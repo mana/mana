@@ -24,9 +24,10 @@
 
 #include "gui/widgets/window.h"
 
-#include "guichanfwd.h"
-
+#include "net/download.h"
 #include "net/serverinfo.h"
+
+#include "utils/mutex.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
@@ -35,7 +36,11 @@
 #include <string>
 #include <vector>
 
+class Button;
+class Label;
 class ListBox;
+class ServerDialog;
+class TextField;
 
 /**
  * Server and Port List Model
@@ -43,6 +48,8 @@ class ListBox;
 class ServersListModel : public gcn::ListModel
 {
     public:
+        ServersListModel(ServerInfos *servers, ServerDialog *parent);
+
         /**
          * Used to get number of line in the list
          */
@@ -57,36 +64,11 @@ class ServersListModel : public gcn::ListModel
          * Used to get the corresponding Server struct
          */
         ServerInfo getServer(int elementIndex) const
-        { return servers[elementIndex]; }
-
-        /**
-         * Add an Element at the end of the server list
-         */
-        void addElement(const ServerInfo &server);
-
-        /**
-         * Add an Element at the end of the server list if it
-         * doesn't exist yet. Otherwise overwrite its properties
-         * in the list.
-         *
-         * @param server ServerInfo to merge into the list.
-         */
-        void mergeElement(const ServerInfo &server);
-
-        /**
-         * Add an Element at the beginning of the server list
-         */
-        void addFirstElement(const ServerInfo &server);
-
-        /**
-         * Returns wheter the given server is already in the list.
-         * @param server Server to search in the list.
-         * @return True, if the server is in the list, false otherwise.
-         */
-        bool contains(const ServerInfo &server);
+        { return mServers->at(elementIndex); }
 
     private:
-        std::vector<ServerInfo> servers;
+        ServerInfos *mServers;
+        ServerDialog *mParent;
 };
 
 /**
@@ -104,7 +86,7 @@ class ServerDialog : public Window,
          *
          * @see Window::Window
          */
-        ServerDialog(ServerInfo *serverInfo);
+        ServerDialog(ServerInfo *serverInfo, const std::string &dir);
 
         /**
          * Destructor
@@ -121,24 +103,54 @@ class ServerDialog : public Window,
          */
         void valueChanged(const gcn::SelectionEvent &event);
 
+        void logic();
+
+    protected:
+        friend class ServersListModel;
+        MutexLocker lock() { return MutexLocker(&mMutex); }
+
     private:
         /**
          * Called to load a list of available server from an online xml file.
          */
-        void loadServerlist();
+        void downloadServerList();
+        void loadServers();
+        static int downloadUpdate(void *ptr, DownloadStatus status,
+                                  size_t total, size_t remaining);
 
         void setFieldsReadOnly(const bool readOnly);
 
-        gcn::TextField *mServerNameField;
-        gcn::TextField *mPortField;
-        gcn::Label  *mServerDescription;
-        gcn::Button *mQuitButton;
-        gcn::Button *mConnectButton;
-        gcn::Button *mManualEntryButton;
+        TextField *mServerNameField;
+        TextField *mPortField;
+        Label  *mDescription;
+        Button *mQuitButton;
+        Button *mConnectButton;
+        Button *mManualEntryButton;
 
-        ListBox *mMostUsedServersList;
-        ServersListModel *mMostUsedServersListModel;
+        ListBox *mServersList;
+        ServersListModel *mServersListModel;
 
+        const std::string &mDir;
+
+        enum ServerDialogDownloadStatus
+        {
+            DOWNLOADING_ERROR,
+            DOWNLOADING_PREPARING,
+            DOWNLOADING_IDLE,
+            DOWNLOADING_IN_PROGRESS,
+            DOWNLOADING_COMPLETE,
+            DOWNLOADING_OVER
+        };
+
+        /** Status of the current download. */
+        ServerDialogDownloadStatus mDownloadStatus;
+
+        Net::Download *mDownload;
+
+        Mutex mMutex;
+        float mDownloadProgress;
+
+        ServerInfos mServers;
         ServerInfo *mServerInfo;
 };
 

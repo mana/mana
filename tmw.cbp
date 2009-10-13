@@ -459,6 +459,8 @@
 		<Unit filename="src/net/adminhandler.h" />
 		<Unit filename="src/net/charhandler.h" />
 		<Unit filename="src/net/chathandler.h" />
+		<Unit filename="src/net/download.cpp" />
+		<Unit filename="src/net/download.h" />
 		<Unit filename="src/net/ea/adminhandler.cpp">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />

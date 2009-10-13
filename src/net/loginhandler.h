@@ -22,8 +22,7 @@
 #ifndef LOGINHANDLER_H
 #define LOGINHANDLER_H
 
-#include "logindata.h"
-
+#include "net/logindata.h"
 #include "net/serverinfo.h"
 #include "net/worldinfo.h"
 

@@ -32,37 +32,14 @@
 #include "log.h"
 #include "main.h"
 
+#include "net/download.h"
+
 #include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 #include <iostream>
-#include <SDL.h>
-#include <SDL_thread.h>
-#include <zlib.h>
-
-#include <curl/curl.h>
-
-/**
- * Calculates the Alder-32 checksum for the given file.
- */
-static unsigned long fadler32(FILE *file)
-{
-    // Obtain file size
-    fseek(file, 0, SEEK_END);
-    long fileSize = ftell(file);
-    rewind(file);
-
-    // Calculate Adler-32 checksum
-    char *buffer = (char*) malloc(fileSize);
-    const size_t read = fread(buffer, 1, fileSize, file);
-    unsigned long adler = adler32(0L, Z_NULL, 0);
-    adler = adler32(adler, (Bytef*) buffer, read);
-    free(buffer);
-
-    return adler;
-}
 
 /**
  * Load the given file into a vector of strings.
@@ -89,22 +66,20 @@ std::vector<std::string> loadTextFile(const std::string &fileName)
 UpdaterWindow::UpdaterWindow(const std::string &updateHost,
                              const std::string &updatesDir):
     Window(_("Updating...")),
-    mThread(NULL),
     mDownloadStatus(UPDATE_NEWS),
     mUpdateHost(updateHost),
     mUpdatesDir(updatesDir),
     mCurrentFile("news.txt"),
+    mDownloadProgress(0.0f),
     mCurrentChecksum(0),
     mStoreInMemory(true),
     mDownloadComplete(true),
     mUserCancel(false),
     mDownloadedBytes(0),
     mMemoryBuffer(NULL),
-    mCurlError(new char[CURL_ERROR_SIZE]),
+    mDownload(NULL),
     mLineIndex(0)
 {
-    mCurlError[0] = 0;
-
     mBrowserBox = new BrowserBox;
     mScrollArea = new ScrollArea(mBrowserBox);
     mLabel = new Label(_("Connecting..."));
@@ -112,6 +87,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayButton = new Button(_("Play"), "play", this);
 
+    mProgressBar->setSmoothProgress(false);
     mBrowserBox->setOpaque(false);
     mPlayButton->setEnabled(false);
 
@@ -139,26 +115,20 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 
 UpdaterWindow::~UpdaterWindow()
 {
-    if (mThread)
-        SDL_WaitThread(mThread, NULL);
-
     free(mMemoryBuffer);
-
-    // Remove possibly leftover temporary download
-    ::remove((mUpdatesDir + "/download.temp").c_str());
-
-    delete[] mCurlError;
 }
 
 void UpdaterWindow::setProgress(float p)
 {
-    mProgressBar->setProgress(p);
+    // Do delayed progress bar update, since Guichan isn't thread-safe
+    MutexLocker lock(&mDownloadMutex);
+    mDownloadProgress = p;
 }
 
 void UpdaterWindow::setLabel(const std::string &str)
 {
     // Do delayed label text update, since Guichan isn't thread-safe
-    MutexLocker lock(&mLabelMutex);
+    MutexLocker lock(&mDownloadMutex);
     mNewLabelCaption = str;
 }
 
@@ -178,6 +148,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
         // Skip the updating process
         if (mDownloadStatus != UPDATE_COMPLETE)
         {
+            mDownload->cancel();
             mDownloadStatus = UPDATE_ERROR;
         }
     }
@@ -216,11 +187,22 @@ void UpdaterWindow::loadNews()
     mScrollArea->setVerticalScrollAmount(0);
 }
 
-int UpdaterWindow::updateProgress(void *ptr,
-                                  double dt, double dn, double ut, double un)
+int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
+                                  size_t dt, size_t dn)
 {
-    float progress = dn / dt;
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
+
+    if (status == DOWNLOAD_STATUS_COMPLETE)
+    {
+        uw->mDownloadComplete = true;
+    }
+    else if (status == DOWNLOAD_STATUS_ERROR ||
+             status == DOWNLOAD_STATUS_CANCELLED)
+    {
+        uw->mDownloadStatus = UPDATE_ERROR;
+    }
+
+    float progress = (float) dn / dt;
 
     if (progress != progress) progress = 0.0f; // check for NaN
     if (progress < 0.0f) progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
@@ -239,7 +221,7 @@ int UpdaterWindow::updateProgress(void *ptr,
     return 0;
 }
 
-size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, void *stream)
 {
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(stream);
     size_t totalMem = size * nmemb;
@@ -254,162 +236,37 @@ size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *st
     return totalMem;
 }
 
-int UpdaterWindow::downloadThread(void *ptr)
-{
-    int attempts = 0;
-    UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
-    CURL *curl;
-    CURLcode res;
-    std::string outFilename;
-    std::string url(uw->mUpdateHost + "/" + uw->mCurrentFile);
-
-    while (attempts < 3 && !uw->mDownloadComplete)
-    {
-        FILE *outfile = NULL;
-        FILE *newfile = NULL;
-        uw->setLabel(uw->mCurrentFile + " (0%)");
-
-        curl = curl_easy_init();
-
-        if (curl)
-        {
-            logger->log("Downloading: %s", url.c_str());
-
-            if (uw->mStoreInMemory)
-            {
-                uw->mDownloadedBytes = 0;
-                curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
-                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
-                                       UpdaterWindow::memoryWrite);
-                curl_easy_setopt(curl, CURLOPT_WRITEDATA, ptr);
-            }
-            else
-            {
-                outFilename =  uw->mUpdatesDir + "/download.temp";
-                outfile = fopen(outFilename.c_str(), "w+b");
-                curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
-            }
-
-#ifdef PACKAGE_VERSION
-            curl_easy_setopt(curl, CURLOPT_USERAGENT, "TMW/" PACKAGE_VERSION);
-#else
-            curl_easy_setopt(curl, CURLOPT_USERAGENT, "TMW");
-#endif
-            curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, uw->mCurlError);
-            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-            curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
-            curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION,
-                                   UpdaterWindow::updateProgress);
-            curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, ptr);
-            curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-            curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15);
-
-            struct curl_slist *pHeaders = NULL;
-            if (uw->mDownloadStatus != UPDATE_RESOURCES)
-            {
-                // Make sure the resources2.txt and news.txt aren't cached,
-                // in order to always get the latest version.
-                pHeaders = curl_slist_append(pHeaders, "pragma: no-cache");
-                pHeaders =
-                    curl_slist_append(pHeaders, "Cache-Control: no-cache");
-                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, pHeaders);
-            }
-
-            if ((res = curl_easy_perform(curl)) != 0)
-            {
-                uw->mDownloadStatus = UPDATE_ERROR;
-                switch (res)
-                {
-                case CURLE_COULDNT_CONNECT:
-                default:
-                    logger->log("curl error %d: %s host: %s",
-                                res, uw->mCurlError, url.c_str());
-                    break;
-                }
-
-                if (!uw->mStoreInMemory)
-                {
-                    fclose(outfile);
-                    ::remove(outFilename.c_str());
-                }
-                attempts++;
-                continue;
-            }
-
-            curl_easy_cleanup(curl);
-
-            if (uw->mDownloadStatus != UPDATE_RESOURCES)
-            {
-                curl_slist_free_all(pHeaders);
-            }
-
-            if (!uw->mStoreInMemory)
-            {
-                // Don't check resources2.txt checksum
-                if (uw->mDownloadStatus == UPDATE_RESOURCES)
-                {
-                    unsigned long adler = fadler32(outfile);
-
-                    if (uw->mCurrentChecksum != adler)
-                    {
-                        fclose(outfile);
-
-                        // Remove the corrupted file
-                        ::remove(outFilename.c_str());
-                        logger->log(
-                            "Checksum for file %s failed: (%lx/%lx)",
-                            uw->mCurrentFile.c_str(),
-                            adler, uw->mCurrentChecksum);
-                        attempts++;
-                        continue; // Bail out here to avoid the renaming
-                    }
-                }
-                fclose(outfile);
-
-                // Give the file the proper name
-                const std::string newName =
-                    uw->mUpdatesDir + "/" + uw->mCurrentFile;
-
-                // Any existing file with this name is deleted first, otherwise
-                // the rename will fail on Windows.
-                ::remove(newName.c_str());
-                ::rename(outFilename.c_str(), newName.c_str());
-
-                // Check if we can open it and no errors were encountered
-                // during renaming
-                newfile = fopen(newName.c_str(), "rb");
-                if (newfile)
-                {
-                    fclose(newfile);
-                    uw->mDownloadComplete = true;
-                }
-            }
-            else
-            {
-                // It's stored in memory, we're done
-                uw->mDownloadComplete = true;
-            }
-        }
-        attempts++;
-    }
-
-    if (!uw->mDownloadComplete) {
-        uw->mDownloadStatus = UPDATE_ERROR;
-    }
-
-    return 0;
-}
-
 void UpdaterWindow::download()
 {
-    mDownloadComplete = false;
-    mThread = SDL_CreateThread(UpdaterWindow::downloadThread, this);
+    mDownload = new Net::Download(this, mUpdateHost + "/" + mCurrentFile,
+                                  updateProgress);
 
-    if (!mThread)
+    if (mStoreInMemory)
     {
-        logger->log("Unable to create mThread");
-        mDownloadStatus = UPDATE_ERROR;
+        mDownload->setWriteFunction(UpdaterWindow::memoryWrite);
     }
+    else
+    {
+        if (mDownloadStatus == UPDATE_RESOURCES)
+        {
+            mDownload->setFile(mUpdatesDir + "/" + mCurrentFile, mCurrentChecksum);
+        }
+        else
+        {
+            mDownload->setFile(mUpdatesDir + "/" + mCurrentFile);
+        }
+    }
+
+    if (mDownloadStatus != UPDATE_RESOURCES)
+    {
+        mDownload->noCache();
+    }
+
+    setLabel(mCurrentFile + " (0%)");
+    mDownloadComplete = false;
+
+    // TODO: check return
+    mDownload->start();
 }
 
 void UpdaterWindow::logic()
@@ -419,31 +276,22 @@ void UpdaterWindow::logic()
 
     // Synchronize label caption when necessary
     {
-        MutexLocker lock(&mLabelMutex);
+        MutexLocker lock(&mDownloadMutex);
 
         if (mLabel->getCaption() != mNewLabelCaption)
         {
             mLabel->setCaption(mNewLabelCaption);
             mLabel->adjustSize();
         }
+
+        mProgressBar->setProgress(mDownloadProgress);
     }
+
+    std::string filename = mUpdatesDir + "/" + mCurrentFile;
 
     switch (mDownloadStatus)
     {
         case UPDATE_ERROR:
-            if (mThread)
-            {
-                if (mUserCancel) {
-                    // Kill the thread, because user has canceled
-                    SDL_KillThread(mThread);
-                    // Set the flag to false again
-                    mUserCancel = false;
-                }
-                else {
-                    SDL_WaitThread(mThread, NULL);
-                }
-                mThread = NULL;
-            }
             // TODO: Only send complete sentences to gettext
             mBrowserBox->addRow("");
             mBrowserBox->addRow(_("##1  The update process is incomplete."));
@@ -451,7 +299,8 @@ void UpdaterWindow::logic()
             mBrowserBox->addRow(_("##1  It is strongly recommended that"));
             // TRANSLATORS: Begins "It is strongly recommended that".
             mBrowserBox->addRow(_("##1  you try again later."));
-            mBrowserBox->addRow(mCurlError);
+
+            mBrowserBox->addRow(mDownload->getError());
             mScrollArea->setVerticalScrollAmount(
                     mScrollArea->getVerticalMaxScroll());
             mDownloadStatus = UPDATE_COMPLETE;
@@ -479,12 +328,6 @@ void UpdaterWindow::logic()
         case UPDATE_RESOURCES:
             if (mDownloadComplete)
             {
-                if (mThread)
-                {
-                    SDL_WaitThread(mThread, NULL);
-                    mThread = NULL;
-                }
-
                 if (mLineIndex < mLines.size())
                 {
                     std::stringstream line(mLines[mLineIndex]);

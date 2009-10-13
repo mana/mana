@@ -926,7 +926,7 @@ int main(int argc, char *argv[])
                 loadUpdates();
             }
 
-            printf("State change: %d to %d\n", oldstate, state);
+            //printf("State change: %d to %d\n", oldstate, state);
 
             oldstate = state;
 
@@ -945,15 +945,16 @@ int main(int argc, char *argv[])
                 case STATE_CHOOSE_SERVER:
                     logger->log("State: CHOOSE SERVER");
 
-                    // Don't allow an alpha opacity
-                    // lower than the default value
-                    SkinLoader::instance()->setMinimumOpacity(0.8f);
-
                     // Allow changing this using a server choice dialog
                     // We show the dialog box only if the command-line
                     // options weren't set.
                     if (options.serverName.empty() && options.serverPort == 0) {
-                        currentDialog = new ServerDialog(&currentServer);
+                        // Don't allow an alpha opacity
+                        // lower than the default value
+                        SkinLoader::instance()->setMinimumOpacity(0.8f);
+
+                        currentDialog = new ServerDialog(&currentServer,
+                                                         homeDir);
                     } else {
                         state = STATE_CONNECT_SERVER;
 

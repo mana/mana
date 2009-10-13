@@ -125,7 +125,7 @@ Net::TradeHandler *Net::getTradeHandler()
 namespace Net
 {
     bool networkLoaded = false;
-}
+} // namespace Net
 
 void Net::connectToServer(const ServerInfo &server)
 {
@@ -134,7 +134,7 @@ void Net::connectToServer(const ServerInfo &server)
 
     if (networkLoaded)
     {
-        Net::getGeneralHandler()->reload();
+        getGeneralHandler()->reload();
     }
     else
     {
@@ -145,11 +145,11 @@ void Net::connectToServer(const ServerInfo &server)
 #endif
     }
 
-    Net::getGeneralHandler()->load();
+    getGeneralHandler()->load();
 
     networkLoaded = true;
 
-    Net::getLoginHandler()->setServer(server);
+    getLoginHandler()->setServer(server);
 
-    Net::getLoginHandler()->connect();
+    getLoginHandler()->connect();
 }

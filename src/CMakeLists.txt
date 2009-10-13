@@ -259,6 +259,8 @@ SET(SRCS
     net/adminhandler.h
     net/charhandler.h
     net/chathandler.h
+    net/download.cpp
+    net/download.h
     net/gamehandler.h
     net/generalhandler.h
     net/guildhandler.h

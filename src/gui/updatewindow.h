@@ -24,6 +24,8 @@
 
 #include "gui/widgets/window.h"
 
+#include "net/download.h"
+
 #include "utils/mutex.h"
 
 #include <guichan/actionlistener.hpp>
@@ -35,8 +37,6 @@ class BrowserBox;
 class Button;
 class ProgressBar;
 class ScrollArea;
-
-struct SDL_Thread;
 
 /**
  * Update progress window GUI
@@ -92,23 +92,18 @@ private:
     void download();
 
     /**
-     * The thread function that download the files.
+     * A download callback for progress updates.
      */
-    static int downloadThread(void *ptr);
-
-    /**
-     * A libcurl callback for progress updates.
-     */
-    static int updateProgress(void *ptr,
-                              double dt, double dn, double ut, double un);
+    static int updateProgress(void *ptr, DownloadStatus status,
+                              size_t dt, size_t dn);
 
     /**
      * A libcurl callback for writing to memory.
      */
     static size_t memoryWrite(void *ptr, size_t size, size_t nmemb,
-                              FILE *stream);
+                              void *stream);
 
-    enum DownloadStatus
+    enum UpdateDownloadStatus
     {
         UPDATE_ERROR,
         UPDATE_IDLE,
@@ -118,11 +113,8 @@ private:
         UPDATE_RESOURCES
     };
 
-    /** A thread that use libcurl to download updates. */
-    SDL_Thread *mThread;
-
     /** Status of the current download. */
-    DownloadStatus mDownloadStatus;
+    UpdateDownloadStatus mDownloadStatus;
 
     /** Host where we get the updated files. */
     std::string mUpdateHost;
@@ -136,8 +128,11 @@ private:
     /** The new label caption to be set in the logic method. */
     std::string mNewLabelCaption;
 
-    /** The mutex used to guard access to mNewLabelCaption. */
-    Mutex mLabelMutex;
+    /** The new progress value to be set in the logic method. */
+    float mDownloadProgress;
+
+    /** The mutex used to guard access to mNewLabelCaption and mDownloadProgress. */
+    Mutex mDownloadMutex;
 
     /** The Adler32 checksum of the file currently downloading. */
     unsigned long mCurrentChecksum;
@@ -157,8 +152,8 @@ private:
     /** Buffer for files downloaded to memory. */
     char *mMemoryBuffer;
 
-    /** Buffer to handler human readable error provided by curl. */
-    char *mCurlError;
+    /** Download handle. */
+    Net::Download *mDownload;
 
     /** List of files to download. */
     std::vector<std::string> mLines;

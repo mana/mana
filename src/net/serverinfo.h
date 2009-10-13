@@ -23,6 +23,7 @@
 #define SERVERINFO_H
 
 #include <string>
+#include <vector>
 
 class ServerInfo
 {
@@ -48,5 +49,7 @@ public:
         return (hostname != other.hostname || port != other.port);
     }
 };
+
+typedef std::vector<ServerInfo> ServerInfos;
 
 #endif // SERVERINFO_H
