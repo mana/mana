@@ -215,10 +215,18 @@ int Download::downloadThread(void *ptr)
             {
                 switch (res)
                 {
+                case CURLE_ABORTED_BY_CALLBACK:
+                    d->mOptions.cancel = true;
+                    break;
                 case CURLE_COULDNT_CONNECT:
                 default:
                     logger->log("curl error %d: %s host: %s",
                                 res, d->mError, d->mUrl.c_str());
+                    break;
+                }
+
+                if (d->mOptions.cancel)
+                {
                     break;
                 }
 
@@ -280,7 +288,11 @@ int Download::downloadThread(void *ptr)
         attempts++;
     }
 
-    if (!complete) {
+    if (d->mOptions.cancel)
+    {
+        // Nothing to do...
+    }
+    else if (!complete || attempts >= 3) {
         d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_ERROR, 0, 0);
     }
     else
@@ -290,6 +302,5 @@ int Download::downloadThread(void *ptr)
 
     return 0;
 }
-
 
 } // namespace Net

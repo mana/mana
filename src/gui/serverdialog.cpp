@@ -192,6 +192,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
+            mDownload->cancel();
             mQuitButton->setEnabled(false);
             mConnectButton->setEnabled(false);
 
@@ -234,6 +235,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "quit")
     {
+        mDownload->cancel();
         state = STATE_FORCE_QUIT;
     }
     else if (event.getId() == "addEntry")
@@ -401,6 +403,9 @@ void ServerDialog::loadServers()
 int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,
                                  size_t total, size_t remaining)
 {
+    if (status == DOWNLOAD_STATUS_CANCELLED)
+        return -1;
+
     ServerDialog *sd = reinterpret_cast<ServerDialog*>(ptr);
     bool finished = false;
 
