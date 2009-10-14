@@ -44,6 +44,10 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         /** Called when key is pressed */
         void keyPressed(gcn::KeyEvent &event);
 
+        static const char *overlayDetailToString(int detail = -1);
+
+        static const char *particleDetailToString(int detail = -1);
+
     private:
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;

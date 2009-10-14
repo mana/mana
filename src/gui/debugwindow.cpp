@@ -22,6 +22,7 @@
 #include "gui/debugwindow.h"
 
 #include "gui/setup.h"
+#include "gui/setup_video.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/label.h"
@@ -30,7 +31,10 @@
 #include "engine.h"
 #include "game.h"
 #include "particle.h"
+#include "main.h"
 #include "map.h"
+
+#include "resources/image.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -46,19 +50,34 @@ DebugWindow::DebugWindow():
     setSaveVisible(true);
     setDefaultSize(400, 100, ImageRect::CENTER);
 
+#ifdef USE_OPENGL
+    if (Image::getLoadAsOpenGL())
+    {
+        mFPSText = _("%d FPS (OpenGL)");
+    }
+#endif
+    else
+    {
+        mFPSText = _("%d FPS");
+    }
+
     mFPSLabel = new Label(strprintf(_("%d FPS"), 0));
     mMusicFileLabel = new Label(strprintf(_("Music: %s"), ""));
     mMapLabel = new Label(strprintf(_("Map: %s"), ""));
     mMinimapLabel = new Label(strprintf(_("Minimap: %s"), ""));
     mTileMouseLabel = new Label(strprintf(_("Cursor: (%d, %d)"), 0, 0));
     mParticleCountLabel = new Label(strprintf(_("Particle count: %d"), 88888));
+    mParticleDetailLabel = new Label();
+    mAmbientDetailLabel = new Label();
 
     place(0, 0, mFPSLabel, 3);
     place(3, 0, mTileMouseLabel);
     place(0, 1, mMusicFileLabel, 3);
     place(3, 1, mParticleCountLabel);
     place(0, 2, mMapLabel, 4);
+    place(3, 2, mParticleDetailLabel);
     place(0, 3, mMinimapLabel, 4);
+    place(3, 3, mAmbientDetailLabel);
 
     loadWindowState();
 }
@@ -72,7 +91,7 @@ void DebugWindow::logic()
     int mouseTileX = (viewport->getMouseX() + viewport->getCameraX()) / 32;
     int mouseTileY = (viewport->getMouseY() + viewport->getCameraY()) / 32;
 
-    mFPSLabel->setCaption(strprintf(_("%d FPS"), fps));
+    mFPSLabel->setCaption(strprintf(mFPSText.c_str(), fps));
 
     mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"), mouseTileX,
                                           mouseTileY));
@@ -96,4 +115,16 @@ void DebugWindow::logic()
 
     mParticleCountLabel->setCaption(strprintf(_("Particle count: %d"),
                                     Particle::particleCount));
+
+    mParticleCountLabel->adjustSize();
+
+    mParticleDetailLabel->setCaption(strprintf(_("Particle detail: %s"),
+                                    Setup_Video::particleDetailToString()));
+
+    mParticleDetailLabel->adjustSize();
+
+    mAmbientDetailLabel->setCaption(strprintf(_("Ambient FX: %s"),
+                                    Setup_Video::overlayDetailToString()));
+
+    mAmbientDetailLabel->adjustSize();
 }

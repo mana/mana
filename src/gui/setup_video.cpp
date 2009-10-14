@@ -146,8 +146,11 @@ static const char *speechModeToString(Being::Speech mode)
     return "";
 }
 
-static const char *overlayDetailToString(int detail)
+const char *Setup_Video::overlayDetailToString(int detail)
 {
+    if (detail == -1)
+        detail = config.getValue("OverlayDetail", -1);
+
     switch (detail)
     {
         case 0: return _("off");
@@ -157,8 +160,11 @@ static const char *overlayDetailToString(int detail)
     return "";
 }
 
-static const char *particleDetailToString(int detail)
+const char *Setup_Video::particleDetailToString(int detail)
 {
+    if (detail == -1)
+        detail = 3 - config.getValue("particleEmitterSkip", -1);
+
     switch (detail)
     {
         case 0: return _("low");
