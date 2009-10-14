@@ -58,10 +58,12 @@
 #define BEING_EFFECTS_FILE "effects.xml"
 #define HAIR_FILE "hair.xml"
 
-int Being::mNumberOfHairstyles = 1;
+static const int DEFAULT_BEING_WIDTH = 32;
+static const int DEFAULT_BEING_HEIGHT = 32;
+extern const int MILLISECONDS_IN_A_TICK;
 
-static const int DEFAULT_WIDTH = 32;
-static const int DEFAULT_HEIGHT = 32;
+
+int Being::mNumberOfHairstyles = 1;
 
 Being::Being(int id, int job, Map *map):
 #ifdef EATHENA_SUPPORT
@@ -87,7 +89,7 @@ Being::Being(int id, int job, Map *map):
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
 #ifdef TMWSERV_SUPPORT
-    mWalkSpeed(100),
+    mWalkSpeed(6.0f), // default speed in tile per second
 #else
     mWalkSpeed(150),
 #endif
@@ -525,16 +527,30 @@ void Being::logic()
             mDest : Vector(mPath.front().x,
                            mPath.front().y);
 
+        // The Vector representing the difference between current position
+        // and the next destination path node.
         Vector dir = dest - mPos;
-        const float length = dir.length();
+
+        const float nominalLength = dir.length();
 
         // When we've not reached our destination, move to it.
-        if (length > 0.0f)
+        if (nominalLength > 0.0f && mWalkSpeed > 0.0f)
         {
-            const float speed = mWalkSpeed / 100.0f;
+
+            // The private mWalkSpeed member is the speed in tiles per second.
+            // We translate it into pixels per tick,
+            // because the logic is called every ticks.
+            const float speedInTicks = ((float)DEFAULT_TILE_SIDE_LENGTH * mWalkSpeed)
+                                      / 1000 * (float)MILLISECONDS_IN_A_TICK;
+
+            // The deplacement of a point along a vector is calculated
+            // using the Unit Vector (â) multiplied by the point speed.
+            // â = a / ||a|| (||a|| is the a length.)
+            // Then, diff = (dir/||dir||)*speed, or (dir / ||dir|| / 1/speed).
+            Vector diff = (dir / (nominalLength / speedInTicks));
 
             // Test if we don't miss the destination by a move too far:
-            if ((dir / (length / speed)).length() > dir.length())
+            if (diff.length() > nominalLength)
             {
                 setPosition(mPos + dir);
 
@@ -545,7 +561,7 @@ void Being::logic()
             }
             // Otherwise, go to it using the nominal speed.
             else
-                setPosition(mPos + (dir / (length / speed)));
+                setPosition(mPos + diff);
 
             if (mAction != WALK)
                 setAction(WALK);
@@ -780,9 +796,9 @@ int Being::getWidth() const
             break;
 
     if (base)
-        return std::max(base->getWidth(), DEFAULT_WIDTH);
+        return std::max(base->getWidth(), DEFAULT_BEING_WIDTH);
     else
-        return DEFAULT_WIDTH;
+        return DEFAULT_BEING_WIDTH;
 }
 
 int Being::getHeight() const
@@ -794,9 +810,9 @@ int Being::getHeight() const
             break;
 
     if (base)
-        return std::max(base->getHeight(), DEFAULT_HEIGHT);
+        return std::max(base->getHeight(), DEFAULT_BEING_HEIGHT);
     else
-        return DEFAULT_HEIGHT;
+        return DEFAULT_BEING_HEIGHT;
 }
 
 void Being::setTargetAnimation(SimpleAnimation* animation)

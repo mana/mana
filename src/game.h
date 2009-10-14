@@ -29,6 +29,7 @@
 extern std::string map_path;
 extern volatile int fps;
 extern volatile int tick_time;
+extern const int MILLISECONDS_IN_A_TICK;
 
 class WindowMenu;
 

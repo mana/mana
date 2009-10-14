@@ -41,6 +41,11 @@
 extern volatile int tick_time;
 
 /**
+ * The used side-length for tiles
+ */
+const int DEFAULT_TILE_SIDE_LENGTH = 32;
+
+/**
  * A location on a tile map. Used for pathfinding, open list.
  */
 struct Location

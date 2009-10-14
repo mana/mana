@@ -203,13 +203,10 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         }
         if (speed)
         {
-            /* The speed on the server is the cost of moving from one tile to
-             * the next. Beings get 1000 cost units per second. The speed is
-             * transferred as devided by 10, so that slower speeds fit in a
-             * byte. Here we convert the speed to pixels per second.
-             */
-            const float tilesPerSecond = 100.0f / speed;
-            being->setWalkSpeed((int) (tilesPerSecond * 32));
+            // The being's speed is transfered in tiles per second * 10
+            // to keep it transferable in a Byte.
+            // We set it back to tiles per second and in a float.
+            being->setWalkSpeed((float) speed / 10);
         }
 
         // Ignore messages from the server for the local player

@@ -43,6 +43,8 @@ typedef std::list<Sprite*> MapSprites;
 typedef MapSprites::iterator MapSprite;
 typedef std::vector<MapLayer*> Layers;
 
+extern const int DEFAULT_TILE_SIDE_LENGTH;
+
 /**
  * A meta tile stores additional information about a location on a tile map.
  * This is information that doesn't need to be repeated for each tile in each

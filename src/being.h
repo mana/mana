@@ -259,11 +259,18 @@ class Being : public Sprite, public ConfigListener
         virtual Type getType() const { return UNKNOWN; }
 
         /**
-         * Sets the walk speed (in pixels per second).
+         * Sets the walk speed.
+         * in pixels per second for eAthena,
+         * in tiles per second for TMWserv.
          */
-        void setWalkSpeed(int speed) { mWalkSpeed = speed; }
+        void setWalkSpeed(float speed) { mWalkSpeed = speed; }
 
-        int getWalkSpeed() const { return mWalkSpeed; }
+        /**
+         * Gets the walk speed.
+         * in pixels per second for eAthena,
+         * in tiles per second for TMWserv (0.1 precision).
+         */
+        float getWalkSpeed() const { return mWalkSpeed; }
 
         /**
          * Sets the sprite id.
@@ -568,7 +575,12 @@ class Being : public Sprite, public ConfigListener
         /** Speech Bubble components */
         SpeechBubble *mSpeechBubble;
 
-        int mWalkSpeed;                 /**< Walking speed (pixels/sec) */
+        /**
+         * Walk speed.
+         * In pixels per second for eAthena,
+         * In tiles per second (0.1 precision) for TMWserv.
+         */
+        float mWalkSpeed;
 
         Vector mPos;
         Vector mDest;
