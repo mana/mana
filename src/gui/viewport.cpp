@@ -378,6 +378,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                 mLocalWalkTime = tick_time;
                 player_node->setDestination(event.getX() + (int) mPixelViewX,
                                             event.getY() + (int) mPixelViewY);
+                player_node->pathSetByMouse();
             }
 #else
             player_node->setDestination(tilex, tiley);

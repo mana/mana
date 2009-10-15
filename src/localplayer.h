@@ -367,6 +367,10 @@ class LocalPlayer : public Player
 
         std::pair<int, int> getExperience(int skill);
 
+        /** Tells the path has been set by mouse */
+        void pathSetByMouse()
+        { mPathSetByMouse = true; }
+
         bool mUpdateName;     /** Whether or not the name settings have changed */
 
         bool mMapInitialized; /** Whether or not the map is available yet */
@@ -424,6 +428,7 @@ class LocalPlayer : public Player
         bool mKeepAttacking;  /** Whether or not to continue to attack */
         int mLastAction;      /**< Time stamp of the last action, -1 if none. */
         int mWalkingDir;      /**< The direction the player is walking in. */
+        bool mPathSetByMouse; /**< Tells if the path was set using mouse */
         int mDestX;           /**< X coordinate of destination. */
         int mDestY;           /**< Y coordinate of destination. */
 

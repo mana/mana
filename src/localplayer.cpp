@@ -103,6 +103,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
     mWalkingDir(0),
+    mPathSetByMouse(false),
     mDestX(0), mDestY(0),
     mInventory(new Inventory(INVENTORY_SIZE)),
 #ifdef TMWSERV_SUPPORT
@@ -538,10 +539,12 @@ void LocalPlayer::setWalkingDir(int dir)
             player_node->stopWalking(false);
 
         // Else, he is not pressing a key,
-        // And the current path is over. Then, stop (sending to server).
-        else if (!dir && mPath.empty())
+        // and the current path hasn't been sent by mouse,
+        // then, stop (sending to server).
+        else if (!dir)
         {
-            player_node->stopWalking(true);
+            if (!mPathSetByMouse)
+                player_node->stopWalking(true);
             return;
         }
 
@@ -640,6 +643,9 @@ void LocalPlayer::stopWalking(bool sendToServer)
                                                      getPosition().y);
         setAction(STAND);
     }
+
+    // No path set anymore, so we reset the path by mouse flag
+    mPathSetByMouse = false;
 
     clearPath();
 }
