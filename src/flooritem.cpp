@@ -69,8 +69,9 @@ void FloorItem::draw(Graphics *graphics, int offsetX, int offsetY) const
     {
         Image *image = mItem->getDrawImage();
 
-        if (image && mAlpha != image->getAlpha())
-            image->setAlpha(mAlpha);
+        if (image)
+            if (mAlpha != image->getAlpha())
+                image->setAlpha(mAlpha);
 
         graphics->drawImage(image, mX * 32 + offsetX, mY * 32 + offsetY);
     }
