@@ -27,6 +27,7 @@
 
 Item::Item(int id, int quantity, bool equipment, bool equipped):
     mImage(0),
+    mDrawImage(0),
     mQuantity(quantity),
     mEquipment(equipment), mEquipped(equipped), mInEquipment(false)
 {
@@ -50,10 +51,17 @@ void Item::setId(int id)
     if (mImage)
         mImage->decRef();
 
+    if (mDrawImage)
+        mDrawImage->decRef();
+
     ResourceManager *resman = ResourceManager::getInstance();
     std::string imagePath = "graphics/items/" + getInfo().getImageName();
     mImage = resman->getImage(imagePath);
+    mDrawImage = resman->getImage(imagePath);
 
     if (!mImage)
         mImage = resman->getImage("graphics/gui/unknown-item.png");
+
+    if (!mDrawImage)
+        mDrawImage = resman->getImage("graphics/gui/unknown-item.png");
 }

@@ -59,6 +59,11 @@ class Item
         Image *getImage() { return mImage; }
 
         /**
+         * Returns the item image.
+         */
+        Image *getDrawImage() { return mDrawImage; }
+
+        /**
          * Sets the number of items.
          */
         void setQuantity(int quantity) { mQuantity = quantity; }
@@ -121,6 +126,7 @@ class Item
     protected:
         int mId;              /**< Item type id. */
         Image *mImage;        /**< Item image. */
+        Image *mDrawImage;    /**< Draw image. */
         int mQuantity;        /**< Number of items. */
         bool mEquipment;      /**< Item is equipment. */
         bool mEquipped;       /**< Item is equipped. */
