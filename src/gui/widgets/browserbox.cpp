@@ -545,7 +545,7 @@ int BrowserBox::calcHeight()
 
                     if (c == '<')
                     {
-                        const int size = mLinks[link].x2 - mLinks[link].x1;
+                        const int size = font->getWidth(mLinks[link].caption) + 1;
                         mLinks[link].x1 = x;
                         mLinks[link].y1 = y;
                         mLinks[link].x2 = mLinks[link].x1 + size;
