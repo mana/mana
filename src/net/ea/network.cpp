@@ -398,7 +398,7 @@ void Network::receive()
                 {
                     // We got disconnected
                     mState = IDLE;
-                    logger->log(_("Disconnected."));
+                    logger->log("Disconnected.");
                 }
                 else if (ret < 0)
                 {
