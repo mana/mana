@@ -401,7 +401,7 @@ void Network::receive()
                 }
                 else if (ret < 0)
                 {
-                    setError("Error in SDLNet_TCP_Recv(): " +
+                    setError("Connection to server terminated: " +
                              std::string(SDLNet_GetError()));
                 }
                 else {
