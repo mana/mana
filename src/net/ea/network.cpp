@@ -26,6 +26,7 @@
 #include "net/messagehandler.h"
 #include "net/messagein.h"
 
+#include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 #include "log.h"
@@ -139,7 +140,7 @@ bool Network::connect(ServerInfo server)
 
     if (server.hostname.empty())
     {
-        setError("Empty address given to Network::connect()!");
+        setError(_("Empty address given to Network::connect()!"));
         return false;
     }
 
@@ -332,7 +333,7 @@ bool Network::realConnect()
     if (SDLNet_ResolveHost(&ipAddress, mServer.hostname.c_str(),
                            mServer.port) == -1)
     {
-        std::string errorMessage = "Unable to resolve host \"" +
+        std::string errorMessage = _("Unable to resolve host \"") +
                                    mServer.hostname + "\"";
         setError(errorMessage);
         logger->log("SDLNet_ResolveHost: %s", errorMessage.c_str());
@@ -397,11 +398,11 @@ void Network::receive()
                 {
                     // We got disconnected
                     mState = IDLE;
-                    logger->log("Disconnected.");
+                    logger->log(_("Disconnected."));
                 }
                 else if (ret < 0)
                 {
-                    setError("Connection to server terminated: " +
+                    setError(_("Connection to server terminated. ") +
                              std::string(SDLNet_GetError()));
                 }
                 else {
