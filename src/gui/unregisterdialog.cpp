@@ -34,6 +34,8 @@
 #include "gui/widgets/textfield.h"
 
 #include "net/logindata.h"
+#include "net/loginhandler.h"
+#include "net/net.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -106,20 +108,22 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
         std::stringstream errorMessage;
         bool error = false;
 
+        unsigned int min = Net::getLoginHandler()->getMinPasswordLength();
+        unsigned int max = Net::getLoginHandler()->getMaxPasswordLength();
+
         // Check password
-        if (password.length() < LEN_MIN_PASSWORD)
+        if (password.length() < min)
         {
             // Pass too short
             errorMessage << strprintf(_("The password needs to be at least %d "
-                                        "characters long."), LEN_MIN_PASSWORD);
+                                        "characters long."), min);
             error = true;
         }
-        else if (password.length() > LEN_MAX_PASSWORD - 1)
+        else if (password.length() > max - 1)
         {
             // Pass too long
             errorMessage << strprintf(_("The password needs to be less than "
-                                        "%d characters long."),
-                                      LEN_MAX_PASSWORD);
+                                        "%d characters long."), max);
             error = true;
         }
 

@@ -63,6 +63,14 @@ class LoginHandler
          */
         virtual int supportedOptionalActions() const = 0;
 
+        virtual unsigned int getMinUserNameLength() const { return 4; };
+
+        virtual unsigned int getMaxUserNameLength() const { return 25; };
+
+        virtual unsigned int getMinPasswordLength() const { return 4; };
+
+        virtual unsigned int getMaxPasswordLength() const { return 25; };
+
         virtual void loginAccount(LoginData *loginData) = 0;
 
         virtual void logout() = 0;

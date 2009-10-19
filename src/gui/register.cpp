@@ -37,8 +37,8 @@
 #include "gui/widgets/textfield.h"
 
 #include "net/logindata.h"
-#include "net/net.h"
 #include "net/loginhandler.h"
+#include "net/net.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -79,25 +79,32 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     place(0, 1, passwordLabel);
     place(0, 2, confirmLabel);
 
+    place(1, 0, mUserField, 3).setPadding(2);
+    place(1, 1, mPasswordField, 3).setPadding(2);
+    place(1, 2, mConfirmField, 3).setPadding(2);
+
+    int row = 3;
+
     if (optionalActions & Net::LoginHandler::SetGenderOnRegister)
     {
         mMaleButton = new RadioButton(_("Male"), "sex", true);
         mFemaleButton = new RadioButton(_("Female"), "sex", false);
-        place(1, 3, mMaleButton);
-        place(2, 3, mFemaleButton);
+        place(1, row, mMaleButton);
+        place(2, row, mFemaleButton);
+
+        row++;
     }
 
     if (optionalActions & Net::LoginHandler::SetEmailOnRegister)
     {
         gcn::Label *emailLabel = new Label(_("Email:"));
         mEmailField = new TextField;
-        place(0, 3, emailLabel);
-        place(1, 3, mEmailField, 3).setPadding(2);
+        place(0, row, emailLabel);
+        place(1, row, mEmailField, 3).setPadding(2);
+
+        row++;
     }
 
-    place(1, 0, mUserField, 3).setPadding(2);
-    place(1, 1, mPasswordField, 3).setPadding(2);
-    place(1, 2, mConfirmField, 3).setPadding(2);
     place = getPlacer(0, 2);
     place(1, 0, mRegisterButton);
     place(2, 0, mCancelButton);
@@ -147,36 +154,41 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
         std::string errorMessage;
         int error = 0;
 
-        if (user.length() < LEN_MIN_USERNAME)
+        unsigned int minUser = Net::getLoginHandler()->getMinUserNameLength();
+        unsigned int maxUser = Net::getLoginHandler()->getMaxUserNameLength();
+        unsigned int minPass = Net::getLoginHandler()->getMinPasswordLength();
+        unsigned int maxPass = Net::getLoginHandler()->getMaxPasswordLength();
+
+        if (user.length() < minUser)
         {
             // Name too short
             errorMessage = strprintf
                 (_("The username needs to be at least %d characters long."),
-                 LEN_MIN_USERNAME);
+                 minUser);
             error = 1;
         }
-        else if (user.length() > LEN_MAX_USERNAME - 1 )
+        else if (user.length() > maxUser - 1 )
         {
             // Name too long
             errorMessage = strprintf
                 (_("The username needs to be less than %d characters long."),
-                 LEN_MAX_USERNAME);
+                 maxUser);
             error = 1;
         }
-        else if (mPasswordField->getText().length() < LEN_MIN_PASSWORD)
+        else if (mPasswordField->getText().length() < minPass)
         {
             // Pass too short
             errorMessage = strprintf
                 (_("The password needs to be at least %d characters long."),
-                 LEN_MIN_PASSWORD);
+                 minPass);
             error = 2;
         }
-        else if (mPasswordField->getText().length() > LEN_MAX_PASSWORD - 1 )
+        else if (mPasswordField->getText().length() > maxPass - 1 )
         {
             // Pass too long
             errorMessage = strprintf
                 (_("The password needs to be less than %d characters long."),
-                 LEN_MAX_PASSWORD);
+                 maxPass);
             error = 2;
         }
         else if (mPasswordField->getText() != mConfirmField->getText())

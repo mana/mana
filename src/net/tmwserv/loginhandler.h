@@ -47,6 +47,10 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         int supportedOptionalActions() const
         { return Unregister | ChangeEmail | SetEmailOnRegister; }
 
+        unsigned int getMaxUserNameLength() const { return 15; };
+
+        unsigned int getMinPasswordLength() const { return 6; };
+
         void loginAccount(LoginData *loginData);
 
         void logout();

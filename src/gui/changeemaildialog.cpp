@@ -32,6 +32,8 @@
 #include "gui/widgets/textfield.h"
 
 #include "net/logindata.h"
+#include "net/loginhandler.h"
+#include "net/net.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -116,20 +118,21 @@ void ChangeEmailDialog::action(const gcn::ActionEvent &event)
         std::stringstream errorMessage;
         int error = 0;
 
-        if (newFirstEmail.length() < LEN_MIN_PASSWORD)
+        unsigned int min = Net::getLoginHandler()->getMinPasswordLength();
+        unsigned int max = Net::getLoginHandler()->getMaxPasswordLength();
+
+        if (newFirstEmail.length() < min)
         {
             // First email address too short
             errorMessage << strprintf(_("The new email address needs to be at "
-                                        "least %d characters long."),
-                                      LEN_MIN_PASSWORD);
+                                        "least %d characters long."), min);
             error = 1;
         }
-        else if (newFirstEmail.length() > LEN_MAX_PASSWORD - 1 )
+        else if (newFirstEmail.length() > max - 1 )
         {
             // First email address too long
             errorMessage << strprintf(_("The new email address needs to be "
-                                        "less than %d characters long."),
-                                      LEN_MAX_PASSWORD);
+                                        "less than %d characters long."), max);
             error = 1;
         }
         else if (newFirstEmail != newSecondEmail)
