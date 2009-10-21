@@ -920,12 +920,6 @@ int main(int argc, char *argv[])
 
         if (state != oldstate)
         {
-            // Load updates after exiting the update state
-            if (oldstate == STATE_UPDATE)
-            {
-                loadUpdates();
-            }
-
             //printf("State change: %d to %d\n", oldstate, state);
 
             oldstate = state;
@@ -1025,19 +1019,20 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_UPDATE:
+
+                    // Determine which source to use for the update host
+                    if (!options.updateHost.empty())
+                        updateHost = options.updateHost;
+                    else
+                        updateHost = loginData.updateHost;
+                    setUpdatesDir();
+
                     if (options.skipUpdate)
                     {
                         state = STATE_LOAD_DATA;
                     }
                     else
                     {
-                        // Determine which source to use for the update host
-                        if (!options.updateHost.empty())
-                            updateHost = options.updateHost;
-                        else
-                            updateHost = loginData.updateHost;
-
-                        setUpdatesDir();
                         logger->log("State: UPDATE");
                         currentDialog = new UpdaterWindow(updateHost,
                                 homeDir + "/" + updatesDir);
@@ -1047,7 +1042,10 @@ int main(int argc, char *argv[])
                 case STATE_LOAD_DATA:
                     logger->log("State: LOAD DATA");
 
-                    // Add customdata directory
+                    // Load the updates downloaded so far...
+                    loadUpdates();
+
+                    // Also add customdata directory
                     ResourceManager::getInstance()->searchAndAddArchives(
                             "customdata/",
                             "zip",
