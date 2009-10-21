@@ -302,7 +302,7 @@ void LocalPlayer::nextStep(unsigned char dir = 0)
 
     const Vector &pos = getPosition();
 
-    // Compute where the next step will set.
+    // Compute where the next step will be set.
 
     int dx = 0, dy = 0;
     if (dir & UP)
@@ -342,7 +342,7 @@ void LocalPlayer::nextStep(unsigned char dir = 0)
         }
     }
 
-    if (dScaler >= 0)
+    if (dScaler > 0)
     {
         //effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
         setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));

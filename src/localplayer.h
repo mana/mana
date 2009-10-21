@@ -367,9 +367,13 @@ class LocalPlayer : public Player
 
         std::pair<int, int> getExperience(int skill);
 
-        /** Tells the path has been set by mouse */
+        /** Tells that the path has been set by mouse. */
         void pathSetByMouse()
         { mPathSetByMouse = true; }
+
+        /** Tells if the path has been set by mouse. */
+        bool isPathSetByMouse() const
+        { return mPathSetByMouse; }
 
         bool mUpdateName;     /** Whether or not the name settings have changed */
 

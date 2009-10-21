@@ -575,7 +575,13 @@ void Being::logic()
             // Update the player sprite direction
             int direction = 0;
             const float dx = std::abs(dir.x);
-            const float dy = std::abs(dir.y);
+            float dy = std::abs(dir.y);
+
+            // When not using mouse for the player, we slightly prefer
+            // UP and DOWN position, especially when walking diagonally.
+            if (this == player_node && !player_node->isPathSetByMouse())
+                dy = dy + 2;
+
             if (dx > dy)
                  direction |= (dir.x > 0) ? RIGHT : LEFT;
             else
