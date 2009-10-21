@@ -381,8 +381,7 @@ void PlayerHandler::setDestination(int x, int y, int /* direction */)
 
 void PlayerHandler::changeAction(Being::Action action)
 {
-    if (action == Being::SIT)
-        player_node->setAction(action);
+    player_node->setAction(action);
 
     MessageOut msg(PGMSG_ACTION_CHANGE);
     msg.writeInt8(action);

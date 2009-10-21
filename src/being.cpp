@@ -192,6 +192,12 @@ void Being::setDestination(int dstX, int dstY)
        it++;
     }
 
+    // Remove the last path node, as it's more clever to go to mDest instead.
+    // It also permit to avoid zigzag at the end of the path,
+    // especially with mouse.
+    thisPath.pop_back();
+    thisPath.push_back(Position(mDest.x, mDest.y));
+
     setPath(thisPath);
 }
 #endif  // TMWSERV_SUPPORT
@@ -534,7 +540,7 @@ void Being::logic()
         const float nominalLength = dir.length();
 
         // When we've not reached our destination, move to it.
-        if (nominalLength > 0.0f && mWalkSpeed > 0.0f)
+        if (nominalLength > 1.0f && mWalkSpeed > 0.0f)
         {
 
             // The private mWalkSpeed member is the speed in tiles per second.
