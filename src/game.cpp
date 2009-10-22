@@ -212,6 +212,23 @@ int get_elapsed_time(int start_time)
 }
 
 /**
+ * Initialize every game sub-engines in the right order
+ */
+static void initEngines()
+{
+    engine = new Engine;
+
+    beingManager = new BeingManager;
+    commandHandler = new CommandHandler;
+    floorItemManager = new FloorItemManager;
+    channelManager = new ChannelManager;
+    effectManager = new EffectManager;
+
+    particleEngine = new Particle(NULL);
+    particleEngine->setupEngine();
+}
+
+/**
  * Create all the various globally accessible gui windows
  */
 static void createGuiWindows()
@@ -301,60 +318,50 @@ Game::Game():
 {
     done = false;
 
-    createGuiWindows();
+        createGuiWindows();
 
-    mWindowMenu = new WindowMenu;
-    windowContainer->add(mWindowMenu);
+        mWindowMenu = new WindowMenu;
+        windowContainer->add(mWindowMenu);
 
-    engine = new Engine;
+        initEngines();
 
-    beingManager = new BeingManager;
-    commandHandler = new CommandHandler;
-    floorItemManager = new FloorItemManager;
-    channelManager = new ChannelManager;
-    effectManager = new EffectManager;
+        // Initialize logic and seconds counters
+        tick_time = 0;
+        mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, NULL);
+        mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
 
-    particleEngine = new Particle(NULL);
-    particleEngine->setupEngine();
+        // This part is eAthena specific
+        // For TMWserv, the map is obtained
+        // with the GPMSG_PLAYER_MAP_CHANGE flag.
+        map_path = map_path.substr(0, map_path.rfind("."));
+        if (!map_path.empty())
+            engine->changeMap(map_path);
 
-    // Initialize logic and seconds counters
-    tick_time = 0;
-    mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, NULL);
-    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
+        // Initialize beings
+        beingManager->setPlayer(player_node);
 
-    // Initialize frame limiting
-    config.addListener("fpslimit", this);
-    optionChanged("fpslimit");
+       /*
+        * To prevent the server from sending data before the client
+        * has initialized, I've modified it to wait for a "ping"
+        * from the client to complete its initialization
+        *
+        * Note: This only affects the latest eAthena version.  This
+        * packet is handled by the older version, but its response
+        * is ignored by the client
+        */
+        Net::getGameHandler()->ping(tick_time);
 
-    // Initialize beings
-    beingManager->setPlayer(player_node);
+        // Initialize frame limiting
+        config.addListener("fpslimit", this);
+        optionChanged("fpslimit");
 
-    Joystick::init();
-    // TODO: The user should be able to choose which one to use
-    // Open the first device
-    if (Joystick::getNumberOfJoysticks() > 0)
-        joystick = new Joystick(0);
+        Joystick::init();
+        // TODO: The user should be able to choose which one to use
+        // Open the first device
+        if (Joystick::getNumberOfJoysticks() > 0)
+            joystick = new Joystick(0);
 
-    // fade out logon-music here too to give the desired effect of "flowing"
-    // into the game.
-    sound.fadeOutMusic(1000);
-    map_path = map_path.substr(0, map_path.rfind("."));
-
-    if (!map_path.empty())
-        engine->changeMap(map_path);
-
-    setupWindow->setInGame(true);
-
-    /*
-     * To prevent the server from sending data before the client
-     * has initialized, I've modified it to wait for a "ping"
-     * from the client to complete its initialization
-     *
-     * Note: This only affects the latest eAthena version.  This
-     * packet is handled by the older version, but its response
-     * is ignored by the client
-     */
-    Net::getGameHandler()->ping(tick_time);
+        setupWindow->setInGame(true);
 }
 
 Game::~Game()
