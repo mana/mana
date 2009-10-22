@@ -1042,14 +1042,17 @@ int main(int argc, char *argv[])
                 case STATE_LOAD_DATA:
                     logger->log("State: LOAD DATA");
 
-                    // Load the updates downloaded so far...
-                    loadUpdates();
+                    if (options.dataPath.empty())
+                    {
+                        // Load the updates downloaded so far...
+                        loadUpdates();
 
-                    // Also add customdata directory
-                    ResourceManager::getInstance()->searchAndAddArchives(
-                            "customdata/",
-                            "zip",
-                            false);
+                        // Also add customdata directory
+                        ResourceManager::getInstance()->searchAndAddArchives(
+                                "customdata/",
+                                "zip",
+                                false);
+                    }
 
                     // Load XML databases
                     ColorDB::load();
