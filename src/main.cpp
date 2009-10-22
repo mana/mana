@@ -186,7 +186,6 @@ struct Options
         printHelp(false),
         printVersion(false),
         skipUpdate(false),
-        skipUpdateLoad(false),
         chooseDefault(false),
         noOpenGL(false),
         serverPort(0)
@@ -195,7 +194,6 @@ struct Options
     bool printHelp;
     bool printVersion;
     bool skipUpdate;
-    bool skipUpdateLoad;
     bool chooseDefault;
     bool noOpenGL;
     std::string username;
@@ -555,7 +553,6 @@ static void printHelp()
         << _("  -p --port        : Login server port") << endl
         << _("  -s --server      : Login server name or IP") << endl
         << _("  -u --skip-update : Skip the update downloads") << endl
-        << _("  -l --skip-load   : Skip loading the updates") << endl
         << _("  -U --username    : Login with this username") << endl
 #ifdef USE_OPENGL
         << _("  -O --no-opengl   : Disable OpenGL for this session") << endl
@@ -570,7 +567,7 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvuld:U:P:Dc:s:p:C:H:S:O";
+    const char *optstring = "hvud:U:P:Dc:s:p:C:H:S:O";
 
     const struct option long_options[] = {
         { "config-file", required_argument, 0, 'C' },
@@ -584,7 +581,6 @@ static void parseOptions(int argc, char *argv[], Options &options)
         { "port",        required_argument, 0, 'p' },
         { "server",      required_argument, 0, 's' },
         { "skip-update", no_argument,       0, 'u' },
-        { "skip-load",   no_argument,       0, 'l' },
         { "username",    required_argument, 0, 'U' },
         { "no-opengl",   no_argument,       0, 'O' },
         { "version",     no_argument,       0, 'v' },
@@ -631,9 +627,6 @@ static void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'u':
                 options.skipUpdate = true;
-                break;
-            case 'l':
-                options.skipUpdateLoad = true;
                 break;
             case 'U':
                 options.username = optarg;
@@ -1049,17 +1042,20 @@ int main(int argc, char *argv[])
                 case STATE_LOAD_DATA:
                     logger->log("State: LOAD DATA");
 
-                    // Load the updates downloaded so far...
-                    if (!options.skipUpdateLoad)
+                    // If another data path has been set,
+                    // we don't load any other files...
+                    if (options.dataPath.empty())
                     {
+                        // Load the updates downloaded so far...
                         loadUpdates();
-                    }
 
-                    // Also add customdata directory
-                    ResourceManager::getInstance()->searchAndAddArchives(
+
+                        // Also add customdata directory
+                        ResourceManager::getInstance()->searchAndAddArchives(
                             "customdata/",
                             "zip",
                             false);
+                    }
 
                     // Load XML databases
                     ColorDB::load();
