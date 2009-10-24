@@ -109,17 +109,17 @@ AC_ARG_WITH(
     AS_HELP_STRING(
         [--with-server=ARG],
         [which server to use [[ARG=manaserv,eathena]]
-        [(default=eathena)]]
+        [(default=manaserv)]]
     ),
     [if test "$withval" = "yes"; then
-        # default is eathena
-        with_server="eathena"
+        # default is manaserv
+        with_server="manaserv"
      elif test "$withval" = "no"; then
         AC_MSG_ERROR([$PACKAGE_NAME cannot run without a server.])
      else
          with_server="$withval"
      fi],
-    [with_server="eathena"]
+    [with_server="manaserv"]
 )
 
 if test "$with_server" = "manaserv"; then
