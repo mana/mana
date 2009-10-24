@@ -1,0 +1,4 @@
+?package(tmw):needs="X11" section="Games/Adventure"\
+ title="Mana"\
+ description="Mana is a 2D MMORPG client."\
+ command="/usr/games/mana" icon="/usr/share/pixmaps/mana.xpm"

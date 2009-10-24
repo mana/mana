@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([The Mana World], [0.0.29.1], [themanaworld-devel@lists.sourceforge.net], [tmw])
+AC_INIT([Mana], [1.0.0], [themanaworld-devel@lists.sourceforge.net], [mana])
 AM_INIT_AUTOMAKE([1.9])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
@@ -100,7 +100,7 @@ else
     with_opengl=yes
     AC_CHECK_LIB([GL], [glBegin], ,
     AC_MSG_ERROR([ *** Unable to find OpenGL library]))
-    AC_DEFINE(USE_OPENGL, 1, [Defines if tmw should use an OpenGL display])
+    AC_DEFINE(USE_OPENGL, 1, [Defines if Mana should have OpenGL support])
 fi
 
 # Enable either Manaserv or eAthena
