@@ -101,7 +101,7 @@ enum
 class LocalPlayer : public Player
 {
     public:
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         enum Attribute
         {
             STR = 0, AGI, DEX, VIT, INT, WIL, CHR
@@ -141,7 +141,7 @@ class LocalPlayer : public Player
          */
         Inventory *getStorage() const { return mStorage; }
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         /**
          * Check the player has permission to invite users to specific guild
          */
@@ -226,7 +226,7 @@ class LocalPlayer : public Player
         /**
          * Sets a new destination for this being to walk to.
          */
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         void setDestination(int x, int y);
 #else
         virtual void setDestination(Uint16 x, Uint16 y);
@@ -440,7 +440,7 @@ class LocalPlayer : public Player
 
         Inventory *mInventory;
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
 #endif

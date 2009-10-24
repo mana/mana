@@ -21,8 +21,8 @@
 
 #include "net/messagehandler.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/network.h"
+#ifdef MANASERV_SUPPORT
+#include "net/manaserv/network.h"
 #else
 #include "net/ea/network.h"
 #endif
@@ -38,7 +38,7 @@ MessageHandler::MessageHandler()
 
 MessageHandler::~MessageHandler()
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     Net::unregisterHandler(this);
 #else
     if (mNetwork)

@@ -43,10 +43,10 @@
 					<Add directory="E:/Programme/CodeBlocks/include/SDL" />
 				</Linker>
 			</Target>
-			<Target title="Unix TMWSERV">
+			<Target title="Unix Manaserv">
 				<Option platforms="Unix;" />
 				<Option output="tmw" prefix_auto="1" extension_auto="1" />
-				<Option object_output=".objs/tmwserv" />
+				<Option object_output=".objs/manaserv" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option parameters='-u -d &quot;../tmwdata&quot;' />
@@ -54,7 +54,7 @@
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="`sdl-config --cflags`" />
-					<Add option="-DTMWSERV_SUPPORT" />
+					<Add option="-DMANASERV_SUPPORT" />
 					<Add option="-DUSE_OPENGL" />
 					<Add directory="/usr/local/include/libxml2" />
 				</Compiler>
@@ -75,9 +75,9 @@
 					<Add library="enet" />
 				</Linker>
 			</Target>
-			<Target title="TMWServ">
-				<Option output="tmw-tmwserv.exe" prefix_auto="0" extension_auto="0" />
-				<Option object_output=".objs/tmwserv" />
+			<Target title="Manaserv">
+				<Option output="tmw-manaserv.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output=".objs/manaserv" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
@@ -88,7 +88,7 @@
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DNOGDI" />
 					<Add option="-DENABLE_NLS" />
-					<Add option="-DTMWSERV_SUPPORT" />
+					<Add option="-DMANASERV_SUPPORT" />
 				</Compiler>
 				<Linker>
 					<Add library="guichan" />
@@ -191,12 +191,12 @@
 		<Unit filename="src/graphics.cpp" />
 		<Unit filename="src/graphics.h" />
 		<Unit filename="src/gui/buddywindow.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/gui/buddywindow.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/gui/buy.cpp" />
 		<Unit filename="src/gui/buy.h" />
@@ -229,20 +229,20 @@
 		<Unit filename="src/gui/gui.cpp" />
 		<Unit filename="src/gui/gui.h" />
 		<Unit filename="src/gui/guildlistbox.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/gui/guildlistbox.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/gui/guildwindow.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/gui/guildwindow.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/gui/help.cpp" />
 		<Unit filename="src/gui/help.h" />
@@ -338,12 +338,12 @@
 		<Unit filename="src/gui/tablemodel.cpp" />
 		<Unit filename="src/gui/tablemodel.h" />
 		<Unit filename="src/gui/textdialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/gui/textdialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/gui/textrenderer.h" />
 		<Unit filename="src/gui/trade.cpp" />
@@ -426,12 +426,12 @@
 		<Unit filename="src/gui/worldselectdialog.h" />
 		<Unit filename="src/guichanfwd.h" />
 		<Unit filename="src/guild.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/guild.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/imageparticle.cpp" />
 		<Unit filename="src/imageparticle.h" />
@@ -627,243 +627,243 @@
 		<Unit filename="src/net/playerhandler.h" />
 		<Unit filename="src/net/specialhandler.h" />
 		<Unit filename="src/net/tmwserv/accountserver/account.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/accountserver/account.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/accountserver/accountserver.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/accountserver/accountserver.h">
-			<Option target="TMWServ" />
+			<Option target="Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/accountserver/internal.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/accountserver/internal.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/adminhandler.cpp">
-			<Option target="Unix TMWSERV" />
-			<Option target="TMWServ" />
+			<Option target="Unix Manaserv" />
+			<Option target="Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/beinghandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/beinghandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/buysellhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/buysellhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/charhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/charhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chathandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chathandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chatserver/chatserver.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chatserver/chatserver.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chatserver/guild.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chatserver/guild.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chatserver/internal.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chatserver/internal.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chatserver/party.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/chatserver/party.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/connection.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/connection.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/effecthandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/effecthandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gamehandler.cpp">
-			<Option target="Unix TMWSERV" />
-			<Option target="TMWServ" />
+			<Option target="Unix Manaserv" />
+			<Option target="Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gamehandler.h">
-			<Option target="Unix TMWSERV" />
-			<Option target="TMWServ" />
+			<Option target="Unix Manaserv" />
+			<Option target="Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gameserver/gameserver.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gameserver/gameserver.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gameserver/internal.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gameserver/internal.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gameserver/player.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gameserver/player.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/generalhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/generalhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/guildhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/guildhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/internal.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/internal.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/inventoryhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/inventoryhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/itemhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/itemhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/loginhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/loginhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/network.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/network.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/npchandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/npchandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/partyhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/partyhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/playerhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/playerhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/protocol.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/specialhandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/specialhandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/tradehandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/tradehandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 		</Unit>
 		<Unit filename="src/net/tradehandler.h" />
 		<Unit filename="src/npc.cpp" />
@@ -951,7 +951,7 @@
 		<Unit filename="src/tmw.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="eAthena" />
-			<Option target="TMWServ" />
+			<Option target="Manaserv" />
 		</Unit>
 		<Unit filename="src/units.cpp" />
 		<Unit filename="src/units.h" />
@@ -962,13 +962,13 @@
 		<Unit filename="src/utils/mathutils.h" />
 		<Unit filename="src/utils/mutex.h" />
 		<Unit filename="src/utils/sha256.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 			<Option target="UNIX eAthena" />
 		</Unit>
 		<Unit filename="src/utils/sha256.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
 			<Option target="UNIX eAthena" />
 		</Unit>
 		<Unit filename="src/utils/stringutils.cpp" />
@@ -979,7 +979,7 @@
 		<Unit filename="src/vector.h" />
 		<Unit filename="src/winver.h">
 			<Option target="eAthena" />
-			<Option target="TMWServ" />
+			<Option target="Manaserv" />
 		</Unit>
 		<Extensions>
 			<code_completion />

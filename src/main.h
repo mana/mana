@@ -62,8 +62,8 @@
 #endif
 
 #ifdef PACKAGE_VERSION
-#ifdef TMWSERV_SUPPORT
-#define FULL_VERSION "v" PACKAGE_VERSION " (tmwserv)"
+#ifdef MANASERV_SUPPORT
+#define FULL_VERSION "v" PACKAGE_VERSION " (manaserv)"
 #else
 #define FULL_VERSION "v" PACKAGE_VERSION " (eAthena)"
 #endif

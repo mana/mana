@@ -38,7 +38,7 @@
 #include "log.h"
 #include "localplayer.h"
 
-#include "net/tmwserv/chatserver/guild.h"
+#include "net/manaserv/chatserver/guild.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"

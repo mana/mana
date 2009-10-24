@@ -37,8 +37,8 @@
 #include "net/specialhandler.h"
 #include "net/tradehandler.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/generalhandler.h"
+#ifdef MANASERV_SUPPORT
+#include "net/manaserv/generalhandler.h"
 #else
 #include "net/ea/generalhandler.h"
 #endif
@@ -138,8 +138,8 @@ void Net::connectToServer(const ServerInfo &server)
     }
     else
     {
-#ifdef TMWSERV_SUPPORT
-        new TmwServ::GeneralHandler;
+#ifdef MANASERV_SUPPORT
+        new ManaServ::GeneralHandler;
 #else
         new EAthena::GeneralHandler;
 #endif

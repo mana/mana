@@ -351,8 +351,8 @@ void ServerDialog::loadServers()
             if (xmlStrEqual(server->name, BAD_CAST "server"))
             {
                 //check wether the version matches
-                #ifdef TMWSERV_SUPPORT
-                if (XML::getProperty(server, "type", "unknown") != "TMWSERV")
+                #ifdef MANASERV_SUPPORT
+                if (XML::getProperty(server, "type", "unknown") != "MANASERV")
                     continue;
                 #endif
 

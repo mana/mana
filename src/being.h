@@ -261,14 +261,14 @@ class Being : public Sprite, public ConfigListener
         /**
          * Sets the walk speed.
          * in pixels per second for eAthena,
-         * in tiles per second for TMWserv.
+         * in tiles per second for Manaserv.
          */
         void setWalkSpeed(float speed) { mWalkSpeed = speed; }
 
         /**
          * Gets the walk speed.
          * in pixels per second for eAthena,
-         * in tiles per second for TMWserv (0.1 precision).
+         * in tiles per second for Manaserv (0.1 precision).
          */
         float getWalkSpeed() const { return mWalkSpeed; }
 
@@ -578,7 +578,7 @@ class Being : public Sprite, public ConfigListener
         /**
          * Walk speed.
          * In pixels per second for eAthena,
-         * In tiles per second (0.1 precision) for TMWserv.
+         * In tiles per second (0.1 precision) for Manaserv.
          */
         float mWalkSpeed;
 

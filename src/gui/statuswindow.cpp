@@ -81,7 +81,7 @@ class ChangeDisplay : public AttrDisplay, gcn::ActionListener
         int mNeeded;
 
         Label *mPoints;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         Button *mDec;
 #endif
         Button *mInc;
@@ -163,7 +163,7 @@ StatusWindow::StatusWindow():
 
     mCharacterPointsLabel = new Label("C");
     place(0, 6, mCharacterPointsLabel, 5);
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     mCorrectionPointsLabel = new Label("C");
     place(0, 7, mCorrectionPointsLabel, 5);
 #endif
@@ -231,7 +231,7 @@ std::string StatusWindow::update(int id)
                                         player_node->getCharacterPoints()));
         mCharacterPointsLabel->adjustSize();
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
                                         player_node->getCorrectionPoints()));
         mCorrectionPointsLabel->adjustSize();
@@ -486,7 +486,7 @@ ChangeDisplay::ChangeDisplay(int id, const std::string &name):
     place(6, 0, mInc);
     place(7, 0, mPoints);
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     mDec = new Button(_("-"), "dec", this);
     mDec->setWidth(mInc->getWidth());
 
@@ -500,7 +500,7 @@ std::string ChangeDisplay::update()
 {
     mPoints->setCaption(toString(mNeeded));
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     mDec->setEnabled(player_node->getCorrectionPoints());
 #endif
     mInc->setEnabled(player_node->getCharacterPoints() >= mNeeded);
@@ -517,7 +517,7 @@ void ChangeDisplay::setPointsNeeded(int needed)
 
 void ChangeDisplay::action(const gcn::ActionEvent &event)
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     if (event.getSource() == mDec)
     {
         int newcorpoints = player_node->getCorrectionPoints() - 1;

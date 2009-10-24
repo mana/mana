@@ -41,8 +41,8 @@
 #include "main.h"
 #include "units.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/accountserver/account.h"
+#ifdef MANASERV_SUPPORT
+#include "net/manaserv/accountserver/account.h"
 #else
 #include "net/ea/protocol.h"
 #endif

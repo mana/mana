@@ -479,83 +479,83 @@ SET(SRCS_EA
     net/ea/tradehandler.h
     )
 
-SET(SRCS_TMW
+SET(SRCS_MANA
     gui/buddywindow.cpp
     gui/buddywindow.h
     gui/guildlistbox.cpp
     gui/guildlistbox.h
     gui/guildwindow.cpp
     gui/guildwindow.h
-    net/tmwserv/accountserver/account.cpp
-    net/tmwserv/accountserver/account.h
-    net/tmwserv/accountserver/accountserver.cpp
-    net/tmwserv/accountserver/accountserver.h
-    net/tmwserv/accountserver/internal.cpp
-    net/tmwserv/accountserver/internal.h
-    net/tmwserv/chatserver/chatserver.cpp
-    net/tmwserv/chatserver/chatserver.h
-    net/tmwserv/chatserver/guild.cpp
-    net/tmwserv/chatserver/guild.h
-    net/tmwserv/chatserver/internal.cpp
-    net/tmwserv/chatserver/internal.h
-    net/tmwserv/chatserver/party.cpp
-    net/tmwserv/chatserver/party.h
-    net/tmwserv/gameserver/gameserver.cpp
-    net/tmwserv/gameserver/gameserver.h
-    net/tmwserv/gameserver/internal.cpp
-    net/tmwserv/gameserver/internal.h
-    net/tmwserv/gameserver/player.cpp
-    net/tmwserv/gameserver/player.h
-    net/tmwserv/adminhandler.cpp
-    net/tmwserv/adminhandler.h
-    net/tmwserv/beinghandler.cpp
-    net/tmwserv/beinghandler.h
-    net/tmwserv/buysellhandler.cpp
-    net/tmwserv/buysellhandler.h
-    net/tmwserv/charhandler.cpp
-    net/tmwserv/charhandler.h
-    net/tmwserv/chathandler.cpp
-    net/tmwserv/chathandler.h
-    net/tmwserv/connection.cpp
-    net/tmwserv/connection.h
-    net/tmwserv/effecthandler.cpp
-    net/tmwserv/effecthandler.h
-    net/tmwserv/gamehandler.cpp
-    net/tmwserv/gamehandler.h
-    net/tmwserv/generalhandler.cpp
-    net/tmwserv/generalhandler.h
-    net/tmwserv/guildhandler.cpp
-    net/tmwserv/guildhandler.h
-    net/tmwserv/internal.cpp
-    net/tmwserv/internal.h
-    net/tmwserv/inventoryhandler.cpp
-    net/tmwserv/inventoryhandler.h
-    net/tmwserv/itemhandler.h
-    net/tmwserv/itemhandler.cpp
-    net/tmwserv/loginhandler.cpp
-    net/tmwserv/loginhandler.h
-    net/tmwserv/network.cpp
-    net/tmwserv/network.h
-    net/tmwserv/npchandler.cpp
-    net/tmwserv/npchandler.h
-    net/tmwserv/partyhandler.cpp
-    net/tmwserv/partyhandler.h
-    net/tmwserv/playerhandler.cpp
-    net/tmwserv/playerhandler.h
-    net/tmwserv/protocol.h
-    net/tmwserv/specialhandler.cpp
-    net/tmwserv/specialhandler.h
-    net/tmwserv/tradehandler.cpp
-    net/tmwserv/tradehandler.h
+    net/manaserv/accountserver/account.cpp
+    net/manaserv/accountserver/account.h
+    net/manaserv/accountserver/accountserver.cpp
+    net/manaserv/accountserver/accountserver.h
+    net/manaserv/accountserver/internal.cpp
+    net/manaserv/accountserver/internal.h
+    net/manaserv/chatserver/chatserver.cpp
+    net/manaserv/chatserver/chatserver.h
+    net/manaserv/chatserver/guild.cpp
+    net/manaserv/chatserver/guild.h
+    net/manaserv/chatserver/internal.cpp
+    net/manaserv/chatserver/internal.h
+    net/manaserv/chatserver/party.cpp
+    net/manaserv/chatserver/party.h
+    net/manaserv/gameserver/gameserver.cpp
+    net/manaserv/gameserver/gameserver.h
+    net/manaserv/gameserver/internal.cpp
+    net/manaserv/gameserver/internal.h
+    net/manaserv/gameserver/player.cpp
+    net/manaserv/gameserver/player.h
+    net/manaserv/adminhandler.cpp
+    net/manaserv/adminhandler.h
+    net/manaserv/beinghandler.cpp
+    net/manaserv/beinghandler.h
+    net/manaserv/buysellhandler.cpp
+    net/manaserv/buysellhandler.h
+    net/manaserv/charhandler.cpp
+    net/manaserv/charhandler.h
+    net/manaserv/chathandler.cpp
+    net/manaserv/chathandler.h
+    net/manaserv/connection.cpp
+    net/manaserv/connection.h
+    net/manaserv/effecthandler.cpp
+    net/manaserv/effecthandler.h
+    net/manaserv/gamehandler.cpp
+    net/manaserv/gamehandler.h
+    net/manaserv/generalhandler.cpp
+    net/manaserv/generalhandler.h
+    net/manaserv/guildhandler.cpp
+    net/manaserv/guildhandler.h
+    net/manaserv/internal.cpp
+    net/manaserv/internal.h
+    net/manaserv/inventoryhandler.cpp
+    net/manaserv/inventoryhandler.h
+    net/manaserv/itemhandler.h
+    net/manaserv/itemhandler.cpp
+    net/manaserv/loginhandler.cpp
+    net/manaserv/loginhandler.h
+    net/manaserv/network.cpp
+    net/manaserv/network.h
+    net/manaserv/npchandler.cpp
+    net/manaserv/npchandler.h
+    net/manaserv/partyhandler.cpp
+    net/manaserv/partyhandler.h
+    net/manaserv/playerhandler.cpp
+    net/manaserv/playerhandler.h
+    net/manaserv/protocol.h
+    net/manaserv/specialhandler.cpp
+    net/manaserv/specialhandler.h
+    net/manaserv/tradehandler.cpp
+    net/manaserv/tradehandler.h
     guild.cpp
     guild.h
     )
 
 
-SET (PROGRAMS tmw tmw-ea)
+SET (PROGRAMS mana mana-ea)
 
-ADD_EXECUTABLE(tmw WIN32 ${SRCS} ${SRCS_TMW})
-ADD_EXECUTABLE(tmw-ea WIN32 ${SRCS} ${SRCS_EA})
+ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_MANA})
+ADD_EXECUTABLE(mana-ea WIN32 ${SRCS} ${SRCS_EA})
 
 FOREACH(program ${PROGRAMS})
     TARGET_LINK_LIBRARIES(${program} ${SDL_LIBRARY}
@@ -575,7 +575,7 @@ FOREACH(program ${PROGRAMS})
 ENDFOREACH(program)
 
 SET(FLAGS_EA "${FLAGS} -DEATHENA_SUPPORT")
-SET(FLAGS_TMW "${FLAGS} -DTMWSERV_SUPPORT")
+SET(FLAGS_MANA "${FLAGS} -DMANASERV_SUPPORT")
 
-SET_TARGET_PROPERTIES(tmw PROPERTIES COMPILE_FLAGS "${FLAGS_TMW}")
-SET_TARGET_PROPERTIES(tmw-ea PROPERTIES COMPILE_FLAGS "${FLAGS_EA}")
+SET_TARGET_PROPERTIES(mana PROPERTIES COMPILE_FLAGS "${FLAGS_MANA}")
+SET_TARGET_PROPERTIES(mana-ea PROPERTIES COMPILE_FLAGS "${FLAGS_EA}")

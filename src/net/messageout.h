@@ -32,7 +32,7 @@ class Network;
 /**
  * Used for building an outgoing message.
  *
- * With tmwserv, the message is sent using Net::Connection::send() when
+ * With manaserv, the message is sent using Net::Connection::send() when
  * finished.
  *
  * \ingroup Network
@@ -45,7 +45,7 @@ class MessageOut
          */
         MessageOut(short id);
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         /**
          * Destructor.
          */
@@ -83,7 +83,7 @@ class MessageOut
         short mID;
 
     private:
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         /**
          * Expand the packet data to be able to hold more data.
          *

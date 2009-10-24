@@ -103,12 +103,12 @@ else
     AC_DEFINE(USE_OPENGL, 1, [Defines if tmw should use an OpenGL display])
 fi
 
-# Enable either tmwserv or eAthena
+# Enable either Manaserv or eAthena
 AC_ARG_WITH(
     [server],
     AS_HELP_STRING(
         [--with-server=ARG],
-        [which server to use [[ARG=tmwserv,eathena]]
+        [which server to use [[ARG=manaserv,eathena]]
         [(default=eathena)]]
     ),
     [if test "$withval" = "yes"; then
@@ -122,10 +122,10 @@ AC_ARG_WITH(
     [with_server="eathena"]
 )
 
-if test "$with_server" = "tmwserv"; then
+if test "$with_server" = "manaserv"; then
     AC_CHECK_LIB([enet], [enet_initialize], ,
     AC_MSG_ERROR([ *** Unable to find enet library (http://enet.bespin.org/)]))
-    AC_DEFINE(TMWSERV_SUPPORT, 1, [Defines if tmwserv support is enabled])
+    AC_DEFINE(MANASERV_SUPPORT, 1, [Defines if manaserv support is enabled])
 elif test "$with_server" = "eathena"; then
     AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
     AC_MSG_ERROR([ *** Unable to find SDL_net library]))
@@ -134,7 +134,7 @@ else
     AC_MSG_ERROR([unknown server: $with_server])
 fi
 
-AM_CONDITIONAL(SERVER_TMWSERV, test "$with_server" = "tmwserv")
+AM_CONDITIONAL(SERVER_MANASERV, test "$with_server" = "manaserv")
 AM_CONDITIONAL(SERVER_EATHENA, test "$with_server" = "eathena")
 
 AC_CONFIG_FILES([

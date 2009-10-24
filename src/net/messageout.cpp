@@ -21,7 +21,7 @@
 
 #include "net/messageout.h"
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 #include <enet/enet.h>
 #else
 #include "net/ea/network.h"
@@ -46,7 +46,7 @@ MessageOut::MessageOut(short id):
     writeInt16(id);
 }
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 MessageOut::~MessageOut()
 {
     free(mData);
@@ -61,7 +61,7 @@ void MessageOut::expand(size_t bytes)
 
 void MessageOut::writeInt8(Sint8 value)
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     expand(mPos + 1);
 #else
     mNetwork->mOutSize += 1;
@@ -72,7 +72,7 @@ void MessageOut::writeInt8(Sint8 value)
 
 void MessageOut::writeInt16(Sint16 value)
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     expand(mPos + 2);
     uint16_t t = ENET_HOST_TO_NET_16(value);
     memcpy(mData + mPos, &t, 2);
@@ -83,13 +83,13 @@ void MessageOut::writeInt16(Sint16 value)
     (*(Sint16 *)(mData + mPos)) = value;
 #endif
     mNetwork->mOutSize += 2;
-#endif // TMWSERV_SUPPORT
+#endif // MANASERV_SUPPORT
     mPos += 2;
 }
 
 void MessageOut::writeInt32(Sint32 value)
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     expand(mPos + 4);
     uint32_t t = ENET_HOST_TO_NET_32(value);
     memcpy(mData + mPos, &t, 4);
@@ -100,7 +100,7 @@ void MessageOut::writeInt32(Sint32 value)
     (*(Sint32 *)(mData + mPos)) = value;
 #endif
     mNetwork->mOutSize += 4;
-#endif // TMWSERV_SUPPORT
+#endif // MANASERV_SUPPORT
     mPos += 4;
 }
 
@@ -179,7 +179,7 @@ void MessageOut::writeString(const std::string &string, int length)
         // Make sure the length of the string is no longer than specified
         stringLength = length;
     }
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     expand(mPos + length);
 #else
     mNetwork->mOutSize += length;

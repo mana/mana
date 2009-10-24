@@ -43,7 +43,7 @@ extern Window *setupWindow;
 extern Window *skillDialog;
 extern Window *specialsWindow;
 extern Window *statusWindow;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 extern Window *buddyWindow;
 extern Window *guildWindow;
 #endif
@@ -60,7 +60,7 @@ WindowMenu::WindowMenu():
         N_("Inventory"),
         N_("Skills"),
         N_("Specials"),
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         N_("Guilds"),
         N_("Buddies"),
 #endif
@@ -133,7 +133,7 @@ void WindowMenu::action(const gcn::ActionEvent &event)
     {
         window = specialsWindow;
     }
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     else if (event.getId() == "Guilds")
     {
         window = guildWindow;

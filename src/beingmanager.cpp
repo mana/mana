@@ -26,8 +26,8 @@
 #include "npc.h"
 #include "player.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/protocol.h"
+#ifdef MANASERV_SUPPORT
+#include "net/manaserv/protocol.h"
 #endif
 
 #include "utils/dtor.h"
@@ -215,7 +215,7 @@ Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
     Being *closestBeing = NULL;
     int dist = 0;
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     //Why do we do this:
     //For some reason x,y passed to this function is always
     //in map coords, while down below its in pixels
@@ -233,7 +233,7 @@ Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
     for (; itr != itr_end; ++itr)
     {
         Being *being = (*itr);
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         const Vector &pos = being->getPosition();
         int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
 #else
@@ -257,7 +257,7 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
 {
     Being *closestBeing = NULL;
     int dist = 0;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     const Vector &apos = aroundBeing->getPosition();
     int x = apos.x;
     int y = apos.y;
@@ -271,7 +271,7 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
          i != i_end; ++i)
     {
         Being *being = (*i);
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         const Vector &pos = being->getPosition();
         int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
 #else

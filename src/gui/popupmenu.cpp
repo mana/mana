@@ -128,7 +128,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 /*mBrowserBox->addRow(strprintf("@@buddy|%s@@",
                                         strprintf(_("Add %s to Buddy List"),
                                                   name.c_str()).c_str()));*/
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
                 mBrowserBox->addRow(strprintf("@@guild|%s@@",
                                 strprintf(_("Invite %s to join your guild"),
                                                     name.c_str()).c_str()));
@@ -253,7 +253,7 @@ void PopupMenu::handleLink(const std::string &link)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::FRIEND);
     }
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     // Guild action
     else if (link == "guild" &&
              being != NULL &&

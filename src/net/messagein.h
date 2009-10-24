@@ -59,7 +59,7 @@ class MessageIn
 
         /**
          * Reads a 3-byte block containing tile-based coordinates. Used by
-         * tmwserv.
+         * manaserv.
          */
         void readCoordinates(Uint16 &x, Uint16 &y);
 

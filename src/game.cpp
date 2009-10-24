@@ -68,7 +68,7 @@
 #include "gui/viewport.h"
 #include "gui/windowmenu.h"
 #include "gui/partywindow.h"
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 #include "gui/buddywindow.h"
 #include "gui/guildwindow.h"
 #endif
@@ -81,7 +81,7 @@
 #include "net/generalhandler.h"
 #include "net/net.h"
 
-#include "net/tmwserv/inventoryhandler.h"
+#include "net/manaserv/inventoryhandler.h"
 #include "net/ea/inventoryhandler.h"
 
 #include "resources/imagewriter.h"
@@ -121,7 +121,7 @@ BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
 PartyWindow *partyWindow;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
 #endif
@@ -241,7 +241,7 @@ static void createGuiWindows()
     sellDialog = new SellDialog;
     tradeWindow = new TradeWindow;
     partyWindow = new PartyWindow;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     buddyWindow = new BuddyWindow;
     guildWindow = new GuildWindow;
 #else
@@ -295,7 +295,7 @@ static void destroyGuiWindows()
     delete partyWindow;
     delete npcDialog;
     delete npcPostDialog;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     delete buddyWindow;
     delete guildWindow;
 #endif
@@ -331,7 +331,7 @@ Game::Game():
         mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
 
         // This part is eAthena specific
-        // For TMWserv, the map is obtained
+        // For Manaserv, the map is obtained
         // with the GPMSG_PLAYER_MAP_CHANGE flag.
         map_path = map_path.substr(0, map_path.rfind("."));
         if (!map_path.empty())
@@ -776,7 +776,7 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
                             const Vector &pos = player_node->getPosition();
                             Uint16 x = (int) pos.x / 32;
                             Uint16 y = (int) pos.y / 32;
@@ -828,7 +828,7 @@ void Game::handleInput()
                             equipmentWindow->setVisible(false);
                             helpWindow->setVisible(false);
                             debugWindow->setVisible(false);
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
                             guildWindow->setVisible(false);
                             buddyWindow->setVisible(false);
 #endif
@@ -1001,7 +1001,7 @@ void Game::handleInput()
             // A set target has highest priority
             if (!player_node->getTarget())
             {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
                 Uint16 targetX = x / 32, targetY = y / 32;
 #else
                 Uint16 targetX = x, targetY = y;

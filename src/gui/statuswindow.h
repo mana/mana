@@ -90,7 +90,7 @@ class StatusWindow : public Window
         ScrollArea *mDAttrScroll;
 
         gcn::Label *mCharacterPointsLabel;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         gcn::Label *mCorrectionPointsLabel;
 #endif
 

@@ -55,7 +55,7 @@ Viewport::Viewport():
     mShowDebugPath(false),
     mVisibleNames(false),
     mPlayerFollowMouse(false),
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     mLocalWalkTime(-1)
 #else
     mWalkTime(0)
@@ -369,7 +369,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         // Just walk around
         else
         {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
             // FIXME: REALLY UGLY!
             Uint8 *keys = SDL_GetKeyState(NULL);
             if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) &&
@@ -404,7 +404,7 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
     if (!mMap || !player_node)
         return;
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     if (mPlayerFollowMouse
         && get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
     {

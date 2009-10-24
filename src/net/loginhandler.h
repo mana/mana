@@ -35,7 +35,7 @@ class LoginHandler
 {
     public:
         /**
-         * This enum describes options specific to either eAthena or tmwserv.
+         * This enum describes options specific to either eAthena or Manaserv.
          * By querying for these flags, the GUI can adapt to the current
          * server type dynamically.
          */

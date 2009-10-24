@@ -26,7 +26,7 @@
 
 class Graphics;
 class Map;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 class Guild;
 #endif
 
@@ -109,7 +109,7 @@ class Player : public Being
         virtual void setSpriteColor(unsigned int slot,
                                     const std::string &color = "");
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         /**
          * Adds a guild to the player.
          */
@@ -170,7 +170,7 @@ class Player : public Being
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         // Character guild information
         std::map<int, Guild*> mGuilds;
 #endif

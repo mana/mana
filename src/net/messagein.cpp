@@ -21,7 +21,7 @@
 
 #include "net/messagein.h"
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 #include <enet/enet.h>
 #else
 #include <SDL.h>
@@ -57,7 +57,7 @@ int MessageIn::readInt16()
     int value = -1;
     if (mPos + 2 <= mLength)
     {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         uint16_t t;
         memcpy(&t, mData + mPos, 2);
         value = (unsigned short) ENET_NET_TO_HOST_16(t);
@@ -67,7 +67,7 @@ int MessageIn::readInt16()
 #else
         value = (*(Sint16*)(mData + mPos));
 #endif
-#endif // TMWSERV_SUPPORT
+#endif // MANASERV_SUPPORT
     }
     mPos += 2;
     return value;
@@ -78,7 +78,7 @@ int MessageIn::readInt32()
     int value = -1;
     if (mPos + 4 <= mLength)
     {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         uint32_t t;
         memcpy(&t, mData + mPos, 4);
         value = ENET_NET_TO_HOST_32(t);
@@ -88,7 +88,7 @@ int MessageIn::readInt32()
 #else
         value = (*(Sint32*)(mData + mPos));
 #endif
-#endif // TMWSERV_SUPPORT
+#endif // MANASERV_SUPPORT
     }
     mPos += 4;
     return value;

@@ -68,21 +68,21 @@
 #include "net/loginhandler.h"
 #include "net/net.h"
 #include "net/worldinfo.h"
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/charhandler.h"
-#include "net/tmwserv/connection.h"
-#include "net/tmwserv/generalhandler.h"
-#include "net/tmwserv/loginhandler.h"
-#include "net/tmwserv/network.h"
+#ifdef MANASERV_SUPPORT
+#include "net/manaserv/charhandler.h"
+#include "net/manaserv/connection.h"
+#include "net/manaserv/generalhandler.h"
+#include "net/manaserv/loginhandler.h"
+#include "net/manaserv/network.h"
 #endif
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/accountserver/accountserver.h"
-#include "net/tmwserv/accountserver/account.h"
+#ifdef MANASERV_SUPPORT
+#include "net/manaserv/accountserver/accountserver.h"
+#include "net/manaserv/accountserver/account.h"
 
-#include "net/tmwserv/chatserver/chatserver.h"
+#include "net/manaserv/chatserver/chatserver.h"
 
-#include "net/tmwserv/gameserver/gameserver.h"
+#include "net/manaserv/gameserver/gameserver.h"
 #endif
 
 #include "resources/colordb.h"
@@ -139,7 +139,7 @@ namespace
 static const int defaultSfxVolume = 100;
 static const int defaultMusicVolume = 60;
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 extern Net::Connection *gameServerConnection;
 extern Net::Connection *chatServerConnection;
 extern Net::Connection *accountServerConnection;
@@ -1215,7 +1215,7 @@ int main(int argc, char *argv[])
 
                 case STATE_UNREGISTER_SUCCESS:
                     logger->log("State: UNREGISTER SUCCESS");
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
                     accountServerConnection->disconnect();
 #endif
                     currentDialog = new OkDialog(_("Unregister Successful"),
@@ -1229,7 +1229,7 @@ int main(int argc, char *argv[])
                 case STATE_SWITCH_SERVER:
                     logger->log("State: SWITCH SERVER");
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
                     gameServerConnection->disconnect();
                     chatServerConnection->disconnect();
                     accountServerConnection->disconnect();

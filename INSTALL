@@ -1,19 +1,19 @@
 How to compile and run TMW on your GNU/Linux Box
 ================================================
 
-Homepage:  http://themanaworld.org/
-IRC:       irc.freenode.net / #themanaworld
+Homepage:  http://manasource.org/
+IRC:       irc.freenode.net / #manasource
 
 1) Requirements
-2) Compiling And Installing The Mana World
+2) Compiling And Installing Mana
 3) Notes
 
 
 1. Requirements
 ===============
 
-You are expected to have either checked out TMW from Git or you have downloaded
-a source release. To get The Mana World to compile, you need a compiler (GCC)
+You are expected to have either checked out Mana from Git or you have downloaded
+a source release. To get Mana to compile, you need a compiler (GCC)
 and some libraries. The required libraries are:
 
 * SDL               http://www.libsdl.org/
@@ -44,7 +44,7 @@ Installing these dependencies is distributions-specific, and we'll leave it to
 you to figure this out.
 
 
-2. Compiling And Installing The Mana World
+2. Compiling And Installing Mana
 ==========================================
 
 1) Go to the directory you have extracted the source to.
@@ -54,12 +54,12 @@ you to figure this out.
 4) Run "make"
 5) Run "make install" as root
 
-It should have installed The Mana World on your system now, and you can run it
+It should have installed Mana on your system now, and you can run it
 with "tmw". By default all files are installed to /usr/local, you can pass a
 different prefix to configure as usual.
 
 
-  NOTE: It is possible to compile TMW without support for OpenGL rendering.
+  NOTE: It is possible to compile Mana without support for OpenGL rendering.
   To do this perform step 3 as follows:
 
     ./configure --without-opengl
@@ -67,14 +67,14 @@ different prefix to configure as usual.
   Rebuild the executable from scratch using "make clean" and then "make".
 
 
-  NOTE: This version of TMW can be compiled with support for connecting to
-  tmwserv, a server developed from scratch by the TMW project. However, the
+  NOTE: This version of Mana can be compiled with support for connecting to
+  Manaserv, a server developed from scratch by the Mana project. However, the
   client won't support eAthena anymore when you do. In future clients we
   intend to support either server from a single compile.
 
-  To configure the client with support for tmwserv, do step 3 as follows:
+  To configure the client with support for Manaserv, do step 3 as follows:
 
-    ./configure --with-server=tmwserv
+    ./configure --with-server=manaserv
 
 
 3. Notes
@@ -83,4 +83,4 @@ different prefix to configure as usual.
 If you have any problems, you are welcome to post your questions on our forums,
 or talk about them in our IRC channel.
 
-- The Mana World Dev Team
+- Mana Dev Team

@@ -54,11 +54,11 @@
 #include "net/tradehandler.h"
 
 #include "effectmanager.h"
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 #include "guild.h"
 
-//#include "net/tmwserv/gameserver/player.h"
-#include "net/tmwserv/chatserver/guild.h"
+//#include "net/manaserv/gameserver/player.h"
+#include "net/manaserv/chatserver/guild.h"
 #endif
 
 #include "resources/animation.h"
@@ -72,7 +72,7 @@
 
 #include <cassert>
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 // This is the minimal delay between to permitted
 // setDestination() calls using the keyboard.
 // TODO: This can fine tuned later on when running is added...
@@ -106,7 +106,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mPathSetByMouse(false),
     mDestX(0), mDestY(0),
     mInventory(new Inventory(INVENTORY_SIZE)),
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     mLocalWalkTime(-1),
 #endif
     mStorage(new Inventory(STORAGE_SIZE)),
@@ -214,7 +214,7 @@ void LocalPlayer::logic()
         }
         else
         {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
             // Find whether target is in range
             const int rangeX = abs(mTarget->getPosition().x - getPosition().x);
             const int rangeY = abs(mTarget->getPosition().y - getPosition().y);
@@ -296,7 +296,7 @@ void LocalPlayer::nextStep(unsigned char dir = 0)
 
 
     Player::nextStep();
-#else // TMWSERV_SUPPORT
+#else // MANASERV_SUPPORT
         if (!mMap || !dir)
         return;
 
@@ -357,7 +357,7 @@ void LocalPlayer::nextStep(unsigned char dir = 0)
 }
 
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 bool LocalPlayer::checkInviteRights(const std::string &guildName)
 {
     Guild *guild = getGuild(guildName);
@@ -414,7 +414,7 @@ void LocalPlayer::pickUp(FloorItem *item)
     }
     else
     {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
 #else
         setDestination(item->getX(), item->getY());
@@ -463,13 +463,13 @@ void LocalPlayer::setTarget(Being *target)
         static_cast<Monster *>(target)->setShowName(true);
 }
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 void LocalPlayer::setDestination(int x, int y)
 #else
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 #endif
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     // Check the walkability of the destination
     // If the destination is a wall, don't go there!
     if (!mMap->getWalk(x / 32, y / 32))
@@ -528,7 +528,7 @@ void LocalPlayer::setWalkingDir(int dir)
 {
     // This function is called by Game::handleInput()
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         // First if player is pressing key for the direction he is already
         // going, do nothing more...
 
@@ -561,7 +561,7 @@ void LocalPlayer::setWalkingDir(int dir)
     {
         startWalking(dir);
     }
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     else if (mAction == WALK)
     {
         nextStep(dir);
@@ -574,18 +574,18 @@ void LocalPlayer::startWalking(unsigned char dir)
     // This function is called by setWalkingDir(),
     // but also by nextStep() for eAthena...
 
-    // TODO: Evaluate the implementation of this method for tmwserv
+    // TODO: Evaluate the implementation of this method for Manaserv
     if (!mMap || !dir)
         return;
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     const Vector &pos = getPosition();
 #endif
 
     if (mAction == WALK && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         Being::setDestination(pos.x, pos.y);
 #else
         Being::setDestination(getTileX(), getTileY());
@@ -625,7 +625,7 @@ void LocalPlayer::startWalking(unsigned char dir)
         Net::getPlayerHandler()->setDirection(dir);
         setDirection(dir);
     }
-#else // TMWSERV_SUPPORT
+#else // MANASERV_SUPPORT
     nextStep(dir);
 #endif
 }
@@ -634,7 +634,7 @@ void LocalPlayer::stopWalking(bool sendToServer)
 {
     if (mAction == WALK && mWalkingDir) {
         mWalkingDir = 0;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         mLocalWalkTime = 0;
 #endif
         Being::setDestination(getPosition().x,getPosition().y);
@@ -676,7 +676,7 @@ void LocalPlayer::emote(Uint8 emotion)
     Net::getPlayerHandler()->emote(emotion);
 }
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 /*
 void LocalPlayer::attack()
 {
@@ -746,7 +746,7 @@ void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     if (mLastAction != -1)
         return;
 
@@ -765,7 +765,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         mLastTarget = -1;
         setTarget(target);
     }
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     Vector plaPos = this->getPosition();
     Vector tarPos = mTarget->getPosition();
     int dist_x = plaPos.x - tarPos.x;
@@ -779,7 +779,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         return;
 #endif
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y < 0)
@@ -811,7 +811,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     }
 #endif
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     mLastAction = tick_time;
 #else
     mWalkTime = tick_time;
@@ -1042,7 +1042,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
 
 int LocalPlayer::getAttackRange()
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     Item *weapon = mEquipment->getEquipment(EQUIP_FIGHT1_SLOT);
     if (weapon)
     {
@@ -1057,7 +1057,7 @@ int LocalPlayer::getAttackRange()
 
 bool LocalPlayer::withinAttackRange(Being *target)
 {
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     const Vector &targetPos = target->getPosition();
     const Vector &pos = getPosition();
     const int dx = abs(targetPos.x - pos.x);
@@ -1081,7 +1081,7 @@ bool LocalPlayer::withinAttackRange(Being *target)
 void LocalPlayer::setGotoTarget(Being *target)
 {
     mLastTarget = -1;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     mTarget = target;
     mGoingToTarget = true;
     const Vector &targetPos = target->getPosition();

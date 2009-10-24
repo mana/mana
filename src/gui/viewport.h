@@ -172,7 +172,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         bool mVisibleNames;          /**< Show target names. */
 
         bool mPlayerFollowMouse;
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
         int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
 #else
         int mWalkTime;

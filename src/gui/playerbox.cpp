@@ -82,7 +82,7 @@ void PlayerBox::draw(gcn::Graphics *graphics)
     {
         // Draw character
         const int bs = getFrameSize();
-//#ifdef TMWSERV_SUPPORT
+//#ifdef MANASERV_SUPPORT
         const int x = getWidth() / 2 + bs;
         const int y = getHeight() - bs - 8;
         mPlayer->draw(static_cast<Graphics*>(graphics), x, y);

@@ -22,7 +22,7 @@
 #include "animatedsprite.h"
 #include "configuration.h"
 #include "game.h"
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 #include "guild.h"
 #endif
 #include "localplayer.h"
@@ -209,7 +209,7 @@ void Player::setSpriteColor(unsigned int slot, const std::string &color)
     setSprite(slot, mSpriteIDs[slot], color);
 }
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 Guild* Player::addGuild(short guildId, short rights)
 {
     Guild *guild = new Guild(guildId, rights);

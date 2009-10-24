@@ -88,7 +88,7 @@ Being::Being(int id, int job, Map *map):
     mStatusParticleEffects(&mStunParticleEffects, false),
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     mWalkSpeed(6.0f), // default speed in tile per second
 #else
     mWalkSpeed(150),
@@ -143,7 +143,7 @@ void Being::setDestination(Uint16 destX, Uint16 destY)
 }
 #endif
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
 void Being::setDestination(int dstX, int dstY)
 {
     mDest.x = dstX;
@@ -200,7 +200,7 @@ void Being::setDestination(int dstX, int dstY)
 
     setPath(thisPath);
 }
-#endif  // TMWSERV_SUPPORT
+#endif  // MANASERV_SUPPORT
 
 void Being::clearPath()
 {
@@ -526,7 +526,7 @@ void Being::logic()
         mText = 0;
     }
 
-#ifdef TMWSERV_SUPPORT
+#ifdef MANASERV_SUPPORT
     if (mAction != DEAD)
     {
         const Vector dest = (mPath.empty()) ?
