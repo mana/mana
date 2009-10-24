@@ -1,8 +1,8 @@
 ----------------------------
-The Mana World Hacking Guide
+Mana Hacking Guide
 ----------------------------
 
-This guide is also available at http://wiki.themanaworld.org/index.php/Hacking
+This guide is also available at http://gitorious.org/mana/pages/Hacking
 including more tips about C++ programming in general.
 
 With multiple coders working on the same source files, there needs to be a

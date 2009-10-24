@@ -10,12 +10,12 @@ PRODUCTVERSION VER_MAJOR,VER_MINOR,VER_RELEASE,VER_BUILD
 FILETYPE VFT_APP {
     BLOCK "StringFileInfo" {
         BLOCK "040904E4" {
-            VALUE "CompanyName", "The Mana World Development Team"
+            VALUE "CompanyName", "The Mana Development Team"
             VALUE "FileVersion", PACKAGE_VERSION
-            VALUE "FileDescription", "The Mana World"
+            VALUE "FileDescription", "Mana"
             VALUE "LegalCopyright", "2004-2009 (C)"
-            VALUE "OriginalFilename", "tmw.exe"
-            VALUE "ProductName", "The Mana World MMORPG"
+            VALUE "OriginalFilename", "mana.exe"
+            VALUE "ProductName", "Mana MMORPG Client"
             VALUE "ProductVersion", PACKAGE_VERSION
         }
     }

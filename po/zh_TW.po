@@ -1,12 +1,12 @@
-# Traditional Chinese translation for tmw
+# Traditional Chinese translation for mana
 # Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
-# This file is distributed under the same license as the tmw package.
+# This file is distributed under the same license as the mana package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
 # SECOND AUTHOR <NETWAREBOSS>,2009
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: tmw\n"
+"Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-06-09 21:24+0200\n"
 "PO-Revision-Date: 2009-05-15 02:25+0000\n"
@@ -2106,8 +2106,8 @@ msgid " video mode: "
 msgstr " 視訊模式: "
 
 #: src/main.cpp:575
-msgid "tmw"
-msgstr "tmw"
+msgid "mana"
+msgstr "mana"
 
 #: src/main.cpp:576
 msgid "Options:"
@@ -2246,27 +2246,27 @@ msgid "Failed to delete character."
 msgstr "刪除角色失敗。"
 
 #: src/net/ea/charserverhandler.cpp:224
-#: src/net/tmwserv/charserverhandler.cpp:253
+#: src/net/manaserv/charserverhandler.cpp:253
 msgid "Strength:"
 msgstr "力量:"
 
 #: src/net/ea/charserverhandler.cpp:225
-#: src/net/tmwserv/charserverhandler.cpp:254
+#: src/net/manaserv/charserverhandler.cpp:254
 msgid "Agility:"
 msgstr "敏捷:"
 
 #: src/net/ea/charserverhandler.cpp:226
-#: src/net/tmwserv/charserverhandler.cpp:256
+#: src/net/manaserv/charserverhandler.cpp:256
 msgid "Vitality:"
 msgstr "體力:"
 
 #: src/net/ea/charserverhandler.cpp:227
-#: src/net/tmwserv/charserverhandler.cpp:257
+#: src/net/manaserv/charserverhandler.cpp:257
 msgid "Intelligence:"
 msgstr "智力:"
 
 #: src/net/ea/charserverhandler.cpp:228
-#: src/net/tmwserv/charserverhandler.cpp:255
+#: src/net/manaserv/charserverhandler.cpp:255
 msgid "Dexterity:"
 msgstr "閃躲:"
 
@@ -2299,27 +2299,27 @@ msgstr "無法裝備。"
 msgid "Unable to unequip."
 msgstr "無法卸下裝備。"
 
-#: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
+#: src/net/ea/generalhandler.cpp:91 src/net/manaserv/generalhandler.cpp:82
 #, c-format
 msgid "Strength %+d"
 msgstr "力量 %+d"
 
-#: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
+#: src/net/ea/generalhandler.cpp:92 src/net/manaserv/generalhandler.cpp:83
 #, c-format
 msgid "Agility %+d"
 msgstr "敏捷 %+d"
 
-#: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
+#: src/net/ea/generalhandler.cpp:93 src/net/manaserv/generalhandler.cpp:85
 #, c-format
 msgid "Vitality %+d"
 msgstr "體力 %+d"
 
-#: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
+#: src/net/ea/generalhandler.cpp:94 src/net/manaserv/generalhandler.cpp:86
 #, c-format
 msgid "Intelligence %+d"
 msgstr "智力 %+d"
 
-#: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
+#: src/net/ea/generalhandler.cpp:95 src/net/manaserv/generalhandler.cpp:84
 #, c-format
 msgid "Dexterity %+d"
 msgstr "閃躲 %+d"
@@ -2519,7 +2519,7 @@ msgstr "使用物品失敗"
 msgid "Account was not found. Please re-login."
 msgstr "帳號還沒連線,請先登入"
 
-#: src/net/ea/loginhandler.cpp:79 src/net/tmwserv/loginhandler.cpp:113
+#: src/net/ea/loginhandler.cpp:79 src/net/manaserv/loginhandler.cpp:113
 msgid "Old password incorrect"
 msgstr "舊密碼輸入錯誤"
 
@@ -2529,9 +2529,9 @@ msgid "New password too short"
 msgstr "新密碼不正確"
 
 #: src/net/ea/loginhandler.cpp:85 src/net/ea/loginhandler.cpp:169
-#: src/net/tmwserv/loginhandler.cpp:89 src/net/tmwserv/loginhandler.cpp:119
-#: src/net/tmwserv/loginhandler.cpp:152 src/net/tmwserv/loginhandler.cpp:188
-#: src/net/tmwserv/loginhandler.cpp:220
+#: src/net/manaserv/loginhandler.cpp:89 src/net/manaserv/loginhandler.cpp:119
+#: src/net/manaserv/loginhandler.cpp:152 src/net/manaserv/loginhandler.cpp:188
+#: src/net/manaserv/loginhandler.cpp:220
 msgid "Unknown error"
 msgstr "不明的錯誤"
 
@@ -2620,23 +2620,23 @@ msgstr "此時無法支援邀請"
 msgid "%s is not in your party!"
 msgstr "%s 不在您的隊伍中！"
 
-#: src/net/ea/playerhandler.cpp:96 src/net/tmwserv/beinghandler.cpp:312
+#: src/net/ea/playerhandler.cpp:96 src/net/manaserv/beinghandler.cpp:312
 msgid "You are dead."
 msgstr "您已經死亡。"
 
-#: src/net/ea/playerhandler.cpp:97 src/net/tmwserv/beinghandler.cpp:313
+#: src/net/ea/playerhandler.cpp:97 src/net/manaserv/beinghandler.cpp:313
 msgid "We regret to inform you that your character was killed in battle."
 msgstr "我們很遺憾的通知您，您的角色已經在戰鬥中被殺了。"
 
-#: src/net/ea/playerhandler.cpp:99 src/net/tmwserv/beinghandler.cpp:314
+#: src/net/ea/playerhandler.cpp:99 src/net/manaserv/beinghandler.cpp:314
 msgid "You are not that alive anymore."
 msgstr "您不再是那麼有活力。"
 
-#: src/net/ea/playerhandler.cpp:100 src/net/tmwserv/beinghandler.cpp:315
+#: src/net/ea/playerhandler.cpp:100 src/net/manaserv/beinghandler.cpp:315
 msgid "The cold hands of the grim reaper are grabbing for your soul."
 msgstr "殘酷的死神用冰冷的手正在抽出你的靈魂。"
 
-#: src/net/ea/playerhandler.cpp:101 src/net/tmwserv/beinghandler.cpp:316
+#: src/net/ea/playerhandler.cpp:101 src/net/manaserv/beinghandler.cpp:316
 msgid "Game Over!"
 msgstr "遊戲結束！"
 
@@ -2644,39 +2644,39 @@ msgstr "遊戲結束！"
 msgid "Insert coin to continue."
 msgstr "請投入金幣"
 
-#: src/net/ea/playerhandler.cpp:103 src/net/tmwserv/beinghandler.cpp:317
+#: src/net/ea/playerhandler.cpp:103 src/net/manaserv/beinghandler.cpp:317
 msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
 msgstr "不，孩子。您的角色並沒有真的死掉。他...呃...去了更好的地方。"
 
-#: src/net/ea/playerhandler.cpp:105 src/net/tmwserv/beinghandler.cpp:318
+#: src/net/ea/playerhandler.cpp:105 src/net/manaserv/beinghandler.cpp:318
 msgid ""
 "Your plan of breaking your enemies weapon by bashing it with your throat "
 "failed."
 msgstr "您想讓敵人的武器插入您的喉嚨好折斷它的計畫失敗了。"
 
-#: src/net/ea/playerhandler.cpp:107 src/net/tmwserv/beinghandler.cpp:319
+#: src/net/ea/playerhandler.cpp:107 src/net/manaserv/beinghandler.cpp:319
 msgid "I guess this did not run too well."
 msgstr "我猜這並沒有跑得很好"
 
-#: src/net/ea/playerhandler.cpp:109 src/net/tmwserv/beinghandler.cpp:320
+#: src/net/ea/playerhandler.cpp:109 src/net/manaserv/beinghandler.cpp:320
 msgid "Do you want your possessions identified?"
 msgstr "您想要鑑定你的財產嗎？"
 
-#: src/net/ea/playerhandler.cpp:111 src/net/tmwserv/beinghandler.cpp:321
+#: src/net/ea/playerhandler.cpp:111 src/net/manaserv/beinghandler.cpp:321
 msgid "Sadly, no trace of you was ever found..."
 msgstr "很悲傷的，沒有人發現你的蹤跡..."
 
-#: src/net/ea/playerhandler.cpp:113 src/net/tmwserv/beinghandler.cpp:322
+#: src/net/ea/playerhandler.cpp:113 src/net/manaserv/beinghandler.cpp:322
 msgid "Annihilated."
 msgstr "灰飛煙滅了。"
 
-#: src/net/ea/playerhandler.cpp:115 src/net/tmwserv/beinghandler.cpp:323
+#: src/net/ea/playerhandler.cpp:115 src/net/manaserv/beinghandler.cpp:323
 msgid "Looks like you got your head handed to you."
 msgstr "看起來你把你的頭拿在手上。"
 
-#: src/net/ea/playerhandler.cpp:117 src/net/tmwserv/beinghandler.cpp:324
+#: src/net/ea/playerhandler.cpp:117 src/net/manaserv/beinghandler.cpp:324
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
 msgstr "你又被幹掉啦!!!躺在地上一次又一次!!"
@@ -2833,12 +2833,12 @@ msgstr "無法偷取任何物品..."
 msgid "Poison had no effect..."
 msgstr "藥水無效..."
 
-#: src/net/ea/tradehandler.cpp:103 src/net/tmwserv/tradehandler.cpp:114
+#: src/net/ea/tradehandler.cpp:103 src/net/manaserv/tradehandler.cpp:114
 #, fuzzy
 msgid "Request for Trade"
 msgstr "交易的要求"
 
-#: src/net/ea/tradehandler.cpp:104 src/net/tmwserv/tradehandler.cpp:115
+#: src/net/ea/tradehandler.cpp:104 src/net/manaserv/tradehandler.cpp:115
 #, fuzzy, c-format
 msgid "%s wants to trade with you, do you accept?"
 msgstr " 想要跟您交易，您接受嗎？"
@@ -2882,135 +2882,135 @@ msgstr "加入物品失敗。交易對象沒有空的欄位。"
 msgid "Failed adding item for unknown reason."
 msgstr "由於不明的原因加入物品失敗。"
 
-#: src/net/ea/tradehandler.cpp:220 src/net/tmwserv/tradehandler.cpp:147
+#: src/net/ea/tradehandler.cpp:220 src/net/manaserv/tradehandler.cpp:147
 msgid "Trade canceled."
 msgstr "交易已取消。"
 
-#: src/net/ea/tradehandler.cpp:227 src/net/tmwserv/tradehandler.cpp:154
+#: src/net/ea/tradehandler.cpp:227 src/net/manaserv/tradehandler.cpp:154
 msgid "Trade completed."
 msgstr "交易已完成。"
 
-#: src/net/tmwserv/beinghandler.cpp:328
+#: src/net/manaserv/beinghandler.cpp:328
 msgid " Press OK to respawn"
 msgstr " 請按確認啟動"
 
-#: src/net/tmwserv/beinghandler.cpp:329
+#: src/net/manaserv/beinghandler.cpp:329
 msgid "You died"
 msgstr "您已經死亡"
 
-#: src/net/tmwserv/charserverhandler.cpp:219
+#: src/net/manaserv/charserverhandler.cpp:219
 msgid "No gameservers are available."
 msgstr "沒有可用的遊戲伺服器。"
 
-#: src/net/tmwserv/charserverhandler.cpp:258
+#: src/net/manaserv/charserverhandler.cpp:258
 msgid "Willpower:"
 msgstr "意志力:"
 
-#: src/net/tmwserv/chathandler.cpp:158 src/net/tmwserv/guildhandler.cpp:250
+#: src/net/manaserv/chathandler.cpp:158 src/net/manaserv/guildhandler.cpp:250
 #, fuzzy, c-format
 msgid "Topic: %s"
 msgstr "主題: "
 
-#: src/net/tmwserv/generalhandler.cpp:87
+#: src/net/manaserv/generalhandler.cpp:87
 #, c-format
 msgid "Willpower %+d"
 msgstr "意志力 %+d"
 
-#: src/net/tmwserv/guildhandler.cpp:74
+#: src/net/manaserv/guildhandler.cpp:74
 msgid "Guild created."
 msgstr ""
 
-#: src/net/tmwserv/guildhandler.cpp:79
+#: src/net/manaserv/guildhandler.cpp:79
 #, fuzzy
 msgid "Error creating guild."
 msgstr "建立更新目錄失敗！"
 
-#: src/net/tmwserv/guildhandler.cpp:89
+#: src/net/manaserv/guildhandler.cpp:89
 #, fuzzy
 msgid "Invite sent."
 msgstr "邀請使用者"
 
-#: src/net/tmwserv/guildhandler.cpp:194
+#: src/net/manaserv/guildhandler.cpp:194
 msgid "Member was promoted successfully."
 msgstr ""
 
-#: src/net/tmwserv/guildhandler.cpp:199
+#: src/net/manaserv/guildhandler.cpp:199
 #, fuzzy
 msgid "Failed to promote member."
 msgstr "使用物品失敗"
 
-#: src/net/tmwserv/loginhandler.cpp:80
+#: src/net/manaserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
 msgstr "錯誤的魔法代號"
 
-#: src/net/tmwserv/loginhandler.cpp:83 src/net/tmwserv/loginhandler.cpp:182
+#: src/net/manaserv/loginhandler.cpp:83 src/net/manaserv/loginhandler.cpp:182
 msgid "Already logged in"
 msgstr "已經登入"
 
-#: src/net/tmwserv/loginhandler.cpp:86 src/net/tmwserv/loginhandler.cpp:185
+#: src/net/manaserv/loginhandler.cpp:86 src/net/manaserv/loginhandler.cpp:185
 msgid "Server is full"
 msgstr "伺服器人數已滿"
 
-#: src/net/tmwserv/loginhandler.cpp:110
+#: src/net/manaserv/loginhandler.cpp:110
 msgid "New password incorrect"
 msgstr "新密碼不正確"
 
-#: src/net/tmwserv/loginhandler.cpp:116 src/net/tmwserv/loginhandler.cpp:146
+#: src/net/manaserv/loginhandler.cpp:116 src/net/manaserv/loginhandler.cpp:146
 msgid "Account not connected. Please login first."
 msgstr "帳號還沒連線,請先登入"
 
-#: src/net/tmwserv/loginhandler.cpp:140
+#: src/net/manaserv/loginhandler.cpp:140
 msgid "New email address incorrect"
 msgstr "新的郵件位址不正確"
 
-#: src/net/tmwserv/loginhandler.cpp:143
+#: src/net/manaserv/loginhandler.cpp:143
 msgid "Old email address incorrect"
 msgstr "舊得郵件位址不正確"
 
-#: src/net/tmwserv/loginhandler.cpp:149
+#: src/net/manaserv/loginhandler.cpp:149
 msgid "The new Email Address already exists."
 msgstr "電子郵件已經被註冊"
 
-#: src/net/tmwserv/loginhandler.cpp:176 src/net/tmwserv/loginhandler.cpp:208
+#: src/net/manaserv/loginhandler.cpp:176 src/net/manaserv/loginhandler.cpp:208
 msgid "Client version is too old"
 msgstr "遊戲版本太老舊!!"
 
-#: src/net/tmwserv/loginhandler.cpp:179
+#: src/net/manaserv/loginhandler.cpp:179
 msgid "Wrong username or password"
 msgstr "錯誤的帳號或密碼"
 
-#: src/net/tmwserv/loginhandler.cpp:211
+#: src/net/manaserv/loginhandler.cpp:211
 msgid "Wrong username, password or email address"
 msgstr "錯誤的帳號或密碼及電子郵件"
 
-#: src/net/tmwserv/loginhandler.cpp:214
+#: src/net/manaserv/loginhandler.cpp:214
 msgid "Username already exists"
 msgstr "名字已經有人使用"
 
-#: src/net/tmwserv/loginhandler.cpp:217
+#: src/net/manaserv/loginhandler.cpp:217
 msgid "Email address already exists"
 msgstr "電子郵件已經存在"
 
-#: src/net/tmwserv/partyhandler.cpp:86
+#: src/net/manaserv/partyhandler.cpp:86
 msgid "Joined party."
 msgstr ""
 
-#: src/net/tmwserv/partyhandler.cpp:103
+#: src/net/manaserv/partyhandler.cpp:103
 #, c-format
 msgid "%s joined the party."
 msgstr ""
 
-#: src/net/tmwserv/tradehandler.cpp:93
+#: src/net/manaserv/tradehandler.cpp:93
 #, fuzzy
 msgid "Accepting incoming trade requests."
 msgstr "接受收到的交易要求"
 
-#: src/net/tmwserv/tradehandler.cpp:95
+#: src/net/manaserv/tradehandler.cpp:95
 #, fuzzy
 msgid "Ignoring incoming trade requests."
 msgstr "忽略收到的交易要求"
 
-#: src/net/tmwserv/tradehandler.cpp:133
+#: src/net/manaserv/tradehandler.cpp:133
 #, fuzzy, c-format
 msgid "Trading with %s"
 msgstr "交易對象: "

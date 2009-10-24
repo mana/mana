@@ -411,7 +411,7 @@ static bool saveScreenshot()
 #elif defined __APPLE__
         filenameSuffix << "Desktop/";
 #endif
-        filenameSuffix << "TMW_Screenshot_" << screenshotCount << ".png";
+        filenameSuffix << "Mana_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();

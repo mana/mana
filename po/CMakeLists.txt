@@ -4,7 +4,7 @@ FIND_PACKAGE(Gettext REQUIRED)
 # we need our own version because the upstream one contains
 # a call to msgmerge (updating po files) which can't be
 # disabled
-MACRO(TMW_GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFileArg)
+MACRO(MANA_GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFileArg)
    # make it a real variable, so we can modify it here
    SET(_firstPoFile "${_firstPoFileArg}")
 
@@ -36,7 +36,7 @@ MACRO(TMW_GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFileArg)
    ENDFOREACH (_currentPoFile )
 
    ADD_CUSTOM_TARGET(translations ${_addToAll} DEPENDS ${_gmoFiles})
-ENDMACRO(TMW_GETTEXT_CREATE_TRANSLATIONS )
+ENDMACRO(MANA_GETTEXT_CREATE_TRANSLATIONS )
 
 FILE(GLOB POFILES *.po)
-TMW_GETTEXT_CREATE_TRANSLATIONS(tmw.pot ALL ${POFILES})
+MANA_GETTEXT_CREATE_TRANSLATIONS(mana.pot ALL ${POFILES})

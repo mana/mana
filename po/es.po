@@ -1,11 +1,11 @@
-# Spanish translation for tmw
+# Spanish translation for mana
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
-# This file is distributed under the same license as the tmw package.
+# This file is distributed under the same license as the mana package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: tmw\n"
+"Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-06-09 21:24+0200\n"
 "PO-Revision-Date: 2009-05-31 11:16+0000\n"
@@ -2111,8 +2111,8 @@ msgid " video mode: "
 msgstr " modo de video "
 
 #: src/main.cpp:575
-msgid "tmw"
-msgstr "TMW"
+msgid "mana"
+msgstr "mana"
 
 #: src/main.cpp:576
 msgid "Options:"
@@ -2243,27 +2243,27 @@ msgid "Failed to delete character."
 msgstr "no se pudo borrar personaje"
 
 #: src/net/ea/charserverhandler.cpp:224
-#: src/net/tmwserv/charserverhandler.cpp:253
+#: src/net/manaserv/charserverhandler.cpp:253
 msgid "Strength:"
 msgstr "Fuerza:"
 
 #: src/net/ea/charserverhandler.cpp:225
-#: src/net/tmwserv/charserverhandler.cpp:254
+#: src/net/manaserv/charserverhandler.cpp:254
 msgid "Agility:"
 msgstr "Agilidad:"
 
 #: src/net/ea/charserverhandler.cpp:226
-#: src/net/tmwserv/charserverhandler.cpp:256
+#: src/net/manaserv/charserverhandler.cpp:256
 msgid "Vitality:"
 msgstr "Vitalidad:"
 
 #: src/net/ea/charserverhandler.cpp:227
-#: src/net/tmwserv/charserverhandler.cpp:257
+#: src/net/manaserv/charserverhandler.cpp:257
 msgid "Intelligence:"
 msgstr "Inteligencia:"
 
 #: src/net/ea/charserverhandler.cpp:228
-#: src/net/tmwserv/charserverhandler.cpp:255
+#: src/net/manaserv/charserverhandler.cpp:255
 msgid "Dexterity:"
 msgstr "Destreza:"
 
@@ -2294,27 +2294,27 @@ msgstr "no se pudo equipar"
 msgid "Unable to unequip."
 msgstr "no se pudo desequipar"
 
-#: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
+#: src/net/ea/generalhandler.cpp:91 src/net/manaserv/generalhandler.cpp:82
 #, c-format
 msgid "Strength %+d"
 msgstr "fuerza %+d"
 
-#: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
+#: src/net/ea/generalhandler.cpp:92 src/net/manaserv/generalhandler.cpp:83
 #, c-format
 msgid "Agility %+d"
 msgstr "agilidad %+d"
 
-#: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
+#: src/net/ea/generalhandler.cpp:93 src/net/manaserv/generalhandler.cpp:85
 #, c-format
 msgid "Vitality %+d"
 msgstr "vitalidad %+d"
 
-#: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
+#: src/net/ea/generalhandler.cpp:94 src/net/manaserv/generalhandler.cpp:86
 #, c-format
 msgid "Intelligence %+d"
 msgstr "inteligencia %+d"
 
-#: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
+#: src/net/ea/generalhandler.cpp:95 src/net/manaserv/generalhandler.cpp:84
 #, c-format
 msgid "Dexterity %+d"
 msgstr "Destreza %+d"
@@ -2512,7 +2512,7 @@ msgstr "No se pudo utilzar el objeto."
 msgid "Account was not found. Please re-login."
 msgstr "La cuenta no se encontro. Por favor conectese de nuevo."
 
-#: src/net/ea/loginhandler.cpp:79 src/net/tmwserv/loginhandler.cpp:113
+#: src/net/ea/loginhandler.cpp:79 src/net/manaserv/loginhandler.cpp:113
 msgid "Old password incorrect"
 msgstr "la contraseña antigua es incorrecta"
 
@@ -2521,9 +2521,9 @@ msgid "New password too short"
 msgstr "La nueva contraseña es demasiada corta"
 
 #: src/net/ea/loginhandler.cpp:85 src/net/ea/loginhandler.cpp:169
-#: src/net/tmwserv/loginhandler.cpp:89 src/net/tmwserv/loginhandler.cpp:119
-#: src/net/tmwserv/loginhandler.cpp:152 src/net/tmwserv/loginhandler.cpp:188
-#: src/net/tmwserv/loginhandler.cpp:220
+#: src/net/manaserv/loginhandler.cpp:89 src/net/manaserv/loginhandler.cpp:119
+#: src/net/manaserv/loginhandler.cpp:152 src/net/manaserv/loginhandler.cpp:188
+#: src/net/manaserv/loginhandler.cpp:220
 msgid "Unknown error"
 msgstr "Error desconocido."
 
@@ -2614,23 +2614,23 @@ msgstr "Por el momento no está soportado invitar de esta forma."
 msgid "%s is not in your party!"
 msgstr "%s no es de su grupo !"
 
-#: src/net/ea/playerhandler.cpp:96 src/net/tmwserv/beinghandler.cpp:312
+#: src/net/ea/playerhandler.cpp:96 src/net/manaserv/beinghandler.cpp:312
 msgid "You are dead."
 msgstr "Estás muerto."
 
-#: src/net/ea/playerhandler.cpp:97 src/net/tmwserv/beinghandler.cpp:313
+#: src/net/ea/playerhandler.cpp:97 src/net/manaserv/beinghandler.cpp:313
 msgid "We regret to inform you that your character was killed in battle."
 msgstr "Sentimos informarte de que tu personaje fue muerto en batalla."
 
-#: src/net/ea/playerhandler.cpp:99 src/net/tmwserv/beinghandler.cpp:314
+#: src/net/ea/playerhandler.cpp:99 src/net/manaserv/beinghandler.cpp:314
 msgid "You are not that alive anymore."
 msgstr "Te quedaste sin vida/"
 
-#: src/net/ea/playerhandler.cpp:100 src/net/tmwserv/beinghandler.cpp:315
+#: src/net/ea/playerhandler.cpp:100 src/net/manaserv/beinghandler.cpp:315
 msgid "The cold hands of the grim reaper are grabbing for your soul."
 msgstr "Las manos heladas de la muerte se llevaron tu alma."
 
-#: src/net/ea/playerhandler.cpp:101 src/net/tmwserv/beinghandler.cpp:316
+#: src/net/ea/playerhandler.cpp:101 src/net/manaserv/beinghandler.cpp:316
 msgid "Game Over!"
 msgstr "¡Fin del juego!"
 
@@ -2638,7 +2638,7 @@ msgstr "¡Fin del juego!"
 msgid "Insert coin to continue."
 msgstr "Inserta una moneda para continuar."
 
-#: src/net/ea/playerhandler.cpp:103 src/net/tmwserv/beinghandler.cpp:317
+#: src/net/ea/playerhandler.cpp:103 src/net/manaserv/beinghandler.cpp:317
 msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
@@ -2646,34 +2646,34 @@ msgstr ""
 "No, niños. Tu personaje no murió realmente. Él... eeh... se marchó a un "
 "lugar mejor."
 
-#: src/net/ea/playerhandler.cpp:105 src/net/tmwserv/beinghandler.cpp:318
+#: src/net/ea/playerhandler.cpp:105 src/net/manaserv/beinghandler.cpp:318
 msgid ""
 "Your plan of breaking your enemies weapon by bashing it with your throat "
 "failed."
 msgstr ""
 "Falló tu plan de romper el arma de tus enemigos golpeándola con tu garganta."
 
-#: src/net/ea/playerhandler.cpp:107 src/net/tmwserv/beinghandler.cpp:319
+#: src/net/ea/playerhandler.cpp:107 src/net/manaserv/beinghandler.cpp:319
 msgid "I guess this did not run too well."
 msgstr "Creo que esto no funcionó muy bien."
 
-#: src/net/ea/playerhandler.cpp:109 src/net/tmwserv/beinghandler.cpp:320
+#: src/net/ea/playerhandler.cpp:109 src/net/manaserv/beinghandler.cpp:320
 msgid "Do you want your possessions identified?"
 msgstr "¿Quieres que tus posesiones sean identificadas?"
 
-#: src/net/ea/playerhandler.cpp:111 src/net/tmwserv/beinghandler.cpp:321
+#: src/net/ea/playerhandler.cpp:111 src/net/manaserv/beinghandler.cpp:321
 msgid "Sadly, no trace of you was ever found..."
 msgstr "Lamentablemente, ningún rastro tuyo fue encontrado nunca."
 
-#: src/net/ea/playerhandler.cpp:113 src/net/tmwserv/beinghandler.cpp:322
+#: src/net/ea/playerhandler.cpp:113 src/net/manaserv/beinghandler.cpp:322
 msgid "Annihilated."
 msgstr "Aniquilado."
 
-#: src/net/ea/playerhandler.cpp:115 src/net/tmwserv/beinghandler.cpp:323
+#: src/net/ea/playerhandler.cpp:115 src/net/manaserv/beinghandler.cpp:323
 msgid "Looks like you got your head handed to you."
 msgstr "Parce que te volaron la cabeza."
 
-#: src/net/ea/playerhandler.cpp:117 src/net/tmwserv/beinghandler.cpp:324
+#: src/net/ea/playerhandler.cpp:117 src/net/manaserv/beinghandler.cpp:324
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
 msgstr ""
@@ -2833,11 +2833,11 @@ msgstr "No pudiste robar nada"
 msgid "Poison had no effect..."
 msgstr "el veneno no tuvo efecto"
 
-#: src/net/ea/tradehandler.cpp:103 src/net/tmwserv/tradehandler.cpp:114
+#: src/net/ea/tradehandler.cpp:103 src/net/manaserv/tradehandler.cpp:114
 msgid "Request for Trade"
 msgstr "Peticion de intercambio"
 
-#: src/net/ea/tradehandler.cpp:104 src/net/tmwserv/tradehandler.cpp:115
+#: src/net/ea/tradehandler.cpp:104 src/net/manaserv/tradehandler.cpp:115
 #, c-format
 msgid "%s wants to trade with you, do you accept?"
 msgstr "%s desea realizar un intercambio con Usted. Accepta ?"
@@ -2882,130 +2882,130 @@ msgstr "no se pudo añadir el objeto , tu compañero no tiene espacio"
 msgid "Failed adding item for unknown reason."
 msgstr "no se pudo añadir el objeto , razon desconocida"
 
-#: src/net/ea/tradehandler.cpp:220 src/net/tmwserv/tradehandler.cpp:147
+#: src/net/ea/tradehandler.cpp:220 src/net/manaserv/tradehandler.cpp:147
 msgid "Trade canceled."
 msgstr "trato cancelado"
 
-#: src/net/ea/tradehandler.cpp:227 src/net/tmwserv/tradehandler.cpp:154
+#: src/net/ea/tradehandler.cpp:227 src/net/manaserv/tradehandler.cpp:154
 msgid "Trade completed."
 msgstr "trato completado"
 
-#: src/net/tmwserv/beinghandler.cpp:328
+#: src/net/manaserv/beinghandler.cpp:328
 msgid " Press OK to respawn"
 msgstr " pulsa OK para volver a la vida"
 
-#: src/net/tmwserv/beinghandler.cpp:329
+#: src/net/manaserv/beinghandler.cpp:329
 msgid "You died"
 msgstr "Has muerto"
 
-#: src/net/tmwserv/charserverhandler.cpp:219
+#: src/net/manaserv/charserverhandler.cpp:219
 msgid "No gameservers are available."
 msgstr "no hay servidores de juego disponibles"
 
-#: src/net/tmwserv/charserverhandler.cpp:258
+#: src/net/manaserv/charserverhandler.cpp:258
 msgid "Willpower:"
 msgstr "Fuerza de voluntad:"
 
-#: src/net/tmwserv/chathandler.cpp:158 src/net/tmwserv/guildhandler.cpp:250
+#: src/net/manaserv/chathandler.cpp:158 src/net/manaserv/guildhandler.cpp:250
 #, c-format
 msgid "Topic: %s"
 msgstr "Tema: %s"
 
-#: src/net/tmwserv/generalhandler.cpp:87
+#: src/net/manaserv/generalhandler.cpp:87
 #, c-format
 msgid "Willpower %+d"
 msgstr "fuerza de voluntad: %+d"
 
-#: src/net/tmwserv/guildhandler.cpp:74
+#: src/net/manaserv/guildhandler.cpp:74
 msgid "Guild created."
 msgstr "Guild créada."
 
-#: src/net/tmwserv/guildhandler.cpp:79
+#: src/net/manaserv/guildhandler.cpp:79
 msgid "Error creating guild."
 msgstr "Eror al crear la guild."
 
-#: src/net/tmwserv/guildhandler.cpp:89
+#: src/net/manaserv/guildhandler.cpp:89
 msgid "Invite sent."
 msgstr "Invitacion enviada."
 
-#: src/net/tmwserv/guildhandler.cpp:194
+#: src/net/manaserv/guildhandler.cpp:194
 msgid "Member was promoted successfully."
 msgstr "El miembro ha sido promovido con exito."
 
-#: src/net/tmwserv/guildhandler.cpp:199
+#: src/net/manaserv/guildhandler.cpp:199
 msgid "Failed to promote member."
 msgstr "Fallo al Promover el miembro"
 
-#: src/net/tmwserv/loginhandler.cpp:80
+#: src/net/manaserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
 msgstr "ficha de magia erronea"
 
-#: src/net/tmwserv/loginhandler.cpp:83 src/net/tmwserv/loginhandler.cpp:182
+#: src/net/manaserv/loginhandler.cpp:83 src/net/manaserv/loginhandler.cpp:182
 msgid "Already logged in"
 msgstr "ya estas conectado"
 
-#: src/net/tmwserv/loginhandler.cpp:86 src/net/tmwserv/loginhandler.cpp:185
+#: src/net/manaserv/loginhandler.cpp:86 src/net/manaserv/loginhandler.cpp:185
 msgid "Server is full"
 msgstr "el servidor esta lleno"
 
-#: src/net/tmwserv/loginhandler.cpp:110
+#: src/net/manaserv/loginhandler.cpp:110
 msgid "New password incorrect"
 msgstr "la nueva contraseña es incorrecta"
 
-#: src/net/tmwserv/loginhandler.cpp:116 src/net/tmwserv/loginhandler.cpp:146
+#: src/net/manaserv/loginhandler.cpp:116 src/net/manaserv/loginhandler.cpp:146
 msgid "Account not connected. Please login first."
 msgstr "cuenta no conectada , conectate primero"
 
-#: src/net/tmwserv/loginhandler.cpp:140
+#: src/net/manaserv/loginhandler.cpp:140
 msgid "New email address incorrect"
 msgstr "Nueva Direccion de E-mail erronea"
 
-#: src/net/tmwserv/loginhandler.cpp:143
+#: src/net/manaserv/loginhandler.cpp:143
 msgid "Old email address incorrect"
 msgstr "Antigua dirreccion de E-mail erronea"
 
-#: src/net/tmwserv/loginhandler.cpp:149
+#: src/net/manaserv/loginhandler.cpp:149
 msgid "The new Email Address already exists."
 msgstr "la nueva direccion de E-mail ya existe"
 
-#: src/net/tmwserv/loginhandler.cpp:176 src/net/tmwserv/loginhandler.cpp:208
+#: src/net/manaserv/loginhandler.cpp:176 src/net/manaserv/loginhandler.cpp:208
 msgid "Client version is too old"
 msgstr "La version de tu cliente es demasiado antigua"
 
-#: src/net/tmwserv/loginhandler.cpp:179
+#: src/net/manaserv/loginhandler.cpp:179
 msgid "Wrong username or password"
 msgstr "nombre de usuario o contraseña incorrectos"
 
-#: src/net/tmwserv/loginhandler.cpp:211
+#: src/net/manaserv/loginhandler.cpp:211
 msgid "Wrong username, password or email address"
 msgstr "nombre de usuario , contraseña o Email incorrectos"
 
-#: src/net/tmwserv/loginhandler.cpp:214
+#: src/net/manaserv/loginhandler.cpp:214
 msgid "Username already exists"
 msgstr "ese nombre ya existe"
 
-#: src/net/tmwserv/loginhandler.cpp:217
+#: src/net/manaserv/loginhandler.cpp:217
 msgid "Email address already exists"
 msgstr "ese E-mail ya existe"
 
-#: src/net/tmwserv/partyhandler.cpp:86
+#: src/net/manaserv/partyhandler.cpp:86
 msgid "Joined party."
 msgstr "Grupo juntado."
 
-#: src/net/tmwserv/partyhandler.cpp:103
+#: src/net/manaserv/partyhandler.cpp:103
 #, c-format
 msgid "%s joined the party."
 msgstr "%s se ha juntado al grupo."
 
-#: src/net/tmwserv/tradehandler.cpp:93
+#: src/net/manaserv/tradehandler.cpp:93
 msgid "Accepting incoming trade requests."
 msgstr "Acceptar las peticiones de intercambio."
 
-#: src/net/tmwserv/tradehandler.cpp:95
+#: src/net/manaserv/tradehandler.cpp:95
 msgid "Ignoring incoming trade requests."
 msgstr "Ignorar las peticiones de intercambio."
 
-#: src/net/tmwserv/tradehandler.cpp:133
+#: src/net/manaserv/tradehandler.cpp:133
 #, c-format
 msgid "Trading with %s"
 msgstr "Intercambiar con %s"

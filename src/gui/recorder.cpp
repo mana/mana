@@ -104,7 +104,7 @@ void Recorder::setRecordingFile(const std::string &msg)
          */
         localChatTab->chatLog(_("Starting to record..."), BY_SERVER);
         const std::string file =
-            std::string(PHYSFS_getUserDir()) + "/.tmw/" + msgCopy;
+            std::string(PHYSFS_getUserDir()) + "/.mana/" + msgCopy;
 
         mStream.open(file.c_str(), std::ios_base::trunc);
 

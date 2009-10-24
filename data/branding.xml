@@ -3,10 +3,10 @@
 <!--
 Branding information
 
-All values in here are the default values which are hardcoded into the TMW
+All values in here are the default values which are hardcoded into the Mana
 client. So it would make no difference for the official version when this file
-is missing. It is basically an example for developers of TMW forks to help them
-writing a branding.xml for their forks.
+is missing. It is basically an example for developers of Mana servers to help them
+writing a branding.xml for their servers.
 -->
 
 <configuration>

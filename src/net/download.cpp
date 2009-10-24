@@ -199,9 +199,9 @@ int Download::downloadThread(void *ptr)
             }
 
 #ifdef PACKAGE_VERSION
-            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT, "TMW/" PACKAGE_VERSION);
+            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT, "Mana/" PACKAGE_VERSION);
 #else
-            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT, "TMW");
+            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT, "Mana");
 #endif
             curl_easy_setopt(d->mCurl, CURLOPT_ERRORBUFFER, d->mError);
             curl_easy_setopt(d->mCurl, CURLOPT_URL, d->mUrl.c_str());

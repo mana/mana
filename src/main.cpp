@@ -301,10 +301,10 @@ static void initHomeDir(const Options &options)
         // Use Application Directory instead of .tmw
         homeDir = std::string(PHYSFS_getUserDir()) +
             "/Library/Application Support/" +
-            branding.getValue("appName", "The Mana World");
+            branding.getValue("appName", "Mana");
 #else
         homeDir = std::string(PHYSFS_getUserDir()) +
-            "/." + branding.getValue("appShort", "tmw");
+            "/." + branding.getValue("appShort", "mana");
 #endif
     }
 #if defined WIN32
@@ -433,7 +433,7 @@ static void initEngine(const Options &options)
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
     }
 #else
-    icon = IMG_Load(resman->getPath(branding.getValue("appIcon", "data/icons/tmw.png")).c_str());
+    icon = IMG_Load(resman->getPath(branding.getValue("appIcon", "data/icons/mana.png")).c_str());
     if (icon)
     {
         SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -539,7 +539,7 @@ static void printHelp()
     using std::endl;
 
     std::cout
-        << _("tmw") << endl << endl
+        << _("mana") << endl << endl
         << _("Options:") << endl
         << _("  -C --config-file : Configuration file to use") << endl
         << _("  -d --data        : Directory to load game data from") << endl
@@ -728,13 +728,13 @@ static void initInternationalization()
 #ifdef WIN32
     putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
     // mingw doesn't like LOCALEDIR to be defined for some reason
-    bindtextdomain("tmw", "translations/");
+    bindtextdomain("mana", "translations/");
 #else
-    bindtextdomain("tmw", LOCALEDIR);
+    bindtextdomain("mana", LOCALEDIR);
 #endif
     setlocale(LC_MESSAGES, "");
-    bind_textdomain_codeset("tmw", "UTF-8");
-    textdomain("tmw");
+    bind_textdomain_codeset("mana", "UTF-8");
+    textdomain("mana");
 #endif
 }
 
@@ -785,10 +785,10 @@ int main(int argc, char *argv[])
 
     // Configure logger
     logger = new Logger;
-    logger->setLogFile(homeDir + std::string("/tmw.log"));
+    logger->setLogFile(homeDir + std::string("/mana.log"));
 
-    // Log the tmw version
-    logger->log("The Mana World %s", FULL_VERSION);
+    // Log the mana version
+    logger->log("Mana %s", FULL_VERSION);
 
     initConfiguration(options);
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));

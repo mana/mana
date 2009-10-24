@@ -1,7 +1,7 @@
 DYECMD
 =======
 
-This tool is used to dye item graphics used by the tmw client according to the
+This tool is used to dye item graphics used by the Mana client according to the
 specification described here: http://wiki.themanaworld.org/index.php/Image_dyeing
 
 The tool expects 3 parameters:
