@@ -28,10 +28,10 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/windowcontainer.h"
 
+#include "main.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-
-#include <physfs.h>
 
 Recorder::Recorder(ChatWindow *chat, const std::string &title,
                    const std::string &buttonTxt) :
@@ -103,8 +103,7 @@ void Recorder::setRecordingFile(const std::string &msg)
          * recorded.
          */
         localChatTab->chatLog(_("Starting to record..."), BY_SERVER);
-        const std::string file =
-            std::string(PHYSFS_getUserDir()) + "/.mana/" + msgCopy;
+        const std::string file = std::string(getHomeDirectory() + msgCopy);
 
         mStream.open(file.c_str(), std::ios_base::trunc);
 

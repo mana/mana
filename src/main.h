@@ -83,6 +83,8 @@
 #define DEFAULT_PORT 6901
 #endif
 
+const std::string &getHomeDirectory();
+
 /*
  * Client different States
  */

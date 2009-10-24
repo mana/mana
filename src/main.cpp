@@ -694,6 +694,11 @@ public:
 
 } // namespace
 
+const std::string &getHomeDirectory()
+{
+    return homeDir;
+}
+
 // TODO Find some nice place for these functions
 static void accountLogin(LoginData *loginData)
 {

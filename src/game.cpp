@@ -92,7 +92,6 @@
 #include <guichan/focushandler.hpp>
 
 #include <fstream>
-#include <physfs.h>
 #include <sstream>
 #include <string>
 
@@ -404,15 +403,13 @@ static bool saveScreenshot()
     do {
         screenshotCount++;
         filename.str("");
-        filenameSuffix.str("");
-        filename << PHYSFS_getUserDir();
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
-        filenameSuffix << ".mana/";
+        filename << getHomeDirectory();
 #elif defined __APPLE__
-        filenameSuffix << "Desktop/";
+        filename << PHYSFS_getUserDir();
+        filename << "Desktop/";
 #endif
-        filenameSuffix << "Mana_Screenshot_" << screenshotCount << ".png";
-        filename << filenameSuffix.str();
+        filename << "Mana_Screenshot_" << screenshotCount << ".png";
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
         testExists.close();
