@@ -1,0 +1,5 @@
+data/graphics/gui/*.png usr/share/games/mana/data/graphics/gui
+data/graphics/images/*.png usr/share/games/mana/data/graphics/images
+data/graphics/images/ambient/*.png usr/share/games/mana/data/graphics/images/ambient
+data/graphics/tiles/*.png usr/share/games/mana/data/graphics/tiles
+data/help/*.txt usr/share/games/mana/data/help

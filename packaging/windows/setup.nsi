@@ -5,14 +5,14 @@ SetCompressor /SOLID lzma
 !define SRCDIR "..\.."
 
 ;--- (and without !defines ) ---
-!System "upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d ${SRCDIR}\tmw.exe"
+!System "upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d ${SRCDIR}\mana.exe"
 
 ; HM NIS Edit helper defines
-!define PRODUCT_NAME "The Mana World"
+!define PRODUCT_NAME "Mana"
 !define PRODUCT_VERSION "0.0.29.1"
-!define PRODUCT_PUBLISHER "The Mana World Development Team"
-!define PRODUCT_WEB_SITE "http://themanaworld.org"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\tmw.exe"
+!define PRODUCT_PUBLISHER "Mana Development Team"
+!define PRODUCT_WEB_SITE "http://manasource.org"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\mana.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
@@ -22,14 +22,14 @@ SetCompressor /SOLID lzma
 ; MUI Settings
 !define MUI_ABORTWARNING
 ;!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\win-install.ico"
-!define MUI_ICON "${SRCDIR}\data\icons\tmw.ico"
+!define MUI_ICON "${SRCDIR}\data\icons\mana.ico"
 ;!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\win-uninstall.ico"
-!define MUI_UNICON "${SRCDIR}\data\icons\tmw.ico"
+!define MUI_UNICON "${SRCDIR}\data\icons\mana.ico"
 
 ;Language Selection Dialog Settings
 ;Remember the installer language
 !define MUI_LANGDLL_REGISTRY_ROOT "HKCU"
-!define MUI_LANGDLL_REGISTRY_KEY "Software\The Mana World"
+!define MUI_LANGDLL_REGISTRY_KEY "Software\Mana"
 !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
 
 !define MUI_WELCOMEFINISHPAGE_BITMAP "setup_welcome.bmp"
@@ -49,16 +49,16 @@ SetCompressor /SOLID lzma
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
 !define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_RUN_FUNCTION RunTMW
+!define MUI_FINISHPAGE_RUN_FUNCTION RunMana
 !define MUI_FINISHPAGE_SHOWREADME 'notepad.exe "$\"$INSTDIR\README$\""'
 !define MUI_PAGE_CUSTOMFUNCTION_PRE changeFinishImage
-!define MUI_FINISHPAGE_LINK "Visit TMW website for the latest news, FAQs and support"
+!define MUI_FINISHPAGE_LINK "Visit Mana website for the latest news, FAQs and support"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://themanaworld.org"
 !insertmacro MUI_PAGE_FINISH
 
-Function RunTMW
+Function RunMana
 SetOutPath $INSTDIR
-Exec "$INSTDIR\tmw.exe"
+Exec "$INSTDIR\mana.exe"
 FunctionEnd
 
 Function changeFinishImage
@@ -130,8 +130,8 @@ ReserveFile "setup_finish.bmp"
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "tmw-${PRODUCT_VERSION}-win32.exe"
-InstallDir "$PROGRAMFILES\The Mana World"
+OutFile "mana-${PRODUCT_VERSION}-win32.exe"
+InstallDir "$PROGRAMFILES\Mana"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
@@ -146,9 +146,9 @@ Section "Core files (required)" SecCore
   SectionIn RO
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  CreateDirectory "$SMPROGRAMS\The Mana World"
-  CreateShortCut "$SMPROGRAMS\The Mana World\The Mana World.lnk" "$INSTDIR\tmw.exe"
-  CreateShortCut "$DESKTOP\The Mana World.lnk" "$INSTDIR\tmw.exe"
+  CreateDirectory "$SMPROGRAMS\Mana"
+  CreateShortCut "$SMPROGRAMS\Mana\Mana.lnk" "$INSTDIR\mana.exe"
+  CreateShortCut "$DESKTOP\Mana.lnk" "$INSTDIR\mana.exe"
   CreateDirectory "$INSTDIR\data"
   CreateDirectory "$INSTDIR\data\fonts"
   CreateDirectory "$INSTDIR\data\graphics"
@@ -161,7 +161,7 @@ Section "Core files (required)" SecCore
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
 
-  File "${SRCDIR}\tmw.exe"
+  File "${SRCDIR}\mana.exe"
   File "${SRCDIR}\*.dll"
   File "${SRCDIR}\AUTHORS"
   File "${SRCDIR}\COPYING"
@@ -177,7 +177,7 @@ Section "Core files (required)" SecCore
   SetOutPath "$INSTDIR\data\help"
   File "${SRCDIR}\data\help\*.txt"
   SetOutPath "$INSTDIR\data\icons\"
-  File "${SRCDIR}\data\icons\tmw.ico"
+  File "${SRCDIR}\data\icons\mana.ico"
   SetOutPath "$INSTDIR\docs"
   File "${SRCDIR}\docs\FAQ.txt"
 SectionEnd
@@ -208,18 +208,18 @@ SectionEnd
 
 Section -AdditionalIcons
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
-  CreateShortCut "$SMPROGRAMS\The Mana World\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
-  CreateShortCut "$SMPROGRAMS\The Mana World\Readme.lnk" "notepad.exe" "$INSTDIR\README"
-  CreateShortCut "$SMPROGRAMS\The Mana World\FAQ.lnk" "$INSTDIR\docs\FAQ.txt"
-  CreateShortCut "$SMPROGRAMS\The Mana World\Uninstall.lnk" "$INSTDIR\uninst.exe"
+  CreateShortCut "$SMPROGRAMS\Mana\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
+  CreateShortCut "$SMPROGRAMS\Mana\Readme.lnk" "notepad.exe" "$INSTDIR\README"
+  CreateShortCut "$SMPROGRAMS\Mana\FAQ.lnk" "$INSTDIR\docs\FAQ.txt"
+  CreateShortCut "$SMPROGRAMS\Mana\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\tmw.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\mana.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\tmw.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\mana.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
@@ -230,18 +230,18 @@ Function un.onInit
 FunctionEnd
 
 Section Uninstall
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\The Mana World"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Mana"
 
   Delete "$INSTDIR\*.*"
 
-  Delete "$SMPROGRAMS\The Mana World\Uninstall.lnk"
-  Delete "$DESKTOP\The Mana World.lnk"
-  Delete "$SMPROGRAMS\The Mana World\The Mana World.lnk"
-  Delete "$SMPROGRAMS\The Mana World\Website.lnk"
-  Delete "$SMPROGRAMS\The Mana World\Readme.lnk"
-  Delete "$SMPROGRAMS\The Mana World\FAQ.lnk"
+  Delete "$SMPROGRAMS\Mana\Uninstall.lnk"
+  Delete "$DESKTOP\Mana.lnk"
+  Delete "$SMPROGRAMS\Mana\Mana.lnk"
+  Delete "$SMPROGRAMS\Mana\Website.lnk"
+  Delete "$SMPROGRAMS\Mana\Readme.lnk"
+  Delete "$SMPROGRAMS\Mana\FAQ.lnk"
 
-  RMDir "$SMPROGRAMS\The Mana World"
+  RMDir "$SMPROGRAMS\Mana"
 
   RMDir /r "$INSTDIR\data"
   RMDir /r "$INSTDIR\docs"

@@ -1,5 +1,5 @@
 This readme explains the most common parameters to CMake needed for 
-building tmw.
+building mana.
 
 Basic syntax
 ------------
@@ -25,13 +25,13 @@ How do I...
 - Add additional include search directories?
   CMAKE_INCLUDE_PATH=/include/path
 
-For example, to build tmw to install in /opt/tmw, with libraries in 
-/build/tmw/lib, and SDL-headers in /build/tmw/include/SDL you'd use 
+For example, to build mana to install in /opt/mana, with libraries in 
+/build/mana/lib, and SDL-headers in /build/mana/include/SDL you'd use 
 the following command:
 
-cmake -D CMAKE_PREFIX_PATH=/build/tmw \
-  -D CMAKE_INCLUDE_PATH=/build/tmw/include/SDL \
-  -D CMAKE_INSTALL_PREFIX=/opt/tmw .
+cmake -D CMAKE_PREFIX_PATH=/build/mana \
+  -D CMAKE_INCLUDE_PATH=/build/mana/include/SDL \
+  -D CMAKE_INSTALL_PREFIX=/opt/mana .
 
 
 Crosscompiling using CMake
@@ -48,7 +48,7 @@ SET(CMAKE_SYSTEM_NAME Windows)
 SET(CMAKE_C_COMPILER i386-mingw32-gcc)
 SET(CMAKE_CXX_COMPILER i386-mingw32-g++)
 # here is the target environment located
-SET(CMAKE_FIND_ROOT_PATH  /build/mingw32 /build/tmw-libs )
+SET(CMAKE_FIND_ROOT_PATH  /build/mingw32 /build/mana-libs )
 # adjust the default behaviour of the FIND_XXX() commands:
 # search headers and libraries in the target environment, search 
 # programs in the host environment

@@ -1,6 +1,7 @@
+
 [Desktop Entry]
 Version=1.0
-Name=The Mana World
+Name=Mana
 Name[fr]=Le Monde de Mana
 Comment=An online fantasy role playing game
 Comment[fr]=Un jeu en ligne dans un univers fantastique
@@ -11,5 +12,5 @@ Exec=tmw
 StartupNotify=false
 Terminal=false
 Type=Game
-Icon=tmw.png
+Icon=mana.png
 Categories=Game

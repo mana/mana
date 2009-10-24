@@ -1,7 +1,7 @@
 SET(FILES
-    tmw.png
+    mana.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/icons)
 
-INSTALL(FILES "tmw.png" DESTINATION share/pixmaps)
+INSTALL(FILES "mana.png" DESTINATION share/pixmaps)

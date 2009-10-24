@@ -1,15 +1,15 @@
 
 iconsdir = $(pkgdatadir)/data/icons
 
-icons_DATA = tmw.png \
-	     tmw.xpm
+icons_DATA = mana.png \
+	     mana.xpm
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(datarootdir)/pixmaps
-	$(INSTALL) $(srcdir)/tmw.png $(DESTDIR)$(datarootdir)/pixmaps/tmw.png
+	$(INSTALL) $(srcdir)/mana.png $(DESTDIR)$(datarootdir)/pixmaps/mana.png
 
 uninstall-local:
-	rm -f $(DESTDIR)$(datarootdir)/pixmaps/tmw.png
+	rm -f $(DESTDIR)$(datarootdir)/pixmaps/mana.png
 
 EXTRA_DIST =		\
 	$(icons_DATA)
