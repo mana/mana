@@ -2,9 +2,7 @@
 [Desktop Entry]
 Version=1.0
 Name=Mana
-Name[fr]=Le Monde de Mana
-Name[sv]=Manavärlden
-Comment=An on-line fantasy role playing game
+Comment=A 2D MMORPG client
 Comment[fr]=Un jeu en ligne dans un univers fantastique
 Comment[de]=ein Online Fantasy Spiel
 Comment[it]=Un gioco fantasy online

@@ -10,12 +10,12 @@ writing a branding.xml for their forks.
 -->
 
 <configuration>
- <option name="appName" value="The Mana World"/>
- <option name="appShort" value="tmw"/>
- <option name="appIcon" value="icons/tmw.png"/>
+ <option name="appName" value="Mana Client"/>
+ <option name="appShort" value="mana"/>
+ <option name="appIcon" value="icons/mana.png"/>
  <option name="loginMusic" value="Magick - Real.ogg"/>
- <option name="defaultServer" value="server.themanaworld.org"/>
- <option name="defaultPort" value="6901"/>
+ <option name="defaultServer" value="testing.manasource.org"/>
+ <option name="defaultPort" value="9601"/>
  <option name="defaultUpdateHost" value="http://updates.themanaworld.org"/>
  <option name="font" value="fonts/dejavusans.ttf" />
  <option name="boldFont" value="fonts/dejavusans-bold.ttf" />
