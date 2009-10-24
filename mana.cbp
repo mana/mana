@@ -7,11 +7,11 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="eAthena">
-				<Option output="tmw-ea.exe" prefix_auto="0" extension_auto="0" />
+				<Option output="mana-ea.exe" prefix_auto="0" extension_auto="0" />
 				<Option object_output=".objs/ea" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
+				<Option parameters='-u -d &quot;D:/mana/data&quot;' />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
 					<Add option="-O3" />
@@ -45,11 +45,11 @@
 			</Target>
 			<Target title="Unix Manaserv">
 				<Option platforms="Unix;" />
-				<Option output="tmw" prefix_auto="1" extension_auto="1" />
+				<Option output="mana" prefix_auto="1" extension_auto="1" />
 				<Option object_output=".objs/manaserv" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters='-u -d &quot;../tmwdata&quot;' />
+				<Option parameters='-u -d &quot;../manadata&quot;' />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-g" />
@@ -76,11 +76,11 @@
 				</Linker>
 			</Target>
 			<Target title="Manaserv">
-				<Option output="tmw-manaserv.exe" prefix_auto="0" extension_auto="0" />
+				<Option output="mana-manaserv.exe" prefix_auto="0" extension_auto="0" />
 				<Option object_output=".objs/manaserv" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
+				<Option parameters='-u -d &quot;D:/mana/data&quot;' />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
 					<Add option="-O3" />
@@ -115,7 +115,7 @@
 			</Target>
 			<Target title="UNIX eAthena">
 				<Option platforms="Unix;" />
-				<Option output="ea-tmw" prefix_auto="1" extension_auto="1" />
+				<Option output="ea-mana" prefix_auto="1" extension_auto="1" />
 				<Option object_output=".objs/ea" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -626,242 +626,242 @@
 		<Unit filename="src/net/partyhandler.h" />
 		<Unit filename="src/net/playerhandler.h" />
 		<Unit filename="src/net/specialhandler.h" />
-		<Unit filename="src/net/tmwserv/accountserver/account.cpp">
+		<Unit filename="src/net/manaserv/accountserver/account.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/accountserver/account.h">
+		<Unit filename="src/net/manaserv/accountserver/account.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/accountserver/accountserver.cpp">
+		<Unit filename="src/net/manaserv/accountserver/accountserver.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/accountserver/accountserver.h">
+		<Unit filename="src/net/manaserv/accountserver/accountserver.h">
 			<Option target="Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/accountserver/internal.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/accountserver/internal.h">
+		<Unit filename="src/net/manaserv/accountserver/internal.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/adminhandler.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/beinghandler.cpp">
+		<Unit filename="src/net/manaserv/accountserver/internal.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/beinghandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/buysellhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/buysellhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/charhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/charhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chathandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chathandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chatserver/chatserver.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chatserver/chatserver.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chatserver/guild.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chatserver/guild.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chatserver/internal.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chatserver/internal.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chatserver/party.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/chatserver/party.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/connection.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/connection.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/effecthandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/effecthandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/gamehandler.cpp">
+		<Unit filename="src/net/manaserv/adminhandler.cpp">
 			<Option target="Unix Manaserv" />
 			<Option target="Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/gamehandler.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/gameserver/gameserver.cpp">
+		<Unit filename="src/net/manaserv/beinghandler.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/gameserver/gameserver.h">
+		<Unit filename="src/net/manaserv/beinghandler.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/gameserver/internal.cpp">
+		<Unit filename="src/net/manaserv/buysellhandler.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/gameserver/internal.h">
+		<Unit filename="src/net/manaserv/buysellhandler.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/gameserver/player.cpp">
+		<Unit filename="src/net/manaserv/charhandler.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/gameserver/player.h">
+		<Unit filename="src/net/manaserv/charhandler.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/generalhandler.cpp">
+		<Unit filename="src/net/manaserv/chathandler.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/generalhandler.h">
+		<Unit filename="src/net/manaserv/chathandler.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/guildhandler.cpp">
+		<Unit filename="src/net/manaserv/chatserver/chatserver.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/guildhandler.h">
+		<Unit filename="src/net/manaserv/chatserver/chatserver.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/internal.cpp">
+		<Unit filename="src/net/manaserv/chatserver/guild.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/internal.h">
+		<Unit filename="src/net/manaserv/chatserver/guild.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/inventoryhandler.cpp">
+		<Unit filename="src/net/manaserv/chatserver/internal.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/inventoryhandler.h">
+		<Unit filename="src/net/manaserv/chatserver/internal.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/itemhandler.cpp">
+		<Unit filename="src/net/manaserv/chatserver/party.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/itemhandler.h">
+		<Unit filename="src/net/manaserv/chatserver/party.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/loginhandler.cpp">
+		<Unit filename="src/net/manaserv/connection.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/loginhandler.h">
+		<Unit filename="src/net/manaserv/connection.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/network.cpp">
+		<Unit filename="src/net/manaserv/effecthandler.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/network.h">
+		<Unit filename="src/net/manaserv/effecthandler.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/npchandler.cpp">
+		<Unit filename="src/net/manaserv/gamehandler.cpp">
+			<Option target="Unix Manaserv" />
+			<Option target="Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/gamehandler.h">
+			<Option target="Unix Manaserv" />
+			<Option target="Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/gameserver/gameserver.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/npchandler.h">
+		<Unit filename="src/net/manaserv/gameserver/gameserver.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/partyhandler.cpp">
+		<Unit filename="src/net/manaserv/gameserver/internal.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/partyhandler.h">
+		<Unit filename="src/net/manaserv/gameserver/internal.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/playerhandler.cpp">
+		<Unit filename="src/net/manaserv/gameserver/player.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/playerhandler.h">
+		<Unit filename="src/net/manaserv/gameserver/player.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/protocol.h">
+		<Unit filename="src/net/manaserv/generalhandler.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/specialhandler.cpp">
+		<Unit filename="src/net/manaserv/generalhandler.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/specialhandler.h">
+		<Unit filename="src/net/manaserv/guildhandler.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/tradehandler.cpp">
+		<Unit filename="src/net/manaserv/guildhandler.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/tradehandler.h">
+		<Unit filename="src/net/manaserv/internal.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/internal.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/inventoryhandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/inventoryhandler.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/itemhandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/itemhandler.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/loginhandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/loginhandler.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/network.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/network.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/npchandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/npchandler.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/partyhandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/partyhandler.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/playerhandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/playerhandler.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/protocol.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/specialhandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/specialhandler.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/tradehandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src/net/manaserv/tradehandler.h">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
@@ -948,7 +948,7 @@
 		<Unit filename="src/textparticle.cpp" />
 		<Unit filename="src/textparticle.h" />
 		<Unit filename="src/tileset.h" />
-		<Unit filename="src/tmw.rc">
+		<Unit filename="src/mana.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="eAthena" />
 			<Option target="Manaserv" />

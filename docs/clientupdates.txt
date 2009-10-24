@@ -16,7 +16,7 @@ this functionality:
  4. Client notices he doesn't have a certain package yet or is out of date
  5. Client requests from server .torrent files (or maybe at first just URL)
     from where to get the the missing packages
- 6. Client downloads them and puts them in "data" directory (~/.tmw/data on
+ 6. Client downloads them and puts them in "data" directory (~/.mana/data on
     Linux, cause that's writable)
  7. Client loads the list of files server mentioned in PhysFS virtual
     filesystem

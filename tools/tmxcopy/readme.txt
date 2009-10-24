@@ -94,7 +94,7 @@ Blank tiles in the lower layer will be ignored (put a blank in the upper layer t
 
 The programs work so far but there are still some minor problems:
 
--Only tested for TMW-compilant maps. I don't guarantee that it works with Tiled maps that are made for other games and thus use different features.
+-Only tested for Mana-compilant maps. I don't guarantee that it works with Tiled maps that are made for other games and thus use different features.
 -Compressed maps (tmx.gz) can not be handled yet (but compressed or uncompressed layers work properly) 
 -When the target map has an object layer it is moved to the bottom of the layer list of the map (no problem for the game but inconvenient for editing). Objects on the source map are ignored. 
 -All tilesets included in the srcFile (TMXCopy) or template (TMXRandomFill and TMXCollide) will be added to the output file, even if they aren't needed for the tiles that are added.

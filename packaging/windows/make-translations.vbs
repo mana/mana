@@ -29,7 +29,7 @@ do while not stream.AtEndOfStream
                 CreateFolderIfNonexistent("..\..\translations\" + s + "\LC_MESSAGES")
                 'build the translate command
                 infile = "../../po/" + s + ".po"
-                outfile = "../../translations/" + s +"/LC_MESSAGES/tmw.mo"
+                outfile = "../../translations/" + s +"/LC_MESSAGES/mana.mo"
                 command = "msgfmt -c -o " + outfile + " " + infile
                 'execute translate command
                 errval = WshShell.run(command, 0, true)

@@ -288,7 +288,7 @@ static void setUpdatesDir()
 }
 
 /**
- * Initializes the home directory. On UNIX and FreeBSD, ~/.tmw is used. On
+ * Initializes the home directory. On UNIX and FreeBSD, ~/.mana is used. On
  * Windows and other systems we use the current working directory.
  */
 static void initHomeDir(const Options &options)
@@ -298,7 +298,7 @@ static void initHomeDir(const Options &options)
     if (homeDir.empty())
     {
 #ifdef __APPLE__
-        // Use Application Directory instead of .tmw
+        // Use Application Directory instead of .mana
         homeDir = std::string(PHYSFS_getUserDir()) +
             "/Library/Application Support/" +
             branding.getValue("appName", "Mana");

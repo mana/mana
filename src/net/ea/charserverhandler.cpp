@@ -296,7 +296,7 @@ void CharServerHandler::connect()
     outMsg.writeInt32(token.session_ID1);
     outMsg.writeInt32(token.session_ID2);
     // [Fate] The next word is unused by the old char server, so we squeeze in
-    //        tmw client version information
+    //        mana client version information
     outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
     outMsg.writeInt8((token.sex == GENDER_MALE) ? 1 : 0);
 

@@ -407,7 +407,7 @@ static bool saveScreenshot()
         filenameSuffix.str("");
         filename << PHYSFS_getUserDir();
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
-        filenameSuffix << ".tmw/";
+        filenameSuffix << ".mana/";
 #elif defined __APPLE__
         filenameSuffix << "Desktop/";
 #endif

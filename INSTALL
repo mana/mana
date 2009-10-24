@@ -55,7 +55,7 @@ you to figure this out.
 5) Run "make install" as root
 
 It should have installed Mana on your system now, and you can run it
-with "tmw". By default all files are installed to /usr/local, you can pass a
+with "mana". By default all files are installed to /usr/local, you can pass a
 different prefix to configure as usual.
 
 
