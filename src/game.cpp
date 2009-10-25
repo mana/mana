@@ -402,14 +402,16 @@ static bool saveScreenshot()
 
     do {
         screenshotCount++;
+        filenameSuffix.str("");
         filename.str("");
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
-        filename << getHomeDirectory();
+        filename << getHomeDirectory() << "/";
 #elif defined __APPLE__
         filename << PHYSFS_getUserDir();
         filename << "Desktop/";
 #endif
-        filename << "Mana_Screenshot_" << screenshotCount << ".png";
+        filenameSuffix << "Mana_Screenshot_" << screenshotCount << ".png";
+        filename << filenameSuffix.str();
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
         testExists.close();
@@ -421,7 +423,7 @@ static bool saveScreenshot()
     {
         std::stringstream chatlogentry;
         // TODO: Make it one complete gettext string below
-        chatlogentry << _("Screenshot saved to ~/") << filenameSuffix.str();
+        chatlogentry << _("Screenshot saved as ") << filenameSuffix.str();
         localChatTab->chatLog(chatlogentry.str(), BY_SERVER);
     }
     else
