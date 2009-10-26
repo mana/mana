@@ -43,15 +43,15 @@ install_manifest.txt
 *.gmo
 .dirstamp
 po/stamp-po
-src/tmw
-src/tmw-ea
+src/mana
+src/mana-ea
 
 # files created during Windows build
 .objs
 *.dll
-tmw.exe
-tmw.depend
-tmw.layout
+mana.exe
+mana.depend
+mana.layout
 
 # files copied in on Windows
 include/*
