@@ -24,6 +24,8 @@
 
 #include <vector>
 
+#include <string>
+
 /**
  * Class for performing a linear interpolation between colors.
  */
