@@ -97,11 +97,6 @@ bool Engine::changeMap(const std::string &mapPath)
     particleEngine->setMap(newMap);
     viewport->setMap(newMap);
 
-    delete mCurrentMap;
-    mCurrentMap = newMap;
-
-    Net::getGameHandler()->mapLoaded(mapPath);
-
     // Initialize map-based particle effects
     if (newMap)
         newMap->initializeParticleEffects(particleEngine);
@@ -111,6 +106,11 @@ bool Engine::changeMap(const std::string &mapPath)
     std::string newMusic = newMap ? newMap->getMusicFile() : "";
     if (newMusic != oldMusic)
         sound.playMusic(newMusic);
+
+    delete mCurrentMap;
+    mCurrentMap = newMap;
+
+    Net::getGameHandler()->mapLoaded(mapPath);
 
     return true;
 }
