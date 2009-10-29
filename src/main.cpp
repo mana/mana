@@ -1104,13 +1104,6 @@ int main(int argc, char *argv[])
                 case STATE_CONNECT_GAME:
                     logger->log("State: CONNECT GAME");
 
-                    // Allow any alpha opacity
-                    SkinLoader::instance()->setMinimumOpacity(-1.0f);
-
-                    // Fade out logon-music here too to give the desired effect
-                    // of "flowing" into the game.
-                    sound.fadeOutMusic(1000);
-
                     Net::getGameHandler()->connect();
                     currentDialog = new ConnectionDialog(STATE_SWITCH_CHARACTER);
                     break;
@@ -1121,6 +1114,13 @@ int main(int argc, char *argv[])
                     config.setValue("lastCharacter", player_node->getName());
 
                     Net::getGameHandler()->inGame();
+
+                    // Fade out logon-music here too to give the desired effect
+                    // of "flowing" into the game.
+                    sound.fadeOutMusic(1000);
+
+                    // Allow any alpha opacity
+                    SkinLoader::instance()->setMinimumOpacity(-1.0f);
 
                     delete setupButton;
                     delete desktop;
