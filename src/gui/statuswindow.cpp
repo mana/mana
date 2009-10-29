@@ -475,7 +475,7 @@ DerDisplay::DerDisplay(int id, const std::string &name):
 ChangeDisplay::ChangeDisplay(int id, const std::string &name):
         AttrDisplay(id, name), mNeeded(1)
 {
-    mPoints = new Label("1");
+    mPoints = new Label("1  ");
     mInc = new Button(_("+"), "inc", this);
 
     // Do the layout
