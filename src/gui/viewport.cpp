@@ -231,8 +231,8 @@ void Viewport::logic()
     if (!mMap || !player_node)
         return;
 
-#ifdef EATHENA_SUPPORT
     Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
+#ifdef EATHENA_SUPPORT
 
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
             mWalkTime != player_node->mWalkTime)
@@ -241,6 +241,17 @@ void Viewport::logic()
                                     mMouseY / 32 + mTileViewY);
         mWalkTime = player_node->mWalkTime;
     }
+#else // MANASERV_SUPPORT
+            Uint8 *keys = SDL_GetKeyState(NULL);
+            if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
+              !(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) &&
+                get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
+            {
+                mLocalWalkTime = tick_time;
+                player_node->setDestination(mMouseX + (int) mPixelViewX,
+                                            mMouseY + (int) mPixelViewY);
+                player_node->pathSetByMouse();
+            }
 #endif
 }
 

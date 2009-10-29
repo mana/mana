@@ -313,12 +313,18 @@ void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
     if (!being)
         return;
     int data = msg.readInt8();
-    switch (data)
+
+    // The direction for the player's character is handled on client side.
+    if (being != player_node)
     {
-       case DIRECTION_UP: being->setDirection(Being::UP); break;
-       case DIRECTION_DOWN: being->setDirection(Being::DOWN); break;
-       case DIRECTION_LEFT: being->setDirection(Being::LEFT); break;
-       case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
+        switch (data)
+        {
+          case DIRECTION_UP: being->setDirection(Being::UP); break;
+          case DIRECTION_DOWN: being->setDirection(Being::DOWN); break;
+          case DIRECTION_LEFT: being->setDirection(Being::LEFT); break;
+          case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
+          default: break;
+        }
     }
 }
 

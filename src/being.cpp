@@ -539,7 +539,6 @@ void Being::logic()
         // When we've not reached our destination, move to it.
         if (nominalLength > 1.0f && mWalkSpeed > 0.0f)
         {
-
             // The private mWalkSpeed member is the speed in tiles per second.
             // We translate it into pixels per tick,
             // because the logic is called every ticks.
@@ -583,6 +582,7 @@ void Being::logic()
                  direction |= (dir.x > 0) ? RIGHT : LEFT;
             else
                  direction |= (dir.y > 0) ? DOWN : UP;
+
             setDirection(direction);
         }
         else if (!mPath.empty())
@@ -611,11 +611,11 @@ void Being::logic()
 
     // Update sprite animations
     if (mUsedTargetCursor)
-        mUsedTargetCursor->update(tick_time * 10);
+        mUsedTargetCursor->update(tick_time * MILLISECONDS_IN_A_TICK);
 
     for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
         if (*it)
-            (*it)->update(tick_time * 10);
+            (*it)->update(tick_time * MILLISECONDS_IN_A_TICK);
 
     // Restart status/particle effects, if needed
     if (mMustResetParticles) {
@@ -636,9 +636,13 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     // TODO: Eventually, we probably should fix all sprite offsets so that
     //       these translations aren't necessary anymore. The sprites know
-    //       best where their centerpoint should be.
+    //       best where their base point should be.
     const int px = mPx + offsetX - 16;
+#ifdef MANASERV_SUPPORT
+    const int py = mPy + offsetY - 15;  // Temporary fix to the Y offset.
+#else
     const int py = mPy + offsetY - 32;
+#endif
 
     if (mUsedTargetCursor)
         mUsedTargetCursor->draw(graphics, px, py);
