@@ -257,7 +257,7 @@ void CharServerHandler::getCharacters()
     connect();
 }
 
-void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)
+void CharServerHandler::chooseCharacter(int slot, LocalPlayer *)
 {
     MessageOut outMsg(CMSG_CHAR_SELECT);
     outMsg.writeInt8(slot);
@@ -277,7 +277,7 @@ void CharServerHandler::newCharacter(const std::string &name, int slot,
     outMsg.writeInt16(hairstyle);
 }
 
-void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
+void CharServerHandler::deleteCharacter(int slot, LocalPlayer *character)
 {
     MessageOut outMsg(CMSG_CHAR_DELETE);
     outMsg.writeInt32(character->getId());

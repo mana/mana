@@ -46,13 +46,13 @@ class CharHandler
 
         virtual void getCharacters() = 0;
 
-        virtual void chooseCharacter(int slot, LocalPlayer* character) = 0;
+        virtual void chooseCharacter(int slot, LocalPlayer *character) = 0;
 
         virtual void newCharacter(const std::string &name, int slot,
                         bool gender, int hairstyle, int hairColor,
                         std::vector<int> stats) = 0;
 
-        virtual void deleteCharacter(int slot, LocalPlayer* character) = 0;
+        virtual void deleteCharacter(int slot, LocalPlayer *character) = 0;
 };
 
 } // namespace Net

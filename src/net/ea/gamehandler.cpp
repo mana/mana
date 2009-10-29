@@ -59,12 +59,11 @@ GameHandler::GameHandler()
 
 void GameHandler::handleMessage(MessageIn &msg)
 {
-    unsigned char direction;
-
     switch (msg.getId())
     {
         case SMSG_MAP_LOGIN_SUCCESS:
         {
+            unsigned char direction;
             Uint16 x, y;
             msg.readInt32();   // server tick
             msg.readCoordinates(x, y, direction);

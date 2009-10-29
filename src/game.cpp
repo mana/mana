@@ -317,50 +317,50 @@ Game::Game():
 {
     done = false;
 
-        createGuiWindows();
+    createGuiWindows();
 
-        mWindowMenu = new WindowMenu;
-        windowContainer->add(mWindowMenu);
+    mWindowMenu = new WindowMenu;
+    windowContainer->add(mWindowMenu);
 
-        initEngines();
+    initEngines();
 
-        // Initialize logic and seconds counters
-        tick_time = 0;
-        mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, NULL);
-        mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
+    // Initialize logic and seconds counters
+    tick_time = 0;
+    mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, NULL);
+    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
 
-        // This part is eAthena specific
-        // For Manaserv, the map is obtained
-        // with the GPMSG_PLAYER_MAP_CHANGE flag.
-        map_path = map_path.substr(0, map_path.rfind("."));
-        if (!map_path.empty())
-            engine->changeMap(map_path);
+    // This part is eAthena specific
+    // For Manaserv, the map is obtained
+    // with the GPMSG_PLAYER_MAP_CHANGE flag.
+    map_path = map_path.substr(0, map_path.rfind("."));
+    if (!map_path.empty())
+        engine->changeMap(map_path);
 
-        // Initialize beings
-        beingManager->setPlayer(player_node);
+    // Initialize beings
+    beingManager->setPlayer(player_node);
 
-       /*
-        * To prevent the server from sending data before the client
-        * has initialized, I've modified it to wait for a "ping"
-        * from the client to complete its initialization
-        *
-        * Note: This only affects the latest eAthena version.  This
-        * packet is handled by the older version, but its response
-        * is ignored by the client
-        */
-        Net::getGameHandler()->ping(tick_time);
+    /*
+     * To prevent the server from sending data before the client
+     * has initialized, I've modified it to wait for a "ping"
+     * from the client to complete its initialization
+     *
+     * Note: This only affects the latest eAthena version.  This
+     * packet is handled by the older version, but its response
+     * is ignored by the client
+     */
+    Net::getGameHandler()->ping(tick_time);
 
-        // Initialize frame limiting
-        config.addListener("fpslimit", this);
-        optionChanged("fpslimit");
+    // Initialize frame limiting
+    config.addListener("fpslimit", this);
+    optionChanged("fpslimit");
 
-        Joystick::init();
-        // TODO: The user should be able to choose which one to use
-        // Open the first device
-        if (Joystick::getNumberOfJoysticks() > 0)
-            joystick = new Joystick(0);
+    Joystick::init();
+    // TODO: The user should be able to choose which one to use
+    // Open the first device
+    if (Joystick::getNumberOfJoysticks() > 0)
+        joystick = new Joystick(0);
 
-        setupWindow->setInGame(true);
+    setupWindow->setInGame(true);
 }
 
 Game::~Game()

@@ -41,12 +41,6 @@
 #include "main.h"
 #include "units.h"
 
-#ifdef MANASERV_SUPPORT
-#include "net/manaserv/accountserver/account.h"
-#else
-#include "net/ea/protocol.h"
-#endif
-
 #include "net/charhandler.h"
 #include "net/logindata.h"
 #include "net/loginhandler.h"
