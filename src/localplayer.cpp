@@ -470,40 +470,51 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 #endif
 {
 #ifdef MANASERV_SUPPORT
+    // Pre-computing character's destination in tiles
+    const int tx = x / 32;
+    const int ty = y / 32;
+
     // Check the walkability of the destination
     // If the destination is a wall, don't go there!
-    if (!mMap->getWalk(x / 32, y / 32))
+    if (!mMap->getWalk(tx, ty))
         return;
+
+    // Pre-computing character's position useful variables.
+    Vector playerPosition = getPosition();
+    const int posX = (int)(playerPosition.x / 32);
+    const int posY = (int)(playerPosition.y / 32);
+    const int offsetY = (int)playerPosition.y % 32;
 
     // check if we're finding a path to the seeked destination
     // If the path is empty... and isn't on the same tile,
     // then, it's an unvalid one.
-    Vector playerPosition = getPosition();
-    if (((int)(playerPosition.x / 32) != x / 32)
-      || (((int)playerPosition.y / 32) != y / 32))
+    if (posX != tx || posY != ty)
     {
-        Path evaluatedPath = mMap->findPath(playerPosition.x / 32,
-                                        playerPosition.y / 32,
-                                        x / 32, y / 32,
-                                        getWalkMask());
+        Path evaluatedPath = mMap->findPath(posX, posY, tx, ty,
+                                            getWalkMask());
         if (evaluatedPath.empty())
             return;
     }
 
-    // Fix coordinates so that the player does not seem to dig into walls.
-    const int tx = x / 32;
-    const int ty = y / 32;
+    // Pre-computing character's destination offsets.
     int fx = x % 32;
     int fy = y % 32;
 
-    if (fx != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty, getWalkMask()))
+    // Fix coordinates so that the player does not seem to dig into walls.
+     if (fx > 16 && !mMap->getWalk(tx + 1, ty, getWalkMask()))
         fx = 16;
-    if (fy != 16 && !mMap->getWalk(tx, ty + fy / 16 * 2 - 1, getWalkMask()))
+     else if (fx < 16 && !mMap->getWalk(tx - 1, ty, getWalkMask()))
+        fx = 16;
+     else if (fy > 16 && !mMap->getWalk(tx, ty + 1, getWalkMask()))
         fy = 16;
-    if (fx != 16 && fy != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1,
-                                               ty + fy / 16 * 2 - 1,
-                                               getWalkMask()))
-        fx = 16;
+     else if (fy < 16 && !mMap->getWalk(tx, ty - 1, getWalkMask()))
+        fy = 16;
+
+     // Test also the current character's position, to avoid the corner case
+     // where a player can approach an obstacle by walking from slightly
+     // under, diagonally. First part to the walk on water bug.
+     if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
+        fy = 16;
 
     x = tx * 32 + fx;
     y = ty * 32 + fy;
@@ -637,7 +648,7 @@ void LocalPlayer::stopWalking(bool sendToServer)
 #ifdef MANASERV_SUPPORT
         mLocalWalkTime = 0;
 #endif
-        Being::setDestination(getPosition().x,getPosition().y);
+        setDestination(getPosition().x, getPosition().y);
         if (sendToServer)
              Net::getPlayerHandler()->setDestination(getPosition().x,
                                                      getPosition().y);

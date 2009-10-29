@@ -165,9 +165,6 @@ void Being::setDestination(int dstX, int dstY)
         return;
     }
 
-    // FIXME: Look into making this code neater.
-    // Interpolate the offsets.  Also convert from tile based to pixel based
-
     // Find the starting offset
     float startX = (srcX % 32);
     float startY = (srcY % 32);
