@@ -53,7 +53,6 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
         alpha = alpha * mLifetimePast / mFadeIn;
 
     gcn::Color color = *mColor;
-    color.a = (int) alpha;
 
     TextRenderer::renderText(graphics, mText,
             screenX, screenY, gcn::Graphics::CENTER,
