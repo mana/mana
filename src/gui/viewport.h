@@ -149,12 +149,17 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * Finds a path from the player to the mouse, and draws it. This is for
          * debug purposes.
          */
-        void drawDebugPath(Graphics *graphics);
+        void _drawDebugPath(Graphics *graphics);
 
         /**
          * Draws the given path.
          */
-        void drawPath(Graphics *graphics, const Path &path);
+        void _drawPath(Graphics *graphics, const Path &path);
+
+        /**
+         * Make the player go to the mouse position.
+         */
+        void _followMouse();
 
         Map *mMap;                   /**< The current map. */
 

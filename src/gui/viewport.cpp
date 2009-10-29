@@ -192,7 +192,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             mMap->drawCollision(graphics,
                                 (int) mPixelViewX,
                                 (int) mPixelViewY);
-            drawDebugPath(graphics);
+            _drawDebugPath(graphics);
         }
     }
 
@@ -228,34 +228,35 @@ void Viewport::logic()
 {
     WindowContainer::logic();
 
-    if (!mMap || !player_node)
-        return;
-
-    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
-#ifdef EATHENA_SUPPORT
-
-    if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
-            mWalkTime != player_node->mWalkTime)
-    {
-        player_node->setDestination(mMouseX / 32 + mTileViewX,
-                                    mMouseY / 32 + mTileViewY);
-        mWalkTime = player_node->mWalkTime;
-    }
-#else // MANASERV_SUPPORT
-            Uint8 *keys = SDL_GetKeyState(NULL);
-            if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
-              !(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) &&
-                get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
-            {
-                mLocalWalkTime = tick_time;
-                player_node->setDestination(mMouseX + (int) mPixelViewX,
-                                            mMouseY + (int) mPixelViewY);
-                player_node->pathSetByMouse();
-            }
-#endif
+    // Make the player follow the mouse position
+    // if the mouse is dragged elsewhere than in a window.
+    _followMouse();
 }
 
-void Viewport::drawDebugPath(Graphics *graphics)
+void Viewport::_followMouse()
+{
+    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
+    // If the left button is dragged
+    if (mPlayerFollowMouse && button & SDL_BUTTON(1))
+    {
+        // We create a mouse event and send it to mouseDragged.
+        Uint8 *keys = SDL_GetKeyState(NULL);
+        gcn::MouseEvent mouseEvent(NULL,
+                      (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]),
+                      false,
+                      false,
+                      false,
+                      gcn::MouseEvent::DRAGGED,
+                      gcn::MouseEvent::LEFT,
+                      mMouseX,
+                      mMouseY,
+                      0);
+
+        mouseDragged(mouseEvent);
+    }
+}
+
+void Viewport::_drawDebugPath(Graphics *graphics)
 {
     // Get the current mouse position
     SDL_GetMouseState(&mMouseX, &mMouseY);
@@ -269,10 +270,10 @@ void Viewport::drawDebugPath(Graphics *graphics)
             (int) (playerPos.y - 32) / 32,
             mouseTileX, mouseTileY, 0xFF);
 
-    drawPath(graphics, debugPath);
+    _drawPath(graphics, debugPath);
 }
 
-void Viewport::drawPath(Graphics *graphics, const Path &path)
+void Viewport::_drawPath(Graphics *graphics, const Path &path)
 {
     graphics->setColor(gcn::Color(255, 0, 0));
     for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
@@ -380,22 +381,11 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         // Just walk around
         else
         {
-#ifdef MANASERV_SUPPORT
-            // FIXME: REALLY UGLY!
-            Uint8 *keys = SDL_GetKeyState(NULL);
-            if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) &&
-                get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
-            {
-                mLocalWalkTime = tick_time;
-                player_node->setDestination(event.getX() + (int) mPixelViewX,
-                                            event.getY() + (int) mPixelViewY);
-                player_node->pathSetByMouse();
-            }
-#else
-            player_node->setDestination(tilex, tiley);
-#endif
             player_node->stopAttack();
             mPlayerFollowMouse = true;
+
+            // Make the player go to the mouse position
+            _followMouse();
         }
     }
     else if (event.getButton() == gcn::MouseEvent::MIDDLE)
@@ -415,22 +405,25 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
     if (!mMap || !player_node)
         return;
 
+    if (mPlayerFollowMouse && !event.isShiftPressed())
+    {
 #ifdef MANASERV_SUPPORT
-    if (mPlayerFollowMouse
-        && get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
-    {
-        mLocalWalkTime = tick_time;
-        player_node->setDestination(event.getX() + (int) mPixelViewX,
-                                    event.getY() + (int) mPixelViewY);
-    }
+          if (get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
+          {
+              mLocalWalkTime = tick_time;
+              player_node->setDestination(event.getX() + (int) mPixelViewX,
+                                          event.getY() + (int) mPixelViewY);
+              player_node->pathSetByMouse();
+          }
 #else
-    if (mPlayerFollowMouse && mWalkTime == player_node->mWalkTime)
-    {
-        int destX = event.getX() / 32 + mTileViewX;
-        int destY = event.getY() / 32 + mTileViewY;
-        player_node->setDestination(destX, destY);
-    }
+          if (mWalkTime != player_node->mWalkTime)
+          {
+              int destX = event.getX() / 32 + mTileViewX;
+              int destY = event.getY() / 32 + mTileViewY;
+              player_node->setDestination(destX, destY);
+          }
 #endif
+    }
 }
 
 void Viewport::mouseReleased(gcn::MouseEvent &event)
