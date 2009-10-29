@@ -143,9 +143,9 @@ void Net::connectToServer(const ServerInfo &server)
 #else
         new EAthena::GeneralHandler;
 #endif
-    }
 
-    getGeneralHandler()->load();
+        getGeneralHandler()->load();
+    }
 
     networkLoaded = true;
 
