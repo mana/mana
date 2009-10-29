@@ -148,6 +148,11 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     mItemIcon->addMouseListener(this);
 }
 
+ItemAmountWindow::~ItemAmountWindow()
+{
+    delete mItemPopup;
+}
+
 // Show ItemTooltip
 void ItemAmountWindow::mouseMoved(gcn::MouseEvent &event)
 {
@@ -196,7 +201,7 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "ok")
     {
         finish(mItem, amount, mUsage);
-        scheduleDelete();
+        close();
         return;
     }
     mItemAmountTextField->setValue(amount);
@@ -205,7 +210,7 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
 
 void ItemAmountWindow::close()
 {
-    delete mItemPopup;
+    keyboard.setEnabled(mEnabledKeyboard);
     scheduleDelete();
 }
 
@@ -228,10 +233,4 @@ void ItemAmountWindow::showWindow(Usage usage, Window *parent, Item *item,
     {
         new ItemAmountWindow(usage, parent, item, maxRange);
     }
-}
-
-void ItemAmountWindow::scheduleDelete()
-{
-    keyboard.setEnabled(mEnabledKeyboard);
-    Window::scheduleDelete();
 }

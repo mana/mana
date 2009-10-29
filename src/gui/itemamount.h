@@ -77,7 +77,7 @@ class ItemAmountWindow : public Window,
         static void showWindow(Usage usage, Window *parent, Item *item,
                          int maxRange = 0);
 
-        void scheduleDelete();
+        ~ItemAmountWindow();
 
     private:
         static void finish(Item *item, int amount, Usage usage);
