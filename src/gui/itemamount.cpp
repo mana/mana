@@ -33,6 +33,7 @@
 #include "gui/widgets/icon.h"
 
 #include "item.h"
+#include "keyboardconfig.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"
@@ -72,6 +73,10 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
 {
     if (!mMax)
         mMax = mItem->getQuantity();
+
+    // Save keyboard state
+    mEnabledKeyboard = keyboard.isEnabled();
+    keyboard.setEnabled(false);
 
     // Integer field
     mItemAmountTextField = new IntTextField(1);
@@ -223,4 +228,10 @@ void ItemAmountWindow::showWindow(Usage usage, Window *parent, Item *item,
     {
         new ItemAmountWindow(usage, parent, item, maxRange);
     }
+}
+
+void ItemAmountWindow::scheduleDelete()
+{
+    keyboard.setEnabled(mEnabledKeyboard);
+    Window::scheduleDelete();
 }

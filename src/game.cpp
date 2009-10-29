@@ -755,7 +755,7 @@ void Game::handleInput()
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
 
                 // Do not activate shortcuts if tradewindow is visible
-                if (!tradeWindow->isVisible())
+                if (!tradeWindow->isVisible() && !setupWindow->isVisible())
                 {
                     // Checks if any item shortcut is pressed.
                     for (int i = KeyboardConfig::KEY_SHORTCUT_1;

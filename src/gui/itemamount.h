@@ -77,6 +77,8 @@ class ItemAmountWindow : public Window,
         static void showWindow(Usage usage, Window *parent, Item *item,
                          int maxRange = 0);
 
+        void scheduleDelete();
+
     private:
         static void finish(Item *item, int amount, Usage usage);
 
@@ -95,6 +97,8 @@ class ItemAmountWindow : public Window,
          * Item Amount buttons.
          */
         gcn::Slider *mItemAmountSlide;
+
+        bool mEnabledKeyboard;
 };
 
 #endif /* ITEM_AMOUNT_WINDOW_H */
