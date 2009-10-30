@@ -55,8 +55,8 @@ DebugWindow::DebugWindow():
     {
         mFPSText = _("%d FPS (OpenGL)");
     }
-#endif
     else
+#endif
     {
         mFPSText = _("%d FPS");
     }
