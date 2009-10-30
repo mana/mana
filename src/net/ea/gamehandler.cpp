@@ -35,6 +35,8 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "gui/okdialog.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -51,6 +53,8 @@ GameHandler::GameHandler()
         SMSG_MAP_LOGIN_SUCCESS,
         SMSG_SERVER_PING,
         SMSG_WHO_ANSWER,
+        SMSG_CHAR_SWITCH_RESPONSE,
+        SMSG_MAP_QUIT_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -83,6 +87,20 @@ void GameHandler::handleMessage(MessageIn &msg)
         case SMSG_WHO_ANSWER:
             localChatTab->chatLog(strprintf(_("Online users: %d"),
                                             msg.readInt32()), BY_SERVER);
+            break;
+
+        case SMSG_CHAR_SWITCH_RESPONSE:
+            if (msg.readInt8())
+            {
+                state = STATE_SWITCH_CHARACTER;
+            }
+            break;
+
+        case SMSG_MAP_QUIT_RESPONSE:
+            if (msg.readInt8())
+            {
+                new OkDialog(_("Game"), _("Request to quit denied!"), NULL);
+            }
             break;
     }
 }

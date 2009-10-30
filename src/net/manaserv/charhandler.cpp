@@ -382,4 +382,9 @@ void CharHandler::deleteCharacter(int slot, LocalPlayer* character)
     Net::AccountServer::Account::deleteCharacter(slot);
 }
 
+void CharHandler::switchCharacter()
+{
+    // TODO
+}
+
 } // namespace ManaServ

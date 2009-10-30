@@ -239,6 +239,7 @@ void GeneralHandler::guiWindowsLoaded()
 void GeneralHandler::guiWindowsUnloaded()
 {
     delete partyTab;
+    partyTab = 0;
 }
 
 void GeneralHandler::clearHandlers()

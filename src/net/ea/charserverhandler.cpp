@@ -284,6 +284,13 @@ void CharServerHandler::deleteCharacter(int slot, LocalPlayer *character)
     outMsg.writeString("a@a.com", 40);
 }
 
+void CharServerHandler::switchCharacter()
+{
+    // This is really a map-server packet
+    MessageOut outMsg(CMSG_PLAYER_RESTART);
+    outMsg.writeInt8(1);
+}
+
 void CharServerHandler::connect()
 {
     const Token &token =

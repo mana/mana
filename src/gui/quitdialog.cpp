@@ -26,10 +26,15 @@
 #include "gui/widgets/button.h"
 #include "gui/widgets/radiobutton.h"
 
+#include "net/charhandler.h"
+#include "net/net.h"
+
 #include "utils/gettext.h"
 
-QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
-    Window(_("Quit"), true, NULL), mQuitGame(quitGame), mMyPointer(pointerToMe)
+#include <assert.h>
+
+QuitDialog::QuitDialog(QuitDialog** pointerToMe):
+    Window(_("Quit"), true, NULL), mMyPointer(pointerToMe)
 {
 
     mLogoutQuit = new RadioButton(_("Quit"), "quitdialog");
@@ -104,27 +109,17 @@ void QuitDialog::action(const gcn::ActionEvent &event)
         }
         else if (mLogoutQuit->isSelected())
         {
-            if ((state == STATE_GAME) && (mQuitGame))
-            {
-                *mQuitGame = true;
-            }
-
             state = STATE_EXIT;
         }
         else if (mSwitchAccountServer->isSelected())
         {
-            if ((state == STATE_GAME) && (mQuitGame))
-            {
-                *mQuitGame = true;
-            }
-
             state = STATE_SWITCH_SERVER;
         }
         else if (mSwitchCharacter->isSelected())
         {
-            if (mQuitGame) *mQuitGame = true;
+            assert(state == STATE_GAME);
 
-            state = STATE_SWITCH_CHARACTER;
+            Net::getCharHandler()->switchCharacter();
         }
     }
     scheduleDelete();

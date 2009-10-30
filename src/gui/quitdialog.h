@@ -43,7 +43,7 @@ class QuitDialog : public Window, public gcn::ActionListener
          * @quitGame;    to be used for getting out of the while loop in Game
          * @pointerToMe  will be set to NULL when the QuitDialog is destroyed
          */
-        QuitDialog(bool *quitGame, QuitDialog **pointerToMe);
+        QuitDialog(QuitDialog **pointerToMe);
 
         /**
          * Destructor
@@ -63,7 +63,6 @@ class QuitDialog : public Window, public gcn::ActionListener
         gcn::Button *mOkButton;
         gcn::Button *mCancelButton;
 
-        bool *mQuitGame;
         QuitDialog **mMyPointer;
 };
 

@@ -66,6 +66,8 @@ class CharHandler : public MessageHandler, public Net::CharHandler
 
         void deleteCharacter(int slot, LocalPlayer* character);
 
+        void switchCharacter();
+
     protected:
         void handleCharCreateResponse(MessageIn &msg);
 

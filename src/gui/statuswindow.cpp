@@ -183,6 +183,10 @@ StatusWindow::StatusWindow():
 
 std::string StatusWindow::update(int id)
 {
+     /*/ TODO get rid of this
+    if (!player_node)
+        return "";*/
+
     if (miniStatusWindow)
         miniStatusWindow->update(id);
 

@@ -808,19 +808,9 @@ int main(int argc, char *argv[])
     setupWindow = new Setup;
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
-    Desktop *desktop = new Desktop;
-    top->add(desktop);
-    ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20,
-                                               gcn::Color(168, 116, 31));
-    progressBar->setSmoothProgress(false);
-    gcn::Label *progressLabel = new Label;
-    top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
-    top->add(progressLabel, 15 + progressBar->getWidth(),
-                            progressBar->getY() + 4);
-    progressBar->setVisible(false);
-    gcn::Button *setupButton = new Button(_("Setup"), "Setup", &listener);
-    setupButton->setPosition(top->getWidth() - setupButton->getWidth() - 3, 3);
-    top->add(setupButton);
+    Desktop *desktop;
+    ProgressBar *progressBar;
+    Button *setupButton;
 
     sound.playMusic(branding.getValue("loginMusic", "Magick - Real.ogg"));
 
@@ -844,12 +834,6 @@ int main(int argc, char *argv[])
     if (loginData.username.empty() && loginData.remember) {
         loginData.username = config.getValue("username", "");
     }
-
-    int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);
-    int screenHeight = static_cast<int>(config.getValue("screenheight",
-                                                        defaultScreenHeight));
-
-    desktop->setSize(screenWidth, screenHeight);
 
     if (state != STATE_ERROR)
         state = STATE_CHOOSE_SERVER;
@@ -876,7 +860,7 @@ int main(int argc, char *argv[])
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
                         if (!quitDialog)
-                            quitDialog = new QuitDialog(NULL, &quitDialog);
+                            quitDialog = new QuitDialog(&quitDialog);
                         else
                             quitDialog->requestMoveToTop();
                     }
@@ -921,6 +905,36 @@ int main(int argc, char *argv[])
         {
             Net::getCharHandler()->setCharInfo(&charInfo);
             state = STATE_LOGIN;
+        }
+        else if (oldstate == STATE_START || oldstate == STATE_GAME)
+        {
+            desktop = new Desktop;
+            top->add(desktop);
+            progressBar = new ProgressBar(0.0f, 100, 20,
+                                          gcn::Color(168, 116, 31));
+            progressBar->setSmoothProgress(false);
+            Label *progressLabel = new Label;
+            top->add(progressBar, 5, top->getHeight() - 5 -
+                     progressBar->getHeight());
+            top->add(progressLabel, 15 + progressBar->getWidth(),
+                     progressBar->getY() + 4);
+            progressBar->setVisible(false);
+            setupButton = new Button(_("Setup"), "Setup", &listener);
+            setupButton->setPosition(top->getWidth() - setupButton->getWidth()
+                                     - 3, 3);
+            top->add(setupButton);
+
+            int screenWidth = (int) config.getValue("screenwidth",
+                                                    defaultScreenWidth);
+            int screenHeight = (int) config.getValue("screenheight",
+                                                     defaultScreenHeight);
+
+            desktop->setSize(screenWidth, screenHeight);
+        }
+
+        if (state == STATE_SWITCH_LOGIN && oldstate == STATE_GAME)
+        {
+            Net::getGameHandler()->clear();
         }
 
         if (state != oldstate)
@@ -1135,9 +1149,8 @@ int main(int argc, char *argv[])
                     delete game;
                     game = 0;
 
-                    state = STATE_EXIT;
-
-                    Net::getGeneralHandler()->unload();
+                    if (state == STATE_GAME)
+                        state = STATE_EXIT;
 
                     break;
 
@@ -1271,6 +1284,7 @@ int main(int argc, char *argv[])
 
                 case STATE_EXIT:
                     logger->log("State: EXIT");
+                    Net::getGeneralHandler()->unload();
                     break;
 
                 case STATE_FORCE_QUIT:

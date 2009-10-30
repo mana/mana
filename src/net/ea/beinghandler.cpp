@@ -118,6 +118,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
     {
         case SMSG_BEING_VISIBLE:
         case SMSG_BEING_MOVE:
+            if (!beingManager)
+                return;
+
             // Information about a being in range
             id = msg.readInt32();
             speed = msg.readInt16();

@@ -52,7 +52,9 @@ class CharHandler
                         bool gender, int hairstyle, int hairColor,
                         std::vector<int> stats) = 0;
 
-        virtual void deleteCharacter(int slot, LocalPlayer *character) = 0;
+        virtual void deleteCharacter(int slot, LocalPlayer* character) = 0;
+
+        virtual void switchCharacter() = 0;
 };
 
 } // namespace Net

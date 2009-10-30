@@ -65,7 +65,10 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_CHAR_MAP_INFO           0x0071
 #define SMSG_CHAR_PASSWORD_RESPONSE  0x0062 /**< Custom packet reply to password change request */
 
+#define SMSG_CHAR_SWITCH_RESPONSE    0x00b3
+
 #define SMSG_MAP_LOGIN_SUCCESS       0x0073 /**< Contains starting location */
+#define SMSG_MAP_QUIT_RESPONSE       0x018b
 #define SMSG_PLAYER_UPDATE_1         0x01d8
 #define SMSG_PLAYER_UPDATE_2         0x01d9
 #define SMSG_PLAYER_MOVE             0x01da /**< A nearby player moves */

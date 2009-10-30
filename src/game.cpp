@@ -97,7 +97,6 @@
 
 std::string map_path;
 
-bool done = false;
 volatile int tick_time;
 volatile int fps = 0, frame = 0;
 
@@ -166,7 +165,7 @@ namespace {
         void action(const gcn::ActionEvent &event)
         {
             if (event.getId() == "yes" || event.getId() == "ok")
-                done = true;
+                state = STATE_EXIT;
 
             disconnectedDialog = NULL;
         }
@@ -274,6 +273,8 @@ static void createGuiWindows()
     Net::getGeneralHandler()->guiWindowsLoaded();
 }
 
+#define del_0(X) { delete X; X = 0; }
+
 /**
  * Destroy all the globally accessible gui windows
  */
@@ -281,42 +282,40 @@ static void destroyGuiWindows()
 {
     Net::getGeneralHandler()->guiWindowsUnloaded();
     logger->setChatWindow(NULL);
-    delete localChatTab; // Need to do this first, so it can remove itself
-    delete chatWindow;
-    delete statusWindow;
-    delete miniStatusWindow;
-    delete buyDialog;
-    delete sellDialog;
+    del_0(localChatTab); // Need to do this first, so it can remove itself
+    del_0(chatWindow);
+    del_0(statusWindow);
+    del_0(miniStatusWindow);
+    del_0(buyDialog);
+    del_0(sellDialog);
 #ifdef EATHENA_SUPPORT
-    delete buySellDialog;
+    del_0(buySellDialog);
 #endif
-    delete inventoryWindow;
-    delete partyWindow;
-    delete npcDialog;
-    delete npcPostDialog;
+    del_0(inventoryWindow);
+    del_0(partyWindow);
+    del_0(npcDialog);
+    del_0(npcPostDialog);
 #ifdef MANASERV_SUPPORT
-    delete buddyWindow;
-    delete guildWindow;
+    del_0(buddyWindow);
+    del_0(guildWindow);
 #endif
-    delete skillDialog;
-    delete minimap;
-    delete equipmentWindow;
-    delete tradeWindow;
-    delete helpWindow;
-    delete debugWindow;
-    delete itemShortcutWindow;
-    delete emoteShortcutWindow;
-    delete storageWindow;
-    delete outfitWindow;
-    delete specialsWindow;
+    del_0(skillDialog);
+    del_0(minimap);
+    del_0(equipmentWindow);
+    del_0(tradeWindow);
+    del_0(helpWindow);
+    del_0(debugWindow);
+    del_0(itemShortcutWindow);
+    del_0(emoteShortcutWindow);
+    del_0(storageWindow);
+    del_0(outfitWindow);
+    del_0(specialsWindow);
 }
 
 Game::Game():
     mLastTarget(Being::UNKNOWN),
     mLogicCounterId(0), mSecondsCounterId(0)
 {
-    done = false;
-
     createGuiWindows();
 
     mWindowMenu = new WindowMenu;
@@ -454,7 +453,7 @@ void Game::logic()
     int gameTime = tick_time;
     mDrawTime = tick_time * MILLISECONDS_IN_A_TICK;
 
-    while (!done)
+    while (state == STATE_GAME)
     {
         if (Map *map = engine->getCurrentMap())
             map->update(get_elapsed_time(gameTime));
@@ -738,7 +737,7 @@ void Game::handleInput()
                case KeyboardConfig::KEY_QUIT:
                     if (!quitDialog)
                     {
-                        quitDialog = new QuitDialog(&done, &quitDialog);
+                        quitDialog = new QuitDialog(&quitDialog);
                         quitDialog->requestMoveToTop();
                     }
                     else
@@ -915,7 +914,7 @@ void Game::handleInput()
         // Quit event
         else if (event.type == SDL_QUIT)
         {
-            done = true;
+            state = STATE_EXIT;
         }
 
         // Push input to GUI when not used
