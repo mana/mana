@@ -113,3 +113,8 @@ bool WhisperTab::handleCommand(const std::string &type,
 
     return true;
 }
+
+int WhisperTab::getType() const
+{
+    return ChatTab::WHISPER;
+}

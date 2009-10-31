@@ -119,4 +119,8 @@ std::string removeColors(std::string msg);
  */
 int compareStrI(const std::string &a, const std::string &b);
 
+bool isWordSeparator(char chr);
+
+const std::string findSameSubstring(std::string &str1, std::string &str2);
+
 #endif // UTILS_STRINGUTILS_H

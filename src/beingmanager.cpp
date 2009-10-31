@@ -26,6 +26,7 @@
 #include "npc.h"
 #include "player.h"
 
+#include "utils/stringutils.h"
 #include "utils/dtor.h"
 
 #include <cassert>
@@ -297,4 +298,38 @@ bool BeingManager::hasBeing(Being *being) const
     }
 
     return false;
+}
+
+std::string BeingManager::getAutoCompletePlayerName(std::string partName)
+{
+    Beings::iterator i = mBeings.begin();
+    std::transform(partName.begin(), partName.end(), partName.begin(), tolower);
+    std::string newName("");
+
+    while (i != mBeings.end())
+    {
+        Being *being = (*i);
+        if (being->getType() != Being::MONSTER && being->getName() != "")
+        {
+            std::string name = being->getName();
+            std::transform(name.begin(), name.end(), name.begin(), tolower);
+
+            std::string::size_type pos = name.find(partName, 0);
+            if (pos == 0)
+            {
+                if (newName != "")
+                {
+                    std::transform(newName.begin(), newName.end(), newName.begin(), tolower);
+                    newName = findSameSubstring(name, newName);
+                }
+                else
+                {
+                    newName = being->getName();
+                }
+            }
+        }
+        ++i;
+    }
+
+    return newName;
 }

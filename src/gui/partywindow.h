@@ -127,6 +127,8 @@ class PartyWindow : public Window, gcn::ActionListener
 
         void clearMembers();
 
+        std::string getAutoCompleteName(std::string partName);
+
     private:
         /**
          * Find a party member based on ID. Creates if not found.

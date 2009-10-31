@@ -47,6 +47,14 @@ enum
 class ChatTab : public Tab
 {
     public:
+        enum Type
+        {
+            UNKNOWN,
+            INPUT,
+            WHISPER,
+            PARTY
+        };
+
         /**
          * Constructor.
          */
@@ -109,6 +117,11 @@ class ChatTab : public Tab
         virtual bool handleCommand(const std::string &type,
                                    const std::string &args)
         { return false; }
+
+        /**
+         * Returns type of the being.
+         */
+        virtual int getType() const;
 
     protected:
         friend class ChatWindow;

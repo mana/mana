@@ -118,6 +118,8 @@ class BeingManager
          */
         void clear();
 
+        std::string getAutoCompletePlayerName(std::string partName);
+
     protected:
         Beings mBeings;
         Map *mMap;

@@ -253,3 +253,37 @@ void PartyWindow::buildLayout()
         lastPos += member->mAvatar->getHeight() + 2;
     }
 }
+
+std::string PartyWindow::getAutoCompleteName(std::string partName)
+{
+    PartyList::iterator i = mMembers.begin();
+    std::transform(partName.begin(), partName.end(), partName.begin(), tolower);
+    std::string newName("");
+
+    while (i != mMembers.end())
+    {
+        PartyMember *member = (*i).second;
+        if (member->getAvatar() && member->getAvatar()->getName() != "")
+        {
+            std::string name = member->getAvatar()->getName();
+            std::transform(name.begin(), name.end(), name.begin(), tolower);
+
+            std::string::size_type pos = name.find(partName, 0);
+            if (pos == 0)
+            {
+                if (newName != "")
+                {
+                    std::transform(newName.begin(), newName.end(), newName.begin(), tolower);
+                    newName = findSameSubstring(name, newName);
+                }
+                else
+                {
+                    newName = member->getAvatar()->getName();
+                }
+            }
+        }
+        ++i;
+    }
+
+    return newName;
+}

@@ -140,3 +140,21 @@ int compareStrI(const std::string &a, const std::string &b)
 
     return 0;
 }
+
+bool isWordSeparator(char chr)
+{
+    return (chr == ' ' || chr == ',' || chr == '.');
+}
+
+const std::string findSameSubstring(std::string &str1, std::string &str2)
+{
+    int minLength = str1.length() > str2.length() ? str2.length() : str1.length();
+    for (int f = 0; f < minLength; f ++)
+    {
+        if (str1.at(f) != str2.at(f))
+        {
+            return str1.substr(0, f);
+        }
+    }
+    return str1.substr(0, minLength);
+}

@@ -37,6 +37,8 @@ class PartyTab : public ChatTab
 
         bool handleCommand(const std::string &type, const std::string &args);
 
+        int getType() const;
+
     protected:
         void handleInput(const std::string &msg);
 };

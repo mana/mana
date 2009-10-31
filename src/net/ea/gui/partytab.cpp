@@ -201,3 +201,8 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
 
     return true;
 }
+
+int PartyTab::getType() const
+{
+    return ChatTab::PARTY;
+}

@@ -41,11 +41,13 @@ int TextField::instances = 0;
 float TextField::mAlpha = 1.0;
 ImageRect TextField::skin;
 
-TextField::TextField(const std::string &text):
+TextField::TextField(const std::string &text, bool loseFocusOnTab):
     gcn::TextField(text),
     mNumeric(false)
 {
     setFrameSize(2);
+
+    mLoseFocusOnTab = loseFocusOnTab;
 
     if (instances == 0)
     {
@@ -245,7 +247,9 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             break;
 
         case Key::TAB:
-            return;
+            if (mLoseFocusOnTab)
+                return;
+            break;
     }
 
     keyEvent.consume();

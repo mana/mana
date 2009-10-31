@@ -38,8 +38,7 @@ class TextField : public gcn::TextField
         /**
          * Constructor, initializes the text field with the given string.
          */
-        TextField(const std::string &text = "");
-
+        TextField(const std::string &text = "", bool loseFocusOnTab = true);
         ~TextField();
 
         /**
@@ -98,6 +97,7 @@ class TextField : public gcn::TextField
         bool mNumeric;
         int mMinimum;
         int mMaximum;
+        bool mLoseFocusOnTab;
 };
 
 #endif

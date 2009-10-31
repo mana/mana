@@ -25,6 +25,7 @@
 #include "gui/recorder.h"
 #include "gui/setup.h"
 #include "gui/sdlinput.h"
+#include "gui/partywindow.h"
 
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/scrollarea.h"
@@ -54,7 +55,8 @@
 class ChatInput : public TextField, public gcn::FocusListener
 {
     public:
-        ChatInput()
+        ChatInput():
+            TextField("", false)
         {
             setVisible(false);
             addFocusListener(this);
@@ -394,6 +396,12 @@ void ChatWindow::keyPressed(gcn::KeyEvent &event)
         mChatInput->setText(*mCurHist);
         mChatInput->setCaretPosition(mChatInput->getText().length());
     }
+    else if (event.getKey().getValue() == Key::TAB &&
+             mChatInput->getText() != "")
+    {
+        autoComplete();
+        return;
+    }
 }
 
 void ChatWindow::addInputText(const std::string &text)
@@ -498,4 +506,86 @@ ChatTab *ChatWindow::addWhisperTab(const std::string &nick, bool switchTo)
         mChatTabs->setSelectedTab(ret);
 
     return ret;
+}
+
+void ChatWindow::autoComplete()
+{
+    int caretPos = mChatInput->getCaretPosition();
+    int startName = 0;
+    const std::string inputText = mChatInput->getText();
+    std::string name = inputText.substr(0, caretPos);
+    std::string newName("");
+
+    for (int f = caretPos - 1; f > -1; f --)
+    {
+        if (isWordSeparator(inputText[f]))
+        {
+            startName = f + 1;
+            name = inputText.substr(f + 1, caretPos - f);
+            break;
+        }
+    }
+
+    if (caretPos - 1 + 1 == startName)
+        return;
+
+
+    ChatTab *cTab = static_cast<ChatTab*>(mChatTabs->getSelectedTab());
+    if (cTab && cTab->getType() == ChatTab::PARTY)
+    {
+        newName = partyWindow->getAutoCompleteName(name);
+    }
+    if (newName == "")
+    {
+        newName = beingManager->getAutoCompletePlayerName(name);
+    }
+    if (newName == "")
+    {
+        newName = autoCompleteHistory(name);
+    }
+
+    if (newName != "")
+    {
+        mChatInput->setText(inputText.substr(0, startName) + newName
+                            + inputText.substr(caretPos, inputText.length() - caretPos));
+
+        if (startName > 0)
+            mChatInput->setCaretPosition(caretPos - name.length() + newName.length() + 1);
+        else
+            mChatInput->setCaretPosition(caretPos - name.length() + newName.length());
+    }
+}
+
+std::string ChatWindow::autoCompleteHistory(std::string partName)
+{
+    History::iterator i = mHistory.begin();
+    std::string newName = "";
+
+    while (i != mHistory.end())
+    {
+        std::string line = *i;
+        int f = 0;
+        while (f < line.length() && !isWordSeparator(line.at(f)))
+        {
+            f++;
+        }
+        line = line.substr(0, f);
+        if (line != "")
+        {
+            std::string::size_type pos = line.find(partName, 0);
+            if (pos == 0)
+            {
+                if (newName != "")
+                {
+                    newName = findSameSubstring(line, newName);
+                }
+                else
+                {
+                    newName = line;
+                }
+            }
+        }
+        ++i;
+    }
+    return newName;
 }

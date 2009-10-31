@@ -187,6 +187,10 @@ class ChatWindow : public Window,
 
         void removeWhisper(const std::string &nick);
 
+        void autoComplete();
+
+        std::string autoCompleteHistory(std::string partName);
+
         /** Used for showing item popup on clicking links **/
         ItemLinkHandler *mItemLinkHandler;
         Recorder *mRecorder;

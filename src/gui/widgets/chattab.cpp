@@ -270,3 +270,8 @@ void ChatTab::handleCommand(const std::string &msg)
 {
     commandHandler->handleCommand(msg, this);
 }
+
+int ChatTab::getType() const
+{
+    return INPUT;
+}
