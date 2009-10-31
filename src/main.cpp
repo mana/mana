@@ -808,9 +808,9 @@ int main(int argc, char *argv[])
     setupWindow = new Setup;
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
-    Desktop *desktop;
-    ProgressBar *progressBar;
-    Button *setupButton;
+    Desktop *desktop = 0;
+    ProgressBar *progressBar = 0;
+    Button *setupButton = 0;
 
     sound.playMusic(branding.getValue("loginMusic", "Magick - Real.ogg"));
 
