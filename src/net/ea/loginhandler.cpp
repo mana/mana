@@ -155,7 +155,6 @@ void LoginHandler::handleMessage(MessageIn &msg)
                     errorMessage = _("Rejected from server.");
                     break;
                 case 4:
-
                     errorMessage = _("You have been permanently banned from "
                                      "the game. Please contact the GM team.");
                     break;

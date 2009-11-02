@@ -1300,7 +1300,6 @@ int main(int argc, char *argv[])
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     Net::getGameHandler()->clear();
-                    Net::getGeneralHandler()->clearHandlers();
                     break;
 
                 default:
