@@ -68,22 +68,6 @@
 #include "net/loginhandler.h"
 #include "net/net.h"
 #include "net/worldinfo.h"
-#ifdef MANASERV_SUPPORT
-#include "net/manaserv/charhandler.h"
-#include "net/manaserv/connection.h"
-#include "net/manaserv/generalhandler.h"
-#include "net/manaserv/loginhandler.h"
-#include "net/manaserv/network.h"
-#endif
-
-#ifdef MANASERV_SUPPORT
-#include "net/manaserv/accountserver/accountserver.h"
-#include "net/manaserv/accountserver/account.h"
-
-#include "net/manaserv/chatserver/chatserver.h"
-
-#include "net/manaserv/gameserver/gameserver.h"
-#endif
 
 #include "resources/colordb.h"
 #include "resources/emotedb.h"
@@ -139,11 +123,11 @@ namespace
 static const int defaultSfxVolume = 100;
 static const int defaultMusicVolume = 60;
 
-#ifdef MANASERV_SUPPORT
+/*#ifdef MANASERV_SUPPORT
 extern Net::Connection *gameServerConnection;
 extern Net::Connection *chatServerConnection;
 extern Net::Connection *accountServerConnection;
-#endif
+#endif*/
 
 Graphics *graphics;
 Game *game = 0;
@@ -1235,9 +1219,8 @@ int main(int argc, char *argv[])
 
                 case STATE_UNREGISTER_SUCCESS:
                     logger->log("State: UNREGISTER SUCCESS");
-#ifdef MANASERV_SUPPORT
-                    accountServerConnection->disconnect();
-#endif
+                    Net::getLoginHandler()->disconnect();
+
                     currentDialog = new OkDialog(_("Unregister Successful"),
                             _("Farewell, come back any time..."));
                     loginData.clear();
@@ -1249,11 +1232,8 @@ int main(int argc, char *argv[])
                 case STATE_SWITCH_SERVER:
                     logger->log("State: SWITCH SERVER");
 
-#ifdef MANASERV_SUPPORT
-                    gameServerConnection->disconnect();
-                    chatServerConnection->disconnect();
-                    accountServerConnection->disconnect();
-#endif
+                    Net::getLoginHandler()->disconnect();
+                    Net::getGameHandler()->disconnect();
 
                     state = STATE_CHOOSE_SERVER;
                     break;
