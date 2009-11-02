@@ -75,7 +75,7 @@ void GameHandler::handleMessage(MessageIn &msg)
             logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
                     x, y, direction);
             // Switch now or we'll have problems
-            // state = STATE_GAME;
+            state = STATE_GAME;
             player_node->setTileCoords(x, y);
          }  break;
 
