@@ -92,6 +92,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mLastTarget(-1),
     mCharacterPoints(0),
     mCorrectionPoints(0),
+    mSpecialRechargeUpdateNeeded(0),
     mLevel(1),
     mExp(0), mExpNeeded(0),
     mMp(0), mMaxMp(0),
