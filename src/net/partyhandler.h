@@ -27,6 +27,7 @@
 class Player;
 
 enum PartyShare {
+    PARTY_SHARE_UNKNOWN = -1,
     PARTY_SHARE_NO,
     PARTY_SHARE,
     PARTY_SHARE_NOT_POSSIBLE = 2

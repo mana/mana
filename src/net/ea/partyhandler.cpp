@@ -42,7 +42,8 @@ Net::PartyHandler *partyHandler = 0;
 
 namespace EAthena {
 
-PartyHandler::PartyHandler()
+PartyHandler::PartyHandler():
+        mShareExp(PARTY_SHARE_UNKNOWN), mShareItems(PARTY_SHARE_UNKNOWN)
 {
     static const Uint16 _messages[] = {
         SMSG_PARTY_CREATE,
@@ -171,7 +172,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     case PARTY_SHARE_NO:
                         if (mShareExp == PARTY_SHARE_NO)
                             break;
-                        mShareExp =PARTY_SHARE_NO;
+                        mShareExp = PARTY_SHARE_NO;
                         partyTab->chatLog(_("Experience sharing disabled."), BY_SERVER);
                         break;
                     case PARTY_SHARE_NOT_POSSIBLE:
