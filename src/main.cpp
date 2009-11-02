@@ -893,7 +893,9 @@ int main(int argc, char *argv[])
         {
             Net::getLoginHandler()->disconnect();
 
-            //state = STATE_GAME;
+#ifdef MANASERV_SUPPORT
+            state = STATE_GAME;
+#endif
         }
         else if (state == STATE_CONNECT_SERVER && oldstate == STATE_CHOOSE_SERVER)
         {
