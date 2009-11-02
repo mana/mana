@@ -934,7 +934,7 @@ int main(int argc, char *argv[])
 
         if (state == STATE_SWITCH_LOGIN && oldstate == STATE_GAME)
         {
-            Net::getGameHandler()->clear();
+            Net::getGameHandler()->disconnect();
         }
 
         if (state != oldstate)
@@ -1268,7 +1268,7 @@ int main(int argc, char *argv[])
                     logger->log("State: SWITCH CHARACTER");
 
                     // Done with game
-                    Net::getGameHandler()->clear();
+                    Net::getGameHandler()->disconnect();
 
                     Net::getCharHandler()->getCharacters();
                     break;
@@ -1299,7 +1299,7 @@ int main(int argc, char *argv[])
                     currentDialog = new OkDialog(_("Error"), errorMessage);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
-                    Net::getGameHandler()->clear();
+                    Net::getGameHandler()->disconnect();
                     break;
 
                 default:

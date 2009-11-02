@@ -124,9 +124,4 @@ void GameHandler::ping(int tick)
     // TODO
 }
 
-void GameHandler::clear()
-{
-    disconnect();
-}
-
 } // namespace ManaServ

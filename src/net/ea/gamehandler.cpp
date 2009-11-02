@@ -162,9 +162,4 @@ void GameHandler::ping(int tick)
     msg.writeInt32(tick);
 }
 
-void GameHandler::clear()
-{
-    disconnect();
-}
-
 } // namespace EAthena

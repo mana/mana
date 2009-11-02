@@ -46,8 +46,6 @@ class GameHandler
         virtual void quit() = 0;
 
         virtual void ping(int tick) = 0;
-
-        virtual void clear() = 0;
 };
 
 } // namespace Net
