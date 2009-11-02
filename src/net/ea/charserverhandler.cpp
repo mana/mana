@@ -169,6 +169,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                 mCharInfo->next();
             } while (mCharInfo->getPos());
 
+            sleep(3);
             mCharInfo->select(slot);
             mNetwork->disconnect();
             state = STATE_CONNECT_GAME;
