@@ -141,6 +141,9 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
                 case PARTY_SHARE_NOT_POSSIBLE:
                     chatLog(_("Item sharing not possible."), BY_SERVER);
                     return true;
+                case PARTY_SHARE_UNKNOWN:
+                    chatLog(_("Item sharing unknown."), BY_SERVER);
+                    return true;
             }
         }
 
@@ -172,6 +175,9 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
                     return true;
                 case PARTY_SHARE_NOT_POSSIBLE:
                     chatLog(_("Experience sharing not possible."), BY_SERVER);
+                    return true;
+                case PARTY_SHARE_UNKNOWN:
+                    chatLog(_("Experience sharing unknown."), BY_SERVER);
                     return true;
             }
         }
