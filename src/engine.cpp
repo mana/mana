@@ -54,6 +54,7 @@ Engine::Engine():
 Engine::~Engine()
 {
     delete mCurrentMap;
+    map_path = "";
 }
 
 void Engine::changeMap(const std::string &mapPath)

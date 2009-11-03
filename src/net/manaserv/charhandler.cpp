@@ -22,6 +22,7 @@
 #include "net/manaserv/charhandler.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/gamehandler.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
@@ -58,6 +59,8 @@ struct CharInfo {
 
 typedef std::vector<CharInfo> CharInfos;
 CharInfos chars;
+
+extern ManaServ::GameHandler *gameHandler;
 
 namespace ManaServ {
 
@@ -394,7 +397,7 @@ void CharHandler::deleteCharacter(int slot, LocalPlayer* character)
 
 void CharHandler::switchCharacter()
 {
-    // TODO
+    gameHandler->quit(true);
 }
 
 } // namespace ManaServ

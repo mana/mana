@@ -382,7 +382,7 @@ Worlds LoginHandler::getWorlds() const
     return Worlds();
 }
 
-void reconnect()
+void LoginHandler::reconnect()
 {
     MessageOut msg(PAMSG_RECONNECT);
     msg.writeString(netToken, 32);

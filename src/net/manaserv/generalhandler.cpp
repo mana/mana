@@ -57,6 +57,8 @@
 
 Net::GeneralHandler *generalHandler  = NULL;
 
+extern ManaServ::LoginHandler *loginHandler;
+
 namespace ManaServ {
 
 Connection *accountServerConnection = 0;
@@ -146,6 +148,13 @@ void GeneralHandler::unload()
 void GeneralHandler::flushNetwork()
 {
     flush();
+
+    if (state == STATE_SWITCH_CHARACTER &&
+        Net::getLoginHandler()->isConnected())
+    {
+        loginHandler->reconnect();
+        state = STATE_GET_CHARACTERS;
+    }
 }
 
 bool GeneralHandler::isNetworkConnected()

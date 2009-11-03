@@ -58,7 +58,16 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             // Successful logout
             if (errMsg == ERRMSG_OK)
             {
-                // TODO: Handle logout
+                netToken = msg.readString(32);
+\
+                if (!netToken.empty())
+                {
+                    state = STATE_SWITCH_CHARACTER;
+                }
+                else
+                {
+                    // TODO: Handle logout
+                }
             }
             // Logout failed
             else
@@ -115,11 +124,11 @@ void GameHandler::who()
     // TODO
 }
 
-void GameHandler::quit()
+void GameHandler::quit(bool reconnectAccount)
 {
-    //MessageOut msg(PGMSG_DISCONNECT);
-    //msg.writeInt8((unsigned char) reconnectAccount);
-    //gameServerConnection->send(msg);
+    MessageOut msg(PGMSG_DISCONNECT);
+    msg.writeInt8((unsigned char) reconnectAccount);
+    gameServerConnection->send(msg);
 }
 
 void GameHandler::ping(int tick)
