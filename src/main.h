@@ -61,14 +61,16 @@
 #define PACKAGE_VERSION "0.0.29.1"
 #endif
 
-#ifdef PACKAGE_VERSION
 #ifdef MANASERV_SUPPORT
-#define FULL_VERSION "v" PACKAGE_VERSION " (manaserv)"
+#define SERVER_BUILD "manaserv"
 #else
-#define FULL_VERSION "v" PACKAGE_VERSION " (eAthena)"
+#define SERVER_BUILD "eAthena"
 #endif
+
+#ifdef PACKAGE_VERSION
+#define FULL_VERSION "v" PACKAGE_VERSION " (" SERVER_BUILD ")"
 #else
-#define FULL_VERSION "Unknown Version"
+#define FULL_VERSION "Unknown Version (" SERVER_BUILD ")"
 #endif
 
 #ifndef PKG_DATADIR

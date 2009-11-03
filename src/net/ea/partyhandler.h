@@ -22,9 +22,10 @@
 #ifndef NET_EA_PARTYHANDLER_H
 #define NET_EA_PARTYHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/net.h"
 #include "net/partyhandler.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -35,7 +36,7 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
 
         ~PartyHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void create(const std::string &name = "");
 

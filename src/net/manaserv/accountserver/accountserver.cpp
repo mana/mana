@@ -24,18 +24,20 @@
 #include "internal.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/messageout.h"
 
 #include "utils/sha256.h"
 
 #include <string>
 
-void Net::AccountServer::login(Net::Connection *connection, int version,
-        const std::string &username, const std::string &password)
+namespace ManaServ
 {
-    Net::AccountServer::connection = connection;
+
+void AccountServer::login(Connection *connection,
+        int version, const std::string &username, const std::string &password)
+{
+    AccountServer::connection = connection;
 
     MessageOut msg(PAMSG_LOGIN);
 
@@ -43,14 +45,14 @@ void Net::AccountServer::login(Net::Connection *connection, int version,
     msg.writeString(username);
     msg.writeString(sha256(username + password));
 
-    Net::AccountServer::connection->send(msg);
+    AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::registerAccount(Net::Connection *connection,
+void AccountServer::registerAccount(Connection *connection,
         int version, const std::string &username, const std::string &password,
         const std::string &email)
 {
-    Net::AccountServer::connection = connection;
+    AccountServer::connection = connection;
 
     MessageOut msg(PAMSG_REGISTER);
 
@@ -62,21 +64,23 @@ void Net::AccountServer::registerAccount(Net::Connection *connection,
     msg.writeString(password);
     msg.writeString(email);
 
-    Net::AccountServer::connection->send(msg);
+    AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::logout()
+void AccountServer::logout()
 {
     MessageOut msg(PAMSG_LOGOUT);
-    Net::AccountServer::connection->send(msg);
+    AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::reconnectAccount(Net::Connection *connection,
-                                          const std::string &passToken)
+void AccountServer::reconnectAccount(Connection *connection,
+                                               const std::string &passToken)
 {
-    Net::AccountServer::connection = connection;
+    AccountServer::connection = connection;
 
     MessageOut msg(PAMSG_RECONNECT);
     msg.writeString(passToken, 32);
-    Net::AccountServer::connection->send(msg);
+    AccountServer::connection->send(msg);
+}
+
 }

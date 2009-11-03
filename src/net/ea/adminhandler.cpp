@@ -21,11 +21,10 @@
 
 #include "net/ea/adminhandler.h"
 
-#include "net/ea/chathandler.h"
-#include "net/ea/protocol.h"
+#include "net/chathandler.h"
+#include "net/net.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
+#include "net/ea/protocol.h"
 
 #include "being.h"
 #include "beingmanager.h"
@@ -55,7 +54,7 @@ AdminHandler::AdminHandler()
     adminHandler = this;
 }
 
-void AdminHandler::handleMessage(MessageIn &msg)
+void AdminHandler::handleMessage(Net::MessageIn &msg)
 {
     int id;
     switch (msg.getId())
@@ -118,7 +117,7 @@ void AdminHandler::unban(int playerId)
 
 void AdminHandler::unban(const std::string &name)
 {
-    chatHandler->talk("@unban " + name);
+    Net::getChatHandler()->talk("@unban " + name);
 }
 
 void AdminHandler::mute(int playerId, int type, int limit)

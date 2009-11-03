@@ -47,7 +47,7 @@
 #include <assert.h>
 
 Engine::Engine():
-    mCurrentMap(0)
+    mCurrentMap(0), mMapName("")
 {
 }
 
@@ -56,7 +56,7 @@ Engine::~Engine()
     delete mCurrentMap;
 }
 
-bool Engine::changeMap(const std::string &mapPath)
+void Engine::changeMap(const std::string &mapPath)
 {
     // Clean up floor items, beings and particles
     floorItemManager->clear();
@@ -111,8 +111,6 @@ bool Engine::changeMap(const std::string &mapPath)
     mCurrentMap = newMap;
 
     Net::getGameHandler()->mapLoaded(mapPath);
-
-    return true;
 }
 
 void Engine::logic()

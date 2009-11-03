@@ -38,10 +38,6 @@
 #include "net/net.h"
 #include "net/playerhandler.h"
 
-#ifdef EATHENA_SUPPORT
-#include "net/ea/protocol.h"
-#endif
-
 #include "utils/gettext.h"
 #include "utils/mathutils.h"
 #include "utils/stringutils.h"
@@ -81,9 +77,7 @@ class ChangeDisplay : public AttrDisplay, gcn::ActionListener
         int mNeeded;
 
         Label *mPoints;
-#ifdef MANASERV_SUPPORT
         Button *mDec;
-#endif
         Button *mInc;
 };
 
@@ -131,15 +125,16 @@ StatusWindow::StatusWindow():
     // 5, 2 and 6, 2 Job Progress Bar
     place(1, 2, mMpBar, 4);
 
-#ifdef EATHENA_SUPPORT
-    mJobLvlLabel = new Label(strprintf(_("Job: %d"), 0));
-    mJobLabel = new Label(_("Job:"));
-    mJobBar = new ProgressBar(0.0f, 80, 15, gcn::Color(220, 135, 203));
+    if (Net::getPlayerHandler()->getJobLocation() > 0)
+    {
+        mJobLvlLabel = new Label(strprintf(_("Job: %d"), 0));
+        mJobLabel = new Label(_("Job:"));
+        mJobBar = new ProgressBar(0.0f, 80, 15, gcn::Color(220, 135, 203));
 
-    place(5, 0, mJobLvlLabel, 3);
-    place(5, 2, mJobLabel).setPadding(3);
-    place(6, 2, mJobBar, 5);
-#endif
+        place(5, 0, mJobLvlLabel, 3);
+        place(5, 2, mJobLabel).setPadding(3);
+        place(6, 2, mJobBar, 5);
+    }
 
     // ----------------------
     // Stats Part
@@ -163,10 +158,12 @@ StatusWindow::StatusWindow():
 
     mCharacterPointsLabel = new Label("C");
     place(0, 6, mCharacterPointsLabel, 5);
-#ifdef MANASERV_SUPPORT
-    mCorrectionPointsLabel = new Label("C");
-    place(0, 7, mCorrectionPointsLabel, 5);
-#endif
+
+    if (Net::getPlayerHandler()->canCorrectAttributes())
+    {
+        mCorrectionPointsLabel = new Label("C");
+        place(0, 7, mCorrectionPointsLabel, 5);
+    }
 
     loadWindowState();
 
@@ -176,17 +173,15 @@ StatusWindow::StatusWindow():
     update(MONEY);
     update(CHAR_POINTS); // This also updates all attributes (none atm)
     update(LEVEL);
-#ifdef EATHENA_SUPPORT
-    update(JOB);
-#endif
+    int job = Net::getPlayerHandler()->getJobLocation();
+    if (job > 0)
+    {
+        update(job);
+    }
 }
 
 std::string StatusWindow::update(int id)
 {
-     /*/ TODO get rid of this
-    if (!player_node)
-        return "";*/
-
     if (miniStatusWindow)
         miniStatusWindow->update(id);
 
@@ -217,29 +212,28 @@ std::string StatusWindow::update(int id)
 
         return _("Money");
     }
-#ifdef EATHENA_SUPPORT
-    else if (id == JOB)
+    else if (id == Net::getPlayerHandler()->getJobLocation())
     {
         mJobLvlLabel->setCaption(strprintf(_("Job: %d"),
-                                        player_node->getAttributeBase(JOB)));
+                                        player_node->getAttributeBase(id)));
         mJobLvlLabel->adjustSize();
 
-        updateProgressBar(mJobBar, JOB, false);
+        updateProgressBar(mJobBar, id, false);
 
         return _("Job");
     }
-#endif
     else if (id == CHAR_POINTS)
     {
         mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
                                         player_node->getCharacterPoints()));
         mCharacterPointsLabel->adjustSize();
 
-#ifdef MANASERV_SUPPORT
-        mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
-                                        player_node->getCorrectionPoints()));
-        mCorrectionPointsLabel->adjustSize();
-#endif
+        if (Net::getPlayerHandler()->canCorrectAttributes())
+        {
+            mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
+                                            player_node->getCorrectionPoints()));
+            mCorrectionPointsLabel->adjustSize();
+        }
 
         for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
         {
@@ -490,12 +484,17 @@ ChangeDisplay::ChangeDisplay(int id, const std::string &name):
     place(6, 0, mInc);
     place(7, 0, mPoints);
 
-#ifdef MANASERV_SUPPORT
-    mDec = new Button(_("-"), "dec", this);
-    mDec->setWidth(mInc->getWidth());
+    if (Net::getPlayerHandler()->canCorrectAttributes())
+    {
+        mDec = new Button(_("-"), "dec", this);
+        mDec->setWidth(mInc->getWidth());
 
-    place(3, 0, mDec);
-#endif
+        place(3, 0, mDec);
+    }
+    else
+    {
+        mDec = 0;
+    }
 
     update();
 }
@@ -504,9 +503,8 @@ std::string ChangeDisplay::update()
 {
     mPoints->setCaption(toString(mNeeded));
 
-#ifdef MANASERV_SUPPORT
-    mDec->setEnabled(player_node->getCorrectionPoints());
-#endif
+    if (mDec)
+        mDec->setEnabled(player_node->getCorrectionPoints());
     mInc->setEnabled(player_node->getCharacterPoints() >= mNeeded);
 
     return AttrDisplay::update();
@@ -521,8 +519,8 @@ void ChangeDisplay::setPointsNeeded(int needed)
 
 void ChangeDisplay::action(const gcn::ActionEvent &event)
 {
-#ifdef MANASERV_SUPPORT
-    if (event.getSource() == mDec)
+    if (Net::getPlayerHandler()->canCorrectAttributes() &&
+        event.getSource() == mDec)
     {
         int newcorpoints = player_node->getCorrectionPoints() - 1;
         player_node->setCorrectionPoints(newcorpoints);
@@ -533,9 +531,7 @@ void ChangeDisplay::action(const gcn::ActionEvent &event)
         int newmod = player_node->getAttributeEffective(mId) - 1;
         player_node->setAttributeEffective(mId, newmod);
         Net::getPlayerHandler()->decreaseAttribute(mId);
-    } else
-#endif
-    if (event.getSource() == mInc)
+    } else if (event.getSource() == mInc)
     {
         int newpoints = player_node->getCharacterPoints() - 1;
         player_node->setCharacterPoints(newpoints);

@@ -101,4 +101,4 @@ class ItemAmountWindow : public Window,
         bool mEnabledKeyboard;
 };
 
-#endif /* ITEM_AMOUNT_WINDOW_H */
+#endif // ITEM_AMOUNT_WINDOW_H

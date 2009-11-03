@@ -41,7 +41,7 @@ ItemHandler::ItemHandler()
     handledMessages = _messages;
 }
 
-void ItemHandler::handleMessage(MessageIn &msg)
+void ItemHandler::handleMessage(Net::MessageIn &msg)
 {
     Uint32 id;
     Uint16 x, y;

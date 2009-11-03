@@ -323,6 +323,12 @@ src/net/ea/itemhandler.cpp
 src/net/ea/itemhandler.h
 src/net/ea/loginhandler.cpp
 src/net/ea/loginhandler.h
+src/net/ea/messagehandler.cpp
+src/net/ea/messagehandler.h
+src/net/ea/messagein.cpp
+src/net/ea/messagein.h
+src/net/ea/messageout.cpp
+src/net/ea/messageout.h
 src/net/ea/network.cpp
 src/net/ea/network.h
 src/net/ea/npchandler.cpp
@@ -391,6 +397,12 @@ src/net/manaserv/itemhandler.cpp
 src/net/manaserv/itemhandler.h
 src/net/manaserv/loginhandler.cpp
 src/net/manaserv/loginhandler.h
+src/net/manaserv/messagehandler.cpp
+src/net/manaserv/messagehandler.h
+src/net/manaserv/messagein.cpp
+src/net/manaserv/messagein.h
+src/net/manaserv/messageout.cpp
+src/net/manaserv/messageout.h
 src/net/manaserv/network.cpp
 src/net/manaserv/network.h
 src/net/manaserv/npchandler.cpp
@@ -404,7 +416,6 @@ src/net/manaserv/specialhandler.cpp
 src/net/manaserv/specialhandler.h
 src/net/manaserv/tradehandler.cpp
 src/net/manaserv/tradehandler.h
-src/net/messagehandler.cpp
 src/net/messagehandler.h
 src/net/messagein.cpp
 src/net/messagein.h

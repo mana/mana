@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_CHATSERVER_INTERNAL_H
-#define NET_CHATSERVER_INTERNAL_H
+#ifndef NET_MANASERV_CHATSERVER_INTERNAL_H
+#define NET_MANASERV_CHATSERVER_INTERNAL_H
 
-namespace Net
+namespace ManaServ
 {
     class Connection;
 
@@ -32,4 +32,4 @@ namespace Net
     }
 }
 
-#endif
+#endif // NET_MANASERV_CHATSERVER_INTERNAL_H

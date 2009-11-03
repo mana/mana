@@ -22,9 +22,10 @@
 #ifndef NET_EA_TRADEHANDLER_H
 #define NET_EA_TRADEHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/net.h"
 #include "net/tradehandler.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -33,7 +34,7 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
     public:
         TradeHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void request(Being *being);
 

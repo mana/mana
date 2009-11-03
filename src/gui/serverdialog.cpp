@@ -350,16 +350,12 @@ void ServerDialog::loadServers()
         {
             if (xmlStrEqual(server->name, BAD_CAST "server"))
             {
-                //check wether the version matches
-                #ifdef MANASERV_SUPPORT
-                if (XML::getProperty(server, "type", "unknown") != "MANASERV")
+                //check wether the build matches
+                if (compareStrI(XML::getProperty(server, "type", "unknown"),
+                                SERVER_BUILD))
+                {
                     continue;
-                #endif
-
-                #ifdef EATHENA_SUPPORT
-                if (XML::getProperty(server, "type", "unknown") != "EATHENA")
-                    continue;
-                #endif
+                }
 
                 currentServer.clear();
                 currentServer.name = XML::getProperty(server, "name", std::string());

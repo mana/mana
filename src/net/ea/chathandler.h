@@ -23,8 +23,9 @@
 #define NET_EA_CHATHANDLER_H
 
 #include "net/chathandler.h"
-#include "net/messagehandler.h"
 #include "net/net.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -33,7 +34,7 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
     public:
         ChatHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void talk(const std::string &text);
 

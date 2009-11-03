@@ -83,7 +83,7 @@ SpecialHandler::SpecialHandler()
     specialHandler = this;
 }
 
-void SpecialHandler::handleMessage(MessageIn &msg)
+void SpecialHandler::handleMessage(Net::MessageIn &msg)
 {
     int skillCount;
     int skillId;

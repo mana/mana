@@ -22,7 +22,7 @@
 #ifndef NET_MANASERV_GUILDHANDLER_H
 #define NET_MANASERV_GUILDHANDLER_H
 
-#include "net/messagehandler.h"
+#include "net/manaserv/messagehandler.h"
 
 #include <string>
 
@@ -33,10 +33,10 @@ class GuildHandler : public MessageHandler
 public:
     GuildHandler();
 
-    void handleMessage(MessageIn &msg);
+    void handleMessage(Net::MessageIn &msg);
 
 protected:
-    void joinedGuild(MessageIn &msg);
+    void joinedGuild(Net::MessageIn &msg);
 };
 
 } // namespace ManaServ

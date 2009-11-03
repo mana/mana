@@ -19,21 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_GAMESERVER_GAMESERVER_H
-#define NET_GAMESERVER_GAMESERVER_H
+#ifndef NET_MANASERV_GAMESERVER_GAMESERVER_H
+#define NET_MANASERV_GAMESERVER_GAMESERVER_H
 
 #include <iosfwd>
 
-namespace Net
+namespace ManaServ
 {
     class Connection;
 
     namespace GameServer
     {
-        void connect(Net::Connection *connection, const std::string &token);
+        void connect(Connection *connection, const std::string &token);
 
         void logout(bool reconnectAccount);
     }
 }
 
-#endif
+#endif // NET_MANASERV_GAMESERVER_GAMESERVER_H

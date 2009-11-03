@@ -23,9 +23,8 @@
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/internal.h"
-
-#include "net/messagehandler.h"
-#include "net/messagein.h"
+#include "net/manaserv/messagehandler.h"
+#include "net/manaserv/messagein.h"
 
 #include "log.h"
 
@@ -40,11 +39,14 @@ namespace {
     ENetHost *client;
 }
 
+namespace ManaServ
+{
+
 typedef std::map<unsigned short, MessageHandler*> MessageHandlers;
 typedef MessageHandlers::iterator MessageHandlerIterator;
 static MessageHandlers mMessageHandlers;
 
-void Net::initialize()
+void initialize()
 {
     if (enet_initialize())
     {
@@ -59,12 +61,12 @@ void Net::initialize()
     }
 }
 
-void Net::finalize()
+void finalize()
 {
     if (!client)
         return; // Wasn't initialized at all
 
-    if (Net::connections) {
+    if (connections) {
         logger->error("Tried to shutdown the network subsystem while there "
                 "are network connections left!");
     }
@@ -73,7 +75,7 @@ void Net::finalize()
     enet_deinitialize();
 }
 
-Net::Connection *Net::getConnection()
+Connection *getConnection()
 {
     if (!client)
     {
@@ -81,10 +83,10 @@ Net::Connection *Net::getConnection()
                 "initializing the network subsystem!");
     }
 
-    return new Net::Connection(client);
+    return new Connection(client);
 }
 
-void Net::registerHandler(MessageHandler *handler)
+void registerHandler(MessageHandler *handler)
 {
     for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
@@ -92,7 +94,7 @@ void Net::registerHandler(MessageHandler *handler)
     }
 }
 
-void Net::unregisterHandler(MessageHandler *handler)
+void unregisterHandler(MessageHandler *handler)
 {
     for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
@@ -100,7 +102,7 @@ void Net::unregisterHandler(MessageHandler *handler)
     }
 }
 
-void Net::clearHandlers()
+void clearHandlers()
 {
     mMessageHandlers.clear();
 }
@@ -133,7 +135,7 @@ namespace
     }
 }
 
-void Net::flush()
+void flush()
 {
     ENetEvent event;
 
@@ -167,4 +169,6 @@ void Net::flush()
                 break;
         }
     }
+}
+
 }

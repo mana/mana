@@ -23,10 +23,10 @@
 #define NET_EA_MAPHANDLER_H
 
 #include "net/gamehandler.h"
-#include "net/messagehandler.h"
 #include "net/net.h"
 #include "net/serverinfo.h"
 
+#include "net/ea/messagehandler.h"
 #include "net/ea/token.h"
 
 namespace EAthena {
@@ -36,7 +36,7 @@ class GameHandler : public MessageHandler, public Net::GameHandler
     public:
         GameHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void connect();
 

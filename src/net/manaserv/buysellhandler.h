@@ -22,7 +22,7 @@
 #ifndef NET_MANASERV_BUYSELLHANDLER_H
 #define NET_MANASERV_BUYSELLHANDLER_H
 
-#include "net/messagehandler.h"
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
@@ -31,7 +31,7 @@ class BuySellHandler : public MessageHandler
     public:
         BuySellHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 };
 
 } // namespace ManaServ

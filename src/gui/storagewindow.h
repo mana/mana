@@ -26,6 +26,9 @@
 
 #include "inventory.h"
 
+#include "net/inventoryhandler.h"
+#include "net/net.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
@@ -46,7 +49,8 @@ class StorageWindow : public Window, gcn::ActionListener,
         /**
          * Constructor.
          */
-        StorageWindow(int invSize = (STORAGE_SIZE - 1));
+        StorageWindow(int invSize = Net::getInventoryHandler()
+                                    ->getStorageSize());
 
         /**
          * Destructor.

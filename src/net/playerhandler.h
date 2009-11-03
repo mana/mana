@@ -56,6 +56,10 @@ class PlayerHandler
         virtual void ignoreAll(bool ignore) = 0;
 
         virtual bool canUseMagic() = 0;
+
+        virtual bool canCorrectAttributes() = 0;
+
+        virtual int getJobLocation() = 0;
 };
 
 } // namespace Net

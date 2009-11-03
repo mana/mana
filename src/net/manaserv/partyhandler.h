@@ -22,8 +22,9 @@
 #ifndef NET_MANASERV_PARTYHANDLER_H
 #define NET_MANASERV_PARTYHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/partyhandler.h"
+
+#include "net/manaserv/messagehandler.h"
 
 #include <string>
 
@@ -34,7 +35,7 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
 public:
     PartyHandler();
 
-    void handleMessage(MessageIn &msg);
+    void handleMessage(Net::MessageIn &msg);
 
     void create(const std::string &name = "");
 
@@ -67,5 +68,4 @@ public:
 
 } // namespace ManaServ
 
-#endif
-
+#endif // NET_MANASERV_PARTYHANDLER_H

@@ -19,18 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_CHATSERVER_CHATSERVER_H
-#define NET_CHATSERVER_CHATSERVER_H
+#ifndef NET_MANASERV_CHATSERVER_CHATSERVER_H
+#define NET_MANASERV_CHATSERVER_CHATSERVER_H
 
 #include <iosfwd>
 
-namespace Net
+namespace ManaServ
 {
     class Connection;
 
     namespace ChatServer
     {
-        void connect(Net::Connection *connection, const std::string &token);
+        void connect(Connection *connection, const std::string &token);
 
         void logout();
 
@@ -41,4 +41,4 @@ namespace Net
     }
 }
 
-#endif
+#endif // NET_MANASERV_CHATSERVER_CHATSERVER_H

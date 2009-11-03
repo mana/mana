@@ -59,6 +59,10 @@ class InventoryHandler
 
         virtual void moveItem(StorageType source, int slot, int amount,
                               StorageType destination) = 0;
+
+        virtual size_t getInventorySize() const = 0;
+
+        virtual size_t getStorageSize() const = 0;
 };
 
 } // namespace Net

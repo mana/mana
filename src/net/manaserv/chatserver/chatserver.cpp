@@ -24,31 +24,34 @@
 #include "internal.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
-#include "net/messageout.h"
+namespace ManaServ {
 
-using Net::ChatServer::connection;
+using ChatServer::connection;
 
-void Net::ChatServer::connect(Net::Connection *connection,
+void ChatServer::connect(Connection *connection,
                               const std::string &token)
 {
-    Net::ChatServer::connection = connection;
+    ChatServer::connection = connection;
 
     MessageOut msg(PCMSG_CONNECT);
     msg.writeString(token, 32);
     connection->send(msg);
 }
 
-void Net::ChatServer::logout()
+void ChatServer::logout()
 {
     MessageOut msg(PCMSG_DISCONNECT);
     connection->send(msg);
 }
 
-void Net::ChatServer::announce(const std::string &text)
+void ChatServer::announce(const std::string &text)
 {
     MessageOut msg(PCMSG_ANNOUNCE);
     msg.writeString(text);
     connection->send(msg);
+}
+
 }

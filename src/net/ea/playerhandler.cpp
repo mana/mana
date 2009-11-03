@@ -162,7 +162,7 @@ PlayerHandler::PlayerHandler()
     playerHandler = this;
 }
 
-void PlayerHandler::handleMessage(MessageIn &msg)
+void PlayerHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -568,6 +568,16 @@ void PlayerHandler::ignoreAll(bool ignore)
 bool PlayerHandler::canUseMagic()
 {
     return player_node->getAttributeEffective(MATK) > 0;
+}
+
+bool PlayerHandler::canCorrectAttributes()
+{
+    return false;
+}
+
+int PlayerHandler::getJobLocation()
+{
+    return JOB;
 }
 
 } // namespace EAthena

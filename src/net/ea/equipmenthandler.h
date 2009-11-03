@@ -22,7 +22,7 @@
 #ifndef NET_EA_EQUIPMENTHANDLER_H
 #define NET_EA_EQUIPMENTHANDLER_H
 
-#include "net/messagehandler.h"
+#include "net/ea/messagehandler.h"
 
 class Item;
 
@@ -37,7 +37,7 @@ class EquipmentHandler : public MessageHandler
     public:
         EquipmentHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        virtual void handleMessage(Net::MessageIn &msg);
 };
 
 } // namespace EAthena

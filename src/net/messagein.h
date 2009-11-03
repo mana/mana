@@ -19,11 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef MESSAGEIN_H
-#define MESSAGEIN_H
+#ifndef NET_MESSAGEIN_H
+#define NET_MESSAGEIN_H
 
 #include <SDL_types.h>
 #include <string>
+
+namespace Net {
 
 /**
  * Used for parsing an incoming message.
@@ -33,11 +35,6 @@
 class MessageIn
 {
     public:
-        /**
-         * Constructor.
-         */
-        MessageIn(const char *data, unsigned int length);
-
         /**
          * Returns the message ID.
          */
@@ -53,42 +50,47 @@ class MessageIn
          */
         unsigned int getUnreadLength() const { return mLength - mPos; }
 
-        int readInt8();             /**< Reads a byte. */
-        int readInt16();            /**< Reads a short. */
-        int readInt32();            /**< Reads a long. */
+        virtual int readInt8();             /**< Reads a byte. */
+        virtual int readInt16() = 0;        /**< Reads a short. */
+        virtual int readInt32() = 0;        /**< Reads a long. */
 
         /**
          * Reads a 3-byte block containing tile-based coordinates. Used by
          * manaserv.
          */
-        void readCoordinates(Uint16 &x, Uint16 &y);
+        virtual void readCoordinates(Uint16 &x, Uint16 &y);
 
         /**
          * Reads a special 3 byte block used by eAthena, containing x and y
          * coordinates and direction.
          */
-        void readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction);
+        virtual void readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction);
 
         /**
          * Reads a special 5 byte block used by eAthena, containing a source
          * and destination coordinate pair.
          */
-        void readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
-                                Uint16 &dstX, Uint16 &dstY);
+        virtual void readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
+                                        Uint16 &dstX, Uint16 &dstY);
 
         /**
          * Skips a given number of bytes.
          */
-        void skip(unsigned int length);
+        virtual void skip(unsigned int length);
 
         /**
          * Reads a string. If a length is not given (-1), it is assumed
          * that the length of the string is stored in a short at the
          * start of the string.
          */
-        std::string readString(int length = -1);
+        virtual std::string readString(int length = -1);
 
-    private:
+    protected:
+        /**
+         * Constructor.
+         */
+        MessageIn(const char *data, unsigned int length);
+
         const char *mData;             /**< The message data. */
         unsigned int mLength;          /**< The length of the data. */
         unsigned short mId;            /**< The message ID. */
@@ -101,4 +103,6 @@ class MessageIn
         unsigned int mPos;
 };
 
-#endif
+}
+
+#endif // NET_MESSAGEIN_H

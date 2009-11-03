@@ -22,9 +22,10 @@
 #ifndef NET_EA_PLAYERHANDLER_H
 #define NET_EA_PLAYERHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/net.h"
 #include "net/playerhandler.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -33,7 +34,7 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
     public:
         PlayerHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void attack(int id);
 
@@ -60,6 +61,10 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
         void ignoreAll(bool ignore);
 
         bool canUseMagic();
+
+        bool canCorrectAttributes();
+
+        int getJobLocation();
 };
 
 } // namespace EAthena

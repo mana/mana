@@ -22,13 +22,13 @@
 #include "net/manaserv/loginhandler.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
 #include "net/manaserv/protocol.h"
 
 #include "net/manaserv/accountserver/account.h"
 #include "net/manaserv/accountserver/accountserver.h"
 
 #include "net/logindata.h"
-#include "net/messagein.h"
 
 #include "main.h"
 
@@ -36,9 +36,10 @@
 
 Net::LoginHandler *loginHandler;
 
-extern Net::Connection *accountServerConnection;
 
 namespace ManaServ {
+
+extern Connection *accountServerConnection;
 
 LoginHandler::LoginHandler()
 {
@@ -56,7 +57,7 @@ LoginHandler::LoginHandler()
     loginHandler = this;
 }
 
-void LoginHandler::handleMessage(MessageIn &msg)
+void LoginHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -209,7 +210,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void LoginHandler::handleLoginResponse(MessageIn &msg)
+void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
 {
     const int errMsg = msg.readInt8();
 
@@ -246,7 +247,7 @@ void LoginHandler::handleLoginResponse(MessageIn &msg)
     }
 }
 
-void LoginHandler::handleRegisterResponse(MessageIn &msg)
+void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
 {
     const int errMsg = msg.readInt8();
 
@@ -278,7 +279,7 @@ void LoginHandler::handleRegisterResponse(MessageIn &msg)
     }
 }
 
-void LoginHandler::readUpdateHost(MessageIn &msg)
+void LoginHandler::readUpdateHost(Net::MessageIn &msg)
 {
     // Set the update host when included in the message
     if (msg.getUnreadLength() > 0)
@@ -290,8 +291,6 @@ void LoginHandler::readUpdateHost(MessageIn &msg)
 void LoginHandler::connect()
 {
     accountServerConnection->connect(mServer.hostname, mServer.port);
-    /*if (state == STATE_CONNECT_SERVER)
-        state = STATE_LOGIN;*/
 }
 
 bool LoginHandler::isConnected()
@@ -307,7 +306,7 @@ void LoginHandler::disconnect()
 void LoginHandler::loginAccount(LoginData *loginData)
 {
     mLoginData = loginData;
-    Net::AccountServer::login(accountServerConnection,
+    AccountServer::login(accountServerConnection,
             0,  // client version
             loginData->username,
             loginData->password);
@@ -320,15 +319,14 @@ void LoginHandler::logout()
 
 void LoginHandler::changeEmail(const std::string &email)
 {
-    Net::AccountServer::Account::changeEmail(email);
+    AccountServer::Account::changeEmail(email);
 }
 
 void LoginHandler::changePassword(const std::string &username,
                     const std::string &oldPassword,
                     const std::string &newPassword)
 {
-    Net::AccountServer::Account::changePassword(username, oldPassword,
-                                                newPassword);
+    AccountServer::Account::changePassword(username, oldPassword, newPassword);
 }
 
 void LoginHandler::chooseServer(unsigned int server)
@@ -338,7 +336,7 @@ void LoginHandler::chooseServer(unsigned int server)
 
 void LoginHandler::registerAccount(LoginData *loginData)
 {
-    Net::AccountServer::registerAccount(accountServerConnection,
+    AccountServer::registerAccount(accountServerConnection,
             0, // client version
             loginData->username,
             loginData->password,
@@ -348,7 +346,7 @@ void LoginHandler::registerAccount(LoginData *loginData)
 void LoginHandler::unregisterAccount(const std::string &username,
                         const std::string &password)
 {
-    Net::AccountServer::Account::unregister(username, password);
+    AccountServer::Account::unregister(username, password);
 }
 
 Worlds LoginHandler::getWorlds() const

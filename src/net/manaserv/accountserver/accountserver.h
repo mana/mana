@@ -19,29 +19,29 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_ACCOUNTSERVER_ACCOUNTSERVER_H
-#define NET_ACCOUNTSERVER_ACCOUNTSERVER_H
+#ifndef NET_MANASERV_ACCOUNTSERVER_ACCOUNTSERVER_H
+#define NET_MANASERV_ACCOUNTSERVER_ACCOUNTSERVER_H
 
 #include <iosfwd>
 
-namespace Net
+namespace ManaServ
 {
     class Connection;
 
     namespace AccountServer
     {
-        void login(Net::Connection *connection, int version,
+        void login(ManaServ::Connection *connection, int version,
                 const std::string &username, const std::string &password);
 
-        void registerAccount(Net::Connection *connection, int version,
+        void registerAccount(ManaServ::Connection *connection, int version,
                 const std::string &username, const std::string &password,
                 const std::string &email);
 
         void logout();
 
-        void reconnectAccount(Net::Connection *connection,
+        void reconnectAccount(ManaServ::Connection *connection,
                                                 const std::string &passToken);
     }
 }
 
-#endif
+#endif // NET_MANASERV_ACCOUNTSERVER_ACCOUNTSERVER_H

@@ -22,7 +22,7 @@
 #ifndef NET_EA_BEINGHANDLER_H
 #define NET_EA_BEINGHANDLER_H
 
-#include "net/messagehandler.h"
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -31,7 +31,7 @@ class BeingHandler : public MessageHandler
     public:
         BeingHandler(bool enableSync);
 
-        virtual void handleMessage(MessageIn &msg);
+        virtual void handleMessage(Net::MessageIn &msg);
 
     private:
         // Should we honor server "Stop Walking" packets

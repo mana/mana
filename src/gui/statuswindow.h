@@ -79,10 +79,8 @@ class StatusWindow : public Window
         gcn::Label *mHpLabel, *mMpLabel, *mXpLabel;
         ProgressBar *mHpBar, *mMpBar, *mXpBar;
 
-#ifdef EATHENA_SUPPORT
         gcn::Label *mJobLvlLabel, *mJobLabel;
         ProgressBar *mJobBar;
-#endif
 
         VertContainer *mAttrCont;
         ScrollArea *mAttrScroll;
@@ -90,9 +88,7 @@ class StatusWindow : public Window
         ScrollArea *mDAttrScroll;
 
         gcn::Label *mCharacterPointsLabel;
-#ifdef MANASERV_SUPPORT
         gcn::Label *mCorrectionPointsLabel;
-#endif
 
         typedef std::map<int, AttrDisplay*> Attrs;
         Attrs mAttrs;

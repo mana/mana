@@ -24,27 +24,30 @@
 #include "internal.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
-#include "net/messageout.h"
-
-void Net::GameServer::connect(Net::Connection *connection,
-        const std::string &token)
+namespace ManaServ
 {
-    Net::GameServer::connection = connection;
+
+void GameServer::connect(Connection *connection, const std::string &token)
+{
+    GameServer::connection = connection;
 
     MessageOut msg(PGMSG_CONNECT);
 
     msg.writeString(token, 32);
 
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
-void Net::GameServer::logout(bool reconnectAccount)
+void GameServer::logout(bool reconnectAccount)
 {
     MessageOut msg(PGMSG_DISCONNECT);
 
     msg.writeInt8((unsigned char) reconnectAccount);
 
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
+}
+
 }

@@ -26,10 +26,6 @@
 #include "npc.h"
 #include "player.h"
 
-#ifdef MANASERV_SUPPORT
-#include "net/manaserv/protocol.h"
-#endif
-
 #include "utils/dtor.h"
 
 #include <cassert>

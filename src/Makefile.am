@@ -216,7 +216,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      net/inventoryhandler.h \
 	      net/logindata.h \
 	      net/loginhandler.h \
-	      net/messagehandler.cpp \
 	      net/messagehandler.h \
 	      net/messagein.cpp \
 	      net/messagein.h \
@@ -444,6 +443,12 @@ mana_SOURCES += \
 	      net/manaserv/itemhandler.cpp \
 	      net/manaserv/loginhandler.cpp \
 	      net/manaserv/loginhandler.h \
+	      net/manaserv/messagehandler.cpp \
+	      net/manaserv/messagehandler.h \
+	      net/manaserv/messagein.cpp \
+	      net/manaserv/messagein.h \
+	      net/manaserv/messageout.cpp \
+	      net/manaserv/messageout.h \
 	      net/manaserv/network.cpp \
 	      net/manaserv/network.h \
 	      net/manaserv/npchandler.cpp \
@@ -488,6 +493,12 @@ mana_SOURCES += \
 	      net/ea/itemhandler.h \
 	      net/ea/loginhandler.cpp \
 	      net/ea/loginhandler.h \
+	      net/ea/messagehandler.cpp \
+	      net/ea/messagehandler.h \
+	      net/ea/messagein.cpp \
+	      net/ea/messagein.h \
+	      net/ea/messageout.cpp \
+	      net/ea/messageout.h \
 	      net/ea/network.cpp \
 	      net/ea/network.h \
 	      net/ea/npchandler.cpp \

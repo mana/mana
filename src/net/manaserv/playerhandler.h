@@ -22,8 +22,9 @@
 #ifndef NET_MANASERV_PLAYERHANDLER_H
 #define NET_MANASERV_PLAYERHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/playerhandler.h"
+
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
@@ -32,7 +33,7 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
     public:
         PlayerHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void attack(int id);
 
@@ -60,10 +61,14 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         bool canUseMagic();
 
+        bool canCorrectAttributes();
+
+        int getJobLocation();
+
     private:
-        void handleMapChangeMessage(MessageIn &msg);
+        void handleMapChangeMessage(Net::MessageIn &msg);
 };
 
 } // namespace ManaServ
 
-#endif
+#endif // NET_MANASERV_PLAYERHANDLER_H

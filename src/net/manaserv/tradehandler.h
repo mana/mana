@@ -22,8 +22,9 @@
 #ifndef NET_MANASERV_TRADEHANDLER_H
 #define NET_MANASERV_TRADEHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/tradehandler.h"
+
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
@@ -32,7 +33,7 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
     public:
         TradeHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         /**
          * Returns whether trade requests are accepted.
@@ -71,4 +72,4 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
 
 } // namespace ManaServ
 
-#endif
+#endif // NET_MANASERV_TRADEHANDLER_H

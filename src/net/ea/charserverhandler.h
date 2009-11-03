@@ -22,10 +22,10 @@
 #ifndef NET_EA_CHARSERVERHANDLER_H
 #define NET_EA_CHARSERVERHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/charhandler.h"
 #include "net/serverinfo.h"
 
+#include "net/ea/messagehandler.h"
 #include "net/ea/token.h"
 
 class LoginData;
@@ -40,7 +40,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
     public:
         CharServerHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        virtual void handleMessage(Net::MessageIn &msg);
 
         void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
         { mCharInfo = charInfo; }
@@ -72,7 +72,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
         CharSelectDialog *mCharSelectDialog;
         CharCreateDialog *mCharCreateDialog;
 
-        LocalPlayer *readPlayerData(MessageIn &msg, int &slot);
+        LocalPlayer *readPlayerData(Net::MessageIn &msg, int &slot);
 };
 
 } // namespace EAthena

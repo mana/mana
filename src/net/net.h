@@ -22,6 +22,10 @@
 #ifndef NET_H
 #define NET_H
 
+/**
+ * \defgroup Network Core network layer
+ */
+
 class ServerInfo;
 
 namespace Net {

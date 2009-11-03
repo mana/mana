@@ -47,7 +47,7 @@ class Engine
         /**
          * Sets the currently active map.
          */
-        bool changeMap(const std::string &mapName);
+        void changeMap(const std::string &mapName);
 
         /**
          * Performs engine logic. This method is called 100 times per second.

@@ -123,12 +123,6 @@ namespace
 static const int defaultSfxVolume = 100;
 static const int defaultMusicVolume = 60;
 
-/*#ifdef MANASERV_SUPPORT
-extern Net::Connection *gameServerConnection;
-extern Net::Connection *chatServerConnection;
-extern Net::Connection *accountServerConnection;
-#endif*/
-
 Graphics *graphics;
 Game *game = 0;
 
@@ -925,8 +919,6 @@ int main(int argc, char *argv[])
 
         if (state != oldstate)
         {
-            //printf("State change: %d to %d\n", oldstate, state);
-
             oldstate = state;
 
             // Get rid of the dialog of the previous state
@@ -1300,9 +1292,6 @@ int main(int argc, char *argv[])
     }
 
     delete guiPalette;
-/*#ifdef EATHENA_SUPPORT
-    delete network;
-#endif*/
 
     logger->log("Quitting");
     exitEngine();

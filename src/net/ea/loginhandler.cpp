@@ -55,7 +55,7 @@ LoginHandler::LoginHandler()
     loginHandler = this;
 }
 
-void LoginHandler::handleMessage(MessageIn &msg)
+void LoginHandler::handleMessage(Net::MessageIn &msg)
 {
     int code, worldCount;
 

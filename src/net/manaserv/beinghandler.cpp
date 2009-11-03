@@ -61,7 +61,7 @@ BeingHandler::BeingHandler()
     handledMessages = _messages;
 }
 
-void BeingHandler::handleMessage(MessageIn &msg)
+void BeingHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -92,7 +92,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
     }
 }
 
-static void handleLooks(Player *being, MessageIn &msg)
+static void handleLooks(Player *being, Net::MessageIn &msg)
 {
     // Order of sent slots. Has to be in sync with the server code.
     static int const nb_slots = 4;
@@ -120,7 +120,7 @@ static void handleLooks(Player *being, MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
+void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
 {
     int type = msg.readInt8();
     int id = msg.readInt16();
@@ -171,7 +171,7 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
     being->setAction(action);
 }
 
-void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
+void BeingHandler::handleBeingLeaveMessage(Net::MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
     if (!being)
@@ -180,7 +180,7 @@ void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
     beingManager->destroyBeing(being);
 }
 
-void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
+void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
@@ -220,7 +220,7 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
+void BeingHandler::handleBeingAttackMessage(Net::MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
     const int direction = msg.readInt8();
@@ -240,7 +240,7 @@ void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
     being->setAction(Being::ATTACK, attackType);
 }
 
-void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
+void BeingHandler::handleBeingsDamageMessage(Net::MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
@@ -253,7 +253,7 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
+void BeingHandler::handleBeingActionChangeMessage(Net::MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
     Being::Action action = (Being::Action) msg.readInt8();
@@ -288,11 +288,11 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
         std::string message(deadMsg[rand()%13]);
         message.append(std::string(" ") + _("Press OK to respawn."));
         OkDialog *dlg = new OkDialog(_("You Died"), message);
-        dlg->addActionListener(&(Net::GameServer::Player::respawnListener));
+        dlg->addActionListener(&(ManaServ::GameServer::Player::respawnListener));
     }
 }
 
-void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
+void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
     if (!being || being->getType() != Being::PLAYER)
@@ -307,7 +307,7 @@ void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
+void BeingHandler::handleBeingDirChangeMessage(Net::MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
     if (!being)

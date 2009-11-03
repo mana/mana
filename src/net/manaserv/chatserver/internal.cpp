@@ -21,7 +21,7 @@
 
 #include "internal.h"
 
-namespace Net
+namespace ManaServ
 {
     class Connection;
 

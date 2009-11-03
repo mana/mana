@@ -557,6 +557,30 @@
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
+		<Unit filename="src\net\ea\messagehandler.cpp">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\messagein.cpp">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\messagein.h">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\messageout.cpp">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\messageout.h">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\messagehandler.h">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
 		<Unit filename="src\net\ea\network.cpp">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
@@ -801,6 +825,30 @@
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
+		<Unit filename="src\net\manaserv\messagehandler.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src\net\manaserv\messagehandler.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src\net\manaserv\messagein.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src\net\manaserv\messagein.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src\net\manaserv\messageout.cpp">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
+		<Unit filename="src\net\manaserv\messageout.h">
+			<Option target="Manaserv" />
+			<Option target="Unix Manaserv" />
+		</Unit>
 		<Unit filename="src\net\manaserv\network.cpp">
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
@@ -853,7 +901,6 @@
 			<Option target="Manaserv" />
 			<Option target="Unix Manaserv" />
 		</Unit>
-		<Unit filename="src\net\messagehandler.cpp" />
 		<Unit filename="src\net\messagehandler.h" />
 		<Unit filename="src\net\messagein.cpp" />
 		<Unit filename="src\net\messagein.h" />

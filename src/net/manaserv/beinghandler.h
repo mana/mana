@@ -22,7 +22,7 @@
 #ifndef NET_MANASERV_BEINGHANDLER_H
 #define NET_MANASERV_BEINGHANDLER_H
 
-#include "net/messagehandler.h"
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
@@ -31,17 +31,17 @@ class BeingHandler : public MessageHandler
     public:
         BeingHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
     private:
-        void handleBeingAttackMessage(MessageIn &msg);
-        void handleBeingEnterMessage(MessageIn &msg);
-        void handleBeingLeaveMessage(MessageIn &msg);
-        void handleBeingsMoveMessage(MessageIn &msg);
-        void handleBeingsDamageMessage(MessageIn &msg);
-        void handleBeingActionChangeMessage(MessageIn &msg);
-        void handleBeingLooksChangeMessage(MessageIn &msg);
-        void handleBeingDirChangeMessage(MessageIn &msg);
+        void handleBeingAttackMessage(Net::MessageIn &msg);
+        void handleBeingEnterMessage(Net::MessageIn &msg);
+        void handleBeingLeaveMessage(Net::MessageIn &msg);
+        void handleBeingsMoveMessage(Net::MessageIn &msg);
+        void handleBeingsDamageMessage(Net::MessageIn &msg);
+        void handleBeingActionChangeMessage(Net::MessageIn &msg);
+        void handleBeingLooksChangeMessage(Net::MessageIn &msg);
+        void handleBeingDirChangeMessage(Net::MessageIn &msg);
 };
 
 } // namespace ManaServ

@@ -69,7 +69,7 @@ PartyHandler::~PartyHandler()
     //deletePartyTab();
 }
 
-void PartyHandler::handleMessage(MessageIn &msg)
+void PartyHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {

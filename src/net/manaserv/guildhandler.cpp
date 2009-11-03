@@ -61,7 +61,7 @@ GuildHandler::GuildHandler()
 
 }
 
-void GuildHandler::handleMessage(MessageIn &msg)
+void GuildHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -229,7 +229,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void GuildHandler::joinedGuild(MessageIn &msg)
+void GuildHandler::joinedGuild(Net::MessageIn &msg)
 {
     std::string guildName = msg.readString();
     short guildId = msg.readInt16();

@@ -58,7 +58,7 @@ ChatHandler::ChatHandler()
     chatHandler = this;
 }
 
-void ChatHandler::handleMessage(MessageIn &msg)
+void ChatHandler::handleMessage(Net::MessageIn &msg)
 {
     Being *being;
     std::string chatMsg;

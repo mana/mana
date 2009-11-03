@@ -44,10 +44,6 @@
 
 #include "utils/gettext.h"
 
-extern Net::Connection *accountServerConnection;
-extern Net::Connection *gameServerConnection;
-extern Net::Connection *chatServerConnection;
-
 Net::CharHandler *charHandler;
 
 struct CharInfo {
@@ -67,6 +63,9 @@ CharInfos chars;
 
 namespace ManaServ {
 
+extern Connection *accountServerConnection;
+extern Connection *gameServerConnection;
+extern Connection *chatServerConnection;
 extern std::string netToken;
 extern ServerInfo gameServer;
 extern ServerInfo chatServer;
@@ -86,7 +85,7 @@ CharHandler::CharHandler():
     charHandler = this;
 }
 
-void CharHandler::handleMessage(MessageIn &msg)
+void CharHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -182,7 +181,7 @@ void CharHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void CharHandler::handleCharCreateResponse(MessageIn &msg)
+void CharHandler::handleCharCreateResponse(Net::MessageIn &msg)
 {
     int errMsg = msg.readInt8();
 
@@ -243,7 +242,7 @@ void CharHandler::handleCharCreateResponse(MessageIn &msg)
 
 }
 
-void CharHandler::handleCharSelectResponse(MessageIn &msg)
+void CharHandler::handleCharSelectResponse(Net::MessageIn &msg)
 {
     int errMsg = msg.readInt8();
 
@@ -360,13 +359,13 @@ void CharHandler::getCharacters()
 
 void CharHandler::chooseCharacter(int slot, LocalPlayer* character)
 {
-    Net::AccountServer::Account::selectCharacter(slot);
+    AccountServer::Account::selectCharacter(slot);
 }
 
 void CharHandler::newCharacter(const std::string &name, int slot, bool gender,
                   int hairstyle, int hairColor, std::vector<int> stats)
 {
-    Net::AccountServer::Account::createCharacter(name, hairstyle, hairColor,
+    AccountServer::Account::createCharacter(name, hairstyle, hairColor,
                     gender,
                     stats[0],  // STR
                     stats[1],  // AGI
@@ -379,7 +378,7 @@ void CharHandler::newCharacter(const std::string &name, int slot, bool gender,
 
 void CharHandler::deleteCharacter(int slot, LocalPlayer* character)
 {
-    Net::AccountServer::Account::deleteCharacter(slot);
+    AccountServer::Account::deleteCharacter(slot);
 }
 
 void CharHandler::switchCharacter()

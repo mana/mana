@@ -22,6 +22,8 @@
 #include "net/manaserv/chathandler.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
 #include "net/manaserv/chatserver/chatserver.h"
@@ -29,9 +31,6 @@
 
 #include "net/manaserv/gameserver/internal.h"
 #include "net/manaserv/gameserver/player.h"
-
-#include "net/messagein.h"
-#include "net/messageout.h"
 
 #include "being.h"
 #include "beingmanager.h"
@@ -54,10 +53,9 @@ extern Being *player_node;
 
 Net::ChatHandler *chatHandler;
 
-extern Net::Connection *chatServerConnection;
-
 namespace ManaServ {
 
+extern Connection *chatServerConnection;
 extern std::string netToken;
 extern ServerInfo chatServer;
 
@@ -81,7 +79,7 @@ ChatHandler::ChatHandler()
     chatHandler = this;
 }
 
-void ChatHandler::handleMessage(MessageIn &msg)
+void ChatHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -149,7 +147,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void ChatHandler::handleGameChatMessage(MessageIn &msg)
+void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
 {
     short id = msg.readInt16();
     std::string chatMsg = msg.readString();
@@ -174,7 +172,7 @@ void ChatHandler::handleGameChatMessage(MessageIn &msg)
     localChatTab->chatLog(mes, being == player_node ? BY_PLAYER : BY_OTHER);
 }
 
-void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
+void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
 {
     if(msg.readInt8() == ERRMSG_OK)
     {
@@ -209,7 +207,7 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
     }
 }
 
-void ChatHandler::handleListChannelsResponse(MessageIn &msg)
+void ChatHandler::handleListChannelsResponse(Net::MessageIn &msg)
 {
     localChatTab->chatLog(_("Listing channels."), BY_SERVER);
     while(msg.getUnreadLength())
@@ -226,7 +224,7 @@ void ChatHandler::handleListChannelsResponse(MessageIn &msg)
     localChatTab->chatLog(_("End of channel list."), BY_SERVER);
 }
 
-void ChatHandler::handlePrivateMessage(MessageIn &msg)
+void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
 {
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
@@ -234,13 +232,13 @@ void ChatHandler::handlePrivateMessage(MessageIn &msg)
     chatWindow->whisper(userNick, chatMsg);
 }
 
-void ChatHandler::handleAnnouncement(MessageIn &msg)
+void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
 {
     std::string chatMsg = msg.readString();
     localChatTab->chatLog(chatMsg, BY_GM);
 }
 
-void ChatHandler::handleChatMessage(MessageIn &msg)
+void ChatHandler::handleChatMessage(Net::MessageIn &msg)
 {
     short channelId = msg.readInt16();
     std::string userNick = msg.readString();
@@ -250,7 +248,7 @@ void ChatHandler::handleChatMessage(MessageIn &msg)
     channel->getTab()->chatLog(userNick, chatMsg);
 }
 
-void ChatHandler::handleQuitChannelResponse(MessageIn &msg)
+void ChatHandler::handleQuitChannelResponse(Net::MessageIn &msg)
 {
     if(msg.readInt8() == ERRMSG_OK)
     {
@@ -260,7 +258,7 @@ void ChatHandler::handleQuitChannelResponse(MessageIn &msg)
     }
 }
 
-void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
+void ChatHandler::handleListChannelUsersResponse(Net::MessageIn &msg)
 {
     std::string channelName = msg.readString();
     std::string userNick;
@@ -283,7 +281,7 @@ void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
     }
 }
 
-void ChatHandler::handleChannelEvent(MessageIn &msg)
+void ChatHandler::handleChannelEvent(Net::MessageIn &msg)
 {
     short channelId = msg.readInt16();
     char eventId = msg.readInt8();
@@ -337,7 +335,7 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
     }
 }
 
-void ChatHandler::handleWhoResponse(MessageIn &msg)
+void ChatHandler::handleWhoResponse(Net::MessageIn &msg)
 {
     std::string userNick;
 
@@ -354,7 +352,7 @@ void ChatHandler::handleWhoResponse(MessageIn &msg)
 
 void ChatHandler::connect()
 {
-    Net::ChatServer::connect(chatServerConnection, netToken);
+    ChatServer::connect(chatServerConnection, netToken);
 }
 
 bool ChatHandler::isConnected()
@@ -371,7 +369,7 @@ void ChatHandler::talk(const std::string &text)
 {
     MessageOut msg(PGMSG_SAY);
     msg.writeString(text);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void ChatHandler::me(const std::string &text)
@@ -385,13 +383,13 @@ void ChatHandler::privateMessage(const std::string &recipient,
     MessageOut msg(PCMSG_PRIVMSG);
     msg.writeString(recipient);
     msg.writeString(text);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::channelList()
 {
     MessageOut msg(PCMSG_LIST_CHANNELS);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::enterChannel(const std::string &channel,
@@ -400,14 +398,14 @@ void ChatHandler::enterChannel(const std::string &channel,
     MessageOut msg(PCMSG_ENTER_CHANNEL);
     msg.writeString(channel);
     msg.writeString(password);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::quitChannel(int channelId)
 {
     MessageOut msg(PCMSG_QUIT_CHANNEL);
     msg.writeInt16(channelId);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::sendToChannel(int channelId, const std::string &text)
@@ -415,14 +413,14 @@ void ChatHandler::sendToChannel(int channelId, const std::string &text)
     MessageOut msg(PCMSG_CHAT);
     msg.writeString(text);
     msg.writeInt16(channelId);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::userList(const std::string &channel)
 {
     MessageOut msg(PCMSG_LIST_CHANNELUSERS);
     msg.writeString(channel);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::setChannelTopic(int channelId, const std::string &text)
@@ -430,7 +428,7 @@ void ChatHandler::setChannelTopic(int channelId, const std::string &text)
     MessageOut msg(PCMSG_TOPIC_CHANGE);
     msg.writeInt16(channelId);
     msg.writeString(text);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
@@ -439,7 +437,7 @@ void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
     msg.writeInt16(channelId);
     msg.writeString(name);
     msg.writeInt8(mode);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::kickUser(int channelId, const std::string &name)
@@ -447,13 +445,13 @@ void ChatHandler::kickUser(int channelId, const std::string &name)
     MessageOut msg(PCMSG_KICK_USER);
     msg.writeInt16(channelId);
     msg.writeString(name);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 void ChatHandler::who()
 {
     MessageOut msg(PCMSG_WHO);
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
 } // namespace ManaServ

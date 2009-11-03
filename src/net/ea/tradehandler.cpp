@@ -76,7 +76,7 @@ TradeHandler::TradeHandler()
 }
 
 
-void TradeHandler::handleMessage(MessageIn &msg)
+void TradeHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {

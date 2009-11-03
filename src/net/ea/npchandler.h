@@ -22,9 +22,10 @@
 #ifndef NET_EA_NPCHANDLER_H
 #define NET_EA_NPCHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/net.h"
 #include "net/npchandler.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -33,7 +34,7 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
     public:
         NpcHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void talk(int npcId);
 

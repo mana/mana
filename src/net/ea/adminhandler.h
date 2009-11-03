@@ -23,8 +23,9 @@
 #define NET_EA_ADMINHANDLER_H
 
 #include "net/adminhandler.h"
-#include "net/messagehandler.h"
 #include "net/net.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -33,7 +34,7 @@ class AdminHandler : public MessageHandler, public Net::AdminHandler
     public:
         AdminHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void announce(const std::string &text);
 

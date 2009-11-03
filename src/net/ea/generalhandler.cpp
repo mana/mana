@@ -110,7 +110,7 @@ GeneralHandler::~GeneralHandler()
     delete mNetwork;
 }
 
-void GeneralHandler::handleMessage(MessageIn &msg)
+void GeneralHandler::handleMessage(Net::MessageIn &msg)
 {
     int code;
 

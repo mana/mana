@@ -24,23 +24,25 @@
 #include "internal.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/messageout.h"
 
 #include "log.h"
 
-void Net::ChatServer::Guild::createGuild(const std::string &name)
+namespace ManaServ
+{
+
+void ChatServer::Guild::createGuild(const std::string &name)
 {
     logger->log("Sending PCMSG_GUILD_CREATE");
     MessageOut msg(PCMSG_GUILD_CREATE);
 
     msg.writeString(name);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Guild::invitePlayer(const std::string &name, short guildId)
+void ChatServer::Guild::invitePlayer(const std::string &name, short guildId)
 {
     logger->log("Sending PCMSG_GUILD_INVITE");
     MessageOut msg(PCMSG_GUILD_INVITE);
@@ -48,30 +50,30 @@ void Net::ChatServer::Guild::invitePlayer(const std::string &name, short guildId
     msg.writeInt16(guildId);
     msg.writeString(name);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Guild::acceptInvite(const std::string &name)
+void ChatServer::Guild::acceptInvite(const std::string &name)
 {
     logger->log("Sending PCMSG_GUILD_ACCEPT");
     MessageOut msg(PCMSG_GUILD_ACCEPT);
 
     msg.writeString(name);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Guild::getGuildMembers(short guildId)
+void ChatServer::Guild::getGuildMembers(short guildId)
 {
     logger->log("Sending PCMSG_GUILD_GET_MEMBERS");
     MessageOut msg(PCMSG_GUILD_GET_MEMBERS);
 
     msg.writeInt16(guildId);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Guild::promoteMember(const std::string &name,
+void ChatServer::Guild::promoteMember(const std::string &name,
                                            short guildId, short level)
 {
     logger->log("Sending PCMSG_GUILD_PROMOTE_MEMBER");
@@ -81,15 +83,17 @@ void Net::ChatServer::Guild::promoteMember(const std::string &name,
     msg.writeString(name);
     msg.writeInt8(level);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Guild::quitGuild(short guildId)
+void ChatServer::Guild::quitGuild(short guildId)
 {
     logger->log("Sending PCMSG_GUILD_QUIT");
     MessageOut msg(PCMSG_GUILD_QUIT);
 
     msg.writeInt16(guildId);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
+}
+
 }

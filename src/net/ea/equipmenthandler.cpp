@@ -155,7 +155,7 @@ EquipmentHandler::EquipmentHandler()
     memset(equips, 0, sizeof(equips));
 }
 
-void EquipmentHandler::handleMessage(MessageIn &msg)
+void EquipmentHandler::handleMessage(Net::MessageIn &msg)
 {
     int itemCount;
     int index, equipPoint, itemId;

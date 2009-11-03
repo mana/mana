@@ -237,4 +237,4 @@ private:
 extern PlayerRelationsManager player_relations; // singleton representation of player relations
 
 
-#endif /* !defined(PLAYER_RELATIONS_H) */
+#endif // PLAYER_RELATIONS_H

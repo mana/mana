@@ -23,7 +23,8 @@
 #define NET_MANASERV_INVENTORYHANDLER_H
 
 #include "net/inventoryhandler.h"
-#include "net/messagehandler.h"
+
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
@@ -32,7 +33,7 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler
     public:
         InventoryHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void equipItem(const Item *item);
 
@@ -54,8 +55,12 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler
 
         void moveItem(StorageType source, int slot, int amount,
                               StorageType destination);
+
+        size_t getInventorySize() const;
+
+        size_t getStorageSize() const;
 };
 
 } // namespace ManaServ
 
-#endif
+#endif // NET_MANASERV_INVENTORYHANDLER_H

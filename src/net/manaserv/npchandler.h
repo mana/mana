@@ -22,8 +22,9 @@
 #ifndef NET_MANASERV_NPCHANDLER_H
 #define NET_MANASERV_NPCHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/npchandler.h"
+
+#include "net/manaserv/messagehandler.h"
 
 #include <list>
 
@@ -34,7 +35,7 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
     public:
         NpcHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void talk(int npcId);
 
@@ -66,4 +67,4 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
 
 } // namespace ManaServ
 
-#endif
+#endif // NET_MANASERV_NPCHANDLER_H

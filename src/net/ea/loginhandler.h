@@ -23,8 +23,8 @@
 #define NET_EA_LOGINHANDLER_H
 
 #include "net/loginhandler.h"
-#include "net/messagehandler.h"
 
+#include "net/ea/messagehandler.h"
 #include "net/ea/token.h"
 
 #include <string>
@@ -38,7 +38,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
     public:
         LoginHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void connect();
 

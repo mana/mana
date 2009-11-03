@@ -54,7 +54,7 @@ BuySellHandler::BuySellHandler()
     handledMessages = _messages;
 }
 
-void BuySellHandler::handleMessage(MessageIn &msg)
+void BuySellHandler::handleMessage(Net::MessageIn &msg)
 {
     int n_items;
     switch (msg.getId())

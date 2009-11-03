@@ -23,9 +23,10 @@
 #define NET_EA_GENERALHANDLER_H
 
 #include "net/generalhandler.h"
-#include "net/messagehandler.h"
 #include "net/net.h"
 #include "net/serverinfo.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -36,7 +37,7 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
 
         ~GeneralHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void load();
 

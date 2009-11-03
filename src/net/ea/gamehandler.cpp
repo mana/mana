@@ -61,7 +61,7 @@ GameHandler::GameHandler()
     gameHandler = this;
 }
 
-void GameHandler::handleMessage(MessageIn &msg)
+void GameHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {

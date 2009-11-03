@@ -24,56 +24,60 @@
 #include "internal.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/messageout.h"
 
 #include "log.h"
 
-void Net::ChatServer::Party::invitePlayer(const std::string &name)
+namespace ManaServ
+{
+
+void ChatServer::Party::invitePlayer(const std::string &name)
 {
     logger->log("Sending PCMSG_PARTY_INVITE");
     MessageOut msg(PCMSG_PARTY_INVITE);
 
     msg.writeString(name);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Party::acceptInvite(const std::string &name)
+void ChatServer::Party::acceptInvite(const std::string &name)
 {
     logger->log("Sending PCMSG_PARTY_ACCEPT_INVITE");
     MessageOut msg(PCMSG_PARTY_ACCEPT_INVITE);
 
     msg.writeString(name);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Party::rejectInvite(const std::string &name)
+void ChatServer::Party::rejectInvite(const std::string &name)
 {
     logger->log("Sending PCMSG_PARTY_REJECT_INVITE");
     MessageOut msg(PCMSG_PARTY_REJECT_INVITE);
 
     msg.writeString(name);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Party::getPartyMembers()
+void ChatServer::Party::getPartyMembers()
 {
     logger->log("Sending PCMSG_PARTY_GET_MEMBERS");
 //    MessageOut msg(PCMSG_GUILD_GET_MEMBERS);
 
 //    msg.writeInt16(guildId);
 
-//    Net::ChatServer::connection->send(msg);
+//    ChatServer::connection->send(msg);
 }
 
-void Net::ChatServer::Party::quitParty()
+void ChatServer::Party::quitParty()
 {
     logger->log("Sending PCMSG_PARTY_QUIT");
     MessageOut msg(PCMSG_PARTY_QUIT);
 
-    Net::ChatServer::connection->send(msg);
+    ChatServer::connection->send(msg);
+}
+
 }

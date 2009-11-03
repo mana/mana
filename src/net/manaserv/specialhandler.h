@@ -22,8 +22,9 @@
 #ifndef NET_MANASERV_SKILLHANDLER_H
 #define NET_MANASERV_SKILLHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/specialhandler.h"
+
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
@@ -32,7 +33,7 @@ class SpecialHandler : public MessageHandler, public Net::SpecialHandler
     public:
         SpecialHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void use(int id);
 
@@ -45,4 +46,4 @@ class SpecialHandler : public MessageHandler, public Net::SpecialHandler
 
 } // namespace ManaServ
 
-#endif
+#endif // NET_MANASERV_SKILLHANDLER_H

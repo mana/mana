@@ -19,37 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "net/messagehandler.h"
+#include "net/manaserv/messagehandler.h"
 
-#ifdef MANASERV_SUPPORT
 #include "net/manaserv/network.h"
-#else
-#include "net/ea/network.h"
-#endif
 
 #include <cassert>
 
-MessageHandler::MessageHandler()
-#ifdef EATHENA_SUPPORT
-    : mNetwork(0)
-#endif
-{
-}
+namespace ManaServ {
 
 MessageHandler::~MessageHandler()
 {
-#ifdef MANASERV_SUPPORT
-    Net::unregisterHandler(this);
-#else
-    if (mNetwork)
-        mNetwork->unregisterHandler(this);
-#endif
+    unregisterHandler(this);
 }
 
-#ifdef EATHENA_SUPPORT
-void MessageHandler::setNetwork(Network *network)
-{
-    assert(!(network && mNetwork));
-    mNetwork = network;
 }
-#endif

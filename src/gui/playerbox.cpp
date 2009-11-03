@@ -82,21 +82,9 @@ void PlayerBox::draw(gcn::Graphics *graphics)
     {
         // Draw character
         const int bs = getFrameSize();
-//#ifdef MANASERV_SUPPORT
         const int x = getWidth() / 2 + bs;
-        const int y = getHeight() - bs - 8;
+        const int y = getHeight() - bs;
         mPlayer->draw(static_cast<Graphics*>(graphics), x, y);
-/*#else
-        const int x = getWidth() / 2 - 16 + bs;
-        const int y = getHeight() / 2 + bs;
-        for (int i = 0; i < Being::VECTOREND_SPRITE; i++)
-        {
-            if (mPlayer->getSprite(i))
-            {
-                mPlayer->getSprite(i)->draw(static_cast<Graphics*>(graphics), x, y);
-            }
-        }
-#endif*/
     }
 
     if (config.getValue("guialpha", 0.8) != mAlpha)

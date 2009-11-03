@@ -76,4 +76,4 @@ class RadioButton : public gcn::RadioButton
         static Image *radioCheckedHi;
 };
 
-#endif /* RADIOBUTTON_H */
+#endif // RADIOBUTTON_H

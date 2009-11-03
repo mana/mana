@@ -132,7 +132,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
         short guild = getSelectedGuild();
         if (guild)
         {
-            Net::ChatServer::Guild::quitGuild(guild);
+            ManaServ::ChatServer::Guild::quitGuild(guild);
             localChatTab->chatLog(strprintf(_("Guild %s quit."),
                     mGuildTabs->getSelectedTab()->getCaption().c_str()), BY_SERVER);
         }
@@ -146,7 +146,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
             return;
         }
         // Process guild name to be created, and unfocus.
-        Net::ChatServer::Guild::createGuild(name);
+        ManaServ::ChatServer::Guild::createGuild(name);
 
         // Defocus dialog
         mFocus = false;
@@ -160,7 +160,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
         short selectedGuild = getSelectedGuild();
 
         // Process invited user to be created and unfocus.
-        Net::ChatServer::Guild::invitePlayer(name, selectedGuild);
+        ManaServ::ChatServer::Guild::invitePlayer(name, selectedGuild);
 
         // Defocus dialog
         mFocus = false;
@@ -170,7 +170,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     else if (eventId == "yes")
     {
         logger->log("Sending invitation acceptance.");
-        Net::ChatServer::Guild::acceptInvite(invitedGuild);
+        ManaServ::ChatServer::Guild::acceptInvite(invitedGuild);
     }
 }
 
@@ -253,7 +253,7 @@ void GuildWindow::openAcceptDialog(const std::string &inviterName,
 void GuildWindow::requestMemberList(short guildId)
 {
     // Get the list of members for displaying in the guild window.
-    Net::ChatServer::Guild::getGuildMembers(guildId);
+    ManaServ::ChatServer::Guild::getGuildMembers(guildId);
 }
 
 void GuildWindow::removeTab(int guildId)

@@ -23,9 +23,6 @@
 
 #include "net/ea/protocol.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "being.h"
 #include "beingmanager.h"
 #include "effectmanager.h"
@@ -97,7 +94,7 @@ Being *createBeing(int id, short job)
     return being;
 }
 
-void BeingHandler::handleMessage(MessageIn &msg)
+void BeingHandler::handleMessage(Net::MessageIn &msg)
 {
     int id;
     short job, speed, gender;

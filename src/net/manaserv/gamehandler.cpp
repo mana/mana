@@ -34,10 +34,9 @@ Net::GameHandler *gameHandler;
 
 extern ManaServ::ChatHandler *chatHandler;
 
-extern Net::Connection *gameServerConnection;
-
 namespace ManaServ {
 
+extern Connection *gameServerConnection;
 extern std::string netToken;
 extern ServerInfo gameServer;
 
@@ -51,7 +50,7 @@ GameHandler::GameHandler()
     gameHandler = this;
 }
 
-void GameHandler::handleMessage(MessageIn &msg)
+void GameHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -100,7 +99,7 @@ void GameHandler::disconnect()
 
 void GameHandler::inGame()
 {
-    Net::GameServer::connect(gameServerConnection, netToken);
+    GameServer::connect(gameServerConnection, netToken);
     chatHandler->connect();
 }
 

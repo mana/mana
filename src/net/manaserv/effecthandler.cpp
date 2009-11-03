@@ -41,7 +41,7 @@ EffectHandler::EffectHandler()
     handledMessages = _messages;
 }
 
-void EffectHandler::handleMessage(MessageIn &msg)
+void EffectHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -56,7 +56,7 @@ void EffectHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void EffectHandler::handleCreateEffectPos(MessageIn &msg)
+void EffectHandler::handleCreateEffectPos(Net::MessageIn &msg)
 {
      int id = msg.readInt16();
      Uint16 x = msg.readInt16();
@@ -64,7 +64,7 @@ void EffectHandler::handleCreateEffectPos(MessageIn &msg)
      effectManager->trigger(id, x, y);
 }
 
-void EffectHandler::handleCreateEffectBeing(MessageIn &msg)
+void EffectHandler::handleCreateEffectBeing(Net::MessageIn &msg)
 {
      int eid = msg.readInt16();
      int bid = msg.readInt16();

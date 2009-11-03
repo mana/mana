@@ -182,4 +182,4 @@ private:
 };
 
 
-#endif /* !defined(TABLE_H) */
+#endif // TABLE_H

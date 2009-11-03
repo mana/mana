@@ -22,11 +22,11 @@
 #include "net/manaserv/partyhandler.h"
 
 #include "net/manaserv/protocol.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
 
 #include "net/manaserv/chatserver/chatserver.h"
 #include "net/manaserv/chatserver/party.h"
-
-#include "net/messagein.h"
 
 #include "gui/partywindow.h"
 
@@ -60,7 +60,7 @@ PartyHandler::PartyHandler()
     partyHandler = this;
 }
 
-void PartyHandler::handleMessage(MessageIn &msg)
+void PartyHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -140,20 +140,20 @@ void PartyHandler::invite(Player *player)
 
 void PartyHandler::invite(const std::string &name)
 {
-    Net::ChatServer::Party::invitePlayer(name);
+    ChatServer::Party::invitePlayer(name);
 }
 
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
 {
     if (accept)
-        Net::ChatServer::Party::acceptInvite(inviter);
+        ChatServer::Party::acceptInvite(inviter);
     else
-        Net::ChatServer::Party::rejectInvite(inviter);
+        ChatServer::Party::rejectInvite(inviter);
 }
 
 void PartyHandler::leave()
 {
-    Net::ChatServer::Party::quitParty();
+    ChatServer::Party::quitParty();
 }
 
 void PartyHandler::kick(Player *player)

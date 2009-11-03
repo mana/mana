@@ -84,6 +84,8 @@ short packet_lengths[] = {
 
 const unsigned int BUFFER_SIZE = 65536;
 
+namespace EAthena {
+
 int networkThread(void *data)
 {
     Network *network = static_cast<Network*>(data);
@@ -222,9 +224,13 @@ void Network::dispatchMessages()
         MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
         if (iter != mMessageHandlers.end())
+        {
             iter->second->handleMessage(msg);
+        }
         else
+        {
             logger->log("Unhandled packet: %x", msg.getId());
+        }
 
         skip(msg.getLength());
     }
@@ -317,7 +323,7 @@ MessageIn Network::getNextMessage()
         len = readWord(2);
 
 #ifdef DEBUG
-    logger->log("Received packet 0x%x of length %d", msgId, len);
+    logger->log("Received packet 0x%x of length %d\n", msgId, len);
 #endif
 
     MessageIn msg(mInBuffer, len);
@@ -463,4 +469,6 @@ Uint16 Network::readWord(int pos)
 #else
     return (*(Uint16*)(mInBuffer+(pos)));
 #endif
+}
+
 }

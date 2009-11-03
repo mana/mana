@@ -23,9 +23,9 @@
 #define NET_MANASERV_MAPHANDLER_H
 
 #include "net/gamehandler.h"
-#include "net/messagehandler.h"
-
 #include "net/serverinfo.h"
+
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
@@ -34,7 +34,7 @@ class GameHandler : public MessageHandler, public Net::GameHandler
     public:
         GameHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void connect();
 
@@ -57,4 +57,4 @@ class GameHandler : public MessageHandler, public Net::GameHandler
 
 } // namespace ManaServ
 
-#endif
+#endif // NET_MANASERV_MAPHANDLER_H

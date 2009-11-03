@@ -24,7 +24,8 @@
 
 #include "net/generalhandler.h"
 #include "net/net.h"
-#include "net/messagehandler.h"
+
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 

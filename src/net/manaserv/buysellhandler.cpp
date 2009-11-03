@@ -50,7 +50,7 @@ BuySellHandler::BuySellHandler()
     handledMessages = _messages;
 }
 
-void BuySellHandler::handleMessage(MessageIn &msg)
+void BuySellHandler::handleMessage(Net::MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
     if (!being || being->getType() != Being::NPC)

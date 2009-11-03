@@ -57,12 +57,11 @@
 
 Net::GeneralHandler *generalHandler  = NULL;
 
-Net::Connection *gameServerConnection = 0;
-Net::Connection *chatServerConnection = 0;
-Net::Connection *accountServerConnection = 0;
-
 namespace ManaServ {
 
+Connection *accountServerConnection = 0;
+Connection *chatServerConnection = 0;
+Connection *gameServerConnection = 0;
 std::string netToken = "";
 ServerInfo gameServer;
 ServerInfo chatServer;
@@ -84,11 +83,11 @@ GeneralHandler::GeneralHandler():
         mTradeHandler(new TradeHandler),
         mSpecialHandler(new SpecialHandler)
 {
-    Net::initialize();
+    initialize();
 
-    accountServerConnection = Net::getConnection();
-    gameServerConnection = Net::getConnection();
-    chatServerConnection = Net::getConnection();
+    accountServerConnection = getConnection();
+    gameServerConnection = getConnection();
+    chatServerConnection = getConnection();
 
     generalHandler = this;
 
@@ -105,20 +104,20 @@ GeneralHandler::GeneralHandler():
 
 void GeneralHandler::load()
 {
-    Net::registerHandler(mBeingHandler.get());
-    Net::registerHandler(mBuySellHandler.get());
-    Net::registerHandler(mCharHandler.get());
-    Net::registerHandler(mChatHandler.get());
-    Net::registerHandler(mEffectHandler.get());
-    Net::registerHandler(mGameHandler.get());
-    Net::registerHandler(mGuildHandler.get());
-    Net::registerHandler(mInventoryHandler.get());
-    Net::registerHandler(mItemHandler.get());
-    Net::registerHandler(mLoginHandler.get());
-    Net::registerHandler(mNpcHandler.get());
-    Net::registerHandler(mPartyHandler.get());
-    Net::registerHandler(mPlayerHandler.get());
-    Net::registerHandler(mTradeHandler.get());
+    registerHandler(mBeingHandler.get());
+    registerHandler(mBuySellHandler.get());
+    registerHandler(mCharHandler.get());
+    registerHandler(mChatHandler.get());
+    registerHandler(mEffectHandler.get());
+    registerHandler(mGameHandler.get());
+    registerHandler(mGuildHandler.get());
+    registerHandler(mInventoryHandler.get());
+    registerHandler(mItemHandler.get());
+    registerHandler(mLoginHandler.get());
+    registerHandler(mNpcHandler.get());
+    registerHandler(mPartyHandler.get());
+    registerHandler(mPlayerHandler.get());
+    registerHandler(mTradeHandler.get());
 }
 
 void GeneralHandler::reload()
@@ -128,7 +127,7 @@ void GeneralHandler::reload()
 
 void GeneralHandler::unload()
 {
-    Net::clearHandlers();
+    clearHandlers();
 
     if (accountServerConnection)
         accountServerConnection->disconnect();
@@ -141,12 +140,12 @@ void GeneralHandler::unload()
     delete gameServerConnection;
     delete chatServerConnection;
 
-    Net::finalize();
+    finalize();
 }
 
 void GeneralHandler::flushNetwork()
 {
-    Net::flush();
+    flush();
 }
 
 bool GeneralHandler::isNetworkConnected()
@@ -184,7 +183,7 @@ void GeneralHandler::guiWindowsUnloaded()
 
 void GeneralHandler::clearHandlers()
 {
-    Net::clearHandlers();
+    clearHandlers();
 }
 
 } // namespace ManaServ

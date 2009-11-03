@@ -55,7 +55,7 @@ NpcHandler::NpcHandler()
     npcHandler = this;
 }
 
-void NpcHandler::handleMessage(MessageIn &msg)
+void NpcHandler::handleMessage(Net::MessageIn &msg)
 {
     int id;
     bool resetPlayer = false;

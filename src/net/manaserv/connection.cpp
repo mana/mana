@@ -22,26 +22,28 @@
 #include "net/manaserv/connection.h"
 
 #include "net/manaserv/internal.h"
-
-#include "net/messageout.h"
+#include "net/manaserv/messageout.h"
 
 #include "log.h"
 
 #include <string>
 
-Net::Connection::Connection(ENetHost *client):
+namespace ManaServ
+{
+
+Connection::Connection(ENetHost *client):
     mConnection(0), mClient(client)
 {
     mPort = 0;
-    Net::connections++;
+    connections++;
 }
 
-Net::Connection::~Connection()
+Connection::~Connection()
 {
-    Net::connections--;
+    connections--;
 }
 
-bool Net::Connection::connect(const std::string &address, short port)
+bool Connection::connect(const std::string &address, short port)
 {
     logger->log("Net::Connection::connect(%s, %i)", address.c_str(), port);
 
@@ -72,7 +74,7 @@ bool Net::Connection::connect(const std::string &address, short port)
     return true;
 }
 
-void Net::Connection::disconnect()
+void Connection::disconnect()
 {
     if (!mConnection)
         return;
@@ -84,13 +86,13 @@ void Net::Connection::disconnect()
     mConnection = 0;
 }
 
-bool Net::Connection::isConnected()
+bool Connection::isConnected()
 {
     return (mConnection) ?
                     (mConnection->state == ENET_PEER_STATE_CONNECTED) : false;
 }
 
-void Net::Connection::send(const MessageOut &msg)
+void Connection::send(const ManaServ::MessageOut &msg)
 {
     if (!isConnected())
     {
@@ -103,3 +105,5 @@ void Net::Connection::send(const MessageOut &msg)
                                             ENET_PACKET_FLAG_RELIABLE);
     enet_peer_send(mConnection, 0, packet);
 }
+
+} // namespace ManaServ

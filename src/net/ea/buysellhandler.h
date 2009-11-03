@@ -22,7 +22,7 @@
 #ifndef NET_EA_BUYSELLHANDLER_H
 #define NET_EA_BUYSELLHANDLER_H
 
-#include "net/messagehandler.h"
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -31,7 +31,7 @@ class BuySellHandler : public MessageHandler
     public:
         BuySellHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        virtual void handleMessage(Net::MessageIn &msg);
 };
 
 } // namespace EAthena

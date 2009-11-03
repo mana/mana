@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_GAMESERVER_PLAYER_H
-#define NET_GAMESERVER_PLAYER_H
+#ifndef NET_MANASERV_GAMESERVER_PLAYER_H
+#define NET_MANASERV_GAMESERVER_PLAYER_H
 
 #include "being.h"
 
@@ -34,7 +34,7 @@ struct RespawnRequestListener : public gcn::ActionListener
     void action(const gcn::ActionEvent &event);
 };
 
-namespace Net
+namespace ManaServ
 {
     namespace GameServer
     {
@@ -48,4 +48,4 @@ namespace Net
     }
 }
 
-#endif
+#endif // NET_MANASERV_GAMESERVER_PLAYER_H

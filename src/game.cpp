@@ -81,9 +81,6 @@
 #include "net/generalhandler.h"
 #include "net/net.h"
 
-#include "net/manaserv/inventoryhandler.h"
-#include "net/ea/inventoryhandler.h"
-
 #include "resources/imagewriter.h"
 
 #include "utils/gettext.h"

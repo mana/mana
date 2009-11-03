@@ -19,71 +19,48 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef MESSAGEOUT_H
-#define MESSAGEOUT_H
+#ifndef NET_MESSAGEOUT_H
+#define NET_MESSAGEOUT_H
 
 #include <iosfwd>
 #include <SDL_types.h>
 
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
+namespace Net {
 
 /**
  * Used for building an outgoing message.
- *
- * With manaserv, the message is sent using Net::Connection::send() when
- * finished.
  *
  * \ingroup Network
  */
 class MessageOut
 {
     public:
-        /**
-         * Constructor.
-         */
-        MessageOut(short id);
-
-#ifdef MANASERV_SUPPORT
-        /**
-         * Destructor.
-         */
-        ~MessageOut();
-#endif
-
-        void writeInt8(Sint8 value);          /**< Writes a byte. */
-        void writeInt16(Sint16 value);        /**< Writes a short. */
-        void writeInt32(Sint32 value);        /**< Writes a long. */
-
-#ifdef EATHENA_SUPPORT
-        /**
-         * Encodes coordinates and direction in 3 bytes. Used by eAthena.
-         */
-        void writeCoordinates(unsigned short x, unsigned short y,
-                              unsigned char direction);
-#endif
+        virtual void writeInt8(Sint8 value);          /**< Writes a byte. */
+        virtual void writeInt16(Sint16 value) = 0;    /**< Writes a short. */
+        virtual void writeInt32(Sint32 value) = 0;    /**< Writes a long. */
 
         /**
          * Writes a string. If a fixed length is not given (-1), it is stored
          * as a short at the start of the string.
          */
-        void writeString(const std::string &string, int length = -1);
+        virtual void writeString(const std::string &string, int length = -1);
 
         /**
          * Returns the content of the message.
          */
-        char *getData() const;
+        virtual char *getData() const;
 
         /**
          * Returns the length of the data.
          */
-        unsigned int getDataSize() const;
+        virtual unsigned int getDataSize() const;
 
-        short mID;
+    protected:
+        /**
+         * Constructor.
+         */
+        MessageOut(short id);
 
-    private:
-#ifdef MANASERV_SUPPORT
         /**
          * Expand the packet data to be able to hold more data.
          *
@@ -91,14 +68,13 @@ class MessageOut
          * memory in advance instead of expanding size every time more data is
          * added.
          */
-        void expand(size_t size);
-#else
-        Network *mNetwork;
-#endif
+        virtual void expand(size_t size) = 0;
 
         char *mData;                         /**< Data building up. */
         unsigned int mDataSize;              /**< Size of data. */
         unsigned int mPos;                   /**< Position in the data. */
 };
 
-#endif
+}
+
+#endif // NET_MESSAGEOUT_H

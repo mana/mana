@@ -26,10 +26,10 @@
 
 #include <enet/enet.h>
 
-class MessageOut;
-
-namespace Net
+namespace ManaServ
 {
+    class MessageOut;
+
     /**
      * \ingroup Network
      */
@@ -65,10 +65,10 @@ namespace Net
             /**
              * Sends a message.
              */
-            void send(const MessageOut &msg);
+            void send(const ManaServ::MessageOut &msg);
 
         private:
-            friend Connection *Net::getConnection();
+            friend Connection *ManaServ::getConnection();
             Connection(ENetHost *client);
 
             short mPort;
@@ -78,4 +78,4 @@ namespace Net
     };
 }
 
-#endif
+#endif // NET_MANASERV_CONNECTION_H

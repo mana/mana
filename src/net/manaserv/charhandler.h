@@ -26,7 +26,7 @@
 
 #include "gui/charselectdialog.h"
 
-#include "net/messagehandler.h"
+#include "net/manaserv/messagehandler.h"
 
 class LoginData;
 
@@ -40,7 +40,7 @@ class CharHandler : public MessageHandler, public Net::CharHandler
     public:
         CharHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
         {
@@ -69,9 +69,9 @@ class CharHandler : public MessageHandler, public Net::CharHandler
         void switchCharacter();
 
     protected:
-        void handleCharCreateResponse(MessageIn &msg);
+        void handleCharCreateResponse(Net::MessageIn &msg);
 
-        void handleCharSelectResponse(MessageIn &msg);
+        void handleCharSelectResponse(Net::MessageIn &msg);
 
         LockedArray<LocalPlayer*> *mCharInfo;
         CharSelectDialog *mCharSelectDialog;

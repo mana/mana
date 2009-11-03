@@ -38,8 +38,8 @@
 #include "localplayer.h"
 #include "units.h"
 
+#include "net/inventoryhandler.h"
 #include "net/net.h"
-#include "net/ea/inventoryhandler.h"
 
 #include "resources/iteminfo.h"
 

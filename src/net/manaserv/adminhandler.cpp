@@ -34,7 +34,7 @@ AdminHandler::AdminHandler()
 
 void AdminHandler::announce(const std::string &text)
 {
-    Net::ChatServer::announce(text);
+    ManaServ::ChatServer::announce(text);
 }
 
 void AdminHandler::localAnnounce(const std::string &text)

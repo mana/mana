@@ -19,10 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef EA_NETWORK_H
-#define EA_NETWORK_H
+#ifndef NET_EA_NETWORK_H
+#define NET_EA_NETWORK_H
 
 #include "net/serverinfo.h"
+
+#include "net/ea/messagehandler.h"
+#include "net/ea/messagein.h"
+#include "net/ea/messageout.h"
 
 #include <SDL_net.h>
 #include <SDL_thread.h>
@@ -36,15 +40,11 @@
  */
 #define CLIENT_PROTOCOL_VERSION      1
 
-class MessageHandler;
-class MessageIn;
+namespace EAthena {
 
 class Network
 {
     public:
-        friend int networkThread(void *data);
-        friend class MessageOut;
-
         Network();
 
         ~Network();
@@ -89,7 +89,10 @@ class Network
             NET_ERROR
         };
 
-    private:
+    protected:
+        friend int networkThread(void *data);
+        friend class MessageOut;
+
         static Network *instance();
 
         void setError(const std::string &error);
@@ -122,4 +125,6 @@ class Network
         static Network *mInstance;
 };
 
-#endif
+}
+
+#endif // NET_EA_NETWORK_H

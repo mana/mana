@@ -24,15 +24,14 @@
 #include "internal.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/messageout.h"
 
 #include "utils/sha256.h"
 
 #include <string>
 
-void Net::AccountServer::Account::createCharacter(
+void ManaServ::AccountServer::Account::createCharacter(
         const std::string &name, char hairStyle, char hairColor, char gender,
         short strength, short agility, short vitality,
         short intelligence, short dexterity, short willpower)
@@ -50,28 +49,28 @@ void Net::AccountServer::Account::createCharacter(
     msg.writeInt16(dexterity);
     msg.writeInt16(willpower);
 
-    Net::AccountServer::connection->send(msg);
+    ManaServ::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::deleteCharacter(char slot)
+void ManaServ::AccountServer::Account::deleteCharacter(char slot)
 {
     MessageOut msg(PAMSG_CHAR_DELETE);
 
     msg.writeInt8(slot);
 
-    Net::AccountServer::connection->send(msg);
+    ManaServ::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::selectCharacter(char slot)
+void ManaServ::AccountServer::Account::selectCharacter(char slot)
 {
     MessageOut msg(PAMSG_CHAR_SELECT);
 
     msg.writeInt8(slot);
 
-    Net::AccountServer::connection->send(msg);
+    ManaServ::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::unregister(const std::string &username,
+void ManaServ::AccountServer::Account::unregister(const std::string &username,
                                              const std::string &password)
 {
     MessageOut msg(PAMSG_UNREGISTER);
@@ -79,10 +78,10 @@ void Net::AccountServer::Account::unregister(const std::string &username,
     msg.writeString(username);
     msg.writeString(sha256(username + password));
 
-    Net::AccountServer::connection->send(msg);
+    ManaServ::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::changeEmail(const std::string &email)
+void ManaServ::AccountServer::Account::changeEmail(const std::string &email)
 {
     MessageOut msg(PAMSG_EMAIL_CHANGE);
 
@@ -90,10 +89,10 @@ void Net::AccountServer::Account::changeEmail(const std::string &email)
     // Encryption is assumed server-side.
     msg.writeString(email);
 
-    Net::AccountServer::connection->send(msg);
+    ManaServ::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::changePassword(
+void ManaServ::AccountServer::Account::changePassword(
                             const std::string &username,
                             const std::string &oldPassword,
                             const std::string &newPassword)
@@ -104,5 +103,5 @@ void Net::AccountServer::Account::changePassword(
     msg.writeString(sha256(username + oldPassword));
     msg.writeString(sha256(username + newPassword));
 
-    Net::AccountServer::connection->send(msg);
+    ManaServ::AccountServer::connection->send(msg);
 }

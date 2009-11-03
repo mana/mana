@@ -23,7 +23,7 @@
 
 #include "net/manaserv/protocol.h"
 
-#include "net/messagein.h"
+#include "net/manaserv/messagein.h"
 
 #include "engine.h"
 #include "flooritemmanager.h"
@@ -40,7 +40,7 @@ ItemHandler::ItemHandler()
     handledMessages = _messages;
 }
 
-void ItemHandler::handleMessage(MessageIn &msg)
+void ItemHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {

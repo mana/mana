@@ -25,17 +25,13 @@
 #include <iosfwd>
 
 /**
- * \defgroup Network Core network layer
- */
-
-class MessageHandler;
-class MessageOut;
-
-/**
  * \ingroup Network
  */
-namespace Net
+namespace ManaServ
 {
+    class MessageHandler;
+    class MessageOut;
+
     class Connection;
 
     /**
@@ -74,6 +70,6 @@ namespace Net
      * registered handlers
      */
     void flush();
-}
+} // namespace ManaServ
 
 #endif

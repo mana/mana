@@ -38,6 +38,7 @@
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/layout.h"
 
+#include "net/inventoryhandler.h"
 #include "net/net.h"
 #include "net/tradehandler.h"
 
@@ -56,8 +57,10 @@
 
 TradeWindow::TradeWindow():
     Window(_("Trade: You")),
-    mMyInventory(new Inventory(INVENTORY_SIZE)),
-    mPartnerInventory(new Inventory(INVENTORY_SIZE)),
+    mMyInventory(new Inventory(Net::getInventoryHandler()
+                               ->getInventorySize())),
+    mPartnerInventory(new Inventory(Net::getInventoryHandler()
+                                    ->getInventorySize())),
     mStatus(PROPOSING)
 {    
     setWindowName("Trade");

@@ -21,7 +21,7 @@
 
 #include "net/manaserv/internal.h"
 
-namespace Net
+namespace ManaServ
 {
     int connections = 0;
 }

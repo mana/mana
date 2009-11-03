@@ -26,6 +26,9 @@
 
 #include "inventory.h"
 
+#include "net/inventoryhandler.h"
+#include "net/net.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/selectionlistener.hpp>
@@ -49,7 +52,8 @@ class InventoryWindow : public Window,
         /**
          * Constructor.
          */
-        InventoryWindow(int invSize = (INVENTORY_SIZE));
+        InventoryWindow(int invSize = Net::getInventoryHandler()
+                                      ->getInventorySize());
 
         /**
          * Destructor.

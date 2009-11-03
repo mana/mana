@@ -72,7 +72,7 @@ InventoryHandler::InventoryHandler()
     inventoryHandler = this;
 }
 
-void InventoryHandler::handleMessage(MessageIn &msg)
+void InventoryHandler::handleMessage(Net::MessageIn &msg)
 {
     int number;
     int index, amount, itemId, equipType, arrow;
@@ -372,6 +372,16 @@ void InventoryHandler::moveItem(StorageType source, int slot, int amount,
         outMsg.writeInt16(slot + STORAGE_OFFSET);
         outMsg.writeInt32(amount);
     }
+}
+
+size_t InventoryHandler::getInventorySize() const
+{
+    return 100;
+}
+
+size_t InventoryHandler::getStorageSize() const
+{
+    return 300;
 }
 
 } // namespace EAthena

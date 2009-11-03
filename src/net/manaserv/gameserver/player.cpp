@@ -24,34 +24,38 @@
 #include "internal.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/messageout.h"
 
 void RespawnRequestListener::action(const gcn::ActionEvent &event)
 {
-    Net::GameServer::Player::respawn();
+    ManaServ::GameServer::Player::respawn();
 }
 
-void Net::GameServer::Player::walk(int x, int y)
+namespace ManaServ
+{
+
+void GameServer::Player::walk(int x, int y)
 {
     MessageOut msg(PGMSG_WALK);
     msg.writeInt16(x);
     msg.writeInt16(y);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::moveItem(int oldSlot, int newSlot, int amount)
+void GameServer::Player::moveItem(int oldSlot, int newSlot, int amount)
 {
     MessageOut msg(PGMSG_MOVE_ITEM);
     msg.writeInt8(oldSlot);
     msg.writeInt8(newSlot);
     msg.writeInt8(amount);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::respawn()
+void GameServer::Player::respawn()
 {
     MessageOut msg(PGMSG_RESPAWN);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
+}
+
 }

@@ -67,7 +67,7 @@ CharServerHandler::CharServerHandler():
     charHandler = this;
 }
 
-void CharServerHandler::handleMessage(MessageIn &msg)
+void CharServerHandler::handleMessage(Net::MessageIn &msg)
 {
     int count, slot;
     LocalPlayer *tempPlayer;
@@ -176,7 +176,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
     }
 }
 
-LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
+LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
 {
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();

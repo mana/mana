@@ -22,9 +22,10 @@
 #ifndef NET_EA_SKILLHANDLER_H
 #define NET_EA_SKILLHANDLER_H
 
-#include "net/messagehandler.h"
 #include "net/net.h"
 #include "net/specialhandler.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -33,7 +34,7 @@ class SpecialHandler : public MessageHandler, public Net::SpecialHandler
     public:
         SpecialHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void use(int id);
 

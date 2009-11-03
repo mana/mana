@@ -57,7 +57,6 @@
 #ifdef MANASERV_SUPPORT
 #include "guild.h"
 
-//#include "net/manaserv/gameserver/player.h"
 #include "net/manaserv/chatserver/guild.h"
 #endif
 
@@ -106,11 +105,11 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mWalkingDir(0),
     mPathSetByMouse(false),
     mDestX(0), mDestY(0),
-    mInventory(new Inventory(INVENTORY_SIZE)),
+    mInventory(new Inventory(Net::getInventoryHandler()->getInventorySize())),
 #ifdef MANASERV_SUPPORT
     mLocalWalkTime(-1),
 #endif
-    mStorage(new Inventory(STORAGE_SIZE)),
+    mStorage(new Inventory(Net::getInventoryHandler()->getStorageSize())),
     mMessageTime(0)
 {
     // Variable to keep the local player from doing certain actions before a map
@@ -132,9 +131,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 LocalPlayer::~LocalPlayer()
 {
     delete mInventory;
-#ifdef EATHENA_SUPPORT
     delete mStorage;
-#endif
 
     config.removeListener("showownname", this);
 
@@ -297,7 +294,7 @@ void LocalPlayer::nextStep(unsigned char dir = 0)
 
 
     Player::nextStep();
-#else // MANASERV_SUPPORT
+#else
         if (!mMap || !dir)
         return;
 
@@ -379,7 +376,7 @@ void LocalPlayer::inviteToGuild(Being *being)
     {
         if (checkInviteRights(itr->second->getName()))
         {
-            Net::ChatServer::Guild::invitePlayer(being->getName(), itr->second->getId());
+            ManaServ::ChatServer::Guild::invitePlayer(being->getName(), itr->second->getId());
             return;
         }
     }
@@ -635,7 +632,7 @@ void LocalPlayer::startWalking(unsigned char dir)
         Net::getPlayerHandler()->setDirection(dir);
         setDirection(dir);
     }
-#else // MANASERV_SUPPORT
+#else
     nextStep(dir);
 #endif
 }
@@ -687,58 +684,6 @@ void LocalPlayer::emote(Uint8 emotion)
 }
 
 #ifdef MANASERV_SUPPORT
-/*
-void LocalPlayer::attack()
-{
-    if (mLastAction != -1)
-        return;
-
-    // Can only attack when standing still
-    if (mAction != STAND && mAction != ATTACK)
-        return;
-
-    //Face direction of the target
-    if(mTarget){
-        unsigned char dir = 0;
-        int x = 0, y = 0;
-        Vector plaPos = this->getPosition();
-        Vector tarPos = mTarget->getPosition();
-        x = plaPos.x - tarPos.x;
-        y = plaPos.y - tarPos.y;
-        if(abs(x) < abs(y)){
-            //Check to see if target is above me or below me
-            if(y > 0){
-               dir = UP;
-            } else {
-               dir = DOWN;
-            }
-        } else {
-            //check to see if the target is to the left or right of me
-            if(x > 0){
-               dir = LEFT;
-            } else {
-               dir = RIGHT;
-            }
-        }
-        setDirection(dir);
-    }
-
-    mLastAction = tick_time;
-
-    setAction(ATTACK);
-
-    if (mEquippedWeapon)
-    {
-        std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);
-        if (soundFile != "") sound.playSfx(soundFile);
-    }
-    else {
-        sound.playSfx("sfx/fist-swish.ogg");
-    }
-    Net::GameServer::Player::attack(getSpriteDirection());
-}
-*/
-
 void LocalPlayer::useSpecial(int special)
 {
     Net::getSpecialHandler()->use(special);
@@ -751,7 +696,6 @@ void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
     mSpecials[id].neededMana = max;
     mSpecials[id].recharge = recharge;
 }
-
 #endif
 
 void LocalPlayer::attack(Being *target, bool keep)
@@ -780,16 +724,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     Vector tarPos = mTarget->getPosition();
     int dist_x = plaPos.x - tarPos.x;
     int dist_y = plaPos.y - tarPos.y;
-#else
-    int dist_x = target->getTileX() - getTileX();
-    int dist_y = target->getTileY() - getTileY();
 
-    // Must be standing to attack
-    if (mAction != STAND)
-        return;
-#endif
-
-#ifdef MANASERV_SUPPORT
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y < 0)
@@ -804,7 +739,16 @@ void LocalPlayer::attack(Being *target, bool keep)
         else
             setDirection(LEFT);
     }
+
+    mLastAction = tick_time;
 #else
+    int dist_x = target->getTileX() - getTileX();
+    int dist_y = target->getTileY() - getTileY();
+
+    // Must be standing to attack
+    if (mAction != STAND)
+        return;
+
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y > 0)
@@ -819,11 +763,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         else
             setDirection(LEFT);
     }
-#endif
 
-#ifdef MANASERV_SUPPORT
-    mLastAction = tick_time;
-#else
     mWalkTime = tick_time;
     mTargetTime = tick_time;
 #endif
@@ -1187,14 +1127,12 @@ void LocalPlayer::loadTargetCursor(const std::string &filename,
     mTargetCursor[index][size] = currentCursor;
 }
 
-#ifdef EATHENA_SUPPORT
 void LocalPlayer::setInStorage(bool inStorage)
 {
     mInStorage = inStorage;
 
     storageWindow->setVisible(inStorage);
 }
-#endif
 
 void LocalPlayer::addMessageToQueue(const std::string &message,
                                     Palette::ColorType color)

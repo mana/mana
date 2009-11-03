@@ -22,7 +22,7 @@
 #ifndef NET_MANASERV_INTERNAL_H
 #define NET_MANASERV_INTERNAL_H
 
-namespace Net
+namespace ManaServ
 {
     extern int connections;
 }

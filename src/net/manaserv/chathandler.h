@@ -23,9 +23,9 @@
 #define NET_MANASERV_CHATHANDLER_H
 
 #include "net/chathandler.h"
-#include "net/messagehandler.h"
-
 #include "net/serverinfo.h"
+
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
@@ -37,7 +37,7 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
         /**
          * Handle the given message appropriately.
          */
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void connect();
 
@@ -75,52 +75,52 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
         /**
          * Handle chat messages sent from the game server.
          */
-        void handleGameChatMessage(MessageIn &msg);
+        void handleGameChatMessage(Net::MessageIn &msg);
 
         /**
          * Handle channel entry responses.
          */
-        void handleEnterChannelResponse(MessageIn &msg);
+        void handleEnterChannelResponse(Net::MessageIn &msg);
 
         /**
          * Handle list channels responses.
          */
-        void handleListChannelsResponse(MessageIn &msg);
+        void handleListChannelsResponse(Net::MessageIn &msg);
 
         /**
          * Handle private messages.
          */
-        void handlePrivateMessage(MessageIn &msg);
+        void handlePrivateMessage(Net::MessageIn &msg);
 
         /**
          * Handle announcements.
          */
-        void handleAnnouncement(MessageIn &msg);
+        void handleAnnouncement(Net::MessageIn &msg);
 
         /**
          * Handle chat messages.
          */
-        void handleChatMessage(MessageIn &msg);
+        void handleChatMessage(Net::MessageIn &msg);
 
         /**
          * Handle quit channel responses.
          */
-        void handleQuitChannelResponse(MessageIn &msg);
+        void handleQuitChannelResponse(Net::MessageIn &msg);
 
         /**
          * Handle list channel users responses.
          */
-        void handleListChannelUsersResponse(MessageIn &msg);
+        void handleListChannelUsersResponse(Net::MessageIn &msg);
 
         /**
          * Handle channel events.
          */
-        void handleChannelEvent(MessageIn &msg);
+        void handleChannelEvent(Net::MessageIn &msg);
 
         /**
          * Handle who responses.
          */
-        void handleWhoResponse(MessageIn &msg);
+        void handleWhoResponse(Net::MessageIn &msg);
 };
 
 } // namespace ManaServ

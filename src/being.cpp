@@ -197,7 +197,7 @@ void Being::setDestination(int dstX, int dstY)
 
     setPath(thisPath);
 }
-#endif  // MANASERV_SUPPORT
+#endif
 
 void Being::clearPath()
 {

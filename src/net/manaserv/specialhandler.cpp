@@ -24,9 +24,9 @@
 #include "net/manaserv/gameserver/internal.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/messageout.h"
 
 Net::SpecialHandler *specialHandler;
 
@@ -37,7 +37,7 @@ SpecialHandler::SpecialHandler()
     specialHandler = this;
 }
 
-void SpecialHandler::handleMessage(MessageIn &msg)
+void SpecialHandler::handleMessage(Net::MessageIn &msg)
 {
     // TODO
 }
@@ -46,7 +46,7 @@ void SpecialHandler::use(int id)
 {
     MessageOut msg(PGMSG_USE_SPECIAL);
     msg.writeInt8(id);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void SpecialHandler::use(int id, int level, int beingId)

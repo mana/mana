@@ -100,4 +100,14 @@ std::string &removeBadChars(std::string &str);
  */
 std::string removeColors(std::string msg);
 
+/**
+ * Compares the two strings case-insensitively.
+ *
+ * @param a the first string in the comparison
+ * @param b the second string in the comparison
+ * @return 0 if the strings are equal, positive if the first is greater,
+ *           negative if the second is greater
+ */
+int compareStrI(const std::string &a, const std::string &b);
+
 #endif // UTILS_STRINGUTILS_H

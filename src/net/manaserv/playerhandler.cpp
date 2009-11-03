@@ -22,13 +22,13 @@
 #include "net/manaserv/playerhandler.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
 #include "net/manaserv/gameserver/internal.h"
 #include "net/manaserv/gameserver/player.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
 #include "net/net.h"
 
 #include "effectmanager.h"
@@ -112,7 +112,7 @@ PlayerHandler::PlayerHandler()
     playerHandler = this;
 }
 
-void PlayerHandler::handleMessage(MessageIn &msg)
+void PlayerHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -289,7 +289,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
+void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
 {
     const std::string mapName = msg.readString();
     const unsigned short x = msg.readInt16();
@@ -328,7 +328,7 @@ void PlayerHandler::attack(int id)
 {
     MessageOut msg(PGMSG_ATTACK);
     msg.writeInt16(id);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void PlayerHandler::emote(int emoteId)
@@ -340,14 +340,14 @@ void PlayerHandler::increaseAttribute(size_t attr)
 {
     MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
     msg.writeInt8(attr);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void PlayerHandler::decreaseAttribute(size_t attr)
 {
     MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
     msg.writeInt8(attr);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void PlayerHandler::increaseSkill(int skillId)
@@ -361,14 +361,14 @@ void PlayerHandler::pickUp(FloorItem *floorItem)
     MessageOut msg(PGMSG_PICKUP);
     msg.writeInt16(id >> 16);
     msg.writeInt16(id & 0xFFFF);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void PlayerHandler::setDirection(char direction)
 {
     MessageOut msg(PGMSG_DIRECTION_CHANGE);
     msg.writeInt8(direction);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void PlayerHandler::setDestination(int x, int y, int /* direction */)
@@ -376,7 +376,7 @@ void PlayerHandler::setDestination(int x, int y, int /* direction */)
     MessageOut msg(PGMSG_WALK);
     msg.writeInt16(x);
     msg.writeInt16(y);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void PlayerHandler::changeAction(Being::Action action)
@@ -385,7 +385,7 @@ void PlayerHandler::changeAction(Being::Action action)
 
     MessageOut msg(PGMSG_ACTION_CHANGE);
     msg.writeInt8(action);
-    Net::GameServer::connection->send(msg);
+    GameServer::connection->send(msg);
 }
 
 void PlayerHandler::respawn()
@@ -406,6 +406,16 @@ void PlayerHandler::ignoreAll(bool ignore)
 bool PlayerHandler::canUseMagic()
 {
     return true;
+}
+
+bool PlayerHandler::canCorrectAttributes()
+{
+    return true;
+}
+
+int PlayerHandler::getJobLocation()
+{
+    return -1;
 }
 
 } // namespace ManaServ

@@ -28,10 +28,7 @@
 
 #include <memory>
 
-class MessageIn;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
+namespace Net {
 
 /**
  * \ingroup Network
@@ -41,19 +38,9 @@ class MessageHandler
     public:
         const Uint16 *handledMessages;
 
-        MessageHandler();
-        virtual ~MessageHandler();
-
         virtual void handleMessage(MessageIn &msg) = 0;
-
-#ifdef EATHENA_SUPPORT
-        void setNetwork(Network *network);
-
-    protected:
-        Network *mNetwork;
-#endif
 };
 
-typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
+}
 
 #endif // NET_MESSAGEHANDLER_H

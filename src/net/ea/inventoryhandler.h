@@ -23,8 +23,9 @@
 #define NET_EA_INVENTORYHANDLER_H
 
 #include "net/inventoryhandler.h"
-#include "net/messagehandler.h"
 #include "net/net.h"
+
+#include "net/ea/messagehandler.h"
 
 namespace EAthena {
 
@@ -33,7 +34,7 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
     public:
         InventoryHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void equipItem(const Item *item);
 
@@ -55,6 +56,10 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 
         void moveItem(StorageType source, int slot, int amount,
                       StorageType destination);
+
+        size_t getInventorySize() const;
+
+        size_t getStorageSize() const;
 };
 
 } // namespace EAthena

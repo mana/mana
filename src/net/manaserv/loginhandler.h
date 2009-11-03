@@ -23,9 +23,9 @@
 #define NET_MANASERV_LOGINHANDLER_H
 
 #include "net/loginhandler.h"
-#include "net/messagehandler.h"
-
 #include "net/serverinfo.h"
+
+#include "net/manaserv/messagehandler.h"
 
 class LoginData;
 
@@ -36,7 +36,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
     public:
         LoginHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(Net::MessageIn &msg);
 
         void connect();
 
@@ -71,10 +71,10 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         Worlds getWorlds() const;
 
     private:
-        void handleLoginResponse(MessageIn &msg);
-        void handleRegisterResponse(MessageIn &msg);
+        void handleLoginResponse(Net::MessageIn &msg);
+        void handleRegisterResponse(Net::MessageIn &msg);
 
-        void readUpdateHost(MessageIn &msg);
+        void readUpdateHost(Net::MessageIn &msg);
 
         LoginData *mLoginData;
 };
