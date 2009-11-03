@@ -367,12 +367,6 @@ src/net/manaserv/effecthandler.cpp
 src/net/manaserv/effecthandler.h
 src/net/manaserv/gamehandler.cpp
 src/net/manaserv/gamehandler.h
-src/net/manaserv/gameserver/gameserver.cpp
-src/net/manaserv/gameserver/gameserver.h
-src/net/manaserv/gameserver/internal.cpp
-src/net/manaserv/gameserver/internal.h
-src/net/manaserv/gameserver/player.cpp
-src/net/manaserv/gameserver/player.h
 src/net/manaserv/generalhandler.cpp
 src/net/manaserv/generalhandler.h
 src/net/manaserv/guildhandler.cpp
