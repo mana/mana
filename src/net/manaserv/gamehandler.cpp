@@ -23,10 +23,8 @@
 
 #include "net/manaserv/chathandler.h"
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/manaserv/chatserver/chatserver.h"
-#include "net/manaserv/gameserver/gameserver.h"
 
 #include "main.h"
 
@@ -99,7 +97,11 @@ void GameHandler::disconnect()
 
 void GameHandler::inGame()
 {
-    GameServer::connect(gameServerConnection, netToken);
+
+    MessageOut msg(PGMSG_CONNECT);
+    msg.writeString(netToken, 32);
+    gameServerConnection->send(msg);
+
     chatHandler->connect();
 }
 
@@ -115,7 +117,9 @@ void GameHandler::who()
 
 void GameHandler::quit()
 {
-    // TODO
+    //MessageOut msg(PGMSG_DISCONNECT);
+    //msg.writeInt8((unsigned char) reconnectAccount);
+    //gameServerConnection->send(msg);
 }
 
 void GameHandler::ping(int tick)

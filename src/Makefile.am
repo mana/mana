@@ -395,26 +395,8 @@ mana_SOURCES += \
 	      gui/guildlistbox.h \
 	      gui/guildwindow.cpp \
 	      gui/guildwindow.h \
-	      net/manaserv/accountserver/account.cpp \
-	      net/manaserv/accountserver/account.h \
-	      net/manaserv/accountserver/accountserver.cpp \
-	      net/manaserv/accountserver/accountserver.h \
-	      net/manaserv/accountserver/internal.cpp \
-	      net/manaserv/accountserver/internal.h \
-	      net/manaserv/chatserver/chatserver.cpp \
-	      net/manaserv/chatserver/chatserver.h \
 	      net/manaserv/chatserver/guild.cpp \
 	      net/manaserv/chatserver/guild.h \
-	      net/manaserv/chatserver/internal.cpp \
-	      net/manaserv/chatserver/internal.h \
-	      net/manaserv/chatserver/party.cpp \
-	      net/manaserv/chatserver/party.h \
-	      net/manaserv/gameserver/gameserver.cpp \
-	      net/manaserv/gameserver/gameserver.h \
-	      net/manaserv/gameserver/internal.cpp \
-	      net/manaserv/gameserver/internal.h \
-	      net/manaserv/gameserver/player.cpp \
-	      net/manaserv/gameserver/player.h \
 	      net/manaserv/adminhandler.cpp \
 	      net/manaserv/adminhandler.h \
 	      net/manaserv/beinghandler.cpp \

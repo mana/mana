@@ -21,9 +21,6 @@
 
 #include "net/manaserv/tradehandler.h"
 
-#include "net/manaserv/gameserver/internal.h"
-#include "net/manaserv/gameserver/player.h"
-
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
@@ -46,6 +43,12 @@
 std::string tradePartnerName;
 int tradePartnerID;
 
+Net::TradeHandler *tradeHandler;
+
+namespace ManaServ {
+
+extern Connection *gameServerConnection;
+
 /**
  * Listener for request trade dialogs
  */
@@ -58,17 +61,13 @@ namespace {
             {
                 ManaServ::MessageOut msg(PGMSG_TRADE_REQUEST);
                 msg.writeInt16(tradePartnerID);
-                ManaServ::GameServer::connection->send(msg);
+                gameServerConnection->send(msg);
             }
             else
                 Net::getTradeHandler()->cancel();
         }
     } listener;
 }
-
-Net::TradeHandler *tradeHandler;
-
-namespace ManaServ {
 
 TradeHandler::TradeHandler():
     mAcceptTradeRequests(true)
@@ -170,13 +169,13 @@ void TradeHandler::request(Being *being)
 
     MessageOut msg(PGMSG_TRADE_REQUEST);
     msg.writeInt16(tradePartnerID);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void TradeHandler::respond(bool accept)
 {
     MessageOut msg(accept ? PGMSG_TRADE_REQUEST : PGMSG_TRADE_CANCEL);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 
     if (!accept)
         player_node->setTrading(false);
@@ -187,7 +186,7 @@ void TradeHandler::addItem(Item *item, int amount)
     MessageOut msg(PGMSG_TRADE_ADD_ITEM);
     msg.writeInt8(item->getInvIndex());
     msg.writeInt8(amount);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 
     tradeWindow->addItem(item->getId(), true, amount);
     item->increaseQuantity(-amount);
@@ -202,25 +201,25 @@ void TradeHandler::setMoney(int amount)
 {
     MessageOut msg(PGMSG_TRADE_SET_MONEY);
     msg.writeInt32(amount);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void TradeHandler::confirm()
 {
     MessageOut msg(PGMSG_TRADE_CONFIRM);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void TradeHandler::finish()
 {
     MessageOut msg(PGMSG_TRADE_AGREED);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void TradeHandler::cancel()
 {
     MessageOut msg(PGMSG_TRADE_CANCEL);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 } // namespace ManaServ

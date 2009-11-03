@@ -349,12 +349,6 @@ src/net/guildhandler.h
 src/net/inventoryhandler.h
 src/net/logindata.h
 src/net/loginhandler.h
-src/net/manaserv/accountserver/account.cpp
-src/net/manaserv/accountserver/account.h
-src/net/manaserv/accountserver/accountserver.cpp
-src/net/manaserv/accountserver/accountserver.h
-src/net/manaserv/accountserver/internal.cpp
-src/net/manaserv/accountserver/internal.h
 src/net/manaserv/adminhandler.cpp
 src/net/manaserv/adminhandler.h
 src/net/manaserv/beinghandler.cpp
@@ -365,14 +359,8 @@ src/net/manaserv/charhandler.cpp
 src/net/manaserv/charhandler.h
 src/net/manaserv/chathandler.cpp
 src/net/manaserv/chathandler.h
-src/net/manaserv/chatserver/chatserver.cpp
-src/net/manaserv/chatserver/chatserver.h
 src/net/manaserv/chatserver/guild.cpp
 src/net/manaserv/chatserver/guild.h
-src/net/manaserv/chatserver/internal.cpp
-src/net/manaserv/chatserver/internal.h
-src/net/manaserv/chatserver/party.cpp
-src/net/manaserv/chatserver/party.h
 src/net/manaserv/connection.cpp
 src/net/manaserv/connection.h
 src/net/manaserv/effecthandler.cpp

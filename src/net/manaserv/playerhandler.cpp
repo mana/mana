@@ -26,9 +26,6 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
-#include "net/manaserv/gameserver/internal.h"
-#include "net/manaserv/gameserver/player.h"
-
 #include "net/net.h"
 
 #include "effectmanager.h"
@@ -93,6 +90,13 @@ namespace {
 Net::PlayerHandler *playerHandler;
 
 namespace ManaServ {
+
+void RespawnRequestListener::action(const gcn::ActionEvent &event)
+{
+    Net::getPlayerHandler()->respawn();
+}
+
+extern Connection *gameServerConnection;
 
 PlayerHandler::PlayerHandler()
 {
@@ -328,7 +332,7 @@ void PlayerHandler::attack(int id)
 {
     MessageOut msg(PGMSG_ATTACK);
     msg.writeInt16(id);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::emote(int emoteId)
@@ -340,14 +344,14 @@ void PlayerHandler::increaseAttribute(size_t attr)
 {
     MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
     msg.writeInt8(attr);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::decreaseAttribute(size_t attr)
 {
     MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
     msg.writeInt8(attr);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::increaseSkill(int skillId)
@@ -361,14 +365,14 @@ void PlayerHandler::pickUp(FloorItem *floorItem)
     MessageOut msg(PGMSG_PICKUP);
     msg.writeInt16(id >> 16);
     msg.writeInt16(id & 0xFFFF);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::setDirection(char direction)
 {
     MessageOut msg(PGMSG_DIRECTION_CHANGE);
     msg.writeInt8(direction);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::setDestination(int x, int y, int /* direction */)
@@ -376,7 +380,7 @@ void PlayerHandler::setDestination(int x, int y, int /* direction */)
     MessageOut msg(PGMSG_WALK);
     msg.writeInt16(x);
     msg.writeInt16(y);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::changeAction(Being::Action action)
@@ -385,12 +389,13 @@ void PlayerHandler::changeAction(Being::Action action)
 
     MessageOut msg(PGMSG_ACTION_CHANGE);
     msg.writeInt8(action);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::respawn()
 {
-    // TODO
+    MessageOut msg(PGMSG_RESPAWN);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::ignorePlayer(const std::string &player, bool ignore)

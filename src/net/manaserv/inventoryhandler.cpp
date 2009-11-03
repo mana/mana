@@ -26,9 +26,6 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
-#include "net/manaserv/gameserver/internal.h"
-#include "net/manaserv/gameserver/player.h"
-
 #include "equipment.h"
 #include "inventory.h"
 #include "item.h"
@@ -44,6 +41,8 @@
 Net::InventoryHandler *inventoryHandler;
 
 namespace ManaServ {
+
+extern Connection *gameServerConnection;
 
 InventoryHandler::InventoryHandler()
 {
@@ -93,14 +92,14 @@ void InventoryHandler::equipItem(const Item *item)
 {
     MessageOut msg(PGMSG_EQUIP);
     msg.writeInt8(item->getInvIndex());
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void InventoryHandler::unequipItem(const Item *item)
 {
     MessageOut msg(PGMSG_UNEQUIP);
     msg.writeInt8(item->getInvIndex());
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
     int equipSlot = item->getInvIndex();
@@ -112,7 +111,7 @@ void InventoryHandler::useItem(const Item *item)
 {
     MessageOut msg(PGMSG_USE_ITEM);
     msg.writeInt8(item->getInvIndex());
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void InventoryHandler::dropItem(const Item *item, int amount)
@@ -120,7 +119,7 @@ void InventoryHandler::dropItem(const Item *item, int amount)
     MessageOut msg(PGMSG_DROP);
     msg.writeInt8(item->getInvIndex());
     msg.writeInt8(amount);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 bool InventoryHandler::canSplit(const Item *item)
@@ -133,7 +132,11 @@ void InventoryHandler::splitItem(const Item *item, int amount)
     int newIndex = player_node->getInventory()->getFreeSlot();
     if (newIndex > Inventory::NO_SLOT_INDEX)
     {
-        GameServer::Player::moveItem(item->getInvIndex(), newIndex, amount);
+        MessageOut msg(PGMSG_MOVE_ITEM);
+        msg.writeInt8(item->getInvIndex());
+        msg.writeInt8(newIndex);
+        msg.writeInt8(amount);
+        gameServerConnection->send(msg);
     }
 }
 
@@ -142,8 +145,12 @@ void InventoryHandler::moveItem(int oldIndex, int newIndex)
     if (oldIndex == newIndex)
         return;
 
-    GameServer::Player::moveItem(oldIndex, newIndex,
-        player_node->getInventory()->getItem(oldIndex)->getQuantity());
+    MessageOut msg(PGMSG_MOVE_ITEM);
+    msg.writeInt8(oldIndex);
+    msg.writeInt8(newIndex);
+    msg.writeInt8(player_node->getInventory()->getItem(oldIndex)
+                  ->getQuantity());
+    gameServerConnection->send(msg);
 }
 
 void InventoryHandler::openStorage()

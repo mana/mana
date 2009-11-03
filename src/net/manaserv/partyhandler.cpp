@@ -21,12 +21,10 @@
 
 #include "net/manaserv/partyhandler.h"
 
-#include "net/manaserv/protocol.h"
+#include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
-
-#include "net/manaserv/chatserver/chatserver.h"
-#include "net/manaserv/chatserver/party.h"
+#include "net/manaserv/protocol.h"
 
 #include "gui/partywindow.h"
 
@@ -43,6 +41,8 @@
 Net::PartyHandler *partyHandler;
 
 namespace ManaServ {
+
+extern Connection *chatServerConnection;
 
 PartyHandler::PartyHandler()
 {
@@ -140,20 +140,28 @@ void PartyHandler::invite(Player *player)
 
 void PartyHandler::invite(const std::string &name)
 {
-    ChatServer::Party::invitePlayer(name);
+    MessageOut msg(PCMSG_PARTY_INVITE);
+
+    msg.writeString(name);
+
+    chatServerConnection->send(msg);
 }
 
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
 {
-    if (accept)
-        ChatServer::Party::acceptInvite(inviter);
-    else
-        ChatServer::Party::rejectInvite(inviter);
+    MessageOut msg = MessageOut(accept ? PCMSG_PARTY_ACCEPT_INVITE :
+                                PCMSG_PARTY_REJECT_INVITE);
+
+    msg.writeString(inviter);
+
+    chatServerConnection->send(msg);
 }
 
 void PartyHandler::leave()
 {
-    ChatServer::Party::quitParty();
+    MessageOut msg(PCMSG_PARTY_QUIT);
+
+    chatServerConnection->send(msg);
 }
 
 void PartyHandler::kick(Player *player)
@@ -173,7 +181,11 @@ void PartyHandler::chat(const std::string &text)
 
 void PartyHandler::requestPartyMembers()
 {
-    // TODO
+    //MessageOut msg(PCMSG_GUILD_GET_MEMBERS);
+
+    //msg.writeInt16(guildId);
+
+    //chatServerConnection->send(msg);
 }
 
 } // namespace ManaServ

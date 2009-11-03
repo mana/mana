@@ -26,7 +26,15 @@
 
 #include "net/manaserv/messagehandler.h"
 
+#include <guichan/actionlistener.hpp>
+
 namespace ManaServ {
+
+struct RespawnRequestListener : public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent &event);
+};
+static RespawnRequestListener respawnListener;
 
 class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 {

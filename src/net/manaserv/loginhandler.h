@@ -70,6 +70,8 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
 
         Worlds getWorlds() const;
 
+        void reconnect();
+
     private:
         void handleLoginResponse(Net::MessageIn &msg);
         void handleRegisterResponse(Net::MessageIn &msg);

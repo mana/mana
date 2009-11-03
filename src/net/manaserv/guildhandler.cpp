@@ -23,7 +23,6 @@
 
 #include "net/messagein.h"
 
-#include "net/manaserv/chatserver/chatserver.h"
 #include "net/manaserv/chatserver/guild.h"
 #include "net/manaserv/protocol.h"
 

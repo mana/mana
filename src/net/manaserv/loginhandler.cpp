@@ -23,16 +23,15 @@
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/manaserv/accountserver/account.h"
-#include "net/manaserv/accountserver/accountserver.h"
 
 #include "net/logindata.h"
 
 #include "main.h"
 
 #include "utils/gettext.h"
+#include "utils/sha256.h"
 
 Net::LoginHandler *loginHandler;
 
@@ -40,6 +39,7 @@ Net::LoginHandler *loginHandler;
 namespace ManaServ {
 
 extern Connection *accountServerConnection;
+extern std::string netToken;
 
 LoginHandler::LoginHandler()
 {
@@ -306,27 +306,44 @@ void LoginHandler::disconnect()
 void LoginHandler::loginAccount(LoginData *loginData)
 {
     mLoginData = loginData;
-    AccountServer::login(accountServerConnection,
-            0,  // client version
-            loginData->username,
-            loginData->password);
+
+    MessageOut msg(PAMSG_LOGIN);
+
+    msg.writeInt32(0); // client version
+    msg.writeString(loginData->username);
+    msg.writeString(sha256(loginData->username + loginData->password));
+
+    accountServerConnection->send(msg);
 }
 
 void LoginHandler::logout()
 {
-    // TODO
+    MessageOut msg(PAMSG_LOGOUT);
+    accountServerConnection->send(msg);
 }
 
 void LoginHandler::changeEmail(const std::string &email)
 {
-    AccountServer::Account::changeEmail(email);
+    MessageOut msg(PAMSG_EMAIL_CHANGE);
+
+    // Email is sent clearly so the server can validate the data.
+    // Encryption is assumed server-side.
+    msg.writeString(email);
+
+    accountServerConnection->send(msg);
 }
 
 void LoginHandler::changePassword(const std::string &username,
                     const std::string &oldPassword,
                     const std::string &newPassword)
 {
-    AccountServer::Account::changePassword(username, oldPassword, newPassword);
+    MessageOut msg(PAMSG_PASSWORD_CHANGE);
+
+    // Change password using SHA2 encryption
+    msg.writeString(sha256(username + oldPassword));
+    msg.writeString(sha256(username + newPassword));
+
+    accountServerConnection->send(msg);
 }
 
 void LoginHandler::chooseServer(unsigned int server)
@@ -336,22 +353,40 @@ void LoginHandler::chooseServer(unsigned int server)
 
 void LoginHandler::registerAccount(LoginData *loginData)
 {
-    AccountServer::registerAccount(accountServerConnection,
-            0, // client version
-            loginData->username,
-            loginData->password,
-            loginData->email);
+    MessageOut msg(PAMSG_REGISTER);
+
+    msg.writeInt32(0); // client version
+    msg.writeString(loginData->username);
+    // When registering, the password and email hash is assumed by server.
+    // Hence, data can be validated safely server-side.
+    // This is the only time we send a clear password.
+    msg.writeString(loginData->password);
+    msg.writeString(loginData->email);
+
+    accountServerConnection->send(msg);
 }
 
 void LoginHandler::unregisterAccount(const std::string &username,
                         const std::string &password)
 {
-    AccountServer::Account::unregister(username, password);
+    MessageOut msg(PAMSG_UNREGISTER);
+
+    msg.writeString(username);
+    msg.writeString(sha256(username + password));
+
+    accountServerConnection->send(msg);
 }
 
 Worlds LoginHandler::getWorlds() const
 {
     return Worlds();
+}
+
+void reconnect()
+{
+    MessageOut msg(PAMSG_RECONNECT);
+    msg.writeString(netToken, 32);
+    accountServerConnection->send(msg);
 }
 
 } // namespace ManaServ

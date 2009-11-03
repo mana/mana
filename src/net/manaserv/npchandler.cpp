@@ -26,9 +26,6 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
-#include "net/manaserv/gameserver/internal.h"
-#include "net/manaserv/gameserver/player.h"
-
 #include "beingmanager.h"
 #include "npc.h"
 
@@ -38,6 +35,8 @@
 Net::NpcHandler *npcHandler;
 
 namespace ManaServ {
+
+extern Connection *gameServerConnection;
 
 NpcHandler::NpcHandler()
 {
@@ -114,21 +113,22 @@ void NpcHandler::talk(int npcId)
 {
     MessageOut msg(PGMSG_NPC_TALK);
     msg.writeInt16(npcId);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void NpcHandler::nextDialog(int npcId)
 {
     MessageOut msg(PGMSG_NPC_TALK_NEXT);
     msg.writeInt16(npcId);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void NpcHandler::closeDialog(int npcId)
 {
     MessageOut msg(PGMSG_NPC_TALK_NEXT);
     msg.writeInt16(npcId);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
+
     npcDialog->setVisible(false);
     npcDialog->setText("");
 }
@@ -138,7 +138,7 @@ void NpcHandler::listInput(int npcId, int value)
     MessageOut msg(PGMSG_NPC_SELECT);
     msg.writeInt16(npcId);
     msg.writeInt8(value);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void NpcHandler::integerInput(int npcId, int value)
@@ -146,7 +146,7 @@ void NpcHandler::integerInput(int npcId, int value)
     MessageOut msg(PGMSG_NPC_NUMBER);
     msg.writeInt16(npcId);
     msg.writeInt32(value);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void NpcHandler::stringInput(int npcId, const std::string &value)
@@ -154,7 +154,7 @@ void NpcHandler::stringInput(int npcId, const std::string &value)
     MessageOut msg(PGMSG_NPC_STRING);
     msg.writeInt16(npcId);
     msg.writeString(value);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void NpcHandler::sendLetter(int npcId, const std::string &recipient,
@@ -163,7 +163,7 @@ void NpcHandler::sendLetter(int npcId, const std::string &recipient,
     MessageOut msg(PGMSG_NPC_POST_SEND);
     msg.writeString(recipient);
     msg.writeString(text);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void NpcHandler::startShopping(int beingId)
@@ -186,7 +186,7 @@ void NpcHandler::buyItem(int beingId, int itemId, int amount)
     MessageOut msg(PGMSG_NPC_BUYSELL);
     msg.writeInt16(itemId);
     msg.writeInt16(amount);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void NpcHandler::sellItem(int beingId, int itemId, int amount)
@@ -194,7 +194,7 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
     MessageOut msg(PGMSG_NPC_BUYSELL);
     msg.writeInt16(itemId);
     msg.writeInt16(amount);
-    GameServer::connection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void NpcHandler::endShopping(int beingId)

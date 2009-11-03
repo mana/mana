@@ -21,11 +21,15 @@
 
 #include "net/manaserv/adminhandler.h"
 
-#include "net/manaserv/chatserver/chatserver.h"
+#include "net/manaserv/connection.h"
+#include "net/manaserv/messageout.h"
+#include "net/manaserv/protocol.h"
 
 Net::AdminHandler *adminHandler;
 
 namespace ManaServ {
+
+extern Connection *chatServerConnection;
 
 AdminHandler::AdminHandler()
 {
@@ -34,7 +38,9 @@ AdminHandler::AdminHandler()
 
 void AdminHandler::announce(const std::string &text)
 {
-    ManaServ::ChatServer::announce(text);
+    MessageOut msg(PCMSG_ANNOUNCE);
+    msg.writeString(text);
+    chatServerConnection->send(msg);
 }
 
 void AdminHandler::localAnnounce(const std::string &text)

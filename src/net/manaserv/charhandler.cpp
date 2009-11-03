@@ -22,14 +22,12 @@
 #include "net/manaserv/charhandler.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/manaserv/accountserver/accountserver.h"
-#include "net/manaserv/accountserver/account.h"
 
 #include "net/logindata.h"
 #include "net/loginhandler.h"
-#include "net/messagein.h"
 #include "net/net.h"
 
 #include "game.h"
@@ -359,26 +357,39 @@ void CharHandler::getCharacters()
 
 void CharHandler::chooseCharacter(int slot, LocalPlayer* character)
 {
-    AccountServer::Account::selectCharacter(slot);
+    MessageOut msg(PAMSG_CHAR_SELECT);
+
+    msg.writeInt8(slot);
+
+    accountServerConnection->send(msg);
 }
 
 void CharHandler::newCharacter(const std::string &name, int slot, bool gender,
                   int hairstyle, int hairColor, std::vector<int> stats)
 {
-    AccountServer::Account::createCharacter(name, hairstyle, hairColor,
-                    gender,
-                    stats[0],  // STR
-                    stats[1],  // AGI
-                    stats[2],  // DEX
-                    stats[3],  // VIT
-                    stats[4],  // INT
-                    stats[5]   // WILL
-                );
+    MessageOut msg(PAMSG_CHAR_CREATE);
+
+    msg.writeString(name);
+    msg.writeInt8(hairstyle);
+    msg.writeInt8(hairColor);
+    msg.writeInt8(gender);
+    msg.writeInt16(stats[0]);
+    msg.writeInt16(stats[1]);
+    msg.writeInt16(stats[2]);
+    msg.writeInt16(stats[3]);
+    msg.writeInt16(stats[4]);
+    msg.writeInt16(stats[5]);
+
+    accountServerConnection->send(msg);
 }
 
 void CharHandler::deleteCharacter(int slot, LocalPlayer* character)
 {
-    AccountServer::Account::deleteCharacter(slot);
+    MessageOut msg(PAMSG_CHAR_DELETE);
+
+    msg.writeInt8(slot);
+
+    accountServerConnection->send(msg);
 }
 
 void CharHandler::switchCharacter()

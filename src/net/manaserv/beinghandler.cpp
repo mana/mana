@@ -21,6 +21,7 @@
 
 #include "net/manaserv/beinghandler.h"
 
+#include "net/manaserv/playerhandler.h"
 #include "net/manaserv/protocol.h"
 
 #include "net/messagein.h"
@@ -40,8 +41,6 @@
 #include "resources/colordb.h"
 
 #include "utils/gettext.h"
-
-#include "net/manaserv/gameserver/player.h"
 
 namespace ManaServ {
 
@@ -288,7 +287,7 @@ void BeingHandler::handleBeingActionChangeMessage(Net::MessageIn &msg)
         std::string message(deadMsg[rand()%13]);
         message.append(std::string(" ") + _("Press OK to respawn."));
         OkDialog *dlg = new OkDialog(_("You Died"), message);
-        dlg->addActionListener(&(ManaServ::GameServer::Player::respawnListener));
+        dlg->addActionListener(&(ManaServ::respawnListener));
     }
 }
 

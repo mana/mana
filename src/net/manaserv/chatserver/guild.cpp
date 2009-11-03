@@ -21,8 +21,6 @@
 
 #include "guild.h"
 
-#include "internal.h"
-
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
@@ -32,6 +30,8 @@
 namespace ManaServ
 {
 
+extern Connection *chatServerConnection;
+
 void ChatServer::Guild::createGuild(const std::string &name)
 {
     logger->log("Sending PCMSG_GUILD_CREATE");
@@ -39,7 +39,7 @@ void ChatServer::Guild::createGuild(const std::string &name)
 
     msg.writeString(name);
 
-    ChatServer::connection->send(msg);
+    chatServerConnection->send(msg);
 }
 
 void ChatServer::Guild::invitePlayer(const std::string &name, short guildId)
@@ -50,7 +50,7 @@ void ChatServer::Guild::invitePlayer(const std::string &name, short guildId)
     msg.writeInt16(guildId);
     msg.writeString(name);
 
-    ChatServer::connection->send(msg);
+    chatServerConnection->send(msg);
 }
 
 void ChatServer::Guild::acceptInvite(const std::string &name)
@@ -60,7 +60,7 @@ void ChatServer::Guild::acceptInvite(const std::string &name)
 
     msg.writeString(name);
 
-    ChatServer::connection->send(msg);
+    chatServerConnection->send(msg);
 }
 
 void ChatServer::Guild::getGuildMembers(short guildId)
@@ -70,7 +70,7 @@ void ChatServer::Guild::getGuildMembers(short guildId)
 
     msg.writeInt16(guildId);
 
-    ChatServer::connection->send(msg);
+    chatServerConnection->send(msg);
 }
 
 void ChatServer::Guild::promoteMember(const std::string &name,
@@ -83,7 +83,7 @@ void ChatServer::Guild::promoteMember(const std::string &name,
     msg.writeString(name);
     msg.writeInt8(level);
 
-    ChatServer::connection->send(msg);
+    chatServerConnection->send(msg);
 }
 
 void ChatServer::Guild::quitGuild(short guildId)
@@ -93,7 +93,7 @@ void ChatServer::Guild::quitGuild(short guildId)
 
     msg.writeInt16(guildId);
 
-    ChatServer::connection->send(msg);
+    chatServerConnection->send(msg);
 }
 
 }
