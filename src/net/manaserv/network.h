@@ -63,7 +63,7 @@ namespace ManaServ
     /**
      * Clears all registered message handlers.
      */
-    void clearHandlers();
+    void clearNetworkHandlers();
 
     /*
      * Handles all events and dispatches incoming messages to the

@@ -183,7 +183,7 @@ void GeneralHandler::guiWindowsUnloaded()
 
 void GeneralHandler::clearHandlers()
 {
-    clearHandlers();
+    clearNetworkHandlers();
 }
 
 } // namespace ManaServ

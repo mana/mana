@@ -71,7 +71,7 @@ void finalize()
                 "are network connections left!");
     }
 
-    clearHandlers();
+    clearNetworkHandlers();
     enet_deinitialize();
 }
 
@@ -102,7 +102,7 @@ void unregisterHandler(MessageHandler *handler)
     }
 }
 
-void clearHandlers()
+void clearNetworkHandlers()
 {
     mMessageHandlers.clear();
 }
