@@ -59,6 +59,7 @@ MiniStatusWindow::MiniStatusWindow():
                    mXpBar->getY() + mXpBar->getHeight());
 
     setVisible((bool) config.getValue(getPopupName() + "Visible", true));
+    update(StatusWindow::HP);
 }
 
 void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
