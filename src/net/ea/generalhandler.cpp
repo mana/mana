@@ -191,17 +191,6 @@ void GeneralHandler::flushNetwork()
 
     mNetwork->flush();
     mNetwork->dispatchMessages();
-}
-
-bool GeneralHandler::isNetworkConnected()
-{
-    return mNetwork->isConnected();
-}
-
-void GeneralHandler::tick()
-{
-    if (!mNetwork)
-        return;
 
     if (mNetwork->getState() == Network::NET_ERROR)
     {

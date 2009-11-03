@@ -42,10 +42,6 @@ class GeneralHandler : public Net::GeneralHandler
 
         void flushNetwork();
 
-        bool isNetworkConnected();
-
-        void tick();
-
         void guiWindowsLoaded();
 
         void guiWindowsUnloaded();

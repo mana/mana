@@ -157,17 +157,6 @@ void GeneralHandler::flushNetwork()
     }
 }
 
-bool GeneralHandler::isNetworkConnected()
-{
-    // TODO
-    return true;
-}
-
-void GeneralHandler::tick()
-{
-    // TODO
-}
-
 void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(true);

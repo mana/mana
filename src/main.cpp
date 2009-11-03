@@ -851,7 +851,6 @@ int main(int argc, char *argv[])
         if (Net::getGeneralHandler())
         {
             Net::getGeneralHandler()->flushNetwork();
-            Net::getGeneralHandler()->tick();
         }
         gui->logic();
 

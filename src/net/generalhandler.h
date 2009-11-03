@@ -37,10 +37,6 @@ class GeneralHandler
 
         virtual void flushNetwork() = 0;
 
-        virtual bool isNetworkConnected() = 0;
-
-        virtual void tick() = 0;
-
         virtual void guiWindowsLoaded() = 0;
 
         virtual void guiWindowsUnloaded() = 0;
