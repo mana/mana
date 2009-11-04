@@ -46,6 +46,7 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "net/guildhandler.h"
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 #include "net/partyhandler.h"
@@ -54,11 +55,7 @@
 #include "net/tradehandler.h"
 
 #include "effectmanager.h"
-#ifdef MANASERV_SUPPORT
 #include "guild.h"
-
-#include "net/manaserv/chatserver/guild.h"
-#endif
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
@@ -368,6 +365,10 @@ bool LocalPlayer::checkInviteRights(const std::string &guildName)
 
 void LocalPlayer::inviteToGuild(Being *being)
 {
+    if (being->getType() != PLAYER)
+        return;
+    Player *player = static_cast<Player*>(being);
+
     // TODO: Allow user to choose which guild to invite being to
     // For now, just invite to the first guild you have permissions to invite with
     std::map<int, Guild*>::iterator itr = mGuilds.begin();
@@ -376,7 +377,7 @@ void LocalPlayer::inviteToGuild(Being *being)
     {
         if (checkInviteRights(itr->second->getName()))
         {
-            ManaServ::ChatServer::Guild::invitePlayer(being->getName(), itr->second->getId());
+            Net::getGuildHandler()->invite(itr->second->getId(), player);
             return;
         }
     }

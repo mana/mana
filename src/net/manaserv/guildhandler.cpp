@@ -23,7 +23,9 @@
 
 #include "net/messagein.h"
 
-#include "net/manaserv/chatserver/guild.h"
+#include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
 #include "gui/widgets/channeltab.h"
@@ -41,7 +43,11 @@
 
 #include <iostream>
 
+Net::GuildHandler *guildHandler;
+
 namespace ManaServ {
+
+extern Connection *chatServerConnection;
 
 GuildHandler::GuildHandler()
 {
@@ -58,6 +64,7 @@ GuildHandler::GuildHandler()
     };
     handledMessages = _messages;
 
+    guildHandler = this;
 }
 
 void GuildHandler::handleMessage(Net::MessageIn &msg)
@@ -178,9 +185,10 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
             logger->log("Received CPMSG_GUILD_INVITED");
             std::string inviterName = msg.readString();
             std::string guildName = msg.readString();
+            int guildId = msg.readInt16();
 
             // Open a dialog asking if the player accepts joining the guild.
-            guildWindow->openAcceptDialog(inviterName, guildName);
+            guildWindow->openAcceptDialog(inviterName, guildName, guildId);
         } break;
 
         case CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE:
@@ -248,6 +256,82 @@ void GuildHandler::joinedGuild(Net::MessageIn &msg)
     channelManager->addChannel(channel);
     channel->getTab()->chatLog(strprintf(_("Topic: %s"), announcement.c_str()),
                                BY_CHANNEL);
+}
+
+void GuildHandler::create(const std::string &name)
+{
+    MessageOut msg(PCMSG_GUILD_CREATE);
+    msg.writeString(name);
+    chatServerConnection->send(msg);
+}
+
+void GuildHandler::invite(int guildId, const std::string &name)
+{
+    MessageOut msg(PCMSG_GUILD_INVITE);
+    msg.writeInt16(guildId);
+    msg.writeString(name);
+    chatServerConnection->send(msg);
+}
+
+void GuildHandler::invite(int guildId, Player *player)
+{
+    invite(guildId, player->getName());
+}
+
+void GuildHandler::inviteResponse(int guildId, bool response)
+{
+    /*MessageOut msg(PCMSG_GUILD_ACCEPT);
+    msg.writeString(name);
+    chatServerConnection->send(msg);*/
+}
+
+void GuildHandler::leave(int guildId)
+{
+    MessageOut msg(PCMSG_GUILD_QUIT);
+    msg.writeInt16(guildId);
+    chatServerConnection->send(msg);
+}
+
+void GuildHandler::kick(int guildId, int playerId)
+{
+    // TODO
+}
+
+void GuildHandler::chat(int guildId, const std::string &text)
+{
+    // TODO
+}
+
+void GuildHandler::memberList(int guildId)
+{
+    MessageOut msg(PCMSG_GUILD_GET_MEMBERS);
+    msg.writeInt16(guildId);
+    chatServerConnection->send(msg);
+}
+
+void GuildHandler::changeMemberPostion(int guildId, int playerId, int level)
+{
+    /*MessageOut msg(PCMSG_GUILD_PROMOTE_MEMBER);
+    msg.writeInt16(guildId);
+    msg.writeString(name);
+    msg.writeInt8(level);
+    chatServerConnection->send(msg);*/
+}
+
+void GuildHandler::requestAlliance(int guildId, int otherGuildId)
+{
+    // TODO
+}
+
+void GuildHandler::requestAllianceResponse(int guildId, int otherGuildId,
+                             bool response)
+{
+    // TODO
+}
+
+void GuildHandler::endAlliance(int guildId, int otherGuildId)
+{
+    // TODO
 }
 
 } // namespace ManaServ

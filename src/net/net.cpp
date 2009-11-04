@@ -50,6 +50,7 @@ extern Net::GeneralHandler *generalHandler;
 extern Net::InventoryHandler *inventoryHandler;
 extern Net::LoginHandler *loginHandler;
 extern Net::GameHandler *gameHandler;
+extern Net::GuildHandler *guildHandler;
 extern Net::NpcHandler *npcHandler;
 extern Net::PartyHandler *partyHandler;
 extern Net::PlayerHandler *playerHandler;
@@ -83,8 +84,7 @@ Net::GeneralHandler *Net::getGeneralHandler()
 
 Net::GuildHandler *Net::getGuildHandler()
 {
-    // TODO
-    return 0;
+    return guildHandler;
 }
 
 Net::InventoryHandler *Net::getInventoryHandler()

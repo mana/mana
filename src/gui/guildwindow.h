@@ -84,7 +84,8 @@ public:
     /**
      * Create a dialog for accepting an invite
      */
-    void openAcceptDialog(const std::string &inviterName, const std::string &guildName);
+    void openAcceptDialog(const std::string &inviterName,
+                          const std::string &guildName, const int guildId);
 
     /**
      * Request member list
@@ -117,7 +118,7 @@ private:
     TabbedArea *mGuildTabs;
     ScrollArea *mScrollArea;
     bool mFocus;
-    std::string invitedGuild;
+    int invitedGuildId;
     typedef std::map<std::string, GuildListBox*> GuildListMap;
     GuildListMap mGuildLists;
 };

@@ -457,6 +457,8 @@ SET(SRCS_EA
     net/ea/gamehandler.h
     net/ea/generalhandler.cpp
     net/ea/generalhandler.h
+    net/ea/guildhandler.cpp
+    net/ea/guildhandler.h
     net/ea/inventoryhandler.cpp
     net/ea/inventoryhandler.h
     net/ea/itemhandler.cpp
@@ -491,8 +493,6 @@ SET(SRCS_MANA
     gui/guildlistbox.h
     gui/guildwindow.cpp
     gui/guildwindow.h
-    net/manaserv/chatserver/guild.cpp
-    net/manaserv/chatserver/guild.h
     net/manaserv/adminhandler.cpp
     net/manaserv/adminhandler.h
     net/manaserv/beinghandler.cpp

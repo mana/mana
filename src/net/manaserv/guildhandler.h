@@ -22,18 +22,43 @@
 #ifndef NET_MANASERV_GUILDHANDLER_H
 #define NET_MANASERV_GUILDHANDLER_H
 
-#include "net/manaserv/messagehandler.h"
+#include "net/guildhandler.h"
 
-#include <string>
+#include "net/manaserv/messagehandler.h"
 
 namespace ManaServ {
 
-class GuildHandler : public MessageHandler
+class GuildHandler : public Net::GuildHandler, public MessageHandler
 {
 public:
     GuildHandler();
 
     void handleMessage(Net::MessageIn &msg);
+
+    void create(const std::string &name);
+
+    void invite(int guildId, const std::string &name);
+
+    void invite(int guidId, Player *player);
+
+    void inviteResponse(int guidId, bool response);
+
+    void leave(int guildId);
+
+    void kick(int guildId, int playerId);
+
+    void chat(int guildId, const std::string &text);
+
+    void memberList(int guildId);
+
+    void changeMemberPostion(int guildId, int playerId, int level);
+
+    void requestAlliance(int guildId, int otherGuildId);
+
+    void requestAllianceResponse(int guildId, int otherGuildId,
+                                 bool response);
+
+    void endAlliance(int guildId, int otherGuildId);
 
 protected:
     void joinedGuild(Net::MessageIn &msg);

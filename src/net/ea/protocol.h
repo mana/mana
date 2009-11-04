@@ -162,6 +162,10 @@ static const int STORAGE_OFFSET = 1;
 
 #define SMSG_ADMIN_KICK_ACK          0x00cd
 
+#define SMSG_GUILD_CREATE_RESPONSE   0x0167
+#define SMSG_GUILD_INVITE_ACK        0x0169
+#define SMSG_GUILD_INVITE            0x016A
+
 #define SMSG_MVP                     0x010c
 
 /**********************************
@@ -241,5 +245,24 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_ADMIN_HIDE              0x019D
 #define CMSG_ADMIN_KICK              0x00CC
 #define CMSG_ADMIN_MUTE              0x0149
+
+#define CMSG_GUILD_CHECK_MASTER      0x014D
+#define CMSG_GUILD_REQUEST_INFO      0x014F
+#define CMSG_GUILD_REQUEST_EMBLEM    0x0151
+#define CMSG_GUILD_CHANGE_EMBLEM     0x0153
+#define CMSG_GUILD_CHANGE_MEMBER_POS 0x0155
+#define CMSG_GUILD_LEAVE             0x0159
+#define CMSG_GUILD_EXPULSION         0x015B
+#define CMSG_GUILD_BREAK             0x015D
+#define CMSG_GUILD_CHANGE_POS_INFO   0x0161
+#define CMSG_GUILD_CREATE            0x0165
+#define CMSG_GUILD_INVITE            0x0168
+#define CMSG_GUILD_INVITE_REPLY      0x016B
+#define CMSG_GUILD_CHANGE_NOTICE     0x016E
+#define CMSG_GUILD_ALLIANCE_REQUEST  0x0170
+#define CMSG_GUILD_ALLIANCE_REPLY    0x0172
+#define CMSG_GUILD_MESSAGE           0x017E
+#define CMSG_GUILD_OPPOSITION        0x0180
+#define CMSG_GUILD_ALLIANCE_DELETE   0x0183
 
 #endif

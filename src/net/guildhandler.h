@@ -22,36 +22,42 @@
 #ifndef GUILDHANDLER_H
 #define GUILDHANDLER_H
 
+#include "player.h"
+
 #include <iosfwd>
 
 namespace Net {
+
 class GuildHandler
 {
     public:
-        virtual void create(const std::string &name) {}
+        virtual void create(const std::string &name) = 0;
 
-        virtual void join(int guildId) {}
+        virtual void invite(int guildId, const std::string &name) = 0;
 
-        virtual void invite(int guidId, int playerId) {}
+        virtual void invite(int guildId, Player *player) = 0;
 
-        virtual void inviteResponse(int guidId, bool response) {}
+        virtual void inviteResponse(int guildId, bool response) = 0;
 
-        virtual void leave(int guidId) {}
+        virtual void leave(int guildId) = 0;
 
-        virtual void kick(int guidId, int playerId) {}
+        virtual void kick(int guildId, int playerId) = 0;
 
-        virtual void chat(int guidId, const std::string &text) {}
+        virtual void chat(int guildId, const std::string &text) = 0;
 
-        virtual void memberList(int guidId) {}
+        virtual void memberList(int guildId) = 0;
 
-        virtual void changeMemberPostion(int guildId, int playerId, int level) {}
+        virtual void changeMemberPostion(int guildId, int playerId,
+                                         int level) = 0;
 
-        virtual void requestAlliance(int guildId, int otherGuildId) {}
+        virtual void requestAlliance(int guildId, int otherGuildId) = 0;
 
-        virtual void requestAllianceResponse(int guildId, int otherGuildId, bool response) {}
+        virtual void requestAllianceResponse(int guildId, int otherGuildId,
+                                             bool response) = 0;
 
-        virtual void endAlliance(int guildId, int otherGuildId) {}
+        virtual void endAlliance(int guildId, int otherGuildId) = 0;
 };
+
 }
 
 #endif // GUILDHANDLER_H

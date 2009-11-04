@@ -38,7 +38,8 @@
 #include "log.h"
 #include "localplayer.h"
 
-#include "net/manaserv/chatserver/guild.h"
+#include "net/guildhandler.h"
+#include "net/net.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
@@ -132,7 +133,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
         short guild = getSelectedGuild();
         if (guild)
         {
-            ManaServ::ChatServer::Guild::quitGuild(guild);
+            Net::getGuildHandler()->leave(guild);
             localChatTab->chatLog(strprintf(_("Guild %s quit."),
                     mGuildTabs->getSelectedTab()->getCaption().c_str()), BY_SERVER);
         }
@@ -146,7 +147,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
             return;
         }
         // Process guild name to be created, and unfocus.
-        ManaServ::ChatServer::Guild::createGuild(name);
+        Net::getGuildHandler()->create(name);
 
         // Defocus dialog
         mFocus = false;
@@ -160,7 +161,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
         short selectedGuild = getSelectedGuild();
 
         // Process invited user to be created and unfocus.
-        ManaServ::ChatServer::Guild::invitePlayer(name, selectedGuild);
+        Net::getGuildHandler()->invite(selectedGuild, name);
 
         // Defocus dialog
         mFocus = false;
@@ -170,7 +171,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     else if (eventId == "yes")
     {
         logger->log("Sending invitation acceptance.");
-        ManaServ::ChatServer::Guild::acceptInvite(invitedGuild);
+        Net::getGuildHandler()->inviteResponse(invitedGuildId, true);
     }
 }
 
@@ -238,7 +239,8 @@ short GuildWindow::getSelectedGuild()
 }
 
 void GuildWindow::openAcceptDialog(const std::string &inviterName,
-                                   const std::string &guildName)
+                                   const std::string &guildName,
+                                   const int guildId)
 {
     std::string msg = strprintf(_("%s has invited you to join the guild %s."),
                                 inviterName.c_str(), guildName.c_str());
@@ -247,13 +249,13 @@ void GuildWindow::openAcceptDialog(const std::string &inviterName,
     acceptDialog = new ConfirmDialog(_("Accept Guild Invite"), msg, this);
     acceptDialog->addActionListener(this);
 
-    invitedGuild = guildName;
+    invitedGuildId = guildId;
 }
 
 void GuildWindow::requestMemberList(short guildId)
 {
     // Get the list of members for displaying in the guild window.
-    ManaServ::ChatServer::Guild::getGuildMembers(guildId);
+    Net::getGuildHandler()->memberList(guildId);
 }
 
 void GuildWindow::removeTab(int guildId)

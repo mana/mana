@@ -317,6 +317,8 @@ src/net/ea/generalhandler.cpp
 src/net/ea/generalhandler.h
 src/net/ea/gui/partytab.cpp
 src/net/ea/gui/partytab.h
+src/net/ea/guildhandler.cpp
+src/net/ea/guildhandler.h
 src/net/ea/inventoryhandler.cpp
 src/net/ea/inventoryhandler.h
 src/net/ea/itemhandler.cpp
@@ -359,8 +361,6 @@ src/net/manaserv/charhandler.cpp
 src/net/manaserv/charhandler.h
 src/net/manaserv/chathandler.cpp
 src/net/manaserv/chathandler.h
-src/net/manaserv/chatserver/guild.cpp
-src/net/manaserv/chatserver/guild.h
 src/net/manaserv/connection.cpp
 src/net/manaserv/connection.h
 src/net/manaserv/effecthandler.cpp

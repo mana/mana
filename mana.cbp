@@ -533,6 +533,14 @@
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
+		<Unit filename="src\net\ea\guildhandler.cpp">
+			<Option target="eAthena" />
+			<Option target="Unix eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\guildhandler.h">
+			<Option target="eAthena" />
+			<Option target="Unix eAthena" />
+		</Unit>
 		<Unit filename="src\net\ea\inventoryhandler.cpp">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
