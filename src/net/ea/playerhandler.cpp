@@ -421,8 +421,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 player_node->setAttributeEffective(MDEF, val);
 
                 val = msg.readInt16(); // HIT
-                player_node->setAttributeBase(ATK, val);
-                player_node->setAttributeEffective(ATK, val);
+                player_node->setAttributeBase(HIT, val);
+                player_node->setAttributeEffective(HIT, val);
 
                 val = msg.readInt16(); // FLEE
                 player_node->setAttributeBase(FLEE, val);
