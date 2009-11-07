@@ -373,6 +373,8 @@ SET(SRCS
     graphics.cpp
     graphics.h
     guichanfwd.h
+    guild.cpp
+    guild.h
     imageparticle.cpp
     imageparticle.h
     inventory.cpp
@@ -540,8 +542,6 @@ SET(SRCS_MANA
     net/manaserv/specialhandler.h
     net/manaserv/tradehandler.cpp
     net/manaserv/tradehandler.h
-    guild.cpp
-    guild.h
     )
 
 

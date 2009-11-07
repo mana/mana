@@ -24,16 +24,47 @@
 
 #include <guichan/listmodel.hpp>
 
+#include <map>
 #include <string>
 #include <vector>
+
+class Guild;
+
+class GuildMember
+{
+public:
+    GuildMember(int guildId, int id, const std::string &name);
+
+    GuildMember(int guildId, int id);
+
+    GuildMember(int guildId, const std::string &name);
+
+    int getID() const { return mId; }
+
+    void setID(int id) { mId = id; }
+
+    std::string getName() const { return mName; }
+
+    void setName(std::string name) { mName = name; }
+
+    Guild *getGuild() const { return mGuild; }
+
+    bool getOnline() const { return mOnline; }
+
+    void setOnline(bool online) { mOnline = online; }
+
+protected:
+    friend class Guild;
+
+    std::string mName;
+    int mId;
+    Guild *mGuild;
+    bool mOnline;
+};
 
 class Guild : public gcn::ListModel
 {
 public:
-    /**
-     * Constructor with guild id passed to it.
-     */
-    Guild(short id, short rights);
 
     /**
      * Set the guild's name.
@@ -46,7 +77,21 @@ public:
     /**
      * Adds member to the list.
      */
-    void addMember(const std::string &name);
+    void addMember(GuildMember *member);
+
+    /**
+     * Find a member by ID.
+     *
+     * @return the member with the given ID, or NULL if they don't exist.
+     */
+    GuildMember *getMember(int id);
+
+    /**
+     * Find a member by name.
+     *
+     * @return the member with the given name, or NULL if they don't exist.
+     */
+    GuildMember *getMember(std::string name);
 
     /**
      * Get the name of the guild.
@@ -69,7 +114,19 @@ public:
     /**
      * Removes a member from the guild.
      */
+    void removeMember(GuildMember *member);
+
+    /**
+     * Removes a member from the guild.
+     */
+    void removeMember(int id);
+
+    /**
+     * Removes a member from the guild.
+     */
     void removeMember(const std::string &name);
+
+    void clearMembers() { mMembers.clear(); }
 
     /**
      * Get size of members list.
@@ -83,9 +140,7 @@ public:
      * Get member at \a index.
      * @return Returns the name of member.
      */
-    std::string getElementAt(int index) {
-        return mMembers[index];
-    }
+    std::string getElementAt(int index);
 
     /**
      * Get whether user can invite users to this guild.
@@ -96,12 +151,29 @@ public:
         return mCanInviteUsers;
     }
 
+    void setRights(short rights);
+
+    bool isMember(GuildMember *member) const;
+
+    bool isMember(int id) const;
+
     bool isMember(const std::string &name) const;
 
+    static Guild *getGuild(int id);
+
 private:
+    typedef std::map<int, Guild*> GuildMap;
+    static GuildMap guilds;
+
+    /**
+     * Constructor with guild id passed to it.
+     */
+    Guild(short id);
+
+    typedef std::vector<GuildMember*> MemberList;
+    MemberList mMembers;
     std::string mName;
     short mId;
-    std::vector<std::string> mMembers;
     bool mCanInviteUsers;
 };
 

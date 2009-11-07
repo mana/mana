@@ -53,7 +53,7 @@ class InventoryWindow : public Window,
          * Constructor.
          */
         InventoryWindow(int invSize = Net::getInventoryHandler()
-                                      ->getInventorySize());
+                                ->getSize(Net::InventoryHandler::INVENTORY));
 
         /**
          * Destructor.

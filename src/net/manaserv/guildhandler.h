@@ -45,13 +45,13 @@ public:
 
     void leave(int guildId);
 
-    void kick(int guildId, int playerId);
+    void kick(GuildMember member);
 
     void chat(int guildId, const std::string &text);
 
     void memberList(int guildId);
 
-    void changeMemberPostion(int guildId, int playerId, int level);
+    void changeMemberPostion(GuildMember member, int level);
 
     void requestAlliance(int guildId, int otherGuildId);
 

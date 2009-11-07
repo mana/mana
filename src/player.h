@@ -26,9 +26,7 @@
 
 class Graphics;
 class Map;
-#ifdef MANASERV_SUPPORT
 class Guild;
-#endif
 
 enum Gender
 {
@@ -109,7 +107,6 @@ class Player : public Being
         virtual void setSpriteColor(unsigned int slot,
                                     const std::string &color = "");
 
-#ifdef MANASERV_SUPPORT
         /**
          * Adds a guild to the player.
          */
@@ -134,8 +131,6 @@ class Player : public Being
          * Get number of guilds the player belongs to.
          */
         short getNumberOfGuilds();
-
-#endif
 
         /**
          * Set whether the player in the LocalPlayer's party. Players that are
@@ -170,10 +165,8 @@ class Player : public Being
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
 
-#ifdef MANASERV_SUPPORT
         // Character guild information
         std::map<int, Guild*> mGuilds;
-#endif
 
         bool mIsGM;
 

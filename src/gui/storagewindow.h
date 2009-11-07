@@ -50,7 +50,7 @@ class StorageWindow : public Window, gcn::ActionListener,
          * Constructor.
          */
         StorageWindow(int invSize = Net::getInventoryHandler()
-                                    ->getStorageSize());
+                                    ->getSize(Net::InventoryHandler::STORAGE));
 
         /**
          * Destructor.

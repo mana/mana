@@ -21,30 +21,86 @@
 
 #include "guild.h"
 
-Guild::Guild(short id, short rights):
+GuildMember::GuildMember(int guildId, int id, const std::string &name):
+        mName(name), mId(id), mOnline(false)
+{
+    mGuild = Guild::getGuild(guildId);
+};
+
+GuildMember::GuildMember(int guildId, int id):
+        mId(id), mOnline(false)
+{
+    mGuild = Guild::getGuild(guildId);
+};
+
+GuildMember::GuildMember(int guildId, const std::string &name):
+        mName(name), mId(0), mOnline(false)
+{
+    mGuild = Guild::getGuild(guildId);
+};
+
+Guild::GuildMap Guild::guilds;
+
+Guild::Guild(short id):
     mId(id),
     mCanInviteUsers(false)
 {
-    // to invite, rights must be greater than 0
-    if (rights > 0)
-        mCanInviteUsers = true;
+    guilds[id] = this;
 }
 
-void Guild::addMember(const std::string &name)
+void Guild::addMember(GuildMember *member)
 {
-    if (!isMember(name))
+    if (member->mGuild > 0 && member->mGuild != this)
     {
-        mMembers.push_back(name);
+        throw "Member in another guild!";
+    }
+
+    if (!isMember(member))
+    {
+        mMembers.push_back(member);
+        member->mGuild = this;
     }
 }
 
-void Guild::removeMember(const std::string &name)
+GuildMember *Guild::getMember(int id)
 {
-    std::vector<std::string>::iterator itr = mMembers.begin(),
-                                       itr_end = mMembers.end();
+    MemberList::iterator itr = mMembers.begin(),
+                               itr_end = mMembers.end();
     while(itr != itr_end)
     {
-        if((*itr) == name)
+        if((*itr)->mId == id)
+        {
+            return (*itr);
+        }
+        ++itr;
+    }
+
+    return NULL;
+}
+
+GuildMember *Guild::getMember(std::string name)
+{
+    MemberList::iterator itr = mMembers.begin(),
+                               itr_end = mMembers.end();
+    while(itr != itr_end)
+    {
+        if((*itr)->mName == name)
+        {
+            return (*itr);
+        }
+        ++itr;
+    }
+
+    return NULL;
+}
+
+void Guild::removeMember(GuildMember *member)
+{
+    MemberList::iterator itr = mMembers.begin(),
+                               itr_end = mMembers.end();
+    while(itr != itr_end)
+    {
+        if((*itr)->mId == member->mId && (*itr)->mName == member->mName)
         {
             mMembers.erase(itr);
         }
@@ -52,13 +108,66 @@ void Guild::removeMember(const std::string &name)
     }
 }
 
-bool Guild::isMember(const std::string &name) const
+void Guild::removeMember(int id)
 {
-    std::vector<std::string>::const_iterator itr = mMembers.begin(),
-                                             itr_end = mMembers.end();
+    MemberList::iterator itr = mMembers.begin(),
+                               itr_end = mMembers.end();
+    while(itr != itr_end)
+    {
+        if((*itr)->mId == id)
+        {
+            mMembers.erase(itr);
+        }
+        ++itr;
+    }
+}
+
+void Guild::removeMember(const std::string &name)
+{
+    MemberList::iterator itr = mMembers.begin(),
+                               itr_end = mMembers.end();
+    while(itr != itr_end)
+    {
+        if((*itr)->mName == name)
+        {
+            mMembers.erase(itr);
+        }
+        ++itr;
+    }
+}
+
+std::string Guild::getElementAt(int index)
+{
+    GuildMember *m = mMembers[index];
+    if (m->mOnline)
+    {
+        return "* " + m->mName;
+    }
+    else
+    {
+        return m->mName;
+    }
+}
+
+void Guild::setRights(short rights)
+{
+    // to invite, rights must be greater than 0
+    if (rights > 0)
+    {
+        mCanInviteUsers = true;
+    }
+}
+
+bool Guild::isMember(GuildMember *member) const
+{
+    if (member->mGuild > 0 && member->mGuild != this)
+        return false;
+
+    MemberList::const_iterator itr = mMembers.begin(),
+                                     itr_end = mMembers.end();
     while (itr != itr_end)
     {
-        if ((*itr) == name)
+        if ((*itr)->mId == member->mId && (*itr)->mName == member->mName)
         {
             return true;
         }
@@ -66,4 +175,45 @@ bool Guild::isMember(const std::string &name) const
     }
 
     return false;
+}
+
+bool Guild::isMember(int id) const
+{
+    MemberList::const_iterator itr = mMembers.begin(),
+                                     itr_end = mMembers.end();
+    while (itr != itr_end)
+    {
+        if ((*itr)->mId == id)
+        {
+            return true;
+        }
+        ++itr;
+    }
+
+    return false;
+}
+
+bool Guild::isMember(const std::string &name) const
+{
+    MemberList::const_iterator itr = mMembers.begin(),
+                                     itr_end = mMembers.end();
+    while (itr != itr_end)
+    {
+        if ((*itr)->mName == name)
+        {
+            return true;
+        }
+        ++itr;
+    }
+
+    return false;
+}
+
+Guild *Guild::getGuild(int id)
+{
+    GuildMap::iterator it = guilds.find(id);
+    if (it != guilds.end())
+        return it->second;
+
+    return new Guild(id);
 }

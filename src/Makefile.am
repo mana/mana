@@ -322,6 +322,8 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      graphics.cpp \
 	      graphics.h \
 	      guichanfwd.h \
+	      guild.cpp \
+	      guild.h \
 	      imageparticle.cpp \
 	      imageparticle.h \
 	      inventory.cpp \
@@ -441,9 +443,7 @@ mana_SOURCES += \
 	      net/manaserv/specialhandler.cpp \
 	      net/manaserv/specialhandler.h \
 	      net/manaserv/tradehandler.cpp \
-	      net/manaserv/tradehandler.h \
-	      guild.cpp \
-	      guild.h
+	      net/manaserv/tradehandler.h
 endif
 
 if SERVER_EATHENA

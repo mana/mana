@@ -197,5 +197,5 @@ void StorageWindow::removeStore(Item *item, int amount)
 
 void StorageWindow::close()
 {
-    Net::getInventoryHandler()->closeStorage();
+    Net::getInventoryHandler()->closeStorage(Net::InventoryHandler::STORAGE);
 }

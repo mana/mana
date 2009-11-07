@@ -141,7 +141,6 @@ class LocalPlayer : public Player
          */
         Inventory *getStorage() const { return mStorage; }
 
-#ifdef MANASERV_SUPPORT
         /**
          * Check the player has permission to invite users to specific guild
          */
@@ -153,6 +152,7 @@ class LocalPlayer : public Player
         void inviteToGuild(Being *being);
 
         void clearInventory();
+#ifdef MANASERV_SUPPORT
         void setInvItem(int index, int id, int amount);
 #endif
 

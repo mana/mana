@@ -22,6 +22,7 @@
 #ifndef GUILDHANDLER_H
 #define GUILDHANDLER_H
 
+#include "guild.h"
 #include "player.h"
 
 #include <iosfwd>
@@ -41,14 +42,13 @@ class GuildHandler
 
         virtual void leave(int guildId) = 0;
 
-        virtual void kick(int guildId, int playerId) = 0;
+        virtual void kick(GuildMember member) = 0;
 
         virtual void chat(int guildId, const std::string &text) = 0;
 
         virtual void memberList(int guildId) = 0;
 
-        virtual void changeMemberPostion(int guildId, int playerId,
-                                         int level) = 0;
+        virtual void changeMemberPostion(GuildMember member, int level) = 0;
 
         virtual void requestAlliance(int guildId, int otherGuildId) = 0;
 

@@ -347,12 +347,12 @@ void InventoryHandler::moveItem(int oldIndex, int newIndex)
     // Not implemented for eAthena (possible?)
 }
 
-void InventoryHandler::openStorage()
+void InventoryHandler::openStorage(StorageType type)
 {
     // Doesn't apply to eAthena, since opening happens through NPCs?
 }
 
-void InventoryHandler::closeStorage()
+void InventoryHandler::closeStorage(StorageType type)
 {
     MessageOut outMsg(CMSG_CLOSE_STORAGE);
 }
@@ -374,14 +374,20 @@ void InventoryHandler::moveItem(StorageType source, int slot, int amount,
     }
 }
 
-size_t InventoryHandler::getInventorySize() const
+size_t InventoryHandler::getSize(StorageType type) const
 {
-    return 100;
-}
+    switch (type)
+    {
+        case INVENTORY:
+            return 100;
+        case STORAGE:
+            return 300;
+        case GUILD_STORAGE:
+            return 1000;
+        case CART:
+            return 0;
+    }
 
-size_t InventoryHandler::getStorageSize() const
-{
-    return 300;
 }
 
 } // namespace EAthena

@@ -45,13 +45,13 @@ class GuildHandler : public Net::GuildHandler, public MessageHandler
 
         void leave(int guildId);
 
-        void kick(int guildId, int playerId);
+        void kick(GuildMember member);
 
         void chat(int guildId, const std::string &text);
 
         void memberList(int guildId);
 
-        void changeMemberPostion(int guildId, int playerId, int level);
+        void changeMemberPostion(GuildMember member, int level);
 
         void requestAlliance(int guildId, int otherGuildId);
 
@@ -59,6 +59,10 @@ class GuildHandler : public Net::GuildHandler, public MessageHandler
                                      bool response);
 
         void endAlliance(int guildId, int otherGuildId);
+
+    private:
+        // eAthena only supports one guild per player
+        Guild *mGuild;
 };
 
 }

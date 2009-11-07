@@ -111,10 +111,10 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
             logger->log("Received CPMSG_GUILD_GET_MEMBERS_RESPONSE");
             if(msg.readInt8() == ERRMSG_OK)
             {
-                std::string guildMember;
+                std::string name;
                 bool online;
-                std::string guildName;
                 Guild *guild;
+                GuildMember *member;
 
                 short guildId = msg.readInt16();
                 guild = player_node->getGuild(guildId);
@@ -122,16 +122,17 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 if (!guild)
                     return;
 
-                guildName = guild->getName();
+                guild->clearMembers();
 
                 while(msg.getUnreadLength())
                 {
-                    guildMember = msg.readString();
+                    name = msg.readString();
                     online = msg.readInt8();
-                    if(guildMember != "")
+                    if(name != "")
                     {
-                        guild->addMember(guildMember);
-                        guildWindow->setOnline(guildName, guildMember, online);
+                        member = new GuildMember(guildId, name);
+                        member->setOnline(online);
+                        guild->addMember(member);
                     }
                 }
 
@@ -143,8 +144,9 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
         {
             logger->log("Received CPMSG_GUILD_UPDATE_LIST");
             short guildId = msg.readInt16();
-            std::string guildMember = msg.readString();
+            std::string name = msg.readString();
             char eventId = msg.readInt8();
+            GuildMember *member;
 
             Guild *guild = player_node->getGuild(guildId);
             if (guild)
@@ -152,23 +154,29 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 switch(eventId)
                 {
                     case GUILD_EVENT_NEW_PLAYER:
-                        guild->addMember(guildMember);
-                        guildWindow->setOnline(guild->getName(), guildMember,
-                                               true);
+                        member = new GuildMember(guildId, name);
+                        member->setOnline(true);
+                        guild->addMember(member);
                         break;
 
                     case GUILD_EVENT_LEAVING_PLAYER:
-                        guild->removeMember(guildMember);
+                        guild->removeMember(name);
                         break;
 
                     case GUILD_EVENT_ONLINE_PLAYER:
-                        guildWindow->setOnline(guild->getName(), guildMember,
-                                               true);
+                        member = guild->getMember(name);
+                        if (member)
+                        {
+                            member->setOnline(true);
+                        }
                         break;
 
                     case GUILD_EVENT_OFFLINE_PLAYER:
-                        guildWindow->setOnline(guild->getName(), guildMember,
-                                               false);
+                        member = guild->getMember(name);
+                        if (member)
+                        {
+                            member->setOnline(false);
+                        }
                         break;
 
                     default:
@@ -292,7 +300,7 @@ void GuildHandler::leave(int guildId)
     chatServerConnection->send(msg);
 }
 
-void GuildHandler::kick(int guildId, int playerId)
+void GuildHandler::kick(GuildMember member)
 {
     // TODO
 }
@@ -309,7 +317,7 @@ void GuildHandler::memberList(int guildId)
     chatServerConnection->send(msg);
 }
 
-void GuildHandler::changeMemberPostion(int guildId, int playerId, int level)
+void GuildHandler::changeMemberPostion(GuildMember member, int level)
 {
     /*MessageOut msg(PCMSG_GUILD_PROMOTE_MEMBER);
     msg.writeInt16(guildId);

@@ -66,7 +66,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
         case GPMSG_INVENTORY:
             while (msg.getUnreadLength())
             {
-                int slot = msg.readInt8();
+                unsigned int slot = msg.readInt8();
                 if (slot == 255)
                 {
                     player_node->setMoney(msg.readInt32());
@@ -78,7 +78,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 {
                     player_node->mEquipment->setEquipment(slot, id);
                 }
-                else if (slot >= 32 && slot < 32 + getInventorySize())
+                else if (slot >= 32 && slot < 32 + getSize(INVENTORY))
                 {
                     int amount = id ? msg.readInt8() : 0;
                     player_node->setInvItem(slot - 32, id, amount);
@@ -153,12 +153,12 @@ void InventoryHandler::moveItem(int oldIndex, int newIndex)
     gameServerConnection->send(msg);
 }
 
-void InventoryHandler::openStorage()
+void InventoryHandler::openStorage(StorageType type)
 {
     // TODO
 }
 
-void InventoryHandler::closeStorage()
+void InventoryHandler::closeStorage(StorageType type)
 {
     // TODO
 }
@@ -169,14 +169,19 @@ void InventoryHandler::moveItem(StorageType source, int slot, int amount,
     // TODO
 }
 
-size_t InventoryHandler::getInventorySize() const
+size_t InventoryHandler::getSize(StorageType type) const
 {
-    return 50;
-}
+    switch (type)
+    {
+        case INVENTORY:
+            return 50;
+        case STORAGE:
+        case GUILD_STORAGE:
+            return 300;
+        case CART:
+            return 0;
+    }
 
-size_t InventoryHandler::getStorageSize() const
-{
-    return 300;
 }
 
 } // namespace ManaServ

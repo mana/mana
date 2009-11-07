@@ -25,6 +25,7 @@
 #include "net/ea/protocol.h"
 
 #include "localplayer.h"
+#include "log.h"
 
 Net::GuildHandler *guildHandler;
 
@@ -102,6 +103,20 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 // TODO
             }
             break;
+
+        case SMSG_GUILD_POSITION_INFO:
+            {
+                int guildId =  msg.readInt32();
+                int emblem =  msg.readInt32();
+                int posMode =  msg.readInt32();
+                msg.readInt32(); // Unused
+                msg.readInt8(); // Unused
+                std::string guildName = msg.readString(24);
+
+                logger->log("Guild position info: %d %d %d %s\n", guildId,
+                            emblem, posMode, guildName.c_str());
+            }
+            break;
     }
 }
 
@@ -143,14 +158,20 @@ void GuildHandler::leave(int guildId)
     msg.writeString("", 30); // Message
 }
 
-void GuildHandler::kick(int guildId, int playerId)
+void GuildHandler::kick(GuildMember member)
 {
-    // TODO
+    MessageOut msg(CMSG_GUILD_EXPULSION);
+    msg.writeInt32(member.getGuild()->getId());
+    msg.writeInt32(member.getID()); // Account ID
+    msg.writeInt32(0); // Char ID
+    msg.writeString("", 40); // Message
 }
 
 void GuildHandler::chat(int guildId, const std::string &text)
 {
-    // TODO
+    MessageOut msg(CMSG_GUILD_MESSAGE);
+    msg.writeInt16(text.size() + 4);
+    msg.writeString(text);
 }
 
 void GuildHandler::memberList(int guildId)
@@ -158,7 +179,7 @@ void GuildHandler::memberList(int guildId)
     // TODO
 }
 
-void GuildHandler::changeMemberPostion(int guildId, int playerId, int level)
+void GuildHandler::changeMemberPostion(GuildMember member, int level)
 {
     // TODO
 }

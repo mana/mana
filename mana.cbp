@@ -421,14 +421,8 @@
 		<Unit filename="src\gui\worldselectdialog.cpp" />
 		<Unit filename="src\gui\worldselectdialog.h" />
 		<Unit filename="src\guichanfwd.h" />
-		<Unit filename="src\guild.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\guild.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
+		<Unit filename="src\guild.cpp" />
+		<Unit filename="src\guild.h" />
 		<Unit filename="src\imageparticle.cpp" />
 		<Unit filename="src\imageparticle.h" />
 		<Unit filename="src\inventory.cpp" />

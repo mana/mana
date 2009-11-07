@@ -58,9 +58,9 @@
 TradeWindow::TradeWindow():
     Window(_("Trade: You")),
     mMyInventory(new Inventory(Net::getInventoryHandler()
-                               ->getInventorySize())),
+                               ->getSize(Net::InventoryHandler::INVENTORY))),
     mPartnerInventory(new Inventory(Net::getInventoryHandler()
-                                    ->getInventorySize())),
+                               ->getSize(Net::InventoryHandler::INVENTORY))),
     mStatus(PROPOSING)
 {    
     setWindowName("Trade");

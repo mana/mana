@@ -45,24 +45,23 @@ class InventoryHandler
 
         virtual void moveItem(int oldIndex, int newIndex) = 0;
 
-        virtual void openStorage() = 0;
-
-        virtual void closeStorage() = 0;
-
-        //void changeCart() = 0;
-
         enum StorageType {
             INVENTORY,
             STORAGE,
+            GUILD_STORAGE,
             CART
         };
+
+        virtual void openStorage(StorageType type) = 0;
+
+        virtual void closeStorage(StorageType type) = 0;
+
+        //void changeCart() = 0;
 
         virtual void moveItem(StorageType source, int slot, int amount,
                               StorageType destination) = 0;
 
-        virtual size_t getInventorySize() const = 0;
-
-        virtual size_t getStorageSize() const = 0;
+        virtual size_t getSize(StorageType type) const = 0;
 };
 
 } // namespace Net

@@ -102,11 +102,13 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mWalkingDir(0),
     mPathSetByMouse(false),
     mDestX(0), mDestY(0),
-    mInventory(new Inventory(Net::getInventoryHandler()->getInventorySize())),
+    mInventory(new Inventory(Net::getInventoryHandler()
+                             ->getSize(Net::InventoryHandler::INVENTORY))),
 #ifdef MANASERV_SUPPORT
     mLocalWalkTime(-1),
 #endif
-    mStorage(new Inventory(Net::getInventoryHandler()->getStorageSize())),
+    mStorage(new Inventory(Net::getInventoryHandler()
+                           ->getSize(Net::InventoryHandler::STORAGE))),
     mMessageTime(0)
 {
     // Variable to keep the local player from doing certain actions before a map
@@ -350,8 +352,6 @@ void LocalPlayer::nextStep(unsigned char dir = 0)
 #endif
 }
 
-
-#ifdef MANASERV_SUPPORT
 bool LocalPlayer::checkInviteRights(const std::string &guildName)
 {
     Guild *guild = getGuild(guildName);
@@ -389,6 +389,7 @@ void LocalPlayer::clearInventory()
     mInventory->clear();
 }
 
+#ifdef MANASERV_SUPPORT
 void LocalPlayer::setInvItem(int index, int id, int amount)
 {
     bool equipment = false;
@@ -397,7 +398,6 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
         equipment = true;
     mInventory->setItem(index, id, amount, equipment);
 }
-
 #endif
 
 void LocalPlayer::pickUp(FloorItem *item)

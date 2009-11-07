@@ -49,16 +49,14 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler
 
         void moveItem(int oldIndex, int newIndex);
 
-        void openStorage();
+        void openStorage(StorageType type);
 
-        void closeStorage();
+        void closeStorage(StorageType type);
 
         void moveItem(StorageType source, int slot, int amount,
                               StorageType destination);
 
-        size_t getInventorySize() const;
-
-        size_t getStorageSize() const;
+        size_t getSize(StorageType type) const;
 };
 
 } // namespace ManaServ

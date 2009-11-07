@@ -22,9 +22,7 @@
 #include "animatedsprite.h"
 #include "configuration.h"
 #include "game.h"
-#ifdef MANASERV_SUPPORT
 #include "guild.h"
-#endif
 #include "localplayer.h"
 #include "particle.h"
 #include "player.h"
@@ -209,10 +207,10 @@ void Player::setSpriteColor(unsigned int slot, const std::string &color)
     setSprite(slot, mSpriteIDs[slot], color);
 }
 
-#ifdef MANASERV_SUPPORT
 Guild* Player::addGuild(short guildId, short rights)
 {
-    Guild *guild = new Guild(guildId, rights);
+    Guild *guild = Guild::getGuild(guildId);
+    guild->setRights(rights);
     mGuilds.insert(std::pair<int, Guild*>(guildId, guild));
     return guild;
 }
@@ -253,8 +251,6 @@ short Player::getNumberOfGuilds()
 {
     return mGuilds.size();
 }
-
-#endif
 
 void Player::setInParty(bool inParty)
 {
