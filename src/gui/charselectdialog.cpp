@@ -107,6 +107,7 @@ class CharEntry : public Container
 
         PlayerBox *mPlayerBox;
         Label *mName;
+        Label *mLevel;
         Label *mMoney;
         Button *mButton;
         Button *mDelete;
@@ -289,7 +290,8 @@ CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
         mPlayerBox(new PlayerBox(chr))
 {
     mButton = new Button("wwwwwwwww", "go", m);
-    mName = new Label("wwwwwwwwwwwwwwwwwwwwwwww (888)");
+    mName = new Label("wwwwwwwwwwwwwwwwwwwwwwww");
+    mLevel = new Label("(888)");
     mMoney = new Label("wwwwwwwww");
 
     mDelete = new Button(_("Delete"), "delete", m);
@@ -299,14 +301,23 @@ CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
 
     place(0, 0, mPlayerBox, 3, 5);
     place(0, 5, mName, 3);
-    place(0, 6, mMoney, 3);
-    place(0, 7, mButton, 3);
-    place(0, 8, mDelete, 3);
-
-    h.reflowLayout(74, 123 + mName->getHeight() + mMoney->getHeight() +
-                   mButton->getHeight() + mDelete->getHeight());
+    place(0, 6, mLevel, 3);
+    place(0, 7, mMoney, 3);
+    place(0, 8, mButton, 3);
+    place(0, 9, mDelete, 3);
 
     update();
+
+    // Setting the width so that the largest label fits.
+    mName->adjustSize();
+    mMoney->adjustSize();
+    int width = 74;
+    if (width < 20 + mName->getWidth())
+        width = 20 + mName->getWidth();
+    if (width < 20 + mMoney->getWidth())
+        width = 20 + mMoney->getWidth();
+    h.reflowLayout(width, 112 + mName->getHeight() + mLevel->getHeight() +
+            mMoney->getHeight() + mButton->getHeight() + mDelete->getHeight());
 }
 
 void CharEntry::setChar(LocalPlayer *chr)
@@ -329,8 +340,8 @@ void CharEntry::update()
     {
         mButton->setCaption(_("Choose"));
         mButton->setActionEventId("use");
-        mName->setCaption(strprintf("%s (%d)", mCharacter->getName().c_str(),
-                                    mCharacter->getLevel()));
+        mName->setCaption(strprintf("%s", mCharacter->getName().c_str()));
+        mLevel->setCaption(strprintf("Level %d", mCharacter->getLevel()));
         mMoney->setCaption(Units::formatCurrency(mCharacter->getMoney()));
 
         mDelete->setVisible(true);
@@ -340,6 +351,7 @@ void CharEntry::update()
         mButton->setCaption(_("Create"));
         mButton->setActionEventId("new");
         mName->setCaption(_("(empty)"));
+        mLevel->setCaption(_("(empty)"));
         mMoney->setCaption(Units::formatCurrency(0));
 
         mDelete->setVisible(false);
