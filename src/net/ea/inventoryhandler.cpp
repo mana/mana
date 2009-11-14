@@ -90,16 +90,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 clearEquipment();
                 inventory->clear();
             }
-            else
-            {
-                /*
-                 * This packet will always be followed by a
-                 * SMSG_PLAYER_STORAGE_EQUIP packet.  The two packets
-                 * together comprise a complete refresh of storage, so
-                 * clear storage here
-                 */
-                storage->clear();
-            }
+
             msg.readInt16();  // length
             number = (msg.getLength() - 4) / 18;
 
@@ -287,6 +278,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             /*
              * Storage access has been closed
              */
+            storage->clear();
             player_node->setInStorage(false);
             break;
     }
