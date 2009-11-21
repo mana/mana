@@ -301,6 +301,11 @@ bool LoginHandler::isConnected()
 void LoginHandler::disconnect()
 {
     accountServerConnection->disconnect();
+
+    if (state == STATE_CONNECT_GAME)
+    {
+        state = STATE_GAME;
+    }
 }
 
 void LoginHandler::loginAccount(LoginData *loginData)
