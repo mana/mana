@@ -321,8 +321,7 @@ void ServerDialog::downloadServerList()
     std::string listFile = config.getValue("onlineServerList", "void");
     // if there is no entry, try to load the file from the default updatehost
     if (listFile == "void")
-        listFile = config.getValue("updatehost", "http://updates.themanaworld.org")
-            + "/serverlist.xml";
+        listFile = "http://manasource.org/serverlist.xml";
 
     mDownload = new Net::Download(this, listFile, &downloadUpdate);
     mDownload->setFile(mDir + "/serverlist.xml");
