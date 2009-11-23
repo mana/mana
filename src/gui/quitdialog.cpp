@@ -23,6 +23,7 @@
 
 #include "main.h"
 
+#include "gui/widgets/layout.h"
 #include "gui/widgets/button.h"
 #include "gui/widgets/radiobutton.h"
 
@@ -36,27 +37,14 @@
 QuitDialog::QuitDialog(QuitDialog** pointerToMe):
     Window(_("Quit"), true, NULL), mMyPointer(pointerToMe)
 {
+    ContainerPlacer place = getPlacer(0, 0);
 
-    mLogoutQuit = new RadioButton(_("Quit"), "quitdialog");
     mForceQuit = new RadioButton(_("Quit"), "quitdialog");
+    mLogoutQuit = new RadioButton(_("Quit"), "quitdialog");
     mSwitchAccountServer = new RadioButton(_("Switch server"), "quitdialog");
     mSwitchCharacter = new RadioButton(_("Switch character"), "quitdialog");
     mOkButton = new Button(_("OK"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
-
-    setContentSize(200, 91);
-
-    mLogoutQuit->setPosition(5, 5);
-    mForceQuit->setPosition(5, 5);
-    mSwitchAccountServer->setPosition(5, 14 + mLogoutQuit->getHeight());
-    mSwitchCharacter->setPosition(5,
-           23 + mLogoutQuit->getHeight() + mSwitchAccountServer->getHeight());
-    mCancelButton->setPosition(
-           200 - mCancelButton->getWidth() - 5,
-           91 - mCancelButton->getHeight() - 5);
-    mOkButton->setPosition(
-           mCancelButton->getX() - mOkButton->getWidth() - 5,
-           91 - mOkButton->getHeight() - 5);
 
     //All states, when we're not logged in to someone.
     if (state == STATE_CHOOSE_SERVER ||
@@ -66,26 +54,26 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
         state == STATE_UPDATE ||
         state == STATE_LOAD_DATA)
     {
+        place(0, 0, mForceQuit, 3);
         mForceQuit->setSelected(true);
-        add(mForceQuit);
     }
     else
     {
         // Only added if we are connected to an accountserver or gameserver
+        place(0, 0, mLogoutQuit, 3);
+        place(0, 1, mSwitchAccountServer, 3);
         mLogoutQuit->setSelected(true);
-        add(mLogoutQuit);
-        add(mSwitchAccountServer);
 
         // Only added if we are connected to a gameserver
-        if (state == STATE_GAME) add(mSwitchCharacter);
+        if (state == STATE_GAME) place(0, 2, mSwitchCharacter, 3);
     }
 
-    add(mOkButton);
-    add(mCancelButton);
+    place(1, 3, mOkButton);
+    place(2, 3, mCancelButton);
 
+    reflowLayout(150, 0);
     setLocationRelativeTo(getParent());
     setVisible(true);
-
     mOkButton->requestFocus();
 }
 
