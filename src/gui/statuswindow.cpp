@@ -473,7 +473,7 @@ DerDisplay::DerDisplay(int id, const std::string &name):
 ChangeDisplay::ChangeDisplay(int id, const std::string &name):
         AttrDisplay(id, name), mNeeded(1)
 {
-    mPoints = new Label("1  ");
+    mPoints = new Label(_("Max"));
     mInc = new Button(_("+"), "inc", this);
 
     // Do the layout
@@ -501,11 +501,21 @@ ChangeDisplay::ChangeDisplay(int id, const std::string &name):
 
 std::string ChangeDisplay::update()
 {
-    mPoints->setCaption(toString(mNeeded));
+    if (mNeeded > 0)
+    {
+        mPoints->setCaption(toString(mNeeded));
+    }
+    else
+    {
+        mPoints->setCaption(_("Max"));
+    }
 
     if (mDec)
+    {
         mDec->setEnabled(player_node->getCorrectionPoints());
-    mInc->setEnabled(player_node->getCharacterPoints() >= mNeeded);
+    }
+    mInc->setEnabled(player_node->getCharacterPoints() >= mNeeded &&
+                     mNeeded > 0);
 
     return AttrDisplay::update();
 }

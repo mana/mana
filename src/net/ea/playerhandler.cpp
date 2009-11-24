@@ -372,32 +372,80 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 int val = msg.readInt8();
                 player_node->setAttributeEffective(STR, val + ATTR_BONUS(STR));
                 player_node->setAttributeBase(STR, val);
-                statusWindow->setPointsNeeded(STR, msg.readInt8());
+                if (val >= 99)
+                {
+                    statusWindow->setPointsNeeded(STR, 0);
+                    msg.readInt8();
+                }
+                else
+                {
+                    statusWindow->setPointsNeeded(STR, msg.readInt8());
+                }
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(AGI, val + ATTR_BONUS(AGI));
                 player_node->setAttributeBase(AGI, val);
-                statusWindow->setPointsNeeded(AGI, msg.readInt8());
+                if (val >= 99)
+                {
+                    statusWindow->setPointsNeeded(AGI, 0);
+                    msg.readInt8();
+                }
+                else
+                {
+                    statusWindow->setPointsNeeded(AGI, msg.readInt8());
+                }
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(VIT, val + ATTR_BONUS(VIT));
                 player_node->setAttributeBase(VIT, val);
-                statusWindow->setPointsNeeded(VIT, msg.readInt8());
+                if (val >= 99)
+                {
+                    statusWindow->setPointsNeeded(VIT, 0);
+                    msg.readInt8();
+                }
+                else
+                {
+                    statusWindow->setPointsNeeded(VIT, msg.readInt8());
+                }
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(INT, val + ATTR_BONUS(INT));
                 player_node->setAttributeBase(INT, val);
-                statusWindow->setPointsNeeded(INT, msg.readInt8());
+                if (val >= 99)
+                {
+                    statusWindow->setPointsNeeded(INT, 0);
+                    msg.readInt8();
+                }
+                else
+                {
+                    statusWindow->setPointsNeeded(INT, msg.readInt8());
+                }
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(DEX, val + ATTR_BONUS(DEX));
                 player_node->setAttributeBase(DEX, val);
-                statusWindow->setPointsNeeded(DEX, msg.readInt8());
+                if (val >= 99)
+                {
+                    statusWindow->setPointsNeeded(DEX, 0);
+                    msg.readInt8();
+                }
+                else
+                {
+                    statusWindow->setPointsNeeded(DEX, msg.readInt8());
+                }
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(LUK, val + ATTR_BONUS(LUK));
                 player_node->setAttributeBase(LUK, val);
-                statusWindow->setPointsNeeded(LUK, msg.readInt8());
+                if (val >= 99)
+                {
+                    statusWindow->setPointsNeeded(LUK, 0);
+                    msg.readInt8();
+                }
+                else
+                {
+                    statusWindow->setPointsNeeded(LUK, msg.readInt8());
+                }
 
                 val = msg.readInt16(); // ATK
                 player_node->setAttributeBase(ATK, val);
