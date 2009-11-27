@@ -43,10 +43,7 @@ extern Window *setupWindow;
 extern Window *skillDialog;
 extern Window *specialsWindow;
 extern Window *statusWindow;
-#ifdef MANASERV_SUPPORT
-extern Window *buddyWindow;
 extern Window *guildWindow;
-#endif
 
 WindowMenu::WindowMenu():
     mEmotePopup(0)
@@ -60,10 +57,7 @@ WindowMenu::WindowMenu():
         N_("Inventory"),
         N_("Skills"),
         N_("Specials"),
-#ifdef MANASERV_SUPPORT
         N_("Guilds"),
-        N_("Buddies"),
-#endif
         N_("Shortcut"),
         N_("Setup"),
         0
@@ -133,16 +127,10 @@ void WindowMenu::action(const gcn::ActionEvent &event)
     {
         window = specialsWindow;
     }
-#ifdef MANASERV_SUPPORT
     else if (event.getId() == "Guilds")
     {
         window = guildWindow;
     }
-    else if (event.getId() == "Buddies")
-    {
-        window = buddyWindow;
-    }
-#endif
     else if (event.getId() == "Shortcut")
     {
         window = itemShortcutWindow;

@@ -62,8 +62,6 @@ src/game.cpp
 src/game.h
 src/graphics.cpp
 src/graphics.h
-src/gui/buddywindow.cpp
-src/gui/buddywindow.h
 src/gui/buy.cpp
 src/gui/buy.h
 src/gui/buysell.cpp

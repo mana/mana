@@ -153,6 +153,10 @@ SET(SRCS
     gui/focushandler.h
     gui/gui.cpp
     gui/gui.h
+    gui/guildlistbox.cpp
+    gui/guildlistbox.h
+    gui/guildwindow.cpp
+    gui/guildwindow.h
     gui/help.cpp
     gui/help.h
     gui/inventorywindow.cpp
@@ -492,12 +496,6 @@ SET(SRCS_EA
     )
 
 SET(SRCS_MANA
-    gui/buddywindow.cpp
-    gui/buddywindow.h
-    gui/guildlistbox.cpp
-    gui/guildlistbox.h
-    gui/guildwindow.cpp
-    gui/guildwindow.h
     net/manaserv/adminhandler.cpp
     net/manaserv/adminhandler.h
     net/manaserv/beinghandler.cpp

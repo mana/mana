@@ -68,10 +68,7 @@
 #include "gui/viewport.h"
 #include "gui/windowmenu.h"
 #include "gui/partywindow.h"
-#ifdef MANASERV_SUPPORT
-#include "gui/buddywindow.h"
 #include "gui/guildwindow.h"
-#endif
 #include "gui/npcpostdialog.h"
 #include "gui/quitdialog.h"
 #include "gui/specialswindow.h"
@@ -110,16 +107,11 @@ StatusWindow *statusWindow;
 MiniStatusWindow *miniStatusWindow;
 BuyDialog *buyDialog;
 SellDialog *sellDialog;
-#ifdef EATHENA_SUPPORT
 BuySellDialog *buySellDialog;
-#endif
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
 PartyWindow *partyWindow;
-#ifdef MANASERV_SUPPORT
-BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
-#endif
 NpcDialog *npcDialog;
 NpcPostDialog *npcPostDialog;
 StorageWindow *storageWindow;
@@ -236,12 +228,8 @@ static void createGuiWindows()
     sellDialog = new SellDialog;
     tradeWindow = new TradeWindow;
     partyWindow = new PartyWindow;
-#ifdef MANASERV_SUPPORT
-    buddyWindow = new BuddyWindow;
     guildWindow = new GuildWindow;
-#else
     buySellDialog = new BuySellDialog;
-#endif
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     npcDialog = new NpcDialog;
     npcPostDialog = new NpcPostDialog;
@@ -285,17 +273,12 @@ static void destroyGuiWindows()
     del_0(miniStatusWindow);
     del_0(buyDialog);
     del_0(sellDialog);
-#ifdef EATHENA_SUPPORT
     del_0(buySellDialog);
-#endif
     del_0(inventoryWindow);
     del_0(partyWindow);
     del_0(npcDialog);
     del_0(npcPostDialog);
-#ifdef MANASERV_SUPPORT
-    del_0(buddyWindow);
     del_0(guildWindow);
-#endif
     del_0(skillDialog);
     del_0(minimap);
     del_0(equipmentWindow);
@@ -823,10 +806,7 @@ void Game::handleInput()
                             equipmentWindow->setVisible(false);
                             helpWindow->setVisible(false);
                             debugWindow->setVisible(false);
-#ifdef MANASERV_SUPPORT
                             guildWindow->setVisible(false);
-                            buddyWindow->setVisible(false);
-#endif
                         }
                         break;
                     case KeyboardConfig::KEY_WINDOW_STATUS:

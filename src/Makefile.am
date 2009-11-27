@@ -99,6 +99,10 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      gui/focushandler.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
+	      gui/guildlistbox.cpp \
+	      gui/guildlistbox.h \
+	      gui/guildwindow.cpp \
+	      gui/guildwindow.h \
 	      gui/help.cpp \
 	      gui/help.h \
 	      gui/inventorywindow.cpp \
@@ -391,12 +395,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 if SERVER_MANASERV
 mana_CXXFLAGS += -DMANASERV_SUPPORT
 mana_SOURCES += \
-	      gui/buddywindow.cpp \
-	      gui/buddywindow.h \
-	      gui/guildlistbox.cpp \
-	      gui/guildlistbox.h \
-	      gui/guildwindow.cpp \
-	      gui/guildwindow.h \
 	      net/manaserv/adminhandler.cpp \
 	      net/manaserv/adminhandler.h \
 	      net/manaserv/beinghandler.cpp \

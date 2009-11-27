@@ -79,8 +79,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     {
         case Being::PLAYER:
             {
-                // Players can be traded with. Later also follow and
-                // add as buddy will be options in this menu.
+                // Players can be traded with.
                 mBrowserBox->addRow(strprintf("@@trade|%s@@",
                                                 strprintf(_("Trade with %s..."),
                                                     name.c_str()).c_str()));
@@ -125,14 +124,9 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 /*mBrowserBox->addRow(strprintf("@@follow|%s@@",
                                         strprintf(_("Follow %s"),
                                                   name.c_str()).c_str()));*/
-                /*mBrowserBox->addRow(strprintf("@@buddy|%s@@",
-                                        strprintf(_("Add %s to Buddy List"),
-                                                  name.c_str()).c_str()));*/
-#ifdef MANASERV_SUPPORT
                 mBrowserBox->addRow(strprintf("@@guild|%s@@",
                                 strprintf(_("Invite %s to join your guild"),
                                                     name.c_str()).c_str()));
-#endif
                 if (player_node->isInParty())
                     mBrowserBox->addRow(strprintf("@@party|%s@@",
                                 strprintf(_("Invite %s to join your party"),
@@ -253,7 +247,6 @@ void PopupMenu::handleLink(const std::string &link)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::FRIEND);
     }
-#ifdef MANASERV_SUPPORT
     // Guild action
     else if (link == "guild" &&
              being != NULL &&
@@ -261,21 +254,10 @@ void PopupMenu::handleLink(const std::string &link)
     {
         player_node->inviteToGuild(being);
     }
-#endif
     /*
     // Follow Player action
     else if (link == "follow")
     {
-    }*/
-
-    /*
-    // Add Buddy action
-    else if ((link == "buddy") && being && being->isPlayer())
-    {
-        if (!buddyWindow->isVisible())
-            buddyWindow->setVisible(true);
-
-        buddyWindow->addBuddy(being->getName());
     }*/
 
     // Pick Up Floor Item action

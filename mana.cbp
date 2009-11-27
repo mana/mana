@@ -190,14 +190,6 @@
 		<Unit filename="src\game.h" />
 		<Unit filename="src\graphics.cpp" />
 		<Unit filename="src\graphics.h" />
-		<Unit filename="src\gui\buddywindow.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\gui\buddywindow.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
 		<Unit filename="src\gui\buy.cpp" />
 		<Unit filename="src\gui\buy.h" />
 		<Unit filename="src\gui\buysell.cpp" />
@@ -228,22 +220,10 @@
 		<Unit filename="src\gui\focushandler.h" />
 		<Unit filename="src\gui\gui.cpp" />
 		<Unit filename="src\gui\gui.h" />
-		<Unit filename="src\gui\guildlistbox.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\gui\guildlistbox.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\gui\guildwindow.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\gui\guildwindow.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
+		<Unit filename="src\gui\guildlistbox.cpp" />
+		<Unit filename="src\gui\guildlistbox.h" />
+		<Unit filename="src\gui\guildwindow.cpp" />
+		<Unit filename="src\gui\guildwindow.h" />
 		<Unit filename="src\gui\help.cpp" />
 		<Unit filename="src\gui\help.h" />
 		<Unit filename="src\gui\inventorywindow.cpp" />
