@@ -170,22 +170,20 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         else if (mActionState == NPC_ACTION_INPUT)
         {
             std::string printText = "";  // Text that will get printed in the textbox
+
             if (mInputState == NPC_INPUT_LIST)
             {
-                 int choice = 0;
-                 int selectedIndex = mItemList->getSelected();
+                int choice = 0;
+                int selectedIndex = mItemList->getSelected();
 
-                 if (selectedIndex >= (int) mItems.size())
-                 {
-                     return;
-                 }
-                 else if (selectedIndex > -1)
-                 {
-                      choice = selectedIndex + 1;
-                      printText = mItems[selectedIndex];
-                 }
+                if (selectedIndex >= (int) mItems.size() || selectedIndex < 0)
+                {
+                    return;
+                }
+                choice = selectedIndex + 1;
+                printText = mItems[selectedIndex];
 
-                 Net::getNpcHandler()->listInput(mNpcId, choice);
+                Net::getNpcHandler()->listInput(mNpcId, choice);
             }
             else if (mInputState == NPC_INPUT_STRING)
             {
@@ -343,6 +341,8 @@ void NpcDialog::buildLayout()
             place(0, 0, mScrollArea, 5, 3);
             place(0, 3, mListScrollArea, 5, 3);
             place(3, 6, mButton, 2);
+
+            mItemList->setSelected(-1);
         }
         else if (mInputState == NPC_INPUT_STRING)
         {
