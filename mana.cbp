@@ -11,7 +11,6 @@
 				<Option object_output=".objs\ea" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters='-u -d &quot;D:/mana/data&quot;' />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
 					<Add option="-O3" />
@@ -22,6 +21,7 @@
 					<Add option="-DEATHENA_SUPPORT" />
 				</Compiler>
 				<Linker>
+					<Add option="-enable-auto-import" />
 					<Add library="guichan" />
 					<Add library="guichan_sdl" />
 					<Add library="guichan_opengl" />
@@ -80,7 +80,6 @@
 				<Option object_output=".objs\manaserv" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters='-u -d &quot;D:/mana/data&quot;' />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
 					<Add option="-O3" />
@@ -91,6 +90,7 @@
 					<Add option="-DMANASERV_SUPPORT" />
 				</Compiler>
 				<Linker>
+					<Add option="-enable-auto-import" />
 					<Add library="guichan" />
 					<Add library="guichan_sdl" />
 					<Add library="guichan_opengl" />
@@ -313,14 +313,8 @@
 		<Unit filename="src\gui\table.h" />
 		<Unit filename="src\gui\tablemodel.cpp" />
 		<Unit filename="src\gui\tablemodel.h" />
-		<Unit filename="src\gui\textdialog.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\gui\textdialog.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
+		<Unit filename="src\gui\textdialog.cpp" />
+		<Unit filename="src\gui\textdialog.h" />
 		<Unit filename="src\gui\textrenderer.h" />
 		<Unit filename="src\gui\trade.cpp" />
 		<Unit filename="src\gui\trade.h" />

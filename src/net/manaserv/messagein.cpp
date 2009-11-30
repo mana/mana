@@ -23,10 +23,6 @@
 
 #include <enet/enet.h>
 
-#define MAKEWORD(low,high) \
-    ((unsigned short)(((unsigned char)(low)) | \
-    ((unsigned short)((unsigned char)(high))) << 8))
-
 namespace ManaServ {
 
 MessageIn::MessageIn(const char *data, unsigned int length):
