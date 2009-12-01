@@ -53,6 +53,8 @@
 
 #include <string>
 
+#include "net/logindata.h"
+
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
 #elif defined WIN32
@@ -130,5 +132,6 @@ enum State {
 
 extern State state;
 extern std::string errorMessage;
+extern LoginData loginData;
 
 #endif

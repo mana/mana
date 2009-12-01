@@ -97,6 +97,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
 
              len = msg.readInt16() - 4;
              mUpdateHost = msg.readString(len);
+             loginData.updateHost = mUpdateHost;
 
              logger->log("Received update host \"%s\" from login server.",
                      mUpdateHost.c_str());
