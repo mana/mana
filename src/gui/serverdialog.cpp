@@ -349,7 +349,8 @@ void ServerDialog::loadServers()
         {
             if (xmlStrEqual(server->name, BAD_CAST "server"))
             {
-                //check wether the build matches
+                // check wether the build matches (remove with last instances
+                // if _SUPPORT ifdefs)
                 if (compareStrI(XML::getProperty(server, "type", "unknown"),
                                 SERVER_BUILD))
                 {
