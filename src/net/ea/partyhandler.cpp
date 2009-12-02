@@ -268,7 +268,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
                 PartyMember *member = partyWindow->findMember(id);
                 if (member)
-                    partyTab->chatLog(member->name, chatMsg);
+                    partyTab->chatLog(member->getAvatar()->getName(), chatMsg);
                 else
                     partyTab->chatLog(strprintf(_("An unknown member tried to "
                                     "say: %s"), chatMsg.c_str()), BY_SERVER);

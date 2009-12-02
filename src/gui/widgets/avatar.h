@@ -38,18 +38,34 @@ public:
     ~Avatar();
 
     /**
+     * Returns the avatar's name.
+     */
+    std::string getName() const { return mName; };
+
+    /**
      * Set the avatar's name.
      */
     void setName(const std::string &name);
+
+    /**
+     * Returns the avatar's online status.
+     */
+    bool getOnline() const { return mOnline; }
 
     /**
      * Set the avatar's online status.
      */
     void setOnline(bool online);
 
+    int getHp() const { return mHp; }
+
     void setHp(int hp);
 
+    int getMaxHp() const { return mMaxHp; }
+
     void setMaxHp(int maxHp);
+
+    bool getDisplayBold() const { return mDisplayBold; }
 
     void setDisplayBold(bool displayBold) { mDisplayBold = displayBold; }
 
@@ -61,6 +77,7 @@ private:
     int mMaxHp;
     Icon *mStatus;
     gcn::Label *mLabel;
+    bool mOnline;
     bool mDisplayBold;
 };
 

@@ -33,6 +33,8 @@
 #include <string>
 #include <map>
 
+class PartyWindow;
+
 /**
  * Party Member
  * Used for storing players in the party
@@ -43,10 +45,16 @@ class PartyMember
         PartyMember();
         ~PartyMember();
 
-        std::string name;
-        bool leader;
-        bool online;
-        Avatar *avatar;
+        Avatar *getAvatar() const { return mAvatar; }
+
+        bool getLeader() const { return mLeader; }
+
+        void setLeader(bool leader);
+
+    private:
+        friend class PartyWindow;
+        bool mLeader;
+        Avatar *mAvatar;
 };
 
 

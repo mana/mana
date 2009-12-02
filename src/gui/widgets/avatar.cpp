@@ -84,6 +84,7 @@ void Avatar::setName(const std::string &name)
 
 void Avatar::setOnline(bool online)
 {
+    mOnline = online;
     mStatus->setImage(online ? avatarStatusOnline : avatarStatusOffline);
 }
 

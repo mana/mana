@@ -483,7 +483,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             {
                 PartyMember *member = partyWindow->findMember(id);
-                if (member && member->online)
+                if (member && member->getAvatar()->getOnline())
                 {
                     player->setInParty(true);
                 }

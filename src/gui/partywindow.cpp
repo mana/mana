@@ -35,13 +35,19 @@
 #include "utils/stringutils.h"
 
 PartyMember::PartyMember():
-    avatar(new Avatar)
+    mAvatar(new Avatar)
 {
 }
 
 PartyMember::~PartyMember()
 {
-    delete avatar;
+    delete mAvatar;
+}
+
+void PartyMember::setLeader(bool leader)
+{
+    mLeader =  leader;
+    mAvatar->setDisplayBold(true);
 }
 
 
@@ -108,7 +114,7 @@ int PartyWindow::findMember(const std::string &name) const
 
     while (itr != itr_end)
     {
-        if ((*itr).second->name == name)
+        if ((*itr).second->mAvatar->getName() == name)
         {
             return (*itr).first;
         }
@@ -122,12 +128,9 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
                                bool leader, bool online)
 {
     PartyMember *member = findOrCreateMember(id);
-    member->name = memberName;
-    member->leader = leader;
-    member->online = online;
-    member->avatar->setDisplayBold(leader);
-    member->avatar->setName(memberName);
-    member->avatar->setOnline(online);
+    member->mAvatar->setName(memberName);
+    member->setLeader(leader);
+    member->mAvatar->setOnline(online);
 
     Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
     if (player && online)
@@ -137,8 +140,8 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
 void PartyWindow::updateMemberHP(int id, int hp, int maxhp)
 {
     PartyMember *player = findOrCreateMember(id);
-    player->avatar->setHp(hp);
-    player->avatar->setMaxHp(maxhp);
+    player->mAvatar->setHp(hp);
+    player->mAvatar->setMaxHp(maxhp);
 }
 
 void PartyWindow::removeMember(int id)
@@ -163,8 +166,7 @@ void PartyWindow::updateOnlne(int id, bool online)
     if (!player)
         return;
 
-    player->online = online;
-    player->avatar->setOnline(online);
+    player->mAvatar->setOnline(online);
 }
 
 void PartyWindow::showPartyInvite(const std::string &inviter,
@@ -245,7 +247,7 @@ void PartyWindow::buildLayout()
     for (it = mMembers.begin(); it != mMembers.end(); it++)
     {
         member = (*it).second;
-        add(member->avatar, 0, lastPos);
-        lastPos += member->avatar->getHeight() + 2;
+        add(member->mAvatar, 0, lastPos);
+        lastPos += member->mAvatar->getHeight() + 2;
     }
 }
