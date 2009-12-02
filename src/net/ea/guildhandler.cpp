@@ -27,7 +27,7 @@
 #include "localplayer.h"
 #include "log.h"
 
-Net::GuildHandler *guildHandler;
+extern Net::GuildHandler *guildHandler;
 
 namespace EAthena {
 

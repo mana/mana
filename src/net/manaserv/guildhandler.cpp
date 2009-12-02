@@ -43,7 +43,7 @@
 
 #include <iostream>
 
-Net::GuildHandler *guildHandler;
+extern Net::GuildHandler *guildHandler;
 
 namespace ManaServ {
 

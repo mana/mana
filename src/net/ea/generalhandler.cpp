@@ -62,7 +62,7 @@
 #include <assert.h>
 #include <list>
 
-Net::GeneralHandler *generalHandler = NULL;
+extern Net::GeneralHandler *generalHandler;
 
 namespace EAthena {
 

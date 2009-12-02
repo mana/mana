@@ -26,7 +26,7 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
-Net::SpecialHandler *specialHandler;
+extern Net::SpecialHandler *specialHandler;
 
 namespace ManaServ {
 

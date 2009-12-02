@@ -28,7 +28,7 @@
 
 #include "main.h"
 
-Net::GameHandler *gameHandler;
+extern Net::GameHandler *gameHandler;
 
 extern ManaServ::ChatHandler *chatHandler;
 

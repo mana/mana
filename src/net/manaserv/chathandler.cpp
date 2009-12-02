@@ -45,7 +45,7 @@
 
 extern Being *player_node;
 
-Net::ChatHandler *chatHandler;
+extern Net::ChatHandler *chatHandler;
 
 namespace ManaServ {
 

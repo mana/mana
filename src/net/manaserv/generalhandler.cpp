@@ -55,7 +55,7 @@
 
 #include <list>
 
-Net::GeneralHandler *generalHandler  = NULL;
+extern Net::GeneralHandler *generalHandler;
 
 extern ManaServ::LoginHandler *loginHandler;
 

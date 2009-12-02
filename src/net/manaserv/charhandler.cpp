@@ -43,7 +43,7 @@
 
 #include "utils/gettext.h"
 
-Net::CharHandler *charHandler;
+extern Net::CharHandler *charHandler;
 
 struct CharInfo {
     unsigned char slot;

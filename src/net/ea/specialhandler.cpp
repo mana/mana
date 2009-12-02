@@ -67,7 +67,7 @@
 /** should always be zero if failed */
 #define SKILL_FAILED      0x00
 
-Net::SpecialHandler *specialHandler;
+extern Net::SpecialHandler *specialHandler;
 
 namespace EAthena {
 

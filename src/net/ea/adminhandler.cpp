@@ -38,9 +38,7 @@
 
 #include <string>
 
-extern Net::ChatHandler *chatHandler;
-
-Net::AdminHandler *adminHandler;
+extern Net::AdminHandler *adminHandler;
 
 namespace EAthena {
 
@@ -97,7 +95,7 @@ void AdminHandler::kick(int playerId)
 
 void AdminHandler::kick(const std::string &name)
 {
-    chatHandler->talk("@kick " + name);
+    Net::getChatHandler()->talk("@kick " + name);
 }
 
 void AdminHandler::ban(int playerId)
@@ -107,7 +105,7 @@ void AdminHandler::ban(int playerId)
 
 void AdminHandler::ban(const std::string &name)
 {
-    chatHandler->talk("@ban " + name);
+    Net::getChatHandler()->talk("@ban " + name);
 }
 
 void AdminHandler::unban(int playerId)

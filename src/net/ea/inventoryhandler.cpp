@@ -46,7 +46,7 @@
 
 #include <SDL_types.h>
 
-Net::InventoryHandler *inventoryHandler;
+extern Net::InventoryHandler *inventoryHandler;
 
 namespace EAthena {
 

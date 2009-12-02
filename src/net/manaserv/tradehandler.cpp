@@ -43,7 +43,7 @@
 std::string tradePartnerName;
 int tradePartnerID;
 
-Net::TradeHandler *tradeHandler;
+extern Net::TradeHandler *tradeHandler;
 
 namespace ManaServ {
 

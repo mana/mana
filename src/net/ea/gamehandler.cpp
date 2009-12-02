@@ -40,8 +40,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-Net::GameHandler *gameHandler;
-extern Game *game;
+extern Net::GameHandler *gameHandler;
 
 namespace EAthena {
 

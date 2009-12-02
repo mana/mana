@@ -36,7 +36,7 @@
 
 #include <SDL_types.h>
 
-Net::NpcHandler *npcHandler;
+extern Net::NpcHandler *npcHandler;
 
 namespace EAthena {
 

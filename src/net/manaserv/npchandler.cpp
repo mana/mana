@@ -32,7 +32,7 @@
 #include "gui/npcpostdialog.h"
 #include "gui/npcdialog.h"
 
-Net::NpcHandler *npcHandler;
+extern Net::NpcHandler *npcHandler;
 
 namespace ManaServ {
 

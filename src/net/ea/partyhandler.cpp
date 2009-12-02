@@ -38,7 +38,7 @@
 #include "utils/stringutils.h"
 
 PartyTab *partyTab = 0;
-Net::PartyHandler *partyHandler = 0;
+extern Net::PartyHandler *partyHandler;
 
 namespace EAthena {
 

@@ -38,7 +38,7 @@
 
 #include <iostream>
 
-Net::PartyHandler *partyHandler;
+extern Net::PartyHandler *partyHandler;
 
 namespace ManaServ {
 

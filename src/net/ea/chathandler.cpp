@@ -39,7 +39,7 @@
 
 #include <string>
 
-Net::ChatHandler *chatHandler;
+extern Net::ChatHandler *chatHandler;
 
 namespace EAthena {
 

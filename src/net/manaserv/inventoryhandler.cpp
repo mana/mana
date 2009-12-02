@@ -38,7 +38,7 @@
 
 #include "log.h" // <<< REMOVE ME!
 
-Net::InventoryHandler *inventoryHandler;
+extern Net::InventoryHandler *inventoryHandler;
 
 namespace ManaServ {
 

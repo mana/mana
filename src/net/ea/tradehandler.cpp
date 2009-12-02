@@ -55,7 +55,7 @@ namespace {
     } listener;
 }
 
-Net::TradeHandler *tradeHandler;
+extern Net::TradeHandler *tradeHandler;
 
 namespace EAthena {
 

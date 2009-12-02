@@ -33,8 +33,7 @@
 #include "utils/gettext.h"
 #include "utils/sha256.h"
 
-Net::LoginHandler *loginHandler;
-
+extern Net::LoginHandler *loginHandler;
 
 namespace ManaServ {
 

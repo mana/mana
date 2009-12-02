@@ -140,7 +140,7 @@ static const char *randomDeathMessage()
     return gettext(deadMsg[random]);
 }
 
-Net::PlayerHandler *playerHandler;
+extern Net::PlayerHandler *playerHandler;
 
 namespace EAthena {
 

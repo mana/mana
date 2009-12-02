@@ -35,7 +35,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-Net::LoginHandler *loginHandler;
+extern Net::LoginHandler *loginHandler;
 
 namespace EAthena {
 

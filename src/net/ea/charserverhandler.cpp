@@ -42,7 +42,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-Net::CharHandler *charHandler;
+extern Net::CharHandler *charHandler;
 
 namespace EAthena {
 

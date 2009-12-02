@@ -43,19 +43,19 @@
 #include "net/ea/generalhandler.h"
 #endif
 
-extern Net::AdminHandler *adminHandler;
-extern Net::CharHandler *charHandler;
-extern Net::ChatHandler *chatHandler;
-extern Net::GeneralHandler *generalHandler;
-extern Net::InventoryHandler *inventoryHandler;
-extern Net::LoginHandler *loginHandler;
-extern Net::GameHandler *gameHandler;
-extern Net::GuildHandler *guildHandler;
-extern Net::NpcHandler *npcHandler;
-extern Net::PartyHandler *partyHandler;
-extern Net::PlayerHandler *playerHandler;
-extern Net::SpecialHandler *specialHandler;
-extern Net::TradeHandler *tradeHandler;
+Net::AdminHandler *adminHandler = NULL;
+Net::CharHandler *charHandler = NULL;
+Net::ChatHandler *chatHandler = NULL;
+Net::GeneralHandler *generalHandler = NULL;
+Net::InventoryHandler *inventoryHandler = NULL;
+Net::LoginHandler *loginHandler = NULL;
+Net::GameHandler *gameHandler = NULL;
+Net::GuildHandler *guildHandler = NULL;
+Net::NpcHandler *npcHandler = NULL;
+Net::PartyHandler *partyHandler = NULL;
+Net::PlayerHandler *playerHandler = NULL;
+Net::SpecialHandler *specialHandler = NULL;
+Net::TradeHandler *tradeHandler = NULL;
 
 Net::AdminHandler *Net::getAdminHandler()
 {

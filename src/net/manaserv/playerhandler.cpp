@@ -87,7 +87,7 @@ namespace {
     } deathListener;
 }
 
-Net::PlayerHandler *playerHandler;
+extern Net::PlayerHandler *playerHandler;
 
 namespace ManaServ {
 
