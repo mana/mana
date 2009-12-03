@@ -464,7 +464,6 @@ bool Map::getWalk(int x, int y, unsigned char walkmask) const
     return !(mMetaTiles[x + y * mWidth].blockmask & walkmask);
 }
 
-#ifdef EATHENA_SUPPORT
 bool Map::occupied(int x, int y) const
 {
     const Beings &beings = beingManager->getAll();
@@ -479,7 +478,6 @@ bool Map::occupied(int x, int y) const
 
     return false;
 }
-#endif
 
 bool Map::contains(int x, int y) const
 {
@@ -611,14 +609,12 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                     ++Gcost;
                 }
 
-#ifdef EATHENA_SUPPORT
                 // It costs extra to walk through a being (needs to be enough
                 // to make it more attractive to walk around).
                 if (occupied(x, y))
                 {
                     Gcost += 3 * basicCost;
                 }
-#endif
 
                 // Skip if Gcost becomes too much
                 // Warning: probably not entirely accurate

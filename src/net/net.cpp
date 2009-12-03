@@ -37,11 +37,8 @@
 #include "net/specialhandler.h"
 #include "net/tradehandler.h"
 
-#ifdef MANASERV_SUPPORT
-#include "net/manaserv/generalhandler.h"
-#else
 #include "net/ea/generalhandler.h"
-#endif
+#include "net/manaserv/generalhandler.h"
 
 Net::AdminHandler *adminHandler = NULL;
 Net::CharHandler *charHandler = NULL;
