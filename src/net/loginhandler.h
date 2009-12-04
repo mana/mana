@@ -71,7 +71,7 @@ class LoginHandler
 
         virtual unsigned int getMinPasswordLength() const { return 4; };
 
-        virtual unsigned int getMaxPasswordLength() const { return 25; };
+        virtual unsigned int getMaxPasswordLength() const { return 255; };
 
         virtual void loginAccount(LoginData *loginData) = 0;
 

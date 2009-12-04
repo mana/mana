@@ -216,8 +216,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             {
                 mMinUserNameLength = msg.readInt8();
                 mMaxUserNameLength = msg.readInt8();
-                mMinPasswordLength = msg.readInt8();
-                mMaxPasswordLength = msg.readInt8();
+                msg.readInt8();
+                msg.readInt8();
                 std::string captchaURL = msg.readString();
                 std::string captchaInstructions = msg.readString();
 
@@ -355,16 +355,6 @@ unsigned int LoginHandler::getMinUserNameLength() const
 unsigned int LoginHandler::getMaxUserNameLength() const
 {
     return mMaxUserNameLength;
-}
-
-unsigned int LoginHandler::getMinPasswordLength() const
-{
-    return mMinPasswordLength;
-}
-
-unsigned int LoginHandler::getMaxPasswordLength() const
-{
-    return mMaxPasswordLength;
 }
 
 void LoginHandler::loginAccount(LoginData *loginData)

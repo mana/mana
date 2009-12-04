@@ -51,6 +51,8 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
 
         void getRegistrationDetails();
 
+        unsigned int getMaxPasswordLength() const { return 25; };
+
         void loginAccount(LoginData *loginData);
 
         void logout();

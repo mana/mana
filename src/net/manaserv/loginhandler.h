@@ -53,10 +53,6 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
 
         unsigned int getMaxUserNameLength() const;
 
-        unsigned int getMinPasswordLength() const;
-
-        unsigned int getMaxPasswordLength() const;
-
         void loginAccount(LoginData *loginData);
 
         void logout();
@@ -87,8 +83,6 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         LoginData *mLoginData;
         unsigned int mMinUserNameLength;
         unsigned int mMaxUserNameLength;
-        unsigned int mMinPasswordLength;
-        unsigned int mMaxPasswordLength;
 };
 
 } // namespace ManaServ
