@@ -268,7 +268,7 @@ void BuyDialog::logic()
 {
     Window::logic();
 
-    if (!current_npc) setVisible(false);
+    if (!current_npc && isVisible()) setVisible(false);
 }
 
 void BuyDialog::setVisible(bool visible)

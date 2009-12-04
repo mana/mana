@@ -103,6 +103,11 @@ class Window : public gcn::Window, gcn::WidgetListener
         void widgetResized(const gcn::Event &event);
 
         /**
+         * Called whenever the widget is hidden.
+         */
+        void widgetHidden(const gcn::Event &event);
+
+        /**
          * Sets whether or not the window has a close button.
          */
         void setCloseButton(bool flag);

@@ -279,6 +279,14 @@ void Window::widgetResized(const gcn::Event &event)
     }
 }
 
+void Window::widgetHidden(const gcn::Event &event)
+{
+    if (gui)
+    {
+        gui->setCursorType(Gui::CURSOR_POINTER);
+    }
+}
+
 void Window::setCloseButton(bool flag)
 {
     mCloseButton = flag;
