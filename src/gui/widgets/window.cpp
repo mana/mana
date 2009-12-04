@@ -314,6 +314,9 @@ void Window::setVisible(bool visible)
 
 void Window::setVisible(bool visible, bool forceSticky)
 {
+    if (visible == isVisible())
+        return; // Nothing to do
+
     // Check if the window is off screen...
     if (visible)
         checkIfIsOffScreen();
