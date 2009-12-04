@@ -421,10 +421,8 @@ void LoginHandler::registerAccount(LoginData *loginData)
 
     msg.writeInt32(0); // client version
     msg.writeString(loginData->username);
-    // When registering, the password and email hash is assumed by server.
-    // Hence, data can be validated safely server-side.
-    // This is the only time we send a clear password.
-    msg.writeString(loginData->password);
+    // Use a hashed password for privacy reasons
+    msg.writeString(sha256(loginData->username + loginData->password));
     msg.writeString(loginData->email);
     msg.writeString(loginData->captchaResponse);
 
