@@ -115,7 +115,7 @@ void LoginDialog::action(const gcn::ActionEvent &event)
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
 
-        state = STATE_REGISTER;
+        state = STATE_REGISTER_PREP;
     }
 }
 

@@ -209,6 +209,12 @@ void LoginHandler::disconnect()
         mNetwork->disconnect();
 }
 
+void LoginHandler::getRegistrationDetails()
+{
+    // Not supported, so move on
+    state = STATE_REGISTER;
+}
+
 void LoginHandler::loginAccount(LoginData *loginData)
 {
     sendLoginRegister(loginData->username, loginData->password);

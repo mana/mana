@@ -50,6 +50,7 @@ LoginHandler::LoginHandler()
         APMSG_EMAIL_CHANGE_RESPONSE,
         APMSG_LOGOUT_RESPONSE,
         APMSG_UNREGISTER_RESPONSE,
+        APMSG_REGISTER_INFO_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -206,6 +207,35 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             }
         }
             break;
+
+        case APMSG_REGISTER_INFO_RESPONSE:
+        {
+            int allowed = msg.readInt8();
+
+            if (allowed)
+            {
+                mMinUserNameLength = msg.readInt8();
+                mMaxUserNameLength = msg.readInt8();
+                mMinPasswordLength = msg.readInt8();
+                mMaxPasswordLength = msg.readInt8();
+                std::string captchaURL = msg.readString();
+                std::string captchaInstructions = msg.readString();
+
+                printf("%s: %s\n", captchaURL.c_str(), captchaInstructions.c_str());
+
+                state = STATE_REGISTER;
+            }
+            else
+            {
+                errorMessage = msg.readString();
+
+                if (errorMessage.empty())
+                    errorMessage = _("Client registration is not allowed. "
+                                     "Please contact server administration.");
+                state = STATE_LOGIN_ERROR;
+            }
+        }
+            break;
     }
 }
 
@@ -270,6 +300,10 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
             case REGISTER_EXISTS_EMAIL:
                 errorMessage = _("Email address already exists.");
                 break;
+            case REGISTER_FAILED_CAPTCHA:
+                errorMessage = _("You took too long with the captcha or your "
+                                 "response was incorrect.");
+                break;
             default:
                 errorMessage = _("Unknown error.");
                 break;
@@ -305,6 +339,32 @@ void LoginHandler::disconnect()
     {
         state = STATE_GAME;
     }
+}
+
+void LoginHandler::getRegistrationDetails()
+{
+    MessageOut msg(PAMSG_REQUEST_REGISTER_INFO);
+    accountServerConnection->send(msg);
+}
+
+unsigned int LoginHandler::getMinUserNameLength() const
+{
+    return mMinUserNameLength;
+}
+
+unsigned int LoginHandler::getMaxUserNameLength() const
+{
+    return mMaxUserNameLength;
+}
+
+unsigned int LoginHandler::getMinPasswordLength() const
+{
+    return mMinPasswordLength;
+}
+
+unsigned int LoginHandler::getMaxPasswordLength() const
+{
+    return mMaxPasswordLength;
 }
 
 void LoginHandler::loginAccount(LoginData *loginData)
@@ -366,6 +426,7 @@ void LoginHandler::registerAccount(LoginData *loginData)
     // This is the only time we send a clear password.
     msg.writeString(loginData->password);
     msg.writeString(loginData->email);
+    msg.writeString(loginData->captchaResponse);
 
     accountServerConnection->send(msg);
 }

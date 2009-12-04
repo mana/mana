@@ -35,6 +35,7 @@ struct LoginData
     std::string updateHost;
 
     std::string email;
+    std::string captchaResponse;
 
     Gender gender;
 
@@ -48,6 +49,7 @@ struct LoginData
         newPassword.clear();
         updateHost.clear();
         email.clear();
+        captchaResponse.clear();
         gender = GENDER_UNSPECIFIED;
     }
 };

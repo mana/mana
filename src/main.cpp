@@ -1141,6 +1141,12 @@ int main(int argc, char *argv[])
                     currentDialog = NULL; // OkDialog deletes itself
                     break;
 
+                case STATE_REGISTER_PREP:
+                    logger->log("State: REGISTER_PREP");
+                    Net::getLoginHandler()->getRegistrationDetails();
+                    currentDialog = new ConnectionDialog(STATE_LOGIN);
+                    break;
+
                 case STATE_REGISTER:
                     logger->log("State: REGISTER");
                     currentDialog = new RegisterDialog(&loginData);

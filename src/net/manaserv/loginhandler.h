@@ -47,9 +47,15 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         int supportedOptionalActions() const
         { return Unregister | ChangeEmail | SetEmailOnRegister; }
 
-        unsigned int getMaxUserNameLength() const { return 15; };
+        void getRegistrationDetails();
 
-        unsigned int getMinPasswordLength() const { return 6; };
+        unsigned int getMinUserNameLength() const;
+
+        unsigned int getMaxUserNameLength() const;
+
+        unsigned int getMinPasswordLength() const;
+
+        unsigned int getMaxPasswordLength() const;
 
         void loginAccount(LoginData *loginData);
 
@@ -79,6 +85,10 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void readUpdateHost(Net::MessageIn &msg);
 
         LoginData *mLoginData;
+        unsigned int mMinUserNameLength;
+        unsigned int mMaxUserNameLength;
+        unsigned int mMinPasswordLength;
+        unsigned int mMaxPasswordLength;
 };
 
 } // namespace ManaServ
