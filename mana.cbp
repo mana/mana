@@ -900,16 +900,8 @@
 		<Unit filename="src\utils\gettext.h" />
 		<Unit filename="src\utils\mathutils.h" />
 		<Unit filename="src\utils\mutex.h" />
-		<Unit filename="src\utils\sha256.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\utils\sha256.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-			<Option target="UNIX eAthena" />
-		</Unit>
+		<Unit filename="src\utils\sha256.cpp" />
+		<Unit filename="src\utils\sha256.h" />
 		<Unit filename="src\utils\stringutils.cpp" />
 		<Unit filename="src\utils\stringutils.h" />
 		<Unit filename="src\utils\xml.cpp" />
