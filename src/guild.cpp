@@ -25,19 +25,19 @@ GuildMember::GuildMember(int guildId, int id, const std::string &name):
         mName(name), mId(id), mOnline(false)
 {
     mGuild = Guild::getGuild(guildId);
-};
+}
 
 GuildMember::GuildMember(int guildId, int id):
         mId(id), mOnline(false)
 {
     mGuild = Guild::getGuild(guildId);
-};
+}
 
 GuildMember::GuildMember(int guildId, const std::string &name):
         mName(name), mId(0), mOnline(false)
 {
     mGuild = Guild::getGuild(guildId);
-};
+}
 
 Guild::GuildMap Guild::guilds;
 
