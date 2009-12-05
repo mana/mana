@@ -216,8 +216,6 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             {
                 mMinUserNameLength = msg.readInt8();
                 mMaxUserNameLength = msg.readInt8();
-                msg.readInt8();
-                msg.readInt8();
                 std::string captchaURL = msg.readString();
                 std::string captchaInstructions = msg.readString();
 
@@ -300,7 +298,7 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
             case REGISTER_EXISTS_EMAIL:
                 errorMessage = _("Email address already exists.");
                 break;
-            case REGISTER_FAILED_CAPTCHA:
+            case REGISTER_CAPTCHA_WRONG:
                 errorMessage = _("You took too long with the captcha or your "
                                  "response was incorrect.");
                 break;
