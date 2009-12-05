@@ -136,7 +136,13 @@ bool Download::start()
 void Download::cancel()
 {
     logger->log("Canceling download: %s\n", mUrl.c_str());
+
     mOptions.cancel = true;
+    if (mThread && SDL_GetThreadID(mThread) != 0)
+    {
+        SDL_WaitThread(mThread, NULL);
+        mThread = NULL;
+    }
 }
 
 char *Download::getError()
@@ -167,20 +173,30 @@ int Download::downloadThread(void *ptr)
     CURLcode res;
     std::string outFilename;
 
+    if (!d)
+    {
+        return 0;
+    }
     if (!d->mOptions.memoryWrite)
     {
         outFilename = d->mFileName + ".part";
     }
 
-    while (attempts < 3 && !complete)
+    while (attempts < 3 && !complete && !d->mOptions.cancel)
     {
         FILE *file = NULL;
 
         d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_STARTING, 0, 0);
 
+        if (d->mOptions.cancel)
+        {
+            d->mThread = NULL;
+            return 0;
+        }
+
         d->mCurl = curl_easy_init();
 
-        if (d->mCurl)
+        if (d->mCurl && !d->mOptions.cancel)
         {
             logger->log("Downloading: %s", d->mUrl.c_str());
 
@@ -211,7 +227,7 @@ int Download::downloadThread(void *ptr)
             curl_easy_setopt(d->mCurl, CURLOPT_NOSIGNAL, 1);
             curl_easy_setopt(d->mCurl, CURLOPT_CONNECTTIMEOUT, 15);
 
-            if ((res = curl_easy_perform(d->mCurl)) != 0)
+            if ((res = curl_easy_perform(d->mCurl)) != 0 && !d->mOptions.cancel)
             {
                 switch (res)
                 {
@@ -285,6 +301,11 @@ int Download::downloadThread(void *ptr)
                 complete = true;
             }
         }
+        if (d->mOptions.cancel)
+        {
+            d->mThread = NULL;
+            return 0;
+        }
         attempts++;
     }
 
@@ -292,7 +313,8 @@ int Download::downloadThread(void *ptr)
     {
         // Nothing to do...
     }
-    else if (!complete || attempts >= 3) {
+    else if (!complete || attempts >= 3)
+    {
         d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_ERROR, 0, 0);
     }
     else
@@ -300,6 +322,7 @@ int Download::downloadThread(void *ptr)
         d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_COMPLETE, 0, 0);
     }
 
+    d->mThread = NULL;
     return 0;
 }
 

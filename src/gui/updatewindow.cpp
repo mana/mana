@@ -115,6 +115,10 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 
 UpdaterWindow::~UpdaterWindow()
 {
+    if (mDownload)
+    {
+        mDownload->cancel();
+    }
     free(mMemoryBuffer);
 }
 

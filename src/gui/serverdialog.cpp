@@ -171,6 +171,10 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
 ServerDialog::~ServerDialog()
 {
+    if (mDownload)
+    {
+        mDownload->cancel();
+    }
     delete mServersListModel;
 }
 
