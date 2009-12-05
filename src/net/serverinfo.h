@@ -28,12 +28,34 @@
 class ServerInfo
 {
 public:
+    enum Type {
+        UNKNOWN,
+        MANASERV,
+        EATHENA
+    };
+
+    Type type;
     std::string name;
     std::string hostname;
     unsigned short port;
 
+    ServerInfo()
+    {
+        type = UNKNOWN;
+        port = 0;
+    }
+
+    ServerInfo(const ServerInfo &info)
+    {
+        type = info.type;
+        name = info.name;
+        hostname = info.hostname;
+        port = info.port;
+    }
+
     void clear()
     {
+        type = UNKNOWN;
         name.clear();
         hostname.clear();
         port = 0;
@@ -41,12 +63,14 @@ public:
 
     bool operator==(const ServerInfo &other)
     {
-        return (hostname == other.hostname && port == other.port);
+        return (type == other.type && hostname == other.hostname &&
+                port == other.port);
     }
 
     bool operator!=(const ServerInfo &other)
     {
-        return (hostname != other.hostname || port != other.port);
+        return (type != other.type || hostname != other.hostname ||
+                port != other.port);
     }
 };
 

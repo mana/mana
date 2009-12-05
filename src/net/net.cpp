@@ -121,15 +121,13 @@ Net::TradeHandler *Net::getTradeHandler()
 
 namespace Net
 {
-    bool networkLoaded = false;
+    ServerInfo::Type networkType = ServerInfo::UNKNOWN;
 } // namespace Net
 
 void Net::connectToServer(const ServerInfo &server)
 {
-    // TODO: Actually query the server about itself and choose the netcode
-    // based on that
-
-    if (networkLoaded)
+    // Remove with ifdefs
+    if (networkType != ServerInfo::UNKNOWN)
     {
         getGeneralHandler()->reload();
     }
@@ -142,9 +140,50 @@ void Net::connectToServer(const ServerInfo &server)
 #endif
 
         getGeneralHandler()->load();
+
+        networkType = server.type;
+    }
+    // End remove section
+
+    // Uncomment after ifdefs removed
+    /*ServerInfo server = ServerInfo(inServer);
+    if (server.type == ServerInfo::UNKNOWN)
+    {
+        // TODO: Query the server about itself and choose the netcode based on
+        // that
     }
 
-    networkLoaded = true;
+    //if (networkType == server.type)
+    if (networkType != ServerInfo::UNKNOWN)
+    {
+        getGeneralHandler()->reload();
+    }
+    else
+    {
+        if (networkType != ServerInfo::UNKNOWN)
+        {
+            getGeneralHandler()->unload();
+        }
+
+        switch (server.type)
+        {
+            case ServerInfo::MANASERV:
+                new ManaServ::GeneralHandler;
+                break;
+
+            case ServerInfo::EATHENA:
+                new EAthena::GeneralHandler;
+                break;
+
+            default:
+                // Shouldn't happen...
+                break;
+        }
+
+        getGeneralHandler()->load();
+
+        networkType = server.type;
+    }*/
 
     getLoginHandler()->setServer(server);
 

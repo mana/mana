@@ -355,8 +355,8 @@ void ServerDialog::loadServers()
             {
                 // check wether the build matches (remove with last instances
                 // if _SUPPORT ifdefs)
-                if (compareStrI(XML::getProperty(server, "type", "unknown"),
-                                SERVER_BUILD))
+                std::string type = XML::getProperty(server, "type", "unknown");
+                if (compareStrI(type, SERVER_BUILD))
                 {
                     continue;
                 }
@@ -368,6 +368,18 @@ void ServerDialog::loadServers()
                 {
                     if (xmlStrEqual(subnode->name, BAD_CAST "connection"))
                     {
+                        if (compareStrI(type, "manaserv"))
+                        {
+                            currentServer.type = ServerInfo::MANASERV;
+                        }
+                        else if (compareStrI(type, "eathena"))
+                        {
+                            currentServer.type = ServerInfo::EATHENA;
+                        }
+                        else
+                        {
+                            currentServer.type = ServerInfo::UNKNOWN;
+                        }
                         currentServer.hostname = XML::getProperty(subnode, "hostname", std::string());
                         currentServer.port = XML::getProperty(subnode, "port", DEFAULT_PORT);
                     }
