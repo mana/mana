@@ -25,22 +25,24 @@
 #include "gui/widgets/window.h"
 
 #include "guichanfwd.h"
-#include "main.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
+
+#include <vector>
 
 /**
  * The quit dialog.
  *
  * \ingroup Interface
  */
-class QuitDialog : public Window, public gcn::ActionListener
+class QuitDialog : public Window, public gcn::ActionListener,
+                   public gcn::KeyListener
 {
     public:
         /**
          * Constructor
          *
-         * @quitGame;    to be used for getting out of the while loop in Game
          * @pointerToMe  will be set to NULL when the QuitDialog is destroyed
          */
         QuitDialog(QuitDialog **pointerToMe);
@@ -55,7 +57,12 @@ class QuitDialog : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        void keyPressed(gcn::KeyEvent &keyEvent);
+
     private:
+        void placeOption(ContainerPlacer &place, gcn::RadioButton *option);
+        std::vector<gcn::RadioButton*> mOptions;
+
         gcn::RadioButton *mLogoutQuit;
         gcn::RadioButton *mForceQuit;
         gcn::RadioButton *mSwitchAccountServer;

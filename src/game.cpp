@@ -523,7 +523,7 @@ void Game::handleInput()
             }
 
             // send straight to gui for certain windows
-            if (npcPostDialog->isVisible())
+            if (quitDialog || npcPostDialog->isVisible())
             {
                 try
                 {
@@ -555,11 +555,8 @@ void Game::handleInput()
             {
                 if (keyboard.isKeyActive(keyboard.KEY_OK))
                 {
-                    // Do not focus chat input when quit dialog is active
-                    if (quitDialog != NULL && quitDialog->isVisible())
-                        continue;
                     // Close the Browser if opened
-                    else if (helpWindow->isVisible() &&
+                    if (helpWindow->isVisible() &&
                                 keyboard.isKeyActive(keyboard.KEY_OK))
                         helpWindow->setVisible(false);
                     // Close the config window, cancelling changes if opened
@@ -715,16 +712,9 @@ void Game::handleInput()
                     break;
                // Quitting confirmation dialog
                case KeyboardConfig::KEY_QUIT:
-                    if (!quitDialog)
-                    {
-                        quitDialog = new QuitDialog(&quitDialog);
-                        quitDialog->requestMoveToTop();
-                    }
-                    else
-                    {
-                        quitDialog->action(gcn::ActionEvent(NULL, "cancel"));
-                    }
-                    break;
+                    quitDialog = new QuitDialog(&quitDialog);
+                    quitDialog->requestMoveToTop();
+                    return;
                 default:
                     break;
             }
@@ -916,7 +906,7 @@ void Game::handleInput()
 
     // Moving player around
     if (player_node->mAction != Being::DEAD && current_npc == 0 &&
-        !chatWindow->isInputFocused())
+        !chatWindow->isInputFocused() && !quitDialog)
     {
         // Get the state of the keyboard keys
         keyboard.refreshActiveKeys();
