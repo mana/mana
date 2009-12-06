@@ -27,6 +27,7 @@
 #include "net/worldinfo.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
 #include <vector>
 
@@ -38,7 +39,8 @@ class WorldListModel;
  *
  * \ingroup Interface
  */
-class WorldSelectDialog : public Window, public gcn::ActionListener {
+class WorldSelectDialog : public Window, public gcn::ActionListener,
+                          public gcn::KeyListener {
     public:
         /**
          * Constructor
@@ -56,6 +58,8 @@ class WorldSelectDialog : public Window, public gcn::ActionListener {
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+        void keyPressed(gcn::KeyEvent &keyEvent);
 
     private:
         WorldListModel *mWorldListModel;

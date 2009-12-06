@@ -30,6 +30,7 @@
 #include "player.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 
 class CharEntry;
 class LocalPlayer;
@@ -45,7 +46,8 @@ class CharHandler;
  *
  * \ingroup Interface
  */
-class CharSelectDialog : public Window, public gcn::ActionListener
+class CharSelectDialog : public Window, public gcn::ActionListener,
+                         public gcn::KeyListener
 {
     public:
         friend class CharDeleteConfirm;
@@ -57,6 +59,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
                          LoginData *loginData);
 
         void action(const gcn::ActionEvent &event);
+
+        void keyPressed(gcn::KeyEvent &keyEvent);
 
         bool selectByName(const std::string &name);
 

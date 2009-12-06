@@ -28,6 +28,8 @@
 #include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"
 
+#include "gui/sdlinput.h"
+
 #include "configuration.h"
 #include "log.h"
 #include "main.h"
@@ -105,6 +107,8 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
+    addKeyListener(this);
+
     center();
     setVisible(true);
     mCancelButton->requestFocus();
@@ -159,6 +163,29 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "play")
     {
         state = STATE_LOAD_DATA;
+    }
+}
+
+void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    gcn::Key key = keyEvent.getKey();
+
+    if (key.getValue() == Key::ESCAPE)
+    {
+        action(gcn::ActionEvent(NULL, mCancelButton->getActionEventId()));
+        state = STATE_WORLD_SELECT;
+    }
+    else if (key.getValue() == Key::ENTER)
+    {
+        if (mDownloadStatus == UPDATE_COMPLETE ||
+                mDownloadStatus == UPDATE_ERROR)
+        {
+            action(gcn::ActionEvent(NULL, mPlayButton->getActionEventId()));
+        }
+        else
+        {
+            action(gcn::ActionEvent(NULL, mCancelButton->getActionEventId()));
+        }
     }
 }
 

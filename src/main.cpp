@@ -835,13 +835,6 @@ int main(int argc, char *argv[])
                     break;
 
                 case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                    {
-                        if (!quitDialog)
-                            quitDialog = new QuitDialog(&quitDialog);
-                        else
-                            quitDialog->requestMoveToTop();
-                    }
                     break;
             }
 
@@ -880,6 +873,13 @@ int main(int argc, char *argv[])
         {
             Net::getCharHandler()->setCharInfo(&charInfo);
             state = STATE_LOGIN;
+        }
+        else if (state == STATE_WORLD_SELECT && oldstate == STATE_UPDATE)
+        {
+            if (Net::getLoginHandler()->getWorlds().size() < 2)
+            {
+                state = STATE_LOGIN;
+            }
         }
         else if (oldstate == STATE_START || oldstate == STATE_GAME)
         {

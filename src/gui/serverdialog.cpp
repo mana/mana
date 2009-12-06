@@ -22,6 +22,7 @@
 #include "gui/serverdialog.h"
 
 #include "gui/okdialog.h"
+#include "gui/sdlinput.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
@@ -149,8 +150,9 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     // Make sure the list has enough height
     getLayout().setRowHeight(3, 80);
 
-
     reflowLayout(300, 0);
+
+    addKeyListener(this);
 
     center();
     setFieldsReadOnly(true);
@@ -245,6 +247,20 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "addEntry")
     {
         setFieldsReadOnly(false);
+    }
+}
+
+void ServerDialog::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    gcn::Key key = keyEvent.getKey();
+
+    if (key.getValue() == Key::ESCAPE)
+    {
+        state = STATE_EXIT;
+    }
+    else if (key.getValue() == Key::ENTER)
+    {
+        action(gcn::ActionEvent(NULL, mConnectButton->getActionEventId()));
     }
 }
 

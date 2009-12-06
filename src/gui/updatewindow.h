@@ -29,6 +29,7 @@
 #include "utils/mutex.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 
 #include <string>
 #include <vector>
@@ -43,7 +44,8 @@ class ScrollArea;
  *
  * \ingroup GUI
  */
-class UpdaterWindow : public Window, public gcn::ActionListener
+class UpdaterWindow : public Window, public gcn::ActionListener,
+                      public gcn::KeyListener
 {
  public:
     /**
@@ -83,6 +85,8 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     void loadNews();
 
     void action(const gcn::ActionEvent &event);
+
+    void keyPressed(gcn::KeyEvent &keyEvent);
 
     void logic();
 

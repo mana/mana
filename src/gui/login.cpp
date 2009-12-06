@@ -22,6 +22,7 @@
 #include "gui/login.h"
 
 #include "gui/okdialog.h"
+#include "gui/sdlinput.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
@@ -77,6 +78,8 @@ LoginDialog::LoginDialog(LoginData *loginData):
     place(3, 6, mLoginButton);
     reflowLayout(250, 0);
 
+    addKeyListener(this);
+
     center();
     setVisible(true);
 
@@ -121,7 +124,20 @@ void LoginDialog::action(const gcn::ActionEvent &event)
 
 void LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
-    mLoginButton->setEnabled(canSubmit());
+    gcn::Key key = keyEvent.getKey();
+
+    if (key.getValue() == Key::ESCAPE)
+    {
+        action(gcn::ActionEvent(NULL, mServerButton->getActionEventId()));
+    }
+    else if (key.getValue() == Key::ENTER)
+    {
+        action(gcn::ActionEvent(NULL, mLoginButton->getActionEventId()));
+    }
+    else
+    {
+        mLoginButton->setEnabled(canSubmit());
+    }
 }
 
 bool LoginDialog::canSubmit()

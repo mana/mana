@@ -34,6 +34,7 @@
 #include "gui/confirmdialog.h"
 #include "gui/okdialog.h"
 #include "gui/playerbox.h"
+#include "gui/sdlinput.h"
 #include "gui/unregisterdialog.h"
 
 #include "game.h"
@@ -162,6 +163,8 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
     reflowLayout();
 
+    addKeyListener(this);
+
     center();
     mCharEntries[0]->requestFocus();
     setVisible(true);
@@ -214,6 +217,16 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "unregister")
     {
         state = STATE_UNREGISTER;
+    }
+}
+
+void CharSelectDialog::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    gcn::Key key = keyEvent.getKey();
+
+    if (key.getValue() == Key::ESCAPE)
+    {
+        action(gcn::ActionEvent(NULL, mSwitchLoginButton->getActionEventId()));
     }
 }
 

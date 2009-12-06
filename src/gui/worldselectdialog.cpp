@@ -26,6 +26,8 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
+#include "gui/sdlinput.h"
+
 #include "net/logindata.h"
 #include "net/loginhandler.h"
 #include "net/net.h"
@@ -92,6 +94,8 @@ WorldSelectDialog::WorldSelectDialog(Worlds worlds):
         // Select first server
         mWorldList->setSelected(0);
 
+    addKeyListener(this);
+
     center();
     setVisible(true);
     mChooseWorld->requestFocus();
@@ -117,5 +121,19 @@ void WorldSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "login")
     {
         state = STATE_LOGIN;
+    }
+}
+
+void WorldSelectDialog::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    gcn::Key key = keyEvent.getKey();
+
+    if (key.getValue() == Key::ESCAPE)
+    {
+        action(gcn::ActionEvent(NULL, mChangeLoginButton->getActionEventId()));
+    }
+    else if (key.getValue() == Key::ENTER)
+    {
+        action(gcn::ActionEvent(NULL, mChooseWorld->getActionEventId()));
     }
 }

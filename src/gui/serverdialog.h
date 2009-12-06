@@ -30,6 +30,7 @@
 #include "utils/mutex.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
 #include <guichan/selectionlistener.hpp>
 
@@ -78,6 +79,7 @@ class ServersListModel : public gcn::ListModel
  */
 class ServerDialog : public Window,
                      public gcn::ActionListener,
+                     public gcn::KeyListener,
                      public gcn::SelectionListener
 {
     public:
@@ -97,6 +99,8 @@ class ServerDialog : public Window,
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+        void keyPressed(gcn::KeyEvent &keyEvent);
 
         /**
          * Called when the selected value changed in the servers list box.
