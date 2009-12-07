@@ -83,7 +83,6 @@ void Inventory::setItem(int index, int id, int quantity, bool equipment)
         Item *item = new Item(id, quantity, equipment);
         item->setInvIndex(index);
         mItems[index] = item;
-        mItems[index]->setEquipment(equipment);
     }
     else if (id > 0)
     {

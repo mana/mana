@@ -35,6 +35,11 @@ namespace EAthena {
 
 class EquipBackend : public Equipment::Backend {
     public:
+        EquipBackend()
+        {
+            memset(mEquipment, -1, sizeof(mEquipment));
+        }
+
         Item *getEquipment(int index) const
         {
             int invyIndex = mEquipment[index];
@@ -64,10 +69,20 @@ class EquipBackend : public Equipment::Backend {
 
         void setEquipment(int index, int inventoryIndex)
         {
-            mEquipment[index] = inventoryIndex;
-            Item* item = player_node->getInventory()->getItem(inventoryIndex);
+            // Unequip existing item
+            Item* item = player_node->getInventory()->getItem(mEquipment[index]);
             if (item)
+            {
+                item->setEquipped(false);
+            }
+
+            mEquipment[index] = inventoryIndex;
+
+            item = player_node->getInventory()->getItem(inventoryIndex);
+            if (item)
+            {
                 item->setEquipped(true);
+            }
         }
 
     private:

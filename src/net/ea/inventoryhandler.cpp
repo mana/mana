@@ -341,7 +341,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
 
                 inventory->setItem(index, itemId, 1, true);
 
-                mEquips.setEquipment(getSlot(equipType), index);
+                if (equipType)
+                {
+                    mEquips.setEquipment(getSlot(equipType), index);
+                }
             }
             break;
 
@@ -370,7 +373,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             }
             else
             {
-                mEquips.setEquipment(getSlot(equipType), 0);
+                mEquips.setEquipment(getSlot(equipType), -1);
             }
             break;
 
@@ -404,11 +407,8 @@ void InventoryHandler::equipItem(const Item *item)
 
 void InventoryHandler::unequipItem(const Item *item)
 {
-    /*const Item *real_item = item->isInEquipment() ? getRealEquipedItem(item)
-                                                  : item;
-
-    if (!real_item)
-        return;*/
+    if (!item)
+        return;
 
     MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
     outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
