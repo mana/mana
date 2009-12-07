@@ -26,7 +26,45 @@
 
 #include "net/manaserv/messagehandler.h"
 
+#include "equipment.h"
+
 namespace ManaServ {
+
+class EquipBackend : public Equipment::Backend {
+    public:
+        EquipBackend()
+        { memset(mEquipment, 0, sizeof(mEquipment)); }
+
+        Item *getEquipment(int index) const
+        { return mEquipment[index]; }
+
+        void clear()
+        {
+            for (int i = 0; i < EQUIPMENT_SIZE; ++i)
+                delete mEquipment[i];
+
+            std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
+        }
+
+        void setEquipment(int index, int id, int quantity = 0)
+        {
+            if (mEquipment[index] && mEquipment[index]->getId() == id)
+                return;
+
+            delete mEquipment[index];
+            mEquipment[index] = (id > 0) ? new Item(id, quantity) : 0;
+
+            if (mEquipment[index])
+            {
+                mEquipment[index]->setInvIndex(index);
+                mEquipment[index]->setEquipped(true);
+                mEquipment[index]->setInEquipment(true);
+            }
+        }
+
+    private:
+        Item *mEquipment[EQUIPMENT_SIZE];
+};
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler
 {
@@ -57,6 +95,9 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler
                               StorageType destination);
 
         size_t getSize(StorageType type) const;
+
+    private:
+        EquipBackend mEqiups;
 };
 
 } // namespace ManaServ

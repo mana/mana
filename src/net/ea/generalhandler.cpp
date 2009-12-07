@@ -35,7 +35,6 @@
 #include "net/ea/buysellhandler.h"
 #include "net/ea/chathandler.h"
 #include "net/ea/charserverhandler.h"
-#include "net/ea/equipmenthandler.h"
 #include "net/ea/gamehandler.h"
 #include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
@@ -75,7 +74,6 @@ GeneralHandler::GeneralHandler():
     mBuySellHandler(new BuySellHandler),
     mCharHandler(new CharServerHandler),
     mChatHandler(new ChatHandler),
-    mEquipmentHandler(new EquipmentHandler),
     mGameHandler(new GameHandler),
     mInventoryHandler(new InventoryHandler),
     mItemHandler(new ItemHandler),
@@ -158,7 +156,6 @@ void GeneralHandler::load()
     mNetwork->registerHandler(mBuySellHandler.get());
     mNetwork->registerHandler(mChatHandler.get());
     mNetwork->registerHandler(mCharHandler.get());
-    mNetwork->registerHandler(mEquipmentHandler.get());
     mNetwork->registerHandler(mGameHandler.get());
     mNetwork->registerHandler(mInventoryHandler.get());
     mNetwork->registerHandler(mItemHandler.get());

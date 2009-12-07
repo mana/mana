@@ -32,14 +32,14 @@ class Equipment
         /**
          * Constructor.
          */
-        Equipment();
+        Equipment(): mBackend(NULL) {}
 
         /**
          * Destructor.
          */
-        ~Equipment();
+        ~Equipment() { mBackend = NULL; }
 
-        enum EquipmentSlots
+        enum Slot
         {
             EQUIP_TORSO_SLOT = 0,
             EQUIP_GLOVES_SLOT = 1,
@@ -55,24 +55,34 @@ class Equipment
             EQUIP_VECTOREND
         };
 
+        class Backend {
+            public:
+                virtual Item *getEquipment(int index) const = 0;
+                virtual void clear() = 0;
+        };
+
         /**
          * Get equipment at the given slot.
          */
-        Item *getEquipment(int index)
-        { return mEquipment[index]; }
+        Item *getEquipment(int index) const
+        { return mBackend ? mBackend->getEquipment(index) : 0; }
 
         /**
          * Clears equipment.
          */
-        void clear();
+        void clear()
+        { if (mBackend) mBackend->clear(); }
 
         /**
          * Set equipment at the given slot.
          */
         void setEquipment(int index, int id, int quantity = 0);
 
+        void setBackend(Backend *backend)
+        { mBackend = backend; }
+
     private:
-        Item *mEquipment[EQUIPMENT_SIZE];
+        Backend *mBackend;
 };
 
 #endif

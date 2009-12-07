@@ -27,7 +27,52 @@
 
 #include "net/ea/messagehandler.h"
 
+#include "equipment.h"
+#include "inventory.h"
+#include "localplayer.h"
+
 namespace EAthena {
+
+class EquipBackend : public Equipment::Backend {
+    public:
+        Item *getEquipment(int index) const
+        {
+            int invyIndex = mEquipment[index];
+            if (invyIndex == 0)
+            {
+                return NULL;
+            }
+            return player_node->getInventory()->getItem(invyIndex);
+        }
+
+        void clear()
+        {
+            for (int i = 0; i < EQUIPMENT_SIZE; i++)
+            {
+                if (mEquipment[i])
+                {
+                    Item* item = player_node->getInventory()->getItem(i);
+                    if (item)
+                    {
+                        item->setEquipped(false);
+                    }
+                }
+
+                mEquipment[i] = 0;
+            }
+        }
+
+        void setEquipment(int index, int inventoryIndex)
+        {
+            mEquipment[index] = inventoryIndex;
+            Item* item = player_node->getInventory()->getItem(inventoryIndex);
+            if (item)
+                item->setEquipped(true);
+        }
+
+    private:
+        int mEquipment[EQUIPMENT_SIZE];
+};
 
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 {
@@ -58,6 +103,9 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
                       StorageType destination);
 
         size_t getSize(StorageType type) const;
+
+    private:
+        EquipBackend mEquips;
 };
 
 } // namespace EAthena

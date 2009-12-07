@@ -21,7 +21,6 @@
 
 #include "net/ea/inventoryhandler.h"
 
-#include "net/ea/equipmenthandler.h"
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
@@ -48,7 +47,40 @@
 
 extern Net::InventoryHandler *inventoryHandler;
 
+const Equipment::Slot EQUIP_POINTS[Equipment::EQUIP_VECTOREND] = {
+    Equipment::EQUIP_LEGS_SLOT,
+    Equipment::EQUIP_FIGHT1_SLOT,
+    Equipment::EQUIP_GLOVES_SLOT,
+    Equipment::EQUIP_RING2_SLOT,
+    Equipment::EQUIP_RING1_SLOT,
+    Equipment::EQUIP_FIGHT2_SLOT,
+    Equipment::EQUIP_FEET_SLOT,
+    Equipment::EQUIP_NECK_SLOT,
+    Equipment::EQUIP_HEAD_SLOT,
+    Equipment::EQUIP_TORSO_SLOT,
+    Equipment::EQUIP_PROJECTILE_SLOT};
+
 namespace EAthena {
+
+int getSlot(int eAthenaSlot)
+{
+    if (eAthenaSlot == 0)
+    {
+        return Equipment::EQUIP_VECTOREND;
+    }
+
+    if (eAthenaSlot & 0x8000)
+        return Equipment::EQUIP_PROJECTILE_SLOT;
+
+    int mask = 1;
+    int position = 0;
+    while (!(eAthenaSlot & mask))
+    {
+        mask <<= 1;
+        position++;
+    }
+    return EQUIP_POINTS[position];
+}
 
 enum { debugInventory = 1 };
 
@@ -66,6 +98,11 @@ InventoryHandler::InventoryHandler()
         SMSG_PLAYER_STORAGE_ADD,
         SMSG_PLAYER_STORAGE_REMOVE,
         SMSG_PLAYER_STORAGE_CLOSE,
+        SMSG_PLAYER_EQUIPMENT,
+        SMSG_PLAYER_EQUIP,
+        SMSG_PLAYER_UNEQUIP,
+        SMSG_PLAYER_ARROW_EQUIP,
+        SMSG_PLAYER_ATTACK_RANGE,
         0
     };
     handledMessages = _messages;
@@ -74,7 +111,7 @@ InventoryHandler::InventoryHandler()
 
 void InventoryHandler::handleMessage(Net::MessageIn &msg)
 {
-    int number;
+    int number, flag;
     int index, amount, itemId, equipType, arrow;
     int identified, cards[4], itemType;
     Inventory *inventory = player_node->getInventory();
@@ -87,7 +124,9 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             if (msg.getId() == SMSG_PLAYER_INVENTORY)
             {
                 // Clear inventory - this will be a complete refresh
-                clearEquipment();
+                mEquips.clear();
+                player_node->mEquipment->setBackend(&mEquips);
+
                 inventory->clear();
             }
 
@@ -124,6 +163,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                         if (Item *item = inventory->getItem(index))
                             item->setEquipment(true);
                     }
+
+                    //const Item *item = inventory->getItem(index);
                 } else {
                     storage->setItem(index, itemId, amount, false);
                 }
@@ -281,6 +322,73 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             storage->clear();
             player_node->setInStorage(false);
             break;
+
+        case SMSG_PLAYER_EQUIPMENT:
+            msg.readInt16(); // length
+            number = (msg.getLength() - 4) / 20;
+
+            for (int loop = 0; loop < number; loop++)
+            {
+                index = msg.readInt16() - INVENTORY_OFFSET;
+                itemId = msg.readInt16();
+                msg.readInt8();  // type
+                msg.readInt8();  // identify flag
+                msg.readInt16(); // equip type
+                equipType = msg.readInt16();
+                msg.readInt8();  // attribute
+                msg.readInt8();  // refine
+                msg.skip(8);     // card
+
+                inventory->setItem(index, itemId, 1, true);
+
+                mEquips.setEquipment(getSlot(equipType), index);
+            }
+            break;
+
+        case SMSG_PLAYER_EQUIP:
+            index = msg.readInt16() - INVENTORY_OFFSET;
+            equipType = msg.readInt16();
+            flag = msg.readInt8();
+
+            if (!flag)
+            {
+                localChatTab->chatLog(_("Unable to equip."), BY_SERVER);
+            }
+            else
+            {
+                mEquips.setEquipment(getSlot(equipType), index);
+            }
+            break;
+
+        case SMSG_PLAYER_UNEQUIP:
+            index = msg.readInt16() - INVENTORY_OFFSET;
+            equipType = msg.readInt16();
+            flag = msg.readInt8();
+
+            if (!flag) {
+                localChatTab->chatLog(_("Unable to unequip."), BY_SERVER);
+            }
+            else
+            {
+                mEquips.setEquipment(getSlot(equipType), 0);
+            }
+            break;
+
+        case SMSG_PLAYER_ATTACK_RANGE:
+            player_node->setAttackRange(msg.readInt16());
+            break;
+
+        case SMSG_PLAYER_ARROW_EQUIP:
+            index = msg.readInt16();
+
+            if (index <= 1)
+                break;
+
+            index -= INVENTORY_OFFSET;
+
+            logger->log("Arrows equipped: %i", index);
+            mEquips.setEquipment(Equipment::EQUIP_PROJECTILE_SLOT, index);
+            break;
     }
 }
 
@@ -296,14 +404,14 @@ void InventoryHandler::equipItem(const Item *item)
 
 void InventoryHandler::unequipItem(const Item *item)
 {
-    const Item *real_item = item->isInEquipment() ? getRealEquipedItem(item)
+    /*const Item *real_item = item->isInEquipment() ? getRealEquipedItem(item)
                                                   : item;
 
     if (!real_item)
-        return;
+        return;*/
 
     MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeInt16(real_item->getInvIndex() + INVENTORY_OFFSET);
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
 }
 
 void InventoryHandler::useItem(const Item *item)

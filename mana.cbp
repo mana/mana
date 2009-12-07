@@ -180,7 +180,6 @@
 		<Unit filename="src\emoteshortcut.h" />
 		<Unit filename="src\engine.cpp" />
 		<Unit filename="src\engine.h" />
-		<Unit filename="src\equipment.cpp" />
 		<Unit filename="src\equipment.h" />
 		<Unit filename="src\flooritem.cpp" />
 		<Unit filename="src\flooritem.h" />
@@ -462,14 +461,6 @@
 			<Option target="UNIX eAthena" />
 		</Unit>
 		<Unit filename="src\net\ea\chathandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\equipmenthandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\equipmenthandler.h">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>

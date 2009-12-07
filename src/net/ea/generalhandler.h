@@ -59,7 +59,6 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
         MessageHandlerPtr mBuySellHandler;
         MessageHandlerPtr mCharHandler;
         MessageHandlerPtr mChatHandler;
-        MessageHandlerPtr mEquipmentHandler;
         MessageHandlerPtr mGameHandler;
         MessageHandlerPtr mInventoryHandler;
         MessageHandlerPtr mItemHandler;

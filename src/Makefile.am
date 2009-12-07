@@ -315,7 +315,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      emoteshortcut.h \
 	      engine.cpp \
 	      engine.h \
-	      equipment.cpp \
 	      equipment.h \
 	      flooritem.cpp \
 	      flooritem.h \
@@ -459,8 +458,6 @@ mana_SOURCES += \
 	      net/ea/charserverhandler.h \
 	      net/ea/chathandler.cpp \
 	      net/ea/chathandler.h \
-	      net/ea/equipmenthandler.cpp \
-	      net/ea/equipmenthandler.h \
 	      net/ea/gamehandler.cpp \
 	      net/ea/gamehandler.h \
 	      net/ea/generalhandler.cpp \
