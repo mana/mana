@@ -179,10 +179,9 @@ size_t InventoryHandler::getSize(StorageType type) const
         case STORAGE:
         case GUILD_STORAGE:
             return 300;
-        case CART:
+        default:
             return 0;
     }
-
 }
 
 } // namespace ManaServ

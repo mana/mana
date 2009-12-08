@@ -484,10 +484,9 @@ size_t InventoryHandler::getSize(StorageType type) const
             return 300;
         case GUILD_STORAGE:
             return 1000;
-        case CART:
+        default:
             return 0;
     }
-
 }
 
 } // namespace EAthena
