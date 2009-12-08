@@ -52,7 +52,6 @@ src/emoteshortcut.cpp
 src/emoteshortcut.h
 src/engine.cpp
 src/engine.h
-src/equipment.cpp
 src/equipment.h
 src/flooritem.cpp
 src/flooritem.h
@@ -307,8 +306,6 @@ src/net/ea/charserverhandler.cpp
 src/net/ea/charserverhandler.h
 src/net/ea/chathandler.cpp
 src/net/ea/chathandler.h
-src/net/ea/equipmenthandler.cpp
-src/net/ea/equipmenthandler.h
 src/net/ea/gamehandler.cpp
 src/net/ea/gamehandler.h
 src/net/ea/generalhandler.cpp
