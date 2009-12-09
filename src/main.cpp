@@ -181,6 +181,7 @@ struct Options
     std::string updateHost;
     std::string dataPath;
     std::string homeDir;
+    std::string screenshotDir;
 
     std::string serverName;
     short serverPort;
@@ -519,23 +520,24 @@ static void printHelp()
     std::cout
         << _("mana") << endl << endl
         << _("Options:") << endl
-        << _("  -C --config-file : Configuration file to use") << endl
-        << _("  -d --data        : Directory to load game data from") << endl
-        << _("  -D --default     : Choose default character server and "
-                                  "character") << endl
-        << _("  -h --help        : Display this help") << endl
-        << _("  -S --home-dir    : Directory to use as home directory") << endl
-        << _("  -H --update-host : Use this update host") << endl
-        << _("  -P --password    : Login with this password") << endl
-        << _("  -c --character   : Login with this character") << endl
-        << _("  -p --port        : Login server port") << endl
-        << _("  -s --server      : Login server name or IP") << endl
-        << _("  -u --skip-update : Skip the update downloads") << endl
-        << _("  -U --username    : Login with this username") << endl
+        << _("  -C --config-file    : Configuration file to use") << endl
+        << _("  -d --data           : Directory to load game data from") << endl
+        << _("  -D --default        : Choose default character server and "
+                                     "character") << endl
+        << _("  -h --help           : Display this help") << endl
+        << _("  -S --home-dir       : Directory to use as home directory") << endl
+        << _("  -i --screenshot-dir : Directory to store screenshots") << endl
+        << _("  -H --update-host    : Use this update host") << endl
+        << _("  -P --password       : Login with this password") << endl
+        << _("  -c --character      : Login with this character") << endl
+        << _("  -p --port           : Login server port") << endl
+        << _("  -s --server         : Login server name or IP") << endl
+        << _("  -u --skip-update    : Skip the update downloads") << endl
+        << _("  -U --username       : Login with this username") << endl
 #ifdef USE_OPENGL
-        << _("  -O --no-opengl   : Disable OpenGL for this session") << endl
+        << _("  -O --no-opengl      : Disable OpenGL for this session") << endl
 #endif
-        << _("  -v --version     : Display the version") << endl;
+        << _("  -v --version        : Display the version") << endl;
 }
 
 static void printVersion()
@@ -545,23 +547,24 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvud:U:P:Dc:s:p:C:H:S:O";
+    const char *optstring = "hvud:U:P:Dc:s:p:C:H:S:Oi:";
 
     const struct option long_options[] = {
-        { "config-file", required_argument, 0, 'C' },
-        { "data",        required_argument, 0, 'd' },
-        { "default",     no_argument,       0, 'D' },
-        { "password",    required_argument, 0, 'P' },
-        { "character",   required_argument, 0, 'c' },
-        { "help",        no_argument,       0, 'h' },
-        { "home-dir",    required_argument, 0, 'S' },
-        { "update-host", required_argument, 0, 'H' },
-        { "port",        required_argument, 0, 'p' },
-        { "server",      required_argument, 0, 's' },
-        { "skip-update", no_argument,       0, 'u' },
-        { "username",    required_argument, 0, 'U' },
-        { "no-opengl",   no_argument,       0, 'O' },
-        { "version",     no_argument,       0, 'v' },
+        { "config-file",    required_argument, 0, 'C' },
+        { "data",           required_argument, 0, 'd' },
+        { "default",        no_argument,       0, 'D' },
+        { "password",       required_argument, 0, 'P' },
+        { "character",      required_argument, 0, 'c' },
+        { "help",           no_argument,       0, 'h' },
+        { "home-dir",       required_argument, 0, 'S' },
+        { "update-host",    required_argument, 0, 'H' },
+        { "port",           required_argument, 0, 'p' },
+        { "server",         required_argument, 0, 's' },
+        { "skip-update",    no_argument,       0, 'u' },
+        { "username",       required_argument, 0, 'U' },
+        { "no-opengl",      no_argument,       0, 'O' },
+        { "version",        no_argument,       0, 'v' },
+        { "screenshot-dir", required_argument, 0, 'i' },
         { 0 }
     };
 
@@ -617,6 +620,9 @@ static void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'O':
                 options.noOpenGL = true;
+                break;
+            case 'i':
+                options.screenshotDir = optarg;
                 break;
         }
     }
@@ -765,6 +771,8 @@ int main(int argc, char *argv[])
     branding.init("data/branding.xml");
 
     initHomeDir(options);
+
+    setScreenshotDir(options.screenshotDir);
 
     // Configure logger
     logger = new Logger;

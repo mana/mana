@@ -85,6 +85,10 @@
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>
 
+#include "physfs.h"
+
+#include <sys/stat.h>
+
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -133,6 +137,8 @@ Particle *particleEngine = NULL;
 EffectManager *effectManager = NULL;
 
 ChatTab *localChatTab = NULL;
+
+std::string screenshotDir = "";
 
 /**
  * Tells the max tick value,
@@ -367,6 +373,20 @@ Game::~Game()
     SDL_RemoveTimer(mSecondsCounterId);
 }
 
+void setScreenshotDir(const std::string &dir)
+{
+    if (dir.empty())
+    {
+        screenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
+        // If ~/Desktop does not exist, we save screenshots in the user's home.
+        struct stat statbuf;
+        if (stat(screenshotDir.c_str(), &statbuf))
+            screenshotDir = std::string(PHYSFS_getUserDir());
+    }
+    else
+        screenshotDir = dir;
+}
+
 static bool saveScreenshot()
 {
     static unsigned int screenshotCount = 0;
@@ -383,12 +403,7 @@ static bool saveScreenshot()
         screenshotCount++;
         filenameSuffix.str("");
         filename.str("");
-#if (defined __USE_UNIX98 || defined __FreeBSD__)
-        filename << getHomeDirectory() << "/";
-#elif defined __APPLE__
-        filename << PHYSFS_getUserDir();
-        filename << "Desktop/";
-#endif
+        filename << screenshotDir << "/";
         filenameSuffix << "Mana_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
         testExists.open(filename.str().c_str(), std::ios::in);

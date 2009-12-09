@@ -66,4 +66,6 @@ class Game : public ConfigListener
  */
 int get_elapsed_time(int start_time);
 
+void setScreenshotDir(const std::string &dir);
+
 #endif
