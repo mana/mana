@@ -49,7 +49,7 @@ src/mana-ea
 # files created during Windows build
 .objs
 *.dll
-mana.exe
+*.exe
 mana.depend
 mana.layout
 

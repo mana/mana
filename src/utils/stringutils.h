@@ -80,7 +80,7 @@ std::string strprintf(char const *, ...)
 #ifdef __GNUC__
     /* This attribute is nice: it even works through gettext invokation. For
        example, gcc will complain that strprintf(_("%s"), 42) is ill-formed. */
-    __attribute__((format(printf, 1, 2)))
+    __attribute__((__format__(__printf__, 1, 2)))
 #endif
 ;
 
