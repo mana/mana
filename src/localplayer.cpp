@@ -887,6 +887,9 @@ void LocalPlayer::setExperience(int skill, int current, int next)
     {
         addMessageToQueue(strprintf("%d %s xp", diff, name.c_str()));
     }
+
+    if (statusWindow)
+        statusWindow->update(skill);
 }
 
 std::pair<int, int> LocalPlayer::getExperience(int skill)
