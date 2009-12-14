@@ -226,7 +226,7 @@ void CharSelectDialog::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (key.getValue() == Key::ESCAPE)
     {
-        action(gcn::ActionEvent(NULL, mSwitchLoginButton->getActionEventId()));
+        action(gcn::ActionEvent(mSwitchLoginButton, mSwitchLoginButton->getActionEventId()));
     }
 }
 
