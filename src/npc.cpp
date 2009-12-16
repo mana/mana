@@ -52,7 +52,7 @@ NPC::NPC(int id, int job, Map *map):
         mSpriteColors.push_back("");
     }
 
-    if (mParticleEffects)
+    if (Particle::enabled)
     {
         //setup particle effects
         for (std::list<std::string>::const_iterator i = info.particles.begin();

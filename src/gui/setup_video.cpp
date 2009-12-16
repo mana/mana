@@ -484,6 +484,8 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("particleeffects",
                         mParticleEffectsCheckBox->isSelected());
+        Particle::enabled = mParticleEffectsCheckBox->isSelected();
+
         if (engine)
         {
             new OkDialog(_("Particle Effect Settings Changed."),

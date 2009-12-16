@@ -49,6 +49,7 @@ int Particle::particleCount = 0;
 int Particle::maxCount = 0;
 int Particle::fastPhysics = 0;
 int Particle::emitterSkip = 1;
+bool Particle::enabled = true;
 const float Particle::PARTICLE_SKY = 800.0f;
 
 Particle::Particle(Map *map):
@@ -89,6 +90,7 @@ void Particle::setupEngine()
     Particle::maxCount = (int)config.getValue("particleMaxCount", 3000);
     Particle::fastPhysics = (int)config.getValue("particleFastPhysics", 0);
     Particle::emitterSkip = (int)config.getValue("particleEmitterSkip", 1) + 1;
+    Particle::enabled = (bool)config.getValue("particleeffects", true);
     disableAutoDelete();
     logger->log("Particle engine set up");
 }

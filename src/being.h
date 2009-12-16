@@ -529,7 +529,6 @@ class Being : public Sprite, public ConfigListener
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         MapSprite mMapSprite;
-        bool mParticleEffects;          /**< Whether to display particles or not */
 
         /**
          * Holds a text object when the being displays it's name, 0 otherwise
