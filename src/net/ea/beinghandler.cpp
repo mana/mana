@@ -50,6 +50,7 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_BEING_MOVE,
         SMSG_BEING_MOVE2,
         SMSG_BEING_REMOVE,
+        SMSG_SKILL_DAMAGE,
         SMSG_BEING_ACTION,
         SMSG_BEING_SELFEFFECT,
         SMSG_BEING_EMOTION,
@@ -288,6 +289,23 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (msg.readInt8() == 1)
                 dstBeing->setAction(Being::STAND);
 
+            break;
+
+        case SMSG_SKILL_DAMAGE:
+            msg.readInt16(); // Skill Id
+            srcBeing = beingManager->findBeing(msg.readInt32());
+            dstBeing = beingManager->findBeing(msg.readInt32());
+            msg.readInt32(); // Server tick
+            msg.readInt32(); // src speed
+            msg.readInt32(); // dst speed
+            param1 = msg.readInt32(); // Damage
+            msg.readInt16(); // Skill level
+            msg.readInt16(); // Div
+            msg.readInt8(); // Skill hit/type (?)
+            if (dstBeing)
+                dstBeing->takeDamage(srcBeing, param1, Being::HIT); // Perhaps a new skill attack type should be created and used?
+            if (srcBeing)
+                srcBeing->handleAttack(dstBeing, param1, Being::HIT);
             break;
 
         case SMSG_BEING_ACTION:
