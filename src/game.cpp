@@ -85,7 +85,7 @@
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>
 
-#include "physfs.h"
+#include <physfs.h>
 
 #include <sys/stat.h>
 
@@ -149,23 +149,6 @@ const int MAX_TICK_VALUE = 10000;
  * Set the milliseconds value of a tick time.
  */
 const int MILLISECONDS_IN_A_TICK = 10;
-
-/**
- * Listener used for exiting handling.
- */
-namespace {
-    class ExitListener : public gcn::ActionListener
-    {
-    public:
-        void action(const gcn::ActionEvent &event)
-        {
-            if (event.getId() == "yes" || event.getId() == "ok")
-                state = STATE_EXIT;
-
-            disconnectedDialog = NULL;
-        }
-    } exitListener;
-}
 
 /**
  * Advances game logic counter.
@@ -302,6 +285,8 @@ Game::Game():
     mLastTarget(Being::UNKNOWN),
     mLogicCounterId(0), mSecondsCounterId(0)
 {
+    disconnectedDialog = NULL;
+
     createGuiWindows();
 
     mWindowMenu = new WindowMenu;
@@ -498,14 +483,13 @@ void Game::logic()
         {
             if (state != STATE_ERROR)
             {
-                errorMessage = _("The connection to the server was lost, "
-                                 "the program will now quit");
+                errorMessage = _("The connection to the server was lost.");
             }
 
             if (!disconnectedDialog)
             {
                 disconnectedDialog = new OkDialog(_("Network Error"), errorMessage);
-                disconnectedDialog->addActionListener(&exitListener);
+                disconnectedDialog->addActionListener(&errorListener);
                 disconnectedDialog->requestMoveToTop();
             }
         }

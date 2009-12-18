@@ -55,6 +55,8 @@
 
 #include "net/logindata.h"
 
+#include <guichan/actionlistener.hpp>
+
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
 #elif defined WIN32
@@ -131,8 +133,15 @@ enum State {
     STATE_FORCE_QUIT
 };
 
+class ErrorListener : public gcn::ActionListener
+{
+    public:
+        void action(const gcn::ActionEvent &event);
+};
+
 extern State state;
 extern std::string errorMessage;
+extern ErrorListener errorListener;
 extern LoginData loginData;
 
 #endif

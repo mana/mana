@@ -82,8 +82,6 @@
 
 #include <SDL_image.h>
 
-#include <guichan/actionlistener.hpp>
-
 #include <libxml/parser.h>
 
 #include <getopt.h>
@@ -128,6 +126,7 @@ Game *game = 0;
 
 State state = STATE_START;
 std::string errorMessage;
+ErrorListener errorListener;
 
 Sound sound;
 Music *bgm;
@@ -649,15 +648,6 @@ static void loadUpdates()
     }
 }
 
-class ErrorListener : public gcn::ActionListener
-{
-public:
-    void action(const gcn::ActionEvent &event)
-    {
-        state = STATE_CHOOSE_SERVER;
-    }
-} errorListener;
-
 class AccountListener : public gcn::ActionListener
 {
 public:
@@ -677,6 +667,11 @@ public:
 } loginListener;
 
 } // namespace
+
+void ErrorListener::action(const gcn::ActionEvent &event)
+{
+    state = STATE_CHOOSE_SERVER;
+}
 
 const std::string &getHomeDirectory()
 {
