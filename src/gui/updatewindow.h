@@ -39,6 +39,16 @@ class Button;
 class ProgressBar;
 class ScrollArea;
 
+struct updateFile
+{
+    public:
+        std::string name;
+        std::string hash;
+        std::string type;
+        bool required;
+        std::string desc;
+};
+
 /**
  * Update progress window GUI
  *
@@ -94,6 +104,12 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
 
 private:
     void download();
+
+    /**
+     * Loads the updates this window has gotten into the resource manager
+     */
+    void loadUpdates();
+
 
     /**
      * A download callback for progress updates.
@@ -160,10 +176,10 @@ private:
     Net::Download *mDownload;
 
     /** List of files to download. */
-    std::vector<std::string> mLines;
+    std::vector<updateFile> mUpdateFiles;
 
     /** Index of the file to be downloaded. */
-    unsigned int mLineIndex;
+    unsigned int mUpdateIndex;
 
     gcn::Label *mLabel;           /**< Progress bar caption. */
     Button *mCancelButton;        /**< Button to stop the update process. */

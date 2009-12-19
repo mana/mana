@@ -627,27 +627,6 @@ static void parseOptions(int argc, char *argv[], Options &options)
     }
 }
 
-/**
- * Reads the file "{Updates Directory}/resources2.txt" and attempts to load
- * each update mentioned in it.
- */
-static void loadUpdates()
-{
-    if (updatesDir.empty()) return;
-    const std::string updatesFile = "/" + updatesDir + "/resources2.txt";
-    ResourceManager *resman = ResourceManager::getInstance();
-    std::vector<std::string> lines = resman->loadTextFile(updatesFile);
-
-    for (unsigned int i = 0; i < lines.size(); ++i)
-    {
-        std::stringstream line(lines[i]);
-        std::string filename;
-        line >> filename;
-        resman->addToSearchPath(homeDir + "/" + updatesDir + "/"
-                                + filename, false);
-    }
-}
-
 class AccountListener : public gcn::ActionListener
 {
 public:
@@ -1041,11 +1020,7 @@ int main(int argc, char *argv[])
                     // we don't load any other files...
                     if (options.dataPath.empty())
                     {
-                        // Load the updates downloaded so far...
-                        loadUpdates();
-
-
-                        // Also add customdata directory
+                        // Add customdata directory
                         ResourceManager::getInstance()->searchAndAddArchives(
                             "customdata/",
                             "zip",

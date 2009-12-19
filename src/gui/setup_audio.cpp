@@ -38,7 +38,9 @@ Setup_Audio::Setup_Audio():
     mMusicVolume((int)config.getValue("musicVolume", 60)),
     mSfxVolume((int)config.getValue("sfxVolume", 100)),
     mSoundEnabled(config.getValue("sound", 0)),
+    mDownloadEnabled(config.getValue("download-music", false)),
     mSoundCheckBox(new CheckBox(_("Sound"), mSoundEnabled)),
+    mDownloadMusicCheckBox(new CheckBox(_("Download music"), mDownloadEnabled)),
     mSfxSlider(new Slider(0, sound.getMaxVolume())),
     mMusicSlider(new Slider(0, sound.getMaxVolume()))
 {
@@ -71,6 +73,7 @@ Setup_Audio::Setup_Audio():
     place(1, 1, sfxLabel);
     place(0, 2, mMusicSlider);
     place(1, 2, musicLabel);
+    place(0, 3, mDownloadMusicCheckBox);
 
     setDimension(gcn::Rectangle(0, 0, 365, 280));
 }
@@ -78,10 +81,19 @@ Setup_Audio::Setup_Audio():
 void Setup_Audio::apply()
 {
     mSoundEnabled = mSoundCheckBox->isSelected();
+    mDownloadEnabled = mDownloadMusicCheckBox->isSelected();
     mSfxVolume = (int) config.getValue("sfxVolume", 100);
     mMusicVolume = (int) config.getValue("musicVolume", 60);
 
     config.setValue("sound", mSoundEnabled);
+
+    // Display a message if user has selected to download music,
+    // And if downloadmusic is not already enabled
+    if (mDownloadEnabled && !config.getValue("download-music", false))
+    {
+        new OkDialog(_("Notice"),_("You may have to restart your client if you want to download new music"));
+    }
+    config.setValue("download-music", mDownloadEnabled);
 
     if (mSoundEnabled)
     {
@@ -104,6 +116,7 @@ void Setup_Audio::apply()
 void Setup_Audio::cancel()
 {
     mSoundCheckBox->setSelected(mSoundEnabled);
+    mDownloadMusicCheckBox->setSelected(mDownloadEnabled);
 
     sound.setSfxVolume(mSfxVolume);
     mSfxSlider->setValue(mSfxVolume);
@@ -112,6 +125,7 @@ void Setup_Audio::cancel()
     mMusicSlider->setValue(mMusicVolume);
 
     config.setValue("sound", mSoundEnabled);
+    config.setValue("download-music", mDownloadEnabled);
     config.setValue("sfxVolume", mSfxVolume);
     config.setValue("musicVolume", mMusicVolume);
 }

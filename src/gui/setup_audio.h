@@ -40,9 +40,9 @@ class Setup_Audio : public SetupTab, public gcn::ActionListener
 
     private:
         int mMusicVolume, mSfxVolume;
-        bool mSoundEnabled;
+        bool mSoundEnabled, mDownloadEnabled;
 
-        gcn::CheckBox *mSoundCheckBox;
+        gcn::CheckBox *mSoundCheckBox, *mDownloadMusicCheckBox;
         gcn::Slider *mSfxSlider, *mMusicSlider;
 };
 

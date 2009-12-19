@@ -40,30 +40,83 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+#include "utils/xml.h"
 
 #include <iostream>
+#include <fstream>
 
 /**
- * Load the given file into a vector of strings.
+ * Load the given file into a vector of updateFiles.
  */
-std::vector<std::string> loadTextFile(const std::string &fileName)
+std::vector<updateFile> loadXMLFile(const std::string &fileName)
 {
-    std::vector<std::string> lines;
-    std::ifstream fin(fileName.c_str());
+    std::vector<updateFile> files;
+    XML::Document doc(fileName, false);
+    xmlNodePtr rootNode = doc.rootNode();
 
-    if (!fin) {
-        logger->log("Couldn't load text file: %s", fileName.c_str());
-        return lines;
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "updates"))
+    {
+        logger->log("Error loading update file: %s", fileName.c_str());
+        return files;
     }
 
-    std::string line;
+    for_each_xml_child_node(fileNode, rootNode)
+    {
+        // Ignore all tags except for the "update" tags
+        if (!xmlStrEqual(fileNode->name, BAD_CAST "update"))
+            continue;
 
-    while (getline(fin, line))
-        lines.push_back(line);
+        updateFile file;
+        file.name = XML::getProperty(fileNode, "file", "");
+        file.hash = XML::getProperty(fileNode, "hash", "");
+        file.type = XML::getProperty(fileNode, "type", "data");
+        file.desc = XML::getProperty(fileNode, "description", "");
+        if (XML::getProperty(fileNode, "required", "yes") == "yes")
+        {
+            file.required = true;
+        }
+        else
+        {
+            file.required = false;
+        }
+        files.push_back(file);
+    }
 
-    return lines;
+    return files;
 }
 
+std::vector<updateFile> loadTxtFile(const std::string &fileName)
+{
+    std::vector<updateFile> files;
+    std::ifstream fileHandler;
+    fileHandler.open(fileName.c_str(), std::ios::in);
+
+    if (fileHandler.is_open())
+    {
+        while (fileHandler.good())
+        {
+            char name[256], hash[50];
+            fileHandler.getline(name, 256, ' ');
+            fileHandler.getline(hash, 50);
+
+            updateFile thisFile;
+            thisFile.name = name;
+            thisFile.hash = hash;
+            thisFile.type = "data";
+            thisFile.required = true;
+            thisFile.desc = "";
+
+            files.push_back(thisFile);
+        }
+    }
+    else
+    {
+        logger->log("Error loading update file: %s", fileName.c_str());
+    }
+    fileHandler.close();
+
+    return files;
+}
 
 UpdaterWindow::UpdaterWindow(const std::string &updateHost,
                              const std::string &updatesDir):
@@ -80,7 +133,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mDownloadedBytes(0),
     mMemoryBuffer(NULL),
     mDownload(NULL),
-    mLineIndex(0)
+    mUpdateIndex(0)
 {
     mBrowserBox = new BrowserBox;
     mScrollArea = new ScrollArea(mBrowserBox);
@@ -119,6 +172,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 
 UpdaterWindow::~UpdaterWindow()
 {
+    loadUpdates();
     if (mDownload)
     {
         mDownload->cancel();
@@ -300,8 +354,21 @@ void UpdaterWindow::download()
     mDownload->start();
 }
 
+void UpdaterWindow::loadUpdates()
+{
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    for (mUpdateIndex = 0; mUpdateIndex < mUpdateFiles.size(); mUpdateIndex++)
+    {
+        resman->addToSearchPath(mUpdatesDir + "/" + mUpdateFiles[mUpdateIndex].name, false);
+    }
+}
+
 void UpdaterWindow::logic()
 {
+    const std::string xmlUpdateFile = "resources.xml";
+    const std::string txtUpdateFile = "resources2.txt";
+
     // Update Scroll logic
     mScrollArea->logic();
 
@@ -342,7 +409,7 @@ void UpdaterWindow::logic()
                 // Parse current memory buffer as news and dispose of the data
                 loadNews();
 
-                mCurrentFile = "resources2.txt";
+                mCurrentFile = xmlUpdateFile;
                 mStoreInMemory = false;
                 mDownloadStatus = UPDATE_LIST;
                 download(); // download() changes mDownloadComplete to false
@@ -351,7 +418,25 @@ void UpdaterWindow::logic()
         case UPDATE_LIST:
             if (mDownloadComplete)
             {
-                mLines = loadTextFile(mUpdatesDir + "/resources2.txt");
+                if (mCurrentFile == xmlUpdateFile)
+                {
+                    mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
+                    if (mUpdateFiles.size() == 0)
+                    {
+                        logger->log("Warning this server does not have a %s file falling back to %s",xmlUpdateFile.c_str(),txtUpdateFile.c_str());
+
+                        // If the resources.xml file fails, fall back onto a older version
+                        mCurrentFile = txtUpdateFile;
+                        mStoreInMemory = false;
+                        mDownloadStatus = UPDATE_LIST;
+                        download();
+                        break;
+                    }
+                }
+                else if (mCurrentFile == txtUpdateFile)
+                {
+                    mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
+                }
                 mStoreInMemory = false;
                 mDownloadStatus = UPDATE_RESOURCES;
             }
@@ -359,12 +444,23 @@ void UpdaterWindow::logic()
         case UPDATE_RESOURCES:
             if (mDownloadComplete)
             {
-                if (mLineIndex < mLines.size())
+                if (mUpdateIndex < mUpdateFiles.size())
                 {
-                    std::stringstream line(mLines[mLineIndex]);
-                    line >> mCurrentFile;
+                    updateFile thisFile = mUpdateFiles[mUpdateIndex];
+                    if (!thisFile.required)
+                    {
+                        // This statement checks to see if the file type is music, and if download-music is true
+                        // If it fails, this statement returns true, and results in not downloading the file
+                        // Else it will ignore the break, and download the file.
+                        if ( !(thisFile.type == "music" && config.getValue("download-music", false)) )
+                        {
+                            mUpdateIndex++;
+                            break;
+                        }
+                    }
+                    mCurrentFile = thisFile.name;
                     std::string checksum;
-                    line >> checksum;
+                    checksum = thisFile.hash;
                     std::stringstream ss(checksum);
                     ss >> std::hex >> mCurrentChecksum;
 
@@ -378,9 +474,10 @@ void UpdaterWindow::logic()
                     }
                     else
                     {
+                        temp.close();
                         logger->log("%s already here", mCurrentFile.c_str());
                     }
-                    mLineIndex++;
+                    mUpdateIndex++;
                 }
                 else
                 {

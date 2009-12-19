@@ -261,7 +261,7 @@ int Download::downloadThread(void *ptr)
 
             if (!d->mOptions.memoryWrite)
             {
-                // Don't check resources2.txt checksum
+                // Don't check resources.xml checksum
                 if (d->mOptions.checkAdler)
                 {
                     unsigned long adler = fadler32(file);

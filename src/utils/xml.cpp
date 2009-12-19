@@ -25,14 +25,43 @@
 
 #include "resources/resourcemanager.h"
 
+#include <iostream>
+#include <fstream>
+
 namespace XML
 {
-    Document::Document(const std::string &filename):
+    Document::Document(const std::string &filename, bool useResman):
         mDoc(0)
     {
         int size;
-        ResourceManager *resman = ResourceManager::getInstance();
-        char *data = (char*) resman->loadFile(filename.c_str(), size);
+        char *data;
+        if (useResman)
+        {
+            ResourceManager *resman = ResourceManager::getInstance();
+            data = (char*) resman->loadFile(filename.c_str(), size);
+        }
+        else
+        {
+            std::ifstream file;
+            file.open(filename.c_str(), std::ios::in);
+
+            if (file.is_open())
+            {
+                // Get length of file
+                file.seekg (0, std::ios::end);
+                size = file.tellg();
+                file.seekg(0, std::ios::beg);
+
+                data = new char[size];
+
+                file.read(data, size);
+                file.close();
+            }
+            else
+            {
+                logger->log("Error loading XML file %s", filename.c_str());
+            }
+        }
 
         if (data) {
             mDoc = xmlParseMemory(data, size);
