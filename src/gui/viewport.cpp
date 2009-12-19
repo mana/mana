@@ -58,7 +58,7 @@ Viewport::Viewport():
 #ifdef MANASERV_SUPPORT
     mLocalWalkTime(-1)
 #else
-    mWalkTime(0)
+    mWalkTime(-1)
 #endif
 {
     setOpaque(false);
