@@ -64,9 +64,12 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
      * @param updateHost Host where to get the updated files.
      * @param updatesDir Directory where to store updates (should be absolute
      *                   and already created).
+     * @param applyUpdates If true, the update window will pass the updates to teh
+     *                     resource manager
      */
     UpdaterWindow(const std::string &updateHost,
-                  const std::string &updatesDir);
+                  const std::string &updatesDir,
+                  bool applyUpdates);
 
     /**
      * Destructor
@@ -180,6 +183,9 @@ private:
 
     /** Index of the file to be downloaded. */
     unsigned int mUpdateIndex;
+
+    /** Tells ~UpdaterWindow() if it should load updates */
+    bool mLoadUpdates;
 
     gcn::Label *mLabel;           /**< Progress bar caption. */
     Button *mCancelButton;        /**< Button to stop the update process. */

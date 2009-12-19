@@ -119,7 +119,8 @@ std::vector<updateFile> loadTxtFile(const std::string &fileName)
 }
 
 UpdaterWindow::UpdaterWindow(const std::string &updateHost,
-                             const std::string &updatesDir):
+                             const std::string &updatesDir,
+                             bool applyUpdates):
     Window(_("Updating...")),
     mDownloadStatus(UPDATE_NEWS),
     mUpdateHost(updateHost),
@@ -133,7 +134,8 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mDownloadedBytes(0),
     mMemoryBuffer(NULL),
     mDownload(NULL),
-    mUpdateIndex(0)
+    mUpdateIndex(0),
+    mLoadUpdates(applyUpdates)
 {
     mBrowserBox = new BrowserBox;
     mScrollArea = new ScrollArea(mBrowserBox);
@@ -172,7 +174,9 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 
 UpdaterWindow::~UpdaterWindow()
 {
-    loadUpdates();
+    if (mLoadUpdates)
+        loadUpdates();
+
     if (mDownload)
     {
         mDownload->cancel();

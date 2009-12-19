@@ -1009,7 +1009,7 @@ int main(int argc, char *argv[])
                     {
                         logger->log("State: UPDATE");
                         currentDialog = new UpdaterWindow(updateHost,
-                                homeDir + "/" + updatesDir);
+                                homeDir + "/" + updatesDir,options.dataPath.empty());
                     }
                     break;
 
