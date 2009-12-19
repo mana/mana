@@ -260,10 +260,14 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     case 0x002b: player_node->setAttributeEffective(MATK, value
                                                            + ATTR_BONUS(MATK));
                         player_node->setAttributeBase(MATK, value);
-                        statusWindow->update(StatusWindow::MP); break;
+                        if (statusWindow)
+                            statusWindow->update(StatusWindow::MP);
+                        break;
                     case 0x002c: value += player_node->getAttributeBase(MATK);
                         player_node->setAttributeEffective(MATK, value);
-                        statusWindow->update(StatusWindow::MP); break;
+                        if (statusWindow)
+                            statusWindow->update(StatusWindow::MP);
+                        break;
                     case 0x002d: player_node->setAttributeEffective(DEF, value
                                                            + ATTR_BONUS(DEF));
                         player_node->setAttributeBase(DEF, value); break;

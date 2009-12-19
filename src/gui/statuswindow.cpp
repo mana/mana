@@ -112,7 +112,9 @@ StatusWindow::StatusWindow():
     mMpLabel = new Label(_("MP:"));
     mMpBar = new ProgressBar((float) player_node->getMaxMP()
                              / (float) player_node->getMaxMP(),
-                             80, 15, gcn::Color(26, 102, 230));
+                             80, 15, Net::getPlayerHandler()->canUseMagic() ?
+                             gcn::Color(26, 102, 230) :
+                             gcn::Color(100, 100, 100));
 
     place(0, 0, mLvlLabel, 3);
     // 5, 0 Job Level
