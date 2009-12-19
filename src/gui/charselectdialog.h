@@ -58,6 +58,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
         CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                          LoginData *loginData);
 
+        ~CharSelectDialog() { mCharInfo->clear(); };
+
         void action(const gcn::ActionEvent &event);
 
         void keyPressed(gcn::KeyEvent &keyEvent);
