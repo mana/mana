@@ -34,7 +34,7 @@ namespace XML
         mDoc(0)
     {
         int size;
-        char *data;
+        char *data = NULL;
         if (useResman)
         {
             ResourceManager *resman = ResourceManager::getInstance();
