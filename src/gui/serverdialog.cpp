@@ -108,6 +108,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
         currentConfig = "MostUsedServerPort" + toString(i);
         currentServer.port = (short) config.getValue(currentConfig, DEFAULT_PORT);
+        currentServer.type = ServerInfo::getCurrentType();
 
         if (!currentServer.hostname.empty() && currentServer.port != 0)
         {
@@ -207,6 +208,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             ServerInfo tempServer;
             currentServer.hostname = mServerNameField->getText();
             currentServer.port = (short) atoi(mPortField->getText().c_str());
+            currentServer.type = ServerInfo::getCurrentType();
 
             // now rewrite the configuration...
             // id = 0 is always the last selected server
@@ -384,11 +386,11 @@ void ServerDialog::loadServers()
                 {
                     if (xmlStrEqual(subnode->name, BAD_CAST "connection"))
                     {
-                        if (compareStrI(type, "manaserv"))
+                        if (!compareStrI(type, "manaserv"))
                         {
                             currentServer.type = ServerInfo::MANASERV;
                         }
-                        else if (compareStrI(type, "eathena"))
+                        else if (!compareStrI(type, "eathena"))
                         {
                             currentServer.type = ServerInfo::EATHENA;
                         }

@@ -25,6 +25,8 @@
 #include <string>
 #include <vector>
 
+#include "utils/stringutils.h"
+
 class ServerInfo
 {
 public:
@@ -71,6 +73,15 @@ public:
     {
         return (type != other.type || hostname != other.hostname ||
                 port != other.port);
+    }
+
+    Type static getCurrentType()
+    {
+#ifdef MANASERV_SUPPORT
+        return MANASERV;
+#else
+        return EATHENA;
+#endif
     }
 };
 
