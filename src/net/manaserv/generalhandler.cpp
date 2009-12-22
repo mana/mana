@@ -161,7 +161,7 @@ void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(true);
     partyWindow->clearPartyName();
-    skillDialog->loadSkills("tmw-skills.xml");
+    skillDialog->loadSkills("mana-skills.xml");
     specialsWindow->loadSpecials("specials.xml");
 
     player_node->setExpNeeded(100);
