@@ -31,7 +31,7 @@
 #include "sprite.h"
 #include "tileset.h"
 
-#include "resources/ambientoverlay.h"
+#include "resources/ambientlayer.h"
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
@@ -207,19 +207,30 @@ Map::~Map()
     }
     delete_all(mLayers);
     delete_all(mTilesets);
-    delete_all(mOverlays);
+    delete_all(mForegrounds);
+    delete_all(mBackgrounds);
     delete_all(mTileAnimations);
 }
 
-void Map::initializeOverlays()
+void Map::initializeAmbientLayers()
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
-    for (int i = 0;
-         hasProperty("overlay" + toString(i) + "image");
-         i++)
+    // search for "foreground*" or "overlay*" (old term) in map properties
+    for (int i = 0; /* terminated by a break */; i++)
     {
-        const std::string name = "overlay" + toString(i);
+        std::string name;
+        if (hasProperty("foreground" + toString(i) + "image"))
+        {
+            name = "foreground" + toString(i);
+        }
+        else if (hasProperty("overlay" + toString(i) + "image"))
+        {
+            name = "overlay" + toString(i);
+        }
+        else {
+            break; // the FOR loop
+        }
 
         Image *img = resman->getImage(getProperty(name + "image"));
         const float speedX = getFloatProperty(name + "scrollX");
@@ -229,10 +240,34 @@ void Map::initializeOverlays()
 
         if (img)
         {
-            mOverlays.push_back(
-                    new AmbientOverlay(img, parallax, speedX, speedY, keepRatio));
+            mForegrounds.push_back(
+                    new AmbientLayer(img, parallax, speedX, speedY, keepRatio));
 
-            // The AmbientOverlay takes control over the image.
+            // The AmbientLayer takes control over the image.
+            img->decRef();
+        }
+    }
+
+
+    // search for "background*" in map properties
+    for (int i = 0;
+         hasProperty("background" + toString(i) + "image");
+         i++)
+    {
+        const std::string name = "background" + toString(i);
+
+        Image *img = resman->getImage(getProperty(name + "image"));
+        const float speedX = getFloatProperty(name + "scrollX");
+        const float speedY = getFloatProperty(name + "scrollY");
+        const float parallax = getFloatProperty(name + "parallax");
+        const bool keepRatio = getBoolProperty(name + "keepratio");
+
+        if (img)
+        {
+            mBackgrounds.push_back(
+                    new AmbientLayer(img, parallax, speedX, speedY, keepRatio));
+
+            // The AmbientLayer takes control over the image.
             img->decRef();
         }
     }
@@ -265,22 +300,28 @@ void Map::update(int ticks)
     {
         iAni->second->update(ticks);
     }
+
 }
 
 void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 {
+    //Calculate range of tiles which are on-screen
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
-
-    // TODO: Do this per-layer
     endPixelY += mMaxTileHeight - mTileHeight;
-
     int startX = scrollX / mTileWidth;
     int startY = scrollY / mTileHeight;
     int endX = (graphics->getWidth() + scrollX + mTileWidth - 1) / mTileWidth;
     int endY = endPixelY / mTileHeight;
 
-    // Make sure sprites are sorted
+    // Make sure sprites are sorted ascending by Y-coordinate so that they overlap correctly
     mSprites.sort(spriteCompare);
+
+    // update scrolling of all ambient layers
+    updateAmbientLayers(scrollX, scrollY);
+
+    // Draw backgrounds
+    drawAmbientLayers(graphics, BACKGROUND_LAYERS, scrollX, scrollY,
+            (int) config.getValue("OverlayDetail", 2));
 
     // draw the game world
     Layers::const_iterator layeri = mLayers.begin();
@@ -309,7 +350,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
         si++;
     }
 
-    drawOverlay(graphics, scrollX, scrollY,
+    drawAmbientLayers(graphics, FOREGROUND_LAYERS, scrollX, scrollY,
             (int) config.getValue("OverlayDetail", 2));
 }
 
@@ -366,13 +407,9 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY)
     }
 }
 
-void Map::drawOverlay(Graphics *graphics,
-                      float scrollX, float scrollY, int detail)
+void Map::updateAmbientLayers(float scrollX, float scrollY)
 {
-    static int lastTick = tick_time;
-
-    // Detail 0: no overlays
-    if (detail <= 0) return;
+    static int lastTick = tick_time; // static = only initialized at first call
 
     if (mLastScrollX == 0.0f && mLastScrollY == 0.0f)
     {
@@ -382,21 +419,47 @@ void Map::drawOverlay(Graphics *graphics,
     }
 
     // Update Overlays
-    int timePassed = get_elapsed_time(lastTick);
     float dx = scrollX - mLastScrollX;
     float dy = scrollY - mLastScrollY;
+    int timePassed = get_elapsed_time(lastTick);
 
-    std::list<AmbientOverlay*>::iterator i;
-    for (i = mOverlays.begin(); i != mOverlays.end(); i++)
+    std::list<AmbientLayer*>::iterator i;
+    for (i = mBackgrounds.begin(); i != mBackgrounds.end(); i++)
+    {
+        (*i)->update(timePassed, dx, dy);
+    }
+    for (i = mForegrounds.begin(); i != mForegrounds.end(); i++)
     {
         (*i)->update(timePassed, dx, dy);
     }
     mLastScrollX = scrollX;
     mLastScrollY = scrollY;
     lastTick = tick_time;
+}
+
+void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
+                      float scrollX, float scrollY, int detail)
+{
+    // Detail 0: no overlays
+    if (detail <= 0) return;
+
+    // find out which layer list to draw
+    std::list<AmbientLayer*> *layers;
+    switch (type)
+    {
+        case FOREGROUND_LAYERS:
+            layers = &mForegrounds;
+            break;
+        case BACKGROUND_LAYERS:
+            layers = &mBackgrounds;
+            break;
+        default:
+            assert(false); // you noob, you added a new type of ambient layers without adding it to Map::drawAmbientLayers
+            break;
+    }
 
     // Draw overlays
-    for (i = mOverlays.begin(); i != mOverlays.end(); i++)
+    for (std::list<AmbientLayer*>::iterator i = layers->begin(); i != layers->end(); i++)
     {
         (*i)->draw(graphics, graphics->getWidth(), graphics->getHeight());
 

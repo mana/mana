@@ -280,7 +280,7 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
         }
     }
 
-    map->initializeOverlays();
+    map->initializeAmbientLayers();
 
     return map;
 }

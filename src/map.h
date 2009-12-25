@@ -29,7 +29,7 @@
 #include "properties.h"
 
 class Animation;
-class AmbientOverlay;
+class AmbientLayer;
 class Graphics;
 class Image;
 class MapLayer;
@@ -172,10 +172,10 @@ class Map : public Properties
         ~Map();
 
         /**
-         * Initialize map overlays. Should be called after all the properties
+         * Initialize ambient layers. Has to be called after all the properties
          * are set.
          */
-        void initializeOverlays();
+        void initializeAmbientLayers();
 
         /**
          * Updates animations. Called as needed.
@@ -295,10 +295,22 @@ class Map : public Properties
         TileAnimation *getAnimationForGid(int gid) const;
 
     private:
+
+        enum LayerType
+        {
+            FOREGROUND_LAYERS,
+            BACKGROUND_LAYERS
+        };
+
         /**
-         * Draws the overlay graphic to the given graphics output.
+         * Updates scrolling of ambient layers. Has to be called each game tick.
          */
-        void drawOverlay(Graphics *graphics, float scrollX, float scrollY,
+        void updateAmbientLayers(float scrollX, float scrollY);
+
+        /**
+         * Draws the foreground or background layers to the given graphics output.
+         */
+        void drawAmbientLayers(Graphics *graphics, LayerType type, float scrollX, float scrollY,
                          int detail);
 
         /**
@@ -323,7 +335,8 @@ class Map : public Properties
         int mOnClosedList, mOnOpenList;
 
         // Overlay data
-        std::list<AmbientOverlay*> mOverlays;
+        std::list<AmbientLayer*> mBackgrounds;
+        std::list<AmbientLayer*> mForegrounds;
         float mLastScrollX;
         float mLastScrollY;
 
@@ -337,6 +350,7 @@ class Map : public Properties
         std::list<ParticleEffectData> particleEffects;
 
         std::map<int, TileAnimation*> mTileAnimations;
+
 };
 
 #endif
