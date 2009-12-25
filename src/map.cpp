@@ -440,8 +440,8 @@ void Map::updateAmbientLayers(float scrollX, float scrollY)
 void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
                       float scrollX, float scrollY, int detail)
 {
-    // Detail 0: no overlays
-    if (detail <= 0) return;
+    // Detail 0 = no ambient effects except background image
+    if (detail <= 0 && type != BACKGROUND_LAYERS) return;
 
     // find out which layer list to draw
     std::list<AmbientLayer*> *layers;
