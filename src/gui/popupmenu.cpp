@@ -87,6 +87,10 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 mBrowserBox->addRow(strprintf("@@attack|%s@@",
                                                 strprintf(_("Attack %s"),
                                                     name.c_str()).c_str()));
+                // TRANSLATORS: Whispering a player.
+                mBrowserBox->addRow(strprintf("@@whisper|%s@@",
+                                                strprintf(_("Whisper %s"),
+                                                    name.c_str()).c_str()));
 
                 mBrowserBox->addRow("##3---");
 
@@ -219,6 +223,10 @@ void PopupMenu::handleLink(const std::string &link)
     else if (link == "attack" && being)
     {
         player_node->attack(being, true);
+    }
+    else if (link == "whisper" && being)
+    {
+        chatWindow->addInputText("/w \"" + being->getName() + "\" ");
     }
     else if (link == "unignore" &&
              being &&
