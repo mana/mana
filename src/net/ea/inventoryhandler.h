@@ -43,7 +43,7 @@ class EquipBackend : public Equipment::Backend {
         Item *getEquipment(int index) const
         {
             int invyIndex = mEquipment[index];
-            if (invyIndex == 0)
+            if (invyIndex == -1)
             {
                 return NULL;
             }
@@ -54,7 +54,7 @@ class EquipBackend : public Equipment::Backend {
         {
             for (int i = 0; i < EQUIPMENT_SIZE; i++)
             {
-                if (mEquipment[i])
+                if (mEquipment[i] != -1)
                 {
                     Item* item = player_node->getInventory()->getItem(i);
                     if (item)
@@ -63,7 +63,7 @@ class EquipBackend : public Equipment::Backend {
                     }
                 }
 
-                mEquipment[i] = 0;
+                mEquipment[i] = -1;
             }
         }
 
