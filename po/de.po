@@ -1,21 +1,23 @@
 # German translation of The Mana World.
 # Copyright (C) 2007 The Mana World Development Team
 # This file is distributed under the same license as the The Mana World package.
-# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
 #
+# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
+# Jonathan Raphael Joachim Kolberg, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-06-09 21:24+0200\n"
-"PO-Revision-Date: 2009-06-02 10:14+0000\n"
-"Last-Translator: Terwarf <Unknown>\n"
-"Language-Team: German\n"
+"PO-Revision-Date: 2009-12-31 01:01+0000\n"
+"Last-Translator: Jonathan Raphael Joachim Kolberg\n"
+"Language-Team: Deutsch <kde-i18n-de@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2009-06-02 17:48+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
 msgid "Unknown command."
@@ -84,7 +86,7 @@ msgstr "/record > Starte die Aufzeichnung des Chats in eine Datei"
 
 #: src/commandhandler.cpp:163
 msgid "/toggle > Determine whether <return> toggles the chat log"
-msgstr "/toggle > Enstscheide, ob <return> den Chat-Dialog schließt"
+msgstr "/toggle > Entscheide, ob <return> den Chat-Dialog schließt"
 
 #: src/commandhandler.cpp:164
 msgid "/present > Get list of players present (sent to chat log, if logging)"
@@ -98,7 +100,7 @@ msgstr "/announce > Globale Ansage (Nur von GM's nutzbar)"
 
 #: src/commandhandler.cpp:170
 msgid "For more information, type /help <command>."
-msgstr "Für mehr Infarmationen, gebe /help <Befehl> ein."
+msgstr "Für mehr Informationen, gib /help <Befehl> ein."
 
 #: src/commandhandler.cpp:174
 msgid "Command: /help"
@@ -463,7 +465,6 @@ msgid "Password:"
 msgstr "Passwort:"
 
 #: src/gui/changepassworddialog.cpp:62
-#, fuzzy
 msgid "Type new password twice:"
 msgstr "Gib dein neues Passwort zweimal ein:"
 
@@ -609,7 +610,7 @@ msgstr "Anwesend: "
 
 #: src/gui/chat.cpp:344
 msgid "Attendance written to record log."
-msgstr "Anwesenheitsliste wurde ins Chatlog geschrieben."
+msgstr "Anwesenheitsliste wurde ins Chatprotokol geschrieben."
 
 #: src/gui/chat.cpp:471
 #, c-format
@@ -701,23 +702,23 @@ msgstr "Alle"
 
 #: src/gui/itemamount.cpp:123
 msgid "Select amount of items to trade."
-msgstr "Wähle aus, wieviele Gegenstände Du tauschen möchtest."
+msgstr "Wähle aus, wie viele Gegenstände Du tauschen möchtest."
 
 #: src/gui/itemamount.cpp:126
 msgid "Select amount of items to drop."
-msgstr "Wähle aus, wieviele Gegenstände Du wegwerfen möchtest."
+msgstr "Wähle aus, wie viele Gegenstände Du wegwerfen möchtest."
 
 #: src/gui/itemamount.cpp:129
 msgid "Select amount of items to store."
-msgstr "Wähle aus, wieviele Gegenstände du einlagern möchtest."
+msgstr "Wähle aus, wie viele Gegenstände du einlagern möchtest."
 
 #: src/gui/itemamount.cpp:132
 msgid "Select amount of items to retrieve."
-msgstr "Wähle aus, wieviele Gegenstände du wiederhaben möchtest."
+msgstr "Wähle aus, wie viele Gegenstände du wieder haben möchtest."
 
 #: src/gui/itemamount.cpp:135
 msgid "Select amount of items to split."
-msgstr "Wähle aus, wieviel Gegenstände Du aufteilen möchtest."
+msgstr "Wähle aus, wie viel Gegenstände Du aufteilen möchtest."
 
 #: src/gui/itempopup.cpp:91
 msgid "Weight: "
@@ -738,7 +739,7 @@ msgstr "Port:"
 
 #: src/gui/login.cpp:56
 msgid "Recent:"
-msgstr "Letzer Server:"
+msgstr "Letzter Server:"
 
 #: src/gui/login.cpp:73
 msgid "Remember Username"
@@ -795,7 +796,7 @@ msgstr "Senden"
 
 #: src/gui/npcpostdialog.cpp:85
 msgid "Failed to send as sender or letter invalid."
-msgstr ""
+msgstr "Es misslang den Brief zu senden oder er war ungültig."
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:142
 msgid "Text"
@@ -880,7 +881,7 @@ msgstr "Eigener Name"
 
 #: src/gui/palette.cpp:106
 msgid "GM Names"
-msgstr "Namen von GMs"
+msgstr "Namen von GM"
 
 #: src/gui/palette.cpp:107
 msgid "NPCs"
@@ -920,7 +921,7 @@ msgstr "Hosen"
 
 #: src/gui/palette.cpp:117
 msgid "Shoes"
-msgstr "Shuhe"
+msgstr "Schuhe"
 
 #: src/gui/palette.cpp:118
 msgid "2 Handed Weapons"
@@ -1233,7 +1234,7 @@ msgstr "Lautstärke der Klangeffekte"
 
 #: src/gui/setup_audio.cpp:49
 msgid "Music volume"
-msgstr "Latustärke der Musik"
+msgstr "Lautstärke der Musik"
 
 #: src/gui/setup_colors.cpp:45
 msgid "This is what the color looks like"
@@ -1488,7 +1489,7 @@ msgstr "Schriftgröße"
 
 #: src/gui/setup_video.cpp:356
 msgid "Failed to switch to "
-msgstr "Konnte nicht Auflösung nicht ändern in "
+msgstr "Konnte Auflösung nicht ändern in "
 
 #: src/gui/setup_video.cpp:357
 msgid "windowed"
@@ -1508,7 +1509,7 @@ msgstr "Wechsle zum Vollbildmodus"
 
 #: src/gui/setup_video.cpp:368
 msgid "Restart needed for changes to take effect."
-msgstr "Änderungen treten erst nach einem Neustart des Programmes in Kraft."
+msgstr "Änderungen treten erst nach einem Neustart des Programms in Kraft."
 
 #: src/gui/setup_video.cpp:380
 msgid "Changing OpenGL"
@@ -1859,7 +1860,7 @@ msgstr "Befehl: /close"
 
 #: src/gui/widgets/whispertab.cpp:79
 msgid "This command closes the current whisper tab."
-msgstr "Dieser befehl schließt den aktuellen privaten Tab."
+msgstr "Dieser Befehl schließt den aktuellen privaten Tab."
 
 #: src/gui/windowmenu.cpp:59
 msgid "Status"
@@ -2027,7 +2028,7 @@ msgstr "Im Chat hochscrollen"
 
 #: src/keyboardconfig.cpp:97
 msgid "Scroll Chat Down"
-msgstr "Im Chat runterscrollen"
+msgstr "Im Chat runter scrollen"
 
 #: src/keyboardconfig.cpp:98
 msgid "Previous Chat Tab"
@@ -2043,11 +2044,11 @@ msgstr "OK auswählen"
 
 #: src/keyboardconfig.cpp:102
 msgid "Ignore input 1"
-msgstr "Ignoriere input 1"
+msgstr "Ignoriere Eingabe 1"
 
 #: src/keyboardconfig.cpp:103
 msgid "Ignore input 2"
-msgstr "Ignoriere inpu 2"
+msgstr "Ignoriere Eingabe 2"
 
 #: src/localplayer.cpp:760
 msgid "Unarmed"
@@ -2059,7 +2060,7 @@ msgstr "Messer"
 
 #: src/localplayer.cpp:762
 msgid "Sword"
-msgstr "Schwertpolearm"
+msgstr "Schwertpolarm"
 
 #: src/localplayer.cpp:763
 msgid "Polearm"
@@ -2107,7 +2108,7 @@ msgstr "Ungültiger Updateserver: "
 
 #: src/main.cpp:296 src/main.cpp:302
 msgid "Error creating updates directory!"
-msgstr "Fehler beim Erstellen des Verszeichnisses für Updates!"
+msgstr "Fehler beim Erstellen des Verzeichnisses für Updates!"
 
 #: src/main.cpp:339
 msgid " can't be created, but it doesn't exist! Exiting."
@@ -2143,7 +2144,7 @@ msgstr "  -D --default : Wähle zuletzt benutzten Server und Spieler aus"
 
 #: src/main.cpp:581
 msgid "  -h --help        : Display this help"
-msgstr "  - --help : Display this help"
+msgstr "  - --help : Zeigt diesen Hilfstext an"
 
 #: src/main.cpp:582
 msgid "  -S --home-dir    : Directory to use as home directory"
@@ -2188,15 +2189,15 @@ msgstr "  -v --version : Die Version des Spieles anzeigen"
 
 #: src/main.cpp:1528
 msgid "Connecting to map server..."
-msgstr "Verbinde zu [map server]..."
+msgstr "Verbinde mit [Kartenserver]..."
 
 #: src/main.cpp:1536
 msgid "Connecting to character server..."
-msgstr "Verbinde zu [character server]..."
+msgstr "Verbinde mit [Charakterserver]..."
 
 #: src/main.cpp:1544
 msgid "Connecting to account server..."
-msgstr "Verbinde zu [account server]..."
+msgstr "Verbinde mit [Benutzerdatenserver]..."
 
 #: src/net/ea/adminhandler.cpp:66
 msgid "Kick failed!"
@@ -2357,7 +2358,7 @@ msgstr "Dieser Account ist bereits angemeldet"
 
 #: src/net/ea/generalhandler.cpp:131
 msgid "Speed hack detected"
-msgstr "Speed hack festgestellt"
+msgstr "Geschwindigkeitsproblem festgestellt"
 
 #: src/net/ea/generalhandler.cpp:134
 msgid "Duplicated login"
@@ -2645,7 +2646,7 @@ msgstr "Ach ja: Du bist Tot."
 #: src/net/ea/playerhandler.cpp:97 src/net/manaserv/beinghandler.cpp:313
 msgid "We regret to inform you that your character was killed in battle."
 msgstr ""
-"Es tut uns leid, Euch mitteilen zu müssen, dass Ihr im Kampfe gefallen seid."
+"Es tut uns Leid, Euch mitteilen zu müssen, dass Ihr im Kampfe gefallen seid."
 
 #: src/net/ea/playerhandler.cpp:99 src/net/manaserv/beinghandler.cpp:314
 msgid "You are not that alive anymore."
@@ -2661,7 +2662,7 @@ msgstr "Game Over!"
 
 #: src/net/ea/playerhandler.cpp:102
 msgid "Insert coin to continue."
-msgstr "Insert coin to continue."
+msgstr "Gib eine Münze ein um weiter zuspielen."
 
 #: src/net/ea/playerhandler.cpp:103 src/net/manaserv/beinghandler.cpp:317
 msgid ""
@@ -2817,7 +2818,7 @@ msgstr "Nicht genug HP!"
 
 #: src/net/ea/skillhandler.cpp:169
 msgid "Insufficient SP!"
-msgstr "NIcht genug SP!"
+msgstr "Nicht genug SP!"
 
 #: src/net/ea/skillhandler.cpp:172
 msgid "You have no memos!"
@@ -2845,7 +2846,7 @@ msgstr "Du brauchst noch einen blauen Edelstein!"
 
 #: src/net/ea/skillhandler.cpp:190
 msgid "You're carrying to much to do this!"
-msgstr "Du schleppst zuviel herum um das zu machen!"
+msgstr "Du schleppst zu viel herum um das zu machen!"
 
 #: src/net/ea/skillhandler.cpp:193
 msgid "Huh? What's that?"
@@ -2896,12 +2897,12 @@ msgstr "Handel mit %s abgebrochen."
 
 #: src/net/ea/tradehandler.cpp:148
 msgid "Unhandled trade cancel packet."
-msgstr "Übergangenes Handelsabruchspaket."
+msgstr "Übergangenes Handelsabbruchspaket."
 
 #: src/net/ea/tradehandler.cpp:198
 msgid "Failed adding item. Trade partner is over weighted."
 msgstr ""
-"Gegenstand konnte nicht hinzugefügt werden. Handelspartnet ist überladen."
+"Gegenstand konnte nicht hinzugefügt werden. Handelspartner ist überladen."
 
 #: src/net/ea/tradehandler.cpp:203
 msgid "Failed adding item. Trade partner has no free slot."
@@ -2953,7 +2954,7 @@ msgstr "Gilde erstellt."
 
 #: src/net/manaserv/guildhandler.cpp:79
 msgid "Error creating guild."
-msgstr "Feheler beim Erstellen der Gilde."
+msgstr "Fehler beim Erstellen der Gilde."
 
 #: src/net/manaserv/guildhandler.cpp:89
 msgid "Invite sent."
