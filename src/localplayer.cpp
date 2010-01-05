@@ -925,7 +925,9 @@ void LocalPlayer::setExp(int value)
 {
     if (mMap && value > mExp)
     {
-        addMessageToQueue(toString(value - mExp) + " xp");
+        #ifdef EATHENA_SUPPORT
+            addMessageToQueue(toString(value - mExp) + " xp");
+        #endif
     }
     mExp = value;
 
