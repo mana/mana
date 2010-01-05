@@ -46,8 +46,11 @@ PartyMember::~PartyMember()
 
 void PartyMember::setLeader(bool leader)
 {
-    mLeader =  leader;
-    mAvatar->setDisplayBold(true);
+    mLeader = leader;
+	if(mLeader)
+	{
+		mAvatar->setDisplayBold(true);
+	}
 }
 
 

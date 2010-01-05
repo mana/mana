@@ -67,7 +67,7 @@ public:
 
     bool getDisplayBold() const { return mDisplayBold; }
 
-    void setDisplayBold(bool displayBold) { mDisplayBold = displayBold; }
+    void setDisplayBold(bool displayBold) { mDisplayBold = displayBold; updateAvatarLabel(); }
 
 private:
     void updateAvatarLabel();
