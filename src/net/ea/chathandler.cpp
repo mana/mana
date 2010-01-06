@@ -60,6 +60,8 @@ ChatHandler::ChatHandler()
 
 void ChatHandler::handleMessage(Net::MessageIn &msg)
 {
+    if (!localChatTab) return;
+
     Being *being;
     std::string chatMsg;
     std::string nick;
@@ -147,7 +149,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
 
             if (msg.getId() == SMSG_PLAYER_CHAT)
             {
-                if (localChatTab) localChatTab->chatLog(chatMsg, BY_PLAYER);
+                localChatTab->chatLog(chatMsg, BY_PLAYER);
 
                 if (pos != std::string::npos)
                     chatMsg.erase(0, pos + 3);
