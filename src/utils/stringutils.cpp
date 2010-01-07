@@ -50,6 +50,12 @@ std::string &toLower(std::string &str)
     return str;
 }
 
+std::string &toUpper(std::string &str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), toupper);
+    return str;
+}
+
 unsigned int atox(const std::string &str)
 {
     unsigned int value;

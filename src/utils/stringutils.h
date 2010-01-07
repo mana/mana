@@ -42,6 +42,15 @@ std::string &trim(std::string &str);
 std::string &toLower(std::string &str);
 
 /**
+ * Converts the given strong to upper case.
+ *
+ * @param str the string to convert to upper case
+ * @return a reference to the given string converted to upper case
+ */
+std::string &toUpper(std::string &str);
+
+
+/**
  * Converts an ascii hexidecimal string to an integer
  *
  * @param str the hex string to convert to an int

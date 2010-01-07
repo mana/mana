@@ -241,8 +241,8 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
             {
                 if (xmlStrEqual(objectNode->name, BAD_CAST "object"))
                 {
-                    const std::string objType =
-                        XML::getProperty(objectNode, "type", "");
+                    std::string objType = XML::getProperty(objectNode, "type", "");
+                    objType = toUpper(objType);
 
                     if (objType == "WARP" || objType == "NPC" ||
                         objType == "SCRIPT" || objType == "SPAWN")
@@ -251,8 +251,7 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
                         continue;
                     }
 
-                    const std::string objName =
-                        XML::getProperty(objectNode, "name", "");
+                    const std::string objName = XML::getProperty(objectNode, "name", "");
                     const int objX = XML::getProperty(objectNode, "x", 0);
                     const int objY = XML::getProperty(objectNode, "y", 0);
 
