@@ -42,7 +42,7 @@ std::string &trim(std::string &str);
 std::string &toLower(std::string &str);
 
 /**
- * Converts the given strong to upper case.
+ * Converts the given string to upper case.
  *
  * @param str the string to convert to upper case
  * @return a reference to the given string converted to upper case
