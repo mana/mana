@@ -76,6 +76,7 @@
 
 #include "net/gamehandler.h"
 #include "net/generalhandler.h"
+#include "net/playerhandler.h"
 #include "net/net.h"
 
 #include "resources/imagewriter.h"
@@ -947,7 +948,19 @@ void Game::handleInput()
             direction |= Being::RIGHT;
         }
 
-        player_node->setWalkingDir(direction);
+        if (keyboard.isKeyActive(keyboard.KEY_EMOTE) && direction != 0)
+        {
+            if (player_node->getDirection() != direction)
+            {
+                player_node->setDirection(direction);
+                Net::getPlayerHandler()->setDirection(direction);
+            }
+            direction = 0;
+        }
+        else
+        {
+            player_node->setWalkingDir(direction);
+        }
 
         // Attacking monsters
         if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
