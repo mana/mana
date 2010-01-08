@@ -564,7 +564,7 @@ std::string ChatWindow::autoCompleteHistory(std::string partName)
     while (i != mHistory.end())
     {
         std::string line = *i;
-        int f = 0;
+        unsigned int f = 0;
         while (f < line.length() && !isWordSeparator(line.at(f)))
         {
             f++;
