@@ -146,7 +146,7 @@ bool isWordSeparator(char chr)
     return (chr == ' ' || chr == ',' || chr == '.');
 }
 
-const std::string findSameSubstring(std::string &str1, std::string &str2)
+const std::string findSameSubstring(const std::string &str1, const std::string &str2)
 {
     int minLength = str1.length() > str2.length() ? str2.length() : str1.length();
     for (int f = 0; f < minLength; f ++)

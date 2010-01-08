@@ -531,13 +531,16 @@ void ChatWindow::autoComplete()
 
 
     ChatTab *cTab = static_cast<ChatTab*>(mChatTabs->getSelectedTab());
+    std::vector<std::string> nameList;
     if (cTab && cTab->getType() == ChatTab::PARTY)
     {
-        newName = partyWindow->getAutoCompleteName(name);
+        partyWindow->getNames(nameList);
+        newName = autoComplete(nameList, name);
     }
     if (newName == "")
     {
-        newName = beingManager->getAutoCompletePlayerName(name);
+        beingManager->getPlayerNames(nameList, true);
+        newName = autoComplete(nameList, name);
     }
     if (newName == "")
     {
@@ -556,10 +559,44 @@ void ChatWindow::autoComplete()
     }
 }
 
+std::string ChatWindow::autoComplete(std::vector<std::string> &names,
+                                     std::string partName) const
+{
+    std::vector<std::string>::iterator i = names.begin();
+    toLower(partName);
+    std::string newName("");
+
+    while (i != names.end())
+    {
+        if (!i->empty())
+        {
+            std::string name = *i;
+            toLower(name);
+
+            std::string::size_type pos = name.find(partName, 0);
+            if (pos == 0)
+            {
+                if (newName != "")
+                {
+                    toLower(newName);
+                    newName = findSameSubstring(name, newName);
+                }
+                else
+                {
+                    newName = *i;
+                }
+            }
+        }
+        ++i;
+    }
+
+    return newName;
+}
+
 std::string ChatWindow::autoCompleteHistory(std::string partName)
 {
     History::iterator i = mHistory.begin();
-    std::string newName = "";
+    std::vector<std::string> nameList;
 
     while (i != mHistory.end())
     {
@@ -572,20 +609,9 @@ std::string ChatWindow::autoCompleteHistory(std::string partName)
         line = line.substr(0, f);
         if (line != "")
         {
-            std::string::size_type pos = line.find(partName, 0);
-            if (pos == 0)
-            {
-                if (newName != "")
-                {
-                    newName = findSameSubstring(line, newName);
-                }
-                else
-                {
-                    newName = line;
-                }
-            }
+            nameList.push_back(line);
         }
         ++i;
     }
-    return newName;
+    return autoComplete(nameList, partName);
 }

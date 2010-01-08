@@ -32,6 +32,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 class PartyWindow;
 
@@ -127,7 +128,7 @@ class PartyWindow : public Window, gcn::ActionListener
 
         void clearMembers();
 
-        std::string getAutoCompleteName(std::string partName);
+        void getNames(std::vector<std::string> &names);
 
     private:
         /**

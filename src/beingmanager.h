@@ -118,7 +118,8 @@ class BeingManager
          */
         void clear();
 
-        std::string getAutoCompletePlayerName(std::string partName);
+        void getPlayerNames(std::vector<std::string> &names,
+                            bool npcNames);
 
     protected:
         Beings mBeings;
