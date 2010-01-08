@@ -86,6 +86,10 @@ Viewport::~Viewport()
 
 void Viewport::setMap(Map *map)
 {
+    if (mMap && map)
+    {
+        map->setDebugFlags(mMap->getDebugFlags());
+    }
     mMap = map;
 }
 
@@ -191,8 +195,10 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         if (mShowDebugPath) {
             mMap->drawCollision(graphics,
                                 (int) mPixelViewX,
-                                (int) mPixelViewY);
-            _drawDebugPath(graphics);
+                                (int) mPixelViewY,
+                                mShowDebugPath);
+            if (mShowDebugPath == Map::MAP_DEBUG)
+                _drawDebugPath(graphics);
         }
     }
 
@@ -462,3 +468,15 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
 
     mSelectedBeing = beingManager->findBeing(tilex, tiley);
 }
+
+void Viewport::toggleDebugPath()
+{
+    mShowDebugPath++;
+    if (mShowDebugPath > Map::MAP_SPECIAL)
+        mShowDebugPath = Map::MAP_NORMAL;
+    if (mMap)
+    {
+        mMap->setDebugFlags(mShowDebugPath);
+    }
+}
+

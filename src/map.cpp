@@ -128,7 +128,7 @@ Image* MapLayer::getTile(int x, int y) const
 
 void MapLayer::draw(Graphics *graphics, int startX, int startY,
                     int endX, int endY, int scrollX, int scrollY,
-                    const MapSprites &sprites) const
+                    const MapSprites &sprites, int debugFlags) const
 {
     startX -= mX;
     startY -= mY;
@@ -163,7 +163,8 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
             {
                 const int px = (x + mX) * 32 - scrollX;
                 const int py = (y + mY) * 32 - scrollY + 32 - img->getHeight();
-                graphics->drawImage(img, px, py);
+                if (debugFlags != Map::MAP_SPECIAL || img->getHeight() <= 32)
+                    graphics->drawImage(img, px, py);
             }
         }
     }
@@ -185,7 +186,8 @@ Map::Map(int width, int height, int tileWidth, int tileHeight):
     mTileWidth(tileWidth), mTileHeight(tileHeight),
     mMaxTileHeight(height),
     mOnClosedList(1), mOnOpenList(2),
-    mLastScrollX(0.0f), mLastScrollY(0.0f)
+    mLastScrollX(0.0f), mLastScrollY(0.0f),
+    mDebugFlags(MAP_NORMAL)
 {
     const int size = mWidth * mHeight;
 
@@ -330,7 +332,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
         (*layeri)->draw(graphics,
                         startX, startY, endX, endY,
                         scrollX, scrollY,
-                        mSprites);
+                        mSprites, mDebugFlags);
     }
 
     // Draws beings with a lower opacity to make them visible
@@ -354,7 +356,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
             (int) config.getValue("OverlayDetail", 2));
 }
 
-void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY)
+void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY, int debugFlags)
 {
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
     int startX = scrollX / mTileWidth;
@@ -371,11 +373,15 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY)
     {
         for (int x = startX; x < endX; x++)
         {
+
             graphics->setColor(gcn::Color(0, 0, 0, 64));
+            if (debugFlags < MAP_SPECIAL)
+            {
                 graphics->drawRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
                     y * mTileWidth - scrollY,
                     33, 33));
+            }
 
             if (!getWalk(x, y, BLOCKMASK_WALL))
             {

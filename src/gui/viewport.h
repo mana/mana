@@ -80,7 +80,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         /**
          * Toggles whether the path debug graphics are shown
          */
-        void toggleDebugPath() { mShowDebugPath = !mShowDebugPath; }
+        void toggleDebugPath();
 
         /**
          * Handles mouse press on map.
@@ -173,7 +173,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         float mPixelViewY;           /**< Current viewpoint in pixels. */
         int mTileViewX;              /**< Current viewpoint in tiles. */
         int mTileViewY;              /**< Current viewpoint in tiles. */
-        bool mShowDebugPath;         /**< Show a path from player to pointer. */
+        int mShowDebugPath;         /**< Show a path from player to pointer. */
         bool mVisibleNames;          /**< Show target names. */
 
         bool mPlayerFollowMouse;

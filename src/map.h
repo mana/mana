@@ -130,7 +130,8 @@ class MapLayer
                   int startX, int startY,
                   int endX, int endY,
                   int scrollX, int scrollY,
-                  const MapSprites &sprites) const;
+                  const MapSprites &sprites,
+                  int mDebugFlags) const;
 
     private:
         int mX, mY;
@@ -159,6 +160,13 @@ class Map : public Properties
             BLOCKMASK_WALL      = 0x80, // = bin 1000 0000
             BLOCKMASK_CHARACTER = 0x01, // = bin 0000 0001
             BLOCKMASK_MONSTER   = 0x02  // = bin 0000 0010
+        };
+
+        enum DebugType
+        {
+            MAP_NORMAL  = 0,
+            MAP_DEBUG   = 1,
+            MAP_SPECIAL = 2
         };
 
         /**
@@ -195,7 +203,8 @@ class Map : public Properties
         /**
          * Visualizes collision layer for debugging
          */
-        void drawCollision(Graphics *graphics, int scrollX, int scrollY);
+        void drawCollision(Graphics *graphics, int scrollX, int scrollY,
+                           int debugFlags);
 
         /**
          * Adds a layer to this map. The map takes ownership of the layer.
@@ -289,6 +298,10 @@ class Map : public Properties
         void addAnimation(int gid, TileAnimation *animation)
         { mTileAnimations[gid] = animation; }
 
+        void setDebugFlags(int n) {mDebugFlags = n;}
+
+        int getDebugFlags() {return mDebugFlags;}
+
         /**
          * Gets the tile animation for a specific gid
          */
@@ -330,6 +343,9 @@ class Map : public Properties
         Layers mLayers;
         Tilesets mTilesets;
         MapSprites mSprites;
+
+        // debug flags
+        int mDebugFlags;
 
         // Pathfinding members
         int mOnClosedList, mOnOpenList;
