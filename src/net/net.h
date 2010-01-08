@@ -63,6 +63,8 @@ TradeHandler *getTradeHandler();
  */
 void connectToServer(const ServerInfo &server);
 
+void unload();
+
 } // namespace Net
 
 #endif // NET_H

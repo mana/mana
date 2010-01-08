@@ -121,10 +121,9 @@ Net::TradeHandler *Net::getTradeHandler()
 
 namespace Net
 {
-    ServerInfo::Type networkType = ServerInfo::UNKNOWN;
-} // namespace Net
+ServerInfo::Type networkType = ServerInfo::UNKNOWN;
 
-void Net::connectToServer(const ServerInfo &server)
+void connectToServer(const ServerInfo &server)
 {
     // Remove with ifdefs
     if (networkType != ServerInfo::UNKNOWN)
@@ -189,3 +188,13 @@ void Net::connectToServer(const ServerInfo &server)
 
     getLoginHandler()->connect();
 }
+
+void unload() {
+    GeneralHandler *handler = getGeneralHandler();
+    if (handler)
+    {
+        handler->unload();
+    }
+}
+
+} // namespace Net

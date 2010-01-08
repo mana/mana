@@ -1237,7 +1237,7 @@ int main(int argc, char *argv[])
 
                 case STATE_EXIT:
                     logger->log("State: EXIT");
-                    Net::getGeneralHandler()->unload();
+                    Net::unload();
                     break;
 
                 case STATE_FORCE_QUIT:
