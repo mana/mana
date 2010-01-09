@@ -475,6 +475,11 @@ class Being : public Sprite, public ConfigListener
 
         void flashName(int time);
 
+        int getTakedDamage() const
+        { return mTakedDamage; }
+
+        void updateName();
+
     protected:
         /**
          * Sets the new path for this being.
@@ -585,6 +590,8 @@ class Being : public Sprite, public ConfigListener
         Vector mDest;
         int mPx, mPy;                   /**< Position in pixels */
         int mX, mY;                     /**< Position on tile */
+
+        int mTakedDamage;
 
         /** Target cursor being used */
         SimpleAnimation* mUsedTargetCursor;

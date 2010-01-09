@@ -179,6 +179,8 @@ Setup_Video::Setup_Video():
     mFullScreenEnabled(config.getValue("screen", false)),
     mOpenGLEnabled(config.getValue("opengl", false)),
     mCustomCursorEnabled(config.getValue("customcursor", true)),
+    mShowMonsterDamageEnabled(config.getValue("showMonstersTakedDamage",
+                                              false)),
     mVisibleNamesEnabled(config.getValue("visiblenames", true)),
     mParticleEffectsEnabled(config.getValue("particleeffects", true)),
     mNameEnabled(config.getValue("showownname", false)),
@@ -221,6 +223,9 @@ Setup_Video::Setup_Video():
 {
     setName(_("Video"));
 
+    mShowMonsterDamageCheckBox = new CheckBox(_("Show monster damage"),
+                                              mShowMonsterDamageEnabled);
+
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
@@ -250,6 +255,7 @@ Setup_Video::Setup_Video():
 
     mModeList->setActionEventId("videomode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
+    mShowMonsterDamageCheckBox->setActionEventId("monsterdamage");
     mVisibleNamesCheckBox->setActionEventId("visiblenames");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
     mPickupChatCheckBox->setActionEventId("pickupchat");
@@ -266,6 +272,7 @@ Setup_Video::Setup_Video():
 
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
+    mShowMonsterDamageCheckBox->addActionListener(this);
     mVisibleNamesCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
     mPickupChatCheckBox->addActionListener(this);
@@ -301,6 +308,7 @@ Setup_Video::Setup_Video():
     place(3, 0, mOpenGLCheckBox, 1);
 
     place(1, 1, mCustomCursorCheckBox, 3);
+    place(3, 1, mShowMonsterDamageCheckBox, 3);
 
     place(1, 2, mVisibleNamesCheckBox, 3);
     place(3, 2, mNameCheckBox, 1);
@@ -405,6 +413,7 @@ void Setup_Video::apply()
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getValue("screen", false);
     mCustomCursorEnabled = config.getValue("customcursor", true);
+    mShowMonsterDamageEnabled = config.getValue("showMonstersTakedDamage", false);
     mVisibleNamesEnabled = config.getValue("visiblenames", true);
     mParticleEffectsEnabled = config.getValue("particleeffects", true);
     mNameEnabled = config.getValue("showownname", false);
@@ -422,6 +431,7 @@ void Setup_Video::cancel()
     mFsCheckBox->setSelected(mFullScreenEnabled);
     mOpenGLCheckBox->setSelected(mOpenGLEnabled);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
+    mShowMonsterDamageCheckBox->setSelected(mShowMonsterDamageEnabled);
     mVisibleNamesCheckBox->setSelected(mVisibleNamesEnabled);
     mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
     mSpeechSlider->setValue(mSpeechMode);
@@ -432,6 +442,7 @@ void Setup_Video::cancel()
 
     config.setValue("screen", mFullScreenEnabled);
     config.setValue("customcursor", mCustomCursorEnabled);
+    config.setValue("showMonstersTakedDamage", mShowMonsterDamageEnabled);
     config.setValue("visiblenames", mVisibleNamesEnabled);
     config.setValue("particleeffects", mParticleEffectsEnabled);
     config.setValue("speech", mSpeechMode);
@@ -475,6 +486,10 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     else if (event.getId() == "customcursor")
     {
         config.setValue("customcursor", mCustomCursorCheckBox->isSelected());
+    }
+    else if (event.getId() == "monsterdamage")
+    {
+        config.setValue("showMonstersTakedDamage", mShowMonsterDamageCheckBox->isSelected());
     }
     else if (event.getId() == "visiblenames")
     {

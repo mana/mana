@@ -94,7 +94,8 @@ Being::Being(int id, int job, Map *map):
 #endif
     mPx(0), mPy(0),
     mX(0), mY(0),
-    mUsedTargetCursor(NULL)
+    mUsedTargetCursor(NULL),
+    mTakedDamage(0)
 {
     setMap(map);
 
@@ -314,6 +315,12 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     if (amount > 0)
     {
+        if (getType() == MONSTER)
+        {
+            mTakedDamage += amount;
+            updateName();
+        }
+
         if (type != CRITICAL)
         {
             effectManager->trigger(26, this);
@@ -941,9 +948,19 @@ void Being::showName()
 {
     delete mDispName;
     mDispName = 0;
+    std::string mDisplayName(mName);
 
-    mDispName = new FlashText(mName, getPixelX(), getPixelY(),
+    if(getType() == MONSTER)
+    {
+        if (config.getValue("showMonstersTakedDamage", false))
+        {
+            mDisplayName += ", " + toString(getTakedDamage());
+        }
+    }
+
+    mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
                              gcn::Graphics::CENTER, mNameColor);
+
 }
 
 int Being::getNumberOfLayers() const
@@ -961,4 +978,12 @@ void Being::load()
         hairstyles++;
 
     mNumberOfHairstyles = hairstyles;
+}
+
+void Being::updateName()
+{
+    if (mShowName)
+    {
+        showName();
+    }
 }
