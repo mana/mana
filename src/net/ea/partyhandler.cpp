@@ -162,7 +162,8 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 short exp = msg.readInt16();
                 short item = msg.readInt16();
 
-                switch (exp) {
+                switch (exp)
+                {
                     case PARTY_SHARE:
                         if (mShareExp == PARTY_SHARE)
                             break;
@@ -185,7 +186,8 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                         logger->log("Unknown party exp option: %d\n", exp);
                 }
 
-                switch (item) {
+                switch (item)
+                {
                     case PARTY_SHARE:
                         if (mShareItems == PARTY_SHARE)
                             break;

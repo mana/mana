@@ -48,7 +48,7 @@ void Icon::setImage(Image *image)
 
 void Icon::draw(gcn::Graphics *g)
 {
-    if(mImage)
+    if (mImage)
     {
         Graphics *graphics = static_cast<Graphics*>(g);
         const int x = (getWidth() - mImage->getWidth()) / 2;

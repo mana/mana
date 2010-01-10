@@ -139,7 +139,8 @@ std::string MessageIn::readString(int length)
         length = readInt16();
 
     // Make sure the string isn't erroneous
-    if (length < 0 || mPos + length > mLength) {
+    if (length < 0 || mPos + length > mLength)
+    {
         mPos = mLength + 1;
         return "";
     }

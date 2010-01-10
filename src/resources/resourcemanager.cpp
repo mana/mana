@@ -146,7 +146,8 @@ bool ResourceManager::setWriteDir(const std::string &path)
 bool ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
     logger->log("Adding to PhysicsFS: %s", path.c_str());
-    if (!PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0)) {
+    if (!PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0))
+    {
         logger->log("Error: %s", PHYSFS_getLastError());
         return false;
     }
@@ -409,7 +410,8 @@ void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
     PHYSFS_file *file = PHYSFS_openRead(fileName.c_str());
 
     // If the handler is an invalid pointer indicate failure
-    if (file == NULL) {
+    if (file == NULL)
+    {
         logger->log("Warning: Failed to load %s: %s",
                 fileName.c_str(), PHYSFS_getLastError());
         return NULL;
@@ -488,7 +490,8 @@ SDL_Surface *ResourceManager::loadSDLSurface(const std::string &filename)
     void *buffer = loadFile(filename, fileSize);
     SDL_Surface *tmp = NULL;
 
-    if (buffer) {
+    if (buffer)
+    {
         SDL_RWops *rw = SDL_RWFromMem(buffer, fileSize);
         tmp = IMG_Load_RW(rw, 1);
         ::free(buffer);

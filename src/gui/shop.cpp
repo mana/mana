@@ -90,7 +90,7 @@ ShopItem *ShopItems::findItem(int id)
     ShopItem *item;
 
     std::vector<ShopItem*>::iterator it;
-    for(it = mShopItems.begin(); it != mShopItems.end(); it++)
+    for (it = mShopItems.begin(); it != mShopItems.end(); it++)
     {
         item = *(it);
         if (item->getId() == id)

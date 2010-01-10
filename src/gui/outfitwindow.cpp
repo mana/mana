@@ -102,9 +102,8 @@ void OutfitWindow::load()
 
         std::vector<int> tokens;
 
-        while (ss >> buf) {
+        while (ss >> buf)
             tokens.push_back(atoi(buf.c_str()));
-        }
 
         for (int i = 0; i < (int)tokens.size(); i++)
         {
@@ -134,19 +133,21 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "next")
     {
-        if (mCurrentOutfit < (OUTFITS_COUNT - 1)) {
+        if (mCurrentOutfit < (OUTFITS_COUNT - 1))
             mCurrentOutfit++;
-        } else {
+        else
             mCurrentOutfit = 0;
-        }
         mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
         mUnequipCheck->setSelected(mItemsUnequip[mCurrentOutfit]);
     }
     else if (event.getId() == "previous")
     {
-        if (mCurrentOutfit > 0) {
+        if (mCurrentOutfit > 0)
+        {
             mCurrentOutfit--;
-        } else {
+        }
+        else
+        {
             mCurrentOutfit = OUTFITS_COUNT - 1;
         }
         mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
@@ -166,9 +167,8 @@ void OutfitWindow::wearOutfit(int outfit)
         item = player_node->getInventory()->findItem(mItems[outfit][i]);
         if (item && !item->isEquipped() && item->getQuantity())
         {
-            if (item->isEquipment()) {
+            if (item->isEquipment())
                 Net::getInventoryHandler()->equipItem(item);
-            }
         }
     }
 
@@ -236,12 +236,13 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
 void OutfitWindow::mouseDragged(gcn::MouseEvent &event)
 {
     Window::mouseDragged(event);
-    if (event.getButton() == gcn::MouseEvent::LEFT) {
-        if (!mItemMoved && mItemClicked) {
+    if (event.getButton() == gcn::MouseEvent::LEFT)
+    {
+        if (!mItemMoved && mItemClicked)
+        {
             const int index = getIndexFromGrid(event.getX(), event.getY());
-            if (index == -1) {
+            if (index == -1)
                 return;
-            }
             const int itemId = mItems[mCurrentOutfit][index];
             if (itemId < 0)
                 return;
@@ -252,7 +253,8 @@ void OutfitWindow::mouseDragged(gcn::MouseEvent &event)
                 mItems[mCurrentOutfit][index] = -1;
             }
         }
-        if (mItemMoved) {
+        if (mItemMoved)
+        {
             mCursorPosX = event.getX();
             mCursorPosY = event.getY();
         }
@@ -263,16 +265,17 @@ void OutfitWindow::mousePressed(gcn::MouseEvent &event)
 {
     Window::mousePressed(event);
     const int index = getIndexFromGrid(event.getX(), event.getY());
-    if (index == -1) {
+    if (index == -1)
         return;
-    }
 
     // Stores the selected item if there is one.
-    if (isItemSelected()) {
+    if (isItemSelected())
+    {
         mItems[mCurrentOutfit][index] = mItemSelected;
         mItemSelected = -1;
     }
-    else if (mItems[mCurrentOutfit][index]) {
+    else if (mItems[mCurrentOutfit][index])
+    {
         mItemClicked = true;
     }
 }
@@ -287,17 +290,18 @@ void OutfitWindow::mouseReleased(gcn::MouseEvent &event)
             mItemSelected = -1;
         }
         const int index = getIndexFromGrid(event.getX(), event.getY());
-        if (index == -1) {
+        if (index == -1)
+        {
             mItemMoved = NULL;
             return;
         }
-        if (mItemMoved) {
+        if (mItemMoved)
+        {
             mItems[mCurrentOutfit][index] = mItemMoved->getId();
             mItemMoved = NULL;
         }
-        if (mItemClicked) {
+        if (mItemClicked)
             mItemClicked = false;
-        }
     }
 }
 
@@ -305,15 +309,12 @@ int OutfitWindow::getIndexFromGrid(int pointX, int pointY) const
 {
     const gcn::Rectangle tRect = gcn::Rectangle(
         10, 25, 10 + mGridWidth * mBoxWidth, 25 + mGridHeight * mBoxHeight);
-    if (!tRect.isPointInRect(pointX, pointY)) {
+    if (!tRect.isPointInRect(pointX, pointY))
         return -1;
-    }
     const int index = (((pointY - 25) / mBoxHeight) * mGridWidth) +
         (pointX - 10) / mBoxWidth;
     if (index >= OUTFIT_ITEM_COUNT)
-    {
         return -1;
-    }
     return index;
 }
 

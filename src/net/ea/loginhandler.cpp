@@ -73,7 +73,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // pass change failed
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case 0:
                         errorMessage = _("Account was not found. Please re-login.");
                         break;
@@ -142,7 +143,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             code = msg.readInt8();
             logger->log("Login::error code: %i", code);
 
-            switch (code) {
+            switch (code)
+            {
                 case 0:
                     errorMessage = _("Unregistered ID.");
                     break;

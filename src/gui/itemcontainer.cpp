@@ -120,12 +120,14 @@ void ItemContainer::draw(gcn::Graphics *graphics)
             {
                 if (itemIndex == mSelectedIndex)
                 {
-                    if (mSelectionStatus == SEL_DRAGGING) {
+                    if (mSelectionStatus == SEL_DRAGGING)
+                    {
                         // Reposition the coords to that of the cursor.
                         itemX = mDragPosX - (BOX_WIDTH / 2);
                         itemY = mDragPosY - (BOX_HEIGHT / 2);
                     }
-                    else {
+                    else
+                    {
                         // Draw selection border image.
                         g->drawImage(mSelImg, itemX, itemY);
                     }
@@ -395,12 +397,10 @@ void ItemContainer::moveHighlight(Direction direction)
 {
     if (mHighlightedIndex == -1)
     {
-        if (mSelectedIndex != -1) {
+        if (mSelectedIndex != -1)
             mHighlightedIndex = mSelectedIndex;
-        }
-        else {
+        else
             mHighlightedIndex = 0;
-        }
         return;
     }
 
@@ -408,9 +408,7 @@ void ItemContainer::moveHighlight(Direction direction)
     {
         case Left:
             if (mHighlightedIndex % mGridColumns == 0)
-            {
                 mHighlightedIndex += mGridColumns;
-            }
             mHighlightedIndex--;
             break;
         case Right:
@@ -423,9 +421,7 @@ void ItemContainer::moveHighlight(Direction direction)
             break;
         case Up:
             if (mHighlightedIndex / mGridColumns == 0)
-            {
                 mHighlightedIndex += (mGridColumns * mGridRows);
-            }
             mHighlightedIndex -= mGridColumns;
             break;
         case Down:

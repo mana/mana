@@ -58,23 +58,21 @@ void EffectHandler::handleMessage(Net::MessageIn &msg)
 
 void EffectHandler::handleCreateEffectPos(Net::MessageIn &msg)
 {
-     int id = msg.readInt16();
-     Uint16 x = msg.readInt16();
-     Uint16 y = msg.readInt16();
-     effectManager->trigger(id, x, y);
+    int id = msg.readInt16();
+    Uint16 x = msg.readInt16();
+    Uint16 y = msg.readInt16();
+    effectManager->trigger(id, x, y);
 }
 
 void EffectHandler::handleCreateEffectBeing(Net::MessageIn &msg)
 {
-     int eid = msg.readInt16();
-     int bid = msg.readInt16();
-     Being* b = beingManager->findBeing(bid);
-     if (b)
-     {
-         effectManager->trigger(eid, b);
-     } else {
-         logger->log("Warning: CreateEffect called for unknown being #%d", bid);
-     }
+    int eid = msg.readInt16();
+    int bid = msg.readInt16();
+    Being* b = beingManager->findBeing(bid);
+    if (b)
+        effectManager->trigger(eid, b);
+    else
+        logger->log("Warning: CreateEffect called for unknown being #%d", bid);
 }
 
 } // namespace ManaServ

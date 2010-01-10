@@ -230,7 +230,8 @@ void Map::initializeAmbientLayers()
         {
             name = "overlay" + toString(i);
         }
-        else {
+        else
+        {
             break; // the FOR loop
         }
 
@@ -712,12 +713,14 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                     newTile->Gcost = Gcost;
                     newTile->Fcost = Gcost + newTile->Hcost;
 
-                    if (x != destX || y != destY) {
+                    if (x != destX || y != destY)
+                    {
                         // Add this tile to the open list
                         newTile->whichList = mOnOpenList;
                         openList.push(Location(x, y, newTile));
                     }
-                    else {
+                    else
+                    {
                         // Target location was found
                         foundPath = true;
                     }

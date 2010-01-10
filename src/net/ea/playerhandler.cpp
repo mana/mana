@@ -309,7 +309,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_PLAYER_STAT_UPDATE_2:
-            switch (msg.readInt16()) {
+            switch (msg.readInt16())
+            {
                 case 0x0001:
                     player_node->setExp(msg.readInt32());
                     break;
@@ -490,7 +491,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_PLAYER_STAT_UPDATE_6:
-            switch (msg.readInt16()) {
+            switch (msg.readInt16())
+            {
                 case 0x0020:
                     statusWindow->setPointsNeeded(STR, msg.readInt8());
                     break;
@@ -516,7 +518,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
             {
                 int type = msg.readInt16();
 
-                switch (type) {
+                switch (type)
+                {
                     case 0:
                         localChatTab->chatLog(_("Equip arrows first."),
                                              BY_SERVER);

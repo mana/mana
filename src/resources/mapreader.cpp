@@ -76,7 +76,8 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
         ret = inflate(&strm, Z_NO_FLUSH);
         assert(ret != Z_STREAM_ERROR);
 
-        switch (ret) {
+        switch (ret)
+        {
             case Z_NEED_DICT:
                 ret = Z_DATA_ERROR;
             case Z_DATA_ERROR:
@@ -185,14 +186,19 @@ Map *MapReader::readMap(const std::string &filename)
     xmlNodePtr node = doc.rootNode();
 
     // Parse the inflated map data
-    if (node) {
-        if (!xmlStrEqual(node->name, BAD_CAST "map")) {
+    if (node)
+    {
+        if (!xmlStrEqual(node->name, BAD_CAST "map"))
+        {
             logger->log("Error: Not a map file (%s)!", filename.c_str());
         }
-        else {
+        else
+        {
             map = readMap(node, filename);
         }
-    } else {
+    }
+    else
+    {
         logger->log("Error while parsing map file (%s)!", filename.c_str());
     }
 
@@ -217,7 +223,8 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
         if (xmlStrEqual(childNode->name, BAD_CAST "tileset"))
         {
             Tileset *tileset = readTileset(childNode, pathDir, map);
-            if (tileset) {
+            if (tileset)
+            {
                 map->addTileset(tileset);
             }
         }
@@ -261,7 +268,8 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
 
                     if (objType == "PARTICLE_EFFECT")
                     {
-                        if (objName.empty()) {
+                        if (objName.empty())
+                        {
                             logger->log("   Warning: No particle file given");
                             continue;
                         }
@@ -308,7 +316,9 @@ static void setTile(Map *map, MapLayer *layer, int x, int y, int gid)
         // Set regular tile on a layer
         Image * const img = set ? set->get(gid - set->getFirstGid()) : 0;
         layer->setTile(x, y, img);
-    } else {
+    }
+    else
+    {
         // Set collision tile
         if (set && (gid - set->getFirstGid() != 0))
             map->blockTile(x, y, Map::BLOCKTYPE_WALL);
@@ -330,7 +340,8 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
     MapLayer *layer = 0;
 
-    if (!isCollisionLayer) {
+    if (!isCollisionLayer)
+    {
         layer = new MapLayer(offsetX, offsetY, w, h, isFringeLayer);
         map->addLayer(layer);
     }
@@ -352,7 +363,8 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
         if (encoding == "base64")
         {
-            if (!compression.empty() && compression != "gzip") {
+            if (!compression.empty() && compression != "gzip")
+            {
                 logger->log("Warning: only gzip layer compression supported!");
                 return;
             }
@@ -367,7 +379,8 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
             const char *charStart = (const char*)dataChild->content;
             unsigned char *charIndex = charData;
 
-            while (*charStart) {
+            while (*charStart)
+            {
                 if (*charStart != ' ' && *charStart != '\t' &&
                     *charStart != '\n')
                 {
@@ -384,8 +397,10 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
             delete[] charData;
 
-            if (binData) {
-                if (compression == "gzip") {
+            if (binData)
+            {
+                if (compression == "gzip")
+                {
                     // Inflate the gzipped layer data
                     unsigned char *inflated;
                     unsigned int inflatedSize =
@@ -395,13 +410,15 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                     binData = inflated;
                     binLen = inflatedSize;
 
-                    if (!inflated) {
+                    if (!inflated)
+                    {
                         logger->log("Error: Could not decompress layer!");
                         return;
                     }
                 }
 
-                for (int i = 0; i < binLen - 3; i += 4) {
+                for (int i = 0; i < binLen - 3; i += 4)
+                {
                     const int gid = binData[i] |
                         binData[i + 1] << 8 |
                         binData[i + 2] << 16 |
@@ -416,7 +433,8 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                     }
 
                     x++;
-                    if (x == w) {
+                    if (x == w)
+                    {
                         x = 0; y++;
 
                         // When we're done, don't crash on too much data
@@ -427,7 +445,8 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                 free(binData);
             }
         }
-        else {
+        else
+        {
             // Read plain XML map file
             for_each_xml_child_node(childNode2, childNode)
             {
@@ -438,7 +457,8 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                 setTile(map, layer, x, y, gid);
 
                 x++;
-                if (x == w) {
+                if (x == w)
+                {
                     x = 0; y++;
                     if (y >= h)
                         break;
@@ -496,7 +516,8 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
                     set = new Tileset(tilebmp, tw, th, firstGid);
                     tilebmp->decRef();
                 }
-                else {
+                else
+                {
                     logger->log("Warning: Failed to load tileset (%s)",
                             source.c_str());
                 }
@@ -531,18 +552,18 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
                     iFrame = tileProperties.find("animation-frame" + toString(i));
                     iDelay = tileProperties.find("animation-delay" + toString(i));
                     if (iFrame != tileProperties.end() && iDelay != tileProperties.end())
-                    {
                         ani->addFrame(set->get(iFrame->second), iDelay->second, 0, 0);
-                    } else {
+                    else
                         break;
-                    }
                 }
 
                 if (ani->getLength() > 0)
                 {
                     map->addAnimation(tileGID, new TileAnimation(ani));
                     logger->log("Animation length: %d", ani->getLength());
-                } else {
+                }
+                else
+                {
                     delete ani;
                 }
             }

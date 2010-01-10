@@ -49,8 +49,10 @@ PlayerBox::PlayerBox(const Player *player):
         int bggridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
 
-        for (y = 0; y < 3; y++) {
-            for (x = 0; x < 3; x++) {
+        for (y = 0; y < 3; y++)
+        {
+            for (x = 0; x < 3; x++)
+            {
                 background.grid[a] = textbox->getSubImage(
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,

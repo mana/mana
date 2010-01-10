@@ -78,7 +78,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Login failed
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case ERRMSG_INVALID_ARGUMENT:
                         errorMessage = _("Wrong magic_token.");
                         break;
@@ -108,7 +109,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // pass change failed
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case ERRMSG_INVALID_ARGUMENT:
                         errorMessage = _("New password incorrect.");
                         break;
@@ -138,7 +140,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // pass change failed
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case ERRMSG_INVALID_ARGUMENT:
                         errorMessage = _("New email address incorrect.");
                         break;
@@ -171,7 +174,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Logout failed
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case ERRMSG_NO_LOGIN:
                         errorMessage = "Accountserver: Not logged in";
                         break;
@@ -194,7 +198,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Unregistration failed
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case ERRMSG_INVALID_ARGUMENT:
                         errorMessage =
                                   "Accountserver: Wrong username or password";
@@ -249,7 +254,8 @@ void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
     }
     else
     {
-        switch (errMsg) {
+        switch (errMsg)
+        {
             case LOGIN_INVALID_VERSION:
                 errorMessage = _("Client version is too old.");
                 break;
@@ -285,7 +291,8 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
     }
     else
     {
-        switch (errMsg) {
+        switch (errMsg)
+        {
             case REGISTER_INVALID_VERSION:
                 errorMessage = _("Client version is too old.");
                 break;

@@ -127,7 +127,8 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             }
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case ERRMSG_NO_LOGIN:
                         errorMessage = "Chatserver: Not logged in";
                         break;
@@ -169,7 +170,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
 
 void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
 {
-    if(msg.readInt8() == ERRMSG_OK)
+    if (msg.readInt8() == ERRMSG_OK)
     {
         short channelId = msg.readInt16();
         std::string channelName = msg.readString();
@@ -182,7 +183,7 @@ void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
         std::string user;
         std::string userModes;
         tab->chatLog(_("Players in this channel:"), BY_CHANNEL);
-        while(msg.getUnreadLength())
+        while (msg.getUnreadLength())
         {
             user = msg.readString();
             if (user == "")
@@ -205,7 +206,7 @@ void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
 void ChatHandler::handleListChannelsResponse(Net::MessageIn &msg)
 {
     localChatTab->chatLog(_("Listing channels."), BY_SERVER);
-    while(msg.getUnreadLength())
+    while (msg.getUnreadLength())
     {
         std::string channelName = msg.readString();
         if (channelName == "")
@@ -245,7 +246,7 @@ void ChatHandler::handleChatMessage(Net::MessageIn &msg)
 
 void ChatHandler::handleQuitChannelResponse(Net::MessageIn &msg)
 {
-    if(msg.readInt8() == ERRMSG_OK)
+    if (msg.readInt8() == ERRMSG_OK)
     {
         short channelId = msg.readInt16();
         Channel *channel = channelManager->findById(channelId);
@@ -260,7 +261,7 @@ void ChatHandler::handleListChannelUsersResponse(Net::MessageIn &msg)
     std::string userModes;
     Channel *channel = channelManager->findByName(channelName);
     channel->getTab()->chatLog(_("Players in this channel:"), BY_CHANNEL);
-    while(msg.getUnreadLength())
+    while (msg.getUnreadLength())
     {
         userNick = msg.readString();
         if (userNick == "")
@@ -283,7 +284,7 @@ void ChatHandler::handleChannelEvent(Net::MessageIn &msg)
     std::string line = msg.readString();
     Channel *channel = channelManager->findById(channelId);
 
-    if(channel)
+    if (channel)
     {
         switch(eventId)
         {
@@ -334,7 +335,7 @@ void ChatHandler::handleWhoResponse(Net::MessageIn &msg)
 {
     std::string userNick;
 
-    while(msg.getUnreadLength())
+    while (msg.getUnreadLength())
     {
         userNick = msg.readString();
         if (userNick == "")

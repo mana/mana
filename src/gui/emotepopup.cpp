@@ -110,7 +110,8 @@ void EmotePopup::mousePressed(gcn::MouseEvent &event)
         return;
 
     const int index = getIndexAt(event.getX(), event.getY());
-    if (index != -1) {
+    if (index != -1)
+    {
         setSelectedEmoteIndex(index);
         emoteShortcut->setEmoteSelected(index + 1);
     }

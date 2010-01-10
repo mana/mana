@@ -411,7 +411,8 @@ void Network::receive()
                     setError(_("Connection to server terminated. ") +
                              std::string(SDLNet_GetError()));
                 }
-                else {
+                else
+                {
                     mInSize += ret;
                     if (mToSkip)
                     {

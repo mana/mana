@@ -233,9 +233,8 @@ void BrowserBox::mousePressed(gcn::MouseEvent &event)
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
 
-    if (i != mLinks.end()) {
+    if (i != mLinks.end())
         mLinkHandler->handleLink(i->link);
-    }
 }
 
 void BrowserBox::mouseMoved(gcn::MouseEvent &event)

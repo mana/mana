@@ -256,9 +256,9 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "add")
     {
-        if(mStatus != PREPARING)
+        if (mStatus != PREPARING)
             return;
-        
+
         if (!inventoryWindow->isVisible())
         {
             inventoryWindow->setVisible(true);
@@ -309,14 +309,15 @@ void TradeWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "money")
     {
-        if(mStatus != PREPARING) 
+        if (mStatus != PREPARING) 
             return;
-        
+
         int v = atoi(mMoneyField->getText().c_str());
         int curMoney = player_node->getMoney();
-        if(v > curMoney)
+        if (v > curMoney)
         {
-            localChatTab->chatLog(_("You don't have enough money."), BY_SERVER);
+            localChatTab->chatLog(_("You don't have enough money."),
+                                  BY_SERVER);
             v = curMoney;
         }
         Net::getTradeHandler()->setMoney(v);

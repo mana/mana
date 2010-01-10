@@ -543,7 +543,8 @@ void ChangeDisplay::action(const gcn::ActionEvent &event)
         int newmod = player_node->getAttributeEffective(mId) - 1;
         player_node->setAttributeEffective(mId, newmod);
         Net::getPlayerHandler()->decreaseAttribute(mId);
-    } else if (event.getSource() == mInc)
+    }
+    else if (event.getSource() == mInc)
     {
         int newpoints = player_node->getCharacterPoints() - 1;
         player_node->setCharacterPoints(newpoints);

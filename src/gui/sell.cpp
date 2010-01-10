@@ -188,7 +188,8 @@ void SellDialog::action(const gcn::ActionEvent &event)
         mPlayerMoney +=
             mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mMaxItems -= mAmountItems;
-        while (mAmountItems > 0) {
+        while (mAmountItems > 0)
+        {
             // This order is important, item->getCurrentInvIndex() would return
             // the inventory index of the next Duplicate otherwise.
             itemIndex = item->getCurrentInvIndex();

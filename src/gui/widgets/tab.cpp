@@ -150,7 +150,8 @@ void Tab::draw(gcn::Graphics *graphics)
             mode = TAB_SELECTED;
             // if tab is selected, it doesnt need to highlight activity
             mHighlighted = false;
-        } else if (mHasMouse)
+        }
+        else if (mHasMouse)
         {
             mode = TAB_HIGHLIGHTED;
         }

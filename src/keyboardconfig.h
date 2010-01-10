@@ -139,7 +139,7 @@ class KeyboardConfig
          */
         void refreshActiveKeys();
 
-        std::string getBindError()
+        std::string getBindError() const
         { return mBindError; }
 
         /**

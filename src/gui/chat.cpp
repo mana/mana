@@ -133,9 +133,8 @@ void ChatWindow::logic()
     Window::logic();
 
     Tab *tab = getFocused();
-    if (tab != mCurrentTab) {
+    if (tab != mCurrentTab)
         mCurrentTab = tab;
-    }
 }
 
 ChatTab *ChatWindow::getFocused() const
@@ -336,7 +335,7 @@ void ChatWindow::mousePressed(gcn::MouseEvent &event)
 {
     Window::mousePressed(event);
 
-    if(event.isConsumed())
+    if (event.isConsumed())
         return;
 
     mMoved = event.getY() <= mCurrentTab->getHeight();
@@ -349,10 +348,10 @@ void ChatWindow::mouseDragged(gcn::MouseEvent &event)
 {
     Window::mouseDragged(event);
 
-    if(event.isConsumed())
+    if (event.isConsumed())
         return;
 
-    if(isMovable() && mMoved)
+    if (isMovable() && mMoved)
     {
         int newX = std::max(0, getX() + event.getX() - mDragOffsetX);
         int newY = std::max(0, getY() + event.getY() - mDragOffsetY);

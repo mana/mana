@@ -533,9 +533,12 @@ void GuiTable::_setFocusHandler(gcn::FocusHandler* focusHandler)
 {
     gcn::Widget::_setFocusHandler(focusHandler);
 
-    if (mModel) {
-        for (int r = 0; r < mModel->getRows(); ++r) {
-            for (int c = 0; c < mModel->getColumns(); ++c) {
+    if (mModel)
+    {
+        for (int r = 0; r < mModel->getRows(); ++r)
+        {
+            for (int c = 0; c < mModel->getColumns(); ++c)
+            {
                 gcn::Widget *w = mModel->getElementAt(r, c);
                 if (w)
                     w->_setFocusHandler(focusHandler);

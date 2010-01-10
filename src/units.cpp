@@ -164,10 +164,13 @@ std::string formatUnit(int value, int type)
     struct UnitLevel ul;
 
     // Shortcut for 0; do the same for values less than 0  (for now)
-    if (value <= 0) {
+    if (value <= 0)
+    {
         ul = ud.levels[0];
         return strprintf("0%s", ul.symbol.c_str());
-    } else {
+    }
+    else
+    {
         double amount = ud.conversion * value;
 
         // If only the first level is needed, act like mix if false
@@ -183,7 +186,8 @@ std::string formatUnit(int value, int type)
 
             amount -= levelAmount * ul.count;
 
-            if (amount > 0) {
+            if (amount > 0)
+            {
                 output = strprintf("%.*f%s", pl.round, amount,
                                     pl.symbol.c_str());
             }
@@ -210,7 +214,8 @@ std::string formatUnit(int value, int type)
             for (unsigned int i = 0; i < ud.levels.size(); i++)
             {
                 ul = ud.levels[i];
-                if (amount < ul.count && ul.count > 0) {
+                if (amount < ul.count && ul.count > 0)
+                {
                     ul = ud.levels[i - 1];
                     break;
                 }

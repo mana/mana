@@ -51,9 +51,7 @@ Guild::Guild(short id):
 void Guild::addMember(GuildMember *member)
 {
     if (member->mGuild > 0 && member->mGuild != this)
-    {
         throw "Member in another guild!";
-    }
 
     if (!isMember(member))
     {
@@ -66,12 +64,10 @@ GuildMember *Guild::getMember(int id)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while(itr != itr_end)
+    while (itr != itr_end)
     {
-        if((*itr)->mId == id)
-        {
+        if ((*itr)->mId == id)
             return (*itr);
-        }
         ++itr;
     }
 
@@ -82,9 +78,9 @@ GuildMember *Guild::getMember(std::string name)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while(itr != itr_end)
+    while (itr != itr_end)
     {
-        if((*itr)->mName == name)
+        if ((*itr)->mName == name)
         {
             return (*itr);
         }
@@ -98,9 +94,9 @@ void Guild::removeMember(GuildMember *member)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while(itr != itr_end)
+    while (itr != itr_end)
     {
-        if((*itr)->mId == member->mId && (*itr)->mName == member->mName)
+        if ((*itr)->mId == member->mId && (*itr)->mName == member->mName)
         {
             mMembers.erase(itr);
         }
@@ -112,12 +108,10 @@ void Guild::removeMember(int id)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while(itr != itr_end)
+    while (itr != itr_end)
     {
-        if((*itr)->mId == id)
-        {
+        if ((*itr)->mId == id)
             mMembers.erase(itr);
-        }
         ++itr;
     }
 }
@@ -126,9 +120,9 @@ void Guild::removeMember(const std::string &name)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while(itr != itr_end)
+    while (itr != itr_end)
     {
-        if((*itr)->mName == name)
+        if ((*itr)->mName == name)
         {
             mMembers.erase(itr);
         }
@@ -140,22 +134,16 @@ std::string Guild::getElementAt(int index)
 {
     GuildMember *m = mMembers[index];
     if (m->mOnline)
-    {
         return "* " + m->mName;
-    }
     else
-    {
         return m->mName;
-    }
 }
 
 void Guild::setRights(short rights)
 {
     // to invite, rights must be greater than 0
     if (rights > 0)
-    {
         mCanInviteUsers = true;
-    }
 }
 
 bool Guild::isMember(GuildMember *member) const
@@ -168,9 +156,7 @@ bool Guild::isMember(GuildMember *member) const
     while (itr != itr_end)
     {
         if ((*itr)->mId == member->mId && (*itr)->mName == member->mName)
-        {
             return true;
-        }
         ++itr;
     }
 
@@ -184,9 +170,7 @@ bool Guild::isMember(int id) const
     while (itr != itr_end)
     {
         if ((*itr)->mId == id)
-        {
             return true;
-        }
         ++itr;
     }
 
@@ -200,9 +184,7 @@ bool Guild::isMember(const std::string &name) const
     while (itr != itr_end)
     {
         if ((*itr)->mName == name)
-        {
             return true;
-        }
         ++itr;
     }
 

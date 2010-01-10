@@ -63,7 +63,8 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
         if (name.empty())
             return container;
 
-        if (!(*container)[name]) {
+        if (!(*container)[name])
+        {
             int v = (int)cobj->getValue(RELATION, PlayerRelation::NEUTRAL);
             (*container)[name] = new PlayerRelation(static_cast<PlayerRelation::Relation>(v));
         }
@@ -168,8 +169,11 @@ void PlayerRelationsManager::signalUpdate(const std::string &name)
 {
     store();
 
-    for (std::list<PlayerRelationsListener *>::const_iterator it = mListeners.begin(); it != mListeners.end(); it++)
+    for (std::list<PlayerRelationsListener *>::const_iterator it = mListeners.begin();
+         it != mListeners.end(); it++)
+    {
         (*it)->updatedPlayer(name);
+    }
 }
 
 unsigned int PlayerRelationsManager::checkPermissionSilently(const std::string &player_name, unsigned int flags)
@@ -177,10 +181,12 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(const std::string &
     PlayerRelation *r = mRelations[player_name];
     if (!r)
         return mDefaultPermissions & flags;
-    else {
+    else
+    {
         unsigned int permissions = PlayerRelation::RELATION_PERMISSIONS[r->mRelation];
 
-        switch (r->mRelation) {
+        switch (r->mRelation)
+        {
         case PlayerRelation::NEUTRAL:
             permissions = mDefaultPermissions;
             break;
@@ -210,9 +216,11 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
     unsigned int rejections = flags & ~checkPermissionSilently(name, flags);
     bool permitted = rejections == 0;
 
-    if (!permitted) {
+    if (!permitted)
+    {
         // execute `ignore' strategy, if possible
-        if (mIgnoreStrategy) {
+        if (mIgnoreStrategy)
+        {
             Player *to_ignore = dynamic_cast<Player *>(beingManager->findBeingByName(name, Being::PLAYER));
 
             if (to_ignore)

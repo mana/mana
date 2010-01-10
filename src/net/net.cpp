@@ -189,7 +189,8 @@ void connectToServer(const ServerInfo &server)
     getLoginHandler()->connect();
 }
 
-void unload() {
+void unload()
+{
     GeneralHandler *handler = getGeneralHandler();
     if (handler)
     {

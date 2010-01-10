@@ -48,7 +48,8 @@ void GuildListBox::draw(gcn::Graphics *gcnGraphics)
     int fontHeight = getFont()->getHeight();
 
     // Draw rectangle below the selected list element
-    if (mSelected >= 0) {
+    if (mSelected >= 0)
+    {
         graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
                                                getWidth(), fontHeight));
     }

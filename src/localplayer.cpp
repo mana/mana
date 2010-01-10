@@ -640,7 +640,8 @@ void LocalPlayer::startWalking(unsigned char dir)
 
 void LocalPlayer::stopWalking(bool sendToServer)
 {
-    if (mAction == WALK && mWalkingDir) {
+    if (mAction == WALK && mWalkingDir)
+    {
         mWalkingDir = 0;
 #ifdef MANASERV_SUPPORT
         mLocalWalkTime = 0;
@@ -1062,25 +1063,33 @@ void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
 
         AnimatedSprite *sprite = effect->getIcon();
 
-        if (!sprite) {
+        if (!sprite)
+        {
             // delete sprite, if necessary
             for (unsigned int i = 0; i < mStatusEffectIcons.size();)
-                if (mStatusEffectIcons[i] == effectId) {
+                if (mStatusEffectIcons[i] == effectId)
+                {
                     mStatusEffectIcons.erase(mStatusEffectIcons.begin() + i);
                     miniStatusWindow->eraseIcon(i);
-                } else i++;
-        } else {
+                }
+                else
+                    i++;
+        }
+        else
+        {
             // replace sprite or append
             bool found = false;
 
             for (unsigned int i = 0; i < mStatusEffectIcons.size(); i++)
-                if (mStatusEffectIcons[i] == effectId) {
+                if (mStatusEffectIcons[i] == effectId)
+                {
                     miniStatusWindow->setIcon(i, sprite);
                     found = true;
                     break;
                 }
 
-            if (!found) { // add new
+            if (!found)
+            { // add new
                 int offset = mStatusEffectIcons.size();
                 miniStatusWindow->setIcon(offset, sprite);
                 mStatusEffectIcons.push_back(effectId);

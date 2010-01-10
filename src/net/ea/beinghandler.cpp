@@ -245,7 +245,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              * we'll just pretend the packet didn't happen
              */
 
-            if (dstBeing) {
+            if (dstBeing)
+            {
                 dstBeing->setAction(Being::STAND);
                 dstBeing->setTileCoords(srcX, srcY);
                 dstBeing->setDestination(dstX, dstY);
@@ -406,14 +407,18 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             int id = 0;
             int id2 = 0;
 
-            if (msg.getId() == SMSG_BEING_CHANGE_LOOKS) {
+            if (msg.getId() == SMSG_BEING_CHANGE_LOOKS)
+            {
                 id = msg.readInt8();
-            } else {        // SMSG_BEING_CHANGE_LOOKS2
+            }
+            else
+            {        // SMSG_BEING_CHANGE_LOOKS2
                 id = msg.readInt16();
                 id2 = msg.readInt16();
             }
 
-            switch (type) {
+            switch (type)
+            {
                 case 1:     // eAthena LOOK_HAIR
                     player->setSpriteID(Player::HAIR_SPRITE, id *-1);
                     break;
@@ -606,14 +611,17 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              */
 
             id = msg.readInt32();
-            if (mSync || id != player_node->getId()) {
+            if (mSync || id != player_node->getId())
+            {
                 dstBeing = beingManager->findBeing(id);
-                if (dstBeing) {
+                if (dstBeing)
+                {
                     Uint16 x, y;
                     x = msg.readInt16();
                     y = msg.readInt16();
                     dstBeing->setTileCoords(x, y);
-                    if (dstBeing->mAction == Being::WALK) {
+                    if (dstBeing->mAction == Being::WALK)
+                    {
                         dstBeing->mFrame = 0;
                         dstBeing->setAction(Being::STAND);
                     }
@@ -639,7 +647,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             statusEffects |= ((Uint32) msg.readInt16()) << 16;
             msg.readInt8();
 
-            if (dstBeing) {
+            if (dstBeing)
+            {
                 dstBeing->setStunMode(stunMode);
                 dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
                 dstBeing->setStatusEffectBlock(16, statusEffects & 0xffff);

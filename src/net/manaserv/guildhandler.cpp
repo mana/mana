@@ -74,7 +74,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
         case CPMSG_GUILD_CREATE_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_CREATE_RESPONSE");
-            if(msg.readInt8() == ERRMSG_OK)
+            if (msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge guild was created
                 localChatTab->chatLog(_("Guild created."));
@@ -89,7 +89,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
         case CPMSG_GUILD_INVITE_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_INVITE_RESPONSE");
-            if(msg.readInt8() == ERRMSG_OK)
+            if (msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge invite was sent
                 localChatTab->chatLog(_("Invite sent."));
@@ -99,7 +99,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
         case CPMSG_GUILD_ACCEPT_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_ACCEPT_RESPONSE");
-            if(msg.readInt8() == ERRMSG_OK)
+            if (msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge accepted into guild
                 joinedGuild(msg);
@@ -109,7 +109,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
         case CPMSG_GUILD_GET_MEMBERS_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_GET_MEMBERS_RESPONSE");
-            if(msg.readInt8() == ERRMSG_OK)
+            if (msg.readInt8() == ERRMSG_OK)
             {
                 std::string name;
                 bool online;
@@ -124,11 +124,11 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
 
                 guild->clearMembers();
 
-                while(msg.getUnreadLength())
+                while (msg.getUnreadLength())
                 {
                     name = msg.readString();
                     online = msg.readInt8();
-                    if(name != "")
+                    if (name != "")
                     {
                         member = new GuildMember(guildId, name);
                         member->setOnline(online);

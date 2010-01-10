@@ -57,7 +57,8 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
     add(mOkButton);
     add(cancelButton);
 
-    if (getParent()) {
+    if (getParent())
+    {
         setLocationRelativeTo(getParent());
         getParent()->moveToTop(this);
     }

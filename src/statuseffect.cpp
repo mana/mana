@@ -63,10 +63,12 @@ AnimatedSprite *StatusEffect::getIcon()
 {
     if (mIcon.empty())
         return NULL;
-    else {
+    else
+    {
         AnimatedSprite *sprite = AnimatedSprite::load(
                 "graphics/sprites/" + mIcon);
-        if (false && sprite) {
+        if (false && sprite)
+        {
             sprite->play(ACTION_DEFAULT);
             sprite->reset();
         }
@@ -135,10 +137,12 @@ void StatusEffect::load()
             if (index >= 0 && block_index >= 0)
                 blockEffectIndexMap[block_index] = index;
 
-        } else if (xmlStrEqual(node->name, BAD_CAST "stun-effect"))
+        }
+        else if (xmlStrEqual(node->name, BAD_CAST "stun-effect"))
             the_map = &stunEffects;
 
-        if (the_map) {
+        if (the_map)
+        {
             StatusEffect *startEffect = new StatusEffect;
             StatusEffect *endEffect = new StatusEffect;
 

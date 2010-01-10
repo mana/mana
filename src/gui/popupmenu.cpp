@@ -94,7 +94,8 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
                 mBrowserBox->addRow("##3---");
 
-                switch (player_relations.getRelation(name)) {
+                switch (player_relations.getRelation(name))
+                {
                     case PlayerRelation::NEUTRAL:
                         mBrowserBox->addRow(strprintf("@@friend|%s@@",
                                                 strprintf(_("Befriend %s"),

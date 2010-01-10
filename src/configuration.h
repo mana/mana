@@ -128,14 +128,19 @@ class ConfigurationObject
             deleteList(name);
             ConfigurationList *list = &(mContainerOptions[name]);
 
-            for (IT it = begin; it != end; it++) {
+            for (IT it = begin; it != end; it++)
+            {
                 ConfigurationObject *wrobj = manager->writeConfigItem(*it, nextobj);
-                if (wrobj) { // wrote something
+                if (wrobj)
+                { // wrote something
                     assert (wrobj == nextobj);
                     nextobj = new ConfigurationObject;
                     list->push_back(wrobj);
-                } else
+                }
+                else
+                {
                     nextobj->clear(); // you never know...
+                }
             }
 
             delete nextobj;

@@ -142,7 +142,8 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     place(0, 0, mAccountNameLabel, 2);
     place(0, 1, mSwitchLoginButton);
 
-    if (optionalActions & Net::LoginHandler::Unregister) {
+    if (optionalActions & Net::LoginHandler::Unregister)
+    {
         gcn::Button *unregisterButton = new Button(_("Unregister"),
                                                    "unregister", this);
         place(3, 1, unregisterButton);
@@ -150,7 +151,8 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
     place(0, 2, mChangePasswordButton);
 
-    if (optionalActions & Net::LoginHandler::ChangeEmail) {
+    if (optionalActions & Net::LoginHandler::ChangeEmail)
+    {
         gcn::Button *changeEmailButton = new Button(_("Change Email"),
                                                     "change_email", this);
         place(3, 2, changeEmailButton);

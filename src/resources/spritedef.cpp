@@ -61,9 +61,12 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
     {
         logger->log("Error, failed to parse %s", animationFile.c_str());
 
-        if (animationFile != "graphics/sprites/error.xml") {
+        if (animationFile != "graphics/sprites/error.xml")
+        {
             return load("graphics/sprites/error.xml", 0);
-        } else {
+        }
+        else
+        {
             return NULL;
         }
     }
@@ -292,7 +295,8 @@ void SpriteDef::substituteAction(SpriteAction complete, SpriteAction with)
     if (mActions.find(complete) == mActions.end())
     {
         Actions::iterator i = mActions.find(with);
-        if (i != mActions.end()) {
+        if (i != mActions.end())
+        {
             mActions[complete] = i->second;
         }
     }
@@ -323,104 +327,73 @@ SpriteDef::~SpriteDef()
 
 SpriteAction SpriteDef::makeSpriteAction(const std::string &action)
 {
-    if (action.empty() || action == "default") {
+    if (action.empty() || action == "default")
         return ACTION_DEFAULT;
-    }
-    if (action == "stand") {
+
+    if (action == "stand")
         return ACTION_STAND;
-    }
-    else if (action == "walk") {
+    else if (action == "walk")
         return ACTION_WALK;
-    }
-    else if (action == "run") {
+    else if (action == "run")
         return ACTION_RUN;
-    }
-    else if (action == "attack") {
+    else if (action == "attack")
         return ACTION_ATTACK;
-    }
-    else if (action == "attack_swing") {
+    else if (action == "attack_swing")
         return ACTION_ATTACK_SWING;
-    }
-    else if (action == "attack_stab") {
+    else if (action == "attack_stab")
         return ACTION_ATTACK_STAB;
-    }
-    else if (action == "attack_bow") {
+    else if (action == "attack_bow")
         return ACTION_ATTACK_BOW;
-    }
-    else if (action == "attack_throw") {
+    else if (action == "attack_throw")
         return ACTION_ATTACK_THROW;
-    }
-    else if (action == "special0") {
+    else if (action == "special0")
         return ACTION_SPECIAL_0;
-    }
-    else if (action == "special1") {
+    else if (action == "special1")
         return ACTION_SPECIAL_1;
-    }
-    else if (action == "special2") {
+    else if (action == "special2")
         return ACTION_SPECIAL_2;
-    }
-    else if (action == "special3") {
+    else if (action == "special3")
         return ACTION_SPECIAL_3;
-    }
-    else if (action == "special4") {
+    else if (action == "special4")
         return ACTION_SPECIAL_4;
-    }
-    else if (action == "special5") {
+    else if (action == "special5")
         return ACTION_SPECIAL_5;
-    }
-    else if (action == "special6") {
+    else if (action == "special6")
         return ACTION_SPECIAL_6;
-    }
-    else if (action == "special7") {
+    else if (action == "special7")
         return ACTION_SPECIAL_7;
-    }
-    else if (action == "special8") {
+    else if (action == "special8")
         return ACTION_SPECIAL_8;
-    }
-    else if (action == "special9") {
+    else if (action == "special9")
         return ACTION_SPECIAL_9;
-    }
-    else if (action == "cast_magic") {
+    else if (action == "cast_magic")
         return ACTION_CAST_MAGIC;
-    }
-    else if (action == "use_item") {
+    else if (action == "use_item")
         return ACTION_USE_ITEM;
-    }
-    else if (action == "sit") {
+    else if (action == "sit")
         return ACTION_SIT;
-    }
-    else if (action == "sleep") {
+    else if (action == "sleep")
         return ACTION_SLEEP;
-    }
-    else if (action == "hurt") {
+    else if (action == "hurt")
         return ACTION_HURT;
-    }
-    else if (action == "dead") {
+    else if (action == "dead")
         return ACTION_DEAD;
-    }
-    else {
+    else
         return ACTION_INVALID;
-    }
 }
 
 SpriteDirection SpriteDef::makeSpriteDirection(const std::string &direction)
 {
-    if (direction.empty() || direction == "default") {
+    if (direction.empty() || direction == "default")
         return DIRECTION_DEFAULT;
-    }
-    else if (direction == "up") {
+    else if (direction == "up")
         return DIRECTION_UP;
-    }
-    else if (direction == "left") {
+    else if (direction == "left")
         return DIRECTION_LEFT;
-    }
-    else if (direction == "right") {
+    else if (direction == "right")
         return DIRECTION_RIGHT;
-    }
-    else if (direction == "down") {
+    else if (direction == "down")
         return DIRECTION_DOWN;
-    }
-    else {
+    else
         return DIRECTION_INVALID;
-    }
 }

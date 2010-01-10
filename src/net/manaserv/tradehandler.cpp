@@ -92,11 +92,10 @@ TradeHandler::TradeHandler():
 void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
 {
     mAcceptTradeRequests = acceptTradeRequests;
-    if (mAcceptTradeRequests) {
+    if (mAcceptTradeRequests)
         localChatTab->chatLog(_("Accepting incoming trade requests."), BY_SERVER);
-    } else {
+    else
         localChatTab->chatLog(_("Ignoring incoming trade requests."), BY_SERVER);
-    }
 }
 
 void TradeHandler::handleMessage(Net::MessageIn &msg)

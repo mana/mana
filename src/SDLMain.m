@@ -364,7 +364,9 @@ int main (int argc, char **argv)
         gArgv[1] = NULL;
         gArgc = 1;
         gFinderLaunch = YES;
-    } else {
+    }
+    else
+    {
         int i;
         gArgc = argc;
         gArgv = (char **) SDL_malloc(sizeof (char *) * (argc+1));

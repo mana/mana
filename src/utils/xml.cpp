@@ -63,13 +63,16 @@ namespace XML
             }
         }
 
-        if (data) {
+        if (data)
+        {
             mDoc = xmlParseMemory(data, size);
             free(data);
 
             if (!mDoc)
                 logger->log("Error parsing XML file %s", filename.c_str());
-        } else {
+        }
+        else
+        {
             logger->log("Error loading %s", filename.c_str());
         }
     }
@@ -95,7 +98,8 @@ namespace XML
         int &ret = def;
 
         xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-        if (prop) {
+        if (prop)
+        {
             ret = atoi((char*)prop);
             xmlFree(prop);
         }
@@ -108,7 +112,8 @@ namespace XML
         double &ret = def;
 
         xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-        if (prop) {
+        if (prop)
+        {
             ret = atof((char*)prop);
             xmlFree(prop);
         }
@@ -120,7 +125,8 @@ namespace XML
                             const std::string &def)
     {
         xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-        if (prop) {
+        if (prop)
+        {
             std::string val = (char*)prop;
             xmlFree(prop);
             return val;

@@ -42,12 +42,14 @@ static char base64_table[] =
 };
 static char base64_pad = '=';
 
-unsigned char *php3_base64_encode(const unsigned char *string, int length, int *ret_length) {
+unsigned char *php3_base64_encode(const unsigned char *string, int length, int *ret_length)
+{
     const unsigned char *current = string;
     int i = 0;
     unsigned char *result = (unsigned char *)malloc(((length + 3 - length % 3) * 4 / 3 + 1) * sizeof(char));
 
-    while (length > 2) { /* keep going until we have less than 24 bits */
+    while (length > 2)
+    { /* keep going until we have less than 24 bits */
         result[i++] = base64_table[current[0] >> 2];
         result[i++] = base64_table[((current[0] & 0x03) << 4) + (current[1] >> 4)];
         result[i++] = base64_table[((current[1] & 0x0f) << 2) + (current[2] >> 6)];
@@ -58,20 +60,24 @@ unsigned char *php3_base64_encode(const unsigned char *string, int length, int *
     }
 
     /* now deal with the tail end of things */
-    if (length != 0) {
+    if (length != 0)
+    {
         result[i++] = base64_table[current[0] >> 2];
-        if (length > 1) {
+        if (length > 1)
+        {
             result[i++] = base64_table[((current[0] & 0x03) << 4) + (current[1] >> 4)];
             result[i++] = base64_table[(current[1] & 0x0f) << 2];
             result[i++] = base64_pad;
         }
-        else {
+        else
+        {
             result[i++] = base64_table[(current[0] & 0x03) << 4];
             result[i++] = base64_pad;
             result[i++] = base64_pad;
         }
     }
-    if(ret_length) {
+    if (ret_length)
+    {
         *ret_length = i;
     }
     result[i] = '\0';
@@ -79,19 +85,22 @@ unsigned char *php3_base64_encode(const unsigned char *string, int length, int *
 }
 
 /* as above, but backwards. :) */
-unsigned char *php3_base64_decode(const unsigned char *string, int length, int *ret_length) {
+unsigned char *php3_base64_decode(const unsigned char *string, int length, int *ret_length)
+{
     const unsigned char *current = string;
     int ch, i = 0, j = 0, k;
     char *chp;
 
     unsigned char *result = (unsigned char *)malloc(length + 1);
 
-    if (result == NULL) {
+    if (result == NULL)
+    {
         return NULL;
     }
 
     /* run through the whole string, converting as we go */
-    while ((ch = *current++) != '\0') {
+    while ((ch = *current++) != '\0')
+    {
         if (ch == base64_pad) break;
 
         /* When Base64 gets POSTed, all pluses are interpreted as spaces.
@@ -107,7 +116,8 @@ unsigned char *php3_base64_decode(const unsigned char *string, int length, int *
         if (chp == NULL) continue;
         ch = chp - base64_table;
 
-        switch(i % 4) {
+        switch(i % 4)
+        {
             case 0:
                 result[j] = ch << 2;
                 break;
@@ -128,8 +138,10 @@ unsigned char *php3_base64_decode(const unsigned char *string, int length, int *
 
     k = j;
     /* mop things up if we ended on a boundary */
-    if (ch == base64_pad) {
-        switch(i % 4) {
+    if (ch == base64_pad)
+    {
+        switch(i % 4)
+        {
             case 0:
             case 1:
                 free(result);
@@ -140,7 +152,8 @@ unsigned char *php3_base64_decode(const unsigned char *string, int length, int *
                 result[k++] = 0;
         }
     }
-    if(ret_length) {
+    if (ret_length)
+    {
         *ret_length = j;
     }
     result[k] = '\0';

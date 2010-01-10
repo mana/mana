@@ -155,17 +155,21 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                                 cards[0], cards[1], cards[2], cards[3]);
                 }
 
-                if (msg.getId() == SMSG_PLAYER_INVENTORY) {
+                if (msg.getId() == SMSG_PLAYER_INVENTORY)
+                {
                     inventory->setItem(index, itemId, amount, false);
 
                     // Trick because arrows are not considered equipment
-                    if (arrow & 0x8000) {
+                    if (arrow & 0x8000)
+                    {
                         if (Item *item = inventory->getItem(index))
                             item->setEquipment(true);
                     }
 
                     //const Item *item = inventory->getItem(index);
-                } else {
+                }
+                else
+                {
                     storage->setItem(index, itemId, amount, false);
                 }
             }
@@ -175,7 +179,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt16();  // length
             number = (msg.getLength() - 4) / 20;
 
-            for (int loop = 0; loop < number; loop++) {
+            for (int loop = 0; loop < number; loop++)
+            {
                 index = msg.readInt16() - STORAGE_OFFSET;
                 itemId = msg.readInt16();
                 itemType = msg.readInt8();
@@ -258,9 +263,12 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             index = msg.readInt16() - INVENTORY_OFFSET;
             amount = msg.readInt16();
 
-            if (msg.readInt8() == 0) {
+            if (msg.readInt8() == 0)
+            {
                 localChatTab->chatLog(_("Failed to use item."), BY_SERVER);
-            } else {
+            }
+            else
+            {
                 if (Item *item = inventory->getItem(index))
                     item->setQuantity(amount);
             }
@@ -354,13 +362,9 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             flag = msg.readInt8();
 
             if (!flag)
-            {
                 localChatTab->chatLog(_("Unable to equip."), BY_SERVER);
-            }
             else
-            {
                 mEquips.setEquipment(getSlot(equipType), index);
-            }
             break;
 
         case SMSG_PLAYER_UNEQUIP:
@@ -368,13 +372,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             equipType = msg.readInt16();
             flag = msg.readInt8();
 
-            if (!flag) {
+            if (!flag)
                 localChatTab->chatLog(_("Unable to unequip."), BY_SERVER);
-            }
             else
-            {
                 mEquips.setEquipment(getSlot(equipType), -1);
-            }
             break;
 
         case SMSG_PLAYER_ATTACK_RANGE:

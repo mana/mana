@@ -1015,7 +1015,11 @@ void Game::handleInput()
                 player_node->setTarget(target);
                 mLastTarget = currentTarget;
             }
-        } else mLastTarget = Being::UNKNOWN; // Reset last target
+        }
+        else
+        {
+            mLastTarget = Being::UNKNOWN; // Reset last target
+        }
 
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )

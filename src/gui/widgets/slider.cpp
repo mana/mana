@@ -175,7 +175,8 @@ void Slider::draw(gcn::Graphics *graphics)
 
         x += w;
             static_cast<Graphics*>(graphics)->drawImage(hEnd, x, y);
-    } else
+    }
+    else
     {
         static_cast<Graphics*>(graphics)->drawImage(hStartHi, x, y);
 

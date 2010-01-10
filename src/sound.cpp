@@ -92,7 +92,8 @@ void Sound::info()
     SDL_AudioDriverName(driver, 40);
 
     Mix_QuerySpec(&rate, &audioFormat, &channels);
-    switch (audioFormat) {
+    switch (audioFormat)
+    {
         case AUDIO_U8: format = "U8"; break;
         case AUDIO_S8: format = "S8"; break;
         case AUDIO_U16LSB: format = "U16LSB"; break;
@@ -150,12 +151,12 @@ static Mix_Music *loadMusic(const std::string &filename)
                     path.c_str());
         bool success = resman->copyFile("music/" + filename, "tempMusic.ogg");
         if (success)
-        {
             path = resman->getPath("tempMusic.ogg");
-        } else {
+        else
             return NULL;
-        }
-    } else {
+    }
+    else
+    {
         logger->log("Loading music \"%s\"", path.c_str());
     }
 
@@ -190,7 +191,8 @@ void Sound::stopMusic()
 
     logger->log("Sound::stopMusic()");
 
-    if (mMusic) {
+    if (mMusic)
+    {
         Mix_HaltMusic();
         Mix_FreeMusic(mMusic);
         mMusic = NULL;
@@ -219,7 +221,8 @@ void Sound::fadeOutMusic(int ms)
 
     logger->log("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
 
-    if (mMusic) {
+    if (mMusic)
+    {
         Mix_FadeOutMusic(ms);
         Mix_FreeMusic(mMusic);
         mMusic = NULL;
@@ -233,7 +236,8 @@ void Sound::playSfx(const std::string &path)
 
     ResourceManager *resman = ResourceManager::getInstance();
     SoundEffect *sample = resman->getSoundEffect(path);
-    if (sample) {
+    if (sample)
+    {
         logger->log("Sound::playSfx() Playing: %s", path.c_str());
         sample->play(0, 120);
     }

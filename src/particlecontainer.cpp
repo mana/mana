@@ -75,7 +75,8 @@ void ParticleList::removeLocally(Particle *particle)
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end(); it++)
     {
-        if (*it == particle) {
+        if (*it == particle)
+        {
             (*it)->kill();
             mElements.erase(it);
         }
@@ -158,7 +159,8 @@ void ParticleVector::moveTo(float x, float y)
     ParticleContainer::moveTo(x, y);
 
     for (std::vector<Particle *>::iterator it = mIndexedElements.begin();
-         it != mIndexedElements.end(); it++) {
+         it != mIndexedElements.end(); it++)
+    {
         if (*it)
         {
             (*it)->moveTo(x, y);

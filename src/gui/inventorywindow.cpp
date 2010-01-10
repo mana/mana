@@ -295,10 +295,7 @@ void InventoryWindow::updateButtons()
         mDropButton->setCaption(_("Drop"));
 
     if (Net::getInventoryHandler()->canSplit(selectedItem))
-    {
         mSplitButton->setEnabled(true);
-    }
-    else {
+    else
         mSplitButton->setEnabled(false);
-    }
 }

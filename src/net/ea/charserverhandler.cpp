@@ -96,7 +96,8 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_CHAR_LOGIN_ERROR:
-            switch (msg.readInt8()) {
+            switch (msg.readInt8())
+            {
                 case 0:
                     errorMessage = _("Access denied.");
                     break;
@@ -216,9 +217,8 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
     tempPlayer->setSprite(Player::HAIR_SPRITE, hairStyle * -1, ColorDB::get(msg.readInt16()));
     tempPlayer->setSprite(Player::MISC2_SPRITE, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++)
         tempPlayer->setAttributeBase(i + STR, msg.readInt8());
-    }
     slot = msg.readInt8(); // character slot
     msg.readInt8();                        // unknown
 

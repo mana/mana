@@ -72,7 +72,8 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             // Logout failed
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case ERRMSG_NO_LOGIN:
                         errorMessage = "Gameserver: Not logged in";
                         break;

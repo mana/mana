@@ -156,7 +156,7 @@ ItemAmountWindow::~ItemAmountWindow()
 // Show ItemTooltip
 void ItemAmountWindow::mouseMoved(gcn::MouseEvent &event)
 {
-    if(event.getSource() == mItemIcon)
+    if (event.getSource() == mItemIcon)
     {
         mItemPopup->setItem(mItem->getInfo());
         mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());

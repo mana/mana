@@ -340,13 +340,17 @@ static void initConfiguration(const Options &options)
     configFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
-    if (configFile == NULL) {
+    if (configFile == NULL)
+    {
         // We reopen the file in write mode and we create it
         configFile = fopen(configPath.c_str(), "wt");
     }
-    if (configFile == NULL) {
+    if (configFile == NULL)
+    {
        logger->log("Can't create %s. Using defaults.", configPath.c_str());
-    } else {
+    }
+    else
+    {
         fclose(configFile);
         config.init(configPath);
     }
@@ -359,7 +363,8 @@ static void initEngine(const Options &options)
 {
     // Initialize SDL
     logger->log("Initializing SDL...");
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
+    {
         logger->error(strprintf("Could not initialize SDL: %s",
                       SDL_GetError()));
     }
@@ -373,7 +378,8 @@ static void initEngine(const Options &options)
 
     ResourceManager *resman = ResourceManager::getInstance();
 
-    if (!resman->setWriteDir(homeDir)) {
+    if (!resman->setWriteDir(homeDir))
+    {
         logger->error(strprintf("%s couldn't be set as home directory! "
                                 "Exiting.", homeDir.c_str()));
     }
@@ -382,9 +388,8 @@ static void initEngine(const Options &options)
     resman->addToSearchPath(homeDir, false);
 
     // Add the main data directories to our PhysicsFS search path
-    if (!options.dataPath.empty()) {
+    if (!options.dataPath.empty())
         resman->addToSearchPath(options.dataPath, true);
-    }
     resman->addToSearchPath("data", true);
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -665,11 +670,10 @@ static void accountLogin(LoginData *loginData)
     Net::getCharHandler()->setCharInfo(&charInfo);
 
     // Send login infos
-    if (loginData->registerLogin) {
+    if (loginData->registerLogin)
         Net::getLoginHandler()->registerAccount(loginData);
-    } else {
+    else
         Net::getLoginHandler()->loginAccount(loginData);
-    }
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -677,9 +681,7 @@ static void accountLogin(LoginData *loginData)
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
     if (loginData->remember)
-    {
         config.setValue("username", loginData->username);
-    }
     config.setValue("remember", loginData->remember);
 }
 
@@ -783,17 +785,18 @@ int main(int argc, char *argv[])
     loginData.remember = config.getValue("remember", 0);
     loginData.registerLogin = false;
 
-    if (currentServer.hostname.empty()) {
+    if (currentServer.hostname.empty())
+    {
         currentServer.hostname = branding.getValue("defaultServer",
                                             "server.themanaworld.org").c_str();
     }
-    if (options.serverPort == 0) {
+    if (options.serverPort == 0)
+    {
         currentServer.port = (short) branding.getValue("defaultPort",
                                                           DEFAULT_PORT);
     }
-    if (loginData.username.empty() && loginData.remember) {
+    if (loginData.username.empty() && loginData.remember)
         loginData.username = config.getValue("username", "");
-    }
 
     if (state != STATE_ERROR)
         state = STATE_CHOOSE_SERVER;
@@ -899,31 +902,35 @@ int main(int argc, char *argv[])
             oldstate = state;
 
             // Get rid of the dialog of the previous state
-            if (currentDialog) {
+            if (currentDialog)
+            {
                 delete currentDialog;
                 currentDialog = NULL;
             }
             // State has changed, while the quitDialog was active, it might
             // not be correct anymore
-            if (quitDialog) {
+            if (quitDialog)
                 quitDialog->scheduleDelete();
-            }
 
-            switch (state) {
+            switch (state)
+            {
                 case STATE_CHOOSE_SERVER:
                     logger->log("State: CHOOSE SERVER");
 
                     // Allow changing this using a server choice dialog
                     // We show the dialog box only if the command-line
                     // options weren't set.
-                    if (options.serverName.empty() && options.serverPort == 0) {
+                    if (options.serverName.empty() && options.serverPort == 0)
+                    {
                         // Don't allow an alpha opacity
                         // lower than the default value
                         SkinLoader::instance()->setMinimumOpacity(0.8f);
 
                         currentDialog = new ServerDialog(&currentServer,
                                                          homeDir);
-                    } else {
+                    }
+                    else
+                    {
                         state = STATE_CONNECT_SERVER;
 
                         // Reset options so that cancelling or connect
@@ -945,9 +952,12 @@ int main(int argc, char *argv[])
                     SkinLoader::instance()->setMinimumOpacity(0.8f);
 
                     if (options.username.empty()
-                            || options.password.empty()) {
+                            || options.password.empty())
+                    {
                         currentDialog = new LoginDialog(&loginData);
-                    } else {
+                    }
+                    else
+                    {
                         state = STATE_LOGIN_ATTEMPT;
                         // Clear the password so that when login fails, the
                         // dialog will show up next time.
@@ -1057,9 +1067,12 @@ int main(int argc, char *argv[])
                         new CharSelectDialog(&charInfo, &loginData);
 
                     if (((CharSelectDialog*) currentDialog)->
-                            selectByName(options.character)) {
+                            selectByName(options.character))
+                    {
                         ((CharSelectDialog*) currentDialog)->chooseSelected();
-                    } else {
+                    }
+                    else
+                    {
                         ((CharSelectDialog*) currentDialog)->selectByName(
                             config.getValue("lastCharacter", ""));
                     }

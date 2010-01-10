@@ -300,7 +300,7 @@ class Map : public Properties
 
         void setDebugFlags(int n) {mDebugFlags = n;}
 
-        int getDebugFlags() {return mDebugFlags;}
+        int getDebugFlags() const {return mDebugFlags;}
 
         /**
          * Gets the tile animation for a specific gid

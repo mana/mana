@@ -483,9 +483,8 @@ Image *Image::_GLload(SDL_Surface *tmpImage)
         glTexParameteri(mTextureType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(mTextureType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        if (SDL_MUSTLOCK(tmpImage)) {
+        if (SDL_MUSTLOCK(tmpImage))
             SDL_UnlockSurface(tmpImage);
-        }
 
         SDL_FreeSurface(tmpImage);
 

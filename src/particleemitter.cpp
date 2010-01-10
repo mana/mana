@@ -380,19 +380,18 @@ ParticleEmitter::readParticleEmitterProp(xmlNodePtr propertyNode, T def)
     retval.set((T) XML::getFloatProperty(propertyNode, "min", (double) def),
                (T) XML::getFloatProperty(propertyNode, "max", (double) def));
 
-     std::string change = XML::getProperty(propertyNode, "change-func", "none");
-     T amplitude = (T) XML::getFloatProperty(propertyNode, "change-amplitude", 0.0);
-     int period = XML::getProperty(propertyNode, "change-period", 0);
-     int phase = XML::getProperty(propertyNode, "change-phase", 0);
-     if (change == "saw" || change == "sawtooth") {
-         retval.setFunction(FUNC_SAW, amplitude, period, phase);
-     } else if (change == "sine" || change == "sinewave") {
-         retval.setFunction(FUNC_SINE, amplitude, period, phase);
-     } else if (change == "triangle") {
-         retval.setFunction(FUNC_TRIANGLE, amplitude, period, phase);
-     } else if (change == "square"){
-         retval.setFunction(FUNC_SQUARE, amplitude, period, phase);
-     }
+    std::string change = XML::getProperty(propertyNode, "change-func", "none");
+    T amplitude = (T) XML::getFloatProperty(propertyNode, "change-amplitude", 0.0);
+    int period = XML::getProperty(propertyNode, "change-period", 0);
+    int phase = XML::getProperty(propertyNode, "change-phase", 0);
+    if (change == "saw" || change == "sawtooth")
+        retval.setFunction(FUNC_SAW, amplitude, period, phase);
+    else if (change == "sine" || change == "sinewave")
+        retval.setFunction(FUNC_SINE, amplitude, period, phase);
+    else if (change == "triangle")
+        retval.setFunction(FUNC_TRIANGLE, amplitude, period, phase);
+    else if (change == "square")
+        retval.setFunction(FUNC_SQUARE, amplitude, period, phase);
 
     return retval;
 }

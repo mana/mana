@@ -192,7 +192,8 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     {
         mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
 
-        if (mShowDebugPath) {
+        if (mShowDebugPath)
+        {
             mMap->drawCollision(graphics,
                                 (int) mPixelViewX,
                                 (int) mPixelViewY,
@@ -376,7 +377,8 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                     break;
              }
         // Picks up a item if we clicked on one
-        } else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
+        }
+        else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
         {
             player_node->pickUp(item);
         }
@@ -452,9 +454,8 @@ void Viewport::optionChanged(const std::string &name)
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
 
-    if (name == "visiblenames") {
+    if (name == "visiblenames")
         mVisibleNames = config.getValue("visiblenames", 1);
-    }
 }
 
 void Viewport::mouseMoved(gcn::MouseEvent &event)

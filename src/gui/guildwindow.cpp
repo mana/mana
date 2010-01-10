@@ -141,7 +141,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     else if (eventId == "CREATE_GUILD_OK")
     {
         std::string name = guildDialog->getText();
-        if(name.size() > 16)
+        if (name.size() > 16)
         {
             // TODO : State too many characters in input.
             return;
@@ -205,7 +205,7 @@ void GuildWindow::updateTab()
 void GuildWindow::setTab(const std::string &guildName)
 {
     // Only enable invite button if user has rights
-    if(player_node->checkInviteRights(guildName))
+    if (player_node->checkInviteRights(guildName))
     {
         mGuildButton[1]->setEnabled(true);
     }

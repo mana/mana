@@ -36,9 +36,8 @@ bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
     png_bytep *row_pointers;
     int colortype;
 
-    if (SDL_MUSTLOCK(surface)) {
+    if (SDL_MUSTLOCK(surface))
         SDL_LockSurface(surface);
-    }
 
     png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
     if (!png_ptr)
@@ -103,9 +102,8 @@ bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
 
     png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
 
-    if (SDL_MUSTLOCK(surface)) {
+    if (SDL_MUSTLOCK(surface))
         SDL_UnlockSurface(surface);
-    }
 
     return true;
 }

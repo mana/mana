@@ -161,11 +161,10 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 msg.skip(8);     // card (4 shorts)
 
                 // TODO: handle also identified, etc
-                if (type == 0) {
+                if (type == 0)
                     tradeWindow->setMoney(amount);
-                } else {
+                else
                     tradeWindow->addItem(type, false, amount, false);
-                }
             }
             break;
 

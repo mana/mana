@@ -201,13 +201,18 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
         mHairStyle--;
         updateHair();
     }
-    else if (event.getId() == "statslider") {
+    else if (event.getId() == "statslider")
+    {
         updateSliders();
     }
-    else if (event.getId() == "gender"){
-        if (mMale->isSelected()) {
+    else if (event.getId() == "gender")
+    {
+        if (mMale->isSelected())
+        {
             mPlayer->setGender(GENDER_MALE);
-        } else {
+        }
+        else
+        {
             mPlayer->setGender(GENDER_FEMALE);
         }
     }

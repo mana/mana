@@ -66,7 +66,8 @@ void finalize()
     if (!client)
         return; // Wasn't initialized at all
 
-    if (connections) {
+    if (connections)
+    {
         logger->error("Tried to shutdown the network subsystem while there "
                 "are network connections left!");
     }
@@ -120,12 +121,14 @@ namespace
 
         MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
-        if (iter != mMessageHandlers.end()) {
+        if (iter != mMessageHandlers.end())
+        {
             //logger->log("Received packet %x (%i B)",
             //        msg.getId(), msg.getLength());
             iter->second->handleMessage(msg);
         }
-        else {
+        else
+        {
             logger->log("Unhandled packet %x (%i B)",
                     msg.getId(), msg.getLength());
         }

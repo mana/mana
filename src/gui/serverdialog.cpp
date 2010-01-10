@@ -159,14 +159,16 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     setFieldsReadOnly(true);
     setVisible(true);
 
-    if (mServerNameField->getText().empty()) {
+    if (mServerNameField->getText().empty())
+    {
         mServerNameField->requestFocus();
-    } else {
-        if (mPortField->getText().empty()) {
+    }
+    else
+    {
+        if (mPortField->getText().empty())
             mPortField->requestFocus();
-        } else {
+        else
             mConnectButton->requestFocus();
-        }
     }
 
     downloadServerList();
@@ -175,9 +177,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 ServerDialog::~ServerDialog()
 {
     if (mDownload)
-    {
         mDownload->cancel();
-    }
     delete mServersListModel;
 }
 

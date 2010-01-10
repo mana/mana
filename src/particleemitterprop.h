@@ -77,18 +77,18 @@ template <typename T> struct ParticleEmitterProp
                 if ((tick%changePeriod) * 2 < changePeriod)
                 {
                     val += changeAmplitude - (T)((tick%changePeriod) / (double)changePeriod) * changeAmplitude * 4;
-                } else {
+                }
+                else
+                {
                     val += changeAmplitude * -3 + (T)((tick%changePeriod) / (double)changePeriod) * changeAmplitude * 4;
                     // I have no idea why this works but it does
                 }
                 break;
             case FUNC_SQUARE:
                 if ((tick%changePeriod) * 2 < changePeriod)
-                {
                     val += changeAmplitude;
-                } else {
+                else
                     val -= changeAmplitude;
-                }
                 break;
             case FUNC_NONE:
             default:
