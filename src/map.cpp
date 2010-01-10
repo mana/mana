@@ -185,9 +185,9 @@ Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),
     mTileWidth(tileWidth), mTileHeight(tileHeight),
     mMaxTileHeight(height),
+    mDebugFlags(MAP_NORMAL),
     mOnClosedList(1), mOnOpenList(2),
-    mLastScrollX(0.0f), mLastScrollY(0.0f),
-    mDebugFlags(MAP_NORMAL)
+    mLastScrollX(0.0f), mLastScrollY(0.0f)
 {
     const int size = mWidth * mHeight;
 

@@ -94,8 +94,8 @@ Being::Being(int id, int job, Map *map):
 #endif
     mPx(0), mPy(0),
     mX(0), mY(0),
-    mUsedTargetCursor(NULL),
-    mTakedDamage(0)
+    mTakedDamage(0),
+    mUsedTargetCursor(NULL)
 {
     setMap(map);
 
