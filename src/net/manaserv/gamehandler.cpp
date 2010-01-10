@@ -26,6 +26,7 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
+#include "localplayer.h"
 #include "main.h"
 
 extern Net::GameHandler *gameHandler;
@@ -113,6 +114,9 @@ void GameHandler::inGame()
     gameServerConnection->send(msg);
 
     chatHandler->connect();
+    
+    // Attack range from item DB
+    player_node->setAttackRange(-1);
 }
 
 void GameHandler::mapLoaded(const std::string &mapName)

@@ -101,13 +101,6 @@ enum
 class LocalPlayer : public Player
 {
     public:
-#ifdef MANASERV_SUPPORT
-        enum Attribute
-        {
-            STR = 0, AGI, DEX, VIT, INT, WIL, CHR
-        };
-#endif
-
         /**
          * Constructor.
          */
@@ -152,18 +145,14 @@ class LocalPlayer : public Player
         void inviteToGuild(Being *being);
 
         void clearInventory();
-#ifdef MANASERV_SUPPORT
         void setInvItem(int index, int id, int amount);
-#endif
 
         void pickUp(FloorItem *item);
 
-#ifdef EATHENA_SUPPORT
         /**
          * Sets the attack range.
          */
         void setAttackRange(int range) { mAttackRange = range; }
-#endif
 
         /**
          * Gets the attack range.
@@ -282,10 +271,6 @@ class LocalPlayer : public Player
         bool getInStorage() { return mInStorage; }
         void setInStorage(bool inStorage);
 
-#ifdef EATHENA_SUPPORT
-        Uint16 mAttackRange;
-#endif
-
         int getHp() const
         { return mHp; }
 
@@ -301,7 +286,7 @@ class LocalPlayer : public Player
 
         void setLevel(int value);
 
-        void setExp(int value);
+        void setExp(int value, bool notify = true);
 
         int getExp() const
         { return mExp; }
@@ -398,6 +383,8 @@ class LocalPlayer : public Player
         void startWalking(unsigned char dir);
 
         bool mInStorage;      /**< Whether storage is currently accessible */
+
+        Uint16 mAttackRange;
 
         int mTargetTime;      /** How long the being has been targeted **/
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */

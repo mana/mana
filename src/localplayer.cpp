@@ -79,11 +79,9 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(int id, int job, Map *map):
     Player(id, job, map),
-#ifdef EATHENA_SUPPORT
-    mAttackRange(0),
-#endif
     mEquipment(new Equipment),
     mInStorage(false),
+    mAttackRange(0),
     mTargetTime(-1),
     mLastTarget(-1),
     mCharacterPoints(0),
@@ -294,7 +292,7 @@ void LocalPlayer::nextStep(unsigned char dir = 0)
 
     Player::nextStep();
 #else
-        if (!mMap || !dir)
+    if (!mMap || !dir)
         return;
 
     const Vector &pos = getPosition();
@@ -389,7 +387,6 @@ void LocalPlayer::clearInventory()
     mInventory->clear();
 }
 
-#ifdef MANASERV_SUPPORT
 void LocalPlayer::setInvItem(int index, int id, int amount)
 {
     bool equipment = false;
@@ -398,7 +395,6 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
         equipment = true;
     mInventory->setItem(index, id, amount, equipment);
 }
-#endif
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
@@ -685,7 +681,6 @@ void LocalPlayer::emote(Uint8 emotion)
     Net::getPlayerHandler()->emote(emotion);
 }
 
-#ifdef MANASERV_SUPPORT
 void LocalPlayer::useSpecial(int special)
 {
     Net::getSpecialHandler()->use(special);
@@ -698,7 +693,6 @@ void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
     mSpecials[id].neededMana = max;
     mSpecials[id].recharge = recharge;
 }
-#endif
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
@@ -922,13 +916,11 @@ void LocalPlayer::setLevel(int value)
         statusWindow->update(StatusWindow::LEVEL);
 }
 
-void LocalPlayer::setExp(int value)
+void LocalPlayer::setExp(int value, bool notify)
 {
-    if (mMap && value > mExp)
+    if (mMap && notify && value > mExp)
     {
-        #ifdef EATHENA_SUPPORT
-            addMessageToQueue(toString(value - mExp) + " xp");
-        #endif
+        addMessageToQueue(toString(value - mExp) + " xp");
     }
     mExp = value;
 
@@ -999,17 +991,20 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
 
 int LocalPlayer::getAttackRange()
 {
-#ifdef MANASERV_SUPPORT
-    Item *weapon = mEquipment->getEquipment(EQUIP_FIGHT1_SLOT);
-    if (weapon)
+    if (mAttackRange > -1)
     {
-        const ItemInfo info = weapon->getInfo();
-        return info.getAttackRange();
+        return mAttackRange;
     }
-    return 48; // unarmed range
-#else
-    return mAttackRange;
-#endif
+    else
+    {
+        Item *weapon = mEquipment->getEquipment(EQUIP_FIGHT1_SLOT);
+        if (weapon)
+        {
+            const ItemInfo info = weapon->getInfo();
+            return info.getAttackRange();
+        }
+        return 48; // unarmed range
+    }
 }
 
 bool LocalPlayer::withinAttackRange(Being *target)
