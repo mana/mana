@@ -64,6 +64,7 @@
 #include "gui/setup.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
+#include "gui/textdialog.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
 #include "gui/windowmenu.h"
@@ -523,7 +524,8 @@ void Game::handleInput()
             }
 
             // send straight to gui for certain windows
-            if (quitDialog || npcPostDialog->isVisible())
+            if (quitDialog || TextDialog::isActive() ||
+                npcPostDialog->isVisible())
             {
                 try
                 {

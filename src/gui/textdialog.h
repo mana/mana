@@ -43,6 +43,9 @@ public:
      */
     TextDialog(const std::string &title, const std::string &msg,
                Window *parent = NULL);
+               
+               
+    ~TextDialog();
 
     /**
      * Called when receiving actions from the widgets.
@@ -58,8 +61,12 @@ public:
      * Set the OK button action id
      */
     void setOKButtonActionId(const std::string &name);
+    
+    static const bool isActive() { return instances > 0; }
 
 private:
+    static int instances;
+
     TextField *mTextField;
     gcn::Button *mOkButton;
 };
