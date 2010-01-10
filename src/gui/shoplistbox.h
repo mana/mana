@@ -25,6 +25,7 @@
 #include "gui/widgets/listbox.h"
 
 class ShopItems;
+class ItemPopup;
 
 /**
  * A list box, meant to be used inside a scroll area. Same as the Guichan list
@@ -71,6 +72,8 @@ class ShopListBox : public ListBox
          * (Good for selling mode.)
          */
         void setPriceCheck(bool check);
+        
+        void mouseMoved(gcn::MouseEvent &event);
 
     private:
         int mPlayerMoney;
@@ -80,6 +83,8 @@ class ShopListBox : public ListBox
          * use the ShopItems specific functions.
          */
         ShopItems *mShopItems;
+
+        ItemPopup *mItemPopup;
 
         unsigned int mRowHeight; /**< Row Height */
 

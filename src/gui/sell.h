@@ -108,8 +108,6 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         ShopListBox *mShopItemList;
         gcn::ScrollArea *mScrollArea;
         gcn::Label *mMoneyLabel;
-        gcn::Label *mItemDescLabel;
-        gcn::Label *mItemEffectLabel;
         gcn::Label *mQuantityLabel;
         gcn::Slider *mSlider;
 

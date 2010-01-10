@@ -19,9 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/shoplistbox.h"
+
+#include "gui/itempopup.h"
 #include "gui/palette.h"
 #include "gui/shop.h"
-#include "gui/shoplistbox.h"
+#include "gui/viewport.h"
 
 #include "configuration.h"
 #include "graphics.h"
@@ -41,6 +44,8 @@ ShopListBox::ShopListBox(gcn::ListModel *listModel):
 {
     mRowHeight = getFont()->getHeight();
     mPriceCheck = true;
+
+    mItemPopup = new ItemPopup;
 }
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel):
@@ -50,6 +55,8 @@ ShopListBox::ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel):
 {
     mRowHeight = std::max(getFont()->getHeight(), ITEM_ICON_SIZE);
     mPriceCheck = true;
+
+    mItemPopup = new ItemPopup;
 }
 
 void ShopListBox::setPlayersMoney(int money)
@@ -127,4 +134,22 @@ void ShopListBox::adjustSize()
 void ShopListBox::setPriceCheck(bool check)
 {
     mPriceCheck = check;
+}
+
+void ShopListBox::mouseMoved(gcn::MouseEvent &event)
+{
+    if (!mShopItems)
+        return;
+
+    Item *item = mShopItems->at(event.getY() / mRowHeight);
+
+    if (item)
+    {
+        mItemPopup->setItem(item->getInfo());
+        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
+    }
+    else
+    {
+        mItemPopup->setVisible(false);
+    }
 }

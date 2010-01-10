@@ -26,7 +26,6 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
-
 #include "gui/setup.h"
 #include "gui/shop.h"
 #include "gui/shoplistbox.h"
@@ -76,8 +75,6 @@ BuyDialog::BuyDialog():
     mBuyButton = new Button(_("Buy"), "buy", this);
     mQuitButton = new Button(_("Quit"), "quit", this);
     mAddMaxButton = new Button(_("Max"), "max", this);
-    mItemDescLabel = new Label(strprintf(_("Description: %s"), ""));
-    mItemEffectLabel = new Label(strprintf(_("Effect: %s"), ""));
 
     mDecreaseButton->adjustSize();
     mDecreaseButton->setWidth(mIncreaseButton->getWidth());
@@ -101,10 +98,8 @@ BuyDialog::BuyDialog():
     place(5, 5, mQuantityLabel, 2);
     place(7, 5, mAddMaxButton);
     place(0, 6, mMoneyLabel, 8);
-    place(0, 7, mItemEffectLabel, 8);
-    place(0, 8, mItemDescLabel, 8);
-    place(6, 9, mBuyButton);
-    place(7, 9, mQuitButton);
+    place(6, 7, mBuyButton);
+    place(7, 7, mQuitButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
@@ -223,13 +218,6 @@ void BuyDialog::updateButtonsAndLabels()
 
     if (selectedItem > -1)
     {
-        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
-
-        mItemDescLabel->setCaption
-            (strprintf(_("Description: %s"), info.getDescription().c_str()));
-        mItemEffectLabel->setCaption
-            (strprintf(_("Effect: %s"), info.getEffect().c_str()));
-
         int itemPrice = mShopItems->at(selectedItem)->getPrice();
 
         // Calculate how many the player can afford
@@ -244,8 +232,6 @@ void BuyDialog::updateButtonsAndLabels()
     }
     else
     {
-        mItemDescLabel->setCaption(strprintf(_("Description: %s"), ""));
-        mItemEffectLabel->setCaption(strprintf(_("Effect: %s"), ""));
         mMaxItems = 0;
         mAmountItems = 0;
     }

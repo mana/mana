@@ -21,15 +21,14 @@
 
 #include "gui/sell.h"
 
-#include "gui/setup.h"
-#include "gui/shop.h"
-#include "gui/shoplistbox.h"
-
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
+#include "gui/setup.h"
+#include "gui/shop.h"
+#include "gui/shoplistbox.h"
 
 #include "npc.h"
 #include "shopitem.h"
@@ -74,8 +73,6 @@ SellDialog::SellDialog():
     mSellButton = new Button(_("Sell"), "sell", this);
     mQuitButton = new Button(_("Quit"), "quit", this);
     mAddMaxButton = new Button(_("Max"), "max", this);
-    mItemDescLabel = new Label(strprintf(_("Description: %s"), ""));
-    mItemEffectLabel = new Label(strprintf(_("Effect: %s"), ""));
 
     mDecreaseButton->adjustSize();
     mDecreaseButton->setWidth(mIncreaseButton->getWidth());
@@ -100,10 +97,8 @@ SellDialog::SellDialog():
     place(5, 5, mQuantityLabel, 2);
     place(7, 5, mAddMaxButton);
     place(0, 6, mMoneyLabel, 8);
-    place(0, 7, mItemEffectLabel, 8);
-    place(0, 8, mItemDescLabel, 8);
-    place(6, 9, mSellButton);
-    place(7, 9, mQuitButton);
+    place(6, 7, mSellButton);
+    place(7, 7, mQuitButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
@@ -248,12 +243,6 @@ void SellDialog::updateButtonsAndLabels()
 
     if (selectedItem > -1)
     {
-        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
-        mItemDescLabel->setCaption
-            (strprintf(_("Description: %s"), info.getDescription().c_str()));
-        mItemEffectLabel->setCaption
-            (strprintf(_("Effect: %s"), info.getEffect().c_str()));
-
         mMaxItems = mShopItems->at(selectedItem)->getQuantity();
         if (mAmountItems > mMaxItems)
         {
@@ -264,8 +253,6 @@ void SellDialog::updateButtonsAndLabels()
     }
     else
     {
-        mItemDescLabel->setCaption(strprintf(_("Description: %s"), ""));
-        mItemEffectLabel->setCaption(strprintf(_("Effect: %s"), ""));
         mMaxItems = 0;
         mAmountItems = 0;
     }
