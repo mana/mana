@@ -51,11 +51,11 @@ class NPC : public Player
                     | Map::BLOCKMASK_MONSTER;
         }
 
-        static bool isTalking;
-
         /** We consider NPCs (at least for now) to be one layer-sprites */
         virtual int getNumberOfLayers() const
         { return 1; }
+        
+        static const bool isTalking();
 
     protected:
         /**

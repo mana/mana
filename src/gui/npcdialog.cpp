@@ -165,7 +165,6 @@ void NpcDialog::action(const gcn::ActionEvent &event)
                 closeDialog();
             setVisible(false);
             current_npc = 0;
-            NPC::isTalking = false;
         }
         else if (mActionState == NPC_ACTION_INPUT)
         {

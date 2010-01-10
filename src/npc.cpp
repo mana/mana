@@ -25,14 +25,18 @@
 #include "particle.h"
 #include "text.h"
 
+#include "gui/buy.h"
+#include "gui/buysell.h"
+#include "gui/npcdialog.h"
+#include "gui/npcpostdialog.h"
 #include "gui/palette.h"
+#include "gui/sell.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"
 
 #include "resources/npcdb.h"
 
-bool NPC::isTalking = false;
 int current_npc = 0;
 
 NPC::NPC(int id, int job, Map *map):
@@ -76,10 +80,8 @@ void NPC::setName(const std::string &name)
 
 void NPC::talk()
 {
-    if (isTalking)
+    if (isTalking())
         return;
-
-    isTalking = true;
 
     Net::getNpcHandler()->talk(mId);
 }
@@ -87,4 +89,11 @@ void NPC::talk()
 void NPC::setSprite(unsigned int slot, int id, const std::string &color)
 {
     // Do nothing
+}
+
+const bool NPC::isTalking()
+{
+    return npcDialog->isVisible() || buyDialog->isVisible() ||
+           sellDialog->isVisible() || buySellDialog->isVisible() ||
+           npcPostDialog->isVisible();
 }

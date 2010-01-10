@@ -81,8 +81,6 @@ void BuySellDialog::action(const gcn::ActionEvent &event)
 {
     setVisible(false);
 
-    NPC::isTalking = false;
-
     if (event.getId() == "Buy")
     {
         Net::getNpcHandler()->buy(current_npc);
