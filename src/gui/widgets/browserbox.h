@@ -40,7 +40,8 @@ struct BROWSER_LINK {
  * A simple browser box able to handle links and forward events to the
  * parent conteiner.
  */
-class BrowserBox : public gcn::Widget, public gcn::MouseListener
+class BrowserBox : public gcn::Widget,
+                   public gcn::MouseListener
 {
     public:
         /**
@@ -88,6 +89,10 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
          */
         void clearRows();
 
+//        void setSize(int width, int height);
+
+//        void widgetResized(const gcn::Event &event);
+
         /**
          * Handles mouse actions.
          */
@@ -98,6 +103,10 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
          * Draws the browser box.
          */
         void draw(gcn::Graphics *graphics);
+
+        void updateHeight();
+
+//        void widgetResized(const gcn::Event &event);
 
         /**
          * BrowserBox modes.
@@ -139,9 +148,15 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         };
 
     private:
+        int calcHeight();
+
         typedef std::list<std::string> TextRows;
         typedef TextRows::iterator TextRowIterator;
         TextRows mTextRows;
+
+        typedef std::list<int> TextRowsHeights;
+        typedef TextRowsHeights::iterator TextRowsHeightIterator;
+        TextRowsHeights mTextRowsHeights;
 
         typedef std::vector<BROWSER_LINK> Links;
         typedef Links::iterator LinkIterator;
@@ -154,6 +169,9 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         bool mUseLinksAndUserColors;
         int mSelectedLink;
         unsigned int mMaxRows;
+        int mHeight;
+        int mWidth;
+        int mYStart;
 };
 
 #endif

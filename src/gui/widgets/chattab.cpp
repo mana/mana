@@ -42,6 +42,8 @@
 
 #include <guichan/widgets/tabbedarea.hpp>
 
+#define MAX_WORD_SIZE 50
+
 ChatTab::ChatTab(const std::string &name) : Tab()
 {
     setCaption(name);
@@ -181,12 +183,12 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
     // at comparison.
     if (mScrollArea->getVerticalScrollAmount() >= mScrollArea->getVerticalMaxScroll())
     {
-        mTextOutput->addRow(line);
+        addRow(line);
         mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
     }
     else
     {
-        mTextOutput->addRow(line);
+        addRow(line);
     }
 
     mScrollArea->logic();
@@ -274,4 +276,23 @@ void ChatTab::handleCommand(const std::string &msg)
 int ChatTab::getType() const
 {
     return INPUT;
+}
+
+void ChatTab::addRow(std::string &line)
+{
+    std::string::size_type idx = 0;
+
+    for (unsigned int f = 0; f < line.length(); f++)
+    {
+        if (line.at(f) == ' ')
+        {
+            idx = f;
+        }
+        else if (f - idx > MAX_WORD_SIZE)
+        {
+            line.insert(f, " ");
+            idx = f;
+        }
+    }
+    mTextOutput->addRow(line);
 }
