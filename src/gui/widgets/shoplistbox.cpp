@@ -93,9 +93,12 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 
         if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
+        {
             if (i != mSelected)
+            {
                 backgroundColor = &guiPalette->getColor(Palette::SHOP_WARNING,
                         alpha);
+            }
             else
             {
                 temp = guiPalette->getColor(Palette::SHOP_WARNING, alpha);
@@ -104,8 +107,11 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
                 temp.b = (temp.g + highlightColor->b) / 2;
                 backgroundColor = &temp;
             }
+        }
         else if (i == mSelected)
+        {
             backgroundColor = highlightColor;
+        }
 
         graphics->setColor(*backgroundColor);
         graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
@@ -128,9 +134,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 void ShopListBox::adjustSize()
 {
     if (mListModel)
-    {
         setHeight(mRowHeight * mListModel->getNumberOfElements());
-    }
 }
 
 void ShopListBox::setPriceCheck(bool check)
@@ -143,15 +147,23 @@ void ShopListBox::mouseMoved(gcn::MouseEvent &event)
     if (!mShopItems)
         return;
 
-    Item *item = mShopItems->at(event.getY() / mRowHeight);
+    int index = event.getY() / mRowHeight;
 
-    if (item)
+    if (index < 0 || index >= mShopItems->getNumberOfElements())
     {
-        mItemPopup->setItem(item->getInfo());
-        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
+        mItemPopup->setVisible(false);
     }
     else
     {
-        mItemPopup->setVisible(false);
+        Item *item = mShopItems->at(index);
+        if (item)
+        {
+            mItemPopup->setItem(item->getInfo());
+            mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
+        }
+        else
+        {
+            mItemPopup->setVisible(false);
+        }
     }
 }

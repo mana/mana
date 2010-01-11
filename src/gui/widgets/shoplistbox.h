@@ -72,7 +72,7 @@ class ShopListBox : public ListBox
          * (Good for selling mode.)
          */
         void setPriceCheck(bool check);
-        
+
         void mouseMoved(gcn::MouseEvent &event);
 
     private:
