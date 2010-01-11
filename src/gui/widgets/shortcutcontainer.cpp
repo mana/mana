@@ -19,13 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "shortcutcontainer.h"
+#include "gui/widgets/shortcutcontainer.h"
 
-#include "../configuration.h"
+#include "configuration.h"
 
-#include "../resources/image.h"
+#include "resources/image.h"
 
-#include "../utils/stringutils.h"
+#include "utils/stringutils.h"
 
 float ShortcutContainer::mAlpha = 1.0;
 

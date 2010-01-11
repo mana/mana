@@ -21,18 +21,18 @@
 
 #include "gui/updatewindow.h"
 
+#include "configuration.h"
+#include "log.h"
+#include "main.h"
+
+#include "gui/sdlinput.h"
+
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"
-
-#include "gui/sdlinput.h"
-
-#include "configuration.h"
-#include "log.h"
-#include "main.h"
 
 #include "net/download.h"
 

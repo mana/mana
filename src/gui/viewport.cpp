@@ -21,10 +21,6 @@
 
 #include "gui/viewport.h"
 
-#include "gui/gui.h"
-#include "gui/ministatus.h"
-#include "gui/popupmenu.h"
-
 #include "beingmanager.h"
 #include "configuration.h"
 #include "flooritemmanager.h"
@@ -36,6 +32,10 @@
 #include "monster.h"
 #include "npc.h"
 #include "textmanager.h"
+
+#include "gui/gui.h"
+#include "gui/ministatus.h"
+#include "gui/popupmenu.h"
 
 #include "resources/monsterinfo.h"
 #include "resources/resourcemanager.h"

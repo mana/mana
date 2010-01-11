@@ -22,7 +22,7 @@
 #ifndef POPUP_MENU_H
 #define POPUP_MENU_H
 
-#include "gui/linkhandler.h"
+#include "gui/widgets/linkhandler.h"
 #include "gui/widgets/popup.h"
 
 class Being;

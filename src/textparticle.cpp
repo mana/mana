@@ -19,11 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/color.hpp>
-
 #include "textparticle.h"
 
-#include "gui/textrenderer.h"
+#include "textrenderer.h"
+
+#include <guichan/color.hpp>
 
 TextParticle::TextParticle(Map *map, const std::string &text,
                            const gcn::Color *color,

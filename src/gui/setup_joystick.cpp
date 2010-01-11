@@ -21,13 +21,13 @@
 
 #include "gui/setup_joystick.h"
 
+#include "configuration.h"
+#include "joystick.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
-
-#include "configuration.h"
-#include "joystick.h"
 
 #include "utils/gettext.h"
 

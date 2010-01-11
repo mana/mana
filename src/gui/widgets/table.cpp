@@ -19,11 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/palette.h"
-#include "gui/table.h"
-#include "gui/sdlinput.h"
+#include "gui/widgets/table.h"
 
 #include "configuration.h"
+
+#include "gui/palette.h"
+#include "gui/sdlinput.h"
 
 #include "utils/dtor.h"
 

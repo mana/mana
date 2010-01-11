@@ -21,22 +21,22 @@
 
 #include "gui/storagewindow.h"
 
-#include "gui/inventorywindow.h"
-#include "gui/itemamount.h"
-#include "gui/itemcontainer.h"
-#include "gui/setup.h"
-#include "gui/viewport.h"
-
-#include "gui/widgets/button.h"
-#include "gui/widgets/label.h"
-#include "gui/widgets/layout.h"
-#include "gui/widgets/progressbar.h"
-#include "gui/widgets/scrollarea.h"
-
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
 #include "units.h"
+
+#include "gui/inventorywindow.h"
+#include "gui/itemamount.h"
+#include "gui/setup.h"
+#include "gui/viewport.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/itemcontainer.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/progressbar.h"
+#include "gui/widgets/scrollarea.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"

@@ -22,6 +22,7 @@
 #include "gui/widgets/desktop.h"
 
 #include "gui/palette.h"
+
 #include "gui/widgets/label.h"
 
 #include "resources/image.h"

@@ -21,6 +21,10 @@
 
 #include "gui/npcdialog.h"
 
+#include "npc.h"
+
+#include "gui/setup.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/inttextfield.h"
 #include "gui/widgets/layout.h"
@@ -28,9 +32,6 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
-#include "gui/setup.h"
-
-#include "npc.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"

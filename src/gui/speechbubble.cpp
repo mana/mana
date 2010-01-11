@@ -22,11 +22,11 @@
 
 #include "gui/speechbubble.h"
 
+#include "graphics.h"
+
 #include "gui/gui.h"
 
 #include "gui/widgets/textbox.h"
-
-#include "graphics.h"
 
 #include <guichan/font.hpp>
 #include <guichan/widgets/label.hpp>

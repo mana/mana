@@ -19,12 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/itemshortcutcontainer.h"
-
-#include "gui/inventorywindow.h"
-#include "gui/itempopup.h"
-#include "gui/palette.h"
-#include "gui/viewport.h"
+#include "gui/widgets/itemshortcutcontainer.h"
 
 #include "configuration.h"
 #include "graphics.h"
@@ -33,6 +28,11 @@
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
+
+#include "gui/inventorywindow.h"
+#include "gui/itempopup.h"
+#include "gui/palette.h"
+#include "gui/viewport.h"
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"

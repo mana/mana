@@ -25,7 +25,7 @@
 #include "being.h"
 #include "guichanfwd.h"
 
-#include "gui/setuptab.h"
+#include "gui/widgets/setuptab.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>

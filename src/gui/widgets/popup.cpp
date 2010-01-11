@@ -22,13 +22,13 @@
 
 #include "gui/widgets/popup.h"
 
-#include "gui/widgets/windowcontainer.h"
-
-#include "gui/skin.h"
-
 #include "configuration.h"
 #include "graphics.h"
 #include "log.h"
+
+#include "gui/skin.h"
+
+#include "gui/widgets/windowcontainer.h"
 
 #include "resources/image.h"
 

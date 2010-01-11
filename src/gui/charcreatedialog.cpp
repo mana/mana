@@ -21,23 +21,22 @@
 
 #include "gui/charcreatedialog.h"
 
-#include "gui/charselectdialog.h"
-#include "gui/confirmdialog.h"
-#include "gui/okdialog.h"
-#include "gui/playerbox.h"
-
-#include "gui/widgets/button.h"
-#include "gui/widgets/label.h"
-#include "gui/widgets/radiobutton.h"
-#include "gui/widgets/slider.h"
-#include "gui/widgets/textfield.h"
-
-#include "gui/widgets/layout.h"
-
 #include "game.h"
 #include "localplayer.h"
 #include "main.h"
 #include "units.h"
+
+#include "gui/charselectdialog.h"
+#include "gui/confirmdialog.h"
+#include "gui/okdialog.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/playerbox.h"
+#include "gui/widgets/radiobutton.h"
+#include "gui/widgets/slider.h"
+#include "gui/widgets/textfield.h"
 
 #include "net/charhandler.h"
 #include "net/messageout.h"

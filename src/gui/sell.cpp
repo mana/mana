@@ -21,18 +21,19 @@
 
 #include "gui/sell.h"
 
+#include "npc.h"
+#include "shopitem.h"
+#include "units.h"
+
+#include "gui/setup.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
+#include "gui/widgets/shopitems.h"
+#include "gui/widgets/shoplistbox.h"
 #include "gui/widgets/slider.h"
-#include "gui/setup.h"
-#include "gui/shop.h"
-#include "gui/shoplistbox.h"
-
-#include "npc.h"
-#include "shopitem.h"
-#include "units.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"

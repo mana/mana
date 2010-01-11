@@ -21,11 +21,12 @@
 
 #include "gui/partywindow.h"
 
-#include "gui/widgets/chattab.h"
-#include "gui/setup.h"
-
 #include "beingmanager.h"
 #include "player.h"
+
+#include "gui/setup.h"
+
+#include "gui/widgets/chattab.h"
 
 #include "net/net.h"
 #include "net/partyhandler.h"

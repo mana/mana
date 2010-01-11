@@ -21,14 +21,14 @@
 
 #include "gui/npcpostdialog.h"
 
+#include "npc.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/scrollarea.h"
-
-#include "npc.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"

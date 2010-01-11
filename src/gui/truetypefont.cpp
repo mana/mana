@@ -22,6 +22,7 @@
 #include "gui/truetypefont.h"
 
 #include "graphics.h"
+
 #include "resources/image.h"
 
 #include <guichan/exception.hpp>

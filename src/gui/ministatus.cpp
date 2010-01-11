@@ -21,15 +21,15 @@
 
 #include "gui/ministatus.h"
 
-#include "gui/gui.h"
-#include "gui/statuswindow.h"
-
-#include "gui/widgets/progressbar.h"
-
 #include "animatedsprite.h"
 #include "configuration.h"
 #include "graphics.h"
 #include "localplayer.h"
+
+#include "gui/gui.h"
+#include "gui/statuswindow.h"
+
+#include "gui/widgets/progressbar.h"
 
 #include "utils/stringutils.h"
 

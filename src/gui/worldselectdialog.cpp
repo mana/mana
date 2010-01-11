@@ -21,19 +21,19 @@
 
 #include "gui/worldselectdialog.h"
 
+#include "main.h"
+
+#include "gui/sdlinput.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
-#include "gui/sdlinput.h"
-
 #include "net/logindata.h"
 #include "net/loginhandler.h"
 #include "net/net.h"
 #include "net/worldinfo.h"
-
-#include "main.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

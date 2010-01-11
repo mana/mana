@@ -24,9 +24,10 @@
 #include "configuration.h"
 #include "graphics.h"
 
+#include "gui/skin.h"
+
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-#include "gui/skin.h"
 
 #include "utils/dtor.h"
 

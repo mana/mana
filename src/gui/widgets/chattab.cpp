@@ -25,11 +25,11 @@
 #include "configuration.h"
 #include "localplayer.h"
 
+#include "gui/recorder.h"
+
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/scrollarea.h"
-
-#include "gui/itemlinkhandler.h"
-#include "gui/recorder.h"
+#include "gui/widgets/itemlinkhandler.h"
 
 #include "net/chathandler.h"
 #include "net/net.h"

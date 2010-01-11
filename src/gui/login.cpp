@@ -21,6 +21,9 @@
 
 #include "gui/login.h"
 
+#include "main.h"
+#include "configuration.h"
+
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
 
@@ -33,9 +36,6 @@
 #include "gui/widgets/textfield.h"
 
 #include "net/logindata.h"
-
-#include "main.h"
-#include "configuration.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

@@ -23,11 +23,11 @@
 
 #include "main.h"
 
+#include "gui/sdlinput.h"
+
 #include "gui/widgets/layout.h"
 #include "gui/widgets/button.h"
 #include "gui/widgets/radiobutton.h"
-
-#include "gui/sdlinput.h"
 
 #include "net/charhandler.h"
 #include "net/net.h"

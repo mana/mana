@@ -21,12 +21,12 @@
 
 #include "gui/widgets/textpreview.h"
 
+#include "configuration.h"
+#include "textrenderer.h"
+
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/textrenderer.h"
 #include "gui/truetypefont.h"
-
-#include "configuration.h"
 
 #include <typeinfo>
 

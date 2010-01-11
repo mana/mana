@@ -21,18 +21,18 @@
 
 #include "gui/widgets/dropdown.h"
 
-#include "gui/widgets/listbox.h"
-#include "gui/widgets/scrollarea.h"
-
-#include "gui/palette.h"
-#include "gui/sdlinput.h"
-
 #include "configuration.h"
 #include "graphics.h"
 
+#include "gui/palette.h"
+#include "gui/sdlinput.h"
+#include "gui/skin.h"
+
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
+
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-#include "gui/skin.h"
 
 #include "utils/dtor.h"
 

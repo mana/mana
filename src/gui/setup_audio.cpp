@@ -21,16 +21,16 @@
 
 #include "gui/setup_audio.h"
 
+#include "configuration.h"
+#include "log.h"
+#include "sound.h"
+
 #include "gui/okdialog.h"
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
 #include "gui/widgets/slider.h"
-
-#include "configuration.h"
-#include "log.h"
-#include "sound.h"
 
 #include "utils/gettext.h"
 

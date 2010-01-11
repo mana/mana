@@ -22,9 +22,9 @@
 #ifndef SETUP_COLORS_H
 #define SETUP_COLORS_H
 
-#include "gui/setuptab.h"
-
 #include "guichanfwd.h"
+
+#include "gui/widgets/setuptab.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>

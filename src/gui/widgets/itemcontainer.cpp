@@ -19,7 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/itemcontainer.h"
+#include "gui/widgets/itemcontainer.h"
+
+#include "graphics.h"
+#include "inventory.h"
+#include "item.h"
+#include "itemshortcut.h"
+#include "log.h"
 
 #include "gui/chat.h"
 #include "gui/itempopup.h"
@@ -30,12 +36,6 @@
 
 #include "net/net.h"
 #include "net/inventoryhandler.h"
-
-#include "graphics.h"
-#include "inventory.h"
-#include "item.h"
-#include "itemshortcut.h"
-#include "log.h"
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"

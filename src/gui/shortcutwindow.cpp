@@ -21,13 +21,13 @@
 
 #include "gui/shortcutwindow.h"
 
-#include "gui/shortcutcontainer.h"
+#include "configuration.h"
+
+#include "gui/setup.h"
 
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
-#include "gui/setup.h"
-
-#include "configuration.h"
+#include "gui/widgets/shortcutcontainer.h"
 
 static const int SCROLL_PADDING = 0;
 

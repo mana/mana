@@ -22,12 +22,13 @@
 #ifndef HELP_H
 #define HELP_H
 
-#include "gui/linkhandler.h"
+#include "gui/widgets/linkhandler.h"
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 
 class BrowserBox;
+class LinkHandler;
 
 /**
  * The help dialog.

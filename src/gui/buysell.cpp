@@ -23,8 +23,9 @@
 
 #include "npc.h"
 
-#include "gui/widgets/button.h"
 #include "gui/setup.h"
+
+#include "gui/widgets/button.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"

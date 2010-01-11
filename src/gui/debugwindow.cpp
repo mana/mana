@@ -21,18 +21,18 @@
 
 #include "gui/debugwindow.h"
 
+#include "engine.h"
+#include "game.h"
+#include "particle.h"
+#include "main.h"
+#include "map.h"
+
 #include "gui/setup.h"
 #include "gui/setup_video.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
-
-#include "engine.h"
-#include "game.h"
-#include "particle.h"
-#include "main.h"
-#include "map.h"
 
 #include "resources/image.h"
 

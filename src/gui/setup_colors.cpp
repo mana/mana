@@ -21,11 +21,13 @@
 
 #include "gui/setup_colors.h"
 
+#include "configuration.h"
+
 #include "gui/gui.h"
-#include "gui/itemlinkhandler.h"
 #include "gui/palette.h"
 
 #include "gui/widgets/browserbox.h"
+#include "gui/widgets/itemlinkhandler.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
 #include "gui/widgets/listbox.h"
@@ -33,8 +35,6 @@
 #include "gui/widgets/slider.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/textpreview.h"
-
-#include "configuration.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

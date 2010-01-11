@@ -77,22 +77,35 @@ SET(SRCS
     gui/widgets/desktop.h
     gui/widgets/dropdown.cpp
     gui/widgets/dropdown.h
+    gui/widgets/emoteshortcutcontainer.cpp
+    gui/widgets/emoteshortcutcontainer.h
     gui/widgets/flowcontainer.cpp
     gui/widgets/flowcontainer.h
+    gui/widgets/guildlistbox.cpp
+    gui/widgets/guildlistbox.h
     gui/widgets/icon.cpp
     gui/widgets/icon.h
     gui/widgets/inttextfield.cpp
     gui/widgets/inttextfield.h
+    gui/widgets/itemcontainer.cpp
+    gui/widgets/itemcontainer.h
+    gui/widgets/itemlinkhandler.cpp
+    gui/widgets/itemlinkhandler.h
+    gui/widgets/itemshortcutcontainer.cpp
+    gui/widgets/itemshortcutcontainer.h
     gui/widgets/label.cpp
     gui/widgets/label.h
     gui/widgets/layout.cpp
     gui/widgets/layout.h
     gui/widgets/layouthelper.cpp
     gui/widgets/layouthelper.h
+    gui/widgets/linkhandler.h
     gui/widgets/listbox.cpp
     gui/widgets/listbox.h
     gui/widgets/passwordfield.cpp
     gui/widgets/passwordfield.h
+    gui/widgets/playerbox.cpp
+    gui/widgets/playerbox.h
     gui/widgets/popup.cpp
     gui/widgets/popup.h
     gui/widgets/progressbar.cpp
@@ -103,12 +116,24 @@ SET(SRCS
     gui/widgets/resizegrip.h
     gui/widgets/scrollarea.cpp
     gui/widgets/scrollarea.h
+    gui/widgets/setuptab.cpp
+    gui/widgets/setuptab.h
+    gui/widgets/shopitems.cpp
+    gui/widgets/shopitems.h
+    gui/widgets/shoplistbox.cpp
+    gui/widgets/shoplistbox.h
+    gui/widgets/shortcutcontainer.cpp
+    gui/widgets/shortcutcontainer.h
     gui/widgets/slider.cpp
     gui/widgets/slider.h
     gui/widgets/tab.cpp
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp
     gui/widgets/tabbedarea.h
+    gui/widgets/table.cpp
+    gui/widgets/table.h
+    gui/widgets/tablemodel.cpp
+    gui/widgets/tablemodel.h
     gui/widgets/textbox.cpp
     gui/widgets/textbox.h
     gui/widgets/textfield.cpp
@@ -145,33 +170,22 @@ SET(SRCS
     gui/debugwindow.h
     gui/emotepopup.cpp
     gui/emotepopup.h
-    gui/emoteshortcutcontainer.cpp
-    gui/emoteshortcutcontainer.h
     gui/equipmentwindow.cpp
     gui/equipmentwindow.h
     gui/focushandler.cpp
     gui/focushandler.h
     gui/gui.cpp
     gui/gui.h
-    gui/guildlistbox.cpp
-    gui/guildlistbox.h
     gui/guildwindow.cpp
     gui/guildwindow.h
     gui/help.cpp
     gui/help.h
     gui/inventorywindow.cpp
     gui/inventorywindow.h
-    gui/itemcontainer.cpp
-    gui/itemcontainer.h
-    gui/itemlinkhandler.cpp
-    gui/itemlinkhandler.h
     gui/itempopup.cpp
     gui/itempopup.h
-    gui/itemshortcutcontainer.cpp
-    gui/itemshortcutcontainer.h
     gui/itemamount.cpp
     gui/itemamount.h
-    gui/linkhandler.h
     gui/login.cpp
     gui/login.h
     gui/minimap.cpp
@@ -190,8 +204,6 @@ SET(SRCS
     gui/palette.h
     gui/partywindow.cpp
     gui/partywindow.h
-    gui/playerbox.cpp
-    gui/playerbox.h
     gui/popupmenu.cpp
     gui/popupmenu.h
     gui/quitdialog.cpp
@@ -220,14 +232,8 @@ SET(SRCS
     gui/setup_players.h
     gui/setup_video.cpp
     gui/setup_video.h
-    gui/setuptab.cpp
-    gui/setuptab.h
-    gui/shop.cpp
-    gui/shop.h
     gui/shoplistbox.cpp
     gui/shoplistbox.h
-    gui/shortcutcontainer.cpp
-    gui/shortcutcontainer.h
     gui/shortcutwindow.cpp
     gui/shortcutwindow.h
     gui/skilldialog.cpp
@@ -242,13 +248,8 @@ SET(SRCS
     gui/statuswindow.h
     gui/storagewindow.cpp
     gui/storagewindow.h
-    gui/table.cpp
-    gui/table.h
-    gui/tablemodel.cpp
-    gui/tablemodel.h
     gui/textdialog.cpp
     gui/textdialog.h
-    gui/textrenderer.h
     gui/trade.cpp
     gui/trade.h
     gui/truetypefont.cpp
@@ -441,6 +442,7 @@ SET(SRCS
     textmanager.h
     textparticle.cpp
     textparticle.h
+    textrenderer.h
     tileset.h
     units.cpp
     units.h

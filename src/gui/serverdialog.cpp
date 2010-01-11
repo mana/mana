@@ -21,6 +21,10 @@
 
 #include "gui/serverdialog.h"
 
+#include "configuration.h"
+#include "log.h"
+#include "main.h"
+
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
 
@@ -30,10 +34,6 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textfield.h"
-
-#include "configuration.h"
-#include "log.h"
-#include "main.h"
 
 #include "net/net.h"
 

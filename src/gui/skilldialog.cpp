@@ -21,6 +21,11 @@
 
 #include "gui/skilldialog.h"
 
+#include "localplayer.h"
+#include "log.h"
+
+#include "gui/setup.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
 #include "gui/widgets/icon.h"
@@ -33,10 +38,6 @@
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
-#include "gui/setup.h"
-
-#include "localplayer.h"
-#include "log.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"

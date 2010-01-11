@@ -1,6 +1,6 @@
 /*
- *  Extended support for activating emotes
- *  Copyright (C) 2009  Aethyra Development Team
+ *  The Mana World
+ *  Copyright (C) 2007  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,33 +19,34 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef EMOTESHORTCUTCONTAINER_H
-#define EMOTESHORTCUTCONTAINER_H
+#ifndef ITEMSHORTCUTCONTAINER_H
+#define ITEMSHORTCUTCONTAINER_H
 
-#include <vector>
+#include <guichan/mouselistener.hpp>
 
-#include "shortcutcontainer.h"
+#include "gui/widgets/shortcutcontainer.h"
 
-class AnimatedSprite;
 class Image;
+class Item;
+class ItemPopup;
 
 /**
- * An emote shortcut container. Used to quickly use emoticons.
+ * An item shortcut container. Used to quickly use items.
  *
  * \ingroup GUI
  */
-class EmoteShortcutContainer : public ShortcutContainer
+class ItemShortcutContainer : public ShortcutContainer
 {
     public:
         /**
          * Constructor. Initializes the graphic.
          */
-        EmoteShortcutContainer();
+        ItemShortcutContainer();
 
         /**
          * Destructor.
          */
-        virtual ~EmoteShortcutContainer();
+        virtual ~ItemShortcutContainer();
 
         /**
          * Draws the items.
@@ -68,10 +69,13 @@ class EmoteShortcutContainer : public ShortcutContainer
         void mouseReleased(gcn::MouseEvent &event);
 
     private:
-        std::vector<const AnimatedSprite*> mEmoteImg;
+        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
 
-        bool mEmoteClicked;
-        int mEmoteMoved;
+        bool mItemClicked;
+        Item *mItemMoved;
+
+        ItemPopup *mItemPopup;
 };
 
 #endif

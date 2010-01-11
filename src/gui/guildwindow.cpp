@@ -22,21 +22,21 @@
 
 #include "gui/guildwindow.h"
 
+#include "guild.h"
+#include "log.h"
+#include "localplayer.h"
+
 #include "gui/confirmdialog.h"
-#include "gui/guildlistbox.h"
 #include "gui/setup.h"
 #include "gui/textdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
+#include "gui/widgets/guildlistbox.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/windowcontainer.h"
-
-#include "guild.h"
-#include "log.h"
-#include "localplayer.h"
 
 #include "net/guildhandler.h"
 #include "net/net.h"

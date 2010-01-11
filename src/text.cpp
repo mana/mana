@@ -26,12 +26,13 @@
 
 #include "configuration.h"
 #include "textmanager.h"
-#include "resources/resourcemanager.h"
-#include "resources/image.h"
+#include "textrenderer.h"
 
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/textrenderer.h"
+
+#include "resources/resourcemanager.h"
+#include "resources/image.h"
 
 int Text::mInstances = 0;
 ImageRect Text::mBubble;

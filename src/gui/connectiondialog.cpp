@@ -21,12 +21,12 @@
 
 #include "connectiondialog.h"
 
+#include "main.h"
+#include "log.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/progressbar.h"
-
-#include "main.h"
-#include "log.h"
 
 #include "utils/gettext.h"
 

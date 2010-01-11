@@ -24,6 +24,7 @@
 #include "localplayer.h"
 
 #include "gui/gui.h"
+
 #include "gui/widgets/icon.h"
 #include "gui/widgets/label.h"
 

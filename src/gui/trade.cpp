@@ -28,11 +28,11 @@
 
 #include "gui/inventorywindow.h"
 #include "gui/itemamount.h"
-#include "gui/itemcontainer.h"
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
+#include "gui/widgets/itemcontainer.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textfield.h"

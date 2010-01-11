@@ -21,13 +21,6 @@
 
 #include "gui/popupmenu.h"
 
-#include "gui/chat.h"
-#include "gui/inventorywindow.h"
-#include "gui/storagewindow.h"
-#include "gui/itemamount.h"
-
-#include "gui/widgets/browserbox.h"
-
 #include "being.h"
 #include "beingmanager.h"
 #include "flooritem.h"
@@ -37,6 +30,13 @@
 #include "log.h"
 #include "npc.h"
 #include "playerrelations.h"
+
+#include "gui/chat.h"
+#include "gui/inventorywindow.h"
+#include "gui/storagewindow.h"
+#include "gui/itemamount.h"
+
+#include "gui/widgets/browserbox.h"
 
 #include "net/adminhandler.h"
 #include "net/inventoryhandler.h"

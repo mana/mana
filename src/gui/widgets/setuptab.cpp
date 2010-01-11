@@ -19,22 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef ITEM_LINK_HANDLER_H
-#define ITEM_LINK_HANDLER_H
+#include "gui/widgets/setuptab.h"
 
-#include "linkhandler.h"
-
-class ItemPopup;
-
-class ItemLinkHandler : public LinkHandler
+SetupTab::SetupTab()
 {
-    public:
-        ItemLinkHandler();
-        ~ItemLinkHandler();
-        void handleLink(const std::string &link);
-
-    private:
-        ItemPopup *mItemPopup;
-};
-
-#endif
+    setOpaque(false);
+}

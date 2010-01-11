@@ -21,14 +21,14 @@
 
 #include "gui/widgets/checkbox.h"
 
-#include "gui/palette.h"
-
 #include "configuration.h"
 #include "graphics.h"
 
+#include "gui/palette.h"
+#include "gui/skin.h"
+
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-#include "gui/skin.h"
 
 int CheckBox::instances = 0;
 float CheckBox::mAlpha = 1.0;

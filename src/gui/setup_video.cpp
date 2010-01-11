@@ -21,6 +21,14 @@
 
 #include "gui/setup_video.h"
 
+#include "configuration.h"
+#include "engine.h"
+#include "graphics.h"
+#include "localplayer.h"
+#include "log.h"
+#include "main.h"
+#include "particle.h"
+
 #include "gui/okdialog.h"
 
 #include "gui/widgets/checkbox.h"
@@ -31,14 +39,6 @@
 #include "gui/widgets/slider.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/dropdown.h"
-
-#include "configuration.h"
-#include "engine.h"
-#include "graphics.h"
-#include "localplayer.h"
-#include "log.h"
-#include "main.h"
-#include "particle.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

@@ -21,15 +21,17 @@
 
 #include "gui/widgets/shoplistbox.h"
 
-#include "gui/itempopup.h"
-#include "gui/palette.h"
-#include "gui/shop.h"
-#include "gui/viewport.h"
-
 #include "configuration.h"
 #include "graphics.h"
-#include "resources/image.h"
 #include "shopitem.h"
+
+#include "gui/itempopup.h"
+#include "gui/palette.h"
+#include "gui/viewport.h"
+
+#include "gui/widgets/shopitems.h"
+
+#include "resources/image.h"
 
 #include <guichan/font.hpp>
 #include <guichan/listmodel.hpp>

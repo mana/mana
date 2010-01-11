@@ -21,18 +21,19 @@
 
 #include "gui/widgets/button.h"
 
-#include "gui/equipmentwindow.h"
-#include "gui/itempopup.h"
-#include "gui/palette.h"
-#include "gui/playerbox.h"
-#include "gui/setup.h"
-#include "gui/viewport.h"
-
 #include "equipment.h"
 #include "graphics.h"
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
+
+#include "gui/equipmentwindow.h"
+#include "gui/itempopup.h"
+#include "gui/palette.h"
+#include "gui/setup.h"
+#include "gui/viewport.h"
+
+#include "gui/widgets/playerbox.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"

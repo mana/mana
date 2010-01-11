@@ -23,10 +23,9 @@
 #define GUI_SETUP_PLAYERS_H
 
 #include "guichanfwd.h"
-
-#include "gui/setuptab.h"
-
 #include "playerrelations.h"
+
+#include "gui/widgets/setuptab.h"
 
 #include <guichan/actionlistener.hpp>
 

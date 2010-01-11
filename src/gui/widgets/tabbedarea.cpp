@@ -20,6 +20,7 @@
  */
 
 #include "gui/widgets/tabbedarea.h"
+
 #include "gui/widgets/tab.h"
 
 #include <guichan/widgets/container.hpp>

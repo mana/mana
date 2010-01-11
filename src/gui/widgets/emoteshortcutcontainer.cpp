@@ -19,9 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/emoteshortcutcontainer.h"
-
-#include "gui/palette.h"
+#include "gui/widgets/emoteshortcutcontainer.h"
 
 #include "animatedsprite.h"
 #include "configuration.h"
@@ -33,6 +31,8 @@
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "log.h"
+
+#include "gui/palette.h"
 
 #include "resources/emotedb.h"
 #include "resources/image.h"

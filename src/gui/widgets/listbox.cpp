@@ -21,10 +21,10 @@
 
 #include "gui/widgets/listbox.h"
 
+#include "configuration.h"
+
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-
-#include "configuration.h"
 #include "gui/skin.h"
 
 #include <guichan/font.hpp>

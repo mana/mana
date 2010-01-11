@@ -21,8 +21,9 @@
 
 #include "gui/widgets/browserbox.h"
 
-#include "gui/linkhandler.h"
 #include "gui/palette.h"
+
+#include "gui/widgets/linkhandler.h"
 
 #include <guichan/graphics.hpp>
 #include <guichan/font.hpp>

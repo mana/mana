@@ -21,10 +21,10 @@
 
 #include "gui/confirmdialog.h"
 
+#include "gui/gui.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/textbox.h"
-
-#include "gui/gui.h"
 
 #include "utils/gettext.h"
 

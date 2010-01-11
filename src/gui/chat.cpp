@@ -21,21 +21,21 @@
 
 #include "chat.h"
 
-#include "gui/itemlinkhandler.h"
+#include "beingmanager.h"
+#include "configuration.h"
+#include "localplayer.h"
+
 #include "gui/recorder.h"
 #include "gui/setup.h"
 #include "gui/sdlinput.h"
 #include "gui/partywindow.h"
 
 #include "gui/widgets/chattab.h"
+#include "gui/widgets/itemlinkhandler.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/whispertab.h"
-
-#include "beingmanager.h"
-#include "configuration.h"
-#include "localplayer.h"
 
 #include "net/chathandler.h"
 #include "net/net.h"

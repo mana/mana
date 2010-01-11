@@ -21,12 +21,12 @@
 
 #include "gui/widgets/tab.h"
 
-#include "gui/widgets/tabbedarea.h"
+#include "configuration.h"
+#include "graphics.h"
 
 #include "gui/palette.h"
 
-#include "configuration.h"
-#include "graphics.h"
+#include "gui/widgets/tabbedarea.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"

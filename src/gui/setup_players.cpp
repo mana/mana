@@ -21,8 +21,10 @@
 
 #include "gui/setup_players.h"
 
+#include "configuration.h"
+#include "log.h"
+
 #include "gui/okdialog.h"
-#include "gui/table.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
@@ -30,9 +32,7 @@
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
 #include "gui/widgets/scrollarea.h"
-
-#include "configuration.h"
-#include "log.h"
+#include "gui/widgets/table.h"
 
 #include "utils/gettext.h"
 

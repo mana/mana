@@ -22,13 +22,13 @@
 
 #include "gui/itempopup.h"
 
+#include "graphics.h"
+#include "units.h"
+
 #include "gui/gui.h"
 #include "gui/palette.h"
 
 #include "gui/widgets/textbox.h"
-
-#include "graphics.h"
-#include "units.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

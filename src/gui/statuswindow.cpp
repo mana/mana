@@ -21,6 +21,12 @@
 
 #include "gui/statuswindow.h"
 
+#include "localplayer.h"
+#include "units.h"
+
+#include "gui/ministatus.h"
+#include "gui/setup.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
@@ -28,12 +34,6 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
-
-#include "gui/ministatus.h"
-#include "gui/setup.h"
-
-#include "localplayer.h"
-#include "units.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"

@@ -21,16 +21,16 @@
 
 #include "gui/widgets/window.h"
 
-#include "gui/widgets/layout.h"
-#include "gui/widgets/resizegrip.h"
-#include "gui/widgets/windowcontainer.h"
+#include "configuration.h"
+#include "log.h"
 
 #include "gui/gui.h"
 #include "gui/palette.h"
 #include "gui/skin.h"
 
-#include "configuration.h"
-#include "log.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/resizegrip.h"
+#include "gui/widgets/windowcontainer.h"
 
 #include "resources/image.h"
 

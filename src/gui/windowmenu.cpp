@@ -21,13 +21,13 @@
 
 #include "gui/windowmenu.h"
 
+#include "graphics.h"
+
 #include "gui/emotepopup.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/window.h"
 #include "gui/widgets/windowcontainer.h"
-
-#include "graphics.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
