@@ -22,10 +22,8 @@
 #ifndef TRUETYPEFONT_H
 #define TRUETYPEFONT_H
 
-#include <list>
-#include <string>
-
 #include <guichan/font.hpp>
+
 #ifdef __APPLE__
 #include <SDL_ttf/SDL_ttf.h>
 #else
@@ -35,6 +33,9 @@
 #include <SDL_ttf.h>
 #endif
 #endif
+
+#include <list>
+#include <string>
 
 class TextChunk;
 

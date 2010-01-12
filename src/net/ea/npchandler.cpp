@@ -21,18 +21,18 @@
 
 #include "net/ea/npchandler.h"
 
-#include "net/ea/protocol.h"
+#include "beingmanager.h"
+#include "localplayer.h"
+#include "npc.h"
+
+#include "gui/npcdialog.h"
 
 #include "net/messagein.h"
 #include "net/messageout.h"
 #include "net/net.h"
 #include "net/npchandler.h"
 
-#include "beingmanager.h"
-#include "localplayer.h"
-#include "npc.h"
-
-#include "gui/npcdialog.h"
+#include "net/ea/protocol.h"
 
 #include <SDL_types.h>
 

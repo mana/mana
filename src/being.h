@@ -22,14 +22,6 @@
 #ifndef BEING_H
 #define BEING_H
 
-#include <guichan/color.hpp>
-
-#include <SDL_types.h>
-
-#include <set>
-#include <string>
-#include <vector>
-
 #include "configlistener.h"
 #include "map.h"
 #include "particlecontainer.h"
@@ -38,6 +30,14 @@
 #include "vector.h"
 
 #include "resources/spritedef.h"
+
+#include <guichan/color.hpp>
+
+#include <SDL_types.h>
+
+#include <set>
+#include <string>
+#include <vector>
 
 #define FIRST_IGNORE_EMOTE 14
 #define STATUS_EFFECTS 32

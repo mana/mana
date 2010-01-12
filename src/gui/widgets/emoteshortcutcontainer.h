@@ -22,9 +22,9 @@
 #ifndef EMOTESHORTCUTCONTAINER_H
 #define EMOTESHORTCUTCONTAINER_H
 
-#include <vector>
-
 #include "gui/widgets/shortcutcontainer.h"
+
+#include <vector>
 
 class AnimatedSprite;
 class Image;

@@ -22,9 +22,9 @@
 #ifndef ITEMINFO_H
 #define ITEMINFO_H
 
-#include "resources/spritedef.h"
-
 #include "player.h"
+
+#include "resources/spritedef.h"
 
 #include <map>
 #include <string>

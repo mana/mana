@@ -22,9 +22,9 @@
 #ifndef PROGRESSBAR_H
 #define PROGRESSBAR_H
 
-#include <string>
-
 #include <guichan/widget.hpp>
+
+#include <string>
 
 class ImageRect;
 

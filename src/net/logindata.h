@@ -22,10 +22,11 @@
 #ifndef LOGINDATA_H
 #define LOGINDATA_H
 
-#include <string>
-
 #include "player.h"
+
 #include "net/serverinfo.h"
+
+#include <string>
 
 struct LoginData
 {

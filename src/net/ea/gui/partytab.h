@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef CHANNELTAB_H
-#define CHANNELTAB_H
+#ifndef EA_PARTYTAB_H
+#define EA_PARTYTAB_H
 
 #include "gui/widgets/chattab.h"
 
@@ -45,4 +45,4 @@ class PartyTab : public ChatTab
 
 extern PartyTab *partyTab;
 
-#endif // CHANNELTAB_H
+#endif // EA_PARTYTAB_H

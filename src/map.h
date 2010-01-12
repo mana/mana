@@ -22,11 +22,11 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <list>
-#include <vector>
-
 #include "position.h"
 #include "properties.h"
+
+#include <list>
+#include <vector>
 
 class Animation;
 class AmbientLayer;

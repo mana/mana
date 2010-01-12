@@ -21,10 +21,6 @@
 
 #include "net/ea/buysellhandler.h"
 
-#include "net/ea/protocol.h"
-
-#include "net/messagein.h"
-
 #include "beingmanager.h"
 #include "inventory.h"
 #include "item.h"
@@ -36,6 +32,10 @@
 #include "gui/sell.h"
 
 #include "gui/widgets/chattab.h"
+
+#include "net/messagein.h"
+
+#include "net/ea/protocol.h"
 
 #include "utils/gettext.h"
 

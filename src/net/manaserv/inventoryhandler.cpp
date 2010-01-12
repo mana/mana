@@ -21,11 +21,6 @@
 
 #include "net/manaserv/inventoryhandler.h"
 
-#include "net/manaserv/connection.h"
-#include "net/manaserv/messagein.h"
-#include "net/manaserv/messageout.h"
-#include "net/manaserv/protocol.h"
-
 #include "equipment.h"
 #include "inventory.h"
 #include "item.h"
@@ -33,6 +28,11 @@
 #include "localplayer.h"
 
 #include "gui/chat.h"
+
+#include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
+#include "net/manaserv/protocol.h"
 
 #include "resources/iteminfo.h"
 

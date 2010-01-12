@@ -22,11 +22,11 @@
 #ifndef NET_MANASERV_INVENTORYHANDLER_H
 #define NET_MANASERV_INVENTORYHANDLER_H
 
+#include "equipment.h"
+
 #include "net/inventoryhandler.h"
 
 #include "net/manaserv/messagehandler.h"
-
-#include "equipment.h"
 
 namespace ManaServ {
 

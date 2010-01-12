@@ -21,14 +21,14 @@
 
 #include "net/manaserv/loginhandler.h"
 
+#include "main.h"
+
+#include "net/logindata.h"
+
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "net/logindata.h"
-
-#include "main.h"
 
 #include "utils/gettext.h"
 #include "utils/sha256.h"

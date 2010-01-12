@@ -22,9 +22,9 @@
 #ifndef DESKTOP_H
 #define DESKTOP_H
 
-#include "gui/widgets/container.h"
-
 #include "guichanfwd.h"
+
+#include "gui/widgets/container.h"
 
 #include <guichan/widgetlistener.hpp>
 

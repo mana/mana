@@ -22,10 +22,10 @@
 #ifndef FLOORITEM_H
 #define FLOORITEM_H
 
-#include <list>
-
 #include "map.h"
 #include "sprite.h"
+
+#include <list>
 
 class Graphics;
 class Image;

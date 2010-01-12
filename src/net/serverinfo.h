@@ -22,10 +22,10 @@
 #ifndef SERVERINFO_H
 #define SERVERINFO_H
 
+#include "utils/stringutils.h"
+
 #include <string>
 #include <vector>
-
-#include "utils/stringutils.h"
 
 class ServerInfo
 {

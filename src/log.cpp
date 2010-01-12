@@ -22,7 +22,9 @@
 #include <iostream>
 #include <sstream>
 
-#include <sys/time.h>
+#include "log.h"
+
+#include "gui/widgets/chattab.h"
 
 #ifdef WIN32
 #include <windows.h>
@@ -30,9 +32,7 @@
 #include <Carbon/Carbon.h>
 #endif
 
-#include "log.h"
-
-#include "gui/widgets/chattab.h"
+#include <sys/time.h>
 
 Logger::Logger():
     mLogToStandardOut(false),

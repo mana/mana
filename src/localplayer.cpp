@@ -22,10 +22,12 @@
 #include "localplayer.h"
 
 #include "configuration.h"
+#include "effectmanager.h"
 #include "equipment.h"
 #include "flooritem.h"
 #include "game.h"
 #include "graphics.h"
+#include "guild.h"
 #include "inventory.h"
 #include "item.h"
 #include "log.h"
@@ -53,9 +55,6 @@
 #include "net/playerhandler.h"
 #include "net/specialhandler.h"
 #include "net/tradehandler.h"
-
-#include "effectmanager.h"
-#include "guild.h"
 
 #include "resources/animation.h"
 #include "resources/imageset.h"

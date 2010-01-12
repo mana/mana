@@ -21,11 +21,6 @@
 
 #include "net/manaserv/beinghandler.h"
 
-#include "net/manaserv/playerhandler.h"
-#include "net/manaserv/protocol.h"
-
-#include "net/messagein.h"
-
 #include "being.h"
 #include "beingmanager.h"
 #include "game.h"
@@ -37,6 +32,11 @@
 #include "sound.h"
 
 #include "gui/okdialog.h"
+
+#include "net/messagein.h"
+
+#include "net/manaserv/playerhandler.h"
+#include "net/manaserv/protocol.h"
 
 #include "resources/colordb.h"
 

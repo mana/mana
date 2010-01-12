@@ -32,6 +32,7 @@
 #include "net/messageout.h"
 
 #include "net/ea/protocol.h"
+
 #include "net/ea/gui/partytab.h"
 
 #include "utils/gettext.h"

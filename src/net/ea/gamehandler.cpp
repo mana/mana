@@ -21,13 +21,6 @@
 
 #include "net/ea/gamehandler.h"
 
-#include "net/ea/loginhandler.h"
-#include "net/ea/network.h"
-#include "net/ea/protocol.h"
-
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -36,6 +29,13 @@
 #include "gui/widgets/chattab.h"
 
 #include "gui/okdialog.h"
+
+#include "net/messagein.h"
+#include "net/messageout.h"
+
+#include "net/ea/loginhandler.h"
+#include "net/ea/network.h"
+#include "net/ea/protocol.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

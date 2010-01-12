@@ -22,8 +22,8 @@
 #ifndef POSITION_H
 #define POSITION_H
 
-#include <list>
 #include <iostream>
+#include <list>
 
 /**
  * A position along a being's path.

@@ -23,10 +23,10 @@
 #ifndef POPUP_H
 #define POPUP_H
 
-#include "gui/widgets/container.h"
-
 #include "configuration.h"
 #include "guichanfwd.h"
+
+#include "gui/widgets/container.h"
 
 class Skin;
 class WindowContainer;

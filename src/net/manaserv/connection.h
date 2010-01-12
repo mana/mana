@@ -22,9 +22,9 @@
 #ifndef NET_MANASERV_CONNECTION_H
 #define NET_MANASERV_CONNECTION_H
 
-#include <iosfwd>
-
 #include <enet/enet.h>
+
+#include <iosfwd>
 
 namespace ManaServ
 {

@@ -22,11 +22,12 @@
 #ifndef LOCALPLAYER_H
 #define LOCALPLAYER_H
 
+#include "player.h"
+
+#include "gui/palette.h"
+
 #include <memory>
 #include <vector>
-
-#include "player.h"
-#include "gui/palette.h"
 
 class Equipment;
 class FloorItem;

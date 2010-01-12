@@ -22,10 +22,10 @@
 #ifndef EQUIPMENTWINDOW_H
 #define EQUIPMENTWINDOW_H
 
-#include "gui/widgets/window.h"
-
 #include "equipment.h"
 #include "guichanfwd.h"
+
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 

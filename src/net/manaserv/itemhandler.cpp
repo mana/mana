@@ -21,12 +21,12 @@
 
 #include "net/manaserv/itemhandler.h"
 
+#include "engine.h"
+#include "flooritemmanager.h"
+
 #include "net/manaserv/protocol.h"
 
 #include "net/manaserv/messagein.h"
-
-#include "engine.h"
-#include "flooritemmanager.h"
 
 namespace ManaServ {
 

@@ -29,6 +29,7 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
+
 #include <vector>
 
 class LoginData;

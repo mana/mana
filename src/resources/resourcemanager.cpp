@@ -21,6 +21,8 @@
 
 #include "resources/resourcemanager.h"
 
+#include "log.h"
+
 #include "resources/dye.h"
 #include "resources/image.h"
 #include "resources/imageset.h"
@@ -28,11 +30,11 @@
 #include "resources/soundeffect.h"
 #include "resources/spritedef.h"
 
-#include "log.h"
+#include <physfs.h>
+
+#include <SDL_image.h>
 
 #include <cassert>
-#include <physfs.h>
-#include <SDL_image.h>
 #include <sstream>
 
 #include <sys/time.h>

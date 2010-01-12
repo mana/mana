@@ -22,9 +22,9 @@
 #ifndef UNREGISTERDIALOG_H
 #define UNREGISTERDIALOG_H
 
-#include "gui/widgets/window.h"
-
 #include "guichanfwd.h"
+
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 

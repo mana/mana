@@ -22,11 +22,12 @@
 #ifndef GUI_GUILDWINDOW_H
 #define GUI_GUILDWINDOW_H
 
-#include "gui/widgets/window.h"
-
 #include "guichanfwd.h"
 
+#include "gui/widgets/window.h"
+
 #include <guichan/actionlistener.hpp>
+
 #include <guichan/widgets/listbox.hpp>
 
 #include <iosfwd>

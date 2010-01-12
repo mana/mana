@@ -26,9 +26,9 @@
 #include "guichanfwd.h"
 #include "lockedarray.h"
 
-#include "gui/widgets/window.h"
-
 #include "gui/charselectdialog.h"
+
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 

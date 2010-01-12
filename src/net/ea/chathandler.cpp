@@ -21,11 +21,6 @@
 
 #include "net/ea/chathandler.h"
 
-#include "net/ea/protocol.h"
-
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "being.h"
 #include "beingmanager.h"
 #include "game.h"
@@ -33,6 +28,11 @@
 #include "playerrelations.h"
 
 #include "gui/widgets/chattab.h"
+
+#include "net/messagein.h"
+#include "net/messageout.h"
+
+#include "net/ea/protocol.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

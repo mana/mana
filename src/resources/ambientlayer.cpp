@@ -21,9 +21,10 @@
 
 #include "resources/ambientlayer.h"
 
+#include "graphics.h"
+
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-#include "graphics.h"
 
 AmbientLayer::AmbientLayer(Image *img, float parallax,
                                float speedX, float speedY, bool keepRatio):

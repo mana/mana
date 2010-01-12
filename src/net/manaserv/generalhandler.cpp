@@ -21,6 +21,8 @@
 
 #include "net/manaserv/generalhandler.h"
 
+#include "main.h"
+
 #include "gui/changeemaildialog.h"
 #include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
@@ -30,19 +32,18 @@
 #include "gui/specialswindow.h"
 #include "gui/statuswindow.h"
 
-#include "net/manaserv/network.h"
-#include "net/manaserv/connection.h"
-
 #include "net/manaserv/beinghandler.h"
 #include "net/manaserv/buysellhandler.h"
 #include "net/manaserv/charhandler.h"
 #include "net/manaserv/chathandler.h"
+#include "net/manaserv/connection.h"
 #include "net/manaserv/effecthandler.h"
 #include "net/manaserv/gamehandler.h"
 #include "net/manaserv/guildhandler.h"
 #include "net/manaserv/inventoryhandler.h"
 #include "net/manaserv/itemhandler.h"
 #include "net/manaserv/loginhandler.h"
+#include "net/manaserv/network.h"
 #include "net/manaserv/npchandler.h"
 #include "net/manaserv/partyhandler.h"
 #include "net/manaserv/playerhandler.h"
@@ -50,8 +51,6 @@
 #include "net/manaserv/tradehandler.h"
 
 #include "utils/gettext.h"
-
-#include "main.h"
 
 #include <list>
 

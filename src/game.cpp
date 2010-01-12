@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "game.h"
+
 #include "beingmanager.h"
 #include "channelmanager.h"
 #include "commandhandler.h"
@@ -27,7 +29,6 @@
 #include "emoteshortcut.h"
 #include "engine.h"
 #include "flooritemmanager.h"
-#include "game.h"
 #include "graphics.h"
 #include "itemshortcut.h"
 #include "joystick.h"
@@ -41,9 +42,6 @@
 #include "playerrelations.h"
 #include "sound.h"
 
-#include "gui/widgets/chattab.h"
-#include "gui/widgets/emoteshortcutcontainer.h"
-#include "gui/widgets/itemshortcutcontainer.h"
 #include "gui/buy.h"
 #include "gui/buysell.h"
 #include "gui/chat.h"
@@ -75,10 +73,14 @@
 #include "gui/specialswindow.h"
 #include "gui/storagewindow.h"
 
+#include "gui/widgets/chattab.h"
+#include "gui/widgets/emoteshortcutcontainer.h"
+#include "gui/widgets/itemshortcutcontainer.h"
+
 #include "net/gamehandler.h"
 #include "net/generalhandler.h"
-#include "net/playerhandler.h"
 #include "net/net.h"
+#include "net/playerhandler.h"
 
 #include "resources/imagewriter.h"
 

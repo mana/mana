@@ -22,9 +22,9 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-#include "gui/widgets/window.h"
-
 #include "main.h"
+
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 

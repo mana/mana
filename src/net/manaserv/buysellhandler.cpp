@@ -21,14 +21,14 @@
 
 #include "net/manaserv/buysellhandler.h"
 
-#include "net/manaserv/protocol.h"
-
-#include "net/messagein.h"
-
 #include "beingmanager.h"
 #include "item.h"
 #include "localplayer.h"
 #include "npc.h"
+
+#include "net/messagein.h"
+
+#include "net/manaserv/protocol.h"
 
 #include "gui/buy.h"
 #include "gui/chat.h"

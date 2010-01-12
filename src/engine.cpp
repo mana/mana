@@ -19,8 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "beingmanager.h"
 #include "engine.h"
+
+#include "beingmanager.h"
 #include "flooritemmanager.h"
 #include "game.h"
 #include "localplayer.h"

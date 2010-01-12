@@ -32,12 +32,12 @@ class Equipment
         /**
          * Constructor.
          */
-        Equipment(): mBackend(NULL) {}
+        Equipment(): mBackend(0) {}
 
         /**
          * Destructor.
          */
-        ~Equipment() { mBackend = NULL; }
+        ~Equipment() { mBackend = 0; }
 
         enum Slot
         {

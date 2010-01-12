@@ -21,11 +21,6 @@
 
 #include "net/manaserv/chathandler.h"
 
-#include "net/manaserv/connection.h"
-#include "net/manaserv/messagein.h"
-#include "net/manaserv/messageout.h"
-#include "net/manaserv/protocol.h"
-
 #include "being.h"
 #include "beingmanager.h"
 #include "channel.h"
@@ -33,9 +28,15 @@
 #include "game.h"
 #include "main.h"
 
-#include "gui/widgets/channeltab.h"
 #include "gui/chat.h"
 #include "gui/guildwindow.h"
+
+#include "gui/widgets/channeltab.h"
+
+#include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
+#include "net/manaserv/protocol.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

@@ -34,6 +34,7 @@
 #include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 ItemPopup::ItemPopup():

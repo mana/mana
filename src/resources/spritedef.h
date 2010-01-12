@@ -24,10 +24,10 @@
 
 #include "resources/resource.h"
 
+#include <libxml/tree.h>
+
 #include <map>
 #include <string>
-
-#include <libxml/tree.h>
 
 class Action;
 class ImageSet;

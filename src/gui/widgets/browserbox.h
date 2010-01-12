@@ -22,11 +22,11 @@
 #ifndef BROWSERBOX_H
 #define BROWSERBOX_H
 
-#include <list>
-#include <vector>
-
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
+
+#include <list>
+#include <vector>
 
 class LinkHandler;
 

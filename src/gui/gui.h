@@ -22,9 +22,9 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include <guichan/gui.hpp>
-
 #include "guichanfwd.h"
+
+#include <guichan/gui.hpp>
 
 class Graphics;
 class GuiConfigListener;

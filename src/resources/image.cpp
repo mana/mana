@@ -22,11 +22,11 @@
 #include "resources/image.h"
 
 #include "resources/dye.h"
+#include "resources/sdlrescalefacility.h"
 
 #include "log.h"
 
 #include <SDL_image.h>
-#include "resources/sdlrescalefacility.h"
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;

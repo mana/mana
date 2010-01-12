@@ -21,10 +21,10 @@
 
 #include "net/manaserv/connection.h"
 
+#include "log.h"
+
 #include "net/manaserv/internal.h"
 #include "net/manaserv/messageout.h"
-
-#include "log.h"
 
 #include <string>
 

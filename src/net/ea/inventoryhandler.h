@@ -22,14 +22,14 @@
 #ifndef NET_EA_INVENTORYHANDLER_H
 #define NET_EA_INVENTORYHANDLER_H
 
+#include "equipment.h"
+#include "inventory.h"
+#include "localplayer.h"
+
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 
 #include "net/ea/messagehandler.h"
-
-#include "equipment.h"
-#include "inventory.h"
-#include "localplayer.h"
 
 namespace EAthena {
 

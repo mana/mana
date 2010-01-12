@@ -21,13 +21,6 @@
 
 #include "net/manaserv/playerhandler.h"
 
-#include "net/manaserv/connection.h"
-#include "net/manaserv/messagein.h"
-#include "net/manaserv/messageout.h"
-#include "net/manaserv/protocol.h"
-
-#include "net/net.h"
-
 #include "effectmanager.h"
 #include "engine.h"
 #include "localplayer.h"
@@ -41,6 +34,13 @@
 #include "gui/okdialog.h"
 #include "gui/sell.h"
 #include "gui/viewport.h"
+
+#include "net/net.h"
+
+#include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
+#include "net/manaserv/protocol.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;

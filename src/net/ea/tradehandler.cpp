@@ -21,12 +21,6 @@
 
 #include "net/ea/tradehandler.h"
 
-#include "net/ea/protocol.h"
-
-#include "net/inventoryhandler.h"
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
@@ -36,6 +30,12 @@
 #include "gui/trade.h"
 
 #include "gui/widgets/chattab.h"
+
+#include "net/inventoryhandler.h"
+#include "net/messagein.h"
+#include "net/messageout.h"
+
+#include "net/ea/protocol.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

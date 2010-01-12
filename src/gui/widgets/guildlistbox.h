@@ -22,11 +22,11 @@
 #ifndef GUI_GUILDLISTBOX_H
 #define GUI_GUILDLISTBOX_H
 
+#include "gui/widgets/listbox.h"
+
 #include <map>
 #include <string>
 #include <vector>
-
-#include "gui/widgets/listbox.h"
 
 class Image;
 

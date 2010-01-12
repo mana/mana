@@ -22,10 +22,11 @@
 #ifndef STATUS_EFFECT_H
 #define STATUS_EFFECT_H
 
-#include "resources/animation.h"
 #include "particle.h"
 #include "animatedsprite.h"
 #include "sound.h"
+
+#include "resources/animation.h"
 
 class StatusEffect
 {

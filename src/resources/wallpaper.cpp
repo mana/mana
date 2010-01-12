@@ -25,12 +25,12 @@
 
 #include "utils/stringutils.h"
 
+#include <physfs.h>
+
 #include <algorithm>
 #include <cstring>
-#include <vector>
-
-#include <physfs.h>
 #include <time.h>
+#include <vector>
 
 #define WALLPAPER_FOLDER "graphics/images/"
 #define WALLPAPER_BASE   "login_wallpaper.png"

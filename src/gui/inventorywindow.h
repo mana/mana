@@ -22,9 +22,9 @@
 #ifndef INVENTORYWINDOW_H
 #define INVENTORYWINDOW_H
 
-#include "gui/widgets/window.h"
-
 #include "inventory.h"
+
+#include "gui/widgets/window.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"

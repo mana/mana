@@ -21,14 +21,15 @@
 
 #include "net/ea/generalhandler.h"
 
+#include "configuration.h"
+#include "log.h"
+#include "main.h"
+
 #include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
 #include "gui/register.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
-
-#include "net/ea/network.h"
-#include "net/ea/protocol.h"
 
 #include "net/ea/adminhandler.h"
 #include "net/ea/beinghandler.h"
@@ -39,9 +40,11 @@
 #include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
 #include "net/ea/loginhandler.h"
+#include "net/ea/network.h"
 #include "net/ea/npchandler.h"
-#include "net/ea/playerhandler.h"
 #include "net/ea/partyhandler.h"
+#include "net/ea/playerhandler.h"
+#include "net/ea/protocol.h"
 #include "net/ea/tradehandler.h"
 #include "net/ea/specialhandler.h"
 
@@ -51,10 +54,6 @@
 #include "net/messageout.h"
 
 #include "resources/itemdb.h"
-
-#include "configuration.h"
-#include "log.h"
-#include "main.h"
 
 #include "utils/gettext.h"
 

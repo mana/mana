@@ -21,21 +21,21 @@
 
 #include "net/ea/charserverhandler.h"
 
-#include "net/ea/loginhandler.h"
-#include "net/ea/network.h"
-#include "net/ea/protocol.h"
-
-#include "net/logindata.h"
-#include "net/messagein.h"
-#include "net/messageout.h"
-#include "net/net.h"
-
 #include "game.h"
 #include "log.h"
 #include "main.h"
 
 #include "gui/charcreatedialog.h"
 #include "gui/okdialog.h"
+
+#include "net/logindata.h"
+#include "net/messagein.h"
+#include "net/messageout.h"
+#include "net/net.h"
+
+#include "net/ea/loginhandler.h"
+#include "net/ea/network.h"
+#include "net/ea/protocol.h"
 
 #include "resources/colordb.h"
 

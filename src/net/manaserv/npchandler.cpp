@@ -21,16 +21,16 @@
 
 #include "net/manaserv/npchandler.h"
 
+#include "beingmanager.h"
+#include "npc.h"
+
+#include "gui/npcdialog.h"
+#include "gui/npcpostdialog.h"
+
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "beingmanager.h"
-#include "npc.h"
-
-#include "gui/npcpostdialog.h"
-#include "gui/npcdialog.h"
 
 extern Net::NpcHandler *npcHandler;
 

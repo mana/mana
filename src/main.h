@@ -51,12 +51,6 @@
  * MessageHanders\endlink.
  */
 
-#include <string>
-
-#include "net/logindata.h"
-
-#include <guichan/actionlistener.hpp>
-
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
 #elif defined WIN32
@@ -64,6 +58,12 @@
 #elif defined __APPLE__
 #define PACKAGE_VERSION "0.0.29.1"
 #endif
+
+#include "net/logindata.h"
+
+#include <guichan/actionlistener.hpp>
+
+#include <string>
 
 #ifdef MANASERV_SUPPORT
 #define SERVER_BUILD "manaserv"

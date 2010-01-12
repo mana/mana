@@ -22,9 +22,9 @@
 #ifndef TRADE_H
 #define TRADE_H
 
-#include "gui/widgets/window.h"
-
 #include "guichanfwd.h"
+
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>

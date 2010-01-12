@@ -22,12 +22,12 @@
 #ifndef CHAR_SELECT_H
 #define CHAR_SELECT_H
 
-#include "gui/widgets/window.h"
-
 #include "guichanfwd.h"
 #include "lockedarray.h"
 #include "main.h"
 #include "player.h"
+
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>

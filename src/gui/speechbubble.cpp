@@ -29,6 +29,7 @@
 #include "gui/widgets/textbox.h"
 
 #include <guichan/font.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 SpeechBubble::SpeechBubble():

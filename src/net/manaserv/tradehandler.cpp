@@ -21,13 +21,6 @@
 
 #include "net/manaserv/tradehandler.h"
 
-#include "net/manaserv/connection.h"
-#include "net/manaserv/messagein.h"
-#include "net/manaserv/messageout.h"
-#include "net/manaserv/protocol.h"
-
-#include "net/net.h"
-
 #include "beingmanager.h"
 #include "item.h"
 #include "localplayer.h"
@@ -36,6 +29,13 @@
 #include "gui/trade.h"
 
 #include "gui/widgets/chattab.h"
+
+#include "net/net.h"
+
+#include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
+#include "net/manaserv/protocol.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

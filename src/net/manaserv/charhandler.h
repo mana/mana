@@ -22,9 +22,9 @@
 #ifndef NET_MANASERV_CHARSERVERHANDLER_H
 #define NET_MANASERV_CHARSERVERHANDLER_H
 
-#include "net/charhandler.h"
-
 #include "gui/charselectdialog.h"
+
+#include "net/charhandler.h"
 
 #include "net/manaserv/messagehandler.h"
 

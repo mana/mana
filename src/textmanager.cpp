@@ -21,9 +21,9 @@
 
 #include "textmanager.h"
 
-#include <cstring>
-
 #include "text.h"
+
+#include <cstring>
 
 TextManager *textManager = 0;
 

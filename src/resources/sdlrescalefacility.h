@@ -29,8 +29,9 @@
 #ifndef SDLRESCALEFACILITY_H
 #define SDLRESCALEFACILITY_H
 
-#include <SDL.h>
 #include "image.h"
+
+#include <SDL.h>
 
 /**
  * _SDLzoomSurface is internally used by Image::getScaledImage() to provide

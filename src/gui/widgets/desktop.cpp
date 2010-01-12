@@ -21,6 +21,10 @@
 
 #include "gui/widgets/desktop.h"
 
+#include "graphics.h"
+#include "log.h"
+#include "main.h"
+
 #include "gui/palette.h"
 
 #include "gui/widgets/label.h"
@@ -28,10 +32,6 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 #include "resources/wallpaper.h"
-
-#include "graphics.h"
-#include "log.h"
-#include "main.h"
 
 Desktop::Desktop()
     : mWallpaper(0)

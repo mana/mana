@@ -21,13 +21,13 @@
 
 #include "net/manaserv/effecthandler.h"
 
-#include "net/manaserv/protocol.h"
-
-#include "net/messagein.h"
-
 #include "beingmanager.h"
 #include "effectmanager.h"
 #include "log.h"
+
+#include "net/messagein.h"
+
+#include "net/manaserv/protocol.h"
 
 namespace ManaServ {
 

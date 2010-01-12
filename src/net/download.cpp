@@ -24,10 +24,11 @@
 #include "log.h"
 #include "main.h"
 
+#include <curl/curl.h>
+
 #include <SDL.h>
 #include <SDL_thread.h>
 
-#include <curl/curl.h>
 #include <zlib.h>
 
 const char *DOWNLOAD_ERROR_MESSAGE_THREAD = "Could not create download thread!";

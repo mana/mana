@@ -45,10 +45,9 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+#include <guichan/font.hpp>
 
 #include <sstream>
-
-#include <guichan/font.hpp>
 
 #define CAPTION_PROPOSE _("Propose trade")
 #define CAPTION_CONFIRMED _("Confirmed. Waiting...")

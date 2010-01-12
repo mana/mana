@@ -19,17 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 #include "commandhandler.h"
+
 #include "channelmanager.h"
 #include "channel.h"
 #include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
 
+#include "gui/chat.h"
+
 #include "gui/widgets/channeltab.h"
 #include "gui/widgets/chattab.h"
-#include "gui/chat.h"
 
 #include "net/adminhandler.h"
 #include "net/chathandler.h"

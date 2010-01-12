@@ -22,9 +22,9 @@
 #ifndef SETUP_H
 #define SETUP_H
 
-#include "gui/widgets/window.h"
-
 #include "guichanfwd.h"
+
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 

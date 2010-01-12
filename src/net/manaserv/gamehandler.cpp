@@ -21,13 +21,13 @@
 
 #include "net/manaserv/gamehandler.h"
 
+#include "localplayer.h"
+#include "main.h"
+
 #include "net/manaserv/chathandler.h"
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-#include "localplayer.h"
-#include "main.h"
 
 extern Net::GameHandler *gameHandler;
 

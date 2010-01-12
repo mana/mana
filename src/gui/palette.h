@@ -23,12 +23,12 @@
 #ifndef PALETTE_H
 #define PALETTE_H
 
+#include <guichan/listmodel.hpp>
+#include <guichan/color.hpp>
+
 #include <cstdlib>
 #include <string>
 #include <vector>
-
-#include <guichan/listmodel.hpp>
-#include <guichan/color.hpp>
 
 // Generate strings from an enum ... some preprocessor fun.
 #define EDEF(a) a,

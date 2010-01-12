@@ -22,8 +22,9 @@
 #ifndef CHATTAB_H
 #define CHATTAB_H
 
-#include "gui/widgets/tab.h"
 #include "gui/chat.h"
+
+#include "gui/widgets/tab.h"
 
 class BrowserBox;
 class Recorder;

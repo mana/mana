@@ -21,16 +21,6 @@
 
 #include "net/manaserv/charhandler.h"
 
-#include "net/manaserv/connection.h"
-#include "net/manaserv/gamehandler.h"
-#include "net/manaserv/messagein.h"
-#include "net/manaserv/messageout.h"
-#include "net/manaserv/protocol.h"
-
-#include "net/logindata.h"
-#include "net/loginhandler.h"
-#include "net/net.h"
-
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -38,6 +28,16 @@
 
 #include "gui/charcreatedialog.h"
 #include "gui/okdialog.h"
+
+#include "net/logindata.h"
+#include "net/loginhandler.h"
+#include "net/net.h"
+
+#include "net/manaserv/connection.h"
+#include "net/manaserv/gamehandler.h"
+#include "net/manaserv/messagein.h"
+#include "net/manaserv/messageout.h"
+#include "net/manaserv/protocol.h"
 
 #include "resources/colordb.h"
 

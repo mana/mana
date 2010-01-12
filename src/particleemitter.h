@@ -22,13 +22,13 @@
 #ifndef PARTICLEEMITTER_H
 #define PARTICLEEMITTER_H
 
-#include <list>
-
-#include "utils/xml.h"
-
 #include "particleemitterprop.h"
 
 #include "resources/animation.h"
+
+#include "utils/xml.h"
+
+#include <list>
 
 class Image;
 class Map;

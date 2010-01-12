@@ -22,8 +22,6 @@
 
 #include "text.h"
 
-#include <guichan/font.hpp>
-
 #include "configuration.h"
 #include "textmanager.h"
 #include "textrenderer.h"
@@ -33,6 +31,8 @@
 
 #include "resources/resourcemanager.h"
 #include "resources/image.h"
+
+#include <guichan/font.hpp>
 
 int Text::mInstances = 0;
 ImageRect Text::mBubble;

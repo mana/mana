@@ -21,11 +21,6 @@
 
 #include "net/ea/inventoryhandler.h"
 
-#include "net/ea/protocol.h"
-
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "configuration.h"
 #include "equipment.h"
 #include "inventory.h"
@@ -37,6 +32,11 @@
 #include "gui/storagewindow.h"
 
 #include "gui/widgets/chattab.h"
+
+#include "net/messagein.h"
+#include "net/messageout.h"
+
+#include "net/ea/protocol.h"
 
 #include "resources/iteminfo.h"
 

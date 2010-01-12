@@ -21,8 +21,6 @@
 
 #include "net/ea/beinghandler.h"
 
-#include "net/ea/protocol.h"
-
 #include "being.h"
 #include "beingmanager.h"
 #include "effectmanager.h"
@@ -33,6 +31,8 @@
 #include "playerrelations.h"
 
 #include "gui/partywindow.h"
+
+#include "net/ea/protocol.h"
 
 #include "resources/colordb.h"
 

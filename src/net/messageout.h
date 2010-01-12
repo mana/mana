@@ -22,8 +22,9 @@
 #ifndef NET_MESSAGEOUT_H
 #define NET_MESSAGEOUT_H
 
-#include <iosfwd>
 #include <SDL_types.h>
+
+#include <iosfwd>
 
 namespace Net {
 

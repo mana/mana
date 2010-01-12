@@ -21,10 +21,10 @@
 
 #include "resources/itemdb.h"
 
+#include "log.h"
+
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
-
-#include "log.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"

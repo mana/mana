@@ -21,11 +21,12 @@
 
 #include "gui/help.h"
 
+#include "gui/setup.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
-#include "gui/setup.h"
 
 #include "resources/resourcemanager.h"
 

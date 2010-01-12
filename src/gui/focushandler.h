@@ -22,9 +22,9 @@
 #ifndef FOCUSHANDLER_H
 #define FOCUSHANDLER_H
 
-#include <list>
-
 #include <guichan/focushandler.hpp>
+
+#include <list>
 
 /**
  * The focus handler. This focus handler does exactly the same as the Guichan

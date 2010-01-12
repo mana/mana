@@ -20,6 +20,7 @@
  */
 
 #include <SDL_types.h>
+
 #include <stdio.h>
 #include <string>
 

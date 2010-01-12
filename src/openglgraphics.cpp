@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <SDL.h>
-
 #include "log.h"
 #include "openglgraphics.h"
 
@@ -31,6 +29,8 @@
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>
 #endif
+
+#include <SDL.h>
 
 #ifndef GL_TEXTURE_RECTANGLE_ARB
 #define GL_TEXTURE_RECTANGLE_ARB 0x84F5

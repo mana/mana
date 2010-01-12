@@ -21,9 +21,9 @@
 
 #include "resources/monsterdb.h"
 
-#include "resources/monsterinfo.h"
-
 #include "log.h"
+
+#include "resources/monsterinfo.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"

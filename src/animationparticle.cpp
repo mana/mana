@@ -20,6 +20,7 @@
  */
 
 #include "animationparticle.h"
+
 #include "graphics.h"
 #include "simpleanimation.h"
 

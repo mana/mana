@@ -22,8 +22,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include <guichan/color.hpp>
-
 #include "animationparticle.h"
 #include "configuration.h"
 #include "imageparticle.h"
@@ -39,6 +37,11 @@
 #include "utils/dtor.h"
 #include "utils/mathutils.h"
 #include "utils/xml.h"
+
+#include <guichan/color.hpp>
+
+#include <algorithm>
+#include <cmath>
 
 #define SIN45 0.707106781f
 

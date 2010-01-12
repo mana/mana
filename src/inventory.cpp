@@ -19,11 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "inventory.h"
 #include "item.h"
 #include "log.h"
+
+#include <algorithm>
 
 struct SlotUsed : public std::unary_function<Item*, bool>
 {

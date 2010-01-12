@@ -22,9 +22,9 @@
 #ifndef _SHOPITEM_H
 #define _SHOPITEM_H
 
-#include <stack>
-
 #include "item.h"
+
+#include <stack>
 
 /**
  * Represents an item in a shop inventory. It can store quantity and inventory

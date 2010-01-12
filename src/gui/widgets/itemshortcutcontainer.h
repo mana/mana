@@ -22,9 +22,9 @@
 #ifndef ITEMSHORTCUTCONTAINER_H
 #define ITEMSHORTCUTCONTAINER_H
 
-#include <guichan/mouselistener.hpp>
-
 #include "gui/widgets/shortcutcontainer.h"
+
+#include <guichan/mouselistener.hpp>
 
 class Image;
 class Item;

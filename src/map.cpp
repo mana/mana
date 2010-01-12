@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <queue>
-
 #include "beingmanager.h"
 #include "configuration.h"
 #include "game.h"
@@ -37,6 +35,8 @@
 
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
+
+#include <queue>
 
 extern volatile int tick_time;
 

@@ -34,9 +34,9 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <SDL_keyboard.h>
-
 #include <guichan/listmodel.hpp>
+
+#include <SDL_keyboard.h>
 
 /**
  * The list model for key function list.

@@ -23,6 +23,7 @@
 #define KEYBOARDCONFIG_H
 
 #include <SDL_types.h>
+
 #include <string>
 
 /**

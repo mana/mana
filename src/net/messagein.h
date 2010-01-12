@@ -23,6 +23,7 @@
 #define NET_MESSAGEIN_H
 
 #include <SDL_types.h>
+
 #include <string>
 
 namespace Net {

@@ -38,6 +38,7 @@
 #include "net/tradehandler.h"
 
 #include "net/ea/generalhandler.h"
+
 #include "net/manaserv/generalhandler.h"
 
 Net::AdminHandler *adminHandler = NULL;

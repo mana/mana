@@ -20,6 +20,7 @@
  */
 
 #include "channelmanager.h"
+
 #include "channel.h"
 
 #include "utils/dtor.h"

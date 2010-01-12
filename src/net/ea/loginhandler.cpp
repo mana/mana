@@ -21,15 +21,15 @@
 
 #include "net/ea/loginhandler.h"
 
-#include "net/ea/network.h"
-#include "net/ea/protocol.h"
+#include "log.h"
+#include "main.h"
 
 #include "net/logindata.h"
 #include "net/messagein.h"
 #include "net/messageout.h"
 
-#include "log.h"
-#include "main.h"
+#include "net/ea/network.h"
+#include "net/ea/protocol.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"

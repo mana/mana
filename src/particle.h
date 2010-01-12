@@ -22,12 +22,12 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#include <list>
-#include <string>
-
 #include "guichanfwd.h"
 #include "sprite.h"
 #include "vector.h"
+
+#include <list>
+#include <string>
 
 class Map;
 class Particle;

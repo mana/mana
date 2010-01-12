@@ -21,11 +21,6 @@
 
 #include "net/ea/playerhandler.h"
 
-#include "net/ea/protocol.h"
-
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "engine.h"
 #include "localplayer.h"
 #include "log.h"
@@ -42,6 +37,11 @@
 #include "gui/viewport.h"
 
 #include "gui/widgets/chattab.h"
+
+#include "net/messagein.h"
+#include "net/messageout.h"
+
+#include "net/ea/protocol.h"
 
 #include "utils/stringutils.h"
 #include "utils/gettext.h"

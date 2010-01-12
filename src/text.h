@@ -23,10 +23,10 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include <guichan/color.hpp>
-
 #include "graphics.h"
 #include "guichanfwd.h"
+
+#include <guichan/color.hpp>
 
 class TextManager;
 

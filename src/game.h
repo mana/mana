@@ -22,9 +22,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "SDL.h"
-
 #include "configlistener.h"
+#include "SDL.h"
 
 extern std::string map_path;
 extern volatile int fps;

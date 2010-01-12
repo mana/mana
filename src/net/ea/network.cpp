@@ -21,15 +21,15 @@
 
 #include "net/ea/network.h"
 
-#include "net/ea/protocol.h"
+#include "log.h"
 
 #include "net/messagehandler.h"
 #include "net/messagein.h"
 
+#include "net/ea/protocol.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-
-#include "log.h"
 
 #include <assert.h>
 #include <sstream>

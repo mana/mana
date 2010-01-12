@@ -22,9 +22,9 @@
 #ifndef ROTATIONAL_PARTICLE_H
 #define ROTATIONAL_PARTICLE_H
 
-#include <libxml/tree.h>
-
 #include "imageparticle.h"
+
+#include <libxml/tree.h>
 
 class Animation;
 class Map;

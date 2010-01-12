@@ -21,9 +21,9 @@
 
 #include "resources/imageset.h"
 
-#include "resources/image.h"
-
 #include "log.h"
+
+#include "resources/image.h"
 
 #include "utils/dtor.h"
 

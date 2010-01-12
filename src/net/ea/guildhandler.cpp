@@ -21,11 +21,11 @@
 
 #include "net/ea/guildhandler.h"
 
-#include "net/ea/messagein.h"
-#include "net/ea/protocol.h"
-
 #include "localplayer.h"
 #include "log.h"
+
+#include "net/ea/messagein.h"
+#include "net/ea/protocol.h"
 
 extern Net::GuildHandler *guildHandler;
 

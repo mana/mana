@@ -45,9 +45,9 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <algorithm>
-
 #include <guichan/widgets/tab.hpp>
+
+#include <algorithm>
 
 GuildWindow::GuildWindow():
     Window(_("Guild")),

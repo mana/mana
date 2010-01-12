@@ -21,12 +21,12 @@
 
 #include "net/manaserv/network.h"
 
+#include "log.h"
+
 #include "net/manaserv/connection.h"
 #include "net/manaserv/internal.h"
 #include "net/manaserv/messagehandler.h"
 #include "net/manaserv/messagein.h"
-
-#include "log.h"
 
 #include <enet/enet.h>
 

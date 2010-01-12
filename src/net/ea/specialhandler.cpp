@@ -21,17 +21,17 @@
 
 #include "net/ea/specialhandler.h"
 
-#include "net/ea/protocol.h"
-
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "localplayer.h"
 #include "log.h"
 
 #include "gui/skilldialog.h"
 
 #include "gui/widgets/chattab.h"
+
+#include "net/messagein.h"
+#include "net/messageout.h"
+
+#include "net/ea/protocol.h"
 
 #include "utils/gettext.h"
 

@@ -47,6 +47,7 @@
 #include <guichan/listmodel.hpp>
 
 #include <SDL.h>
+
 #include <string>
 #include <vector>
 

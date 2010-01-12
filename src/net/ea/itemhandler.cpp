@@ -21,12 +21,12 @@
 
 #include "net/ea/itemhandler.h"
 
-#include "net/ea/protocol.h"
+#include "engine.h"
+#include "flooritemmanager.h"
 
 #include "net/messagein.h"
 
-#include "engine.h"
-#include "flooritemmanager.h"
+#include "net/ea/protocol.h"
 
 namespace EAthena {
 

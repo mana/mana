@@ -21,9 +21,10 @@
 
 #include "resources/ambientoverlay.h"
 
+#include "graphics.h"
+
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-#include "graphics.h"
 
 AmbientOverlay::AmbientOverlay(Image *img, float parallax,
                                float speedX, float speedY, bool keepRatio):

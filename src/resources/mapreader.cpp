@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "resources/animation.h"
-#include "resources/image.h"
 #include "resources/mapreader.h"
-#include "resources/resourcemanager.h"
 
 #include "log.h"
 #include "map.h"
 #include "tileset.h"
+
+#include "resources/animation.h"
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 #include "utils/base64.h"
 #include "utils/stringutils.h"

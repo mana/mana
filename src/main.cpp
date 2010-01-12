@@ -38,11 +38,6 @@
 #include "statuseffect.h"
 #include "units.h"
 
-#include "gui/widgets/button.h"
-#include "gui/widgets/desktop.h"
-#include "gui/widgets/label.h"
-#include "gui/widgets/progressbar.h"
-
 #include "gui/changeemaildialog.h"
 #include "gui/changepassworddialog.h"
 #include "gui/charselectdialog.h"
@@ -60,6 +55,11 @@
 #include "gui/unregisterdialog.h"
 #include "gui/updatewindow.h"
 #include "gui/worldselectdialog.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/desktop.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/progressbar.h"
 
 #include "net/charhandler.h"
 #include "net/gamehandler.h"
@@ -84,6 +84,13 @@
 
 #include <libxml/parser.h>
 
+#ifdef WIN32
+#include <SDL_syswm.h>
+#else
+#include <cerrno>
+#include <sys/stat.h>
+#endif
+
 #include <getopt.h>
 #include <iostream>
 #include <physfs.h>
@@ -97,13 +104,6 @@
 #ifdef __MINGW32__
 #include <windows.h>
 #define usleep(usec) (Sleep ((usec) / 1000), 0)
-#endif
-
-#ifdef WIN32
-#include <SDL_syswm.h>
-#else
-#include <cerrno>
-#include <sys/stat.h>
 #endif
 
 namespace

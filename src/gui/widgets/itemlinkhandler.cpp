@@ -22,9 +22,10 @@
 #include <sstream>
 #include <string>
 
-#include "gui/widgets/itemlinkhandler.h"
 #include "gui/itempopup.h"
 #include "gui/viewport.h"
+
+#include "gui/widgets/itemlinkhandler.h"
 
 #include "resources/iteminfo.h"
 #include "resources/itemdb.h"
