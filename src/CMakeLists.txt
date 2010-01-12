@@ -232,8 +232,6 @@ SET(SRCS
     gui/setup_players.h
     gui/setup_video.cpp
     gui/setup_video.h
-    gui/shoplistbox.cpp
-    gui/shoplistbox.h
     gui/shortcutwindow.cpp
     gui/shortcutwindow.h
     gui/skilldialog.cpp
