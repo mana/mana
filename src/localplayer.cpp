@@ -93,7 +93,9 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mTotalWeight(1), mMaxWeight(1),
     mHp(1), mMaxHp(1),
     mSkillPoints(0),
-    mTarget(NULL), mPickUpTarget(NULL),
+    mTarget(NULL),
+    mPlayerFollowed(""),
+    mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
     mWalkingDir(0),
@@ -106,8 +108,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 #endif
     mStorage(new Inventory(Net::getInventoryHandler()
                            ->getSize(Net::InventoryHandler::STORAGE))),
-    mMessageTime(0),
-    mPlayerFollowed("")
+    mMessageTime(0)
 {
     // Variable to keep the local player from doing certain actions before a map
     // is initialized. e.g. drawing a player's name using the TextManager, since
