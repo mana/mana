@@ -219,7 +219,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 dstBeing->setDirection(dir);
             }
 
-//             msg.readInt8();   // unknown
+            msg.readInt8();   // unknown
             msg.readInt8();   // unknown
             msg.readInt8();   // unknown / sit
 
