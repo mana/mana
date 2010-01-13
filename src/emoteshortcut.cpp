@@ -26,7 +26,7 @@
 
 #include "utils/stringutils.h"
 
-EmoteShortcut::EmoteShortcut *emoteShortcut;
+EmoteShortcut *emoteShortcut;
 
 EmoteShortcut::EmoteShortcut():
     mEmoteSelected(0)
