@@ -54,6 +54,7 @@
 #: src/resources/monsterdb.cpp:101 src/resources/monsterdb.cpp:133
 # Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
 # Jonathan Raphael Joachim Kolberg, 2009, 2010.
+# seeseekey <seeseekey@googlemail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
