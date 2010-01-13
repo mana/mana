@@ -327,7 +327,7 @@ class LocalPlayer : public Player
         int getAttributeBase(int num)
         { return mAttributeBase[num]; }
 
-        void setAttributeBase(int num, int value);
+        void setAttributeBase(int num, int value, bool notify = true);
 
         int getAttributeEffective(int num)
         { return mAttributeEffective[num]; }
@@ -349,7 +349,7 @@ class LocalPlayer : public Player
 
         void setSkillPoints(int points);
 
-        void setExperience(int skill, int current, int next);
+        void setExperience(int skill, int current, int next, bool notify = true);
 
         std::pair<int, int> getExperience(int skill);
 

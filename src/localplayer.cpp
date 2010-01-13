@@ -817,7 +817,7 @@ void LocalPlayer::lowerAttribute(size_t attr)
     Net::getPlayerHandler()->decreaseAttribute(attr);
 }
 
-void LocalPlayer::setAttributeBase(int num, int value)
+void LocalPlayer::setAttributeBase(int num, int value, bool notify)
 {
     int old = mAttributeBase[num];
 
@@ -827,7 +827,8 @@ void LocalPlayer::setAttributeBase(int num, int value)
         if (skillDialog->update(num).empty() || !(value > old))
             return;
 
-        effectManager->trigger(1, this);
+        if (old != 0 && notify)
+            effectManager->trigger(1, this);
     }
 
     if (statusWindow)
@@ -867,7 +868,7 @@ void LocalPlayer::setSkillPoints(int points)
         skillDialog->update();
 }
 
-void LocalPlayer::setExperience(int skill, int current, int next)
+void LocalPlayer::setExperience(int skill, int current, int next, bool notify)
 {
     std::pair<int, int> cur = getExperience(skill);
     int diff = current - cur.first;
@@ -875,11 +876,12 @@ void LocalPlayer::setExperience(int skill, int current, int next)
     cur = std::pair<int, int>(current, next);
 
     mSkillExp[skill] = cur;
+
     std::string name;
     if (skillDialog)
         name = skillDialog->update(skill);
 
-    if (mMap && cur.first != -1 && diff > 0 && !name.empty())
+    if (mMap && notify && cur.first != -1 && diff > 0 && !name.empty())
     {
         addMessageToQueue(strprintf("%d %s xp", diff, name.c_str()));
     }

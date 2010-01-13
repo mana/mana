@@ -189,7 +189,7 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
     tempPlayer->setMoney(msg.readInt32());
     tempPlayer->setExperience(JOB, msg.readInt32(), 1);
     int temp = msg.readInt32();
-    tempPlayer->setAttributeBase(JOB, temp);
+    tempPlayer->setAttributeBase(JOB, temp, false);
     tempPlayer->setAttributeEffective(JOB, temp);
     tempPlayer->setSprite(Player::SHOE_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Player::GLOVES_SPRITE, msg.readInt16());
@@ -218,7 +218,7 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
     tempPlayer->setSprite(Player::MISC2_SPRITE, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++)
-        tempPlayer->setAttributeBase(i + STR, msg.readInt8());
+        tempPlayer->setAttributeBase(i + STR, msg.readInt8(), false);
     slot = msg.readInt8(); // character slot
     msg.readInt8();                        // unknown
 

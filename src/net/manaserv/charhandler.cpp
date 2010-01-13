@@ -166,7 +166,7 @@ void CharHandler::handleMessage(Net::MessageIn &msg)
 
                 for (int i = 0; i < 7; i++)
                 {
-                    tempPlayer->setAttributeBase(i, info.attr[i]);
+                    tempPlayer->setAttributeBase(i, info.attr[i], false);
                 }
 
                 mCharInfo->setEntry(tempPlayer);
@@ -341,7 +341,7 @@ void CharHandler::getCharacters()
 
             for (int i = 0; i < 7; i++)
             {
-                tempPlayer->setAttributeBase(i, info.attr[i]);
+                tempPlayer->setAttributeBase(i, info.attr[i], false);
             }
 
             mCharInfo->setEntry(tempPlayer);
