@@ -374,6 +374,29 @@ class LocalPlayer : public Player
          * Called when a option (set with config.addListener()) is changed
          */
         void optionChanged(const std::string &value);
+        
+        /**
+         * set a following player by right clicking.
+         */
+        void setFollow(std::string player) { mPlayerFollowed = player; }
+
+        /**
+         * setting the next destination of the following, in case of warp
+         */
+        void setNextDest(int x, int y) { mNextDestX = x; mNextDestY = y; }
+
+        int getNextDestX() const { return mNextDestX; }
+        int getNextDestY() const { return mNextDestY; }
+
+        /**
+         * stops a following
+         */
+        void cancelFollow() { mPlayerFollowed = ""; }
+        
+        /**
+         * get following
+         */
+        std::string getFollow() const { return mPlayerFollowed; }
 
     protected:
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
@@ -413,6 +436,12 @@ class LocalPlayer : public Player
         int mGMLevel;
 
         Being *mTarget;
+        
+        /** Follow system **/
+        std::string mPlayerFollowed;
+        int mNextDestX;
+        int mNextDestY;
+        
         FloorItem *mPickUpTarget;
 
         bool mTrading;

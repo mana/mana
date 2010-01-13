@@ -106,7 +106,8 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 #endif
     mStorage(new Inventory(Net::getInventoryHandler()
                            ->getSize(Net::InventoryHandler::STORAGE))),
-    mMessageTime(0)
+    mMessageTime(0),
+    mPlayerFollowed("")
 {
     // Variable to keep the local player from doing certain actions before a map
     // is initialized. e.g. drawing a player's name using the TextManager, since

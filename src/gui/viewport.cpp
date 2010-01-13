@@ -390,6 +390,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         else
         {
             player_node->stopAttack();
+            player_node->cancelFollow();
             mPlayerFollowMouse = true;
 
             // Make the player go to the mouse position
