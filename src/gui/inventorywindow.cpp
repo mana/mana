@@ -25,6 +25,7 @@
 #include "item.h"
 #include "localplayer.h"
 #include "units.h"
+#include "keyboardconfig.h"
 
 #include "gui/itemamount.h"
 #include "gui/setup.h"
@@ -220,6 +221,19 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
         const int mx = event.getX() + getX();
         const int my = event.getY() + getY();
         viewport->showPopup(mx, my, item);
+    }
+
+    if (event.getButton() == gcn::MouseEvent::LEFT)
+    {
+        if (storageWindow && keyboard.isKeyActive(keyboard.KEY_EMOTE))
+        {
+            Item *item = mItems->getSelectedItem();
+
+            if(!item)
+                return;
+
+            storageWindow->addStore(item, item->getQuantity());
+        }
     }
 }
 

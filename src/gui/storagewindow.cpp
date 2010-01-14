@@ -25,6 +25,7 @@
 #include "item.h"
 #include "localplayer.h"
 #include "units.h"
+#include "keyboardconfig.h"
 
 #include "gui/inventorywindow.h"
 #include "gui/itemamount.h"
@@ -173,6 +174,18 @@ void StorageWindow::mouseClicked(gcn::MouseEvent &event)
         const int mx = event.getX() + getX();
         const int my = event.getY() + getY();
         viewport->showPopup(mx, my, item, false);
+    }
+    if (event.getButton() == gcn::MouseEvent::LEFT)
+    {
+        if (keyboard.isKeyActive(keyboard.KEY_EMOTE))
+        {
+            Item *item = mItems->getSelectedItem();
+
+            if(!item)
+                return;
+
+            removeStore(item, item->getQuantity());
+        }
     }
 }
 

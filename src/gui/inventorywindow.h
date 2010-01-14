@@ -24,6 +24,7 @@
 
 #include "inventory.h"
 
+#include "gui/storagewindow.h"
 #include "gui/widgets/window.h"
 
 #include "net/inventoryhandler.h"
