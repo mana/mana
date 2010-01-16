@@ -321,8 +321,16 @@ class Being : public Sprite, public ConfigListener
          * Draws this being to the given graphics context.
          *
          * @see Sprite::draw(Graphics, int, int)
+         *
+         * TODO: The following two functions should be combined.
+         * at some point draw(), was changed to use mPx and mPy, with arugements
+         * only for the offset, drawSpriteAt() takes x, and y and draws the sprite
+         * exactly at those coords (though it does do some computing to work how the
+         * old draw() worked).
          */
         virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
+
+        virtual void drawSpriteAt(Graphics *graphics, int x, int y) const;
 
         /**
          * Set the alpha opacity used to draw the being.

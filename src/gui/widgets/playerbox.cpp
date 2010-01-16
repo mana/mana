@@ -86,7 +86,7 @@ void PlayerBox::draw(gcn::Graphics *graphics)
         const int bs = getFrameSize();
         const int x = getWidth() / 2 + bs;
         const int y = getHeight() - bs;
-        mPlayer->draw(static_cast<Graphics*>(graphics), x, y);
+        mPlayer->drawSpriteAt(static_cast<Graphics*>(graphics), x, y);
     }
 
     if (config.getValue("guialpha", 0.8) != mAlpha)

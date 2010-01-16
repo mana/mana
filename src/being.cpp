@@ -664,6 +664,20 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
         }
 }
 
+void Being::drawSpriteAt(Graphics *graphics, int x, int y) const
+{
+    const int px = x - 16;
+    const int py = y - 32;
+
+    for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
+        if (*it)
+        {
+            if ((*it)->getAlpha() != mAlpha)
+                (*it)->setAlpha(mAlpha);
+            (*it)->draw(graphics, px, py);
+        }
+}
+
 void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 {
     if (!mEmotion)
