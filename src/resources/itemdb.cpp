@@ -74,6 +74,7 @@ static ItemType itemTypeFromString(const std::string &name, int id = 0)
     else if (name=="equip-legs")        return ITEM_EQUIPMENT_LEGS;
     else if (name=="equip-shield")      return ITEM_EQUIPMENT_SHIELD;
     else if (name=="equip-ring")        return ITEM_EQUIPMENT_RING;
+    else if (name=="equip-charm")       return ITEM_EQUIPMENT_CHARM;
     else if (name=="equip-necklace")    return ITEM_EQUIPMENT_NECKLACE;
     else if (name=="equip-feet")        return ITEM_EQUIPMENT_FEET;
     else if (name=="equip-ammo")        return ITEM_EQUIPMENT_AMMO;
