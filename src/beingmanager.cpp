@@ -206,23 +206,14 @@ void BeingManager::clear()
         mBeings.push_back(player_node);
 }
 
-Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
+Being *BeingManager::findNearestLivingBeing(int x, int y,
+                                            int maxTileDist,
                                             Being::Type type) const
 {
-    Being *closestBeing = NULL;
+    Being *closestBeing = 0;
     int dist = 0;
 
-#ifdef MANASERV_SUPPORT
-    //Why do we do this:
-    //For some reason x,y passed to this function is always
-    //in map coords, while down below its in pixels
-    //
-    //I believe there is a deeper problem under this, but
-    //for a temp solution we'll convert to coords to pixels
-    x = x * 32;
-    y = y * 32;
-    maxdist = maxdist * 32;
-#endif
+    const int maxDist = maxTileDist * 32;
 
     Beings::const_iterator itr = mBeings.begin();
     Beings::const_iterator itr_end = mBeings.end();
@@ -230,15 +221,11 @@ Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
     for (; itr != itr_end; ++itr)
     {
         Being *being = (*itr);
-#ifdef MANASERV_SUPPORT
         const Vector &pos = being->getPosition();
         int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
-#else
-        int d = abs(being->getTileX() - x) + abs(being->getTileY() - y);
-#endif
 
         if ((being->getType() == type || type == Being::UNKNOWN)
-                && (d < dist || closestBeing == NULL)   // it is closer
+                && (d < dist || !closestBeing)          // it is closer
                 && being->mAction != Being::DEAD)       // no dead beings
         {
             dist = d;
@@ -246,46 +233,14 @@ Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
         }
     }
 
-    return (maxdist >= dist) ? closestBeing : NULL;
+    return (maxDist >= dist) ? closestBeing : 0;
 }
 
-Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
+Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxDist,
                                             Being::Type type) const
 {
-    Being *closestBeing = NULL;
-    int dist = 0;
-#ifdef MANASERV_SUPPORT
-    const Vector &apos = aroundBeing->getPosition();
-    int x = apos.x;
-    int y = apos.y;
-    maxdist = maxdist * 32;
-#else
-    int x = aroundBeing->getTileX();
-    int y = aroundBeing->getTileY();
-#endif
-
-    for (Beings::const_iterator i = mBeings.begin(), i_end = mBeings.end();
-         i != i_end; ++i)
-    {
-        Being *being = (*i);
-#ifdef MANASERV_SUPPORT
-        const Vector &pos = being->getPosition();
-        int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
-#else
-        int d = abs(being->getTileX() - x) + abs(being->getTileY() - y);
-#endif
-
-        if ((being->getType() == type || type == Being::UNKNOWN)
-                && (d < dist || closestBeing == NULL)   // it is closer
-                && being->mAction != Being::DEAD        // no dead beings
-                && being != aroundBeing)
-        {
-            dist = d;
-            closestBeing = being;
-        }
-    }
-
-    return (maxdist >= dist) ? closestBeing : NULL;
+    const Vector &pos = aroundBeing->getPosition();
+    return findNearestLivingBeing(pos.x, pos.y, maxDist, type);
 }
 
 bool BeingManager::hasBeing(Being *being) const

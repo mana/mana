@@ -70,29 +70,31 @@ class BeingManager
         /**
          * Returns a being nearest to specific coordinates.
          *
-         * @param x       X coordinate.
-         * @param y       Y coordinate.
-         * @param maxdist Maximal distance. If minimal distance is larger,
-         *                no being is returned.
-         * @param type    The type of being to look for.
+         * @param x           X coordinate in pixels.
+         * @param y           Y coordinate in pixels.
+         * @param maxTileDist Maximal distance in tiles. If minimal distance is
+         *                    larger, no being is returned.
+         * @param type        The type of being to look for.
          */
-        Being *findNearestLivingBeing(int x, int y, int maxdist,
+        Being *findNearestLivingBeing(int x, int y, int maxTileDist,
                                       Being::Type type = Being::UNKNOWN) const;
+
+        /**
+         * Returns a being nearest to another being.
+         *
+         * @param aroundBeing The being to search around.
+         * @param maxTileDist Maximal distance in tiles. If minimal distance is
+         *                    larger, no being is returned.
+         * @param type        The type of being to look for.
+         */
+         Being *findNearestLivingBeing(Being *aroundBeing, int maxTileDist,
+                                       Being::Type type = Being::UNKNOWN) const;
 
        /**
         * Finds a being by name and (optionally) by type.
         */
         Being *findBeingByName(const std::string &name,
                                Being::Type type = Being::UNKNOWN) const;
-
-       /**
-        * Returns a being nearest to another being.
-        *
-        * \param maxdist maximal distance. If minimal distance is larger,
-        *                no being is returned
-        */
-        Being *findNearestLivingBeing(Being *aroundBeing, int maxdist,
-                                      Being::Type type = Being::UNKNOWN) const;
 
         /**
          * Returns the whole list of beings.

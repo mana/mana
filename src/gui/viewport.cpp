@@ -307,10 +307,10 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
 
     mPlayerFollowMouse = false;
 
-    const int pixelx = event.getX() + (int) mPixelViewX;
-    const int pixely = event.getY() + (int) mPixelViewY;
-    const int tilex = pixelx / mMap->getTileWidth();
-    const int tiley = pixely / mMap->getTileHeight();
+    const int pixelX = event.getX() + (int) mPixelViewX;
+    const int pixelY = event.getY() + (int) mPixelViewY;
+    const int tileX = pixelX / mMap->getTileWidth();
+    const int tileY = pixelY / mMap->getTileHeight();
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
@@ -318,14 +318,14 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = beingManager->findBeingByPixel(pixelx, pixely)) &&
+        if ((being = beingManager->findBeingByPixel(pixelX, pixelY)) &&
              being != player_node)
         {
             mPopupMenu->showPopup(event.getX(), event.getY(), being);
             return;
         }
-        else if ((floorItem = floorItemManager->findByCoordinates(tilex,
-                                                                  tiley)))
+        else if ((floorItem = floorItemManager->findByCoordinates(tileX,
+                                                                  tileY)))
         {
             mPopupMenu->showPopup(event.getX(), event.getY(), floorItem);
             return;
@@ -346,7 +346,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         Being *being;
 
         // Interact with some being
-        if ((being = beingManager->findBeingByPixel(pixelx, pixely)))
+        if ((being = beingManager->findBeingByPixel(pixelX, pixelY)))
         {
             switch (being->getType())
             {
@@ -378,7 +378,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
              }
         // Picks up a item if we clicked on one
         }
-        else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
+        else if ((item = floorItemManager->findByCoordinates(tileX, tileY)))
         {
             player_node->pickUp(item);
         }
@@ -401,8 +401,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     {
         // Find the being nearest to the clicked position
         Being *target = beingManager->findNearestLivingBeing(
-                tilex, tiley,
-                20, Being::MONSTER);
+                pixelX, pixelY, 20, Being::MONSTER);
 
         if (target)
              player_node->setTarget(target);
