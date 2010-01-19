@@ -30,6 +30,7 @@
 #include "gui/buy.h"
 #include "gui/buysell.h"
 #include "gui/gui.h"
+#include "gui/npcdialog.h"
 #include "gui/okdialog.h"
 #include "gui/sell.h"
 #include "gui/statuswindow.h"
@@ -87,6 +88,8 @@ namespace {
             if (storageWindow->isVisible())
                 storageWindow->close();
             viewport->closePopupMenu();
+            npcDialog->closeDialog();
+            current_npc = 0;
         }
     } deathListener;
 

@@ -54,7 +54,7 @@ class NPC : public Player
         /** We consider NPCs (at least for now) to be one layer-sprites */
         virtual int getNumberOfLayers() const
         { return 1; }
-        
+
         static const bool isTalking();
 
     protected:
