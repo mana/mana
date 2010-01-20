@@ -1073,8 +1073,12 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        ((CharSelectDialog*) currentDialog)->selectByName(
-                            config.getValue("lastCharacter", ""));
+                        if (((CharSelectDialog*) currentDialog)->selectByName(
+                            config.getValue("lastCharacter", "")))
+                        {
+                            if (options.chooseDefault)
+                                ((CharSelectDialog*) currentDialog)->chooseSelected();
+                        }
                     }
 
                     break;

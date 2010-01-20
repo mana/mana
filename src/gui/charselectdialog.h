@@ -66,7 +66,12 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
 
         bool selectByName(const std::string &name);
 
-        void chooseSelected();
+        /**
+         * Send selection to character server
+         * @return false if the selection or the number of existing character
+         * is empty.
+         */ 
+        bool chooseSelected();
 
         void update(int slot = -1);
 
