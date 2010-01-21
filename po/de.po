@@ -2,6 +2,9 @@
 # Copyright (C) 2007 The Mana World Development Team
 # This file is distributed under the same license as the The Mana World package.
 #
+# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
+# Jonathan Raphael Joachim Kolberg, 2009, 2010.
+# seeseekey <seeseekey@googlemail.com>, 2009.
 #: src/commandhandler.cpp:149 src/commandhandler.cpp:319
 #: src/commandhandler.cpp:320 src/commandhandler.cpp:344
 #: src/commandhandler.cpp:397 src/engine.cpp:50 src/engine.cpp:57
@@ -52,9 +55,6 @@
 #: src/resources/itemdb.cpp:228 src/resources/itemdb.cpp:229
 #: src/resources/itemdb.cpp:230 src/resources/itemdb.cpp:306
 #: src/resources/monsterdb.cpp:101 src/resources/monsterdb.cpp:133
-# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
-# Jonathan Raphael Joachim Kolberg, 2009, 2010.
-# seeseekey <seeseekey@googlemail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
@@ -1229,11 +1229,13 @@ msgstr ""
 msgid "%d FPS"
 msgstr ""
 
-#: src/gui/debugwindow.cpp:65, c-format
+#: src/gui/debugwindow.cpp:65
+#, c-format
 msgid "Music: %s"
 msgstr "Musik: %s"
 
-#: src/gui/debugwindow.cpp:66, c-format
+#: src/gui/debugwindow.cpp:66
+#, c-format
 msgid "Map: %s"
 msgstr "Karte : %s"
 
@@ -1941,6 +1943,16 @@ msgstr "Partyeinladung von %s abgelehnt."
 msgid "PopupMenu"
 msgstr ""
 
+#: src/gui/popupmenu.cpp:84
+#, fuzzy, c-format
+msgid "Trade with %s..."
+msgstr "Handele mit %s"
+
+#: src/gui/popupmenu.cpp:88 src/gui/popupmenu.cpp:160
+#, fuzzy, c-format
+msgid "Attack %s"
+msgstr "Angriff %+d"
+
 #: src/gui/popupmenu.cpp:92
 #, c-format
 msgid "Whisper %s"
@@ -2022,10 +2034,6 @@ msgstr "Angriff"
 
 #: src/gui/popupmenu.cpp:229
 msgid "/w \""
-msgstr ""
-
-#: src/gui/popupmenu.cpp:229
-msgid "\" "
 msgstr ""
 
 #: src/gui/popupmenu.cpp:245
@@ -2185,15 +2193,6 @@ msgstr "Die Warteschlange ist leer."
 #: src/gui/sell.cpp:74 src/gui/sell.cpp:182
 msgid "sell"
 msgstr "Verkaufen"
-
-#: src/gui/serverdialog.cpp:76 src/gui/updatewindow.cpp:301
-#: src/gui/worldselectdialog.cpp:64
-msgid " ("
-msgstr ""
-
-#: src/gui/serverdialog.cpp:80 src/gui/worldselectdialog.cpp:64
-msgid ")"
-msgstr ""
 
 #: src/gui/serverdialog.cpp:87
 msgid "Choose Your Server"
@@ -4035,6 +4034,10 @@ msgstr "Ungültiger Updateserver: "
 msgid "http://updates.themanaworld.org/"
 msgstr ""
 
+#: src/main.cpp:211
+msgid "://"
+msgstr ""
+
 #: src/main.cpp:216 src/main.cpp:229
 msgid "updates/"
 msgstr ""
@@ -4053,6 +4056,10 @@ msgstr "Ungültiger Updateserver: "
 msgid "Warning: no protocol was specified for the update host"
 msgstr ""
 
+#: src/main.cpp:241 src/main.cpp:246
+msgid "\\"
+msgstr ""
+
 #: src/main.cpp:253
 #, fuzzy, c-format
 msgid "Error: %s can't be made, but doesn't exist!"
@@ -4066,6 +4073,15 @@ msgstr "Fehler beim Erstellen des Verzeichnisses für Updates!"
 #, fuzzy, c-format
 msgid "Error: %s/%s can't be made, but doesn't exist!"
 msgstr " konnte nicht erstellt werden, aber existiert auch nicht! Beende."
+
+#: src/main.cpp:281
+msgid "/Library/Application Support/"
+msgstr ""
+
+#: src/main.cpp:282 src/main.cpp:371
+#, fuzzy
+msgid "appName"
+msgstr "Name"
 
 #: src/main.cpp:282
 #, fuzzy
@@ -4306,10 +4322,6 @@ msgstr "Benutzername ist %s"
 
 #: src/main.cpp:692
 msgid "LANG="
-msgstr ""
-
-#: src/main.cpp:694
-msgid "translations/"
 msgstr ""
 
 #: src/main.cpp:699
@@ -4880,7 +4892,6 @@ msgstr "Dieser Befehl lässt Dich die Party verlassen"
 
 #: src/net/ea/gui/partytab.cpp:87 src/net/ea/gui/partytab.cpp:129
 #: src/net/ea/gui/partytab.cpp:161 src/resources/itemdb.cpp:128
-#, fuzzy
 msgid "item"
 msgstr ""
 
