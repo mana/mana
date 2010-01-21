@@ -458,11 +458,7 @@ void LocalPlayer::setTarget(Being *target)
         static_cast<Monster *>(target)->setShowName(true);
 }
 
-#ifdef MANASERV_SUPPORT
 void LocalPlayer::setDestination(int x, int y)
-#else
-void LocalPlayer::setDestination(Uint16 x, Uint16 y)
-#endif
 {
 #ifdef MANASERV_SUPPORT
     // Pre-computing character's destination in tiles

@@ -136,7 +136,7 @@ void Being::setPosition(const Vector &pos)
 }
 
 #ifdef EATHENA_SUPPORT
-void Being::setDestination(Uint16 destX, Uint16 destY)
+void Being::setDestination(int destX, int destY)
 {
     if (mMap)
         setPath(mMap->findPath(mX, mY, destX, destY, getWalkMask()));

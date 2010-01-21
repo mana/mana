@@ -147,7 +147,7 @@ class Being : public Sprite, public ConfigListener
          * Sets a new destination for this being to walk to.
          */
 #ifdef EATHENA_SUPPORT
-        virtual void setDestination(Uint16 destX, Uint16 destY);
+        virtual void setDestination(int destX, int destY);
 #else
         /**
          * Creates a path for the being from current position to ex and ey

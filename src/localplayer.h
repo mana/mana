@@ -206,21 +206,17 @@ class LocalPlayer : public Player
          * Returns the current target of the player. Returns 0 if no being is
          * currently targeted.
          */
-        Being* getTarget() const;
+        Being *getTarget() const;
 
         /**
          * Sets the target being of the player.
          */
-        void setTarget(Being* target);
+        void setTarget(Being *target);
 
         /**
          * Sets a new destination for this being to walk to.
          */
-#ifdef MANASERV_SUPPORT
-        void setDestination(int x, int y);
-#else
-        virtual void setDestination(Uint16 x, Uint16 y);
-#endif
+        virtual void setDestination(int x, int y);
 
         /**
          * Sets a new direction to keep walking in.
@@ -374,7 +370,7 @@ class LocalPlayer : public Player
          * Called when a option (set with config.addListener()) is changed
          */
         void optionChanged(const std::string &value);
-        
+
         /**
          * set a following player by right clicking.
          */
@@ -392,7 +388,7 @@ class LocalPlayer : public Player
          * stops a following
          */
         void cancelFollow() { mPlayerFollowed = ""; }
-        
+
         /**
          * get following
          */
@@ -436,12 +432,12 @@ class LocalPlayer : public Player
         int mGMLevel;
 
         Being *mTarget;
-        
+
         /** Follow system **/
         std::string mPlayerFollowed;
         int mNextDestX;
         int mNextDestY;
-        
+
         FloorItem *mPickUpTarget;
 
         bool mTrading;
