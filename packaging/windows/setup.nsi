@@ -1,18 +1,58 @@
+; This script allows the following parameters being overwritten from
+; command line. When called without any parameters it behaves exactly
+; like the old install script.
+;
+; DLLDIR - directory containing required dlls
+; EXEDIR - directory containing mana.exe (and maybe mana-ea.exe)
+; EXESUFFIX - offset to SRCDIR pointing to a directory containing mana.exe
+; COMBINED_BUILD - set to one to include mana.exe and mana-ea.exe
+; PRODUCT_VERSION - software version
+; UPX - upx binary name
+;
+; For a cmake build on UNIX the following should give you a working installer:
+; makensis -DDLLDIR=/path/to/dlls \
+;    -DPRODUCT_VERSION=0.1.`date +%Y%m%d`
+;    -DUPX=upx
+;    -DEXESUFFIX=/src
+
 CRCCheck on
 SetCompress off
 SetCompressor /SOLID lzma
 
 !define SRCDIR "..\.."
+!ifndef UPX
+  !define "UPX upx\upx.exe"
+!endif
+
+!ifdef EXESUFFIX
+  !define EXEDIR ${SRCDIR}/${EXESUFFIX}
+!endif
+
+!ifndef EXEDIR
+  !define EXEDIR ${SRCDIR}
+!endif
+
+!ifndef DLLDIR
+  !define DLLDIR ${SRCDIR}/dll
+!endif
 
 ;--- (and without !defines ) ---
-!System "upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d ${SRCDIR}\mana.exe"
+!System "${UPX} --best --crp-ms=999999 --compress-icons=0 --nrv2d ${EXEDIR}\mana.exe"
+!ifdef COMBINED_BUILD
+  !System "${UPX} --best --crp-ms=999999 --compress-icons=0 --nrv2d ${EXEDIR}\mana-ea.exe"
+!endif
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Mana"
-!define PRODUCT_VERSION "0.0.29.1"
+!ifndef PRODUCT_VERSION
+  !define PRODUCT_VERSION "0.0.29.1"
+!endif
 !define PRODUCT_PUBLISHER "Mana Development Team"
 !define PRODUCT_WEB_SITE "http://manasource.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\mana.exe"
+!ifdef COMBINED_BUILD
+!define PRODUCT_DIR_REGKEY_EA "Software\Microsoft\Windows\CurrentVersion\App Paths\mana-ea.exe"
+!endif
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
@@ -133,6 +173,9 @@ Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "mana-${PRODUCT_VERSION}-win32.exe"
 InstallDir "$PROGRAMFILES\Mana"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
+!ifdef COMBINED_BUILD
+  InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY_EA}" ""
+!endif
 ShowInstDetails show
 ShowUnInstDetails show
 
@@ -149,6 +192,10 @@ Section "Core files (required)" SecCore
   CreateDirectory "$SMPROGRAMS\Mana"
   CreateShortCut "$SMPROGRAMS\Mana\Mana.lnk" "$INSTDIR\mana.exe"
   CreateShortCut "$DESKTOP\Mana.lnk" "$INSTDIR\mana.exe"
+  !ifdef COMBINED_BUILD
+    CreateShortCut "$SMPROGRAMS\Mana\Mana (Eathena).lnk" "$INSTDIR\mana-ea.exe"
+    CreateShortCut "$DESKTOP\Mana (Eathena).lnk" "$INSTDIR\mana-ea.exe"
+  !endif
   CreateDirectory "$INSTDIR\data"
   CreateDirectory "$INSTDIR\data\fonts"
   CreateDirectory "$INSTDIR\data\graphics"
@@ -161,8 +208,11 @@ Section "Core files (required)" SecCore
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
 
-  File "${SRCDIR}\mana.exe"
-  File "${SRCDIR}\*.dll"
+  File "${EXEDIR}\mana.exe"
+  !ifdef COMBINED_BUILD
+    File "${EXEDIR}\mana-ea.exe"
+  !endif
+  File "${DLLDIR}\*.dll"
   File "${SRCDIR}\AUTHORS"
   File "${SRCDIR}\COPYING"
   File "${SRCDIR}\NEWS"
@@ -223,6 +273,10 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  !ifdef COMBINED_BUILD
+    WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\mana-ea.exe"
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\mana-ea.exe"
+  !endif
 SectionEnd
 
 Function un.onInit
@@ -237,6 +291,10 @@ Section Uninstall
   Delete "$SMPROGRAMS\Mana\Uninstall.lnk"
   Delete "$DESKTOP\Mana.lnk"
   Delete "$SMPROGRAMS\Mana\Mana.lnk"
+  !ifdef COMBINED_BUILD
+    Delete "$DESKTOP\Mana (Eathena).lnk"
+    Delete "$SMPROGRAMS\Mana\Mana (Eathena).lnk"
+  !endif
   Delete "$SMPROGRAMS\Mana\Website.lnk"
   Delete "$SMPROGRAMS\Mana\Readme.lnk"
   Delete "$SMPROGRAMS\Mana\FAQ.lnk"
@@ -251,5 +309,8 @@ Section Uninstall
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
+  !ifdef COMBINED_BUILD
+    DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
+  !endif
   SetAutoClose true
 SectionEnd
