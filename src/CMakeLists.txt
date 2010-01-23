@@ -16,6 +16,7 @@ SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${LOCALEDIR}/\\\"")
 
 IF (WIN32)
     SET(EXTRA_LIBRARIES ws2_32 winmm)
+    FIND_PACKAGE(LibIntl REQUIRED)
 ELSEIF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
     # explicit linking to libintl is required on Solaris
     SET(EXTRA_LIBRARIES intl)
@@ -563,6 +564,7 @@ FOREACH(program ${PROGRAMS})
         ${LIBXML2_LIBRARIES}
         ${GUICHAN_LIBRARIES}
         ${OPENGL_LIBRARIES}
+        ${LIBINTL_LIBRARIES}
         ${EXTRA_LIBRARIES})
     INSTALL(TARGETS ${program} RUNTIME DESTINATION ${PKG_BINDIR})
 ENDFOREACH(program)
