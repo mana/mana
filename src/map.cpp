@@ -583,7 +583,7 @@ const std::string &Map::getName() const
     return getProperty("mapname");
 }
 
-const std::string *Map::getMapId() const
+const std::string *Map::getFilename() const
 {
     std::string fileName = getProperty("_filename");
     int lastSlash = fileName.rfind("/") + 1;

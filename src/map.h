@@ -269,7 +269,7 @@ class Map : public Properties
         /**
          * Gives the map id based on filepath (ex: 009-1)
          */
-        const std::string *getMapId() const;
+        const std::string *getFilename() const;
 
         /**
          * Find a path from one location to the next.
