@@ -583,6 +583,18 @@ const std::string &Map::getName() const
     return getProperty("mapname");
 }
 
+const std::string *Map::getMapId() const
+{
+    std::string fileName = getProperty("_filename");
+    int lastSlash = fileName.rfind("/") + 1;
+    int lastDot = fileName.rfind(".");
+
+    std::string *sub = new std::string(
+        fileName.substr(lastSlash, lastDot - lastSlash));
+
+    return sub;
+}
+
 static int const basicCost = 100;
 
 Path Map::findPath(int startX, int startY, int destX, int destY,
