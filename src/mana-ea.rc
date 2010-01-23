@@ -13,9 +13,9 @@ PRODUCTVERSION VER_MAJOR,VER_MINOR,VER_RELEASE,VER_BUILD
         BLOCK "040904E4" {
             VALUE "CompanyName", "The Mana Development Team"
             VALUE "FileVersion", PACKAGE_VERSION
-            VALUE "FileDescription", "Mana"
+            VALUE "FileDescription", "Mana (Eathena)"
             VALUE "LegalCopyright", "2004-2010 (C)"
-            VALUE "OriginalFilename", "mana.exe"
+            VALUE "OriginalFilename", "mana-ea.exe"
             VALUE "ProductName", "Mana MMORPG Client"
             VALUE "ProductVersion", PACKAGE_VERSION
         }

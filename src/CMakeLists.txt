@@ -69,6 +69,22 @@ INCLUDE_DIRECTORIES(
     ${GUICHAN_INCLUDE_DIR}
     )
 
+# enable rc-handling with mingw
+# most likely this part can be kicked out with some later cmake version
+IF (MINGW)
+    FIND_PATH(MINGW_INCLUDE_DIR windows.h $ENV{INCLUDE})
+    IF (MINGW_INCLUDE_DIR)
+        MESSAGE(STATUS "Found mingw headers: ${MINGW_INCLUDE_DIR}")
+        INCLUDE_DIRECTORIES(${MINGW_INCLUDE_DIR})
+    ELSE()
+        MESSAGE(FATAL_ERROR "Unable to find mingw headers. Required for windres")
+    ENDIF()
+    SET(CMAKE_RC_COMPILER_INIT windres)
+    ENABLE_LANGUAGE(RC)
+    SET(CMAKE_RC_COMPILE_OBJECT
+      "<CMAKE_RC_COMPILER> <FLAGS> <DEFINES> -O coff -o <OBJECT> <SOURCE>")
+ENDIF()
+
 # Fix some stuff that gets not hidden by mainline modules
 MARK_AS_ADVANCED(PHYSFS_INCLUDE_DIR)
 MARK_AS_ADVANCED(PHYSFS_LIBRARY)
@@ -568,6 +584,10 @@ SET(SRCS_MANA
     net/manaserv/tradehandler.h
     )
 
+IF (WIN32)
+    SET(SRCS_MANA ${SRCS_MANA} mana.rc)
+    SET(SRCS_EA ${SRCS_EA} mana-ea.rc)
+ENDIF ()
 
 SET (PROGRAMS mana mana-ea)
 
