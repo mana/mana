@@ -548,6 +548,9 @@ void ChatWindow::autoComplete()
 
     if (newName != "")
     {
+        if(inputText[0] == '@' || inputText[0] == '/')
+            newName = "\"" + newName + "\"";
+
         mChatInput->setText(inputText.substr(0, startName) + newName
                             + inputText.substr(caretPos, inputText.length() - caretPos));
 
