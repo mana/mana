@@ -47,6 +47,35 @@
 
 #define MAX_SERVERLIST 5
 
+ServerInfo::Type stringToServerType(const std::string &type)
+{
+    if (compareStrI(type, "eathena") == 0)
+    {
+        return ServerInfo::MANASERV;
+    }
+    else if (compareStrI(type, "manaserv") == 0)
+    {
+        return ServerInfo::MANASERV;
+    }
+    else
+    {
+        return ServerInfo::UNKNOWN;
+    }
+}
+
+std::string serverTypeToString(ServerInfo::Type type)
+{
+    switch (type)
+    {
+    case ServerInfo::EATHENA:
+        return "eAthena";
+    case ServerInfo::MANASERV:
+        return "manaserv";
+    default:
+        return "";
+    }
+}
+
 ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
         mServers(servers),
         mParent(parent)
@@ -108,7 +137,10 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
         currentConfig = "MostUsedServerPort" + toString(i);
         currentServer.port = (short) config.getValue(currentConfig, DEFAULT_PORT);
-        currentServer.type = ServerInfo::getCurrentType();
+
+        currentConfig = "MostUsedServerType" + toString(i);
+        currentServer.type = stringToServerType(config
+                                                .getValue(currentConfig, ""));
 
         if (!currentServer.hostname.empty() && currentServer.port != 0)
         {
@@ -208,12 +240,14 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             ServerInfo tempServer;
             currentServer.hostname = mServerNameField->getText();
             currentServer.port = (short) atoi(mPortField->getText().c_str());
-            currentServer.type = ServerInfo::getCurrentType();
+            currentServer.type = ServerInfo::UNKNOWN;
 
             // now rewrite the configuration...
             // id = 0 is always the last selected server
             config.setValue("MostUsedServerName0", currentServer.hostname);
             config.setValue("MostUsedServerPort0", currentServer.port);
+            config.setValue("MostUsedServerType0",
+                            serverTypeToString(currentServer.type));
 
             // now add the rest of the list...
             std::string currentConfig = "";
@@ -229,6 +263,8 @@ void ServerDialog::action(const gcn::ActionEvent &event)
                     config.setValue(currentConfig, toString(tempServer.hostname));
                     currentConfig = "MostUsedServerPort" + toString(configCount);
                     config.setValue(currentConfig, toString(tempServer.port));
+                    currentConfig = "MostUsedServerType" + toString(configCount);
+                    config.setValue(currentConfig, serverTypeToString(tempServer.type));
                     configCount++;
                 }
 
@@ -386,18 +422,7 @@ void ServerDialog::loadServers()
                 {
                     if (xmlStrEqual(subnode->name, BAD_CAST "connection"))
                     {
-                        if (!compareStrI(type, "manaserv"))
-                        {
-                            currentServer.type = ServerInfo::MANASERV;
-                        }
-                        else if (!compareStrI(type, "eathena"))
-                        {
-                            currentServer.type = ServerInfo::EATHENA;
-                        }
-                        else
-                        {
-                            currentServer.type = ServerInfo::UNKNOWN;
-                        }
+                        currentServer.type = stringToServerType(type);
                         currentServer.hostname = XML::getProperty(subnode, "hostname", std::string());
                         currentServer.port = XML::getProperty(subnode, "port", DEFAULT_PORT);
                     }
