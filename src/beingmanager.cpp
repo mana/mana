@@ -26,6 +26,9 @@
 #include "npc.h"
 #include "player.h"
 
+#include "net/gamehandler.h"
+#include "net/net.h"
+
 #include "utils/stringutils.h"
 #include "utils/dtor.h"
 
@@ -180,14 +183,13 @@ void BeingManager::logic()
 
         being->logic();
 
-#ifdef EATHENA_SUPPORT
-        if (being->mAction == Being::DEAD && being->mFrame >= 20)
+        if (being->mAction == Being::DEAD &&
+            Net::getGameHandler()->removeDeadBeings() && being->mFrame >= 20)
         {
             delete being;
             i = mBeings.erase(i);
         }
         else
-#endif
         {
             ++i;
         }

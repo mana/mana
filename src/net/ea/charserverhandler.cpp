@@ -191,10 +191,10 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
     int temp = msg.readInt32();
     tempPlayer->setAttributeBase(JOB, temp, false);
     tempPlayer->setAttributeEffective(JOB, temp);
-    tempPlayer->setSprite(Player::SHOE_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Player::GLOVES_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Player::CAPE_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Player::MISC1_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(SPRITE_SHOE, msg.readInt16());
+    tempPlayer->setSprite(SPRITE_GLOVES, msg.readInt16());
+    tempPlayer->setSprite(SPRITE_CAPE, msg.readInt16());
+    tempPlayer->setSprite(SPRITE_MISC1, msg.readInt16());
     msg.readInt32();                       // option
     msg.readInt32();                       // karma
     msg.readInt32();                       // manner
@@ -207,15 +207,15 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
     msg.readInt16();                       // class
     int hairStyle = msg.readInt16();
     Uint16 weapon = msg.readInt16();
-    tempPlayer->setSprite(Player::WEAPON_SPRITE, weapon);
+    tempPlayer->setSprite(SPRITE_WEAPON, weapon, "", true);
     tempPlayer->setLevel(msg.readInt16());
     msg.readInt16();                       // skill point
-    tempPlayer->setSprite(Player::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
-    tempPlayer->setSprite(Player::SHIELD_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Player::HAT_SPRITE, msg.readInt16()); // head option top
-    tempPlayer->setSprite(Player::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
-    tempPlayer->setSprite(Player::HAIR_SPRITE, hairStyle * -1, ColorDB::get(msg.readInt16()));
-    tempPlayer->setSprite(Player::MISC2_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(SPRITE_BOTTOMCLOTHES, msg.readInt16()); // head bottom
+    tempPlayer->setSprite(SPRITE_SHIELD, msg.readInt16());
+    tempPlayer->setSprite(SPRITE_HAT, msg.readInt16()); // head option top
+    tempPlayer->setSprite(SPRITE_TOPCLOTHES, msg.readInt16()); // head option mid
+    tempPlayer->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(msg.readInt16()));
+    tempPlayer->setSprite(SPRITE_MISC2, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++)
         tempPlayer->setAttributeBase(i + STR, msg.readInt8(), false);
@@ -289,6 +289,21 @@ void CharServerHandler::switchCharacter()
     // This is really a map-server packet
     MessageOut outMsg(CMSG_PLAYER_RESTART);
     outMsg.writeInt8(1);
+}
+
+unsigned int CharServerHandler::baseSprite() const
+{
+    return SPRITE_BASE;
+}
+
+unsigned int CharServerHandler::hairSprite() const
+{
+    return SPRITE_HAIR;
+}
+
+unsigned int CharServerHandler::maxSprite() const
+{
+    return SPRITE_VECTOREND;
 }
 
 void CharServerHandler::connect()

@@ -43,29 +43,6 @@ enum Gender
 class Player : public Being
 {
     public:
-        enum Sprite
-        {
-            BASE_SPRITE = 0,
-            SHOE_SPRITE,
-            BOTTOMCLOTHES_SPRITE,
-            TOPCLOTHES_SPRITE,
-#ifdef EATHENA_SUPPORT
-            MISC1_SPRITE,
-            MISC2_SPRITE,
-#endif
-            HAIR_SPRITE,
-            HAT_SPRITE,
-#ifdef EATHENA_SUPPORT
-            CAPE_SPRITE,
-            GLOVES_SPRITE,
-#endif
-            WEAPON_SPRITE,
-#ifdef EATHENA_SUPPORT
-            SHIELD_SPRITE,
-#endif
-            VECTOREND_SPRITE
-        };
-
         /**
          * Constructor.
          */
@@ -73,9 +50,7 @@ class Player : public Being
 
         ~Player();
 
-#ifdef EATHENA_SUPPORT
         virtual void logic();
-#endif
 
         virtual Type getType() const { return PLAYER; }
 
@@ -100,7 +75,8 @@ class Player : public Being
          * Sets visible equipments for this player.
          */
         virtual void setSprite(unsigned int slot, int id,
-                               const std::string &color = "");
+                               const std::string &color = "",
+                               bool isWeapon = false);
 
         virtual void setSpriteID(unsigned int slot, int id);
 

@@ -115,8 +115,8 @@ class Being : public Sprite, public ConfigListener
          */
         enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
-#ifdef EATHENA_SUPPORT
         int mFrame;
+#ifdef EATHENA_SUPPORT
         int mWalkTime;
 #endif
         int mEmotion;         /**< Currently showing emotion */

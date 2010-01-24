@@ -361,6 +361,6 @@ void CharCreateDialog::updateHair()
     if (mHairColor < 0)
        mHairColor += ColorDB::size();
 
-    mPlayer->setSprite(Player::HAIR_SPRITE,
+    mPlayer->setSprite(Net::getCharHandler()->hairSprite(),
                       mHairStyle * -1, ColorDB::get(mHairColor));
 }

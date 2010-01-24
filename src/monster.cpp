@@ -69,9 +69,9 @@ Monster::Monster(int id, int job, Map *map):
     Being::setName(getInfo().getName());
 }
 
-#ifdef EATHENA_SUPPORT
 void Monster::logic()
 {
+#ifdef EATHENA_SUPPORT
     if (mAction != STAND)
     {
         mFrame = (get_elapsed_time(mWalkTime) * 4) / getWalkSpeed();
@@ -79,10 +79,10 @@ void Monster::logic()
         if (mFrame >= 4 && mAction != DEAD)
             nextStep();
     }
+#endif
 
     Being::logic();
 }
-#endif
 
 void Monster::setAction(Action action, int attackType)
 {

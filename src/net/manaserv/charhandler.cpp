@@ -157,7 +157,7 @@ void CharHandler::handleMessage(Net::MessageIn &msg)
                 LocalPlayer *tempPlayer = new LocalPlayer();
                 tempPlayer->setName(info.name);
                 tempPlayer->setGender(info.gender);
-                tempPlayer->setSprite(Player::HAIR_SPRITE, info.hs * -1,
+                tempPlayer->setSprite(SPRITE_HAIR, info.hs * -1,
                                       ColorDB::get(info.hc));
                 tempPlayer->setLevel(info.level);
                 tempPlayer->setCharacterPoints(info.charPoints);
@@ -332,7 +332,7 @@ void CharHandler::getCharacters()
             tempPlayer = new LocalPlayer();
             tempPlayer->setName(info.name);
             tempPlayer->setGender(info.gender);
-            tempPlayer->setSprite(Player::HAIR_SPRITE, info.hs * -1,
+            tempPlayer->setSprite(SPRITE_HAIR, info.hs * -1,
                                   ColorDB::get(info.hc));
             tempPlayer->setLevel(info.level);
             tempPlayer->setCharacterPoints(info.charPoints);
@@ -398,6 +398,21 @@ void CharHandler::deleteCharacter(int slot, LocalPlayer* character)
 void CharHandler::switchCharacter()
 {
     gameHandler->quit(true);
+}
+
+unsigned int CharHandler::baseSprite() const
+{
+    return SPRITE_BASE;
+}
+
+unsigned int CharHandler::hairSprite() const
+{
+    return SPRITE_HAIR;
+}
+
+unsigned int CharHandler::maxSprite() const
+{
+    return SPRITE_VECTOREND;
 }
 
 } // namespace ManaServ

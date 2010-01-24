@@ -30,6 +30,9 @@
 
 #include "gui/palette.h"
 
+#include "net/charhandler.h"
+#include "net/net.h"
+
 #include "resources/colordb.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
@@ -44,7 +47,7 @@ Player::Player(int id, int job, Map *map, bool isNPC):
 {
     if (!isNPC)
     {
-        for (int i = 0; i < VECTOREND_SPRITE; i++)
+        for (unsigned int i = 0; i < Net::getCharHandler()->maxSprite(); i++)
         {
             mSprites.push_back(NULL);
             mSpriteIDs.push_back(0);
@@ -55,7 +58,7 @@ Player::Player(int id, int job, Map *map, bool isNPC):
          * line and set the base sprite when setting the race of the player
          * character.
          */
-        setSprite(BASE_SPRITE, -100);
+        setSprite(Net::getCharHandler()->baseSprite(), -100);
     }
     mShowName = config.getValue("visiblenames", 1);
     config.addListener("visiblenames", this);
@@ -68,9 +71,9 @@ Player::~Player()
     config.removeListener("visiblenames", this);
 }
 
-#ifdef EATHENA_SUPPORT
 void Player::logic()
 {
+#ifdef EATHENA_SUPPORT
     switch (mAction)
     {
         case STAND:
@@ -123,10 +126,10 @@ void Player::logic()
 
             break;
     }
+#endif
 
     Being::logic();
 }
-#endif
 
 void Player::setGender(Gender gender)
 {
@@ -150,9 +153,13 @@ void Player::setGM(bool gm)
     updateColors();
 }
 
-void Player::setSprite(unsigned int slot, int id, const std::string &color)
+void Player::setSprite(unsigned int slot, int id, const std::string &color,
+                       bool isWeapon)
 {
-    assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
+    if (getType() == NPC)
+        return;
+
+    assert(slot < Net::getCharHandler()->maxSprite());
 
     // id = 0 means unequip
     if (id == 0)
@@ -160,10 +167,8 @@ void Player::setSprite(unsigned int slot, int id, const std::string &color)
         delete mSprites[slot];
         mSprites[slot] = NULL;
 
-#ifdef EATHENA_SUPPORT
-        if (slot == WEAPON_SPRITE)
+        if (isWeapon)
             mEquippedWeapon = NULL;
-#endif
     }
     else
     {
@@ -187,7 +192,7 @@ void Player::setSprite(unsigned int slot, int id, const std::string &color)
 
         mSprites[slot] = equipmentSprite;
 
-        if (slot == WEAPON_SPRITE)
+        if (isWeapon)
             mEquippedWeapon = &ItemDB::get(id);
 
         setAction(mAction);

@@ -55,6 +55,12 @@ class CharHandler
         virtual void deleteCharacter(int slot, LocalPlayer* character) = 0;
 
         virtual void switchCharacter() = 0;
+
+        virtual unsigned int baseSprite() const = 0;
+
+        virtual unsigned int hairSprite() const = 0;
+
+        virtual unsigned int maxSprite() const = 0;
 };
 
 } // namespace Net

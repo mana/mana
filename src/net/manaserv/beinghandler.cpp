@@ -96,8 +96,8 @@ static void handleLooks(Player *being, Net::MessageIn &msg)
     // Order of sent slots. Has to be in sync with the server code.
     static int const nb_slots = 4;
     static int const slots[nb_slots] =
-        { Player::WEAPON_SPRITE, Player::HAT_SPRITE, Player::TOPCLOTHES_SPRITE,
-          Player::BOTTOMCLOTHES_SPRITE };
+        { SPRITE_WEAPON, SPRITE_HAT, SPRITE_TOPCLOTHES,
+          SPRITE_BOTTOMCLOTHES };
 
     int mask = msg.readInt8();
 
@@ -145,7 +145,7 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
             }
             Player *p = static_cast< Player * >(being);
             int hs = msg.readInt8(), hc = msg.readInt8();
-            p->setSprite(Player::HAIR_SPRITE, hs * -1, ColorDB::get(hc));
+            p->setSprite(SPRITE_HAIR, hs * -1, ColorDB::get(hc));
             p->setGender(msg.readInt8() == GENDER_MALE ?
                     GENDER_MALE : GENDER_FEMALE);
             handleLooks(p, msg);
@@ -302,7 +302,7 @@ void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
     {
         int style = msg.readInt16();
         int color = msg.readInt16();
-        player->setSprite(Player::HAIR_SPRITE, style * -1, ColorDB::get(color));
+        player->setSprite(SPRITE_HAIR, style * -1, ColorDB::get(color));
     }
 }
 

@@ -66,6 +66,7 @@ extern const int MILLISECONDS_IN_A_TICK;
 int Being::mNumberOfHairstyles = 1;
 
 Being::Being(int id, int job, Map *map):
+    mFrame(0),
 #ifdef EATHENA_SUPPORT
     mWalkTime(0),
 #endif

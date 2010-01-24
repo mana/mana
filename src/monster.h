@@ -32,9 +32,7 @@ class Monster : public Being
     public:
         Monster(int id, int job, Map *map);
 
-#ifdef EATHENA_SUPPORT
         virtual void logic();
-#endif
 
         virtual void setAction(Action action, int attackType = 0);
 
