@@ -51,7 +51,7 @@ ServerInfo::Type stringToServerType(const std::string &type)
 {
     if (compareStrI(type, "eathena") == 0)
     {
-        return ServerInfo::MANASERV;
+        return ServerInfo::EATHENA;
     }
     else if (compareStrI(type, "manaserv") == 0)
     {

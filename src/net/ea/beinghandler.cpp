@@ -551,11 +551,11 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             // Set these after the gender, as the sprites may be gender-specific
             player->setSprite(SPRITE_WEAPON, weapon, "", true);
             player->setSprite(SPRITE_SHIELD, shield);
-            player->setSprite(SPRITE_SHOE, shoes);
+            //player->setSprite(SPRITE_SHOE, shoes);
             player->setSprite(SPRITE_BOTTOMCLOTHES, headBottom);
             player->setSprite(SPRITE_TOPCLOTHES, headMid);
             player->setSprite(SPRITE_HAT, headTop);
-            player->setSprite(SPRITE_GLOVES, gloves);
+            //player->setSprite(SPRITE_GLOVES, gloves);
             //player->setSprite(SPRITE_CAPE, cape);
             //player->setSprite(SPRITE_MISC1, misc1);
             //player->setSprite(SPRITE_MISC2, misc2);
