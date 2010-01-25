@@ -177,11 +177,8 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         bool mVisibleNames;          /**< Show target names. */
 
         bool mPlayerFollowMouse;
-#ifdef MANASERV_SUPPORT
+
         int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
-#else
-        int mWalkTime;
-#endif
 
         PopupMenu *mPopupMenu;       /**< Popup menu. */
         Being *mSelectedBeing;       /**< Current selected being. */

@@ -55,11 +55,7 @@ Viewport::Viewport():
     mShowDebugPath(false),
     mVisibleNames(false),
     mPlayerFollowMouse(false),
-#ifdef MANASERV_SUPPORT
     mLocalWalkTime(-1)
-#else
-    mWalkTime(-1)
-#endif
 {
     setOpaque(false);
     addMouseListener(this);
@@ -424,8 +420,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
               player_node->pathSetByMouse();
           }
 #else
-          if (mWalkTime != player_node->mWalkTime)
+          if (mLocalWalkTime != player_node->mWalkTime)
           {
+              mLocalWalkTime = player_node->mWalkTime;
               int destX = event.getX() / 32 + mTileViewX;
               int destY = event.getY() / 32 + mTileViewY;
               player_node->setDestination(destX, destY);
@@ -437,6 +434,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
 void Viewport::mouseReleased(gcn::MouseEvent &event)
 {
     mPlayerFollowMouse = false;
+#ifdef EATHENA_SUPPORT
+    mLocalWalkTime = -1;
+#endif
 }
 
 void Viewport::showPopup(int x, int y, Item *item, bool isInventory)
