@@ -434,9 +434,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
 void Viewport::mouseReleased(gcn::MouseEvent &event)
 {
     mPlayerFollowMouse = false;
-#ifdef EATHENA_SUPPORT
+
+    // Only useful for eAthena but doesn't hurt under ManaServ
     mLocalWalkTime = -1;
-#endif
 }
 
 void Viewport::showPopup(int x, int y, Item *item, bool isInventory)
