@@ -357,6 +357,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
             {
                 y += fontHeight;
                 x = 15;
+                wrapped = false;
             }
 
             // "Tokenize" the string at control sequences
@@ -527,6 +528,7 @@ int BrowserBox::calcHeight()
             {
                 y += fontHeight;
                 x = 15;
+                wrapped = false;
             }
 
             // "Tokenize" the string at control sequences
