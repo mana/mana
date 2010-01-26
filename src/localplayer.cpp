@@ -579,14 +579,11 @@ void LocalPlayer::startWalking(unsigned char dir)
     if (!mMap || !dir)
         return;
 
-#ifdef MANASERV_SUPPORT
-    const Vector &pos = getPosition();
-#endif
-
     if (mAction == WALK && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
 #ifdef MANASERV_SUPPORT
+        const Vector &pos = getPosition();
         Being::setDestination(pos.x, pos.y);
 #else
         Being::setDestination(getTileX(), getTileY());

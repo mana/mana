@@ -35,6 +35,8 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+namespace EAthena {
+
 PartyTab::PartyTab() :
     ChatTab(_("Party"))
 {
@@ -206,3 +208,5 @@ int PartyTab::getType() const
 {
     return ChatTab::PARTY;
 }
+
+} // namespace EAthena

@@ -24,6 +24,8 @@
 
 #include "gui/widgets/chattab.h"
 
+namespace EAthena {
+
 /**
  * A tab for a party chat channel.
  */
@@ -44,5 +46,7 @@ class PartyTab : public ChatTab
 };
 
 extern PartyTab *partyTab;
+
+} // namespace EAthena
 
 #endif // EA_PARTYTAB_H

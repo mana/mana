@@ -38,10 +38,11 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-PartyTab *partyTab = 0;
 extern Net::PartyHandler *partyHandler;
 
 namespace EAthena {
+
+PartyTab *partyTab = 0;
 
 PartyHandler::PartyHandler():
         mShareExp(PARTY_SHARE_UNKNOWN), mShareItems(PARTY_SHARE_UNKNOWN)
