@@ -6,6 +6,4 @@ EXTRA_DIST = $(man6_MANS) \
 	     HACKING.txt \
 	     SOURCE/Doxyfile \
 	     items.txt \
-	     progression.txt \
-	     INSTALL/debian.txt \
-	     INSTALL/win32.txt
+	     progression.txt
