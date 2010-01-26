@@ -277,7 +277,7 @@ bool CharSelectDialog::chooseSelected()
 
     setVisible(false);
     attemptCharSelect();
-    
+
     return true;
 }
 
