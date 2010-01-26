@@ -3,7 +3,9 @@ AUTOMAKE_OPTIONS = subdir-objects
 bin_PROGRAMS = mana
 
 mana_CXXFLAGS = -DPKG_DATADIR=\""$(pkgdatadir)/"\"      \
-	       -DLOCALEDIR=\""$(localedir)"\"
+		-DLOCALEDIR=\""$(localedir)"\"           \
+		-Wall                                    \
+		-g
 
 mana_SOURCES = gui/widgets/avatar.cpp \
 	      gui/widgets/avatar.h \
