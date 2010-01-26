@@ -93,7 +93,6 @@ Being::Being(int id, int job, Map *map):
 #else
     mWalkSpeed(150),
 #endif
-    mPx(0), mPy(0),
     mX(0), mY(0),
     mTakedDamage(0),
     mUsedTargetCursor(NULL)
@@ -125,15 +124,11 @@ void Being::setPosition(const Vector &pos)
 {
     mPos = pos;
 
-    // Update pixel coordinates (convert once, for performance reasons)
-    mPx = (int) pos.x;
-    mPy = (int) pos.y;
-
     updateCoords();
 
     if (mText)
-        mText->adviseXY(mPx,
-                        mPy - getHeight() - mText->getHeight() - 6);
+        mText->adviseXY(pos.x,
+                        pos.y - getHeight() - mText->getHeight() - 6);
 }
 
 #ifdef EATHENA_SUPPORT
@@ -142,9 +137,7 @@ void Being::setDestination(int destX, int destY)
     if (mMap)
         setPath(mMap->findPath(mX, mY, destX, destY, getWalkMask()));
 }
-#endif
-
-#ifdef MANASERV_SUPPORT
+#else
 void Being::setDestination(int dstX, int dstY)
 {
     mDest.x = dstX;
@@ -266,7 +259,7 @@ void Being::setSpeech(const std::string &text, int time)
             delete mText;
 
         mText = new Text(mSpeech,
-                         mPx, mPy - getHeight(),
+                         getPixelX(), getPixelY() - getHeight(),
                          gcn::Graphics::CENTER,
                          &guiPalette->getColor(Palette::PARTICLE),
                          true);
@@ -311,7 +304,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage,
-                                        mPx, mPy - 16,
+                                        getPixelX(), getPixelY() - 16,
                                         color, font, true);
 
     if (amount > 0)
@@ -346,7 +339,8 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
             p->moveBy(Vector(0.0f, 0.0f, 32.0f));
             victim->controlParticle(p);
 
-            Particle *p2 = particleEngine->addEffect("graphics/particles/arrow.particle.xml", mPx, mPy);
+            Particle *p2 = particleEngine->addEffect("graphics/particles/arrow.particle.xml",
+                                                     getPixelX(), getPixelY());
             if (p2)
             {
                 p2->setLifetime(900);
@@ -646,11 +640,11 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     // TODO: Eventually, we probably should fix all sprite offsets so that
     //       these translations aren't necessary anymore. The sprites know
     //       best where their base point should be.
-    const int px = mPx + offsetX - 16;
+    const int px = getPixelX() + offsetX - 16;
 #ifdef MANASERV_SUPPORT
-    const int py = mPy + offsetY - 15;  // Temporary fix to the Y offset.
+    const int py = getPixelY() + offsetY - 15;  // Temporary fix to the Y offset.
 #else
-    const int py = mPy + offsetY - 32;
+    const int py = getPixelY() + offsetY - 32;
 #endif
 
     if (mUsedTargetCursor)
@@ -684,8 +678,8 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     if (!mEmotion)
         return;
 
-    const int px = mPx - offsetX - 16;
-    const int py = mPy - offsetY - 64 - 32;
+    const int px = getPixelX() - offsetX - 16;
+    const int py = getPixelY() - offsetY - 64 - 32;
     const int emotionIndex = mEmotion - 1;
 
     if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
@@ -694,8 +688,8 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 
 void Being::drawSpeech(int offsetX, int offsetY)
 {
-    const int px = mPx - offsetX;
-    const int py = mPy - offsetY;
+    const int px = getPixelX() - offsetX;
+    const int py = getPixelY() - offsetY;
     const int speech = (int) config.getValue("speech", TEXT_OVERHEAD);
 
     // Draw speech above this being
@@ -729,7 +723,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
         if (! mText)
         {
             mText = new Text(mSpeech,
-                             mPx, mPy - getHeight(),
+                             getPixelX(), getPixelY() - getHeight(),
                              gcn::Graphics::CENTER,
                              &guiPalette->getColor(Palette::PARTICLE),
                              true);

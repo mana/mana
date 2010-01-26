@@ -161,16 +161,19 @@ class Being : public Sprite, public ConfigListener
 #endif
 
         /**
-         * Returns the tile x or y coord
+         * Returns the tile x coord
          */
         int getTileX() const
         { return mX; }
 
+        /**
+         * Returns the tile y coord
+         */
         int getTileY() const
         { return mY; }
 
         /**
-         * Sets the tile x or y coord
+         * Sets the tile x and y coord
          */
         void setTileCoords(int x, int y)
         { mX = x; mY = y; }
@@ -348,7 +351,7 @@ class Being : public Sprite, public ConfigListener
          * Returns the X coordinate in pixels.
          */
         int getPixelX() const
-        { return mPx; }
+        { return mPos.x; }
 
         /**
          * Returns the Y coordinate in pixels.
@@ -356,7 +359,7 @@ class Being : public Sprite, public ConfigListener
          * @see Sprite::getPixelY()
          */
         int getPixelY() const
-        { return mPy; }
+        { return mPos.y; }
 
 #ifdef EATHENA_SUPPORT
         /**
@@ -596,7 +599,6 @@ class Being : public Sprite, public ConfigListener
 
         Vector mPos;
         Vector mDest;
-        int mPx, mPy;                   /**< Position in pixels */
         int mX, mY;                     /**< Position on tile */
 
         int mTakedDamage;
