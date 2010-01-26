@@ -11,8 +11,10 @@ SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
 FIND_PACKAGE(Gettext)
 
-# Help getting compilation warnings
-set(CMAKE_CXX_FLAGS "-g -Wall")
+IF (CMAKE_COMPILER_IS_GNUCXX)
+    # Help getting compilation warnings
+    SET(CMAKE_CXX_FLAGS "-Wall")
+ENDIF()
 
 OPTION(WITH_OPENGL "Enable OpenGL support" ON)
 OPTION(ENABLE_NLS "Enable building of tranlations" ON)
