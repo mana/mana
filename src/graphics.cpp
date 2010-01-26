@@ -28,7 +28,12 @@
 #include "resources/imageloader.h"
 
 Graphics::Graphics():
-    mScreen(0)
+    mScreen(0),
+    mWidth(0),
+    mHeight(0),
+    mBpp(0),
+    mFullscreen(false),
+    mHWAccel(false)
 {
 }
 
@@ -46,6 +51,9 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 
     int displayFlags = SDL_ANYFORMAT;
 
+    mWidth = w;
+    mHeight = h;
+    mBpp = bpp;
     mFullscreen = fs;
     mHWAccel = hwaccel;
 
@@ -101,18 +109,17 @@ bool Graphics::setFullscreen(bool fs)
     if (mFullscreen == fs)
         return true;
 
-    return setVideoMode(mScreen->w, mScreen->h,
-            mScreen->format->BitsPerPixel, fs, mHWAccel);
+    return setVideoMode(mWidth, mHeight, mBpp, fs, mHWAccel);
 }
 
 int Graphics::getWidth() const
 {
-    return mScreen->w;
+    return mWidth;
 }
 
 int Graphics::getHeight() const
 {
-    return mScreen->h;
+    return mHeight;
 }
 
 bool Graphics::drawImage(Image *image, int x, int y)
@@ -163,8 +170,8 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
                          int width, int height, bool)
 {
     // Check that preconditions for blitting are met.
-    if (!mScreen || !image) return false;
-    if (!image->mSDLSurface) return false;
+    if (!mScreen || !image || !image->mSDLSurface)
+        return false;
 
     dstX += mClipStack.top().xOffset;
     dstY += mClipStack.top().yOffset;

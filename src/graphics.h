@@ -195,7 +195,11 @@ class Graphics : public gcn::SDLGraphics
 
     protected:
         SDL_Surface *mScreen;
-        bool mFullscreen, mHWAccel;
+        int mWidth;
+        int mHeight;
+        int mBpp;
+        bool mFullscreen;
+        bool mHWAccel;
 };
 
 extern Graphics *graphics;
