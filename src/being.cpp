@@ -127,8 +127,8 @@ void Being::setPosition(const Vector &pos)
     updateCoords();
 
     if (mText)
-        mText->adviseXY(pos.x,
-                        pos.y - getHeight() - mText->getHeight() - 6);
+        mText->adviseXY((int)pos.x,
+                        (int)pos.y - getHeight() - mText->getHeight() - 6);
 }
 
 #ifdef EATHENA_SUPPORT
@@ -507,7 +507,7 @@ void Being::nextStep()
     mX = pos.x;
     mY = pos.y;
     setAction(WALK);
-    mWalkTime += mWalkSpeed / 10;
+    mWalkTime += (int)(mWalkSpeed / 10);
 }
 #endif
 
@@ -808,7 +808,7 @@ int Being::getOffset(char pos, char neg) const
     if (mAction != WALK ||  !(mDirection & (pos | neg)))
         return 0;
 
-    int offset = (get_elapsed_time(mWalkTime) * 32) / mWalkSpeed;
+    int offset = (int)((get_elapsed_time(mWalkTime) * 32) / mWalkSpeed);
 
     // We calculate the offset _from_ the _target_ location
     offset -= 32;

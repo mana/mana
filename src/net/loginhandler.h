@@ -92,6 +92,8 @@ class LoginHandler
 
         virtual Worlds getWorlds() const = 0;
 
+        virtual ~LoginHandler () {}
+
     protected:
         ServerInfo mServer;
 };

@@ -56,6 +56,8 @@ class MessageOut
          */
         virtual unsigned int getDataSize() const;
 
+        virtual ~MessageOut() {}
+
     protected:
         /**
          * Constructor.

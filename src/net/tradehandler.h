@@ -45,6 +45,8 @@ class TradeHandler
         virtual void finish() {}
 
         virtual void cancel() {}
+
+        virtual ~TradeHandler() {}
 };
 }
 

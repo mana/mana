@@ -392,7 +392,7 @@ class Being : public Sprite, public ConfigListener
          * Returns the X coordinate in pixels.
          */
         int getPixelX() const
-        { return mPos.x; }
+        { return (int) mPos.x; }
 
         /**
          * Returns the Y coordinate in pixels.
@@ -400,7 +400,7 @@ class Being : public Sprite, public ConfigListener
          * @see Sprite::getPixelY()
          */
         int getPixelY() const
-        { return mPos.y; }
+        { return (int) mPos.y; }
 
         /**
          * Sets the position of this being.

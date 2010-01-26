@@ -86,6 +86,8 @@ class MessageIn
          */
         virtual std::string readString(int length = -1);
 
+        virtual ~MessageIn() {}
+
     protected:
         /**
          * Constructor.

@@ -59,6 +59,7 @@ class Equipment
             public:
                 virtual Item *getEquipment(int index) const = 0;
                 virtual void clear() = 0;
+                virtual ~Backend() { }
         };
 
         /**

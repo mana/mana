@@ -39,6 +39,8 @@ class MessageHandler
         const Uint16 *handledMessages;
 
         virtual void handleMessage(MessageIn &msg) = 0;
+
+        virtual ~MessageHandler() {}
 };
 
 }

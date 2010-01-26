@@ -42,6 +42,8 @@ class GeneralHandler
         virtual void guiWindowsUnloaded() = 0;
 
         virtual void clearHandlers() = 0;
+
+        virtual ~GeneralHandler() {}
 };
 
 } // namespace Net

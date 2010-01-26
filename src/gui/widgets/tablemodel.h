@@ -40,6 +40,8 @@ public:
      * \param completed whether we are signalling the end of the update
      */
     virtual void modelUpdated(bool completed) = 0;
+
+    virtual ~TableModelListener() {}
 };
 
 /**

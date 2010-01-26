@@ -69,6 +69,8 @@ class PartyHandler
         // virtual void options() = 0;
 
         // virtual void message() = 0;
+
+        virtual ~PartyHandler() {}
 };
 
 } // namespace Net

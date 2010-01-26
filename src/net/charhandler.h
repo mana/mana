@@ -61,6 +61,8 @@ class CharHandler
         virtual unsigned int hairSprite() const = 0;
 
         virtual unsigned int maxSprite() const = 0;
+
+        virtual ~CharHandler() {}
 };
 
 } // namespace Net

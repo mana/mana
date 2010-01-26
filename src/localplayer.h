@@ -404,7 +404,7 @@ class LocalPlayer : public Player
 
         bool mInStorage;      /**< Whether storage is currently accessible */
 
-        Uint16 mAttackRange;
+        int mAttackRange;
 
         int mTargetTime;      /** How long the being has been targeted **/
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */

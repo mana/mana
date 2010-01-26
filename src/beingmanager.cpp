@@ -243,7 +243,7 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxDist,
                                             Being::Type type) const
 {
     const Vector &pos = aroundBeing->getPosition();
-    return findNearestLivingBeing(pos.x, pos.y, maxDist, type);
+    return findNearestLivingBeing((int)pos.x, (int)pos.y, maxDist, type);
 }
 
 bool BeingManager::hasBeing(Being *being) const

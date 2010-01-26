@@ -62,6 +62,8 @@ class InventoryHandler
                               StorageType destination) = 0;
 
         virtual size_t getSize(StorageType type) const = 0;
+
+        virtual ~InventoryHandler() {}
 };
 
 } // namespace Net

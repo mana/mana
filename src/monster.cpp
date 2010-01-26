@@ -74,7 +74,7 @@ void Monster::logic()
 #ifdef EATHENA_SUPPORT
     if (mAction != STAND)
     {
-        mFrame = (get_elapsed_time(mWalkTime) * 4) / getWalkSpeed();
+        mFrame = (int) ((get_elapsed_time(mWalkTime) * 4) / getWalkSpeed());
 
         if (mFrame >= 4 && mAction != DEAD)
             nextStep();

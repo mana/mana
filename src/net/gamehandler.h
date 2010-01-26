@@ -48,6 +48,8 @@ class GameHandler
         virtual void ping(int tick) = 0;
 
         virtual bool removeDeadBeings() const = 0;
+
+        virtual ~GameHandler() {}
 };
 
 } // namespace Net

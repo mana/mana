@@ -35,6 +35,8 @@ class SpecialHandler
         virtual void use(int id, int level, int x, int y) = 0;
 
         virtual void use(int id, const std::string &map) = 0;
+
+        virtual ~SpecialHandler () {}
 };
 }
 

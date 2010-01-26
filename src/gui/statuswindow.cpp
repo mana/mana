@@ -376,7 +376,7 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
         if (g1 > 255) g1 = 255;
         if (b1 > 255) b1 = 255;
 
-        bar->setColor(r1, g1, b1);
+        bar->setColor((int)r1,(int)g1, (int)b1);
     }
 
     bar->setProgress((float) player_node->getHp() / (float) player_node->getMaxHp());

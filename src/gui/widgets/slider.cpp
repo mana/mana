@@ -210,3 +210,4 @@ void Slider::mouseExited(gcn::MouseEvent& event)
 {
     mHasMouse = false;
 }
+

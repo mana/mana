@@ -56,7 +56,7 @@ class AnimatedSprite
         /**
          * Destructor.
          */
-        ~AnimatedSprite();
+        virtual ~AnimatedSprite();
 
         /**
          * Resets the animated sprite.

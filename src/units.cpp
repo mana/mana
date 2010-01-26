@@ -107,7 +107,7 @@ void Units::loadUnits()
             struct UnitDescription ud;
             int level = 1;
             const std::string type = XML::getProperty(node, "type", "");
-            ud.conversion = XML::getProperty(node, "conversion", 1.0);
+            ud.conversion = XML::getProperty(node, "conversion", 1);
             ud.mix = XML::getProperty(node, "mix", "no") == "yes";
 
             struct UnitLevel bu;

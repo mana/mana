@@ -64,6 +64,8 @@ class ConfigurationListManager
          */
         virtual CONT readConfigItem(ConfigurationObject *obj,
                                     CONT container) = 0;
+
+        virtual ~ConfigurationListManager() {}
 };
 
 /**

@@ -636,10 +636,10 @@ void LocalPlayer::stopWalking(bool sendToServer)
 #ifdef MANASERV_SUPPORT
         mLocalWalkTime = 0;
 #endif
-        setDestination(getPosition().x, getPosition().y);
+        setDestination((int) getPosition().x, (int) getPosition().y);
         if (sendToServer)
-             Net::getPlayerHandler()->setDestination(getPosition().x,
-                                                     getPosition().y);
+             Net::getPlayerHandler()->setDestination((int) getPosition().x,
+                                                     (int) getPosition().y);
         setAction(STAND);
     }
 

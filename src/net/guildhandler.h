@@ -56,6 +56,8 @@ class GuildHandler
                                              bool response) = 0;
 
         virtual void endAlliance(int guildId, int otherGuildId) = 0;
+
+        virtual ~GuildHandler() {}
 };
 
 }

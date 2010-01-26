@@ -49,6 +49,8 @@ class AdminHandler
 
         virtual void mute(int playerId, int type, int limit) = 0;
 
+        virtual ~AdminHandler() {}
+
         // TODO
 };
 

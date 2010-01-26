@@ -158,12 +158,12 @@ int Download::downloadProgress(void *clientp, double dltotal, double dlnow,
 
     if (d->mOptions.cancel)
     {
-        return d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_CANCELLED, dltotal,
-                                  dlnow);
+        return d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_CANCELLED, (size_t) dltotal,
+                                  (size_t) dlnow);
         return -5;
     }
 
-    return d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_IDLE, dltotal, dlnow);
+    return d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_IDLE, (size_t) dltotal, (size_t) dlnow);
 }
 
 int Download::downloadThread(void *ptr)

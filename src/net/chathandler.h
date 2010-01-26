@@ -53,6 +53,8 @@ class ChatHandler
         virtual void kickUser(int channelId, const std::string &name) = 0;
 
         virtual void who() = 0;
+
+        virtual ~ChatHandler() {}
 };
 }
 
