@@ -41,6 +41,7 @@
 #include "utils/stringutils.h"
 
 std::string tradePartnerName;
+ConfirmDialog *confirmDlg;
 
 /**
  * Listener for request trade dialogs
@@ -50,6 +51,7 @@ namespace {
     {
         void action(const gcn::ActionEvent &event)
         {
+            confirmDlg = 0;
             Net::getTradeHandler()->respond(event.getId() == "yes");
         }
     } listener;
@@ -73,6 +75,7 @@ TradeHandler::TradeHandler()
     };
     handledMessages = _messages;
     tradeHandler = this;
+    confirmDlg = 0;
 }
 
 
@@ -81,35 +84,37 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_TRADE_REQUEST:
+            {
                 // If a trade window or request window is already open, send a
                 // trade cancel to any other trade request.
                 //
                 // Note that it would be nice if the server would prevent this
                 // situation, and that the requesting player would get a
                 // special message about the player being occupied.
-                tradePartnerName = msg.readString(24);
+                std::string tradePartnerNameTemp = msg.readString(24);
 
                 if (player_relations.hasPermission(tradePartnerName,
                                                    PlayerRelation::TRADE))
                 {
-                    if (!player_node->tradeRequestOk())
+                    if (!player_node->tradeRequestOk() || confirmDlg)
                     {
                         Net::getTradeHandler()->respond(false);
                         break;
                     }
 
+                    tradePartnerName = tradePartnerNameTemp;
                     player_node->setTrading(true);
-                    ConfirmDialog *dlg;
-                    dlg = new ConfirmDialog(_("Request for Trade"),
+                    confirmDlg = new ConfirmDialog(_("Request for Trade"),
                             strprintf(_("%s wants to trade with you, do you "
-                                    "accept?"), tradePartnerName.c_str()));
-                    dlg->addActionListener(&listener);
+                                      "accept?"), tradePartnerName.c_str()));
+                    confirmDlg->addActionListener(&listener);
                 }
                 else
                 {
                     Net::getTradeHandler()->respond(false);
                     break;
                 }
+            }
             break;
 
         case SMSG_TRADE_RESPONSE:
