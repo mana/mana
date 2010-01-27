@@ -355,7 +355,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                 case Being::MONSTER:
                 case Being::PLAYER:
                     // Ignore it if its dead
-                    if (being->mAction == Being::DEAD)
+                    if (!being->isAlive())
                         break;
 
                     if (player_node->withinAttackRange(being) ||
@@ -378,7 +378,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         {
             player_node->pickUp(item);
         }
-        else if (player_node->mAction == Being::SIT)
+        else if (player_node->getCurrentAction() == Being::SIT)
         {
             return;
         }
@@ -420,9 +420,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
               player_node->pathSetByMouse();
           }
 #else
-          if (mLocalWalkTime != player_node->mWalkTime)
+          if (mLocalWalkTime != player_node->getWalkTime())
           {
-              mLocalWalkTime = player_node->mWalkTime;
+              mLocalWalkTime = player_node->getWalkTime();
               int destX = event.getX() / 32 + mTileViewX;
               int destY = event.getY() / 32 + mTileViewY;
               player_node->setDestination(destX, destY);

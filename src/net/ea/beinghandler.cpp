@@ -112,7 +112,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     Player *player;
     int hairStyle, hairColor, flag;
     std::string player_followed;
-    
+
     switch (msg.getId())
     {
         case SMSG_BEING_VISIBLE:
@@ -153,8 +153,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (msg.getId() == 0x0078)
             {
                 dstBeing->clearPath();
-                dstBeing->mFrame = 0;
-                dstBeing->mWalkTime = tick_time;
+                dstBeing->setFrame(0);
+                dstBeing->setWalkTime(tick_time);
                 dstBeing->setAction(Being::STAND);
             }
 
@@ -163,7 +163,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (speed == 0) { speed = 150; }
 
             dstBeing->setWalkSpeed(speed);
-            dstBeing->mJob = job;
+            dstBeing->setJob(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
             headBottom = msg.readInt16();
@@ -263,9 +263,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             if (!dstBeing)
                 break;
-            
+
             player_followed = player_node->getFollow();
-            
+
             if (!player_followed.empty())
             {
                 if (dstBeing->getName() == player_followed)
@@ -349,7 +349,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 case 0x02: // Sit
                     if (srcBeing)
                     {
-                        srcBeing->mFrame = 0;
+                        srcBeing->setFrame(0);
                         srcBeing->setAction(Being::SIT);
                     }
                     break;
@@ -357,7 +357,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 case 0x03: // Stand up
                     if (srcBeing)
                     {
-                        srcBeing->mFrame = 0;
+                        srcBeing->setFrame(0);
                         srcBeing->setAction(Being::STAND);
                     }
                     break;
@@ -386,7 +386,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (player_relations.hasPermission(dstBeing, PlayerRelation::EMOTE))
             {
                 // only set emote if one doesnt already exist
-                if (!dstBeing->mEmotion)
+                if (!dstBeing->getEmotion())
                     dstBeing->setEmote(msg.readInt8(), EMOTION_TIME);
             }
 
@@ -524,7 +524,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             }
 
             dstBeing->setWalkSpeed(speed);
-            dstBeing->mJob = job;
+            dstBeing->setJob(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
             shield = msg.readInt16();
@@ -567,7 +567,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
                 dstBeing->setTileCoords(srcX, srcY);
                 dstBeing->setDestination(dstX, dstY);
-                
+
                 player_followed = player_node->getFollow();
                 if (!player_followed.empty())
                 {
@@ -612,8 +612,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();   // Lv
             msg.readInt8();   // unknown
 
-            dstBeing->mWalkTime = tick_time;
-            dstBeing->mFrame = 0;
+            dstBeing->setWalkTime(tick_time);
+            dstBeing->setFrame(0);
 
             dstBeing->setStunMode(stunMode);
             dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
@@ -643,9 +643,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     x = msg.readInt16();
                     y = msg.readInt16();
                     dstBeing->setTileCoords(x, y);
-                    if (dstBeing->mAction == Being::WALK)
+                    if (dstBeing->getCurrentAction() == Being::WALK)
                     {
-                        dstBeing->mFrame = 0;
+                        dstBeing->setFrame(0);
                         dstBeing->setAction(Being::STAND);
                     }
                 }

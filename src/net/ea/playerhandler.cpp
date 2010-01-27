@@ -211,7 +211,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 player_node->setAction(Being::STAND);
-                player_node->mFrame = 0;
+                player_node->setFrame(0);
                 player_node->setTileCoords(x, y);
 
                 logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
@@ -295,7 +295,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     case 0x0034: player_node->setAttributeBase(CRIT, value);
                         player_node->setAttributeEffective(CRIT, value); break;
 
-                    case 0x0035: player_node->mAttackSpeed = value; break;
+                    case 0x0035: player_node->setAttackSpeed(value); break;
                     case 0x0037: player_node->setAttributeBase(JOB, value);
                         player_node->setAttributeEffective(JOB, value); break;
                     case 500: player_node->setGMLevel(value); break;

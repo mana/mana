@@ -126,7 +126,7 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
             break;
     }
 
-    if (resetPlayer && player_node->mAction != Being::SIT)
+    if (resetPlayer && player_node->getCurrentAction() != Being::SIT)
         player_node->setAction(Being::STAND);
 }
 

@@ -43,7 +43,7 @@ class FindBeingFunctor
             const Vector &pos = being->getPosition();
             return ((int) pos.x / 32 == x &&
                     ((int) pos.y / 32 == y || (int) pos.y / 32 == other_y) &&
-                    being->mAction != Being::DEAD &&
+                    being->isAlive() &&
                     (type == Being::UNKNOWN || being->getType() == type));
         }
 
@@ -141,7 +141,7 @@ Being *BeingManager::findBeingByPixel(int x, int y) const
         int xtol = being->getWidth() / 2;
         int uptol = being->getHeight();
 
-        if ((being->mAction != Being::DEAD) &&
+        if ((being->isAlive()) &&
             (being != player_node) &&
             (being->getPixelX() - xtol <= x) &&
             (being->getPixelX() + xtol >= x) &&
@@ -183,8 +183,9 @@ void BeingManager::logic()
 
         being->logic();
 
-        if (being->mAction == Being::DEAD &&
-            Net::getGameHandler()->removeDeadBeings() && being->mFrame >= 20)
+        if (!being->isAlive() &&
+            Net::getGameHandler()->removeDeadBeings() &&
+            being->getCurrentFrame() >= 20)
         {
             delete being;
             i = mBeings.erase(i);
@@ -228,7 +229,7 @@ Being *BeingManager::findNearestLivingBeing(int x, int y,
 
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || !closestBeing)          // it is closer
-                && being->mAction != Being::DEAD)       // no dead beings
+                && being->isAlive())       // no dead beings
         {
             dist = d;
             closestBeing = being;

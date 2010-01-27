@@ -225,7 +225,7 @@ void LocalPlayer::logic()
             mTarget->setTargetAnimation(
                 mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
 
-            if (mTarget->mAction == DEAD)
+            if (!mTarget->isAlive())
                 stopAttack();
 
             if (mKeepAttacking && mTarget)
