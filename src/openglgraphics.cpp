@@ -59,6 +59,9 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 
     int displayFlags = SDL_ANYFORMAT | SDL_OPENGL;
 
+    mWidth = w;
+    mHeight = h;
+    mBpp = bpp;
     mFullscreen = fs;
     mHWAccel = hwaccel;
 
