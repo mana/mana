@@ -722,6 +722,10 @@ static void initXML()
 /** Main */
 int main(int argc, char *argv[])
 {
+#if defined(DEBUG) && defined(WIN32)
+    // load mingw crash handler. Won't fail if dll is not present.
+    LoadLibrary("exchndl.dll");
+#endif
     // Parse command line options
     Options options;
     parseOptions(argc, argv, options);
