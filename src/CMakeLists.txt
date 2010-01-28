@@ -10,6 +10,17 @@ FIND_PACKAGE(PhysFS REQUIRED)
 FIND_PACKAGE(PNG REQUIRED)
 FIND_PACKAGE(Gettext REQUIRED)
 
+IF (CMAKE_COMPILER_IS_GNUCXX)
+    # Help getting compilation warnings
+    SET(CMAKE_CXX_FLAGS "-Wall")
+    IF (WIN32)
+        # This includes enough debug information to get something useful
+        # from Dr. Mingw while keeping binary size down. Almost useless
+        # with gdb, though.
+        SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -ggdb0 -gstabs2")
+    ENDIF()
+ENDIF()
+
 SET(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
 SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${PKG_DATADIR}/\\\"")
 SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${LOCALEDIR}/\\\"")
