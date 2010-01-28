@@ -139,7 +139,8 @@ class NpcDialog : public Window, public gcn::ActionListener,
         /**
          * Requests a interger from the user.
          */
-        void integerRequest(int defaultValue = 0, int min = 0, int max = 2000);
+        void integerRequest(int defaultValue = 0, int min = 0,
+                            int max = 2147483647);
 
         void move(int amount);
 
