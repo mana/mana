@@ -24,8 +24,12 @@
 #include "localplayer.h"
 #include "log.h"
 
+#include "gui/widgets/chattab.h"
+
 #include "net/ea/messagein.h"
 #include "net/ea/protocol.h"
+
+#include "utils/gettext.h"
 
 extern Net::GuildHandler *guildHandler;
 
@@ -122,6 +126,10 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
 
 void GuildHandler::create(const std::string &name)
 {
+    localChatTab->chatLog(_("Guild creation isn't supported yet."),
+                          BY_SERVER);
+    return;
+
     MessageOut msg(CMSG_GUILD_CREATE);
     msg.writeInt32(0); // Unused
     msg.writeString(name, 24);
