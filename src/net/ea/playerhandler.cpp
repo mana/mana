@@ -47,9 +47,8 @@
 #include "utils/stringutils.h"
 #include "utils/gettext.h"
 
-// TODO Move somewhere else
-OkDialog *weightNotice = NULL;
-OkDialog *deathNotice = NULL;
+extern OkDialog *weightNotice;
+extern OkDialog *deathNotice;
 
 // Max. distance we are willing to scroll after a teleport;
 // everything beyond will reset the port hard.
@@ -636,6 +635,11 @@ bool PlayerHandler::canCorrectAttributes()
 int PlayerHandler::getJobLocation()
 {
     return JOB;
+}
+
+float PlayerHandler::getDefaultWalkSpeed()
+{
+    return 150;
 }
 
 } // namespace EAthena

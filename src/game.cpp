@@ -105,8 +105,8 @@ volatile int fps = 0, frame = 0;
 Engine *engine = NULL;
 Joystick *joystick = NULL;
 
-extern Window *weightNotice;
-extern Window *deathNotice;
+OkDialog *weightNotice = NULL;
+OkDialog *deathNotice = NULL;
 QuitDialog *quitDialog = NULL;
 OkDialog *disconnectedDialog = NULL;
 

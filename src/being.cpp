@@ -51,6 +51,8 @@
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
+#include "net/net.h"
+#include "net/playerhandler.h"
 
 #include <cassert>
 #include <cmath>
@@ -65,11 +67,10 @@ extern const int MILLISECONDS_IN_A_TICK;
 
 int Being::mNumberOfHairstyles = 1;
 
+// TODO: mWalkTime used by eAthena only
 Being::Being(int id, int job, Map *map):
     mFrame(0),
-#ifdef EATHENA_SUPPORT
     mWalkTime(0),
-#endif
     mEmotion(0), mEmotionTime(0),
     mSpeechTime(0),
     mAttackSpeed(350),
@@ -88,11 +89,6 @@ Being::Being(int id, int job, Map *map):
     mStatusParticleEffects(&mStunParticleEffects, false),
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
-#ifdef MANASERV_SUPPORT
-    mWalkSpeed(6.0f), // default speed in tile per second
-#else
-    mWalkSpeed(150),
-#endif
     mX(0), mY(0),
     mTakedDamage(0),
     mUsedTargetCursor(NULL)
@@ -103,6 +99,7 @@ Being::Being(int id, int job, Map *map):
 
     mNameColor = &guiPalette->getColor(Palette::NPC);
     mTextColor = &guiPalette->getColor(Palette::CHAT);
+    mWalkSpeed = Net::getPlayerHandler()->getDefaultWalkSpeed();
 }
 
 Being::~Being()
@@ -131,15 +128,15 @@ void Being::setPosition(const Vector &pos)
                         (int)pos.y - getHeight() - mText->getHeight() - 6);
 }
 
-#ifdef EATHENA_SUPPORT
-void Being::setDestination(int destX, int destY)
-{
-    if (mMap)
-        setPath(mMap->findPath(mX, mY, destX, destY, getWalkMask()));
-}
-#else
 void Being::setDestination(int dstX, int dstY)
 {
+    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    {
+        if (mMap)
+            setPath(mMap->findPath(mX, mY, dstX, dstY, getWalkMask()));
+        return;
+    }
+
     mDest.x = dstX;
     mDest.y = dstY;
     int srcX = mPos.x;
@@ -191,7 +188,6 @@ void Being::setDestination(int dstX, int dstY)
 
     setPath(thisPath);
 }
-#endif
 
 void Being::clearPath()
 {
@@ -201,13 +197,12 @@ void Being::clearPath()
 void Being::setPath(const Path &path)
 {
     mPath = path;
-#ifdef EATHENA_SUPPORT
-    if (mAction != WALK && mAction != DEAD)
+    if ((Net::getNetworkType() == ServerInfo::EATHENA) &&
+            mAction != WALK && mAction != DEAD)
     {
         nextStep();
         mWalkTime = tick_time;
     }
-#endif
 }
 
 void Being::setSpeech(const std::string &text, int time)
@@ -349,10 +344,11 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
             }
         }
     }
-#ifdef EATHENA_SUPPORT
-    mFrame = 0;
-    mWalkTime = tick_time;
-#endif
+    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    {
+        mFrame = 0;
+        mWalkTime = tick_time;
+    }
 }
 
 void Being::setName(const std::string &name)
@@ -474,7 +470,7 @@ void Being::setDirection(Uint8 direction)
            (*it)->setDirection(dir);
 }
 
-#ifdef EATHENA_SUPPORT
+/** TODO: Used by eAthena only */
 void Being::nextStep()
 {
     if (mPath.empty())
@@ -509,7 +505,6 @@ void Being::nextStep()
     setAction(WALK);
     mWalkTime += (int)(mWalkSpeed / 10);
 }
-#endif
 
 void Being::logic()
 {
@@ -524,8 +519,7 @@ void Being::logic()
         mText = 0;
     }
 
-#ifdef MANASERV_SUPPORT
-    if (mAction != DEAD)
+    if ((Net::getNetworkType() == ServerInfo::MANASERV) && (mAction != DEAD))
     {
         const Vector dest = (mPath.empty()) ?
             mDest : Vector(mPath.front().x,
@@ -597,11 +591,12 @@ void Being::logic()
             setAction(STAND);
         }
     }
-#else
-    // Update pixel coordinates
-    setPosition(mX * 32 + 16 + getXOffset(),
-                mY * 32 + 32 + getYOffset());
-#endif
+    else if (Net::getNetworkType() == ServerInfo::EATHENA)
+    {
+        // Update pixel coordinates
+        setPosition(mX * 32 + 16 + getXOffset(),
+                    mY * 32 + 32 + getYOffset());
+    }
 
     if (mEmotion != 0)
     {
@@ -641,11 +636,9 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     //       these translations aren't necessary anymore. The sprites know
     //       best where their base point should be.
     const int px = getPixelX() + offsetX - 16;
-#ifdef MANASERV_SUPPORT
-    const int py = getPixelY() + offsetY - 15;  // Temporary fix to the Y offset.
-#else
-    const int py = getPixelY() + offsetY - 32;
-#endif
+    // Temporary fix to the Y offset.
+    const int py = getPixelY() + offsetY -
+        ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
 
     if (mUsedTargetCursor)
         mUsedTargetCursor->draw(graphics, px, py);
@@ -801,7 +794,7 @@ void Being::setStatusEffect(int index, bool active)
     }
 }
 
-#ifdef EATHENA_SUPPORT
+/** TODO: eAthena only */
 int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
@@ -821,7 +814,6 @@ int Being::getOffset(char pos, char neg) const
 
     return offset;
 }
-#endif
 
 int Being::getWidth() const
 {

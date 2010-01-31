@@ -453,10 +453,8 @@ class LocalPlayer : public Player
 
         Inventory *mInventory;
 
-#ifdef MANASERV_SUPPORT
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
-#endif
 
         Inventory *mStorage;
 

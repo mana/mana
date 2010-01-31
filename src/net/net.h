@@ -26,7 +26,7 @@
  * \defgroup Network Core network layer
  */
 
-class ServerInfo;
+#include "net/serverinfo.h"
 
 namespace Net {
 
@@ -57,6 +57,8 @@ PartyHandler *getPartyHandler();
 PlayerHandler *getPlayerHandler();
 SpecialHandler *getSpecialHandler();
 TradeHandler *getTradeHandler();
+
+ServerInfo::Type getNetworkType();
 
 /**
  * Handles server detection and connection

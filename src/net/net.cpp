@@ -126,41 +126,20 @@ ServerInfo::Type networkType = ServerInfo::UNKNOWN;
 
 void connectToServer(const ServerInfo &server)
 {
-    // Remove with ifdefs
-    if (networkType != ServerInfo::UNKNOWN)
-    {
-        getGeneralHandler()->reload();
-    }
-    else
-    {
-#ifdef MANASERV_SUPPORT
-        new ManaServ::GeneralHandler;
-#else
-        new EAthena::GeneralHandler;
-#endif
-
-        getGeneralHandler()->load();
-
-        networkType = server.type;
-    }
-    // End remove section
-
-    // Uncomment after ifdefs removed
-    /*ServerInfo server = ServerInfo(inServer);
     if (server.type == ServerInfo::UNKNOWN)
     {
         // TODO: Query the server about itself and choose the netcode based on
         // that
     }
 
-    //if (networkType == server.type)
-    if (networkType != ServerInfo::UNKNOWN)
+    if (networkType == server.type && getGeneralHandler() != NULL)
+    //if (networkType != ServerInfo::UNKNOWN)
     {
         getGeneralHandler()->reload();
     }
     else
     {
-        if (networkType != ServerInfo::UNKNOWN)
+        if (networkType != ServerInfo::UNKNOWN && getGeneralHandler() != NULL)
         {
             getGeneralHandler()->unload();
         }
@@ -183,7 +162,7 @@ void connectToServer(const ServerInfo &server)
         getGeneralHandler()->load();
 
         networkType = server.type;
-    }*/
+    }
 
     getLoginHandler()->setServer(server);
 
@@ -197,6 +176,11 @@ void unload()
     {
         handler->unload();
     }
+}
+
+ServerInfo::Type getNetworkType()
+{
+    return networkType;
 }
 
 } // namespace Net

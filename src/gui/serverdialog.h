@@ -42,6 +42,7 @@ class Label;
 class ListBox;
 class ServerDialog;
 class TextField;
+class DropDown;
 
 /**
  * Server and Port List Model
@@ -71,6 +72,26 @@ class ServersListModel : public gcn::ListModel
         ServerInfos *mServers;
         ServerDialog *mParent;
 };
+
+/**
+ * Server and Port List Model
+ */
+class TypeListModel : public gcn::ListModel
+{
+    public:
+        TypeListModel() { };
+
+        /**
+         * Used to get number of line in the list
+         */
+        int getNumberOfElements() { return 2; }
+
+        /**
+         * Used to get an element from the list
+         */
+        std::string getElementAt(int elementIndex);
+};
+
 
 /**
  * The server choice dialog.
@@ -133,6 +154,9 @@ class ServerDialog : public Window,
 
         ListBox *mServersList;
         ServersListModel *mServersListModel;
+
+        DropDown *mTypeField;
+        TypeListModel *mTypeListModel;
 
         const std::string &mDir;
 

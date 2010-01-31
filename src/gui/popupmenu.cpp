@@ -52,7 +52,7 @@
 
 #include <cassert>
 
-extern std::string tradePartnerName;
+std::string tradePartnerName;
 
 PopupMenu::PopupMenu():
     Popup("PopupMenu"),

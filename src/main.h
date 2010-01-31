@@ -65,16 +65,10 @@
 
 #include <string>
 
-#ifdef MANASERV_SUPPORT
-#define SERVER_BUILD "manaserv"
-#else
-#define SERVER_BUILD "eAthena"
-#endif
-
 #ifdef PACKAGE_VERSION
-#define FULL_VERSION "v" PACKAGE_VERSION " (" SERVER_BUILD ")"
+#define FULL_VERSION "v" PACKAGE_VERSION
 #else
-#define FULL_VERSION "Unknown Version (" SERVER_BUILD ")"
+#define FULL_VERSION "Unknown Version"
 #endif
 
 #ifndef PKG_DATADIR
@@ -83,11 +77,9 @@
 
 #define MAX_CHARACTER_COUNT 3
 
-#ifdef MANASERV_SUPPORT
-#define DEFAULT_PORT 9601
-#else
+//manaserv uses 9601
+//#define DEFAULT_PORT 9601
 #define DEFAULT_PORT 6901
-#endif
 
 const std::string &getHomeDirectory();
 

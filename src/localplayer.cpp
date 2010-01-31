@@ -67,12 +67,10 @@
 
 #include <cassert>
 
-#ifdef MANASERV_SUPPORT
 // This is the minimal delay between to permitted
 // setDestination() calls using the keyboard.
 // TODO: This can fine tuned later on when running is added...
 const short walkingKeyboardDelay = 1000;
-#endif
 
 LocalPlayer *player_node = NULL;
 
@@ -103,9 +101,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mDestX(0), mDestY(0),
     mInventory(new Inventory(Net::getInventoryHandler()
                              ->getSize(Net::InventoryHandler::INVENTORY))),
-#ifdef MANASERV_SUPPORT
     mLocalWalkTime(-1),
-#endif
     mStorage(new Inventory(Net::getInventoryHandler()
                            ->getSize(Net::InventoryHandler::STORAGE))),
     mMessageTime(0)
@@ -210,15 +206,17 @@ void LocalPlayer::logic()
         }
         else
         {
-#ifdef MANASERV_SUPPORT
             // Find whether target is in range
-            const int rangeX = abs(mTarget->getPosition().x - getPosition().x);
-            const int rangeY = abs(mTarget->getPosition().y - getPosition().y);
-#else
-            // Find whether target is in range
-            const int rangeX = abs(mTarget->getTileX() - getTileX());
-            const int rangeY = abs(mTarget->getTileY() - getTileY());
-#endif
+            // TODO: Make this nicer, probably using getPosition() only
+            const int rangeX =
+                (Net::getNetworkType() == ServerInfo::MANASERV) ?
+                abs(mTarget->getPosition().x - getPosition().x) :
+                abs(mTarget->getTileX() - getTileX());
+            const int rangeY =
+                (Net::getNetworkType() == ServerInfo::MANASERV) ?
+                abs(mTarget->getPosition().y - getPosition().y) :
+                abs(mTarget->getTileY() - getTileY());
+
             const int attackRange = getAttackRange();
             const int inRange = rangeX > attackRange || rangeY > attackRange
                                                                     ? 1 : 0;
@@ -263,92 +261,95 @@ void LocalPlayer::setGMLevel(int level)
 
 void LocalPlayer::nextStep(unsigned char dir = 0)
 {
-#ifdef EATHENA_SUPPORT
-    // TODO: Fix picking up when reaching target (this method is obsolete)
-    // TODO: Fix holding walking button to keep walking smoothly
-    if (mPath.empty())
+    if (Net::getNetworkType() == ServerInfo::EATHENA)
     {
-        if (mPickUpTarget)
-            pickUp(mPickUpTarget);
-
-        if (mWalkingDir)
-            startWalking(mWalkingDir);
-    }
-
-    // TODO: Fix automatically walking within range of target, when wanted
-    if (mGoingToTarget && mTarget && withinAttackRange(mTarget))
-    {
-        mAction = Being::STAND;
-        attack(mTarget, true);
-        mGoingToTarget = false;
-        mPath.clear();
-        return;
-    }
-    else if (mGoingToTarget && !mTarget)
-    {
-        mGoingToTarget = false;
-        mPath.clear();
-    }
-
-
-    Player::nextStep();
-#else
-    if (!mMap || !dir)
-        return;
-
-    const Vector &pos = getPosition();
-
-    // Compute where the next step will be set.
-    int dx = 0, dy = 0;
-    if (dir & UP)
-        dy--;
-    if (dir & DOWN)
-        dy++;
-    if (dir & LEFT)
-        dx--;
-    if (dir & RIGHT)
-        dx++;
-
-    // Prevent skipping corners over colliding tiles
-    if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
-                             (int) pos.y / 32, getWalkMask()))
-        dx = 16 - (int) pos.x % 32;
-    if (dy && !mMap->getWalk((int) pos.x / 32,
-                             ((int) pos.y + dy) / 32, getWalkMask()))
-        dy = 16 - (int) pos.y % 32;
-
-    // Choose a straight direction when diagonal target is blocked
-    if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
-                                   (pos.y + dy) / 32, getWalkMask()))
-        dx = 16 - (int) pos.x % 32;
-
-    int dScaler; // Distance to walk
-
-    // Checks our path up to 1 tiles, if a blocking tile is found
-    // We go to the last good tile, and break out of the loop
-    for (dScaler = 1; dScaler <= 32; dScaler++)
-    {
-        if ( (dx || dy) &&
-             !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
-                             ((int) pos.y + (dy * dScaler)) / 32, getWalkMask()) )
+        // TODO: Fix picking up when reaching target (this method is obsolete)
+        // TODO: Fix holding walking button to keep walking smoothly
+        if (mPath.empty())
         {
-            dScaler--;
-            break;
+            if (mPickUpTarget)
+                pickUp(mPickUpTarget);
+
+            if (mWalkingDir)
+                startWalking(mWalkingDir);
+        }
+
+        // TODO: Fix automatically walking within range of target, when wanted
+        if (mGoingToTarget && mTarget && withinAttackRange(mTarget))
+        {
+            mAction = Being::STAND;
+            attack(mTarget, true);
+            mGoingToTarget = false;
+            mPath.clear();
+            return;
+        }
+        else if (mGoingToTarget && !mTarget)
+        {
+            mGoingToTarget = false;
+            mPath.clear();
+        }
+
+
+        Player::nextStep();
+    }
+    else
+    {
+        if (!mMap || !dir)
+            return;
+
+        const Vector &pos = getPosition();
+
+        // Compute where the next step will be set.
+        int dx = 0, dy = 0;
+        if (dir & UP)
+            dy--;
+        if (dir & DOWN)
+            dy++;
+        if (dir & LEFT)
+            dx--;
+        if (dir & RIGHT)
+            dx++;
+
+        // Prevent skipping corners over colliding tiles
+        if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
+                                 (int) pos.y / 32, getWalkMask()))
+            dx = 16 - (int) pos.x % 32;
+        if (dy && !mMap->getWalk((int) pos.x / 32,
+                                 ((int) pos.y + dy) / 32, getWalkMask()))
+            dy = 16 - (int) pos.y % 32;
+
+        // Choose a straight direction when diagonal target is blocked
+        if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
+                                       (pos.y + dy) / 32, getWalkMask()))
+            dx = 16 - (int) pos.x % 32;
+
+        int dScaler; // Distance to walk
+
+        // Checks our path up to 1 tiles, if a blocking tile is found
+        // We go to the last good tile, and break out of the loop
+        for (dScaler = 1; dScaler <= 32; dScaler++)
+        {
+            if ( (dx || dy) &&
+                 !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
+                                 ((int) pos.y + (dy * dScaler)) / 32, getWalkMask()) )
+            {
+                dScaler--;
+                break;
+            }
+        }
+
+        if (dScaler > 16)
+        {
+            //effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+            setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+        }
+        else if (dir)
+        {
+            // If the being can't move, just change direction
+            Net::getPlayerHandler()->setDirection(dir);
+            setDirection(dir);
         }
     }
-
-    if (dScaler > 16)
-    {
-        //effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
-        setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
-    }
-    else if (dir)
-    {
-        // If the being can't move, just change direction
-        Net::getPlayerHandler()->setDirection(dir);
-        setDirection(dir);
-    }
-#endif
 }
 
 bool LocalPlayer::checkInviteRights(const std::string &guildName)
@@ -409,15 +410,17 @@ void LocalPlayer::pickUp(FloorItem *item)
     }
     else
     {
-#ifdef MANASERV_SUPPORT
-        setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
-#else
-        setDestination(item->getX(), item->getY());
-#endif
-        mPickUpTarget = item;
-#ifdef EATHENA_SUPPORT
-        stopAttack();
-#endif
+        if (Net::getNetworkType() == ServerInfo::MANASERV)
+        {
+            setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
+            mPickUpTarget = item;
+        }
+        else
+        {
+            setDestination(item->getX(), item->getY());
+            mPickUpTarget = item;
+            stopAttack();
+        }
     }
 }
 
@@ -460,56 +463,57 @@ void LocalPlayer::setTarget(Being *target)
 
 void LocalPlayer::setDestination(int x, int y)
 {
-#ifdef MANASERV_SUPPORT
-    // Pre-computing character's destination in tiles
-    const int tx = x / 32;
-    const int ty = y / 32;
-
-    // Check the walkability of the destination
-    // If the destination is a wall, don't go there!
-    if (!mMap->getWalk(tx, ty))
-        return;
-
-    // Pre-computing character's position useful variables.
-    Vector playerPosition = getPosition();
-    const int posX = (int)(playerPosition.x / 32);
-    const int posY = (int)(playerPosition.y / 32);
-    const int offsetY = (int)playerPosition.y % 32;
-
-    // check if we're finding a path to the seeked destination
-    // If the path is empty... and isn't on the same tile,
-    // then, it's an unvalid one.
-    if (posX != tx || posY != ty)
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
     {
-        Path evaluatedPath = mMap->findPath(posX, posY, tx, ty,
-                                            getWalkMask());
-        if (evaluatedPath.empty())
+        // Pre-computing character's destination in tiles
+        const int tx = x / 32;
+        const int ty = y / 32;
+
+        // Check the walkability of the destination
+        // If the destination is a wall, don't go there!
+        if (!mMap->getWalk(tx, ty))
             return;
+
+        // Pre-computing character's position useful variables.
+        Vector playerPosition = getPosition();
+        const int posX = (int)(playerPosition.x / 32);
+        const int posY = (int)(playerPosition.y / 32);
+        const int offsetY = (int)playerPosition.y % 32;
+
+        // check if we're finding a path to the seeked destination
+        // If the path is empty... and isn't on the same tile,
+        // then, it's an unvalid one.
+        if (posX != tx || posY != ty)
+        {
+            Path evaluatedPath = mMap->findPath(posX, posY, tx, ty,
+                                                getWalkMask());
+            if (evaluatedPath.empty())
+                return;
+        }
+
+        // Pre-computing character's destination offsets.
+        int fx = x % 32;
+        int fy = y % 32;
+
+        // Fix coordinates so that the player does not seem to dig into walls.
+         if (fx > 16 && !mMap->getWalk(tx + 1, ty, getWalkMask()))
+            fx = 16;
+         else if (fx < 16 && !mMap->getWalk(tx - 1, ty, getWalkMask()))
+            fx = 16;
+         else if (fy > 16 && !mMap->getWalk(tx, ty + 1, getWalkMask()))
+            fy = 16;
+         else if (fy < 16 && !mMap->getWalk(tx, ty - 1, getWalkMask()))
+            fy = 16;
+
+         // Test also the current character's position, to avoid the corner case
+         // where a player can approach an obstacle by walking from slightly
+         // under, diagonally. First part to the walk on water bug.
+         if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
+            fy = 16;
+
+        x = tx * 32 + fx;
+        y = ty * 32 + fy;
     }
-
-    // Pre-computing character's destination offsets.
-    int fx = x % 32;
-    int fy = y % 32;
-
-    // Fix coordinates so that the player does not seem to dig into walls.
-     if (fx > 16 && !mMap->getWalk(tx + 1, ty, getWalkMask()))
-        fx = 16;
-     else if (fx < 16 && !mMap->getWalk(tx - 1, ty, getWalkMask()))
-        fx = 16;
-     else if (fy > 16 && !mMap->getWalk(tx, ty + 1, getWalkMask()))
-        fy = 16;
-     else if (fy < 16 && !mMap->getWalk(tx, ty - 1, getWalkMask()))
-        fy = 16;
-
-     // Test also the current character's position, to avoid the corner case
-     // where a player can approach an obstacle by walking from slightly
-     // under, diagonally. First part to the walk on water bug.
-     if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
-        fy = 16;
-
-    x = tx * 32 + fx;
-    y = ty * 32 + fy;
-#endif
 
     // Only send a new message to the server when destination changes
     if (x != mDestX || y != mDestY)
@@ -529,7 +533,8 @@ void LocalPlayer::setWalkingDir(int dir)
 {
     // This function is called by Game::handleInput()
 
-#ifdef MANASERV_SUPPORT
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
+    {
         // First if player is pressing key for the direction he is already
         // going, do nothing more...
 
@@ -553,7 +558,7 @@ void LocalPlayer::setWalkingDir(int dir)
         // don't do anything or we could get disconnected for spamming the server
         if (get_elapsed_time(mLocalWalkTime) < walkingKeyboardDelay)
             return;
-#endif
+    }
 
     mWalkingDir = dir;
 
@@ -562,12 +567,10 @@ void LocalPlayer::setWalkingDir(int dir)
     {
         startWalking(dir);
     }
-#ifdef MANASERV_SUPPORT
-    else if (mAction == WALK)
+    else if (mAction == WALK && (Net::getNetworkType() == ServerInfo::MANASERV))
     {
         nextStep(dir);
     }
-#endif
 }
 
 void LocalPlayer::startWalking(unsigned char dir)
@@ -582,12 +585,13 @@ void LocalPlayer::startWalking(unsigned char dir)
     if (mAction == WALK && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
-#ifdef MANASERV_SUPPORT
-        const Vector &pos = getPosition();
-        Being::setDestination(pos.x, pos.y);
-#else
-        Being::setDestination(getTileX(), getTileY());
-#endif
+        if (Net::getNetworkType() == ServerInfo::MANASERV)
+        {
+            const Vector &pos = getPosition();
+            Being::setDestination(pos.x, pos.y);
+        }
+        else
+            Being::setDestination(getTileX(), getTileY());
         return;
     }
 
@@ -601,31 +605,32 @@ void LocalPlayer::startWalking(unsigned char dir)
     if (dir & RIGHT)
         dx++;
 
-#ifdef EATHENA_SUPPORT
-    // Prevent skipping corners over colliding tiles
-    if (dx && !mMap->getWalk(getTileX() + dx, getTileY(), getWalkMask()))
-        dx = 0;
-    if (dy && !mMap->getWalk(getTileX(), getTileY() + dy, getWalkMask()))
-        dy = 0;
-
-    // Choose a straight direction when diagonal target is blocked
-    if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
-        dx = 0;
-
-    // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
+    if (Net::getNetworkType() == ServerInfo::EATHENA)
     {
-        setDestination(getTileX() + dx, getTileY() + dy);
+        // Prevent skipping corners over colliding tiles
+        if (dx && !mMap->getWalk(getTileX() + dx, getTileY(), getWalkMask()))
+            dx = 0;
+        if (dy && !mMap->getWalk(getTileX(), getTileY() + dy, getWalkMask()))
+            dy = 0;
+
+        // Choose a straight direction when diagonal target is blocked
+        if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
+            dx = 0;
+
+        // Walk to where the player can actually go
+        if ((dx || dy) && mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
+        {
+            setDestination(getTileX() + dx, getTileY() + dy);
+        }
+        else if (dir)
+        {
+            // If the being can't move, just change direction
+            Net::getPlayerHandler()->setDirection(dir);
+            setDirection(dir);
+        }
     }
-    else if (dir)
-    {
-        // If the being can't move, just change direction
-        Net::getPlayerHandler()->setDirection(dir);
-        setDirection(dir);
-    }
-#else
-    nextStep(dir);
-#endif
+    else
+        nextStep(dir);
 }
 
 void LocalPlayer::stopWalking(bool sendToServer)
@@ -633,9 +638,8 @@ void LocalPlayer::stopWalking(bool sendToServer)
     if (mAction == WALK && mWalkingDir)
     {
         mWalkingDir = 0;
-#ifdef MANASERV_SUPPORT
         mLocalWalkTime = 0;
-#endif
+
         setDestination((int) getPosition().x, (int) getPosition().y);
         if (sendToServer)
              Net::getPlayerHandler()->setDestination((int) getPosition().x,
@@ -690,14 +694,15 @@ void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
-#ifdef MANASERV_SUPPORT
-    if (mLastAction != -1)
-        return;
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
+    {
+        if (mLastAction != -1)
+            return;
 
-    // Can only attack when standing still
-    if (mAction != STAND && mAction != ATTACK)
-        return;
-#endif
+        // Can only attack when standing still
+        if (mAction != STAND && mAction != ATTACK)
+            return;
+    }
 
     mKeepAttacking = keep;
 
@@ -709,54 +714,57 @@ void LocalPlayer::attack(Being *target, bool keep)
         mLastTarget = -1;
         setTarget(target);
     }
-#ifdef MANASERV_SUPPORT
-    Vector plaPos = this->getPosition();
-    Vector tarPos = mTarget->getPosition();
-    int dist_x = plaPos.x - tarPos.x;
-    int dist_y = plaPos.y - tarPos.y;
-
-    if (abs(dist_y) >= abs(dist_x))
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
     {
-        if (dist_y < 0)
-            setDirection(DOWN);
+        Vector plaPos = this->getPosition();
+        Vector tarPos = mTarget->getPosition();
+        int dist_x = plaPos.x - tarPos.x;
+        int dist_y = plaPos.y - tarPos.y;
+
+        if (abs(dist_y) >= abs(dist_x))
+        {
+            if (dist_y < 0)
+                setDirection(DOWN);
+            else
+                setDirection(UP);
+        }
         else
-            setDirection(UP);
+        {
+            if (dist_x < 0)
+                setDirection(RIGHT);
+            else
+                setDirection(LEFT);
+        }
+
+        mLastAction = tick_time;
     }
     else
     {
-        if (dist_x < 0)
-            setDirection(RIGHT);
+        int dist_x = target->getTileX() - getTileX();
+        int dist_y = target->getTileY() - getTileY();
+
+        // Must be standing to attack
+        if (mAction != STAND)
+            return;
+
+        if (abs(dist_y) >= abs(dist_x))
+        {
+            if (dist_y > 0)
+                setDirection(DOWN);
+            else
+                setDirection(UP);
+        }
         else
-            setDirection(LEFT);
+        {
+            if (dist_x > 0)
+                setDirection(RIGHT);
+            else
+                setDirection(LEFT);
+        }
+
+        mWalkTime = tick_time;
+        mTargetTime = tick_time;
     }
-
-    mLastAction = tick_time;
-#else
-    int dist_x = target->getTileX() - getTileX();
-    int dist_y = target->getTileY() - getTileY();
-
-    // Must be standing to attack
-    if (mAction != STAND)
-        return;
-
-    if (abs(dist_y) >= abs(dist_x))
-    {
-        if (dist_y > 0)
-            setDirection(DOWN);
-        else
-            setDirection(UP);
-    }
-    else
-    {
-        if (dist_x > 0)
-            setDirection(RIGHT);
-        else
-            setDirection(LEFT);
-    }
-
-    mWalkTime = tick_time;
-    mTargetTime = tick_time;
-#endif
 
     setAction(ATTACK);
 
@@ -772,10 +780,8 @@ void LocalPlayer::attack(Being *target, bool keep)
     }
 
     Net::getPlayerHandler()->attack(target->getId());
-#ifdef EATHENA_SUPPORT
-    if (!keep)
+    if ((Net::getNetworkType() == ServerInfo::EATHENA) && !keep)
         stopAttack();
-#endif
 }
 
 void LocalPlayer::stopAttack()
@@ -1005,40 +1011,46 @@ int LocalPlayer::getAttackRange()
 
 bool LocalPlayer::withinAttackRange(Being *target)
 {
-#ifdef MANASERV_SUPPORT
-    const Vector &targetPos = target->getPosition();
-    const Vector &pos = getPosition();
-    const int dx = abs(targetPos.x - pos.x);
-    const int dy = abs(targetPos.y - pos.y);
-    const int range = getAttackRange();
-
-    return !(dx > range || dy > range);
-#else
-    int dist_x = abs(target->getTileX() - getTileY());
-    int dist_y = abs(target->getTileY() - getTileX());
-
-    if (dist_x > getAttackRange() || dist_y > getAttackRange())
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
     {
-        return false;
-    }
+        const Vector &targetPos = target->getPosition();
+        const Vector &pos = getPosition();
+        const int dx = abs(targetPos.x - pos.x);
+        const int dy = abs(targetPos.y - pos.y);
+        const int range = getAttackRange();
 
-    return true;
-#endif
+        return !(dx > range || dy > range);
+    }
+    else
+    {
+        int dist_x = abs(target->getTileX() - getTileY());
+        int dist_y = abs(target->getTileY() - getTileX());
+
+        if (dist_x > getAttackRange() || dist_y > getAttackRange())
+        {
+            return false;
+        }
+
+        return true;
+    }
 }
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
     mLastTarget = -1;
-#ifdef MANASERV_SUPPORT
-    mTarget = target;
-    mGoingToTarget = true;
-    const Vector &targetPos = target->getPosition();
-    setDestination(targetPos.x, targetPos.y);
-#else
-    setTarget(target);
-    mGoingToTarget = true;
-    setDestination(target->getTileX(), target->getTileY());
-#endif
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
+    {
+        mTarget = target;
+        mGoingToTarget = true;
+        const Vector &targetPos = target->getPosition();
+        setDestination(targetPos.x, targetPos.y);
+    }
+    else
+    {
+        setTarget(target);
+        mGoingToTarget = true;
+        setDestination(target->getTileX(), target->getTileY());
+    }
 }
 
 extern MiniStatusWindow *miniStatusWindow;

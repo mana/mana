@@ -29,6 +29,7 @@
 #include "gui/sdlinput.h"
 
 #include "gui/widgets/button.h"
+#include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
@@ -40,6 +41,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
+#include "widgets/dropdown.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -111,6 +113,16 @@ std::string ServersListModel::getElementAt(int elementIndex)
     return myServer;
 }
 
+std::string TypeListModel::getElementAt(int elementIndex)
+{
+    if (elementIndex == 0)
+        return "eAthena";
+    else if (elementIndex == 1)
+        return "Manaserv";
+    else
+        return "Unknown";
+}
+
 
 ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     Window(_("Choose Your Server")),
@@ -122,6 +134,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 {
     Label *serverLabel = new Label(_("Server:"));
     Label *portLabel = new Label(_("Port:"));
+    Label *typeLabel = new Label(_("Server type:"));
     mServerNameField = new TextField(mServerInfo->hostname);
     mPortField = new TextField(toString(mServerInfo->port));
 
@@ -154,6 +167,9 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     ScrollArea *usedScroll = new ScrollArea(mServersList);
     usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
+    mTypeListModel = new TypeListModel();
+    mTypeField = new DropDown(mTypeListModel);
+
     mDescription = new Label(std::string());
 
     mQuitButton = new Button(_("Quit"), "quit", this);
@@ -174,11 +190,13 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     place(1, 0, mServerNameField, 3).setPadding(3);
     place(0, 1, portLabel);
     place(1, 1, mPortField, 3).setPadding(3);
-    place(0, 2, usedScroll, 4, 5).setPadding(3);
-    place(0, 7, mDescription, 4);
-    place(0, 8, mManualEntryButton);
-    place(2, 8, mQuitButton);
-    place(3, 8, mConnectButton);
+    place(0, 2, typeLabel);
+    place(1, 2, mTypeField, 3).setPadding(3);
+    place(0, 3, usedScroll, 4, 5).setPadding(3);
+    place(0, 8, mDescription, 4);
+    place(0, 9, mManualEntryButton);
+    place(2, 9, mQuitButton);
+    place(3, 9, mConnectButton);
 
     // Make sure the list has enough height
     getLayout().setRowHeight(3, 80);
@@ -211,6 +229,7 @@ ServerDialog::~ServerDialog()
     if (mDownload)
         mDownload->cancel();
     delete mServersListModel;
+    delete mTypeListModel;
 }
 
 void ServerDialog::action(const gcn::ActionEvent &event)
@@ -240,7 +259,17 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             ServerInfo tempServer;
             currentServer.hostname = mServerNameField->getText();
             currentServer.port = (short) atoi(mPortField->getText().c_str());
-            currentServer.type = ServerInfo::UNKNOWN;
+            switch (mTypeField->getSelected())
+            {
+                case 0:
+                    currentServer.type = ServerInfo::EATHENA;
+                    break;
+                case 1:
+                    currentServer.type = ServerInfo::MANASERV;
+                    break;
+                default:
+                    currentServer.type = ServerInfo::UNKNOWN;
+            }
 
             // now rewrite the configuration...
             // id = 0 is always the last selected server
@@ -274,6 +303,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             }
             mServerInfo->hostname = currentServer.hostname;
             mServerInfo->port = currentServer.port;
+            mServerInfo->type = currentServer.type;
             state = STATE_CONNECT_SERVER;
         }
     }
@@ -313,7 +343,17 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &event)
     mDescription->setCaption(myServer.name);
     mServerNameField->setText(myServer.hostname);
     mPortField->setText(toString(myServer.port));
-
+    switch (myServer.type)
+    {
+        case ServerInfo::UNKNOWN:
+            mTypeField->setSelected(2);
+            break;
+        case ServerInfo::EATHENA:
+            mTypeField->setSelected(0);
+            break;
+        case ServerInfo::MANASERV:
+            mTypeField->setSelected(1);
+    }
     setFieldsReadOnly(true);
 }
 
@@ -407,13 +447,7 @@ void ServerDialog::loadServers()
         {
             if (xmlStrEqual(server->name, BAD_CAST "server"))
             {
-                // check wether the build matches (remove with last instances
-                // if _SUPPORT ifdefs)
                 std::string type = XML::getProperty(server, "type", "unknown");
-                if (compareStrI(type, SERVER_BUILD))
-                {
-                    continue;
-                }
 
                 currentServer.clear();
                 currentServer.name = XML::getProperty(server, "name", std::string());

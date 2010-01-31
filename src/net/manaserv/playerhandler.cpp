@@ -42,9 +42,8 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
-// TODO Move somewhere else
-OkDialog *weightNotice = NULL;
-OkDialog *deathNotice = NULL;
+extern OkDialog *weightNotice;
+extern OkDialog *deathNotice;
 
 extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
@@ -422,6 +421,11 @@ bool PlayerHandler::canCorrectAttributes()
 int PlayerHandler::getJobLocation()
 {
     return -1;
+}
+
+float PlayerHandler::getDefaultWalkSpeed()
+{
+    return 6.0f;
 }
 
 } // namespace ManaServ

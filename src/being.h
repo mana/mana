@@ -131,42 +131,41 @@ class Being : public Sprite, public ConfigListener
          */
         void clearPath();
 
-#ifdef EATHENA_SUPPORT
         /**
          * Returns the walk time.
          * Used to know which frame to display and trigger
          * the next Tile step.
+         * TODO: Used by eAthena only?
          */
         int getWalkTime() const { return mWalkTime; }
 
         /**
          * Set the current WalkTime value.
+         * TODO: Used by eAthena only?
          * @see Ea::BeingHandler that set it to tick time.
          */
         void setWalkTime(int walkTime) { mWalkTime = walkTime; }
 
         /**
          * Makes this being take the next step (tile) of its path.
+         * TODO: Used by eAthena only?
          */
         virtual void nextStep();
 
         /**
          * Get the current X pixel offset.
+         * TODO: Used by eAthena only?
          */
         int getXOffset() const
         { return getOffset(LEFT, RIGHT); }
 
         /**
          * Get the current Y pixel offset.
+         * TODO: Used by eAthena only?
          */
         int getYOffset() const
         { return getOffset(UP, DOWN); }
 
-        /**
-         * Sets a new destination for this being to walk to.
-         */
-        virtual void setDestination(int destX, int destY);
-#elif MANASERV_SUPPORT
         /**
          * Creates a path for the being from current position to ex and ey
          */
@@ -176,7 +175,6 @@ class Being : public Sprite, public ConfigListener
          * Returns the destination for this being.
          */
         const Vector &getDestination() const { return mDest; }
-#endif
 
         /**
          * Returns the tile x coord
@@ -580,10 +578,11 @@ class Being : public Sprite, public ConfigListener
         /** The current sprite Frame number to be displayed */
         int mFrame;
 
-#ifdef EATHENA_SUPPORT
-        /** Used to trigger the nextStep (walking on next Tile) */
+        /** Used to trigger the nextStep (walking on next Tile)
+         * TODO: Used by eAthena only?
+         */
         int mWalkTime;
-#endif
+
         int mEmotion;         /**< Currently showing emotion */
         int mEmotionTime;     /**< Time until emotion disappears */
         /** Time until the last speech sentence disappears */
@@ -630,13 +629,13 @@ class Being : public Sprite, public ConfigListener
         ParticleList mChildParticleEffects;
 
     private:
-#ifdef EATHENA_SUPPORT
+
         /**
          * Calculates the offset in the given directions.
          * If walking in direction 'neg' the value is negated.
+         * TODO: Used by eAthena only?
          */
         int getOffset(char pos, char neg) const;
-#endif
 
         /** Reset particle status effects on next redraw? */
         bool mMustResetParticles;

@@ -73,60 +73,61 @@ Player::~Player()
 
 void Player::logic()
 {
-#ifdef EATHENA_SUPPORT
-    switch (mAction)
+    if (Net::getNetworkType() == ServerInfo::EATHENA)
     {
-        case STAND:
-        case SIT:
-        case DEAD:
-        case HURT:
-           break;
+        switch (mAction)
+        {
+            case STAND:
+            case SIT:
+            case DEAD:
+            case HURT:
+               break;
 
-        case WALK:
-            mFrame = (int) ((get_elapsed_time(mWalkTime) * 6) / getWalkSpeed());
-            if (mFrame >= 6)
-                nextStep();
-            break;
+            case WALK:
+                mFrame = (int) ((get_elapsed_time(mWalkTime) * 6) / getWalkSpeed());
+                if (mFrame >= 6)
+                    nextStep();
+                break;
 
-        case ATTACK:
-            int rotation = 0;
-            std::string particleEffect = "";
-            int frames = 4;
+            case ATTACK:
+                int rotation = 0;
+                std::string particleEffect = "";
+                int frames = 4;
 
-            if (mEquippedWeapon &&
-                mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
-            {
-                frames = 5;
-            }
-
-            mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
-
-            //attack particle effect
-            if (mEquippedWeapon)
-                particleEffect = mEquippedWeapon->getParticleEffect();
-
-            if (!particleEffect.empty() && Particle::enabled && mFrame == 1)
-            {
-                switch (mDirection)
+                if (mEquippedWeapon &&
+                    mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
                 {
-                    case DOWN: rotation = 0; break;
-                    case LEFT: rotation = 90; break;
-                    case UP: rotation = 180; break;
-                    case RIGHT: rotation = 270; break;
-                    default: break;
+                    frames = 5;
                 }
-                Particle *p;
-                p = particleEngine->addEffect("graphics/particles/" +
-                                              particleEffect, 0, 0, rotation);
-                controlParticle(p);
-            }
 
-            if (mFrame >= frames)
-                nextStep();
+                mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
 
-            break;
+                //attack particle effect
+                if (mEquippedWeapon)
+                    particleEffect = mEquippedWeapon->getParticleEffect();
+
+                if (!particleEffect.empty() && Particle::enabled && mFrame == 1)
+                {
+                    switch (mDirection)
+                    {
+                        case DOWN: rotation = 0; break;
+                        case LEFT: rotation = 90; break;
+                        case UP: rotation = 180; break;
+                        case RIGHT: rotation = 270; break;
+                        default: break;
+                    }
+                    Particle *p;
+                    p = particleEngine->addEffect("graphics/particles/" +
+                                                  particleEffect, 0, 0, rotation);
+                    controlParticle(p);
+                }
+
+                if (mFrame >= frames)
+                    nextStep();
+
+                break;
+        }
     }
-#endif
 
     Being::logic();
 }

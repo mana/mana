@@ -40,7 +40,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-std::string tradePartnerName;
+extern std::string tradePartnerName;
 int tradePartnerID;
 
 extern Net::TradeHandler *tradeHandler;

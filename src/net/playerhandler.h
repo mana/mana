@@ -61,6 +61,8 @@ class PlayerHandler
 
         virtual int getJobLocation() = 0;
 
+        virtual float getDefaultWalkSpeed() = 0;
+
         virtual ~PlayerHandler() {}
 };
 

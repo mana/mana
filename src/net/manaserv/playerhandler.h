@@ -73,6 +73,8 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         int getJobLocation();
 
+        float getDefaultWalkSpeed();
+
     private:
         void handleMapChangeMessage(Net::MessageIn &msg);
 };
