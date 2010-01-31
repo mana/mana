@@ -61,3 +61,12 @@ data/music/*.ogg
 
 # files created by Qt Creator
 mana.creator.user
+
+# files created by gtags
+GPATH
+GRTAGS
+GSYMS
+GTAGS
+
+# generated for nsis build
+translations/*
