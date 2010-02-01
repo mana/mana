@@ -22,11 +22,10 @@
 #include "resources/image.h"
 
 #include "resources/dye.h"
-#include "resources/sdlrescalefacility.h"
-
 #include "log.h"
 
 #include <SDL_image.h>
+#include <SDL_rotozoom.h>
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
@@ -354,12 +353,12 @@ Image* Image::SDLgetScaledImage(int width, int height)
 
     if (mSDLSurface)
     {
-        scaledSurface = _SDLzoomSurface(mSDLSurface,
+        scaledSurface = zoomSurface(mSDLSurface,
                     (double) width / getWidth(),
                     (double) height / getHeight(),
                     1);
 
-        // The load function takes of the SDL<->OpenGL implementation
+        // The load function takes care of the SDL<->OpenGL implementation
         // and about freeing the given SDL_surface*.
         if (scaledSurface)
             scaledImage = load(scaledSurface);

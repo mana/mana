@@ -88,6 +88,10 @@ AC_MSG_ERROR([ *** Unable to find SDL_mixer library (http://www.libsdl.org/proje
 AC_CHECK_LIB([guichan_sdl], [gcnSDL], ,
 AC_MSG_ERROR([ *** Unable to find Guichan SDL library (http://guichan.sf.net/)]))
 
+AC_CHECK_LIB(SDL_gfx, rotozoomSurfaceXY, ,
+AC_MSG_ERROR([ *** Unable to find SDL_gfx library (http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx)]))
+AC_CHECK_HEADERS(SDL_rotozoom.h, ,)
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])

@@ -21,6 +21,7 @@ and some libraries. The required libraries are:
 * SDL_image         http://www.libsdl.org/projects/SDL_image/
 * SDL_net           http://www.libsdl.org/projects/SDL_net/
 * SDL_ttf           http://www.libsdl.org/projects/SDL_ttf/
+* SDL_gfx           http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx
 * ENet 1.2          http://enet.bespin.org/
 * Guichan 0.8.x     http://guichan.sourceforge.net/
 * libxml2           http://www.xmlsoft.org/

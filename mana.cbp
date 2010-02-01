@@ -30,6 +30,7 @@
 					<Add library="SDL_mixer" />
 					<Add library="SDL_net" />
 					<Add library="SDL_ttf" />
+					<Add library="SDL_gfx" />
 					<Add library="mingw32" />
 					<Add library="SDLmain" />
 					<Add library="SDL.dll" />
@@ -71,6 +72,7 @@
 					<Add library="SDL_net" />
 					<Add library="SDL_image" />
 					<Add library="SDL_ttf" />
+					<Add library="SDL_gfx" />
 					<Add library="png" />
 					<Add library="enet" />
 				</Linker>
@@ -99,6 +101,7 @@
 					<Add library="SDL_mixer" />
 					<Add library="SDL_net" />
 					<Add library="SDL_ttf" />
+					<Add library="SDL_gfx" />
 					<Add library="mingw32" />
 					<Add library="SDLmain" />
 					<Add library="SDL.dll" />
@@ -140,6 +143,7 @@
 					<Add library="SDL_net" />
 					<Add library="SDL_image" />
 					<Add library="SDL_ttf" />
+					<Add library="SDL_gfx" />
 					<Add library="png" />
 				</Linker>
 			</Target>

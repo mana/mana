@@ -3,6 +3,7 @@ FIND_PACKAGE(SDL_image REQUIRED)
 FIND_PACKAGE(SDL_mixer REQUIRED)
 FIND_PACKAGE(SDL_net REQUIRED)
 FIND_PACKAGE(SDL_ttf REQUIRED)
+FIND_PACKAGE(SDL_gfx REQUIRED)
 FIND_PACKAGE(ENet REQUIRED)
 FIND_PACKAGE(CURL REQUIRED)
 FIND_PACKAGE(LibXml2 REQUIRED)
@@ -61,6 +62,7 @@ INCLUDE_DIRECTORIES(
     ${SDLMIXER_INCLUDE_DIR}
     ${SDLNET_INCLUDE_DIR}
     ${SDLTTF_INCLUDE_DIR}
+    ${SDLGFX_INCLUDE_DIR}
     ${ENET_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
     ${PHYSFS_INCLUDE_DIR}
@@ -367,8 +369,6 @@ SET(SRCS
     resources/resource.h
     resources/resourcemanager.cpp
     resources/resourcemanager.h
-    resources/sdlrescalefacility.h
-    resources/sdlrescalefacility.cpp
     resources/soundeffect.h
     resources/soundeffect.cpp
     resources/spritedef.h
@@ -597,6 +597,7 @@ TARGET_LINK_LIBRARIES(mana ${SDL_LIBRARY}
     ${SDLMIXER_LIBRARY}
     ${SDLNET_LIBRARY}
     ${SDLTTF_LIBRARY}
+    ${SDLGFX_LIBRARIES}
     ${ENET_LIBRARIES}
     ${PNG_LIBRARIES}
     ${PHYSFS_LIBRARY}
