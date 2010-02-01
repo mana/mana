@@ -6,9 +6,9 @@
 		<Option pch_mode="0" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="eAthena">
-				<Option output="mana-ea.exe" prefix_auto="0" extension_auto="0" />
-				<Option object_output=".objs\ea" />
+			<Target title="Windows">
+				<Option output="mana.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output=".objs\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option projectResourceIncludeDirsRelation="0" />
@@ -41,13 +41,15 @@
 					<Add library="physfs" />
 					<Add library="curl.dll" />
 					<Add library="intl" />
+					<Add library="enet" />
+					<Add library="ws2_32" />
+					<Add library="winmm" />
 					<Add directory="E:\Programme\CodeBlocks\include\SDL" />
 				</Linker>
 			</Target>
-			<Target title="Unix Manaserv">
+			<Target title="Unix">
 				<Option platforms="Unix;" />
 				<Option output="mana" prefix_auto="1" extension_auto="1" />
-				<Option object_output=".objs\manaserv" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option parameters='-u -d &quot;../manadata&quot;' />
@@ -77,79 +79,9 @@
 					<Add library="enet" />
 				</Linker>
 			</Target>
-			<Target title="Manaserv">
-				<Option output="mana-manaserv.exe" prefix_auto="0" extension_auto="0" />
-				<Option object_output=".objs\manaserv" />
-				<Option type="0" />
-				<Option compiler="gcc" />
-				<Option projectResourceIncludeDirsRelation="0" />
-				<Compiler>
-					<Add option="-O3" />
-					<Add option="-Wall" />
-					<Add option="-DUSE_OPENGL" />
-					<Add option="-DNOGDI" />
-					<Add option="-DENABLE_NLS" />
-					<Add option="-DMANASERV_SUPPORT" />
-				</Compiler>
-				<Linker>
-					<Add option="-enable-auto-import" />
-					<Add library="guichan" />
-					<Add library="guichan_sdl" />
-					<Add library="guichan_opengl" />
-					<Add library="enet" />
-					<Add library="SDL_image" />
-					<Add library="SDL_mixer" />
-					<Add library="SDL_net" />
-					<Add library="SDL_ttf" />
-					<Add library="SDL_gfx" />
-					<Add library="mingw32" />
-					<Add library="SDLmain" />
-					<Add library="SDL.dll" />
-					<Add library="xml2.dll" />
-					<Add library="opengl32" />
-					<Add library="png12.dll" />
-					<Add library="z.dll" />
-					<Add library="physfs" />
-					<Add library="curl.dll" />
-					<Add library="intl" />
-					<Add library="ws2_32" />
-					<Add library="winmm" />
-				</Linker>
-			</Target>
-			<Target title="UNIX eAthena">
-				<Option platforms="Unix;" />
-				<Option output="ea-mana" prefix_auto="1" extension_auto="1" />
-				<Option object_output=".objs\ea" />
-				<Option type="0" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-g" />
-					<Add option="`sdl-config --cflags`" />
-					<Add option="-DEATHENA_SUPPORT" />
-					<Add option="-DUSE_OPENGL" />
-					<Add directory="\usr\local\include\libxml2" />
-				</Compiler>
-				<Linker>
-					<Add option="`sdl-config --libs`" />
-					<Add library="guichan" />
-					<Add library="guichan_sdl" />
-					<Add library="guichan_opengl" />
-					<Add library="GL" />
-					<Add library="physfs" />
-					<Add library="curl" />
-					<Add library="xml2" />
-					<Add library="SDL_mixer" />
-					<Add library="SDL_net" />
-					<Add library="SDL_image" />
-					<Add library="SDL_ttf" />
-					<Add library="SDL_gfx" />
-					<Add library="png" />
-				</Linker>
-			</Target>
 		</Build>
 		<VirtualTargets>
-			<Add alias="All" targets="eAthena;" />
+			<Add alias="All" targets="Windows;" />
 		</VirtualTargets>
 		<Compiler>
 			<Add directory="src\" />
@@ -427,371 +359,109 @@
 		<Unit filename="src\net\chathandler.h" />
 		<Unit filename="src\net\download.cpp" />
 		<Unit filename="src\net\download.h" />
-		<Unit filename="src\net\ea\adminhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\adminhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\beinghandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\beinghandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\buysellhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\buysellhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\charserverhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\charserverhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\chathandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\chathandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\gamehandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\gamehandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\generalhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\generalhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\gui\partytab.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\gui\partytab.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
+		<Unit filename="src\net\ea\adminhandler.cpp" />
+		<Unit filename="src\net\ea\adminhandler.h" />
+		<Unit filename="src\net\ea\beinghandler.cpp" />
+		<Unit filename="src\net\ea\beinghandler.h" />
+		<Unit filename="src\net\ea\buysellhandler.cpp" />
+		<Unit filename="src\net\ea\buysellhandler.h" />
+		<Unit filename="src\net\ea\charserverhandler.cpp" />
+		<Unit filename="src\net\ea\charserverhandler.h" />
+		<Unit filename="src\net\ea\chathandler.cpp" />
+		<Unit filename="src\net\ea\chathandler.h" />
+		<Unit filename="src\net\ea\gamehandler.cpp" />
+		<Unit filename="src\net\ea\gamehandler.h" />
+		<Unit filename="src\net\ea\generalhandler.cpp" />
+		<Unit filename="src\net\ea\generalhandler.h" />
+		<Unit filename="src\net\ea\gui\partytab.cpp" />
+		<Unit filename="src\net\ea\gui\partytab.h" />
 		<Unit filename="src\net\ea\guildhandler.cpp">
-			<Option target="eAthena" />
 			<Option target="Unix eAthena" />
+			<Option target="Windows" />
+			<Option target="Unix" />
 		</Unit>
 		<Unit filename="src\net\ea\guildhandler.h">
-			<Option target="eAthena" />
 			<Option target="Unix eAthena" />
+			<Option target="Windows" />
+			<Option target="Unix" />
 		</Unit>
-		<Unit filename="src\net\ea\inventoryhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\inventoryhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\itemhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\itemhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\loginhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\loginhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\messagehandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\messagehandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\messagein.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\messagein.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\messageout.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\messageout.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\network.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\network.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\npchandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\npchandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\partyhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\partyhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\playerhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\playerhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\protocol.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\specialhandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\specialhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\tradehandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\tradehandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
+		<Unit filename="src\net\ea\inventoryhandler.cpp" />
+		<Unit filename="src\net\ea\inventoryhandler.h" />
+		<Unit filename="src\net\ea\itemhandler.cpp" />
+		<Unit filename="src\net\ea\itemhandler.h" />
+		<Unit filename="src\net\ea\loginhandler.cpp" />
+		<Unit filename="src\net\ea\loginhandler.h" />
+		<Unit filename="src\net\ea\messagehandler.cpp" />
+		<Unit filename="src\net\ea\messagehandler.h" />
+		<Unit filename="src\net\ea\messagein.cpp" />
+		<Unit filename="src\net\ea\messagein.h" />
+		<Unit filename="src\net\ea\messageout.cpp" />
+		<Unit filename="src\net\ea\messageout.h" />
+		<Unit filename="src\net\ea\network.cpp" />
+		<Unit filename="src\net\ea\network.h" />
+		<Unit filename="src\net\ea\npchandler.cpp" />
+		<Unit filename="src\net\ea\npchandler.h" />
+		<Unit filename="src\net\ea\partyhandler.cpp" />
+		<Unit filename="src\net\ea\partyhandler.h" />
+		<Unit filename="src\net\ea\playerhandler.cpp" />
+		<Unit filename="src\net\ea\playerhandler.h" />
+		<Unit filename="src\net\ea\protocol.h" />
+		<Unit filename="src\net\ea\specialhandler.cpp" />
+		<Unit filename="src\net\ea\specialhandler.h" />
+		<Unit filename="src\net\ea\tradehandler.cpp" />
+		<Unit filename="src\net\ea\tradehandler.h" />
 		<Unit filename="src\net\gamehandler.h" />
 		<Unit filename="src\net\generalhandler.h" />
 		<Unit filename="src\net\guildhandler.h" />
 		<Unit filename="src\net\inventoryhandler.h" />
 		<Unit filename="src\net\loginhandler.h" />
-		<Unit filename="src\net\manaserv\adminhandler.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\adminhandler.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\beinghandler.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\beinghandler.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\buysellhandler.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\buysellhandler.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\charhandler.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\charhandler.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\chathandler.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\chathandler.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\connection.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\connection.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\effecthandler.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\effecthandler.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\gamehandler.cpp">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\gamehandler.h">
-			<Option target="Unix Manaserv" />
-			<Option target="Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\generalhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\generalhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\guildhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\guildhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\internal.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\internal.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\inventoryhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\inventoryhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\itemhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\itemhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\loginhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\loginhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\messagehandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\messagehandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\messagein.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\messagein.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\messageout.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\messageout.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\network.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\network.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\npchandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\npchandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\partyhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\partyhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\playerhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\playerhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\protocol.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\specialhandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\specialhandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\tradehandler.cpp">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
-		<Unit filename="src\net\manaserv\tradehandler.h">
-			<Option target="Manaserv" />
-			<Option target="Unix Manaserv" />
-		</Unit>
+		<Unit filename="src\net\manaserv\adminhandler.cpp" />
+		<Unit filename="src\net\manaserv\adminhandler.h" />
+		<Unit filename="src\net\manaserv\beinghandler.cpp" />
+		<Unit filename="src\net\manaserv\beinghandler.h" />
+		<Unit filename="src\net\manaserv\buysellhandler.cpp" />
+		<Unit filename="src\net\manaserv\buysellhandler.h" />
+		<Unit filename="src\net\manaserv\charhandler.cpp" />
+		<Unit filename="src\net\manaserv\charhandler.h" />
+		<Unit filename="src\net\manaserv\chathandler.cpp" />
+		<Unit filename="src\net\manaserv\chathandler.h" />
+		<Unit filename="src\net\manaserv\connection.cpp" />
+		<Unit filename="src\net\manaserv\connection.h" />
+		<Unit filename="src\net\manaserv\effecthandler.cpp" />
+		<Unit filename="src\net\manaserv\effecthandler.h" />
+		<Unit filename="src\net\manaserv\gamehandler.cpp" />
+		<Unit filename="src\net\manaserv\gamehandler.h" />
+		<Unit filename="src\net\manaserv\generalhandler.cpp" />
+		<Unit filename="src\net\manaserv\generalhandler.h" />
+		<Unit filename="src\net\manaserv\guildhandler.cpp" />
+		<Unit filename="src\net\manaserv\guildhandler.h" />
+		<Unit filename="src\net\manaserv\internal.cpp" />
+		<Unit filename="src\net\manaserv\internal.h" />
+		<Unit filename="src\net\manaserv\inventoryhandler.cpp" />
+		<Unit filename="src\net\manaserv\inventoryhandler.h" />
+		<Unit filename="src\net\manaserv\itemhandler.cpp" />
+		<Unit filename="src\net\manaserv\itemhandler.h" />
+		<Unit filename="src\net\manaserv\loginhandler.cpp" />
+		<Unit filename="src\net\manaserv\loginhandler.h" />
+		<Unit filename="src\net\manaserv\messagehandler.cpp" />
+		<Unit filename="src\net\manaserv\messagehandler.h" />
+		<Unit filename="src\net\manaserv\messagein.cpp" />
+		<Unit filename="src\net\manaserv\messagein.h" />
+		<Unit filename="src\net\manaserv\messageout.cpp" />
+		<Unit filename="src\net\manaserv\messageout.h" />
+		<Unit filename="src\net\manaserv\network.cpp" />
+		<Unit filename="src\net\manaserv\network.h" />
+		<Unit filename="src\net\manaserv\npchandler.cpp" />
+		<Unit filename="src\net\manaserv\npchandler.h" />
+		<Unit filename="src\net\manaserv\partyhandler.cpp" />
+		<Unit filename="src\net\manaserv\partyhandler.h" />
+		<Unit filename="src\net\manaserv\playerhandler.cpp" />
+		<Unit filename="src\net\manaserv\playerhandler.h" />
+		<Unit filename="src\net\manaserv\protocol.h" />
+		<Unit filename="src\net\manaserv\specialhandler.cpp" />
+		<Unit filename="src\net\manaserv\specialhandler.h" />
+		<Unit filename="src\net\manaserv\tradehandler.cpp" />
+		<Unit filename="src\net\manaserv\tradehandler.h" />
 		<Unit filename="src\net\messagehandler.h" />
 		<Unit filename="src\net\messagein.cpp" />
 		<Unit filename="src\net\messagein.h" />
@@ -824,10 +494,10 @@
 		<Unit filename="src\properties.h" />
 		<Unit filename="src\resources\action.cpp" />
 		<Unit filename="src\resources\action.h" />
-		<Unit filename="src\resources\ambientoverlay.cpp" />
-		<Unit filename="src\resources\ambientoverlay.h" />
 		<Unit filename="src\resources\ambientlayer.cpp" />
 		<Unit filename="src\resources\ambientlayer.h" />
+		<Unit filename="src\resources\ambientoverlay.cpp" />
+		<Unit filename="src\resources\ambientoverlay.h" />
 		<Unit filename="src\resources\animation.cpp" />
 		<Unit filename="src\resources\animation.h" />
 		<Unit filename="src\resources\colordb.cpp" />
@@ -904,8 +574,7 @@
 		<Unit filename="src\vector.cpp" />
 		<Unit filename="src\vector.h" />
 		<Unit filename="src\winver.h">
-			<Option target="eAthena" />
-			<Option target="Manaserv" />
+			<Option target="Windows" />
 		</Unit>
 		<Extensions>
 			<code_completion />
