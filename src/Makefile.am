@@ -274,8 +274,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \
 	      resources/resourcemanager.h \
-	      resources/sdlrescalefacility.cpp \
-	      resources/sdlrescalefacility.h \
 	      resources/soundeffect.h \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
