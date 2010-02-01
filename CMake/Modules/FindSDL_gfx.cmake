@@ -12,7 +12,7 @@ ENDIF (SDL_gfx_INCLUDE_DIR AND SDL_gfx_LIBRARY)
 
 FIND_PATH(SDL_gfx_INCLUDE_DIR
     NAMES SDL_rotozoom.h
-    PATHS /usr/include/SDL /usr/local/include/SDL
+    PATH_SUFFIXES SDL
     )
 
 FIND_LIBRARY(SDL_gfx_LIBRARY
