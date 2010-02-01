@@ -86,7 +86,7 @@ void Player::logic()
             case WALK:
                 mFrame = (int) ((get_elapsed_time(mWalkTime) * 6) / getWalkSpeed());
                 if (mFrame >= 6)
-                    nextStep();
+                    nextTile();
                 break;
 
             case ATTACK:
@@ -123,7 +123,7 @@ void Player::logic()
                 }
 
                 if (mFrame >= frames)
-                    nextStep();
+                    nextTile();
 
                 break;
         }

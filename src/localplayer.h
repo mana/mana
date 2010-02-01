@@ -117,13 +117,15 @@ class LocalPlayer : public Player
         virtual void setAction(Action action, int attackType = 0);
 
         /**
-         * Adds a new step when walking before calling super. Also, when
-         * specified it picks up an item at the end of a path.
+         * Adds a new tile to the path when walking.
+         * @note Eathena
+         * Also, when specified, it picks up an item at the end of a path
+         * or attack target.
          */
-        virtual void nextStep()
-        { nextStep(0); }
+        virtual void nextTile()
+        { nextTile(0); }
 
-        virtual void nextStep(unsigned char dir);
+        virtual void nextTile(unsigned char dir);
 
         /**
          * Returns the player's inventory.
@@ -357,12 +359,6 @@ class LocalPlayer : public Player
         bool isPathSetByMouse() const
         { return mPathSetByMouse; }
 
-        bool mUpdateName;     /** Whether or not the name settings have changed */
-
-        bool mMapInitialized; /** Whether or not the map is available yet */
-
-        const std::auto_ptr<Equipment> mEquipment;
-
         void addMessageToQueue(const std::string &message,
                                Palette::ColorType color = Palette::EXP_INFO);
 
@@ -385,16 +381,48 @@ class LocalPlayer : public Player
         int getNextDestY() const { return mNextDestY; }
 
         /**
-         * stops a following
+         * Stop following a player.
          */
         void cancelFollow() { mPlayerFollowed = ""; }
 
         /**
-         * get following
+         * Get the playername followed by the current player.
          */
         std::string getFollow() const { return mPlayerFollowed; }
 
+        /**
+         * Tells the engine wether to check
+         * if the Player Name is to be displayed.
+         */
+        void setCheckNameSetting(bool checked) { mUpdateName = checked; }
+
+        /**
+         * Gets if the engine has to check
+         * if the Player Name is to be displayed.
+         */
+        bool getCheckNameSetting() const { return mUpdateName; }
+
+        /**
+         * Set if the current map is initialized.
+         */
+        void setMapInitialized(bool initialized)
+        { mMapInitialized = initialized; }
+
+        /**
+         * Tells if the current map is initialized.
+         */
+        bool isMapInitialized() const { return mMapInitialized; }
+
+        /**  Keeps the Equipment related values */
+        const std::auto_ptr<Equipment> mEquipment;
+
     protected:
+
+        /** Whether or not the name settings have changed */
+        bool mUpdateName;
+
+        bool mMapInitialized; /**< Whether or not the map is available yet */
+
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
         // Colors don't change for local player
@@ -458,7 +486,7 @@ class LocalPlayer : public Player
 
         Inventory *mStorage;
 
-        // Load the target cursors into memory
+        /** Load the target cursors into memory */
         void initTargetCursor();
 
         /**

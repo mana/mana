@@ -147,10 +147,10 @@ class Being : public Sprite, public ConfigListener
         void setWalkTime(int walkTime) { mWalkTime = walkTime; }
 
         /**
-         * Makes this being take the next step (tile) of its path.
+         * Makes this being take the next tile of its path.
          * TODO: Used by eAthena only?
          */
-        virtual void nextStep();
+        virtual void nextTile();
 
         /**
          * Get the current X pixel offset.

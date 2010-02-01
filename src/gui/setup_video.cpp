@@ -449,7 +449,7 @@ void Setup_Video::cancel()
     config.setValue("speech", mSpeechMode);
     config.setValue("showownname", mNameEnabled);
     if (player_node)
-        player_node->mUpdateName = true;
+        player_node->setCheckNameSetting(true);
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled);
     config.setValue("showpickupchat", mPickupChatEnabled);
@@ -529,7 +529,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         // Notify the local player that settings have changed for the name
         // and requires an update
         if (player_node)
-            player_node->mUpdateName = true;
+            player_node->setCheckNameSetting(true);
         config.setValue("showownname", mNameCheckBox->isSelected());
     }
     else if (event.getId() == "fpslimitslider")

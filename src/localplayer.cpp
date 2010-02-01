@@ -259,7 +259,7 @@ void LocalPlayer::setGMLevel(int level)
 }
 
 
-void LocalPlayer::nextStep(unsigned char dir = 0)
+void LocalPlayer::nextTile(unsigned char dir = 0)
 {
     if (Net::getNetworkType() == ServerInfo::EATHENA)
     {
@@ -290,7 +290,7 @@ void LocalPlayer::nextStep(unsigned char dir = 0)
         }
 
 
-        Player::nextStep();
+        Player::nextTile();
     }
     else
     {
@@ -569,7 +569,7 @@ void LocalPlayer::setWalkingDir(int dir)
     }
     else if (mAction == WALK && (Net::getNetworkType() == ServerInfo::MANASERV))
     {
-        nextStep(dir);
+        nextTile(dir);
     }
 }
 
@@ -630,7 +630,7 @@ void LocalPlayer::startWalking(unsigned char dir)
         }
     }
     else
-        nextStep(dir);
+        nextTile(dir);
 }
 
 void LocalPlayer::stopWalking(bool sendToServer)

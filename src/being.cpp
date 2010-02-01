@@ -200,7 +200,7 @@ void Being::setPath(const Path &path)
     if ((Net::getNetworkType() == ServerInfo::EATHENA) &&
             mAction != WALK && mAction != DEAD)
     {
-        nextStep();
+        nextTile();
         mWalkTime = tick_time;
     }
 }
@@ -471,7 +471,7 @@ void Being::setDirection(Uint8 direction)
 }
 
 /** TODO: Used by eAthena only */
-void Being::nextStep()
+void Being::nextTile()
 {
     if (mPath.empty())
     {

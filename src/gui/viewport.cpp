@@ -109,7 +109,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
     // Ensure the client doesn't freak out if a feature localplayer uses
     // is dependent on a map.
-    player_node->mMapInitialized = true;
+    player_node->setMapInitialized(true);
 
     // Avoid freaking out when tick_time overflows
     if (tick_time < lastTick)
@@ -201,9 +201,9 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         }
     }
 
-    if (player_node->mUpdateName)
+    if (player_node->getCheckNameSetting())
     {
-        player_node->mUpdateName = false;
+        player_node->setCheckNameSetting(false);
         player_node->setName(player_node->getName());
     }
 
