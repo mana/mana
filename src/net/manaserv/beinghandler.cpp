@@ -202,10 +202,18 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         }
         if (speed)
         {
-            // The being's speed is transfered in tiles per second * 10
-            // to keep it transferable in a Byte.
-            // We set it back to tiles per second and in a float.
-            being->setWalkSpeed((float) speed / 10);
+          /**
+            * The being's speed is transfered in tiles per second * 10
+            * to keep it transferable in a Byte.
+            * We set it back to tiles per second and in a float.
+            * Then, we translate it in pixels per ticks, to correspond
+            * with the Being::logic() function calls
+            * @see MILLISECONDS_IN_A_TICK
+            */
+            const float walkSpeedInTicks =
+                ((float)DEFAULT_TILE_SIDE_LENGTH * (float) speed / 10)
+                / 1000 * (float)MILLISECONDS_IN_A_TICK;
+            being->setWalkSpeed(walkSpeedInTicks);
         }
 
         // Ignore messages from the server for the local player

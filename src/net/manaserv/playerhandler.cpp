@@ -49,6 +49,8 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
 
+extern const int MILLISECONDS_IN_A_TICK;
+
 /* Max. distance we are willing to scroll after a teleport;
  * everything beyond will reset the port hard.
  */
@@ -425,7 +427,9 @@ int PlayerHandler::getJobLocation()
 
 float PlayerHandler::getDefaultWalkSpeed()
 {
-    return 6.0f;
+    // Return translation in pixels per ticks.
+    return (6.0f * (float)DEFAULT_TILE_SIDE_LENGTH)
+    / 1000 * (float)MILLISECONDS_IN_A_TICK;
 }
 
 } // namespace ManaServ

@@ -534,17 +534,11 @@ void Being::logic()
         // When we've not reached our destination, move to it.
         if (nominalLength > 1.0f && mWalkSpeed > 0.0f)
         {
-            // The private mWalkSpeed member is the speed in tiles per second.
-            // We translate it into pixels per tick,
-            // because the logic is called every ticks.
-            const float speedInTicks = ((float)DEFAULT_TILE_SIDE_LENGTH * mWalkSpeed)
-                                      / 1000 * (float)MILLISECONDS_IN_A_TICK;
-
             // The deplacement of a point along a vector is calculated
             // using the Unit Vector (â) multiplied by the point speed.
             // â = a / ||a|| (||a|| is the a length.)
             // Then, diff = (dir/||dir||)*speed, or (dir / ||dir|| / 1/speed).
-            Vector diff = (dir / (nominalLength / speedInTicks));
+            Vector diff = (dir / (nominalLength / mWalkSpeed));
 
             // Test if we don't miss the destination by a move too far:
             if (diff.length() > nominalLength)

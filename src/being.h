@@ -646,7 +646,8 @@ class Being : public Sprite, public ConfigListener
         /**
          * Walk speed.
          * In pixels per second for eAthena,
-         * In tiles per second (0.1 precision) for Manaserv.
+         * In pixels per ticks for Manaserv.
+         * @see MILLISECONDS_IN_A_TICK
          */
         float mWalkSpeed;
 
