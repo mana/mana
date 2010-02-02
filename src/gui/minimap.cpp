@@ -77,11 +77,8 @@ Minimap::~Minimap()
 void Minimap::setMap(Map *map)
 {
     // Set the title for the Minimap
-    std::string caption = "";
+    std::string caption = map ? map->getName() : "";
     std::string minimapName;
-
-    if (map)
-        caption = map->getName();
 
     if (caption.empty())
         caption = _("Map");
