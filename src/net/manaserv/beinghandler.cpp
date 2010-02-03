@@ -91,6 +91,12 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
+float BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
+{
+    return (speedInTilesPerSeconds * (float)DEFAULT_TILE_SIDE_LENGTH)
+    / 1000 * (float)MILLISECONDS_IN_A_TICK;
+}
+
 static void handleLooks(Player *being, Net::MessageIn &msg)
 {
     // Order of sent slots. Has to be in sync with the server code.
@@ -202,7 +208,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         }
         if (speed)
         {
-          /**
+           /**
             * The being's speed is transfered in tiles per second * 10
             * to keep it transferable in a Byte.
             * We set it back to tiles per second and in a float.
@@ -210,10 +216,8 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
             * with the Being::logic() function calls
             * @see MILLISECONDS_IN_A_TICK
             */
-            const float walkSpeedInTicks =
-                ((float)DEFAULT_TILE_SIDE_LENGTH * (float) speed / 10)
-                / 1000 * (float)MILLISECONDS_IN_A_TICK;
-            being->setWalkSpeed(walkSpeedInTicks);
+            being->setWalkSpeed(
+                               giveSpeedInPixelsPerTicks((float) speed / 10));
         }
 
         // Ignore messages from the server for the local player

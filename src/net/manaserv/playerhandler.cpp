@@ -20,6 +20,7 @@
  */
 
 #include "net/manaserv/playerhandler.h"
+#include "net/manaserv/beinghandler.h"
 
 #include "effectmanager.h"
 #include "engine.h"
@@ -49,12 +50,16 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
 
+/** @see in game.cpp */
 extern const int MILLISECONDS_IN_A_TICK;
+
+/** @see in map.cpp */
+extern const int DEFAULT_TILE_SIDE_LENGTH;
 
 /* Max. distance we are willing to scroll after a teleport;
  * everything beyond will reset the port hard.
  */
-static const int MAP_TELEPORT_SCROLL_DISTANCE = 8 * 32;
+static const int MAP_TELEPORT_SCROLL_DISTANCE = 8 * DEFAULT_TILE_SIDE_LENGTH;
 
 /**
  * Listener used for handling the overweigth message.
@@ -428,8 +433,7 @@ int PlayerHandler::getJobLocation()
 float PlayerHandler::getDefaultWalkSpeed()
 {
     // Return translation in pixels per ticks.
-    return (6.0f * (float)DEFAULT_TILE_SIDE_LENGTH)
-    / 1000 * (float)MILLISECONDS_IN_A_TICK;
+    return ManaServ::BeingHandler::giveSpeedInPixelsPerTicks(6.0f);
 }
 
 } // namespace ManaServ
