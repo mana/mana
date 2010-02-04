@@ -51,7 +51,7 @@ class ShortcutWindow : public Window
 
         ScrollArea *mScrollArea;
 
-        static int mInstances;
+        static int mBoxesWidth;
 };
 
 extern ShortcutWindow *itemShortcutWindow;

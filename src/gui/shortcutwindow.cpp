@@ -31,7 +31,7 @@
 
 static const int SCROLL_PADDING = 0;
 
-int ShortcutWindow::mInstances = 0;
+int ShortcutWindow::mBoxesWidth = 0;
 
 ShortcutWindow::ShortcutWindow(const std::string &title,
                                ShortcutContainer *content)
@@ -53,11 +53,11 @@ ShortcutWindow::ShortcutWindow(const std::string &title,
     setMaxWidth(mItems->getBoxWidth() * mItems->getMaxItems() + border);
     setMaxHeight(mItems->getBoxHeight() * mItems->getMaxItems() + border);
 
-    setDefaultSize(mItems->getBoxWidth() + border, (mItems->getBoxHeight() *
-                   mItems->getMaxItems()) + border, ImageRect::LOWER_RIGHT,
-                   mInstances * mItems->getBoxWidth(), 0);
+    setDefaultSize(mItems->getBoxWidth() + border, mItems->getBoxHeight() *
+                   mItems->getMaxItems() + border, ImageRect::LOWER_RIGHT,
+                   mBoxesWidth, 0);
 
-    mInstances++;
+    mBoxesWidth += mItems->getBoxWidth() + border;
 
     mScrollArea = new ScrollArea(mItems);
     mScrollArea->setPosition(SCROLL_PADDING, SCROLL_PADDING);
