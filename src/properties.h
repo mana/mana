@@ -57,8 +57,8 @@ class Properties
          *
          * @param name The name of the property.
          * @param def  Default value, 0.0f by default.
-         * @return the value of the given property, or 0.0f when it doesn't
-         *         exist.
+         * @return the value of the given property or the given default when it
+         *         doesn't exist.
          */
         float getFloatProperty(const std::string &name, float def = 0.0f) const
         {
@@ -78,8 +78,8 @@ class Properties
          *
          * @param name The name of the property.
          * @param def  Default value, false by default.
-         * @return the value of the given property, or false when it doesn't
-         *         exist.
+         * @return the value of the given property or the given default when it
+         *         doesn't exist.
          */
         float getBoolProperty(const std::string &name, bool def = false) const
         {
