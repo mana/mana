@@ -81,7 +81,7 @@ class Properties
          * @return the value of the given property or the given default when it
          *         doesn't exist.
          */
-        float getBoolProperty(const std::string &name, bool def = false) const
+        bool getBoolProperty(const std::string &name, bool def = false) const
         {
             PropertyMap::const_iterator i = mProperties.find(name);
             bool ret = def;
