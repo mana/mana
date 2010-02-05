@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -30,26 +30,54 @@ extern volatile int fps;
 extern volatile int tick_time;
 extern const int MILLISECONDS_IN_A_TICK;
 
+class Map;
 class WindowMenu;
 
+/**
+ * The main class responsible for running the game.
+ */
 class Game : public ConfigListener
 {
     public:
+        /**
+         * Constructs the game, creating all the managers, handlers, engines
+         * and GUI windows that make up the game.
+         */
         Game();
 
+        /**
+         * Destructor, cleans up the game.
+         */
         ~Game();
 
-        void logic();
+        /**
+         * Provides access to the game instance.
+         */
+        static Game *instance() { return mInstance; }
+
+        /**
+         * This method runs the game. It returns when the game stops.
+         */
+        void exec();
 
         void handleInput();
 
         void optionChanged(const std::string &name);
 
+        void changeMap(const std::string &mapName);
+
+        /**
+         * Returns the currently active map.
+         */
+        Map *getCurrentMap() { return mCurrentMap; }
+
+        const std::string &getCurrentMapName() { return mMapName; }
+
     private:
         /** Used to determine whether to draw the next frame. */
         int mDrawTime;
 
-        /** The minimum frame time (used for frame limiting). */
+        /** The minimum frame time in ms (used for frame limiting). */
         int mMinFrameTime;
 
         int mLastTarget;
@@ -58,6 +86,11 @@ class Game : public ConfigListener
         SDL_TimerID mSecondsCounterId;
 
         WindowMenu *mWindowMenu;
+
+        Map *mCurrentMap;
+        std::string mMapName;
+
+        static Game *mInstance;
 };
 
 /**

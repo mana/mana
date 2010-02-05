@@ -313,8 +313,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      effectmanager.h \
 	      emoteshortcut.cpp \
 	      emoteshortcut.h \
-	      engine.cpp \
-	      engine.h \
 	      equipment.h \
 	      flooritem.cpp \
 	      flooritem.h \

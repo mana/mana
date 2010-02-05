@@ -64,8 +64,6 @@
 ./src/effectmanager.h
 ./src/emoteshortcut.cpp
 ./src/emoteshortcut.h
-./src/engine.cpp
-./src/engine.h
 ./src/equipment.h
 ./src/flooritem.cpp
 ./src/flooritem.h

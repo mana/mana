@@ -21,7 +21,6 @@
 
 #include "net/ea/itemhandler.h"
 
-#include "engine.h"
 #include "flooritemmanager.h"
 
 #include "net/messagein.h"
@@ -43,28 +42,24 @@ ItemHandler::ItemHandler()
 
 void ItemHandler::handleMessage(Net::MessageIn &msg)
 {
-    Uint32 id;
-    Uint16 x, y;
-    int itemId;
-
     switch (msg.getId())
     {
         case SMSG_ITEM_VISIBLE:
         case SMSG_ITEM_DROPPED:
-            id = msg.readInt32();
-            itemId = msg.readInt16();
-            msg.readInt8();  // identify flag
-            x = msg.readInt16();
-            y = msg.readInt16();
-            msg.skip(4);     // amount,subX,subY / subX,subY,amount
+            {
+                int id = msg.readInt32();
+                int itemId = msg.readInt16();
+                msg.readInt8();  // identify flag
+                int x = msg.readInt16();
+                int y = msg.readInt16();
+                msg.skip(4);     // amount,subX,subY / subX,subY,amount
 
-            floorItemManager->create(id, itemId, x, y, engine->getCurrentMap());
+                floorItemManager->create(id, itemId, x, y);
+            }
             break;
 
         case SMSG_ITEM_REMOVE:
-            FloorItem *item;
-            item = floorItemManager->findById(msg.readInt32());
-            if (item)
+            if (FloorItem *item = floorItemManager->findById(msg.readInt32()))
                 floorItemManager->destroy(item);
             break;
     }

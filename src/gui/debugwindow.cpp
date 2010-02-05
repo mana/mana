@@ -21,7 +21,6 @@
 
 #include "gui/debugwindow.h"
 
-#include "engine.h"
 #include "game.h"
 #include "particle.h"
 #include "main.h"
@@ -93,24 +92,16 @@ void DebugWindow::logic()
 
     mFPSLabel->setCaption(strprintf(mFPSText.c_str(), fps));
 
-    mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"), mouseTileX,
+    mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"),
+                                          mouseTileX,
                                           mouseTileY));
 
-    Map *currentMap = engine->getCurrentMap();
-    if (currentMap)
+    if (const Map *map = Game::instance()->getCurrentMap())
     {
         // TODO: Add gettext support below
-        const std::string music =
-            "Music: " + currentMap->getProperty("music");
-        mMusicFileLabel->setCaption(music);
-
-        const std::string minimap =
-            "Minimap: " + currentMap->getProperty("minimap");
-        mMinimapLabel->setCaption(minimap);
-
-        const std::string map =
-            "Map: " + currentMap->getProperty("_filename");
-        mMapLabel->setCaption(map);
+        mMusicFileLabel->setCaption("Music: " + map->getProperty("music"));
+        mMinimapLabel->setCaption("Minimap: " + map->getProperty("minimap"));
+        mMapLabel->setCaption("Map: " + map->getProperty("_filename"));
     }
 
     mParticleCountLabel->setCaption(strprintf(_("Particle count: %d"),

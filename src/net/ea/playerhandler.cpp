@@ -21,7 +21,7 @@
 
 #include "net/ea/playerhandler.h"
 
-#include "engine.h"
+#include "game.h"
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
@@ -179,9 +179,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_PLAYER_WARP:
             {
                 std::string mapPath = msg.readString(16);
-                bool nearby;
-                Uint16 x = msg.readInt16();
-                Uint16 y = msg.readInt16();
+                int x = msg.readInt16();
+                int y = msg.readInt16();
 
                 logger->log("Warping to %s (%d, %d)", mapPath.c_str(), x, y);
 
@@ -191,17 +190,20 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                  */
                 player_node->stopAttack();
 
-                nearby = (engine->getCurrentMapName() == mapPath);
+                Game *game = Game::instance();
+
+                const std::string &currentMap = game->getCurrentMapName();
+                bool sameMap = (currentMap == mapPath);
 
                 // Switch the actual map, deleting the previous one if necessary
                 mapPath = mapPath.substr(0, mapPath.rfind("."));
-                engine->changeMap(mapPath);
+                game->changeMap(mapPath);
 
                 float scrollOffsetX = 0.0f;
                 float scrollOffsetY = 0.0f;
 
                 /* Scroll if neccessary */
-                if (!nearby
+                if (!sameMap
                     || (abs(x - player_node->getTileX()) > MAP_TELEPORT_SCROLL_DISTANCE)
                     || (abs(y - player_node->getTileY()) > MAP_TELEPORT_SCROLL_DISTANCE))
                 {

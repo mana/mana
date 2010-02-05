@@ -22,6 +22,8 @@
 #include "flooritemmanager.h"
 #include "flooritem.h"
 
+#include "game.h"
+
 #include "utils/dtor.h"
 
 FloorItemManager::~FloorItemManager()
@@ -29,9 +31,9 @@ FloorItemManager::~FloorItemManager()
     clear();
 }
 
-FloorItem *FloorItemManager::create(int id, int itemId,
-                                    int x, int y, Map *map)
+FloorItem *FloorItemManager::create(int id, int itemId, int x, int y)
 {
+    Map *map = Game::instance()->getCurrentMap();
     FloorItem *floorItem = new FloorItem(id, itemId, x, y, map);
     mFloorItems.push_back(floorItem);
     return floorItem;
@@ -49,9 +51,9 @@ void FloorItemManager::clear()
     mFloorItems.clear();
 }
 
-FloorItem *FloorItemManager::findById(int id)
+FloorItem *FloorItemManager::findById(int id) const
 {
-    FloorItemIterator i;
+    FloorItems::const_iterator i;
     for (i = mFloorItems.begin(); i != mFloorItems.end(); i++)
     {
         if ((*i)->getId() == id)
@@ -63,9 +65,9 @@ FloorItem *FloorItemManager::findById(int id)
     return NULL;
 }
 
-FloorItem *FloorItemManager::findByCoordinates(int x, int y)
+FloorItem *FloorItemManager::findByCoordinates(int x, int y) const
 {
-    FloorItemIterator i;
+    FloorItems::const_iterator i;
     for (i = mFloorItems.begin(); i != mFloorItems.end(); i++)
     {
         if ((*i)->getX() == x && (*i)->getY() == y)

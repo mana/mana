@@ -23,7 +23,7 @@
 #include "net/manaserv/beinghandler.h"
 
 #include "effectmanager.h"
-#include "engine.h"
+#include "game.h"
 #include "localplayer.h"
 #include "log.h"
 #include "particle.h"
@@ -304,12 +304,14 @@ void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
     const std::string mapName = msg.readString();
     const unsigned short x = msg.readInt16();
     const unsigned short y = msg.readInt16();
-    const bool nearby = (engine->getCurrentMapName() == mapName);
+
+    Game *game = Game::instance();
+    const bool sameMap = (game->getCurrentMapName() == mapName);
 
     logger->log("Changing map to %s (%d, %d)", mapName.c_str(), x, y);
 
     // Switch the actual map, deleting the previous one
-    engine->changeMap(mapName);
+    game->changeMap(mapName);
 
     current_npc = 0;
 
@@ -318,7 +320,7 @@ void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
     float scrollOffsetY = 0.0f;
 
     /* Scroll if neccessary */
-    if (!nearby
+    if (!sameMap
             || (abs(x - (int) playerPos.x) > MAP_TELEPORT_SCROLL_DISTANCE)
             || (abs(y - (int) playerPos.y) > MAP_TELEPORT_SCROLL_DISTANCE))
     {

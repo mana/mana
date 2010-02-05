@@ -1117,7 +1117,7 @@ int main(int argc, char *argv[])
 
                     logger->log("State: GAME");
                     game = new Game;
-                    game->logic();
+                    game->exec();
                     delete game;
                     game = 0;
 

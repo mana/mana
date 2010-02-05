@@ -22,7 +22,7 @@
 #include "gui/setup_video.h"
 
 #include "configuration.h"
-#include "engine.h"
+#include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
@@ -502,7 +502,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
                         mParticleEffectsCheckBox->isSelected());
         Particle::enabled = mParticleEffectsCheckBox->isSelected();
 
-        if (engine)
+        if (Game::instance())
         {
             new OkDialog(_("Particle Effect Settings Changed."),
                          _("Changes will take effect on map change."));

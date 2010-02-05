@@ -50,7 +50,6 @@ class DebugWindow : public Window
         Label *mParticleCountLabel, *mParticleDetailLabel;
         Label *mAmbientDetailLabel;
 
-
         std::string mFPSText;
 };
 

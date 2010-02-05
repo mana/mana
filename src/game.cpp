@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -27,7 +27,6 @@
 #include "configuration.h"
 #include "effectmanager.h"
 #include "emoteshortcut.h"
-#include "engine.h"
 #include "flooritemmanager.h"
 #include "graphics.h"
 #include "itemshortcut.h"
@@ -83,6 +82,8 @@
 #include "net/playerhandler.h"
 
 #include "resources/imagewriter.h"
+#include "resources/mapreader.h"
+#include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
 
@@ -102,7 +103,6 @@ std::string map_path;
 volatile int tick_time;
 volatile int fps = 0, frame = 0;
 
-Engine *engine = NULL;
 Joystick *joystick = NULL;
 
 OkDialog *weightNotice = NULL;
@@ -196,8 +196,6 @@ int get_elapsed_time(int start_time)
  */
 static void initEngines()
 {
-    engine = new Engine;
-
     beingManager = new BeingManager;
     commandHandler = new CommandHandler;
     floorItemManager = new FloorItemManager;
@@ -285,10 +283,16 @@ static void destroyGuiWindows()
     del_0(specialsWindow);
 }
 
+Game *Game::mInstance = 0;
+
 Game::Game():
     mLastTarget(Being::UNKNOWN),
-    mLogicCounterId(0), mSecondsCounterId(0)
+    mLogicCounterId(0), mSecondsCounterId(0),
+    mCurrentMap(0), mMapName("")
 {
+    assert(!mInstance);
+    mInstance = this;
+
     disconnectedDialog = NULL;
 
     createGuiWindows();
@@ -308,7 +312,7 @@ Game::Game():
     // with the GPMSG_PLAYER_MAP_CHANGE flag.
     map_path = map_path.substr(0, map_path.rfind("."));
     if (!map_path.empty())
-        engine->changeMap(map_path);
+        changeMap(map_path);
 
     // Initialize beings
     beingManager->setPlayer(player_node);
@@ -350,9 +354,12 @@ Game::~Game()
     delete commandHandler;
     delete joystick;
     delete particleEngine;
-    delete engine;
 
     viewport->setMap(NULL);
+
+    delete mCurrentMap;
+    map_path = "";
+
     player_node = NULL;
     beingManager = NULL;
     floorItemManager = NULL;
@@ -360,6 +367,8 @@ Game::~Game()
 
     SDL_RemoveTimer(mLogicCounterId);
     SDL_RemoveTimer(mSecondsCounterId);
+
+    mInstance = 0;
 }
 
 void setScreenshotDir(const std::string &dir)
@@ -422,15 +431,15 @@ static bool saveScreenshot()
 
 void Game::optionChanged(const std::string &name)
 {
-    int fpsLimit = (int) config.getValue("fpslimit", 60);
-
+    // Calculate the new minimum time per frame based on the FPS limit
+    const int fpsLimit = (int) config.getValue("fpslimit", 60);
     mMinFrameTime = fpsLimit ? 1000 / fpsLimit : 0;
 
     // Reset draw time to current time
     mDrawTime = tick_time * MILLISECONDS_IN_A_TICK;
 }
 
-void Game::logic()
+void Game::exec()
 {
     // mDrawTime has a higher granularity than gameTime in order to be able to
     // work with minimum frame durations in milliseconds.
@@ -439,14 +448,17 @@ void Game::logic()
 
     while (state == STATE_GAME)
     {
-        if (Map *map = engine->getCurrentMap())
-            map->update(get_elapsed_time(gameTime));
+        if (mCurrentMap)
+            mCurrentMap->update(get_elapsed_time(gameTime));
 
         // Handle all necessary game logic
         while (get_elapsed_time(gameTime) > 0)
         {
             handleInput();
-            engine->logic();
+            beingManager->logic();
+            particleEngine->update();
+            gui->logic();
+
             gameTime++;
         }
 
@@ -500,6 +512,9 @@ void Game::logic()
     }
 }
 
+/**
+ * The MONSTER input handling method.
+ */
 void Game::handleInput()
 {
     if (joystick)
@@ -1057,4 +1072,65 @@ void Game::handleInput()
             }
         }
     }
+}
+
+/**
+ * Changes the currently active map. Should only be called while the game is
+ * running.
+ */
+void Game::changeMap(const std::string &mapPath)
+{
+    // Clean up floor items, beings and particles
+    floorItemManager->clear();
+    beingManager->clear();
+
+    // Close the popup menu on map change so that invalid options can't be
+    // executed.
+    viewport->closePopupMenu();
+
+    // Unset the map of the player so that its particles are cleared before
+    // being deleted in the next step
+    if (player_node)
+        player_node->setMap(0);
+
+    particleEngine->clear();
+
+    mMapName = mapPath;
+
+    // Store full map path in global var
+    map_path = "maps/" + mapPath + ".tmx";
+    ResourceManager *resman = ResourceManager::getInstance();
+    if (!resman->exists(map_path))
+        map_path += ".gz";
+
+    // Attempt to load the new map
+    Map *newMap = MapReader::readMap(map_path);
+
+    if (!newMap)
+    {
+        logger->log("Error while loading %s", map_path.c_str());
+        new OkDialog(_("Could Not Load Map"),
+                     strprintf(_("Error while loading %s"), map_path.c_str()));
+    }
+
+    // Notify the minimap and beingManager about the map change
+    minimap->setMap(newMap);
+    beingManager->setMap(newMap);
+    particleEngine->setMap(newMap);
+    viewport->setMap(newMap);
+
+    // Initialize map-based particle effects
+    if (newMap)
+        newMap->initializeParticleEffects(particleEngine);
+
+    // Start playing new music file when necessary
+    std::string oldMusic = mCurrentMap ? mCurrentMap->getMusicFile() : "";
+    std::string newMusic = newMap ? newMap->getMusicFile() : "";
+    if (newMusic != oldMusic)
+        sound.playMusic(newMusic);
+
+    delete mCurrentMap;
+    mCurrentMap = newMap;
+
+    Net::getGameHandler()->mapLoaded(mapPath);
 }
