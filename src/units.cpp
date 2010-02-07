@@ -1,6 +1,6 @@
 /*
  *  Support for custom units
- *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
