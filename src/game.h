@@ -23,7 +23,9 @@
 #define GAME_H
 
 #include "configlistener.h"
-#include "SDL.h"
+
+#include <SDL.h>
+#include <SDL_framerate.h>
 
 extern std::string map_path;
 extern volatile int fps;
@@ -74,16 +76,13 @@ class Game : public ConfigListener
         const std::string &getCurrentMapName() { return mMapName; }
 
     private:
-        /** Used to determine whether to draw the next frame. */
-        int mDrawTime;
-
-        /** The minimum frame time in ms (used for frame limiting). */
-        int mMinFrameTime;
-
         int mLastTarget;
 
         SDL_TimerID mLogicCounterId;
         SDL_TimerID mSecondsCounterId;
+
+        bool mLimitFps;
+        FPSmanager mFpsManager;
 
         WindowMenu *mWindowMenu;
 
