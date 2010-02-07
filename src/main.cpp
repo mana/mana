@@ -972,6 +972,7 @@ int main(int argc, char *argv[])
                 case STATE_LOGIN_ATTEMPT:
                     logger->log("State: LOGIN ATTEMPT");
                     accountLogin(&loginData);
+                    currentDialog = new ConnectionDialog(STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_WORLD_SELECT:
@@ -1059,6 +1060,7 @@ int main(int argc, char *argv[])
                 case STATE_GET_CHARACTERS:
                     logger->log("State: GET CHARACTERS");
                     Net::getCharHandler()->getCharacters();
+                    currentDialog = new ConnectionDialog(STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_CHAR_SELECT:
