@@ -522,8 +522,8 @@ class Being : public Sprite, public ConfigListener
 
         void flashName(int time);
 
-        int getTakedDamage() const
-        { return mTakedDamage; }
+        int getDamageTaken() const
+        { return mDamageTaken; }
 
         void updateName();
 
@@ -655,7 +655,7 @@ class Being : public Sprite, public ConfigListener
         Vector mDest;
         int mX, mY;                     /**< Position on tile */
 
-        int mTakedDamage;
+        int mDamageTaken;
 
         /** Target cursor being used */
         SimpleAnimation* mUsedTargetCursor;

@@ -90,7 +90,7 @@ Being::Being(int id, int job, Map *map):
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
     mX(0), mY(0),
-    mTakedDamage(0),
+    mDamageTaken(0),
     mUsedTargetCursor(NULL)
 {
     setMap(map);
@@ -306,7 +306,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     {
         if (getType() == MONSTER)
         {
-            mTakedDamage += amount;
+            mDamageTaken += amount;
             updateName();
         }
 
@@ -959,7 +959,7 @@ void Being::showName()
     {
         if (config.getValue("showMonstersTakedDamage", false))
         {
-            mDisplayName += ", " + toString(getTakedDamage());
+            mDisplayName += ", " + toString(getDamageTaken());
         }
     }
 
