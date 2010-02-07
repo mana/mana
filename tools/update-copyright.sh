@@ -20,4 +20,5 @@ echo "The next +/- counts mentioning copyrights should match:"
 grep "^[-+][^-+]" $tmp_file | sort | uniq -c
 echo "If they don't, try finding the offending files with grep -rl <\$bad_line>"
 
-
+# Remove temp file
+[[ -e $tmp_file ]] && rm $tmp_file
