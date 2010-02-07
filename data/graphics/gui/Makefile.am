@@ -21,6 +21,7 @@ gui_DATA =				\
 	hscroll_right_pressed.png	\
 	item_shortcut_bgr.png		\
 	mouse.png			\
+	progress-indicator.png		\
 	radioin.png			\
 	radioin_highlight.png		\
 	radioout.png			\

@@ -237,6 +237,8 @@
 ./src/gui/widgets/popup.h
 ./src/gui/widgets/progressbar.cpp
 ./src/gui/widgets/progressbar.h
+./src/gui/widgets/progressindicator.cpp
+./src/gui/widgets/progressindicator.h
 ./src/gui/widgets/radiobutton.cpp
 ./src/gui/widgets/radiobutton.h
 ./src/gui/widgets/resizegrip.cpp

@@ -28,8 +28,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-class ProgressBar;
-
 /**
  * The connection dialog.
  *
@@ -39,11 +37,14 @@ class ConnectionDialog : public Window, gcn::ActionListener
 {
     public:
         /**
-         * Constructor
+         * Constructor.
+         *
+         * @param text        The text to display
+         * @param cancelState The state to enter when Cancel is pressed
          *
          * @see Window::Window
          */
-        ConnectionDialog(State previousState);
+        ConnectionDialog(const std::string &text, State cancelState);
 
         /**
          * Called when the user presses Cancel. Restores the global state to
@@ -51,12 +52,11 @@ class ConnectionDialog : public Window, gcn::ActionListener
          */
         void action(const gcn::ActionEvent &);
 
-        void logic();
+        void draw(gcn::Graphics *graphics);
 
     private:
-        ProgressBar *mProgressBar;
-        float mProgress;
-        State mPreviousState;
+        gcn::Label *mLabel;
+        State mCancelState;
 };
 
 #endif

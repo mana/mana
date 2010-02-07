@@ -152,6 +152,8 @@ SET(SRCS
     gui/widgets/popup.h
     gui/widgets/progressbar.cpp
     gui/widgets/progressbar.h
+    gui/widgets/progressindicator.cpp
+    gui/widgets/progressindicator.h
     gui/widgets/radiobutton.cpp
     gui/widgets/radiobutton.h
     gui/widgets/resizegrip.cpp

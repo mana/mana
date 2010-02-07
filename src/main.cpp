@@ -572,7 +572,6 @@ static void parseOptions(int argc, char *argv[], Options &options)
 
     while (optind < argc)
     {
-
         int result = getopt_long(argc, argv, optstring, long_options, NULL);
 
         if (result == -1)
@@ -925,7 +924,8 @@ int main(int argc, char *argv[])
 
                 case STATE_CONNECT_SERVER:
                     logger->log("State: CONNECT SERVER");
-                    currentDialog = new ConnectionDialog(STATE_SWITCH_SERVER);
+                    currentDialog = new ConnectionDialog(
+                            _("Connecting to server"), STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_LOGIN:
@@ -951,7 +951,8 @@ int main(int argc, char *argv[])
                 case STATE_LOGIN_ATTEMPT:
                     logger->log("State: LOGIN ATTEMPT");
                     accountLogin(&loginData);
-                    currentDialog = new ConnectionDialog(STATE_SWITCH_SERVER);
+                    currentDialog = new ConnectionDialog(
+                            _("Logging in"), STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_WORLD_SELECT:
@@ -983,7 +984,8 @@ int main(int argc, char *argv[])
 
                 case STATE_WORLD_SELECT_ATTEMPT:
                     logger->log("State: WORLD SELECT ATTEMPT");
-                    currentDialog = new ConnectionDialog(STATE_WORLD_SELECT);
+                    currentDialog = new ConnectionDialog(
+                            _("Entering game world"), STATE_WORLD_SELECT);
                     break;
 
                 case STATE_UPDATE:
@@ -1039,7 +1041,9 @@ int main(int argc, char *argv[])
                 case STATE_GET_CHARACTERS:
                     logger->log("State: GET CHARACTERS");
                     Net::getCharHandler()->getCharacters();
-                    currentDialog = new ConnectionDialog(STATE_SWITCH_SERVER);
+                    currentDialog = new ConnectionDialog(
+                            _("Requesting characters"),
+                            STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_CHAR_SELECT:
@@ -1072,7 +1076,9 @@ int main(int argc, char *argv[])
                     logger->log("State: CONNECT GAME");
 
                     Net::getGameHandler()->connect();
-                    currentDialog = new ConnectionDialog(STATE_SWITCH_CHARACTER);
+                    currentDialog = new ConnectionDialog(
+                            _("Connecting to the game server"),
+                            STATE_SWITCH_CHARACTER);
                     break;
 
                 case STATE_GAME:
@@ -1124,7 +1130,8 @@ int main(int argc, char *argv[])
                 case STATE_REGISTER_PREP:
                     logger->log("State: REGISTER_PREP");
                     Net::getLoginHandler()->getRegistrationDetails();
-                    currentDialog = new ConnectionDialog(STATE_LOGIN);
+                    currentDialog = new ConnectionDialog(
+                            _("Requesting registration details"), STATE_LOGIN);
                     break;
 
                 case STATE_REGISTER:

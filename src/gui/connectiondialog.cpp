@@ -26,26 +26,28 @@
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/progressbar.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/progressindicator.h"
 
 #include "utils/gettext.h"
 
-ConnectionDialog::ConnectionDialog(State previousState):
-    Window(_("Info")), mProgress(0), mPreviousState(previousState)
+ConnectionDialog::ConnectionDialog(const std::string &text,
+                                   State cancelState):
+    Window(""),
+    mCancelState(cancelState)
 {
-    setContentSize(200, 100);
+    setTitleBarHeight(0);
+    setMovable(false);
+    setMinWidth(0);
 
+    ProgressIndicator *progressIndicator = new ProgressIndicator;
+    gcn::Label *label = new Label(text);
     Button *cancelButton = new Button(_("Cancel"), "cancelButton", this);
-    mProgressBar = new ProgressBar(0.0, 200 - 10, 20, gcn::Color(128, 128, 128));
-    gcn::Label *label = new Label(_("Connecting..."));
 
-    cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
-    mProgressBar->setPosition(5, cancelButton->getY() - 25);
-    label->setPosition(5, mProgressBar->getY() - 25);
-
-    add(label);
-    add(cancelButton);
-    add(mProgressBar);
+    place(0, 0, progressIndicator);
+    place(0, 1, label);
+    place(0, 2, cancelButton).setHAlign(LayoutCell::CENTER);
+    reflowLayout();
 
     center();
     setVisible(true);
@@ -54,16 +56,11 @@ ConnectionDialog::ConnectionDialog(State previousState):
 void ConnectionDialog::action(const gcn::ActionEvent &)
 {
     logger->log("Cancel pressed");
-    state = mPreviousState;
+    state = mCancelState;
 }
 
-void ConnectionDialog::logic()
+void ConnectionDialog::draw(gcn::Graphics *graphics)
 {
-    mProgress += 0.005f;
-
-    if (mProgress > 1.0f)
-        mProgress = 0.0f;
-
-    mProgressBar->setProgress(mProgress);
-    Window::logic();
+    // Don't draw the window background, only draw the children
+    drawChildren(graphics);
 }

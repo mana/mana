@@ -456,7 +456,7 @@ class Being : public Sprite, public ConfigListener
         /**
          * Sets the target animation for this being.
          */
-        void setTargetAnimation(SimpleAnimation* animation);
+        void setTargetAnimation(SimpleAnimation *animation);
 
         /**
          * Untargets the being
@@ -658,7 +658,7 @@ class Being : public Sprite, public ConfigListener
         int mDamageTaken;
 
         /** Target cursor being used */
-        SimpleAnimation* mUsedTargetCursor;
+        SimpleAnimation *mUsedTargetCursor;
 };
 
 #endif

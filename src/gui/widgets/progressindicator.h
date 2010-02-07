@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  Copyright (C) 2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,28 +19,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "resources/animation.h"
+#ifndef PROGRESSINDICATOR_H
+#define PROGRESSINDICATOR_H
 
-#include "utils/dtor.h"
+#include <guichan/widget.hpp>
 
-Animation::Animation():
-    mDuration(0)
+class SimpleAnimation;
+
+/**
+ * A widget that indicates progress. Suitable to use instead of a progress bar
+ * in cases where it is unknown how long something is going to take.
+ */
+class ProgressIndicator : public gcn::Widget
 {
-}
+public:
+    ProgressIndicator();
+    ~ProgressIndicator();
 
-void Animation::addFrame(Image *image, int delay, int offsetX, int offsetY)
-{
-    Frame frame = { image, delay, offsetX, offsetY };
-    mFrames.push_back(frame);
-    mDuration += delay;
-}
+    void logic();
+    void draw(gcn::Graphics *graphics);
 
-void Animation::addTerminator()
-{
-    addFrame(NULL, 0, 0, 0);
-}
+private:
+    SimpleAnimation *mIndicator;
+};
 
-bool Animation::isTerminator(const Frame &candidate)
-{
-    return (candidate.image == NULL);
-}
+#endif // PROGRESSINDICATOR_H
