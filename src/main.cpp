@@ -58,8 +58,6 @@
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/desktop.h"
-#include "gui/widgets/label.h"
-#include "gui/widgets/progressbar.h"
 
 #include "net/charhandler.h"
 #include "net/gamehandler.h"
@@ -769,13 +767,12 @@ int main(int argc, char *argv[])
     // Needs to be created in main, as the updater uses it
     guiPalette = new Palette;
 
-    Window *currentDialog = NULL;
-    QuitDialog* quitDialog = NULL;
+    Window *currentDialog = 0;
+    QuitDialog *quitDialog = 0;
     setupWindow = new Setup;
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
     Desktop *desktop = 0;
-    ProgressBar *progressBar = 0;
     Button *setupButton = 0;
 
     sound.playMusic(branding.getValue("loginMusic", "Magick - Real.ogg"));
@@ -831,18 +828,9 @@ int main(int argc, char *argv[])
         }
 
         if (Net::getGeneralHandler())
-        {
             Net::getGeneralHandler()->flushNetwork();
-        }
+
         gui->logic();
-
-        if (progressBar && progressBar->isVisible())
-        {
-            progressBar->setProgress(progressBar->getProgress() + 0.005f);
-            if (progressBar->getProgress() == 1.0f)
-                progressBar->setProgress(0.0f);
-        }
-
         gui->draw();
         graphics->updateScreen();
 
@@ -874,15 +862,6 @@ int main(int argc, char *argv[])
         {
             desktop = new Desktop;
             top->add(desktop);
-            progressBar = new ProgressBar(0.0f, 100, 20,
-                                          gcn::Color(168, 116, 31));
-            progressBar->setSmoothProgress(false);
-            Label *progressLabel = new Label;
-            top->add(progressBar, 5, top->getHeight() - 5 -
-                     progressBar->getHeight());
-            top->add(progressLabel, 15 + progressBar->getWidth(),
-                     progressBar->getY() + 4);
-            progressBar->setVisible(false);
             setupButton = new Button(_("Setup"), "Setup", &listener);
             setupButton->setPosition(top->getWidth() - setupButton->getWidth()
                                      - 3, 3);
