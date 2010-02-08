@@ -115,7 +115,7 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
         // Draw Name
         graphics->drawText(text, 15, y);
 
-        width = getFont()->getWidth(text) + 17; // Extra right padding
+        width = graphics->getFont()->getWidth(text) + 17; // Extra right padding
 
         if (width > newWidth)
         {
