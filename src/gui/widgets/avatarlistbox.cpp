@@ -23,6 +23,7 @@
 
 #include "graphics.h"
 
+#include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/palette.h"
 
@@ -136,6 +137,17 @@ void AvatarListBox::mousePressed(gcn::MouseEvent &event)
         int y = event.getY();
         setSelected(y / getFont()->getHeight());
         distributeActionEvent();
+
+        if (event.getClickCount() == 2)
+        {
+            int selected = getSelected();
+            AvatarListModel *model = dynamic_cast<AvatarListModel*>(mListModel);
+            if (model)
+            {
+                chatWindow->addWhisperTab(model->getAvatarAt(selected)
+                                          ->getName(), true);
+            }
+        }
     }
     // TODO: Add support for context menu
     else if (event.getButton() == gcn::MouseEvent::RIGHT)
