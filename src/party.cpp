@@ -145,6 +145,21 @@ void Party::removeMember(const std::string &name)
     }
 }
 
+void Party::removeFromMembers()
+{
+    MemberList::iterator itr = mMembers.begin(),
+                               itr_end = mMembers.end();
+    while(itr != itr_end)
+    {
+        Player *p = dynamic_cast<Player*>(beingManager->findBeing((*itr)->getID()));
+        if (p)
+        {
+            p->setParty(NULL);
+        }
+        ++itr;
+    }
+}
+
 Avatar *Party::getAvatarAt(int index)
 {
     return mMembers[index];

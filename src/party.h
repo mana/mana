@@ -125,6 +125,8 @@ public:
 
     void clearMembers() { mMembers.clear(); }
 
+    void removeFromMembers();
+
     /**
      * Get size of members list.
      * @return Returns the number of members in the party.

@@ -118,6 +118,8 @@ public:
      */
     void removeMember(const std::string &name);
 
+    void removeFromMembers();
+
     void clearMembers() { mMembers.clear(); }
 
     /**

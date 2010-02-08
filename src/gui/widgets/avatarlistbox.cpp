@@ -100,10 +100,22 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
         if (a->getDisplayBold())
             graphics->setFont(boldFont);
 
-        // Draw Name
-        graphics->drawText(a->getName(), 15, y);
+        std::string text;
 
-        width = getFont()->getWidth(a->getName()) + 17; // Extra right padding
+        if (a->getMaxHp() > 0)
+        {
+            text = strprintf("%s %d/%d", a->getName().c_str(),
+                             a->getHp(), a->getMaxHp());
+        }
+        else
+        {
+            text = a->getName();
+        }
+
+        // Draw Name
+        graphics->drawText(text, 15, y);
+
+        width = getFont()->getWidth(text) + 17; // Extra right padding
 
         if (width > newWidth)
         {

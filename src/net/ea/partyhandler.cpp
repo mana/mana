@@ -236,8 +236,8 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 msg.readInt8();     // fail
                 if (id == player_node->getId())
                 {
+                    eaParty->removeFromMembers();
                     eaParty->clearMembers();
-                    player_node->setParty(NULL);
                     localChatTab->chatLog(_("You have left the party."),
                                           BY_SERVER);
                     if (partyTab)
@@ -251,6 +251,11 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 {
                     partyTab->chatLog(strprintf(_("%s has left your party."),
                                     nick.c_str()), BY_SERVER);
+                    Player *p = dynamic_cast<Player*>(beingManager->findBeing(id));
+                    if (p)
+                    {
+                        p->setParty(NULL);
+                    }
                     eaParty->removeMember(id);
                 }
                 break;

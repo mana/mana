@@ -307,4 +307,9 @@ void Player::updateColors()
     {
         mNameColor = &guiPalette->getColor(Palette::PC);
     }
+
+    if (mDispName)
+    {
+        mDispName->setColor(mNameColor);
+    }
 }
