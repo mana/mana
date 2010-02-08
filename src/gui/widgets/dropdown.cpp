@@ -43,10 +43,10 @@ Image *DropDown::buttons[2][2];
 ImageRect DropDown::skin;
 float DropDown::mAlpha = 1.0;
 
-DropDown::DropDown(gcn::ListModel *listModel, bool deleteModel):
+DropDown::DropDown(gcn::ListModel *listModel):
     gcn::DropDown::DropDown(listModel,
                             new ScrollArea,
-                            new ListBox(listModel, deleteModel))
+                            new ListBox(listModel))
 {
     setFrameSize(2);
 

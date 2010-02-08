@@ -34,18 +34,13 @@
 
 float ListBox::mAlpha = 1.0;
 
-ListBox::ListBox(gcn::ListModel *listModel, bool deleteModel):
-    gcn::ListBox(listModel),
-    mDeleteModel(deleteModel)
+ListBox::ListBox(gcn::ListModel *listModel):
+    gcn::ListBox(listModel)
 {
 }
 
 ListBox::~ListBox()
 {
-    if (mDeleteModel)
-    {
-        delete mListModel;
-    }
 }
 
 void ListBox::updateAlpha()

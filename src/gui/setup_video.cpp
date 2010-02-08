@@ -236,7 +236,8 @@ Setup_Video::Setup_Video():
     particleDetailLabel = new Label(_("Particle detail"));
     fontSizeLabel = new Label(_("Font size"));
 
-    mFontSizeDropDown = new DropDown(new FontSizeChoiceListModel, true);
+    mFontSizeListModel = new FontSizeChoiceListModel;
+    mFontSizeDropDown = new DropDown(mFontSizeListModel);
 
     mModeList->setEnabled(true);
 
@@ -344,6 +345,12 @@ Setup_Video::Setup_Video():
     place(2, 11, mParticleDetailField, 3).setPadding(2);
 
     setDimension(gcn::Rectangle(0, 0, 365, 300));
+}
+
+Setup_Video::~Setup_Video()
+{
+    delete mModeListModel;
+    delete mFontSizeListModel;
 }
 
 void Setup_Video::apply()

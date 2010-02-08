@@ -30,11 +30,15 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
+class ModeListModel;
+class FontSizeChoiceListModel;
+
 class Setup_Video : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener
 {
     public:
         Setup_Video();
+        ~Setup_Video();
 
         void apply();
         void cancel();
@@ -62,7 +66,8 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         int mFps;
         Being::Speech mSpeechMode;
 
-        class ModeListModel *mModeListModel;
+        ModeListModel *mModeListModel;
+        FontSizeChoiceListModel *mFontSizeListModel;
 
         gcn::Label *speechLabel;
         gcn::Label *alphaLabel;
@@ -99,7 +104,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         int mParticleDetail;
         gcn::Slider *mParticleDetailSlider;
         gcn::Label *mParticleDetailField;
-        
+
         int mFontSize;
         gcn::DropDown *mFontSizeDropDown;
 };
