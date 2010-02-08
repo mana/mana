@@ -98,6 +98,10 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handleClear(args, tab);
     }
+    else if (type == "createparty")
+    {
+        handleCreateParty(args, tab);
+    }
     else if (type == "party")
     {
         handleParty(args, tab);
@@ -170,6 +174,7 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/list > Display all public channels"));
         tab->chatLog(_("/join > Join or create a channel"));
 
+        tab->chatLog(_("/createparty > Create a new party"));
         tab->chatLog(_("/party > Invite a user to party"));
 
         tab->chatLog(_("/record > Start recording the chat to an external file"));
@@ -242,6 +247,11 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Command: /q <nick>"));
         tab->chatLog(_("This command tries to make a tab for whispers between"
                        "you and <nick>."));
+    }
+    else if (args == "createparty")
+    {
+        tab->chatLog(_("Command: /createparty <name>"));
+        tab->chatLog(_("This command creates a new party called <name>."));
     }
     else if (args == "party")
     {
@@ -391,6 +401,18 @@ void CommandHandler::handleJoin(const std::string &args, ChatTab *tab)
 void CommandHandler::handleListChannels(const std::string &args, ChatTab *tab)
 {
     Net::getChatHandler()->channelList();
+}
+
+void CommandHandler::handleCreateParty(const std::string &args, ChatTab *tab)
+{
+    if (args.empty())
+    {
+        tab->chatLog(_("Party name is missing."), BY_SERVER);
+    }
+    else
+    {
+        Net::getPartyHandler()->create(args);
+    }
 }
 
 void CommandHandler::handleParty(const std::string &args, ChatTab *tab)

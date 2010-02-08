@@ -104,6 +104,11 @@ class CommandHandler
         void handleClear(const std::string &args, ChatTab *tab);
 
         /**
+         * Handle a createparty command.
+         */
+        void handleCreateParty(const std::string &args, ChatTab *tab);
+
+        /**
          * Handle a party command.
          */
         void handleParty(const std::string &args, ChatTab *tab);

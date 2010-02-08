@@ -320,7 +320,17 @@ void PartyHandler::invite(Player *player)
 
 void PartyHandler::invite(const std::string &name)
 {
-    partyTab->chatLog(_("Inviting like this isn't supported at the moment."), BY_SERVER);
+    if (partyTab)
+    {
+        partyTab->chatLog(_("Inviting like this isn't supported at the moment."),
+                          BY_SERVER);
+    }
+    else
+    {
+        localChatTab->chatLog(_("You can only inivte when you are in a party!"),
+                              BY_SERVER);
+    }
+
     // TODO?
 }
 

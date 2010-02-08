@@ -55,8 +55,6 @@ void PartyTab::handleInput(const std::string &msg)
 void PartyTab::showHelp()
 {
     chatLog(_("/help > Display this help."));
-    chatLog(_("/create > Create a new party"));
-    chatLog(_("/new > Alias of create"));
     chatLog(_("/invite > Invite a player to your party"));
     chatLog(_("/leave > Leave the party you are in"));
     chatLog(_("/kick > Kick some one from the party you are in"));
@@ -68,13 +66,7 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
 {
     if (type == "help")
     {
-        if (args == "create" || args == "new")
-        {
-            chatLog(_("Command: /new <party-name>"));
-            chatLog(_("Command: /create <party-name>"));
-            chatLog(_("These commands create a new party called <party-name>."));
-        }
-        else if (args == "invite")
+        if (args == "invite")
         {
             chatLog(_("Command: /invite <nick>"));
             chatLog(_("This command invites <nick> to party with you."));
