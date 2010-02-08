@@ -236,7 +236,7 @@ Setup_Video::Setup_Video():
     particleDetailLabel = new Label(_("Particle detail"));
     fontSizeLabel = new Label(_("Font size"));
 
-    mFontSizeDropDown = new DropDown(new FontSizeChoiceListModel);
+    mFontSizeDropDown = new DropDown(new FontSizeChoiceListModel, true);
 
     mModeList->setEnabled(true);
 

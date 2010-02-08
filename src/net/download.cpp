@@ -79,10 +79,12 @@ Download::Download(void *ptr, const std::string &url,
 
 Download::~Download()
 {
-    delete mError;
-
     if (mHeaders)
         curl_slist_free_all(mHeaders);
+
+    int status;
+    SDL_WaitThread(mThread, &status);
+    free(mError);
 }
 
 void Download::addHeader(const std::string &header)

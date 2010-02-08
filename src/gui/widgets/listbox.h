@@ -39,7 +39,9 @@ class ListBox : public gcn::ListBox
         /**
          * Constructor.
          */
-        ListBox(gcn::ListModel *listModel);
+        ListBox(gcn::ListModel *listModel, bool deleteModel = false);
+
+        ~ListBox();
 
         /**
          * Draws the list box.
@@ -65,6 +67,8 @@ class ListBox : public gcn::ListBox
 
     private:
         static float mAlpha;
+
+        bool mDeleteModel;
 };
 
 #endif

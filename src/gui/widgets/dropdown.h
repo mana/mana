@@ -45,7 +45,7 @@ class DropDown : public gcn::DropDown
          * @param listBox the listBox to use.
          * @see ListModel, ScrollArea, ListBox.
          */
-        DropDown(gcn::ListModel *listModel = NULL);
+        DropDown(gcn::ListModel *listModel = NULL, bool deleteModel = false);
 
         ~DropDown();
 

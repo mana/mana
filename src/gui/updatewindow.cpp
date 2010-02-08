@@ -180,6 +180,9 @@ UpdaterWindow::~UpdaterWindow()
     if (mDownload)
     {
         mDownload->cancel();
+
+        delete mDownload;
+        mDownload = 0;
     }
     free(mMemoryBuffer);
 }
