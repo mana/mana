@@ -42,6 +42,7 @@ ScrollArea::ScrollArea():
     gcn::ScrollArea(),
     mX(0),
     mY(0),
+    mHasMouse(false),
     mOpaque(true)
 {
     addWidgetListener(this);
@@ -50,6 +51,8 @@ ScrollArea::ScrollArea():
 
 ScrollArea::ScrollArea(gcn::Widget *widget):
     gcn::ScrollArea(widget),
+    mX(0),
+    mY(0),
     mHasMouse(false),
     mOpaque(true)
 {

@@ -43,7 +43,7 @@ extern Window *setupWindow;
 extern Window *skillDialog;
 extern Window *specialsWindow;
 extern Window *statusWindow;
-extern Window *guildWindow;
+extern Window *socialWindow;
 
 WindowMenu::WindowMenu():
     mEmotePopup(0)
@@ -57,7 +57,7 @@ WindowMenu::WindowMenu():
         N_("Inventory"),
         N_("Skills"),
         N_("Specials"),
-        N_("Guilds"),
+        N_("Social"),
         N_("Shortcut"),
         N_("Setup"),
         0
@@ -127,9 +127,9 @@ void WindowMenu::action(const gcn::ActionEvent &event)
     {
         window = specialsWindow;
     }
-    else if (event.getId() == "Guilds")
+    else if (event.getId() == "Social")
     {
-        window = guildWindow;
+        window = socialWindow;
     }
     else if (event.getId() == "Shortcut")
     {

@@ -54,23 +54,22 @@
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
 #include "gui/npcdialog.h"
+#include "gui/npcpostdialog.h"
 #include "gui/okdialog.h"
 #include "gui/outfitwindow.h"
+#include "gui/quitdialog.h"
 #include "gui/sdlinput.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
+#include "gui/socialwindow.h"
+#include "gui/specialswindow.h"
+#include "gui/storagewindow.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
 #include "gui/textdialog.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
 #include "gui/windowmenu.h"
-#include "gui/partywindow.h"
-#include "gui/guildwindow.h"
-#include "gui/npcpostdialog.h"
-#include "gui/quitdialog.h"
-#include "gui/specialswindow.h"
-#include "gui/storagewindow.h"
 
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/emoteshortcutcontainer.h"
@@ -118,8 +117,6 @@ SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
-PartyWindow *partyWindow;
-GuildWindow *guildWindow;
 NpcDialog *npcDialog;
 NpcPostDialog *npcPostDialog;
 StorageWindow *storageWindow;
@@ -132,6 +129,7 @@ ShortcutWindow *itemShortcutWindow;
 ShortcutWindow *emoteShortcutWindow;
 OutfitWindow *outfitWindow;
 SpecialsWindow *specialsWindow;
+SocialWindow *socialWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
@@ -218,8 +216,6 @@ static void createGuiWindows()
     buyDialog = new BuyDialog;
     sellDialog = new SellDialog;
     tradeWindow = new TradeWindow;
-    partyWindow = new PartyWindow;
-    guildWindow = new GuildWindow;
     buySellDialog = new BuySellDialog;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     npcDialog = new NpcDialog;
@@ -238,6 +234,7 @@ static void createGuiWindows()
                                              new EmoteShortcutContainer);
     outfitWindow = new OutfitWindow();
     specialsWindow = new SpecialsWindow();
+    socialWindow = new SocialWindow();
 
     localChatTab = new ChatTab(_("General"));
 
@@ -258,29 +255,28 @@ static void destroyGuiWindows()
 {
     Net::getGeneralHandler()->guiWindowsUnloaded();
     logger->setChatWindow(NULL);
-    del_0(localChatTab); // Need to do this first, so it can remove itself
-    del_0(chatWindow);
-    del_0(statusWindow);
-    del_0(miniStatusWindow);
-    del_0(buyDialog);
-    del_0(sellDialog);
-    del_0(buySellDialog);
-    del_0(inventoryWindow);
-    del_0(partyWindow);
-    del_0(npcDialog);
-    del_0(npcPostDialog);
-    del_0(guildWindow);
-    del_0(skillDialog);
-    del_0(minimap);
-    del_0(equipmentWindow);
-    del_0(tradeWindow);
-    del_0(helpWindow);
-    del_0(debugWindow);
-    del_0(itemShortcutWindow);
-    del_0(emoteShortcutWindow);
-    del_0(storageWindow);
-    del_0(outfitWindow);
-    del_0(specialsWindow);
+    del_0(localChatTab) // Need to do this first, so it can remove itself
+    del_0(chatWindow)
+    del_0(statusWindow)
+    del_0(miniStatusWindow)
+    del_0(buyDialog)
+    del_0(sellDialog)
+    del_0(buySellDialog)
+    del_0(inventoryWindow)
+    del_0(npcDialog)
+    del_0(npcPostDialog)
+    del_0(skillDialog)
+    del_0(minimap)
+    del_0(equipmentWindow)
+    del_0(tradeWindow)
+    del_0(helpWindow)
+    del_0(debugWindow)
+    del_0(itemShortcutWindow)
+    del_0(emoteShortcutWindow)
+    del_0(storageWindow)
+    del_0(outfitWindow)
+    del_0(specialsWindow)
+    del_0(socialWindow)
 }
 
 Game *Game::mInstance = 0;
@@ -795,7 +791,7 @@ void Game::handleInput()
                             equipmentWindow->setVisible(false);
                             helpWindow->setVisible(false);
                             debugWindow->setVisible(false);
-                            guildWindow->setVisible(false);
+                            socialWindow->setVisible(false);
                         }
                         break;
                     case KeyboardConfig::KEY_WINDOW_STATUS:
@@ -825,8 +821,8 @@ void Game::handleInput()
                     case KeyboardConfig::KEY_WINDOW_DEBUG:
                         requestedWindow = debugWindow;
                         break;
-                    case KeyboardConfig::KEY_WINDOW_PARTY:
-                        requestedWindow = partyWindow;
+                    case KeyboardConfig::KEY_WINDOW_SOCIAL:
+                        requestedWindow = socialWindow;
                         break;
                     case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
                         requestedWindow = emoteShortcutWindow;

@@ -25,8 +25,7 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/chat.h"
-#include "gui/partywindow.h"
+#include "gui/socialwindow.h"
 
 #include "net/messagein.h"
 #include "net/messageout.h"
@@ -38,11 +37,14 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+#define PARTY_ID 1
+
 extern Net::PartyHandler *partyHandler;
 
 namespace EAthena {
 
 PartyTab *partyTab = 0;
+Party *eaParty;
 
 PartyHandler::PartyHandler():
         mShareExp(PARTY_SHARE_UNKNOWN), mShareItems(PARTY_SHARE_UNKNOWN)
@@ -62,13 +64,16 @@ PartyHandler::PartyHandler():
     };
     handledMessages = _messages;
     partyHandler = this;
-
-    //newPartyTab();
+    eaParty = Party::getParty(1);
 }
 
 PartyHandler::~PartyHandler()
 {
-    //deletePartyTab();
+    if (partyTab)
+    {
+        delete partyTab;
+        partyTab = 0;
+    }
 }
 
 void PartyHandler::handleMessage(Net::MessageIn &msg)
@@ -77,24 +82,19 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
     {
         case SMSG_PARTY_CREATE:
             if (msg.readInt8())
-                partyTab->chatLog(_("Could not create party."), BY_SERVER);
+                localChatTab->chatLog(_("Could not create party."), BY_SERVER);
             else
             {
-                partyTab->chatLog(_("Party successfully created."), BY_SERVER);
-                player_node->setInParty(true);
-                partyWindow->setVisible(true);
+                localChatTab->chatLog(_("Party successfully created."),
+                                      BY_SERVER);
             }
             break;
         case SMSG_PARTY_INFO:
             {
-                if (!partyWindow)
-                    break;
-
-                partyWindow->clearMembers();
+                eaParty->clearMembers();
 
                 int length = msg.readInt16();
-                std::string party = msg.readString(24);
-                partyWindow->setPartyName(party);
+                eaParty->setName(msg.readString(24));
                 int count = (length - 28) / 46;
 
                 for (int i = 0; i < count; i++)
@@ -105,7 +105,10 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     bool leader = msg.readInt8() == 0;
                     bool online = msg.readInt8() == 0;
 
-                    partyWindow->updateMember(id, nick, leader, online);
+                    PartyMember *member = new PartyMember(PARTY_ID, id, nick);
+                    member->setLeader(leader);
+                    member->setOnline(online);
+                    eaParty->addMember(member);
                 }
             }
             break;
@@ -136,29 +139,30 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_PARTY_INVITED:
             {
                 int id = msg.readInt32();
-                Being *being = beingManager->findBeing(id);
-                if (!being)
+                std::string partyName = msg.readString(24);
+                std::string nick = "";
+                Being *being;
+
+                if (!(being = beingManager->findBeing(id)))
                 {
-                    break;
+                    if (being->getType() == Being::PLAYER)
+                    {
+                        nick = being->getName();
+                    }
                 }
-                std::string nick;
-                std::string partyName = "";
-                if (being->getType() != Being::PLAYER)
-                {
-                    nick = "";
-                }
-                else
-                {
-                    nick = being->getName();
-                    partyName = msg.readString(24);
-                }
-                partyWindow->showPartyInvite(nick, partyName);
+
+                socialWindow->showPartyInvite(partyName, nick);
                 break;
             }
         case SMSG_PARTY_SETTINGS:
             {
                 if (!partyTab)
-                    break;
+                {
+                    if (!chatWindow)
+                        break;
+
+                    partyTab = new PartyTab();
+                }
 
                 // These seem to indicate the sharing mode for exp and items
                 short exp = msg.readInt16();
@@ -199,7 +203,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     case PARTY_SHARE_NO:
                         if (mShareItems == PARTY_SHARE_NO)
                             break;
-                        mShareItems =PARTY_SHARE_NO;
+                        mShareItems = PARTY_SHARE_NO;
                         partyTab->chatLog(_("Item sharing disabled."), BY_SERVER);
                         break;
                     case PARTY_SHARE_NOT_POSSIBLE:
@@ -232,16 +236,22 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 msg.readInt8();     // fail
                 if (id == player_node->getId())
                 {
-                    partyWindow->clearMembers();
-                    partyWindow->clearPartyName();
-                    partyWindow->setVisible(false);
-                    partyTab->chatLog(_("You have left the party."), BY_SERVER);
+                    eaParty->clearMembers();
+                    player_node->setParty(NULL);
+                    localChatTab->chatLog(_("You have left the party."),
+                                          BY_SERVER);
+                    if (partyTab)
+                    {
+                        delete partyTab;
+                        partyTab = 0;
+                    }
+                    socialWindow->removeTab(eaParty);
                 }
                 else
                 {
                     partyTab->chatLog(strprintf(_("%s has left your party."),
                                     nick.c_str()), BY_SERVER);
-                    partyWindow->removeMember(id);
+                    eaParty->removeMember(id);
                 }
                 break;
             }
@@ -250,7 +260,12 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 int id = msg.readInt32();
                 int hp = msg.readInt16();
                 int maxhp = msg.readInt16();
-                partyWindow->updateMemberHP(id, hp, maxhp);
+                PartyMember *m = eaParty->getMember(id);
+                if (m)
+                {
+                    m->setHp(hp);
+                    m->setMaxHp(maxhp);
+                }
             }
             break;
         case SMSG_PARTY_UPDATE_COORDS:
@@ -270,9 +285,9 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 int id = msg.readInt32();
                 std::string chatMsg = msg.readString(msgLength);
 
-                PartyMember *member = partyWindow->findMember(id);
+                PartyMember *member = eaParty->getMember(id);
                 if (member)
-                    partyTab->chatLog(member->getAvatar()->getName(), chatMsg);
+                    partyTab->chatLog(member->getName(), chatMsg);
                 else
                     partyTab->chatLog(strprintf(_("An unknown member tried to "
                                     "say: %s"), chatMsg.c_str()), BY_SERVER);
@@ -309,7 +324,6 @@ void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
     MessageOut outMsg(CMSG_PARTY_INVITED);
     outMsg.writeInt32(player_node->getId());
     outMsg.writeInt32(accept ? 1 : 0);
-    player_node->setInParty(player_node->isInParty() || accept);
 }
 
 void PartyHandler::leave()
@@ -326,8 +340,8 @@ void PartyHandler::kick(Player *player)
 
 void PartyHandler::kick(const std::string &name)
 {
-    int id = partyWindow->findMember(name);
-    if (id == -1)
+    PartyMember *m = eaParty->getMember(name);
+    if (!m)
     {
         partyTab->chatLog(strprintf(_("%s is not in your party!"), name.c_str()),
                           BY_SERVER);
@@ -335,7 +349,7 @@ void PartyHandler::kick(const std::string &name)
     }
 
     MessageOut outMsg(CMSG_PARTY_KICK);
-    outMsg.writeInt32(id);
+    outMsg.writeInt32(m->getID());
     outMsg.writeString(name, 24); //Unused
 }
 

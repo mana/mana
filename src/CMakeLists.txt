@@ -101,8 +101,8 @@ MARK_AS_ADVANCED(SDL_INCLUDE_DIR)
 MARK_AS_ADVANCED(SDL_LIBRARY)
 
 SET(SRCS
-    gui/widgets/avatar.cpp
-    gui/widgets/avatar.h
+    gui/widgets/avatarlistbox.cpp
+    gui/widgets/avatarlistbox.h
     gui/widgets/browserbox.cpp
     gui/widgets/browserbox.h
     gui/widgets/button.cpp
@@ -123,8 +123,6 @@ SET(SRCS
     gui/widgets/emoteshortcutcontainer.h
     gui/widgets/flowcontainer.cpp
     gui/widgets/flowcontainer.h
-    gui/widgets/guildlistbox.cpp
-    gui/widgets/guildlistbox.h
     gui/widgets/icon.cpp
     gui/widgets/icon.h
     gui/widgets/inttextfield.cpp
@@ -220,8 +218,6 @@ SET(SRCS
     gui/focushandler.h
     gui/gui.cpp
     gui/gui.h
-    gui/guildwindow.cpp
-    gui/guildwindow.h
     gui/help.cpp
     gui/help.h
     gui/inventorywindow.cpp
@@ -246,8 +242,6 @@ SET(SRCS
     gui/outfitwindow.h
     gui/palette.cpp
     gui/palette.h
-    gui/partywindow.cpp
-    gui/partywindow.h
     gui/popupmenu.cpp
     gui/popupmenu.h
     gui/quitdialog.cpp
@@ -282,6 +276,8 @@ SET(SRCS
     gui/skilldialog.h
     gui/skin.cpp
     gui/skin.h
+    gui/socialwindow.cpp
+    gui/socialwindow.h
     gui/speechbubble.cpp
     gui/speechbubble.h
     gui/specialswindow.cpp
@@ -393,6 +389,8 @@ SET(SRCS
     animatedsprite.h
     animationparticle.cpp
     animationparticle.h
+    avatar.cpp
+    avatar.h
     being.cpp
     being.h
     beingmanager.cpp
@@ -456,6 +454,8 @@ SET(SRCS
     particleemitter.cpp
     particleemitter.h
     particleemitterprop.h
+    party.cpp
+    party.h
     player.cpp
     player.h
     playerrelations.cpp

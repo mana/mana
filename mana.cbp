@@ -97,6 +97,8 @@
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
 		<Unit filename="src\animationparticle.h" />
+		<Unit filename="src\avatar.cpp" />
+		<Unit filename="src\avatar.h" />
 		<Unit filename="src\being.cpp" />
 		<Unit filename="src\being.h" />
 		<Unit filename="src\beingmanager.cpp" />
@@ -153,8 +155,6 @@
 		<Unit filename="src\gui\focushandler.h" />
 		<Unit filename="src\gui\gui.cpp" />
 		<Unit filename="src\gui\gui.h" />
-		<Unit filename="src\gui\guildwindow.cpp" />
-		<Unit filename="src\gui\guildwindow.h" />
 		<Unit filename="src\gui\help.cpp" />
 		<Unit filename="src\gui\help.h" />
 		<Unit filename="src\gui\inventorywindow.cpp" />
@@ -179,8 +179,6 @@
 		<Unit filename="src\gui\outfitwindow.h" />
 		<Unit filename="src\gui\palette.cpp" />
 		<Unit filename="src\gui\palette.h" />
-		<Unit filename="src\gui\partywindow.cpp" />
-		<Unit filename="src\gui\partywindow.h" />
 		<Unit filename="src\gui\popupmenu.cpp" />
 		<Unit filename="src\gui\popupmenu.h" />
 		<Unit filename="src\gui\quitdialog.cpp" />
@@ -215,6 +213,8 @@
 		<Unit filename="src\gui\skilldialog.h" />
 		<Unit filename="src\gui\skin.cpp" />
 		<Unit filename="src\gui\skin.h" />
+		<Unit filename="src\gui\socialwindow.cpp" />
+		<Unit filename="src\gui\socialwindow.h" />
 		<Unit filename="src\gui\specialswindow.cpp" />
 		<Unit filename="src\gui\specialswindow.h" />
 		<Unit filename="src\gui\speechbubble.cpp" />
@@ -235,8 +235,8 @@
 		<Unit filename="src\gui\updatewindow.h" />
 		<Unit filename="src\gui\viewport.cpp" />
 		<Unit filename="src\gui\viewport.h" />
-		<Unit filename="src\gui\widgets\avatar.cpp" />
-		<Unit filename="src\gui\widgets\avatar.h" />
+		<Unit filename="src\gui\widgets\avatarlistbox.cpp" />
+		<Unit filename="src\gui\widgets\avatarlistbox.h" />
 		<Unit filename="src\gui\widgets\browserbox.cpp" />
 		<Unit filename="src\gui\widgets\browserbox.h" />
 		<Unit filename="src\gui\widgets\button.cpp" />
@@ -257,8 +257,6 @@
 		<Unit filename="src\gui\widgets\emoteshortcutcontainer.h" />
 		<Unit filename="src\gui\widgets\flowcontainer.cpp" />
 		<Unit filename="src\gui\widgets\flowcontainer.h" />
-		<Unit filename="src\gui\widgets\guildlistbox.cpp" />
-		<Unit filename="src\gui\widgets\guildlistbox.h" />
 		<Unit filename="src\gui\widgets\icon.cpp" />
 		<Unit filename="src\gui\widgets\icon.h" />
 		<Unit filename="src\gui\widgets\inttextfield.cpp" />
@@ -485,6 +483,8 @@
 		<Unit filename="src\particleemitter.cpp" />
 		<Unit filename="src\particleemitter.h" />
 		<Unit filename="src\particleemitterprop.h" />
+		<Unit filename="src\party.cpp" />
+		<Unit filename="src\party.h" />
 		<Unit filename="src\player.cpp" />
 		<Unit filename="src\player.h" />
 		<Unit filename="src\playerrelations.cpp" />

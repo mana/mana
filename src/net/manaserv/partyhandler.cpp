@@ -21,12 +21,12 @@
 
 #include "net/manaserv/partyhandler.h"
 
-#include "gui/partywindow.h"
-
-#include "gui/widgets/chattab.h"
-
 #include "log.h"
 #include "localplayer.h"
+
+#include "gui/socialwindow.h"
+
+#include "gui/widgets/chattab.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
@@ -38,13 +38,16 @@
 
 #include <iostream>
 
+#define PARTY_ID 1
+
 extern Net::PartyHandler *partyHandler;
 
 namespace ManaServ {
 
 extern Connection *chatServerConnection;
 
-PartyHandler::PartyHandler()
+PartyHandler::PartyHandler():
+        mParty(Party::getParty(PARTY_ID))
 {
     static const Uint16 _messages[] = {
         CPMSG_PARTY_INVITE_RESPONSE,
@@ -74,15 +77,14 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
         case CPMSG_PARTY_INVITED:
         {
-            std::string inviter = msg.readString();
-            partyWindow->showPartyInvite(inviter);
+            socialWindow->showPartyInvite(msg.readString());
         } break;
 
         case CPMSG_PARTY_ACCEPT_INVITE_RESPONSE:
         {
             if (msg.readInt8() == ERRMSG_OK)
             {
-                player_node->setInParty(true);
+                //
                 localChatTab->chatLog(_("Joined party."));
             }
         }
@@ -91,7 +93,8 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
         {
             if (msg.readInt8() == ERRMSG_OK)
             {
-                player_node->setInParty(false);
+                mParty->clearMembers();
+                player_node->setParty(NULL);
             }
         } break;
 
@@ -103,15 +106,16 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             localChatTab->chatLog(strprintf(_("%s joined the party."),
                                             name.c_str()));
 
-            if (!player_node->isInParty())
-                player_node->setInParty(true);
+            if (id == player_node->getId())
+                player_node->setParty(mParty);
 
-            partyWindow->updateMember(id, name);
+            PartyMember *member = new PartyMember(PARTY_ID, id, name);
+            mParty->addMember(member);
         } break;
 
         case CPMSG_PARTY_MEMBER_LEFT:
         {
-            partyWindow->removeMember(msg.readString());
+            mParty->removeMember(msg.readString());
         } break;
 
         case CPMSG_PARTY_REJECTED:

@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2008-2010  The Mana World Development Team
+ *  Copyright (C) 2008  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -22,6 +22,8 @@
 #ifndef GUI_GUILDLISTBOX_H
 #define GUI_GUILDLISTBOX_H
 
+#include "avatar.h"
+
 #include "gui/widgets/listbox.h"
 
 #include <map>
@@ -30,13 +32,21 @@
 
 class Image;
 
-class GuildListBox : public ListBox
+class AvatarListModel : public gcn::ListModel
 {
 public:
-    /**
-     * Constructor
-     */
-    GuildListBox();
+    virtual Avatar *getAvatarAt(int i) = 0;
+
+    std::string getElementAt(int i)
+    { return getAvatarAt(i)->getName(); }
+};
+
+class AvatarListBox : public ListBox
+{
+public:
+    AvatarListBox(AvatarListModel *model);
+
+    ~AvatarListBox();
 
     /**
      * Draws the list box.
@@ -45,21 +55,11 @@ public:
 
     void mousePressed(gcn::MouseEvent &event);
 
-    /**
-     * Sets the index of the selected element.
-     */
-//    void setSelected(int selected);
-
-    /**
-     * Set whether a member is online or offline
-     */
-    void setOnlineStatus(const std::string &user, bool online);
-
 private:
-    Image *onlineIcon;
-    Image *offlineIcon;
-    typedef std::map<std::string, bool> UserMap;
-    UserMap mUsers;
+    static int instances;
+    static Image *onlineIcon;
+    static Image *offlineIcon;
+
 };
 
 #endif

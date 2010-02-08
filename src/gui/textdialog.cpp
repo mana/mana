@@ -65,6 +65,7 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
         getParent()->moveToTop(this);
     }
     setVisible(true);
+    requestModalFocus();
     mTextField->requestFocus();
     
     instances++;
@@ -77,14 +78,10 @@ TextDialog::~TextDialog()
 
 void TextDialog::action(const gcn::ActionEvent &event)
 {
-    // Proxy button events to our listeners
-    ActionListenerIterator i;
-    for (i = mActionListeners.begin(); i != mActionListeners.end(); ++i)
-    {
-        (*i)->action(event);
-    }
+    setActionEventId(event.getId());
+    distributeActionEvent();
 
-    if (event.getId() == "CANCEL" || event.getId() == "OK")
+    if (event.getId() == "CANCEL" || event.getSource() == mOkButton)
     {
         scheduleDelete();
     }

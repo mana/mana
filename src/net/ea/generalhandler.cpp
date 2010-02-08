@@ -29,6 +29,7 @@
 #include "gui/inventorywindow.h"
 #include "gui/register.h"
 #include "gui/skilldialog.h"
+#include "gui/socialwindow.h"
 #include "gui/statuswindow.h"
 
 #include "net/ea/adminhandler.h"
@@ -66,6 +67,8 @@ namespace EAthena {
 
 ServerInfo charServer;
 ServerInfo mapServer;
+
+extern Party *eaParty;
 
 GeneralHandler::GeneralHandler():
     mAdminHandler(new AdminHandler),
@@ -202,7 +205,6 @@ void GeneralHandler::flushNetwork()
 
 void GeneralHandler::guiWindowsLoaded()
 {
-    partyTab = new PartyTab;
     inventoryWindow->setSplitAllowed(false);
     skillDialog->loadSkills("ea-skills.xml");
 
@@ -224,8 +226,12 @@ void GeneralHandler::guiWindowsLoaded()
 
 void GeneralHandler::guiWindowsUnloaded()
 {
-    delete partyTab;
-    partyTab = 0;
+    socialWindow->removeTab(eaParty);
+    if (partyTab)
+    {
+        delete partyTab;
+        partyTab = 0;
+    }
 }
 
 void GeneralHandler::clearHandlers()

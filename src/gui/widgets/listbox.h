@@ -65,7 +65,7 @@ class ListBox : public gcn::ListBox
 
         void mouseDragged(gcn::MouseEvent &event);
 
-    private:
+    protected:
         static float mAlpha;
 };
 

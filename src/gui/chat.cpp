@@ -24,11 +24,11 @@
 #include "beingmanager.h"
 #include "configuration.h"
 #include "localplayer.h"
+#include "party.h"
 
 #include "gui/recorder.h"
 #include "gui/setup.h"
 #include "gui/sdlinput.h"
-#include "gui/partywindow.h"
 
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/itemlinkhandler.h"
@@ -75,8 +75,7 @@ class ChatInput : public TextField, public gcn::FocusListener
 
 ChatWindow::ChatWindow():
     Window(_("Chat")),
-    mTmpVisible(false),
-    mCurrentTab(NULL)
+    mTmpVisible(false)
 {
     setWindowName("Chat");
 
@@ -126,15 +125,6 @@ void ChatWindow::resetToDefaultSize()
 {
     mRecorder->resetToDefaultSize();
     Window::resetToDefaultSize();
-}
-
-void ChatWindow::logic()
-{
-    Window::logic();
-
-    Tab *tab = getFocused();
-    if (tab != mCurrentTab)
-        mCurrentTab = tab;
 }
 
 ChatTab *ChatWindow::getFocused() const
@@ -338,7 +328,7 @@ void ChatWindow::mousePressed(gcn::MouseEvent &event)
     if (event.isConsumed())
         return;
 
-    mMoved = event.getY() <= mCurrentTab->getHeight();
+    mMoved = event.getY() <= getFocused()->getHeight();
     mDragOffsetX = event.getX();
     mDragOffsetY = event.getY();
 
@@ -533,7 +523,11 @@ void ChatWindow::autoComplete()
     std::vector<std::string> nameList;
     if (cTab && cTab->getType() == ChatTab::PARTY)
     {
-        partyWindow->getNames(nameList);
+        Party *p = player_node->getParty();
+
+        if (p) // Shouldn't be needed, but lets be safe
+            p->getNames(nameList);
+
         newName = autoComplete(nameList, name);
     }
     if (newName == "")

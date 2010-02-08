@@ -26,7 +26,6 @@
 #include "gui/changeemaildialog.h"
 #include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
-#include "gui/partywindow.h"
 #include "gui/register.h"
 #include "gui/skilldialog.h"
 #include "gui/specialswindow.h"
@@ -159,8 +158,7 @@ void GeneralHandler::flushNetwork()
 void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(true);
-    partyWindow->clearPartyName();
-    skillDialog->loadSkills("mana-skills.xml");
+    skillDialog->loadSkills("tmw-skills.xml");
     specialsWindow->loadSpecials("specials.xml");
 
     player_node->setExpNeeded(100);

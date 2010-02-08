@@ -178,6 +178,5 @@ void TabbedArea::widgetResized(const gcn::Event &event)
 
     gcn::Widget *w = getCurrentWidget();
     if (w)
-        w->setSize(width,
-                   height);
+        w->setSize(width, height);
 }

@@ -22,30 +22,22 @@
 #ifndef AVATAR_H
 #define AVATAR_H
 
-#include "guichanfwd.h"
-
-#include "gui/widgets/container.h"
-
 #include <string>
 
-class Image;
-class Icon;
-
-class Avatar : public Container
+class Avatar
 {
 public:
-    Avatar();
-    ~Avatar();
+    Avatar(const std::string &name = "");
 
     /**
      * Returns the avatar's name.
      */
-    std::string getName() const { return mName; };
+    std::string getName() const { return mName; }
 
     /**
      * Set the avatar's name.
      */
-    void setName(const std::string &name);
+    void setName(const std::string &name) { mName = name; }
 
     /**
      * Returns the avatar's online status.
@@ -55,28 +47,24 @@ public:
     /**
      * Set the avatar's online status.
      */
-    void setOnline(bool online);
+    void setOnline(bool online) { mOnline = online; }
 
     int getHp() const { return mHp; }
 
-    void setHp(int hp);
+    void setHp(int hp) { mHp = hp; }
 
     int getMaxHp() const { return mMaxHp; }
 
-    void setMaxHp(int maxHp);
+    void setMaxHp(int maxHp) { mMaxHp = maxHp; }
 
     bool getDisplayBold() const { return mDisplayBold; }
 
-    void setDisplayBold(bool displayBold) { mDisplayBold = displayBold; updateAvatarLabel(); }
+    void setDisplayBold(bool displayBold) { mDisplayBold = displayBold; }
 
 private:
-    void updateAvatarLabel();
-
     std::string mName;
     int mHp;
     int mMaxHp;
-    Icon *mStatus;
-    gcn::Label *mLabel;
     bool mOnline;
     bool mDisplayBold;
 };

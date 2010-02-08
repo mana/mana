@@ -1,10 +1,5 @@
-./build/CMakeCache.txt
-./build/CMakeFiles/CMakeRuleHashes.txt
-./build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp
-./build/CMakeFiles/TargetDirectories.txt
-./build/src/CMakeFiles/mana.dir/link.txt
-./build/src/CMakeFiles/mana-ea.dir/link.txt
 ./CMakeLists.txt
+./config.h
 ./data/branding.xml
 ./data/CMakeLists.txt
 ./data/fonts/CMakeLists.txt
@@ -46,6 +41,8 @@
 ./src/animatedsprite.h
 ./src/animationparticle.cpp
 ./src/animationparticle.h
+./src/avatar.cpp
+./src/avatar.h
 ./src/being.cpp
 ./src/being.h
 ./src/beingmanager.cpp
@@ -130,8 +127,6 @@
 ./src/gui/outfitwindow.h
 ./src/gui/palette.cpp
 ./src/gui/palette.h
-./src/gui/partywindow.cpp
-./src/gui/partywindow.h
 ./src/gui/popupmenu.cpp
 ./src/gui/popupmenu.h
 ./src/gui/quitdialog.cpp
@@ -166,6 +161,8 @@
 ./src/gui/skilldialog.h
 ./src/gui/skin.cpp
 ./src/gui/skin.h
+./src/gui/socialwindow.cpp
+./src/gui/socialwindow.h
 ./src/gui/specialswindow.cpp
 ./src/gui/specialswindow.h
 ./src/gui/speechbubble.cpp
@@ -186,8 +183,8 @@
 ./src/gui/updatewindow.h
 ./src/gui/viewport.cpp
 ./src/gui/viewport.h
-./src/gui/widgets/avatar.cpp
-./src/gui/widgets/avatar.h
+./src/gui/widgets/avatarlistbox.cpp
+./src/gui/widgets/avatarlistbox.h
 ./src/gui/widgets/browserbox.cpp
 ./src/gui/widgets/browserbox.h
 ./src/gui/widgets/button.cpp
@@ -432,6 +429,8 @@
 ./src/particleemitter.h
 ./src/particleemitterprop.h
 ./src/particle.h
+./src/party.cpp
+./src/party.h
 ./src/player.cpp
 ./src/player.h
 ./src/playerrelations.cpp

@@ -79,12 +79,8 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
 
 void ConfirmDialog::action(const gcn::ActionEvent &event)
 {
-    // Proxy button events to our listeners
-    ActionListenerIterator i;
-    for (i = mActionListeners.begin(); i != mActionListeners.end(); ++i)
-    {
-        (*i)->action(event);
-    }
+    setActionEventId(event.getId());
+    distributeActionEvent();
 
     // Can we receive anything else anyway?
     if (event.getId() == "yes" || event.getId() == "no")

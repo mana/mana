@@ -27,6 +27,8 @@
 
 #include "net/ea/messagehandler.h"
 
+#include "party.h"
+
 namespace EAthena {
 
 class PartyHandler : public MessageHandler, public Net::PartyHandler

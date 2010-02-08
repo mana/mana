@@ -21,17 +21,18 @@
 
 #include "net/manaserv/guildhandler.h"
 
-#include "gui/widgets/channeltab.h"
-#include "gui/chat.h"
-#include "gui/guildwindow.h"
-
 #include "guild.h"
 #include "log.h"
 #include "localplayer.h"
 #include "channel.h"
 #include "channelmanager.h"
 
+#include "gui/widgets/channeltab.h"
+#include "gui/chat.h"
+#include "gui/socialwindow.h"
+
 #include "net/messagein.h"
+#include "net/net.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
@@ -135,8 +136,6 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                         guild->addMember(member);
                     }
                 }
-
-                guildWindow->updateTab();
             }
         } break;
 
@@ -183,9 +182,6 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                         logger->log("Invalid guild event");
                 }
             }
-            guildWindow->updateTab();
-
-
         } break;
 
         case CPMSG_GUILD_INVITED:
@@ -196,7 +192,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
             int guildId = msg.readInt16();
 
             // Open a dialog asking if the player accepts joining the guild.
-            guildWindow->openAcceptDialog(inviterName, guildName, guildId);
+            socialWindow->showGuildInvite(guildName, guildId, inviterName);
         } break;
 
         case CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE:
@@ -236,7 +232,6 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 {
                     Channel *channel = channelManager->findByName(guild->getName());
                     channelManager->removeChannel(channel);
-                    guildWindow->removeTab(guildId);
                     player_node->removeGuild(guildId);
                 }
             }
@@ -252,11 +247,12 @@ void GuildHandler::joinedGuild(Net::MessageIn &msg)
     short channelId = msg.readInt16();
     std::string announcement = msg.readString();
 
-    // Add guild to player and create new guild tab
-    Guild *guild = player_node->addGuild(guildId, permissions);
+    // Add guild to player
+    Guild *guild = Guild::getGuild(guildId);
     guild->setName(guildName);
-    guildWindow->newGuildTab(guildName);
-    guildWindow->requestMemberList(guildId);
+    guild->setRights(permissions);
+    player_node->addGuild(guild);
+    Net::getGuildHandler()->memberList(guildId);
 
     // Automatically create the guild channel
     // COMMENT: Should this go here??

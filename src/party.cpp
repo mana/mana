@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,66 +19,78 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "guild.h"
+#include "party.h"
 
-GuildMember::GuildMember(int guildId, int id, const std::string &name):
-        Avatar(name), mId(id)
+#include "beingmanager.h"
+#include "player.h"
+
+PartyMember::PartyMember(int partyId, int id, const std::string &name):
+        Avatar(name), mId(id), mLeader(false)
 {
-    mGuild = Guild::getGuild(guildId);
+    mParty = Party::getParty(partyId);
+
+    Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
+    if (player)
+        player->setParty(mParty);
 }
 
-GuildMember::GuildMember(int guildId, int id):
-        mId(id)
+PartyMember::PartyMember(int PartyId, int id):
+        mId(id), mLeader(false)
 {
-    mGuild = Guild::getGuild(guildId);
+    mParty = Party::getParty(PartyId);
+
+    if (beingManager)
+    {
+        Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
+        if (player)
+            player->setParty(mParty);
+    }
 }
 
-GuildMember::GuildMember(int guildId, const std::string &name):
-        Avatar(name), mId(0)
-{
-    mGuild = Guild::getGuild(guildId);
-}
+Party::PartyMap Party::parties;
 
-Guild::GuildMap Guild::guilds;
-
-Guild::Guild(short id):
+Party::Party(short id):
     mId(id),
     mCanInviteUsers(false)
 {
-    guilds[id] = this;
+    parties[id] = this;
 }
 
-void Guild::addMember(GuildMember *member)
+void Party::addMember(PartyMember *member)
 {
-    if (member->mGuild > 0 && member->mGuild != this)
-        throw "Member in another guild!";
+    if (member->mParty > 0 && member->mParty != this)
+    {
+        throw "Member in another Party!";
+    }
 
     if (!isMember(member))
     {
         mMembers.push_back(member);
-        member->mGuild = this;
+        member->mParty = this;
     }
 }
 
-GuildMember *Guild::getMember(int id)
+PartyMember *Party::getMember(int id)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while (itr != itr_end)
+    while(itr != itr_end)
     {
-        if ((*itr)->mId == id)
+        if((*itr)->mId == id)
+        {
             return (*itr);
+        }
         ++itr;
     }
 
     return NULL;
 }
 
-GuildMember *Guild::getMember(std::string name)
+PartyMember *Party::getMember(std::string name)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while (itr != itr_end)
+    while(itr != itr_end)
     {
         if((*itr)->getName() == name)
         {
@@ -90,11 +102,11 @@ GuildMember *Guild::getMember(std::string name)
     return NULL;
 }
 
-void Guild::removeMember(GuildMember *member)
+void Party::removeMember(PartyMember *member)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while (itr != itr_end)
+    while(itr != itr_end)
     {
         if((*itr)->mId == member->mId &&
            (*itr)->getName() == member->getName())
@@ -105,23 +117,25 @@ void Guild::removeMember(GuildMember *member)
     }
 }
 
-void Guild::removeMember(int id)
+void Party::removeMember(int id)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while (itr != itr_end)
+    while(itr != itr_end)
     {
-        if ((*itr)->mId == id)
+        if((*itr)->mId == id)
+        {
             mMembers.erase(itr);
+        }
         ++itr;
     }
 }
 
-void Guild::removeMember(const std::string &name)
+void Party::removeMember(const std::string &name)
 {
     MemberList::iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while (itr != itr_end)
+    while(itr != itr_end)
     {
         if((*itr)->getName() == name)
         {
@@ -131,21 +145,23 @@ void Guild::removeMember(const std::string &name)
     }
 }
 
-Avatar *Guild::getAvatarAt(int index)
+Avatar *Party::getAvatarAt(int index)
 {
     return mMembers[index];
 }
 
-void Guild::setRights(short rights)
+void Party::setRights(short rights)
 {
     // to invite, rights must be greater than 0
     if (rights > 0)
+    {
         mCanInviteUsers = true;
+    }
 }
 
-bool Guild::isMember(GuildMember *member) const
+bool Party::isMember(PartyMember *member) const
 {
-    if (member->mGuild > 0 && member->mGuild != this)
+    if (member->mParty > 0 && member->mParty != this)
         return false;
 
     MemberList::const_iterator itr = mMembers.begin(),
@@ -163,21 +179,23 @@ bool Guild::isMember(GuildMember *member) const
     return false;
 }
 
-bool Guild::isMember(int id) const
+bool Party::isMember(int id) const
 {
     MemberList::const_iterator itr = mMembers.begin(),
                                      itr_end = mMembers.end();
     while (itr != itr_end)
     {
         if ((*itr)->mId == id)
+        {
             return true;
+        }
         ++itr;
     }
 
     return false;
 }
 
-bool Guild::isMember(const std::string &name) const
+bool Party::isMember(const std::string &name) const
 {
     MemberList::const_iterator itr = mMembers.begin(),
                                      itr_end = mMembers.end();
@@ -193,7 +211,7 @@ bool Guild::isMember(const std::string &name) const
     return false;
 }
 
-void Guild::getNames(std::vector<std::string> &names) const
+void Party::getNames(std::vector<std::string> &names) const
 {
     names.clear();
     MemberList::const_iterator it = mMembers.begin(),
@@ -205,11 +223,11 @@ void Guild::getNames(std::vector<std::string> &names) const
     }
 }
 
-Guild *Guild::getGuild(int id)
+Party *Party::getParty(int id)
 {
-    GuildMap::iterator it = guilds.find(id);
-    if (it != guilds.end())
+    PartyMap::iterator it = parties.find(id);
+    if (it != parties.end())
         return it->second;
 
-    return new Guild(id);
+    return new Party(id);
 }

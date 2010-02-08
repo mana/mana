@@ -25,8 +25,9 @@
 #include "being.h"
 
 class Graphics;
-class Map;
 class Guild;
+class Map;
+class Party;
 
 enum Gender
 {
@@ -86,7 +87,7 @@ class Player : public Being
         /**
          * Adds a guild to the player.
          */
-        Guild *addGuild(short guildId, short rights);
+        void addGuild(Guild *guild);
 
         /**
          * Removers a guild from the player.
@@ -106,16 +107,13 @@ class Player : public Being
         /**
          * Get number of guilds the player belongs to.
          */
-        short getNumberOfGuilds();
+        short getNumberOfGuilds() const { return mGuilds.size(); }
 
-        /**
-         * Set whether the player in the LocalPlayer's party. Players that are
-         * in the same party as the local player get their name displayed in
-         * a different color.
-         */
-        void setInParty(bool inParty);
+        bool isInParty() const { return mParty != NULL; }
 
-        bool isInParty() const { return mInParty; }
+        void setParty(Party *party);
+
+        Party *getParty() const { return mParty; }
 
         /**
          * Gets the way the character is blocked by other objects.
@@ -143,11 +141,9 @@ class Player : public Being
 
         // Character guild information
         std::map<int, Guild*> mGuilds;
+        Party *mParty;
 
         bool mIsGM;
-
-    private:
-        bool mInParty;
 };
 
 #endif

@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef GUILD_H
-#define GUILD_H
+#ifndef PARTY_H
+#define PARTY_H
 
 #include "avatar.h"
 
@@ -30,36 +30,41 @@
 #include <string>
 #include <vector>
 
-class Guild;
+class Party;
 
-class GuildMember : public Avatar
+class PartyMember : public Avatar
 {
 public:
-    GuildMember(int guildId, int id, const std::string &name);
+    PartyMember(int partyId, int id, const std::string &name);
 
-    GuildMember(int guildId, int id);
+    PartyMember(int partyId, int id);
 
-    GuildMember(int guildId, const std::string &name);
+    PartyMember(int partyId, const std::string &name);
 
     int getID() const { return mId; }
 
     void setID(int id) { mId = id; }
 
-    Guild *getGuild() const { return mGuild; }
+    Party *getParty() const { return mParty; }
+
+    bool getLeader() const { return mLeader; }
+
+    void setLeader(bool leader) { mLeader = leader; setDisplayBold(leader); }
 
 protected:
-    friend class Guild;
+    friend class Party;
 
     int mId;
-    Guild *mGuild;
+    Party *mParty;
+    bool mLeader;
 };
 
-class Guild : public AvatarListModel
+class Party : public AvatarListModel
 {
 public:
 
     /**
-     * Set the guild's name.
+     * Set the party's name.
      */
     void setName(const std::string &name)
     {
@@ -69,25 +74,25 @@ public:
     /**
      * Adds member to the list.
      */
-    void addMember(GuildMember *member);
+    void addMember(PartyMember *member);
 
     /**
      * Find a member by ID.
      *
      * @return the member with the given ID, or NULL if they don't exist.
      */
-    GuildMember *getMember(int id);
+    PartyMember *getMember(int id);
 
     /**
      * Find a member by name.
      *
      * @return the member with the given name, or NULL if they don't exist.
      */
-    GuildMember *getMember(std::string name);
+    PartyMember *getMember(std::string name);
 
     /**
-     * Get the name of the guild.
-     * @return returns name of the guild
+     * Get the name of the party.
+     * @return returns name of the party
      */
     const std::string &getName() const
     {
@@ -95,8 +100,8 @@ public:
     }
 
     /**
-     * Get the id of the guild.
-     * @return Returns the id of the guild
+     * Get the id of the party.
+     * @return Returns the id of the party
      */
     short getId() const
     {
@@ -104,17 +109,17 @@ public:
     }
 
     /**
-     * Removes a member from the guild.
+     * Removes a member from the party.
      */
-    void removeMember(GuildMember *member);
+    void removeMember(PartyMember *member);
 
     /**
-     * Removes a member from the guild.
+     * Removes a member from the party.
      */
     void removeMember(int id);
 
     /**
-     * Removes a member from the guild.
+     * Removes a member from the party.
      */
     void removeMember(const std::string &name);
 
@@ -122,7 +127,7 @@ public:
 
     /**
      * Get size of members list.
-     * @return Returns the number of members in the guild.
+     * @return Returns the number of members in the party.
      */
     int getNumberOfElements() {
         return mMembers.size();
@@ -131,7 +136,7 @@ public:
     Avatar *getAvatarAt(int i);
 
     /**
-     * Get whether user can invite users to this guild.
+     * Get whether user can invite users to this party.
      * @return Returns true if user can invite users
      */
     bool getInviteRights() const
@@ -141,7 +146,7 @@ public:
 
     void setRights(short rights);
 
-    bool isMember(GuildMember *member) const;
+    bool isMember(PartyMember *member) const;
 
     bool isMember(int id) const;
 
@@ -149,22 +154,22 @@ public:
 
     void getNames(std::vector<std::string> &names) const;
 
-    static Guild *getGuild(int id);
+    static Party *getParty(int id);
 
 private:
-    typedef std::map<int, Guild*> GuildMap;
-    static GuildMap guilds;
+    typedef std::map<int, Party*> PartyMap;
+    static PartyMap parties;
 
     /**
      * Constructor with guild id passed to it.
      */
-    Guild(short id);
+    Party(short id);
 
-    typedef std::vector<GuildMember*> MemberList;
+    typedef std::vector<PartyMember*> MemberList;
     MemberList mMembers;
     std::string mName;
     short mId;
     bool mCanInviteUsers;
 };
 
-#endif // GUILD_H
+#endif // PARTY_H

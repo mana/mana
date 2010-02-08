@@ -26,6 +26,8 @@
 
 #include "net/manaserv/messagehandler.h"
 
+#include "party.h"
+
 #include <string>
 
 namespace ManaServ {
@@ -64,6 +66,8 @@ public:
     PartyShare getShareItems() { return PARTY_SHARE_NO; }
 
     void setShareItems(PartyShare share) {}
+private:
+    Party *mParty;
 };
 
 } // namespace ManaServ

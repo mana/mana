@@ -25,10 +25,12 @@
 #include "guild.h"
 #include "localplayer.h"
 #include "particle.h"
+#include "party.h"
 #include "player.h"
 #include "text.h"
 
 #include "gui/palette.h"
+#include "gui/socialwindow.h"
 
 #include "net/charhandler.h"
 #include "net/net.h"
@@ -42,8 +44,8 @@
 Player::Player(int id, int job, Map *map, bool isNPC):
     Being(id, job, map),
     mGender(GENDER_UNSPECIFIED),
-    mIsGM(false),
-    mInParty(false)
+    mParty(NULL),
+    mIsGM(false)
 {
     if (!isNPC)
     {
@@ -213,16 +215,23 @@ void Player::setSpriteColor(unsigned int slot, const std::string &color)
     setSprite(slot, mSpriteIDs[slot], color);
 }
 
-Guild* Player::addGuild(short guildId, short rights)
+void Player::addGuild(Guild *guild)
 {
-    Guild *guild = Guild::getGuild(guildId);
-    guild->setRights(rights);
-    mGuilds.insert(std::pair<int, Guild*>(guildId, guild));
-    return guild;
+    mGuilds[guild->getId()] = guild;
+
+    if (this == player_node && socialWindow)
+    {
+        socialWindow->addTab(guild);
+    }
 }
 
 void Player::removeGuild(int id)
 {
+    if (this == player_node && socialWindow)
+    {
+        socialWindow->removeTab(mGuilds[id]);
+    }
+
     mGuilds.erase(id);
 }
 
@@ -253,16 +262,24 @@ Guild *Player::getGuild(int id) const
     return NULL;
 }
 
-short Player::getNumberOfGuilds()
+void Player::setParty(Party *party)
 {
-    return mGuilds.size();
-}
+    if (party == mParty)
+        return;
 
-void Player::setInParty(bool inParty)
-{
-    mInParty = inParty;
+    Party *old = mParty;
+    mParty = party;
 
     updateColors();
+
+    if (this == player_node && socialWindow)
+    {
+        if (old)
+            socialWindow->removeTab(old);
+
+        if (party)
+            socialWindow->addTab(party);
+    }
 }
 
 void Player::optionChanged(const std::string &value)
@@ -282,7 +299,7 @@ void Player::updateColors()
         mTextColor = &guiPalette->getColor(Palette::GM);
         mNameColor = &guiPalette->getColor(Palette::GM_NAME);
     }
-    else if (mInParty)
+    else if (mParty != NULL)
     {
         mNameColor = &guiPalette->getColor(Palette::PARTY);
     }

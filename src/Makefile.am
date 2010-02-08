@@ -6,8 +6,8 @@ mana_CXXFLAGS = -DPKG_DATADIR=\""$(pkgdatadir)/"\"      \
 		-DLOCALEDIR=\""$(localedir)"\"           \
 		-Wall
 
-mana_SOURCES = gui/widgets/avatar.cpp \
-	      gui/widgets/avatar.h \
+mana_SOURCES = gui/widgets/avatarlistbox.cpp \
+	      gui/widgets/avatarlistbox.h \
 	      gui/widgets/browserbox.cpp \
 	      gui/widgets/browserbox.h \
 	      gui/widgets/button.cpp \
@@ -28,8 +28,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      gui/widgets/emoteshortcutcontainer.h \
 	      gui/widgets/flowcontainer.cpp \
 	      gui/widgets/flowcontainer.h \
-	      gui/widgets/guildlistbox.cpp \
-	      gui/widgets/guildlistbox.h \
 	      gui/widgets/icon.cpp \
 	      gui/widgets/icon.h \
 	      gui/widgets/inttextfield.cpp \
@@ -125,8 +123,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      gui/focushandler.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
-	      gui/guildwindow.cpp \
-	      gui/guildwindow.h \
 	      gui/help.cpp \
 	      gui/help.h \
 	      gui/inventorywindow.cpp \
@@ -151,8 +147,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      gui/outfitwindow.h \
 	      gui/palette.cpp \
 	      gui/palette.h \
-	      gui/partywindow.cpp \
-	      gui/partywindow.h \
 	      gui/popupmenu.cpp \
 	      gui/popupmenu.h \
 	      gui/quitdialog.cpp \
@@ -187,6 +181,8 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      gui/skilldialog.h \
 	      gui/skin.cpp \
 	      gui/skin.h \
+	      gui/socialwindow.cpp \
+	      gui/socialwindow.h \
 	      gui/speechbubble.cpp \
 	      gui/speechbubble.h \
 	      gui/specialswindow.cpp \
@@ -298,6 +294,8 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      animatedsprite.h \
 	      animationparticle.cpp \
 	      animationparticle.h \
+	      avatar.cpp \
+	      avatar.h \
 	      being.cpp \
 	      being.h \
 	      beingmanager.cpp \
@@ -361,6 +359,8 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      particleemitter.cpp \
 	      particleemitter.h \
 	      particleemitterprop.h \
+	      party.cpp \
+	      party.h \
 	      player.cpp \
 	      player.h \
 	      playerrelations.cpp \

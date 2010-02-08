@@ -28,9 +28,8 @@
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
+#include "party.h"
 #include "playerrelations.h"
-
-#include "gui/partywindow.h"
 
 #include "net/ea/protocol.h"
 
@@ -515,11 +514,10 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             player = dynamic_cast<Player*>(dstBeing);
 
-            {
-                PartyMember *member = partyWindow->findMember(id);
-                if (member && member->getAvatar()->getOnline())
+            if (Party *party = player_node->getParty()){
+                if (party->isMember(id))
                 {
-                    player->setInParty(true);
+                    player->setParty(party);
                 }
             }
 

@@ -75,8 +75,6 @@ class ChatWindow : public Window,
          */
         ~ChatWindow();
 
-        void logic();
-
         /**
          * Reset the chat window and recorder window attached to it to their
          * default positions.
@@ -207,7 +205,6 @@ class ChatWindow : public Window,
 
         /** Tabbed area for holding each channel. */
         TabbedArea *mChatTabs;
-        Tab *mCurrentTab;
 
         typedef std::map<const std::string, ChatTab*> TabMap;
         /** Manage whisper tabs */

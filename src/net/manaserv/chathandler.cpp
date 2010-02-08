@@ -29,7 +29,6 @@
 #include "main.h"
 
 #include "gui/chat.h"
-#include "gui/guildwindow.h"
 
 #include "gui/widgets/channeltab.h"
 
