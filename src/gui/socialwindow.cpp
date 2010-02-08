@@ -252,9 +252,6 @@ public:
         else if (link == "party")
         {
             socialWindow->showPartyCreate();
-            // TODO
-
-            printf("Create party\n");
         }
 
         setVisible(false);
