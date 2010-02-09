@@ -86,22 +86,25 @@ void DebugWindow::logic()
     if (!isVisible())
         return;
 
-    // Get the current mouse position
-    int mouseTileX = (viewport->getMouseX() + viewport->getCameraX()) / 32;
-    int mouseTileY = (viewport->getMouseY() + viewport->getCameraY()) / 32;
-
     mFPSLabel->setCaption(strprintf(mFPSText.c_str(), fps));
-
-    mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"),
-                                          mouseTileX,
-                                          mouseTileY));
 
     if (const Map *map = Game::instance()->getCurrentMap())
     {
+          // Get the current mouse position
+        int mouseTileX = (viewport->getMouseX() + viewport->getCameraX())
+                        / map->getTileWidth();
+        int mouseTileY = (viewport->getMouseY() + viewport->getCameraY())
+                        / map->getTileHeight();
+        mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"),
+                        mouseTileX,
+                        mouseTileY));
         // TODO: Add gettext support below
-        mMusicFileLabel->setCaption("Music: " + map->getProperty("music"));
-        mMinimapLabel->setCaption("Minimap: " + map->getProperty("minimap"));
-        mMapLabel->setCaption("Map: " + map->getProperty("_filename"));
+        mMusicFileLabel->setCaption(strprintf(
+            _("Music: %s"), map->getProperty("music").c_str()));
+        mMinimapLabel->setCaption(
+            strprintf(_("Minimap: %s"), map->getProperty("minimap").c_str()));
+        mMapLabel->setCaption(
+            strprintf(_("Map: %s"), map->getProperty("_filename").c_str()));
     }
 
     mParticleCountLabel->setCaption(strprintf(_("Particle count: %d"),

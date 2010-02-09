@@ -85,7 +85,8 @@ class FloorItem : public Sprite
          *
          * @see Sprite::getPixelY()
          */
-        int getPixelY() const { return mY * 32 + 16; }
+        int getPixelY() const
+        { return mY * mMap->getTileHeight() + mMap->getTileHeight() / 2; }
 
         /**
          * Draws this floor item to the given graphics context.

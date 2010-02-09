@@ -144,6 +144,11 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void scrollBy(float x, float y) { mPixelViewX += x; mPixelViewY += y; }
 
+        /**
+         * Returns the current map object.
+         */
+        Map *getCurrentMap() const { return mMap; }
+
     private:
         /**
          * Finds a path from the player to the mouse, and draws it. This is for
