@@ -102,19 +102,22 @@ Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
         if (map)
         {
             speedInTicks.x = speedInTilesPerSeconds
-            * (float)map->getTileWidth()
-            / 1000 * (float)MILLISECONDS_IN_A_TICK;
+                * (float)map->getTileWidth()
+                / 1000 * (float)MILLISECONDS_IN_A_TICK;
             speedInTicks.y = speedInTilesPerSeconds
-            * (float)map->getTileHeight()
-            / 1000 * (float)MILLISECONDS_IN_A_TICK;
+                * (float)map->getTileHeight()
+                / 1000 * (float)MILLISECONDS_IN_A_TICK;
         }
     }
 
     if (!game || !map)
     {
-        speedInTicks.x = speedInTicks.y = speedInTilesPerSeconds
-        * (float)DEFAULT_TILE_SIDE_LENGTH
-        / 1000 * (float)MILLISECONDS_IN_A_TICK;
+        speedInTicks.x = speedInTilesPerSeconds
+            * (float)DEFAULT_TILE_WIDTH
+            / 1000 * (float)MILLISECONDS_IN_A_TICK;
+        speedInTicks.y = speedInTilesPerSeconds
+            * (float)DEFAULT_TILE_HEIGHT
+            / 1000 * (float)MILLISECONDS_IN_A_TICK;
     }
     // We don't use z for now.
     speedInTicks.z = 0;

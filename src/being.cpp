@@ -811,8 +811,11 @@ int Being::getOffset(char pos, char neg) const
     }
     else
     {
-        offset = (int)((get_elapsed_time(mWalkTime)
-        * DEFAULT_TILE_SIDE_LENGTH) / mWalkSpeed.x);
+        offset = (pos == LEFT && neg == RIGHT) ?
+        (int)((get_elapsed_time(mWalkTime)
+        * DEFAULT_TILE_WIDTH) / mWalkSpeed.x) :
+        (int)((get_elapsed_time(mWalkTime)
+        * DEFAULT_TILE_HEIGHT) / mWalkSpeed.y);
     }
 
     // We calculate the offset _from_ the _target_ location

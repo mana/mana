@@ -37,9 +37,6 @@
 #include <iostream>
 #include <zlib.h>
 
-const unsigned int DEFAULT_TILE_WIDTH = 32;
-const unsigned int DEFAULT_TILE_HEIGHT = 32;
-
 /**
  * Inflates either zlib or gzip deflated memory. The inflated memory is
  * expected to be freed by the caller.
