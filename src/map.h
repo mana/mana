@@ -43,10 +43,6 @@ typedef std::list<Sprite*> MapSprites;
 typedef MapSprites::iterator MapSprite;
 typedef std::vector<MapLayer*> Layers;
 
-/** Default fallback values for tiles width and height */
-extern const int DEFAULT_TILE_WIDTH; /**< Used for X coords */
-extern const int DEFAULT_TILE_HEIGHT; /**< Used for Y coords */
-
 /**
  * A meta tile stores additional information about a location on a tile map.
  * This is information that doesn't need to be repeated for each tile in each
@@ -259,13 +255,13 @@ class Map : public Properties
          * Returns the tile width of this map.
          */
         int getTileWidth() const
-        { return mTileWidth > 0 ? mTileWidth : DEFAULT_TILE_WIDTH; }
+        { return mTileWidth; }
 
         /**
          * Returns the tile height used by this map.
          */
         int getTileHeight() const
-        { return mTileHeight > 0 ? mTileHeight : DEFAULT_TILE_HEIGHT; }
+        { return mTileHeight; }
 
         const std::string &getMusicFile() const;
         const std::string &getName() const;

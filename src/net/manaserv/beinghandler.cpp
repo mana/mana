@@ -112,12 +112,9 @@ Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
 
     if (!game || !map)
     {
-        speedInTicks.x = speedInTilesPerSeconds
-            * (float)DEFAULT_TILE_WIDTH
-            / 1000 * (float)MILLISECONDS_IN_A_TICK;
-        speedInTicks.y = speedInTilesPerSeconds
-            * (float)DEFAULT_TILE_HEIGHT
-            / 1000 * (float)MILLISECONDS_IN_A_TICK;
+        speedInTicks.x = speedInTicks.y = 0;
+        logger->log("Manaserv::BeingHandler: Speed wasn't given back"
+        " because game/Map not initialized.");
     }
     // We don't use z for now.
     speedInTicks.z = 0;

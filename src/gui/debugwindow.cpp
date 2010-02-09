@@ -98,7 +98,7 @@ void DebugWindow::logic()
         mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"),
                         mouseTileX,
                         mouseTileY));
-        // TODO: Add gettext support below
+
         mMusicFileLabel->setCaption(strprintf(
             _("Music: %s"), map->getProperty("music").c_str()));
         mMinimapLabel->setCaption(

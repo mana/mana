@@ -31,6 +31,7 @@
 
 #include "utils/base64.h"
 #include "utils/stringutils.h"
+#include "utils/gettext.h"
 #include "utils/xml.h"
 
 #include <cassert>
@@ -117,19 +118,19 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
     {
         if (ret == Z_MEM_ERROR)
         {
-            logger->log("Error: Out of memory while decompressing map data!");
+            logger->log(_("Error: Out of memory while decompressing map data!"));
         }
         else if (ret == Z_VERSION_ERROR)
         {
-            logger->log("Error: Incompatible zlib version!");
+            logger->log(_("Error: Incompatible zlib version!"));
         }
         else if (ret == Z_DATA_ERROR)
         {
-            logger->log("Error: Incorrect zlib compressed data!");
+            logger->log(_("Error: Incorrect zlib compressed data!"));
         }
         else
         {
-            logger->log("Error: Unknown error while decompressing map data!");
+            logger->log(_("Error: Unknown error while decompressing map data!"));
         }
 
         free(out);
@@ -142,7 +143,7 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
 
 Map *MapReader::readMap(const std::string &filename)
 {
-    logger->log("Attempting to read map %s", filename.c_str());
+    logger->log(_("Attempting to read map %s"), filename.c_str());
     // Load the file through resource manager
     ResourceManager *resman = ResourceManager::getInstance();
     int fileSize;
@@ -151,7 +152,7 @@ Map *MapReader::readMap(const std::string &filename)
 
     if (buffer == NULL)
     {
-        logger->log("Map file not found (%s)", filename.c_str());
+        logger->log(_("Map file not found (%s)"), filename.c_str());
         return NULL;
     }
 
@@ -167,7 +168,7 @@ Map *MapReader::readMap(const std::string &filename)
 
         if (inflated == NULL)
         {
-            logger->log("Could not decompress map file (%s)",
+            logger->log(_("Could not decompress map file (%s)"),
                     filename.c_str());
             return NULL;
         }
@@ -212,8 +213,16 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
 
     const int w = XML::getProperty(node, "width", 0);
     const int h = XML::getProperty(node, "height", 0);
-    const int tilew = XML::getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
-    const int tileh = XML::getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
+    const int tilew = XML::getProperty(node, "tilewidth", -1);
+    const int tileh = XML::getProperty(node, "tileheight", -1);
+
+    if (tilew < 0 || tileh < 0)
+    {
+        logger->log(_("MapReader: Warning: "
+        "Unitialized tile width or height value for map: %s"), path.c_str());
+        return 0;
+    }
+
     Map *map = new Map(w, h, tilew, tileh);
 
     for_each_xml_child_node(childNode, node)

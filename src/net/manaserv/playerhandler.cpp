@@ -53,13 +53,13 @@ extern Window *buySellDialog;
 /** @see in game.cpp */
 extern const int MILLISECONDS_IN_A_TICK;
 
-/** @see in map.cpp */
-extern const int DEFAULT_TILE_WIDTH;
-
-/* Max. distance we are willing to scroll after a teleport;
+/**
+ * Max. distance we are willing to scroll after a teleport;
  * everything beyond will reset the port hard.
+ * 32 is the nominal tile width/height.
+ * @todo: Make this parameter read from config.
  */
-static const int MAP_TELEPORT_SCROLL_DISTANCE = 8 * DEFAULT_TILE_WIDTH;
+static const int MAP_TELEPORT_SCROLL_DISTANCE = 8 * 32;
 
 /**
  * Listener used for handling the overweigth message.
