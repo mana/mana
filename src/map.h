@@ -256,12 +256,14 @@ class Map : public Properties
         /**
          * Returns the tile width of this map.
          */
-        int getTileWidth() const { return mTileWidth; }
+        int getTileWidth() const
+        { return mTileWidth > 0 ? mTileWidth : DEFAULT_TILE_SIDE_LENGTH; }
 
         /**
          * Returns the tile height used by this map.
          */
-        int getTileHeight() const { return mTileHeight; }
+        int getTileHeight() const
+        { return mTileHeight > 0 ? mTileHeight : DEFAULT_TILE_SIDE_LENGTH; }
 
         const std::string &getMusicFile() const;
         const std::string &getName() const;

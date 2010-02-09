@@ -66,7 +66,7 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         int getJobLocation();
 
-        float getDefaultWalkSpeed();
+        Vector getDefaultWalkSpeed();
 };
 
 } // namespace EAthena

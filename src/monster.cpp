@@ -75,7 +75,7 @@ void Monster::logic()
 {
     if ((Net::getNetworkType() == ServerInfo::EATHENA) && (mAction != STAND))
     {
-        mFrame = (int) ((get_elapsed_time(mWalkTime) * 4) / getWalkSpeed());
+        mFrame = (int) ((get_elapsed_time(mWalkTime) * 4) / getWalkSpeed().x);
 
         if (mFrame >= 4 && mAction != DEAD)
             nextTile();

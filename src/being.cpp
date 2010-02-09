@@ -503,7 +503,7 @@ void Being::nextTile()
     mX = pos.x;
     mY = pos.y;
     setAction(WALK);
-    mWalkTime += (int)(mWalkSpeed / 10);
+    mWalkTime += (int)(mWalkSpeed.x / 10);
 }
 
 void Being::logic()
@@ -537,8 +537,8 @@ void Being::logic()
             // The deplacement of a point along a vector is calculated
             // using the Unit Vector (â) multiplied by the point speed.
             // â = a / ||a|| (||a|| is the a length.)
-            // Then, diff = (dir/||dir||)*speed, or (dir / ||dir|| / 1/speed).
-            Vector diff = (dir / (nominalLength / mWalkSpeed));
+            // Then, diff = (dir/||dir||) * speed.
+            Vector diff = dir.normalized() * mWalkSpeed;
 
             // Test if we don't miss the destination by a move too far:
             if (diff.length() > nominalLength)
@@ -799,7 +799,21 @@ int Being::getOffset(char pos, char neg) const
     if (mAction != WALK ||  !(mDirection & (pos | neg)))
         return 0;
 
-    int offset = (int)((get_elapsed_time(mWalkTime) * 32) / mWalkSpeed);
+    int offset;
+
+    if (mMap)
+    {
+        offset = (pos == LEFT && neg == RIGHT) ?
+        (int)((get_elapsed_time(mWalkTime)
+        * mMap->getTileWidth()) / mWalkSpeed.x) :
+        (int)((get_elapsed_time(mWalkTime)
+        * mMap->getTileHeight()) / mWalkSpeed.y);
+    }
+    else
+    {
+        offset = (int)((get_elapsed_time(mWalkTime)
+        * DEFAULT_TILE_SIDE_LENGTH) / mWalkSpeed.x);
+    }
 
     // We calculate the offset _from_ the _target_ location
     offset -= 32;

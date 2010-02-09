@@ -23,6 +23,8 @@
 #define NET_MANASERV_BEINGHANDLER_H
 
 #include "net/manaserv/messagehandler.h"
+#include "vector.h"
+#include "map.h"
 
 namespace ManaServ {
 
@@ -39,7 +41,7 @@ class BeingHandler : public MessageHandler
          * Used to optimize Being::logic() calls.
          * @see MILLISECONDS_IN_A_TICKS
          */
-        static float giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds);
+        static Vector giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds);
 
     private:
         void handleBeingAttackMessage(Net::MessageIn &msg);

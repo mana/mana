@@ -285,14 +285,14 @@ class Being : public Sprite, public ConfigListener
          * in pixels per second for eAthena,
          * in tiles per second for Manaserv.
          */
-        void setWalkSpeed(float speed) { mWalkSpeed = speed; }
+        void setWalkSpeed(Vector speed) { mWalkSpeed = speed; }
 
         /**
          * Gets the walk speed.
          * in pixels per second for eAthena,
          * in tiles per second for Manaserv (0.1 precision).
          */
-        float getWalkSpeed() const { return mWalkSpeed; }
+        Vector getWalkSpeed() const { return mWalkSpeed; }
 
         /**
          * Sets the attack speed.
@@ -644,12 +644,12 @@ class Being : public Sprite, public ConfigListener
         SpeechBubble *mSpeechBubble;
 
         /**
-         * Walk speed.
+         * Walk speed for x and y movement values.
          * In pixels per second for eAthena,
          * In pixels per ticks for Manaserv.
          * @see MILLISECONDS_IN_A_TICK
          */
-        float mWalkSpeed;
+        Vector mWalkSpeed;
 
         Vector mPos;
         Vector mDest;

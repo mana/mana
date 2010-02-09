@@ -86,7 +86,8 @@ void Player::logic()
                break;
 
             case WALK:
-                mFrame = (int) ((get_elapsed_time(mWalkTime) * 6) / getWalkSpeed());
+                mFrame = (int) ((get_elapsed_time(mWalkTime) * 6)
+                         / getWalkSpeed().x);
                 if (mFrame >= 6)
                     nextTile();
                 break;

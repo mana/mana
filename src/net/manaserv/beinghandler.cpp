@@ -91,10 +91,35 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-float BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
+Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
 {
-    return (speedInTilesPerSeconds * (float)DEFAULT_TILE_SIDE_LENGTH)
-    / 1000 * (float)MILLISECONDS_IN_A_TICK;
+    Vector speedInTicks;
+    Game *game = Game::instance();
+    Map *map = 0;
+    if (game)
+    {
+        map = game->getCurrentMap();
+        if (map)
+        {
+            speedInTicks.x = speedInTilesPerSeconds
+            * (float)map->getTileWidth()
+            / 1000 * (float)MILLISECONDS_IN_A_TICK;
+            speedInTicks.y = speedInTilesPerSeconds
+            * (float)map->getTileHeight()
+            / 1000 * (float)MILLISECONDS_IN_A_TICK;
+        }
+    }
+
+    if (!game || !map)
+    {
+        speedInTicks.x = speedInTicks.y = speedInTilesPerSeconds
+        * (float)DEFAULT_TILE_SIDE_LENGTH
+        / 1000 * (float)MILLISECONDS_IN_A_TICK;
+    }
+    // We don't use z for now.
+    speedInTicks.z = 0;
+
+    return speedInTicks;
 }
 
 static void handleLooks(Player *being, Net::MessageIn &msg)

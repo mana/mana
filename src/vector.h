@@ -71,6 +71,16 @@ class Vector
         }
 
         /**
+         * Scale vector operator.
+         */
+        Vector operator*(const Vector &v) const
+        {
+            return Vector(x * v.x,
+                          y * v.y,
+                          z * v.z);
+        }
+
+        /**
          * In-place scale vector operator.
          */
         Vector &operator*=(float c)
@@ -142,6 +152,22 @@ class Vector
             y -= v.y;
             z -= v.z;
             return *this;
+        }
+
+        /**
+         * In-place > test vector operator.
+         */
+        bool operator>(const Vector &v)
+        {
+            return (x > v.x || y > v.y || z > v.z);
+        }
+
+        /**
+         * In-place > test vector operator against a float.
+         */
+        bool operator>(float c)
+        {
+            return (x > c || y > c || z > c);
         }
 
         /**

@@ -432,7 +432,7 @@ int PlayerHandler::getJobLocation()
     return -1;
 }
 
-float PlayerHandler::getDefaultWalkSpeed()
+Vector PlayerHandler::getDefaultWalkSpeed()
 {
     // Return translation in pixels per ticks.
     return ManaServ::BeingHandler::giveSpeedInPixelsPerTicks(6.0f);

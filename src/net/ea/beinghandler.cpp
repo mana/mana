@@ -161,7 +161,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             // Prevent division by 0 when calculating frame
             if (speed == 0) { speed = 150; }
 
-            dstBeing->setWalkSpeed(speed);
+            dstBeing->setWalkSpeed(Vector(speed, speed, 0));
             dstBeing->setJob(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
@@ -521,7 +521,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 }
             }
 
-            dstBeing->setWalkSpeed(speed);
+            dstBeing->setWalkSpeed(Vector(speed, speed, 0));
             dstBeing->setJob(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
