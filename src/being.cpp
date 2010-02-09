@@ -532,13 +532,15 @@ void Being::logic()
         const float nominalLength = dir.length();
 
         // When we've not reached our destination, move to it.
-        if (nominalLength > 1.0f && mWalkSpeed > 0.0f)
+        if (nominalLength > 1.0f && !mWalkSpeed.isNull())
         {
             // The deplacement of a point along a vector is calculated
             // using the Unit Vector (â) multiplied by the point speed.
             // â = a / ||a|| (||a|| is the a length.)
             // Then, diff = (dir/||dir||) * speed.
-            Vector diff = dir.normalized() * mWalkSpeed;
+            const Vector normalizedDir = dir.normalized();
+            Vector diff(normalizedDir.x * mWalkSpeed.x,
+                        normalizedDir.y * mWalkSpeed.y);
 
             // Test if we don't miss the destination by a move too far:
             if (diff.length() > nominalLength)

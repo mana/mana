@@ -61,6 +61,15 @@ class Vector
         {}
 
         /**
+         * Returns true if all coordinates are set to 0, otherwise returns
+         * false.
+         */
+        bool isNull() const
+        {
+            return x == 0.0f && y == 0.0f && z == 0.0f;
+        }
+
+        /**
          * Scale vector operator.
          */
         Vector operator*(float c) const
@@ -68,16 +77,6 @@ class Vector
             return Vector(x * c,
                           y * c,
                           z * c);
-        }
-
-        /**
-         * Scale vector operator.
-         */
-        Vector operator*(const Vector &v) const
-        {
-            return Vector(x * v.x,
-                          y * v.y,
-                          z * v.z);
         }
 
         /**
@@ -152,22 +151,6 @@ class Vector
             y -= v.y;
             z -= v.z;
             return *this;
-        }
-
-        /**
-         * In-place > test vector operator.
-         */
-        bool operator>(const Vector &v)
-        {
-            return (x > v.x || y > v.y || z > v.z);
-        }
-
-        /**
-         * In-place > test vector operator against a float.
-         */
-        bool operator>(float c)
-        {
-            return (x > c || y > c || z > c);
         }
 
         /**

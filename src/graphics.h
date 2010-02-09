@@ -193,7 +193,7 @@ class Graphics : public gcn::SDLGraphics
          */
         virtual SDL_Surface *getScreenshot();
 
-        gcn::Font *getFont() { return mFont; }
+        gcn::Font *getFont() const { return mFont; }
 
     protected:
         SDL_Surface *mScreen;
