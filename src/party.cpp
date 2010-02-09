@@ -29,9 +29,14 @@ PartyMember::PartyMember(int partyId, int id, const std::string &name):
 {
     mParty = Party::getParty(partyId);
 
-    Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
-    if (player)
-        player->setParty(mParty);
+    if (beingManager)
+    {
+        Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
+        if (player)
+        {
+            player->setParty(mParty);
+        }
+    }
 }
 
 PartyMember::PartyMember(int PartyId, int id):
