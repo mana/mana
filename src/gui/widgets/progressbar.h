@@ -26,6 +26,7 @@
 
 #include <string>
 
+class Graphics;
 class ImageRect;
 
 /**
@@ -111,6 +112,13 @@ class ProgressBar : public gcn::Widget
          */
         void setSmoothColorChange(bool smoothColorChange)
         { mSmoothColorChange = smoothColorChange; }
+
+        /**
+         * Renders a progressbar with the given properties.
+         */
+        static void render(Graphics *graphics, const gcn::Rectangle &area,
+                           const gcn::Color &color, float progress,
+                           const std::string &text = "");
 
     private:
         float mProgress, mProgressToGo;

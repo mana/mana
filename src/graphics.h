@@ -173,6 +173,16 @@ class Graphics : public gcn::SDLGraphics
                 const ImageRect &imgRect);
 
         /**
+         * Draws a rectangle using images. 4 corner images, 4 side images and 1
+         * image for the inside.
+         */
+        inline void drawImageRect(const gcn::Rectangle &area,
+                const ImageRect &imgRect)
+        {
+            drawImageRect(area.x, area.y, area.width, area.height, imgRect);
+        }
+
+        /**
          * Updates the screen. This is done by either copying the buffer to the
          * screen or swapping pages.
          */

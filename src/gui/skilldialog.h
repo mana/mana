@@ -30,6 +30,7 @@
 
 #include <map>
 
+class Button;
 class Label;
 class ScrollArea;
 class Tab;
@@ -73,6 +74,7 @@ class SkillDialog : public Window, public gcn::ActionListener
         SkillMap mSkills;
         TabbedArea *mTabs;
         Label *mPointsLabel;
+        Button *mIncreaseButton;
 };
 
 extern SkillDialog *skillDialog;

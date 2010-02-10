@@ -141,31 +141,14 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 {
     updateAlpha();
 
-    static_cast<Graphics*>(graphics)->
-        drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
-
     mColor.a = (int) (mAlpha * 255);
 
-    // The bar
-    if (mProgress > 0)
-    {
-        graphics->setColor(mColor);
-        graphics->fillRectangle(gcn::Rectangle(4, 4,
-                               (int) (mProgress * (getWidth() - 8)),
-                                getHeight() - 8));
-    }
+    gcn::Rectangle rect = getDimension();
+    rect.x = 0;
+    rect.y = 0;
 
-    // The label
-    if (!mText.empty())
-    {
-        const int textX = getWidth() / 2;
-        const int textY = (getHeight() - boldFont->getHeight()) / 2;
-
-        TextRenderer::renderText(graphics, mText, textX, textY,
-                                 gcn::Graphics::CENTER,
-                                 guiPalette->getColor(Palette::PROGRESS_BAR),
-                                 gui->getFont(), true, false);
-    }
+    render(static_cast<Graphics*>(graphics), rect, mColor,
+           mProgress, mText);
 }
 
 void ProgressBar::setProgress(float progress)
@@ -183,4 +166,38 @@ void ProgressBar::setColor(const gcn::Color &color)
 
     if (!mSmoothColorChange)
         mColor = color;
+}
+
+void ProgressBar::render(Graphics *graphics, const gcn::Rectangle &area,
+                         const gcn::Color &color, float progress,
+                         const std::string &text)
+{
+    gcn::Font *oldFont = graphics->getFont();
+    gcn::Color oldColor = graphics->getColor();
+
+    graphics->drawImageRect(area, mBorder);
+
+    // The bar
+    if (progress > 0)
+    {
+        graphics->setColor(color);
+        graphics->fillRectangle(gcn::Rectangle(area.x + 4, area.y + 4,
+                               (int) (progress * (area.width - 8)),
+                                area.height - 8));
+    }
+
+    // The label
+    if (!text.empty())
+    {
+        const int textX = area.x + area.width / 2;
+        const int textY = area.y + (area.height - boldFont->getHeight()) / 2;
+
+        TextRenderer::renderText(graphics, text, textX, textY,
+                                 gcn::Graphics::CENTER,
+                                 guiPalette->getColor(Palette::PROGRESS_BAR),
+                                 gui->getFont(), true, false);
+    }
+
+    graphics->setFont(oldFont);
+    graphics->setColor(oldColor);
 }

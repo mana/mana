@@ -28,7 +28,6 @@
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
-#include "gui/widgets/icon.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
 #include "gui/widgets/listbox.h"
@@ -36,50 +35,151 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tab.h"
 #include "gui/widgets/tabbedarea.h"
-#include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
+#include <guichan/font.hpp>
+
+#include <set>
 #include <string>
 
+class SkillModel;
 class SkillEntry;
 
 struct SkillInfo
 {
     unsigned short id;
     std::string name;
-    std::string icon;
+    Image *icon;
     bool modifiable;
-    SkillEntry *display;
+    bool visible;
+    SkillModel *model;
+
+    std::string skillLevel;
+    int skillLevelWidth;
+
+    std::string skillExp;
+    float progress;
+
+    ~SkillInfo()
+    {
+        icon->decRef();
+    }
+
+    void setIcon(std::string iconPath)
+    {
+        ResourceManager *res = ResourceManager::getInstance();
+        if (!iconPath.empty())
+        {
+            icon = res->getImage(iconPath);
+        }
+        else
+        {
+            icon = res->getImage("graphics/gui/unknown-item.png");
+        }
+
+        icon->incRef();
+    }
+
+    void update();
+
+    void draw(Graphics *graphics, int y, int width);
 };
 
-class SkillEntry : public Container, gcn::WidgetListener
+typedef std::vector<SkillInfo*> SkillList;
+
+class SkillModel : public gcn::ListModel
 {
-    public:
-        SkillEntry(SkillInfo *info);
+public:
+    int getNumberOfElements() { return mVisibleSkills.size(); }
+    SkillInfo *getSkillAt(int i) { return mVisibleSkills.at(i); }
+    std::string getElementAt(int i) { return getSkillAt(i)->name; }
+    void updateVisibilities();
+    void addSkill(SkillInfo *info) { mSkills.push_back(info); }
 
-        void widgetResized(const gcn::Event &event);
+private:
+    SkillList mSkills;
+    SkillList mVisibleSkills;
+};
 
-        void update();
+class SkillListBox : public ListBox
+{
+public:
+    SkillListBox(SkillModel *model):
+            ListBox(model)
+    {}
 
-    protected:
-        friend class SkillDialog;
-        SkillInfo *mInfo;
+    SkillInfo *getSelectedInfo()
+    {
+        return static_cast<SkillModel*>(mListModel)->getSkillAt(getSelected());
+    }
 
-    private:
-        Icon *mIcon;
-        Label *mNameLabel;
-        Label *mLevelLabel;
-        Label *mExpLabel;
-        Button *mIncrease;
-        ProgressBar *mProgress;
+    void draw(gcn::Graphics *gcnGraphics)
+    {
+        SkillModel* model = dynamic_cast<SkillModel*>(mListModel);
+
+        if (!model)
+            return;
+
+        updateAlpha();
+
+        Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
+
+        graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
+                (int)(mAlpha * 255.0f)));
+        graphics->setFont(getFont());
+
+        // Draw filled rectangle around the selected list element
+        if (mSelected >= 0)
+        {
+            graphics->fillRectangle(gcn::Rectangle(0, getRowHeight() * mSelected,
+                                                   getWidth(), getRowHeight()));
+        }
+
+        // Draw the list elements
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
+        for (int i = 0, y = 1;
+             i < model->getNumberOfElements();
+             ++i, y += getRowHeight())
+        {
+            SkillInfo *e = model->getSkillAt(i);
+
+            if (e)
+            {
+                e->draw(graphics, y, getWidth());
+            }
+        }
+    }
+
+    unsigned int getRowHeight() const { return 34; }
+};
+
+class SkillTab : public Tab
+{
+public:
+    SkillTab(const std::string &name, SkillListBox *listBox):
+            mListBox(listBox)
+    {
+        setCaption(name);
+    }
+
+    SkillInfo *getSelectedInfo()
+    {
+        return mListBox->getSelectedInfo();
+    }
+
+private:
+    SkillListBox *mListBox;
 };
 
 SkillDialog::SkillDialog():
@@ -94,9 +194,11 @@ SkillDialog::SkillDialog():
 
     mTabs = new TabbedArea();
     mPointsLabel = new Label("0");
+    mIncreaseButton = new Button(_("Up"), "inc", this);
 
     place(0, 0, mTabs, 5, 5);
-    place(0, 5, mPointsLabel, 2);
+    place(0, 5, mPointsLabel, 4);
+    place(4, 5, mIncreaseButton);
 
     setLocationRelativeTo(getParent());
     loadWindowState();
@@ -112,14 +214,22 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "inc")
     {
-        SkillEntry *disp = dynamic_cast<SkillEntry*>(event.getSource()->getParent());
+        SkillTab *tab = dynamic_cast<SkillTab*>(mTabs->getSelectedTab());
 
-        if (disp)
-            Net::getPlayerHandler()->increaseSkill(disp->mInfo->id);
+        if (tab)
+        {
+            SkillInfo *info = tab->getSelectedInfo();
+
+            Net::getPlayerHandler()->increaseSkill(info->id);
+        }
     }
     else if (event.getId() == "close")
     {
         setVisible(false);
+    }
+    else
+    {
+        printf("Unknown event '%s'\n", event.getId().c_str());
     }
 }
 
@@ -130,7 +240,7 @@ std::string SkillDialog::update(int id)
     if (i != mSkills.end())
     {
         SkillInfo *info = i->second;
-        info->display->update();
+        info->update();
         return info->name;
     }
 
@@ -146,22 +256,25 @@ void SkillDialog::update()
     for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end(); it++)
     {
         if ((*it).second->modifiable)
-            (*it).second->display->update();
+            (*it).second->update();
     }
 }
 
 void SkillDialog::loadSkills(const std::string &file)
 {
-    // TODO: mTabs->clear();
-    while (mTabs->getSelectedTabIndex() != -1)
+    // Fixes issues with removing tabs
+    if (mTabs->getSelectedTabIndex() != -1)
     {
-        mTabs->removeTabWithIndex(mTabs->getSelectedTabIndex());
+        mTabs->setSelectedTab((unsigned int) 0);
+
+        while (mTabs->getSelectedTabIndex() != -1)
+        {
+            gcn::Tab *tab = mTabs->getSelectedTab();
+            mTabs->removeTabWithIndex(mTabs->getSelectedTabIndex());
+            delete tab;
+        }
     }
 
-    for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end();  it++)
-    {
-        delete (*it).second->display;
-    }
     delete_all(mSkills);
     mSkills.clear();
 
@@ -180,7 +293,8 @@ void SkillDialog::loadSkills(const std::string &file)
     int setCount = 0;
     std::string setName;
     ScrollArea *scroll;
-    VertContainer *container;
+    SkillListBox *listbox;
+    SkillTab *tab;
 
     for_each_xml_child_node(set, root)
     {
@@ -189,14 +303,8 @@ void SkillDialog::loadSkills(const std::string &file)
             setCount++;
             setName = XML::getProperty(set, "name", strprintf(_("Skill Set %d"), setCount));
 
-            container = new VertContainer(32);
-            container->setOpaque(false);
-            scroll = new ScrollArea(container);
-            scroll->setOpaque(false);
-            scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
-            scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
+            SkillModel *model = new SkillModel();
 
-            mTabs->addTab(setName, scroll);
             for_each_xml_child_node(node, set)
             {
                 if (xmlStrEqual(node->name, BAD_CAST "skill"))
@@ -208,15 +316,29 @@ void SkillDialog::loadSkills(const std::string &file)
                     SkillInfo *skill = new SkillInfo;
                     skill->id = id;
                     skill->name = name;
-                    skill->icon = icon;
-                    skill->modifiable = 0;
-                    skill->display = new SkillEntry(skill);
+                    skill->setIcon(icon);
+                    skill->modifiable = false;
+                    skill->visible = false;
+                    skill->model = model;
+                    skill->update();
 
-                    container->add(skill->display);
+                    model->addSkill(skill);
 
                     mSkills[id] = skill;
                 }
             }
+
+            model->updateVisibilities();
+
+            listbox = new SkillListBox(model);
+            scroll = new ScrollArea(listbox);
+            scroll->setOpaque(false);
+            scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
+            scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
+
+            tab = new SkillTab(setName, listbox);
+
+            mTabs->addTab(tab, scroll);
         }
     }
     update();
@@ -224,133 +346,103 @@ void SkillDialog::loadSkills(const std::string &file)
 
 void SkillDialog::setModifiable(int id, bool modifiable)
 {
-    SkillMap::iterator i = mSkills.find(id);
+    SkillMap::iterator it = mSkills.find(id);
 
-    if (i != mSkills.end())
+    if (it != mSkills.end())
     {
-        SkillInfo *info = i->second;
+        SkillInfo *info = it->second;
         info->modifiable = modifiable;
-        info->display->update();
+        info->update();
     }
 }
 
-SkillEntry::SkillEntry(SkillInfo *info) :
-    mInfo(info),
-    mIcon(NULL),
-    mNameLabel(new Label(info->name)),
-    mLevelLabel(new Label("999")),
-    mIncrease(new Button(_("+"), "inc", skillDialog)),
-    mProgress(new ProgressBar(0.0f, 200, 20, gcn::Color(150, 150, 150)))
+void SkillModel::updateVisibilities()
 {
-    setFrameSize(1);
-    setOpaque(false);
+    mVisibleSkills.clear();
 
-    addWidgetListener(this);
-
-    if (!info->icon.empty())
-        mIcon = new Icon(info->icon);
-    else
-        mIcon = new Icon("graphics/gui/unknown-item.png");
-
-    mIcon->setPosition(1, 0);
-    add(mIcon);
-
-    mNameLabel->setPosition(35, 0);
-    add(mNameLabel);
-
-    mLevelLabel->setPosition(165, 0);
-    add(mLevelLabel);
-
-    mProgress->setPosition(35, 13);
-    add(mProgress);
-
-    mIncrease->setPosition(getWidth() - mIncrease->getWidth(), 13);
-    add(mIncrease);
-
-    update();
+    for (SkillList::iterator it = mSkills.begin(); it != mSkills.end(); it++)
+    {
+        if ((*it)->visible)
+        {
+            mVisibleSkills.push_back((*it));
+        }
+    }
 }
 
-void SkillEntry::widgetResized(const gcn::Event &event)
+void SkillInfo::update()
 {
-    gcn::Rectangle size = getChildrenArea();
+    int baseLevel = player_node->getAttributeBase(id);
+    int effLevel = player_node->getAttributeEffective(id);
 
-    if (mProgress->isVisible() && mIncrease->isVisible())
-    {
-        mLevelLabel->setPosition(size.width - mLevelLabel->getWidth()
-                                 - mIncrease->getWidth() - 4, 0);
-        mProgress->setWidth(size.width - mIncrease->getWidth() - 39);
-        mIncrease->setPosition(getWidth() - mIncrease->getWidth() - 2, 6);
-    }
-    else if (mProgress->isVisible())
-    {
-        mLevelLabel->setPosition(size.width - mLevelLabel->getWidth(), 0);
-        mProgress->setWidth(size.width - 39);
-    }
-    else if (mIncrease->isVisible())
-    {
-        mLevelLabel->setPosition(size.width - mLevelLabel->getWidth()
-                                 - mIncrease->getWidth() - 4, 0);
-        mIncrease->setPosition(getWidth() - mIncrease->getWidth() - 2, 6);
-    }
-    else
-        mLevelLabel->setPosition(size.width - mLevelLabel->getWidth(), 0);
-}
+    std::pair<int, int> exp = player_node->getExperience(id);
 
-void SkillEntry::update()
-{
-    int baseLevel = player_node->getAttributeBase(mInfo->id);
-    int effLevel = player_node->getAttributeEffective(mInfo->id);
-
-    if (baseLevel <= 0 && !mInfo->modifiable)
+    if (!modifiable && baseLevel == 0 && effLevel == 0 && exp.second == 0)
     {
-        setVisible(false);
+        if (visible)
+        {
+            visible = false;
+            model->updateVisibilities();
+        }
+
         return;
     }
 
-    setVisible(true);
-
-    std::string skillLevel;
+    bool updateVisibility = !visible;
+    visible = true;
 
     if (effLevel != baseLevel)
     {
-        skillLevel = strprintf(_("Lvl: %d (%+d)"),
-                               baseLevel, baseLevel - effLevel);
+        skillLevel = strprintf(_("Lvl: %d (%+d)"), baseLevel,
+                               effLevel - baseLevel);
     }
     else
     {
-        skillLevel = strprintf(_("Lvl: %d"), baseLevel);
+        if (baseLevel == 0)
+        {
+            skillLevel.clear();
+        }
+        else
+        {
+            skillLevel = strprintf(_("Lvl: %d"), baseLevel);
+        }
     }
-
-    mLevelLabel->setCaption(skillLevel);
-
-    std::pair<int, int> exp = player_node->getExperience(mInfo->id);
-    std::string sExp (toString(exp.first) + " / " + toString(exp.second));
-
-    mLevelLabel->adjustSize();
+    skillLevelWidth = -1;
 
     if (exp.second)
     {
-        mProgress->setVisible(true);
-        mProgress->setText(sExp);
-
-        // More intense red as exp grows
-        int color = 150 - (int)(150 * ((float) exp.first / exp.second));
-        mProgress->setColor(244, color, color);
-        mProgress->setProgress((float) exp.first / exp.second);
-    }
-    else
-        mProgress->setVisible(false);
-
-    if (mInfo->modifiable)
-    {
-        mIncrease->setVisible(true);
-        mIncrease->setEnabled(player_node->getSkillPoints());
+        skillExp = strprintf("%d / %d", exp.first, exp.second);
+        progress = (float) exp.first / exp.second;
     }
     else
     {
-        mIncrease->setVisible(false);
-        mIncrease->setEnabled(false);
+        skillExp.clear();
+        progress = 0.0f;
     }
 
-    widgetResized(NULL);
+    if (updateVisibility)
+    {
+        model->updateVisibilities();
+    }
+}
+
+void SkillInfo::draw(Graphics *graphics, int y, int width)
+{
+    graphics->drawImage(icon, 1, y);
+    graphics->drawText(name, 34, y);
+
+    if (skillLevelWidth < 0)
+    {
+        // Add one for padding
+        skillLevelWidth = graphics->getFont()->getWidth(skillLevel) + 1;
+    }
+
+    graphics->drawText(skillLevel, width - skillLevelWidth, y);
+
+    if (!skillExp.empty())
+    {
+        gcn::Rectangle rect(33, y + 15, width - 33, 17);
+
+        ProgressBar::render(graphics, rect, gcn::Color(143, 192, 211),
+                            progress, skillExp);
+    }
 }
