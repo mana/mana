@@ -87,8 +87,6 @@ struct SkillInfo
         {
             icon = res->getImage("graphics/gui/unknown-item.png");
         }
-
-        icon->incRef();
     }
 
     void update();
