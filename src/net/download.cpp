@@ -203,6 +203,7 @@ int Download::downloadThread(void *ptr)
         {
             logger->log("Downloading: %s", d->mUrl.c_str());
 
+            curl_easy_setopt(d->mCurl, CURLOPT_FOLLOWLOCATION, 1);
             curl_easy_setopt(d->mCurl, CURLOPT_HTTPHEADER, d->mHeaders);
 
             if (d->mOptions.memoryWrite)
