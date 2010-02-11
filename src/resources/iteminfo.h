@@ -180,6 +180,11 @@ class ItemInfo
 
         void setWeaponType(int);
 
+        // Handlers for seting and getting the string used for particles when attacking
+        void setMissileParticle(std::string s) { mMissileParticle = s; }
+
+        std::string getMissileParticle() const { return mMissileParticle; }
+
         SpriteAction getAttackType() const
         { return mAttackType; }
 
@@ -207,6 +212,9 @@ class ItemInfo
         // Equipment related members
         SpriteAction mAttackType;    /**< Attack type, in case of weapon. */
         int mAttackRange;            /**< Attack range, will be zero if non weapon. */
+
+        // Particle to be shown when weapon attacks
+        std::string mMissileParticle;
 
         /** Maps gender to sprite filenames. */
         std::map<int, std::string> mAnimationFiles;

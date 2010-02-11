@@ -35,7 +35,8 @@
 #include "resources/monsterinfo.h"
 
 Monster::Monster(int id, int job, Map *map):
-    Being(id, job, map)
+    Being(id, job, map),
+    mAttackType(1)
 {
     const MonsterInfo& info = getInfo();
 
@@ -100,6 +101,7 @@ void Monster::setAction(Action action, int attackType)
             sound.playSfx(getInfo().getSound(MONSTER_EVENT_DIE));
             break;
         case ATTACK:
+            mAttackType = attackType;
             currentAction = getInfo().getAttackAction(attackType);
             for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
                 (*it)->reset();
@@ -148,6 +150,8 @@ void Monster::handleAttack(Being *victim, int damage, AttackType type)
     const MonsterInfo &mi = getInfo();
     sound.playSfx(mi.getSound((damage > 0) ?
                 MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
+
+    fireMissile(victim, mi.getAttackMissileParticle(mAttackType));
 }
 
 void Monster::takeDamage(Being *attacker, int amount, AttackType type)

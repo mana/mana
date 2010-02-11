@@ -327,21 +327,9 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
         setAction(Being::ATTACK, 1);
     if (getType() == PLAYER && victim)
     {
-        if (mEquippedWeapon && mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
+        if (mEquippedWeapon)
         {
-            Particle *p = new Particle(NULL);
-            p->setLifetime(1000);
-            p->moveBy(Vector(0.0f, 0.0f, 32.0f));
-            victim->controlParticle(p);
-
-            Particle *p2 = particleEngine->addEffect("graphics/particles/arrow.particle.xml",
-                                                     getPixelX(), getPixelY());
-            if (p2)
-            {
-                p2->setLifetime(900);
-                p2->setDestination(p, 7, 0);
-                p2->setDieDistance(8);
-            }
+            fireMissile(victim, mEquippedWeapon->getMissileParticle());
         }
     }
     if (Net::getNetworkType() == ServerInfo::EATHENA)
@@ -396,6 +384,26 @@ void Being::setMap(Map *map)
 void Being::controlParticle(Particle *particle)
 {
     mChildParticleEffects.addLocally(particle);
+}
+
+void Being::fireMissile(Being *victim, const std::string &particle)
+{
+    if (!victim || particle.empty())
+        return;
+
+    Particle *target = particleEngine->createChild();
+    Particle *missile = target->addEffect(particle, getPixelX(), getPixelY());
+
+    if (missile)
+    {
+        target->setLifetime(2000);
+        target->moveBy(Vector(0.0f, 0.0f, 32.0f));
+        victim->controlParticle(target);
+
+        missile->setDestination(target, 7, 0);
+        missile->setDieDistance(8);
+        missile->setLifetime(900);
+    }
 }
 
 void Being::setAction(Action action, int attackType)

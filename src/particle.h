@@ -96,6 +96,13 @@ class Particle : public Sprite
          */
         void setMap(Map *map);
 
+
+        /**
+         * Creates a blank particle as a child of the current particle
+         * Useful for creating target particles
+         */
+        Particle *createChild();
+
         /**
          * Creates a child particle that hosts some emitters described in the
          * particleEffectFile.

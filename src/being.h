@@ -442,6 +442,11 @@ class Being : public Sprite, public ConfigListener
         void controlParticle(Particle *particle);
 
         /**
+         * Shoots a missile particle from this being, to target being
+         */
+        void fireMissile(Being *target, const std::string &particle);
+
+        /**
          * Gets the way the object is blocked by other objects.
          */
         virtual unsigned char getWalkMask() const

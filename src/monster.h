@@ -88,6 +88,9 @@ class Monster : public Being
         void updateCoords();
 
         void showName();
+
+    private:
+        int mAttackType;
 };
 
 #endif

@@ -62,6 +62,14 @@ const std::string &MonsterInfo::getAttackParticleEffect(int attackType) const
     return (i == mMonsterAttacks.end()) ? empty : (*i).second->particleEffect;
 }
 
+const std::string &MonsterInfo::getAttackMissileParticle(int attackType) const
+{
+    static std::string empty("");
+    std::map<int, MonsterAttack*>::const_iterator i =
+        mMonsterAttacks.find(attackType);
+    return (i == mMonsterAttacks.end()) ? empty : (*i).second->missileParticle;
+}
+
 SpriteAction MonsterInfo::getAttackAction(int attackType) const
 {
     std::map<int, MonsterAttack*>::const_iterator i =
@@ -71,10 +79,12 @@ SpriteAction MonsterInfo::getAttackAction(int attackType) const
 
 void MonsterInfo::addMonsterAttack(int id,
                                    const std::string &particleEffect,
-                                   SpriteAction action)
+                                   SpriteAction action,
+                                   const std::string &missileParticle)
 {
     MonsterAttack *a = new MonsterAttack;
     a->particleEffect = particleEffect;
+    a->missileParticle = missileParticle;
     a->action = action;
     mMonsterAttacks[id] = a;
 }

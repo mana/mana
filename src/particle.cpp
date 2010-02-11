@@ -254,6 +254,13 @@ void Particle::moveTo(float x, float y)
     moveTo(Vector(x, y, mPos.z));
 }
 
+Particle *Particle::createChild()
+{
+    Particle *newParticle = new Particle(mMap);
+    mChildParticles.push_back(newParticle);
+    return newParticle;
+}
+
 Particle *Particle::addEffect(const std::string &particleEffectFile,
                               int pixelX, int pixelY, int rotation)
 {

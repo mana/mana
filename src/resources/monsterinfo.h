@@ -39,6 +39,7 @@ enum MonsterSoundEvent
 
 struct MonsterAttack
 {
+    std::string missileParticle;
     std::string particleEffect;
     SpriteAction action;
 };
@@ -81,9 +82,12 @@ class MonsterInfo
 
         void addMonsterAttack(int id,
                               const std::string &particleEffect,
-                              SpriteAction action);
+                              SpriteAction action,
+                              const std::string &missileParticle);
 
         const std::string &getAttackParticleEffect(int attackType) const;
+
+        const std::string &getAttackMissileParticle(int attackType) const;
 
         SpriteAction getAttackAction(int attackType) const;
 
