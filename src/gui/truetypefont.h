@@ -1,6 +1,7 @@
 /*
  *  The Mana World
  *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  Copyright (C) 2009  Aethyra Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -75,7 +76,7 @@ class TrueTypeFont : public gcn::Font
         TTF_Font *mFont;
 
         // Word surfaces cache
-        std::list<TextChunk> mCache;
+        mutable std::list<TextChunk> mCache;
 };
 
 #endif
