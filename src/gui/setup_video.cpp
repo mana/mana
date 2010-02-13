@@ -248,7 +248,7 @@ Setup_Video::Setup_Video():
     mAlphaSlider->setValue(mOpacity);
     mAlphaSlider->setWidth(90);
 
-    mFpsField->setText(toString(mFps));
+    mFpsField->setText(mFps > 0 ? toString(mFps) : "");
     mFpsField->setEnabled(mFps > 0);
     mFpsField->setWidth(30);
     mFpsSlider->setValue(mFps);
@@ -413,9 +413,11 @@ void Setup_Video::apply()
                      _("Applying change to OpenGL requires restart."));
     }
 
+    mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;
+    mFpsSlider->setEnabled(mFps > 0);
+
     // FPS change
     config.setValue("fpslimit", mFps);
-
     config.setValue("fontSize", mFontSizeDropDown->getSelected() + 10);
 
     // We sync old and new values at apply time
@@ -436,17 +438,22 @@ void Setup_Video::apply()
 
 void Setup_Video::cancel()
 {
+    mFpsCheckBox->setSelected(mFps > 0);
     mFsCheckBox->setSelected(mFullScreenEnabled);
     mOpenGLCheckBox->setSelected(mOpenGLEnabled);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
     mShowMonsterDamageCheckBox->setSelected(mShowMonsterDamageEnabled);
     mVisibleNamesCheckBox->setSelected(mVisibleNamesEnabled);
     mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
+    mFpsSlider->setValue(mFps);
+    mFpsSlider->setEnabled(mFps > 0);
     mSpeechSlider->setValue(mSpeechMode);
     mNameCheckBox->setSelected(mNameEnabled);
     mAlphaSlider->setValue(mOpacity);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
+    std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : "";
+    mFpsField->setText(text);
 
     config.setValue("screen", mFullScreenEnabled);
     config.setValue("customcursor", mCustomCursorEnabled);
@@ -541,8 +548,10 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "fpslimitslider")
     {
-        mFps = (int) mFpsSlider->getValue();
-        mFpsField->setText(toString(mFps));
+        const int fps = (int) mFpsSlider->getValue();
+        std::string text = mFpsCheckBox->isSelected() ? toString(fps) : "";
+
+        mFpsField->setText(text);
     }
     else if (event.getId() == "overlaydetailslider")
     {
@@ -559,16 +568,13 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "fpslimitcheckbox")
     {
-        if (mFpsCheckBox->isSelected())
-        {
-            mFps = (int) mFpsSlider->getValue();
-        }
-        else
-        {
-            mFps = 0;
-        }
+        int fps = (int) mFpsSlider->getValue();
+        fps = fps > 0 ? fps : mFpsSlider->getScaleStart();
+        mFps = mFpsCheckBox->isSelected() ? fps : 0;
+        std::string text = mFps > 0 ? toString(mFps) : "";
+
         mFpsField->setEnabled(mFps > 0);
-        mFpsField->setText(toString(mFps));
+        mFpsField->setText(text);
         mFpsSlider->setValue(mFps);
         mFpsSlider->setEnabled(mFps > 0);
     }
