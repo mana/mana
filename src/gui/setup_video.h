@@ -45,9 +45,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         void action(const gcn::ActionEvent &event);
 
-        /** Called when key is pressed */
-        void keyPressed(gcn::KeyEvent &event);
-
         static const char *overlayDetailToString(int detail = -1);
 
         static const char *particleDetailToString(int detail = -1);
@@ -95,7 +92,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::Slider *mAlphaSlider;
         gcn::CheckBox *mFpsCheckBox;
         gcn::Slider *mFpsSlider;
-        gcn::TextField *mFpsField;
+        gcn::Label *mFpsLabel;
 
         int mOverlayDetail;
         gcn::Slider *mOverlayDetailSlider;

@@ -213,13 +213,13 @@ Setup_Video::Setup_Video():
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox(_("FPS limit:"))),
     mFpsSlider(new Slider(10, 120)),
-    mFpsField(new TextField),
+    mFpsLabel(new Label),
     mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
     mOverlayDetailSlider(new Slider(0, 2)),
-    mOverlayDetailField(new Label("")),
+    mOverlayDetailField(new Label),
     mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
-    mParticleDetailField(new Label("")),
+    mParticleDetailField(new Label),
     mFontSize((int) config.getValue("fontSize", 11))
 {
     setName(_("Video"));
@@ -248,9 +248,8 @@ Setup_Video::Setup_Video():
     mAlphaSlider->setValue(mOpacity);
     mAlphaSlider->setWidth(90);
 
-    mFpsField->setText(mFps > 0 ? toString(mFps) : "");
-    mFpsField->setEnabled(mFps > 0);
-    mFpsField->setWidth(30);
+    mFpsLabel->setCaption(mFps > 0 ? toString(mFps) : _("None"));
+    mFpsLabel->setWidth(60);
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setSelected(mFps > 0);
@@ -330,7 +329,7 @@ Setup_Video::Setup_Video():
 
     place(0, 8, mFpsSlider);
     place(1, 8, mFpsCheckBox).setPadding(3);
-    place(2, 8, mFpsField).setPadding(1);
+    place(2, 8, mFpsLabel).setPadding(1);
 
     place(0, 9, mSpeechSlider);
     place(1, 9, speechLabel);
@@ -452,8 +451,8 @@ void Setup_Video::cancel()
     mAlphaSlider->setValue(mOpacity);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
-    std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : "";
-    mFpsField->setText(text);
+    std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : _("None");
+    mFpsLabel->setCaption(text);
 
     config.setValue("screen", mFullScreenEnabled);
     config.setValue("customcursor", mCustomCursorEnabled);
@@ -472,7 +471,9 @@ void Setup_Video::cancel()
 
 void Setup_Video::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "videomode")
+    const std::string &id = event.getId();
+
+    if (id == "videomode")
     {
         const std::string mode = mModeListModel->getElementAt(mModeList->getSelected());
         const int width = atoi(mode.substr(0, mode.find("x")).c_str());
@@ -494,23 +495,23 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         config.setValue("screenwidth", width);
         config.setValue("screenheight", height);
     }
-    else if (event.getId() == "guialpha")
+    else if (id == "guialpha")
     {
         config.setValue("guialpha", mAlphaSlider->getValue());
     }
-    else if (event.getId() == "customcursor")
+    else if (id == "customcursor")
     {
         config.setValue("customcursor", mCustomCursorCheckBox->isSelected());
     }
-    else if (event.getId() == "monsterdamage")
+    else if (id == "monsterdamage")
     {
         config.setValue("showMonstersTakedDamage", mShowMonsterDamageCheckBox->isSelected());
     }
-    else if (event.getId() == "visiblenames")
+    else if (id == "visiblenames")
     {
         config.setValue("visiblenames", mVisibleNamesCheckBox->isSelected());
     }
-    else if (event.getId() == "particleeffects")
+    else if (id == "particleeffects")
     {
         config.setValue("particleeffects",
                         mParticleEffectsCheckBox->isSelected());
@@ -522,23 +523,23 @@ void Setup_Video::action(const gcn::ActionEvent &event)
                          _("Changes will take effect on map change."));
         }
     }
-    else if (event.getId() == "pickupchat")
+    else if (id == "pickupchat")
     {
         config.setValue("showpickupchat", mPickupChatCheckBox->isSelected());
     }
-    else if (event.getId() == "pickupparticle")
+    else if (id == "pickupparticle")
     {
         config.setValue("showpickupparticle",
                         mPickupParticleCheckBox->isSelected());
     }
-    else if (event.getId() == "speech")
+    else if (id == "speech")
     {
         Being::Speech val = (Being::Speech)mSpeechSlider->getValue();
         mSpeechLabel->setCaption(speechModeToString(val));
         mSpeechSlider->setValue(val);
         config.setValue("speech", val);
     }
-    else if (event.getId() == "showownname")
+    else if (id == "showownname")
     {
         // Notify the local player that settings have changed for the name
         // and requires an update
@@ -546,60 +547,28 @@ void Setup_Video::action(const gcn::ActionEvent &event)
             player_node->setCheckNameSetting(true);
         config.setValue("showownname", mNameCheckBox->isSelected());
     }
-    else if (event.getId() == "fpslimitslider")
-    {
-        const int fps = (int) mFpsSlider->getValue();
-        std::string text = mFpsCheckBox->isSelected() ? toString(fps) : "";
-
-        mFpsField->setText(text);
-    }
-    else if (event.getId() == "overlaydetailslider")
+    else if (id == "overlaydetailslider")
     {
         int val = (int) mOverlayDetailSlider->getValue();
         mOverlayDetailField->setCaption(overlayDetailToString(val));
         config.setValue("OverlayDetail", val);
     }
-    else if (event.getId() == "particledetailslider")
+    else if (id == "particledetailslider")
     {
         int val = (int) mParticleDetailSlider->getValue();
         mParticleDetailField->setCaption(particleDetailToString(val));
         config.setValue("particleEmitterSkip", 3 - val);
         Particle::emitterSkip = 4 - val;
     }
-    else if (event.getId() == "fpslimitcheckbox")
+    else if (id == "fpslimitcheckbox" || id == "fpslimitslider")
     {
         int fps = (int) mFpsSlider->getValue();
         fps = fps > 0 ? fps : mFpsSlider->getScaleStart();
         mFps = mFpsCheckBox->isSelected() ? fps : 0;
-        std::string text = mFps > 0 ? toString(mFps) : "";
+        const std::string text = mFps > 0 ? toString(mFps) : _("None");
 
-        mFpsField->setEnabled(mFps > 0);
-        mFpsField->setText(text);
+        mFpsLabel->setCaption(text);
         mFpsSlider->setValue(mFps);
         mFpsSlider->setEnabled(mFps > 0);
-    }
-}
-
-void Setup_Video::keyPressed(gcn::KeyEvent &event)
-{
-    std::stringstream tempFps(mFpsField->getText());
-
-    if (tempFps >> mFps)
-    {
-        if (mFps < 10)
-        {
-            mFps = 10;
-        }
-        else if (mFps > 120)
-        {
-            mFps = 120;
-        }
-        mFpsField->setText(toString(mFps));
-        mFpsSlider->setValue(mFps);
-    }
-    else
-    {
-        mFpsField->setText("");
-        mFps = 0;
     }
 }
