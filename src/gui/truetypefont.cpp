@@ -43,11 +43,6 @@ class TextChunk
             delete img;
         }
 
-        bool operator==(const std::string &str) const
-        {
-            return (str == text);
-        }
-
         bool operator==(const TextChunk &chunk) const
         {
             return (chunk.text == text && chunk.color == color);
@@ -170,7 +165,7 @@ int TrueTypeFont::getWidth(const std::string &text) const
 {
     for (CacheIterator i = mCache.begin(); i != mCache.end(); i++)
     {
-        if ((*i) == text)
+        if (i->text == text)
         {
             // Raise priority: move it to front
             // Assumption is that TTF::draw will be called next
