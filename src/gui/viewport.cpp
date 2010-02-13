@@ -300,7 +300,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         return;
 
     // Check if we are busy
-    if (current_npc)
+    if (NPC::isTalking())
         return;
 
     mPlayerFollowMouse = false;

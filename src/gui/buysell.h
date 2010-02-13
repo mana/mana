@@ -40,12 +40,9 @@ class BuySellDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        BuySellDialog();
+        BuySellDialog(int npcId);
 
-        /**
-         * Check for current NPC
-         */
-        void logic();
+        ~BuySellDialog();
 
         void setVisible(bool visible);
 
@@ -54,10 +51,22 @@ class BuySellDialog : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        /**
+         * Returns true if any instances exist.
+         */
+        static bool isActive() { return instances.size() > 0; }
+
+        /**
+         * Closes all instances.
+         */
+        static void closeAll();
+
     private:
+        typedef std::list<BuySellDialog*> DialogList;
+        static DialogList instances;
+
+        int mNpcId;
         gcn::Button *mBuyButton;
 };
-
-extern BuySellDialog *buySellDialog;
 
 #endif

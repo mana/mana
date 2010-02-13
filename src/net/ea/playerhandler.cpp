@@ -80,15 +80,15 @@ namespace {
         {
             Net::getPlayerHandler()->respawn();
             deathNotice = NULL;
-            buyDialog->setVisible(false);
-            sellDialog->setVisible(false);
-            buySellDialog->setVisible(false);
+
+            BuyDialog::closeAll();
+            BuySellDialog::closeAll();
+            NpcDialog::closeAll();
+            SellDialog::closeAll();
 
             if (storageWindow->isVisible())
                 storageWindow->close();
             viewport->closePopupMenu();
-            npcDialog->closeDialog();
-            current_npc = 0;
         }
     } deathListener;
 

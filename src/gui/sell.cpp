@@ -43,12 +43,14 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-SellDialog::SellDialog():
+SellDialog::DialogList SellDialog::instances;
+
+SellDialog::SellDialog(int npcId):
     Window(_("Sell")),
-    mMaxItems(0), mAmountItems(0)
+    mNpcId(npcId), mMaxItems(0), mAmountItems(0)
 {
     setWindowName("Sell");
-    setupWindow->registerWindowForReset(this);
+    //setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
     setMinWidth(260);
@@ -106,11 +108,16 @@ SellDialog::SellDialog():
 
     center();
     loadWindowState();
+
+    instances.push_back(this);
+    setVisible(true);
 }
 
 SellDialog::~SellDialog()
 {
     delete mShopItems;
+
+    instances.remove(this);
 }
 
 void SellDialog::reset()
@@ -190,7 +197,7 @@ void SellDialog::action(const gcn::ActionEvent &event)
             // the inventory index of the next Duplicate otherwise.
             itemIndex = item->getCurrentInvIndex();
             sellCount = item->sellCurrentDuplicate(mAmountItems);
-            Net::getNpcHandler()->sellItem(current_npc, itemIndex, sellCount);
+            Net::getNpcHandler()->sellItem(mNpcId, itemIndex, sellCount);
             mAmountItems -= sellCount;
         }
 
@@ -271,23 +278,27 @@ void SellDialog::updateButtonsAndLabels()
                     Units::formatCurrency(mPlayerMoney + income).c_str()));
 }
 
-void SellDialog::logic()
-{
-    Window::logic();
-
-    if (!current_npc) setVisible(false);
-}
-
 void SellDialog::setVisible(bool visible)
 {
     Window::setVisible(visible);
 
     if (visible)
+    {
         mShopItemList->requestFocus();
+    }
+    else
+    {
+        scheduleDelete();
+    }
 }
 
-void SellDialog::close()
+void SellDialog::closeAll()
 {
-    setVisible(false);
-    current_npc = 0;
+    DialogList::iterator it = instances.begin();
+    DialogList::iterator it_end = instances.end();
+
+    for (; it != it_end; it++)
+    {
+        (*it)->close();
+    }
 }

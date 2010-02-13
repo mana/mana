@@ -205,9 +205,7 @@ void PopupMenu::handleLink(const std::string &link)
 
     // Talk To action
     if (link == "talk" &&
-        being &&
-        being->getType() == Being::NPC &&
-        current_npc == 0)
+        being && being->getType() == Being::NPC)
     {
         dynamic_cast<NPC*>(being)->talk();
     }

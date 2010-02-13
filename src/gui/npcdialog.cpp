@@ -46,9 +46,11 @@
 #define CAPTION_CLOSE _("Close")
 #define CAPTION_SUBMIT _("Submit")
 
-NpcDialog::NpcDialog()
+NpcDialog::DialogList NpcDialog::instances;
+
+NpcDialog::NpcDialog(int npcId)
     : Window(_("NPC")),
-      mNpcId(0),
+      mNpcId(npcId),
       mDefaultInt(0),
       mInputState(NPC_INPUT_NONE),
       mActionState(NPC_ACTION_WAIT)
@@ -56,7 +58,8 @@ NpcDialog::NpcDialog()
     // Basic Window Setup
     setWindowName("NpcText");
     setResizable(true);
-    setupWindow->registerWindowForReset(this);
+    //setupWindow->registerWindowForReset(this);
+    setFocusable(true);
 
     setMinWidth(200);
     setMinHeight(150);
@@ -111,17 +114,24 @@ NpcDialog::NpcDialog()
 
     center();
     loadWindowState();
+
+    instances.push_back(this);
+    setVisible(true);
+    requestFocus();
 }
 
 NpcDialog::~NpcDialog()
 {
     // These might not actually be in the layout, so lets be safe
+    delete mScrollArea;
     delete mItemList;
     delete mTextField;
     delete mIntField;
     delete mResetButton;
     delete mPlusButton;
     delete mMinusButton;
+
+    instances.remove(this);
 }
 
 void NpcDialog::setText(const std::string &text)
@@ -162,10 +172,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         }
         else if (mActionState == NPC_ACTION_CLOSE)
         {
-            if (current_npc)
-                closeDialog();
-            setVisible(false);
-            current_npc = 0;
+            closeDialog();
         }
         else if (mActionState == NPC_ACTION_INPUT)
         {
@@ -276,6 +283,22 @@ bool NpcDialog::isInputFocused() const
     return mTextField->isFocused() || mIntField->isFocused();
 }
 
+bool NpcDialog::isAnyInputFocused()
+{
+    DialogList::iterator it = instances.begin();
+    DialogList::iterator it_end = instances.end();
+
+    for (; it != it_end; it++)
+    {
+        if ((*it)->isInputFocused())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void NpcDialog::integerRequest(int defaultValue, int min, int max)
 {
     mActionState = NPC_ACTION_INPUT;
@@ -310,6 +333,43 @@ void NpcDialog::widgetResized(const gcn::Event &event)
     Window::widgetResized(event);
 
     setText(mText);
+}
+
+void NpcDialog::setVisible(bool visible)
+{
+    Window::setVisible(visible);
+
+    if (!visible)
+    {
+        scheduleDelete();
+    }
+}
+
+NpcDialog *NpcDialog::getActive()
+{
+    DialogList::iterator it = instances.begin();
+    DialogList::iterator it_end = instances.end();
+
+    for (; it != it_end; it++)
+    {
+        if ((*it)->isFocused())
+        {
+            return (*it);
+        }
+    }
+
+    return NULL;
+}
+
+void NpcDialog::closeAll()
+{
+    DialogList::iterator it = instances.begin();
+    DialogList::iterator it_end = instances.end();
+
+    for (; it != it_end; it++)
+    {
+        (*it)->close();
+    }
 }
 
 void NpcDialog::buildLayout()

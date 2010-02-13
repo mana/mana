@@ -35,23 +35,35 @@ public:
     /**
      * Constructor
      */
-    NpcPostDialog();
+    NpcPostDialog(int npcId);
+
+    ~NpcPostDialog();
 
     /**
      * Called when receiving actions from the widgets.
      */
     void action(const gcn::ActionEvent &event);
 
+    void setVisible(bool visible);
+
     /**
-     * Clear the contents of the dialog
+     * Returns true if any instances exist.
      */
-    void clear();
+    static bool isActive() { return instances.size() > 0; }
+
+    /**
+     * Closes all instances.
+     */
+    static void closeAll();
 
 private:
+    typedef std::list<NpcPostDialog*> DialogList;
+    static DialogList instances;
+
+    int mNpcId;
+
     TextBox *mText;
     TextField *mSender;
 };
-
-extern NpcPostDialog *npcPostDialog;
 
 #endif

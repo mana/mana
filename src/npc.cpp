@@ -37,8 +37,6 @@
 
 #include "resources/npcdb.h"
 
-int current_npc = 0;
-
 NPC::NPC(int id, int job, Map *map):
     Player(id, job, map, true)
 {
@@ -80,9 +78,6 @@ void NPC::setName(const std::string &name)
 
 void NPC::talk()
 {
-    if (isTalking())
-        return;
-
     Net::getNpcHandler()->talk(mId);
 }
 
@@ -93,7 +88,7 @@ void NPC::setSprite(unsigned int slot, int id, const std::string &color)
 
 const bool NPC::isTalking()
 {
-    return npcDialog->isVisible() || buyDialog->isVisible() ||
-           sellDialog->isVisible() || buySellDialog->isVisible() ||
-           npcPostDialog->isVisible();
+    return NpcDialog::isActive() || BuyDialog::isActive() ||
+           SellDialog::isActive() || BuySellDialog::isActive() ||
+           NpcPostDialog::isActive();
 }

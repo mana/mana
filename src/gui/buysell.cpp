@@ -32,12 +32,16 @@
 
 #include "utils/gettext.h"
 
-BuySellDialog::BuySellDialog():
+BuySellDialog::DialogList BuySellDialog::instances;
+
+BuySellDialog::BuySellDialog(int npcId):
     Window(_("Shop")),
+    mNpcId(npcId),
     mBuyButton(0)
 {
     setWindowName("BuySell");
-    setupWindow->registerWindowForReset(this);
+    //setupWindow->registerWindowForReset(this);
+    setCloseButton(true);
 
     static const char *buttonNames[] = {
         N_("Buy"), N_("Sell"), N_("Cancel"), 0
@@ -60,14 +64,14 @@ BuySellDialog::BuySellDialog():
     center();
     setDefaultSize();
     loadWindowState();
+
+    instances.push_back(this);
+    setVisible(true);
 }
 
-void BuySellDialog::logic()
+BuySellDialog::~BuySellDialog()
 {
-    Window::logic();
-
-    if (isVisible() && !current_npc)
-        setVisible(false);
+    instances.remove(this);
 }
 
 void BuySellDialog::setVisible(bool visible)
@@ -75,24 +79,36 @@ void BuySellDialog::setVisible(bool visible)
     Window::setVisible(visible);
 
     if (visible)
+    {
         mBuyButton->requestFocus();
+    }
+    else
+    {
+        scheduleDelete();
+    }
 }
 
 void BuySellDialog::action(const gcn::ActionEvent &event)
 {
-    setVisible(false);
-
     if (event.getId() == "Buy")
     {
-        Net::getNpcHandler()->buy(current_npc);
+        Net::getNpcHandler()->buy(mNpcId);
     }
     else if (event.getId() == "Sell")
     {
-        Net::getNpcHandler()->sell(current_npc);
+        Net::getNpcHandler()->sell(mNpcId);
     }
-    else if (event.getId() == "Cancel")
+
+    close();
+}
+
+void BuySellDialog::closeAll()
+{
+    DialogList::iterator it = instances.begin();
+    DialogList::iterator it_end = instances.end();
+
+    for (; it != it_end; it++)
     {
-        current_npc = 0;
-        return;
+        (*it)->close();
     }
 }

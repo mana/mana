@@ -41,8 +41,6 @@
 #include "playerrelations.h"
 #include "sound.h"
 
-#include "gui/buy.h"
-#include "gui/buysell.h"
 #include "gui/chat.h"
 #include "gui/confirmdialog.h"
 #include "gui/debugwindow.h"
@@ -59,7 +57,6 @@
 #include "gui/outfitwindow.h"
 #include "gui/quitdialog.h"
 #include "gui/sdlinput.h"
-#include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/socialwindow.h"
 #include "gui/specialswindow.h"
@@ -112,13 +109,8 @@ OkDialog *disconnectedDialog = NULL;
 ChatWindow *chatWindow;
 StatusWindow *statusWindow;
 MiniStatusWindow *miniStatusWindow;
-BuyDialog *buyDialog;
-SellDialog *sellDialog;
-BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
-NpcDialog *npcDialog;
-NpcPostDialog *npcPostDialog;
 StorageWindow *storageWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
@@ -213,13 +205,8 @@ static void createGuiWindows()
 
     // Create dialogs
     chatWindow = new ChatWindow;
-    buyDialog = new BuyDialog;
-    sellDialog = new SellDialog;
     tradeWindow = new TradeWindow;
-    buySellDialog = new BuySellDialog;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    npcDialog = new NpcDialog;
-    npcPostDialog = new NpcPostDialog;
     storageWindow = new StorageWindow;
     statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
@@ -259,12 +246,7 @@ static void destroyGuiWindows()
     del_0(chatWindow)
     del_0(statusWindow)
     del_0(miniStatusWindow)
-    del_0(buyDialog)
-    del_0(sellDialog)
-    del_0(buySellDialog)
     del_0(inventoryWindow)
-    del_0(npcDialog)
-    del_0(npcPostDialog)
     del_0(skillDialog)
     del_0(minimap)
     del_0(equipmentWindow)
@@ -523,7 +505,7 @@ void Game::handleInput()
 
             // send straight to gui for certain windows
             if (quitDialog || TextDialog::isActive() ||
-                npcPostDialog->isVisible())
+                NpcPostDialog::isActive())
             {
                 try
                 {
@@ -553,37 +535,29 @@ void Game::handleInput()
             if (!chatWindow->isInputFocused()
                 && !gui->getFocusHandler()->getModalFocused())
             {
+                NpcDialog *dialog = NpcDialog::getActive();
                 if (keyboard.isKeyActive(keyboard.KEY_OK))
                 {
                     // Close the Browser if opened
-                    if (helpWindow->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
+                    if (helpWindow->isVisible())
                         helpWindow->setVisible(false);
                     // Close the config window, cancelling changes if opened
-                    else if (setupWindow->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
+                    else if (setupWindow->isVisible())
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                    else if (npcDialog->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
-                        npcDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    /*
-                    else if (guildWindow->isVisible())
-                    {
-                        // TODO: Check if a dialog is open and close it if so
-                    }
-                    */
+                    else if (dialog)
+                        dialog->action(gcn::ActionEvent(NULL, "ok"));
                 }
                 if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
                 {
                     if (chatWindow->requestChatFocus())
                         used = true;
                 }
-                if (npcDialog->isVisible())
+                if (dialog)
                 {
                     if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP))
-                        npcDialog->move(1);
+                        dialog->move(1);
                     else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN))
-                        npcDialog->move(-1);
+                        dialog->move(-1);
                 }
             }
 
@@ -705,8 +679,8 @@ void Game::handleInput()
                 default:
                     break;
             }
-            if (keyboard.isEnabled() &&
-                 !chatWindow->isInputFocused() && !npcDialog->isInputFocused())
+            if (keyboard.isEnabled() && !chatWindow->isInputFocused() &&
+                !NpcDialog::isAnyInputFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
 
@@ -888,7 +862,7 @@ void Game::handleInput()
         return;
 
     // Moving player around
-    if (player_node->isAlive() && current_npc == 0 &&
+    if (player_node->isAlive() && !NPC::isTalking() &&
         !chatWindow->isInputFocused() && !quitDialog)
     {
         // Get the state of the keyboard keys
@@ -1006,15 +980,12 @@ void Game::handleInput()
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
         {
-            if (!npcDialog->isVisible())
-            {
-                Being *target = player_node->getTarget();
+            Being *target = player_node->getTarget();
 
-                if (target)
-                {
-                    if (target->getType() == Being::NPC)
-                        dynamic_cast<NPC*>(target)->talk();
-                }
+            if (target)
+            {
+                if (target->getType() == Being::NPC)
+                    dynamic_cast<NPC*>(target)->talk();
             }
         }
 

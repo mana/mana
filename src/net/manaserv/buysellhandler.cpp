@@ -26,17 +26,14 @@
 #include "localplayer.h"
 #include "npc.h"
 
-#include "net/messagein.h"
-
-#include "net/manaserv/protocol.h"
-
 #include "gui/buy.h"
 #include "gui/chat.h"
 #include "gui/sell.h"
 
-extern BuyDialog *buyDialog;
-extern SellDialog *sellDialog;
-extern Window *buySellDialog;
+#include "net/messagein.h"
+
+#include "net/manaserv/protocol.h"
+
 
 namespace ManaServ {
 
@@ -58,37 +55,43 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
         return;
     }
 
-    current_npc = being->getId();
+    int npcId = being->getId();
 
     switch (msg.getId())
     {
         case GPMSG_NPC_BUY:
-            buyDialog->reset();
-            buyDialog->setMoney(player_node->getMoney());
-            buyDialog->setVisible(true);
+        {
+            BuyDialog* dialog = new BuyDialog(npcId);
+
+            dialog->reset();
+            dialog->setMoney(player_node->getMoney());
 
             while (msg.getUnreadLength())
             {
                 int itemId = msg.readInt16();
                 int amount = msg.readInt16();
                 int value = msg.readInt16();
-                buyDialog->addItem(itemId, amount, value);
+                dialog->addItem(itemId, amount, value);
             }
             break;
+        }
 
         case GPMSG_NPC_SELL:
-            sellDialog->setMoney(player_node->getMoney());
-            sellDialog->reset();
-            sellDialog->setVisible(true);
+        {
+            SellDialog* dialog = new SellDialog(npcId);
+
+            dialog->reset();
+            dialog->setMoney(player_node->getMoney());
 
             while (msg.getUnreadLength())
             {
                 int itemId = msg.readInt16();
                 int amount = msg.readInt16();
                 int value = msg.readInt16();
-                sellDialog->addItem(new Item(itemId, amount, false), value);
+                dialog->addItem(new Item(itemId, amount, false), value);
             }
             break;
+        }
     }
 }
 

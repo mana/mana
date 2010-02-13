@@ -29,6 +29,7 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
 
+#include <list>
 #include <string>
 #include <vector>
 
@@ -52,7 +53,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        NpcDialog();
+        NpcDialog(int npcId);
 
         ~NpcDialog();
 
@@ -60,11 +61,6 @@ class NpcDialog : public Window, public gcn::ActionListener,
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
-
-        void setNpc(int npc)
-        { mNpcId = npc; }
-
-        void clearText();
 
         /**
         * Sets the text shows in the dialog.
@@ -136,6 +132,8 @@ class NpcDialog : public Window, public gcn::ActionListener,
 
         bool isInputFocused() const;
 
+        static bool isAnyInputFocused();
+
         /**
          * Requests a interger from the user.
          */
@@ -151,7 +149,28 @@ class NpcDialog : public Window, public gcn::ActionListener,
          */
         void widgetResized(const gcn::Event &event);
 
+        void setVisible(bool visible);
+
+        /**
+         * Returns true if any instances exist.
+         */
+        static bool isActive() { return instances.size() > 0; }
+
+        /**
+         * Returns the first active instance. Useful for pushing user
+         * interaction.
+         */
+        static NpcDialog *getActive();
+
+        /**
+         * Closes all instances.
+         */
+        static void closeAll();
+
     private:
+        typedef std::list<NpcDialog*> DialogList;
+        static DialogList instances;
+
         void buildLayout();
 
         int mNpcId;
@@ -200,9 +219,5 @@ class NpcDialog : public Window, public gcn::ActionListener,
         NpcInputState mInputState;
         NpcActionState mActionState;
 };
-
-// TODO: This should be made not to be global, later.
-
-extern NpcDialog* npcDialog;
 
 #endif // NPCDIALOG_H

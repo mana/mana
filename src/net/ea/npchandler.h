@@ -27,6 +27,10 @@
 
 #include "net/ea/messagehandler.h"
 
+#include <map>
+
+class NpcDialog;
+
 namespace EAthena {
 
 class NpcHandler : public MessageHandler, public Net::NpcHandler
@@ -62,6 +66,13 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
         void sellItem(int beingId, int itemId, int amount);
 
         void endShopping(int beingId);
+
+    private:
+        typedef struct {
+            NpcDialog* dialog;
+        } Wrapper;
+        typedef std::map<int, Wrapper> NpcDialogs;
+        NpcDialogs mNpcDialogs;
 };
 
 } // namespace EAthena

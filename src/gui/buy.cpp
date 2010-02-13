@@ -43,12 +43,14 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-BuyDialog::BuyDialog():
+BuyDialog::DialogList BuyDialog::instances;
+
+BuyDialog::BuyDialog(int npcId):
     Window(_("Buy")),
-    mMoney(0), mAmountItems(0), mMaxItems(0)
+    mNpcId(npcId), mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     setWindowName("Buy");
-    setupWindow->registerWindowForReset(this);
+    //setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
     setMinWidth(260);
@@ -107,11 +109,16 @@ BuyDialog::BuyDialog():
 
     center();
     loadWindowState();
+
+    instances.push_back(this);
+    setVisible(true);
 }
 
 BuyDialog::~BuyDialog()
 {
     delete mShopItems;
+
+    instances.remove(this);
 }
 
 void BuyDialog::setMoney(int amount)
@@ -186,7 +193,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "buy" && mAmountItems > 0 &&
                 mAmountItems <= mMaxItems)
     {
-        Net::getNpcHandler()->buyItem(current_npc,
+        Net::getNpcHandler()->buyItem(mNpcId,
                                       mShopItems->at(selectedItem)->getId(),
                                       mAmountItems);
 
@@ -251,23 +258,27 @@ void BuyDialog::updateButtonsAndLabels()
                     Units::formatCurrency(mMoney - price).c_str()));
 }
 
-void BuyDialog::logic()
-{
-    Window::logic();
-
-    if (!current_npc) setVisible(false);
-}
-
 void BuyDialog::setVisible(bool visible)
 {
     Window::setVisible(visible);
 
     if (visible)
+    {
         mShopItemList->requestFocus();
+    }
+    else
+    {
+        scheduleDelete();
+    }
 }
 
-void BuyDialog::close()
+void BuyDialog::closeAll()
 {
-    setVisible(false);
-    current_npc = 0;
+    DialogList::iterator it = instances.begin();
+    DialogList::iterator it_end = instances.end();
+
+    for (; it != it_end; it++)
+    {
+        (*it)->close();
+    }
 }

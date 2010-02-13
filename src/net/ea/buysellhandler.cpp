@@ -51,29 +51,29 @@ BuySellHandler::BuySellHandler()
         SMSG_NPC_SELL_RESPONSE,
         0
     };
+    mNpcId = 0;
     handledMessages = _messages;
 }
 
 void BuySellHandler::handleMessage(Net::MessageIn &msg)
 {
     int n_items;
+
     switch (msg.getId())
     {
         case SMSG_NPC_BUY_SELL_CHOICE:
-            buyDialog->setVisible(false);
-            buyDialog->reset();
-            sellDialog->setVisible(false);
-            sellDialog->reset();
-            current_npc = msg.readInt32();
-            buySellDialog->setVisible(true);
+            if (!BuySellDialog::isActive())
+            {
+                mNpcId = msg.readInt32();
+                new BuySellDialog(mNpcId);
+            }
             break;
 
         case SMSG_NPC_BUY:
             msg.readInt16();  // length
             n_items = (msg.getLength() - 4) / 11;
-            buyDialog->reset();
-            buyDialog->setMoney(player_node->getMoney());
-            buyDialog->setVisible(true);
+            mBuyDialog = new BuyDialog(mNpcId);
+            mBuyDialog->setMoney(player_node->getMoney());
 
             for (int k = 0; k < n_items; k++)
             {
@@ -81,7 +81,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
                 msg.readInt32();  // DCvalue
                 msg.readInt8();  // type
                 int itemId = msg.readInt16();
-                buyDialog->addItem(itemId, 0, value);
+                mBuyDialog->addItem(itemId, 0, value);
             }
             break;
 
@@ -90,9 +90,8 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             n_items = (msg.getLength() - 4) / 10;
             if (n_items > 0)
             {
-                sellDialog->setMoney(player_node->getMoney());
-                sellDialog->reset();
-                sellDialog->setVisible(true);
+                SellDialog *dialog = new SellDialog(mNpcId);
+                dialog->setMoney(player_node->getMoney());
 
                 for (int k = 0; k < n_items; k++)
                 {
@@ -103,13 +102,12 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
                     Item *item = player_node->getInventory()->getItem(index);
 
                     if (item && !(item->isEquipped()))
-                        sellDialog->addItem(item, value);
+                        dialog->addItem(item, value);
                 }
             }
             else
             {
                 localChatTab->chatLog(_("Nothing to sell."), BY_SERVER);
-                current_npc = 0;
             }
             break;
 
@@ -122,7 +120,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
-                buyDialog->setMoney(player_node->getMoney());
+                mBuyDialog->setMoney(player_node->getMoney());
                 localChatTab->chatLog(_("Unable to buy."), BY_SERVER);
             }
             break;

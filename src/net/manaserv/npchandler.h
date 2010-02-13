@@ -26,7 +26,9 @@
 
 #include "net/manaserv/messagehandler.h"
 
-#include <list>
+#include <map>
+
+class NpcDialog;
 
 namespace ManaServ {
 
@@ -63,6 +65,13 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
         void sellItem(int beingId, int itemId, int amount);
 
         void endShopping(int beingId);
+
+    private:
+        typedef struct {
+            NpcDialog* dialog;
+        } Wrapper;
+        typedef std::map<int, Wrapper> NpcDialogs;
+        NpcDialogs mNpcDialogs;
 };
 
 } // namespace ManaServ

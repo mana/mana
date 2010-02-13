@@ -47,7 +47,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        BuyDialog();
+        BuyDialog(int npcId);
 
         /**
          * Destructor
@@ -95,21 +95,26 @@ class BuyDialog : public Window, public gcn::ActionListener,
         void updateButtonsAndLabels();
 
         /**
-         * Check for current NPC
-         */
-        void logic();
-
-        /**
          * Sets the visibility of this window.
          */
         void setVisible(bool visible);
 
         /**
-         * Closes the Buy Window, as well as resetting the current npc.
+         * Returns true if any instances exist.
          */
-        void close();
+        static bool isActive() { return instances.size() > 0; }
+
+        /**
+         * Closes all instances.
+         */
+        static void closeAll();
 
     private:
+        typedef std::list<BuyDialog*> DialogList;
+        static DialogList instances;
+
+        int mNpcId;
+
         gcn::Button *mBuyButton;
         gcn::Button *mQuitButton;
         gcn::Button *mAddMaxButton;
@@ -127,7 +132,5 @@ class BuyDialog : public Window, public gcn::ActionListener,
         int mAmountItems;
         int mMaxItems;
 };
-
-extern BuyDialog *buyDialog;
 
 #endif

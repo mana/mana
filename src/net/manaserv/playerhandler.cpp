@@ -29,11 +29,9 @@
 #include "particle.h"
 #include "npc.h"
 
-#include "gui/buy.h"
 #include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/okdialog.h"
-#include "gui/sell.h"
 #include "gui/viewport.h"
 
 #include "net/net.h"
@@ -42,13 +40,6 @@
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-extern OkDialog *weightNotice;
-extern OkDialog *deathNotice;
-
-extern BuyDialog *buyDialog;
-extern SellDialog *sellDialog;
-extern Window *buySellDialog;
 
 /** @see in game.cpp */
 extern const int MILLISECONDS_IN_A_TICK;
@@ -60,38 +51,6 @@ extern const int MILLISECONDS_IN_A_TICK;
  * @todo: Make this parameter read from config.
  */
 static const int MAP_TELEPORT_SCROLL_DISTANCE = 8 * 32;
-
-/**
- * Listener used for handling the overweigth message.
- */
-// TODO Move somewhere else
-namespace {
-    struct WeightListener : public gcn::ActionListener
-    {
-        void action(const gcn::ActionEvent &event)
-        {
-            weightNotice = NULL;
-        }
-    } weightListener;
-}
-
-/**
- * Listener used for handling death message.
- */
-// TODO Move somewhere else
-namespace {
-    struct DeathListener : public gcn::ActionListener
-    {
-        void action(const gcn::ActionEvent &event)
-        {
-            Net::getPlayerHandler()->respawn();
-            deathNotice = NULL;
-            buyDialog->setVisible(false);
-            sellDialog->setVisible(false);
-            current_npc = 0;
-        }
-    } deathListener;
-}
 
 extern Net::PlayerHandler *playerHandler;
 
@@ -312,8 +271,6 @@ void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
 
     // Switch the actual map, deleting the previous one
     game->changeMap(mapName);
-
-    current_npc = 0;
 
     const Vector &playerPos = player_node->getPosition();
     float scrollOffsetX = 0.0f;

@@ -62,16 +62,29 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         return;
     }
 
-    current_npc = being->getId();
-    npcDialog->setNpc(current_npc);
+    int npcId = being->getId();
+    NpcDialogs::iterator diag = mNpcDialogs.find(npcId);
+    NpcDialog *dialog;
+
+    if (diag == mNpcDialogs.end())
+    {
+        dialog = new NpcDialog(npcId);
+        Wrapper wrap;
+        wrap.dialog = dialog;
+        mNpcDialogs[npcId] = wrap;
+    }
+    else
+    {
+        dialog = diag->second.dialog;
+    }
 
     switch (msg.getId())
     {
         case GPMSG_NPC_CHOICE:
-            npcDialog->choiceRequest();
+            dialog->choiceRequest();
             while (msg.getUnreadLength())
             {
-                npcDialog->addChoice(msg.readString());
+                dialog->addChoice(msg.readString());
             }
             break;
 
@@ -79,32 +92,35 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         {
             int min_num = msg.readInt32();
             int max_num = msg.readInt32();
-            npcDialog->integerRequest(msg.readInt32(), min_num, max_num);
+            dialog->integerRequest(msg.readInt32(), min_num, max_num);
             break;
         }
 
         case GPMSG_NPC_STRING:
-            npcDialog->textRequest("");
+            dialog->textRequest("");
             break;
 
         case GPMSG_NPC_POST:
-            npcDialog->setVisible(false);
-            npcPostDialog->clear();
-            npcPostDialog->setVisible(true);
+        {
+            new NpcPostDialog(npcId);
             break;
+        }
 
         case GPMSG_NPC_ERROR:
-            current_npc = NULL;
+            dialog->close();
+            if (diag != mNpcDialogs.end())
+            {
+                mNpcDialogs.erase(diag);
+            }
             break;
 
         case GPMSG_NPC_MESSAGE:
-            npcDialog->addText(msg.readString(msg.getUnreadLength()));
-            npcDialog->showNextButton();
-            npcDialog->setVisible(true);
+            dialog->addText(msg.readString(msg.getUnreadLength()));
+            dialog->showNextButton();
             break;
 
         case GPMSG_NPC_CLOSE:
-            npcDialog->showCloseButton();
+            dialog->showCloseButton();
             break;
     }
 }
@@ -129,8 +145,12 @@ void NpcHandler::closeDialog(int npcId)
     msg.writeInt16(npcId);
     gameServerConnection->send(msg);
 
-    npcDialog->setVisible(false);
-    npcDialog->setText("");
+    NpcDialogs::iterator it = mNpcDialogs.find(npcId);
+    if (it != mNpcDialogs.end())
+    {
+        (*it).second.dialog->close();
+        mNpcDialogs.erase(it);
+    }
 }
 
 void NpcHandler::listInput(int npcId, int value)

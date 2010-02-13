@@ -68,6 +68,4 @@ class NPC : public Player
         virtual void updateColors() {}
 };
 
-extern int current_npc;
-
 #endif

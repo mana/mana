@@ -35,8 +35,11 @@
 
 #include "utils/gettext.h"
 
-NpcPostDialog::NpcPostDialog():
-    Window(_("NPC"))
+NpcPostDialog::DialogList NpcPostDialog::instances;
+
+NpcPostDialog::NpcPostDialog(int npcId):
+    Window(_("NPC")),
+    mNpcId(npcId)
 {
     setContentSize(400, 180);
 
@@ -74,6 +77,14 @@ NpcPostDialog::NpcPostDialog():
     add(cancelButton);
 
     setLocationRelativeTo(getParent());
+
+    instances.push_back(this);
+    setVisible(true);
+}
+
+NpcPostDialog::~NpcPostDialog()
+{
+    instances.remove(this);
 }
 
 void NpcPostDialog::action(const gcn::ActionEvent &event)
@@ -87,21 +98,34 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
-            Net::getNpcHandler()->sendLetter(current_npc, mSender->getText(),
+            Net::getNpcHandler()->sendLetter(mNpcId, mSender->getText(),
                                              mText->getText());
         }
         setVisible(false);
-        clear();
     }
     else if (event.getId() == "cancel")
     {
         setVisible(false);
-        clear();
     }
 }
 
-void NpcPostDialog::clear()
+void NpcPostDialog::setVisible(bool visible)
 {
-    mSender->setText("");
-    mText->setText("");
+    Window::setVisible(visible);
+
+    if (!visible)
+    {
+        scheduleDelete();
+    }
+}
+
+void NpcPostDialog::closeAll()
+{
+    DialogList::iterator it = instances.begin();
+    DialogList::iterator it_end = instances.end();
+
+    for (; it != it_end; it++)
+    {
+        (*it)->close();
+    }
 }

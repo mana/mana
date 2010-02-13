@@ -24,6 +24,8 @@
 
 #include "net/ea/messagehandler.h"
 
+class BuyDialog;
+
 namespace EAthena {
 
 class BuySellHandler : public MessageHandler
@@ -32,6 +34,10 @@ class BuySellHandler : public MessageHandler
         BuySellHandler();
 
         virtual void handleMessage(Net::MessageIn &msg);
+
+    private:
+        int mNpcId;
+        BuyDialog *mBuyDialog;
 };
 
 } // namespace EAthena

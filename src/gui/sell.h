@@ -46,7 +46,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          *
          * @see Window::Window
          */
-        SellDialog();
+        SellDialog(int npcId);
 
         /**
          * Destructor
@@ -81,24 +81,30 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         void setMoney(int amount);
 
         /**
-         * Check for current NPC
-         */
-        void logic();
-
-        /**
          * Sets the visibility of this window.
          */
         void setVisible(bool visible);
 
         /**
-         * Closes the Buy Window, as well as resetting the current npc.
+         * Returns true if any instances exist.
          */
-        void close();
+        static bool isActive() { return instances.size() > 0; }
+
+        /**
+         * Closes all instances.
+         */
+        static void closeAll();
+
     private:
+        typedef std::list<SellDialog*> DialogList;
+        static DialogList instances;
+
         /**
          * Updates the state of buttons and labels.
          */
         void updateButtonsAndLabels();
+
+        int mNpcId;
 
         gcn::Button *mSellButton;
         gcn::Button *mQuitButton;
@@ -117,7 +123,5 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         int mMaxItems;
         int mAmountItems;
 };
-
-extern SellDialog *sellDialog;
 
 #endif
