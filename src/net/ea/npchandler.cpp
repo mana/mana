@@ -57,8 +57,6 @@ NpcHandler::NpcHandler()
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
 {
-    bool resetPlayer = true;
-
     if (msg.getId() == SMSG_NPC_CHOICE || msg.getId() == SMSG_NPC_MESSAGE)
     {
         msg.readInt16();  // length
@@ -66,7 +64,7 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
 
     int npcId = msg.readInt32();
     NpcDialogs::iterator diag = mNpcDialogs.find(npcId);
-    NpcDialog *dialog;
+    NpcDialog *dialog = 0;
 
     if (diag == mNpcDialogs.end())
     {
@@ -124,7 +122,7 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
             break;
     }
 
-    if (resetPlayer && player_node->getCurrentAction() != Being::SIT)
+    if (player_node->getCurrentAction() != Being::SIT)
         player_node->setAction(Being::STAND);
 }
 
