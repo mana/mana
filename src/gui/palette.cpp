@@ -144,21 +144,20 @@ Palette::Palette() :
 
 Palette::~Palette()
 {
-    const std::string *configName;
     for (ColVector::iterator col = mColVector.begin(),
          colEnd = mColVector.end(); col != colEnd; ++col)
     {
-        configName = &ColorTypeNames[col->type];
-        config.setValue(*configName + "Gradient", col->committedGrad);
+        const std::string &configName = ColorTypeNames[col->type];
+        config.setValue(configName + "Gradient", col->committedGrad);
 
         if (col->grad != STATIC)
-            config.setValue(*configName + "Delay", col->delay);
+            config.setValue(configName + "Delay", col->delay);
 
         if (col->grad == STATIC || col->grad == PULSE)
         {
             char buffer[20];
             sprintf(buffer, "0x%06x", col->getRGB());
-            config.setValue(*configName, std::string(buffer));
+            config.setValue(configName, std::string(buffer));
         }
     }
 }
@@ -271,10 +270,10 @@ void Palette::addColor(Palette::ColorType type, int rgb,
                        Palette::GradientType grad, const std::string &text,
                        char c, int delay)
 {
-    const std::string *configName = &ColorTypeNames[type];
+    const std::string &configName = ColorTypeNames[type];
     char buffer[20];
     sprintf(buffer, "0x%06x", rgb);
-    const std::string rgbString = config.getValue(*configName,
+    const std::string rgbString = config.getValue(configName,
                                                   std::string(buffer));
     unsigned int rgbValue = 0;
     if (rgbString.length() == 8 && rgbString[0] == '0' && rgbString[1] == 'x')
@@ -282,8 +281,8 @@ void Palette::addColor(Palette::ColorType type, int rgb,
     else
         rgbValue = atoi(rgbString.c_str());
     gcn::Color trueCol = rgbValue;
-    grad = (GradientType) config.getValue(*configName + "Gradient", grad);
-    delay = (int) config.getValue(*configName + "Delay", delay);
+    grad = (GradientType) config.getValue(configName + "Gradient", grad);
+    delay = (int) config.getValue(configName + "Delay", delay);
     mColVector[type].set(type, trueCol, grad, text, c, delay);
 
     if (grad != STATIC)
@@ -323,11 +322,11 @@ void Palette::advanceGradient()
             {
                 colVal = (int) (255.0 * sin(M_PI * colIndex / numOfColors));
 
-                const gcn::Color* col = &mGradVector[i]->testColor;
+                const gcn::Color &col = mGradVector[i]->testColor;
 
-                mGradVector[i]->color.r = ((colVal * col->r) / 255) % (col->r + 1);
-                mGradVector[i]->color.g = ((colVal * col->g) / 255) % (col->g + 1);
-                mGradVector[i]->color.b = ((colVal * col->b) / 255) % (col->b + 1);
+                mGradVector[i]->color.r = ((colVal * col.r) / 255) % (col.r + 1);
+                mGradVector[i]->color.g = ((colVal * col.g) / 255) % (col.g + 1);
+                mGradVector[i]->color.b = ((colVal * col.b) / 255) % (col.b + 1);
             }
             if (mGradVector[i]->grad == SPECTRUM)
             {
@@ -353,21 +352,21 @@ void Palette::advanceGradient()
             }
             else if (mGradVector[i]->grad == RAINBOW)
             {
-                const gcn::Color* startCol = &RAINBOW_COLORS[colIndex];
-                const gcn::Color* destCol =
-                        &RAINBOW_COLORS[(colIndex + 1) % numOfColors];
+                const gcn::Color &startCol = RAINBOW_COLORS[colIndex];
+                const gcn::Color &destCol =
+                        RAINBOW_COLORS[(colIndex + 1) % numOfColors];
 
                 startColVal = (cos(M_PI * pos / delay) + 1) / 2;
                 destColVal = 1 - startColVal;
 
-                mGradVector[i]->color.r =(int)(startColVal * startCol->r +
-                                               destColVal * destCol->r);
+                mGradVector[i]->color.r =(int)(startColVal * startCol.r +
+                                               destColVal * destCol.r);
 
-                mGradVector[i]->color.g =(int)(startColVal * startCol->g +
-                                               destColVal * destCol->g);
+                mGradVector[i]->color.g =(int)(startColVal * startCol.g +
+                                               destColVal * destCol.g);
 
-                mGradVector[i]->color.b =(int)(startColVal * startCol->b +
-                                               destColVal * destCol->b);
+                mGradVector[i]->color.b =(int)(startColVal * startCol.b +
+                                               destColVal * destCol.b);
             }
         }
 
