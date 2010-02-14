@@ -64,7 +64,7 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     else
         displayFlags |= SDL_SWSURFACE;
 
-    mTarget = SDL_SetVideoMode(w, h, bpp, displayFlags);
+    setTarget(SDL_SetVideoMode(w, h, bpp, displayFlags));
 
     if (!mTarget)
         return false;
@@ -97,8 +97,6 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     logger->log("Accelerated color fills: %s",
             ((vi->blit_fill) ? "yes" : "no"));
     logger->log("Available video memory: %d", vi->video_mem);
-
-    setTarget(mTarget);
 
     return true;
 }
