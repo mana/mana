@@ -24,7 +24,6 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/gui.h"
 #include "gui/skin.h"
 
 #include "resources/image.h"
@@ -88,6 +87,11 @@ void ScrollArea::init()
 {
     // Draw background by default
     setOpaque(true);
+
+    setUpButtonScrollAmount(2);
+    setDownButtonScrollAmount(2);
+    setLeftButtonScrollAmount(2);
+    setRightButtonScrollAmount(2);
 
     if (instances == 0)
     {
@@ -160,18 +164,13 @@ void ScrollArea::init()
             resman->getImage("graphics/gui/hscroll_right_pressed.png");
     }
 
-    mLastUpdate = tick_time;
-
     instances++;
 }
 
 void ScrollArea::logic()
 {
     if (!isVisible())
-    {
-        mLastUpdate = tick_time;
         return;
-    }
 
     gcn::ScrollArea::logic();
     gcn::Widget *content = getContent();
@@ -192,32 +191,25 @@ void ScrollArea::logic()
         }
     }
 
-    const int updateTicks = get_elapsed_time(mLastUpdate) / 100;
-
-    if (updateTicks > 0)
+    if (mUpButtonPressed)
     {
-        if (mUpButtonPressed)
-        {
-            setVerticalScrollAmount(getVerticalScrollAmount() -
-                                    mUpButtonScrollAmount);
-        }
-        else if (mDownButtonPressed)
-        {
-            setVerticalScrollAmount(getVerticalScrollAmount() +
-                                    mDownButtonScrollAmount);
-        }
-        else if (mLeftButtonPressed)
-        {
-            setHorizontalScrollAmount(getHorizontalScrollAmount() - 
-                                      mLeftButtonScrollAmount);
-        }
-        else if (mRightButtonPressed)
-        {
-            setHorizontalScrollAmount(getHorizontalScrollAmount() +
-                                      mRightButtonScrollAmount);
-        }
-
-        mLastUpdate = tick_time;
+        setVerticalScrollAmount(getVerticalScrollAmount() -
+                                mUpButtonScrollAmount);
+    }
+    else if (mDownButtonPressed)
+    {
+        setVerticalScrollAmount(getVerticalScrollAmount() +
+                                mDownButtonScrollAmount);
+    }
+    else if (mLeftButtonPressed)
+    {
+        setHorizontalScrollAmount(getHorizontalScrollAmount() -
+                                  mLeftButtonScrollAmount);
+    }
+    else if (mRightButtonPressed)
+    {
+        setHorizontalScrollAmount(getHorizontalScrollAmount() +
+                                  mRightButtonScrollAmount);
     }
 }
 
