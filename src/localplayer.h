@@ -105,7 +105,7 @@ class LocalPlayer : public Player
         /**
          * Constructor.
          */
-        LocalPlayer(int id= 65535, int job = 0, Map *map = NULL);
+        LocalPlayer(int id= 65535, int job = 0);
 
         /**
          * Destructor.
@@ -249,12 +249,12 @@ class LocalPlayer : public Player
         /**
          * Uses a character point to raise an attribute
          */
-        void raiseAttribute(size_t attr);
+        void raiseAttribute(int attr);
 
         /**
          * Uses a correction point to lower an attribute
          */
-        void lowerAttribute(size_t attr);
+        void lowerAttribute(int attr);
 
         void toggleSit();
         void emote(Uint8 emotion);

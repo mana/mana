@@ -303,6 +303,7 @@ SET(SRCS
     gui/worldselectdialog.cpp
     gui/worldselectdialog.h
     net/adminhandler.h
+    net/charhandler.cpp
     net/charhandler.h
     net/chathandler.h
     net/download.cpp
@@ -434,7 +435,6 @@ SET(SRCS
     keyboardconfig.h
     localplayer.cpp
     localplayer.h
-    lockedarray.h
     log.cpp
     log.h
     main.cpp

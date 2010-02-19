@@ -30,7 +30,8 @@
 
 namespace ManaServ {
 
-class EquipBackend : public Equipment::Backend {
+class EquipBackend : public Equipment::Backend
+{
     public:
         EquipBackend()
         { memset(mEquipment, 0, sizeof(mEquipment)); }
@@ -97,7 +98,7 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler
         size_t getSize(StorageType type) const;
 
     private:
-        EquipBackend mEqiups;
+        EquipBackend mEquips;
 };
 
 } // namespace ManaServ

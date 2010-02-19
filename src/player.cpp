@@ -49,7 +49,7 @@ Player::Player(int id, int job, Map *map, bool isNPC):
 {
     if (!isNPC)
     {
-        for (unsigned int i = 0; i < Net::getCharHandler()->maxSprite(); i++)
+        for (int i = 0; i < Net::getCharHandler()->maxSprite(); i++)
         {
             mSprites.push_back(NULL);
             mSpriteIDs.push_back(0);
@@ -157,7 +157,7 @@ void Player::setGM(bool gm)
     updateColors();
 }
 
-void Player::setSprite(unsigned int slot, int id, const std::string &color,
+void Player::setSprite(int slot, int id, const std::string &color,
                        bool isWeapon)
 {
     if (getType() == NPC)

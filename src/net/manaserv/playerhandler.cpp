@@ -306,14 +306,14 @@ void PlayerHandler::emote(int emoteId)
     // TODO
 }
 
-void PlayerHandler::increaseAttribute(size_t attr)
+void PlayerHandler::increaseAttribute(int attr)
 {
     MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
     msg.writeInt8(attr);
     gameServerConnection->send(msg);
 }
 
-void PlayerHandler::decreaseAttribute(size_t attr)
+void PlayerHandler::decreaseAttribute(int attr)
 {
     MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
     msg.writeInt8(attr);

@@ -42,11 +42,6 @@ class CharHandler : public MessageHandler, public Net::CharHandler
 
         void handleMessage(Net::MessageIn &msg);
 
-        void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
-        {
-            mCharInfo = charInfo;
-        }
-
         void setCharSelectDialog(CharSelectDialog *window);
 
         /**
@@ -56,32 +51,52 @@ class CharHandler : public MessageHandler, public Net::CharHandler
          */
         void setCharCreateDialog(CharCreateDialog *window);
 
-        void getCharacters();
+        void requestCharacters();
 
-        void chooseCharacter(int slot, LocalPlayer* character);
+        void chooseCharacter(Net::Character *character);
 
         void newCharacter(const std::string &name, int slot,
-                        bool gender, int hairstyle, int hairColor,
-                        std::vector<int> stats);
+                          bool gender, int hairstyle, int hairColor,
+                          const std::vector<int> &stats);
 
-        void deleteCharacter(int slot, LocalPlayer* character);
+        void deleteCharacter(Net::Character *character);
 
         void switchCharacter();
 
-        unsigned int baseSprite() const;
+        int baseSprite() const;
 
-        unsigned int hairSprite() const;
+        int hairSprite() const;
 
-        unsigned int maxSprite() const;
+        int maxSprite() const;
 
-    protected:
-        void handleCharCreateResponse(Net::MessageIn &msg);
+    private:
+        /**
+         * Character information needs to be cached since we receive it before
+         * we have loaded the dynamic data, so we can't resolve load any
+         * sprites yet.
+         */
+        struct CachedCharacterInfo {
+            int slot;
+            std::string name;
+            Gender gender;
+            int hairStyle;
+            int hairColor;
+            int level;
+            int characterPoints;
+            int correctionPoints;
+            int money;
+            int attribute[7];
+        };
 
-        void handleCharSelectResponse(Net::MessageIn &msg);
+        void handleCharacterInfo(Net::MessageIn &msg);
+        void handleCharacterCreateResponse(Net::MessageIn &msg);
+        void handleCharacterDeleteResponse(Net::MessageIn &msg);
+        void handleCharacterSelectResponse(Net::MessageIn &msg);
 
-        LockedArray<LocalPlayer*> *mCharInfo;
-        CharSelectDialog *mCharSelectDialog;
-        CharCreateDialog *mCharCreateDialog;
+        void updateCharacters();
+
+        /** Cached character information */
+        std::vector<CachedCharacterInfo> mCachedCharacterInfos;
 };
 
 } // namespace ManaServ

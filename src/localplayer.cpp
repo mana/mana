@@ -74,8 +74,8 @@ const short walkingKeyboardDelay = 1000;
 
 LocalPlayer *player_node = NULL;
 
-LocalPlayer::LocalPlayer(int id, int job, Map *map):
-    Player(id, job, map),
+LocalPlayer::LocalPlayer(int id, int job):
+    Player(id, job, 0),
     mEquipment(new Equipment),
     mInStorage(false),
     mAttackRange(0),
@@ -795,7 +795,7 @@ void LocalPlayer::stopAttack()
     mLastTarget = -1;
 }
 
-void LocalPlayer::raiseAttribute(size_t attr)
+void LocalPlayer::raiseAttribute(int attr)
 {
     // we assume that the server allows the change. When not we will undo it later.
     mCharacterPoints--;
@@ -805,7 +805,7 @@ void LocalPlayer::raiseAttribute(size_t attr)
     Net::getPlayerHandler()->increaseAttribute(attr);
 }
 
-void LocalPlayer::lowerAttribute(size_t attr)
+void LocalPlayer::lowerAttribute(int attr)
 {
     // we assume that the server allows the change. When not we will undo it later.
     mCorrectionPoints--;

@@ -556,7 +556,7 @@ void PlayerHandler::emote(int emoteId)
     outMsg.writeInt8(emoteId);
 }
 
-void PlayerHandler::increaseAttribute(size_t attr)
+void PlayerHandler::increaseAttribute(int attr)
 {
     if (attr >= STR && attr <= LUK)
     {
@@ -566,7 +566,7 @@ void PlayerHandler::increaseAttribute(size_t attr)
     }
 }
 
-void PlayerHandler::decreaseAttribute(size_t attr)
+void PlayerHandler::decreaseAttribute(int attr)
 {
     // Supported by eA?
 }

@@ -61,7 +61,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     {
         case GPMSG_INVENTORY_FULL:
             player_node->clearInventory();
-            player_node->mEquipment->setBackend(&mEqiups);
+            player_node->mEquipment->setBackend(&mEquips);
             // no break!
 
         case GPMSG_INVENTORY:
@@ -77,7 +77,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 int id = msg.readInt16();
                 if (slot < EQUIPMENT_SIZE)
                 {
-                    mEqiups.setEquipment(slot, id);
+                    mEquips.setEquipment(slot, id);
                 }
                 else if (slot >= 32 && slot < 32 + getSize(INVENTORY))
                 {
@@ -105,7 +105,7 @@ void InventoryHandler::unequipItem(const Item *item)
     // Tidy equipment directly to avoid weapon still shown bug, for instance
     int equipSlot = item->getInvIndex();
     logger->log("Unequipping %d", equipSlot);
-    mEqiups.setEquipment(equipSlot, 0);
+    mEquips.setEquipment(equipSlot, 0);
 }
 
 void InventoryHandler::useItem(const Item *item)

@@ -208,6 +208,7 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/worldselectdialog.cpp \
 	      gui/worldselectdialog.h \
 	      net/adminhandler.h \
+	      net/charhandler.cpp \
 	      net/charhandler.h \
 	      net/chathandler.h \
 	      net/download.cpp \
@@ -339,7 +340,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      keyboardconfig.h \
 	      localplayer.cpp \
 	      localplayer.h \
-	      lockedarray.h \
 	      log.cpp \
 	      log.h \
 	      main.cpp \

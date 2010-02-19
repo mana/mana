@@ -25,6 +25,7 @@
 #include "localplayer.h"
 #include "main.h"
 #include "units.h"
+#include "log.h"
 
 #include "gui/changeemaildialog.h"
 #include "gui/changepassworddialog.h"
@@ -56,6 +57,7 @@
 #include <guichan/font.hpp>
 
 #include <string>
+#include <cassert>
 
 /**
  * Listener for confirming character deletion.
@@ -63,48 +65,45 @@
 class CharDeleteConfirm : public ConfirmDialog
 {
     public:
-        CharDeleteConfirm(CharSelectDialog *m):
+        CharDeleteConfirm(CharSelectDialog *m, int index):
             ConfirmDialog(_("Confirm Character Delete"),
                     _("Are you sure you want to delete this character?"), m),
-            master(m)
+            mMaster(m),
+            mIndex(index)
         {
         }
 
         void action(const gcn::ActionEvent &event)
         {
-            //ConfirmDialog::action(event);
             if (event.getId() == "yes")
-            {
-                master->attemptCharDelete();
-            }
+                mMaster->attemptCharacterDelete(mIndex);
+
             ConfirmDialog::action(event);
         }
 
     private:
-        CharSelectDialog *master;
+        CharSelectDialog *mMaster;
+        int mIndex;
 };
 
-class CharEntry : public Container
+class CharacterDisplay : public Container
 {
     public:
-        CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr);
+        CharacterDisplay(CharSelectDialog *charSelectDialog);
 
-        char getSlot() const
-        { return mSlot; }
+        void setCharacter(Net::Character *character);
 
-        LocalPlayer *getChar() const
+        Net::Character *getCharacter() const
         { return mCharacter; }
-
-        void setChar(LocalPlayer *chr);
 
         void requestFocus();
 
+        void setActive(bool active);
+
+    private:
         void update();
 
-    protected:
-        friend class CharSelectDialog;
-        char mSlot;
-        LocalPlayer *mCharacter;
+        Net::Character *mCharacter;
 
         PlayerBox *mPlayerBox;
         Label *mName;
@@ -114,10 +113,11 @@ class CharEntry : public Container
         Button *mDelete;
 };
 
-CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
-                                   LoginData *loginData):
+CharSelectDialog::CharSelectDialog(LoginData *loginData):
     Window(_("Account and Character Management")),
-    mCharInfo(charInfo),
+    mLocked(false),
+    mUnregisterButton(0),
+    mChangeEmailButton(0),
     mLoginData(loginData),
     mCharHandler(Net::getCharHandler())
 {
@@ -127,12 +127,6 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     mSwitchLoginButton = new Button(_("Switch Login"), "switch", this);
     mChangePasswordButton = new Button(_("Change Password"), "change_password",
                                        this);
-
-    for (int i = 0; i < MAX_CHARACTER_COUNT; i++)
-    {
-        charInfo->select(i);
-        mCharEntries[i] = new CharEntry(this, i, charInfo->getEntry());
-    }
 
     int optionalActions = Net::getLoginHandler()->supportedOptionalActions();
 
@@ -144,79 +138,85 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
     if (optionalActions & Net::LoginHandler::Unregister)
     {
-        gcn::Button *unregisterButton = new Button(_("Unregister"),
-                                                   "unregister", this);
-        place(3, 1, unregisterButton);
+        mUnregisterButton = new Button(_("Unregister"),
+                                       "unregister", this);
+        place(3, 1, mUnregisterButton);
     }
 
     place(0, 2, mChangePasswordButton);
 
     if (optionalActions & Net::LoginHandler::ChangeEmail)
     {
-        gcn::Button *changeEmailButton = new Button(_("Change Email"),
-                                                    "change_email", this);
-        place(3, 2, changeEmailButton);
+        mChangeEmailButton = new Button(_("Change Email"),
+                                        "change_email", this);
+        place(3, 2, mChangeEmailButton);
     }
 
     place = getPlacer(0, 1);
-    place(0, 0, mCharEntries[0]);
-    place(1, 0, mCharEntries[1]);
-    place(2, 0, mCharEntries[2]);
+
+    for (int i = 0; i < MAX_CHARACTER_COUNT; i++) {
+        mCharacterEntries[i] = new CharacterDisplay(this);
+        place(i, 0, mCharacterEntries[i]);
+    }
 
     reflowLayout();
 
     addKeyListener(this);
 
     center();
-    mCharEntries[0]->requestFocus();
+    mCharacterEntries[0]->requestFocus();
     setVisible(true);
 
     Net::getCharHandler()->setCharSelectDialog(this);
 }
 
+CharSelectDialog::~CharSelectDialog()
+{
+}
+
 void CharSelectDialog::action(const gcn::ActionEvent &event)
 {
+    // Check if a button of a character was pressed
     const gcn::Widget *sourceParent = event.getSource()->getParent();
+    int selected = -1;
+    for (unsigned i = 0; i < MAX_CHARACTER_COUNT; ++i)
+        if (mCharacterEntries[i] == sourceParent)
+            selected = i;
 
-    // Update which character is selected when applicable
-    if (const CharEntry *entry = dynamic_cast<const CharEntry*>(sourceParent))
-        mCharInfo->select(entry->getSlot());
+    const std::string &eventId = event.getId();
 
-    if (event.getId() == "use")
+    if (selected != -1)
     {
-        chooseSelected();
-    }
-    else if (event.getId() == "switch")
-    {
-        mCharInfo->clear();
-        state = STATE_SWITCH_LOGIN;
-    }
-    else if (event.getId() == "new")
-    {
-        if (!(mCharInfo->getEntry()))
+        if (eventId == "use")
+        {
+            attemptCharacterSelect(selected);
+        }
+        else if (eventId == "new" && !mCharacterEntries[selected]->getCharacter())
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
-                new CharCreateDialog(this, mCharInfo->getPos());
+                    new CharCreateDialog(this, selected);
             mCharHandler->setCharCreateDialog(charCreateDialog);
         }
-    }
-    else if (event.getId() == "delete")
-    {
-        if (mCharInfo->getEntry())
+        else if (eventId == "delete"
+                 && mCharacterEntries[selected]->getCharacter())
         {
-            new CharDeleteConfirm(this);
+            new CharDeleteConfirm(this, selected);
         }
     }
-    else if (event.getId() == "change_password")
+    else if (eventId == "switch")
+    {
+        state = STATE_SWITCH_LOGIN;
+    }
+    else if (eventId == "change_password")
     {
         state = STATE_CHANGEPASSWORD;
     }
-    else if (event.getId() == "change_email")
+    else if (eventId == "change_email")
     {
         state = STATE_CHANGEEMAIL;
     }
-    else if (event.getId() == "unregister")
+    else if (eventId == "unregister")
     {
         state = STATE_UNREGISTER;
     }
@@ -228,90 +228,111 @@ void CharSelectDialog::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (key.getValue() == Key::ESCAPE)
     {
-        action(gcn::ActionEvent(mSwitchLoginButton, mSwitchLoginButton->getActionEventId()));
+        action(gcn::ActionEvent(mSwitchLoginButton,
+                                mSwitchLoginButton->getActionEventId()));
     }
 }
 
-void CharSelectDialog::attemptCharDelete()
+/**
+ * Communicate character deletion to the server.
+ */
+void CharSelectDialog::attemptCharacterDelete(int index)
 {
-    mCharHandler->deleteCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
-    mCharInfo->lock();
+    if (mLocked)
+        return;
+
+    mCharHandler->deleteCharacter(mCharacterEntries[index]->getCharacter());
+    lock();
 }
 
-void CharSelectDialog::attemptCharSelect()
+/**
+ * Communicate character selection to the server.
+ */
+void CharSelectDialog::attemptCharacterSelect(int index)
 {
-    mCharHandler->chooseCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
-    mCharInfo->lock();
+    if (mLocked)
+        return;
+
+    mCharHandler->chooseCharacter(mCharacterEntries[index]->getCharacter());
+    lock();
 }
 
-bool CharSelectDialog::selectByName(const std::string &name)
+void CharSelectDialog::setCharacters(const Net::Characters &characters)
 {
-    if (mCharInfo->isLocked())
-        return false;
+    // Reset previous characters
+    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i)
+        mCharacterEntries[i]->setCharacter(0);
 
-    unsigned int oldPos = mCharInfo->getPos();
-
-    mCharInfo->select(0);
-    do
+    Net::Characters::const_iterator i, i_end = characters.end();
+    for (i = characters.begin(); i != i_end; ++i)
     {
-        LocalPlayer *player = mCharInfo->getEntry();
-
-        if (player && player->getName() == name)
-        {
-            mCharEntries[mCharInfo->getPos()]->requestFocus();
-            return true;
+        Net::Character *character = *i;
+        if (character->slot >= MAX_CHARACTER_COUNT) {
+            logger->log("Warning: slot out of range: %d", character->slot);
+            continue;
         }
 
-        mCharInfo->next();
-    } while (mCharInfo->getPos());
+        mCharacterEntries[character->slot]->setCharacter(character);
+    }
+}
 
-    mCharInfo->select(oldPos);
+void CharSelectDialog::lock()
+{
+    assert(!mLocked);
+    setLocked(true);
+}
+
+void CharSelectDialog::unlock()
+{
+    setLocked(false);
+}
+
+void CharSelectDialog::setLocked(bool locked)
+{
+    mLocked = locked;
+
+    mSwitchLoginButton->setEnabled(!locked);
+    mChangePasswordButton->setEnabled(!locked);
+    if (mUnregisterButton)
+        mUnregisterButton->setEnabled(!locked);
+    if (mChangeEmailButton)
+        mChangeEmailButton->setEnabled(!locked);
+
+    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i)
+        mCharacterEntries[i]->setActive(!mLocked);
+}
+
+bool CharSelectDialog::selectByName(const std::string &name,
+                                    SelectAction action)
+{
+    if (mLocked)
+        return false;
+
+    for (unsigned i = 0; i < MAX_CHARACTER_COUNT; ++i) {
+        if (Net::Character *character = mCharacterEntries[i]->getCharacter()) {
+            if (character->dummy->getName() == name) {
+                mCharacterEntries[i]->requestFocus();
+                if (action == Choose)
+                    attemptCharacterSelect(i);
+                return true;
+            }
+        }
+    }
 
     return false;
 }
 
-bool CharSelectDialog::chooseSelected()
+
+CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
+    mCharacter(0),
+    mPlayerBox(new PlayerBox)
 {
-    if (!mCharInfo->getSize())
-        return false;
-
-    setVisible(false);
-    attemptCharSelect();
-
-    return true;
-}
-
-void CharSelectDialog::update(int slot)
-{
-    if (slot >= 0 && slot < MAX_CHARACTER_COUNT)
-    {
-        mCharInfo->select(slot);
-        mCharEntries[slot]->setChar(mCharInfo->getEntry());
-        mCharEntries[slot]->requestFocus();
-    }
-    else
-    {
-        int slot = mCharInfo->getPos();
-        for (int i = 0; i < MAX_CHARACTER_COUNT; i++)
-        {
-            mCharInfo->select(slot);
-            mCharEntries[slot]->setChar(mCharInfo->getEntry());
-        }
-        mCharInfo->select(slot);
-    }
-}
-
-CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
-        mSlot(slot),
-        mCharacter(chr),
-        mPlayerBox(new PlayerBox(chr))
-{
-    mButton = new Button("wwwwwwwww", "go", m);
+    mButton = new Button("wwwwwwwww", "go", charSelectDialog);
     mName = new Label("wwwwwwwwwwwwwwwwwwwwwwww");
     mLevel = new Label("(888)");
     mMoney = new Label("wwwwwwwww");
 
-    mDelete = new Button(_("Delete"), "delete", m);
+    mDelete = new Button(_("Delete"), "delete", charSelectDialog);
 
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
@@ -337,29 +358,37 @@ CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
             mMoney->getHeight() + mButton->getHeight() + mDelete->getHeight());
 }
 
-void CharEntry::setChar(LocalPlayer *chr)
+void CharacterDisplay::setCharacter(Net::Character *character)
 {
-    mCharacter = chr;
+    if (mCharacter == character)
+        return;
 
-    mPlayerBox->setPlayer(chr);
-
+    mCharacter = character;
+    mPlayerBox->setPlayer(character ? character->dummy : 0);
     update();
 }
 
-void CharEntry::requestFocus()
+void CharacterDisplay::requestFocus()
 {
     mButton->requestFocus();
 }
 
-void CharEntry::update()
+void CharacterDisplay::setActive(bool active)
+{
+    mButton->setEnabled(active);
+    mDelete->setEnabled(active);
+}
+
+void CharacterDisplay::update()
 {
     if (mCharacter)
     {
+        const LocalPlayer *character = mCharacter->dummy;
         mButton->setCaption(_("Choose"));
         mButton->setActionEventId("use");
-        mName->setCaption(strprintf("%s", mCharacter->getName().c_str()));
-        mLevel->setCaption(strprintf("Level %d", mCharacter->getLevel()));
-        mMoney->setCaption(Units::formatCurrency(mCharacter->getMoney()));
+        mName->setCaption(strprintf("%s", character->getName().c_str()));
+        mLevel->setCaption(strprintf("Level %d", character->getLevel()));
+        mMoney->setCaption(Units::formatCurrency(character->getMoney()));
 
         mDelete->setVisible(true);
     }

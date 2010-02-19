@@ -42,9 +42,6 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
 
         virtual void handleMessage(Net::MessageIn &msg);
 
-        void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
-        { mCharInfo = charInfo; }
-
         void setCharSelectDialog(CharSelectDialog *window);
 
         /**
@@ -54,31 +51,28 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
          */
         void setCharCreateDialog(CharCreateDialog *window);
 
-        void getCharacters();
+        void requestCharacters();
 
-        void chooseCharacter(int slot, LocalPlayer* character);
+        void chooseCharacter(Net::Character *character);
 
         void newCharacter(const std::string &name, int slot, bool gender,
-                    int hairstyle, int hairColor, std::vector<int> stats);
+                          int hairstyle, int hairColor,
+                          const std::vector<int> &stats);
 
-        void deleteCharacter(int slot, LocalPlayer* character);
+        void deleteCharacter(Net::Character *character);
 
         void switchCharacter();
 
-        unsigned int baseSprite() const;
+        int baseSprite() const;
 
-        unsigned int hairSprite() const;
+        int hairSprite() const;
 
-        unsigned int maxSprite() const;
+        int maxSprite() const;
 
         void connect();
 
-    protected:
-        LockedArray<LocalPlayer*> *mCharInfo;
-        CharSelectDialog *mCharSelectDialog;
-        CharCreateDialog *mCharCreateDialog;
-
-        LocalPlayer *readPlayerData(Net::MessageIn &msg, int &slot);
+    private:
+        LocalPlayer *readPlayerData(Net::MessageIn &msg, int *slot);
 };
 
 } // namespace EAthena

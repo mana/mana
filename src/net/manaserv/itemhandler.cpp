@@ -58,12 +58,9 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
 
                 if (itemId)
                 {
-                    Game *game = Game::instance();
-                    Map *map = 0;
-                    if (game)
+                    if (Game *game = Game::instance())
                     {
-                        map = game->getCurrentMap();
-                        if (map)
+                        if (Map *map = game->getCurrentMap())
                         {
                             floorItemManager->create(id,
                                                      itemId,
@@ -71,9 +68,11 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
                                                      y / map->getTileHeight());
                         }
                         else
-                          logger->log(
-                          "ItemHandler: An item wasn't created because of"
-                          "Game/Map not initialized...");
+                        {
+                            logger->log(
+                                    "ItemHandler: An item wasn't created "
+                                    "because of Game/Map not initialized...");
+                        }
                     }
                 }
                 else if (FloorItem *item = floorItemManager->findById(id))

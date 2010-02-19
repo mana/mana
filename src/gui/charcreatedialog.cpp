@@ -90,13 +90,13 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mFemale->addActionListener(this);
 
     mPlayerBox = new PlayerBox(mPlayer);
-
     mPlayerBox->setWidth(74);
 
     mNameField->setActionEventId("create");
     mNameField->addActionListener(this);
 
-    mAttributesLeft = new Label(strprintf(_("Please distribute %d points"), 99));
+    mAttributesLeft = new Label(
+            strprintf(_("Please distribute %d points"), 99));
 
     int w = 200;
     int h = 330;
@@ -168,8 +168,9 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
             }
 
             Net::getCharHandler()->newCharacter(getName(), mSlot,
-                                mFemale->isSelected(), mHairStyle,
-                                mHairColor, atts);
+                                                mFemale->isSelected(),
+                                                mHairStyle,
+                                                mHairColor, atts);
         }
         else
         {
@@ -246,11 +247,13 @@ void CharCreateDialog::updateSliders()
         mCreateButton->setEnabled(false);
         if (pointsLeft > 0)
         {
-            mAttributesLeft->setCaption(strprintf(_("Please distribute %d points"), pointsLeft));
+            mAttributesLeft->setCaption(
+                    strprintf(_("Please distribute %d points"), pointsLeft));
         }
         else
         {
-            mAttributesLeft->setCaption(strprintf(_("Please remove %d points"), -pointsLeft));
+            mAttributesLeft->setCaption(
+                    strprintf(_("Please remove %d points"), -pointsLeft));
         }
     }
 
@@ -273,7 +276,7 @@ int CharCreateDialog::getDistributedPoints() const
     return points;
 }
 
-void CharCreateDialog::setAttributes(std::vector<std::string> labels,
+void CharCreateDialog::setAttributes(const std::vector<std::string> &labels,
                                      int available, int min, int max)
 {
     mMaxPoints = available;
@@ -303,7 +306,8 @@ void CharCreateDialog::setAttributes(std::vector<std::string> labels,
         add(mAttributeLabel[i]);
 
         mAttributeSlider[i] = new Slider(min, max);
-        mAttributeSlider[i]->setDimension(gcn::Rectangle(75, 140 + i*20, 100, 10));
+        mAttributeSlider[i]->setDimension(gcn::Rectangle(75, 140 + i * 20,
+                                                         100, 10));
         mAttributeSlider[i]->setActionEventId("statslider");
         mAttributeSlider[i]->addActionListener(this);
         add(mAttributeSlider[i]);
@@ -344,11 +348,6 @@ void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
         mMale->setEnabled(false);
         mFemale->setEnabled(false);
     }
-}
-
-void CharCreateDialog::success()
-{
-    mCharSelectDialog->update(mSlot);
 }
 
 void CharCreateDialog::updateHair()

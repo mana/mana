@@ -75,7 +75,7 @@ class Player : public Being
         /**
          * Sets visible equipments for this player.
          */
-        virtual void setSprite(unsigned int slot, int id,
+        virtual void setSprite(int slot, int id,
                                const std::string &color = "",
                                bool isWeapon = false);
 

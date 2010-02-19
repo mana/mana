@@ -41,25 +41,10 @@
 
 #include "resources/colordb.h"
 
+#include "utils/dtor.h"
 #include "utils/gettext.h"
 
 extern Net::CharHandler *charHandler;
-
-struct CharInfo {
-    unsigned char slot;
-    std::string name;
-    Gender gender;
-    int hs, hc;
-    unsigned short level;
-    unsigned short charPoints;
-    unsigned short corrPoints;
-    unsigned int money;
-    unsigned char attr[7];
-};
-
-typedef std::vector<CharInfo> CharInfos;
-CharInfos chars;
-
 extern ManaServ::GameHandler *gameHandler;
 
 namespace ManaServ {
@@ -71,9 +56,7 @@ extern std::string netToken;
 extern ServerInfo gameServer;
 extern ServerInfo chatServer;
 
-CharHandler::CharHandler():
-    mCharSelectDialog(0),
-    mCharCreateDialog(0)
+CharHandler::CharHandler()
 {
     static const Uint16 _messages[] = {
         APMSG_CHAR_CREATE_RESPONSE,
@@ -91,104 +74,54 @@ void CharHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
         case APMSG_CHAR_CREATE_RESPONSE:
-            handleCharCreateResponse(msg);
+            handleCharacterCreateResponse(msg);
             break;
 
         case APMSG_CHAR_DELETE_RESPONSE:
-        {
-            int errMsg = msg.readInt8();
-            // Character deletion successful
-            if (errMsg == ERRMSG_OK)
-            {
-                LocalPlayer *tempPlayer = mCharInfo->getEntry();
-                mCharInfo->setEntry(0);
-                mCharInfo->unlock();
-                if (mCharSelectDialog)
-                    mCharSelectDialog->update(mCharInfo->getPos());
-                new OkDialog(_("Info"), _("Player deleted."));
-                delete tempPlayer;
-            }
-            // Character deletion failed
-            else
-            {
-                std::string errorMessage = "";
-                switch (errMsg)
-                {
-                    case ERRMSG_NO_LOGIN:
-                        errorMessage = _("Not logged in.");
-                        break;
-                    case ERRMSG_INVALID_ARGUMENT:
-                        errorMessage = _("Selection out of range.");
-                        break;
-                    default:
-                        errorMessage = _("Unknown error.");
-                }
-                mCharInfo->unlock();
-                new OkDialog(_("Error"), errorMessage);
-            }
-        }
+            handleCharacterDeleteResponse(msg);
             break;
 
         case APMSG_CHAR_INFO:
-        {
-            CharInfo info;
-            info.slot = msg.readInt8(); // character slot
-            info.name = msg.readString();
-            info.gender = msg.readInt8() == GENDER_MALE ? GENDER_MALE :
-                                                          GENDER_FEMALE;
-            info.hs = msg.readInt8();
-            info.hc = msg.readInt8();
-            info.level = msg.readInt16();
-            info.charPoints = msg.readInt16();
-            info.corrPoints = msg.readInt16();
-            info.money = msg.readInt32();
-
-            for (int i = 0; i < 7; i++)
-            {
-                info.attr[i] = msg.readInt8();
-            }
-
-            chars.push_back(info);
-
-            if (mCharSelectDialog)
-            {
-                mCharInfo->select(info.slot);
-
-                LocalPlayer *tempPlayer = new LocalPlayer();
-                tempPlayer->setName(info.name);
-                tempPlayer->setGender(info.gender);
-                tempPlayer->setSprite(SPRITE_HAIR, info.hs * -1,
-                                      ColorDB::get(info.hc));
-                tempPlayer->setLevel(info.level);
-                tempPlayer->setCharacterPoints(info.charPoints);
-                tempPlayer->setCorrectionPoints(info.corrPoints);
-                tempPlayer->setMoney(info.money);
-
-                for (int i = 0; i < 7; i++)
-                {
-                    tempPlayer->setAttributeBase(i, info.attr[i], false);
-                }
-
-                mCharInfo->setEntry(tempPlayer);
-
-                mCharSelectDialog->update(info.slot);
-            }
-        }
+            handleCharacterInfo(msg);
             break;
 
         case APMSG_CHAR_SELECT_RESPONSE:
-            handleCharSelectResponse(msg);
+            handleCharacterSelectResponse(msg);
             break;
     }
 }
 
-void CharHandler::handleCharCreateResponse(Net::MessageIn &msg)
+void CharHandler::handleCharacterInfo(Net::MessageIn &msg)
 {
-    int errMsg = msg.readInt8();
+    CachedCharacterInfo info;
+    info.slot = msg.readInt8();
+    info.name = msg.readString();
+    info.gender = msg.readInt8() == GENDER_MALE ? GENDER_MALE :
+                                                  GENDER_FEMALE;
+    info.hairStyle = msg.readInt8();
+    info.hairColor = msg.readInt8();
+    info.level = msg.readInt16();
+    info.characterPoints = msg.readInt16();
+    info.correctionPoints = msg.readInt16();
+    info.money = msg.readInt32();
 
-    // Character creation failed
+    for (int i = 0; i < 7; i++)
+    {
+        info.attribute[i] = msg.readInt8();
+    }
+
+    mCachedCharacterInfos.push_back(info);
+
+    updateCharacters();
+}
+
+void CharHandler::handleCharacterCreateResponse(Net::MessageIn &msg)
+{
+    const int errMsg = msg.readInt8();
+
     if (errMsg != ERRMSG_OK)
     {
+        // Character creation failed
         std::string errorMessage = "";
         switch (errMsg)
         {
@@ -233,17 +166,48 @@ void CharHandler::handleCharCreateResponse(Net::MessageIn &msg)
     }
     else
     {
+        // Close the character create dialog
         if (mCharCreateDialog)
         {
-            mCharCreateDialog->success();
             mCharCreateDialog->scheduleDelete();
             mCharCreateDialog = 0;
         }
     }
-
 }
 
-void CharHandler::handleCharSelectResponse(Net::MessageIn &msg)
+void CharHandler::handleCharacterDeleteResponse(Net::MessageIn &msg)
+{
+    int errMsg = msg.readInt8();
+    if (errMsg == ERRMSG_OK)
+    {
+        // Character deletion successful
+        delete mSelectedCharacter;
+        mCharacters.remove(mSelectedCharacter);
+        updateCharSelectDialog();
+        unlockCharSelectDialog();
+        new OkDialog(_("Info"), _("Player deleted."));
+    }
+    else
+    {
+        // Character deletion failed
+        std::string errorMessage = "";
+        switch (errMsg)
+        {
+            case ERRMSG_NO_LOGIN:
+                errorMessage = _("Not logged in.");
+                break;
+            case ERRMSG_INVALID_ARGUMENT:
+                errorMessage = _("Selection out of range.");
+                break;
+            default:
+                errorMessage = strprintf(_("Unknown error (%d)."), errMsg);
+        }
+        new OkDialog(_("Error"), errorMessage);
+    }
+    mSelectedCharacter = 0;
+}
+
+void CharHandler::handleCharacterSelectResponse(Net::MessageIn &msg)
 {
     int errMsg = msg.readInt8();
 
@@ -265,31 +229,20 @@ void CharHandler::handleCharSelectResponse(Net::MessageIn &msg)
         gameServerConnection->connect(gameServer.hostname, gameServer.port);
         chatServerConnection->connect(chatServer.hostname, chatServer.port);
 
-        // Keep the selected character and delete the others
-        player_node = mCharInfo->getEntry();
-        int slot = mCharInfo->getPos();
-        mCharInfo->unlock();
-        mCharInfo->select(0);
+        // Prevent the selected local player from being deleted
+        player_node = mSelectedCharacter->dummy;
+        mSelectedCharacter->dummy = 0;
 
-        do {
-            LocalPlayer *tmp = mCharInfo->getEntry();
-            if (tmp != player_node)
-            {
-                delete tmp;
-                mCharInfo->setEntry(0);
-            }
-            mCharInfo->next();
-        } while (mCharInfo->getPos());
-        mCharInfo->select(slot);
-
-        mCharInfo->clear(); //player_node will be deleted by ~Game
+        mCachedCharacterInfos.clear();
+        updateCharacters();
 
         state = STATE_CONNECT_GAME;
     }
-    else if(errMsg == ERRMSG_FAILURE)
+    else if (errMsg == ERRMSG_FAILURE)
     {
         errorMessage = _("No gameservers are available.");
-        mCharInfo->clear();
+        delete_all(mCharacters);
+        mCharacters.clear();
         state = STATE_ERROR;
     }
 }
@@ -297,13 +250,15 @@ void CharHandler::handleCharSelectResponse(Net::MessageIn &msg)
 void CharHandler::setCharSelectDialog(CharSelectDialog *window)
 {
     mCharSelectDialog = window;
+    updateCharacters();
 }
 
 void CharHandler::setCharCreateDialog(CharCreateDialog *window)
 {
     mCharCreateDialog = window;
 
-    if (!mCharCreateDialog) return;
+    if (!mCharCreateDialog)
+        return;
 
     std::vector<std::string> attributes;
     attributes.push_back(_("Strength:"));
@@ -316,59 +271,34 @@ void CharHandler::setCharCreateDialog(CharCreateDialog *window)
     mCharCreateDialog->setAttributes(attributes, 60, 1, 20);
 }
 
-void CharHandler::getCharacters()
+void CharHandler::requestCharacters()
 {
     if (!accountServerConnection->isConnected())
+    {
         Net::getLoginHandler()->connect();
+    }
     else
     {
-        mCharInfo->unlock();
-        LocalPlayer *tempPlayer;
-        for (CharInfos::const_iterator it = chars.begin(); it != chars.end(); it++)
-        {
-            const CharInfo info = (CharInfo) (*it);
-            mCharInfo->select(info.slot);
-
-            tempPlayer = new LocalPlayer();
-            tempPlayer->setName(info.name);
-            tempPlayer->setGender(info.gender);
-            tempPlayer->setSprite(SPRITE_HAIR, info.hs * -1,
-                                  ColorDB::get(info.hc));
-            tempPlayer->setLevel(info.level);
-            tempPlayer->setCharacterPoints(info.charPoints);
-            tempPlayer->setCorrectionPoints(info.corrPoints);
-            tempPlayer->setMoney(info.money);
-
-            for (int i = 0; i < 7; i++)
-            {
-                tempPlayer->setAttributeBase(i, info.attr[i], false);
-            }
-
-            mCharInfo->setEntry(tempPlayer);
-        }
-
-        // Close the character create dialog
-        if (mCharCreateDialog)
-        {
-            mCharCreateDialog->scheduleDelete();
-            mCharCreateDialog = 0;
-        }
-
+        // The characters are already there, continue to character selection
         state = STATE_CHAR_SELECT;
     }
 }
 
-void CharHandler::chooseCharacter(int slot, LocalPlayer* character)
+void CharHandler::chooseCharacter(Net::Character *character)
 {
+    mSelectedCharacter = character;
+
     MessageOut msg(PAMSG_CHAR_SELECT);
-
-    msg.writeInt8(slot);
-
+    msg.writeInt8(mSelectedCharacter->slot);
     accountServerConnection->send(msg);
 }
 
-void CharHandler::newCharacter(const std::string &name, int slot, bool gender,
-                  int hairstyle, int hairColor, std::vector<int> stats)
+void CharHandler::newCharacter(const std::string &name,
+                               int /* slot */,
+                               bool gender,
+                               int hairstyle,
+                               int hairColor,
+                               const std::vector<int> &stats)
 {
     MessageOut msg(PAMSG_CHAR_CREATE);
 
@@ -386,12 +316,12 @@ void CharHandler::newCharacter(const std::string &name, int slot, bool gender,
     accountServerConnection->send(msg);
 }
 
-void CharHandler::deleteCharacter(int slot, LocalPlayer* character)
+void CharHandler::deleteCharacter(Net::Character *character)
 {
+    mSelectedCharacter = character;
+
     MessageOut msg(PAMSG_CHAR_DELETE);
-
-    msg.writeInt8(slot);
-
+    msg.writeInt8(mSelectedCharacter->slot);
     accountServerConnection->send(msg);
 }
 
@@ -400,19 +330,56 @@ void CharHandler::switchCharacter()
     gameHandler->quit(true);
 }
 
-unsigned int CharHandler::baseSprite() const
+int CharHandler::baseSprite() const
 {
     return SPRITE_BASE;
 }
 
-unsigned int CharHandler::hairSprite() const
+int CharHandler::hairSprite() const
 {
     return SPRITE_HAIR;
 }
 
-unsigned int CharHandler::maxSprite() const
+int CharHandler::maxSprite() const
 {
     return SPRITE_VECTOREND;
+}
+
+void CharHandler::updateCharacters()
+{
+    // Delete previous characters
+    delete_all(mCharacters);
+    mCharacters.clear();
+
+    if (!mCharSelectDialog)
+        return;
+
+    // Create new characters and initialize them from the cached infos
+    for (unsigned i = 0; i < mCachedCharacterInfos.size(); ++i)
+    {
+        const CachedCharacterInfo &info = mCachedCharacterInfos.at(i);
+
+        Net::Character *character = new Net::Character;
+        character->slot = info.slot;
+        LocalPlayer *player = character->dummy;
+        player->setName(info.name);
+        player->setGender(info.gender);
+        player->setSprite(SPRITE_HAIR, info.hairStyle * -1,
+                          ColorDB::get(info.hairColor));
+        player->setLevel(info.level);
+        player->setCharacterPoints(info.characterPoints);
+        player->setCorrectionPoints(info.correctionPoints);
+        player->setMoney(info.money);
+
+        for (int i = 0; i < 7; i++)
+        {
+            player->setAttributeBase(i, info.attribute[i], false);
+        }
+
+        mCharacters.push_back(character);
+    }
+
+    updateCharSelectDialog();
 }
 
 } // namespace ManaServ

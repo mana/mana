@@ -44,31 +44,23 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
         void handleMessage(Net::MessageIn &msg);
 
         void attack(int id);
-
         void emote(int emoteId);
 
-        void increaseAttribute(size_t attr);
-
-        void decreaseAttribute(size_t attr);
-
+        void increaseAttribute(int attr);
+        void decreaseAttribute(int attr);
         void increaseSkill(int skillId);
 
         void pickUp(FloorItem *floorItem);
-
         void setDirection(char direction);
-
         void setDestination(int x, int y, int direction = -1);
-
         void changeAction(Being::Action action);
 
         void respawn();
 
         void ignorePlayer(const std::string &player, bool ignore);
-
         void ignoreAll(bool ignore);
 
         bool canUseMagic();
-
         bool canCorrectAttributes();
 
         int getJobLocation();

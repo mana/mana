@@ -292,7 +292,6 @@
 ./src/keyboardconfig.h
 ./src/localplayer.cpp
 ./src/localplayer.h
-./src/lockedarray.h
 ./src/log.cpp
 ./src/log.h
 ./src/main.cpp
@@ -303,6 +302,7 @@
 ./src/monster.cpp
 ./src/monster.h
 ./src/net/adminhandler.h
+./src/net/charhandler.cpp
 ./src/net/charhandler.h
 ./src/net/chathandler.h
 ./src/net/download.cpp

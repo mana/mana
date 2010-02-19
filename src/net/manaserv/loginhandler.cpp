@@ -64,9 +64,11 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
         case APMSG_LOGIN_RESPONSE:
             handleLoginResponse(msg);
             break;
+
         case APMSG_REGISTER_RESPONSE:
             handleRegisterResponse(msg);
             break;
+
         case APMSG_RECONNECT_RESPONSE:
         {
             int errMsg = msg.readInt8();

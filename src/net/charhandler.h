@@ -23,7 +23,6 @@
 #define CHARHANDLER_H
 
 #include "localplayer.h"
-#include "lockedarray.h"
 #include "logindata.h"
 
 #include <iosfwd>
@@ -35,34 +34,73 @@ class LocalPlayer;
 
 namespace Net {
 
+/**
+ * A structure to hold information about a character.
+ */
+struct Character
+{
+    Character() :
+        slot(0),
+        dummy(new LocalPlayer)
+    {
+    }
+
+    ~Character()
+    {
+        delete dummy;
+    }
+
+    int slot;            /**< The index in the list of characters */
+    LocalPlayer *dummy;  /**< A dummy representing this character */
+};
+
+typedef std::list<Character*> Characters;
+
 class CharHandler
 {
     public:
-        virtual void setCharInfo(LockedArray<LocalPlayer*> *charInfo) = 0;
-
         virtual void setCharSelectDialog(CharSelectDialog *window) = 0;
 
         virtual void setCharCreateDialog(CharCreateDialog *window) = 0;
 
-        virtual void getCharacters() = 0;
+        virtual void requestCharacters() = 0;
 
-        virtual void chooseCharacter(int slot, LocalPlayer *character) = 0;
+        virtual void chooseCharacter(Net::Character *character) = 0;
 
         virtual void newCharacter(const std::string &name, int slot,
-                        bool gender, int hairstyle, int hairColor,
-                        std::vector<int> stats) = 0;
+                                  bool gender, int hairstyle, int hairColor,
+                                  const std::vector<int> &stats) = 0;
 
-        virtual void deleteCharacter(int slot, LocalPlayer* character) = 0;
+        virtual void deleteCharacter(Net::Character *character) = 0;
 
         virtual void switchCharacter() = 0;
 
-        virtual unsigned int baseSprite() const = 0;
+        virtual int baseSprite() const = 0;
 
-        virtual unsigned int hairSprite() const = 0;
+        virtual int hairSprite() const = 0;
 
-        virtual unsigned int maxSprite() const = 0;
+        virtual int maxSprite() const = 0;
 
         virtual ~CharHandler() {}
+
+    protected:
+        CharHandler():
+            mSelectedCharacter(0),
+            mCharSelectDialog(0),
+            mCharCreateDialog(0)
+        {}
+
+        void updateCharSelectDialog();
+        void unlockCharSelectDialog();
+
+        /** The list of available characters. */
+        Net::Characters mCharacters;
+
+        /** The selected character. */
+        Net::Character *mSelectedCharacter;
+
+        CharSelectDialog *mCharSelectDialog;
+        CharCreateDialog *mCharCreateDialog;
 };
 
 } // namespace Net

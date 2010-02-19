@@ -39,6 +39,7 @@
 
 #include "resources/colordb.h"
 
+#include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -49,9 +50,7 @@ namespace EAthena {
 extern ServerInfo charServer;
 extern ServerInfo mapServer;
 
-CharServerHandler::CharServerHandler():
-    mCharSelectDialog(0),
-    mCharCreateDialog(0)
+CharServerHandler::CharServerHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_CHAR_LOGIN,
@@ -69,30 +68,32 @@ CharServerHandler::CharServerHandler():
 
 void CharServerHandler::handleMessage(Net::MessageIn &msg)
 {
-    int count, slot;
-    LocalPlayer *tempPlayer;
-
     logger->log("CharServerHandler: Packet ID: %x, Length: %d",
-            msg.getId(), msg.getLength());
+                msg.getId(), msg.getLength());
+
     switch (msg.getId())
     {
-        case SMSG_CHAR_LOGIN:
-            msg.skip(2); // Length word
-            msg.skip(20); // Unused
-
-            // Derive number of characters from message length
-            count = (msg.getLength() - 24) / 106;
-
-            for (int i = 0; i < count; i++)
+            case SMSG_CHAR_LOGIN:
             {
-                tempPlayer = readPlayerData(msg, slot);
-                mCharInfo->select(slot);
-                mCharInfo->setEntry(tempPlayer);
-                logger->log("CharServer: Player: %s (%d)",
-                tempPlayer->getName().c_str(), slot);
-            }
+                msg.skip(2);  // Length word
+                msg.skip(20); // Unused
 
-            state = STATE_CHAR_SELECT;
+                // Derive number of characters from message length
+                const int count = (msg.getLength() - 24) / 106;
+
+                for (int i = 0; i < count; ++i)
+                {
+                    Net::Character *character = new Net::Character;
+                    int slot;
+                    character->dummy = readPlayerData(msg, &slot);
+                    character->slot = slot;
+                    mCharacters.push_back(character);
+                    logger->log("CharServer: Player: %s (%d)",
+                                character->dummy->getName().c_str(), slot);
+                }
+
+                state = STATE_CHAR_SELECT;
+            }
             break;
 
         case SMSG_CHAR_LOGIN_ERROR:
@@ -108,81 +109,75 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
                     errorMessage = _("Unknown failure to select character.");
                     break;
             }
-            mCharInfo->unlock();
+            unlockCharSelectDialog();
             break;
 
         case SMSG_CHAR_CREATE_SUCCEEDED:
-            tempPlayer = readPlayerData(msg, slot);
-            mCharInfo->unlock();
-            mCharInfo->select(slot);
-            mCharInfo->setEntry(tempPlayer);
-
-            // Close the character create dialog
-            if (mCharCreateDialog)
             {
-                mCharCreateDialog->success();
-                mCharCreateDialog->scheduleDelete();
-                mCharCreateDialog = 0;
+                Net::Character *character = new Net::Character;
+                int slot;
+                character->dummy = readPlayerData(msg, &slot);
+                character->slot = slot;
+                mCharacters.push_back(character);
+
+                updateCharSelectDialog();
+
+                // Close the character create dialog
+                if (mCharCreateDialog)
+                {
+                    mCharCreateDialog->scheduleDelete();
+                    mCharCreateDialog = 0;
+                }
             }
             break;
 
         case SMSG_CHAR_CREATE_FAILED:
             new OkDialog(_("Error"), _("Failed to create character. Most "
                                        "likely the name is already taken."));
-
             if (mCharCreateDialog)
                 mCharCreateDialog->unlock();
             break;
 
         case SMSG_CHAR_DELETE_SUCCEEDED:
-            tempPlayer = mCharInfo->getEntry();
-            mCharInfo->setEntry(0);
-            mCharInfo->unlock();
-            if (mCharSelectDialog)
-                mCharSelectDialog->update(mCharInfo->getPos());
+            delete mSelectedCharacter;
+            mCharacters.remove(mSelectedCharacter);
+            mSelectedCharacter = 0;
+            updateCharSelectDialog();
+            unlockCharSelectDialog();
             new OkDialog(_("Info"), _("Character deleted."));
-            delete tempPlayer;
             break;
 
         case SMSG_CHAR_DELETE_FAILED:
-            mCharInfo->unlock();
+            unlockCharSelectDialog();
             new OkDialog(_("Error"), _("Failed to delete character."));
             break;
 
         case SMSG_CHAR_MAP_INFO:
-            player_node = mCharInfo->getEntry();
-            slot = mCharInfo->getPos();
             msg.skip(4); // CharID, must be the same as player_node->charID
             map_path = msg.readString(16);
             mapServer.hostname = ipToString(msg.readInt32());
             mapServer.port = msg.readInt16();
-            mCharInfo->unlock();
-            mCharInfo->select(0);
-            // Clear unselected players infos
-            do
-            {
-                LocalPlayer *tmp = mCharInfo->getEntry();
-                if (tmp != player_node)
-                {
-                    delete tmp;
-                    mCharInfo->setEntry(0);
-                }
-                mCharInfo->next();
-            } while (mCharInfo->getPos());
 
-            mCharInfo->select(slot);
+            // Prevent the selected local player from being deleted
+            player_node = mSelectedCharacter->dummy;
+            mSelectedCharacter->dummy = 0;
+
+            delete_all(mCharacters);
+            mCharacters.clear();
+            updateCharSelectDialog();
+
             mNetwork->disconnect();
             state = STATE_CONNECT_GAME;
             break;
     }
 }
 
-LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
+LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int *slot)
 {
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
 
-    LocalPlayer *tempPlayer = new LocalPlayer(msg.readInt32(), 0, NULL);
+    LocalPlayer *tempPlayer = new LocalPlayer(msg.readInt32(), 0);
     tempPlayer->setGender(token.sex);
 
     tempPlayer->setExp(msg.readInt32());
@@ -219,7 +214,7 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
     tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++)
         tempPlayer->setAttributeBase(i + STR, msg.readInt8(), false);
-    slot = msg.readInt8(); // character slot
+    *slot = msg.readInt8(); // character slot
     msg.readInt8();                        // unknown
 
     return tempPlayer;
@@ -228,6 +223,7 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int &slot)
 void CharServerHandler::setCharSelectDialog(CharSelectDialog *window)
 {
     mCharSelectDialog = window;
+    updateCharSelectDialog();
 }
 
 void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
@@ -252,19 +248,22 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
     mCharCreateDialog->setFixedGender(true, token.sex);
 }
 
-void CharServerHandler::getCharacters()
+void CharServerHandler::requestCharacters()
 {
     connect();
 }
 
-void CharServerHandler::chooseCharacter(int slot, LocalPlayer *)
+void CharServerHandler::chooseCharacter(Net::Character *character)
 {
+    mSelectedCharacter = character;
+
     MessageOut outMsg(CMSG_CHAR_SELECT);
-    outMsg.writeInt8(slot);
+    outMsg.writeInt8(mSelectedCharacter->slot);
 }
 
 void CharServerHandler::newCharacter(const std::string &name, int slot,
-        bool gender, int hairstyle, int hairColor, std::vector<int> stats)
+                                     bool gender, int hairstyle, int hairColor,
+                                     const std::vector<int> &stats)
 {
     MessageOut outMsg(CMSG_CHAR_CREATE);
     outMsg.writeString(name, 24);
@@ -277,10 +276,12 @@ void CharServerHandler::newCharacter(const std::string &name, int slot,
     outMsg.writeInt16(hairstyle);
 }
 
-void CharServerHandler::deleteCharacter(int slot, LocalPlayer *character)
+void CharServerHandler::deleteCharacter(Net::Character *character)
 {
+    mSelectedCharacter = character;
+
     MessageOut outMsg(CMSG_CHAR_DELETE);
-    outMsg.writeInt32(character->getId());
+    outMsg.writeInt32(mSelectedCharacter->dummy->getId());
     outMsg.writeString("a@a.com", 40);
 }
 
@@ -291,17 +292,17 @@ void CharServerHandler::switchCharacter()
     outMsg.writeInt8(1);
 }
 
-unsigned int CharServerHandler::baseSprite() const
+int CharServerHandler::baseSprite() const
 {
     return SPRITE_BASE;
 }
 
-unsigned int CharServerHandler::hairSprite() const
+int CharServerHandler::hairSprite() const
 {
     return SPRITE_HAIR;
 }
 
-unsigned int CharServerHandler::maxSprite() const
+int CharServerHandler::maxSprite() const
 {
     return SPRITE_VECTOREND;
 }

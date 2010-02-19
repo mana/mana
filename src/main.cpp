@@ -28,7 +28,6 @@
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
-#include "lockedarray.h"
 #include "log.h"
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
@@ -135,7 +134,6 @@ Logger *logger;               /**< Log object */
 KeyboardConfig keyboard;
 
 LoginData loginData;
-LockedArray<LocalPlayer*> charInfo(MAX_CHARACTER_COUNT);
 
 Palette *guiPalette;
 
@@ -632,7 +630,7 @@ static void parseOptions(int argc, char *argv[], Options &options)
 class AccountListener : public gcn::ActionListener
 {
 public:
-    void action(const gcn::ActionEvent &event)
+    void action(const gcn::ActionEvent &)
     {
         state = STATE_CHAR_SELECT;
     }
@@ -641,7 +639,7 @@ public:
 class LoginListener : public gcn::ActionListener
 {
 public:
-    void action(const gcn::ActionEvent &event)
+    void action(const gcn::ActionEvent &)
     {
         state = STATE_LOGIN;
     }
@@ -649,7 +647,7 @@ public:
 
 } // namespace
 
-void ErrorListener::action(const gcn::ActionEvent &event)
+void ErrorListener::action(const gcn::ActionEvent &)
 {
     state = STATE_CHOOSE_SERVER;
 }
@@ -663,8 +661,6 @@ const std::string &getHomeDirectory()
 static void accountLogin(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
-
-    Net::getCharHandler()->setCharInfo(&charInfo);
 
     // Send login infos
     if (loginData->registerLogin)
@@ -847,7 +843,6 @@ int main(int argc, char *argv[])
                  oldstate != STATE_CHOOSE_SERVER &&
                  Net::getLoginHandler()->isConnected())
         {
-            Net::getCharHandler()->setCharInfo(&charInfo);
             state = STATE_LOGIN;
         }
         else if (state == STATE_WORLD_SELECT && oldstate == STATE_UPDATE)
@@ -1040,7 +1035,7 @@ int main(int argc, char *argv[])
 
                 case STATE_GET_CHARACTERS:
                     logger->log("State: GET CHARACTERS");
-                    Net::getCharHandler()->getCharacters();
+                    Net::getCharHandler()->requestCharacters();
                     currentDialog = new ConnectionDialog(
                             _("Requesting characters"),
                             STATE_SWITCH_SERVER);
@@ -1052,22 +1047,16 @@ int main(int argc, char *argv[])
                     // lower than the default value
                     SkinLoader::instance()->setMinimumOpacity(0.8f);
 
-                    currentDialog =
-                        new CharSelectDialog(&charInfo, &loginData);
+                    currentDialog = new CharSelectDialog(&loginData);
 
-                    if (((CharSelectDialog*) currentDialog)->
-                            selectByName(options.character))
+                    if (!((CharSelectDialog*) currentDialog)->selectByName(
+                            options.character, CharSelectDialog::Choose))
                     {
-                        ((CharSelectDialog*) currentDialog)->chooseSelected();
-                    }
-                    else
-                    {
-                        if (((CharSelectDialog*) currentDialog)->selectByName(
-                            config.getValue("lastCharacter", "")))
-                        {
-                            if (options.chooseDefault)
-                                ((CharSelectDialog*) currentDialog)->chooseSelected();
-                        }
+                        ((CharSelectDialog*) currentDialog)->selectByName(
+                                config.getValue("lastCharacter", ""),
+                                options.chooseDefault ?
+                                    CharSelectDialog::Choose :
+                                    CharSelectDialog::Focus);
                     }
 
                     break;
@@ -1141,8 +1130,6 @@ int main(int argc, char *argv[])
 
                 case STATE_REGISTER_ATTEMPT:
                     logger->log("Username is %s", loginData.username.c_str());
-
-                    Net::getCharHandler()->setCharInfo(&charInfo);
                     Net::getLoginHandler()->registerAccount(&loginData);
                     break;
 
@@ -1232,7 +1219,7 @@ int main(int argc, char *argv[])
                     // Done with game
                     Net::getGameHandler()->disconnect();
 
-                    Net::getCharHandler()->getCharacters();
+                    Net::getCharHandler()->requestCharacters();
                     break;
 
                 case STATE_LOGOUT_ATTEMPT:

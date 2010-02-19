@@ -91,8 +91,7 @@ UnRegisterDialog::~UnRegisterDialog()
     delete mWrongDataNoticeListener;
 }
 
-void
-UnRegisterDialog::action(const gcn::ActionEvent &event)
+void UnRegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {

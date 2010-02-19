@@ -19,12 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef CHAR_CREATE_H
-#define CHAR_CREATE_H
+#ifndef CHAR_CREATE_DIALOG_H
+#define CHAR_CREATE_DIALOG_H
 
 #include "player.h"
 #include "guichanfwd.h"
-#include "lockedarray.h"
 
 #include "gui/charselectdialog.h"
 
@@ -63,18 +62,11 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         void unlock();
 
-        void setAttributes(std::vector<std::string> labels, int available,
+        void setAttributes(const std::vector<std::string> &labels,
+                           int available,
                            int min, int max);
 
         void setFixedGender(bool fixed, Gender gender = GENDER_FEMALE);
-
-        /**
-         * Notify the CharSelectDialog the character was created successfully.
-         */
-        void success();
-
-        CharSelectDialog *getSelectDialog() const
-        { return mCharSelectDialog; }
 
     private:
         int getDistributedPoints() const;
@@ -127,4 +119,4 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         int mSlot;
 };
 
-#endif // CHAR_CREATE_H
+#endif // CHAR_CREATE_DIALOG_H

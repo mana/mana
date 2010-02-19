@@ -23,16 +23,17 @@
 #define CHAR_SELECT_H
 
 #include "guichanfwd.h"
-#include "lockedarray.h"
 #include "main.h"
 #include "player.h"
 
 #include "gui/widgets/window.h"
 
+#include "net/charhandler.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
-class CharEntry;
+class CharacterDisplay;
 class LocalPlayer;
 class LoginData;
 class PlayerBox;
@@ -51,49 +52,55 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
 {
     public:
         friend class CharDeleteConfirm;
+        friend class Net::CharHandler;
 
         /**
          * Constructor.
          */
-        CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
-                         LoginData *loginData);
+        CharSelectDialog(LoginData *loginData);
 
-        ~CharSelectDialog() { mCharInfo->clear(); };
+        ~CharSelectDialog();
 
         void action(const gcn::ActionEvent &event);
 
         void keyPressed(gcn::KeyEvent &keyEvent);
 
-        bool selectByName(const std::string &name);
+        enum SelectAction {
+            Focus,
+            Choose
+        };
 
         /**
-         * Send selection to character server
-         * @return false if the selection or the number of existing character
-         * is empty.
-         */ 
-        bool chooseSelected();
-
-        void update(int slot = -1);
+         * Attempt to select the character with the given name. Returns whether
+         * a character with the given name was found.
+         *
+         * \param action determines what to do when a character with the given
+         *               name was found (just focus or also try to choose this
+         *               character).
+         */
+        bool selectByName(const std::string &name,
+                          SelectAction action = Focus);
 
     private:
-        /**
-         * Communicate character deletion to the server.
-         */
-        void attemptCharDelete();
+        void attemptCharacterDelete(int index);
+        void attemptCharacterSelect(int index);
 
-        /**
-         * Communicate character selection to the server.
-         */
-        void attemptCharSelect();
+        void setCharacters(const Net::Characters &characters);
 
-        LockedArray<LocalPlayer*> *mCharInfo;
+        void lock();
+        void unlock();
+        void setLocked(bool locked);
+
+        bool mLocked;
 
         gcn::Label *mAccountNameLabel;
 
         gcn::Button *mSwitchLoginButton;
         gcn::Button *mChangePasswordButton;
+        gcn::Button *mUnregisterButton;
+        gcn::Button *mChangeEmailButton;
 
-        CharEntry *mCharEntries[MAX_CHARACTER_COUNT];
+        CharacterDisplay *mCharacterEntries[MAX_CHARACTER_COUNT];
 
         LoginData *mLoginData;
 
