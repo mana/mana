@@ -37,6 +37,9 @@ ChannelTab::ChannelTab(Channel *channel) :
 
 ChannelTab::~ChannelTab()
 {
+    // Clear tab so the channel won't try to (if the ChatWindow is cleared
+    // before the channels are, we'll run into issues without this)
+    mChannel->setTab(0);
 }
 
 void ChannelTab::handleInput(const std::string &msg)
