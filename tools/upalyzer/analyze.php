@@ -15,8 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with upalyzer; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with upalyzer.  If not, see <http://www.gnu.org/licenses/>.
  */
 header("Content-type: text/html");
 header("Cache-Control: no-store, no-cache, must-revalidate");
