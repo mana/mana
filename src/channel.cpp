@@ -35,8 +35,5 @@ Channel::Channel(short id,
 
 Channel::~Channel()
 {
-    if (mTab)
-    {
-        delete mTab;
-    }
+    delete mTab;
 }
