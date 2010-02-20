@@ -10,7 +10,7 @@ writing a branding.xml for their servers.
 -->
 
 <configuration>
- <option name="appName" value="Mana Client"/>
+ <option name="appName" value="Mana"/>
  <option name="appShort" value="mana"/>
  <option name="appIcon" value="icons/mana.png"/>
  <option name="loginMusic" value="Magick - Real.ogg"/>

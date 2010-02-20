@@ -368,8 +368,7 @@ static void initEngine(const Options &options)
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-    SDL_WM_SetCaption(branding.getValue("appName", "The Mana World").c_str(),
-                      NULL);
+    SDL_WM_SetCaption(branding.getValue("appName", "Mana").c_str(), NULL);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
