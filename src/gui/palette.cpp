@@ -23,7 +23,7 @@
 #include "palette.h"
 
 #include "configuration.h"
-#include "game.h"
+#include "client.h"
 
 #include "gui/gui.h"
 

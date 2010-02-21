@@ -22,6 +22,7 @@
 #include "statuseffect.h"
 
 #include "log.h"
+#include "sound.h"
 
 #include "gui/widgets/chattab.h"
 

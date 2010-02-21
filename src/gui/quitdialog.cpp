@@ -21,7 +21,7 @@
 
 #include "gui/quitdialog.h"
 
-#include "main.h"
+#include "client.h"
 
 #include "gui/sdlinput.h"
 
@@ -50,7 +50,9 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
 
     ContainerPlacer place = getPlacer(0, 0);
 
-    //All states, when we're not logged in to someone.
+    const State state = Client::getState();
+
+    // All states, when we're not logged in to someone.
     if (state == STATE_CHOOSE_SERVER ||
         state == STATE_CONNECT_SERVER ||
         state == STATE_LOGIN ||
@@ -106,19 +108,19 @@ void QuitDialog::action(const gcn::ActionEvent &event)
     {
         if (mForceQuit->isSelected())
         {
-            state = STATE_FORCE_QUIT;
+            Client::setState(STATE_FORCE_QUIT);
         }
         else if (mLogoutQuit->isSelected())
         {
-            state = STATE_EXIT;
+            Client::setState(STATE_EXIT);
         }
         else if (mSwitchAccountServer->isSelected())
         {
-            state = STATE_SWITCH_SERVER;
+            Client::setState(STATE_SWITCH_SERVER);
         }
         else if (mSwitchCharacter->isSelected())
         {
-            assert(state == STATE_GAME);
+            assert(Client::getState() == STATE_GAME);
 
             Net::getCharHandler()->switchCharacter();
         }

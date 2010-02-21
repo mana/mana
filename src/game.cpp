@@ -23,6 +23,7 @@
 
 #include "beingmanager.h"
 #include "channelmanager.h"
+#include "client.h"
 #include "commandhandler.h"
 #include "configuration.h"
 #include "effectmanager.h"
@@ -34,7 +35,6 @@
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 #include "map.h"
 #include "npc.h"
 #include "particle.h"
@@ -96,9 +96,6 @@
 
 std::string map_path;
 
-volatile int tick_time;
-volatile int fps = 0, frame = 0;
-
 Joystick *joystick = NULL;
 
 OkDialog *weightNotice = NULL;
@@ -132,55 +129,6 @@ EffectManager *effectManager = NULL;
 Viewport *viewport = NULL;                    /**< Viewport on the map. */
 
 ChatTab *localChatTab = NULL;
-
-std::string screenshotDir = "";
-
-/**
- * Tells the max tick value,
- * setting it back to zero (and start again).
- */
-const int MAX_TICK_VALUE = 10000;
-/**
- * Set the milliseconds value of a tick time.
- */
-const int MILLISECONDS_IN_A_TICK = 10;
-
-/**
- * Advances game logic counter.
- * Called every 10 milliseconds by SDL_AddTimer()
- * @see MILLISECONDS_IN_A_TICK value
- */
-Uint32 nextTick(Uint32 interval, void *param)
-{
-    tick_time++;
-    if (tick_time == MAX_TICK_VALUE) tick_time = 0;
-    return interval;
-}
-
-/**
- * Updates fps.
- * Called every seconds by SDL_AddTimer()
- */
-Uint32 nextSecond(Uint32 interval, void *param)
-{
-    fps = frame;
-    frame = 0;
-
-    return interval;
-}
-
-/**
- * @return the elapsed time in milliseconds
- * between two tick values.
- */
-int get_elapsed_time(int start_time)
-{
-    if (start_time <= tick_time)
-        return (tick_time - start_time) * MILLISECONDS_IN_A_TICK;
-    else
-        return (tick_time + (MAX_TICK_VALUE - start_time))
-                * MILLISECONDS_IN_A_TICK;
-}
 
 /**
  * Initialize every game sub-engines in the right order
@@ -266,8 +214,6 @@ Game *Game::mInstance = 0;
 
 Game::Game():
     mLastTarget(Being::UNKNOWN),
-    mLogicCounterId(0), mSecondsCounterId(0),
-    mLimitFps(false),
     mCurrentMap(0), mMapName("")
 {
     assert(!mInstance);
@@ -276,7 +222,7 @@ Game::Game():
     disconnectedDialog = NULL;
 
     // Create the viewport
-    viewport = new Viewport();
+    viewport = new Viewport;
     viewport->setDimension(gcn::Rectangle(0, 0, graphics->getWidth(),
                                           graphics->getHeight()));
 
@@ -290,11 +236,6 @@ Game::Game():
     windowContainer->add(mWindowMenu);
 
     initEngines();
-
-    // Initialize logic and seconds counters
-    tick_time = 0;
-    mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, NULL);
-    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
 
     // This part is eAthena specific
     // For Manaserv, the map is obtained
@@ -316,11 +257,6 @@ Game::Game():
      * is ignored by the client
      */
     Net::getGameHandler()->ping(tick_time);
-
-    // Initialize frame limiting
-    SDL_initFramerate(&mFpsManager);
-    config.addListener("fpslimit", this);
-    optionChanged("fpslimit");
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use
@@ -356,24 +292,7 @@ Game::~Game()
     floorItemManager = NULL;
     joystick = NULL;
 
-    SDL_RemoveTimer(mLogicCounterId);
-    SDL_RemoveTimer(mSecondsCounterId);
-
     mInstance = 0;
-}
-
-void setScreenshotDir(const std::string &dir)
-{
-    if (dir.empty())
-    {
-        screenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
-        // If ~/Desktop does not exist, we save screenshots in the user's home.
-        struct stat statbuf;
-        if (stat(screenshotDir.c_str(), &statbuf))
-            screenshotDir = std::string(PHYSFS_getUserDir());
-    }
-    else
-        screenshotDir = dir;
 }
 
 static bool saveScreenshot()
@@ -392,7 +311,7 @@ static bool saveScreenshot()
         screenshotCount++;
         filenameSuffix.str("");
         filename.str("");
-        filename << screenshotDir << "/";
+        filename << Client::getScreenshotDirectory() << "/";
         filenameSuffix << "Mana_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
         testExists.open(filename.str().c_str(), std::ios::in);
@@ -420,74 +339,36 @@ static bool saveScreenshot()
     return success;
 }
 
-void Game::optionChanged(const std::string &name)
+void Game::logic()
 {
-    const int fpsLimit = (int) config.getValue("fpslimit", 60);
-    mLimitFps = fpsLimit > 0;
-    if (mLimitFps)
-        SDL_setFramerate(&mFpsManager, fpsLimit);
-}
+    handleInput();
 
-void Game::exec()
-{
-    int gameTime = tick_time;
+    // Handle all necessary game logic
+    beingManager->logic();
+    particleEngine->update();
+    if (mCurrentMap)
+        mCurrentMap->update();
 
-    while (state == STATE_GAME)
+    // Handle network stuff
+    if (!Net::getGameHandler()->isConnected())
     {
-        if (mCurrentMap)
-            mCurrentMap->update(get_elapsed_time(gameTime));
-
-        handleInput();
-
-        // Handle all necessary game logic
-        while (get_elapsed_time(gameTime) > 0)
+        if (Client::getState() != STATE_ERROR)
         {
-            beingManager->logic();
-            particleEngine->update();
-            gui->logic();
-
-            gameTime++;
+            errorMessage = _("The connection to the server was lost.");
         }
 
-        // This is done because at some point tick_time will wrap.
-        gameTime = tick_time;
-
-        // Update the screen when application is active, delay otherwise.
-        if (SDL_GetAppState() & SDL_APPACTIVE)
+        if (!disconnectedDialog)
         {
-            frame++;
-            gui->draw();
-            graphics->updateScreen();
-        }
-        else
-        {
-            SDL_Delay(10);
-        }
-
-        if (mLimitFps)
-            SDL_framerateDelay(&mFpsManager);
-
-        // Handle network stuff
-        Net::getGeneralHandler()->flushNetwork();
-        if (!Net::getGameHandler()->isConnected())
-        {
-            if (state != STATE_ERROR)
-            {
-                errorMessage = _("The connection to the server was lost.");
-            }
-
-            if (!disconnectedDialog)
-            {
-                disconnectedDialog = new OkDialog(_("Network Error"), errorMessage);
-                disconnectedDialog->addActionListener(&errorListener);
-                disconnectedDialog->requestMoveToTop();
-            }
+            disconnectedDialog = new OkDialog(_("Network Error"),
+                                              errorMessage);
+            disconnectedDialog->addActionListener(&errorListener);
+            disconnectedDialog->requestMoveToTop();
         }
     }
 }
 
 /**
- * The MONSTER input handling method.
+ * The huge input handling method.
  */
 void Game::handleInput()
 {
@@ -849,7 +730,7 @@ void Game::handleInput()
         // Quit event
         else if (event.type == SDL_QUIT)
         {
-            state = STATE_EXIT;
+            Client::setState(STATE_EXIT);
         }
 
         // Push input to GUI when not used
@@ -861,7 +742,7 @@ void Game::handleInput()
             }
             catch (gcn::Exception e)
             {
-                const char* err = e.getMessage().c_str();
+                const char *err = e.getMessage().c_str();
                 logger->log("Warning: guichan input exception: %s", err);
             }
         }

@@ -22,6 +22,7 @@
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/beinghandler.h"
 
+#include "client.h"
 #include "effectmanager.h"
 #include "game.h"
 #include "localplayer.h"
@@ -40,9 +41,6 @@
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-/** @see in game.cpp */
-extern const int MILLISECONDS_IN_A_TICK;
 
 /**
  * Max. distance we are willing to scroll after a teleport;

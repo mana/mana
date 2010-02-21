@@ -21,7 +21,6 @@
 
 #include "connectiondialog.h"
 
-#include "main.h"
 #include "log.h"
 
 #include "gui/widgets/button.h"
@@ -56,7 +55,7 @@ ConnectionDialog::ConnectionDialog(const std::string &text,
 void ConnectionDialog::action(const gcn::ActionEvent &)
 {
     logger->log("Cancel pressed");
-    state = mCancelState;
+    Client::setState(mCancelState);
 }
 
 void ConnectionDialog::draw(gcn::Graphics *graphics)

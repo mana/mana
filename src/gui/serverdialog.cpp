@@ -21,9 +21,9 @@
 
 #include "gui/serverdialog.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
@@ -149,7 +149,8 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
         currentServer.hostname = config.getValue(currentConfig, "");
 
         currentConfig = "MostUsedServerPort" + toString(i);
-        currentServer.port = (short) config.getValue(currentConfig, DEFAULT_PORT);
+        currentServer.port = (short) config.getValue(currentConfig,
+                                                     DEFAULT_PORT);
 
         currentConfig = "MostUsedServerType" + toString(i);
         currentServer.type = stringToServerType(config
@@ -308,13 +309,13 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             mServerInfo->hostname = currentServer.hostname;
             mServerInfo->port = currentServer.port;
             mServerInfo->type = currentServer.type;
-            state = STATE_CONNECT_SERVER;
+            Client::setState(STATE_CONNECT_SERVER);
         }
     }
     else if (event.getId() == "quit")
     {
         mDownload->cancel();
-        state = STATE_FORCE_QUIT;
+        Client::setState(STATE_FORCE_QUIT);
     }
     else if (event.getId() == "addEntry")
     {
@@ -328,7 +329,7 @@ void ServerDialog::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (key.getValue() == Key::ESCAPE)
     {
-        state = STATE_EXIT;
+        Client::setState(STATE_EXIT);
     }
     else if (key.getValue() == Key::ENTER)
     {

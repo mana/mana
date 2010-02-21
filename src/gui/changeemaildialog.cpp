@@ -21,7 +21,7 @@
 
 #include "gui/changeemaildialog.h"
 
-#include "main.h"
+#include "client.h"
 #include "log.h"
 
 #include "gui/register.h"
@@ -104,7 +104,7 @@ void ChangeEmailDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        state = STATE_CHAR_SELECT;
+        Client::setState(STATE_CHAR_SELECT);
     }
     else if (event.getId() == "change_email")
     {
@@ -162,7 +162,7 @@ void ChangeEmailDialog::action(const gcn::ActionEvent &event)
             mChangeEmailButton->setEnabled(false);
             // Set the new email address
             mLoginData->email = newFirstEmail;
-            state = STATE_CHANGEEMAIL_ATTEMPT;
+            Client::setState(STATE_CHANGEEMAIL_ATTEMPT);
         }
     }
 }

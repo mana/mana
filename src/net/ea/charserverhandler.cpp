@@ -21,9 +21,9 @@
 
 #include "net/ea/charserverhandler.h"
 
+#include "client.h"
 #include "game.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/charcreatedialog.h"
 #include "gui/okdialog.h"
@@ -92,7 +92,7 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
                                 character->dummy->getName().c_str(), slot);
                 }
 
-                state = STATE_CHAR_SELECT;
+                Client::setState(STATE_CHAR_SELECT);
             }
             break;
 
@@ -167,7 +167,7 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
             updateCharSelectDialog();
 
             mNetwork->disconnect();
-            state = STATE_CONNECT_GAME;
+            Client::setState(STATE_CONNECT_GAME);
             break;
     }
 }

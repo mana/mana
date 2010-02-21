@@ -21,10 +21,10 @@
 
 #include "gui/viewport.h"
 
+#include "client.h"
 #include "beingmanager.h"
 #include "configuration.h"
 #include "flooritemmanager.h"
-#include "game.h"
 #include "graphics.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"

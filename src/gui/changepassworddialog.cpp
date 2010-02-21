@@ -21,7 +21,7 @@
 
 #include "changepassworddialog.h"
 
-#include "main.h"
+#include "client.h"
 #include "log.h"
 
 #include "gui/register.h"
@@ -85,7 +85,7 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        state = STATE_CHAR_SELECT;
+        Client::setState(STATE_CHAR_SELECT);
     }
     else if (event.getId() == "change_password")
     {
@@ -156,7 +156,7 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
             // Set the new password
             mLoginData->password = oldPassword;
             mLoginData->newPassword = newFirstPass;
-            state = STATE_CHANGEPASSWORD_ATTEMPT;
+            Client::setState(STATE_CHANGEPASSWORD_ATTEMPT);
         }
     }
 }

@@ -66,7 +66,7 @@ class LoginDialog : public Window, public gcn::ActionListener,
          * Returns whether submit can be enabled. This is true in the login
          * state, when all necessary fields have some text.
          */
-        bool canSubmit();
+        bool canSubmit() const;
 
         gcn::TextField *mUserField;
         gcn::TextField *mPassField;

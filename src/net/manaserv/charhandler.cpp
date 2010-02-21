@@ -21,10 +21,9 @@
 
 #include "net/manaserv/charhandler.h"
 
-#include "game.h"
+#include "client.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/charcreatedialog.h"
 #include "gui/okdialog.h"
@@ -236,14 +235,14 @@ void CharHandler::handleCharacterSelectResponse(Net::MessageIn &msg)
         mCachedCharacterInfos.clear();
         updateCharacters();
 
-        state = STATE_CONNECT_GAME;
+        Client::setState(STATE_CONNECT_GAME);
     }
     else if (errMsg == ERRMSG_FAILURE)
     {
         errorMessage = _("No gameservers are available.");
         delete_all(mCharacters);
         mCharacters.clear();
-        state = STATE_ERROR;
+        Client::setState(STATE_ERROR);
     }
 }
 
@@ -280,7 +279,7 @@ void CharHandler::requestCharacters()
     else
     {
         // The characters are already there, continue to character selection
-        state = STATE_CHAR_SELECT;
+        Client::setState(STATE_CHAR_SELECT);
     }
 }
 

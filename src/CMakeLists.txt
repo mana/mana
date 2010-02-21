@@ -396,6 +396,8 @@ SET(SRCS
     being.h
     beingmanager.cpp
     beingmanager.h
+    client.cpp
+    client.h
     channel.cpp
     channel.h
     channelmanager.cpp

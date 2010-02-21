@@ -21,7 +21,7 @@
 
 #include "gui/worldselectdialog.h"
 
-#include "main.h"
+#include "client.h"
 
 #include "gui/sdlinput.h"
 
@@ -115,12 +115,12 @@ void WorldSelectDialog::action(const gcn::ActionEvent &event)
         Net::getLoginHandler()->chooseServer(mWorldList->getSelected());
 
         // Check in case netcode moves us forward
-        if (state == STATE_WORLD_SELECT)
-            state = STATE_WORLD_SELECT_ATTEMPT;
+        if (Client::getState() == STATE_WORLD_SELECT)
+            Client::setState(STATE_WORLD_SELECT_ATTEMPT);
     }
     else if (event.getId() == "login")
     {
-        state = STATE_LOGIN;
+        Client::setState(STATE_LOGIN);
     }
 }
 

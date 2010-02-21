@@ -23,10 +23,9 @@
 
 #include "being.h"
 #include "beingmanager.h"
+#include "client.h"
 #include "channel.h"
 #include "channelmanager.h"
-#include "game.h"
-#include "main.h"
 
 #include "gui/chat.h"
 
@@ -136,7 +135,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = "Chatserver: Unknown error";
                         break;
                 }
-                state = STATE_ERROR;
+                Client::setState(STATE_ERROR);
             }
         }
             break;

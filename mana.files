@@ -282,6 +282,8 @@
 ./src/imageparticle.h
 ./src/inventory.cpp
 ./src/inventory.h
+./src/client.cpp
+./src/client.h
 ./src/item.cpp
 ./src/item.h
 ./src/itemshortcut.cpp

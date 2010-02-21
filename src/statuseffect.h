@@ -24,7 +24,6 @@
 
 #include "particle.h"
 #include "animatedsprite.h"
-#include "sound.h"
 
 #include "resources/animation.h"
 

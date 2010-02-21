@@ -22,23 +22,18 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "configlistener.h"
+#include <string>
 
-#include <SDL.h>
-#include <SDL_framerate.h>
-
-extern std::string map_path;
-extern volatile int fps;
-extern volatile int tick_time;
-extern const int MILLISECONDS_IN_A_TICK;
+extern std::string map_path;  // TODO: Get rid of this global
 
 class Map;
 class WindowMenu;
 
 /**
- * The main class responsible for running the game.
+ * The main class responsible for running the game. The game starts after you
+ * have selected your character.
  */
-class Game : public ConfigListener
+class Game
 {
     public:
         /**
@@ -58,13 +53,12 @@ class Game : public ConfigListener
         static Game *instance() { return mInstance; }
 
         /**
-         * This method runs the game. It returns when the game stops.
+         * This method takes the game a small step further. It is called 100
+         * times per second.
          */
-        void exec();
+        void logic();
 
         void handleInput();
-
-        void optionChanged(const std::string &name);
 
         void changeMap(const std::string &mapName);
 
@@ -76,13 +70,8 @@ class Game : public ConfigListener
         const std::string &getCurrentMapName() { return mMapName; }
 
     private:
+
         int mLastTarget;
-
-        SDL_TimerID mLogicCounterId;
-        SDL_TimerID mSecondsCounterId;
-
-        bool mLimitFps;
-        FPSmanager mFpsManager;
 
         WindowMenu *mWindowMenu;
 
@@ -91,12 +80,5 @@ class Game : public ConfigListener
 
         static Game *mInstance;
 };
-
-/**
- * Returns elapsed time. (Warning: supposes the delay is always < 100 seconds)
- */
-int get_elapsed_time(int start_time);
-
-void setScreenshotDir(const std::string &dir);
 
 #endif

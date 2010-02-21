@@ -21,9 +21,9 @@
 
 #include "gui/register.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/login.h"
 #include "gui/okdialog.h"
@@ -144,7 +144,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        state = STATE_LOGIN;
+        Client::setState(STATE_LOGIN);
     }
     else if (event.getId() == "register" && canSubmit())
     {
@@ -232,7 +232,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
                 mLoginData->email = mEmailField->getText();
             mLoginData->registerLogin = true;
 
-            state = STATE_REGISTER_ATTEMPT;
+            Client::setState(STATE_REGISTER_ATTEMPT);
         }
     }
 }
@@ -247,5 +247,5 @@ bool RegisterDialog::canSubmit() const
     return !mUserField->getText().empty() &&
            !mPasswordField->getText().empty() &&
            !mConfirmField->getText().empty() &&
-           state == STATE_REGISTER;
+           Client::getState() == STATE_REGISTER;
 }

@@ -21,10 +21,9 @@
 
 #include "net/ea/gamehandler.h"
 
-#include "game.h"
+#include "client.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -74,7 +73,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
                     x, y, direction);
             // Switch now or we'll have problems
-            state = STATE_GAME;
+            Client::setState(STATE_GAME);
             player_node->setTileCoords(x, y);
          }  break;
 
@@ -91,7 +90,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_CHAR_SWITCH_RESPONSE:
             if (msg.readInt8())
             {
-                state = STATE_SWITCH_CHARACTER;
+                Client::setState(STATE_SWITCH_CHARACTER);
             }
             break;
 

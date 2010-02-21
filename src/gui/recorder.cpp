@@ -20,7 +20,7 @@
 
 #include "gui/recorder.h"
 
-#include "main.h"
+#include "client.h"
 
 #include "gui/chat.h"
 
@@ -102,7 +102,7 @@ void Recorder::setRecordingFile(const std::string &msg)
          * recorded.
          */
         localChatTab->chatLog(_("Starting to record..."), BY_SERVER);
-        const std::string file = std::string(getHomeDirectory() + msgCopy);
+        const std::string file = Client::getHomeDirectory() + msgCopy;
 
         mStream.open(file.c_str(), std::ios_base::trunc);
 

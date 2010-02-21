@@ -19,11 +19,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "beingmanager.h"
-#include "configuration.h"
-#include "game.h"
-#include "graphics.h"
 #include "map.h"
+
+#include "beingmanager.h"
+#include "client.h"
+#include "configuration.h"
+#include "graphics.h"
 #include "particle.h"
 #include "simpleanimation.h"
 #include "sprite.h"
@@ -37,8 +38,6 @@
 #include "utils/stringutils.h"
 
 #include <queue>
-
-extern volatile int tick_time;
 
 /**
  * A location on a tile map. Used for pathfinding, open list.
@@ -291,14 +290,13 @@ bool spriteCompare(const Sprite *a, const Sprite *b)
 
 void Map::update(int ticks)
 {
-    //update animated tiles
+    // Update animated tiles
     for (std::map<int, TileAnimation*>::iterator iAni = mTileAnimations.begin();
          iAni != mTileAnimations.end();
          iAni++)
     {
         iAni->second->update(ticks);
     }
-
 }
 
 void Map::draw(Graphics *graphics, int scrollX, int scrollY)

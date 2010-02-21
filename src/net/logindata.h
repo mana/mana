@@ -28,8 +28,9 @@
 
 #include <string>
 
-struct LoginData
+class LoginData
 {
+public:
     std::string username;
     std::string password;
     std::string newPassword;

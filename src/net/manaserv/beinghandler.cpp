@@ -23,13 +23,12 @@
 
 #include "being.h"
 #include "beingmanager.h"
+#include "client.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 #include "npc.h"
 #include "particle.h"
-#include "sound.h"
 
 #include "gui/okdialog.h"
 
@@ -103,10 +102,10 @@ Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
         {
             speedInTicks.x = speedInTilesPerSeconds
                 * (float)map->getTileWidth()
-                / 1000 * (float)MILLISECONDS_IN_A_TICK;
+                / 1000 * (float) MILLISECONDS_IN_A_TICK;
             speedInTicks.y = speedInTilesPerSeconds
                 * (float)map->getTileHeight()
-                / 1000 * (float)MILLISECONDS_IN_A_TICK;
+                / 1000 * (float) MILLISECONDS_IN_A_TICK;
         }
     }
 

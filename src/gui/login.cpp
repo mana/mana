@@ -21,7 +21,7 @@
 
 #include "gui/login.h"
 
-#include "main.h"
+#include "client.h"
 #include "configuration.h"
 
 #include "gui/okdialog.h"
@@ -107,18 +107,19 @@ void LoginDialog::action(const gcn::ActionEvent &event)
         mRegisterButton->setEnabled(false);
         mServerButton->setEnabled(false);
         mLoginButton->setEnabled(false);
-        state = STATE_LOGIN_ATTEMPT;
+
+        Client::setState(STATE_LOGIN_ATTEMPT);
     }
     else if (event.getId() == "server")
     {
-        state = STATE_SWITCH_SERVER;
+        Client::setState(STATE_SWITCH_SERVER);
     }
     else if (event.getId() == "register")
     {
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
 
-        state = STATE_REGISTER_PREP;
+        Client::setState(STATE_REGISTER_PREP);
     }
 }
 
@@ -140,9 +141,9 @@ void LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
     }
 }
 
-bool LoginDialog::canSubmit()
+bool LoginDialog::canSubmit() const
 {
     return !mUserField->getText().empty() &&
            !mPassField->getText().empty() &&
-           state == STATE_LOGIN;
+           Client::getState() == STATE_LOGIN;
 }

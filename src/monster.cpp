@@ -19,10 +19,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "animatedsprite.h"
-#include "game.h"
-#include "localplayer.h"
 #include "monster.h"
+
+#include "animatedsprite.h"
+#include "client.h"
+#include "localplayer.h"
 #include "particle.h"
 #include "sound.h"
 #include "text.h"
@@ -38,7 +39,7 @@ Monster::Monster(int id, int job, Map *map):
     Being(id, job, map),
     mAttackType(1)
 {
-    const MonsterInfo& info = getInfo();
+    const MonsterInfo &info = getInfo();
 
     // Setup Monster sprites
     const std::list<std::string> &sprites = info.getSprites();

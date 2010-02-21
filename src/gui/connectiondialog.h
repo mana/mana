@@ -22,7 +22,7 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-#include "main.h"
+#include "client.h"
 
 #include "gui/widgets/window.h"
 

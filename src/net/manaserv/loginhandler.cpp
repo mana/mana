@@ -21,7 +21,7 @@
 
 #include "net/manaserv/loginhandler.h"
 
-#include "main.h"
+#include "client.h"
 
 #include "net/logindata.h"
 
@@ -75,7 +75,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_CHAR_SELECT;
+                Client::setState(STATE_CHAR_SELECT);
             }
             // Login failed
             else
@@ -95,7 +95,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                state = STATE_ERROR;
+                Client::setState(STATE_ERROR);
             }
         }
             break;
@@ -106,7 +106,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful pass change
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_CHANGEPASSWORD_SUCCESS;
+                Client::setState(STATE_CHANGEPASSWORD_SUCCESS);
             }
             // pass change failed
             else
@@ -126,7 +126,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                state = STATE_ACCOUNTCHANGE_ERROR;
+                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
             }
         }
             break;
@@ -137,7 +137,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful pass change
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_CHANGEEMAIL_SUCCESS;
+                Client::setState(STATE_CHANGEEMAIL_SUCCESS);
             }
             // pass change failed
             else
@@ -160,7 +160,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                state = STATE_ACCOUNTCHANGE_ERROR;
+                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
             }
         }
             break;
@@ -185,7 +185,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = "Accountserver: Unknown error";
                         break;
                 }
-                state = STATE_ERROR;
+                Client::setState(STATE_ERROR);
             }
         }
             break;
@@ -195,7 +195,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful unregistration
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_UNREGISTER;
+                Client::setState(STATE_UNREGISTER);
             }
             // Unregistration failed
             else
@@ -210,7 +210,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = "Accountserver: Unknown error";
                         break;
                 }
-                state = STATE_ACCOUNTCHANGE_ERROR;
+                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
             }
         }
             break;
@@ -228,7 +228,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
 
                 printf("%s: %s\n", captchaURL.c_str(), captchaInstructions.c_str());
 
-                state = STATE_REGISTER;
+                Client::setState(STATE_REGISTER);
             }
             else
             {
@@ -237,7 +237,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                 if (errorMessage.empty())
                     errorMessage = _("Client registration is not allowed. "
                                      "Please contact server administration.");
-                state = STATE_LOGIN_ERROR;
+                Client::setState(STATE_LOGIN_ERROR);
             }
         }
             break;
@@ -252,7 +252,7 @@ void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
     {
         readUpdateHost(msg);
         // No worlds atm, but future use :-D
-        state = STATE_WORLD_SELECT;
+        Client::setState(STATE_WORLD_SELECT);
     }
     else
     {
@@ -278,7 +278,7 @@ void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
                 errorMessage = _("Unknown error.");
                 break;
         }
-        state = STATE_LOGIN_ERROR;
+        Client::setState(STATE_LOGIN_ERROR);
     }
 }
 
@@ -289,7 +289,7 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
     if (errMsg == ERRMSG_OK)
     {
         readUpdateHost(msg);
-        state = STATE_WORLD_SELECT;
+        Client::setState(STATE_WORLD_SELECT);
     }
     else
     {
@@ -315,7 +315,7 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
                 errorMessage = _("Unknown error.");
                 break;
         }
-        state = STATE_LOGIN_ERROR;
+        Client::setState(STATE_LOGIN_ERROR);
     }
 }
 
@@ -342,9 +342,9 @@ void LoginHandler::disconnect()
 {
     accountServerConnection->disconnect();
 
-    if (state == STATE_CONNECT_GAME)
+    if (Client::getState() == STATE_CONNECT_GAME)
     {
-        state = STATE_GAME;
+        Client::setState(STATE_GAME);
     }
 }
 

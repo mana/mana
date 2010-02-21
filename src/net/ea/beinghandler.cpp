@@ -23,8 +23,8 @@
 
 #include "being.h"
 #include "beingmanager.h"
+#include "client.h"
 #include "effectmanager.h"
-#include "game.h"
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"

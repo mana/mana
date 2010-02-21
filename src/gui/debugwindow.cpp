@@ -21,6 +21,7 @@
 
 #include "gui/debugwindow.h"
 
+#include "client.h"
 #include "game.h"
 #include "particle.h"
 #include "main.h"

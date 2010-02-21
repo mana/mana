@@ -22,9 +22,9 @@
 #include "being.h"
 
 #include "animatedsprite.h"
+#include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
@@ -62,7 +62,6 @@
 
 static const int DEFAULT_BEING_WIDTH = 32;
 static const int DEFAULT_BEING_HEIGHT = 32;
-extern const int MILLISECONDS_IN_A_TICK;
 
 
 int Being::mNumberOfHairstyles = 1;

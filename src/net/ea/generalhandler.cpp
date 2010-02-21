@@ -21,9 +21,9 @@
 
 #include "net/ea/generalhandler.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
@@ -129,7 +129,7 @@ void GeneralHandler::handleMessage(Net::MessageIn &msg)
                     errorMessage = _("No servers available.");
                     break;
                 case 2:
-                    if (state == STATE_GAME)
+                    if (Client::getState() == STATE_GAME)
                         errorMessage = _("Someone else is trying to use this "
                                          "account.");
                     else
@@ -145,7 +145,7 @@ void GeneralHandler::handleMessage(Net::MessageIn &msg)
                     errorMessage = _("Unknown connection error.");
                     break;
             }
-            state = STATE_ERROR;
+            Client::setState(STATE_ERROR);
             break;
     }
 }
@@ -199,7 +199,7 @@ void GeneralHandler::flushNetwork()
         else
             errorMessage = _("Got disconnected from server!");
 
-        state = STATE_ERROR;
+        Client::setState(STATE_ERROR);
     }
 }
 

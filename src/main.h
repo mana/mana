@@ -59,12 +59,6 @@
 #define PACKAGE_VERSION "0.0.29.1"
 #endif
 
-#include "net/logindata.h"
-
-#include <guichan/actionlistener.hpp>
-
-#include <string>
-
 #ifdef PACKAGE_VERSION
 #define FULL_VERSION "v" PACKAGE_VERSION
 #else
@@ -74,66 +68,5 @@
 #ifndef PKG_DATADIR
 #define PKG_DATADIR ""
 #endif
-
-#define MAX_CHARACTER_COUNT 3
-
-//manaserv uses 9601
-//#define DEFAULT_PORT 9601
-#define DEFAULT_PORT 6901
-
-const std::string &getHomeDirectory();
-
-/*
- * Client different States
- */
-enum State {
-    STATE_ERROR = -1,
-    STATE_START = 0,
-    STATE_CHOOSE_SERVER,
-    STATE_CONNECT_SERVER,
-    STATE_LOGIN,
-    STATE_LOGIN_ATTEMPT,
-    STATE_WORLD_SELECT, // 5
-    STATE_WORLD_SELECT_ATTEMPT,
-    STATE_UPDATE,
-    STATE_LOAD_DATA,
-    STATE_GET_CHARACTERS,
-    STATE_CHAR_SELECT, // 10
-    STATE_CONNECT_GAME,
-    STATE_GAME,
-    STATE_CHANGE_MAP, // Switch map-server/gameserver
-    STATE_LOGIN_ERROR,
-    STATE_ACCOUNTCHANGE_ERROR, // 15
-    STATE_REGISTER_PREP,
-    STATE_REGISTER,
-    STATE_REGISTER_ATTEMPT,
-    STATE_CHANGEPASSWORD,
-    STATE_CHANGEPASSWORD_ATTEMPT, // 20
-    STATE_CHANGEPASSWORD_SUCCESS,
-    STATE_CHANGEEMAIL,
-    STATE_CHANGEEMAIL_ATTEMPT,
-    STATE_CHANGEEMAIL_SUCCESS,
-    STATE_UNREGISTER, // 25
-    STATE_UNREGISTER_ATTEMPT,
-    STATE_UNREGISTER_SUCCESS,
-    STATE_SWITCH_SERVER,
-    STATE_SWITCH_LOGIN,
-    STATE_SWITCH_CHARACTER, // 30
-    STATE_LOGOUT_ATTEMPT,
-    STATE_WAIT,
-    STATE_EXIT,
-    STATE_FORCE_QUIT
-};
-
-class ErrorListener : public gcn::ActionListener
-{
-    public:
-        void action(const gcn::ActionEvent &event);
-};
-
-extern State state;
-extern std::string errorMessage;
-extern ErrorListener errorListener;
-extern LoginData loginData;
 
 #endif

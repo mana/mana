@@ -19,14 +19,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "player.h"
+
 #include "animatedsprite.h"
+#include "client.h"
 #include "configuration.h"
-#include "game.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "particle.h"
 #include "party.h"
-#include "player.h"
 #include "text.h"
 
 #include "gui/palette.h"

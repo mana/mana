@@ -21,8 +21,8 @@
 
 #include "net/manaserv/gamehandler.h"
 
+#include "client.h"
 #include "localplayer.h"
-#include "main.h"
 
 #include "net/manaserv/chathandler.h"
 #include "net/manaserv/connection.h"
@@ -63,7 +63,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
 \
                 if (!netToken.empty())
                 {
-                    state = STATE_SWITCH_CHARACTER;
+                    Client::setState(STATE_SWITCH_CHARACTER);
                 }
                 else
                 {
@@ -82,7 +82,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = "Gameserver: Unknown error";
                         break;
                 }
-                state = STATE_ERROR;
+                Client::setState(STATE_ERROR);
             }
         }
             break;

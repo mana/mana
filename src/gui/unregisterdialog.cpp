@@ -21,7 +21,7 @@
 
 #include "gui/unregisterdialog.h"
 
-#include "main.h"
+#include "client.h"
 #include "log.h"
 
 #include "gui/okdialog.h"
@@ -95,7 +95,7 @@ void UnRegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        state = STATE_CHAR_SELECT;
+        Client::setState(STATE_CHAR_SELECT);
     }
     else if (event.getId() == "unregister")
     {
@@ -138,7 +138,7 @@ void UnRegisterDialog::action(const gcn::ActionEvent &event)
             // No errors detected, unregister the new user.
             mUnRegisterButton->setEnabled(false);
             mLoginData->password = password;
-            state = STATE_UNREGISTER_ATTEMPT;
+            Client::setState(STATE_UNREGISTER_ATTEMPT);
         }
     }
 }

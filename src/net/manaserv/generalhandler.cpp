@@ -21,7 +21,7 @@
 
 #include "net/manaserv/generalhandler.h"
 
-#include "main.h"
+#include "client.h"
 
 #include "gui/changeemaildialog.h"
 #include "gui/charselectdialog.h"
@@ -147,11 +147,11 @@ void GeneralHandler::flushNetwork()
 {
     flush();
 
-    if (state == STATE_SWITCH_CHARACTER &&
+    if (Client::getState() == STATE_SWITCH_CHARACTER &&
         Net::getLoginHandler()->isConnected())
     {
         loginHandler->reconnect();
-        state = STATE_GET_CHARACTERS;
+        Client::setState(STATE_GET_CHARACTERS);
     }
 }
 

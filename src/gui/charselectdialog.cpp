@@ -21,9 +21,9 @@
 
 #include "gui/charselectdialog.h"
 
+#include "client.h"
 #include "game.h"
 #include "localplayer.h"
-#include "main.h"
 #include "units.h"
 #include "log.h"
 
@@ -179,7 +179,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     // Check if a button of a character was pressed
     const gcn::Widget *sourceParent = event.getSource()->getParent();
     int selected = -1;
-    for (unsigned i = 0; i < MAX_CHARACTER_COUNT; ++i)
+    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i)
         if (mCharacterEntries[i] == sourceParent)
             selected = i;
 
@@ -206,19 +206,19 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     }
     else if (eventId == "switch")
     {
-        state = STATE_SWITCH_LOGIN;
+        Client::setState(STATE_SWITCH_LOGIN);
     }
     else if (eventId == "change_password")
     {
-        state = STATE_CHANGEPASSWORD;
+        Client::setState(STATE_CHANGEPASSWORD);
     }
     else if (eventId == "change_email")
     {
-        state = STATE_CHANGEEMAIL;
+        Client::setState(STATE_CHANGEEMAIL);
     }
     else if (eventId == "unregister")
     {
-        state = STATE_UNREGISTER;
+        Client::setState(STATE_UNREGISTER);
     }
 }
 
@@ -308,7 +308,7 @@ bool CharSelectDialog::selectByName(const std::string &name,
     if (mLocked)
         return false;
 
-    for (unsigned i = 0; i < MAX_CHARACTER_COUNT; ++i) {
+    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i) {
         if (Net::Character *character = mCharacterEntries[i]->getCharacter()) {
             if (character->dummy->getName() == name) {
                 mCharacterEntries[i]->requestFocus();

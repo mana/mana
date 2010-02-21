@@ -21,9 +21,9 @@
 
 #include "gui/updatewindow.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/sdlinput.h"
 
@@ -223,7 +223,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "play")
     {
-        state = STATE_LOAD_DATA;
+        Client::setState(STATE_LOAD_DATA);
     }
 }
 
@@ -234,7 +234,7 @@ void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
     if (key.getValue() == Key::ESCAPE)
     {
         action(gcn::ActionEvent(NULL, mCancelButton->getActionEventId()));
-        state = STATE_WORLD_SELECT;
+        Client::setState(STATE_WORLD_SELECT);
     }
     else if (key.getValue() == Key::ENTER)
     {
@@ -296,15 +296,18 @@ int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
 
     float progress = (float) dn / dt;
 
-    if (progress != progress) progress = 0.0f; // check for NaN
-    if (progress < 0.0f) progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
-    if (progress > 1.0f) progress = 1.0f;
+    if (progress != progress)
+        progress = 0.0f; // check for NaN
+    if (progress < 0.0f)
+        progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
+    if (progress > 1.0f)
+        progress = 1.0f;
 
     uw->setLabel(
             uw->mCurrentFile + " (" + toString((int) (progress * 100)) + "%)");
     uw->setProgress(progress);
 
-    if (state != STATE_UPDATE || uw->mDownloadStatus == UPDATE_ERROR)
+    if (Client::getState() != STATE_UPDATE || uw->mDownloadStatus == UPDATE_ERROR)
     {
         // If the action was canceled return an error code to stop the mThread
         return -1;
