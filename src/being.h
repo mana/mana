@@ -240,6 +240,17 @@ class Being : public Sprite, public ConfigListener
         virtual void setShowName(bool doShowName);
 
         /**
+         * Following are set from the server (mainly for players)
+         */
+        void setPartyName(const std::string &name) { mPartyName = name; }
+
+        const std::string &getPartyName() const { return mPartyName; }
+
+        virtual void setGuildName(const std::string &name);
+
+        virtual void setGuildPos(const std::string &pos);
+
+        /**
          * Get the number of hairstyles implemented
          */
         static int getNumOfHairstyles()
@@ -602,6 +613,7 @@ class Being : public Sprite, public ConfigListener
         Uint8 mSpriteDirection;         /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
+        std::string mPartyName;
         MapSprite mMapSprite;
 
         /**

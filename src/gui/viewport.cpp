@@ -36,6 +36,7 @@
 #include "gui/gui.h"
 #include "gui/ministatus.h"
 #include "gui/popupmenu.h"
+#include "gui/beingpopup.h"
 
 #include "net/net.h"
 
@@ -73,6 +74,7 @@ Viewport::Viewport():
     config.addListener("visiblenames", this);
 
     mPopupMenu = new PopupMenu;
+    mBeingPopup = new BeingPopup;
 }
 
 Viewport::~Viewport()
@@ -472,10 +474,11 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     if (!mMap || !player_node)
         return;
 
-    const int tilex = (event.getX() + (int) mPixelViewX) / 32;
-    const int tiley = (event.getY() + (int) mPixelViewY) / 32;
+    const int x = (event.getX() + (int) mPixelViewX);
+    const int y = (event.getY() + (int) mPixelViewY);
 
-    mSelectedBeing = beingManager->findBeing(tilex, tiley);
+    mSelectedBeing = beingManager->findBeingByPixel(x, y);
+    mBeingPopup->setBeing(getMouseX(), getMouseY(), mSelectedBeing);
 }
 
 void Viewport::toggleDebugPath()

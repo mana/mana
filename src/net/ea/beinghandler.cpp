@@ -56,6 +56,7 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_BEING_CHANGE_LOOKS,
         SMSG_BEING_CHANGE_LOOKS2,
         SMSG_BEING_NAME_RESPONSE,
+        SMSG_PLAYER_GUILD_PARTY_INFO,
         SMSG_BEING_CHANGE_DIRECTION,
         SMSG_PLAYER_UPDATE_1,
         SMSG_PLAYER_UPDATE_2,
@@ -480,7 +481,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 dstBeing->setName(msg.readString(24));
             }
             break;
-
+        case SMSG_PLAYER_GUILD_PARTY_INFO:
+            if ((dstBeing = beingManager->findBeing(msg.readInt32())))
+            {
+                dstBeing->setPartyName(msg.readString(24));
+                dstBeing->setGuildName(msg.readString(24));
+                dstBeing->setGuildPos(msg.readString(24));
+            }
+            break;
         case SMSG_BEING_CHANGE_DIRECTION:
             if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
             {

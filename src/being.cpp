@@ -363,6 +363,17 @@ void Being::setShowName(bool doShowName)
     }
 }
 
+void Being::setGuildName(const std::string &name)
+{
+    logger->log("Got guild name \"%s\" for being %s(%i)", name.c_str(), mName.c_str(), mId);
+}
+
+
+void Being::setGuildPos(const std::string &pos)
+{
+    logger->log("Got guild position \"%s\" for being %s(%i)", pos.c_str(), mName.c_str(), mId);
+}
+
 void Being::setMap(Map *map)
 {
     // Remove sprite from potential previous map

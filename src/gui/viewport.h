@@ -36,6 +36,7 @@ class ImageSet;
 class Item;
 class Map;
 class PopupMenu;
+class BeingPopup;
 
 /** Delay between two mouse calls when dragging mouse and move the player */
 const int walkingMouseDelay = 500;
@@ -187,6 +188,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
 
         PopupMenu *mPopupMenu;       /**< Popup menu. */
         Being *mSelectedBeing;       /**< Current selected being. */
+        BeingPopup *mBeingPopup;
 };
 
 extern Viewport *viewport;           /**< The viewport */
