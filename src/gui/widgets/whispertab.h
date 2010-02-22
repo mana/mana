@@ -39,8 +39,6 @@ class WhisperTab : public ChatTab
         bool handleCommand(const std::string &type,
                            const std::string &args);
 
-        int getType() const;
-
     protected:
         friend class ChatWindow;
 

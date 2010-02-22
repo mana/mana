@@ -48,14 +48,6 @@ enum
 class ChatTab : public Tab
 {
     public:
-        enum Type
-        {
-            UNKNOWN,
-            INPUT,
-            WHISPER,
-            PARTY
-        };
-
         /**
          * Constructor.
          */
@@ -119,11 +111,6 @@ class ChatTab : public Tab
                                    const std::string &args)
         { return false; }
 
-        /**
-         * Returns type of the being.
-         */
-        virtual int getType() const;
-
     protected:
         friend class ChatWindow;
         friend class WhisperWindow;
@@ -133,6 +120,8 @@ class ChatTab : public Tab
         virtual void handleInput(const std::string &msg);
 
         virtual void handleCommand(const std::string &msg);
+
+        virtual void getAutoCompleteList(std::vector<std::string>&) const {}
 
         void addRow(std::string &line);
 

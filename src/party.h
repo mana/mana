@@ -153,7 +153,7 @@ public:
 
     bool isMember(const std::string &name) const;
 
-    void getNames(std::vector<std::string> &names) const;
+    const void getNames(std::vector<std::string> &names) const;
 
     static Party *getParty(int id);
 

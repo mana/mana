@@ -521,15 +521,9 @@ void ChatWindow::autoComplete()
 
     ChatTab *cTab = static_cast<ChatTab*>(mChatTabs->getSelectedTab());
     std::vector<std::string> nameList;
-    if (cTab && cTab->getType() == ChatTab::PARTY)
-    {
-        Party *p = player_node->getParty();
+    cTab->getAutoCompleteList(nameList);
+    newName = autoComplete(nameList, name);
 
-        if (p) // Shouldn't be needed, but lets be safe
-            p->getNames(nameList);
-
-        newName = autoComplete(nameList, name);
-    }
     if (newName == "")
     {
         beingManager->getPlayerNames(nameList, true);

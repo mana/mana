@@ -275,11 +275,6 @@ void ChatTab::handleCommand(const std::string &msg)
     commandHandler->handleCommand(msg, this);
 }
 
-int ChatTab::getType() const
-{
-    return INPUT;
-}
-
 void ChatTab::addRow(std::string &line)
 {
     std::string::size_type idx = 0;

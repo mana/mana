@@ -19,9 +19,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "partytab.h"
+#include "net/ea/gui/partytab.h"
 
 #include "commandhandler.h"
+#include "localplayer.h"
+#include "party.h"
 
 #include "gui/palette.h"
 
@@ -196,9 +198,12 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
     return true;
 }
 
-int PartyTab::getType() const
+void PartyTab::getAutoCompleteList(std::vector<std::string> &names) const
 {
-    return ChatTab::PARTY;
+    Party *p = player_node->getParty();
+
+    if (p)
+        p->getNames(names);
 }
 
 } // namespace EAthena
