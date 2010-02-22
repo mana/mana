@@ -487,6 +487,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 dstBeing->setPartyName(msg.readString(24));
                 dstBeing->setGuildName(msg.readString(24));
                 dstBeing->setGuildPos(msg.readString(24));
+                msg.readString(24); // Discard this
             }
             break;
         case SMSG_BEING_CHANGE_DIRECTION:
