@@ -53,11 +53,6 @@ class ItemPopup : public Popup,
          */
         void setItem(const ItemInfo &item);
 
-        /**
-         * Sets the location to display the item popup.
-         */
-        void view(int x, int y);
-
         void mouseMoved(gcn::MouseEvent &mouseEvent);
 
     private:

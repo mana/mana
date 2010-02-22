@@ -320,7 +320,7 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
     if (item)
     {
         mItemPopup->setItem(item->getInfo());
-        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
+        mItemPopup->position(viewport->getMouseX(), viewport->getMouseY());
     }
     else
     {

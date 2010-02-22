@@ -1,8 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
- *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2010  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -27,8 +25,8 @@
 
 #include <guichan/mouselistener.hpp>
 
+class Player;
 class TextBox;
-class Being;
 
 /**
  * A popup that displays information about an item.
@@ -47,14 +45,11 @@ class BeingPopup : public Popup
         ~BeingPopup();
 
         /**
-         * Sets the info to be displayed given a particular item.
+         * Sets the info to be displayed given a particular player.
          */
-        void setBeing(int x, int y, Being *b);
+        void show(int x, int y, Player *p);
 
-        /**
-         * Sets the location to display the item popup.
-         */
-        void view(int x, int y);
+        // TODO: Add a version for monsters, NPCs, etc?
 
     private:
         TextBox *mBeingName;

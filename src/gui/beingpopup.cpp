@@ -1,8 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
- *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2010  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -23,9 +21,8 @@
 #include "gui/beingpopup.h"
 
 #include "graphics.h"
+#include "player.h"
 #include "units.h"
-
-#include "being.h"
 
 #include "gui/gui.h"
 #include "gui/palette.h"
@@ -62,29 +59,28 @@ BeingPopup::~BeingPopup()
 {
 }
 
-void BeingPopup::setBeing(int x, int y, Being *b)
+void BeingPopup::show(int x, int y, Player *p)
 {
-    if (!b)
+    if (!p)
     {
         setVisible(false);
         return;
     }
 
-    if (!(b->getPartyName().empty()))
+    if (!(p->getPartyName().empty()))
     {
-        mBeingName->setTextWrapped(b->getName(), 196);
-        mBeingParty->setTextWrapped(strprintf(_("Party: %s"),b->getPartyName().c_str()), 196);
+        mBeingName->setTextWrapped(p->getName(), 196);
+        mBeingParty->setTextWrapped(strprintf(_("Party: %s"),
+                                        p->getPartyName().c_str()), 196);
 
-        int minWidth = mBeingName->getMinWidth();
-
-        if (mBeingParty->getMinWidth() > minWidth)
-            minWidth = mBeingParty->getMinWidth();
+        int minWidth = std::max(mBeingName->getMinWidth(),
+                                mBeingParty->getMinWidth());
 
         const int height = getFont()->getHeight();
 
-        setContentSize(minWidth, (height * 2) + 10);
+        setContentSize(minWidth + 10, (height * 2) + 10);
 
-        view(x, y);
+        position(x, y);
         return;
     }
 
@@ -94,21 +90,4 @@ void BeingPopup::setBeing(int x, int y, Being *b)
 gcn::Color BeingPopup::getColor()
 {
     return guiPalette->getColor(Palette::GENERIC);
-}
-
-void BeingPopup::view(int x, int y)
-{
-    const int distance = 20;
-
-    int posX = std::max(0, x - getWidth() / 2);
-    int posY = y + distance;
-
-    if (posX > graphics->getWidth() - getWidth())
-        posX = graphics->getWidth() - getWidth();
-    if (posY > graphics->getHeight() - getHeight())
-        posY = y - getHeight() - distance;
-
-    setPosition(posX, posY);
-    setVisible(true);
-    requestMoveToTop();
 }

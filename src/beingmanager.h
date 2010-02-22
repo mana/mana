@@ -87,12 +87,12 @@ class BeingManager
          *                    larger, no being is returned.
          * @param type        The type of being to look for.
          */
-         Being *findNearestLivingBeing(Being *aroundBeing, int maxTileDist,
+        Being *findNearestLivingBeing(Being *aroundBeing, int maxTileDist,
                                        Being::Type type = Being::UNKNOWN) const;
 
-       /**
-        * Finds a being by name and (optionally) by type.
-        */
+        /**
+         * Finds a being by name and (optionally) by type.
+         */
         Being *findBeingByName(const std::string &name,
                                Being::Type type = Being::UNKNOWN) const;
 

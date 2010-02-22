@@ -70,6 +70,8 @@
 ./src/game.h
 ./src/graphics.cpp
 ./src/graphics.h
+./src/gui/beingpopup.cpp
+./src/gui/beingpopup.h
 ./src/gui/buy.cpp
 ./src/gui/buy.h
 ./src/gui/buysell.cpp

@@ -170,3 +170,19 @@ void Popup::scheduleDelete()
     windowContainer->scheduleDelete(this);
 }
 
+void Popup::position(int x, int y)
+{
+    const int distance = 20;
+
+    int posX = std::max(0, x - getWidth() / 2);
+    int posY = y + distance;
+
+    if (posX > graphics->getWidth() - getWidth())
+        posX = graphics->getWidth() - getWidth();
+    if (posY > graphics->getHeight() - getHeight())
+        posY = y - getHeight() - distance;
+
+    setPosition(posX, posY);
+    setVisible(true);
+    requestMoveToTop();
+}

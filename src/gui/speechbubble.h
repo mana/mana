@@ -49,11 +49,6 @@ class SpeechBubble : public Popup
          */
         void setText(const std::string &text, bool showName = true);
 
-        /**
-         * Sets the location in which the speech bubble will be displayed.
-         */
-        void setLocation(int x, int y);
-
     private:
         std::string mText;
         gcn::Label *mCaption;

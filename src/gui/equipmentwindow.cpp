@@ -226,7 +226,7 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
         SDL_GetMouseState(&mouseX, &mouseY);
 
         mItemPopup->setItem(item->getInfo());
-        mItemPopup->view(x + getX(), y + getY());
+        mItemPopup->position(x + getX(), y + getY());
     }
     else
     {

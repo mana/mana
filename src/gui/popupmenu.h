@@ -59,12 +59,6 @@ class PopupMenu : public Popup, public LinkHandler
         void showPopup(int x, int y, Item *item, bool isInventory);
 
         /**
-         * Just shows general information about a being
-         */
-        void showPopupBeing(int x, int y, Being *being);
-
-
-        /**
          * Handles link action.
          */
         void handleLink(const std::string &link);

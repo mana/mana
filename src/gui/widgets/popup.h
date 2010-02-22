@@ -152,6 +152,14 @@ class Popup : public Container
 
         virtual gcn::Rectangle getChildrenArea();
 
+        /**
+         * Sets the location to display the popup. Tries to horizontally center
+         * the popup and provide a vertical buffer between the given point and
+         * the popup. Prevents the popup from extending off-screen, if
+         * possible.
+         */
+        void position(int x, int y);
+
     private:
         std::string mPopupName;       /**< Name of the popup */
         std::string mDefaultSkinPath; /**< Default skin path for this popup */

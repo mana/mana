@@ -190,6 +190,8 @@ SET(SRCS
     gui/widgets/window.h
     gui/widgets/windowcontainer.cpp
     gui/widgets/windowcontainer.h
+    gui/beingpopup.cpp
+    gui/beingpopup.h
     gui/buy.cpp
     gui/buy.h
     gui/buysell.cpp

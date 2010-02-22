@@ -478,7 +478,10 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int y = (event.getY() + (int) mPixelViewY);
 
     mSelectedBeing = beingManager->findBeingByPixel(x, y);
-    mBeingPopup->setBeing(getMouseX(), getMouseY(), mSelectedBeing);
+    if (Player *p = dynamic_cast<Player*>(mSelectedBeing))
+    {
+        mBeingPopup->show(getMouseX(), getMouseY(), p);
+    }
 }
 
 void Viewport::toggleDebugPath()
