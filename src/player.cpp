@@ -301,7 +301,7 @@ void Player::updateColors()
         mTextColor = &guiPalette->getColor(Palette::GM);
         mNameColor = &guiPalette->getColor(Palette::GM_NAME);
     }
-    else if (mParty != NULL)
+    else if (mParty && mParty == player_node->getParty())
     {
         mNameColor = &guiPalette->getColor(Palette::PARTY);
     }
