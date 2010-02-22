@@ -22,6 +22,7 @@
 #include "net/manaserv/loginhandler.h"
 
 #include "client.h"
+#include "log.h"
 
 #include "net/logindata.h"
 
@@ -321,11 +322,16 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
 
 void LoginHandler::readUpdateHost(Net::MessageIn &msg)
 {
+    // Safety check for outdated manaserv versions (remove me later)
+    if (msg.getUnreadLength() == 0)
+        return;
+
     // Set the update host when included in the message
-    if (msg.getUnreadLength() > 0)
-    {
-        mLoginData->updateHost = msg.readString();
-    }
+    const std::string updateHost = msg.readString();
+    if (!updateHost.empty())
+        mLoginData->updateHost = updateHost;
+    else
+        logger->log("Warning: server does not have an update host set!");
 }
 
 void LoginHandler::connect()
