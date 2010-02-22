@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2010  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -162,7 +162,7 @@ private:
     static PartyMap parties;
 
     /**
-     * Constructor with guild id passed to it.
+     * Constructor with party id passed to it.
      */
     Party(short id);
 
