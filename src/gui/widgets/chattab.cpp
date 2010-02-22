@@ -64,7 +64,9 @@ ChatTab::ChatTab(const std::string &name) : Tab()
 
 ChatTab::~ChatTab()
 {
-    chatWindow->removeTab(this);
+    if (chatWindow)
+        chatWindow->removeTab(this);
+
     delete mTextOutput;
     delete mScrollArea;
 }

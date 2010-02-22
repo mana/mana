@@ -37,9 +37,6 @@ ChannelTab::ChannelTab(Channel *channel) :
 
 ChannelTab::~ChannelTab()
 {
-    // Clear tab so the channel won't try to delete it again (otherwise we'd
-    // run into issues if the ChatWindow is deleted before the channels are)
-    mChannel->setTab(0);
 }
 
 void ChannelTab::handleInput(const std::string &msg)
