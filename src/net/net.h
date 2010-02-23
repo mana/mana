@@ -23,7 +23,11 @@
 #define NET_H
 
 /**
- * \defgroup Network Core network layer
+ * \namespace Net
+ *
+ * The network communication layer. It is composed of a host of interfaces that
+ * interact with different aspects of the game. They have different
+ * implementations depending on the type of server the client is connecting to.
  */
 
 #include "net/serverinfo.h"
