@@ -31,6 +31,10 @@
 #include <iostream>
 #include <physfs.h>
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 static void printHelp()
 {
     using std::endl;

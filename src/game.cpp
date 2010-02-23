@@ -88,8 +88,6 @@
 
 #include <physfs.h>
 
-#include <sys/stat.h>
-
 #include <fstream>
 #include <sstream>
 #include <string>

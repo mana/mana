@@ -86,9 +86,9 @@
 #include <SDL_syswm.h>
 #else
 #include <cerrno>
-#include <sys/stat.h>
 #endif
 
+#include <sys/stat.h>
 #include <cassert>
 
 /**
