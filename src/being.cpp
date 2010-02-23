@@ -127,6 +127,48 @@ void Being::setPosition(const Vector &pos)
                         (int)pos.y - getHeight() - mText->getHeight() - 6);
 }
 
+Position Being::checkNodeOffsets(Position position)
+{
+    // Pre-computing character's position in tiles
+    const int tx = position.x / 32;
+    const int ty = position.y / 32;
+
+    // Pre-computing character's position offsets.
+    int fx = position.x % 32;
+    int fy = position.y % 32;
+
+    // Compute the being radius:
+    // FIXME: the beings' radius should be obtained from xml values
+    // and stored into the Being ojects.
+    int radius = getWidth() / 2;
+    // FIXME: Hande beings with more than 1/2 tile radius by not letting them
+    // go or spawn in too narrow places. The server will have to be aware
+    // of being's radius value (in tiles) to handle this gracefully.
+    if (radius > 32 / 2) radius = 32 / 2;
+    // set a default value if no value returned.
+    if (radius < 1) radius = 32 / 3;
+
+    // Fix coordinates so that the player does not seem to dig into walls.
+    if (fx > (32 - radius) && !mMap->getWalk(tx + 1, ty, getWalkMask()))
+        fx = 32 - radius;
+    else if (fx < radius && !mMap->getWalk(tx - 1, ty, getWalkMask()))
+        fx = radius;
+    else if (fy > (32 - radius) && !mMap->getWalk(tx, ty + 1, getWalkMask()))
+        fy = 32 - radius;
+    else if (fy < radius && !mMap->getWalk(tx, ty - 1, getWalkMask()))
+        fy = radius;
+
+    // FIXME: Check also diagonal positions.
+
+    // Test also the current character's position, to avoid the corner case
+    // where a player can approach an obstacle by walking from slightly
+    // under, diagonally. First part to the walk on water bug.
+    //if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
+      //fy = 16;
+
+    return Position(tx * 32 + fx, ty * 32 + fy);
+}
+
 void Being::setDestination(int dstX, int dstY)
 {
     if (Net::getNetworkType() == ServerInfo::EATHENA)
@@ -136,12 +178,22 @@ void Being::setDestination(int dstX, int dstY)
         return;
     }
 
-    mDest.x = dstX;
-    mDest.y = dstY;
+    // Check the walkability of the destination:
+    // If the destination is unwalkable,
+    // don't bother finding a path or set a destination.
+    if (!mMap->getWalk(dstX / 32, dstY / 32))
+        return;
+
+    // We check the destination in order to handle
+    // surrounding blocking tiles gracefully...
+    Position dest = checkNodeOffsets(dstX, dstY);
+    mDest.x = dest.x;
+    mDest.y = dest.y;
     int srcX = mPos.x;
     int srcY = mPos.y;
 
-    Path thisPath;
+    // We initialize an empty path...
+    Path thisPath = Path();
 
     if (mMap)
     {
@@ -175,6 +227,12 @@ void Being::setDestination(int dstX, int dstY)
     {
        it->x = (it->x * 32) + startX + (changeX * i);
        it->y = (it->y * 32) + startY + (changeY * i);
+
+       // We check each path node and correct the
+       // tile position's offsets whenever needed.
+       Position pos = checkNodeOffsets(*it);
+       it->x = pos.x;
+       it->y = pos.y;
        i++;
        it++;
     }
