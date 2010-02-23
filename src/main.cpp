@@ -31,7 +31,7 @@
 #include <iostream>
 #include <physfs.h>
 
-#ifdef WIN32
+#ifdef __MINGW32__
 #include <windows.h>
 #endif
 
@@ -188,7 +188,7 @@ static void initXML()
 
 int main(int argc, char *argv[])
 {
-#if defined(DEBUG) && defined(WIN32)
+#if defined(DEBUG) && defined(__MINGW32__)
     // Load mingw crash handler. Won't fail if dll is not present.
     LoadLibrary("exchndl.dll");
 #endif
