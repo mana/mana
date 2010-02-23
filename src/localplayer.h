@@ -474,8 +474,6 @@ class LocalPlayer : public Player
         int mLastAction;      /**< Time stamp of the last action, -1 if none. */
         int mWalkingDir;      /**< The direction the player is walking in. */
         bool mPathSetByMouse; /**< Tells if the path was set using mouse */
-        int mDestX;           /**< X coordinate of destination. */
-        int mDestY;           /**< Y coordinate of destination. */
 
         std::vector<int> mStatusEffectIcons;
 

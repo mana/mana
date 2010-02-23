@@ -98,7 +98,6 @@ LocalPlayer::LocalPlayer(int id, int job):
     mLastAction(-1),
     mWalkingDir(0),
     mPathSetByMouse(false),
-    mDestX(0), mDestY(0),
     mInventory(new Inventory(Net::getInventoryHandler()
                              ->getSize(Net::InventoryHandler::INVENTORY))),
     mLocalWalkTime(-1),
@@ -516,11 +515,8 @@ void LocalPlayer::setDestination(int x, int y)
     }
 
     // Only send a new message to the server when destination changes
-    if (x != mDestX || y != mDestY)
+    if (x != mDest.x || y != mDest.y)
     {
-        mDestX = x;
-        mDestY = y;
-
         Being::setDestination(x, y);
         Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }

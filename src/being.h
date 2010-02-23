@@ -645,6 +645,8 @@ class Being : public Sprite, public ConfigListener
         ParticleVector mStatusParticleEffects;
         ParticleList mChildParticleEffects;
 
+        Vector mDest;  /**< destination coordinates. */
+
     private:
 
         /**
@@ -668,9 +670,8 @@ class Being : public Sprite, public ConfigListener
          */
         Vector mWalkSpeed;
 
-        Vector mPos;
-        Vector mDest;
-        int mX, mY;                     /**< Position on tile */
+        Vector mPos;  /**< Position coordinates. */
+        int mX, mY;   /**< Position in tile */
 
         int mDamageTaken;
 
