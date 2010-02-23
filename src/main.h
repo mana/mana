@@ -27,9 +27,9 @@
  *
  * \section Introduction Introduction
  *
- * This is the documentation for the client of The Mana World
- * (http://themanaworld.org). It is always a work in progress, with the intent
- * to make it easier for new developers to grow familiar with the source code.
+ * This is the documentation for the Mana client (http://manasource.org). It is
+ * always a work in progress, with the intent to make it easier for new
+ * developers to grow familiar with the source code.
  *
  * \section General General information
  *
@@ -44,11 +44,10 @@
  * \link FloorItem FloorItems\endlink, they are drawn from top to bottom
  * by the map, interleaved with the tiles in the fringe layer.
  *
- * The server is split up into an \link Net::AccountServer account
- * server\endlink, a \link Net::ChatServer chat server\endlink and a \link
- * Net::GameServer game server\endlink. There may be multiple game servers.
- * Handling of incoming messages is spread over several \link MessageHandler
- * MessageHanders\endlink.
+ * The client supports two servers, \link EAthena eAthena\endlink (the TMW
+ * version) and the \link ManaServ Mana server\endlink. To achieve this, the
+ * \link Net network communication layer\endlink is abstracted in many
+ * different interfaces, which have different implementations for each server.
  */
 
 #ifdef HAVE_CONFIG_H
