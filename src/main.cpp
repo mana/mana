@@ -40,26 +40,26 @@ static void printHelp()
     using std::endl;
 
     std::cout
-        << _("mana [mana-file]") << endl << endl
+        << _("mana [options] [mana-file]") << endl << endl
         << _("Options:") << endl
-        << _("  -C --config-file    : Configuration file to use") << endl
-        << _("  -d --data           : Directory to load game data from") << endl
-        << _("  -D --default        : Choose default character server and "
-                                     "character") << endl
+        << _("  -v --version        : Display the version") << endl
         << _("  -h --help           : Display this help") << endl
-        << _("  -S --home-dir       : Directory to use as home directory") << endl
-        << _("  -i --screenshot-dir : Directory to store screenshots") << endl
-        << _("  -H --update-host    : Use this update host") << endl
+        << _("  -C --config-file    : Configuration file to use") << endl
+        << _("  -U --username       : Login with this username") << endl
         << _("  -P --password       : Login with this password") << endl
         << _("  -c --character      : Login with this character") << endl
-        << _("  -p --port           : Login server port") << endl
         << _("  -s --server         : Login server name or IP") << endl
+        << _("  -p --port           : Login server port") << endl
+        << _("     --update-host    : Use this update host") << endl
+        << _("  -D --default        : Choose default character server and "
+                                     "character") << endl
         << _("  -u --skip-update    : Skip the update downloads") << endl
-        << _("  -U --username       : Login with this username") << endl
+        << _("  -d --data           : Directory to load game data from") << endl
+        << _("     --home-dir       : Directory to use as home directory") << endl
+        << _("     --screenshot-dir : Directory to store screenshots") << endl
 #ifdef USE_OPENGL
-        << _("  -O --no-opengl      : Disable OpenGL for this session") << endl
+        << _("     --no-opengl      : Disable OpenGL for this session") << endl;
 #endif
-        << _("  -v --version        : Display the version") << endl;
 }
 
 static void printVersion()
@@ -69,7 +69,7 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Client::Options &options)
 {
-    const char *optstring = "hvud:U:P:Dc:s:p:C:H:S:Oi:";
+    const char *optstring = "hvud:U:P:Dc:p:C:S:";
 
     const struct option long_options[] = {
         { "config-file",    required_argument, 0, 'C' },
@@ -108,7 +108,8 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
             case 'D':
                 options.chooseDefault = true;
                 break;
-            default: // Unknown option
+            case '?': // Unknown option
+            case ':': // Missing argument
             case 'h':
                 options.printHelp = true;
                 break;
@@ -154,8 +155,6 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
     {
         options.brandingPath = argv[optind];
     }
-
-
 }
 
 #ifdef WIN32
