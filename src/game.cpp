@@ -865,7 +865,8 @@ void Game::handleInput()
         }
 
         // Talk to the nearest NPC if 't' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
+        if (event.type == SDL_KEYDOWN &&
+            keyboard.getKeyIndex(event.key.keysym.sym) == KeyboardConfig::KEY_TALK)
         {
             Being *target = player_node->getTarget();
 
