@@ -61,6 +61,7 @@ class InventoryHandler
         virtual void moveItem(StorageType source, int slot, int amount,
                               StorageType destination) = 0;
 
+        // TODO: fix/remove me
         virtual size_t getSize(StorageType type) const = 0;
 
         virtual ~InventoryHandler() {}

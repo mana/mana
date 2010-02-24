@@ -26,10 +26,14 @@
 #include "inventory.h"
 #include "localplayer.h"
 
+#include "gui/storagewindow.h"
+
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 
 #include "net/ea/messagehandler.h"
+
+#include <list>
 
 namespace EAthena {
 
@@ -89,10 +93,34 @@ class EquipBackend : public Equipment::Backend {
         int mEquipment[EQUIPMENT_SIZE];
 };
 
+/**
+ * Used to cache storage data until we get size data for it.
+ */
+class InventoryItem
+{
+    public:
+        int slot;
+        int id;
+        int quantity;
+        bool equip;
+
+        InventoryItem(int slot, int id, int quantity, bool equip)
+        {
+            this->slot = slot;
+            this->id = id;
+            this->quantity = quantity;
+            this->equip = equip;
+        }
+};
+
+typedef std::list<InventoryItem> InventoryItems;
+
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 {
     public:
         InventoryHandler();
+
+        ~InventoryHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
@@ -121,6 +149,9 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 
     private:
         EquipBackend mEquips;
+        InventoryItems mInventoryItems;
+        Inventory *mStorage;
+        StorageWindow *mStorageWindow;
 };
 
 } // namespace EAthena

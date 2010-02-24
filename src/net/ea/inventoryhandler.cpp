@@ -107,6 +107,20 @@ InventoryHandler::InventoryHandler()
     };
     handledMessages = _messages;
     inventoryHandler = this;
+
+    mStorage = 0;
+    mStorageWindow = 0;
+}
+
+InventoryHandler::~InventoryHandler()
+{
+    if (mStorageWindow)
+    {
+        mStorageWindow->close();
+        mStorageWindow = 0;
+    }
+
+    delete mStorage;
 }
 
 void InventoryHandler::handleMessage(Net::MessageIn &msg)
@@ -115,7 +129,6 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     int index, amount, itemId, equipType, arrow;
     int identified, cards[4], itemType;
     Inventory *inventory = player_node->getInventory();
-    Inventory *storage = player_node->getStorage();
 
     switch (msg.getId())
     {
@@ -128,6 +141,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 player_node->mEquipment->setBackend(&mEquips);
 
                 inventory->clear();
+            }
+            else
+            {
+                mInventoryItems.clear();
             }
 
             msg.readInt16();  // length
@@ -170,7 +187,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 }
                 else
                 {
-                    storage->setItem(index, itemId, amount, false);
+                    mInventoryItems.push_back(InventoryItem(index, itemId,
+                                                            amount, false));
                 }
             }
             break;
@@ -201,7 +219,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                                 cards[0], cards[1], cards[2], cards[3]);
                 }
 
-                storage->setItem(index, itemId, amount, false);
+                mInventoryItems.push_back(InventoryItem(index, itemId, amount,
+                                                        false));
             }
             break;
 
@@ -280,15 +299,27 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
              * server. It always comes after the two SMSG_PLAYER_STORAGE_...
              * packets that update storage contents.
              */
-            player_node->setInStorage(true);
-            msg.readInt16(); // Used count
-            msg.readInt16(); // Storage capacity
+            {
+                msg.readInt16(); // Used count
+                int size = msg.readInt16(); // Max size
+
+                if (!mStorage)
+                    mStorage = new Inventory(size);
+
+                InventoryItems::iterator it = mInventoryItems.begin();
+                InventoryItems::iterator it_end = mInventoryItems.end();
+                for (; it != it_end; it++)
+                    mStorage->setItem((*it).slot, (*it).id, (*it).quantity,
+                                      (*it).equip);
+                mInventoryItems.clear();
+
+                if (!mStorageWindow)
+                    mStorageWindow = new StorageWindow(mStorage);
+            }
             break;
 
         case SMSG_PLAYER_STORAGE_ADD:
-            /*
-             * Move an item into storage
-             */
+            // Move an item into storage
             index = msg.readInt16() - STORAGE_OFFSET;
             amount = msg.readInt32();
             itemId = msg.readInt16();
@@ -298,37 +329,38 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             for (int i = 0; i < 4; i++)
                 cards[i] = msg.readInt16();
 
-            if (Item *item = storage->getItem(index))
+            if (Item *item = mStorage->getItem(index))
             {
                 item->setId(itemId);
                 item->increaseQuantity(amount);
             }
             else
             {
-                storage->setItem(index, itemId, amount, false);
+                mStorage->setItem(index, itemId, amount, false);
             }
             break;
 
         case SMSG_PLAYER_STORAGE_REMOVE:
-            /*
-             * Move an item out of storage
-             */
+            // Move an item out of storage
             index = msg.readInt16() - STORAGE_OFFSET;
             amount = msg.readInt16();
-            if (Item *item = storage->getItem(index))
+            if (Item *item = mStorage->getItem(index))
             {
                 item->increaseQuantity(-amount);
                 if (item->getQuantity() == 0)
-                    storage->removeItemAt(index);
+                    mStorage->removeItemAt(index);
             }
             break;
 
         case SMSG_PLAYER_STORAGE_CLOSE:
-            /*
-             * Storage access has been closed
-             */
-            storage->clear();
-            player_node->setInStorage(false);
+            // Storage access has been closed
+
+            // Storage window deletes itself
+            mStorageWindow = 0;
+
+            mStorage->clear();
+            delete mStorage;
+            mStorage = 0;
             break;
 
         case SMSG_PLAYER_EQUIPMENT:
@@ -482,9 +514,9 @@ size_t InventoryHandler::getSize(StorageType type) const
         case INVENTORY:
             return 100;
         case STORAGE:
-            return 300;
+            return 0;
         case GUILD_STORAGE:
-            return 1000;
+            return 0;
         default:
             return 0;
     }

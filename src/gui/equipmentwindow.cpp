@@ -207,7 +207,7 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
              */
             const int mx = x + getX();
             const int my = y + getY();
-            viewport->showPopup(mx, my, item, true);
+            viewport->showPopup(this, mx, my, item, true);
         }
     }
 }

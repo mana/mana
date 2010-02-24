@@ -77,7 +77,6 @@ LocalPlayer *player_node = NULL;
 LocalPlayer::LocalPlayer(int id, int job):
     Player(id, job, 0),
     mEquipment(new Equipment),
-    mInStorage(false),
     mAttackRange(0),
     mTargetTime(-1),
     mLastTarget(-1),
@@ -101,8 +100,6 @@ LocalPlayer::LocalPlayer(int id, int job):
     mInventory(new Inventory(Net::getInventoryHandler()
                              ->getSize(Net::InventoryHandler::INVENTORY))),
     mLocalWalkTime(-1),
-    mStorage(new Inventory(Net::getInventoryHandler()
-                           ->getSize(Net::InventoryHandler::STORAGE))),
     mMessageTime(0)
 {
     // Variable to keep the local player from doing certain actions before a map
@@ -124,7 +121,6 @@ LocalPlayer::LocalPlayer(int id, int job):
 LocalPlayer::~LocalPlayer()
 {
     delete mInventory;
-    delete mStorage;
 
     config.removeListener("showownname", this);
 
@@ -1093,13 +1089,6 @@ void LocalPlayer::loadTargetCursor(const std::string &filename,
 
     mTargetCursorImages[index][size] = currentImageSet;
     mTargetCursor[index][size] = currentCursor;
-}
-
-void LocalPlayer::setInStorage(bool inStorage)
-{
-    mInStorage = inStorage;
-
-    storageWindow->setVisible(inStorage);
 }
 
 void LocalPlayer::addMessageToQueue(const std::string &message,

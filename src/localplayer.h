@@ -133,11 +133,6 @@ class LocalPlayer : public Player
         Inventory *getInventory() const { return mInventory; }
 
         /**
-         * Returns the player's storage
-         */
-        Inventory *getStorage() const { return mStorage; }
-
-        /**
          * Check the player has permission to invite users to specific guild
          */
         bool checkInviteRights(const std::string &guildName);
@@ -263,12 +258,6 @@ class LocalPlayer : public Player
          * Shows item pickup notifications.
          */
         void pickedUp(const ItemInfo &itemInfo, int amount);
-
-        /**
-         * Accessors for mInStorage
-         */
-        bool getInStorage() { return mInStorage; }
-        void setInStorage(bool inStorage);
 
         int getHp() const
         { return mHp; }
@@ -430,8 +419,6 @@ class LocalPlayer : public Player
 
         void startWalking(unsigned char dir);
 
-        bool mInStorage;      /**< Whether storage is currently accessible */
-
         int mAttackRange;
 
         int mTargetTime;      /** How long the being has been targeted **/
@@ -481,8 +468,6 @@ class LocalPlayer : public Player
 
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
-
-        Inventory *mStorage;
 
         /** Load the target cursors into memory */
         void initTargetCursor();

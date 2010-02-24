@@ -54,10 +54,10 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             Net::getInventoryHandler()->splitItem(item, amount);
             break;
         case StoreAdd:
-            storageWindow->addStore(item, amount);
+            StorageWindow::addStore(item, amount);
             break;
         case StoreRemove:
-            storageWindow->removeStore(item, amount);
+            StorageWindow::removeStore(item, amount);
             break;
         default:
             break;
