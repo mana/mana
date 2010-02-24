@@ -131,9 +131,8 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                     online = msg.readInt8();
                     if (name != "")
                     {
-                        member = new GuildMember(guildId, name);
+                        member = guild->addMember(name);
                         member->setOnline(online);
-                        guild->addMember(member);
                     }
                 }
             }
@@ -153,9 +152,8 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 switch(eventId)
                 {
                     case GUILD_EVENT_NEW_PLAYER:
-                        member = new GuildMember(guildId, name);
+                        member = guild->addMember(name);
                         member->setOnline(true);
-                        guild->addMember(member);
                         break;
 
                     case GUILD_EVENT_LEAVING_PLAYER:
@@ -296,7 +294,7 @@ void GuildHandler::leave(int guildId)
     chatServerConnection->send(msg);
 }
 
-void GuildHandler::kick(GuildMember member)
+void GuildHandler::kick(GuildMember *member, std::string reason)
 {
     // TODO
 }
@@ -313,7 +311,7 @@ void GuildHandler::memberList(int guildId)
     chatServerConnection->send(msg);
 }
 
-void GuildHandler::changeMemberPostion(GuildMember member, int level)
+void GuildHandler::changeMemberPostion(GuildMember *member, int level)
 {
     /*MessageOut msg(PCMSG_GUILD_PROMOTE_MEMBER);
     msg.writeInt16(guildId);

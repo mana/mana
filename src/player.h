@@ -105,6 +105,16 @@ class Player : public Being
         Guild *getGuild(int id) const;
 
         /**
+         * Returns all guilds the player is in.
+         */
+        const std::map<int, Guild*> &getGuilds() const;
+
+        /**
+         * Removes all guilds the player is in.
+         */
+        void clearGuilds();
+
+        /**
          * Get number of guilds the player belongs to.
          */
         short getNumberOfGuilds() const { return mGuilds.size(); }

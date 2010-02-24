@@ -493,6 +493,8 @@ SET(SRCS
     )
 
 SET(SRCS_EA
+    net/ea/gui/guildtab.cpp
+    net/ea/gui/guildtab.h
     net/ea/gui/partytab.cpp
     net/ea/gui/partytab.h
     net/ea/adminhandler.cpp

@@ -446,6 +446,8 @@ mana_SOURCES += \
 	      net/manaserv/tradehandler.h
 
 mana_SOURCES += \
+	      net/ea/gui/guildtab.cpp \
+	      net/ea/gui/guildtab.h \
 	      net/ea/gui/partytab.cpp \
 	      net/ea/gui/partytab.h \
 	      net/ea/adminhandler.cpp \

@@ -25,6 +25,7 @@
 #include "beingmanager.h"
 #include "client.h"
 #include "effectmanager.h"
+#include "guild.h"
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
@@ -106,7 +107,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     int param1;
     int stunMode;
     Uint32 statusEffects;
-    int type;
+    int type, guild;
     Uint16 status;
     Being *srcBeing, *dstBeing;
     Player *player;
@@ -179,9 +180,19 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             hairColor = msg.readInt16();
             shoes = msg.readInt16();  // clothes color - "abused" as shoes
             gloves = msg.readInt16();  // head dir - "abused" as gloves
-            msg.readInt16();  // guild
-            msg.readInt16();  // unknown
-            msg.readInt16();  // unknown
+            guild = msg.readInt32();  // guild
+            if (player)
+            {
+                if (guild == 0)
+                {
+                    player->clearGuilds();
+                }
+                else
+                {
+                    player->addGuild(Guild::getGuild(guild));
+                }
+            }
+            msg.readInt16();  // guild emblem
             msg.readInt16();  // manner
             dstBeing->setStatusEffectBlock(32, msg.readInt16());  // opt3
             msg.readInt8();   // karma
