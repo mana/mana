@@ -327,6 +327,8 @@
 ./src/net/ea/generalhandler.h
 ./src/net/ea/guildhandler.cpp
 ./src/net/ea/guildhandler.h
+./src/net/ea/gui/guildtab.cpp
+./src/net/ea/gui/guildtab.h
 ./src/net/ea/gui/partytab.cpp
 ./src/net/ea/gui/partytab.h
 ./src/net/ea/inventoryhandler.cpp

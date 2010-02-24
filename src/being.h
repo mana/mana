@@ -645,6 +645,17 @@ class Being : public Sprite, public ConfigListener
         ParticleVector mStatusParticleEffects;
         ParticleList mChildParticleEffects;
 
+        Vector mDest;  /**< destination coordinates. */
+
+        /**
+         * Check the current position against surrounding
+         * blocking tiles, and correct the position offset within
+         * tile when needed.
+         */
+        Position checkNodeOffsets(Position position);
+        Position checkNodeOffsets(int x, int y)
+        { return checkNodeOffsets(Position(x, y)); }
+
     private:
 
         /**
@@ -668,9 +679,8 @@ class Being : public Sprite, public ConfigListener
          */
         Vector mWalkSpeed;
 
-        Vector mPos;
-        Vector mDest;
-        int mX, mY;                     /**< Position on tile */
+        Vector mPos;  /**< Position coordinates. */
+        int mX, mY;   /**< Position in tile */
 
         int mDamageTaken;
 

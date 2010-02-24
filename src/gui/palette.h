@@ -71,6 +71,7 @@ class Palette : public gcn::ListModel
             ENTRY(WHISPER)\
             ENTRY(IS)\
             ENTRY(PARTY)\
+            ENTRY(GUILD)\
             ENTRY(SERVER)\
             ENTRY(LOGGER)\
             ENTRY(HYPERLINK)\

@@ -384,18 +384,12 @@
 		<Unit filename="src\net\ea\gamehandler.h" />
 		<Unit filename="src\net\ea\generalhandler.cpp" />
 		<Unit filename="src\net\ea\generalhandler.h" />
+		<Unit filename="src\net\ea\gui\guildtab.cpp" />
+		<Unit filename="src\net\ea\gui\guildtab.h" />
 		<Unit filename="src\net\ea\gui\partytab.cpp" />
 		<Unit filename="src\net\ea\gui\partytab.h" />
-		<Unit filename="src\net\ea\guildhandler.cpp">
-			<Option target="Unix eAthena" />
-			<Option target="Windows" />
-			<Option target="Unix" />
-		</Unit>
-		<Unit filename="src\net\ea\guildhandler.h">
-			<Option target="Unix eAthena" />
-			<Option target="Windows" />
-			<Option target="Unix" />
-		</Unit>
+		<Unit filename="src\net\ea\guildhandler.cpp" />
+		<Unit filename="src\net\ea\guildhandler.h" />
 		<Unit filename="src\net\ea\inventoryhandler.cpp" />
 		<Unit filename="src\net\ea\inventoryhandler.h" />
 		<Unit filename="src\net\ea\itemhandler.cpp" />

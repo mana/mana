@@ -300,6 +300,7 @@ void Setup_Colors::valueChanged(const gcn::SelectionEvent &event)
         case Palette::WHISPER:
         case Palette::IS:
         case Palette::PARTY:
+        case Palette::GUILD:
         case Palette::SERVER:
         case Palette::LOGGER:
         case Palette::HYPERLINK:

@@ -281,8 +281,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
              * packets that update storage contents.
              */
             player_node->setInStorage(true);
-            msg.readInt16(); // Storage capacity
             msg.readInt16(); // Used count
+            msg.readInt16(); // Storage capacity
             break;
 
         case SMSG_PLAYER_STORAGE_ADD:

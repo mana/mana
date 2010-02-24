@@ -49,6 +49,7 @@
 #include "net/ea/tradehandler.h"
 #include "net/ea/specialhandler.h"
 
+#include "net/ea/gui/guildtab.h"
 #include "net/ea/gui/partytab.h"
 
 #include "net/messagein.h"
@@ -68,6 +69,7 @@ namespace EAthena {
 ServerInfo charServer;
 ServerInfo mapServer;
 
+extern Guild *eaGuild;
 extern Party *eaParty;
 
 GeneralHandler::GeneralHandler():
@@ -226,12 +228,14 @@ void GeneralHandler::guiWindowsLoaded()
 
 void GeneralHandler::guiWindowsUnloaded()
 {
+    socialWindow->removeTab(eaGuild);
     socialWindow->removeTab(eaParty);
-    if (partyTab)
-    {
-        delete partyTab;
-        partyTab = 0;
-    }
+
+    delete guildTab;
+    guildTab = 0;
+
+    delete partyTab;
+    partyTab = 0;
 }
 
 void GeneralHandler::clearHandlers()

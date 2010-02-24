@@ -68,11 +68,8 @@ PartyHandler::PartyHandler():
 
 PartyHandler::~PartyHandler()
 {
-    if (partyTab)
-    {
-        delete partyTab;
-        partyTab = 0;
-    }
+    delete partyTab;
+    partyTab = 0;
 }
 
 void PartyHandler::handleMessage(Net::MessageIn &msg)
@@ -104,10 +101,9 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     bool leader = msg.readInt8() == 0;
                     bool online = msg.readInt8() == 0;
 
-                    PartyMember *member = new PartyMember(PARTY_ID, id, nick);
+                    PartyMember *member = eaParty->addMember(id, nick);
                     member->setLeader(leader);
                     member->setOnline(online);
-                    eaParty->addMember(member);
                 }
             }
             break;

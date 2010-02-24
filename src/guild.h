@@ -35,12 +35,6 @@ class Guild;
 class GuildMember : public Avatar
 {
 public:
-    GuildMember(int guildId, int id, const std::string &name);
-
-    GuildMember(int guildId, int id);
-
-    GuildMember(int guildId, const std::string &name);
-
     int getID() const { return mId; }
 
     void setID(int id) { mId = id; }
@@ -49,6 +43,12 @@ public:
 
 protected:
     friend class Guild;
+
+    GuildMember(Guild *guild, int id, const std::string &name);
+
+    GuildMember(Guild *guild, int id);
+
+    GuildMember(Guild *guild, const std::string &name);
 
     int mId;
     Guild *mGuild;
@@ -69,7 +69,17 @@ public:
     /**
      * Adds member to the list.
      */
-    void addMember(GuildMember *member);
+    GuildMember *addMember(int id, const std::string &name);
+
+    /**
+     * Adds member to the list.
+     */
+    GuildMember *addMember(int id);
+
+    /**
+     * Adds member to the list.
+     */
+    GuildMember *addMember(const std::string &name);
 
     /**
      * Find a member by ID.
