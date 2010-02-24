@@ -205,7 +205,10 @@ Client::Client(const Options &options):
     mInstance = this;
 
     // Load branding information
-    branding.init("data/branding.xml");
+    if (!options.brandingPath.empty())
+    {
+        branding.init(options.brandingPath);
+    }
 
     initHomeDir(options);
     initScreenshotDir(options.screenshotDir);

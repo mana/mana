@@ -139,6 +139,7 @@ public:
         std::string password;
         std::string character;
         std::string configPath;
+        std::string brandingPath;
         std::string updateHost;
         std::string dataPath;
         std::string homeDir;

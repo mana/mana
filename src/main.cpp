@@ -40,7 +40,7 @@ static void printHelp()
     using std::endl;
 
     std::cout
-        << _("mana") << endl << endl
+        << _("mana [mana-file]") << endl << endl
         << _("Options:") << endl
         << _("  -C --config-file    : Configuration file to use") << endl
         << _("  -d --data           : Directory to load game data from") << endl
@@ -147,6 +147,15 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 break;
         }
     }
+
+    // when there are still options left use the last
+    // one as branding file
+    if (optind < argc)
+    {
+        options.brandingPath = argv[optind];
+    }
+
+
 }
 
 #ifdef WIN32
