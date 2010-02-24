@@ -93,6 +93,7 @@
 			<Add directory="lib" />
 		</Linker>
 		<Unit filename="src\SDLMain.h" />
+		<Unit filename="src\SDLMain.m" />
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
@@ -107,6 +108,8 @@
 		<Unit filename="src\channel.h" />
 		<Unit filename="src\channelmanager.cpp" />
 		<Unit filename="src\channelmanager.h" />
+		<Unit filename="src\client.cpp" />
+		<Unit filename="src\client.h" />
 		<Unit filename="src\commandhandler.cpp" />
 		<Unit filename="src\commandhandler.h" />
 		<Unit filename="src\configlistener.h" />
@@ -116,7 +119,6 @@
 		<Unit filename="src\effectmanager.h" />
 		<Unit filename="src\emoteshortcut.cpp" />
 		<Unit filename="src\emoteshortcut.h" />
-		<Unit filename="src\engine.cpp" />
 		<Unit filename="src\engine.h" />
 		<Unit filename="src\equipment.h" />
 		<Unit filename="src\flooritem.cpp" />
@@ -286,6 +288,8 @@
 		<Unit filename="src\gui\widgets\popup.h" />
 		<Unit filename="src\gui\widgets\progressbar.cpp" />
 		<Unit filename="src\gui\widgets\progressbar.h" />
+		<Unit filename="src\gui\widgets\progressindicator.cpp" />
+		<Unit filename="src\gui\widgets\progressindicator.h" />
 		<Unit filename="src\gui\widgets\radiobutton.cpp" />
 		<Unit filename="src\gui\widgets\radiobutton.h" />
 		<Unit filename="src\gui\widgets\resizegrip.cpp" />
@@ -350,11 +354,18 @@
 		<Unit filename="src\log.h" />
 		<Unit filename="src\main.cpp" />
 		<Unit filename="src\main.h" />
+		<Unit filename="src\mana-ea.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="src\mana.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Unit filename="src\map.cpp" />
 		<Unit filename="src\map.h" />
 		<Unit filename="src\monster.cpp" />
 		<Unit filename="src\monster.h" />
 		<Unit filename="src\net\adminhandler.h" />
+		<Unit filename="src\net\charhandler.cpp" />
 		<Unit filename="src\net\charhandler.h" />
 		<Unit filename="src\net\chathandler.h" />
 		<Unit filename="src\net\download.cpp" />
@@ -408,12 +419,14 @@
 		<Unit filename="src\net\ea\protocol.h" />
 		<Unit filename="src\net\ea\specialhandler.cpp" />
 		<Unit filename="src\net\ea\specialhandler.h" />
+		<Unit filename="src\net\ea\token.h" />
 		<Unit filename="src\net\ea\tradehandler.cpp" />
 		<Unit filename="src\net\ea\tradehandler.h" />
 		<Unit filename="src\net\gamehandler.h" />
 		<Unit filename="src\net\generalhandler.h" />
 		<Unit filename="src\net\guildhandler.h" />
 		<Unit filename="src\net\inventoryhandler.h" />
+		<Unit filename="src\net\logindata.h" />
 		<Unit filename="src\net\loginhandler.h" />
 		<Unit filename="src\net\manaserv\adminhandler.cpp" />
 		<Unit filename="src\net\manaserv\adminhandler.h" />
@@ -472,8 +485,10 @@
 		<Unit filename="src\net\npchandler.h" />
 		<Unit filename="src\net\partyhandler.h" />
 		<Unit filename="src\net\playerhandler.h" />
+		<Unit filename="src\net\serverinfo.h" />
 		<Unit filename="src\net\specialhandler.h" />
 		<Unit filename="src\net\tradehandler.h" />
+		<Unit filename="src\net\worldinfo.h" />
 		<Unit filename="src\npc.cpp" />
 		<Unit filename="src\npc.h" />
 		<Unit filename="src\openglgraphics.cpp" />
@@ -575,9 +590,8 @@
 		<Unit filename="src\utils\xml.h" />
 		<Unit filename="src\vector.cpp" />
 		<Unit filename="src\vector.h" />
-		<Unit filename="src\winver.h">
-			<Option target="Windows" />
-		</Unit>
+		<Unit filename="src\winver.h" />
+		<Unit filename="src\winver.h.in" />
 		<Extensions>
 			<code_completion />
 			<envvars />
