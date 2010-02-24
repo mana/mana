@@ -601,7 +601,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
     std::priority_queue<Location> openList;
 
     // Return when destination not walkable
-    if (!getWalk(destX, destY, walkmask)) return path;
+    if (!getWalk(destX, destY, walkmask))
+        return path;
 
     // Reset starting tile's G cost to 0
     MetaTile *startTile = getMetaTile(startX, startY);

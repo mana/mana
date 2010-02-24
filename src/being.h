@@ -648,12 +648,11 @@ class Being : public Sprite, public ConfigListener
         Vector mDest;  /**< destination coordinates. */
 
         /**
-         * Check the current position against surrounding
-         * blocking tiles, and correct the position offset within
-         * tile when needed.
+         * Check the current position against surrounding blocking tiles, and
+         * correct the position offset within tile when needed.
          */
-        Position checkNodeOffsets(Position position);
-        Position checkNodeOffsets(int x, int y)
+        Position checkNodeOffsets(const Position &position) const;
+        Position checkNodeOffsets(int x, int y) const
         { return checkNodeOffsets(Position(x, y)); }
 
     private:
