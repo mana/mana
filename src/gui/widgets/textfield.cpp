@@ -31,6 +31,7 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
+#include "utils/copynpaste.h"
 #include "utils/dtor.h"
 
 #include <guichan/font.hpp>
@@ -250,8 +251,23 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             if (mLoseFocusOnTab)
                 return;
             break;
+
+        case 22: // Control code 22, SYNCHRONOUS IDLE, sent on Ctrl+v
+            handlePaste();
+            break;
     }
 
     keyEvent.consume();
     fixScroll();
+}
+
+void TextField::handlePaste()
+{
+    std::string text = getText();
+    std::string::size_type caretPos = getCaretPosition();
+
+    if (RetrieveBuffer(text, caretPos)) {
+        setText(text);
+        setCaretPosition(caretPos);
+    }
 }
