@@ -102,7 +102,7 @@ void Recorder::setRecordingFile(const std::string &msg)
          * recorded.
          */
         localChatTab->chatLog(_("Starting to record..."), BY_SERVER);
-        const std::string file = Client::getHomeDirectory() + msgCopy;
+        const std::string file = Client::getLocalDataDirectory() + "/" + msgCopy;
 
         mStream.open(file.c_str(), std::ios_base::trunc);
 

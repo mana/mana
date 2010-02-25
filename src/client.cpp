@@ -85,6 +85,7 @@
 
 #ifdef WIN32
 #include <SDL_syswm.h>
+#include "utils/specialfolder.h"
 #else
 #include <cerrno>
 #endif
@@ -217,7 +218,7 @@ Client::Client(const Options &options):
     initScreenshotDir(options.screenshotDir);
 
     // Configure logger
-    logger->setLogFile(homeDir + std::string("/mana.log"));
+    logger->setLogFile(localDataDir + std::string("/mana.log"));
 
     // Log the mana version
     logger->log("Mana %s", FULL_VERSION);
@@ -241,14 +242,14 @@ Client::Client(const Options &options):
 
     ResourceManager *resman = ResourceManager::getInstance();
 
-    if (!resman->setWriteDir(homeDir))
+    if (!resman->setWriteDir(localDataDir))
     {
         logger->error(strprintf("%s couldn't be set as home directory! "
-                                "Exiting.", homeDir.c_str()));
+                                "Exiting.", localDataDir.c_str()));
     }
 
-    // Add the user's homedir to PhysicsFS search path
-    resman->addToSearchPath(homeDir, false);
+    // Add the local data directory to PhysicsFS search path
+    resman->addToSearchPath(localDataDir, false);
 
     // Add the main data directories to our PhysicsFS search path
     if (!options.dataPath.empty())
@@ -580,7 +581,7 @@ int Client::exec()
                         SkinLoader::instance()->setMinimumOpacity(0.8f);
 
                         currentDialog = new ServerDialog(&currentServer,
-                                                         homeDir);
+                                                         configDir);
                     }
                     else
                     {
@@ -675,7 +676,7 @@ int Client::exec()
                     {
                         logger->log("State: UPDATE");
                         currentDialog = new UpdaterWindow(updateHost,
-                                homeDir + "/" + updatesDir,options.dataPath.empty());
+                                localDataDir + "/" + updatesDir,options.dataPath.empty());
                     }
                     break;
 
@@ -958,25 +959,53 @@ void Client::action(const gcn::ActionEvent &event)
  */
 void Client::initHomeDir(const Options &options)
 {
-    homeDir = options.homeDir;
+    localDataDir = options.localDataDir;
 
-    if (homeDir.empty())
+    if (localDataDir.empty())
     {
 #ifdef __APPLE__
         // Use Application Directory instead of .mana
-        homeDir = std::string(PHYSFS_getUserDir()) +
+        localDataDir = std::string(PHYSFS_getUserDir()) +
             "/Library/Application Support/" +
             branding.getValue("appName", "Mana");
+#elif defined WIN32
+        localDataDir = getSpecialFolderLocation(CSIDL_LOCAL_APPDATA);
+        if (localDataDir.empty())
+            localDataDir = std::string(PHYSFS_getUserDir());
+        localDataDir += "/Mana";
 #else
-        homeDir = std::string(PHYSFS_getUserDir()) +
-            "/." + branding.getValue("appShort", "mana");
+        localDataDir = std::string(PHYSFS_getUserDir()) +
+            "/.local/share/mana";
 #endif
     }
 
-    if (mkdir_r(homeDir.c_str()))
+    if (mkdir_r(localDataDir.c_str()))
     {
         logger->error(strprintf(_("%s doesn't exist and can't be created! "
-                                  "Exiting."), homeDir.c_str()));
+                                  "Exiting."), localDataDir.c_str()));
+    }
+
+    configDir = options.configDir;
+
+    if (configDir.empty()){
+#ifdef __APPLE__
+        configDir = localDataDir;
+#elif defined WIN32
+        configDir = getSpecialFolderLocation(CSIDL_APPDATA);
+        if (configDir.empty())
+            configDir = localDataDir;
+        else
+            configDir += "/mana/" + branding.getValue("appName", "Mana");
+#else
+        configDir = std::string(PHYSFS_getUserDir()) +
+            "/.config/mana/" + branding.getValue("appShort", "mana");
+#endif
+    }
+
+    if (mkdir_r(configDir.c_str()))
+    {
+        logger->error(strprintf(_("%s doesn't exist and can't be created! "
+                                  "Exiting."), configDir.c_str()));
     }
 }
 
@@ -1013,10 +1042,9 @@ void Client::initConfiguration(const Options &options)
     // Checking if the configuration file exists... otherwise create it with
     // default options.
     FILE *configFile = 0;
-    std::string configPath = options.configPath;
+    std::string configPath;
 
-    if (configPath.empty())
-        configPath = homeDir + "/config.xml";
+    configPath = configDir + "/config.xml";
 
     configFile = fopen(configPath.c_str(), "r");
 
@@ -1089,7 +1117,7 @@ void Client::initUpdatesDir()
         if (!resman->mkdir("/" + updatesDir))
         {
 #if defined WIN32
-            std::string newDir = homeDir + "\\" + updatesDir;
+            std::string newDir = localDataDir + "\\" + updatesDir;
             std::string::size_type loc = newDir.find("/", 0);
 
             while (loc != std::string::npos)
@@ -1108,7 +1136,7 @@ void Client::initUpdatesDir()
             }
 #else
             logger->log("Error: %s/%s can't be made, but doesn't exist!",
-                        homeDir.c_str(), updatesDir.c_str());
+                        localDataDir.c_str(), updatesDir.c_str());
             errorMessage = _("Error creating updates directory!");
             state = STATE_ERROR;
 #endif

@@ -44,7 +44,7 @@ static void printHelp()
         << _("Options:") << endl
         << _("  -v --version        : Display the version") << endl
         << _("  -h --help           : Display this help") << endl
-        << _("  -C --config-file    : Configuration file to use") << endl
+        << _("  -C --config-dir     : Configuration directory to use") << endl
         << _("  -U --username       : Login with this username") << endl
         << _("  -P --password       : Login with this password") << endl
         << _("  -c --character      : Login with this character") << endl
@@ -55,7 +55,7 @@ static void printHelp()
                                      "character") << endl
         << _("  -u --skip-update    : Skip the update downloads") << endl
         << _("  -d --data           : Directory to load game data from") << endl
-        << _("     --home-dir       : Directory to use as home directory") << endl
+        << _("  -L --localdata-dir  : Directory to use as local data directory") << endl
         << _("     --screenshot-dir : Directory to store screenshots") << endl
 #ifdef USE_OPENGL
         << _("     --no-opengl      : Disable OpenGL for this session") << endl;
@@ -69,16 +69,16 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Client::Options &options)
 {
-    const char *optstring = "hvud:U:P:Dc:p:C:S:";
+    const char *optstring = "hvud:U:P:Dc:p:C:L:";
 
     const struct option long_options[] = {
-        { "config-file",    required_argument, 0, 'C' },
+        { "config-dir",     required_argument, 0, 'C' },
         { "data",           required_argument, 0, 'd' },
         { "default",        no_argument,       0, 'D' },
         { "password",       required_argument, 0, 'P' },
         { "character",      required_argument, 0, 'c' },
         { "help",           no_argument,       0, 'h' },
-        { "home-dir",       required_argument, 0, 'S' },
+        { "localdata-dir",  required_argument, 0, 'L' },
         { "update-host",    required_argument, 0, 'H' },
         { "port",           required_argument, 0, 'p' },
         { "server",         required_argument, 0, 's' },
@@ -100,7 +100,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
         switch (result)
         {
             case 'C':
-                options.configPath = optarg;
+                options.configDir = optarg;
                 break;
             case 'd':
                 options.dataPath = optarg;
@@ -138,7 +138,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 options.printVersion = true;
                 break;
             case 'S':
-                options.homeDir = optarg;
+                options.localDataDir = optarg;
                 break;
             case 'O':
                 options.noOpenGL = true;
