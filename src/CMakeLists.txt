@@ -593,7 +593,12 @@ SET(SRCS_MANA
     )
 
 IF (WIN32)
-    SET(SRCS_MANA ${SRCS_MANA} mana.rc)
+    SET(SRCS_MANA
+        ${SRCS_MANA}
+        utils/specialfolder.cpp
+        utils/specialfolder.h
+        mana.rc
+    )
 ENDIF ()
 
 SET (PROGRAMS mana)

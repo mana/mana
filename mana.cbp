@@ -580,6 +580,8 @@
 		<Unit filename="src\utils\mutex.h" />
 		<Unit filename="src\utils\sha256.cpp" />
 		<Unit filename="src\utils\sha256.h" />
+		<Unit filename="src\utils\specialfolder.cpp" />
+		<Unit filename="src\utils\specialfolder.h" />
 		<Unit filename="src\utils\stringutils.cpp" />
 		<Unit filename="src\utils\stringutils.h" />
 		<Unit filename="src\utils\xml.cpp" />
