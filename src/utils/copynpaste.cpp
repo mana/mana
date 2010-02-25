@@ -308,6 +308,8 @@ bool RetrieveBuffer(std::string& text, std::string::size_type& pos)
       text.insert(pos, data);
       pos += strlen(data);
       XFree(data);
+
+      return true;
     }
   }
   return false;
