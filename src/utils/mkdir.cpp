@@ -36,22 +36,29 @@
 
 #include "mkdir.h"
 
-int mkdir_r(char *pathname){
+int mkdir_r(const char *pathname) {
     char tmp[PATH_MAX];
     char *p;
+
+    if (strlen(pathname) >= PATH_MAX-2)
+        return -1;
+
     strncpy(tmp, pathname, sizeof(tmp)-1);
+    tmp[PATH_MAX-1] = '\0';
 
     int len=strlen(tmp);
 
     // terminate the pathname with '/'
-    if (tmp[len-1] != '/')
+    if (tmp[len-1] != '/') {
         tmp[len] = '/';
+        tmp[len+1] = '\0';
+    }
 
-    for (p=tmp;*p;p++){
+    for (p=tmp; *p; p++) {
 #if defined WIN32
         if (*p == '/' || *p == '\\')
 #else
-        if (*p == '/' || *p == '\\')
+        if (*p == '/')
 #endif
         {
             *p = '\0';
@@ -72,7 +79,7 @@ int mkdir_r(char *pathname){
                 // hack, hack. just assume that x: might be a drive
                 // letter, and try again
                 if (!(strlen(tmp) == 2 &&
-                      !strcmp(tmp+1, ":")))
+                      !strcmp(tmp + 1, ":")))
 #endif
                 return -1;
             }
@@ -83,10 +90,11 @@ int mkdir_r(char *pathname){
             *p = '/';
         }
     }
+    return 0;
 }
 
 #ifdef _MKDIR_TEST_
-int main(int argc, char** argv){
+int main(int argc, char** argv) {
     if (argc < 2) exit(1);
     mkdir_r(argv[1]);
 }
