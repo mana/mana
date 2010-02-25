@@ -286,6 +286,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      utils/dtor.h \
 	      utils/gettext.h \
 	      utils/mathutils.h \
+	      utils/mkdir.cpp \
+	      utils/mkdir.h \
 	      utils/sha256.cpp \
 	      utils/sha256.h \
 	      utils/stringutils.cpp \

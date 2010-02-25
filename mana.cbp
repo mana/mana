@@ -575,6 +575,8 @@
 		<Unit filename="src\utils\dtor.h" />
 		<Unit filename="src\utils\gettext.h" />
 		<Unit filename="src\utils\mathutils.h" />
+		<Unit filename="src\utils\mkdir.cpp" />
+		<Unit filename="src\utils\mkdir.h" />
 		<Unit filename="src\utils\mutex.h" />
 		<Unit filename="src\utils\sha256.cpp" />
 		<Unit filename="src\utils\sha256.h" />

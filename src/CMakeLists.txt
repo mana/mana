@@ -386,6 +386,8 @@ SET(SRCS
     utils/stringutils.cpp
     utils/stringutils.h
     utils/mutex.h
+    utils/mkdir.cpp
+    utils/mkdir.h
     utils/xml.cpp
     utils/xml.h
     animatedsprite.cpp

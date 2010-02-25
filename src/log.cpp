@@ -35,7 +35,7 @@
 #include <sys/time.h>
 
 Logger::Logger():
-    mLogToStandardOut(false),
+    mLogToStandardOut(true),
     mChatWindow(NULL)
 {
 }
@@ -61,11 +61,6 @@ void Logger::setLogFile(const std::string &logFilename)
 
 void Logger::log(const char *log_text, ...)
 {
-    if (!mLogFile.is_open())
-    {
-        return;
-    }
-
     char* buf = new char[1024];
     va_list ap;
 
@@ -94,7 +89,10 @@ void Logger::log(const char *log_text, ...)
         << (int)((tv.tv_usec / 10000) % 100)
         << "] ";
 
-    mLogFile << timeStr.str() << buf << std::endl;
+    if (mLogFile.is_open())
+    {
+        mLogFile << timeStr.str() << buf << std::endl;
+    }
 
     if (mLogToStandardOut)
     {

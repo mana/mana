@@ -517,6 +517,8 @@
 ./src/utils/dtor.h
 ./src/utils/gettext.h
 ./src/utils/mathutils.h
+./src/utils/mkdir.cpp
+./src/utils/mkdir.h
 ./src/utils/mutex.h
 ./src/utils/sha256.cpp
 ./src/utils/sha256.h

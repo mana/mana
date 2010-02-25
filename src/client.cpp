@@ -73,6 +73,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
+#include "utils/mkdir.h"
 #include "utils/stringutils.h"
 
 #ifdef __APPLE__
@@ -204,6 +205,8 @@ Client::Client(const Options &options):
     assert(!mInstance);
     mInstance = this;
 
+    logger = new Logger;
+
     // Load branding information
     if (!options.brandingPath.empty())
     {
@@ -214,7 +217,6 @@ Client::Client(const Options &options):
     initScreenshotDir(options.screenshotDir);
 
     // Configure logger
-    logger = new Logger;
     logger->setLogFile(homeDir + std::string("/mana.log"));
 
     // Log the mana version
@@ -970,14 +972,8 @@ void Client::initHomeDir(const Options &options)
             "/." + branding.getValue("appShort", "mana");
 #endif
     }
-#if defined WIN32
-    if (!CreateDirectory(homeDir.c_str(), 0) &&
-            GetLastError() != ERROR_ALREADY_EXISTS)
-#else
-    // Create home directory if it doesn't exist already
-    if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
-            (errno != EEXIST))
-#endif
+
+    if (mkdir_r(homeDir.c_str()))
     {
         logger->error(strprintf(_("%s doesn't exist and can't be created! "
                                   "Exiting."), homeDir.c_str()));
