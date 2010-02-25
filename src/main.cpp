@@ -58,8 +58,9 @@ static void printHelp()
         << _("  -L --localdata-dir  : Directory to use as local data directory") << endl
         << _("     --screenshot-dir : Directory to store screenshots") << endl
 #ifdef USE_OPENGL
-        << _("     --no-opengl      : Disable OpenGL for this session") << endl;
+        << _("     --no-opengl      : Disable OpenGL for this session") << endl
 #endif
+        ;
 }
 
 static void printVersion()
