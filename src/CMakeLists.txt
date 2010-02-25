@@ -55,6 +55,12 @@ IF (WITH_OPENGL)
     SET(FLAGS "${FLAGS} -DUSE_OPENGL")
 ENDIF (WITH_OPENGL)
 
+IF (USE_X11)
+    FIND_PACKAGE(X11 REQUIRED)
+    INCLUDE_DIRECTORIES(${X11_INCLUDE_DIR})
+    SET(FLAGS "${FLAGS} -DUSE_X11")
+ENDIF (USE_X11)
+
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${SDL_INCLUDE_DIR}
@@ -378,6 +384,8 @@ SET(SRCS
     resources/wallpaper.h
     utils/base64.cpp
     utils/base64.h
+    utils/copynpaste.cpp
+    utils/copynpaste.h
     utils/dtor.h
     utils/gettext.h
     utils/mathutils.h

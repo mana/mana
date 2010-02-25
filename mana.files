@@ -514,6 +514,8 @@
 ./src/units.h
 ./src/utils/base64.cpp
 ./src/utils/base64.h
+./src/utils/copynpaste.cpp
+./src/utils/copynpaste.h
 ./src/utils/dtor.h
 ./src/utils/gettext.h
 ./src/utils/mathutils.h
