@@ -247,7 +247,7 @@ bool Party::isMember(const std::string &name) const
     return false;
 }
 
-const void Party::getNames(std::vector<std::string> &names) const
+void Party::getNames(std::vector<std::string> &names) const
 {
     names.clear();
     MemberList::const_iterator it = mMembers.begin(),

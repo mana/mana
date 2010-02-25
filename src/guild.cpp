@@ -241,7 +241,7 @@ bool Guild::isMember(const std::string &name) const
     return false;
 }
 
-const void Guild::getNames(std::vector<std::string> &names) const
+void Guild::getNames(std::vector<std::string> &names) const
 {
     names.clear();
     MemberList::const_iterator it = mMembers.begin(),
