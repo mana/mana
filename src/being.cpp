@@ -148,6 +148,34 @@ Position Being::checkNodeOffsets(const Position &position) const
     // set a default value if no value returned.
     if (radius < 1) radius = 32 / 3;
 
+    // We check diagonal first as they are more restrictive.
+    // Top-left border check
+    if (!mMap->getWalk(tx - 1, ty - 1, getWalkMask())
+        && fy < radius && fx < radius)
+    {
+        fx = fy = radius;
+    }
+    // Top-right border check
+    if (!mMap->getWalk(tx + 1, ty - 1, getWalkMask())
+        && (fy < radius) && fx > (32 - radius))
+    {
+        fx = 32 -radius;
+        fy = radius;
+    }
+    // Bottom-left border check
+    if (!mMap->getWalk(tx - 1, ty + 1, getWalkMask())
+        && fy > (32 - radius) && fx < radius)
+    {
+        fx = radius;
+        fy = 32 - radius;
+    }
+    // Bottom-right border check
+    if (!mMap->getWalk(tx + 1, ty + 1, getWalkMask())
+        && fy > (32 - radius) && fx > (32 - radius))
+    {
+        fx = fy = 32 -radius;
+    }
+
     // Fix coordinates so that the player does not seem to dig into walls.
     if (fx > (32 - radius) && !mMap->getWalk(tx + 1, ty, getWalkMask()))
         fx = 32 - radius;
@@ -157,14 +185,6 @@ Position Being::checkNodeOffsets(const Position &position) const
         fy = 32 - radius;
     else if (fy < radius && !mMap->getWalk(tx, ty - 1, getWalkMask()))
         fy = radius;
-
-    // FIXME: Check also diagonal positions.
-
-    // Test also the current character's position, to avoid the corner case
-    // where a player can approach an obstacle by walking from slightly
-    // under, diagonally. First part to the walk on water bug.
-    //if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
-      //fy = 16;
 
     return Position(tx * 32 + fx, ty * 32 + fy);
 }
