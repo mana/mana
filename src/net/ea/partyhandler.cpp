@@ -105,6 +105,8 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     member->setLeader(leader);
                     member->setOnline(online);
                 }
+
+                player_node->setParty(eaParty);
             }
             break;
         case SMSG_PARTY_INVITE_RESPONSE:
@@ -265,6 +267,13 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 {
                     m->setHp(hp);
                     m->setMaxHp(maxhp);
+                }
+
+                // The server only sends this when the member is in range, so
+                // lets make sure they get the party hilight.
+                if (Being *b = beingManager->findBeing(id))
+                {
+                    static_cast<Player*>(b)->setParty(eaParty);
                 }
             }
             break;
