@@ -400,8 +400,6 @@ Client::~Client()
     delete itemShortcut;
     delete emoteShortcut;
 
-    config.write();
-
     delete gui;
     delete graphics;
 
@@ -425,6 +423,9 @@ Client::~Client()
 
     logger->log("Quitting");
     delete guiPalette;
+
+    config.write();
+
     delete logger;
 
     mInstance = 0;
