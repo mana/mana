@@ -215,7 +215,6 @@ Client::Client(const Options &options):
     }
 
     initHomeDir(options);
-    initScreenshotDir(options.screenshotDir);
 
     // Configure logger
     logger->setLogFile(localDataDir + std::string("/mana.log"));
@@ -224,6 +223,8 @@ Client::Client(const Options &options):
     logger->log("Mana %s", FULL_VERSION);
 
     initConfiguration(options);
+    initScreenshotDir(options.screenshotDir);
+
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
     // Initialize SDL
@@ -1037,6 +1038,7 @@ void Client::initConfiguration(const Options &options)
         "http://updates.themanaworld.org");
     config.setValue("updatehost", defaultUpdateHost);
     config.setValue("customcursor", true);
+    config.setValue("useScreenshotDirectorySuffix", true);
     config.setValue("ChatLogLength", 128);
 
     // Checking if the configuration file exists... otherwise create it with
@@ -1146,16 +1148,52 @@ void Client::initUpdatesDir()
 
 void Client::initScreenshotDir(const std::string &dir)
 {
-    if (dir.empty())
-    {
-        screenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
-        // If ~/Desktop does not exist, we save screenshots in the user's home.
-        struct stat statbuf;
-        if (stat(screenshotDir.c_str(), &statbuf))
-            screenshotDir = std::string(PHYSFS_getUserDir());
-    }
-    else
+    if (!dir.empty())
         screenshotDir = dir;
+    else
+    {
+        std::string configScreenshotDir =
+            config.getValue("screenshotDirectory", "");
+        if (!configScreenshotDir.empty())
+            screenshotDir = configScreenshotDir;
+        else
+        {
+#ifdef WIN32
+            screenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);
+            if (screenshotDir.empty())
+                screenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
+#else
+            screenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
+            // If ~/Desktop does not exist, we save screenshots in the user's home.
+            struct stat statbuf;
+            if (stat(screenshotDir.c_str(), &statbuf))
+                screenshotDir = std::string(PHYSFS_getUserDir());
+#endif
+        }
+        config.setValue("screenshotDirectory", screenshotDir);
+
+        if (config.getValue("useScreenshotDirectorySuffix", true))
+        {
+            std::string configScreenshotSuffix =
+                config.getValue("screenshotDirectorySuffix",
+                                branding.getValue("appShort", "Mana"));
+
+            if (!configScreenshotSuffix.empty())
+            {
+                screenshotDir += "/" + configScreenshotSuffix;
+                config.setValue("screenshotDirectorySuffix",
+                                configScreenshotSuffix);
+            }
+        }
+    }
+
+    if (mkdir_r(screenshotDir.c_str()))
+    {
+        logger->log("Directory %s doesn't exist and can't be created! "
+                    "Setting screenshot directory to home.",
+                    screenshotDir.c_str());
+        screenshotDir = std::string(PHYSFS_getUserDir());
+    }
 }
 
 void Client::accountLogin(LoginData *loginData)
