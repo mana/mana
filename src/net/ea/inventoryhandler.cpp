@@ -174,16 +174,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
 
                 if (msg.getId() == SMSG_PLAYER_INVENTORY)
                 {
-                    inventory->setItem(index, itemId, amount, false);
-
                     // Trick because arrows are not considered equipment
-                    if (arrow & 0x8000)
-                    {
-                        if (Item *item = inventory->getItem(index))
-                            item->setEquipment(true);
-                    }
+                    bool isEquipment = arrow & 0x8000;
 
-                    //const Item *item = inventory->getItem(index);
+                    inventory->setItem(index, itemId, amount, isEquipment);
                 }
                 else
                 {
