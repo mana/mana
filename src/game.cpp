@@ -275,9 +275,6 @@ Game::~Game()
     delete commandHandler;
     delete joystick;
     delete particleEngine;
-
-    viewport->setMap(NULL);
-
     delete viewport;
     delete mCurrentMap;
     map_path = "";

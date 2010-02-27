@@ -61,4 +61,4 @@ void MessageOut::writeInt32(Sint32 value)
     mPos += 4;
 }
 
-}
+} // namespace ManaServ
