@@ -192,7 +192,7 @@ public:
 Client *Client::mInstance = 0;
 
 Client::Client(const Options &options):
-    options(options),
+    mOptions(options),
     mCurrentDialog(0),
     mQuitDialog(0),
     mDesktop(0),
