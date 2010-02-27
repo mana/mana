@@ -55,13 +55,40 @@
 #elif defined WIN32
 #include "winver.h"
 #elif defined __APPLE__
-#define PACKAGE_VERSION "0.0.29.1"
+#define PACKAGE_VERSION "1.0.0"
 #endif
 
 #ifdef PACKAGE_VERSION
 #define FULL_VERSION "v" PACKAGE_VERSION
 #else
 #define FULL_VERSION "Unknown Version"
+#endif
+
+#ifdef PACKAGE_OS
+// If it's already been defined, let's not change it
+#elif defined __APPLE__
+#define PACKAGE_OS "Apple"
+#elif defined __FreeBSD__ || defined __DragonFly__
+#define PACKAGE_OS "FreeBSD"
+#elif defined __NetBSD__
+#define PACKAGE_OS "NetBSD"
+#elif defined __OpenBSD__
+#define PACKAGE_OS "OpenBSD"
+#elif defined __linux__ || defined __linux
+#define PACKAGE_OS "Linux"
+#elif defined __GNU__
+#define PACKAGE_OS "GNU Hurd"
+#elif defined WIN32 || defined _WIN32 || defined __WIN32__ || defined __NT__ \
+    || defined WIN64 || defined _WIN64 || defined __WIN64__
+#define PACKAGE_OS "Windows"
+#else
+#define PACKAGE_OS "Other"
+#endif
+
+#ifdef PACKAGE_VERSION
+#define PACKAGE_EXTENDED_VERSION "Mana/" PACKAGE_VERSION " (" PACKAGE_OS "; %s)"
+#else
+#define PACKAGE_EXTENDED_VERSION "Mana (" PACKAGE_OS "; %s)"
 #endif
 
 #ifndef PKG_DATADIR
