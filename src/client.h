@@ -178,10 +178,10 @@ public:
     void action(const gcn::ActionEvent &event);
 
 private:
-    void initHomeDir(const Options &options);
+    void initHomeDir();
     void initConfiguration();
     void initUpdatesDir();
-    void initScreenshotDir(const std::string &dir);
+    void initScreenshotDir();
 
     void accountLogin(LoginData *loginData);
 

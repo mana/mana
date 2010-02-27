@@ -214,7 +214,7 @@ Client::Client(const Options &options):
         branding.init(options.brandingPath);
     }
 
-    initHomeDir(options);
+    initHomeDir();
 
     // Configure logger
     logger->setLogFile(mLocalDataDir + std::string("/mana.log"));
@@ -222,8 +222,8 @@ Client::Client(const Options &options):
     // Log the mana version
     logger->log("Mana %s", FULL_VERSION);
 
-    initConfiguration(options);
-    initScreenshotDir(options.screenshotDir);
+    initConfiguration();
+    initScreenshotDir();
 
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
@@ -959,9 +959,9 @@ void Client::action(const gcn::ActionEvent &event)
  * Initializes the home directory. On UNIX and FreeBSD, ~/.mana is used. On
  * Windows and other systems we use the current working directory.
  */
-void Client::initHomeDir(const Options &options)
+void Client::initHomeDir()
 {
-    mLocalDataDir = options.localDataDir;
+    mLocalDataDir = mOptions.localDataDir;
 
     if (mLocalDataDir.empty())
     {
@@ -987,7 +987,7 @@ void Client::initHomeDir(const Options &options)
                                   "Exiting."), mLocalDataDir.c_str()));
     }
 
-    mConfigDir = options.configDir;
+    mConfigDir = mOptions.configDir;
 
     if (mConfigDir.empty()){
 #ifdef __APPLE__
@@ -1147,10 +1147,10 @@ void Client::initUpdatesDir()
     }
 }
 
-void Client::initScreenshotDir(const std::string &dir)
+void Client::initScreenshotDir()
 {
-    if (!dir.empty())
-        mScreenshotDir = dir;
+    if (!mOptions.screenshotDir.empty())
+        mScreenshotDir = mOptions.screenshotDir;
     else
     {
         std::string configScreenshotDir =

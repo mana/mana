@@ -1,6 +1,5 @@
 ./CMakeLists.txt
 ./config.h
-./data/branding.xml
 ./data/CMakeLists.txt
 ./data/fonts/CMakeLists.txt
 ./data/fonts/Makefile.am
@@ -51,6 +50,8 @@
 ./src/channel.h
 ./src/channelmanager.cpp
 ./src/channelmanager.h
+./src/client.cpp
+./src/client.h
 ./src/CMakeLists.txt
 ./src/commandhandler.cpp
 ./src/commandhandler.h
@@ -101,8 +102,6 @@
 ./src/gui/focushandler.h
 ./src/gui/gui.cpp
 ./src/gui/gui.h
-./src/gui/guildwindow.cpp
-./src/gui/guildwindow.h
 ./src/gui/help.cpp
 ./src/gui/help.h
 ./src/gui/inventorywindow.cpp
@@ -207,8 +206,6 @@
 ./src/gui/widgets/emoteshortcutcontainer.h
 ./src/gui/widgets/flowcontainer.cpp
 ./src/gui/widgets/flowcontainer.h
-./src/gui/widgets/guildlistbox.cpp
-./src/gui/widgets/guildlistbox.h
 ./src/gui/widgets/icon.cpp
 ./src/gui/widgets/icon.h
 ./src/gui/widgets/inttextfield.cpp
@@ -284,8 +281,6 @@
 ./src/imageparticle.h
 ./src/inventory.cpp
 ./src/inventory.h
-./src/client.cpp
-./src/client.h
 ./src/item.cpp
 ./src/item.h
 ./src/itemshortcut.cpp
@@ -325,10 +320,10 @@
 ./src/net/ea/gamehandler.h
 ./src/net/ea/generalhandler.cpp
 ./src/net/ea/generalhandler.h
-./src/net/ea/guildhandler.cpp
-./src/net/ea/guildhandler.h
 ./src/net/ea/gui/guildtab.cpp
 ./src/net/ea/gui/guildtab.h
+./src/net/ea/guildhandler.cpp
+./src/net/ea/guildhandler.h
 ./src/net/ea/gui/partytab.cpp
 ./src/net/ea/gui/partytab.h
 ./src/net/ea/inventoryhandler.cpp
@@ -524,6 +519,8 @@
 ./src/utils/mutex.h
 ./src/utils/sha256.cpp
 ./src/utils/sha256.h
+./src/utils/specialfolder.cpp
+./src/utils/specialfolder.h
 ./src/utils/stringutils.cpp
 ./src/utils/stringutils.h
 ./src/utils/xml.cpp
