@@ -199,6 +199,7 @@ Client::Client(const Options &options):
     mSetupButton(0),
     mState(STATE_CHOOSE_SERVER),
     mOldState(STATE_START),
+    mIcon(0),
     mLogicCounterId(0),
     mSecondsCounterId(0),
     mLimitFps(false)
