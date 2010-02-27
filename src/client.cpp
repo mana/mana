@@ -291,7 +291,7 @@ Client::Client(const Options &options):
 #endif
 
 #ifdef USE_OPENGL
-    bool useOpenGL = !options.noOpenGL && (config.getValue("opengl", 0) == 1);
+    bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 0) == 1);
 
     // Setup image loading for the right image format
     Image::setLoadAsOpenGL(useOpenGL);
@@ -967,14 +967,14 @@ void Client::initHomeDir(const Options &options)
     {
 #ifdef __APPLE__
         // Use Application Directory instead of .mana
-        localDataDir = std::string(PHYSFS_getUserDir()) +
+        mLocalDataDir = std::string(PHYSFS_getUserDir()) +
             "/Library/Application Support/" +
             branding.getValue("appName", "Mana");
 #elif defined WIN32
-        localDataDir = getSpecialFolderLocation(CSIDL_LOCAL_APPDATA);
-        if (localDataDir.empty())
-            localDataDir = std::string(PHYSFS_getUserDir());
-        localDataDir += "/Mana";
+        mLocalDataDir = getSpecialFolderLocation(CSIDL_LOCAL_APPDATA);
+        if (mLocalDataDir.empty())
+            mLocalDataDir = std::string(PHYSFS_getUserDir());
+        mLocalDataDir += "/Mana";
 #else
         mLocalDataDir = std::string(PHYSFS_getUserDir()) +
             "/.local/share/mana";
@@ -991,13 +991,13 @@ void Client::initHomeDir(const Options &options)
 
     if (mConfigDir.empty()){
 #ifdef __APPLE__
-        configDir = localDataDir;
+        mConfigDir = mLocalDataDir;
 #elif defined WIN32
-        configDir = getSpecialFolderLocation(CSIDL_APPDATA);
-        if (configDir.empty())
-            configDir = localDataDir;
+        mConfigDir = getSpecialFolderLocation(CSIDL_APPDATA);
+        if (mConfigDir.empty())
+            mConfigDir = mLocalDataDir;
         else
-            configDir += "/mana/" + branding.getValue("appName", "Mana");
+            mConfigDir += "/mana/" + branding.getValue("appName", "Mana");
 #else
         mConfigDir = std::string(PHYSFS_getUserDir()) +
             "/.config/mana/" + branding.getValue("appShort", "mana");
@@ -1014,7 +1014,7 @@ void Client::initHomeDir(const Options &options)
 /**
  * Initialize configuration.
  */
-void Client::initConfiguration(const Options &options)
+void Client::initConfiguration()
 {
     // Fill configuration with defaults
     logger->log("Initializing configuration...");
@@ -1052,12 +1052,12 @@ void Client::initConfiguration(const Options &options)
     configFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
-    if (configFile == NULL)
+    if (!configFile)
     {
         // We reopen the file in write mode and we create it
         configFile = fopen(configPath.c_str(), "wt");
     }
-    if (configFile == NULL)
+    if (!configFile)
     {
        logger->log("Can't create %s. Using defaults.", configPath.c_str());
     }
@@ -1120,7 +1120,7 @@ void Client::initUpdatesDir()
         if (!resman->mkdir("/" + mUpdatesDir))
         {
 #if defined WIN32
-            std::string newDir = localDataDir + "\\" + updatesDir;
+            std::string newDir = mLocalDataDir + "\\" + mUpdatesDir;
             std::string::size_type loc = newDir.find("/", 0);
 
             while (loc != std::string::npos)
@@ -1135,7 +1135,7 @@ void Client::initUpdatesDir()
                 logger->log("Error: %s can't be made, but doesn't exist!",
                             newDir.c_str());
                 errorMessage = _("Error creating updates directory!");
-                state = STATE_ERROR;
+                mState = STATE_ERROR;
             }
 #else
             logger->log("Error: %s/%s can't be made, but doesn't exist!",
@@ -1160,9 +1160,9 @@ void Client::initScreenshotDir(const std::string &dir)
         else
         {
 #ifdef WIN32
-            screenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);
-            if (screenshotDir.empty())
-                screenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
+            mScreenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);
+            if (mScreenshotDir.empty())
+                mScreenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
 #else
             mScreenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
             // If ~/Desktop does not exist, we save screenshots in the user's home.

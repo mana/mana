@@ -179,7 +179,7 @@ public:
 
 private:
     void initHomeDir(const Options &options);
-    void initConfiguration(const Options &options);
+    void initConfiguration();
     void initUpdatesDir();
     void initScreenshotDir(const std::string &dir);
 
