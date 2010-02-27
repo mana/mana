@@ -26,6 +26,7 @@
 ./data/icons/Makefile.am
 ./data/Makefile.am
 ./docs/clientupdates.txt
+./docs/example.mana
 ./docs/FAQ.txt
 ./docs/HACKING.txt
 ./docs/items.txt

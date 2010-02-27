@@ -420,10 +420,14 @@ void ServerDialog::setFieldsReadOnly(const bool readOnly)
 
 void ServerDialog::downloadServerList()
 {
-    // try to load the configuration value for the onlineServerList
-    std::string listFile = config.getValue("onlineServerList", "void");
-    // if there is no entry, try to load the file from the default updatehost
-    if (listFile == "void")
+    // Try to load the configuration value for the onlineServerList
+    std::string listFile = branding.getValue("onlineServerList", std::string());
+
+    if (listFile.empty())
+        listFile = config.getValue("onlineServerList", std::string());
+
+    // Fall back to manasource.org when neither branding nor config set it
+    if (listFile.empty())
         listFile = "http://manasource.org/serverlist.xml";
 
     mDownload = new Net::Download(this, listFile, &downloadUpdate);
