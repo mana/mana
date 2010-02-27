@@ -193,12 +193,12 @@ Client *Client::mInstance = 0;
 
 Client::Client(const Options &options):
     options(options),
-    currentDialog(0),
-    quitDialog(0),
-    desktop(0),
-    setupButton(0),
-    state(STATE_CHOOSE_SERVER),
-    oldstate(STATE_START),
+    mCurrentDialog(0),
+    mQuitDialog(0),
+    mDesktop(0),
+    mSetupButton(0),
+    mState(STATE_CHOOSE_SERVER),
+    mOldState(STATE_START),
     mLogicCounterId(0),
     mSecondsCounterId(0),
     mLimitFps(false)
@@ -217,7 +217,7 @@ Client::Client(const Options &options):
     initHomeDir(options);
 
     // Configure logger
-    logger->setLogFile(localDataDir + std::string("/mana.log"));
+    logger->setLogFile(mLocalDataDir + std::string("/mana.log"));
 
     // Log the mana version
     logger->log("Mana %s", FULL_VERSION);
@@ -243,14 +243,14 @@ Client::Client(const Options &options):
 
     ResourceManager *resman = ResourceManager::getInstance();
 
-    if (!resman->setWriteDir(localDataDir))
+    if (!resman->setWriteDir(mLocalDataDir))
     {
         logger->error(strprintf("%s couldn't be set as home directory! "
-                                "Exiting.", localDataDir.c_str()));
+                                "Exiting.", mLocalDataDir.c_str()));
     }
 
     // Add the local data directory to PhysicsFS search path
-    resman->addToSearchPath(localDataDir, false);
+    resman->addToSearchPath(mLocalDataDir, false);
 
     // Add the main data directories to our PhysicsFS search path
     if (!options.dataPath.empty())
@@ -281,12 +281,12 @@ Client::Client(const Options &options):
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
     }
 #else
-    icon = IMG_Load(resman->getPath(
+    mIcon = IMG_Load(resman->getPath(
             branding.getValue("appIcon", "data/icons/mana.png")).c_str());
-    if (icon)
+    if (mIcon)
     {
-        SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-        SDL_WM_SetIcon(icon, NULL);
+        SDL_SetAlpha(mIcon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+        SDL_WM_SetIcon(mIcon, NULL);
     }
 #endif
 
@@ -340,7 +340,7 @@ Client::Client(const Options &options):
     }
     catch (const char *err)
     {
-        state = STATE_ERROR;
+        mState = STATE_ERROR;
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
@@ -357,28 +357,28 @@ Client::Client(const Options &options):
     sound.playMusic(branding.getValue("loginMusic", "Magick - Real.ogg"));
 
     // Initialize default server
-    currentServer.hostname = options.serverName;
-    currentServer.port = options.serverPort;
+    mCurrentServer.hostname = options.serverName;
+    mCurrentServer.port = options.serverPort;
     loginData.username = options.username;
     loginData.password = options.password;
     loginData.remember = config.getValue("remember", 0);
     loginData.registerLogin = false;
 
-    if (currentServer.hostname.empty())
+    if (mCurrentServer.hostname.empty())
     {
-        currentServer.hostname = branding.getValue("defaultServer",
+        mCurrentServer.hostname = branding.getValue("defaultServer",
                                             "server.themanaworld.org").c_str();
     }
     if (options.serverPort == 0)
     {
-        currentServer.port = (short) branding.getValue("defaultPort",
+        mCurrentServer.port = (short) branding.getValue("defaultPort",
                                                        DEFAULT_PORT);
     }
     if (loginData.username.empty() && loginData.remember)
         loginData.username = config.getValue("username", "");
 
-    if (state != STATE_ERROR)
-        state = STATE_CHOOSE_SERVER;
+    if (mState != STATE_ERROR)
+        mState = STATE_CHOOSE_SERVER;
 
     // Initialize logic and seconds counters
     tick_time = 0;
@@ -419,7 +419,7 @@ Client::~Client()
 
     ResourceManager::deleteInstance();
 
-    SDL_FreeSurface(icon);
+    SDL_FreeSurface(mIcon);
 
     logger->log("Quitting");
     delete guiPalette;
@@ -438,7 +438,7 @@ int Client::exec()
     Game *game = 0;
     SDL_Event event;
 
-    while (state != STATE_EXIT)
+    while (mState != STATE_EXIT)
     {
         bool handledEvents = false;
 
@@ -457,7 +457,7 @@ int Client::exec()
                 switch (event.type)
                 {
                     case SDL_QUIT:
-                        state = STATE_EXIT;
+                        mState = STATE_EXIT;
                         break;
 
                     case SDL_KEYDOWN:
@@ -500,75 +500,75 @@ int Client::exec()
 
 
         // TODO: Add connect timeouts
-        if (state == STATE_CONNECT_GAME &&
+        if (mState == STATE_CONNECT_GAME &&
                  Net::getGameHandler()->isConnected())
         {
             Net::getLoginHandler()->disconnect();
         }
-        else if (state == STATE_CONNECT_SERVER && oldstate == STATE_CHOOSE_SERVER)
+        else if (mState == STATE_CONNECT_SERVER && mOldState == STATE_CHOOSE_SERVER)
         {
-            Net::connectToServer(currentServer);
+            Net::connectToServer(mCurrentServer);
         }
-        else if (state == STATE_CONNECT_SERVER &&
-                 oldstate != STATE_CHOOSE_SERVER &&
+        else if (mState == STATE_CONNECT_SERVER &&
+                 mOldState != STATE_CHOOSE_SERVER &&
                  Net::getLoginHandler()->isConnected())
         {
-            state = STATE_LOGIN;
+            mState = STATE_LOGIN;
         }
-        else if (state == STATE_WORLD_SELECT && oldstate == STATE_UPDATE)
+        else if (mState == STATE_WORLD_SELECT && mOldState == STATE_UPDATE)
         {
             if (Net::getLoginHandler()->getWorlds().size() < 2)
             {
-                state = STATE_LOGIN;
+                mState = STATE_LOGIN;
             }
         }
-        else if (oldstate == STATE_START ||
-                 (oldstate == STATE_GAME && state != STATE_GAME))
+        else if (mOldState == STATE_START ||
+                 (mOldState == STATE_GAME && mState != STATE_GAME))
         {
             gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 
-            desktop = new Desktop;
-            top->add(desktop);
-            setupButton = new Button(_("Setup"), "Setup", this);
-            setupButton->setPosition(top->getWidth() - setupButton->getWidth()
+            mDesktop = new Desktop;
+            top->add(mDesktop);
+            mSetupButton = new Button(_("Setup"), "Setup", this);
+            mSetupButton->setPosition(top->getWidth() - mSetupButton->getWidth()
                                      - 3, 3);
-            top->add(setupButton);
+            top->add(mSetupButton);
 
             int screenWidth = (int) config.getValue("screenwidth",
                                                     defaultScreenWidth);
             int screenHeight = (int) config.getValue("screenheight",
                                                      defaultScreenHeight);
 
-            desktop->setSize(screenWidth, screenHeight);
+            mDesktop->setSize(screenWidth, screenHeight);
         }
 
-        if (state == STATE_SWITCH_LOGIN && oldstate == STATE_GAME)
+        if (mState == STATE_SWITCH_LOGIN && mOldState == STATE_GAME)
         {
             Net::getGameHandler()->disconnect();
         }
 
-        if (state != oldstate)
+        if (mState != mOldState)
         {
-            if (oldstate == STATE_GAME)
+            if (mOldState == STATE_GAME)
             {
                 delete game;
                 game = 0;
             }
 
-            oldstate = state;
+            mOldState = mState;
 
             // Get rid of the dialog of the previous state
-            if (currentDialog)
+            if (mCurrentDialog)
             {
-                delete currentDialog;
-                currentDialog = NULL;
+                delete mCurrentDialog;
+                mCurrentDialog = NULL;
             }
             // State has changed, while the quitDialog was active, it might
             // not be correct anymore
-            if (quitDialog)
-                quitDialog->scheduleDelete();
+            if (mQuitDialog)
+                mQuitDialog->scheduleDelete();
 
-            switch (state)
+            switch (mState)
             {
                 case STATE_CHOOSE_SERVER:
                     logger->log("State: CHOOSE SERVER");
@@ -576,29 +576,29 @@ int Client::exec()
                     // Allow changing this using a server choice dialog
                     // We show the dialog box only if the command-line
                     // options weren't set.
-                    if (options.serverName.empty() && options.serverPort == 0)
+                    if (mOptions.serverName.empty() && mOptions.serverPort == 0)
                     {
                         // Don't allow an alpha opacity
                         // lower than the default value
                         SkinLoader::instance()->setMinimumOpacity(0.8f);
 
-                        currentDialog = new ServerDialog(&currentServer,
-                                                         configDir);
+                        mCurrentDialog = new ServerDialog(&mCurrentServer,
+                                                         mConfigDir);
                     }
                     else
                     {
-                        state = STATE_CONNECT_SERVER;
+                        mState = STATE_CONNECT_SERVER;
 
                         // Reset options so that cancelling or connect
                         // timeout will show the server dialog.
-                        options.serverName.clear();
-                        options.serverPort = 0;
+                        mOptions.serverName.clear();
+                        mOptions.serverPort = 0;
                     }
                     break;
 
                 case STATE_CONNECT_SERVER:
                     logger->log("State: CONNECT SERVER");
-                    currentDialog = new ConnectionDialog(
+                    mCurrentDialog = new ConnectionDialog(
                             _("Connecting to server"), STATE_SWITCH_SERVER);
                     break;
 
@@ -608,24 +608,24 @@ int Client::exec()
                     // lower than the default value
                     SkinLoader::instance()->setMinimumOpacity(0.8f);
 
-                    if (options.username.empty()
-                            || options.password.empty())
+                    if (mOptions.username.empty()
+                            || mOptions.password.empty())
                     {
-                        currentDialog = new LoginDialog(&loginData);
+                        mCurrentDialog = new LoginDialog(&loginData);
                     }
                     else
                     {
-                        state = STATE_LOGIN_ATTEMPT;
+                        mState = STATE_LOGIN_ATTEMPT;
                         // Clear the password so that when login fails, the
                         // dialog will show up next time.
-                        options.password.clear();
+                        mOptions.password.clear();
                     }
                     break;
 
                 case STATE_LOGIN_ATTEMPT:
                     logger->log("State: LOGIN ATTEMPT");
                     accountLogin(&loginData);
-                    currentDialog = new ConnectionDialog(
+                    mCurrentDialog = new ConnectionDialog(
                             _("Logging in"), STATE_SWITCH_SERVER);
                     break;
 
@@ -637,19 +637,19 @@ int Client::exec()
                         if (worlds.size() == 0)
                         {
                             // Trust that the netcode knows what it's doing
-                            state = STATE_UPDATE;
+                            mState = STATE_UPDATE;
                         }
                         else if (worlds.size() == 1)
                         {
                             Net::getLoginHandler()->chooseServer(0);
-                            state = STATE_UPDATE;
+                            mState = STATE_UPDATE;
                         }
                         else
                         {
-                            currentDialog = new WorldSelectDialog(worlds);
-                            if (options.chooseDefault)
+                            mCurrentDialog = new WorldSelectDialog(worlds);
+                            if (mOptions.chooseDefault)
                             {
-                                ((WorldSelectDialog*) currentDialog)->action(
+                                ((WorldSelectDialog*) mCurrentDialog)->action(
                                     gcn::ActionEvent(NULL, "ok"));
                             }
                         }
@@ -658,27 +658,27 @@ int Client::exec()
 
                 case STATE_WORLD_SELECT_ATTEMPT:
                     logger->log("State: WORLD SELECT ATTEMPT");
-                    currentDialog = new ConnectionDialog(
+                    mCurrentDialog = new ConnectionDialog(
                             _("Entering game world"), STATE_WORLD_SELECT);
                     break;
 
                 case STATE_UPDATE:
                     // Determine which source to use for the update host
-                    if (!options.updateHost.empty())
-                        updateHost = options.updateHost;
+                    if (!mOptions.updateHost.empty())
+                        mUpdateHost = mOptions.updateHost;
                     else
-                        updateHost = loginData.updateHost;
+                        mUpdateHost = loginData.updateHost;
                     initUpdatesDir();
 
-                    if (options.skipUpdate)
+                    if (mOptions.skipUpdate)
                     {
-                        state = STATE_LOAD_DATA;
+                        mState = STATE_LOAD_DATA;
                     }
                     else
                     {
                         logger->log("State: UPDATE");
-                        currentDialog = new UpdaterWindow(updateHost,
-                                localDataDir + "/" + updatesDir,options.dataPath.empty());
+                        mCurrentDialog = new UpdaterWindow(mUpdateHost,
+                                mLocalDataDir + "/" + mUpdatesDir,mOptions.dataPath.empty());
                     }
                     break;
 
@@ -687,7 +687,7 @@ int Client::exec()
 
                     // If another data path has been set,
                     // we don't load any other files...
-                    if (options.dataPath.empty())
+                    if (mOptions.dataPath.empty())
                     {
                         // Add customdata directory
                         ResourceManager::getInstance()->searchAndAddArchives(
@@ -706,15 +706,15 @@ int Client::exec()
                     StatusEffect::load();
                     Units::loadUnits();
 
-                    desktop->reloadWallpaper();
+                    mDesktop->reloadWallpaper();
 
-                    state = STATE_GET_CHARACTERS;
+                    mState = STATE_GET_CHARACTERS;
                     break;
 
                 case STATE_GET_CHARACTERS:
                     logger->log("State: GET CHARACTERS");
                     Net::getCharHandler()->requestCharacters();
-                    currentDialog = new ConnectionDialog(
+                    mCurrentDialog = new ConnectionDialog(
                             _("Requesting characters"),
                             STATE_SWITCH_SERVER);
                     break;
@@ -725,14 +725,14 @@ int Client::exec()
                     // lower than the default value
                     SkinLoader::instance()->setMinimumOpacity(0.8f);
 
-                    currentDialog = new CharSelectDialog(&loginData);
+                    mCurrentDialog = new CharSelectDialog(&loginData);
 
-                    if (!((CharSelectDialog*) currentDialog)->selectByName(
-                            options.character, CharSelectDialog::Choose))
+                    if (!((CharSelectDialog*) mCurrentDialog)->selectByName(
+                            mOptions.character, CharSelectDialog::Choose))
                     {
-                        ((CharSelectDialog*) currentDialog)->selectByName(
+                        ((CharSelectDialog*) mCurrentDialog)->selectByName(
                                 config.getValue("lastCharacter", ""),
-                                options.chooseDefault ?
+                                mOptions.chooseDefault ?
                                     CharSelectDialog::Choose :
                                     CharSelectDialog::Focus);
                     }
@@ -743,7 +743,7 @@ int Client::exec()
                     logger->log("State: CONNECT GAME");
 
                     Net::getGameHandler()->connect();
-                    currentDialog = new ConnectionDialog(
+                    mCurrentDialog = new ConnectionDialog(
                             _("Connecting to the game server"),
                             STATE_SWITCH_CHARACTER);
                     break;
@@ -762,12 +762,12 @@ int Client::exec()
                     // Allow any alpha opacity
                     SkinLoader::instance()->setMinimumOpacity(-1.0f);
 
-                    delete setupButton;
-                    delete desktop;
-                    setupButton = NULL;
-                    desktop = NULL;
+                    delete mSetupButton;
+                    delete mDesktop;
+                    mSetupButton = NULL;
+                    mDesktop = NULL;
 
-                    currentDialog = NULL;
+                    mCurrentDialog = NULL;
 
                     logger->log("State: GAME");
                     game = new Game;
@@ -775,28 +775,28 @@ int Client::exec()
 
                 case STATE_LOGIN_ERROR:
                     logger->log("State: LOGIN ERROR");
-                    currentDialog = new OkDialog(_("Error"), errorMessage);
-                    currentDialog->addActionListener(&loginListener);
-                    currentDialog = NULL; // OkDialog deletes itself
+                    mCurrentDialog = new OkDialog(_("Error"), errorMessage);
+                    mCurrentDialog->addActionListener(&loginListener);
+                    mCurrentDialog = NULL; // OkDialog deletes itself
                     break;
 
                 case STATE_ACCOUNTCHANGE_ERROR:
                     logger->log("State: ACCOUNT CHANGE ERROR");
-                    currentDialog = new OkDialog(_("Error"), errorMessage);
-                    currentDialog->addActionListener(&accountListener);
-                    currentDialog = NULL; // OkDialog deletes itself
+                    mCurrentDialog = new OkDialog(_("Error"), errorMessage);
+                    mCurrentDialog->addActionListener(&accountListener);
+                    mCurrentDialog = NULL; // OkDialog deletes itself
                     break;
 
                 case STATE_REGISTER_PREP:
                     logger->log("State: REGISTER_PREP");
                     Net::getLoginHandler()->getRegistrationDetails();
-                    currentDialog = new ConnectionDialog(
+                    mCurrentDialog = new ConnectionDialog(
                             _("Requesting registration details"), STATE_LOGIN);
                     break;
 
                 case STATE_REGISTER:
                     logger->log("State: REGISTER");
-                    currentDialog = new RegisterDialog(&loginData);
+                    mCurrentDialog = new RegisterDialog(&loginData);
                     break;
 
                 case STATE_REGISTER_ATTEMPT:
@@ -806,7 +806,7 @@ int Client::exec()
 
                 case STATE_CHANGEPASSWORD:
                     logger->log("State: CHANGE PASSWORD");
-                    currentDialog = new ChangePasswordDialog(&loginData);
+                    mCurrentDialog = new ChangePasswordDialog(&loginData);
                     break;
 
                 case STATE_CHANGEPASSWORD_ATTEMPT:
@@ -818,17 +818,17 @@ int Client::exec()
 
                 case STATE_CHANGEPASSWORD_SUCCESS:
                     logger->log("State: CHANGE PASSWORD SUCCESS");
-                    currentDialog = new OkDialog(_("Password Change"),
+                    mCurrentDialog = new OkDialog(_("Password Change"),
                             _("Password changed successfully!"));
-                    currentDialog->addActionListener(&accountListener);
-                    currentDialog = NULL; // OkDialog deletes itself
+                    mCurrentDialog->addActionListener(&accountListener);
+                    mCurrentDialog = NULL; // OkDialog deletes itself
                     loginData.password = loginData.newPassword;
                     loginData.newPassword = "";
                     break;
 
                 case STATE_CHANGEEMAIL:
                     logger->log("State: CHANGE EMAIL");
-                    currentDialog = new ChangeEmailDialog(&loginData);
+                    mCurrentDialog = new ChangeEmailDialog(&loginData);
                     break;
 
                 case STATE_CHANGEEMAIL_ATTEMPT:
@@ -838,15 +838,15 @@ int Client::exec()
 
                 case STATE_CHANGEEMAIL_SUCCESS:
                     logger->log("State: CHANGE EMAIL SUCCESS");
-                    currentDialog = new OkDialog(_("Email Change"),
+                    mCurrentDialog = new OkDialog(_("Email Change"),
                             _("Email changed successfully!"));
-                    currentDialog->addActionListener(&accountListener);
-                    currentDialog = NULL; // OkDialog deletes itself
+                    mCurrentDialog->addActionListener(&accountListener);
+                    mCurrentDialog = NULL; // OkDialog deletes itself
                     break;
 
                 case STATE_UNREGISTER:
                     logger->log("State: UNREGISTER");
-                    currentDialog = new UnRegisterDialog(&loginData);
+                    mCurrentDialog = new UnRegisterDialog(&loginData);
                     break;
 
                 case STATE_UNREGISTER_ATTEMPT:
@@ -859,12 +859,12 @@ int Client::exec()
                     logger->log("State: UNREGISTER SUCCESS");
                     Net::getLoginHandler()->disconnect();
 
-                    currentDialog = new OkDialog(_("Unregister Successful"),
+                    mCurrentDialog = new OkDialog(_("Unregister Successful"),
                             _("Farewell, come back any time..."));
                     loginData.clear();
                     //The errorlistener sets the state to STATE_CHOOSE_SERVER
-                    currentDialog->addActionListener(&errorListener);
-                    currentDialog = NULL; // OkDialog deletes itself
+                    mCurrentDialog->addActionListener(&errorListener);
+                    mCurrentDialog = NULL; // OkDialog deletes itself
                     break;
 
                 case STATE_SWITCH_SERVER:
@@ -873,7 +873,7 @@ int Client::exec()
                     Net::getLoginHandler()->disconnect();
                     Net::getGameHandler()->disconnect();
 
-                    state = STATE_CHOOSE_SERVER;
+                    mState = STATE_CHOOSE_SERVER;
                     break;
 
                 case STATE_SWITCH_LOGIN:
@@ -881,7 +881,7 @@ int Client::exec()
 
                     Net::getLoginHandler()->logout();
 
-                    state = STATE_LOGIN;
+                    mState = STATE_LOGIN;
                     break;
 
                 case STATE_SWITCH_CHARACTER:
@@ -911,19 +911,19 @@ int Client::exec()
                     logger->log("State: FORCE QUIT");
                     if (Net::getGeneralHandler())
                         Net::getGeneralHandler()->unload();
-                    state = STATE_EXIT;
+                    mState = STATE_EXIT;
                   break;
 
                 case STATE_ERROR:
                     logger->log("State: ERROR");
-                    currentDialog = new OkDialog(_("Error"), errorMessage);
-                    currentDialog->addActionListener(&errorListener);
-                    currentDialog = NULL; // OkDialog deletes itself
+                    mCurrentDialog = new OkDialog(_("Error"), errorMessage);
+                    mCurrentDialog->addActionListener(&errorListener);
+                    mCurrentDialog = NULL; // OkDialog deletes itself
                     Net::getGameHandler()->disconnect();
                     break;
 
                 default:
-                    state = STATE_FORCE_QUIT;
+                    mState = STATE_FORCE_QUIT;
                     break;
             }
         }
@@ -961,9 +961,9 @@ void Client::action(const gcn::ActionEvent &event)
  */
 void Client::initHomeDir(const Options &options)
 {
-    localDataDir = options.localDataDir;
+    mLocalDataDir = options.localDataDir;
 
-    if (localDataDir.empty())
+    if (mLocalDataDir.empty())
     {
 #ifdef __APPLE__
         // Use Application Directory instead of .mana
@@ -976,20 +976,20 @@ void Client::initHomeDir(const Options &options)
             localDataDir = std::string(PHYSFS_getUserDir());
         localDataDir += "/Mana";
 #else
-        localDataDir = std::string(PHYSFS_getUserDir()) +
+        mLocalDataDir = std::string(PHYSFS_getUserDir()) +
             "/.local/share/mana";
 #endif
     }
 
-    if (mkdir_r(localDataDir.c_str()))
+    if (mkdir_r(mLocalDataDir.c_str()))
     {
         logger->error(strprintf(_("%s doesn't exist and can't be created! "
-                                  "Exiting."), localDataDir.c_str()));
+                                  "Exiting."), mLocalDataDir.c_str()));
     }
 
-    configDir = options.configDir;
+    mConfigDir = options.configDir;
 
-    if (configDir.empty()){
+    if (mConfigDir.empty()){
 #ifdef __APPLE__
         configDir = localDataDir;
 #elif defined WIN32
@@ -999,15 +999,15 @@ void Client::initHomeDir(const Options &options)
         else
             configDir += "/mana/" + branding.getValue("appName", "Mana");
 #else
-        configDir = std::string(PHYSFS_getUserDir()) +
+        mConfigDir = std::string(PHYSFS_getUserDir()) +
             "/.config/mana/" + branding.getValue("appShort", "mana");
 #endif
     }
 
-    if (mkdir_r(configDir.c_str()))
+    if (mkdir_r(mConfigDir.c_str()))
     {
         logger->error(strprintf(_("%s doesn't exist and can't be created! "
-                                  "Exiting."), configDir.c_str()));
+                                  "Exiting."), mConfigDir.c_str()));
     }
 }
 
@@ -1047,7 +1047,7 @@ void Client::initConfiguration(const Options &options)
     FILE *configFile = 0;
     std::string configPath;
 
-    configPath = configDir + "/config.xml";
+    configPath = mConfigDir + "/config.xml";
 
     configFile = fopen(configPath.c_str(), "r");
 
@@ -1077,47 +1077,47 @@ void Client::initUpdatesDir()
     std::stringstream updates;
 
     // If updatesHost is currently empty, fill it from config file
-    if (updateHost.empty())
+    if (mUpdateHost.empty())
     {
-        updateHost =
+        mUpdateHost =
             config.getValue("updatehost", "http://updates.themanaworld.org/");
     }
 
     // Remove any trailing slash at the end of the update host
-    if (updateHost.at(updateHost.size() - 1) == '/')
-        updateHost.resize(updateHost.size() - 1);
+    if (mUpdateHost.at(mUpdateHost.size() - 1) == '/')
+        mUpdateHost.resize(mUpdateHost.size() - 1);
 
     // Parse out any "http://" or "ftp://", and set the updates directory
     size_t pos;
-    pos = updateHost.find("://");
-    if (pos != updateHost.npos)
+    pos = mUpdateHost.find("://");
+    if (pos != mUpdateHost.npos)
     {
-        if (pos + 3 < updateHost.length())
+        if (pos + 3 < mUpdateHost.length())
         {
-            updates << "updates/" << updateHost.substr(pos + 3);
-            updatesDir = updates.str();
+            updates << "updates/" << mUpdateHost.substr(pos + 3);
+            mUpdatesDir = updates.str();
         }
         else
         {
-            logger->log("Error: Invalid update host: %s", updateHost.c_str());
+            logger->log("Error: Invalid update host: %s", mUpdateHost.c_str());
             errorMessage = strprintf(_("Invalid update host: %s"),
-                                     updateHost.c_str());
-            state = STATE_ERROR;
+                                     mUpdateHost.c_str());
+            mState = STATE_ERROR;
         }
     }
     else
     {
         logger->log("Warning: no protocol was specified for the update host");
-        updates << "updates/" << updateHost;
-        updatesDir = updates.str();
+        updates << "updates/" << mUpdateHost;
+        mUpdatesDir = updates.str();
     }
 
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Verify that the updates directory exists. Create if necessary.
-    if (!resman->isDirectory("/" + updatesDir))
+    if (!resman->isDirectory("/" + mUpdatesDir))
     {
-        if (!resman->mkdir("/" + updatesDir))
+        if (!resman->mkdir("/" + mUpdatesDir))
         {
 #if defined WIN32
             std::string newDir = localDataDir + "\\" + updatesDir;
@@ -1139,9 +1139,9 @@ void Client::initUpdatesDir()
             }
 #else
             logger->log("Error: %s/%s can't be made, but doesn't exist!",
-                        localDataDir.c_str(), updatesDir.c_str());
+                        mLocalDataDir.c_str(), mUpdatesDir.c_str());
             errorMessage = _("Error creating updates directory!");
-            state = STATE_ERROR;
+            mState = STATE_ERROR;
 #endif
         }
     }
@@ -1150,13 +1150,13 @@ void Client::initUpdatesDir()
 void Client::initScreenshotDir(const std::string &dir)
 {
     if (!dir.empty())
-        screenshotDir = dir;
+        mScreenshotDir = dir;
     else
     {
         std::string configScreenshotDir =
             config.getValue("screenshotDirectory", "");
         if (!configScreenshotDir.empty())
-            screenshotDir = configScreenshotDir;
+            mScreenshotDir = configScreenshotDir;
         else
         {
 #ifdef WIN32
@@ -1164,14 +1164,14 @@ void Client::initScreenshotDir(const std::string &dir)
             if (screenshotDir.empty())
                 screenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
 #else
-            screenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
+            mScreenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
             // If ~/Desktop does not exist, we save screenshots in the user's home.
             struct stat statbuf;
-            if (stat(screenshotDir.c_str(), &statbuf))
-                screenshotDir = std::string(PHYSFS_getUserDir());
+            if (stat(mScreenshotDir.c_str(), &statbuf))
+                mScreenshotDir = std::string(PHYSFS_getUserDir());
 #endif
         }
-        config.setValue("screenshotDirectory", screenshotDir);
+        config.setValue("screenshotDirectory", mScreenshotDir);
 
         if (config.getValue("useScreenshotDirectorySuffix", true))
         {
@@ -1181,19 +1181,19 @@ void Client::initScreenshotDir(const std::string &dir)
 
             if (!configScreenshotSuffix.empty())
             {
-                screenshotDir += "/" + configScreenshotSuffix;
+                mScreenshotDir += "/" + configScreenshotSuffix;
                 config.setValue("screenshotDirectorySuffix",
                                 configScreenshotSuffix);
             }
         }
     }
 
-    if (mkdir_r(screenshotDir.c_str()))
+    if (mkdir_r(mScreenshotDir.c_str()))
     {
         logger->log("Directory %s doesn't exist and can't be created! "
                     "Setting screenshot directory to home.",
-                    screenshotDir.c_str());
-        screenshotDir = std::string(PHYSFS_getUserDir());
+                    mScreenshotDir.c_str());
+        mScreenshotDir = std::string(PHYSFS_getUserDir());
     }
 }
 

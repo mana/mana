@@ -160,19 +160,19 @@ public:
     int exec();
 
     static void setState(State state)
-    { instance()->state = state; }
+    { instance()->mState = state; }
 
     static State getState()
-    { return instance()->state; }
+    { return instance()->mState; }
 
     static const std::string &getConfigDirectory()
-    { return instance()->configDir; }
+    { return instance()->mConfigDir; }
 
     static const std::string &getLocalDataDirectory()
-    { return instance()->localDataDir; }
+    { return instance()->mLocalDataDir; }
 
     static const std::string &getScreenshotDirectory()
-    { return instance()->screenshotDir; }
+    { return instance()->mScreenshotDir; }
 
     void optionChanged(const std::string &name);
     void action(const gcn::ActionEvent &event);
@@ -187,25 +187,25 @@ private:
 
     static Client *mInstance;
 
-    Options options;
+    Options mOptions;
 
-    std::string configDir;
-    std::string localDataDir;
-    std::string updateHost;
-    std::string updatesDir;
-    std::string screenshotDir;
+    std::string mConfigDir;
+    std::string mLocalDataDir;
+    std::string mUpdateHost;
+    std::string mUpdatesDir;
+    std::string mScreenshotDir;
 
-    ServerInfo currentServer;
+    ServerInfo mCurrentServer;
 
-    Window *currentDialog;
-    QuitDialog *quitDialog;
-    Desktop *desktop;
-    Button *setupButton;
+    Window *mCurrentDialog;
+    QuitDialog *mQuitDialog;
+    Desktop *mDesktop;
+    Button *mSetupButton;
 
-    State state;
-    State oldstate;
+    State mState;
+    State mOldState;
 
-    SDL_Surface *icon;
+    SDL_Surface *mIcon;
 
     SDL_TimerID mLogicCounterId;
     SDL_TimerID mSecondsCounterId;
