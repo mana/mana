@@ -300,38 +300,119 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
         if (dir & RIGHT)
             dx++;
 
-        // Prevent skipping corners over colliding tiles
-        if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
-                                 (int) pos.y / 32, getWalkMask()))
-            dx = 16 - (int) pos.x % 32;
-        if (dy && !mMap->getWalk((int) pos.x / 32,
-                                 ((int) pos.y + dy) / 32, getWalkMask()))
-            dy = 16 - (int) pos.y % 32;
-
         // Choose a straight direction when diagonal target is blocked
-        if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
-                                       (pos.y + dy) / 32, getWalkMask()))
-            dx = 16 - (int) pos.x % 32;
-
-        int dScaler; // Distance to walk
-
-        // Checks our path up to 1 tiles, if a blocking tile is found
-        // We go to the last good tile, and break out of the loop
-        for (dScaler = 1; dScaler <= 32; dScaler++)
+        if (dx && dy && !mMap->getWalk((pos.x / 32) + dx,
+                                       (pos.y / 32) + dy, getWalkMask()))
         {
-            if ( (dx || dy) &&
-                 !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
-                                 ((int) pos.y + (dy * dScaler)) / 32, getWalkMask()) )
+            // If one straight direction is blocked, and not the other,
+            // we choose the free one.
+            if (!mMap->getWalk((pos.x / 32) + dx, pos.y / 32,
+                               getWalkMask())
+                && mMap->getWalk((pos.x / 32), pos.y / 32 + dy,
+                               getWalkMask()))
+                {
+                    dx = 0;
+                }
+
+                else if (mMap->getWalk((pos.x / 32) + dx, pos.y / 32,
+                               getWalkMask())
+                && !mMap->getWalk((pos.x / 32), pos.y / 32 + dy,
+                               getWalkMask()))
+                {
+                    dy = 0;
+                }
+                else
+                {
+                    // In the other cases, we test if the current tile offset
+                    // is more inclined to one straight direction or another.
+                    int fx = (int) pos.x % 32;
+                    int fy = (int) pos.y % 32;
+
+                    // Top-left case
+                    if (dx < 0 && dy < 0)
+                    {
+                        // Go left when below the corner
+                        if (fy >= (fx / mMap->getTileWidth()
+                            * mMap->getTileHeight()))
+                            dy = 0;
+                        else // Go up otherwise
+                            dx = 0;
+                    }
+
+                    // Bottom-right case
+                    if (dx > 0 && dy > 0)
+                    {
+                        // Go down when below the corner
+                        if (fy >= (fx / mMap->getTileWidth()
+                            * mMap->getTileHeight()))
+                            dx = 0;
+                        else // Go right otherwise
+                            dy = 0;
+                    }
+
+                    // Top-right case
+                    if (dx > 0 && dy < 0)
+                    {
+                        // Go right when below the corner
+                        if (fy >= (fx / mMap->getTileHeight()
+                            - (fx / mMap->getTileWidth()
+                               * mMap->getTileHeight()) ))
+                            dy = 0;
+                        else // Go up otherwise
+                            dx = 0;
+                    }
+
+                    // Bottom-left case
+                    if (dx < 0 && dy > 0)
+                    {
+                        // Go down when below the corner
+                        if (fy >= (fx / mMap->getTileHeight()
+                            - (fx / mMap->getTileWidth()
+                               * mMap->getTileHeight()) ))
+                            dx = 0;
+                        else // Go left otherwise
+                            dy = 0;
+                    }
+                }
+        }
+
+        int dScaler = 0; // Distance to walk in pixels
+
+        if (dx || dy)
+        {
+            Position refPosition(0, 0);
+            Position testPosition(0, 0);
+            // Checks our path up to 1 tiles, if a blocking tile is found
+            // We go to the last good tile, and break out of the loop
+            for (dScaler = 1; dScaler <= std::max(mMap->getTileWidth(),
+                                                  mMap->getTileHeight());
+                                                  dScaler++)
             {
-                dScaler--;
-                break;
+                refPosition = Position((int) pos.x + (dx * dScaler) / 32,
+                            (int) pos.y + (dy * dScaler) / 32);
+                testPosition = checkNodeOffsets(refPosition);
+                if (refPosition.x != testPosition.x
+                    || refPosition.y != testPosition.y)
+                {
+                    dScaler--;
+                    break;
+                }
             }
         }
 
-        if (dScaler > 16)
+        // Test also current position to avoid being blocked on corners
+        // in certain situations.
+        Position currentPosition((int) pos.x, (int) pos.y);
+        Position testPosition = checkNodeOffsets(currentPosition);
+        if (dScaler > 0)
         {
-            //effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
-            setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+            setDestination((int) pos.x + (dx * dScaler),
+                           (int) pos.y + (dy * dScaler));
+        }
+        else if (currentPosition.x != testPosition.x
+                || currentPosition.y != testPosition.y)
+        {
+            setDestination(testPosition.x, testPosition.y);
         }
         else if (dir != mDirection)
         {
@@ -464,7 +545,7 @@ void LocalPlayer::setDestination(int x, int y)
         // we inform the Server.
         if ((x == mDest.x && y == mDest.y)
             || Net::getNetworkType() == ServerInfo::EATHENA)
-          Net::getPlayerHandler()->setDestination(x, y, mDirection);
+                Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }
 
     mPickUpTarget = NULL;
@@ -518,9 +599,7 @@ void LocalPlayer::setWalkingDir(int dir)
 void LocalPlayer::startWalking(unsigned char dir)
 {
     // This function is called by setWalkingDir(),
-    // but also by nextStep() for eAthena...
-
-    // TODO: Evaluate the implementation of this method for Manaserv
+    // but also by nextTile() for eAthena...
     if (!mMap || !dir)
         return;
 
@@ -556,11 +635,13 @@ void LocalPlayer::startWalking(unsigned char dir)
             dy = 0;
 
         // Choose a straight direction when diagonal target is blocked
-        if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
+        if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy,
+                                       getWalkMask()))
             dx = 0;
 
         // Walk to where the player can actually go
-        if ((dx || dy) && mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
+        if ((dx || dy) && mMap->getWalk(getTileX() + dx, getTileY() + dy,
+                                        getWalkMask()))
         {
             setDestination(getTileX() + dx, getTileY() + dy);
         }
@@ -628,7 +709,8 @@ void LocalPlayer::useSpecial(int special)
 
 void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
 {
-    logger->log("SpecialUpdate Skill #%d -- (%d/%d) -> %d", id, current, max, recharge);
+    logger->log("SpecialUpdate Skill #%d -- (%d/%d) -> %d", id, current, max,
+                recharge);
     mSpecials[id].currentMana = current;
     mSpecials[id].neededMana = max;
     mSpecials[id].recharge = recharge;
@@ -739,7 +821,8 @@ void LocalPlayer::stopAttack()
 
 void LocalPlayer::raiseAttribute(int attr)
 {
-    // we assume that the server allows the change. When not we will undo it later.
+    // we assume that the server allows the change.
+    // When not we will undo it later.
     mCharacterPoints--;
     IntMap::iterator it = mAttributeBase.find(attr);
     if (it != mAttributeBase.end())
@@ -749,7 +832,8 @@ void LocalPlayer::raiseAttribute(int attr)
 
 void LocalPlayer::lowerAttribute(int attr)
 {
-    // we assume that the server allows the change. When not we will undo it later.
+    // we assume that the server allows the change.
+    // When not we will undo it later.
     mCorrectionPoints--;
     mCharacterPoints++;
     IntMap::iterator it = mAttributeBase.find(attr);

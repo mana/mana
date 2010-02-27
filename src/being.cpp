@@ -621,7 +621,7 @@ void Being::logic()
         const float nominalLength = dir.length();
 
         // When we've not reached our destination, move to it.
-        if (nominalLength > 1.0f && !mWalkSpeed.isNull())
+        if (nominalLength > 0.0f && !mWalkSpeed.isNull())
         {
             // The deplacement of a point along a vector is calculated
             // using the Unit Vector (â) multiplied by the point speed.
@@ -648,22 +648,26 @@ void Being::logic()
             if (mAction != WALK)
                 setAction(WALK);
 
-            // Update the player sprite direction
-            int direction = 0;
-            const float dx = std::abs(dir.x);
-            float dy = std::abs(dir.y);
+            // Update the player sprite direction.
+            // N.B.: We only change this if the distance is more than one pixel.
+            if (nominalLength > 1.0f)
+            {
+                int direction = 0;
+                const float dx = std::abs(dir.x);
+                float dy = std::abs(dir.y);
 
-            // When not using mouse for the player, we slightly prefer
-            // UP and DOWN position, especially when walking diagonally.
-            if (this == player_node && !player_node->isPathSetByMouse())
-                dy = dy + 2;
+                // When not using mouse for the player, we slightly prefer
+                // UP and DOWN position, especially when walking diagonally.
+                if (this == player_node && !player_node->isPathSetByMouse())
+                    dy = dy + 2;
 
-            if (dx > dy)
-                 direction |= (dir.x > 0) ? RIGHT : LEFT;
-            else
-                 direction |= (dir.y > 0) ? DOWN : UP;
+                if (dx > dy)
+                     direction |= (dir.x > 0) ? RIGHT : LEFT;
+                else
+                     direction |= (dir.y > 0) ? DOWN : UP;
 
-            setDirection(direction);
+                setDirection(direction);
+            }
         }
         else if (!mPath.empty())
         {
