@@ -235,7 +235,8 @@ public:
         mBrowserBox->setOpaque(false);
         mBrowserBox->setLinkHandler(this);
 
-        mBrowserBox->addRow(strprintf("@@guild|%s@@", _("Create Guild")));
+        if (Net::getGuildHandler()->isSupported())
+            mBrowserBox->addRow(strprintf("@@guild|%s@@", _("Create Guild")));
         mBrowserBox->addRow(strprintf("@@party|%s@@", _("Create Party")));
         mBrowserBox->addRow("##3---");
         mBrowserBox->addRow(strprintf("@@cancel|%s@@", _("Cancel")));
@@ -425,7 +426,10 @@ void SocialWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "create")
     {
-        mCreatePopup->show(mCreateButton);
+        if (Net::getGuildHandler()->isSupported())
+            mCreatePopup->show(mCreateButton);
+        else
+            showPartyCreate();
     }
     else if (event.getId() == "invite")
     {
@@ -564,7 +568,7 @@ void SocialWindow::showPartyCreate()
     }
 
     mPartyCreateDialog = new TextDialog(_("Party Name"),
-                                        _("Choose your part's name."), this);
+                                        _("Choose your party's name."), this);
     mPartyCreateDialog->setOKButtonActionId("create party");
     mPartyCreateDialog->addActionListener(this);
 }

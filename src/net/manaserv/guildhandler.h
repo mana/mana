@@ -33,6 +33,8 @@ class GuildHandler : public Net::GuildHandler, public MessageHandler
 public:
     GuildHandler();
 
+    bool isSupported() { return true; }
+
     void handleMessage(Net::MessageIn &msg);
 
     void create(const std::string &name);

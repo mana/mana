@@ -32,6 +32,10 @@ namespace Net {
 class GuildHandler
 {
     public:
+        virtual ~GuildHandler() {}
+
+        virtual bool isSupported() { return false; }
+
         virtual void create(const std::string &name) = 0;
 
         virtual void invite(int guildId, const std::string &name) = 0;
@@ -56,8 +60,6 @@ class GuildHandler
                                              bool response) = 0;
 
         virtual void endAlliance(int guildId, int otherGuildId) = 0;
-
-        virtual ~GuildHandler() {}
 };
 
 }
