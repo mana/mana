@@ -304,7 +304,8 @@ static bool saveScreenshot()
         filenameSuffix.str("");
         filename.str("");
         filename << Client::getScreenshotDirectory() << "/";
-        filenameSuffix << "Mana_Screenshot_" << screenshotCount << ".png";
+        filenameSuffix << branding.getValue("appShort", "Mana")
+                       << "_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
