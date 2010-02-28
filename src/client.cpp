@@ -216,17 +216,16 @@ Client::Client(const Options &options):
     }
 
     initHomeDir();
+    initConfiguration();
 
     // Configure logger
     logger->setLogFile(mLocalDataDir + std::string("/mana.log"));
+    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
     // Log the mana version
     logger->log("Mana %s", FULL_VERSION);
 
-    initConfiguration();
     initScreenshotDir();
-
-    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
     // Initialize SDL
     logger->log("Initializing SDL...");
@@ -1018,7 +1017,6 @@ void Client::initHomeDir()
 void Client::initConfiguration()
 {
     // Fill configuration with defaults
-    logger->log("Initializing configuration...");
     std::string defaultHost = branding.getValue("defaultServer",
         "server.themanaworld.org");
     int defaultPort = (int) branding.getValue("defaultPort", DEFAULT_PORT);
