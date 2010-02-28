@@ -283,9 +283,7 @@ Client::Client(const Options &options):
         int loc = path.find_last_of('/');
 #endif
         if (loc > 0)
-            path = path.substr(0, loc + 1);
-
-        resman->addToSearchPath(path + "data", false);
+            resman->addToSearchPath(path.substr(0, loc + 1) + "data", false);
     }
 
     // Add the main data directories to our PhysicsFS search path
