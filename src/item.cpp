@@ -21,6 +21,8 @@
 
 #include "item.h"
 
+#include "gui/skin.h"
+
 #include "resources/image.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
@@ -60,8 +62,8 @@ void Item::setId(int id)
     mDrawImage = resman->getImage(imagePath);
 
     if (!mImage)
-        mImage = resman->getImage("graphics/gui/unknown-item.png");
+        mImage = SkinLoader::getImageFromTheme("unknown-item.png");
 
     if (!mDrawImage)
-        mDrawImage = resman->getImage("graphics/gui/unknown-item.png");
+        mDrawImage = SkinLoader::getImageFromTheme("unknown-item.png");
 }

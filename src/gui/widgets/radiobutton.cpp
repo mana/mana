@@ -24,8 +24,9 @@
 #include "configuration.h"
 #include "graphics.h"
 
+#include "gui/skin.h"
+
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 int RadioButton::instances = 0;
 float RadioButton::mAlpha = 1.0;
@@ -43,13 +44,12 @@ RadioButton::RadioButton(const std::string &caption, const std::string &group,
 {
     if (instances == 0)
     {
-        ResourceManager *resman = ResourceManager::getInstance();
-        radioNormal = resman->getImage("graphics/gui/radioout.png");
-        radioChecked = resman->getImage("graphics/gui/radioin.png");
-        radioDisabled = resman->getImage("graphics/gui/radioout.png");
-        radioDisabledChecked = resman->getImage("graphics/gui/radioin.png");
-        radioNormalHi = resman->getImage("graphics/gui/radioout_highlight.png");
-        radioCheckedHi = resman->getImage("graphics/gui/radioin_highlight.png");
+        radioNormal = SkinLoader::getImageFromTheme("radioout.png");
+        radioChecked = SkinLoader::getImageFromTheme("radioin.png");
+        radioDisabled = SkinLoader::getImageFromTheme("radioout.png");
+        radioDisabledChecked = SkinLoader::getImageFromTheme("radioin.png");
+        radioNormalHi = SkinLoader::getImageFromTheme("radioout_highlight.png");
+        radioCheckedHi = SkinLoader::getImageFromTheme("radioin_highlight.png");
         radioNormal->setAlpha(mAlpha);
         radioChecked->setAlpha(mAlpha);
         radioDisabled->setAlpha(mAlpha);

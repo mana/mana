@@ -209,9 +209,8 @@ void Gui::setUseCustomCursor(bool customCursor)
             SDL_ShowCursor(SDL_DISABLE);
 
             // Load the mouse cursor
-            ResourceManager *resman = ResourceManager::getInstance();
-            mMouseCursors =
-                resman->getImageSet("graphics/gui/mouse.png", 40, 40);
+            mMouseCursors = SkinLoader::getImageSetFromTheme("mouse.png",
+                                                             40, 40);
 
             if (!mMouseCursors)
                 logger->error("Unable to load mouse cursors.");

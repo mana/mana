@@ -25,6 +25,7 @@
 #include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/palette.h"
+#include "gui/skin.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -44,8 +45,8 @@ AvatarListBox::AvatarListBox(AvatarListModel *model):
 
     if (instances == 1)
     {
-        onlineIcon = ResourceManager::getInstance()->getImage("graphics/gui/circle-green.png");
-        offlineIcon = ResourceManager::getInstance()->getImage("graphics/gui/circle-gray.png");
+        onlineIcon = SkinLoader::getImageFromTheme("circle-green.png");
+        offlineIcon = SkinLoader::getImageFromTheme("circle-gray.png");
     }
 
     setWidth(200);

@@ -28,7 +28,6 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -54,10 +53,10 @@ struct ButtonData
 };
 
 static ButtonData const data[BUTTON_COUNT] = {
-    { "graphics/gui/button.png", 0, 0 },
-    { "graphics/gui/buttonhi.png", 9, 4 },
-    { "graphics/gui/buttonpress.png", 16, 19 },
-    { "graphics/gui/button_disabled.png", 25, 23 }
+    { "button.png", 0, 0 },
+    { "buttonhi.png", 9, 4 },
+    { "buttonpress.png", 16, 19 },
+    { "button_disabled.png", 25, 23 }
 };
 
 ImageRect Button::button[BUTTON_COUNT];
@@ -85,14 +84,13 @@ void Button::init()
     if (mInstances == 0)
     {
         // Load the skin
-        ResourceManager *resman = ResourceManager::getInstance();
         Image *btn[BUTTON_COUNT];
 
         int a, x, y, mode;
 
         for (mode = 0; mode < BUTTON_COUNT; mode++)
         {
-            btn[mode] = resman->getImage(data[mode].file);
+            btn[mode] = SkinLoader::getImageFromTheme(data[mode].file);
             a = 0;
             for (y = 0; y < 3; y++)
             {

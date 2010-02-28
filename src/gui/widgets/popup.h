@@ -55,7 +55,7 @@ class Popup : public Container
          * @param skin    The location where the Popup's skin XML can be found.
          */
         Popup(const std::string &name = "",
-              const std::string &skin = "graphics/gui/gui.xml");
+              const std::string &skin = "gui.xml");
 
         /**
          * Destructor. Deletes all the added widgets.

@@ -39,7 +39,7 @@ class ResizeGrip : public gcn::Widget
         /**
          * Constructor.
          */
-        ResizeGrip(const std::string &image = "graphics/gui/resize.png");
+        ResizeGrip(const std::string &image = "resize.png");
 
         /**
          * Destructor.

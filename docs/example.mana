@@ -19,4 +19,5 @@ filename / path as a command line parameter
  <option name="defaultUpdateHost" value="http://updates.themanaworld.org"/>
  <option name="font" value="fonts/dejavusans.ttf" />
  <option name="boldFont" value="fonts/dejavusans-bold.ttf" />
+ <option name="theme" value="wood" />
 </configuration>

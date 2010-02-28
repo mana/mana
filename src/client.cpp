@@ -249,13 +249,6 @@ Client::Client(const Options &options):
                                 "Exiting.", mLocalDataDir.c_str()));
     }
 
-    // Add the local data directory to PhysicsFS search path
-    resman->addToSearchPath(mLocalDataDir, false);
-
-    // Add the main data directories to our PhysicsFS search path
-    if (!options.dataPath.empty())
-        resman->addToSearchPath(options.dataPath, true);
-    resman->addToSearchPath("data", true);
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
@@ -267,10 +260,40 @@ Client::Client(const Options &options):
     }
     CFRelease(resourcesURL);
     strncat(path, "/data", PATH_MAX - 1);
-    resman->addToSearchPath(path, true);
+    resman->addToSearchPath(path, false);
+    mPackageDir = path;
 #else
-    resman->addToSearchPath(PKG_DATADIR "data", true);
+    resman->addToSearchPath(PKG_DATADIR "data", false);
+    mPackageDir = PKG_DATADIR "data";
 #endif
+
+    resman->addToSearchPath("data", false);
+
+    // Add branding/data to PhysFS search path
+    if (!options.brandingPath.empty())
+    {
+        std::string path = options.brandingPath;
+
+        // Strip blah.mana from the path
+#ifdef WIN32
+        int loc1 = path.find_last_of('/');
+        int loc2 = path.find_last_of('\\');
+        int loc = std::max(loc1, loc2);
+#else
+        int loc = path.find_last_of('/');
+#endif
+        if (loc > 0)
+            path = path.substr(0, loc + 1);
+
+        resman->addToSearchPath(path + "data", false);
+    }
+
+    // Add the main data directories to our PhysicsFS search path
+    if (!options.dataPath.empty())
+        resman->addToSearchPath(options.dataPath, false);
+
+    // Add the local data directory to PhysicsFS search path
+    resman->addToSearchPath(mLocalDataDir, false);
 
 #ifdef WIN32
     static SDL_SysWMinfo pInfo;
@@ -318,6 +341,8 @@ Client::Client(const Options &options):
 
     // Initialize for drawing
     graphics->_beginDraw();
+
+    SkinLoader::prepareThemePath();
 
     // Initialize the item shortcuts.
     itemShortcut = new ItemShortcut;

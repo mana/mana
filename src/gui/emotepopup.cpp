@@ -29,10 +29,11 @@
 #include "localplayer.h"
 #include "log.h"
 
+#include "gui/skin.h"
+
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/iteminfo.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -56,8 +57,7 @@ EmotePopup::EmotePopup():
         mEmotes.push_back(EmoteDB::getAnimation(i));
     }
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    mSelectionImage = resman->getImage("graphics/gui/selection.png");
+    mSelectionImage = SkinLoader::getImageFromTheme("selection.png");
     if (!mSelectionImage)
         logger->error("Unable to load selection.png");
 

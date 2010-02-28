@@ -25,6 +25,7 @@
 #include "graphics.h"
 
 #include "gui/gui.h"
+#include "gui/skin.h"
 
 #include "gui/widgets/textbox.h"
 
@@ -33,7 +34,7 @@
 #include <guichan/widgets/label.hpp>
 
 SpeechBubble::SpeechBubble():
-    Popup("Speech", "graphics/gui/speechbubble.xml")
+        Popup("Speech", "speechbubble.xml")
 {
     setContentSize(140, 46);
     setMinWidth(29);

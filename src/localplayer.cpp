@@ -43,6 +43,7 @@
 #include "gui/ministatus.h"
 #include "gui/palette.h"
 #include "gui/skilldialog.h"
+#include "gui/skin.h"
 #include "gui/statuswindow.h"
 #include "gui/storagewindow.h"
 
@@ -1050,18 +1051,12 @@ void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
 void LocalPlayer::initTargetCursor()
 {
     // Load target cursors
-    loadTargetCursor("graphics/gui/target-cursor-blue-s.png", 44, 35,
-                     false, TC_SMALL);
-    loadTargetCursor("graphics/gui/target-cursor-red-s.png", 44, 35,
-                     true, TC_SMALL);
-    loadTargetCursor("graphics/gui/target-cursor-blue-m.png", 62, 44,
-                     false, TC_MEDIUM);
-    loadTargetCursor("graphics/gui/target-cursor-red-m.png", 62, 44,
-                     true, TC_MEDIUM);
-    loadTargetCursor("graphics/gui/target-cursor-blue-l.png", 82, 60,
-                     false, TC_LARGE);
-    loadTargetCursor("graphics/gui/target-cursor-red-l.png", 82, 60,
-                     true, TC_LARGE);
+    loadTargetCursor("target-cursor-blue-s.png", 44, 35, false, TC_SMALL);
+    loadTargetCursor("target-cursor-red-s.png", 44, 35, true, TC_SMALL);
+    loadTargetCursor("target-cursor-blue-m.png", 62, 44, false, TC_MEDIUM);
+    loadTargetCursor("target-cursor-red-m.png", 62, 44, true, TC_MEDIUM);
+    loadTargetCursor("target-cursor-blue-l.png", 82, 60, false, TC_LARGE);
+    loadTargetCursor("target-cursor-red-l.png", 82, 60, true, TC_LARGE);
 }
 
 void LocalPlayer::loadTargetCursor(const std::string &filename,
@@ -1071,9 +1066,8 @@ void LocalPlayer::loadTargetCursor(const std::string &filename,
     assert(size > -1);
     assert(size < 3);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    ImageSet *currentImageSet = resman->getImageSet(filename, width, height);
+    ImageSet *currentImageSet = SkinLoader::getImageSetFromTheme(filename,
+                                                                width, height);
     Animation *anim = new Animation;
 
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)

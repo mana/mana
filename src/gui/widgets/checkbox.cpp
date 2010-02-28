@@ -28,7 +28,6 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 int CheckBox::instances = 0;
 float CheckBox::mAlpha = 1.0;
@@ -45,8 +44,7 @@ CheckBox::CheckBox(const std::string &caption, bool selected):
 {
     if (instances == 0)
     {
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *checkBox = resman->getImage("graphics/gui/checkbox.png");
+        Image *checkBox = SkinLoader::getImageFromTheme("checkbox.png");
         checkBoxNormal = checkBox->getSubImage(0, 0, 9, 10);
         checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
         checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);

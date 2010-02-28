@@ -165,6 +165,9 @@ public:
     static State getState()
     { return instance()->mState; }
 
+    static const std::string &getPackageDirectory()
+    { return instance()->mPackageDir; }
+
     static const std::string &getConfigDirectory()
     { return instance()->mConfigDir; }
 
@@ -189,6 +192,7 @@ private:
 
     Options mOptions;
 
+    std::string mPackageDir;
     std::string mConfigDir;
     std::string mLocalDataDir;
     std::string mUpdateHost;
