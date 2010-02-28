@@ -68,18 +68,24 @@ class ServersListModel : public gcn::ListModel
         ServerInfo getServer(int elementIndex) const
         { return mServers->at(elementIndex); }
 
+        /**
+         * Removes the entry.
+         */
+        void remove(int elementIndex)
+        { mServers->erase(mServers->begin() + elementIndex); }
+
     private:
         ServerInfos *mServers;
         ServerDialog *mParent;
 };
 
 /**
- * Server and Port List Model
+ * Server Type List Model
  */
 class TypeListModel : public gcn::ListModel
 {
     public:
-        TypeListModel() { };
+        TypeListModel() {}
 
         /**
          * Used to get number of line in the list
@@ -151,6 +157,7 @@ class ServerDialog : public Window,
         Button *mQuitButton;
         Button *mConnectButton;
         Button *mManualEntryButton;
+        Button *mDeleteButton;
 
         ListBox *mServersList;
         ServersListModel *mServersListModel;

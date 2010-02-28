@@ -160,7 +160,10 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
         server.port = (unsigned short) config.getValue(portKey, defaultPort);
 
         if (server.isValid())
+        {
+            server.save = true;
             mServers.push_back(server);
+        }
     }
 
     mServersListModel = new ServersListModel(&mServers, this);
@@ -177,6 +180,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     mQuitButton = new Button(_("Quit"), "quit", this);
     mConnectButton = new Button(_("Connect"), "connect", this);
     mManualEntryButton = new Button(_("Custom Server"), "addEntry", this);
+    mDeleteButton = new Button(_("Delete"), "remove", this);
 
     mServerNameField->setActionEventId("connect");
     mPortField->setActionEventId("connect");
@@ -189,16 +193,17 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     usedScroll->setVerticalScrollAmount(0);
 
     place(0, 0, serverLabel);
-    place(1, 0, mServerNameField, 3).setPadding(3);
+    place(1, 0, mServerNameField, 4).setPadding(3);
     place(0, 1, portLabel);
-    place(1, 1, mPortField, 3).setPadding(3);
+    place(1, 1, mPortField, 4).setPadding(3);
     place(0, 2, typeLabel);
-    place(1, 2, mTypeField, 3).setPadding(3);
-    place(0, 3, usedScroll, 4, 5).setPadding(3);
-    place(0, 8, mDescription, 4);
+    place(1, 2, mTypeField, 4).setPadding(3);
+    place(0, 3, usedScroll, 5, 5).setPadding(3);
+    place(0, 8, mDescription, 5);
     place(0, 9, mManualEntryButton);
-    place(2, 9, mQuitButton);
-    place(3, 9, mConnectButton);
+    place(1, 9, mDeleteButton);
+    place(3, 9, mQuitButton);
+    place(4, 9, mConnectButton);
 
     // Make sure the list has enough height
     getLayout().setRowHeight(3, 80);
@@ -290,6 +295,10 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             {
                 const ServerInfo server = mServersListModel->getServer(i);
 
+                // Only save servers that were loaded from settings
+                if (!server.save)
+                    continue;
+
                 // ensure, that our server will not be added twice
                 if (server != currentServer)
                 {
@@ -324,6 +333,12 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     {
         setFieldsReadOnly(false);
     }
+    else if (event.getId() == "remove")
+    {
+        int index = mServersList->getSelected();
+        mServersList->setSelected(0);
+        mServersListModel->remove(index);
+    }
 }
 
 void ServerDialog::keyPressed(gcn::KeyEvent &keyEvent)
@@ -344,7 +359,10 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
 {
     const int index = mServersList->getSelected();
     if (index == -1)
+    {
+        mDeleteButton->setEnabled(false);
         return;
+    }
 
     // Update the server and post fields according to the new selection
     const ServerInfo myServer = mServersListModel->getServer(index);
@@ -363,6 +381,8 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
             mTypeField->setSelected(1);
     }
     setFieldsReadOnly(true);
+
+    mDeleteButton->setEnabled(myServer.save);
 }
 
 void ServerDialog::logic()
@@ -408,6 +428,7 @@ void ServerDialog::setFieldsReadOnly(bool readOnly)
     }
 
     mManualEntryButton->setEnabled(readOnly);
+    mDeleteButton->setEnabled(false);
     mDescription->setVisible(readOnly);
 
     mServerNameField->setEnabled(!readOnly);
