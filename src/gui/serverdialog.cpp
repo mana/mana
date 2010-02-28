@@ -189,7 +189,6 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     mPortField->addActionListener(this);
     mManualEntryButton->addActionListener(this);
     mServersList->addSelectionListener(this);
-    mServersList->setSelected(0);
     usedScroll->setVerticalScrollAmount(0);
 
     place(0, 0, serverLabel);
@@ -214,6 +213,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     center();
     setFieldsReadOnly(true);
+    mServersList->setSelected(0); // Do this after for the Delete button
     setVisible(true);
 
     if (mServerNameField->getText().empty())
