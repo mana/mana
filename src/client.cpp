@@ -344,10 +344,8 @@ Client::Client(const Options &options):
 
     SkinLoader::prepareThemePath();
 
-    // Initialize the item shortcuts.
+    // Initialize the item and emote shortcuts.
     itemShortcut = new ItemShortcut;
-
-    // Initialize the emote shortcuts.
     emoteShortcut = new EmoteShortcut;
 
     gui = new Gui(graphics);
@@ -608,7 +606,7 @@ int Client::exec()
                         SkinLoader::instance()->setMinimumOpacity(0.8f);
 
                         mCurrentDialog = new ServerDialog(&mCurrentServer,
-                                                         mConfigDir);
+                                                          mConfigDir);
                     }
                     else
                     {
@@ -1042,10 +1040,6 @@ void Client::initHomeDir()
 void Client::initConfiguration()
 {
     // Fill configuration with defaults
-    std::string defaultHost = branding.getValue("defaultServer",
-        "server.themanaworld.org");
-    int defaultPort = (int) branding.getValue("defaultPort", DEFAULT_PORT);
-    config.setValue("port", defaultPort);
     config.setValue("hwaccel", false);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
     config.setValue("opengl", true);

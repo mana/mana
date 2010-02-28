@@ -55,6 +55,11 @@ public:
         port = info.port;
     }
 
+    bool isValid() const
+    {
+        return !(hostname.empty() || port == 0 || type == UNKNOWN);
+    }
+
     void clear()
     {
         type = UNKNOWN;
@@ -63,13 +68,13 @@ public:
         port = 0;
     }
 
-    bool operator==(const ServerInfo &other)
+    bool operator==(const ServerInfo &other) const
     {
         return (type == other.type && hostname == other.hostname &&
                 port == other.port);
     }
 
-    bool operator!=(const ServerInfo &other)
+    bool operator!=(const ServerInfo &other) const
     {
         return (type != other.type || hostname != other.hostname ||
                 port != other.port);
