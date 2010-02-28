@@ -143,7 +143,7 @@ class ServerDialog : public Window,
         static int downloadUpdate(void *ptr, DownloadStatus status,
                                   size_t total, size_t remaining);
 
-        void setFieldsReadOnly(const bool readOnly);
+        void setFieldsReadOnly(bool readOnly);
 
         TextField *mServerNameField;
         TextField *mPortField;

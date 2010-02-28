@@ -86,7 +86,7 @@ void NPC::setSprite(unsigned int slot, int id, const std::string &color)
     // Do nothing
 }
 
-const bool NPC::isTalking()
+bool NPC::isTalking()
 {
     return NpcDialog::isActive() || BuyDialog::isActive() ||
            SellDialog::isActive() || BuySellDialog::isActive() ||

@@ -391,7 +391,7 @@ void ServerDialog::logic()
     Window::logic();
 }
 
-void ServerDialog::setFieldsReadOnly(const bool readOnly)
+void ServerDialog::setFieldsReadOnly(bool readOnly)
 {
     if (readOnly)
     {

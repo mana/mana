@@ -234,7 +234,7 @@ class Being : public Sprite, public ConfigListener
          */
         virtual void setName(const std::string &name);
 
-        const bool getShowName() const
+        bool getShowName() const
         { return mShowName; }
 
         virtual void setShowName(bool doShowName);
