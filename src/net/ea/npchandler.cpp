@@ -72,10 +72,12 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         if (msg.getId() == SMSG_NPC_CLOSE)
         {
             closeDialog(npcId);
+            return;
         }
         else if (msg.getId() == SMSG_NPC_NEXT)
         {
             nextDialog(npcId);
+            return;
         }
         else
         {
