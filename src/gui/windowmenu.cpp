@@ -24,10 +24,10 @@
 #include "graphics.h"
 
 #include "gui/emotepopup.h"
+#include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/window.h"
-#include "gui/widgets/windowcontainer.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
@@ -103,7 +103,7 @@ void WindowMenu::action(const gcn::ActionEvent &event)
         }
         else
         {
-            windowContainer->scheduleDelete(mEmotePopup);
+            viewport->scheduleDelete(mEmotePopup);
             mEmotePopup = 0;
         }
     }
@@ -158,7 +158,7 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
         if (emote)
             Net::getPlayerHandler()->emote(emote);
 
-        windowContainer->scheduleDelete(mEmotePopup);
+        viewport->scheduleDelete(mEmotePopup);
         mEmotePopup = 0;
     }
 }

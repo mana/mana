@@ -31,7 +31,6 @@
 
 #include "gui/widgets/layout.h"
 #include "gui/widgets/resizegrip.h"
-#include "gui/widgets/windowcontainer.h"
 
 #include "resources/image.h"
 
@@ -63,8 +62,8 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
-    if (!windowContainer)
-        throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
+    if (!viewport)
+        throw GCN_EXCEPTION("Window::Window(): no viewport set");
 
     instances++;
 
@@ -75,8 +74,8 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     // Loads the skin
     mSkin = SkinLoader::instance()->load(skin, mDefaultSkinPath);
 
-    // Add this window to the window container
-    windowContainer->add(this);
+    // Add this window to the viewport
+    viewport->add(this);
 
     if (mModal)
     {
@@ -88,6 +87,8 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     setVisible(false);
 
     addWidgetListener(this);
+
+    setFocusable(true);
 }
 
 Window::~Window()
@@ -106,11 +107,6 @@ Window::~Window()
     instances--;
 
     mSkin->instances--;
-}
-
-void Window::setWindowContainer(WindowContainer *wc)
-{
-    windowContainer = wc;
 }
 
 void Window::draw(gcn::Graphics *graphics)
@@ -336,7 +332,7 @@ void Window::setVisible(bool visible, bool forceSticky)
 
 void Window::scheduleDelete()
 {
-    windowContainer->scheduleDelete(this);
+    viewport->scheduleDelete(this);
 }
 
 void Window::mousePressed(gcn::MouseEvent &event)
@@ -431,9 +427,6 @@ void Window::mouseMoved(gcn::MouseEvent &event)
         default:
             gui->setCursorType(Gui::CURSOR_POINTER);
     }
-
-    if (viewport)
-        viewport->hideBeingPopup();
 }
 
 void Window::mouseDragged(gcn::MouseEvent &event)

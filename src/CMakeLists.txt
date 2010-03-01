@@ -194,8 +194,6 @@ SET(SRCS
     gui/widgets/whispertab.h
     gui/widgets/window.cpp
     gui/widgets/window.h
-    gui/widgets/windowcontainer.cpp
-    gui/widgets/windowcontainer.h
     gui/beingpopup.cpp
     gui/beingpopup.h
     gui/buy.cpp

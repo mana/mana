@@ -43,9 +43,12 @@
 #include "resources/monsterinfo.h"
 #include "resources/resourcemanager.h"
 
+#include "utils/dtor.h"
 #include "utils/stringutils.h"
 
 extern volatile int tick_time;
+
+Viewport *viewport = NULL;
 
 Viewport::Viewport():
     mMap(0),
@@ -53,12 +56,10 @@ Viewport::Viewport():
     mMouseY(0),
     mPixelViewX(0.0f),
     mPixelViewY(0.0f),
-    mTileViewX(0),
-    mTileViewY(0),
     mShowDebugPath(false),
-    mVisibleNames(false),
     mPlayerFollowMouse(false),
-    mLocalWalkTime(-1)
+    mLocalWalkTime(-1),
+    mBeingPopup(0)
 {
     setOpaque(false);
     addMouseListener(this);
@@ -67,21 +68,20 @@ Viewport::Viewport():
     mScrollRadius = (int) config.getValue("ScrollRadius", 0);
     mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
     mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
-    mVisibleNames = config.getValue("visiblenames", 1);
 
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
-    config.addListener("visiblenames", this);
+
+    viewport = this;
 
     mPopupMenu = new PopupMenu;
-    mBeingPopup = new BeingPopup;
+
+    setFocusable(true);
 }
 
 Viewport::~Viewport()
 {
     delete mPopupMenu;
-
-    config.removeListener("visiblenames", this);
 }
 
 void Viewport::setMap(Map *map)
@@ -91,6 +91,9 @@ void Viewport::setMap(Map *map)
         map->setDebugFlags(mMap->getDebugFlags());
     }
     mMap = map;
+
+    if (!mBeingPopup)
+        mBeingPopup = new BeingPopup;
 }
 
 extern MiniStatusWindow *miniStatusWindow;
@@ -104,14 +107,13 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         gcnGraphics->setColor(gcn::Color(64, 64, 64));
         gcnGraphics->fillRectangle(
                 gcn::Rectangle(0, 0, getWidth(), getHeight()));
+
+        // Draw contained widgets
+        Container::draw(gcnGraphics);
         return;
     }
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
-
-    // Ensure the client doesn't freak out if a feature localplayer uses
-    // is dependent on a map.
-    player_node->setMapInitialized(true);
 
     // Avoid freaking out when tick_time overflows
     if (tick_time < lastTick)
@@ -184,9 +186,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             mPixelViewY = viewYmax;
     }
 
-    mTileViewX = (int) (mPixelViewX + 16) / 32;
-    mTileViewY = (int) (mPixelViewY + 16) / 32;
-
     // Draw tiles and sprites
     if (mMap)
     {
@@ -228,16 +227,22 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         miniStatusWindow->drawIcons(graphics);
 
     // Draw contained widgets
-    WindowContainer::draw(gcnGraphics);
+    Container::draw(gcnGraphics);
 }
 
 void Viewport::logic()
 {
-    WindowContainer::logic();
+    delete_all(mDeathList);
+    mDeathList.clear();
 
-    // Make the player follow the mouse position
-    // if the mouse is dragged elsewhere than in a window.
-    _followMouse();
+    if (mMap)
+    {
+        // Make the player follow the mouse position
+        // if the mouse is dragged elsewhere than in a window.
+        _followMouse();
+    }
+
+    gcn::Container::logic();
 }
 
 void Viewport::_followMouse()
@@ -423,8 +428,8 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
           if (mLocalWalkTime != player_node->getWalkTime())
           {
               mLocalWalkTime = player_node->getWalkTime();
-              int destX = event.getX() / 32 + mTileViewX;
-              int destY = event.getY() / 32 + mTileViewY;
+              int destX = (event.getX() + mPixelViewX) / mMap->getTileWidth();
+              int destY = (event.getY() + mPixelViewY) / mMap->getTileHeight();
               player_node->setDestination(destX, destY);
           }
         }
@@ -454,9 +459,6 @@ void Viewport::optionChanged(const std::string &name)
 {
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
-
-    if (name == "visiblenames")
-        mVisibleNames = config.getValue("visiblenames", 1);
 }
 
 void Viewport::mouseMoved(gcn::MouseEvent &event)
@@ -469,8 +471,10 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int y = (event.getY() + (int) mPixelViewY);
 
     mHoverBeing = beingManager->findBeingByPixel(x, y);
-    if (Player *p = dynamic_cast<Player*>(mHoverBeing))
-        mBeingPopup->show(getMouseX(), getMouseY(), p);
+    if (mHoverBeing && mHoverBeing->getType() == Being::PLAYER &&
+            event.getSource() == this)
+        mBeingPopup->show(getMouseX(), getMouseY(),
+                          static_cast<Player*>(mHoverBeing));
     else
         mBeingPopup->setVisible(false);
 
@@ -519,5 +523,11 @@ void Viewport::toggleDebugPath()
 
 void Viewport::hideBeingPopup()
 {
-    mBeingPopup->setVisible(false);
+    if (mBeingPopup)
+        mBeingPopup->setVisible(false);
+}
+
+void Viewport::scheduleDelete(gcn::Widget *widget)
+{
+    mDeathList.push_back(widget);
 }

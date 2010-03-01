@@ -29,8 +29,6 @@
 #include "gui/skin.h"
 #include "gui/viewport.h"
 
-#include "gui/widgets/windowcontainer.h"
-
 #include "resources/image.h"
 
 #include <guichan/exception.hpp>
@@ -45,16 +43,16 @@ Popup::Popup(const std::string &name, const std::string &skin):
 {
     logger->log("Popup::Popup(\"%s\")", name.c_str());
 
-    if (!windowContainer)
-        throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
+    if (!viewport)
+        throw GCN_EXCEPTION("Popup::Popup(): no viewport set");
 
     setPadding(3);
 
     // Loads the skin
     mSkin = SkinLoader::instance()->load(skin, mDefaultSkinPath);
 
-    // Add this window to the window container
-    windowContainer->add(this);
+    // Add this window to the viewport
+    viewport->add(this);
 
     // Popups are invisible by default
     setVisible(false);
@@ -67,11 +65,6 @@ Popup::~Popup()
     savePopupConfiguration();
 
     mSkin->instances--;
-}
-
-void Popup::setWindowContainer(WindowContainer *wc)
-{
-    windowContainer = wc;
 }
 
 void Popup::loadPopupConfiguration()
@@ -168,7 +161,7 @@ void Popup::setMaxHeight(int height)
 
 void Popup::scheduleDelete()
 {
-    windowContainer->scheduleDelete(this);
+    viewport->scheduleDelete(this);
 }
 
 void Popup::position(int x, int y)
@@ -186,10 +179,4 @@ void Popup::position(int x, int y)
     setPosition(posX, posY);
     setVisible(true);
     requestMoveToTop();
-}
-
-void Popup::mouseMoved(gcn::MouseEvent &event)
-{
-    if (viewport)
-        viewport->hideBeingPopup();
 }

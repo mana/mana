@@ -25,7 +25,7 @@
 #include "configlistener.h"
 #include "position.h"
 
-#include "gui/widgets/windowcontainer.h"
+#include "gui/widgets/container.h"
 
 #include <guichan/mouselistener.hpp>
 
@@ -50,7 +50,7 @@ const int walkingMouseDelay = 500;
  * of it such as NPC messages, which are positioned using map pixel
  * coordinates.
  */
-class Viewport : public WindowContainer, public gcn::MouseListener,
+class Viewport : public Container, public gcn::MouseListener,
     public ConfigListener
 {
     public:
@@ -157,6 +157,12 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void hideBeingPopup();
 
+        /**
+         * Schedule a widget for deletion. It will be deleted at the start of
+         * the next logic update.
+         */
+        void scheduleDelete(gcn::Widget *widget);
+
     private:
         /**
          * Finds a path from the player to the mouse, and draws it. This is for
@@ -174,6 +180,13 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void _followMouse();
 
+        /**
+         * List of widgets that are scheduled to be deleted.
+         */
+        typedef std::list<gcn::Widget*> Widgets;
+        typedef Widgets::iterator WidgetIterator;
+        Widgets mDeathList;
+
         Map *mMap;                   /**< The current map. */
 
         int mScrollRadius;
@@ -184,10 +197,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mMouseY;                 /**< Current mouse position in pixels. */
         float mPixelViewX;           /**< Current viewpoint in pixels. */
         float mPixelViewY;           /**< Current viewpoint in pixels. */
-        int mTileViewX;              /**< Current viewpoint in tiles. */
-        int mTileViewY;              /**< Current viewpoint in tiles. */
         int mShowDebugPath;         /**< Show a path from player to pointer. */
-        bool mVisibleNames;          /**< Show target names. */
 
         bool mPlayerFollowMouse;
 
@@ -196,9 +206,9 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         PopupMenu *mPopupMenu;       /**< Popup menu. */
         Being *mHoverBeing;          /**< Being mouse is currently over. */
         FloorItem *mHoverItem;       /**< FloorItem mouse is currently over. */
-        BeingPopup *mBeingPopup;
+        BeingPopup *mBeingPopup;     /**< Being information popup. */
 };
 
-extern Viewport *viewport;           /**< The viewport */
+extern Viewport *viewport;           /**< The viewport. */
 
 #endif

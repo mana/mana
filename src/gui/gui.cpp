@@ -29,7 +29,6 @@
 #include "gui/viewport.h"
 
 #include "gui/widgets/window.h"
-#include "gui/widgets/windowcontainer.h"
 
 #include "configlistener.h"
 #include "configuration.h"
@@ -94,11 +93,11 @@ Gui::Gui(Graphics *graphics):
     mFocusHandler = new FocusHandler;
 
     // Initialize top GUI widget
-    WindowContainer *guiTop = new WindowContainer;
+    Viewport *guiTop = new Viewport;
+    guiTop->setFocusable(true);
     guiTop->setDimension(gcn::Rectangle(0, 0,
                 graphics->getWidth(), graphics->getHeight()));
     guiTop->setOpaque(false);
-    Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
     ResourceManager *resman = ResourceManager::getInstance();

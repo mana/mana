@@ -326,8 +326,6 @@
 		<Unit filename="src\gui\widgets\whispertab.h" />
 		<Unit filename="src\gui\widgets\window.cpp" />
 		<Unit filename="src\gui\widgets\window.h" />
-		<Unit filename="src\gui\widgets\windowcontainer.cpp" />
-		<Unit filename="src\gui\widgets\windowcontainer.h" />
 		<Unit filename="src\gui\windowmenu.cpp" />
 		<Unit filename="src\gui\windowmenu.h" />
 		<Unit filename="src\gui\worldselectdialog.cpp" />

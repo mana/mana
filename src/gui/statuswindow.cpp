@@ -26,6 +26,7 @@
 
 #include "gui/ministatus.h"
 #include "gui/setup.h"
+#include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
@@ -33,7 +34,6 @@
 #include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/vertcontainer.h"
-#include "gui/widgets/windowcontainer.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
@@ -89,8 +89,8 @@ StatusWindow::StatusWindow():
     setResizable(true);
     setCloseButton(true);
     setSaveVisible(true);
-    setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 365, 275);
+    setDefaultSize((viewport->getWidth() - 365) / 2,
+                   (viewport->getHeight() - 255) / 2, 365, 275);
 
     // ----------------------
     // Status Part

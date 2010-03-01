@@ -34,7 +34,6 @@ class Layout;
 class LayoutCell;
 class ResizeGrip;
 class Skin;
-class WindowContainer;
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
@@ -63,11 +62,6 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Destructor. Deletes all the added widgets.
          */
         ~Window();
-
-        /**
-         * Sets the window container to be used by new windows.
-         */
-        static void setWindowContainer(WindowContainer *windowContainer);
 
         /**
          * Draws the window.

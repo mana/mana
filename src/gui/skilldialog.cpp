@@ -26,6 +26,7 @@
 
 #include "gui/setup.h"
 #include "gui/skin.h"
+#include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
@@ -36,7 +37,6 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tab.h"
 #include "gui/widgets/tabbedarea.h"
-#include "gui/widgets/windowcontainer.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
@@ -188,7 +188,7 @@ SkillDialog::SkillDialog():
     setCloseButton(true);
     setResizable(true);
     setSaveVisible(true);
-    setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
+    setDefaultSize(viewport->getWidth() - 280, 30, 275, 425);
     setupWindow->registerWindowForReset(this);
 
     mTabs = new TabbedArea();
