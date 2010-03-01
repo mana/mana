@@ -27,6 +27,7 @@
 #include "log.h"
 
 #include "gui/skin.h"
+#include "gui/viewport.h"
 
 #include "gui/widgets/windowcontainer.h"
 
@@ -185,4 +186,10 @@ void Popup::position(int x, int y)
     setPosition(posX, posY);
     setVisible(true);
     requestMoveToTop();
+}
+
+void Popup::mouseMoved(gcn::MouseEvent &event)
+{
+    if (viewport)
+        viewport->hideBeingPopup();
 }

@@ -42,8 +42,7 @@ namespace gcn {
  *
  * \ingroup GUI
  */
-class EmotePopup : public Popup,
-                   public gcn::MouseListener
+class EmotePopup : public Popup
 {
     public:
         /**

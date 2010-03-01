@@ -27,6 +27,7 @@
 #include "gui/gui.h"
 #include "gui/palette.h"
 #include "gui/skin.h"
+#include "gui/viewport.h"
 
 #include "gui/widgets/layout.h"
 #include "gui/widgets/resizegrip.h"
@@ -430,6 +431,9 @@ void Window::mouseMoved(gcn::MouseEvent &event)
         default:
             gui->setCursorType(Gui::CURSOR_POINTER);
     }
+
+    if (viewport)
+        viewport->hideBeingPopup();
 }
 
 void Window::mouseDragged(gcn::MouseEvent &event)

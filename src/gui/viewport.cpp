@@ -517,3 +517,7 @@ void Viewport::toggleDebugPath()
     }
 }
 
+void Viewport::hideBeingPopup()
+{
+    mBeingPopup->setVisible(false);
+}

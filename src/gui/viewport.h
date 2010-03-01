@@ -152,6 +152,11 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         Map *getCurrentMap() const { return mMap; }
 
+        /**
+         * Hides the BeingPopup.
+         */
+        void hideBeingPopup();
+
     private:
         /**
          * Finds a path from the player to the mouse, and draws it. This is for

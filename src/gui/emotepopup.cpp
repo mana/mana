@@ -119,6 +119,8 @@ void EmotePopup::mousePressed(gcn::MouseEvent &event)
 
 void EmotePopup::mouseMoved(gcn::MouseEvent &event)
 {
+    Popup::mouseMoved(event);
+
     mHoveredEmoteIndex = getIndexAt(event.getX(), event.getY());
 }
 
