@@ -1181,10 +1181,6 @@ void Client::initScreenshotDir()
                 mScreenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
 #else
             mScreenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
-            // If ~/Desktop does not exist, we save screenshots in the user's home.
-            struct stat statbuf;
-            if (stat(mScreenshotDir.c_str(), &statbuf))
-                mScreenshotDir = std::string(PHYSFS_getUserDir());
 #endif
         }
         config.setValue("screenshotDirectory", mScreenshotDir);
@@ -1202,14 +1198,6 @@ void Client::initScreenshotDir()
                                 configScreenshotSuffix);
             }
         }
-    }
-
-    if (mkdir_r(mScreenshotDir.c_str()))
-    {
-        logger->log("Directory %s doesn't exist and can't be created! "
-                    "Setting screenshot directory to home.",
-                    mScreenshotDir.c_str());
-        mScreenshotDir = std::string(PHYSFS_getUserDir());
     }
 }
 

@@ -82,6 +82,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
+#include "utils/mkdir.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>
@@ -297,13 +298,22 @@ static bool saveScreenshot()
     std::stringstream filenameSuffix;
     std::stringstream filename;
     std::fstream testExists;
+    std::string screenshotDirectory = Client::getScreenshotDirectory();
     bool found = false;
+
+    if (mkdir_r(screenshotDirectory.c_str()) != 0)
+    {
+        logger->log("Directory %s doesn't exist and can't be created! "
+                    "Setting screenshot directory to home.",
+                    screenshotDirectory.c_str());
+        screenshotDirectory = std::string(PHYSFS_getUserDir());
+    }
 
     do {
         screenshotCount++;
         filenameSuffix.str("");
         filename.str("");
-        filename << Client::getScreenshotDirectory() << "/";
+        filename << screenshotDirectory << "/";
         filenameSuffix << branding.getValue("appShort", "Mana")
                        << "_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
