@@ -24,9 +24,9 @@
 
 #if defined WIN32
 #include <windows.h>
-#else
-#include <sys/stat.h>
 #endif
+
+#include <sys/stat.h>
 
 #ifdef _MKDIR_TEST_
 // compile with -D_MKDIR_TEST_ to get a standalone binary
@@ -67,12 +67,24 @@ int mkdir_r(const char *pathname) {
                 *p = '/';
                 continue;
             }
+
+            // check if the name already exists, but not as directory
+            struct stat statbuf;
+            if (!stat(tmp, &statbuf))
+            {
+                if (S_ISDIR(statbuf.st_mode))
+                {
+                    *p = '/';
+                    continue;
+                }
+                else
+                    return -1;
+            }
+
 #if defined WIN32
-            if (!CreateDirectory(tmp, 0) &&
-                GetLastError() != ERROR_ALREADY_EXISTS)
+            if (!CreateDirectory(tmp, 0))
 #else
-            if (mkdir(tmp, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) &&
-                errno != EEXIST)
+            if (mkdir(tmp, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH))
 #endif
             {
 #if defined WIN32
