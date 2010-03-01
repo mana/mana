@@ -189,7 +189,8 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
 
         PopupMenu *mPopupMenu;       /**< Popup menu. */
-        Being *mSelectedBeing;       /**< Current selected being. */
+        Being *mHoverBeing;          /**< Being mouse is currently over. */
+        FloorItem *mHoverItem;       /**< FloorItem mouse is currently over. */
         BeingPopup *mBeingPopup;
 };
 

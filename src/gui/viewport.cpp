@@ -312,25 +312,18 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
 
     const int pixelX = event.getX() + (int) mPixelViewX;
     const int pixelY = event.getY() + (int) mPixelViewY;
-    const int tileX = pixelX / mMap->getTileWidth();
-    const int tileY = pixelY / mMap->getTileHeight();
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        Being *being;
-        FloorItem *floorItem;
-
-        if ((being = beingManager->findBeingByPixel(pixelX, pixelY)) &&
-             being != player_node)
+        if (mHoverBeing && mHoverBeing != player_node)
         {
-            mPopupMenu->showPopup(event.getX(), event.getY(), being);
+            mPopupMenu->showPopup(event.getX(), event.getY(), mHoverBeing);
             return;
         }
-        else if ((floorItem = floorItemManager->findByCoordinates(tileX,
-                                                                  tileY)))
+        else if (mHoverItem)
         {
-            mPopupMenu->showPopup(event.getX(), event.getY(), floorItem);
+            mPopupMenu->showPopup(event.getX(), event.getY(), mHoverItem);
             return;
         }
     }
@@ -345,35 +338,32 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     // Left click can cause different actions
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        FloorItem *item;
-        Being *being;
-
         // Interact with some being
-        if ((being = beingManager->findBeingByPixel(pixelX, pixelY)))
+        if (mHoverBeing)
         {
-            switch (being->getType())
+            switch (mHoverBeing->getType())
             {
                 // Talk to NPCs
                 case Being::NPC:
-                    dynamic_cast<NPC*>(being)->talk();
+                    static_cast<NPC*>(mHoverBeing)->talk();
                     break;
 
                 // Attack or walk to monsters or players
                 case Being::MONSTER:
                 case Being::PLAYER:
                     // Ignore it if its dead
-                    if (!being->isAlive())
+                    if (!mHoverBeing->isAlive())
                         break;
 
-                    if (player_node->withinAttackRange(being) ||
+                    if (player_node->withinAttackRange(mHoverBeing) ||
                         keyboard.isKeyActive(keyboard.KEY_ATTACK))
                     {
-                        player_node->attack(being,
+                        player_node->attack(mHoverBeing,
                             !keyboard.isKeyActive(keyboard.KEY_TARGET));
                     }
                     else
                     {
-                        player_node->setGotoTarget(being);
+                        player_node->setGotoTarget(mHoverBeing);
                     }
                     break;
                 default:
@@ -381,9 +371,9 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
              }
         // Picks up a item if we clicked on one
         }
-        else if ((item = floorItemManager->findByCoordinates(tileX, tileY)))
+        else if (mHoverItem)
         {
-            player_node->pickUp(item);
+            player_node->pickUp(mHoverItem);
         }
         else if (player_node->getCurrentAction() == Being::SIT)
         {
@@ -478,11 +468,42 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int x = (event.getX() + (int) mPixelViewX);
     const int y = (event.getY() + (int) mPixelViewY);
 
-    mSelectedBeing = beingManager->findBeingByPixel(x, y);
-    if (Player *p = dynamic_cast<Player*>(mSelectedBeing))
+    mHoverBeing = beingManager->findBeingByPixel(x, y);
+    if (Player *p = dynamic_cast<Player*>(mHoverBeing))
         mBeingPopup->show(getMouseX(), getMouseY(), p);
     else
         mBeingPopup->setVisible(false);
+
+    mHoverItem = floorItemManager->findByCoordinates(x / mMap->getTileWidth(),
+                                                    y / mMap->getTileHeight());
+
+    if (mHoverBeing)
+    {
+        switch (mHoverBeing->getType())
+        {
+            // NPCs
+            case Being::NPC:
+                gui->setCursorType(Gui::CURSOR_TALK);
+                break;
+
+            // Monsters
+            case Being::MONSTER:
+                gui->setCursorType(Gui::CURSOR_FIGHT);
+                break;
+            default:
+                gui->setCursorType(Gui::CURSOR_POINTER);
+                break;
+         }
+    // Item mouseover
+    }
+    else if (mHoverItem)
+    {
+        gui->setCursorType(Gui::CURSOR_PICKUP);
+    }
+    else
+    {
+        gui->setCursorType(Gui::CURSOR_POINTER);
+    }
 }
 
 void Viewport::toggleDebugPath()
