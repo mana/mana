@@ -127,68 +127,6 @@ void Being::setPosition(const Vector &pos)
                         (int)pos.y - getHeight() - mText->getHeight() - 6);
 }
 
-Position Being::checkNodeOffsets(const Position &position) const
-{
-    // Pre-computing character's position in tiles
-    const int tx = position.x / 32;
-    const int ty = position.y / 32;
-
-    // Pre-computing character's position offsets.
-    int fx = position.x % 32;
-    int fy = position.y % 32;
-
-    // Compute the being radius:
-    // FIXME: the beings' radius should be obtained from xml values
-    // and stored into the Being ojects.
-    int radius = getWidth() / 2;
-    // FIXME: Hande beings with more than 1/2 tile radius by not letting them
-    // go or spawn in too narrow places. The server will have to be aware
-    // of being's radius value (in tiles) to handle this gracefully.
-    if (radius > 32 / 2) radius = 32 / 2;
-    // set a default value if no value returned.
-    if (radius < 1) radius = 32 / 3;
-
-    // We check diagonal first as they are more restrictive.
-    // Top-left border check
-    if (!mMap->getWalk(tx - 1, ty - 1, getWalkMask())
-        && fy < radius && fx < radius)
-    {
-        fx = fy = radius;
-    }
-    // Top-right border check
-    if (!mMap->getWalk(tx + 1, ty - 1, getWalkMask())
-        && (fy < radius) && fx > (32 - radius))
-    {
-        fx = 32 -radius;
-        fy = radius;
-    }
-    // Bottom-left border check
-    if (!mMap->getWalk(tx - 1, ty + 1, getWalkMask())
-        && fy > (32 - radius) && fx < radius)
-    {
-        fx = radius;
-        fy = 32 - radius;
-    }
-    // Bottom-right border check
-    if (!mMap->getWalk(tx + 1, ty + 1, getWalkMask())
-        && fy > (32 - radius) && fx > (32 - radius))
-    {
-        fx = fy = 32 -radius;
-    }
-
-    // Fix coordinates so that the player does not seem to dig into walls.
-    if (fx > (32 - radius) && !mMap->getWalk(tx + 1, ty, getWalkMask()))
-        fx = 32 - radius;
-    else if (fx < radius && !mMap->getWalk(tx - 1, ty, getWalkMask()))
-        fx = radius;
-    else if (fy > (32 - radius) && !mMap->getWalk(tx, ty + 1, getWalkMask()))
-        fy = 32 - radius;
-    else if (fy < radius && !mMap->getWalk(tx, ty - 1, getWalkMask()))
-        fy = radius;
-
-    return Position(tx * 32 + fx, ty * 32 + fy);
-}
-
 void Being::setDestination(int dstX, int dstY)
 {
     if (Net::getNetworkType() == ServerInfo::EATHENA)
@@ -200,6 +138,10 @@ void Being::setDestination(int dstX, int dstY)
 
     // Manaserv's part:
 
+    // We can't calculate anything without a map anyway.
+    if (!mMap)
+        return;
+
     // Don't handle flawed destinations from server...
     if (dstX == 0 || dstY == 0)
         return;
@@ -208,16 +150,11 @@ void Being::setDestination(int dstX, int dstY)
     if (!mMap->getWalk(dstX / 32, dstY / 32))
         return;
 
-    Position dest = checkNodeOffsets(dstX, dstY);
-
-    Path thisPath;
-
-    if (mMap)
-    {
-        // The being radius should be obtained from xml values.
-        thisPath = mMap->findPixelPath(mPos.x, mPos.y, dest.x, dest.y,
-                                       getWidth() / 2, getWalkMask());
-    }
+    // The being radius should be obtained from xml values.
+    Position dest = mMap->checkNodeOffsets(getWidth() / 2, getWalkMask(),
+                                           dstX, dstY);
+    Path thisPath = mMap->findPixelPath(mPos.x, mPos.y, dest.x, dest.y,
+                                   getWidth() / 2, getWalkMask());
 
     if (thisPath.empty())
     {

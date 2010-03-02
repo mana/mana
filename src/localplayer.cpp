@@ -390,7 +390,9 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
             {
                 refPosition = Position((int) pos.x + (dx * dScaler) / 32,
                             (int) pos.y + (dy * dScaler) / 32);
-                testPosition = checkNodeOffsets(refPosition);
+                testPosition = mMap->checkNodeOffsets(getWidth() / 2,
+                                                      getWalkMask(),
+                                                      refPosition);
                 if (refPosition.x != testPosition.x
                     || refPosition.y != testPosition.y)
                 {
@@ -403,7 +405,9 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
         // Test also current position to avoid being blocked on corners
         // in certain situations.
         Position currentPosition((int) pos.x, (int) pos.y);
-        Position testPosition = checkNodeOffsets(currentPosition);
+        Position testPosition = mMap->checkNodeOffsets(getWidth() / 2,
+                                                       getWalkMask(),
+                                                       currentPosition);
         if (dScaler > 0)
         {
             setDestination((int) pos.x + (dx * dScaler),
