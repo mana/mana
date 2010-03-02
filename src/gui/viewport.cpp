@@ -259,30 +259,72 @@ void Viewport::_drawDebugPath(Graphics *graphics)
     // Get the current mouse position
     SDL_GetMouseState(&mMouseX, &mMouseY);
 
-    const int mouseTileX = (mMouseX + (int) mPixelViewX) / 32;
-    const int mouseTileY = (mMouseY + (int) mPixelViewY) / 32;
-    const Vector &playerPos = player_node->getPosition();
+    Path debugPath;
 
-    Path debugPath = mMap->findPath(
+    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    {
+        const int mouseTileX = (mMouseX + (int) mPixelViewX) / 32;
+        const int mouseTileY = (mMouseY + (int) mPixelViewY) / 32;
+        const Vector &playerPos = player_node->getPosition();
+
+        debugPath = mMap->findPath(
             (int) (playerPos.x - 16) / 32,
             (int) (playerPos.y - 32) / 32,
             mouseTileX, mouseTileY, 0xFF);
 
-    _drawPath(graphics, debugPath);
+        _drawPath(graphics, debugPath);
+    }
+    else if (Net::getNetworkType() == ServerInfo::MANASERV)
+    {
+        const Vector &playerPos = player_node->getPosition();
+
+        debugPath = mMap->findPixelPath(
+            (int) playerPos.x,
+            (int) playerPos.y,
+            mMouseX + (int) mPixelViewX,
+            mMouseY + (int) mPixelViewY,
+            player_node->getWidth() / 2, 0xFF);
+
+        // We draw the path proposed by mouse
+        _drawPath(graphics, debugPath, gcn::Color(255, 0, 255));
+
+        // But also the one currently walked on.
+        _drawPath(graphics, player_node->getPath(), gcn::Color(0, 0, 255));
+    }
 }
 
-void Viewport::_drawPath(Graphics *graphics, const Path &path)
+void Viewport::_drawPath(Graphics *graphics, const Path &path,
+                         gcn::Color color)
 {
-    graphics->setColor(gcn::Color(255, 0, 0));
-    for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
-    {
-        int squareX = i->x * 32 - (int) mPixelViewX + 12;
-        int squareY = i->y * 32 - (int) mPixelViewY + 12;
+    graphics->setColor(color);
 
-        graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-        graphics->drawText(
-                toString(mMap->getMetaTile(i->x, i->y)->Gcost),
-                squareX + 4, squareY + 12, gcn::Graphics::CENTER);
+    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    {
+        for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
+        {
+            int squareX = i->x * 32 - (int) mPixelViewX + 12;
+            int squareY = i->y * 32 - (int) mPixelViewY + 12;
+
+            graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+            graphics->drawText(
+                    toString(mMap->getMetaTile(i->x, i->y)->Gcost),
+                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
+        }
+    }
+    else if (Net::getNetworkType() == ServerInfo::MANASERV)
+    {
+        for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
+        {
+            int squareX = i->x - (int) mPixelViewX;
+            int squareY = i->y - (int) mPixelViewY;
+
+            graphics->fillRectangle(gcn::Rectangle(squareX - 4, squareY - 4,
+                                                   8, 8));
+            graphics->drawText(
+                    toString(mMap->getMetaTile(i->x / 32, i->y / 32)->Gcost),
+                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
+        }
+
     }
 }
 
