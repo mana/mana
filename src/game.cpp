@@ -269,21 +269,16 @@ Game::~Game()
 
     destroyGuiWindows();
 
-    delete beingManager;
-    delete player_node;
-    delete floorItemManager;
-    delete channelManager;
-    delete commandHandler;
-    delete joystick;
-    delete particleEngine;
-    delete viewport;
-    delete mCurrentMap;
+    del_0(beingManager)
+    del_0(player_node)
+    del_0(floorItemManager)
+    del_0(channelManager)
+    del_0(commandHandler)
+    del_0(joystick)
+    del_0(particleEngine)
+    del_0(viewport)
+    del_0(mCurrentMap)
     map_path = "";
-
-    player_node = NULL;
-    beingManager = NULL;
-    floorItemManager = NULL;
-    joystick = NULL;
 
     mInstance = 0;
 }
