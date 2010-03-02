@@ -272,6 +272,23 @@ class Map : public Properties
         const std::string *getFilename() const;
 
         /**
+         * Check the current position against surrounding blocking tiles, and
+         * correct the position offset within tile when needed.
+         */
+        Position checkNodeOffsets(int radius, unsigned char walkMask,
+                                  const Position &position) const;
+        Position checkNodeOffsets(int radius, unsigned char walkMask,
+                                  int x, int y) const
+        { return checkNodeOffsets(radius, walkMask, Position(x, y)); }
+
+        /**
+         * Find a pixel path from one location to the next.
+         */
+        Path findPixelPath(int startPixelX, int startPixelY,
+                          int destPixelX, int destPixelY,
+                          int radius, unsigned char walkmask, int maxCost = 20);
+
+        /**
          * Find a path from one location to the next.
          */
         Path findPath(int startX, int startY, int destX, int destY,

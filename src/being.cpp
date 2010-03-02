@@ -198,61 +198,44 @@ void Being::setDestination(int dstX, int dstY)
         return;
     }
 
+    // Manaserv's part:
+
+    // Don't handle flawed destinations from server...
+    if (dstX == 0 || dstY == 0)
+        return;
+
     // If the destination is unwalkable, don't bother trying to get there
     if (!mMap->getWalk(dstX / 32, dstY / 32))
         return;
 
     Position dest = checkNodeOffsets(dstX, dstY);
-    mDest.x = dest.x;
-    mDest.y = dest.y;
-    int srcX = mPos.x;
-    int srcY = mPos.y;
 
     Path thisPath;
 
     if (mMap)
     {
-        thisPath = mMap->findPath(mPos.x / 32, mPos.y / 32,
-                                  mDest.x / 32, mDest.y / 32, getWalkMask());
+        // The being radius should be obtained from xml values.
+        thisPath = mMap->findPixelPath(mPos.x, mPos.y, dest.x, dest.y,
+                                       getWidth() / 2, getWalkMask());
     }
 
     if (thisPath.empty())
     {
+        // If there is no path but the destination is on the same walkable tile,
+        // we accept it.
+        if ((int)mPos.x / 32 == dest.x / 32
+            && (int)mPos.y / 32 == dest.y / 32)
+        {
+            mDest.x = dest.x;
+            mDest.y = dest.y;
+        }
         setPath(Path());
         return;
     }
 
-    // Find the starting offset
-    float startX = (srcX % 32);
-    float startY = (srcY % 32);
-
-    // Find the ending offset
-    float endX = (dstX % 32);
-    float endY = (dstY % 32);
-
-    // Find the distance, and divide it by the number of steps
-    int changeX = (int)((endX - startX) / thisPath.size());
-    int changeY = (int)((endY - startY) / thisPath.size());
-
-    // Convert the map path to pixels over tiles
-    // And add interpolation between the starting and ending offsets
-    Path::iterator it = thisPath.begin();
-    int i = 0;
-    while (it != thisPath.end())
-    {
-        // A position that is valid on the start and end tile is not
-        // necessarily valid on all the tiles in between, so check the offsets.
-        *it = checkNodeOffsets(it->x * 32 + startX + changeX * i,
-                               it->y * 32 + startY + changeY * i);
-        i++;
-        it++;
-    }
-
-    // Remove the last path node, as it's more clever to go to mDest instead.
-    // It also permit to avoid zigzag at the end of the path,
-    // especially with mouse.
-    thisPath.pop_back();
-    thisPath.push_back(Position(mDest.x, mDest.y));
+    // The destination is valid, so we set it.
+    mDest.x = dest.x;
+    mDest.y = dest.y;
 
     setPath(thisPath);
 }

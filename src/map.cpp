@@ -301,7 +301,7 @@ void Map::update(int ticks)
 
 void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 {
-    //Calculate range of tiles which are on-screen
+    // Calculate range of tiles which are on-screen
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
     endPixelY += mMaxTileHeight - mTileHeight;
     int startX = scrollX / mTileWidth;
@@ -309,7 +309,8 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     int endX = (graphics->getWidth() + scrollX + mTileWidth - 1) / mTileWidth;
     int endY = endPixelY / mTileHeight;
 
-    // Make sure sprites are sorted ascending by Y-coordinate so that they overlap correctly
+    // Make sure sprites are sorted ascending by Y-coordinate
+    // so that they overlap correctly
     mSprites.sort(spriteCompare);
 
     // update scrolling of all ambient layers
@@ -350,7 +351,8 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
             (int) config.getValue("OverlayDetail", 2));
 }
 
-void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY, int debugFlags)
+void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
+                        int debugFlags)
 {
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
     int startX = scrollX / mTileWidth;
@@ -373,7 +375,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY, int debugF
             {
                 graphics->drawRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
-                    y * mTileWidth - scrollY,
+                    y * mTileHeight - scrollY,
                     33, 33));
             }
 
@@ -382,7 +384,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY, int debugF
                 graphics->setColor(gcn::Color(0, 0, 200, 64));
                 graphics->fillRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
-                    y * mTileWidth - scrollY,
+                    y * mTileHeight - scrollY,
                     32, 32));
             }
 
@@ -391,7 +393,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY, int debugF
                 graphics->setColor(gcn::Color(200, 0, 0, 64));
                 graphics->fillRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
-                    y * mTileWidth - scrollY,
+                    y * mTileHeight - scrollY,
                     32, 32));
             }
 
@@ -400,7 +402,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY, int debugF
                 graphics->setColor(gcn::Color(0, 200, 0, 64));
                 graphics->fillRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
-                    y * mTileWidth - scrollY,
+                    y * mTileHeight - scrollY,
                     32, 32));
             }
         }
@@ -454,12 +456,15 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
             layers = &mBackgrounds;
             break;
         default:
-            assert(false); // you noob, you added a new type of ambient layers without adding it to Map::drawAmbientLayers
+            // New type of ambient layers added here without adding it
+            // to Map::drawAmbientLayers.
+            assert(false);
             break;
     }
 
     // Draw overlays
-    for (std::list<AmbientLayer*>::iterator i = layers->begin(); i != layers->end(); i++)
+    for (std::list<AmbientLayer*>::iterator i = layers->begin();
+         i != layers->end(); i++)
     {
         (*i)->draw(graphics, graphics->getWidth(), graphics->getHeight());
 
@@ -511,7 +516,7 @@ void Map::blockTile(int x, int y, BlockType type)
                 mMetaTiles[tileNum].blockmask |= BLOCKMASK_MONSTER;
                 break;
             default:
-                // shut up!
+                // Do nothing.
                 break;
         }
     }
@@ -534,7 +539,7 @@ bool Map::occupied(int x, int y) const
     {
         const Being *being = *i;
 
-        // job 45 is a portal, they don't collide
+        // Eathena: The Job 45 is a portal, so they don't collide.
         if (being->getTileX() == x && being->getTileY() == y
             && being->getJob() != 45)
             return true;
@@ -587,6 +592,115 @@ const std::string *Map::getFilename() const
         fileName.substr(lastSlash, lastDot - lastSlash));
 
     return sub;
+}
+
+Position Map::checkNodeOffsets(int radius, unsigned char walkMask,
+                               const Position &position) const
+{
+    // Pre-computing character's position in tiles
+    const int tx = position.x / 32;
+    const int ty = position.y / 32;
+
+    // Pre-computing character's position offsets.
+    int fx = position.x % 32;
+    int fy = position.y % 32;
+
+    // Compute the being radius:
+    // FIXME: Hande beings with more than 1/2 tile radius by not letting them
+    // go or spawn in too narrow places. The server will have to be aware
+    // of being's radius value (in tiles) to handle this gracefully.
+    if (radius > 32 / 2) radius = 32 / 2;
+    // set a default value if no value returned.
+    if (radius < 1) radius = 32 / 3;
+
+    // We check diagonal first as they are more restrictive.
+    // Top-left border check
+    if (!getWalk(tx - 1, ty - 1, walkMask)
+        && fy < radius && fx < radius)
+    {
+        fx = fy = radius;
+    }
+    // Top-right border check
+    if (!getWalk(tx + 1, ty - 1, walkMask)
+        && (fy < radius) && fx > (32 - radius))
+    {
+        fx = 32 -radius;
+        fy = radius;
+    }
+    // Bottom-left border check
+    if (!getWalk(tx - 1, ty + 1, walkMask)
+        && fy > (32 - radius) && fx < radius)
+    {
+        fx = radius;
+        fy = 32 - radius;
+    }
+    // Bottom-right border check
+    if (!getWalk(tx + 1, ty + 1, walkMask)
+        && fy > (32 - radius) && fx > (32 - radius))
+    {
+        fx = fy = 32 -radius;
+    }
+
+    // Fix coordinates so that the player does not seem to dig into walls.
+    if (fx > (32 - radius) && !getWalk(tx + 1, ty, walkMask))
+        fx = 32 - radius;
+    else if (fx < radius && !getWalk(tx - 1, ty, walkMask))
+        fx = radius;
+    else if (fy > (32 - radius) && !getWalk(tx, ty + 1, walkMask))
+        fy = 32 - radius;
+    else if (fy < radius && !getWalk(tx, ty - 1, walkMask))
+        fy = radius;
+
+    return Position(tx * 32 + fx, ty * 32 + fy);
+}
+
+Path Map::findPixelPath(int startPixelX, int startPixelY, int endPixelX,
+                         int endPixelY,
+                         int radius, unsigned char walkMask, int maxCost)
+{
+    Path myPath = findPath(startPixelX / 32, startPixelY / 32,
+                           endPixelX / 32, endPixelY / 32, walkMask, maxCost);
+
+    // Don't compute empty coordinates.
+    if (myPath.empty())
+        return myPath;
+
+    // Find the starting offset
+    float startOffsetX = (startPixelX % 32);
+    float startOffsetY = (startPixelY % 32);
+
+    // Find the ending offset
+    float endOffsetX = (endPixelX % 32);
+    float endOffsetY = (endPixelY % 32);
+
+    // Find the distance, and divide it by the number of steps
+    int changeX = (int)((endOffsetX - startOffsetX) / myPath.size());
+    int changeY = (int)((endOffsetY - startOffsetY) / myPath.size());
+
+    // Convert the map path to pixels over tiles
+    // And add interpolation between the starting and ending offsets
+    Path::iterator it = myPath.begin();
+    int i = 0;
+    while (it != myPath.end())
+    {
+        // A position that is valid on the start and end tile is not
+        // necessarily valid on all the tiles in between, so check the offsets.
+        *it = checkNodeOffsets(radius, walkMask,
+                               it->x * 32 + startOffsetX + changeX * i,
+                               it->y * 32 + startOffsetY + changeY * i);
+        i++;
+        it++;
+    }
+
+    // Remove the last path node, as it's more clever to go to the destination.
+    // It also permit to avoid zigzag at the end of the path,
+    // especially with mouse.
+    Position destination = checkNodeOffsets(radius, walkMask,
+                                            endPixelX, endPixelY);
+    myPath.pop_back();
+    myPath.push_back(destination);
+
+    return myPath;
 }
 
 static int const basicCost = 100;
