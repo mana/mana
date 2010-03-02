@@ -468,7 +468,8 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int y = (event.getY() + (int) mPixelViewY);
 
     mHoverBeing = beingManager->findBeingByPixel(x, y);
-    if (mHoverBeing && mHoverBeing->getType() == Being::PLAYER)
+    if (mHoverBeing && mHoverBeing->getType() == Being::PLAYER &&
+            event.getSource() == this)
         mBeingPopup->show(getMouseX(), getMouseY(),
                           static_cast<Player*>(mHoverBeing));
     else
@@ -476,10 +477,6 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
 
     mHoverItem = floorItemManager->findByCoordinates(x / mMap->getTileWidth(),
                                                     y / mMap->getTileHeight());
-
-    // Don't change the cursor if the mouse is over something else
-    if (event.getSource() != this)
-        return;
 
     if (mHoverBeing)
     {
