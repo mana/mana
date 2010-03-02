@@ -53,10 +53,7 @@ Viewport::Viewport():
     mMouseY(0),
     mPixelViewX(0.0f),
     mPixelViewY(0.0f),
-    mTileViewX(0),
-    mTileViewY(0),
     mShowDebugPath(false),
-    mVisibleNames(false),
     mPlayerFollowMouse(false),
     mLocalWalkTime(-1)
 {
@@ -67,11 +64,9 @@ Viewport::Viewport():
     mScrollRadius = (int) config.getValue("ScrollRadius", 0);
     mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
     mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
-    mVisibleNames = config.getValue("visiblenames", 1);
 
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
-    config.addListener("visiblenames", this);
 
     mPopupMenu = new PopupMenu;
     mBeingPopup = new BeingPopup;
@@ -82,8 +77,7 @@ Viewport::Viewport():
 Viewport::~Viewport()
 {
     delete mPopupMenu;
-
-    config.removeListener("visiblenames", this);
+    delete mBeingPopup;
 }
 
 void Viewport::setMap(Map *map)
@@ -185,9 +179,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         if (mPixelViewY > viewYmax)
             mPixelViewY = viewYmax;
     }
-
-    mTileViewX = (int) (mPixelViewX + 16) / 32;
-    mTileViewY = (int) (mPixelViewY + 16) / 32;
 
     // Draw tiles and sprites
     if (mMap)
@@ -425,8 +416,10 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
           if (mLocalWalkTime != player_node->getWalkTime())
           {
               mLocalWalkTime = player_node->getWalkTime();
-              int destX = event.getX() / 32 + mTileViewX;
-              int destY = event.getY() / 32 + mTileViewY;
+              int destX = (event.getX() + mPixelViewX + 16) /
+                          mMap->getTileWidth();
+              int destY = (event.getY() + mPixelViewY + 16) /
+                          mMap->getTileHeight();
               player_node->setDestination(destX, destY);
           }
         }
@@ -456,9 +449,6 @@ void Viewport::optionChanged(const std::string &name)
 {
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
-
-    if (name == "visiblenames")
-        mVisibleNames = config.getValue("visiblenames", 1);
 }
 
 void Viewport::mouseMoved(gcn::MouseEvent &event)
