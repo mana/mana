@@ -92,14 +92,6 @@ Gui::Gui(Graphics *graphics):
     delete mFocusHandler;
     mFocusHandler = new FocusHandler;
 
-    // Initialize top GUI widget
-    Viewport *guiTop = new Viewport;
-    guiTop->setFocusable(true);
-    guiTop->setDimension(gcn::Rectangle(0, 0,
-                graphics->getWidth(), graphics->getHeight()));
-    guiTop->setOpaque(false);
-    setTop(guiTop);
-
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Set global font
@@ -131,6 +123,14 @@ Gui::Gui(Graphics *graphics):
     }
 
     gcn::Widget::setGlobalFont(mGuiFont);
+
+    // Initialize top GUI widget
+    Viewport *guiTop = new Viewport;
+    guiTop->setFocusable(true);
+    guiTop->setDimension(gcn::Rectangle(0, 0,
+                graphics->getWidth(), graphics->getHeight()));
+    guiTop->setOpaque(false);
+    setTop(guiTop);
 
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getValue("customcursor", 1) == 1);

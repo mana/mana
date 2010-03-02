@@ -27,7 +27,7 @@
 #include "gui/gui.h"
 #include "gui/palette.h"
 
-#include "gui/widgets/textbox.h"
+#include "gui/widgets/label.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -39,14 +39,14 @@ BeingPopup::BeingPopup():
     Popup("BeingPopup")
 {
     // Being Name
-    mBeingName = new TextBox();
+    mBeingName = new Label("A");
     mBeingName->setFont(boldFont);
     mBeingName->setPosition(getPadding(), getPadding());
 
-    const int fontHeight = getFont()->getHeight();
+    const int fontHeight = mBeingName->getHeight() + getPadding();
 
     // Being's party
-    mBeingParty = new TextBox();
+    mBeingParty = new Label("A");
     mBeingParty->setPosition(getPadding(), fontHeight);
 
     add(mBeingName);
@@ -69,12 +69,15 @@ void BeingPopup::show(int x, int y, Player *p)
 
     if (!(p->getPartyName().empty()))
     {
-        mBeingName->setTextWrapped(p->getName(), 196);
-        mBeingParty->setTextWrapped(strprintf(_("Party: %s"),
-                                        p->getPartyName().c_str()), 196);
+        mBeingName->setCaption(p->getName());
+        mBeingName->adjustSize();
 
-        int minWidth = std::max(mBeingName->getMinWidth(),
-                                mBeingParty->getMinWidth());
+        mBeingParty->setCaption(strprintf(_("Party: %s"),
+                                          p->getPartyName().c_str()));
+        mBeingParty->adjustSize();
+
+        int minWidth = std::max(mBeingName->getWidth(),
+                                mBeingParty->getWidth());
 
         const int height = getFont()->getHeight();
 

@@ -58,8 +58,7 @@ Viewport::Viewport():
     mPixelViewY(0.0f),
     mShowDebugPath(false),
     mPlayerFollowMouse(false),
-    mLocalWalkTime(-1),
-    mBeingPopup(0)
+    mLocalWalkTime(-1)
 {
     setOpaque(false);
     addMouseListener(this);
@@ -75,6 +74,7 @@ Viewport::Viewport():
     viewport = this;
 
     mPopupMenu = new PopupMenu;
+    mBeingPopup = new BeingPopup;
 
     setFocusable(true);
 }
@@ -91,9 +91,6 @@ void Viewport::setMap(Map *map)
         map->setDebugFlags(mMap->getDebugFlags());
     }
     mMap = map;
-
-    if (!mBeingPopup)
-        mBeingPopup = new BeingPopup;
 }
 
 extern MiniStatusWindow *miniStatusWindow;
@@ -523,8 +520,7 @@ void Viewport::toggleDebugPath()
 
 void Viewport::hideBeingPopup()
 {
-    if (mBeingPopup)
-        mBeingPopup->setVisible(false);
+    mBeingPopup->setVisible(false);
 }
 
 void Viewport::scheduleDelete(gcn::Widget *widget)
