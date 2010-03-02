@@ -112,21 +112,29 @@ void CheckBox::drawBox(gcn::Graphics* graphics)
     Image *box;
 
     if (isEnabled())
+    {
         if (isSelected())
+        {
             if (mHasMouse)
                 box = checkBoxCheckedHi;
             else
                 box = checkBoxChecked;
+        }
         else
+        {
             if (mHasMouse)
                 box = checkBoxNormalHi;
             else
                 box = checkBoxNormal;
+        }
+    }
     else
+    {
         if (isSelected())
             box = checkBoxDisabledChecked;
         else
             box = checkBoxDisabled;
+    }
 
     updateAlpha();
 

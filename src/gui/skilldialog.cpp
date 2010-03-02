@@ -77,7 +77,7 @@ struct SkillInfo
         icon->decRef();
     }
 
-    void setIcon(std::string iconPath)
+    void setIcon(const std::string &iconPath)
     {
         ResourceManager *res = ResourceManager::getInstance();
         if (!iconPath.empty())
@@ -100,11 +100,19 @@ typedef std::vector<SkillInfo*> SkillList;
 class SkillModel : public gcn::ListModel
 {
 public:
-    int getNumberOfElements() { return mVisibleSkills.size(); }
-    SkillInfo *getSkillAt(int i) { return mVisibleSkills.at(i); }
-    std::string getElementAt(int i) { return getSkillAt(i)->name; }
+    int getNumberOfElements()
+    { return mVisibleSkills.size(); }
+
+    SkillInfo *getSkillAt(int i) const
+    { return mVisibleSkills.at(i); }
+
+    std::string getElementAt(int i)
+    { return getSkillAt(i)->name; }
+
     void updateVisibilities();
-    void addSkill(SkillInfo *info) { mSkills.push_back(info); }
+
+    void addSkill(SkillInfo *info)
+    { mSkills.push_back(info); }
 
 private:
     SkillList mSkills;
@@ -120,7 +128,11 @@ public:
 
     SkillInfo *getSelectedInfo()
     {
-        return static_cast<SkillModel*>(mListModel)->getSkillAt(getSelected());
+        const int selected = getSelected();
+        if (selected < 0 || selected > mListModel->getNumberOfElements())
+            return 0;
+
+        return static_cast<SkillModel*>(mListModel)->getSkillAt(selected);
     }
 
     void draw(gcn::Graphics *gcnGraphics)
@@ -217,9 +229,8 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 
         if (tab)
         {
-            SkillInfo *info = tab->getSelectedInfo();
-
-            Net::getPlayerHandler()->increaseSkill(info->id);
+            if (SkillInfo *info = tab->getSelectedInfo())
+                Net::getPlayerHandler()->increaseSkill(info->id);
         }
     }
     else if (event.getId() == "close")
