@@ -27,6 +27,7 @@
 #include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/windowcontainer.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

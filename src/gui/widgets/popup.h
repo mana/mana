@@ -31,6 +31,7 @@
 #include <guichan/mouselistener.hpp>
 
 class Skin;
+class WindowContainer;
 
 /**
  * A light version of the Window class. Particularly suited for popup type
@@ -64,6 +65,11 @@ class Popup : public Container, public gcn::MouseListener
         ~Popup();
 
         /**
+         * Sets the window container to be used by new popups.
+         */
+        static void setWindowContainer(WindowContainer *windowContainer);
+
+        /**
          * Changes the popup's skin to use the skin defined in the saved
          * configuration file.
          */
@@ -89,6 +95,8 @@ class Popup : public Container, public gcn::MouseListener
          * Sets the location relative to the given widget.
          */
         void setLocationRelativeTo(gcn::Widget *widget);
+
+        void mouseMoved(gcn::MouseEvent &event);
 
         /**
          * Sets the minimum width of the popup.

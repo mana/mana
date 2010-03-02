@@ -391,6 +391,17 @@ class LocalPlayer : public Player
          */
         bool getCheckNameSetting() const { return mUpdateName; }
 
+        /**
+         * Set if the current map is initialized.
+         */
+        void setMapInitialized(bool initialized)
+        { mMapInitialized = initialized; }
+
+        /**
+         * Tells if the current map is initialized.
+         */
+        bool isMapInitialized() const { return mMapInitialized; }
+
         /**  Keeps the Equipment related values */
         const std::auto_ptr<Equipment> mEquipment;
 
@@ -398,6 +409,8 @@ class LocalPlayer : public Player
 
         /** Whether or not the name settings have changed */
         bool mUpdateName;
+
+        bool mMapInitialized; /**< Whether or not the map is available yet */
 
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 

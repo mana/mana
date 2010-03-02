@@ -26,9 +26,9 @@
 #include "gui/sdlinput.h"
 #include "gui/skin.h"
 #include "gui/truetypefont.h"
-#include "gui/viewport.h"
 
 #include "gui/widgets/window.h"
+#include "gui/widgets/windowcontainer.h"
 
 #include "configlistener.h"
 #include "configuration.h"
@@ -92,6 +92,15 @@ Gui::Gui(Graphics *graphics):
     delete mFocusHandler;
     mFocusHandler = new FocusHandler;
 
+    // Initialize top GUI widget
+    WindowContainer *guiTop = new WindowContainer;
+    guiTop->setFocusable(true);
+    guiTop->setDimension(gcn::Rectangle(0, 0,
+                graphics->getWidth(), graphics->getHeight()));
+    guiTop->setOpaque(false);
+    Window::setWindowContainer(guiTop);
+    setTop(guiTop);
+
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Set global font
@@ -123,14 +132,6 @@ Gui::Gui(Graphics *graphics):
     }
 
     gcn::Widget::setGlobalFont(mGuiFont);
-
-    // Initialize top GUI widget
-    Viewport *guiTop = new Viewport;
-    guiTop->setFocusable(true);
-    guiTop->setDimension(gcn::Rectangle(0, 0,
-                graphics->getWidth(), graphics->getHeight()));
-    guiTop->setOpaque(false);
-    setTop(guiTop);
 
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getValue("customcursor", 1) == 1);

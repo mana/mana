@@ -103,6 +103,11 @@ LocalPlayer::LocalPlayer(int id, int job):
     mLocalWalkTime(-1),
     mMessageTime(0)
 {
+    // Variable to keep the local player from doing certain actions before a map
+    // is initialized. e.g. drawing a player's name using the TextManager, since
+    // it appears to be dependant upon map coordinates for updating drawing.
+    mMapInitialized = false;
+
     mUpdateName = true;
 
     mTextColor = &guiPalette->getColor(Palette::PLAYER);
