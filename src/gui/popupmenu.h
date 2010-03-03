@@ -29,6 +29,7 @@ class Being;
 class BrowserBox;
 class FloorItem;
 class Item;
+class Window;
 
 /**
  * Window showing popup menu.
@@ -56,7 +57,8 @@ class PopupMenu : public Popup, public LinkHandler
          * Shows the related popup menu when right click on the inventory
          * at the specified mouse coordinates.
          */
-        void showPopup(int x, int y, Item *item, bool isInventory);
+        void showPopup(Window *parent, int x, int y, Item *item,
+                       bool isInventory);
 
         /**
          * Handles link action.
@@ -69,6 +71,8 @@ class PopupMenu : public Popup, public LinkHandler
         int mBeingId;
         FloorItem* mFloorItem;
         Item *mItem;
+
+        Window *mWindow;
 
         /**
          * Shared code for the various showPopup functions.

@@ -92,6 +92,24 @@ AC_CHECK_LIB(SDL_gfx, rotozoomSurfaceXY, ,
 AC_MSG_ERROR([ *** Unable to find SDL_gfx library (http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx)]))
 AC_CHECK_HEADERS(SDL_rotozoom.h, ,)
 
+# === Check for X11 (check borrowed from Wormux) ========================
+# Deactivated on purpose under OSX (in case X11 SDK is installed)
+if test "x$OSX" != "xyes" ; then
+  AC_CHECK_HEADER(X11/Xlib.h, check_x11="yes",check_x11="no")
+  if test x${check_x11} = xno ; then
+    AC_CHECK_HEADER(X11R6/Xlib.h,
+                    [ check_x11="yes"
+                      LDFLAGS="-L/usr/X11R6/include $CFLAGS"],
+                    check_x11="no")
+  fi
+  if test x${check_x11} = xyes ; then
+    AC_CHECK_LIB(X11, XOpenDisplay,
+                 [ LIBS="$LIBS -lX11"
+                   AC_DEFINE(USE_X11, 1, [Define to use X11 copy'n'paste]) ],
+                 [])
+  fi
+fi
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])

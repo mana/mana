@@ -34,12 +34,6 @@ class Party;
 class PartyMember : public Avatar
 {
 public:
-    PartyMember(int partyId, int id, const std::string &name);
-
-    PartyMember(int partyId, int id);
-
-    PartyMember(int partyId, const std::string &name);
-
     int getID() const { return mId; }
 
     void setID(int id) { mId = id; }
@@ -52,6 +46,12 @@ public:
 
 protected:
     friend class Party;
+
+    PartyMember(Party *party, int id, const std::string &name);
+
+    PartyMember(Party *party, int id);
+
+    PartyMember(Party *party, const std::string &name);
 
     int mId;
     Party *mParty;
@@ -73,7 +73,17 @@ public:
     /**
      * Adds member to the list.
      */
-    void addMember(PartyMember *member);
+    PartyMember *addMember(int id, const std::string &name);
+
+    /**
+     * Adds member to the list.
+     */
+    PartyMember *addMember(int id);
+
+    /**
+     * Adds member to the list.
+     */
+    PartyMember *addMember(const std::string &name);
 
     /**
      * Find a member by ID.
@@ -153,7 +163,7 @@ public:
 
     bool isMember(const std::string &name) const;
 
-    const void getNames(std::vector<std::string> &names) const;
+    void getNames(std::vector<std::string> &names) const;
 
     static Party *getParty(int id);
 

@@ -283,11 +283,17 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      resources/wallpaper.h \
 	      utils/base64.cpp \
 	      utils/base64.h \
+	      utils/copynpaste.cpp \
+	      utils/copynpaste.h \
 	      utils/dtor.h \
 	      utils/gettext.h \
 	      utils/mathutils.h \
+	      utils/mkdir.cpp \
+	      utils/mkdir.h \
 	      utils/sha256.cpp \
 	      utils/sha256.h \
+	      utils/specialfolder.cpp \
+	      utils/specialfolder.h \
 	      utils/stringutils.cpp \
 	      utils/stringutils.h \
 	      utils/mutex.h \
@@ -446,6 +452,8 @@ mana_SOURCES += \
 	      net/manaserv/tradehandler.h
 
 mana_SOURCES += \
+	      net/ea/gui/guildtab.cpp \
+	      net/ea/gui/guildtab.h \
 	      net/ea/gui/partytab.cpp \
 	      net/ea/gui/partytab.h \
 	      net/ea/adminhandler.cpp \

@@ -127,7 +127,7 @@ void Being::setPosition(const Vector &pos)
                         (int)pos.y - getHeight() - mText->getHeight() - 6);
 }
 
-Position Being::checkNodeOffsets(Position position)
+Position Being::checkNodeOffsets(const Position &position) const
 {
     // Pre-computing character's position in tiles
     const int tx = position.x / 32;
@@ -197,22 +197,17 @@ void Being::setDestination(int dstX, int dstY)
         return;
     }
 
-    // Check the walkability of the destination:
-    // If the destination is unwalkable,
-    // don't bother finding a path or set a destination.
+    // If the destination is unwalkable, don't bother trying to get there
     if (!mMap->getWalk(dstX / 32, dstY / 32))
         return;
 
-    // We check the destination in order to handle
-    // surrounding blocking tiles gracefully...
     Position dest = checkNodeOffsets(dstX, dstY);
     mDest.x = dest.x;
     mDest.y = dest.y;
     int srcX = mPos.x;
     int srcY = mPos.y;
 
-    // We initialize an empty path...
-    Path thisPath = Path();
+    Path thisPath;
 
     if (mMap)
     {
@@ -244,16 +239,12 @@ void Being::setDestination(int dstX, int dstY)
     int i = 0;
     while (it != thisPath.end())
     {
-       it->x = (it->x * 32) + startX + (changeX * i);
-       it->y = (it->y * 32) + startY + (changeY * i);
-
-       // We check each path node and correct the
-       // tile position's offsets whenever needed.
-       Position pos = checkNodeOffsets(*it);
-       it->x = pos.x;
-       it->y = pos.y;
-       i++;
-       it++;
+        // A position that is valid on the start and end tile is not
+        // necessarily valid on all the tiles in between, so check the offsets.
+        *it = checkNodeOffsets(it->x * 32 + startX + changeX * i,
+                               it->y * 32 + startY + changeY * i);
+        i++;
+        it++;
     }
 
     // Remove the last path node, as it's more clever to go to mDest instead.
@@ -273,6 +264,7 @@ void Being::clearPath()
 void Being::setPath(const Path &path)
 {
     mPath = path;
+
     if ((Net::getNetworkType() == ServerInfo::EATHENA) &&
             mAction != WALK && mAction != DEAD)
     {
@@ -387,13 +379,9 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
         }
 
         if (type != CRITICAL)
-        {
             effectManager->trigger(26, this);
-        }
         else
-        {
             effectManager->trigger(28, this);
-        }
     }
 }
 
@@ -401,6 +389,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
 {
     if (this != player_node)
         setAction(Being::ATTACK, 1);
+
     if (getType() == PLAYER && victim)
     {
         if (mEquippedWeapon)

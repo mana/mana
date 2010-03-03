@@ -220,6 +220,7 @@ void Player::setSpriteColor(unsigned int slot, const std::string &color)
 void Player::addGuild(Guild *guild)
 {
     mGuilds[guild->getId()] = guild;
+    guild->addMember(mId, mName);
 
     if (this == player_node && socialWindow)
     {
@@ -234,6 +235,7 @@ void Player::removeGuild(int id)
         socialWindow->removeTab(mGuilds[id]);
     }
 
+    mGuilds[id]->removeMember(mId);
     mGuilds.erase(id);
 }
 
@@ -264,6 +266,27 @@ Guild *Player::getGuild(int id) const
     return NULL;
 }
 
+const std::map<int, Guild*> &Player::getGuilds() const
+{
+    return mGuilds;
+}
+
+void Player::clearGuilds()
+{
+    std::map<int, Guild*>::const_iterator itr, itr_end = mGuilds.end();
+    for (itr = mGuilds.begin(); itr != itr_end; ++itr)
+    {
+        Guild *guild = itr->second;
+
+        if (this == player_node && socialWindow)
+            socialWindow->removeTab(guild);
+
+        guild->removeMember(mId);
+    }
+
+    mGuilds.clear();
+}
+
 void Player::setParty(Party *party)
 {
     if (party == mParty)
@@ -271,6 +294,16 @@ void Player::setParty(Party *party)
 
     Party *old = mParty;
     mParty = party;
+
+    if (old)
+    {
+        party->removeMember(mId);
+    }
+
+    if (party)
+    {
+        party->addMember(mId, mName);
+    }
 
     updateColors();
 

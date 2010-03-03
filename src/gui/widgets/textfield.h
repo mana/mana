@@ -91,6 +91,8 @@ class TextField : public gcn::TextField
         int getValue() const;
 
     private:
+        void handlePaste();
+
         static int instances;
         static float mAlpha;
         static ImageRect skin;

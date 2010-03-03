@@ -32,6 +32,8 @@ class GuildHandler : public Net::GuildHandler, public MessageHandler
     public:
         GuildHandler();
 
+        ~GuildHandler();
+
         void handleMessage(Net::MessageIn &msg);
 
         void create(const std::string &name);
@@ -44,13 +46,13 @@ class GuildHandler : public Net::GuildHandler, public MessageHandler
 
         void leave(int guildId);
 
-        void kick(GuildMember member);
+        void kick(GuildMember *member, std::string reason = "");
 
         void chat(int guildId, const std::string &text);
 
         void memberList(int guildId);
 
-        void changeMemberPostion(GuildMember member, int level);
+        void changeMemberPostion(GuildMember *member, int level);
 
         void requestAlliance(int guildId, int otherGuildId);
 

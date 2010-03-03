@@ -327,6 +327,8 @@
 ./src/net/ea/generalhandler.h
 ./src/net/ea/guildhandler.cpp
 ./src/net/ea/guildhandler.h
+./src/net/ea/gui/guildtab.cpp
+./src/net/ea/gui/guildtab.h
 ./src/net/ea/gui/partytab.cpp
 ./src/net/ea/gui/partytab.h
 ./src/net/ea/inventoryhandler.cpp
@@ -512,9 +514,13 @@
 ./src/units.h
 ./src/utils/base64.cpp
 ./src/utils/base64.h
+./src/utils/copynpaste.cpp
+./src/utils/copynpaste.h
 ./src/utils/dtor.h
 ./src/utils/gettext.h
 ./src/utils/mathutils.h
+./src/utils/mkdir.cpp
+./src/utils/mkdir.h
 ./src/utils/mutex.h
 ./src/utils/sha256.cpp
 ./src/utils/sha256.h

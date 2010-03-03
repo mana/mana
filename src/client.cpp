@@ -73,6 +73,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
+#include "utils/mkdir.h"
 #include "utils/stringutils.h"
 
 #ifdef __APPLE__
@@ -84,6 +85,7 @@
 
 #ifdef WIN32
 #include <SDL_syswm.h>
+#include "utils/specialfolder.h"
 #else
 #include <cerrno>
 #endif
@@ -204,20 +206,25 @@ Client::Client(const Options &options):
     assert(!mInstance);
     mInstance = this;
 
+    logger = new Logger;
+
     // Load branding information
-    branding.init("data/branding.xml");
+    if (!options.brandingPath.empty())
+    {
+        branding.init(options.brandingPath);
+    }
 
     initHomeDir(options);
-    initScreenshotDir(options.screenshotDir);
 
     // Configure logger
-    logger = new Logger;
-    logger->setLogFile(homeDir + std::string("/mana.log"));
+    logger->setLogFile(localDataDir + std::string("/mana.log"));
 
     // Log the mana version
     logger->log("Mana %s", FULL_VERSION);
 
     initConfiguration(options);
+    initScreenshotDir(options.screenshotDir);
+
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
     // Initialize SDL
@@ -236,14 +243,14 @@ Client::Client(const Options &options):
 
     ResourceManager *resman = ResourceManager::getInstance();
 
-    if (!resman->setWriteDir(homeDir))
+    if (!resman->setWriteDir(localDataDir))
     {
         logger->error(strprintf("%s couldn't be set as home directory! "
-                                "Exiting.", homeDir.c_str()));
+                                "Exiting.", localDataDir.c_str()));
     }
 
-    // Add the user's homedir to PhysicsFS search path
-    resman->addToSearchPath(homeDir, false);
+    // Add the local data directory to PhysicsFS search path
+    resman->addToSearchPath(localDataDir, false);
 
     // Add the main data directories to our PhysicsFS search path
     if (!options.dataPath.empty())
@@ -575,7 +582,7 @@ int Client::exec()
                         SkinLoader::instance()->setMinimumOpacity(0.8f);
 
                         currentDialog = new ServerDialog(&currentServer,
-                                                         homeDir);
+                                                         configDir);
                     }
                     else
                     {
@@ -670,7 +677,7 @@ int Client::exec()
                     {
                         logger->log("State: UPDATE");
                         currentDialog = new UpdaterWindow(updateHost,
-                                homeDir + "/" + updatesDir,options.dataPath.empty());
+                                localDataDir + "/" + updatesDir,options.dataPath.empty());
                     }
                     break;
 
@@ -953,31 +960,53 @@ void Client::action(const gcn::ActionEvent &event)
  */
 void Client::initHomeDir(const Options &options)
 {
-    homeDir = options.homeDir;
+    localDataDir = options.localDataDir;
 
-    if (homeDir.empty())
+    if (localDataDir.empty())
     {
 #ifdef __APPLE__
         // Use Application Directory instead of .mana
-        homeDir = std::string(PHYSFS_getUserDir()) +
+        localDataDir = std::string(PHYSFS_getUserDir()) +
             "/Library/Application Support/" +
             branding.getValue("appName", "Mana");
+#elif defined WIN32
+        localDataDir = getSpecialFolderLocation(CSIDL_LOCAL_APPDATA);
+        if (localDataDir.empty())
+            localDataDir = std::string(PHYSFS_getUserDir());
+        localDataDir += "/Mana";
 #else
-        homeDir = std::string(PHYSFS_getUserDir()) +
-            "/." + branding.getValue("appShort", "mana");
+        localDataDir = std::string(PHYSFS_getUserDir()) +
+            "/.local/share/mana";
 #endif
     }
-#if defined WIN32
-    if (!CreateDirectory(homeDir.c_str(), 0) &&
-            GetLastError() != ERROR_ALREADY_EXISTS)
-#else
-    // Create home directory if it doesn't exist already
-    if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
-            (errno != EEXIST))
-#endif
+
+    if (mkdir_r(localDataDir.c_str()))
     {
         logger->error(strprintf(_("%s doesn't exist and can't be created! "
-                                  "Exiting."), homeDir.c_str()));
+                                  "Exiting."), localDataDir.c_str()));
+    }
+
+    configDir = options.configDir;
+
+    if (configDir.empty()){
+#ifdef __APPLE__
+        configDir = localDataDir;
+#elif defined WIN32
+        configDir = getSpecialFolderLocation(CSIDL_APPDATA);
+        if (configDir.empty())
+            configDir = localDataDir;
+        else
+            configDir += "/mana/" + branding.getValue("appName", "Mana");
+#else
+        configDir = std::string(PHYSFS_getUserDir()) +
+            "/.config/mana/" + branding.getValue("appShort", "mana");
+#endif
+    }
+
+    if (mkdir_r(configDir.c_str()))
+    {
+        logger->error(strprintf(_("%s doesn't exist and can't be created! "
+                                  "Exiting."), configDir.c_str()));
     }
 }
 
@@ -1009,15 +1038,15 @@ void Client::initConfiguration(const Options &options)
         "http://updates.themanaworld.org");
     config.setValue("updatehost", defaultUpdateHost);
     config.setValue("customcursor", true);
+    config.setValue("useScreenshotDirectorySuffix", true);
     config.setValue("ChatLogLength", 128);
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
     FILE *configFile = 0;
-    std::string configPath = options.configPath;
+    std::string configPath;
 
-    if (configPath.empty())
-        configPath = homeDir + "/config.xml";
+    configPath = configDir + "/config.xml";
 
     configFile = fopen(configPath.c_str(), "r");
 
@@ -1090,7 +1119,7 @@ void Client::initUpdatesDir()
         if (!resman->mkdir("/" + updatesDir))
         {
 #if defined WIN32
-            std::string newDir = homeDir + "\\" + updatesDir;
+            std::string newDir = localDataDir + "\\" + updatesDir;
             std::string::size_type loc = newDir.find("/", 0);
 
             while (loc != std::string::npos)
@@ -1109,7 +1138,7 @@ void Client::initUpdatesDir()
             }
 #else
             logger->log("Error: %s/%s can't be made, but doesn't exist!",
-                        homeDir.c_str(), updatesDir.c_str());
+                        localDataDir.c_str(), updatesDir.c_str());
             errorMessage = _("Error creating updates directory!");
             state = STATE_ERROR;
 #endif
@@ -1119,16 +1148,52 @@ void Client::initUpdatesDir()
 
 void Client::initScreenshotDir(const std::string &dir)
 {
-    if (dir.empty())
-    {
-        screenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
-        // If ~/Desktop does not exist, we save screenshots in the user's home.
-        struct stat statbuf;
-        if (stat(screenshotDir.c_str(), &statbuf))
-            screenshotDir = std::string(PHYSFS_getUserDir());
-    }
-    else
+    if (!dir.empty())
         screenshotDir = dir;
+    else
+    {
+        std::string configScreenshotDir =
+            config.getValue("screenshotDirectory", "");
+        if (!configScreenshotDir.empty())
+            screenshotDir = configScreenshotDir;
+        else
+        {
+#ifdef WIN32
+            screenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);
+            if (screenshotDir.empty())
+                screenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
+#else
+            screenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
+            // If ~/Desktop does not exist, we save screenshots in the user's home.
+            struct stat statbuf;
+            if (stat(screenshotDir.c_str(), &statbuf))
+                screenshotDir = std::string(PHYSFS_getUserDir());
+#endif
+        }
+        config.setValue("screenshotDirectory", screenshotDir);
+
+        if (config.getValue("useScreenshotDirectorySuffix", true))
+        {
+            std::string configScreenshotSuffix =
+                config.getValue("screenshotDirectorySuffix",
+                                branding.getValue("appShort", "Mana"));
+
+            if (!configScreenshotSuffix.empty())
+            {
+                screenshotDir += "/" + configScreenshotSuffix;
+                config.setValue("screenshotDirectorySuffix",
+                                configScreenshotSuffix);
+            }
+        }
+    }
+
+    if (mkdir_r(screenshotDir.c_str()))
+    {
+        logger->log("Directory %s doesn't exist and can't be created! "
+                    "Setting screenshot directory to home.",
+                    screenshotDir.c_str());
+        screenshotDir = std::string(PHYSFS_getUserDir());
+    }
 }
 
 void Client::accountLogin(LoginData *loginData)

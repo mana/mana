@@ -29,18 +29,18 @@ class Player;
 class TextBox;
 
 /**
- * A popup that displays information about an item.
+ * A popup that displays information about a being.
  */
 class BeingPopup : public Popup
 {
     public:
         /**
-         * Constructor. Initializes the item popup.
+         * Constructor. Initializes the being popup.
          */
         BeingPopup();
 
         /**
-         * Destructor. Cleans up the item popup on deletion.
+         * Destructor. Cleans up the being popup on deletion.
          */
         ~BeingPopup();
 

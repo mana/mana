@@ -23,32 +23,19 @@
 #include "beingmanager.h"
 #include "player.h"
 
-PartyMember::PartyMember(int partyId, int id, const std::string &name):
-        Avatar(name), mId(id), mLeader(false)
+PartyMember::PartyMember(Party *party, int id, const std::string &name):
+        Avatar(name), mId(id), mParty(party), mLeader(false)
 {
-    mParty = Party::getParty(partyId);
-
-    if (beingManager)
-    {
-        Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
-        if (player)
-        {
-            player->setParty(mParty);
-        }
-    }
 }
 
-PartyMember::PartyMember(int PartyId, int id):
-        mId(id), mLeader(false)
+PartyMember::PartyMember(Party *party, int id):
+        mId(id), mParty(party), mLeader(false)
 {
-    mParty = Party::getParty(PartyId);
+}
 
-    if (beingManager)
-    {
-        Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
-        if (player)
-            player->setParty(mParty);
-    }
+PartyMember::PartyMember(Party *party, const std::string &name):
+        Avatar(name), mParty(party), mLeader(false)
+{
 }
 
 Party::PartyMap Party::parties;
@@ -59,19 +46,49 @@ Party::Party(short id):
 {
     parties[id] = this;
 }
-
-void Party::addMember(PartyMember *member)
+PartyMember *Party::addMember(int id, const std::string &name)
 {
-    if (member->mParty > 0 && member->mParty != this)
+    PartyMember *m;
+    if ((m = getMember(id)))
     {
-        throw "Member in another Party!";
+        return m;
     }
 
-    if (!isMember(member))
+    m = new PartyMember(this, id, name);
+
+    mMembers.push_back(m);
+
+    return m;
+}
+
+PartyMember *Party::addMember(int id)
+{
+    PartyMember *m;
+    if ((m = getMember(id)))
     {
-        mMembers.push_back(member);
-        member->mParty = this;
+        return m;
     }
+
+    m = new PartyMember(this, id);
+
+    mMembers.push_back(m);
+
+    return m;
+}
+
+PartyMember *Party::addMember(const std::string &name)
+{
+    PartyMember *m;
+    if ((m = getMember(name)))
+    {
+        return m;
+    }
+
+    m = new PartyMember(this, name);
+
+    mMembers.push_back(m);
+
+    return m;
 }
 
 PartyMember *Party::getMember(int id)
@@ -230,7 +247,7 @@ bool Party::isMember(const std::string &name) const
     return false;
 }
 
-const void Party::getNames(std::vector<std::string> &names) const
+void Party::getNames(std::vector<std::string> &names) const
 {
     names.clear();
     MemberList::const_iterator it = mMembers.begin(),

@@ -106,7 +106,6 @@ StatusWindow *statusWindow;
 MiniStatusWindow *miniStatusWindow;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
-StorageWindow *storageWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 TradeWindow *tradeWindow;
@@ -154,7 +153,6 @@ static void createGuiWindows()
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    storageWindow = new StorageWindow;
     statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
     inventoryWindow = new InventoryWindow;
@@ -202,7 +200,6 @@ static void destroyGuiWindows()
     del_0(debugWindow)
     del_0(itemShortcutWindow)
     del_0(emoteShortcutWindow)
-    del_0(storageWindow)
     del_0(outfitWindow)
     del_0(specialsWindow)
     del_0(socialWindow)
@@ -868,7 +865,8 @@ void Game::handleInput()
         }
 
         // Talk to the nearest NPC if 't' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
+        if (event.type == SDL_KEYDOWN &&
+            keyboard.getKeyIndex(event.key.keysym.sym) == KeyboardConfig::KEY_TALK)
         {
             Being *target = player_node->getTarget();
 

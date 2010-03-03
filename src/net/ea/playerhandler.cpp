@@ -86,8 +86,6 @@ namespace {
             NpcDialog::closeAll();
             SellDialog::closeAll();
 
-            if (storageWindow->isVisible())
-                storageWindow->close();
             viewport->closePopupMenu();
         }
     } deathListener;

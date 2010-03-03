@@ -138,10 +138,11 @@ public:
         std::string username;
         std::string password;
         std::string character;
-        std::string configPath;
+        std::string brandingPath;
         std::string updateHost;
         std::string dataPath;
-        std::string homeDir;
+        std::string configDir;
+        std::string localDataDir;
         std::string screenshotDir;
 
         std::string serverName;
@@ -164,8 +165,11 @@ public:
     static State getState()
     { return instance()->state; }
 
-    static const std::string &getHomeDirectory()
-    { return instance()->homeDir; }
+    static const std::string &getConfigDirectory()
+    { return instance()->configDir; }
+
+    static const std::string &getLocalDataDirectory()
+    { return instance()->localDataDir; }
 
     static const std::string &getScreenshotDirectory()
     { return instance()->screenshotDir; }
@@ -185,7 +189,8 @@ private:
 
     Options options;
 
-    std::string homeDir;
+    std::string configDir;
+    std::string localDataDir;
     std::string updateHost;
     std::string updatesDir;
     std::string screenshotDir;

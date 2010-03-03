@@ -98,6 +98,8 @@ public:
     {
         setCaption(guild->getName());
 
+        setTabColor(&guiPalette->getColor(Palette::GUILD));
+
         mList = new AvatarListBox(guild);
         mScroll = new ScrollArea(mList);
 
@@ -160,6 +162,8 @@ public:
             mParty(party)
     {
         setCaption(party->getName());
+
+        setTabColor(&guiPalette->getColor(Palette::PARTY));
 
         mList = new AvatarListBox(party);
         mScroll = new ScrollArea(mList);

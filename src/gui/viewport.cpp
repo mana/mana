@@ -449,9 +449,10 @@ void Viewport::mouseReleased(gcn::MouseEvent &event)
     mLocalWalkTime = -1;
 }
 
-void Viewport::showPopup(int x, int y, Item *item, bool isInventory)
+void Viewport::showPopup(Window *parent, int x, int y, Item *item,
+                         bool isInventory)
 {
-    mPopupMenu->showPopup(x, y, item, isInventory);
+    mPopupMenu->showPopup(parent, x, y, item, isInventory);
 }
 
 void Viewport::closePopupMenu()

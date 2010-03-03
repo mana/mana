@@ -49,8 +49,7 @@ class StorageWindow : public Window, gcn::ActionListener,
         /**
          * Constructor.
          */
-        StorageWindow(int invSize = Net::getInventoryHandler()
-                                    ->getSize(Net::InventoryHandler::STORAGE));
+        StorageWindow(Inventory *inventory);
 
         /**
          * Destructor.
@@ -75,22 +74,31 @@ class StorageWindow : public Window, gcn::ActionListener,
         void mouseClicked(gcn::MouseEvent &event);
 
         /**
-         * Add the specified ammount of the specified item to storage
-         */
-        void addStore(Item* item, int amount);
-
-        /**
-         * Remove the specified ammount of the specified item from storage
-         */
-        void removeStore(Item* item, int amount);
-
-        /**
          * Closes the Storage Window, as well as telling the server that the
          * window has been closed.
          */
         void close();
 
+        /**
+         * Add the specified ammount of the specified item to storage
+         */
+        static void addStore(Item* item, int amount);
+
+        /**
+         * Remove the specified ammount of the specified item from storage
+         */
+        static void removeStore(Item* item, int amount);
+
+        /**
+         * Returns true if any instances exist.
+         */
+        static bool isActive() { return instances.size() > 0; }
+
     private:
+        typedef std::list<StorageWindow*> WindowList;
+        static WindowList instances;
+
+        Inventory *mInventory;
         ItemContainer *mItems;
 
         int mSlots;
@@ -101,11 +109,7 @@ class StorageWindow : public Window, gcn::ActionListener,
 
         ProgressBar *mSlotsBar;
 
-        int mMaxSlots;
-
         bool mItemDesc;
 };
-
-extern StorageWindow *storageWindow;
 
 #endif // STORAGEWINDOW_H

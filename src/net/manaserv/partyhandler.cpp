@@ -109,8 +109,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             if (id == player_node->getId())
                 player_node->setParty(mParty);
 
-            PartyMember *member = new PartyMember(PARTY_ID, id, name);
-            mParty->addMember(member);
+            mParty->addMember(id, name);
         } break;
 
         case CPMSG_PARTY_MEMBER_LEFT:

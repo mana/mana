@@ -193,7 +193,7 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
 
         // Convert relative to the window coordinates to absolute screen
         // coordinates.
-        viewport->showPopup(viewport->getMouseX(), viewport->getMouseY(), item);
+        viewport->showPopup(NULL, viewport->getMouseX(), viewport->getMouseY(), item);
     }
 }
 

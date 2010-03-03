@@ -24,22 +24,19 @@
 #include "beingmanager.h"
 #include "player.h"
 
-GuildMember::GuildMember(int guildId, int id, const std::string &name):
-        Avatar(name), mId(id)
+GuildMember::GuildMember(Guild *guild, int id, const std::string &name):
+        Avatar(name), mId(id), mGuild(guild)
 {
-    mGuild = Guild::getGuild(guildId);
 }
 
-GuildMember::GuildMember(int guildId, int id):
-        mId(id)
+GuildMember::GuildMember(Guild *guild, int id):
+        mId(id), mGuild(guild)
 {
-    mGuild = Guild::getGuild(guildId);
 }
 
-GuildMember::GuildMember(int guildId, const std::string &name):
-        Avatar(name), mId(0)
+GuildMember::GuildMember(Guild *guild, const std::string &name):
+        Avatar(name), mId(0), mGuild(guild)
 {
-    mGuild = Guild::getGuild(guildId);
 }
 
 Guild::GuildMap Guild::guilds;
@@ -51,16 +48,49 @@ Guild::Guild(short id):
     guilds[id] = this;
 }
 
-void Guild::addMember(GuildMember *member)
+GuildMember *Guild::addMember(int id, const std::string &name)
 {
-    if (member->mGuild > 0 && member->mGuild != this)
-        throw "Member in another guild!";
-
-    if (!isMember(member))
+    GuildMember *m;
+    if ((m = getMember(id)))
     {
-        mMembers.push_back(member);
-        member->mGuild = this;
+        return m;
     }
+
+    m = new GuildMember(this, id, name);
+
+    mMembers.push_back(m);
+
+    return m;
+}
+
+GuildMember *Guild::addMember(int id)
+{
+    GuildMember *m;
+    if ((m = getMember(id)))
+    {
+        return m;
+    }
+
+    m = new GuildMember(this, id);
+
+    mMembers.push_back(m);
+
+    return m;
+}
+
+GuildMember *Guild::addMember(const std::string &name)
+{
+    GuildMember *m;
+    if ((m = getMember(name)))
+    {
+        return m;
+    }
+
+    m = new GuildMember(this, name);
+
+    mMembers.push_back(m);
+
+    return m;
 }
 
 GuildMember *Guild::getMember(int id)
@@ -211,7 +241,7 @@ bool Guild::isMember(const std::string &name) const
     return false;
 }
 
-const void Guild::getNames(std::vector<std::string> &names) const
+void Guild::getNames(std::vector<std::string> &names) const
 {
     names.clear();
     MemberList::const_iterator it = mMembers.begin(),

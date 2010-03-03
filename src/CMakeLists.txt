@@ -55,6 +55,12 @@ IF (WITH_OPENGL)
     SET(FLAGS "${FLAGS} -DUSE_OPENGL")
 ENDIF (WITH_OPENGL)
 
+IF (USE_X11)
+    FIND_PACKAGE(X11 REQUIRED)
+    INCLUDE_DIRECTORIES(${X11_INCLUDE_DIR})
+    SET(FLAGS "${FLAGS} -DUSE_X11")
+ENDIF (USE_X11)
+
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${SDL_INCLUDE_DIR}
@@ -378,6 +384,8 @@ SET(SRCS
     resources/wallpaper.h
     utils/base64.cpp
     utils/base64.h
+    utils/copynpaste.cpp
+    utils/copynpaste.h
     utils/dtor.h
     utils/gettext.h
     utils/mathutils.h
@@ -386,6 +394,8 @@ SET(SRCS
     utils/stringutils.cpp
     utils/stringutils.h
     utils/mutex.h
+    utils/mkdir.cpp
+    utils/mkdir.h
     utils/xml.cpp
     utils/xml.h
     animatedsprite.cpp
@@ -493,6 +503,8 @@ SET(SRCS
     )
 
 SET(SRCS_EA
+    net/ea/gui/guildtab.cpp
+    net/ea/gui/guildtab.h
     net/ea/gui/partytab.cpp
     net/ea/gui/partytab.h
     net/ea/adminhandler.cpp
@@ -589,7 +601,12 @@ SET(SRCS_MANA
     )
 
 IF (WIN32)
-    SET(SRCS_MANA ${SRCS_MANA} mana.rc)
+    SET(SRCS_MANA
+        ${SRCS_MANA}
+        utils/specialfolder.cpp
+        utils/specialfolder.h
+        mana.rc
+    )
 ENDIF ()
 
 SET (PROGRAMS mana)

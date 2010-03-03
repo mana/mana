@@ -38,14 +38,14 @@
 BeingPopup::BeingPopup():
     Popup("BeingPopup")
 {
-    // Item Name
+    // Being Name
     mBeingName = new TextBox();
     mBeingName->setFont(boldFont);
     mBeingName->setPosition(getPadding(), getPadding());
 
     const int fontHeight = getFont()->getHeight();
 
-    // Item Description
+    // Being's party
     mBeingParty = new TextBox();
     mBeingParty->setPosition(getPadding(), fontHeight);
 

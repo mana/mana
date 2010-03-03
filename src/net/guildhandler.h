@@ -42,13 +42,13 @@ class GuildHandler
 
         virtual void leave(int guildId) = 0;
 
-        virtual void kick(GuildMember member) = 0;
+        virtual void kick(GuildMember *member, std::string reason = "") = 0;
 
         virtual void chat(int guildId, const std::string &text) = 0;
 
         virtual void memberList(int guildId) = 0;
 
-        virtual void changeMemberPostion(GuildMember member, int level) = 0;
+        virtual void changeMemberPostion(GuildMember *member, int level) = 0;
 
         virtual void requestAlliance(int guildId, int otherGuildId) = 0;
 

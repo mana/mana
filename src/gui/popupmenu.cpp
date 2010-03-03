@@ -320,8 +320,8 @@ void PopupMenu::handleLink(const std::string &link)
 
     else if (link == "retrieve")
     {
-        ItemAmountWindow::showWindow(ItemAmountWindow::StoreRemove,
-                             storageWindow, mItem);
+        ItemAmountWindow::showWindow(ItemAmountWindow::StoreRemove, mWindow,
+                                     mItem);
     }
 
     else if (link == "party" && being && being->getType() == Being::PLAYER)
@@ -356,10 +356,12 @@ void PopupMenu::handleLink(const std::string &link)
     mItem = NULL;
 }
 
-void PopupMenu::showPopup(int x, int y, Item *item, bool isInventory)
+void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
+                          bool isInventory)
 {
     assert(item);
     mItem = item;
+    mWindow = parent;
     mBrowserBox->clearRows();
 
     if (isInventory)
@@ -384,7 +386,7 @@ void PopupMenu::showPopup(int x, int y, Item *item, bool isInventory)
             mBrowserBox->addRow(strprintf("@@split|%s@@", _("Split")));
         }
 
-        if (player_node->getInStorage())
+        if (StorageWindow::isActive())
         {
             mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }
