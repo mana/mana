@@ -169,6 +169,8 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     mServersListModel = new ServersListModel(&mServers, this);
 
     mServersList = new ListBox(mServersListModel);
+    mServersList->addMouseListener(this);
+
     ScrollArea *usedScroll = new ScrollArea(mServersList);
     usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
@@ -371,18 +373,28 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     mPortField->setText(toString(myServer.port));
     switch (myServer.type)
     {
-        case ServerInfo::UNKNOWN:
-            mTypeField->setSelected(2);
-            break;
         case ServerInfo::EATHENA:
             mTypeField->setSelected(0);
             break;
         case ServerInfo::MANASERV:
             mTypeField->setSelected(1);
+        default:
+            mTypeField->setSelected(2);
+            break;
     }
     setFieldsReadOnly(true);
 
     mDeleteButton->setEnabled(myServer.save);
+}
+
+void ServerDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
+{
+    if (mouseEvent.getClickCount() == 2 &&
+        mouseEvent.getSource() == mServersList)
+    {
+        action(gcn::ActionEvent(mConnectButton,
+                                mConnectButton->getActionEventId()));
+    }
 }
 
 void ServerDialog::logic()

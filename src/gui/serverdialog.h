@@ -32,6 +32,7 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
+#include <guichan/mouselistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
 #include <string>
@@ -133,6 +134,8 @@ class ServerDialog : public Window,
          * Called when the selected value changed in the servers list box.
          */
         void valueChanged(const gcn::SelectionEvent &event);
+
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
 
         void logic();
 
