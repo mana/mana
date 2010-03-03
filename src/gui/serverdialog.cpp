@@ -374,12 +374,11 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     switch (myServer.type)
     {
         case ServerInfo::EATHENA:
+        case ServerInfo::UNKNOWN:
             mTypeField->setSelected(0);
             break;
         case ServerInfo::MANASERV:
             mTypeField->setSelected(1);
-        default:
-            mTypeField->setSelected(2);
             break;
     }
     setFieldsReadOnly(true);
