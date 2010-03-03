@@ -152,6 +152,11 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         Map *getCurrentMap() const { return mMap; }
 
+        /**
+         * Hides the BeingPopup.
+         */
+        void hideBeingPopup();
+
     private:
         /**
          * Finds a path from the player to the mouse, and draws it. This is for
@@ -179,20 +184,18 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mMouseY;                 /**< Current mouse position in pixels. */
         float mPixelViewX;           /**< Current viewpoint in pixels. */
         float mPixelViewY;           /**< Current viewpoint in pixels. */
-        int mTileViewX;              /**< Current viewpoint in tiles. */
-        int mTileViewY;              /**< Current viewpoint in tiles. */
         int mShowDebugPath;         /**< Show a path from player to pointer. */
-        bool mVisibleNames;          /**< Show target names. */
 
         bool mPlayerFollowMouse;
 
         int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
 
         PopupMenu *mPopupMenu;       /**< Popup menu. */
-        Being *mSelectedBeing;       /**< Current selected being. */
-        BeingPopup *mBeingPopup;
+        Being *mHoverBeing;          /**< Being mouse is currently over. */
+        FloorItem *mHoverItem;       /**< FloorItem mouse is currently over. */
+        BeingPopup *mBeingPopup;     /**< Being information popup. */
 };
 
-extern Viewport *viewport;           /**< The viewport */
+extern Viewport *viewport;           /**< The viewport. */
 
 #endif

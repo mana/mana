@@ -57,7 +57,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          * @param skin    The location where the window's skin XML can be found.
          */
         Window(const std::string &caption = "Window", bool modal = false,
-               Window *parent = NULL, const std::string &skin = "graphics/gui/gui.xml");
+               Window *parent = NULL, const std::string &skin = "window.xml");
 
         /**
          * Destructor. Deletes all the added widgets.

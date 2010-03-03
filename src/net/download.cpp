@@ -20,8 +20,11 @@
 
 #include "net/download.h"
 
+#include "configuration.h"
 #include "log.h"
 #include "main.h"
+
+#include "utils/stringutils.h"
 
 #include <curl/curl.h>
 
@@ -217,11 +220,9 @@ int Download::downloadThread(void *ptr)
                 curl_easy_setopt(d->mCurl, CURLOPT_WRITEDATA, file);
             }
 
-#ifdef PACKAGE_VERSION
-            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT, "Mana/" PACKAGE_VERSION);
-#else
-            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT, "Mana");
-#endif
+            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT,
+                             strprintf(PACKAGE_EXTENDED_VERSION, branding
+                             .getValue("appShort", "mana").c_str()).c_str());
             curl_easy_setopt(d->mCurl, CURLOPT_ERRORBUFFER, d->mError);
             curl_easy_setopt(d->mCurl, CURLOPT_URL, d->mUrl.c_str());
             curl_easy_setopt(d->mCurl, CURLOPT_NOPROGRESS, 0);

@@ -125,6 +125,6 @@ class Network
         static Network *mInstance;
 };
 
-}
+} // namespace EAthena
 
 #endif // NET_EA_NETWORK_H

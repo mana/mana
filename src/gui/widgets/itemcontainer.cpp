@@ -32,6 +32,7 @@
 #include "gui/outfitwindow.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
+#include "gui/skin.h"
 #include "gui/viewport.h"
 
 #include "net/net.h"
@@ -39,7 +40,6 @@
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/stringutils.h"
 
@@ -67,9 +67,7 @@ ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
     mItemPopup = new ItemPopup;
     setFocusable(true);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    mSelImg = resman->getImage("graphics/gui/selection.png");
+    mSelImg = SkinLoader::getImageFromTheme("selection.png");
     if (!mSelImg)
         logger->error("Unable to load selection.png");
 

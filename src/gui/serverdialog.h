@@ -32,6 +32,7 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
+#include <guichan/mouselistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
 #include <string>
@@ -68,18 +69,24 @@ class ServersListModel : public gcn::ListModel
         ServerInfo getServer(int elementIndex) const
         { return mServers->at(elementIndex); }
 
+        /**
+         * Removes the entry.
+         */
+        void remove(int elementIndex)
+        { mServers->erase(mServers->begin() + elementIndex); }
+
     private:
         ServerInfos *mServers;
         ServerDialog *mParent;
 };
 
 /**
- * Server and Port List Model
+ * Server Type List Model
  */
 class TypeListModel : public gcn::ListModel
 {
     public:
-        TypeListModel() { };
+        TypeListModel() {}
 
         /**
          * Used to get number of line in the list
@@ -128,6 +135,8 @@ class ServerDialog : public Window,
          */
         void valueChanged(const gcn::SelectionEvent &event);
 
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
+
         void logic();
 
     protected:
@@ -143,7 +152,7 @@ class ServerDialog : public Window,
         static int downloadUpdate(void *ptr, DownloadStatus status,
                                   size_t total, size_t remaining);
 
-        void setFieldsReadOnly(const bool readOnly);
+        void setFieldsReadOnly(bool readOnly);
 
         TextField *mServerNameField;
         TextField *mPortField;
@@ -151,6 +160,7 @@ class ServerDialog : public Window,
         Button *mQuitButton;
         Button *mConnectButton;
         Button *mManualEntryButton;
+        Button *mDeleteButton;
 
         ListBox *mServersList;
         ServersListModel *mServersListModel;

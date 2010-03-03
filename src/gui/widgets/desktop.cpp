@@ -20,6 +20,7 @@
 
 #include "gui/widgets/desktop.h"
 
+#include "configuration.h"
 #include "graphics.h"
 #include "log.h"
 #include "main.h"
@@ -32,6 +33,8 @@
 #include "resources/resourcemanager.h"
 #include "resources/wallpaper.h"
 
+#include "utils/stringutils.h"
+
 Desktop::Desktop()
     : mWallpaper(0)
 {
@@ -39,7 +42,14 @@ Desktop::Desktop()
 
     Wallpaper::loadWallpapers();
 
-    mVersionLabel = new Label(FULL_VERSION);
+    std::string appName = branding.getValue("appName", "");
+
+    if (appName.empty())
+        mVersionLabel = new Label(FULL_VERSION);
+    else
+        mVersionLabel = new Label(strprintf("%s (Mana %s)", appName.c_str(),
+                                            FULL_VERSION));
+
     mVersionLabel->setBackgroundColor(gcn::Color(255, 255, 255, 128));
     add(mVersionLabel, 25, 2);
 }

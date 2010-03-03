@@ -34,8 +34,7 @@ class TextBox;
 /**
  * A popup that displays information about an item.
  */
-class ItemPopup : public Popup,
-                  public gcn::MouseListener
+class ItemPopup : public Popup
 {
     public:
         /**

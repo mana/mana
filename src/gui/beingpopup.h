@@ -23,10 +23,8 @@
 
 #include "gui/widgets/popup.h"
 
-#include <guichan/mouselistener.hpp>
-
+class Label;
 class Player;
-class TextBox;
 
 /**
  * A popup that displays information about a being.
@@ -52,8 +50,8 @@ class BeingPopup : public Popup
         // TODO: Add a version for monsters, NPCs, etc?
 
     private:
-        TextBox *mBeingName;
-        TextBox *mBeingParty;
+        Label *mBeingName;
+        Label *mBeingParty;
 
         static gcn::Color getColor();
 };

@@ -168,6 +168,8 @@ gcn::Color ItemPopup::getColor(ItemType type)
 
 void ItemPopup::mouseMoved(gcn::MouseEvent &event)
 {
+    Popup::mouseMoved(event);
+
     // When the mouse moved on top of the popup, hide it
     setVisible(false);
 }

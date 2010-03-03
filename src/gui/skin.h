@@ -31,6 +31,7 @@
 
 class ConfigListener;
 class Image;
+class ImageSet;
 
 class Skin
 {
@@ -101,11 +102,24 @@ class SkinLoader
         static SkinLoader *instance();
         static void deleteInstance();
 
+        static void prepareThemePath();
+        static std::string getThemePath() { return mThemePath; }
+
+        /**
+         * Returns the patch to the given gui resource relative to the theme
+         * or, if it isn't in the theme, relative to 'graphics/gui'.
+         */
+        static std::string resolveThemePath(const std::string &path);
+
+        static Image *getImageFromTheme(const std::string &path);
+        static ImageSet *getImageSetFromTheme(const std::string &path,
+                                           int w, int h);
+
         /**
          * Loads a skin.
          */
         Skin *load(const std::string &filename,
-                   const std::string &defaultPath);
+                   const std::string &defaultPath = getThemePath());
 
         /**
          * Updates the alpha values of all of the skins.
@@ -141,7 +155,10 @@ class SkinLoader
          */
         ConfigListener *mSkinConfigListener;
 
+        static std::string mThemePath;
         static SkinLoader *mInstance;
+
+        static bool tryThemePath(std::string themePath);
 
         /**
          * Tells if the current skins opacity

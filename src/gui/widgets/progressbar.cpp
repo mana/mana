@@ -30,7 +30,6 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -59,8 +58,7 @@ ProgressBar::ProgressBar(float progress,
 
     if (mInstances == 0)
     {
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
+        Image *dBorders = SkinLoader::getImageFromTheme("vscroll_grey.png");
         mBorder.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
         mBorder.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
         mBorder.grid[2] = dBorders->getSubImage(7, 0, 4, 4);

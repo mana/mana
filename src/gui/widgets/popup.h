@@ -28,6 +28,8 @@
 
 #include "gui/widgets/container.h"
 
+#include <guichan/mouselistener.hpp>
+
 class Skin;
 class WindowContainer;
 
@@ -43,7 +45,7 @@ class WindowContainer;
  *
  * \ingroup GUI
  */
-class Popup : public Container
+class Popup : public Container, public gcn::MouseListener
 {
     public:
         /**
@@ -55,7 +57,7 @@ class Popup : public Container
          * @param skin    The location where the Popup's skin XML can be found.
          */
         Popup(const std::string &name = "",
-              const std::string &skin = "graphics/gui/gui.xml");
+              const std::string &skin = "window.xml");
 
         /**
          * Destructor. Deletes all the added widgets.
@@ -93,6 +95,8 @@ class Popup : public Container
          * Sets the location relative to the given widget.
          */
         void setLocationRelativeTo(gcn::Widget *widget);
+
+        void mouseMoved(gcn::MouseEvent &event);
 
         /**
          * Sets the minimum width of the popup.

@@ -28,6 +28,7 @@
 
 #include "gui/gui.h"
 #include "gui/palette.h"
+#include "gui/skin.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/image.h"
@@ -49,8 +50,7 @@ Text::Text(const std::string &text, int x, int y,
     if (textManager == 0)
     {
         textManager = new TextManager;
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *sbImage = resman->getImage("graphics/gui/bubble.png|W:#"
+        Image *sbImage = SkinLoader::getImageFromTheme("bubble.png|W:#"
             + config.getValue("speechBubblecolor", "000000"));
         mBubble.grid[0] = sbImage->getSubImage(0, 0, 5, 5);
         mBubble.grid[1] = sbImage->getSubImage(5, 0, 5, 5);

@@ -9,7 +9,6 @@ SET (FILES
     circle-green.png
     close_button.png
     deepbox.png
-    gui.xml
     hscroll_left_default.png
     hscroll_left_highlight.png
     hscroll_left_pressed.png
@@ -48,6 +47,7 @@ SET (FILES
     vscroll_up_highlight.png
     vscroll_up_pressed.png
     window.png
+    window.xml
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/gui)

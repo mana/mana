@@ -32,10 +32,10 @@
 #include "log.h"
 
 #include "gui/palette.h"
+#include "gui/skin.h"
 
 #include "resources/emotedb.h"
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -49,9 +49,7 @@ EmoteShortcutContainer::EmoteShortcutContainer():
     addMouseListener(this);
     addWidgetListener(this);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    mBackgroundImg = resman->getImage("graphics/gui/item_shortcut_bgr.png");
+    mBackgroundImg = SkinLoader::getImageFromTheme("item_shortcut_bgr.png");
 
     mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
 

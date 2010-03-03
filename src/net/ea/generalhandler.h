@@ -60,6 +60,7 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
         MessageHandlerPtr mCharHandler;
         MessageHandlerPtr mChatHandler;
         MessageHandlerPtr mGameHandler;
+        MessageHandlerPtr mGuildHandler;
         MessageHandlerPtr mInventoryHandler;
         MessageHandlerPtr mItemHandler;
         MessageHandlerPtr mLoginHandler;

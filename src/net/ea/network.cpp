@@ -475,4 +475,4 @@ Uint16 Network::readWord(int pos)
 #endif
 }
 
-}
+} // namespace EAthena

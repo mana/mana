@@ -23,21 +23,25 @@
 
 #include "gui/skin.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "configlistener.h"
 #include "log.h"
 
 #include "resources/image.h"
+#include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
+#include <physfs.h>
+
 #include <algorithm>
 
+std::string SkinLoader::mThemePath;
 SkinLoader *SkinLoader::mInstance = 0;
-
 
 class SkinConfigListener : public ConfigListener
 {
@@ -197,7 +201,7 @@ Skin *SkinLoader::readSkin(const std::string &filename)
 
     logger->log("Loading skin '%s'.", filename.c_str());
 
-    XML::Document doc(filename);
+    XML::Document doc(resolveThemePath(filename));
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
@@ -215,8 +219,7 @@ Skin *SkinLoader::readSkin(const std::string &filename)
     logger->log("SkinLoader::load(): <skinset> defines "
                 "'%s' as a skin image.", skinSetImage.c_str());
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *dBorders = resman->getImage("graphics/gui/" + skinSetImage);
+    Image *dBorders = SkinLoader::getImageFromTheme(skinSetImage);
     ImageRect border;
 
     // iterate <widget>'s
@@ -286,8 +289,8 @@ Skin *SkinLoader::readSkin(const std::string &filename)
     logger->log("Finished loading skin.");
 
     // Hard-coded for now until we update the above code to look for window buttons
-    Image *closeImage = resman->getImage("graphics/gui/close_button.png");
-    Image *sticky = resman->getImage("graphics/gui/sticky_button.png");
+    Image *closeImage = SkinLoader::getImageFromTheme("close_button.png");
+    Image *sticky = SkinLoader::getImageFromTheme("sticky_button.png");
     Image *stickyImageUp = sticky->getSubImage(0, 0, 15, 15);
     Image *stickyImageDown = sticky->getSubImage(15, 0, 15, 15);
     sticky->decRef();
@@ -296,4 +299,69 @@ Skin *SkinLoader::readSkin(const std::string &filename)
                           filename);
     skin->updateAlpha(mMinimumOpacity);
     return skin;
+}
+
+bool SkinLoader::tryThemePath(std::string themePath)
+{
+    if (!themePath.empty())
+    {
+        themePath = "graphics/gui/" + themePath;
+        if (PHYSFS_exists(themePath.c_str()))
+        {
+            mThemePath = themePath;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void SkinLoader::prepareThemePath()
+{
+    // Try theme from settings
+    if (tryThemePath(config.getValue("theme", "")))
+        return;
+
+    // Try theme from branding
+    if (tryThemePath(branding.getValue("theme", "")))
+        return;
+
+    // Use default
+    mThemePath = "graphics/gui";
+}
+
+std::string SkinLoader::resolveThemePath(const std::string &path)
+{
+    // Need to strip off any dye info for the existence tests
+    int pos = path.find('|');
+    std::string file;
+    if (pos > 0)
+        file = path.substr(0, pos);
+    else
+        file = path;
+
+    // Might be a valid path already
+    if (PHYSFS_exists(file.c_str()))
+        return path;
+
+    // Try the theme
+    file = getThemePath() + "/" + file;
+    if (PHYSFS_exists(file.c_str()))
+        return getThemePath() + "/" + path;
+
+    // Backup
+    return "graphics/gui/" + path;
+}
+
+Image *SkinLoader::getImageFromTheme(const std::string &path)
+{
+    ResourceManager *resman = ResourceManager::getInstance();
+    return resman->getImage(resolveThemePath(path));
+}
+
+ImageSet *SkinLoader::getImageSetFromTheme(const std::string &path,
+                                        int w, int h)
+{
+    ResourceManager *resman = ResourceManager::getInstance();
+    return resman->getImageSet(resolveThemePath(path), w, h);
 }

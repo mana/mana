@@ -82,6 +82,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
+#include "utils/mkdir.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>
@@ -268,24 +269,16 @@ Game::~Game()
 
     destroyGuiWindows();
 
-    delete beingManager;
-    delete player_node;
-    delete floorItemManager;
-    delete channelManager;
-    delete commandHandler;
-    delete joystick;
-    delete particleEngine;
-    delete viewport;
-
-    viewport->setMap(NULL);
-
-    delete mCurrentMap;
+    del_0(beingManager)
+    del_0(player_node)
+    del_0(floorItemManager)
+    del_0(channelManager)
+    del_0(commandHandler)
+    del_0(joystick)
+    del_0(particleEngine)
+    del_0(viewport)
+    del_0(mCurrentMap)
     map_path = "";
-
-    player_node = NULL;
-    beingManager = NULL;
-    floorItemManager = NULL;
-    joystick = NULL;
 
     mInstance = 0;
 }
@@ -300,14 +293,24 @@ static bool saveScreenshot()
     std::stringstream filenameSuffix;
     std::stringstream filename;
     std::fstream testExists;
+    std::string screenshotDirectory = Client::getScreenshotDirectory();
     bool found = false;
+
+    if (mkdir_r(screenshotDirectory.c_str()) != 0)
+    {
+        logger->log("Directory %s doesn't exist and can't be created! "
+                    "Setting screenshot directory to home.",
+                    screenshotDirectory.c_str());
+        screenshotDirectory = std::string(PHYSFS_getUserDir());
+    }
 
     do {
         screenshotCount++;
         filenameSuffix.str("");
         filename.str("");
-        filename << Client::getScreenshotDirectory() << "/";
-        filenameSuffix << "Mana_Screenshot_" << screenshotCount << ".png";
+        filename << screenshotDirectory << "/";
+        filenameSuffix << branding.getValue("appShort", "Mana")
+                       << "_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
@@ -593,8 +596,12 @@ void Game::handleInput()
                     case KeyboardConfig::KEY_PICKUP:
                         {
                             const Vector &pos = player_node->getPosition();
-                            Uint16 x = (int) pos.x / 32;
-                            Uint16 y = (int) pos.y / 32;
+                            Map *map = viewport->getCurrentMap();
+                            Uint16 x = (int) pos.x / map->getTileWidth();
+                            Uint16 y = (int) (pos.y - 1)
+                                       / map->getTileHeight();
+                            // y - 1 needed to fix position, otherwise, it's
+                            // off under eAthena.
 
                             FloorItem *item =
                                 floorItemManager->findByCoordinates(x, y);

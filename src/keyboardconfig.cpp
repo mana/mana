@@ -156,15 +156,24 @@ bool KeyboardConfig::hasConflicts()
     {
         for (j = i, j++; j < KEY_TOTAL; j++)
         {
-            // Allow for item shortcut and emote keys to overlap
-            // as well as emote and ignore keys, but no other keys
-            if (!((((i >= KEY_SHORTCUT_1) && (i <= KEY_SHORTCUT_12)) &&
-                   ((j >= KEY_EMOTE_1) && (j <= KEY_EMOTE_12))) ||
-                   ((i == KEY_TOGGLE_CHAT) && (j == KEY_OK)) ||
-                   ((i == KEY_EMOTE) &&
-                    (j == KEY_IGNORE_INPUT_1 || j == KEY_IGNORE_INPUT_2))) &&
-                   (mKey[i].value == mKey[j].value)
-               )
+            // Allow collisions between shortcut and emote keys
+            if ((i >= KEY_SHORTCUT_1 && i <= KEY_SHORTCUT_12) && (j >= KEY_EMOTE_1 && j <= KEY_EMOTE_12))
+                continue;
+
+            // Why?
+            if (i == KEY_TOGGLE_CHAT && j == KEY_OK)
+                continue;
+
+            // Ignore keys can collide with anything.
+            if (j == KEY_IGNORE_INPUT_1 || j == KEY_IGNORE_INPUT_2)
+                continue;
+
+            // If the one of the keys is not set, then no conflict can happen.
+            if (mKey[i].value == -1 || mKey[j].value == -1)
+                continue;
+
+            // Finally test to see if a conflict DOES exist.
+            if (mKey[i].value == mKey[j].value)
             {
                 mBindError = strprintf(_("Conflict \"%s\" and \"%s\" keys. "
                                          "Resolve them, or gameplay may result"

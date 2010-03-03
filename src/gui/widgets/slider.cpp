@@ -27,7 +27,6 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;
@@ -83,9 +82,8 @@ void Slider::init()
     // Load resources
     if (mInstances == 0)
     {
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *slider = resman->getImage("graphics/gui/slider.png");
-        Image *sliderHi = resman->getImage("graphics/gui/slider_hilight.png");
+        Image *slider = SkinLoader::getImageFromTheme("slider.png");
+        Image *sliderHi = SkinLoader::getImageFromTheme("slider_hilight.png");
 
         x = 0; y = 0;
         w = 15; h = 6;

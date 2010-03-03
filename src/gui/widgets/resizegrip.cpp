@@ -24,8 +24,9 @@
 #include "configuration.h"
 #include "graphics.h"
 
+#include "gui/skin.h"
+
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include <guichan/graphics.hpp>
 
@@ -38,8 +39,7 @@ ResizeGrip::ResizeGrip(const std::string &image)
     if (mInstances == 0)
     {
         // Load the grip image
-        ResourceManager *resman = ResourceManager::getInstance();
-        gripImage = resman->getImage(image);
+        gripImage = SkinLoader::getImageFromTheme(image);
         gripImage->setAlpha(mAlpha);
     }
 

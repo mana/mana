@@ -12,7 +12,6 @@ gui_DATA =				\
 	circle-green.png		\
 	close_button.png		\
 	deepbox.png			\
-	gui.xml				\
 	hscroll_left_default.png	\
 	hscroll_left_highlight.png	\
 	hscroll_left_pressed.png	\
@@ -50,7 +49,8 @@ gui_DATA =				\
 	vscroll_up_default.png		\
 	vscroll_up_highlight.png	\
 	vscroll_up_pressed.png		\
-	window.png
+	window.png			\
+	window.xml
 
 EXTRA_DIST =				\
 	$(gui_DATA)

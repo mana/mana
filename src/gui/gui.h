@@ -107,6 +107,9 @@ class Gui : public gcn::Gui
             CURSOR_RESIZE_DOWN,
             CURSOR_RESIZE_DOWN_LEFT,
             CURSOR_RESIZE_DOWN_RIGHT,
+            CURSOR_FIGHT,
+            CURSOR_PICKUP,
+            CURSOR_TALK,
             CURSOR_TOTAL
         };
 

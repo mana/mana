@@ -38,6 +38,7 @@
 #include "net/ea/chathandler.h"
 #include "net/ea/charserverhandler.h"
 #include "net/ea/gamehandler.h"
+#include "net/ea/guildhandler.h"
 #include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
 #include "net/ea/loginhandler.h"
@@ -79,6 +80,7 @@ GeneralHandler::GeneralHandler():
     mCharHandler(new CharServerHandler),
     mChatHandler(new ChatHandler),
     mGameHandler(new GameHandler),
+    mGuildHandler(new GuildHandler),
     mInventoryHandler(new InventoryHandler),
     mItemHandler(new ItemHandler),
     mLoginHandler(new LoginHandler),
@@ -162,6 +164,7 @@ void GeneralHandler::load()
     mNetwork->registerHandler(mChatHandler.get());
     mNetwork->registerHandler(mCharHandler.get());
     mNetwork->registerHandler(mGameHandler.get());
+    mNetwork->registerHandler(mGuildHandler.get());
     mNetwork->registerHandler(mInventoryHandler.get());
     mNetwork->registerHandler(mItemHandler.get());
     mNetwork->registerHandler(mLoginHandler.get());

@@ -26,7 +26,6 @@
 #include "gui/sdlinput.h"
 #include "gui/skin.h"
 #include "gui/truetypefont.h"
-#include "gui/viewport.h"
 
 #include "gui/widgets/window.h"
 #include "gui/widgets/windowcontainer.h"
@@ -95,6 +94,7 @@ Gui::Gui(Graphics *graphics):
 
     // Initialize top GUI widget
     WindowContainer *guiTop = new WindowContainer;
+    guiTop->setFocusable(true);
     guiTop->setDimension(gcn::Rectangle(0, 0,
                 graphics->getWidth(), graphics->getHeight()));
     guiTop->setOpaque(false);
@@ -209,9 +209,8 @@ void Gui::setUseCustomCursor(bool customCursor)
             SDL_ShowCursor(SDL_DISABLE);
 
             // Load the mouse cursor
-            ResourceManager *resman = ResourceManager::getInstance();
-            mMouseCursors =
-                resman->getImageSet("graphics/gui/mouse.png", 40, 40);
+            mMouseCursors = SkinLoader::getImageSetFromTheme("mouse.png",
+                                                             40, 40);
 
             if (!mMouseCursors)
                 logger->error("Unable to load mouse cursors.");

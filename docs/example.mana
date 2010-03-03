@@ -13,9 +13,11 @@ filename / path as a command line parameter
  <option name="appShort" value="mana"/>
  <option name="appIcon" value="icons/mana.png"/>
  <option name="loginMusic" value="Magick - Real.ogg"/>
+ <option name="onlineServerList" value="http://manasource.org/serverlist.xml"/>
  <option name="defaultServer" value="testing.manasource.org"/>
  <option name="defaultPort" value="9601"/>
  <option name="defaultUpdateHost" value="http://updates.themanaworld.org"/>
  <option name="font" value="fonts/dejavusans.ttf" />
  <option name="boldFont" value="fonts/dejavusans-bold.ttf" />
+ <option name="theme" value="wood" />
 </configuration>

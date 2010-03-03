@@ -41,10 +41,13 @@ public:
     std::string hostname;
     unsigned short port;
 
+    bool save;
+
     ServerInfo()
     {
         type = UNKNOWN;
         port = 0;
+        save = false;
     }
 
     ServerInfo(const ServerInfo &info)
@@ -53,6 +56,12 @@ public:
         name = info.name;
         hostname = info.hostname;
         port = info.port;
+        save = info.save;
+    }
+
+    bool isValid() const
+    {
+        return !(hostname.empty() || port == 0 || type == UNKNOWN);
     }
 
     void clear()
@@ -63,13 +72,13 @@ public:
         port = 0;
     }
 
-    bool operator==(const ServerInfo &other)
+    bool operator==(const ServerInfo &other) const
     {
         return (type == other.type && hostname == other.hostname &&
                 port == other.port);
     }
 
-    bool operator!=(const ServerInfo &other)
+    bool operator!=(const ServerInfo &other) const
     {
         return (type != other.type || hostname != other.hostname ||
                 port != other.port);

@@ -29,7 +29,6 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/copynpaste.h"
 #include "utils/dtor.h"
@@ -53,8 +52,7 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
     if (instances == 0)
     {
         // Load the skin
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *textbox = resman->getImage("graphics/gui/deepbox.png");
+        Image *textbox = SkinLoader::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;

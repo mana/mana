@@ -125,4 +125,4 @@ void MessageOut::writeCoordinates(unsigned short x, unsigned short y,
     data[2] |= direction;
 }
 
-}
+} // namespace EAthena

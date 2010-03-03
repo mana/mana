@@ -32,11 +32,11 @@
 #include "gui/inventorywindow.h"
 #include "gui/itempopup.h"
 #include "gui/palette.h"
+#include "gui/skin.h"
 #include "gui/viewport.h"
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/stringutils.h"
 
@@ -50,9 +50,7 @@ ItemShortcutContainer::ItemShortcutContainer():
 
     mItemPopup = new ItemPopup;
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    mBackgroundImg = resman->getImage("graphics/gui/item_shortcut_bgr.png");
+    mBackgroundImg = SkinLoader::getImageFromTheme("item_shortcut_bgr.png");
     mMaxItems = itemShortcut->getItemCount();
 
     mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));

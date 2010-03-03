@@ -55,7 +55,7 @@ class NPC : public Player
         virtual int getNumberOfLayers() const
         { return 1; }
 
-        static const bool isTalking();
+        static bool isTalking();
 
     protected:
         /**
