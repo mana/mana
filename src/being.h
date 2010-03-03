@@ -442,6 +442,11 @@ class Being : public Sprite, public ConfigListener
         virtual int getHeight() const;
 
         /**
+         * Returns the being's pixel radius used to detect collisions.
+         */
+        virtual int getCollisionRadius() const;
+
+        /**
          * Returns the required size of a target cursor for this being.
          */
         virtual Being::TargetCursorSize getTargetCursorSize() const

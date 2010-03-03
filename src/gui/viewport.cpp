@@ -277,16 +277,23 @@ void Viewport::_drawDebugPath(Graphics *graphics)
     else if (Net::getNetworkType() == ServerInfo::MANASERV)
     {
         const Vector &playerPos = player_node->getPosition();
+        const int playerRadius = player_node->getCollisionRadius();
+        // Draw player collision rectangle
+        graphics->setColor(gcn::Color(128, 128, 0, 120));
+        graphics->fillRectangle(
+            gcn::Rectangle((int) playerPos.x - (int) mPixelViewX - playerRadius,
+                           (int) playerPos.y - (int) mPixelViewY - playerRadius,
+                                 playerRadius * 2, playerRadius * 2));
 
         debugPath = mMap->findPixelPath(
             (int) playerPos.x,
             (int) playerPos.y,
             mMouseX + (int) mPixelViewX,
             mMouseY + (int) mPixelViewY,
-            player_node->getWidth() / 2, 0xFF);
+            playerRadius, 0xFF);
 
         // We draw the path proposed by mouse
-        _drawPath(graphics, debugPath, gcn::Color(255, 0, 255));
+        _drawPath(graphics, debugPath, gcn::Color(128, 0, 128));
 
         // But also the one currently walked on.
         _drawPath(graphics, player_node->getPath(), gcn::Color(0, 0, 255));

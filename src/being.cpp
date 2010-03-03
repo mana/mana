@@ -150,11 +150,10 @@ void Being::setDestination(int dstX, int dstY)
     if (!mMap->getWalk(dstX / 32, dstY / 32))
         return;
 
-    // The being radius should be obtained from xml values.
-    Position dest = mMap->checkNodeOffsets(getWidth() / 2, getWalkMask(),
+    Position dest = mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
                                            dstX, dstY);
     Path thisPath = mMap->findPixelPath(mPos.x, mPos.y, dest.x, dest.y,
-                                   getWidth() / 2, getWalkMask());
+                                   getCollisionRadius(), getWalkMask());
 
     if (thisPath.empty())
     {
@@ -509,6 +508,17 @@ void Being::nextTile()
     mY = pos.y;
     setAction(WALK);
     mWalkTime += (int)(mWalkSpeed.x / 10);
+}
+
+int Being::getCollisionRadius() const
+{
+    // FIXME: Get this from XML file
+    int radius = getWidth() / 2;
+    if (radius > 32 / 2) radius = 32 / 2;
+    // set a default value if no value returned.
+    if (radius < 1) radius = 32 / 3;
+
+    return radius;
 }
 
 void Being::logic()
