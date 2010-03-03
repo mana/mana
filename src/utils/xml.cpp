@@ -52,7 +52,7 @@ namespace XML
                 size = file.tellg();
                 file.seekg(0, std::ios::beg);
 
-                data = new char[size];
+                data = (char*) malloc(size);
 
                 file.read(data, size);
                 file.close();
