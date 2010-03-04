@@ -290,7 +290,7 @@ class Map : public Properties
         /**
          * Adds a particle effect
          */
-        void addParticleEffect(const std::string &effectFile, int x, int y);
+        void addParticleEffect(const std::string &effectFile, int x, int y, int w = 0, int h = 0);
 
         /**
          * Initializes all added particle effects
@@ -367,6 +367,8 @@ class Map : public Properties
             std::string file;
             int x;
             int y;
+            int w;
+            int h;
         };
         std::list<ParticleEffectData> particleEffects;
 

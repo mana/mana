@@ -250,6 +250,12 @@ class Particle : public Sprite
         void setDieDistance(float dist)
         { mInvDieDistance = 1.0f / dist; }
 
+        /**
+         * Changes the size of the emitters so that the effect fills a
+         * rectangle of this size
+         */
+        void adjustEmitterSize(int w, int h);
+
         bool isAlive()
         { return mAlive; }
 

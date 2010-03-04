@@ -778,17 +778,22 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
     return path;
 }
 
-void Map::addParticleEffect(const std::string &effectFile, int x, int y)
+void Map::addParticleEffect(const std::string &effectFile, int x, int y, int w, int h)
 {
     ParticleEffectData newEffect;
     newEffect.file = effectFile;
     newEffect.x = x;
     newEffect.y = y;
+    newEffect.w = w;
+    newEffect.h = h;
     particleEffects.push_back(newEffect);
+
 }
 
 void Map::initializeParticleEffects(Particle *particleEngine)
 {
+    Particle *p;
+
     if (config.getValue("particleeffects", 1))
     {
         for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
@@ -796,7 +801,11 @@ void Map::initializeParticleEffects(Particle *particleEngine)
              i++
             )
         {
-            particleEngine->addEffect(i->file, i->x, i->y);
+            p = particleEngine->addEffect(i->file, i->x, i->y);
+            if (i->w > 0 && i->h > 0)
+            {
+                p->adjustEmitterSize(i->w, i->h);
+            }
         }
     }
 }

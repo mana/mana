@@ -378,6 +378,15 @@ Particle *Particle::addTextRiseFadeOutEffect(const std::string &text,
     return newParticle;
 }
 
+void Particle::adjustEmitterSize(int w, int h)
+{
+    for (EmitterIterator e = mChildEmitters.begin();
+         e != mChildEmitters.end(); e++)
+    {
+        (*e)->adjustSize(w, h);
+    }
+}
+
 void Particle::setMap(Map *map)
 {
     mMap = map;

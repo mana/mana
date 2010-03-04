@@ -474,3 +474,28 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
 
     return newParticles;
 }
+
+void ParticleEmitter::adjustSize(int w, int h)
+{
+    if (w == 0 || h == 0) return; // new dimensions are illegal
+
+    // calculate the old rectangle
+    int oldWidth = mParticlePosX.maxVal - mParticlePosX.minVal;
+    int oldHeight = mParticlePosX.maxVal - mParticlePosY.minVal;
+    int oldArea = oldWidth * oldHeight;
+    if (oldArea == 0)
+    {
+        //when the effect has no dimension it is
+        //not designed to be resizeable
+        return;
+    }
+
+    // set the new dimensions
+    mParticlePosX.set(0, w);
+    mParticlePosY.set(0, h);
+    int newArea = w * h;
+    // adjust the output so that the particle density stays the same
+    float outputFactor = (float)newArea / (float)oldArea;
+    mOutput.minVal *= outputFactor;
+    mOutput.maxVal *= outputFactor;
+}

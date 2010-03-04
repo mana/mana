@@ -73,6 +73,12 @@ class ParticleEmitter
         void setTarget(Particle *target)
         { mParticleTarget = target; };
 
+        /**
+         * Changes the size of the emitter so that the effect fills a
+         * rectangle of this size
+         */
+        void adjustSize(int w, int h);
+
     private:
         template <typename T> ParticleEmitterProp<T> readParticleEmitterProp(xmlNodePtr propertyNode, T def);
 
