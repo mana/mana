@@ -67,6 +67,9 @@ private:
 
     bool mWhisperTab;
     gcn::CheckBox *mWhisperTabCheckBox;
+
+    bool mShowGender;
+    gcn::CheckBox *mShowGenderCheckBox;
 };
 
 #endif

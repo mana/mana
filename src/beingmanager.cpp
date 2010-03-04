@@ -276,3 +276,16 @@ void BeingManager::getPlayerNames(std::vector<std::string> &names,
         ++i;
     }
 }
+
+void BeingManager::updatePlayerNames()
+{
+    Beings::iterator i = mBeings.begin();
+
+    while (i != mBeings.end())
+    {
+        Being *being = (*i);
+        if (being->getType() == Being::PLAYER && being->getName() != "")
+            being->updateName();
+        ++i;
+    }
+}
