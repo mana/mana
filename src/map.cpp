@@ -802,7 +802,7 @@ void Map::initializeParticleEffects(Particle *particleEngine)
             )
         {
             p = particleEngine->addEffect(i->file, i->x, i->y);
-            if (i->w > 0 && i->h > 0)
+            if (p && i->w > 0 && i->h > 0)
             {
                 p->adjustEmitterSize(i->w, i->h);
             }
