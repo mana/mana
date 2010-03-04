@@ -513,12 +513,7 @@ void Being::nextTile()
 int Being::getCollisionRadius() const
 {
     // FIXME: Get this from XML file
-    int radius = getWidth() / 2;
-    if (radius > 32 / 2) radius = 32 / 2;
-    // set a default value if no value returned.
-    if (radius < 1) radius = 32 / 3;
-
-    return radius;
+    return 16;
 }
 
 void Being::logic()

@@ -703,11 +703,11 @@ Path Map::findPixelPath(int startPixelX, int startPixelY, int endPixelX,
     return myPath;
 }
 
-static int const basicCost = 100;
-
 Path Map::findPath(int startX, int startY, int destX, int destY,
                    unsigned char walkmask, int maxCost)
 {
+    static int const basicCost = 100;
+
     // Path to be built up (empty by default)
     Path path;
 

@@ -249,6 +249,349 @@ void LocalPlayer::setGMLevel(int level)
 }
 
 
+Position LocalPlayer::getNextWalkPosition(unsigned char dir)
+{
+
+    // Compute where the next tile will be set.
+    int dx = 0, dy = 0;
+    if (dir & Being::UP)
+        dy--;
+    if (dir & Being::DOWN)
+        dy++;
+    if (dir & Being::LEFT)
+        dx--;
+    if (dir & Being::RIGHT)
+        dx++;
+
+    Vector pos = getPosition();
+
+    // If no map or no direction is given, give back the current player position
+    if (!mMap || (!dx && !dy))
+        return Position((int)pos.x, (int)pos.y);
+
+    // Get the current tile pos and its offset
+    int tileX = (int)pos.x / mMap->getTileWidth();
+    int tileY = (int)pos.y / mMap->getTileHeight();
+    int offsetX = (int)pos.x % mMap->getTileWidth();
+    int offsetY = (int)pos.y % mMap->getTileHeight();
+
+    // Get the walkability of every surrounding tiles.
+    bool wTopLeft = mMap->getWalk(tileX - 1, tileY - 1, getWalkMask());
+    bool wTop = mMap->getWalk(tileX, tileY - 1, getWalkMask());
+    bool wTopRight = mMap->getWalk(tileX + 1, tileY - 1, getWalkMask());
+    bool wLeft = mMap->getWalk(tileX - 1, tileY, getWalkMask());
+    bool wRight = mMap->getWalk(tileX + 1, tileY, getWalkMask());
+    bool wBottomLeft = mMap->getWalk(tileX - 1, tileY + 1, getWalkMask());
+    bool wBottom = mMap->getWalk(tileX, tileY + 1, getWalkMask());
+    bool wBottomRight = mMap->getWalk(tileX + 1, tileY + 1, getWalkMask());
+
+    // Make diagonals unwalkable when both straight directions are blocking
+    if (!wTop)
+    {
+        if (!wRight)
+            wTopRight = false;
+        if (!wLeft)
+            wTopLeft = false;
+    }
+    if (!wBottom)
+    {
+        if (!wRight)
+            wBottomRight = false;
+        if (!wLeft)
+            wBottomLeft = false;
+    }
+
+    // We'll make tests for each desired direction
+
+    // Handle diagonal cases by setting the way back to a straight direction
+    // when necessary.
+    if (dx && dy)
+    {
+        // Going top-right
+        if (dx > 0 && dy < 0)
+        {
+            if (!wTopRight)
+            {
+                // Choose a straight direction when diagonal target is blocked
+                if (!wTop && wRight)
+                    dy = 0;
+                else if (wTop && !wRight)
+                    dx = 0;
+                else if (!wTop && !wRight)
+                    return Position(tileX * 32 + 32 - getCollisionRadius(),
+                                    tileY * 32 + getCollisionRadius());
+                else // Both straight direction are walkable
+                {
+                    // Go right when below the corner
+                    if (offsetY >= (offsetX / mMap->getTileHeight()
+                        - (offsetX / mMap->getTileWidth()
+                           * mMap->getTileHeight()) ))
+                        dy = 0;
+                    else // Go up otherwise
+                        dx = 0;
+                }
+            }
+            else // The diagonal is walkable
+                return mMap->checkNodeOffsets(getCollisionRadius(),
+                                              getWalkMask(),
+                                    Position((int)pos.x + 32, (int)pos.y - 32));
+        }
+
+        // Going top-left
+        if (dx < 0 && dy < 0)
+        {
+            if (!wTopLeft)
+            {
+                // Choose a straight direction when diagonal target is blocked
+                if (!wTop && wLeft)
+                    dy = 0;
+                else if (wTop && !wLeft)
+                    dx = 0;
+                else if (!wTop && !wLeft)
+                    return Position(tileX * 32 + getCollisionRadius(),
+                                    tileY * 32 + getCollisionRadius());
+                else // Both straight direction are walkable
+                {
+                    // Go left when below the corner
+                    if (offsetY >= (offsetX / mMap->getTileWidth()
+                        * mMap->getTileHeight()))
+                        dy = 0;
+                    else // Go up otherwise
+                        dx = 0;
+                }
+            }
+            else // The diagonal is walkable
+                return mMap->checkNodeOffsets(getCollisionRadius(),
+                                              getWalkMask(),
+                                    Position((int)pos.x - 32, (int)pos.y - 32));
+        }
+
+        // Going bottom-left
+        if (dx < 0 && dy > 0)
+        {
+            if (!wBottomLeft)
+            {
+                // Choose a straight direction when diagonal target is blocked
+                if (!wBottom && wLeft)
+                    dy = 0;
+                else if (wBottom && !wLeft)
+                    dx = 0;
+                else if (!wBottom && !wLeft)
+                    return Position(tileX * 32 + getCollisionRadius(),
+                                    tileY * 32 + 32 - getCollisionRadius());
+                else // Both straight direction are walkable
+                {
+                    // Go down when below the corner
+                    if (offsetY >= (offsetX / mMap->getTileHeight()
+                        - (offsetX / mMap->getTileWidth()
+                           * mMap->getTileHeight()) ))
+                        dx = 0;
+                    else // Go left otherwise
+                        dy = 0;
+                }
+            }
+            else // The diagonal is walkable
+                return mMap->checkNodeOffsets(getCollisionRadius(),
+                                              getWalkMask(),
+                                    Position((int)pos.x - 32, (int)pos.y + 32));
+        }
+
+        // Going bottom-right
+        if (dx > 0 && dy > 0)
+        {
+            if (!wBottomRight)
+            {
+                // Choose a straight direction when diagonal target is blocked
+                if (!wBottom && wRight)
+                    dy = 0;
+                else if (wBottom && !wRight)
+                    dx = 0;
+                else if (!wBottom && !wRight)
+                    return Position(tileX * 32 + 32 - getCollisionRadius(),
+                                    tileY * 32 + 32 - getCollisionRadius());
+                else // Both straight direction are walkable
+                {
+                    // Go down when below the corner
+                    if (offsetY >= (offsetX / mMap->getTileWidth()
+                        * mMap->getTileHeight()))
+                        dx = 0;
+                    else // Go right otherwise
+                        dy = 0;
+                }
+            }
+            else // The diagonal is walkable
+                return mMap->checkNodeOffsets(getCollisionRadius(),
+                                              getWalkMask(),
+                                    Position((int)pos.x + 32, (int)pos.y + 32));
+        }
+
+    } // End of diagonal cases
+
+    // Straight directions
+    // Right direction
+    if (dx > 0 && !dy)
+    {
+        // If the straight destination is blocked,
+        // Make the player go the closest possible.
+        if (!wRight)
+            return Position(tileX * 32 + 32 - getCollisionRadius(), (int)pos.y);
+        else
+        {
+            if (!wTopRight)
+            {
+                // If we're going to collide with the top-right corner
+                if (offsetY - getCollisionRadius() < 0)
+                {
+                    // We make the player corrects its offset
+                    // before going further
+                    return Position(tileX * 32 + 32 - getCollisionRadius(),
+                                    tileY * 32 + getCollisionRadius());
+
+                }
+            }
+
+            if (!wBottomRight)
+            {
+                // If we're going to collide with the bottom-right corner
+                if (offsetY + getCollisionRadius() > 32)
+                {
+                    // We make the player corrects its offset
+                    // before going further
+                    return Position(tileX * 32 + 32 - getCollisionRadius(),
+                                    tileY * 32 + 32 - getCollisionRadius());
+
+                }
+            }
+            // If the way is clear, step up one checked tile ahead.
+            return mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+                                       Position((int)pos.x + 32, (int)pos.y));
+        }
+    }
+
+    // Left direction
+    if (dx < 0 && !dy)
+    {
+        // If the straight destination is blocked,
+        // Make the player go the closest possible.
+        if (!wLeft)
+            return Position(tileX * 32 + getCollisionRadius(), (int)pos.y);
+        else
+        {
+            if (!wTopLeft)
+            {
+                // If we're going to collide with the top-left corner
+                if (offsetY - getCollisionRadius() < 0)
+                {
+                    // We make the player corrects its offset
+                    // before going further
+                    return Position(tileX * 32 + getCollisionRadius(),
+                                    tileY * 32 + getCollisionRadius());
+
+                }
+            }
+
+            if (!wBottomLeft)
+            {
+                // If we're going to collide with the bottom-left corner
+                if (offsetY + getCollisionRadius() > 32)
+                {
+                    // We make the player corrects its offset
+                    // before going further
+                    return Position(tileX * 32 + getCollisionRadius(),
+                                    tileY * 32 + 32 - getCollisionRadius());
+
+                }
+            }
+            // If the way is clear, step up one checked tile ahead.
+            return mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+                                       Position((int)pos.x - 32, (int)pos.y));
+        }
+    }
+
+    // Up direction
+    if (!dx && dy < 0)
+    {
+        // If the straight destination is blocked,
+        // Make the player go the closest possible.
+        if (!wTop)
+            return Position((int)pos.x, tileY * 32 + getCollisionRadius());
+        else
+        {
+            if (!wTopLeft)
+            {
+                // If we're going to collide with the top-left corner
+                if (offsetX - getCollisionRadius() < 0)
+                {
+                    // We make the player corrects its offset
+                    // before going further
+                    return Position(tileX * 32 + getCollisionRadius(),
+                                    tileY * 32 + getCollisionRadius());
+
+                }
+            }
+
+            if (!wTopRight)
+            {
+                // If we're going to collide with the top-right corner
+                if (offsetX + getCollisionRadius() > 32)
+                {
+                    // We make the player corrects its offset
+                    // before going further
+                    return Position(tileX * 32 + 32 - getCollisionRadius(),
+                                    tileY * 32 + getCollisionRadius());
+
+                }
+            }
+            // If the way is clear, step up one checked tile ahead.
+            return mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+                                       Position((int)pos.x, (int)pos.y - 32));
+        }
+    }
+
+    // Down direction
+    if (!dx && dy > 0)
+    {
+        // If the straight destination is blocked,
+        // Make the player go the closest possible.
+        if (!wBottom)
+            return Position((int)pos.x, tileY * 32 + 32 - getCollisionRadius());
+        else
+        {
+            if (!wBottomLeft)
+            {
+                // If we're going to collide with the bottom-left corner
+                if (offsetX - getCollisionRadius() < 0)
+                {
+                    // We make the player corrects its offset
+                    // before going further
+                    return Position(tileX * 32 + getCollisionRadius(),
+                                    tileY * 32 + 32 - getCollisionRadius());
+
+                }
+            }
+
+            if (!wBottomRight)
+            {
+                // If we're going to collide with the bottom-right corner
+                if (offsetX + getCollisionRadius() > 32)
+                {
+                    // We make the player corrects its offset
+                    // before going further
+                    return Position(tileX * 32 + 32 - getCollisionRadius(),
+                                    tileY * 32 + 32 - getCollisionRadius());
+
+                }
+            }
+            // If the way is clear, step up one checked tile ahead.
+            return mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+                                       Position((int)pos.x, (int)pos.y + 32));
+        }
+    }
+
+    // Return the current position if everything else has failed.
+    return Position((int)pos.x, (int)pos.y);
+}
+
 void LocalPlayer::nextTile(unsigned char dir = 0)
 {
     if (Net::getNetworkType() == ServerInfo::EATHENA)
@@ -288,135 +631,12 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
             return;
 
         const Vector &pos = getPosition();
+        Position destination = getNextWalkPosition(dir);
 
-        // Compute where the next step will be set.
-        int dx = 0, dy = 0;
-        if (dir & UP)
-            dy--;
-        if (dir & DOWN)
-            dy++;
-        if (dir & LEFT)
-            dx--;
-        if (dir & RIGHT)
-            dx++;
-
-        // Choose a straight direction when diagonal target is blocked
-        if (dx && dy && !mMap->getWalk((pos.x / 32) + dx,
-                                       (pos.y / 32) + dy, getWalkMask()))
+        if ((int)pos.x != destination.x
+            || (int)pos.y != destination.y)
         {
-            // If one straight direction is blocked, and not the other,
-            // we choose the free one.
-            if (!mMap->getWalk((pos.x / 32) + dx, pos.y / 32,
-                               getWalkMask())
-                && mMap->getWalk((pos.x / 32), pos.y / 32 + dy,
-                               getWalkMask()))
-                {
-                    dx = 0;
-                }
-
-                else if (mMap->getWalk((pos.x / 32) + dx, pos.y / 32,
-                               getWalkMask())
-                && !mMap->getWalk((pos.x / 32), pos.y / 32 + dy,
-                               getWalkMask()))
-                {
-                    dy = 0;
-                }
-                else
-                {
-                    // In the other cases, we test if the current tile offset
-                    // is more inclined to one straight direction or another.
-                    int fx = (int) pos.x % 32;
-                    int fy = (int) pos.y % 32;
-
-                    // Top-left case
-                    if (dx < 0 && dy < 0)
-                    {
-                        // Go left when below the corner
-                        if (fy >= (fx / mMap->getTileWidth()
-                            * mMap->getTileHeight()))
-                            dy = 0;
-                        else // Go up otherwise
-                            dx = 0;
-                    }
-
-                    // Bottom-right case
-                    if (dx > 0 && dy > 0)
-                    {
-                        // Go down when below the corner
-                        if (fy >= (fx / mMap->getTileWidth()
-                            * mMap->getTileHeight()))
-                            dx = 0;
-                        else // Go right otherwise
-                            dy = 0;
-                    }
-
-                    // Top-right case
-                    if (dx > 0 && dy < 0)
-                    {
-                        // Go right when below the corner
-                        if (fy >= (fx / mMap->getTileHeight()
-                            - (fx / mMap->getTileWidth()
-                               * mMap->getTileHeight()) ))
-                            dy = 0;
-                        else // Go up otherwise
-                            dx = 0;
-                    }
-
-                    // Bottom-left case
-                    if (dx < 0 && dy > 0)
-                    {
-                        // Go down when below the corner
-                        if (fy >= (fx / mMap->getTileHeight()
-                            - (fx / mMap->getTileWidth()
-                               * mMap->getTileHeight()) ))
-                            dx = 0;
-                        else // Go left otherwise
-                            dy = 0;
-                    }
-                }
-        }
-
-        int dScaler = 0; // Distance to walk in pixels
-
-        if (dx || dy)
-        {
-            Position refPosition(0, 0);
-            Position testPosition(0, 0);
-            // Checks our path up to 1 tiles, if a blocking tile is found
-            // We go to the last good tile, and break out of the loop
-            for (dScaler = 1; dScaler <= std::max(mMap->getTileWidth(),
-                                                  mMap->getTileHeight());
-                                                  dScaler++)
-            {
-                refPosition = Position((int) pos.x + (dx * dScaler) / 32,
-                            (int) pos.y + (dy * dScaler) / 32);
-                testPosition = mMap->checkNodeOffsets(getWidth() / 2,
-                                                      getWalkMask(),
-                                                      refPosition);
-                if (refPosition.x != testPosition.x
-                    || refPosition.y != testPosition.y)
-                {
-                    dScaler--;
-                    break;
-                }
-            }
-        }
-
-        // Test also current position to avoid being blocked on corners
-        // in certain situations.
-        Position currentPosition((int) pos.x, (int) pos.y);
-        Position testPosition = mMap->checkNodeOffsets(getWidth() / 2,
-                                                       getWalkMask(),
-                                                       currentPosition);
-        if (dScaler > 0)
-        {
-            setDestination((int) pos.x + (dx * dScaler),
-                           (int) pos.y + (dy * dScaler));
-        }
-        else if (currentPosition.x != testPosition.x
-                || currentPosition.y != testPosition.y)
-        {
-            setDestination(testPosition.x, testPosition.y);
+            setDestination(destination.x, destination.y);
         }
         else if (dir != mDirection)
         {

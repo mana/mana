@@ -117,6 +117,12 @@ class LocalPlayer : public Player
         virtual void setAction(Action action, int attackType = 0);
 
         /**
+         * Compute the next pathnode location when walking using keyboard.
+         * used by nextTile().
+         */
+        Position getNextWalkPosition(unsigned char dir);
+
+        /**
          * Adds a new tile to the path when walking.
          * @note Eathena
          * Also, when specified, it picks up an item at the end of a path
