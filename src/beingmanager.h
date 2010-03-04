@@ -123,6 +123,8 @@ class BeingManager
         void getPlayerNames(std::vector<std::string> &names,
                             bool npcNames);
 
+        void updatePlayerNames();
+
     protected:
         Beings mBeings;
         Map *mMap;

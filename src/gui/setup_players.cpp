@@ -21,6 +21,7 @@
 
 #include "gui/setup_players.h"
 
+#include "beingmanager.h"
 #include "configuration.h"
 #include "log.h"
 
@@ -214,6 +215,7 @@ public:
 #define ACTION_TABLE "table"
 #define ACTION_STRATEGY "strategy"
 #define ACTION_WHISPER_TAB "whisper tab"
+#define ACTION_SHOW_GENDER "show gender"
 
 Setup_Players::Setup_Players():
     mPlayerTableTitleModel(new StaticTableModel(1, COLUMNS_NR)),
@@ -227,7 +229,9 @@ Setup_Players::Setup_Players():
                 player_relations.getDefault() & PlayerRelation::WHISPER)),
     mDeleteButton(new Button(_("Delete"), ACTION_DELETE, this)),
     mWhisperTab(config.getValue("whispertab", false)),
-    mWhisperTabCheckBox(new CheckBox(_("Put all whispers in tabs"), mWhisperTab))
+    mWhisperTabCheckBox(new CheckBox(_("Put all whispers in tabs"), mWhisperTab)),
+    mShowGender(config.getValue("showgender", false)),
+    mShowGenderCheckBox(new CheckBox(_("Show gender"), mShowGender))
 {
     setName(_("Players"));
 
@@ -274,6 +278,9 @@ Setup_Players::Setup_Players():
     mWhisperTabCheckBox->setActionEventId(ACTION_WHISPER_TAB);
     mWhisperTabCheckBox->addActionListener(this);
 
+    mShowGenderCheckBox->setActionEventId(ACTION_SHOW_GENDER);
+    mShowGenderCheckBox->addActionListener(this);
+
     reset();
 
     // Do the layout
@@ -283,6 +290,7 @@ Setup_Players::Setup_Players():
     place(0, 0, mPlayerTitleTable, 4);
     place(0, 1, mPlayerScrollArea, 4, 4).setPadding(2);
     place(0, 5, mDeleteButton);
+    place(0, 6, mShowGenderCheckBox, 2).setPadding(2);
     place(2, 5, ignore_action_label);
     place(2, 6, mIgnoreActionChoicesBox, 2).setPadding(2);
     place(2, 7, mDefaultTrading);
@@ -334,12 +342,21 @@ void Setup_Players::apply()
                                 | (mDefaultWhisper->isSelected() ?
                                        PlayerRelation::WHISPER : 0));
     config.setValue("whispertab", mWhisperTab);
+
+    bool showGender = config.getValue("showgender", false);
+
+    config.setValue("showgender", mShowGender);
+
+    if (beingManager && mShowGender != showGender)
+        beingManager->updatePlayerNames();
 }
 
 void Setup_Players::cancel()
 {
     mWhisperTab = config.getValue("whispertab", false);
     mWhisperTabCheckBox->setSelected(mWhisperTab);
+    mShowGender = config.getValue("showgender", false);
+    mShowGenderCheckBox->setSelected(mShowGender);
 }
 
 void Setup_Players::action(const gcn::ActionEvent &event)
@@ -382,6 +399,10 @@ void Setup_Players::action(const gcn::ActionEvent &event)
     else if (event.getId() == ACTION_WHISPER_TAB)
     {
         mWhisperTab = mWhisperTabCheckBox->isSelected();
+    }
+    else if (event.getId() == ACTION_SHOW_GENDER)
+    {
+        mShowGender = mShowGenderCheckBox->isSelected();
     }
 }
 

@@ -1032,7 +1032,21 @@ void Being::showName()
     mDispName = 0;
     std::string mDisplayName(mName);
 
-    if (getType() == MONSTER)
+    if (getType() == PLAYER)
+    {
+        if (config.getValue("showgender", false))
+        {
+            Player* player =  static_cast<Player*>(this);
+            if (player)
+            {
+                if (player->getGender() == GENDER_FEMALE)
+                    mDisplayName += " \u2640";
+                else
+                    mDisplayName += " \u2642";
+            }
+        }
+    }
+    else if (getType() == MONSTER)
     {
         if (config.getValue("showMonstersTakedDamage", false))
         {
