@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Mana], [1.0.0], [themanaworld-devel@lists.sourceforge.net], [mana])
+AC_INIT([Mana], [1.0.0], [dev@manasource.org], [mana])
 AM_INIT_AUTOMAKE([1.9])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS

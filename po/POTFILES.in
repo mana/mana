@@ -1,10 +1,11 @@
 # List of source files which contain translatable strings.
 # Generated using: grep "_(" -Irl src | sort
 
+src/client.cpp
 src/commandhandler.cpp
 src/commandhandler.h
-src/engine.cpp
 src/game.cpp
+src/gui/beingpopup.cpp
 src/gui/buy.cpp
 src/gui/buysell.cpp
 src/gui/changeemaildialog.cpp
@@ -16,7 +17,6 @@ src/gui/confirmdialog.cpp
 src/gui/connectiondialog.cpp
 src/gui/debugwindow.cpp
 src/gui/equipmentwindow.cpp
-src/gui/guildwindow.cpp
 src/gui/help.cpp
 src/gui/inventorywindow.cpp
 src/gui/itemamount.cpp
@@ -28,7 +28,6 @@ src/gui/npcpostdialog.cpp
 src/gui/okdialog.cpp
 src/gui/outfitwindow.cpp
 src/gui/palette.cpp
-src/gui/partywindow.cpp
 src/gui/popupmenu.cpp
 src/gui/quitdialog.cpp
 src/gui/recorder.cpp
@@ -46,6 +45,7 @@ src/gui/setup_keyboard.cpp
 src/gui/setup_players.cpp
 src/gui/setup_video.cpp
 src/gui/skilldialog.cpp
+src/gui/socialwindow.cpp
 src/gui/specialswindow.cpp
 src/gui/statuswindow.cpp
 src/gui/storagewindow.cpp
@@ -68,6 +68,8 @@ src/net/ea/charserverhandler.cpp
 src/net/ea/chathandler.cpp
 src/net/ea/gamehandler.cpp
 src/net/ea/generalhandler.cpp
+src/net/ea/gui/guildtab.cpp
+src/net/ea/guildhandler.cpp
 src/net/ea/gui/partytab.cpp
 src/net/ea/inventoryhandler.cpp
 src/net/ea/loginhandler.cpp
