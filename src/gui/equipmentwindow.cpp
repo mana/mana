@@ -29,7 +29,7 @@
 
 #include "gui/equipmentwindow.h"
 #include "gui/itempopup.h"
-#include "gui/palette.h"
+#include "gui/theme.h"
 #include "gui/setup.h"
 #include "gui/viewport.h"
 
@@ -118,7 +118,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     {
         if (i == mSelected)
         {
-            const gcn::Color color = guiPalette->getColor(Palette::HIGHLIGHT);
+            const gcn::Color color = Theme::getThemeColor(Theme::HIGHLIGHT);
 
             // Set color to the highlight color
             g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
@@ -143,7 +143,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
                          mEquipBox[i].posY + 2);
             if (i == EQUIP_PROJECTILE_SLOT)
             {
-                g->setColor(guiPalette->getColor(Palette::TEXT));
+                g->setColor(Theme::getThemeColor(Theme::TEXT));
                 graphics->drawText(toString(item->getQuantity()),
                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
                                    mEquipBox[i].posY - getFont()->getHeight(),

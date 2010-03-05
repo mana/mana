@@ -53,9 +53,9 @@ class Tab : public gcn::Tab
         void setTabColor(const gcn::Color *color);
 
         /**
-         * Set tab highlighted
+         * Set tab flashing state
          */
-        void setHighlighted(bool high);
+        void setFlash(bool flash);
 
     protected:
         friend class TabbedArea;
@@ -70,7 +70,7 @@ class Tab : public gcn::Tab
         static float mAlpha;
 
         const gcn::Color *mTabColor;
-        bool mHighlighted;
+        bool mFlash;
 };
 
 #endif

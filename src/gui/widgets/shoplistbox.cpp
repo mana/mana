@@ -26,7 +26,7 @@
 #include "shopitem.h"
 
 #include "gui/itempopup.h"
-#include "gui/palette.h"
+#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/shopitems.h"
@@ -76,7 +76,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 
     int alpha = (int)(mAlpha * 255.0f);
     const gcn::Color* highlightColor =
-            &guiPalette->getColor(Palette::HIGHLIGHT, alpha);
+            &Theme::getThemeColor(Theme::HIGHLIGHT, alpha);
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
@@ -89,19 +89,19 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     {
         gcn::Color temp;
         const gcn::Color* backgroundColor =
-                &guiPalette->getColor(Palette::BACKGROUND, alpha);
+                &Theme::getThemeColor(Theme::BACKGROUND, alpha);
 
         if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
         {
             if (i != mSelected)
             {
-                backgroundColor = &guiPalette->getColor(Palette::SHOP_WARNING,
-                        alpha);
+                backgroundColor = &Theme::getThemeColor(Theme::SHOP_WARNING,
+                                                        alpha);
             }
             else
             {
-                temp = guiPalette->getColor(Palette::SHOP_WARNING, alpha);
+                temp = Theme::getThemeColor(Theme::SHOP_WARNING, alpha);
                 temp.r = (temp.r + highlightColor->r) / 2;
                 temp.g = (temp.g + highlightColor->g) / 2;
                 temp.b = (temp.g + highlightColor->b) / 2;
@@ -125,7 +125,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
                 graphics->drawImage(icon, 1, y);
             }
         }
-        graphics->setColor(guiPalette->getColor(Palette::TEXT));
+        graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         graphics->drawText(mListModel->getElementAt(i), ITEM_ICON_SIZE + 5,
                 y + (ITEM_ICON_SIZE - getFont()->getHeight()) / 2);
     }

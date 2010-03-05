@@ -27,11 +27,15 @@
 #include "configlistener.h"
 #include "graphics.h"
 
+#include "gui/palette.h"
+
 #include <map>
 #include <string>
 
+class DyePalette;
 class Image;
 class ImageSet;
+class ProgressBar;
 
 class Skin
 {
@@ -96,7 +100,7 @@ class Skin
         Image *mStickyImageDown;   /**< Sticky Button Image */
 };
 
-class Theme : public ConfigListener
+class Theme : public Palette, public ConfigListener
 {
     public:
         static Theme *instance();
@@ -114,6 +118,79 @@ class Theme : public ConfigListener
         static Image *getImageFromTheme(const std::string &path);
         static ImageSet *getImageSetFromTheme(const std::string &path,
                                            int w, int h);
+
+        enum ThemePalette {
+            TEXT,
+            SHADOW,
+            OUTLINE,
+            PROGRESS_BAR,
+            BUTTON,
+            BUTTON_DISABLED,
+            TAB,
+            BACKGROUND,
+            HIGHLIGHT,
+            TAB_FLASH,
+            SHOP_WARNING,
+            ITEM_EQUIPPED,
+            CHAT,
+            GM,
+            PLAYER,
+            WHISPER,
+            IS,
+            PARTY,
+            GUILD,
+            SERVER,
+            LOGGER,
+            HYPERLINK,
+            UNKNOWN_ITEM,
+            GENERIC,
+            HEAD,
+            USABLE,
+            TORSO,
+            ONEHAND,
+            LEGS,
+            FEET,
+            TWOHAND,
+            SHIELD,
+            RING,
+            NECKLACE,
+            ARMS,
+            AMMO,
+            THEME_COLORS_END
+        };
+
+        enum ProgressPalette {
+            PROG_DEFAULT,
+            PROG_HP,
+            PROG_MP,
+            PROG_NO_MP,
+            PROG_EXP,
+            PROG_INVY_SLOTS,
+            PROG_WEIGHT,
+            PROG_JOB,
+            THEME_PROG_END
+        };
+
+        /**
+         * Gets the color associated with the type. Sets the alpha channel
+         * before returning.
+         *
+         * @param type the color type requested
+         * @param alpha alpha channel to use
+         *
+         * @return the requested color
+         */
+        inline static const gcn::Color &getThemeColor(int type, int alpha = 255)
+        {
+            return mInstance->getColor(type, alpha);
+        }
+
+        const static gcn::Color &getThemeColor(char c, bool &valid)
+        {
+            return mInstance->getColor(c, valid);
+        }
+
+        static gcn::Color getProgressColor(int type, float progress);
 
         /**
          * Loads a skin.
@@ -152,21 +229,21 @@ class Theme : public ConfigListener
 
         Skins mSkins;
 
-        /**
-         * The config listener that listens to changes relevant to all skins.
-         */
-        ConfigListener *mSkinConfigListener;
-
         static std::string mThemePath;
         static Theme *mInstance;
 
         static bool tryThemePath(std::string themePath);
+
+        void loadColors(std::string file = "");
 
         /**
          * Tells if the current skins opacity
          * should not get less than the given value
          */
         float mMinimumOpacity;
+
+        typedef std::vector<DyePalette*> ProgressColors;
+        ProgressColors mProgressColors;
 };
 
 #endif

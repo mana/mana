@@ -39,6 +39,10 @@ class DyePalette
          */
         DyePalette(const std::string &pallete);
 
+        void addFirstColor(const int color[3]);
+
+        void addLastColor(const int color[3]);
+
         /**
          * Gets a pixel color depending on its intensity.
          */

@@ -23,24 +23,12 @@
 #ifndef PALETTE_H
 #define PALETTE_H
 
-#include <guichan/listmodel.hpp>
 #include <guichan/color.hpp>
 
 #include <cstdlib>
 #include <string>
+#include <set>
 #include <vector>
-
-// Generate strings from an enum ... some preprocessor fun.
-#define EDEF(a) a,
-#define LASTEDEF(a) a
-#define ECONFIGSTR(a) Palette::getConfigName(#a),
-#define LASTECONFIGSTR(a) Palette::getConfigName(#a)
-
-#define TEXTENUM(name,def)\
-    enum name { def(EDEF,LASTEDEF) };\
-    static const std::string name ## Names[]
-#define DEFENUMNAMES(name,def)\
-    const std::string Palette::name ## Names[] = { def(ECONFIGSTR,ECONFIGSTR) "" }
 
 // Default Gradient Delay
 #define GRADIENT_DELAY 40
@@ -48,67 +36,11 @@
 /**
  * Class controlling the game's color palette.
  */
-class Palette : public gcn::ListModel
+class Palette
 {
     public:
-        /** List of all colors that are configurable. */
-        #define COLOR_TYPE(ENTRY,LASTENTRY)\
-            ENTRY(TEXT)\
-            ENTRY(SHADOW)\
-            ENTRY(OUTLINE)\
-            ENTRY(PROGRESS_BAR)\
-            ENTRY(BUTTON)\
-            ENTRY(BUTTON_DISABLED)\
-            ENTRY(TAB)\
-            ENTRY(BACKGROUND)\
-            ENTRY(HIGHLIGHT)\
-            ENTRY(TAB_HIGHLIGHT)\
-            ENTRY(SHOP_WARNING)\
-            ENTRY(ITEM_EQUIPPED)\
-            ENTRY(CHAT)\
-            ENTRY(GM)\
-            ENTRY(PLAYER)\
-            ENTRY(WHISPER)\
-            ENTRY(IS)\
-            ENTRY(PARTY)\
-            ENTRY(GUILD)\
-            ENTRY(SERVER)\
-            ENTRY(LOGGER)\
-            ENTRY(HYPERLINK)\
-            ENTRY(BEING)\
-            ENTRY(PC)\
-            ENTRY(SELF)\
-            ENTRY(GM_NAME)\
-            ENTRY(NPC)\
-            ENTRY(MONSTER)\
-            ENTRY(UNKNOWN_ITEM)\
-            ENTRY(GENERIC)\
-            ENTRY(HEAD)\
-            ENTRY(USABLE)\
-            ENTRY(TORSO)\
-            ENTRY(ONEHAND)\
-            ENTRY(LEGS)\
-            ENTRY(FEET)\
-            ENTRY(TWOHAND)\
-            ENTRY(SHIELD)\
-            ENTRY(RING)\
-            ENTRY(NECKLACE)\
-            ENTRY(ARMS)\
-            ENTRY(AMMO)\
-            ENTRY(PARTICLE)\
-            ENTRY(EXP_INFO)\
-            ENTRY(PICKUP_INFO)\
-            ENTRY(HIT_PLAYER_MONSTER)\
-            ENTRY(HIT_MONSTER_PLAYER)\
-            ENTRY(HIT_CRITICAL)\
-            ENTRY(MISS)\
-            ENTRY(HPBAR_FULL)\
-            ENTRY(HPBAR_THREE_QUARTERS)\
-            ENTRY(HPBAR_ONE_HALF)\
-            ENTRY(HPBAR_ONE_QUARTER)\
-            LASTENTRY(TYPE_COUNT)
-
-        TEXTENUM(ColorType, COLOR_TYPE);
+        /** Black Color Constant */
+        static const gcn::Color BLACK;
 
         /** Colors can be static or can alter over time. */
         enum GradientType {
@@ -117,16 +49,6 @@ class Palette : public gcn::ListModel
             SPECTRUM,
             RAINBOW
         };
-
-        /**
-         * Constructor
-         */
-        Palette();
-
-        /**
-         * Destructor
-         */
-        ~Palette();
 
         /**
          * Returns the color associated with a character, if it exists. Returns
@@ -148,46 +70,11 @@ class Palette : public gcn::ListModel
          *
          * @return the requested color
          */
-        inline const gcn::Color &getColor(ColorType type, int alpha = 255)
+        inline const gcn::Color &getColor(int type, int alpha = 255)
         {
-            gcn::Color* col = &mColVector[type].color;
+            gcn::Color* col = &mColors[type].color;
             col->a = alpha;
             return *col;
-        }
-
-        /**
-         * Gets the committed color associated with the specified type.
-         *
-         * @param type the color type requested
-         *
-         * @return the requested committed color
-         */
-        inline const gcn::Color &getCommittedColor(ColorType type)
-        {
-            return mColVector[type].committedColor;
-        }
-
-        /**
-         * Gets the test color associated with the specified type.
-         *
-         * @param type the color type requested
-         *
-         * @return the requested test color
-         */
-        inline const gcn::Color &getTestColor(ColorType type)
-        {
-            return mColVector[type].testColor;
-        }
-
-        /**
-         * Sets the test color associated with the specified type.
-         *
-         * @param type the color type requested
-         * @param color the color that should be tested
-         */
-        inline void setTestColor(ColorType type, gcn::Color color)
-        {
-            mColVector[type].testColor = color;
         }
 
         /**
@@ -197,9 +84,21 @@ class Palette : public gcn::ListModel
          *
          * @return the gradient type of the color with the given index
          */
-        inline GradientType getGradientType(ColorType type)
+        inline GradientType getGradientType(int type)
         {
-            return mColVector[type].grad;
+            return mColors[type].grad;
+        }
+
+        /**
+         * Get the character used by the specified color.
+         *
+         * @param type the color type of the color
+         *
+         * @return the color char of the color with the given index
+         */
+        inline char getColorChar(int type)
+        {
+            return mColors[type].ch;
         }
 
         /**
@@ -209,119 +108,40 @@ class Palette : public gcn::ListModel
          *
          * @return the gradient delay of the color with the given index
          */
-        inline int getGradientDelay(ColorType type)
-            { return mColVector[type].delay; }
-
-        /**
-        * Get the character used by the specified color.
-        *
-        * @param type the color type of the color
-        *
-        * @return the color char of the color with the given index
-        */
-        inline char getColorChar(ColorType type)
-        {
-            return mColVector[type].ch;
-        }
-
-        /**
-         * Sets the color for the specified type.
-         *
-         * @param type color to be set
-         * @param r red component
-         * @param g green component
-         * @param b blue component
-         */
-        void setColor(ColorType type, int r, int g, int b);
-
-        /**
-         * Sets the gradient type for the specified color.
-         *
-         * @param grad gradient type to set
-         */
-        void setGradient(ColorType type, GradientType grad);
-
-        /**
-         * Sets the gradient delay for the specified color.
-         *
-         * @param grad gradient type to set
-         */
-        void setGradientDelay(ColorType type, int delay)
-            { mColVector[type].delay = delay; }
-
-        /**
-         * Returns the number of colors known.
-         *
-         * @return the number of colors known
-         */
-        inline int getNumberOfElements() { return mColVector.size(); }
-
-        /**
-         * Returns the name of the ith color.
-         *
-         * @param i index of color interested in
-         *
-         * @return the name of the color
-         */
-        std::string getElementAt(int i);
-
-        /**
-         * Gets the ColorType used by the color for the element at index i in
-         * the current color model.
-         *
-         * @param i the index of the color
-         *
-         * @return the color type of the color with the given index
-         */
-        ColorType getColorTypeAt(int i);
-
-        /**
-         * Commit the colors
-         */
-        inline void commit()
-        {
-            commit(false);
-        }
-
-        /**
-         * Rollback the colors
-         */
-        void rollback();
+        inline int getGradientDelay(int type)
+            { return mColors[type].delay; }
 
         /**
          * Updates all colors, that are non-static.
          */
-        void advanceGradient();
+        static void advanceGradients();
 
-    private:
-        /** Black Color Constant */
-        static const gcn::Color BLACK;
-
+    protected:
         /** Colors used for the rainbow gradient */
         static const gcn::Color RAINBOW_COLORS[];
         static const int RAINBOW_COLOR_COUNT;
+
         /** Time tick, that gradient-type colors were updated the last time. */
         int mRainbowTime;
 
-        /**
-         * Define a color replacement.
-         *
-         * @param i the index of the color to replace
-         * @param r red component
-         * @param g green component
-         * @param b blue component
-         */
-        void setColorAt(int i, int r, int g, int b);
+        typedef std::set<Palette*> Palettes;
+        static Palettes mInstances;
 
         /**
-         * Commit the colors. Commit the non-static color values, if
-         * commitNonStatic is true. Only needed in the constructor.
+         * Constructor
          */
-        void commit(bool commitNonStatic);
+        Palette(int size);
+
+        /**
+         * Destructor
+         */
+        ~Palette();
+
+        void advanceGradient();
 
         struct ColorElem
         {
-            ColorType type;
+            int type;
             gcn::Color color;
             gcn::Color testColor;
             gcn::Color committedColor;
@@ -333,7 +153,7 @@ class Palette : public gcn::ListModel
             int delay;
             int committedDelay;
 
-            void set(ColorType type, gcn::Color& color, GradientType grad,
+            void set(int type, gcn::Color& color, GradientType grad,
                      const std::string &text, char c, int delay)
             {
                 ColorElem::type = type;
@@ -352,35 +172,10 @@ class Palette : public gcn::ListModel
                         committedColor.b;
             }
         };
-        typedef std::vector<ColorElem> ColVector;
+        typedef std::vector<ColorElem> Colors;
         /** Vector containing the colors. */
-        ColVector mColVector;
+        Colors mColors;
         std::vector<ColorElem*> mGradVector;
-
-        /**
-         * Initialise color
-         *
-         * @param c character that needs initialising
-         * @param rgb default color if not found in config
-         * @param text identifier of color
-         */
-        void addColor(ColorType type, int rgb, GradientType grad,
-                      const std::string &text, char c = 0, 
-                      int delay = GRADIENT_DELAY);
-
-        /**
-         * Prefixes the given string with "Color", lowercases all letters but
-         * the first and all following a '_'. All '_'s will be removed.
-         *
-         * E.g.: HIT_PLAYER_MONSTER -> HitPlayerMonster
-         *
-         * @param typeName string to transform
-         *
-         * @return the transformed string
-         */
-        static std::string getConfigName(const std::string &typeName);
 };
-
-extern Palette *guiPalette;
 
 #endif

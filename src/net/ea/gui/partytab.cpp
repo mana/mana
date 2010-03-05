@@ -25,7 +25,7 @@
 #include "localplayer.h"
 #include "party.h"
 
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 #include "net/net.h"
 #include "net/partyhandler.h"
@@ -42,7 +42,7 @@ namespace EAthena {
 PartyTab::PartyTab() :
     ChatTab(_("Party"))
 {
-    setTabColor(&guiPalette->getColor(Palette::PARTY));
+    setTabColor(&Theme::getThemeColor(Theme::PARTY));
 }
 
 PartyTab::~PartyTab()

@@ -26,7 +26,7 @@
 #include "units.h"
 
 #include "gui/gui.h"
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/textbox.h"
 
@@ -136,33 +136,33 @@ gcn::Color ItemPopup::getColor(ItemType type)
     switch (type)
     {
         case ITEM_UNUSABLE:
-            return guiPalette->getColor(Palette::GENERIC);
+            return Theme::getThemeColor(Theme::GENERIC);
         case ITEM_USABLE:
-            return guiPalette->getColor(Palette::USABLE);
+            return Theme::getThemeColor(Theme::USABLE);
         case ITEM_EQUIPMENT_ONE_HAND_WEAPON:
-            return guiPalette->getColor(Palette::ONEHAND);
+            return Theme::getThemeColor(Theme::ONEHAND);
         case ITEM_EQUIPMENT_TWO_HANDS_WEAPON:
-            return guiPalette->getColor(Palette::TWOHAND);
+            return Theme::getThemeColor(Theme::TWOHAND);
         case ITEM_EQUIPMENT_TORSO:
-            return guiPalette->getColor(Palette::TORSO);
+            return Theme::getThemeColor(Theme::TORSO);
         case ITEM_EQUIPMENT_ARMS:
-            return guiPalette->getColor(Palette::ARMS);
+            return Theme::getThemeColor(Theme::ARMS);
         case ITEM_EQUIPMENT_HEAD:
-            return guiPalette->getColor(Palette::HEAD);
+            return Theme::getThemeColor(Theme::HEAD);
         case ITEM_EQUIPMENT_LEGS:
-            return guiPalette->getColor(Palette::LEGS);
+            return Theme::getThemeColor(Theme::LEGS);
         case ITEM_EQUIPMENT_SHIELD:
-            return guiPalette->getColor(Palette::SHIELD);
+            return Theme::getThemeColor(Theme::SHIELD);
         case ITEM_EQUIPMENT_RING:
-            return guiPalette->getColor(Palette::RING);
+            return Theme::getThemeColor(Theme::RING);
         case ITEM_EQUIPMENT_NECKLACE:
-            return guiPalette->getColor(Palette::NECKLACE);
+            return Theme::getThemeColor(Theme::NECKLACE);
         case ITEM_EQUIPMENT_FEET:
-            return guiPalette->getColor(Palette::FEET);
+            return Theme::getThemeColor(Theme::FEET);
         case ITEM_EQUIPMENT_AMMO:
-            return guiPalette->getColor(Palette::AMMO);
+            return Theme::getThemeColor(Theme::AMMO);
         default:
-            return guiPalette->getColor(Palette::UNKNOWN_ITEM);
+            return Theme::getThemeColor(Theme::UNKNOWN_ITEM);
     }
 }
 

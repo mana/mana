@@ -30,6 +30,7 @@
 #include "gui/inventorywindow.h"
 #include "gui/itemamount.h"
 #include "gui/setup.h"
+#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
@@ -82,7 +83,7 @@ StorageWindow::StorageWindow(Inventory *inventory):
 
     mSlotsLabel = new Label(_("Slots:"));
 
-    mSlotsBar = new ProgressBar(0.0f, 100, 20, gcn::Color(225, 200, 25));
+    mSlotsBar = new ProgressBar(0.0f, 100, 20, Theme::PROG_INVY_SLOTS);
     mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mInventory->getSize()));
     mSlotsBar->setProgress((float) mUsedSlots / mInventory->getSize());
 

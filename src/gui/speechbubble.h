@@ -23,7 +23,7 @@
 #ifndef SPEECHBUBBLE_H
 #define SPEECHBUBBLE_H
 
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/popup.h"
 
@@ -42,7 +42,7 @@ class SpeechBubble : public Popup
          */
         void setCaption(const std::string &name,
                         const gcn::Color *color =
-                        &guiPalette->getColor(Palette::TEXT));
+                        &Theme::getThemeColor(Theme::TEXT));
 
         /**
          * Sets the text to be displayed.

@@ -71,6 +71,7 @@ struct SkillInfo
 
     std::string skillExp;
     float progress;
+    gcn::Color color;
 
     ~SkillInfo()
     {
@@ -146,8 +147,8 @@ public:
 
         Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
-        graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
-                (int)(mAlpha * 255.0f)));
+        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
+                                                (int) (mAlpha * 255.0f)));
         graphics->setFont(getFont());
 
         // Draw filled rectangle around the selected list element
@@ -158,7 +159,7 @@ public:
         }
 
         // Draw the list elements
-        graphics->setColor(guiPalette->getColor(Palette::TEXT));
+        graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         for (int i = 0, y = 1;
              i < model->getNumberOfElements();
              ++i, y += getRowHeight())
@@ -429,6 +430,8 @@ void SkillInfo::update()
         progress = 0.0f;
     }
 
+    color = Theme::getProgressColor(Theme::PROG_EXP, progress);
+
     if (updateVisibility)
     {
         model->updateVisibilities();
@@ -452,7 +455,6 @@ void SkillInfo::draw(Graphics *graphics, int y, int width)
     {
         gcn::Rectangle rect(33, y + 15, width - 33, 17);
 
-        ProgressBar::render(graphics, rect, gcn::Color(143, 192, 211),
-                            progress, skillExp);
+        ProgressBar::render(graphics, rect, color, progress, skillExp);
     }
 }

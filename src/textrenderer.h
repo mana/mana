@@ -24,7 +24,7 @@
 
 #include "graphics.h"
 
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 /**
  * Class for text rendering. Used by the TextParticle, the Text and FlashText
@@ -50,7 +50,7 @@ class TextRenderer
         // Text shadow
         if (shadow)
         {
-            graphics->setColor(guiPalette->getColor(Palette::SHADOW,
+            graphics->setColor(Theme::getThemeColor(Theme::SHADOW,
                                                     color.a / 2));
             if (outline)
             {
@@ -71,7 +71,7 @@ class TextRenderer
             graphics->drawText(text, x + 2, y + 1, align);*/
 
             // Text outline
-            graphics->setColor(guiPalette->getColor(Palette::OUTLINE, color.a));
+            graphics->setColor(Theme::getThemeColor(Theme::OUTLINE, color.a));
             graphics->drawText(text, x + 1, y, align);
             graphics->drawText(text, x - 1, y, align);
             graphics->drawText(text, x, y + 1, align);

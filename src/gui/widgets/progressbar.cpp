@@ -41,11 +41,10 @@ float ProgressBar::mAlpha = 1.0;
 
 ProgressBar::ProgressBar(float progress,
                          int width, int height,
-                         const gcn::Color &color):
+                         int color):
     gcn::Widget(),
     mSmoothProgress(true),
-    mColor(color),
-    mColorToGo(color),
+    mProgressPalette(color),
     mSmoothColorChange(true)
 {
     // The progress value is directly set at load time:
@@ -53,6 +52,9 @@ ProgressBar::ProgressBar(float progress,
         progress = 1.0f;
 
     mProgress = mProgressToGo = progress;
+
+    mColor = mColorToGo = Theme::getProgressColor(color >= 0 ? color : 0,
+                                                  mProgress);
 
     setSize(width, height);
 
@@ -156,6 +158,22 @@ void ProgressBar::setProgress(float progress)
 
     if (!mSmoothProgress)
         mProgress = p;
+
+    if (mProgressPalette >= 0)
+    {
+        mColorToGo = Theme::getProgressColor(mProgressPalette, progress);
+    }
+}
+
+void ProgressBar::setProgressPalette(int progressPalette)
+{
+    int oldPalette = mProgressPalette;
+    mProgressPalette = progressPalette;
+
+    if (mProgressPalette != oldPalette && mProgressPalette >= 0)
+    {
+        mColorToGo = Theme::getProgressColor(mProgressPalette, mProgressToGo);
+    }
 }
 
 void ProgressBar::setColor(const gcn::Color &color)
@@ -192,7 +210,7 @@ void ProgressBar::render(Graphics *graphics, const gcn::Rectangle &area,
 
         TextRenderer::renderText(graphics, text, textX, textY,
                                  gcn::Graphics::CENTER,
-                                 guiPalette->getColor(Palette::PROGRESS_BAR),
+                                 Theme::getThemeColor(Theme::PROGRESS_BAR),
                                  gui->getFont(), true, false);
     }
 

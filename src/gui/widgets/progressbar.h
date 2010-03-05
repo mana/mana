@@ -42,7 +42,7 @@ class ProgressBar : public gcn::Widget
          */
         ProgressBar(float progress = 0.0f,
                     int width = 40, int height = 7,
-                    const gcn::Color &color = gcn::Color(150, 150, 150));
+                    int color = -1);
 
         ~ProgressBar();
 
@@ -72,17 +72,15 @@ class ProgressBar : public gcn::Widget
         float getProgress() const { return mProgress; }
 
         /**
-         * Change the color of the progress bar.
+         * Change the ProgressPalette for this ProgressBar to follow or -1 to
+         * disable this and manage color manually.
          */
-        void setColor(const gcn::Color &color);
+        void setProgressPalette(int progressPalette);
 
         /**
          * Change the color of the progress bar.
-         *
-         * This is an overload provided for convenience.
          */
-        inline void setColor(int r, int g, int b)
-        { setColor(gcn::Color(r, g, b)); }
+        void setColor(const gcn::Color &color);
 
         /**
          * Returns the color of the progress bar.
@@ -124,6 +122,7 @@ class ProgressBar : public gcn::Widget
         float mProgress, mProgressToGo;
         bool mSmoothProgress;
 
+        int mProgressPalette; /** < Entry in ProgressPalette or -1 for none. */
         gcn::Color mColor;
         gcn::Color mColorToGo;
         bool mSmoothColorChange;

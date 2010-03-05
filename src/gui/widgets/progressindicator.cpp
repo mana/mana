@@ -20,14 +20,14 @@
 
 #include "progressindicator.h"
 
+#include "graphics.h"
+#include "simpleanimation.h"
+
 #include "gui/theme.h"
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
-
-#include "graphics.h"
-#include "simpleanimation.h"
 
 #include <guichan/widgets/label.hpp>
 

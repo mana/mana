@@ -168,7 +168,7 @@ void Gui::logic()
     else
         mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
 
-    guiPalette->advanceGradient();
+    Palette::advanceGradients();
 
     gcn::Gui::logic();
 }

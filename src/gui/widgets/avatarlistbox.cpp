@@ -74,8 +74,8 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
-    graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
-            (int)(mAlpha * 255.0f)));
+    graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
+                                            (int) (mAlpha * 255.0f)));
     graphics->setFont(getFont());
 
     const int fontHeight = getFont()->getHeight();
@@ -89,7 +89,7 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
     int width = 0;
 
     // Draw the list elements
-    graphics->setColor(guiPalette->getColor(Palette::TEXT));
+    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     for (int i = 0, y = 0;
          i < model->getNumberOfElements();
          ++i, y += fontHeight)

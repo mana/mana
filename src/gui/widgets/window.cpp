@@ -122,7 +122,7 @@ void Window::draw(gcn::Graphics *graphics)
     // Draw title
     if (mShowTitle)
     {
-        g->setColor(guiPalette->getColor(Palette::TEXT));
+        g->setColor(Theme::getThemeColor(Theme::TEXT));
         g->setFont(getFont());
         g->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }

@@ -27,6 +27,7 @@
 #include "configuration.h"
 #include "log.h"
 
+#include "resources/dye.h"
 #include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
@@ -38,6 +39,8 @@
 #include <physfs.h>
 
 #include <algorithm>
+
+#define GUI_ROOT "graphics/gui"
 
 std::string Theme::mThemePath;
 Theme *Theme::mInstance = 0;
@@ -92,9 +95,12 @@ int Skin::getMinHeight() const
 }
 
 Theme::Theme():
-    mMinimumOpacity(-1.0f)
+    Palette(THEME_COLORS_END),
+    mMinimumOpacity(-1.0f),
+    mProgressColors(ProgressColors(THEME_PROG_END))
 {
     config.addListener("guialpha", this);
+    loadColors();
 }
 
 Theme::~Theme()
@@ -115,6 +121,18 @@ void Theme::deleteInstance()
 {
     delete mInstance;
     mInstance = 0;
+}
+
+gcn::Color Theme::getProgressColor(int type, float progress)
+{
+    DyePalette *dye = mInstance->mProgressColors[type];
+
+    int color[3] = {0, 0, 0};
+    int intensity = (int) (255 * progress);
+
+    dye->getColor(intensity, color);
+
+    return gcn::Color(color[0], color[1], color[2]);
 }
 
 Skin *Theme::load(const std::string &filename, const std::string &defaultPath)
@@ -283,7 +301,7 @@ bool Theme::tryThemePath(std::string themePath)
 {
     if (!themePath.empty())
     {
-        themePath = "graphics/gui/" + themePath;
+        themePath = GUI_ROOT + themePath;
         if (PHYSFS_exists(themePath.c_str()))
         {
             mThemePath = themePath;
@@ -297,15 +315,13 @@ bool Theme::tryThemePath(std::string themePath)
 void Theme::prepareThemePath()
 {
     // Try theme from settings
-    if (tryThemePath(config.getValue("theme", "")))
-        return;
+    if (!tryThemePath(config.getValue("theme", "")))
+        // Try theme from branding
+        if (!tryThemePath(branding.getValue("theme", "")))
+            // Use default
+            mThemePath = GUI_ROOT;
 
-    // Try theme from branding
-    if (tryThemePath(branding.getValue("theme", "")))
-        return;
-
-    // Use default
-    mThemePath = "graphics/gui";
+    instance()->loadColors(mThemePath);
 }
 
 std::string Theme::resolveThemePath(const std::string &path)
@@ -328,7 +344,7 @@ std::string Theme::resolveThemePath(const std::string &path)
         return getThemePath() + "/" + path;
 
     // Backup
-    return "graphics/gui/" + path;
+    return std::string(GUI_ROOT) + "/" + path;
 }
 
 Image *Theme::getImageFromTheme(const std::string &path)
@@ -342,4 +358,191 @@ ImageSet *Theme::getImageSetFromTheme(const std::string &path,
 {
     ResourceManager *resman = ResourceManager::getInstance();
     return resman->getImageSet(resolveThemePath(path), w, h);
+}
+
+static int readColorType(const std::string &type)
+{
+    static std::string colors[] = {
+        "TEXT",
+        "SHADOW",
+        "OUTLINE",
+        "PROGRESS_BAR",
+        "BUTTON",
+        "BUTTON_DISABLED",
+        "TAB",
+        "BACKGROUND",
+        "HIGHLIGHT",
+        "TAB_FLASH",
+        "SHOP_WARNING",
+        "ITEM_EQUIPPED",
+        "CHAT",
+        "GM",
+        "PLAYER",
+        "WHISPER",
+        "IS",
+        "PARTY",
+        "GUILD",
+        "SERVER",
+        "LOGGER",
+        "HYPERLINK",
+        "UNKNOWN_ITEM",
+        "GENERIC",
+        "HEAD",
+        "USABLE",
+        "TORSO",
+        "ONEHAND",
+        "LEGS",
+        "FEET",
+        "TWOHAND",
+        "SHIELD",
+        "RING",
+        "NECKLACE",
+        "ARMS",
+        "AMMO"
+    };
+
+    if (type.empty())
+        return -1;
+
+    for (int i = 0; i < Theme::THEME_COLORS_END; i++)
+    {
+        if (compareStrI(type, colors[i]) == 0)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+static gcn::Color readColor(const std::string &description)
+{
+    int size = description.length();
+    if (size < 7 || description[0] != '#')
+    {
+        error:
+        logger->log("Error, invalid theme color palette: %s",
+                    description.c_str());
+        return Palette::BLACK;
+    }
+
+    int v = 0;
+    for (int i = 1; i < 7; ++i)
+    {
+        char c = description[i];
+        int n;
+
+        if ('0' <= c && c <= '9')
+            n = c - '0';
+        else if ('A' <= c && c <= 'F')
+            n = c - 'A' + 10;
+        else if ('a' <= c && c <= 'f')
+            n = c - 'a' + 10;
+        else
+            goto error;
+
+        v = (v << 4) | n;
+    }
+
+    return gcn::Color(v);
+}
+
+static Palette::GradientType readColorGradient(const std::string &grad)
+{
+    static std::string grads[] = {
+        "STATIC",
+        "PULSE",
+        "SPECTRUM",
+        "RAINBOW"
+    };
+
+    if (grad.empty())
+        return Palette::STATIC;
+
+    for (int i = 0; i < 4; i++)
+    {
+        if (compareStrI(grad, grads[i]))
+            return (Palette::GradientType) i;
+    }
+
+    return Palette::STATIC;
+}
+
+static int readProgressType(const std::string &type)
+{
+    static std::string colors[] = {
+        "DEFAULT",
+        "HP",
+        "MP",
+        "NO_MP",
+        "EXP",
+        "INVY_SLOTS",
+        "WEIGHT",
+        "JOB"
+    };
+
+    if (type.empty())
+        return -1;
+
+    for (int i = 0; i < Theme::THEME_PROG_END; i++)
+    {
+        if (compareStrI(type, colors[i]) == 0)
+            return i;
+    }
+
+    return -1;
+}
+
+void Theme::loadColors(std::string file)
+{
+    if (file == GUI_ROOT)
+        return; // No need to reload
+
+    if (file == "")
+        file = GUI_ROOT;
+
+    file += "/colors.xml";
+
+    XML::Document doc(file);
+    xmlNodePtr root = doc.rootNode();
+
+    if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
+    {
+        logger->log("Error loading colors file: %s", file.c_str());
+        return;
+    }
+
+    int type;
+    std::string temp;
+    gcn::Color color;
+    GradientType grad;
+
+    for_each_xml_child_node(node, root)
+    {
+        if (xmlStrEqual(node->name, BAD_CAST "color"))
+        {
+            type = readColorType(XML::getProperty(node, "id", ""));
+            if (type < 0) // invalid or no type given
+                continue;
+
+            temp = XML::getProperty(node, "color", "");
+            if (temp.empty()) // no color set, so move on
+                continue;
+
+            color = readColor(temp);
+            grad = readColorGradient(XML::getProperty(node, "effect", ""));
+
+            mColors[type].set(type, color, grad, "", 0, 10);
+        }
+
+        if (xmlStrEqual(node->name, BAD_CAST "progressbar"))
+        {
+            type = readProgressType(XML::getProperty(node, "id", ""));
+            if (type < 0) // invalid or no type given
+                continue;
+
+            mProgressColors[type] = new DyePalette(XML::getProperty(node,
+                                                           "color", ""));
+        }
+    }
 }

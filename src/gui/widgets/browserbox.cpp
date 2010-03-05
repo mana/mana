@@ -21,7 +21,7 @@
 
 #include "gui/widgets/browserbox.h"
 
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/linkhandler.h"
 
@@ -268,7 +268,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
     if (mOpaque)
     {
-        graphics->setColor(guiPalette->getColor(Palette::BACKGROUND));
+        graphics->setColor(Theme::getThemeColor(Theme::BACKGROUND));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
 
@@ -276,7 +276,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
     {
         if ((mHighMode & BACKGROUND))
         {
-            graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT));
+            graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT));
             graphics->fillRectangle(gcn::Rectangle(
                         mLinks[mSelectedLink].x1,
                         mLinks[mSelectedLink].y1,
@@ -287,7 +287,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
         if ((mHighMode & UNDERLINE))
         {
-            graphics->setColor(guiPalette->getColor(Palette::HYPERLINK));
+            graphics->setColor(Theme::getThemeColor(Theme::HYPERLINK));
             graphics->drawLine(
                     mLinks[mSelectedLink].x1,
                     mLinks[mSelectedLink].y2,
@@ -305,8 +305,8 @@ void BrowserBox::draw(gcn::Graphics *graphics)
     char const *hyphen = "~";
     int hyphenWidth = font->getWidth(hyphen);
 
-    graphics->setColor(guiPalette->getColor(Palette::TEXT));
-    const gcn::Color textColor = guiPalette->getColor(Palette::TEXT);
+    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+    const gcn::Color textColor = Theme::getThemeColor(Theme::TEXT);
     TextRowsHeightIterator h = mTextRowsHeights.begin();
 
     for (TextRowIterator i = mTextRows.begin();
@@ -373,7 +373,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                 {
                     const char c = row.at(start + 2);
                     bool valid;
-                    const gcn::Color col = guiPalette->getColor(c, valid);
+                    const gcn::Color col = Theme::getThemeColor(c, valid);
 
                     if (c == '>')
                     {

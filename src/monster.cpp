@@ -28,7 +28,7 @@
 #include "sound.h"
 #include "text.h"
 
-#include "gui/palette.h"
+#include "gui/userpalette.h"
 
 #include "net/net.h"
 
@@ -67,8 +67,8 @@ Monster::Monster(int id, int job, Map *map):
         }
     }
 
-    mNameColor = &guiPalette->getColor(Palette::MONSTER);
-    mTextColor = &guiPalette->getColor(Palette::MONSTER);
+    mNameColor = &userPalette->getColor(UserPalette::MONSTER);
+    mTextColor = &userPalette->getColor(UserPalette::MONSTER);
 
     Being::setName(getInfo().getName());
 }

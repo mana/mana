@@ -141,7 +141,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
                 caption = "Eq.";
 
             if (item->isEquipped())
-                g->setColor(guiPalette->getColor(Palette::ITEM_EQUIPPED));
+                g->setColor(Theme::getThemeColor(Theme::ITEM_EQUIPPED));
             else
                 g->setColor(gcn::Color(0, 0, 0));
 

@@ -138,7 +138,13 @@ int compareStrI(const std::string &a, const std::string &b)
             return comp;
     }
 
-    return 0;
+    // Check string lengths
+    if (itA == endA && itB == endB)
+        return 0;
+    else if (itA == endA)
+        return -1;
+    else
+        return 1;
 }
 
 bool isWordSeparator(char chr)

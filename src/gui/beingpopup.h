@@ -52,8 +52,6 @@ class BeingPopup : public Popup
     private:
         Label *mBeingName;
         Label *mBeingParty;
-
-        static gcn::Color getColor();
 };
 
 #endif // BEINGPOPUP_H

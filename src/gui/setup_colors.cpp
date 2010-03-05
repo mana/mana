@@ -23,7 +23,8 @@
 #include "configuration.h"
 
 #include "gui/gui.h"
-#include "gui/palette.h"
+#include "gui/theme.h"
+#include "gui/userpalette.h"
 
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/itemlinkhandler.h"
@@ -48,7 +49,7 @@ Setup_Colors::Setup_Colors() :
 {
     setName(_("Colors"));
 
-    mColorBox = new ListBox(guiPalette);
+    mColorBox = new ListBox(userPalette);
     mColorBox->addSelectionListener(this);
 
     mScroll = new ScrollArea(mColorBox);
@@ -227,18 +228,15 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
 void Setup_Colors::valueChanged(const gcn::SelectionEvent &event)
 {
     mSelected = mColorBox->getSelected();
-    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
-    const gcn::Color *col = &guiPalette->getColor(type);
-    Palette::GradientType grad = guiPalette->getGradientType(type);
-    const int delay = guiPalette->getGradientDelay(type);
-
-    std::string msg;
-    const char ch = guiPalette->getColorChar(type);
+    int type = userPalette->getColorTypeAt(mSelected);
+    const gcn::Color *col = &userPalette->getColor(type);
+    Palette::GradientType grad = userPalette->getGradientType(type);
+    const int delay = userPalette->getGradientDelay(type);
 
     mPreview->clearRows();
     mPreviewBox->setContent(mTextPreview);
-    mTextPreview->setFont(gui->getFont());
-    mTextPreview->setTextColor(&guiPalette->getColor(Palette::TEXT));
+    mTextPreview->setFont(boldFont);
+    mTextPreview->setTextColor(col);
     mTextPreview->setTextBGColor(NULL);
     mTextPreview->setOpaque(false);
     mTextPreview->setShadow(true);
@@ -247,125 +245,24 @@ void Setup_Colors::valueChanged(const gcn::SelectionEvent &event)
 
     switch (type)
     {
-        case Palette::TEXT:
-        case Palette::SHADOW:
-        case Palette::OUTLINE:
-            mTextPreview->setFont(gui->getFont());
-            mTextPreview->setShadow(type == Palette::SHADOW);
-            mTextPreview->setOutline(type == Palette::OUTLINE);
-            break;
-        case Palette::PROGRESS_BAR:
-            mTextPreview->useTextAlpha(true);
-            mTextPreview->setFont(boldFont);
-            mTextPreview->setTextColor(col);
-            mTextPreview->setOutline(true);
+        case UserPalette::PARTICLE:
+        case UserPalette::EXP_INFO:
+        case UserPalette::PICKUP_INFO:
+        case UserPalette::HIT_PLAYER_MONSTER:
+        case UserPalette::HIT_MONSTER_PLAYER:
+        case UserPalette::HIT_CRITICAL:
+        case UserPalette::MISS:
             mTextPreview->setShadow(false);
-            break;
-        case Palette::BUTTON:
-        case Palette::BUTTON_DISABLED:
-        case Palette::TAB:
-        case Palette::TAB_HIGHLIGHT:
-            mTextPreview->setFont(gui->getFont());
-            mTextPreview->setTextColor(col);
-            mTextPreview->setOutline(false);
-            mTextPreview->setShadow(false);
-            break;
-        case Palette::BACKGROUND:
-        case Palette::SHOP_WARNING:
-            mTextPreview->setBGColor(col);
-            mTextPreview->setOpaque(true);
-            mTextPreview->setOutline(false);
-            mTextPreview->setShadow(false);
-            break;
-        case Palette::HPBAR_FULL:
-        case Palette::HPBAR_THREE_QUARTERS:
-        case Palette::HPBAR_ONE_HALF:
-        case Palette::HPBAR_ONE_QUARTER:
-            mTextPreview->setTextBGColor(col);
-            mTextPreview->setFont(boldFont);
-            mTextPreview->setTextColor(&guiPalette->getColor(Palette::PROGRESS_BAR));
-            mTextPreview->setOutline(true);
-            mTextPreview->setShadow(false);
-            mPreview->addRow(rawmsg);
-            break;
-        case Palette::HIGHLIGHT:
-            mTextPreview->setTextBGColor(col);
-            mTextPreview->setOutline(false);
-            mTextPreview->setShadow(false);
-            mPreview->addRow(rawmsg);
-            break;
-        case Palette::CHAT:
-        case Palette::GM:
-        case Palette::PLAYER:
-        case Palette::WHISPER:
-        case Palette::IS:
-        case Palette::PARTY:
-        case Palette::GUILD:
-        case Palette::SERVER:
-        case Palette::LOGGER:
-        case Palette::HYPERLINK:
-            mPreviewBox->setContent(mPreview);
-            mPreview->clearRows();
-
-            if (ch == '<')
-                msg = toString("@@|") + rawmsg + "@@";
-            else
-                msg = "##" + toString(ch) + rawmsg;
-
-            mPreview->addRow(msg);
-            break;
-        case Palette::ITEM_EQUIPPED:
-            mTextPreview->setTextColor(col);
-            mTextPreview->setOutline(false);
-            mTextPreview->setShadow(false);
-            break;
-        case Palette::UNKNOWN_ITEM:
-        case Palette::GENERIC:
-        case Palette::HEAD:
-        case Palette::USABLE:
-        case Palette::TORSO:
-        case Palette::ONEHAND:
-        case Palette::LEGS:
-        case Palette::FEET:
-        case Palette::TWOHAND:
-        case Palette::SHIELD:
-        case Palette::RING:
-        case Palette::NECKLACE:
-        case Palette::ARMS:
-        case Palette::AMMO:
-            mTextPreview->setFont(boldFont);
-            mTextPreview->setTextColor(col);
-            mTextPreview->setOutline(false);
-            mTextPreview->setShadow(false);
-            break;
-        case Palette::PARTICLE:
-        case Palette::EXP_INFO:
-        case Palette::PICKUP_INFO:
-        case Palette::HIT_PLAYER_MONSTER:
-        case Palette::HIT_MONSTER_PLAYER:
-        case Palette::HIT_CRITICAL:
-        case Palette::MISS:
-            mTextPreview->setShadow(false);
-        case Palette::BEING:
-        case Palette::PC:
-        case Palette::SELF:
-        case Palette::GM_NAME:
-        case Palette::NPC:
-        case Palette::MONSTER:
-            mTextPreview->setFont(boldFont);
-            mTextPreview->setTextColor(col);
-        case Palette::TYPE_COUNT:
-            break;
     }
 
     if (grad != Palette::STATIC && grad != Palette::PULSE)
     { // If nonstatic color, don't display the current, but the committed
       // color at the sliders
-        col = &guiPalette->getCommittedColor(type);
+        col = &userPalette->getCommittedColor(type);
     }
     else if (grad == Palette::PULSE)
     {
-        col = &guiPalette->getTestColor(type);
+        col = &userPalette->getTestColor(type);
     }
 
     setEntry(mGradDelaySlider, mGradDelayText, delay);
@@ -388,16 +285,16 @@ void Setup_Colors::setEntry(gcn::Slider *s, TextField *t, int value)
 
 void Setup_Colors::apply()
 {
-    guiPalette->commit();
+    userPalette->commit();
 }
 
 void Setup_Colors::cancel()
 {
-    guiPalette->rollback();
-    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
-    const gcn::Color *col = &guiPalette->getColor(type);
-    mGradTypeSlider->setValue(guiPalette->getGradientType(type));
-    const int delay = guiPalette->getGradientDelay(type);
+    userPalette->rollback();
+    int type = userPalette->getColorTypeAt(mSelected);
+    const gcn::Color *col = &userPalette->getColor(type);
+    mGradTypeSlider->setValue(userPalette->getGradientType(type));
+    const int delay = userPalette->getGradientDelay(type);
     setEntry(mGradDelaySlider, mGradDelayText, delay);
     setEntry(mRedSlider, mRedText, col->r);
     setEntry(mGreenSlider, mGreenText, col->g);
@@ -426,8 +323,8 @@ void Setup_Colors::updateGradType()
         return;
 
     mSelected = mColorBox->getSelected();
-    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
-    Palette::GradientType grad = guiPalette->getGradientType(type);
+    int type = userPalette->getColorTypeAt(mSelected);
+    Palette::GradientType grad = userPalette->getGradientType(type);
 
     mGradTypeText->setCaption(
             (grad == Palette::STATIC) ? _("Static") :
@@ -453,23 +350,23 @@ void Setup_Colors::updateColor()
     if (mSelected == -1)
         return;
 
-    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
-    Palette::GradientType grad =
-            static_cast<Palette::GradientType>((int)mGradTypeSlider->getValue());
+    int type = userPalette->getColorTypeAt(mSelected);
+    Palette::GradientType grad = static_cast<Palette::GradientType>((int)
+                                                mGradTypeSlider->getValue());
     int delay = (int) mGradDelaySlider->getValue();
-    guiPalette->setGradient(type, grad);
-    guiPalette->setGradientDelay(type, delay);
+    userPalette->setGradient(type, grad);
+    userPalette->setGradientDelay(type, delay);
 
     if (grad == Palette::STATIC)
     {
-        guiPalette->setColor(type,
+        userPalette->setColor(type,
                 static_cast<int>(mRedSlider->getValue()),
                 static_cast<int>(mGreenSlider->getValue()),
                 static_cast<int>(mBlueSlider->getValue()));
     }
     else if (grad == Palette::PULSE)
     {
-        guiPalette->setTestColor(type, gcn::Color(
+        userPalette->setTestColor(type, gcn::Color(
                 static_cast<int>(mRedSlider->getValue()),
                 static_cast<int>(mGreenSlider->getValue()),
                 static_cast<int>(mBlueSlider->getValue())));

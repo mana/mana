@@ -20,7 +20,7 @@
 
 #include "gui/widgets/label.h"
 
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 Label::Label()
 {
@@ -33,6 +33,6 @@ Label::Label(const std::string &caption) :
 
 void Label::draw(gcn::Graphics *graphics)
 {
-    setForegroundColor(guiPalette->getColor(Palette::TEXT));
+    setForegroundColor(Theme::getThemeColor(Theme::TEXT));
     gcn::Label::draw(static_cast<gcn::Graphics*>(graphics));
 }

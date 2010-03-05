@@ -23,8 +23,8 @@
 
 #include "configuration.h"
 
-#include "gui/palette.h"
 #include "gui/sdlinput.h"
+#include "gui/theme.h"
 
 #include "utils/dtor.h"
 
@@ -275,7 +275,7 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
     if (mOpaque)
     {
-        graphics->setColor(guiPalette->getColor(Palette::BACKGROUND,
+        graphics->setColor(Theme::getThemeColor(Theme::BACKGROUND,
                 (int)(mAlpha * 255.0f)));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
@@ -321,8 +321,8 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
                 widget->setDimension(bounds);
 
-                graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
-                                                       (int)(mAlpha * 255.0f)));
+                graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
+                                                      (int)(mAlpha * 255.0f)));
 
                 if (mLinewiseMode && r == mSelectedRow && c == 0)
                 {

@@ -5,6 +5,7 @@
 ./data/fonts/Makefile.am
 ./data/graphics/CMakeLists.txt
 ./data/graphics/gui/CMakeLists.txt
+./data/graphics/gui/colors.xml
 ./data/graphics/gui/Makefile.am
 ./data/graphics/gui/speechbubble.xml
 ./data/graphics/gui/window.xml
@@ -183,6 +184,8 @@
 ./src/gui/unregisterdialog.h
 ./src/gui/updatewindow.cpp
 ./src/gui/updatewindow.h
+./src/gui/userpalette.cpp
+./src/gui/userpalette.h
 ./src/gui/viewport.cpp
 ./src/gui/viewport.h
 ./src/gui/widgets/avatarlistbox.cpp

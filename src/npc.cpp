@@ -29,7 +29,7 @@
 #include "gui/buysell.h"
 #include "gui/npcdialog.h"
 #include "gui/npcpostdialog.h"
-#include "gui/palette.h"
+#include "gui/userpalette.h"
 #include "gui/sell.h"
 
 #include "net/net.h"
@@ -74,6 +74,10 @@ void NPC::setName(const std::string &name)
     const std::string displayName = name.substr(0, name.find('#', 0));
 
     Being::setName(displayName);
+
+    mNameColor = &userPalette->getColor(UserPalette::NPC);
+
+    mDispName->setColor(mNameColor);
 }
 
 void NPC::talk()

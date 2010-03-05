@@ -236,6 +236,8 @@
 		<Unit filename="src\gui\unregisterdialog.cpp" />
 		<Unit filename="src\gui\unregisterdialog.h" />
 		<Unit filename="src\gui\updatewindow.cpp" />
+		<Unit filename="src\gui\userpalette.cpp" />
+		<Unit filename="src\gui\userpalette.h" />
 		<Unit filename="src\gui\updatewindow.h" />
 		<Unit filename="src\gui\viewport.cpp" />
 		<Unit filename="src\gui\viewport.h" />

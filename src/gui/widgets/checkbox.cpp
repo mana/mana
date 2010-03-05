@@ -83,7 +83,7 @@ void CheckBox::draw(gcn::Graphics* graphics)
     drawBox(graphics);
 
     graphics->setFont(getFont());
-    graphics->setColor(guiPalette->getColor(Palette::TEXT));
+    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
 
     const int h = getHeight() + getHeight() / 2;
 

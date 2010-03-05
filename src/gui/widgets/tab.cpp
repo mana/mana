@@ -63,7 +63,7 @@ static TabData const data[TAB_COUNT] = {
 ImageRect Tab::tabImg[TAB_COUNT];
 
 Tab::Tab() : gcn::Tab(),
-    mTabColor(&guiPalette->getColor(Palette::TAB))
+    mTabColor(&Theme::getThemeColor(Theme::TAB))
 {
     init();
 }
@@ -85,7 +85,7 @@ void Tab::init()
 {
     setFocusable(false);
     setFrameSize(0);
-    mHighlighted = false;
+    mFlash = false;
 
     if (mInstances == 0)
     {
@@ -148,15 +148,15 @@ void Tab::draw(gcn::Graphics *graphics)
         {
             mode = TAB_SELECTED;
             // if tab is selected, it doesnt need to highlight activity
-            mHighlighted = false;
+            mFlash = false;
         }
         else if (mHasMouse)
         {
             mode = TAB_HIGHLIGHTED;
         }
-        if (mHighlighted)
+        if (mFlash)
         {
-            mLabel->setForegroundColor(guiPalette->getColor(Palette::TAB_HIGHLIGHT));
+            mLabel->setForegroundColor(Theme::getThemeColor(Theme::TAB_FLASH));
         }
     }
 
@@ -175,7 +175,7 @@ void Tab::setTabColor(const gcn::Color *color)
     mTabColor = color;
 }
 
-void Tab::setHighlighted(bool high)
+void Tab::setFlash(bool flash)
 {
-    mHighlighted = high;
+    mFlash = flash;
 }

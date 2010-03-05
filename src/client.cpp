@@ -42,7 +42,6 @@
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/okdialog.h"
-#include "gui/palette.h"
 #include "gui/quitdialog.h"
 #include "gui/register.h"
 #include "gui/sdlinput.h"
@@ -51,6 +50,7 @@
 #include "gui/theme.h"
 #include "gui/unregisterdialog.h"
 #include "gui/updatewindow.h"
+#include "gui/userpalette.h"
 #include "gui/worldselectdialog.h"
 
 #include "gui/widgets/button.h"
@@ -112,7 +112,7 @@ Configuration branding;       /**< XML branding information reader */
 Logger *logger;               /**< Log object */
 KeyboardConfig keyboard;
 
-Palette *guiPalette;
+UserPalette *userPalette;
 Graphics *graphics;
 
 Sound sound;
@@ -372,7 +372,7 @@ Client::Client(const Options &options):
     // Initialise player relations
     player_relations.init();
 
-    guiPalette = new Palette;
+    userPalette = new UserPalette;
     setupWindow = new Setup;
 
     sound.playMusic(branding.getValue("loginMusic", "Magick - Real.ogg"));
@@ -443,7 +443,7 @@ Client::~Client()
     SDL_FreeSurface(mIcon);
 
     logger->log("Quitting");
-    delete guiPalette;
+    delete userPalette;
 
     config.write();
 

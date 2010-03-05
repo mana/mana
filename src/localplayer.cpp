@@ -41,11 +41,11 @@
 
 #include "gui/gui.h"
 #include "gui/ministatus.h"
-#include "gui/palette.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
 #include "gui/storagewindow.h"
 #include "gui/theme.h"
+#include "gui/userpalette.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -105,8 +105,8 @@ LocalPlayer::LocalPlayer(int id, int job):
 {
     mUpdateName = true;
 
-    mTextColor = &guiPalette->getColor(Palette::PLAYER);
-    mNameColor = &guiPalette->getColor(Palette::SELF);
+    mTextColor = &Theme::getThemeColor(Theme::PLAYER);
+    mNameColor = &userPalette->getColor(UserPalette::SELF);
 
     initTargetCursor();
 
@@ -150,7 +150,7 @@ void LocalPlayer::logic()
                     (int) pos.y - 48,*/
                     getPixelX(),
                     getPixelY() - 48,
-                    &guiPalette->getColor(info.second),
+                    &userPalette->getColor(info.second),
                     gui->getInfoParticleFont(), true);
 
             mMessages.pop_front();
@@ -928,7 +928,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
         if (mMap && config.getValue("showpickupparticle", 0))
         {
             // Show pickup notification
-            addMessageToQueue(itemInfo.getName(), Palette::PICKUP_INFO);
+            addMessageToQueue(itemInfo.getName(), UserPalette::PICKUP_INFO);
         }
     }
 }
@@ -1080,8 +1080,7 @@ void LocalPlayer::loadTargetCursor(const std::string &filename,
     mTargetCursor[index][size] = currentCursor;
 }
 
-void LocalPlayer::addMessageToQueue(const std::string &message,
-                                    Palette::ColorType color)
+void LocalPlayer::addMessageToQueue(const std::string &message, int color)
 {
     mMessages.push_back(MessagePair(message, color));
 }

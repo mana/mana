@@ -89,8 +89,3 @@ void BeingPopup::show(int x, int y, Player *p)
 
     setVisible(false);
 }
-
-gcn::Color BeingPopup::getColor()
-{
-    return guiPalette->getColor(Palette::GENERIC);
-}

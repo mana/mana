@@ -108,7 +108,7 @@ void TextField::draw(gcn::Graphics *graphics)
                   mXScroll);
     }
 
-    graphics->setColor(guiPalette->getColor(Palette::TEXT));
+    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     graphics->setFont(getFont());
     graphics->drawText(mText, 1 - mXScroll, 1);
 }

@@ -30,6 +30,7 @@
 #include "gui/okdialog.h"
 #include "gui/setup.h"
 #include "gui/textdialog.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/avatarlistbox.h"
 #include "gui/widgets/browserbox.h"
@@ -98,7 +99,7 @@ public:
     {
         setCaption(guild->getName());
 
-        setTabColor(&guiPalette->getColor(Palette::GUILD));
+        setTabColor(&Theme::getThemeColor(Theme::GUILD));
 
         mList = new AvatarListBox(guild);
         mScroll = new ScrollArea(mList);
@@ -163,7 +164,7 @@ public:
     {
         setCaption(party->getName());
 
-        setTabColor(&guiPalette->getColor(Palette::PARTY));
+        setTabColor(&Theme::getThemeColor(Theme::PARTY));
 
         mList = new AvatarListBox(party);
         mScroll = new ScrollArea(mList);

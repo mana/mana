@@ -197,7 +197,7 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
     chatWindow->mRecorder->record(line.substr(3));
     if (this != getTabbedArea()->getSelectedTab() &&
         own != BY_PLAYER)
-        setHighlighted(true);
+        setFlash(true);
 }
 
 void ChatTab::chatLog(const std::string &nick, const std::string &msg)

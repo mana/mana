@@ -26,6 +26,7 @@
 
 #include "gui/ministatus.h"
 #include "gui/setup.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
@@ -99,22 +100,21 @@ StatusWindow::StatusWindow():
     mLvlLabel = new Label(strprintf(_("Level: %d"), 0));
     mMoneyLabel = new Label(strprintf(_("Money: %s"), ""));
 
+    int max = player_node->getMaxHp();
     mHpLabel = new Label(_("HP:"));
-    mHpBar = new ProgressBar((float) player_node->getHp()
-                             / (float) player_node->getMaxHp(),
-                             80, 15, gcn::Color(0, 171, 34));
+    mHpBar = new ProgressBar(max ? (float) player_node->getHp() / max: 0,
+                             80, 15, Theme::PROG_HP);
 
+    max = player_node->getExpNeeded();
     mXpLabel = new Label(_("Exp:"));
-    mXpBar = new ProgressBar((float) player_node->getExp()
-                             / player_node->getExpNeeded(),
-                             80, 15, gcn::Color(143, 192, 211));
+    mXpBar = new ProgressBar(max ? (float) player_node->getExp() / max : 0,
+                             80, 15, Theme::PROG_EXP);
 
+    max = player_node->getMaxMP();
     mMpLabel = new Label(_("MP:"));
-    mMpBar = new ProgressBar((float) player_node->getMaxMP()
-                             / (float) player_node->getMaxMP(),
+    mMpBar = new ProgressBar(max ? (float) player_node->getMaxMP() / max : 0,
                              80, 15, Net::getPlayerHandler()->canUseMagic() ?
-                             gcn::Color(26, 102, 230) :
-                             gcn::Color(100, 100, 100));
+                             Theme::PROG_MP : Theme::PROG_NO_MP);
 
     place(0, 0, mLvlLabel, 3);
     // 5, 0 Job Level
@@ -131,7 +131,7 @@ StatusWindow::StatusWindow():
     {
         mJobLvlLabel = new Label(strprintf(_("Job: %d"), 0));
         mJobLabel = new Label(_("Job:"));
-        mJobBar = new ProgressBar(0.0f, 80, 15, gcn::Color(220, 135, 203));
+        mJobBar = new ProgressBar(0.0f, 80, 15, Theme::PROG_JOB);
 
         place(5, 0, mJobLvlLabel, 3);
         place(5, 2, mJobLabel).setPadding(3);
@@ -303,84 +303,8 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
     else
         bar->setText(toString(player_node->getHp()));
 
-    if (player_node->getMaxHp() < 4)
-    {
-        bar->setColor(guiPalette->getColor(Palette::HPBAR_ONE_QUARTER));
-    }
-    else
-    {
-        // HP Bar coloration
-        float r1 = 255;
-        float g1 = 255;
-        float b1 = 255;
-
-        float r2 = 255;
-        float g2 = 255;
-        float b2 = 255;
-
-        float weight = 1.0f;
-
-        int curHP = player_node->getHp();
-        int thresholdLevel = player_node->getMaxHp() / 4;
-        int thresholdProgress = curHP % thresholdLevel;
-
-        if (thresholdLevel)
-            weight = 1 - ((float)thresholdProgress) / ((float)thresholdLevel);
-        else
-            weight = 0;
-
-        if (curHP < (thresholdLevel))
-        {
-            gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_ONE_HALF);
-            gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_ONE_QUARTER);
-            r1 = color1.r; r2 = color2.r;
-            g1 = color1.g; g2 = color2.g;
-            b1 = color1.b; b2 = color2.b;
-        }
-        else if (curHP < (thresholdLevel*2))
-        {
-            gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_THREE_QUARTERS);
-            gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_ONE_HALF);
-            r1 = color1.r; r2 = color2.r;
-            g1 = color1.g; g2 = color2.g;
-            b1 = color1.b; b2 = color2.b;
-        }
-        else if (curHP < thresholdLevel*3)
-        {
-            gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_FULL);
-            gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_THREE_QUARTERS);
-            r1 = color1.r; r2 = color2.r;
-            g1 = color1.g; g2 = color2.g;
-            b1 = color1.b; b2 = color2.b;
-        }
-        else
-        {
-            gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_FULL);
-            gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_FULL);
-            r1 = color1.r; r2 = color2.r;
-            g1 = color1.g; g2 = color2.g;
-            b1 = color1.b; b2 = color2.b;
-        }
-
-        // Safety checks
-        if (weight > 1.0f) weight = 1.0f;
-        if (weight < 0.0f) weight = 0.0f;
-
-        // Do the color blend
-        r1 = (int) weightedAverage(r1, r2,weight);
-        g1 = (int) weightedAverage(g1, g2, weight);
-        b1 = (int) weightedAverage(b1, b2, weight);
-
-        // More safety checks
-        if (r1 > 255) r1 = 255;
-        if (g1 > 255) g1 = 255;
-        if (b1 > 255) b1 = 255;
-
-        bar->setColor((int)r1,(int)g1, (int)b1);
-    }
-
-    bar->setProgress((float) player_node->getHp() / (float) player_node->getMaxHp());
-
+    float prog = (float) player_node->getHp() / player_node->getMaxHp();
+    bar->setProgress(prog);
 }
 
 void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
@@ -391,13 +315,14 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
     else
         bar->setText(toString(player_node->getMP()));
 
-    if (Net::getPlayerHandler()->canUseMagic())
-        bar->setColor(26, 102, 230); // blue, to indicate that we have magic
-    else
-        bar->setColor(100, 100, 100); // grey, to indicate that we lack magic
+    float prog = (float) player_node->getMP() / player_node->getMaxMP();
 
-    bar->setProgress((float) player_node->getMP() /
-                     (float) player_node->getMaxMP());
+    if (Net::getPlayerHandler()->canUseMagic())
+        bar->setProgressPalette(Theme::PROG_MP);
+    else
+        bar->setProgressPalette(Theme::PROG_NO_MP);
+
+    bar->setProgress(prog);
 }
 
 void StatusWindow::updateProgressBar(ProgressBar *bar, int value, int max,
@@ -423,8 +348,8 @@ void StatusWindow::updateProgressBar(ProgressBar *bar, int value, int max,
 
 void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
 {
-    updateProgressBar(bar, player_node->getExp(), player_node->getExpNeeded(),
-                      percent);
+    updateProgressBar(bar, player_node->getExp(),
+                      player_node->getExpNeeded(), percent);
 }
 
 void StatusWindow::updateProgressBar(ProgressBar *bar, int id, bool percent)

@@ -59,8 +59,8 @@ void ListBox::draw(gcn::Graphics *graphics)
 
     updateAlpha();
 
-    graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
-            (int)(mAlpha * 255.0f)));
+    graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
+                                            (int) (mAlpha * 255.0f)));
     graphics->setFont(getFont());
 
     const int fontHeight = getFont()->getHeight();
@@ -71,7 +71,7 @@ void ListBox::draw(gcn::Graphics *graphics)
                                                getWidth(), fontHeight));
 
     // Draw the list elements
-    graphics->setColor(guiPalette->getColor(Palette::TEXT));
+    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     for (int i = 0, y = 0; i < mListModel->getNumberOfElements();
          ++i, y += fontHeight)
     {

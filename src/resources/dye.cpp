@@ -75,27 +75,43 @@ DyePalette::DyePalette(const std::string &description)
     logger->log("Error, invalid embedded palette: %s", description.c_str());
 }
 
+void DyePalette::addFirstColor(const int color[3])
+{
+    Color c = { {color[0], color[1], color[2]} };
+    mColors.insert(mColors.begin(), c);
+}
+
+void DyePalette::addLastColor(const int color[3])
+{
+    Color c = { {color[0], color[1], color[2]} };
+    mColors.push_back(c);
+}
+
 void DyePalette::getColor(int intensity, int color[3]) const
 {
-    if (intensity == 0)
-    {
-        color[0] = 0;
-        color[1] = 0;
-        color[2] = 0;
+    if (mColors.size() == 0)
         return;
+
+    Color c0 = mColors[0];
+
+    // Short circuit for black and single-color palettes
+    if (intensity == 0 || mColors.size() == 1)
+    {
+        color[0] = c0.value[0];
+        color[1] = c0.value[1];
+        color[2] = c0.value[2];
     }
 
-    int last = mColors.size();
-    if (last == 0) return;
+    int last = mColors.size() - 1;
 
     int i = intensity * last / 255;
     int t = intensity * last % 255;
 
     int j = t != 0 ? i : i - 1;
     // Get the exact color if any, the next color otherwise.
-    int r2 = mColors[j].value[0],
-        g2 = mColors[j].value[1],
-        b2 = mColors[j].value[2];
+    int r2 = mColors[j + 1].value[0],
+        g2 = mColors[j + 1].value[1],
+        b2 = mColors[j + 1].value[2];
 
     if (t == 0)
     {
@@ -106,13 +122,13 @@ void DyePalette::getColor(int intensity, int color[3]) const
         return;
     }
 
-    // Get the previous color. First color is implicitly black.
-    int r1 = 0, g1 = 0, b1 = 0;
+    // Get the previous color.
+    int r1 = c0.value[0], g1 = c0.value[1], b1 = c0.value[2];
     if (i > 0)
     {
-        r1 = mColors[i - 1].value[0];
-        g1 = mColors[i - 1].value[1];
-        b1 = mColors[i - 1].value[2];
+        r1 = mColors[i].value[0];
+        g1 = mColors[i].value[1];
+        b1 = mColors[i].value[2];
     }
 
     // Perform a linear interpolation.
@@ -123,6 +139,8 @@ void DyePalette::getColor(int intensity, int color[3]) const
 
 Dye::Dye(const std::string &description)
 {
+    static const int black[3] = {0, 0, 0};
+
     for (int i = 0; i < 7; ++i)
         mDyePalettes[i] = 0;
 
@@ -161,6 +179,7 @@ Dye::Dye(const std::string &description)
         }
         mDyePalettes[i] = new DyePalette(description.substr(pos + 2,
                                                             next_pos - pos - 2));
+        mDyePalettes[i]->addFirstColor(black); // First color is black
         ++next_pos;
     }
     while (next_pos < length);

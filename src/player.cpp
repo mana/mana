@@ -30,8 +30,9 @@
 #include "party.h"
 #include "text.h"
 
-#include "gui/palette.h"
 #include "gui/socialwindow.h"
+#include "gui/theme.h"
+#include "gui/userpalette.h"
 
 #include "net/charhandler.h"
 #include "net/net.h"
@@ -327,20 +328,20 @@ void Player::optionChanged(const std::string &value)
 
 void Player::updateColors()
 {
-    mTextColor = &guiPalette->getColor(Palette::PLAYER);
+    mTextColor = &userPalette->getColor(Theme::PLAYER);
 
     if (mIsGM)
     {
-        mTextColor = &guiPalette->getColor(Palette::GM);
-        mNameColor = &guiPalette->getColor(Palette::GM_NAME);
+        mTextColor = &userPalette->getColor(Theme::GM);
+        mNameColor = &userPalette->getColor(UserPalette::GM);
     }
     else if (mParty && mParty == player_node->getParty())
     {
-        mNameColor = &guiPalette->getColor(Palette::PARTY);
+        mNameColor = &userPalette->getColor(UserPalette::PARTY);
     }
     else
     {
-        mNameColor = &guiPalette->getColor(Palette::PC);
+        mNameColor = &userPalette->getColor(UserPalette::PC);
     }
 
     if (mDispName)

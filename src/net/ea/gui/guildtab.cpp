@@ -25,7 +25,7 @@
 #include "guild.h"
 #include "localplayer.h"
 
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 #include "net/net.h"
 #include "net/guildhandler.h"
@@ -44,7 +44,7 @@ extern Guild *eaGuild;
 GuildTab::GuildTab() :
     ChatTab(_("Guild"))
 {
-    setTabColor(&guiPalette->getColor(Palette::GUILD));
+    setTabColor(&Theme::getThemeColor(Theme::GUILD));
 }
 
 GuildTab::~GuildTab()

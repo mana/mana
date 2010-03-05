@@ -203,6 +203,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/unregisterdialog.h \
 	      gui/updatewindow.cpp \
 	      gui/updatewindow.h \
+	      gui/userpalette.cpp \
+	      gui/userpalette.h \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/windowmenu.cpp \

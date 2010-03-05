@@ -30,8 +30,8 @@
 #include "map.h"
 #include "player.h"
 
-#include "gui/palette.h"
 #include "gui/setup.h"
+#include "gui/userpalette.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -201,32 +201,32 @@ void Minimap::draw(gcn::Graphics *graphics)
                 {
                     const Player *player = static_cast<const Player*>(being);
 
-                    Palette::ColorType type = Palette::PC;
+                    int type = UserPalette::PC;
 
                     if (being == player_node)
                     {
-                        type = Palette::SELF;
+                        type = UserPalette::SELF;
                         dotSize = 3;
                     }
                     else if (player->isGM())
                     {
-                        type = Palette::GM_NAME;
+                        type = UserPalette::GM;
                     }
                     else if (player->isInParty())
                     {
-                        type = Palette::PARTY;
+                        type = UserPalette::PARTY;
                     }
 
-                    graphics->setColor(guiPalette->getColor(type));
+                    graphics->setColor(userPalette->getColor(type));
                     break;
                  }
 
             case Being::MONSTER:
-                graphics->setColor(guiPalette->getColor(Palette::MONSTER));
+                graphics->setColor(userPalette->getColor(UserPalette::MONSTER));
                 break;
 
             case Being::NPC:
-                graphics->setColor(guiPalette->getColor(Palette::NPC));
+                graphics->setColor(userPalette->getColor(UserPalette::NPC));
                 break;
 
             default:

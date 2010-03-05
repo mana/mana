@@ -24,7 +24,7 @@
 #include "commandhandler.h"
 #include "localplayer.h"
 
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 #include "net/chathandler.h"
 #include "net/net.h"
@@ -36,7 +36,7 @@ WhisperTab::WhisperTab(const std::string &nick) :
     ChatTab(nick),
     mNick(nick)
 {
-    setTabColor(&guiPalette->getColor(Palette::WHISPER));
+    setTabColor(&Theme::getThemeColor(Theme::WHISPER));
 }
 
 WhisperTab::~WhisperTab()

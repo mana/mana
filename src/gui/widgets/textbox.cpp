@@ -21,14 +21,14 @@
 
 #include "gui/widgets/textbox.h"
 
-#include "gui/palette.h"
+#include "gui/theme.h"
 
 #include <guichan/font.hpp>
 
 #include <sstream>
 
 TextBox::TextBox() :
-    mTextColor(&guiPalette->getColor(Palette::TEXT))
+    mTextColor(&Theme::getThemeColor(Theme::TEXT))
 {
     setOpaque(false);
     setFrameSize(0);
