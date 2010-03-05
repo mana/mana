@@ -572,6 +572,8 @@
 		<Unit filename="src\units.h" />
 		<Unit filename="src\utils\base64.cpp" />
 		<Unit filename="src\utils\base64.h" />
+		<Unit filename="src\utils\copynpaste.cpp" />
+		<Unit filename="src\utils\copynpaste.h" />
 		<Unit filename="src\utils\dtor.h" />
 		<Unit filename="src\utils\gettext.h" />
 		<Unit filename="src\utils\mathutils.h" />
