@@ -24,7 +24,7 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -82,8 +82,8 @@ void Slider::init()
     // Load resources
     if (mInstances == 0)
     {
-        Image *slider = SkinLoader::getImageFromTheme("slider.png");
-        Image *sliderHi = SkinLoader::getImageFromTheme("slider_hilight.png");
+        Image *slider = Theme::getImageFromTheme("slider.png");
+        Image *sliderHi = Theme::getImageFromTheme("slider_hilight.png");
 
         x = 0; y = 0;
         w = 15; h = 6;
@@ -127,7 +127,7 @@ void Slider::init()
 void Slider::updateAlpha()
 {
     float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double)SkinLoader::instance()->getMinimumOpacity());
+                   (double) Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)
     {

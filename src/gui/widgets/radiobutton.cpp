@@ -24,7 +24,7 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -44,12 +44,12 @@ RadioButton::RadioButton(const std::string &caption, const std::string &group,
 {
     if (instances == 0)
     {
-        radioNormal = SkinLoader::getImageFromTheme("radioout.png");
-        radioChecked = SkinLoader::getImageFromTheme("radioin.png");
-        radioDisabled = SkinLoader::getImageFromTheme("radioout.png");
-        radioDisabledChecked = SkinLoader::getImageFromTheme("radioin.png");
-        radioNormalHi = SkinLoader::getImageFromTheme("radioout_highlight.png");
-        radioCheckedHi = SkinLoader::getImageFromTheme("radioin_highlight.png");
+        radioNormal = Theme::getImageFromTheme("radioout.png");
+        radioChecked = Theme::getImageFromTheme("radioin.png");
+        radioDisabled = Theme::getImageFromTheme("radioout.png");
+        radioDisabledChecked = Theme::getImageFromTheme("radioin.png");
+        radioNormalHi = Theme::getImageFromTheme("radioout_highlight.png");
+        radioCheckedHi = Theme::getImageFromTheme("radioin_highlight.png");
         radioNormal->setAlpha(mAlpha);
         radioChecked->setAlpha(mAlpha);
         radioDisabled->setAlpha(mAlpha);

@@ -20,7 +20,7 @@
 
 #include "progressindicator.h"
 
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
@@ -33,8 +33,8 @@
 
 ProgressIndicator::ProgressIndicator()
 {
-    ImageSet *images =
-            SkinLoader::getImageSetFromTheme("progress-indicator.png", 32, 32);
+    ImageSet *images = Theme::getImageSetFromTheme("progress-indicator.png",
+                                                   32, 32);
 
     Animation *anim = new Animation;
     for (ImageSet::size_type i = 0; i < images->size(); ++i)

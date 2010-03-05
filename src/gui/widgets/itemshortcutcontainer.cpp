@@ -32,7 +32,7 @@
 #include "gui/inventorywindow.h"
 #include "gui/itempopup.h"
 #include "gui/palette.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "resources/image.h"
@@ -50,7 +50,7 @@ ItemShortcutContainer::ItemShortcutContainer():
 
     mItemPopup = new ItemPopup;
 
-    mBackgroundImg = SkinLoader::getImageFromTheme("item_shortcut_bgr.png");
+    mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
     mMaxItems = itemShortcut->getItemCount();
 
     mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));

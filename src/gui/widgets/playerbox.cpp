@@ -26,7 +26,7 @@
 #include "graphics.h"
 #include "player.h"
 
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -44,7 +44,7 @@ PlayerBox::PlayerBox(const Player *player):
     if (instances == 0)
     {
         // Load the background skin
-        Image *textbox = SkinLoader::getImageFromTheme("deepbox.png");
+        Image *textbox = Theme::getImageFromTheme("deepbox.png");
         int bggridx[4] = {0, 3, 28, 31};
         int bggridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;

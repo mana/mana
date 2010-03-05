@@ -24,7 +24,7 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -95,7 +95,7 @@ void ScrollArea::init()
     if (instances == 0)
     {
         // Load the background skin
-        Image *textbox = SkinLoader::getImageFromTheme("deepbox.png");
+        Image *textbox = Theme::getImageFromTheme("deepbox.png");
         const int bggridx[4] = {0, 3, 28, 31};
         const int bggridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
@@ -116,8 +116,8 @@ void ScrollArea::init()
         textbox->decRef();
 
         // Load vertical scrollbar skin
-        Image *vscroll = SkinLoader::getImageFromTheme("vscroll_grey.png");
-        Image *vscrollHi = SkinLoader::getImageFromTheme("vscroll_highlight.png");
+        Image *vscroll = Theme::getImageFromTheme("vscroll_grey.png");
+        Image *vscrollHi = Theme::getImageFromTheme("vscroll_highlight.png");
 
         int vsgridx[4] = {0, 4, 7, 11};
         int vsgridy[4] = {0, 4, 15, 19};
@@ -145,21 +145,21 @@ void ScrollArea::init()
         vscrollHi->decRef();
 
         buttons[UP][0] =
-            SkinLoader::getImageFromTheme("vscroll_up_default.png");
+            Theme::getImageFromTheme("vscroll_up_default.png");
         buttons[DOWN][0] =
-            SkinLoader::getImageFromTheme("vscroll_down_default.png");
+            Theme::getImageFromTheme("vscroll_down_default.png");
         buttons[LEFT][0] =
-            SkinLoader::getImageFromTheme("hscroll_left_default.png");
+            Theme::getImageFromTheme("hscroll_left_default.png");
         buttons[RIGHT][0] =
-            SkinLoader::getImageFromTheme("hscroll_right_default.png");
+            Theme::getImageFromTheme("hscroll_right_default.png");
         buttons[UP][1] =
-            SkinLoader::getImageFromTheme("vscroll_up_pressed.png");
+            Theme::getImageFromTheme("vscroll_up_pressed.png");
         buttons[DOWN][1] =
-            SkinLoader::getImageFromTheme("vscroll_down_pressed.png");
+            Theme::getImageFromTheme("vscroll_down_pressed.png");
         buttons[LEFT][1] =
-            SkinLoader::getImageFromTheme("hscroll_left_pressed.png");
+            Theme::getImageFromTheme("hscroll_left_pressed.png");
         buttons[RIGHT][1] =
-            SkinLoader::getImageFromTheme("hscroll_right_pressed.png");
+            Theme::getImageFromTheme("hscroll_right_pressed.png");
     }
 
     instances++;
@@ -214,7 +214,7 @@ void ScrollArea::logic()
 void ScrollArea::updateAlpha()
 {
         float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double)SkinLoader::instance()->getMinimumOpacity());
+                   (double) Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)
     {

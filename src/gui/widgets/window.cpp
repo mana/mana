@@ -26,7 +26,7 @@
 
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/layout.h"
@@ -73,7 +73,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     setTitleBarHeight(20);
 
     // Loads the skin
-    mSkin = SkinLoader::instance()->load(skin, mDefaultSkinPath);
+    mSkin = Theme::instance()->load(skin, mDefaultSkinPath);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -531,7 +531,7 @@ void Window::loadWindowState()
     if (skinName.compare(mSkin->getFilePath()) != 0)
     {
         mSkin->instances--;
-        mSkin = SkinLoader::instance()->load(skinName, mDefaultSkinPath);
+        mSkin = Theme::instance()->load(skinName, mDefaultSkinPath);
     }
 
     if (mGrip)
@@ -709,7 +709,7 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
 int Window::getGuiAlpha()
 {
     float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double)SkinLoader::instance()->getMinimumOpacity());
+                   (double) Theme::instance()->getMinimumOpacity());
     return (int) (alpha * 255.0f);
 }
 

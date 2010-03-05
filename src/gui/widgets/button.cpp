@@ -25,7 +25,7 @@
 #include "graphics.h"
 
 #include "gui/palette.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -90,7 +90,7 @@ void Button::init()
 
         for (mode = 0; mode < BUTTON_COUNT; mode++)
         {
-            btn[mode] = SkinLoader::getImageFromTheme(data[mode].file);
+            btn[mode] = Theme::getImageFromTheme(data[mode].file);
             a = 0;
             for (y = 0; y < 3; y++)
             {
@@ -126,7 +126,7 @@ Button::~Button()
 void Button::updateAlpha()
 {
     float alpha = std::max(config.getValue("guialpha", 0.8f),
-                           (double)SkinLoader::instance()->getMinimumOpacity());
+                           (double) Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)
     {

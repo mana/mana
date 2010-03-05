@@ -43,9 +43,9 @@
 #include "gui/ministatus.h"
 #include "gui/palette.h"
 #include "gui/skilldialog.h"
-#include "gui/skin.h"
 #include "gui/statuswindow.h"
 #include "gui/storagewindow.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -1061,8 +1061,8 @@ void LocalPlayer::loadTargetCursor(const std::string &filename,
     assert(size > -1);
     assert(size < 3);
 
-    ImageSet *currentImageSet = SkinLoader::getImageSetFromTheme(filename,
-                                                                width, height);
+    ImageSet *currentImageSet = Theme::getImageSetFromTheme(filename,
+                                                            width, height);
     Animation *anim = new Animation;
 
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)

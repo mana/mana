@@ -24,7 +24,7 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -39,7 +39,7 @@ ResizeGrip::ResizeGrip(const std::string &image)
     if (mInstances == 0)
     {
         // Load the grip image
-        gripImage = SkinLoader::getImageFromTheme(image);
+        gripImage = Theme::getImageFromTheme(image);
         gripImage->setAlpha(mAlpha);
     }
 

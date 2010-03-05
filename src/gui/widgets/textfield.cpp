@@ -26,7 +26,7 @@
 
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -52,7 +52,7 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
     if (instances == 0)
     {
         // Load the skin
-        Image *textbox = SkinLoader::getImageFromTheme("deepbox.png");
+        Image *textbox = Theme::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
@@ -87,7 +87,7 @@ TextField::~TextField()
 void TextField::updateAlpha()
 {
     float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double)SkinLoader::instance()->getMinimumOpacity());
+                   (double) Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)
     {

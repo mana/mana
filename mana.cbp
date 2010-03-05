@@ -215,8 +215,6 @@
 		<Unit filename="src\gui\shortcutwindow.h" />
 		<Unit filename="src\gui\skilldialog.cpp" />
 		<Unit filename="src\gui\skilldialog.h" />
-		<Unit filename="src\gui\skin.cpp" />
-		<Unit filename="src\gui\skin.h" />
 		<Unit filename="src\gui\socialwindow.cpp" />
 		<Unit filename="src\gui\socialwindow.h" />
 		<Unit filename="src\gui\specialswindow.cpp" />
@@ -229,6 +227,8 @@
 		<Unit filename="src\gui\storagewindow.h" />
 		<Unit filename="src\gui\textdialog.cpp" />
 		<Unit filename="src\gui\textdialog.h" />
+		<Unit filename="src\gui\theme.cpp" />
+		<Unit filename="src\gui\theme.h" />
 		<Unit filename="src\gui\trade.cpp" />
 		<Unit filename="src\gui\trade.h" />
 		<Unit filename="src\gui\truetypefont.cpp" />

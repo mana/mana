@@ -29,7 +29,7 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/emotedb.h"
 #include "resources/image.h"
@@ -57,7 +57,7 @@ EmotePopup::EmotePopup():
         mEmotes.push_back(EmoteDB::getAnimation(i));
     }
 
-    mSelectionImage = SkinLoader::getImageFromTheme("selection.png");
+    mSelectionImage = Theme::getImageFromTheme("selection.png");
     if (!mSelectionImage)
         logger->error("Unable to load selection.png");
 

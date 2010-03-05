@@ -24,7 +24,7 @@
 #include "log.h"
 
 #include "gui/setup.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
@@ -220,7 +220,7 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     if (!info->icon.empty())
         mIcon = new Icon(info->icon);
     else
-        mIcon = new Icon(SkinLoader::resolveThemePath("unknown-item.png"));
+        mIcon = new Icon(Theme::resolveThemePath("unknown-item.png"));
 
     mIcon->setPosition(1, 0);
     add(mIcon);

@@ -282,8 +282,6 @@ SET(SRCS
     gui/shortcutwindow.h
     gui/skilldialog.cpp
     gui/skilldialog.h
-    gui/skin.cpp
-    gui/skin.h
     gui/socialwindow.cpp
     gui/socialwindow.h
     gui/speechbubble.cpp
@@ -296,6 +294,8 @@ SET(SRCS
     gui/storagewindow.h
     gui/textdialog.cpp
     gui/textdialog.h
+    gui/theme.cpp
+    gui/theme.h
     gui/trade.cpp
     gui/trade.h
     gui/truetypefont.cpp

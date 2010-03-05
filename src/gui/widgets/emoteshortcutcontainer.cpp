@@ -32,7 +32,7 @@
 #include "log.h"
 
 #include "gui/palette.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/emotedb.h"
 #include "resources/image.h"
@@ -49,7 +49,7 @@ EmoteShortcutContainer::EmoteShortcutContainer():
     addMouseListener(this);
     addWidgetListener(this);
 
-    mBackgroundImg = SkinLoader::getImageFromTheme("item_shortcut_bgr.png");
+    mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
 
     mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
 

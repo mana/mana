@@ -26,7 +26,7 @@
 
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
@@ -55,14 +55,10 @@ DropDown::DropDown(gcn::ListModel *listModel):
         // Load the background skin
 
         // Get the button skin
-        buttons[1][0] =
-                SkinLoader::getImageFromTheme("vscroll_up_default.png");
-        buttons[0][0] =
-                SkinLoader::getImageFromTheme("vscroll_down_default.png");
-        buttons[1][1] =
-                SkinLoader::getImageFromTheme("vscroll_up_pressed.png");
-        buttons[0][1] =
-                SkinLoader::getImageFromTheme("vscroll_down_pressed.png");
+        buttons[1][0] = Theme::getImageFromTheme("vscroll_up_default.png");
+        buttons[0][0] = Theme::getImageFromTheme("vscroll_down_default.png");
+        buttons[1][1] = Theme::getImageFromTheme("vscroll_up_pressed.png");
+        buttons[0][1] = Theme::getImageFromTheme("vscroll_down_pressed.png");
 
         buttons[0][0]->setAlpha(mAlpha);
         buttons[0][1]->setAlpha(mAlpha);
@@ -70,7 +66,7 @@ DropDown::DropDown(gcn::ListModel *listModel):
         buttons[1][1]->setAlpha(mAlpha);
 
         // get the border skin
-        Image *boxBorder = SkinLoader::getImageFromTheme("deepbox.png");
+        Image *boxBorder = Theme::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
@@ -115,7 +111,7 @@ DropDown::~DropDown()
 void DropDown::updateAlpha()
 {
     float alpha = std::max(config.getValue("guialpha", 0.8f),
-                       (double)SkinLoader::instance()->getMinimumOpacity());
+                       (double) Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)
     {

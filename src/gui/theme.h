@@ -24,12 +24,12 @@
 #ifndef SKIN_H
 #define SKIN_H
 
+#include "configlistener.h"
 #include "graphics.h"
 
 #include <map>
 #include <string>
 
-class ConfigListener;
 class Image;
 class ImageSet;
 
@@ -96,10 +96,10 @@ class Skin
         Image *mStickyImageDown;   /**< Sticky Button Image */
 };
 
-class SkinLoader
+class Theme : public ConfigListener
 {
     public:
-        static SkinLoader *instance();
+        static Theme *instance();
         static void deleteInstance();
 
         static void prepareThemePath();
@@ -138,9 +138,11 @@ class SkinLoader
          */
         void setMinimumOpacity(float minimumOpacity);
 
+        void optionChanged(const std::string &);
+
     private:
-        SkinLoader();
-        ~SkinLoader();
+        Theme();
+        ~Theme();
 
         Skin *readSkin(const std::string &filename);
 
@@ -156,7 +158,7 @@ class SkinLoader
         ConfigListener *mSkinConfigListener;
 
         static std::string mThemePath;
-        static SkinLoader *mInstance;
+        static Theme *mInstance;
 
         static bool tryThemePath(std::string themePath);
 

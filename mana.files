@@ -5,9 +5,9 @@
 ./data/fonts/Makefile.am
 ./data/graphics/CMakeLists.txt
 ./data/graphics/gui/CMakeLists.txt
-./data/graphics/gui/gui.xml
 ./data/graphics/gui/Makefile.am
 ./data/graphics/gui/speechbubble.xml
+./data/graphics/gui/window.xml
 ./data/graphics/images/CMakeLists.txt
 ./data/graphics/images/Makefile.am
 ./data/graphics/Makefile.am
@@ -161,8 +161,6 @@
 ./src/gui/shortcutwindow.h
 ./src/gui/skilldialog.cpp
 ./src/gui/skilldialog.h
-./src/gui/skin.cpp
-./src/gui/skin.h
 ./src/gui/socialwindow.cpp
 ./src/gui/socialwindow.h
 ./src/gui/specialswindow.cpp
@@ -175,6 +173,8 @@
 ./src/gui/storagewindow.h
 ./src/gui/textdialog.cpp
 ./src/gui/textdialog.h
+./src/gui/theme.cpp
+./src/gui/theme.h
 ./src/gui/trade.cpp
 ./src/gui/trade.h
 ./src/gui/truetypefont.cpp

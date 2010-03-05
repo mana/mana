@@ -25,7 +25,7 @@
 #include "log.h"
 
 #include "gui/setup.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
@@ -86,7 +86,7 @@ struct SkillInfo
         }
         else
         {
-            icon = SkinLoader::getImageFromTheme("unknown-item.png");
+            icon = Theme::getImageFromTheme("unknown-item.png");
         }
     }
 

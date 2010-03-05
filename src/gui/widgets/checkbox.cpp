@@ -25,7 +25,7 @@
 #include "graphics.h"
 
 #include "gui/palette.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -44,7 +44,7 @@ CheckBox::CheckBox(const std::string &caption, bool selected):
 {
     if (instances == 0)
     {
-        Image *checkBox = SkinLoader::getImageFromTheme("checkbox.png");
+        Image *checkBox = Theme::getImageFromTheme("checkbox.png");
         checkBoxNormal = checkBox->getSubImage(0, 0, 9, 10);
         checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
         checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);
@@ -93,7 +93,7 @@ void CheckBox::draw(gcn::Graphics* graphics)
 void CheckBox::updateAlpha()
 {
     float alpha = std::max(config.getValue("guialpha", 0.8f),
-                       (double)SkinLoader::instance()->getMinimumOpacity());
+                       (double) Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)
     {
