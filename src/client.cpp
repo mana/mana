@@ -40,7 +40,6 @@
 #include "gui/charselectdialog.h"
 #include "gui/connectiondialog.h"
 #include "gui/gui.h"
-#include "gui/skin.h"
 #include "gui/login.h"
 #include "gui/okdialog.h"
 #include "gui/palette.h"
@@ -49,6 +48,7 @@
 #include "gui/sdlinput.h"
 #include "gui/serverdialog.h"
 #include "gui/setup.h"
+#include "gui/theme.h"
 #include "gui/unregisterdialog.h"
 #include "gui/updatewindow.h"
 #include "gui/worldselectdialog.h"
@@ -340,7 +340,7 @@ Client::Client(const Options &options):
     // Initialize for drawing
     graphics->_beginDraw();
 
-    SkinLoader::prepareThemePath();
+    Theme::prepareThemePath();
 
     // Initialize the item and emote shortcuts.
     itemShortcut = new ItemShortcut;
@@ -601,7 +601,7 @@ int Client::exec()
                     {
                         // Don't allow an alpha opacity
                         // lower than the default value
-                        SkinLoader::instance()->setMinimumOpacity(0.8f);
+                        Theme::instance()->setMinimumOpacity(0.8f);
 
                         mCurrentDialog = new ServerDialog(&mCurrentServer,
                                                           mConfigDir);
@@ -627,7 +627,7 @@ int Client::exec()
                     logger->log("State: LOGIN");
                     // Don't allow an alpha opacity
                     // lower than the default value
-                    SkinLoader::instance()->setMinimumOpacity(0.8f);
+                    Theme::instance()->setMinimumOpacity(0.8f);
 
                     if (mOptions.username.empty()
                             || mOptions.password.empty())
@@ -744,7 +744,7 @@ int Client::exec()
                     logger->log("State: CHAR SELECT");
                     // Don't allow an alpha opacity
                     // lower than the default value
-                    SkinLoader::instance()->setMinimumOpacity(0.8f);
+                    Theme::instance()->setMinimumOpacity(0.8f);
 
                     mCurrentDialog = new CharSelectDialog(&loginData);
 
@@ -781,7 +781,7 @@ int Client::exec()
                     sound.fadeOutMusic(1000);
 
                     // Allow any alpha opacity
-                    SkinLoader::instance()->setMinimumOpacity(-1.0f);
+                    Theme::instance()->setMinimumOpacity(-1.0f);
 
                     delete mSetupButton;
                     delete mDesktop;

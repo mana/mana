@@ -25,7 +25,7 @@
 #include "graphics.h"
 
 #include "gui/palette.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/tabbedarea.h"
 
@@ -96,7 +96,7 @@ void Tab::init()
 
         for (mode = 0; mode < TAB_COUNT; mode++)
         {
-            tab[mode] = SkinLoader::getImageFromTheme(data[mode].file);
+            tab[mode] = Theme::getImageFromTheme(data[mode].file);
             a = 0;
             for (y = 0; y < 3; y++)
             {
@@ -119,7 +119,7 @@ void Tab::init()
 void Tab::updateAlpha()
 {
     float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double)SkinLoader::instance()->getMinimumOpacity());
+                   (double) Theme::instance()->getMinimumOpacity());
 
     // TODO We don't need to do this for every tab on every draw
     // Maybe use a config listener to do it as the value changes.

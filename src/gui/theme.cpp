@@ -21,11 +21,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "client.h"
 #include "configuration.h"
-#include "configlistener.h"
 #include "log.h"
 
 #include "resources/image.h"
@@ -40,32 +39,8 @@
 
 #include <algorithm>
 
-std::string SkinLoader::mThemePath;
-SkinLoader *SkinLoader::mInstance = 0;
-
-class SkinConfigListener : public ConfigListener
-{
-    public:
-        SkinConfigListener(SkinLoader *skinLoader)
-            : mSkinLoader(skinLoader)
-        {
-            config.addListener("guialpha", this);
-        }
-
-        ~SkinConfigListener()
-        {
-            config.removeListener("guialpha", this);
-        }
-
-        void optionChanged(const std::string &)
-        {
-            mSkinLoader->updateAlpha();
-        }
-
-    private:
-        SkinLoader *mSkinLoader;
-};
-
+std::string Theme::mThemePath;
+Theme *Theme::mInstance = 0;
 
 Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
            const std::string &filePath,
@@ -116,34 +91,33 @@ int Skin::getMinHeight() const
            mBorder.grid[ImageRect::LOWER_LEFT]->getHeight();
 }
 
-SkinLoader::SkinLoader()
-    : mSkinConfigListener(new SkinConfigListener(this)),
+Theme::Theme():
     mMinimumOpacity(-1.0f)
 {
+    config.addListener("guialpha", this);
 }
 
-SkinLoader::~SkinLoader()
+Theme::~Theme()
 {
     delete_all(mSkins);
-    delete mSkinConfigListener;
+    config.removeListener("guialpha", this);
 }
 
-SkinLoader *SkinLoader::instance()
+Theme *Theme::instance()
 {
     if (!mInstance)
-        mInstance = new SkinLoader;
+        mInstance = new Theme;
 
     return mInstance;
 }
 
-void SkinLoader::deleteInstance()
+void Theme::deleteInstance()
 {
     delete mInstance;
     mInstance = 0;
 }
 
-Skin *SkinLoader::load(const std::string &filename,
-                       const std::string &defaultPath)
+Skin *Theme::load(const std::string &filename, const std::string &defaultPath)
 {
     // Check if this skin was already loaded
     SkinIterator skinIterator = mSkins.find(filename);
@@ -180,7 +154,7 @@ Skin *SkinLoader::load(const std::string &filename,
     return skin;
 }
 
-void SkinLoader::setMinimumOpacity(float minimumOpacity)
+void Theme::setMinimumOpacity(float minimumOpacity)
 {
     if (minimumOpacity > 1.0f) return;
 
@@ -188,13 +162,18 @@ void SkinLoader::setMinimumOpacity(float minimumOpacity)
     updateAlpha();
 }
 
-void SkinLoader::updateAlpha()
+void Theme::updateAlpha()
 {
     for (SkinIterator iter = mSkins.begin(); iter != mSkins.end(); ++iter)
         iter->second->updateAlpha(mMinimumOpacity);
 }
 
-Skin *SkinLoader::readSkin(const std::string &filename)
+void Theme::optionChanged(const std::string &)
+{
+    updateAlpha();
+}
+
+Skin *Theme::readSkin(const std::string &filename)
 {
     if (filename.empty())
         return 0;
@@ -211,15 +190,14 @@ Skin *SkinLoader::readSkin(const std::string &filename)
 
     if (skinSetImage.empty())
     {
-        logger->log("SkinLoader::readSkin(): Skinset does not define an "
-                    "image!");
+        logger->log("Theme::readSkin(): Skinset does not define an image!");
         return 0;
     }
 
-    logger->log("SkinLoader::load(): <skinset> defines "
-                "'%s' as a skin image.", skinSetImage.c_str());
+    logger->log("Theme::load(): <skinset> defines '%s' as a skin image.",
+                skinSetImage.c_str());
 
-    Image *dBorders = SkinLoader::getImageFromTheme(skinSetImage);
+    Image *dBorders = Theme::getImageFromTheme(skinSetImage);
     ImageRect border;
 
     // iterate <widget>'s
@@ -273,13 +251,13 @@ Skin *SkinLoader::readSkin(const std::string &filename)
                     border.grid[8] = dBorders->getSubImage(xPos, yPos, width, height);
 
                 else
-                    logger->log("SkinLoader::readSkin(): Unknown part type '%s'",
+                    logger->log("Theme::readSkin(): Unknown part type '%s'",
                                 partType.c_str());
             }
         }
         else
         {
-            logger->log("SkinLoader::readSkin(): Unknown widget type '%s'",
+            logger->log("Theme::readSkin(): Unknown widget type '%s'",
                         widgetType.c_str());
         }
     }
@@ -289,8 +267,8 @@ Skin *SkinLoader::readSkin(const std::string &filename)
     logger->log("Finished loading skin.");
 
     // Hard-coded for now until we update the above code to look for window buttons
-    Image *closeImage = SkinLoader::getImageFromTheme("close_button.png");
-    Image *sticky = SkinLoader::getImageFromTheme("sticky_button.png");
+    Image *closeImage = Theme::getImageFromTheme("close_button.png");
+    Image *sticky = Theme::getImageFromTheme("sticky_button.png");
     Image *stickyImageUp = sticky->getSubImage(0, 0, 15, 15);
     Image *stickyImageDown = sticky->getSubImage(15, 0, 15, 15);
     sticky->decRef();
@@ -301,7 +279,7 @@ Skin *SkinLoader::readSkin(const std::string &filename)
     return skin;
 }
 
-bool SkinLoader::tryThemePath(std::string themePath)
+bool Theme::tryThemePath(std::string themePath)
 {
     if (!themePath.empty())
     {
@@ -316,7 +294,7 @@ bool SkinLoader::tryThemePath(std::string themePath)
     return false;
 }
 
-void SkinLoader::prepareThemePath()
+void Theme::prepareThemePath()
 {
     // Try theme from settings
     if (tryThemePath(config.getValue("theme", "")))
@@ -330,7 +308,7 @@ void SkinLoader::prepareThemePath()
     mThemePath = "graphics/gui";
 }
 
-std::string SkinLoader::resolveThemePath(const std::string &path)
+std::string Theme::resolveThemePath(const std::string &path)
 {
     // Need to strip off any dye info for the existence tests
     int pos = path.find('|');
@@ -353,13 +331,13 @@ std::string SkinLoader::resolveThemePath(const std::string &path)
     return "graphics/gui/" + path;
 }
 
-Image *SkinLoader::getImageFromTheme(const std::string &path)
+Image *Theme::getImageFromTheme(const std::string &path)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     return resman->getImage(resolveThemePath(path));
 }
 
-ImageSet *SkinLoader::getImageSetFromTheme(const std::string &path,
+ImageSet *Theme::getImageSetFromTheme(const std::string &path,
                                         int w, int h)
 {
     ResourceManager *resman = ResourceManager::getInstance();

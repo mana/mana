@@ -24,7 +24,7 @@
 #include "gui/focushandler.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 #include "gui/truetypefont.h"
 
 #include "gui/widgets/window.h"
@@ -154,7 +154,7 @@ Gui::~Gui()
 
     delete guiInput;
 
-    SkinLoader::deleteInstance();
+    Theme::deleteInstance();
 }
 
 void Gui::logic()
@@ -209,8 +209,7 @@ void Gui::setUseCustomCursor(bool customCursor)
             SDL_ShowCursor(SDL_DISABLE);
 
             // Load the mouse cursor
-            mMouseCursors = SkinLoader::getImageSetFromTheme("mouse.png",
-                                                             40, 40);
+            mMouseCursors = Theme::getImageSetFromTheme("mouse.png", 40, 40);
 
             if (!mMouseCursors)
                 logger->error("Unable to load mouse cursors.");

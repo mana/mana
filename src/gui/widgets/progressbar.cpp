@@ -27,7 +27,7 @@
 
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 
 #include "resources/image.h"
 
@@ -58,7 +58,7 @@ ProgressBar::ProgressBar(float progress,
 
     if (mInstances == 0)
     {
-        Image *dBorders = SkinLoader::getImageFromTheme("vscroll_grey.png");
+        Image *dBorders = Theme::getImageFromTheme("vscroll_grey.png");
         mBorder.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
         mBorder.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
         mBorder.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
@@ -122,7 +122,7 @@ void ProgressBar::logic()
 void ProgressBar::updateAlpha()
 {
     float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double)SkinLoader::instance()->getMinimumOpacity());
+                   (double) Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)
     {

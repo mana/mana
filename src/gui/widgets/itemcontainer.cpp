@@ -32,7 +32,7 @@
 #include "gui/outfitwindow.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/skin.h"
+#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "net/net.h"
@@ -67,7 +67,7 @@ ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
     mItemPopup = new ItemPopup;
     setFocusable(true);
 
-    mSelImg = SkinLoader::getImageFromTheme("selection.png");
+    mSelImg = Theme::getImageFromTheme("selection.png");
     if (!mSelImg)
         logger->error("Unable to load selection.png");
 
