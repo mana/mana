@@ -56,12 +56,12 @@ class Item
         /**
          * Returns the item image.
          */
-        Image *getImage() { return mImage; }
+        Image *getImage() const { return mImage; }
 
         /**
          * Returns the item image.
          */
-        Image *getDrawImage() { return mDrawImage; }
+        Image *getDrawImage() const { return mDrawImage; }
 
         /**
          * Sets the number of items.
