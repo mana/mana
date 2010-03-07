@@ -1,3 +1,43 @@
+1.0.0 (.. March 2010)
+- The Mana World client is now called the Mana client
+- Added support for branding the client differently via command line parameter
+- Added support for ManaServ and eAthena (TMW version) from the same binary
+- Added support for switching character or server without restart
+- Added downloading of server list
+- Added the ability to define multiple outfits to quickly switch between
+- Added /ignore, /unignore and /createparty commands
+- Added support for showing particle effects when monsters attack
+- Added highlights on hovering over buttons, tabs, sliders and scrollbars
+- Added --screenshot-dir command line parameter to set the screenshot directory
+- Added handling of player revival after dying
+- Added handling of damage dealt using skills
+- Added support for showing map background images
+- Added nick autocompletion in chat when pressing Tab
+- Added ability to only change player direction by holding "emote" key
+- Added option to show the amount of damage dealt to target monster
+- Added automatic loading of minimap based on file name
+- Added support for pasting text from the clipboard in text fields
+- Added rudimentary support for GUI themes
+- Added additional mouse cursors to indicate attack and talk actions
+- Added option to show gender next to player names
+- Added ability to unassign keyboard shortcuts
+- Combined Party and Guild (ManaServ) support in one Social window
+- Display the first key binding conflict in keyboard setup
+- The login wallpaper is now scaled when it doesn't exactly fit the screen
+- Ambient image layers can now be scaled to fit the screen
+- Automatically show inventory window when starting a trade
+- Display the party name of other players on mouseover
+- The party tab will now only show when you're in a party
+- Allow displaying warp portals using particle effects
+- Hide color codes from speech text
+- Improved keyboard control of the quit dialog
+- Quickly move items into your store by "emote"-clicking them
+- Allow redirects when downloading updates
+- Fixed windows to stay on screen when resolution is lowered
+- Fixed some slowness due to chat window
+- Changed the default locations for configuration, updates and screenshots
+- Many additional fixes and cleanups
+
 0.0.29.1 (9 June 2009)
 - Added the ability to change your password after logging in
 - The leader of a party is now displayed in bold
