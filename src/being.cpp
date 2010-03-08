@@ -139,13 +139,13 @@ Position Being::checkNodeOffsets(const Position &position) const
 
     // Compute the being radius:
     // FIXME: the beings' radius should be obtained from xml values
-    // and stored into the Being objects.
+    // and stored into the Being ojects.
     int radius = getWidth() / 2;
-    // FIXME: Handle beings with more than 1/2 tile radius by not letting them
+    // FIXME: Hande beings with more than 1/2 tile radius by not letting them
     // go or spawn in too narrow places. The server will have to be aware
     // of being's radius value (in tiles) to handle this gracefully.
     if (radius > 32 / 2) radius = 32 / 2;
-    // Set a default value if no value returned.
+    // set a default value if no value returned.
     if (radius < 1) radius = 32 / 3;
 
     // Fix coordinates so that the player does not seem to dig into walls.
@@ -158,32 +158,13 @@ Position Being::checkNodeOffsets(const Position &position) const
     else if (fy < radius && !mMap->getWalk(tx, ty - 1, getWalkMask()))
         fy = radius;
 
-    // Top-left border check
-    if (!mMap->getWalk(tx - 1, ty - 1, getWalkMask())
-        && fy < radius && fx < radius)
-    {
-        fx = fy = radius;
-    }
-    // Top-right border check
-    if (!mMap->getWalk(tx + 1, ty - 1, getWalkMask())
-        && (fy < radius) && fx > (32 - radius))
-    {
-        fx = 32 -radius;
-        fy = radius;
-    }
-    // Bottom-left border check
-    if (!mMap->getWalk(tx - 1, ty + 1, getWalkMask())
-        && fy > (32 - radius) && fx < radius)
-    {
-        fx = radius;
-        fy = 32 - radius;
-    }
-    // Bottom-right border check
-    if (!mMap->getWalk(tx + 1, ty + 1, getWalkMask())
-        && fy > (32 - radius) && fx > (32 - radius))
-    {
-        fx = fy = 32 -radius;
-    }
+    // FIXME: Check also diagonal positions.
+
+    // Test also the current character's position, to avoid the corner case
+    // where a player can approach an obstacle by walking from slightly
+    // under, diagonally. First part to the walk on water bug.
+    //if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
+      //fy = 16;
 
     return Position(tx * 32 + fx, ty * 32 + fy);
 }
