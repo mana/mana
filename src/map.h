@@ -263,8 +263,8 @@ class Map : public Properties
         int getTileHeight() const
         { return mTileHeight; }
 
-        const std::string &getMusicFile() const;
-        const std::string &getName() const;
+        const std::string getMusicFile() const;
+        const std::string getName() const;
 
         /**
          * Gives the map id based on filepath (ex: 009-1)
