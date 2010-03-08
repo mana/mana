@@ -73,20 +73,25 @@ void Wallpaper::loadWallpapers()
 
         // First, get the base filename of the image:
         std::string filename = *i;
-        int separator = filename.rfind("_");
+        unsigned int separator = filename.rfind("_");
         filename = filename.substr(0, separator);
 
-        // Then, append the width and height search mask.
-        filename.append("_%dx%d.png");
-
-        if (sscanf(*i, filename.c_str(), &width, &height) == 2)
+        // Check that the base filename doesn't have any '%' markers.
+        separator = filename.find("%");
+        if (separator == std::string::npos)
         {
-            WallpaperData wp;
-            wp.filename = WALLPAPER_FOLDER;
-            wp.filename.append(*i);
-            wp.width = width;
-            wp.height = height;
-            wallpaperData.push_back(wp);
+            // Then, append the width and height search mask.
+            filename.append("_%dx%d.png");
+
+            if (sscanf(*i, filename.c_str(), &width, &height) == 2)
+            {
+                WallpaperData wp;
+                wp.filename = WALLPAPER_FOLDER;
+                wp.filename.append(*i);
+                wp.width = width;
+                wp.height = height;
+                wallpaperData.push_back(wp);
+            }
         }
     }
 
