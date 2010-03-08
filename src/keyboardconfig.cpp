@@ -154,8 +154,14 @@ bool KeyboardConfig::hasConflicts()
      */
     for (i = 0; i < KEY_TOTAL; i++)
     {
+        if (mKey[i].value == KEY_NO_VALUE)
+            continue;
+
         for (j = i, j++; j < KEY_TOTAL; j++)
         {
+            if (mKey[j].value == KEY_NO_VALUE)
+                continue;
+
             // Allow collisions between shortcut and emote keys
             if ((i >= KEY_SHORTCUT_1 && i <= KEY_SHORTCUT_12) && (j >= KEY_EMOTE_1 && j <= KEY_EMOTE_12))
                 continue;

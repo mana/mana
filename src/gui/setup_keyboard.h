@@ -72,6 +72,7 @@ class Setup_Keyboard : public SetupTab, public gcn::ActionListener
         gcn::ListBox *mKeyList;
 
         gcn::Button *mAssignKeyButton;
+        gcn::Button *mUnAssignKeyButton;
         gcn::Button *mMakeDefaultButton;
 
         bool mKeySetting; /**< flag to check if key being set. */
