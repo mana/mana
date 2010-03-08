@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-03-05 21:43+0100\n"
-"PO-Revision-Date: 2009-01-18 16:53+0000\n"
-"Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2009-07-15 12:21+0000\n"
+"Last-Translator: Yentl <y.v.t@scarlet.be>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
@@ -68,12 +68,14 @@ msgid "Password changed successfully!"
 msgstr ""
 
 #: src/client.cpp:862
+#, fuzzy
 msgid "Email Change"
-msgstr ""
+msgstr "Veranderen"
 
 #: src/client.cpp:863
+#, fuzzy
 msgid "Email changed successfully!"
-msgstr ""
+msgstr "Lid is succesvol gepromoveerd."
 
 #: src/client.cpp:883
 #, fuzzy
@@ -90,61 +92,61 @@ msgid "%s doesn't exist and can't be created! Exiting."
 msgstr ""
 
 #: src/client.cpp:1119
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid update host: %s"
-msgstr ""
+msgstr "Ongeldige updatahost: "
 
 #: src/client.cpp:1153 src/client.cpp:1159
 msgid "Error creating updates directory!"
-msgstr ""
+msgstr "Fout bij het creëren van de update map!"
 
 #: src/commandhandler.cpp:127 src/commandhandler.cpp:308
 msgid "Unknown command."
-msgstr ""
+msgstr "Onbekend commando."
 
 #: src/commandhandler.cpp:156
 msgid "-- Help --"
-msgstr ""
+msgstr "-- Help --"
 
 #: src/commandhandler.cpp:157
 msgid "/help > Display this help"
-msgstr ""
+msgstr "/help > Deze help weergeven"
 
 #: src/commandhandler.cpp:159
 msgid "/where > Display map name"
-msgstr ""
+msgstr "/where > Mapnaam weergeven"
 
 #: src/commandhandler.cpp:160
 msgid "/who > Display number of online users"
-msgstr ""
+msgstr "/who > Aantal online gebruikers weergeven"
 
 #: src/commandhandler.cpp:161
 msgid "/me > Tell something about yourself"
-msgstr ""
+msgstr "/me > Vertel iets over jezelf"
 
 #: src/commandhandler.cpp:163
 msgid "/clear > Clears this window"
-msgstr ""
+msgstr "/clear > Maak dit venster leeg"
 
 #: src/commandhandler.cpp:165
 msgid "/msg > Send a private message to a user"
-msgstr ""
+msgstr "/msg > Zend een privébericht naar een gebruiker"
 
 #: src/commandhandler.cpp:166
 msgid "/whisper > Alias of msg"
-msgstr ""
+msgstr "/whisper > zelfde functie als msg"
 
 #: src/commandhandler.cpp:167
 msgid "/w > Alias of msg"
-msgstr ""
+msgstr "/w > zelfde als msg"
 
 #: src/commandhandler.cpp:168
 msgid "/query > Makes a tab for private messages with another user"
-msgstr ""
+msgstr "/query > Maakt een tabblad voor privéberichten met andere gebruikers"
 
 #: src/commandhandler.cpp:169
 msgid "/q > Alias of query"
-msgstr ""
+msgstr "/q > zelfde functie als query"
 
 #: src/commandhandler.cpp:171
 msgid "/ignore > ignore a player"
@@ -156,40 +158,42 @@ msgstr ""
 
 #: src/commandhandler.cpp:174
 msgid "/list > Display all public channels"
-msgstr ""
+msgstr "/list > Alle publieke kanalen weergeven"
 
 #: src/commandhandler.cpp:175
 msgid "/join > Join or create a channel"
-msgstr ""
+msgstr "/join > Een kanaal creëren of bij aansluiten"
 
 #: src/commandhandler.cpp:177
+#, fuzzy
 msgid "/createparty > Create a new party"
-msgstr ""
+msgstr "/create > Creëer een nieuwe groep"
 
 #: src/commandhandler.cpp:178
 msgid "/party > Invite a user to party"
-msgstr ""
+msgstr "/party > Een gebruiker uitnodigen in de groep"
 
 #: src/commandhandler.cpp:180
 msgid "/record > Start recording the chat to an external file"
-msgstr ""
+msgstr "/record > De chat beginnen opnemen naar een extern bestand"
 
 #: src/commandhandler.cpp:181
 msgid "/toggle > Determine whether <return> toggles the chat log"
-msgstr ""
+msgstr "/toggle > Bepalen of <return> de chatlog wisselt"
 
 #: src/commandhandler.cpp:182
 msgid "/present > Get list of players present (sent to chat log, if logging)"
 msgstr ""
+"/present > Lijst weergeven met alle aanwezige spelers (opgeslagen in "
+"chatlog, als logging aanstaat)"
 
 #: src/commandhandler.cpp:184
 msgid "/announce > Global announcement (GM only)"
-msgstr ""
+msgstr "/announce > Globale aankondiging (enkel GM)"
 
 #: src/commandhandler.cpp:188
-#, fuzzy
 msgid "For more information, type /help <command>."
-msgstr "Commando: /help <commando>"
+msgstr "Voor meer informatie, typ /help <commando>."
 
 #: src/commandhandler.cpp:192
 msgid "Command: /help"
@@ -197,7 +201,7 @@ msgstr "Commando: /help"
 
 #: src/commandhandler.cpp:193
 msgid "This command displays a list of all commands available."
-msgstr ""
+msgstr "Dit commando geeft een lijst weer van alle mogelijke commando's"
 
 #: src/commandhandler.cpp:194
 msgid "Command: /help <command>"
@@ -205,7 +209,7 @@ msgstr "Commando: /help <commando>"
 
 #: src/commandhandler.cpp:195
 msgid "This command displays help on <command>."
-msgstr ""
+msgstr "Dit commando geeft help weer van <commando>"
 
 #: src/commandhandler.cpp:203
 msgid "Command: /announce <msg>"
@@ -213,11 +217,12 @@ msgstr "Commando: /announce <msg>"
 
 #: src/commandhandler.cpp:204
 msgid "*** only available to a GM ***"
-msgstr ""
+msgstr "*** enkel mogelijk door een GM ***"
 
 #: src/commandhandler.cpp:205
 msgid "This command sends the message <msg> to all players currently online."
 msgstr ""
+"Dit commando stuurt het bericht <msg> naar alle spelers momenteel online."
 
 #: src/commandhandler.cpp:210
 msgid "Command: /clear"
@@ -225,125 +230,134 @@ msgstr "Commando: /clear"
 
 #: src/commandhandler.cpp:211
 msgid "This command clears the chat log of previous chat."
-msgstr ""
+msgstr "Dit commando maakt de chatlog van vorige chatsessies leeg"
 
 #: src/commandhandler.cpp:215
 #, fuzzy
 msgid "Command: /ignore <player>"
-msgstr "Commando: /announce <msg>"
+msgstr "Commando: /item <beleid>"
 
 #: src/commandhandler.cpp:216
+#, fuzzy
 msgid "This command ignores the given player regardless of current relations."
-msgstr ""
+msgstr "Dit commando geeft het aantal spelers dat momenteel online is weer."
 
 #: src/commandhandler.cpp:221
 msgid "Command: /join <channel>"
-msgstr ""
+msgstr "Commando: /join <kanaal>"
 
 #: src/commandhandler.cpp:222
 msgid "This command makes you enter <channel>."
-msgstr ""
+msgstr "Dit commando voegt je toe op kanaal <kanaal>."
 
 #: src/commandhandler.cpp:223
 msgid "If <channel> doesn't exist, it's created."
-msgstr ""
+msgstr "Als <kanaal> niet bestaat, wordt het aangemaakt."
 
 #: src/commandhandler.cpp:227
 msgid "Command: /list"
-msgstr ""
+msgstr "Commando: /list"
 
 #: src/commandhandler.cpp:228
 msgid "This command shows a list of all channels."
-msgstr ""
+msgstr "Dit commando geeft een lijst weer van alle kanalen."
 
 #: src/commandhandler.cpp:232
 msgid "Command: /me <message>"
-msgstr ""
+msgstr "Commando /me <bericht>"
 
 #: src/commandhandler.cpp:233
 msgid "This command tell others you are (doing) <msg>."
-msgstr ""
+msgstr "Dit commando vertelt anderen dat je <msg> bent/doet."
 
 #: src/commandhandler.cpp:237
 msgid "Command: /msg <nick> <message>"
-msgstr ""
+msgstr "Commando: /msg <nick> <bericht>"
 
 #: src/commandhandler.cpp:238
 msgid "Command: /whisper <nick> <message>"
-msgstr ""
+msgstr "Commando: /msg <nick> <bericht>"
 
 #: src/commandhandler.cpp:239
 msgid "Command: /w <nick> <message>"
-msgstr ""
+msgstr "Commando: /w <nick> <bericht>"
 
 #: src/commandhandler.cpp:240
 msgid "This command sends the text <message> to <nick>."
-msgstr ""
+msgstr "Dit commando zendt de tekst <bericht> aan <nick>."
 
 #: src/commandhandler.cpp:241 src/commandhandler.cpp:260
 #: src/gui/widgets/channeltab.cpp:82 src/gui/widgets/channeltab.cpp:91
 #: src/net/ea/gui/guildtab.cpp:75 src/net/ea/gui/partytab.cpp:75
 msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
 msgstr ""
+"Als de <nick> spaties bevat, omsluit het dan met dubbele aanhalingstekens "
+"(\")."
 
 #: src/commandhandler.cpp:246
 msgid "Command: /query <nick>"
-msgstr ""
+msgstr "Commando: /query <nick>"
 
 #: src/commandhandler.cpp:247
 msgid "Command: /q <nick>"
-msgstr ""
+msgstr "Commando: /q <nick>"
 
 #: src/commandhandler.cpp:248
 msgid "This command tries to make a tab for whispers betweenyou and <nick>."
 msgstr ""
+"Dit commando probeert een tabblad aan te maken voor alle whispers tussen jou "
+"en <nick>"
 
 #: src/commandhandler.cpp:253
 #, fuzzy
 msgid "Command: /createparty <name>"
-msgstr "Commando: /clear"
+msgstr "Commando: /create <groepsnaam>"
 
 #: src/commandhandler.cpp:254
+#, fuzzy
 msgid "This command creates a new party called <name>."
-msgstr ""
+msgstr "Dit commando creëert een nieuwe groep genaamd <groepsnaam>"
 
 #: src/commandhandler.cpp:258
 msgid "Command: /party <nick>"
-msgstr ""
+msgstr "Commando: /party <nick>"
 
 #: src/commandhandler.cpp:259 src/net/ea/gui/partytab.cpp:74
 msgid "This command invites <nick> to party with you."
-msgstr ""
+msgstr "Dit commando nodigt <nick> uit om een groep te vormen met jou."
 
 #: src/commandhandler.cpp:265
 msgid "Command: /present"
-msgstr ""
+msgstr "Commando: /present"
 
 #: src/commandhandler.cpp:266
 msgid ""
 "This command gets a list of players within hearing and sends it to either "
 "the record log if recording, or the chat log otherwise."
 msgstr ""
+"Dit commando haalt een lijst op van spelers die je kunnen horen en zendt dit "
+"naar ofwel het logboek als dit opgeslagen wordt, of anders naar de chatlog."
 
 #: src/commandhandler.cpp:272
 msgid "Command: /record <filename>"
-msgstr ""
+msgstr "Commando: /record <bestandsnaam>"
 
 #: src/commandhandler.cpp:273
 msgid "This command starts recording the chat log to the file <filename>."
 msgstr ""
+"Dit commando begint de chat log op te slaan naar het bestand <bestandsnaam>."
 
 #: src/commandhandler.cpp:275
 msgid "Command: /record"
-msgstr ""
+msgstr "Commando: /record"
 
 #: src/commandhandler.cpp:276
 msgid "This command finishes a recording session."
-msgstr ""
+msgstr "Dit commando beëindigt het opslaan van de chatlog."
 
 #: src/commandhandler.cpp:280
 msgid "Command: /toggle <state>"
-msgstr ""
+msgstr "Commando: /toggle <status>"
 
 #: src/commandhandler.cpp:281
 msgid ""
@@ -356,10 +370,12 @@ msgid ""
 "<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or \"0"
 "\", \"no\", \"false\" to turn the toggle off."
 msgstr ""
+"<status> kan \"1\", \"yes\", \"true\" zijn om het in te schakelen, of \"0\", "
+"\"no\", \"false\" om het uit te schakelen."
 
 #: src/commandhandler.cpp:286
 msgid "Command: /toggle"
-msgstr ""
+msgstr "Commando: /toggle"
 
 #: src/commandhandler.cpp:287
 msgid "This command displays the return toggle status."
@@ -368,7 +384,7 @@ msgstr ""
 #: src/commandhandler.cpp:291 src/gui/widgets/whispertab.cpp:93
 #, fuzzy
 msgid "Command: /unignore <player>"
-msgstr "Commando: /announce <msg>"
+msgstr "Commando: /item <beleid>"
 
 #: src/commandhandler.cpp:292
 msgid "This command stops ignoring the given player if they are being ignored"
@@ -380,15 +396,15 @@ msgstr "Commando: /where"
 
 #: src/commandhandler.cpp:298
 msgid "This command displays the name of the current map."
-msgstr ""
+msgstr "Dit commando geeft de naam weer van de huidige map."
 
 #: src/commandhandler.cpp:302
 msgid "Command: /who"
-msgstr ""
+msgstr "Commando: /who"
 
 #: src/commandhandler.cpp:303
 msgid "This command displays the number of players currently online."
-msgstr ""
+msgstr "Dit commando geeft het aantal spelers dat momenteel online is weer."
 
 #: src/commandhandler.cpp:309
 msgid "Type /help for a list of commands."
@@ -396,7 +412,7 @@ msgstr "Type /help voor een lijst van commando's."
 
 #: src/commandhandler.cpp:375
 msgid "Cannot send empty whispers!"
-msgstr ""
+msgstr "Kan geen lege berichten sturen!"
 
 #: src/commandhandler.cpp:383
 #, c-format
@@ -408,11 +424,11 @@ msgstr ""
 #: src/commandhandler.cpp:397
 #, c-format
 msgid "Requesting to join channel %s."
-msgstr ""
+msgstr "Aanvragen om bij kanaal %s toegevoegd te worden."
 
 #: src/commandhandler.cpp:410 src/net/ea/gui/partytab.cpp:109
 msgid "Party name is missing."
-msgstr ""
+msgstr "Groepsnaam ontbreekt."
 
 #: src/commandhandler.cpp:423 src/commandhandler.cpp:471
 #: src/commandhandler.cpp:493
@@ -425,7 +441,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:441
 msgid "Message closes chat."
-msgstr ""
+msgstr "Bericht sluit chat."
 
 #: src/commandhandler.cpp:450
 msgid "Return now toggles chat."
@@ -433,19 +449,21 @@ msgstr ""
 
 #: src/commandhandler.cpp:454
 msgid "Message now closes chat."
-msgstr ""
+msgstr "Bericht sluit nu chat."
 
 #: src/commandhandler.cpp:477
 msgid "Player already ignored!"
 msgstr ""
 
 #: src/commandhandler.cpp:484
+#, fuzzy
 msgid "Player successfully ignored!"
-msgstr ""
+msgstr "Groep succesvol aangemaakt."
 
 #: src/commandhandler.cpp:486
+#, fuzzy
 msgid "Player could not be ignored!"
-msgstr ""
+msgstr "Fluisterbericht kon niet verzonden worden, genegeerd door gebruiker."
 
 #: src/commandhandler.cpp:501
 msgid "Player wasn't ignored!"
@@ -456,56 +474,62 @@ msgid "Player no longer ignored!"
 msgstr ""
 
 #: src/commandhandler.cpp:508
+#, fuzzy
 msgid "Player could not be unignored!"
-msgstr ""
+msgstr "Fluisterbericht kon niet verzonden worden, genegeerd door gebruiker."
 
 #: src/commandhandler.h:31
 #, c-format
 msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 msgstr ""
+"Opties voor /%s zijn \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 
 #: src/game.cpp:172
 msgid "General"
-msgstr ""
+msgstr "Algemeen"
 
 #: src/game.cpp:326
+#, fuzzy
 msgid "Screenshot saved as "
-msgstr ""
+msgstr "Screenshot opgeslagen naar ~/"
 
 #: src/game.cpp:331
 msgid "Saving screenshot failed!"
-msgstr ""
+msgstr "Opslaan van screenshot mislukt!"
 
 #: src/game.cpp:355
 #, fuzzy
 msgid "The connection to the server was lost."
-msgstr "Verbinden met de karakter server..."
+msgstr ""
+"De verbinding met de server is verloren gegaan, het programma zal nu "
+"afsluiten"
 
 #: src/game.cpp:360
 msgid "Network Error"
-msgstr ""
+msgstr "Netwerkfout"
 
 #: src/game.cpp:705
 msgid "Ignoring incoming trade requests"
-msgstr ""
+msgstr "Inkomende handelsaanvragen negeren"
 
 #: src/game.cpp:712
 msgid "Accepting incoming trade requests"
-msgstr ""
+msgstr "Inkomende handelsaanvragen accepteren"
 
 #: src/game.cpp:946
+#, fuzzy
 msgid "Could Not Load Map"
-msgstr ""
+msgstr "Kan de map niet laden"
 
 #: src/game.cpp:947
 #, c-format
 msgid "Error while loading %s"
-msgstr ""
+msgstr "Fout bij het laden van %s"
 
 #: src/gui/beingpopup.cpp:75
-#, c-format
+#, fuzzy, c-format
 msgid "Party: %s"
-msgstr ""
+msgstr "Groep (%s)"
 
 #: src/gui/buy.cpp:49 src/gui/buy.cpp:78 src/gui/buysell.cpp:47
 msgid "Buy"
@@ -515,7 +539,7 @@ msgstr "Kopen"
 #: src/gui/sell.cpp:276
 #, c-format
 msgid "Price: %s / Total: %s"
-msgstr ""
+msgstr "Prijs: %s / Totaal: %s"
 
 #. TRANSLATORS: This is a narrow symbol used to denote 'increasing'.
 #. You may change this symbol if your language uses another.
@@ -540,7 +564,7 @@ msgstr "Afsluiten"
 #: src/gui/buy.cpp:80 src/gui/sell.cpp:78 src/gui/statuswindow.cpp:408
 #: src/gui/statuswindow.cpp:478 src/gui/statuswindow.cpp:512
 msgid "Max"
-msgstr ""
+msgstr "Maximum"
 
 #: src/gui/buysell.cpp:38
 msgid "Shop"
@@ -563,16 +587,17 @@ msgstr "Annuleren"
 
 #: src/gui/changeemaildialog.cpp:45 src/gui/changeemaildialog.cpp:54
 msgid "Change Email Address"
-msgstr ""
+msgstr "Emailadres wijzigen"
 
 #: src/gui/changeemaildialog.cpp:49 src/gui/changepassworddialog.cpp:52
 #, c-format
 msgid "Account: %s"
-msgstr ""
+msgstr "Account: %s"
 
 #: src/gui/changeemaildialog.cpp:51
+#, fuzzy
 msgid "Type new email address twice:"
-msgstr ""
+msgstr "Typ nieuw emailadres tweemaal:"
 
 #: src/gui/changeemaildialog.cpp:127
 #, fuzzy, c-format
@@ -585,13 +610,14 @@ msgid "The new email address needs to be less than %d characters long."
 msgstr "De gebruikersnaam moet uit minder dan %d tekens bestaan."
 
 #: src/gui/changeemaildialog.cpp:141
+#, fuzzy
 msgid "The email address entries mismatch."
-msgstr ""
+msgstr "Het nieuwe emailadres bestaat al."
 
 #: src/gui/changepassworddialog.cpp:47 src/gui/changepassworddialog.cpp:56
 #: src/gui/charselectdialog.cpp:128
 msgid "Change Password"
-msgstr ""
+msgstr "Wijzig wachtwoord"
 
 #: src/gui/changepassworddialog.cpp:61 src/gui/login.cpp:53
 #: src/gui/register.cpp:68 src/gui/unregisterdialog.cpp:53
@@ -599,8 +625,9 @@ msgid "Password:"
 msgstr "Wachtwoord:"
 
 #: src/gui/changepassworddialog.cpp:63
+#, fuzzy
 msgid "Type new password twice:"
-msgstr ""
+msgstr "Typ nieuw wachtwoord tweemaal:"
 
 #: src/gui/changepassworddialog.cpp:110
 msgid "Enter the old password first."
@@ -686,7 +713,7 @@ msgstr "Verwijder alstublieft %d punten"
 
 #: src/gui/charselectdialog.cpp:69
 msgid "Confirm Character Delete"
-msgstr ""
+msgstr "Bevestig het verwijderen van het personage"
 
 #: src/gui/charselectdialog.cpp:70
 msgid "Are you sure you want to delete this character?"
@@ -694,7 +721,7 @@ msgstr "Weet je zeker dat je deze personage wilt verwijderen?"
 
 #: src/gui/charselectdialog.cpp:117
 msgid "Account and Character Management"
-msgstr ""
+msgstr "Account en personage beheer"
 
 #: src/gui/charselectdialog.cpp:127
 msgid "Switch Login"
@@ -706,8 +733,9 @@ msgid "Unregister"
 msgstr "Registreren"
 
 #: src/gui/charselectdialog.cpp:150
+#, fuzzy
 msgid "Change Email"
-msgstr ""
+msgstr "Emailadres wijzigen"
 
 #: src/gui/charselectdialog.cpp:335 src/gui/serverdialog.cpp:185
 #: src/gui/setup_players.cpp:230
@@ -725,21 +753,21 @@ msgstr ""
 
 #: src/gui/chat.cpp:77 src/gui/palette.cpp:96
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/gui/chat.cpp:287
-#, c-format
+#, fuzzy, c-format
 msgid "Present: %s; %d players are present."
-msgstr ""
+msgstr "%d spelers zijn aanwezig."
 
 #: src/gui/chat.cpp:305
 msgid "Attendance written to record log."
-msgstr ""
+msgstr "Aanwezigheid geschreven in logbestand."
 
 #: src/gui/chat.cpp:469
 #, c-format
 msgid "Whispering to %s: %s"
-msgstr ""
+msgstr "Fluisteren naar %s: %s"
 
 #: src/gui/confirmdialog.cpp:42
 msgid "Yes"
@@ -764,9 +792,9 @@ msgid "%d FPS"
 msgstr ""
 
 #: src/gui/debugwindow.cpp:65 src/gui/debugwindow.cpp:104
-#, c-format
+#, fuzzy, c-format
 msgid "Music: %s"
-msgstr ""
+msgstr "Onderwerp: %s"
 
 #: src/gui/debugwindow.cpp:66 src/gui/debugwindow.cpp:108
 #, fuzzy, c-format
@@ -774,9 +802,9 @@ msgid "Map: %s"
 msgstr "Naam: %s"
 
 #: src/gui/debugwindow.cpp:67 src/gui/debugwindow.cpp:106
-#, c-format
+#, fuzzy, c-format
 msgid "Minimap: %s"
-msgstr ""
+msgstr "Kaartje"
 
 #: src/gui/debugwindow.cpp:68 src/gui/debugwindow.cpp:99
 #, c-format
@@ -784,14 +812,14 @@ msgid "Cursor: (%d, %d)"
 msgstr ""
 
 #: src/gui/debugwindow.cpp:69 src/gui/debugwindow.cpp:111
-#, c-format
+#, fuzzy, c-format
 msgid "Particle count: %d"
-msgstr ""
+msgstr "Deeltjes effecten"
 
 #: src/gui/debugwindow.cpp:116
-#, c-format
+#, fuzzy, c-format
 msgid "Particle detail: %s"
-msgstr ""
+msgstr "Deeltjes details"
 
 #: src/gui/debugwindow.cpp:121
 #, fuzzy, c-format
@@ -810,7 +838,7 @@ msgstr "Afdoen"
 
 #: src/gui/help.cpp:36
 msgid "Help"
-msgstr ""
+msgstr "Help"
 
 #: src/gui/help.cpp:50 src/gui/npcdialog.cpp:46 src/gui/storagewindow.cpp:73
 msgid "Close"
@@ -846,11 +874,11 @@ msgstr ""
 
 #: src/gui/inventorywindow.cpp:96 src/gui/storagewindow.cpp:83
 msgid "Slots:"
-msgstr ""
+msgstr "Sloten:"
 
 #: src/gui/inventorywindow.cpp:97
 msgid "Weight:"
-msgstr ""
+msgstr "Gewicht:"
 
 #: src/gui/inventorywindow.cpp:310 src/gui/popupmenu.cpp:382
 msgid "Drop"
@@ -864,7 +892,7 @@ msgstr "OK"
 
 #: src/gui/itemamount.cpp:102
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: src/gui/itemamount.cpp:128
 msgid "Select amount of items to trade."
@@ -876,20 +904,20 @@ msgstr "Selecteer het aantal exemplaren om neer te leggen"
 
 #: src/gui/itemamount.cpp:134
 msgid "Select amount of items to store."
-msgstr ""
+msgstr "Selecteer hoeveelheid voorwerpen te bewaren."
 
 #: src/gui/itemamount.cpp:137
 msgid "Select amount of items to retrieve."
-msgstr ""
+msgstr "Selecteer hoeveelheid voorwerpen terug te nemen."
 
 #: src/gui/itemamount.cpp:140
 msgid "Select amount of items to split."
-msgstr ""
+msgstr "Selecteer hoeveelheid voorwerpen om te splitsen."
 
 #: src/gui/itempopup.cpp:92
 #, fuzzy, c-format
 msgid "Weight: %s"
-msgstr "Effect: %s"
+msgstr "Gewicht "
 
 #: src/gui/login.cpp:49 src/gui/login.cpp:61
 msgid "Login"
@@ -907,25 +935,23 @@ msgstr "Aanmelden"
 #: src/gui/login.cpp:60
 #, fuzzy
 msgid "Change Server"
-msgstr "Server Selecteren"
+msgstr "Server"
 
 #: src/gui/minimap.cpp:46 src/gui/minimap.cpp:87
-#, fuzzy
 msgid "Map"
-msgstr "Kaartje"
+msgstr "Map"
 
 #: src/gui/npcdialog.cpp:44
 msgid "Waiting for server"
-msgstr ""
+msgstr "Wachten op server"
 
 #: src/gui/npcdialog.cpp:45
 msgid "Next"
 msgstr "Volgende"
 
 #: src/gui/npcdialog.cpp:47
-#, fuzzy
 msgid "Submit"
-msgstr "Afsluiten"
+msgstr "Indienen"
 
 #: src/gui/npcdialog.cpp:52 src/gui/npcpostdialog.cpp:41
 msgid "NPC"
@@ -933,7 +959,7 @@ msgstr "NPC"
 
 #: src/gui/npcdialog.cpp:110
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 #. TRANSLATORS: Please leave the \n sequences intact.
 #: src/gui/npcdialog.cpp:171
@@ -945,15 +971,15 @@ msgstr "Volgende"
 
 #: src/gui/npcpostdialog.cpp:47
 msgid "To:"
-msgstr ""
+msgstr "Aan:"
 
 #: src/gui/npcpostdialog.cpp:54
 msgid "Send"
-msgstr ""
+msgstr "Verzenden"
 
 #: src/gui/npcpostdialog.cpp:96
 msgid "Failed to send as sender or letter invalid."
-msgstr ""
+msgstr "Kon niet zenden als zender, of de brief is ongeldig."
 
 #: src/gui/outfitwindow.cpp:68 src/gui/outfitwindow.cpp:141
 #: src/gui/outfitwindow.cpp:154
@@ -968,19 +994,19 @@ msgstr "Afdoen"
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:143
 msgid "Text"
-msgstr ""
+msgstr "Tekst"
 
 #: src/gui/palette.cpp:82
 msgid "Text Shadow"
-msgstr ""
+msgstr "Tekstschaduw"
 
 #: src/gui/palette.cpp:83
 msgid "Text Outline"
-msgstr ""
+msgstr "Tekstuitlijning"
 
 #: src/gui/palette.cpp:84
 msgid "Progress Bar Labels"
-msgstr ""
+msgstr "Vooruitgangsbalk Labels"
 
 #: src/gui/palette.cpp:85
 msgid "Buttons"
@@ -996,51 +1022,53 @@ msgstr ""
 
 #: src/gui/palette.cpp:89
 msgid "Background"
-msgstr ""
+msgstr "Achtergrond"
 
 #: src/gui/palette.cpp:91
 msgid "Highlight"
-msgstr ""
+msgstr "Accentueren"
 
 #: src/gui/palette.cpp:92
 msgid "Tab Highlight"
-msgstr ""
+msgstr "Tab Accentuering"
 
 #: src/gui/palette.cpp:93
+#, fuzzy
 msgid "Item Too Expensive"
-msgstr ""
+msgstr "Voorwerp te duur"
 
 #: src/gui/palette.cpp:94
+#, fuzzy
 msgid "Item Is Equipped"
-msgstr ""
+msgstr "Voorwerp wordt al gedragen"
 
 #: src/gui/palette.cpp:97
 msgid "GM"
-msgstr ""
+msgstr "GM"
 
 #: src/gui/palette.cpp:98
 msgid "Player"
-msgstr ""
+msgstr "Speler"
 
 #: src/gui/palette.cpp:99
 msgid "Whisper"
-msgstr ""
+msgstr "Fluister"
 
 #: src/gui/palette.cpp:100
 msgid "Is"
-msgstr ""
+msgstr "is gelijk aan"
 
 #: src/gui/palette.cpp:101 src/net/ea/gui/partytab.cpp:43
 msgid "Party"
-msgstr ""
+msgstr "Groep"
 
 #: src/gui/palette.cpp:102 src/net/ea/gui/guildtab.cpp:45
 msgid "Guild"
-msgstr ""
+msgstr "Guild"
 
 #: src/gui/palette.cpp:103
 msgid "Server"
-msgstr ""
+msgstr "Server"
 
 #: src/gui/palette.cpp:104
 msgid "Logger"
@@ -1048,53 +1076,51 @@ msgstr ""
 
 #: src/gui/palette.cpp:105
 msgid "Hyperlink"
-msgstr ""
+msgstr "Hyperlink"
 
 #: src/gui/palette.cpp:107
 msgid "Being"
-msgstr ""
+msgstr "Wezen"
 
 #: src/gui/palette.cpp:108
 msgid "Other Players' Names"
-msgstr ""
+msgstr "Namen van andere Spelers"
 
 #: src/gui/palette.cpp:109
 msgid "Own Name"
-msgstr ""
+msgstr "Eigen Naam"
 
 #: src/gui/palette.cpp:110
 msgid "GM Names"
-msgstr ""
+msgstr "GM Namen"
 
 #: src/gui/palette.cpp:111
 msgid "NPCs"
-msgstr ""
+msgstr "NPCs"
 
 #: src/gui/palette.cpp:112
 msgid "Monsters"
-msgstr ""
+msgstr "Monsters"
 
 #: src/gui/palette.cpp:114
 msgid "Unknown Item Type"
-msgstr ""
+msgstr "Onbekend type voorwerp"
 
 #: src/gui/palette.cpp:115
 msgid "Generics"
-msgstr ""
+msgstr "Generiek"
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Hats"
-msgstr "Status"
+msgstr "Hoeden"
 
 #: src/gui/palette.cpp:117
-#, fuzzy
 msgid "Usables"
-msgstr "Gebruiken"
+msgstr "Gebruiksvoorwerpen"
 
 #: src/gui/palette.cpp:118
 msgid "Shirts"
-msgstr ""
+msgstr "Shirts"
 
 #: src/gui/palette.cpp:119
 msgid "One Handed Weapons"
@@ -1102,95 +1128,96 @@ msgstr ""
 
 #: src/gui/palette.cpp:120
 msgid "Pants"
-msgstr ""
+msgstr "Broeken"
 
 #: src/gui/palette.cpp:121
 msgid "Shoes"
-msgstr ""
+msgstr "Schoenen"
 
 #: src/gui/palette.cpp:122
 msgid "Two Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:123
-#, fuzzy
 msgid "Shields"
-msgstr "Vaardigheden"
+msgstr "Schilden"
 
 #: src/gui/palette.cpp:124
 msgid "Rings"
-msgstr ""
+msgstr "Ringen"
 
 #: src/gui/palette.cpp:125
 msgid "Necklaces"
-msgstr ""
+msgstr "Kettingen"
 
 #: src/gui/palette.cpp:126
 msgid "Arms"
-msgstr ""
+msgstr "Wapens"
 
 #: src/gui/palette.cpp:127
 msgid "Ammo"
-msgstr ""
+msgstr "Ammunitie"
 
 #: src/gui/palette.cpp:129
 msgid "Particle Effects"
-msgstr ""
+msgstr "Deeltjes effecten"
 
 #: src/gui/palette.cpp:130
 msgid "Pickup Notification"
-msgstr ""
+msgstr "Notificatie bij opnemen"
 
 #: src/gui/palette.cpp:131
 msgid "Exp Notification"
-msgstr ""
+msgstr "Ervaring Notificatie"
 
 #: src/gui/palette.cpp:133
+#, fuzzy
 msgid "Player Hits Monster"
-msgstr ""
+msgstr "Speler raakt Monster"
 
 #: src/gui/palette.cpp:135
+#, fuzzy
 msgid "Monster Hits Player"
-msgstr ""
+msgstr "Monster raakt Speler"
 
 #: src/gui/palette.cpp:136
 msgid "Critical Hit"
-msgstr ""
+msgstr "Kritieke aanval"
 
 #: src/gui/palette.cpp:137
 msgid "Misses"
-msgstr ""
+msgstr "Missers"
 
 #: src/gui/palette.cpp:139
 msgid "HP Bar"
-msgstr ""
+msgstr "Levensbalk"
 
 #: src/gui/palette.cpp:140
 msgid "3/4 HP Bar"
-msgstr ""
+msgstr "3/4 Levensbalk"
 
 #: src/gui/palette.cpp:141
 msgid "1/2 HP Bar"
-msgstr ""
+msgstr "1/2 Levensbalk"
 
 #: src/gui/palette.cpp:142
 msgid "1/4 HP Bar"
-msgstr ""
+msgstr "1/4 Levensbalk"
 
 #: src/gui/popupmenu.cpp:84
 #, fuzzy, c-format
 msgid "Trade with %s..."
-msgstr "@@trade|Handelen met %s@@"
+msgstr "Handelen met %s"
 
 #: src/gui/popupmenu.cpp:88 src/gui/popupmenu.cpp:161
 #, fuzzy, c-format
 msgid "Attack %s"
-msgstr "@@attack|%s aanvallen@@"
+msgstr "Aanval %+d"
 
 #: src/gui/popupmenu.cpp:92
 #, fuzzy, c-format
 msgid "Whisper %s"
-msgstr "Wilskracht:"
+msgstr "Fluister"
 
 #: src/gui/popupmenu.cpp:101
 #, c-format
@@ -1228,13 +1255,14 @@ msgid "Invite %s to join your guild"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:137
-#, c-format
+#, fuzzy, c-format
 msgid "Invite %s to join your party"
-msgstr ""
+msgstr "%s is niet in jouw groep!"
 
 #: src/gui/popupmenu.cpp:144
+#, fuzzy
 msgid "Kick player"
-msgstr ""
+msgstr "Kick gefaald!"
 
 #: src/gui/popupmenu.cpp:153
 #, c-format
@@ -1242,8 +1270,9 @@ msgid "Talk to %s"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:166
+#, fuzzy
 msgid "Kick monster"
-msgstr ""
+msgstr "Monsters"
 
 #: src/gui/popupmenu.cpp:174
 msgid "Add name to chat"
@@ -1252,7 +1281,7 @@ msgstr ""
 #: src/gui/popupmenu.cpp:191
 #, fuzzy, c-format
 msgid "Pick up %s"
-msgstr "@@pickup|%s oppakken@@"
+msgstr "Oprapen"
 
 #: src/gui/popupmenu.cpp:193 src/gui/popupmenu.cpp:400
 msgid "Add to chat"
@@ -1260,11 +1289,11 @@ msgstr ""
 
 #: src/gui/popupmenu.cpp:391 src/gui/storagewindow.cpp:70
 msgid "Store"
-msgstr ""
+msgstr "Opslaan"
 
 #: src/gui/popupmenu.cpp:398 src/gui/storagewindow.cpp:71
 msgid "Retrieve"
-msgstr ""
+msgstr "Afhalen"
 
 #: src/gui/quitdialog.cpp:44
 msgid "Switch server"
@@ -1276,31 +1305,31 @@ msgstr "Van personage wisselen"
 
 #: src/gui/recorder.cpp:87
 msgid "Finishing recording."
-msgstr ""
+msgstr "Opname voltooid."
 
 #: src/gui/recorder.cpp:91
 msgid "Not currently recording."
-msgstr ""
+msgstr "Momenteel niet aan het opnemen."
 
 #: src/gui/recorder.cpp:96
 msgid "Already recording."
-msgstr ""
+msgstr "Reeds aan het opnemen."
 
 #: src/gui/recorder.cpp:104
 msgid "Starting to record..."
-msgstr ""
+msgstr "Opname starten..."
 
 #: src/gui/recorder.cpp:112
 msgid "Failed to start recording."
-msgstr ""
+msgstr "Kan de opname niet starten."
 
 #: src/gui/recorder.h:38
 msgid "Recording..."
-msgstr ""
+msgstr "Opnemen..."
 
 #: src/gui/recorder.h:39
 msgid "Stop recording"
-msgstr ""
+msgstr "Stoppen met opnemen"
 
 #: src/gui/register.cpp:69
 msgid "Confirm:"
@@ -1335,8 +1364,9 @@ msgid "Passwords do not match."
 msgstr "Wachtwoorden komen niet overeen."
 
 #: src/gui/serverdialog.cpp:134
+#, fuzzy
 msgid "Choose Your Server"
-msgstr ""
+msgstr "Kies jouw server"
 
 #: src/gui/serverdialog.cpp:141 src/gui/widgets/chattab.cpp:139
 msgid "Server:"
@@ -1363,7 +1393,7 @@ msgstr "Aangepaste cursor"
 
 #: src/gui/serverdialog.cpp:262
 msgid "Please type both the address and the port of a server."
-msgstr ""
+msgstr "Typ aub zowel het adres van de server, als de poort."
 
 #: src/gui/serverdialog.cpp:411
 #, c-format
@@ -1373,7 +1403,7 @@ msgstr ""
 #: src/gui/serverdialog.cpp:417
 #, fuzzy
 msgid "Waiting for server..."
-msgstr "Verbinden met de map server..."
+msgstr "Wachten op server"
 
 #: src/gui/serverdialog.cpp:421
 msgid "Preparing download"
@@ -1400,8 +1430,9 @@ msgid "Music volume"
 msgstr "Muziek volume"
 
 #: src/gui/setup_audio.cpp:94
+#, fuzzy
 msgid "Notice"
-msgstr ""
+msgstr "Geen tekst"
 
 #: src/gui/setup_audio.cpp:94
 msgid "You may have to restart your client if you want to download new music"
@@ -1413,51 +1444,55 @@ msgstr ""
 
 #: src/gui/setup_colors.cpp:44
 msgid "This is what the color looks like"
-msgstr ""
+msgstr "Dit is hoe de kleur eruit ziet"
 
 #: src/gui/setup_colors.cpp:49
 msgid "Colors"
-msgstr ""
+msgstr "Kleuren"
 
 #: src/gui/setup_colors.cpp:70
+#, fuzzy
 msgid "Type:"
-msgstr ""
+msgstr "Type: "
 
 #: src/gui/setup_colors.cpp:81 src/gui/setup_colors.cpp:433
 msgid "Static"
-msgstr ""
+msgstr "Statisch"
 
 #: src/gui/setup_colors.cpp:83 src/gui/setup_colors.cpp:84
 #: src/gui/setup_colors.cpp:434
 msgid "Pulse"
-msgstr ""
+msgstr "Puls"
 
 #: src/gui/setup_colors.cpp:85 src/gui/setup_colors.cpp:86
 #: src/gui/setup_colors.cpp:435
 msgid "Rainbow"
-msgstr ""
+msgstr "Regenboog"
 
 #: src/gui/setup_colors.cpp:87 src/gui/setup_colors.cpp:88
 #: src/gui/setup_colors.cpp:435
 msgid "Spectrum"
-msgstr ""
+msgstr "Spectrum"
 
 #: src/gui/setup_colors.cpp:92
 #, fuzzy
 msgid "Delay:"
-msgstr "Spelen"
+msgstr "Vertraging: "
 
 #: src/gui/setup_colors.cpp:107
+#, fuzzy
 msgid "Red:"
-msgstr ""
+msgstr "Rood: "
 
 #: src/gui/setup_colors.cpp:122
+#, fuzzy
 msgid "Green:"
-msgstr ""
+msgstr "Groen: "
 
 #: src/gui/setup_colors.cpp:137
+#, fuzzy
 msgid "Blue:"
-msgstr ""
+msgstr "Blauw: "
 
 #: src/gui/setup.cpp:51
 msgid "Apply"
@@ -1505,7 +1540,7 @@ msgstr "Standaard"
 
 #: src/gui/setup_keyboard.cpp:119
 msgid "Key Conflict(s) Detected."
-msgstr ""
+msgstr "Conflict(en) tussen toetsen gevonden."
 
 #: src/gui/setup_players.cpp:57
 msgid "Name"
@@ -1533,23 +1568,24 @@ msgstr "Genegeerd"
 
 #: src/gui/setup_players.cpp:208 src/gui/setup_video.cpp:132
 msgid "???"
-msgstr ""
+msgstr "???"
 
 #: src/gui/setup_players.cpp:226
 msgid "Allow trading"
-msgstr ""
+msgstr "Handelen toestaan"
 
 #: src/gui/setup_players.cpp:228
 msgid "Allow whispers"
-msgstr ""
+msgstr "Fluisteren toestaan"
 
 #: src/gui/setup_players.cpp:232
 msgid "Put all whispers in tabs"
 msgstr ""
 
 #: src/gui/setup_players.cpp:234
+#, fuzzy
 msgid "Show gender"
-msgstr ""
+msgstr "Naam tonen"
 
 #: src/gui/setup_players.cpp:236
 msgid "Players"
@@ -1557,37 +1593,35 @@ msgstr "Spelers"
 
 #: src/gui/setup_players.cpp:261
 msgid "When ignoring:"
-msgstr ""
+msgstr "Tijdens negeren:"
 
 #: src/gui/setup_video.cpp:113
 msgid "Tiny"
-msgstr ""
+msgstr "Klein"
 
 #: src/gui/setup_video.cpp:114
-#, fuzzy
 msgid "Small"
-msgstr "Verkopen"
+msgstr "Klein"
 
 #: src/gui/setup_video.cpp:115
-#, fuzzy
 msgid "Medium"
-msgstr "gemiddeld"
+msgstr "Middelmatig"
 
 #: src/gui/setup_video.cpp:116
 msgid "Large"
-msgstr ""
+msgstr "Groot"
 
 #: src/gui/setup_video.cpp:142
 msgid "No text"
-msgstr ""
+msgstr "Geen tekst"
 
 #: src/gui/setup_video.cpp:144
 msgid "Bubbles, no names"
-msgstr ""
+msgstr "Bellen, geen namen"
 
 #: src/gui/setup_video.cpp:145
 msgid "Bubbles with names"
-msgstr ""
+msgstr "Bellen met namen"
 
 #: src/gui/setup_video.cpp:157
 msgid "off"
@@ -1623,29 +1657,30 @@ msgstr "Aangepaste cursor"
 
 #: src/gui/setup_video.cpp:200
 msgid "Visible names"
-msgstr ""
+msgstr "Zichtbare namen"
 
 #: src/gui/setup_video.cpp:202
 msgid "Particle effects"
-msgstr ""
+msgstr "Deeltjes effecten"
 
 #: src/gui/setup_video.cpp:204
+#, fuzzy
 msgid "Show own name"
-msgstr ""
+msgstr "Naam tonen"
 
 #: src/gui/setup_video.cpp:205
 msgid "Show pickup notification"
-msgstr ""
+msgstr "Notificatie bij oprapen weergeven"
 
 #. TRANSLATORS: Refers to "Show own name"
 #: src/gui/setup_video.cpp:207
 msgid "in chat"
-msgstr ""
+msgstr "in chat"
 
 #. TRANSLATORS: Refers to "Show own name"
 #: src/gui/setup_video.cpp:209
 msgid "as particle"
-msgstr ""
+msgstr "als deeltje"
 
 #: src/gui/setup_video.cpp:214
 #, fuzzy
@@ -1657,8 +1692,9 @@ msgid "Video"
 msgstr "Video"
 
 #: src/gui/setup_video.cpp:227
+#, fuzzy
 msgid "Show monster damage"
-msgstr ""
+msgstr "Naam tonen"
 
 #: src/gui/setup_video.cpp:233
 msgid "Overhead text"
@@ -1673,12 +1709,13 @@ msgid "Ambient FX"
 msgstr "Omgevingseffecten"
 
 #: src/gui/setup_video.cpp:236
+#, fuzzy
 msgid "Particle detail"
-msgstr ""
+msgstr "Deeltjes details"
 
 #: src/gui/setup_video.cpp:237
 msgid "Font size"
-msgstr ""
+msgstr "Lettergrootte"
 
 #: src/gui/setup_video.cpp:251 src/gui/setup_video.cpp:454
 #: src/gui/setup_video.cpp:568
@@ -1687,14 +1724,16 @@ msgid "None"
 msgstr "Nee"
 
 #: src/gui/setup_video.cpp:381
+#, fuzzy
 msgid ""
 "Failed to switch to windowed mode and restoration of old mode also failed!"
-msgstr ""
+msgstr "modus en herstel van oude modus ook gefaald!"
 
 #: src/gui/setup_video.cpp:387
+#, fuzzy
 msgid ""
 "Failed to switch to fullscreen mode and restoration of old mode also failed!"
-msgstr ""
+msgstr "modus en herstel van oude modus ook gefaald!"
 
 #: src/gui/setup_video.cpp:398
 #, fuzzy
@@ -1715,24 +1754,26 @@ msgid "Applying change to OpenGL requires restart."
 msgstr "Het wisselen van of naar OpenGL wordt pas actief na opnieuw opstarten"
 
 #: src/gui/setup_video.cpp:486 src/gui/setup_video.cpp:491
+#, fuzzy
 msgid "Screen Resolution Changed"
-msgstr ""
+msgstr "Schermresolutie veranderd"
 
 #: src/gui/setup_video.cpp:487 src/gui/setup_video.cpp:492
 msgid "Restart your client for the change to take effect."
-msgstr ""
+msgstr "Herstart de client om de wijzigingen in werking te doen treden."
 
 #: src/gui/setup_video.cpp:489
 msgid "Some windows may be moved to fit the lowered resolution."
 msgstr ""
 
 #: src/gui/setup_video.cpp:522
+#, fuzzy
 msgid "Particle Effect Settings Changed."
-msgstr ""
+msgstr "Deeltjes effecten instellingen gewijzigd."
 
 #: src/gui/setup_video.cpp:523
 msgid "Changes will take effect on map change."
-msgstr ""
+msgstr "Wijzigingen treden in werking bij het wisselen van map."
 
 #: src/gui/skilldialog.cpp:197 src/gui/windowmenu.cpp:58
 msgid "Skills"
@@ -1740,17 +1781,17 @@ msgstr "Vaardigheden"
 
 #: src/gui/skilldialog.cpp:208
 msgid "Up"
-msgstr ""
+msgstr "Omhoog"
 
 #: src/gui/skilldialog.cpp:262
-#, c-format
+#, fuzzy, c-format
 msgid "Skill points available: %d"
-msgstr ""
+msgstr "Vaardigheidspunten: %d"
 
 #: src/gui/skilldialog.cpp:314
-#, c-format
+#, fuzzy, c-format
 msgid "Skill Set %d"
-msgstr ""
+msgstr "Vaardigheidspunten: %d"
 
 #: src/gui/skilldialog.cpp:323
 #, fuzzy, c-format
@@ -1773,9 +1814,9 @@ msgid "Invited user %s to guild %s."
 msgstr ""
 
 #: src/gui/socialwindow.cpp:126
-#, c-format
+#, fuzzy, c-format
 msgid "Guild %s quit requested."
-msgstr ""
+msgstr "Guild aangemaakt."
 
 #: src/gui/socialwindow.cpp:136
 msgid "Member Invite to Guild"
@@ -1787,18 +1828,19 @@ msgid "Who would you like to invite to guild %s?"
 msgstr ""
 
 #: src/gui/socialwindow.cpp:146
+#, fuzzy
 msgid "Leave Guild?"
-msgstr ""
+msgstr "Guild aanmaken"
 
 #: src/gui/socialwindow.cpp:147
 #, fuzzy, c-format
 msgid "Are you sure you want to leave guild %s?"
-msgstr "Weet je zeker dat je deze personage wilt verwijderen?"
+msgstr "Weet u zeker dat u wilt afsluiten?"
 
 #: src/gui/socialwindow.cpp:182
-#, c-format
+#, fuzzy, c-format
 msgid "Invited user %s to party."
-msgstr ""
+msgstr "/party > Een gebruiker uitnodigen in de groep"
 
 #: src/gui/socialwindow.cpp:189
 #, c-format
@@ -1806,8 +1848,9 @@ msgid "Party %s quit requested."
 msgstr ""
 
 #: src/gui/socialwindow.cpp:199
+#, fuzzy
 msgid "Member Invite to Party"
-msgstr ""
+msgstr "/party > Een gebruiker uitnodigen in de groep"
 
 #: src/gui/socialwindow.cpp:200
 #, c-format
@@ -1821,11 +1864,11 @@ msgstr ""
 #: src/gui/socialwindow.cpp:210
 #, fuzzy, c-format
 msgid "Are you sure you want to leave party %s?"
-msgstr "Weet je zeker dat je deze personage wilt verwijderen?"
+msgstr "Weet u zeker dat u wilt afsluiten?"
 
 #: src/gui/socialwindow.cpp:239
 msgid "Create Guild"
-msgstr ""
+msgstr "Guild aanmaken"
 
 #: src/gui/socialwindow.cpp:240 src/gui/socialwindow.cpp:564
 #, fuzzy
@@ -1837,37 +1880,39 @@ msgid "Social"
 msgstr ""
 
 #: src/gui/socialwindow.cpp:297
+#, fuzzy
 msgid "Invite"
-msgstr ""
+msgstr "Gebruiker uitnodigen"
 
 #: src/gui/socialwindow.cpp:298
+#, fuzzy
 msgid "Leave"
-msgstr ""
+msgstr "Groot"
 
 #: src/gui/socialwindow.cpp:394
-#, c-format
+#, fuzzy, c-format
 msgid "Accepted party invite from %s."
-msgstr ""
+msgstr "Uitnodiging van %s aanvaard."
 
 #: src/gui/socialwindow.cpp:400
-#, c-format
+#, fuzzy, c-format
 msgid "Rejected party invite from %s."
-msgstr ""
+msgstr "Uitnodiging van %s geweigerd."
 
 #: src/gui/socialwindow.cpp:413
-#, c-format
+#, fuzzy, c-format
 msgid "Accepted guild invite from %s."
-msgstr ""
+msgstr "Uitnodiging van %s aanvaard."
 
 #: src/gui/socialwindow.cpp:419
-#, c-format
+#, fuzzy, c-format
 msgid "Rejected guild invite from %s."
-msgstr ""
+msgstr "Uitnodiging van %s geweigerd."
 
 #: src/gui/socialwindow.cpp:463
-#, c-format
+#, fuzzy, c-format
 msgid "Creating guild called %s."
-msgstr ""
+msgstr "Fout bij het creëren van guild."
 
 #: src/gui/socialwindow.cpp:477
 #, c-format
@@ -1875,64 +1920,71 @@ msgid "Creating party called %s."
 msgstr ""
 
 #: src/gui/socialwindow.cpp:484
+#, fuzzy
 msgid "Guild Name"
-msgstr ""
+msgstr "Guild"
 
 #: src/gui/socialwindow.cpp:485
+#, fuzzy
 msgid "Choose your guild's name."
-msgstr ""
+msgstr "Kies jouw server"
 
 #: src/gui/socialwindow.cpp:497
+#, fuzzy
 msgid "Received guild request, but one already exists."
-msgstr ""
+msgstr "Uitnodiging tot groep ontvangen, maar er is er al één."
 
 #: src/gui/socialwindow.cpp:502
-#, c-format
+#, fuzzy, c-format
 msgid "%s has invited you to join the guild %s."
-msgstr ""
+msgstr "%s heeft je uitgenodigd om je bij groep %s te voegen."
 
 #: src/gui/socialwindow.cpp:507
+#, fuzzy
 msgid "Accept Guild Invite"
-msgstr ""
+msgstr "Groepsuitnodiging aanvaarden"
 
 #: src/gui/socialwindow.cpp:519
 msgid "Received party request, but one already exists."
-msgstr ""
+msgstr "Uitnodiging tot groep ontvangen, maar er is er al één."
 
 #: src/gui/socialwindow.cpp:529
+#, fuzzy
 msgid "You have been invited you to join a party."
-msgstr ""
+msgstr "%s heeft je uitgenodigd om je bij hun groep te voegen."
 
 #: src/gui/socialwindow.cpp:533
-#, c-format
+#, fuzzy, c-format
 msgid "You have been invited to join the %s party."
-msgstr ""
+msgstr "%s heeft je uitgenodigd om je bij groep %s te voegen."
 
 #: src/gui/socialwindow.cpp:541
 #, c-format
 msgid "%s has invited you to join their party."
-msgstr ""
+msgstr "%s heeft je uitgenodigd om je bij hun groep te voegen."
 
 #: src/gui/socialwindow.cpp:546
 #, c-format
 msgid "%s has invited you to join the %s party."
-msgstr ""
+msgstr "%s heeft je uitgenodigd om je bij groep %s te voegen."
 
 #: src/gui/socialwindow.cpp:554
 msgid "Accept Party Invite"
-msgstr ""
+msgstr "Groepsuitnodiging aanvaarden"
 
 #: src/gui/socialwindow.cpp:565
 msgid "Cannot create party. You are already in a party"
 msgstr ""
 
 #: src/gui/socialwindow.cpp:570
+#, fuzzy
 msgid "Party Name"
-msgstr ""
+msgstr "Groep"
 
 #: src/gui/socialwindow.cpp:571
+#, fuzzy
 msgid "Choose your party's name."
-msgstr ""
+msgstr "Kies jouw server"
 
 #: src/gui/specialswindow.cpp:85 src/gui/windowmenu.cpp:59
 msgid "Specials"
@@ -1956,40 +2008,43 @@ msgstr "Level: %d"
 #: src/gui/statuswindow.cpp:100 src/gui/statuswindow.cpp:211
 #, c-format
 msgid "Money: %s"
-msgstr ""
+msgstr "Geld: %s"
 
 #: src/gui/statuswindow.cpp:102
 msgid "HP:"
-msgstr ""
+msgstr "Leven:"
 
 #: src/gui/statuswindow.cpp:107
 msgid "Exp:"
-msgstr ""
+msgstr "Ervaring:"
 
 #: src/gui/statuswindow.cpp:112
 msgid "MP:"
-msgstr ""
+msgstr "Magie:"
 
 #: src/gui/statuswindow.cpp:132 src/gui/statuswindow.cpp:219
 #, c-format
 msgid "Job: %d"
-msgstr ""
+msgstr "Job: %d"
 
 #: src/gui/statuswindow.cpp:133
 msgid "Job:"
-msgstr ""
+msgstr "Job:"
 
 #: src/gui/statuswindow.cpp:194
+#, fuzzy
 msgid "HP"
-msgstr ""
+msgstr "Leven:"
 
 #: src/gui/statuswindow.cpp:200
+#, fuzzy
 msgid "MP"
-msgstr ""
+msgstr "Magie:"
 
 #: src/gui/statuswindow.cpp:206
+#, fuzzy
 msgid "Exp"
-msgstr ""
+msgstr "Ervaring:"
 
 #: src/gui/statuswindow.cpp:215
 #, fuzzy
@@ -1997,8 +2052,9 @@ msgid "Money"
 msgstr "Geld: %d"
 
 #: src/gui/statuswindow.cpp:225
+#, fuzzy
 msgid "Job"
-msgstr ""
+msgstr "Job:"
 
 #: src/gui/statuswindow.cpp:229
 #, fuzzy, c-format
@@ -2006,9 +2062,9 @@ msgid "Character points: %d"
 msgstr "Attributen van personage OK"
 
 #: src/gui/statuswindow.cpp:235
-#, c-format
+#, fuzzy, c-format
 msgid "Correction points: %d"
-msgstr ""
+msgstr "Vaardigheidspunten: %d"
 
 #: src/gui/statuswindow.cpp:251
 #, fuzzy
@@ -2017,31 +2073,31 @@ msgstr "Level: %d"
 
 #: src/gui/storagewindow.cpp:58
 msgid "Storage"
-msgstr ""
+msgstr "Opslag"
 
 #: src/gui/trade.cpp:52
 msgid "Propose trade"
-msgstr ""
+msgstr "Handelen voorstellen"
 
 #: src/gui/trade.cpp:53
 msgid "Confirmed. Waiting..."
-msgstr ""
+msgstr "Bevestigd. Wachten..."
 
 #: src/gui/trade.cpp:54
 msgid "Agree trade"
-msgstr ""
+msgstr "Handel goedkeuren"
 
 #: src/gui/trade.cpp:55
 msgid "Agreed. Waiting..."
-msgstr ""
+msgstr "Goedgekeurd. Wachten..."
 
 #: src/gui/trade.cpp:58
 msgid "Trade: You"
-msgstr ""
+msgstr "Handel: Jij"
 
 #: src/gui/trade.cpp:74 src/gui/trade.cpp:75
 msgid "Trade"
-msgstr ""
+msgstr "Handel"
 
 #: src/gui/trade.cpp:77
 msgid "Add"
@@ -2050,7 +2106,7 @@ msgstr "Toevoegen"
 #: src/gui/trade.cpp:99 src/gui/trade.cpp:135
 #, fuzzy, c-format
 msgid "You get %s"
-msgstr "Je geeft:"
+msgstr "Jij krijgt %s."
 
 #: src/gui/trade.cpp:100
 msgid "You give:"
@@ -2058,15 +2114,17 @@ msgstr "Je geeft:"
 
 #: src/gui/trade.cpp:104
 msgid "Change"
-msgstr ""
+msgstr "Veranderen"
 
 #: src/gui/trade.cpp:275
 msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr ""
+"Kan dat voorwerp niet toevoegen. Je kan één type voorwerp niet overlappen in "
+"het venster."
 
 #: src/gui/trade.cpp:318
 msgid "You don't have enough money."
-msgstr ""
+msgstr "Je hebt niet genoeg geld."
 
 #: src/gui/unregisterdialog.cpp:51
 #, c-format
@@ -2087,17 +2145,18 @@ msgstr "Spelen"
 
 #: src/gui/updatewindow.cpp:405
 msgid "##1  The update process is incomplete."
-msgstr ""
+msgstr "##1 Het updateproces is onvolledig."
 
 #. TRANSLATORS: Continues "you try again later.".
 #: src/gui/updatewindow.cpp:407
 msgid "##1  It is strongly recommended that"
-msgstr ""
+msgstr "##1 Het is ten sterkste aanbevolen dat"
 
 #. TRANSLATORS: Begins "It is strongly recommended that".
 #: src/gui/updatewindow.cpp:409
+#, fuzzy
 msgid "##1  you try again later."
-msgstr ""
+msgstr "##1 je later opnieuw probeert"
 
 #: src/gui/updatewindow.cpp:501
 msgid "Completed"
@@ -2105,97 +2164,101 @@ msgstr "Voltooid"
 
 #: src/gui/widgets/channeltab.cpp:49
 msgid "/users > Lists the users in the current channel"
-msgstr ""
+msgstr "/users > Lijst van gebruikers in het huidig kanaal weergeven"
 
 #: src/gui/widgets/channeltab.cpp:50
 msgid "/topic > Set the topic of the current channel"
-msgstr ""
+msgstr "/topic > stel het onderwerp van het huidig kanaal in"
 
 #: src/gui/widgets/channeltab.cpp:51
 msgid "/quit > Leave a channel"
-msgstr ""
+msgstr "/quit > Verlaat een kanaal"
 
 #: src/gui/widgets/channeltab.cpp:52
 msgid "/op > Make a user a channel operator"
-msgstr ""
+msgstr "/op > Maakt een gebruiker een kanaalbeheerder"
 
 #: src/gui/widgets/channeltab.cpp:53
 msgid "/kick > Kick a user from the channel"
-msgstr ""
+msgstr "/kick > Verwijdert een gebruiker van het kanaal"
 
 #: src/gui/widgets/channeltab.cpp:63
 msgid "Command: /users"
-msgstr ""
+msgstr "Commando: /users"
 
 #: src/gui/widgets/channeltab.cpp:64
 msgid "This command shows the users in this channel."
-msgstr ""
+msgstr "Dit commando geeft de gebruikers in het kanaal weer."
 
 #: src/gui/widgets/channeltab.cpp:68
 msgid "Command: /topic <message>"
-msgstr ""
+msgstr "Commando: /topic <bericht>"
 
 #: src/gui/widgets/channeltab.cpp:69
 msgid "This command sets the topic to <message>."
-msgstr ""
+msgstr "Dit commando zet het onderwerp naar <bericht>."
 
 #: src/gui/widgets/channeltab.cpp:73
 msgid "Command: /quit"
-msgstr ""
+msgstr "Commando: /quit"
 
 #: src/gui/widgets/channeltab.cpp:74
 msgid "This command leaves the current channel."
-msgstr ""
+msgstr "Dit commando verlaat het huidige kanaal."
 
 #: src/gui/widgets/channeltab.cpp:75
 msgid "If you're the last person in the channel, it will be deleted."
 msgstr ""
+"Als je de laatste persoon in het kanaal bent, zal het kanaal worden "
+"verwijderd."
 
 #: src/gui/widgets/channeltab.cpp:80
 msgid "Command: /op <nick>"
-msgstr ""
+msgstr "Commando: /op <nick>"
 
 #: src/gui/widgets/channeltab.cpp:81
 msgid "This command makes <nick> a channel operator."
-msgstr ""
+msgstr "Dit commando maakt van <nick> een kanaalbeheerder."
 
 #: src/gui/widgets/channeltab.cpp:84
 msgid "Channel operators can kick and op other users from the channel."
 msgstr ""
+"Kanaalbeheerders kunnen andere gebruikers uit het kanaal verwijderen en "
+"andere gebruikers kanaalbeheerders maken."
 
 #: src/gui/widgets/channeltab.cpp:89
 msgid "Command: /kick <nick>"
-msgstr ""
+msgstr "Commando: /kick <nick>"
 
 #: src/gui/widgets/channeltab.cpp:90
 msgid "This command makes <nick> leave the channel."
-msgstr ""
+msgstr "Dit commando maakt <nick> het kanaal verlaten."
 
 #: src/gui/widgets/channeltab.cpp:119
 msgid "Need a user to op!"
-msgstr ""
+msgstr "Een gebruiker nodig om kanaalbeheerder te maken!"
 
 #: src/gui/widgets/channeltab.cpp:126
 msgid "Need a user to kick!"
-msgstr ""
+msgstr "Een gebruiker nodig om uit het kanaal te verwijderen!"
 
 #: src/gui/widgets/chattab.cpp:118
 msgid "Global announcement:"
-msgstr ""
+msgstr "Globale aankondiging:"
 
 #: src/gui/widgets/chattab.cpp:124
 #, c-format
 msgid "Global announcement from %s:"
-msgstr ""
+msgstr "Globale aankondiging van %s:"
 
 #: src/gui/widgets/chattab.cpp:150
-#, c-format
+#, fuzzy, c-format
 msgid "%s whispers: %s"
-msgstr ""
+msgstr "%s fluistert: "
 
 #: src/gui/widgets/whispertab.cpp:51
 msgid "Cannot send empty chat!"
-msgstr ""
+msgstr "Kan geen leeg chatbericht sturen!"
 
 #: src/gui/widgets/whispertab.cpp:70
 msgid "/ignore > Ignore the other player"
@@ -2207,28 +2270,31 @@ msgstr ""
 
 #: src/gui/widgets/whispertab.cpp:72
 msgid "/close > Close the whisper tab"
-msgstr ""
+msgstr "/close > Sluit de fluistertab"
 
 #: src/gui/widgets/whispertab.cpp:82
 msgid "Command: /close"
-msgstr ""
+msgstr "Commando: /close"
 
 #: src/gui/widgets/whispertab.cpp:83
 msgid "This command closes the current whisper tab."
-msgstr ""
+msgstr "Dit commando sluit de huidige fluistertab."
 
 #: src/gui/widgets/whispertab.cpp:87
 #, fuzzy
 msgid "Command: /ignore"
-msgstr "Commando: /where"
+msgstr "Commando: /item"
 
 #: src/gui/widgets/whispertab.cpp:88
+#, fuzzy
 msgid "This command ignores the other player regardless of current relations."
-msgstr ""
+msgstr "Dit commando geeft het aantal spelers dat momenteel online is weer."
 
 #: src/gui/widgets/whispertab.cpp:94
+#, fuzzy
 msgid "This command stops ignoring the other player if they are being ignored."
 msgstr ""
+"Dit commando begint de chat log op te slaan naar het bestand <bestandsnaam>."
 
 #: src/gui/windowmenu.cpp:55
 msgid "Status"
@@ -2241,87 +2307,90 @@ msgstr "Sneltoets"
 #: src/gui/worldselectdialog.cpp:71
 #, fuzzy
 msgid "Select World"
-msgstr "Server Selecteren"
+msgstr "OK selecteren"
 
 #: src/gui/worldselectdialog.cpp:76
+#, fuzzy
 msgid "Change Login"
-msgstr ""
+msgstr "Veranderen"
 
 #: src/gui/worldselectdialog.cpp:77
+#, fuzzy
 msgid "Choose World"
-msgstr ""
+msgstr "Kies jouw server"
 
 #: src/keyboardconfig.cpp:40
 msgid "Move Up"
-msgstr ""
+msgstr "Omhoog"
 
 #: src/keyboardconfig.cpp:41
 msgid "Move Down"
-msgstr ""
+msgstr "Omlaag"
 
 #: src/keyboardconfig.cpp:42
 msgid "Move Left"
-msgstr ""
+msgstr "Naar links"
 
 #: src/keyboardconfig.cpp:43
 msgid "Move Right"
-msgstr ""
+msgstr "Naar rechts"
 
 #: src/keyboardconfig.cpp:44 src/net/ea/generalhandler.cpp:223
 msgid "Attack"
-msgstr ""
+msgstr "Aanvallen"
 
 #: src/keyboardconfig.cpp:45
 msgid "Target & Attack"
-msgstr ""
+msgstr "Viseren en Aanvallen"
 
 #: src/keyboardconfig.cpp:46
 msgid "Smilie"
-msgstr ""
+msgstr "Smilie"
 
 #: src/keyboardconfig.cpp:47
 msgid "Talk"
-msgstr ""
+msgstr "Spreken"
 
 #: src/keyboardconfig.cpp:48
 msgid "Stop Attack"
-msgstr ""
+msgstr "Aanval stoppen"
 
 #: src/keyboardconfig.cpp:49
+#, fuzzy
 msgid "Target Monster"
-msgstr ""
+msgstr "Dichtstbijzijnde viseren"
 
 #: src/keyboardconfig.cpp:50
 msgid "Target NPC"
-msgstr ""
+msgstr "NPC viseren"
 
 #: src/keyboardconfig.cpp:51
 msgid "Target Player"
-msgstr ""
+msgstr "Speler viseren"
 
 #: src/keyboardconfig.cpp:52
 msgid "Pickup"
-msgstr ""
+msgstr "Oprapen"
 
 #: src/keyboardconfig.cpp:53
 msgid "Hide Windows"
-msgstr ""
+msgstr "Vensters verbergen"
 
 #: src/keyboardconfig.cpp:54
 msgid "Sit"
-msgstr ""
+msgstr "Zitten"
 
 #: src/keyboardconfig.cpp:55
 msgid "Screenshot"
-msgstr ""
+msgstr "Schermafdruk"
 
 #: src/keyboardconfig.cpp:56
 msgid "Enable/Disable Trading"
-msgstr ""
+msgstr "Handelen inschakelen/uitschakelen"
 
 #: src/keyboardconfig.cpp:57
 msgid "Find Path to Mouse"
-msgstr ""
+msgstr "Pad naar Muis vinden"
 
 #: src/keyboardconfig.cpp:58 src/keyboardconfig.cpp:59
 #: src/keyboardconfig.cpp:60 src/keyboardconfig.cpp:61
@@ -2331,62 +2400,61 @@ msgstr ""
 #: src/keyboardconfig.cpp:68 src/keyboardconfig.cpp:69
 #, c-format
 msgid "Item Shortcut %d"
-msgstr ""
+msgstr "Snelkopeling naar voorwerp %d"
 
 #: src/keyboardconfig.cpp:70
 msgid "Help Window"
-msgstr ""
+msgstr "Help venster"
 
 #: src/keyboardconfig.cpp:71
 msgid "Status Window"
-msgstr ""
+msgstr "Statusvenster"
 
 #: src/keyboardconfig.cpp:72
 msgid "Inventory Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:73
-#, fuzzy
 msgid "Equipment Window"
-msgstr "Uitrusting"
+msgstr "Uitrustingsvenster"
 
 #: src/keyboardconfig.cpp:74
 msgid "Skill Window"
-msgstr ""
+msgstr "Vaardigheidsvenster"
 
 #: src/keyboardconfig.cpp:75
 msgid "Minimap Window"
-msgstr ""
+msgstr "Minimapvenster"
 
 #: src/keyboardconfig.cpp:76
 msgid "Chat Window"
-msgstr ""
+msgstr "Gespreksvenster"
 
 #: src/keyboardconfig.cpp:77
 msgid "Item Shortcut Window"
-msgstr ""
+msgstr "Voorwerpsnelkoppelingsvenster"
 
 #: src/keyboardconfig.cpp:78
 msgid "Setup Window"
-msgstr ""
+msgstr "Instellingenvenster"
 
 #: src/keyboardconfig.cpp:79
 msgid "Debug Window"
-msgstr ""
+msgstr "Debugvenster"
 
 #: src/keyboardconfig.cpp:80
 #, fuzzy
 msgid "Social Window"
-msgstr "Vensters in beginstand"
+msgstr "Vaardigheidsvenster"
 
 #: src/keyboardconfig.cpp:81
 msgid "Emote Shortcut Window"
-msgstr ""
+msgstr "Emoticonsnelkoppelingsvenster"
 
 #: src/keyboardconfig.cpp:82
 #, fuzzy
 msgid "Outfits Window"
-msgstr "Uitrusting"
+msgstr "Statusvenster"
 
 #: src/keyboardconfig.cpp:83
 msgid "Wear Outfit"
@@ -2404,7 +2472,7 @@ msgstr ""
 #: src/keyboardconfig.cpp:95 src/keyboardconfig.cpp:96
 #, c-format
 msgid "Emote Shortcut %d"
-msgstr ""
+msgstr "Emoticon snelkoppeling %d"
 
 #: src/keyboardconfig.cpp:97
 msgid "Toggle Chat"
@@ -2412,51 +2480,51 @@ msgstr ""
 
 #: src/keyboardconfig.cpp:98
 msgid "Scroll Chat Up"
-msgstr ""
+msgstr "Chat omhoogscrollen"
 
 #: src/keyboardconfig.cpp:99
 msgid "Scroll Chat Down"
-msgstr ""
+msgstr "Chat omlaagscrollen"
 
 #: src/keyboardconfig.cpp:100
 msgid "Previous Chat Tab"
-msgstr ""
+msgstr "Vorige chattab"
 
 #: src/keyboardconfig.cpp:101
 msgid "Next Chat Tab"
-msgstr ""
+msgstr "Volgende chattab"
 
 #: src/keyboardconfig.cpp:102
 msgid "Select OK"
-msgstr ""
+msgstr "OK selecteren"
 
 #: src/keyboardconfig.cpp:104
 msgid "Ignore input 1"
-msgstr ""
+msgstr "Ingave 1 negeren"
 
 #: src/keyboardconfig.cpp:105
 msgid "Ignore input 2"
-msgstr ""
+msgstr "Ingave 2 negeren"
 
 #: src/keyboardconfig.cpp:178
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Conflict \"%s\" and \"%s\" keys. Resolve them, or gameplay may result in "
 "strange behaviour."
-msgstr ""
+msgstr "Los deze problemen op, of het spel kan raar gedrag vertonen."
 
 #: src/localplayer.cpp:913
 msgid "Unable to pick up item."
-msgstr ""
+msgstr "Kan het voorwerp niet oprapen."
 
 #. TRANSLATORS: This sentence may be translated differently
 #. for different grammatical numbers (singular, plural, ...)
 #: src/localplayer.cpp:922
-#, c-format
+#, fuzzy, c-format
 msgid "You picked up %d [@@%d|%s@@]."
 msgid_plural "You picked up %d [@@%d|%s@@]."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Je raapte %s [@@%d|%s@@] op."
+msgstr[1] "Je raapte %s [@@%d|%s@@] op."
 
 #: src/main.cpp:43
 msgid "mana [options] [mana-file]"
@@ -2464,124 +2532,141 @@ msgstr ""
 
 #: src/main.cpp:44
 msgid "Options:"
-msgstr ""
+msgstr "Opties:"
 
 #: src/main.cpp:45
+#, fuzzy
 msgid "  -v --version        : Display the version"
-msgstr ""
+msgstr "  -v --version : Versie weergeven"
 
 #: src/main.cpp:46
+#, fuzzy
 msgid "  -h --help           : Display this help"
-msgstr ""
+msgstr "  -h --help : Deze help weergeven"
 
 #: src/main.cpp:47
+#, fuzzy
 msgid "  -C --config-dir     : Configuration directory to use"
-msgstr ""
+msgstr "  -C --config-file : Gebruikte configuratiebestand"
 
 #: src/main.cpp:48
+#, fuzzy
 msgid "  -U --username       : Login with this username"
-msgstr ""
+msgstr "  -U --username : Login met deze gebruikersnaam"
 
 #: src/main.cpp:49
+#, fuzzy
 msgid "  -P --password       : Login with this password"
-msgstr ""
+msgstr "  -P --password : Login met dit wachtwoord"
 
 #: src/main.cpp:50
+#, fuzzy
 msgid "  -c --character      : Login with this character"
-msgstr ""
+msgstr "  -c --character : Login met dit personage"
 
 #: src/main.cpp:51
+#, fuzzy
 msgid "  -s --server         : Login server name or IP"
-msgstr ""
+msgstr "  -s --server : Loginserver naam of IP-adres"
 
 #: src/main.cpp:52
+#, fuzzy
 msgid "  -p --port           : Login server port"
-msgstr ""
+msgstr "  -p --port : Loginserver poort"
 
 #: src/main.cpp:53
+#, fuzzy
 msgid "     --update-host    : Use this update host"
-msgstr ""
+msgstr "  -H --update-host : Gebruik deze updatehost"
 
 #: src/main.cpp:54
+#, fuzzy
 msgid "  -D --default        : Choose default character server and character"
-msgstr ""
+msgstr "  -D --default : Kies standaard personageserver en personage"
 
 #: src/main.cpp:56
+#, fuzzy
 msgid "  -u --skip-update    : Skip the update downloads"
-msgstr ""
+msgstr "  -u --skip-update : Sla update downloads over"
 
 #: src/main.cpp:57
+#, fuzzy
 msgid "  -d --data           : Directory to load game data from"
-msgstr ""
+msgstr "  -d --data : Map waarvan speldata geladen wordt"
 
 #: src/main.cpp:58
+#, fuzzy
 msgid "  -L --localdata-dir  : Directory to use as local data directory"
-msgstr ""
+msgstr "  -S --home-dir : Map te gebruiken als home"
 
 #: src/main.cpp:59
+#, fuzzy
 msgid "     --screenshot-dir : Directory to store screenshots"
-msgstr ""
+msgstr "  -S --home-dir : Map te gebruiken als home"
 
 #: src/main.cpp:61
+#, fuzzy
 msgid "     --no-opengl      : Disable OpenGL for this session"
-msgstr ""
+msgstr "  -O --no-opengl : OpenGL uitschakelen voor deze sessie"
 
 #: src/net/ea/adminhandler.cpp:63
 msgid "Kick failed!"
-msgstr ""
+msgstr "Kick gefaald!"
 
 #: src/net/ea/adminhandler.cpp:65
 msgid "Kick succeeded!"
-msgstr ""
+msgstr "Kick succesvol!"
 
 #: src/net/ea/buysellhandler.cpp:110
 msgid "Nothing to sell."
-msgstr ""
+msgstr "Niets te verkopen."
 
 #: src/net/ea/buysellhandler.cpp:117
 msgid "Thanks for buying."
-msgstr ""
+msgstr "Bedankt voor de aankopen."
 
 #: src/net/ea/buysellhandler.cpp:124
 msgid "Unable to buy."
-msgstr ""
+msgstr "Kan niets kopen."
 
 #: src/net/ea/buysellhandler.cpp:130
 msgid "Thanks for selling."
-msgstr ""
+msgstr "Bedankt voor het verkopen."
 
 #: src/net/ea/buysellhandler.cpp:132
 msgid "Unable to sell."
-msgstr ""
+msgstr "Kan niets verkopen."
 
 #: src/net/ea/charserverhandler.cpp:103
+#, fuzzy
 msgid "Access denied."
-msgstr ""
+msgstr "Toegang geweigerd"
 
 #: src/net/ea/charserverhandler.cpp:106
+#, fuzzy
 msgid "Cannot use this ID."
-msgstr ""
+msgstr "Kan deze ID niet gebruiken"
 
 #: src/net/ea/charserverhandler.cpp:109
+#, fuzzy
 msgid "Unknown failure to select character."
-msgstr ""
+msgstr "Onbekende fout bij het selecteren van personage"
 
 #: src/net/ea/charserverhandler.cpp:135
 msgid "Failed to create character. Most likely the name is already taken."
-msgstr ""
+msgstr "Kan personage niet aanmaken. Waarschijnlijk bestaat de naam al."
 
 #: src/net/ea/charserverhandler.cpp:147 src/net/manaserv/charhandler.cpp:187
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: src/net/ea/charserverhandler.cpp:147
-#, fuzzy
 msgid "Character deleted."
-msgstr "Attributen van personage OK"
+msgstr "Personage verwijderd."
 
 #: src/net/ea/charserverhandler.cpp:152
 msgid "Failed to delete character."
-msgstr ""
+msgstr "Kon personage niet verwijderen."
 
 #: src/net/ea/charserverhandler.cpp:237 src/net/manaserv/charhandler.cpp:263
 msgid "Strength:"
@@ -2605,27 +2690,27 @@ msgstr "Dexteriteit:"
 
 #: src/net/ea/charserverhandler.cpp:242
 msgid "Luck:"
-msgstr ""
+msgstr "Geluk:"
 
 #: src/net/ea/chathandler.cpp:80
 msgid "Whisper could not be sent, user is offline."
-msgstr ""
+msgstr "Fluisterbericht kon niet verzonden worden, gebruiker is offline."
 
 #: src/net/ea/chathandler.cpp:84
 msgid "Whisper could not be sent, ignored by user."
-msgstr ""
+msgstr "Fluisterbericht kon niet verzonden worden, genegeerd door gebruiker."
 
 #: src/net/ea/chathandler.cpp:171
 #, fuzzy
 msgid "MVP player."
-msgstr "Spelers"
+msgstr "Speler"
 
 #: src/net/ea/chathandler.cpp:204 src/net/ea/chathandler.cpp:210
 #: src/net/ea/chathandler.cpp:215 src/net/ea/chathandler.cpp:220
 #: src/net/ea/chathandler.cpp:225 src/net/ea/chathandler.cpp:230
 #: src/net/ea/chathandler.cpp:235 src/net/ea/chathandler.cpp:240
 msgid "Channels are not supported!"
-msgstr ""
+msgstr "Kanalen worden niet ondersteund!"
 
 #: src/net/ea/gamehandler.cpp:86
 #, c-format
@@ -2638,66 +2723,74 @@ msgid "Game"
 msgstr "Naam"
 
 #: src/net/ea/gamehandler.cpp:100
+#, fuzzy
 msgid "Request to quit denied!"
-msgstr ""
+msgstr "Handel aanvragen"
 
 #: src/net/ea/generalhandler.cpp:102 src/net/manaserv/generalhandler.cpp:95
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Sterkte:"
+msgstr "Kracht %+d"
 
 #: src/net/ea/generalhandler.cpp:103 src/net/manaserv/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "Agiliteit:"
+msgstr "Behandigheid %+d"
 
 #: src/net/ea/generalhandler.cpp:104 src/net/manaserv/generalhandler.cpp:98
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "Vitaliteit:"
+msgstr "Vitaliteit %+d"
 
 #: src/net/ea/generalhandler.cpp:105 src/net/manaserv/generalhandler.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Intelligentie:"
+msgstr "Intelligentie %+d"
 
 #: src/net/ea/generalhandler.cpp:106 src/net/manaserv/generalhandler.cpp:97
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "Dexteriteit:"
+msgstr "Vaardigheid %+d"
 
 #: src/net/ea/generalhandler.cpp:107
 #, c-format
 msgid "Luck %+d"
-msgstr ""
+msgstr "Geluk %+d"
 
 #: src/net/ea/generalhandler.cpp:130
+#, fuzzy
 msgid "Authentication failed."
-msgstr ""
+msgstr "Authenticatie mislukt"
 
 #: src/net/ea/generalhandler.cpp:133
+#, fuzzy
 msgid "No servers available."
-msgstr ""
+msgstr "Geen servers beschikbaar"
 
 #: src/net/ea/generalhandler.cpp:137
+#, fuzzy
 msgid "Someone else is trying to use this account."
-msgstr ""
+msgstr "Iemand anders probeert deze account te gebruiken"
 
 #: src/net/ea/generalhandler.cpp:140
+#, fuzzy
 msgid "This account is already logged in."
-msgstr ""
+msgstr "Deze account is reeds aangemeld"
 
 #: src/net/ea/generalhandler.cpp:143
+#, fuzzy
 msgid "Speed hack detected."
-msgstr ""
+msgstr "Speedhack gedetecteerd"
 
 #: src/net/ea/generalhandler.cpp:146
+#, fuzzy
 msgid "Duplicated login."
-msgstr ""
+msgstr "Dubbele login"
 
 #: src/net/ea/generalhandler.cpp:149
+#, fuzzy
 msgid "Unknown connection error."
-msgstr ""
+msgstr "Onbekenden connectiefout"
 
 #: src/net/ea/generalhandler.cpp:205
 msgid "Got disconnected from server!"
@@ -2705,91 +2798,99 @@ msgstr "De verbinding met de server werd verbroken!"
 
 #: src/net/ea/generalhandler.cpp:216 src/net/manaserv/generalhandler.cpp:166
 msgid "Strength"
-msgstr ""
+msgstr "Kracht"
 
 #: src/net/ea/generalhandler.cpp:217 src/net/manaserv/generalhandler.cpp:167
 msgid "Agility"
-msgstr ""
+msgstr "Behendigheid"
 
 #: src/net/ea/generalhandler.cpp:218 src/net/manaserv/generalhandler.cpp:169
 msgid "Vitality"
-msgstr ""
+msgstr "Vitaliteit"
 
 #: src/net/ea/generalhandler.cpp:219 src/net/manaserv/generalhandler.cpp:170
 msgid "Intelligence"
-msgstr ""
+msgstr "Intelligentie"
 
 #: src/net/ea/generalhandler.cpp:220 src/net/manaserv/generalhandler.cpp:168
 msgid "Dexterity"
-msgstr ""
+msgstr "Vaardigheid"
 
 #: src/net/ea/generalhandler.cpp:221
 msgid "Luck"
-msgstr ""
+msgstr "Geluk"
 
 #: src/net/ea/generalhandler.cpp:224
 #, fuzzy
 msgid "Defense"
-msgstr "Verwijderen"
+msgstr "Verdediging:"
 
 #: src/net/ea/generalhandler.cpp:225
+#, fuzzy
 msgid "M.Attack"
-msgstr ""
+msgstr "Magische Aanval:"
 
 #: src/net/ea/generalhandler.cpp:226
+#, fuzzy
 msgid "M.Defense"
-msgstr ""
+msgstr "Magische Verdediging:"
 
 #: src/net/ea/generalhandler.cpp:227
-#, c-format
+#, fuzzy, c-format
 msgid "% Accuracy"
-msgstr ""
+msgstr "% Nauwkeurigheid:"
 
 #: src/net/ea/generalhandler.cpp:228
-#, c-format
+#, fuzzy, c-format
 msgid "% Evade"
-msgstr ""
+msgstr "% Ontwijking:"
 
 #: src/net/ea/generalhandler.cpp:229
-#, c-format
+#, fuzzy, c-format
 msgid "% Critical"
-msgstr ""
+msgstr "Kritieke aanval"
 
 #: src/net/ea/gui/guildtab.cpp:61 src/net/ea/gui/partytab.cpp:59
 msgid "/help > Display this help."
-msgstr ""
+msgstr "/help > Geeft deze help weer."
 
 #: src/net/ea/gui/guildtab.cpp:62
+#, fuzzy
 msgid "/invite > Invite a player to your guild"
-msgstr ""
+msgstr "/invite > Nodig een speler uit voor jouw groep"
 
 #: src/net/ea/gui/guildtab.cpp:63
+#, fuzzy
 msgid "/leave > Leave the guild you are in"
-msgstr ""
+msgstr "/leave > Verlaat de groep waarin je je bevindt"
 
 #: src/net/ea/gui/guildtab.cpp:64
+#, fuzzy
 msgid "/kick > Kick some one from the guild you are in"
-msgstr ""
+msgstr "/kick > Verwijder iemand vanuit de groep waarin je bent"
 
 #: src/net/ea/gui/guildtab.cpp:73 src/net/ea/gui/partytab.cpp:73
 msgid "Command: /invite <nick>"
-msgstr ""
+msgstr "Commando: /invite <nick>"
 
 #: src/net/ea/gui/guildtab.cpp:74
+#, fuzzy
 msgid "This command invites <nick> to the guild you're in."
-msgstr ""
+msgstr "Dit commando nodigt <nick> uit om een groep te vormen met jou."
 
 #: src/net/ea/gui/guildtab.cpp:80 src/net/ea/gui/partytab.cpp:80
 msgid "Command: /leave"
-msgstr ""
+msgstr "Commando: /leave"
 
 #: src/net/ea/gui/guildtab.cpp:81
+#, fuzzy
 msgid "This command causes the player to leave the guild."
-msgstr ""
+msgstr "Dit commando zorgt ervoor dat de speler de groep verlaat."
 
 #: src/net/ea/gui/guildtab.cpp:89
+#, fuzzy
 msgid "Guild name is missing."
-msgstr ""
+msgstr "Groepsnaam ontbreekt."
 
 #: src/net/ea/guildhandler.cpp:293
 msgid "Could not inivte user to guild."
@@ -2800,16 +2901,18 @@ msgid "User rejected guild invite."
 msgstr ""
 
 #: src/net/ea/guildhandler.cpp:303
+#, fuzzy
 msgid "User is now part of your guild."
-msgstr ""
+msgstr "%s is nu een lid van jouw groep."
 
 #: src/net/ea/guildhandler.cpp:308
 msgid "Your guild is full."
 msgstr ""
 
 #: src/net/ea/guildhandler.cpp:313
+#, fuzzy
 msgid "Unknown guild invite response."
-msgstr ""
+msgstr "Onbekend uitnodigingsantwoord van %s."
 
 #: src/net/ea/guildhandler.cpp:390
 msgid "Guild creation isn't supported yet."
@@ -2817,111 +2920,121 @@ msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:60
 msgid "/invite > Invite a player to your party"
-msgstr ""
+msgstr "/invite > Nodig een speler uit voor jouw groep"
 
 #: src/net/ea/gui/partytab.cpp:61
 msgid "/leave > Leave the party you are in"
-msgstr ""
+msgstr "/leave > Verlaat de groep waarin je je bevindt"
 
 #: src/net/ea/gui/partytab.cpp:62
 msgid "/kick > Kick some one from the party you are in"
-msgstr ""
+msgstr "/kick > Verwijder iemand vanuit de groep waarin je bent"
 
 #: src/net/ea/gui/partytab.cpp:63
 msgid "/item > Show/change party item sharing options"
-msgstr ""
+msgstr "/item > Geeft weer/wijzigt de opties voor voorwerpdeling"
 
 #: src/net/ea/gui/partytab.cpp:64
 msgid "/exp > Show/change party experience sharing options"
-msgstr ""
+msgstr "/exp > Geeft weer/wijzigt de ervaringsdelingsopties"
 
 #: src/net/ea/gui/partytab.cpp:81
 msgid "This command causes the player to leave the party."
-msgstr ""
+msgstr "Dit commando zorgt ervoor dat de speler de groep verlaat."
 
 #: src/net/ea/gui/partytab.cpp:85
 msgid "Command: /item <policy>"
-msgstr ""
+msgstr "Commando: /item <beleid>"
 
 #: src/net/ea/gui/partytab.cpp:86
 msgid "This command changes the party's item sharing policy."
-msgstr ""
+msgstr "Dit commando wijzigt het voorwerpdelingsbeleid van de groep."
 
 #: src/net/ea/gui/partytab.cpp:87
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
 "\"0\", \"no\", \"false\" to disable item sharing."
 msgstr ""
+"<beleid> kan een van de volgende zijn om voorwerpdeling in te schakelen: \"1"
+"\", \"yes\", \"true\". Of om voorwerpdeling uit te schakelen: \"0\", \"no\", "
+"\"false\"."
 
 #: src/net/ea/gui/partytab.cpp:90
 msgid "Command: /item"
-msgstr ""
+msgstr "Commando: /item"
 
 #: src/net/ea/gui/partytab.cpp:91
 msgid "This command displays the party's current item sharing policy."
 msgstr ""
+"Dit commando geeft het huidige voorwerpdelingsbeleid van de groep weer."
 
 #: src/net/ea/gui/partytab.cpp:95
 msgid "Command: /exp <policy>"
-msgstr ""
+msgstr "Commando: /exp <beleid>"
 
 #: src/net/ea/gui/partytab.cpp:96
 msgid "This command changes the party's experience sharing policy."
-msgstr ""
+msgstr "Dit commando wijzigt het ervaringsdelingsbeleid van de groep."
 
 #: src/net/ea/gui/partytab.cpp:97
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable experience "
 "sharing, or \"0\", \"no\", \"false\" to disable experience sharing."
 msgstr ""
+"<beleid> kan een van de volgende zijn om ervaringsdeling in te schakelen: \"1"
+"\", \"true\", \"yes\". Of om ervaringsdeling uit te schakelen: \"0\", \"false"
+"\", \"no\"."
 
 #: src/net/ea/gui/partytab.cpp:100
 msgid "Command: /exp"
-msgstr ""
+msgstr "Commando: /exp"
 
 #: src/net/ea/gui/partytab.cpp:101
 msgid "This command displays the party's current experience sharing policy."
 msgstr ""
+"Dit commando geeft het huidige ervaringsdelingbeleid van de groep weer."
 
 #: src/net/ea/gui/partytab.cpp:132 src/net/ea/partyhandler.cpp:198
 msgid "Item sharing enabled."
-msgstr ""
+msgstr "Voorwerpdeling ingeschakeld."
 
 #: src/net/ea/gui/partytab.cpp:135 src/net/ea/partyhandler.cpp:204
 msgid "Item sharing disabled."
-msgstr ""
+msgstr "Voorwerpdeling uitgeschakeld."
 
 #: src/net/ea/gui/partytab.cpp:138 src/net/ea/partyhandler.cpp:210
 msgid "Item sharing not possible."
-msgstr ""
+msgstr "Voorwerpdeling is niet mogelijk."
 
 #: src/net/ea/gui/partytab.cpp:141
+#, fuzzy
 msgid "Item sharing unknown."
-msgstr ""
+msgstr "Voorwerpdeling ingeschakeld."
 
 #: src/net/ea/gui/partytab.cpp:167 src/net/ea/partyhandler.cpp:174
 msgid "Experience sharing enabled."
-msgstr ""
+msgstr "Ervaringsdeling ingeschakeld."
 
 #: src/net/ea/gui/partytab.cpp:170 src/net/ea/partyhandler.cpp:180
 msgid "Experience sharing disabled."
-msgstr ""
+msgstr "Ervaringsdeling uitgeschakeld."
 
 #: src/net/ea/gui/partytab.cpp:173 src/net/ea/partyhandler.cpp:186
 msgid "Experience sharing not possible."
-msgstr ""
+msgstr "Ervaringsdeling is niet mogelijk."
 
 #: src/net/ea/gui/partytab.cpp:176
+#, fuzzy
 msgid "Experience sharing unknown."
-msgstr ""
+msgstr "Ervaringsdeling ingeschakeld."
 
 #: src/net/ea/inventoryhandler.cpp:281
 msgid "Failed to use item."
-msgstr ""
+msgstr "Kan voorwerp niet gebruiken."
 
 #: src/net/ea/inventoryhandler.cpp:391
 msgid "Unable to equip."
-msgstr ""
+msgstr "Kan dit niet uitrusten."
 
 #: src/net/ea/inventoryhandler.cpp:402
 msgid "Unable to unequip."
@@ -2929,45 +3042,52 @@ msgstr ""
 
 #: src/net/ea/loginhandler.cpp:79
 msgid "Account was not found. Please re-login."
-msgstr ""
+msgstr "Account was niet gevonden. Probeer opnieuw in te loggen aub."
 
 #: src/net/ea/loginhandler.cpp:82 src/net/manaserv/loginhandler.cpp:121
+#, fuzzy
 msgid "Old password incorrect."
-msgstr ""
+msgstr "Oud wachtwoord incorrect"
 
 #: src/net/ea/loginhandler.cpp:85
+#, fuzzy
 msgid "New password too short."
-msgstr ""
+msgstr "Nieuw wachtwoord is te kort"
 
 #: src/net/ea/loginhandler.cpp:88 src/net/ea/loginhandler.cpp:175
 #: src/net/manaserv/charhandler.cpp:158 src/net/manaserv/loginhandler.cpp:96
 #: src/net/manaserv/loginhandler.cpp:127 src/net/manaserv/loginhandler.cpp:161
 #: src/net/manaserv/loginhandler.cpp:279 src/net/manaserv/loginhandler.cpp:316
+#, fuzzy
 msgid "Unknown error."
-msgstr ""
+msgstr "Onbekende foutmelding"
 
 #: src/net/ea/loginhandler.cpp:149
 #, fuzzy
 msgid "Unregistered ID."
-msgstr "Registreren"
+msgstr "Ongeregistreerde ID"
 
 #: src/net/ea/loginhandler.cpp:152
+#, fuzzy
 msgid "Wrong password."
-msgstr ""
+msgstr "Onjuist wachtwoord"
 
 #: src/net/ea/loginhandler.cpp:155
+#, fuzzy
 msgid "Account expired."
-msgstr ""
+msgstr "Account verlopen"
 
 #: src/net/ea/loginhandler.cpp:158
 #, fuzzy
 msgid "Rejected from server."
-msgstr "De verbinding met de server werd verbroken!"
+msgstr "Geweerd van server"
 
 #: src/net/ea/loginhandler.cpp:161
+#, fuzzy
 msgid ""
 "You have been permanently banned from the game. Please contact the GM team."
 msgstr ""
+"Je bent permanent geband van het spel. Neem aub contact op met het GM team."
 
 #: src/net/ea/loginhandler.cpp:165
 #, c-format
@@ -2975,18 +3095,22 @@ msgid ""
 "You have been temporarily banned from the game until %s.\n"
 "Please contact the GM team via the forums."
 msgstr ""
+"Je bent tijdelijk geband van het spel tot %s.\n"
+"Neem aub contact op met het GM team via de forums."
 
 #: src/net/ea/loginhandler.cpp:172
+#, fuzzy
 msgid "This user name is already taken."
-msgstr ""
+msgstr "Deze gebruikersnaam bestaat al"
 
 #: src/net/ea/network.cpp:145
 msgid "Empty address given to Network::connect()!"
 msgstr ""
 
 #: src/net/ea/network.cpp:345
+#, fuzzy
 msgid "Unable to resolve host \""
-msgstr ""
+msgstr "Kan niets verkopen."
 
 #: src/net/ea/network.cpp:414
 #, fuzzy
@@ -2995,49 +3119,49 @@ msgstr "Verbinden met de map server..."
 
 #: src/net/ea/partyhandler.cpp:81
 msgid "Could not create party."
-msgstr ""
+msgstr "Kan geen groep aanmaken."
 
 #: src/net/ea/partyhandler.cpp:84
 msgid "Party successfully created."
-msgstr ""
+msgstr "Groep succesvol aangemaakt."
 
 #: src/net/ea/partyhandler.cpp:118
 #, c-format
 msgid "%s is already a member of a party."
-msgstr ""
+msgstr "%s is al een lid van een groep."
 
 #: src/net/ea/partyhandler.cpp:122
 #, c-format
 msgid "%s refused your invitation."
-msgstr ""
+msgstr "%s wees jouw uitnodiging af."
 
 #: src/net/ea/partyhandler.cpp:126
 #, c-format
 msgid "%s is now a member of your party."
-msgstr ""
+msgstr "%s is nu een lid van jouw groep."
 
 #: src/net/ea/partyhandler.cpp:130
 #, c-format
 msgid "Unknown invite response for %s."
-msgstr ""
+msgstr "Onbekend uitnodigingsantwoord van %s."
 
 #: src/net/ea/partyhandler.cpp:238
 msgid "You have left the party."
-msgstr ""
+msgstr "Je hebt de groep verlaten."
 
 #: src/net/ea/partyhandler.cpp:249
 #, c-format
 msgid "%s has left your party."
-msgstr ""
+msgstr "%s heeft jouw groep verlaten."
 
 #: src/net/ea/partyhandler.cpp:301
 #, c-format
 msgid "An unknown member tried to say: %s"
-msgstr ""
+msgstr "Een onbekend lid probeerde te zeggen: %s"
 
 #: src/net/ea/partyhandler.cpp:329
 msgid "Inviting like this isn't supported at the moment."
-msgstr ""
+msgstr "Op deze manier iemand uitnodigen wordt momenteel niet ondersteund."
 
 #: src/net/ea/partyhandler.cpp:334
 msgid "You can only inivte when you are in a party!"
@@ -3046,59 +3170,65 @@ msgstr ""
 #: src/net/ea/partyhandler.cpp:365
 #, c-format
 msgid "%s is not in your party!"
-msgstr ""
+msgstr "%s is niet in jouw groep!"
 
 #: src/net/ea/playerhandler.cpp:99 src/net/manaserv/beinghandler.cpp:304
 msgid "You are dead."
-msgstr ""
+msgstr "Je bent dood."
 
 #: src/net/ea/playerhandler.cpp:100 src/net/manaserv/beinghandler.cpp:305
 msgid "We regret to inform you that your character was killed in battle."
 msgstr ""
+"We betreuren het om je te melden dat jouw personage is gestorven in een "
+"gevecht."
 
 #: src/net/ea/playerhandler.cpp:102 src/net/manaserv/beinghandler.cpp:307
 msgid "You are not that alive anymore."
-msgstr ""
+msgstr "Je bent niet langer levend."
 
 #: src/net/ea/playerhandler.cpp:103 src/net/manaserv/beinghandler.cpp:308
 msgid "The cold hands of the grim reaper are grabbing for your soul."
-msgstr ""
+msgstr "De koude handen van Pietje de Dood grijpen naar jouw ziel."
 
 #: src/net/ea/playerhandler.cpp:104 src/net/manaserv/beinghandler.cpp:309
 msgid "Game Over!"
-msgstr ""
+msgstr "Game Over!"
 
 #: src/net/ea/playerhandler.cpp:105
 msgid "Insert coin to continue."
-msgstr ""
+msgstr "Werp een muntstuk in om verder te spelen."
 
 #: src/net/ea/playerhandler.cpp:106 src/net/manaserv/beinghandler.cpp:310
 msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
 msgstr ""
+"Neen, kinderen. Jouw personage is niet echt gestorven. Het... euhm... is "
+"naar een beter plaats gegaan."
 
 #: src/net/ea/playerhandler.cpp:108 src/net/manaserv/beinghandler.cpp:312
 msgid ""
 "Your plan of breaking your enemies weapon by bashing it with your throat "
 "failed."
 msgstr ""
+"Jouw plan om vijandelijke wapens te vernietignen door ermee tegen jouw keel "
+"te slaan is mislukt."
 
 #: src/net/ea/playerhandler.cpp:110 src/net/manaserv/beinghandler.cpp:314
 msgid "I guess this did not run too well."
-msgstr ""
+msgstr "Dit verliep niet zoals gepland."
 
 #: src/net/ea/playerhandler.cpp:112 src/net/manaserv/beinghandler.cpp:315
 msgid "Do you want your possessions identified?"
-msgstr ""
+msgstr "Wil je dat jouw bezittingen geïdentificeerd worden?"
 
 #: src/net/ea/playerhandler.cpp:114 src/net/manaserv/beinghandler.cpp:316
 msgid "Sadly, no trace of you was ever found..."
-msgstr ""
+msgstr "Spijtig genoeg, was er geen spoor van jou gevonden..."
 
 #: src/net/ea/playerhandler.cpp:116 src/net/manaserv/beinghandler.cpp:317
 msgid "Annihilated."
-msgstr ""
+msgstr "Verslagen"
 
 #: src/net/ea/playerhandler.cpp:118 src/net/manaserv/beinghandler.cpp:318
 msgid "Looks like you got your head handed to you."
@@ -3108,30 +3238,31 @@ msgstr ""
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
 msgstr ""
+"Je hebt het weer verknald, dump jouw lichaam  en ga er een nieuw halen."
 
 #: src/net/ea/playerhandler.cpp:123
 msgid "You're not dead yet. You're just resting."
-msgstr ""
+msgstr "Je bent nog niet dood. Je bent maar aan het rusten."
 
 #: src/net/ea/playerhandler.cpp:124
 msgid "You are no more."
-msgstr ""
+msgstr "Je bent niet langer."
 
 #: src/net/ea/playerhandler.cpp:125
 msgid "You have ceased to be."
-msgstr ""
+msgstr "Je hebt opgehouden te zijn."
 
 #: src/net/ea/playerhandler.cpp:126
 msgid "You've expired and gone to meet your maker."
-msgstr ""
+msgstr "Je bent verlopen en gaat een bezoekje maken bij jouw schepper."
 
 #: src/net/ea/playerhandler.cpp:127
 msgid "You're a stiff."
-msgstr ""
+msgstr "Je bent stokstijf."
 
 #: src/net/ea/playerhandler.cpp:128
 msgid "Bereft of life, you rest in peace."
-msgstr ""
+msgstr "Beroofd van het leven, rust je in vrede."
 
 #: src/net/ea/playerhandler.cpp:129
 msgid "If you weren't so animated, you'd be pushing up the daisies."
@@ -3139,7 +3270,7 @@ msgstr ""
 
 #: src/net/ea/playerhandler.cpp:130
 msgid "Your metabolic processes are now history."
-msgstr ""
+msgstr "Jouw metabolische processen behoren nu tot het verleden."
 
 #: src/net/ea/playerhandler.cpp:131
 msgid "You're off the twig."
@@ -3157,7 +3288,7 @@ msgstr ""
 
 #: src/net/ea/playerhandler.cpp:135
 msgid "You are an ex-player."
-msgstr ""
+msgstr "Je bent een ex-speler."
 
 #: src/net/ea/playerhandler.cpp:136
 msgid "You're pining for the fjords."
@@ -3165,17 +3296,19 @@ msgstr ""
 
 #: src/net/ea/playerhandler.cpp:249 src/net/ea/playerhandler.cpp:310
 msgid "Message"
-msgstr ""
+msgstr "Bericht"
 
 #: src/net/ea/playerhandler.cpp:250
 msgid ""
 "You are carrying more than half your weight. You are unable to regain health."
 msgstr ""
+"Je draagt meer dan de helft van jouw eigen gewicht. Je kan geen leven "
+"herstellen."
 
 #: src/net/ea/playerhandler.cpp:333
-#, c-format
+#, fuzzy, c-format
 msgid "You picked up %s."
-msgstr ""
+msgstr "Je raapte op: "
 
 #: src/net/ea/playerhandler.cpp:369
 msgid "Cannot raise skill!"
@@ -3187,11 +3320,11 @@ msgstr ""
 
 #: src/net/ea/specialhandler.cpp:147
 msgid "Trade failed!"
-msgstr ""
+msgstr "Handel mislukte!"
 
 #: src/net/ea/specialhandler.cpp:150
 msgid "Emote failed!"
-msgstr ""
+msgstr "Emoticon gefaald!"
 
 #: src/net/ea/specialhandler.cpp:153
 msgid "Sit failed!"
@@ -3199,51 +3332,51 @@ msgstr "Zitten niet mogelijk!"
 
 #: src/net/ea/specialhandler.cpp:156
 msgid "Chat creating failed!"
-msgstr ""
+msgstr "Chatcreatie mislukte!"
 
 #: src/net/ea/specialhandler.cpp:159
 msgid "Could not join party!"
-msgstr ""
+msgstr "Kan je niet bij de groep voegen!"
 
 #: src/net/ea/specialhandler.cpp:162
 msgid "Cannot shout!"
-msgstr ""
+msgstr "Kan niet roepen!"
 
 #: src/net/ea/specialhandler.cpp:171
 msgid "You have not yet reached a high enough lvl!"
-msgstr ""
+msgstr "Je hebt nog geen hoog genoeg level bereikt!"
 
 #: src/net/ea/specialhandler.cpp:174
 msgid "Insufficient HP!"
-msgstr ""
+msgstr "Onvoldoende leven!"
 
 #: src/net/ea/specialhandler.cpp:177
 msgid "Insufficient SP!"
-msgstr ""
+msgstr "Onvoldoende Vaardigheidspunten!"
 
 #: src/net/ea/specialhandler.cpp:180
 msgid "You have no memos!"
-msgstr ""
+msgstr "Je hebt geen memo's!"
 
 #: src/net/ea/specialhandler.cpp:183
 msgid "You cannot do that right now!"
-msgstr ""
+msgstr "Je kan dat nu niet doen!"
 
 #: src/net/ea/specialhandler.cpp:186
 msgid "Seems you need more money... ;-)"
-msgstr ""
+msgstr "Het lijkt erop dat je meer geld nodig hebt... ;-)"
 
 #: src/net/ea/specialhandler.cpp:189
 msgid "You cannot use this skill with that kind of weapon!"
-msgstr ""
+msgstr "Je kan die vaardigheid niet gebruiken met dit type wapen!"
 
 #: src/net/ea/specialhandler.cpp:192
 msgid "You need another red gem!"
-msgstr ""
+msgstr "Je hebt een andere rode edelsteen nodig!"
 
 #: src/net/ea/specialhandler.cpp:195
 msgid "You need another blue gem!"
-msgstr ""
+msgstr "Je hebt een andere blauwe edelsteen nodig!"
 
 #: src/net/ea/specialhandler.cpp:198
 msgid "You're carrying to much to do this!"
@@ -3251,87 +3384,89 @@ msgstr "Je draagt teveel bij je om dit te doen!"
 
 #: src/net/ea/specialhandler.cpp:201
 msgid "Huh? What's that?"
-msgstr ""
+msgstr "Huh? Wat is dat?"
 
 #: src/net/ea/specialhandler.cpp:210
 msgid "Warp failed..."
-msgstr ""
+msgstr "Warp mislukt..."
 
 #: src/net/ea/specialhandler.cpp:213
 msgid "Could not steal anything..."
-msgstr ""
+msgstr "Kon niets stelen..."
 
 #: src/net/ea/specialhandler.cpp:216
 msgid "Poison had no effect..."
-msgstr ""
+msgstr "Gif had geen effect..."
 
 #: src/net/ea/tradehandler.cpp:107 src/net/manaserv/tradehandler.cpp:116
 msgid "Request for Trade"
-msgstr ""
+msgstr "Handel aanvragen"
 
 #: src/net/ea/tradehandler.cpp:108 src/net/manaserv/tradehandler.cpp:117
 #, c-format
 msgid "%s wants to trade with you, do you accept?"
-msgstr ""
+msgstr "%s wil met jou handelen, aanvaard je dit?"
 
 #: src/net/ea/tradehandler.cpp:124
 msgid "Trading isn't possible. Trade partner is too far away."
-msgstr ""
+msgstr "Handelen is niet mogelijk. Partner is te ver weg."
 
 #: src/net/ea/tradehandler.cpp:128
 msgid "Trading isn't possible. Character doesn't exist."
-msgstr ""
+msgstr "Handelen is niet mogelijk. Personage bestaat niet."
 
 #: src/net/ea/tradehandler.cpp:132
 msgid "Trade cancelled due to an unknown reason."
-msgstr ""
+msgstr "Handel onderbroken vanwege een onbekende reden."
 
 #: src/net/ea/tradehandler.cpp:137
 #, c-format
 msgid "Trade: You and %s"
-msgstr ""
+msgstr "Handelen: Jij en %s"
 
 #: src/net/ea/tradehandler.cpp:144
 #, c-format
 msgid "Trade with %s cancelled."
-msgstr ""
+msgstr "Handel met %s geannuleerd."
 
 #: src/net/ea/tradehandler.cpp:153
 msgid "Unhandled trade cancel packet."
-msgstr ""
+msgstr "Onbehandelde handelannulatiepakket."
 
 #: src/net/ea/tradehandler.cpp:202
 msgid "Failed adding item. Trade partner is over weighted."
-msgstr ""
+msgstr "Kan voorwerp niet toevoegen. Handelspartner is al te zwaar beladen."
 
 #: src/net/ea/tradehandler.cpp:207
 msgid "Failed adding item. Trade partner has no free slot."
-msgstr ""
+msgstr "Kan voorwerp niet toevoegen. Handelspartner heeft geen vrij slot."
 
 #: src/net/ea/tradehandler.cpp:211
 msgid "Failed adding item for unknown reason."
-msgstr ""
+msgstr "Kan voorwerp niet toevoegen voor een onbekende reden."
 
 #: src/net/ea/tradehandler.cpp:224 src/net/manaserv/tradehandler.cpp:149
 msgid "Trade canceled."
-msgstr ""
+msgstr "Handel geannuleerd."
 
 #: src/net/ea/tradehandler.cpp:231 src/net/manaserv/tradehandler.cpp:156
 msgid "Trade completed."
-msgstr ""
+msgstr "Handel voltooid."
 
 #: src/net/manaserv/beinghandler.cpp:324
+#, fuzzy
 msgid "Press OK to respawn."
-msgstr ""
+msgstr " Druk op OK om te respawnen"
 
 #: src/net/manaserv/beinghandler.cpp:325
 #, fuzzy
 msgid "You Died"
-msgstr "Je geeft:"
+msgstr "Je stierf"
 
 #: src/net/manaserv/charhandler.cpp:128 src/net/manaserv/charhandler.cpp:196
+#, fuzzy
 msgid "Not logged in."
-msgstr ""
+msgstr "Reeds aangemeld"
 
 #: src/net/manaserv/charhandler.cpp:131
 msgid "No empty slot."
@@ -3344,7 +3479,7 @@ msgstr ""
 #: src/net/manaserv/charhandler.cpp:137
 #, fuzzy
 msgid "Character's name already exists."
-msgstr "Attributen van personage OK"
+msgstr "Gebruikersnaam bestaat al"
 
 #: src/net/manaserv/charhandler.cpp:140
 msgid "Invalid hairstyle."
@@ -3375,7 +3510,7 @@ msgstr ""
 #: src/net/manaserv/charhandler.cpp:187
 #, fuzzy
 msgid "Player deleted."
-msgstr "Attributen van personage OK"
+msgstr "Personage verwijderd."
 
 #: src/net/manaserv/charhandler.cpp:199
 #, fuzzy
@@ -3383,13 +3518,13 @@ msgid "Selection out of range."
 msgstr "Selecteer het aantal exemplaren om te verhandelen"
 
 #: src/net/manaserv/charhandler.cpp:202
-#, c-format
+#, fuzzy, c-format
 msgid "Unknown error (%d)."
-msgstr ""
+msgstr "Onbekende foutmelding"
 
 #: src/net/manaserv/charhandler.cpp:242
 msgid "No gameservers are available."
-msgstr ""
+msgstr "Geen gameservers beschikbaar."
 
 #: src/net/manaserv/charhandler.cpp:268
 msgid "Willpower:"
@@ -3399,28 +3534,31 @@ msgstr "Wilskracht:"
 #: src/net/manaserv/guildhandler.cpp:259
 #, c-format
 msgid "Topic: %s"
-msgstr ""
+msgstr "Onderwerp: %s"
 
 #: src/net/manaserv/chathandler.cpp:184 src/net/manaserv/chathandler.cpp:262
+#, fuzzy
 msgid "Players in this channel:"
-msgstr ""
+msgstr "Speler raakt Monster"
 
 #: src/net/manaserv/chathandler.cpp:201
+#, fuzzy
 msgid "Error joining channel."
-msgstr ""
+msgstr "Commando: /join <kanaal>"
 
 #: src/net/manaserv/chathandler.cpp:207
+#, fuzzy
 msgid "Listing channels."
-msgstr ""
+msgstr "Aanvragen om bij kanaal %s toegevoegd te worden."
 
 #: src/net/manaserv/chathandler.cpp:219
 msgid "End of channel list."
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:291
-#, c-format
+#, fuzzy, c-format
 msgid "%s entered the channel."
-msgstr ""
+msgstr "%s heeft zich bij de groep gevoegd."
 
 #: src/net/manaserv/chathandler.cpp:296
 #, c-format
@@ -3438,13 +3576,14 @@ msgid "%s has kicked %s."
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:327
+#, fuzzy
 msgid "Unknown channel event."
-msgstr ""
+msgstr "Onbekend commando."
 
 #: src/net/manaserv/generalhandler.cpp:100
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "Wilskracht:"
+msgstr "Wilskracht %+d"
 
 #: src/net/manaserv/generalhandler.cpp:171
 #, fuzzy
@@ -3453,55 +3592,62 @@ msgstr "Wilskracht:"
 
 #: src/net/manaserv/guildhandler.cpp:81
 msgid "Guild created."
-msgstr ""
+msgstr "Guild aangemaakt."
 
 #: src/net/manaserv/guildhandler.cpp:86
 msgid "Error creating guild."
-msgstr ""
+msgstr "Fout bij het creëren van guild."
 
 #: src/net/manaserv/guildhandler.cpp:96
 msgid "Invite sent."
-msgstr ""
+msgstr "Uitnodiging verzonden."
 
 #: src/net/manaserv/guildhandler.cpp:203
 msgid "Member was promoted successfully."
-msgstr ""
+msgstr "Lid is succesvol gepromoveerd."
 
 #: src/net/manaserv/guildhandler.cpp:208
 msgid "Failed to promote member."
-msgstr ""
+msgstr "Kon lid niet promoveren."
 
 #: src/net/manaserv/loginhandler.cpp:87
+#, fuzzy
 msgid "Wrong magic_token."
-msgstr ""
+msgstr "Verkeerd magie_teken"
 
 #: src/net/manaserv/loginhandler.cpp:90 src/net/manaserv/loginhandler.cpp:269
+#, fuzzy
 msgid "Already logged in."
-msgstr ""
+msgstr "Reeds aangemeld"
 
 #: src/net/manaserv/loginhandler.cpp:93 src/net/manaserv/loginhandler.cpp:272
+#, fuzzy
 msgid "Server is full."
-msgstr ""
+msgstr "Server is volzet"
 
 #: src/net/manaserv/loginhandler.cpp:118
+#, fuzzy
 msgid "New password incorrect."
-msgstr ""
+msgstr "Nieuw wachtwoord is incorrect"
 
 #: src/net/manaserv/loginhandler.cpp:124 src/net/manaserv/loginhandler.cpp:155
 msgid "Account not connected. Please login first."
-msgstr ""
+msgstr "Account niet verbonden. Log eerst in aub."
 
 #: src/net/manaserv/loginhandler.cpp:149
+#, fuzzy
 msgid "New email address incorrect."
-msgstr ""
+msgstr "Nieuw emailadres is incorrect"
 
 #: src/net/manaserv/loginhandler.cpp:152
+#, fuzzy
 msgid "Old email address incorrect."
-msgstr ""
+msgstr "Oud emailadres is incorrect"
 
 #: src/net/manaserv/loginhandler.cpp:158
+#, fuzzy
 msgid "The new email address already exists."
-msgstr ""
+msgstr "Het nieuwe emailadres bestaat al."
 
 #: src/net/manaserv/loginhandler.cpp:239
 msgid ""
@@ -3509,28 +3655,33 @@ msgid ""
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:263 src/net/manaserv/loginhandler.cpp:300
+#, fuzzy
 msgid "Client version is too old."
-msgstr ""
+msgstr "Te oude Client versie"
 
 #: src/net/manaserv/loginhandler.cpp:266
+#, fuzzy
 msgid "Wrong username or password."
-msgstr ""
+msgstr "Verkeerde gebruikersnaam of wachtwoord"
 
 #: src/net/manaserv/loginhandler.cpp:275
 msgid "Login attempt too soon after previous attempt."
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:303
+#, fuzzy
 msgid "Wrong username, password or email address."
-msgstr ""
+msgstr "Verkeerde gebruikersnaam, wachtwoord of emailadres"
 
 #: src/net/manaserv/loginhandler.cpp:306
+#, fuzzy
 msgid "Username already exists."
-msgstr ""
+msgstr "Gebruikersnaam bestaat al"
 
 #: src/net/manaserv/loginhandler.cpp:309
+#, fuzzy
 msgid "Email address already exists."
-msgstr ""
+msgstr "emailadres bestaat al"
 
 #: src/net/manaserv/loginhandler.cpp:312
 msgid "You took too long with the captcha or your response was incorrect."
@@ -3538,30 +3689,30 @@ msgstr ""
 
 #: src/net/manaserv/partyhandler.cpp:88
 msgid "Joined party."
-msgstr ""
+msgstr "Bijgevoegd bij groep."
 
 #: src/net/manaserv/partyhandler.cpp:106
 #, c-format
 msgid "%s joined the party."
-msgstr ""
+msgstr "%s heeft zich bij de groep gevoegd."
 
 #: src/net/manaserv/partyhandler.cpp:123
-#, c-format
+#, fuzzy, c-format
 msgid "%s rejected your invite."
-msgstr ""
+msgstr "%s wees jouw uitnodiging af."
 
 #: src/net/manaserv/tradehandler.cpp:96
 msgid "Accepting incoming trade requests."
-msgstr ""
+msgstr "Inkomende handelsaanvragen accepteren."
 
 #: src/net/manaserv/tradehandler.cpp:98
 msgid "Ignoring incoming trade requests."
-msgstr ""
+msgstr "Inkomende handelsaanvragen negeren."
 
 #: src/net/manaserv/tradehandler.cpp:135
 #, c-format
 msgid "Trading with %s"
-msgstr ""
+msgstr "Handelen met %s"
 
 #: src/playerrelations.cpp:304
 #, fuzzy
@@ -3587,34 +3738,46 @@ msgstr ""
 #: src/resources/itemdb.cpp:52
 #, c-format
 msgid "Attack %+d"
-msgstr ""
+msgstr "Aanval %+d"
 
 #: src/resources/itemdb.cpp:53
 #, c-format
 msgid "Defense %+d"
-msgstr ""
+msgstr "Verdediging %+d"
 
 #: src/resources/itemdb.cpp:54
 #, c-format
 msgid "HP %+d"
-msgstr ""
+msgstr "Leven %+d"
 
 #: src/resources/itemdb.cpp:55
 #, c-format
 msgid "MP %+d"
-msgstr ""
+msgstr "Magie %+d"
 
 #: src/resources/itemdb.cpp:114
 msgid "Unknown item"
-msgstr ""
+msgstr "Onbekend voorwerp"
 
 #: src/resources/itemdb.cpp:158 src/resources/monsterdb.cpp:45
 #: src/resources/monsterdb.cpp:67
 msgid "unnamed"
-msgstr ""
+msgstr "naamloos"
+
+#~ msgid "no"
+#~ msgstr "nee"
+
+#~ msgid "Buddy"
+#~ msgstr "Vriend"
+
+#~ msgid "Buddy List"
+#~ msgstr "Vriendenlijst"
 
 #~ msgid "Description: %s"
 #~ msgstr "Beschrijving: %s"
+
+#~ msgid "Effect: %s"
+#~ msgstr "Effect: %s"
 
 #~ msgid "Previous"
 #~ msgstr "Vorige"
@@ -3622,8 +3785,29 @@ msgstr ""
 #~ msgid "New"
 #~ msgstr "Nieuw"
 
+#~ msgid "Job Level: %d"
+#~ msgstr "Beroep niveau: %d"
+
+#~ msgid "Present: "
+#~ msgstr "Aanwezig: "
+
+#~ msgid "Quit Guild"
+#~ msgstr "Guild verlaten"
+
 #~ msgid "Ok"
 #~ msgstr "OK"
+
+#~ msgid "Recent:"
+#~ msgstr "Recent:"
+
+#~ msgid "Magic"
+#~ msgstr "Magie"
+
+#~ msgid "@@trade|Trade With %s@@"
+#~ msgstr "@@trade|Handelen met %s@@"
+
+#~ msgid "@@attack|Attack %s@@"
+#~ msgstr "@@attack|%s aanvallen@@"
 
 #~ msgid "@@cancel|Cancel@@"
 #~ msgstr "@@cancel|Annuleren@@"
@@ -3637,9 +3821,23 @@ msgstr ""
 #~ msgid "@@drop|Drop@@"
 #~ msgstr "@@drop|Neerleggen@@"
 
-#, fuzzy
-#~ msgid "@@store|Store@@"
-#~ msgstr "@@use|Gebruiken@@"
+#~ msgid "Select Server"
+#~ msgstr "Server Selecteren"
+
+#~ msgid "Failed to switch to "
+#~ msgstr "Kan niet wisselen naar "
+
+#~ msgid "windowed"
+#~ msgstr "in venster"
+
+#~ msgid "fullscreen"
+#~ msgstr "volledig scherm"
+
+#~ msgid "Weapons"
+#~ msgstr "Wapens"
+
+#~ msgid "Stats"
+#~ msgstr "statistieken"
 
 #~ msgid "Total"
 #~ msgstr "Totaal"
@@ -3647,11 +3845,95 @@ msgstr ""
 #~ msgid "Cost"
 #~ msgstr "Kosten"
 
+#~ msgid "Attack:"
+#~ msgstr "Aanval:"
+
+#~ msgid "% Reflex:"
+#~ msgstr "% Reflex:"
+
+#~ msgid "Remaining Status Points: %d"
+#~ msgstr "Overblijvende statuspunten: %d"
+
+#~ msgid "Max level"
+#~ msgstr "Maximum level"
+
+#~ msgid " host: "
+#~ msgstr " host: "
+
+#~ msgid "Guilds"
+#~ msgstr "Guilds"
+
+#~ msgid "Buddys"
+#~ msgstr "Vrienden"
+
+#~ msgid "Party Window"
+#~ msgstr "Groepsvenster"
+
+#~ msgid "Unarmed"
+#~ msgstr "Ongewapend"
+
+#~ msgid "Knife"
+#~ msgstr "Mes"
+
+#~ msgid "Sword"
+#~ msgstr "Zwaard"
+
+#~ msgid "Staff"
+#~ msgstr "Staf"
+
+#~ msgid "Whip"
+#~ msgstr "Zweep"
+
+#~ msgid "Bow"
+#~ msgstr "Boog"
+
+#~ msgid "Shooting"
+#~ msgstr "Schieten"
+
+#~ msgid "Mace"
+#~ msgstr "Goedendag"
+
+#~ msgid "Axe"
+#~ msgstr "Bijl"
+
+#~ msgid "Thrown"
+#~ msgstr "Geworpen"
+
+#~ msgid "Unknown Skill"
+#~ msgstr "Onbekende vaardigheid"
+
+#~ msgid " can't be created, but it doesn't exist! Exiting."
+#~ msgstr " kan niet gecreëerd worden, maar het bestaat niet! Verlaten."
+
+#~ msgid "Couldn't set "
+#~ msgstr "Kan niet instellen van "
+
+#~ msgid " video mode: "
+#~ msgstr " video modus: "
+
+#~ msgid "mana"
+#~ msgstr "mana"
+
+#~ msgid "Connecting to character server..."
+#~ msgstr "Verbinden met de karakter server..."
+
 #~ msgid "Connecting to account server..."
 #~ msgstr "Verbinden met de account server..."
 
+#~ msgid "/new > Alias of create"
+#~ msgstr "/new > Zelfde functie als create"
+
+#~ msgid "Command: /new <party-name>"
+#~ msgstr "Commando: /new <groepsnaam>"
+
+#~ msgid "a"
+#~ msgstr "een"
+
 #~ msgid "Unnamed"
 #~ msgstr "Naamloos"
+
+#~ msgid "@@pickup|Pick Up %s@@"
+#~ msgstr "@@pickup|%s oppakken@@"
 
 #~ msgid "Scroll radius"
 #~ msgstr "Scroll radius"

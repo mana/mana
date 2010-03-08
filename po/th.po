@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-03-05 21:43+0100\n"
-"PO-Revision-Date: 2009-01-09 12:37+0000\n"
-"Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2009-11-06 15:29+0000\n"
+"Last-Translator: Krit Marukawisutthigul <Unknown>\n"
 "Language-Team: Thai <th@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
@@ -560,7 +560,7 @@ msgstr "เปลี่ยนที่อยู่ Email"
 #: src/gui/changeemaildialog.cpp:49 src/gui/changepassworddialog.cpp:52
 #, c-format
 msgid "Account: %s"
-msgstr ""
+msgstr "บัญชี: %s"
 
 #: src/gui/changeemaildialog.cpp:51
 msgid "Type new email address twice:"
@@ -776,9 +776,9 @@ msgid "Cursor: (%d, %d)"
 msgstr ""
 
 #: src/gui/debugwindow.cpp:69 src/gui/debugwindow.cpp:111
-#, c-format
+#, fuzzy, c-format
 msgid "Particle count: %d"
-msgstr ""
+msgstr "บัญชี: %s"
 
 #: src/gui/debugwindow.cpp:116
 #, c-format
@@ -912,9 +912,8 @@ msgid "Next"
 msgstr "ถัดไป"
 
 #: src/gui/npcdialog.cpp:47
-#, fuzzy
 msgid "Submit"
-msgstr "ออก"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:52 src/gui/npcpostdialog.cpp:41
 msgid "NPC"
@@ -1071,14 +1070,12 @@ msgid "Generics"
 msgstr ""
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Hats"
-msgstr "สถานะ"
+msgstr ""
 
 #: src/gui/palette.cpp:117
-#, fuzzy
 msgid "Usables"
-msgstr "ใช้"
+msgstr ""
 
 #: src/gui/palette.cpp:118
 msgid "Shirts"
@@ -1175,9 +1172,9 @@ msgid "Attack %s"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:92
-#, fuzzy, c-format
+#, c-format
 msgid "Whisper %s"
-msgstr "Willpower:"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:101
 #, c-format
@@ -1736,14 +1733,14 @@ msgid "Skill %d"
 msgstr ""
 
 #: src/gui/skilldialog.cpp:405
-#, c-format
+#, fuzzy, c-format
 msgid "Lvl: %d (%+d)"
-msgstr ""
+msgstr "เลเวล: %d"
 
 #: src/gui/skilldialog.cpp:416
-#, c-format
+#, fuzzy, c-format
 msgid "Lvl: %d"
-msgstr ""
+msgstr "เลเวล: %d"
 
 #: src/gui/socialwindow.cpp:117
 #, c-format
@@ -1929,7 +1926,7 @@ msgstr ""
 #: src/gui/statuswindow.cpp:99 src/gui/statuswindow.cpp:247
 #, c-format
 msgid "Level: %d"
-msgstr ""
+msgstr "เลเวล: %d"
 
 #: src/gui/statuswindow.cpp:100 src/gui/statuswindow.cpp:211
 #, c-format
@@ -1978,9 +1975,9 @@ msgid "Job"
 msgstr ""
 
 #: src/gui/statuswindow.cpp:229
-#, fuzzy, c-format
+#, c-format
 msgid "Character points: %d"
-msgstr "ยืนยันการลบตัวละคร"
+msgstr ""
 
 #: src/gui/statuswindow.cpp:235
 #, c-format
@@ -1988,8 +1985,9 @@ msgid "Correction points: %d"
 msgstr ""
 
 #: src/gui/statuswindow.cpp:251
+#, fuzzy
 msgid "Level"
-msgstr ""
+msgstr "เลเวล: %d"
 
 #: src/gui/storagewindow.cpp:58
 msgid "Storage"
@@ -2546,9 +2544,8 @@ msgid "Info"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:147
-#, fuzzy
 msgid "Character deleted."
-msgstr "ยืนยันการลบตัวละคร"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:152
 msgid "Failed to delete character."
@@ -2612,29 +2609,29 @@ msgid "Request to quit denied!"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:102 src/net/manaserv/generalhandler.cpp:95
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Strength:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:103 src/net/manaserv/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "Agility:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:104 src/net/manaserv/generalhandler.cpp:98
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "Vitality:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:105 src/net/manaserv/generalhandler.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Intelligence:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:106 src/net/manaserv/generalhandler.cpp:97
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "Dexterity:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:107
 #, c-format
@@ -3309,9 +3306,8 @@ msgid "Invalid name."
 msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:137
-#, fuzzy
 msgid "Character's name already exists."
-msgstr "ยืนยันการลบตัวละคร"
+msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:140
 msgid "Invalid hairstyle."
@@ -3338,9 +3334,8 @@ msgid "One stat is zero."
 msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:187
-#, fuzzy
 msgid "Player deleted."
-msgstr "ยืนยันการลบตัวละคร"
+msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:199
 msgid "Selection out of range."
@@ -3406,9 +3401,9 @@ msgid "Unknown channel event."
 msgstr ""
 
 #: src/net/manaserv/generalhandler.cpp:100
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "Willpower:"
+msgstr ""
 
 #: src/net/manaserv/generalhandler.cpp:171
 #, fuzzy
@@ -3575,6 +3570,9 @@ msgstr ""
 #: src/resources/monsterdb.cpp:67
 msgid "unnamed"
 msgstr ""
+
+#~ msgid "Description: %s"
+#~ msgstr "รายละเอียด: %s"
 
 #~ msgid "Previous"
 #~ msgstr "ก่อนหน้า"

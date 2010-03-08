@@ -7,16 +7,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
-"Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-03-05 21:33+0100\n"
-"PO-Revision-Date: 2009-05-05 10:15+0000\n"
+"Report-Msgid-Bugs-To: dev@manasource.org\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2009-06-08 22:11+0000\n"
 "Last-Translator: lok0919 <lok0919@gmail.com>\n"
 "Language-Team: Traditional Chinese <themanaworld-devel@lists.sourceforge."
 "net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Country: China\n"
 "X-Poedit-Language: Chinese\n"
@@ -113,9 +113,8 @@ msgid "-- Help --"
 msgstr "-- 說明 --"
 
 #: src/commandhandler.cpp:157
-#, fuzzy
 msgid "/help > Display this help"
-msgstr "/help > 顯示幫助"
+msgstr ""
 
 #: src/commandhandler.cpp:159
 msgid "/where > Display map name"
@@ -195,9 +194,8 @@ msgid "/announce > Global announcement (GM only)"
 msgstr "/announce > 公告 (GM only)"
 
 #: src/commandhandler.cpp:188
-#, fuzzy
 msgid "For more information, type /help <command>."
-msgstr "輸入/help <指令> 獲取更多幫助訊息"
+msgstr ""
 
 #: src/commandhandler.cpp:192
 msgid "Command: /help"
@@ -922,9 +920,8 @@ msgid "Change Server"
 msgstr "更改"
 
 #: src/gui/minimap.cpp:46 src/gui/minimap.cpp:87
-#, fuzzy
 msgid "Map"
-msgstr "小地圖"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:44
 msgid "Waiting for server"
@@ -935,9 +932,8 @@ msgid "Next"
 msgstr "下一個"
 
 #: src/gui/npcdialog.cpp:47
-#, fuzzy
 msgid "Submit"
-msgstr "離開"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:52 src/gui/npcpostdialog.cpp:41
 msgid "NPC"
@@ -1095,14 +1091,12 @@ msgid "Generics"
 msgstr ""
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Hats"
-msgstr "狀態"
+msgstr ""
 
 #: src/gui/palette.cpp:117
-#, fuzzy
 msgid "Usables"
-msgstr "使用"
+msgstr ""
 
 #: src/gui/palette.cpp:118
 msgid "Shirts"
@@ -1125,9 +1119,8 @@ msgid "Two Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:123
-#, fuzzy
 msgid "Shields"
-msgstr "技能"
+msgstr ""
 
 #: src/gui/palette.cpp:124
 msgid "Rings"
@@ -1262,9 +1255,9 @@ msgid "Add name to chat"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:191
-#, fuzzy, c-format
+#, c-format
 msgid "Pick up %s"
-msgstr "@@撿起|撿起%s@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:193 src/gui/popupmenu.cpp:400
 msgid "Add to chat"
@@ -1576,14 +1569,12 @@ msgid "Tiny"
 msgstr ""
 
 #: src/gui/setup_video.cpp:114
-#, fuzzy
 msgid "Small"
-msgstr "出售"
+msgstr ""
 
 #: src/gui/setup_video.cpp:115
-#, fuzzy
 msgid "Medium"
-msgstr "中"
+msgstr ""
 
 #: src/gui/setup_video.cpp:116
 msgid "Large"
@@ -1879,9 +1870,9 @@ msgid "Rejected guild invite from %s."
 msgstr ""
 
 #: src/gui/socialwindow.cpp:463
-#, fuzzy, c-format
+#, c-format
 msgid "Creating guild called %s."
-msgstr "聊天新增失敗！"
+msgstr ""
 
 #: src/gui/socialwindow.cpp:477
 #, c-format
@@ -2080,9 +2071,8 @@ msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr "增加物品失敗。你不能覆蓋視窗中的該類物品能。"
 
 #: src/gui/trade.cpp:318
-#, fuzzy
 msgid "You don't have enough money."
-msgstr "沒有備忘錄"
+msgstr ""
 
 #: src/gui/unregisterdialog.cpp:51
 #, c-format
@@ -2364,9 +2354,8 @@ msgid "Inventory Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:73
-#, fuzzy
 msgid "Equipment Window"
-msgstr "裝備"
+msgstr ""
 
 #: src/keyboardconfig.cpp:74
 msgid "Skill Window"
@@ -2393,18 +2382,16 @@ msgid "Debug Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:80
-#, fuzzy
 msgid "Social Window"
-msgstr "重置視窗"
+msgstr ""
 
 #: src/keyboardconfig.cpp:81
 msgid "Emote Shortcut Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:82
-#, fuzzy
 msgid "Outfits Window"
-msgstr "裝備"
+msgstr ""
 
 #: src/keyboardconfig.cpp:83
 msgid "Wear Outfit"
@@ -2485,9 +2472,8 @@ msgid "Options:"
 msgstr ""
 
 #: src/main.cpp:45
-#, fuzzy
 msgid "  -v --version        : Display the version"
-msgstr "/help > 顯示幫助"
+msgstr ""
 
 #: src/main.cpp:46
 #, fuzzy
@@ -2595,9 +2581,8 @@ msgid "Info"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:147
-#, fuzzy
 msgid "Character deleted."
-msgstr "確認刪除角色"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:152
 msgid "Failed to delete character."
@@ -2662,34 +2647,34 @@ msgid "Request to quit denied!"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:102 src/net/manaserv/generalhandler.cpp:95
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "力量"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:103 src/net/manaserv/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "敏捷"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:104 src/net/manaserv/generalhandler.cpp:98
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "體力"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:105 src/net/manaserv/generalhandler.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "智力"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:106 src/net/manaserv/generalhandler.cpp:97
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "閃躲"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:107
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
-msgstr "幸運"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:130
 #, fuzzy
@@ -3369,9 +3354,8 @@ msgid "Invalid name."
 msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:137
-#, fuzzy
 msgid "Character's name already exists."
-msgstr "確認刪除角色"
+msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:140
 msgid "Invalid hairstyle."
@@ -3400,9 +3384,8 @@ msgid "One stat is zero."
 msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:187
-#, fuzzy
 msgid "Player deleted."
-msgstr "確認刪除角色"
+msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:199
 #, fuzzy
@@ -3471,9 +3454,9 @@ msgid "Unknown channel event."
 msgstr "不明指令"
 
 #: src/net/manaserv/generalhandler.cpp:100
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "意志力:"
+msgstr ""
 
 #: src/net/manaserv/generalhandler.cpp:171
 #, fuzzy
@@ -3485,9 +3468,8 @@ msgid "Guild created."
 msgstr ""
 
 #: src/net/manaserv/guildhandler.cpp:86
-#, fuzzy
 msgid "Error creating guild."
-msgstr "聊天新增失敗！"
+msgstr ""
 
 #: src/net/manaserv/guildhandler.cpp:96
 msgid "Invite sent."
@@ -3678,10 +3660,6 @@ msgstr ""
 
 #~ msgid "@@split|Split@@"
 #~ msgstr "@@分離|分離@@"
-
-#, fuzzy
-#~ msgid "@@store|Store@@"
-#~ msgstr "@@使用|使用@@"
 
 #~ msgid "Mystery Skill"
 #~ msgstr "神秘技能"

@@ -7,16 +7,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
-"Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-03-05 21:33+0100\n"
-"PO-Revision-Date: 2009-05-15 02:25+0000\n"
-"Last-Translator: netwareboss <netwareboss@gmail.com>\n"
+"Report-Msgid-Bugs-To: dev@manasource.org\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2010-01-23 17:23+0000\n"
+"Last-Translator: Peierh <Unknown>\n"
 "Language-Team: Traditional Chinese <themanaworld-devel@lists.sourceforge."
 "net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-28 20:32+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Country: China\n"
 "X-Poedit-Language: Chinese\n"
@@ -78,8 +78,9 @@ msgid "Email Change"
 msgstr "更改"
 
 #: src/client.cpp:863
+#, fuzzy
 msgid "Email changed successfully!"
-msgstr ""
+msgstr "成功提升會員."
 
 #: src/client.cpp:883
 #, fuzzy
@@ -194,9 +195,8 @@ msgid "/announce > Global announcement (GM only)"
 msgstr "/announce > 全域廣播 (GM 專用)"
 
 #: src/commandhandler.cpp:188
-#, fuzzy
 msgid "For more information, type /help <command>."
-msgstr "輸入/help <指令> 獲取更多幫助訊息"
+msgstr "查看更多資訊, 輸入 /help <指令>."
 
 #: src/commandhandler.cpp:192
 msgid "Command: /help"
@@ -411,16 +411,16 @@ msgid "Cannot send empty whispers!"
 msgstr "傳送密語失敗"
 
 #: src/commandhandler.cpp:383
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
 "you."
-msgstr "不能創造一個密語區塊給\"%s\"! 他不是已經存在,或就是你."
+msgstr "不能以名稱 \"%s\" 創建一個密語標籤! 該名稱已存在或對方是你."
 
 #: src/commandhandler.cpp:397
 #, c-format
 msgid "Requesting to join channel %s."
-msgstr ""
+msgstr "要求參加頻道 %s"
 
 #: src/commandhandler.cpp:410 src/net/ea/gui/partytab.cpp:109
 msgid "Party name is missing."
@@ -459,7 +459,7 @@ msgstr "隊伍已成功的建立。"
 #: src/commandhandler.cpp:486
 #, fuzzy
 msgid "Player could not be ignored!"
-msgstr "無法傳送悄悄話，被使用者忽略"
+msgstr "該玩家拒絕你的密語"
 
 #: src/commandhandler.cpp:501
 msgid "Player wasn't ignored!"
@@ -472,7 +472,7 @@ msgstr ""
 #: src/commandhandler.cpp:508
 #, fuzzy
 msgid "Player could not be unignored!"
-msgstr "無法傳送悄悄話，被使用者忽略"
+msgstr "該玩家拒絕你的密語"
 
 #: src/commandhandler.h:31
 #, c-format
@@ -512,12 +512,12 @@ msgstr "接受收到的交易要求"
 #: src/game.cpp:946
 #, fuzzy
 msgid "Could Not Load Map"
-msgstr "不能加入隊伍！"
+msgstr "無法載入地圖"
 
 #: src/game.cpp:947
-#, fuzzy, c-format
+#, c-format
 msgid "Error while loading %s"
-msgstr "NPC 資料庫：當載入 npcs.xml 時發生錯誤！"
+msgstr "載入 %s 時發生錯誤"
 
 #: src/gui/beingpopup.cpp:75
 #, fuzzy, c-format
@@ -637,9 +637,8 @@ msgid "The new password needs to be less than %d characters long."
 msgstr "密碼不能少於%d個字元。"
 
 #: src/gui/changepassworddialog.cpp:130
-#, fuzzy
 msgid "The new password entries mismatch."
-msgstr "輸入新密碼兩次:"
+msgstr ""
 
 #: src/gui/charcreatedialog.cpp:53
 msgid "Create Character"
@@ -788,7 +787,7 @@ msgstr ""
 #: src/gui/debugwindow.cpp:65 src/gui/debugwindow.cpp:104
 #, fuzzy, c-format
 msgid "Music: %s"
-msgstr "主題: "
+msgstr "主題: %s"
 
 #: src/gui/debugwindow.cpp:66 src/gui/debugwindow.cpp:108
 #, fuzzy, c-format
@@ -964,9 +963,8 @@ msgid ""
 msgstr "下一個"
 
 #: src/gui/npcpostdialog.cpp:47
-#, fuzzy
 msgid "To:"
-msgstr "主題: "
+msgstr "存至:"
 
 #: src/gui/npcpostdialog.cpp:54
 msgid "Send"
@@ -974,7 +972,7 @@ msgstr "傳送"
 
 #: src/gui/npcpostdialog.cpp:96
 msgid "Failed to send as sender or letter invalid."
-msgstr ""
+msgstr "無法傳送的發件人或信息無效。"
 
 #: src/gui/outfitwindow.cpp:68 src/gui/outfitwindow.cpp:141
 #: src/gui/outfitwindow.cpp:154
@@ -1204,7 +1202,7 @@ msgstr "1/4 血量"
 #: src/gui/popupmenu.cpp:84
 #, fuzzy, c-format
 msgid "Trade with %s..."
-msgstr "交易對象: "
+msgstr "與 %s 交易."
 
 #: src/gui/popupmenu.cpp:88 src/gui/popupmenu.cpp:161
 #, fuzzy, c-format
@@ -1813,9 +1811,9 @@ msgid "Invited user %s to guild %s."
 msgstr ""
 
 #: src/gui/socialwindow.cpp:126
-#, c-format
+#, fuzzy, c-format
 msgid "Guild %s quit requested."
-msgstr ""
+msgstr "公會已成立."
 
 #: src/gui/socialwindow.cpp:136
 msgid "Member Invite to Guild"
@@ -1891,27 +1889,27 @@ msgstr "大型"
 #: src/gui/socialwindow.cpp:394
 #, fuzzy, c-format
 msgid "Accepted party invite from %s."
-msgstr "被伺服器拒絕"
+msgstr "接受 %s 的派對邀請."
 
 #: src/gui/socialwindow.cpp:400
 #, fuzzy, c-format
 msgid "Rejected party invite from %s."
-msgstr "被伺服器拒絕"
+msgstr "拒絕 %s 的派對邀請"
 
 #: src/gui/socialwindow.cpp:413
 #, fuzzy, c-format
 msgid "Accepted guild invite from %s."
-msgstr "被伺服器拒絕"
+msgstr "接受 %s 的派對邀請."
 
 #: src/gui/socialwindow.cpp:419
 #, fuzzy, c-format
 msgid "Rejected guild invite from %s."
-msgstr "被伺服器拒絕"
+msgstr "拒絕 %s 的派對邀請"
 
 #: src/gui/socialwindow.cpp:463
 #, fuzzy, c-format
 msgid "Creating guild called %s."
-msgstr "建立更新目錄失敗！"
+msgstr "創建公會時發生錯誤."
 
 #: src/gui/socialwindow.cpp:477
 #, c-format
@@ -1929,45 +1927,47 @@ msgid "Choose your guild's name."
 msgstr "選擇您的伺服器"
 
 #: src/gui/socialwindow.cpp:497
+#, fuzzy
 msgid "Received guild request, but one already exists."
-msgstr ""
+msgstr "收到派對邀請,但而有另一個存在."
 
 #: src/gui/socialwindow.cpp:502
 #, fuzzy, c-format
 msgid "%s has invited you to join the guild %s."
-msgstr "%s 已經離開您的隊伍。"
+msgstr "%s 邀請你參加 %s 派對."
 
 #: src/gui/socialwindow.cpp:507
+#, fuzzy
 msgid "Accept Guild Invite"
-msgstr ""
+msgstr "接受派對邀請"
 
 #: src/gui/socialwindow.cpp:519
 msgid "Received party request, but one already exists."
-msgstr ""
+msgstr "收到派對邀請,但而有另一個存在."
 
 #: src/gui/socialwindow.cpp:529
 #, fuzzy
 msgid "You have been invited you to join a party."
-msgstr "%s 已經離開您的隊伍。"
+msgstr "%s 邀請你參加他們的派對."
 
 #: src/gui/socialwindow.cpp:533
 #, fuzzy, c-format
 msgid "You have been invited to join the %s party."
-msgstr "%s 已經離開您的隊伍。"
+msgstr "%s 邀請你參加 %s 派對."
 
 #: src/gui/socialwindow.cpp:541
-#, fuzzy, c-format
+#, c-format
 msgid "%s has invited you to join their party."
-msgstr "%s 已經離開您的隊伍。"
+msgstr "%s 邀請你參加他們的派對."
 
 #: src/gui/socialwindow.cpp:546
-#, fuzzy, c-format
+#, c-format
 msgid "%s has invited you to join the %s party."
-msgstr "%s 已經離開您的隊伍。"
+msgstr "%s 邀請你參加 %s 派對."
 
 #: src/gui/socialwindow.cpp:554
 msgid "Accept Party Invite"
-msgstr ""
+msgstr "接受派對邀請"
 
 #: src/gui/socialwindow.cpp:565
 msgid "Cannot create party. You are already in a party"
@@ -2118,9 +2118,8 @@ msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr "增加物品失敗。你不能覆蓋視窗中的該類物品能。"
 
 #: src/gui/trade.cpp:318
-#, fuzzy
 msgid "You don't have enough money."
-msgstr "您沒有足夠的錢"
+msgstr "你沒有足夠的金錢."
 
 #: src/gui/unregisterdialog.cpp:51
 #, c-format
@@ -2406,9 +2405,8 @@ msgid "Inventory Window"
 msgstr "物品欄視窗"
 
 #: src/keyboardconfig.cpp:73
-#, fuzzy
 msgid "Equipment Window"
-msgstr "裝備視窗"
+msgstr "物品視窗"
 
 #: src/keyboardconfig.cpp:74
 msgid "Skill Window"
@@ -2506,9 +2504,8 @@ msgid ""
 msgstr "解決按鍵衝突，否則遊戲中可能遇到奇怪行為。"
 
 #: src/localplayer.cpp:913
-#, fuzzy
 msgid "Unable to pick up item."
-msgstr "無法撿拾物品"
+msgstr "不能拾取物品."
 
 #. TRANSLATORS: This sentence may be translated differently
 #. for different grammatical numbers (singular, plural, ...)
@@ -2516,8 +2513,8 @@ msgstr "無法撿拾物品"
 #, fuzzy, c-format
 msgid "You picked up %d [@@%d|%s@@]."
 msgid_plural "You picked up %d [@@%d|%s@@]."
-msgstr[0] "你撿起了 %s [@@%d|%s@@]"
-msgstr[1] "你撿起了 %s [@@%d|%s@@]"
+msgstr[0] "你拾取了 %s [@@%d|%s@@]."
+msgstr[1] "你拾取了 %s [@@%d|%s@@]."
 
 #: src/main.cpp:43
 msgid "mana [options] [mana-file]"
@@ -2560,12 +2557,12 @@ msgstr "  -c --character : 用此帳號登入"
 #: src/main.cpp:51
 #, fuzzy
 msgid "  -s --server         : Login server name or IP"
-msgstr "  -s --server : 登入伺服器名稱或IP位址"
+msgstr "  -s --server : 登錄伺服器埠名稱或IP位址"
 
 #: src/main.cpp:52
 #, fuzzy
 msgid "  -p --port           : Login server port"
-msgstr "  -p --port : 伺服器端口"
+msgstr "  -p --port : 登錄伺服器埠"
 
 #: src/main.cpp:53
 #, fuzzy
@@ -2611,29 +2608,24 @@ msgid "Kick succeeded!"
 msgstr "踢人成功！"
 
 #: src/net/ea/buysellhandler.cpp:110
-#, fuzzy
 msgid "Nothing to sell."
-msgstr "沒有東西可賣"
+msgstr "沒有任何物品可出售."
 
 #: src/net/ea/buysellhandler.cpp:117
-#, fuzzy
 msgid "Thanks for buying."
-msgstr "感謝購買"
+msgstr "謝謝光臨."
 
 #: src/net/ea/buysellhandler.cpp:124
-#, fuzzy
 msgid "Unable to buy."
-msgstr "無法購買"
+msgstr "不能購買."
 
 #: src/net/ea/buysellhandler.cpp:130
-#, fuzzy
 msgid "Thanks for selling."
-msgstr "感謝賣出"
+msgstr "謝謝你的出售."
 
 #: src/net/ea/buysellhandler.cpp:132
-#, fuzzy
 msgid "Unable to sell."
-msgstr "無法販賣"
+msgstr "不能出售."
 
 #: src/net/ea/charserverhandler.cpp:103
 #, fuzzy
@@ -2659,9 +2651,8 @@ msgid "Info"
 msgstr "資訊"
 
 #: src/net/ea/charserverhandler.cpp:147
-#, fuzzy
 msgid "Character deleted."
-msgstr "確認刪除角色"
+msgstr "角色被刪除."
 
 #: src/net/ea/charserverhandler.cpp:152
 msgid "Failed to delete character."
@@ -2692,14 +2683,12 @@ msgid "Luck:"
 msgstr "幸運:"
 
 #: src/net/ea/chathandler.cpp:80
-#, fuzzy
 msgid "Whisper could not be sent, user is offline."
-msgstr "無法傳送悄悄話，使用者已離線"
+msgstr "該玩家已離線,無法送出密語."
 
 #: src/net/ea/chathandler.cpp:84
-#, fuzzy
 msgid "Whisper could not be sent, ignored by user."
-msgstr "無法傳送悄悄話，被使用者忽略"
+msgstr "該玩家拒絕你的密語"
 
 #: src/net/ea/chathandler.cpp:171
 #, fuzzy
@@ -2726,7 +2715,7 @@ msgstr "名字"
 #: src/net/ea/gamehandler.cpp:100
 #, fuzzy
 msgid "Request to quit denied!"
-msgstr "交易的要求"
+msgstr "要求交易"
 
 #: src/net/ea/generalhandler.cpp:102 src/net/manaserv/generalhandler.cpp:95
 #, c-format
@@ -3026,9 +3015,8 @@ msgid "Experience sharing unknown."
 msgstr "經驗值分享已啟用。"
 
 #: src/net/ea/inventoryhandler.cpp:281
-#, fuzzy
 msgid "Failed to use item."
-msgstr "使用物品失敗"
+msgstr "不能使用該物品."
 
 #: src/net/ea/inventoryhandler.cpp:391
 msgid "Unable to equip."
@@ -3039,9 +3027,8 @@ msgid "Unable to unequip."
 msgstr "無法卸下裝備。"
 
 #: src/net/ea/loginhandler.cpp:79
-#, fuzzy
 msgid "Account was not found. Please re-login."
-msgstr "帳號還沒連線,請先登入"
+msgstr "找不到該帳號,請重新登入."
 
 #: src/net/ea/loginhandler.cpp:82 src/net/manaserv/loginhandler.cpp:121
 #, fuzzy
@@ -3051,7 +3038,7 @@ msgstr "舊密碼輸入錯誤"
 #: src/net/ea/loginhandler.cpp:85
 #, fuzzy
 msgid "New password too short."
-msgstr "新密碼不正確"
+msgstr "新設定的密碼長度太短."
 
 #: src/net/ea/loginhandler.cpp:88 src/net/ea/loginhandler.cpp:175
 #: src/net/manaserv/charhandler.cpp:158 src/net/manaserv/loginhandler.cpp:96
@@ -3088,13 +3075,13 @@ msgid ""
 msgstr "您已經被這個遊戲永遠列入黑名單。請連絡 GM 團隊。"
 
 #: src/net/ea/loginhandler.cpp:165
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You have been temporarily banned from the game until %s.\n"
 "Please contact the GM team via the forums."
 msgstr ""
-"您暫時被此遊戲列入黑名單，直到 %s。\n"
-" 請透過討論區連絡 GM 團隊。"
+"你的帳號已被暫時凍結直至 %s.\n"
+"請通過論壇聯絡GM."
 
 #: src/net/ea/loginhandler.cpp:172
 #, fuzzy
@@ -3108,7 +3095,7 @@ msgstr ""
 #: src/net/ea/network.cpp:345
 #, fuzzy
 msgid "Unable to resolve host \""
-msgstr "無法販賣"
+msgstr "不能出售."
 
 #: src/net/ea/network.cpp:414
 #, fuzzy
@@ -3304,9 +3291,8 @@ msgid "Cannot raise skill!"
 msgstr ""
 
 #: src/net/ea/playerhandler.cpp:532
-#, fuzzy
 msgid "Equip arrows first."
-msgstr "請先裝備弓箭"
+msgstr "先裝備箭."
 
 #: src/net/ea/specialhandler.cpp:147
 msgid "Trade failed!"
@@ -3389,14 +3375,13 @@ msgid "Poison had no effect..."
 msgstr "藥水無效..."
 
 #: src/net/ea/tradehandler.cpp:107 src/net/manaserv/tradehandler.cpp:116
-#, fuzzy
 msgid "Request for Trade"
-msgstr "交易的要求"
+msgstr "要求交易"
 
 #: src/net/ea/tradehandler.cpp:108 src/net/manaserv/tradehandler.cpp:117
-#, fuzzy, c-format
+#, c-format
 msgid "%s wants to trade with you, do you accept?"
-msgstr " 想要跟您交易，您接受嗎？"
+msgstr "%s 請求交易, 是否接受?"
 
 #: src/net/ea/tradehandler.cpp:124
 msgid "Trading isn't possible. Trade partner is too far away."
@@ -3411,19 +3396,18 @@ msgid "Trade cancelled due to an unknown reason."
 msgstr "由於不明的原因已取消交易。"
 
 #: src/net/ea/tradehandler.cpp:137
-#, fuzzy, c-format
+#, c-format
 msgid "Trade: You and %s"
-msgstr "交易：您和 "
+msgstr "交易: 你和 %s"
 
 #: src/net/ea/tradehandler.cpp:144
-#, fuzzy, c-format
+#, c-format
 msgid "Trade with %s cancelled."
-msgstr "交易已取消。"
+msgstr "取消和 %s 的交易."
 
 #: src/net/ea/tradehandler.cpp:153
-#, fuzzy
 msgid "Unhandled trade cancel packet."
-msgstr "未處理的交易取消封包"
+msgstr ""
 
 #: src/net/ea/tradehandler.cpp:202
 msgid "Failed adding item. Trade partner is over weighted."
@@ -3524,9 +3508,9 @@ msgstr "意志力:"
 
 #: src/net/manaserv/chathandler.cpp:180 src/net/manaserv/chathandler.cpp:301
 #: src/net/manaserv/guildhandler.cpp:259
-#, fuzzy, c-format
+#, c-format
 msgid "Topic: %s"
-msgstr "主題: "
+msgstr "主題: %s"
 
 #: src/net/manaserv/chathandler.cpp:184 src/net/manaserv/chathandler.cpp:262
 #, fuzzy
@@ -3539,17 +3523,18 @@ msgid "Error joining channel."
 msgstr "指令: /join <頻道名稱>"
 
 #: src/net/manaserv/chathandler.cpp:207
+#, fuzzy
 msgid "Listing channels."
-msgstr ""
+msgstr "要求參加頻道 %s"
 
 #: src/net/manaserv/chathandler.cpp:219
 msgid "End of channel list."
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:291
-#, c-format
+#, fuzzy, c-format
 msgid "%s entered the channel."
-msgstr ""
+msgstr "%s 參加了這個派對."
 
 #: src/net/manaserv/chathandler.cpp:296
 #, c-format
@@ -3583,26 +3568,23 @@ msgstr "意志力:"
 
 #: src/net/manaserv/guildhandler.cpp:81
 msgid "Guild created."
-msgstr ""
+msgstr "公會已成立."
 
 #: src/net/manaserv/guildhandler.cpp:86
-#, fuzzy
 msgid "Error creating guild."
-msgstr "建立更新目錄失敗！"
+msgstr "創建公會時發生錯誤."
 
 #: src/net/manaserv/guildhandler.cpp:96
-#, fuzzy
 msgid "Invite sent."
-msgstr "邀請使用者"
+msgstr "發出邀請."
 
 #: src/net/manaserv/guildhandler.cpp:203
 msgid "Member was promoted successfully."
-msgstr ""
+msgstr "成功提升會員."
 
 #: src/net/manaserv/guildhandler.cpp:208
-#, fuzzy
 msgid "Failed to promote member."
-msgstr "使用物品失敗"
+msgstr "無法提升會員."
 
 #: src/net/manaserv/loginhandler.cpp:87
 #, fuzzy
@@ -3683,12 +3665,12 @@ msgstr ""
 
 #: src/net/manaserv/partyhandler.cpp:88
 msgid "Joined party."
-msgstr ""
+msgstr "參加派對."
 
 #: src/net/manaserv/partyhandler.cpp:106
 #, c-format
 msgid "%s joined the party."
-msgstr ""
+msgstr "%s 參加了這個派對."
 
 #: src/net/manaserv/partyhandler.cpp:123
 #, fuzzy, c-format
@@ -3696,19 +3678,17 @@ msgid "%s rejected your invite."
 msgstr "%s 拒絕您的邀請。"
 
 #: src/net/manaserv/tradehandler.cpp:96
-#, fuzzy
 msgid "Accepting incoming trade requests."
-msgstr "接受收到的交易要求"
+msgstr "接受傳入的交易要求."
 
 #: src/net/manaserv/tradehandler.cpp:98
-#, fuzzy
 msgid "Ignoring incoming trade requests."
-msgstr "忽略收到的交易要求"
+msgstr "拒絕傳入的交易要求."
 
 #: src/net/manaserv/tradehandler.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Trading with %s"
-msgstr "交易對象: "
+msgstr "與 %s 交易."
 
 #: src/playerrelations.cpp:304
 #, fuzzy
@@ -3976,162 +3956,11 @@ msgstr "未知物品"
 #~ msgid "Command: /new <party-name>"
 #~ msgstr "指令： /new <隊伍名稱>"
 
+#~ msgid "a"
+#~ msgstr "一個"
+
 #~ msgid "Unnamed"
 #~ msgstr "未知物品"
-
-#, fuzzy
-#~ msgid "The Mana World %s"
-#~ msgstr "瑪那世界 "
-
-#~ msgid "Unable to load selection.png"
-#~ msgstr "無法讀取所選擇png圖檔"
-
-#~ msgid "skills.xml"
-#~ msgstr "skills.xml"
-
-#~ msgid "Slots: "
-#~ msgstr "欄位: "
-
-#~ msgid " cancelled"
-#~ msgstr " 已取消"
-
-#~ msgid "items.xml"
-#~ msgstr "items.xml"
-
-#~ msgid "monsters.xml"
-#~ msgstr "monsters.xml"
-
-#~ msgid "@@pickup|Pick Up %s@@"
-#~ msgstr "@@撿起|撿起%s@@"
-
-#~ msgid "Scroll radius"
-#~ msgstr "捲動半徑"
-
-#~ msgid "Scroll laziness"
-#~ msgstr "捲動延遲"
-
-#~ msgid "Save player list"
-#~ msgstr "保存玩家列表"
-
-#~ msgid "Emote"
-#~ msgstr "表情"
-
-#~ msgid "use"
-#~ msgstr "使用"
-
-#~ msgid "Insert coin to continue"
-#~ msgstr "投入硬幣接關"
-
-#~ msgid "Options: "
-#~ msgstr "選項: "
-
-#~ msgid "  -C --configfile : Configuration file to use"
-#~ msgstr "  -C --configfile : 要使用的組態檔案"
-
-#~ msgid "  -d --data       : Directory to load game data from"
-#~ msgstr "  -d --data       : 用來載入遊戲資料的目錄"
-
-#~ msgid "  -D --default    : Bypass the login process with default settings"
-#~ msgstr "  -D --default : 以預設的設定值跳過登入程序"
-
-#~ msgid "  -h --help       : Display this help"
-#~ msgstr "  -h --help : 顯示這個說明"
-
-#~ msgid "  -H --updatehost : Use this update host"
-#~ msgstr "  -H --updatehost : 使用這個更新主機"
-
-#~ msgid "  -P --password   : Login with this password"
-#~ msgstr "  -P --password : 以這個密碼登入"
-
-#~ msgid "  -u --skipupdate : Skip the update downloads"
-#~ msgstr "  -u --skipupdate : 略過更新的下載"
-
-#~ msgid "  -U --username   : Login with this username"
-#~ msgstr "  -U --username : 以這個使用者名稱登入"
-
-#~ msgid "  -v --version    : Display the version"
-#~ msgstr "  -v --version : 顯示版本"
-
-#~ msgid "Cannont send empty whispers!"
-#~ msgstr "不能送出空的悄悄話！"
-
-#~ msgid ""
-#~ "Cannont create a whisper tab for nick '%s'!It either already exists, or "
-#~ "is you."
-#~ msgstr "不能建立 nick 「%s」的悄悄話分頁！它已經存在，或者對象是你自己。"
-
-#~ msgid ""
-#~ "\n"
-#~ "> Cancel\n"
-#~ msgstr ""
-#~ "\n"
-#~ "> 取消\n"
-
-#~ msgid "NPC Text Request"
-#~ msgstr "NPC 文字要求"
-
-#~ msgid "Other Player's Names"
-#~ msgstr "其他玩家的名字"
-
-#~ msgid "Generic"
-#~ msgstr "一般"
-
-#~ msgid "Hat"
-#~ msgstr "帽子"
-
-#~ msgid "Usable"
-#~ msgstr "可使用"
-
-#~ msgid "Shirt"
-#~ msgstr "襯衫"
-
-#~ msgid "Shield"
-#~ msgstr "盾牌"
-
-#~ msgid "Ring"
-#~ msgstr "指環"
-
-#~ msgid "Necklace"
-#~ msgstr "項鍊"
-
-#~ msgid "%s: %s"
-#~ msgstr "%s： %s"
-
-#~ msgid "Emote Window"
-#~ msgstr "表情視窗"
-
-#~ msgid "  -S --homedir    : Directory to use as home directory"
-#~ msgstr "  -S --homedir : 做為家目錄的目錄"
-
-#~ msgid "  -c --character  : Login with this character"
-#~ msgstr "  -c --character : 以這個角色登入"
-
-#~ msgid "  -o --port       : Login Server Port"
-#~ msgstr "  -o --port : 登入伺服器連接埠"
-
-#~ msgid "  -s --server     : Login Server name or IP"
-#~ msgstr "  -s --server  : 登入伺服器名稱或 IP"
-
-#~ msgid "Strength: %d"
-#~ msgstr "力量: %d"
-
-#~ msgid "Agility: %d"
-#~ msgstr "敏捷: %d"
-
-#~ msgid "Intelligence: %d"
-#~ msgstr "智力: %d"
-
-#~ msgid "Dexterity: %d"
-#~ msgstr "閃躲: %d"
-
-#~ msgid "Luck: %d"
-#~ msgstr "幸運: %d"
-
-#~ msgid "You picked up %s [%s]"
-#~ msgstr "您已經撿起 %s [%s]"
-
-#~ msgid "Willpower: %d"
-#~ msgstr "意志力: %d"
 
 #~ msgid "Gold: %d"
 #~ msgstr "金幣：%d"
@@ -4181,6 +4010,18 @@ msgstr "未知物品"
 #~ msgid "Slots used: %d / %d"
 #~ msgstr "已使用攔： %d / %d"
 
+#~ msgid "@@pickup|Pick Up %s@@"
+#~ msgstr "@@撿起|撿起%s@@"
+
+#~ msgid "Save player list"
+#~ msgstr "保存玩家列表"
+
+#~ msgid "Scroll radius"
+#~ msgstr "捲動半徑"
+
+#~ msgid "Scroll laziness"
+#~ msgstr "捲動延遲"
+
 #~ msgid "Money: %d GP"
 #~ msgstr "金錢：%d 金錢"
 
@@ -4195,3 +4036,141 @@ msgstr "未知物品"
 
 #~ msgid "Keep"
 #~ msgstr "保持"
+
+#~ msgid "monsters.xml"
+#~ msgstr "monsters.xml"
+
+#~ msgid "items.xml"
+#~ msgstr "items.xml"
+
+#~ msgid " cancelled"
+#~ msgstr " 已取消"
+
+#~ msgid "Emote"
+#~ msgstr "表情"
+
+#~ msgid ""
+#~ "\n"
+#~ "> Cancel\n"
+#~ msgstr ""
+#~ "\n"
+#~ "> 取消\n"
+
+#~ msgid "Other Player's Names"
+#~ msgstr "其他玩家的名字"
+
+#~ msgid "Shirt"
+#~ msgstr "襯衫"
+
+#~ msgid "Usable"
+#~ msgstr "可使用"
+
+#~ msgid "Hat"
+#~ msgstr "帽子"
+
+#~ msgid "Ring"
+#~ msgstr "指環"
+
+#~ msgid "Necklace"
+#~ msgstr "項鍊"
+
+#~ msgid "Shield"
+#~ msgstr "盾牌"
+
+#~ msgid "skills.xml"
+#~ msgstr "skills.xml"
+
+#~ msgid "use"
+#~ msgstr "使用"
+
+#~ msgid "%s: %s"
+#~ msgstr "%s： %s"
+
+#~ msgid "Emote Window"
+#~ msgstr "表情視窗"
+
+#~ msgid "Options: "
+#~ msgstr "選項: "
+
+#~ msgid "  -h --help       : Display this help"
+#~ msgstr "  -h --help : 顯示這個說明"
+
+#~ msgid "  -D --default    : Bypass the login process with default settings"
+#~ msgstr "  -D --default : 以預設的設定值跳過登入程序"
+
+#~ msgid "  -d --data       : Directory to load game data from"
+#~ msgstr "  -d --data       : 用來載入遊戲資料的目錄"
+
+#~ msgid "  -C --configfile : Configuration file to use"
+#~ msgstr "  -C --configfile : 要使用的組態檔案"
+
+#~ msgid "  -u --skipupdate : Skip the update downloads"
+#~ msgstr "  -u --skipupdate : 略過更新的下載"
+
+#~ msgid "  -v --version    : Display the version"
+#~ msgstr "  -v --version : 顯示版本"
+
+#~ msgid "  -o --port       : Login Server Port"
+#~ msgstr "  -o --port : 登入伺服器連接埠"
+
+#~ msgid "  -c --character  : Login with this character"
+#~ msgstr "  -c --character : 以這個角色登入"
+
+#~ msgid "  -s --server     : Login Server name or IP"
+#~ msgstr "  -s --server  : 登入伺服器名稱或 IP"
+
+#~ msgid "  -H --updatehost : Use this update host"
+#~ msgstr "  -H --updatehost : 使用這個更新主機"
+
+#~ msgid "  -S --homedir    : Directory to use as home directory"
+#~ msgstr "  -S --homedir : 做為家目錄的目錄"
+
+#~ msgid "  -P --password   : Login with this password"
+#~ msgstr "  -P --password : 以這個密碼登入"
+
+#~ msgid "  -U --username   : Login with this username"
+#~ msgstr "  -U --username : 以這個使用者名稱登入"
+
+#~ msgid "Luck: %d"
+#~ msgstr "幸運: %d"
+
+#~ msgid "Intelligence: %d"
+#~ msgstr "智力: %d"
+
+#~ msgid "Strength: %d"
+#~ msgstr "力量: %d"
+
+#~ msgid "You picked up %s [%s]"
+#~ msgstr "您已經撿起 %s [%s]"
+
+#~ msgid "NPC Text Request"
+#~ msgstr "NPC 文字要求"
+
+#~ msgid "Insert coin to continue"
+#~ msgstr "投入硬幣接關"
+
+#~ msgid "Willpower: %d"
+#~ msgstr "意志力: %d"
+
+#~ msgid "Cannont send empty whispers!"
+#~ msgstr "不能送出空的悄悄話！"
+
+#~ msgid ""
+#~ "Cannont create a whisper tab for nick '%s'!It either already exists, or "
+#~ "is you."
+#~ msgstr "不能建立 nick 「%s」的悄悄話分頁！它已經存在，或者對象是你自己。"
+
+#~ msgid "Generic"
+#~ msgstr "一般"
+
+#~ msgid "Slots: "
+#~ msgstr "欄位: "
+
+#~ msgid "Agility: %d"
+#~ msgstr "敏捷: %d"
+
+#~ msgid "Dexterity: %d"
+#~ msgstr "閃躲: %d"
+
+#~ msgid "Unable to load selection.png"
+#~ msgstr "無法讀取所選擇png圖檔"

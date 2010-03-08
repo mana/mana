@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-03-05 21:43+0100\n"
-"PO-Revision-Date: 2009-01-09 11:34+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2009-09-10 13:30+0000\n"
+"Last-Translator: Yamiharu <yamiharu84@gmail.com>\n"
 "Language-Team: Esperanto <eo@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
@@ -98,7 +98,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:156
 msgid "-- Help --"
-msgstr ""
+msgstr "--Helpo--"
 
 #: src/commandhandler.cpp:157
 msgid "/help > Display this help"
@@ -190,7 +190,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:193
 msgid "This command displays a list of all commands available."
-msgstr ""
+msgstr "Tiu komando monstras la liston de uzeblaj komandoj"
 
 #: src/commandhandler.cpp:194
 msgid "Command: /help <command>"
@@ -483,8 +483,9 @@ msgid "Accepting incoming trade requests"
 msgstr ""
 
 #: src/game.cpp:946
+#, fuzzy
 msgid "Could Not Load Map"
-msgstr ""
+msgstr "La mapo ne sxa"
 
 #: src/game.cpp:947
 #, c-format
@@ -1756,9 +1757,9 @@ msgid "Leave Guild?"
 msgstr ""
 
 #: src/gui/socialwindow.cpp:147
-#, c-format
+#, fuzzy, c-format
 msgid "Are you sure you want to leave guild %s?"
-msgstr ""
+msgstr "Ĉu vi vere volas fini la programon?"
 
 #: src/gui/socialwindow.cpp:182
 #, c-format
@@ -1784,9 +1785,9 @@ msgid "Leave Party?"
 msgstr ""
 
 #: src/gui/socialwindow.cpp:210
-#, c-format
+#, fuzzy, c-format
 msgid "Are you sure you want to leave party %s?"
-msgstr ""
+msgstr "Ĉu vi vere volas fini la programon?"
 
 #: src/gui/socialwindow.cpp:239
 msgid "Create Guild"
@@ -3553,4 +3554,7 @@ msgstr ""
 #: src/resources/itemdb.cpp:158 src/resources/monsterdb.cpp:45
 #: src/resources/monsterdb.cpp:67
 msgid "unnamed"
-msgstr ""
+msgstr "sennoma"
+
+#~ msgid "no"
+#~ msgstr "Ne"

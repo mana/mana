@@ -6,15 +6,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
-"Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-03-05 21:33+0100\n"
-"PO-Revision-Date: 2009-04-21 16:38+0000\n"
-"Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
+"Report-Msgid-Bugs-To: dev@manasource.org\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2009-06-08 22:07+0000\n"
+"Last-Translator: Thorbjørn Lindeijer <bjorn@lindeijer.nl>\n"
 "Language-Team: German, Low <nds@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
@@ -913,9 +913,8 @@ msgid "Next"
 msgstr ""
 
 #: src/gui/npcdialog.cpp:47
-#, fuzzy
 msgid "Submit"
-msgstr "Beenden"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:52 src/gui/npcpostdialog.cpp:41
 msgid "NPC"
@@ -1072,14 +1071,12 @@ msgid "Generics"
 msgstr ""
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Hats"
-msgstr "Status"
+msgstr ""
 
 #: src/gui/palette.cpp:117
-#, fuzzy
 msgid "Usables"
-msgstr "Benutzen"
+msgstr ""
 
 #: src/gui/palette.cpp:118
 msgid "Shirts"
@@ -1102,9 +1099,8 @@ msgid "Two Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:123
-#, fuzzy
 msgid "Shields"
-msgstr "Fähigkeiten"
+msgstr ""
 
 #: src/gui/palette.cpp:124
 msgid "Rings"
@@ -1551,9 +1547,8 @@ msgid "Tiny"
 msgstr ""
 
 #: src/gui/setup_video.cpp:114
-#, fuzzy
 msgid "Small"
-msgstr "Verkaufen"
+msgstr ""
 
 #: src/gui/setup_video.cpp:115
 msgid "Medium"
@@ -2327,9 +2322,8 @@ msgid "Inventory Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:73
-#, fuzzy
 msgid "Equipment Window"
-msgstr "Ausrüstung"
+msgstr ""
 
 #: src/keyboardconfig.cpp:74
 msgid "Skill Window"
@@ -2554,9 +2548,8 @@ msgid "Info"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:147
-#, fuzzy
 msgid "Character deleted."
-msgstr "Der Löschung des Charakters zustimmen"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:152
 msgid "Failed to delete character."
@@ -2620,9 +2613,9 @@ msgid "Request to quit denied!"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:102 src/net/manaserv/generalhandler.cpp:95
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Stärke"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:103 src/net/manaserv/generalhandler.cpp:96
 #, c-format
@@ -2635,9 +2628,9 @@ msgid "Vitality %+d"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:105 src/net/manaserv/generalhandler.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Intelligenz"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:106 src/net/manaserv/generalhandler.cpp:97
 #, c-format
@@ -3413,9 +3406,9 @@ msgid "Unknown channel event."
 msgstr ""
 
 #: src/net/manaserv/generalhandler.cpp:100
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "Willenskraft"
+msgstr ""
 
 #: src/net/manaserv/generalhandler.cpp:171
 #, fuzzy
@@ -3586,8 +3579,8 @@ msgstr ""
 #~ msgid "Description: %s"
 #~ msgstr "Beschreibung: %s"
 
-#~ msgid "Ok"
-#~ msgstr "Ok"
-
 #~ msgid "New"
 #~ msgstr "Neu"
+
+#~ msgid "Ok"
+#~ msgstr "Ok"

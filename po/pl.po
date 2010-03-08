@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-03-05 21:43+0100\n"
-"PO-Revision-Date: 2009-05-30 15:48+0000\n"
-"Last-Translator: lusmanko <Unknown>\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2009-09-14 06:59+0000\n"
+"Last-Translator: Maciej Benke <syngress_stc@vp.pl>\n"
 "Language-Team: <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-08 19:32+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
@@ -646,9 +646,8 @@ msgid "The new password needs to be less than %d characters long."
 msgstr "Hasło nie może mieć więcej jak %d znaków."
 
 #: src/gui/changepassworddialog.cpp:130
-#, fuzzy
 msgid "The new password entries mismatch."
-msgstr "Wpisz dwukrotnie nowe hasło:"
+msgstr ""
 
 #: src/gui/charcreatedialog.cpp:53
 msgid "Create Character"
@@ -3194,7 +3193,7 @@ msgstr "Koniec gry!"
 
 #: src/net/ea/playerhandler.cpp:105
 msgid "Insert coin to continue."
-msgstr ""
+msgstr "Wrzuć monetę aby kontynuować."
 
 #: src/net/ea/playerhandler.cpp:106 src/net/manaserv/beinghandler.cpp:310
 msgid ""
@@ -3979,6 +3978,9 @@ msgstr "nienazwany"
 #~ msgid "Unnamed"
 #~ msgstr "Nienazwany"
 
+#~ msgid "@@pickup|Pick Up %s@@"
+#~ msgstr "@@pickup|Podnieś %s@@"
+
 #~ msgid "Scroll radius"
 #~ msgstr "Skok przy przewijaniu ekranu"
 
@@ -3994,18 +3996,8 @@ msgstr "nienazwany"
 #~ msgid "Emote"
 #~ msgstr "Emoty"
 
-#~ msgid "inc"
-#~ msgstr "podw."
-
-#~ msgid "use"
-#~ msgstr "użyj"
-
-#~ msgid " cancelled"
-#~ msgstr " anulował"
-
-#~ msgid "  -D --default    : Bypass the login process with default settings"
-#~ msgstr ""
-#~ "  -D --default    : Pomiń proces logowania z domyślnymi ustawieniami"
+#~ msgid "NPC Text Request"
+#~ msgstr "Tekst NPC - Prośba"
 
 #~ msgid "NPC Number Request"
 #~ msgstr "Prośba NPC Numer"
@@ -4017,14 +4009,14 @@ msgstr "nienazwany"
 #~ "\n"
 #~ "> Anuluj\n"
 
-#~ msgid "NPC Text Request"
-#~ msgstr "Tekst NPC - Prośba"
-
 #~ msgid "skills.xml"
 #~ msgstr "skills.xml"
 
-#~ msgid "Slots: "
-#~ msgstr "Miejsc: "
+#~ msgid "inc"
+#~ msgstr "podw."
+
+#~ msgid "use"
+#~ msgstr "użyj"
 
 #~ msgid "%s: %s"
 #~ msgstr "%s: %s"
@@ -4032,8 +4024,18 @@ msgstr "nienazwany"
 #~ msgid "Emote Window"
 #~ msgstr "Okno Emotek"
 
-#~ msgid "items.xml"
-#~ msgstr "items.xml"
+#~ msgid " cancelled"
+#~ msgstr " anulował"
 
 #~ msgid "monsters.xml"
 #~ msgstr "monsters.xml"
+
+#~ msgid "items.xml"
+#~ msgstr "items.xml"
+
+#~ msgid "  -D --default    : Bypass the login process with default settings"
+#~ msgstr ""
+#~ "  -D --default    : Pomiń proces logowania z domyślnymi ustawieniami"
+
+#~ msgid "Slots: "
+#~ msgstr "Miejsc: "

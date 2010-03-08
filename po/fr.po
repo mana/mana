@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-03-05 21:43+0100\n"
-"PO-Revision-Date: 2009-05-29 15:23+0000\n"
-"Last-Translator: Jumpy <Unknown>\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2010-01-27 21:27+0000\n"
+"Last-Translator: JVC <Unknown>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-02 17:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
@@ -144,7 +144,7 @@ msgstr "/w > Alias de msg"
 #: src/commandhandler.cpp:168
 msgid "/query > Makes a tab for private messages with another user"
 msgstr ""
-"/query > Créé un nouvel onglet pour vos messages privés avec un autre "
+"/query > Crée un nouvel onglet pour vos messages privés avec un autre "
 "utilisateur"
 
 #: src/commandhandler.cpp:169
@@ -656,9 +656,8 @@ msgid "The new password needs to be less than %d characters long."
 msgstr "Le mot de passe doit faire moins de %d caractères."
 
 #: src/gui/changepassworddialog.cpp:130
-#, fuzzy
 msgid "The new password entries mismatch."
-msgstr "Entrer une nouvelle fois le nouveau mot de passe :"
+msgstr ""
 
 #: src/gui/charcreatedialog.cpp:53
 msgid "Create Character"
@@ -992,7 +991,7 @@ msgstr "Envoyer"
 
 #: src/gui/npcpostdialog.cpp:96
 msgid "Failed to send as sender or letter invalid."
-msgstr "Echec de l'envoi comme émetteur ou charactère invalide."
+msgstr "Echec de l'envoi comme émetteur ou caractère invalide."
 
 #: src/gui/outfitwindow.cpp:68 src/gui/outfitwindow.cpp:141
 #: src/gui/outfitwindow.cpp:154
@@ -1201,11 +1200,11 @@ msgstr "Coup critique"
 
 #: src/gui/palette.cpp:137
 msgid "Misses"
-msgstr "Ratés"
+msgstr "Coups manqués"
 
 #: src/gui/palette.cpp:139
 msgid "HP Bar"
-msgstr "Barre de vie"
+msgstr "Barre de vie (niveau maximum)"
 
 #: src/gui/palette.cpp:140
 msgid "3/4 HP Bar"
@@ -1779,7 +1778,7 @@ msgstr "Résolution de l'écran changée"
 
 #: src/gui/setup_video.cpp:487 src/gui/setup_video.cpp:492
 msgid "Restart your client for the change to take effect."
-msgstr "Rédémarrez le jeu pour que les changements soient appliqués."
+msgstr "Redémarrez le jeu pour que les changements soient appliqués."
 
 #: src/gui/setup_video.cpp:489
 msgid "Some windows may be moved to fit the lowered resolution."
@@ -2033,7 +2032,7 @@ msgstr "Argent : %s"
 
 #: src/gui/statuswindow.cpp:102
 msgid "HP:"
-msgstr "PV :"
+msgstr "Vie :"
 
 #: src/gui/statuswindow.cpp:107
 msgid "Exp:"
@@ -2050,12 +2049,12 @@ msgstr "Metier : %d"
 
 #: src/gui/statuswindow.cpp:133
 msgid "Job:"
-msgstr "Travail :"
+msgstr "Habilité :"
 
 #: src/gui/statuswindow.cpp:194
 #, fuzzy
 msgid "HP"
-msgstr "PV :"
+msgstr "Vie :"
 
 #: src/gui/statuswindow.cpp:200
 #, fuzzy
@@ -2075,7 +2074,7 @@ msgstr "Argent : %d"
 #: src/gui/statuswindow.cpp:225
 #, fuzzy
 msgid "Job"
-msgstr "Travail :"
+msgstr "Habilité :"
 
 #: src/gui/statuswindow.cpp:229
 #, fuzzy, c-format
@@ -2209,7 +2208,7 @@ msgstr "Commande : /users"
 
 #: src/gui/widgets/channeltab.cpp:64
 msgid "This command shows the users in this channel."
-msgstr "The commande affiche la liste d'utilisateurs présents dans ce salon."
+msgstr "Cette commande affiche la liste d'utilisateurs présents dans ce salon."
 
 #: src/gui/widgets/channeltab.cpp:68
 msgid "Command: /topic <message>"
@@ -2323,7 +2322,7 @@ msgstr "Statut"
 
 #: src/gui/windowmenu.cpp:61
 msgid "Shortcut"
-msgstr "Raccourci"
+msgstr "Raccourcis"
 
 #: src/gui/worldselectdialog.cpp:71
 #, fuzzy
@@ -2569,7 +2568,7 @@ msgstr "  -h --help : Montre cette aide"
 #: src/main.cpp:47
 #, fuzzy
 msgid "  -C --config-dir     : Configuration directory to use"
-msgstr "  -C --config-file : Fichier de configuration a utiliser"
+msgstr "  -C --config-file : Fichier de configuration à utiliser"
 
 #: src/main.cpp:48
 #, fuzzy
@@ -2589,9 +2588,7 @@ msgstr "  -c --character : Se connecter avec ce personnage"
 #: src/main.cpp:51
 #, fuzzy
 msgid "  -s --server         : Login server name or IP"
-msgstr ""
-"  Copy text   \t\r\n"
-"-s --server : Nom du serveur pour la connexion ou IP"
+msgstr "  -s --server : Nom du serveur pour la connexion ou IP"
 
 #: src/main.cpp:52
 #, fuzzy
@@ -2619,18 +2616,18 @@ msgstr "  -u --skip-update : Passer les téléchargements de mise à jour"
 #, fuzzy
 msgid "  -d --data           : Directory to load game data from"
 msgstr ""
-"  -d --data : Repertoire dans lequel les données du jeu se trouvent et "
+"  -d --data : Répertoire dans lequel les données du jeu se trouvent et "
 "seront chargées"
 
 #: src/main.cpp:58
 #, fuzzy
 msgid "  -L --localdata-dir  : Directory to use as local data directory"
-msgstr "  -S --home-dir : Répertoire a utiliser comme répertoire principal"
+msgstr "  -S --home-dir : Répertoire à utiliser comme répertoire principal"
 
 #: src/main.cpp:59
 #, fuzzy
 msgid "     --screenshot-dir : Directory to store screenshots"
-msgstr "  -S --home-dir : Répertoire a utiliser comme répertoire principal"
+msgstr "  -S --home-dir : Répertoire à utiliser comme répertoire principal"
 
 #: src/main.cpp:61
 #, fuzzy
@@ -3128,7 +3125,7 @@ msgid ""
 "You have been temporarily banned from the game until %s.\n"
 "Please contact the GM team via the forums."
 msgstr ""
-"Vous avez été banni temporairement du ju depuis %s.\n"
+"Vous avez été banni temporairement du jeu depuis %s.\n"
 "Merci de contacter un MJ par le forum."
 
 #: src/net/ea/loginhandler.cpp:172
@@ -3225,7 +3222,7 @@ msgstr "Les mains gelées de la faucheuse viennent réclamer votre âme."
 
 #: src/net/ea/playerhandler.cpp:104 src/net/manaserv/beinghandler.cpp:309
 msgid "Game Over!"
-msgstr "Jeu terminé !"
+msgstr "Fin de la partie !"
 
 #: src/net/ea/playerhandler.cpp:105
 msgid "Insert coin to continue."
@@ -3236,7 +3233,7 @@ msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
 msgstr ""
-"No, mon enfant. Ton personnage n'est pas vraiment mort... Il... enfin,.. "
+"Non, les  enfants. Ton personnage n'est pas vraiment mort... Il... enfin,.. "
 "il... est parti dans un monde meilleur."
 
 #: src/net/ea/playerhandler.cpp:108 src/net/manaserv/beinghandler.cpp:312
@@ -3244,8 +3241,8 @@ msgid ""
 "Your plan of breaking your enemies weapon by bashing it with your throat "
 "failed."
 msgstr ""
-"Votre plan de casser l'arme de votre ennemi en la frappant avec votre gorge "
-"a échoué."
+"Votre tentative de casser l'arme de votre ennemi en la frappant avec votre "
+"gorge a échoué."
 
 #: src/net/ea/playerhandler.cpp:110 src/net/manaserv/beinghandler.cpp:314
 msgid "I guess this did not run too well."
@@ -3271,7 +3268,7 @@ msgstr "Il semble que l'on vous ait rendu votre tête."
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
 msgstr ""
-"Vous avez encore bien râté, jetez votre corps aux oubliettes et prenez en un "
+"Vous avez encore échoué, jetez votre corps aux oubliettes et prenez en un "
 "autre."
 
 #: src/net/ea/playerhandler.cpp:123
@@ -3386,7 +3383,7 @@ msgstr "Vous n'avez pas encore atteind le niveau requis !"
 
 #: src/net/ea/specialhandler.cpp:174
 msgid "Insufficient HP!"
-msgstr "Pas assez de PV !"
+msgstr "Pas assez de vie !"
 
 #: src/net/ea/specialhandler.cpp:177
 msgid "Insufficient SP!"
@@ -3993,7 +3990,7 @@ msgstr "anonyme"
 #~ msgstr "Lancé"
 
 #~ msgid "Craft"
-#~ msgstr "Métier"
+#~ msgstr "Compétences"
 
 #~ msgid "Unknown Skill"
 #~ msgstr "Compétence inconnue"
@@ -4030,17 +4027,8 @@ msgstr "anonyme"
 #~ msgid "Unnamed"
 #~ msgstr "Aonyme"
 
-#~ msgid "The Mana World %s"
-#~ msgstr "The Mana World %s"
-
-#~ msgid "Scroll radius"
-#~ msgstr "Rayon du défilement"
-
-#~ msgid "Scroll laziness"
-#~ msgstr "Lenteur du défilement"
-
-#~ msgid "Save player list"
-#~ msgstr "Sauvegarder la liste de joueurs"
+#~ msgid "@@pickup|Pick Up %s@@"
+#~ msgstr "@@pickup|Ramasser %s@@"
 
 #~ msgid "Unable to load selection.png"
 #~ msgstr "Impossible de charger le fichier selection.png"
@@ -4048,19 +4036,8 @@ msgstr "anonyme"
 #~ msgid "Emote"
 #~ msgstr "Emote"
 
-#~ msgid "inc"
-#~ msgstr "inc"
-
-#~ msgid "use"
-#~ msgstr "Utiliser"
-
-#~ msgid " cancelled"
-#~ msgstr " annulé"
-
-#~ msgid "  -D --default    : Bypass the login process with default settings"
-#~ msgstr ""
-#~ "  -D --default : Bypasser le processus de connexion par la configuration "
-#~ "par défaut"
+#~ msgid "NPC Text Request"
+#~ msgstr "Requête de texte PNJ"
 
 #~ msgid "NPC Number Request"
 #~ msgstr "Requête de nombre PNJ"
@@ -4072,26 +4049,49 @@ msgstr "anonyme"
 #~ "\n"
 #~ "> Annuler\n"
 
-#~ msgid "NPC Text Request"
-#~ msgstr "Requête de texte PNJ"
+#~ msgid "Save player list"
+#~ msgstr "Sauvegarder la liste de joueurs"
 
 #~ msgid "skills.xml"
 #~ msgstr "skills.xml"
 
-#~ msgid "Slots: "
-#~ msgstr "Cases : "
+#~ msgid "use"
+#~ msgstr "Utiliser"
 
 #~ msgid "%s: %s"
 #~ msgstr "%s : %s"
 
+#~ msgid "Scroll radius"
+#~ msgstr "Rayon du défilement"
+
+#~ msgid "Scroll laziness"
+#~ msgstr "Lenteur du défilement"
+
+#~ msgid "Slots: "
+#~ msgstr "Cases : "
+
 #~ msgid "Emote Window"
 #~ msgstr "Fenêtre d'emote"
 
-#~ msgid "items.xml"
-#~ msgstr "items.xml"
+#~ msgid "  -D --default    : Bypass the login process with default settings"
+#~ msgstr ""
+#~ "  -D --default : Bypasser le processus de connexion par la configuration "
+#~ "par défaut"
+
+#~ msgid " cancelled"
+#~ msgstr " annulé"
 
 #~ msgid "monsters.xml"
 #~ msgstr "monsters.xml"
 
+#~ msgid "items.xml"
+#~ msgstr "items.xml"
+
+#~ msgid "inc"
+#~ msgstr "inc"
+
 #~ msgid "; "
 #~ msgstr "; "
+
+#~ msgid "The Mana World %s"
+#~ msgstr "The Mana World %s"

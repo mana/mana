@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-03-05 21:43+0100\n"
-"PO-Revision-Date: 2009-03-26 13:00+0000\n"
-"Last-Translator: Lubos <alvinx12@centrum.cz>\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2009-12-04 15:16+0000\n"
+"Last-Translator: David Kolibáč <david@kolibac.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
@@ -24,11 +24,12 @@ msgstr "Nastavení"
 #: src/client.cpp:623
 #, fuzzy
 msgid "Connecting to server"
-msgstr "Připojuji se..."
+msgstr "Čeká se na server"
 
 #: src/client.cpp:650
+#, fuzzy
 msgid "Logging in"
-msgstr ""
+msgstr "Přihlášení"
 
 #: src/client.cpp:683
 msgid "Entering game world"
@@ -99,7 +100,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:127 src/commandhandler.cpp:308
 msgid "Unknown command."
-msgstr ""
+msgstr "Neznámý příkaz."
 
 #: src/commandhandler.cpp:156
 msgid "-- Help --"
@@ -107,43 +108,43 @@ msgstr "-- Nápověda --"
 
 #: src/commandhandler.cpp:157
 msgid "/help > Display this help"
-msgstr ""
+msgstr "/help > Zobrazit tuto nápovědu"
 
 #: src/commandhandler.cpp:159
 msgid "/where > Display map name"
-msgstr ""
+msgstr "/where > Zobrazit jméno mapy"
 
 #: src/commandhandler.cpp:160
 msgid "/who > Display number of online users"
-msgstr ""
+msgstr "/who > Zobrazit počet uživatelů on-line"
 
 #: src/commandhandler.cpp:161
 msgid "/me > Tell something about yourself"
-msgstr ""
+msgstr "/me > Říct něco o sobě"
 
 #: src/commandhandler.cpp:163
 msgid "/clear > Clears this window"
-msgstr ""
+msgstr "/clear > Vyčistit toto okno"
 
 #: src/commandhandler.cpp:165
 msgid "/msg > Send a private message to a user"
-msgstr ""
+msgstr "/msg > Odeslat soukromou zprávu uživateli"
 
 #: src/commandhandler.cpp:166
 msgid "/whisper > Alias of msg"
-msgstr ""
+msgstr "/whisper > Jiné označení pro msg"
 
 #: src/commandhandler.cpp:167
 msgid "/w > Alias of msg"
-msgstr ""
+msgstr "/w > Jiné označení pro msg"
 
 #: src/commandhandler.cpp:168
 msgid "/query > Makes a tab for private messages with another user"
-msgstr ""
+msgstr "/query > Založit kartu pro soukromé zprávy jinému uživateli"
 
 #: src/commandhandler.cpp:169
 msgid "/q > Alias of query"
-msgstr ""
+msgstr "/q > Jiné označení pro query"
 
 #: src/commandhandler.cpp:171
 msgid "/ignore > ignore a player"
@@ -155,23 +156,24 @@ msgstr ""
 
 #: src/commandhandler.cpp:174
 msgid "/list > Display all public channels"
-msgstr ""
+msgstr "/list > Zobrazit seznam všech veřejných kanálů"
 
 #: src/commandhandler.cpp:175
 msgid "/join > Join or create a channel"
-msgstr ""
+msgstr "/join > Připojit se, nebo vytvořit kanál"
 
 #: src/commandhandler.cpp:177
+#, fuzzy
 msgid "/createparty > Create a new party"
-msgstr ""
+msgstr "/party >Pozvat uživatele do party"
 
 #: src/commandhandler.cpp:178
 msgid "/party > Invite a user to party"
-msgstr ""
+msgstr "/party >Pozvat uživatele do party"
 
 #: src/commandhandler.cpp:180
 msgid "/record > Start recording the chat to an external file"
-msgstr ""
+msgstr "/record > Spustit nahrávání záznamu chatu do externího souboru"
 
 #: src/commandhandler.cpp:181
 msgid "/toggle > Determine whether <return> toggles the chat log"
@@ -183,80 +185,81 @@ msgstr ""
 
 #: src/commandhandler.cpp:184
 msgid "/announce > Global announcement (GM only)"
-msgstr ""
+msgstr "/announce > Globální oznámení (jen GM)"
 
 #: src/commandhandler.cpp:188
-#, fuzzy
 msgid "For more information, type /help <command>."
-msgstr "Pro více informací napište /help <příkaz>"
+msgstr "Pro bližší informace zadejte /help <command>."
 
 #: src/commandhandler.cpp:192
 msgid "Command: /help"
-msgstr ""
+msgstr "Příkaz: /help"
 
 #: src/commandhandler.cpp:193
 msgid "This command displays a list of all commands available."
-msgstr ""
+msgstr "Tento příkaz zobrazí seznam všech příkazů, které jsou k dispozici."
 
 #: src/commandhandler.cpp:194
 msgid "Command: /help <command>"
-msgstr ""
+msgstr "Příkaz: /help <command>"
 
 #: src/commandhandler.cpp:195
 msgid "This command displays help on <command>."
-msgstr ""
+msgstr "Tento příkaz zobrazí nápovědu k <command>."
 
 #: src/commandhandler.cpp:203
 msgid "Command: /announce <msg>"
-msgstr ""
+msgstr "Příkaz: /announce <msg>"
 
 #: src/commandhandler.cpp:204
 msgid "*** only available to a GM ***"
-msgstr ""
+msgstr "*** K dispozici pouze pro GM ***"
 
 #: src/commandhandler.cpp:205
 msgid "This command sends the message <msg> to all players currently online."
-msgstr ""
+msgstr "Tento příkaz odešle zprávu <msg> všem hráčům, kteří jsou on-line."
 
 #: src/commandhandler.cpp:210
 msgid "Command: /clear"
-msgstr ""
+msgstr "Příkaz: /clear"
 
 #: src/commandhandler.cpp:211
 msgid "This command clears the chat log of previous chat."
-msgstr ""
+msgstr "Tento příkaz vyčistí záznam předchozího chatu."
 
 #: src/commandhandler.cpp:215
+#, fuzzy
 msgid "Command: /ignore <player>"
-msgstr ""
+msgstr "Příkaz: /join <channel>"
 
 #: src/commandhandler.cpp:216
+#, fuzzy
 msgid "This command ignores the given player regardless of current relations."
-msgstr ""
+msgstr "Tento příkaz zobrazí počet hráčů, kteří jsou momentálně online."
 
 #: src/commandhandler.cpp:221
 msgid "Command: /join <channel>"
-msgstr ""
+msgstr "Příkaz: /join <channel>"
 
 #: src/commandhandler.cpp:222
 msgid "This command makes you enter <channel>."
-msgstr ""
+msgstr "Tento příkaz vás připojí ke kanálu <channel>."
 
 #: src/commandhandler.cpp:223
 msgid "If <channel> doesn't exist, it's created."
-msgstr ""
+msgstr "Pokud <channel> neexistuje, bude vytvořen."
 
 #: src/commandhandler.cpp:227
 msgid "Command: /list"
-msgstr ""
+msgstr "Příkaz: /list"
 
 #: src/commandhandler.cpp:228
 msgid "This command shows a list of all channels."
-msgstr ""
+msgstr "Tento příkaz zobrazí seznam všech kanálů."
 
 #: src/commandhandler.cpp:232
 msgid "Command: /me <message>"
-msgstr ""
+msgstr "Příkaz: /me <message>"
 
 #: src/commandhandler.cpp:233
 msgid "This command tell others you are (doing) <msg>."
@@ -264,49 +267,51 @@ msgstr ""
 
 #: src/commandhandler.cpp:237
 msgid "Command: /msg <nick> <message>"
-msgstr ""
+msgstr "Příkaz: /msg <nick> <message>"
 
 #: src/commandhandler.cpp:238
 msgid "Command: /whisper <nick> <message>"
-msgstr ""
+msgstr "Příkaz: /whisper <nick> <message>"
 
 #: src/commandhandler.cpp:239
 msgid "Command: /w <nick> <message>"
-msgstr ""
+msgstr "Příkaz: /w <nick> <message>"
 
 #: src/commandhandler.cpp:240
 msgid "This command sends the text <message> to <nick>."
-msgstr ""
+msgstr "Tento příkaz odešle zprávu <message> uživateli <nick>."
 
 #: src/commandhandler.cpp:241 src/commandhandler.cpp:260
 #: src/gui/widgets/channeltab.cpp:82 src/gui/widgets/channeltab.cpp:91
 #: src/net/ea/gui/guildtab.cpp:75 src/net/ea/gui/partytab.cpp:75
 msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
-msgstr ""
+msgstr "Pokud <nick> obsahuje mezeru, uzavřete jej do uvozovek (\")."
 
 #: src/commandhandler.cpp:246
 msgid "Command: /query <nick>"
-msgstr ""
+msgstr "Příkaz: /query <nick>"
 
 #: src/commandhandler.cpp:247
 msgid "Command: /q <nick>"
-msgstr ""
+msgstr "Příkaz: /q <nick>"
 
 #: src/commandhandler.cpp:248
 msgid "This command tries to make a tab for whispers betweenyou and <nick>."
 msgstr ""
 
 #: src/commandhandler.cpp:253
+#, fuzzy
 msgid "Command: /createparty <name>"
-msgstr ""
+msgstr "Příkaz: /party <nick>"
 
 #: src/commandhandler.cpp:254
+#, fuzzy
 msgid "This command creates a new party called <name>."
-msgstr ""
+msgstr "Tento příkaz vás připojí ke kanálu <channel>."
 
 #: src/commandhandler.cpp:258
 msgid "Command: /party <nick>"
-msgstr ""
+msgstr "Příkaz: /party <nick>"
 
 #: src/commandhandler.cpp:259 src/net/ea/gui/partytab.cpp:74
 msgid "This command invites <nick> to party with you."
@@ -314,7 +319,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:265
 msgid "Command: /present"
-msgstr ""
+msgstr "Příkaz: /present"
 
 #: src/commandhandler.cpp:266
 msgid ""
@@ -324,7 +329,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:272
 msgid "Command: /record <filename>"
-msgstr ""
+msgstr "Příkaz: /record <filename>"
 
 #: src/commandhandler.cpp:273
 msgid "This command starts recording the chat log to the file <filename>."
@@ -332,7 +337,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:275
 msgid "Command: /record"
-msgstr ""
+msgstr "Příkaz: /record"
 
 #: src/commandhandler.cpp:276
 msgid "This command finishes a recording session."
@@ -340,7 +345,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:280
 msgid "Command: /toggle <state>"
-msgstr ""
+msgstr "Příkaz: /toggle <state>"
 
 #: src/commandhandler.cpp:281
 msgid ""
@@ -356,15 +361,16 @@ msgstr ""
 
 #: src/commandhandler.cpp:286
 msgid "Command: /toggle"
-msgstr ""
+msgstr "Příkaz: /toggle"
 
 #: src/commandhandler.cpp:287
 msgid "This command displays the return toggle status."
 msgstr ""
 
 #: src/commandhandler.cpp:291 src/gui/widgets/whispertab.cpp:93
+#, fuzzy
 msgid "Command: /unignore <player>"
-msgstr ""
+msgstr "Příkaz: /announce <msg>"
 
 #: src/commandhandler.cpp:292
 msgid "This command stops ignoring the given player if they are being ignored"
@@ -376,7 +382,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:298
 msgid "This command displays the name of the current map."
-msgstr ""
+msgstr "Tento příkaz zobrazí název aktuální mapy."
 
 #: src/commandhandler.cpp:302
 msgid "Command: /who"
@@ -384,7 +390,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:303
 msgid "This command displays the number of players currently online."
-msgstr ""
+msgstr "Tento příkaz zobrazí počet hráčů, kteří jsou momentálně online."
 
 #: src/commandhandler.cpp:309
 msgid "Type /help for a list of commands."
@@ -465,42 +471,45 @@ msgid "General"
 msgstr ""
 
 #: src/game.cpp:326
+#, fuzzy
 msgid "Screenshot saved as "
-msgstr ""
+msgstr "Snímek obrazovky uložen do ~/"
 
 #: src/game.cpp:331
 msgid "Saving screenshot failed!"
-msgstr ""
+msgstr "Ukládání snímku obrazovky selhalo!"
 
 #: src/game.cpp:355
+#, fuzzy
 msgid "The connection to the server was lost."
-msgstr ""
+msgstr "Připojení k serveru bylo ztraceno, program nyní bude ukončen"
 
 #: src/game.cpp:360
 msgid "Network Error"
-msgstr ""
+msgstr "Chyba sítě"
 
 #: src/game.cpp:705
 msgid "Ignoring incoming trade requests"
-msgstr ""
+msgstr "Ignorovat příchozí žádosti o obchodování"
 
 #: src/game.cpp:712
 msgid "Accepting incoming trade requests"
-msgstr ""
+msgstr "Akceptovat příchozí žádosti o obchodování"
 
 #: src/game.cpp:946
+#, fuzzy
 msgid "Could Not Load Map"
-msgstr ""
+msgstr "Nelze nahrát mapu"
 
 #: src/game.cpp:947
 #, c-format
 msgid "Error while loading %s"
-msgstr ""
+msgstr "Chyba při načítání %s"
 
 #: src/gui/beingpopup.cpp:75
-#, c-format
+#, fuzzy, c-format
 msgid "Party: %s"
-msgstr ""
+msgstr "Parta (%s)"
 
 #: src/gui/buy.cpp:49 src/gui/buy.cpp:78 src/gui/buysell.cpp:47
 msgid "Buy"
@@ -530,12 +539,12 @@ msgstr ""
 #: src/gui/quitdialog.cpp:43 src/gui/sell.cpp:77 src/gui/serverdialog.cpp:182
 #: src/keyboardconfig.cpp:103
 msgid "Quit"
-msgstr ""
+msgstr "Ukončit"
 
 #: src/gui/buy.cpp:80 src/gui/sell.cpp:78 src/gui/statuswindow.cpp:408
 #: src/gui/statuswindow.cpp:478 src/gui/statuswindow.cpp:512
 msgid "Max"
-msgstr ""
+msgstr "Vše"
 
 #: src/gui/buysell.cpp:38
 msgid "Shop"
@@ -566,8 +575,9 @@ msgid "Account: %s"
 msgstr "Účet: %s"
 
 #: src/gui/changeemaildialog.cpp:51
+#, fuzzy
 msgid "Type new email address twice:"
-msgstr ""
+msgstr "Zadejte dvakrát nový e-mail:"
 
 #: src/gui/changeemaildialog.cpp:127
 #, fuzzy, c-format
@@ -594,8 +604,9 @@ msgid "Password:"
 msgstr "Heslo:"
 
 #: src/gui/changepassworddialog.cpp:63
+#, fuzzy
 msgid "Type new password twice:"
-msgstr ""
+msgstr "Zadejte dvakrát nové heslo:"
 
 #: src/gui/changepassworddialog.cpp:110
 msgid "Enter the old password first."
@@ -604,7 +615,7 @@ msgstr ""
 #: src/gui/changepassworddialog.cpp:116
 #, fuzzy, c-format
 msgid "The new password needs to be at least %d characters long."
-msgstr "Heslo musí být kratší než %d znaků."
+msgstr "Heslo musí být dlouhé nejméně %d znaků."
 
 #: src/gui/changepassworddialog.cpp:123
 #, fuzzy, c-format
@@ -646,7 +657,7 @@ msgstr "Barva vlasů:"
 #: src/gui/charcreatedialog.cpp:77
 #, fuzzy
 msgid "Hair style:"
-msgstr "Styl vlasů:"
+msgstr "Účes:"
 
 #: src/gui/charcreatedialog.cpp:78 src/gui/charselectdialog.cpp:397
 #: src/gui/socialwindow.cpp:296
@@ -668,7 +679,7 @@ msgstr "Rozdělte prosím %d bodů"
 
 #: src/gui/charcreatedialog.cpp:178
 msgid "Your name needs to be at least 4 characters."
-msgstr ""
+msgstr "Vaše jméno musí mít nejméně 4 znaky."
 
 #: src/gui/charcreatedialog.cpp:242
 msgid "Character stats OK"
@@ -681,11 +692,11 @@ msgstr "Odstraňte prosím %d bodů."
 
 #: src/gui/charselectdialog.cpp:69
 msgid "Confirm Character Delete"
-msgstr "Potvrďte vymazání postavy"
+msgstr "Potvrďte smazání postavy"
 
 #: src/gui/charselectdialog.cpp:70
 msgid "Are you sure you want to delete this character?"
-msgstr "Jste si jistí, že chcete vymazat tuto postavu?"
+msgstr "Jste si jistí, že chcete smazat tuto postavu?"
 
 #: src/gui/charselectdialog.cpp:117
 msgid "Account and Character Management"
@@ -708,11 +719,12 @@ msgstr "Změnit e-mail"
 #: src/gui/charselectdialog.cpp:335 src/gui/serverdialog.cpp:185
 #: src/gui/setup_players.cpp:230
 msgid "Delete"
-msgstr "Odstranit"
+msgstr "Smazat"
 
 #: src/gui/charselectdialog.cpp:387
+#, fuzzy
 msgid "Choose"
-msgstr ""
+msgstr "Barvy"
 
 #: src/gui/charselectdialog.cpp:399 src/gui/charselectdialog.cpp:400
 msgid "(empty)"
@@ -720,12 +732,12 @@ msgstr ""
 
 #: src/gui/chat.cpp:77 src/gui/palette.cpp:96
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/gui/chat.cpp:287
-#, c-format
+#, fuzzy, c-format
 msgid "Present: %s; %d players are present."
-msgstr ""
+msgstr "%d hráči jsou přítomni."
 
 #: src/gui/chat.cpp:305
 msgid "Attendance written to record log."
@@ -769,9 +781,9 @@ msgid "Map: %s"
 msgstr "Jméno: %s"
 
 #: src/gui/debugwindow.cpp:67 src/gui/debugwindow.cpp:106
-#, c-format
+#, fuzzy, c-format
 msgid "Minimap: %s"
-msgstr ""
+msgstr "Peníze: %s"
 
 #: src/gui/debugwindow.cpp:68 src/gui/debugwindow.cpp:99
 #, c-format
@@ -801,11 +813,11 @@ msgstr "Vybavení"
 #: src/gui/inventorywindow.cpp:79 src/gui/inventorywindow.cpp:298
 #: src/gui/popupmenu.cpp:372
 msgid "Unequip"
-msgstr ""
+msgstr "Odstranit z vybavení"
 
 #: src/gui/help.cpp:36
 msgid "Help"
-msgstr ""
+msgstr "Pomoc"
 
 #: src/gui/help.cpp:50 src/gui/npcdialog.cpp:46 src/gui/storagewindow.cpp:73
 msgid "Close"
@@ -823,7 +835,7 @@ msgstr "Vybavit"
 #: src/gui/inventorywindow.cpp:73 src/gui/inventorywindow.cpp:74
 #: src/gui/inventorywindow.cpp:304 src/gui/popupmenu.cpp:377
 msgid "Use"
-msgstr ""
+msgstr "Použít"
 
 #: src/gui/inventorywindow.cpp:83 src/gui/inventorywindow.cpp:308
 #: src/gui/popupmenu.cpp:380
@@ -841,11 +853,11 @@ msgstr ""
 
 #: src/gui/inventorywindow.cpp:96 src/gui/storagewindow.cpp:83
 msgid "Slots:"
-msgstr ""
+msgstr "Sloty:"
 
 #: src/gui/inventorywindow.cpp:97
 msgid "Weight:"
-msgstr ""
+msgstr "Hmotnost:"
 
 #: src/gui/inventorywindow.cpp:310 src/gui/popupmenu.cpp:382
 msgid "Drop"
@@ -855,19 +867,19 @@ msgstr "Upustit"
 #: src/gui/quitdialog.cpp:46 src/gui/textdialog.cpp:38 src/gui/trade.cpp:73
 #: src/gui/trade.cpp:75
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: src/gui/itemamount.cpp:102
 msgid "All"
-msgstr ""
+msgstr "Vše"
 
 #: src/gui/itemamount.cpp:128
 msgid "Select amount of items to trade."
-msgstr "Vyberte množství zboží, se kterým budete obchodovat."
+msgstr "Vyberte množství předmětů, se kterými budete obchodovat."
 
 #: src/gui/itemamount.cpp:131
 msgid "Select amount of items to drop."
-msgstr "Vyberte množství zboží, které chcete upustit."
+msgstr "Vyberte množství předmětů, které chcete upustit."
 
 #: src/gui/itemamount.cpp:134
 msgid "Select amount of items to store."
@@ -884,11 +896,11 @@ msgstr ""
 #: src/gui/itempopup.cpp:92
 #, fuzzy, c-format
 msgid "Weight: %s"
-msgstr "Účinek: %s"
+msgstr "Hmotnost: "
 
 #: src/gui/login.cpp:49 src/gui/login.cpp:61
 msgid "Login"
-msgstr ""
+msgstr "Přihlášení"
 
 #: src/gui/login.cpp:58
 #, fuzzy
@@ -902,16 +914,15 @@ msgstr "Registrace"
 #: src/gui/login.cpp:60
 #, fuzzy
 msgid "Change Server"
-msgstr "Změnit"
+msgstr "Server"
 
 #: src/gui/minimap.cpp:46 src/gui/minimap.cpp:87
-#, fuzzy
 msgid "Map"
-msgstr "MiniMapa"
+msgstr "Mapa"
 
 #: src/gui/npcdialog.cpp:44
 msgid "Waiting for server"
-msgstr ""
+msgstr "Čeká se na server"
 
 #: src/gui/npcdialog.cpp:45
 msgid "Next"
@@ -923,11 +934,11 @@ msgstr ""
 
 #: src/gui/npcdialog.cpp:52 src/gui/npcpostdialog.cpp:41
 msgid "NPC"
-msgstr ""
+msgstr "NPC"
 
 #: src/gui/npcdialog.cpp:110
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 #. TRANSLATORS: Please leave the \n sequences intact.
 #: src/gui/npcdialog.cpp:171
@@ -943,7 +954,7 @@ msgstr ""
 
 #: src/gui/npcpostdialog.cpp:54
 msgid "Send"
-msgstr ""
+msgstr "Odeslat"
 
 #: src/gui/npcpostdialog.cpp:96
 msgid "Failed to send as sender or letter invalid."
@@ -956,12 +967,13 @@ msgid "Outfit: %d"
 msgstr ""
 
 #: src/gui/outfitwindow.cpp:70
+#, fuzzy
 msgid "Unequip first"
-msgstr ""
+msgstr "Odstranit z vybavení"
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:143
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #: src/gui/palette.cpp:82
 msgid "Text Shadow"
@@ -989,51 +1001,53 @@ msgstr ""
 
 #: src/gui/palette.cpp:89
 msgid "Background"
-msgstr ""
+msgstr "Pozadí"
 
 #: src/gui/palette.cpp:91
 msgid "Highlight"
-msgstr ""
+msgstr "Zvýraznit"
 
 #: src/gui/palette.cpp:92
 msgid "Tab Highlight"
 msgstr ""
 
 #: src/gui/palette.cpp:93
+#, fuzzy
 msgid "Item Too Expensive"
-msgstr ""
+msgstr "Předmět je příliš drahý"
 
 #: src/gui/palette.cpp:94
+#, fuzzy
 msgid "Item Is Equipped"
-msgstr ""
+msgstr "Předmět je ve vybavení"
 
 #: src/gui/palette.cpp:97
 msgid "GM"
-msgstr ""
+msgstr "GM"
 
 #: src/gui/palette.cpp:98
 msgid "Player"
-msgstr ""
+msgstr "Hráč"
 
 #: src/gui/palette.cpp:99
 msgid "Whisper"
-msgstr ""
+msgstr "Šeptat"
 
 #: src/gui/palette.cpp:100
 msgid "Is"
-msgstr ""
+msgstr "Je"
 
 #: src/gui/palette.cpp:101 src/net/ea/gui/partytab.cpp:43
 msgid "Party"
-msgstr ""
+msgstr "Parta"
 
 #: src/gui/palette.cpp:102 src/net/ea/gui/guildtab.cpp:45
 msgid "Guild"
-msgstr ""
+msgstr "Guilda"
 
 #: src/gui/palette.cpp:103
 msgid "Server"
-msgstr ""
+msgstr "Server"
 
 #: src/gui/palette.cpp:104
 msgid "Logger"
@@ -1049,7 +1063,7 @@ msgstr ""
 
 #: src/gui/palette.cpp:108
 msgid "Other Players' Names"
-msgstr ""
+msgstr "Jména ostatních hráčů"
 
 #: src/gui/palette.cpp:109
 msgid "Own Name"
@@ -1057,7 +1071,7 @@ msgstr ""
 
 #: src/gui/palette.cpp:110
 msgid "GM Names"
-msgstr ""
+msgstr "Jména GM"
 
 #: src/gui/palette.cpp:111
 msgid "NPCs"
@@ -1065,7 +1079,7 @@ msgstr ""
 
 #: src/gui/palette.cpp:112
 msgid "Monsters"
-msgstr ""
+msgstr "Monstra"
 
 #: src/gui/palette.cpp:114
 msgid "Unknown Item Type"
@@ -1076,9 +1090,8 @@ msgid "Generics"
 msgstr ""
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Hats"
-msgstr "Stav"
+msgstr "Klobouky"
 
 #: src/gui/palette.cpp:117
 msgid "Usables"
@@ -1089,33 +1102,34 @@ msgid "Shirts"
 msgstr ""
 
 #: src/gui/palette.cpp:119
+#, fuzzy
 msgid "One Handed Weapons"
-msgstr ""
+msgstr "Jednoruční zbraně"
 
 #: src/gui/palette.cpp:120
 msgid "Pants"
-msgstr ""
+msgstr "Kalhoty"
 
 #: src/gui/palette.cpp:121
 msgid "Shoes"
-msgstr ""
+msgstr "Boty"
 
 #: src/gui/palette.cpp:122
+#, fuzzy
 msgid "Two Handed Weapons"
-msgstr ""
+msgstr "Jednoruční zbraně"
 
 #: src/gui/palette.cpp:123
-#, fuzzy
 msgid "Shields"
-msgstr "Dovednosti"
+msgstr "Štíty"
 
 #: src/gui/palette.cpp:124
 msgid "Rings"
-msgstr ""
+msgstr "Prsteny"
 
 #: src/gui/palette.cpp:125
 msgid "Necklaces"
-msgstr ""
+msgstr "Náhrdelníky"
 
 #: src/gui/palette.cpp:126
 msgid "Arms"
@@ -1123,7 +1137,7 @@ msgstr ""
 
 #: src/gui/palette.cpp:127
 msgid "Ammo"
-msgstr ""
+msgstr "Munice"
 
 #: src/gui/palette.cpp:129
 msgid "Particle Effects"
@@ -1147,7 +1161,7 @@ msgstr ""
 
 #: src/gui/palette.cpp:136
 msgid "Critical Hit"
-msgstr ""
+msgstr "Kritický zásah"
 
 #: src/gui/palette.cpp:137
 msgid "Misses"
@@ -1180,9 +1194,9 @@ msgid "Attack %s"
 msgstr "Útok %+d"
 
 #: src/gui/popupmenu.cpp:92
-#, c-format
+#, fuzzy, c-format
 msgid "Whisper %s"
-msgstr ""
+msgstr "Šeptat"
 
 #: src/gui/popupmenu.cpp:101
 #, c-format
@@ -1220,9 +1234,9 @@ msgid "Invite %s to join your guild"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:137
-#, c-format
+#, fuzzy, c-format
 msgid "Invite %s to join your party"
-msgstr ""
+msgstr "%s vás zve ke vstupu do své party."
 
 #: src/gui/popupmenu.cpp:144
 msgid "Kick player"
@@ -1234,8 +1248,9 @@ msgid "Talk to %s"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:166
+#, fuzzy
 msgid "Kick monster"
-msgstr ""
+msgstr "Monstra"
 
 #: src/gui/popupmenu.cpp:174
 msgid "Add name to chat"
@@ -1296,7 +1311,7 @@ msgstr ""
 
 #: src/gui/register.cpp:69
 msgid "Confirm:"
-msgstr ""
+msgstr "Potvrdit:"
 
 #: src/gui/register.cpp:100
 msgid "Email:"
@@ -1315,7 +1330,7 @@ msgstr "Uživatelské jméno musí být kratší než %d znaků."
 #: src/gui/register.cpp:182 src/gui/unregisterdialog.cpp:117
 #, c-format
 msgid "The password needs to be at least %d characters long."
-msgstr ""
+msgstr "Heslo musí být dlouhé nejméně %d znaků."
 
 #: src/gui/register.cpp:190 src/gui/unregisterdialog.cpp:124
 #, c-format
@@ -1327,8 +1342,9 @@ msgid "Passwords do not match."
 msgstr "Hesla se neshodují."
 
 #: src/gui/serverdialog.cpp:134
+#, fuzzy
 msgid "Choose Your Server"
-msgstr ""
+msgstr "Vyberte si server"
 
 #: src/gui/serverdialog.cpp:141 src/gui/widgets/chattab.cpp:139
 msgid "Server:"
@@ -1351,11 +1367,11 @@ msgstr "Připojuji se..."
 #: src/gui/serverdialog.cpp:184
 #, fuzzy
 msgid "Custom Server"
-msgstr "Vyber server"
+msgstr "Vlastní kurzor"
 
 #: src/gui/serverdialog.cpp:262
 msgid "Please type both the address and the port of a server."
-msgstr ""
+msgstr "Prosím zadejte adresu a port serveru."
 
 #: src/gui/serverdialog.cpp:411
 #, c-format
@@ -1363,8 +1379,9 @@ msgid "Downloading server list...%2.2f%%"
 msgstr ""
 
 #: src/gui/serverdialog.cpp:417
+#, fuzzy
 msgid "Waiting for server..."
-msgstr ""
+msgstr "Čeká se na server"
 
 #: src/gui/serverdialog.cpp:421
 msgid "Preparing download"
@@ -1384,15 +1401,16 @@ msgstr "Audio"
 
 #: src/gui/setup_audio.cpp:50
 msgid "Sfx volume"
-msgstr ""
+msgstr "Hlasitost efektů"
 
 #: src/gui/setup_audio.cpp:51
 msgid "Music volume"
-msgstr ""
+msgstr "Hlasitost hudby"
 
 #: src/gui/setup_audio.cpp:94
+#, fuzzy
 msgid "Notice"
-msgstr ""
+msgstr "Bez textu"
 
 #: src/gui/setup_audio.cpp:94
 msgid "You may have to restart your client if you want to download new music"
@@ -1408,11 +1426,12 @@ msgstr ""
 
 #: src/gui/setup_colors.cpp:49
 msgid "Colors"
-msgstr ""
+msgstr "Barvy"
 
 #: src/gui/setup_colors.cpp:70
+#, fuzzy
 msgid "Type:"
-msgstr ""
+msgstr "Typ: "
 
 #: src/gui/setup_colors.cpp:81 src/gui/setup_colors.cpp:433
 msgid "Static"
@@ -1421,29 +1440,32 @@ msgstr ""
 #: src/gui/setup_colors.cpp:83 src/gui/setup_colors.cpp:84
 #: src/gui/setup_colors.cpp:434
 msgid "Pulse"
-msgstr ""
+msgstr "Puls"
 
 #: src/gui/setup_colors.cpp:85 src/gui/setup_colors.cpp:86
 #: src/gui/setup_colors.cpp:435
 msgid "Rainbow"
-msgstr ""
+msgstr "Duha"
 
 #: src/gui/setup_colors.cpp:87 src/gui/setup_colors.cpp:88
 #: src/gui/setup_colors.cpp:435
 msgid "Spectrum"
-msgstr ""
+msgstr "Spektrum"
 
 #: src/gui/setup_colors.cpp:92
+#, fuzzy
 msgid "Delay:"
-msgstr ""
+msgstr "Hrát"
 
 #: src/gui/setup_colors.cpp:107
+#, fuzzy
 msgid "Red:"
-msgstr ""
+msgstr "Červená: "
 
 #: src/gui/setup_colors.cpp:122
+#, fuzzy
 msgid "Green:"
-msgstr ""
+msgstr "Zelená: "
 
 #: src/gui/setup_colors.cpp:137
 msgid "Blue:"
@@ -1451,7 +1473,7 @@ msgstr ""
 
 #: src/gui/setup.cpp:51
 msgid "Apply"
-msgstr ""
+msgstr "Použít"
 
 #: src/gui/setup.cpp:51
 msgid "Reset Windows"
@@ -1459,7 +1481,7 @@ msgstr ""
 
 #: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:78
 msgid "Press the button to start calibration"
-msgstr ""
+msgstr "Stiskněte tlačítko pro zahájení kalibrace"
 
 #: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:76
 msgid "Calibrate"
@@ -1467,15 +1489,15 @@ msgstr "Kalibrovat"
 
 #: src/gui/setup_joystick.cpp:39
 msgid "Enable joystick"
-msgstr ""
+msgstr "Zapnout joystick"
 
 #: src/gui/setup_joystick.cpp:41
 msgid "Joystick"
-msgstr ""
+msgstr "Joystick"
 
 #: src/gui/setup_joystick.cpp:83
 msgid "Stop"
-msgstr ""
+msgstr "Zastavit"
 
 #: src/gui/setup_joystick.cpp:84
 msgid "Rotate the stick"
@@ -1491,7 +1513,7 @@ msgstr ""
 
 #: src/gui/setup_keyboard.cpp:90
 msgid "Default"
-msgstr ""
+msgstr "Výchozí"
 
 #: src/gui/setup_keyboard.cpp:119
 msgid "Key Conflict(s) Detected."
@@ -1499,7 +1521,7 @@ msgstr ""
 
 #: src/gui/setup_players.cpp:57
 msgid "Name"
-msgstr ""
+msgstr "Jméno"
 
 #: src/gui/setup_players.cpp:58
 msgid "Relation"
@@ -1507,7 +1529,7 @@ msgstr ""
 
 #: src/gui/setup_players.cpp:63
 msgid "Neutral"
-msgstr ""
+msgstr "Neutrální"
 
 #: src/gui/setup_players.cpp:64
 msgid "Friend"
@@ -1523,11 +1545,11 @@ msgstr ""
 
 #: src/gui/setup_players.cpp:208 src/gui/setup_video.cpp:132
 msgid "???"
-msgstr ""
+msgstr "???"
 
 #: src/gui/setup_players.cpp:226
 msgid "Allow trading"
-msgstr ""
+msgstr "Povolit obchodování"
 
 #: src/gui/setup_players.cpp:228
 msgid "Allow whispers"
@@ -1543,7 +1565,7 @@ msgstr ""
 
 #: src/gui/setup_players.cpp:236
 msgid "Players"
-msgstr ""
+msgstr "Hráči"
 
 #: src/gui/setup_players.cpp:261
 msgid "When ignoring:"
@@ -1554,21 +1576,20 @@ msgid "Tiny"
 msgstr ""
 
 #: src/gui/setup_video.cpp:114
-#, fuzzy
 msgid "Small"
-msgstr "Prodej"
+msgstr "Malý"
 
 #: src/gui/setup_video.cpp:115
 msgid "Medium"
-msgstr ""
+msgstr "Střední"
 
 #: src/gui/setup_video.cpp:116
 msgid "Large"
-msgstr ""
+msgstr "Velký"
 
 #: src/gui/setup_video.cpp:142
 msgid "No text"
-msgstr ""
+msgstr "Bez textu"
 
 #: src/gui/setup_video.cpp:144
 msgid "Bubbles, no names"
@@ -1580,27 +1601,27 @@ msgstr ""
 
 #: src/gui/setup_video.cpp:157
 msgid "off"
-msgstr ""
+msgstr "vypnout"
 
 #: src/gui/setup_video.cpp:158 src/gui/setup_video.cpp:171
 msgid "low"
-msgstr ""
+msgstr "nízký"
 
 #: src/gui/setup_video.cpp:159 src/gui/setup_video.cpp:173
 msgid "high"
-msgstr ""
+msgstr "vysoký"
 
 #: src/gui/setup_video.cpp:172
 msgid "medium"
-msgstr ""
+msgstr "střední"
 
 #: src/gui/setup_video.cpp:174
 msgid "max"
-msgstr ""
+msgstr "max"
 
 #: src/gui/setup_video.cpp:196
 msgid "Full screen"
-msgstr ""
+msgstr "Celá obrazovka"
 
 #: src/gui/setup_video.cpp:197
 msgid "OpenGL"
@@ -1608,7 +1629,7 @@ msgstr "OpenGL"
 
 #: src/gui/setup_video.cpp:198
 msgid "Custom cursor"
-msgstr ""
+msgstr "Vlastní kurzor"
 
 #: src/gui/setup_video.cpp:200
 msgid "Visible names"
@@ -1642,7 +1663,7 @@ msgstr ""
 
 #: src/gui/setup_video.cpp:225
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: src/gui/setup_video.cpp:227
 msgid "Show monster damage"
@@ -1666,7 +1687,7 @@ msgstr ""
 
 #: src/gui/setup_video.cpp:237
 msgid "Font size"
-msgstr ""
+msgstr "Velikost písma"
 
 #: src/gui/setup_video.cpp:251 src/gui/setup_video.cpp:454
 #: src/gui/setup_video.cpp:568
@@ -1685,20 +1706,22 @@ msgid ""
 msgstr ""
 
 #: src/gui/setup_video.cpp:398
+#, fuzzy
 msgid "Switching to Full Screen"
-msgstr ""
+msgstr "Přepnout na celou obrazovku"
 
 #: src/gui/setup_video.cpp:399
 msgid "Restart needed for changes to take effect."
-msgstr ""
+msgstr "Pro uplatnění změn je potřeba restart."
 
 #: src/gui/setup_video.cpp:411
+#, fuzzy
 msgid "Changing to OpenGL"
-msgstr ""
+msgstr "Přepnout OpenGL"
 
 #: src/gui/setup_video.cpp:412
 msgid "Applying change to OpenGL requires restart."
-msgstr ""
+msgstr "Změny v OpenGL vyžadují restart."
 
 #: src/gui/setup_video.cpp:486 src/gui/setup_video.cpp:491
 msgid "Screen Resolution Changed"
@@ -1718,7 +1741,7 @@ msgstr ""
 
 #: src/gui/setup_video.cpp:523
 msgid "Changes will take effect on map change."
-msgstr ""
+msgstr "Změny se projeví až po změně mapy."
 
 #: src/gui/skilldialog.cpp:197 src/gui/windowmenu.cpp:58
 msgid "Skills"
@@ -1773,18 +1796,19 @@ msgid "Who would you like to invite to guild %s?"
 msgstr ""
 
 #: src/gui/socialwindow.cpp:146
+#, fuzzy
 msgid "Leave Guild?"
-msgstr ""
+msgstr "Vytvořit guildu"
 
 #: src/gui/socialwindow.cpp:147
 #, fuzzy, c-format
 msgid "Are you sure you want to leave guild %s?"
-msgstr "Jste si jistí, že chcete vymazat tuto postavu?"
+msgstr "Opravdu chcete skončit?"
 
 #: src/gui/socialwindow.cpp:182
-#, c-format
+#, fuzzy, c-format
 msgid "Invited user %s to party."
-msgstr ""
+msgstr "/party >Pozvat uživatele do party"
 
 #: src/gui/socialwindow.cpp:189
 #, c-format
@@ -1792,8 +1816,9 @@ msgid "Party %s quit requested."
 msgstr ""
 
 #: src/gui/socialwindow.cpp:199
+#, fuzzy
 msgid "Member Invite to Party"
-msgstr ""
+msgstr "/party >Pozvat uživatele do party"
 
 #: src/gui/socialwindow.cpp:200
 #, c-format
@@ -1807,11 +1832,11 @@ msgstr ""
 #: src/gui/socialwindow.cpp:210
 #, fuzzy, c-format
 msgid "Are you sure you want to leave party %s?"
-msgstr "Jste si jistí, že chcete vymazat tuto postavu?"
+msgstr "Opravdu chcete skončit?"
 
 #: src/gui/socialwindow.cpp:239
 msgid "Create Guild"
-msgstr ""
+msgstr "Vytvořit guildu"
 
 #: src/gui/socialwindow.cpp:240 src/gui/socialwindow.cpp:564
 #, fuzzy
@@ -1823,32 +1848,34 @@ msgid "Social"
 msgstr ""
 
 #: src/gui/socialwindow.cpp:297
+#, fuzzy
 msgid "Invite"
-msgstr ""
+msgstr "Pozvat uživatele"
 
 #: src/gui/socialwindow.cpp:298
+#, fuzzy
 msgid "Leave"
-msgstr ""
+msgstr "Velký"
 
 #: src/gui/socialwindow.cpp:394
-#, c-format
+#, fuzzy, c-format
 msgid "Accepted party invite from %s."
-msgstr ""
+msgstr "Přijmout pozvání od %s."
 
 #: src/gui/socialwindow.cpp:400
-#, c-format
+#, fuzzy, c-format
 msgid "Rejected party invite from %s."
-msgstr ""
+msgstr "Odmítnout pozvání od %s."
 
 #: src/gui/socialwindow.cpp:413
-#, c-format
+#, fuzzy, c-format
 msgid "Accepted guild invite from %s."
-msgstr ""
+msgstr "Přijmout pozvání od %s."
 
 #: src/gui/socialwindow.cpp:419
-#, c-format
+#, fuzzy, c-format
 msgid "Rejected guild invite from %s."
-msgstr ""
+msgstr "Odmítnout pozvání od %s."
 
 #: src/gui/socialwindow.cpp:463
 #, c-format
@@ -1863,63 +1890,68 @@ msgstr ""
 #: src/gui/socialwindow.cpp:484
 #, fuzzy
 msgid "Guild Name"
-msgstr "Gildy"
+msgstr "Guilda"
 
 #: src/gui/socialwindow.cpp:485
+#, fuzzy
 msgid "Choose your guild's name."
-msgstr ""
+msgstr "Vyberte si server"
 
 #: src/gui/socialwindow.cpp:497
 msgid "Received guild request, but one already exists."
 msgstr ""
 
 #: src/gui/socialwindow.cpp:502
-#, c-format
+#, fuzzy, c-format
 msgid "%s has invited you to join the guild %s."
-msgstr ""
+msgstr "%s vás zve ke vstupu do party: %s"
 
 #: src/gui/socialwindow.cpp:507
+#, fuzzy
 msgid "Accept Guild Invite"
-msgstr ""
+msgstr "Přijmout pozvání do party"
 
 #: src/gui/socialwindow.cpp:519
 msgid "Received party request, but one already exists."
 msgstr ""
 
 #: src/gui/socialwindow.cpp:529
+#, fuzzy
 msgid "You have been invited you to join a party."
-msgstr ""
+msgstr "%s vás zve ke vstupu do své party."
 
 #: src/gui/socialwindow.cpp:533
-#, c-format
+#, fuzzy, c-format
 msgid "You have been invited to join the %s party."
-msgstr ""
+msgstr "%s vás zve ke vstupu do party: %s"
 
 #: src/gui/socialwindow.cpp:541
 #, c-format
 msgid "%s has invited you to join their party."
-msgstr ""
+msgstr "%s vás zve ke vstupu do své party."
 
 #: src/gui/socialwindow.cpp:546
 #, c-format
 msgid "%s has invited you to join the %s party."
-msgstr ""
+msgstr "%s vás zve ke vstupu do party: %s"
 
 #: src/gui/socialwindow.cpp:554
 msgid "Accept Party Invite"
-msgstr ""
+msgstr "Přijmout pozvání do party"
 
 #: src/gui/socialwindow.cpp:565
 msgid "Cannot create party. You are already in a party"
 msgstr ""
 
 #: src/gui/socialwindow.cpp:570
+#, fuzzy
 msgid "Party Name"
-msgstr ""
+msgstr "Parta"
 
 #: src/gui/socialwindow.cpp:571
+#, fuzzy
 msgid "Choose your party's name."
-msgstr ""
+msgstr "Vyberte si server"
 
 #: src/gui/specialswindow.cpp:85 src/gui/windowmenu.cpp:59
 msgid "Specials"
@@ -1943,7 +1975,7 @@ msgstr "Úroveň: %d"
 #: src/gui/statuswindow.cpp:100 src/gui/statuswindow.cpp:211
 #, c-format
 msgid "Money: %s"
-msgstr ""
+msgstr "Peníze: %s"
 
 #: src/gui/statuswindow.cpp:102
 msgid "HP:"
@@ -1951,7 +1983,7 @@ msgstr ""
 
 #: src/gui/statuswindow.cpp:107
 msgid "Exp:"
-msgstr ""
+msgstr "Exp:"
 
 #: src/gui/statuswindow.cpp:112
 msgid "MP:"
@@ -1975,8 +2007,9 @@ msgid "MP"
 msgstr ""
 
 #: src/gui/statuswindow.cpp:206
+#, fuzzy
 msgid "Exp"
-msgstr ""
+msgstr "Exp:"
 
 #: src/gui/statuswindow.cpp:215
 #, fuzzy
@@ -1988,9 +2021,9 @@ msgid "Job"
 msgstr ""
 
 #: src/gui/statuswindow.cpp:229
-#, fuzzy, c-format
+#, c-format
 msgid "Character points: %d"
-msgstr "Potvrďte vymazání postavy"
+msgstr ""
 
 #: src/gui/statuswindow.cpp:235
 #, c-format
@@ -2016,7 +2049,7 @@ msgstr ""
 
 #: src/gui/trade.cpp:54
 msgid "Agree trade"
-msgstr ""
+msgstr "Souhlasit s obchodem"
 
 #: src/gui/trade.cpp:55
 msgid "Agreed. Waiting..."
@@ -2028,11 +2061,11 @@ msgstr ""
 
 #: src/gui/trade.cpp:74 src/gui/trade.cpp:75
 msgid "Trade"
-msgstr ""
+msgstr "Obchod"
 
 #: src/gui/trade.cpp:77
 msgid "Add"
-msgstr ""
+msgstr "Přidat"
 
 #: src/gui/trade.cpp:99 src/gui/trade.cpp:135
 #, c-format
@@ -2053,7 +2086,7 @@ msgstr ""
 
 #: src/gui/trade.cpp:318
 msgid "You don't have enough money."
-msgstr ""
+msgstr "Nemáte dost peněz."
 
 #: src/gui/unregisterdialog.cpp:51
 #, c-format
@@ -2062,7 +2095,7 @@ msgstr "Jméno: %s"
 
 #: src/gui/updatewindow.cpp:124
 msgid "Updating..."
-msgstr ""
+msgstr "Aktualizuje se..."
 
 #: src/gui/updatewindow.cpp:142
 msgid "Connecting..."
@@ -2070,7 +2103,7 @@ msgstr "Připojuji se..."
 
 #: src/gui/updatewindow.cpp:145
 msgid "Play"
-msgstr ""
+msgstr "Hrát"
 
 #: src/gui/updatewindow.cpp:405
 msgid "##1  The update process is incomplete."
@@ -2136,7 +2169,7 @@ msgstr ""
 
 #: src/gui/widgets/channeltab.cpp:75
 msgid "If you're the last person in the channel, it will be deleted."
-msgstr ""
+msgstr "Pokud jste poslední osobou v kanálu, kanál bude smazán."
 
 #: src/gui/widgets/channeltab.cpp:80
 msgid "Command: /op <nick>"
@@ -2182,7 +2215,7 @@ msgstr ""
 
 #: src/gui/widgets/whispertab.cpp:51
 msgid "Cannot send empty chat!"
-msgstr ""
+msgstr "Nelze poslat prázdný chat!"
 
 #: src/gui/widgets/whispertab.cpp:70
 msgid "/ignore > Ignore the other player"
@@ -2205,12 +2238,14 @@ msgid "This command closes the current whisper tab."
 msgstr ""
 
 #: src/gui/widgets/whispertab.cpp:87
+#, fuzzy
 msgid "Command: /ignore"
-msgstr ""
+msgstr "Příkaz: /record"
 
 #: src/gui/widgets/whispertab.cpp:88
+#, fuzzy
 msgid "This command ignores the other player regardless of current relations."
-msgstr ""
+msgstr "Tento příkaz zobrazí počet hráčů, kteří jsou momentálně online."
 
 #: src/gui/widgets/whispertab.cpp:94
 msgid "This command stops ignoring the other player if they are being ignored."
@@ -2227,7 +2262,7 @@ msgstr "Zkratka"
 #: src/gui/worldselectdialog.cpp:71
 #, fuzzy
 msgid "Select World"
-msgstr "Vyber server"
+msgstr "Vyberte server"
 
 #: src/gui/worldselectdialog.cpp:76
 #, fuzzy
@@ -2235,8 +2270,9 @@ msgid "Change Login"
 msgstr "Změnit"
 
 #: src/gui/worldselectdialog.cpp:77
+#, fuzzy
 msgid "Choose World"
-msgstr ""
+msgstr "Vyberte si server"
 
 #: src/keyboardconfig.cpp:40
 msgid "Move Up"
@@ -2256,15 +2292,15 @@ msgstr ""
 
 #: src/keyboardconfig.cpp:44 src/net/ea/generalhandler.cpp:223
 msgid "Attack"
-msgstr ""
+msgstr "Útok"
 
 #: src/keyboardconfig.cpp:45
 msgid "Target & Attack"
-msgstr ""
+msgstr "Cíl & Útok"
 
 #: src/keyboardconfig.cpp:46
 msgid "Smilie"
-msgstr ""
+msgstr "Smajlíky"
 
 #: src/keyboardconfig.cpp:47
 msgid "Talk"
@@ -2272,11 +2308,12 @@ msgstr ""
 
 #: src/keyboardconfig.cpp:48
 msgid "Stop Attack"
-msgstr ""
+msgstr "Zastavit Útok"
 
 #: src/keyboardconfig.cpp:49
+#, fuzzy
 msgid "Target Monster"
-msgstr ""
+msgstr "Monstra"
 
 #: src/keyboardconfig.cpp:50
 msgid "Target NPC"
@@ -2296,11 +2333,11 @@ msgstr ""
 
 #: src/keyboardconfig.cpp:54
 msgid "Sit"
-msgstr ""
+msgstr "Sednout si"
 
 #: src/keyboardconfig.cpp:55
 msgid "Screenshot"
-msgstr ""
+msgstr "Snímek obrazovky"
 
 #: src/keyboardconfig.cpp:56
 msgid "Enable/Disable Trading"
@@ -2333,9 +2370,8 @@ msgid "Inventory Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:73
-#, fuzzy
 msgid "Equipment Window"
-msgstr "Vybavení"
+msgstr ""
 
 #: src/keyboardconfig.cpp:74
 msgid "Skill Window"
@@ -2370,9 +2406,8 @@ msgid "Emote Shortcut Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:82
-#, fuzzy
 msgid "Outfits Window"
-msgstr "Vybavení"
+msgstr ""
 
 #: src/keyboardconfig.cpp:83
 msgid "Wear Outfit"
@@ -2450,15 +2485,16 @@ msgstr ""
 
 #: src/main.cpp:44
 msgid "Options:"
-msgstr ""
+msgstr "Nastavení:"
 
 #: src/main.cpp:45
 msgid "  -v --version        : Display the version"
 msgstr ""
 
 #: src/main.cpp:46
+#, fuzzy
 msgid "  -h --help           : Display this help"
-msgstr ""
+msgstr "/help > Zobrazit tuto nápovědu"
 
 #: src/main.cpp:47
 msgid "  -C --config-dir     : Configuration directory to use"
@@ -2526,7 +2562,7 @@ msgstr ""
 
 #: src/net/ea/buysellhandler.cpp:117
 msgid "Thanks for buying."
-msgstr ""
+msgstr "Děkuji za nákup."
 
 #: src/net/ea/buysellhandler.cpp:124
 msgid "Unable to buy."
@@ -2534,15 +2570,16 @@ msgstr ""
 
 #: src/net/ea/buysellhandler.cpp:130
 msgid "Thanks for selling."
-msgstr ""
+msgstr "Děkuji za prodej."
 
 #: src/net/ea/buysellhandler.cpp:132
 msgid "Unable to sell."
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:103
+#, fuzzy
 msgid "Access denied."
-msgstr ""
+msgstr "Přístup zamítnut"
 
 #: src/net/ea/charserverhandler.cpp:106
 msgid "Cannot use this ID."
@@ -2558,12 +2595,11 @@ msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:147 src/net/manaserv/charhandler.cpp:187
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: src/net/ea/charserverhandler.cpp:147
-#, fuzzy
 msgid "Character deleted."
-msgstr "Potvrďte vymazání postavy"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:152
 msgid "Failed to delete character."
@@ -2575,7 +2611,7 @@ msgstr "Síla:"
 
 #: src/net/ea/charserverhandler.cpp:238 src/net/manaserv/charhandler.cpp:264
 msgid "Agility:"
-msgstr ""
+msgstr "Hbitost:"
 
 #: src/net/ea/charserverhandler.cpp:239 src/net/manaserv/charhandler.cpp:266
 msgid "Vitality:"
@@ -2587,11 +2623,11 @@ msgstr "Inteligence:"
 
 #: src/net/ea/charserverhandler.cpp:241 src/net/manaserv/charhandler.cpp:265
 msgid "Dexterity:"
-msgstr ""
+msgstr "Obratnost:"
 
 #: src/net/ea/charserverhandler.cpp:242
 msgid "Luck:"
-msgstr ""
+msgstr "Štěstí:"
 
 #: src/net/ea/chathandler.cpp:80
 msgid "Whisper could not be sent, user is offline."
@@ -2602,8 +2638,9 @@ msgid "Whisper could not be sent, ignored by user."
 msgstr ""
 
 #: src/net/ea/chathandler.cpp:171
+#, fuzzy
 msgid "MVP player."
-msgstr ""
+msgstr "Hráč"
 
 #: src/net/ea/chathandler.cpp:204 src/net/ea/chathandler.cpp:210
 #: src/net/ea/chathandler.cpp:215 src/net/ea/chathandler.cpp:220
@@ -2620,16 +2657,16 @@ msgstr ""
 #: src/net/ea/gamehandler.cpp:100
 #, fuzzy
 msgid "Game"
-msgstr "Jméno:"
+msgstr "Jméno"
 
 #: src/net/ea/gamehandler.cpp:100
 msgid "Request to quit denied!"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:102 src/net/manaserv/generalhandler.cpp:95
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Síla:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:103 src/net/manaserv/generalhandler.cpp:96
 #, c-format
@@ -2637,14 +2674,14 @@ msgid "Agility %+d"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:104 src/net/manaserv/generalhandler.cpp:98
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "Vitalita:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:105 src/net/manaserv/generalhandler.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Inteligence:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:106 src/net/manaserv/generalhandler.cpp:97
 #, c-format
@@ -2652,9 +2689,9 @@ msgid "Dexterity %+d"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:107
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
-msgstr "Útok %+d"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:130
 msgid "Authentication failed."
@@ -2690,65 +2727,66 @@ msgstr ""
 
 #: src/net/ea/generalhandler.cpp:216 src/net/manaserv/generalhandler.cpp:166
 msgid "Strength"
-msgstr ""
+msgstr "Síla"
 
 #: src/net/ea/generalhandler.cpp:217 src/net/manaserv/generalhandler.cpp:167
 msgid "Agility"
-msgstr ""
+msgstr "Hbitost"
 
 #: src/net/ea/generalhandler.cpp:218 src/net/manaserv/generalhandler.cpp:169
 msgid "Vitality"
-msgstr ""
+msgstr "Vitalita"
 
 #: src/net/ea/generalhandler.cpp:219 src/net/manaserv/generalhandler.cpp:170
 msgid "Intelligence"
-msgstr ""
+msgstr "Inteligence"
 
 #: src/net/ea/generalhandler.cpp:220 src/net/manaserv/generalhandler.cpp:168
 msgid "Dexterity"
-msgstr ""
+msgstr "Obratnost"
 
 #: src/net/ea/generalhandler.cpp:221
 msgid "Luck"
-msgstr ""
+msgstr "Štěstí"
 
 #: src/net/ea/generalhandler.cpp:224
 #, fuzzy
 msgid "Defense"
-msgstr "Obrana %+d"
+msgstr "Obrana:"
 
 #: src/net/ea/generalhandler.cpp:225
 #, fuzzy
 msgid "M.Attack"
-msgstr "Útok %+d"
+msgstr "M.Útok:"
 
 #: src/net/ea/generalhandler.cpp:226
 #, fuzzy
 msgid "M.Defense"
-msgstr "Obrana %+d"
+msgstr "M.Obrana:"
 
 #: src/net/ea/generalhandler.cpp:227
-#, c-format
+#, fuzzy, c-format
 msgid "% Accuracy"
-msgstr ""
+msgstr "% Přesnost:"
 
 #: src/net/ea/generalhandler.cpp:228
-#, c-format
+#, fuzzy, c-format
 msgid "% Evade"
-msgstr ""
+msgstr "% Únik:"
 
 #: src/net/ea/generalhandler.cpp:229
-#, c-format
+#, fuzzy, c-format
 msgid "% Critical"
-msgstr ""
+msgstr "Kritický zásah"
 
 #: src/net/ea/gui/guildtab.cpp:61 src/net/ea/gui/partytab.cpp:59
 msgid "/help > Display this help."
 msgstr ""
 
 #: src/net/ea/gui/guildtab.cpp:62
+#, fuzzy
 msgid "/invite > Invite a player to your guild"
-msgstr ""
+msgstr "/party >Pozvat uživatele do party"
 
 #: src/net/ea/gui/guildtab.cpp:63
 msgid "/leave > Leave the guild you are in"
@@ -2771,8 +2809,9 @@ msgid "Command: /leave"
 msgstr ""
 
 #: src/net/ea/gui/guildtab.cpp:81
+#, fuzzy
 msgid "This command causes the player to leave the guild."
-msgstr ""
+msgstr "Tento příkaz odešle zprávu <message> uživateli <nick>."
 
 #: src/net/ea/gui/guildtab.cpp:89
 msgid "Guild name is missing."
@@ -2930,8 +2969,9 @@ msgstr ""
 #: src/net/manaserv/charhandler.cpp:158 src/net/manaserv/loginhandler.cpp:96
 #: src/net/manaserv/loginhandler.cpp:127 src/net/manaserv/loginhandler.cpp:161
 #: src/net/manaserv/loginhandler.cpp:279 src/net/manaserv/loginhandler.cpp:316
+#, fuzzy
 msgid "Unknown error."
-msgstr ""
+msgstr "Neznámý předmět"
 
 #: src/net/ea/loginhandler.cpp:149
 #, fuzzy
@@ -2941,15 +2981,16 @@ msgstr "Zrušit registraci"
 #: src/net/ea/loginhandler.cpp:152
 #, fuzzy
 msgid "Wrong password."
-msgstr "Změnit heslo"
+msgstr "Špatné heslo"
 
 #: src/net/ea/loginhandler.cpp:155
 msgid "Account expired."
 msgstr ""
 
 #: src/net/ea/loginhandler.cpp:158
+#, fuzzy
 msgid "Rejected from server."
-msgstr ""
+msgstr "Odmítnout pozvání od %s."
 
 #: src/net/ea/loginhandler.cpp:161
 msgid ""
@@ -3327,9 +3368,8 @@ msgid "Invalid name."
 msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:137
-#, fuzzy
 msgid "Character's name already exists."
-msgstr "Potvrďte vymazání postavy"
+msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:140
 msgid "Invalid hairstyle."
@@ -3356,19 +3396,18 @@ msgid "One stat is zero."
 msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:187
-#, fuzzy
 msgid "Player deleted."
-msgstr "Potvrďte vymazání postavy"
+msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:199
 #, fuzzy
 msgid "Selection out of range."
-msgstr "Vyberte množství zboží, se kterým budete obchodovat."
+msgstr "Vyberte množství předmětů, se kterými budete obchodovat."
 
 #: src/net/manaserv/charhandler.cpp:202
-#, c-format
+#, fuzzy, c-format
 msgid "Unknown error (%d)."
-msgstr ""
+msgstr "Neznámý příkaz."
 
 #: src/net/manaserv/charhandler.cpp:242
 msgid "No gameservers are available."
@@ -3389,8 +3428,9 @@ msgid "Players in this channel:"
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:201
+#, fuzzy
 msgid "Error joining channel."
-msgstr ""
+msgstr "Příkaz: /join <channel>"
 
 #: src/net/manaserv/chathandler.cpp:207
 msgid "Listing channels."
@@ -3421,8 +3461,9 @@ msgid "%s has kicked %s."
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:327
+#, fuzzy
 msgid "Unknown channel event."
-msgstr ""
+msgstr "Neznámý příkaz."
 
 #: src/net/manaserv/generalhandler.cpp:100
 #, c-format
@@ -3430,8 +3471,9 @@ msgid "Willpower %+d"
 msgstr ""
 
 #: src/net/manaserv/generalhandler.cpp:171
+#, fuzzy
 msgid "Willpower"
-msgstr ""
+msgstr "Šeptat"
 
 #: src/net/manaserv/guildhandler.cpp:81
 msgid "Guild created."
@@ -3466,16 +3508,18 @@ msgid "Server is full."
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:118
+#, fuzzy
 msgid "New password incorrect."
-msgstr ""
+msgstr "Zadejte dvakrát nové heslo:"
 
 #: src/net/manaserv/loginhandler.cpp:124 src/net/manaserv/loginhandler.cpp:155
 msgid "Account not connected. Please login first."
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:149
+#, fuzzy
 msgid "New email address incorrect."
-msgstr ""
+msgstr "Zadejte dvakrát nový e-mail:"
 
 #: src/net/manaserv/loginhandler.cpp:152
 msgid "Old email address incorrect."
@@ -3495,16 +3539,18 @@ msgid "Client version is too old."
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:266
+#, fuzzy
 msgid "Wrong username or password."
-msgstr ""
+msgstr "Chybné uživatelské jméno nebo heslo"
 
 #: src/net/manaserv/loginhandler.cpp:275
 msgid "Login attempt too soon after previous attempt."
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:303
+#, fuzzy
 msgid "Wrong username, password or email address."
-msgstr ""
+msgstr "Chybné uživatelské jméno, heslo nebo e-mail"
 
 #: src/net/manaserv/loginhandler.cpp:306
 msgid "Username already exists."
@@ -3528,9 +3574,9 @@ msgid "%s joined the party."
 msgstr ""
 
 #: src/net/manaserv/partyhandler.cpp:123
-#, c-format
+#, fuzzy, c-format
 msgid "%s rejected your invite."
-msgstr ""
+msgstr "Odmítnout pozvání od %s."
 
 #: src/net/manaserv/tradehandler.cpp:96
 msgid "Accepting incoming trade requests."
@@ -3587,15 +3633,27 @@ msgstr ""
 
 #: src/resources/itemdb.cpp:114
 msgid "Unknown item"
-msgstr ""
+msgstr "Neznámý předmět"
 
 #: src/resources/itemdb.cpp:158 src/resources/monsterdb.cpp:45
 #: src/resources/monsterdb.cpp:67
 msgid "unnamed"
 msgstr ""
 
+#~ msgid "no"
+#~ msgstr "ne"
+
+#~ msgid "Buddy"
+#~ msgstr "Kamarád"
+
+#~ msgid "Buddy List"
+#~ msgstr "Seznam kamarádů"
+
 #~ msgid "Description: %s"
 #~ msgstr "Popis: %s"
+
+#~ msgid "Effect: %s"
+#~ msgstr "Účinek: %s"
 
 #~ msgid "Previous"
 #~ msgstr "Předchozí"
@@ -3603,5 +3661,59 @@ msgstr ""
 #~ msgid "New"
 #~ msgstr "Nová"
 
+#~ msgid "Job Level: %d"
+#~ msgstr "Úroveň povolání: %d"
+
 #~ msgid "Ok"
 #~ msgstr "Ok"
+
+#~ msgid "2 Handed Weapons"
+#~ msgstr "Obouruční zbraně"
+
+#~ msgid "fullscreen"
+#~ msgstr "celá obrazovka"
+
+#~ msgid "Weapons"
+#~ msgstr "Zbraně"
+
+#~ msgid "Crafts"
+#~ msgstr "Řemesla"
+
+#~ msgid "Cost"
+#~ msgstr "Cena"
+
+#~ msgid "Attack:"
+#~ msgstr "Útok:"
+
+#~ msgid "% Reflex:"
+#~ msgstr "% Reakce:"
+
+#~ msgid "Guilds"
+#~ msgstr "Gildy"
+
+#~ msgid "Unarmed"
+#~ msgstr "Neozbrojený"
+
+#~ msgid "Knife"
+#~ msgstr "Nůž"
+
+#~ msgid "Sword"
+#~ msgstr "Meč"
+
+#~ msgid "Staff"
+#~ msgstr "Hůl"
+
+#~ msgid "Whip"
+#~ msgstr "Bič"
+
+#~ msgid "Bow"
+#~ msgstr "Luk"
+
+#~ msgid "Mace"
+#~ msgstr "Palcát"
+
+#~ msgid "Axe"
+#~ msgstr "Sekera"
+
+#~ msgid "mana"
+#~ msgstr "mana"

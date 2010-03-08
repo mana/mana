@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-03-05 21:43+0100\n"
-"PO-Revision-Date: 2009-01-09 12:22+0000\n"
-"Last-Translator: ActiveFile <activefile@gmail.com>\n"
+"POT-Creation-Date: 2010-03-05 21:52+0100\n"
+"PO-Revision-Date: 2009-11-21 12:11+0000\n"
+"Last-Translator: Rainfeed <Unknown>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
@@ -100,7 +100,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:127 src/commandhandler.cpp:308
 msgid "Unknown command."
-msgstr ""
+msgstr "Perintah tidak dikenal."
 
 #: src/commandhandler.cpp:156
 msgid "-- Help --"
@@ -184,7 +184,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:184
 msgid "/announce > Global announcement (GM only)"
-msgstr ""
+msgstr "/announce > Pengumuman global (khusus GM)"
 
 #: src/commandhandler.cpp:188
 msgid "For more information, type /help <command>."
@@ -192,7 +192,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:192
 msgid "Command: /help"
-msgstr ""
+msgstr "Perintah: /help"
 
 #: src/commandhandler.cpp:193
 msgid "This command displays a list of all commands available."
@@ -208,11 +208,11 @@ msgstr ""
 
 #: src/commandhandler.cpp:203
 msgid "Command: /announce <msg>"
-msgstr ""
+msgstr "Perintah: /announce <pesan>"
 
 #: src/commandhandler.cpp:204
 msgid "*** only available to a GM ***"
-msgstr ""
+msgstr "*** hanya tersedia bagi GM ***"
 
 #: src/commandhandler.cpp:205
 msgid "This command sends the message <msg> to all players currently online."
@@ -220,15 +220,16 @@ msgstr ""
 
 #: src/commandhandler.cpp:210
 msgid "Command: /clear"
-msgstr ""
+msgstr "Perintah: /clear"
 
 #: src/commandhandler.cpp:211
 msgid "This command clears the chat log of previous chat."
 msgstr ""
 
 #: src/commandhandler.cpp:215
+#, fuzzy
 msgid "Command: /ignore <player>"
-msgstr ""
+msgstr "Perintah: /announce <pesan>"
 
 #: src/commandhandler.cpp:216
 msgid "This command ignores the given player regardless of current relations."
@@ -297,8 +298,9 @@ msgid "This command tries to make a tab for whispers betweenyou and <nick>."
 msgstr ""
 
 #: src/commandhandler.cpp:253
+#, fuzzy
 msgid "Command: /createparty <name>"
-msgstr ""
+msgstr "Perintah: /clear"
 
 #: src/commandhandler.cpp:254
 msgid "This command creates a new party called <name>."
@@ -363,8 +365,9 @@ msgid "This command displays the return toggle status."
 msgstr ""
 
 #: src/commandhandler.cpp:291 src/gui/widgets/whispertab.cpp:93
+#, fuzzy
 msgid "Command: /unignore <player>"
-msgstr ""
+msgstr "Perintah: /announce <pesan>"
 
 #: src/commandhandler.cpp:292
 msgid "This command stops ignoring the given player if they are being ignored"
@@ -769,9 +772,9 @@ msgid "Map: %s"
 msgstr "Nama: %s"
 
 #: src/gui/debugwindow.cpp:67 src/gui/debugwindow.cpp:106
-#, c-format
+#, fuzzy, c-format
 msgid "Minimap: %s"
-msgstr ""
+msgstr "MiniMap"
 
 #: src/gui/debugwindow.cpp:68 src/gui/debugwindow.cpp:99
 #, c-format
@@ -904,9 +907,8 @@ msgid "Change Server"
 msgstr "Ubah"
 
 #: src/gui/minimap.cpp:46 src/gui/minimap.cpp:87
-#, fuzzy
 msgid "Map"
-msgstr "MiniMap"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:44
 msgid "Waiting for server"
@@ -917,9 +919,8 @@ msgid "Next"
 msgstr "Berikutnya"
 
 #: src/gui/npcdialog.cpp:47
-#, fuzzy
 msgid "Submit"
-msgstr "Keluar"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:52 src/gui/npcpostdialog.cpp:41
 msgid "NPC"
@@ -1076,14 +1077,12 @@ msgid "Generics"
 msgstr ""
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Hats"
-msgstr "Status"
+msgstr ""
 
 #: src/gui/palette.cpp:117
-#, fuzzy
 msgid "Usables"
-msgstr "Gunakan"
+msgstr ""
 
 #: src/gui/palette.cpp:118
 msgid "Shirts"
@@ -1106,9 +1105,8 @@ msgid "Two Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:123
-#, fuzzy
 msgid "Shields"
-msgstr "Keahlian"
+msgstr ""
 
 #: src/gui/palette.cpp:124
 msgid "Rings"
@@ -1181,9 +1179,9 @@ msgid "Attack %s"
 msgstr "Serangan %+d"
 
 #: src/gui/popupmenu.cpp:92
-#, fuzzy, c-format
+#, c-format
 msgid "Whisper %s"
-msgstr "Ketekunan"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:101
 #, c-format
@@ -1243,9 +1241,9 @@ msgid "Add name to chat"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:191
-#, fuzzy, c-format
+#, c-format
 msgid "Pick up %s"
-msgstr "@@pickup|Ambil %s@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:193 src/gui/popupmenu.cpp:400
 msgid "Add to chat"
@@ -1555,9 +1553,8 @@ msgid "Tiny"
 msgstr ""
 
 #: src/gui/setup_video.cpp:114
-#, fuzzy
 msgid "Small"
-msgstr "Jual"
+msgstr ""
 
 #: src/gui/setup_video.cpp:115
 msgid "Medium"
@@ -2208,8 +2205,9 @@ msgid "This command closes the current whisper tab."
 msgstr ""
 
 #: src/gui/widgets/whispertab.cpp:87
+#, fuzzy
 msgid "Command: /ignore"
-msgstr ""
+msgstr "Perintah: /help"
 
 #: src/gui/widgets/whispertab.cpp:88
 msgid "This command ignores the other player regardless of current relations."
@@ -2335,9 +2333,8 @@ msgid "Inventory Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:73
-#, fuzzy
 msgid "Equipment Window"
-msgstr "Perlengkapan"
+msgstr ""
 
 #: src/keyboardconfig.cpp:74
 msgid "Skill Window"
@@ -2372,9 +2369,8 @@ msgid "Emote Shortcut Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:82
-#, fuzzy
 msgid "Outfits Window"
-msgstr "Perlengkapan"
+msgstr ""
 
 #: src/keyboardconfig.cpp:83
 msgid "Wear Outfit"
@@ -2563,9 +2559,8 @@ msgid "Info"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:147
-#, fuzzy
 msgid "Character deleted."
-msgstr "Stats Karakter OK"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:152
 msgid "Failed to delete character."
@@ -2629,9 +2624,9 @@ msgid "Request to quit denied!"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:102 src/net/manaserv/generalhandler.cpp:95
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Kekuatan"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:103 src/net/manaserv/generalhandler.cpp:96
 #, c-format
@@ -2639,24 +2634,24 @@ msgid "Agility %+d"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:104 src/net/manaserv/generalhandler.cpp:98
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "Daya/Tenaga Hidup"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:105 src/net/manaserv/generalhandler.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Kecerdasan"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:106 src/net/manaserv/generalhandler.cpp:97
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "Ketangkasan"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:107
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
-msgstr "Serangan %+d"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:130
 msgid "Authentication failed."
@@ -2932,8 +2927,9 @@ msgstr ""
 #: src/net/manaserv/charhandler.cpp:158 src/net/manaserv/loginhandler.cpp:96
 #: src/net/manaserv/loginhandler.cpp:127 src/net/manaserv/loginhandler.cpp:161
 #: src/net/manaserv/loginhandler.cpp:279 src/net/manaserv/loginhandler.cpp:316
+#, fuzzy
 msgid "Unknown error."
-msgstr ""
+msgstr "Perintah tidak dikenal."
 
 #: src/net/ea/loginhandler.cpp:149
 #, fuzzy
@@ -3329,9 +3325,8 @@ msgid "Invalid name."
 msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:137
-#, fuzzy
 msgid "Character's name already exists."
-msgstr "Stats Karakter OK"
+msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:140
 msgid "Invalid hairstyle."
@@ -3360,9 +3355,8 @@ msgid "One stat is zero."
 msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:187
-#, fuzzy
 msgid "Player deleted."
-msgstr "Stats Karakter OK"
+msgstr ""
 
 #: src/net/manaserv/charhandler.cpp:199
 #, fuzzy
@@ -3370,9 +3364,9 @@ msgid "Selection out of range."
 msgstr "Pilih jumlah item yang mau di perdagangkan"
 
 #: src/net/manaserv/charhandler.cpp:202
-#, c-format
+#, fuzzy, c-format
 msgid "Unknown error (%d)."
-msgstr ""
+msgstr "Perintah tidak dikenal."
 
 #: src/net/manaserv/charhandler.cpp:242
 msgid "No gameservers are available."
@@ -3425,13 +3419,14 @@ msgid "%s has kicked %s."
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:327
+#, fuzzy
 msgid "Unknown channel event."
-msgstr ""
+msgstr "Perintah tidak dikenal."
 
 #: src/net/manaserv/generalhandler.cpp:100
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "Ketekunan"
+msgstr ""
 
 #: src/net/manaserv/generalhandler.cpp:171
 #, fuzzy
@@ -3629,9 +3624,8 @@ msgstr ""
 #~ msgid "@@split|Split@@"
 #~ msgstr "@@split|Pisah@@"
 
-#, fuzzy
-#~ msgid "@@store|Store@@"
-#~ msgstr "@@use|Gunakan@@"
+#~ msgid "@@pickup|Pick Up %s@@"
+#~ msgstr "@@pickup|Ambil %s@@"
 
 #~ msgid "Scroll radius"
 #~ msgstr "Radius gulungan"
