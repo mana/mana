@@ -87,9 +87,9 @@ Setup_Keyboard::Setup_Keyboard():
     mAssignKeyButton->addActionListener(this);
     mAssignKeyButton->setEnabled(false);
 
-    mUnAssignKeyButton = new Button(_("Unassign"), "unassign", this);
-    mUnAssignKeyButton->addActionListener(this);
-    mUnAssignKeyButton->setEnabled(false);
+    mUnassignKeyButton = new Button(_("Unassign"), "unassign", this);
+    mUnassignKeyButton->addActionListener(this);
+    mUnassignKeyButton->setEnabled(false);
 
     mMakeDefaultButton = new Button(_("Default"), "makeDefault", this);
     mMakeDefaultButton->addActionListener(this);
@@ -101,7 +101,7 @@ Setup_Keyboard::Setup_Keyboard():
     place(0, 0, scrollArea, 4, 6).setPadding(2);
     place(0, 6, mMakeDefaultButton);
     place(2, 6, mAssignKeyButton);
-    place(3, 6, mUnAssignKeyButton);
+    place(3, 6, mUnassignKeyButton);
 
     setDimension(gcn::Rectangle(0, 0, 365, 280));
 }
@@ -112,7 +112,7 @@ Setup_Keyboard::~Setup_Keyboard()
     delete mKeyListModel;
 
     delete mAssignKeyButton;
-    delete mUnAssignKeyButton;
+    delete mUnassignKeyButton;
     delete mMakeDefaultButton;
 }
 
@@ -146,7 +146,7 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
         if (!mKeySetting)
         {
             mAssignKeyButton->setEnabled(true);
-            mUnAssignKeyButton->setEnabled(true);
+            mUnassignKeyButton->setEnabled(true);
         }
     }
     else if (event.getId() == "assign")
