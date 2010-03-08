@@ -21,6 +21,7 @@
 
 #include "resources/mapreader.h"
 
+#include "configuration.h"
 #include "log.h"
 #include "map.h"
 #include "tileset.h"
@@ -291,8 +292,12 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
                     }
                     else if (objType == "WARP")
                     {
-                        map->addParticleEffect("graphics/particles/warparea.particle.xml",
-                                                objX, objY, objW, objH);
+                        if (config.getValue("showWarps", 1))
+                        {
+                            map->addParticleEffect(
+                                "graphics/particles/warparea.particle.xml",
+                                objX, objY, objW, objH);
+                        }
                     }
                     else
                     {

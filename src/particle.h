@@ -256,6 +256,9 @@ class Particle : public Sprite
          */
         void adjustEmitterSize(int w, int h);
 
+        void setAllowSizeAdjust(bool adjust)
+        { mAllowSizeAdjust = adjust; }
+
         bool isAlive()
         { return mAlive; }
 
@@ -297,6 +300,7 @@ class Particle : public Sprite
         std::list<Sprite*>::iterator mSpriteIterator;   /**< iterator of the particle on the current map */
         Emitters mChildEmitters;    /**< List of child emitters. */
         Particles mChildParticles;  /**< List of particles controlled by this particle */
+        bool mAllowSizeAdjust;      /**< Can the effect size be adjusted by the object props in the map file? */
 
         // dynamic particle
         Vector mVelocity;           /**< Speed in pixels per game-tick. */
