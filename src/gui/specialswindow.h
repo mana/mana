@@ -56,6 +56,8 @@ class SpecialsWindow : public Window, public gcn::ActionListener {
 
         void loadSpecials(const std::string &file);
 
+        bool hasSpecials() { return !mSpecials.empty(); }
+
     private:
         std::vector<gcn::Button *> mSpellButtons;
         typedef std::map<int, SpecialInfo*> SpecialMap;

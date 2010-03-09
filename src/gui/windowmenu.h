@@ -48,6 +48,8 @@ class WindowMenu : public Container,
         void valueChanged(const gcn::SelectionEvent &event);
 
     private:
+        inline void addButton(const char* text, int &x, int &h);
+
         EmotePopup *mEmotePopup;
 };
 

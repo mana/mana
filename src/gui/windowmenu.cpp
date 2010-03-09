@@ -24,6 +24,8 @@
 #include "graphics.h"
 
 #include "gui/emotepopup.h"
+#include "gui/skilldialog.h"
+#include "gui/specialswindow.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/window.h"
@@ -40,38 +42,28 @@ extern Window *equipmentWindow;
 extern Window *inventoryWindow;
 extern Window *itemShortcutWindow;
 extern Window *setupWindow;
-extern Window *skillDialog;
-extern Window *specialsWindow;
 extern Window *statusWindow;
 extern Window *socialWindow;
 
 WindowMenu::WindowMenu():
     mEmotePopup(0)
 {
-    // Buttons
-    static const char *buttonNames[] =
-    {
-        ":-)",
-        N_("Status"),
-        N_("Equipment"),
-        N_("Inventory"),
-        N_("Skills"),
-        N_("Specials"),
-        N_("Social"),
-        N_("Shortcut"),
-        N_("Setup"),
-        0
-    };
     int x = 0, h = 0;
 
-    for (const char **curBtn = buttonNames; *curBtn; curBtn++)
-    {
-        gcn::Button *btn = new Button(gettext(*curBtn), *curBtn, this);
-        btn->setPosition(x, 0);
-        add(btn);
-        x += btn->getWidth() + 3;
-        h = btn->getHeight();
-    }
+    addButton(":-)", x, h);
+    addButton(N_("Status"), x, h);
+    addButton(N_("Equipment"), x, h);
+    addButton(N_("Inventory"), x, h);
+
+    if (skillDialog->hasSkills())
+        addButton(N_("Skills"), x, h);
+
+    if (specialsWindow->hasSpecials())
+        addButton(N_("Specials"), x, h);
+
+    addButton(N_("Social"), x, h);
+    addButton(N_("Shortcut"), x, h);
+    addButton(N_("Setup"), x, h);
 
     setDimension(gcn::Rectangle(graphics->getWidth() - x - 3, 3,
                                 x - 3, h));
@@ -161,4 +153,13 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
         windowContainer->scheduleDelete(mEmotePopup);
         mEmotePopup = 0;
     }
+}
+
+void WindowMenu::addButton(const char* text, int &x, int &h)
+{
+    gcn::Button *btn = new Button(gettext(text), text, this);
+    btn->setPosition(x, 0);
+    add(btn);
+    x += btn->getWidth() + 3;
+    h = btn->getHeight();
 }

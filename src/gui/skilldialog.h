@@ -69,6 +69,8 @@ class SkillDialog : public Window, public gcn::ActionListener
 
         void setModifiable(int id, bool modifiable);
 
+        bool hasSkills() { return !mSkills.empty(); }
+
     private:
         typedef std::map<int, SkillInfo*> SkillMap;
         SkillMap mSkills;
