@@ -54,6 +54,8 @@ void MonsterDB::load()
         logger->error("Monster Database: Error while loading monster.xml!");
     }
 
+    int offset = XML::getProperty(rootNode, "offset", 0);
+
     //iterate <monster>s
     for_each_xml_child_node(monsterNode, rootNode)
     {
@@ -143,7 +145,7 @@ void MonsterDB::load()
                     (const char*) spriteNode->xmlChildrenNode->content);
             }
         }
-        mMonsterInfos[XML::getProperty(monsterNode, "id", 0)] = currentInfo;
+        mMonsterInfos[XML::getProperty(monsterNode, "id", 0) + offset] = currentInfo;
     }
 
     mLoaded = true;

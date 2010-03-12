@@ -80,10 +80,7 @@ Being *createBeing(int id, short job)
     else if (job >= 46 && job <= 1000)
         type = Being::NPC;
     else if (job > 1000 && job <= 2000)
-    {
         type = Being::MONSTER;
-        job -= 1002;
-    }
 
     Being *being = beingManager->createBeing(id, type, job);
 
