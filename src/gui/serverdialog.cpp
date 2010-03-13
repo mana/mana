@@ -47,7 +47,7 @@
 #include <iostream>
 #include <string>
 
-#define MAX_SERVERLIST 5
+static const int MAX_SERVERLIST = 6;
 
 static ServerInfo::Type stringToServerType(const std::string &type)
 {
@@ -99,7 +99,7 @@ int ServersListModel::getNumberOfElements()
 std::string ServersListModel::getElementAt(int elementIndex)
 {
     MutexLocker lock = mParent->lock();
-    ServerInfo server = mServers->at(elementIndex);
+    const ServerInfo &server = mServers->at(elementIndex);
     std::string myServer;
     if (server.name.empty())
     {
@@ -144,27 +144,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     mServerNameField = new TextField(mServerInfo->hostname);
     mPortField = new TextField(toString(mServerInfo->port));
 
-    // Add the most used servers from config
-    for (int i = 0; i <= MAX_SERVERLIST; ++i)
-    {
-        const std::string index = toString(i);
-        const std::string nameKey = "MostUsedServerName" + index;
-        const std::string typeKey = "MostUsedServerType" + index;
-        const std::string portKey = "MostUsedServerPort" + index;
-
-        ServerInfo server;
-        server.hostname = config.getValue(nameKey, "");
-        server.type = stringToServerType(config.getValue(typeKey, ""));
-
-        const int defaultPort = defaultPortForServerType(server.type);
-        server.port = (unsigned short) config.getValue(portKey, defaultPort);
-
-        if (server.isValid())
-        {
-            server.save = true;
-            mServers.push_back(server);
-        }
-    }
+    loadCustomServers();
 
     mServersListModel = new ServersListModel(&mServers, this);
 
@@ -268,61 +248,25 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             mQuitButton->setEnabled(false);
             mConnectButton->setEnabled(false);
 
-            // First, look if the entry is a new one.
-            ServerInfo currentServer;
-            currentServer.hostname = mServerNameField->getText();
-            currentServer.port = (short) atoi(mPortField->getText().c_str());
+            mServerInfo->hostname = mServerNameField->getText();
+            mServerInfo->port = (short) atoi(mPortField->getText().c_str());
             switch (mTypeField->getSelected())
             {
                 case 0:
-                    currentServer.type = ServerInfo::EATHENA;
+                    mServerInfo->type = ServerInfo::EATHENA;
                     break;
                 case 1:
-                    currentServer.type = ServerInfo::MANASERV;
+                    mServerInfo->type = ServerInfo::MANASERV;
                     break;
                 default:
-                    currentServer.type = ServerInfo::UNKNOWN;
+                    mServerInfo->type = ServerInfo::UNKNOWN;
             }
 
-            // now rewrite the configuration...
-            // id = 0 is always the last selected server
-            config.setValue("MostUsedServerName0", currentServer.hostname);
-            config.setValue("MostUsedServerPort0", currentServer.port);
-            config.setValue("MostUsedServerType0",
-                            serverTypeToString(currentServer.type));
+            // Save when it is not one of the selected servers
+            mServerInfo->save = (mServersList->getSelected() == -1);
 
-            // now add the rest of the list...
-            int configCount = 1;
-            for (int i = 0; i < mServersListModel->getNumberOfElements(); ++i)
-            {
-                const ServerInfo server = mServersListModel->getServer(i);
+            saveCustomServers(*mServerInfo);
 
-                // Only save servers that were loaded from settings
-                if (!server.save)
-                    continue;
-
-                // ensure, that our server will not be added twice
-                if (server != currentServer)
-                {
-                    const std::string index = toString(configCount);
-                    const std::string nameKey = "MostUsedServerName" + index;
-                    const std::string typeKey = "MostUsedServerType" + index;
-                    const std::string portKey = "MostUsedServerPort" + index;
-
-                    config.setValue(nameKey, toString(server.hostname));
-                    config.setValue(typeKey, serverTypeToString(server.type));
-                    config.setValue(portKey, toString(server.port));
-
-                    configCount++;
-                }
-
-                // stop if we exceed the number of maximum config entries
-                if (configCount >= MAX_SERVERLIST)
-                    break;
-            }
-            mServerInfo->hostname = currentServer.hostname;
-            mServerInfo->port = currentServer.port;
-            mServerInfo->type = currentServer.type;
             Client::setState(STATE_CONNECT_SERVER);
         }
     }
@@ -339,7 +283,9 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     {
         int index = mServersList->getSelected();
         mServersList->setSelected(0);
-        mServersListModel->remove(index);
+        mServers.erase(mServers.begin() + index);
+
+        saveCustomServers();
     }
 }
 
@@ -367,7 +313,7 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     }
 
     // Update the server and post fields according to the new selection
-    const ServerInfo myServer = mServersListModel->getServer(index);
+    const ServerInfo &myServer = mServersListModel->getServer(index);
     mDescription->setCaption(myServer.name);
     mServerNameField->setText(myServer.hostname);
     mPortField->setText(toString(myServer.port));
@@ -534,6 +480,75 @@ void ServerDialog::loadServers()
         if (!found)
             mServers.push_back(server);
     }
+}
+
+void ServerDialog::loadCustomServers()
+{
+    for (int i = 0; i < MAX_SERVERLIST; ++i)
+    {
+        const std::string index = toString(i);
+        const std::string nameKey = "MostUsedServerName" + index;
+        const std::string typeKey = "MostUsedServerType" + index;
+        const std::string portKey = "MostUsedServerPort" + index;
+
+        ServerInfo server;
+        server.hostname = config.getValue(nameKey, "");
+        server.type = stringToServerType(config.getValue(typeKey, ""));
+
+        const int defaultPort = defaultPortForServerType(server.type);
+        server.port = (unsigned short) config.getValue(portKey, defaultPort);
+
+        // Stop on the first invalid server
+        if (!server.isValid())
+            break;
+
+        server.save = true;
+        mServers.push_back(server);
+    }
+}
+
+void ServerDialog::saveCustomServers(const ServerInfo &currentServer)
+{
+    // Make sure the current server is mentioned first
+    if (currentServer.isValid())
+    {
+        ServerInfos::iterator i, i_end = mServers.end();
+        for (i = mServers.begin(); i != i_end; ++i)
+        {
+            if (*i == currentServer)
+            {
+                mServers.erase(i);
+                break;
+            }
+        }
+        mServers.insert(mServers.begin(), currentServer);
+    }
+
+    int savedServerCount = 0;
+
+    for (unsigned i = 0;
+         i < mServers.size() && savedServerCount < MAX_SERVERLIST; ++i)
+    {
+        const ServerInfo &server = mServers.at(i);
+
+        // Only save servers that were loaded from settings
+        if (!server.save)
+            continue;
+
+        const std::string index = toString(savedServerCount);
+        const std::string nameKey = "MostUsedServerName" + index;
+        const std::string typeKey = "MostUsedServerType" + index;
+        const std::string portKey = "MostUsedServerPort" + index;
+
+        config.setValue(nameKey, toString(server.hostname));
+        config.setValue(typeKey, serverTypeToString(server.type));
+        config.setValue(portKey, toString(server.port));
+        ++savedServerCount;
+    }
+
+    // Insert an invalid entry at the end to make the loading stop there
+    if (savedServerCount < MAX_SERVERLIST)
+        config.setValue("MostUsedServerName" + toString(savedServerCount), "");
 }
 
 int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,

@@ -219,6 +219,9 @@ class Configuration : public ConfigurationObject
 
         void setValue(const std::string &key, const std::string &value);
 
+        inline void setValue(const std::string &key, const char *value)
+        { setValue(key, std::string(value)); }
+
         inline void setValue(const std::string &key, float value)
         { setValue(key, toString(value)); }
 
@@ -232,7 +235,7 @@ class Configuration : public ConfigurationObject
         { setValue(key, toString(value)); }
 
         inline void setValue(const std::string &key, bool value)
-        { setValue(key, value ? std::string("1") : std::string("0")); }
+        { setValue(key, value ? "1" : "0"); }
 
     private:
         typedef std::list<ConfigListener*> Listeners;

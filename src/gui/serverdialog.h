@@ -66,14 +66,8 @@ class ServersListModel : public gcn::ListModel
         /**
          * Used to get the corresponding Server struct
          */
-        ServerInfo getServer(int elementIndex) const
+        const ServerInfo &getServer(int elementIndex) const
         { return mServers->at(elementIndex); }
-
-        /**
-         * Removes the entry.
-         */
-        void remove(int elementIndex)
-        { mServers->erase(mServers->begin() + elementIndex); }
 
     private:
         ServerInfos *mServers;
@@ -149,6 +143,10 @@ class ServerDialog : public Window,
          */
         void downloadServerList();
         void loadServers();
+
+        void loadCustomServers();
+        void saveCustomServers(const ServerInfo &currentServer = ServerInfo());
+
         static int downloadUpdate(void *ptr, DownloadStatus status,
                                   size_t total, size_t remaining);
 
