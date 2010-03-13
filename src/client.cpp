@@ -303,7 +303,7 @@ Client::Client(const Options &options):
     }
 #else
     mIcon = IMG_Load(resman->getPath(
-            branding.getValue("appIcon", "data/icons/mana.png")).c_str());
+            branding.getValue("appIcon", "icons/mana.png")).c_str());
     if (mIcon)
     {
         SDL_SetAlpha(mIcon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
