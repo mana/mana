@@ -422,10 +422,11 @@ Being *LocalPlayer::getTarget() const
 
 void LocalPlayer::setTarget(Being *target)
 {
-    if (mLastTarget != -1 || target == this)
+    if ((mLastTarget != -1 || target == this) && target)
         return;
 
-    mLastTarget = tick_time;
+    if (target)
+        mLastTarget = tick_time;
 
     if (target == mTarget)
         return;
@@ -444,12 +445,12 @@ void LocalPlayer::setTarget(Being *target)
         mTarget->untarget();
 
     if (mTarget && mTarget->getType() == Being::MONSTER)
-        static_cast<Monster *>(mTarget)->setShowName(false);
+        mTarget->setShowName(false);
 
     mTarget = target;
 
     if (target && target->getType() == Being::MONSTER)
-        static_cast<Monster *>(target)->setShowName(true);
+        target->setShowName(true);
 }
 
 void LocalPlayer::setDestination(int x, int y)

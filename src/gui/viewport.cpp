@@ -509,3 +509,9 @@ void Viewport::hideBeingPopup()
 {
     mBeingPopup->setVisible(false);
 }
+
+void Viewport::clearHoverBeing(Being *being)
+{
+    if (mHoverBeing == being)
+        mHoverBeing = 0;
+}

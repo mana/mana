@@ -26,6 +26,8 @@
 #include "npc.h"
 #include "player.h"
 
+#include "gui/viewport.h"
+
 #include "net/gamehandler.h"
 #include "net/net.h"
 
@@ -102,6 +104,7 @@ Being *BeingManager::createBeing(int id, Being::Type type, int subtype)
 void BeingManager::destroyBeing(Being *being)
 {
     mBeings.remove(being);
+    viewport->clearHoverBeing(being);
     delete being;
 }
 

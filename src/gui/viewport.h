@@ -22,6 +22,7 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
+#include "beingmanager.h"
 #include "configlistener.h"
 #include "position.h"
 
@@ -156,6 +157,12 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * Hides the BeingPopup.
          */
         void hideBeingPopup();
+
+    protected:
+        friend class BeingManager;
+
+        /// Clears the hovered being if it matches
+        void clearHoverBeing(Being *being);
 
     private:
         /**
