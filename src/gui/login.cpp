@@ -76,7 +76,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     place(0, 6, mRegisterButton).setHAlign(LayoutCell::LEFT);
     place(2, 6, mServerButton);
     place(3, 6, mLoginButton);
-    reflowLayout(250, 0);
+    reflowLayout();
 
     addKeyListener(this);
 

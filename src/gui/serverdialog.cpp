@@ -189,7 +189,17 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     // Make sure the list has enough height
     getLayout().setRowHeight(3, 80);
 
-    reflowLayout(300, 0);
+    // Do this manually instead of calling reflowLayout so we can enforce a
+    // minimum width.
+    int width = 0, height = 0;
+    getLayout().reflow(width, height);
+    if (width < 300)
+    {
+        width = 300;
+        getLayout().reflow(width, height);
+    }
+
+    setContentSize(width, height);
 
     addKeyListener(this);
 
