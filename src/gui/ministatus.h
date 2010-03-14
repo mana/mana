@@ -29,6 +29,7 @@
 class AnimatedSprite;
 class Graphics;
 class ProgressBar;
+class TextPopup;
 
 /**
  * The player mini-status dialog.
@@ -56,13 +57,19 @@ class MiniStatusWindow : public Popup
         void draw(gcn::Graphics *graphics)
         { drawChildren(graphics); }
 
+        void mouseMoved(gcn::MouseEvent &mouseEvent);
+        void mouseExited(gcn::MouseEvent &event);
+
     private:
+        bool isInBar(ProgressBar *bar, int x, int y) const;
+
         /*
          * Mini Status Bars
          */
         ProgressBar *mHpBar;
         ProgressBar *mMpBar;
         ProgressBar *mXpBar;
+        TextPopup *mTextPopup;
 
         std::vector<AnimatedSprite *> mIcons;
 };

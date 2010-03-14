@@ -28,6 +28,7 @@
 
 #include "gui/gui.h"
 #include "gui/statuswindow.h"
+#include "gui/textpopup.h"
 #include "gui/theme.h"
 
 #include "gui/widgets/progressbar.h"
@@ -35,6 +36,7 @@
 #include "net/net.h"
 #include "net/playerhandler.h"
 
+#include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 extern volatile int tick_time;
@@ -64,6 +66,11 @@ MiniStatusWindow::MiniStatusWindow():
                    mXpBar->getY() + mXpBar->getHeight());
 
     setVisible((bool) config.getValue(getPopupName() + "Visible", true));
+
+    mTextPopup = new TextPopup();
+
+    addMouseListener(this);
+
     update(StatusWindow::HP);
 }
 
@@ -134,3 +141,46 @@ void MiniStatusWindow::logic()
         if (mIcons[i])
             mIcons[i]->update(tick_time * 10);
 }
+
+void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
+{
+    Popup::mouseMoved(event);
+
+    const int x = event.getX();
+    const int y = event.getY();
+
+    if (event.getSource() == mXpBar)
+    {
+        mTextPopup->show(x + getX(), y + getY(),
+                         strprintf("%u/%u", player_node->getExp(),
+                                   player_node->getExpNeeded()),
+                         strprintf("%s: %u", _("Need"),
+                                   player_node->getExpNeeded()
+                                   - player_node->getExp()));
+    }
+    else if (event.getSource() == mHpBar)
+    {
+        mTextPopup->show(x + getX(), y + getY(),
+                         strprintf("%u/%u", player_node->getHp(),
+                                   player_node->getMaxHp()));
+    }
+    else if (event.getSource() == mMpBar)
+    {
+        mTextPopup->show(x + getX(), y + getY(),
+                         strprintf("%u/%u", player_node->getMP(),
+                                   player_node->getMaxMP()));
+    }
+    else
+    {
+        mTextPopup->setVisible(false);
+    }
+}
+
+void MiniStatusWindow::mouseExited(gcn::MouseEvent &event)
+{
+    Popup::mouseExited(event);
+
+    mTextPopup->setVisible(false);
+}
+
+

@@ -294,6 +294,8 @@ SET(SRCS
     gui/storagewindow.h
     gui/textdialog.cpp
     gui/textdialog.h
+    gui/textpopup.cpp
+    gui/textpopup.h
     gui/theme.cpp
     gui/theme.h
     gui/trade.cpp
