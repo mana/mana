@@ -11,6 +11,7 @@ gui_DATA =				\
 	circle-gray.png			\
 	circle-green.png		\
 	close_button.png		\
+	colors.xml			\
 	deepbox.png			\
 	hscroll_left_default.png	\
 	hscroll_left_highlight.png	\
