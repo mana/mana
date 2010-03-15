@@ -499,6 +499,7 @@ mana_SOURCES += \
 	      net/ea/protocol.h \
 	      net/ea/specialhandler.cpp \
 	      net/ea/specialhandler.h \
+	      net/ea/token.h \
 	      net/ea/tradehandler.cpp \
 	      net/ea/tradehandler.h
 
