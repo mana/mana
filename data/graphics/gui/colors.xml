@@ -7,10 +7,10 @@
 	<color id="BUTTON_DISABLED" color="#333333" />
 	<color id="TAB" color="#000000" />
 	<color id="BACKGROUND" color="#ffffff" />
-	<color id="HIGHLIGHT" color="#ebc873" />
+	<color id="HIGHLIGHT" color="#c0c0c0" />
 	<color id="TAB_FLASH" color="#ff0000" effect="pulse" />
 	<color id="SHOP_WARNING" color="#910000" />
-	<color id="ITEM_EQUIPPED" color="" />
+	<color id="ITEM_EQUIPPED" color="#000091" />
 	<color id="CHAT" color="#000000" />
 	<color id="GM" color="#ff0000" />
 	<color id="PLAYER" color="#1fa052" />
