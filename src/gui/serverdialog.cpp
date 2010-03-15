@@ -262,8 +262,8 @@ void ServerDialog::action(const gcn::ActionEvent &event)
                     mServerInfo->type = ServerInfo::UNKNOWN;
             }
 
-            // Save when it is not one of the selected servers
-            mServerInfo->save = (mServersList->getSelected() == -1);
+            // Save the selected server
+            mServerInfo->save = true;
 
             saveCustomServers(*mServerInfo);
 
@@ -532,7 +532,7 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer)
         const ServerInfo &server = mServers.at(i);
 
         // Only save servers that were loaded from settings
-        if (!server.save)
+        if (!(server.save && server.isValid()))
             continue;
 
         const std::string index = toString(savedServerCount);
