@@ -40,7 +40,7 @@
 
 #include <algorithm>
 
-#define GUI_ROOT "graphics/gui"
+#define GUI_ROOT "graphics/gui/"
 
 std::string Theme::mThemePath;
 Theme *Theme::mInstance = 0;

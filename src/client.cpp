@@ -394,6 +394,8 @@ Client::Client(const Options &options):
     {
         mCurrentServer.port = (short) branding.getValue("defaultPort",
                                                        DEFAULT_PORT);
+        mCurrentServer.type = ServerInfo::parseType(
+                branding.getValue("defaultServerType", "eathena"));
     }
     if (loginData.username.empty() && loginData.remember)
         loginData.username = config.getValue("username", "");

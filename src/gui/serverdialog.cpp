@@ -49,16 +49,6 @@
 
 static const int MAX_SERVERLIST = 6;
 
-static ServerInfo::Type stringToServerType(const std::string &type)
-{
-    if (compareStrI(type, "eathena") == 0)
-        return ServerInfo::EATHENA;
-    else if (compareStrI(type, "manaserv") == 0)
-        return ServerInfo::MANASERV;
-
-    return ServerInfo::UNKNOWN;
-}
-
 static std::string serverTypeToString(ServerInfo::Type type)
 {
     switch (type)
@@ -448,7 +438,7 @@ void ServerDialog::loadServers()
 
         std::string type = XML::getProperty(serverNode, "type", "unknown");
 
-        server.type = stringToServerType(type);
+        server.type = ServerInfo::parseType(type);
         server.name = XML::getProperty(serverNode, "name", std::string());
 
         if (server.type == ServerInfo::UNKNOWN)
@@ -503,7 +493,7 @@ void ServerDialog::loadCustomServers()
 
         ServerInfo server;
         server.hostname = config.getValue(nameKey, "");
-        server.type = stringToServerType(config.getValue(typeKey, ""));
+        server.type = ServerInfo::parseType(config.getValue(typeKey, ""));
 
         const int defaultPort = defaultPortForServerType(server.type);
         server.port = (unsigned short) config.getValue(portKey, defaultPort);

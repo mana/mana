@@ -16,6 +16,7 @@ filename / path as a command line parameter
  <option name="onlineServerList" value="http://manasource.org/serverlist.xml"/>
  <option name="defaultServer" value="testing.manasource.org"/>
  <option name="defaultPort" value="9601"/>
+ <option name="defaultServerType" value="manaserv"/>
  <option name="defaultUpdateHost" value="http://updates.themanaworld.org"/>
  <option name="font" value="fonts/dejavusans.ttf" />
  <option name="boldFont" value="fonts/dejavusans-bold.ttf" />

@@ -83,6 +83,16 @@ public:
         return (type != other.type || hostname != other.hostname ||
                 port != other.port);
     }
+
+    static Type parseType(const std::string &type)
+    {
+        if (compareStrI(type, "eathena") == 0)
+            return EATHENA;
+        else if (compareStrI(type, "manaserv") == 0)
+            return MANASERV;
+
+        return UNKNOWN;
+    }
 };
 
 typedef std::vector<ServerInfo> ServerInfos;
