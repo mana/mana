@@ -1,38 +1,38 @@
 # Set of available languages.
-ar
-#bg
-ca
-cs
+#ar # Disabled because of current client limitations (shaping, RTL)
+#bg # Not enough translations
+#ca # Not enough translations
+#cs # Not enough translations
 da
 de
 en_GB
-eo
+#eo # Not enough translations
 es
-#et
-#fa
-fi
+#et # Not enough translations
+#fa # Disabled because of current client limitations (shaping, RTL)
+#fi # Not enough translations
 fr
-#he
+#he # Disabled because of current client limitations (RTL)
 hr
-#hu
-id
+hu
+#id # Not enough translations
 it
-ja
-#ka
-#nb
-#nds
+#ja # Disabled because of current client limitations (font fallbacking)
+#ka # Not enough translations
+#nb # Not enough translations
+#nds # Not enough translations
 nl
 pl
 pt
 pt_BR
 ru
-sk
-#sq
+#sk # Not enough translations
+#sq # Not enough translations
 sv
-#te
-th
-#tr
-#uk
-#zh_CN
-#zh_HK
-#zh_TW
+#te # Disabled because of current client limitations (font fallbacking)
+#th # Disabled because of current client limitations (font fallbacking)
+#tr # Not enough translations
+#uk # Not enough translations
+#zh_CN # Disabled because of current client limitations (font fallbacking)
+#zh_HK # Disabled because of current client limitations (font fallbacking)
+#zh_TW # Disabled because of current client limitations (font fallbacking)
