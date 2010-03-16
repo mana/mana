@@ -101,6 +101,18 @@ Theme::Theme():
 {
     config.addListener("guialpha", this);
     loadColors();
+
+    mColors[HIGHLIGHT].ch = 'H';
+    mColors[CHAT].ch = 'C';
+    mColors[GM].ch = 'G';
+    mColors[PLAYER].ch = 'Y';
+    mColors[WHISPER].ch = 'W';
+    mColors[IS].ch = 'I';
+    mColors[PARTY].ch = 'P';
+    mColors[GUILD].ch = 'U';
+    mColors[SERVER].ch = 'S';
+    mColors[LOGGER].ch = 'L';
+    mColors[HYPERLINK].ch = '<';
 }
 
 Theme::~Theme()
@@ -532,10 +544,9 @@ void Theme::loadColors(std::string file)
             color = readColor(temp);
             grad = readColorGradient(XML::getProperty(node, "effect", ""));
 
-            mColors[type].set(type, color, grad, "", 0, 10);
+            mColors[type].set(type, color, grad, 10);
         }
-
-        if (xmlStrEqual(node->name, BAD_CAST "progressbar"))
+        else if (xmlStrEqual(node->name, BAD_CAST "progressbar"))
         {
             type = readProgressType(XML::getProperty(node, "id", ""));
             if (type < 0) // invalid or no type given

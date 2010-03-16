@@ -213,9 +213,8 @@ int UserPalette::getColorTypeAt(int i)
     return mColors[i].type;
 }
 
-void UserPalette::addColor(int type, int rgb,
-                           Palette::GradientType grad, const std::string &text,
-                           char c, int delay)
+void UserPalette::addColor(int type, int rgb, Palette::GradientType grad,
+                           const std::string &text, int delay)
 {
     const std::string &configName = ColorTypeNames[type];
     char buffer[20];
@@ -230,7 +229,8 @@ void UserPalette::addColor(int type, int rgb,
     gcn::Color trueCol = rgbValue;
     grad = (GradientType) config.getValue(configName + "Gradient", grad);
     delay = (int) config.getValue(configName + "Delay", delay);
-    mColors[type].set(type, trueCol, grad, text, c, delay);
+    mColors[type].set(type, trueCol, grad, delay);
+    mColors[type].text = text;
 
     if (grad != STATIC)
         mGradVector.push_back(&mColors[type]);

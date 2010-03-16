@@ -199,8 +199,7 @@ class UserPalette : public Palette, public gcn::ListModel
          * @param text identifier of color
          */
         void addColor(int type, int rgb, GradientType grad,
-                      const std::string &text, char c = 0,
-                      int delay = GRADIENT_DELAY);
+                      const std::string &text, int delay = GRADIENT_DELAY);
 };
 
 extern UserPalette *userPalette;

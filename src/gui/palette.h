@@ -153,14 +153,11 @@ class Palette
             int delay;
             int committedDelay;
 
-            void set(int type, gcn::Color& color, GradientType grad,
-                     const std::string &text, char c, int delay)
+            void set(int type, gcn::Color& color, GradientType grad, int delay)
             {
                 ColorElem::type = type;
                 ColorElem::color = color;
                 ColorElem::testColor = color;
-                ColorElem::text = text;
-                ColorElem::ch = c;
                 ColorElem::grad = grad;
                 ColorElem::delay = delay;
                 ColorElem::gradientIndex = rand();
