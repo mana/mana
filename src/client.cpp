@@ -390,13 +390,15 @@ Client::Client(const Options &options):
         mCurrentServer.hostname = branding.getValue("defaultServer",
                                             "server.themanaworld.org").c_str();
     }
-    if (options.serverPort == 0)
+
+    if (mCurrentServer.port == 0)
     {
         mCurrentServer.port = (short) branding.getValue("defaultPort",
                                                        DEFAULT_PORT);
         mCurrentServer.type = ServerInfo::parseType(
                 branding.getValue("defaultServerType", "eathena"));
     }
+
     if (loginData.username.empty() && loginData.remember)
         loginData.username = config.getValue("username", "");
 
@@ -599,7 +601,8 @@ int Client::exec()
                     // Allow changing this using a server choice dialog
                     // We show the dialog box only if the command-line
                     // options weren't set.
-                    if (mOptions.serverName.empty() && mOptions.serverPort == 0)
+                    if (mOptions.serverName.empty() && mOptions.serverPort == 0
+                        && !branding.getValue("onlineServerList", "a").empty())
                     {
                         // Don't allow an alpha opacity
                         // lower than the default value

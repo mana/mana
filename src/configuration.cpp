@@ -131,7 +131,7 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
             std::string name = XML::getProperty(node, "name", std::string());
             std::string value = XML::getProperty(node, "value", std::string());
 
-            if (!name.empty() && !value.empty())
+            if (!name.empty())
                 mOptions[name] = value;
         } // otherwise ignore
     }
