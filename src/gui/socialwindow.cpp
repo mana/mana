@@ -307,6 +307,11 @@ SocialWindow::SocialWindow() :
     widgetResized(NULL);
 
     mCreatePopup = new CreatePopup();
+
+    if (player_node->getParty())
+    {
+        addTab(player_node->getParty());
+    }
 }
 
 SocialWindow::~SocialWindow()
