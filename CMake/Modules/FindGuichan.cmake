@@ -13,9 +13,10 @@
 
 # Be quiet if Guichan was already found
 # We need an extra variable to have the check per component
+
 IF (Guichan_INCLUDE_DIR AND Guichan_LIBRARY)
     SET(Guichan_QUIET TRUE)
-ENDIF (Guichan_INCLUDE_DIR AND Guichan_LIBRARY)
+ENDIF ()
 
 FIND_PATH(Guichan_INCLUDE_DIR
     NAMES guichan.hpp
@@ -29,7 +30,6 @@ FIND_LIBRARY(Guichan_LIBRARY
 
 MARK_AS_ADVANCED(Guichan_INCLUDE_DIR Guichan_LIBRARY)
 
-
 IF (Guichan_INCLUDE_DIR AND Guichan_LIBRARY)
     SET(GUICHAN_FOUND TRUE)
     SET(GUICHAN_INCLUDE_DIR ${Guichan_INCLUDE_DIR})
@@ -37,14 +37,13 @@ IF (Guichan_INCLUDE_DIR AND Guichan_LIBRARY)
 
     IF (NOT Guichan_FIND_QUIETLY AND NOT Guichan_QUIET)
         MESSAGE(STATUS "Found Guichan: ${Guichan_LIBRARY}")
-    ENDIF (NOT Guichan_FIND_QUIETLY AND NOT Guichan_QUIET)
-ENDIF (Guichan_INCLUDE_DIR AND Guichan_LIBRARY)
+    ENDIF ()
+ENDIF ()
 
 # Bail out if Guichan is not found but required
 IF (NOT GUICHAN_FOUND AND Guichan_FIND_REQUIRED)
     MESSAGE(FATAL_ERROR "Could NOT find Guichan library ${GUICHAN_INCLUDE_DIR}")
-ENDIF (NOT GUICHAN_FOUND AND Guichan_FIND_REQUIRED)
-
+ENDIF ()
 
 # Check for guichan components
 FOREACH (COMPONENT ${Guichan_FIND_COMPONENTS})
@@ -52,25 +51,15 @@ FOREACH (COMPONENT ${Guichan_FIND_COMPONENTS})
 
     IF (COMPONENT STREQUAL "SDL")
         SET(COMPONENT_FOUND TRUE)
-	IF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-		SET(Guichan_HEADER "sdl.hpp")
-		SET(Guichan_LIBRARY_${COMPONENT} TRUE)
-	ELSE (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-		SET(Guichan_HEADER "guichan/sdl.hpp")
-        	SET(Guichan_LIBRARY "guichan_sdl")
-	ENDIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    ENDIF (COMPONENT STREQUAL "SDL")
+        SET(Guichan_HEADER "guichan/sdl.hpp")
+        SET(Guichan_LIBRARY "guichan_sdl")
+    ENDIF ()
 
     IF (COMPONENT STREQUAL "OpenGL")
         SET(COMPONENT_FOUND TRUE)
-	IF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-		SET(Guichan_HEADER "opengl.hpp")
-		SET(Guichan_LIBRARY_${COMPONENT} TRUE)
-	ELSE (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-		SET(Guichan_HEADER "guichan/opengl.hpp")
-        	SET(Guichan_LIBRARY "guichan_opengl")
-	ENDIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-   ENDIF (COMPONENT STREQUAL "OpenGL")
+        SET(Guichan_HEADER "guichan/opengl.hpp")
+        SET(Guichan_LIBRARY "guichan_opengl")
+    ENDIF ()
 
     IF (NOT COMPONENT_FOUND)
         MESSAGE(FATAL_ERROR "Invalid Guichan component: ${COMPONENT}")
@@ -79,9 +68,9 @@ FOREACH (COMPONENT ${Guichan_FIND_COMPONENTS})
     # Check if we already found this component
     IF (Guichan_LIBRARY_${COMPONENT})
         SET(Guichan_QUIET TRUE)
-    ELSE (Guichan_LIBRARY_${COMPONENT})
+    ELSE ()
         SET(Guichan_QUIET FALSE)
-    ENDIF (Guichan_LIBRARY_${COMPONENT})
+    ENDIF ()
 
     FIND_LIBRARY(Guichan_LIBRARY_${COMPONENT}
         NAMES ${Guichan_LIBRARY}
@@ -94,13 +83,11 @@ FOREACH (COMPONENT ${Guichan_FIND_COMPONENTS})
             NOT Guichan_LIBRARY_${COMPONENT})
         SET(GUICHAN_FOUND FALSE)
         MESSAGE(FATAL_ERROR "Could NOT find Guichan component ${COMPONENT}")
-    ENDIF (NOT EXISTS ${Guichan_INCLUDE_DIR}/${Guichan_HEADER} OR
-        NOT Guichan_LIBRARY_${COMPONENT})
+    ENDIF ()
 
     IF (NOT Guichan_FIND_QUIETLY AND NOT Guichan_QUIET)
         MESSAGE(STATUS "Found Guichan ${COMPONENT}: ${Guichan_LIBRARY_${COMPONENT}}")
-    ENDIF (NOT Guichan_FIND_QUIETLY AND NOT Guichan_QUIET)
+    ENDIF ()
 
     SET(GUICHAN_LIBRARIES ${GUICHAN_LIBRARIES} ${Guichan_LIBRARY_${COMPONENT}})
-ENDFOREACH(COMPONENT)
-
+ENDFOREACH()
