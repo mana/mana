@@ -1035,6 +1035,32 @@ void Client::initHomeDir()
         logger->error(strprintf(_("%s doesn't exist and can't be created! "
                                   "Exiting."), mConfigDir.c_str()));
     }
+
+    struct stat statbuf;
+    std::string newConfigFile = mConfigDir + "/config.xml";
+    if (stat(newConfigFile.c_str(), &statbuf))
+    {
+        std::string oldConfigFile = std::string(PHYSFS_getUserDir()) +
+            "/.tmw/config.xml";
+        if (!stat(oldConfigFile.c_str(), &statbuf) && S_ISREG(statbuf.st_mode))
+        {
+            std::ifstream oldConfig;
+            std::ofstream newConfig;
+            logger->log("Copying old TMW settings.");
+
+            oldConfig.open(oldConfigFile.c_str(), std::ios::binary);
+            newConfig.open(newConfigFile.c_str(), std::ios::binary);
+
+            if (!oldConfig.is_open() || !newConfig.is_open())
+                logger->log("Unable to copy old settings.");
+            else
+            {
+                newConfig << oldConfig.rdbuf();
+                newConfig.close();
+                oldConfig.close();
+            }
+        }
+    }
 }
 
 /**
