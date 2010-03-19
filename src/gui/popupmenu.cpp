@@ -261,9 +261,9 @@ void PopupMenu::handleLink(const std::string &link)
     {
         player_node->inviteToGuild(being);
     }
-    
+
     // Follow Player action
-    else if (link == "follow")
+    else if (link == "follow" && being)
     {
         player_node->setFollow(being->getName());
     }
