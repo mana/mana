@@ -42,7 +42,6 @@ void MonsterDB::load()
         return;
 
     mUnknown.addSprite("error.xml");
-    mUnknown.setName(_("unnamed"));
 
     logger->log("Initializing monster database...");
 

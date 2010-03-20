@@ -22,8 +22,11 @@
 #include "resources/monsterinfo.h"
 
 #include "utils/dtor.h"
+#include "utils/gettext.h"
 
-MonsterInfo::MonsterInfo()
+MonsterInfo::MonsterInfo():
+        mName(_("unnamed")),
+        mTargetCursorSize(Being::TC_MEDIUM)
 {
 }
 
