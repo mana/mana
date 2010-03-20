@@ -295,17 +295,47 @@ void SkillDialog::loadSkills(const std::string &file)
     XML::Document doc(file);
     xmlNodePtr root = doc.rootNode();
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
-    {
-        logger->log("Error loading skills file: %s", file.c_str());
-        return;
-    }
-
     int setCount = 0;
     std::string setName;
     ScrollArea *scroll;
     SkillListBox *listbox;
     SkillTab *tab;
+
+    if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
+    {
+        logger->log("Error loading skills file: %s", file.c_str());
+
+        if (Net::getNetworkType() == ServerInfo::EATHENA)
+        {
+            SkillModel *model = new SkillModel();
+            SkillInfo *skill = new SkillInfo;
+            skill->id = 1;
+            skill->name = "basic";
+            skill->setIcon("");
+            skill->modifiable = true;
+            skill->visible = true;
+            skill->model = model;
+            skill->update();
+
+            model->addSkill(skill);
+            mSkills[1] = skill;
+
+            model->updateVisibilities();
+
+            listbox = new SkillListBox(model);
+            scroll = new ScrollArea(listbox);
+            scroll->setOpaque(false);
+            scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
+            scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
+
+            tab = new SkillTab("Skills", listbox);
+
+            mTabs->addTab(tab, scroll);
+
+            update();
+        }
+        return;
+    }
 
     for_each_xml_child_node(set, root)
     {
