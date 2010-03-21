@@ -12,4 +12,5 @@ help_DATA =				\
 	team.txt
 
 EXTRA_DIST =			\
-	$(help_DATA)
+	$(help_DATA) \
+	CMakeLists.txt

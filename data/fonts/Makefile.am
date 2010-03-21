@@ -5,4 +5,5 @@ fonts_DATA =				\
 	dejavusans-bold.ttf
 
 EXTRA_DIST =				\
-	$(fonts_DATA)
+	$(fonts_DATA) \
+	CMakeLists.txt

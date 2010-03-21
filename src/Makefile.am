@@ -404,7 +404,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      units.cpp \
 	      units.h \
 	      vector.cpp \
-	      vector.h
+	      vector.h \
+	      winver.h
 
 mana_SOURCES += \
 	      net/manaserv/adminhandler.cpp \
@@ -502,6 +503,9 @@ mana_SOURCES += \
 	      net/ea/token.h \
 	      net/ea/tradehandler.cpp \
 	      net/ea/tradehandler.h
+
+EXTRA_DIST = CMakeLists.txt \
+	     winver.h.in
 
 # set the include path found by configure
 INCLUDES = $(all_includes)

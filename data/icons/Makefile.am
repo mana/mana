@@ -12,4 +12,5 @@ uninstall-local:
 	rm -f $(DESTDIR)$(datarootdir)/pixmaps/mana.png
 
 EXTRA_DIST =		\
-	$(icons_DATA)
+	$(icons_DATA) \
+	CMakeLists.txt

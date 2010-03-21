@@ -5,4 +5,5 @@ images_DATA =				\
 	login_wallpaper.png
 
 EXTRA_DIST =				\
-	$(images_DATA)
+	$(images_DATA) \
+	CMakeLists.txt
