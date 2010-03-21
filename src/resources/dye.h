@@ -44,9 +44,15 @@ class DyePalette
         void addLastColor(const int color[3]);
 
         /**
-         * Gets a pixel color depending on its intensity.
+         * Gets a pixel color depending on its intensity. First color is
+         * implicitly black (0, 0, 0).
          */
         void getColor(int intensity, int color[3]) const;
+
+        /**
+         * Gets a pixel color depending on its intensity.
+         */
+        void getColor(double intensity, int color[3]) const;
 
     private:
 

@@ -140,9 +140,7 @@ gcn::Color Theme::getProgressColor(int type, float progress)
     DyePalette *dye = mInstance->mProgressColors[type];
 
     int color[3] = {0, 0, 0};
-    int intensity = (int) (255 * progress);
-
-    dye->getColor(intensity, color);
+    dye->getColor(progress, color);
 
     return gcn::Color(color[0], color[1], color[2]);
 }
