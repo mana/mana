@@ -56,11 +56,6 @@ public:
      */
     const std::string &getText() const;
 
-    /**
-     * Set the OK button action id
-     */
-    void setOKButtonActionId(const std::string &name);
-
     static bool isActive() { return instances > 0; }
 
 private:

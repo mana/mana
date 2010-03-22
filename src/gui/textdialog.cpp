@@ -78,21 +78,14 @@ TextDialog::~TextDialog()
 
 void TextDialog::action(const gcn::ActionEvent &event)
 {
-    setActionEventId(event.getId());
-    distributeActionEvent();
+    if (event.getId() == "CANCEL")
+        setActionEventId("~" + getActionEventId());
 
-    if (event.getId() == "CANCEL" || event.getSource() == mOkButton)
-    {
-        scheduleDelete();
-    }
+    distributeActionEvent();
+    scheduleDelete();
 }
 
 const std::string &TextDialog::getText() const
 {
     return mTextField->getText();
-}
-
-void TextDialog::setOKButtonActionId(const std::string &name)
-{
-    mOkButton->setActionEventId(name);
 }

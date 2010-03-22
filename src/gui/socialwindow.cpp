@@ -121,11 +121,19 @@ public:
                                   BY_SERVER);
             mInviteDialog = NULL;
         }
+        else if (event.getId() == "~do invite")
+        {
+            mInviteDialog = NULL;
+        }
         else if (event.getId() == "yes")
         {
             Net::getGuildHandler()->leave(mGuild->getId());
             localChatTab->chatLog(strprintf(_("Guild %s quit requested."),
                                         mGuild->getName().c_str()), BY_SERVER);
+            mConfirmDialog = NULL;
+        }
+        else if (event.getId() == "~yes")
+        {
             mConfirmDialog = NULL;
         }
     }
@@ -138,7 +146,7 @@ protected:
                      strprintf(_("Who would you like to invite to guild %s?"),
                                mGuild->getName().c_str()),
                      socialWindow);
-        mInviteDialog->setOKButtonActionId("do invite");
+        mInviteDialog->setActionEventId("do invite");
         mInviteDialog->addActionListener(this);
     }
 
@@ -184,11 +192,19 @@ public:
                                             name.c_str()), BY_SERVER);
             mInviteDialog = NULL;
         }
+        else if (event.getId() == "~do invite")
+        {
+            mInviteDialog = NULL;
+        }
         else if (event.getId() == "yes")
         {
             Net::getPartyHandler()->leave();
             localChatTab->chatLog(strprintf(_("Party %s quit requested."),
                                         mParty->getName().c_str()), BY_SERVER);
+            mConfirmDialog = NULL;
+        }
+        else if (event.getId() == "~yes")
+        {
             mConfirmDialog = NULL;
         }
     }
@@ -201,7 +217,7 @@ protected:
                       strprintf(_("Who would you like to invite to party %s?"),
                                 mParty->getName().c_str()),
                       socialWindow);
-        mInviteDialog->setOKButtonActionId("do invite");
+        mInviteDialog->setActionEventId("do invite");
         mInviteDialog->addActionListener(this);
     }
 
@@ -468,6 +484,12 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         Net::getGuildHandler()->create(name);
         localChatTab->chatLog(strprintf(_("Creating guild called %s."),
                                             name.c_str()), BY_SERVER);
+
+        mGuildCreateDialog = NULL;
+    }
+    else if (event.getId() == "~create guild")
+    {
+        mGuildCreateDialog = NULL;
     }
     else if (event.getId() == "create party")
     {
@@ -482,6 +504,12 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         Net::getPartyHandler()->create(name);
         localChatTab->chatLog(strprintf(_("Creating party called %s."),
                                             name.c_str()), BY_SERVER);
+
+        mPartyCreateDialog = NULL;
+    }
+    else if (event.getId() == "~create party")
+    {
+        mPartyCreateDialog = NULL;
     }
 }
 
@@ -489,7 +517,7 @@ void SocialWindow::showGuildCreate()
 {
     mGuildCreateDialog = new TextDialog(_("Guild Name"),
                                         _("Choose your guild's name."), this);
-    mGuildCreateDialog->setOKButtonActionId("create guild");
+    mGuildCreateDialog->setActionEventId("create guild");
     mGuildCreateDialog->addActionListener(this);
 }
 
@@ -575,6 +603,6 @@ void SocialWindow::showPartyCreate()
 
     mPartyCreateDialog = new TextDialog(_("Party Name"),
                                         _("Choose your party's name."), this);
-    mPartyCreateDialog->setOKButtonActionId("create party");
+    mPartyCreateDialog->setActionEventId("create party");
     mPartyCreateDialog->addActionListener(this);
 }
