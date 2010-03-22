@@ -38,26 +38,12 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
     mOkButton = new Button(_("OK"), "OK", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "CANCEL", this);
 
-    int w = textLabel->getWidth() + 20;
-    int inWidth = mOkButton->getWidth() + cancelButton->getWidth() + 5;
-    int h = textLabel->getHeight() + 25 + mOkButton->getHeight() + mTextField->getHeight();
+    place(0, 0, textLabel, 4);
+    place(0, 1, mTextField, 4);
+    place(2, 2, mOkButton);
+    place(3, 2, cancelButton);
 
-    if (w < inWidth + 10)
-        w = inWidth + 10;
-
-    setContentSize(w, h);
-    textLabel->setPosition(10, 10);
-    mTextField->setWidth(85);
-    mTextField->setPosition(10,20 + textLabel->getHeight());
-    mOkButton->setPosition((w - inWidth) / 2,
-                           h - 5 - cancelButton->getHeight());
-    cancelButton->setPosition(mOkButton->getX() + mOkButton->getWidth() + 5,
-                          h - 5 - cancelButton->getHeight());
-
-    add(textLabel);
-    add(mTextField);
-    add(mOkButton);
-    add(cancelButton);
+    reflowLayout(textLabel->getWidth() + 20);
 
     if (getParent())
     {
