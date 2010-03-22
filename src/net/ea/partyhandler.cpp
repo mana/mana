@@ -111,6 +111,9 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             break;
         case SMSG_PARTY_INVITE_RESPONSE:
             {
+                if (!partyTab)
+                    break;
+
                 std::string nick = msg.readString(24);
                 switch (msg.readInt8())
                 {
