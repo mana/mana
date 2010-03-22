@@ -298,7 +298,7 @@ void Player::setParty(Party *party)
 
     if (old)
     {
-        party->removeMember(mId);
+        old->removeMember(mId);
     }
 
     if (party)
