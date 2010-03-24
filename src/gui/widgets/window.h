@@ -371,7 +371,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         Window *mParent;              /**< The parent window */
         Layout *mLayout;              /**< Layout handler */
         std::string mWindowName;      /**< Name of the window */
-        std::string mDefaultSkinPath; /**< Default skin path for this window */
         bool mShowTitle;              /**< Window has a title bar */
         bool mModal;                  /**< Window is modal */
         bool mCloseButton;            /**< Window has a close button */

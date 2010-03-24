@@ -49,8 +49,6 @@ TextPopup::TextPopup():
     add(mText1);
     add(mText2);
     addMouseListener(this);
-
-    loadPopupConfiguration();
 }
 
 TextPopup::~TextPopup()

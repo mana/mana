@@ -70,18 +70,6 @@ class Popup : public Container, public gcn::MouseListener
         static void setWindowContainer(WindowContainer *windowContainer);
 
         /**
-         * Changes the popup's skin to use the skin defined in the saved
-         * configuration file.
-         */
-        void loadPopupConfiguration();
-
-        /**
-         * Currently only saves the skin used by the popup so that when the
-         * client is reloaded, it can use the saved skin.
-         */
-        void savePopupConfiguration();
-
-        /**
          * Draws the popup.
          */
         void draw(gcn::Graphics *graphics);
@@ -166,7 +154,6 @@ class Popup : public Container, public gcn::MouseListener
 
     private:
         std::string mPopupName;       /**< Name of the popup */
-        std::string mDefaultSkinPath; /**< Default skin path for this popup */
         int mMinWidth;                /**< Minimum popup width */
         int mMinHeight;               /**< Minimum popup height */
         int mMaxWidth;                /**< Maximum popup width */

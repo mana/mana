@@ -68,8 +68,6 @@ ItemPopup::ItemPopup():
     add(mItemWeight);
 
     addMouseListener(this);
-
-    loadPopupConfiguration();
 }
 
 ItemPopup::~ItemPopup()

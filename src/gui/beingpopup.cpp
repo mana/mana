@@ -51,8 +51,6 @@ BeingPopup::BeingPopup():
 
     add(mBeingName);
     add(mBeingParty);
-
-    loadPopupConfiguration();
 }
 
 BeingPopup::~BeingPopup()

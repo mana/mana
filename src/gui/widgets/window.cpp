@@ -48,7 +48,6 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     mParent(parent),
     mLayout(NULL),
     mWindowName("window"),
-    mDefaultSkinPath(skin),
     mShowTitle(true),
     mModal(modal),
     mCloseButton(false),
@@ -73,7 +72,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     setTitleBarHeight(20);
 
     // Loads the skin
-    mSkin = Theme::instance()->load(skin, mDefaultSkinPath);
+    mSkin = Theme::instance()->load(skin);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -515,8 +514,6 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 void Window::loadWindowState()
 {
     const std::string &name = mWindowName;
-    const std::string skinName = config.getValue(name + "Skin",
-                                                 mSkin->getFilePath());
     assert(!name.empty());
 
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
@@ -527,12 +524,6 @@ void Window::loadWindowState()
 
     if (mStickyButton)
         setSticky((bool) config.getValue(name + "Sticky", isSticky()));
-
-    if (skinName.compare(mSkin->getFilePath()) != 0)
-    {
-        mSkin->instances--;
-        mSkin = Theme::instance()->load(skinName, mDefaultSkinPath);
-    }
 
     if (mGrip)
     {
@@ -572,8 +563,6 @@ void Window::saveWindowState()
 
         if (mStickyButton)
             config.setValue(mWindowName + "Sticky", isSticky());
-
-        config.setValue(mWindowName + "Skin", mSkin->getFilePath());
 
         if (mGrip)
         {

@@ -50,8 +50,6 @@ SpeechBubble::SpeechBubble():
 
     add(mCaption);
     add(mSpeechBox);
-
-    loadPopupConfiguration();
 }
 
 void SpeechBubble::setCaption(const std::string &name, const gcn::Color *color)
@@ -73,7 +71,7 @@ void SpeechBubble::setText(const std::string &text, bool showName)
     const int speechWidth = mSpeechBox->getMinWidth() + 2 * getPadding();
 
     const int fontHeight = getFont()->getHeight();
-    const int nameHeight = showName ? mCaption->getHeight() + 
+    const int nameHeight = showName ? mCaption->getHeight() +
                            (getPadding() / 2) : 0;
     const int numRows = mSpeechBox->getNumberOfRows();
     const int height = (numRows * fontHeight) + nameHeight + getPadding();
