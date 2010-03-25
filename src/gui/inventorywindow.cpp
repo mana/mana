@@ -143,6 +143,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory, bool isMainInventory):
 
 InventoryWindow::~InventoryWindow()
 {
+    instances.remove(this);
     mInventory->removeInventoyListener(this);
 }
 
