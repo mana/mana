@@ -303,7 +303,10 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
     else
         bar->setText(toString(player_node->getHp()));
 
-    float prog = (float) player_node->getHp() / player_node->getMaxHp();
+    float prog = 1.0;
+
+    if (player_node->getMaxHp() > 0)
+        prog = (float) player_node->getHp() / player_node->getMaxHp();
     bar->setProgress(prog);
 }
 
@@ -315,7 +318,10 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
     else
         bar->setText(toString(player_node->getMP()));
 
-    float prog = (float) player_node->getMP() / player_node->getMaxMP();
+    float prog = 1.0f;
+
+    if (player_node->getMaxMP() > 0)
+        prog = (float) player_node->getMP() / player_node->getMaxMP();
 
     if (Net::getPlayerHandler()->canUseMagic())
         bar->setProgressPalette(Theme::PROG_MP);
