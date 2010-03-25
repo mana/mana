@@ -240,10 +240,14 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
             if(!item)
                 return;
-
-            Net::getInventoryHandler()->moveItem(Inventory::INVENTORY,
-                                     item->getInvIndex(), item->getQuantity(),
-                                     Inventory::STORAGE);
+            if (mInventory->isMainInventory())
+                Net::getInventoryHandler()->moveItem(Inventory::INVENTORY,
+                                            item->getInvIndex(), item->getQuantity(),
+                                            Inventory::STORAGE);
+            else
+                Net::getInventoryHandler()->moveItem(Inventory::STORAGE,
+                                            item->getInvIndex(), item->getQuantity(),
+                                            Inventory::INVENTORY);
         }
     }
 }
@@ -272,6 +276,9 @@ void InventoryWindow::keyReleased(gcn::KeyEvent &event)
 
 void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
+    if (!mInventory->isMainInventory())
+        return;
+
     Item *item = mItems->getSelectedItem();
 
     if (mSplit && Net::getInventoryHandler()->
