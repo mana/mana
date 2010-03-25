@@ -60,7 +60,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory, bool isMainInventory):
     mInventory(inventory),
     mSplit(false)
 {
-    setWindowName("Inventory");
+    setWindowName(isMainInventory ? "Inventory" : "Storage");
     setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
