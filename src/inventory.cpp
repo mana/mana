@@ -34,7 +34,8 @@ struct SlotUsed : public std::unary_function<Item*, bool>
 };
 
 Inventory::Inventory(int size):
-    mSize(size)
+    mSize(size),
+    mUsed(0)
 {
     mItems = new Item*[mSize];
     std::fill_n(mItems, mSize, (Item*) 0);
@@ -83,6 +84,8 @@ void Inventory::setItem(int index, int id, int quantity, bool equipment)
         Item *item = new Item(id, quantity, equipment);
         item->setInvIndex(index);
         mItems[index] = item;
+        mUsed++;
+        distributeSlotsChangedEvent();
     }
     else if (id > 0)
     {
@@ -113,6 +116,11 @@ void Inventory::removeItemAt(int index)
 {
     delete mItems[index];
     mItems[index] = 0;
+    mUsed--;
+    if (mUsed < 0) // Already at 0, no need to distribute event
+        mUsed = 0;
+    else
+        distributeSlotsChangedEvent();
 }
 
 bool Inventory::contains(Item *item) const
@@ -131,11 +139,6 @@ int Inventory::getFreeSlot() const
     return (i == mItems + mSize) ? -1 : (i - mItems);
 }
 
-int Inventory::getNumberOfSlotsUsed() const
-{
-    return count_if(mItems, mItems + mSize, SlotUsed());
-}
-
 int Inventory::getLastUsedSlot() const
 {
     for (int i = mSize - 1; i >= 0; i--)
@@ -143,4 +146,24 @@ int Inventory::getLastUsedSlot() const
             return i;
 
     return -1;
+}
+
+void Inventory::addInventoyListener(InventoryListener* listener)
+{
+    mInventoryListeners.push_back(listener);
+}
+
+void Inventory::removeInventoyListener(InventoryListener* listener)
+{
+    mInventoryListeners.remove(listener);
+}
+
+void Inventory::distributeSlotsChangedEvent()
+{
+    InventoryListenerList::const_iterator i = mInventoryListeners.begin();
+    InventoryListenerList::const_iterator i_end = mInventoryListeners.end();
+    for (; i != i_end; i++)
+    {
+        (*i)->slotsChanged(this);
+    }
 }

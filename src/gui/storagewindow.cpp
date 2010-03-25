@@ -104,31 +104,14 @@ StorageWindow::StorageWindow(Inventory *inventory):
 
     instances.push_back(this);
     setVisible(true);
+
+    mInventory->addInventoyListener(this);
+    slotsChanged(mInventory);
 }
 
 StorageWindow::~StorageWindow()
 {
     instances.remove(this);
-}
-
-void StorageWindow::logic()
-{
-    if (!isVisible())
-        return;
-
-    Window::logic();
-
-    const int usedSlots = mInventory->getNumberOfSlotsUsed();
-
-    if (mUsedSlots != usedSlots)
-    {
-        mUsedSlots = usedSlots;
-
-        mSlotsBar->setProgress((float) mUsedSlots / mInventory->getSize());
-
-        mSlotsBar->setText(strprintf("%d/%d", mUsedSlots,
-                                     mInventory->getSize()));
-    }
 }
 
 void StorageWindow::action(const gcn::ActionEvent &event)
@@ -200,6 +183,15 @@ void StorageWindow::mouseClicked(gcn::MouseEvent &event)
 Item *StorageWindow::getSelectedItem() const
 {
     return mItems->getSelectedItem();
+}
+
+void StorageWindow::slotsChanged(Inventory* inventory)
+{
+    const int usedSlots = mInventory->getNumberOfSlotsUsed();
+
+    mSlotsBar->setProgress((float) usedSlots / mInventory->getSize());
+
+    mSlotsBar->setText(strprintf("%d/%d", usedSlots, mInventory->getSize()));
 }
 
 void StorageWindow::addStore(Item *item, int amount)

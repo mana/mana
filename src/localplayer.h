@@ -302,14 +302,12 @@ class LocalPlayer : public Player
         int getTotalWeight() const
         { return mTotalWeight; }
 
-        void setTotalWeight(int value)
-        { mTotalWeight = value; }
+        void setTotalWeight(int value);
 
         int getMaxWeight() const
         { return mMaxWeight; }
 
-        void setMaxWeight(int value)
-        { mMaxWeight = value; }
+        void setMaxWeight(int value);
 
         int getAttributeBase(int num)
         { return mAttributeBase[num]; }

@@ -47,24 +47,19 @@ class TextBox;
 class InventoryWindow : public Window,
                         public gcn::ActionListener,
                         public gcn::KeyListener,
-                        public gcn::SelectionListener
+                        public gcn::SelectionListener,
+                        public InventoryListener
 {
     public:
         /**
          * Constructor.
          */
-        InventoryWindow(int invSize = Net::getInventoryHandler()
-                                ->getSize(Net::InventoryHandler::INVENTORY));
+        InventoryWindow();
 
         /**
          * Destructor.
          */
         ~InventoryWindow();
-
-        /**
-         * Logic (updates buttons and weight information).
-         */
-        void logic();
 
         /**
          * Called when receiving actions from the widgets.
@@ -100,17 +95,20 @@ class InventoryWindow : public Window,
          * Sets whether the split button should be shown.
          */
         void setSplitAllowed(bool allowed);
+        
+        /**
+         * Updates the weight bar.
+         */
+        void updateWeight();
+
+        void slotsChanged(Inventory* inventory);
 
     private:
-        void updateButtons();    /**< Updates button states. */
-
         ItemContainer *mItems;
 
         std::string mWeight;
         std::string mSlots;
-        int mUsedSlots;
-        int mTotalWeight;
-        int mMaxWeight;
+
         gcn::Button *mUseButton;
         gcn::Button *mDropButton;
         gcn::Button *mSplitButton;
@@ -120,8 +118,6 @@ class InventoryWindow : public Window,
 
         ProgressBar *mWeightBar;
         ProgressBar *mSlotsBar;
-
-        int mMaxSlots;
 
         bool mSplit;
         bool mItemDesc;

@@ -53,9 +53,8 @@
 
 #include <string>
 
-InventoryWindow::InventoryWindow(int invSize):
+InventoryWindow::InventoryWindow():
     Window(_("Inventory")),
-    mMaxSlots(invSize),
     mSplit(false),
     mItemDesc(false)
 {
@@ -90,10 +89,6 @@ InventoryWindow::InventoryWindow(int invSize):
     gcn::ScrollArea *invenScroll = new ScrollArea(mItems);
     invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mTotalWeight = -1;
-    mMaxWeight = -1;
-    mUsedSlots = -1;
-
     mSlotsLabel = new Label(_("Slots:"));
     mWeightLabel = new Label(_("Weight:"));
 
@@ -113,43 +108,15 @@ InventoryWindow::InventoryWindow(int invSize):
     Layout &layout = getLayout();
     layout.setRowHeight(1, Layout::AUTO_SET);
 
+    player_node->getInventory()->addInventoyListener(this);
+
     loadWindowState();
+    updateWeight();
+    slotsChanged(player_node->getInventory());
 }
 
 InventoryWindow::~InventoryWindow()
 {
-}
-
-void InventoryWindow::logic()
-{
-    if (!isVisible())
-        return;
-
-    Window::logic();
-
-    // It would be nicer if this update could be event based, needs some
-    // redesign of InventoryWindow and ItemContainer probably.
-    updateButtons();
-
-    const int usedSlots = player_node->getInventory()->getNumberOfSlotsUsed();
-
-    if (mMaxWeight != player_node->getMaxWeight() ||
-        mTotalWeight != player_node->getTotalWeight() ||
-        mUsedSlots != usedSlots)
-    {
-        mTotalWeight = player_node->getTotalWeight();
-        mMaxWeight = player_node->getMaxWeight();
-        mUsedSlots = usedSlots;
-
-        // Adjust progress bars
-        mSlotsBar->setProgress((float) mUsedSlots / mMaxSlots);
-        mWeightBar->setProgress((float) mTotalWeight / mMaxWeight);
-
-        mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mMaxSlots));
-        mWeightBar->setText(strprintf("%s/%s",
-                                    Units::formatWeight(mTotalWeight).c_str(),
-                                    Units::formatWeight(mMaxWeight).c_str()));
-    }
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -255,39 +222,29 @@ void InventoryWindow::keyReleased(gcn::KeyEvent &event)
 
 void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
-    if (mSplit && Net::getInventoryHandler()->canSplit(mItems->getSelectedItem()))
+    Item *item = mItems->getSelectedItem();
+
+    if (mSplit && Net::getInventoryHandler()->
+        canSplit(mItems->getSelectedItem()) && item)
     {
-        Item *item = mItems->getSelectedItem();
-
-        if (item)
-            ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
-                                 (item->getQuantity() - 1));
+        ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
+                                     (item->getQuantity() - 1));
     }
-}
 
-
-void InventoryWindow::setSplitAllowed(bool allowed)
-{
-    mSplitButton->setVisible(allowed);
-}
-
-void InventoryWindow::updateButtons()
-{
-    const Item *selectedItem = mItems->getSelectedItem();
-
-    if (!selectedItem || selectedItem->getQuantity() == 0)
+    if (!item || item->getQuantity() == 0)
     {
         mUseButton->setEnabled(false);
         mDropButton->setEnabled(false);
+
         return;
     }
 
     mUseButton->setEnabled(true);
     mDropButton->setEnabled(true);
 
-    if (selectedItem->isEquipment())
+    if (item->isEquipment())
     {
-        if (selectedItem->isEquipped())
+        if (item->isEquipped())
             mUseButton->setCaption(_("Unequip"));
         else
             mUseButton->setCaption(_("Equip"));
@@ -297,13 +254,40 @@ void InventoryWindow::updateButtons()
         mUseButton->setCaption(_("Use"));
     }
 
-    if (selectedItem->getQuantity() > 1)
+    if (item->getQuantity() > 1)
         mDropButton->setCaption(_("Drop..."));
     else
         mDropButton->setCaption(_("Drop"));
 
-    if (Net::getInventoryHandler()->canSplit(selectedItem))
+    if (Net::getInventoryHandler()->canSplit(item))
         mSplitButton->setEnabled(true);
     else
         mSplitButton->setEnabled(false);
+}
+
+
+void InventoryWindow::setSplitAllowed(bool allowed)
+{
+    mSplitButton->setVisible(allowed);
+}
+
+void InventoryWindow::updateWeight()
+{
+    int total = player_node->getTotalWeight();
+    int max = player_node->getMaxWeight();
+
+    // Adjust progress bar
+    mWeightBar->setProgress((float) total / max);
+    mWeightBar->setText(strprintf("%s/%s", Units::formatWeight(total).c_str(),
+                                  Units::formatWeight(max).c_str()));
+}
+
+void InventoryWindow::slotsChanged(Inventory* inventory)
+{
+    const int usedSlots = player_node->getInventory()->getNumberOfSlotsUsed();
+    const int maxSlots = player_node->getInventory()->getSize();
+
+    mSlotsBar->setProgress((float) usedSlots / maxSlots);
+
+    mSlotsBar->setText(strprintf("%d/%d", usedSlots, maxSlots));
 }

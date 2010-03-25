@@ -40,6 +40,7 @@
 #include "text.h"
 
 #include "gui/gui.h"
+#include "gui/inventorywindow.h"
 #include "gui/ministatus.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
@@ -757,6 +758,20 @@ void LocalPlayer::lowerAttribute(int attr)
     if (it != mAttributeBase.end())
         (*it).second--;
     Net::getPlayerHandler()->decreaseAttribute(attr);
+}
+
+void LocalPlayer::setTotalWeight(int value)
+{
+    mTotalWeight = value;
+
+    inventoryWindow->updateWeight();
+}
+
+void LocalPlayer::setMaxWeight(int value)
+{
+    mMaxWeight = value;
+
+    inventoryWindow->updateWeight();
 }
 
 void LocalPlayer::setAttributeBase(int num, int value, bool notify)

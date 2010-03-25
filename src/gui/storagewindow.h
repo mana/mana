@@ -43,7 +43,8 @@ class TextBox;
  * \ingroup Interface
  */
 class StorageWindow : public Window, gcn::ActionListener,
-                                       gcn::SelectionListener
+                                       gcn::SelectionListener,
+                                       public InventoryListener
 {
     public:
         /**
@@ -55,11 +56,6 @@ class StorageWindow : public Window, gcn::ActionListener,
          * Destructor.
          */
         ~StorageWindow();
-
-        /**
-         * Logic (updates buttons and weight information).
-         */
-        void logic();
 
         /**
          * Called when receiving actions from the widgets.
@@ -78,6 +74,8 @@ class StorageWindow : public Window, gcn::ActionListener,
          * window has been closed.
          */
         void close();
+
+        void slotsChanged(Inventory* inventory);
 
         /**
          * Add the specified ammount of the specified item to storage

@@ -22,11 +22,27 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
+#include <list>
+
+class Inventory;
 class Item;
+
+class InventoryListener
+{
+public:
+    virtual ~InventoryListener() {}
+
+    virtual void slotsChanged(Inventory* inventory) = 0;
+
+protected:
+    InventoryListener() {}
+};
 
 class Inventory
 {
     public:
+        static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
+
         /**
          * Constructor.
          *
@@ -95,18 +111,27 @@ class Inventory
         /**
          * Get the number of slots filled with an item
          */
-        int getNumberOfSlotsUsed() const;
+        int getNumberOfSlotsUsed() const
+        { return mUsed; }
 
         /**
          * Returns the index of the last occupied slot or 0 if none occupied.
          */
         int getLastUsedSlot() const;
 
-        static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
+        void addInventoyListener(InventoryListener* listener);
+
+        void removeInventoyListener(InventoryListener* listener);
 
     protected:
+        typedef std::list<InventoryListener*> InventoryListenerList;
+        InventoryListenerList mInventoryListeners;
+
+        void distributeSlotsChangedEvent();
+
         Item **mItems;  /**< The holder of items */
         int mSize;      /**< The max number of inventory items */
+        int mUsed;      /**< THe number of slots in use */
 };
 
 #endif
