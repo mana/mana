@@ -331,11 +331,14 @@ void InventoryWindow::setSplitAllowed(bool allowed)
 void InventoryWindow::close()
 {
     if (this == inventoryWindow)
-        return;
-
-    Net::getInventoryHandler()->closeStorage(Inventory::STORAGE);
-
-    scheduleDelete();
+    {
+        setVisible(false);
+    }
+    else
+    {
+        Net::getInventoryHandler()->closeStorage(Inventory::STORAGE);
+        scheduleDelete();
+    }
 }
 
 void InventoryWindow::updateWeight()
