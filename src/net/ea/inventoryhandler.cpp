@@ -29,8 +29,6 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/storagewindow.h"
-
 #include "gui/widgets/chattab.h"
 
 #include "net/messagein.h"
@@ -308,7 +306,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 mInventoryItems.clear();
 
                 if (!mStorageWindow)
-                    mStorageWindow = new StorageWindow(mStorage);
+                    mStorageWindow = new InventoryWindow(mStorage);
             }
             break;
 

@@ -34,7 +34,6 @@
 #include "gui/okdialog.h"
 #include "gui/sell.h"
 #include "gui/statuswindow.h"
-#include "gui/storagewindow.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/chattab.h"

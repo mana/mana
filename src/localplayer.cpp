@@ -44,7 +44,6 @@
 #include "gui/ministatus.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
-#include "gui/storagewindow.h"
 #include "gui/theme.h"
 #include "gui/userpalette.h"
 

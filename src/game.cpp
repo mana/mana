@@ -60,7 +60,6 @@
 #include "gui/setup.h"
 #include "gui/socialwindow.h"
 #include "gui/specialswindow.h"
-#include "gui/storagewindow.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
 #include "gui/textdialog.h"
@@ -156,7 +155,7 @@ static void createGuiWindows()
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
-    inventoryWindow = new InventoryWindow;
+    inventoryWindow = new InventoryWindow(player_node->getInventory(), true);
     skillDialog = new SkillDialog;
     minimap = new Minimap;
     helpWindow = new HelpWindow;

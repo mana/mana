@@ -26,7 +26,7 @@
 #include "inventory.h"
 #include "localplayer.h"
 
-#include "gui/storagewindow.h"
+#include "gui/inventorywindow.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"
@@ -151,7 +151,7 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
         EquipBackend mEquips;
         InventoryItems mInventoryItems;
         Inventory *mStorage;
-        StorageWindow *mStorageWindow;
+        InventoryWindow *mStorageWindow;
 };
 
 } // namespace EAthena

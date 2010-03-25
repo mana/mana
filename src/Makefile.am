@@ -189,8 +189,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/specialswindow.h \
 	      gui/statuswindow.cpp \
 	      gui/statuswindow.h \
-	      gui/storagewindow.cpp \
-	      gui/storagewindow.h \
 	      gui/textdialog.cpp \
 	      gui/textdialog.h \
 	      gui/textpopup.cpp \

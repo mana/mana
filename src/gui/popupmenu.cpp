@@ -33,7 +33,6 @@
 
 #include "gui/chat.h"
 #include "gui/inventorywindow.h"
-#include "gui/storagewindow.h"
 #include "gui/itemamount.h"
 
 #include "gui/widgets/browserbox.h"
@@ -386,7 +385,7 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
             mBrowserBox->addRow(strprintf("@@split|%s@@", _("Split")));
         }
 
-        if (StorageWindow::isActive())
+        if (InventoryWindow::isStorageActive())
         {
             mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }

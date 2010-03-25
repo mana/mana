@@ -170,8 +170,6 @@
 ./src/gui/speechbubble.h
 ./src/gui/statuswindow.cpp
 ./src/gui/statuswindow.h
-./src/gui/storagewindow.cpp
-./src/gui/storagewindow.h
 ./src/gui/textdialog.cpp
 ./src/gui/textdialog.h
 ./src/gui/textpopup.cpp

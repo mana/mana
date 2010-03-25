@@ -53,10 +53,12 @@
 
 #include <string>
 
-InventoryWindow::InventoryWindow():
-    Window(_("Inventory")),
-    mSplit(false),
-    mItemDesc(false)
+InventoryWindow::WindowList InventoryWindow::instances;
+
+InventoryWindow::InventoryWindow(Inventory *inventory, bool isMainInventory):
+    Window(isMainInventory ? _("Inventory") : _("Storage")),
+    mInventory(inventory),
+    mSplit(false)
 {
     setWindowName("Inventory");
     setupWindow->registerWindowForReset(this);
@@ -69,54 +71,79 @@ InventoryWindow::InventoryWindow():
     setMinHeight(179);
     addKeyListener(this);
 
-    std::string longestUseString = getFont()->getWidth(_("Equip")) >
-                                   getFont()->getWidth(_("Use")) ?
-                                   _("Equip") : _("Use");
-
-    if (getFont()->getWidth(longestUseString) <
-        getFont()->getWidth(_("Unequip")))
-    {
-        longestUseString = _("Unequip");
-    }
-
-    mUseButton = new Button(longestUseString, "use", this);
-    mDropButton = new Button(_("Drop..."), "drop", this);
-    mSplitButton = new Button(_("Split"), "split", this);
-    mOutfitButton = new Button(_("Outfits"), "outfit", this);
-    mItems = new ItemContainer(player_node->getInventory());
+    mItems = new ItemContainer(mInventory);
     mItems->addSelectionListener(this);
 
     gcn::ScrollArea *invenScroll = new ScrollArea(mItems);
     invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mSlotsLabel = new Label(_("Slots:"));
-    mWeightLabel = new Label(_("Weight:"));
-
     mSlotsBar = new ProgressBar(0.0f, 100, 20, Theme::PROG_INVY_SLOTS);
-    mWeightBar = new ProgressBar(0.0f, 100, 20, Theme::PROG_WEIGHT);
 
-    place(0, 0, mWeightLabel).setPadding(3);
-    place(1, 0, mWeightBar, 3);
-    place(4, 0, mSlotsLabel).setPadding(3);
-    place(5, 0, mSlotsBar, 2);
-    place(0, 1, invenScroll, 7).setPadding(3);
-    place(0, 2, mUseButton);
-    place(1, 2, mDropButton);
-    place(2, 2, mSplitButton);
-    place(6, 2, mOutfitButton);
+    if (isMainInventory)
+    {
+        std::string equip = _("Equip");
+        std::string use = _("Use");
+        std::string unequip = _("Unequip");
+
+        std::string longestUseString = getFont()->getWidth(equip) >
+                                       getFont()->getWidth(use) ? equip : use;
+
+        if (getFont()->getWidth(longestUseString) <
+            getFont()->getWidth(unequip))
+        {
+            longestUseString = unequip;
+        }
+
+        mUseButton = new Button(longestUseString, "use", this);
+        mDropButton = new Button(_("Drop..."), "drop", this);
+        mSplitButton = new Button(_("Split"), "split", this);
+        mOutfitButton = new Button(_("Outfits"), "outfit", this);
+
+        mWeightLabel = new Label(_("Weight:"));
+        mWeightBar = new ProgressBar(0.0f, 100, 20, Theme::PROG_WEIGHT);
+
+        place(0, 0, mWeightLabel).setPadding(3);
+        place(1, 0, mWeightBar, 3);
+        place(4, 0, mSlotsLabel).setPadding(3);
+        place(5, 0, mSlotsBar, 2);
+        place(0, 1, invenScroll, 7).setPadding(3);
+        place(0, 2, mUseButton);
+        place(1, 2, mDropButton);
+        place(2, 2, mSplitButton);
+        place(6, 2, mOutfitButton);
+
+        updateWeight();
+    }
+    else
+    {
+        mStoreButton = new Button(_("Store"), "store", this);
+        mRetrieveButton = new Button(_("Retrieve"), "retrieve", this);
+
+        place(0, 0, mSlotsLabel).setPadding(3);
+        place(1, 0, mSlotsBar, 3);
+        place(0, 1, invenScroll, 4, 4);
+        place(0, 5, mStoreButton);
+        place(1, 5, mRetrieveButton);
+    }
 
     Layout &layout = getLayout();
     layout.setRowHeight(1, Layout::AUTO_SET);
 
-    player_node->getInventory()->addInventoyListener(this);
+    mInventory->addInventoyListener(this);
+
+    instances.push_back(this);
 
     loadWindowState();
-    updateWeight();
-    slotsChanged(player_node->getInventory());
+    slotsChanged(mInventory);
+
+    if (!isMainInventory)
+        setVisible(true);
 }
 
 InventoryWindow::~InventoryWindow()
 {
+    mInventory->removeInventoyListener(this);
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -157,6 +184,27 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
                                  (item->getQuantity() - 1));
     }
+    else if (event.getId() == "store")
+    {
+        if (!inventoryWindow->isVisible()) return;
+
+        Item *item = inventoryWindow->getSelectedItem();
+
+        if (!item)
+            return;
+
+        ItemAmountWindow::showWindow(ItemAmountWindow::StoreAdd, this, item);
+    }
+    else if (event.getId() == "retrieve")
+    {
+        Item *item = mItems->getSelectedItem();
+
+        if (!item)
+            return;
+
+        ItemAmountWindow::showWindow(ItemAmountWindow::StoreRemove, this,
+                                     item);
+    }
 }
 
 Item *InventoryWindow::getSelectedItem() const
@@ -185,15 +233,16 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (StorageWindow::isActive() &&
-            keyboard.isKeyActive(keyboard.KEY_EMOTE))
+        if (isStorageActive() && keyboard.isKeyActive(keyboard.KEY_EMOTE))
         {
             Item *item = mItems->getSelectedItem();
 
             if(!item)
                 return;
 
-            StorageWindow::addStore(item, item->getQuantity());
+            Net::getInventoryHandler()->moveItem(Net::InventoryHandler::INVENTORY,
+                                     item->getInvIndex(), item->getQuantity(),
+                                     Net::InventoryHandler::STORAGE);
         }
     }
 }
@@ -271,6 +320,16 @@ void InventoryWindow::setSplitAllowed(bool allowed)
     mSplitButton->setVisible(allowed);
 }
 
+void InventoryWindow::close()
+{
+    if (this == inventoryWindow)
+        return;
+
+    Net::getInventoryHandler()->closeStorage(Net::InventoryHandler::STORAGE);
+
+    scheduleDelete();
+}
+
 void InventoryWindow::updateWeight()
 {
     int total = player_node->getTotalWeight();
@@ -284,10 +343,13 @@ void InventoryWindow::updateWeight()
 
 void InventoryWindow::slotsChanged(Inventory* inventory)
 {
-    const int usedSlots = player_node->getInventory()->getNumberOfSlotsUsed();
-    const int maxSlots = player_node->getInventory()->getSize();
+    if (inventory == mInventory)
+    {
+        const int usedSlots = mInventory->getNumberOfSlotsUsed();
+        const int maxSlots = mInventory->getSize();
 
-    mSlotsBar->setProgress((float) usedSlots / maxSlots);
+        mSlotsBar->setProgress((float) usedSlots / maxSlots);
 
-    mSlotsBar->setText(strprintf("%d/%d", usedSlots, maxSlots));
+        mSlotsBar->setText(strprintf("%d/%d", usedSlots, maxSlots));
+    }
 }

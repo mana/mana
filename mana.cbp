@@ -223,8 +223,6 @@
 		<Unit filename="src\gui\speechbubble.h" />
 		<Unit filename="src\gui\statuswindow.cpp" />
 		<Unit filename="src\gui\statuswindow.h" />
-		<Unit filename="src\gui\storagewindow.cpp" />
-		<Unit filename="src\gui\storagewindow.h" />
 		<Unit filename="src\gui\textdialog.cpp" />
 		<Unit filename="src\gui\textdialog.h" />
 		<Unit filename="src\gui\textpopup.cpp" />

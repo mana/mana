@@ -24,7 +24,6 @@
 
 #include "inventory.h"
 
-#include "gui/storagewindow.h"
 #include "gui/widgets/window.h"
 
 #include "net/inventoryhandler.h"
@@ -54,7 +53,7 @@ class InventoryWindow : public Window,
         /**
          * Constructor.
          */
-        InventoryWindow();
+        InventoryWindow(Inventory *inventory, bool isMainInventory = false);
 
         /**
          * Destructor.
@@ -95,6 +94,12 @@ class InventoryWindow : public Window,
          * Sets whether the split button should be shown.
          */
         void setSplitAllowed(bool allowed);
+
+        /**
+         * Closes the Storage Window, as well as telling the server that the
+         * window has been closed.
+         */
+        void close();
         
         /**
          * Updates the weight bar.
@@ -103,24 +108,28 @@ class InventoryWindow : public Window,
 
         void slotsChanged(Inventory* inventory);
 
+        /**
+         * Returns true if any instances exist.
+         */
+        static bool isStorageActive() { return instances.size() > 1; }
+
     private:
+        typedef std::list<InventoryWindow*> WindowList;
+        static WindowList instances;
+
+        Inventory *mInventory;
         ItemContainer *mItems;
 
-        std::string mWeight;
-        std::string mSlots;
+        std::string mWeight, mSlots;
 
-        gcn::Button *mUseButton;
-        gcn::Button *mDropButton;
-        gcn::Button *mSplitButton;
-        gcn::Button *mOutfitButton;
-        gcn::Label *mWeightLabel;
-        gcn::Label *mSlotsLabel;
+        gcn::Button *mUseButton, *mDropButton, *mSplitButton, *mOutfitButton,
+                    *mStoreButton, *mRetrieveButton;
 
-        ProgressBar *mWeightBar;
-        ProgressBar *mSlotsBar;
+        gcn::Label *mWeightLabel, *mSlotsLabel;
+
+        ProgressBar *mWeightBar, *mSlotsBar;
 
         bool mSplit;
-        bool mItemDesc;
 };
 
 extern InventoryWindow *inventoryWindow;
