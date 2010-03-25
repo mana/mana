@@ -23,6 +23,9 @@
 #include "item.h"
 #include "log.h"
 
+#include "net/inventoryhandler.h"
+#include "net/net.h"
+
 #include <algorithm>
 
 struct SlotUsed : public std::unary_function<Item*, bool>
@@ -33,8 +36,9 @@ struct SlotUsed : public std::unary_function<Item*, bool>
     }
 };
 
-Inventory::Inventory(int size):
-    mSize(size),
+Inventory::Inventory(int type, int size):
+    mType(type),
+    mSize(size == -1 ? Net::getInventoryHandler()->getSize(type) : size),
     mUsed(0)
 {
     mItems = new Item*[mSize];

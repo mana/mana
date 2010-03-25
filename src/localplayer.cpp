@@ -98,8 +98,7 @@ LocalPlayer::LocalPlayer(int id, int job):
     mLastAction(-1),
     mWalkingDir(0),
     mPathSetByMouse(false),
-    mInventory(new Inventory(Net::getInventoryHandler()
-                             ->getSize(Net::InventoryHandler::INVENTORY))),
+    mInventory(new Inventory(Inventory::INVENTORY)),
     mLocalWalkTime(-1),
     mMessageTime(0)
 {

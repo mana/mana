@@ -22,6 +22,7 @@
 #ifndef INVENTORYHANDLER_H
 #define INVENTORYHANDLER_H
 
+#include "inventory.h"
 #include "item.h"
 
 #include <iosfwd>
@@ -45,24 +46,17 @@ class InventoryHandler
 
         virtual void moveItem(int oldIndex, int newIndex) = 0;
 
-        enum StorageType {
-            INVENTORY,
-            STORAGE,
-            GUILD_STORAGE,
-            CART
-        };
+        virtual void openStorage(int type) = 0;
 
-        virtual void openStorage(StorageType type) = 0;
-
-        virtual void closeStorage(StorageType type) = 0;
+        virtual void closeStorage(int type) = 0;
 
         //void changeCart() = 0;
 
-        virtual void moveItem(StorageType source, int slot, int amount,
-                              StorageType destination) = 0;
+        virtual void moveItem(int source, int slot, int amount,
+                              int destination) = 0;
 
         // TODO: fix/remove me
-        virtual size_t getSize(StorageType type) const = 0;
+        virtual size_t getSize(int type) const = 0;
 
         virtual ~InventoryHandler() {}
 };

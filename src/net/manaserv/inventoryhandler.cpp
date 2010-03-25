@@ -79,7 +79,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 {
                     mEquips.setEquipment(slot, id);
                 }
-                else if (slot >= 32 && slot < 32 + getSize(INVENTORY))
+                else if (slot >= 32 && slot < 32 + getSize(Inventory::INVENTORY))
                 {
                     int amount = id ? msg.readInt8() : 0;
                     player_node->setInvItem(slot - 32, id, amount);
@@ -154,30 +154,30 @@ void InventoryHandler::moveItem(int oldIndex, int newIndex)
     gameServerConnection->send(msg);
 }
 
-void InventoryHandler::openStorage(StorageType type)
+void InventoryHandler::openStorage(int type)
 {
     // TODO
 }
 
-void InventoryHandler::closeStorage(StorageType type)
+void InventoryHandler::closeStorage(int type)
 {
     // TODO
 }
 
-void InventoryHandler::moveItem(StorageType source, int slot, int amount,
-                                StorageType destination)
+void InventoryHandler::moveItem(int source, int slot, int amount,
+                                int destination)
 {
     // TODO
 }
 
-size_t InventoryHandler::getSize(StorageType type) const
+size_t InventoryHandler::getSize(int type) const
 {
     switch (type)
     {
-        case INVENTORY:
+        case Inventory::INVENTORY:
+        case Inventory::TRADE:
             return 50;
-        case STORAGE:
-        case GUILD_STORAGE:
+        case Inventory::STORAGE:
             return 300;
         default:
             return 0;

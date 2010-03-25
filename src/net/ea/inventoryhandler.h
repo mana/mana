@@ -118,6 +118,11 @@ typedef std::list<InventoryItem> InventoryItems;
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 {
     public:
+        enum {
+            GUILD_STORAGE = Inventory::TYPE_END,
+            CART
+        };
+
         InventoryHandler();
 
         ~InventoryHandler();
@@ -138,14 +143,14 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 
         void moveItem(int oldIndex, int newIndex);
 
-        void openStorage(StorageType type);
+        void openStorage(int type);
 
-        void closeStorage(StorageType type);
+        void closeStorage(int type);
 
-        void moveItem(StorageType source, int slot, int amount,
-                      StorageType destination);
+        void moveItem(int source, int slot, int amount,
+                      int destination);
 
-        size_t getSize(StorageType type) const;
+        size_t getSize(int type) const;
 
     private:
         EquipBackend mEquips;

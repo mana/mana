@@ -155,7 +155,7 @@ static void createGuiWindows()
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
-    inventoryWindow = new InventoryWindow(player_node->getInventory(), true);
+    inventoryWindow = new InventoryWindow(player_node->getInventory());
     skillDialog = new SkillDialog;
     minimap = new Minimap;
     helpWindow = new HelpWindow;

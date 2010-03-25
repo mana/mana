@@ -296,7 +296,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 int size = msg.readInt16(); // Max size
 
                 if (!mStorage)
-                    mStorage = new Inventory(size);
+                    mStorage = new Inventory(Inventory::STORAGE, size);
 
                 InventoryItems::iterator it = mInventoryItems.begin();
                 InventoryItems::iterator it_end = mInventoryItems.end();
@@ -472,26 +472,26 @@ void InventoryHandler::moveItem(int oldIndex, int newIndex)
     // Not implemented for eAthena (possible?)
 }
 
-void InventoryHandler::openStorage(StorageType type)
+void InventoryHandler::openStorage(int type)
 {
     // Doesn't apply to eAthena, since opening happens through NPCs?
 }
 
-void InventoryHandler::closeStorage(StorageType type)
+void InventoryHandler::closeStorage(int type)
 {
     MessageOut outMsg(CMSG_CLOSE_STORAGE);
 }
 
-void InventoryHandler::moveItem(StorageType source, int slot, int amount,
-                                StorageType destination)
+void InventoryHandler::moveItem(int source, int slot, int amount,
+                                int destination)
 {
-    if (source == INVENTORY && destination == STORAGE)
+    if (source == Inventory::INVENTORY && destination == Inventory::STORAGE)
     {
         MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
         outMsg.writeInt16(slot + INVENTORY_OFFSET);
         outMsg.writeInt32(amount);
     }
-    else if (source == STORAGE && destination == INVENTORY)
+    else if (source == Inventory::STORAGE && destination == Inventory::INVENTORY)
     {
         MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
         outMsg.writeInt16(slot + STORAGE_OFFSET);
@@ -499,16 +499,18 @@ void InventoryHandler::moveItem(StorageType source, int slot, int amount,
     }
 }
 
-size_t InventoryHandler::getSize(StorageType type) const
+size_t InventoryHandler::getSize(int type) const
 {
     switch (type)
     {
-        case INVENTORY:
+        case Inventory::INVENTORY:
             return 100;
-        case STORAGE:
-            return 0;
+        case Inventory::STORAGE:
+            return 0; // Comes from server after items
+        case Inventory::TRADE:
+            return 12;
         case GUILD_STORAGE:
-            return 0;
+            return 0; // Comes from server after items
         default:
             return 0;
     }

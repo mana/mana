@@ -55,12 +55,12 @@
 
 InventoryWindow::WindowList InventoryWindow::instances;
 
-InventoryWindow::InventoryWindow(Inventory *inventory, bool isMainInventory):
-    Window(isMainInventory ? _("Inventory") : _("Storage")),
+InventoryWindow::InventoryWindow(Inventory *inventory):
+    Window(inventory->isMainInventory() ? _("Inventory") : _("Storage")),
     mInventory(inventory),
     mSplit(false)
 {
-    setWindowName(isMainInventory ? "Inventory" : "Storage");
+    setWindowName(inventory->isMainInventory() ? "Inventory" : "Storage");
     setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
@@ -80,7 +80,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory, bool isMainInventory):
     mSlotsLabel = new Label(_("Slots:"));
     mSlotsBar = new ProgressBar(0.0f, 100, 20, Theme::PROG_INVY_SLOTS);
 
-    if (isMainInventory)
+    if (inventory->isMainInventory())
     {
         std::string equip = _("Equip");
         std::string use = _("Use");
@@ -137,7 +137,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory, bool isMainInventory):
     loadWindowState();
     slotsChanged(mInventory);
 
-    if (!isMainInventory)
+    if (!inventory->isMainInventory())
         setVisible(true);
 }
 
@@ -241,9 +241,9 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
             if(!item)
                 return;
 
-            Net::getInventoryHandler()->moveItem(Net::InventoryHandler::INVENTORY,
+            Net::getInventoryHandler()->moveItem(Inventory::INVENTORY,
                                      item->getInvIndex(), item->getQuantity(),
-                                     Net::InventoryHandler::STORAGE);
+                                     Inventory::STORAGE);
         }
     }
 }
@@ -326,7 +326,7 @@ void InventoryWindow::close()
     if (this == inventoryWindow)
         return;
 
-    Net::getInventoryHandler()->closeStorage(Net::InventoryHandler::STORAGE);
+    Net::getInventoryHandler()->closeStorage(Inventory::STORAGE);
 
     scheduleDelete();
 }

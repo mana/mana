@@ -53,7 +53,7 @@ class InventoryWindow : public Window,
         /**
          * Constructor.
          */
-        InventoryWindow(Inventory *inventory, bool isMainInventory = false);
+        InventoryWindow(Inventory *inventory);
 
         /**
          * Destructor.

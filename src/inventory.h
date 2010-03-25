@@ -43,12 +43,20 @@ class Inventory
     public:
         static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
 
+        enum {
+            INVENTORY,
+            STORAGE,
+            TRADE,
+            TYPE_END
+        };
+
+
         /**
          * Constructor.
          *
          * @param size the number of items that fit in the inventory
          */
-        Inventory(int size);
+        Inventory(int type, int size = -1);
 
         /**
          * Destructor.
@@ -123,12 +131,19 @@ class Inventory
 
         void removeInventoyListener(InventoryListener* listener);
 
+        int getType() const
+        { return mType; }
+
+        bool isMainInventory() const
+        { return mType == INVENTORY; }
+
     protected:
         typedef std::list<InventoryListener*> InventoryListenerList;
         InventoryListenerList mInventoryListeners;
 
         void distributeSlotsChangedEvent();
 
+        int mType;
         Item **mItems;  /**< The holder of items */
         int mSize;      /**< The max number of inventory items */
         int mUsed;      /**< THe number of slots in use */
