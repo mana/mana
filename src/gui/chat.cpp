@@ -129,7 +129,7 @@ void ChatWindow::resetToDefaultSize()
 
 ChatTab *ChatWindow::getFocused() const
 {
-    return dynamic_cast<ChatTab*>(mChatTabs->getSelectedTab());
+    return static_cast<ChatTab*>(mChatTabs->getSelectedTab());
 }
 
 void ChatWindow::clearTab(ChatTab *tab)

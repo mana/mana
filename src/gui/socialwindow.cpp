@@ -455,21 +455,11 @@ void SocialWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "invite")
     {
-        SocialTab *tab = dynamic_cast<SocialTab*>(mTabs->getSelectedTab());
-
-        if (tab)
-        {
-            tab->invite();
-        }
+        static_cast<SocialTab*>(mTabs->getSelectedTab())->invite();
     }
     else if (event.getId() == "leave")
     {
-        SocialTab *tab = dynamic_cast<SocialTab*>(mTabs->getSelectedTab());
-
-        if (tab)
-        {
-            tab->leave();
-        }
+        static_cast<SocialTab*>(mTabs->getSelectedTab())->leave();
     }
     else if (event.getId() == "create guild")
     {

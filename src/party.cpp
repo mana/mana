@@ -172,11 +172,9 @@ void Party::removeFromMembers()
                                itr_end = mMembers.end();
     while(itr != itr_end)
     {
-        Player *p = dynamic_cast<Player*>(beingManager->findBeing((*itr)->getID()));
-        if (p)
-        {
-            p->setParty(NULL);
-        }
+        Being *b = beingManager->findBeing((*itr)->getID());
+        if (b->getType() == Being::PLAYER)
+            static_cast<Player*>(b)->setParty(NULL);
         ++itr;
     }
 }

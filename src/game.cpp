@@ -879,7 +879,7 @@ void Game::handleInput()
             if (target)
             {
                 if (target->getType() == Being::NPC)
-                    dynamic_cast<NPC*>(target)->talk();
+                    static_cast<NPC*>(target)->talk();
             }
         }
 

@@ -138,10 +138,10 @@ public:
 
     void draw(gcn::Graphics *gcnGraphics)
     {
-        SkillModel* model = dynamic_cast<SkillModel*>(mListModel);
-
-        if (!model)
+        if (!mListModel)
             return;
+
+        SkillModel* model = static_cast<SkillModel*>(mListModel);
 
         updateAlpha();
 
@@ -226,13 +226,9 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "inc")
     {
-        SkillTab *tab = dynamic_cast<SkillTab*>(mTabs->getSelectedTab());
-
-        if (tab)
-        {
-            if (SkillInfo *info = tab->getSelectedInfo())
-                Net::getPlayerHandler()->increaseSkill(info->id);
-        }
+        SkillTab *tab = static_cast<SkillTab*>(mTabs->getSelectedTab());
+        if (SkillInfo *info = tab->getSelectedInfo())
+            Net::getPlayerHandler()->increaseSkill(info->id);
     }
     else if (event.getId() == "close")
     {

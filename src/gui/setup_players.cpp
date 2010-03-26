@@ -151,7 +151,7 @@ public:
 
     virtual void updateModelInRow(int row)
     {
-        gcn::DropDown *choicebox = dynamic_cast<gcn::DropDown *>(
+        gcn::DropDown *choicebox = static_cast<gcn::DropDown *>(
                                    getElementAt(row, RELATION_CHOICE_COLUMN));
         player_relations.setRelation(getPlayerAt(row),
                                    static_cast<PlayerRelation::Relation>(

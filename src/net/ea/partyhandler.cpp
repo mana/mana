@@ -251,11 +251,11 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 {
                     partyTab->chatLog(strprintf(_("%s has left your party."),
                                     nick.c_str()), BY_SERVER);
-                    Player *p = dynamic_cast<Player*>(beingManager->findBeing(id));
-                    if (p)
-                    {
-                        p->setParty(NULL);
-                    }
+
+                    Being *b = beingManager->findBeing(id);
+                    if (b->getType() == Being::PLAYER)
+                        static_cast<Player*>(b)->setParty(NULL);
+
                     eaParty->removeMember(id);
                 }
                 break;

@@ -46,7 +46,12 @@
 class AttrDisplay : public Container
 {
     public:
+        enum Type {
+            DERIVED, CHANGEABLE, UNKNOWN
+        };
+
         virtual std::string update();
+        virtual Type getType() { return UNKNOWN; }
 
     protected:
         AttrDisplay(int id, const std::string &name);
@@ -63,6 +68,7 @@ class DerDisplay : public AttrDisplay
 {
     public:
         DerDisplay(int id, const std::string &name);
+        virtual Type getType() { return DERIVED; }
 };
 
 class ChangeDisplay : public AttrDisplay, gcn::ActionListener
@@ -70,6 +76,7 @@ class ChangeDisplay : public AttrDisplay, gcn::ActionListener
     public:
         ChangeDisplay(int id, const std::string &name);
         std::string update();
+        virtual Type getType() { return CHANGEABLE; }
         void setPointsNeeded(int needed);
 
     private:
@@ -269,9 +276,9 @@ void StatusWindow::setPointsNeeded(int id, int needed)
 
     if (it != mAttrs.end())
     {
-        ChangeDisplay *disp = dynamic_cast<ChangeDisplay*>(it->second);
-        if (disp)
-            disp->setPointsNeeded(needed);
+        AttrDisplay *disp = it->second;
+        if (disp->getType() == AttrDisplay::CHANGEABLE)
+            static_cast<ChangeDisplay*>(disp)->setPointsNeeded(needed);
     }
 }
 

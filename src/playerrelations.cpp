@@ -221,10 +221,9 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
         // execute `ignore' strategy, if possible
         if (mIgnoreStrategy)
         {
-            Player *to_ignore = dynamic_cast<Player *>(beingManager->findBeingByName(name, Being::PLAYER));
-
-            if (to_ignore)
-                mIgnoreStrategy->ignore(to_ignore, rejections);
+            Being *b = beingManager->findBeingByName(name, Being::PLAYER);
+            if (b->getType() == Being::PLAYER)
+                mIgnoreStrategy->ignore(static_cast<Player *>(b), rejections);
         }
     }
 
