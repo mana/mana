@@ -162,6 +162,9 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
 
 void OutfitWindow::wearOutfit(int outfit)
 {
+    if (mItemsUnequip[outfit])
+        unequipNotInOutfit(outfit);
+
     Item *item;
     for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
@@ -171,11 +174,6 @@ void OutfitWindow::wearOutfit(int outfit)
             if (item->isEquipment())
                 Net::getInventoryHandler()->equipItem(item);
         }
-    }
-
-    if (mItemsUnequip[outfit])
-    {
-        unequipNotInOutfit(outfit);
     }
 }
 
