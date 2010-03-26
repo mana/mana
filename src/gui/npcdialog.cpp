@@ -347,6 +347,9 @@ void NpcDialog::setVisible(bool visible)
 
 NpcDialog *NpcDialog::getActive()
 {
+    if (instances.size() == 1)
+        return instances.front();
+
     DialogList::iterator it = instances.begin();
     DialogList::iterator it_end = instances.end();
 
