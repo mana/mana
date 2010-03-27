@@ -459,7 +459,7 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int y = (event.getY() + (int) mPixelViewY);
 
     mHoverBeing = beingManager->findBeingByPixel(x, y);
-    if (mHoverBeing->getType() == Being::PLAYER)
+    if (mHoverBeing && mHoverBeing->getType() == Being::PLAYER)
         mBeingPopup->show(getMouseX(), getMouseY(),
                           static_cast<Player*>(mHoverBeing));
     else
