@@ -63,17 +63,17 @@ void ListBox::draw(gcn::Graphics *graphics)
                                             (int) (mAlpha * 255.0f)));
     graphics->setFont(getFont());
 
-    const int fontHeight = getFont()->getHeight();
+    const int height = getRowHeight();
 
     // Draw filled rectangle around the selected list element
     if (mSelected >= 0)
-        graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
-                                               getWidth(), fontHeight));
+        graphics->fillRectangle(gcn::Rectangle(0, height * mSelected,
+                                               getWidth(), height));
 
     // Draw the list elements
     graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     for (int i = 0, y = 0; i < mListModel->getNumberOfElements();
-         ++i, y += fontHeight)
+         ++i, y += height)
     {
         graphics->drawText(mListModel->getElementAt(i), 1, y);
     }
