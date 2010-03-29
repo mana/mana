@@ -41,13 +41,17 @@ public:
     std::string hostname;
     unsigned short port;
 
+    std::string description;
+
     bool save;
+    bool meetsMinimumVersion;
 
     ServerInfo()
     {
         type = UNKNOWN;
         port = 0;
         save = false;
+        meetsMinimumVersion = true;
     }
 
     ServerInfo(const ServerInfo &info)
@@ -56,7 +60,9 @@ public:
         name = info.name;
         hostname = info.hostname;
         port = info.port;
+        description = info.description;
         save = info.save;
+        meetsMinimumVersion = info.meetsMinimumVersion;
     }
 
     bool isValid() const
@@ -70,6 +76,9 @@ public:
         name.clear();
         hostname.clear();
         port = 0;
+        description.clear();
+        save = false;
+        meetsMinimumVersion = true;
     }
 
     bool operator==(const ServerInfo &other) const

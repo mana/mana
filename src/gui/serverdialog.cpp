@@ -23,10 +23,12 @@
 
 #include "client.h"
 #include "configuration.h"
+#include "gui.h"
 #include "log.h"
 
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/dropdown.h"
@@ -42,6 +44,8 @@
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 #include "widgets/dropdown.h"
+
+#include <guichan/font.hpp>
 
 #include <cstdlib>
 #include <iostream>
@@ -76,6 +80,7 @@ static unsigned short defaultPortForServerType(ServerInfo::Type type)
 
 ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
         mServers(servers),
+        mVersionStrings(servers->size(), VersionString(0, "")),
         mParent(parent)
 {
 }
@@ -91,22 +96,35 @@ std::string ServersListModel::getElementAt(int elementIndex)
     MutexLocker lock = mParent->lock();
     const ServerInfo &server = mServers->at(elementIndex);
     std::string myServer;
-    if (server.name.empty())
-    {
-        myServer += server.hostname;
-        myServer += ":";
-        myServer += toString(server.port);
-    }
+    myServer += server.hostname;
+    myServer += ":";
+    myServer += toString(server.port);
+    return myServer;
+}
+
+void ServersListModel::setVersionString(int index, const std::string &version)
+{
+    if (version.empty())
+        mVersionStrings[index] = VersionString(0, "");
     else
     {
-        myServer += server.name;
-        myServer += " (";
-        myServer += server.hostname;
-        myServer += ":";
-        myServer += toString(server.port);
-        myServer += ")";
+        int width = gui->getFont()->getWidth(version);
+        mVersionStrings[index] = VersionString(width, version);
     }
-    return myServer;
+}
+
+void ServersListModel::addServer(const ServerInfo &info,
+                                 const std::string &version)
+{
+    mServers->push_back(info);
+
+    if (version.empty())
+        mVersionStrings.push_back(VersionString(0, ""));
+    else
+    {
+        int width = gui->getFont()->getWidth(version);
+        mVersionStrings.push_back(VersionString(width, version));
+    }
 }
 
 std::string TypeListModel::getElementAt(int elementIndex)
@@ -119,6 +137,74 @@ std::string TypeListModel::getElementAt(int elementIndex)
         return "Unknown";
 }
 
+class ServersListBox : public ListBox
+{
+public:
+    ServersListBox(ServersListModel *model):
+            ListBox(model)
+    {
+    }
+
+    void draw(gcn::Graphics *graphics)
+    {
+        if (!mListModel)
+            return;
+
+        ServersListModel *model = static_cast<ServersListModel*>(mListModel);
+
+        updateAlpha();
+
+        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
+                                                (int) (mAlpha * 255.0f)));
+        graphics->setFont(getFont());
+
+        const int height = getRowHeight();
+        const gcn::Color unsupported =
+                Theme::getThemeColor(Theme::SERVER_VERSION_NOT_SUPPORTED,
+                                     (int) (mAlpha * 255.0f));
+
+        // Draw filled rectangle around the selected list element
+        if (mSelected >= 0)
+            graphics->fillRectangle(gcn::Rectangle(0, height * mSelected,
+                                                   getWidth(), height));
+
+        // Draw the list elements
+        for (int i = 0, y = 0; i < model->getNumberOfElements();
+             ++i, y += height)
+        {
+            ServerInfo info = model->getServer(i);
+
+            graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+
+            if (!info.name.empty())
+            {
+                graphics->setFont(boldFont);
+                graphics->drawText(info.name, 2, y);
+            }
+
+            graphics->setFont(getFont());
+
+            int top = y + height / 2;
+
+            graphics->drawText(model->getElementAt(i), 2, top);
+
+            const ServersListModel::VersionString versionInfo = model->getVersionString(i);
+            if (versionInfo.first > 0)
+            {
+                graphics->setColor(unsupported);
+
+                graphics->drawText(versionInfo.second,
+                                   getWidth() - versionInfo.first - 2, top);
+            }
+        }
+    }
+
+    unsigned int getRowHeight() const
+    {
+        return 2 * getFont()->getHeight();
+    }
+};
+
 
 ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     Window(_("Choose Your Server")),
@@ -128,6 +214,8 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     mServers(ServerInfos()),
     mServerInfo(serverInfo)
 {
+    setWindowName("ServerDialog");
+
     Label *serverLabel = new Label(_("Server:"));
     Label *portLabel = new Label(_("Port:"));
     Label *typeLabel = new Label(_("Server type:"));
@@ -138,7 +226,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     mServersListModel = new ServersListModel(&mServers, this);
 
-    mServersList = new ListBox(mServersListModel);
+    mServersList = new ServersListBox(mServersListModel);
     mServersList->addMouseListener(this);
 
     ScrollArea *usedScroll = new ScrollArea(mServersList);
@@ -183,17 +271,23 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     // minimum width.
     int width = 0, height = 0;
     getLayout().reflow(width, height);
-    if (width < 300)
+    if (width < 400)
     {
-        width = 300;
+        width = 400;
         getLayout().reflow(width, height);
     }
 
     setContentSize(width, height);
 
+    setMinWidth(getWidth());
+    setMinHeight(getHeight());
+    setDefaultSize(getWidth(), getHeight(), ImageRect::CENTER);
+
+    setResizable(true);
     addKeyListener(this);
 
-    center();
+    loadWindowState();
+
     setFieldsReadOnly(true);
     mServersList->setSelected(0); // Do this after for the Delete button
     setVisible(true);
@@ -314,7 +408,7 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
 
     // Update the server and post fields according to the new selection
     const ServerInfo &myServer = mServersListModel->getServer(index);
-    mDescription->setCaption(myServer.name);
+    mDescription->setCaption(myServer.description);
     mServerNameField->setText(myServer.hostname);
     mPortField->setText(toString(myServer.port));
     switch (myServer.type)
@@ -441,6 +535,18 @@ void ServerDialog::loadServers()
         server.type = ServerInfo::parseType(type);
         server.name = XML::getProperty(serverNode, "name", std::string());
 
+        std::string version = XML::getProperty(serverNode, "minimumVersion",
+                                               std::string());
+
+        server.meetsMinimumVersion = (compareStrI(version, PACKAGE_VERSION)
+                                      <= 0);
+
+        // For display in the list
+        if (server.meetsMinimumVersion)
+            version.clear();
+        else
+            version = strprintf(_("requires v%s"), version.c_str());
+
         if (server.type == ServerInfo::UNKNOWN)
         {
             logger->log("Unknown server type: %s", type.c_str());
@@ -449,36 +555,41 @@ void ServerDialog::loadServers()
 
         for_each_xml_child_node(subNode, serverNode)
         {
-            if (!xmlStrEqual(subNode->name, BAD_CAST "connection"))
-                continue;
-
-            server.hostname = XML::getProperty(subNode, "hostname", "");
-            server.port = XML::getProperty(subNode, "port", 0);
-            if (server.port == 0)
+            if (xmlStrEqual(subNode->name, BAD_CAST "connection"))
             {
-                // If no port is given, use the default for the given type
-                server.port = defaultPortForServerType(server.type);
+                server.hostname = XML::getProperty(subNode, "hostname", "");
+                server.port = XML::getProperty(subNode, "port", 0);
+                if (server.port == 0)
+                {
+                    // If no port is given, use the default for the given type
+                    server.port = defaultPortForServerType(server.type);
+                }
+            }
+            else if (xmlStrEqual(subNode->name, BAD_CAST "description"))
+            {
+                server.description = (const char*) subNode->xmlChildrenNode->content;
             }
         }
 
 
         MutexLocker lock(&mMutex);
         // Add the server to the local list if it's not already present
-        ServerInfos::iterator it;
         bool found = false;
-        for (it = mServers.begin(); it != mServers.end(); it++)
+        for (unsigned int i = 0; i < mServers.size(); i++)
         {
-            if ((*it) == server)
+            if (mServers[i] == server)
             {
                 // Use the name listed in the server list
-                (*it).name = server.name;
+                mServers[i].name = server.name;
+                mServers[i].meetsMinimumVersion = server.meetsMinimumVersion;
+                mServersListModel->setVersionString(i, version);
                 found = true;
                 break;
             }
         }
 
         if (!found)
-            mServers.push_back(server);
+            mServersListModel->addServer(server, version);
     }
 }
 
@@ -503,6 +614,7 @@ void ServerDialog::loadCustomServers()
             break;
 
         server.save = true;
+        server.meetsMinimumVersion = true;
         mServers.push_back(server);
     }
 }

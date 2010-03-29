@@ -156,6 +156,7 @@ class Theme : public Palette, public ConfigListener
             NECKLACE,
             ARMS,
             AMMO,
+            SERVER_VERSION_NOT_SUPPORTED,
             THEME_COLORS_END
         };
 

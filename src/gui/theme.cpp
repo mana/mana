@@ -408,7 +408,8 @@ static int readColorType(const std::string &type)
         "RING",
         "NECKLACE",
         "ARMS",
-        "AMMO"
+        "AMMO",
+        "SERVER_VERSION_NOT_SUPPORTED"
     };
 
     if (type.empty())

@@ -35,6 +35,7 @@
 	<color id="NECKLACE" color="#ff00ff" />
 	<color id="ARMS" color="#9c24e8" />
 	<color id="AMMO" color="#8b6311" />
+	<color id="SERVER_VERSION_NOT_SUPPORTED" color="#DC0000" />
 
 	<progressbar id="DEFAULT" color="#969696" />
 	<progressbar id="HP" color="#ff0000,e28000,c38948,0f6a20" />
