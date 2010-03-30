@@ -38,6 +38,8 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
     public:
         LoginHandler();
 
+        ~LoginHandler();
+
         void handleMessage(Net::MessageIn &msg);
 
         void connect();

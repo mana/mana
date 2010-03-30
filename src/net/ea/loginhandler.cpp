@@ -55,6 +55,11 @@ LoginHandler::LoginHandler()
     loginHandler = this;
 }
 
+LoginHandler::~LoginHandler()
+{
+    delete_all(mWorlds);
+}
+
 void LoginHandler::handleMessage(Net::MessageIn &msg)
 {
     int code, worldCount;

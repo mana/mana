@@ -119,6 +119,7 @@ Theme::~Theme()
 {
     delete_all(mSkins);
     config.removeListener("guialpha", this);
+    delete_all(mProgressColors);
 }
 
 Theme *Theme::instance()

@@ -46,6 +46,12 @@ Party::Party(short id):
 {
     parties[id] = this;
 }
+
+Party::~Party()
+{
+    clearMembers();
+}
+
 PartyMember *Party::addMember(int id, const std::string &name)
 {
     PartyMember *m;
@@ -132,7 +138,9 @@ void Party::removeMember(PartyMember *member)
         if((*itr)->mId == member->mId &&
            (*itr)->getName() == member->getName())
         {
+            PartyMember *member = (*itr);
             mMembers.erase(itr);
+            delete member;
         }
         ++itr;
     }
@@ -146,7 +154,9 @@ void Party::removeMember(int id)
     {
         if((*itr)->mId == id)
         {
+            PartyMember *member = (*itr);
             mMembers.erase(itr);
+            delete member;
         }
         ++itr;
     }
@@ -160,7 +170,9 @@ void Party::removeMember(const std::string &name)
     {
         if((*itr)->getName() == name)
         {
+            PartyMember *member = (*itr);
             mMembers.erase(itr);
+            delete member;
         }
         ++itr;
     }

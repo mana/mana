@@ -25,6 +25,8 @@
 
 #include "gui/widgets/avatarlistbox.h"
 
+#include "utils/dtor.h"
+
 #include <map>
 #include <string>
 #include <vector>
@@ -132,7 +134,7 @@ public:
      */
     void removeMember(const std::string &name);
 
-    void clearMembers() { mMembers.clear(); }
+    void clearMembers() { delete_all(mMembers); mMembers.clear(); }
 
     void removeFromMembers();
 
@@ -175,6 +177,8 @@ private:
      * Constructor with party id passed to it.
      */
     Party(short id);
+
+    ~Party();
 
     typedef std::vector<PartyMember*> MemberList;
     MemberList mMembers;
