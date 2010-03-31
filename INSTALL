@@ -68,16 +68,6 @@ different prefix to configure as usual.
   Rebuild the executable from scratch using "make clean" and then "make".
 
 
-  NOTE: This version of Mana can be compiled with support for connecting to
-  Manaserv, a server developed from scratch by the Mana project. However, the
-  client won't support eAthena anymore when you do. In future clients we
-  intend to support either server from a single compile.
-
-  To configure the client with support for Manaserv, do step 3 as follows:
-
-    ./configure --with-server=manaserv
-
-
 3. Notes
 ========
 

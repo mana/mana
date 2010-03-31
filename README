@@ -1,7 +1,7 @@
-THE MANA WORLD
-==============
+THE MANA CLIENT
+===============
 
- Version: 0.0.29.1       Date: 09/06/2009
+ Version: 1.0.0       Date: 2010-03-31
 
  Development team:
   - See AUTHORS file for a list
@@ -28,9 +28,10 @@ THE MANA WORLD
 1. Account
 ----------
 
-To create an account, when you login for the first time enter the desired
-username and a password of your choice then press the "Register button".
-Remember that the server is only for demo and development purposes.
+To create an account you can usually press the "Register" button after
+choosing your server. When this doesn't work, visit the website of the server
+you'd like to register on, since they may be using an online registration
+form instead.
 
 2. Commands
 -----------
@@ -70,16 +71,16 @@ context menu. Holding [Left Shift] prevents from walking when attacking.
 
 - /help              Displays the list of commands
 - /announce          broadcasts a global msg(Gm Cammand only)
-- /clear             clears the chat window 
+- /clear             clears the chat window
 - /who               shows how many players are online
-- /where             displays the map name your currently on 
+- /where             displays the map name your currently on
 - /whisper           send a private msg to another player
                         (format: /whisper <charname> <message>)
                      If the <nick> has spaces in it, enclose it in double
                         quotes e.g. /whisper "char name" <message>
-- /record            Records the Chat output 
+- /record            Records the Chat output
                      (format: /record <filename to write to> starts the record
-                        session /record again 
+                        session /record again
                       stops the session)
 - /party             <command> <params>: Party commands
  - /party new         creates a new party /party new <party name>
@@ -98,34 +99,12 @@ Type /help party <option> for further help.
                        focus after every message.  /toggle displays the status)
 For more information, type /help <command>
 
-3. Skills
----------
-
-You can improve your skills by increasing job level. Each job level gives you 1
-point to spend on skills.
-
-BASIC SKILLS:
-
-Level 1:  enables the ability to trade with others
-Level 2:  enables the ability to express emotions
-Level 3:  enables character to sit
-Level 4:  enables not used 
-level 5:  enables the ability to join a party 
-level 6:  enables not used 
-level 7:  enables the ability to create a party 
-level 8:  enables not used
-level 9:  enables not used
-level 10: enables not used
-
 4. Support
 ----------
 
-If you're having troubles, please first of all read the FAQ.
-If you can't find a solution to your problem, feel free to check our
-Bugs/Support section of the forum:
-- http://themanaworld.org/phpBB2/viewforum.php?f=3
-or come visit us on our IRC channel:
-- #themanaworld @ irc.freenode.net
+If you're having issues with this client, feel free to report them to us.
+There is a bug tracker at http://bugs.manasource.org/ and you can find us on
+IRC on irc.freenode.net in the #mana channel.
 
-Otherwise check the AUTHORS file to have a list of developers and how to
-contact them.
+If you have feedback about a specific game that uses the Mana client, be sure
+to contact the developers of the game instead.
