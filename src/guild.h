@@ -46,8 +46,6 @@ protected:
 
     GuildMember(Guild *guild, int id, const std::string &name);
 
-    GuildMember(Guild *guild, int id);
-
     GuildMember(Guild *guild, const std::string &name);
 
     int mId;
@@ -74,11 +72,6 @@ public:
     /**
      * Adds member to the list.
      */
-    GuildMember *addMember(int id);
-
-    /**
-     * Adds member to the list.
-     */
     GuildMember *addMember(const std::string &name);
 
     /**
@@ -86,14 +79,14 @@ public:
      *
      * @return the member with the given ID, or NULL if they don't exist.
      */
-    GuildMember *getMember(int id);
+    GuildMember *getMember(int id) const;
 
     /**
      * Find a member by name.
      *
      * @return the member with the given name, or NULL if they don't exist.
      */
-    GuildMember *getMember(std::string name);
+    GuildMember *getMember(const std::string &name) const;
 
     /**
      * Get the name of the guild.

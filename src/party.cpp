@@ -28,16 +28,6 @@ PartyMember::PartyMember(Party *party, int id, const std::string &name):
 {
 }
 
-PartyMember::PartyMember(Party *party, int id):
-        mId(id), mParty(party), mLeader(false)
-{
-}
-
-PartyMember::PartyMember(Party *party, const std::string &name):
-        Avatar(name), mParty(party), mLeader(false)
-{
-}
-
 Party::PartyMap Party::parties;
 
 Party::Party(short id):
@@ -67,43 +57,13 @@ PartyMember *Party::addMember(int id, const std::string &name)
     return m;
 }
 
-PartyMember *Party::addMember(int id)
+PartyMember *Party::getMember(int id) const
 {
-    PartyMember *m;
-    if ((m = getMember(id)))
-    {
-        return m;
-    }
-
-    m = new PartyMember(this, id);
-
-    mMembers.push_back(m);
-
-    return m;
-}
-
-PartyMember *Party::addMember(const std::string &name)
-{
-    PartyMember *m;
-    if ((m = getMember(name)))
-    {
-        return m;
-    }
-
-    m = new PartyMember(this, name);
-
-    mMembers.push_back(m);
-
-    return m;
-}
-
-PartyMember *Party::getMember(int id)
-{
-    MemberList::iterator itr = mMembers.begin(),
+    MemberList::const_iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while(itr != itr_end)
+    while (itr != itr_end)
     {
-        if((*itr)->mId == id)
+        if ((*itr)->mId == id)
         {
             return (*itr);
         }
@@ -113,13 +73,13 @@ PartyMember *Party::getMember(int id)
     return NULL;
 }
 
-PartyMember *Party::getMember(std::string name)
+PartyMember *Party::getMember(const std::string &name) const
 {
-    MemberList::iterator itr = mMembers.begin(),
+    MemberList::const_iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
-    while(itr != itr_end)
+    while (itr != itr_end)
     {
-        if((*itr)->getName() == name)
+        if ((*itr)->getName() == name)
         {
             return (*itr);
         }

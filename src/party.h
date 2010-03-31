@@ -51,10 +51,6 @@ protected:
 
     PartyMember(Party *party, int id, const std::string &name);
 
-    PartyMember(Party *party, int id);
-
-    PartyMember(Party *party, const std::string &name);
-
     int mId;
     Party *mParty;
     bool mLeader;
@@ -78,28 +74,18 @@ public:
     PartyMember *addMember(int id, const std::string &name);
 
     /**
-     * Adds member to the list.
-     */
-    PartyMember *addMember(int id);
-
-    /**
-     * Adds member to the list.
-     */
-    PartyMember *addMember(const std::string &name);
-
-    /**
      * Find a member by ID.
      *
      * @return the member with the given ID, or NULL if they don't exist.
      */
-    PartyMember *getMember(int id);
+    PartyMember *getMember(int id) const;
 
     /**
      * Find a member by name.
      *
      * @return the member with the given name, or NULL if they don't exist.
      */
-    PartyMember *getMember(std::string name);
+    PartyMember *getMember(const std::string &name) const;
 
     /**
      * Get the name of the party.

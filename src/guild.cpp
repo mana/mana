@@ -29,11 +29,6 @@ GuildMember::GuildMember(Guild *guild, int id, const std::string &name):
 {
 }
 
-GuildMember::GuildMember(Guild *guild, int id):
-        mId(id), mGuild(guild)
-{
-}
-
 GuildMember::GuildMember(Guild *guild, const std::string &name):
         Avatar(name), mId(0), mGuild(guild)
 {
@@ -63,21 +58,6 @@ GuildMember *Guild::addMember(int id, const std::string &name)
     return m;
 }
 
-GuildMember *Guild::addMember(int id)
-{
-    GuildMember *m;
-    if ((m = getMember(id)))
-    {
-        return m;
-    }
-
-    m = new GuildMember(this, id);
-
-    mMembers.push_back(m);
-
-    return m;
-}
-
 GuildMember *Guild::addMember(const std::string &name)
 {
     GuildMember *m;
@@ -93,9 +73,9 @@ GuildMember *Guild::addMember(const std::string &name)
     return m;
 }
 
-GuildMember *Guild::getMember(int id)
+GuildMember *Guild::getMember(int id) const
 {
-    MemberList::iterator itr = mMembers.begin(),
+    MemberList::const_iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -107,13 +87,13 @@ GuildMember *Guild::getMember(int id)
     return NULL;
 }
 
-GuildMember *Guild::getMember(std::string name)
+GuildMember *Guild::getMember(const std::string &name) const
 {
-    MemberList::iterator itr = mMembers.begin(),
+    MemberList::const_iterator itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
-        if((*itr)->getName() == name)
+        if ((*itr)->getName() == name)
         {
             return (*itr);
         }
