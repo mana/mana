@@ -333,7 +333,7 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
             //effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
             setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
         }
-        else if (dir)
+        else if (dir != mDirection)
         {
             // If the being can't move, just change direction
             Net::getPlayerHandler()->setDirection(dir);
@@ -564,7 +564,7 @@ void LocalPlayer::startWalking(unsigned char dir)
         {
             setDestination(getTileX() + dx, getTileY() + dy);
         }
-        else if (dir)
+        else if (dir != mDirection)
         {
             // If the being can't move, just change direction
             Net::getPlayerHandler()->setDirection(dir);
