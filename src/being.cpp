@@ -590,6 +590,10 @@ void Being::logic()
             mDest : Vector(mPath.front().x,
                            mPath.front().y);
 
+        // This is a hack that stops NPCs from running off the map...
+        if (mDest.x <= 0 && mDest.y <= 0)
+            return;
+
         // The Vector representing the difference between current position
         // and the next destination path node.
         Vector dir = dest - mPos;
