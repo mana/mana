@@ -68,6 +68,9 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
 
     if (diag == mNpcDialogs.end())
     {
+        if (msg.getId() == GPMSG_NPC_ERROR || msg.getId() == GPMSG_NPC_CLOSE)
+            return; // Dialog is pointless in these cases
+
         dialog = new NpcDialog(npcId);
         Wrapper wrap;
         wrap.dialog = dialog;
