@@ -133,7 +133,6 @@ void connectToServer(const ServerInfo &server)
     }
 
     if (networkType == server.type && getGeneralHandler() != NULL)
-    //if (networkType != ServerInfo::UNKNOWN)
     {
         getGeneralHandler()->reload();
     }

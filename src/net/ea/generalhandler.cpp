@@ -180,6 +180,8 @@ void GeneralHandler::reload()
         mNetwork->disconnect();
 
     static_cast<LoginHandler*>(mLoginHandler.get())->clearWorlds();
+    static_cast<CharServerHandler*>(mCharHandler.get())->setCharCreateDialog(0);
+    static_cast<CharServerHandler*>(mCharHandler.get())->setCharSelectDialog(0);
 }
 
 void GeneralHandler::unload()

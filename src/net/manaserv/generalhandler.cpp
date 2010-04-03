@@ -122,7 +122,8 @@ void GeneralHandler::load()
 
 void GeneralHandler::reload()
 {
-    // Nothing needed yet
+    static_cast<CharHandler*>(mCharHandler.get())->setCharCreateDialog(0);
+    static_cast<CharHandler*>(mCharHandler.get())->setCharSelectDialog(0);
 }
 
 void GeneralHandler::unload()
