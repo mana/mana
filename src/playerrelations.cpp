@@ -222,7 +222,7 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
         if (mIgnoreStrategy)
         {
             Being *b = beingManager->findBeingByName(name, Being::PLAYER);
-            if (b->getType() == Being::PLAYER)
+            if (b && b->getType() == Being::PLAYER)
                 mIgnoreStrategy->ignore(static_cast<Player *>(b), rejections);
         }
     }
