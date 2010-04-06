@@ -36,22 +36,24 @@ public:
         EATHENA
     };
 
+    typedef std::pair<int, std::string> VersionString;
+
     Type type;
     std::string name;
     std::string hostname;
     unsigned short port;
 
     std::string description;
+    VersionString version;
 
     bool save;
-    bool meetsMinimumVersion;
 
     ServerInfo()
     {
         type = UNKNOWN;
         port = 0;
         save = false;
-        meetsMinimumVersion = true;
+        version.first = 0;
     }
 
     ServerInfo(const ServerInfo &info)
@@ -61,8 +63,9 @@ public:
         hostname = info.hostname;
         port = info.port;
         description = info.description;
+        version.first = info.version.first;
+        version.second = info.version.second;
         save = info.save;
-        meetsMinimumVersion = info.meetsMinimumVersion;
     }
 
     bool isValid() const
@@ -77,8 +80,9 @@ public:
         hostname.clear();
         port = 0;
         description.clear();
+        version.first = 0;
+        version.second.clear();
         save = false;
-        meetsMinimumVersion = true;
     }
 
     bool operator==(const ServerInfo &other) const

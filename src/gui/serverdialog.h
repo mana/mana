@@ -71,12 +71,7 @@ class ServersListModel : public gcn::ListModel
         const ServerInfo &getServer(int elementIndex) const
         { return mServers->at(elementIndex); }
 
-        const VersionString &getVersionString(int index) const
-        { return mVersionStrings[index]; }
-
         void setVersionString(int index, const std::string &version);
-
-        void addServer(const ServerInfo &info, const std::string &version);
 
     private:
         typedef std::vector<VersionString> VersionStrings;

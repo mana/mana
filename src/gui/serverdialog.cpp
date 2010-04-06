@@ -113,20 +113,6 @@ void ServersListModel::setVersionString(int index, const std::string &version)
     }
 }
 
-void ServersListModel::addServer(const ServerInfo &info,
-                                 const std::string &version)
-{
-    mServers->push_back(info);
-
-    if (version.empty())
-        mVersionStrings.push_back(VersionString(0, ""));
-    else
-    {
-        int width = gui->getFont()->getWidth(version);
-        mVersionStrings.push_back(VersionString(width, version));
-    }
-}
-
 std::string TypeListModel::getElementAt(int elementIndex)
 {
     if (elementIndex == 0)
@@ -188,13 +174,12 @@ public:
 
             graphics->drawText(model->getElementAt(i), 2, top);
 
-            const ServersListModel::VersionString versionInfo = model->getVersionString(i);
-            if (versionInfo.first > 0)
+            if (info.version.first > 0)
             {
                 graphics->setColor(unsupported);
 
-                graphics->drawText(versionInfo.second,
-                                   getWidth() - versionInfo.first - 2, top);
+                graphics->drawText(info.version.second,
+                                   getWidth() - info.version.first - 2, top);
             }
         }
     }
@@ -538,11 +523,11 @@ void ServerDialog::loadServers()
         std::string version = XML::getProperty(serverNode, "minimumVersion",
                                                std::string());
 
-        server.meetsMinimumVersion = (compareStrI(version, PACKAGE_VERSION)
+        bool meetsMinimumVersion = (compareStrI(version, PACKAGE_VERSION)
                                       <= 0);
 
         // For display in the list
-        if (server.meetsMinimumVersion)
+        if (meetsMinimumVersion)
             version.clear();
         else
             version = strprintf(_("requires v%s"), version.c_str());
@@ -571,6 +556,8 @@ void ServerDialog::loadServers()
             }
         }
 
+        server.version.first = gui->getFont()->getWidth(version);
+        server.version.second = version;
 
         MutexLocker lock(&mMutex);
         // Add the server to the local list if it's not already present
@@ -581,7 +568,7 @@ void ServerDialog::loadServers()
             {
                 // Use the name listed in the server list
                 mServers[i].name = server.name;
-                mServers[i].meetsMinimumVersion = server.meetsMinimumVersion;
+                mServers[i].version = server.version;
                 mServersListModel->setVersionString(i, version);
                 found = true;
                 break;
@@ -589,7 +576,7 @@ void ServerDialog::loadServers()
         }
 
         if (!found)
-            mServersListModel->addServer(server, version);
+            mServers.push_back(server);
     }
 }
 
@@ -614,7 +601,6 @@ void ServerDialog::loadCustomServers()
             break;
 
         server.save = true;
-        server.meetsMinimumVersion = true;
         mServers.push_back(server);
     }
 }
