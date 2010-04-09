@@ -51,6 +51,8 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         int supportedOptionalActions() const
         { return SetGenderOnRegister; }
 
+        bool isRegistrationEnabled();
+
         void getRegistrationDetails();
 
         unsigned int getMaxPasswordLength() const { return 25; }
@@ -81,6 +83,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void sendLoginRegister(const std::string &username,
                                const std::string &password);
 
+        bool mRegistrationEnabled;
         std::string mUpdateHost;
         Worlds mWorlds;
         Token mToken;

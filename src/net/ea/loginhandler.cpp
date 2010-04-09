@@ -41,7 +41,8 @@ namespace EAthena {
 
 extern ServerInfo charServer;
 
-LoginHandler::LoginHandler()
+LoginHandler::LoginHandler():
+        mRegistrationEnabled(true)
 {
     static const Uint16 _messages[] = {
         SMSG_UPDATE_HOST,
@@ -190,9 +191,14 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                 msg.readInt8(); // T
                 msg.readInt8(); // M
                 msg.readInt8(); // W
-                msg.readInt8(); // (space)
-                msg.readInt8(); // e
-                msg.readInt8(); // A
+
+                unsigned int options = msg.readInt32();
+
+                if (options & 1)
+                {
+                    // Registeration not allowed
+                    mRegistrationEnabled = false;
+                }
 
                 //state = STATE_LOGIN;
             }
@@ -215,6 +221,11 @@ void LoginHandler::disconnect()
 {
     if (mNetwork->getServer() == mServer)
         mNetwork->disconnect();
+}
+
+bool LoginHandler::isRegistrationEnabled()
+{
+    return mRegistrationEnabled;
 }
 
 void LoginHandler::getRegistrationDetails()

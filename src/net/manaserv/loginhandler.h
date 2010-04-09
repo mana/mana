@@ -47,6 +47,8 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         int supportedOptionalActions() const
         { return Unregister | ChangeEmail | SetEmailOnRegister; }
 
+        bool isRegistrationEnabled();
+
         void getRegistrationDetails();
 
         unsigned int getMinUserNameLength() const;

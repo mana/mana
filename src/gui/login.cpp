@@ -36,6 +36,8 @@
 #include "gui/widgets/textfield.h"
 
 #include "net/logindata.h"
+#include "net/loginhandler.h"
+#include "net/net.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -89,6 +91,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
         mPassField->requestFocus();
 
     mLoginButton->setEnabled(canSubmit());
+    mRegisterButton->setEnabled(Net::getLoginHandler()->isRegistrationEnabled());
 }
 
 LoginDialog::~LoginDialog()

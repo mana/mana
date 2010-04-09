@@ -63,6 +63,8 @@ class LoginHandler
          */
         virtual int supportedOptionalActions() const = 0;
 
+        virtual bool isRegistrationEnabled() = 0;
+
         virtual void getRegistrationDetails() = 0;
 
         virtual unsigned int getMinUserNameLength() const { return 4; }

@@ -354,6 +354,11 @@ void LoginHandler::disconnect()
     }
 }
 
+bool LoginHandler::isRegistrationEnabled()
+{
+    return true;
+}
+
 void LoginHandler::getRegistrationDetails()
 {
     MessageOut msg(PAMSG_REQUEST_REGISTER_INFO);
