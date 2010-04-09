@@ -67,11 +67,6 @@ class MapReader
          */
         static Tileset *readTileset(xmlNodePtr node, const std::string &path,
                                     Map *map);
-
-        /**
-         * Gets an integer property from an xmlNodePtr.
-         */
-        static int getProperty(xmlNodePtr node, const char* name, int def);
 };
 
 #endif

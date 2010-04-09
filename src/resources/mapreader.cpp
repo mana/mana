@@ -38,6 +38,34 @@
 #include <iostream>
 #include <zlib.h>
 
+// DO NOT CHANGE THESE STRINGS TO BE PASSED BY REFERENCE, AS THIS METHOD ALTERS
+// (THAT IS, DESTROYS) THEM.
+static std::string resolveRelativePath(std::string base, std::string relative)
+{
+    // Remove trailing "/", if present
+    size_t i = base.length();
+    if (base.at(i - 1) == '/')
+        base.erase(i - 1, i);
+
+    while (relative.substr(0, 3) == "../")
+    {
+        relative.erase(0, 3);  // Remove "../"
+        if (!base.empty()) // If base is already empty, we can't trim anymore
+        {
+            i = base.find_last_of('/');
+            if (i == std::string::npos)
+                i = 0;
+            base.erase(i, base.length()); // Remove deepest folder in base
+        }
+    }
+
+    // Re-add trailing slash, if needed
+    if (!base.empty() && base[base.length() - 1] != '/')
+        base += '/';
+
+    return base + relative;
+}
+
 /**
  * Inflates either zlib or gzip deflated memory. The inflated memory is
  * expected to be freed by the caller.
@@ -497,22 +525,24 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
     }
 }
 
-Tileset *MapReader::readTileset(xmlNodePtr node,
-                                const std::string &path,
+Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
                                 Map *map)
 {
     int firstGid = XML::getProperty(node, "firstgid", 0);
     XML::Document* doc = NULL;
     Tileset *set = NULL;
+    std::string pathDir(path);
 
     if (xmlHasProp(node, BAD_CAST "source"))
     {
         std::string filename = XML::getProperty(node, "source", "");
-        while (filename.substr(0, 3) == "../")
-               filename.erase(0, 3);  // Remove "../"
+        filename = resolveRelativePath(path, filename);
+
         doc = new XML::Document(filename);
         node = doc->rootNode();
-        firstGid += XML::getProperty(node, "firstgid", 0);
+
+        // Reset path to be realtive to the tsx file
+        pathDir = filename.substr(0, filename.rfind("/") + 1);
     }
 
     const int tw = XML::getProperty(node, "tilewidth", map->getTileWidth());
@@ -526,8 +556,7 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
 
             if (!source.empty())
             {
-                std::string sourceStr = source;
-                sourceStr.erase(0, 3);  // Remove "../"
+                std::string sourceStr = resolveRelativePath(pathDir, source);
 
                 ResourceManager *resman = ResourceManager::getInstance();
                 Image* tilebmp = resman->getImage(sourceStr);
