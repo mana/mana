@@ -53,6 +53,8 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
 
         void clearHandlers();
 
+        void stateChanged(State oldState, State newState);
+
     protected:
         MessageHandlerPtr mAdminHandler;
         MessageHandlerPtr mBeingHandler;

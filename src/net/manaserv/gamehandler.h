@@ -57,6 +57,8 @@ class GameHandler : public MessageHandler, public Net::GameHandler
         bool removeDeadBeings() const { return false; }
 
         void clear();
+
+        void gameLoading();
 };
 
 } // namespace ManaServ

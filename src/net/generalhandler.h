@@ -19,6 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "client.h"
 #include "main.h"
 
 #ifndef GENERALHANDLER_H
@@ -29,6 +30,8 @@ namespace Net {
 class GeneralHandler
 {
     public:
+        virtual ~GeneralHandler() {}
+
         virtual void load() = 0;
 
         virtual void reload() = 0;
@@ -43,7 +46,7 @@ class GeneralHandler
 
         virtual void clearHandlers() = 0;
 
-        virtual ~GeneralHandler() {}
+        virtual void stateChanged(State oldState, State newState) = 0;
 };
 
 } // namespace Net

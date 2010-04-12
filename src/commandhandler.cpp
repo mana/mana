@@ -313,7 +313,7 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
 void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 {
     std::ostringstream where;
-    where << map_path << ", coordinates: " 
+    where << Game::instance()->getCurrentMapName() << ", coordinates: "
           << ((player_node->getPixelX() - 16) / 32) << ", "
           << ((player_node->getPixelY() - 32) / 32);
 

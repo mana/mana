@@ -22,6 +22,7 @@
 #include "net/ea/gamehandler.h"
 
 #include "client.h"
+#include "game.h"
 #include "localplayer.h"
 #include "log.h"
 
@@ -110,16 +111,21 @@ void GameHandler::connect()
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
 
+
+    if (Client::getState() == STATE_CONNECT_GAME)
+    {
+        mCharID = player_node->getId();
+        // Change the player's ID to the account ID to match what eAthena uses
+        player_node->setId(token.account_ID);
+    }
+
     // Send login infos
     MessageOut outMsg(CMSG_MAP_SERVER_CONNECT);
     outMsg.writeInt32(token.account_ID);
-    outMsg.writeInt32(player_node->getId());
+    outMsg.writeInt32(mCharID);
     outMsg.writeInt32(token.session_ID1);
     outMsg.writeInt32(token.session_ID2);
     outMsg.writeInt8((token.sex == GENDER_MALE) ? 1 : 0);
-
-    // Change the player's ID to the account ID to match what eAthena uses
-    player_node->setId(token.account_ID);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);
@@ -137,7 +143,7 @@ void GameHandler::disconnect()
 
 void GameHandler::inGame()
 {
-    // TODO
+    Game::instance()->changeMap(mMap);
 }
 
 void GameHandler::mapLoaded(const std::string &mapName)
@@ -158,6 +164,11 @@ void GameHandler::ping(int tick)
 {
     MessageOut msg(CMSG_CLIENT_PING);
     msg.writeInt32(tick);
+}
+
+void GameHandler::setMap(const std::string map)
+{
+    mMap = map.substr(0, map.rfind("."));
 }
 
 } // namespace EAthena

@@ -48,6 +48,8 @@ class GeneralHandler : public Net::GeneralHandler
 
         void clearHandlers();
 
+        void stateChanged(State oldState, State newState);
+
     protected:
         MessageHandlerPtr mBeingHandler;
         MessageHandlerPtr mBuySellHandler;

@@ -574,6 +574,10 @@ int Client::exec()
 
         if (mState != mOldState)
         {
+            Net::GeneralHandler *generalHandler = Net::getGeneralHandler();
+            if (generalHandler)
+                generalHandler->stateChanged(mOldState, mState);
+
             if (mOldState == STATE_GAME)
             {
                 delete game;
@@ -774,12 +778,19 @@ int Client::exec()
                             STATE_SWITCH_CHARACTER);
                     break;
 
+                case STATE_CHANGE_MAP:
+                    logger->log("State: CHANGE_MAP");
+
+                    Net::getGameHandler()->connect();
+                    mCurrentDialog = new ConnectionDialog(
+                            _("Changing game servers"),
+                            STATE_SWITCH_CHARACTER);
+                    break;
+
                 case STATE_GAME:
                     logger->log("Memorizing selected character %s",
                             player_node->getName().c_str());
                     config.setValue("lastCharacter", player_node->getName());
-
-                    Net::getGameHandler()->inGame();
 
                     // Fade out logon-music here too to give the desired effect
                     // of "flowing" into the game.

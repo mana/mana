@@ -247,4 +247,9 @@ void GeneralHandler::clearHandlers()
     mNetwork->clearHandlers();
 }
 
+void GeneralHandler::stateChanged(State oldState, State newState)
+{
+    //
+}
+
 } // namespace EAthena

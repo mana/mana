@@ -57,6 +57,12 @@ class GameHandler : public MessageHandler, public Net::GameHandler
         bool removeDeadBeings() const { return true; }
 
         void clear();
+
+        void setMap(const std::string map);
+
+    private:
+        std::string mMap;
+        int mCharID; /// < Saved for map-server switching
 };
 
 } // namespace EAthena

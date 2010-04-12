@@ -92,8 +92,6 @@
 #include <sstream>
 #include <string>
 
-std::string map_path;
-
 Joystick *joystick = NULL;
 
 OkDialog *weightNotice = NULL;
@@ -232,12 +230,7 @@ Game::Game():
 
     initEngines();
 
-    // This part is eAthena specific
-    // For Manaserv, the map is obtained
-    // with the GPMSG_PLAYER_MAP_CHANGE flag.
-    map_path = map_path.substr(0, map_path.rfind("."));
-    if (!map_path.empty())
-        changeMap(map_path);
+    Net::getGameHandler()->inGame();
 
     // Initialize beings
     beingManager->setPlayer(player_node);
@@ -269,7 +262,8 @@ Game::~Game()
     destroyGuiWindows();
 
     del_0(beingManager)
-    del_0(player_node)
+    if (Client::getState() != STATE_CHANGE_MAP)
+        del_0(player_node)
     del_0(floorItemManager)
     del_0(channelManager)
     del_0(commandHandler)
@@ -277,7 +271,6 @@ Game::~Game()
     del_0(particleEngine)
     del_0(viewport)
     del_0(mCurrentMap)
-    map_path = "";
 
     mInstance = 0;
 }
@@ -349,6 +342,9 @@ void Game::logic()
     // Handle network stuff
     if (!Net::getGameHandler()->isConnected())
     {
+        if (Client::getState() == STATE_CHANGE_MAP)
+            return; // Not a problem here
+
         if (Client::getState() != STATE_ERROR)
         {
             errorMessage = _("The connection to the server was lost.");
@@ -930,20 +926,19 @@ void Game::changeMap(const std::string &mapPath)
 
     mMapName = mapPath;
 
-    // Store full map path in global var
-    map_path = "maps/" + mapPath + ".tmx";
+    std::string fullMap = "maps/" + mapPath + ".tmx";
     ResourceManager *resman = ResourceManager::getInstance();
-    if (!resman->exists(map_path))
-        map_path += ".gz";
+    if (!resman->exists(fullMap))
+        fullMap += ".gz";
 
     // Attempt to load the new map
-    Map *newMap = MapReader::readMap(map_path);
+    Map *newMap = MapReader::readMap(fullMap);
 
     if (!newMap)
     {
-        logger->log("Error while loading %s", map_path.c_str());
+        logger->log("Error while loading %s", fullMap.c_str());
         new OkDialog(_("Could Not Load Map"),
-                     strprintf(_("Error while loading %s"), map_path.c_str()));
+                     strprintf(_("Error while loading %s"), fullMap.c_str()));
     }
 
     // Notify the minimap and beingManager about the map change

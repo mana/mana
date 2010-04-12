@@ -108,15 +108,7 @@ void GameHandler::disconnect()
 
 void GameHandler::inGame()
 {
-
-    MessageOut msg(PGMSG_CONNECT);
-    msg.writeString(netToken, 32);
-    gameServerConnection->send(msg);
-
-    chatHandler->connect();
-    
-    // Attack range from item DB
-    player_node->setAttackRange(-1);
+    // TODO
 }
 
 void GameHandler::mapLoaded(const std::string &mapName)
@@ -139,6 +131,18 @@ void GameHandler::quit(bool reconnectAccount)
 void GameHandler::ping(int tick)
 {
     // TODO
+}
+
+void GameHandler::gameLoading()
+{
+    MessageOut msg(PGMSG_CONNECT);
+    msg.writeString(netToken, 32);
+    gameServerConnection->send(msg);
+
+    chatHandler->connect();
+
+    // Attack range from item DB
+    player_node->setAttackRange(-1);
 }
 
 } // namespace ManaServ

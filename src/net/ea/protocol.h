@@ -83,6 +83,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_CHAR_PASSWORD_RESPONSE  0x0062 /**< Custom packet reply to password change request */
 
 #define SMSG_CHAR_SWITCH_RESPONSE    0x00b3
+#define SMSG_CHANGE_MAP_SERVER       0x0092
 
 #define SMSG_MAP_LOGIN_SUCCESS       0x0073 /**< Contains starting location */
 #define SMSG_MAP_QUIT_RESPONSE       0x018b

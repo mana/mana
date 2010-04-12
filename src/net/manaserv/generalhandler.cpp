@@ -182,4 +182,13 @@ void GeneralHandler::clearHandlers()
     clearNetworkHandlers();
 }
 
+void GeneralHandler::stateChanged(State oldState, State newState)
+{
+    if (newState == STATE_GAME)
+    {
+        GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
+        game->gameLoading();
+    }
+}
+
 } // namespace ManaServ

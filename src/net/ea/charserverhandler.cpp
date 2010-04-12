@@ -33,6 +33,7 @@
 #include "net/messageout.h"
 #include "net/net.h"
 
+#include "net/ea/gamehandler.h"
 #include "net/ea/loginhandler.h"
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
@@ -60,6 +61,7 @@ CharServerHandler::CharServerHandler()
         SMSG_CHAR_DELETE_SUCCEEDED,
         SMSG_CHAR_DELETE_FAILED,
         SMSG_CHAR_MAP_INFO,
+        SMSG_CHANGE_MAP_SERVER,
         0
     };
     handledMessages = _messages;
@@ -153,8 +155,10 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_CHAR_MAP_INFO:
+        {
             msg.skip(4); // CharID, must be the same as player_node->charID
-            map_path = msg.readString(16);
+            GameHandler *gh = static_cast<GameHandler*>(Net::getGameHandler());
+            gh->setMap(msg.readString(16));
             mapServer.hostname = ipToString(msg.readInt32());
             mapServer.port = msg.readInt16();
 
@@ -168,7 +172,24 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
 
             mNetwork->disconnect();
             Client::setState(STATE_CONNECT_GAME);
-            break;
+        }
+        break;
+
+        case SMSG_CHANGE_MAP_SERVER:
+        {
+            GameHandler *gh = static_cast<GameHandler*>(Net::getGameHandler());
+            gh->setMap(msg.readString(16));
+            int x = msg.readInt16();
+            int y = msg.readInt16();
+            mapServer.hostname = ipToString(msg.readInt32());
+            mapServer.port = msg.readInt16();
+
+            mNetwork->disconnect();
+            Client::setState(STATE_CHANGE_MAP);
+            player_node->setTileCoords(x, y);
+            player_node->setMap(0);
+        }
+        break;
     }
 }
 

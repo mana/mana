@@ -24,8 +24,6 @@
 
 #include <string>
 
-extern std::string map_path;  // TODO: Get rid of this global
-
 class Map;
 class WindowMenu;
 
