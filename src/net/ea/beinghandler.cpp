@@ -95,6 +95,9 @@ Being *createBeing(int id, short job)
 
 void BeingHandler::handleMessage(Net::MessageIn &msg)
 {
+    if (!beingManager)
+        return;
+
     int id;
     short job, speed, gender;
     Uint16 headTop, headMid, headBottom;
@@ -115,9 +118,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     {
         case SMSG_BEING_VISIBLE:
         case SMSG_BEING_MOVE:
-            if (!beingManager)
-                return;
-
             // Information about a being in range
             id = msg.readInt32();
             speed = msg.readInt16();
