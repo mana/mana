@@ -775,7 +775,7 @@ int Client::exec()
                     Net::getGameHandler()->connect();
                     mCurrentDialog = new ConnectionDialog(
                             _("Connecting to the game server"),
-                            STATE_SWITCH_CHARACTER);
+                            STATE_GET_CHARACTERS);
                     break;
 
                 case STATE_CHANGE_MAP:
