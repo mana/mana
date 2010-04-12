@@ -81,6 +81,8 @@ Being *createBeing(int id, short job)
         type = Being::NPC;
     else if (job > 1000 && job <= 2000)
         type = Being::MONSTER;
+    else if (job == 45)
+        return NULL; // Skip portals
 
     Being *being = beingManager->createBeing(id, type, job);
 
@@ -138,6 +140,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 dstBeing = createBeing(id, job);
+
+                if (!dstBeing)
+                    break;
             }
 
             if (dstBeing->getType() == Being::PLAYER)
@@ -529,6 +534,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (!dstBeing)
             {
                 dstBeing = createBeing(id, job);
+
+                if (!dstBeing)
+                    break;
             }
 
             if (dstBeing->getType() == Being::PLAYER)
