@@ -445,6 +445,10 @@ void ServerDialog::logic()
         {
             mDescription->setCaption(_("Preparing download"));
         }
+        else if (mDownloadStatus == DOWNLOADING_ERROR)
+        {
+            mDescription->setCaption(_("Error retreiving server list!"));
+        }
     }
 
     Window::logic();
@@ -666,8 +670,7 @@ int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,
     {
         logger->log("Error retreiving server list: %s\n",
                     sd->mDownload->getError());
-
-        finished = true;
+        sd->mDownloadStatus = DOWNLOADING_ERROR;
     }
     else
     {
