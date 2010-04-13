@@ -40,6 +40,8 @@ class CharHandler : public MessageHandler, public Net::CharHandler
     public:
         CharHandler();
 
+        ~CharHandler();
+
         void handleMessage(Net::MessageIn &msg);
 
         void setCharSelectDialog(CharSelectDialog *window);
@@ -68,6 +70,8 @@ class CharHandler : public MessageHandler, public Net::CharHandler
         int hairSprite() const;
 
         int maxSprite() const;
+
+        void clear();
 
     private:
         /**

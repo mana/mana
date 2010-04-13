@@ -72,6 +72,8 @@ PlayerBox::~PlayerBox()
 {
     instances--;
 
+    mPlayer = 0;
+
     if (instances == 0)
     {
         for_each(background.grid, background.grid + 9, dtor<Image*>());

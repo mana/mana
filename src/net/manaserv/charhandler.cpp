@@ -68,6 +68,11 @@ CharHandler::CharHandler()
     charHandler = this;
 }
 
+CharHandler::~CharHandler()
+{
+    clear();
+}
+
 void CharHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
@@ -225,15 +230,9 @@ void CharHandler::handleCharacterSelectResponse(Net::MessageIn &msg)
         logger->log("Chat server: %s:%d", chatServer.hostname.c_str(),
                     chatServer.port);
 
-        gameServerConnection->connect(gameServer.hostname, gameServer.port);
-        chatServerConnection->connect(chatServer.hostname, chatServer.port);
-
         // Prevent the selected local player from being deleted
         player_node = mSelectedCharacter->dummy;
         mSelectedCharacter->dummy = 0;
-
-        mCachedCharacterInfos.clear();
-        updateCharacters();
 
         Client::setState(STATE_CONNECT_GAME);
     }
@@ -379,6 +378,15 @@ void CharHandler::updateCharacters()
     }
 
     updateCharSelectDialog();
+}
+
+void CharHandler::clear()
+{
+    setCharCreateDialog(0);
+    setCharSelectDialog(0);
+
+    mCachedCharacterInfos.clear();
+    updateCharacters();
 }
 
 } // namespace ManaServ

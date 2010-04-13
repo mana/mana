@@ -253,6 +253,7 @@ void CharSelectDialog::attemptCharacterSelect(int index)
     if (mLocked)
         return;
 
+    setVisible(false);
     mCharHandler->chooseCharacter(mCharacterEntries[index]->getCharacter());
     lock();
 }

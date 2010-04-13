@@ -523,14 +523,14 @@ int Client::exec()
         if (mLimitFps)
             SDL_framerateDelay(&mFpsManager);
 
-
         // TODO: Add connect timeouts
         if (mState == STATE_CONNECT_GAME &&
                  Net::getGameHandler()->isConnected())
         {
             Net::getLoginHandler()->disconnect();
         }
-        else if (mState == STATE_CONNECT_SERVER && mOldState == STATE_CHOOSE_SERVER)
+        else if (mState == STATE_CONNECT_SERVER &&
+                 mOldState == STATE_CHOOSE_SERVER)
         {
             Net::connectToServer(mCurrentServer);
         }
@@ -775,7 +775,8 @@ int Client::exec()
                     Net::getGameHandler()->connect();
                     mCurrentDialog = new ConnectionDialog(
                             _("Connecting to the game server"),
-                            STATE_GET_CHARACTERS);
+                            Net::getNetworkType() == ServerInfo::EATHENA ?
+                            STATE_CHOOSE_SERVER : STATE_SWITCH_CHARACTER);
                     break;
 
                 case STATE_CHANGE_MAP:
@@ -927,7 +928,7 @@ int Client::exec()
                     // Done with game
                     Net::getGameHandler()->disconnect();
 
-                    Net::getCharHandler()->requestCharacters();
+                    mState = STATE_GET_CHARACTERS;
                     break;
 
                 case STATE_LOGOUT_ATTEMPT:

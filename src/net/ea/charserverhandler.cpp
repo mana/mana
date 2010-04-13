@@ -277,6 +277,7 @@ void CharServerHandler::requestCharacters()
 void CharServerHandler::chooseCharacter(Net::Character *character)
 {
     mSelectedCharacter = character;
+    mCharSelectDialog = 0;
 
     MessageOut outMsg(CMSG_CHAR_SELECT);
     outMsg.writeInt8(mSelectedCharacter->slot);

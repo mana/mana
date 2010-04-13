@@ -122,8 +122,20 @@ void GeneralHandler::load()
 
 void GeneralHandler::reload()
 {
-    static_cast<CharHandler*>(mCharHandler.get())->setCharCreateDialog(0);
-    static_cast<CharHandler*>(mCharHandler.get())->setCharSelectDialog(0);
+    static_cast<CharHandler*>(Net::getCharHandler())->clear();
+
+    if (accountServerConnection)
+        accountServerConnection->disconnect();
+
+    if (gameServerConnection)
+        gameServerConnection->disconnect();
+
+    if (chatServerConnection)
+        chatServerConnection->disconnect();
+
+    netToken.clear();
+    gameServer.clear();
+    chatServer.clear();
 }
 
 void GeneralHandler::unload()
