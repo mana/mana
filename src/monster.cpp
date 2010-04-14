@@ -35,37 +35,11 @@
 #include "resources/monsterdb.h"
 #include "resources/monsterinfo.h"
 
-Monster::Monster(int id, int job, Map *map):
-    Being(id, job, map),
+Monster::Monster(int id, int subtype, Map *map):
+    Being(id, subtype, map),
     mAttackType(1)
 {
-    const MonsterInfo &info = getInfo();
-
-    // Setup Monster sprites
-    const std::list<std::string> &sprites = info.getSprites();
-
-    for (std::list<std::string>::const_iterator i = sprites.begin();
-         i != sprites.end(); i++)
-    {
-        std::string file = "graphics/sprites/" + *i;
-        mSprites.push_back(AnimatedSprite::load(file));
-    }
-
-    // Ensure that something is shown
-    if (mSprites.size() == 0)
-    {
-        mSprites.push_back(AnimatedSprite::load("graphics/sprites/error.xml"));
-    }
-
-    if (Particle::enabled)
-    {
-        const std::list<std::string> &particleEffects = info.getParticleEffects();
-        for (std::list<std::string>::const_iterator i = particleEffects.begin();
-             i != particleEffects.end(); i++)
-        {
-            controlParticle(particleEngine->addEffect((*i), 0, 0));
-        }
-    }
+    setSubtype(subtype);
 
     mNameColor = &userPalette->getColor(UserPalette::MONSTER);
     mTextColor = &userPalette->getColor(UserPalette::MONSTER);
@@ -85,6 +59,7 @@ void Monster::logic()
 
     Being::logic();
 }
+
 
 void Monster::setAction(Action action, int attackType)
 {
@@ -144,6 +119,40 @@ void Monster::setAction(Action action, int attackType)
     }
 }
 
+void Monster::setSubtype(Uint16 subtype)
+{
+    Being::setSubtype(subtype);
+
+    const MonsterInfo &info = getInfo();
+
+    // Setup Monster sprites
+    const std::list<std::string> &sprites = info.getSprites();
+
+    mSprites.clear();
+    for (std::list<std::string>::const_iterator i = sprites.begin();
+         i != sprites.end(); i++)
+    {
+        std::string file = "graphics/sprites/" + *i;
+        mSprites.push_back(AnimatedSprite::load(file));
+    }
+
+    // Ensure that something is shown
+    if (mSprites.size() == 0)
+    {
+        mSprites.push_back(AnimatedSprite::load("graphics/sprites/error.xml"));
+    }
+
+    if (Particle::enabled)
+    {
+        const std::list<std::string> &particleEffects = info.getParticleEffects();
+        for (std::list<std::string>::const_iterator i = particleEffects.begin();
+             i != particleEffects.end(); i++)
+        {
+            controlParticle(particleEngine->addEffect((*i), 0, 0));
+        }
+    }
+}
+
 void Monster::handleAttack(Being *victim, int damage, AttackType type)
 {
     Being::handleAttack(victim, damage, type);
@@ -170,7 +179,7 @@ Being::TargetCursorSize Monster::getTargetCursorSize() const
 
 const MonsterInfo &Monster::getInfo() const
 {
-    return MonsterDB::get(mJob);
+    return MonsterDB::get(mSubType);
 }
 
 void Monster::updateCoords()

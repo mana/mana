@@ -30,13 +30,15 @@ class Text;
 class Monster : public Being
 {
     public:
-        Monster(int id, int job, Map *map);
+        Monster(int id, int subtype, Map *map);
 
         virtual void logic();
 
         virtual void setAction(Action action, int attackType = 0);
 
         virtual Type getType() const { return MONSTER; }
+
+        virtual void setSubtype(Uint16 subtype);
 
         virtual TargetCursorSize
         getTargetCursorSize() const;

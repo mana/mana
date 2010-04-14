@@ -167,7 +167,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (speed == 0) { speed = 150; }
 
             dstBeing->setWalkSpeed(Vector(speed, speed, 0));
-            dstBeing->setJob(job);
+            dstBeing->setSubtype(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
             headBottom = msg.readInt16();
@@ -550,7 +550,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             }
 
             dstBeing->setWalkSpeed(Vector(speed, speed, 0));
-            dstBeing->setJob(job);
+            dstBeing->setSubtype(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
             shield = msg.readInt16();

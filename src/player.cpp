@@ -43,8 +43,8 @@
 
 #include "utils/stringutils.h"
 
-Player::Player(int id, int job, Map *map, bool isNPC):
-    Being(id, job, map),
+Player::Player(int id, int subtype, Map *map, bool isNPC):
+    Being(id, subtype, map),
     mGender(GENDER_UNSPECIFIED),
     mParty(NULL),
     mIsGM(false)
@@ -58,11 +58,7 @@ Player::Player(int id, int job, Map *map, bool isNPC):
             mSpriteColors.push_back("");
         }
 
-        /* Human base sprite. When implementing different races remove this
-         * line and set the base sprite when setting the race of the player
-         * character.
-         */
-        setSprite(Net::getCharHandler()->baseSprite(), -100);
+        setSubtype(subtype);
     }
     mShowName = config.getValue("visiblenames", 1);
     config.addListener("visiblenames", this);
@@ -135,6 +131,17 @@ void Player::logic()
     }
 
     Being::logic();
+}
+
+void Player::setSubtype(Uint16 subtype)
+{
+    Being::setSubtype(subtype);
+
+    int id = -100 - subtype;
+    if (ItemDB::exists(id)) // Prevent showing errors when sprite doesn't exist
+        setSprite(Net::getCharHandler()->baseSprite(), id);
+    else
+        setSprite(Net::getCharHandler()->baseSprite(), -100);
 }
 
 void Player::setGender(Gender gender)

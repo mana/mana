@@ -37,11 +37,32 @@
 
 #include "resources/npcdb.h"
 
-NPC::NPC(int id, int job, Map *map):
-    Player(id, job, map, true)
+NPC::NPC(int id, int subtype, Map *map):
+    Player(id, subtype, map, true)
 {
-    NPCInfo info = NPCDB::get(job);
+    setSubtype(subtype);
 
+    setShowName(true);
+}
+
+void NPC::setName(const std::string &name)
+{
+    const std::string displayName = name.substr(0, name.find('#', 0));
+
+    Being::setName(displayName);
+
+    mNameColor = &userPalette->getColor(UserPalette::NPC);
+
+    mDispName->setColor(mNameColor);
+}
+
+void NPC::setSubtype(Uint16 subtype)
+{
+    Being::setSubtype(subtype);
+
+    NPCInfo info = NPCDB::get(subtype);
+
+    mSprites.clear();
     // Setup NPC sprites
     for (std::list<NPCsprite*>::const_iterator i = info.sprites.begin();
          i != info.sprites.end();
@@ -65,19 +86,6 @@ NPC::NPC(int id, int job, Map *map):
             this->controlParticle(p);
         }
     }
-
-    setShowName(true);
-}
-
-void NPC::setName(const std::string &name)
-{
-    const std::string displayName = name.substr(0, name.find('#', 0));
-
-    Being::setName(displayName);
-
-    mNameColor = &userPalette->getColor(UserPalette::NPC);
-
-    mDispName->setColor(mNameColor);
 }
 
 void NPC::talk()

@@ -220,7 +220,7 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int *slot)
     tempPlayer->setMP(msg.readInt16());
     tempPlayer->setMaxMP(msg.readInt16());
     msg.readInt16();                       // speed
-    msg.readInt16();                       // class
+    tempPlayer->setSubtype(msg.readInt16()); // class (used for race)
     int hairStyle = msg.readInt16();
     Uint16 weapon = msg.readInt16();
     tempPlayer->setSprite(SPRITE_WEAPON, weapon, "", true);

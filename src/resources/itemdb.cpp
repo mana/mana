@@ -78,6 +78,8 @@ static ItemType itemTypeFromString(const std::string &name, int id = 0)
     else if (name=="equip-necklace")    return ITEM_EQUIPMENT_NECKLACE;
     else if (name=="equip-feet")        return ITEM_EQUIPMENT_FEET;
     else if (name=="equip-ammo")        return ITEM_EQUIPMENT_AMMO;
+    else if (name=="racesprite")        return ITEM_SPRITE_RACE;
+    else if (name=="hairsprite")        return ITEM_SPRITE_HAIR;
     else return ITEM_UNUSABLE;
 }
 
@@ -253,6 +255,15 @@ void ItemDB::unload()
     delete_all(mItemInfos);
     mItemInfos.clear();
     mLoaded = false;
+}
+
+bool ItemDB::exists(int id)
+{
+    assert(mLoaded);
+
+    ItemInfos::const_iterator i = mItemInfos.find(id);
+
+    return i != mItemInfos.end();
 }
 
 const ItemInfo &ItemDB::get(int id)

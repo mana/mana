@@ -30,11 +30,13 @@ class Text;
 class NPC : public Player
 {
     public:
-        NPC(int id, int job, Map *map);
+        NPC(int id, int subtype, Map *map);
 
         void setName(const std::string &name);
 
         virtual Type getType() const { return Being::NPC; }
+
+        virtual void setSubtype(Uint16 subtype);
 
         void talk();
 

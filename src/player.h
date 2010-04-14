@@ -47,13 +47,15 @@ class Player : public Being
         /**
          * Constructor.
          */
-        Player(int id, int job, Map *map, bool isNPC = false);
+        Player(int id, int subtype, Map *map, bool isNPC = false);
 
         ~Player();
 
         virtual void logic();
 
         virtual Type getType() const { return PLAYER; }
+
+        virtual void setSubtype(Uint16 subtype);
 
         /**
          * Sets the gender of this being.

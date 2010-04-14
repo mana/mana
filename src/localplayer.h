@@ -105,7 +105,7 @@ class LocalPlayer : public Player
         /**
          * Constructor.
          */
-        LocalPlayer(int id= 65535, int job = 0);
+        LocalPlayer(int id= 65535, int subtype = 0);
 
         /**
          * Destructor.

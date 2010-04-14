@@ -75,8 +75,8 @@ const short walkingKeyboardDelay = 1000;
 
 LocalPlayer *player_node = NULL;
 
-LocalPlayer::LocalPlayer(int id, int job):
-    Player(id, job, 0),
+LocalPlayer::LocalPlayer(int id, int subtype):
+    Player(id, subtype, 0),
     mEquipment(new Equipment),
     mAttackRange(0),
     mTargetTime(-1),

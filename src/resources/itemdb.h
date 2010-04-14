@@ -43,6 +43,8 @@ namespace ItemDB
      */
     void unload();
 
+    bool exists(int id);
+
     const ItemInfo &get(int id);
     const ItemInfo &get(const std::string &name);
 

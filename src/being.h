@@ -118,11 +118,11 @@ class Being : public Sprite, public ConfigListener
         /**
          * Constructor.
          *
-         * @param id   a unique being id
-         * @param job  partly determines the type of the being
-         * @param map  the map the being is on
+         * @param id      a unique being id
+         * @param subtype partly determines the type of the being
+         * @param map     the map the being is on
          */
-        Being(int id, int job, Map *map);
+        Being(int id, int subtype, Map *map);
 
         virtual ~Being();
 
@@ -284,12 +284,12 @@ class Being : public Sprite, public ConfigListener
          /**
           * Return Being's current Job (player job, npc, monster, creature )
           */
-        Uint16 getJob() const { return mJob; }
+        Uint16 getSubType() const { return mSubType; }
 
          /**
           * Set Being's current Job (player job, npc, monster, creature )
           */
-        void setJob(Uint16 job) { mJob = job; }
+        virtual void setSubtype(Uint16 subtype) { mSubType = subtype; }
 
         /**
          * Sets the walk speed.
@@ -611,7 +611,7 @@ class Being : public Sprite, public ConfigListener
 
         int mAttackSpeed;     /**< Attack speed */
         Action mAction;       /**< Action the being is performing */
-        Uint16 mJob;          /**< Job (player job, npc, monster, creature ) */
+        Uint16 mSubType;      /**< Subtype (graphical view, basically) */
 
         int mId;                        /**< Unique sprite id */
         Uint8 mDirection;               /**< Facing direction */

@@ -67,14 +67,14 @@ static const int DEFAULT_BEING_HEIGHT = 32;
 int Being::mNumberOfHairstyles = 1;
 
 // TODO: mWalkTime used by eAthena only
-Being::Being(int id, int job, Map *map):
+Being::Being(int id, int subtype, Map *map):
     mFrame(0),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mSpeechTime(0),
     mAttackSpeed(350),
     mAction(STAND),
-    mJob(job),
+    mSubType(subtype),
     mId(id),
     mDirection(DOWN),
     mSpriteDirection(DIRECTION_DOWN),
