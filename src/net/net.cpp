@@ -37,7 +37,7 @@
 #include "net/specialhandler.h"
 #include "net/tradehandler.h"
 
-#include "net/ea/generalhandler.h"
+#include "net/tmwa/generalhandler.h"
 
 #include "net/manaserv/generalhandler.h"
 
@@ -149,8 +149,8 @@ void connectToServer(const ServerInfo &server)
                 new ManaServ::GeneralHandler;
                 break;
 
-            case ServerInfo::EATHENA:
-                new EAthena::GeneralHandler;
+            case ServerInfo::TMWATHENA:
+                new TmwAthena::GeneralHandler;
                 break;
 
             default:

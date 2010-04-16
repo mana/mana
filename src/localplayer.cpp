@@ -594,7 +594,7 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
 
 void LocalPlayer::nextTile(unsigned char dir = 0)
 {
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         // TODO: Fix picking up when reaching target (this method is obsolete)
         // TODO: Fix holding walking button to keep walking smoothly
@@ -768,7 +768,7 @@ void LocalPlayer::setDestination(int x, int y)
         // If the destination given to being class is accepted,
         // we inform the Server.
         if ((x == mDest.x && y == mDest.y)
-            || Net::getNetworkType() == ServerInfo::EATHENA)
+            || Net::getNetworkType() == ServerInfo::TMWATHENA)
                 Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }
 
@@ -823,7 +823,7 @@ void LocalPlayer::setWalkingDir(int dir)
 void LocalPlayer::startWalking(unsigned char dir)
 {
     // This function is called by setWalkingDir(),
-    // but also by nextTile() for eAthena...
+    // but also by nextTile() for TMW-Athena...
     if (!mMap || !dir)
         return;
 
@@ -850,7 +850,7 @@ void LocalPlayer::startWalking(unsigned char dir)
     if (dir & RIGHT)
         dx++;
 
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         // Prevent skipping corners over colliding tiles
         if (dx && !mMap->getWalk(getTileX() + dx, getTileY(), getWalkMask()))
@@ -1028,7 +1028,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     }
 
     Net::getPlayerHandler()->attack(target->getId());
-    if ((Net::getNetworkType() == ServerInfo::EATHENA) && !keep)
+    if ((Net::getNetworkType() == ServerInfo::TMWATHENA) && !keep)
         stopAttack();
 }
 

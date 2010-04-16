@@ -73,7 +73,7 @@ Player::~Player()
 
 void Player::logic()
 {
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         switch (mAction)
         {

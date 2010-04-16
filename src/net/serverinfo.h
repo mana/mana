@@ -33,7 +33,7 @@ public:
     enum Type {
         UNKNOWN,
         MANASERV,
-        EATHENA
+        TMWATHENA
     };
 
     typedef std::pair<int, std::string> VersionString;
@@ -99,8 +99,11 @@ public:
 
     static Type parseType(const std::string &type)
     {
-        if (compareStrI(type, "eathena") == 0)
-            return EATHENA;
+        if (compareStrI(type, "tmwathena") == 0)
+            return TMWATHENA;
+        // Used for backward compatibility
+        else if (compareStrI(type, "eathena") == 0)
+            return TMWATHENA;
         else if (compareStrI(type, "manaserv") == 0)
             return MANASERV;
 

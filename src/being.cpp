@@ -129,7 +129,7 @@ void Being::setPosition(const Vector &pos)
 
 void Being::setDestination(int dstX, int dstY)
 {
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         if (mMap)
             setPath(mMap->findPath(mX, mY, dstX, dstY, getWalkMask()));
@@ -185,7 +185,7 @@ void Being::setPath(const Path &path)
 {
     mPath = path;
 
-    if ((Net::getNetworkType() == ServerInfo::EATHENA) &&
+    if ((Net::getNetworkType() == ServerInfo::TMWATHENA) &&
             mAction != WALK && mAction != DEAD)
     {
         nextTile();
@@ -317,7 +317,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
             fireMissile(victim, mEquippedWeapon->getMissileParticle());
         }
     }
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         mFrame = 0;
         mWalkTime = tick_time;
@@ -605,7 +605,7 @@ void Being::logic()
             setAction(STAND);
         }
     }
-    else if (Net::getNetworkType() == ServerInfo::EATHENA)
+    else if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         // Update pixel coordinates
         setPosition(mX * 32 + 16 + getXOffset(),

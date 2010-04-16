@@ -49,7 +49,7 @@ Monster::Monster(int id, int subtype, Map *map):
 
 void Monster::logic()
 {
-    if ((Net::getNetworkType() == ServerInfo::EATHENA) && (mAction != STAND))
+    if ((Net::getNetworkType() == ServerInfo::TMWATHENA) && (mAction != STAND))
     {
         mFrame = (int) ((get_elapsed_time(mWalkTime) * 4) / getWalkSpeed().x);
 

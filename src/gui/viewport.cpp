@@ -261,7 +261,7 @@ void Viewport::_drawDebugPath(Graphics *graphics)
 
     Path debugPath;
 
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         const int mouseTileX = (mMouseX + (int) mPixelViewX) / 32;
         const int mouseTileY = (mMouseY + (int) mPixelViewY) / 32;
@@ -305,7 +305,7 @@ void Viewport::_drawPath(Graphics *graphics, const Path &path,
 {
     graphics->setColor(color);
 
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
         {

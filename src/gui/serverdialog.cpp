@@ -57,10 +57,10 @@ static std::string serverTypeToString(ServerInfo::Type type)
 {
     switch (type)
     {
-    case ServerInfo::EATHENA:
-        return "eAthena";
+    case ServerInfo::TMWATHENA:
+        return "TmwAthena";
     case ServerInfo::MANASERV:
-        return "manaserv";
+        return "ManaServ";
     default:
         return "";
     }
@@ -71,7 +71,7 @@ static unsigned short defaultPortForServerType(ServerInfo::Type type)
     switch (type)
     {
     default:
-    case ServerInfo::EATHENA:
+    case ServerInfo::TMWATHENA:
         return 6901;
     case ServerInfo::MANASERV:
         return 9601;
@@ -116,9 +116,9 @@ void ServersListModel::setVersionString(int index, const std::string &version)
 std::string TypeListModel::getElementAt(int elementIndex)
 {
     if (elementIndex == 0)
-        return "eAthena";
+        return "TmwAthena";
     else if (elementIndex == 1)
-        return "Manaserv";
+        return "ManaServ";
     else
         return "Unknown";
 }
@@ -332,7 +332,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             switch (mTypeField->getSelected())
             {
                 case 0:
-                    mServerInfo->type = ServerInfo::EATHENA;
+                    mServerInfo->type = ServerInfo::TMWATHENA;
                     break;
                 case 1:
                     mServerInfo->type = ServerInfo::MANASERV;
@@ -398,7 +398,7 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     mPortField->setText(toString(myServer.port));
     switch (myServer.type)
     {
-        case ServerInfo::EATHENA:
+        case ServerInfo::TMWATHENA:
         case ServerInfo::UNKNOWN:
             mTypeField->setSelected(0);
             break;
