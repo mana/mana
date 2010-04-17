@@ -31,6 +31,8 @@
 
 #include "net/net.h"
 
+#define OLD_EATHENA_OFFSET 1002
+
 namespace
 {
     MonsterDB::MonsterInfos mMonsterInfos;
@@ -55,8 +57,8 @@ void MonsterDB::load()
         logger->error("Monster Database: Error while loading monster.xml!");
     }
 
-    int offset = XML::getProperty(rootNode, "offset",
-            Net::getNetworkType() == ServerInfo::EATHENA ? 1002 : 0);
+    int offset = XML::getProperty(rootNode, "offset", Net::getNetworkType() ==
+                                 ServerInfo::EATHENA ? OLD_EATHENA_OFFSET : 0);
 
     //iterate <monster>s
     for_each_xml_child_node(monsterNode, rootNode)

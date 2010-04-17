@@ -148,12 +148,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (dstBeing->getType() == Being::PLAYER)
                 player = static_cast<Player*>(dstBeing);
 
-            // Fix monster jobs
-            if (dstBeing->getType() == Being::MONSTER)
-            {
-                job -= 1002;
-            }
-
             if (msg.getId() == 0x0078)
             {
                 dstBeing->clearPath();
