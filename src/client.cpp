@@ -775,7 +775,7 @@ int Client::exec()
                     Net::getGameHandler()->connect();
                     mCurrentDialog = new ConnectionDialog(
                             _("Connecting to the game server"),
-                            Net::getNetworkType() == ServerInfo::EATHENA ?
+                            Net::getNetworkType() == ServerInfo::TMWATHENA ?
                             STATE_CHOOSE_SERVER : STATE_SWITCH_CHARACTER);
                     break;
 
