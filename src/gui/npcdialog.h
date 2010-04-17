@@ -22,6 +22,7 @@
 #ifndef NPCDIALOG_H
 #define NPCDIALOG_H
 
+#include "configlistener.h"
 #include "npc.h"
 
 #include "gui/widgets/window.h"
@@ -45,7 +46,7 @@ class Button;
  * \ingroup Interface
  */
 class NpcDialog : public Window, public gcn::ActionListener,
-                  public gcn::ListModel
+                  public gcn::ListModel, public ConfigListener
 {
     public:
         /**
@@ -75,7 +76,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
          *
          * @param string The text to add.
          */
-        void addText(const std::string &string);
+        void addText(const std::string &string, bool save = true);
 
         /**
          * When called, the widget will show a "Next" button.
@@ -151,6 +152,8 @@ class NpcDialog : public Window, public gcn::ActionListener,
 
         void setVisible(bool visible);
 
+        void optionChanged(const std::string &name);
+
         /**
          * Returns true if any instances exist.
          */
@@ -174,6 +177,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
         void buildLayout();
 
         int mNpcId;
+        bool mLogInteraction;
 
         int mDefaultInt;
         std::string mDefaultString;
@@ -182,6 +186,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
         gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
         std::string mText;
+        std::string mNewText;
 
         // Used for choice input
         ListBox *mItemList;
@@ -193,6 +198,8 @@ class NpcDialog : public Window, public gcn::ActionListener,
         IntTextField *mIntField;
         Button *mPlusButton;
         Button *mMinusButton;
+
+        Button *mClearButton;
 
         // Used for the button
         Button *mButton;

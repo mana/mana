@@ -57,6 +57,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mVisibleNamesEnabled;
         bool mParticleEffectsEnabled;
         bool mNameEnabled;
+        bool mNPCLogEnabled;
         bool mPickupChatEnabled;
         bool mPickupParticleEnabled;
         double mOpacity;
@@ -82,6 +83,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mVisibleNamesCheckBox;
         gcn::CheckBox *mParticleEffectsCheckBox;
         gcn::CheckBox *mNameCheckBox;
+        gcn::CheckBox *mNPCLogCheckBox;
 
         gcn::Label *mPickupNotifyLabel;
         gcn::CheckBox *mPickupChatCheckBox;

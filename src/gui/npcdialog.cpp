@@ -21,6 +21,7 @@
 
 #include "gui/npcdialog.h"
 
+#include "configuration.h"
 #include "npc.h"
 
 #include "gui/setup.h"
@@ -51,6 +52,7 @@ NpcDialog::DialogList NpcDialog::instances;
 NpcDialog::NpcDialog(int npcId)
     : Window(_("NPC")),
       mNpcId(npcId),
+      mLogInteraction(config.getValue("logNpcInGui", true)),
       mDefaultInt(0),
       mInputState(NPC_INPUT_NONE),
       mActionState(NPC_ACTION_WAIT)
@@ -93,6 +95,8 @@ NpcDialog::NpcDialog(int npcId)
     mIntField = new IntTextField;
     mIntField->setVisible(true);
 
+    mClearButton = new Button(_("Clear log"), "clear", this);
+
     // Setup button
     mButton = new Button("", "ok", this);
 
@@ -118,6 +122,8 @@ NpcDialog::NpcDialog(int npcId)
     instances.push_back(this);
     setVisible(true);
     requestFocus();
+
+    config.addListener("logNpcInGui", this);
 }
 
 NpcDialog::~NpcDialog()
@@ -132,6 +138,8 @@ NpcDialog::~NpcDialog()
     delete mMinusButton;
 
     instances.remove(this);
+
+    config.removeListener("logNpcInGui", this);
 }
 
 void NpcDialog::setText(const std::string &text)
@@ -140,9 +148,13 @@ void NpcDialog::setText(const std::string &text)
     mTextBox->setTextWrapped(mText, mScrollArea->getWidth() - 15);
 }
 
-void NpcDialog::addText(const std::string &text)
+void NpcDialog::addText(const std::string &text, bool save)
 {
-    setText(mText + text + "\n");
+    if (save || mLogInteraction)
+    {
+        mNewText += text + "\n";
+        setText(mText + text + "\n");
+    }
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
     mActionState = NPC_ACTION_WAIT;
     buildLayout();
@@ -168,7 +180,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         {
             nextDialog();
             // TRANSLATORS: Please leave the \n sequences intact.
-            addText(_("\n> Next\n"));
+            addText(_("\n> Next\n"), false);
         }
         else if (mActionState == NPC_ACTION_CLOSE)
         {
@@ -203,8 +215,13 @@ void NpcDialog::action(const gcn::ActionEvent &event)
                 Net::getNpcHandler()->integerInput(mNpcId, mIntField->getValue());
             }
             // addText will auto remove the input layout
-            addText( strprintf("\n> \"%s\"\n", printText.c_str()) );
+            addText(strprintf("\n> \"%s\"\n", printText.c_str()), false);
+
+            mNewText.clear();
         }
+
+        if (!mLogInteraction)
+            setText("");
     }
     else if (event.getId() == "reset")
     {
@@ -224,6 +241,10 @@ void NpcDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "dec")
     {
         mIntField->setValue(mIntField->getValue() - 1);
+    }
+    else if (event.getId() == "clear")
+    {
+        setText(mNewText);
     }
 }
 
@@ -345,6 +366,14 @@ void NpcDialog::setVisible(bool visible)
     }
 }
 
+void NpcDialog::optionChanged(const std::string &name)
+{
+    if (name == "logNpcInGui")
+    {
+        mLogInteraction = config.getValue("logNpcInGui", true);
+    }
+}
+
 NpcDialog *NpcDialog::getActive()
 {
     if (instances.size() == 1)
@@ -394,34 +423,41 @@ void NpcDialog::buildLayout()
             mButton->setCaption(CAPTION_CLOSE);
         }
         place(0, 0, mScrollArea, 5, 3);
+        place(3, 3, mClearButton);
         place(4, 3, mButton);
     }
     else if (mInputState != NPC_INPUT_NONE)
     {
+        if (!mLogInteraction)
+            setText(mNewText);
+
         mButton->setCaption(CAPTION_SUBMIT);
         if (mInputState == NPC_INPUT_LIST)
         {
-            place(0, 0, mScrollArea, 5, 3);
-            place(0, 3, mListScrollArea, 5, 3);
-            place(3, 6, mButton, 2);
+            place(0, 0, mScrollArea, 6, 3);
+            place(0, 3, mListScrollArea, 6, 3);
+            place(2, 6, mClearButton, 2);
+            place(4, 6, mButton, 2);
 
             mItemList->setSelected(-1);
         }
         else if (mInputState == NPC_INPUT_STRING)
         {
-            place(0, 0, mScrollArea, 5, 3);
-            place(0, 3, mTextField, 5);
+            place(0, 0, mScrollArea, 6, 3);
+            place(0, 3, mTextField, 6);
             place(0, 4, mResetButton, 2);
-            place(3, 4, mButton, 2);
+            place(2, 4, mClearButton, 2);
+            place(4, 4, mButton, 2);
         }
         else if (mInputState == NPC_INPUT_INTEGER)
         {
-            place(0, 0, mScrollArea, 5, 3);
+            place(0, 0, mScrollArea, 6, 3);
             place(0, 3, mMinusButton, 1);
-            place(1, 3, mIntField, 3);
-            place(4, 3, mPlusButton, 1);
+            place(1, 3, mIntField, 4);
+            place(5, 3, mPlusButton, 1);
             place(0, 4, mResetButton, 2);
-            place(3, 4, mButton, 2);
+            place(2, 4, mClearButton, 2);
+            place(4, 4, mButton, 2);
         }
     }
 

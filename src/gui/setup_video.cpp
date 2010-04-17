@@ -185,6 +185,7 @@ Setup_Video::Setup_Video():
     mVisibleNamesEnabled(config.getValue("visiblenames", true)),
     mParticleEffectsEnabled(config.getValue("particleeffects", true)),
     mNameEnabled(config.getValue("showownname", false)),
+    mNPCLogEnabled(config.getValue("logNpcInGui", true)),
     mPickupChatEnabled(config.getValue("showpickupchat", true)),
     mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
@@ -202,6 +203,7 @@ Setup_Video::Setup_Video():
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
                                           mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
+    mNPCLogCheckBox(new CheckBox(_("Log NPC interations"), mNPCLogEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification"))),
     // TRANSLATORS: Refers to "Show own name"
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
@@ -262,6 +264,7 @@ Setup_Video::Setup_Video():
     mPickupChatCheckBox->setActionEventId("pickupchat");
     mPickupParticleCheckBox->setActionEventId("pickupparticle");
     mNameCheckBox->setActionEventId("showownname");
+    mNPCLogCheckBox->setActionEventId("lognpc");
     mAlphaSlider->setActionEventId("guialpha");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
     mSpeechSlider->setActionEventId("speech");
@@ -279,6 +282,7 @@ Setup_Video::Setup_Video():
     mPickupChatCheckBox->addActionListener(this);
     mPickupParticleCheckBox->addActionListener(this);
     mNameCheckBox->addActionListener(this);
+    mNPCLogCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
     mSpeechSlider->addActionListener(this);
@@ -315,6 +319,7 @@ Setup_Video::Setup_Video():
     place(3, 2, mNameCheckBox, 1);
 
     place(1, 3, mParticleEffectsCheckBox, 3);
+    place(3, 3, mNPCLogCheckBox, 1);
 
     place(1, 4, mPickupNotifyLabel, 4);
 
@@ -426,6 +431,7 @@ void Setup_Video::apply()
     mVisibleNamesEnabled = config.getValue("visiblenames", true);
     mParticleEffectsEnabled = config.getValue("particleeffects", true);
     mNameEnabled = config.getValue("showownname", false);
+    mNPCLogEnabled = config.getValue("logNpcInGui", true);
     mSpeechMode = static_cast<Being::Speech>(
             config.getValue("speech", Being::TEXT_OVERHEAD));
     mOpacity = config.getValue("guialpha", 0.8);
@@ -448,6 +454,7 @@ void Setup_Video::cancel()
     mFpsSlider->setEnabled(mFps > 0);
     mSpeechSlider->setValue(mSpeechMode);
     mNameCheckBox->setSelected(mNameEnabled);
+    mNPCLogCheckBox->setSelected(mNPCLogEnabled);
     mAlphaSlider->setValue(mOpacity);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
@@ -463,6 +470,7 @@ void Setup_Video::cancel()
     config.setValue("showownname", mNameEnabled);
     if (player_node)
         player_node->setCheckNameSetting(true);
+    config.setValue("logNpcInGui", mNPCLogEnabled);
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled);
     config.setValue("showpickupchat", mPickupChatEnabled);
@@ -546,6 +554,10 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         if (player_node)
             player_node->setCheckNameSetting(true);
         config.setValue("showownname", mNameCheckBox->isSelected());
+    }
+    else if (id == "lognpc")
+    {
+        config.setValue("logNpcInGui", mNPCLogCheckBox->isSelected());
     }
     else if (id == "overlaydetailslider")
     {
