@@ -53,8 +53,8 @@
 
 /** reasons why action failed      */
 #define RFAIL_SKILLDEP    0x00
-#define RFAIL_INSUFHP     0x01
-#define RFAIL_INSUFSP     0x02
+#define RFAIL_INSUFSP     0x01
+#define RFAIL_INSUFHP     0x02
 #define RFAIL_NOMEMO      0x03
 #define RFAIL_SKILLDELAY  0x04
 #define RFAIL_ZENY        0x05
