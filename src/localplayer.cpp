@@ -42,6 +42,7 @@
 #include "gui/gui.h"
 #include "gui/inventorywindow.h"
 #include "gui/ministatus.h"
+#include "gui/okdialog.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
 #include "gui/theme.h"
@@ -49,6 +50,7 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "net/chathandler.h"
 #include "net/guildhandler.h"
 #include "net/inventoryhandler.h"
 #include "net/net.h"
@@ -72,6 +74,8 @@
 // setDestination() calls using the keyboard.
 // TODO: This can fine tuned later on when running is added...
 const short walkingKeyboardDelay = 1000;
+
+#define AWAY_LIMIT_TIMER 60
 
 LocalPlayer *player_node = NULL;
 
@@ -100,8 +104,13 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mPathSetByMouse(false),
     mInventory(new Inventory(Inventory::INVENTORY)),
     mLocalWalkTime(-1),
-    mMessageTime(0)
+    mMessageTime(0),
+    mAwayDialog(0),
+    mAfkTime(0),
+    mAwayMode(false)
 {
+    mAwayListener = new AwayListener();
+
     mUpdateName = true;
 
     mTextColor = &Theme::getThemeColor(Theme::PLAYER);
@@ -1412,5 +1421,63 @@ void LocalPlayer::optionChanged(const std::string &value)
     if (value == "showownname")
     {
         setShowName(config.getValue("showownname", 1));
+    }
+}
+
+void LocalPlayer::changeAwayMode()
+{
+    mAwayMode = !mAwayMode;
+    mAfkTime = 0;
+    if (mAwayMode)
+    {
+        cancelFollow();
+        mAwayDialog = new OkDialog(_("Away"),
+                config.getValue("afkMessage", "I am away from keyboard"));
+        mAwayDialog->addActionListener(mAwayListener);
+    }
+    else
+    {
+        mAwayDialog = 0;
+    }
+}
+
+void LocalPlayer::setAway(const std::string &message)
+{
+    if (!message.empty())
+        config.setValue("afkMessage", message);
+    changeAwayMode();
+}
+
+void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
+{
+    if (mAwayMode)
+    {
+        if (mAfkTime == 0
+            || cur_time < mAfkTime
+            || cur_time - mAfkTime > AWAY_LIMIT_TIMER)
+        {
+            std::string msg = "*AFK*: "
+                    + config.getValue("afkMessage", "I am away from keyboard");
+
+            Net::getChatHandler()->privateMessage(nick, msg);
+            if (!tab)
+            {
+                localChatTab->chatLog(getName() + " : " + msg,
+                                      ACT_WHISPER, false);
+            }
+            else
+            {
+                tab->chatLog(getName(), msg);
+            }
+            mAfkTime = cur_time;
+        }
+    }
+}
+
+void AwayListener::action(const gcn::ActionEvent &event)
+{
+    if (event.getId() == "ok" && player_node->getAwayMode())
+    {
+        player_node->changeAwayMode();
     }
 }

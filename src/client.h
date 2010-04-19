@@ -50,6 +50,7 @@ static const short DEFAULT_PORT = 6901;
 
 extern volatile int fps;
 extern volatile int tick_time;
+extern volatile int cur_time;
 
 class ErrorListener : public gcn::ActionListener
 {

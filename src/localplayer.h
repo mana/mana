@@ -26,15 +26,19 @@
 
 #include "gui/userpalette.h"
 
+#include <guichan/actionlistener.hpp>
+
 #include <memory>
 #include <vector>
 
+class ChatTab;
 class Equipment;
 class FloorItem;
 class ImageSet;
 class Inventory;
 class Item;
 class Map;
+class OkDialog;
 
 
 struct Special
@@ -42,6 +46,12 @@ struct Special
     int currentMana;
     int neededMana;
     int recharge;
+};
+
+class AwayListener : public gcn::ActionListener
+{
+    public:
+        void action(const gcn::ActionEvent &event);
 };
 
 
@@ -352,6 +362,15 @@ class LocalPlayer : public Player
         bool isPathSetByMouse() const
         { return mPathSetByMouse; }
 
+        void changeAwayMode();
+
+        bool getAwayMode()
+        { return mAwayMode; }
+
+        void setAway(const std::string &message);
+
+        void afkRespond(ChatTab *tab, const std::string &nick);
+
         void addMessageToQueue(const std::string &message,
                                int color = UserPalette::EXP_INFO);
 
@@ -480,6 +499,11 @@ class LocalPlayer : public Player
         /** Queued exp messages*/
         std::list<MessagePair> mMessages;
         int mMessageTime;
+        AwayListener *mAwayListener;
+        OkDialog *mAwayDialog;
+
+        int mAfkTime;
+        bool mAwayMode;
 };
 
 extern LocalPlayer *player_node;

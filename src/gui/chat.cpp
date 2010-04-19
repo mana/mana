@@ -456,9 +456,14 @@ void ChatWindow::whisper(const std::string &nick,
     if (tab)
     {
         if (own)
+        {
             tab->chatInput(mes);
+        }
         else
+        {
             tab->chatLog(nick, mes);
+            player_node->afkRespond(tab, nick);
+        }
     }
     else
     {

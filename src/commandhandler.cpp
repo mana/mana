@@ -122,6 +122,10 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handlePresent(args, tab);
     }
+    else if (type == "away")
+    {
+        handleAway(args, tab);
+    }
     else
     {
         tab->chatLog(_("Unknown command."));
@@ -506,4 +510,9 @@ void CommandHandler::handleUnignore(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Player no longer ignored!"), BY_SERVER);
     else
         tab->chatLog(_("Player could not be unignored!"), BY_SERVER);
+}
+
+void CommandHandler::handleAway(const std::string &args, ChatTab *tab)
+{
+    player_node->setAway(args);
 }

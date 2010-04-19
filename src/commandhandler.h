@@ -142,6 +142,11 @@ class CommandHandler
          * Handle an unignore command.
          */
         void handleUnignore(const std::string &args, ChatTab *tab);
+
+        /**
+         * Handle away command.
+         */
+        void handleAway(const std::string &args, ChatTab *tab);
 };
 
 extern CommandHandler *commandHandler;

@@ -125,6 +125,7 @@ void ErrorListener::action(const gcn::ActionEvent &)
 volatile int tick_time;       /**< Tick counter */
 volatile int fps = 0;         /**< Frames counted in the last second */
 volatile int frame_count = 0; /**< Counts the frames during one second */
+volatile int cur_time;
 
 /**
  * Advances game logic counter.
