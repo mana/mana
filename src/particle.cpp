@@ -61,9 +61,7 @@ Particle::Particle(Map *map):
     mLifetimePast(0),
     mFadeOut(0),
     mFadeIn(0),
-    mAlpha(1.0f),
     mAutoDelete(true),
-    mMap(map),
     mAllowSizeAdjust(false),
     mGravity(0.0f),
     mRandomness(0),
@@ -74,16 +72,12 @@ Particle::Particle(Map *map):
     mInvDieDistance(-1.0f),
     mMomentum(1.0f)
 {
+    setMap(map);
     Particle::particleCount++;
-    if (mMap)
-        setSpriteIterator(mMap->addSprite(this));
 }
 
 Particle::~Particle()
 {
-    // Remove from map sprite list
-    if (mMap)
-        mMap->removeSprite(mSpriteIterator);
     // Delete child emitters and child particles
     clear();
     Particle::particleCount--;
@@ -391,13 +385,6 @@ void Particle::adjustEmitterSize(int w, int h)
             (*e)->adjustSize(w, h);
         }
     }
-}
-
-void Particle::setMap(Map *map)
-{
-    mMap = map;
-    if (mMap)
-        setSpriteIterator(mMap->addSprite(this));
 }
 
 void Particle::clear()

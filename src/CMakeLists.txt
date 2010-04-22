@@ -400,6 +400,8 @@ SET(SRCS
     utils/mkdir.h
     utils/xml.cpp
     utils/xml.h
+    actor.cpp
+    actor.h
     animatedsprite.cpp
     animatedsprite.h
     animationparticle.cpp
@@ -487,7 +489,6 @@ SET(SRCS
     simpleanimation.h
     sound.cpp
     sound.h
-    sprite.h
     statuseffect.cpp
     statuseffect.h
     text.cpp

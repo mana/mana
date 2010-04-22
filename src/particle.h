@@ -22,8 +22,8 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
+#include "actor.h"
 #include "guichanfwd.h"
-#include "sprite.h"
 #include "vector.h"
 
 #include <list>
@@ -41,7 +41,7 @@ typedef Emitters::iterator EmitterIterator;
 /**
  * A particle spawned by a ParticleEmitter.
  */
-class Particle : public Sprite
+class Particle : public Actor
 {
     public:
         static const float PARTICLE_SKY; /**< Maximum Z position of particles */
@@ -92,12 +92,6 @@ class Particle : public Sprite
         { return (int) (mPos.y + mPos.z) - 64; }
 
         /**
-         * Sets the map the particle is on.
-         */
-        void setMap(Map *map);
-
-
-        /**
          * Creates a blank particle as a child of the current particle
          * Useful for creating target particles
          */
@@ -142,12 +136,6 @@ class Particle : public Sprite
         void moveTo(float x, float y);
 
         /**
-         * Returns the particle position.
-         */
-        const Vector& getPosition() const
-        { return mPos; }
-
-        /**
          * Changes the particle position relative
          */
         void moveBy (const Vector &change);
@@ -171,32 +159,6 @@ class Particle : public Sprite
          */
         void setFadeIn(int fadeIn)
         { mFadeIn = fadeIn; }
-
-        /**
-         * Sets the alpha value of the particle
-         */
-        void setAlpha(float alpha)
-        { mAlpha = alpha; }
-
-        /**
-         * Returns the current alpha opacity of the particle.
-         */
-        virtual float getAlpha() const
-        { return mAlpha; }
-
-        /**
-         * Sets the sprite iterator of the particle on the current map to make
-         * it easier to remove the particle from the map when it is destroyed.
-         */
-        void setSpriteIterator(std::list<Sprite*>::iterator spriteIterator)
-        { mSpriteIterator = spriteIterator; }
-
-        /**
-         * Gets the sprite iterator of the particle on the current map.
-         */
-        std::list<Sprite*>::iterator
-        getSpriteIterator() const
-        { return mSpriteIterator; }
 
         /**
          * Sets the current velocity in 3 dimensional space.
@@ -287,17 +249,13 @@ class Particle : public Sprite
 
     protected:
         bool mAlive;                /**< Is the particle supposed to be drawn and updated?*/
-        Vector mPos;                /**< Position in pixels relative to map. */
         int mLifetimeLeft;          /**< Lifetime left in game ticks*/
         int mLifetimePast;          /**< Age of the particle in game ticks*/
         int mFadeOut;               /**< Lifetime in game ticks left where fading out begins*/
         int mFadeIn;                /**< Age in game ticks where fading in is finished*/
-        float mAlpha;               /**< Opacity of the graphical representation of the particle */
 
         // generic properties
         bool mAutoDelete;           /**< May the particle request its deletion by the parent particle? */
-        Map *mMap;                  /**< Map the particle is on. */
-        std::list<Sprite*>::iterator mSpriteIterator;   /**< iterator of the particle on the current map */
         Emitters mChildEmitters;    /**< List of child emitters. */
         Particles mChildParticles;  /**< List of particles controlled by this particle */
         bool mAllowSizeAdjust;      /**< Can the effect size be adjusted by the object props in the map file? */

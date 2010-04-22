@@ -32,24 +32,17 @@ FloorItem::FloorItem(int id,
                      int x,
                      int y,
                      Map *map):
-    mId(id),
-    mX(x),
-    mY(y),
-    mMap(map),
-    mAlpha(1.0f)
+    mId(id)
 {
+    setMap(map);
+    mPos.x = x * map->getTileWidth();
+    mPos.y = y * map->getTileHeight();
     // Create a corresponding item instance
     mItem = new Item(itemId);
-
-    // Add ourselves to the map
-    mMapSprite = mMap->addSprite(this);
 }
 
 FloorItem::~FloorItem()
 {
-    // Remove ourselves from the map
-    mMap->removeSprite(mMapSprite);
-
     delete mItem;
 }
 
@@ -73,7 +66,7 @@ void FloorItem::draw(Graphics *graphics, int offsetX, int offsetY) const
             if (mAlpha != image->getAlpha())
                 image->setAlpha(mAlpha);
 
-        graphics->drawImage(image, mX * mMap->getTileWidth() + offsetX,
-                            mY * mMap->getTileHeight() + offsetY);
+        graphics->drawImage(image, getPixelX() + offsetX,
+                            getPixelY() + offsetY);
     }
 }

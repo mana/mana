@@ -26,7 +26,6 @@
 #include "map.h"
 #include "particlecontainer.h"
 #include "position.h"
-#include "sprite.h"
 #include "vector.h"
 
 #include "resources/spritedef.h"
@@ -59,7 +58,7 @@ class Text;
 
 class StatusEffect;
 
-class Being : public Sprite, public ConfigListener
+class Being : public Actor, public ConfigListener
 {
     public:
         enum Type
@@ -373,7 +372,7 @@ class Being : public Sprite, public ConfigListener
         /**
          * Draws this being to the given graphics context.
          *
-         * @see Sprite::draw(Graphics, int, int)
+         * @see Actor::draw(Graphics, int, int)
          *
          * TODO: The following two functions should be combined.
          * at some point draw(), was changed to use mPx and mPy, with arugements
@@ -385,35 +384,6 @@ class Being : public Sprite, public ConfigListener
 
         virtual void drawSpriteAt(Graphics *graphics, int x, int y) const;
 
-        /**
-         * Set the alpha opacity used to draw the being.
-         */
-        virtual void setAlpha(float alpha)
-        { mAlpha = alpha; }
-
-        /**
-         * Returns the current alpha opacity of the Being.
-         */
-        virtual float getAlpha() const
-        { return mAlpha; }
-
-        /**
-         * Returns the X coordinate in pixels.
-         */
-        int getPixelX() const
-        { return (int) mPos.x; }
-
-        /**
-         * Returns the Y coordinate in pixels.
-         *
-         * @see Sprite::getPixelY()
-         */
-        int getPixelY() const
-        { return (int) mPos.y; }
-
-        /**
-         * Sets the position of this being.
-         */
         void setPosition(const Vector &pos);
 
         /**
@@ -421,15 +391,10 @@ class Being : public Sprite, public ConfigListener
          *
          * @see setPosition(const Vector &pos)
          */
-        void setPosition(float x, float y, float z = 0.0f)
+        inline void setPosition(float x, float y, float z = 0.0f)
         {
             setPosition(Vector(x, y, z));
         }
-
-        /**
-         * Returns the position of this being.
-         */
-        const Vector &getPosition() const { return mPos; }
 
         /**
          * Returns the horizontal size of the current base sprite of the being.
@@ -616,10 +581,8 @@ class Being : public Sprite, public ConfigListener
         int mId;                        /**< Unique sprite id */
         Uint8 mDirection;               /**< Facing direction */
         Uint8 mSpriteDirection;         /**< Facing direction */
-        Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         std::string mPartyName;
-        MapSprite mMapSprite;
 
         /**
          * Holds a text object when the being displays it's name, 0 otherwise
@@ -644,7 +607,6 @@ class Being : public Sprite, public ConfigListener
         typedef Sprites::iterator SpriteIterator;
         typedef Sprites::const_iterator SpriteConstIterator;
         Sprites mSprites;
-        float mAlpha;                   /**< Alpha opacity to draw the sprite */
 
         ParticleList mStunParticleEffects;
         ParticleVector mStatusParticleEffects;
@@ -675,7 +637,6 @@ class Being : public Sprite, public ConfigListener
          */
         Vector mWalkSpeed;
 
-        Vector mPos;  /**< Position coordinates. */
         int mX, mY;   /**< Position in tile */
 
         int mDamageTaken;

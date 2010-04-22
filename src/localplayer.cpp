@@ -704,8 +704,8 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-    int dx = item->getX() - (int) getPosition().x / 32;
-    int dy = item->getY() - (int) getPosition().y / 32;
+    int dx = item->getTileX() - (int) getPosition().x / 32;
+    int dy = item->getTileY() - (int) getPosition().y / 32;
 
     if (dx * dx + dy * dy < 4)
     {
@@ -716,12 +716,12 @@ void LocalPlayer::pickUp(FloorItem *item)
     {
         if (Net::getNetworkType() == ServerInfo::MANASERV)
         {
-            setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
+            setDestination(item->getPixelX() + 16, item->getPixelY() + 16);
             mPickUpTarget = item;
         }
         else
         {
-            setDestination(item->getX(), item->getY());
+            setDestination(item->getTileX(), item->getTileY());
             mPickUpTarget = item;
             stopAttack();
         }

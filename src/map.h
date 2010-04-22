@@ -22,6 +22,7 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include "actor.h"
 #include "position.h"
 #include "properties.h"
 
@@ -31,16 +32,12 @@
 class Animation;
 class AmbientLayer;
 class Graphics;
-class Image;
 class MapLayer;
 class Particle;
 class SimpleAnimation;
-class Sprite;
 class Tileset;
 
 typedef std::vector<Tileset*> Tilesets;
-typedef std::list<Sprite*> MapSprites;
-typedef MapSprites::iterator MapSprite;
 typedef std::vector<MapLayer*> Layers;
 
 /**
@@ -91,7 +88,7 @@ class MapLayer
     public:
         /**
          * Constructor, taking layer origin, size and whether this layer is the
-         * fringe layer. The fringe layer is the layer that draws the sprites.
+         * fringe layer. The fringe layer is the layer that draws the actors.
          * There can be only one fringe layer per map.
          */
         MapLayer(int x, int y, int width, int height, bool isFringeLayer);
@@ -121,20 +118,20 @@ class MapLayer
          * expected to be in map range and will be translated to local layer
          * coordinates and clipped to the layer's dimensions.
          *
-         * The given sprites are only drawn when this layer is the fringe
+         * The given actors are only drawn when this layer is the fringe
          * layer.
          */
         void draw(Graphics *graphics,
                   int startX, int startY,
                   int endX, int endY,
                   int scrollX, int scrollY,
-                  const MapSprites &sprites,
+                  const Actors &actors,
                   int mDebugFlags) const;
 
     private:
         int mX, mY;
         int mWidth, mHeight;
-        bool mIsFringeLayer;    /**< Whether the sprites are drawn. */
+        bool mIsFringeLayer;    /**< Whether the actors are drawn. */
         Image **mTiles;
 };
 
@@ -190,7 +187,7 @@ class Map : public Properties
 
         /**
          * Draws the map to the given graphics output. This method draws all
-         * layers, sprites and overlay effects.
+         * layers, actors and overlay effects.
          *
          * TODO: For efficiency reasons, this method could take into account
          * the clipping rectangle set on the Graphics object. However,
@@ -295,16 +292,6 @@ class Map : public Properties
                       unsigned char walkmask, int maxCost = 20);
 
         /**
-         * Adds a sprite to the map.
-         */
-        MapSprite addSprite(Sprite *sprite);
-
-        /**
-         * Removes a sprite from the map.
-         */
-        void removeSprite(MapSprite iterator);
-
-        /**
          * Adds a particle effect
          */
         void addParticleEffect(const std::string &effectFile, int x, int y, int w = 0, int h = 0);
@@ -328,6 +315,19 @@ class Map : public Properties
          * Gets the tile animation for a specific gid
          */
         TileAnimation *getAnimationForGid(int gid) const;
+
+    protected:
+        friend class Actor;
+
+        /**
+         * Adds an actor to the map.
+         */
+        Actors::iterator addActor(Actor *actor);
+
+        /**
+         * Removes an actor from the map.
+         */
+        void removeActor(Actors::iterator iterator);
 
     private:
 
@@ -364,7 +364,7 @@ class Map : public Properties
         MetaTile *mMetaTiles;
         Layers mLayers;
         Tilesets mTilesets;
-        MapSprites mSprites;
+        Actors mActors;
 
         // debug flags
         int mDebugFlags;

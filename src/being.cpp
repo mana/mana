@@ -78,13 +78,11 @@ Being::Being(int id, int subtype, Map *map):
     mId(id),
     mDirection(DOWN),
     mSpriteDirection(DIRECTION_DOWN),
-    mMap(NULL),
     mDispName(0),
     mShowName(false),
     mEquippedWeapon(NULL),
     mText(0),
     mStunMode(0),
-    mAlpha(1.0f),
     mStatusParticleEffects(&mStunParticleEffects, false),
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
@@ -109,8 +107,6 @@ Being::~Being()
     if (player_node && player_node->getTarget() == this)
         player_node->setTarget(NULL);
 
-    setMap(NULL);
-
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
@@ -118,7 +114,7 @@ Being::~Being()
 
 void Being::setPosition(const Vector &pos)
 {
-    mPos = pos;
+    Actor::setPosition(pos);
 
     updateCoords();
 
@@ -362,15 +358,7 @@ void Being::setGuildPos(const std::string &pos)
 
 void Being::setMap(Map *map)
 {
-    // Remove sprite from potential previous map
-    if (mMap)
-        mMap->removeSprite(mMapSprite);
-
-    mMap = map;
-
-    // Add sprite to potential new map
-    if (mMap)
-        mMapSprite = mMap->addSprite(this);
+    Actor::setMap(map);
 
     // Clear particle effect list because child particles became invalid
     mChildParticleEffects.clear();

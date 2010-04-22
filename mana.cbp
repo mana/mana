@@ -94,6 +94,8 @@
 		</Linker>
 		<Unit filename="src\SDLMain.h" />
 		<Unit filename="src\SDLMain.m" />
+		<Unit filename="src\actor.cpp" />
+		<Unit filename="src\actor.h" />
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
@@ -559,7 +561,6 @@
 		<Unit filename="src\simpleanimation.h" />
 		<Unit filename="src\sound.cpp" />
 		<Unit filename="src\sound.h" />
-		<Unit filename="src\sprite.h" />
 		<Unit filename="src\statuseffect.cpp" />
 		<Unit filename="src\statuseffect.h" />
 		<Unit filename="src\text.cpp" />

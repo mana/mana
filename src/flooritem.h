@@ -23,9 +23,6 @@
 #define FLOORITEM_H
 
 #include "map.h"
-#include "sprite.h"
-
-#include <list>
 
 class Graphics;
 class Image;
@@ -34,7 +31,7 @@ class Item;
 /**
  * An item lying on the floor.
  */
-class FloorItem : public Sprite
+class FloorItem : public Actor
 {
     public:
         /**
@@ -57,7 +54,8 @@ class FloorItem : public Sprite
         /**
          * Returns instance ID of this item.
          */
-        int getId() const { return mId; }
+        int getId() const
+        { return mId; }
 
         /**
          * Returns the item ID.
@@ -71,41 +69,11 @@ class FloorItem : public Sprite
         Item *getItem() const;
 
         /**
-         * Returns the x coordinate in tiles.
-         */
-        int getX() const { return mX; }
-
-        /**
-         * Returns the y coordinate in tiles.
-         */
-        int getY() const { return mY; }
-
-        /**
-         * Returns the pixel y coordinate.
-         *
-         * @see Sprite::getPixelY()
-         */
-        int getPixelY() const
-        { return mY * mMap->getTileHeight() + mMap->getTileHeight() / 2; }
-
-        /**
          * Draws this floor item to the given graphics context.
          *
-         * @see Sprite::draw(Graphics, int, int)
+         * @see Actor::draw(Graphics, int, int)
          */
         void draw(Graphics *graphics, int offsetX, int offsetY) const;
-
-        /**
-         * Sets the alpha value of the floor item
-         */
-        void setAlpha(float alpha)
-        { mAlpha = alpha; }
-
-        /**
-         * Returns the current alpha opacity of the floor item.
-         */
-        virtual float getAlpha() const
-        { return mAlpha; }
 
         /** We consider flooritems (at least for now) to be one layer-sprites */
         virtual int getNumberOfLayers() const
@@ -113,11 +81,7 @@ class FloorItem : public Sprite
 
     private:
         int mId;
-        int mX, mY;
         Item *mItem;
-        MapSprite mMapSprite;
-        Map *mMap;
-        float mAlpha;
 };
 
 #endif

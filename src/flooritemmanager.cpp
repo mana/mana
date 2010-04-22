@@ -70,7 +70,7 @@ FloorItem *FloorItemManager::findByCoordinates(int x, int y) const
     FloorItems::const_iterator i;
     for (i = mFloorItems.begin(); i != mFloorItems.end(); i++)
     {
-        if ((*i)->getX() == x && (*i)->getY() == y)
+        if ((*i)->getTileX() == x && (*i)->getTileY() == y)
         {
             return *i;
         }

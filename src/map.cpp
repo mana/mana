@@ -27,7 +27,6 @@
 #include "graphics.h"
 #include "particle.h"
 #include "simpleanimation.h"
-#include "sprite.h"
 #include "tileset.h"
 
 #include "resources/ambientlayer.h"
@@ -122,7 +121,7 @@ Image* MapLayer::getTile(int x, int y) const
 
 void MapLayer::draw(Graphics *graphics, int startX, int startY,
                     int endX, int endY, int scrollX, int scrollY,
-                    const MapSprites &sprites, int debugFlags) const
+                    const Actors &actors, int debugFlags) const
 {
     startX -= mX;
     startY -= mY;
@@ -134,19 +133,19 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
     if (endX > mWidth) endX = mWidth;
     if (endY > mHeight) endY = mHeight;
 
-    MapSprites::const_iterator si = sprites.begin();
+    Actors::const_iterator ai = actors.begin();
 
     for (int y = startY; y < endY; y++)
     {
-        // If drawing the fringe layer, make sure all sprites above this row of
+        // If drawing the fringe layer, make sure all actors above this row of
         // tiles have been drawn
         if (mIsFringeLayer)
         {
-            while (si != sprites.end() && (*si)->getPixelY() <= y * 32)
+            while (ai != actors.end() && (*ai)->getPixelY() <= y * 32)
             {
-                (*si)->setAlpha(1.0f);
-                (*si)->draw(graphics, -scrollX, -scrollY);
-                si++;
+                (*ai)->setAlpha(1.0f);
+                (*ai)->draw(graphics, -scrollX, -scrollY);
+                ai++;
             }
         }
 
@@ -163,14 +162,14 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
         }
     }
 
-    // Draw any remaining sprites
+    // Draw any remaining actors
     if (mIsFringeLayer)
     {
-        while (si != sprites.end())
+        while (ai != actors.end())
         {
-            (*si)->setAlpha(1.0f);
-            (*si)->draw(graphics, -scrollX, -scrollY);
-            si++;
+            (*ai)->setAlpha(1.0f);
+            (*ai)->draw(graphics, -scrollX, -scrollY);
+            ai++;
         }
     }
 }
@@ -283,7 +282,7 @@ void Map::addTileset(Tileset *tileset)
         mMaxTileHeight = tileset->getHeight();
 }
 
-bool spriteCompare(const Sprite *a, const Sprite *b)
+bool actorCompare(const Actor *a, const Actor *b)
 {
     return a->getPixelY() < b->getPixelY();
 }
@@ -309,9 +308,9 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     int endX = (graphics->getWidth() + scrollX + mTileWidth - 1) / mTileWidth;
     int endY = endPixelY / mTileHeight;
 
-    // Make sure sprites are sorted ascending by Y-coordinate
+    // Make sure actors are sorted ascending by Y-coordinate
     // so that they overlap correctly
-    mSprites.sort(spriteCompare);
+    mActors.sort(actorCompare);
 
     // update scrolling of all ambient layers
     updateAmbientLayers(scrollX, scrollY);
@@ -327,24 +326,24 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
         (*layeri)->draw(graphics,
                         startX, startY, endX, endY,
                         scrollX, scrollY,
-                        mSprites, mDebugFlags);
+                        mActors, mDebugFlags);
     }
 
     // Draws beings with a lower opacity to make them visible
     // even when covered by a wall or some other elements...
-    MapSprites::const_iterator si = mSprites.begin();
-    while (si != mSprites.end())
+    Actors::const_iterator ai = mActors.begin();
+    while (ai != mActors.end())
     {
-        if (Sprite *sprite = *si)
+        if (Actor *actor = *ai)
         {
-            // For now, just draw sprites with only one layer.
-            if (sprite->getNumberOfLayers() == 1)
+            // For now, just draw actors with only one layer.
+            if (actor->getNumberOfLayers() == 1)
             {
-                sprite->setAlpha(0.3f);
-                sprite->draw(graphics, -scrollX, -scrollY);
+                actor->setAlpha(0.3f);
+                actor->draw(graphics, -scrollX, -scrollY);
             }
         }
-        si++;
+        ai++;
     }
 
     drawAmbientLayers(graphics, FOREGROUND_LAYERS, scrollX, scrollY,
@@ -556,15 +555,15 @@ MetaTile *Map::getMetaTile(int x, int y) const
     return &mMetaTiles[x + y * mWidth];
 }
 
-MapSprite Map::addSprite(Sprite *sprite)
+Actors::iterator Map::addActor(Actor *actor)
 {
-    mSprites.push_front(sprite);
-    return mSprites.begin();
+    mActors.push_front(actor);
+    return mActors.begin();
 }
 
-void Map::removeSprite(MapSprite iterator)
+void Map::removeActor(Actors::iterator iterator)
 {
-    mSprites.erase(iterator);
+    mActors.erase(iterator);
 }
 
 const std::string Map::getMusicFile() const
