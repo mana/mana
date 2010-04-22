@@ -75,9 +75,11 @@ class BeingManager
          * @param maxTileDist Maximal distance in tiles. If minimal distance is
          *                    larger, no being is returned.
          * @param type        The type of being to look for.
+         * @param excluded    The being to exclude from the search.
          */
         Being *findNearestLivingBeing(int x, int y, int maxTileDist,
-                                      Being::Type type = Being::UNKNOWN) const;
+                                      Being::Type type = Being::UNKNOWN,
+                                      Being *excluded = 0) const;
 
         /**
          * Returns a being nearest to another being.
@@ -88,7 +90,7 @@ class BeingManager
          * @param type        The type of being to look for.
          */
         Being *findNearestLivingBeing(Being *aroundBeing, int maxTileDist,
-                                       Being::Type type = Being::UNKNOWN) const;
+                                      Being::Type type = Being::UNKNOWN) const;
 
         /**
          * Finds a being by name and (optionally) by type.

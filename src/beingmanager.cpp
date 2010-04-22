@@ -213,8 +213,8 @@ void BeingManager::clear()
 }
 
 Being *BeingManager::findNearestLivingBeing(int x, int y,
-                                            int maxTileDist,
-                                            Being::Type type) const
+                                            int maxTileDist, Being::Type type,
+                                            Being *excluded) const
 {
     Being *closestBeing = 0;
     int dist = 0;
@@ -231,8 +231,9 @@ Being *BeingManager::findNearestLivingBeing(int x, int y,
         int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
 
         if ((being->getType() == type || type == Being::UNKNOWN)
-                && (d < dist || !closestBeing)          // it is closer
-                && being->isAlive())       // no dead beings
+                && (d < dist || !closestBeing)  // it is closer
+                && being->isAlive()             // no dead beings
+                && being != excluded)
         {
             dist = d;
             closestBeing = being;
@@ -246,7 +247,8 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxDist,
                                             Being::Type type) const
 {
     const Vector &pos = aroundBeing->getPosition();
-    return findNearestLivingBeing((int)pos.x, (int)pos.y, maxDist, type);
+    return findNearestLivingBeing((int)pos.x, (int)pos.y, maxDist, type,
+                                  aroundBeing);
 }
 
 bool BeingManager::hasBeing(Being *being) const
