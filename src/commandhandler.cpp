@@ -169,8 +169,12 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/msg > Send a private message to a user"));
         tab->chatLog(_("/whisper > Alias of msg"));
         tab->chatLog(_("/w > Alias of msg"));
-        tab->chatLog(_("/query > Makes a tab for private messages with another user"));
+        tab->chatLog(_("/query > Makes a tab for private messages "
+                       "with another user"));
         tab->chatLog(_("/q > Alias of query"));
+
+        tab->chatLog(_("/away > Tell the other whispering players "
+                       "you're away from keyboard."));
 
         tab->chatLog(_("/ignore > ignore a player"));
         tab->chatLog(_("/unignore > stop ignoring a player"));
@@ -181,9 +185,12 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/createparty > Create a new party"));
         tab->chatLog(_("/party > Invite a user to party"));
 
-        tab->chatLog(_("/record > Start recording the chat to an external file"));
-        tab->chatLog(_("/toggle > Determine whether <return> toggles the chat log"));
-        tab->chatLog(_("/present > Get list of players present (sent to chat log, if logging)"));
+        tab->chatLog(_("/record > Start recording the chat "
+                       "to an external file"));
+        tab->chatLog(_("/toggle > Determine whether <return> "
+                       "toggles the chat log"));
+        tab->chatLog(_("/present > Get list of players present "
+                       "(sent to chat log, if logging)"));
 
         tab->chatLog(_("/announce > Global announcement (GM only)"));
 
@@ -194,7 +201,8 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
     else if (args == "help") // Do this before tabs so they can't change it
     {
         tab->chatLog(_("Command: /help"));
-        tab->chatLog(_("This command displays a list of all commands available."));
+        tab->chatLog(_("This command displays a list "
+                       "of all commands available."));
         tab->chatLog(_("Command: /help <command>"));
         tab->chatLog(_("This command displays help on <command>."));
     }
@@ -251,6 +259,14 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Command: /q <nick>"));
         tab->chatLog(_("This command tries to make a tab for whispers between"
                        "you and <nick>."));
+    }
+    else if (args == "away")
+    {
+        tab->chatLog(_("Command: /away <afk reason>"));
+        tab->chatLog(_("This command tells "
+                       "you're away from keyboard with the given reason."));
+        tab->chatLog(_("Command: /away"));
+        tab->chatLog(_("This command clears the away status and message."));
     }
     else if (args == "createparty")
     {
