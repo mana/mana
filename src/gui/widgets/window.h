@@ -180,12 +180,12 @@ class Window : public gcn::Window, gcn::WidgetListener
         void setVisible(bool visible, bool forceSticky);
 
         /**
-         * Returns whether the window will save it's visibility.
+         * Returns whether the window is visible by default.
          */
         bool isDefaultVisible() const { return mDefaultVisible; }
 
         /**
-         * Returns whether the window will save it's visibility.
+         * Sets whether the window is visible by default.
          */
         void setDefaultVisible(bool save) { mDefaultVisible = save; }
 
@@ -195,7 +195,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         bool willSaveVisible() const { return mSaveVisible; }
 
         /**
-         * Returns whether the window will save it's visibility.
+         * Sets whether the window will save it's visibility.
          */
         void setSaveVisible(bool save) { mSaveVisible = save; }
 
