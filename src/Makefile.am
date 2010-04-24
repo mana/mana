@@ -451,6 +451,8 @@ mana_SOURCES += \
 	      net/manaserv/protocol.h \
 	      net/manaserv/specialhandler.cpp \
 	      net/manaserv/specialhandler.h \
+	      net/manaserv/stats.cpp \
+	      net/manaserv/stats.h \
 	      net/manaserv/tradehandler.cpp \
 	      net/manaserv/tradehandler.h
 

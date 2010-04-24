@@ -469,6 +469,8 @@
 		<Unit filename="src\net\manaserv\protocol.h" />
 		<Unit filename="src\net\manaserv\specialhandler.cpp" />
 		<Unit filename="src\net\manaserv\specialhandler.h" />
+		<Unit filename="src\net\manaserv\stats.cpp" />
+		<Unit filename="src\net\manaserv\stats.h" />
 		<Unit filename="src\net\manaserv\tradehandler.cpp" />
 		<Unit filename="src\net\manaserv\tradehandler.h" />
 		<Unit filename="src\net\messagehandler.h" />

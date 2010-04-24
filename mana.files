@@ -407,6 +407,8 @@
 ./src/net/manaserv/protocol.h
 ./src/net/manaserv/specialhandler.cpp
 ./src/net/manaserv/specialhandler.h
+./src/net/manaserv/stats.cpp
+./src/net/manaserv/stats.h
 ./src/net/manaserv/tradehandler.cpp
 ./src/net/manaserv/tradehandler.h
 ./src/net/messagehandler.h
