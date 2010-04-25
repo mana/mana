@@ -108,6 +108,8 @@ class InventoryWindow : public Window,
 
         void slotsChanged(Inventory* inventory);
 
+        bool isMainInventory() { return mInventory->isMainInventory(); }
+
         /**
          * Returns true if any instances exist.
          */

@@ -60,7 +60,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     mInventory(inventory),
     mSplit(false)
 {
-    setWindowName(inventory->isMainInventory() ? "Inventory" : "Storage");
+    setWindowName(isMainInventory() ? "Inventory" : "Storage");
     setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
@@ -80,7 +80,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     mSlotsLabel = new Label(_("Slots:"));
     mSlotsBar = new ProgressBar(0.0f, 100, 20, Theme::PROG_INVY_SLOTS);
 
-    if (inventory->isMainInventory())
+    if (isMainInventory())
     {
         std::string equip = _("Equip");
         std::string use = _("Use");
@@ -137,7 +137,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     loadWindowState();
     slotsChanged(mInventory);
 
-    if (!inventory->isMainInventory())
+    if (!isMainInventory())
         setVisible(true);
 }
 
@@ -157,6 +157,17 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         {
             outfitWindow->requestMoveToTop();
         }
+    }
+    else if (event.getId() == "store")
+    {
+        if (!inventoryWindow->isVisible()) return;
+
+        Item *item = inventoryWindow->getSelectedItem();
+
+        if (!item)
+            return;
+
+        ItemAmountWindow::showWindow(ItemAmountWindow::StoreAdd, this, item);
     }
 
     Item *item = mItems->getSelectedItem();
@@ -184,17 +195,6 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     {
         ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
                                  (item->getQuantity() - 1));
-    }
-    else if (event.getId() == "store")
-    {
-        if (!inventoryWindow->isVisible()) return;
-
-        Item *item = inventoryWindow->getSelectedItem();
-
-        if (!item)
-            return;
-
-        ItemAmountWindow::showWindow(ItemAmountWindow::StoreAdd, this, item);
     }
     else if (event.getId() == "retrieve")
     {
@@ -229,7 +229,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
          */
         const int mx = event.getX() + getX();
         const int my = event.getY() + getY();
-        viewport->showPopup(this, mx, my, item);
+        viewport->showPopup(this, mx, my, item, isMainInventory());
     }
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
