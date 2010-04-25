@@ -81,6 +81,13 @@ class ModeListModel : public gcn::ListModel
          */
         std::string getElementAt(int i) { return mVideoModes[i]; }
 
+        /**
+         * Returns the index corresponding to the given video mode.
+         * E.g.: "800x600".
+         * or -1 if not found.
+         */
+        int getIndexOf(const std::string &widthXHeightMode);
+
     private:
         std::vector<std::string> mVideoModes;
 };
@@ -106,6 +113,20 @@ ModeListModel::ModeListModel()
             mVideoModes.push_back(modeString);
         }
     }
+}
+
+int ModeListModel::getIndexOf(const std::string &widthXHeightMode)
+{
+    std::string currentMode = "";
+    for (int i = 0; i < getNumberOfElements(); i++)
+    {
+        currentMode = getElementAt(i);
+        if (currentMode == widthXHeightMode)
+        {
+            return i;
+        }
+    }
+    return -1;
 }
 
 const char *SIZE_NAME[4] =
@@ -255,6 +276,11 @@ Setup_Video::Setup_Video():
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setSelected(mFps > 0);
+
+    // Pre-select the current video mode.
+    std::string videoMode = toString(graphics->getWidth()) + "x"
+                            + toString(graphics->getHeight());
+    mModeList->setSelected(mModeListModel->getIndexOf(videoMode));
 
     mModeList->setActionEventId("videomode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
@@ -462,6 +488,14 @@ void Setup_Video::cancel()
     mFpsLabel->setCaption(text);
 
     config.setValue("screen", mFullScreenEnabled);
+
+    // Set back to the current video mode.
+    std::string videoMode = toString(graphics->getWidth()) + "x"
+                            + toString(graphics->getHeight());
+    mModeList->setSelected(mModeListModel->getIndexOf(videoMode));
+    config.setValue("screenwidth", graphics->getWidth());
+    config.setValue("screenheight", graphics->getHeight());
+
     config.setValue("customcursor", mCustomCursorEnabled);
     config.setValue("showMonstersTakedDamage", mShowMonsterDamageEnabled);
     config.setValue("visiblenames", mVisibleNamesEnabled);
