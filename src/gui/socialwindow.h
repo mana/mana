@@ -77,6 +77,8 @@ public:
 protected:
     friend class SocialTab;
 
+    void updateButtons();
+
     int mGuildInvited;
     ConfirmDialog *mGuildAcceptDialog;
     TextDialog *mGuildCreateDialog;
