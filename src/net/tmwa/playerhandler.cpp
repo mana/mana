@@ -42,6 +42,7 @@
 #include "net/messageout.h"
 
 #include "net/tmwa/protocol.h"
+#include "net/tmwa/npchandler.h"
 
 #include "utils/stringutils.h"
 #include "utils/gettext.h"
@@ -86,6 +87,10 @@ namespace {
             SellDialog::closeAll();
 
             viewport->closePopupMenu();
+
+            TmwAthena::NpcHandler *handler =
+                    static_cast<TmwAthena::NpcHandler*>(Net::getNpcHandler());
+            handler->clearDialogs();
         }
     } deathListener;
 

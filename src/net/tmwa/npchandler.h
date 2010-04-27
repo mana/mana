@@ -67,6 +67,8 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
 
         void endShopping(int beingId);
 
+        void clearDialogs();
+
     private:
         typedef struct {
             NpcDialog* dialog;

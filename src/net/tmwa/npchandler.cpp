@@ -223,4 +223,9 @@ void NpcHandler::endShopping(int beingId)
     // TODO
 }
 
+void NpcHandler::clearDialogs()
+{
+    mNpcDialogs.clear();
+}
+
 } // namespace TmwAthena
