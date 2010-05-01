@@ -21,6 +21,7 @@
 
 #include "gui/serverdialog.h"
 
+#include "chatlog.h"
 #include "client.h"
 #include "configuration.h"
 #include "gui.h"
@@ -343,6 +344,8 @@ void ServerDialog::action(const gcn::ActionEvent &event)
 
             // Save the selected server
             mServerInfo->save = true;
+
+            chatLogger->setServerName(mServerInfo->hostname);
 
             saveCustomServers(*mServerInfo);
 

@@ -110,6 +110,8 @@
 		<Unit filename="src\channel.h" />
 		<Unit filename="src\channelmanager.cpp" />
 		<Unit filename="src\channelmanager.h" />
+		<Unit filename="src\chatlog.cpp" />
+		<Unit filename="src\chatlog.h" />
 		<Unit filename="src\client.cpp" />
 		<Unit filename="src\client.h" />
 		<Unit filename="src\commandhandler.cpp" />

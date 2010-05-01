@@ -313,6 +313,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      being.h \
 	      beingmanager.cpp \
 	      beingmanager.h \
+	      chatlog.cpp \
+	      chatlog.h \
 	      client.cpp \
 	      client.h \
 	      channel.cpp \

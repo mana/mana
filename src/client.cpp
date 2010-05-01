@@ -22,6 +22,7 @@
 #include "client.h"
 #include "main.h"
 
+#include "chatlog.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "game.h"
@@ -110,6 +111,7 @@ LoginData loginData;
 Configuration config;         /**< XML file configuration reader */
 Configuration branding;       /**< XML branding information reader */
 Logger *logger;               /**< Log object */
+ChatLogger *chatLogger;       /**< Chat log object */
 KeyboardConfig keyboard;
 
 UserPalette *userPalette;
@@ -218,6 +220,12 @@ Client::Client(const Options &options):
 
     initHomeDir();
     initConfiguration();
+
+    chatLogger = new ChatLogger;
+    if (options.chatLogDir == "")
+        chatLogger->setLogDir(mLocalDataDir + std::string("/logs/"));
+    else
+        chatLogger->setLogDir(options.chatLogDir);
 
     // Configure logger
     logger->setLogFile(mLocalDataDir + std::string("/mana.log"));
@@ -399,6 +407,9 @@ Client::Client(const Options &options):
         mCurrentServer.type = ServerInfo::parseType(
                 branding.getValue("defaultServerType", "eathena"));
     }
+
+    if (chatLogger)
+        chatLogger->setServerName(mCurrentServer.hostname);
 
     if (loginData.username.empty() && loginData.remember)
         loginData.username = config.getValue("username", "");

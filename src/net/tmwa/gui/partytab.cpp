@@ -21,6 +21,7 @@
 
 #include "net/tmwa/gui/partytab.h"
 
+#include "chatlog.h"
 #include "commandhandler.h"
 #include "localplayer.h"
 #include "party.h"
@@ -204,6 +205,12 @@ void PartyTab::getAutoCompleteList(std::vector<std::string> &names) const
 
     if (p)
         p->getNames(names);
+}
+
+void PartyTab::saveToLogFile(std::string &msg)
+{
+    if (chatLogger)
+        chatLogger->log("#Party", msg);
 }
 
 } // namespace TmwAthena

@@ -21,6 +21,7 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "chatlog.h"
 #include "commandhandler.h"
 #include "configuration.h"
 #include "localplayer.h"
@@ -180,6 +181,9 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
 
     line = lineColor + timeStr.str() + tmp.nick + tmp.text;
 
+    if (config.getValue("enableChatLog", false))
+        saveToLogFile(line);
+
     // We look if the Vertical Scroll Bar is set at the max before
     // adding a row, otherwise the max will always be a row higher
     // at comparison.
@@ -273,6 +277,12 @@ void ChatTab::handleInput(const std::string &msg)
 void ChatTab::handleCommand(const std::string &msg)
 {
     commandHandler->handleCommand(msg, this);
+}
+
+void ChatTab::saveToLogFile(std::string &msg)
+{
+    if (chatLogger)
+        chatLogger->log(msg);
 }
 
 void ChatTab::addRow(std::string &line)

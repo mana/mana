@@ -70,6 +70,9 @@ private:
 
     bool mShowGender;
     gcn::CheckBox *mShowGenderCheckBox;
+
+    bool mEnableChatLog;
+    gcn::CheckBox *mEnableChatLogCheckBox;
 };
 
 #endif

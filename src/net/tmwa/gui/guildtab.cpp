@@ -21,6 +21,7 @@
 
 #include "net/tmwa/gui/guildtab.h"
 
+#include "chatlog.h"
 #include "commandhandler.h"
 #include "guild.h"
 #include "localplayer.h"
@@ -112,6 +113,12 @@ void GuildTab::getAutoCompleteList(std::vector<std::string> &names) const
 {
     if (taGuild)
         taGuild->getNames(names);
+}
+
+void GuildTab::saveToLogFile(std::string &msg)
+{
+    if (chatLogger)
+        chatLogger->log("#Guild", msg);
 }
 
 } // namespace TmwAthena

@@ -54,6 +54,8 @@
 ./src/channel.h
 ./src/channelmanager.cpp
 ./src/channelmanager.h
+./src/chatlog.cpp
+./src/chatlog.h
 ./src/client.cpp
 ./src/client.h
 ./src/CMakeLists.txt

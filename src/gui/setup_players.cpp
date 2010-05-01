@@ -216,6 +216,7 @@ public:
 #define ACTION_STRATEGY "strategy"
 #define ACTION_WHISPER_TAB "whisper tab"
 #define ACTION_SHOW_GENDER "show gender"
+#define ACTION_ENABLE_CHAT_LOG "enable log"
 
 Setup_Players::Setup_Players():
     mPlayerTableTitleModel(new StaticTableModel(1, COLUMNS_NR)),
@@ -231,7 +232,9 @@ Setup_Players::Setup_Players():
     mWhisperTab(config.getValue("whispertab", false)),
     mWhisperTabCheckBox(new CheckBox(_("Put all whispers in tabs"), mWhisperTab)),
     mShowGender(config.getValue("showgender", false)),
-    mShowGenderCheckBox(new CheckBox(_("Show gender"), mShowGender))
+    mShowGenderCheckBox(new CheckBox(_("Show gender"), mShowGender)),
+    mEnableChatLog(config.getValue("enableChatLog", false)),
+    mEnableChatLogCheckBox(new CheckBox(_("Enable Chat log"), mEnableChatLog))
 {
     setName(_("Players"));
 
@@ -281,6 +284,9 @@ Setup_Players::Setup_Players():
     mShowGenderCheckBox->setActionEventId(ACTION_SHOW_GENDER);
     mShowGenderCheckBox->addActionListener(this);
 
+    mEnableChatLogCheckBox->setActionEventId(ACTION_ENABLE_CHAT_LOG);
+    mEnableChatLogCheckBox->addActionListener(this);
+
     reset();
 
     // Do the layout
@@ -291,6 +297,7 @@ Setup_Players::Setup_Players():
     place(0, 1, mPlayerScrollArea, 4, 4).setPadding(2);
     place(0, 5, mDeleteButton);
     place(0, 6, mShowGenderCheckBox, 2).setPadding(2);
+    place(0, 7, mEnableChatLogCheckBox, 2).setPadding(2);
     place(2, 5, ignore_action_label);
     place(2, 6, mIgnoreActionChoicesBox, 2).setPadding(2);
     place(2, 7, mDefaultTrading);
@@ -349,6 +356,8 @@ void Setup_Players::apply()
 
     if (beingManager && mShowGender != showGender)
         beingManager->updatePlayerNames();
+
+    config.setValue("enableChatLog", mEnableChatLog);
 }
 
 void Setup_Players::cancel()
@@ -357,6 +366,8 @@ void Setup_Players::cancel()
     mWhisperTabCheckBox->setSelected(mWhisperTab);
     mShowGender = config.getValue("showgender", false);
     mShowGenderCheckBox->setSelected(mShowGender);
+    mEnableChatLog = config.getValue("enableChatLog", false);
+    mEnableChatLogCheckBox->setSelected(mEnableChatLog);
 }
 
 void Setup_Players::action(const gcn::ActionEvent &event)
@@ -403,6 +414,10 @@ void Setup_Players::action(const gcn::ActionEvent &event)
     else if (event.getId() == ACTION_SHOW_GENDER)
     {
         mShowGender = mShowGenderCheckBox->isSelected();
+    }
+    else if (event.getId() == ACTION_ENABLE_CHAT_LOG)
+    {
+        mEnableChatLog = mEnableChatLogCheckBox->isSelected();
     }
 }
 

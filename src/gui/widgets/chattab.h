@@ -111,6 +111,8 @@ class ChatTab : public Tab
                                    const std::string &args)
         { return false; }
 
+        virtual void saveToLogFile(std::string &msg);
+
     protected:
         friend class ChatWindow;
         friend class WhisperWindow;

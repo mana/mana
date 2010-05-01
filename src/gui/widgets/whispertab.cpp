@@ -21,6 +21,7 @@
 
 #include "whispertab.h"
 
+#include "chatlog.h"
 #include "commandhandler.h"
 #include "localplayer.h"
 
@@ -113,4 +114,10 @@ bool WhisperTab::handleCommand(const std::string &type,
         return false;
 
     return true;
+}
+
+void WhisperTab::saveToLogFile(std::string &msg)
+{
+    if (chatLogger)
+        chatLogger->log(getNick(), msg);
 }

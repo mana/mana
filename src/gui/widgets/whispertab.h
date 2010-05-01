@@ -39,6 +39,8 @@ class WhisperTab : public ChatTab
         bool handleCommand(const std::string &type,
                            const std::string &args);
 
+        void saveToLogFile(std::string &msg);
+
     protected:
         friend class ChatWindow;
 

@@ -56,6 +56,7 @@ static void printHelp()
         << _("  -u --skip-update    : Skip the update downloads") << endl
         << _("  -d --data           : Directory to load game data from") << endl
         << _("  -L --localdata-dir  : Directory to use as local data directory") << endl
+        << _("  -l --chat-log-dir   : Chat log dir to use") << endl
         << _("     --screenshot-dir : Directory to store screenshots") << endl
 #ifdef USE_OPENGL
         << _("     --no-opengl      : Disable OpenGL for this session") << endl
@@ -86,6 +87,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
         { "skip-update",    no_argument,       0, 'u' },
         { "username",       required_argument, 0, 'U' },
         { "no-opengl",      no_argument,       0, 'O' },
+        { "chat-log-dir",   required_argument, 0, 'l' },
         { "version",        no_argument,       0, 'v' },
         { "screenshot-dir", required_argument, 0, 'i' },
         { 0 }
@@ -144,6 +146,8 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
             case 'O':
                 options.noOpenGL = true;
                 break;
+            case 'l':
+                options.chatLogDir = std::string(optarg);
             case 'i':
                 options.screenshotDir = optarg;
                 break;

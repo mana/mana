@@ -142,6 +142,7 @@ public:
         std::string brandingPath;
         std::string updateHost;
         std::string dataPath;
+        std::string chatLogDir;
         std::string configDir;
         std::string localDataDir;
         std::string screenshotDir;
