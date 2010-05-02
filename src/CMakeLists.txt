@@ -41,6 +41,8 @@ ENDIF()
 IF (WIN32)
     SET(EXTRA_LIBRARIES ws2_32 winmm)
     FIND_PACKAGE(LibIntl REQUIRED)
+ELSEIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    FIND_PACKAGE(LibIntl REQUIRED)
 ELSEIF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
     # explicit linking to libintl is required on Solaris
     SET(EXTRA_LIBRARIES intl)
