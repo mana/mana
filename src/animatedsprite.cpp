@@ -41,10 +41,11 @@ AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
     mSprite(sprite),
     mAction(0),
     mAnimation(0),
-    mFrame(0),
-    mAlpha(1.0f)
+    mFrame(0)
 {
     assert(mSprite);
+
+    mAlpha = 1.0f;
 
     // Take possession of the sprite
     mSprite->incRef();
@@ -192,4 +193,9 @@ int AnimatedSprite::getHeight() const
         return mFrame->image ? mFrame->image->getHeight() : 0;
     else
         return 0;
+}
+
+Image* AnimatedSprite::getImage() const
+{
+    return mFrame ? mFrame->image : 0;
 }

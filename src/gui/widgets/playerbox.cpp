@@ -86,8 +86,8 @@ void PlayerBox::draw(gcn::Graphics *graphics)
     {
         // Draw character
         const int bs = getFrameSize();
-        const int x = getWidth() / 2 + bs;
-        const int y = getHeight() - bs;
+        const int x = getWidth() / 2 + bs - 16;
+        const int y = getHeight() - bs - 32;
         mPlayer->drawSpriteAt(static_cast<Graphics*>(graphics), x, y);
     }
 

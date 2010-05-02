@@ -38,7 +38,7 @@ class TextParticle : public Particle
         /**
          * Draws the particle image.
          */
-        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
+        virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         // hack to improve text visibility
         virtual int getPixelY() const

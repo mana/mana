@@ -303,6 +303,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      utils/xml.h \
 	      actor.cpp \
 	      actor.h \
+	      actorsprite.cpp \
+	      actorsprite.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
 	      animationparticle.cpp \
@@ -323,6 +325,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      channelmanager.h \
 	      commandhandler.cpp \
 	      commandhandler.h \
+	      compoundsprite.cpp \
+	      compoundsprite.h \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \
@@ -344,6 +348,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      guild.h \
 	      imageparticle.cpp \
 	      imageparticle.h \
+	      imagesprite.cpp \
+	      imagesprite.h \
 	      inventory.cpp \
 	      inventory.h \
 	      item.cpp \
@@ -392,6 +398,7 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      simpleanimation.h \
 	      sound.cpp \
 	      sound.h \
+	      sprite.h \
 	      statuseffect.cpp \
 	      statuseffect.h \
 	      text.cpp \

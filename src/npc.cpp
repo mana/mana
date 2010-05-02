@@ -38,7 +38,7 @@
 #include "resources/npcdb.h"
 
 NPC::NPC(int id, int subtype, Map *map):
-    Player(id, subtype, map, true)
+    Being(id, subtype, map)
 {
     setSubtype(subtype);
 
@@ -60,42 +60,12 @@ void NPC::setSubtype(Uint16 subtype)
 {
     Being::setSubtype(subtype);
 
-    NPCInfo info = NPCDB::get(subtype);
-
-    mSprites.clear();
-    // Setup NPC sprites
-    for (std::list<NPCsprite*>::const_iterator i = info.sprites.begin();
-         i != info.sprites.end();
-         i++)
-    {
-        std::string file = "graphics/sprites/" + (*i)->sprite;
-        int variant = (*i)->variant;
-        mSprites.push_back(AnimatedSprite::load(file, variant));
-        mSpriteIDs.push_back(0);
-        mSpriteColors.push_back("");
-    }
-
-    if (Particle::enabled)
-    {
-        //setup particle effects
-        for (std::list<std::string>::const_iterator i = info.particles.begin();
-             i != info.particles.end();
-             i++)
-        {
-            Particle *p = particleEngine->addEffect(*i, 0, 0);
-            this->controlParticle(p);
-        }
-    }
+    setupSpriteDisplay(NPCDB::get(subtype), false);
 }
 
 void NPC::talk()
 {
     Net::getNpcHandler()->talk(mId);
-}
-
-void NPC::setSprite(unsigned int slot, int id, const std::string &color)
-{
-    // Do nothing
 }
 
 bool NPC::isTalking()

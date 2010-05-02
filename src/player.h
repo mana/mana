@@ -47,7 +47,7 @@ class Player : public Being
         /**
          * Constructor.
          */
-        Player(int id, int subtype, Map *map, bool isNPC = false);
+        Player(int id, int subtype, Map *map);
 
         ~Player();
 

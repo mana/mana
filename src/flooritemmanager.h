@@ -41,6 +41,11 @@ class FloorItemManager
         FloorItem *findById(int id) const;
         FloorItem *findByCoordinates(int x, int y) const;
 
+        /**
+         * Performs floor item logic.
+         */
+        void logic();
+
     private:
         typedef std::list<FloorItem*> FloorItems;
         typedef FloorItems::iterator FloorItemIterator;

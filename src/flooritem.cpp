@@ -21,52 +21,34 @@
 
 #include "flooritem.h"
 
-#include "graphics.h"
-#include "item.h"
-#include "map.h"
+#include "net/net.h"
 
-#include "resources/image.h"
+#include "resources/itemdb.h"
+#include "resources/iteminfo.h"
 
 FloorItem::FloorItem(int id,
                      int itemId,
                      int x,
                      int y,
                      Map *map):
-    mId(id)
+    ActorSprite(id),
+    mItemId(itemId),
+    mX(x),
+    mY(y)
 {
     setMap(map);
-    mPos.x = x * map->getTileWidth();
-    mPos.y = y * map->getTileHeight();
-    // Create a corresponding item instance
-    mItem = new Item(itemId);
+
+    // TODO: Eventually, we probably should fix all sprite offsets so that
+    //       these translations aren't necessary anymore. The sprites know
+    //       best where their base point should be.
+    mPos.x = x * map->getTileWidth() + 16;
+    mPos.y = y * map->getTileHeight() +
+             ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
+
+    setupSpriteDisplay(ItemDB::get(itemId).getDisplay());
 }
 
-FloorItem::~FloorItem()
+const ItemInfo &FloorItem::getInfo() const
 {
-    delete mItem;
-}
-
-int FloorItem::getItemId() const
-{
-    return mItem->getId();
-}
-
-Item *FloorItem::getItem() const
-{
-    return mItem;
-}
-
-void FloorItem::draw(Graphics *graphics, int offsetX, int offsetY) const
-{
-    if (mItem)
-    {
-        Image *image = mItem->getDrawImage();
-
-        if (image)
-            if (mAlpha != image->getAlpha())
-                image->setAlpha(mAlpha);
-
-        graphics->drawImage(image, getPixelX() + offsetX,
-                            getPixelY() + offsetY);
-    }
+    return ItemDB::get(mId);
 }

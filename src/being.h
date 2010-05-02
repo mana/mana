@@ -22,6 +22,7 @@
 #ifndef BEING_H
 #define BEING_H
 
+#include "actorsprite.h"
 #include "configlistener.h"
 #include "map.h"
 #include "particlecontainer.h"
@@ -44,31 +45,17 @@
 #define SPEECH_TIME 500
 #define SPEECH_MAX_TIME 1000
 
-class AnimatedSprite;
 class FlashText;
-class Graphics;
-class Image;
 class ItemInfo;
 class Item;
 class Particle;
 class Position;
-class SimpleAnimation;
 class SpeechBubble;
 class Text;
 
-class StatusEffect;
-
-class Being : public Actor, public ConfigListener
+class Being : public ActorSprite, public ConfigListener
 {
     public:
-        enum Type
-        {
-            UNKNOWN,
-            PLAYER,
-            NPC,
-            MONSTER
-        };
-
         /**
          * Action the being is currently performing
          * WARNING: Has to be in sync with the same enum in the Being class
@@ -82,14 +69,6 @@ class Being : public Actor, public ConfigListener
             SIT,
             DEAD,
             HURT
-        };
-
-        enum TargetCursorSize
-        {
-            TC_SMALL = 0,
-            TC_MEDIUM,
-            TC_LARGE,
-            NUM_TC
         };
 
         enum Speech
@@ -275,11 +254,6 @@ class Being : public Actor, public ConfigListener
          */
         void drawEmotion(Graphics *graphics, int offsetX, int offsetY);
 
-        /**
-         * Returns the type of the being.
-         */
-        virtual Type getType() const { return UNKNOWN; }
-
          /**
           * Return Being's current Job (player job, npc, monster, creature )
           */
@@ -315,18 +289,6 @@ class Being : public Actor, public ConfigListener
          * @todo In what unit?
          */
         int getAttackSpeed() const { return mAttackSpeed; }
-
-        /**
-         * Sets the sprite id.
-         */
-        void setId(int id) { mId = id; }
-
-        int getId() const { return mId; }
-
-        /**
-         * Sets the map the being is on
-         */
-        void setMap(Map *map);
 
         /**
          * Sets the current action.
@@ -369,21 +331,6 @@ class Being : public Actor, public ConfigListener
         SpriteDirection getSpriteDirection() const
         { return SpriteDirection(mSpriteDirection); }
 
-        /**
-         * Draws this being to the given graphics context.
-         *
-         * @see Actor::draw(Graphics, int, int)
-         *
-         * TODO: The following two functions should be combined.
-         * at some point draw(), was changed to use mPx and mPy, with arugements
-         * only for the offset, drawSpriteAt() takes x, and y and draws the sprite
-         * exactly at those coords (though it does do some computing to work how the
-         * old draw() worked).
-         */
-        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
-
-        virtual void drawSpriteAt(Graphics *graphics, int x, int y) const;
-
         void setPosition(const Vector &pos);
 
         /**
@@ -412,17 +359,6 @@ class Being : public Actor, public ConfigListener
         virtual int getCollisionRadius() const;
 
         /**
-         * Returns the required size of a target cursor for this being.
-         */
-        virtual Being::TargetCursorSize getTargetCursorSize() const
-        { return TC_MEDIUM; }
-
-        /**
-         * Take control of a particle.
-         */
-        void controlParticle(Particle *particle);
-
-        /**
          * Shoots a missile particle from this being, to target being
          */
         void fireMissile(Being *target, const std::string &particle);
@@ -438,16 +374,6 @@ class Being : public Actor, public ConfigListener
          * when this being isn't following any path currently.
          */
         const Path &getPath() const { return mPath; }
-
-        /**
-         * Sets the target animation for this being.
-         */
-        void setTargetAnimation(SimpleAnimation *animation);
-
-        /**
-         * Untargets the being
-         */
-        void untarget() { mUsedTargetCursor = NULL; }
 
 
         /**
@@ -465,42 +391,6 @@ class Being : public Actor, public ConfigListener
          * the being.
          */
         Uint8 getEmotion() const { return mEmotion; }
-
-        /**
-         * Sets the being's stun mode.  If zero, the being is `normal',
-         * otherwise it is `stunned' in some fashion.
-         */
-        void setStunMode(int stunMode)
-        {
-            if (mStunMode != stunMode)
-                updateStunMode(mStunMode, stunMode);
-            mStunMode = stunMode;
-        };
-
-        void setStatusEffect(int index, bool active);
-
-        /**
-         * A status effect block is a 16 bit mask of status effects.
-         * We assign each such flag a block ID of offset + bitnr.
-         *
-         * These are NOT the same as the status effect indices.
-         */
-        void setStatusEffectBlock(int offset, Uint16 flags);
-
-        /**
-         * Triggers a visual effect, such as `level up'
-         *
-         * Only draws the visual effect, does not play sound effects
-         *
-         * \param effectId ID of the effect to trigger
-         */
-        virtual void triggerEffect(int effectId)
-        {
-            internalTriggerEffect(effectId, false, true);
-        }
-
-        virtual AnimatedSprite *getSprite(int index) const
-        { return mSprites[index]; }
 
         static void load();
 
@@ -524,41 +414,6 @@ class Being : public Actor, public ConfigListener
          */
         virtual void updateCoords();
 
-        /**
-         * Gets the way the object blocks pathfinding for other objects
-         */
-        virtual Map::BlockType getBlockType() const
-        { return Map::BLOCKTYPE_NONE; }
-
-        /**
-         * Trigger visual effect, with components
-         *
-         * \param effectId ID of the effect to trigger
-         * \param sfx Whether to trigger sound effects
-         * \param gfx Whether to trigger graphical effects
-         */
-        void internalTriggerEffect(int effectId, bool sfx, bool gfx);
-
-        /**
-         * Notify self that the stun mode has been updated. Invoked by
-         * setStunMode if something changed.
-         */
-        virtual void updateStunMode(int oldMode, int newMode);
-
-        /**
-         * Notify self that a status effect has flipped.
-         * The new flag is passed.
-         */
-        virtual void updateStatusEffect(int index, bool newStatus);
-
-        /**
-         * Handle an update to a status or stun effect
-         *
-         * \param The StatusEffect to effect
-         * \param effectId -1 for stun, otherwise the effect index
-         */
-        virtual void handleStatusEffect(StatusEffect *effect, int effectId);
-
         virtual void showName();
 
         /** The current sprite Frame number to be displayed */
@@ -578,7 +433,6 @@ class Being : public Actor, public ConfigListener
         Action mAction;       /**< Action the being is performing */
         Uint16 mSubType;      /**< Subtype (graphical view, basically) */
 
-        int mId;                        /**< Unique sprite id */
         Uint8 mDirection;               /**< Facing direction */
         Uint8 mSpriteDirection;         /**< Facing direction */
         std::string mName;              /**< Name of character */
@@ -600,17 +454,6 @@ class Being : public Actor, public ConfigListener
         std::string mSpeech;
         Text *mText;
         const gcn::Color *mTextColor;
-        Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
-        std::set<int> mStatusEffects;   /**< set of active status effects */
-
-        typedef std::vector<AnimatedSprite*> Sprites;
-        typedef Sprites::iterator SpriteIterator;
-        typedef Sprites::const_iterator SpriteConstIterator;
-        Sprites mSprites;
-
-        ParticleList mStunParticleEffects;
-        ParticleVector mStatusParticleEffects;
-        ParticleList mChildParticleEffects;
 
         Vector mDest;  /**< destination coordinates. */
 
@@ -622,9 +465,6 @@ class Being : public Actor, public ConfigListener
          * TODO: Used by eAthena only?
          */
         int getOffset(char pos, char neg) const;
-
-        /** Reset particle status effects on next redraw? */
-        bool mMustResetParticles;
 
         /** Speech Bubble components */
         SpeechBubble *mSpeechBubble;
@@ -640,9 +480,6 @@ class Being : public Actor, public ConfigListener
         int mX, mY;   /**< Position in tile */
 
         int mDamageTaken;
-
-        /** Target cursor being used */
-        SimpleAnimation *mUsedTargetCursor;
 };
 
 #endif

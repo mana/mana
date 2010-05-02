@@ -46,7 +46,7 @@ public:
      * would support setting a translation offset. It already does this
      * partly with the clipping rectangle support.
      */
-    virtual void draw(Graphics *graphics, int offsetX, int offsetY) const = 0;
+    virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const = 0;
 
     /**
      * Returns the horizontal size of the actors graphical representation
@@ -105,14 +105,12 @@ public:
     /**
      * Returns the current alpha value used to draw the actor.
      */
-    virtual float getAlpha() const
-    { return mAlpha; }
+    virtual float getAlpha() const = 0;
 
     /**
      * Sets the alpha value used to draw the actor.
      */
-    virtual void setAlpha(float alpha)
-    { mAlpha = alpha; }
+    virtual void setAlpha(float alpha) = 0;
 
     void setMap(Map *map);
 
@@ -122,7 +120,6 @@ public:
 protected:
     Map *mMap;
     Vector mPos;                /**< Position in pixels relative to map. */
-    float mAlpha;
 
 private:
     Actors::iterator mMapActor;

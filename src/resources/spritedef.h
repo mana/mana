@@ -26,11 +26,27 @@
 
 #include <libxml/tree.h>
 
+#include <list>
 #include <map>
 #include <string>
 
 class Action;
 class ImageSet;
+
+struct SpriteReference
+{
+    std::string sprite;
+    int variant;
+};
+
+struct SpriteDisplay
+{
+    std::string image;
+    std::list<SpriteReference*> sprites;
+    std::list<std::string> particles;
+};
+
+typedef std::list<SpriteReference*>::const_iterator SpriteRefs;
 
 enum SpriteAction
 {

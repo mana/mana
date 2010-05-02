@@ -79,8 +79,7 @@ void Monster::setAction(Action action, int attackType)
         case ATTACK:
             mAttackType = attackType;
             currentAction = getInfo().getAttackAction(attackType);
-            for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
-                (*it)->reset();
+            reset();
 
             //attack particle effect
             particleEffect = getInfo().getAttackParticleEffect(attackType);
@@ -112,9 +111,7 @@ void Monster::setAction(Action action, int attackType)
 
     if (currentAction != ACTION_INVALID)
     {
-        for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
-            if (*it)
-                (*it)->play(currentAction);
+        play(currentAction);
         mAction = action;
     }
 }
@@ -125,32 +122,7 @@ void Monster::setSubtype(Uint16 subtype)
 
     const MonsterInfo &info = getInfo();
 
-    // Setup Monster sprites
-    const std::list<std::string> &sprites = info.getSprites();
-
-    mSprites.clear();
-    for (std::list<std::string>::const_iterator i = sprites.begin();
-         i != sprites.end(); i++)
-    {
-        std::string file = "graphics/sprites/" + *i;
-        mSprites.push_back(AnimatedSprite::load(file));
-    }
-
-    // Ensure that something is shown
-    if (mSprites.size() == 0)
-    {
-        mSprites.push_back(AnimatedSprite::load("graphics/sprites/error.xml"));
-    }
-
-    if (Particle::enabled)
-    {
-        const std::list<std::string> &particleEffects = info.getParticleEffects();
-        for (std::list<std::string>::const_iterator i = particleEffects.begin();
-             i != particleEffects.end(); i++)
-        {
-            controlParticle(particleEngine->addEffect((*i), 0, 0));
-        }
-    }
+    setupSpriteDisplay(info.getDisplay());
 }
 
 void Monster::handleAttack(Being *victim, int damage, AttackType type)

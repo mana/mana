@@ -182,11 +182,11 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 {
     mFloorItem = floorItem;
-    mItem = floorItem->getItem();
+    ItemInfo info = floorItem->getInfo();
     mBrowserBox->clearRows();
 
     // Floor item can be picked up (single option, candidate for removal)
-    std::string name = ItemDB::get(mFloorItem->getItemId()).getName();
+    std::string name = info.getName();
     mBrowserBox->addRow(strprintf("@@pickup|%s@@", strprintf(_("Pick up %s"),
                                                     name.c_str()).c_str()));
     mBrowserBox->addRow(strprintf("@@chat|%s@@", _("Add to chat")));
@@ -283,7 +283,10 @@ void PopupMenu::handleLink(const std::string &link)
 
     else if (link == "chat")
     {
-        chatWindow->addItemText(mItem->getInfo().getName());
+        if (mItem)
+            chatWindow->addItemText(mItem->getInfo().getName());
+        else if (mFloorItem)
+            chatWindow->addItemText(mFloorItem->getInfo().getName());
     }
 
     else if (link == "split")

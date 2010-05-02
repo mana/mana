@@ -28,7 +28,7 @@
 namespace
 {
     NPCInfos mNPCInfos;
-    NPCInfo mUnknown;
+    SpriteDisplay mUnknown;
     bool mLoaded = false;
 }
 
@@ -37,10 +37,12 @@ void NPCDB::load()
     if (mLoaded)
         return;
 
-    NPCsprite *unknownSprite = new NPCsprite;
-    unknownSprite->sprite = "error.xml";
-    unknownSprite->variant = 0;
-    mUnknown.sprites.push_back(unknownSprite);
+    {
+        SpriteReference *unknownSprite = new SpriteReference;
+        unknownSprite->sprite = "error.xml";
+        unknownSprite->variant = 0;
+        mUnknown.sprites.push_back(unknownSprite);
+    }
 
     logger->log("Initializing NPC database...");
 
@@ -65,13 +67,13 @@ void NPCDB::load()
             continue;
         }
 
-        NPCInfo *currentInfo = new NPCInfo;
+        SpriteDisplay *currentInfo = new SpriteDisplay;
 
         for_each_xml_child_node(spriteNode, npcNode)
         {
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {
-                NPCsprite *currentSprite = new NPCsprite;
+                SpriteReference *currentSprite = new SpriteReference;
                 currentSprite->sprite = (const char*)spriteNode->xmlChildrenNode->content;
                 currentSprite->variant = XML::getProperty(spriteNode, "variant", 0);
                 currentInfo->sprites.push_back(currentSprite);
@@ -113,7 +115,7 @@ void NPCDB::unload()
     mLoaded = false;
 }
 
-const NPCInfo& NPCDB::get(int id)
+const SpriteDisplay& NPCDB::get(int id)
 {
     NPCInfosIterator i = mNPCInfos.find(id);
 

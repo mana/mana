@@ -91,8 +91,3 @@ void MonsterInfo::addMonsterAttack(int id,
     a->action = action;
     mMonsterAttacks[id] = a;
 }
-
-void MonsterInfo::addParticleEffect(const std::string &filename)
-{
-    mParticleEffects.push_back(filename);
-}

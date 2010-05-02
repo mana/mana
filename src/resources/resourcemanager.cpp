@@ -164,6 +164,8 @@ void ResourceManager::searchAndAddArchives(const std::string &path,
     const char *dirSep = PHYSFS_getDirSeparator();
     char **list = PHYSFS_enumerateFiles(path.c_str());
 
+    printf("Path: %s -> %s\n", path.c_str(), PHYSFS_getRealDir(path.c_str()));
+
     for (char **i = list; *i; i++)
     {
         size_t len = strlen(*i);

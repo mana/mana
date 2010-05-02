@@ -36,10 +36,10 @@ TextParticle::TextParticle(Map *map, const std::string &text,
 {
 }
 
-void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
+bool TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     if (!mAlive)
-        return;
+        return false;
 
     int screenX = (int) mPos.x + offsetX;
     int screenY = (int) mPos.y - (int) mPos.z + offsetY;
@@ -58,4 +58,6 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     TextRenderer::renderText(graphics, mText,
             screenX, screenY, gcn::Graphics::CENTER,
             color, mTextFont, mOutline, false);
+
+    return true;
 }

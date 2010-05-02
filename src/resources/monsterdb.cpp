@@ -45,7 +45,16 @@ void MonsterDB::load()
     if (mLoaded)
         return;
 
-    mUnknown.addSprite("error.xml");
+    {
+        SpriteReference *unknownSprite = new SpriteReference;
+        unknownSprite->sprite = "error.xml";
+        unknownSprite->variant = 0;
+
+        SpriteDisplay display;
+        display.sprites.push_front(unknownSprite);
+
+        mUnknown.setDisplay(display);
+    }
 
     logger->log("Initializing monster database...");
 
@@ -94,13 +103,17 @@ void MonsterDB::load()
             currentInfo->setTargetCursorSize(Being::TC_MEDIUM);
         }
 
+        SpriteDisplay display;
+
         //iterate <sprite>s and <sound>s
         for_each_xml_child_node(spriteNode, monsterNode)
         {
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {
-                currentInfo->addSprite(
-                        (const char*) spriteNode->xmlChildrenNode->content);
+                SpriteReference *currentSprite = new SpriteReference;
+                currentSprite->sprite = (const char*)spriteNode->xmlChildrenNode->content;
+                currentSprite->variant = XML::getProperty(spriteNode, "variant", 0);
+                display.sprites.push_back(currentSprite);
             }
             else if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
             {
@@ -145,10 +158,12 @@ void MonsterDB::load()
             }
             else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
             {
-                currentInfo->addParticleEffect(
+                display.particles.push_back(
                     (const char*) spriteNode->xmlChildrenNode->content);
             }
         }
+        currentInfo->setDisplay(display);
+
         mMonsterInfos[XML::getProperty(monsterNode, "id", 0) + offset] = currentInfo;
     }
 

@@ -22,19 +22,18 @@
 #ifndef ANIMATEDSPRITE_H
 #define ANIMATEDSPRITE_H
 
-#include "resources/spritedef.h"
+#include "sprite.h"
 
 #include <map>
 #include <string>
 
 class Animation;
-class Graphics;
 struct Frame;
 
 /**
  * Animates a sprite by adding playback state.
  */
-class AnimatedSprite
+class AnimatedSprite : public Sprite
 {
     public:
         /**
@@ -53,59 +52,26 @@ class AnimatedSprite
         static AnimatedSprite *load(const std::string &filename,
                                     int variant = 0);
 
-        /**
-         * Destructor.
-         */
         virtual ~AnimatedSprite();
 
-        /**
-         * Resets the animated sprite.
-         */
         void reset();
 
-        /**
-         * Plays an action using the current direction
-         */
         void play(SpriteAction action);
 
-        /**
-         * Inform the animation of the passed time so that it can output the
-         * correct animation frame.
-         */
         void update(int time);
 
-        /**
-         * Draw the current animation frame at the coordinates given in screen
-         * pixels.
-         */
         bool draw(Graphics* graphics, int posX, int posY) const;
 
-        /**
-         * gets the width in pixels of the image of the current frame
-         */
         int getWidth() const;
 
-        /**
-         * gets the height in pixels of the image of the current frame
-         */
         int getHeight() const;
 
-        /**
-         * Sets the direction.
-         */
+        Image* getImage() const;
+
         void setDirection(SpriteDirection direction);
 
-        /**
-         * Sets the alpha value of the animated sprite
-         */
-        void setAlpha(float alpha)
-        { mAlpha = alpha; }
-
-        /**
-         * Returns the current alpha opacity of the animated sprite.
-         */
-        virtual float getAlpha() const
-        { return mAlpha; }
+        int getNumberOfLayers()
+        { return 1; }
 
     private:
         bool updateCurrentAnimation(unsigned int dt);
@@ -120,7 +86,6 @@ class AnimatedSprite
         Action *mAction;               /**< The currently active action. */
         Animation *mAnimation;         /**< The currently active animation. */
         Frame *mFrame;                 /**< The currently active frame. */
-        float mAlpha;                  /**< The alpha opacity used to draw */
 };
 
 #endif

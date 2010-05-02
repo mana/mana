@@ -18,41 +18,46 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "actor.h"
+#ifndef IMAGESPRITE_H
+#define IMAGESPRITE_H
 
-#include "map.h"
+#include "sprite.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
-Actor::Actor():
-        mMap(NULL)
-{}
+class Graphics;
 
-Actor::~Actor()
+class ImageSprite : public Sprite
 {
-    setMap(NULL);
-}
+public:
+    ImageSprite(Image *image);
 
-void Actor::setMap(Map *map)
-{
-    // Remove Actor from potential previous map
-    if (mMap)
-        mMap->removeActor(mMapActor);
+    ~ImageSprite();
 
-    mMap = map;
+    virtual void reset() {}
 
-    // Add Actor to potential new map
-    if (mMap)
-        mMapActor = mMap->addActor(this);
-}
+    virtual void play(SpriteAction action) {}
 
-int Actor::getTileX() const
-{
-    return getPixelX() / mMap->getTileWidth();
-}
+    virtual void update(int time) {}
 
-int Actor::getTileY() const
-{
-    return getPixelY() / mMap->getTileHeight();
-}
+    virtual bool draw(Graphics* graphics, int posX, int posY) const;
+
+    virtual int getWidth() const
+    { return mImage->getWidth(); }
+
+    virtual int getHeight() const
+    { return mImage->getHeight(); }
+
+    virtual Image* getImage() const
+    { return mImage; }
+
+    virtual void setDirection(SpriteDirection direction) {}
+
+    int getNumberOfLayers()
+    { return 1; }
+
+private:
+    Image *mImage;
+};
+
+#endif // IMAGESPRITE_H

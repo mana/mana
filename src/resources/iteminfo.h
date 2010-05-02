@@ -143,11 +143,11 @@ class ItemInfo
 
         std::string getParticleEffect() const { return mParticle; }
 
-        void setImageName(const std::string &imageName)
-        { mImageName = imageName; }
+        void setDisplay(SpriteDisplay display)
+        { mDisplay = display; }
 
-        const std::string &getImageName() const
-        { return mImageName; }
+        const SpriteDisplay &getDisplay() const
+        { return mDisplay; }
 
         void setDescription(const std::string &description)
         { mDescription = description; }
@@ -201,7 +201,7 @@ class ItemInfo
         const std::string &getSound(EquipmentSoundEvent event) const;
 
     protected:
-        std::string mImageName;      /**< The filename of the icon image. */
+        SpriteDisplay mDisplay;        /**< Display info (like icon) */
         std::string mName;
         std::string mDescription;    /**< Short description. */
         std::string mEffect;         /**< Description of effects. */

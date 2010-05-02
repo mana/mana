@@ -32,6 +32,7 @@
 #include "particle.h"
 #include "simpleanimation.h"
 #include "sound.h"
+#include "sprite.h"
 #include "text.h"
 #include "statuseffect.h"
 
@@ -47,17 +48,16 @@
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
+#include "net/net.h"
+#include "net/playerhandler.h"
 
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
-#include "net/net.h"
-#include "net/playerhandler.h"
 
 #include <cassert>
 #include <cmath>
 
-#define BEING_EFFECTS_FILE "effects.xml"
 #define HAIR_FILE "hair.xml"
 
 static const int DEFAULT_BEING_WIDTH = 32;
@@ -68,6 +68,7 @@ int Being::mNumberOfHairstyles = 1;
 
 // TODO: mWalkTime used by eAthena only
 Being::Being(int id, int subtype, Map *map):
+    ActorSprite(id),
     mFrame(0),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
@@ -75,20 +76,14 @@ Being::Being(int id, int subtype, Map *map):
     mAttackSpeed(350),
     mAction(STAND),
     mSubType(subtype),
-    mId(id),
     mDirection(DOWN),
     mSpriteDirection(DIRECTION_DOWN),
     mDispName(0),
     mShowName(false),
     mEquippedWeapon(NULL),
     mText(0),
-    mStunMode(0),
-    mStatusParticleEffects(&mStunParticleEffects, false),
-    mChildParticleEffects(&mStatusParticleEffects, false),
-    mMustResetParticles(false),
     mX(0), mY(0),
-    mDamageTaken(0),
-    mUsedTargetCursor(NULL)
+    mDamageTaken(0)
 {
     setMap(map);
 
@@ -101,12 +96,6 @@ Being::Being(int id, int subtype, Map *map):
 
 Being::~Being()
 {
-    mUsedTargetCursor = NULL;
-    delete_all(mSprites);
-
-    if (player_node && player_node->getTarget() == this)
-        player_node->setTarget(NULL);
-
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
@@ -356,20 +345,6 @@ void Being::setGuildPos(const std::string &pos)
     logger->log("Got guild position \"%s\" for being %s(%i)", pos.c_str(), mName.c_str(), mId);
 }
 
-void Being::setMap(Map *map)
-{
-    Actor::setMap(map);
-
-    // Clear particle effect list because child particles became invalid
-    mChildParticleEffects.clear();
-    mMustResetParticles = true; // Reset status particles on next redraw
-}
-
-void Being::controlParticle(Particle *particle)
-{
-    mChildParticleEffects.addLocally(particle);
-}
-
 void Being::fireMissile(Being *victim, const std::string &particle)
 {
     if (!victim || particle.empty())
@@ -408,9 +383,7 @@ void Being::setAction(Action action, int attackType)
             else
                 currentAction = ACTION_ATTACK;
 
-            for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
-                if (*it)
-                    (*it)->reset();
+            reset();
             break;
         case HURT:
             //currentAction = ACTION_HURT;  // Buggy: makes the player stop
@@ -427,9 +400,7 @@ void Being::setAction(Action action, int attackType)
 
     if (currentAction != ACTION_INVALID)
     {
-        for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
-            if (*it)
-                (*it)->play(currentAction);
+        play(currentAction);
         mAction = action;
     }
 }
@@ -457,9 +428,7 @@ void Being::setDirection(Uint8 direction)
         dir = DIRECTION_LEFT;
     mSpriteDirection = dir;
 
-    for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
-        if (*it)
-           (*it)->setDirection(dir);
+    CompoundSprite::setDirection(dir);
 }
 
 /** TODO: Used by eAthena only */
@@ -607,69 +576,7 @@ void Being::logic()
             mEmotion = 0;
     }
 
-    // Update sprite animations
-    if (mUsedTargetCursor)
-        mUsedTargetCursor->update(tick_time * MILLISECONDS_IN_A_TICK);
-
-    for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
-        if (*it)
-            (*it)->update(tick_time * MILLISECONDS_IN_A_TICK);
-
-    // Restart status/particle effects, if needed
-    if (mMustResetParticles)
-    {
-        mMustResetParticles = false;
-        for (std::set<int>::iterator it = mStatusEffects.begin();
-             it != mStatusEffects.end(); it++)
-        {
-            const StatusEffect *effect = StatusEffect::getStatusEffect(*it, true);
-            if (effect && effect->particleEffectIsPersistent())
-                updateStatusEffect(*it, true);
-        }
-    }
-
-    // Update particle effects
-    mChildParticleEffects.moveTo(mPos.x, mPos.y);
-}
-
-void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
-{
-    // TODO: Eventually, we probably should fix all sprite offsets so that
-    //       these translations aren't necessary anymore. The sprites know
-    //       best where their base point should be.
-    const int px = getPixelX() + offsetX - 16;
-    // Temporary fix to the Y offset.
-    const int py = getPixelY() + offsetY -
-        ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
-
-    if (mUsedTargetCursor)
-        mUsedTargetCursor->draw(graphics, px, py);
-
-    for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
-    {
-        if (*it)
-        {
-            if ((*it)->getAlpha() != mAlpha)
-                (*it)->setAlpha(mAlpha);
-            (*it)->draw(graphics, px, py);
-        }
-    }
-}
-
-void Being::drawSpriteAt(Graphics *graphics, int x, int y) const
-{
-    const int px = x - 16;
-    const int py = y - 32;
-
-    for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
-    {
-        if (*it)
-        {
-            if ((*it)->getAlpha() != mAlpha)
-                (*it)->setAlpha(mAlpha);
-            (*it)->draw(graphics, px, py);
-        }
-    }
+    ActorSprite::logic();
 }
 
 void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
@@ -739,67 +646,6 @@ void Being::drawSpeech(int offsetX, int offsetY)
     }
 }
 
-void Being::setStatusEffectBlock(int offset, Uint16 newEffects)
-{
-    for (int i = 0; i < STATUS_EFFECTS; i++)
-    {
-        int index = StatusEffect::blockEffectIndexToEffectIndex(offset + i);
-
-        if (index != -1)
-            setStatusEffect(index, (newEffects & (1 << i)) > 0);
-    }
-}
-
-void Being::handleStatusEffect(StatusEffect *effect, int effectId)
-{
-    if (!effect)
-        return;
-
-    // TODO: Find out how this is meant to be used
-    // (SpriteAction != Being::Action)
-    //SpriteAction action = effect->getAction();
-    //if (action != ACTION_INVALID)
-    //    setAction(action);
-
-    Particle *particle = effect->getParticle();
-
-    if (effectId >= 0)
-    {
-        mStatusParticleEffects.setLocally(effectId, particle);
-    }
-    else
-    {
-        mStunParticleEffects.clearLocally();
-        if (particle)
-            mStunParticleEffects.addLocally(particle);
-    }
-}
-
-void Being::updateStunMode(int oldMode, int newMode)
-{
-    handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
-    handleStatusEffect(StatusEffect::getStatusEffect(newMode, true), -1);
-}
-
-void Being::updateStatusEffect(int index, bool newStatus)
-{
-    handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);
-}
-
-void Being::setStatusEffect(int index, bool active)
-{
-    const bool wasActive = mStatusEffects.find(index) != mStatusEffects.end();
-
-    if (active != wasActive)
-    {
-        updateStatusEffect(index, active);
-        if (active)
-            mStatusEffects.insert(index);
-        else
-            mStatusEffects.erase(index);
-    }
-}
-
 /** TODO: eAthena only */
 int Being::getOffset(char pos, char neg) const
 {
@@ -832,125 +678,12 @@ int Being::getOffset(char pos, char neg) const
 
 int Being::getWidth() const
 {
-    AnimatedSprite *base = NULL;
-
-    for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
-        if ((base = (*it)))
-            break;
-
-    if (base)
-        return std::max(base->getWidth(), DEFAULT_BEING_WIDTH);
-
-    return DEFAULT_BEING_WIDTH;
+    return std::max(CompoundSprite::getWidth(), DEFAULT_BEING_WIDTH);
 }
 
 int Being::getHeight() const
 {
-    AnimatedSprite *base = NULL;
-
-    for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
-        if ((base = (*it)))
-            break;
-
-    if (base)
-        return std::max(base->getHeight(), DEFAULT_BEING_HEIGHT);
-
-    return DEFAULT_BEING_HEIGHT;
-}
-
-void Being::setTargetAnimation(SimpleAnimation *animation)
-{
-    mUsedTargetCursor = animation;
-    mUsedTargetCursor->reset();
-}
-
-struct EffectDescription {
-    std::string mGFXEffect;
-    std::string mSFXEffect;
-};
-
-static EffectDescription *default_effect = NULL;
-static std::map<int, EffectDescription *> effects;
-static bool effects_initialized = false;
-
-static EffectDescription *getEffectDescription(xmlNodePtr node, int *id)
-{
-    EffectDescription *ed = new EffectDescription;
-
-    *id = atoi(XML::getProperty(node, "id", "-1").c_str());
-    ed->mSFXEffect = XML::getProperty(node, "audio", "");
-    ed->mGFXEffect = XML::getProperty(node, "particle", "");
-
-    return ed;
-}
-
-static EffectDescription *getEffectDescription(int effectId)
-{
-    if (!effects_initialized)
-    {
-        XML::Document doc(BEING_EFFECTS_FILE);
-        xmlNodePtr root = doc.rootNode();
-
-        if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
-        {
-            logger->log("Error loading being effects file: "
-                    BEING_EFFECTS_FILE);
-            return NULL;
-        }
-
-        for_each_xml_child_node(node, root)
-        {
-            int id;
-
-            if (xmlStrEqual(node->name, BAD_CAST "effect"))
-            {
-                EffectDescription *EffectDescription =
-                    getEffectDescription(node, &id);
-                effects[id] = EffectDescription;
-            }
-            else if (xmlStrEqual(node->name, BAD_CAST "default"))
-            {
-                EffectDescription *effectDescription =
-                    getEffectDescription(node, &id);
-
-                if (default_effect)
-                    delete default_effect;
-
-                default_effect = effectDescription;
-            }
-        }
-
-        effects_initialized = true;
-    } // done initializing
-
-    EffectDescription *ed = effects[effectId];
-
-    return ed ? ed : default_effect;
-}
-
-void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
-{
-    logger->log("Special effect #%d on %s", effectId,
-                getId() == player_node->getId() ? "self" : "other");
-
-    EffectDescription *ed = getEffectDescription(effectId);
-
-    if (!ed)
-    {
-        logger->log("Unknown special effect and no default recorded");
-        return;
-    }
-
-    if (gfx && !ed->mGFXEffect.empty())
-    {
-        Particle *selfFX;
-
-        selfFX = particleEngine->addEffect(ed->mGFXEffect, 0, 0);
-        controlParticle(selfFX);
-    }
-
-    if (sfx && !ed->mSFXEffect.empty())
-        sound.playSfx(ed->mSFXEffect);
+    return std::max(CompoundSprite::getHeight(), DEFAULT_BEING_HEIGHT);
 }
 
 void Being::updateCoords()
@@ -1001,7 +734,7 @@ void Being::showName()
 
 int Being::getNumberOfLayers() const
 {
-    return mSprites.size();
+    return size();
 }
 
 void Being::load()

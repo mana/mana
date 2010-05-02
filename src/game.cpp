@@ -335,6 +335,7 @@ void Game::logic()
 
     // Handle all necessary game logic
     beingManager->logic();
+    floorItemManager->logic();
     particleEngine->update();
     if (mCurrentMap)
         mCurrentMap->update();

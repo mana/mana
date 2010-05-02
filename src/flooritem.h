@@ -22,16 +22,14 @@
 #ifndef FLOORITEM_H
 #define FLOORITEM_H
 
-#include "map.h"
+#include "actorsprite.h"
 
-class Graphics;
-class Image;
-class Item;
+class ItemInfo;
 
 /**
  * An item lying on the floor.
  */
-class FloorItem : public Actor
+class FloorItem : public ActorSprite
 {
     public:
         /**
@@ -49,39 +47,29 @@ class FloorItem : public Actor
                   int y,
                   Map *map);
 
-        ~FloorItem();
-
-        /**
-         * Returns instance ID of this item.
-         */
-        int getId() const
-        { return mId; }
+        Type getType() const { return FLOOR_ITEM; }
 
         /**
          * Returns the item ID.
          */
-        int getItemId() const;
+        int getItemId() const
+        { return mItemId; }
 
         /**
-         * Returns the item object. Useful for adding an item link for the
-         * floor item to chat.
+         * Returns the item info for this floor item. Useful for adding an item
+         * link for the floor item to chat.
          */
-        Item *getItem() const;
+        const ItemInfo &getInfo() const;
 
-        /**
-         * Draws this floor item to the given graphics context.
-         *
-         * @see Actor::draw(Graphics, int, int)
-         */
-        void draw(Graphics *graphics, int offsetX, int offsetY) const;
+        virtual int getTileX() const
+        { return mX; }
 
-        /** We consider flooritems (at least for now) to be one layer-sprites */
-        virtual int getNumberOfLayers() const
-        { return 1; }
+        virtual int getTileY() const
+        { return mY; }
 
     private:
-        int mId;
-        Item *mItem;
+        int mItemId;
+        int mX, mY;
 };
 
 #endif

@@ -40,6 +40,8 @@
 ./po/CMakeLists.txt
 ./src/actor.cpp
 ./src/actor.h
+./src/actorsprite.cpp
+./src/actorsprite.h
 ./src/animatedsprite.cpp
 ./src/animatedsprite.h
 ./src/animationparticle.cpp
@@ -61,6 +63,8 @@
 ./src/CMakeLists.txt
 ./src/commandhandler.cpp
 ./src/commandhandler.h
+./src/compoundsprite.cpp
+./src/compoundsprite.h
 ./src/configlistener.h
 ./src/configuration.cpp
 ./src/configuration.h
@@ -287,6 +291,8 @@
 ./src/gui/worldselectdialog.h
 ./src/imageparticle.cpp
 ./src/imageparticle.h
+./src/imagesprite.cpp
+./src/imagesprite.h
 ./src/inventory.cpp
 ./src/inventory.h
 ./src/item.cpp
@@ -502,6 +508,7 @@
 ./src/simpleanimation.h
 ./src/sound.cpp
 ./src/sound.h
+./src/sprite.h
 ./src/statuseffect.cpp
 ./src/statuseffect.h
 ./src/text.cpp

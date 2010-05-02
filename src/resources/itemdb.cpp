@@ -46,6 +46,7 @@ namespace
 // Forward declarations
 static void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
 static void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
+static void loadFloorSprite(SpriteDisplay *display, xmlNodePtr node);
 
 static char const *const fields[][2] =
 {
@@ -114,7 +115,7 @@ void ItemDB::load()
 
     mUnknown = new ItemInfo;
     mUnknown->setName(_("Unknown item"));
-    mUnknown->setImageName("");
+    mUnknown->setDisplay(SpriteDisplay());
     mUnknown->setSprite("error.xml", GENDER_MALE);
     mUnknown->setSprite("error.xml", GENDER_FEMALE);
 
@@ -154,9 +155,11 @@ void ItemDB::load()
         int attackRange = XML::getProperty(node, "attack-range", 0);
         std::string missileParticle = XML::getProperty(node, "missile-particle", "");
 
+        SpriteDisplay display;
+        display.image = image;
+
         ItemInfo *itemInfo = new ItemInfo;
         itemInfo->setId(id);
-        itemInfo->setImageName(image);
         itemInfo->setName(name.empty() ? _("unnamed") : name);
         itemInfo->setDescription(description);
         itemInfo->setType(itemTypeFromString(typeStr));
@@ -202,7 +205,13 @@ void ItemDB::load()
             {
                 loadSoundRef(itemInfo, itemChild);
             }
+            else if (xmlStrEqual(itemChild->name, BAD_CAST "floor"))
+            {
+                loadFloorSprite(&display, itemChild);
+            }
         }
+
+        itemInfo->setDisplay(display);
 
         mItemInfos[id] = itemInfo;
         if (!name.empty())
@@ -332,5 +341,24 @@ void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
     {
         logger->log("ItemDB: Ignoring unknown sound event '%s'",
                 event.c_str());
+    }
+}
+
+void loadFloorSprite(SpriteDisplay *display, xmlNodePtr floorNode)
+{
+    for_each_xml_child_node(spriteNode, floorNode)
+    {
+        if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
+        {
+            SpriteReference *currentSprite = new SpriteReference;
+            currentSprite->sprite = (const char*)spriteNode->xmlChildrenNode->content;
+            currentSprite->variant = XML::getProperty(spriteNode, "variant", 0);
+            display->sprites.push_back(currentSprite);
+        }
+        else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
+        {
+            std::string particlefx = (const char*)spriteNode->xmlChildrenNode->content;
+            display->particles.push_back(particlefx);
+        }
     }
 }

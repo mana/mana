@@ -43,23 +43,20 @@
 
 #include "utils/stringutils.h"
 
-Player::Player(int id, int subtype, Map *map, bool isNPC):
+Player::Player(int id, int subtype, Map *map):
     Being(id, subtype, map),
     mGender(GENDER_UNSPECIFIED),
     mParty(NULL),
     mIsGM(false)
 {
-    if (!isNPC)
+    for (int i = 0; i < Net::getCharHandler()->maxSprite(); i++)
     {
-        for (int i = 0; i < Net::getCharHandler()->maxSprite(); i++)
-        {
-            mSprites.push_back(NULL);
-            mSpriteIDs.push_back(0);
-            mSpriteColors.push_back("");
-        }
-
-        setSubtype(subtype);
+        push_back(NULL);
+        mSpriteIDs.push_back(0);
+        mSpriteColors.push_back("");
     }
+
+    setSubtype(subtype);
     mShowName = config.getValue("visiblenames", 1);
     config.addListener("visiblenames", this);
 
@@ -151,7 +148,7 @@ void Player::setGender(Gender gender)
         mGender = gender;
 
         // Reload all subsprites
-        for (unsigned int i = 0; i < mSprites.size(); i++)
+        for (unsigned int i = 0; i < size(); i++)
         {
             if (mSpriteIDs.at(i) != 0)
                 setSprite(i, mSpriteIDs.at(i), mSpriteColors.at(i));
@@ -169,16 +166,13 @@ void Player::setGM(bool gm)
 void Player::setSprite(int slot, int id, const std::string &color,
                        bool isWeapon)
 {
-    if (getType() == NPC)
-        return;
-
     assert(slot < Net::getCharHandler()->maxSprite());
 
     // id = 0 means unequip
     if (id == 0)
     {
-        delete mSprites[slot];
-        mSprites[slot] = NULL;
+        delete at(slot);
+        at(slot) = NULL;
 
         if (isWeapon)
             mEquippedWeapon = NULL;
@@ -200,10 +194,10 @@ void Player::setSprite(int slot, int id, const std::string &color,
         if (equipmentSprite)
             equipmentSprite->setDirection(getSpriteDirection());
 
-        if (mSprites[slot])
-            delete mSprites[slot];
+        if (at(slot))
+            delete at(slot);
 
-        mSprites[slot] = equipmentSprite;
+        at(slot) = equipmentSprite;
 
         if (isWeapon)
             mEquippedWeapon = &ItemDB::get(id);

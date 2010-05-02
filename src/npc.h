@@ -22,12 +22,12 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "player.h"
+#include "being.h"
 
 class Graphics;
 class Text;
 
-class NPC : public Player
+class NPC : public Being
 {
     public:
         NPC(int id, int subtype, Map *map);
@@ -39,9 +39,6 @@ class NPC : public Player
         virtual void setSubtype(Uint16 subtype);
 
         void talk();
-
-        void setSprite(unsigned int slot, int id,
-                        const std::string &color = "");
 
         /**
          * Gets the way an NPC is blocked by other things on the map
@@ -65,9 +62,6 @@ class NPC : public Player
          */
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_CHARACTER; } //blocks like a player character
-
-        // Colors don't change for NPCs
-        virtual void updateColors() {}
 };
 
 #endif

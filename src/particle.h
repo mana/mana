@@ -83,7 +83,7 @@ class Particle : public Actor
         /**
          * Draws the particle image.
          */
-        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
+        virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
          * Necessary for sorting with the other sprites.
@@ -247,12 +247,18 @@ class Particle : public Actor
         virtual int getNumberOfLayers() const
         { return 1; }
 
+        virtual float getAlpha() const
+        { return 1.0f; }
+
+        virtual void setAlpha(float alpha) {}
+
     protected:
         bool mAlive;                /**< Is the particle supposed to be drawn and updated?*/
         int mLifetimeLeft;          /**< Lifetime left in game ticks*/
         int mLifetimePast;          /**< Age of the particle in game ticks*/
         int mFadeOut;               /**< Lifetime in game ticks left where fading out begins*/
         int mFadeIn;                /**< Age in game ticks where fading in is finished*/
+        float mAlpha;               /**< Opacity of the graphical representation of the particle */
 
         // generic properties
         bool mAutoDelete;           /**< May the particle request its deletion by the parent particle? */

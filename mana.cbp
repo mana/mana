@@ -96,6 +96,8 @@
 		<Unit filename="src\SDLMain.m" />
 		<Unit filename="src\actor.cpp" />
 		<Unit filename="src\actor.h" />
+		<Unit filename="src\actorsprite.cpp" />
+		<Unit filename="src\actorsprite.h" />
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
@@ -116,6 +118,8 @@
 		<Unit filename="src\client.h" />
 		<Unit filename="src\commandhandler.cpp" />
 		<Unit filename="src\commandhandler.h" />
+		<Unit filename="src\compoundsprite.cpp" />
+		<Unit filename="src\compoundsprite.h" />
 		<Unit filename="src\configlistener.h" />
 		<Unit filename="src\configuration.cpp" />
 		<Unit filename="src\configuration.h" />
@@ -343,6 +347,8 @@
 		<Unit filename="src\guild.h" />
 		<Unit filename="src\imageparticle.cpp" />
 		<Unit filename="src\imageparticle.h" />
+		<Unit filename="src\imagesprite.cpp" />
+		<Unit filename="src\imagesprite.h" />
 		<Unit filename="src\inventory.cpp" />
 		<Unit filename="src\inventory.h" />
 		<Unit filename="src\item.cpp" />
@@ -563,6 +569,7 @@
 		<Unit filename="src\simpleanimation.h" />
 		<Unit filename="src\sound.cpp" />
 		<Unit filename="src\sound.h" />
+		<Unit filename="src\sprite.h" />
 		<Unit filename="src\statuseffect.cpp" />
 		<Unit filename="src\statuseffect.h" />
 		<Unit filename="src\text.cpp" />

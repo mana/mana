@@ -57,7 +57,8 @@ void Item::setId(int id)
         mDrawImage->decRef();
 
     ResourceManager *resman = ResourceManager::getInstance();
-    std::string imagePath = "graphics/items/" + getInfo().getImageName();
+    SpriteDisplay display = getInfo().getDisplay();
+    std::string imagePath = "graphics/items/" + display.image;
     mImage = resman->getImage(imagePath);
     mDrawImage = resman->getImage(imagePath);
 

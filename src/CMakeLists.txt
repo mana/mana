@@ -402,6 +402,8 @@ SET(SRCS
     utils/xml.h
     actor.cpp
     actor.h
+    actorsprite.cpp
+    actorsprite.h
     animatedsprite.cpp
     animatedsprite.h
     animationparticle.cpp
@@ -422,6 +424,8 @@ SET(SRCS
     channelmanager.h
     commandhandler.cpp
     commandhandler.h
+    compoundsprite.cpp
+    compoundsprite.h
     configlistener.h
     configuration.cpp
     configuration.h
@@ -443,6 +447,8 @@ SET(SRCS
     guild.h
     imageparticle.cpp
     imageparticle.h
+    imagesprite.cpp
+    imagesprite.h
     inventory.cpp
     inventory.h
     item.cpp
@@ -491,6 +497,7 @@ SET(SRCS
     simpleanimation.h
     sound.cpp
     sound.h
+    sprite.h
     statuseffect.cpp
     statuseffect.h
     text.cpp

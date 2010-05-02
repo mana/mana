@@ -61,6 +61,7 @@ Particle::Particle(Map *map):
     mLifetimePast(0),
     mFadeOut(0),
     mFadeIn(0),
+    mAlpha(1.0f),
     mAutoDelete(true),
     mAllowSizeAdjust(false),
     mGravity(0.0f),
@@ -93,8 +94,9 @@ void Particle::setupEngine()
     logger->log("Particle engine set up");
 }
 
-void Particle::draw(Graphics *, int, int) const
+bool Particle::draw(Graphics *, int, int) const
 {
+    return false;
 }
 
 bool Particle::update()

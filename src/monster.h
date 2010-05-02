@@ -40,8 +40,7 @@ class Monster : public Being
 
         virtual void setSubtype(Uint16 subtype);
 
-        virtual TargetCursorSize
-        getTargetCursorSize() const;
+        virtual TargetCursorSize getTargetCursorSize() const;
 
         /**
          * Handles an attack of another being by this monster. Plays a hit or

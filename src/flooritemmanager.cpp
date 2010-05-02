@@ -78,3 +78,12 @@ FloorItem *FloorItemManager::findByCoordinates(int x, int y) const
 
     return NULL;
 }
+
+void FloorItemManager::logic()
+{
+    FloorItemIterator it, it_end;
+
+    for (it = mFloorItems.begin(), it_end = mFloorItems.end(); it != it_end;
+         it++)
+        (*it)->logic();
+}

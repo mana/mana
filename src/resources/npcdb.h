@@ -22,23 +22,11 @@
 #ifndef NPC_DB_H
 #define NPC_DB_H
 
-#include <list>
+#include "resources/spritedef.h"
+
 #include <map>
-#include <string>
 
-struct NPCsprite
-{
-    std::string sprite;
-    int variant;
-};
-
-struct NPCInfo
-{
-    std::list<NPCsprite*> sprites;
-    std::list<std::string> particles;
-};
-
-typedef std::map<int, NPCInfo*> NPCInfos;
+typedef std::map<int, SpriteDisplay*> NPCInfos;
 
 /**
  * NPC information database.
@@ -49,7 +37,7 @@ namespace NPCDB
 
     void unload();
 
-    const NPCInfo& get(int id);
+    const SpriteDisplay& get(int id);
 
     typedef NPCInfos::iterator NPCInfosIterator;
 }

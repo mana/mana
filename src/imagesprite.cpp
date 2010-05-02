@@ -18,41 +18,27 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "actor.h"
+#include "imagesprite.h"
 
-#include "map.h"
+#include "graphics.h"
 
-#include "resources/image.h"
-#include "resources/resourcemanager.h"
-
-Actor::Actor():
-        mMap(NULL)
-{}
-
-Actor::~Actor()
+ImageSprite::ImageSprite(Image *image):
+        mImage(image)
 {
-    setMap(NULL);
+    mAlpha = mImage->getAlpha();
+
+    mImage->incRef();
 }
 
-void Actor::setMap(Map *map)
+ImageSprite::~ImageSprite()
 {
-    // Remove Actor from potential previous map
-    if (mMap)
-        mMap->removeActor(mMapActor);
-
-    mMap = map;
-
-    // Add Actor to potential new map
-    if (mMap)
-        mMapActor = mMap->addActor(this);
+    mImage->decRef();
 }
 
-int Actor::getTileX() const
+bool ImageSprite::draw(Graphics* graphics, int posX, int posY) const
 {
-    return getPixelX() / mMap->getTileWidth();
-}
+    if (mImage->getAlpha() != mAlpha)
+        mImage->setAlpha(mAlpha);
 
-int Actor::getTileY() const
-{
-    return getPixelY() / mMap->getTileHeight();
+    return graphics->drawImage(mImage, posX, posY);
 }
