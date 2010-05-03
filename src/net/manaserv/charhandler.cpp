@@ -150,13 +150,13 @@ void CharHandler::handleCharacterCreateResponse(Net::MessageIn &msg)
             case CREATE_INVALID_GENDER:
                 errorMessage = _("Invalid gender.");
                 break;
-            case CREATE_RAW_STATS_TOO_HIGH:
+            case CREATE_ATTRIBUTES_TOO_HIGH:
                 errorMessage = _("Character's stats are too high.");
                 break;
-            case CREATE_RAW_STATS_TOO_LOW:
+            case CREATE_ATTRIBUTES_TOO_LOW:
                 errorMessage = _("Character's stats are too low.");
                 break;
-            case CREATE_RAW_STATS_EQUAL_TO_ZERO:
+            case CREATE_ATTRIBUTES_EQUAL_TO_ZERO:
                 errorMessage = _("One stat is zero.");
                 break;
             default:
