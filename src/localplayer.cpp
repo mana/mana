@@ -1296,13 +1296,11 @@ bool LocalPlayer::withinAttackRange(Being *target)
     }
     else
     {
-        int dist_x = abs(target->getTileX() - getTileY());
-        int dist_y = abs(target->getTileY() - getTileX());
+        int dist_x = abs(target->getTileX() - getTileX());
+        int dist_y = abs(target->getTileY() - getTileY());
 
         if (dist_x > getAttackRange() || dist_y > getAttackRange())
-        {
             return false;
-        }
 
         return true;
     }
