@@ -45,6 +45,9 @@
 #include <iostream>
 #include <fstream>
 
+const std::string xmlUpdateFile = "resources.xml";
+const std::string txtUpdateFile = "resources2.txt";
+
 /**
  * Load the given file into a vector of updateFiles.
  */
@@ -72,13 +75,10 @@ std::vector<updateFile> loadXMLFile(const std::string &fileName)
         file.type = XML::getProperty(fileNode, "type", "data");
         file.desc = XML::getProperty(fileNode, "description", "");
         if (XML::getProperty(fileNode, "required", "yes") == "yes")
-        {
             file.required = true;
-        }
         else
-        {
             file.required = false;
-        }
+
         files.push_back(file);
     }
 
@@ -344,7 +344,8 @@ void UpdaterWindow::download()
     {
         if (mDownloadStatus == UPDATE_RESOURCES)
         {
-            mDownload->setFile(mUpdatesDir + "/" + mCurrentFile, mCurrentChecksum);
+            mDownload->setFile(mUpdatesDir + "/" + mCurrentFile,
+                               mCurrentChecksum);
         }
         else
         {
@@ -353,9 +354,7 @@ void UpdaterWindow::download()
     }
 
     if (mDownloadStatus != UPDATE_RESOURCES)
-    {
         mDownload->noCache();
-    }
 
     setLabel(mCurrentFile + " (0%)");
     mDownloadComplete = false;
@@ -368,9 +367,22 @@ void UpdaterWindow::loadUpdates()
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
+    if (!mUpdateFiles.size())
+    {   // updates not downloaded
+        mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
+        if (!mUpdateFiles.size())
+        {
+            logger->log("Warning this server does not have a"
+                        " %s file falling back to %s", xmlUpdateFile.c_str(),
+                        txtUpdateFile.c_str());
+            mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
+        }
+    }
+
     for (mUpdateIndex = 0; mUpdateIndex < mUpdateFiles.size(); mUpdateIndex++)
     {
-        resman->addToSearchPath(mUpdatesDir + "/" + mUpdateFiles[mUpdateIndex].name, false);
+        resman->addToSearchPath(mUpdatesDir + "/"
+                                + mUpdateFiles[mUpdateIndex].name, false);
     }
 }
 
@@ -433,7 +445,9 @@ void UpdaterWindow::logic()
                     mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
                     if (mUpdateFiles.size() == 0)
                     {
-                        logger->log("Warning this server does not have a %s file falling back to %s",xmlUpdateFile.c_str(),txtUpdateFile.c_str());
+                        logger->log("Warning this server does not have a %s"
+                                    " file falling back to %s",
+                                    xmlUpdateFile.c_str(), txtUpdateFile.c_str());
 
                         // If the resources.xml file fails, fall back onto a older version
                         mCurrentFile = txtUpdateFile;
