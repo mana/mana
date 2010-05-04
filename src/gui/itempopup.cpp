@@ -28,17 +28,22 @@
 #include "gui/gui.h"
 #include "gui/theme.h"
 
+#include "gui/widgets/icon.h"
 #include "gui/widgets/textbox.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 #include <guichan/font.hpp>
 
 #include <guichan/widgets/label.hpp>
 
 ItemPopup::ItemPopup():
-    Popup("ItemPopup")
+    Popup("ItemPopup"),
+    mIcon(0)
 {
     // Item Name
     mItemName = new gcn::Label;
@@ -62,28 +67,62 @@ ItemPopup::ItemPopup():
     mItemWeight->setEditable(false);
     mItemWeight->setPosition(getPadding(), 3 * fontHeight + 4 * getPadding());
 
+    mIcon = new Icon(0);
+
     add(mItemName);
     add(mItemDesc);
     add(mItemEffect);
     add(mItemWeight);
+    add(mIcon);
 
     addMouseListener(this);
 }
 
 ItemPopup::~ItemPopup()
 {
+    if (mIcon)
+    {
+        Image *image = mIcon->getImage();
+        if (image)
+            image->decRef();
+    }
 }
 
-void ItemPopup::setItem(const ItemInfo &item)
+void ItemPopup::setItem(const ItemInfo &item, bool showImage)
 {
     if (item.getName() == mItemName->getCaption())
         return;
+
+    int space = 0;
+
+    Image *oldImage = mIcon->getImage();
+    if (oldImage)
+        oldImage->decRef();
+
+    if (showImage)
+    {
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *image = resman->getImage("graphics/items/" + item.getImageName());
+        mIcon->setImage(image);
+        if (image)
+        {
+            int x = getPadding();
+            int y = getPadding();
+            mIcon->setPosition(x, y);
+            space = mIcon->getWidth();
+        }
+    }
+    else
+    {
+        mIcon->setImage(0);
+    }
 
     mItemType = item.getType();
 
     mItemName->setCaption(item.getName());
     mItemName->adjustSize();
     mItemName->setForegroundColor(getColor(mItemType));
+    mItemName->setPosition(getPadding() + space, getPadding());
 
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);
@@ -91,7 +130,7 @@ void ItemPopup::setItem(const ItemInfo &item)
                                 Units::formatWeight(item.getWeight()).c_str()),
                                 196);
 
-    int minWidth = mItemName->getWidth();
+    int minWidth = mItemName->getWidth() + space;
 
     if (mItemDesc->getMinWidth() > minWidth)
         minWidth = mItemDesc->getMinWidth();
@@ -127,6 +166,7 @@ void ItemPopup::setItem(const ItemInfo &item)
 
     mItemDesc->setPosition(getPadding(), 2 * height);
     mItemEffect->setPosition(getPadding(), (numRowsDesc + getPadding()) * height);
+
 }
 
 gcn::Color ItemPopup::getColor(ItemType type)
@@ -171,3 +211,4 @@ void ItemPopup::mouseMoved(gcn::MouseEvent &event)
     // When the mouse moved on top of the popup, hide it
     setVisible(false);
 }
+

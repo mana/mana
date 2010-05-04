@@ -30,20 +30,22 @@ Icon::Icon(const std::string &file)
     : mImage(0)
 {
     mImage = ResourceManager::getInstance()->getImage(file);
-    setSize(mImage->getWidth(), mImage->getHeight());
-
+    if (mImage)
+        setSize(mImage->getWidth(), mImage->getHeight());
 }
 
 Icon::Icon(Image *image)
     : mImage(image)
 {
-    setSize(mImage->getWidth(), mImage->getHeight());
+    if (mImage)
+        setSize(mImage->getWidth(), mImage->getHeight());
 }
 
 void Icon::setImage(Image *image)
 {
     mImage = image;
-    setSize(mImage->getWidth(), mImage->getHeight());
+    if (mImage)
+        setSize(mImage->getWidth(), mImage->getHeight());
 }
 
 void Icon::draw(gcn::Graphics *g)
