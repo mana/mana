@@ -369,7 +369,7 @@ static void setTile(Map *map, MapLayer *layer, int x, int y, int gid)
     else
     {
         // Set collision tile
-        if (set && (gid - set->getFirstGid() != 0))
+        if (set && (gid - set->getFirstGid() == 1))
             map->blockTile(x, y, Map::BLOCKTYPE_WALL);
     }
 }
