@@ -219,6 +219,8 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     mTypeListModel = new TypeListModel();
     mTypeField = new DropDown(mTypeListModel);
+    mTypeField->setSelected((serverInfo->type == ServerInfo::MANASERV) ?
+                            1 : 0);
 
     mDescription = new Label(std::string());
 
