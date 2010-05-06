@@ -160,7 +160,7 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
 
     switch (type)
     {
-        case OBJECT_PLAYER:
+        case OBJECT_CHARACTER:
         {
             std::string name = msg.readString();
             if (player_node->getName() == name)
