@@ -22,16 +22,16 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "net/serverinfo.h"
-
 #include "configlistener.h"
+
+#include "net/serverinfo.h"
 
 #include <guichan/actionlistener.hpp>
 
-#include <string>
-
 #include <SDL.h>
 #include <SDL_framerate.h>
+
+#include <string>
 
 class Button;
 class Desktop;

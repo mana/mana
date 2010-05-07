@@ -135,6 +135,9 @@ LocalPlayer::~LocalPlayer()
         mTargetCursorImages[0][i]->decRef();
         mTargetCursorImages[1][i]->decRef();
     }
+
+    delete mAwayDialog;
+    delete mAwayListener;
 }
 
 void LocalPlayer::logic()
@@ -1433,10 +1436,8 @@ void LocalPlayer::changeAwayMode()
                 config.getValue("afkMessage", "I am away from keyboard"));
         mAwayDialog->addActionListener(mAwayListener);
     }
-    else
-    {
-        mAwayDialog = 0;
-    }
+
+    mAwayDialog = 0;
 }
 
 void LocalPlayer::setAway(const std::string &message)
