@@ -124,10 +124,11 @@ void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
         if (!mEmoteMoved && mEmoteClicked)
         {
             const int index = getIndexFromGrid(event.getX(), event.getY());
-            const int emoteId = emoteShortcut->getEmote(index);
 
             if (index == -1)
                 return;
+
+            const int emoteId = emoteShortcut->getEmote(index);
 
             if (emoteId)
             {

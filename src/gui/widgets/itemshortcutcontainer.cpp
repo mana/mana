@@ -142,9 +142,13 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
         if (!mItemMoved && mItemClicked)
         {
             const int index = getIndexFromGrid(event.getX(), event.getY());
+
+            if (index == -1)
+                return;
+
             const int itemId = itemShortcut->getItem(index);
 
-            if (index == -1 || itemId < 0)
+            if (itemId < 0)
                 return;
 
             Item *item = player_node->getInventory()->findItem(itemId);
@@ -227,9 +231,13 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
 void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
 {
     const int index = getIndexFromGrid(event.getX(), event.getY());
+
+    if (index == -1)
+        return;
+
     const int itemId = itemShortcut->getItem(index);
 
-    if (index == -1 || itemId < 0)
+    if (itemId < 0)
         return;
 
     Item *item = player_node->getInventory()->findItem(itemId);
