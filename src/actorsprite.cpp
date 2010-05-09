@@ -34,9 +34,15 @@
 #include "net/net.h"
 
 #include "resources/image.h"
+#include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
+#include <cassert>
+
 #define EFFECTS_FILE "effects.xml"
+
+ImageSet *ActorSprite::targetCursorImages[2][NUM_TC];
+SimpleAnimation *ActorSprite::targetCursor[2][NUM_TC];
 
 ActorSprite::ActorSprite(int id):
     mId(id),
@@ -83,9 +89,6 @@ bool ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
 void ActorSprite::logic()
 {
     // Update sprite animations
-    if (mUsedTargetCursor)
-        mUsedTargetCursor->update(tick_time * MILLISECONDS_IN_A_TICK);
-
     update(tick_time * MILLISECONDS_IN_A_TICK);
 
     // Restart status/particle effects, if needed
@@ -105,6 +108,18 @@ void ActorSprite::logic()
     mChildParticleEffects.moveTo(mPos.x, mPos.y);
 }
 
+void ActorSprite::actorLogic()
+{
+    // Update sprite animations
+    for (int size = TC_SMALL; size < NUM_TC; size++)
+    {
+        for (int type = TCT_NORMAL; type < NUM_TCT; type++)
+        {
+            targetCursor[type][size]->update(tick_time * MILLISECONDS_IN_A_TICK);
+        }
+    }
+}
+
 void ActorSprite::setMap(Map* map)
 {
     Actor::setMap(map);
@@ -119,10 +134,12 @@ void ActorSprite::controlParticle(Particle *particle)
     mChildParticleEffects.addLocally(particle);
 }
 
-void ActorSprite::setTargetAnimation(SimpleAnimation *animation)
+void ActorSprite::setTargetType(TargetCursorType type)
 {
-    mUsedTargetCursor = animation;
-    mUsedTargetCursor->reset();
+    if (type == TCT_NONE)
+        untarget();
+    else
+        mUsedTargetCursor = targetCursor[type][getTargetCursorSize()];
 }
 
 struct EffectDescription {
@@ -323,4 +340,96 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     }
 
     mMustResetParticles = true;
+}
+
+void ActorSprite::load()
+{
+    initTargetCursor();
+}
+
+void ActorSprite::unload()
+{
+    cleanupTargetCursors();
+}
+
+static const char *cursorType(int type)
+{
+    switch (type)
+    {
+    case ActorSprite::TCT_IN_RANGE:
+        return "in-range";
+    case ActorSprite::TCT_NORMAL:
+        return "normal";
+    default:
+        assert(false);
+    }
+}
+
+static const char *cursorSize(int size)
+{
+    switch (size)
+    {
+    case ActorSprite::TC_LARGE:
+        return "l";
+    case ActorSprite::TC_MEDIUM:
+        return "m";
+    case ActorSprite::TC_SMALL:
+        return "s";
+    default:
+        assert(false);
+    }
+}
+
+void ActorSprite::initTargetCursor()
+{
+    static std::string targetCursor = "graphics/target-cursor-%s-%s.png";
+    static int targetWidths[NUM_TC] = {44, 62, 82};
+    static int targetHeights[NUM_TC] = {35, 44, 60};
+
+    // Load target cursors
+    for (int size = TC_SMALL; size < NUM_TC; size++)
+    {
+        for (int type = TCT_NORMAL; type < NUM_TCT; type++)
+        {
+            loadTargetCursor(strprintf(targetCursor.c_str(), cursorType(type),
+                                       cursorSize(size)), targetWidths[size],
+                             targetHeights[size], type, size);
+        }
+    }
+}
+
+void ActorSprite::cleanupTargetCursors()
+{
+    for (int size = TC_SMALL; size < NUM_TC; size++)
+    {
+        for (int type = TCT_NORMAL; type < NUM_TCT; type++)
+        {
+            delete targetCursor[type][size];
+            targetCursorImages[type][size]->decRef();
+        }
+    }
+}
+
+void ActorSprite::loadTargetCursor(const std::string &filename,
+                                   int width, int height, int type, int size)
+{
+    assert(size > -1);
+    assert(size < 3);
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    ImageSet *currentImageSet = resman->getImageSet(filename, width, height);
+
+    Animation *anim = new Animation;
+
+    for (unsigned int i = 0; i < currentImageSet->size(); ++i)
+    {
+        anim->addFrame(currentImageSet->get(i), 750,
+                      (16 - (currentImageSet->getWidth() / 2)),
+                      (16 - (currentImageSet->getHeight() / 2)));
+    }
+
+    SimpleAnimation *currentCursor = new SimpleAnimation(anim);
+
+    targetCursorImages[type][size] = currentImageSet;
+    targetCursor[type][size] = currentCursor;
 }

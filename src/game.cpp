@@ -21,6 +21,7 @@
 
 #include "game.h"
 
+#include "actorsprite.h"
 #include "beingmanager.h"
 #include "channelmanager.h"
 #include "client.h"
@@ -334,6 +335,7 @@ void Game::logic()
     handleInput();
 
     // Handle all necessary game logic
+    ActorSprite::actorLogic();
     beingManager->logic();
     floorItemManager->logic();
     particleEngine->update();

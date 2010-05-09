@@ -479,22 +479,6 @@ class LocalPlayer : public Player
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
 
-        /** Load the target cursors into memory */
-        void initTargetCursor();
-
-        /**
-         * Helper function for loading target cursors
-         */
-        void loadTargetCursor(const std::string &filename,
-                              int width, int height,
-                              bool outRange, Being::TargetCursorSize size);
-
-        /** Images of the target cursor. */
-        ImageSet *mTargetCursorImages[2][NUM_TC];
-
-        /** Animated target cursors. */
-        SimpleAnimation *mTargetCursor[2][NUM_TC];
-
         typedef std::pair<std::string, int> MessagePair;
         /** Queued exp messages*/
         std::list<MessagePair> mMessages;

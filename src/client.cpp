@@ -446,14 +446,6 @@ Client::~Client()
     // Shutdown sound
     sound.close();
 
-    // Unload XML databases
-    ColorDB::unload();
-    EmoteDB::unload();
-    ItemDB::unload();
-    MonsterDB::unload();
-    NPCDB::unload();
-    StatusEffect::unload();
-
     ResourceManager::deleteInstance();
 
     SDL_FreeSurface(mIcon);
@@ -594,6 +586,19 @@ int Client::exec()
             {
                 delete game;
                 game = 0;
+
+                if (mState != STATE_CHANGE_MAP)
+                {
+                    // Unload XML databases
+                    ColorDB::unload();
+                    EmoteDB::unload();
+                    ItemDB::unload();
+                    MonsterDB::unload();
+                    NPCDB::unload();
+                    StatusEffect::unload();
+
+                    ActorSprite::unload();
+                }
             }
 
             mOldState = mState;
@@ -747,6 +752,8 @@ int Client::exec()
                     EmoteDB::load();
                     StatusEffect::load();
                     Units::loadUnits();
+
+                    ActorSprite::load();
 
                     mDesktop->reloadWallpaper();
 

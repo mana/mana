@@ -116,8 +116,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mTextColor = &Theme::getThemeColor(Theme::PLAYER);
     mNameColor = &userPalette->getColor(UserPalette::SELF);
 
-    initTargetCursor();
-
     config.addListener("showownname", this);
     setShowName(config.getValue("showownname", 1));
 }
@@ -127,14 +125,6 @@ LocalPlayer::~LocalPlayer()
     delete mInventory;
 
     config.removeListener("showownname", this);
-
-    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
-    {
-        delete mTargetCursor[0][i];
-        delete mTargetCursor[1][i];
-        mTargetCursorImages[0][i]->decRef();
-        mTargetCursorImages[1][i]->decRef();
-    }
 }
 
 void LocalPlayer::logic()
@@ -200,8 +190,7 @@ void LocalPlayer::logic()
         if (mTarget->getType() == Being::NPC)
         {
             // NPCs are always in range
-            mTarget->setTargetAnimation(
-                mTargetCursor[0][mTarget->getTargetCursorSize()]);
+            mTarget->setTargetType(TCT_IN_RANGE);
         }
         else
         {
@@ -217,10 +206,10 @@ void LocalPlayer::logic()
                 abs(mTarget->getTileY() - getTileY());
 
             const int attackRange = getAttackRange();
-            const int inRange = rangeX > attackRange || rangeY > attackRange
-                                                                    ? 1 : 0;
-            mTarget->setTargetAnimation(
-                mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
+            const TargetCursorType targetType = rangeX > attackRange ||
+                                                rangeY > attackRange ?
+                                                TCT_NORMAL : TCT_IN_RANGE;
+            mTarget->setTargetType(targetType);
 
             if (!mTarget->isAlive())
                 stopAttack();
@@ -1372,43 +1361,6 @@ void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
             }
         }
     }
-}
-
-void LocalPlayer::initTargetCursor()
-{
-    // Load target cursors
-    loadTargetCursor("target-cursor-blue-s.png", 44, 35, false, TC_SMALL);
-    loadTargetCursor("target-cursor-red-s.png", 44, 35, true, TC_SMALL);
-    loadTargetCursor("target-cursor-blue-m.png", 62, 44, false, TC_MEDIUM);
-    loadTargetCursor("target-cursor-red-m.png", 62, 44, true, TC_MEDIUM);
-    loadTargetCursor("target-cursor-blue-l.png", 82, 60, false, TC_LARGE);
-    loadTargetCursor("target-cursor-red-l.png", 82, 60, true, TC_LARGE);
-}
-
-void LocalPlayer::loadTargetCursor(const std::string &filename,
-                                   int width, int height,
-                                   bool outRange, TargetCursorSize size)
-{
-    assert(size > -1);
-    assert(size < 3);
-
-    ImageSet *currentImageSet = Theme::getImageSetFromTheme(filename,
-                                                            width, height);
-    Animation *anim = new Animation;
-
-    for (unsigned int i = 0; i < currentImageSet->size(); ++i)
-    {
-        anim->addFrame(currentImageSet->get(i), 75,
-                      (16 - (currentImageSet->getWidth() / 2)),
-                      (16 - (currentImageSet->getHeight() / 2)));
-    }
-
-    SimpleAnimation *currentCursor = new SimpleAnimation(anim);
-
-    const int index = outRange ? 1 : 0;
-
-    mTargetCursorImages[index][size] = currentImageSet;
-    mTargetCursor[index][size] = currentCursor;
 }
 
 void LocalPlayer::addMessageToQueue(const std::string &message, int color)
