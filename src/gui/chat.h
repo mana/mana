@@ -35,8 +35,8 @@
 #include <vector>
 
 class BrowserBox;
-class Channel;
 class ChatTab;
+class Channel;
 class ChatInput;
 class Recorder;
 class ScrollArea;
@@ -47,12 +47,24 @@ class WhisperTab;
 
 #define DEFAULT_CHAT_WINDOW_SCROLL 7 // 1 means `1/8th of the window size'.
 
+enum Own
+{
+    BY_GM,
+    BY_PLAYER,
+    BY_OTHER,
+    BY_SERVER,
+    BY_CHANNEL,
+    ACT_WHISPER,      // getting whispered at
+    ACT_IS,           // equivalent to "/me" on IRC
+    BY_LOGGER
+};
+
 /** One item in the chat log */
 struct CHATLOG
 {
     std::string nick;
     std::string text;
-    int own;
+    Own own;
 };
 
 /**
@@ -170,7 +182,7 @@ class ChatWindow : public Window,
         void doPresent();
 
         void whisper(const std::string &nick, const std::string &mes,
-                     bool own = false);
+                     Own own = BY_OTHER);
 
         ChatTab *addWhisperTab(const std::string &nick, bool switchTo = false);
 

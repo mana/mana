@@ -30,18 +30,6 @@ class BrowserBox;
 class Recorder;
 class ScrollArea;
 
-enum
-{
-    BY_GM,
-    BY_PLAYER,
-    BY_OTHER,
-    BY_SERVER,
-    BY_CHANNEL,
-    ACT_WHISPER,      // getting whispered at
-    ACT_IS,           // equivalent to "/me" on IRC
-    BY_LOGGER
-};
-
 /**
  * A tab for the chat window. This is special to ease chat handling.
  */
@@ -62,7 +50,8 @@ class ChatTab : public Tab
          * @param channelName which channel to send the message to.
          * @param ignoreRecord should this not be recorded?
          */
-        void chatLog(std::string line, int own = BY_SERVER, bool ignoreRecord = false);
+        void chatLog(std::string line, Own own = BY_SERVER,
+                     bool ignoreRecord = false);
 
         /**
          * Adds the text to the message list

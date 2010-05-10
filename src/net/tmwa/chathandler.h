@@ -27,6 +27,8 @@
 
 #include "net/tmwa/messagehandler.h"
 
+#include <queue>
+
 namespace TmwAthena {
 
 class ChatHandler : public MessageHandler, public Net::ChatHandler
@@ -61,6 +63,10 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
         void kickUser(int channelId, const std::string &name);
 
         void who();
+
+    private:
+        typedef std::queue<std::string> WhisperQueue;
+        WhisperQueue mSentWhispers;
 };
 
 } // namespace TmwAthena

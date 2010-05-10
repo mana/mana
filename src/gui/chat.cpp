@@ -431,7 +431,7 @@ void ChatWindow::setRecordingFile(const std::string &msg)
 }
 
 void ChatWindow::whisper(const std::string &nick,
-                         const std::string &mes, bool own)
+                         const std::string &mes, Own own)
 {
     if (mes.empty())
         return;
@@ -455,9 +455,13 @@ void ChatWindow::whisper(const std::string &nick,
 
     if (tab)
     {
-        if (own)
+        if (own == BY_PLAYER)
         {
             tab->chatInput(mes);
+        }
+        else if (own == BY_SERVER)
+        {
+            tab->chatLog(mes);
         }
         else
         {

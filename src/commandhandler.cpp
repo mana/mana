@@ -389,7 +389,7 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
         if (tempNick.compare(playerName) == 0 || args.empty())
             return;
 
-        chatWindow->whisper(recvnick, msg, true);
+        chatWindow->whisper(recvnick, msg, BY_PLAYER);
     }
     else
         tab->chatLog(_("Cannot send empty whispers!"), BY_SERVER);
