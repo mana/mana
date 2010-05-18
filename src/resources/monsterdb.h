@@ -22,9 +22,7 @@
 #ifndef MONSTER_DB_H
 #define MONSTER_DB_H
 
-#include <map>
-
-class MonsterInfo;
+class BeingInfo;
 
 /**
  * Monster information database.
@@ -35,10 +33,7 @@ namespace MonsterDB
 
     void unload();
 
-    const MonsterInfo &get(int id);
-
-    typedef std::map<int, MonsterInfo*> MonsterInfos;
-    typedef MonsterInfos::iterator MonsterInfoIterator;
+    BeingInfo *get(int id);
 }
 
 #endif

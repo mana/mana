@@ -23,12 +23,14 @@
 
 #include "log.h"
 
+#include "resources/beinginfo.h"
+
+#include "utils/dtor.h"
 #include "utils/xml.h"
 
 namespace
 {
-    NPCInfos mNPCInfos;
-    SpriteDisplay mUnknown;
+    BeingInfos mNPCInfos;
     bool mLoaded = false;
 }
 
@@ -36,13 +38,6 @@ void NPCDB::load()
 {
     if (mLoaded)
         return;
-
-    {
-        SpriteReference *unknownSprite = new SpriteReference;
-        unknownSprite->sprite = "error.xml";
-        unknownSprite->variant = 0;
-        mUnknown.sprites.push_back(unknownSprite);
-    }
 
     logger->log("Initializing NPC database...");
 
@@ -67,7 +62,8 @@ void NPCDB::load()
             continue;
         }
 
-        SpriteDisplay *currentInfo = new SpriteDisplay;
+        BeingInfo *currentInfo = new BeingInfo;
+        SpriteDisplay display;
 
         for_each_xml_child_node(spriteNode, npcNode)
         {
@@ -76,14 +72,17 @@ void NPCDB::load()
                 SpriteReference *currentSprite = new SpriteReference;
                 currentSprite->sprite = (const char*)spriteNode->xmlChildrenNode->content;
                 currentSprite->variant = XML::getProperty(spriteNode, "variant", 0);
-                currentInfo->sprites.push_back(currentSprite);
+                display.sprites.push_back(currentSprite);
             }
             else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
             {
                 std::string particlefx = (const char*)spriteNode->xmlChildrenNode->content;
-                currentInfo->particles.push_back(particlefx);
+                display.particles.push_back(particlefx);
             }
         }
+
+        currentInfo->setDisplay(display);
+
         mNPCInfos[id] = currentInfo;
     }
 
@@ -92,40 +91,23 @@ void NPCDB::load()
 
 void NPCDB::unload()
 {
-    for (   NPCInfosIterator i = mNPCInfos.begin();
-            i != mNPCInfos.end();
-            i++)
-    {
-        while (!i->second->sprites.empty())
-        {
-            delete i->second->sprites.front();
-            i->second->sprites.pop_front();
-        }
-        delete i->second;
-    }
-
+    delete_all(mNPCInfos);
     mNPCInfos.clear();
-
-    while (!mUnknown.sprites.empty())
-    {
-        delete mUnknown.sprites.front();
-        mUnknown.sprites.pop_front();
-    }
 
     mLoaded = false;
 }
 
-const SpriteDisplay& NPCDB::get(int id)
+BeingInfo *NPCDB::get(int id)
 {
-    NPCInfosIterator i = mNPCInfos.find(id);
+    BeingInfoIterator i = mNPCInfos.find(id);
 
     if (i == mNPCInfos.end())
     {
         logger->log("NPCDB: Warning, unknown NPC ID %d requested", id);
-        return mUnknown;
+        return BeingInfo::Unknown;
     }
     else
     {
-        return *(i->second);
+        return i->second;
     }
 }

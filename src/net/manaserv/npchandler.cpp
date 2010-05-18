@@ -22,7 +22,6 @@
 #include "net/manaserv/npchandler.h"
 
 #include "beingmanager.h"
-#include "npc.h"
 
 #include "gui/npcdialog.h"
 #include "gui/npcpostdialog.h"
@@ -57,7 +56,7 @@ NpcHandler::NpcHandler()
 void NpcHandler::handleMessage(Net::MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
-    if (!being || being->getType() != Being::NPC)
+    if (!being || being->getType() != ActorSprite::NPC)
     {
         return;
     }

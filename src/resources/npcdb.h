@@ -22,11 +22,7 @@
 #ifndef NPC_DB_H
 #define NPC_DB_H
 
-#include "resources/spritedef.h"
-
-#include <map>
-
-typedef std::map<int, SpriteDisplay*> NPCInfos;
+class BeingInfo;
 
 /**
  * NPC information database.
@@ -37,9 +33,7 @@ namespace NPCDB
 
     void unload();
 
-    const SpriteDisplay& get(int id);
-
-    typedef NPCInfos::iterator NPCInfosIterator;
+    BeingInfo *get(int id);
 }
 
 #endif

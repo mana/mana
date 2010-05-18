@@ -136,9 +136,9 @@ void PartyHandler::join(int partyId)
     // TODO
 }
 
-void PartyHandler::invite(Player *player)
+void PartyHandler::invite(Being *being)
 {
-    invite(player->getName());
+    invite(being->getName());
 }
 
 void PartyHandler::invite(const std::string &name)
@@ -167,7 +167,7 @@ void PartyHandler::leave()
     chatServerConnection->send(msg);
 }
 
-void PartyHandler::kick(Player *player)
+void PartyHandler::kick(Being *being)
 {
     // TODO
 }

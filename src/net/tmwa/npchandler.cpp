@@ -23,7 +23,6 @@
 
 #include "beingmanager.h"
 #include "localplayer.h"
-#include "npc.h"
 
 #include "gui/npcdialog.h"
 

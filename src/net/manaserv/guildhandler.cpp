@@ -275,9 +275,9 @@ void GuildHandler::invite(int guildId, const std::string &name)
     chatServerConnection->send(msg);
 }
 
-void GuildHandler::invite(int guildId, Player *player)
+void GuildHandler::invite(int guildId, Being *being)
 {
-    invite(guildId, player->getName());
+    invite(guildId, being->getName());
 }
 
 void GuildHandler::inviteResponse(int guildId, bool response)

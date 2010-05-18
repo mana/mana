@@ -26,30 +26,43 @@
 #include "configuration.h"
 #include "effectmanager.h"
 #include "graphics.h"
+#include "guild.h"
 #include "localplayer.h"
 #include "log.h"
 #include "map.h"
 #include "particle.h"
+#include "party.h"
 #include "simpleanimation.h"
 #include "sound.h"
 #include "sprite.h"
 #include "text.h"
 #include "statuseffect.h"
 
+#include "gui/buy.h"
+#include "gui/buysell.h"
 #include "gui/gui.h"
+#include "gui/npcdialog.h"
+#include "gui/npcpostdialog.h"
+#include "gui/sell.h"
+#include "gui/socialwindow.h"
 #include "gui/speechbubble.h"
 #include "gui/theme.h"
 #include "gui/userpalette.h"
 
+#include "net/charhandler.h"
+#include "net/net.h"
+#include "net/npchandler.h"
+#include "net/playerhandler.h"
+
+#include "resources/beinginfo.h"
 #include "resources/colordb.h"
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
+#include "resources/monsterdb.h"
+#include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
-
-#include "net/net.h"
-#include "net/playerhandler.h"
 
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
@@ -62,36 +75,49 @@
 
 static const int DEFAULT_BEING_WIDTH = 32;
 static const int DEFAULT_BEING_HEIGHT = 32;
-
-
 int Being::mNumberOfHairstyles = 1;
 
 // TODO: mWalkTime used by eAthena only
-Being::Being(int id, int subtype, Map *map):
+Being::Being(int id, Type type, int subtype, Map *map):
     ActorSprite(id),
+    mInfo(BeingInfo::Unknown),
     mFrame(0),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mSpeechTime(0),
+    mAttackType(1),
     mAttackSpeed(350),
     mAction(STAND),
-    mSubType(subtype),
+    mSubType(0xFFFF),
     mDirection(DOWN),
     mSpriteDirection(DIRECTION_DOWN),
     mDispName(0),
     mShowName(false),
     mEquippedWeapon(NULL),
     mText(0),
+    mGender(GENDER_UNSPECIFIED),
+    mParty(NULL),
+    mIsGM(false),
+    mType(type),
     mX(0), mY(0),
     mDamageTaken(0)
 {
     setMap(map);
+    setSubtype(subtype);
 
     mSpeechBubble = new SpeechBubble;
 
-    mNameColor = &userPalette->getColor(UserPalette::NPC);
-    mTextColor = &Theme::getThemeColor(Theme::CHAT);
     mWalkSpeed = Net::getPlayerHandler()->getDefaultWalkSpeed();
+
+    if (getType() == PLAYER)
+        mShowName = config.getValue("visiblenames", 1);
+
+    config.addListener("visiblenames", this);
+
+    if (getType() == PLAYER || getType() == NPC)
+        setShowName(true);
+
+    updateColors();
 }
 
 Being::~Being()
@@ -99,6 +125,53 @@ Being::~Being()
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
+
+    config.removeListener("visiblenames", this);
+}
+
+void Being::setSubtype(Uint16 subtype)
+{
+    if (subtype == mSubType)
+        return;
+
+    mSubType = subtype;
+
+    if (getType() == MONSTER)
+    {
+        mInfo = MonsterDB::get(mSubType);
+        setName(mInfo->getName());
+        setupSpriteDisplay(mInfo->getDisplay());
+    }
+    else if (getType() == NPC)
+    {
+        mInfo = NPCDB::get(mSubType);
+        setupSpriteDisplay(mInfo->getDisplay(), false);
+    }
+    else if (getType() == PLAYER)
+    {
+        int id = -100 - subtype;
+
+        // Prevent showing errors when sprite doesn't exist
+        if (!ItemDB::exists(id))
+            id = -100;
+
+        setSprite(Net::getCharHandler()->baseSprite(), id);
+    }
+}
+
+ActorSprite::TargetCursorSize Being::getTargetCursorSize() const
+{
+    return mInfo->getTargetCursorSize();
+}
+
+unsigned char Being::getWalkMask() const
+{
+    return mInfo->getWalkMask();
+}
+
+Map::BlockType Being::getBlockType() const
+{
+    return mInfo->getBlockType();
 }
 
 void Being::setPosition(const Vector &pos)
@@ -277,6 +350,8 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     if (amount > 0)
     {
+        sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT));
+
         if (getType() == MONSTER)
         {
             mDamageTaken += amount;
@@ -302,35 +377,48 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
             fireMissile(victim, mEquippedWeapon->getMissileParticle());
         }
     }
+    else
+        fireMissile(victim, mInfo->getAttack(mAttackType)->missileParticle);
+
     if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         mFrame = 0;
         mWalkTime = tick_time;
     }
+
+    sound.playSfx(mInfo->getSound((damage > 0) ?
+                  SOUND_EVENT_HIT : SOUND_EVENT_MISS));
 }
 
 void Being::setName(const std::string &name)
 {
-    mName = name;
-
-    if (getShowName())
+    if (getType() == NPC)
+    {
+        mName = name.substr(0, name.find('#', 0));
         showName();
+    }
+    else
+    {
+        mName = name;
+
+        if (getType() == PLAYER && getShowName())
+            showName();
+    }
 }
 
 void Being::setShowName(bool doShowName)
 {
-    bool oldShow = mShowName;
+    if (mShowName == doShowName)
+        return;
+
     mShowName = doShowName;
 
-    if (doShowName != oldShow)
+    if (doShowName)
+        showName();
+    else
     {
-        if (doShowName)
-            showName();
-        else
-        {
-            delete mDispName;
-            mDispName = 0;
-        }
+        delete mDispName;
+        mDispName = 0;
     }
 }
 
@@ -343,6 +431,101 @@ void Being::setGuildName(const std::string &name)
 void Being::setGuildPos(const std::string &pos)
 {
     logger->log("Got guild position \"%s\" for being %s(%i)", pos.c_str(), mName.c_str(), mId);
+}
+
+void Being::addGuild(Guild *guild)
+{
+    mGuilds[guild->getId()] = guild;
+    guild->addMember(mId, mName);
+
+    if (this == player_node && socialWindow)
+    {
+        socialWindow->addTab(guild);
+    }
+}
+
+void Being::removeGuild(int id)
+{
+    if (this == player_node && socialWindow)
+    {
+        socialWindow->removeTab(mGuilds[id]);
+    }
+
+    mGuilds[id]->removeMember(mId);
+    mGuilds.erase(id);
+}
+
+Guild *Being::getGuild(const std::string &guildName) const
+{
+    std::map<int, Guild*>::const_iterator itr, itr_end = mGuilds.end();
+    for (itr = mGuilds.begin(); itr != itr_end; ++itr)
+    {
+        Guild *guild = itr->second;
+        if (guild->getName() == guildName)
+        {
+            return guild;
+        }
+    }
+
+    return NULL;
+}
+
+Guild *Being::getGuild(int id) const
+{
+    std::map<int, Guild*>::const_iterator itr;
+    itr = mGuilds.find(id);
+    if (itr != mGuilds.end())
+    {
+        return itr->second;
+    }
+
+    return NULL;
+}
+
+void Being::clearGuilds()
+{
+    std::map<int, Guild*>::const_iterator itr, itr_end = mGuilds.end();
+    for (itr = mGuilds.begin(); itr != itr_end; ++itr)
+    {
+        Guild *guild = itr->second;
+
+        if (this == player_node && socialWindow)
+            socialWindow->removeTab(guild);
+
+        guild->removeMember(mId);
+    }
+
+    mGuilds.clear();
+}
+
+void Being::setParty(Party *party)
+{
+    if (party == mParty)
+        return;
+
+    Party *old = mParty;
+    mParty = party;
+
+    if (old)
+    {
+        old->removeMember(mId);
+    }
+
+    if (party)
+    {
+        party->addMember(mId, mName);
+    }
+
+    updateColors();
+
+    if (this == player_node && socialWindow)
+    {
+        if (old)
+            socialWindow->removeTab(old);
+
+        if (party)
+            socialWindow->addTab(party);
+    }
 }
 
 void Being::fireMissile(Being *victim, const std::string &particle)
@@ -379,11 +562,37 @@ void Being::setAction(Action action, int attackType)
             break;
         case ATTACK:
             if (mEquippedWeapon)
+            {
                 currentAction = mEquippedWeapon->getAttackType();
+                reset();
+            }
             else
-                currentAction = ACTION_ATTACK;
+            {
+                mAttackType = attackType;
+                currentAction = mInfo->getAttack(attackType)->action;
+                reset();
 
-            reset();
+                int rotation = 0;
+                //attack particle effect
+                std::string particleEffect = mInfo->getAttack(attackType)
+                                             ->particleEffect;
+                if (!particleEffect.empty() && Particle::enabled)
+                {
+                    switch (mSpriteDirection)
+                    {
+                        case DIRECTION_DOWN: rotation = 0; break;
+                        case DIRECTION_LEFT: rotation = 90; break;
+                        case DIRECTION_UP: rotation = 180; break;
+                        case DIRECTION_RIGHT: rotation = 270; break;
+                        default: break;
+                    }
+                    Particle *p;
+                    p = particleEngine->addEffect(particleEffect, 0, 0,
+                                                  rotation);
+                    controlParticle(p);
+                }
+            }
+
             break;
         case HURT:
             //currentAction = ACTION_HURT;  // Buggy: makes the player stop
@@ -392,6 +601,7 @@ void Being::setAction(Action action, int attackType)
             break;
         case DEAD:
             currentAction = ACTION_DEAD;
+            sound.playSfx(mInfo->getSound(SOUND_EVENT_DIE));
             break;
         case STAND:
             currentAction = ACTION_STAND;
@@ -564,6 +774,70 @@ void Being::logic()
     }
     else if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
+        if (getType() == MONSTER && (mAction != STAND))
+        {
+            mFrame = (int) ((get_elapsed_time(mWalkTime) * 4) / getWalkSpeed().x);
+
+            if (mFrame >= 4 && mAction != DEAD)
+                nextTile();
+        }
+        else if (getType() == PLAYER)
+        {
+            switch (mAction)
+            {
+                case STAND:
+                case SIT:
+                case DEAD:
+                case HURT:
+                   break;
+
+                case WALK:
+                    mFrame = (int) ((get_elapsed_time(mWalkTime) * 6)
+                             / getWalkSpeed().x);
+                    if (mFrame >= 6)
+                        nextTile();
+                    break;
+
+                case ATTACK:
+                    int rotation = 0;
+                    std::string particleEffect = "";
+                    int frames = 4;
+
+                    if (mEquippedWeapon &&
+                        mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
+                    {
+                        frames = 5;
+                    }
+
+                    mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
+
+                    //attack particle effect
+                    if (mEquippedWeapon)
+                        particleEffect = mEquippedWeapon->getParticleEffect();
+
+                    if (!particleEffect.empty() && Particle::enabled && mFrame == 1)
+                    {
+                        switch (mDirection)
+                        {
+                            case DOWN: rotation = 0; break;
+                            case LEFT: rotation = 90; break;
+                            case UP: rotation = 180; break;
+                            case RIGHT: rotation = 270; break;
+                            default: break;
+                        }
+                        Particle *p;
+                        p = particleEngine->addEffect("graphics/particles/" +
+                                                      particleEffect, 0, 0, rotation);
+                        controlParticle(p);
+                    }
+
+                    if (mFrame >= frames)
+                        nextTile();
+
+                    break;
+            }
+        }
+
         // Update pixel coordinates
         setPosition(mX * 32 + 16 + getXOffset(),
                     mY * 32 + 32 + getYOffset());
@@ -688,9 +962,22 @@ int Being::getHeight() const
 
 void Being::updateCoords()
 {
-    if (mDispName)
-    {
+    if (!mDispName)
+        return;
+
+    // Monster names show above the sprite instead of below it
+    if (getType() == MONSTER)
+        mDispName->adviseXY(getPixelX(),
+                getPixelY() - getHeight() - mDispName->getHeight());
+    else
         mDispName->adviseXY(getPixelX(), getPixelY());
+}
+
+void Being::optionChanged(const std::string &value)
+{
+    if (getType() == PLAYER && value == "visiblenames")
+    {
+        setShowName(config.getValue("visiblenames", 1));
     }
 }
 
@@ -706,21 +993,15 @@ void Being::showName()
     mDispName = 0;
     std::string mDisplayName(mName);
 
-    if (getType() == PLAYER)
+    if (config.getValue("showgender", false))
     {
-        if (config.getValue("showgender", false))
-        {
-            Player* player =  static_cast<Player*>(this);
-            if (player)
-            {
-                if (player->getGender() == GENDER_FEMALE)
-                    mDisplayName += " \u2640";
-                else
-                    mDisplayName += " \u2642";
-            }
-        }
+        if (getGender() == GENDER_FEMALE)
+            mDisplayName += " \u2640";
+        else if (getGender() == GENDER_MALE)
+            mDisplayName += " \u2642";
     }
-    else if (getType() == MONSTER)
+
+    if (getType() == MONSTER)
     {
         if (config.getValue("showMonstersTakedDamage", false))
         {
@@ -730,6 +1011,115 @@ void Being::showName()
 
     mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
                              gcn::Graphics::CENTER, mNameColor);
+
+    updateCoords();
+}
+
+void Being::updateColors()
+{
+    if (getType() == MONSTER)
+    {
+        mNameColor = &userPalette->getColor(UserPalette::MONSTER);
+        mTextColor = &userPalette->getColor(UserPalette::MONSTER);
+    }
+    else if (getType() == NPC)
+    {
+        mNameColor = &userPalette->getColor(UserPalette::NPC);
+        mTextColor = &userPalette->getColor(UserPalette::NPC);
+    }
+    else if (this == player_node)
+    {
+        mNameColor = &userPalette->getColor(UserPalette::SELF);
+        mTextColor = &Theme::getThemeColor(Theme::PLAYER);
+    }
+    else
+    {
+        mTextColor = &userPalette->getColor(Theme::PLAYER);
+
+        if (mIsGM)
+        {
+            mTextColor = &userPalette->getColor(UserPalette::GM);
+            mNameColor = &userPalette->getColor(UserPalette::GM);
+        }
+        else if (mParty && mParty == player_node->getParty())
+        {
+            mNameColor = &userPalette->getColor(UserPalette::PARTY);
+        }
+        else
+        {
+            mNameColor = &userPalette->getColor(UserPalette::PC);
+        }
+    }
+
+    if (mDispName)
+    {
+        mDispName->setColor(mNameColor);
+    }
+}
+
+void Being::setSprite(unsigned int slot, int id, const std::string &color,
+                      bool isWeapon)
+{
+    assert(slot < Net::getCharHandler()->maxSprite());
+
+    if (slot >= size())
+        resize(slot + 1, NULL);
+
+    if (slot >= mSpriteIDs.size())
+        mSpriteIDs.resize(slot + 1, 0);
+
+    if (slot >= mSpriteColors.size())
+        mSpriteColors.resize(slot + 1, "");
+
+    // id = 0 means unequip
+    if (id == 0)
+    {
+        delete at(slot);
+        at(slot) = NULL;
+
+        if (isWeapon)
+            mEquippedWeapon = NULL;
+    }
+    else
+    {
+        std::string filename = ItemDB::get(id).getSprite(mGender);
+        AnimatedSprite *equipmentSprite = NULL;
+
+        if (!filename.empty())
+        {
+            if (!color.empty())
+                filename += "|" + color;
+
+            equipmentSprite = AnimatedSprite::load("graphics/sprites/" +
+                                                   filename);
+        }
+
+        if (equipmentSprite)
+            equipmentSprite->setDirection(getSpriteDirection());
+
+        if (at(slot))
+            delete at(slot);
+
+        at(slot) = equipmentSprite;
+
+        if (isWeapon)
+            mEquippedWeapon = &ItemDB::get(id);
+
+        setAction(mAction);
+    }
+
+    mSpriteIDs[slot] = id;
+    mSpriteColors[slot] = color;
+}
+
+void Being::setSpriteID(unsigned int slot, int id)
+{
+    setSprite(slot, id, mSpriteColors[slot]);
+}
+
+void Being::setSpriteColor(unsigned int slot, const std::string &color)
+{
+    setSprite(slot, mSpriteIDs[slot], color);
 }
 
 int Being::getNumberOfLayers() const
@@ -753,4 +1143,45 @@ void Being::updateName()
 {
     if (mShowName)
         showName();
+}
+
+void Being::setGender(Gender gender)
+{
+    if (gender != mGender)
+    {
+        mGender = gender;
+
+        // Reload all subsprites
+        for (unsigned int i = 0; i < mSpriteIDs.size(); i++)
+        {
+            if (mSpriteIDs.at(i) != 0)
+                setSprite(i, mSpriteIDs.at(i), mSpriteColors.at(i));
+        }
+
+        updateName();
+    }
+}
+
+void Being::setGM(bool gm)
+{
+    mIsGM = gm;
+
+    updateColors();
+}
+
+bool Being::canTalk()
+{
+    return mType == NPC;
+}
+
+void Being::talkTo()
+{
+    Net::getNpcHandler()->talk(mId);
+}
+
+bool Being::isTalking()
+{
+    return NpcDialog::isActive() || BuyDialog::isActive() ||
+           SellDialog::isActive() || BuySellDialog::isActive() ||
+           NpcPostDialog::isActive();
 }

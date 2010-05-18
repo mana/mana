@@ -22,7 +22,7 @@
 #ifndef CHAR_CREATE_DIALOG_H
 #define CHAR_CREATE_DIALOG_H
 
-#include "player.h"
+#include "being.h"
 #include "guichanfwd.h"
 
 #include "gui/charselectdialog.h"
@@ -110,7 +110,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Button *mCreateButton;
         gcn::Button *mCancelButton;
 
-        Player *mPlayer;
+        Being *mPlayer;
         PlayerBox *mPlayerBox;
 
         int mHairStyle;

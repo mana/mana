@@ -22,8 +22,6 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include "player.h"
-
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>

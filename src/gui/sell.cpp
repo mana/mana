@@ -21,7 +21,6 @@
 
 #include "gui/sell.h"
 
-#include "npc.h"
 #include "shopitem.h"
 #include "units.h"
 

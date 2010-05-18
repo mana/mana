@@ -22,9 +22,6 @@
 #include "beingmanager.h"
 
 #include "localplayer.h"
-#include "monster.h"
-#include "npc.h"
-#include "player.h"
 
 #include "gui/viewport.h"
 
@@ -41,12 +38,12 @@ class FindBeingFunctor
     public:
         bool operator() (Being *being)
         {
-            Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
+            Uint16 other_y = y + ((being->getType() == ActorSprite::NPC) ? 1 : 0);
             const Vector &pos = being->getPosition();
             return ((int) pos.x / 32 == x &&
                     ((int) pos.y / 32 == y || (int) pos.y / 32 == other_y) &&
                     being->isAlive() &&
-                    (type == Being::UNKNOWN || being->getType() == type));
+                    (type == ActorSprite::UNKNOWN || being->getType() == type));
         }
 
         Uint16 x, y;
@@ -75,27 +72,9 @@ void BeingManager::setPlayer(LocalPlayer *player)
     mBeings.push_back(player);
 }
 
-Being *BeingManager::createBeing(int id, Being::Type type, int subtype)
+Being *BeingManager::createBeing(int id, ActorSprite::Type type, int subtype)
 {
-    Being *being;
-
-    switch (type)
-    {
-        case Being::PLAYER:
-            being = new Player(id, subtype, mMap);
-            break;
-        case Being::NPC:
-            being = new NPC(id, subtype, mMap);
-            break;
-        case Being::MONSTER:
-            being = new Monster(id, subtype, mMap);
-            break;
-        case Being::UNKNOWN:
-            being = new Being(id, subtype, mMap);
-            break;
-        default:
-            assert(false);
-    }
+    Being *being = new Being(id, type, subtype, mMap);
 
     mBeings.push_back(being);
     return being;
@@ -120,7 +99,7 @@ Being *BeingManager::findBeing(int id) const
     return NULL;
 }
 
-Being *BeingManager::findBeing(int x, int y, Being::Type type) const
+Being *BeingManager::findBeing(int x, int y, ActorSprite::Type type) const
 {
     beingFinder.x = x;
     beingFinder.y = y;
@@ -159,14 +138,14 @@ Being *BeingManager::findBeingByPixel(int x, int y) const
 }
 
 Being *BeingManager::findBeingByName(const std::string &name,
-                                     Being::Type type) const
+                                     ActorSprite::Type type) const
 {
     for (Beings::const_iterator i = mBeings.begin(), i_end = mBeings.end();
          i != i_end; ++i)
     {
         Being *being = (*i);
         if (being->getName() == name &&
-           (type == Being::UNKNOWN || type == being->getType()))
+           (type == ActorSprite::UNKNOWN || type == being->getType()))
             return being;
     }
     return NULL;
@@ -214,7 +193,7 @@ void BeingManager::clear()
 
 Being *BeingManager::findNearestLivingBeing(int x, int y,
                                             int maxTileDist,
-                                            Being::Type type) const
+                                            ActorSprite::Type type) const
 {
     Being *closestBeing = 0;
     int dist = 0;
@@ -230,7 +209,7 @@ Being *BeingManager::findNearestLivingBeing(int x, int y,
         const Vector &pos = being->getPosition();
         int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
 
-        if ((being->getType() == type || type == Being::UNKNOWN)
+        if ((being->getType() == type || type == ActorSprite::UNKNOWN)
                 && (d < dist || !closestBeing)          // it is closer
                 && being->isAlive())       // no dead beings
         {
@@ -243,7 +222,7 @@ Being *BeingManager::findNearestLivingBeing(int x, int y,
 }
 
 Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxDist,
-                                            Being::Type type) const
+                                            ActorSprite::Type type) const
 {
     const Vector &pos = aroundBeing->getPosition();
     return findNearestLivingBeing((int)pos.x, (int)pos.y, maxDist, type);
@@ -270,8 +249,8 @@ void BeingManager::getPlayerNames(std::vector<std::string> &names,
     while (i != mBeings.end())
     {
         Being *being = (*i);
-        if ((being->getType() == Being::PLAYER
-             || (being->getType() == Being::NPC && npcNames))
+        if ((being->getType() == ActorSprite::PLAYER
+             || (being->getType() == ActorSprite::NPC && npcNames))
             && being->getName() != "")
         {
             names.push_back(being->getName());
@@ -287,7 +266,7 @@ void BeingManager::updatePlayerNames()
     while (i != mBeings.end())
     {
         Being *being = (*i);
-        if (being->getType() == Being::PLAYER && being->getName() != "")
+        if (being->getType() == ActorSprite::PLAYER && being->getName() != "")
             being->updateName();
         ++i;
     }

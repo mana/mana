@@ -25,7 +25,6 @@
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
-#include "npc.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"

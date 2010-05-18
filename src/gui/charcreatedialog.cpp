@@ -54,7 +54,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mCharSelectDialog(parent),
     mSlot(slot)
 {
-    mPlayer = new Player(0, 0, NULL);
+    mPlayer = new Being(0, ActorSprite::PLAYER, 0, NULL);
     mPlayer->setGender(GENDER_MALE);
 
     int numberOfHairColors = ColorDB::size();

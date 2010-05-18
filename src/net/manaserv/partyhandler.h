@@ -43,7 +43,7 @@ public:
 
     void join(int partyId);
 
-    void invite(Player *player);
+    void invite(Being *being);
 
     void invite(const std::string &name);
 
@@ -51,7 +51,7 @@ public:
 
     void leave();
 
-    void kick(Player *player);
+    void kick(Being *being);
 
     void kick(const std::string &name);
 

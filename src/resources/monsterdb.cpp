@@ -23,7 +23,7 @@
 
 #include "log.h"
 
-#include "resources/monsterinfo.h"
+#include "resources/beinginfo.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
@@ -35,8 +35,7 @@
 
 namespace
 {
-    MonsterDB::MonsterInfos mMonsterInfos;
-    MonsterInfo mUnknown;
+    BeingInfos mMonsterInfos;
     bool mLoaded = false;
 }
 
@@ -44,17 +43,6 @@ void MonsterDB::load()
 {
     if (mLoaded)
         return;
-
-    {
-        SpriteReference *unknownSprite = new SpriteReference;
-        unknownSprite->sprite = "error.xml";
-        unknownSprite->variant = 0;
-
-        SpriteDisplay display;
-        display.sprites.push_front(unknownSprite);
-
-        mUnknown.setDisplay(display);
-    }
 
     logger->log("Initializing monster database...");
 
@@ -77,7 +65,12 @@ void MonsterDB::load()
             continue;
         }
 
-        MonsterInfo *currentInfo = new MonsterInfo;
+        BeingInfo *currentInfo = new BeingInfo;
+
+        currentInfo->setWalkMask(Map::BLOCKMASK_WALL
+                                 | Map::BLOCKMASK_CHARACTER
+                                 | Map::BLOCKMASK_MONSTER);
+        currentInfo->setBlockType(Map::BLOCKTYPE_MONSTER);
 
         currentInfo->setName(XML::getProperty(monsterNode, "name", _("unnamed")));
 
@@ -85,22 +78,22 @@ void MonsterDB::load()
         targetCursor = XML::getProperty(monsterNode, "targetCursor", "medium");
         if (targetCursor == "small")
         {
-            currentInfo->setTargetCursorSize(Being::TC_SMALL);
+            currentInfo->setTargetCursorSize(ActorSprite::TC_SMALL);
         }
         else if (targetCursor == "medium")
         {
-            currentInfo->setTargetCursorSize(Being::TC_MEDIUM);
+            currentInfo->setTargetCursorSize(ActorSprite::TC_MEDIUM);
         }
         else if (targetCursor == "large")
         {
-            currentInfo->setTargetCursorSize(Being::TC_LARGE);
+            currentInfo->setTargetCursorSize(ActorSprite::TC_LARGE);
         }
         else
         {
             logger->log("MonsterDB: Unknown target cursor type \"%s\" for %s -"
                         "using medium sized one",
                         targetCursor.c_str(), currentInfo->getName().c_str());
-            currentInfo->setTargetCursorSize(Being::TC_MEDIUM);
+            currentInfo->setTargetCursorSize(ActorSprite::TC_MEDIUM);
         }
 
         SpriteDisplay display;
@@ -123,19 +116,19 @@ void MonsterDB::load()
 
                 if (event == "hit")
                 {
-                    currentInfo->addSound(MONSTER_EVENT_HIT, filename);
+                    currentInfo->addSound(SOUND_EVENT_HIT, filename);
                 }
                 else if (event == "miss")
                 {
-                    currentInfo->addSound(MONSTER_EVENT_MISS, filename);
+                    currentInfo->addSound(SOUND_EVENT_MISS, filename);
                 }
                 else if (event == "hurt")
                 {
-                    currentInfo->addSound(MONSTER_EVENT_HURT, filename);
+                    currentInfo->addSound(SOUND_EVENT_HURT, filename);
                 }
                 else if (event == "die")
                 {
-                    currentInfo->addSound(MONSTER_EVENT_DIE, filename);
+                    currentInfo->addSound(SOUND_EVENT_DIE, filename);
                 }
                 else
                 {
@@ -154,7 +147,8 @@ void MonsterDB::load()
                         XML::getProperty(spriteNode, "action", "attack"));
                 const std::string missileParticle = XML::getProperty(
                         spriteNode, "missile-particle", "");
-                currentInfo->addMonsterAttack(id, particleEffect, spriteAction, missileParticle);
+                currentInfo->addAttack(id, spriteAction,
+                                       particleEffect, missileParticle);
             }
             else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
             {
@@ -179,17 +173,17 @@ void MonsterDB::unload()
 }
 
 
-const MonsterInfo &MonsterDB::get(int id)
+BeingInfo *MonsterDB::get(int id)
 {
-    MonsterInfoIterator i = mMonsterInfos.find(id);
+    BeingInfoIterator i = mMonsterInfos.find(id);
 
     if (i == mMonsterInfos.end())
     {
         logger->log("MonsterDB: Warning, unknown monster ID %d requested", id);
-        return mUnknown;
+        return BeingInfo::Unknown;
     }
     else
     {
-        return *(i->second);
+        return i->second;
     }
 }

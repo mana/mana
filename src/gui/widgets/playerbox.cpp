@@ -22,9 +22,9 @@
 #include "gui/widgets/playerbox.h"
 
 #include "animatedsprite.h"
+#include "being.h"
 #include "configuration.h"
 #include "graphics.h"
-#include "player.h"
 
 #include "gui/theme.h"
 
@@ -36,8 +36,8 @@ int PlayerBox::instances = 0;
 float PlayerBox::mAlpha = 1.0;
 ImageRect PlayerBox::background;
 
-PlayerBox::PlayerBox(const Player *player):
-    mPlayer(player)
+PlayerBox::PlayerBox(const Being *being):
+    mBeing(being)
 {
     setFrameSize(2);
 
@@ -72,7 +72,7 @@ PlayerBox::~PlayerBox()
 {
     instances--;
 
-    mPlayer = 0;
+    mBeing = 0;
 
     if (instances == 0)
     {
@@ -82,13 +82,13 @@ PlayerBox::~PlayerBox()
 
 void PlayerBox::draw(gcn::Graphics *graphics)
 {
-    if (mPlayer)
+    if (mBeing)
     {
         // Draw character
         const int bs = getFrameSize();
         const int x = getWidth() / 2 + bs - 16;
         const int y = getHeight() - bs - 32;
-        mPlayer->drawSpriteAt(static_cast<Graphics*>(graphics), x, y);
+        mBeing->drawSpriteAt(static_cast<Graphics*>(graphics), x, y);
     }
 
     if (config.getValue("guialpha", 0.8) != mAlpha)

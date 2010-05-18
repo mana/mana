@@ -28,7 +28,6 @@
 #include "item.h"
 #include "localplayer.h"
 #include "log.h"
-#include "npc.h"
 #include "playerrelations.h"
 
 #include "gui/chat.h"
@@ -76,7 +75,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
     switch (being->getType())
     {
-        case Being::PLAYER:
+        case ActorSprite::PLAYER:
             {
                 // Players can be traded with.
                 mBrowserBox->addRow(strprintf("@@trade|%s@@",
@@ -145,7 +144,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
             }
             break;
 
-        case Being::NPC:
+        case ActorSprite::NPC:
             // NPCs can be talked to (single option, candidate for removal
             // unless more options would be added)
             mBrowserBox->addRow(strprintf("@@talk|%s@@",
@@ -153,7 +152,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                                                     name.c_str()).c_str()));
             break;
 
-        case Being::MONSTER:
+        case ActorSprite::MONSTER:
             {
                 // Monsters can be attacked
                 mBrowserBox->addRow(strprintf("@@attack|%s@@",
@@ -203,13 +202,14 @@ void PopupMenu::handleLink(const std::string &link)
     Being *being = beingManager->findBeing(mBeingId);
 
     // Talk To action
-    if (link == "talk" && being && being->getType() == Being::NPC)
+    if (link == "talk" && being && being->canTalk())
     {
-        static_cast<NPC*>(being)->talk();
+        being->talkTo();
     }
 
     // Trade action
-    else if (link == "trade" && being && being->getType() == Being::PLAYER)
+    else if (link == "trade" && being &&
+             being->getType() == ActorSprite::PLAYER)
     {
         Net::getTradeHandler()->request(being);
         tradePartnerName = being->getName();
@@ -223,27 +223,32 @@ void PopupMenu::handleLink(const std::string &link)
     {
         chatWindow->addInputText("/w \"" + being->getName() + "\" ");
     }
-    else if (link == "unignore" && being && being->getType() == Being::PLAYER)
+    else if (link == "unignore" && being &&
+             being->getType() == ActorSprite::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::NEUTRAL);
     }
 
-    else if (link == "ignore" && being && being->getType() == Being::PLAYER)
+    else if (link == "ignore" && being &&
+             being->getType() == ActorSprite::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::IGNORED);
     }
 
-    else if (link == "disregard" && being && being->getType() == Being::PLAYER)
+    else if (link == "disregard" && being &&
+             being->getType() == ActorSprite::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::DISREGARDED);
     }
 
-    else if (link == "friend" && being && being->getType() == Being::PLAYER)
+    else if (link == "friend" && being &&
+             being->getType() == ActorSprite::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::FRIEND);
     }
     // Guild action
-    else if (link == "guild" && being && being->getType() == Being::PLAYER)
+    else if (link == "guild" && being &&
+             being->getType() == ActorSprite::PLAYER)
     {
         player_node->inviteToGuild(being);
     }
@@ -313,9 +318,10 @@ void PopupMenu::handleLink(const std::string &link)
                                      mItem);
     }
 
-    else if (link == "party" && being && being->getType() == Being::PLAYER)
+    else if (link == "party" && being &&
+             being->getType() == ActorSprite::PLAYER)
     {
-        Net::getPartyHandler()->invite(static_cast<Player*>(being));
+        Net::getPartyHandler()->invite(being);
     }
 
     else if (link == "name" && being)
@@ -326,8 +332,8 @@ void PopupMenu::handleLink(const std::string &link)
 
     else if (link == "admin-kick" &&
              being &&
-             (being->getType() == Being::PLAYER ||
-              being->getType() == Being::MONSTER))
+             (being->getType() == ActorSprite::PLAYER ||
+              being->getType() == ActorSprite::MONSTER))
     {
         Net::getAdminHandler()->kick(being->getId());
     }

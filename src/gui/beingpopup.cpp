@@ -20,8 +20,8 @@
 
 #include "gui/beingpopup.h"
 
+#include "being.h"
 #include "graphics.h"
-#include "player.h"
 #include "units.h"
 
 #include "gui/gui.h"
@@ -57,21 +57,21 @@ BeingPopup::~BeingPopup()
 {
 }
 
-void BeingPopup::show(int x, int y, Player *p)
+void BeingPopup::show(int x, int y, Being *b)
 {
-    if (!p)
+    if (!b)
     {
         setVisible(false);
         return;
     }
 
-    if (!(p->getPartyName().empty()))
+    if (!(b->getPartyName().empty()))
     {
-        mBeingName->setCaption(p->getName());
+        mBeingName->setCaption(b->getName());
         mBeingName->adjustSize();
 
         mBeingParty->setCaption(strprintf(_("Party: %s"),
-                                          p->getPartyName().c_str()));
+                                          b->getPartyName().c_str()));
         mBeingParty->adjustSize();
 
         int minWidth = std::max(mBeingName->getWidth(),

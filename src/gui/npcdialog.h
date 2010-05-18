@@ -23,7 +23,6 @@
 #define NPCDIALOG_H
 
 #include "configlistener.h"
-#include "npc.h"
 
 #include "gui/widgets/window.h"
 

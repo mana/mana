@@ -21,8 +21,6 @@
 
 #include "gui/npcpostdialog.h"
 
-#include "npc.h"
-
 #include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/label.h"

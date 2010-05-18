@@ -228,9 +228,9 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      net/messagein.h \
 	      net/messageout.cpp \
 	      net/messageout.h \
-	      net/npchandler.h \
 	      net/net.cpp \
 	      net/net.h \
+	      net/npchandler.h \
 	      net/partyhandler.h \
 	      net/playerhandler.h \
 	      net/serverinfo.h \
@@ -245,6 +245,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      resources/ambientoverlay.h \
 	      resources/animation.cpp \
 	      resources/animation.h \
+	      resources/beinginfo.cpp \
+	      resources/beinginfo.h \
 	      resources/colordb.cpp \
 	      resources/colordb.h \
 	      resources/dye.cpp \
@@ -267,8 +269,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      resources/mapreader.h \
 	      resources/monsterdb.cpp \
 	      resources/monsterdb.h \
-	      resources/monsterinfo.cpp \
-	      resources/monsterinfo.h \
 	      resources/music.cpp \
 	      resources/music.h \
 	      resources/npcdb.cpp \
@@ -368,10 +368,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      main.h \
 	      map.cpp\
 	      map.h \
-	      monster.cpp\
-	      monster.h \
-	      npc.cpp \
-	      npc.h \
 	      openglgraphics.cpp\
 	      openglgraphics.h \
 	      particle.cpp \
@@ -383,8 +379,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      particleemitterprop.h \
 	      party.cpp \
 	      party.h \
-	      player.cpp \
-	      player.h \
 	      playerrelations.cpp \
 	      playerrelations.h \
 	      position.cpp \

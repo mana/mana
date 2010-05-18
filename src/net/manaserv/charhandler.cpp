@@ -328,17 +328,17 @@ void CharHandler::switchCharacter()
     gameHandler->quit(true);
 }
 
-int CharHandler::baseSprite() const
+unsigned int CharHandler::baseSprite() const
 {
     return SPRITE_BASE;
 }
 
-int CharHandler::hairSprite() const
+unsigned int CharHandler::hairSprite() const
 {
     return SPRITE_HAIR;
 }
 
-int CharHandler::maxSprite() const
+unsigned int CharHandler::maxSprite() const
 {
     return SPRITE_VECTOREND;
 }

@@ -22,7 +22,6 @@
 #include "guild.h"
 
 #include "beingmanager.h"
-#include "player.h"
 
 GuildMember::GuildMember(Guild *guild, int id, const std::string &name):
         Avatar(name), mId(id), mGuild(guild)
@@ -151,9 +150,7 @@ void Guild::removeFromMembers()
     while(itr != itr_end)
     {
         Being *b = beingManager->findBeing((*itr)->getID());
-
-        if (b->getType() == Being::PLAYER)
-            static_cast<Player*>(b)->removeGuild(getId());
+        b->removeGuild(getId());
         ++itr;
     }
 }

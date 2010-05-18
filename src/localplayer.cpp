@@ -32,7 +32,6 @@
 #include "item.h"
 #include "log.h"
 #include "map.h"
-#include "monster.h"
 #include "particle.h"
 #include "simpleanimation.h"
 #include "sound.h"
@@ -80,7 +79,7 @@ const short walkingKeyboardDelay = 1000;
 LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
-    Player(id, subtype, 0),
+    Being(id, PLAYER, subtype, 0),
     mEquipment(new Equipment),
     mAttackRange(0),
     mTargetTime(-1),
@@ -112,9 +111,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mAwayListener = new AwayListener();
 
     mUpdateName = true;
-
-    mTextColor = &Theme::getThemeColor(Theme::PLAYER);
-    mNameColor = &userPalette->getColor(UserPalette::SELF);
 
     config.addListener("showownname", this);
     setShowName(config.getValue("showownname", 1));
@@ -187,7 +183,7 @@ void LocalPlayer::logic()
 
     if (mTarget)
     {
-        if (mTarget->getType() == Being::NPC)
+        if (mTarget->getType() == ActorSprite::NPC)
         {
             // NPCs are always in range
             mTarget->setTargetType(TCT_IN_RANGE);
@@ -219,7 +215,7 @@ void LocalPlayer::logic()
         }
     }
 
-    Player::logic();
+    Being::logic();
 }
 
 void LocalPlayer::setAction(Action action, int attackType)
@@ -230,12 +226,7 @@ void LocalPlayer::setAction(Action action, int attackType)
         setTarget(NULL);
     }
 
-    Player::setAction(action, attackType);
-}
-
-void LocalPlayer::setGM(bool gm)
-{
-    mIsGM = gm;
+    Being::setAction(action, attackType);
 }
 
 void LocalPlayer::setGMLevel(int level)
@@ -621,7 +612,7 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
         }
 
 
-        Player::nextTile();
+        Being::nextTile();
     }
     else
     {
@@ -660,7 +651,6 @@ void LocalPlayer::inviteToGuild(Being *being)
 {
     if (being->getType() != PLAYER)
         return;
-    Player *player = static_cast<Player*>(being);
 
     // TODO: Allow user to choose which guild to invite being to
     // For now, just invite to the first guild you have permissions to invite with
@@ -670,7 +660,7 @@ void LocalPlayer::inviteToGuild(Being *being)
     {
         if (checkInviteRights(itr->second->getName()))
         {
-            Net::getGuildHandler()->invite(itr->second->getId(), player);
+            Net::getGuildHandler()->invite(itr->second->getId(), being);
             return;
         }
     }
@@ -746,12 +736,12 @@ void LocalPlayer::setTarget(Being *target)
     if (mTarget)
         mTarget->untarget();
 
-    if (mTarget && mTarget->getType() == Being::MONSTER)
+    if (mTarget && mTarget->getType() == ActorSprite::MONSTER)
         mTarget->setShowName(false);
 
     mTarget = target;
 
-    if (target && target->getType() == Being::MONSTER)
+    if (target && target->getType() == ActorSprite::MONSTER)
         target->setShowName(true);
 }
 
@@ -952,7 +942,7 @@ void LocalPlayer::attack(Being *target, bool keep)
 
     mKeepAttacking = keep;
 
-    if (!target || target->getType() == Being::NPC)
+    if (!target || target->getType() == ActorSprite::NPC)
         return;
 
     if (mTarget != target || !mTarget)

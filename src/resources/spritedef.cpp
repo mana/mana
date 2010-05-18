@@ -30,9 +30,12 @@
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
+#include "utils/dtor.h"
 #include "utils/xml.h"
 
 #include <set>
+
+SpriteReference *SpriteReference::Empty = new SpriteReference("error.xml", 0);
 
 Action *SpriteDef::getAction(SpriteAction action) const
 {

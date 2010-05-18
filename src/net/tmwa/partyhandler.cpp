@@ -145,10 +145,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
                 if (!(being = beingManager->findBeing(id)))
                 {
-                    if (being->getType() == Being::PLAYER)
-                    {
-                        nick = being->getName();
-                    }
+                    nick = being->getName();
                 }
 
                 socialWindow->showPartyInvite(partyName, nick);
@@ -253,8 +250,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                                     nick.c_str()), BY_SERVER);
 
                     Being *b = beingManager->findBeing(id);
-                    if (b->getType() == Being::PLAYER)
-                        static_cast<Player*>(b)->setParty(NULL);
+                    b->setParty(NULL);
 
                     taParty->removeMember(id);
                 }
@@ -276,7 +272,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 // lets make sure they get the party hilight.
                 if (Being *b = beingManager->findBeing(id))
                 {
-                    static_cast<Player*>(b)->setParty(taParty);
+                    b->setParty(taParty);
                 }
             }
             break;
@@ -319,10 +315,10 @@ void PartyHandler::join(int partyId)
     // TODO?
 }
 
-void PartyHandler::invite(Player *player)
+void PartyHandler::invite(Being *being)
 {
     MessageOut outMsg(CMSG_PARTY_INVITE);
-    outMsg.writeInt32(player->getId());
+    outMsg.writeInt32(being->getId());
 }
 
 void PartyHandler::invite(const std::string &name)
@@ -353,10 +349,10 @@ void PartyHandler::leave()
     MessageOut outMsg(CMSG_PARTY_LEAVE);
 }
 
-void PartyHandler::kick(Player *player)
+void PartyHandler::kick(Being *being)
 {
     MessageOut outMsg(CMSG_PARTY_KICK);
-    outMsg.writeInt32(player->getId());
+    outMsg.writeInt32(being->getId());
     outMsg.writeString("", 24); //Unused
 }
 

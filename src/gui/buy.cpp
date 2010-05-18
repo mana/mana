@@ -21,6 +21,9 @@
 
 #include "gui/buy.h"
 
+#include "shopitem.h"
+#include "units.h"
+
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"
@@ -30,10 +33,6 @@
 #include "gui/widgets/shopitems.h"
 #include "gui/widgets/shoplistbox.h"
 #include "gui/widgets/slider.h"
-
-#include "npc.h"
-#include "shopitem.h"
-#include "units.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"

@@ -37,7 +37,6 @@
 #include "localplayer.h"
 #include "log.h"
 #include "map.h"
-#include "npc.h"
 #include "particle.h"
 #include "playerrelations.h"
 #include "sound.h"
@@ -207,7 +206,7 @@ static void destroyGuiWindows()
 Game *Game::mInstance = 0;
 
 Game::Game():
-    mLastTarget(Being::UNKNOWN),
+    mLastTarget(ActorSprite::UNKNOWN),
     mCurrentMap(0), mMapName("")
 {
     assert(!mInstance);
@@ -756,7 +755,7 @@ void Game::handleInput()
         return;
 
     // Moving player around
-    if (player_node->isAlive() && !NPC::isTalking() &&
+    if (player_node->isAlive() && !Being::isTalking() &&
         !chatWindow->isInputFocused() && !quitDialog)
     {
         // Get the state of the keyboard keys
@@ -835,7 +834,7 @@ void Game::handleInput()
             {
                 // Only auto target Monsters
                 target = beingManager->findNearestLivingBeing(player_node,
-                         20, Being::MONSTER);
+                         20, ActorSprite::MONSTER);
             }
             player_node->attack(target, newTarget);
         }
@@ -847,14 +846,14 @@ void Game::handleInput()
                     (joystick && joystick->buttonPressed(3))) &&
                 !keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
-            Being::Type currentTarget = Being::UNKNOWN;
+            ActorSprite::Type currentTarget = ActorSprite::UNKNOWN;
             if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
                     (joystick && joystick->buttonPressed(3)))
-                currentTarget = Being::MONSTER;
+                currentTarget = ActorSprite::MONSTER;
             else if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
-                currentTarget = Being::PLAYER;
+                currentTarget = ActorSprite::PLAYER;
             else if (keyboard.isKeyActive(keyboard.KEY_TARGET_NPC))
-                currentTarget = Being::NPC;
+                currentTarget = ActorSprite::NPC;
 
             Being *target = beingManager->findNearestLivingBeing(player_node,
                                                     20, currentTarget);
@@ -868,7 +867,7 @@ void Game::handleInput()
         }
         else
         {
-            mLastTarget = Being::UNKNOWN; // Reset last target
+            mLastTarget = ActorSprite::UNKNOWN; // Reset last target
         }
 
         // Talk to the nearest NPC if 't' pressed
@@ -879,8 +878,8 @@ void Game::handleInput()
 
             if (target)
             {
-                if (target->getType() == Being::NPC)
-                    static_cast<NPC*>(target)->talk();
+                if (target->canTalk())
+                    target->talkTo();
             }
         }
 

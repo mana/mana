@@ -35,6 +35,13 @@ class ImageSet;
 
 struct SpriteReference
 {
+    static SpriteReference *Empty;
+
+    SpriteReference() {}
+
+    SpriteReference(std::string sprite, int variant)
+    { this->sprite = sprite; this->variant = variant; }
+
     std::string sprite;
     int variant;
 };

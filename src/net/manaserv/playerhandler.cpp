@@ -28,7 +28,6 @@
 #include "localplayer.h"
 #include "log.h"
 #include "particle.h"
-#include "npc.h"
 
 #include "gui/chat.h"
 #include "gui/gui.h"

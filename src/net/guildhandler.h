@@ -23,9 +23,10 @@
 #define GUILDHANDLER_H
 
 #include "guild.h"
-#include "player.h"
 
 #include <iosfwd>
+
+class Being;
 
 namespace Net {
 
@@ -40,7 +41,7 @@ class GuildHandler
 
         virtual void invite(int guildId, const std::string &name) = 0;
 
-        virtual void invite(int guildId, Player *player) = 0;
+        virtual void invite(int guildId, Being *being) = 0;
 
         virtual void inviteResponse(int guildId, bool response) = 0;
 

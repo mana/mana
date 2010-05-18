@@ -20,11 +20,9 @@
 
 #include "gui/socialwindow.h"
 
-#include "beingmanager.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "party.h"
-#include "player.h"
 
 #include "gui/confirmdialog.h"
 #include "gui/okdialog.h"

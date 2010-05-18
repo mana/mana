@@ -21,8 +21,6 @@
 
 #include "buysell.h"
 
-#include "npc.h"
-
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"

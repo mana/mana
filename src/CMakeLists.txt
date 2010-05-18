@@ -346,6 +346,8 @@ SET(SRCS
     resources/ambientoverlay.h
     resources/animation.cpp
     resources/animation.h
+    resources/beinginfo.cpp
+    resources/beinginfo.h
     resources/colordb.cpp
     resources/colordb.h
     resources/dye.cpp
@@ -368,8 +370,6 @@ SET(SRCS
     resources/mapreader.h
     resources/monsterdb.cpp
     resources/monsterdb.h
-    resources/monsterinfo.cpp
-    resources/monsterinfo.h
     resources/music.cpp
     resources/music.h
     resources/npcdb.cpp
@@ -467,10 +467,6 @@ SET(SRCS
     main.h
     map.cpp
     map.h
-    monster.cpp
-    monster.h
-    npc.cpp
-    npc.h
     openglgraphics.cpp
     openglgraphics.h
     particle.cpp
@@ -482,8 +478,6 @@ SET(SRCS
     particleemitterprop.h
     party.cpp
     party.h
-    player.cpp
-    player.h
     playerrelations.cpp
     playerrelations.h
     position.cpp

@@ -312,8 +312,6 @@
 ./src/Makefile.am
 ./src/map.cpp
 ./src/map.h
-./src/monster.cpp
-./src/monster.h
 ./src/net/adminhandler.h
 ./src/net/charhandler.cpp
 ./src/net/charhandler.h
@@ -433,8 +431,6 @@
 ./src/net/tmwa/tradehandler.h
 ./src/net/tradehandler.h
 ./src/net/worldinfo.h
-./src/npc.cpp
-./src/npc.h
 ./src/openglgraphics.cpp
 ./src/openglgraphics.h
 ./src/particlecontainer.cpp
@@ -446,8 +442,6 @@
 ./src/particle.h
 ./src/party.cpp
 ./src/party.h
-./src/player.cpp
-./src/player.h
 ./src/playerrelations.cpp
 ./src/playerrelations.h
 ./src/position.cpp
@@ -461,6 +455,8 @@
 ./src/resources/ambientoverlay.h
 ./src/resources/animation.cpp
 ./src/resources/animation.h
+./src/resources/beinginfo.cpp
+./src/resources/beinginfo.h
 ./src/resources/colordb.cpp
 ./src/resources/colordb.h
 ./src/resources/dye.cpp
@@ -483,8 +479,6 @@
 ./src/resources/mapreader.h
 ./src/resources/monsterdb.cpp
 ./src/resources/monsterdb.h
-./src/resources/monsterinfo.cpp
-./src/resources/monsterinfo.h
 ./src/resources/music.cpp
 ./src/resources/music.h
 ./src/resources/npcdb.cpp

@@ -75,11 +75,11 @@ class CharHandler
 
         virtual void switchCharacter() = 0;
 
-        virtual int baseSprite() const = 0;
+        virtual unsigned int baseSprite() const = 0;
 
-        virtual int hairSprite() const = 0;
+        virtual unsigned int hairSprite() const = 0;
 
-        virtual int maxSprite() const = 0;
+        virtual unsigned int maxSprite() const = 0;
 
         virtual ~CharHandler() {}
 

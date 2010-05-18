@@ -27,7 +27,6 @@
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
-#include "npc.h"
 #include "particle.h"
 
 #include "gui/okdialog.h"
@@ -121,7 +120,7 @@ Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
     return speedInTicks;
 }
 
-static void handleLooks(Player *being, Net::MessageIn &msg)
+static void handleLooks(Being *being, Net::MessageIn &msg)
 {
     // Order of sent slots. Has to be in sync with the server code.
     static int const nb_slots = 4;
@@ -170,15 +169,14 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
             }
             else
             {
-                being = beingManager->createBeing(id, Being::PLAYER, 0);
+                being = beingManager->createBeing(id, ActorSprite::PLAYER, 0);
                 being->setName(name);
             }
-            Player *p = static_cast< Player * >(being);
             int hs = msg.readInt8(), hc = msg.readInt8();
-            p->setSprite(SPRITE_HAIR, hs * -1, ColorDB::get(hc));
-            p->setGender(msg.readInt8() == GENDER_MALE ?
-                    GENDER_MALE : GENDER_FEMALE);
-            handleLooks(p, msg);
+            being->setSprite(SPRITE_HAIR, hs * -1, ColorDB::get(hc));
+            being->setGender(msg.readInt8() == GENDER_MALE ?
+                             GENDER_MALE : GENDER_FEMALE);
+            handleLooks(being, msg);
         } break;
 
         case OBJECT_MONSTER:
@@ -186,7 +184,7 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
         {
             int subtype = msg.readInt16();
             being = beingManager->createBeing(id, type == OBJECT_MONSTER ?
-                                    Being::MONSTER : Being::NPC, subtype);
+                            ActorSprite::MONSTER : ActorSprite::NPC, subtype);
             std::string name = msg.readString();
             if (name.length() > 0) being->setName(name);
         } break;
@@ -330,15 +328,14 @@ void BeingHandler::handleBeingActionChangeMessage(Net::MessageIn &msg)
 void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
-    if (!being || being->getType() != Being::PLAYER)
+    if (!being || being->getType() != ActorSprite::PLAYER)
         return;
-    Player *player = static_cast<Player *>(being);
-    handleLooks(player, msg);
+    handleLooks(being, msg);
     if (msg.getUnreadLength())
     {
         int style = msg.readInt16();
         int color = msg.readInt16();
-        player->setSprite(SPRITE_HAIR, style * -1, ColorDB::get(color));
+        being->setSprite(SPRITE_HAIR, style * -1, ColorDB::get(color));
     }
 }
 

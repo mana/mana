@@ -22,9 +22,9 @@
 #ifndef CHAR_SELECT_H
 #define CHAR_SELECT_H
 
+#include "being.h"
 #include "guichanfwd.h"
 #include "main.h"
-#include "player.h"
 
 #include "gui/widgets/window.h"
 

@@ -401,10 +401,10 @@ void GuildHandler::invite(int guildId, const std::string &name)
     // TODO?
 }
 
-void GuildHandler::invite(int guildId, Player *player)
+void GuildHandler::invite(int guildId, Being *being)
 {
     MessageOut msg(CMSG_GUILD_INVITE);
-    msg.writeInt32(player->getId());
+    msg.writeInt32(being->getId());
     msg.writeInt32(0); // Unused
     msg.writeInt32(0); // Unused
 }

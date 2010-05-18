@@ -22,7 +22,6 @@
 #include "gui/npcdialog.h"
 
 #include "configuration.h"
-#include "npc.h"
 
 #include "gui/setup.h"
 

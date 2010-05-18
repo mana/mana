@@ -24,7 +24,6 @@
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
-#include "npc.h"
 #include "units.h"
 
 #include "gui/buy.h"

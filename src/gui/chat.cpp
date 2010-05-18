@@ -273,7 +273,7 @@ void ChatWindow::doPresent()
     for (Beings::const_iterator bi = beings.begin(), be = beings.end();
          bi != be; ++bi)
     {
-        if ((*bi)->getType() == Being::PLAYER)
+        if ((*bi)->getType() == ActorSprite::PLAYER)
         {
             if (!response.empty())
             {

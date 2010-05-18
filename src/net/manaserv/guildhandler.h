@@ -41,7 +41,7 @@ public:
 
     void invite(int guildId, const std::string &name);
 
-    void invite(int guidId, Player *player);
+    void invite(int guidId, Being *being);
 
     void inviteResponse(int guidId, bool response);
 

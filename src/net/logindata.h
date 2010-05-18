@@ -22,7 +22,7 @@
 #ifndef LOGINDATA_H
 #define LOGINDATA_H
 
-#include "player.h"
+#include "being.h"
 
 #include "net/serverinfo.h"
 

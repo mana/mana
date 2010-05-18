@@ -24,7 +24,7 @@
 
 #include <string>
 
-class Player;
+class Being;
 
 enum PartyShare {
     PARTY_SHARE_UNKNOWN = -1,
@@ -42,7 +42,7 @@ class PartyHandler
 
         virtual void join(int partyId) = 0;
 
-        virtual void invite(Player *player) = 0;
+        virtual void invite(Being *player) = 0;
 
         virtual void invite(const std::string &name) = 0;
 
@@ -50,7 +50,7 @@ class PartyHandler
 
         virtual void leave() = 0;
 
-        virtual void kick(Player *player) = 0;
+        virtual void kick(Being *player) = 0;
 
         virtual void kick(const std::string &name) = 0;
 

@@ -65,11 +65,11 @@ class CharHandler : public MessageHandler, public Net::CharHandler
 
         void switchCharacter();
 
-        int baseSprite() const;
+        unsigned int baseSprite() const;
 
-        int hairSprite() const;
+        unsigned int hairSprite() const;
 
-        int maxSprite() const;
+        unsigned int maxSprite() const;
 
         void clear();
 

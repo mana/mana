@@ -40,7 +40,7 @@ class GuildHandler : public Net::GuildHandler, public MessageHandler
 
         void invite(int guildId, const std::string &name);
 
-        void invite(int guildId, Player *player);
+        void invite(int guildId, Being *being);
 
         void inviteResponse(int guildId, bool response);
 

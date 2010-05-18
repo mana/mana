@@ -314,17 +314,17 @@ void CharServerHandler::switchCharacter()
     outMsg.writeInt8(1);
 }
 
-int CharServerHandler::baseSprite() const
+unsigned int CharServerHandler::baseSprite() const
 {
     return SPRITE_BASE;
 }
 
-int CharServerHandler::hairSprite() const
+unsigned int CharServerHandler::hairSprite() const
 {
     return SPRITE_HAIR;
 }
 
-int CharServerHandler::maxSprite() const
+unsigned int CharServerHandler::maxSprite() const
 {
     return SPRITE_VECTOREND;
 }

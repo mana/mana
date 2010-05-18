@@ -25,7 +25,6 @@
 #include "beingmanager.h"
 #include "configuration.h"
 #include "graphics.h"
-#include "player.h"
 #include "playerrelations.h"
 
 #include "utils/dtor.h"
@@ -205,7 +204,7 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(const std::string &
 
 bool PlayerRelationsManager::hasPermission(Being *being, unsigned int flags)
 {
-    if (being->getType() == Being::PLAYER)
+    if (being->getType() == ActorSprite::PLAYER)
         return hasPermission(being->getName(), flags) == flags;
     return true;
 }
@@ -221,9 +220,10 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
         // execute `ignore' strategy, if possible
         if (mIgnoreStrategy)
         {
-            Being *b = beingManager->findBeingByName(name, Being::PLAYER);
-            if (b && b->getType() == Being::PLAYER)
-                mIgnoreStrategy->ignore(static_cast<Player *>(b), rejections);
+            Being *b = beingManager->findBeingByName(name,
+                                                     ActorSprite::PLAYER);
+            if (b && b->getType() == ActorSprite::PLAYER)
+                mIgnoreStrategy->ignore(b, rejections);
         }
     }
 
@@ -304,7 +304,7 @@ public:
         mShortName = PLAYER_IGNORE_STRATEGY_NOP;
     }
 
-    virtual void ignore(Player *player, unsigned int flags)
+    virtual void ignore(Being *being, unsigned int flags)
     {
     }
 };
@@ -318,9 +318,9 @@ public:
         mShortName = "dotdotdot";
     }
 
-    virtual void ignore(Player *player, unsigned int flags)
+    virtual void ignore(Being *being, unsigned int flags)
      {
-         player->setSpeech("...", 500);
+         being->setSpeech("...", 500);
      }
 };
 
@@ -334,9 +334,9 @@ public:
         mShortName = "blinkname";
     }
 
-    virtual void ignore(Player *player, unsigned int flags)
+    virtual void ignore(Being *being, unsigned int flags)
     {
-        player->flashName(200);
+        being->flashName(200);
     }
 };
 
@@ -350,9 +350,9 @@ public:
         mShortName = shortname;
     }
 
-    virtual void ignore(Player *player, unsigned int flags)
+    virtual void ignore(Being *being, unsigned int flags)
      {
-         player->setEmote(mEmotion, IGNORE_EMOTE_TIME);
+         being->setEmote(mEmotion, IGNORE_EMOTE_TIME);
      }
 private:
     int mEmotion;

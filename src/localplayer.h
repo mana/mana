@@ -22,7 +22,7 @@
 #ifndef LOCALPLAYER_H
 #define LOCALPLAYER_H
 
-#include "player.h"
+#include "being.h"
 
 #include "gui/userpalette.h"
 
@@ -109,7 +109,7 @@ enum
 /**
  * The local player character.
  */
-class LocalPlayer : public Player
+class LocalPlayer : public Being
 {
     public:
         /**
@@ -193,11 +193,6 @@ class LocalPlayer : public Player
         { return mSpecials; }
 
         void attack(Being *target = NULL, bool keep = false);
-
-        /**
-         * Triggers whether or not to show the name as a GM name.
-         */
-        virtual void setGM(bool gm);
 
         void setGMLevel(int level);
 
@@ -403,7 +398,7 @@ class LocalPlayer : public Player
         std::string getFollow() const { return mPlayerFollowed; }
 
         /**
-         * Tells the engine wether to check
+         * Tells the engine whether to check
          * if the Player Name is to be displayed.
          */
         void setCheckNameSetting(bool checked) { mUpdateName = checked; }
@@ -423,9 +418,6 @@ class LocalPlayer : public Player
         bool mUpdateName;
 
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
-
-        // Colors don't change for local player
-        virtual void updateColors() {}
 
         void startWalking(unsigned char dir);
 

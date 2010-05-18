@@ -22,7 +22,7 @@
 #ifndef ITEMINFO_H
 #define ITEMINFO_H
 
-#include "player.h"
+#include "being.h"
 
 #include "resources/spritedef.h"
 

@@ -49,7 +49,7 @@ class BeingManager
         /**
          * Create a being and add it to the list of beings.
          */
-        Being *createBeing(int id, Being::Type type, int subtype);
+        Being *createBeing(int id, ActorSprite::Type type, int subtype);
 
         /**
          * Remove a Being.
@@ -64,7 +64,8 @@ class BeingManager
         /**
          * Returns a being at specific coordinates.
          */
-        Being *findBeing(int x, int y, Being::Type type = Being::UNKNOWN) const;
+        Being *findBeing(int x, int y,
+                         ActorSprite::Type type = ActorSprite::UNKNOWN) const;
         Being *findBeingByPixel(int x, int y) const;
 
         /**
@@ -77,7 +78,7 @@ class BeingManager
          * @param type        The type of being to look for.
          */
         Being *findNearestLivingBeing(int x, int y, int maxTileDist,
-                                      Being::Type type = Being::UNKNOWN) const;
+                              ActorSprite::Type type = Being::UNKNOWN) const;
 
         /**
          * Returns a being nearest to another being.
@@ -88,13 +89,13 @@ class BeingManager
          * @param type        The type of being to look for.
          */
         Being *findNearestLivingBeing(Being *aroundBeing, int maxTileDist,
-                                       Being::Type type = Being::UNKNOWN) const;
+                               ActorSprite::Type type = Being::UNKNOWN) const;
 
         /**
          * Finds a being by name and (optionally) by type.
          */
         Being *findBeingByName(const std::string &name,
-                               Being::Type type = Being::UNKNOWN) const;
+                               ActorSprite::Type type = Being::UNKNOWN) const;
 
         /**
          * Returns the whole list of beings.

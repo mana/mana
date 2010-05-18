@@ -24,8 +24,8 @@
 
 #include <guichan/widgets/scrollarea.hpp>
 
+class Being;
 class ImageRect;
-class Player;
 
 /**
  * A box showing a player character.
@@ -39,7 +39,7 @@ class PlayerBox : public gcn::ScrollArea
          * Constructor. Takes the initial player character that this box should
          * display, which defaults to <code>NULL</code>.
          */
-        PlayerBox(const Player *player = 0);
+        PlayerBox(const Being *being = 0);
 
         /**
          * Destructor.
@@ -51,7 +51,7 @@ class PlayerBox : public gcn::ScrollArea
          * player to <code>NULL</code> causes the box not to draw any
          * character.
          */
-        void setPlayer(const Player *player) { mPlayer = player; }
+        void setPlayer(const Being *being) { mBeing = being; }
 
         /**
          * Draws the scroll area.
@@ -64,7 +64,7 @@ class PlayerBox : public gcn::ScrollArea
         void drawFrame(gcn::Graphics *graphics);
 
     private:
-        const Player *mPlayer;       /**< The character used for display */
+        const Being *mBeing; /**< The character used for display */
 
         static float mAlpha;
         static int instances;

@@ -29,8 +29,6 @@
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "map.h"
-#include "monster.h"
-#include "npc.h"
 #include "textmanager.h"
 
 #include "gui/gui.h"
@@ -40,7 +38,6 @@
 
 #include "net/net.h"
 
-#include "resources/monsterinfo.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/stringutils.h"
@@ -345,7 +342,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         return;
 
     // Check if we are busy
-    if (NPC::isTalking())
+    if (Being::isTalking())
         return;
 
     mPlayerFollowMouse = false;
@@ -381,33 +378,20 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         // Interact with some being
         if (mHoverBeing)
         {
-            switch (mHoverBeing->getType())
+            if (mHoverBeing->canTalk())
+                mHoverBeing->talkTo();
+            else
             {
-                // Talk to NPCs
-                case Being::NPC:
-                    static_cast<NPC*>(mHoverBeing)->talk();
-                    break;
-
-                // Attack or walk to monsters or players
-                case Being::MONSTER:
-                case Being::PLAYER:
-                    // Ignore it if its dead
-                    if (!mHoverBeing->isAlive())
-                        break;
-
+                // Ignore it if its dead
+                if (mHoverBeing->isAlive())
+                {
                     if (player_node->withinAttackRange(mHoverBeing) ||
                         keyboard.isKeyActive(keyboard.KEY_ATTACK))
-                    {
                         player_node->attack(mHoverBeing,
                             !keyboard.isKeyActive(keyboard.KEY_TARGET));
-                    }
                     else
-                    {
                         player_node->setGotoTarget(mHoverBeing);
-                    }
-                    break;
-                default:
-                    break;
+                }
              }
         // Picks up a item if we clicked on one
         }
@@ -434,7 +418,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     {
         // Find the being nearest to the clicked position
         Being *target = beingManager->findNearestLivingBeing(
-                pixelX, pixelY, 20, Being::MONSTER);
+                pixelX, pixelY, 20, ActorSprite::MONSTER);
 
         if (target)
              player_node->setTarget(target);
@@ -508,11 +492,7 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int y = (event.getY() + (int) mPixelViewY);
 
     mHoverBeing = beingManager->findBeingByPixel(x, y);
-    if (mHoverBeing && mHoverBeing->getType() == Being::PLAYER)
-        mBeingPopup->show(getMouseX(), getMouseY(),
-                          static_cast<Player*>(mHoverBeing));
-    else
-        mBeingPopup->setVisible(false);
+    mBeingPopup->show(getMouseX(), getMouseY(), mHoverBeing);
 
     mHoverItem = floorItemManager->findByCoordinates(x / mMap->getTileWidth(),
                                                     y / mMap->getTileHeight());
@@ -522,12 +502,12 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
         switch (mHoverBeing->getType())
         {
             // NPCs
-            case Being::NPC:
+            case ActorSprite::NPC:
                 gui->setCursorType(Gui::CURSOR_TALK);
                 break;
 
             // Monsters
-            case Being::MONSTER:
+            case ActorSprite::MONSTER:
                 gui->setCursorType(Gui::CURSOR_FIGHT);
                 break;
             default:

@@ -21,7 +21,6 @@
 #include "party.h"
 
 #include "beingmanager.h"
-#include "player.h"
 
 PartyMember::PartyMember(Party *party, int id, const std::string &name):
         Avatar(name), mId(id), mParty(party), mLeader(false)
@@ -145,8 +144,7 @@ void Party::removeFromMembers()
     while(itr != itr_end)
     {
         Being *b = beingManager->findBeing((*itr)->getID());
-        if (b->getType() == Being::PLAYER)
-            static_cast<Player*>(b)->setParty(NULL);
+        b->setParty(NULL);
         ++itr;
     }
 }

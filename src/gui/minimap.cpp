@@ -28,7 +28,6 @@
 #include "localplayer.h"
 #include "log.h"
 #include "map.h"
-#include "player.h"
 
 #include "gui/setup.h"
 #include "gui/userpalette.h"
@@ -195,44 +194,35 @@ void Minimap::draw(gcn::Graphics *graphics)
         const Being *being = (*bi);
         int dotSize = 2;
 
-        switch (being->getType())
+        int type = UserPalette::PC;
+
+        if (being == player_node)
         {
-            case Being::PLAYER:
-                {
-                    const Player *player = static_cast<const Player*>(being);
-
-                    int type = UserPalette::PC;
-
-                    if (being == player_node)
-                    {
-                        type = UserPalette::SELF;
-                        dotSize = 3;
-                    }
-                    else if (player->isGM())
-                    {
-                        type = UserPalette::GM;
-                    }
-                    else if (player->isInParty())
-                    {
-                        type = UserPalette::PARTY;
-                    }
-
-                    graphics->setColor(userPalette->getColor(type));
+            type = UserPalette::SELF;
+            dotSize = 3;
+        }
+        else if (being->isGM())
+            type = UserPalette::GM;
+        else if (being->isInParty())
+            type = UserPalette::PARTY;
+        else
+        {
+            switch (being->getType())
+            {
+                case ActorSprite::MONSTER:
+                    graphics->setColor(userPalette->getColor(UserPalette::MONSTER));
                     break;
-                 }
 
-            case Being::MONSTER:
-                graphics->setColor(userPalette->getColor(UserPalette::MONSTER));
-                break;
+                case ActorSprite::NPC:
+                    graphics->setColor(userPalette->getColor(UserPalette::NPC));
+                    break;
 
-            case Being::NPC:
-                graphics->setColor(userPalette->getColor(UserPalette::NPC));
-                break;
-
-            default:
-                continue;
+                default:
+                    continue;
+            }
         }
 
+        graphics->setColor(userPalette->getColor(type));
 
         const int offsetHeight = (int) ((dotSize - 1) * mHeightProportion);
         const int offsetWidth = (int) ((dotSize - 1) * mWidthProportion);
