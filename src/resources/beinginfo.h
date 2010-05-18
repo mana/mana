@@ -83,6 +83,8 @@ class BeingInfo
         const SpriteDisplay &getDisplay() const
         { return mDisplay; }
 
+        void setTargetCursorSize(const std::string &size);
+
         void setTargetCursorSize(ActorSprite::TargetCursorSize targetSize)
         { mTargetCursorSize = targetSize; }
 

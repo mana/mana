@@ -63,8 +63,11 @@ void NPCDB::load()
         }
 
         BeingInfo *currentInfo = new BeingInfo;
-        SpriteDisplay display;
 
+        currentInfo->setTargetCursorSize(XML::getProperty(npcNode,
+                                         "targetCursor", "medium"));
+
+        SpriteDisplay display;
         for_each_xml_child_node(spriteNode, npcNode)
         {
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))

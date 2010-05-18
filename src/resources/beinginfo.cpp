@@ -21,6 +21,8 @@
 
 #include "resources/beinginfo.h"
 
+#include "log.h"
+
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 
@@ -49,6 +51,22 @@ BeingInfo::~BeingInfo()
 void BeingInfo::setDisplay(SpriteDisplay display)
 {
     mDisplay = display;
+}
+
+void BeingInfo::setTargetCursorSize(const std::string &size)
+{
+    if (size == "small")
+        setTargetCursorSize(ActorSprite::TC_SMALL);
+    else if (size == "medium")
+        setTargetCursorSize(ActorSprite::TC_MEDIUM);
+    else if (size == "large")
+        setTargetCursorSize(ActorSprite::TC_LARGE);
+    else
+    {
+        logger->log("Unknown target cursor type \"%s\" for %s - using medium "
+                    "sized one", size.c_str(), getName().c_str());
+        setTargetCursorSize(ActorSprite::TC_MEDIUM);
+    }
 }
 
 void BeingInfo::addSound(SoundEvent event, const std::string &filename)

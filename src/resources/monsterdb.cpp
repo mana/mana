@@ -23,13 +23,13 @@
 
 #include "log.h"
 
+#include "net/net.h"
+
 #include "resources/beinginfo.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/xml.h"
-
-#include "net/net.h"
 
 #define OLD_TMWATHENA_OFFSET 1002
 
@@ -74,27 +74,8 @@ void MonsterDB::load()
 
         currentInfo->setName(XML::getProperty(monsterNode, "name", _("unnamed")));
 
-        std::string targetCursor;
-        targetCursor = XML::getProperty(monsterNode, "targetCursor", "medium");
-        if (targetCursor == "small")
-        {
-            currentInfo->setTargetCursorSize(ActorSprite::TC_SMALL);
-        }
-        else if (targetCursor == "medium")
-        {
-            currentInfo->setTargetCursorSize(ActorSprite::TC_MEDIUM);
-        }
-        else if (targetCursor == "large")
-        {
-            currentInfo->setTargetCursorSize(ActorSprite::TC_LARGE);
-        }
-        else
-        {
-            logger->log("MonsterDB: Unknown target cursor type \"%s\" for %s -"
-                        "using medium sized one",
-                        targetCursor.c_str(), currentInfo->getName().c_str());
-            currentInfo->setTargetCursorSize(ActorSprite::TC_MEDIUM);
-        }
+        currentInfo->setTargetCursorSize(XML::getProperty(monsterNode,
+                                         "targetCursor", "medium"));
 
         SpriteDisplay display;
 
