@@ -54,11 +54,11 @@ class AnimatedSprite : public Sprite
 
         virtual ~AnimatedSprite();
 
-        void reset();
+        bool reset();
 
-        void play(SpriteAction action);
+        bool play(SpriteAction action);
 
-        void update(int time);
+        bool update(int time);
 
         bool draw(Graphics* graphics, int posX, int posY) const;
 
@@ -66,9 +66,9 @@ class AnimatedSprite : public Sprite
 
         int getHeight() const;
 
-        Image* getImage() const;
+        const Image* getImage() const;
 
-        void setDirection(SpriteDirection direction);
+        bool setDirection(SpriteDirection direction);
 
         int getNumberOfLayers()
         { return 1; }

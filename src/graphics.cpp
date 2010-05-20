@@ -27,12 +27,15 @@
 #include "resources/image.h"
 #include "resources/imageloader.h"
 
+#include <SDL_gfxBlitFunc.h>
+
 Graphics::Graphics():
     mWidth(0),
     mHeight(0),
     mBpp(0),
     mFullscreen(false),
-    mHWAccel(false)
+    mHWAccel(false),
+    mBlitMode(BLIT_NORMAL)
 {
 }
 
@@ -183,7 +186,10 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcRect.w = width;
     srcRect.h = height;
 
-    return !(SDL_BlitSurface(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
+    if (mBlitMode == BLIT_NORMAL)
+        return !(SDL_BlitSurface(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
+    else
+        return !(SDL_gfxBlitRGBA(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
 }
 
 void Graphics::drawImage(gcn::Image const *image, int srcX, int srcY,

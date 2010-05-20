@@ -73,6 +73,11 @@ struct ImageRect
 class Graphics : public gcn::SDLGraphics
 {
     public:
+        enum BlitMode {
+            BLIT_NORMAL = 0,
+            BLIT_GFX
+        };
+
         /**
          * Constructor.
          */
@@ -182,6 +187,12 @@ class Graphics : public gcn::SDLGraphics
             drawImageRect(area.x, area.y, area.width, area.height, imgRect);
         }
 
+        void setBlitMode(BlitMode mode)
+        { mBlitMode = mode; }
+
+        BlitMode getBlitMode()
+        { return mBlitMode; }
+
         /**
          * Updates the screen. This is done by either copying the buffer to the
          * screen or swapping pages.
@@ -211,6 +222,7 @@ class Graphics : public gcn::SDLGraphics
         int mBpp;
         bool mFullscreen;
         bool mHWAccel;
+        BlitMode mBlitMode;
 };
 
 extern Graphics *graphics;

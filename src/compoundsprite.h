@@ -25,18 +25,20 @@
 
 #include <vector>
 
-class CompoundSprite : public Sprite, public std::vector<Sprite*>
+class Image;
+
+class CompoundSprite : public Sprite, private std::vector<Sprite*>
 {
 public:
     CompoundSprite();
 
     ~CompoundSprite();
 
-    virtual void reset();
+    virtual bool reset();
 
-    virtual void play(SpriteAction action);
+    virtual bool play(SpriteAction action);
 
-    virtual void update(int time);
+    virtual bool update(int time);
 
     virtual bool draw(Graphics* graphics, int posX, int posY) const;
 
@@ -50,18 +52,40 @@ public:
      */
     virtual int getHeight() const;
 
-    virtual Image* getImage() const;
+    virtual const Image* getImage() const;
 
-    virtual void setDirection(SpriteDirection direction);
+    virtual bool setDirection(SpriteDirection direction);
 
-    virtual Sprite *getSprite(int index) const
-    { return at(index); }
+    int getNumberOfLayers() const;
 
-    int getNumberOfLayers()
-    { return size(); }
+    size_t size() const
+    { return std::vector<Sprite*>::size(); }
+
+    void addSprite(Sprite* sprite);
+
+    void setSprite(int layer, Sprite* sprite);
+
+    Sprite *getSprite(int layer) const
+    { return at(layer); }
+
+    void removeSprite(int layer);
+
+    void clear();
+
+    void ensureSize(size_t layerCount);
+
+private:
+    typedef CompoundSprite::iterator SpriteIterator;
+    typedef CompoundSprite::const_iterator SpriteConstIterator;
+
+    void redraw() const;
+
+    mutable Image *mImage;
+    mutable Image *mAlphaImage;
+
+    mutable int mOffsetX, mOffsetY;
+
+    mutable bool mNeedsRedraw;
 };
-
-typedef CompoundSprite::iterator SpriteIterator;
-typedef CompoundSprite::const_iterator SpriteConstIterator;
 
 #endif // COMPOUNDSPRITE_H

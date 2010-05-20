@@ -34,11 +34,14 @@ public:
 
     ~ImageSprite();
 
-    virtual void reset() {}
+    virtual bool reset()
+    { return false; }
 
-    virtual void play(SpriteAction action) {}
+    virtual bool play(SpriteAction action)
+    { return false; }
 
-    virtual void update(int time) {}
+    virtual bool update(int time)
+    { return false; }
 
     virtual bool draw(Graphics* graphics, int posX, int posY) const;
 
@@ -48,10 +51,11 @@ public:
     virtual int getHeight() const
     { return mImage->getHeight(); }
 
-    virtual Image* getImage() const
+    virtual const Image* getImage() const
     { return mImage; }
 
-    virtual void setDirection(SpriteDirection direction) {}
+    virtual bool setDirection(SpriteDirection direction)
+    { return false; }
 
     int getNumberOfLayers()
     { return 1; }

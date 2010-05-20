@@ -1063,7 +1063,7 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
     assert(slot < Net::getCharHandler()->maxSprite());
 
     if (slot >= size())
-        resize(slot + 1, NULL);
+        ensureSize(slot + 1);
 
     if (slot >= mSpriteIDs.size())
         mSpriteIDs.resize(slot + 1, 0);
@@ -1074,8 +1074,7 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
     // id = 0 means unequip
     if (id == 0)
     {
-        delete at(slot);
-        at(slot) = NULL;
+        removeSprite(slot);
 
         if (isWeapon)
             mEquippedWeapon = NULL;
@@ -1097,10 +1096,7 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
         if (equipmentSprite)
             equipmentSprite->setDirection(getSpriteDirection());
 
-        if (at(slot))
-            delete at(slot);
-
-        at(slot) = equipmentSprite;
+        CompoundSprite::setSprite(slot, equipmentSprite);
 
         if (isWeapon)
             mEquippedWeapon = &ItemDB::get(id);
@@ -1124,7 +1120,7 @@ void Being::setSpriteColor(unsigned int slot, const std::string &color)
 
 int Being::getNumberOfLayers() const
 {
-    return size();
+    return CompoundSprite::getNumberOfLayers();
 }
 
 void Being::load()

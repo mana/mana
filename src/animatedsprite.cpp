@@ -70,18 +70,22 @@ AnimatedSprite::~AnimatedSprite()
     mSprite->decRef();
 }
 
-void AnimatedSprite::reset()
+bool AnimatedSprite::reset()
 {
+    bool ret = mFrameIndex !=0 || mFrameTime != 0 || mLastTime != 0;
+
     mFrameIndex = 0;
     mFrameTime = 0;
     mLastTime = 0;
+
+    return ret;
 }
 
-void AnimatedSprite::play(SpriteAction spriteAction)
+bool AnimatedSprite::play(SpriteAction spriteAction)
 {
     Action *action = mSprite->getAction(spriteAction);
     if (!action)
-        return;
+        return false;
 
     mAction = action;
     Animation *animation = mAction->getAnimation(mDirection);
@@ -92,10 +96,14 @@ void AnimatedSprite::play(SpriteAction spriteAction)
         mFrame = mAnimation->getFrame(0);
 
         reset();
+
+        return true;
     }
+
+    return false;
 }
 
-void AnimatedSprite::update(int time)
+bool AnimatedSprite::update(int time)
 {
     // Avoid freaking out at first frame or when tick_time overflows
     if (time < mLastTime || mLastTime == 0)
@@ -103,16 +111,22 @@ void AnimatedSprite::update(int time)
 
     // If not enough time has passed yet, do nothing
     if (time <= mLastTime || !mAnimation)
-        return;
+        return false;
 
     unsigned int dt = time - mLastTime;
     mLastTime = time;
+
+    Animation *animation = mAnimation;
+    Frame *frame = mFrame;
 
     if (!updateCurrentAnimation(dt))
     {
         // Animation finished, reset to default
         play(ACTION_STAND);
     }
+
+    // Make sure something actually changed
+    return animation != mAnimation || frame != mFrame;
 }
 
 bool AnimatedSprite::updateCurrentAnimation(unsigned int time)
@@ -159,14 +173,14 @@ bool AnimatedSprite::draw(Graphics *graphics, int posX, int posY) const
                                posY + mFrame->offsetY);
 }
 
-void AnimatedSprite::setDirection(SpriteDirection direction)
+bool AnimatedSprite::setDirection(SpriteDirection direction)
 {
     if (mDirection != direction)
     {
         mDirection = direction;
 
         if (!mAction)
-            return;
+            return false;
 
         Animation *animation = mAction->getAnimation(mDirection);
 
@@ -176,7 +190,11 @@ void AnimatedSprite::setDirection(SpriteDirection direction)
             mFrame = mAnimation->getFrame(0);
             reset();
         }
+
+        return true;
     }
+
+    return false;
 }
 
 int AnimatedSprite::getWidth() const
@@ -195,7 +213,7 @@ int AnimatedSprite::getHeight() const
         return 0;
 }
 
-Image* AnimatedSprite::getImage() const
+const Image* AnimatedSprite::getImage() const
 {
     return mFrame ? mFrame->image : 0;
 }

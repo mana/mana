@@ -304,14 +304,14 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     {
         std::string file = "graphics/sprites/" + (*it)->sprite;
         int variant = (*it)->variant;
-        push_back(AnimatedSprite::load(file, variant));
+        addSprite(AnimatedSprite::load(file, variant));
     }
 
     // Ensure that something is shown, if desired
     if (size() == 0 && forceDisplay)
     {
         if (display.image.empty())
-            push_back(AnimatedSprite::load("graphics/sprites/error.xml"));
+            addSprite(AnimatedSprite::load("graphics/sprites/error.xml"));
         else
         {
             ResourceManager *resman = ResourceManager::getInstance();
@@ -321,7 +321,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
             if (!img)
                 img = Theme::getImageFromTheme("unknown-item.png");
 
-            push_back(new ImageSprite(img));
+            addSprite(new ImageSprite(img));
         }
     }
 
