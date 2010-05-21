@@ -102,7 +102,8 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     if (showImage)
     {
         ResourceManager *resman = ResourceManager::getInstance();
-        Image *image = resman->getImage("graphics/items/" + item.getImageName());
+        Image *image = resman->getImage("graphics/items/" +
+                                        item.getDisplay().image);
         mIcon->setImage(image);
         if (image)
         {
