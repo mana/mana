@@ -1162,7 +1162,7 @@ void Client::initUpdatesDir()
     }
 
     // Remove any trailing slash at the end of the update host
-    if (mUpdateHost.at(mUpdateHost.size() - 1) == '/')
+    if (!mUpdateHost.empty() && mUpdateHost.at(mUpdateHost.size() - 1) == '/')
         mUpdateHost.resize(mUpdateHost.size() - 1);
 
     // Parse out any "http://" or "ftp://", and set the updates directory
@@ -1170,7 +1170,7 @@ void Client::initUpdatesDir()
     pos = mUpdateHost.find("://");
     if (pos != mUpdateHost.npos)
     {
-        if (pos + 3 < mUpdateHost.length())
+        if (pos + 3 < mUpdateHost.length() && !mUpdateHost.empty())
         {
             updates << "updates/" << mUpdateHost.substr(pos + 3);
             mUpdatesDir = updates.str();
