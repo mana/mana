@@ -51,6 +51,7 @@ AmbientLayer::AmbientLayer(Image *img, float parallax,
             std::string idPath = mImage->getIdPath() + "_rescaled";
             ResourceManager::getInstance()->addResource(idPath, rescaledOverlay);
             mImage = rescaledOverlay;
+            rescaledOverlay->incRef();
         }
         else
             mImage->incRef();
