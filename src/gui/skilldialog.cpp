@@ -234,10 +234,6 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     {
         setVisible(false);
     }
-    else
-    {
-        printf("Unknown event '%s'\n", event.getId().c_str());
-    }
 }
 
 std::string SkillDialog::update(int id)

@@ -269,7 +269,6 @@ static char* getSelection(Display *dpy, Window us, Atom selection)
       return (char*)data;
     }
   }
-  printf("Timeout\n");
   return NULL;
 }
 
