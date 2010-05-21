@@ -89,8 +89,8 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                     case ERRMSG_FAILURE:
                         errorMessage = _("Already logged in.");
                         break;
-                    case LOGIN_SERVER_FULL:
-                        errorMessage = _("Server is full.");
+                    case LOGIN_BANNED:
+                        errorMessage = _("Account banned.");
                         break;
                     default:
                         errorMessage = _("Unknown error.");
@@ -268,8 +268,8 @@ void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
             case ERRMSG_FAILURE:
                 errorMessage = _("Already logged in.");
                 break;
-            case LOGIN_SERVER_FULL:
-                errorMessage = _("Server is full.");
+            case LOGIN_BANNED:
+                errorMessage = _("Account banned");
                 break;
             case LOGIN_INVALID_TIME:
                 errorMessage = _("Login attempt too soon after previous "

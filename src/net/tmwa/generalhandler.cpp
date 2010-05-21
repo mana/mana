@@ -98,12 +98,12 @@ GeneralHandler::GeneralHandler():
     generalHandler = this;
 
     std::list<ItemDB::Stat> stats;
-    stats.push_back(ItemDB::Stat("str", N_("Strength %+d")));
-    stats.push_back(ItemDB::Stat("agi", N_("Agility %+d")));
-    stats.push_back(ItemDB::Stat("vit", N_("Vitality %+d")));
-    stats.push_back(ItemDB::Stat("int", N_("Intelligence %+d")));
-    stats.push_back(ItemDB::Stat("dex", N_("Dexterity %+d")));
-    stats.push_back(ItemDB::Stat("luck", N_("Luck %+d")));
+    stats.push_back(ItemDB::Stat("str", _("Strength %+d")));
+    stats.push_back(ItemDB::Stat("agi", _("Agility %+d")));
+    stats.push_back(ItemDB::Stat("vit", _("Vitality %+d")));
+    stats.push_back(ItemDB::Stat("int", _("Intelligence %+d")));
+    stats.push_back(ItemDB::Stat("dex", _("Dexterity %+d")));
+    stats.push_back(ItemDB::Stat("luck", _("Luck %+d")));
 
     ItemDB::setStatsList(stats);
 }
@@ -214,20 +214,20 @@ void GeneralHandler::guiWindowsLoaded()
     inventoryWindow->setSplitAllowed(false);
     skillDialog->loadSkills("ea-skills.xml");
 
-    statusWindow->addAttribute(STR, _("Strength"), true);
-    statusWindow->addAttribute(AGI, _("Agility"), true);
-    statusWindow->addAttribute(VIT, _("Vitality"), true);
-    statusWindow->addAttribute(INT, _("Intelligence"), true);
-    statusWindow->addAttribute(DEX, _("Dexterity"), true);
-    statusWindow->addAttribute(LUK, _("Luck"), true);
+    statusWindow->addAttribute(STR, _("Strength"), true, "");
+    statusWindow->addAttribute(AGI, _("Agility"), true, "");
+    statusWindow->addAttribute(VIT, _("Vitality"), true, "");
+    statusWindow->addAttribute(INT, _("Intelligence"), true, "");
+    statusWindow->addAttribute(DEX, _("Dexterity"), true, "");
+    statusWindow->addAttribute(LUK, _("Luck"), true, "");
 
-    statusWindow->addAttribute(ATK, _("Attack"), false);
-    statusWindow->addAttribute(DEF, _("Defense"), false);
-    statusWindow->addAttribute(MATK, _("M.Attack"), false);
-    statusWindow->addAttribute(MDEF, _("M.Defense"), false);
-    statusWindow->addAttribute(HIT, _("% Accuracy"), false);
-    statusWindow->addAttribute(FLEE, _("% Evade"), false);
-    statusWindow->addAttribute(CRIT, _("% Critical"), false);
+    statusWindow->addAttribute(ATK, _("Attack"), false, "");
+    statusWindow->addAttribute(DEF, _("Defense"), false, "");
+    statusWindow->addAttribute(MATK, _("M.Attack"), false, "");
+    statusWindow->addAttribute(MDEF, _("M.Defense"), false, "");
+    statusWindow->addAttribute(HIT, _("% Accuracy"), false, "");
+    statusWindow->addAttribute(FLEE, _("% Evade"), false, "");
+    statusWindow->addAttribute(CRIT, _("% Critical"), false, "");
 }
 
 void GeneralHandler::guiWindowsUnloaded()

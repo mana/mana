@@ -169,6 +169,8 @@ void unloadMap(std::map<int, StatusEffect *> map)
 
     for (it = map.begin(); it != map.end(); it++)
         delete (*it).second;
+
+    map.clear();
 }
 
 void StatusEffect::unload()

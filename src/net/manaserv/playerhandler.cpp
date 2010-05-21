@@ -39,6 +39,7 @@
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
+#include "net/manaserv/npchandler.h"
 #include "net/manaserv/protocol.h"
 
 /**
@@ -56,6 +57,10 @@ namespace ManaServ {
 void RespawnRequestListener::action(const gcn::ActionEvent &event)
 {
     Net::getPlayerHandler()->respawn();
+
+    ManaServ::NpcHandler *handler =
+            static_cast<ManaServ::NpcHandler*>(Net::getNpcHandler());
+    handler->clearDialogs();
 }
 
 extern Connection *gameServerConnection;

@@ -29,6 +29,7 @@
 
 #include <guichan/mouselistener.hpp>
 
+class Icon;
 class TextBox;
 
 /**
@@ -50,7 +51,7 @@ class ItemPopup : public Popup
         /**
          * Sets the info to be displayed given a particular item.
          */
-        void setItem(const ItemInfo &item);
+        void setItem(const ItemInfo &item, bool showImage = false);
 
         void mouseMoved(gcn::MouseEvent &mouseEvent);
 
@@ -60,6 +61,7 @@ class ItemPopup : public Popup
         TextBox *mItemEffect;
         TextBox *mItemWeight;
         ItemType mItemType;
+        Icon *mIcon;
 
         static gcn::Color getColor(ItemType type);
 };

@@ -318,7 +318,11 @@ struct DyedImageLoader
         }
         int fileSize;
         void *buffer = l->manager->loadFile(path, fileSize);
-        if (!buffer) return NULL;
+        if (!buffer)
+        {
+            delete d;
+            return NULL;
+        }
         Resource *res = d ? Image::load(buffer, fileSize, *d)
                           : Image::load(buffer, fileSize);
         free(buffer);

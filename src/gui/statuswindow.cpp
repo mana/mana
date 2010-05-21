@@ -283,7 +283,8 @@ void StatusWindow::setPointsNeeded(int id, int needed)
 }
 
 void StatusWindow::addAttribute(int id, const std::string &name,
-                                bool modifiable)
+                                bool modifiable,
+                                const std::string &description)
 {
     AttrDisplay *disp;
 

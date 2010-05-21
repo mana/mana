@@ -41,6 +41,8 @@ ENDIF()
 IF (WIN32)
     SET(EXTRA_LIBRARIES ws2_32 winmm)
     FIND_PACKAGE(LibIntl REQUIRED)
+ELSEIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    FIND_PACKAGE(LibIntl REQUIRED)
 ELSEIF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
     # explicit linking to libintl is required on Solaris
     SET(EXTRA_LIBRARIES intl)
@@ -603,6 +605,8 @@ SET(SRCS_MANA
     net/manaserv/protocol.h
     net/manaserv/specialhandler.cpp
     net/manaserv/specialhandler.h
+    net/manaserv/stats.cpp
+    net/manaserv/stats.h
     net/manaserv/tradehandler.cpp
     net/manaserv/tradehandler.h
     )

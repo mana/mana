@@ -121,6 +121,9 @@ LocalPlayer::~LocalPlayer()
     delete mInventory;
 
     config.removeListener("showownname", this);
+
+    delete mAwayDialog;
+    delete mAwayListener;
 }
 
 void LocalPlayer::logic()
@@ -1275,13 +1278,11 @@ bool LocalPlayer::withinAttackRange(Being *target)
     }
     else
     {
-        int dist_x = abs(target->getTileX() - getTileY());
-        int dist_y = abs(target->getTileY() - getTileX());
+        int dist_x = abs(target->getTileX() - getTileX());
+        int dist_y = abs(target->getTileY() - getTileY());
 
         if (dist_x > getAttackRange() || dist_y > getAttackRange())
-        {
             return false;
-        }
 
         return true;
     }
@@ -1377,10 +1378,8 @@ void LocalPlayer::changeAwayMode()
                 config.getValue("afkMessage", "I am away from keyboard"));
         mAwayDialog->addActionListener(mAwayListener);
     }
-    else
-    {
-        mAwayDialog = 0;
-    }
+
+    mAwayDialog = 0;
 }
 
 void LocalPlayer::setAway(const std::string &message)

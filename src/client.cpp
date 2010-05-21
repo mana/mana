@@ -397,7 +397,7 @@ Client::Client(const Options &options):
     if (mCurrentServer.hostname.empty())
     {
         mCurrentServer.hostname = branding.getValue("defaultServer",
-                                            "server.themanaworld.org").c_str();
+                                                    "").c_str();
     }
 
     if (mCurrentServer.port == 0)
@@ -405,7 +405,7 @@ Client::Client(const Options &options):
         mCurrentServer.port = (short) branding.getValue("defaultPort",
                                                        DEFAULT_PORT);
         mCurrentServer.type = ServerInfo::parseType(
-                branding.getValue("defaultServerType", "eathena"));
+                branding.getValue("defaultServerType", "tmwathena"));
     }
 
     if (chatLogger)
@@ -1113,8 +1113,7 @@ void Client::initConfiguration()
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 60);
-    std::string defaultUpdateHost = branding.getValue("defaultUpdateHost",
-        "http://updates.themanaworld.org");
+    std::string defaultUpdateHost = branding.getValue("defaultUpdateHost", "");
     config.setValue("updatehost", defaultUpdateHost);
     config.setValue("customcursor", true);
     config.setValue("useScreenshotDirectorySuffix", true);
@@ -1157,8 +1156,7 @@ void Client::initUpdatesDir()
     // If updatesHost is currently empty, fill it from config file
     if (mUpdateHost.empty())
     {
-        mUpdateHost =
-            config.getValue("updatehost", "http://updates.themanaworld.org/");
+        mUpdateHost = config.getValue("updatehost", "");
     }
 
     // Remove any trailing slash at the end of the update host
