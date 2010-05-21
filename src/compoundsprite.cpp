@@ -49,6 +49,9 @@ CompoundSprite::~CompoundSprite()
         delete (*it);
 
     clear();
+
+    delete mImage;
+    delete mAlphaImage;
 }
 
 bool CompoundSprite::reset()
@@ -297,8 +300,14 @@ void CompoundSprite::redraw() const
     SDL_SetAlpha(surface, 0, SDL_ALPHA_OPAQUE);
     SDL_BlitSurface(surface, NULL, surfaceA, NULL);
 
+    delete mImage;
+    delete mAlphaImage;
+
     mImage = Image::load(surface);
+    SDL_FreeSurface(surface);
+
     mAlphaImage = Image::load(surfaceA);
+    SDL_FreeSurface(surfaceA);
 
     mNeedsRedraw = false;
 }
