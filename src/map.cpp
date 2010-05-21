@@ -143,7 +143,6 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
         {
             while (ai != actors.end() && (*ai)->getPixelY() <= y * 32)
             {
-                (*ai)->setAlpha(1.0f);
                 (*ai)->draw(graphics, -scrollX, -scrollY);
                 ai++;
             }
@@ -167,7 +166,6 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
     {
         while (ai != actors.end())
         {
-            (*ai)->setAlpha(1.0f);
             (*ai)->draw(graphics, -scrollX, -scrollY);
             ai++;
         }
@@ -341,6 +339,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
             {
                 actor->setAlpha(0.3f);
                 actor->draw(graphics, -scrollX, -scrollY);
+                actor->setAlpha(1.0f);
             }
         }
         ai++;
