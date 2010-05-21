@@ -99,7 +99,9 @@ bool CompoundSprite::draw(Graphics* graphics, int posX, int posY) const
         redraw();
 
     if (mAlpha == 1.0f && mImage)
+    {
         return graphics->drawImage(mImage, posX + mOffsetX, posY + mOffsetY);
+    }
     else if (mAlpha && mAlphaImage)
     {
         if (mAlphaImage->getAlpha() != mAlpha)
@@ -115,6 +117,8 @@ bool CompoundSprite::draw(Graphics* graphics, int posX, int posY) const
         {
             if (*it)
             {
+                if ((*it)->getAlpha() != mAlpha)
+                    (*it)->setAlpha(mAlpha);
                 (*it)->draw(graphics, posX, posY);
             }
         }
