@@ -29,11 +29,14 @@
 using namespace std;
 
 // return values
-#define RETURN_OK                 1
-#define INVALID_PARAMETER_LIST  100
-#define INVALID_INPUT_IMAGE     101
-#define INVALID_OUTPUT_IMAGE    102
-#define INVALID_DYE_PARAMETER   105
+enum ReturnValues
+{
+    RETURN_OK = 0,
+    INVALID_PARAMETER_LIST = 100,
+    INVALID_INPUT_IMAGE = 101,
+    INVALID_OUTPUT_IMAGE = 102,
+    INVALID_DYE_PARAMETER = 105
+};
 
 SDL_Surface* recolor(SDL_Surface* tmpImage, Dye* dye)
 {
@@ -49,18 +52,20 @@ SDL_Surface* recolor(SDL_Surface* tmpImage, Dye* dye)
     rgba.alpha = 255;
 
     SDL_Surface *surf = SDL_ConvertSurface(tmpImage, &rgba, SDL_SWSURFACE);
-    //SDL_FreeSurface(tmpImage);
+    //SDL_FreeSurface(tmpImage); <-- We'll free the surface later.
 
     Uint32 *pixels = static_cast< Uint32 * >(surf->pixels);
     for (Uint32 *p_end = pixels + surf->w * surf->h; pixels != p_end; ++pixels)
     {
-        int alpha = *pixels & 255;
+        int alpha = (*pixels >> rgba.Ashift) & 255;
         if (!alpha) continue;
         int v[3];
+
         v[0] = (*pixels >> rgba.Rshift) & 255;
         v[1] = (*pixels >> rgba.Gshift) & 255;
         v[2] = (*pixels >> rgba.Bshift) & 255;
         dye->update(v);
+
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
         *pixels = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | alpha;
 #else
@@ -71,53 +76,80 @@ SDL_Surface* recolor(SDL_Surface* tmpImage, Dye* dye)
     return surf;
 }
 
+void printHelp()
+{
+    cout << endl
+    << "This tool is used to dye item graphics used by the Mana client "
+    << "according to the specification described here: "
+    << endl << "http://doc.manasource.org/image_dyeing_system"
+    << endl << endl <<
+    "The tool expects 3 parameters:" << endl
+    << "dyecmd <source_image> <target_image> <dye_string>" << endl
+    << "e.g.:" << endl
+    << "dyecmd \"armor-legs-shorts.png\" "
+    <<"\"armor-legs-shorts2.png\" \"W:#222255,6666ff\"" << std::endl;
+}
+
 int main(int argc, char* argv[])
 {
     Dye* dye = NULL;
-    SDL_Surface* source = NULL;
+    SDL_Surface* source = NULL, *target = NULL;
+    ReturnValues returnValue = RETURN_OK;
 
+    if (argc > 1 && (!strcmp(argv[1], "--help") || !strcmp(argv[1], "-h")))
+    {
+        printHelp();
+    }
     // not enough or to many parameters
-    if (argc != 4)
+    else if (argc != 4)
     {
         cout << INVALID_PARAMETER_LIST << " - INVALID_PARAMETER_LIST";
-        exit(INVALID_PARAMETER_LIST);
+        printHelp();
+        returnValue = INVALID_PARAMETER_LIST;
     }
+    else
+    {
+        // Start dyeing process.
+        string inputFile = argv[1];
+        string outputFile = argv[2];
+        string dyeDescription = argv[3];
 
-    try
-    {
-        dye = new Dye(argv[3]);
-    }
-    catch (exception &e)
-    {
-        cout << INVALID_DYE_PARAMETER << " - INVALID_DYE_PARAMETER";
-        exit(INVALID_DYE_PARAMETER);
-    }
-
-    try
-    {
-        source = IMG_Load(argv[1]);
-        if (!source)
+        dye = new Dye(dyeDescription);
+        if (!dye->loaded())
         {
-            throw;
+            cout << INVALID_DYE_PARAMETER << " - INVALID_DYE_PARAMETER";
+            printHelp();
+            returnValue = INVALID_DYE_PARAMETER;
         }
-    }
-    catch (exception &e)
-    {
-        cout << INVALID_INPUT_IMAGE << " - INVALID_INPUT_IMAGE";
-        exit(INVALID_INPUT_IMAGE);
-    }
+        else
+        {
+            source = IMG_Load(inputFile.c_str());
+            if (!source)
+            {
+                cout << INVALID_INPUT_IMAGE << " - INVALID_INPUT_IMAGE";
+                printHelp();
+                returnValue = INVALID_INPUT_IMAGE;
+            }
+            else
+            {
+                target = recolor(source, dye);
 
-    SDL_Surface* target = recolor(source, dye);
+                if (!ImageWriter::writePNG(target, outputFile))
+                {
+                    cout << INVALID_OUTPUT_IMAGE << " - INVALID_OUTPUT_IMAGE";
+                    printHelp();
+                    returnValue = INVALID_OUTPUT_IMAGE;
+                }
+            } // Valid source image file
+        } // Valid dye parameter
+    } // Parameters ok
 
-    if (!ImageWriter::writePNG(target, argv[2]))
-    {
-        cout << INVALID_OUTPUT_IMAGE << " - INVALID_OUTPUT_IMAGE";
-        exit(INVALID_OUTPUT_IMAGE);
-    }
+    if (source)
+        SDL_FreeSurface(source);
+    if (target)
+        SDL_FreeSurface(target);
+    if (dye)
+        delete dye;
 
-    SDL_FreeSurface(source);
-    SDL_FreeSurface(target);
-    delete dye;
-
-    return 0;
+    return returnValue;
 }

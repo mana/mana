@@ -21,16 +21,20 @@
 
 #include <algorithm>
 #include <sstream>
+#include <iostream>
 
 #include "dye.h"
 
 Palette::Palette(const std::string &description)
 {
+    mLoaded = false;
     int size = description.length();
     if (size == 0) return;
     if (description[0] != '#')
     {
-        throw;
+        std::cout << "Missing # in the palette description "
+        << "in the third parameter." << std::endl;
+        return;
     }
 
     int pos = 1;
@@ -42,25 +46,41 @@ Palette::Palette(const std::string &description)
         {
             char c = description[pos + i];
             int n;
-            if ('0' <= c && c <= '9') n = c - '0';
-            else if ('A' <= c && c <= 'F') n = c - 'A' + 10;
-            else if ('a' <= c && c <= 'f') n = c - 'a' + 10;
+            if ('0' <= c && c <= '9')
+                n = c - '0';
+            else if ('A' <= c && c <= 'F')
+                n = c - 'A' + 10;
+            else if ('a' <= c && c <= 'f')
+                n = c - 'a' + 10;
             else
-                throw;
+            {
+                std::cout << "invalid Hexadecimal description: "
+                << description << std::endl;
+                return;
+            }
 
             v = (v << 4) | n;
         }
         Color c = { { v >> 16, v >> 8, v } };
         mColors.push_back(c);
         pos += 6;
-        if (pos == size) return;
-        if (description[pos] != ',') break;
+        if (pos == size)
+        {
+            mLoaded = true;
+            return;
+        }
+        if (description[pos] != ',')
+            break;
+
         ++pos;
     }
+
+    mLoaded = true;
 }
 
 void Palette::getColor(int intensity, int color[3]) const
 {
+    // Return implicit black
     if (intensity == 0)
     {
         color[0] = 0;
@@ -107,6 +127,7 @@ void Palette::getColor(int intensity, int color[3]) const
 
 Dye::Dye(const std::string &description)
 {
+    mLoaded = false;
     for (int i = 0; i < 7; ++i)
         mPalettes[i] = 0;
 
@@ -121,7 +142,9 @@ Dye::Dye(const std::string &description)
             next_pos = length;
         if (next_pos <= pos + 3 || description[pos + 1] != ':')
         {
-            throw;
+            std::cout << "Dyeing: Missing ':' in channel description."
+            << std::endl;
+            return;
         }
         int i = 0;
         switch (description[pos])
@@ -134,12 +157,21 @@ Dye::Dye(const std::string &description)
             case 'C': i = 5; break;
             case 'W': i = 6; break;
             default:
-                throw;
+                std::cout << "Dyeing: Invalid channel. Not in [R,G,Y,B,M,C,W]"
+                << std::endl;
+                return;
         }
-        mPalettes[i] = new Palette(description.substr(pos + 2, next_pos - pos - 2));
+        mPalettes[i] = new Palette(
+                           description.substr(pos + 2, next_pos - pos - 2));
+
+        if (!mPalettes[i]->loaded())
+            return;
+
         ++next_pos;
     }
     while (next_pos < length);
+
+    mLoaded = true;
 }
 
 Dye::~Dye()
@@ -167,48 +199,4 @@ void Dye::update(int color[3]) const
 
     if (mPalettes[i - 1])
         mPalettes[i - 1]->getColor(cmax, color);
-}
-
-void Dye::instantiate(std::string &target, const std::string &palettes)
-{
-    std::string::size_type next_pos = target.find('|');
-    if (next_pos == std::string::npos || palettes.empty()) return;
-    ++next_pos;
-
-    std::ostringstream s;
-    s << target.substr(0, next_pos);
-    std::string::size_type last_pos = target.length(), pal_pos = 0;
-    do
-    {
-        std::string::size_type pos = next_pos;
-        next_pos = target.find(';', pos);
-        if (next_pos == std::string::npos) next_pos = last_pos;
-        if (next_pos == pos + 1 && pal_pos != std::string::npos)
-        {
-            std::string::size_type pal_next_pos = palettes.find(';', pal_pos);
-            s << target[pos] << ':';
-            if (pal_next_pos == std::string::npos)
-            {
-                s << palettes.substr(pal_pos);
-                s << target.substr(next_pos);
-                pal_pos = std::string::npos;
-                break;
-            }
-            s << palettes.substr(pal_pos, pal_next_pos - pal_pos);
-            pal_pos = pal_next_pos + 1;
-        }
-        else if (next_pos > pos + 2)
-        {
-            s << target.substr(pos, next_pos - pos);
-        }
-        else
-        {
-            throw;
-        }
-        s << target[next_pos];
-        ++next_pos;
-    }
-    while (next_pos < last_pos);
-
-    target = s.str();
 }
