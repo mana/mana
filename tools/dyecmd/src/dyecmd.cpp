@@ -23,8 +23,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
-
-
 #include "dye.h"
 #include "imagewriter.h"
 
@@ -59,11 +57,15 @@ SDL_Surface* recolor(SDL_Surface* tmpImage, Dye* dye)
         int alpha = *pixels & 255;
         if (!alpha) continue;
         int v[3];
-        v[0] = (*pixels >> 24) & 255;
-        v[1] = (*pixels >> 16) & 255;
-        v[2] = (*pixels >> 8 ) & 255;
+        v[0] = (*pixels >> rgba.Rshift) & 255;
+        v[1] = (*pixels >> rgba.Gshift) & 255;
+        v[2] = (*pixels >> rgba.Bshift) & 255;
         dye->update(v);
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
         *pixels = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | alpha;
+#else
+        *pixels = v[0] | (v[1] << 8) | (v[2] << 16) | (alpha << 24);
+#endif
     }
 
     return surf;
