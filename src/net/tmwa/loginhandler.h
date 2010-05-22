@@ -83,6 +83,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void sendLoginRegister(const std::string &username,
                                const std::string &password);
 
+        bool mVersionResponse;
         bool mRegistrationEnabled;
         std::string mUpdateHost;
         Worlds mWorlds;
