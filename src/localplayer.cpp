@@ -736,13 +736,22 @@ void LocalPlayer::setTarget(Being *target)
         mTargetTime = -1;
     }
 
+    Being *oldTarget = 0;
     if (mTarget)
+    {
         mTarget->untarget();
+        oldTarget = mTarget;
+    }
 
     if (mTarget && mTarget->getType() == ActorSprite::MONSTER)
         mTarget->setShowName(false);
 
     mTarget = target;
+
+    if (oldTarget)
+        oldTarget->updateName();
+    if (mTarget)
+        mTarget->updateName();
 
     if (target && target->getType() == ActorSprite::MONSTER)
         target->setShowName(true);

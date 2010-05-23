@@ -182,7 +182,10 @@ void BeingManager::logic()
 void BeingManager::clear()
 {
     if (player_node)
+    {
+        player_node->setTarget(0);
         mBeings.remove(player_node);
+    }
 
     delete_all(mBeings);
     mBeings.clear();

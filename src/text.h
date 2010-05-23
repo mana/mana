@@ -40,7 +40,8 @@ class Text
          */
         Text(const std::string &text, int x, int y,
              gcn::Graphics::Alignment alignment,
-             const gcn::Color *color, bool isSpeech = false);
+             const gcn::Color *color, bool isSpeech = false,
+             gcn::Font *font = 0);
 
         /**
          * Destructor. The text is removed from the screen.
@@ -84,7 +85,8 @@ class FlashText : public Text
     public:
         FlashText(const std::string &text, int x, int y,
                   gcn::Graphics::Alignment alignment,
-                  const gcn::Color* color);
+                  const gcn::Color* color,
+                  gcn::Font *font = 0);
 
         /**
          * Remove the text from the screen

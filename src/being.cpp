@@ -122,11 +122,14 @@ Being::Being(int id, Type type, int subtype, Map *map):
 
 Being::~Being()
 {
+    config.removeListener("visiblenames", this);
+
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
-
-    config.removeListener("visiblenames", this);
+    mSpeechBubble = 0;
+    mDispName = 0;
+    mText = 0;
 }
 
 void Being::setSubtype(Uint16 subtype)
@@ -1004,8 +1007,15 @@ void Being::showName()
         }
     }
 
+    gcn::Font *font = 0;
+    if (player_node && player_node->getTarget() == this
+        && getType() != MONSTER)
+    {
+        font = boldFont;
+    }
+
     mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
-                             gcn::Graphics::CENTER, mNameColor);
+                              gcn::Graphics::CENTER, mNameColor, font);
 
     updateCoords();
 }

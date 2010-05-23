@@ -41,12 +41,17 @@ Image *Text::mBubbleArrow;
 
 Text::Text(const std::string &text, int x, int y,
            gcn::Graphics::Alignment alignment,
-           const gcn::Color* color, bool isSpeech) :
+           const gcn::Color* color, bool isSpeech,
+           gcn::Font *font) :
     mText(text),
     mColor(color),
-    mFont(gui->getFont()),
     mIsSpeech(isSpeech)
 {
+    if (!font)
+        mFont = gui->getFont();
+    else
+        mFont = font;
+
     if (textManager == 0)
     {
         textManager = new TextManager;
@@ -145,8 +150,8 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 
 FlashText::FlashText(const std::string &text, int x, int y,
                      gcn::Graphics::Alignment alignment,
-                     const gcn::Color *color) :
-    Text(text, x, y, alignment, color),
+                     const gcn::Color *color, gcn::Font *font) :
+    Text(text, x, y, alignment, color, false, font),
     mTime(0)
 {
 }
