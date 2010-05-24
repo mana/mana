@@ -370,13 +370,8 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
     if (this != player_node)
         setAction(Being::ATTACK, 1);
 
-    if (getType() == PLAYER && victim)
-    {
-        if (mEquippedWeapon)
-        {
-            fireMissile(victim, mEquippedWeapon->getMissileParticle());
-        }
-    }
+    if (getType() == PLAYER && victim && mEquippedWeapon)
+        fireMissile(victim, mEquippedWeapon->getMissileParticle());
     else
         fireMissile(victim, mInfo->getAttack(mAttackType)->missileParticle);
 

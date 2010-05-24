@@ -90,7 +90,7 @@ const std::string &BeingInfo::getSound(SoundEvent event) const
 
 const Attack *BeingInfo::getAttack(int type) const
 {
-    static Attack *empty = new Attack(ACTION_DEFAULT, "", "");
+    static Attack *empty = new Attack(ACTION_ATTACK, "", "");
 
     Attacks::const_iterator i = mAttacks.find(type);
     return (i == mAttacks.end()) ? empty : (*i).second;
