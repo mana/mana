@@ -85,6 +85,13 @@ FOREACH (COMPONENT ${Guichan_FIND_COMPONENTS})
         MESSAGE(FATAL_ERROR "Could NOT find Guichan component ${COMPONENT}")
     ENDIF ()
 
+    # Check guichan >= 0.8.0 by searching for the widgetlistener.hpp file.
+    SET(Guichan_HEADER "guichan/widgetlistener.hpp")
+    IF (NOT EXISTS ${Guichan_INCLUDE_DIR}/${Guichan_HEADER})
+            SET(GUICHAN_FOUND FALSE)
+            MESSAGE(FATAL_ERROR "Guichan version is less than 0.8.0")
+    ENDIF()
+
     IF (NOT Guichan_FIND_QUIETLY AND NOT Guichan_QUIET)
         MESSAGE(STATUS "Found Guichan ${COMPONENT}: ${Guichan_LIBRARY_${COMPONENT}}")
     ENDIF ()

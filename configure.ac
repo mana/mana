@@ -37,6 +37,9 @@ AC_MSG_ERROR([ *** Unable to find Guichan library (http://guichan.sf.net/)]))
 AC_CHECK_HEADERS([guichan.hpp], ,
 AC_MSG_ERROR([ *** Guichan library found but cannot find headers (http://guichan.sf.net/)]))
 
+AC_CHECK_HEADERS([guichan/widgetlistener.hpp], ,
+AC_MSG_ERROR([ *** Guichan library version is found  but version is < 0.8.0 (http://guichan.sf.net/)]))
+
 if test -n "$SDL_CONFIG"; then
     LIBS="$LIBS `$SDL_CONFIG --libs`"
     CPPFLAGS="$CPPFLAGS `$SDL_CONFIG --cflags`"
