@@ -181,6 +181,7 @@ int TrueTypeFont::getWidth(const std::string &text) const
     int w, h;
     const char* str = getSafeUtf8String(text);
     TTF_SizeUTF8(mFont, str, &w, &h);
+    delete[] str;
     return w;
 }
 
