@@ -21,9 +21,12 @@
 
 #include "utils/stringutils.h"
 
+#include <string.h>
 #include <algorithm>
 #include <cstdarg>
 #include <cstdio>
+
+const int UTF8_MAX_SIZE = 10;
 
 std::string &trim(std::string &str)
 {
@@ -163,4 +166,12 @@ const std::string findSameSubstring(const std::string &str1, const std::string &
         }
     }
     return str1.substr(0, minLength);
+}
+
+const char* getSafeUtf8String(std::string text)
+{
+    char* buf = new char[text.size() + UTF8_MAX_SIZE];
+    memcpy(buf, text.c_str(), text.size());
+    memset(buf + text.size(), 0, UTF8_MAX_SIZE);
+    return buf;
 }

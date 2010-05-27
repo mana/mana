@@ -26,9 +26,11 @@
 
 #include "resources/image.h"
 
+#include "utils/stringutils.h"
+
 #include <guichan/exception.hpp>
 
-#define CACHE_SIZE 256
+const unsigned int CACHE_SIZE = 256;
 
 class TextChunk
 {
@@ -55,8 +57,10 @@ class TextChunk
             sdlCol.r = color.r;
             sdlCol.g = color.g;
 
+            const char* str = getSafeUtf8String(text);
             SDL_Surface *surface = TTF_RenderUTF8_Blended(
-                    font, text.c_str(), sdlCol);
+                    font, str, sdlCol);
+            delete[] str;
 
             if (!surface)
             {
@@ -175,7 +179,8 @@ int TrueTypeFont::getWidth(const std::string &text) const
     }
 
     int w, h;
-    TTF_SizeUTF8(mFont, text.c_str(), &w, &h);
+    const char* str = getSafeUtf8String(text);
+    TTF_SizeUTF8(mFont, str, &w, &h);
     return w;
 }
 
