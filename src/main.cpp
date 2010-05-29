@@ -41,6 +41,10 @@ static void printHelp()
 
     std::cout
         << _("mana [options] [mana-file]") << endl << endl
+        << _("[mana-file] : The mana file is an XML file (.mana)") << endl
+        << _("              used to set custom parameters") << endl
+        << _("              to the mana client.")
+        << endl << endl
         << _("Options:") << endl
         << _("  -v --version        : Display the version") << endl
         << _("  -h --help           : Display this help") << endl
