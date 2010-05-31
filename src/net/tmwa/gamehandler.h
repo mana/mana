@@ -60,6 +60,9 @@ class GameHandler : public MessageHandler, public Net::GameHandler
 
         void setMap(const std::string map);
 
+        /** The tmwa protocol is making use of the Mp Main status bar. */
+        bool canUseMagicBar() const { return true; }
+
     private:
         std::string mMap;
         int mCharID; /// < Saved for map-server switching

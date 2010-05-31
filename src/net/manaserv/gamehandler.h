@@ -53,12 +53,16 @@ class GameHandler : public MessageHandler, public Net::GameHandler
         void quit() { quit(false); }
 
         void ping(int tick);
-        
+
         bool removeDeadBeings() const { return false; }
 
         void clear();
 
         void gameLoading();
+
+        /** The ManaServ protocol doesn't use the Mp Main status bar. */
+        bool canUseMagicBar() const { return false; }
+
 };
 
 } // namespace ManaServ

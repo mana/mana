@@ -38,6 +38,7 @@
 
 #include "net/net.h"
 #include "net/playerhandler.h"
+#include "net/gamehandler.h"
 
 #include "utils/gettext.h"
 #include "utils/mathutils.h"
@@ -117,11 +118,15 @@ StatusWindow::StatusWindow():
     mXpBar = new ProgressBar(max ? (float) player_node->getExp() / max : 0,
                              80, 15, Theme::PROG_EXP);
 
-    max = player_node->getMaxMP();
-    mMpLabel = new Label(_("MP:"));
-    mMpBar = new ProgressBar(max ? (float) player_node->getMaxMP() / max : 0,
+    bool magicBar = Net::getGameHandler()->canUseMagicBar();
+    if (magicBar)
+    {
+        max = player_node->getMaxMP();
+        mMpLabel = new Label(_("MP:"));
+        mMpBar = new ProgressBar(max ? (float) player_node->getMaxMP() / max : 0,
                              80, 15, Net::getPlayerHandler()->canUseMagic() ?
                              Theme::PROG_MP : Theme::PROG_NO_MP);
+    }
 
     place(0, 0, mLvlLabel, 3);
     // 5, 0 Job Level
@@ -130,9 +135,12 @@ StatusWindow::StatusWindow():
     place(1, 1, mHpBar, 4);
     place(5, 1, mXpLabel).setPadding(3);
     place(6, 1, mXpBar, 5);
-    place(0, 2, mMpLabel).setPadding(3);
-    // 5, 2 and 6, 2 Job Progress Bar
-    place(1, 2, mMpBar, 4);
+    if (magicBar)
+    {
+        place(0, 2, mMpLabel).setPadding(3);
+        // 5, 2 and 6, 2 Job Progress Bar
+        place(1, 2, mMpBar, 4);
+    }
 
     if (Net::getPlayerHandler()->getJobLocation() > 0)
     {
@@ -177,16 +185,15 @@ StatusWindow::StatusWindow():
     loadWindowState();
 
     update(HP);
-    update(MP);
+    if (magicBar)
+        update(MP);
     update(EXP);
     update(MONEY);
     update(CHAR_POINTS); // This also updates all attributes (none atm)
     update(LEVEL);
     int job = Net::getPlayerHandler()->getJobLocation();
     if (job > 0)
-    {
         update(job);
-    }
 }
 
 std::string StatusWindow::update(int id)
@@ -304,6 +311,8 @@ void StatusWindow::addAttribute(int id, const std::string &name,
 
 void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
 {
+    if (!bar)
+        return;
 
     if (showMax)
         bar->setText(toString(player_node->getHp()) +
@@ -320,6 +329,9 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
 
 void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
 {
+    if (!bar)
+        return;
+
     if (showMax)
         bar->setText(toString(player_node->getMP()) +
                     "/" + toString(player_node->getMaxMP()));
@@ -342,6 +354,9 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
 void StatusWindow::updateProgressBar(ProgressBar *bar, int value, int max,
                               bool percent)
 {
+    if (!bar)
+        return;
+
     if (max == 0)
     {
         bar->setText(_("Max"));
@@ -362,6 +377,9 @@ void StatusWindow::updateProgressBar(ProgressBar *bar, int value, int max,
 
 void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
 {
+    if (!bar)
+        return;
+
     updateProgressBar(bar, player_node->getExp(),
                       player_node->getExpNeeded(), percent);
 }

@@ -35,6 +35,7 @@
 
 #include "net/net.h"
 #include "net/playerhandler.h"
+#include "net/gamehandler.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -47,19 +48,28 @@ MiniStatusWindow::MiniStatusWindow():
     int max = player_node->getMaxHp();
     mHpBar = new ProgressBar(max ? (float) player_node->getHp() / max : 0,
                              100, 20, Theme::PROG_HP);
-    max = player_node->getMaxMP();
-    mMpBar = new ProgressBar(max ? (float) player_node->getMP() / max : 0,
+    if (Net::getGameHandler()->canUseMagicBar())
+    {
+        max = player_node->getMaxMP();
+        mMpBar = new ProgressBar(max ? (float) player_node->getMaxMP() / max : 0,
                              100, 20, Net::getPlayerHandler()->canUseMagic() ?
                              Theme::PROG_MP : Theme::PROG_NO_MP);
+    }
+    else
+        mMpBar = 0;
+
     max = player_node->getExpNeeded();
     mXpBar = new ProgressBar(max ? (float) player_node->getExp() / max : 0,
                              100, 20, Theme::PROG_EXP);
     mHpBar->setPosition(0, 3);
-    mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
-    mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);
+    if (mMpBar)
+        mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
+    mXpBar->setPosition(mMpBar ? mMpBar->getX() + mMpBar->getWidth() + 3 :
+                                 mHpBar->getX() + mHpBar->getWidth() + 3, 3);
 
     add(mHpBar);
-    add(mMpBar);
+    if (mMpBar)
+        add(mMpBar);
     add(mXpBar);
 
     setContentSize(mXpBar->getX() + mXpBar->getWidth(),

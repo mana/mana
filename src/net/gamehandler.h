@@ -49,6 +49,11 @@ class GameHandler
 
         virtual bool removeDeadBeings() const = 0;
 
+        /**
+         * Tells whether the protocol is using the MP statu bar
+         */
+        virtual bool canUseMagicBar() const = 0;
+
         virtual ~GameHandler() {}
 };
 
