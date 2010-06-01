@@ -1,4 +1,4 @@
-1.0.0 (31 March 2010)
+1.0.0 (...)
 - The Mana World client is now called the Mana client
 - Added support for branding the client differently via command line parameter
 - Added support for ManaServ and eAthena (TMW version) from the same binary
