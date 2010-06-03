@@ -122,7 +122,7 @@ void Download::setWriteFunction(WriteFunction write)
 
 bool Download::start()
 {
-    logger->log("Starting download: %s\n", mUrl.c_str());
+    logger->log("Starting download: %s", mUrl.c_str());
 
     mThread = SDL_CreateThread(downloadThread, this);
 
@@ -140,7 +140,7 @@ bool Download::start()
 
 void Download::cancel()
 {
-    logger->log("Canceling download: %s\n", mUrl.c_str());
+    logger->log("Canceling download: %s", mUrl.c_str());
 
     mOptions.cancel = true;
     if (mThread && SDL_GetThreadID(mThread) != 0)

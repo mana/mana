@@ -528,7 +528,7 @@ void ServerDialog::loadServers()
         // Ignore unknown server types
         if (server.type == ServerInfo::UNKNOWN)
         {
-            logger->log("Ignoring server entry with unknown type: %s\n",
+            logger->log("Ignoring server entry with unknown type: %s",
                         type.c_str());
             continue;
         }
@@ -546,12 +546,6 @@ void ServerDialog::loadServers()
             version.clear();
         else
             version = strprintf(_("requires v%s"), version.c_str());
-
-        if (server.type == ServerInfo::UNKNOWN)
-        {
-            logger->log("Unknown server type: %s", type.c_str());
-            continue;
-        }
 
         for_each_xml_child_node(subNode, serverNode)
         {
