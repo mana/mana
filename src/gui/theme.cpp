@@ -228,6 +228,7 @@ Skin *Theme::readSkin(const std::string &filename)
 
     Image *dBorders = Theme::getImageFromTheme(skinSetImage);
     ImageRect border;
+    memset(&border, 0, sizeof(ImageRect));
 
     // iterate <widget>'s
     for_each_xml_child_node(widgetNode, rootNode)
