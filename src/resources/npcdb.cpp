@@ -35,7 +35,7 @@ namespace
 void NPCDB::load()
 {
     if (mLoaded)
-        return;
+        unload();
 
     NPCsprite *unknownSprite = new NPCsprite;
     unknownSprite->sprite = "error.xml";

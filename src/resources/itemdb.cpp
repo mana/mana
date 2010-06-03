@@ -108,7 +108,7 @@ static std::string normalized(const std::string &name)
 void ItemDB::load()
 {
     if (mLoaded)
-        return;
+        unload();
 
     logger->log("Initializing item database...");
 

@@ -36,7 +36,7 @@ namespace
 void EmoteDB::load()
 {
     if (mLoaded)
-        return;
+        unload();
 
     mLastEmote = 0;
 

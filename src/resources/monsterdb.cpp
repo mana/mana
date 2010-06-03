@@ -43,7 +43,7 @@ namespace
 void MonsterDB::load()
 {
     if (mLoaded)
-        return;
+        unload();
 
     mUnknown.addSprite("error.xml");
 

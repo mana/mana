@@ -422,6 +422,14 @@ Client::~Client()
     SDL_RemoveTimer(mLogicCounterId);
     SDL_RemoveTimer(mSecondsCounterId);
 
+    // Unload XML databases
+    ColorDB::unload();
+    EmoteDB::unload();
+    ItemDB::unload();
+    MonsterDB::unload();
+    NPCDB::unload();
+    StatusEffect::unload();
+
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
     delete emoteShortcut;
@@ -575,14 +583,6 @@ int Client::exec()
             {
                 delete game;
                 game = 0;
-
-                // Unload XML databases
-                ColorDB::unload();
-                EmoteDB::unload();
-                ItemDB::unload();
-                MonsterDB::unload();
-                NPCDB::unload();
-                StatusEffect::unload();
             }
 
             mOldState = mState;

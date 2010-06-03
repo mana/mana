@@ -98,6 +98,7 @@ public:
 
     static void unload();
 private:
+    static bool mLoaded;
 
     std::string mMessage;
     std::string mSFXEffect;
