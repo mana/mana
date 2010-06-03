@@ -524,6 +524,15 @@ void ServerDialog::loadServers()
         std::string type = XML::getProperty(serverNode, "type", "unknown");
 
         server.type = ServerInfo::parseType(type);
+
+        // Ignore unknown server types
+        if (server.type == ServerInfo::UNKNOWN)
+        {
+            logger->log("Ignoring server entry with unknown type: %s\n",
+                        type.c_str());
+            continue;
+        }
+
         server.name = XML::getProperty(serverNode, "name", std::string());
 
         std::string version = XML::getProperty(serverNode, "minimumVersion",
