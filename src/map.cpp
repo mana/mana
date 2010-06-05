@@ -580,16 +580,13 @@ const std::string Map::getName() const
     return getProperty("mapname");
 }
 
-const std::string *Map::getFilename() const
+const std::string Map::getFilename() const
 {
     std::string fileName = getProperty("_filename");
     int lastSlash = fileName.rfind("/") + 1;
     int lastDot = fileName.rfind(".");
 
-    std::string *sub = new std::string(
-        fileName.substr(lastSlash, lastDot - lastSlash));
-
-    return sub;
+    return fileName.substr(lastSlash, lastDot - lastSlash);
 }
 
 Position Map::checkNodeOffsets(int radius, unsigned char walkMask,

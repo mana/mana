@@ -269,7 +269,7 @@ class Map : public Properties
         /**
          * Gives the map id based on filepath (ex: 009-1)
          */
-        const std::string *getFilename() const;
+        const std::string getFilename() const;
 
         /**
          * Check the current position against surrounding blocking tiles, and
