@@ -198,5 +198,16 @@ namespace Stats {
                                        it->second.modifiable,
                                        it->second.description);
     }
+
+    std::vector<std::string> getLabelVector()
+    {
+        std::vector<std::string> attributes;
+        StatMap::const_iterator it, it_end;
+        for (it = stats.begin(), it_end = stats.end(); it != it_end; it++)
+            if (it->second.modifiable)
+                attributes.push_back(it->second.name + ":");
+
+        return attributes;
+    }
 } // namespace Stats
 } // namespace ManaServ

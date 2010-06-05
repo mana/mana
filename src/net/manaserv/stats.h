@@ -21,6 +21,9 @@
 #ifndef NET_MANASERV_STATS_H
 #define NET_MANASERV_STATS_H
 
+#include <string>
+#include <vector>
+
 namespace ManaServ {
 namespace Stats {
     void load();
@@ -30,6 +33,8 @@ namespace Stats {
     void informItemDB();
 
     void informStatusWindow();
+
+    std::vector<std::string> getLabelVector();
 } // namespace Stats
 } // namespace ManaServ
 
