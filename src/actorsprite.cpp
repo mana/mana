@@ -115,7 +115,8 @@ void ActorSprite::actorLogic()
     {
         for (int type = TCT_NORMAL; type < NUM_TCT; type++)
         {
-            targetCursor[type][size]->update(tick_time * MILLISECONDS_IN_A_TICK);
+            if (targetCursor[type][size])
+                targetCursor[type][size]->update(tick_time * MILLISECONDS_IN_A_TICK);
         }
     }
 }
@@ -405,7 +406,8 @@ void ActorSprite::cleanupTargetCursors()
         for (int type = TCT_NORMAL; type < NUM_TCT; type++)
         {
             delete targetCursor[type][size];
-            targetCursorImages[type][size]->decRef();
+            if (targetCursorImages[type][size])
+                targetCursorImages[type][size]->decRef();
         }
     }
 }
@@ -418,6 +420,12 @@ void ActorSprite::loadTargetCursor(const std::string &filename,
 
     ResourceManager *resman = ResourceManager::getInstance();
     ImageSet *currentImageSet = resman->getImageSet(filename, width, height);
+
+    if (!currentImageSet)
+    {
+        logger->log("Error loading target cursor: %s", filename.c_str());
+        return;
+    }
 
     Animation *anim = new Animation;
 
