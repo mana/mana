@@ -189,6 +189,7 @@ Section "Core files (required)" SecCore
   CreateDirectory "$INSTDIR\data\icons"
   CreateDirectory "$INSTDIR\data\graphics\gui"
   CreateDirectory "$INSTDIR\data\graphics\images"
+  CreateDirectory "$INSTDIR\data\graphics\sprites"
   CreateDirectory "$INSTDIR\docs"
 
   SetOverwrite ifnewer
@@ -207,6 +208,9 @@ Section "Core files (required)" SecCore
   File "${SRCDIR}\data\graphics\gui\*.xml"
   SetOutPath "$INSTDIR\data\graphics\images"
   File /x minimap_*.png ${SRCDIR}\data\graphics\images\*.png
+  SetOutPath "$INSTDIR\data\graphics\sprites"
+  File "${SRCDIR}\data\graphics\sprites\*.png"
+  File "${SRCDIR}\data\graphics\sprites\*.xml"
   SetOutPath "$INSTDIR\data\help"
   File "${SRCDIR}\data\help\*.txt"
   SetOutPath "$INSTDIR\data\icons\"

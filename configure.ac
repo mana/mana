@@ -138,6 +138,7 @@ data/fonts/Makefile
 data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile
+data/graphics/sprites/Makefile
 data/help/Makefile
 data/icons/Makefile
 docs/Makefile

@@ -1,4 +1,4 @@
 
 EXTRA_DIST = CMakeLists.txt
 
-SUBDIRS = gui images
+SUBDIRS = gui images sprites

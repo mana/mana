@@ -544,6 +544,8 @@ void ServerDialog::loadServers()
         // For display in the list
         if (meetsMinimumVersion)
             version.clear();
+        else if (version.empty())
+            version = _("requires a newer version");
         else
             version = strprintf(_("requires v%s"), version.c_str());
 
