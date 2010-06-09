@@ -34,30 +34,36 @@ public:
 
     ~ImageSprite();
 
-    virtual bool reset()
+    bool reset()
     { return false; }
 
-    virtual bool play(SpriteAction action)
+    bool play(SpriteAction action)
     { return false; }
 
-    virtual bool update(int time)
+    bool update(int time)
     { return false; }
 
-    virtual bool draw(Graphics* graphics, int posX, int posY) const;
+    bool draw(Graphics* graphics, int posX, int posY) const;
 
-    virtual int getWidth() const
+    int getWidth() const
     { return mImage->getWidth(); }
 
-    virtual int getHeight() const
+    int getHeight() const
     { return mImage->getHeight(); }
 
-    virtual const Image* getImage() const
+    const Image* getImage() const
     { return mImage; }
 
     virtual bool setDirection(SpriteDirection direction)
     { return false; }
 
     int getNumberOfLayers()
+    { return 1; }
+
+    size_t getCurrentFrame() const
+    { return 0; }
+
+    size_t getFrameCount() const
     { return 1; }
 
 private:

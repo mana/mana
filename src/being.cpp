@@ -72,6 +72,7 @@
 #include <cmath>
 
 #define HAIR_FILE "hair.xml"
+#define PARTICLE_LOCATION "graphics/particles/"
 
 static const int DEFAULT_BEING_WIDTH = 32;
 static const int DEFAULT_BEING_HEIGHT = 32;
@@ -81,7 +82,6 @@ int Being::mNumberOfHairstyles = 1;
 Being::Being(int id, Type type, int subtype, Map *map):
     ActorSprite(id),
     mInfo(BeingInfo::Unknown),
-    mFrame(0),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mSpeechTime(0),
@@ -380,7 +380,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
 
     if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
-        mFrame = 0;
+        reset();
         mWalkTime = tick_time;
     }
 
@@ -570,24 +570,27 @@ void Being::setAction(Action action, int attackType)
                 currentAction = mInfo->getAttack(attackType)->action;
                 reset();
 
-                int rotation = 0;
-                //attack particle effect
-                std::string particleEffect = mInfo->getAttack(attackType)
-                                             ->particleEffect;
-                if (!particleEffect.empty() && Particle::enabled)
+                if (Net::getNetworkType() == ServerInfo::MANASERV)
                 {
-                    switch (mSpriteDirection)
+                    int rotation = 0;
+                    //attack particle effect
+                    std::string particleEffect = mInfo->getAttack(attackType)
+                                                 ->particleEffect;
+                    if (!particleEffect.empty() && Particle::enabled)
                     {
-                        case DIRECTION_DOWN: rotation = 0; break;
-                        case DIRECTION_LEFT: rotation = 90; break;
-                        case DIRECTION_UP: rotation = 180; break;
-                        case DIRECTION_RIGHT: rotation = 270; break;
-                        default: break;
+                        switch (mSpriteDirection)
+                        {
+                           case DIRECTION_DOWN: rotation = 0; break;
+                            case DIRECTION_LEFT: rotation = 90; break;
+                            case DIRECTION_UP: rotation = 180; break;
+                            case DIRECTION_RIGHT: rotation = 270; break;
+                            default: break;
+                        }
+                        Particle *p;
+                        p = particleEngine->addEffect(particleEffect, 0, 0,
+                                                      rotation);
+                        controlParticle(p);
                     }
-                    Particle *p;
-                    p = particleEngine->addEffect(particleEffect, 0, 0,
-                                                  rotation);
-                    controlParticle(p);
                 }
             }
 
@@ -772,68 +775,67 @@ void Being::logic()
     }
     else if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
-        if (getType() == MONSTER && (mAction != STAND))
+        int frameCount = getFrameCount();
+
+        switch (mAction)
         {
-            mFrame = (int) ((get_elapsed_time(mWalkTime) * 4) / getWalkSpeed().x);
+            case STAND:
+            case SIT:
+            case DEAD:
+            case HURT:
+               break;
 
-            if (mFrame >= 4 && mAction != DEAD)
-                nextTile();
-        }
-        else if (getType() == PLAYER)
-        {
-            switch (mAction)
-            {
-                case STAND:
-                case SIT:
-                case DEAD:
-                case HURT:
-                   break;
+            case WALK:
+                if ((int) ((get_elapsed_time(mWalkTime) * frameCount)
+                        / getWalkSpeed().x) >= frameCount)
+                    nextTile();
+                break;
 
-                case WALK:
-                    mFrame = (int) ((get_elapsed_time(mWalkTime) * 6)
-                             / getWalkSpeed().x);
-                    if (mFrame >= 6)
-                        nextTile();
-                    break;
+            case ATTACK:
+                int rotation = 0;
+                std::string particleEffect = "";
 
-                case ATTACK:
-                    int rotation = 0;
-                    std::string particleEffect = "";
-                    int frames = 4;
+                int curFrame = (get_elapsed_time(mWalkTime) * frameCount)
+                               / mAttackSpeed;
 
-                    if (mEquippedWeapon &&
-                        mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
+                //attack particle effect
+                if (mEquippedWeapon)
+                {
+                    particleEffect = mEquippedWeapon->getParticleEffect();
+
+                    if (!particleEffect.empty() &&
+                        findSameSubstring(particleEffect,
+                                          PARTICLE_LOCATION).empty())
+                        particleEffect = PARTICLE_LOCATION +
+                                         particleEffect;
+                }
+                else
+                {
+                    particleEffect = mInfo->getAttack(mAttackType)
+                                             ->particleEffect;
+                }
+
+                if (!particleEffect.empty() && Particle::enabled
+                    && curFrame == 1)
+                {
+                    switch (mDirection)
                     {
-                        frames = 5;
+                        case DOWN: rotation = 0; break;
+                        case LEFT: rotation = 90; break;
+                        case UP: rotation = 180; break;
+                        case RIGHT: rotation = 270; break;
+                        default: break;
                     }
+                    Particle *p;
+                    p = particleEngine->addEffect(particleEffect, 0, 0,
+                                                  rotation);
+                    controlParticle(p);
+                }
 
-                    mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
+                if (curFrame >= frameCount)
+                    nextTile();
 
-                    //attack particle effect
-                    if (mEquippedWeapon)
-                        particleEffect = mEquippedWeapon->getParticleEffect();
-
-                    if (!particleEffect.empty() && Particle::enabled && mFrame == 1)
-                    {
-                        switch (mDirection)
-                        {
-                            case DOWN: rotation = 0; break;
-                            case LEFT: rotation = 90; break;
-                            case UP: rotation = 180; break;
-                            case RIGHT: rotation = 270; break;
-                            default: break;
-                        }
-                        Particle *p;
-                        p = particleEngine->addEffect("graphics/particles/" +
-                                                      particleEffect, 0, 0, rotation);
-                        controlParticle(p);
-                    }
-
-                    if (mFrame >= frames)
-                        nextTile();
-
-                    break;
-            }
+                break;
         }
 
         // Update pixel coordinates

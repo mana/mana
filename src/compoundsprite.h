@@ -58,6 +58,10 @@ public:
 
     int getNumberOfLayers() const;
 
+    size_t getCurrentFrame() const;
+
+    size_t getFrameCount() const;
+
     size_t size() const
     { return std::vector<Sprite*>::size(); }
 
@@ -73,6 +77,16 @@ public:
     void clear();
 
     void ensureSize(size_t layerCount);
+
+    /**
+     * Returns the curent frame in the current animation of the given layer.
+     */
+    virtual size_t getCurrentFrame(size_t layer);
+
+    /**
+     * Returns the frame count in the current animation of the given layer.
+     */
+    virtual size_t getFrameCount(size_t layer);
 
 private:
     typedef CompoundSprite::iterator SpriteIterator;

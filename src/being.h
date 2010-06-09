@@ -398,16 +398,6 @@ class Being : public ActorSprite, public ConfigListener
         void setDirection(Uint8 direction);
 
         /**
-         * Returns the being's current sprite frame number.
-         */
-        int getCurrentFrame() const { return mFrame; }
-
-        /**
-         * Set the being's current sprite frame number.
-         */
-        void setFrame(int frame) { mFrame = frame; }
-
-        /**
          * Returns the direction the being is facing.
          */
         SpriteDirection getSpriteDirection() const
@@ -450,7 +440,6 @@ class Being : public ActorSprite, public ConfigListener
          * when this being isn't following any path currently.
          */
         const Path &getPath() const { return mPath; }
-
 
         /**
          * Set the Emoticon type and time displayed above
@@ -520,9 +509,6 @@ class Being : public ActorSprite, public ConfigListener
         void updateColors();
 
         BeingInfo *mInfo;
-
-        /** The current sprite Frame number to be displayed */
-        int mFrame;
 
         /** Used to trigger the nextStep (walking on next Tile)
          * TODO: Used by eAthena only?

@@ -93,6 +93,16 @@ class Sprite
         virtual float getAlpha() const
         { return mAlpha; }
 
+        /**
+         * Returns the current frame number for the sprite.
+         */
+        virtual size_t getCurrentFrame() const = 0;
+
+        /**
+         * Returns the frame count for the sprite.
+         */
+        virtual size_t getFrameCount() const = 0;
+
     protected:
         float mAlpha;                  /**< The alpha opacity used to draw */
 };

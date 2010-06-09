@@ -73,6 +73,10 @@ class AnimatedSprite : public Sprite
         int getNumberOfLayers()
         { return 1; }
 
+        size_t getCurrentFrame() const;
+
+        size_t getFrameCount() const;
+
     private:
         bool updateCurrentAnimation(unsigned int dt);
 

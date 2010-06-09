@@ -143,10 +143,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     break;
             }
 
-            if (msg.getId() == 0x0078)
+            if (msg.getId() == SMSG_BEING_VISIBLE)
             {
                 dstBeing->clearPath();
-                dstBeing->setFrame(0);
                 dstBeing->setWalkTime(tick_time);
                 dstBeing->setAction(Being::STAND);
             }
@@ -349,7 +348,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 case 0x02: // Sit
                     if (srcBeing)
                     {
-                        srcBeing->setFrame(0);
                         srcBeing->setAction(Being::SIT);
                     }
                     break;
@@ -357,7 +355,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 case 0x03: // Stand up
                     if (srcBeing)
                     {
-                        srcBeing->setFrame(0);
                         srcBeing->setAction(Being::STAND);
                     }
                     break;
@@ -619,7 +616,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();   // unknown
 
             dstBeing->setWalkTime(tick_time);
-            dstBeing->setFrame(0);
+            dstBeing->reset();
 
             dstBeing->setStunMode(stunMode);
             dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
@@ -650,10 +647,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     y = msg.readInt16();
                     dstBeing->setTileCoords(x, y);
                     if (dstBeing->getCurrentAction() == Being::WALK)
-                    {
-                        dstBeing->setFrame(0);
                         dstBeing->setAction(Being::STAND);
-                    }
                 }
             }
             break;

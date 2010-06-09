@@ -216,7 +216,6 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 player_node->setAction(Being::STAND);
-                player_node->setFrame(0);
                 player_node->setTileCoords(x, y);
 
                 logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
