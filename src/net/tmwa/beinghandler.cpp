@@ -146,7 +146,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (msg.getId() == SMSG_BEING_VISIBLE)
             {
                 dstBeing->clearPath();
-                dstBeing->setWalkTime(tick_time);
+                dstBeing->setActionTime(tick_time);
                 dstBeing->setAction(Being::STAND);
             }
 
@@ -615,7 +615,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();   // Lv
             msg.readInt8();   // unknown
 
-            dstBeing->setWalkTime(tick_time);
+            dstBeing->setActionTime(tick_time);
             dstBeing->reset();
 
             dstBeing->setStunMode(stunMode);

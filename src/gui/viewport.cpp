@@ -444,9 +444,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
         }
         else
         {
-          if (mLocalWalkTime != player_node->getWalkTime())
+          if (mLocalWalkTime != player_node->getActionTime())
           {
-              mLocalWalkTime = player_node->getWalkTime();
+              mLocalWalkTime = player_node->getActionTime();
               int destX = (event.getX() + mPixelViewX + 16) /
                           mMap->getTileWidth();
               int destY = (event.getY() + mPixelViewY + 16) /

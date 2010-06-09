@@ -1010,7 +1010,7 @@ void LocalPlayer::attack(Being *target, bool keep)
                 setDirection(LEFT);
         }
 
-        mWalkTime = tick_time;
+        mActionTime = tick_time;
         mTargetTime = tick_time;
     }
 

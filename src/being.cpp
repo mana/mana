@@ -22,6 +22,7 @@
 #include "being.h"
 
 #include "animatedsprite.h"
+#include "beingmanager.h"
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
@@ -50,6 +51,7 @@
 #include "gui/userpalette.h"
 
 #include "net/charhandler.h"
+#include "net/gamehandler.h"
 #include "net/net.h"
 #include "net/npchandler.h"
 #include "net/playerhandler.h"
@@ -82,7 +84,7 @@ int Being::mNumberOfHairstyles = 1;
 Being::Being(int id, Type type, int subtype, Map *map):
     ActorSprite(id),
     mInfo(BeingInfo::Unknown),
-    mWalkTime(0),
+    mActionTime(0),
     mEmotion(0), mEmotionTime(0),
     mSpeechTime(0),
     mAttackType(1),
@@ -250,7 +252,7 @@ void Being::setPath(const Path &path)
             mAction != WALK && mAction != DEAD)
     {
         nextTile();
-        mWalkTime = tick_time;
+        mActionTime = tick_time;
     }
 }
 
@@ -381,7 +383,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
     if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         reset();
-        mWalkTime = tick_time;
+        mActionTime = tick_time;
     }
 
     sound.playSfx(mInfo->getSound((damage > 0) ?
@@ -614,6 +616,9 @@ void Being::setAction(Action action, int attackType)
         play(currentAction);
         mAction = action;
     }
+
+    if (currentAction != ACTION_WALK)
+        mActionTime = tick_time;
 }
 
 void Being::setDirection(Uint8 direction)
@@ -675,7 +680,7 @@ void Being::nextTile()
     mX = pos.x;
     mY = pos.y;
     setAction(WALK);
-    mWalkTime += (int)(mWalkSpeed.x / 10);
+    mActionTime += (int)(mWalkSpeed.x / 10);
 }
 
 int Being::getCollisionRadius() const
@@ -786,7 +791,7 @@ void Being::logic()
                break;
 
             case WALK:
-                if ((int) ((get_elapsed_time(mWalkTime) * frameCount)
+                if ((int) ((get_elapsed_time(mActionTime) * frameCount)
                         / getWalkSpeed().x) >= frameCount)
                     nextTile();
                 break;
@@ -795,7 +800,7 @@ void Being::logic()
                 int rotation = 0;
                 std::string particleEffect = "";
 
-                int curFrame = (get_elapsed_time(mWalkTime) * frameCount)
+                int curFrame = (get_elapsed_time(mActionTime) * frameCount)
                                / mAttackSpeed;
 
                 //attack particle effect
@@ -851,6 +856,15 @@ void Being::logic()
     }
 
     ActorSprite::logic();
+
+    int frameCount = getFrameCount();
+    if (frameCount < 10)
+        frameCount = 10;
+
+    if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
+        (int) ((get_elapsed_time(mActionTime)
+                / getWalkSpeed().x) >= frameCount))
+        beingManager->scheduleDelete(this);
 }
 
 void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
@@ -932,9 +946,9 @@ int Being::getOffset(char pos, char neg) const
     if (mMap)
     {
         offset = (pos == LEFT && neg == RIGHT) ?
-                 (int)((get_elapsed_time(mWalkTime)
+                 (int)((get_elapsed_time(mActionTime)
                         * mMap->getTileWidth()) / mWalkSpeed.x) :
-                 (int)((get_elapsed_time(mWalkTime)
+                 (int)((get_elapsed_time(mActionTime)
                         * mMap->getTileHeight()) / mWalkSpeed.y);
     }
 

@@ -121,19 +121,15 @@ class Being : public ActorSprite, public ConfigListener
         void clearPath();
 
         /**
-         * Returns the walk time.
-         * Used to know which frame to display and trigger
-         * the next Tile step.
-         * TODO: Used by eAthena only?
+         * Returns the time spent in the current action.
          */
-        int getWalkTime() const { return mWalkTime; }
+        int getActionTime() const { return mActionTime; }
 
         /**
-         * Set the current WalkTime value.
-         * TODO: Used by eAthena only?
+         * Set the current action time.
          * @see Ea::BeingHandler that set it to tick time.
          */
-        void setWalkTime(int walkTime) { mWalkTime = walkTime; }
+        void setActionTime(int actionTime) { mActionTime = actionTime; }
 
         /**
          * Makes this being take the next tile of its path.
@@ -510,10 +506,7 @@ class Being : public ActorSprite, public ConfigListener
 
         BeingInfo *mInfo;
 
-        /** Used to trigger the nextStep (walking on next Tile)
-         * TODO: Used by eAthena only?
-         */
-        int mWalkTime;
+        int mActionTime;      /**< Time spent in current action */
 
         int mEmotion;         /**< Currently showing emotion */
         int mEmotionTime;     /**< Time until emotion disappears */

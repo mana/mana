@@ -128,8 +128,14 @@ class BeingManager
 
         void updatePlayerNames();
 
+        /**
+         * Destroys the given Being at the end of BeingManager::logic
+         */
+        void scheduleDelete(Being *being);
+
     protected:
         Beings mBeings;
+        Beings mDeleteBeings;
         Map *mMap;
 };
 

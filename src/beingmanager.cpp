@@ -25,9 +25,6 @@
 
 #include "gui/viewport.h"
 
-#include "net/gamehandler.h"
-#include "net/net.h"
-
 #include "utils/stringutils.h"
 #include "utils/dtor.h"
 
@@ -83,6 +80,7 @@ Being *BeingManager::createBeing(int id, ActorSprite::Type type, int subtype)
 void BeingManager::destroyBeing(Being *being)
 {
     mBeings.remove(being);
+    mDeleteBeings.remove(being);
     viewport->clearHoverBeing(being);
     delete being;
 }
@@ -158,25 +156,18 @@ const Beings &BeingManager::getAll() const
 
 void BeingManager::logic()
 {
-    Beings::iterator i = mBeings.begin();
-    while (i != mBeings.end())
+    Beings::iterator it, it_end;
+    for (it = mBeings.begin(), it_end = mBeings.end(); it != it_end; it++)
+        (*it)->logic();
+
+    for (it = mDeleteBeings.begin(), it_end = mDeleteBeings.end();
+            it != it_end; it++)
     {
-        Being *being = (*i);
-
-        being->logic();
-
-        if (!being->isAlive() &&
-            Net::getGameHandler()->removeDeadBeings() &&
-            being->getCurrentFrame() >= 20)
-        {
-            delete being;
-            i = mBeings.erase(i);
-        }
-        else
-        {
-            ++i;
-        }
+        mBeings.remove(*it);
+        delete *it;
     }
+
+    mDeleteBeings.clear();
 }
 
 void BeingManager::clear()
@@ -189,6 +180,7 @@ void BeingManager::clear()
 
     delete_all(mBeings);
     mBeings.clear();
+    mDeleteBeings.clear();
 
     if (player_node)
         mBeings.push_back(player_node);
@@ -276,4 +268,9 @@ void BeingManager::updatePlayerNames()
             being->updateName();
         ++i;
     }
+}
+
+void BeingManager::scheduleDelete(Being *being)
+{
+    mDeleteBeings.push_back(being);
 }
