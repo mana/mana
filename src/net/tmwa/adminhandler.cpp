@@ -21,8 +21,8 @@
 
 #include "net/tmwa/adminhandler.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "game.h"
 #include "playerrelations.h"
 

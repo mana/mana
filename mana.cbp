@@ -98,6 +98,8 @@
 		<Unit filename="src\actor.h" />
 		<Unit filename="src\actorsprite.cpp" />
 		<Unit filename="src\actorsprite.h" />
+		<Unit filename="src\actorspritemanager.cpp" />
+		<Unit filename="src\actorspritemanager.h" />
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
@@ -106,8 +108,6 @@
 		<Unit filename="src\avatar.h" />
 		<Unit filename="src\being.cpp" />
 		<Unit filename="src\being.h" />
-		<Unit filename="src\beingmanager.cpp" />
-		<Unit filename="src\beingmanager.h" />
 		<Unit filename="src\channel.cpp" />
 		<Unit filename="src\channel.h" />
 		<Unit filename="src\channelmanager.cpp" />
@@ -131,8 +131,6 @@
 		<Unit filename="src\equipment.h" />
 		<Unit filename="src\flooritem.cpp" />
 		<Unit filename="src\flooritem.h" />
-		<Unit filename="src\flooritemmanager.cpp" />
-		<Unit filename="src\flooritemmanager.h" />
 		<Unit filename="src\game.cpp" />
 		<Unit filename="src\game.h" />
 		<Unit filename="src\graphics.cpp" />

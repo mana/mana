@@ -20,7 +20,7 @@
 
 #include "party.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 
 PartyMember::PartyMember(Party *party, int id, const std::string &name):
         Avatar(name), mId(id), mParty(party), mLeader(false)
@@ -143,7 +143,7 @@ void Party::removeFromMembers()
                                itr_end = mMembers.end();
     while(itr != itr_end)
     {
-        Being *b = beingManager->findBeing((*itr)->getID());
+        Being *b = actorSpriteManager->findBeing((*itr)->getID());
         b->setParty(NULL);
         ++itr;
     }

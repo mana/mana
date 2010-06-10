@@ -21,8 +21,8 @@
 
 #include "net/tmwa/chathandler.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
@@ -112,7 +112,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
         // Received speech from being
         case SMSG_BEING_CHAT: {
             chatMsgLength = msg.readInt16() - 8;
-            being = beingManager->findBeing(msg.readInt32());
+            being = actorSpriteManager->findBeing(msg.readInt32());
 
             if (!being || chatMsgLength <= 0)
                 break;

@@ -21,7 +21,7 @@
 
 #include "map.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "client.h"
 #include "configuration.h"
 #include "graphics.h"
@@ -532,12 +532,14 @@ bool Map::getWalk(int x, int y, unsigned char walkmask) const
 
 bool Map::occupied(int x, int y) const
 {
-    const Beings &beings = beingManager->getAll();
-    for (Beings::const_iterator i = beings.begin(); i != beings.end(); i++)
+    const ActorSprites &actors = actorSpriteManager->getAll();
+    ActorSpritesConstIterator it, it_end;
+    for (it = actors.begin(), it_end = actors.end(); it != it_end; it++)
     {
-        const Being *being = *i;
+        const ActorSprite *actor = *it;
 
-        if (being->getTileX() == x && being->getTileY() == y)
+        if (actor->getTileX() == x && actor->getTileY() == y &&
+            actor->getType() != ActorSprite::FLOOR_ITEM)
             return true;
     }
 

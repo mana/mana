@@ -21,7 +21,7 @@
 
 #include "net/tmwa/itemhandler.h"
 
-#include "flooritemmanager.h"
+#include "actorspritemanager.h"
 
 #include "net/messagein.h"
 
@@ -54,13 +54,13 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
                 int y = msg.readInt16();
                 msg.skip(4);     // amount,subX,subY / subX,subY,amount
 
-                floorItemManager->create(id, itemId, x, y);
+                actorSpriteManager->createItem(id, itemId, x, y);
             }
             break;
 
         case SMSG_ITEM_REMOVE:
-            if (FloorItem *item = floorItemManager->findById(msg.readInt32()))
-                floorItemManager->destroy(item);
+            if (FloorItem *item = actorSpriteManager->findItem(msg.readInt32()))
+                actorSpriteManager->destroy(item);
             break;
     }
 }

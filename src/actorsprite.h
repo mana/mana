@@ -150,6 +150,12 @@ public:
     virtual float getAlpha() const
     { return CompoundSprite::getAlpha(); }
 
+    virtual int getWidth() const
+    { return CompoundSprite::getWidth(); }
+
+    virtual int getHeight() const
+    { return CompoundSprite::getHeight(); }
+
     static void load();
 
     static void unload();

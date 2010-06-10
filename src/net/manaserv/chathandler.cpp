@@ -21,8 +21,8 @@
 
 #include "net/manaserv/chathandler.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "client.h"
 #include "channel.h"
 #include "channelmanager.h"
@@ -153,7 +153,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
         return;
     }
 
-    Being *being = beingManager->findBeing(id);
+    Being *being = actorSpriteManager->findBeing(id);
 
     std::string mes;
     if (being)

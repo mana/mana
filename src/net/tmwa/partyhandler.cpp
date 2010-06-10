@@ -20,7 +20,7 @@
 
 #include "net/tmwa/partyhandler.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "localplayer.h"
 #include "log.h"
 
@@ -143,7 +143,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 std::string nick = "";
                 Being *being;
 
-                if (!(being = beingManager->findBeing(id)))
+                if (!(being = actorSpriteManager->findBeing(id)))
                 {
                     nick = being->getName();
                 }
@@ -249,7 +249,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     partyTab->chatLog(strprintf(_("%s has left your party."),
                                     nick.c_str()), BY_SERVER);
 
-                    Being *b = beingManager->findBeing(id);
+                    Being *b = actorSpriteManager->findBeing(id);
                     b->setParty(NULL);
 
                     taParty->removeMember(id);
@@ -270,7 +270,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
                 // The server only sends this when the member is in range, so
                 // lets make sure they get the party hilight.
-                if (Being *b = beingManager->findBeing(id))
+                if (Being *b = actorSpriteManager->findBeing(id))
                 {
                     b->setParty(taParty);
                 }

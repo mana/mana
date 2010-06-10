@@ -22,7 +22,7 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "configlistener.h"
 #include "position.h"
 
@@ -30,6 +30,7 @@
 
 #include <guichan/mouselistener.hpp>
 
+class ActorSprite;
 class Being;
 class BeingPopup;
 class FloorItem;
@@ -159,10 +160,10 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void hideBeingPopup();
 
     protected:
-        friend class BeingManager;
+        friend class ActorSpriteManager;
 
-        /// Clears the hovered being if it matches
-        void clearHoverBeing(Being *being);
+        /// Clears any matching hovers
+        void clearHover(ActorSprite *actor);
 
     private:
         /**

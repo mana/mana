@@ -21,8 +21,8 @@
 
 #include "gui/popupmenu.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "flooritem.h"
 #include "graphics.h"
 #include "item.h"
@@ -199,7 +199,7 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 
 void PopupMenu::handleLink(const std::string &link)
 {
-    Being *being = beingManager->findBeing(mBeingId);
+    Being *being = actorSpriteManager->findBeing(mBeingId);
 
     // Talk To action
     if (link == "talk" && being && being->canTalk())

@@ -21,8 +21,8 @@
 
 #include "net/tmwa/beinghandler.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "client.h"
 #include "effectmanager.h"
 #include "guild.h"
@@ -83,7 +83,7 @@ Being *createBeing(int id, short job)
     else if (job == 45)
         return NULL; // Skip portals
 
-    Being *being = beingManager->createBeing(id, type, job);
+    Being *being = actorSpriteManager->createBeing(id, type, job);
 
     if (type == ActorSprite::PLAYER || type == ActorSprite::NPC)
     {
@@ -96,7 +96,7 @@ Being *createBeing(int id, short job)
 
 void BeingHandler::handleMessage(Net::MessageIn &msg)
 {
-    if (!beingManager)
+    if (!actorSpriteManager)
         return;
 
     int id;
@@ -126,7 +126,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             statusEffects |= ((Uint32)msg.readInt16()) << 16;  // option
             job = msg.readInt16();  // class
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
 
             if (!dstBeing)
             {
@@ -233,7 +233,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              * later versions of eAthena for both mobs and
              * players
              */
-            dstBeing = beingManager->findBeing(msg.readInt32());
+            dstBeing = actorSpriteManager->findBeing(msg.readInt32());
 
             Uint16 srcX, srcY, dstX, dstY;
             msg.readCoordinatePair(srcX, srcY, dstX, dstY);
@@ -258,7 +258,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             // A being should be removed or has died
             id = msg.readInt32();
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
 
             if (!dstBeing)
                 break;
@@ -280,7 +280,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (msg.readInt8() == 1)
                 dstBeing->setAction(Being::DEAD);
             else
-                beingManager->destroyBeing(dstBeing);
+                actorSpriteManager->destroy(dstBeing);
 
             break;
 
@@ -288,7 +288,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             // A being changed mortality status
             id = msg.readInt32();
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
 
             if (!dstBeing)
                 break;
@@ -304,8 +304,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_SKILL_DAMAGE:
             msg.readInt16(); // Skill Id
-            srcBeing = beingManager->findBeing(msg.readInt32());
-            dstBeing = beingManager->findBeing(msg.readInt32());
+            srcBeing = actorSpriteManager->findBeing(msg.readInt32());
+            dstBeing = actorSpriteManager->findBeing(msg.readInt32());
             msg.readInt32(); // Server tick
             msg.readInt32(); // src speed
             msg.readInt32(); // dst speed
@@ -320,8 +320,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_BEING_ACTION:
-            srcBeing = beingManager->findBeing(msg.readInt32());
-            dstBeing = beingManager->findBeing(msg.readInt32());
+            srcBeing = actorSpriteManager->findBeing(msg.readInt32());
+            dstBeing = actorSpriteManager->findBeing(msg.readInt32());
             msg.readInt32();   // server tick
             msg.readInt32();   // src speed
             msg.readInt32();   // dst speed
@@ -363,11 +363,11 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_BEING_SELFEFFECT: {
             id = (Uint32)msg.readInt32();
-            if (!beingManager->findBeing(id))
+            if (!actorSpriteManager->findBeing(id))
                 break;
 
             int effectType = msg.readInt32();
-            Being* being = beingManager->findBeing(id);
+            Being* being = actorSpriteManager->findBeing(id);
 
             effectManager->trigger(effectType, being);
 
@@ -375,7 +375,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
         }
 
         case SMSG_BEING_EMOTION:
-            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
+            if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
             }
@@ -404,7 +404,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              * 16 bit value will be 0.
              */
 
-            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
+            if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
             }
@@ -471,13 +471,13 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_BEING_NAME_RESPONSE:
-            if ((dstBeing = beingManager->findBeing(msg.readInt32())))
+            if ((dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 dstBeing->setName(msg.readString(24));
             }
             break;
         case SMSG_PLAYER_GUILD_PARTY_INFO:
-            if ((dstBeing = beingManager->findBeing(msg.readInt32())))
+            if ((dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 dstBeing->setPartyName(msg.readString(24));
                 dstBeing->setGuildName(msg.readString(24));
@@ -486,7 +486,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             }
             break;
         case SMSG_BEING_CHANGE_DIRECTION:
-            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
+            if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
             }
@@ -509,7 +509,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 << 16; // status.options; Aethyra uses this as misc2
             job = msg.readInt16();
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
 
             if (!dstBeing)
             {
@@ -639,7 +639,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             id = msg.readInt32();
             if (mSync || id != player_node->getId())
             {
-                dstBeing = beingManager->findBeing(id);
+                dstBeing = actorSpriteManager->findBeing(id);
                 if (dstBeing)
                 {
                     Uint16 x, y;
@@ -664,7 +664,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_PLAYER_STATUS_CHANGE:
             // Change in players' flags
             id = msg.readInt32();
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
             stunMode = msg.readInt16();
             statusEffects = msg.readInt16();
             statusEffects |= ((Uint32) msg.readInt16()) << 16;
@@ -684,7 +684,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             id = msg.readInt32();
             flag = msg.readInt8(); // 0: stop, 1: start
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
             if (dstBeing)
                 dstBeing->setStatusEffect(status, flag);
             break;

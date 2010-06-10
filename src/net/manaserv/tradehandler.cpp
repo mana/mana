@@ -21,7 +21,7 @@
 
 #include "net/manaserv/tradehandler.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "item.h"
 #include "localplayer.h"
 
@@ -104,7 +104,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
     {
         case GPMSG_TRADE_REQUEST:
         {
-            Being *being = beingManager->findBeing(msg.readInt16());
+            Being *being = actorSpriteManager->findBeing(msg.readInt16());
             if (!being || !mAcceptTradeRequests)
             {
                 respond(false);

@@ -42,6 +42,8 @@
 ./src/actor.h
 ./src/actorsprite.cpp
 ./src/actorsprite.h
+./src/actorspritemanager.cpp
+./src/actorspritemanager.h
 ./src/animatedsprite.cpp
 ./src/animatedsprite.h
 ./src/animationparticle.cpp
@@ -50,8 +52,6 @@
 ./src/avatar.h
 ./src/being.cpp
 ./src/being.h
-./src/beingmanager.cpp
-./src/beingmanager.h
 ./src/channel.cpp
 ./src/channel.h
 ./src/channelmanager.cpp
@@ -75,8 +75,6 @@
 ./src/equipment.h
 ./src/flooritem.cpp
 ./src/flooritem.h
-./src/flooritemmanager.cpp
-./src/flooritemmanager.h
 ./src/game.cpp
 ./src/game.h
 ./src/graphics.cpp

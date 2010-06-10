@@ -21,10 +21,9 @@
 
 #include "gui/viewport.h"
 
+#include "actorspritemanager.h"
 #include "client.h"
-#include "beingmanager.h"
 #include "configuration.h"
-#include "flooritemmanager.h"
 #include "graphics.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
@@ -204,12 +203,16 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     // Draw player names, speech, and emotion sprite as needed
-    const Beings &beings = beingManager->getAll();
-    for (Beings::const_iterator i = beings.begin(), i_end = beings.end();
-         i != i_end; ++i)
+    const ActorSprites &actors = actorSpriteManager->getAll();
+    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+         it != it_end; it++)
     {
-        (*i)->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
-        (*i)->drawEmotion(graphics, (int) mPixelViewX, (int) mPixelViewY);
+        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+            continue;
+
+        Being *b = static_cast<Being*>(*it);
+        b->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
+        b->drawEmotion(graphics, (int) mPixelViewX, (int) mPixelViewY);
     }
 
     if (miniStatusWindow)
@@ -417,7 +420,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     else if (event.getButton() == gcn::MouseEvent::MIDDLE)
     {
         // Find the being nearest to the clicked position
-        Being *target = beingManager->findNearestLivingBeing(
+        Being *target = actorSpriteManager->findNearestLivingBeing(
                 pixelX, pixelY, 20, ActorSprite::MONSTER);
 
         if (target)
@@ -491,11 +494,11 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int x = (event.getX() + (int) mPixelViewX);
     const int y = (event.getY() + (int) mPixelViewY);
 
-    mHoverBeing = beingManager->findBeingByPixel(x, y);
+    mHoverBeing = actorSpriteManager->findBeingByPixel(x, y);
     mBeingPopup->show(getMouseX(), getMouseY(), mHoverBeing);
 
-    mHoverItem = floorItemManager->findByCoordinates(x / mMap->getTileWidth(),
-                                                    y / mMap->getTileHeight());
+    mHoverItem = actorSpriteManager->findItem(x / mMap->getTileWidth(),
+                                              y / mMap->getTileHeight());
 
     if (mHoverBeing)
     {
@@ -542,8 +545,11 @@ void Viewport::hideBeingPopup()
     mBeingPopup->setVisible(false);
 }
 
-void Viewport::clearHoverBeing(Being *being)
+void Viewport::clearHover(ActorSprite *actor)
 {
-    if (mHoverBeing == being)
+    if (mHoverBeing == actor)
         mHoverBeing = 0;
+
+    if (mHoverItem == actor)
+        mHoverItem = 0;
 }

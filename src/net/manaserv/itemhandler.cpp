@@ -21,7 +21,7 @@
 
 #include "net/manaserv/itemhandler.h"
 
-#include "flooritemmanager.h"
+#include "actorspritemanager.h"
 
 #include "net/manaserv/protocol.h"
 #include "net/manaserv/messagein.h"
@@ -62,8 +62,7 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
                     {
                         if (Map *map = game->getCurrentMap())
                         {
-                            floorItemManager->create(id,
-                                                     itemId,
+                            actorSpriteManager->createItem(id, itemId,
                                                      x / map->getTileWidth(),
                                                      y / map->getTileHeight());
                         }
@@ -75,9 +74,9 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
                         }
                     }
                 }
-                else if (FloorItem *item = floorItemManager->findById(id))
+                else if (FloorItem *item = actorSpriteManager->findItem(id))
                 {
-                    floorItemManager->destroy(item);
+                    actorSpriteManager->destroy(item);
                 }
             }
         } break;

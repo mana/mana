@@ -21,8 +21,8 @@
 
 #include "gui/minimap.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "configuration.h"
 #include "graphics.h"
 #include "localplayer.h"
@@ -186,12 +186,15 @@ void Minimap::draw(gcn::Graphics *graphics)
             drawImage(mMapImage, mapOriginX, mapOriginY);
     }
 
-    const Beings &beings = beingManager->getAll();
+    const ActorSprites &actors = actorSpriteManager->getAll();
 
-    for (Beings::const_iterator bi = beings.begin(), bi_end = beings.end();
-         bi != bi_end; ++bi)
+    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+         it != it_end; it++)
     {
-        const Being *being = (*bi);
+        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+            continue;
+
+        const Being *being = static_cast<Being*>(*it);
         int dotSize = 2;
 
         int type = UserPalette::PC;

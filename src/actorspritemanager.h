@@ -19,25 +19,29 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BEINGMANAGER_H
-#define BEINGMANAGER_H
+#ifndef ACTORSPRITEMANAGER_H
+#define ACTORSPRITEMANAGER_H
 
+#include "actorsprite.h"
 #include "being.h"
+#include "flooritem.h"
 
 class LocalPlayer;
 class Map;
 
-typedef std::list<Being*> Beings;
+typedef std::list<ActorSprite*> ActorSprites;
+typedef ActorSprites::iterator ActorSpritesIterator;
+typedef ActorSprites::const_iterator ActorSpritesConstIterator;
 
-class BeingManager
+class ActorSpriteManager
 {
     public:
-        BeingManager();
+        ActorSpriteManager();
 
-        ~BeingManager();
+        ~ActorSpriteManager();
 
         /**
-         * Sets the map on which beings are created.
+         * Sets the map on which ActorSprites are created.
          */
         void setMap(Map *map);
 
@@ -47,17 +51,23 @@ class BeingManager
         void setPlayer(LocalPlayer *player);
 
         /**
-         * Create a being and add it to the list of beings.
+         * Create a Being and add it to the list of ActorSprites.
          */
         Being *createBeing(int id, ActorSprite::Type type, int subtype);
 
         /**
-         * Remove a Being.
+         * Create a FloorItem and add it to the list of ActorSprites.
          */
-        void destroyBeing(Being *being);
+        FloorItem *createItem(int id, int itemId, int x, int y);
 
         /**
-         * Returns a specific id Being.
+         * Destroys the given ActorSprite at the end of
+         * ActorSpriteManager::logic.
+         */
+        void destroy(ActorSprite *actor);
+
+        /**
+         * Returns a specific Being, by id;
          */
         Being *findBeing(int id) const;
 
@@ -66,7 +76,21 @@ class BeingManager
          */
         Being *findBeing(int x, int y,
                          ActorSprite::Type type = ActorSprite::UNKNOWN) const;
+
+        /**
+         * Returns a being at the specific pixel.
+         */
         Being *findBeingByPixel(int x, int y) const;
+
+        /**
+         * Returns a specific FloorItem, by id.
+         */
+        FloorItem *findItem(int id) const;
+
+        /**
+         * Returns a FloorItem at specific coordinates.
+         */
+        FloorItem *findItem(int x, int y) const;
 
         /**
          * Returns a being nearest to specific coordinates.
@@ -91,35 +115,35 @@ class BeingManager
          * @param type        The type of being to look for.
          */
         Being *findNearestLivingBeing(Being *aroundBeing, int maxTileDist,
-                                      ActorSprite::Type type = Being::UNKNOWN) const;
+                                ActorSprite::Type type = Being::UNKNOWN) const;
 
         /**
          * Finds a being by name and (optionally) by type.
          */
         Being *findBeingByName(const std::string &name,
-                               ActorSprite::Type type = Being::UNKNOWN) const;
+                                ActorSprite::Type type = Being::UNKNOWN) const;
 
         /**
          * Returns the whole list of beings.
          */
-        const Beings &getAll() const;
+        const ActorSprites &getAll() const;
 
         /**
-         * Returns true if the given being is in the manager's list, false
-         * otherwise.
+         * Returns true if the given ActorSprite is in the manager's list,
+         * false otherwise.
          *
-         * \param being the being to search for
+         * \param actor the ActorSprite to search for
          */
-        bool hasBeing(Being *being) const;
+        bool hasActorSprite(ActorSprite *actor) const;
 
         /**
-         * Performs being logic and deletes dead beings when they have been
-         * dead long enough.
+         * Performs ActorSprite logic and deletes ActorSprite scheduled to be
+         * deleted.
          */
         void logic();
 
         /**
-         * Destroys all beings except the local player
+         * Destroys all ActorSprites except the local player
          */
         void clear();
 
@@ -128,17 +152,12 @@ class BeingManager
 
         void updatePlayerNames();
 
-        /**
-         * Destroys the given Being at the end of BeingManager::logic
-         */
-        void scheduleDelete(Being *being);
-
     protected:
-        Beings mBeings;
-        Beings mDeleteBeings;
+        ActorSprites mActors;
+        ActorSprites mDeleteActors;
         Map *mMap;
 };
 
-extern BeingManager *beingManager;
+extern ActorSpriteManager *actorSpriteManager;
 
-#endif
+#endif // ACTORSPRITEMANAGER_H

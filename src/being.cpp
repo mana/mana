@@ -21,8 +21,8 @@
 
 #include "being.h"
 
+#include "actorspritemanager.h"
 #include "animatedsprite.h"
-#include "beingmanager.h"
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
@@ -864,7 +864,7 @@ void Being::logic()
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
         (int) ((get_elapsed_time(mActionTime)
                 / getWalkSpeed().x) >= frameCount))
-        beingManager->scheduleDelete(this);
+        actorSpriteManager->destroy(this);
 }
 
 void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)

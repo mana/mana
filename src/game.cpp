@@ -21,15 +21,14 @@
 
 #include "game.h"
 
+#include "actorspritemanager.h"
 #include "actorsprite.h"
-#include "beingmanager.h"
 #include "channelmanager.h"
 #include "client.h"
 #include "commandhandler.h"
 #include "configuration.h"
 #include "effectmanager.h"
 #include "emoteshortcut.h"
-#include "flooritemmanager.h"
 #include "graphics.h"
 #include "itemshortcut.h"
 #include "joystick.h"
@@ -115,8 +114,7 @@ OutfitWindow *outfitWindow;
 SpecialsWindow *specialsWindow;
 SocialWindow *socialWindow;
 
-BeingManager *beingManager = NULL;
-FloorItemManager *floorItemManager = NULL;
+ActorSpriteManager *actorSpriteManager = NULL;
 ChannelManager *channelManager = NULL;
 CommandHandler *commandHandler = NULL;
 Particle *particleEngine = NULL;
@@ -130,9 +128,8 @@ ChatTab *localChatTab = NULL;
  */
 static void initEngines()
 {
-    beingManager = new BeingManager;
+    actorSpriteManager = new ActorSpriteManager;
     commandHandler = new CommandHandler;
-    floorItemManager = new FloorItemManager;
     channelManager = new ChannelManager;
     effectManager = new EffectManager;
 
@@ -233,7 +230,7 @@ Game::Game():
     Net::getGameHandler()->inGame();
 
     // Initialize beings
-    beingManager->setPlayer(player_node);
+    actorSpriteManager->setPlayer(player_node);
 
     /*
      * To prevent the server from sending data before the client
@@ -261,10 +258,9 @@ Game::~Game()
 
     destroyGuiWindows();
 
-    del_0(beingManager)
+    del_0(actorSpriteManager)
     if (Client::getState() != STATE_CHANGE_MAP)
         del_0(player_node)
-    del_0(floorItemManager)
     del_0(channelManager)
     del_0(commandHandler)
     del_0(joystick)
@@ -335,8 +331,7 @@ void Game::logic()
 
     // Handle all necessary game logic
     ActorSprite::actorLogic();
-    beingManager->logic();
-    floorItemManager->logic();
+    actorSpriteManager->logic();
     particleEngine->update();
     if (mCurrentMap)
         mCurrentMap->update();
@@ -451,7 +446,8 @@ void Game::handleInput()
             }
 
 
-            if (!chatWindow->isInputFocused() || (event.key.keysym.mod & KMOD_ALT))
+            if (!chatWindow->isInputFocused() || (event.key.keysym.mod &
+                                                  KMOD_ALT))
             {
                 if (keyboard.isKeyActive(keyboard.KEY_PREV_CHAT_TAB))
                 {
@@ -603,7 +599,7 @@ void Game::handleInput()
                             // off under eAthena.
 
                             FloorItem *item =
-                                floorItemManager->findByCoordinates(x, y);
+                                    actorSpriteManager->findItem(x, y);
 
                             // If none below the player, try the tile in front
                             // of the player
@@ -620,8 +616,7 @@ void Game::handleInput()
                                     default: break;
                                 }
 
-                                item = floorItemManager->findByCoordinates(
-                                        x, y);
+                                item = actorSpriteManager->findItem(x, y);
                             }
 
                             if (item)
@@ -833,8 +828,8 @@ void Game::handleInput()
             if (!player_node->getTarget())
             {
                 // Only auto target Monsters
-                target = beingManager->findNearestLivingBeing(player_node,
-                         20, ActorSprite::MONSTER);
+                target = actorSpriteManager->findNearestLivingBeing(player_node,
+                                                    20, ActorSprite::MONSTER);
             }
             player_node->attack(target, newTarget);
         }
@@ -855,7 +850,7 @@ void Game::handleInput()
             else if (keyboard.isKeyActive(keyboard.KEY_TARGET_NPC))
                 currentTarget = ActorSprite::NPC;
 
-            Being *target = beingManager->findNearestLivingBeing(player_node,
+            Being *target = actorSpriteManager->findNearestLivingBeing(player_node,
                                                     20, currentTarget);
 
             if (target && (target != player_node->getTarget() ||
@@ -894,7 +889,7 @@ void Game::handleInput()
         {
             if (joystick->buttonPressed(1))
             {
-                FloorItem *item = floorItemManager->findByCoordinates(x, y);
+                FloorItem *item = actorSpriteManager->findItem(x, y);
 
                 if (item)
                     player_node->pickUp(item);
@@ -914,8 +909,7 @@ void Game::handleInput()
 void Game::changeMap(const std::string &mapPath)
 {
     // Clean up floor items, beings and particles
-    floorItemManager->clear();
-    beingManager->clear();
+    actorSpriteManager->clear();
 
     // Close the popup menu on map change so that invalid options can't be
     // executed.
@@ -947,7 +941,7 @@ void Game::changeMap(const std::string &mapPath)
 
     // Notify the minimap and beingManager about the map change
     minimap->setMap(newMap);
-    beingManager->setMap(newMap);
+    actorSpriteManager->setMap(newMap);
     particleEngine->setMap(newMap);
     viewport->setMap(newMap);
 

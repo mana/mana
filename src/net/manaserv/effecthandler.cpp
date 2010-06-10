@@ -21,7 +21,7 @@
 
 #include "net/manaserv/effecthandler.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "effectmanager.h"
 #include "log.h"
 
@@ -68,7 +68,7 @@ void EffectHandler::handleCreateEffectBeing(Net::MessageIn &msg)
 {
     int eid = msg.readInt16();
     int bid = msg.readInt16();
-    Being* b = beingManager->findBeing(bid);
+    Being* b = actorSpriteManager->findBeing(bid);
     if (b)
         effectManager->trigger(eid, b);
     else

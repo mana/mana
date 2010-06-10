@@ -305,6 +305,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      actor.h \
 	      actorsprite.cpp \
 	      actorsprite.h \
+	      actorspritemanager.cpp \
+	      actorspritemanager.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
 	      animationparticle.cpp \
@@ -313,8 +315,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      avatar.h \
 	      being.cpp \
 	      being.h \
-	      beingmanager.cpp \
-	      beingmanager.h \
 	      chatlog.cpp \
 	      chatlog.h \
 	      client.cpp \
@@ -337,8 +337,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      equipment.h \
 	      flooritem.cpp \
 	      flooritem.h \
-	      flooritemmanager.cpp \
-	      flooritemmanager.h \
 	      game.cpp \
 	      game.h \
 	      graphics.cpp \

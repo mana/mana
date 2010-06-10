@@ -21,7 +21,7 @@
 
 #include "gui/setup_players.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "configuration.h"
 #include "log.h"
 
@@ -354,8 +354,8 @@ void Setup_Players::apply()
 
     config.setValue("showgender", mShowGender);
 
-    if (beingManager && mShowGender != showGender)
-        beingManager->updatePlayerNames();
+    if (actorSpriteManager && mShowGender != showGender)
+        actorSpriteManager->updatePlayerNames();
 
     config.setValue("enableChatLog", mEnableChatLog);
 }

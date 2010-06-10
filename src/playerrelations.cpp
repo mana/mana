@@ -21,8 +21,8 @@
 
 #include <algorithm>
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "configuration.h"
 #include "graphics.h"
 #include "playerrelations.h"
@@ -220,8 +220,8 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
         // execute `ignore' strategy, if possible
         if (mIgnoreStrategy)
         {
-            Being *b = beingManager->findBeingByName(name,
-                                                     ActorSprite::PLAYER);
+            Being *b = actorSpriteManager->findBeingByName(name,
+                                                        ActorSprite::PLAYER);
             if (b && b->getType() == ActorSprite::PLAYER)
                 mIgnoreStrategy->ignore(b, rejections);
         }

@@ -21,7 +21,7 @@
 
 #include "net/tmwa/npchandler.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "localplayer.h"
 
 #include "gui/npcdialog.h"

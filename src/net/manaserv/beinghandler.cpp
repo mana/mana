@@ -21,8 +21,8 @@
 
 #include "net/manaserv/beinghandler.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "client.h"
 #include "game.h"
 #include "localplayer.h"
@@ -169,7 +169,8 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
             }
             else
             {
-                being = beingManager->createBeing(id, ActorSprite::PLAYER, 0);
+                being = actorSpriteManager->createBeing(id,
+                                                    ActorSprite::PLAYER, 0);
                 being->setName(name);
             }
             int hs = msg.readInt8(), hc = msg.readInt8();
@@ -183,8 +184,8 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
         case OBJECT_NPC:
         {
             int subtype = msg.readInt16();
-            being = beingManager->createBeing(id, type == OBJECT_MONSTER ?
-                            ActorSprite::MONSTER : ActorSprite::NPC, subtype);
+            being = actorSpriteManager->createBeing(id, type == OBJECT_MONSTER
+                           ? ActorSprite::MONSTER : ActorSprite::NPC, subtype);
             std::string name = msg.readString();
             if (name.length() > 0) being->setName(name);
         } break;
@@ -200,11 +201,11 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
 
 void BeingHandler::handleBeingLeaveMessage(Net::MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readInt16());
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being)
         return;
 
-    beingManager->destroyBeing(being);
+    actorSpriteManager->destroy(being);
 }
 
 void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
@@ -213,7 +214,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
     {
         int id = msg.readInt16();
         int flags = msg.readInt8();
-        Being *being = beingManager->findBeing(id);
+        Being *being = actorSpriteManager->findBeing(id);
         int sx = 0;
         int sy = 0;
         int speed = 0;
@@ -255,7 +256,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
 
 void BeingHandler::handleBeingAttackMessage(Net::MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readInt16());
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
     const int direction = msg.readInt8();
     const int attackType = msg.readInt8();
 
@@ -277,7 +278,7 @@ void BeingHandler::handleBeingsDamageMessage(Net::MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
-        Being *being = beingManager->findBeing(msg.readInt16());
+        Being *being = actorSpriteManager->findBeing(msg.readInt16());
         int damage = msg.readInt16();
         if (being)
         {
@@ -288,7 +289,7 @@ void BeingHandler::handleBeingsDamageMessage(Net::MessageIn &msg)
 
 void BeingHandler::handleBeingActionChangeMessage(Net::MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readInt16());
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
     Being::Action action = (Being::Action) msg.readInt8();
     if (!being)
         return;
@@ -327,7 +328,7 @@ void BeingHandler::handleBeingActionChangeMessage(Net::MessageIn &msg)
 
 void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readInt16());
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being || being->getType() != ActorSprite::PLAYER)
         return;
     handleLooks(being, msg);
@@ -341,7 +342,7 @@ void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
 
 void BeingHandler::handleBeingDirChangeMessage(Net::MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readInt16());
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being)
         return;
     int data = msg.readInt8();

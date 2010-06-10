@@ -21,7 +21,7 @@
 
 #include "chat.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "configuration.h"
 #include "localplayer.h"
 #include "party.h"
@@ -266,20 +266,20 @@ void ChatWindow::chatInput(const std::string &msg)
 
 void ChatWindow::doPresent()
 {
-    const Beings &beings = beingManager->getAll();
+    const ActorSprites &actors = actorSpriteManager->getAll();
     std::string response = "";
     int playercount = 0;
 
-    for (Beings::const_iterator bi = beings.begin(), be = beings.end();
-         bi != be; ++bi)
+    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+         it != it_end; it++)
     {
-        if ((*bi)->getType() == ActorSprite::PLAYER)
+        if ((*it)->getType() == ActorSprite::PLAYER)
         {
             if (!response.empty())
             {
                 response += ", ";
             }
-            response += (*bi)->getName();
+            response += static_cast<Being*>(*it)->getName();
             ++playercount;
         }
     }
@@ -531,7 +531,7 @@ void ChatWindow::autoComplete()
 
     if (newName == "")
     {
-        beingManager->getPlayerNames(nameList, true);
+        actorSpriteManager->getPlayerNames(nameList, true);
         newName = autoComplete(nameList, name);
     }
     if (newName == "")
