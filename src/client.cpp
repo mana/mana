@@ -1141,6 +1141,10 @@ void Client::initUpdatesDir()
         mUpdateHost = config.getValue("updatehost", "");
     }
 
+    // Don't go out of range int he next check
+    if (mUpdateHost.length() < 2)
+        return;
+
     // Remove any trailing slash at the end of the update host
     if (mUpdateHost.at(mUpdateHost.size() - 1) == '/')
         mUpdateHost.resize(mUpdateHost.size() - 1);
