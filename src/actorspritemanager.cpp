@@ -95,6 +95,9 @@ FloorItem *ActorSpriteManager::createItem(int id, int itemId, int x, int y)
 
 void ActorSpriteManager::destroy(ActorSprite *actor)
 {
+    if (!actor || actor == player_node)
+        return;
+
     mDeleteActors.push_back(actor);
 }
 
