@@ -864,7 +864,10 @@ void Being::logic()
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
         (int) ((get_elapsed_time(mActionTime)
                 / getWalkSpeed().x) >= frameCount))
-        actorSpriteManager->destroy(this);
+    {
+        if (getType() != PLAYER)
+            actorSpriteManager->destroy(this);
+    }
 }
 
 void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
