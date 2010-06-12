@@ -63,7 +63,7 @@ protected:
             mConfirmDialog(NULL)
     {}
 
-    ~SocialTab()
+    virtual ~SocialTab()
     {
         // Cleanup dialogs
         if (mInviteDialog)
@@ -106,6 +106,14 @@ public:
 
         mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+    }
+
+    ~GuildTab()
+    {
+        delete mList;
+        mList = 0;
+        delete mScroll;
+        mScroll = 0;
     }
 
     void action(const gcn::ActionEvent &event)
@@ -179,6 +187,14 @@ public:
 
         mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+    }
+
+    ~PartyTab()
+    {
+        delete mList;
+        mList = 0;
+        delete mScroll;
+        mScroll = 0;
     }
 
     void action(const gcn::ActionEvent &event)
