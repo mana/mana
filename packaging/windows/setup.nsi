@@ -202,6 +202,8 @@ Section "Core files (required)" SecCore
   File "${SRCDIR}\README"
   SetOutPath "$INSTDIR\data\fonts"
   File "${SRCDIR}\data\fonts\*.ttf"
+  SetOutPath "$INSTDIR\data\graphics"
+  File "${SRCDIR}\data\graphics\*.png"
   SetOutPath "$INSTDIR\data\graphics\gui"
   File "${SRCDIR}\data\graphics\gui\*.png"
   File "${SRCDIR}\data\graphics\gui\*.xml"
