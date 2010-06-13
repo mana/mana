@@ -368,6 +368,7 @@ SocialWindow::~SocialWindow()
 
         mPartyInviter = "";
     }
+    delete mCreatePopup;
 }
 
 bool SocialWindow::addTab(Guild *guild)
