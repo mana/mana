@@ -1,5 +1,6 @@
 ADD_SUBDIRECTORY(gui)
 ADD_SUBDIRECTORY(images)
+ADD_SUBDIRECTORY(sprites)
 
 SET (FILES
     target-cursor-in-range-l.png

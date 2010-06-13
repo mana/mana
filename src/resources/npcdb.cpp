@@ -37,7 +37,7 @@ namespace
 void NPCDB::load()
 {
     if (mLoaded)
-        return;
+        unload();
 
     logger->log("Initializing NPC database...");
 

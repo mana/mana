@@ -43,6 +43,7 @@
 
 ImageSet *ActorSprite::targetCursorImages[2][NUM_TC];
 SimpleAnimation *ActorSprite::targetCursor[2][NUM_TC];
+bool ActorSprite::loaded = false;
 
 ActorSprite::ActorSprite(int id):
     mId(id),
@@ -345,12 +346,21 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
 
 void ActorSprite::load()
 {
+    if (loaded)
+        unload();
+
     initTargetCursor();
+
+    loaded = true;
 }
 
 void ActorSprite::unload()
 {
+    if (!loaded)
+        return;
+
     cleanupTargetCursors();
+    loaded = false;
 }
 
 static const char *cursorType(int type)

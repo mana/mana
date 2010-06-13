@@ -45,11 +45,19 @@ class Palette
          */
         void getColor(int intensity, int color[3]) const;
 
+        /**
+         * Tells if the palette was successfully loaded.
+         */
+        bool loaded() const
+        { return mLoaded; }
+
     private:
 
         struct Color { unsigned char value[3]; };
 
         std::vector< Color > mColors;
+
+        bool mLoaded;
 };
 
 /**
@@ -73,15 +81,15 @@ class Dye
         ~Dye();
 
         /**
+         * Tells if the dye description was successfully loaded.
+         */
+        bool loaded() const
+        { return mLoaded; }
+
+        /**
          * Modifies a pixel color.
          */
         void update(int color[3]) const;
-
-        /**
-         * Fills the blank in a dye placeholder with some palette names.
-         */
-        static void instantiate(std::string &target,
-                                const std::string &palettes);
 
     private:
 
@@ -91,6 +99,7 @@ class Dye
          * Red, Green, Yellow, Blue, Magenta, White (or rather gray).
          */
         Palette *mPalettes[7];
+        bool mLoaded;
 };
 
 #endif

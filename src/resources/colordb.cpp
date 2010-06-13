@@ -36,7 +36,7 @@ namespace
 void ColorDB::load()
 {
     if (mLoaded)
-        return;
+        unload();
 
     XML::Document *doc = new XML::Document("hair.xml");
     xmlNodePtr root = doc->rootNode();

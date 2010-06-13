@@ -32,6 +32,8 @@
 
 #define STATUS_EFFECTS_FILE "status-effects.xml"
 
+bool StatusEffect::mLoaded = false;
+
 StatusEffect::StatusEffect() :
     mPersistentParticleEffect(false)
 {}
@@ -113,6 +115,9 @@ StatusEffect *StatusEffect::getStunEffect(int index, bool enabling)
 
 void StatusEffect::load()
 {
+    if (mLoaded)
+        unload();
+
     XML::Document doc(STATUS_EFFECTS_FILE);
     xmlNodePtr rootNode = doc.rootNode();
 
@@ -175,8 +180,13 @@ void unloadMap(std::map<int, StatusEffect *> map)
 
 void StatusEffect::unload()
 {
+    if (!mLoaded)
+        return;
+
     unloadMap(statusEffects[0]);
     unloadMap(statusEffects[1]);
     unloadMap(stunEffects[0]);
     unloadMap(stunEffects[1]);
+
+    mLoaded = false;
 }

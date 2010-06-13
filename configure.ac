@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Mana], [1.0.0-beta], [dev@manasource.org], [mana])
+AC_INIT([Mana], [1.0.0-beta2], [dev@manasource.org], [mana])
 AM_INIT_AUTOMAKE([1.9])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
@@ -141,6 +141,7 @@ data/fonts/Makefile
 data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile
+data/graphics/sprites/Makefile
 data/help/Makefile
 data/icons/Makefile
 docs/Makefile

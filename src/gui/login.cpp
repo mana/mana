@@ -91,7 +91,8 @@ LoginDialog::LoginDialog(LoginData *loginData):
         mPassField->requestFocus();
 
     mLoginButton->setEnabled(canSubmit());
-    mRegisterButton->setEnabled(Net::getLoginHandler()->isRegistrationEnabled());
+    mRegisterButton->setEnabled(Net::getLoginHandler()
+                                ->isRegistrationEnabled());
 }
 
 LoginDialog::~LoginDialog()

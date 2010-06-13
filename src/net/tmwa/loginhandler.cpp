@@ -42,6 +42,7 @@ namespace TmwAthena {
 extern ServerInfo charServer;
 
 LoginHandler::LoginHandler():
+        mVersionResponse(false),
         mRegistrationEnabled(true)
 {
     static const Uint16 _messages[] = {
@@ -187,6 +188,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_SERVER_VERSION_RESPONSE:
             {
                 // TODO: verify these!
+
                 msg.readInt8(); // -1
                 msg.readInt8(); // T
                 msg.readInt8(); // M
@@ -194,13 +196,10 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
 
                 unsigned int options = msg.readInt32();
 
-                if (options & 1)
-                {
-                    // Registeration not allowed
-                    mRegistrationEnabled = false;
-                }
+                mRegistrationEnabled = (options & 1);
 
-                //state = STATE_LOGIN;
+                // Leave this last
+                mVersionResponse = true;
             }
             break;
     }
@@ -214,7 +213,7 @@ void LoginHandler::connect()
 
 bool LoginHandler::isConnected()
 {
-    return mNetwork->isConnected();
+    return mVersionResponse && mNetwork->isConnected();
 }
 
 void LoginHandler::disconnect()

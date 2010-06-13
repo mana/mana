@@ -9,8 +9,8 @@ graphics_DATA =				\
 	target-cursor-normal-m.png	\
 	target-cursor-normal-s.png
 
-SUBDIRS = gui images
-
-EXTRA_DIST =				\
-	$(graphics_DATA) \
+EXTRA_DIST =			\
+	$(graphics_DATA)	\
 	CMakeLists.txt
+
+SUBDIRS = gui images sprites

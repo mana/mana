@@ -1,5 +1,4 @@
 SET(FILES
-    error.png
     login_wallpaper.png
     )
 

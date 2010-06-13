@@ -123,4 +123,6 @@ bool isWordSeparator(char chr);
 
 const std::string findSameSubstring(const std::string &str1, const std::string &str2);
 
+const char* getSafeUtf8String(std::string text);
+
 #endif // UTILS_STRINGUTILS_H

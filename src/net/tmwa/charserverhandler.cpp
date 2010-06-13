@@ -70,9 +70,6 @@ CharServerHandler::CharServerHandler()
 
 void CharServerHandler::handleMessage(Net::MessageIn &msg)
 {
-    logger->log("CharServerHandler: Packet ID: %x, Length: %d",
-                msg.getId(), msg.getLength());
-
     switch (msg.getId())
     {
             case SMSG_CHAR_LOGIN:
@@ -102,16 +99,17 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
             switch (msg.readInt8())
             {
                 case 0:
-                    errorMessage = _("Access denied.");
+                    errorMessage = _("Access denied. Most likely, there are "
+                                     "too many players on this server.");
                     break;
                 case 1:
                     errorMessage = _("Cannot use this ID.");
                     break;
                 default:
-                    errorMessage = _("Unknown failure to select character.");
+                    errorMessage = _("Unknown char-server failure.");
                     break;
             }
-            unlockCharSelectDialog();
+            Client::setState(STATE_ERROR);
             break;
 
         case SMSG_CHAR_CREATE_SUCCEEDED:

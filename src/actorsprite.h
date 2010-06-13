@@ -223,6 +223,8 @@ private:
     /** Animated target cursors. */
     static SimpleAnimation *targetCursor[NUM_TCT][NUM_TC];
 
+    static bool loaded;
+
     /** Target cursor being used */
     SimpleAnimation *mUsedTargetCursor;
 };

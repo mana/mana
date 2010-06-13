@@ -90,13 +90,20 @@ PlayerRelation::PlayerRelation(Relation relation)
 PlayerRelationsManager::PlayerRelationsManager() :
     mPersistIgnores(false),
     mDefaultPermissions(PlayerRelation::DEFAULT),
-    mIgnoreStrategy(NULL)
+    mIgnoreStrategy(0)
 {
 }
 
 PlayerRelationsManager::~PlayerRelationsManager()
 {
     delete_all(mIgnoreStrategies);
+
+    for (std::map<std::string,
+         PlayerRelation *>::const_iterator it = mRelations.begin();
+         it != mRelations.end(); it++)
+    {
+        delete it->second;
+    }
 }
 
 void PlayerRelationsManager::clear()
@@ -104,7 +111,9 @@ void PlayerRelationsManager::clear()
     std::vector<std::string> *names = getPlayers();
     for (std::vector<std::string>::const_iterator
              it = names->begin(); it != names->end(); it++)
+    {
         removePlayer(*it);
+    }
     delete names;
 }
 

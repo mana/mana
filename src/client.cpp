@@ -433,6 +433,14 @@ Client::~Client()
     SDL_RemoveTimer(mLogicCounterId);
     SDL_RemoveTimer(mSecondsCounterId);
 
+    // Unload XML databases
+    ColorDB::unload();
+    EmoteDB::unload();
+    ItemDB::unload();
+    MonsterDB::unload();
+    NPCDB::unload();
+    StatusEffect::unload();
+
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
     delete emoteShortcut;
@@ -586,19 +594,6 @@ int Client::exec()
             {
                 delete game;
                 game = 0;
-
-                if (mState != STATE_CHANGE_MAP)
-                {
-                    // Unload XML databases
-                    ColorDB::unload();
-                    EmoteDB::unload();
-                    ItemDB::unload();
-                    MonsterDB::unload();
-                    NPCDB::unload();
-                    StatusEffect::unload();
-
-                    ActorSprite::unload();
-                }
             }
 
             mOldState = mState;
@@ -973,6 +968,7 @@ int Client::exec()
 
                 case STATE_ERROR:
                     logger->log("State: ERROR");
+                    logger->log("Error: %s\n", errorMessage.c_str());
                     mCurrentDialog = new OkDialog(_("Error"), errorMessage);
                     mCurrentDialog->addActionListener(&errorListener);
                     mCurrentDialog = NULL; // OkDialog deletes itself
@@ -1158,6 +1154,10 @@ void Client::initUpdatesDir()
     {
         mUpdateHost = config.getValue("updatehost", "");
     }
+
+    // Don't go out of range int he next check
+    if (mUpdateHost.length() < 2)
+        return;
 
     // Remove any trailing slash at the end of the update host
     if (!mUpdateHost.empty() && mUpdateHost.at(mUpdateHost.size() - 1) == '/')

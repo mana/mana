@@ -42,7 +42,7 @@ namespace
 void MonsterDB::load()
 {
     if (mLoaded)
-        return;
+        unload();
 
     logger->log("Initializing monster database...");
 

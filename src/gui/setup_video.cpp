@@ -380,6 +380,7 @@ Setup_Video::Setup_Video():
 Setup_Video::~Setup_Video()
 {
     delete mModeListModel;
+    delete mModeList;
     delete mFontSizeListModel;
 }
 

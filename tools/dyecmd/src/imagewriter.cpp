@@ -22,6 +22,7 @@
 #include "imagewriter.h"
 
 #include <png.h>
+#include <iostream>
 #include <string>
 #include <SDL/SDL.h>
 
@@ -32,8 +33,8 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
     FILE *fp = fopen(filename.c_str(), "wb");
     if (!fp)
     {
-        // todo
-        // logger->log("could not open file %s for writing", filename.c_str());
+        std::cout << "PNG writer: Could not open file for writing: "
+        << filename << std::endl;
         return false;
     }
 
@@ -49,8 +50,8 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
     png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
     if (!png_ptr)
     {
-        // todo
-        // logger->log("Had trouble creating png_structp");
+        std::cout << "PNG writer: Had trouble creating png_structp"
+                  << std::endl;
         return false;
     }
 
@@ -58,16 +59,15 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
     if (!info_ptr)
     {
         png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
-        // todo
-        // logger->log("Could not create png_info");
+        std::cout << "PNG writer: Could not create png_info" << std::endl;
         return false;
     }
 
     if (setjmp(png_jmpbuf(png_ptr)))
     {
         png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
-        // todo
-        // logger->log("problem writing to %s", filename.c_str());
+        std::cout << "PNG writer: problem writing to : "
+                  << filename << std::endl;
         return false;
     }
 
@@ -86,8 +86,9 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
     row_pointers = new png_bytep[surface->h];
     if (!row_pointers)
     {
-        // todo
-        // logger->log("Had trouble converting surface to row pointers");
+        std::cout
+        << "PNG writer: Had trouble converting surface to row pointers"
+        << std::endl;
         return false;
     }
 
@@ -105,9 +106,8 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
 
     png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
 
-    if (SDL_MUSTLOCK(surface)) {
+    if (SDL_MUSTLOCK(surface))
         SDL_UnlockSurface(surface);
-    }
 
     return true;
 }

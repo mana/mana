@@ -51,6 +51,8 @@ class AttrDisplay : public Container
             DERIVED, CHANGEABLE, UNKNOWN
         };
 
+        ~AttrDisplay();
+
         virtual std::string update();
         virtual Type getType() { return UNKNOWN; }
 
@@ -402,6 +404,11 @@ AttrDisplay::AttrDisplay(int id, const std::string &name):
     mValue->setAlignment(Graphics::CENTER);
 
     mLayout = new LayoutHelper(this);
+}
+
+AttrDisplay::~AttrDisplay()
+{
+    delete mLayout;
 }
 
 std::string AttrDisplay::update()

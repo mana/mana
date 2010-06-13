@@ -185,6 +185,12 @@ public:
         setCaption(name);
     }
 
+    ~SkillTab()
+    {
+        delete mListBox;
+        mListBox = 0;
+    }
+
     SkillInfo *getSelectedInfo()
     {
         return mListBox->getSelectedInfo();

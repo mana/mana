@@ -108,9 +108,6 @@ void GeneralHandler::load()
     registerHandler(mPartyHandler.get());
     registerHandler(mPlayerHandler.get());
     registerHandler(mTradeHandler.get());
-
-    Stats::load();
-    Stats::informItemDB();
 }
 
 void GeneralHandler::reload()
@@ -193,6 +190,11 @@ void GeneralHandler::stateChanged(State oldState, State newState)
     {
         GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
         game->gameLoading();
+    }
+    else if (newState == STATE_LOAD_DATA)
+    {
+        Stats::load();
+        Stats::informItemDB();
     }
 }
 
