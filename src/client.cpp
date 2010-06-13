@@ -955,6 +955,7 @@ int Client::exec()
 
                 case STATE_ERROR:
                     logger->log("State: ERROR");
+                    logger->log("Error: %s\n", errorMessage.c_str());
                     mCurrentDialog = new OkDialog(_("Error"), errorMessage);
                     mCurrentDialog->addActionListener(&errorListener);
                     mCurrentDialog = NULL; // OkDialog deletes itself

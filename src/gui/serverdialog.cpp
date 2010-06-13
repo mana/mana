@@ -25,6 +25,7 @@
 #include "configuration.h"
 #include "gui.h"
 #include "log.h"
+#include "main.h"
 
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
