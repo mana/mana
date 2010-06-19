@@ -77,7 +77,11 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
         ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
 
     if (mUsedTargetCursor)
+    {
+        mUsedTargetCursor->reset();
+        mUsedTargetCursor->update(tick_time * MILLISECONDS_IN_A_TICK);
         mUsedTargetCursor->draw(graphics, px, py);
+    }
 
     return drawSpriteAt(graphics, px, py);
 }
@@ -111,15 +115,6 @@ void ActorSprite::logic()
 
 void ActorSprite::actorLogic()
 {
-    // Update sprite animations
-    for (int size = TC_SMALL; size < NUM_TC; size++)
-    {
-        for (int type = TCT_NORMAL; type < NUM_TCT; type++)
-        {
-            if (targetCursor[type][size])
-                targetCursor[type][size]->update(tick_time * MILLISECONDS_IN_A_TICK);
-        }
-    }
 }
 
 void ActorSprite::setMap(Map* map)
@@ -441,7 +436,7 @@ void ActorSprite::loadTargetCursor(const std::string &filename,
 
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)
     {
-        anim->addFrame(currentImageSet->get(i), 750,
+        anim->addFrame(currentImageSet->get(i), 75,
                       (16 - (currentImageSet->getWidth() / 2)),
                       (16 - (currentImageSet->getHeight() / 2)));
     }
