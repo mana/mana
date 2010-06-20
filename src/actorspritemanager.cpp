@@ -74,14 +74,14 @@ void ActorSpriteManager::setMap(Map *map)
 void ActorSpriteManager::setPlayer(LocalPlayer *player)
 {
     player_node = player;
-    mActors.push_back(player);
+    mActors.insert(player);
 }
 
 Being *ActorSpriteManager::createBeing(int id, ActorSprite::Type type, int subtype)
 {
     Being *being = new Being(id, type, subtype, mMap);
 
-    mActors.push_back(being);
+    mActors.insert(being);
     return being;
 }
 
@@ -89,7 +89,7 @@ FloorItem *ActorSpriteManager::createItem(int id, int itemId, int x, int y)
 {
     FloorItem *floorItem = new FloorItem(id, itemId, x, y, mMap);
 
-    mActors.push_back(floorItem);
+    mActors.insert(floorItem);
     return floorItem;
 }
 
@@ -98,7 +98,7 @@ void ActorSpriteManager::destroy(ActorSprite *actor)
     if (!actor || actor == player_node)
         return;
 
-    mDeleteActors.push_back(actor);
+    mDeleteActors.insert(actor);
 }
 
 Being *ActorSpriteManager::findBeing(int id) const
@@ -208,7 +208,7 @@ void ActorSpriteManager::logic()
          it != it_end; ++it)
     {
         viewport->clearHover(*it);
-        mActors.remove(*it);
+        mActors.erase(*it);
         delete *it;
     }
 
@@ -220,15 +220,16 @@ void ActorSpriteManager::clear()
     if (player_node)
     {
         player_node->setTarget(0);
-        mActors.remove(player_node);
+        mActors.erase(player_node);
     }
 
-    delete_all(mActors);
+    for_actors
+        delete *it;
     mActors.clear();
     mDeleteActors.clear();
 
     if (player_node)
-        mActors.push_back(player_node);
+        mActors.insert(player_node);
 }
 
 Being *ActorSpriteManager::findNearestLivingBeing(int x, int y,
@@ -297,7 +298,9 @@ void ActorSpriteManager::getPlayerNames(std::vector<std::string> &names,
         if ((being->getType() == ActorSprite::PLAYER
              || (being->getType() == ActorSprite::NPC && npcNames))
             && being->getName() != "")
+        {
             names.push_back(being->getName());
+        }
     }
 }
 

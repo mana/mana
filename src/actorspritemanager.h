@@ -29,7 +29,7 @@
 class LocalPlayer;
 class Map;
 
-typedef std::list<ActorSprite*> ActorSprites;
+typedef std::set<ActorSprite*> ActorSprites;
 typedef ActorSprites::iterator ActorSpritesIterator;
 typedef ActorSprites::const_iterator ActorSpritesConstIterator;
 
