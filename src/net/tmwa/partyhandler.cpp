@@ -143,7 +143,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 std::string nick = "";
                 Being *being;
 
-                if (!(being = beingManager->findBeing(id)))
+                if ((being = beingManager->findBeing(id)))
                 {
                     if (being->getType() == Being::PLAYER)
                     {
