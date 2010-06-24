@@ -143,7 +143,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 std::string nick = "";
                 Being *being;
 
-                if (!(being = actorSpriteManager->findBeing(id)))
+                if ((being = actorSpriteManager->findBeing(id)))
                 {
                     nick = being->getName();
                 }
