@@ -194,8 +194,9 @@ void SellDialog::action(const gcn::ActionEvent &event)
         {
             // This order is important, item->getCurrentInvIndex() would return
             // the inventory index of the next Duplicate otherwise.
-            itemIndex = item->getCurrentInvIndex();
+            item->getCurrentInvIndex();
             sellCount = item->sellCurrentDuplicate(mAmountItems);
+            itemIndex = item->getId();
             Net::getNpcHandler()->sellItem(mNpcId, itemIndex, sellCount);
             mAmountItems -= sellCount;
         }
