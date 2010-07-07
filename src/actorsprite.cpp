@@ -19,6 +19,7 @@
  */
 
 #include "actorsprite.h"
+#include "actorspritelistener.h"
 
 #include "client.h"
 #include "effectmanager.h"
@@ -64,6 +65,11 @@ ActorSprite::~ActorSprite()
 
     if (player_node && player_node->getTarget() == this)
         player_node->setTarget(NULL);
+
+    // Notify listeners of the destruction.
+    for (ActorSpriteListenerIterator iter = mActorSpriteListeners.begin(),
+            end = mActorSpriteListeners.end(); iter != end; ++iter)
+        (*iter)->actorSpriteDestroyed(*this);
 }
 
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
@@ -356,6 +362,16 @@ void ActorSprite::unload()
 
     cleanupTargetCursors();
     loaded = false;
+}
+
+void ActorSprite::addActorSpriteListener(ActorSpriteListener *listener)
+{
+    mActorSpriteListeners.push_front(listener);
+}
+
+void ActorSprite::removeActorSpriteListener(ActorSpriteListener *listener)
+{
+    mActorSpriteListeners.remove(listener);
 }
 
 static const char *cursorType(int type)

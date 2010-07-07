@@ -582,8 +582,11 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
-    MessageOut outMsg(CMSG_ITEM_PICKUP);
-    outMsg.writeInt32(floorItem->getId());
+    if (floorItem)
+    {
+        MessageOut outMsg(CMSG_ITEM_PICKUP);
+        outMsg.writeInt32(floorItem->getId());
+    }
 }
 
 void PlayerHandler::setDirection(char direction)

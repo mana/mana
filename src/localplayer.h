@@ -23,6 +23,7 @@
 #define LOCALPLAYER_H
 
 #include "being.h"
+#include "actorspritelistener.h"
 
 #include "gui/userpalette.h"
 
@@ -109,7 +110,7 @@ enum
 /**
  * The local player character.
  */
-class LocalPlayer : public Being
+class LocalPlayer : public Being, public ActorSpriteListener
 {
     public:
         /**
@@ -162,6 +163,12 @@ class LocalPlayer : public Being
         void setInvItem(int index, int id, int amount);
 
         void pickUp(FloorItem *item);
+
+        /**
+         * Called when an ActorSprite has been destroyed.
+         * @param actorSprite the ActorSprite being destroyed.
+         */
+        void actorSpriteDestroyed(const ActorSprite &actorSprite);
 
         /**
          * Sets the attack range.

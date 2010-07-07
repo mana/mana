@@ -305,6 +305,7 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      actor.h \
 	      actorsprite.cpp \
 	      actorsprite.h \
+	      actorspritelistener.h \
 	      actorspritemanager.cpp \
 	      actorspritemanager.h \
 	      animatedsprite.cpp \

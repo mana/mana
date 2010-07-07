@@ -29,9 +29,11 @@
 #include <SDL_types.h>
 
 #include <set>
+#include <list>
 
 class SimpleAnimation;
 class StatusEffect;
+class ActorSpriteListener;
 
 class ActorSprite : public CompoundSprite, public Actor
 {
@@ -160,6 +162,16 @@ public:
 
     static void unload();
 
+    /**
+     * Add an ActorSprite listener.
+     */
+    void addActorSpriteListener(ActorSpriteListener *listener);
+
+    /**
+     * Remove an ActorSprite listener.
+     */
+    void removeActorSpriteListener(ActorSpriteListener *listener);
+
 protected:
     /**
      * Trigger visual effect, with components
@@ -227,6 +239,10 @@ private:
 
     /** Target cursor being used */
     SimpleAnimation *mUsedTargetCursor;
+
+    typedef std::list<ActorSpriteListener*> ActorSpriteListeners;
+    typedef ActorSpriteListeners::iterator ActorSpriteListenerIterator;
+    ActorSpriteListeners mActorSpriteListeners;
 };
 
 #endif // ACTORSPRITE_H

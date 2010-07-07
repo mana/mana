@@ -42,6 +42,7 @@
 ./src/actor.h
 ./src/actorsprite.cpp
 ./src/actorsprite.h
+./src/actorspritelistener.h
 ./src/actorspritemanager.cpp
 ./src/actorspritemanager.h
 ./src/animatedsprite.cpp

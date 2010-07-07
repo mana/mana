@@ -329,11 +329,14 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
-    int id = floorItem->getId();
-    MessageOut msg(PGMSG_PICKUP);
-    msg.writeInt16(id >> 16);
-    msg.writeInt16(id & 0xFFFF);
-    gameServerConnection->send(msg);
+    if (floorItem)
+    {
+        int id = floorItem->getId();
+        MessageOut msg(PGMSG_PICKUP);
+        msg.writeInt16(id >> 16);
+        msg.writeInt16(id & 0xFFFF);
+        gameServerConnection->send(msg);
+    }
 }
 
 void PlayerHandler::setDirection(char direction)

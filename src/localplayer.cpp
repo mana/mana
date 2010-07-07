@@ -686,6 +686,9 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
+    if (!item)
+        return;
+
     int dx = item->getTileX() - (int) getPosition().x / 32;
     int dy = item->getTileY() - (int) getPosition().y / 32;
 
@@ -700,14 +703,22 @@ void LocalPlayer::pickUp(FloorItem *item)
         {
             setDestination(item->getPixelX() + 16, item->getPixelY() + 16);
             mPickUpTarget = item;
+            mPickUpTarget->addActorSpriteListener(this);
         }
         else
         {
             setDestination(item->getTileX(), item->getTileY());
             mPickUpTarget = item;
+            mPickUpTarget->addActorSpriteListener(this);
             stopAttack();
         }
     }
+}
+
+void LocalPlayer::actorSpriteDestroyed(const ActorSprite &actorSprite)
+{
+    if (mPickUpTarget == &actorSprite)
+        mPickUpTarget = 0;
 }
 
 Being *LocalPlayer::getTarget() const
