@@ -471,7 +471,7 @@ void ChatWindow::whisper(const std::string &nick,
     }
     else
     {
-        if (own)
+        if (own == BY_PLAYER)
         {
             Net::getChatHandler()->privateMessage(nick, mes);
 
