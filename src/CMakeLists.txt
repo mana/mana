@@ -382,6 +382,8 @@ SET(SRCS
     resources/resourcemanager.h
     resources/soundeffect.h
     resources/soundeffect.cpp
+    resources/specialdb.cpp
+    resources/specialdb.h
     resources/spritedef.h
     resources/spritedef.cpp
     resources/wallpaper.cpp
