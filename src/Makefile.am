@@ -279,6 +279,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      resources/resourcemanager.h \
 	      resources/soundeffect.h \
 	      resources/soundeffect.cpp \
+	      resources/specialdb.h \
+	      resources/specialdb.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
 	      resources/wallpaper.cpp \
