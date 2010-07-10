@@ -27,6 +27,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 namespace XML
 {
@@ -132,6 +133,15 @@ namespace XML
             return val;
         }
 
+        return def;
+    }
+
+    bool getBoolProperty(xmlNodePtr node, const char* name, bool def)
+    {
+        xmlChar *prop = xmlGetProp(node, BAD_CAST name);
+
+        if (xmlStrEqual(prop, BAD_CAST "true" ) ) return true;
+        if (xmlStrEqual(prop, BAD_CAST "false") ) return false;
         return def;
     }
 

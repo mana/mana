@@ -58,7 +58,7 @@ WindowMenu::WindowMenu():
     if (skillDialog->hasSkills())
         addButton(N_("Skills"), x, h);
 
-    if (specialsWindow->hasSpecials())
+    // if (specialsWindow->hasSpecials())
         addButton(N_("Specials"), x, h);
 
     addButton(N_("Social"), x, h);

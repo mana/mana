@@ -70,6 +70,7 @@
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
+#include "resources/specialdb.h"
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
 
@@ -743,6 +744,7 @@ int Client::exec()
                     ItemDB::load();
                     Being::load(); // Hairstyles
                     MonsterDB::load();
+                    SpecialDB::load();
                     NPCDB::load();
                     EmoteDB::load();
                     StatusEffect::load();

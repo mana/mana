@@ -25,6 +25,8 @@
 
 #include "guichanfwd.h"
 
+#include "localplayer.h"
+
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
@@ -36,7 +38,7 @@ class ScrollArea;
 class Tab;
 class TabbedArea;
 
-struct SpecialInfo;
+struct SpecialEntry;
 
 class SpecialsWindow : public Window, public gcn::ActionListener {
     public:
@@ -49,20 +51,14 @@ class SpecialsWindow : public Window, public gcn::ActionListener {
          */
         void action(const gcn::ActionEvent &actionEvent);
 
-        /**
-         * Update the given special's display
-         */
-        std::string update(int id);
-
-        void loadSpecials(const std::string &file);
-
-        bool hasSpecials() { return !mSpecials.empty(); }
+        void draw(gcn::Graphics *graphics);
 
     private:
-        std::vector<gcn::Button *> mSpellButtons;
-        typedef std::map<int, SpecialInfo*> SpecialMap;
-        SpecialMap mSpecials;
+        // (re)constructs the list of specials
+        void rebuild(const std::map<int, Special> &specialData);
+
         TabbedArea *mTabs;
+        std::map<int, SpecialEntry *> mEntries;
 };
 
 extern SpecialsWindow *specialsWindow;

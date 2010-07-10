@@ -20,7 +20,6 @@
 
 #include "gui/specialswindow.h"
 
-#include "localplayer.h"
 #include "log.h"
 
 #include "gui/setup.h"
@@ -42,6 +41,8 @@
 #include "net/net.h"
 #include "net/specialhandler.h"
 
+#include "resources/specialdb.h"
+
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -54,31 +55,24 @@
 
 class SpecialEntry;
 
-struct SpecialInfo
-{
-    unsigned short id;
-    std::string name;
-    std::string icon;
-    SpecialEntry *display;
-};
 
 class SpecialEntry : public Container
 {
     public:
         SpecialEntry(SpecialInfo *info);
 
-        void update();
+        void update(int current, int needed);
 
     protected:
         friend class SpecialsWindow;
         SpecialInfo *mInfo;
 
     private:
-        Icon *mIcon;
-        Label *mNameLabel;
-        Label *mLevelLabel;
-        Label *mTechLabel;
-        Button *mUse;
+        Icon *mIcon;        // icon to display
+        Label *mNameLabel;  // name to display
+        Label *mLevelLabel; // level number label (only shown when applicable)
+        Button *mUse; // use button (only shown when applicable)
+        ProgressBar *mRechargeBar; // recharge bar (only shown when applicable)
 };
 
 SpecialsWindow::SpecialsWindow():
@@ -102,7 +96,6 @@ SpecialsWindow::SpecialsWindow():
 SpecialsWindow::~SpecialsWindow()
 {
     // Clear gui
-    loadSpecials("");
 }
 
 void SpecialsWindow::action(const gcn::ActionEvent &event)
@@ -127,91 +120,70 @@ void SpecialsWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-std::string SpecialsWindow::update(int id)
+void SpecialsWindow::draw(gcn::Graphics *graphics)
 {
-    // TODO
+    // update the progress bars
+    std::map<int, Special> specialData = player_node->getSpecialStatus();
+    bool foundNew = false;
+    unsigned int found = 0; // number of entries in specialData which match mEntries
 
-    return std::string();
+    for (std::map<int, Special>::iterator i = specialData.begin();
+      i != specialData.end();
+      i++)
+    {
+        std::map<int, SpecialEntry *>::iterator e = mEntries.find(i->first);
+        if (e == mEntries.end())
+        {
+            // found a new special - abort update and rebuild from scratch
+            foundNew = true;
+            break;
+        } else {
+            // update progress bar of special
+            e->second->update(i->second.currentMana, i->second.neededMana);
+            found++;
+        }
+    }
+    // a rebuild is needed when a) the number of specials changed or b) an existing entry isn't found anymore
+    if (foundNew || found != mEntries.size()) rebuild(specialData);
+
+    Window::draw(graphics);
 }
 
-void SpecialsWindow::loadSpecials(const std::string &file)
+void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
 {
-    // TODO: mTabs->clear();
-    while (mTabs->getSelectedTabIndex() != -1)
+    make_dtor(mEntries);
+    mEntries.clear();
+    int vPos = 0; //vertical position of next placed element
+
+    for (std::map<int, Special>::const_iterator i = specialData.begin();
+         i != specialData.end();
+         i++)
     {
-        mTabs->removeTabWithIndex(mTabs->getSelectedTabIndex());
-    }
+        logger->log("Updating special GUI for %d", i->first);
 
-    for (SpecialMap::iterator it = mSpecials.begin(); it != mSpecials.end();  it++)
-    {
-        delete (*it).second->display;
-    }
-    delete_all(mSpecials);
-    mSpecials.clear();
-
-    if (file.length() == 0)
-        return;
-
-    XML::Document doc(file);
-    xmlNodePtr root = doc.rootNode();
-
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "specials"))
-    {
-        logger->log("Error loading specials file: %s", file.c_str());
-        return;
-    }
-
-    int setCount = 0;
-    std::string setName;
-    ScrollArea *scroll;
-    FlowContainer *container;
-
-    for_each_xml_child_node(set, root)
-    {
-        if (xmlStrEqual(set->name, BAD_CAST "set"))
+        SpecialInfo* info = SpecialDB::get(i->first);
+        if (info)
         {
-            setCount++;
-            setName = XML::getProperty(set, "name", strprintf(_("Specials Set %d"), setCount));
-
-            container = new FlowContainer(SPECIALS_WIDTH, SPECIALS_HEIGHT);
-            container->setOpaque(false);
-            scroll = new ScrollArea(container);
-            scroll->setOpaque(false);
-            scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
-            scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
-
-            mTabs->addTab(setName, scroll);
-            for_each_xml_child_node(node, set)
-            {
-                if (xmlStrEqual(node->name, BAD_CAST "special"))
-                {
-                    int id = atoi(XML::getProperty(node, "id", "-1").c_str());
-                    if (id == -1)
-                        continue;
-                    std::string name = XML::getProperty(node, "name", strprintf(_("Special %d"), id));
-                    std::string icon = XML::getProperty(node, "icon", "");
-
-                    SpecialInfo *special = new SpecialInfo;
-                    special->id = id;
-                    special->name = name;
-                    special->icon = icon;
-                    special->display = new SpecialEntry(special);
-
-                    container->add(special->display);
-
-                    mSpecials[id] = special;
-                }
-            }
+            info->rechargeCurrent = i->second.currentMana;
+            info->rechargeNeeded = i->second.neededMana;
+            SpecialEntry* entry = new SpecialEntry(info);
+            entry->setPosition(0, vPos);
+            vPos += entry->getHeight();
+            add(entry);
+            mEntries[i->first] = entry;
+        } else {
+            logger->log("Warning: No info available of special %d", i->first);
         }
     }
 }
 
+
 SpecialEntry::SpecialEntry(SpecialInfo *info) :
     mInfo(info),
     mIcon(NULL),
-    mNameLabel(new Label(info->name)),
-    mLevelLabel(new Label("999")),
-    mUse(new Button("Use", "use", specialsWindow))
+    mLevelLabel(NULL),
+    mUse(NULL),
+    mRechargeBar(NULL)
 {
     setFrameSize(1);
     setOpaque(false);
@@ -225,21 +197,42 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     mIcon->setPosition(1, 0);
     add(mIcon);
 
+
+    mNameLabel = new Label(info->name);
     mNameLabel->setPosition(35, 0);
     add(mNameLabel);
 
-    mLevelLabel->setPosition(getWidth() - mLevelLabel->getWidth(), 0);
-    add(mLevelLabel);
+    if (info->hasLevel)
+    {
+        mLevelLabel = new Label(toString(info->level));
+        mLevelLabel->setPosition(getWidth() - mLevelLabel->getWidth(), 0);
+        add(mLevelLabel);
+    }
 
-    mNameLabel->setWidth(mLevelLabel->getX() - mNameLabel->getX() - 1);
 
-    mUse->setPosition(getWidth() - mUse->getWidth(), 13);
-    add(mUse);
+    if (info->isActive)
+    {
+        mUse = new Button("Use", "use", specialsWindow);
+        mUse->setPosition(getWidth() - mUse->getWidth(), 13);
+        add(mUse);
+    }
 
-    update();
+    if (info->hasRechargeBar)
+    {
+        float progress = (float)info->rechargeCurrent / (float)info->rechargeNeeded;
+        mRechargeBar = new ProgressBar(progress, 100, 10, Theme::PROG_MP);
+        mRechargeBar->setSmoothProgress(false);
+        mRechargeBar->setPosition(0, 13);
+        add(mRechargeBar);
+    }
+
 }
 
-void SpecialEntry::update()
+void SpecialEntry::update(int current, int needed)
 {
-    // TODO
+    if (mRechargeBar)
+    {
+        float progress = (float)current / (float)needed;
+        mRechargeBar->setProgress(progress);
+    }
 }
