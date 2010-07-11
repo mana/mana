@@ -1035,9 +1035,7 @@ void LocalPlayer::attack(Being *target, bool keep)
             sound.playSfx(soundFile);
     }
     else
-    {
-        sound.playSfx("sfx/fist-swish.ogg");
-    }
+        sound.playSfx(paths.getValue("attackSfxFile", "fist-swish.ogg"));
 
     Net::getPlayerHandler()->attack(target->getId());
     if ((Net::getNetworkType() == ServerInfo::TMWATHENA) && !keep)

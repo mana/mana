@@ -34,6 +34,7 @@
 
 #include "resources/monsterdb.h"
 #include "resources/monsterinfo.h"
+#include "configuration.h"
 
 Monster::Monster(int id, int subtype, Map *map):
     Being(id, subtype, map),
@@ -132,14 +133,17 @@ void Monster::setSubtype(Uint16 subtype)
     for (std::list<std::string>::const_iterator i = sprites.begin();
          i != sprites.end(); i++)
     {
-        std::string file = "graphics/sprites/" + *i;
+        std::string file = paths.getValue("sprites",
+                                          "graphics/sprites/") + *i;
         mSprites.push_back(AnimatedSprite::load(file));
     }
 
     // Ensure that something is shown
     if (mSprites.size() == 0)
     {
-        mSprites.push_back(AnimatedSprite::load("graphics/sprites/error.xml"));
+        mSprites.push_back(AnimatedSprite::load(
+                              paths.getValue("sprites", "graphics/sprites/") +
+                              paths.getValue("spriteErrorFile", "error.xml") ));
     }
 
     if (Particle::enabled)

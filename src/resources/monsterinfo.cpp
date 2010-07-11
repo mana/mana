@@ -23,6 +23,7 @@
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
+#include "configuration.h"
 
 MonsterInfo::MonsterInfo():
         mName(_("unnamed")),
@@ -45,7 +46,8 @@ void MonsterInfo::addSound(MonsterSoundEvent event, const std::string &filename)
         mSounds[event] = new std::vector<std::string>;
     }
 
-    mSounds[event]->push_back("sfx/" + filename);
+    mSounds[event]->push_back(paths.getValue("sfx", "sfx/")
+                              + filename);
 }
 
 const std::string &MonsterInfo::getSound(MonsterSoundEvent event) const

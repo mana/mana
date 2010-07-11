@@ -232,7 +232,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         }
         if (speed)
         {
-           /**
+           /*
             * The being's speed is transfered in tiles per second * 10
             * to keep it transferable in a Byte.
             * We set it back to tiles per second and in a float.

@@ -36,6 +36,7 @@
 #include "net/npchandler.h"
 
 #include "resources/npcdb.h"
+#include "configuration.h"
 
 NPC::NPC(int id, int subtype, Map *map):
     Player(id, subtype, map, true)
@@ -68,7 +69,8 @@ void NPC::setSubtype(Uint16 subtype)
          i != info.sprites.end();
          i++)
     {
-        std::string file = "graphics/sprites/" + (*i)->sprite;
+        std::string file = paths.getValue("sprites",
+                                          "graphics/sprites/") + (*i)->sprite;
         int variant = (*i)->variant;
         mSprites.push_back(AnimatedSprite::load(file, variant));
         mSpriteIDs.push_back(0);

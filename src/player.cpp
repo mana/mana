@@ -118,8 +118,10 @@ void Player::logic()
                         default: break;
                     }
                     Particle *p;
-                    p = particleEngine->addEffect("graphics/particles/" +
-                                                  particleEffect, 0, 0, rotation);
+                    p = particleEngine->addEffect(
+                                          paths.getValue("particles",
+                                          "graphics/particles/")
+                                          + particleEffect, 0, 0, rotation);
                     controlParticle(p);
                 }
 
@@ -193,8 +195,8 @@ void Player::setSprite(int slot, int id, const std::string &color,
             if (!color.empty())
                 filename += "|" + color;
 
-            equipmentSprite = AnimatedSprite::load("graphics/sprites/" +
-                                                   filename);
+            equipmentSprite = AnimatedSprite::load(
+              paths.getValue("sprites", "graphics/sprites/") + filename);
         }
 
         if (equipmentSprite)

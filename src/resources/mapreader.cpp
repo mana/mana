@@ -323,7 +323,10 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
                         if (config.getValue("showWarps", 1))
                         {
                             map->addParticleEffect(
-                                "graphics/particles/warparea.particle.xml",
+                            paths.getValue("particles",
+                                           "graphics/particles/")
+                            + paths.getValue("portalEffectFile",
+                                             "warparea.particle.xml"),
                                 objX, objY, objW, objH);
                         }
                     }

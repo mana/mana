@@ -24,6 +24,7 @@
 #include "log.h"
 
 #include "utils/xml.h"
+#include "configuration.h"
 
 namespace
 {
@@ -38,7 +39,8 @@ void NPCDB::load()
         unload();
 
     NPCsprite *unknownSprite = new NPCsprite;
-    unknownSprite->sprite = "error.xml";
+    unknownSprite->sprite = paths.getValue("spriteErrorFile",
+                                           "error.xml");
     unknownSprite->variant = 0;
     mUnknown.sprites.push_back(unknownSprite);
 

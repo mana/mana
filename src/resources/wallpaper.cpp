@@ -21,9 +21,11 @@
 
 #include "resources/wallpaper.h"
 
+#include "resources/resourcemanager.h"
 #include "log.h"
 
 #include "utils/stringutils.h"
+#include "configuration.h"
 
 #include <physfs.h>
 
@@ -31,9 +33,6 @@
 #include <cstring>
 #include <time.h>
 #include <vector>
-
-#define WALLPAPER_FOLDER "graphics/images/"
-#define WALLPAPER_BASE   "login_wallpaper.png"
 
 struct WallpaperData
 {
@@ -44,6 +43,37 @@ struct WallpaperData
 
 static std::vector<WallpaperData> wallpaperData;
 static bool haveBackup; // Is the backup (no size given) version available?
+
+static std::string wallpaperPath;
+static std::string wallpaperFile;
+
+// Search for the wallpaper path values sequentially..
+static void initDefaultWallpaperPaths()
+{
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    // Init the path
+    wallpaperPath = branding.getValue("wallpapersPath", "");
+
+    if (!wallpaperPath.empty() && resman->isDirectory(wallpaperPath))
+        return;
+    else
+        wallpaperPath = paths.getValue("wallpapers", "");
+
+    if (wallpaperPath.empty() || !resman->isDirectory(wallpaperPath))
+        wallpaperPath = "graphics/images/";
+
+    // Init the default file
+    wallpaperFile = branding.getValue("wallpaperFile", "");
+
+    if (!wallpaperFile.empty() && resman->isDirectory(wallpaperFile))
+        return;
+    else
+        wallpaperFile = paths.getValue("wallpaperFile", "");
+
+    if (wallpaperFile.empty() || !resman->isDirectory(wallpaperFile))
+        wallpaperFile = "login_wallpaper.png";
+}
 
 bool wallpaperCompare(WallpaperData a, WallpaperData b)
 {
@@ -57,7 +87,9 @@ void Wallpaper::loadWallpapers()
 {
     wallpaperData.clear();
 
-    char **imgs = PHYSFS_enumerateFiles(WALLPAPER_FOLDER);
+    initDefaultWallpaperPaths();
+
+    char **imgs = PHYSFS_enumerateFiles(wallpaperPath.c_str());
 
     for (char **i = imgs; *i != NULL; i++)
     {
@@ -65,7 +97,7 @@ void Wallpaper::loadWallpapers()
         int height;
 
         // If the backup file is found, we tell it.
-        if (strncmp (*i, WALLPAPER_BASE, strlen(*i)) == 0)
+        if (strncmp (*i, wallpaperFile.c_str(), strlen(*i)) == 0)
             haveBackup = true;
 
         // If the image format is terminated by: "_<width>x<height>.png"
@@ -86,7 +118,7 @@ void Wallpaper::loadWallpapers()
             if (sscanf(*i, filename.c_str(), &width, &height) == 2)
             {
                 WallpaperData wp;
-                wp.filename = WALLPAPER_FOLDER;
+                wp.filename = wallpaperPath;
                 wp.filename.append(*i);
                 wp.width = width;
                 wp.height = height;
@@ -132,7 +164,7 @@ std::string Wallpaper::getWallpaper(int width, int height)
 
     // Return the backup file if everything else failed...
     if (haveBackup)
-        return std::string(WALLPAPER_FOLDER WALLPAPER_BASE);
+        return std::string(wallpaperPath + wallpaperFile);
 
     // Return an empty string if everything else failed
     return std::string();

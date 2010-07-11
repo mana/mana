@@ -26,6 +26,7 @@
 #include "resources/image.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
+#include "configuration.h"
 
 Item::Item(int id, int quantity, bool equipment, bool equipped):
     mImage(0),
@@ -57,13 +58,17 @@ void Item::setId(int id)
         mDrawImage->decRef();
 
     ResourceManager *resman = ResourceManager::getInstance();
-    std::string imagePath = "graphics/items/" + getInfo().getImageName();
+    std::string imagePath = paths.getValue("itemIcons", "graphics/items/")
+                            + getInfo().getImageName();
     mImage = resman->getImage(imagePath);
     mDrawImage = resman->getImage(imagePath);
 
     if (!mImage)
-        mImage = Theme::getImageFromTheme("unknown-item.png");
+        mImage = Theme::getImageFromTheme(paths.getValue("unknownItemFile",
+                                                         "unknown-item.png"));
 
     if (!mDrawImage)
-        mDrawImage = Theme::getImageFromTheme("unknown-item.png");
+        mDrawImage = Theme::getImageFromTheme(
+                                            paths.getValue("unknownItemFile",
+                                                           "unknown-item.png"));
 }

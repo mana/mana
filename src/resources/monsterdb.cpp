@@ -30,6 +30,7 @@
 #include "utils/xml.h"
 
 #include "net/net.h"
+#include "configuration.h"
 
 #define OLD_TMWATHENA_OFFSET 1002
 
@@ -45,7 +46,7 @@ void MonsterDB::load()
     if (mLoaded)
         unload();
 
-    mUnknown.addSprite("error.xml");
+    mUnknown.addSprite(paths.getValue("spriteErrorFile", "error.xml"));
 
     logger->log("Initializing monster database...");
 

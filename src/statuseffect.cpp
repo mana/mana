@@ -28,6 +28,8 @@
 
 #include "utils/xml.h"
 
+#include "configuration.h"
+
 #include <map>
 
 #define STATUS_EFFECTS_FILE "status-effects.xml"
@@ -68,7 +70,7 @@ AnimatedSprite *StatusEffect::getIcon()
     else
     {
         AnimatedSprite *sprite = AnimatedSprite::load(
-                "graphics/sprites/" + mIcon);
+             paths.getValue("sprites", "graphics/sprites/") + mIcon);
         if (false && sprite)
         {
             sprite->play(ACTION_DEFAULT);
@@ -123,8 +125,7 @@ void StatusEffect::load()
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "status-effects"))
     {
-        logger->log("Error loading status effects file: "
-                    STATUS_EFFECTS_FILE);
+        logger->log("Error loading status effects file: " STATUS_EFFECTS_FILE);
         return;
     }
 

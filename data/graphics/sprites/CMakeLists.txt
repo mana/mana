@@ -3,4 +3,4 @@ SET(FILES
     error.xml
     )
 
-INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/sprits)
+INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/sprites)
