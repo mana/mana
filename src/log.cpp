@@ -123,6 +123,10 @@ void Logger::error(const std::string &error_text)
     StandardAlert(kAlertStopAlert,
                   "\pError",
                   (ConstStr255Param) msg, NULL, NULL);
+#elif defined __linux__
+    std::cerr << "Error: " << error_text << std::endl;
+    std::string msg="xmessage \"" + error_text + "\"";
+    system(msg.c_str());
 #else
     std::cerr << "Error: " << error_text << std::endl;
 #endif
