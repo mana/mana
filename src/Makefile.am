@@ -338,6 +338,10 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      emoteshortcut.cpp \
 	      emoteshortcut.h \
 	      equipment.h \
+	      event.cpp \
+	      event.h \
+	      eventmanager.cpp \
+	      eventmanager.h \
 	      flooritem.cpp \
 	      flooritem.h \
 	      game.cpp \
@@ -361,6 +365,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      joystick.h \
 	      keyboardconfig.cpp \
 	      keyboardconfig.h \
+	      listener.cpp \
+	      listener.h \
 	      localplayer.cpp \
 	      localplayer.h \
 	      log.cpp \
@@ -406,6 +412,7 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      tileset.h \
 	      units.cpp \
 	      units.h \
+	      variabledata.h \
 	      vector.cpp \
 	      vector.h \
 	      winver.h

@@ -130,6 +130,10 @@
 		<Unit filename="src\emoteshortcut.cpp" />
 		<Unit filename="src\emoteshortcut.h" />
 		<Unit filename="src\equipment.h" />
+		<Unit filename="src\event.cpp" />
+		<Unit filename="src\event.h" />
+		<Unit filename="src\eventmanager.cpp" />
+		<Unit filename="src\eventmanager.h" />
 		<Unit filename="src\flooritem.cpp" />
 		<Unit filename="src\flooritem.h" />
 		<Unit filename="src\game.cpp" />
@@ -358,6 +362,8 @@
 		<Unit filename="src\joystick.h" />
 		<Unit filename="src\keyboardconfig.cpp" />
 		<Unit filename="src\keyboardconfig.h" />
+		<Unit filename="src\listener.cpp" />
+		<Unit filename="src\listener.h" />
 		<Unit filename="src\localplayer.cpp" />
 		<Unit filename="src\localplayer.h" />
 		<Unit filename="src\log.cpp" />
@@ -596,6 +602,7 @@
 		<Unit filename="src\utils\stringutils.h" />
 		<Unit filename="src\utils\xml.cpp" />
 		<Unit filename="src\utils\xml.h" />
+		<Unit filename="src\variabledata.h" />
 		<Unit filename="src\vector.cpp" />
 		<Unit filename="src\vector.h" />
 		<Unit filename="src\winver.h" />
