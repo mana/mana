@@ -30,7 +30,7 @@ class Event;
 
 class Listener
 {
-    public:
+public:
     ~Listener();
 
     void listen(const std::string &channel);
@@ -40,5 +40,6 @@ class Listener
     virtual void event(const std::string &channel, const Event &event) = 0;
 };
 
-}; // namespace Mana
+} // namespace Mana
+
 #endif

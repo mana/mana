@@ -96,4 +96,4 @@ double Event::getFloat(const std::string &key) const throw (BadEvent)
     return static_cast<FloatData *>(it->second)->getData();
 }
 
-}; // namespace Mana
+} // namespace Mana

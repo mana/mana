@@ -40,4 +40,4 @@ void Listener::ignore(const std::string &channel)
     EventManager::unbind(this, channel);
 }
 
-}; // namespace Mana
+} // namespace Mana

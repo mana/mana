@@ -64,4 +64,4 @@ void EventManager::unbind(Listener *listener, const std::string &channel)
     mBindings[channel].erase(listener);
 }
 
-}; // namespace Mana
+} // namespace Mana

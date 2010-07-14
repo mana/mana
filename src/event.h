@@ -39,7 +39,7 @@ typedef std::map<std::string, VariableData *> VariableMap;
 
 class Event
 {
-    public:
+public:
     // String passed can be retivered with getName()
     // and is to used to identify what type of event
     // this is.
@@ -63,11 +63,12 @@ class Event
     void setFloat(const std::string &key, double value) throw (BadEvent);
     double getFloat(const std::string &key) const throw (BadEvent);
 
-    private:
+private:
     std::string mEventName;
 
     VariableMap mData;
 };
 
-}; // namespace Mana
+} // namespace Mana
+
 #endif

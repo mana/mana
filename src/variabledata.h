@@ -43,43 +43,43 @@ class VariableData
 
 class IntData : public VariableData
 {
-    public:
+public:
     IntData(int value) { mData = value; }
 
     int getData() const { return mData; }
 
     int getType() const { return DATA_INT; }
 
-    private:
+private:
     int mData;
 };
 
 class StringData : public VariableData
 {
-    public:
+public:
     StringData(const std::string &value) { mData = value; }
 
     const std::string &getData() const { return mData; }
 
     int getType() const { return DATA_STRING; }
 
-    private:
+private:
     std::string mData;
 };
 
 class FloatData : public VariableData
 {
-    public:
+public:
     FloatData(double value) { mData = value; }
 
     double getData() const { return mData; }
 
     int getType() const { return DATA_FLOAT; }
 
-    private:
+private:
     double mData;
 };
 
-}; // namespace Mana
+} // namespace Mana
 
 #endif

@@ -36,7 +36,7 @@ typedef std::map<std::string, ListenerSet > ListenMap;
 
 class EventManager
 {
-    public:
+public:
     // Sends event to all listener on the channel
     static void trigger(const std::string &channel, const Event &event);
 
@@ -47,10 +47,10 @@ class EventManager
     static void bind(Listener *listener, const std::string &channel);
     static void unbind(Listener *listener, const std::string &channel);
 
-    private:
+private:
     static ListenMap mBindings;
 };
 
-}; // namespace Mana
+} // namespace Mana
 
 #endif
