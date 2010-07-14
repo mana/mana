@@ -94,7 +94,10 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
 void GameHandler::connect()
 {
     gameServerConnection->connect(gameServer.hostname, gameServer.port);
-    chatServerConnection->connect(chatServer.hostname, chatServer.port);
+
+    // Will already be connected if we just changed gameservers
+    if (!chatServerConnection->isConnected())
+        chatServerConnection->connect(chatServer.hostname, chatServer.port);
 }
 
 bool GameHandler::isConnected()
@@ -106,7 +109,10 @@ bool GameHandler::isConnected()
 void GameHandler::disconnect()
 {
     gameServerConnection->disconnect();
-    chatHandler->disconnect();
+
+    // No need if we're just changing gameservers
+    if (Client::getState() != STATE_CHANGE_MAP)
+        chatHandler->disconnect();
 }
 
 void GameHandler::inGame()
