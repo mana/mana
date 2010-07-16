@@ -41,7 +41,8 @@ WhisperTab::WhisperTab(const std::string &nick) :
 
 WhisperTab::~WhisperTab()
 {
-    chatWindow->removeWhisper(mNick);
+    if (chatWindow)
+        chatWindow->removeWhisper(mNick);
 }
 
 void WhisperTab::handleInput(const std::string &msg)
