@@ -21,11 +21,12 @@
 
 #include "gui/inventorywindow.h"
 
+#include "event.h"
 #include "inventory.h"
 #include "item.h"
-#include "localplayer.h"
 #include "units.h"
 #include "keyboardconfig.h"
+#include "playerinfo.h"
 
 #include "gui/itemamount.h"
 #include "gui/setup.h"
@@ -60,6 +61,8 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     mInventory(inventory),
     mSplit(false)
 {
+    listen("Attributes");
+
     setWindowName(isMainInventory() ? "Inventory" : "Storage");
     setupWindow->registerWindowForReset(this);
     setResizable(true);
@@ -341,10 +344,26 @@ void InventoryWindow::close()
     }
 }
 
+void InventoryWindow::event(const std::string &channel, const Mana::Event &event)
+{
+    if (event.getName() == "UpdateAttribute")
+    {
+        int id = event.getInt("id");
+        if (id == TOTAL_WEIGHT ||
+            id == MAX_WEIGHT)
+        {
+            updateWeight();
+        }
+    }
+}
+
 void InventoryWindow::updateWeight()
 {
-    int total = player_node->getTotalWeight();
-    int max = player_node->getMaxWeight();
+    int total = PlayerInfo::getAttribute(TOTAL_WEIGHT);
+    int max = PlayerInfo::getAttribute(MAX_WEIGHT);
+
+    if (max <= 0)
+        return;
 
     // Adjust progress bar
     mWeightBar->setProgress((float) total / max);

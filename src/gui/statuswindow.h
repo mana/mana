@@ -23,6 +23,7 @@
 #define STATUS_H
 
 #include "guichanfwd.h"
+#include "listener.h"
 
 #include "gui/widgets/window.h"
 
@@ -40,24 +41,15 @@ class VertContainer;
  *
  * \ingroup Interface
  */
-class StatusWindow : public Window
+class StatusWindow : public Window, public Mana::Listener
 {
     public:
-        enum { // Some update constants
-            HP = -1,
-            MP = -2,
-            EXP = -3,
-            MONEY = -4,
-            CHAR_POINTS = -5,
-            LEVEL = -6
-        };
-
         /**
          * Constructor.
          */
         StatusWindow();
 
-        std::string update(int id);
+        void event(const std::string &channel, const Mana::Event &event);
 
         void setPointsNeeded(int id, int needed);
 

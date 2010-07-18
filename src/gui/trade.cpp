@@ -24,6 +24,7 @@
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
+#include "playerinfo.h"
 #include "units.h"
 
 #include "gui/inventorywindow.h"
@@ -59,7 +60,7 @@ TradeWindow::TradeWindow():
     mMyInventory(new Inventory(Inventory::TRADE)),
     mPartnerInventory(new Inventory(Inventory::TRADE)),
     mStatus(PROPOSING)
-{    
+{
     setWindowName("Trade");
     setResizable(true);
     setCloseButton(true);
@@ -96,7 +97,7 @@ TradeWindow::TradeWindow():
 
     mMoneyLabel = new Label(strprintf(_("You get %s"), ""));
     gcn::Label *mMoneyLabel2 = new Label(_("You give:"));
-    
+
     mMoneyField = new TextField;
     mMoneyField->setWidth(40);
     mMoneyChangeButton = new Button(_("Change"), "money", this);
@@ -310,7 +311,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             return;
 
         int v = atoi(mMoneyField->getText().c_str());
-        int curMoney = player_node->getMoney();
+        int curMoney = PlayerInfo::getAttribute(MONEY);
         if (v > curMoney)
         {
             localChatTab->chatLog(_("You don't have enough money."),

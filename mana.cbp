@@ -510,6 +510,8 @@
 		<Unit filename="src\particleemitterprop.h" />
 		<Unit filename="src\party.cpp" />
 		<Unit filename="src\party.h" />
+		<Unit filename="src\playerinfo.cpp" />
+		<Unit filename="src\playerinfo.h" />
 		<Unit filename="src\playerrelations.cpp" />
 		<Unit filename="src\playerrelations.h" />
 		<Unit filename="src\position.cpp" />

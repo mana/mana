@@ -43,7 +43,6 @@
 #include "gui/ministatus.h"
 #include "gui/okdialog.h"
 #include "gui/skilldialog.h"
-#include "gui/statuswindow.h"
 #include "gui/theme.h"
 #include "gui/userpalette.h"
 
@@ -84,16 +83,7 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mAttackRange(0),
     mTargetTime(-1),
     mLastTarget(-1),
-    mCharacterPoints(0),
-    mCorrectionPoints(0),
     mSpecialRechargeUpdateNeeded(0),
-    mLevel(1),
-    mExp(0), mExpNeeded(0),
-    mMp(0), mMaxMp(0),
-    mMoney(0),
-    mTotalWeight(1), mMaxWeight(1),
-    mHp(1), mMaxHp(1),
-    mSkillPoints(0),
     mTarget(NULL),
     mPlayerFollowed(""),
     mPickUpTarget(NULL),
@@ -1052,189 +1042,6 @@ void LocalPlayer::stopAttack()
         setTarget(NULL);
     }
     mLastTarget = -1;
-}
-
-void LocalPlayer::raiseAttribute(int attr)
-{
-    // we assume that the server allows the change.
-    // When not we will undo it later.
-    mCharacterPoints--;
-    IntMap::iterator it = mAttributeBase.find(attr);
-    if (it != mAttributeBase.end())
-        (*it).second++;
-    Net::getPlayerHandler()->increaseAttribute(attr);
-}
-
-void LocalPlayer::lowerAttribute(int attr)
-{
-    // we assume that the server allows the change.
-    // When not we will undo it later.
-    mCorrectionPoints--;
-    mCharacterPoints++;
-    IntMap::iterator it = mAttributeBase.find(attr);
-    if (it != mAttributeBase.end())
-        (*it).second--;
-    Net::getPlayerHandler()->decreaseAttribute(attr);
-}
-
-void LocalPlayer::setTotalWeight(int value)
-{
-    mTotalWeight = value;
-
-    inventoryWindow->updateWeight();
-}
-
-void LocalPlayer::setMaxWeight(int value)
-{
-    mMaxWeight = value;
-
-    inventoryWindow->updateWeight();
-}
-
-void LocalPlayer::setAttributeBase(int num, int value, bool notify)
-{
-    int old = mAttributeBase[num];
-
-    mAttributeBase[num] = value;
-    if (skillDialog)
-    {
-        if (skillDialog->update(num).empty() || !(value > old))
-            return;
-
-        if (old != 0 && notify)
-            effectManager->trigger(1, this);
-    }
-
-    if (statusWindow)
-        statusWindow->update(num);
-}
-
-void LocalPlayer::setAttributeEffective(int num, int value)
-{
-    mAttributeEffective[num] = value;
-    if (skillDialog)
-        skillDialog->update(num);
-
-    if (statusWindow)
-        statusWindow->update(num);
-}
-
-void LocalPlayer::setCharacterPoints(int n)
-{
-    mCharacterPoints = n;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::CHAR_POINTS);
-}
-
-void LocalPlayer::setCorrectionPoints(int n)
-{
-    mCorrectionPoints = n;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::CHAR_POINTS);
-}
-
-void LocalPlayer::setSkillPoints(int points)
-{
-    mSkillPoints = points;
-    if (skillDialog)
-        skillDialog->update();
-}
-
-void LocalPlayer::setExperience(int skill, int current, int next, bool notify)
-{
-    std::pair<int, int> cur = getExperience(skill);
-    int diff = current - cur.first;
-
-    cur = std::pair<int, int>(current, next);
-
-    mSkillExp[skill] = cur;
-
-    std::string name;
-    if (skillDialog)
-        name = skillDialog->update(skill);
-
-    if (mMap && notify && cur.first != -1 && diff > 0 && !name.empty())
-    {
-        addMessageToQueue(strprintf("%d %s xp", diff, name.c_str()));
-    }
-
-    if (statusWindow)
-        statusWindow->update(skill);
-}
-
-std::pair<int, int> LocalPlayer::getExperience(int skill)
-{
-    return mSkillExp[skill];
-}
-
-void LocalPlayer::setHp(int value)
-{
-    mHp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::HP);
-}
-
-void LocalPlayer::setMaxHp(int value)
-{
-    mMaxHp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::HP);
-}
-
-void LocalPlayer::setLevel(int value)
-{
-    mLevel = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::LEVEL);
-}
-
-void LocalPlayer::setExp(int value, bool notify)
-{
-    if (mMap && notify && value > mExp)
-    {
-        addMessageToQueue(toString(value - mExp) + " xp");
-    }
-    mExp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::EXP);
-}
-
-void LocalPlayer::setExpNeeded(int value)
-{
-    mExpNeeded = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::EXP);
-}
-
-void LocalPlayer::setMP(int value)
-{
-    mMp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::MP);
-}
-
-void LocalPlayer::setMaxMP(int value)
-{
-    mMaxMp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::MP);
-}
-
-void LocalPlayer::setMoney(int value)
-{
-    mMoney = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::MONEY);
 }
 
 void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)

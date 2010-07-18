@@ -233,6 +233,7 @@ void CharHandler::handleCharacterSelectResponse(Net::MessageIn &msg)
 
         // Prevent the selected local player from being deleted
         player_node = mSelectedCharacter->dummy;
+        PlayerInfo::setBackend(mSelectedCharacter->data);
         mSelectedCharacter->dummy = 0;
 
         Client::setState(STATE_CONNECT_GAME);
@@ -355,14 +356,14 @@ void CharHandler::updateCharacters()
         player->setGender(info.gender);
         player->setSprite(SPRITE_HAIR, info.hairStyle * -1,
                           ColorDB::get(info.hairColor));
-        player->setLevel(info.level);
-        player->setCharacterPoints(info.characterPoints);
-        player->setCorrectionPoints(info.correctionPoints);
-        player->setMoney(info.money);
+        character->data.mAttributes[LEVEL] = info.level;
+        character->data.mAttributes[CHAR_POINTS] = info.characterPoints;
+        character->data.mAttributes[CORR_POINTS] = info.correctionPoints;
+        character->data.mAttributes[MONEY] = info.money;
 
         for (int i = 0; i < 7; i++)
         {
-            player->setAttributeBase(i, info.attribute[i], false);
+            character->data.mStats[i].base = info.attribute[i];
         }
 
         mCharacters.push_back(character);

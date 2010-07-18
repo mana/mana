@@ -26,6 +26,7 @@
 #include "item.h"
 #include "itemshortcut.h"
 #include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/chat.h"
 
@@ -70,7 +71,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 unsigned int slot = msg.readInt8();
                 if (slot == 255)
                 {
-                    player_node->setMoney(msg.readInt32());
+                    PlayerInfo::setAttribute(MONEY, msg.readInt32());
                     continue;
                 }
 

@@ -24,6 +24,7 @@
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
+#include "playerinfo.h"
 #include "units.h"
 
 #include "gui/buy.h"
@@ -52,9 +53,6 @@ extern OkDialog *deathNotice;
 // Max. distance we are willing to scroll after a teleport;
 // everything beyond will reset the port hard.
 static const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
-
-#define ATTR_BONUS(atr) \
-(player_node->getAttributeEffective(atr) - player_node->getAttributeBase(atr))
 
 // TODO Move somewhere else
 namespace {
@@ -236,17 +234,17 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                       player_node->setWalkSpeed(Vector(value, value, 0));
                     break;
                     case 0x0004: break; // manner
-                    case 0x0005: player_node->setHp(value); break;
-                    case 0x0006: player_node->setMaxHp(value); break;
-                    case 0x0007: player_node->setMP(value); break;
-                    case 0x0008: player_node->setMaxMP(value); break;
-                    case 0x0009: player_node->setCharacterPoints(value); break;
-                    case 0x000b: player_node->setLevel(value); break;
-                    case 0x000c: player_node->setSkillPoints(value); break;
+                    case 0x0005: PlayerInfo::setAttribute(HP, value); break;
+                    case 0x0006: PlayerInfo::setAttribute(MAX_HP, value); break;
+                    case 0x0007: PlayerInfo::setAttribute(MP, value); break;
+                    case 0x0008: PlayerInfo::setAttribute(MAX_MP, value); break;
+                    case 0x0009: PlayerInfo::setAttribute(CHAR_POINTS, value); break;
+                    case 0x000b: PlayerInfo::setAttribute(LEVEL, value); break;
+                    case 0x000c: PlayerInfo::setAttribute(SKILL_POINTS, value); break;
                     case 0x0018:
-                                 if (value >= player_node->getMaxWeight() / 2 &&
-                                         player_node->getTotalWeight() <
-                                         player_node->getMaxWeight() / 2)
+                                 if (value >= PlayerInfo::getAttribute(MAX_WEIGHT) / 2 &&
+                                         PlayerInfo::getAttribute(TOTAL_WEIGHT) <
+                                         PlayerInfo::getAttribute(MAX_WEIGHT) / 2)
                                  {
                                      weightNotice = new OkDialog(_("Message"),
                                              _("You are carrying more than "
@@ -255,59 +253,37 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                                      weightNotice->addActionListener(
                                              &weightListener);
                                  }
-                                 player_node->setTotalWeight(value);
+                                 PlayerInfo::setAttribute(TOTAL_WEIGHT, value);
                                  break;
-                    case 0x0019: player_node->setMaxWeight(value); break;
+                    case 0x0019: PlayerInfo::setAttribute(MAX_WEIGHT, value); break;
 
-                    case 0x0029: player_node->setAttributeEffective(ATK, value
-                                                           + ATTR_BONUS(ATK));
-                        player_node->setAttributeBase(ATK, value);
-                        break;
-                    case 0x002a: value += player_node->getAttributeBase(ATK);
-                        player_node->setAttributeEffective(ATK, value); break;
+                    case 0x0029: PlayerInfo::setStatBase(ATK, value); break;
+                    case 0x002a: PlayerInfo::setStatMod(ATK, value); break;
 
-                    case 0x002b: player_node->setAttributeEffective(MATK, value
-                                                           + ATTR_BONUS(MATK));
-                        player_node->setAttributeBase(MATK, value);
-                        if (statusWindow)
-                            statusWindow->update(StatusWindow::MP);
-                        break;
-                    case 0x002c: value += player_node->getAttributeBase(MATK);
-                        player_node->setAttributeEffective(MATK, value);
-                        if (statusWindow)
-                            statusWindow->update(StatusWindow::MP);
-                        break;
-                    case 0x002d: player_node->setAttributeEffective(DEF, value
-                                                           + ATTR_BONUS(DEF));
-                        player_node->setAttributeBase(DEF, value); break;
-                    case 0x002e: value += player_node->getAttributeBase(DEF);
-                        player_node->setAttributeEffective(DEF, value); break;
+                    case 0x002b: PlayerInfo::setStatBase(MATK, value); break;
+                    case 0x002c: PlayerInfo::setStatMod(MATK, value); break;
 
-                    case 0x002f: player_node->setAttributeEffective(MDEF, value
-                                                           + ATTR_BONUS(MDEF));
-                        player_node->setAttributeBase(MDEF, value); break;
-                    case 0x0030: value += player_node->getAttributeBase(MDEF);
-                        player_node->setAttributeEffective(MDEF, value); break;
+                    case 0x002d: PlayerInfo::setStatBase(DEF, value); break;
+                    case 0x002e: PlayerInfo::setStatMod(DEF, value); break;
 
-                    case 0x0031: player_node->setAttributeBase(HIT, value);
-                        player_node->setAttributeEffective(HIT, value); break;
+                    case 0x002f: PlayerInfo::setStatBase(MDEF, value); break;
+                    case 0x0030: PlayerInfo::setStatMod(MDEF, value); break;
 
-                    case 0x0032: player_node->setAttributeEffective(FLEE, value
-                                                           + ATTR_BONUS(FLEE));
-                        player_node->setAttributeBase(FLEE, value); break;
-                    case 0x0033: value += player_node->getAttributeBase(FLEE);
-                        player_node->setAttributeEffective(FLEE, value); break;
+                    case 0x0031: PlayerInfo::setStatBase(HIT, value); break;
 
-                    case 0x0034: player_node->setAttributeBase(CRIT, value);
-                        player_node->setAttributeEffective(CRIT, value); break;
+                    case 0x0032: PlayerInfo::setStatBase(FLEE, value); break;
+                    case 0x0033: PlayerInfo::setStatMod(FLEE, value); break;
+
+                    case 0x0034: PlayerInfo::setStatBase(CRIT, value); break;
 
                     case 0x0035: player_node->setAttackSpeed(value); break;
-                    case 0x0037: player_node->setAttributeBase(JOB, value);
-                        player_node->setAttributeEffective(JOB, value); break;
+
+                    case 0x0037: PlayerInfo::setStatBase(JOB, value); break;
+
                     case 500: player_node->setGMLevel(value); break;
                 }
 
-                if (player_node->getHp() == 0 && !deathNotice)
+                if (PlayerInfo::getAttribute(HP) == 0 && !deathNotice)
                 {
                     deathNotice = new OkDialog(_("Message"),
                                                randomDeathMessage(),
@@ -322,29 +298,29 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
             switch (msg.readInt16())
             {
                 case 0x0001:
-                    player_node->setExp(msg.readInt32());
+                    PlayerInfo::setAttribute(EXP, msg.readInt32());
                     break;
                 case 0x0002:
-                    player_node->setExperience(JOB, msg.readInt32(),
-                                    player_node->getExperience(JOB).second);
+                    PlayerInfo::setStatExperience(JOB, msg.readInt32(),
+                                                  PlayerInfo::getStatExperience(JOB).second);
                     break;
                 case 0x0014: {
-                        int curGp = player_node->getMoney();
-                        player_node->setMoney(msg.readInt32());
-                        if (player_node->getMoney() > curGp)
+                        int oldMoney = PlayerInfo::getAttribute(MONEY);
+                        int newMoney = msg.readInt32();
+                        if (newMoney > oldMoney)
                             localChatTab->chatLog(strprintf(_("You picked up "
                                                               "%s."),
-                                Units::formatCurrency(player_node->getMoney()
-                                    - curGp).c_str()), BY_SERVER);
+                                Units::formatCurrency(newMoney - oldMoney).c_str()),
+                                BY_SERVER);
                     }
                     break;
                 case 0x0016:
-                    player_node->setExpNeeded(msg.readInt32());
+                    PlayerInfo::setAttribute(EXP_NEEDED, msg.readInt32());
                     break;
                 case 0x0017:
-                    player_node->setExperience(JOB,
-                                    player_node->getExperience(JOB).first,
-                                    msg.readInt32());
+                    PlayerInfo::setStatExperience(JOB,
+                                                  PlayerInfo::getStatExperience(JOB).first,
+                                                  msg.readInt32());
                     break;
             }
             break;
@@ -355,8 +331,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 int base = msg.readInt32();
                 int bonus = msg.readInt32();
 
-                player_node->setAttributeBase(type, base);
-                player_node->setAttributeEffective(type, base + bonus);
+                PlayerInfo::setStatBase(type, base, false);
+                PlayerInfo::setStatMod(type, bonus);
             }
             break;
 
@@ -372,21 +348,17 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                                           BY_SERVER);
                 }
 
-                int bonus = ATTR_BONUS(type);
-
-                player_node->setAttributeBase(type, value);
-                player_node->setAttributeEffective(type, value + bonus);
+                PlayerInfo::setStatBase(type, value);
             }
             break;
 
         // Updates stats and status points
         case SMSG_PLAYER_STAT_UPDATE_5:
-            player_node->setCharacterPoints(msg.readInt16());
+            PlayerInfo::setAttribute(CHAR_POINTS, msg.readInt16());
 
             {
                 int val = msg.readInt8();
-                player_node->setAttributeEffective(STR, val + ATTR_BONUS(STR));
-                player_node->setAttributeBase(STR, val);
+                PlayerInfo::setStatBase(STR, val);
                 if (val >= 99)
                 {
                     statusWindow->setPointsNeeded(STR, 0);
@@ -398,8 +370,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 val = msg.readInt8();
-                player_node->setAttributeEffective(AGI, val + ATTR_BONUS(AGI));
-                player_node->setAttributeBase(AGI, val);
+                PlayerInfo::setStatBase(AGI, val);
                 if (val >= 99)
                 {
                     statusWindow->setPointsNeeded(AGI, 0);
@@ -411,8 +382,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 val = msg.readInt8();
-                player_node->setAttributeEffective(VIT, val + ATTR_BONUS(VIT));
-                player_node->setAttributeBase(VIT, val);
+                PlayerInfo::setStatBase(VIT, val);
                 if (val >= 99)
                 {
                     statusWindow->setPointsNeeded(VIT, 0);
@@ -424,8 +394,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 val = msg.readInt8();
-                player_node->setAttributeEffective(INT, val + ATTR_BONUS(INT));
-                player_node->setAttributeBase(INT, val);
+                PlayerInfo::setStatBase(INT, val);
                 if (val >= 99)
                 {
                     statusWindow->setPointsNeeded(INT, 0);
@@ -437,8 +406,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 val = msg.readInt8();
-                player_node->setAttributeEffective(DEX, val + ATTR_BONUS(DEX));
-                player_node->setAttributeBase(DEX, val);
+                PlayerInfo::setStatBase(DEX, val);
                 if (val >= 99)
                 {
                     statusWindow->setPointsNeeded(DEX, 0);
@@ -450,8 +418,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 val = msg.readInt8();
-                player_node->setAttributeEffective(LUK, val + ATTR_BONUS(LUK));
-                player_node->setAttributeBase(LUK, val);
+                PlayerInfo::setStatBase(LUK, val);
                 if (val >= 99)
                 {
                     statusWindow->setPointsNeeded(LUK, 0);
@@ -462,39 +429,25 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     statusWindow->setPointsNeeded(LUK, msg.readInt8());
                 }
 
-                val = msg.readInt16(); // ATK
-                player_node->setAttributeBase(ATK, val);
-                val += msg.readInt16();  // ATK bonus
-                player_node->setAttributeEffective(ATK, val);
+                PlayerInfo::setStatBase(ATK, msg.readInt16(), false);
+                PlayerInfo::setStatMod(ATK, msg.readInt16());
 
-                val = msg.readInt16(); // MATK
-                player_node->setAttributeBase(MATK, val);
-                val += msg.readInt16();  // MATK bonus
-                player_node->setAttributeEffective(MATK, val);
-                statusWindow->update(StatusWindow::MP);
+                PlayerInfo::setStatBase(MATK, msg.readInt16(), false);
+                PlayerInfo::setStatMod(MATK, msg.readInt16());
 
-                val = msg.readInt16(); // DEF
-                player_node->setAttributeBase(DEF, val);
-                val += msg.readInt16();  // DEF bonus
-                player_node->setAttributeEffective(DEF, val);
 
-                val = msg.readInt16(); // MDEF
-                player_node->setAttributeBase(MDEF, val);
-                val += msg.readInt16();  // MDEF bonus
-                player_node->setAttributeEffective(MDEF, val);
+                PlayerInfo::setStatBase(DEF, msg.readInt16(), false);
+                PlayerInfo::setStatMod(DEF, msg.readInt16());
 
-                val = msg.readInt16(); // HIT
-                player_node->setAttributeBase(HIT, val);
-                player_node->setAttributeEffective(HIT, val);
+                PlayerInfo::setStatBase(MDEF, msg.readInt16(), false);
+                PlayerInfo::setStatMod(MDEF, msg.readInt16());
 
-                val = msg.readInt16(); // FLEE
-                player_node->setAttributeBase(FLEE, val);
-                val += msg.readInt16();  // FLEE bonus
-                player_node->setAttributeEffective(FLEE, val);
+                PlayerInfo::setStatBase(HIT, msg.readInt16());
 
-                val = msg.readInt16();
-                player_node->setAttributeBase(CRIT, val);
-                player_node->setAttributeEffective(CRIT, val);
+                PlayerInfo::setStatBase(FLEE, msg.readInt16(), false);
+                PlayerInfo::setStatMod(FLEE, msg.readInt16());
+
+                PlayerInfo::setStatBase(CRIT, msg.readInt16());
             }
 
             msg.readInt16();  // manner
@@ -573,7 +526,7 @@ void PlayerHandler::decreaseAttribute(int attr)
 
 void PlayerHandler::increaseSkill(int skillId)
 {
-    if (player_node->getSkillPoints() <= 0)
+    if (PlayerInfo::getAttribute(SKILL_POINTS) <= 0)
         return;
 
     MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
@@ -635,7 +588,7 @@ void PlayerHandler::ignoreAll(bool ignore)
 
 bool PlayerHandler::canUseMagic()
 {
-    return player_node->getAttributeEffective(MATK) > 0;
+    return PlayerInfo::getStatEffective(MATK) > 0;
 }
 
 bool PlayerHandler::canCorrectAttributes()

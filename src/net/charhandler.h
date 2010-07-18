@@ -24,13 +24,13 @@
 
 #include "localplayer.h"
 #include "logindata.h"
+#include "playerinfo.h"
 
 #include <iosfwd>
 #include <vector>
 
 class CharCreateDialog;
 class CharSelectDialog;
-class LocalPlayer;
 
 namespace Net {
 
@@ -52,6 +52,7 @@ struct Character
 
     int slot;            /**< The index in the list of characters */
     LocalPlayer *dummy;  /**< A dummy representing this character */
+    PlayerInfoBackend data;
 };
 
 typedef std::list<Character*> Characters;

@@ -21,8 +21,8 @@
 
 #include "gui/skilldialog.h"
 
-#include "localplayer.h"
 #include "log.h"
+#include "playerinfo.h"
 
 #include "gui/setup.h"
 #include "gui/theme.h"
@@ -259,7 +259,7 @@ std::string SkillDialog::update(int id)
 void SkillDialog::update()
 {
     mPointsLabel->setCaption(strprintf(_("Skill points available: %d"),
-                                       player_node->getSkillPoints()));
+                                       PlayerInfo::getAttribute(SKILL_POINTS)));
     mPointsLabel->adjustSize();
 
     for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end(); it++)
@@ -410,10 +410,10 @@ void SkillModel::updateVisibilities()
 
 void SkillInfo::update()
 {
-    int baseLevel = player_node->getAttributeBase(id);
-    int effLevel = player_node->getAttributeEffective(id);
+    int baseLevel = PlayerInfo::getStatBase(id);
+    int effLevel = PlayerInfo::getStatEffective(id);
 
-    std::pair<int, int> exp = player_node->getExperience(id);
+    std::pair<int, int> exp = PlayerInfo::getStatExperience(id);
 
     if (!modifiable && baseLevel == 0 && effLevel == 0 && exp.second == 0)
     {

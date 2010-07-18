@@ -259,16 +259,6 @@ class LocalPlayer : public Being, public ActorSpriteListener
          */
         void stopWalking(bool sendToServer = true);
 
-        /**
-         * Uses a character point to raise an attribute
-         */
-        void raiseAttribute(int attr);
-
-        /**
-         * Uses a correction point to lower an attribute
-         */
-        void lowerAttribute(int attr);
-
         void toggleSit();
         void emote(Uint8 emotion);
 
@@ -276,85 +266,6 @@ class LocalPlayer : public Being, public ActorSpriteListener
          * Shows item pickup notifications.
          */
         void pickedUp(const ItemInfo &itemInfo, int amount);
-
-        int getHp() const
-        { return mHp; }
-
-        int getMaxHp() const
-        { return mMaxHp; }
-
-        void setHp(int value);
-
-        void setMaxHp(int value);
-
-        int getLevel() const
-        { return mLevel; }
-
-        void setLevel(int value);
-
-        void setExp(int value, bool notify = true);
-
-        int getExp() const
-        { return mExp; }
-
-        void setExpNeeded(int value);
-
-        int getExpNeeded() const
-        { return mExpNeeded; }
-
-        void setMP(int value);
-
-        int getMP() const
-        { return mMp; }
-
-        void setMaxMP(int value);
-
-        int getMaxMP() const
-        { return mMaxMp; }
-
-        int getMoney() const
-        { return mMoney; }
-
-        void setMoney(int value);
-
-        int getTotalWeight() const
-        { return mTotalWeight; }
-
-        void setTotalWeight(int value);
-
-        int getMaxWeight() const
-        { return mMaxWeight; }
-
-        void setMaxWeight(int value);
-
-        int getAttributeBase(int num)
-        { return mAttributeBase[num]; }
-
-        void setAttributeBase(int num, int value, bool notify = true);
-
-        int getAttributeEffective(int num)
-        { return mAttributeEffective[num]; }
-
-        void setAttributeEffective(int num, int value);
-
-        int getCharacterPoints() const
-        { return mCharacterPoints; }
-
-        void setCharacterPoints(int n);
-
-        int getCorrectionPoints() const
-        { return mCorrectionPoints; }
-
-        void setCorrectionPoints(int n);
-
-        int getSkillPoints() const
-        { return mSkillPoints; }
-
-        void setSkillPoints(int points);
-
-        void setExperience(int skill, int current, int next, bool notify = true);
-
-        std::pair<int, int> getExperience(int skill);
 
         /** Tells that the path has been set by mouse. */
         void pathSetByMouse()
@@ -434,24 +345,9 @@ class LocalPlayer : public Being, public ActorSpriteListener
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 
         // Character status:
-        typedef std::map<int, int> IntMap;
-        IntMap mAttributeBase;
-        IntMap mAttributeEffective;
-        std::map<int, std::pair<int, int> > mSkillExp;
-        int mCharacterPoints;
-        int mCorrectionPoints;
         int mLevelProgress;
         std::map<int, Special> mSpecials;
         char mSpecialRechargeUpdateNeeded;
-        int mLevel;
-        int mExp, mExpNeeded;
-        int mMp, mMaxMp;
-        int mMoney;
-        int mTotalWeight;
-        int mMaxWeight;
-        int mHp;
-        int mMaxHp;
-        int mSkillPoints;
 
         int mGMLevel;
 

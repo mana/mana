@@ -23,6 +23,7 @@
 #define INVENTORYWINDOW_H
 
 #include "inventory.h"
+#include "listener.h"
 
 #include "gui/widgets/window.h"
 
@@ -47,7 +48,8 @@ class InventoryWindow : public Window,
                         public gcn::ActionListener,
                         public gcn::KeyListener,
                         public gcn::SelectionListener,
-                        public InventoryListener
+                        public InventoryListener,
+                        public Mana::Listener
 {
     public:
         /**
@@ -100,11 +102,6 @@ class InventoryWindow : public Window,
          * window has been closed.
          */
         void close();
-        
-        /**
-         * Updates the weight bar.
-         */
-        void updateWeight();
 
         void slotsChanged(Inventory* inventory);
 
@@ -115,7 +112,15 @@ class InventoryWindow : public Window,
          */
         static bool isStorageActive() { return instances.size() > 1; }
 
+        void event(const std::string &channel, const Mana::Event &event);
+
     private:
+        /**
+         * Updates the weight bar.
+         */
+        void updateWeight();
+
+
         typedef std::list<InventoryWindow*> WindowList;
         static WindowList instances;
 

@@ -386,6 +386,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      particleemitterprop.h \
 	      party.cpp \
 	      party.h \
+	      playerinfo.cpp \
+	      playerinfo.h \
 	      playerrelations.cpp \
 	      playerrelations.h \
 	      position.cpp \

@@ -168,7 +168,7 @@ void GeneralHandler::guiWindowsLoaded()
     inventoryWindow->setSplitAllowed(true);
     skillDialog->loadSkills("mana-skills.xml");
 
-    player_node->setExpNeeded(100);
+    PlayerInfo::setAttribute(EXP_NEEDED, 100);
 
     Stats::informStatusWindow();
 }

@@ -23,7 +23,7 @@
 
 #include "actorspritemanager.h"
 #include "item.h"
-#include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/buy.h"
 #include "gui/chat.h"
@@ -63,7 +63,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             BuyDialog* dialog = new BuyDialog(npcId);
 
             dialog->reset();
-            dialog->setMoney(player_node->getMoney());
+            dialog->setMoney(PlayerInfo::getAttribute(MONEY));
 
             while (msg.getUnreadLength())
             {
@@ -80,7 +80,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             SellDialog* dialog = new SellDialog(npcId);
 
             dialog->reset();
-            dialog->setMoney(player_node->getMoney());
+            dialog->setMoney(PlayerInfo::getAttribute(MONEY));
 
             while (msg.getUnreadLength())
             {

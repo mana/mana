@@ -83,12 +83,10 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
                 for (int i = 0; i < count; ++i)
                 {
                     Net::Character *character = new Net::Character;
-                    int slot;
-                    character->dummy = readPlayerData(msg, &slot);
-                    character->slot = slot;
+                    readPlayerData(msg, character);
                     mCharacters.push_back(character);
                     logger->log("CharServer: Player: %s (%d)",
-                                character->dummy->getName().c_str(), slot);
+                                character->dummy->getName().c_str(), character->slot);
                 }
 
                 Client::setState(STATE_CHAR_SELECT);
@@ -115,9 +113,7 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_CHAR_CREATE_SUCCEEDED:
             {
                 Net::Character *character = new Net::Character;
-                int slot;
-                character->dummy = readPlayerData(msg, &slot);
-                character->slot = slot;
+                readPlayerData(msg, character);
                 mCharacters.push_back(character);
 
                 updateCharSelectDialog();
@@ -162,6 +158,8 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
 
             // Prevent the selected local player from being deleted
             player_node = mSelectedCharacter->dummy;
+            PlayerInfo::setBackend(mSelectedCharacter->data);
+
             mSelectedCharacter->dummy = 0;
 
             delete_all(mCharacters);
@@ -191,7 +189,7 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int *slot)
+void CharServerHandler::readPlayerData(Net::MessageIn &msg, Net::Character *character)
 {
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
@@ -199,30 +197,37 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int *slot)
     LocalPlayer *tempPlayer = new LocalPlayer(msg.readInt32(), 0);
     tempPlayer->setGender(token.sex);
 
-    tempPlayer->setExp(msg.readInt32());
-    tempPlayer->setMoney(msg.readInt32());
-    tempPlayer->setExperience(JOB, msg.readInt32(), 1);
+    character->data.mAttributes[EXP] = msg.readInt32();
+    character->data.mAttributes[MONEY] = msg.readInt32();
+    character->data.mStats[JOB].exp = msg.readInt32();
+
     int temp = msg.readInt32();
-    tempPlayer->setAttributeBase(JOB, temp, false);
-    tempPlayer->setAttributeEffective(JOB, temp);
+    character->data.mStats[JOB].base = temp;
+    character->data.mStats[JOB].mod = temp;
+
     tempPlayer->setSprite(SPRITE_SHOE, msg.readInt16());
     tempPlayer->setSprite(SPRITE_GLOVES, msg.readInt16());
     tempPlayer->setSprite(SPRITE_CAPE, msg.readInt16());
     tempPlayer->setSprite(SPRITE_MISC1, msg.readInt16());
+
     msg.readInt32();                       // option
     msg.readInt32();                       // karma
     msg.readInt32();                       // manner
     msg.skip(2);                          // unknown
-    tempPlayer->setHp(msg.readInt16());
-    tempPlayer->setMaxHp(msg.readInt16());
-    tempPlayer->setMP(msg.readInt16());
-    tempPlayer->setMaxMP(msg.readInt16());
+
+    character->data.mAttributes[HP] = msg.readInt16();
+    character->data.mAttributes[MAX_HP] = msg.readInt16();
+    character->data.mAttributes[MP] = msg.readInt16();
+    character->data.mAttributes[MAX_MP] = msg.readInt16();
+
     msg.readInt16();                       // speed
     tempPlayer->setSubtype(msg.readInt16()); // class (used for race)
     int hairStyle = msg.readInt16();
     Uint16 weapon = msg.readInt16();
     tempPlayer->setSprite(SPRITE_WEAPON, weapon, "", true);
-    tempPlayer->setLevel(msg.readInt16());
+
+    character->data.mAttributes[LEVEL] = msg.readInt16();
+
     msg.readInt16();                       // skill point
     tempPlayer->setSprite(SPRITE_BOTTOMCLOTHES, msg.readInt16()); // head bottom
     tempPlayer->setSprite(SPRITE_SHIELD, msg.readInt16());
@@ -231,12 +236,14 @@ LocalPlayer *CharServerHandler::readPlayerData(Net::MessageIn &msg, int *slot)
     tempPlayer->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(msg.readInt16()));
     tempPlayer->setSprite(SPRITE_MISC2, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
-    for (int i = 0; i < 6; i++)
-        tempPlayer->setAttributeBase(i + STR, msg.readInt8(), false);
-    *slot = msg.readInt8(); // character slot
-    msg.readInt8();                        // unknown
 
-    return tempPlayer;
+    character->dummy = tempPlayer;
+
+    for (int i = 0; i < 6; i++)
+        character->data.mStats[i + STR].base = msg.readInt8();
+
+    character->slot = msg.readInt8(); // character slot
+    msg.readInt8();                        // unknown
 }
 
 void CharServerHandler::setCharSelectDialog(CharSelectDialog *window)

@@ -72,7 +72,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
         void connect();
 
     private:
-        LocalPlayer *readPlayerData(Net::MessageIn &msg, int *slot);
+        void readPlayerData(Net::MessageIn &msg, Net::Character *character);
 };
 
 } // namespace TmwAthena

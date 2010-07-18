@@ -22,6 +22,8 @@
 #ifndef MINISTATUS_H
 #define MINISTATUS_H
 
+#include "listener.h"
+
 #include "gui/widgets/popup.h"
 
 #include <vector>
@@ -36,7 +38,7 @@ class TextPopup;
  *
  * \ingroup Interface
  */
-class MiniStatusWindow : public Popup
+class MiniStatusWindow : public Popup, public Mana::Listener
 {
     public:
         MiniStatusWindow();
@@ -50,7 +52,7 @@ class MiniStatusWindow : public Popup
 
         void drawIcons(Graphics *graphics);
 
-        void update(int id); // Same types as status window
+        void event(const std::string &channel, const Mana::Event &event);
 
         void logic(); // Updates icons
 

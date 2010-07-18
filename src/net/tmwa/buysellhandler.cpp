@@ -25,6 +25,7 @@
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
@@ -72,7 +73,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt16();  // length
             n_items = (msg.getLength() - 4) / 11;
             mBuyDialog = new BuyDialog(mNpcId);
-            mBuyDialog->setMoney(player_node->getMoney());
+            mBuyDialog->setMoney(PlayerInfo::getAttribute(MONEY));
 
             for (int k = 0; k < n_items; k++)
             {
@@ -90,7 +91,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             if (n_items > 0)
             {
                 SellDialog *dialog = new SellDialog(mNpcId);
-                dialog->setMoney(player_node->getMoney());
+                dialog->setMoney(PlayerInfo::getAttribute(MONEY));
 
                 for (int k = 0; k < n_items; k++)
                 {
@@ -119,7 +120,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
-                mBuyDialog->setMoney(player_node->getMoney());
+                mBuyDialog->setMoney(PlayerInfo::getAttribute(MONEY));
                 localChatTab->chatLog(_("Unable to buy."), BY_SERVER);
             }
             break;

@@ -23,8 +23,9 @@
 
 #include "animatedsprite.h"
 #include "configuration.h"
+#include "event.h"
 #include "graphics.h"
-#include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/gui.h"
 #include "gui/statuswindow.h"
@@ -45,22 +46,27 @@ extern volatile int tick_time;
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
-    int max = player_node->getMaxHp();
-    mHpBar = new ProgressBar(max ? (float) player_node->getHp() / max : 0,
-                             100, 20, Theme::PROG_HP);
+    listen("Attributes");
+
+    mHpBar = new ProgressBar(0, 100, 20, Theme::PROG_HP);
+    StatusWindow::updateHPBar(mHpBar);
+
     if (Net::getGameHandler()->canUseMagicBar())
     {
-        max = player_node->getMaxMP();
-        mMpBar = new ProgressBar(max ? (float) player_node->getMaxMP() / max : 0,
-                             100, 20, Net::getPlayerHandler()->canUseMagic() ?
-                             Theme::PROG_MP : Theme::PROG_NO_MP);
+        mMpBar = new ProgressBar(0, 100, 20,
+                        Net::getPlayerHandler()->canUseMagic()
+                        ? Theme::PROG_MP : Theme::PROG_NO_MP);
+
+        StatusWindow::updateMPBar(mMpBar);
     }
     else
         mMpBar = 0;
 
-    max = player_node->getExpNeeded();
-    mXpBar = new ProgressBar(max ? (float) player_node->getExp() / max : 0,
-                             100, 20, Theme::PROG_EXP);
+    mXpBar = new ProgressBar(0, 100, 20, Theme::PROG_EXP);
+    StatusWindow::updateXPBar(mXpBar);
+
+    // Add the progressbars to the window
+
     mHpBar->setPosition(0, 3);
     if (mMpBar)
         mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
@@ -80,8 +86,6 @@ MiniStatusWindow::MiniStatusWindow():
     mTextPopup = new TextPopup();
 
     addMouseListener(this);
-
-    update(StatusWindow::HP);
 }
 
 void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
@@ -114,19 +118,23 @@ void MiniStatusWindow::drawIcons(Graphics *graphics)
     }
 }
 
-void MiniStatusWindow::update(int id)
+void MiniStatusWindow::event(const std::string &channel, const Mana::Event &event)
 {
-    if (id == StatusWindow::HP)
+    if (event.getName() == "UpdateAttribute")
     {
-        StatusWindow::updateHPBar(mHpBar);
-    }
-    else if (id == StatusWindow::MP)
-    {
-        StatusWindow::updateMPBar(mMpBar);
-    }
-    else if (id == StatusWindow::EXP)
-    {
-        StatusWindow::updateXPBar(mXpBar);
+        int id = event.getInt("id");
+        if (id == HP || id == MAX_HP)
+        {
+            StatusWindow::updateHPBar(mHpBar);
+        }
+        else if (id == MP || id == MAX_MP)
+        {
+            StatusWindow::updateMPBar(mMpBar);
+        }
+        else if (id == EXP || id == EXP_NEEDED)
+        {
+            StatusWindow::updateXPBar(mXpBar);
+        }
     }
 }
 
@@ -162,23 +170,23 @@ void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
     if (event.getSource() == mXpBar)
     {
         mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", player_node->getExp(),
-                                   player_node->getExpNeeded()),
+                         strprintf("%u/%u", PlayerInfo::getAttribute(EXP),
+                                   PlayerInfo::getAttribute(EXP_NEEDED)),
                          strprintf("%s: %u", _("Need"),
-                                   player_node->getExpNeeded()
-                                   - player_node->getExp()));
+                                   PlayerInfo::getAttribute(EXP_NEEDED)
+                                   - PlayerInfo::getAttribute(EXP)));
     }
     else if (event.getSource() == mHpBar)
     {
         mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", player_node->getHp(),
-                                   player_node->getMaxHp()));
+                         strprintf("%u/%u", PlayerInfo::getAttribute(HP),
+                                   PlayerInfo::getAttribute(MAX_HP)));
     }
     else if (event.getSource() == mMpBar)
     {
         mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", player_node->getMP(),
-                                   player_node->getMaxMP()));
+                         strprintf("%u/%u", PlayerInfo::getAttribute(MP),
+                                   PlayerInfo::getAttribute(MAX_MP)));
     }
     else
     {

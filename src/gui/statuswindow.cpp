@@ -21,10 +21,11 @@
 
 #include "gui/statuswindow.h"
 
+#include "event.h"
 #include "localplayer.h"
+#include "playerinfo.h"
 #include "units.h"
 
-#include "gui/ministatus.h"
 #include "gui/setup.h"
 #include "gui/theme.h"
 
@@ -95,6 +96,8 @@ class ChangeDisplay : public AttrDisplay, gcn::ActionListener
 StatusWindow::StatusWindow():
     Window(player_node->getName())
 {
+    listen("Attributes");
+
     setWindowName("Status");
     setupWindow->registerWindowForReset(this);
     setResizable(true);
@@ -110,22 +113,22 @@ StatusWindow::StatusWindow():
     mLvlLabel = new Label(strprintf(_("Level: %d"), 0));
     mMoneyLabel = new Label(strprintf(_("Money: %s"), ""));
 
-    int max = player_node->getMaxHp();
+    int max = PlayerInfo::getAttribute(MAX_HP);
     mHpLabel = new Label(_("HP:"));
-    mHpBar = new ProgressBar(max ? (float) player_node->getHp() / max: 0,
+    mHpBar = new ProgressBar(max ? (float) PlayerInfo::getAttribute(HP) / max: 0,
                              80, 15, Theme::PROG_HP);
 
-    max = player_node->getExpNeeded();
+    max = PlayerInfo::getAttribute(EXP_NEEDED);
     mXpLabel = new Label(_("Exp:"));
-    mXpBar = new ProgressBar(max ? (float) player_node->getExp() / max : 0,
+    mXpBar = new ProgressBar(max ? (float) PlayerInfo::getAttribute(EXP) / max : 0,
                              80, 15, Theme::PROG_EXP);
 
     bool magicBar = Net::getGameHandler()->canUseMagicBar();
     if (magicBar)
     {
-        max = player_node->getMaxMP();
+        max = PlayerInfo::getAttribute(MAX_MP);
         mMpLabel = new Label(_("MP:"));
-        mMpBar = new ProgressBar(max ? (float) player_node->getMaxMP() / max : 0,
+        mMpBar = new ProgressBar(max ? (float) PlayerInfo::getAttribute(MAX_MP) / max : 0,
                              80, 15, Net::getPlayerHandler()->canUseMagic() ?
                              Theme::PROG_MP : Theme::PROG_NO_MP);
     }
@@ -186,97 +189,95 @@ StatusWindow::StatusWindow():
 
     loadWindowState();
 
-    update(HP);
+    // Update bars
+    updateHPBar(mHpBar, true);
     if (magicBar)
-        update(MP);
-    update(EXP);
-    update(MONEY);
-    update(CHAR_POINTS); // This also updates all attributes (none atm)
-    update(LEVEL);
-    int job = Net::getPlayerHandler()->getJobLocation();
-    if (job > 0)
-        update(job);
+        updateMPBar(mMpBar, true);
+    updateXPBar(mXpBar, false);
+
+
+    mMoneyLabel->setCaption(strprintf(_("Money: %s"),
+                            Units::formatCurrency(PlayerInfo::getAttribute(MONEY)).c_str()));
+    mMoneyLabel->adjustSize();
+    mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
+                                      PlayerInfo::getAttribute(CHAR_POINTS)));
+    mCharacterPointsLabel->adjustSize();
+
+    mLvlLabel->setCaption(strprintf(_("Level: %d"),
+                          PlayerInfo::getAttribute(LEVEL)));
+    mLvlLabel->adjustSize();
 }
 
-std::string StatusWindow::update(int id)
+void StatusWindow::event(const std::string &channel, const Mana::Event &event)
 {
-    if (miniStatusWindow)
-        miniStatusWindow->update(id);
-
-    if (id == HP)
+    if (event.getName() == "UpdateAttribute")
     {
-        updateHPBar(mHpBar, true);
-
-        return _("HP");
-    }
-    else if (id == MP)
-    {
-        updateMPBar(mMpBar, true);
-
-        return _("MP");
-    }
-    else if (id == EXP)
-    {
-        updateXPBar(mXpBar, false);
-
-        return _("Exp");
-    }
-    else if (id == MONEY)
-    {
-        int money = player_node->getMoney();
-        mMoneyLabel->setCaption(strprintf(_("Money: %s"),
-                                        Units::formatCurrency(money).c_str()));
-        mMoneyLabel->adjustSize();
-
-        return _("Money");
-    }
-    else if (id == Net::getPlayerHandler()->getJobLocation())
-    {
-        mJobLvlLabel->setCaption(strprintf(_("Job: %d"),
-                                        player_node->getAttributeBase(id)));
-        mJobLvlLabel->adjustSize();
-
-        updateProgressBar(mJobBar, id, false);
-
-        return _("Job");
-    }
-    else if (id == CHAR_POINTS)
-    {
-        mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
-                                        player_node->getCharacterPoints()));
-        mCharacterPointsLabel->adjustSize();
-
-        if (Net::getPlayerHandler()->canCorrectAttributes())
+        switch(event.getInt("id"))
         {
-            mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
-                                            player_node->getCorrectionPoints()));
-            mCorrectionPointsLabel->adjustSize();
-        }
+            case HP: case MAX_HP:
+                updateHPBar(mHpBar, true);
+            break;
 
-        for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
-        {
-            it->second->update();
+            case MP: case MAX_MP:
+                updateMPBar(mMpBar, true);
+            break;
+
+            case EXP: case EXP_NEEDED:
+                updateXPBar(mXpBar, false);
+            break;
+
+            case MONEY:
+                mMoneyLabel->setCaption(strprintf(_("Money: %s"),
+                                      Units::formatCurrency(event.getInt("value")).c_str()));
+                mMoneyLabel->adjustSize();
+            break;
+
+            case CHAR_POINTS:
+                mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
+                                              event.getInt("value")));
+                mCharacterPointsLabel->adjustSize();
+                // Update all attributes
+                for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
+                    it->second->update();
+            break;
+
+            case CORR_POINTS:
+                mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
+                                               event.getInt("value")));
+                mCorrectionPointsLabel->adjustSize();
+                // Update all attributes
+                for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
+                    it->second->update();
+            break;
+
+            case LEVEL:
+                mLvlLabel->setCaption(strprintf(_("Level: %d"),
+                                  event.getInt("value")));
+                mLvlLabel->adjustSize();
+            break;
         }
     }
-    else if (id == LEVEL)
+    else if (event.getName() == "UpdateStat")
     {
-        mLvlLabel->setCaption(strprintf(_("Level: %d"),
-                                        player_node->getLevel()));
-        mLvlLabel->adjustSize();
-
-        return _("Level");
-    }
-    else
-    {
-        Attrs::iterator it = mAttrs.find(id);
-
-        if (it != mAttrs.end())
+        int id = event.getInt("id");
+        if (id == Net::getPlayerHandler()->getJobLocation())
         {
-            return it->second->update();
+
+            mJobLvlLabel->setCaption(strprintf(_("Job: %d"),
+                                            PlayerInfo::getStatBase(id)));
+            mJobLvlLabel->adjustSize();
+
+            updateProgressBar(mJobBar, id, false);
+        }
+        else
+        {
+            Attrs::iterator it = mAttrs.find(id);
+            if (it != mAttrs.end())
+            {
+                it->second->update();
+            }
         }
     }
-
-    return "";
 }
 
 void StatusWindow::setPointsNeeded(int id, int needed)
@@ -317,15 +318,15 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
         return;
 
     if (showMax)
-        bar->setText(toString(player_node->getHp()) +
-                    "/" + toString(player_node->getMaxHp()));
+        bar->setText(toString(PlayerInfo::getAttribute(HP)) +
+                    "/" + toString(PlayerInfo::getAttribute(MAX_HP)));
     else
-        bar->setText(toString(player_node->getHp()));
+        bar->setText(toString(PlayerInfo::getAttribute(HP)));
 
     float prog = 1.0;
 
-    if (player_node->getMaxHp() > 0)
-        prog = (float) player_node->getHp() / player_node->getMaxHp();
+    if (PlayerInfo::getAttribute(MAX_HP) > 0)
+        prog = (float) PlayerInfo::getAttribute(HP) / PlayerInfo::getAttribute(MAX_HP);
     bar->setProgress(prog);
 }
 
@@ -335,15 +336,15 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
         return;
 
     if (showMax)
-        bar->setText(toString(player_node->getMP()) +
-                    "/" + toString(player_node->getMaxMP()));
+        bar->setText(toString(PlayerInfo::getAttribute(MP)) +
+                    "/" + toString(PlayerInfo::getAttribute(MAX_MP)));
     else
-        bar->setText(toString(player_node->getMP()));
+        bar->setText(toString(PlayerInfo::getAttribute(MP)));
 
     float prog = 1.0f;
 
-    if (player_node->getMaxMP() > 0)
-        prog = (float) player_node->getMP() / player_node->getMaxMP();
+    if (PlayerInfo::getAttribute(MAX_MP) > 0)
+        prog = (float) PlayerInfo::getAttribute(MP) / PlayerInfo::getAttribute(MAX_MP);
 
     if (Net::getPlayerHandler()->canUseMagic())
         bar->setProgressPalette(Theme::PROG_MP);
@@ -382,13 +383,13 @@ void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
     if (!bar)
         return;
 
-    updateProgressBar(bar, player_node->getExp(),
-                      player_node->getExpNeeded(), percent);
+    updateProgressBar(bar, PlayerInfo::getAttribute(EXP),
+                      PlayerInfo::getAttribute(EXP_NEEDED), percent);
 }
 
 void StatusWindow::updateProgressBar(ProgressBar *bar, int id, bool percent)
 {
-    std::pair<int, int> exp =  player_node->getExperience(id);
+    std::pair<int, int> exp =  PlayerInfo::getStatExperience(id);
     updateProgressBar(bar, exp.first, exp.second, percent);
 }
 
@@ -413,8 +414,8 @@ AttrDisplay::~AttrDisplay()
 
 std::string AttrDisplay::update()
 {
-    int base = player_node->getAttributeBase(mId);
-    int bonus = player_node->getAttributeEffective(mId) - base;
+    int base = PlayerInfo::getStatBase(mId);
+    int bonus = PlayerInfo::getStatMod(mId);
     std::string value = toString(base);
     if (bonus)
         value += strprintf(" (%+d)", bonus);
@@ -478,9 +479,9 @@ std::string ChangeDisplay::update()
 
     if (mDec)
     {
-        mDec->setEnabled(player_node->getCorrectionPoints());
+        mDec->setEnabled(PlayerInfo::getAttribute(CORR_POINTS));
     }
-    mInc->setEnabled(player_node->getCharacterPoints() >= mNeeded &&
+    mInc->setEnabled(PlayerInfo::getAttribute(CHAR_POINTS) >= mNeeded &&
                      mNeeded > 0);
 
     return AttrDisplay::update();
@@ -498,24 +499,25 @@ void ChangeDisplay::action(const gcn::ActionEvent &event)
     if (Net::getPlayerHandler()->canCorrectAttributes() &&
         event.getSource() == mDec)
     {
-        int newcorpoints = player_node->getCorrectionPoints() - 1;
-        player_node->setCorrectionPoints(newcorpoints);
-        int newpoints = player_node->getCharacterPoints() + 1;
-        player_node->setCharacterPoints(newpoints);
-        int newbase = player_node->getAttributeBase(mId) - 1;
-        player_node->setAttributeBase(mId, newbase);
-        int newmod = player_node->getAttributeEffective(mId) - 1;
-        player_node->setAttributeEffective(mId, newmod);
+        int newcorpoints = PlayerInfo::getAttribute(CORR_POINTS) - 1;
+        PlayerInfo::setAttribute(CORR_POINTS, newcorpoints);
+
+        int newpoints = PlayerInfo::getAttribute(CHAR_POINTS) + 1;
+        PlayerInfo::setAttribute(CHAR_POINTS, newpoints);
+
+        int newbase = PlayerInfo::getStatBase(mId) - 1;
+        PlayerInfo::setStatBase(mId, newbase);
+
         Net::getPlayerHandler()->decreaseAttribute(mId);
     }
     else if (event.getSource() == mInc)
     {
-        int newpoints = player_node->getCharacterPoints() - 1;
-        player_node->setCharacterPoints(newpoints);
-        int newbase = player_node->getAttributeBase(mId) + 1;
-        player_node->setAttributeBase(mId, newbase);
-        int newmod = player_node->getAttributeEffective(mId) + 1;
-        player_node->setAttributeEffective(mId, newmod);
+        int newpoints = PlayerInfo::getAttribute(CHAR_POINTS) - 1;
+        PlayerInfo::setAttribute(CHAR_POINTS, newpoints);
+
+        int newbase = PlayerInfo::getStatBase(mId) + 1;
+        PlayerInfo::setStatBase(mId, newbase);
+
         Net::getPlayerHandler()->increaseAttribute(mId);
     }
 }
