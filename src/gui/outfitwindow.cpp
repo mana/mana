@@ -22,12 +22,12 @@
 #include "outfitwindow.h"
 
 #include "configuration.h"
-#include "localplayer.h"
+#include "equipment.h"
 #include "graphics.h"
 #include "inventory.h"
-#include "equipment.h"
 #include "item.h"
 #include "log.h"
+#include "playerinfo.h"
 
 #include "gui/chat.h"
 
@@ -168,7 +168,7 @@ void OutfitWindow::wearOutfit(int outfit)
     Item *item;
     for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
-        item = player_node->getInventory()->findItem(mItems[outfit][i]);
+        item = PlayerInfo::getInventory()->findItem(mItems[outfit][i]);
         if (item && !item->isEquipped() && item->getQuantity())
         {
             if (item->isEquipment())
@@ -206,7 +206,7 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
         }
 
         Item *item =
-            player_node->getInventory()->findItem(mItems[mCurrentOutfit][i]);
+               PlayerInfo::getInventory()->findItem(mItems[mCurrentOutfit][i]);
         if (item)
          {
             // Draw item icon.
@@ -245,7 +245,7 @@ void OutfitWindow::mouseDragged(gcn::MouseEvent &event)
             const int itemId = mItems[mCurrentOutfit][index];
             if (itemId < 0)
                 return;
-            Item *item = player_node->getInventory()->findItem(itemId);
+            Item *item = PlayerInfo::getInventory()->findItem(itemId);
             if (item)
             {
                 mItemMoved = item;
@@ -319,7 +319,7 @@ int OutfitWindow::getIndexFromGrid(int pointX, int pointY) const
 
 void OutfitWindow::unequipNotInOutfit(int outfit)
 {
-    Inventory *inventory = player_node->getInventory();
+    Inventory *inventory = PlayerInfo::getInventory();
     if (!inventory)
         return;
 

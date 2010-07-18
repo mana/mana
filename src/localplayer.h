@@ -33,21 +33,11 @@
 #include <vector>
 
 class ChatTab;
-class Equipment;
 class FloorItem;
 class ImageSet;
-class Inventory;
 class Item;
 class Map;
 class OkDialog;
-
-
-struct Special
-{
-    int currentMana;
-    int neededMana;
-    int recharge;
-};
 
 class AwayListener : public gcn::ActionListener
 {
@@ -93,11 +83,6 @@ class LocalPlayer : public Being, public ActorSpriteListener
         virtual void nextTile(unsigned char dir);
 
         /**
-         * Returns the player's inventory.
-         */
-        Inventory *getInventory() const { return mInventory; }
-
-        /**
          * Check the player has permission to invite users to specific guild
          */
         bool checkInviteRights(const std::string &guildName);
@@ -106,9 +91,6 @@ class LocalPlayer : public Being, public ActorSpriteListener
          * Invite a player to join guild
          */
         void inviteToGuild(Being *being);
-
-        void clearInventory();
-        void setInvItem(int index, int id, int amount);
 
         void pickUp(FloorItem *item);
 
@@ -127,26 +109,6 @@ class LocalPlayer : public Being, public ActorSpriteListener
          * Gets the attack range.
          */
         int getAttackRange();
-
-        /**
-         * Returns true when the player is ready to accept a trade offer.
-         * Returns false otherwise.
-         */
-        bool tradeRequestOk() const { return !mTrading; }
-
-        /**
-         * Sets the trading state of the player, i.e. whether or not he is
-         * currently involved into some trade.
-         */
-        void setTrading(bool trading) { mTrading = trading; }
-
-        void useSpecial(int id);
-
-        void setSpecialStatus(int id, int current, int max, int recharge);
-
-        const std::map<int, Special> &getSpecialStatus() const
-        { return mSpecials; }
-
         void attack(Being *target = NULL, bool keep = false);
 
         void setGMLevel(int level);
@@ -275,11 +237,7 @@ class LocalPlayer : public Being, public ActorSpriteListener
          */
         bool getCheckNameSetting() const { return mUpdateName; }
 
-        /**  Keeps the Equipment related values */
-        const std::auto_ptr<Equipment> mEquipment;
-
     protected:
-
         /** Whether or not the name settings have changed */
         bool mUpdateName;
 
@@ -292,11 +250,6 @@ class LocalPlayer : public Being, public ActorSpriteListener
         int mTargetTime;      /** How long the being has been targeted **/
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 
-        // Character status:
-        int mLevelProgress;
-        std::map<int, Special> mSpecials;
-        char mSpecialRechargeUpdateNeeded;
-
         int mGMLevel;
 
         Being *mTarget;
@@ -308,7 +261,6 @@ class LocalPlayer : public Being, public ActorSpriteListener
 
         FloorItem *mPickUpTarget;
 
-        bool mTrading;
         bool mGoingToTarget;
         bool mKeepAttacking;  /** Whether or not to continue to attack */
         int mLastAction;      /**< Time stamp of the last action, -1 if none. */
@@ -317,13 +269,11 @@ class LocalPlayer : public Being, public ActorSpriteListener
 
         std::vector<int> mStatusEffectIcons;
 
-        Inventory *mInventory;
-
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
 
         typedef std::pair<std::string, int> MessagePair;
-        /** Queued exp messages*/
+        /** Queued messages*/
         std::list<MessagePair> mMessages;
         int mMessageTime;
         AwayListener *mAwayListener;

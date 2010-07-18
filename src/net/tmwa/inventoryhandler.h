@@ -24,7 +24,7 @@
 
 #include "equipment.h"
 #include "inventory.h"
-#include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/inventorywindow.h"
 
@@ -51,7 +51,7 @@ class EquipBackend : public Equipment::Backend {
             {
                 return NULL;
             }
-            return player_node->getInventory()->getItem(invyIndex);
+            return PlayerInfo::getInventory()->getItem(invyIndex);
         }
 
         void clear()
@@ -60,7 +60,7 @@ class EquipBackend : public Equipment::Backend {
             {
                 if (mEquipment[i] != -1)
                 {
-                    Item* item = player_node->getInventory()->getItem(i);
+                    Item* item = PlayerInfo::getInventory()->getItem(i);
                     if (item)
                     {
                         item->setEquipped(false);
@@ -74,7 +74,7 @@ class EquipBackend : public Equipment::Backend {
         void setEquipment(int index, int inventoryIndex)
         {
             // Unequip existing item
-            Item* item = player_node->getInventory()->getItem(mEquipment[index]);
+            Item* item = PlayerInfo::getInventory()->getItem(mEquipment[index]);
             if (item)
             {
                 item->setEquipped(false);
@@ -82,7 +82,7 @@ class EquipBackend : public Equipment::Backend {
 
             mEquipment[index] = inventoryIndex;
 
-            item = player_node->getInventory()->getItem(inventoryIndex);
+            item = PlayerInfo::getInventory()->getItem(inventoryIndex);
             if (item)
             {
                 item->setEquipped(true);

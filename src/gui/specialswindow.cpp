@@ -123,7 +123,7 @@ void SpecialsWindow::action(const gcn::ActionEvent &event)
 void SpecialsWindow::draw(gcn::Graphics *graphics)
 {
     // update the progress bars
-    std::map<int, Special> specialData = player_node->getSpecialStatus();
+    std::map<int, Special> specialData = PlayerInfo::getSpecialStatus();
     bool foundNew = false;
     unsigned int found = 0; // number of entries in specialData which match mEntries
 

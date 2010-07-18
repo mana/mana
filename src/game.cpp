@@ -28,6 +28,8 @@
 #include "commandhandler.h"
 #include "configuration.h"
 #include "effectmanager.h"
+#include "event.h"
+#include "eventmanager.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
 #include "itemshortcut.h"
@@ -147,10 +149,10 @@ static void createGuiWindows()
     // Create dialogs
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
-    equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
+    equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
     statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
-    inventoryWindow = new InventoryWindow(player_node->getInventory());
+    inventoryWindow = new InventoryWindow(PlayerInfo::getInventory());
     skillDialog = new SkillDialog;
     minimap = new Minimap;
     helpWindow = new HelpWindow;
@@ -250,6 +252,9 @@ Game::Game():
         joystick = new Joystick(0);
 
     setupWindow->setInGame(true);
+
+    Mana::Event event("Constructed");
+    Mana::EventManager::trigger("Game", event);
 }
 
 Game::~Game()
@@ -269,6 +274,9 @@ Game::~Game()
     del_0(mCurrentMap)
 
     mInstance = 0;
+
+    Mana::Event event("Destructed");
+    Mana::EventManager::trigger("Game", event);
 }
 
 static bool saveScreenshot()

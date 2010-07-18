@@ -126,7 +126,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     int number, flag;
     int index, amount, itemId, equipType, arrow;
     int identified, cards[4], itemType;
-    Inventory *inventory = player_node->getInventory();
+    Inventory *inventory = PlayerInfo::getInventory();
 
     switch (msg.getId())
     {
@@ -136,7 +136,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             {
                 // Clear inventory - this will be a complete refresh
                 mEquips.clear();
-                player_node->mEquipment->setBackend(&mEquips);
+                PlayerInfo::getEquipment()->setBackend(&mEquips);
 
                 inventory->clear();
             }

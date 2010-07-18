@@ -23,7 +23,7 @@
 #include "inventory.h"
 #include "item.h"
 #include "itemshortcut.h"
-#include "localplayer.h"
+#include "playerinfo.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"
@@ -66,7 +66,7 @@ void ItemShortcut::useItem(int index)
 {
     if (mItems[index])
     {
-        Item *item = player_node->getInventory()->findItem(mItems[index]);
+        Item *item = PlayerInfo::getInventory()->findItem(mItems[index]);
         if (item && item->getQuantity())
         {
             if (item->isEquipment())

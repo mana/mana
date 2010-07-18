@@ -99,7 +99,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
                     int value = msg.readInt32();
                     msg.readInt32();  // OCvalue
 
-                    Item *item = player_node->getInventory()->getItem(index);
+                    Item *item = PlayerInfo::getInventory()->getItem(index);
 
                     if (item && !(item->isEquipped()))
                         dialog->addItem(item, value);

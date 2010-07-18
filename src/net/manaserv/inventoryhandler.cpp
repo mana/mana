@@ -61,8 +61,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
         case GPMSG_INVENTORY_FULL:
-            player_node->clearInventory();
-            player_node->mEquipment->setBackend(&mEquips);
+            PlayerInfo::clearInventory();
+            PlayerInfo::getEquipment()->setBackend(&mEquips);
             // no break!
 
         case GPMSG_INVENTORY:
@@ -83,7 +83,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 else if (slot >= 32 && slot < 32 + getSize(Inventory::INVENTORY))
                 {
                     int amount = id ? msg.readInt8() : 0;
-                    player_node->setInvItem(slot - 32, id, amount);
+                    PlayerInfo::setInventoryItem(slot - 32, id, amount);
                 }
             };
             break;
@@ -131,7 +131,7 @@ bool InventoryHandler::canSplit(const Item *item)
 
 void InventoryHandler::splitItem(const Item *item, int amount)
 {
-    int newIndex = player_node->getInventory()->getFreeSlot();
+    int newIndex = PlayerInfo::getInventory()->getFreeSlot();
     if (newIndex > Inventory::NO_SLOT_INDEX)
     {
         MessageOut msg(PGMSG_MOVE_ITEM);
@@ -150,7 +150,7 @@ void InventoryHandler::moveItem(int oldIndex, int newIndex)
     MessageOut msg(PGMSG_MOVE_ITEM);
     msg.writeInt8(oldIndex);
     msg.writeInt8(newIndex);
-    msg.writeInt8(player_node->getInventory()->getItem(oldIndex)
+    msg.writeInt8(PlayerInfo::getInventory()->getItem(oldIndex)
                   ->getQuantity());
     gameServerConnection->send(msg);
 }

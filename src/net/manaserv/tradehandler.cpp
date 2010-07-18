@@ -24,6 +24,7 @@
 #include "actorspritemanager.h"
 #include "item.h"
 #include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/confirmdialog.h"
 #include "gui/trade.h"
@@ -110,7 +111,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 respond(false);
                 break;
             }
-            player_node->setTrading(true);
+            PlayerInfo::setTrading(true);
             tradePartnerName = being->getName();
             tradePartnerID = being->getId();
             ConfirmDialog *dlg = new ConfirmDialog(_("Request for Trade"),
@@ -149,14 +150,14 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
             localChatTab->chatLog(_("Trade canceled."), BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            player_node->setTrading(false);
+            PlayerInfo::setTrading(false);
             break;
 
         case GPMSG_TRADE_COMPLETE:
             localChatTab->chatLog(_("Trade completed."), BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            player_node->setTrading(false);
+            PlayerInfo::setTrading(false);
             break;
     }
 }
@@ -177,7 +178,7 @@ void TradeHandler::respond(bool accept)
     gameServerConnection->send(msg);
 
     if (!accept)
-        player_node->setTrading(false);
+        PlayerInfo::setTrading(false);
 }
 
 void TradeHandler::addItem(Item *item, int amount)

@@ -27,7 +27,7 @@
 #include "item.h"
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
-#include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/inventorywindow.h"
 #include "gui/itempopup.h"
@@ -94,7 +94,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
             continue;
 
         Item *item =
-            player_node->getInventory()->findItem(itemShortcut->getItem(i));
+                PlayerInfo::getInventory()->findItem(itemShortcut->getItem(i));
 
         if (item)
         {
@@ -151,7 +151,7 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
             if (itemId < 0)
                 return;
 
-            Item *item = player_node->getInventory()->findItem(itemId);
+            Item *item = PlayerInfo::getInventory()->findItem(itemId);
 
             if (item)
             {
@@ -187,7 +187,7 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
     }
     else if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        Item *item = player_node->getInventory()->
+        Item *item = PlayerInfo::getInventory()->
                      findItem(itemShortcut->getItem(index));
 
         if (!item)
@@ -240,7 +240,7 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
     if (itemId < 0)
         return;
 
-    Item *item = player_node->getInventory()->findItem(itemId);
+    Item *item = PlayerInfo::getInventory()->findItem(itemId);
 
     if (item)
     {

@@ -241,7 +241,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 int current = msg.readInt32();
                 int max = msg.readInt32();
                 int recharge = msg.readInt32();
-                player_node->setSpecialStatus(id, current, max, recharge);
+                PlayerInfo::setSpecialStatus(id, current, max, recharge);
             }
         } break;
         /*

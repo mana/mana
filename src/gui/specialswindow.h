@@ -25,7 +25,7 @@
 
 #include "guichanfwd.h"
 
-#include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/widgets/window.h"
 

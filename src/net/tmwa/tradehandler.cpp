@@ -24,6 +24,7 @@
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
+#include "playerinfo.h"
 #include "playerrelations.h"
 
 #include "gui/confirmdialog.h"
@@ -96,14 +97,14 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 if (player_relations.hasPermission(tradePartnerName,
                                                    PlayerRelation::TRADE))
                 {
-                    if (!player_node->tradeRequestOk() || confirmDlg)
+                    if (PlayerInfo::isTrading() || confirmDlg)
                     {
                         Net::getTradeHandler()->respond(false);
                         break;
                     }
 
                     tradePartnerName = tradePartnerNameTemp;
-                    player_node->setTrading(true);
+                    PlayerInfo::setTrading(true);
                     confirmDlg = new ConfirmDialog(_("Request for Trade"),
                             strprintf(_("%s wants to trade with you, do you "
                                       "accept?"), tradePartnerName.c_str()));
@@ -147,7 +148,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                     // otherwise ignore silently
 
                     tradeWindow->setVisible(false);
-                    player_node->setTrading(false);
+                    PlayerInfo::setTrading(false);
                     break;
                 default: // Shouldn't happen as well, but to be sure
                     localChatTab->chatLog(_("Unhandled trade cancel packet."),
@@ -177,7 +178,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
             // Trade: New Item add response (was 0x00ea, now 01b1)
             {
                 const int index = msg.readInt16() - INVENTORY_OFFSET;
-                Item *item = player_node->getInventory()->getItem(index);
+                Item *item = PlayerInfo::getInventory()->getItem(index);
                 if (!item)
                 {
                     tradeWindow->receivedOk(true);
@@ -224,14 +225,14 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
             localChatTab->chatLog(_("Trade canceled."), BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            player_node->setTrading(false);
+            PlayerInfo::setTrading(false);
             break;
 
         case SMSG_TRADE_COMPLETE:
             localChatTab->chatLog(_("Trade completed."), BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            player_node->setTrading(false);
+            PlayerInfo::setTrading(false);
             break;
     }
 }
@@ -245,7 +246,7 @@ void TradeHandler::request(Being *being)
 void TradeHandler::respond(bool accept)
 {
     if (!accept)
-        player_node->setTrading(false);
+        PlayerInfo::setTrading(false);
 
     MessageOut outMsg(CMSG_TRADE_RESPONSE);
     outMsg.writeInt8(accept ? 3 : 4);

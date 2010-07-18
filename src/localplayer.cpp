@@ -24,22 +24,20 @@
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "equipment.h"
 #include "flooritem.h"
 #include "graphics.h"
 #include "guild.h"
-#include "inventory.h"
 #include "item.h"
 #include "log.h"
 #include "map.h"
 #include "particle.h"
+#include "playerinfo.h"
 #include "simpleanimation.h"
 #include "sound.h"
 #include "statuseffect.h"
 #include "text.h"
 
 #include "gui/gui.h"
-#include "gui/inventorywindow.h"
 #include "gui/ministatus.h"
 #include "gui/okdialog.h"
 #include "gui/skilldialog.h"
@@ -59,7 +57,6 @@
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
-#include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
@@ -79,19 +76,16 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
     Being(id, PLAYER, subtype, 0),
-    mEquipment(new Equipment),
     mAttackRange(0),
     mTargetTime(-1),
     mLastTarget(-1),
-    mSpecialRechargeUpdateNeeded(0),
     mTarget(NULL),
     mPlayerFollowed(""),
     mPickUpTarget(NULL),
-    mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
+    mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
     mWalkingDir(0),
     mPathSetByMouse(false),
-    mInventory(new Inventory(Inventory::INVENTORY)),
     mLocalWalkTime(-1),
     mMessageTime(0),
     mAwayDialog(0),
@@ -108,8 +102,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
 LocalPlayer::~LocalPlayer()
 {
-    delete mInventory;
-
     config.removeListener("showownname", this);
 
     delete mAwayDialog;
@@ -146,21 +138,7 @@ void LocalPlayer::logic()
         mMessageTime--;
     }
 
-    if ((mSpecialRechargeUpdateNeeded%11) == 0)
-    {
-        mSpecialRechargeUpdateNeeded = 0;
-        for (std::map<int, Special>::iterator i = mSpecials.begin();
-             i != mSpecials.end();
-             i++)
-        {
-            i->second.currentMana += i->second.recharge;
-            if (i->second.currentMana > i->second.neededMana)
-            {
-                i->second.currentMana = i->second.neededMana;
-            }
-        }
-    }
-    mSpecialRechargeUpdateNeeded++;
+    PlayerInfo::logic();
 
     // Targeting allowed 4 times a second
     if (get_elapsed_time(mLastTarget) >= 250)
@@ -659,21 +637,6 @@ void LocalPlayer::inviteToGuild(Being *being)
     }
 }
 
-void LocalPlayer::clearInventory()
-{
-    mEquipment->clear();
-    mInventory->clear();
-}
-
-void LocalPlayer::setInvItem(int index, int id, int amount)
-{
-    bool equipment = false;
-    int itemType = ItemDB::get(id).getType();
-    if (itemType != ITEM_UNUSABLE && itemType != ITEM_USABLE)
-        equipment = true;
-    mInventory->setItem(index, id, amount, equipment);
-}
-
 void LocalPlayer::pickUp(FloorItem *item)
 {
     if (!item)
@@ -927,20 +890,6 @@ void LocalPlayer::emote(Uint8 emotion)
     Net::getPlayerHandler()->emote(emotion);
 }
 
-void LocalPlayer::useSpecial(int special)
-{
-    Net::getSpecialHandler()->use(special);
-}
-
-void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
-{
-    logger->log("SpecialUpdate Skill #%d -- (%d/%d) -> %d", id, current, max,
-                recharge);
-    mSpecials[id].currentMana = current;
-    mSpecials[id].neededMana = max;
-    mSpecials[id].recharge = recharge;
-}
-
 void LocalPlayer::attack(Being *target, bool keep)
 {
     if (Net::getNetworkType() == ServerInfo::MANASERV)
@@ -1081,7 +1030,8 @@ int LocalPlayer::getAttackRange()
     }
     else
     {
-        Item *weapon = mEquipment->getEquipment(EQUIP_FIGHT1_SLOT);
+        // TODO: Fix this to be more generic
+        Item *weapon = PlayerInfo::getEquipment(EQUIP_FIGHT1_SLOT);
         if (weapon)
         {
             const ItemInfo info = weapon->getInfo();

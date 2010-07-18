@@ -25,6 +25,8 @@
 #include "chatlog.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
+#include "event.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
@@ -427,6 +429,9 @@ Client::Client(const Options &options):
     SDL_initFramerate(&mFpsManager);
     config.addListener("fpslimit", this);
     optionChanged("fpslimit");
+
+    // Initialize PlayerInfo
+    PlayerInfo::init();
 }
 
 Client::~Client()
@@ -587,6 +592,13 @@ int Client::exec()
 
         if (mState != mOldState)
         {
+            {
+                Mana::Event event("StateChange");
+                event.setInt("oldState", mOldState);
+                event.setInt("newState", mState);
+                Mana::EventManager::trigger("Client", event);
+            }
+
             Net::GeneralHandler *generalHandler = Net::getGeneralHandler();
             if (generalHandler)
                 generalHandler->stateChanged(mOldState, mState);
