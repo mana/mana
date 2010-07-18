@@ -38,6 +38,7 @@
 #include "net/net.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/defines.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/npchandler.h"

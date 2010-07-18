@@ -582,6 +582,7 @@ SET(SRCS_MANA
     net/manaserv/chathandler.h
     net/manaserv/connection.cpp
     net/manaserv/connection.h
+    net/manaserv/defines.h
     net/manaserv/effecthandler.cpp
     net/manaserv/effecthandler.h
     net/manaserv/gamehandler.cpp

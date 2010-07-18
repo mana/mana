@@ -55,58 +55,6 @@ class AwayListener : public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 };
 
-
-/**
- * Attributes used during combat. Available to all the beings.
- */
-enum
-{
-BASE_ATTR_BEGIN = 0,
-    BASE_ATTR_PHY_ATK_MIN = BASE_ATTR_BEGIN,
-    BASE_ATTR_PHY_ATK_DELTA,
-                       /**< Physical attack power. */
-    BASE_ATTR_MAG_ATK, /**< Magical attack power. */
-    BASE_ATTR_PHY_RES, /**< Resistance to physical damage. */
-    BASE_ATTR_MAG_RES, /**< Resistance to magical damage. */
-    BASE_ATTR_EVADE,   /**< Ability to avoid hits. */
-    BASE_ATTR_HIT,     /**< Ability to hit stuff. */
-    BASE_ATTR_HP,      /**< Hit Points (Base value: maximum, Modded value: current) */
-    BASE_ATTR_HP_REGEN,/**< number of HP regenerated every 10 game ticks */
-    BASE_ATTR_END,
-    BASE_ATTR_NB = BASE_ATTR_END - BASE_ATTR_BEGIN,
-
-    BASE_ELEM_BEGIN = BASE_ATTR_END,
-    BASE_ELEM_NEUTRAL = BASE_ELEM_BEGIN,
-    BASE_ELEM_FIRE,
-    BASE_ELEM_WATER,
-    BASE_ELEM_EARTH,
-    BASE_ELEM_AIR,
-    BASE_ELEM_SACRED,
-    BASE_ELEM_DEATH,
-    BASE_ELEM_END,
-    BASE_ELEM_NB = BASE_ELEM_END - BASE_ELEM_BEGIN,
-
-    NB_BEING_ATTRIBUTES = BASE_ELEM_END
-};
-
-/**
- * Attributes of characters. Used to derive being attributes.
- */
-enum
-{
-    CHAR_ATTR_BEGIN = NB_BEING_ATTRIBUTES,
-    CHAR_ATTR_STRENGTH = CHAR_ATTR_BEGIN,
-    CHAR_ATTR_AGILITY,
-    CHAR_ATTR_DEXTERITY,
-    CHAR_ATTR_VITALITY,
-    CHAR_ATTR_INTELLIGENCE,
-    CHAR_ATTR_WILLPOWER,
-    CHAR_ATTR_END,
-    CHAR_ATTR_NB = CHAR_ATTR_END - CHAR_ATTR_BEGIN,
-
-    NB_CHARACTER_ATTRIBUTES = CHAR_ATTR_END
-};
-
 /**
  * The local player character.
  */

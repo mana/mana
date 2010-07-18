@@ -402,6 +402,7 @@
 		<Unit filename="src\net\manaserv\chathandler.h" />
 		<Unit filename="src\net\manaserv\connection.cpp" />
 		<Unit filename="src\net\manaserv\connection.h" />
+		<Unit filename="src\net\manaserv\defines.h" />
 		<Unit filename="src\net\manaserv\effecthandler.cpp" />
 		<Unit filename="src\net\manaserv\effecthandler.h" />
 		<Unit filename="src\net\manaserv\gamehandler.cpp" />
