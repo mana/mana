@@ -1035,13 +1035,13 @@ void Client::initHomeDir()
 
     if (mConfigDir.empty()){
 #ifdef __APPLE__
-        mConfigDir = mLocalDataDir;
+        mConfigDir = mLocalDataDir + "/" + branding.getValue("appShort", "mana");
 #elif defined WIN32
         mConfigDir = getSpecialFolderLocation(CSIDL_APPDATA);
         if (mConfigDir.empty())
             mConfigDir = mLocalDataDir;
         else
-            mConfigDir += "/mana/" + branding.getValue("appName", "Mana");
+            mConfigDir += "/mana/" + branding.getValue("appShort", "Mana");
 #else
         mConfigDir = std::string(PHYSFS_getUserDir()) +
             "/.config/mana/" + branding.getValue("appShort", "mana");
