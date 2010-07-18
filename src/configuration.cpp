@@ -141,16 +141,16 @@ void Configuration::init(const std::string &filename, bool useResManager)
 {
     XML::Document doc(filename, useResManager);
 
+    if (useResManager)
+        mConfigPath = "PhysFS://" + filename;
+    else
+        mConfigPath = filename;
+
     if (!doc.rootNode())
     {
         logger->log("Couldn't open configuration file: %s", filename.c_str());
         return;
     }
-
-    if (useResManager)
-        mConfigPath = "PhysFS://" + filename;
-    else
-        mConfigPath = filename;
 
     xmlNodePtr rootNode = doc.rootNode();
 
