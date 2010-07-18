@@ -38,6 +38,8 @@ namespace Net {
 class PartyHandler
 {
     public:
+        virtual ~PartyHandler() {}
+
         virtual void create(const std::string &name = "") = 0;
 
         virtual void join(int partyId) = 0;
@@ -69,8 +71,6 @@ class PartyHandler
         // virtual void options() = 0;
 
         // virtual void message() = 0;
-
-        virtual ~PartyHandler() {}
 };
 
 } // namespace Net

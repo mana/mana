@@ -31,15 +31,13 @@ namespace Net {
 class GameHandler
 {
     public:
+        virtual ~GameHandler() {}
+
         virtual void connect() = 0;
 
         virtual bool isConnected() = 0;
 
         virtual void disconnect() = 0;
-
-        virtual void inGame() = 0;
-
-        virtual void mapLoaded(const std::string &mapName) = 0;
 
         virtual void who() = 0;
 
@@ -50,11 +48,9 @@ class GameHandler
         virtual bool removeDeadBeings() const = 0;
 
         /**
-         * Tells whether the protocol is using the MP statu bar
+         * Tells whether the protocol is using the MP status bar
          */
         virtual bool canUseMagicBar() const = 0;
-
-        virtual ~GameHandler() {}
 };
 
 } // namespace Net

@@ -40,13 +40,7 @@ class GeneralHandler
 
         virtual void flushNetwork() = 0;
 
-        virtual void guiWindowsLoaded() = 0;
-
-        virtual void guiWindowsUnloaded() = 0;
-
         virtual void clearHandlers() = 0;
-
-        virtual void stateChanged(State oldState, State newState) = 0;
 };
 
 } // namespace Net

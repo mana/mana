@@ -130,6 +130,8 @@ ChatTab *localChatTab = NULL;
  */
 static void initEngines()
 {
+    Mana::EventManager::trigger("Game", Mana::Event("EnginesInitalizing"));
+
     actorSpriteManager = new ActorSpriteManager;
     commandHandler = new CommandHandler;
     channelManager = new ChannelManager;
@@ -137,6 +139,8 @@ static void initEngines()
 
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();
+
+    Mana::EventManager::trigger("Game", Mana::Event("EnginesInitalized"));
 }
 
 /**
@@ -144,6 +148,8 @@ static void initEngines()
  */
 static void createGuiWindows()
 {
+    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsLoading"));
+
     setupWindow->clearWindowsForReset();
 
     // Create dialogs
@@ -172,7 +178,7 @@ static void createGuiWindows()
         logger->setChatWindow(chatWindow);
     }
 
-    Net::getGeneralHandler()->guiWindowsLoaded();
+    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsLoaded"));
 }
 
 #define del_0(X) { delete X; X = 0; }
@@ -182,7 +188,8 @@ static void createGuiWindows()
  */
 static void destroyGuiWindows()
 {
-    Net::getGeneralHandler()->guiWindowsUnloaded();
+    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsUnloading"));
+
     logger->setChatWindow(NULL);
     del_0(localChatTab) // Need to do this first, so it can remove itself
     del_0(chatWindow)
@@ -200,6 +207,8 @@ static void destroyGuiWindows()
     del_0(outfitWindow)
     del_0(specialsWindow)
     del_0(socialWindow)
+
+    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsUnloaded"));
 }
 
 Game *Game::mInstance = 0;
@@ -229,8 +238,6 @@ Game::Game():
 
     initEngines();
 
-    Net::getGameHandler()->inGame();
-
     // Initialize beings
     actorSpriteManager->setPlayer(player_node);
 
@@ -253,8 +260,7 @@ Game::Game():
 
     setupWindow->setInGame(true);
 
-    Mana::Event event("Constructed");
-    Mana::EventManager::trigger("Game", event);
+    Mana::EventManager::trigger("Game", Mana::Event("Constructed"));
 }
 
 Game::~Game()
@@ -275,8 +281,7 @@ Game::~Game()
 
     mInstance = 0;
 
-    Mana::Event event("Destructed");
-    Mana::EventManager::trigger("Game", event);
+    Mana::EventManager::trigger("Game", Mana::Event("Destructed"));
 }
 
 static bool saveScreenshot()
@@ -966,5 +971,7 @@ void Game::changeMap(const std::string &mapPath)
     delete mCurrentMap;
     mCurrentMap = newMap;
 
-    Net::getGameHandler()->mapLoaded(mapPath);
+    Mana::Event event("MapLoaded");
+    event.setString("mapPath", mapPath);
+    Mana::EventManager::trigger("Game", event);
 }

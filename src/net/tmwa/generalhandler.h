@@ -22,15 +22,17 @@
 #ifndef NET_TMWA_GENERALHANDLER_H
 #define NET_TMWA_GENERALHANDLER_H
 
+#include "listener.h"
+
 #include "net/generalhandler.h"
 #include "net/net.h"
-#include "net/serverinfo.h"
 
 #include "net/tmwa/messagehandler.h"
 
 namespace TmwAthena {
 
-class GeneralHandler : public MessageHandler, public Net::GeneralHandler
+class GeneralHandler : public MessageHandler, public Net::GeneralHandler,
+        public Mana::Listener
 {
     public:
         GeneralHandler();
@@ -47,13 +49,9 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
 
         void flushNetwork();
 
-        void guiWindowsLoaded();
-
-        void guiWindowsUnloaded();
-
         void clearHandlers();
 
-        void stateChanged(State oldState, State newState);
+        void event(const std::string &channel, const Mana::Event &event);
 
     protected:
         MessageHandlerPtr mAdminHandler;

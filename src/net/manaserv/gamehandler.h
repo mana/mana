@@ -42,10 +42,6 @@ class GameHandler : public MessageHandler, public Net::GameHandler
 
         void disconnect();
 
-        void inGame();
-
-        void mapLoaded(const std::string &mapName);
-
         void who();
 
         void quit(bool reconnectAccount);
@@ -60,9 +56,8 @@ class GameHandler : public MessageHandler, public Net::GameHandler
 
         void gameLoading();
 
-        /** The ManaServ protocol doesn't use the Mp Main status bar. */
+        /** The ManaServ protocol doesn't use the MP status bar. */
         bool canUseMagicBar() const { return false; }
-
 };
 
 } // namespace ManaServ

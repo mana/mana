@@ -32,6 +32,8 @@ namespace Net {
 class InventoryHandler
 {
     public:
+        virtual ~InventoryHandler() {}
+
         virtual void equipItem(const Item *item) = 0;
 
         virtual void unequipItem(const Item *item) = 0;
@@ -57,8 +59,6 @@ class InventoryHandler
 
         // TODO: fix/remove me
         virtual size_t getSize(int type) const = 0;
-
-        virtual ~InventoryHandler() {}
 };
 
 } // namespace Net

@@ -30,6 +30,8 @@ namespace Net {
 class TradeHandler
 {
     public:
+        virtual ~TradeHandler() {}
+
         virtual void request(Being *being) {}
 
         virtual void respond(bool accept) {}
@@ -45,8 +47,6 @@ class TradeHandler
         virtual void finish() {}
 
         virtual void cancel() {}
-
-        virtual ~TradeHandler() {}
 };
 }
 

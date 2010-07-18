@@ -31,6 +31,8 @@ namespace Net {
 class PlayerHandler
 {
     public:
+        virtual ~PlayerHandler() {}
+
         virtual void attack(int id) = 0;
 
         virtual void emote(int emoteId) = 0;
@@ -62,8 +64,6 @@ class PlayerHandler
         virtual int getJobLocation() = 0;
 
         virtual Vector getDefaultWalkSpeed() = 0;
-
-        virtual ~PlayerHandler() {}
 };
 
 } // namespace Net

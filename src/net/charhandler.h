@@ -60,6 +60,8 @@ typedef std::list<Character*> Characters;
 class CharHandler
 {
     public:
+        virtual ~CharHandler() {}
+
         virtual void setCharSelectDialog(CharSelectDialog *window) = 0;
 
         virtual void setCharCreateDialog(CharCreateDialog *window) = 0;
@@ -81,8 +83,6 @@ class CharHandler
         virtual unsigned int hairSprite() const = 0;
 
         virtual unsigned int maxSprite() const = 0;
-
-        virtual ~CharHandler() {}
 
     protected:
         CharHandler():

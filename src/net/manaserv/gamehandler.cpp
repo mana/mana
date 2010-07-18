@@ -109,16 +109,6 @@ void GameHandler::disconnect()
     chatHandler->disconnect();
 }
 
-void GameHandler::inGame()
-{
-    // TODO
-}
-
-void GameHandler::mapLoaded(const std::string &mapName)
-{
-    // TODO
-}
-
 void GameHandler::who()
 {
     // TODO

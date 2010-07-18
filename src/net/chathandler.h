@@ -28,6 +28,8 @@ namespace Net {
 class ChatHandler
 {
     public:
+        virtual ~ChatHandler() {}
+
         virtual void talk(const std::string &text) = 0;
 
         virtual void me(const std::string &text) = 0;
@@ -53,8 +55,6 @@ class ChatHandler
         virtual void kickUser(int channelId, const std::string &name) = 0;
 
         virtual void who() = 0;
-
-        virtual ~ChatHandler() {}
 };
 }
 

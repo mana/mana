@@ -29,6 +29,8 @@ namespace Net {
 class AdminHandler
 {
     public:
+        virtual ~AdminHandler() {}
+
         virtual void announce(const std::string &text) = 0;
 
         virtual void localAnnounce(const std::string &text) = 0;
@@ -48,8 +50,6 @@ class AdminHandler
         virtual void unban(const std::string &name) = 0;
 
         virtual void mute(int playerId, int type, int limit) = 0;
-
-        virtual ~AdminHandler() {}
 
         // TODO
 };

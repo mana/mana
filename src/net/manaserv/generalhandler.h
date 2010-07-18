@@ -22,6 +22,8 @@
 #ifndef NET_MANASERV_GENERALHANDLER_H
 #define NET_MANASERV_GENERALHANDLER_H
 
+#include "listener.h"
+
 #include "net/generalhandler.h"
 #include "net/net.h"
 
@@ -29,7 +31,7 @@
 
 namespace ManaServ {
 
-class GeneralHandler : public Net::GeneralHandler
+class GeneralHandler : public Net::GeneralHandler, public Mana::Listener
 {
     public:
         GeneralHandler();
@@ -42,13 +44,9 @@ class GeneralHandler : public Net::GeneralHandler
 
         void flushNetwork();
 
-        void guiWindowsLoaded();
-
-        void guiWindowsUnloaded();
-
         void clearHandlers();
 
-        void stateChanged(State oldState, State newState);
+        void event(const std::string &channel, const Mana::Event &event);
 
     protected:
         MessageHandlerPtr mBeingHandler;

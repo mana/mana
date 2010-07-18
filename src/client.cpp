@@ -599,10 +599,6 @@ int Client::exec()
                 Mana::EventManager::trigger("Client", event);
             }
 
-            Net::GeneralHandler *generalHandler = Net::getGeneralHandler();
-            if (generalHandler)
-                generalHandler->stateChanged(mOldState, mState);
-
             if (mOldState == STATE_GAME)
             {
                 delete game;

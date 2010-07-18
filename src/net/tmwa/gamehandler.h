@@ -22,6 +22,8 @@
 #ifndef NET_TA_MAPHANDLER_H
 #define NET_TA_MAPHANDLER_H
 
+#include "listener.h"
+
 #include "net/gamehandler.h"
 #include "net/net.h"
 #include "net/serverinfo.h"
@@ -31,22 +33,21 @@
 
 namespace TmwAthena {
 
-class GameHandler : public MessageHandler, public Net::GameHandler
+class GameHandler : public MessageHandler, public Net::GameHandler,
+        public Mana::Listener
 {
     public:
         GameHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
+        void event(const std::string &channel, const Mana::Event &event);
+
         void connect();
 
         bool isConnected();
 
         void disconnect();
-
-        void inGame();
-
-        void mapLoaded(const std::string &mapName);
 
         void who();
 
@@ -60,7 +61,7 @@ class GameHandler : public MessageHandler, public Net::GameHandler
 
         void setMap(const std::string map);
 
-        /** The tmwa protocol is making use of the Mp Main status bar. */
+        /** The tmwAthena protocol is making use of the MP status bar. */
         bool canUseMagicBar() const { return true; }
 
     private:

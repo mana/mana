@@ -29,6 +29,8 @@ namespace Net {
 class NpcHandler
 {
     public:
+        virtual ~NpcHandler() {}
+
         virtual void talk(int npcId) = 0;
 
         virtual void nextDialog(int npcId) = 0;
@@ -55,8 +57,6 @@ class NpcHandler
         virtual void sellItem(int beingId, int itemId, int amount) = 0;
 
         virtual void endShopping(int beingId) = 0;
-
-        virtual ~NpcHandler() {}
 };
 
 } // namespace Net
