@@ -359,6 +359,9 @@ void InventoryWindow::event(const std::string &channel, const Mana::Event &event
 
 void InventoryWindow::updateWeight()
 {
+    if (!isMainInventory())
+        return;
+
     int total = PlayerInfo::getAttribute(TOTAL_WEIGHT);
     int max = PlayerInfo::getAttribute(MAX_WEIGHT);
 
