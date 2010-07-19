@@ -24,6 +24,7 @@
 #include "log.h"
 
 #include "utils/xml.h"
+#include "configuration.h"
 
 namespace
 {
@@ -41,7 +42,8 @@ void EmoteDB::load()
     mLastEmote = 0;
 
     EmoteSprite *unknownSprite = new EmoteSprite;
-    unknownSprite->sprite = AnimatedSprite::load("error.xml");
+    unknownSprite->sprite = AnimatedSprite::load(
+                        paths.getValue("spriteErrorFile", "error.xml") );
     unknownSprite->name = "unknown";
     mUnknown.sprites.push_back(unknownSprite);
 
@@ -76,8 +78,10 @@ void EmoteDB::load()
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {
                 EmoteSprite *currentSprite = new EmoteSprite;
-                std::string file = "graphics/sprites/" + (std::string)
-                            (const char*) spriteNode->xmlChildrenNode->content;
+                std::string file = paths.getValue("sprites",
+                                                  "graphics/sprites/")
+                                   + (std::string) (const char*)
+                                     spriteNode->xmlChildrenNode->content;
                 currentSprite->sprite = AnimatedSprite::load(file,
                                 XML::getProperty(spriteNode, "variant", 0));
                 currentInfo->sprites.push_back(currentSprite);

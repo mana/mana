@@ -936,7 +936,8 @@ void Game::changeMap(const std::string &mapPath)
 
     mMapName = mapPath;
 
-    std::string fullMap = "maps/" + mapPath + ".tmx";
+    std::string fullMap = paths.getValue("maps", "maps/")
+                          + mMapName + ".tmx";
     ResourceManager *resman = ResourceManager::getInstance();
     if (!resman->exists(fullMap))
         fullMap += ".gz";

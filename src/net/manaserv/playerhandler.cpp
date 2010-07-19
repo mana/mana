@@ -29,6 +29,7 @@
 #include "log.h"
 #include "particle.h"
 #include "playerinfo.h"
+#include "configuration.h"
 
 #include "gui/chat.h"
 #include "gui/gui.h"
@@ -142,7 +143,10 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
             PlayerInfo::setAttribute(LEVEL, msg.readInt16());
             PlayerInfo::setAttribute(CHAR_POINTS, msg.readInt16());
             PlayerInfo::setAttribute(CORR_POINTS, msg.readInt16());
-            Particle* effect = particleEngine->addEffect("graphics/particles/levelup.particle.xml", 0, 0);
+            Particle* effect = particleEngine->addEffect(
+                     paths.getValue("particles", "graphics/particles/")
+                   + paths.getValue("levelUpEffectFile", "levelup.particle.xml")
+                                                         ,0, 0);
             player_node->controlParticle(effect);
         } break;
 

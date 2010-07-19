@@ -202,6 +202,8 @@ class ChatWindow : public Window,
 
         void removeWhisper(const std::string &nick);
 
+        void removeAllWhispers();
+
         void autoComplete();
 
         std::string autoCompleteHistory(std::string partName);

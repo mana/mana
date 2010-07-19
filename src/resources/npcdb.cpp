@@ -27,6 +27,7 @@
 
 #include "utils/dtor.h"
 #include "utils/xml.h"
+#include "configuration.h"
 
 namespace
 {

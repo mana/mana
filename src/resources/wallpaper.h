@@ -37,7 +37,7 @@ class Wallpaper
         static void loadWallpapers();
 
         /**
-         * Returns the larget wallpaper for the given resolution, or the
+         * Returns the largest wallpaper for the given resolution, or the
          * default wallpaper if none are found.
          *
          * @param width the desired width

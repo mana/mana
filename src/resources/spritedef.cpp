@@ -30,12 +30,15 @@
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
-#include "utils/dtor.h"
+#include "configuration.h"
+
 #include "utils/xml.h"
 
 #include <set>
 
-SpriteReference *SpriteReference::Empty = new SpriteReference("error.xml", 0);
+SpriteReference *SpriteReference::Empty = new SpriteReference(
+                                 paths.getValue("spriteErrorFile", "error.xml"),
+                                                              0);
 
 Action *SpriteDef::getAction(SpriteAction action) const
 {
@@ -64,9 +67,12 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
     {
         logger->log("Error, failed to parse %s", animationFile.c_str());
 
-        if (animationFile != "graphics/sprites/error.xml")
+        std::string errorFile = paths.getValue("sprites", "graphics/sprites")
+                                + paths.getValue("spriteErrorFile",
+                                                 "error.xml");
+        if (animationFile != errorFile)
         {
-            return load("graphics/sprites/error.xml", 0);
+            return load(errorFile, 0);
         }
         else
         {
@@ -281,7 +287,8 @@ void SpriteDef::includeSprite(xmlNodePtr includeNode)
     if (filename.empty())
         return;
 
-    XML::Document doc("graphics/sprites/" + filename);
+    XML::Document doc(paths.getValue("sprites", "graphics/sprites/")
+                      + filename);
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "sprite"))

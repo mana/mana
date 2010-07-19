@@ -137,33 +137,30 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
     }
 }
 
-void Configuration::init(const std::string &filename)
+void Configuration::init(const std::string &filename, bool useResManager)
 {
-    mConfigPath = filename;
+    XML::Document doc(filename, useResManager);
 
-    // Do not attempt to read config from non-existant file
-    FILE *testFile = fopen(filename.c_str(), "r");
-    if (!testFile)
-        return;
+    if (useResManager)
+        mConfigPath = "PhysFS://" + filename;
     else
-        fclose(testFile);
+        mConfigPath = filename;
 
-    xmlDocPtr doc = xmlReadFile(filename.c_str(), NULL, 0);
+    if (!doc.rootNode())
+    {
+        logger->log("Couldn't open configuration file: %s", filename.c_str());
+        return;
+    }
 
-    if (!doc) return;
-
-    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
+    xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "configuration"))
     {
         logger->log("Warning: No configuration file (%s)", filename.c_str());
-        xmlFreeDoc(doc);
         return;
     }
 
     initFromXML(rootNode);
-
-    xmlFreeDoc(doc);
 }
 
 void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)

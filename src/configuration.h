@@ -197,9 +197,10 @@ class Configuration : public ConfigurationObject
         /**
          * Reads config file and parse all options into memory.
          *
-         * \param filename path to config file
+         * @param filename path to config file
+         * @param useResManager Make use of the resource manager.
          */
-        void init(const std::string &filename);
+        void init(const std::string &filename, bool useResManager = false);
 
         /**
          * Writes the current settings back to the config file.
@@ -244,10 +245,11 @@ class Configuration : public ConfigurationObject
         typedef ListenerMap::iterator ListenerMapIterator;
         ListenerMap mListenerMap;
 
-        std::string mConfigPath;         /**< Location of config file */
+        std::string mConfigPath;            /**< Location of config file */
 };
 
 extern Configuration branding;
 extern Configuration config;
+extern Configuration paths;
 
 #endif

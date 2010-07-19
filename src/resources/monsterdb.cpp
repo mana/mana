@@ -31,6 +31,8 @@
 #include "utils/gettext.h"
 #include "utils/xml.h"
 
+#include "configuration.h"
+
 #define OLD_TMWATHENA_OFFSET 1002
 
 namespace

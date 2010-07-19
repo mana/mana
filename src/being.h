@@ -100,7 +100,13 @@ class Being : public ActorSprite, public ConfigListener
         /**
          * Directions, to be used as bitmask values
          */
-        enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
+        enum BeingDirection
+        {
+            DOWN = 1,
+            LEFT = 2,
+            UP = 4,
+            RIGHT = 8
+        };
 
         /**
          * Constructor.

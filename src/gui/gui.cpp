@@ -107,6 +107,7 @@ Gui::Gui(Graphics *graphics):
     const int fontSize = (int) config.getValue("fontSize", 11);
     std::string fontFile = branding.getValue("font", "fonts/dejavusans.ttf");
     std::string path = resman->getPath(fontFile);
+
     try
     {
         mGuiFont = new TrueTypeFont(path, fontSize);

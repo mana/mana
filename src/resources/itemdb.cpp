@@ -30,6 +30,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
+#include "configuration.h"
 
 #include <libxml/tree.h>
 
@@ -116,8 +117,9 @@ void ItemDB::load()
     mUnknown = new ItemInfo;
     mUnknown->setName(_("Unknown item"));
     mUnknown->setDisplay(SpriteDisplay());
-    mUnknown->setSprite("error.xml", GENDER_MALE);
-    mUnknown->setSprite("error.xml", GENDER_FEMALE);
+    std::string errFile = paths.getValue("spriteErrorFile", "error.xml");
+    mUnknown->setSprite(errFile, GENDER_MALE);
+    mUnknown->setSprite(errFile, GENDER_FEMALE);
 
     XML::Document doc("items.xml");
     xmlNodePtr rootNode = doc.rootNode();

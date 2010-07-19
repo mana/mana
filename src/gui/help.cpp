@@ -29,6 +29,7 @@
 #include "gui/widgets/scrollarea.h"
 
 #include "resources/resourcemanager.h"
+#include "configuration.h"
 
 #include "utils/gettext.h"
 
@@ -93,8 +94,11 @@ void HelpWindow::loadHelp(const std::string &helpFile)
 void HelpWindow::loadFile(const std::string &file)
 {
     ResourceManager *resman = ResourceManager::getInstance();
+    std::string helpPath = branding.getValue("helpPath", "");
+    if (helpPath.empty())
+        helpPath = paths.getValue("help", "help/");
     std::vector<std::string> lines =
-        resman->loadTextFile("help/" + file + ".txt");
+        resman->loadTextFile(helpPath + file + ".txt");
 
     for (unsigned int i = 0; i < lines.size(); ++i)
     {

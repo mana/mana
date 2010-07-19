@@ -1153,7 +1153,8 @@ void Being::load()
     // we can go.
     int hairstyles = 1;
 
-    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
+    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) !=
+            paths.getValue("spriteErrorFile", "error.xml"))
         hairstyles++;
 
     mNumberOfHairstyles = hairstyles;

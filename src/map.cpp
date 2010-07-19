@@ -472,25 +472,15 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
     }
 }
 
-class ContainsGidFunctor
-{
-    public:
-        bool operator() (const Tileset *set) const
-        {
-            return (set->getFirstGid() <= gid &&
-                    gid - set->getFirstGid() < (int)set->size());
-        }
-        int gid;
-} containsGid;
-
 Tileset *Map::getTilesetWithGid(int gid) const
 {
-    containsGid.gid = gid;
+    Tileset *s = NULL;
+    for (Tilesets::const_iterator it = mTilesets.begin(),
+         it_end = mTilesets.end(); it < it_end && (*it)->getFirstGid() <= gid;
+         it++)
+        s = *it;
 
-    Tilesets::const_iterator i = find_if(mTilesets.begin(), mTilesets.end(),
-            containsGid);
-
-    return (i == mTilesets.end()) ? NULL : *i;
+    return s;
 }
 
 void Map::blockTile(int x, int y, BlockType type)

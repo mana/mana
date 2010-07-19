@@ -119,7 +119,7 @@ ChatWindow::~ChatWindow()
 {
     config.setValue("ReturnToggles", mReturnToggles);
     delete mRecorder;
-    delete_all(mWhispers);
+    removeAllWhispers();
     delete mItemLinkHandler;
 }
 
@@ -235,10 +235,6 @@ bool ChatWindow::isInputFocused() const
 
 void ChatWindow::removeTab(ChatTab *tab)
 {
-    // Prevent removal of the local chat tab
-    if (tab == localChatTab)
-        return;
-
     mChatTabs->removeTab(tab);
 }
 
@@ -258,6 +254,25 @@ void ChatWindow::removeWhisper(const std::string &nick)
     std::string tempNick = nick;
     toLower(tempNick);
     mWhispers.erase(tempNick);
+}
+
+void ChatWindow::removeAllWhispers()
+{
+    TabMap::iterator iter;
+    std::list<ChatTab*> tabs;
+
+    for (iter = mWhispers.begin(); iter != mWhispers.end(); ++iter)
+    {
+        tabs.push_back(iter->second);
+    }
+
+    for (std::list<ChatTab*>::iterator it = tabs.begin();
+         it != tabs.end(); ++it)
+    {
+        delete *it;
+    }
+
+    mWhispers.clear();
 }
 
 void ChatWindow::chatInput(const std::string &msg)

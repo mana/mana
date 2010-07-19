@@ -22,6 +22,7 @@
 #include "resources/iteminfo.h"
 
 #include "resources/itemdb.h"
+#include "configuration.h"
 
 const std::string &ItemInfo::getSprite(Gender gender) const
 {
@@ -68,7 +69,7 @@ void ItemInfo::setWeaponType(int type)
 
 void ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
 {
-    mSounds[event].push_back("sfx/" + filename);
+    mSounds[event].push_back(paths.getValue("sfx", "sfx/") + filename);
 }
 
 const std::string &ItemInfo::getSound(EquipmentSoundEvent event) const

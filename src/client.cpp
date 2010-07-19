@@ -112,6 +112,7 @@ LoginData loginData;
 
 Configuration config;         /**< XML file configuration reader */
 Configuration branding;       /**< XML branding information reader */
+Configuration paths;          /**< XML default paths information reader */
 Logger *logger;               /**< Log object */
 ChatLogger *chatLogger;       /**< Chat log object */
 KeyboardConfig keyboard;
@@ -745,6 +746,9 @@ int Client::exec()
                             "zip",
                             false);
                     }
+
+                    // Read default paths file 'data/paths.xml'
+                    paths.init("paths.xml", true);
 
                     // Load XML databases
                     ColorDB::load();
