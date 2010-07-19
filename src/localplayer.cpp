@@ -92,6 +92,8 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mAfkTime(0),
     mAwayMode(false)
 {
+    listen("Attributes");
+
     mAwayListener = new AwayListener();
 
     mUpdateName = true;
