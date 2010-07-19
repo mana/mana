@@ -50,15 +50,16 @@ int mLevelProgress = 0;
 
 // --- Triggers ---------------------------------------------------------------
 
-void triggerAttr(int id)
+void triggerAttr(int id, int old)
 {
     Mana::Event event("UpdateAttribute");
     event.setInt("id", id);
-    event.setInt("value", mData.mAttributes.find(id)->second);
+    event.setInt("oldValue", old);
+    event.setInt("newValue", mData.mAttributes.find(id)->second);
     Mana::EventManager::trigger("Attributes", event);
 }
 
-void triggerStat(int id)
+void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
 {
     StatMap::iterator it = mData.mStats.find(id);
     Mana::Event event("UpdateStat");
@@ -66,7 +67,10 @@ void triggerStat(int id)
     event.setInt("base", it->second.base);
     event.setInt("mod", it->second.mod);
     event.setInt("exp", it->second.exp);
-    event.setInt("expneeded", it->second.expneed);
+    event.setInt("expNeeded", it->second.expNeed);
+    event.setString("changed", changed);
+    event.setInt("oldValue1", old1);
+    event.setInt("oldValue2", old2);
     Mana::EventManager::trigger("Attributes", event);
 }
 
@@ -83,9 +87,10 @@ int getAttribute(int id)
 
 void setAttribute(int id, int value, bool notify)
 {
+    int old = mData.mAttributes[id];
     mData.mAttributes[id] = value;
     if (notify)
-        triggerAttr(id);
+        triggerAttr(id, old);
 }
 
 // --- Stats ------------------------------------------------------------------
@@ -101,14 +106,14 @@ int getStatBase(int id)
 
 void setStatBase(int id, int value, bool notify)
 {
+    int old = mData.mStats[id].base;
     mData.mStats[id].base = value;
     if (notify)
-        triggerStat(id);
+        triggerStat(id, "base", old);
 }
 
 int getStatMod(int id)
 {
-
     StatMap::const_iterator it = mData.mStats.find(id);
     if (it != mData.mStats.end())
         return it->second.mod;
@@ -118,9 +123,10 @@ int getStatMod(int id)
 
 void setStatMod(int id, int value, bool notify)
 {
+    int old = mData.mStats[id].mod;
     mData.mStats[id].mod = value;
     if (notify)
-        triggerStat(id);
+        triggerStat(id, "mod", old);
 }
 
 int getStatEffective(int id)
@@ -139,7 +145,7 @@ std::pair<int, int> getStatExperience(int id)
     if (it != mData.mStats.end())
     {
         a = it->second.exp;
-        b = it->second.expneed;
+        b = it->second.expNeed;
     }
     else
     {
@@ -151,10 +157,12 @@ std::pair<int, int> getStatExperience(int id)
 
 void setStatExperience(int id, int have, int need, bool notify)
 {
+    int oldExp = mData.mStats[id].exp;
+    int oldExpNeed = mData.mStats[id].expNeed;
     mData.mStats[id].exp = have;
-    mData.mStats[id].expneed = need;
+    mData.mStats[id].expNeed = need;
     if (notify)
-        triggerStat(id);
+        triggerStat(id, "exp", oldExp, oldExpNeed);
 }
 
 // --- Inventory / Equipment --------------------------------------------------

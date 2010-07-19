@@ -24,6 +24,7 @@
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
+#include "event.h"
 #include "flooritem.h"
 #include "graphics.h"
 #include "guild.h"
@@ -1141,6 +1142,23 @@ void LocalPlayer::optionChanged(const std::string &value)
     if (value == "showownname")
     {
         setShowName(config.getValue("showownname", 1));
+    }
+}
+
+void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
+{
+    if (channel == "Attributes")
+    {
+        if (event.getName() == "UpdateAttribute")
+        {
+            if (event.getInt("id") == EXP)
+            {
+                int change = event.getInt("newValue")
+                        - event.getInt("oldValue");
+
+                addMessageToQueue(toString(change) + " xp");
+            }
+        }
     }
 }
 

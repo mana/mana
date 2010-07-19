@@ -47,7 +47,7 @@ struct Stat
     int base;
     int mod;
     int exp;
-    int expneed;
+    int expNeed;
 };
 
 typedef std::map<int, int> IntMap;

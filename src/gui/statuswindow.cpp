@@ -260,6 +260,7 @@ void StatusWindow::event(const std::string &channel, const Mana::Event &event)
     else if (event.getName() == "UpdateStat")
     {
         int id = event.getInt("id");
+
         if (id == Net::getPlayerHandler()->getJobLocation())
         {
 

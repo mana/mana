@@ -22,8 +22,9 @@
 #ifndef LOCALPLAYER_H
 #define LOCALPLAYER_H
 
-#include "being.h"
 #include "actorspritelistener.h"
+#include "being.h"
+#include "listener.h"
 
 #include "gui/userpalette.h"
 
@@ -48,7 +49,8 @@ class AwayListener : public gcn::ActionListener
 /**
  * The local player character.
  */
-class LocalPlayer : public Being, public ActorSpriteListener
+class LocalPlayer : public Being, public ActorSpriteListener,
+        public Mana::Listener
 {
     public:
         /**
@@ -201,6 +203,8 @@ class LocalPlayer : public Being, public ActorSpriteListener
          * Called when a option (set with config.addListener()) is changed
          */
         void optionChanged(const std::string &value);
+
+        void event(const std::string &channel, const Mana::Event &event);
 
         /**
          * set a following player by right clicking.
