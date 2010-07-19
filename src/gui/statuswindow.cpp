@@ -21,7 +21,6 @@
 
 #include "gui/statuswindow.h"
 
-#include "event.h"
 #include "localplayer.h"
 #include "playerinfo.h"
 #include "units.h"

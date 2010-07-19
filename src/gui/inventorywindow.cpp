@@ -21,7 +21,6 @@
 
 #include "gui/inventorywindow.h"
 
-#include "event.h"
 #include "inventory.h"
 #include "item.h"
 #include "units.h"

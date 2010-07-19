@@ -21,7 +21,6 @@
 
 #include "net/manaserv/partyhandler.h"
 
-#include "event.h"
 #include "eventmanager.h"
 #include "log.h"
 #include "localplayer.h"

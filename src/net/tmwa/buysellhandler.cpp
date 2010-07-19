@@ -22,7 +22,6 @@
 #include "net/tmwa/buysellhandler.h"
 
 #include "actorspritemanager.h"
-#include "event.h"
 #include "eventmanager.h"
 #include "inventory.h"
 #include "item.h"

@@ -25,7 +25,6 @@
 #include "chatlog.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
-#include "event.h"
 #include "eventmanager.h"
 #include "game.h"
 #include "itemshortcut.h"

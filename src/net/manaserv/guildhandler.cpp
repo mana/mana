@@ -21,7 +21,6 @@
 
 #include "net/manaserv/guildhandler.h"
 
-#include "event.h"
 #include "eventmanager.h"
 #include "guild.h"
 #include "log.h"

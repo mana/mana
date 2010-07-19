@@ -23,7 +23,6 @@
 
 #include "actorspritemanager.h"
 #include "being.h"
-#include "event.h"
 #include "eventmanager.h"
 #include "game.h"
 #include "localplayer.h"

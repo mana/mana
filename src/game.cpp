@@ -28,7 +28,6 @@
 #include "commandhandler.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "event.h"
 #include "eventmanager.h"
 #include "emoteshortcut.h"
 #include "graphics.h"

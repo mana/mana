@@ -23,7 +23,6 @@
 
 #include "actorspritemanager.h"
 #include "configuration.h"
-#include "event.h"
 #include "localplayer.h"
 #include "party.h"
 

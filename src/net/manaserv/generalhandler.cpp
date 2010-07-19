@@ -22,7 +22,6 @@
 #include "net/manaserv/generalhandler.h"
 
 #include "client.h"
-#include "event.h"
 
 #include "gui/changeemaildialog.h"
 #include "gui/charselectdialog.h"

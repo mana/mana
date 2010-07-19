@@ -21,12 +21,12 @@
 #ifndef LISTENER_H
 #define LISTENER_H
 
+#include "event.h"
+
 #include <string>
 
 namespace Mana
 {
-
-class Event;
 
 class Listener
 {

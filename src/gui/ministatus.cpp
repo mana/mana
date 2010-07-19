@@ -23,7 +23,6 @@
 
 #include "animatedsprite.h"
 #include "configuration.h"
-#include "event.h"
 #include "graphics.h"
 #include "playerinfo.h"
 

@@ -23,7 +23,6 @@
 
 #include "configuration.h"
 #include "equipment.h"
-#include "event.h"
 #include "eventmanager.h"
 #include "inventory.h"
 #include "item.h"

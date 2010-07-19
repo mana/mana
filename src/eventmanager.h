@@ -21,6 +21,8 @@
 #ifndef EVENTMANAGER_H
 #define EVENTMANAGER_H
 
+#include "event.h"
+
 #include <string>
 #include <map>
 #include <set>
@@ -33,7 +35,6 @@ Mana::EventManager::trigger("Notices", event); }
 namespace Mana
 {
 
-class Event;
 class Listener;
 
 typedef std::set<Listener *> ListenerSet;

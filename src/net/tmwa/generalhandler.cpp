@@ -23,7 +23,6 @@
 
 #include "client.h"
 #include "configuration.h"
-#include "event.h"
 #include "log.h"
 
 #include "gui/charselectdialog.h"

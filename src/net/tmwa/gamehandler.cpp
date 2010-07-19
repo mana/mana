@@ -22,7 +22,6 @@
 #include "net/tmwa/gamehandler.h"
 
 #include "client.h"
-#include "event.h"
 #include "eventmanager.h"
 #include "game.h"
 #include "localplayer.h"
