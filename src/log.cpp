@@ -30,6 +30,8 @@
 #include <windows.h>
 #elif __APPLE__
 #include <Carbon/Carbon.h>
+#elif __linux__ || __linux
+#include <stdlib.h>
 #endif
 
 #include <sys/time.h>
@@ -123,7 +125,7 @@ void Logger::error(const std::string &error_text)
     StandardAlert(kAlertStopAlert,
                   "\pError",
                   (ConstStr255Param) msg, NULL, NULL);
-#elif defined __linux__
+#elif defined __linux__ || __linux
     std::cerr << "Error: " << error_text << std::endl;
     std::string msg="xmessage \"" + error_text + "\"";
     system(msg.c_str());
