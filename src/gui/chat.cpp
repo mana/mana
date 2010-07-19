@@ -23,6 +23,7 @@
 
 #include "actorspritemanager.h"
 #include "configuration.h"
+#include "event.h"
 #include "localplayer.h"
 #include "party.h"
 
@@ -77,6 +78,8 @@ ChatWindow::ChatWindow():
     Window(_("Chat")),
     mTmpVisible(false)
 {
+    listen("Notices");
+
     setWindowName("Chat");
 
     setupWindow->registerWindowForReset(this);
@@ -390,6 +393,17 @@ void ChatWindow::keyPressed(gcn::KeyEvent &event)
     {
         autoComplete();
         return;
+    }
+}
+
+void ChatWindow::event(const std::string &channel, const Mana::Event &event)
+{
+    if (channel == "Notices")
+    {
+        if (event.getName() == "ServerNotice")
+        {
+            localChatTab->chatLog(event.getString("message"), BY_SERVER);
+        }
     }
 }
 

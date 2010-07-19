@@ -25,6 +25,11 @@
 #include <map>
 #include <set>
 
+#define SERVER_NOTICE(message) { \
+Mana::Event event("ServerNotice"); \
+event.setString("message", message); \
+Mana::EventManager::trigger("Notices", event); }
+
 namespace Mana
 {
 

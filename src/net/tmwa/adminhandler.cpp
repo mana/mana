@@ -23,10 +23,10 @@
 
 #include "actorspritemanager.h"
 #include "being.h"
+#include "event.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "playerrelations.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/chathandler.h"
 #include "net/net.h"
@@ -60,9 +60,9 @@ void AdminHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_ADMIN_KICK_ACK:
             id = msg.readInt32();
             if (id == 0)
-                localChatTab->chatLog(_("Kick failed!"), BY_SERVER);
+                SERVER_NOTICE(_("Kick failed!"))
             else
-                localChatTab->chatLog(_("Kick succeeded!"), BY_SERVER);
+                SERVER_NOTICE(_("Kick succeeded!"))
             break;
     }
 }

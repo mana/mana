@@ -23,11 +23,10 @@
 
 #include "client.h"
 #include "event.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "gui/okdialog.h"
 
@@ -87,8 +86,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_WHO_ANSWER:
-            localChatTab->chatLog(strprintf(_("Online users: %d"),
-                                            msg.readInt32()), BY_SERVER);
+            SERVER_NOTICE(strprintf(_("Online users: %d"), msg.readInt32()))
             break;
 
         case SMSG_CHAR_SWITCH_RESPONSE:

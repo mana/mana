@@ -21,12 +21,12 @@
 
 #include "net/manaserv/partyhandler.h"
 
+#include "event.h"
+#include "eventmanager.h"
 #include "log.h"
 #include "localplayer.h"
 
 #include "gui/socialwindow.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
@@ -85,7 +85,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 //
-                localChatTab->chatLog(_("Joined party."));
+                SERVER_NOTICE(_("Joined party."));
             }
         }
 
@@ -103,7 +103,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             int id = msg.readInt16(); // being id
             std::string name = msg.readString();
 
-            localChatTab->chatLog(strprintf(_("%s joined the party."),
+            SERVER_NOTICE(strprintf(_("%s joined the party."),
                                             name.c_str()));
 
             if (id == player_node->getId())
@@ -120,8 +120,8 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
         case CPMSG_PARTY_REJECTED:
         {
             std::string name = msg.readString();
-            localChatTab->chatLog(strprintf(_("%s rejected your invite."),
-                                            name.c_str()));
+            SERVER_NOTICE(strprintf(
+                        _("%s rejected your invite."), name.c_str()));
         } break;
     }
 }

@@ -22,6 +22,8 @@
 #ifndef CHAT_H
 #define CHAT_H
 
+#include "listener.h"
+
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
@@ -74,7 +76,8 @@ struct CHATLOG
  */
 class ChatWindow : public Window,
                    public gcn::ActionListener,
-                   public gcn::KeyListener
+                   public gcn::KeyListener,
+                   public Mana::Listener
 {
     public:
         /**
@@ -159,6 +162,7 @@ class ChatWindow : public Window,
 	void mousePressed(gcn::MouseEvent &event);
 	void mouseDragged(gcn::MouseEvent &event);
 
+        void event(const std::string &channel, const Mana::Event &event);
 
         /**
          * Scrolls the chat window

@@ -21,6 +21,8 @@
 
 #include "net/tmwa/playerhandler.h"
 
+#include "event.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -35,8 +37,6 @@
 #include "gui/sell.h"
 #include "gui/statuswindow.h"
 #include "gui/viewport.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/messagein.h"
 #include "net/messageout.h"
@@ -308,10 +308,9 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                         int oldMoney = PlayerInfo::getAttribute(MONEY);
                         int newMoney = msg.readInt32();
                         if (newMoney > oldMoney)
-                            localChatTab->chatLog(strprintf(_("You picked up "
-                                                              "%s."),
-                                Units::formatCurrency(newMoney - oldMoney).c_str()),
-                                BY_SERVER);
+                            SERVER_NOTICE(strprintf(_("You picked up %s."),
+                                         Units::formatCurrency(newMoney -
+                                         oldMoney).c_str()))
                     }
                     break;
                 case 0x0016:
@@ -344,8 +343,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
                 if (ok != 1)
                 {
-                    localChatTab->chatLog(_("Cannot raise skill!"),
-                                          BY_SERVER);
+                    SERVER_NOTICE(_("Cannot raise skill!"))
                 }
 
                 PlayerInfo::setStatBase(type, value);
@@ -484,8 +482,9 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 switch (type)
                 {
                     case 0:
-                        localChatTab->chatLog(_("Equip arrows first."),
-                                             BY_SERVER);
+                        {
+                            SERVER_NOTICE(_("Equip arrows first."))
+                        }
                         break;
                     default:
                         logger->log("0x013b: Unhandled message %i", type);

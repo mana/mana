@@ -23,6 +23,8 @@
 
 #include "configuration.h"
 #include "equipment.h"
+#include "event.h"
+#include "eventmanager.h"
 #include "inventory.h"
 #include "item.h"
 #include "itemshortcut.h"
@@ -276,7 +278,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
 
             if (msg.readInt8() == 0)
             {
-                localChatTab->chatLog(_("Failed to use item."), BY_SERVER);
+                SERVER_NOTICE(_("Failed to use item."))
             }
             else
             {
@@ -386,7 +388,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             flag = msg.readInt8();
 
             if (!flag)
-                localChatTab->chatLog(_("Unable to equip."), BY_SERVER);
+                SERVER_NOTICE(_("Unable to equip."))
             else
                 mEquips.setEquipment(getSlot(equipType), index);
             break;
@@ -397,7 +399,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             flag = msg.readInt8();
 
             if (!flag)
-                localChatTab->chatLog(_("Unable to unequip."), BY_SERVER);
+                SERVER_NOTICE(_("Unable to unequip."))
             else
                 mEquips.setEquipment(getSlot(equipType), -1);
             break;

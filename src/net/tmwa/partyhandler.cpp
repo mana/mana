@@ -21,6 +21,8 @@
 #include "net/tmwa/partyhandler.h"
 
 #include "actorspritemanager.h"
+#include "event.h"
+#include "eventmanager.h"
 #include "localplayer.h"
 #include "log.h"
 
@@ -78,12 +80,9 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
     {
         case SMSG_PARTY_CREATE:
             if (msg.readInt8())
-                localChatTab->chatLog(_("Could not create party."), BY_SERVER);
+                SERVER_NOTICE(_("Could not create party."))
             else
-            {
-                localChatTab->chatLog(_("Party successfully created."),
-                                      BY_SERVER);
-            }
+                SERVER_NOTICE(_("Party successfully created."))
             break;
         case SMSG_PARTY_INFO:
             {
@@ -235,8 +234,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 {
                     taParty->removeFromMembers();
                     taParty->clearMembers();
-                    localChatTab->chatLog(_("You have left the party."),
-                                          BY_SERVER);
+                    SERVER_NOTICE(_("You have left the party."))
                     if (partyTab)
                     {
                         delete partyTab;
@@ -330,8 +328,7 @@ void PartyHandler::invite(const std::string &name)
     }
     else
     {
-        localChatTab->chatLog(_("You can only inivte when you are in a party!"),
-                              BY_SERVER);
+        SERVER_NOTICE(_("You can only inivte when you are in a party!"))
     }
 
     // TODO?

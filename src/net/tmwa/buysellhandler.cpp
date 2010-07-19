@@ -22,6 +22,8 @@
 #include "net/tmwa/buysellhandler.h"
 
 #include "actorspritemanager.h"
+#include "event.h"
+#include "eventmanager.h"
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
@@ -30,8 +32,6 @@
 #include "gui/buy.h"
 #include "gui/buysell.h"
 #include "gui/sell.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/messagein.h"
 
@@ -107,29 +107,29 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             }
             else
             {
-                localChatTab->chatLog(_("Nothing to sell."), BY_SERVER);
+                SERVER_NOTICE(_("Nothing to sell."))
             }
             break;
 
         case SMSG_NPC_BUY_RESPONSE:
             if (msg.readInt8() == 0)
             {
-                localChatTab->chatLog(_("Thanks for buying."), BY_SERVER);
+                SERVER_NOTICE(_("Thanks for buying."))
             }
             else
             {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
                 mBuyDialog->setMoney(PlayerInfo::getAttribute(MONEY));
-                localChatTab->chatLog(_("Unable to buy."), BY_SERVER);
+                SERVER_NOTICE(_("Unable to buy."))
             }
             break;
 
         case SMSG_NPC_SELL_RESPONSE:
             if (msg.readInt8() == 0)
-                localChatTab->chatLog(_("Thanks for selling."), BY_SERVER);
+                SERVER_NOTICE(_("Thanks for selling."))
             else
-                localChatTab->chatLog(_("Unable to sell."), BY_SERVER);
+                SERVER_NOTICE(_("Unable to sell."))
 
             break;
     }

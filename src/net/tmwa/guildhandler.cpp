@@ -21,6 +21,8 @@
 #include "net/tmwa/guildhandler.h"
 
 #include "guild.h"
+#include "event.h"
+#include "eventmanager.h"
 #include "localplayer.h"
 #include "log.h"
 
@@ -387,8 +389,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
 
 void GuildHandler::create(const std::string &name)
 {
-    localChatTab->chatLog(_("Guild creation isn't supported yet."),
-                          BY_SERVER);
+    SERVER_NOTICE(_("Guild creation isn't supported yet."))
     return;
 
     MessageOut msg(CMSG_GUILD_CREATE);

@@ -23,6 +23,8 @@
 
 #include "actorspritemanager.h"
 #include "being.h"
+#include "event.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
@@ -212,43 +214,43 @@ void ChatHandler::privateMessage(const std::string &recipient,
 
 void ChatHandler::channelList()
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::enterChannel(const std::string &channel,
                                const std::string &password)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::quitChannel(int channelId)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::sendToChannel(int channelId, const std::string &text)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::userList(const std::string &channel)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::setChannelTopic(int channelId, const std::string &text)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::kickUser(int channelId, const std::string &name)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::who()
