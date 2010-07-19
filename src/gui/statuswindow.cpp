@@ -227,31 +227,36 @@ void StatusWindow::event(const std::string &channel, const Mana::Event &event)
 
             case MONEY:
                 mMoneyLabel->setCaption(strprintf(_("Money: %s"),
-                                      Units::formatCurrency(event.getInt("value")).c_str()));
+                                Units::formatCurrency(
+                                event.getInt("newValue")).c_str()));
                 mMoneyLabel->adjustSize();
             break;
 
             case CHAR_POINTS:
-                mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
-                                              event.getInt("value")));
+                mCharacterPointsLabel->setCaption(strprintf(
+                                              _("Character points: %d"),
+                                              event.getInt("newValue")));
                 mCharacterPointsLabel->adjustSize();
                 // Update all attributes
-                for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
+                for (Attrs::iterator it = mAttrs.begin();
+                     it != mAttrs.end(); it++)
                     it->second->update();
             break;
 
             case CORR_POINTS:
-                mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
-                                               event.getInt("value")));
+                mCorrectionPointsLabel->setCaption(strprintf(
+                                               _("Correction points: %d"),
+                                               event.getInt("newValue")));
                 mCorrectionPointsLabel->adjustSize();
                 // Update all attributes
-                for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
+                for (Attrs::iterator it = mAttrs.begin();
+                     it != mAttrs.end(); it++)
                     it->second->update();
             break;
 
             case LEVEL:
                 mLvlLabel->setCaption(strprintf(_("Level: %d"),
-                                  event.getInt("value")));
+                                  event.getInt("newValue")));
                 mLvlLabel->adjustSize();
             break;
         }
