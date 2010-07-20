@@ -532,7 +532,7 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
 void Viewport::toggleDebugPath()
 {
     mShowDebugPath++;
-    if (mShowDebugPath > Map::MAP_SPECIAL)
+    if (mShowDebugPath > Map::MAP_SPECIAL3)
         mShowDebugPath = Map::MAP_NORMAL;
     if (mMap)
     {

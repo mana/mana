@@ -128,6 +128,11 @@ class MapLayer
                   const Actors &actors,
                   int mDebugFlags) const;
 
+        bool isFringeLayer()
+        { return mIsFringeLayer; }
+
+        int getTileDrawWidth(int x1, int y1, int endX, int &width) const;
+
     private:
         int mX, mY;
         int mWidth, mHeight;
@@ -161,7 +166,9 @@ class Map : public Properties
         {
             MAP_NORMAL  = 0,
             MAP_DEBUG   = 1,
-            MAP_SPECIAL = 2
+            MAP_SPECIAL = 2,
+            MAP_SPECIAL2 = 3,
+            MAP_SPECIAL3 = 4
         };
 
         /**

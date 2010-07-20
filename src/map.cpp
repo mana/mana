@@ -135,8 +135,13 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
 
     Actors::const_iterator ai = actors.begin();
 
+    int dx = (mX * 32) - scrollX;
+    int dy = (mY * 32) - scrollY + 32;
+
     for (int y = startY; y < endY; y++)
     {
+        int y32 = y * 32;
+
         // If drawing the fringe layer, make sure all actors above this row of
         // tiles have been drawn
         if (mIsFringeLayer)
@@ -148,15 +153,35 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
             }
         }
 
-        for (int x = startX; x < endX; x++)
+        if (debugFlags != Map::MAP_SPECIAL3)
         {
-            Image *img = getTile(x, y);
-            if (img)
+            const int py0 = y32 + dy;
+
+            for (int x = startX; x < endX; x++)
             {
-                const int px = (x + mX) * 32 - scrollX;
-                const int py = (y + mY) * 32 - scrollY + 32 - img->getHeight();
-                if (debugFlags != Map::MAP_SPECIAL || img->getHeight() <= 32)
-                    graphics->drawImage(img, px, py);
+                Image *img = getTile(x, y);
+                if (img)
+                {
+                    const int px = (x * 32) + dx;
+                    const int py = py0 - img->getHeight();
+                    if ((debugFlags != Map::MAP_SPECIAL
+                        && debugFlags != Map::MAP_SPECIAL2)
+                        || img->getHeight() <= 32)
+                    {
+                        int width = 0;
+                        int c = getTileDrawWidth(x, y, endX, width);
+                        if (!c)
+                        {
+                            graphics->drawImage(img, px, py);
+                        }
+                        else
+                        {
+                            graphics->drawImagePattern(img, px, py,
+                                width, img->getHeight());
+                        }
+                        x += c;
+                    }
+                }
             }
         }
     }
@@ -170,6 +195,22 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
             ai++;
         }
     }
+}
+
+int MapLayer::getTileDrawWidth(int x1, int y1, int endX, int &width) const
+{
+    Image *img1 = getTile(x1, y1);
+    int c = 0;
+    width = img1->getWidth();
+    for (int x = x1 + 1; x < endX; x++)
+    {
+        Image *img = getTile(x, y1);
+        if (img != img1)
+            break;
+        c ++;
+        width += img->getWidth();
+    }
+    return c;
 }
 
 Map::Map(int width, int height, int tileWidth, int tileHeight):
@@ -319,12 +360,34 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 
     // draw the game world
     Layers::const_iterator layeri = mLayers.begin();
-    for (; layeri != mLayers.end(); ++layeri)
+
+    bool overFringe = false;
+
+    if (mDebugFlags == MAP_SPECIAL3)
     {
-        (*layeri)->draw(graphics,
-                        startX, startY, endX, endY,
-                        scrollX, scrollY,
-                        mActors, mDebugFlags);
+        for (; layeri != mLayers.end(); ++layeri)
+        {
+            if ((*layeri)->isFringeLayer())
+            {
+                (*layeri)->draw(graphics,
+                                startX, startY, endX, endY,
+                                scrollX, scrollY,
+                                mActors, mDebugFlags);
+            }
+        }
+    }
+    else
+    {
+        for (; layeri != mLayers.end() && !overFringe; ++layeri)
+        {
+            if ((*layeri)->isFringeLayer() && mDebugFlags == MAP_SPECIAL2)
+                overFringe = true;
+
+            (*layeri)->draw(graphics,
+                            startX, startY, endX, endY,
+                            scrollX, scrollY,
+                            mActors, mDebugFlags);
+        }
     }
 
     // Draws beings with a lower opacity to make them visible
