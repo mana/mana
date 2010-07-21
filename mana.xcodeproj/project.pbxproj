@@ -14,6 +14,14 @@
 		92037A1F0ED2037300D3712D /* text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92037A1B0ED2037300D3712D /* text.cpp */; };
 		92037A200ED2037300D3712D /* textmanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92037A1D0ED2037300D3712D /* textmanager.cpp */; };
 		920C631F0F37D0EF001DD274 /* SDL_ttf.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 926A29790F23C155005D6466 /* SDL_ttf.framework */; };
+		922895B711F665A200AE53BB /* libintl.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 922895B411F665A200AE53BB /* libintl.8.dylib */; };
+		922895B811F665A200AE53BB /* libphysfs.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 922895B511F665A200AE53BB /* libphysfs.1.dylib */; };
+		922895B911F665A200AE53BB /* libSDL_gfx.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 922895B611F665A200AE53BB /* libSDL_gfx.13.dylib */; };
+		922895BA11F665A700AE53BB /* libintl.8.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 922895B411F665A200AE53BB /* libintl.8.dylib */; };
+		922895BB11F665AB00AE53BB /* libphysfs.1.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 922895B511F665A200AE53BB /* libphysfs.1.dylib */; };
+		922895BC11F665AF00AE53BB /* libSDL_gfx.13.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 922895B611F665A200AE53BB /* libSDL_gfx.13.dylib */; };
+		922895C111F6678300AE53BB /* libiconv.2.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 922895BF11F6677F00AE53BB /* libiconv.2.dylib */; };
+		922895C211F6678700AE53BB /* libSDL-1.2.0.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 922895C011F6677F00AE53BB /* libSDL-1.2.0.dylib */; };
 		922CD9580E3D00900074C50E /* npcdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 922CD9560E3D00900074C50E /* npcdb.cpp */; };
 		922CD95F0E3D01080074C50E /* shopitem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 922CD95D0E3D01080074C50E /* shopitem.cpp */; };
 		924A39F20C0784280066885E /* animationparticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 924A39E80C0784280066885E /* animationparticle.cpp */; };
@@ -456,6 +464,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				922895C211F6678700AE53BB /* libSDL-1.2.0.dylib in Copy Frameworks */,
+				922895C111F6678300AE53BB /* libiconv.2.dylib in Copy Frameworks */,
+				922895BC11F665AF00AE53BB /* libSDL_gfx.13.dylib in Copy Frameworks */,
+				922895BB11F665AB00AE53BB /* libphysfs.1.dylib in Copy Frameworks */,
+				922895BA11F665A700AE53BB /* libintl.8.dylib in Copy Frameworks */,
 				926857B011F15AB200A28C33 /* guichan.framework in Copy Frameworks */,
 				920C631F0F37D0EF001DD274 /* SDL_ttf.framework in Copy Frameworks */,
 				92EEA0030D2E20B300DDE300 /* libpng.framework in Copy Frameworks */,
@@ -488,6 +501,11 @@
 		92037A1C0ED2037300D3712D /* text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = text.h; path = src/text.h; sourceTree = "<group>"; };
 		92037A1D0ED2037300D3712D /* textmanager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = textmanager.cpp; path = src/textmanager.cpp; sourceTree = "<group>"; };
 		92037A1E0ED2037300D3712D /* textmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = textmanager.h; path = src/textmanager.h; sourceTree = "<group>"; };
+		922895B411F665A200AE53BB /* libintl.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libintl.8.dylib; sourceTree = "<group>"; };
+		922895B511F665A200AE53BB /* libphysfs.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libphysfs.1.dylib; sourceTree = "<group>"; };
+		922895B611F665A200AE53BB /* libSDL_gfx.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSDL_gfx.13.dylib; sourceTree = "<group>"; };
+		922895BF11F6677F00AE53BB /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libiconv.2.dylib; sourceTree = "<group>"; };
+		922895C011F6677F00AE53BB /* libSDL-1.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libSDL-1.2.0.dylib"; sourceTree = "<group>"; };
 		922CD9560E3D00900074C50E /* npcdb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = npcdb.cpp; sourceTree = "<group>"; };
 		922CD9570E3D00900074C50E /* npcdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = npcdb.h; sourceTree = "<group>"; };
 		922CD95D0E3D01080074C50E /* shopitem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shopitem.cpp; path = src/shopitem.cpp; sourceTree = "<group>"; };
@@ -1065,6 +1083,9 @@
 				9294DAA10C17E73200FCEDE9 /* libpng.framework in Frameworks */,
 				926A297A0F23C155005D6466 /* SDL_ttf.framework in Frameworks */,
 				926857AC11F15A9300A28C33 /* guichan.framework in Frameworks */,
+				922895B711F665A200AE53BB /* libintl.8.dylib in Frameworks */,
+				922895B811F665A200AE53BB /* libphysfs.1.dylib in Frameworks */,
+				922895B911F665A200AE53BB /* libSDL_gfx.13.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1220,6 +1241,11 @@
 		20286C32FDCF999611CA2CEA /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				922895BF11F6677F00AE53BB /* libiconv.2.dylib */,
+				922895C011F6677F00AE53BB /* libSDL-1.2.0.dylib */,
+				922895B411F665A200AE53BB /* libintl.8.dylib */,
+				922895B511F665A200AE53BB /* libphysfs.1.dylib */,
+				922895B611F665A200AE53BB /* libSDL_gfx.13.dylib */,
 				926A29790F23C155005D6466 /* SDL_ttf.framework */,
 				9294DAA00C17E73200FCEDE9 /* libpng.framework */,
 				92BC40E80BAEF57D000DAB7F /* Cocoa.framework */,
@@ -1844,6 +1870,7 @@
 				92EEA0090D2E20D100DDE300 /* Copy Frameworks */,
 				9273BE3C0EF34050008E56E1 /* Copy Music Files */,
 				926A29AA0F23CA6D005D6466 /* Copy Font Files */,
+				922890C411F661D000AE53BB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1886,6 +1913,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		922890C411F661D000AE53BB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#app\ninstall_name_tool -change /opt/local/lib/libphysfs.1.dylib @executable_path/../Frameworks/libphysfs.1.dylib \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Contents/MacOS/${PRODUCT_NAME}\"\ninstall_name_tool -change /opt/local/lib/libintl.8.dylib @executable_path/../Frameworks/libintl.8.dylib \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Contents/MacOS/${PRODUCT_NAME}\"\ninstall_name_tool -change /opt/local/lib/libSDL_gfx.13.dylib @executable_path/../Frameworks/libSDL_gfx.13.dylib \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Contents/MacOS/${PRODUCT_NAME}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D0C4E8F0486CD37000505A6 /* Sources */ = {
@@ -2135,17 +2178,18 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"/System/Library/Frameworks\"";
-				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_DEBUGGING_SYMBOLS = default;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					EATHENA_SUPPORT,
 					USE_OPENGL,
@@ -2165,6 +2209,7 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					/usr/lib,
+					"\"$(SRCROOT)\"",
 					/opt/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
@@ -2172,12 +2217,10 @@
 					"-lz",
 					"-lxml2",
 					"-lcurl",
-					"-lphysfs",
-					"-lintl",
 					"-lenet",
-					"-lsdl_gfx",
 				);
 				PREBINDING = NO;
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "The Mana World";
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				USER_HEADER_SEARCH_PATHS = src;
@@ -2191,7 +2234,7 @@
 				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
@@ -2224,6 +2267,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					/usr/lib,
+					"\"$(SRCROOT)\"",
 					/opt/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
@@ -2232,10 +2276,7 @@
 					"-lz",
 					"-lxml2",
 					"-lcurl",
-					"-lphysfs",
-					"-lintl",
 					"-lenet",
-					"-lsdl_gfx",
 				);
 				PREBINDING = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
