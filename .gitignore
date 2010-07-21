@@ -35,6 +35,8 @@ stamp-h1
 # files created by CMake
 CMakeFiles/
 CMakeCache.txt
+CPackConfig.cmake
+CPackSourceConfig.cmake
 cmake_install.cmake
 install_manifest.txt
 
