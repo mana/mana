@@ -78,6 +78,9 @@ class SimpleAnimation
 
         /** Current animation phase. */
         Frame *mCurrentFrame;
+
+        /**  Tell whether the animation is ready */
+        bool mInitialized;
 };
 
 #endif

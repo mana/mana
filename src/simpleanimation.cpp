@@ -33,14 +33,16 @@ SimpleAnimation::SimpleAnimation(Animation *animation):
     mAnimation(animation),
     mAnimationTime(0),
     mAnimationPhase(0),
-    mCurrentFrame(mAnimation->getFrame(0))
+    mCurrentFrame(mAnimation->getFrame(0)),
+    mInitialized(true)
 {
 }
 
 SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
     mAnimation(new Animation),
     mAnimationTime(0),
-    mAnimationPhase(0)
+    mAnimationPhase(0),
+    mInitialized(false)
 {
     initializeAnimation(animationNode);
     mCurrentFrame = mAnimation->getFrame(0);
@@ -48,7 +50,8 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
 
 SimpleAnimation::~SimpleAnimation()
 {
-    delete mAnimation;
+    if (mAnimation)
+        delete mAnimation;
 }
 
 bool SimpleAnimation::draw(Graphics *graphics, int posX, int posY) const
@@ -79,37 +82,54 @@ void SimpleAnimation::setFrame(int frame)
 
 void SimpleAnimation::update(int timePassed)
 {
-    mAnimationTime += timePassed;
-
-    while (mAnimationTime > mCurrentFrame->delay && mCurrentFrame->delay > 0)
+    if (mInitialized)
     {
-        mAnimationTime -= mCurrentFrame->delay;
-        mAnimationPhase++;
+        mAnimationTime += timePassed;
 
-        if (mAnimationPhase >= mAnimation->getLength())
-            mAnimationPhase = 0;
+        while (mAnimationTime > mCurrentFrame->delay && mCurrentFrame->delay > 0)
+        {
+            mAnimationTime -= mCurrentFrame->delay;
+            mAnimationPhase++;
 
-        mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
+            if (mAnimationPhase >= mAnimation->getLength())
+                mAnimationPhase = 0;
+
+            mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
+        }
     }
 }
 
 int SimpleAnimation::getLength() const
 {
-    return mAnimation->getLength();
+    if (mAnimation)
+        return mAnimation->getLength();
+    else
+        return 0;
 }
 
 Image *SimpleAnimation::getCurrentImage() const
 {
-    return mCurrentFrame->image;
+    if (mCurrentFrame)
+        return mCurrentFrame->image;
+    else
+        return NULL;
 }
 
 void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode)
 {
+    mInitialized = false;
+
+    if (!animationNode)
+        return;
+
     ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
         XML::getProperty(animationNode, "imageset", ""),
         XML::getProperty(animationNode, "width", 0),
         XML::getProperty(animationNode, "height", 0)
     );
+
+    if (!imageset)
+        return;
 
     // Get animation frames
     for (   xmlNodePtr frameNode = animationNode->xmlChildrenNode;
@@ -172,4 +192,6 @@ void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode)
             mAnimation->addTerminator();
         }
     }
+
+    mInitialized = true;
 }
