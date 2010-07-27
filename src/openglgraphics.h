@@ -22,7 +22,15 @@
 #ifndef OPENGLGRAPHICS_H
 #define OPENGLGRAPHICS_H
 
+#include "main.h"
+
 #include "graphics.h"
+
+#ifdef USE_OPENGL
+#define NO_SDL_GLEXT
+
+#include <SDL_opengl.h>
+#endif
 
 class OpenGLGraphics : public Graphics
 {
@@ -72,8 +80,8 @@ class OpenGLGraphics : public Graphics
          * Draw a pattern based on a rescaled version of the given image...
          */
         void drawRescaledImagePattern(Image *image,
-                               int x, int y, int w, int h,
-                               int scaledWidth, int scaledHeight);
+                                      int x, int y, int w, int h,
+                                      int scaledWidth, int scaledHeight);
 
         void updateScreen();
 
@@ -97,15 +105,26 @@ class OpenGLGraphics : public Graphics
 
         void setTargetPlane(int width, int height);
 
+        void drawQuadArrayfi(int size);
+
+        void drawQuadArrayii(int size);
+
         /**
          * Takes a screenshot and returns it as SDL surface.
          */
         SDL_Surface *getScreenshot();
 
+        static void bindTexture(GLenum target, GLuint texture);
+
+        static GLuint mLastImage;
+
     protected:
         void setTexturingAndBlending(bool enable);
 
     private:
+        GLfloat *mFloatTexArray;
+        GLint *mIntTexArray;
+        GLint *mIntVertArray;
         bool mAlpha, mTexture;
         bool mColorAlpha;
         bool mSync;
