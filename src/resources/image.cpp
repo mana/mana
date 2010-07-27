@@ -22,6 +22,11 @@
 #include "resources/image.h"
 
 #include "resources/dye.h"
+
+#ifdef USE_OPENGL
+#include "openglgraphics.h"
+#endif
+
 #include "log.h"
 
 #include <SDL_image.h>
@@ -467,7 +472,7 @@ Image *Image::_GLload(SDL_Surface *tmpImage)
 
         GLuint texture;
         glGenTextures(1, &texture);
-        glBindTexture(mTextureType, texture);
+        OpenGLGraphics::bindTexture(mTextureType, texture);
 
         if (SDL_MUSTLOCK(tmpImage))
             SDL_LockSurface(tmpImage);
