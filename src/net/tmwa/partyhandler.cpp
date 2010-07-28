@@ -246,8 +246,10 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     partyTab->chatLog(strprintf(_("%s has left your party."),
                                     nick.c_str()), BY_SERVER);
 
-                    Being *b = actorSpriteManager->findBeing(id);
-                    b->setParty(NULL);
+                    if (Being *b = actorSpriteManager->findBeing(id))
+                    {
+                        b->setParty(NULL);
+                    }
 
                     taParty->removeMember(id);
                 }

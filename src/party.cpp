@@ -144,7 +144,8 @@ void Party::removeFromMembers()
     while(itr != itr_end)
     {
         Being *b = actorSpriteManager->findBeing((*itr)->getID());
-        b->setParty(NULL);
+        if (b)
+            b->setParty(NULL);
         ++itr;
     }
 }
