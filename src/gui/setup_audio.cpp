@@ -35,10 +35,10 @@
 #include "utils/gettext.h"
 
 Setup_Audio::Setup_Audio():
-    mMusicVolume((int)config.getValue("musicVolume", 60)),
-    mSfxVolume((int)config.getValue("sfxVolume", 100)),
-    mSoundEnabled(config.getValue("sound", 0)),
-    mDownloadEnabled(config.getValue("download-music", false)),
+    mMusicVolume(config.getIntValue("musicVolume")),
+    mSfxVolume(config.getIntValue("sfxVolume")),
+    mSoundEnabled(config.getBoolValue("sound")),
+    mDownloadEnabled(config.getBoolValue("download-music")),
     mSoundCheckBox(new CheckBox(_("Sound"), mSoundEnabled)),
     mDownloadMusicCheckBox(new CheckBox(_("Download music"), mDownloadEnabled)),
     mSfxSlider(new Slider(0, sound.getMaxVolume())),
@@ -82,14 +82,14 @@ void Setup_Audio::apply()
 {
     mSoundEnabled = mSoundCheckBox->isSelected();
     mDownloadEnabled = mDownloadMusicCheckBox->isSelected();
-    mSfxVolume = (int) config.getValue("sfxVolume", 100);
-    mMusicVolume = (int) config.getValue("musicVolume", 60);
+    mSfxVolume = config.getIntValue("sfxVolume");
+    mMusicVolume = config.getIntValue("musicVolume");
 
     config.setValue("sound", mSoundEnabled);
 
     // Display a message if user has selected to download music,
     // And if downloadmusic is not already enabled
-    if (mDownloadEnabled && !config.getValue("download-music", false))
+    if (mDownloadEnabled && !config.getBoolValue("download-music"))
     {
         new OkDialog(_("Notice"),_("You may have to restart your client if you want to download new music"));
     }

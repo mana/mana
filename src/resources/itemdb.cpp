@@ -117,7 +117,7 @@ void ItemDB::load()
     mUnknown = new ItemInfo;
     mUnknown->setName(_("Unknown item"));
     mUnknown->setDisplay(SpriteDisplay());
-    std::string errFile = paths.getValue("spriteErrorFile", "error.xml");
+    std::string errFile = paths.getStringValue("spriteErrorFile");
     mUnknown->setSprite(errFile, GENDER_MALE);
     mUnknown->setSprite(errFile, GENDER_FEMALE);
 

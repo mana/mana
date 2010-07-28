@@ -110,7 +110,7 @@ ChatWindow::ChatWindow():
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
 
-    mReturnToggles = config.getValue("ReturnToggles", "0") == "1";
+    mReturnToggles = config.getBoolValue("ReturnToggles");
 
     mRecorder = new Recorder(this);
 }
@@ -478,7 +478,7 @@ void ChatWindow::whisper(const std::string &nick,
 
     if (i != mWhispers.end())
         tab = i->second;
-    else if (config.getValue("whispertab", true))
+    else if (config.getBoolValue("whispertab"))
         tab = addWhisperTab(nick);
 
     if (tab)

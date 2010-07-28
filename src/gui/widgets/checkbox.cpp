@@ -92,8 +92,8 @@ void CheckBox::draw(gcn::Graphics* graphics)
 
 void CheckBox::updateAlpha()
 {
-    float alpha = std::max(config.getValue("guialpha", 0.8f),
-                       (double) Theme::instance()->getMinimumOpacity());
+    float alpha = std::max(config.getFloatValue("guialpha"),
+                           Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)
     {

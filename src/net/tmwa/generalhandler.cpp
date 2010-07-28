@@ -76,7 +76,7 @@ extern Party *taParty;
 
 GeneralHandler::GeneralHandler():
     mAdminHandler(new AdminHandler),
-    mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
+    mBeingHandler(new BeingHandler(config.getBoolValue("EnableSync"))),
     mBuySellHandler(new BuySellHandler),
     mCharHandler(new CharServerHandler),
     mChatHandler(new ChatHandler),

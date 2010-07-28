@@ -37,8 +37,7 @@
 #include <set>
 
 SpriteReference *SpriteReference::Empty = new SpriteReference(
-                                 paths.getValue("spriteErrorFile", "error.xml"),
-                                                              0);
+                                    paths.getStringValue("spriteErrorFile"), 0);
 
 Action *SpriteDef::getAction(SpriteAction action) const
 {
@@ -67,9 +66,8 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
     {
         logger->log("Error, failed to parse %s", animationFile.c_str());
 
-        std::string errorFile = paths.getValue("sprites", "graphics/sprites")
-                                + paths.getValue("spriteErrorFile",
-                                                 "error.xml");
+        std::string errorFile = paths.getStringValue("sprites")
+                                + paths.getStringValue("spriteErrorFile");
         if (animationFile != errorFile)
         {
             return load(errorFile, 0);
@@ -287,8 +285,7 @@ void SpriteDef::includeSprite(xmlNodePtr includeNode)
     if (filename.empty())
         return;
 
-    XML::Document doc(paths.getValue("sprites", "graphics/sprites/")
-                      + filename);
+    XML::Document doc(paths.getStringValue("sprites") + filename);
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "sprite"))

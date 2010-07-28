@@ -171,7 +171,7 @@ static const char *speechModeToString(Being::Speech mode)
 const char *Setup_Video::overlayDetailToString(int detail)
 {
     if (detail == -1)
-        detail = config.getValue("OverlayDetail", -1);
+        detail = config.getIntValue("OverlayDetail");
 
     switch (detail)
     {
@@ -185,7 +185,7 @@ const char *Setup_Video::overlayDetailToString(int detail)
 const char *Setup_Video::particleDetailToString(int detail)
 {
     if (detail == -1)
-        detail = 3 - config.getValue("particleEmitterSkip", -1);
+        detail = 3 - config.getIntValue("particleEmitterSkip");
 
     switch (detail)
     {
@@ -198,21 +198,19 @@ const char *Setup_Video::particleDetailToString(int detail)
 }
 
 Setup_Video::Setup_Video():
-    mFullScreenEnabled(config.getValue("screen", false)),
-    mOpenGLEnabled(config.getValue("opengl", false)),
-    mCustomCursorEnabled(config.getValue("customcursor", true)),
-    mShowMonsterDamageEnabled(config.getValue("showMonstersTakedDamage",
-                                              false)),
-    mVisibleNamesEnabled(config.getValue("visiblenames", true)),
-    mParticleEffectsEnabled(config.getValue("particleeffects", true)),
-    mNameEnabled(config.getValue("showownname", false)),
-    mNPCLogEnabled(config.getValue("logNpcInGui", true)),
-    mPickupChatEnabled(config.getValue("showpickupchat", true)),
-    mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
-    mOpacity(config.getValue("guialpha", 0.8)),
-    mFps((int) config.getValue("fpslimit", 60)),
-    mSpeechMode(static_cast<Being::Speech>(
-            config.getValue("speech", Being::TEXT_OVERHEAD))),
+    mFullScreenEnabled(config.getBoolValue("screen")),
+    mOpenGLEnabled(config.getBoolValue("opengl")),
+    mCustomCursorEnabled(config.getBoolValue("customcursor")),
+    mShowMonsterDamageEnabled(config.getBoolValue("showMonstersTakedDamage")),
+    mVisibleNamesEnabled(config.getBoolValue("visiblenames")),
+    mParticleEffectsEnabled(config.getBoolValue("particleeffects")),
+    mNameEnabled(config.getBoolValue("showownname")),
+    mNPCLogEnabled(config.getBoolValue("logNpcInGui")),
+    mPickupChatEnabled(config.getBoolValue("showpickupchat")),
+    mPickupParticleEnabled(config.getBoolValue("showpickupparticle")),
+    mOpacity(config.getFloatValue("guialpha")),
+    mFps(config.getIntValue("fpslimit")),
+    mSpeechMode(static_cast<Being::Speech>(config.getIntValue("speech"))),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
@@ -237,13 +235,13 @@ Setup_Video::Setup_Video():
     mFpsCheckBox(new CheckBox(_("FPS limit:"))),
     mFpsSlider(new Slider(10, 120)),
     mFpsLabel(new Label),
-    mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
+    mOverlayDetail(config.getIntValue("OverlayDetail")),
     mOverlayDetailSlider(new Slider(0, 2)),
     mOverlayDetailField(new Label),
-    mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
+    mParticleDetail(3 - config.getIntValue("particleEmitterSkip")),
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new Label),
-    mFontSize((int) config.getValue("fontSize", 11))
+    mFontSize(config.getIntValue("fontSize"))
 {
     setName(_("Video"));
 
@@ -388,7 +386,7 @@ void Setup_Video::apply()
 {
     // Full screen changes
     bool fullscreen = mFsCheckBox->isSelected();
-    if (fullscreen != (config.getValue("screen", false) == 1))
+    if (fullscreen != config.getBoolValue("screen"))
     {
         /* The OpenGL test is only necessary on Windows, since switching
          * to/from full screen works fine on Linux. On Windows we'd have to
@@ -399,7 +397,7 @@ void Setup_Video::apply()
 
 #if defined(WIN32) || defined(__APPLE__)
         // checks for opengl usage
-        if (!(config.getValue("opengl", false) == 1))
+        if (!config.getBoolValue("opengl"))
         {
 #endif
             if (!graphics->setFullscreen(fullscreen))
@@ -452,20 +450,20 @@ void Setup_Video::apply()
     config.setValue("fontSize", mFontSizeDropDown->getSelected() + 10);
 
     // We sync old and new values at apply time
-    mFullScreenEnabled = config.getValue("screen", false);
-    mCustomCursorEnabled = config.getValue("customcursor", true);
-    mShowMonsterDamageEnabled = config.getValue("showMonstersTakedDamage", false);
-    mVisibleNamesEnabled = config.getValue("visiblenames", true);
-    mParticleEffectsEnabled = config.getValue("particleeffects", true);
-    mNameEnabled = config.getValue("showownname", false);
-    mNPCLogEnabled = config.getValue("logNpcInGui", true);
+    mFullScreenEnabled = config.getBoolValue("screen");
+    mCustomCursorEnabled = config.getBoolValue("customcursor");
+    mShowMonsterDamageEnabled = config.getBoolValue("showMonstersTakedDamage");
+    mVisibleNamesEnabled = config.getBoolValue("visiblenames");
+    mParticleEffectsEnabled = config.getBoolValue("particleeffects");
+    mNameEnabled = config.getBoolValue("showownname");
+    mNPCLogEnabled = config.getBoolValue("logNpcInGui");
     mSpeechMode = static_cast<Being::Speech>(
-            config.getValue("speech", Being::TEXT_OVERHEAD));
-    mOpacity = config.getValue("guialpha", 0.8);
-    mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
-    mOpenGLEnabled = config.getValue("opengl", false);
-    mPickupChatEnabled = config.getValue("showpickupchat", true);
-    mPickupParticleEnabled = config.getValue("showpickupparticle", false);
+            config.getIntValue("speech"));
+    mOpacity = config.getFloatValue("guialpha");
+    mOverlayDetail = config.getIntValue("OverlayDetail");
+    mOpenGLEnabled = config.getBoolValue("opengl");
+    mPickupChatEnabled = config.getBoolValue("showpickupchat");
+    mPickupParticleEnabled = config.getBoolValue("showpickupparticle");
 }
 
 void Setup_Video::cancel()

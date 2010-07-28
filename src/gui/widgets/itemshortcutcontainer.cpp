@@ -53,7 +53,7 @@ ItemShortcutContainer::ItemShortcutContainer():
     mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
     mMaxItems = itemShortcut->getItemCount();
 
-    mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
+    mBackgroundImg->setAlpha(config.getFloatValue("guialpha"));
 
     mBoxHeight = mBackgroundImg->getHeight();
     mBoxWidth = mBackgroundImg->getWidth();
@@ -67,9 +67,9 @@ ItemShortcutContainer::~ItemShortcutContainer()
 
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
-    if (config.getValue("guialpha", 0.8) != mAlpha)
+    if (config.getFloatValue("guialpha") != mAlpha)
     {
-        mAlpha = config.getValue("guialpha", 0.8);
+        mAlpha = config.getFloatValue("guialpha");
         mBackgroundImg->setAlpha(mAlpha);
     }
 

@@ -57,7 +57,7 @@ PlayerBox::PlayerBox(const Being *being):
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,
                         bggridy[y + 1] - bggridy[y] + 1);
-                background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
+                background.grid[a]->setAlpha(config.getFloatValue("guialpha"));
                 a++;
             }
         }
@@ -91,11 +91,11 @@ void PlayerBox::draw(gcn::Graphics *graphics)
         mBeing->drawSpriteAt(static_cast<Graphics*>(graphics), x, y);
     }
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
+    if (config.getFloatValue("guialpha") != mAlpha)
     {
         for (int a = 0; a < 9; a++)
         {
-            background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
+            background.grid[a]->setAlpha(config.getFloatValue("guialpha"));
         }
     }
 }

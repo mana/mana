@@ -150,8 +150,7 @@ void ChatLogger::setServerName(const std::string &serverName)
 {
     mServerName = serverName;
     if (mServerName == "")
-        mServerName = config.getValue("MostUsedServerName0",
-                                     "server.themanaworld.org");
+        mServerName = config.getStringValue("MostUsedServerName0");
 
     if (mLogFile.is_open())
         mLogFile.close();

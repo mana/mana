@@ -40,7 +40,7 @@ Setup_Joystick::Setup_Joystick():
 {
     setName(_("Joystick"));
 
-    mOriginalJoystickEnabled = !config.getValue("joystickEnabled", false);
+    mOriginalJoystickEnabled = !config.getBoolValue("joystickEnabled");
     mJoystickEnabled->setSelected(mOriginalJoystickEnabled);
 
     mJoystickEnabled->addActionListener(this);

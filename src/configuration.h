@@ -23,6 +23,7 @@
 #define CONFIGURATION_H
 
 #include "utils/stringutils.h"
+#include "defaults.h"
 
 #include <libxml/xmlwriter.h>
 
@@ -192,7 +193,7 @@ class ConfigurationObject
 class Configuration : public ConfigurationObject
 {
     public:
-        virtual ~Configuration() {}
+        ~Configuration();
 
         /**
          * Reads config file and parse all options into memory.
@@ -201,6 +202,13 @@ class Configuration : public ConfigurationObject
          * @param useResManager Make use of the resource manager.
          */
         void init(const std::string &filename, bool useResManager = false);
+
+        /**
+         * Set the default values for each keys.
+         *
+         * @param defaultsData data used as defaults.
+         */
+        void setDefaultValues(DefaultsData *defaultsData);
 
         /**
          * Writes the current settings back to the config file.
@@ -238,14 +246,30 @@ class Configuration : public ConfigurationObject
         inline void setValue(const std::string &key, bool value)
         { setValue(key, value ? "1" : "0"); }
 
+        /**
+         * returns a value corresponding to the given key.
+         * The default value returned in based on fallbacks registry.
+         * @see defaults.h
+         */
+        int getIntValue(const std::string &key) const;
+        float getFloatValue(const std::string &key) const;
+        std::string getStringValue(const std::string &key) const;
+        bool getBoolValue(const std::string &key) const;
+
     private:
+        /**
+         * Clean up the default values member.
+         */
+        void cleanDefaults();
+
         typedef std::list<ConfigListener*> Listeners;
         typedef Listeners::iterator ListenerIterator;
         typedef std::map<std::string, Listeners> ListenerMap;
         typedef ListenerMap::iterator ListenerMapIterator;
         ListenerMap mListenerMap;
 
-        std::string mConfigPath;            /**< Location of config file */
+        std::string mConfigPath;       /**< Location of config file */
+        DefaultsData *mDefaultsData;   /**< Defaults of value for a given key */
 };
 
 extern Configuration branding;

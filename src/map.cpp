@@ -356,7 +356,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 
     // Draw backgrounds
     drawAmbientLayers(graphics, BACKGROUND_LAYERS, scrollX, scrollY,
-            (int) config.getValue("OverlayDetail", 2));
+                      config.getIntValue("OverlayDetail"));
 
     // draw the game world
     Layers::const_iterator layeri = mLayers.begin();
@@ -409,7 +409,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     }
 
     drawAmbientLayers(graphics, FOREGROUND_LAYERS, scrollX, scrollY,
-            (int) config.getValue("OverlayDetail", 2));
+                      config.getIntValue("OverlayDetail"));
 }
 
 void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
@@ -956,7 +956,7 @@ void Map::initializeParticleEffects(Particle *particleEngine)
 {
     Particle *p;
 
-    if (config.getValue("particleeffects", 1))
+    if (config.getBoolValue("particleeffects"))
     {
         for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
              i != particleEffects.end();

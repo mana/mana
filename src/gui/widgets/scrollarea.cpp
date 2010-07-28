@@ -108,7 +108,7 @@ void ScrollArea::init()
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,
                         bggridy[y + 1] - bggridy[y] + 1);
-                background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
+                background.grid[a]->setAlpha(config.getFloatValue("guialpha"));
                 a++;
             }
         }
@@ -135,8 +135,8 @@ void ScrollArea::init()
                         vsgridx[x], vsgridy[y],
                         vsgridx[x + 1] - vsgridx[x],
                         vsgridy[y + 1] - vsgridy[y]);
-                vMarker.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
-                vMarkerHi.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
+                vMarker.grid[a]->setAlpha(config.getFloatValue("guialpha"));
+                vMarkerHi.grid[a]->setAlpha(config.getFloatValue("guialpha"));
                 a++;
             }
         }
@@ -213,8 +213,8 @@ void ScrollArea::logic()
 
 void ScrollArea::updateAlpha()
 {
-        float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double) Theme::instance()->getMinimumOpacity());
+        float alpha = std::max(config.getFloatValue("guialpha"),
+                               Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)
     {

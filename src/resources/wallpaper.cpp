@@ -53,26 +53,20 @@ static void initDefaultWallpaperPaths()
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Init the path
-    wallpaperPath = branding.getValue("wallpapersPath", "");
+    wallpaperPath = branding.getStringValue("wallpapersPath");
 
     if (!wallpaperPath.empty() && resman->isDirectory(wallpaperPath))
         return;
     else
-        wallpaperPath = paths.getValue("wallpapers", "");
-
-    if (wallpaperPath.empty() || !resman->isDirectory(wallpaperPath))
-        wallpaperPath = "graphics/images/";
+        wallpaperPath = paths.getValue("wallpapers", "graphics/images/");
 
     // Init the default file
-    wallpaperFile = branding.getValue("wallpaperFile", "");
+    wallpaperFile = branding.getStringValue("wallpaperFile");
 
-    if (!wallpaperFile.empty() && resman->isDirectory(wallpaperFile))
+    if (!wallpaperFile.empty())
         return;
     else
-        wallpaperFile = paths.getValue("wallpaperFile", "");
-
-    if (wallpaperFile.empty() || !resman->isDirectory(wallpaperFile))
-        wallpaperFile = "login_wallpaper.png";
+        wallpaperFile = paths.getValue("wallpaperFile", "login_wallpaper.png");
 }
 
 bool wallpaperCompare(WallpaperData a, WallpaperData b)
@@ -82,7 +76,7 @@ bool wallpaperCompare(WallpaperData a, WallpaperData b)
 
     return (aa > ab || (aa == ab && a.width > b.width));
 }
-
+#include <iostream>
 void Wallpaper::loadWallpapers()
 {
     wallpaperData.clear();

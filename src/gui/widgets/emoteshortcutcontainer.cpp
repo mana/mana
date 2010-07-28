@@ -51,7 +51,7 @@ EmoteShortcutContainer::EmoteShortcutContainer():
 
     mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
 
-    mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
+    mBackgroundImg->setAlpha(config.getFloatValue("guialpha"));
 
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); i++)
@@ -72,9 +72,9 @@ EmoteShortcutContainer::~EmoteShortcutContainer()
 
 void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 {
-    if (config.getValue("guialpha", 0.8) != mAlpha)
+    if (config.getFloatValue("guialpha") != mAlpha)
     {
-        mAlpha = config.getValue("guialpha", 0.8);
+        mAlpha = config.getFloatValue("guialpha");
         mBackgroundImg->setAlpha(mAlpha);
     }
 

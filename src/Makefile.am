@@ -333,6 +333,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \
+	      defaults.cpp \
+	      defaults.h \
 	      effectmanager.cpp \
 	      effectmanager.h \
 	      emoteshortcut.cpp \

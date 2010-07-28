@@ -48,7 +48,7 @@ Theme *Theme::mInstance = 0;
 static void initDefaultThemePath()
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    defaultThemePath = branding.getValue("guiThemePath", "");
+    defaultThemePath = branding.getStringValue("guiThemePath");
 
     if (!defaultThemePath.empty() && resman->isDirectory(defaultThemePath))
         return;
@@ -81,8 +81,8 @@ Skin::~Skin()
 
 void Skin::updateAlpha(float minimumOpacityAllowed)
 {
-    const float alpha = std::max((double)minimumOpacityAllowed,
-                                 config.getValue("guialpha", 0.8f));
+    const float alpha = std::max(minimumOpacityAllowed,
+                                              config.getFloatValue("guialpha"));
 
     for_each(mBorder.grid, mBorder.grid + 9,
              std::bind2nd(std::mem_fun(&Image::setAlpha), alpha));
@@ -339,9 +339,9 @@ bool Theme::tryThemePath(std::string themePath)
 void Theme::prepareThemePath()
 {
     // Try theme from settings
-    if (!tryThemePath(config.getValue("theme", "")))
+    if (!tryThemePath(config.getStringValue("theme")))
         // Try theme from branding
-        if (!tryThemePath(branding.getValue("theme", "")))
+        if (!tryThemePath(branding.getStringValue("theme")))
             // Use default
             mThemePath = defaultThemePath;
 

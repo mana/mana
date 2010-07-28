@@ -69,7 +69,7 @@ void ItemInfo::setWeaponType(int type)
 
 void ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
 {
-    mSounds[event].push_back(paths.getValue("sfx", "sfx/") + filename);
+    mSounds[event].push_back(paths.getStringValue("sfx") + filename);
 }
 
 const std::string &ItemInfo::getSound(EquipmentSoundEvent event) const

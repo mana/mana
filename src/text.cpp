@@ -56,7 +56,7 @@ Text::Text(const std::string &text, int x, int y,
     {
         textManager = new TextManager;
         Image *sbImage = Theme::getImageFromTheme("bubble.png|W:#"
-            + config.getValue("speechBubblecolor", "000000"));
+            + config.getStringValue("speechBubblecolor"));
         mBubble.grid[0] = sbImage->getSubImage(0, 0, 5, 5);
         mBubble.grid[1] = sbImage->getSubImage(5, 0, 5, 5);
         mBubble.grid[2] = sbImage->getSubImage(10, 0, 5, 5);
@@ -67,7 +67,7 @@ Text::Text(const std::string &text, int x, int y,
         mBubble.grid[7] = sbImage->getSubImage(5, 10, 5, 5);
         mBubble.grid[8] = sbImage->getSubImage(10, 10, 5, 5);
         mBubbleArrow = sbImage->getSubImage(0, 15, 15, 10);
-        const float bubbleAlpha = config.getValue("speechBubbleAlpha", 1.0);
+        const float bubbleAlpha = config.getFloatValue("speechBubbleAlpha");
         for (int i = 0; i < 9; i++)
         {
              mBubble.grid[i]->setAlpha(bubbleAlpha);

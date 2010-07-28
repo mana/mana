@@ -29,11 +29,13 @@ namespace Mana
 class VariableData
 {
     public:
-    enum {
+    enum DataType
+    {
         DATA_NONE,
         DATA_INT,
         DATA_STRING,
-        DATA_FLOAT
+        DATA_FLOAT,
+        DATA_BOOL
     };
 
     virtual ~VariableData() {};
@@ -70,14 +72,27 @@ private:
 class FloatData : public VariableData
 {
 public:
-    FloatData(double value) { mData = value; }
+    FloatData(float value) { mData = value; }
 
-    double getData() const { return mData; }
+    float getData() const { return mData; }
 
     int getType() const { return DATA_FLOAT; }
 
 private:
-    double mData;
+    float mData;
+};
+
+class BoolData : public VariableData
+{
+public:
+    BoolData(bool value) { mData = value; }
+
+    bool getData() const { return mData; }
+
+    int getType() const { return DATA_BOOL; }
+
+private:
+    bool mData;
 };
 
 } // namespace Mana

@@ -61,7 +61,7 @@ EmotePopup::EmotePopup():
     if (!mSelectionImage)
         logger->error("Unable to load selection.png");
 
-    mSelectionImage->setAlpha(config.getValue("guialpha", 0.8));
+    mSelectionImage->setAlpha(config.getFloatValue("guialpha"));
 
     addMouseListener(this);
     recalculateSize();

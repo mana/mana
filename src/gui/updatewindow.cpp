@@ -476,7 +476,7 @@ void UpdaterWindow::logic()
                         // This statement checks to see if the file type is music, and if download-music is true
                         // If it fails, this statement returns true, and results in not downloading the file
                         // Else it will ignore the break, and download the file.
-                        if ( !(thisFile.type == "music" && config.getValue("download-music", false)) )
+                        if ( !(thisFile.type == "music" && config.getBoolValue("download-music")) )
                         {
                             mUpdateIndex++;
                             break;

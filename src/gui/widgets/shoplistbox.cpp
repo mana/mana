@@ -71,8 +71,8 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     if (!mListModel)
         return;
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-        mAlpha = config.getValue("guialpha", 0.8);
+    if (config.getFloatValue("guialpha") != mAlpha)
+        mAlpha = config.getFloatValue("guialpha");
 
     int alpha = (int)(mAlpha * 255.0f);
     const gcn::Color* highlightColor =

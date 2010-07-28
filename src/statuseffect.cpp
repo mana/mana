@@ -70,7 +70,7 @@ AnimatedSprite *StatusEffect::getIcon()
     else
     {
         AnimatedSprite *sprite = AnimatedSprite::load(
-             paths.getValue("sprites", "graphics/sprites/") + mIcon);
+                                       paths.getStringValue("sprites") + mIcon);
         if (false && sprite)
         {
             sprite->play(ACTION_DEFAULT);

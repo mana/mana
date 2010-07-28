@@ -125,4 +125,12 @@ const std::string findSameSubstring(const std::string &str1, const std::string &
 
 const char* getSafeUtf8String(std::string text);
 
+/**
+ * Returns a bool value depending on the given string value.
+ *
+ * @param text the string used to get the bool value
+ * @return a boolean value..
+ */
+bool getBoolFromString(const std::string &text);
+
 #endif // UTILS_STRINGUTILS_H

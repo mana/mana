@@ -94,9 +94,9 @@ void HelpWindow::loadHelp(const std::string &helpFile)
 void HelpWindow::loadFile(const std::string &file)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    std::string helpPath = branding.getValue("helpPath", "");
+    std::string helpPath = branding.getStringValue("helpPath");
     if (helpPath.empty())
-        helpPath = paths.getValue("help", "help/");
+        helpPath = paths.getStringValue("help");
     std::vector<std::string> lines =
         resman->loadTextFile(helpPath + file + ".txt");
 

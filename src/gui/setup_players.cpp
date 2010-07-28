@@ -227,11 +227,11 @@ Setup_Players::Setup_Players():
     mDefaultWhisper(new CheckBox(_("Allow whispers"),
                 player_relations.getDefault() & PlayerRelation::WHISPER)),
     mDeleteButton(new Button(_("Delete"), ACTION_DELETE, this)),
-    mWhisperTab(config.getValue("whispertab", false)),
+    mWhisperTab(config.getBoolValue("whispertab")),
     mWhisperTabCheckBox(new CheckBox(_("Put all whispers in tabs"), mWhisperTab)),
-    mShowGender(config.getValue("showgender", false)),
+    mShowGender(config.getBoolValue("showgender")),
     mShowGenderCheckBox(new CheckBox(_("Show gender"), mShowGender)),
-    mEnableChatLog(config.getValue("enableChatLog", false)),
+    mEnableChatLog(config.getBoolValue("enableChatLog")),
     mEnableChatLogCheckBox(new CheckBox(_("Enable Chat log"), mEnableChatLog))
 {
     setName(_("Players"));
@@ -348,7 +348,7 @@ void Setup_Players::apply()
                                        PlayerRelation::WHISPER : 0));
     config.setValue("whispertab", mWhisperTab);
 
-    bool showGender = config.getValue("showgender", false);
+    bool showGender = config.getBoolValue("showgender");
 
     config.setValue("showgender", mShowGender);
 
@@ -360,11 +360,11 @@ void Setup_Players::apply()
 
 void Setup_Players::cancel()
 {
-    mWhisperTab = config.getValue("whispertab", false);
+    mWhisperTab = config.getBoolValue("whispertab");
     mWhisperTabCheckBox->setSelected(mWhisperTab);
-    mShowGender = config.getValue("showgender", false);
+    mShowGender = config.getBoolValue("showgender");
     mShowGenderCheckBox->setSelected(mShowGender);
-    mEnableChatLog = config.getValue("enableChatLog", false);
+    mEnableChatLog = config.getBoolValue("enableChatLog");
     mEnableChatLogCheckBox->setSelected(mEnableChatLog);
 }
 

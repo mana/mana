@@ -51,7 +51,7 @@ NpcDialog::DialogList NpcDialog::instances;
 NpcDialog::NpcDialog(int npcId)
     : Window(_("NPC")),
       mNpcId(npcId),
-      mLogInteraction(config.getValue("logNpcInGui", true)),
+      mLogInteraction(config.getBoolValue("logNpcInGui")),
       mDefaultInt(0),
       mInputState(NPC_INPUT_NONE),
       mActionState(NPC_ACTION_WAIT)
@@ -369,7 +369,7 @@ void NpcDialog::optionChanged(const std::string &name)
 {
     if (name == "logNpcInGui")
     {
-        mLogInteraction = config.getValue("logNpcInGui", true);
+        mLogInteraction = config.getBoolValue("logNpcInGui");
     }
 }
 

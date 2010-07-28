@@ -26,7 +26,7 @@
 #include <cstdarg>
 #include <cstdio>
 
-const int UTF8_MAX_SIZE = 10;
+static int UTF8_MAX_SIZE = 10;
 
 std::string &trim(std::string &str)
 {
@@ -174,4 +174,16 @@ const char* getSafeUtf8String(std::string text)
     memcpy(buf, text.c_str(), text.size());
     memset(buf + text.size(), 0, UTF8_MAX_SIZE);
     return buf;
+}
+
+bool getBoolFromString(const std::string &text)
+{
+    std::string txt = text;
+    toLower(trim(txt));
+    if (txt == "true" || txt == "yes" || txt == "on" || txt == "1")
+      return true;
+    else if (txt == "false" || txt == "no" || txt == "off" || txt == "0")
+        return false;
+    else
+        return (bool) atoi(txt.c_str());
 }

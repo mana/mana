@@ -112,7 +112,7 @@ Being::Being(int id, Type type, int subtype, Map *map):
     mWalkSpeed = Net::getPlayerHandler()->getDefaultWalkSpeed();
 
     if (getType() == PLAYER)
-        mShowName = config.getValue("visiblenames", 1);
+        mShowName = config.getBoolValue("visiblenames");
 
     config.addListener("visiblenames", this);
 
@@ -298,7 +298,7 @@ void Being::setSpeech(const std::string &text, int time)
     if (!mSpeech.empty())
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 
-    const int speech = (int) config.getValue("speech", TEXT_OVERHEAD);
+    const int speech = config.getIntValue("speech");
     if (speech == TEXT_OVERHEAD)
     {
         if (mText)
@@ -887,7 +887,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = getPixelX() - offsetX;
     const int py = getPixelY() - offsetY;
-    const int speech = (int) config.getValue("speech", TEXT_OVERHEAD);
+    const int speech = config.getIntValue("speech");
 
     // Draw speech above this being
     if (mSpeechTime == 0)
@@ -994,7 +994,7 @@ void Being::optionChanged(const std::string &value)
 {
     if (getType() == PLAYER && value == "visiblenames")
     {
-        setShowName(config.getValue("visiblenames", 1));
+        setShowName(config.getBoolValue("visiblenames"));
     }
 }
 
@@ -1010,7 +1010,7 @@ void Being::showName()
     mDispName = 0;
     std::string mDisplayName(mName);
 
-    if (config.getValue("showgender", false))
+    if (config.getBoolValue("showgender"))
     {
         if (getGender() == GENDER_FEMALE)
             mDisplayName += " \u2640";
@@ -1020,7 +1020,7 @@ void Being::showName()
 
     if (getType() == MONSTER)
     {
-        if (config.getValue("showMonstersTakedDamage", false))
+        if (config.getBoolValue("showMonstersTakedDamage"))
         {
             mDisplayName += ", " + toString(getDamageTaken());
         }
@@ -1113,8 +1113,8 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
             if (!color.empty())
                 filename += "|" + color;
 
-            equipmentSprite = AnimatedSprite::load("graphics/sprites/" +
-                                                   filename);
+            equipmentSprite = AnimatedSprite::load(
+                                    paths.getStringValue("sprites") + filename);
         }
 
         if (equipmentSprite)
@@ -1154,7 +1154,7 @@ void Being::load()
     int hairstyles = 1;
 
     while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) !=
-            paths.getValue("spriteErrorFile", "error.xml"))
+                                        paths.getStringValue("spriteErrorFile"))
         hairstyles++;
 
     mNumberOfHairstyles = hairstyles;

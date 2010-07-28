@@ -43,7 +43,7 @@ void EmoteDB::load()
 
     EmoteSprite *unknownSprite = new EmoteSprite;
     unknownSprite->sprite = AnimatedSprite::load(
-                        paths.getValue("spriteErrorFile", "error.xml") );
+                                       paths.getStringValue("spriteErrorFile"));
     unknownSprite->name = "unknown";
     mUnknown.sprites.push_back(unknownSprite);
 
@@ -78,8 +78,7 @@ void EmoteDB::load()
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {
                 EmoteSprite *currentSprite = new EmoteSprite;
-                std::string file = paths.getValue("sprites",
-                                                  "graphics/sprites/")
+                std::string file = paths.getStringValue("sprites")
                                    + (std::string) (const char*)
                                      spriteNode->xmlChildrenNode->content;
                 currentSprite->sprite = AnimatedSprite::load(file,

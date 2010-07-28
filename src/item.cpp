@@ -59,7 +59,7 @@ void Item::setId(int id)
 
     ResourceManager *resman = ResourceManager::getInstance();
     SpriteDisplay display = getInfo().getDisplay();
-    std::string imagePath = paths.getValue("itemIcons", "graphics/items/")
+    std::string imagePath = paths.getStringValue("itemIcons")
                             + display.image;
     mImage = resman->getImage(imagePath);
     mDrawImage = resman->getImage(imagePath);

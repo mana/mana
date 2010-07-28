@@ -125,6 +125,8 @@
 		<Unit filename="src\configlistener.h" />
 		<Unit filename="src\configuration.cpp" />
 		<Unit filename="src\configuration.h" />
+		<Unit filename="src\defaults.cpp" />
+		<Unit filename="src\defaults.h" />
 		<Unit filename="src\effectmanager.cpp" />
 		<Unit filename="src\effectmanager.h" />
 		<Unit filename="src\emoteshortcut.cpp" />

@@ -142,7 +142,7 @@ void Sound::setSfxVolume(int volume)
 static Mix_Music *loadMusic(const std::string &filename)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    std::string path = resman->getPath("music/" + filename);
+    std::string path = resman->getPath(paths.getStringValue("music") + filename);
 
     if (path.find(".zip/") != std::string::npos ||
         path.find(".zip\\") != std::string::npos)
@@ -152,7 +152,7 @@ static Mix_Music *loadMusic(const std::string &filename)
         logger->log("Loading music \"%s\" from temporary file tempMusic.ogg",
                     path.c_str());
         bool success = resman->copyFile(
-                               paths.getValue("music", "music/")
+                               paths.getStringValue("music")
                                + filename, "tempMusic.ogg");
         if (success)
             path = resman->getPath("tempMusic.ogg");
@@ -240,7 +240,7 @@ void Sound::playSfx(const std::string &path)
 
     ResourceManager *resman = ResourceManager::getInstance();
     SoundEffect *sample = resman->getSoundEffect(
-                          paths.getValue("sfx", "sfx/") + path);
+                                            paths.getStringValue("sfx") + path);
     if (sample)
     {
         logger->log("Sound::playSfx() Playing: %s", path.c_str());
