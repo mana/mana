@@ -85,7 +85,7 @@ static ItemType itemTypeFromString(const std::string &name, int id = 0)
     else return ITEM_UNUSABLE;
 }
 
-static WeaponType weaponTypeFromString(const std::string &name, int id = 0)
+static WeaponType weaponTypeFromString(const std::string &name)
 {
     if      (name=="knife")      return WPNTYPE_KNIFE;
     else if (name=="sword")      return WPNTYPE_SWORD;

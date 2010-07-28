@@ -47,23 +47,23 @@ void ItemInfo::setWeaponType(int type)
     switch (type)
     {
         case WPNTYPE_NONE:
-            mAttackType = ACTION_DEFAULT;
+            mWeaponAttackType = ACTION_DEFAULT;
             break;
         case WPNTYPE_KNIFE:
         case WPNTYPE_SWORD:
-            mAttackType = ACTION_ATTACK_STAB;
+            mWeaponAttackType = ACTION_ATTACK_STAB;
             break;
         case WPNTYPE_THROWN:
-            mAttackType = ACTION_ATTACK_THROW;
+            mWeaponAttackType = ACTION_ATTACK_THROW;
             break;
         case WPNTYPE_BOW:
-            mAttackType = ACTION_ATTACK_BOW;
+            mWeaponAttackType = ACTION_ATTACK_BOW;
             break;
         case WPNTYPE_POLEARM:
-            mAttackType = ACTION_ATTACK_SWING;
+            mWeaponAttackType = ACTION_ATTACK_SWING;
             break;
         default:
-            mAttackType = ACTION_ATTACK;
+            mWeaponAttackType = ACTION_ATTACK;
     }
 }
 

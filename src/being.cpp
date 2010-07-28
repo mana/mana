@@ -563,7 +563,7 @@ void Being::setAction(Action action, int attackType)
         case ATTACK:
             if (mEquippedWeapon)
             {
-                currentAction = mEquippedWeapon->getAttackType();
+                currentAction = mEquippedWeapon->getWeaponAttackType();
                 reset();
             }
             else

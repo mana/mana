@@ -122,7 +122,7 @@ class ItemInfo
             mWeight(0),
             mView(0),
             mId(0),
-            mAttackType(ACTION_DEFAULT)
+            mWeaponAttackType(ACTION_DEFAULT)
         {
         }
 
@@ -187,8 +187,8 @@ class ItemInfo
 
         std::string getMissileParticle() const { return mMissileParticle; }
 
-        SpriteAction getAttackType() const
-        { return mAttackType; }
+        SpriteAction getWeaponAttackType() const
+        { return mWeaponAttackType; }
 
         int getAttackRange() const
         { return mAttackRange; }
@@ -212,8 +212,8 @@ class ItemInfo
         int mId;                     /**< Item ID */
 
         // Equipment related members
-        SpriteAction mAttackType;    /**< Attack type, in case of weapon. */
-        int mAttackRange;            /**< Attack range, will be zero if non weapon. */
+        SpriteAction mWeaponAttackType;  /**< Attack type, in case of weapon. */
+        int mAttackRange;      /**< Attack range, will be zero if non weapon. */
 
         // Particle to be shown when weapon attacks
         std::string mMissileParticle;
