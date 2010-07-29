@@ -72,14 +72,14 @@ private:
 class FloatData : public VariableData
 {
 public:
-    FloatData(float value) { mData = value; }
+    FloatData(double value) { mData = value; }
 
-    float getData() const { return mData; }
+    double getData() const { return mData; }
 
     int getType() const { return DATA_FLOAT; }
 
 private:
-    float mData;
+    double mData;
 };
 
 class BoolData : public VariableData

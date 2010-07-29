@@ -215,8 +215,9 @@ void Being::setDestination(int dstX, int dstY)
 
     Position dest = mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
                                            dstX, dstY);
-    Path thisPath = mMap->findPixelPath(mPos.x, mPos.y, dest.x, dest.y,
-                                   getCollisionRadius(), getWalkMask());
+    Path thisPath = mMap->findPixelPath((int) mPos.x, (int) mPos.y,
+                                        dest.x, dest.y,
+                                        getCollisionRadius(), getWalkMask());
 
     if (thisPath.empty())
     {

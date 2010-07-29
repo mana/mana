@@ -35,6 +35,11 @@ VariableData* createData(int defData)
     return new IntData(defData);
 }
 
+VariableData* createData(double defData)
+{
+    return new FloatData(defData);
+}
+
 VariableData* createData(float defData)
 {
     return new FloatData(defData);

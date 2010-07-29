@@ -31,7 +31,7 @@ namespace Mana
 class Listener
 {
 public:
-    ~Listener();
+    virtual ~Listener();
 
     void listen(const std::string &channel);
 
