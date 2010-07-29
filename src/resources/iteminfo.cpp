@@ -41,30 +41,12 @@ const std::string &ItemInfo::getSprite(Gender gender) const
     }
 }
 
-void ItemInfo::setWeaponType(int type)
+void ItemInfo::setAttackAction(std::string attackAction)
 {
-    // See server item.hpp file for type values.
-    switch (type)
-    {
-        case WPNTYPE_NONE:
-            mWeaponAttackType = ACTION_DEFAULT;
-            break;
-        case WPNTYPE_KNIFE:
-        case WPNTYPE_SWORD:
-            mWeaponAttackType = ACTION_ATTACK_STAB;
-            break;
-        case WPNTYPE_THROWN:
-            mWeaponAttackType = ACTION_ATTACK_THROW;
-            break;
-        case WPNTYPE_BOW:
-            mWeaponAttackType = ACTION_ATTACK_BOW;
-            break;
-        case WPNTYPE_POLEARM:
-            mWeaponAttackType = ACTION_ATTACK_SWING;
-            break;
-        default:
-            mWeaponAttackType = ACTION_ATTACK;
-    }
+    if (attackAction.empty())
+        mAttackAction = SpriteAction::ATTACK; // (Equal to unarmed animation)
+    else
+        mAttackAction = attackAction;
 }
 
 void ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)

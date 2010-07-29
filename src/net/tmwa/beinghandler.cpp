@@ -641,7 +641,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     x = msg.readInt16();
                     y = msg.readInt16();
                     dstBeing->setTileCoords(x, y);
-                    if (dstBeing->getCurrentAction() == Being::WALK)
+                    if (dstBeing->getCurrentAction() == Being::MOVE)
                         dstBeing->setAction(Being::STAND);
                 }
             }

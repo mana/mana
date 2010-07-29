@@ -51,7 +51,7 @@ AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
     mSprite->incRef();
 
     // Play the stand animation by default
-    play(ACTION_STAND);
+    play(SpriteAction::STAND);
 }
 
 AnimatedSprite *AnimatedSprite::load(const std::string &filename, int variant)
@@ -81,7 +81,7 @@ bool AnimatedSprite::reset()
     return ret;
 }
 
-bool AnimatedSprite::play(SpriteAction spriteAction)
+bool AnimatedSprite::play(std::string spriteAction)
 {
     Action *action = mSprite->getAction(spriteAction);
     if (!action)
@@ -122,7 +122,7 @@ bool AnimatedSprite::update(int time)
     if (!updateCurrentAnimation(dt))
     {
         // Animation finished, reset to default
-        play(ACTION_STAND);
+        play(SpriteAction::STAND);
     }
 
     // Make sure something actually changed

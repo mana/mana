@@ -90,24 +90,6 @@ enum ItemType
 };
 
 /**
- * Enumeration of available weapon's types.
- */
-enum WeaponType
-{
-    WPNTYPE_NONE = 0,
-    WPNTYPE_KNIFE,
-    WPNTYPE_SWORD,
-    WPNTYPE_POLEARM,
-    WPNTYPE_STAFF,
-    WPNTYPE_WHIP,
-    WPNTYPE_BOW,
-    WPNTYPE_SHOOTING,
-    WPNTYPE_MACE,
-    WPNTYPE_AXE,
-    WPNTYPE_THROWN
-};
-
-/**
  * Defines a class for storing item infos. This includes information used when
  * the item is equipped.
  */
@@ -122,7 +104,7 @@ class ItemInfo
             mWeight(0),
             mView(0),
             mId(0),
-            mWeaponAttackType(ACTION_DEFAULT)
+            mAttackAction(SpriteAction::INVALID)
         {
         }
 
@@ -180,15 +162,15 @@ class ItemInfo
 
         const std::string &getSprite(Gender gender) const;
 
-        void setWeaponType(int);
+        void setAttackAction(std::string attackAction);
 
         // Handlers for seting and getting the string used for particles when attacking
         void setMissileParticle(std::string s) { mMissileParticle = s; }
 
         std::string getMissileParticle() const { return mMissileParticle; }
 
-        SpriteAction getWeaponAttackType() const
-        { return mWeaponAttackType; }
+        std::string getAttackAction() const
+        { return mAttackAction; }
 
         int getAttackRange() const
         { return mAttackRange; }
@@ -211,8 +193,12 @@ class ItemInfo
         int mView;                   /**< Item ID of how this item looks. */
         int mId;                     /**< Item ID */
 
-        // Equipment related members
-        SpriteAction mWeaponAttackType;  /**< Attack type, in case of weapon. */
+        // Equipment related members.
+        /** Attack type, in case of weapon.
+         * See SpriteAction in spritedef.h for more info.
+         * Attack action sub-types (bow, sword, ...) are defined in items.xml.
+         */
+        std::string mAttackAction;
         int mAttackRange;      /**< Attack range, will be zero if non weapon. */
 
         // Particle to be shown when weapon attacks

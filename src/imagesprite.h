@@ -37,7 +37,7 @@ public:
     bool reset()
     { return false; }
 
-    bool play(SpriteAction action)
+    bool play(std::string action)
     { return false; }
 
     bool update(int time)

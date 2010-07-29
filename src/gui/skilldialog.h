@@ -19,8 +19,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SKILL_H
-#define SKILL_H
+#ifndef SKILLDIALOG_H
+#define SKILLDIALOG_H
 
 #include "guichanfwd.h"
 

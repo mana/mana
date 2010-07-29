@@ -43,7 +43,7 @@ class Sprite
          *
          * @returns true if the sprite changed, false otherwise
          */
-        virtual bool play(SpriteAction action) = 0;
+        virtual bool play(std::string action) = 0;
 
         /**
          * Inform the animation of the passed time so that it can output the

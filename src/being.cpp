@@ -249,7 +249,7 @@ void Being::setPath(const Path &path)
     mPath = path;
 
     if ((Net::getNetworkType() == ServerInfo::TMWATHENA) &&
-            mAction != WALK && mAction != DEAD)
+            mAction != MOVE && mAction != DEAD)
     {
         nextTile();
         mActionTime = tick_time;
@@ -550,20 +550,23 @@ void Being::fireMissile(Being *victim, const std::string &particle)
 
 void Being::setAction(Action action, int attackType)
 {
-    SpriteAction currentAction = ACTION_INVALID;
+    std::string currentAction = SpriteAction::INVALID;
 
     switch (action)
     {
-        case WALK:
-            currentAction = ACTION_WALK;
+        case MOVE:
+            currentAction = SpriteAction::MOVE;
+            // Note: When adding a run action,
+            // Differentiate walk and run with action name,
+            // while using only the ACTION_MOVE.
             break;
         case SIT:
-            currentAction = ACTION_SIT;
+            currentAction = SpriteAction::SIT;
             break;
         case ATTACK:
             if (mEquippedWeapon)
             {
-                currentAction = mEquippedWeapon->getWeaponAttackType();
+                currentAction = mEquippedWeapon->getAttackAction();
                 reset();
             }
             else
@@ -598,26 +601,27 @@ void Being::setAction(Action action, int attackType)
 
             break;
         case HURT:
-            //currentAction = ACTION_HURT;  // Buggy: makes the player stop
+            //currentAction = SpriteAction::HURT;// Buggy: makes the player stop
                                             // attacking and unable to attack
-                                            // again until he moves
+                                            // again until he moves.
+                                            // TODO: fix this!
             break;
         case DEAD:
-            currentAction = ACTION_DEAD;
+            currentAction = SpriteAction::DEAD;
             sound.playSfx(mInfo->getSound(SOUND_EVENT_DIE));
             break;
         case STAND:
-            currentAction = ACTION_STAND;
+            currentAction = SpriteAction::STAND;
             break;
     }
 
-    if (currentAction != ACTION_INVALID)
+    if (currentAction != SpriteAction::INVALID)
     {
         play(currentAction);
         mAction = action;
     }
 
-    if (currentAction != ACTION_WALK)
+    if (currentAction != SpriteAction::MOVE)
         mActionTime = tick_time;
 }
 
@@ -679,7 +683,7 @@ void Being::nextTile()
 
     mX = pos.x;
     mY = pos.y;
-    setAction(WALK);
+    setAction(MOVE);
     mActionTime += (int)(mWalkSpeed.x / 10);
 }
 
@@ -743,8 +747,8 @@ void Being::logic()
             else
                 setPosition(mPos + diff);
 
-            if (mAction != WALK)
-                setAction(WALK);
+            if (mAction != MOVE)
+                setAction(MOVE);
 
             // Update the player sprite direction.
             // N.B.: We only change this if the distance is more than one pixel.
@@ -773,7 +777,7 @@ void Being::logic()
             // remove it and go to the next one.
             mPath.pop_front();
         }
-        else if (mAction == WALK)
+        else if (mAction == MOVE)
         {
             setAction(STAND);
         }
@@ -790,7 +794,7 @@ void Being::logic()
             case HURT:
                break;
 
-            case WALK:
+            case MOVE:
                 if ((int) ((get_elapsed_time(mActionTime) * frameCount)
                         / getWalkSpeed().x) >= frameCount)
                     nextTile();
@@ -941,7 +945,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
 int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
-    if (mAction != WALK ||  !(mDirection & (pos | neg)))
+    if (mAction != MOVE ||  !(mDirection & (pos | neg)))
         return 0;
 
     int offset = 0;

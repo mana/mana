@@ -85,22 +85,6 @@ static ItemType itemTypeFromString(const std::string &name, int id = 0)
     else return ITEM_UNUSABLE;
 }
 
-static WeaponType weaponTypeFromString(const std::string &name)
-{
-    if      (name=="knife")      return WPNTYPE_KNIFE;
-    else if (name=="sword")      return WPNTYPE_SWORD;
-    else if (name=="polearm")    return WPNTYPE_POLEARM;
-    else if (name=="staff")      return WPNTYPE_STAFF;
-    else if (name=="whip")       return WPNTYPE_WHIP;
-    else if (name=="bow")        return WPNTYPE_BOW;
-    else if (name=="shooting")   return WPNTYPE_SHOOTING;
-    else if (name=="mace")       return WPNTYPE_MACE;
-    else if (name=="axe")        return WPNTYPE_AXE;
-    else if (name=="thrown")     return WPNTYPE_THROWN;
-
-    else return WPNTYPE_NONE;
-}
-
 static std::string normalized(const std::string &name)
 {
     std::string normalized = name;
@@ -153,7 +137,7 @@ void ItemDB::load()
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-        int weaponType = weaponTypeFromString(XML::getProperty(node, "weapon-type", ""));
+        std::string attackAction = XML::getProperty(node, "attack-action", "");
         int attackRange = XML::getProperty(node, "attack-range", 0);
         std::string missileParticle = XML::getProperty(node, "missile-particle", "");
 
@@ -167,7 +151,7 @@ void ItemDB::load()
         itemInfo->setType(itemTypeFromString(typeStr));
         itemInfo->setView(view);
         itemInfo->setWeight(weight);
-        itemInfo->setWeaponType(weaponType);
+        itemInfo->setAttackAction(attackAction);
         itemInfo->setAttackRange(attackRange);
         itemInfo->setMissileParticle(missileParticle);
 
@@ -231,7 +215,7 @@ void ItemDB::load()
             }
         }
 
-        if (weaponType > 0)
+        if (!attackAction.empty())
             if (attackRange == 0)
                 logger->log("ItemDB: Missing attack range from weapon %i!", id);
 

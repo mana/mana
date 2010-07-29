@@ -90,13 +90,13 @@ const std::string &BeingInfo::getSound(SoundEvent event) const
 
 const Attack *BeingInfo::getAttack(int type) const
 {
-    static Attack *empty = new Attack(ACTION_ATTACK, "", "");
+    static Attack *empty = new Attack(SpriteAction::ATTACK, "", "");
 
     Attacks::const_iterator i = mAttacks.find(type);
     return (i == mAttacks.end()) ? empty : (*i).second;
 }
 
-void BeingInfo::addAttack(int id, SpriteAction action,
+void BeingInfo::addAttack(int id, std::string action,
                           const std::string &particleEffect,
                           const std::string &missileParticle)
 {

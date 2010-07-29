@@ -56,9 +56,9 @@ public:
     AnimatedSprite *getIcon();
 
     /**
-     * Retrieves an action to perform, or ACTION_INVALID
+     * Retrieves an action to perform, or SpriteAction::INVALID
      */
-    SpriteAction getAction();
+    std::string getAction();
 
     /**
      * Determines whether the particle effect should be restarted when the

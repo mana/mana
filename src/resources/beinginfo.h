@@ -32,11 +32,11 @@
 #include <vector>
 
 struct Attack {
-    SpriteAction action;
+    std::string action;
     std::string particleEffect;
     std::string missileParticle;
 
-    Attack(SpriteAction action, std::string particleEffect,
+    Attack(std::string action, std::string particleEffect,
            std::string missileParticle)
     {
         this->action = action;
@@ -95,7 +95,7 @@ class BeingInfo
 
         const std::string &getSound(SoundEvent event) const;
 
-        void addAttack(int id, SpriteAction action,
+        void addAttack(int id, std::string action,
                        const std::string &particleEffect,
                        const std::string &missileParticle);
 

@@ -67,7 +67,7 @@ bool CompoundSprite::reset()
     return ret;
 }
 
-bool CompoundSprite::play(SpriteAction action)
+bool CompoundSprite::play(std::string action)
 {
     bool ret = false;
 

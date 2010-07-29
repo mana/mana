@@ -36,7 +36,7 @@ public:
 
     virtual bool reset();
 
-    virtual bool play(SpriteAction action);
+    virtual bool play(std::string action);
 
     virtual bool update(int time);
 

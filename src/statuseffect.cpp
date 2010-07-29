@@ -73,19 +73,19 @@ AnimatedSprite *StatusEffect::getIcon()
                                        paths.getStringValue("sprites") + mIcon);
         if (false && sprite)
         {
-            sprite->play(ACTION_DEFAULT);
+            sprite->play(SpriteAction::DEFAULT);
             sprite->reset();
         }
         return sprite;
     }
 }
 
-SpriteAction StatusEffect::getAction()
+std::string StatusEffect::getAction()
 {
     if (mAction.empty())
-        return ACTION_INVALID;
+        return SpriteAction::INVALID;
     else
-        return SpriteDef::makeSpriteAction(mAction);
+        return mAction;
 }
 
 

@@ -73,7 +73,7 @@ class Being : public ActorSprite, public ConfigListener
         enum Action
         {
             STAND,
-            WALK,
+            MOVE,
             ATTACK,
             SIT,
             DEAD,

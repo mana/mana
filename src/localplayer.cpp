@@ -776,11 +776,11 @@ void LocalPlayer::setWalkingDir(int dir)
     mWalkingDir = dir;
 
     // If we're not already walking, start walking.
-    if (mAction != WALK && dir)
+    if (mAction != MOVE && dir)
     {
         startWalking(dir);
     }
-    else if (mAction == WALK && (Net::getNetworkType() == ServerInfo::MANASERV))
+    else if (mAction == MOVE && (Net::getNetworkType() == ServerInfo::MANASERV))
     {
         nextTile(dir);
     }
@@ -793,7 +793,7 @@ void LocalPlayer::startWalking(unsigned char dir)
     if (!mMap || !dir)
         return;
 
-    if (mAction == WALK && !mPath.empty())
+    if (mAction == MOVE && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
         if (Net::getNetworkType() == ServerInfo::MANASERV)
@@ -848,7 +848,7 @@ void LocalPlayer::startWalking(unsigned char dir)
 
 void LocalPlayer::stopWalking(bool sendToServer)
 {
-    if (mAction == WALK && mWalkingDir)
+    if (mAction == MOVE && mWalkingDir)
     {
         mWalkingDir = 0;
         mLocalWalkTime = 0;

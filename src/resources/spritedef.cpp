@@ -39,13 +39,13 @@
 SpriteReference *SpriteReference::Empty = new SpriteReference(
                                     paths.getStringValue("spriteErrorFile"), 0);
 
-Action *SpriteDef::getAction(SpriteAction action) const
+Action *SpriteDef::getAction(std::string action) const
 {
     Actions::const_iterator i = mActions.find(action);
 
     if (i == mActions.end())
     {
-        logger->log("Warning: no action \"%u\" defined!", action);
+        logger->log("Warning: no action \"%s\" defined!", action.c_str());
         return NULL;
     }
 
@@ -84,22 +84,29 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
     return def;
 }
 
+void SpriteDef::substituteAction(std::string complete, std::string with)
+{
+    if (mActions.find(complete) == mActions.end())
+    {
+        Actions::iterator i = mActions.find(with);
+        if (i != mActions.end())
+        {
+            mActions[complete] = i->second;
+        }
+    }
+}
+
 void SpriteDef::substituteActions()
 {
-    substituteAction(ACTION_STAND, ACTION_DEFAULT);
-    substituteAction(ACTION_WALK, ACTION_STAND);
-    substituteAction(ACTION_WALK, ACTION_RUN);
-    substituteAction(ACTION_ATTACK, ACTION_STAND);
-    substituteAction(ACTION_ATTACK_SWING, ACTION_ATTACK);
-    substituteAction(ACTION_ATTACK_STAB, ACTION_ATTACK_SWING);
-    substituteAction(ACTION_ATTACK_BOW, ACTION_ATTACK_STAB);
-    substituteAction(ACTION_ATTACK_THROW, ACTION_ATTACK_SWING);
-    substituteAction(ACTION_CAST_MAGIC, ACTION_ATTACK_SWING);
-    substituteAction(ACTION_USE_ITEM, ACTION_CAST_MAGIC);
-    substituteAction(ACTION_SIT, ACTION_STAND);
-    substituteAction(ACTION_SLEEP, ACTION_SIT);
-    substituteAction(ACTION_HURT, ACTION_STAND);
-    substituteAction(ACTION_DEAD, ACTION_HURT);
+    substituteAction(SpriteAction::STAND, SpriteAction::DEFAULT);
+    substituteAction(SpriteAction::MOVE, SpriteAction::STAND);
+    substituteAction(SpriteAction::ATTACK, SpriteAction::STAND);
+    substituteAction(SpriteAction::CAST_MAGIC, SpriteAction::ATTACK);
+    substituteAction(SpriteAction::USE_ITEM, SpriteAction::CAST_MAGIC);
+    substituteAction(SpriteAction::SIT, SpriteAction::STAND);
+    substituteAction(SpriteAction::SLEEP, SpriteAction::SIT);
+    substituteAction(SpriteAction::HURT, SpriteAction::STAND);
+    substituteAction(SpriteAction::DEAD, SpriteAction::HURT);
 }
 
 void SpriteDef::loadSprite(xmlNodePtr spriteNode, int variant,
@@ -171,20 +178,19 @@ void SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
     }
     ImageSet *imageSet = si->second;
 
-    SpriteAction actionType = makeSpriteAction(actionName);
-    if (actionType == ACTION_INVALID)
+    if (actionName == SpriteAction::INVALID)
     {
         logger->log("Warning: Unknown action \"%s\" defined in %s",
                 actionName.c_str(), getIdPath().c_str());
         return;
     }
     Action *action = new Action;
-    mActions[actionType] = action;
+    mActions[actionName] = action;
 
     // When first action set it as default direction
-    if (mActions.empty())
+    if (mActions.size() == 1)
     {
-        mActions[ACTION_DEFAULT] = action;
+        mActions[SpriteAction::DEFAULT] = action;
     }
 
     // Load animations
@@ -297,18 +303,6 @@ void SpriteDef::includeSprite(xmlNodePtr includeNode)
     loadSprite(rootNode, 0);
 }
 
-void SpriteDef::substituteAction(SpriteAction complete, SpriteAction with)
-{
-    if (mActions.find(complete) == mActions.end())
-    {
-        Actions::iterator i = mActions.find(with);
-        if (i != mActions.end())
-        {
-            mActions[complete] = i->second;
-        }
-    }
-}
-
 SpriteDef::~SpriteDef()
 {
     // Actions are shared, so ensure they are deleted only once.
@@ -330,63 +324,6 @@ SpriteDef::~SpriteDef()
     {
         i->second->decRef();
     }
-}
-
-SpriteAction SpriteDef::makeSpriteAction(const std::string &action)
-{
-    if (action.empty() || action == "default")
-        return ACTION_DEFAULT;
-
-    if (action == "stand")
-        return ACTION_STAND;
-    else if (action == "walk")
-        return ACTION_WALK;
-    else if (action == "run")
-        return ACTION_RUN;
-    else if (action == "attack")
-        return ACTION_ATTACK;
-    else if (action == "attack_swing")
-        return ACTION_ATTACK_SWING;
-    else if (action == "attack_stab")
-        return ACTION_ATTACK_STAB;
-    else if (action == "attack_bow")
-        return ACTION_ATTACK_BOW;
-    else if (action == "attack_throw")
-        return ACTION_ATTACK_THROW;
-    else if (action == "special0")
-        return ACTION_SPECIAL_0;
-    else if (action == "special1")
-        return ACTION_SPECIAL_1;
-    else if (action == "special2")
-        return ACTION_SPECIAL_2;
-    else if (action == "special3")
-        return ACTION_SPECIAL_3;
-    else if (action == "special4")
-        return ACTION_SPECIAL_4;
-    else if (action == "special5")
-        return ACTION_SPECIAL_5;
-    else if (action == "special6")
-        return ACTION_SPECIAL_6;
-    else if (action == "special7")
-        return ACTION_SPECIAL_7;
-    else if (action == "special8")
-        return ACTION_SPECIAL_8;
-    else if (action == "special9")
-        return ACTION_SPECIAL_9;
-    else if (action == "cast_magic")
-        return ACTION_CAST_MAGIC;
-    else if (action == "use_item")
-        return ACTION_USE_ITEM;
-    else if (action == "sit")
-        return ACTION_SIT;
-    else if (action == "sleep")
-        return ACTION_SLEEP;
-    else if (action == "hurt")
-        return ACTION_HURT;
-    else if (action == "dead")
-        return ACTION_DEAD;
-    else
-        return ACTION_INVALID;
 }
 
 SpriteDirection SpriteDef::makeSpriteDirection(const std::string &direction)

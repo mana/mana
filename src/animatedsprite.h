@@ -56,7 +56,7 @@ class AnimatedSprite : public Sprite
 
         bool reset();
 
-        bool play(SpriteAction action);
+        bool play(std::string action);
 
         bool update(int time);
 
