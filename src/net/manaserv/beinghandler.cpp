@@ -144,7 +144,7 @@ static void handleLooks(Being *being, Net::MessageIn &msg)
     {
         if (!(mask & (1 << i))) continue;
         int id = msg.readInt16();
-        being->setSprite(slots[i], id);
+        being->setSprite(slots[i], id,"", (slots[i] == SPRITE_WEAPON));
     }
 }
 

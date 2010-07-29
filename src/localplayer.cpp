@@ -914,6 +914,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         mLastTarget = -1;
         setTarget(target);
     }
+
     if (Net::getNetworkType() == ServerInfo::MANASERV)
     {
         Vector plaPos = this->getPosition();
