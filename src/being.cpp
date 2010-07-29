@@ -74,7 +74,6 @@
 #include <cmath>
 
 #define HAIR_FILE "hair.xml"
-#define PARTICLE_LOCATION "graphics/particles/"
 
 static const int DEFAULT_BEING_WIDTH = 32;
 static const int DEFAULT_BEING_HEIGHT = 32;
@@ -815,9 +814,9 @@ void Being::logic()
 
                     if (!particleEffect.empty() &&
                         findSameSubstring(particleEffect,
-                                          PARTICLE_LOCATION).empty())
-                        particleEffect = PARTICLE_LOCATION +
-                                         particleEffect;
+                                     paths.getStringValue("particles")).empty())
+                        particleEffect = paths.getStringValue("particles")
+                                         + particleEffect;
                 }
                 else
                 {

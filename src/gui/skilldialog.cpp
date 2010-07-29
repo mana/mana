@@ -23,6 +23,7 @@
 
 #include "log.h"
 #include "playerinfo.h"
+#include "configuration.h"
 
 #include "gui/setup.h"
 #include "gui/theme.h"
@@ -87,7 +88,8 @@ struct SkillInfo
         }
         else
         {
-            icon = Theme::getImageFromTheme("unknown-item.png");
+            icon = Theme::getImageFromTheme(
+                                       paths.getStringValue("unknownItemFile"));
         }
     }
 
