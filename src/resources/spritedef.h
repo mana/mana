@@ -54,38 +54,7 @@ struct SpriteDisplay
 };
 
 typedef std::list<SpriteReference*>::const_iterator SpriteRefs;
-#if 0
-enum SpriteAction
-{
-    ACTION_DEFAULT = 0,
-    ACTION_STAND,
-    ACTION_WALK,
-    ACTION_RUN,
-    ACTION_ATTACK,
-    ACTION_ATTACK_SWING,
-    ACTION_ATTACK_STAB,
-    ACTION_ATTACK_BOW,
-    ACTION_ATTACK_THROW,
-    ACTION_SPECIAL_0,
-    ACTION_SPECIAL_1,
-    ACTION_SPECIAL_2,
-    ACTION_SPECIAL_3,
-    ACTION_SPECIAL_4,
-    ACTION_SPECIAL_5,
-    ACTION_SPECIAL_6,
-    ACTION_SPECIAL_7,
-    ACTION_SPECIAL_8,
-    ACTION_SPECIAL_9,
-    ACTION_CAST_MAGIC,
-    ACTION_USE_ITEM,
-    ACTION_SIT,
-    ACTION_SLEEP,
-    ACTION_HURT,
-    ACTION_DEAD,
-    ACTION_INVALID
-};
-#endif
-#if 1 // Aim to be reached
+
 /*
  * Remember those are the main action.
  * Action subtypes, e.g.: "attack_bow" are to be passed by items.xml after
@@ -110,7 +79,7 @@ namespace SpriteAction
     static const std::string USE_ITEM = "item";
     static const std::string INVALID = "";
 };
-#endif
+
 enum SpriteDirection
 {
     DIRECTION_DEFAULT = 0,
