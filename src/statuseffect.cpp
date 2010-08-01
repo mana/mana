@@ -21,10 +21,9 @@
 
 #include "statuseffect.h"
 
+#include "eventmanager.h"
 #include "log.h"
 #include "sound.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "utils/xml.h"
 
@@ -52,7 +51,7 @@ void StatusEffect::playSFX()
 void StatusEffect::deliverMessage()
 {
     if (!mMessage.empty())
-        localChatTab->chatLog(mMessage, BY_SERVER);
+        SERVER_NOTICE(mMessage)
 }
 
 Particle *StatusEffect::getParticle()

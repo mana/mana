@@ -24,6 +24,7 @@
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
+#include "eventmanager.h"
 #include "flooritem.h"
 #include "graphics.h"
 #include "guild.h"
@@ -1000,7 +1001,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
     {
         if (config.getValue("showpickupchat", 1))
         {
-            localChatTab->chatLog(_("Unable to pick up item."), BY_SERVER);
+            SERVER_NOTICE(_("Unable to pick up item."))
         }
     }
     else
@@ -1009,10 +1010,9 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
         {
             // TRANSLATORS: This sentence may be translated differently
             // for different grammatical numbers (singular, plural, ...)
-            localChatTab->chatLog(strprintf(ngettext("You picked up %d "
+            SERVER_NOTICE(strprintf(ngettext("You picked up %d "
                     "[@@%d|%s@@].", "You picked up %d [@@%d|%s@@].", amount),
-                    amount, itemInfo.getId(), itemInfo.getName().c_str()),
-                    BY_SERVER);
+                    amount, itemInfo.getId(), itemInfo.getName().c_str()))
         }
 
         if (mMap && config.getValue("showpickupparticle", 0))

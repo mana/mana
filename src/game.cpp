@@ -324,11 +324,11 @@ static bool saveScreenshot()
         std::stringstream chatlogentry;
         // TODO: Make it one complete gettext string below
         chatlogentry << _("Screenshot saved as ") << filenameSuffix.str();
-        localChatTab->chatLog(chatlogentry.str(), BY_SERVER);
+        SERVER_NOTICE(chatlogentry.str())
     }
     else
     {
-        localChatTab->chatLog(_("Saving screenshot failed!"), BY_SERVER);
+        SERVER_NOTICE(_("Saving screenshot failed!"))
         logger->log("Error: could not save screenshot.");
     }
 
@@ -707,16 +707,12 @@ void Game::handleInput()
                         unsigned int deflt = player_relations.getDefault();
                         if (deflt & PlayerRelation::TRADE)
                         {
-                            localChatTab->chatLog(
-                                        _("Ignoring incoming trade requests"),
-                                        BY_SERVER);
+                            SERVER_NOTICE(_("Ignoring incoming trade requests"))
                             deflt &= ~PlayerRelation::TRADE;
                         }
                         else
                         {
-                            localChatTab->chatLog(
-                                        _("Accepting incoming trade requests"),
-                                        BY_SERVER);
+                            SERVER_NOTICE(_("Accepting incoming trade requests"))
                             deflt |= PlayerRelation::TRADE;
                         }
 

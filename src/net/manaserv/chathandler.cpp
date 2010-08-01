@@ -26,6 +26,7 @@
 #include "client.h"
 #include "channel.h"
 #include "channelmanager.h"
+#include "eventmanager.h"
 
 #include "gui/chat.h"
 
@@ -149,7 +150,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
 
     if (id == 0)
     {
-        localChatTab->chatLog(chatMsg, BY_SERVER);
+        SERVER_NOTICE(chatMsg)
         return;
     }
 
@@ -198,13 +199,13 @@ void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
     }
     else
     {
-        localChatTab->chatLog(_("Error joining channel."), BY_SERVER);
+        SERVER_NOTICE(_("Error joining channel."))
     }
 }
 
 void ChatHandler::handleListChannelsResponse(Net::MessageIn &msg)
 {
-    localChatTab->chatLog(_("Listing channels."), BY_SERVER);
+    SERVER_NOTICE(_("Listing channels."))
     while (msg.getUnreadLength())
     {
         std::string channelName = msg.readString();
@@ -214,9 +215,9 @@ void ChatHandler::handleListChannelsResponse(Net::MessageIn &msg)
         numUsers << msg.readInt16();
         channelName += " - ";
         channelName += numUsers.str();
-        localChatTab->chatLog(channelName, BY_SERVER);
+        SERVER_NOTICE(channelName)
     }
-    localChatTab->chatLog(_("End of channel list."), BY_SERVER);
+    SERVER_NOTICE(_("End of channel list."))
 }
 
 void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
@@ -341,7 +342,7 @@ void ChatHandler::handleWhoResponse(Net::MessageIn &msg)
         {
             break;
         }
-        localChatTab->chatLog(userNick, BY_SERVER);
+        SERVER_NOTICE(userNick)
     }
 }
 

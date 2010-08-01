@@ -21,6 +21,7 @@
 
 #include "gui/trade.h"
 
+#include "eventmanager.h"
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
@@ -32,7 +33,6 @@
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/chattab.h"
 #include "gui/widgets/itemcontainer.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/scrollarea.h"
@@ -271,9 +271,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
         if (mMyInventory->contains(item))
         {
-           localChatTab->chatLog(_("Failed adding item. You can not "
-                                  "overlap one kind of item on the window."),
-                                  BY_SERVER);
+           SERVER_NOTICE(_("Failed adding item. You can not "
+                                  "overlap one kind of item on the window."))
             return;
         }
 
@@ -314,8 +313,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         int curMoney = PlayerInfo::getAttribute(MONEY);
         if (v > curMoney)
         {
-            localChatTab->chatLog(_("You don't have enough money."),
-                                  BY_SERVER);
+            SERVER_NOTICE(_("You don't have enough money."))
             v = curMoney;
         }
         Net::getTradeHandler()->setMoney(v);

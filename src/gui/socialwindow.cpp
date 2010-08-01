@@ -20,6 +20,7 @@
 
 #include "gui/socialwindow.h"
 
+#include "eventmanager.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "party.h"
@@ -33,7 +34,6 @@
 #include "gui/widgets/avatarlistbox.h"
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/button.h"
-#include "gui/widgets/chattab.h"
 #include "gui/widgets/container.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
@@ -121,10 +121,9 @@ public:
             std::string name = mInviteDialog->getText();
             Net::getGuildHandler()->invite(mGuild->getId(), name);
 
-            localChatTab->chatLog(strprintf(_("Invited user %s to guild %s."),
+            SERVER_NOTICE(strprintf(_("Invited user %s to guild %s."),
                                             name.c_str(),
-                                            mGuild->getName().c_str()),
-                                  BY_SERVER);
+                                            mGuild->getName().c_str()))
             mInviteDialog = NULL;
         }
         else if (event.getId() == "~do invite")
@@ -134,8 +133,8 @@ public:
         else if (event.getId() == "yes")
         {
             Net::getGuildHandler()->leave(mGuild->getId());
-            localChatTab->chatLog(strprintf(_("Guild %s quit requested."),
-                                        mGuild->getName().c_str()), BY_SERVER);
+            SERVER_NOTICE(strprintf(_("Guild %s quit requested."),
+                                        mGuild->getName().c_str()))
             mConfirmDialog = NULL;
         }
         else if (event.getId() == "~yes")
@@ -202,8 +201,8 @@ public:
             std::string name = mInviteDialog->getText();
             Net::getPartyHandler()->invite(name);
 
-            localChatTab->chatLog(strprintf(_("Invited user %s to party."),
-                                            name.c_str()), BY_SERVER);
+            SERVER_NOTICE(strprintf(_("Invited user %s to party."),
+                                            name.c_str()))
             mInviteDialog = NULL;
         }
         else if (event.getId() == "~do invite")
@@ -213,8 +212,8 @@ public:
         else if (event.getId() == "yes")
         {
             Net::getPartyHandler()->leave();
-            localChatTab->chatLog(strprintf(_("Party %s quit requested."),
-                                        mParty->getName().c_str()), BY_SERVER);
+            SERVER_NOTICE(strprintf(_("Party %s quit requested."),
+                                        mParty->getName().c_str()))
             mConfirmDialog = NULL;
         }
         else if (event.getId() == "~yes")
@@ -438,14 +437,14 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         // check if they accepted the invite
         if (eventId == "yes")
         {
-            localChatTab->chatLog(strprintf(_("Accepted party invite from %s."),
-                    mPartyInviter.c_str()));
+            SERVER_NOTICE(strprintf(_("Accepted party invite from %s."),
+                    mPartyInviter.c_str()))
             Net::getPartyHandler()->inviteResponse(mPartyInviter, true);
         }
         else if (eventId == "no")
         {
-            localChatTab->chatLog(strprintf(_("Rejected party invite from %s."),
-                    mPartyInviter.c_str()));
+            SERVER_NOTICE(strprintf(_("Rejected party invite from %s."),
+                    mPartyInviter.c_str()))
             Net::getPartyHandler()->inviteResponse(mPartyInviter, false);
         }
 
@@ -457,14 +456,14 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         // check if they accepted the invite
         if (eventId == "yes")
         {
-            localChatTab->chatLog(strprintf(_("Accepted guild invite from %s."),
-                    mPartyInviter.c_str()));
+            SERVER_NOTICE(strprintf(_("Accepted guild invite from %s."),
+                    mPartyInviter.c_str()))
             Net::getGuildHandler()->inviteResponse(mGuildInvited, true);
         }
         else if (eventId == "no")
         {
-            localChatTab->chatLog(strprintf(_("Rejected guild invite from %s."),
-                    mPartyInviter.c_str()));
+            SERVER_NOTICE(strprintf(_("Rejected guild invite from %s."),
+                    mPartyInviter.c_str()))
             Net::getGuildHandler()->inviteResponse(mGuildInvited, false);
         }
 
@@ -497,8 +496,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         }
 
         Net::getGuildHandler()->create(name);
-        localChatTab->chatLog(strprintf(_("Creating guild called %s."),
-                                            name.c_str()), BY_SERVER);
+        SERVER_NOTICE(strprintf(_("Creating guild called %s."),
+                                            name.c_str()))
 
         mGuildCreateDialog = NULL;
     }
@@ -517,8 +516,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         }
 
         Net::getPartyHandler()->create(name);
-        localChatTab->chatLog(strprintf(_("Creating party called %s."),
-                                            name.c_str()), BY_SERVER);
+        SERVER_NOTICE(strprintf(_("Creating party called %s."),
+                                            name.c_str()));
 
         mPartyCreateDialog = NULL;
     }
@@ -543,14 +542,14 @@ void SocialWindow::showGuildInvite(const std::string &guildName,
     // check there isnt already an invite showing
     if (mGuildInvited != 0)
     {
-        localChatTab->chatLog(_("Received guild request, but one already "
-                "exists."), BY_SERVER);
+        SERVER_NOTICE(_("Received guild request, but one already "
+                "exists."))
         return;
     }
 
     std::string msg = strprintf(_("%s has invited you to join the guild %s."),
                                 inviterName.c_str(), guildName.c_str());
-    localChatTab->chatLog(msg, BY_SERVER);
+    SERVER_NOTICE(msg)
 
     // show invite
     mGuildAcceptDialog = new ConfirmDialog(_("Accept Guild Invite"), msg, this);
@@ -565,8 +564,7 @@ void SocialWindow::showPartyInvite(const std::string &partyName,
     // check there isnt already an invite showing
     if (mPartyInviter != "")
     {
-        localChatTab->chatLog(_("Received party request, but one already "
-                "exists."), BY_SERVER);
+        SERVER_NOTICE(_("Received party request, but one already exists."))
         return;
     }
 
@@ -597,7 +595,7 @@ void SocialWindow::showPartyInvite(const std::string &partyName,
         }
     }
 
-    localChatTab->chatLog(msg, BY_SERVER);
+    SERVER_NOTICE(msg)
 
     // show invite
     mPartyAcceptDialog = new ConfirmDialog(_("Accept Party Invite"), msg, this);

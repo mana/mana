@@ -21,11 +21,11 @@
 #include "gui/recorder.h"
 
 #include "client.h"
+#include "eventmanager.h"
 
 #include "gui/chat.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/chattab.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/windowcontainer.h"
 
@@ -84,16 +84,16 @@ void Recorder::setRecordingFile(const std::string &msg)
              * Message should go after mStream is closed so that it isn't
              * recorded.
              */
-            localChatTab->chatLog(_("Finishing recording."), BY_SERVER);
+            SERVER_NOTICE(_("Finishing recording."))
         }
         else
         {
-            localChatTab->chatLog(_("Not currently recording."), BY_SERVER);
+            SERVER_NOTICE(_("Not currently recording."))
         }
     }
     else if (mStream.is_open())
     {
-        localChatTab->chatLog(_("Already recording."), BY_SERVER);
+        SERVER_NOTICE(_("Already recording."))
     }
     else
     {
@@ -101,7 +101,7 @@ void Recorder::setRecordingFile(const std::string &msg)
          * Message should go before mStream is opened so that it isn't
          * recorded.
          */
-        localChatTab->chatLog(_("Starting to record..."), BY_SERVER);
+        SERVER_NOTICE(_("Starting to record..."))
         const std::string file = Client::getLocalDataDirectory() + "/" + msgCopy;
 
         mStream.open(file.c_str(), std::ios_base::trunc);
@@ -109,7 +109,7 @@ void Recorder::setRecordingFile(const std::string &msg)
         if (mStream.is_open())
             setVisible(true);
         else
-            localChatTab->chatLog(_("Failed to start recording."), BY_SERVER);
+            SERVER_NOTICE(_("Failed to start recording."))
     }
 }
 

@@ -21,12 +21,11 @@
 
 #include "net/tmwa/specialhandler.h"
 
+#include "eventmanager.h"
 #include "log.h"
 #include "playerinfo.h"
 
 #include "gui/skilldialog.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/messagein.h"
 #include "net/messageout.h"
@@ -216,7 +215,7 @@ void SpecialHandler::handleMessage(Net::MessageIn &msg)
                 }
             }
 
-            localChatTab->chatLog(msg);
+            SERVER_NOTICE(msg)
             break;
     }
 }

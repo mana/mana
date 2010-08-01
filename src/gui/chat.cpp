@@ -415,9 +415,7 @@ void ChatWindow::event(const std::string &channel, const Mana::Event &event)
     if (channel == "Notices")
     {
         if (event.getName() == "ServerNotice")
-        {
             localChatTab->chatLog(event.getString("message"), BY_SERVER);
-        }
     }
 }
 

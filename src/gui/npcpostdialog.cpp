@@ -21,8 +21,9 @@
 
 #include "gui/npcpostdialog.h"
 
+#include "eventmanager.h"
+
 #include "gui/widgets/button.h"
-#include "gui/widgets/chattab.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
@@ -91,8 +92,7 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
     {
         if (mSender->getText().empty() || mText->getText().empty())
         {
-            localChatTab->chatLog(_("Failed to send as sender or letter "
-                    "invalid."));
+            SERVER_NOTICE(_("Failed to send as sender or letter invalid."))
         }
         else
         {

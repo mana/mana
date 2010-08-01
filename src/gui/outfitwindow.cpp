@@ -33,7 +33,6 @@
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
-#include "gui/widgets/chattab.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 
