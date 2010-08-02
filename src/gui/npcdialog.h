@@ -154,11 +154,6 @@ class NpcDialog : public Window, public gcn::ActionListener,
         void optionChanged(const std::string &name);
 
         /**
-         * Returns true if any instances exist.
-         */
-        static bool isActive() { return instances.size() > 0; }
-
-        /**
          * Returns the first active instance. Useful for pushing user
          * interaction.
          */

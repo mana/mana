@@ -107,11 +107,6 @@ class InventoryWindow : public Window,
 
         bool isMainInventory() { return mInventory->isMainInventory(); }
 
-        /**
-         * Returns true if any instances exist.
-         */
-        static bool isStorageActive() { return instances.size() > 1; }
-
         void event(const std::string &channel, const Mana::Event &event);
 
     private:

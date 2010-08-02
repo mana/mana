@@ -401,7 +401,7 @@ void Game::handleInput()
 
             // send straight to gui for certain windows
             if (quitDialog || TextDialog::isActive() ||
-                NpcPostDialog::isActive())
+                    PlayerInfo::getNPCPostCount() > 0)
             {
                 try
                 {

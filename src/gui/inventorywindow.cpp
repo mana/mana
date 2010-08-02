@@ -140,13 +140,19 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     slotsChanged(mInventory);
 
     if (!isMainInventory())
+    {
         setVisible(true);
+        PlayerInfo::setStorageCount(PlayerInfo::getStorageCount() + 1);
+    }
 }
 
 InventoryWindow::~InventoryWindow()
 {
     instances.remove(this);
     mInventory->removeInventoyListener(this);
+
+    if (!isMainInventory())
+        PlayerInfo::setStorageCount(PlayerInfo::getStorageCount() - 1);
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -236,7 +242,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (isStorageActive() && keyboard.isKeyActive(keyboard.KEY_EMOTE))
+        if (instances.size() > 1 && keyboard.isKeyActive(keyboard.KEY_EMOTE))
         {
             Item *item = mItems->getSelectedItem();
 

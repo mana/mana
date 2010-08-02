@@ -149,7 +149,7 @@ namespace PlayerInfo
      */
     void setStatExperience(int id, int have, int need, bool notify = true);
 
-// --- Inventory / Equipment --------------------------------------------------
+// --- Inventory / Equipment / Storage ----------------------------------------
 
     /**
      * Returns the player's inventory.
@@ -176,17 +176,49 @@ namespace PlayerInfo
      */
     Item *getEquipment(unsigned int slot);
 
+    /**
+     * Returns the number of currently open storage windows.
+     */
+    int getStorageCount();
+
+    /**
+     * Sets the number of currently open storage windows.
+     */
+    void setStorageCount(int count);
+
+// -- NPC ---------------------------------------------------------------------
+
+    /**
+     * Returns the number of currently open NPC interaction windows.
+     */
+    int getNPCInteractionCount();
+
+    /**
+     * Sets the number of currently open NPC interaction windows.
+     */
+    void setNPCInteractionCount(int count);
+
+    /**
+     * Returns the number of currently open NPC post windows.
+     */
+    int getNPCPostCount();
+
+    /**
+     * Sets the number of currently open NPC post windows.
+     */
+    void setNPCPostCount(int count);
+
 // -- Buy/Sell/Trade ----------------------------------------------------------
 
     /**
-     * Returns true if the player is involved in a buy, sell, or related
-     * interaction, false otherwise.
+     * Returns the current buy, sell, or related interaction the player is
+     * involved in.
      */
     BuySellState getBuySellState();
 
     /**
-     * Sets whether the player is currently involved in a buy, sell, or related
-     * interaction.
+     * Sets which buy, sell, or related interaction the player is currently
+     * involved in.
      */
     void setBuySellState(BuySellState buySellState);
 

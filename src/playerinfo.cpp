@@ -44,6 +44,11 @@ PlayerInfoBackend mData;
 Inventory *mInventory = 0;
 Equipment *mEquipment = 0;
 
+bool mStorageCount = 0;
+
+bool mNPCCount = 0;
+bool mNPCPostCount = 0;
+
 BuySellState mBuySellState = BUYSELL_NONE;
 bool mTrading = false;
 
@@ -206,6 +211,65 @@ void setEquipmentBackend(Equipment::Backend *backend)
     mEquipment->setBackend(backend);
 }
 
+int getStorageCount()
+{
+    return mStorageCount;
+}
+
+void setStorageCount(int count)
+{
+    int old = mStorageCount;
+    mStorageCount = count;
+
+    if (count != old)
+    {
+        Mana::Event event("StorageCount");
+        event.setBool("oldCount", old);
+        event.setBool("newCount", count);
+        Mana::EventManager::trigger("Storage", event);
+    }
+}
+
+// -- NPC ---------------------------------------------------------------------
+
+int getNPCInteractionCount()
+{
+    return mNPCCount;
+}
+
+void setNPCInteractionCount(int count)
+{
+    int old = mNPCCount;
+    mNPCCount = count;
+
+    if (count != old)
+    {
+        Mana::Event event("NPCCount");
+        event.setBool("oldCount", old);
+        event.setBool("newCount", count);
+        Mana::EventManager::trigger("NPC", event);
+    }
+}
+
+int getNPCPostCount()
+{
+    return mNPCPostCount;
+}
+
+void setNPCPostCount(int count)
+{
+    int old = mNPCPostCount;
+    mNPCPostCount = count;
+
+    if (count != old)
+    {
+        Mana::Event event("PostCount");
+        event.setBool("oldCount", old);
+        event.setBool("newCount", count);
+        Mana::EventManager::trigger("NPC", event);
+    }
+}
+
 // -- Buy/Sell/Trade ----------------------------------------------------------
 
 BuySellState getBuySellState()
@@ -270,8 +334,8 @@ void setBackend(const PlayerInfoBackend &backend)
 
 bool isTalking()
 {
-    return NpcDialog::isActive() || NpcPostDialog::isActive() ||
-            PlayerInfo::getBuySellState() != BUYSELL_NONE;
+    return getNPCInteractionCount() || getNPCPostCount()
+            || getBuySellState() != BUYSELL_NONE;
 }
 
 void logic()

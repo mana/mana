@@ -22,6 +22,7 @@
 #include "gui/npcdialog.h"
 
 #include "configuration.h"
+#include "playerinfo.h"
 
 #include "gui/setup.h"
 
@@ -123,6 +124,8 @@ NpcDialog::NpcDialog(int npcId)
     requestFocus();
 
     config.addListener("logNpcInGui", this);
+    PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
+                                       + 1);
 }
 
 NpcDialog::~NpcDialog()
@@ -139,6 +142,8 @@ NpcDialog::~NpcDialog()
     instances.remove(this);
 
     config.removeListener("logNpcInGui", this);
+    PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
+                                       - 1);
 }
 
 void NpcDialog::setText(const std::string &text)

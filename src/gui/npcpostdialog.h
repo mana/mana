@@ -47,11 +47,6 @@ public:
     void setVisible(bool visible);
 
     /**
-     * Returns true if any instances exist.
-     */
-    static bool isActive() { return instances.size() > 0; }
-
-    /**
      * Closes all instances.
      */
     static void closeAll();

@@ -22,6 +22,7 @@
 #include "gui/npcpostdialog.h"
 
 #include "eventmanager.h"
+#include "playerinfo.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
@@ -79,11 +80,14 @@ NpcPostDialog::NpcPostDialog(int npcId):
 
     instances.push_back(this);
     setVisible(true);
+
+    PlayerInfo::setNPCPostCount(PlayerInfo::getNPCPostCount() + 1);
 }
 
 NpcPostDialog::~NpcPostDialog()
 {
     instances.remove(this);
+    PlayerInfo::setNPCPostCount(PlayerInfo::getNPCPostCount() - 1);
 }
 
 void NpcPostDialog::action(const gcn::ActionEvent &event)

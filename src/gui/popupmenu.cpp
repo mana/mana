@@ -28,6 +28,7 @@
 #include "item.h"
 #include "localplayer.h"
 #include "log.h"
+#include "playerinfo.h"
 #include "playerrelations.h"
 
 #include "gui/chat.h"
@@ -381,7 +382,7 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
             mBrowserBox->addRow(strprintf("@@split|%s@@", _("Split")));
         }
 
-        if (InventoryWindow::isStorageActive())
+        if (PlayerInfo::getStorageCount() > 0)
         {
             mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }
