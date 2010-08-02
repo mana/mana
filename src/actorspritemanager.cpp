@@ -206,7 +206,10 @@ void ActorSpriteManager::logic()
 
     for (it = mDeleteActors.begin(), it_end = mDeleteActors.end();
          it != it_end; ++it)
+    {
+        mActors.erase(*it);
         delete *it;
+    }
 
     mDeleteActors.clear();
 }

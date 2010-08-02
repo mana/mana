@@ -495,11 +495,13 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int x = (event.getX() + (int) mPixelViewX);
     const int y = (event.getY() + (int) mPixelViewY);
 
-    mHoverBeing->removeActorSpriteListener(this);
+    if (mHoverBeing)
+        mHoverBeing->removeActorSpriteListener(this);
     mHoverBeing = actorSpriteManager->findBeingByPixel(x, y);
     mBeingPopup->show(getMouseX(), getMouseY(), mHoverBeing);
 
-    mHoverItem->removeActorSpriteListener(this);
+    if (mHoverItem)
+        mHoverItem->removeActorSpriteListener(this);
     mHoverItem = actorSpriteManager->findItem(x / mMap->getTileWidth(),
                                               y / mMap->getTileHeight());
 
