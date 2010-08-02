@@ -224,8 +224,8 @@ void setStorageCount(int count)
     if (count != old)
     {
         Mana::Event event("StorageCount");
-        event.setBool("oldCount", old);
-        event.setBool("newCount", count);
+        event.setInt("oldCount", old);
+        event.setInt("newCount", count);
         Mana::EventManager::trigger("Storage", event);
     }
 }
@@ -245,8 +245,8 @@ void setNPCInteractionCount(int count)
     if (count != old)
     {
         Mana::Event event("NPCCount");
-        event.setBool("oldCount", old);
-        event.setBool("newCount", count);
+        event.setInt("oldCount", old);
+        event.setInt("newCount", count);
         Mana::EventManager::trigger("NPC", event);
     }
 }
@@ -264,8 +264,8 @@ void setNPCPostCount(int count)
     if (count != old)
     {
         Mana::Event event("PostCount");
-        event.setBool("oldCount", old);
-        event.setBool("newCount", count);
+        event.setInt("oldCount", old);
+        event.setInt("newCount", count);
         Mana::EventManager::trigger("NPC", event);
     }
 }
