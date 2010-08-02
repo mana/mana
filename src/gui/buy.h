@@ -100,11 +100,6 @@ class BuyDialog : public Window, public gcn::ActionListener,
         void setVisible(bool visible);
 
         /**
-         * Returns true if any instances exist.
-         */
-        static bool isActive() { return instances.size() > 0; }
-
-        /**
          * Closes all instances.
          */
         static void closeAll();

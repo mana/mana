@@ -28,6 +28,7 @@
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "map.h"
+#include "playerinfo.h"
 #include "textmanager.h"
 
 #include "gui/gui.h"
@@ -345,7 +346,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         return;
 
     // Check if we are busy
-    if (Being::isTalking())
+    if (PlayerInfo::isTalking())
         return;
 
     mPlayerFollowMouse = false;

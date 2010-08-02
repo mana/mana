@@ -21,6 +21,8 @@
 
 #include "buysell.h"
 
+#include "playerinfo.h"
+
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"
@@ -65,11 +67,16 @@ BuySellDialog::BuySellDialog(int npcId):
 
     instances.push_back(this);
     setVisible(true);
+
+    PlayerInfo::setBuySellState(BUYSELL_CHOOSING);
 }
 
 BuySellDialog::~BuySellDialog()
 {
     instances.remove(this);
+
+    if (PlayerInfo::getBuySellState() == BUYSELL_CHOOSING)
+        PlayerInfo::setBuySellState(BUYSELL_NONE);
 }
 
 void BuySellDialog::setVisible(bool visible)

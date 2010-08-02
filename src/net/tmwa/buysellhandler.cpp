@@ -61,7 +61,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_NPC_BUY_SELL_CHOICE:
-            if (!BuySellDialog::isActive())
+            if (PlayerInfo::getBuySellState() != BUYSELL_CHOOSING)
             {
                 mNpcId = msg.readInt32();
                 new BuySellDialog(mNpcId);

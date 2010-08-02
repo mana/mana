@@ -21,6 +21,7 @@
 
 #include "gui/sell.h"
 
+#include "playerinfo.h"
 #include "shopitem.h"
 #include "units.h"
 
@@ -110,6 +111,8 @@ SellDialog::SellDialog(int npcId):
 
     instances.push_back(this);
     setVisible(true);
+
+    PlayerInfo::setBuySellState(BUYSELL_SELLING);
 }
 
 SellDialog::~SellDialog()
@@ -117,6 +120,9 @@ SellDialog::~SellDialog()
     delete mShopItems;
 
     instances.remove(this);
+
+    if (PlayerInfo::getBuySellState() == BUYSELL_SELLING)
+        PlayerInfo::setBuySellState(BUYSELL_NONE);
 }
 
 void SellDialog::reset()

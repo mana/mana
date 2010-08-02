@@ -493,8 +493,6 @@ class Being : public ActorSprite, public ConfigListener
 
         void talkTo();
 
-        static bool isTalking();
-
     protected:
         /**
          * Sets the new path for this being.

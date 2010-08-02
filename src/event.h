@@ -63,6 +63,10 @@ public:
     void setFloat(const std::string &key, double value) throw (BadEvent);
     double getFloat(const std::string &key) const throw (BadEvent);
 
+    // Sets or gets a boolean with key to identify
+    void setBool(const std::string &key, bool value) throw (BadEvent);
+    bool getBool(const std::string &key) const throw (BadEvent);
+
 private:
     std::string mEventName;
 

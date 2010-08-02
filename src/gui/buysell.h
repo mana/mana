@@ -52,11 +52,6 @@ class BuySellDialog : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         /**
-         * Returns true if any instances exist.
-         */
-        static bool isActive() { return instances.size() > 0; }
-
-        /**
          * Closes all instances.
          */
         static void closeAll();

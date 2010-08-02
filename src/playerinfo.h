@@ -66,6 +66,14 @@ class Equipment;
 class Inventory;
 class Item;
 
+enum BuySellState
+{
+    BUYSELL_NONE,
+    BUYSELL_CHOOSING,
+    BUYSELL_BUYING,
+    BUYSELL_SELLING
+};
+
 /**
  * Special information storage structure.
  */
@@ -168,6 +176,31 @@ namespace PlayerInfo
      */
     Item *getEquipment(unsigned int slot);
 
+// -- Buy/Sell/Trade ----------------------------------------------------------
+
+    /**
+     * Returns true if the player is involved in a buy, sell, or related
+     * interaction, false otherwise.
+     */
+    BuySellState getBuySellState();
+
+    /**
+     * Sets whether the player is currently involved in a buy, sell, or related
+     * interaction.
+     */
+    void setBuySellState(BuySellState buySellState);
+
+    /**
+     * Returns true if the player is involved in a trade at the moment, false
+     * otherwise.
+     */
+    bool isTrading();
+
+    /**
+     * Sets whether the player is currently involved in trade or not.
+     */
+    void setTrading(bool trading);
+
 // --- Specials ---------------------------------------------------------------
 
     /**
@@ -188,20 +221,15 @@ namespace PlayerInfo
     void setBackend(const PlayerInfoBackend &backend);
 
     /**
+     * Returns true if the player is involved in a NPC interaction, false
+     * otherwise.
+     */
+    bool isTalking();
+
+    /**
      * Does necessary updates every tick.
      */
     void logic();
-
-    /**
-     * Returns true if the player is involved in a trade at the moment, false
-     * otherwise.
-     */
-    bool isTrading();
-
-    /**
-     * Sets whether the player is currently involved in trade or not.
-     */
-    void setTrading(bool trading);
 
     /**
      * Initializes some internals.

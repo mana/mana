@@ -96,4 +96,24 @@ double Event::getFloat(const std::string &key) const throw (BadEvent)
     return static_cast<FloatData *>(it->second)->getData();
 }
 
+void Event::setBool(const std::string &key, bool value) throw (BadEvent)
+{
+    if (mData.find(key) != mData.end())
+        throw KEY_ALREADY_EXISTS;
+
+    mData[key] = new BoolData(value);
+}
+
+bool Event::getBool(const std::string &key) const throw (BadEvent)
+{
+    VariableMap::const_iterator it = mData.find(key);
+    if (it == mData.end())
+        throw BAD_KEY;
+
+    if (it->second->getType() != VariableData::DATA_BOOL)
+        throw BAD_VALUE;
+
+    return static_cast<BoolData *>(it->second)->getData();
+}
+
 } // namespace Mana

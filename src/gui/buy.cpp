@@ -21,6 +21,7 @@
 
 #include "gui/buy.h"
 
+#include "playerinfo.h"
 #include "shopitem.h"
 #include "units.h"
 
@@ -111,6 +112,8 @@ BuyDialog::BuyDialog(int npcId):
 
     instances.push_back(this);
     setVisible(true);
+
+    PlayerInfo::setBuySellState(BUYSELL_BUYING);
 }
 
 BuyDialog::~BuyDialog()
@@ -118,6 +121,9 @@ BuyDialog::~BuyDialog()
     delete mShopItems;
 
     instances.remove(this);
+
+    if (PlayerInfo::getBuySellState() == BUYSELL_BUYING)
+        PlayerInfo::setBuySellState(BUYSELL_NONE);
 }
 
 void BuyDialog::setMoney(int amount)

@@ -39,12 +39,7 @@
 #include "text.h"
 #include "statuseffect.h"
 
-#include "gui/buy.h"
-#include "gui/buysell.h"
 #include "gui/gui.h"
-#include "gui/npcdialog.h"
-#include "gui/npcpostdialog.h"
-#include "gui/sell.h"
 #include "gui/socialwindow.h"
 #include "gui/speechbubble.h"
 #include "gui/theme.h"
@@ -1202,11 +1197,4 @@ bool Being::canTalk()
 void Being::talkTo()
 {
     Net::getNpcHandler()->talk(mId);
-}
-
-bool Being::isTalking()
-{
-    return NpcDialog::isActive() || BuyDialog::isActive() ||
-           SellDialog::isActive() || BuySellDialog::isActive() ||
-           NpcPostDialog::isActive();
 }

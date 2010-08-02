@@ -27,24 +27,29 @@
 #include "listener.h"
 #include "log.h"
 
+#include "gui/npcdialog.h"
+#include "gui/npcpostdialog.h"
+
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
 namespace PlayerInfo {
 
-class PlayerInfoListener;
+class PlayerLogic;
 
-PlayerInfoListener *mListener = 0;
+PlayerLogic *mListener = 0;
 
 PlayerInfoBackend mData;
 
 Inventory *mInventory = 0;
 Equipment *mEquipment = 0;
 
+BuySellState mBuySellState = BUYSELL_NONE;
+bool mTrading = false;
+
 std::map<int, Special> mSpecials;
 char mSpecialRechargeUpdateNeeded = 0;
 
-bool mTrading = false;
 int mLevelProgress = 0;
 
 // --- Triggers ---------------------------------------------------------------
@@ -201,6 +206,45 @@ void setEquipmentBackend(Equipment::Backend *backend)
     mEquipment->setBackend(backend);
 }
 
+// -- Buy/Sell/Trade ----------------------------------------------------------
+
+BuySellState getBuySellState()
+{
+    return mBuySellState;
+}
+
+void setBuySellState(BuySellState buySellState)
+{
+    BuySellState old = mBuySellState;
+    mBuySellState = buySellState;
+
+    if (buySellState != old)
+    {
+        Mana::Event event("StateChange");
+        event.setInt("oldState", old);
+        event.setInt("newState", buySellState);
+        Mana::EventManager::trigger("BuySell", event);
+    }
+}
+
+bool isTrading()
+{
+    return mTrading;
+}
+
+void setTrading(bool trading)
+{
+    bool notify = mTrading != trading;
+    mTrading = trading;
+
+    if (notify)
+    {
+        Mana::Event event("Trading");
+        event.setBool("trading", trading);
+        Mana::EventManager::trigger("Status", event);
+    }
+}
+
 // --- Specials ---------------------------------------------------------------
 
 void setSpecialStatus(int id, int current, int max, int recharge)
@@ -224,6 +268,12 @@ void setBackend(const PlayerInfoBackend &backend)
     mData = backend;
 }
 
+bool isTalking()
+{
+    return NpcDialog::isActive() || NpcPostDialog::isActive() ||
+            PlayerInfo::getBuySellState() != BUYSELL_NONE;
+}
+
 void logic()
 {
     if ((mSpecialRechargeUpdateNeeded%11) == 0)
@@ -242,28 +292,10 @@ void logic()
     mSpecialRechargeUpdateNeeded++;
 }
 
-bool isTrading()
-{
-    return mTrading;
-}
-
-void setTrading(bool trading)
-{
-    bool notify = mTrading != trading;
-    mTrading = trading;
-
-    if (notify)
-    {
-        Mana::Event event("Trading");
-        event.setInt("trading", trading);
-        Mana::EventManager::trigger("Status", event);
-    }
-}
-
-class PlayerInfoListener : Mana::Listener
+class PlayerLogic : Mana::Listener
 {
 public:
-    PlayerInfoListener()
+    PlayerLogic()
     {
         listen("Client");
         listen("Game");
@@ -306,7 +338,7 @@ void init()
     if (mListener)
         return;
 
-    mListener = new PlayerInfoListener();
+    mListener = new PlayerLogic();
 }
 
 } // namespace PlayerInfo
