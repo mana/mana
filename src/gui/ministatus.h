@@ -43,13 +43,6 @@ class MiniStatusWindow : public Popup, public Mana::Listener
     public:
         MiniStatusWindow();
 
-        /**
-         * Sets one of the icons.
-         */
-        void setIcon(int index, AnimatedSprite *sprite);
-
-        void eraseIcon(int index);
-
         void drawIcons(Graphics *graphics);
 
         void event(const std::string &channel, const Mana::Event &event);
@@ -65,6 +58,13 @@ class MiniStatusWindow : public Popup, public Mana::Listener
     private:
         bool isInBar(ProgressBar *bar, int x, int y) const;
 
+        /**
+         * Sets one of the icons.
+         */
+        void setIcon(int index, AnimatedSprite *sprite);
+
+        void eraseIcon(int index);
+
         /*
          * Mini Status Bars
          */
@@ -73,6 +73,7 @@ class MiniStatusWindow : public Popup, public Mana::Listener
         ProgressBar *mXpBar;
         TextPopup *mTextPopup;
 
+        std::vector<int> mStatusEffectIcons;
         std::vector<AnimatedSprite *> mIcons;
 };
 

@@ -35,13 +35,10 @@
 #include "playerinfo.h"
 #include "simpleanimation.h"
 #include "sound.h"
-#include "statuseffect.h"
 #include "text.h"
 
 #include "gui/gui.h"
-#include "gui/ministatus.h"
 #include "gui/okdialog.h"
-#include "gui/skilldialog.h"
 #include "gui/theme.h"
 #include "gui/userpalette.h"
 
@@ -1081,54 +1078,6 @@ void LocalPlayer::setGotoTarget(Being *target)
         setTarget(target);
         mGoingToTarget = true;
         setDestination(target->getTileX(), target->getTileY());
-    }
-}
-
-extern MiniStatusWindow *miniStatusWindow;
-
-void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
-{
-    Being::handleStatusEffect(effect, effectId);
-
-    if (effect)
-    {
-        effect->deliverMessage();
-        effect->playSFX();
-
-        AnimatedSprite *sprite = effect->getIcon();
-
-        if (!sprite)
-        {
-            // delete sprite, if necessary
-            for (unsigned int i = 0; i < mStatusEffectIcons.size();)
-                if (mStatusEffectIcons[i] == effectId)
-                {
-                    mStatusEffectIcons.erase(mStatusEffectIcons.begin() + i);
-                    miniStatusWindow->eraseIcon(i);
-                }
-                else
-                    i++;
-        }
-        else
-        {
-            // replace sprite or append
-            bool found = false;
-
-            for (unsigned int i = 0; i < mStatusEffectIcons.size(); i++)
-                if (mStatusEffectIcons[i] == effectId)
-                {
-                    miniStatusWindow->setIcon(i, sprite);
-                    found = true;
-                    break;
-                }
-
-            if (!found)
-            { // add new
-                int offset = mStatusEffectIcons.size();
-                miniStatusWindow->setIcon(offset, sprite);
-                mStatusEffectIcons.push_back(effectId);
-            }
-        }
     }
 }
 

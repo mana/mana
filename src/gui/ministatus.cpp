@@ -25,6 +25,7 @@
 #include "configuration.h"
 #include "graphics.h"
 #include "playerinfo.h"
+#include "statuseffect.h"
 
 #include "gui/gui.h"
 #include "gui/statuswindow.h"
@@ -119,20 +120,79 @@ void MiniStatusWindow::drawIcons(Graphics *graphics)
 
 void MiniStatusWindow::event(const std::string &channel, const Mana::Event &event)
 {
-    if (event.getName() == "UpdateAttribute")
+    if (channel == "Attributes")
     {
-        int id = event.getInt("id");
-        if (id == HP || id == MAX_HP)
+        if (event.getName() == "UpdateAttribute")
         {
-            StatusWindow::updateHPBar(mHpBar);
+            int id = event.getInt("id");
+            if (id == HP || id == MAX_HP)
+            {
+                StatusWindow::updateHPBar(mHpBar);
+            }
+            else if (id == MP || id == MAX_MP)
+            {
+                StatusWindow::updateMPBar(mMpBar);
+            }
+            else if (id == EXP || id == EXP_NEEDED)
+            {
+                StatusWindow::updateXPBar(mXpBar);
+            }
         }
-        else if (id == MP || id == MAX_MP)
+    }
+    else if (channel == "ActorSprite")
+    {
+        if (event.getName() == "UpdateStatusEffect")
         {
-            StatusWindow::updateMPBar(mMpBar);
-        }
-        else if (id == EXP || id == EXP_NEEDED)
-        {
-            StatusWindow::updateXPBar(mXpBar);
+            int index = event.getInt("index");
+            bool newStatus = event.getBool("newStatus");
+
+            StatusEffect *effect = StatusEffect::getStatusEffect(index,
+                                                                 newStatus);
+
+            if (effect)
+            {
+                effect->deliverMessage();
+                effect->playSFX();
+
+                AnimatedSprite *sprite = effect->getIcon();
+
+                typedef std::vector<int> IntMap;
+
+                if (!sprite)
+                {
+                    // delete sprite, if necessary
+                    for (unsigned int i = 0; i < mStatusEffectIcons.size();)
+                        if (mStatusEffectIcons[i] == index)
+                        {
+                            mStatusEffectIcons.erase(mStatusEffectIcons.begin()
+                                                     + i);
+                            miniStatusWindow->eraseIcon(i);
+                        }
+                        else
+                            i++;
+                }
+                else
+                {
+                    // replace sprite or append
+                    bool found = false;
+
+                    for (unsigned int i = 0; i < mStatusEffectIcons.size();
+                         i++)
+                        if (mStatusEffectIcons[i] == index)
+                        {
+                            miniStatusWindow->setIcon(i, sprite);
+                            found = true;
+                            break;
+                        }
+
+                    if (!found)
+                    { // add new
+                        int offset = mStatusEffectIcons.size();
+                        miniStatusWindow->setIcon(offset, sprite);
+                        mStatusEffectIcons.push_back(index);
+                    }
+                }
+            }
         }
     }
 }
@@ -199,5 +259,3 @@ void MiniStatusWindow::mouseExited(gcn::MouseEvent &event)
 
     mTextPopup->setVisible(false);
 }
-
-

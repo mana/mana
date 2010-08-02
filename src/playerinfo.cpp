@@ -27,9 +27,6 @@
 #include "listener.h"
 #include "log.h"
 
-#include "gui/npcdialog.h"
-#include "gui/npcpostdialog.h"
-
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 

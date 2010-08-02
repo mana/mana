@@ -245,8 +245,6 @@ class LocalPlayer : public Being, public ActorSpriteListener,
         /** Whether or not the name settings have changed */
         bool mUpdateName;
 
-        virtual void handleStatusEffect(StatusEffect *effect, int effectId);
-
         void startWalking(unsigned char dir);
 
         int mAttackRange;
@@ -270,8 +268,6 @@ class LocalPlayer : public Being, public ActorSpriteListener,
         int mLastAction;      /**< Time stamp of the last action, -1 if none. */
         int mWalkingDir;      /**< The direction the player is walking in. */
         bool mPathSetByMouse; /**< Tells if the path was set using mouse */
-
-        std::vector<int> mStatusEffectIcons;
 
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */

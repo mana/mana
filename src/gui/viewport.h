@@ -22,6 +22,7 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
+#include "actorspritelistener.h"
 #include "actorspritemanager.h"
 #include "configlistener.h"
 #include "position.h"
@@ -53,7 +54,7 @@ const int walkingMouseDelay = 500;
  * coordinates.
  */
 class Viewport : public WindowContainer, public gcn::MouseListener,
-    public ConfigListener
+        public ConfigListener, public ActorSpriteListener
 {
     public:
         /**
@@ -159,11 +160,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void hideBeingPopup();
 
-    protected:
-        friend class ActorSpriteManager;
-
-        /// Clears any matching hovers
-        void clearHover(ActorSprite *actor);
+        void actorSpriteDestroyed(const ActorSprite &actorSprite);
 
     private:
         /**

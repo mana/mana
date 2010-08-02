@@ -495,14 +495,17 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int x = (event.getX() + (int) mPixelViewX);
     const int y = (event.getY() + (int) mPixelViewY);
 
+    mHoverBeing->removeActorSpriteListener(this);
     mHoverBeing = actorSpriteManager->findBeingByPixel(x, y);
     mBeingPopup->show(getMouseX(), getMouseY(), mHoverBeing);
 
+    mHoverItem->removeActorSpriteListener(this);
     mHoverItem = actorSpriteManager->findItem(x / mMap->getTileWidth(),
                                               y / mMap->getTileHeight());
 
     if (mHoverBeing)
     {
+        mHoverBeing->addActorSpriteListener(this);
         switch (mHoverBeing->getType())
         {
             // NPCs
@@ -522,6 +525,7 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     }
     else if (mHoverItem)
     {
+        mHoverItem->addActorSpriteListener(this);
         gui->setCursorType(Gui::CURSOR_PICKUP);
     }
     else
@@ -546,11 +550,11 @@ void Viewport::hideBeingPopup()
     mBeingPopup->setVisible(false);
 }
 
-void Viewport::clearHover(ActorSprite *actor)
+void Viewport::actorSpriteDestroyed(const ActorSprite &actorSprite)
 {
-    if (mHoverBeing == actor)
+    if (&actorSprite == mHoverBeing)
         mHoverBeing = 0;
 
-    if (mHoverItem == actor)
+    if (&actorSprite == mHoverItem)
         mHoverItem = 0;
 }
