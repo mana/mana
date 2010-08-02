@@ -77,6 +77,7 @@ ChatWindow::ChatWindow():
     Window(_("Chat")),
     mTmpVisible(false)
 {
+    listen("Chat");
     listen("Notices");
 
     setWindowName("Chat");
@@ -416,6 +417,30 @@ void ChatWindow::event(const std::string &channel, const Mana::Event &event)
     {
         if (event.getName() == "ServerNotice")
             localChatTab->chatLog(event.getString("message"), BY_SERVER);
+    }
+    else if (channel == "Chat")
+    {
+        if (event.getName() == "Whisper")
+        {
+            whisper(event.getString("nick"), event.getString("message"));
+        }
+        else if (event.getName() == "WhisperError")
+        {
+            whisper(event.getString("nick"),
+                    event.getString("error"), BY_SERVER);
+        }
+        else if (event.getName() == "Player")
+        {
+            localChatTab->chatLog(event.getString("message"), BY_PLAYER);
+        }
+        else if (event.getName() == "Announcement")
+        {
+            localChatTab->chatLog(event.getString("message"), BY_GM);
+        }
+        else if (event.getName() == "Being")
+        {
+            localChatTab->chatLog(event.getString("message"), BY_OTHER);
+        }
     }
 }
 

@@ -165,7 +165,9 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     else
         mes = "Unknown : " + chatMsg;
 
-    localChatTab->chatLog(mes, being == player_node ? BY_PLAYER : BY_OTHER);
+    Mana::Event event(being == player_node ? "Player" : "Being");
+    event.setString("message", mes);
+    Mana::EventManager::trigger("Chat", event);
 }
 
 void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
@@ -225,13 +227,18 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
 
-    chatWindow->whisper(userNick, chatMsg);
+    Mana::Event event("Whisper");
+    event.setString("nick", userNick);
+    event.setString("message", chatMsg);
+    Mana::EventManager::trigger("Chat", event);
 }
 
 void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
 {
     std::string chatMsg = msg.readString();
-    localChatTab->chatLog(chatMsg, BY_GM);
+    Mana::Event event("Announcement");
+    event.setString("message", chatMsg);
+    Mana::EventManager::trigger("Chat", event);
 }
 
 void ChatHandler::handleChatMessage(Net::MessageIn &msg)

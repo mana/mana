@@ -28,8 +28,6 @@
 #include "localplayer.h"
 #include "playerrelations.h"
 
-#include "gui/widgets/chattab.h"
-
 #include "net/messagein.h"
 #include "net/messageout.h"
 
@@ -61,8 +59,6 @@ ChatHandler::ChatHandler()
 
 void ChatHandler::handleMessage(Net::MessageIn &msg)
 {
-    if (!localChatTab) return;
-
     Being *being;
     std::string chatMsg;
     std::string nick;
@@ -85,14 +81,22 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                     // Success (don't need to report)
                     break;
                 case 0x01:
-                    chatWindow->whisper(nick, strprintf(_("Whisper could not "
-                                  "be sent, %s is offline."), nick.c_str()),
-                                        BY_SERVER);
+                    {
+                        Mana::Event event("WhisperError");
+                        event.setString("nick", nick);
+                        event.setString("error", strprintf(_("Whisper could "
+                                  "not be sent, %s is offline."), nick.c_str()));
+                        Mana::EventManager::trigger("Chat", event);
+                    }
                     break;
                 case 0x02:
-                    chatWindow->whisper(nick, strprintf(_("Whisper could not "
-                                  "be sent, ignored by %s."), nick.c_str()),
-                                        BY_SERVER);
+                    {
+                        Mana::Event event("WhisperError");
+                        event.setString("nick", nick);
+                        event.setString("error", strprintf(_("Whisper could "
+                                 "not be sent, ignored by %s."), nick.c_str()));
+                        Mana::EventManager::trigger("Chat", event);
+                    }
                     break;
             }
             break;
@@ -110,11 +114,16 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             if (nick != "Server")
             {
                 if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
-                    chatWindow->whisper(nick, chatMsg);
+                {
+                    Mana::Event event("Whisper");
+                    event.setString("nick", nick);
+                    event.setString("message", chatMsg);
+                    Mana::EventManager::trigger("Chat", event);
+                }
             }
             else
             {
-                localChatTab->chatLog(chatMsg, BY_SERVER);
+                SERVER_NOTICE(chatMsg)
             }
 
             break;
@@ -122,7 +131,8 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
         // Received speech from being
         case SMSG_BEING_CHAT: {
             chatMsgLength = msg.readInt16() - 8;
-            being = actorSpriteManager->findBeing(msg.readInt32());
+            int beingId = msg.readInt32();
+            being = actorSpriteManager->findBeing(beingId);
 
             if (!being || chatMsgLength <= 0)
                 break;
@@ -137,7 +147,13 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             // We use getIgnorePlayer instead of ignoringPlayer here because ignorePlayer' side
             // effects are triggered right below for Being::IGNORE_SPEECH_FLOAT.
             if (player_relations.checkPermissionSilently(sender_name, PlayerRelation::SPEECH_LOG))
-                localChatTab->chatLog(chatMsg, BY_OTHER);
+            {
+                Mana::Event event("Being");
+                event.setString("message", chatMsg);
+                event.setString("nick", sender_name);
+                event.setInt("beingId", beingId);
+                Mana::EventManager::trigger("Chat", event);
+            }
 
             chatMsg.erase(0, pos + 3);
             trim(chatMsg);
@@ -159,7 +175,9 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
 
             if (msg.getId() == SMSG_PLAYER_CHAT)
             {
-                localChatTab->chatLog(chatMsg, BY_PLAYER);
+                Mana::Event event("Player");
+                event.setString("message", chatMsg);
+                Mana::EventManager::trigger("Chat", event);
 
                 if (pos != std::string::npos)
                     chatMsg.erase(0, pos + 3);
@@ -170,7 +188,9 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             }
             else
             {
-                localChatTab->chatLog(chatMsg, BY_GM);
+                Mana::Event event("Announcement");
+                event.setString("message", chatMsg);
+                Mana::EventManager::trigger("Chat", event);
             }
             break;
         }
@@ -178,7 +198,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_MVP:
             // Display MVP player
             msg.readInt32(); // id
-            localChatTab->chatLog(_("MVP player."), BY_SERVER);
+            SERVER_NOTICE(_("MVP player."))
             break;
     }
 }
