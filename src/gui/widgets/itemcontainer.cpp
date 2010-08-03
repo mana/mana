@@ -255,14 +255,46 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
 
         if (mSelectedIndex == index)
         {
-            mSelectionStatus = SEL_DESELECTING;
+            if(event.getClickCount() == 2)
+            {
+                if (item->isEquipment())
+                {
+                    if (item->isEquipped())
+                        Net::getInventoryHandler()->unequipItem(item);
+                    else
+                        Net::getInventoryHandler()->equipItem(item);
+                }
+                else
+                    Net::getInventoryHandler()->useItem(item);
+
+            }
+            else
+            {
+                mSelectionStatus = SEL_DESELECTING;
+            }
         }
         else if (item && item->getId())
         {
-            setSelectedIndex(index);
-            mSelectionStatus = SEL_SELECTING;
+           if(event.getClickCount() == 2)
+            {
+                if (item->isEquipment())
+                {
+                    if (item->isEquipped())
+                        Net::getInventoryHandler()->unequipItem(item);
+                    else
+                        Net::getInventoryHandler()->equipItem(item);
+                }
+                else
+                    Net::getInventoryHandler()->useItem(item);
 
-            itemShortcut->setItemSelected(item->getId());
+            }
+            else
+            {
+                setSelectedIndex(index);
+                mSelectionStatus = SEL_SELECTING;
+
+                itemShortcut->setItemSelected(item->getId());
+            }
             if (item->isEquipment())
                 outfitWindow->setItemSelected(item->getId());
         }

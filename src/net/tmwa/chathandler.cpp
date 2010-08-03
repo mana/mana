@@ -129,7 +129,8 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         // Received speech from being
-        case SMSG_BEING_CHAT: {
+        case SMSG_BEING_CHAT:
+        {
             chatMsgLength = msg.readInt16() - 8;
             int beingId = msg.readInt32();
             being = actorSpriteManager->findBeing(beingId);
@@ -141,8 +142,23 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
 
             std::string::size_type pos = chatMsg.find(" : ", 0);
             std::string sender_name = ((pos == std::string::npos)
-                                       ? ""
-                                       : chatMsg.substr(0, pos));
+                                       ? "" : chatMsg.substr(0, pos));
+
+            if (sender_name != being->getName()
+                && being->getType() == Being::PLAYER)
+            {
+                if (!being->getName().empty())
+                    sender_name = being->getName();
+            }
+            else
+            {
+                chatMsg.erase(0, pos + 3);
+            }
+
+            trim(chatMsg);
+
+            std::string reducedMessage = chatMsg;
+            chatMsg = removeColors(sender_name) + " : " + reducedMessage;
 
             // We use getIgnorePlayer instead of ignoringPlayer here because ignorePlayer' side
             // effects are triggered right below for Being::IGNORE_SPEECH_FLOAT.
@@ -150,21 +166,23 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             {
                 Mana::Event event("Being");
                 event.setString("message", chatMsg);
+                event.setString("text", reducedMessage);
                 event.setString("nick", sender_name);
                 event.setInt("beingId", beingId);
                 Mana::EventManager::trigger("Chat", event);
             }
 
-            chatMsg.erase(0, pos + 3);
-            trim(chatMsg);
-
-            if (player_relations.hasPermission(sender_name, PlayerRelation::SPEECH_FLOAT))
+            if (player_relations.hasPermission(sender_name,
+                PlayerRelation::SPEECH_FLOAT))
+            {
                 being->setSpeech(chatMsg, SPEECH_TIME);
+            }
             break;
         }
 
         case SMSG_PLAYER_CHAT:
-        case SMSG_GM_CHAT: {
+        case SMSG_GM_CHAT:
+        {
             chatMsgLength = msg.readInt16() - 4;
 
             if (chatMsgLength <= 0)
