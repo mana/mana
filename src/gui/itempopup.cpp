@@ -26,7 +26,6 @@
 #include "units.h"
 
 #include "gui/gui.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/icon.h"
 #include "gui/widgets/textbox.h"
@@ -36,6 +35,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 

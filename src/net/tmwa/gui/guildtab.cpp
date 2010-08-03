@@ -26,13 +26,12 @@
 #include "guild.h"
 #include "localplayer.h"
 
-#include "gui/theme.h"
-
 #include "net/net.h"
 #include "net/guildhandler.h"
 
 #include "resources/iteminfo.h"
 #include "resources/itemdb.h"
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"

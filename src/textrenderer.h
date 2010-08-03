@@ -24,7 +24,7 @@
 
 #include "graphics.h"
 
-#include "gui/theme.h"
+#include "resources/theme.h"
 
 /**
  * Class for text rendering. Used by the TextParticle, the Text and FlashText

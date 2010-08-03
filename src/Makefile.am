@@ -193,8 +193,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/textdialog.h \
 	      gui/textpopup.cpp \
 	      gui/textpopup.h \
-	      gui/theme.cpp \
-	      gui/theme.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
 	      gui/truetypefont.cpp \
@@ -203,8 +201,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/unregisterdialog.h \
 	      gui/updatewindow.cpp \
 	      gui/updatewindow.h \
-	      gui/userpalette.cpp \
-	      gui/userpalette.h \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/windowmenu.cpp \
@@ -283,6 +279,10 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      resources/specialdb.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
+	      resources/theme.cpp \
+	      resources/theme.h \
+	      resources/userpalette.cpp \
+	      resources/userpalette.h \
 	      resources/wallpaper.cpp \
 	      resources/wallpaper.h \
 	      utils/base64.cpp \

@@ -26,7 +26,6 @@
 #include "units.h"
 
 #include "gui/setup.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
@@ -39,6 +38,8 @@
 #include "net/net.h"
 #include "net/playerhandler.h"
 #include "net/gamehandler.h"
+
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/mathutils.h"

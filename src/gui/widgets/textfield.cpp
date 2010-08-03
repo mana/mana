@@ -26,9 +26,9 @@
 
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include "utils/copynpaste.h"
 #include "utils/dtor.h"

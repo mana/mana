@@ -24,7 +24,6 @@
 #include "gui/focushandler.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 #include "gui/truetypefont.h"
 
 #include "gui/widgets/window.h"
@@ -39,6 +38,7 @@
 #include "resources/imageset.h"
 #include "resources/imageloader.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>

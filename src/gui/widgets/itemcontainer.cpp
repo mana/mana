@@ -32,7 +32,6 @@
 #include "gui/outfitwindow.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "net/net.h"
@@ -40,6 +39,7 @@
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
+#include "resources/theme.h"
 
 #include "utils/stringutils.h"
 

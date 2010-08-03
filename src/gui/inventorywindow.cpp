@@ -30,7 +30,6 @@
 #include "gui/itemamount.h"
 #include "gui/setup.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
@@ -44,6 +43,7 @@
 #include "net/net.h"
 
 #include "resources/iteminfo.h"
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

@@ -29,11 +29,10 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/theme.h"
-
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/iteminfo.h"
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 

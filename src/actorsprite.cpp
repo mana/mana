@@ -31,13 +31,12 @@
 #include "sound.h"
 #include "statuseffect.h"
 
-#include "gui/theme.h"
-
 #include "net/net.h"
 
 #include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include <cassert>
 

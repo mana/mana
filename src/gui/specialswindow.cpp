@@ -23,7 +23,6 @@
 #include "log.h"
 
 #include "gui/setup.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
@@ -42,6 +41,7 @@
 #include "net/specialhandler.h"
 
 #include "resources/specialdb.h"
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"

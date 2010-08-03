@@ -29,7 +29,6 @@
 
 #include "gui/equipmentwindow.h"
 #include "gui/itempopup.h"
-#include "gui/theme.h"
 #include "gui/setup.h"
 #include "gui/viewport.h"
 
@@ -41,6 +40,7 @@
 #include "resources/image.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

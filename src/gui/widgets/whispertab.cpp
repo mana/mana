@@ -25,10 +25,10 @@
 #include "commandhandler.h"
 #include "localplayer.h"
 
-#include "gui/theme.h"
-
 #include "net/chathandler.h"
 #include "net/net.h"
+
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

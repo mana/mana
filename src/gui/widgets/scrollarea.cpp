@@ -24,9 +24,8 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/theme.h"
-
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 

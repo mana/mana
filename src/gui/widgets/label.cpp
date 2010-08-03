@@ -20,7 +20,7 @@
 
 #include "gui/widgets/label.h"
 
-#include "gui/theme.h"
+#include "resources/theme.h"
 
 Label::Label()
 {

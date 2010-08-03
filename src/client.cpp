@@ -49,10 +49,8 @@
 #include "gui/sdlinput.h"
 #include "gui/serverdialog.h"
 #include "gui/setup.h"
-#include "gui/theme.h"
 #include "gui/unregisterdialog.h"
 #include "gui/updatewindow.h"
-#include "gui/userpalette.h"
 #include "gui/worldselectdialog.h"
 
 #include "gui/widgets/button.h"
@@ -74,6 +72,8 @@
 #include "resources/specialdb.h"
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
+#include "resources/userpalette.h"
 
 #include "utils/gettext.h"
 #include "utils/mkdir.h"

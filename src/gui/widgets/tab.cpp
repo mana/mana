@@ -25,11 +25,11 @@
 #include "graphics.h"
 
 #include "gui/palette.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/tabbedarea.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 

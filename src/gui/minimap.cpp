@@ -30,10 +30,10 @@
 #include "map.h"
 
 #include "gui/setup.h"
-#include "gui/userpalette.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "resources/userpalette.h"
 
 #include "utils/gettext.h"
 

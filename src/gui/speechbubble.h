@@ -23,9 +23,9 @@
 #ifndef SPEECHBUBBLE_H
 #define SPEECHBUBBLE_H
 
-#include "gui/theme.h"
-
 #include "gui/widgets/popup.h"
+
+#include "resources/theme.h"
 
 class TextBox;
 

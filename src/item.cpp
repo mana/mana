@@ -21,12 +21,12 @@
 
 #include "item.h"
 
-#include "gui/theme.h"
+#include "configuration.h"
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
-#include "configuration.h"
+#include "resources/theme.h"
 
 Item::Item(int id, int quantity, bool equipment, bool equipped):
     mImage(0),

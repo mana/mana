@@ -25,7 +25,8 @@
 
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
+
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>

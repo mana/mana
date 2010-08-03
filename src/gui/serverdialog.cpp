@@ -30,7 +30,6 @@
 
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/dropdown.h"
@@ -42,10 +41,11 @@
 
 #include "net/net.h"
 
+#include "resources/theme.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
-#include "widgets/dropdown.h"
 
 #include <guichan/font.hpp>
 

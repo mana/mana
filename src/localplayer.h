@@ -26,7 +26,7 @@
 #include "being.h"
 #include "listener.h"
 
-#include "gui/userpalette.h"
+#include "resources/userpalette.h"
 
 #include <guichan/actionlistener.hpp>
 

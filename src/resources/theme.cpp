@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/theme.h"
+#include "resources/theme.h"
 
 #include "client.h"
 #include "configuration.h"

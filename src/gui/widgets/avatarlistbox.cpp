@@ -25,10 +25,10 @@
 #include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/theme.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include "utils/stringutils.h"
 

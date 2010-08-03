@@ -26,7 +26,6 @@
 
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/layout.h"
@@ -34,6 +33,7 @@
 #include "gui/widgets/windowcontainer.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>

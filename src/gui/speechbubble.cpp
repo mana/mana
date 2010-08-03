@@ -25,9 +25,10 @@
 #include "graphics.h"
 
 #include "gui/gui.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/textbox.h"
+
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 

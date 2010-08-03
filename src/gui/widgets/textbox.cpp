@@ -21,7 +21,7 @@
 
 #include "gui/widgets/textbox.h"
 
-#include "gui/theme.h"
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 

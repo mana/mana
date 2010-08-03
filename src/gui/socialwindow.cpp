@@ -29,7 +29,6 @@
 #include "gui/okdialog.h"
 #include "gui/setup.h"
 #include "gui/textdialog.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/avatarlistbox.h"
 #include "gui/widgets/browserbox.h"
@@ -46,6 +45,8 @@
 #include "net/net.h"
 #include "net/guildhandler.h"
 #include "net/partyhandler.h"
+
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"

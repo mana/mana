@@ -24,9 +24,8 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/theme.h"
-
 #include "resources/image.h"
+#include "resources/theme.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;

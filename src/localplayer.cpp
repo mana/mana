@@ -39,8 +39,6 @@
 
 #include "gui/gui.h"
 #include "gui/okdialog.h"
-#include "gui/theme.h"
-#include "gui/userpalette.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -57,6 +55,8 @@
 #include "resources/imageset.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
+#include "resources/userpalette.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

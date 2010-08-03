@@ -28,10 +28,10 @@
 
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/theme.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 

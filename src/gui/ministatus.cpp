@@ -30,13 +30,14 @@
 #include "gui/gui.h"
 #include "gui/statuswindow.h"
 #include "gui/textpopup.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/progressbar.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
 #include "net/gamehandler.h"
+
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

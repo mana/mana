@@ -23,8 +23,6 @@
 #include "configuration.h"
 
 #include "gui/gui.h"
-#include "gui/theme.h"
-#include "gui/userpalette.h"
 
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/itemlinkhandler.h"
@@ -35,6 +33,9 @@
 #include "gui/widgets/slider.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/textpreview.h"
+
+#include "resources/theme.h"
+#include "resources/userpalette.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

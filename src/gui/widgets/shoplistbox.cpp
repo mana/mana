@@ -26,12 +26,12 @@
 #include "shopitem.h"
 
 #include "gui/itempopup.h"
-#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/shopitems.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 #include <guichan/listmodel.hpp>

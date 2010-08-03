@@ -240,8 +240,6 @@
 		<Unit filename="src\gui\textdialog.h" />
 		<Unit filename="src\gui\textpopup.cpp" />
 		<Unit filename="src\gui\textpopup.h" />
-		<Unit filename="src\gui\theme.cpp" />
-		<Unit filename="src\gui\theme.h" />
 		<Unit filename="src\gui\trade.cpp" />
 		<Unit filename="src\gui\trade.h" />
 		<Unit filename="src\gui\truetypefont.cpp" />
@@ -250,8 +248,6 @@
 		<Unit filename="src\gui\unregisterdialog.h" />
 		<Unit filename="src\gui\updatewindow.cpp" />
 		<Unit filename="src\gui\updatewindow.h" />
-		<Unit filename="src\gui\userpalette.cpp" />
-		<Unit filename="src\gui\userpalette.h" />
 		<Unit filename="src\gui\viewport.cpp" />
 		<Unit filename="src\gui\viewport.h" />
 		<Unit filename="src\gui\widgets\avatarlistbox.cpp" />
@@ -566,6 +562,10 @@
 		<Unit filename="src\resources\specialdb.h" />
 		<Unit filename="src\resources\spritedef.cpp" />
 		<Unit filename="src\resources\spritedef.h" />
+		<Unit filename="src\resources\theme.cpp" />
+		<Unit filename="src\resources\theme.h" />
+		<Unit filename="src\resources\userpalette.cpp" />
+		<Unit filename="src\resources\userpalette.h" />
 		<Unit filename="src\resources\wallpaper.cpp" />
 		<Unit filename="src\resources\wallpaper.h" />
 		<Unit filename="src\rotationalparticle.cpp" />

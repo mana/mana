@@ -24,7 +24,8 @@
 #include "configuration.h"
 
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
+
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 

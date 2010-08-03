@@ -42,8 +42,6 @@
 #include "gui/gui.h"
 #include "gui/socialwindow.h"
 #include "gui/speechbubble.h"
-#include "gui/theme.h"
-#include "gui/userpalette.h"
 
 #include "net/charhandler.h"
 #include "net/gamehandler.h"
@@ -60,6 +58,8 @@
 #include "resources/monsterdb.h"
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
+#include "resources/userpalette.h"
 
 #include "utils/dtor.h"
 #include "utils/stringutils.h"

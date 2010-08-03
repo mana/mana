@@ -25,9 +25,9 @@
 #include "graphics.h"
 
 #include "gui/palette.h"
-#include "gui/theme.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 int CheckBox::instances = 0;
 float CheckBox::mAlpha = 1.0;
