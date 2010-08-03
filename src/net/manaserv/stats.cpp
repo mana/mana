@@ -32,6 +32,8 @@
 #include <list>
 #include <map>
 
+#define DEFAULT_ATTRIBUTESDB_FILE "attributes.xml"
+
 namespace ManaServ {
 namespace Stats {
     typedef struct {
@@ -123,12 +125,13 @@ namespace Stats {
 
     void load()
     {
-        XML::Document doc("stats.xml");
+        XML::Document doc(DEFAULT_ATTRIBUTESDB_FILE);
         xmlNodePtr rootNode = doc.rootNode();
 
         if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "stats"))
         {
-            logger->log("Stats: Error while loading stats.xml!");
+            logger->log("Stats: Error while loading "
+                        DEFAULT_ATTRIBUTESDB_FILE ". Using Built-ins.");
             loadBuiltins();
             return;
         }
@@ -142,7 +145,8 @@ namespace Stats {
 
             if (id == 0)
             {
-                logger->log("Stats: Invalid or missing stat ID in stats.xml!");
+                logger->log("Stats: Invalid or missing stat ID in "
+                            DEFAULT_ATTRIBUTESDB_FILE "!");
                 continue;
             }
             else if (stats.find(id) != stats.end())
@@ -155,7 +159,7 @@ namespace Stats {
             if (name.empty())
             {
                 logger->log("Stats: Invalid or missing stat name in "
-                            "stats.xml!");
+                            DEFAULT_ATTRIBUTESDB_FILE "!");
                 continue;
             }
 

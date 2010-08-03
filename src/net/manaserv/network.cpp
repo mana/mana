@@ -73,7 +73,7 @@ void finalize()
     if (connections)
     {
         logger->error("Tried to shutdown the network subsystem while there "
-                "are network connections left!");
+                      "are network connections left!");
     }
 
     clearNetworkHandlers();
@@ -85,7 +85,7 @@ Connection *getConnection()
     if (!client)
     {
         logger->error("Tried to instantiate a network object before "
-                "initializing the network subsystem!");
+                      "initializing the network subsystem!");
     }
 
     return new Connection(client);
