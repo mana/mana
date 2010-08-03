@@ -53,7 +53,11 @@ void initialize()
         logger->error("Failed to initialize ENet.");
     }
 
+#ifdef ENET_VERSION_MAJOR
+    client = enet_host_create(NULL, 3, 0, 0, 0);
+#else
     client = enet_host_create(NULL, 3, 0, 0);
+#endif
 
     if (!client)
     {
