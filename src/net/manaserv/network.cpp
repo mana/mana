@@ -53,12 +53,10 @@ void initialize()
         logger->error("Failed to initialize ENet.");
     }
 
-#if ENET_VERSION_MAJOR != 1
-#error Unsuported enet version!
-#elif ENET_VERSION_MINOR < 3
-    client = enet_host_create(NULL, 3, 0, 0);
-#else
+#ifdef ENET_VERSION_MAJOR
     client = enet_host_create(NULL, 3, 0, 0, 0);
+#else
+    client = enet_host_create(NULL, 3, 0, 0);
 #endif
 
     if (!client)

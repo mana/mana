@@ -60,12 +60,10 @@ bool Connection::connect(const std::string &address, short port)
     enetAddress.port = port;
 
     // Initiate the connection, allocating channel 0.
-#if ENET_VERSION_MAJOR != 1
-#error Unsuported enet version!
-#elif ENET_VERSION_MINOR < 3
-    mConnection = enet_host_connect(mClient, &enetAddress, 1);
-#else
+#ifdef ENET_VERSION_MAJOR
     mConnection = enet_host_connect(mClient, &enetAddress, 1, 0);
+#else
+    mConnection = enet_host_connect(mClient, &enetAddress, 1);
 #endif
 
     if (!mConnection)
