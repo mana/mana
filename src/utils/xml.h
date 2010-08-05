@@ -45,15 +45,6 @@ namespace XML
             Document(const std::string &filename, bool useResman = true);
 
             /**
-             * Constructor that attempts to load an XML document from memory.
-             * Does not log errors.
-             *
-             * @param data the string to parse as XML
-             * @param size the length of the string in bytes
-             */
-            Document(const char *data, int size);
-
-            /**
              * Destructor. Frees the loaded XML file.
              */
             ~Document();
@@ -88,6 +79,11 @@ namespace XML
      * Finds the first child node with the given name
      */
     xmlNodePtr findFirstChildByName(xmlNodePtr parent, const char *name);
+
+    /**
+     * Initializes the XML engine.
+     */
+    void init();
 }
 
 #define for_each_xml_child_node(var, parent) \

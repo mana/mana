@@ -21,11 +21,10 @@
 
 #include "main.h"
 
-#include "utils/gettext.h"
-
 #include "client.h"
 
-#include <libxml/parser.h>
+#include "utils/gettext.h"
+#include "utils/xml.h"
 
 #include <getopt.h>
 #include <iostream>
@@ -178,22 +177,6 @@ static void initInternationalization()
 #endif
 }
 
-static void xmlNullLogger(void *ctx, const char *msg, ...)
-{
-    // Does nothing, that's the whole point of it
-}
-
-// Initialize libxml2 and check for potential ABI mismatches between
-// compiled version and the shared library actually used.
-static void initXML()
-{
-    xmlInitParser();
-    LIBXML_TEST_VERSION;
-
-    // Suppress libxml2 error messages
-    xmlSetGenericErrorFunc(NULL, xmlNullLogger);
-}
-
 
 int main(int argc, char *argv[])
 {
@@ -227,7 +210,7 @@ int main(int argc, char *argv[])
     }
     atexit((void(*)()) PHYSFS_deinit);
 
-    initXML();
+    XML::init();
 
     Client client(options);
     return client.exec();
