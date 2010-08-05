@@ -25,6 +25,7 @@
 #include "configuration.h"
 #include "localplayer.h"
 #include "party.h"
+#include "playerrelations.h"
 
 #include "gui/recorder.h"
 #include "gui/setup.h"
@@ -439,7 +440,8 @@ void ChatWindow::event(const std::string &channel, const Mana::Event &event)
         }
         else if (event.getName() == "Being")
         {
-            localChatTab->chatLog(event.getString("message"), BY_OTHER);
+            if (event.getInt("permissions") & PlayerRelation::SPEECH_LOG)
+                localChatTab->chatLog(event.getString("message"), BY_OTHER);
         }
     }
 }

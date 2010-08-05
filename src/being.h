@@ -24,6 +24,7 @@
 
 #include "actorsprite.h"
 #include "configlistener.h"
+#include "listener.h"
 #include "map.h"
 #include "particlecontainer.h"
 #include "position.h"
@@ -62,7 +63,7 @@ enum Gender
     GENDER_UNSPECIFIED = 2
 };
 
-class Being : public ActorSprite, public ConfigListener
+class Being : public ActorSprite, public ConfigListener, public Mana::Listener
 {
     public:
         /**
@@ -492,6 +493,8 @@ class Being : public ActorSprite, public ConfigListener
         bool canTalk();
 
         void talkTo();
+
+        void event(const std::string &channel, const Mana::Event &event);
 
     protected:
         /**

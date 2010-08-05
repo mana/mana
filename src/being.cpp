@@ -26,6 +26,7 @@
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
+#include "event.h"
 #include "graphics.h"
 #include "guild.h"
 #include "localplayer.h"
@@ -33,6 +34,7 @@
 #include "map.h"
 #include "particle.h"
 #include "party.h"
+#include "playerrelations.h"
 #include "simpleanimation.h"
 #include "sound.h"
 #include "sprite.h"
@@ -114,6 +116,7 @@ Being::Being(int id, Type type, int subtype, Map *map):
         setShowName(true);
 
     updateColors();
+    listen("Chat");
 }
 
 Being::~Being()
@@ -1197,4 +1200,22 @@ bool Being::canTalk()
 void Being::talkTo()
 {
     Net::getNpcHandler()->talk(mId);
+}
+
+void Being::event(const std::string &channel, const Mana::Event &event)
+{
+    if (channel == "Chat" &&
+            (event.getName() == "Being" || event.getName() == "Player") &&
+            event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
+    {
+        try
+        {
+            if (mId == event.getInt("beingId"))
+            {
+                setSpeech(event.getString("text"));
+            }
+        }
+        catch (Mana::BadEvent badEvent)
+        {}
+    }
 }

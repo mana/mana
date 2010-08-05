@@ -49,8 +49,7 @@ class AwayListener : public gcn::ActionListener
 /**
  * The local player character.
  */
-class LocalPlayer : public Being, public ActorSpriteListener,
-        public Mana::Listener
+class LocalPlayer : public Being, public ActorSpriteListener
 {
     public:
         /**

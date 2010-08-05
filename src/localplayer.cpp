@@ -1109,6 +1109,8 @@ void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
             }
         }
     }
+    else
+        Being::event(channel, event);
 }
 
 void LocalPlayer::changeAwayMode()

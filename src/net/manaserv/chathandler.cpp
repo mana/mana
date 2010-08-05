@@ -27,6 +27,7 @@
 #include "channel.h"
 #include "channelmanager.h"
 #include "eventmanager.h"
+#include "playerrelations.h"
 
 #include "gui/widgets/channeltab.h"
 
@@ -158,7 +159,6 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     if (being)
     {
         mes = being->getName() + " : " + chatMsg;
-        being->setSpeech(chatMsg, SPEECH_TIME);
     }
     else
         mes = "Unknown : " + chatMsg;
@@ -168,6 +168,9 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     event.setString("text", chatMsg);
     event.setString("nick", being->getName());
     event.setInt("beingId", id);
+    event.setInt("permissions", player_relations
+                 .checkPermissionSilently(being->getName(),
+                 PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT));
     Mana::EventManager::trigger("Chat", event);
 }
 

@@ -155,28 +155,33 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                 chatMsg.erase(0, pos + 3);
             }
 
+            int perms;
+
+            if (being->getType() == Being::PLAYER)
+            {
+                perms = player_relations.checkPermissionSilently(sender_name,
+                    PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT);
+            }
+            else
+            {
+                perms = player_relations.getDefault()
+                        & (PlayerRelation::SPEECH_LOG
+                           | PlayerRelation::SPEECH_FLOAT);
+            }
+
             trim(chatMsg);
 
             std::string reducedMessage = chatMsg;
             chatMsg = removeColors(sender_name) + " : " + reducedMessage;
 
-            // We use getIgnorePlayer instead of ignoringPlayer here because ignorePlayer' side
-            // effects are triggered right below for Being::IGNORE_SPEECH_FLOAT.
-            if (player_relations.checkPermissionSilently(sender_name, PlayerRelation::SPEECH_LOG))
-            {
-                Mana::Event event("Being");
-                event.setString("message", chatMsg);
-                event.setString("text", reducedMessage);
-                event.setString("nick", sender_name);
-                event.setInt("beingId", beingId);
-                Mana::EventManager::trigger("Chat", event);
-            }
+            Mana::Event event("Being");
+            event.setString("message", chatMsg);
+            event.setString("text", reducedMessage);
+            event.setString("nick", sender_name);
+            event.setInt("beingId", beingId);
+            event.setInt("permissions", perms);
+            Mana::EventManager::trigger("Chat", event);
 
-            if (player_relations.hasPermission(sender_name,
-                PlayerRelation::SPEECH_FLOAT))
-            {
-                being->setSpeech(chatMsg, SPEECH_TIME);
-            }
             break;
         }
 
@@ -205,9 +210,10 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                 event.setString("text", chatMsg);
                 event.setString("nick", player_node->getName());
                 event.setInt("beingId", player_node->getId());
+                event.setInt("permissions", player_relations.getDefault()
+                             & (PlayerRelation::SPEECH_LOG
+                                | PlayerRelation::SPEECH_FLOAT));
                 Mana::EventManager::trigger("Chat", event);
-
-                player_node->setSpeech(chatMsg, SPEECH_TIME);
             }
             else
             {
