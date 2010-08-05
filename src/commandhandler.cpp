@@ -27,8 +27,6 @@
 #include "localplayer.h"
 #include "playerrelations.h"
 
-#include "gui/chat.h"
-
 #include "gui/widgets/channeltab.h"
 #include "gui/widgets/chattab.h"
 

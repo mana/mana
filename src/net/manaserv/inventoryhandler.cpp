@@ -28,16 +28,12 @@
 #include "localplayer.h"
 #include "playerinfo.h"
 
-#include "gui/chat.h"
-
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
 #include "resources/iteminfo.h"
-
-#include "log.h" // <<< REMOVE ME!
 
 extern Net::InventoryHandler *inventoryHandler;
 
@@ -105,7 +101,6 @@ void InventoryHandler::unequipItem(const Item *item)
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
     int equipSlot = item->getInvIndex();
-    logger->log("Unequipping %d", equipSlot);
     mEquips.setEquipment(equipSlot, 0);
 }
 

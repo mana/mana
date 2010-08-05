@@ -23,8 +23,6 @@
 
 #include "localplayer.h"
 
-#include "gui/viewport.h"
-
 #include "utils/stringutils.h"
 #include "utils/dtor.h"
 

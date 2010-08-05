@@ -31,7 +31,6 @@
 #include "playerinfo.h"
 #include "configuration.h"
 
-#include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/okdialog.h"
 #include "gui/viewport.h"

@@ -28,8 +28,6 @@
 #include "channelmanager.h"
 #include "eventmanager.h"
 
-#include "gui/chat.h"
-
 #include "gui/widgets/channeltab.h"
 
 #include "net/manaserv/connection.h"
@@ -167,6 +165,9 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
 
     Mana::Event event(being == player_node ? "Player" : "Being");
     event.setString("message", mes);
+    event.setString("text", chatMsg);
+    event.setString("nick", being->getName());
+    event.setInt("beingId", id);
     Mana::EventManager::trigger("Chat", event);
 }
 

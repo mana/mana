@@ -26,7 +26,6 @@
 #include "playerinfo.h"
 
 #include "gui/buy.h"
-#include "gui/chat.h"
 #include "gui/sell.h"
 
 #include "net/messagein.h"

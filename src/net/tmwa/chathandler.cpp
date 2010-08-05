@@ -189,18 +189,23 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                 break;
 
             chatMsg = msg.readString(chatMsgLength);
-            std::string::size_type pos = chatMsg.find(" : ", 0);
 
             if (msg.getId() == SMSG_PLAYER_CHAT)
             {
-                Mana::Event event("Player");
-                event.setString("message", chatMsg);
-                Mana::EventManager::trigger("Chat", event);
+                std::string::size_type pos = chatMsg.find(" : ", 0);
+                std::string mes = chatMsg;
 
                 if (pos != std::string::npos)
                     chatMsg.erase(0, pos + 3);
 
                 trim(chatMsg);
+
+                Mana::Event event("Player");
+                event.setString("message", mes);
+                event.setString("text", chatMsg);
+                event.setString("nick", player_node->getName());
+                event.setInt("beingId", player_node->getId());
+                Mana::EventManager::trigger("Chat", event);
 
                 player_node->setSpeech(chatMsg, SPEECH_TIME);
             }
