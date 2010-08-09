@@ -26,6 +26,7 @@
 
 #include "gui/gui.h"
 
+#include "gui/widgets/label.h"
 #include "gui/widgets/textbox.h"
 
 #include "resources/theme.h"
@@ -41,7 +42,7 @@ SpeechBubble::SpeechBubble():
     setMinWidth(29);
     setMinHeight(29);
 
-    mCaption = new gcn::Label;
+    mCaption = new Label;
     mCaption->setFont(boldFont);
 
     mSpeechBox = new TextBox;

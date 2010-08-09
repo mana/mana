@@ -26,6 +26,8 @@
 #include "gui/gui.h"
 #include "gui/palette.h"
 
+#include "gui/widgets/label.h"
+
 #include "graphics.h"
 #include "units.h"
 
@@ -40,10 +42,10 @@ TextPopup::TextPopup():
 {
     const int fontHeight = getFont()->getHeight();
 
-    mText1 = new gcn::Label;
+    mText1 = new Label;
     mText1->setPosition(getPadding(), getPadding());
 
-    mText2 = new gcn::Label;
+    mText2 = new Label;
     mText2->setPosition(getPadding(), fontHeight + getPadding());
 
     add(mText1);

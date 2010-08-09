@@ -28,6 +28,7 @@
 #include "gui/gui.h"
 
 #include "gui/widgets/icon.h"
+#include "gui/widgets/label.h"
 #include "gui/widgets/textbox.h"
 
 #include "utils/gettext.h"
@@ -46,7 +47,7 @@ ItemPopup::ItemPopup():
     mIcon(0)
 {
     // Item Name
-    mItemName = new gcn::Label;
+    mItemName = new Label;
     mItemName->setFont(boldFont);
     mItemName->setPosition(getPadding(), getPadding());
 
