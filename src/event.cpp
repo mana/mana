@@ -55,6 +55,13 @@ int Event::getInt(const std::string &key) const throw (BadEvent)
     return static_cast<IntData *>(it->second)->getData();
 }
 
+bool Event::hasInt(const std::string &key)
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_INT);
+}
+
 void Event::setString(const std::string &key, const std::string &value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -76,6 +83,13 @@ const std::string &Event::getString(const std::string &key) const throw (BadEven
 }
 
 
+bool Event::hasString(const std::string &key)
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_STRING);
+}
+
 void Event::setFloat(const std::string &key, double value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -96,6 +110,13 @@ double Event::getFloat(const std::string &key) const throw (BadEvent)
     return static_cast<FloatData *>(it->second)->getData();
 }
 
+bool Event::hasFloat(const std::string &key)
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_FLOAT);
+}
+
 void Event::setBool(const std::string &key, bool value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -114,6 +135,13 @@ bool Event::getBool(const std::string &key) const throw (BadEvent)
         throw BAD_VALUE;
 
     return static_cast<BoolData *>(it->second)->getData();
+}
+
+bool Event::hasBool(const std::string &key)
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_BOOL);
 }
 
 } // namespace Mana
