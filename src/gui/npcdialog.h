@@ -119,13 +119,6 @@ class NpcDialog : public Window, public gcn::ActionListener,
         void addChoice(const std::string &);
 
         /**
-          * Fills the options list for an NPC dialog.
-          *
-          * @param itemString A string with the options separated with colons.
-          */
-        void parseListItems(const std::string &itemString);
-
-        /**
          * Requests a text string from the user.
          */
         void textRequest(const std::string &defaultText = "");
@@ -137,8 +130,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
         /**
          * Requests a interger from the user.
          */
-        void integerRequest(int defaultValue = 0, int min = 0,
-                            int max = 2147483647);
+        void integerRequest(int defaultValue, int min, int max);
 
         void move(int amount);
 
@@ -163,6 +155,8 @@ class NpcDialog : public Window, public gcn::ActionListener,
          * Closes all instances.
          */
         static void closeAll();
+
+        static void setup();
 
     private:
         typedef std::list<NpcDialog*> DialogList;

@@ -177,6 +177,8 @@ static void createGuiWindows()
         logger->setChatWindow(chatWindow);
     }
 
+    NpcDialog::setup();
+
     Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsLoaded"));
 }
 

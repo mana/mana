@@ -29,8 +29,6 @@
 
 #include <map>
 
-class NpcDialog;
-
 namespace TmwAthena {
 
 class NpcHandler : public MessageHandler, public Net::NpcHandler
@@ -66,15 +64,6 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
         void sellItem(int beingId, int itemId, int amount);
 
         void endShopping(int beingId);
-
-        void clearDialogs();
-
-    private:
-        typedef struct {
-            NpcDialog* dialog;
-        } Wrapper;
-        typedef std::map<int, Wrapper> NpcDialogs;
-        NpcDialogs mNpcDialogs;
 };
 
 } // namespace TmwAthena

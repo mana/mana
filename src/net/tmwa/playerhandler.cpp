@@ -31,7 +31,6 @@
 #include "gui/buy.h"
 #include "gui/buysell.h"
 #include "gui/gui.h"
-#include "gui/npcdialog.h"
 #include "gui/okdialog.h"
 #include "gui/sell.h"
 #include "gui/statuswindow.h"
@@ -41,7 +40,6 @@
 #include "net/messageout.h"
 
 #include "net/tmwa/protocol.h"
-#include "net/tmwa/npchandler.h"
 
 #include "utils/stringutils.h"
 #include "utils/gettext.h"
@@ -79,14 +77,11 @@ namespace {
 
             BuyDialog::closeAll();
             BuySellDialog::closeAll();
-            NpcDialog::closeAll();
             SellDialog::closeAll();
 
             viewport->closePopupMenu();
 
-            TmwAthena::NpcHandler *handler =
-                    static_cast<TmwAthena::NpcHandler*>(Net::getNpcHandler());
-            handler->clearDialogs();
+            Mana::EventManager::trigger("NPC", Mana::Event("CloseAll"));
         }
     } deathListener;
 

@@ -22,14 +22,14 @@
 #include "net/manaserv/npchandler.h"
 
 #include "actorspritemanager.h"
-
-#include "gui/npcdialog.h"
-#include "gui/npcpostdialog.h"
+#include "eventmanager.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
+
+#include "utils/stringutils.h"
 
 extern Net::NpcHandler *npcHandler;
 
@@ -61,70 +61,70 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         return;
     }
 
-    int npcId = being->getId();
-    NpcDialogs::iterator diag = mNpcDialogs.find(npcId);
-    NpcDialog *dialog;
-
-    if (diag == mNpcDialogs.end())
-    {
-        if (msg.getId() == GPMSG_NPC_ERROR || msg.getId() == GPMSG_NPC_CLOSE)
-            return; // Dialog is pointless in these cases
-
-        dialog = new NpcDialog(npcId);
-        Wrapper wrap;
-        wrap.dialog = dialog;
-        mNpcDialogs[npcId] = wrap;
-    }
-    else
-    {
-        dialog = diag->second.dialog;
-    }
+    int npcId = being->getId(), count = 0;
+    Mana::Event *event = 0;
 
     switch (msg.getId())
     {
-        case GPMSG_NPC_CHOICE:
-            dialog->choiceRequest();
-            while (msg.getUnreadLength())
-            {
-                dialog->addChoice(msg.readString());
-            }
-            break;
-
-        case GPMSG_NPC_NUMBER:
+    case GPMSG_NPC_CHOICE:
+        event = new Mana::Event("Menu");
+        event->setInt("id", npcId);
+        while (msg.getUnreadLength())
         {
-            int min_num = msg.readInt32();
-            int max_num = msg.readInt32();
-            dialog->integerRequest(msg.readInt32(), min_num, max_num);
-            break;
+            count++;
+            event->setString("choice" + toString(count), msg.readString());
         }
+        event->setInt("choiceCount", count);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case GPMSG_NPC_STRING:
-            dialog->textRequest("");
-            break;
+    case GPMSG_NPC_NUMBER:
+        event = new Mana::Event("IntegerInput");
+        event->setInt("id", npcId);
+        event->setInt("min", msg.readInt32());
+        event->setInt("max", msg.readInt32());
+        event->setInt("default", msg.readInt32());
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case GPMSG_NPC_POST:
-        {
-            new NpcPostDialog(npcId);
-            break;
-        }
+    case GPMSG_NPC_STRING:
+        event = new Mana::Event("StringInput");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case GPMSG_NPC_ERROR:
-            dialog->close();
-            if (diag != mNpcDialogs.end())
-            {
-                mNpcDialogs.erase(diag);
-            }
-            break;
+    case GPMSG_NPC_POST:
+        event = new Mana::Event("Post");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case GPMSG_NPC_MESSAGE:
-            dialog->addText(msg.readString(msg.getUnreadLength()));
-            dialog->showNextButton();
-            break;
+    case GPMSG_NPC_ERROR:
+        event = new Mana::Event("End");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case GPMSG_NPC_CLOSE:
-            dialog->showCloseButton();
-            break;
+    case GPMSG_NPC_MESSAGE:
+        event = new Mana::Event("Message");
+        event->setInt("id", npcId);
+        event->setString("text", msg.readString(msg.getUnreadLength()));
+        Mana::EventManager::trigger("NPC", *event);
+        delete event;
+
+        event = new Mana::Event("Next");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
+
+    case GPMSG_NPC_CLOSE:
+        event = new Mana::Event("Close");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
     }
+
+    delete event;
 }
 
 void NpcHandler::talk(int npcId)
@@ -146,13 +146,6 @@ void NpcHandler::closeDialog(int npcId)
     MessageOut msg(PGMSG_NPC_TALK_NEXT);
     msg.writeInt16(npcId);
     gameServerConnection->send(msg);
-
-    NpcDialogs::iterator it = mNpcDialogs.find(npcId);
-    if (it != mNpcDialogs.end())
-    {
-        (*it).second.dialog->close();
-        mNpcDialogs.erase(it);
-    }
 }
 
 void NpcHandler::listInput(int npcId, int value)
@@ -222,11 +215,6 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
 void NpcHandler::endShopping(int beingId)
 {
     // TODO
-}
-
-void NpcHandler::clearDialogs()
-{
-    mNpcDialogs.clear();
 }
 
 } // namespace ManaServ

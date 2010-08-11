@@ -24,6 +24,7 @@
 
 #include "client.h"
 #include "effectmanager.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -41,7 +42,6 @@
 #include "net/manaserv/defines.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
-#include "net/manaserv/npchandler.h"
 #include "net/manaserv/protocol.h"
 
 /**
@@ -60,9 +60,7 @@ void RespawnRequestListener::action(const gcn::ActionEvent &event)
 {
     Net::getPlayerHandler()->respawn();
 
-    ManaServ::NpcHandler *handler =
-            static_cast<ManaServ::NpcHandler*>(Net::getNpcHandler());
-    handler->clearDialogs();
+    Mana::EventManager::trigger("NPC", Mana::Event("CloseAll"));
 }
 
 extern Connection *gameServerConnection;

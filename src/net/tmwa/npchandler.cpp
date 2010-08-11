@@ -22,9 +22,8 @@
 #include "net/tmwa/npchandler.h"
 
 #include "actorspritemanager.h"
+#include "eventmanager.h"
 #include "localplayer.h"
-
-#include "gui/npcdialog.h"
 
 #include "net/messagein.h"
 #include "net/messageout.h"
@@ -33,9 +32,26 @@
 
 #include "net/tmwa/protocol.h"
 
+#include "utils/stringutils.h"
+
 #include <SDL_types.h>
 
 extern Net::NpcHandler *npcHandler;
+
+static void parseMenu(Mana::Event *event, const std::string &options)
+{
+    std::istringstream iss(options);
+
+    int count = 0;
+    std::string tmp;
+    while (getline(iss, tmp, ':'))
+    {
+        count++;
+        event->setString("choice" + toString(count), tmp);
+    }
+
+    event->setInt("choiceCount", count);
+}
 
 namespace TmwAthena {
 
@@ -62,66 +78,54 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
     }
 
     int npcId = msg.readInt32();
-    NpcDialogs::iterator diag = mNpcDialogs.find(npcId);
-    NpcDialog *dialog = 0;
-
-    if (diag == mNpcDialogs.end())
-    {
-        // Empty dialogs don't help
-        if (msg.getId() == SMSG_NPC_CLOSE)
-        {
-            closeDialog(npcId);
-            return;
-        }
-        else if (msg.getId() == SMSG_NPC_NEXT)
-        {
-            nextDialog(npcId);
-            return;
-        }
-        else
-        {
-            dialog = new NpcDialog(npcId);
-            Wrapper wrap;
-            wrap.dialog = dialog;
-            mNpcDialogs[npcId] = wrap;
-        }
-    }
-    else
-    {
-        dialog = diag->second.dialog;
-    }
+    Mana::Event *event = 0;
 
     switch (msg.getId())
     {
-        case SMSG_NPC_CHOICE:
-            dialog->choiceRequest();
-            dialog->parseListItems(msg.readString(msg.getLength() - 8));
-            break;
+    case SMSG_NPC_CHOICE:
+        event = new Mana::Event("Menu");
+        event->setInt("id", npcId);
+        parseMenu(event, msg.readString(msg.getLength() - 8));
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case SMSG_NPC_MESSAGE:
-            dialog->addText(msg.readString(msg.getLength() - 8));
-            break;
+    case SMSG_NPC_MESSAGE:
+        event = new Mana::Event("Message");
+        event->setInt("id", npcId);
+        event->setString("text", msg.readString(msg.getLength() - 8));
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-         case SMSG_NPC_CLOSE:
-            // Show the close button
-            dialog->showCloseButton();
-            break;
+     case SMSG_NPC_CLOSE:
+        // Show the close button
+        event = new Mana::Event("Close");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case SMSG_NPC_NEXT:
-            // Show the next button
-            dialog->showNextButton();
-            break;
+    case SMSG_NPC_NEXT:
+        // Show the next button
+        event = new Mana::Event("Next");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case SMSG_NPC_INT_INPUT:
-            // Request for an integer
-            dialog->integerRequest(0);
-            break;
+    case SMSG_NPC_INT_INPUT:
+        // Request for an integer
+        event = new Mana::Event("IntegerInput");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
 
-        case SMSG_NPC_STR_INPUT:
-            // Request for a string
-            dialog->textRequest("");
-            break;
+    case SMSG_NPC_STR_INPUT:
+        // Request for a string
+        event = new Mana::Event("StringInput");
+        event->setInt("id", npcId);
+        Mana::EventManager::trigger("NPC", *event);
+        break;
     }
+
+    delete event;
 
     if (player_node->getCurrentAction() != Being::SIT)
         player_node->setAction(Being::STAND);
@@ -144,13 +148,6 @@ void NpcHandler::closeDialog(int npcId)
 {
     MessageOut outMsg(CMSG_NPC_CLOSE);
     outMsg.writeInt32(npcId);
-
-    NpcDialogs::iterator it = mNpcDialogs.find(npcId);
-    if (it != mNpcDialogs.end())
-    {
-        (*it).second.dialog->close();
-        mNpcDialogs.erase(it);
-    }
 }
 
 void NpcHandler::listInput(int npcId, int value)
@@ -220,11 +217,6 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
 void NpcHandler::endShopping(int beingId)
 {
     // TODO
-}
-
-void NpcHandler::clearDialogs()
-{
-    mNpcDialogs.clear();
 }
 
 } // namespace TmwAthena
