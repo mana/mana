@@ -74,7 +74,7 @@ public:
     /**
      * Returns true if the given variable exists and is an integer.
      */
-    bool hasInt(const std::string &key);
+    bool hasInt(const std::string &key) const;
 
     /**
      * Sets the given variable to the given string, if it isn't already set.
@@ -90,14 +90,14 @@ public:
      * Returns the given variable if it is set and a string, returning the
      * given default otherwise.
      */
-    inline const std::string &getString(const std::string &key,
-                                        const std::string &defaultValue) const
+    inline std::string getString(const std::string &key,
+                                 const std::string &defaultValue) const
     { try { return getString(key); } catch (BadEvent) { return defaultValue; }}
 
     /**
      * Returns true if the given variable exists and is a string.
      */
-    bool hasString(const std::string &key);
+    bool hasString(const std::string &key) const;
 
     /**
      * Sets the given variable to the given floating-point, if it isn't already
@@ -120,7 +120,7 @@ public:
     /**
      * Returns true if the given variable exists and is a floating-point.
      */
-    bool hasFloat(const std::string &key);
+    bool hasFloat(const std::string &key) const;
 
     /**
      * Sets the given variable to the given boolean, if it isn't already set.
@@ -142,7 +142,7 @@ public:
     /**
      * Returns true if the given variable exists and is a boolean.
      */
-    bool hasBool(const std::string &key);
+    bool hasBool(const std::string &key) const;
 
 private:
     std::string mEventName;

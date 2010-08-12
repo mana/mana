@@ -55,7 +55,7 @@ int Event::getInt(const std::string &key) const throw (BadEvent)
     return static_cast<IntData *>(it->second)->getData();
 }
 
-bool Event::hasInt(const std::string &key)
+bool Event::hasInt(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     return !(it == mData.end()
@@ -83,7 +83,7 @@ const std::string &Event::getString(const std::string &key) const throw (BadEven
 }
 
 
-bool Event::hasString(const std::string &key)
+bool Event::hasString(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     return !(it == mData.end()
@@ -110,7 +110,7 @@ double Event::getFloat(const std::string &key) const throw (BadEvent)
     return static_cast<FloatData *>(it->second)->getData();
 }
 
-bool Event::hasFloat(const std::string &key)
+bool Event::hasFloat(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     return !(it == mData.end()
@@ -137,7 +137,7 @@ bool Event::getBool(const std::string &key) const throw (BadEvent)
     return static_cast<BoolData *>(it->second)->getData();
 }
 
-bool Event::hasBool(const std::string &key)
+bool Event::hasBool(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     return !(it == mData.end()
