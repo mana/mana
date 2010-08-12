@@ -104,7 +104,7 @@ class SpriteDef : public Resource
         /**
          * Returns the specified action.
          */
-        Action *getAction(std::string action) const;
+        Action *getAction(const std::string &action) const;
 
         /**
          * Converts a string into a SpriteDirection enum.

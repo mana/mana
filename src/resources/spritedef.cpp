@@ -39,7 +39,7 @@
 SpriteReference *SpriteReference::Empty = new SpriteReference(
                                     paths.getStringValue("spriteErrorFile"), 0);
 
-Action *SpriteDef::getAction(std::string action) const
+Action *SpriteDef::getAction(const std::string &action) const
 {
     Actions::const_iterator i = mActions.find(action);
 
