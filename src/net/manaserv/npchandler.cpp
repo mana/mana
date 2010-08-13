@@ -51,6 +51,8 @@ NpcHandler::NpcHandler()
     };
     handledMessages = _messages;
     npcHandler = this;
+
+    Mana::EventManager::bind(this, "NPC");
 }
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
@@ -127,58 +129,51 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
     delete event;
 }
 
-void NpcHandler::talk(int npcId)
+void NpcHandler::event(const std::string &channel, const Mana::Event &event)
 {
-    MessageOut msg(PGMSG_NPC_TALK);
-    msg.writeInt16(npcId);
-    gameServerConnection->send(msg);
-}
-
-void NpcHandler::nextDialog(int npcId)
-{
-    MessageOut msg(PGMSG_NPC_TALK_NEXT);
-    msg.writeInt16(npcId);
-    gameServerConnection->send(msg);
-}
-
-void NpcHandler::closeDialog(int npcId)
-{
-    MessageOut msg(PGMSG_NPC_TALK_NEXT);
-    msg.writeInt16(npcId);
-    gameServerConnection->send(msg);
-}
-
-void NpcHandler::listInput(int npcId, int value)
-{
-    MessageOut msg(PGMSG_NPC_SELECT);
-    msg.writeInt16(npcId);
-    msg.writeInt8(value);
-    gameServerConnection->send(msg);
-}
-
-void NpcHandler::integerInput(int npcId, int value)
-{
-    MessageOut msg(PGMSG_NPC_NUMBER);
-    msg.writeInt16(npcId);
-    msg.writeInt32(value);
-    gameServerConnection->send(msg);
-}
-
-void NpcHandler::stringInput(int npcId, const std::string &value)
-{
-    MessageOut msg(PGMSG_NPC_STRING);
-    msg.writeInt16(npcId);
-    msg.writeString(value);
-    gameServerConnection->send(msg);
-}
-
-void NpcHandler::sendLetter(int npcId, const std::string &recipient,
-                            const std::string &text)
-{
-    MessageOut msg(PGMSG_NPC_POST_SEND);
-    msg.writeString(recipient);
-    msg.writeString(text);
-    gameServerConnection->send(msg);
+    if (channel == "NPC")
+    {
+        if (event.getName() == "doTalk")
+        {
+            MessageOut msg(PGMSG_NPC_TALK);
+            msg.writeInt16(event.getInt("npcId"));
+            gameServerConnection->send(msg);
+        }
+        else if (event.getName() == "doNext" || event.getName() == "doClose")
+        {
+            MessageOut msg(PGMSG_NPC_TALK_NEXT);
+            msg.writeInt16(event.getInt("npcId"));
+            gameServerConnection->send(msg);
+        }
+        else if (event.getName() == "doMenu")
+        {
+            MessageOut msg(PGMSG_NPC_SELECT);
+            msg.writeInt16(event.getInt("npcId"));
+            msg.writeInt8(event.getInt("choice"));
+            gameServerConnection->send(msg);
+        }
+        else if (event.getName() == "doIntegerInput")
+        {
+            MessageOut msg(PGMSG_NPC_NUMBER);
+            msg.writeInt16(event.getInt("npcId"));
+            msg.writeInt32(event.getInt("value"));
+            gameServerConnection->send(msg);
+        }
+        else if (event.getName() == "doStringInput")
+        {
+            MessageOut msg(PGMSG_NPC_STRING);
+            msg.writeInt16(event.getInt("npcId"));
+            msg.writeString(event.getString("value"));
+            gameServerConnection->send(msg);
+        }
+        else if (event.getName() == "doSendLetter")
+        {
+            MessageOut msg(PGMSG_NPC_POST_SEND);
+            msg.writeString(event.getString("recipient"));
+            msg.writeString(event.getString("text"));
+            gameServerConnection->send(msg);
+        }
+    }
 }
 
 void NpcHandler::startShopping(int beingId)

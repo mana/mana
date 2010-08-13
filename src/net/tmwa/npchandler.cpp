@@ -68,6 +68,8 @@ NpcHandler::NpcHandler()
     };
     handledMessages = _messages;
     npcHandler = this;
+
+    Mana::EventManager::bind(this, "NPC");
 }
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
@@ -131,52 +133,48 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         player_node->setAction(Being::STAND);
 }
 
-void NpcHandler::talk(int npcId)
+void NpcHandler::event(const std::string &channel, const Mana::Event &event)
 {
-    MessageOut outMsg(CMSG_NPC_TALK);
-    outMsg.writeInt32(npcId);
-    outMsg.writeInt8(0); // Unused
-}
-
-void NpcHandler::nextDialog(int npcId)
-{
-    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
-    outMsg.writeInt32(npcId);
-}
-
-void NpcHandler::closeDialog(int npcId)
-{
-    MessageOut outMsg(CMSG_NPC_CLOSE);
-    outMsg.writeInt32(npcId);
-}
-
-void NpcHandler::listInput(int npcId, int value)
-{
-    MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
-    outMsg.writeInt32(npcId);
-    outMsg.writeInt8(value);
-}
-
-void NpcHandler::integerInput(int npcId, int value)
-{
-    MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
-    outMsg.writeInt32(npcId);
-    outMsg.writeInt32(value);
-}
-
-void NpcHandler::stringInput(int npcId, const std::string &value)
-{
-    MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
-    outMsg.writeInt16(value.length() + 9);
-    outMsg.writeInt32(npcId);
-    outMsg.writeString(value, value.length());
-    outMsg.writeInt8(0); // Prevent problems with string reading
-}
-
-void NpcHandler::sendLetter(int npcId, const std::string &recipient,
-                            const std::string &text)
-{
-    // TODO
+    if (channel == "NPC")
+    {
+        if (event.getName() == "doTalk")
+        {
+            MessageOut outMsg(CMSG_NPC_TALK);
+            outMsg.writeInt32(event.getInt("npcId"));
+            outMsg.writeInt8(0); // Unused
+        }
+        else if (event.getName() == "doNext")
+        {
+            MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
+            outMsg.writeInt32(event.getInt("npcId"));
+        }
+        else if (event.getName() == "doClose")
+        {
+            MessageOut outMsg(CMSG_NPC_CLOSE);
+            outMsg.writeInt32(event.getInt("npcId"));
+        }
+        else if (event.getName() == "doMenu")
+        {
+            MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
+            outMsg.writeInt32(event.getInt("npcId"));
+            outMsg.writeInt8(event.getInt("choice"));
+        }
+        else if (event.getName() == "doIntegerInput")
+        {
+            MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
+            outMsg.writeInt32(event.getInt("npcId"));
+            outMsg.writeInt32(event.getInt("value"));
+        }
+        else if (event.getName() == "doStringInput")
+        {
+            const std::string &value = event.getString("value");
+            MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
+            outMsg.writeInt16(value.length() + 9);
+            outMsg.writeInt32(event.getInt("npcId"));
+            outMsg.writeString(value, value.length());
+            outMsg.writeInt8(0); // Prevent problems with string reading
+        }
+    }
 }
 
 void NpcHandler::startShopping(int beingId)

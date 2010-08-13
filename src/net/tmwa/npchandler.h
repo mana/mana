@@ -22,7 +22,8 @@
 #ifndef NET_TA_NPCHANDLER_H
 #define NET_TA_NPCHANDLER_H
 
-#include "net/net.h"
+#include "listener.h"
+
 #include "net/npchandler.h"
 
 #include "net/tmwa/messagehandler.h"
@@ -31,27 +32,15 @@
 
 namespace TmwAthena {
 
-class NpcHandler : public MessageHandler, public Net::NpcHandler
+class NpcHandler : public MessageHandler, public Net::NpcHandler,
+        public Mana::Listener
 {
     public:
         NpcHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
-        void talk(int npcId);
-
-        void nextDialog(int npcId);
-
-        void closeDialog(int npcId);
-
-        void listInput(int npcId, int value);
-
-        void integerInput(int npcId, int value);
-
-        void stringInput(int npcId, const std::string &value);
-
-        void sendLetter(int npcId, const std::string &recipient,
-                        const std::string &text);
+        void event(const std::string &channel, const Mana::Event &event);
 
         void startShopping(int beingId);
 

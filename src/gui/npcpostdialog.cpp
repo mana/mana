@@ -30,9 +30,6 @@
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/scrollarea.h"
 
-#include "net/net.h"
-#include "net/npchandler.h"
-
 #include "utils/gettext.h"
 
 NpcPostDialog::DialogList NpcPostDialog::instances;
@@ -100,8 +97,11 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
-            Net::getNpcHandler()->sendLetter(mNpcId, mSender->getText(),
-                                             mText->getText());
+            Mana::Event event("doSendLetter");
+            event.setInt("npcId", mNpcId);
+            event.setString("recipient", mSender->getText());
+            event.setString("text", mText->getText());
+            Mana::EventManager::trigger("NPC", event);
         }
         setVisible(false);
     }

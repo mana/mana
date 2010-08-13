@@ -31,21 +31,6 @@ class NpcHandler
     public:
         virtual ~NpcHandler() {}
 
-        virtual void talk(int npcId) = 0;
-
-        virtual void nextDialog(int npcId) = 0;
-
-        virtual void closeDialog(int npcId) = 0;
-
-        virtual void listInput(int npcId, int value) = 0;
-
-        virtual void integerInput(int npcId, int value) = 0;
-
-        virtual void stringInput(int npcId, const std::string &value) = 0;
-
-        virtual void sendLetter(int npcId, const std::string &recipient,
-                                const std::string &text) = 0;
-
         virtual void startShopping(int beingId) = 0;
 
         virtual void buy(int beingId) = 0;

@@ -22,6 +22,7 @@
 #include "gui/npcdialog.h"
 
 #include "configuration.h"
+#include "eventmanager.h"
 #include "listener.h"
 #include "playerinfo.h"
 
@@ -36,9 +37,6 @@
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
 
-#include "net/net.h"
-#include "net/npchandler.h"
-
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -48,6 +46,13 @@
 #define CAPTION_NEXT _("Next")
 #define CAPTION_CLOSE _("Close")
 #define CAPTION_SUBMIT _("Submit")
+
+#define NpcEvent(name) Mana::Event event(name);\
+event.setInt("npcId", mNpcId);
+
+#define FireEvent(event) Mana::EventManager::trigger("NPC", event);
+
+#define FireEvent2(name) NpcEvent(name) FireEvent(event)
 
 typedef std::map<int, NpcDialog*> NpcDialogs;
 
@@ -217,27 +222,32 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
             if (mInputState == NPC_INPUT_LIST)
             {
-                int choice = 0;
                 int selectedIndex = mItemList->getSelected();
 
                 if (selectedIndex >= (int) mItems.size() || selectedIndex < 0)
-                {
                     return;
-                }
-                choice = selectedIndex + 1;
+
                 printText = mItems[selectedIndex];
 
-                Net::getNpcHandler()->listInput(mNpcId, choice);
+                NpcEvent("doMenu")
+                event.setInt("choice", selectedIndex + 1);
+                FireEvent(event);
             }
             else if (mInputState == NPC_INPUT_STRING)
             {
                 printText = mTextField->getText();
-                Net::getNpcHandler()->stringInput(mNpcId, printText);
+
+                NpcEvent("doStringInput")
+                event.setString("value", printText);
+                FireEvent(event);
             }
             else if (mInputState == NPC_INPUT_INTEGER)
             {
                 printText = strprintf("%d", mIntField->getValue());
-                Net::getNpcHandler()->integerInput(mNpcId, mIntField->getValue());
+
+                NpcEvent("doIntegerInput")
+                event.setInt("value", mIntField->getValue());
+                FireEvent(event);
             }
             // addText will auto remove the input layout
             addText(strprintf("\n> \"%s\"\n", printText.c_str()), false);
@@ -275,12 +285,12 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
 void NpcDialog::nextDialog()
 {
-    Net::getNpcHandler()->nextDialog(mNpcId);
+    FireEvent2("doNext")
 }
 
 void NpcDialog::closeDialog()
 {
-    Net::getNpcHandler()->closeDialog(mNpcId);
+    FireEvent2("doClose")
     close();
 }
 
@@ -550,7 +560,8 @@ void NpcEventListener::event(const std::string &channel,
 
         if (!dialog)
         {
-            Net::getNpcHandler()->nextDialog(id);
+            int mNpcId = id;
+            FireEvent2("doNext")
             return;
         }
 
@@ -563,7 +574,8 @@ void NpcEventListener::event(const std::string &channel,
 
         if (!dialog)
         {
-            Net::getNpcHandler()->closeDialog(id);
+            int mNpcId = id;
+            FireEvent2("doClose")
             return;
         }
 
