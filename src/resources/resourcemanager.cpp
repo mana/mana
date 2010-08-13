@@ -31,6 +31,8 @@
 #include "resources/soundeffect.h"
 #include "resources/spritedef.h"
 
+#include "utils/zlib.h"
+
 #include <physfs.h>
 
 #include <SDL_image.h>
@@ -411,34 +413,59 @@ void ResourceManager::deleteInstance()
     instance = NULL;
 }
 
-void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
+void *ResourceManager::loadFile(const std::string &filename, int &filesize,
+                                bool inflate)
 {
     // Attempt to open the specified file using PhysicsFS
-    PHYSFS_file *file = PHYSFS_openRead(fileName.c_str());
+    PHYSFS_file *file = PHYSFS_openRead(filename.c_str());
 
     // If the handler is an invalid pointer indicate failure
     if (file == NULL)
     {
         logger->log("Warning: Failed to load %s: %s",
-                fileName.c_str(), PHYSFS_getLastError());
+                filename.c_str(), PHYSFS_getLastError());
         return NULL;
     }
 
     // Log the real dir of the file
-    logger->log("Loaded %s/%s", PHYSFS_getRealDir(fileName.c_str()),
-            fileName.c_str());
+    logger->log("Loaded %s/%s", PHYSFS_getRealDir(filename.c_str()),
+            filename.c_str());
 
     // Get the size of the file
-    fileSize = PHYSFS_fileLength(file);
+    filesize = PHYSFS_fileLength(file);
 
     // Allocate memory and load the file
-    void *buffer = malloc(fileSize);
-    PHYSFS_read(file, buffer, 1, fileSize);
+    void *buffer = malloc(filesize);
+    PHYSFS_read(file, buffer, 1, filesize);
 
     // Close the file and let the user deallocate the memory
     PHYSFS_close(file);
 
-    return buffer;
+    unsigned char *inflated;
+    unsigned int inflatedSize;
+
+    if (inflate && filename.find(".gz", filename.length() - 3)
+            != std::string::npos)
+    {
+        // Inflate the gzipped map data
+        inflatedSize =
+            inflateMemory((unsigned char*) buffer, filesize, inflated);
+        free(buffer);
+
+        if (inflated == NULL)
+        {
+            logger->log("Could not decompress file: %s",
+                        filename.c_str());
+            return NULL;
+        }
+
+        filesize = inflatedSize;
+        return inflated;
+    }
+    else
+    {
+        return buffer;
+    }
 }
 
 bool ResourceManager::copyFile(const std::string &src, const std::string &dst)

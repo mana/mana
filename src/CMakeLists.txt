@@ -402,6 +402,8 @@ SET(SRCS
     utils/mkdir.h
     utils/xml.cpp
     utils/xml.h
+    utils/zlib.cpp
+    utils/zlib.h
     animatedsprite.cpp
     animatedsprite.h
     animationparticle.cpp

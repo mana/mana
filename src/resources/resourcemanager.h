@@ -183,13 +183,16 @@ class ResourceManager
          * Allocates data into a buffer pointer for raw data loading. The
          * returned data is expected to be freed using <code>free()</code>.
          *
-         * @param fileName The name of the file to be loaded.
-         * @param fileSize The size of the file that was loaded.
+         * @param filename The name of the file to be loaded.
+         * @param filesize The size of the file that was loaded.
+         * @param inflate  True to uncompress the file if the filename ends in
+         *                 ".gz", false to ignore that.
          *
          * @return An allocated byte array containing the data that was loaded,
          *         or <code>NULL</code> on fail.
          */
-        void *loadFile(const std::string &fileName, int &fileSize);
+        void *loadFile(const std::string &filename, int &filesize,
+                       bool inflate = true);
 
         /**
          * Retrieves the contents of a text file.

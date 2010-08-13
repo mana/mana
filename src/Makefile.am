@@ -301,6 +301,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      utils/mutex.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
+	      utils/zlib.cpp \
+	      utils/zlib.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
 	      animationparticle.cpp \

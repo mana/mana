@@ -25,11 +25,10 @@
 
 #include "resources/resourcemanager.h"
 
+#include "utils/zlib.h"
+
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
-
-#include <fstream>
-#include <iostream>
 
 namespace XML
 {
@@ -58,25 +57,7 @@ namespace XML
         }
         else
         {
-            std::ifstream file;
-            file.open(filename.c_str(), std::ios::in);
-
-            if (file.is_open())
-            {
-                // Get length of file
-                file.seekg (0, std::ios::end);
-                size = file.tellg();
-                file.seekg(0, std::ios::beg);
-
-                data = (char*) malloc(size);
-
-                file.read(data, size);
-                file.close();
-            }
-            else
-            {
-                logger->log("Error loading XML file %s", filename.c_str());
-            }
+            data = (char *) loadCompressedFile(filename, size);
         }
 
         if (data)
