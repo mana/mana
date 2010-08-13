@@ -301,6 +301,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 case 0x0014: {
                         int oldMoney = PlayerInfo::getAttribute(MONEY);
                         int newMoney = msg.readInt32();
+                        PlayerInfo::setAttribute(MONEY, newMoney);
                         if (newMoney > oldMoney)
                             SERVER_NOTICE(strprintf(_("You picked up %s."),
                                          Units::formatCurrency(newMoney -
