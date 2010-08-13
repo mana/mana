@@ -443,8 +443,6 @@ SET(SRCS
     equipment.h
     event.cpp
     event.h
-    eventmanager.cpp
-    eventmanager.h
     flooritem.cpp
     flooritem.h
     game.cpp

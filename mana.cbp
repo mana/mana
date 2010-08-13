@@ -134,8 +134,6 @@
 		<Unit filename="src\equipment.h" />
 		<Unit filename="src\event.cpp" />
 		<Unit filename="src\event.h" />
-		<Unit filename="src\eventmanager.cpp" />
-		<Unit filename="src\eventmanager.h" />
 		<Unit filename="src\flooritem.cpp" />
 		<Unit filename="src\flooritem.h" />
 		<Unit filename="src\game.cpp" />

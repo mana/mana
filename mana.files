@@ -81,8 +81,6 @@
 ./src/equipment.h
 ./src/event.cpp
 ./src/event.h
-./src/eventmanager.cpp
-./src/eventmanager.h
 ./src/flooritem.cpp
 ./src/flooritem.h
 ./src/game.cpp

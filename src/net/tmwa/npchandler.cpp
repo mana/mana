@@ -22,7 +22,7 @@
 #include "net/tmwa/npchandler.h"
 
 #include "actorspritemanager.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "localplayer.h"
 
 #include "net/messagein.h"
@@ -69,7 +69,7 @@ NpcHandler::NpcHandler()
     handledMessages = _messages;
     npcHandler = this;
 
-    Mana::EventManager::bind(this, "NPC");
+    listen("NPC");
 }
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
@@ -88,42 +88,42 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         event = new Mana::Event("Menu");
         event->setInt("id", npcId);
         parseMenu(event, msg.readString(msg.getLength() - 8));
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case SMSG_NPC_MESSAGE:
         event = new Mana::Event("Message");
         event->setInt("id", npcId);
         event->setString("text", msg.readString(msg.getLength() - 8));
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
      case SMSG_NPC_CLOSE:
         // Show the close button
         event = new Mana::Event("Close");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case SMSG_NPC_NEXT:
         // Show the next button
         event = new Mana::Event("Next");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case SMSG_NPC_INT_INPUT:
         // Request for an integer
         event = new Mana::Event("IntegerInput");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case SMSG_NPC_STR_INPUT:
         // Request for a string
         event = new Mana::Event("StringInput");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
     }
 

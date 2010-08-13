@@ -21,7 +21,7 @@
 
 #include "net/tmwa/specialhandler.h"
 
-#include "eventmanager.h"
+#include "event.h"
 #include "log.h"
 #include "playerinfo.h"
 

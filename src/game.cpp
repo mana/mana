@@ -28,7 +28,7 @@
 #include "commandhandler.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
 #include "itemshortcut.h"
@@ -129,7 +129,7 @@ ChatTab *localChatTab = NULL;
  */
 static void initEngines()
 {
-    Mana::EventManager::trigger("Game", Mana::Event("EnginesInitalizing"));
+    Mana::Event::trigger("Game", "EnginesInitalizing");
 
     actorSpriteManager = new ActorSpriteManager;
     commandHandler = new CommandHandler;
@@ -139,7 +139,7 @@ static void initEngines()
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();
 
-    Mana::EventManager::trigger("Game", Mana::Event("EnginesInitalized"));
+    Mana::Event::trigger("Game", "EnginesInitalized");
 }
 
 /**
@@ -147,7 +147,7 @@ static void initEngines()
  */
 static void createGuiWindows()
 {
-    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsLoading"));
+    Mana::Event::trigger("Game", "GuiWindowsLoading");
 
     setupWindow->clearWindowsForReset();
 
@@ -179,7 +179,7 @@ static void createGuiWindows()
 
     NpcDialog::setup();
 
-    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsLoaded"));
+    Mana::Event::trigger("Game", "GuiWindowsLoaded");
 }
 
 #define del_0(X) { delete X; X = 0; }
@@ -189,7 +189,7 @@ static void createGuiWindows()
  */
 static void destroyGuiWindows()
 {
-    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsUnloading"));
+    Mana::Event::trigger("Game", "GuiWindowsUnloading");
 
     logger->setChatWindow(NULL);
     del_0(localChatTab) // Need to do this first, so it can remove itself
@@ -209,7 +209,7 @@ static void destroyGuiWindows()
     del_0(specialsWindow)
     del_0(socialWindow)
 
-    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsUnloaded"));
+    Mana::Event::trigger("Game", "GuiWindowsUnloaded");
 }
 
 Game *Game::mInstance = 0;
@@ -261,7 +261,7 @@ Game::Game():
 
     setupWindow->setInGame(true);
 
-    Mana::EventManager::trigger("Game", Mana::Event("Constructed"));
+    Mana::Event::trigger("Game", "Constructed");
 }
 
 Game::~Game()
@@ -282,7 +282,7 @@ Game::~Game()
 
     mInstance = 0;
 
-    Mana::EventManager::trigger("Game", Mana::Event("Destructed"));
+    Mana::Event::trigger("Game", "Destructed");
 }
 
 static bool saveScreenshot()
@@ -971,5 +971,5 @@ void Game::changeMap(const std::string &mapPath)
 
     Mana::Event event("MapLoaded");
     event.setString("mapPath", mapPath);
-    Mana::EventManager::trigger("Game", event);
+    event.trigger("Game");
 }

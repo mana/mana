@@ -23,7 +23,7 @@
 
 #include "actorspritemanager.h"
 #include "being.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
@@ -86,7 +86,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                         event.setString("nick", nick);
                         event.setString("error", strprintf(_("Whisper could "
                                   "not be sent, %s is offline."), nick.c_str()));
-                        Mana::EventManager::trigger("Chat", event);
+                        event.trigger("Chat");
                     }
                     break;
                 case 0x02:
@@ -95,7 +95,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                         event.setString("nick", nick);
                         event.setString("error", strprintf(_("Whisper could "
                                  "not be sent, ignored by %s."), nick.c_str()));
-                        Mana::EventManager::trigger("Chat", event);
+                        event.Event::trigger("Chat");
                     }
                     break;
             }
@@ -118,7 +118,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                     Mana::Event event("Whisper");
                     event.setString("nick", nick);
                     event.setString("message", chatMsg);
-                    Mana::EventManager::trigger("Chat", event);
+                    event.trigger("Chat");
                 }
             }
             else
@@ -180,7 +180,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             event.setString("nick", sender_name);
             event.setInt("beingId", beingId);
             event.setInt("permissions", perms);
-            Mana::EventManager::trigger("Chat", event);
+            event.trigger("Chat");
 
             break;
         }
@@ -213,13 +213,13 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                 event.setInt("permissions", player_relations.getDefault()
                              & (PlayerRelation::SPEECH_LOG
                                 | PlayerRelation::SPEECH_FLOAT));
-                Mana::EventManager::trigger("Chat", event);
+                event.trigger("Chat");
             }
             else
             {
                 Mana::Event event("Announcement");
                 event.setString("message", chatMsg);
-                Mana::EventManager::trigger("Chat", event);
+                event.trigger("Chat");
             }
             break;
         }

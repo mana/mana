@@ -21,7 +21,7 @@
 #include "net/tmwa/partyhandler.h"
 
 #include "actorspritemanager.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "localplayer.h"
 #include "log.h"
 

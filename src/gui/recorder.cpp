@@ -21,7 +21,7 @@
 #include "gui/recorder.h"
 
 #include "client.h"
-#include "eventmanager.h"
+#include "event.h"
 
 #include "gui/chat.h"
 

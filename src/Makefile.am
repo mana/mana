@@ -342,8 +342,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      equipment.h \
 	      event.cpp \
 	      event.h \
-	      eventmanager.cpp \
-	      eventmanager.h \
 	      flooritem.cpp \
 	      flooritem.h \
 	      game.cpp \

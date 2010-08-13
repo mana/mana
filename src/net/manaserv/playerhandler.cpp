@@ -24,7 +24,7 @@
 
 #include "client.h"
 #include "effectmanager.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -60,7 +60,7 @@ void RespawnRequestListener::action(const gcn::ActionEvent &event)
 {
     Net::getPlayerHandler()->respawn();
 
-    Mana::EventManager::trigger("NPC", Mana::Event("CloseAll"));
+    Mana::Event::trigger("NPC", "CloseAll");
 }
 
 extern Connection *gameServerConnection;

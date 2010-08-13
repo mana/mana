@@ -26,7 +26,7 @@
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "graphics.h"
 #include "guild.h"
 #include "localplayer.h"
@@ -1200,7 +1200,7 @@ void Being::talkTo()
 {
     Mana::Event event("doTalk");
     event.setInt("npcId", mId);
-    Mana::EventManager::trigger("NPC", event);
+    event.trigger("NPC");
 }
 
 void Being::event(const std::string &channel, const Mana::Event &event)

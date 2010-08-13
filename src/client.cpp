@@ -25,7 +25,7 @@
 #include "chatlog.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "game.h"
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
@@ -590,7 +590,7 @@ int Client::exec()
                 Mana::Event event("StateChange");
                 event.setInt("oldState", mOldState);
                 event.setInt("newState", mState);
-                Mana::EventManager::trigger("Client", event);
+                event.trigger("Client");
             }
 
             if (mOldState == STATE_GAME)

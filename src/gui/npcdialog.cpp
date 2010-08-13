@@ -22,7 +22,7 @@
 #include "gui/npcdialog.h"
 
 #include "configuration.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "listener.h"
 #include "playerinfo.h"
 
@@ -49,10 +49,6 @@
 
 #define NpcEvent(name) Mana::Event event(name);\
 event.setInt("npcId", mNpcId);
-
-#define FireEvent(event) Mana::EventManager::trigger("NPC", event);
-
-#define FireEvent2(name) NpcEvent(name) FireEvent(event)
 
 typedef std::map<int, NpcDialog*> NpcDialogs;
 
@@ -231,7 +227,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 NpcEvent("doMenu")
                 event.setInt("choice", selectedIndex + 1);
-                FireEvent(event);
+                event.trigger("NPC");
             }
             else if (mInputState == NPC_INPUT_STRING)
             {
@@ -239,7 +235,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 NpcEvent("doStringInput")
                 event.setString("value", printText);
-                FireEvent(event);
+                event.trigger("NPC");
             }
             else if (mInputState == NPC_INPUT_INTEGER)
             {
@@ -247,7 +243,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 NpcEvent("doIntegerInput")
                 event.setInt("value", mIntField->getValue());
-                FireEvent(event);
+                event.trigger("NPC");
             }
             // addText will auto remove the input layout
             addText(strprintf("\n> \"%s\"\n", printText.c_str()), false);
@@ -285,12 +281,14 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
 void NpcDialog::nextDialog()
 {
-    FireEvent2("doNext")
+    NpcEvent("doNext");
+    event.trigger("NPC");
 }
 
 void NpcDialog::closeDialog()
 {
-    FireEvent2("doClose")
+    NpcEvent("doClose");
+    event.trigger("NPC");
     close();
 }
 
@@ -561,7 +559,8 @@ void NpcEventListener::event(const std::string &channel,
         if (!dialog)
         {
             int mNpcId = id;
-            FireEvent2("doNext")
+            NpcEvent("doNext");
+            event.trigger("NPC");
             return;
         }
 
@@ -575,7 +574,8 @@ void NpcEventListener::event(const std::string &channel,
         if (!dialog)
         {
             int mNpcId = id;
-            FireEvent2("doClose")
+            NpcEvent("doClose");
+            event.trigger("NPC");
             return;
         }
 

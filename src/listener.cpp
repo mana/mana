@@ -20,24 +20,24 @@
 
 #include "listener.h"
 
-#include "eventmanager.h"
+#include "event.h"
 
 namespace Mana
 {
 
 Listener::~Listener()
 {
-    EventManager::remove(this);
+    Event::remove(this);
 }
 
 void Listener::listen(const std::string &channel)
 {
-    EventManager::bind(this, channel);
+    Event::bind(this, channel);
 }
 
 void Listener::ignore(const std::string &channel)
 {
-    EventManager::unbind(this, channel);
+    Event::unbind(this, channel);
 }
 
 } // namespace Mana

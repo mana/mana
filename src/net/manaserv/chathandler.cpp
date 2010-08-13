@@ -26,7 +26,7 @@
 #include "client.h"
 #include "channel.h"
 #include "channelmanager.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "playerrelations.h"
 
 #include "gui/widgets/channeltab.h"
@@ -171,7 +171,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     event.setInt("permissions", player_relations
                  .checkPermissionSilently(being->getName(),
                  PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT));
-    Mana::EventManager::trigger("Chat", event);
+    event.trigger("Chat");
 }
 
 void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
@@ -234,7 +234,7 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
     Mana::Event event("Whisper");
     event.setString("nick", userNick);
     event.setString("message", chatMsg);
-    Mana::EventManager::trigger("Chat", event);
+    event.trigger("Chat");
 }
 
 void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
@@ -242,7 +242,7 @@ void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
     std::string chatMsg = msg.readString();
     Mana::Event event("Announcement");
     event.setString("message", chatMsg);
-    Mana::EventManager::trigger("Chat", event);
+    event.trigger("Chat");
 }
 
 void ChatHandler::handleChatMessage(Net::MessageIn &msg)

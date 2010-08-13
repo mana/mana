@@ -21,7 +21,7 @@
 #include "net/tmwa/guildhandler.h"
 
 #include "guild.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "localplayer.h"
 #include "log.h"
 

@@ -23,7 +23,7 @@
 
 #include "client.h"
 #include "effectmanager.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "imagesprite.h"
 #include "localplayer.h"
 #include "log.h"
@@ -264,7 +264,7 @@ void ActorSprite::updateStunMode(int oldMode, int newMode)
         Mana::Event event("Stun");
         event.setInt("oldMode", oldMode);
         event.setInt("newMode", newMode);
-        Mana::EventManager::trigger("ActorSprite", event);
+        event.trigger("ActorSprite");
     }
 
     handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
@@ -278,7 +278,7 @@ void ActorSprite::updateStatusEffect(int index, bool newStatus)
         Mana::Event event("UpdateStatusEffect");
         event.setInt("index", index);
         event.setBool("newStatus", newStatus);
-        Mana::EventManager::trigger("ActorSprite", event);
+        event.trigger("ActorSprite");
     }
 
     handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);

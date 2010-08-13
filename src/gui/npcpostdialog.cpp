@@ -21,7 +21,7 @@
 
 #include "gui/npcpostdialog.h"
 
-#include "eventmanager.h"
+#include "event.h"
 #include "playerinfo.h"
 
 #include "gui/widgets/button.h"
@@ -101,7 +101,7 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
             event.setInt("npcId", mNpcId);
             event.setString("recipient", mSender->getText());
             event.setString("text", mText->getText());
-            Mana::EventManager::trigger("NPC", event);
+            event.trigger("NPC");
         }
         setVisible(false);
     }

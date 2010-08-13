@@ -24,7 +24,7 @@
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "flooritem.h"
 #include "graphics.h"
 #include "guild.h"

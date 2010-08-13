@@ -23,7 +23,7 @@
 
 #include "actorspritemanager.h"
 #include "being.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "game.h"
 #include "playerrelations.h"
 

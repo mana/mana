@@ -21,7 +21,7 @@
 
 #include "statuseffect.h"
 
-#include "eventmanager.h"
+#include "event.h"
 #include "log.h"
 #include "sound.h"
 

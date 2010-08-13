@@ -22,7 +22,7 @@
 #include "net/manaserv/npchandler.h"
 
 #include "actorspritemanager.h"
-#include "eventmanager.h"
+#include "event.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
@@ -52,7 +52,7 @@ NpcHandler::NpcHandler()
     handledMessages = _messages;
     npcHandler = this;
 
-    Mana::EventManager::bind(this, "NPC");
+    listen("NPC");
 }
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
@@ -77,7 +77,7 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
             event->setString("choice" + toString(count), msg.readString());
         }
         event->setInt("choiceCount", count);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case GPMSG_NPC_NUMBER:
@@ -86,43 +86,43 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         event->setInt("min", msg.readInt32());
         event->setInt("max", msg.readInt32());
         event->setInt("default", msg.readInt32());
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case GPMSG_NPC_STRING:
         event = new Mana::Event("StringInput");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case GPMSG_NPC_POST:
         event = new Mana::Event("Post");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case GPMSG_NPC_ERROR:
         event = new Mana::Event("End");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case GPMSG_NPC_MESSAGE:
         event = new Mana::Event("Message");
         event->setInt("id", npcId);
         event->setString("text", msg.readString(msg.getUnreadLength()));
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         delete event;
 
         event = new Mana::Event("Next");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
 
     case GPMSG_NPC_CLOSE:
         event = new Mana::Event("Close");
         event->setInt("id", npcId);
-        Mana::EventManager::trigger("NPC", *event);
+        event->trigger("NPC");
         break;
     }
 

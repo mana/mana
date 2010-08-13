@@ -21,7 +21,7 @@
 
 #include "net/tmwa/tradehandler.h"
 
-#include "eventmanager.h"
+#include "event.h"
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"

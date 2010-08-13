@@ -20,10 +20,13 @@
 
 #include "event.h"
 
+#include "listener.h"
 #include "variabledata.h"
 
 namespace Mana
 {
+
+ListenMap Event::mBindings;
 
 Event::~Event()
 {
@@ -142,6 +145,43 @@ bool Event::hasBool(const std::string &key) const
     VariableMap::const_iterator it = mData.find(key);
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_BOOL);
+}
+
+void Event::trigger(const std::string &channel, const Event &event)
+{
+    ListenMap::iterator it = mBindings.find(channel);
+
+    // Make sure something is listening
+    if (it == mBindings.end())
+        return;
+
+    // Loop though all listeners
+    ListenerSet::iterator lit = it->second.begin();
+    while (lit != it->second.end())
+    {
+        (*lit)->event(channel, event);
+        lit++;
+    }
+}
+
+void Event::bind(Listener *listener, const std::string &channel)
+{
+    mBindings[channel].insert(listener);
+}
+
+void Event::unbind(Listener *listener, const std::string &channel)
+{
+    mBindings[channel].erase(listener);
+}
+
+void Event::remove(Listener *listener)
+{
+    ListenMap::iterator it = mBindings.begin();
+    while (it != mBindings.end())
+    {
+        it->second.erase(listener);
+        it++;
+    }
 }
 
 } // namespace Mana

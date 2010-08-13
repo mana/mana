@@ -22,7 +22,7 @@
 
 #include "client.h"
 #include "equipment.h"
-#include "eventmanager.h"
+#include "event.h"
 #include "inventory.h"
 #include "listener.h"
 #include "log.h"
@@ -62,7 +62,7 @@ void triggerAttr(int id, int old)
     event.setInt("id", id);
     event.setInt("oldValue", old);
     event.setInt("newValue", mData.mAttributes.find(id)->second);
-    Mana::EventManager::trigger("Attributes", event);
+    event.trigger("Attributes");
 }
 
 void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
@@ -77,7 +77,7 @@ void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
     event.setString("changed", changed);
     event.setInt("oldValue1", old1);
     event.setInt("oldValue2", old2);
-    Mana::EventManager::trigger("Attributes", event);
+    event.trigger("Attributes");
 }
 
 // --- Attributes -------------------------------------------------------------
@@ -223,7 +223,7 @@ void setStorageCount(int count)
         Mana::Event event("StorageCount");
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        Mana::EventManager::trigger("Storage", event);
+        event.trigger("Storage");
     }
 }
 
@@ -244,7 +244,7 @@ void setNPCInteractionCount(int count)
         Mana::Event event("NPCCount");
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        Mana::EventManager::trigger("NPC", event);
+        event.trigger("NPC");
     }
 }
 
@@ -263,7 +263,7 @@ void setNPCPostCount(int count)
         Mana::Event event("PostCount");
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        Mana::EventManager::trigger("NPC", event);
+        event.trigger("NPC");
     }
 }
 
@@ -284,7 +284,7 @@ void setBuySellState(BuySellState buySellState)
         Mana::Event event("StateChange");
         event.setInt("oldState", old);
         event.setInt("newState", buySellState);
-        Mana::EventManager::trigger("BuySell", event);
+        event.trigger("BuySell");
     }
 }
 
@@ -302,7 +302,7 @@ void setTrading(bool trading)
     {
         Mana::Event event("Trading");
         event.setBool("trading", trading);
-        Mana::EventManager::trigger("Status", event);
+        event.trigger("Status");
     }
 }
 

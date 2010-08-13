@@ -23,6 +23,7 @@
 
 #include <string>
 #include <map>
+#include <set>
 
 namespace Mana
 {
@@ -34,8 +35,18 @@ enum BadEvent {
     KEY_ALREADY_EXISTS
 };
 
+class Listener;
+
+typedef std::set<Listener *> ListenerSet;
+typedef std::map<std::string, ListenerSet > ListenMap;
+
 class VariableData;
 typedef std::map<std::string, VariableData *> VariableMap;
+
+#define SERVER_NOTICE(message) { \
+Mana::Event event("ServerNotice"); \
+event.setString("message", message); \
+event.trigger("Notices", event); }
 
 class Event
 {
@@ -144,7 +155,48 @@ public:
      */
     bool hasBool(const std::string &key) const;
 
+    /**
+     * Sends this event to all classes listening to the given channel.
+     */
+    inline void trigger(const std::string &channel) const
+    { trigger(channel, *this); }
+
+    /**
+     * Sends the given event to all classes listening to the given channel.
+     */
+    static void trigger(const std::string &channel, const Event &event);
+
+    /**
+     * Sends an empty event with the given name to all classes listening to the
+     * given channel.
+     */
+    static inline void trigger(const std::string& channel,
+                               const std::string& name)
+    { trigger(channel, Mana::Event(name)); }
+
+protected:
+    friend class Listener;
+
+    /**
+     * Binds the given listener to the given channel. The listener will receive
+     * all events triggered on the channel.
+     */
+    static void bind(Listener *listener, const std::string &channel);
+
+    /**
+     * Unbinds the given listener from the given channel. The listener will no
+     * longer receive any events from the channel.
+     */
+    static void unbind(Listener *listener, const std::string &channel);
+
+    /**
+     * Unbinds the given listener from all channels.
+     */
+    static void remove(Listener *listener);
+
 private:
+    static ListenMap mBindings;
+
     std::string mEventName;
 
     VariableMap mData;

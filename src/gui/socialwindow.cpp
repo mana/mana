@@ -20,7 +20,7 @@
 
 #include "gui/socialwindow.h"
 
-#include "eventmanager.h"
+#include "event.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "party.h"

@@ -21,7 +21,7 @@
 
 #include "net/tmwa/playerhandler.h"
 
-#include "eventmanager.h"
+#include "event.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -81,7 +81,7 @@ namespace {
 
             viewport->closePopupMenu();
 
-            Mana::EventManager::trigger("NPC", Mana::Event("CloseAll"));
+            Mana::Event::trigger("NPC", "CloseAll");
         }
     } deathListener;
 
