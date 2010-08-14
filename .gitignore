@@ -78,3 +78,6 @@ docs/SOURCE/html/*
 
 # patch files created by git
 [0-9][0-9][0-9][0-9]-*.patch
+
+# static libraries
+*.a
