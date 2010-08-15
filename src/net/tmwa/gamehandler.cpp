@@ -98,7 +98,8 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_MAP_QUIT_RESPONSE:
             if (msg.readInt8())
             {
-                new OkDialog(_("Game"), _("Request to quit denied!"), NULL);
+                new OkDialog(_("Game"), _("Request to quit denied!"), false,
+                                                                          NULL);
             }
             break;
     }

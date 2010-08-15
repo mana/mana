@@ -21,19 +21,37 @@
 
 #include "utils/xml.h"
 
-#include "log.h"
-
-#include "resources/resourcemanager.h"
-
 #include <iostream>
 #include <fstream>
 #include <cstring>
 
+#include <libxml/parser.h>
+#include <libxml/xmlerror.h>
+
+#include "log.h"
+
+#include "resources/resourcemanager.h"
+
+#include "utils/zlib.h"
+
 namespace XML
 {
+    static void xmlLogger(void *ctx, xmlErrorPtr error);
+
+    struct XMLContext
+    {
+        std::string file;
+        bool resman;
+    };
+
     Document::Document(const std::string &filename, bool useResman):
         mDoc(0)
     {
+        XMLContext *ctx = new XMLContext();
+        ctx->file = filename;
+        ctx->resman = useResman;
+        xmlSetStructuredErrorFunc(ctx, xmlLogger);
+
         int size;
         char *data = NULL;
         if (useResman)
@@ -43,25 +61,7 @@ namespace XML
         }
         else
         {
-            std::ifstream file;
-            file.open(filename.c_str(), std::ios::in);
-
-            if (file.is_open())
-            {
-                // Get length of file
-                file.seekg (0, std::ios::end);
-                size = file.tellg();
-                file.seekg(0, std::ios::beg);
-
-                data = (char*) malloc(size);
-
-                file.read(data, size);
-                file.close();
-            }
-            else
-            {
-                logger->log("Error loading XML file %s", filename.c_str());
-            }
+            data = (char *) loadCompressedFile(filename, size);
         }
 
         if (data)
@@ -76,11 +76,8 @@ namespace XML
         {
             logger->log("Error loading %s", filename.c_str());
         }
-    }
 
-    Document::Document(const char *data, int size)
-    {
-        mDoc = xmlParseMemory(data, size);
+        xmlSetStructuredErrorFunc(NULL, xmlLogger);
     }
 
     Document::~Document()
@@ -152,6 +149,34 @@ namespace XML
                 return child;
 
         return NULL;
+    }
+
+    static void xmlLogger(void *ctx, xmlErrorPtr error)
+    {
+        XMLContext *context = static_cast<XMLContext*>(ctx);
+
+        if (context)
+            logger->log("Error in XML file '%s' on line %d",
+                        context->file.c_str(), error->line);
+        else
+            logger->log("Error in unknown xml file on line %d",
+                        error->line);
+
+        logger->log(error->message);
+
+        // No need to keep errors around
+        xmlCtxtResetLastError(error->ctxt);
+    }
+
+    void init()
+    {
+        // Initialize libxml2 and check for potential ABI mismatches between
+        // compiled version and the shared library actually used.
+        xmlInitParser();
+        LIBXML_TEST_VERSION;
+
+        // Handle libxml2 error messages
+        xmlSetStructuredErrorFunc(NULL, xmlLogger);
     }
 
 } // namespace XML

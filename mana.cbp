@@ -605,6 +605,8 @@
 		<Unit filename="src\utils\stringutils.h" />
 		<Unit filename="src\utils\xml.cpp" />
 		<Unit filename="src\utils\xml.h" />
+		<Unit filename="src\utils\zlib.cpp" />
+		<Unit filename="src\utils\zlib.h" />
 		<Unit filename="src\variabledata.h" />
 		<Unit filename="src\vector.cpp" />
 		<Unit filename="src\vector.h" />

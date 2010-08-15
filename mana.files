@@ -548,6 +548,8 @@
 ./src/utils/stringutils.h
 ./src/utils/xml.cpp
 ./src/utils/xml.h
+./src/utils/zlib.cpp
+./src/utils/zlib.h
 ./src/variabledata.h
 ./src/vector.cpp
 ./src/vector.h

@@ -56,14 +56,16 @@ extern Net::PlayerHandler *playerHandler;
 
 namespace ManaServ {
 
+extern Connection *gameServerConnection;
+extern std::string netToken;
+extern ServerInfo gameServer;
+
 void RespawnRequestListener::action(const gcn::ActionEvent &event)
 {
     Net::getPlayerHandler()->respawn();
 
     Mana::Event::trigger("NPC", "CloseAll");
 }
-
-extern Connection *gameServerConnection;
 
 PlayerHandler::PlayerHandler()
 {
@@ -92,11 +94,18 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case GPMSG_PLAYER_SERVER_CHANGE:
-        {   // TODO: Implement reconnecting to another game server
-            std::string token = msg.readString(32);
+        {   // TODO: Fix the servers to test this
+            netToken = msg.readString(32);
             std::string address = msg.readString();
             int port = msg.readInt16();
             logger->log("Changing server to %s:%d", address.c_str(), port);
+
+            gameServer.hostname = address;
+            gameServer.port = port;
+
+            gameServerConnection->disconnect();
+            Client::setState(STATE_CHANGE_MAP);
+            player_node->setMap(0);
         } break;
 
         case GPMSG_PLAYER_ATTRIBUTE_CHANGE:
