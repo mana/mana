@@ -172,11 +172,6 @@ static void createGuiWindows()
 
     localChatTab = new ChatTab(_("General"));
 
-    if (config.getValue("logToChat", 0))
-    {
-        logger->setChatWindow(chatWindow);
-    }
-
     NpcDialog::setup();
 
     Mana::Event::trigger("Game", "GuiWindowsLoaded");
@@ -191,7 +186,6 @@ static void destroyGuiWindows()
 {
     Mana::Event::trigger("Game", "GuiWindowsUnloading");
 
-    logger->setChatWindow(NULL);
     del_0(localChatTab) // Need to do this first, so it can remove itself
     del_0(chatWindow)
     del_0(statusWindow)

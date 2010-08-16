@@ -22,9 +22,10 @@
 #include <iostream>
 #include <sstream>
 
-#include "log.h"
+#include <stdio.h>
+#include <stdarg.h>
 
-#include "gui/widgets/chattab.h"
+#include "log.h"
 
 #ifdef WIN32
 #include <windows.h>
@@ -37,8 +38,7 @@
 #include <sys/time.h>
 
 Logger::Logger():
-    mLogToStandardOut(true),
-    mChatWindow(NULL)
+    mLogToStandardOut(true)
 {
 }
 
@@ -99,11 +99,6 @@ void Logger::log(const char *log_text, ...)
     if (mLogToStandardOut)
     {
         std::cout << timeStr.str() << buf << std::endl;
-    }
-
-    if (mChatWindow)
-    {
-        localChatTab->chatLog(buf, BY_LOGGER);
     }
 
     // Delete temporary buffer
