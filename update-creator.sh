@@ -1,5 +1,6 @@
 #!/bin/sh
-find -name \*.cpp \
+find -path ./libs -prune -path ./CMake -prune \
+  -o -name \*.cpp \
   -o -name \*.h \
   -o -name \*.am \
   -o -name \*.txt \

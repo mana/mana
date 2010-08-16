@@ -1,5 +1,8 @@
+./CMakeCache.txt
+./CMakeFiles/CMakeRuleHashes.txt
+./CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp
+./CMakeFiles/TargetDirectories.txt
 ./CMakeLists.txt
-./config.h
 ./data/CMakeLists.txt
 ./data/fonts/CMakeLists.txt
 ./data/fonts/Makefile.am
@@ -64,6 +67,7 @@
 ./src/chatlog.h
 ./src/client.cpp
 ./src/client.h
+./src/CMakeFiles/mana.dir/link.txt
 ./src/CMakeLists.txt
 ./src/commandhandler.cpp
 ./src/commandhandler.h
