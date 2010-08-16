@@ -215,10 +215,7 @@ void ActorSpriteManager::logic()
 void ActorSpriteManager::clear()
 {
     if (player_node)
-    {
-        player_node->setTarget(0);
         mActors.erase(player_node);
-    }
 
     for_actors
         delete *it;

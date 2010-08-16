@@ -34,28 +34,7 @@ class InventoryHandler
     public:
         virtual ~InventoryHandler() {}
 
-        virtual void equipItem(const Item *item) = 0;
-
-        virtual void unequipItem(const Item *item) = 0;
-
-        virtual void useItem(const Item *item) = 0;
-
-        virtual void dropItem(const Item *item, int amount) = 0;
-
         virtual bool canSplit(const Item *item) = 0;
-
-        virtual void splitItem(const Item *item, int amount) = 0;
-
-        virtual void moveItem(int oldIndex, int newIndex) = 0;
-
-        virtual void openStorage(int type) = 0;
-
-        virtual void closeStorage(int type) = 0;
-
-        //void changeCart() = 0;
-
-        virtual void moveItem(int source, int slot, int amount,
-                              int destination) = 0;
 
         // TODO: fix/remove me
         virtual size_t getSize(int type) const = 0;

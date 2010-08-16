@@ -189,7 +189,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                         // Successfully added item
                         if (item->isEquipment() && item->isEquipped())
                         {
-                            Net::getInventoryHandler()->unequipItem(item);
+                            item->doEvent("doUnequip");
                         }
                         tradeWindow->addItem(item->getId(), true, quantity,
                                 item->isEquipment());

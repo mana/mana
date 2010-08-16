@@ -23,6 +23,9 @@
 
 #include <string>
 
+class ActorSprite;
+class Item;
+
 namespace Mana
 {
 
@@ -35,7 +38,9 @@ class VariableData
         DATA_INT,
         DATA_STRING,
         DATA_FLOAT,
-        DATA_BOOL
+        DATA_BOOL,
+        DATA_ITEM,
+        DATA_ACTOR
     };
 
     virtual ~VariableData() {};
@@ -93,6 +98,32 @@ public:
 
 private:
     bool mData;
+};
+
+class ItemData : public VariableData
+{
+public:
+    ItemData(Item *value) { mData = value; }
+
+    Item *getData() const { return mData; }
+
+    int getType() const { return DATA_ITEM; }
+
+private:
+    Item *mData;
+};
+
+class ActorData : public VariableData
+{
+public:
+    ActorData(ActorSprite *value) { mData = value; }
+
+    ActorSprite *getData() const { return mData; }
+
+    int getType() const { return DATA_ACTOR; }
+
+private:
+    ActorSprite *mData;
 };
 
 } // namespace Mana

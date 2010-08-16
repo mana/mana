@@ -47,20 +47,30 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             tradeWindow->tradeItem(item, amount);
             break;
         case ItemDrop:
-            Net::getInventoryHandler()->dropItem(item, amount);
+            item->doEvent("doDrop", amount);
             break;
         case ItemSplit:
-            Net::getInventoryHandler()->splitItem(item, amount);
+            item->doEvent("doSplit", amount);
             break;
         case StoreAdd:
-            Net::getInventoryHandler()->moveItem(Inventory::INVENTORY,
-                                             item->getInvIndex(), amount,
-                                             Inventory::STORAGE);
+        {
+            Mana::Event event("doMove");
+            event.setItem("item", item);
+            event.setInt("amount", amount);
+            event.setInt("source", Inventory::INVENTORY);
+            event.setInt("destination", Inventory::STORAGE);
+            event.trigger("Item");
+        }
             break;
         case StoreRemove:
-            Net::getInventoryHandler()->moveItem(Inventory::STORAGE,
-                                             item->getInvIndex(), amount,
-                                             Inventory::INVENTORY);
+        {
+            Mana::Event event("doMove");
+            event.setItem("item", item);
+            event.setInt("amount", amount);
+            event.setInt("source", Inventory::STORAGE);
+            event.setInt("destination", Inventory::INVENTORY);
+            event.trigger("Item");
+        }
             break;
         default:
             break;

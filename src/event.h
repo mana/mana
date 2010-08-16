@@ -21,9 +21,12 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include <string>
 #include <map>
 #include <set>
+#include <string>
+
+class ActorSprite;
+class Item;
 
 namespace Mana
 {
@@ -65,6 +68,8 @@ public:
     const std::string &getName() const
     { return mEventName; }
 
+// Integers
+
     /**
      * Sets the given variable to the given integer, if it isn't already set.
      */
@@ -86,6 +91,8 @@ public:
      * Returns true if the given variable exists and is an integer.
      */
     bool hasInt(const std::string &key) const;
+
+// Strings
 
     /**
      * Sets the given variable to the given string, if it isn't already set.
@@ -110,6 +117,8 @@ public:
      */
     bool hasString(const std::string &key) const;
 
+// Floats
+
     /**
      * Sets the given variable to the given floating-point, if it isn't already
      * set.
@@ -133,6 +142,8 @@ public:
      */
     bool hasFloat(const std::string &key) const;
 
+// Booleans
+
     /**
      * Sets the given variable to the given boolean, if it isn't already set.
      */
@@ -154,6 +165,57 @@ public:
      * Returns true if the given variable exists and is a boolean.
      */
     bool hasBool(const std::string &key) const;
+
+// Items
+
+    /**
+     * Sets the given variable to the given Item, if it isn't already set.
+     */
+    void setItem(const std::string &key, Item *value) throw (BadEvent);
+
+    /**
+     * Returns the given variable if it is set and an Item.
+     */
+    Item *getItem(const std::string &key) const throw (BadEvent);
+
+    /**
+     * Returns the given variable if it is set and an Item, returning the
+     * given default otherwise.
+     */
+    inline Item *getItem(const std::string &key, Item *defaultValue) const
+    { try { return getItem(key); } catch (BadEvent) { return defaultValue; }}
+
+    /**
+     * Returns true if the given variable exists and is an Item.
+     */
+    bool hasItem(const std::string &key) const;
+
+// ActorSprites
+
+    /**
+     * Sets the given variable to the given actor, if it isn't already set.
+     */
+    void setActor(const std::string &key, ActorSprite *value) throw (BadEvent);
+
+    /**
+     * Returns the given variable if it is set and an actor.
+     */
+    ActorSprite *getActor(const std::string &key) const throw (BadEvent);
+
+    /**
+     * Returns the given variable if it is set and an actor, returning the
+     * given default otherwise.
+     */
+    inline ActorSprite *getActor(const std::string &key,
+                                 ActorSprite *defaultValue) const
+    { try { return getActor(key); } catch (BadEvent) { return defaultValue; }}
+
+    /**
+     * Returns true if the given variable exists and is an actor.
+     */
+    bool hasActor(const std::string &key) const;
+
+// Triggers
 
     /**
      * Sends this event to all classes listening to the given channel.

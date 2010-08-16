@@ -188,12 +188,12 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         if (item->isEquipment())
         {
             if (item->isEquipped())
-                Net::getInventoryHandler()->unequipItem(item);
+                item->doEvent("doUnequip");
             else
-                Net::getInventoryHandler()->equipItem(item);
+                item->doEvent("doEquip");
         }
         else
-            Net::getInventoryHandler()->useItem(item);
+            item->doEvent("doUse");
     }
     else if (event.getId() == "drop")
     {
@@ -249,13 +249,23 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
             if(!item)
                 return;
             if (mInventory->isMainInventory())
-                Net::getInventoryHandler()->moveItem(Inventory::INVENTORY,
-                                            item->getInvIndex(), item->getQuantity(),
-                                            Inventory::STORAGE);
+            {
+                Mana::Event event("doMove");
+                event.setItem("item", item);
+                event.setInt("amount", item->getQuantity());
+                event.setInt("source", Inventory::INVENTORY);
+                event.setInt("destination", Inventory::STORAGE);
+                event.trigger("Item");
+            }
             else
-                Net::getInventoryHandler()->moveItem(Inventory::STORAGE,
-                                            item->getInvIndex(), item->getQuantity(),
-                                            Inventory::INVENTORY);
+            {
+                Mana::Event event("doMove");
+                event.setItem("item", item);
+                event.setInt("amount", item->getQuantity());
+                event.setInt("source", Inventory::STORAGE);
+                event.setInt("destination", Inventory::INVENTORY);
+                event.trigger("Item");
+            }
         }
     }
 }
@@ -344,7 +354,9 @@ void InventoryWindow::close()
     }
     else
     {
-        Net::getInventoryHandler()->closeStorage(Inventory::STORAGE);
+        Mana::Event event("doCloseInventory");
+        event.setInt("type", mInventory->getType());
+        event.trigger("Item");
         scheduleDelete();
     }
 }

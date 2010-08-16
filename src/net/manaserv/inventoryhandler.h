@@ -23,6 +23,7 @@
 #define NET_MANASERV_INVENTORYHANDLER_H
 
 #include "equipment.h"
+#include "listener.h"
 
 #include "net/inventoryhandler.h"
 
@@ -67,33 +68,17 @@ class EquipBackend : public Equipment::Backend
         Item *mEquipment[EQUIPMENT_SIZE];
 };
 
-class InventoryHandler : public MessageHandler, Net::InventoryHandler
+class InventoryHandler : public MessageHandler, Net::InventoryHandler,
+        public Mana::Listener
 {
     public:
         InventoryHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
-        void equipItem(const Item *item);
-
-        void unequipItem(const Item *item);
-
-        void useItem(const Item *item);
-
-        void dropItem(const Item *item, int amount);
+        void event(const std::string &channel, const Mana::Event &event);
 
         bool canSplit(const Item *item);
-
-        void splitItem(const Item *item, int amount);
-
-        void moveItem(int oldIndex, int newIndex);
-
-        void openStorage(int type);
-
-        void closeStorage(int type);
-
-        void moveItem(int source, int slot, int amount,
-                      int destination);
 
         size_t getSize(int type) const;
 

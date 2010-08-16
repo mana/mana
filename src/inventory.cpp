@@ -19,6 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "event.h"
 #include "inventory.h"
 #include "item.h"
 #include "log.h"
@@ -36,7 +37,7 @@ struct SlotUsed : public std::unary_function<Item*, bool>
     }
 };
 
-Inventory::Inventory(int type, int size):
+Inventory::Inventory(Type type, int size):
     mType(type),
     mSize(size == -1 ? Net::getInventoryHandler()->getSize(type) : size),
     mUsed(0)

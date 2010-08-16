@@ -415,7 +415,6 @@ SET(SRCS
     actor.h
     actorsprite.cpp
     actorsprite.h
-    actorspritelistener.h
     actorspritemanager.cpp
     actorspritemanager.h
     animatedsprite.cpp

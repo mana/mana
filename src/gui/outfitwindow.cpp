@@ -171,7 +171,7 @@ void OutfitWindow::wearOutfit(int outfit)
         if (item && !item->isEquipped() && item->getQuantity())
         {
             if (item->isEquipment())
-                Net::getInventoryHandler()->equipItem(item);
+                item->doEvent("doEquip");
         }
     }
 }
@@ -337,7 +337,10 @@ void OutfitWindow::unequipNotInOutfit(int outfit)
             }
             if (!found)
             {
-                Net::getInventoryHandler()->unequipItem(inventory->getItem(i));
+                Item *item = inventory->getItem(i);
+
+                if (item)
+                    item->doEvent("doUnequip");
             }
         }
     }

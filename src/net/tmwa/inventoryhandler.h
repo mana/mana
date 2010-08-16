@@ -24,6 +24,7 @@
 
 #include "equipment.h"
 #include "inventory.h"
+#include "listener.h"
 #include "playerinfo.h"
 
 #include "gui/inventorywindow.h"
@@ -115,7 +116,8 @@ class InventoryItem
 
 typedef std::list<InventoryItem> InventoryItems;
 
-class InventoryHandler : public MessageHandler, public Net::InventoryHandler
+class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
+        public Mana::Listener
 {
     public:
         enum {
@@ -129,26 +131,9 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 
         void handleMessage(Net::MessageIn &msg);
 
-        void equipItem(const Item *item);
-
-        void unequipItem(const Item *item);
-
-        void useItem(const Item *item);
-
-        void dropItem(const Item *item, int amount);
+        void event(const std::string &channel, const Mana::Event &event);
 
         bool canSplit(const Item *item);
-
-        void splitItem(const Item *item, int amount);
-
-        void moveItem(int oldIndex, int newIndex);
-
-        void openStorage(int type);
-
-        void closeStorage(int type);
-
-        void moveItem(int source, int slot, int amount,
-                      int destination);
 
         size_t getSize(int type) const;
 

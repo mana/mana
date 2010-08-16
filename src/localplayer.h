@@ -22,9 +22,7 @@
 #ifndef LOCALPLAYER_H
 #define LOCALPLAYER_H
 
-#include "actorspritelistener.h"
 #include "being.h"
-#include "listener.h"
 
 #include "resources/userpalette.h"
 
@@ -49,7 +47,7 @@ class AwayListener : public gcn::ActionListener
 /**
  * The local player character.
  */
-class LocalPlayer : public Being, public ActorSpriteListener
+class LocalPlayer : public Being
 {
     public:
         /**
@@ -94,12 +92,6 @@ class LocalPlayer : public Being, public ActorSpriteListener
         void inviteToGuild(Being *being);
 
         void pickUp(FloorItem *item);
-
-        /**
-         * Called when an ActorSprite has been destroyed.
-         * @param actorSprite the ActorSprite being destroyed.
-         */
-        void actorSpriteDestroyed(const ActorSprite &actorSprite);
 
         /**
          * Sets the attack range.

@@ -50,6 +50,8 @@ InventoryHandler::InventoryHandler()
     };
     handledMessages = _messages;
     inventoryHandler = this;
+
+    listen("Item");
 }
 
 void InventoryHandler::handleMessage(Net::MessageIn &msg)
@@ -86,84 +88,92 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void InventoryHandler::equipItem(const Item *item)
+void InventoryHandler::event(const std::string &channel,
+                             const Mana::Event &event)
 {
-    MessageOut msg(PGMSG_EQUIP);
-    msg.writeInt8(item->getInvIndex());
-    gameServerConnection->send(msg);
-}
+    if (channel == "Item")
+    {
+        Item *item = event.getItem("item");
 
-void InventoryHandler::unequipItem(const Item *item)
-{
-    MessageOut msg(PGMSG_UNEQUIP);
-    msg.writeInt8(item->getInvIndex());
-    gameServerConnection->send(msg);
+        if (!item)
+            return;
 
-    // Tidy equipment directly to avoid weapon still shown bug, for instance
-    int equipSlot = item->getInvIndex();
-    mEquips.setEquipment(equipSlot, 0);
-}
+        int index = item->getInvIndex();
 
-void InventoryHandler::useItem(const Item *item)
-{
-    MessageOut msg(PGMSG_USE_ITEM);
-    msg.writeInt8(item->getInvIndex());
-    gameServerConnection->send(msg);
-}
+        if (event.getName() == "doEquip")
+        {
+            MessageOut msg(PGMSG_EQUIP);
+            msg.writeInt8(index);
+            gameServerConnection->send(msg);
+        }
+        else if (event.getName() == "doUnequip")
+        {
+            MessageOut msg(PGMSG_UNEQUIP);
+            msg.writeInt8(index);
+            gameServerConnection->send(msg);
 
-void InventoryHandler::dropItem(const Item *item, int amount)
-{
-    MessageOut msg(PGMSG_DROP);
-    msg.writeInt8(item->getInvIndex());
-    msg.writeInt8(amount);
-    gameServerConnection->send(msg);
+            // Tidy equipment directly to avoid weapon still shown bug, for instance
+            mEquips.setEquipment(index, 0);
+        }
+        else if (event.getName() == "doUse")
+        {
+            MessageOut msg(PGMSG_USE_ITEM);
+            msg.writeInt8(index);
+            gameServerConnection->send(msg);
+        }
+        else if (event.getName() == "doDrop")
+        {
+            int amount = event.getInt("amount", 1);
+
+            MessageOut msg(PGMSG_DROP);
+            msg.writeInt8(index);
+            msg.writeInt8(amount);
+            gameServerConnection->send(msg);
+        }
+        else if (event.getName() == "doSplit")
+        {
+            int amount = event.getInt("amount", 1);
+
+            int newIndex = PlayerInfo::getInventory()->getFreeSlot();
+            if (newIndex > Inventory::NO_SLOT_INDEX)
+            {
+                MessageOut msg(PGMSG_MOVE_ITEM);
+                msg.writeInt8(index);
+                msg.writeInt8(newIndex);
+                msg.writeInt8(amount);
+                gameServerConnection->send(msg);
+            }
+        }
+        else if (event.getName() == "doMove")
+        {
+            int newIndex = event.getInt("newIndex", -1);
+
+            if (newIndex >= 0)
+            {
+                if (index == newIndex)
+                    return;
+
+                MessageOut msg(PGMSG_MOVE_ITEM);
+                msg.writeInt8(index);
+                msg.writeInt8(newIndex);
+                msg.writeInt8(item->getQuantity());
+                gameServerConnection->send(msg);
+            }
+            else
+            {
+                /*int source = event.getInt("source");
+                int destination = event.getInt("destination");
+                int amount = event.getInt("amount", 1);*/
+
+                // TODO
+            }
+        }
+    }
 }
 
 bool InventoryHandler::canSplit(const Item *item)
 {
     return item && !item->isEquipment() && item->getQuantity() > 1;
-}
-
-void InventoryHandler::splitItem(const Item *item, int amount)
-{
-    int newIndex = PlayerInfo::getInventory()->getFreeSlot();
-    if (newIndex > Inventory::NO_SLOT_INDEX)
-    {
-        MessageOut msg(PGMSG_MOVE_ITEM);
-        msg.writeInt8(item->getInvIndex());
-        msg.writeInt8(newIndex);
-        msg.writeInt8(amount);
-        gameServerConnection->send(msg);
-    }
-}
-
-void InventoryHandler::moveItem(int oldIndex, int newIndex)
-{
-    if (oldIndex == newIndex)
-        return;
-
-    MessageOut msg(PGMSG_MOVE_ITEM);
-    msg.writeInt8(oldIndex);
-    msg.writeInt8(newIndex);
-    msg.writeInt8(PlayerInfo::getInventory()->getItem(oldIndex)
-                  ->getQuantity());
-    gameServerConnection->send(msg);
-}
-
-void InventoryHandler::openStorage(int type)
-{
-    // TODO
-}
-
-void InventoryHandler::closeStorage(int type)
-{
-    // TODO
-}
-
-void InventoryHandler::moveItem(int source, int slot, int amount,
-                                int destination)
-{
-    // TODO
 }
 
 size_t InventoryHandler::getSize(int type) const

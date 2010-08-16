@@ -260,12 +260,12 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
                 if (item->isEquipment())
                 {
                     if (item->isEquipped())
-                        Net::getInventoryHandler()->unequipItem(item);
+                        item->doEvent("doUnequip");
                     else
-                        Net::getInventoryHandler()->equipItem(item);
+                        item->doEvent("doEquip");
                 }
                 else
-                    Net::getInventoryHandler()->useItem(item);
+                    item->doEvent("doUse");
 
             }
             else
@@ -275,18 +275,17 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
         }
         else if (item && item->getId())
         {
-           if(event.getClickCount() == 2)
+            if(event.getClickCount() == 2)
             {
                 if (item->isEquipment())
                 {
                     if (item->isEquipped())
-                        Net::getInventoryHandler()->unequipItem(item);
+                        item->doEvent("doUnequip");
                     else
-                        Net::getInventoryHandler()->equipItem(item);
+                        item->doEvent("doEquip");
                 }
                 else
-                    Net::getInventoryHandler()->useItem(item);
-
+                    item->doEvent("doUse");
             }
             else
             {
@@ -337,7 +336,14 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
         return;
     if (index == mSelectedIndex || mSelectedIndex == -1)
         return;
-    Net::getInventoryHandler()->moveItem(mSelectedIndex, index);
+
+    Item *item = getSelectedItem();
+    {
+        Mana::Event event("doMove");
+        event.setItem("item", item);
+        event.setInt("newIndex", index);
+        event.trigger("Item");
+    }
     selectNone();
 }
 
@@ -404,8 +410,11 @@ void ItemContainer::keyAction()
         mSelectedIndex != -1 &&
         mHighlightedIndex != -1)
     {
-        Net::getInventoryHandler()->moveItem(
-            mSelectedIndex, mHighlightedIndex);
+        Item *item = getSelectedItem();
+        Mana::Event event("doMove");
+        event.setItem("item", item);
+        event.setInt("newIndex", mHighlightedIndex);
+        event.trigger("Item");
         setSelectedIndex(mHighlightedIndex);
     }
     // If the highlight is on an item then select it.
@@ -417,8 +426,11 @@ void ItemContainer::keyAction()
     // If the highlight is on a blank space then move it.
     else if (mSelectedIndex != -1)
     {
-        Net::getInventoryHandler()->moveItem(
-            mSelectedIndex, mHighlightedIndex);
+        Item *item = getSelectedItem();
+        Mana::Event event("doMove");
+        event.setItem("item", item);
+        event.setInt("newIndex", mHighlightedIndex);
+        event.trigger("Item");
         selectNone();
     }
 }

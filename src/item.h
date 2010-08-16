@@ -118,6 +118,10 @@ class Item
          */
         int getInvIndex() const { return mInvIndex; }
 
+        void doEvent(const std::string &eventName);
+
+        void doEvent(const std::string &eventName, int amount);
+
         /**
          * Returns information about this item type.
          */

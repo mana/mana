@@ -38,6 +38,8 @@ Event::~Event()
     }
 }
 
+// Integers
+
 void Event::setInt(const std::string &key, int value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -64,6 +66,8 @@ bool Event::hasInt(const std::string &key) const
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_INT);
 }
+
+// Strings
 
 void Event::setString(const std::string &key, const std::string &value) throw (BadEvent)
 {
@@ -93,6 +97,8 @@ bool Event::hasString(const std::string &key) const
              || it->second->getType() != VariableData::DATA_STRING);
 }
 
+// Floats
+
 void Event::setFloat(const std::string &key, double value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -120,6 +126,8 @@ bool Event::hasFloat(const std::string &key) const
              || it->second->getType() != VariableData::DATA_FLOAT);
 }
 
+// Booleans
+
 void Event::setBool(const std::string &key, bool value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -146,6 +154,66 @@ bool Event::hasBool(const std::string &key) const
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_BOOL);
 }
+
+// Items
+
+void Event::setItem(const std::string &key, Item *value) throw (BadEvent)
+{
+    if (mData.find(key) != mData.end())
+        throw KEY_ALREADY_EXISTS;
+
+    mData[key] = new ItemData(value);
+}
+
+Item *Event::getItem(const std::string &key) const throw (BadEvent)
+{
+    VariableMap::const_iterator it = mData.find(key);
+    if (it == mData.end())
+        throw BAD_KEY;
+
+    if (it->second->getType() != VariableData::DATA_ITEM)
+        throw BAD_VALUE;
+
+    return static_cast<ItemData *>(it->second)->getData();
+}
+
+bool Event::hasItem(const std::string &key) const
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_ITEM);
+}
+
+// Actors
+
+void Event::setActor(const std::string &key, ActorSprite *value) throw (BadEvent)
+{
+    if (mData.find(key) != mData.end())
+        throw KEY_ALREADY_EXISTS;
+
+    mData[key] = new ActorData(value);
+}
+
+ActorSprite *Event::getActor(const std::string &key) const throw (BadEvent)
+{
+    VariableMap::const_iterator it = mData.find(key);
+    if (it == mData.end())
+        throw BAD_KEY;
+
+    if (it->second->getType() != VariableData::DATA_ACTOR)
+        throw BAD_VALUE;
+
+    return static_cast<ActorData *>(it->second)->getData();
+}
+
+bool Event::hasActor(const std::string &key) const
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_ACTOR);
+}
+
+// Triggers
 
 void Event::trigger(const std::string &channel, const Event &event)
 {

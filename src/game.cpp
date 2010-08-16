@@ -203,6 +203,8 @@ static void destroyGuiWindows()
     del_0(specialsWindow)
     del_0(socialWindow)
 
+    Mana::Event::trigger("NPC", "CloseAll"); // Cleanup remaining NPC dialogs
+
     Mana::Event::trigger("Game", "GuiWindowsUnloaded");
 }
 
@@ -260,6 +262,8 @@ Game::Game():
 
 Game::~Game()
 {
+    Mana::Event::trigger("Game", "Destructing");
+
     delete mWindowMenu;
 
     destroyGuiWindows();

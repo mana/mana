@@ -22,6 +22,7 @@
 #include "item.h"
 
 #include "configuration.h"
+#include "event.h"
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
@@ -72,4 +73,19 @@ void Item::setId(int id)
         mDrawImage = Theme::getImageFromTheme(
                                             paths.getValue("unknownItemFile",
                                                            "unknown-item.png"));
+}
+
+void Item::doEvent(const std::string &eventName)
+{
+    Mana::Event event(eventName);
+    event.setItem("item", this);
+    event.trigger("Item");
+}
+
+void Item::doEvent(const std::string &eventName, int amount)
+{
+    Mana::Event event(eventName);
+    event.setItem("item", this);
+    event.setInt("amount", amount);
+    event.trigger("Item");
 }

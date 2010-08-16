@@ -98,6 +98,8 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
     config.addListener("showownname", this);
     setShowName(config.getValue("showownname", 1));
+
+    listen("ActorSprite");
 }
 
 LocalPlayer::~LocalPlayer()
@@ -656,22 +658,14 @@ void LocalPlayer::pickUp(FloorItem *item)
         {
             setDestination(item->getPixelX() + 16, item->getPixelY() + 16);
             mPickUpTarget = item;
-            mPickUpTarget->addActorSpriteListener(this);
         }
         else
         {
             setDestination(item->getTileX(), item->getTileY());
             mPickUpTarget = item;
-            mPickUpTarget->addActorSpriteListener(this);
             stopAttack();
         }
     }
-}
-
-void LocalPlayer::actorSpriteDestroyed(const ActorSprite &actorSprite)
-{
-    if (mPickUpTarget == &actorSprite)
-        mPickUpTarget = 0;
 }
 
 Being *LocalPlayer::getTarget() const
@@ -1096,7 +1090,20 @@ void LocalPlayer::optionChanged(const std::string &value)
 
 void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
 {
-    if (channel == "Attributes")
+    if (channel == "ActorSprite")
+    {
+        if (event.getName() == "Destroyed")
+        {
+            ActorSprite *actor = event.getActor("source");
+
+            if (mPickUpTarget == actor)
+                mPickUpTarget = 0;
+
+            if (mTarget == actor)
+                mTarget = 0;
+        }
+    }
+    else if (channel == "Attributes")
     {
         if (event.getName() == "UpdateAttribute")
         {
@@ -1109,8 +1116,8 @@ void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
             }
         }
     }
-    else
-        Being::event(channel, event);
+
+    Being::event(channel, event);
 }
 
 void LocalPlayer::changeAwayMode()

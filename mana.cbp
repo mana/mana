@@ -99,7 +99,6 @@
 		<Unit filename="src\actor.h" />
 		<Unit filename="src\actorsprite.cpp" />
 		<Unit filename="src\actorsprite.h" />
-		<Unit filename="src\actorspritelistener.h" />
 		<Unit filename="src\actorspritemanager.cpp" />
 		<Unit filename="src\actorspritemanager.h" />
 		<Unit filename="src\animatedsprite.cpp" />

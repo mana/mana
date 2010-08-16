@@ -22,9 +22,9 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
-#include "actorspritelistener.h"
 #include "actorspritemanager.h"
 #include "configlistener.h"
+#include "listener.h"
 #include "position.h"
 
 #include "gui/widgets/windowcontainer.h"
@@ -54,7 +54,7 @@ const int walkingMouseDelay = 500;
  * coordinates.
  */
 class Viewport : public WindowContainer, public gcn::MouseListener,
-        public ConfigListener, public ActorSpriteListener
+        public ConfigListener, public Mana::Listener
 {
     public:
         /**
@@ -160,7 +160,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void hideBeingPopup();
 
-        void actorSpriteDestroyed(const ActorSprite &actorSprite);
+        void event(const std::string &channel, const Mana::Event &event);
 
     private:
         /**
