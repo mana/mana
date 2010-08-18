@@ -50,22 +50,17 @@ ItemPopup::ItemPopup():
     mItemName->setFont(boldFont);
     mItemName->setPosition(getPadding(), getPadding());
 
-    const int fontHeight = getFont()->getHeight();
-
     // Item Description
     mItemDesc = new TextBox;
     mItemDesc->setEditable(false);
-    mItemDesc->setPosition(getPadding(), fontHeight);
 
     // Item Effect
     mItemEffect = new TextBox;
     mItemEffect->setEditable(false);
-    mItemEffect->setPosition(getPadding(), 2 * fontHeight + 2 * getPadding());
 
     // Item Weight
     mItemWeight = new TextBox;
     mItemWeight->setEditable(false);
-    mItemWeight->setPosition(getPadding(), 3 * fontHeight + 4 * getPadding());
 
     mIcon = new Icon(0);
 
@@ -147,28 +142,34 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     const int numRowsDesc = mItemDesc->getNumberOfRows();
     const int numRowsEffect = mItemEffect->getNumberOfRows();
     const int numRowsWeight = mItemWeight->getNumberOfRows();
-    const int height = getFont()->getHeight();
+    const int fontHeight = getFont()->getHeight();
+
+    int nameHeight;
+    if (mIcon->getHeight() > 2 * fontHeight)
+        nameHeight = mIcon->getHeight();
+    else
+        nameHeight = 2 * fontHeight;
 
     if (item.getEffect().empty())
     {
-        setContentSize(minWidth, (numRowsDesc + numRowsWeight + getPadding()) *
-                       height);
+        setContentSize(minWidth, nameHeight +
+                        (numRowsDesc + numRowsWeight + 1) * fontHeight);
 
-        mItemWeight->setPosition(getPadding(), (numRowsDesc + getPadding()) *
-                                 height);
+        mItemWeight->setPosition(getPadding(),
+                                nameHeight + (numRowsDesc + 1) * fontHeight);
     }
     else
     {
-        setContentSize(minWidth, (numRowsDesc + numRowsEffect + numRowsWeight +
-                       getPadding()) * height);
+        setContentSize(minWidth, nameHeight + (numRowsDesc + numRowsEffect +
+                        numRowsWeight + 1) * fontHeight);
 
-        mItemWeight->setPosition(getPadding(), (numRowsDesc + numRowsEffect +
-                                 getPadding()) * height);
+        mItemWeight->setPosition(getPadding(), nameHeight + (numRowsDesc +
+                                    numRowsEffect + 1) * fontHeight);
     }
 
-    mItemDesc->setPosition(getPadding(), 2 * height);
-    mItemEffect->setPosition(getPadding(), (numRowsDesc + getPadding()) * height);
-
+    mItemDesc->setPosition(getPadding(), nameHeight);
+    mItemEffect->setPosition(getPadding(), nameHeight +
+                            (numRowsDesc + 1) * fontHeight);
 }
 
 gcn::Color ItemPopup::getColor(ItemType type)
