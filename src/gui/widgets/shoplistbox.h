@@ -48,6 +48,11 @@ class ShopListBox : public ListBox
         ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel);
 
         /**
+         * Deconstructor
+         */
+        ~ShopListBox();
+
+        /**
          * Draws the list box.
          */
         void draw(gcn::Graphics *graphics);
@@ -73,7 +78,15 @@ class ShopListBox : public ListBox
          */
         void setPriceCheck(bool check);
 
+        /**
+         ** Show ItemTooltip
+         */
         void mouseMoved(gcn::MouseEvent &event);
+
+        /**
+         ** Hide ItemTooltip
+         */
+         void mouseExited(gcn::MouseEvent &event);
 
     private:
         int mPlayerMoney;
