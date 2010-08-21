@@ -145,7 +145,7 @@ void Party::removeFromMembers()
     while(itr != itr_end)
     {
         Being *b = beingManager->findBeing((*itr)->getID());
-        if (b->getType() == Being::PLAYER)
+        if (b && b->getType() == Being::PLAYER)
             static_cast<Player*>(b)->setParty(NULL);
         ++itr;
     }

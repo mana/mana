@@ -754,7 +754,7 @@ void Game::handleInput()
 
     // Moving player around
     if (player_node->isAlive() && !NPC::isTalking() &&
-        !chatWindow->isInputFocused() && !quitDialog)
+        !chatWindow->isInputFocused() && !quitDialog && !TextDialog::isActive())
     {
         // Get the state of the keyboard keys
         keyboard.refreshActiveKeys();

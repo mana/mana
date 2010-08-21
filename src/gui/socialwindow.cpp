@@ -186,7 +186,7 @@ public:
         mScroll = new ScrollArea(mList);
 
         mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
-        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
     }
 
     ~PartyTab()
@@ -321,7 +321,7 @@ SocialWindow::SocialWindow() :
     setCloseButton(true);
     setMinWidth(120);
     setMinHeight(55);
-    setDefaultSize(590, 200, 150, 60);
+    setDefaultSize(590, 200, 150, 124);
     setupWindow->registerWindowForReset(this);
 
     loadWindowState();
