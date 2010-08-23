@@ -253,7 +253,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                                     nick.c_str()), BY_SERVER);
 
                     Being *b = beingManager->findBeing(id);
-                    if (b->getType() == Being::PLAYER)
+                    if (b && b->getType() == Being::PLAYER)
                         static_cast<Player*>(b)->setParty(NULL);
 
                     taParty->removeMember(id);
