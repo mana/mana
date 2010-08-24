@@ -38,6 +38,8 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
     mOkButton = new Button(_("OK"), "OK", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "CANCEL", this);
 
+    mTextField->addActionListener(this);
+
     place(0, 0, textLabel, 4);
     place(0, 1, mTextField, 4);
     place(2, 2, mOkButton);

@@ -327,18 +327,24 @@ void PartyHandler::invite(Player *player)
 
 void PartyHandler::invite(const std::string &name)
 {
-    if (partyTab)
+    Being *invitee = beingManager->findBeingByName(name, Being::PLAYER);
+
+    if (invitee)
     {
-        partyTab->chatLog(_("Inviting like this isn't supported at the moment."),
-                          BY_SERVER);
+        invite((Player *)invitee);
+        partyTab->chatLog(strprintf(_("Invited user %s to party."),
+                                        name.c_str()), BY_SERVER);
+    }
+    else if (partyTab)
+    {
+        partyTab->chatLog(strprintf(_("Inviting failed, because you can't see "
+                            "a player called %s."), name.c_str()), BY_SERVER);
     }
     else
     {
         localChatTab->chatLog(_("You can only inivte when you are in a party!"),
                               BY_SERVER);
     }
-
-    // TODO?
 }
 
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)

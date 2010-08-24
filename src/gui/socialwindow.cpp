@@ -203,9 +203,6 @@ public:
         {
             std::string name = mInviteDialog->getText();
             Net::getPartyHandler()->invite(name);
-
-            localChatTab->chatLog(strprintf(_("Invited user %s to party."),
-                                            name.c_str()), BY_SERVER);
             mInviteDialog = NULL;
         }
         else if (event.getId() == "~do invite")
