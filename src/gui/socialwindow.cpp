@@ -121,12 +121,16 @@ public:
         if (event.getId() == "do invite")
         {
             std::string name = mInviteDialog->getText();
-            Net::getGuildHandler()->invite(mGuild->getId(), name);
 
-            localChatTab->chatLog(strprintf(_("Invited user %s to guild %s."),
+            if (!name.empty())
+            {
+                Net::getGuildHandler()->invite(mGuild->getId(), name);
+                localChatTab->chatLog(strprintf(_("Invited user %s to guild %s."),
                                             name.c_str(),
                                             mGuild->getName().c_str()),
                                   BY_SERVER);
+            }
+
             mInviteDialog = NULL;
         }
         else if (event.getId() == "~do invite")
@@ -153,7 +157,7 @@ protected:
         mInviteDialog = new TextDialog(_("Member Invite to Guild"),
                      strprintf(_("Who would you like to invite to guild %s?"),
                                mGuild->getName().c_str()),
-                     socialWindow);
+                     socialWindow, true);
         mInviteDialog->setActionEventId("do invite");
         mInviteDialog->addActionListener(this);
     }
@@ -202,7 +206,10 @@ public:
         if (event.getId() == "do invite")
         {
             std::string name = mInviteDialog->getText();
-            Net::getPartyHandler()->invite(name);
+
+            if (!name.empty())
+                Net::getPartyHandler()->invite(name);
+
             mInviteDialog = NULL;
         }
         else if (event.getId() == "~do invite")
@@ -229,7 +236,7 @@ protected:
         mInviteDialog = new TextDialog(_("Member Invite to Party"),
                       strprintf(_("Who would you like to invite to party %s?"),
                                 mParty->getName().c_str()),
-                      socialWindow);
+                      socialWindow, true);
         mInviteDialog->setActionEventId("do invite");
         mInviteDialog->addActionListener(this);
     }

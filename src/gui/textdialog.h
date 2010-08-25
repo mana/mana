@@ -42,7 +42,7 @@ public:
      * @see Window::Window
      */
     TextDialog(const std::string &title, const std::string &msg,
-               Window *parent = NULL);
+               Window *parent = NULL, bool autoCompleteEnabled = false);
 
     ~TextDialog();
 

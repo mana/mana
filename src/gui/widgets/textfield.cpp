@@ -21,9 +21,11 @@
 
 #include "gui/widgets/textfield.h"
 
+#include "beingmanager.h"
 #include "configuration.h"
 #include "graphics.h"
 
+#include "gui/chat.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
 #include "gui/theme.h"
@@ -43,7 +45,8 @@ ImageRect TextField::skin;
 
 TextField::TextField(const std::string &text, bool loseFocusOnTab):
     gcn::TextField(text),
-    mNumeric(false)
+    mNumeric(false),
+    mAutoComplete(false)
 {
     setFrameSize(2);
 
@@ -246,6 +249,17 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             break;
 
         case Key::TAB:
+            if (mAutoComplete && mText.size() > 0)
+            {
+                std::vector<std::string> names;
+                beingManager->getPlayerNames(names, false);
+                std::string newName = chatWindow->autoComplete(names, mText);
+                if (newName != "")
+                {
+                    setText(newName);
+                    setCaretPosition(mText.size());
+                }
+            }
             if (mLoseFocusOnTab)
                 return;
             break;

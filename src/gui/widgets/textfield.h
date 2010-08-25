@@ -90,6 +90,16 @@ class TextField : public gcn::TextField
          */
         int getValue() const;
 
+        /**
+         * Set if the tabulator key causes auto complete
+         */
+         void setAutoComplete(bool b ) {mAutoComplete = b;}
+
+         /**
+         * Returns if the tabulator key causes auto complete
+         */
+         bool getAutoComplete() {return mAutoComplete;}
+
     private:
         void handlePaste();
 
@@ -100,6 +110,7 @@ class TextField : public gcn::TextField
         int mMinimum;
         int mMaximum;
         bool mLoseFocusOnTab;
+        bool mAutoComplete;
 };
 
 #endif

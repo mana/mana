@@ -177,6 +177,7 @@ class ChatWindow : public Window,
     protected:
         friend class ChatTab;
         friend class WhisperTab;
+        friend class TextField;
 
         /** Remove the given tab from the window */
         void removeTab(ChatTab *tab);

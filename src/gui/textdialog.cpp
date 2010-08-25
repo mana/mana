@@ -30,13 +30,17 @@
 int TextDialog::instances = 0;
 
 TextDialog::TextDialog(const std::string &title, const std::string &msg,
-                       Window *parent):
-    Window(title, true, parent),
-    mTextField(new TextField)
+                       Window *parent, bool autoCompleteEnabled):
+    Window(title, true, parent)
 {
     gcn::Label *textLabel = new Label(msg);
     mOkButton = new Button(_("OK"), "OK", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "CANCEL", this);
+
+    // In TextField the escape key will either cause autoComplete or lose focus
+    mTextField = new TextField("", ! autoCompleteEnabled);
+    if (autoCompleteEnabled)
+        mTextField->setAutoComplete(true);
 
     mTextField->addActionListener(this);
 

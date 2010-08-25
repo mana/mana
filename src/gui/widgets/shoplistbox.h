@@ -48,7 +48,7 @@ class ShopListBox : public ListBox
         ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel);
 
         /**
-         * Deconstructor
+         * Destructor
          */
         ~ShopListBox();
 
