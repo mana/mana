@@ -18,14 +18,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_STATS_H
-#define NET_MANASERV_STATS_H
+#ifndef NET_MANASERV_ATTRIBUTES_H
+#define NET_MANASERV_ATTRIBUTES_H
 
 #include <string>
 #include <vector>
 
 namespace ManaServ {
-namespace Stats {
+namespace Attributes {
     void load();
 
     void unload();
@@ -34,8 +34,30 @@ namespace Stats {
 
     void informStatusWindow();
 
-    std::vector<std::string> getLabelVector();
-} // namespace Stats
+    /**
+     * Returns the list of base attribute labels.
+     */
+    std::vector<std::string>& getLabels();
+
+    /**
+     * Give the attribute points given to a character
+     * at its creation.
+     */
+    unsigned int getCreationPoints();
+
+    /**
+     * Give the minimum attribute point possible
+     * at character's creation.
+     */
+    unsigned int getAttributeMinimum();
+
+    /**
+     * Give the maximum attribute point possible
+     * at character's creation.
+     */
+    unsigned int getAttributeMaximum();
+
+} // namespace Attributes
 } // namespace ManaServ
 
-#endif // NET_MANASERV_STATS_H
+#endif // NET_MANASERV_ATTRIBUTES_H

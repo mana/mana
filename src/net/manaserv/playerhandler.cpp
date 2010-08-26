@@ -110,24 +110,20 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
         case GPMSG_PLAYER_ATTRIBUTE_CHANGE:
         {
-            logger->log("ATTRIBUTE UPDATE:");
             while (msg.getUnreadLength())
             {
-                int stat = msg.readInt16();
-                int base = msg.readInt16();
-                int value = msg.readInt16();
-                logger->log("%d set to %d %d", stat, base, value);
+                int attr = msg.readInt16();
+                double base = msg.readInt32() / 256.0;
+                double value = msg.readInt32() / 256.0;
 
-                if (stat == BASE_ATTR_HP)
-                {
-                    PlayerInfo::setAttribute(MAX_HP, base);
+                /* TODO handle HP
+                if (attr == ATTR_HP)
                     PlayerInfo::setAttribute(HP, value);
-                }
-                else
-                {
-                    PlayerInfo::setStatBase(stat, base);
-                    PlayerInfo::setStatMod(stat, value - base);
-                }
+                else if (attr == ATTR_MAX_HP)
+                    PlayerInfo::setAttribute(MAX_HP, value);*/
+
+                PlayerInfo::setStatBase(attr, base);
+                PlayerInfo::setStatMod(attr, value - base);
             }
         } break;
 
@@ -166,7 +162,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
         case GPMSG_RAISE_ATTRIBUTE_RESPONSE:
         {
             int errCode = msg.readInt8();
-            int attrNum = msg.readInt8() - CHAR_ATTR_BEGIN;
+            int attrNum = msg.readInt16();
             switch (errCode)
             {
                 case ATTRIBMOD_OK:
@@ -203,7 +199,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
         case GPMSG_LOWER_ATTRIBUTE_RESPONSE:
         {
             int errCode = msg.readInt8();
-            int attrNum = msg.readInt8() - CHAR_ATTR_BEGIN;
+            int attrNum = msg.readInt16();
             switch (errCode)
             {
                 case ATTRIBMOD_OK:
@@ -221,9 +217,10 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     // undo attribute change and set points to 0
                     logger->log("Warning: Server denied reduction of attribute %d (no points left) ", attrNum);
                     int attrValue = PlayerInfo::getStatBase(attrNum) + 1;
+                    // TODO are these right?
                     PlayerInfo::setAttribute(CHAR_POINTS, 0);
+                    PlayerInfo::setAttribute(CORR_POINTS, 0);
                     PlayerInfo::setStatBase(attrNum, attrValue);
-                    break;
                 } break;
                 case ATTRIBMOD_DENIED:
                 {
@@ -326,14 +323,14 @@ void PlayerHandler::emote(int emoteId)
 void PlayerHandler::increaseAttribute(int attr)
 {
     MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
-    msg.writeInt8(attr);
+    msg.writeInt16(attr);
     gameServerConnection->send(msg);
 }
 
 void PlayerHandler::decreaseAttribute(int attr)
 {
     MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
-    msg.writeInt8(attr);
+    msg.writeInt16(attr);
     gameServerConnection->send(msg);
 }
 

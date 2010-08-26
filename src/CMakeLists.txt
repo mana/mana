@@ -578,6 +578,8 @@ SET(SRCS_TMWA
 SET(SRCS_MANA
     net/manaserv/adminhandler.cpp
     net/manaserv/adminhandler.h
+    net/manaserv/attributes.cpp
+    net/manaserv/attributes.h
     net/manaserv/beinghandler.cpp
     net/manaserv/beinghandler.h
     net/manaserv/buysellhandler.cpp
@@ -622,8 +624,6 @@ SET(SRCS_MANA
     net/manaserv/protocol.h
     net/manaserv/specialhandler.cpp
     net/manaserv/specialhandler.h
-    net/manaserv/stats.cpp
-    net/manaserv/stats.h
     net/manaserv/tradehandler.cpp
     net/manaserv/tradehandler.h
     )

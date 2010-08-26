@@ -45,10 +45,10 @@ FloorItem::FloorItem(int id,
     mPos.y = y * map->getTileHeight() +
              ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
 
-    setupSpriteDisplay(ItemDB::get(itemId).getDisplay());
+    setupSpriteDisplay(itemDb->get(itemId).getDisplay());
 }
 
 const ItemInfo &FloorItem::getInfo() const
 {
-    return ItemDB::get(mId);
+    return itemDb->get(mId);
 }

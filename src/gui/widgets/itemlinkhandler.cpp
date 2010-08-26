@@ -49,7 +49,7 @@ void ItemLinkHandler::handleLink(const std::string &link)
 
     if (id > 0)
     {
-        const ItemInfo &itemInfo = ItemDB::get(id);
+        const ItemInfo &itemInfo = itemDb->get(id);
         mItemPopup->setItem(itemInfo, true);
 
         if (mItemPopup->isVisible())

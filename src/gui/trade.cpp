@@ -141,18 +141,6 @@ void TradeWindow::addItem(int id, bool own, int quantity)
     (own ? mMyInventory : mPartnerInventory)->addItem(id, quantity);
 }
 
-void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
-{
-    if (own)
-    {
-        mMyInventory->addItem(id, quantity, equipment);
-    }
-    else
-    {
-        mPartnerInventory->addItem(id, quantity, equipment);
-    }
-}
-
 void TradeWindow::changeQuantity(int index, bool own, int quantity)
 {
     if (own)

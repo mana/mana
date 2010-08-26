@@ -120,6 +120,8 @@ KeyboardConfig keyboard;
 UserPalette *userPalette;
 Graphics *graphics;
 
+ItemDB *itemDb;
+
 Sound sound;
 
 void ErrorListener::action(const gcn::ActionEvent &)
@@ -438,7 +440,7 @@ Client::~Client()
     // Unload XML databases
     ColorDB::unload();
     EmoteDB::unload();
-    ItemDB::unload();
+    delete itemDb;
     MonsterDB::unload();
     NPCDB::unload();
     StatusEffect::unload();
@@ -747,7 +749,7 @@ int Client::exec()
 
                     // Load XML databases
                     ColorDB::load();
-                    ItemDB::load();
+                    itemDb = new ItemDB;
                     Being::load(); // Hairstyles
                     MonsterDB::load();
                     SpecialDB::load();

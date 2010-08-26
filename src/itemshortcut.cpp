@@ -29,6 +29,8 @@
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 
+#include "resources/iteminfo.h"
+
 #include "utils/stringutils.h"
 
 ItemShortcut *itemShortcut;
@@ -70,7 +72,7 @@ void ItemShortcut::useItem(int index)
         Item *item = PlayerInfo::getInventory()->findItem(mItems[index]);
         if (item && item->getQuantity())
         {
-            if (item->isEquipment())
+            if (item->getInfo().getEquippable())
             {
                 if (item->isEquipped())
                     item->doEvent("doUnequip");
@@ -78,7 +80,9 @@ void ItemShortcut::useItem(int index)
                     item->doEvent("doEquip");
             }
             else
+            {
                 item->doEvent("doUse");
+            }
         }
     }
 }

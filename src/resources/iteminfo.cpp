@@ -29,7 +29,7 @@ const std::string &ItemInfo::getSprite(Gender gender) const
     if (mView)
     {
         // Forward the request to the item defining how to view this item
-        return ItemDB::get(mView).getSprite(gender);
+        return itemDb->get(mView).getSprite(gender);
     }
     else
     {

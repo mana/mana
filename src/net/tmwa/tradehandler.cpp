@@ -37,6 +37,8 @@
 
 #include "net/tmwa/protocol.h"
 
+#include "resources/iteminfo.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -167,7 +169,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 if (type == 0)
                     tradeWindow->setMoney(amount);
                 else
-                    tradeWindow->addItem(type, false, amount, false);
+                    tradeWindow->addItem(type, false, amount);
             }
             break;
 
@@ -187,12 +189,12 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 {
                     case 0:
                         // Successfully added item
-                        if (item->isEquipment() && item->isEquipped())
+                        if (item->isEquippable() && item->isEquipped())
                         {
                             item->doEvent("doUnequip");
                         }
-                        tradeWindow->addItem(item->getId(), true, quantity,
-                                item->isEquipment());
+                        tradeWindow->addItem(item->getId(), true, quantity);
+
                         item->increaseQuantity(-quantity);
                         break;
                     case 1:

@@ -37,7 +37,7 @@
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-#include "net/manaserv/stats.h"
+#include "net/manaserv/attributes.h"
 
 #include "resources/colordb.h"
 
@@ -108,11 +108,15 @@ void CharHandler::handleCharacterInfo(Net::MessageIn &msg)
     info.level = msg.readInt16();
     info.characterPoints = msg.readInt16();
     info.correctionPoints = msg.readInt16();
-    info.money = msg.readInt32();
 
-    for (int i = 0; i < 7; i++)
+    while (msg.getUnreadLength() > 0)
     {
-        info.attribute[i] = msg.readInt8();
+        int id = msg.readInt32();
+        CachedAttrbiute attr;
+        attr.base = msg.readInt32() / 256.0;
+        attr.mod = msg.readInt32() / 256.0;
+
+        info.attribute[id] = attr;
     }
 
     mCachedCharacterInfos.push_back(info);
@@ -260,7 +264,10 @@ void CharHandler::setCharCreateDialog(CharCreateDialog *window)
     if (!mCharCreateDialog)
         return;
 
-    mCharCreateDialog->setAttributes(Stats::getLabelVector(), 60, 1, 20);
+    mCharCreateDialog->setAttributes(Attributes::getLabels(),
+                                     Attributes::getCreationPoints(),
+                                     Attributes::getAttributeMinimum(),
+                                     Attributes::getAttributeMaximum());
 }
 
 void CharHandler::requestCharacters()
@@ -359,11 +366,12 @@ void CharHandler::updateCharacters()
         character->data.mAttributes[LEVEL] = info.level;
         character->data.mAttributes[CHAR_POINTS] = info.characterPoints;
         character->data.mAttributes[CORR_POINTS] = info.correctionPoints;
-        character->data.mAttributes[MONEY] = info.money;
 
-        for (int i = 0; i < 7; i++)
+        for (CachedAttributes::const_iterator it = info.attribute.begin(),
+             it_end = info.attribute.end(); it != it_end; it++)
         {
-            character->data.mStats[i].base = info.attribute[i];
+            character->data.mStats[i].base = it->second.base;
+            character->data.mStats[i].mod = it->second.mod;
         }
 
         mCharacters.push_back(character);

@@ -40,6 +40,7 @@
 #include "net/net.h"
 
 #include "resources/image.h"
+#include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -170,7 +171,7 @@ void OutfitWindow::wearOutfit(int outfit)
         item = PlayerInfo::getInventory()->findItem(mItems[outfit][i]);
         if (item && !item->isEquipped() && item->getQuantity())
         {
-            if (item->isEquipment())
+            if (item->isEquippable())
                 item->doEvent("doEquip");
         }
     }

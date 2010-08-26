@@ -106,7 +106,7 @@ GeneralHandler::GeneralHandler():
     stats.push_back(ItemDB::Stat("dex", _("Dexterity %+d")));
     stats.push_back(ItemDB::Stat("luck", _("Luck %+d")));
 
-    ItemDB::setStatsList(stats);
+    itemDb->setStatsList(stats);
 
     listen("Game");
 }

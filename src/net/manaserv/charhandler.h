@@ -28,6 +28,8 @@
 
 #include "net/manaserv/messagehandler.h"
 
+#include <map.h>
+
 class LoginData;
 
 namespace ManaServ {
@@ -79,6 +81,13 @@ class CharHandler : public MessageHandler, public Net::CharHandler
          * we have loaded the dynamic data, so we can't resolve load any
          * sprites yet.
          */
+        struct CachedAttrbiute {
+            double base;
+            double mod;
+        };
+
+        typedef std::map<int, CachedAttrbiute> CachedAttributes;
+
         struct CachedCharacterInfo {
             int slot;
             std::string name;
@@ -88,8 +97,7 @@ class CharHandler : public MessageHandler, public Net::CharHandler
             int level;
             int characterPoints;
             int correctionPoints;
-            int money;
-            int attribute[7];
+            CachedAttributes attribute;
         };
 
         void handleCharacterInfo(Net::MessageIn &msg);

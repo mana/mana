@@ -46,6 +46,7 @@ InventoryHandler::InventoryHandler()
     static const Uint16 _messages[] = {
         GPMSG_INVENTORY_FULL,
         GPMSG_INVENTORY,
+        GPMSG_EQUIP,
         0
     };
     handledMessages = _messages;
@@ -59,31 +60,50 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
         case GPMSG_INVENTORY_FULL:
-            PlayerInfo::clearInventory();
-            PlayerInfo::getEquipment()->setBackend(&mEquips);
-            // no break!
+            {
+                PlayerInfo::clearInventory();
+                PlayerInfo::getEquipment()->setBackend(&mEquips);
+                int count = msg.readInt16();
+                while (count--)
+                {
+                    unsigned int slot = msg.readInt16();
+                    int id = msg.readInt16();
+                    unsigned int amount = msg.readInt16();
+                    PlayerInfo::setInventoryItem(slot, id, amount);
+                }
+                while (msg.getUnreadLength())
+                {
+                    unsigned int slot = msg.readInt8();
+                    unsigned int ref = msg.readInt16();
+
+                    mEquips.addEquipment(slot, ref);
+                }
+            }
+            break;
 
         case GPMSG_INVENTORY:
             while (msg.getUnreadLength())
             {
-                unsigned int slot = msg.readInt8();
-                if (slot == 255)
-                {
-                    PlayerInfo::setAttribute(MONEY, msg.readInt32());
-                    continue;
-                }
-
+                unsigned int slot = msg.readInt16();
                 int id = msg.readInt16();
-                if (slot < EQUIPMENT_SIZE)
+                unsigned int amount = id ? msg.readInt16() : 0;
+                PlayerInfo::setInventoryItem(slot, id, amount);
+            }
+            break;
+
+        case GPMSG_EQUIP:
+            while (msg.getUnreadLength())
+            {
+                unsigned int ref = msg.readInt16();
+                int count = msg.readInt8();
+                while (count--)
                 {
-                    mEquips.setEquipment(slot, id);
+                    unsigned int slot = msg.readInt8();
+                    unsigned int used = msg.readInt8();
+
+                    mEquips.setEquipment(slot, used, ref);
                 }
-                else if (slot >= 32 && slot < 32 + getSize(Inventory::INVENTORY))
-                {
-                    int amount = id ? msg.readInt8() : 0;
-                    PlayerInfo::setInventoryItem(slot - 32, id, amount);
-                }
-            };
+            }
             break;
     }
 }
@@ -112,8 +132,9 @@ void InventoryHandler::event(const std::string &channel,
             msg.writeInt8(index);
             gameServerConnection->send(msg);
 
-            // Tidy equipment directly to avoid weapon still shown bug, for instance
-            mEquips.setEquipment(index, 0);
+            // Tidy equipment directly to avoid weapon still shown bug,
+            // for instance.
+            mEquips.setEquipment(index, 0, 0);
         }
         else if (event.getName() == "doUse")
         {
@@ -173,7 +194,8 @@ void InventoryHandler::event(const std::string &channel,
 
 bool InventoryHandler::canSplit(const Item *item)
 {
-    return item && !item->isEquipment() && item->getQuantity() > 1;
+    return item && !item->getInfo().getEquippable()
+           && item->getQuantity() > 1;
 }
 
 size_t InventoryHandler::getSize(int type) const

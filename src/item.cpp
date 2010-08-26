@@ -29,11 +29,11 @@
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 
-Item::Item(int id, int quantity, bool equipment, bool equipped):
+Item::Item(int id, int quantity, bool equipped):
     mImage(0),
     mDrawImage(0),
     mQuantity(quantity),
-    mEquipment(equipment), mEquipped(equipped), mInEquipment(false)
+    mEquipped(equipped), mInEquipment(false)
 {
     setId(id);
 }
@@ -47,9 +47,6 @@ Item::~Item()
 void Item::setId(int id)
 {
     mId = id;
-
-    // Types 0 and 1 are not equippable items.
-    mEquipment = id && getInfo().getType() >= 2;
 
     // Load the associated image
     if (mImage)
@@ -88,4 +85,9 @@ void Item::doEvent(const std::string &eventName, int amount)
     event.setItem("item", this);
     event.setInt("amount", amount);
     event.trigger("Item");
+}
+
+bool Item::isEquippable() const
+{
+    return getInfo().getEquippable();
 }

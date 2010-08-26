@@ -63,8 +63,8 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         void unlock();
 
         void setAttributes(const std::vector<std::string> &labels,
-                           int available,
-                           int min, int max);
+                           unsigned int available,
+                           unsigned int min, unsigned int max);
 
         void setFixedGender(bool fixed, Gender gender = GENDER_FEMALE);
 

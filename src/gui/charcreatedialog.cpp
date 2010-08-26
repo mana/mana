@@ -65,10 +65,10 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
 
     mNameField = new TextField("");
     mNameLabel = new Label(_("Name:"));
-    // TRANSLATORS: This is a narrow symbol used to denote 'next'.
+    // TRANSLATORS: This is an arrow symbol used to denote 'next'.
     // You may change this symbol if your language uses another.
     mNextHairColorButton = new Button(_(">"), "nextcolor", this);
-    // TRANSLATORS: This is a narrow symbol used to denote 'previous'.
+    // TRANSLATORS: This is an arrow symbol used to denote 'previous'.
     // You may change this symbol if your language uses another.
     mPrevHairColorButton = new Button(_("<"), "prevcolor", this);
     mHairColorLabel = new Label(_("Hair color:"));
@@ -277,7 +277,8 @@ int CharCreateDialog::getDistributedPoints() const
 }
 
 void CharCreateDialog::setAttributes(const std::vector<std::string> &labels,
-                                     int available, int min, int max)
+                                     unsigned int available, unsigned int min,
+                                     unsigned int max)
 {
     mMaxPoints = available;
 

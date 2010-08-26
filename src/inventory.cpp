@@ -71,12 +71,12 @@ Item *Inventory::findItem(int itemId) const
     return NULL;
 }
 
-void Inventory::addItem(int id, int quantity, bool equipment)
+void Inventory::addItem(int id, int quantity)
 {
-    setItem(getFreeSlot(), id, quantity, equipment);
+    setItem(getFreeSlot(), id, quantity);
 }
 
-void Inventory::setItem(int index, int id, int quantity, bool equipment)
+void Inventory::setItem(int index, int id, int quantity)
 {
     if (index < 0 || index >= mSize)
     {
@@ -86,7 +86,7 @@ void Inventory::setItem(int index, int id, int quantity, bool equipment)
 
     if (!mItems[index] && id > 0)
     {
-        Item *item = new Item(id, quantity, equipment);
+        Item *item = new Item(id, quantity);
         item->setInvIndex(index);
         mItems[index] = item;
         mUsed++;
@@ -96,7 +96,6 @@ void Inventory::setItem(int index, int id, int quantity, bool equipment)
     {
         mItems[index]->setId(id);
         mItems[index]->setQuantity(quantity);
-        mItems[index]->setEquipment(equipment);
     }
     else if (mItems[index])
     {

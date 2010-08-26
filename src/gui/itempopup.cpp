@@ -61,12 +61,12 @@ ItemPopup::ItemPopup():
     // Item Effect
     mItemEffect = new TextBox;
     mItemEffect->setEditable(false);
-    mItemEffect->setPosition(getPadding(), 2 * fontHeight + 2 * getPadding());
+    mItemEffect->setPosition(getPadding(), (fontHeight << 1) + (getPadding() << 1));
 
     // Item Weight
     mItemWeight = new TextBox;
     mItemWeight->setEditable(false);
-    mItemWeight->setPosition(getPadding(), 3 * fontHeight + 4 * getPadding());
+    mItemWeight->setPosition(getPadding(), fontHeight * 3 + (getPadding() << 2));
 
     mIcon = new Icon(0);
 
@@ -121,18 +121,27 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
         mIcon->setImage(0);
     }
 
-    mItemType = item.getType();
+    //mItemType = item.getType();
 
     mItemName->setCaption(item.getName());
     mItemName->adjustSize();
-    mItemName->setForegroundColor(getColor(mItemType));
+    mItemName->setForegroundColor(Theme::UNKNOWN_ITEM); // TODO
     mItemName->setPosition(getPadding() + space, getPadding());
 
-    mItemDesc->setTextWrapped(item.getDescription(), 196);
-    mItemEffect->setTextWrapped(item.getEffect(), 196);
+#define ITEMPOPUP_WRAP_WIDTH 196
+
+    mItemDesc->setTextWrapped(item.getDescription(), ITEMPOPUP_WRAP_WIDTH);
+    {
+        const std::vector<std::string> &effect = item.getEffect();
+        std::string temp = "";
+        for (std::vector<std::string>::const_iterator it = effect.begin(),
+             it_end = effect.end(); it != it_end; ++it)
+            temp += temp.empty() ? *it : "\n" + *it;
+        mItemEffect->setTextWrapped(temp, ITEMPOPUP_WRAP_WIDTH);
+    }
     mItemWeight->setTextWrapped(strprintf(_("Weight: %s"),
                                 Units::formatWeight(item.getWeight()).c_str()),
-                                196);
+                                ITEMPOPUP_WRAP_WIDTH);
 
     int minWidth = mItemName->getWidth() + space;
 

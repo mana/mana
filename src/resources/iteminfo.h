@@ -108,57 +108,24 @@ class ItemInfo
         {
         }
 
-        void setId(int id)
-        { mId = id; }
-
         int getId() const
         { return mId; }
-
-        void setName(const std::string &name)
-        { mName = name; }
 
         const std::string &getName() const
         { return mName; }
 
-        void setParticleEffect(const std::string &particleEffect)
-        { mParticle = particleEffect; }
-
         std::string getParticleEffect() const { return mParticle; }
-
-        void setDisplay(SpriteDisplay display)
-        { mDisplay = display; }
 
         const SpriteDisplay &getDisplay() const
         { return mDisplay; }
 
-        void setDescription(const std::string &description)
-        { mDescription = description; }
-
         const std::string &getDescription() const
         { return mDescription; }
 
-        void setEffect(const std::string &effect)
-        { mEffect = effect; }
-
-        const std::string &getEffect() const { return mEffect; }
-
-        void setType(ItemType type)
-        { mType = type; }
-
-        ItemType getType() const
-        { return mType; }
-
-        void setWeight(int weight)
-        { mWeight = weight; }
+        const std::vector<std::string> &getEffect() const { return mEffect; }
 
         int getWeight() const
         { return mWeight; }
-
-        void setView(int view)
-        { mView = view; }
-
-        void setSprite(const std::string &animationFile, Gender gender)
-        { mAnimationFiles[gender] = animationFile; }
 
         const std::string &getSprite(Gender gender) const;
 
@@ -175,23 +142,33 @@ class ItemInfo
         int getAttackRange() const
         { return mAttackRange; }
 
-        void setAttackRange(int r)
-        { mAttackRange = r; }
+        const std::string &getSound(EquipmentSoundEvent event) const;
+
+        bool getEquippable() const { return mEquippable; }
+
+        bool getActivatable() const { return mActivatable; }
+
+    private:
+
+        void setSprite(const std::string &animationFile, Gender gender)
+        { mAnimationFiles[gender] = animationFile; }
 
         void addSound(EquipmentSoundEvent event, const std::string &filename);
 
-        const std::string &getSound(EquipmentSoundEvent event) const;
+        void setWeaponType(int);
 
-    protected:
-        SpriteDisplay mDisplay;        /**< Display info (like icon) */
+        SpriteDisplay mDisplay;           /**< Display info (like icon) */
         std::string mName;
-        std::string mDescription;    /**< Short description. */
-        std::string mEffect;         /**< Description of effects. */
-        ItemType mType;              /**< Item type. */
-        std::string mParticle;       /**< Particle effect used with this item */
-        int mWeight;                 /**< Weight in grams. */
-        int mView;                   /**< Item ID of how this item looks. */
-        int mId;                     /**< Item ID */
+        std::string mDescription;         /**< Short description. */
+        std::vector<std::string> mEffect; /**< Description of effects. */
+        ItemType mType;                   /**< Item type. */
+        std::string mParticle;            /**< Particle effect used with this item */
+        int mWeight;                      /**< Weight in grams. */
+        int mView;                        /**< Item ID of how this item looks. */
+        int mId;                          /**< Item ID */
+
+        bool mEquippable;                 /**< Whether this item can be equipped. */
+        bool mActivatable;                /**< Whether this item can be activated. */
 
         // Equipment related members.
         /** Attack type, in case of weapon.
@@ -209,6 +186,9 @@ class ItemInfo
 
         /** Stores the names of sounds to be played at certain event. */
         std::map< EquipmentSoundEvent, std::vector<std::string> > mSounds;
+
+        friend class ItemDB;
+        friend void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
 };
 
 #endif

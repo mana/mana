@@ -35,8 +35,7 @@ class Item
         /**
          * Constructor.
          */
-        Item(int id = -1, int quantity = 0, bool equipment = false,
-             bool equipped = false);
+        Item(int id = -1, int quantity = 0, bool equipped = false);
 
         /**
          * Destructor.
@@ -79,16 +78,6 @@ class Item
         int getQuantity() const { return mQuantity; }
 
         /**
-         * Sets whether this item is considered equipment.
-         */
-        void setEquipment(bool equipment) { mEquipment = equipment; }
-
-        /**
-         * Returns whether this item is considered equipment.
-         */
-        bool isEquipment() const { return mEquipment; }
-
-        /**
          * Sets whether this item is equipped.
          */
         void setEquipped(bool equipped) { mEquipped = equipped; }
@@ -109,6 +98,11 @@ class Item
         bool isInEquipment() const { return mInEquipment; }
 
         /**
+         * Returns whether this item is equippable.
+         */
+        bool isEquippable() const;
+
+        /**
          * Sets the inventory index of this item.
          */
         void setInvIndex(int index) { mInvIndex = index; }
@@ -125,17 +119,17 @@ class Item
         /**
          * Returns information about this item type.
          */
-        const ItemInfo &getInfo() const { return ItemDB::get(mId); }
+        const ItemInfo &getInfo() const { return itemDb->get(mId); }
 
     protected:
         int mId;              /**< Item type id. */
         Image *mImage;        /**< Item image. */
         Image *mDrawImage;    /**< Draw image. */
         int mQuantity;        /**< Number of items. */
-        bool mEquipment;      /**< Item is equipment. */
         bool mEquipped;       /**< Item is equipped. */
         bool mInEquipment;    /**< Item is in equipment */
         int mInvIndex;        /**< Inventory index. */
+
 };
 
 #endif

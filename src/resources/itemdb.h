@@ -26,45 +26,67 @@
 #include <map>
 #include <string>
 
+#include "utils/xml.h"
+
 class ItemInfo;
+class SpriteDisplay;
 
 /**
  * Item information database.
  */
-namespace ItemDB
+class ItemDB
 {
-    /**
-     * Loads the item data from <code>items.xml</code>.
-     */
-    void load();
+    public:
+        ItemDB() : mLoaded(false) { load(); }
 
-    /**
-     * Frees item data.
-     */
-    void unload();
+        ~ItemDB() { unload(); }
+        /**
+         * Loads the item data from <code>items.xml</code>.
+         */
+        void load();
 
-    bool exists(int id);
+        /**
+         * Frees item data.
+         */
+        void unload();
 
-    const ItemInfo &get(int id);
-    const ItemInfo &get(const std::string &name);
+        bool exists(int id);
 
-    struct Stat
-    {
-        Stat(const std::string &tag,
-             const std::string &format):
-            tag(tag),
-            format(format)
-        {}
+        const ItemInfo &get(int id);
+        const ItemInfo &get(const std::string &name);
 
-        std::string tag;
-        std::string format;
-    };
+        class Stat
+        {
+            public:
+                Stat(const std::string &tag,
+                     const std::string &format):
+                tag(tag), format(format) {}
 
-    void setStatsList(const std::list<Stat> &stats);
+                bool operator ==(std::string &name) const { return tag == name; }
 
-    // Items database
-    typedef std::map<int, ItemInfo*> ItemInfos;
-    typedef std::map<std::string, ItemInfo*> NamedItemInfos;
-}
+            private:
+                std::string tag;
+                std::string format;
+                friend class ItemDB;
+        };
+
+        void setStatsList(const std::list<Stat> &stats);
+
+    private:
+        void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
+        void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
+        void loadFloorSprite(SpriteDisplay *display, xmlNodePtr node);
+
+        // Items database
+        typedef std::map<int, ItemInfo*> ItemInfos;
+        typedef std::map<std::string, ItemInfo*> NamedItemInfos;
+
+        ItemInfos mItemInfos;
+        NamedItemInfos mNamedItemInfos;
+        ItemInfo *mUnknown;
+        bool mLoaded;
+};
+
+extern ItemDB *itemDb;
 
 #endif

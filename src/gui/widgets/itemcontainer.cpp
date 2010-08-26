@@ -257,7 +257,7 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
         {
             if(event.getClickCount() == 2)
             {
-                if (item->isEquipment())
+                if (item->getInfo().getEquippable())
                 {
                     if (item->isEquipped())
                         item->doEvent("doUnequip");
@@ -277,7 +277,7 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
         {
             if(event.getClickCount() == 2)
             {
-                if (item->isEquipment())
+                if (item->getInfo().getEquippable())
                 {
                     if (item->isEquipped())
                         item->doEvent("doUnequip");
@@ -285,7 +285,9 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
                         item->doEvent("doEquip");
                 }
                 else
+                {
                     item->doEvent("doUse");
+                }
             }
             else
             {
@@ -294,7 +296,8 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
 
                 itemShortcut->setItemSelected(item->getId());
             }
-            if (item->isEquipment())
+
+            if (item->getInfo().getEquippable())
                 outfitWindow->setItemSelected(item->getId());
         }
         else

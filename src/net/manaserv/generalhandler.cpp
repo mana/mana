@@ -46,7 +46,7 @@
 #include "net/manaserv/partyhandler.h"
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/specialhandler.h"
-#include "net/manaserv/stats.h"
+#include "net/manaserv/attributes.h"
 #include "net/manaserv/tradehandler.h"
 
 #include "utils/gettext.h"
@@ -130,9 +130,9 @@ void GeneralHandler::reload()
     gameServer.clear();
     chatServer.clear();
 
-    Stats::unload();
-    Stats::load();
-    Stats::informItemDB();
+    Attributes::unload();
+    Attributes::load();
+    Attributes::informItemDB();
 }
 
 void GeneralHandler::unload()
@@ -150,7 +150,7 @@ void GeneralHandler::unload()
     delete gameServerConnection;
     delete chatServerConnection;
 
-    Stats::unload();
+    Attributes::unload();
     finalize();
 }
 
@@ -185,8 +185,8 @@ void GeneralHandler::event(const std::string &channel,
         }
         else if (newState == STATE_LOAD_DATA)
         {
-            Stats::load();
-            Stats::informItemDB();
+            Attributes::load();
+            Attributes::informItemDB();
         }
     }
     else if (channel == "Game")
@@ -198,7 +198,7 @@ void GeneralHandler::event(const std::string &channel,
 
             PlayerInfo::setAttribute(EXP_NEEDED, 100);
 
-            Stats::informStatusWindow();
+            Attributes::informStatusWindow();
         }
     }
 }

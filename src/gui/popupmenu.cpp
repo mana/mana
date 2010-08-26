@@ -271,10 +271,10 @@ void PopupMenu::handleLink(const std::string &link)
     {
     }
 
-    else if (link == "use")
+    else if (link == "activate")
     {
         assert(mItem);
-        if (mItem->isEquipment())
+        if (mItem->isEquippable())
         {
             if (mItem->isEquipped())
                 mItem->doEvent("doUnequip");
@@ -282,9 +282,10 @@ void PopupMenu::handleLink(const std::string &link)
                 mItem->doEvent("doEquip");
         }
         else
+        {
             mItem->doEvent("doUse");
+        }
     }
-
     else if (link == "chat")
     {
         if (mItem)
@@ -360,15 +361,15 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
 
     if (isInventory)
     {
-        if (item->isEquipment())
+        if (item->getInfo().getEquippable())
         {
             if (item->isEquipped())
-                mBrowserBox->addRow(strprintf("@@use|%s@@", _("Unequip")));
+                mBrowserBox->addRow(strprintf("@@equip|%s@@", _("Unequip")));
             else
-                mBrowserBox->addRow(strprintf("@@use|%s@@", _("Equip")));
+                mBrowserBox->addRow(strprintf("@@equip|%s@@", _("Equip")));
         }
-        else
-            mBrowserBox->addRow(strprintf("@@use|%s@@", _("Use")));
+        if (item->getInfo().getActivatable())
+            mBrowserBox->addRow(strprintf("@@activate|%s@@", _("Activate")));
 
         if (item->getQuantity() > 1)
             mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop...")));

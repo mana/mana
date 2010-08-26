@@ -124,8 +124,8 @@ class InventoryWindow : public Window,
 
         std::string mWeight, mSlots;
 
-        gcn::Button *mUseButton, *mDropButton, *mSplitButton, *mOutfitButton,
-                    *mStoreButton, *mRetrieveButton;
+        gcn::Button *mUseButton, *mEquipButton, *mDropButton, *mSplitButton,
+                    *mOutfitButton, *mStoreButton, *mRetrieveButton;
 
         gcn::Label *mWeightLabel, *mSlotsLabel;
 

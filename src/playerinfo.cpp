@@ -186,11 +186,7 @@ void clearInventory()
 
 void setInventoryItem(int index, int id, int amount)
 {
-    bool equipment = false;
-    int itemType = ItemDB::get(id).getType();
-    if (itemType != ITEM_UNUSABLE && itemType != ITEM_USABLE)
-        equipment = true;
-    mInventory->setItem(index, id, amount, equipment);
+    mInventory->setItem(index, id, amount);
 }
 
 Equipment *getEquipment()

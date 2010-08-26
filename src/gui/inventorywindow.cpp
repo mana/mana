@@ -97,7 +97,8 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
             longestUseString = unequip;
         }
 
-        mUseButton = new Button(longestUseString, "use", this);
+        mEquipButton = new Button(_("Equip"), "equip", this);
+        mUseButton = new Button(_("Activate"), "activate", this);
         mDropButton = new Button(_("Drop..."), "drop", this);
         mSplitButton = new Button(_("Split"), "split", this);
         mOutfitButton = new Button(_("Outfits"), "outfit", this);
@@ -111,8 +112,9 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
         place(5, 0, mSlotsBar, 2);
         place(0, 1, invenScroll, 7).setPadding(3);
         place(0, 2, mUseButton);
-        place(1, 2, mDropButton);
-        place(2, 2, mSplitButton);
+        place(1, 2, mEquipButton);
+        place(2, 2, mDropButton);
+        place(3, 2, mSplitButton);
         place(6, 2, mOutfitButton);
 
         updateWeight();
@@ -183,9 +185,11 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     if (!item)
         return;
 
-    if (event.getId() == "use")
+    if (event.getId() == "activate")
+        item->doEvent("doUse");
+    else if (event.getId() == "equip")
     {
-        if (item->isEquipment())
+        if (item->isEquippable())
         {
             if (item->isEquipped())
                 item->doEvent("doUnequip");
@@ -193,7 +197,9 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
                 item->doEvent("doEquip");
         }
         else
+        {
             item->doEvent("doUse");
+        }
     }
     else if (event.getId() == "drop")
     {
@@ -309,25 +315,26 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
     if (!item || item->getQuantity() == 0)
     {
         mUseButton->setEnabled(false);
+        mEquipButton->setEnabled(false);
         mDropButton->setEnabled(false);
 
         return;
     }
 
-    mUseButton->setEnabled(true);
     mDropButton->setEnabled(true);
 
-    if (item->isEquipment())
+    if (item->getInfo().getEquippable())
     {
         if (item->isEquipped())
-            mUseButton->setCaption(_("Unequip"));
+            mEquipButton->setCaption(_("Unequip"));
         else
-            mUseButton->setCaption(_("Equip"));
+            mEquipButton->setCaption(_("Equip"));
+        mEquipButton->setEnabled(true);
     }
     else
-    {
-        mUseButton->setCaption(_("Use"));
-    }
+        mEquipButton->setEnabled(false);
+
+    mUseButton->setEnabled(item->getInfo().getActivatable());
 
     if (item->getQuantity() > 1)
         mDropButton->setCaption(_("Drop..."));

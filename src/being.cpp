@@ -153,7 +153,7 @@ void Being::setSubtype(Uint16 subtype)
         int id = -100 - subtype;
 
         // Prevent showing errors when sprite doesn't exist
-        if (!ItemDB::exists(id))
+        if (!itemDb->exists(id))
             id = -100;
 
         setSprite(Net::getCharHandler()->baseSprite(), id);
@@ -1106,7 +1106,7 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
     }
     else
     {
-        std::string filename = ItemDB::get(id).getSprite(mGender);
+        std::string filename = itemDb->get(id).getSprite(mGender);
         AnimatedSprite *equipmentSprite = NULL;
 
         if (!filename.empty())
@@ -1124,7 +1124,7 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
         CompoundSprite::setSprite(slot, equipmentSprite);
 
         if (isWeapon)
-            mEquippedWeapon = &ItemDB::get(id);
+            mEquippedWeapon = &itemDb->get(id);
 
         setAction(mAction);
     }
@@ -1154,7 +1154,7 @@ void Being::load()
     // we can go.
     int hairstyles = 1;
 
-    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) !=
+    while (itemDb->get(-hairstyles).getSprite(GENDER_MALE) !=
                                         paths.getStringValue("spriteErrorFile"))
         hairstyles++;
 

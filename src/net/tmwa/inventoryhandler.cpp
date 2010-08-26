@@ -174,17 +174,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 if (msg.getId() == SMSG_PLAYER_INVENTORY)
-                {
-                    // Trick because arrows are not considered equipment
-                    bool isEquipment = arrow & 0x8000;
-
-                    inventory->setItem(index, itemId, amount, isEquipment);
-                }
+                    inventory->setItem(index, itemId, amount);
                 else
-                {
                     mInventoryItems.push_back(InventoryItem(index, itemId,
                                                             amount, false));
-                }
             }
             break;
 
@@ -228,11 +221,11 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();  // refine
             for (int i = 0; i < 4; i++)
                 cards[i] = msg.readInt16();
-            equipType = msg.readInt16();
+            msg.readInt16(); // EquipType
             itemType = msg.readInt8();
 
             {
-                const ItemInfo &itemInfo = ItemDB::get(itemId);
+                const ItemInfo &itemInfo = itemDb->get(itemId);
 
                 if (msg.readInt8() > 0)
                 {
@@ -247,7 +240,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                     if  (item && item->getId() == itemId)
                         amount += inventory->getItem(index)->getQuantity();
 
-                    inventory->setItem(index, itemId, amount, equipType != 0);
+                    inventory->setItem(index, itemId, amount);
                 }
             } break;
 
@@ -304,8 +297,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 InventoryItems::iterator it = mInventoryItems.begin();
                 InventoryItems::iterator it_end = mInventoryItems.end();
                 for (; it != it_end; it++)
-                    mStorage->setItem((*it).slot, (*it).id, (*it).quantity,
-                                      (*it).equip);
+                    mStorage->setItem((*it).slot, (*it).id, (*it).quantity);
                 mInventoryItems.clear();
 
                 if (!mStorageWindow)
@@ -330,9 +322,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 item->increaseQuantity(amount);
             }
             else
-            {
-                mStorage->setItem(index, itemId, amount, false);
-            }
+                mStorage->setItem(index, itemId, amount);
             break;
 
         case SMSG_PLAYER_STORAGE_REMOVE:
@@ -374,7 +364,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 msg.readInt8();  // refine
                 msg.skip(8);     // card
 
-                inventory->setItem(index, itemId, 1, true);
+                inventory->setItem(index, itemId, 1);
 
                 if (equipType)
                 {

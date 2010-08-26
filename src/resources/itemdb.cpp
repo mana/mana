@@ -23,6 +23,8 @@
 
 #include "log.h"
 
+#include "net/net.h"
+
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
@@ -36,19 +38,7 @@
 
 #include <cassert>
 
-namespace
-{
-    ItemDB::ItemInfos mItemInfos;
-    ItemDB::NamedItemInfos mNamedItemInfos;
-    ItemInfo *mUnknown;
-    bool mLoaded = false;
-}
-
 // Forward declarations
-static void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
-static void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
-static void loadFloorSprite(SpriteDisplay *display, xmlNodePtr node);
-
 static char const *const fields[][2] =
 {
     { "attack",    N_("Attack %+d")    },
@@ -59,7 +49,7 @@ static char const *const fields[][2] =
 
 static std::list<ItemDB::Stat> extraStats;
 
-void ItemDB::setStatsList(const std::list<ItemDB::Stat> &stats)
+void ItemDB::setStatsList(const std::list<Stat> &stats)
 {
     extraStats = stats;
 }
@@ -99,8 +89,8 @@ void ItemDB::load()
     logger->log("Initializing item database...");
 
     mUnknown = new ItemInfo;
-    mUnknown->setName(_("Unknown item"));
-    mUnknown->setDisplay(SpriteDisplay());
+    mUnknown->mName = _("Unknown item");
+    mUnknown->mDisplay = SpriteDisplay();
     std::string errFile = paths.getStringValue("spriteErrorFile");
     mUnknown->setSprite(errFile, GENDER_MALE);
     mUnknown->setSprite(errFile, GENDER_FEMALE);
@@ -109,9 +99,7 @@ void ItemDB::load()
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
-    {
         logger->error("ItemDB: Error while loading items.xml!");
-    }
 
     for_each_xml_child_node(node, rootNode)
     {
@@ -120,15 +108,13 @@ void ItemDB::load()
 
         int id = XML::getProperty(node, "id", 0);
 
-        if (id == 0)
+        if (!id)
         {
             logger->log("ItemDB: Invalid or missing item ID in items.xml!");
             continue;
         }
         else if (mItemInfos.find(id) != mItemInfos.end())
-        {
             logger->log("ItemDB: Redefinition of item ID %d", id);
-        }
 
         std::string typeStr = XML::getProperty(node, "type", "other");
         int weight = XML::getProperty(node, "weight", 0);
@@ -145,37 +131,37 @@ void ItemDB::load()
         display.image = image;
 
         ItemInfo *itemInfo = new ItemInfo;
-        itemInfo->setId(id);
-        itemInfo->setName(name.empty() ? _("unnamed") : name);
-        itemInfo->setDescription(description);
-        itemInfo->setType(itemTypeFromString(typeStr));
-        itemInfo->setView(view);
-        itemInfo->setWeight(weight);
+        itemInfo->mId = id;
+        itemInfo->mName = name.empty() ? _("unnamed") : name;
+        itemInfo->mDescription = description;
+        itemInfo->mType = itemTypeFromString(typeStr);
+        itemInfo->mActivatable = itemInfo->mType == ITEM_USABLE;
+        // Everything not unusable or usable is equippable by the old type system.
+        itemInfo->mEquippable  = itemInfo->mType != ITEM_UNUSABLE
+                                 && itemInfo->mType != ITEM_USABLE;
+        itemInfo->mView = view;
+        itemInfo->mWeight = weight;
         itemInfo->setAttackAction(attackAction);
-        itemInfo->setAttackRange(attackRange);
+        itemInfo->mAttackRange = attackRange;
         itemInfo->setMissileParticle(missileParticle);
 
-        std::string effect;
+        std::vector<std::string> effect;
         for (int i = 0; i < int(sizeof(fields) / sizeof(fields[0])); ++i)
         {
             int value = XML::getProperty(node, fields[i][0], 0);
             if (!value) continue;
-            if (!effect.empty()) effect += " / ";
-            effect += strprintf(gettext(fields[i][1]), value);
+            effect.push_back(strprintf(gettext(fields[i][1]), value));
         }
         for (std::list<Stat>::iterator it = extraStats.begin();
                 it != extraStats.end(); it++)
         {
             int value = XML::getProperty(node, it->tag.c_str(), 0);
             if (!value) continue;
-            if (!effect.empty()) effect += " / ";
-            effect += strprintf(it->format.c_str(), value);
+            effect.push_back(strprintf(it->format.c_str(), value));
         }
         std::string temp = XML::getProperty(node, "effect", "");
-        if (!effect.empty() && !temp.empty())
-            effect += " / ";
-        effect += temp;
-        itemInfo->setEffect(effect);
+        if (!temp.empty())
+            effect.push_back(temp);
 
         for_each_xml_child_node(itemChild, node)
         {
@@ -183,7 +169,7 @@ void ItemDB::load()
             {
                 std::string attackParticle = XML::getProperty(
                     itemChild, "particle-effect", "");
-                itemInfo->setParticleEffect(attackParticle);
+                itemInfo->mParticle = attackParticle;
 
                 loadSpriteRef(itemInfo, itemChild);
             }
@@ -195,9 +181,96 @@ void ItemDB::load()
             {
                 loadFloorSprite(&display, itemChild);
             }
+            /*
+             * Begin new item definition code. Previous code is left in to
+             *     maintain backwards compatibility.
+             * Exit here if tmwAthena.
+             */
+            else if (Net::getNetworkType() == ServerInfo::TMWATHENA);
+            else if (xmlStrEqual(itemChild->name, BAD_CAST "equip"))
+            {
+                // The fact that there is a way to equip is enough.
+                // Discard any details, but mark the item as equippable.
+                itemInfo->mEquippable = true;
+            }
+            else if (xmlStrEqual(itemChild->name, BAD_CAST "effect"))
+            {
+                std::string trigger = XML::getProperty(
+                        itemChild, "trigger", "");
+                if (trigger.empty()) {
+                    logger->log("Found empty trigger effect label, skipping.");
+                    continue;
+                }
+
+                if (trigger == "activation")
+                    itemInfo->mActivatable = true;
+
+                static std::map<std::string, const char* > triggerTable;
+                if (triggerTable.empty())
+                {
+                    // FIXME: This should ideally be softcoded via XML or similar.
+                    triggerTable["existence"]       = " when it is in the inventory";
+                    triggerTable["activation"]      = " upon activation";
+                    triggerTable["equip"]           = " upon successful equip";
+                    triggerTable["leave-inventory"] = " when it leaves the inventory";
+                    triggerTable["unequip"]         = " when it is unequipped";
+                    triggerTable["equip-change"]    = " when it changes the way it is equipped";
+                }
+                std::map<std::string, const char* >::const_iterator triggerLabel =
+                        triggerTable.find(trigger);
+                if (triggerLabel == triggerTable.end())
+                {
+                    logger->log("Warning: unknown trigger %s in item %d!", trigger.c_str(), id);
+                    continue;
+                }
+
+                for_each_xml_child_node(effectChild, itemChild)
+                {
+                    if (xmlStrEqual(effectChild->name, BAD_CAST "modifier"))
+                    {
+                        std::string attribute = XML::getProperty(
+                                effectChild, "attribute", "");
+                        double value = XML::getFloatProperty(
+                                effectChild, "value", 0.0);
+                        int duration = XML::getProperty(
+                                effectChild, "duration", 0);
+                        if (attribute.empty() || !value)
+                        {
+                            logger->log("Warning: incomplete modifier definition, skipping.");
+                            continue;
+                        }
+                        std::list<Stat>::const_iterator
+                                it = extraStats.begin(),
+                                it_end = extraStats.end();
+                        while (it != it_end && !(*it == attribute))
+                            ++it;
+                        if (it == extraStats.end())
+                        {
+                            logger->log("Warning: unknown modifier tag %s, skipping.", attribute.c_str());
+                            continue;
+                        }
+                        effect.push_back(
+                                strprintf(strprintf(
+                                        duration ?
+                                        strprintf("%%s%%s. This effect lasts %d ticks.", duration).c_str()
+                                        : "%s%s.", it->format.c_str(), triggerLabel->second).c_str(), value));
+                    }
+                    else if (xmlStrEqual(effectChild->name, BAD_CAST "modifier"))
+                        effect.push_back(strprintf("Provides an autoattack%s.",
+                                                   triggerLabel->second));
+                    else if (xmlStrEqual(effectChild->name, BAD_CAST "consumes"))
+                        effect.push_back(strprintf("This will be consumed%s.",
+                                                   triggerLabel->second));
+                    else if (xmlStrEqual(effectChild->name, BAD_CAST "label"))
+                        effect.push_back(
+                                (const char*)effectChild->xmlChildrenNode->content);
+                }
+            }
         }
 
-        itemInfo->setDisplay(display);
+        itemInfo->mEffect = effect;
+
+        itemInfo->mDisplay = display;
 
         mItemInfos[id] = itemInfo;
         if (!name.empty())
@@ -295,7 +368,7 @@ const ItemInfo &ItemDB::get(const std::string &name)
     return *(i->second);
 }
 
-void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
+void ItemDB::loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
 {
     std::string gender = XML::getProperty(node, "gender", "unisex");
     std::string filename = (const char*) node->xmlChildrenNode->content;
@@ -310,7 +383,7 @@ void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
     }
 }
 
-void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
+void ItemDB::loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
 {
     std::string event = XML::getProperty(node, "event", "");
     std::string filename = (const char*) node->xmlChildrenNode->content;
@@ -330,7 +403,7 @@ void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
     }
 }
 
-void loadFloorSprite(SpriteDisplay *display, xmlNodePtr floorNode)
+void ItemDB::loadFloorSprite(SpriteDisplay *display, xmlNodePtr floorNode)
 {
     for_each_xml_child_node(spriteNode, floorNode)
     {
