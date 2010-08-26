@@ -425,6 +425,8 @@ void LoginHandler::chooseServer(unsigned int server)
 
 void LoginHandler::registerAccount(LoginData *loginData)
 {
+    mLoginData = loginData;
+
     MessageOut msg(PAMSG_REGISTER);
 
     msg.writeInt32(0); // client version
