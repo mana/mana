@@ -137,7 +137,6 @@
 		<Unit filename="src\effectmanager.h" />
 		<Unit filename="src\emoteshortcut.cpp" />
 		<Unit filename="src\emoteshortcut.h" />
-		<Unit filename="src\engine.h" />
 		<Unit filename="src\equipment.h" />
 		<Unit filename="src\flooritem.cpp" />
 		<Unit filename="src\flooritem.h" />
@@ -369,7 +368,6 @@
 		<Unit filename="src\keyboardconfig.h" />
 		<Unit filename="src\localplayer.cpp" />
 		<Unit filename="src\localplayer.h" />
-		<Unit filename="src\lockedarray.h" />
 		<Unit filename="src\log.cpp" />
 		<Unit filename="src\log.h" />
 		<Unit filename="src\main.cpp" />

@@ -165,7 +165,7 @@ Being *BeingManager::findBeingByName(const std::string &name,
          i != i_end; ++i)
     {
         Being *being = (*i);
-        if (being->getName() == name &&
+        if (!compareStrI(being->getName(),name) &&
            (type == Being::UNKNOWN || type == being->getType()))
             return being;
     }

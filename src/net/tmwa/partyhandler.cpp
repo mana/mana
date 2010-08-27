@@ -333,7 +333,7 @@ void PartyHandler::invite(const std::string &name)
     {
         invite((Player *)invitee);
         partyTab->chatLog(strprintf(_("Invited user %s to party."),
-                                        name.c_str()), BY_SERVER);
+                                    invitee->getName().c_str()), BY_SERVER);
     }
     else if (partyTab)
     {

@@ -498,7 +498,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
 
         if (name.size() > 16)
         {
-            // TODO : State too many characters in input.
+            localChatTab->chatLog(_("Creating guild failed, please choose a "
+                                    "shorter name."), BY_SERVER);
             return;
         }
 
@@ -518,7 +519,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
 
         if (name.size() > 16)
         {
-            // TODO : State too many characters in input.
+            localChatTab->chatLog(_("Creating party failed, please choose a "
+                                    "shorter name."), BY_SERVER);
             return;
         }
 
