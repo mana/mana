@@ -24,6 +24,8 @@
 
 #include "being.h"
 
+#include "gui/widgets/textfield.h"
+
 class LocalPlayer;
 class Map;
 
@@ -122,12 +124,18 @@ class BeingManager
          */
         void clear();
 
-        void getPlayerNames(std::vector<std::string> &names,
-                            bool npcNames);
+        AutoCompleteLister *getPlayerNameLister();
+
+        AutoCompleteLister *getPlayerNPCNameLister();
 
         void updatePlayerNames();
 
     protected:
+        friend class PlayerNamesLister;
+        friend class PlayerNPCNamesLister;
+
+        AutoCompleteLister *mPlayerNames;
+        AutoCompleteLister *mPlayerNPCNames;
         Beings mBeings;
         Map *mMap;
 };

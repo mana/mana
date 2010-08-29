@@ -25,7 +25,6 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/chat.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
 #include "gui/theme.h"
@@ -34,6 +33,7 @@
 
 #include "utils/copynpaste.h"
 #include "utils/dtor.h"
+#include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
 
@@ -46,7 +46,8 @@ ImageRect TextField::skin;
 TextField::TextField(const std::string &text, bool loseFocusOnTab):
     gcn::TextField(text),
     mNumeric(false),
-    mAutoComplete(false)
+    mAutoComplete(NULL),
+    mHistory(NULL)
 {
     setFrameSize(2);
 
@@ -212,6 +213,42 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             }
         } break;
 
+        case Key::UP:
+        {
+            if (mHistory && !mHistory->atBegining() && !mHistory->empty())
+            {
+                // Move backward through the history
+                mHistory->current--;
+                setText(*mHistory->current);
+                setCaretPosition(getText().length());
+            }
+        } break;
+
+        case Key::DOWN:
+        {
+            if (mHistory && !mHistory->atEnd())
+            {
+                // Move forward through the history
+                TextHistoryIterator prevHist = mHistory->current++;
+
+                if (!mHistory->atEnd())
+                {
+                    setText(*mHistory->current);
+                    setCaretPosition(getText().length());
+                }
+                else
+                {
+                    setText("");
+                    mHistory->current = prevHist;
+                }
+            }
+            else if (getText() != "")
+            {
+                // Always clear (easy access to useful function)
+                setText("");
+            }
+        } break;
+
         case Key::DELETE:
         {
             unsigned sz = mText.size();
@@ -237,6 +274,19 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
         } break;
 
         case Key::ENTER:
+            if (mHistory)
+            {
+                mHistory->toEnd();
+
+                // If the input is different from previous, put it in the history
+                if (mHistory->empty() || !mHistory->matchesEntry(getText()))
+                {
+                    mHistory->addEntry(getText());
+                }
+
+                mHistory->toEnd();
+            }
+
             distributeActionEvent();
             break;
 
@@ -249,17 +299,7 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             break;
 
         case Key::TAB:
-            if (mAutoComplete && mText.size() > 0)
-            {
-                std::vector<std::string> names;
-                beingManager->getPlayerNames(names, false);
-                std::string newName = chatWindow->autoComplete(names, mText);
-                if (newName != "")
-                {
-                    setText(newName);
-                    setCaretPosition(mText.size());
-                }
-            }
+            autoComplete();
             if (mLoseFocusOnTab)
                 return;
             break;
@@ -271,6 +311,77 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
 
     keyEvent.consume();
     fixScroll();
+}
+
+void TextField::autoComplete()
+{
+    if (mAutoComplete && mText.size() > 0)
+    {
+        int caretPos = getCaretPosition();
+        int startName = 0;
+        const std::string inputText = getText();
+        std::string name = inputText.substr(0, caretPos);
+        std::string newName("");
+
+        for (int f = caretPos - 1; f > -1; f --)
+        {
+            if (isWordSeparator(inputText[f]))
+            {
+                startName = f + 1;
+                name = inputText.substr(f + 1, caretPos - f);
+                break;
+            }
+        }
+
+        if (caretPos - 1 + 1 != startName)
+            return;
+
+
+        std::vector<std::string> nameList;
+        mAutoComplete->getAutoCompleteList(nameList);
+        newName = autocomplete(nameList, name);
+
+        if (newName == "" && mHistory)
+        {
+
+            TextHistoryIterator i = mHistory->history.begin();
+            std::vector<std::string> nameList;
+
+            while (i != mHistory->history.end())
+            {
+                std::string line = *i;
+                unsigned int f = 0;
+                while (f < line.length() && !isWordSeparator(line.at(f)))
+                {
+                    f++;
+                }
+                line = line.substr(0, f);
+                if (line != "")
+                {
+                    nameList.push_back(line);
+                }
+                ++i;
+            }
+
+            newName = autocomplete(nameList, name);
+        }
+
+        if (newName != "")
+        {
+            if(inputText[0] == '@' || inputText[0] == '/')
+                newName = "\"" + newName + "\"";
+
+            setText(inputText.substr(0, startName) + newName
+                    + inputText.substr(caretPos, inputText.length()
+                                       - caretPos));
+
+            if (startName > 0)
+                setCaretPosition(caretPos - name.length() + newName.length()
+                                 + 1);
+            else
+                setCaretPosition(caretPos - name.length() + newName.length());
+        }
+    }
 }
 
 void TextField::handlePaste()

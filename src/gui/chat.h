@@ -23,6 +23,7 @@
 #define CHAT_H
 
 #include "gui/widgets/window.h"
+#include "gui/widgets/textfield.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
@@ -61,8 +62,7 @@ struct CHATLOG
  * \ingroup Interface
  */
 class ChatWindow : public Window,
-                   public gcn::ActionListener,
-                   public gcn::KeyListener
+                   public gcn::ActionListener
 {
     public:
         /**
@@ -131,9 +131,6 @@ class ChatWindow : public Window,
          */
         void chatInput(const std::string &msg);
 
-        /** Called when key is pressed */
-        void keyPressed(gcn::KeyEvent &event);
-
         /** Add the given text to the chat input. */
         void addInputText(const std::string &text);
 
@@ -143,10 +140,8 @@ class ChatWindow : public Window,
         /** Override to reset mTmpVisible */
         void setVisible(bool visible);
 
-
 	void mousePressed(gcn::MouseEvent &event);
 	void mouseDragged(gcn::MouseEvent &event);
-
 
         /**
          * Scrolls the chat window
@@ -177,7 +172,7 @@ class ChatWindow : public Window,
     protected:
         friend class ChatTab;
         friend class WhisperTab;
-        friend class TextField;
+        friend class ChatAutoComplete;
 
         /** Remove the given tab from the window */
         void removeTab(ChatTab *tab);
@@ -189,19 +184,15 @@ class ChatWindow : public Window,
 
         void removeAllWhispers();
 
-        void autoComplete();
-
-        std::string autoCompleteHistory(std::string partName);
-
-        std::string autoComplete(std::vector<std::string> &names,
-                                 std::string partName) const;
-
         /** Used for showing item popup on clicking links **/
         ItemLinkHandler *mItemLinkHandler;
         Recorder *mRecorder;
 
         /** Input box for typing chat messages. */
         ChatInput *mChatInput;
+
+        TextHistory *mHistory;
+        AutoCompleteLister *mAutoComplete;
 
     private:
         bool mTmpVisible;
@@ -213,10 +204,6 @@ class ChatWindow : public Window,
         /** Manage whisper tabs */
         TabMap mWhispers;
 
-        typedef std::list<std::string> History;
-        typedef History::iterator HistoryIterator;
-        History mHistory;           /**< Command history. */
-        HistoryIterator mCurHist;   /**< History iterator. */
         bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
                                 or not */
 };

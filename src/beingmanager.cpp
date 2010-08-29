@@ -53,8 +53,48 @@ class FindBeingFunctor
         Being::Type type;
 } beingFinder;
 
+class PlayerNamesLister : public AutoCompleteLister
+{
+    void getAutoCompleteList(std::vector<std::string>& names) const
+    {
+        Beings::iterator i = beingManager->mBeings.begin();
+        names.clear();
+
+        while (i != beingManager->mBeings.end())
+        {
+            Being *being = (*i);
+            if (being->getType() == Being::PLAYER && being->getName() != "")
+                names.push_back(being->getName());
+
+            ++i;
+        }
+    }
+};
+
+class PlayerNPCNamesLister : public AutoCompleteLister
+{
+    void getAutoCompleteList(std::vector<std::string>& names) const
+    {
+        Beings::iterator i = beingManager->mBeings.begin();
+        names.clear();
+
+        while (i != beingManager->mBeings.end())
+        {
+            Being *being = (*i);
+            if ((being->getType() == Being::PLAYER
+                 || being->getType() == Being::NPC)
+                && being->getName() != "")
+                names.push_back(being->getName());
+
+            ++i;
+        }
+    }
+};
+
 BeingManager::BeingManager()
 {
+    mPlayerNames = new PlayerNamesLister;
+    mPlayerNPCNames = new PlayerNPCNamesLister;
 }
 
 BeingManager::~BeingManager()
@@ -263,23 +303,14 @@ bool BeingManager::hasBeing(Being *being) const
     return false;
 }
 
-void BeingManager::getPlayerNames(std::vector<std::string> &names,
-                                  bool npcNames)
+AutoCompleteLister *BeingManager::getPlayerNameLister()
 {
-    Beings::iterator i = mBeings.begin();
-    names.clear();
+    return mPlayerNames;
+}
 
-    while (i != mBeings.end())
-    {
-        Being *being = (*i);
-        if ((being->getType() == Being::PLAYER
-             || (being->getType() == Being::NPC && npcNames))
-            && being->getName() != "")
-        {
-            names.push_back(being->getName());
-        }
-        ++i;
-    }
+AutoCompleteLister *BeingManager::getPlayerNPCNameLister()
+{
+    return mPlayerNPCNames;
 }
 
 void BeingManager::updatePlayerNames()

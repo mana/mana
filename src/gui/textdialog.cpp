@@ -21,6 +21,8 @@
 
 #include "gui/textdialog.h"
 
+#include "beingmanager.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/textfield.h"
@@ -40,7 +42,7 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
     // In TextField the escape key will either cause autoComplete or lose focus
     mTextField = new TextField("", ! autoCompleteEnabled);
     if (autoCompleteEnabled)
-        mTextField->setAutoComplete(true);
+        mTextField->setAutoComplete(beingManager->getPlayerNameLister());
 
     mTextField->addActionListener(this);
 

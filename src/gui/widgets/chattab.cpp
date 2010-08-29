@@ -21,6 +21,7 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "beingmanager.h"
 #include "commandhandler.h"
 #include "configuration.h"
 #include "localplayer.h"
@@ -273,6 +274,11 @@ void ChatTab::handleInput(const std::string &msg)
 void ChatTab::handleCommand(const std::string &msg)
 {
     commandHandler->handleCommand(msg, this);
+}
+
+void ChatTab::getAutoCompleteList(std::vector<std::string> &names) const
+{
+    beingManager->getPlayerNPCNameLister()->getAutoCompleteList(names);
 }
 
 void ChatTab::addRow(std::string &line)
