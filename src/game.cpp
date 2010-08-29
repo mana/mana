@@ -148,14 +148,14 @@ static void createGuiWindows()
     setupWindow->clearWindowsForReset();
 
     // Create dialogs
+    miniStatusWindow = new MiniStatusWindow;
+    minimap = new Minimap;
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     statusWindow = new StatusWindow;
-    miniStatusWindow = new MiniStatusWindow;
     inventoryWindow = new InventoryWindow(player_node->getInventory());
     skillDialog = new SkillDialog;
-    minimap = new Minimap;
     helpWindow = new HelpWindow;
     debugWindow = new DebugWindow;
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",
