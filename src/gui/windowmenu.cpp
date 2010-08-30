@@ -72,6 +72,7 @@ WindowMenu::WindowMenu():
 
 WindowMenu::~WindowMenu()
 {
+    delete mEmotePopup;
 }
 
 void WindowMenu::action(const gcn::ActionEvent &event)
