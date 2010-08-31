@@ -276,10 +276,8 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
         case Key::ENTER:
             if (mHistory)
             {
-                mHistory->toEnd();
-
                 // If the input is different from previous, put it in the history
-                if (mHistory->empty() || !mHistory->matchesEntry(getText()))
+                if (mHistory->empty() || !mHistory->matchesLastEntry(getText()))
                 {
                     mHistory->addEntry(getText());
                 }
@@ -317,23 +315,23 @@ void TextField::autoComplete()
 {
     if (mAutoComplete && mText.size() > 0)
     {
-        int caretPos = getCaretPosition();
+        const int caretPos = getCaretPosition();
         int startName = 0;
         const std::string inputText = getText();
         std::string name = inputText.substr(0, caretPos);
         std::string newName("");
 
-        for (int f = caretPos - 1; f > -1; f --)
+        for (int f = caretPos - 1; f > -1; f--)
         {
             if (isWordSeparator(inputText[f]))
             {
                 startName = f + 1;
-                name = inputText.substr(f + 1, caretPos - f);
+                name = inputText.substr(f + 1, caretPos - startName);
                 break;
             }
         }
 
-        if (caretPos - 1 + 1 != startName)
+        if (caretPos == startName)
             return;
 
 
@@ -375,11 +373,7 @@ void TextField::autoComplete()
                     + inputText.substr(caretPos, inputText.length()
                                        - caretPos));
 
-            if (startName > 0)
-                setCaretPosition(caretPos - name.length() + newName.length()
-                                 + 1);
-            else
-                setCaretPosition(caretPos - name.length() + newName.length());
+            setCaretPosition(caretPos - name.length() + newName.length());
         }
     }
 }

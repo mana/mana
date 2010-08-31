@@ -57,8 +57,8 @@ struct TextHistory {
     void addEntry(const std::string &text)
     { history.push_back(text); }
 
-    bool matchesEntry(const std::string &text)
-    { return (*current) == text; }
+    bool matchesLastEntry(const std::string &text)
+    { return history.back() == text; }
 };
 
 class AutoCompleteLister {
