@@ -277,7 +277,8 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             if (mHistory)
             {
                 // If the input is different from previous, put it in the history
-                if (mHistory->empty() || !mHistory->matchesLastEntry(getText()))
+                if (!getText().empty() && (mHistory->empty() ||
+                    !mHistory->matchesLastEntry(getText())))
                 {
                     mHistory->addEntry(getText());
                 }
