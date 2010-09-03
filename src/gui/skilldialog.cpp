@@ -73,9 +73,14 @@ struct SkillInfo
     float progress;
     gcn::Color color;
 
+    SkillInfo() :
+        icon(NULL)
+    {}
+
     ~SkillInfo()
     {
-        icon->decRef();
+        if (icon)
+            icon->decRef();
     }
 
     void setIcon(const std::string &iconPath)
@@ -85,7 +90,8 @@ struct SkillInfo
         {
             icon = res->getImage(iconPath);
         }
-        else
+
+        if (!icon)
         {
             icon = Theme::getImageFromTheme("unknown-item.png");
         }
