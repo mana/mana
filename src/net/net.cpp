@@ -22,6 +22,7 @@
 #include "net/net.h"
 
 #include "main.h"
+#include "log.h"
 
 #include "net/adminhandler.h"
 #include "net/charhandler.h"
@@ -40,6 +41,8 @@
 #include "net/tmwa/generalhandler.h"
 
 #include "net/manaserv/generalhandler.h"
+
+#include "utils/gettext.h"
 
 Net::AdminHandler *adminHandler = NULL;
 Net::CharHandler *charHandler = NULL;
@@ -124,12 +127,19 @@ namespace Net
 {
 ServerInfo::Type networkType = ServerInfo::UNKNOWN;
 
-void connectToServer(const ServerInfo &server)
+void connectToServer(ServerInfo &server)
 {
     if (server.type == ServerInfo::UNKNOWN)
     {
         // TODO: Query the server about itself and choose the netcode based on
         // that
+
+        if (server.port == 6901)
+            server.type = ServerInfo::TMWATHENA;
+        else if (server.port == 9601)
+            server.type = ServerInfo::MANASERV;
+        else
+            logger->error(_("Unknown Server Type! Exiting."));
     }
 
     if (networkType == server.type && getGeneralHandler() != NULL)

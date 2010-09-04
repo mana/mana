@@ -604,11 +604,13 @@ int Client::exec()
                 case STATE_CHOOSE_SERVER:
                     logger->log("State: CHOOSE SERVER");
 
-                    // Allow changing this using a server choice dialog
-                    // We show the dialog box only if the command-line
-                    // options weren't set.
-                    if (mOptions.serverName.empty() && mOptions.serverPort == 0
-                        && !branding.getValue("onlineServerList", "a").empty())
+                    // If a server was passed on the command line, or branding
+                    // provides a server and a blank server list, we skip the
+                    // server selection dialog.
+                    if (mOptions.serverName.empty() || mOptions.serverPort == 0
+                        || !(!branding.getValue("defaultServer","").empty() &&
+                             branding.getValue("defaultPort",0) &&
+                             branding.getValue("onlineServerList", "").empty()))
                     {
                         // Don't allow an alpha opacity
                         // lower than the default value

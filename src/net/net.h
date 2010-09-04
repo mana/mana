@@ -67,7 +67,7 @@ ServerInfo::Type getNetworkType();
 /**
  * Handles server detection and connection
  */
-void connectToServer(const ServerInfo &server);
+void connectToServer(ServerInfo &server);
 
 void unload();
 
