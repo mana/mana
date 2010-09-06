@@ -161,8 +161,11 @@ void CharHandler::handleCharacterCreateResponse(Net::MessageIn &msg)
             case CREATE_ATTRIBUTES_TOO_LOW:
                 errorMessage = _("Character's stats are too low.");
                 break;
-            case CREATE_ATTRIBUTES_EQUAL_TO_ZERO:
-                errorMessage = _("One stat is zero.");
+            case CREATE_ATTRIBUTES_OUT_OF_RANGE:
+                errorMessage = strprintf( _("At least one stat"
+                                   "is out of the permitted range: (%u - %u)."),
+                                   Attributes::getAttributeMinimum(),
+                                   Attributes::getAttributeMaximum());
                 break;
             default:
                 errorMessage = _("Unknown error.");
