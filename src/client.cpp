@@ -607,19 +607,10 @@ int Client::exec()
                     // If a server was passed on the command line, or branding
                     // provides a server and a blank server list, we skip the
                     // server selection dialog.
-                    if (mOptions.serverName.empty() || mOptions.serverPort == 0
-                        || !(!branding.getValue("defaultServer","").empty() &&
-                             branding.getValue("defaultPort",0) &&
-                             branding.getValue("onlineServerList", "").empty()))
-                    {
-                        // Don't allow an alpha opacity
-                        // lower than the default value
-                        Theme::instance()->setMinimumOpacity(0.8f);
-
-                        mCurrentDialog = new ServerDialog(&mCurrentServer,
-                                                          mConfigDir);
-                    }
-                    else
+                    if ((!mOptions.serverName.empty() && mOptions.serverPort)
+                        || (!branding.getValue("defaultServer","").empty() &&
+                            branding.getValue("defaultPort",0) &&
+                            branding.getValue("onlineServerList", "").empty()))
                     {
                         mState = STATE_CONNECT_SERVER;
 
@@ -627,6 +618,15 @@ int Client::exec()
                         // timeout will show the server dialog.
                         mOptions.serverName.clear();
                         mOptions.serverPort = 0;
+                    }
+                    else
+                    {
+                        // Don't allow an alpha opacity
+                        // lower than the default value
+                        Theme::instance()->setMinimumOpacity(0.8f);
+
+                        mCurrentDialog = new ServerDialog(&mCurrentServer,
+                                                          mConfigDir);
                     }
                     break;
 
