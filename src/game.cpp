@@ -347,10 +347,10 @@ void Game::logic()
         if (Client::getState() == STATE_CHANGE_MAP)
             return; // Not a problem here
 
-        if (Client::getState() != STATE_ERROR)
-        {
-            errorMessage = _("The connection to the server was lost.");
-        }
+        if (Client::getState() == STATE_ERROR)
+            return; // Disconnect gets handled by STATE_ERROR
+
+        errorMessage = _("The connection to the server was lost.");
 
         if (!disconnectedDialog)
         {
