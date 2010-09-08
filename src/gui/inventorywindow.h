@@ -100,7 +100,12 @@ class InventoryWindow : public Window,
          * window has been closed.
          */
         void close();
-        
+
+        /**
+         * Updates the buttons.
+         */
+        void updateButtons();
+
         /**
          * Updates the weight bar.
          */
