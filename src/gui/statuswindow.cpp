@@ -246,10 +246,7 @@ std::string StatusWindow::update(int id)
             mCorrectionPointsLabel->adjustSize();
         }
 
-        for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
-        {
-            it->second->update();
-        }
+        updateAttrs();
     }
     else if (id == LEVEL)
     {
@@ -270,6 +267,14 @@ std::string StatusWindow::update(int id)
     }
 
     return "";
+}
+
+void StatusWindow::updateAttrs()
+{
+    for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
+    {
+        it->second->update();
+    }
 }
 
 void StatusWindow::setPointsNeeded(int id, int needed)

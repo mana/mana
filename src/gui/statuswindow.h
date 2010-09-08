@@ -59,6 +59,8 @@ class StatusWindow : public Window
 
         std::string update(int id);
 
+        void updateAttrs();
+
         void setPointsNeeded(int id, int needed);
 
         void addAttribute(int id, const std::string &name, bool modifiable,
