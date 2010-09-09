@@ -239,8 +239,7 @@ void Sound::playSfx(const std::string &path)
         return;
 
     ResourceManager *resman = ResourceManager::getInstance();
-    SoundEffect *sample = resman->getSoundEffect(
-                          paths.getValue("sfx", "sfx/") + path);
+    SoundEffect *sample = resman->getSoundEffect(path);
     if (sample)
     {
         logger->log("Sound::playSfx() Playing: %s", path.c_str());
