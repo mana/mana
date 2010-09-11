@@ -440,8 +440,18 @@ void Setup_Video::apply()
         config.setValue("opengl", mOpenGLCheckBox->isSelected());
 
         // OpenGL can currently only be changed by restarting, notify user.
-        new OkDialog(_("Changing to OpenGL"),
-                     _("Applying change to OpenGL requires restart."));
+        if (mOpenGLCheckBox->isSelected())
+        {
+            new OkDialog(_("Changing to OpenGL"),
+                         _("Applying change to OpenGL requires restart. "
+                           "In case OpenGL messes up your game graphics, restart "
+                           "the game with the command line option \"--no-opengl\"."));
+        }
+        else
+        {
+            new OkDialog(_("Deactivating OpenGL"),
+                         _("Applying change to OpenGL requires restart."));
+        }
     }
 
     mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;
