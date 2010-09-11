@@ -270,7 +270,11 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
 
             if (Item *item = inventory->getItem(index))
             {
-                item->setQuantity(amount);
+                if (amount)
+                    item->setQuantity(amount);
+                else
+                    inventory->removeItemAt(index);
+
                 inventoryWindow->updateButtons();
             }
 
@@ -288,7 +292,11 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             {
                 if (Item *item = inventory->getItem(index))
                 {
-                    item->setQuantity(amount);
+                    if (amount)
+                        item->setQuantity(amount);
+                    else
+                        inventory->removeItemAt(index);
+
                     inventoryWindow->updateButtons();
                 }
             }
