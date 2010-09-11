@@ -224,11 +224,11 @@ Setup_Video::Setup_Video():
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
                                           mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
-    mNPCLogCheckBox(new CheckBox(_("Log NPC interations"), mNPCLogEnabled)),
+    mNPCLogCheckBox(new CheckBox(_("Log NPC interactions"), mNPCLogEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification"))),
-    // TRANSLATORS: Refers to "Show own name"
+    // TRANSLATORS: Refers to "Show pickup notification"
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
-    // TRANSLATORS: Refers to "Show own name"
+    // TRANSLATORS: Refers to "Show pickup notification"
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
                                          mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),

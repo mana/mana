@@ -676,7 +676,7 @@ int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,
     }
     else if (status < 0)
     {
-        logger->log("Error retreiving server list: %s\n",
+        logger->log("Error retreiving server list: %s",
                     sd->mDownload->getError());
         sd->mDownloadStatus = DOWNLOADING_ERROR;
     }
