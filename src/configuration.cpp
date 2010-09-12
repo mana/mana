@@ -43,9 +43,7 @@ void Configuration::setValue(const std::string &key, const std::string &value)
     {
         Listeners listeners = list->second;
         for (ListenerIterator i = listeners.begin(); i != listeners.end(); i++)
-        {
             (*i)->optionChanged(key);
-        }
     }
 }
 
@@ -79,8 +77,11 @@ double ConfigurationObject::getValue(const std::string &key,
 void ConfigurationObject::deleteList(const std::string &name)
 {
     for (ConfigurationList::const_iterator
-             it = mContainerOptions[name].begin(); it != mContainerOptions[name].end(); it++)
+         it = mContainerOptions[name].begin();
+         it != mContainerOptions[name].end(); it++)
+    {
         delete *it;
+    }
 
     mContainerOptions[name].clear();
 }
@@ -88,8 +89,11 @@ void ConfigurationObject::deleteList(const std::string &name)
 void ConfigurationObject::clear()
 {
     for (std::map<std::string, ConfigurationList>::const_iterator
-             it = mContainerOptions.begin(); it != mContainerOptions.end(); it++)
+         it = mContainerOptions.begin(); it != mContainerOptions.end(); it++)
+    {
         deleteList(it->first);
+    }
+
     mOptions.clear();
 }
 
@@ -125,97 +129,102 @@ void Configuration::setDefaultValues(DefaultsData *defaultsData)
     mDefaultsData = defaultsData;
 }
 
-int Configuration::getIntValue(const std::string &key) const
+Mana::VariableData* Configuration::getDefault(const std::string &key,
+                                              Mana::VariableData::DataType type
+                                             ) const
 {
-    int defaultValue = 0;
     if (mDefaultsData)
     {
         DefaultsData::const_iterator itdef = mDefaultsData->find(key);
 
         if (itdef != mDefaultsData->end() && itdef->second
-            && itdef->second->getType() == Mana::VariableData::DATA_INT)
+            && itdef->second->getType() == type)
         {
-            defaultValue = ((Mana::IntData*)itdef->second)->getData();
+            return itdef->second;
         }
         else
         {
-            logger->log("%s: No integer value in registry for key %s",
-                                              mConfigPath.c_str(), key.c_str());
+            logger->log("%s: No value in registry for key %s",
+                        mConfigPath.c_str(), key.c_str());
         }
     }
+    return NULL;
+}
+
+int Configuration::getIntValue(const std::string &key) const
+{
+    int defaultValue = 0;
     Options::const_iterator iter = mOptions.find(key);
-    return (iter != mOptions.end()) ? atoi(iter->second.c_str()) : defaultValue;
+    if (iter == mOptions.end())
+    {
+        Mana::VariableData* vd = getDefault(key, Mana::VariableData::DATA_INT);
+        if (vd)
+            defaultValue = ((Mana::IntData*)vd)->getData();
+    }
+    else
+    {
+        defaultValue = atoi(iter->second.c_str());
+    }
+    return defaultValue;
 }
 
 std::string Configuration::getStringValue(const std::string &key) const
 {
     std::string defaultValue = "";
-    if (mDefaultsData)
-    {
-        DefaultsData::const_iterator itdef = mDefaultsData->find(key);
-
-        if (itdef != mDefaultsData->end() && itdef->second
-            && itdef->second->getType() == Mana::VariableData::DATA_STRING)
-        {
-            defaultValue = ((Mana::StringData*)itdef->second)->getData();
-        }
-        else
-        {
-            logger->log("%s: No string value in registry for key %s",
-                                              mConfigPath.c_str(), key.c_str());
-        }
-    }
     Options::const_iterator iter = mOptions.find(key);
-    return (iter != mOptions.end()) ? iter->second : defaultValue;
+    if (iter == mOptions.end())
+    {
+        Mana::VariableData* vd = getDefault(key,
+                                            Mana::VariableData::DATA_STRING);
+
+        if (vd)
+            defaultValue = ((Mana::StringData*)vd)->getData();
+    }
+    else
+    {
+        defaultValue = iter->second;
+    }
+    return defaultValue;
 }
 
 
 float Configuration::getFloatValue(const std::string &key) const
 {
     float defaultValue = 0.0f;
-    if (mDefaultsData)
-    {
-        DefaultsData::const_iterator itdef = mDefaultsData->find(key);
-
-        if (itdef != mDefaultsData->end() && itdef->second
-            && itdef->second->getType() == Mana::VariableData::DATA_FLOAT)
-        {
-            defaultValue = ((Mana::FloatData*)itdef->second)->getData();
-        }
-        else
-        {
-            logger->log("%s: No float value in registry for key %s",
-                                              mConfigPath.c_str(), key.c_str());
-        }
-    }
     Options::const_iterator iter = mOptions.find(key);
-    return (iter != mOptions.end()) ? atof(iter->second.c_str()) : defaultValue;
+    if (iter == mOptions.end())
+    {
+        Mana::VariableData* vd = getDefault(key,
+            Mana::VariableData::DATA_FLOAT);
+
+        if (vd)
+            defaultValue = ((Mana::FloatData*)vd)->getData();
+    }
+    else
+    {
+        defaultValue = atof(iter->second.c_str());
+    }
+    return defaultValue;
 }
 
 bool Configuration::getBoolValue(const std::string &key) const
 {
     bool defaultValue = false;
-    if (mDefaultsData)
+    Options::const_iterator iter = mOptions.find(key);
+    if (iter == mOptions.end())
     {
-        DefaultsData::const_iterator itdef = mDefaultsData->find(key);
+        Mana::VariableData* vd = getDefault(key,
+            Mana::VariableData::DATA_BOOL);
 
-        if (itdef != mDefaultsData->end() && itdef->second
-            && itdef->second->getType() == Mana::VariableData::DATA_BOOL)
-        {
-            defaultValue = ((Mana::BoolData*)itdef->second)->getData();
-        }
-        else
-        {
-            logger->log("%s: No boolean value in registry for key %s",
-                                              mConfigPath.c_str(), key.c_str());
-        }
+        if (vd)
+            defaultValue = ((Mana::BoolData*)vd)->getData();
+    }
+    else
+    {
+        defaultValue = getBoolFromString(iter->second);
     }
 
-    Options::const_iterator iter = mOptions.find(key);
-    if (iter != mOptions.end())
-        return getBoolFromString(iter->second);
-    else
-        return defaultValue;
+    return defaultValue;
 }
 
 void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
@@ -226,8 +235,7 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
     {
         if (xmlStrEqual(node->name, BAD_CAST "list"))
         {
-            // list option handling
-
+            // List option handling.
             std::string name = XML::getProperty(node, "name", std::string());
 
             for_each_xml_child_node(subnode, node)
@@ -237,7 +245,7 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
                 {
                     ConfigurationObject *cobj = new ConfigurationObject;
 
-                    cobj->initFromXML(subnode); // recurse
+                    cobj->initFromXML(subnode); // Recurse
 
                     mContainerOptions[name].push_back(cobj);
                 }
@@ -246,14 +254,13 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
         }
         else if (xmlStrEqual(node->name, BAD_CAST "option"))
         {
-            // single option handling
-
+            // Single option handling.
             std::string name = XML::getProperty(node, "name", std::string());
             std::string value = XML::getProperty(node, "value", std::string());
 
             if (!name.empty())
                 mOptions[name] = value;
-        } // otherwise ignore
+        } // Otherwise ignore
     }
 }
 
@@ -297,16 +304,16 @@ void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
     }
 
     for (std::map<std::string, ConfigurationList>::const_iterator
-             it = mContainerOptions.begin(); it != mContainerOptions.end(); it++)
+        it = mContainerOptions.begin(); it != mContainerOptions.end(); it++)
     {
         const char *name = it->first.c_str();
 
         xmlTextWriterStartElement(writer, BAD_CAST "list");
         xmlTextWriterWriteAttribute(writer, BAD_CAST "name", BAD_CAST name);
 
-        // recurse on all elements
+        // Recurse on all elements
         for (ConfigurationList::const_iterator
-                 elt_it = it->second.begin(); elt_it != it->second.end(); elt_it++)
+             elt_it = it->second.begin(); elt_it != it->second.end(); elt_it++)
         {
             xmlTextWriterStartElement(writer, BAD_CAST name);
             (*elt_it)->writeToXML(writer);
@@ -352,14 +359,14 @@ void Configuration::write()
     xmlFreeTextWriter(writer);
 }
 
-void Configuration::addListener(
-        const std::string &key, ConfigListener *listener)
+void Configuration::addListener(const std::string &key,
+                                ConfigListener *listener)
 {
     mListenerMap[key].push_front(listener);
 }
 
-void Configuration::removeListener(
-        const std::string &key, ConfigListener *listener)
+void Configuration::removeListener(const std::string &key,
+                                   ConfigListener *listener)
 {
     mListenerMap[key].remove(listener);
 }

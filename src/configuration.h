@@ -252,10 +252,15 @@ class Configuration : public ConfigurationObject
          * @see defaults.h
          */
         int getIntValue(const std::string &key) const;
+
         float getFloatValue(const std::string &key) const;
+
         std::string getStringValue(const std::string &key) const;
+
         bool getBoolValue(const std::string &key) const;
 
+        Mana::VariableData* getDefault(const std::string &key,
+                                       Mana::VariableData::DataType type) const;
     private:
         /**
          * Clean up the default values member.
