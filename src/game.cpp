@@ -958,7 +958,12 @@ void Game::changeMap(const std::string &mapPath)
     std::string oldMusic = mCurrentMap ? mCurrentMap->getMusicFile() : "";
     std::string newMusic = newMap ? newMap->getMusicFile() : "";
     if (newMusic != oldMusic)
-        sound.playMusic(newMusic);
+    {
+        if (newMusic.empty())
+            sound.stopMusic();
+        else
+            sound.playMusic(newMusic);
+    }
 
     delete mCurrentMap;
     mCurrentMap = newMap;

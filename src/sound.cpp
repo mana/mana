@@ -195,12 +195,7 @@ void Sound::stopMusic()
 
     logger->log("Sound::stopMusic()");
 
-    if (mMusic)
-    {
-        Mix_HaltMusic();
-        Mix_FreeMusic(mMusic);
-        mMusic = NULL;
-    }
+    haltMusic();
 }
 
 void Sound::fadeInMusic(const std::string &path, int ms)
