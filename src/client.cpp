@@ -747,6 +747,8 @@ int Client::exec()
                     paths.init("paths.xml", true);
                     paths.setDefaultValues(getPathsDefaults());
 
+                    Mana::Event::trigger("Client", "DBsLoading");
+
                     // Load XML databases
                     ColorDB::load();
                     itemDb = new ItemDB;

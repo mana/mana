@@ -176,14 +176,17 @@ void GeneralHandler::event(const std::string &channel,
 {
     if (channel == "Client")
     {
-        int newState = event.getInt("newState");
-
-        if (newState == STATE_GAME)
+        if (event.getName() == "StatChange")
         {
-            GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
-            game->gameLoading();
+            int newState = event.getInt("newState");
+
+            if (newState == STATE_GAME)
+            {
+                GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
+                game->gameLoading();
+            }
         }
-        else if (newState == STATE_LOAD_DATA)
+        else if (event.getName() == "DBsLoading")
         {
             Attributes::load();
             Attributes::informItemDB();
