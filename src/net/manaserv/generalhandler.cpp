@@ -176,7 +176,7 @@ void GeneralHandler::event(const std::string &channel,
 {
     if (channel == "Client")
     {
-        if (event.getName() == "StatChange")
+        if (event.getName() == "StateChange")
         {
             int newState = event.getInt("newState");
 
