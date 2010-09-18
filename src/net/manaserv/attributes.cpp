@@ -40,7 +40,9 @@
 
 namespace ManaServ {
 namespace Attributes {
-    typedef struct {
+
+    typedef struct
+    {
         unsigned int id;
         std::string name;
         std::string description;
@@ -80,6 +82,22 @@ namespace Attributes {
     std::vector<std::string>& getLabels()
     {
         return attributeLabels;
+    }
+
+    /**
+     * Fills the list of base attribute labels.
+     */
+    static void fillLabels()
+    {
+        // Fill up the modifiable attribute label list.
+        attributeLabels.clear();
+        AttributeMap::const_iterator it, it_end;
+        for (it = attributes.begin(), it_end = attributes.end(); it != it_end;
+                                                                           it++)
+        {
+            if (it->second.modifiable)
+                attributeLabels.push_back(it->second.name + ":");
+        }
     }
 
     static void loadBuiltins()
@@ -163,6 +181,7 @@ namespace Attributes {
             logger->log("Attributes: Error while loading "
                         DEFAULT_ATTRIBUTESDB_FILE ". Using Built-ins.");
             loadBuiltins();
+            fillLabels();
             return;
         }
 
@@ -261,15 +280,7 @@ namespace Attributes {
         logger->log("Found %d tags for %d attributes.", int(tags.size()),
                                                         int(attributes.size()));
 
-        // Fill up the modifiable attribute label list.
-        attributeLabels.clear();
-        AttributeMap::const_iterator it, it_end;
-        for (it = attributes.begin(), it_end = attributes.end(); it != it_end;
-                                                                           it++)
-        {
-            if (it->second.modifiable)
-                attributeLabels.push_back(it->second.name + ":");
-        }
+        fillLabels();
 
         // Sanity checks on starting points
         float modifiableAttributeCount = (float) attributeLabels.size();
