@@ -103,16 +103,12 @@ void TabbedArea::addTab(const std::string &caption, gcn::Widget *widget)
 
 void TabbedArea::removeTab(Tab *tab)
 {
-    int tabIndexToBeSelected = -1;
-
     if (tab == mSelectedTab)
     {
-        int index = getSelectedTabIndex();
-
-        if (index == (int)mTabs.size() - 1 && mTabs.size() == 1)
-            tabIndexToBeSelected = -1;
+        if (getNumberOfTabs() > 1)
+            setSelectedTab(std::max(0, getSelectedTabIndex() - 1));
         else
-            tabIndexToBeSelected = index - 1;
+            mSelectedTab = 0;
     }
 
     TabContainer::iterator iter;
@@ -135,16 +131,6 @@ void TabbedArea::removeTab(Tab *tab)
             delete tab;
             break;
         }
-    }
-
-    if (tabIndexToBeSelected == -1)
-    {
-        mSelectedTab = NULL;
-        mWidgetContainer->clear();
-    }
-    else
-    {
-        setSelectedTab(tabIndexToBeSelected);
     }
 
     adjustSize();

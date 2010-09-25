@@ -51,6 +51,8 @@ class StatusWindow : public Window, public Mana::Listener
 
         void event(const std::string &channel, const Mana::Event &event);
 
+        void updateAttrs();
+
         void setPointsNeeded(int id, int needed);
 
         void addAttribute(int id, const std::string &name, bool modifiable,

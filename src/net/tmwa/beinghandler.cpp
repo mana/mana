@@ -47,6 +47,7 @@ BeingHandler::BeingHandler(bool enableSync):
     static const Uint16 _messages[] = {
         SMSG_BEING_VISIBLE,
         SMSG_BEING_MOVE,
+        SMSG_BEING_SPAWN,
         SMSG_BEING_MOVE2,
         SMSG_BEING_REMOVE,
         SMSG_SKILL_DAMAGE,
@@ -226,6 +227,13 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
             dstBeing->setStatusEffectBlock(16, statusEffects & 0xffff);
             break;
+
+        case SMSG_BEING_SPAWN:
+            /*
+             * TODO: This packet might need handling in the future.
+             */
+             // Do nothing.
+             break;
 
         case SMSG_BEING_MOVE2:
             /*

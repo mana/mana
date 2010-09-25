@@ -128,7 +128,8 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 mBrowserBox->addRow(strprintf("@@follow|%s@@",
                                         strprintf(_("Follow %s"),
                                                   name.c_str()).c_str()));
-                mBrowserBox->addRow(strprintf("@@guild|%s@@",
+                if (player_node->getNumberOfGuilds())
+                    mBrowserBox->addRow(strprintf("@@guild|%s@@",
                                 strprintf(_("Invite %s to join your guild"),
                                                     name.c_str()).c_str()));
                 if (player_node->isInParty())

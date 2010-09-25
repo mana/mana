@@ -238,10 +238,7 @@ void StatusWindow::event(const std::string &channel, const Mana::Event &event)
                                               _("Character points: %d"),
                                               event.getInt("newValue")));
                 mCharacterPointsLabel->adjustSize();
-                // Update all attributes
-                for (Attrs::iterator it = mAttrs.begin();
-                     it != mAttrs.end(); it++)
-                    it->second->update();
+                updateAttrs();
             break;
 
             case CORR_POINTS:
@@ -249,10 +246,7 @@ void StatusWindow::event(const std::string &channel, const Mana::Event &event)
                                                _("Correction points: %d"),
                                                event.getInt("newValue")));
                 mCorrectionPointsLabel->adjustSize();
-                // Update all attributes
-                for (Attrs::iterator it = mAttrs.begin();
-                     it != mAttrs.end(); it++)
-                    it->second->update();
+                updateAttrs();
             break;
 
             case LEVEL:
@@ -283,6 +277,14 @@ void StatusWindow::event(const std::string &channel, const Mana::Event &event)
                 it->second->update();
             }
         }
+    }
+}
+
+void StatusWindow::updateAttrs()
+{
+    for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
+    {
+        it->second->update();
     }
 }
 

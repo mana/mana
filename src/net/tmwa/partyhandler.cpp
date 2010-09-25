@@ -184,7 +184,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                         partyTab->chatLog(_("Experience sharing not possible."), BY_SERVER);
                         break;
                     default:
-                        logger->log("Unknown party exp option: %d\n", exp);
+                        logger->log("Unknown party exp option: %d", exp);
                 }
 
                 switch (item)
@@ -208,7 +208,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                         partyTab->chatLog(_("Item sharing not possible."), BY_SERVER);
                         break;
                     default:
-                        logger->log("Unknown party item option: %d\n", exp);
+                        logger->log("Unknown party item option: %d", exp);
                 }
                 break;
             }
@@ -322,17 +322,23 @@ void PartyHandler::invite(Being *being)
 
 void PartyHandler::invite(const std::string &name)
 {
-    if (partyTab)
+    Being *invitee = actorSpriteManager->findBeingByName(name, Being::PLAYER);
+
+    if (invitee)
     {
-        partyTab->chatLog(_("Inviting like this isn't supported at the moment."),
-                          BY_SERVER);
+        invite(invitee);
+        partyTab->chatLog(strprintf(_("Invited user %s to party."),
+                                    invitee->getName().c_str()), BY_SERVER);
+    }
+    else if (partyTab)
+    {
+        partyTab->chatLog(strprintf(_("Inviting failed, because you can't see "
+                            "a player called %s."), name.c_str()), BY_SERVER);
     }
     else
     {
         SERVER_NOTICE(_("You can only inivte when you are in a party!"))
     }
-
-    // TODO?
 }
 
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)

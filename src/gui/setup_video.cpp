@@ -222,11 +222,11 @@ Setup_Video::Setup_Video():
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
                                           mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
-    mNPCLogCheckBox(new CheckBox(_("Log NPC interations"), mNPCLogEnabled)),
+    mNPCLogCheckBox(new CheckBox(_("Log NPC interactions"), mNPCLogEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification"))),
-    // TRANSLATORS: Refers to "Show own name"
+    // TRANSLATORS: Refers to "Show pickup notification"
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
-    // TRANSLATORS: Refers to "Show own name"
+    // TRANSLATORS: Refers to "Show pickup notification"
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
                                          mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),
@@ -438,8 +438,18 @@ void Setup_Video::apply()
         config.setValue("opengl", mOpenGLCheckBox->isSelected());
 
         // OpenGL can currently only be changed by restarting, notify user.
-        new OkDialog(_("Changing to OpenGL"),
-                     _("Applying change to OpenGL requires restart."));
+        if (mOpenGLCheckBox->isSelected())
+        {
+            new OkDialog(_("Changing to OpenGL"),
+                         _("Applying change to OpenGL requires restart. "
+                           "In case OpenGL messes up your game graphics, restart "
+                           "the game with the command line option \"--no-opengl\"."));
+        }
+        else
+        {
+            new OkDialog(_("Deactivating OpenGL"),
+                         _("Applying change to OpenGL requires restart."));
+        }
     }
 
     mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;

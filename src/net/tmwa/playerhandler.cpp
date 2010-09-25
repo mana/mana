@@ -286,6 +286,10 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     player_node->setAction(Being::DEAD);
                 }
             }
+
+            if (statusWindow)
+                statusWindow->updateAttrs();
+
             break;
 
         case SMSG_PLAYER_STAT_UPDATE_2:

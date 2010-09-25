@@ -103,6 +103,11 @@ class InventoryWindow : public Window,
          */
         void close();
 
+        /**
+         * Updates the buttons.
+         */
+        void updateButtons();
+
         void slotsChanged(Inventory* inventory);
 
         bool isMainInventory() { return mInventory->isMainInventory(); }

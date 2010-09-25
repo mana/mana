@@ -25,6 +25,7 @@
 #include "gui/chat.h"
 
 #include "gui/widgets/tab.h"
+#include "gui/widgets/textfield.h"
 
 class BrowserBox;
 class Recorder;
@@ -33,7 +34,7 @@ class ScrollArea;
 /**
  * A tab for the chat window. This is special to ease chat handling.
  */
-class ChatTab : public Tab
+class ChatTab : public Tab, public AutoCompleteLister
 {
     public:
         /**
@@ -100,6 +101,9 @@ class ChatTab : public Tab
                                    const std::string &args)
         { return false; }
 
+
+        void getAutoCompleteList(std::vector<std::string> &names) const;
+
         virtual void saveToLogFile(std::string &msg);
 
     protected:
@@ -111,8 +115,6 @@ class ChatTab : public Tab
         virtual void handleInput(const std::string &msg);
 
         virtual void handleCommand(const std::string &msg);
-
-        virtual void getAutoCompleteList(std::vector<std::string>&) const {}
 
         void addRow(std::string &line);
 

@@ -73,9 +73,21 @@ class ChatInput : public TextField, public gcn::FocusListener
         }
 };
 
+class ChatAutoComplete : public AutoCompleteLister
+{
+    void getAutoCompleteList(std::vector<std::string> &list) const
+    {
+        ChatTab *tab = static_cast<ChatTab*>(chatWindow->mChatTabs
+                                             ->getSelectedTab());
+
+        return tab->getAutoCompleteList(list);
+    }
+};
 
 ChatWindow::ChatWindow():
     Window(_("Chat")),
+    mHistory(new TextHistory()),
+    mAutoComplete(new ChatAutoComplete),
     mTmpVisible(false)
 {
     listen("Chat");
@@ -108,9 +120,8 @@ ChatWindow::ChatWindow():
 
     loadWindowState();
 
-    // Add key listener to chat input to be able to respond to up/down
-    mChatInput->addKeyListener(this);
-    mCurHist = mHistory.end();
+    mChatInput->setHistory(mHistory);
+    mChatInput->setAutoComplete(mAutoComplete);
 
     mReturnToggles = config.getBoolValue("ReturnToggles");
 
@@ -123,6 +134,8 @@ ChatWindow::~ChatWindow()
     delete mRecorder;
     removeAllWhispers();
     delete mItemLinkHandler;
+    delete mHistory;
+    delete mAutoComplete;
 }
 
 void ChatWindow::resetToDefaultSize()
@@ -177,14 +190,6 @@ void ChatWindow::action(const gcn::ActionEvent &event)
 
         if (!message.empty())
         {
-            // If message different from previous, put it in the history
-            if (mHistory.empty() || message != mHistory.back())
-            {
-                mHistory.push_back(message);
-            }
-            // Reset history iterator
-            mCurHist = mHistory.end();
-
             // Send the message to the server
             chatInput(message);
 
@@ -370,48 +375,6 @@ void ChatWindow::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-
-void ChatWindow::keyPressed(gcn::KeyEvent &event)
-{
-    if (event.getKey().getValue() == Key::DOWN)
-    {
-        if (mCurHist != mHistory.end())
-        {
-            // Move forward through the history
-            HistoryIterator prevHist = mCurHist++;
-
-            if (mCurHist != mHistory.end())
-            {
-                mChatInput->setText(*mCurHist);
-                mChatInput->setCaretPosition(mChatInput->getText().length());
-            }
-            else
-            {
-                mChatInput->setText("");
-                mCurHist = prevHist;
-            }
-        }
-        else if (mChatInput->getText() != "")
-        {
-            mChatInput->setText("");
-        }
-    }
-    else if (event.getKey().getValue() == Key::UP &&
-            mCurHist != mHistory.begin() && mHistory.size() > 0)
-    {
-        // Move backward through the history
-        mCurHist--;
-        mChatInput->setText(*mCurHist);
-        mChatInput->setCaretPosition(mChatInput->getText().length());
-    }
-    else if (event.getKey().getValue() == Key::TAB &&
-             mChatInput->getText() != "")
-    {
-        autoComplete();
-        return;
-    }
-}
-
 void ChatWindow::event(const std::string &channel, const Mana::Event &event)
 {
     if (channel == "Notices")
@@ -557,113 +520,4 @@ ChatTab *ChatWindow::addWhisperTab(const std::string &nick, bool switchTo)
         mChatTabs->setSelectedTab(ret);
 
     return ret;
-}
-
-void ChatWindow::autoComplete()
-{
-    int caretPos = mChatInput->getCaretPosition();
-    int startName = 0;
-    const std::string inputText = mChatInput->getText();
-    std::string name = inputText.substr(0, caretPos);
-    std::string newName("");
-
-    for (int f = caretPos - 1; f > -1; f --)
-    {
-        if (isWordSeparator(inputText[f]))
-        {
-            startName = f + 1;
-            name = inputText.substr(f + 1, caretPos - f);
-            break;
-        }
-    }
-
-    if (caretPos - 1 + 1 == startName)
-        return;
-
-
-    ChatTab *cTab = static_cast<ChatTab*>(mChatTabs->getSelectedTab());
-    std::vector<std::string> nameList;
-    cTab->getAutoCompleteList(nameList);
-    newName = autoComplete(nameList, name);
-
-    if (newName == "")
-    {
-        actorSpriteManager->getPlayerNames(nameList, true);
-        newName = autoComplete(nameList, name);
-    }
-    if (newName == "")
-    {
-        newName = autoCompleteHistory(name);
-    }
-
-    if (newName != "")
-    {
-        if(inputText[0] == '@' || inputText[0] == '/')
-            newName = "\"" + newName + "\"";
-
-        mChatInput->setText(inputText.substr(0, startName) + newName
-                            + inputText.substr(caretPos, inputText.length() - caretPos));
-
-        if (startName > 0)
-            mChatInput->setCaretPosition(caretPos - name.length() + newName.length() + 1);
-        else
-            mChatInput->setCaretPosition(caretPos - name.length() + newName.length());
-    }
-}
-
-std::string ChatWindow::autoComplete(std::vector<std::string> &names,
-                                     std::string partName) const
-{
-    std::vector<std::string>::iterator i = names.begin();
-    toLower(partName);
-    std::string newName("");
-
-    while (i != names.end())
-    {
-        if (!i->empty())
-        {
-            std::string name = *i;
-            toLower(name);
-
-            std::string::size_type pos = name.find(partName, 0);
-            if (pos == 0)
-            {
-                if (newName != "")
-                {
-                    toLower(newName);
-                    newName = findSameSubstring(name, newName);
-                }
-                else
-                {
-                    newName = *i;
-                }
-            }
-        }
-        ++i;
-    }
-
-    return newName;
-}
-
-std::string ChatWindow::autoCompleteHistory(std::string partName)
-{
-    History::iterator i = mHistory.begin();
-    std::vector<std::string> nameList;
-
-    while (i != mHistory.end())
-    {
-        std::string line = *i;
-        unsigned int f = 0;
-        while (f < line.length() && !isWordSeparator(line.at(f)))
-        {
-            f++;
-        }
-        line = line.substr(0, f);
-        if (line != "")
-        {
-            nameList.push_back(line);
-        }
-        ++i;
-    }
-    return autoComplete(nameList, partName);
 }

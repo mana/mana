@@ -119,7 +119,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 msg.readInt8(); // Unused
                 std::string guildName = msg.readString(24);
 
-                logger->log("Guild position info: %d %d %d %s\n", guildId,
+                logger->log("Guild position info: %d %d %d %s", guildId,
                             emblem, posMode, guildName.c_str());
             }
             break;

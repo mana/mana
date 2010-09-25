@@ -187,3 +187,38 @@ bool getBoolFromString(const std::string &text)
     else
         return (bool) atoi(txt.c_str());
 }
+
+std::string autocomplete(std::vector<std::string> &candidates,
+                         std::string base)
+{
+    std::vector<std::string>::iterator i = candidates.begin();
+    toLower(base);
+    std::string newName("");
+
+    while (i != candidates.end())
+    {
+        if (!i->empty())
+        {
+            std::string name = *i;
+            toLower(name);
+
+            std::string::size_type pos = name.find(base, 0);
+            if (pos == 0)
+            {
+                if (newName != "")
+                {
+                    toLower(newName);
+                    newName = findSameSubstring(name, newName);
+                }
+                else
+                {
+                    newName = *i;
+                }
+            }
+        }
+
+        ++i;
+    }
+
+    return newName;
+}

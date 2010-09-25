@@ -88,6 +88,8 @@ class EquipBackend : public Equipment::Backend {
             {
                 item->setEquipped(true);
             }
+
+            inventoryWindow->updateButtons();
         }
 
     private:

@@ -326,6 +326,7 @@ bool Theme::tryThemePath(std::string themePath)
     if (!themePath.empty())
     {
         themePath = defaultThemePath + themePath;
+
         if (PHYSFS_exists(themePath.c_str()))
         {
             mThemePath = themePath;
@@ -338,6 +339,9 @@ bool Theme::tryThemePath(std::string themePath)
 
 void Theme::prepareThemePath()
 {
+    // Ensure the Theme object has been created
+    instance();
+
     // Try theme from settings
     if (!tryThemePath(config.getStringValue("theme")))
         // Try theme from branding

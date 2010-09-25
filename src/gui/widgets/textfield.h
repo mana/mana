@@ -24,8 +24,47 @@
 
 #include <guichan/widgets/textfield.hpp>
 
+#include <vector>
+
 class ImageRect;
 class TextField;
+
+typedef std::list<std::string> TextHistoryList;
+typedef TextHistoryList::iterator TextHistoryIterator;
+
+struct TextHistory {
+    TextHistoryList history;     /**< Command history. */
+    TextHistoryIterator current; /**< History iterator. */
+
+    TextHistory()
+    { current = history.end(); }
+
+    bool empty() const
+    { return history.empty(); }
+
+    bool atBegining() const
+    { return current == history.begin(); }
+
+    bool atEnd() const
+    { return current == history.end(); }
+
+    void toBegining()
+    { current = history.begin(); }
+
+    void toEnd()
+    { current = history.end(); }
+
+    void addEntry(const std::string &text)
+    { history.push_back(text); }
+
+    bool matchesLastEntry(const std::string &text)
+    { return history.back() == text; }
+};
+
+class AutoCompleteLister {
+public:
+    virtual void getAutoCompleteList(std::vector<std::string>&) const {}
+};
 
 /**
  * A text field.
@@ -90,7 +129,33 @@ class TextField : public gcn::TextField
          */
         int getValue() const;
 
+        /**
+         * Sets the TextField's source of autocomplete. Passing null will
+         * disable autocomplete.
+         */
+         void setAutoComplete(AutoCompleteLister *lister)
+         { mAutoComplete = lister; }
+
+         /**
+         * Returns the TextField's source of autocomplete.
+         */
+         AutoCompleteLister *getAutoComplete() const
+         { return mAutoComplete; }
+
+         /**
+         * Sets the TextField's source of input history.
+         */
+         void setHistory(TextHistory *history)
+         { mHistory = history; }
+
+         /**
+         * Returns the TextField's source of input history.
+         */
+         TextHistory *getHistory() const
+         { return mHistory; }
+
     private:
+        void autoComplete();
         void handlePaste();
 
         static int instances;
@@ -100,6 +165,10 @@ class TextField : public gcn::TextField
         int mMinimum;
         int mMaximum;
         bool mLoseFocusOnTab;
+
+        AutoCompleteLister *mAutoComplete;
+
+        TextHistory *mHistory; /**< Text history. */
 };
 
 #endif

@@ -152,14 +152,14 @@ static void createGuiWindows()
     setupWindow->clearWindowsForReset();
 
     // Create dialogs
+    miniStatusWindow = new MiniStatusWindow;
+    minimap = new Minimap;
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
     equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
     statusWindow = new StatusWindow;
-    miniStatusWindow = new MiniStatusWindow;
     inventoryWindow = new InventoryWindow(PlayerInfo::getInventory());
     skillDialog = new SkillDialog;
-    minimap = new Minimap;
     helpWindow = new HelpWindow;
     debugWindow = new DebugWindow;
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",
@@ -356,10 +356,10 @@ void Game::logic()
         if (Client::getState() == STATE_CHANGE_MAP)
             return; // Not a problem here
 
-        if (Client::getState() != STATE_ERROR)
-        {
-            errorMessage = _("The connection to the server was lost.");
-        }
+        if (Client::getState() == STATE_ERROR)
+            return; // Disconnect gets handled by STATE_ERROR
+
+        errorMessage = _("The connection to the server was lost.");
 
         if (!disconnectedDialog)
         {
@@ -759,7 +759,7 @@ void Game::handleInput()
 
     // Moving player around
     if (player_node->isAlive() && !PlayerInfo::isTalking() &&
-        !chatWindow->isInputFocused() && !quitDialog)
+        !chatWindow->isInputFocused() && !quitDialog && !TextDialog::isActive())
     {
         // Get the state of the keyboard keys
         keyboard.refreshActiveKeys();
@@ -962,7 +962,12 @@ void Game::changeMap(const std::string &mapPath)
     std::string oldMusic = mCurrentMap ? mCurrentMap->getMusicFile() : "";
     std::string newMusic = newMap ? newMap->getMusicFile() : "";
     if (newMusic != oldMusic)
-        sound.playMusic(newMusic);
+    {
+        if (newMusic.empty())
+            sound.stopMusic();
+        else
+            sound.playMusic(newMusic);
+    }
 
     delete mCurrentMap;
     mCurrentMap = newMap;

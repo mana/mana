@@ -26,6 +26,8 @@
 #include "being.h"
 #include "flooritem.h"
 
+#include "gui/widgets/textfield.h"
+
 class LocalPlayer;
 class Map;
 
@@ -147,12 +149,18 @@ class ActorSpriteManager
          */
         void clear();
 
-        void getPlayerNames(std::vector<std::string> &names,
-                            bool npcNames);
+        AutoCompleteLister *getPlayerNameLister();
+
+        AutoCompleteLister *getPlayerNPCNameLister();
 
         void updatePlayerNames();
 
     protected:
+        friend class PlayerNamesLister;
+        friend class PlayerNPCNamesLister;
+
+        AutoCompleteLister *mPlayerNames;
+        AutoCompleteLister *mPlayerNPCNames;
         ActorSprites mActors;
         ActorSprites mDeleteActors;
         Map *mMap;

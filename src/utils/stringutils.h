@@ -24,6 +24,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 
 /**
  * Trims spaces off the end and the beginning of the given string.
@@ -132,5 +133,8 @@ const char* getSafeUtf8String(std::string text);
  * @return a boolean value..
  */
 bool getBoolFromString(const std::string &text);
+
+std::string autocomplete(std::vector<std::string> &candidates,
+                         std::string base);
 
 #endif // UTILS_STRINGUTILS_H

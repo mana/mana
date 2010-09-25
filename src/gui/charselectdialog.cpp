@@ -164,10 +164,10 @@ CharSelectDialog::CharSelectDialog(LoginData *loginData):
     addKeyListener(this);
 
     center();
-    mCharacterEntries[0]->requestFocus();
     setVisible(true);
 
     Net::getCharHandler()->setCharSelectDialog(this);
+    mCharacterEntries[0]->requestFocus();
 }
 
 CharSelectDialog::~CharSelectDialog()
@@ -328,10 +328,10 @@ CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
     mCharacter(0),
     mPlayerBox(new PlayerBox)
 {
-    mButton = new Button("wwwwwwwww", "go", charSelectDialog);
-    mName = new Label("wwwwwwwwwwwwwwwwwwwwwwww");
-    mLevel = new Label("(888)");
-    mMoney = new Label("wwwwwwwww");
+    mButton = new Button("", "go", charSelectDialog);
+    mName = new Label("");
+    mLevel = new Label("");
+    mMoney = new Label("");
 
     mDelete = new Button(_("Delete"), "delete", charSelectDialog);
 
@@ -347,15 +347,7 @@ CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
 
     update();
 
-    // Setting the width so that the largest label fits.
-    mName->adjustSize();
-    mMoney->adjustSize();
-    int width = 74;
-    if (width < 20 + mName->getWidth())
-        width = 20 + mName->getWidth();
-    if (width < 20 + mMoney->getWidth())
-        width = 20 + mMoney->getWidth();
-    h.reflowLayout(width, 112 + mName->getHeight() + mLevel->getHeight() +
+    h.reflowLayout(80, 112 + mName->getHeight() + mLevel->getHeight() +
             mMoney->getHeight() + mButton->getHeight() + mDelete->getHeight());
 }
 

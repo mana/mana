@@ -252,6 +252,8 @@ void SellDialog::setMoney(int amount)
 {
     mPlayerMoney = amount;
     mShopItemList->setPlayersMoney(amount);
+
+    updateButtonsAndLabels();
 }
 
 void SellDialog::updateButtonsAndLabels()

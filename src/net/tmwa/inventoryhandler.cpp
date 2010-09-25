@@ -130,6 +130,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     int index, amount, itemId, equipType, arrow;
     int identified, cards[4], itemType;
     Inventory *inventory = PlayerInfo::getInventory();
+    PlayerInfo::getEquipment()->setBackend(&mEquips);
 
     switch (msg.getId())
     {
@@ -139,8 +140,6 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             {
                 // Clear inventory - this will be a complete refresh
                 mEquips.clear();
-                PlayerInfo::getEquipment()->setBackend(&mEquips);
-
                 inventory->clear();
             }
             else
@@ -242,6 +241,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
 
                     inventory->setItem(index, itemId, amount);
                 }
+
+                inventoryWindow->updateButtons();
             } break;
 
         case SMSG_PLAYER_INVENTORY_REMOVE:
@@ -252,6 +253,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 item->increaseQuantity(-amount);
                 if (item->getQuantity() == 0)
                     inventory->removeItemAt(index);
+                inventoryWindow->updateButtons();
             }
             break;
 
@@ -263,7 +265,15 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();  // type
 
             if (Item *item = inventory->getItem(index))
-                item->setQuantity(amount);
+            {
+                if (amount)
+                    item->setQuantity(amount);
+                else
+                    inventory->removeItemAt(index);
+
+                inventoryWindow->updateButtons();
+            }
+
             break;
 
         case SMSG_ITEM_USE_RESPONSE:
@@ -277,7 +287,14 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             else
             {
                 if (Item *item = inventory->getItem(index))
-                    item->setQuantity(amount);
+                {
+                    if (amount)
+                        item->setQuantity(amount);
+                    else
+                        inventory->removeItemAt(index);
+
+                    inventoryWindow->updateButtons();
+                }
             }
             break;
 

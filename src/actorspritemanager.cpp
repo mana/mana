@@ -52,8 +52,50 @@ class FindBeingFunctor
         ActorSprite::Type type;
 } beingFinder;
 
+class PlayerNamesLister : public AutoCompleteLister
+{
+    void getAutoCompleteList(std::vector<std::string>& names) const
+    {
+        names.clear();
+
+        const ActorSprites &mActors = actorSpriteManager->getAll();
+        for_actors
+        {
+            if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+                continue;
+
+            Being *being = static_cast<Being*>(*it);
+            if (being->getType() == Being::PLAYER && being->getName() != "")
+                names.push_back(being->getName());
+        }
+    }
+};
+
+class PlayerNPCNamesLister : public AutoCompleteLister
+{
+    void getAutoCompleteList(std::vector<std::string>& names) const
+    {
+        names.clear();
+
+        const ActorSprites &mActors = actorSpriteManager->getAll();
+        for_actors
+        {
+            if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+                continue;
+
+            Being *being = static_cast<Being*>(*it);
+            if ((being->getType() == Being::PLAYER
+                 || being->getType() == Being::NPC)
+                && being->getName() != "")
+                names.push_back(being->getName());
+        }
+    }
+};
+
 ActorSpriteManager::ActorSpriteManager()
 {
+    mPlayerNames = new PlayerNamesLister;
+    mPlayerNPCNames = new PlayerNPCNamesLister;
 }
 
 ActorSpriteManager::~ActorSpriteManager()
@@ -278,24 +320,14 @@ bool ActorSpriteManager::hasActorSprite(ActorSprite *actor) const
     return false;
 }
 
-void ActorSpriteManager::getPlayerNames(std::vector<std::string> &names,
-                                        bool npcNames)
+AutoCompleteLister *ActorSpriteManager::getPlayerNameLister()
 {
-    names.clear();
+    return mPlayerNames;
+}
 
-    for_actors
-    {
-        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
-            continue;
-
-        Being *being = static_cast<Being*>(*it);
-        if ((being->getType() == ActorSprite::PLAYER
-             || (being->getType() == ActorSprite::NPC && npcNames))
-            && being->getName() != "")
-        {
-            names.push_back(being->getName());
-        }
-    }
+AutoCompleteLister *ActorSpriteManager::getPlayerNPCNameLister()
+{
+    return mPlayerNPCNames;
 }
 
 void ActorSpriteManager::updatePlayerNames()

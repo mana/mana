@@ -77,6 +77,9 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
                 msg.skip(2);  // Length word
                 msg.skip(20); // Unused
 
+                delete_all(mCharacters);
+                mCharacters.clear();
+
                 // Derive number of characters from message length
                 const int count = (msg.getLength() - 24) / 106;
 

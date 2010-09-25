@@ -61,6 +61,11 @@ ShopListBox::ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel):
     mItemPopup = new ItemPopup;
 }
 
+ShopListBox::~ShopListBox()
+{
+    delete mItemPopup;
+}
+
 void ShopListBox::setPlayersMoney(int money)
 {
     mPlayerMoney = money;
@@ -167,3 +172,9 @@ void ShopListBox::mouseMoved(gcn::MouseEvent &event)
         }
     }
 }
+
+void ShopListBox::mouseExited(gcn::MouseEvent &event)
+{
+    mItemPopup->setVisible(false);
+}
+

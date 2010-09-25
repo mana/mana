@@ -65,25 +65,28 @@ void BeingPopup::show(int x, int y, Being *b)
         return;
     }
 
+    mBeingName->setCaption(b->getName());
+    mBeingName->adjustSize();
+
+    int minWidth = mBeingName->getWidth();
+    const int height = getFont()->getHeight();
+
     if (!(b->getPartyName().empty()))
     {
-        mBeingName->setCaption(b->getName());
-        mBeingName->adjustSize();
-
         mBeingParty->setCaption(strprintf(_("Party: %s"),
                                           b->getPartyName().c_str()));
         mBeingParty->adjustSize();
 
-        int minWidth = std::max(mBeingName->getWidth(),
-                                mBeingParty->getWidth());
-
-        const int height = getFont()->getHeight();
+        if (minWidth < mBeingParty->getWidth())
+            minWidth = mBeingParty->getWidth();
 
         setContentSize(minWidth + 10, (height * 2) + 10);
-
-        position(x, y);
-        return;
+    }
+    else
+    {
+        mBeingParty->setCaption("");
+        setContentSize(minWidth + 10, height + 10);
     }
 
-    setVisible(false);
+    position(x, y);
 }

@@ -120,11 +120,13 @@ public:
         if (event.getId() == "do invite")
         {
             std::string name = mInviteDialog->getText();
-            Net::getGuildHandler()->invite(mGuild->getId(), name);
 
-            SERVER_NOTICE(strprintf(_("Invited user %s to guild %s."),
-                                            name.c_str(),
-                                            mGuild->getName().c_str()))
+            if (!name.empty())
+            {
+                SERVER_NOTICE(strprintf(_("Invited user %s to guild %s."),
+	                          name.c_str(),
+	                          mGuild->getName().c_str()))
+            }
             mInviteDialog = NULL;
         }
         else if (event.getId() == "~do invite")
@@ -151,7 +153,7 @@ protected:
         mInviteDialog = new TextDialog(_("Member Invite to Guild"),
                      strprintf(_("Who would you like to invite to guild %s?"),
                                mGuild->getName().c_str()),
-                     socialWindow);
+                     socialWindow, true);
         mInviteDialog->setActionEventId("do invite");
         mInviteDialog->addActionListener(this);
     }
@@ -184,7 +186,7 @@ public:
         mScroll = new ScrollArea(mList);
 
         mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
-        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
     }
 
     ~PartyTab()
@@ -200,10 +202,10 @@ public:
         if (event.getId() == "do invite")
         {
             std::string name = mInviteDialog->getText();
-            Net::getPartyHandler()->invite(name);
 
-            SERVER_NOTICE(strprintf(_("Invited user %s to party."),
-                                            name.c_str()))
+            if (!name.empty())
+                SERVER_NOTICE(strprintf(_("Invited user %s to party."),
+                              name.c_str()))
             mInviteDialog = NULL;
         }
         else if (event.getId() == "~do invite")
@@ -230,7 +232,7 @@ protected:
         mInviteDialog = new TextDialog(_("Member Invite to Party"),
                       strprintf(_("Who would you like to invite to party %s?"),
                                 mParty->getName().c_str()),
-                      socialWindow);
+                      socialWindow, true);
         mInviteDialog->setActionEventId("do invite");
         mInviteDialog->addActionListener(this);
     }
@@ -319,7 +321,7 @@ SocialWindow::SocialWindow() :
     setCloseButton(true);
     setMinWidth(120);
     setMinHeight(55);
-    setDefaultSize(590, 200, 150, 60);
+    setDefaultSize(590, 200, 150, 124);
     setupWindow->registerWindowForReset(this);
 
     loadWindowState();
@@ -492,7 +494,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
 
         if (name.size() > 16)
         {
-            // TODO : State too many characters in input.
+            SERVER_NOTICE(_("Creating guild failed, please choose a "
+                            "shorter name."));
             return;
         }
 
@@ -512,7 +515,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
 
         if (name.size() > 16)
         {
-            // TODO : State too many characters in input.
+            SERVER_NOTICE(_("Creating party failed, please choose a "
+                            "shorter name."));
             return;
         }
 
