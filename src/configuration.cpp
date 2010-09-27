@@ -221,7 +221,7 @@ bool Configuration::getBoolValue(const std::string &key) const
     }
     else
     {
-        defaultValue = getBoolFromString(iter->second);
+        return getBoolFromString(iter->second, defaultValue);
     }
 
     return defaultValue;

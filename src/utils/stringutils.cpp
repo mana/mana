@@ -155,7 +155,8 @@ bool isWordSeparator(char chr)
     return (chr == ' ' || chr == ',' || chr == '.' || chr == '"');
 }
 
-const std::string findSameSubstring(const std::string &str1, const std::string &str2)
+const std::string findSameSubstring(const std::string &str1,
+                                    const std::string &str2)
 {
     int minLength = str1.length() > str2.length() ? str2.length() : str1.length();
     for (int f = 0; f < minLength; f ++)
@@ -176,16 +177,16 @@ const char* getSafeUtf8String(std::string text)
     return buf;
 }
 
-bool getBoolFromString(const std::string &text)
+bool getBoolFromString(const std::string &text, bool def)
 {
-    std::string txt = text;
-    toLower(trim(txt));
-    if (txt == "true" || txt == "yes" || txt == "on" || txt == "1")
-      return true;
-    else if (txt == "false" || txt == "no" || txt == "off" || txt == "0")
+    std::string a = text;
+    toLower(trim(a));
+    if (a == "true" || a == "1" || a == "on" || a == "yes" || a == "y")
+        return true;
+    if (a == "false" || a == "0" || a == "off" || a == "no" || a == "n")
         return false;
     else
-        return (bool) atoi(txt.c_str());
+        return def;
 }
 
 std::string autocomplete(std::vector<std::string> &candidates,

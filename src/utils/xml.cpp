@@ -32,6 +32,7 @@
 
 #include "resources/resourcemanager.h"
 
+#include "utils/stringutils.h"
 #include "utils/zlib.h"
 
 namespace XML
@@ -135,11 +136,14 @@ namespace XML
 
     bool getBoolProperty(xmlNodePtr node, const char* name, bool def)
     {
+        bool ret = def;
         xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-
-        if (xmlStrEqual(prop, BAD_CAST "true" ) ) return true;
-        if (xmlStrEqual(prop, BAD_CAST "false") ) return false;
-        return def;
+        if (prop)
+        {
+            ret = getBoolFromString((char*) prop, def);
+            xmlFree(prop);
+        }
+        return ret;
     }
 
     xmlNodePtr findFirstChildByName(xmlNodePtr parent, const char *name)
