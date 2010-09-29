@@ -168,6 +168,9 @@ PlayerHandler::PlayerHandler()
 
 void PlayerHandler::handleMessage(Net::MessageIn &msg)
 {
+    if (!player_node)
+        return;
+
     switch (msg.getId())
     {
         case SMSG_WALK_RESPONSE:
