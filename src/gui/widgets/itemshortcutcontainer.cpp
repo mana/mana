@@ -109,6 +109,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
                 else if (item->isEquipped())
                     caption = "Eq.";
 
+                image->setAlpha(1.0f);
                 g->drawImage(image, itemX, itemY);
                 if (item->isEquipped())
                     g->setColor(Theme::getThemeColor(Theme::ITEM_EQUIPPED));
