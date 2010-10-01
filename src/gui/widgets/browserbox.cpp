@@ -217,6 +217,7 @@ void BrowserBox::addRow(const std::string &row)
     {
         setHeight(font->getHeight() * static_cast<int>(mTextRows.size()));
     }
+    mUpdateTime = 0;
     updateHeight();
 }
 
@@ -513,16 +514,12 @@ int BrowserBox::calcHeight()
 
 void BrowserBox::updateHeight()
 {
-    if (mAlwaysUpdate || std::abs(mUpdateTime - tick_time) > 10
+    if (mAlwaysUpdate || !mUpdateTime || std::abs(mUpdateTime - tick_time) > 10
         || mTextRows.size() < 3)
     {
         mWidth = getWidth();
         mHeight = calcHeight();
         setHeight(mHeight);
-        mUpdateTime = tick_time;
-    }
-    else if (!mUpdateTime)
-    {
         mUpdateTime = tick_time;
     }
 }
