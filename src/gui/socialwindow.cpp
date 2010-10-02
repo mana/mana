@@ -500,12 +500,13 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         {
             localChatTab->chatLog(_("Creating guild failed, please choose a "
                                     "shorter name."), BY_SERVER);
-            return;
         }
-
-        Net::getGuildHandler()->create(name);
-        localChatTab->chatLog(strprintf(_("Creating guild called %s."),
-                                            name.c_str()), BY_SERVER);
+        else if (!name.empty())
+        {
+            Net::getGuildHandler()->create(name);
+            localChatTab->chatLog(strprintf(_("Creating guild called %s."),
+                                                name.c_str()), BY_SERVER);
+        }
 
         mGuildCreateDialog = NULL;
     }
@@ -521,12 +522,13 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         {
             localChatTab->chatLog(_("Creating party failed, please choose a "
                                     "shorter name."), BY_SERVER);
-            return;
         }
-
-        Net::getPartyHandler()->create(name);
-        localChatTab->chatLog(strprintf(_("Creating party called %s."),
-                                            name.c_str()), BY_SERVER);
+        else if (!name.empty())
+        {
+            Net::getPartyHandler()->create(name);
+            localChatTab->chatLog(strprintf(_("Creating party called %s."),
+                                                name.c_str()), BY_SERVER);
+        }
 
         mPartyCreateDialog = NULL;
     }
