@@ -182,6 +182,11 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void _followMouse();
 
+        /**
+         * Updates the cursor type
+         */
+        void updateCursorType();
+
         Map *mMap;                   /**< The current map. */
 
         int mScrollRadius;

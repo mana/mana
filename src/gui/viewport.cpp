@@ -349,9 +349,17 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         return;
 
     mPlayerFollowMouse = false;
+    mBeingPopup->setVisible(false);
 
     const int pixelX = event.getX() + (int) mPixelViewX;
     const int pixelY = event.getY() + (int) mPixelViewY;
+
+    mHoverBeing = beingManager->findBeingByPixel(pixelX, pixelY);
+    mHoverItem = floorItemManager->
+                            findByCoordinates(pixelX / mMap->getTileWidth(),
+                                              pixelY / mMap->getTileHeight());
+
+    updateCursorType();
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
@@ -517,6 +525,11 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     mHoverItem = floorItemManager->findByCoordinates(x / mMap->getTileWidth(),
                                                     y / mMap->getTileHeight());
 
+    updateCursorType();
+}
+
+void Viewport::updateCursorType()
+{
     if (mHoverBeing)
     {
         switch (mHoverBeing->getType())
