@@ -84,14 +84,9 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mWalkingDir(0),
     mPathSetByMouse(false),
     mLocalWalkTime(-1),
-    mMessageTime(0),
-    mAwayDialog(0),
-    mAfkTime(0),
-    mAwayMode(false)
+    mMessageTime(0)
 {
     listen("Attributes");
-
-    mAwayListener = new AwayListener();
 
     mUpdateName = true;
 
@@ -104,9 +99,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 LocalPlayer::~LocalPlayer()
 {
     config.removeListener("showownname", this);
-
-    delete mAwayDialog;
-    delete mAwayListener;
 }
 
 void LocalPlayer::logic()
@@ -1117,59 +1109,4 @@ void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
     }
 
     Being::event(channel, event);
-}
-
-void LocalPlayer::changeAwayMode()
-{
-    mAwayMode = !mAwayMode;
-    mAfkTime = 0;
-    if (mAwayMode)
-    {
-        mAwayDialog = new OkDialog(_("Away"),
-                config.getValue("afkMessage", "I am away from keyboard"));
-        mAwayDialog->addActionListener(mAwayListener);
-    }
-
-    mAwayDialog = 0;
-}
-
-void LocalPlayer::setAway(const std::string &message)
-{
-    if (!message.empty())
-        config.setValue("afkMessage", message);
-    changeAwayMode();
-}
-
-void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
-{
-    if (mAwayMode)
-    {
-        if (mAfkTime == 0
-            || cur_time < mAfkTime
-            || cur_time - mAfkTime > AWAY_LIMIT_TIMER)
-        {
-            std::string msg = "*AFK*: "
-                    + config.getValue("afkMessage", "I am away from keyboard");
-
-            Net::getChatHandler()->privateMessage(nick, msg);
-            if (!tab)
-            {
-                localChatTab->chatLog(getName() + " : " + msg,
-                                      ACT_WHISPER, false);
-            }
-            else
-            {
-                tab->chatLog(getName(), msg);
-            }
-            mAfkTime = cur_time;
-        }
-    }
-}
-
-void AwayListener::action(const gcn::ActionEvent &event)
-{
-    if (event.getId() == "ok" && player_node->getAwayMode())
-    {
-        player_node->changeAwayMode();
-    }
 }

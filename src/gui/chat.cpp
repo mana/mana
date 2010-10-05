@@ -482,7 +482,6 @@ void ChatWindow::whisper(const std::string &nick,
         else
         {
             tab->chatLog(nick, mes);
-            player_node->afkRespond(tab, nick);
         }
     }
     else
