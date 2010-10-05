@@ -1007,20 +1007,23 @@ void LocalPlayer::attack(Being *target, bool keep)
         if (mAction != STAND)
             return;
 
+        Uint8 direction = 0;
         if (abs(dist_y) >= abs(dist_x))
         {
             if (dist_y > 0)
-                setDirection(DOWN);
+                direction = DOWN;
             else
-                setDirection(UP);
+                direction = UP;
         }
         else
         {
             if (dist_x > 0)
-                setDirection(RIGHT);
+                direction = RIGHT;
             else
-                setDirection(LEFT);
+                direction = LEFT;
         }
+        Net::getPlayerHandler()->setDirection(direction);
+        setDirection(direction);
 
         mWalkTime = tick_time;
         mTargetTime = tick_time;
