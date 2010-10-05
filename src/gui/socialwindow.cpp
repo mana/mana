@@ -144,7 +144,7 @@ public:
                                         mGuild->getName().c_str()), BY_SERVER);
             mConfirmDialog = NULL;
         }
-        else if (event.getId() == "~yes")
+        else if (event.getId() == "no")
         {
             mConfirmDialog = NULL;
         }
@@ -223,7 +223,7 @@ public:
                                         mParty->getName().c_str()), BY_SERVER);
             mConfirmDialog = NULL;
         }
-        else if (event.getId() == "~yes")
+        else if (event.getId() == "no")
         {
             mConfirmDialog = NULL;
         }
