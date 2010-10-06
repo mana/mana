@@ -471,10 +471,8 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
           if (mLocalWalkTime != player_node->getWalkTime())
           {
               mLocalWalkTime = player_node->getWalkTime();
-              int destX = (event.getX() + mPixelViewX + 16) /
-                          mMap->getTileWidth();
-              int destY = (event.getY() + mPixelViewY + 16) /
-                          mMap->getTileHeight();
+              int destX = (event.getX() + mPixelViewX) / mMap->getTileWidth();
+              int destY = (event.getY() + mPixelViewY) / mMap->getTileHeight();
               player_node->setDestination(destX, destY);
           }
         }
