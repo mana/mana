@@ -13,14 +13,13 @@
 				<Option compiler="gcc" />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
+					<Add option="-g" />
 					<Add option="-O3" />
 					<Add option="-Wall" />
 					<Add option="-Wno-switch" />
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-DUSE_OPENGL" />
-					<Add option="-DNOGDI" />
 					<Add option="-DENABLE_NLS" />
-					<Add option="-DEATHENA_SUPPORT" />
 				</Compiler>
 				<Linker>
 					<Add option="-enable-auto-import" />
