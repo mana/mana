@@ -115,7 +115,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     Being *srcBeing, *dstBeing;
     Player *player = 0;
     int hairStyle, hairColor, flag;
-    std::string player_followed;
 
     switch (msg.getId())
     {
@@ -279,16 +278,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             if (!dstBeing)
                 break;
-
-            player_followed = player_node->getFollow();
-
-            if (!player_followed.empty())
-            {
-                if (dstBeing->getName() == player_followed)
-                {
-                    player_node->setDestination(player_node->getNextDestX(), player_node->getNextDestY());
-                }
-            }
 
             // If this is player's current target, clear it.
             if (dstBeing == player_node->getTarget())
@@ -595,16 +584,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
                 dstBeing->setTileCoords(srcX, srcY);
                 dstBeing->setDestination(dstX, dstY);
-
-                player_followed = player_node->getFollow();
-                if (!player_followed.empty())
-                {
-                    if (dstBeing->getName() == player_followed)
-                    {
-                        player_node->setNextDest(dstX, dstY);
-                        player_node->setDestination(srcX, srcY);
-                    }
-                }
             }
             else
             {

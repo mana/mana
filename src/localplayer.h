@@ -380,29 +380,6 @@ class LocalPlayer : public Player
         void optionChanged(const std::string &value);
 
         /**
-         * set a following player by right clicking.
-         */
-        void setFollow(std::string player) { mPlayerFollowed = player; }
-
-        /**
-         * setting the next destination of the following, in case of warp
-         */
-        void setNextDest(int x, int y) { mNextDestX = x; mNextDestY = y; }
-
-        int getNextDestX() const { return mNextDestX; }
-        int getNextDestY() const { return mNextDestY; }
-
-        /**
-         * Stop following a player.
-         */
-        void cancelFollow() { mPlayerFollowed = ""; }
-
-        /**
-         * Get the playername followed by the current player.
-         */
-        std::string getFollow() const { return mPlayerFollowed; }
-
-        /**
          * Tells the engine wether to check
          * if the Player Name is to be displayed.
          */
@@ -457,11 +434,6 @@ class LocalPlayer : public Player
         int mGMLevel;
 
         Being *mTarget;
-
-        /** Follow system **/
-        std::string mPlayerFollowed;
-        int mNextDestX;
-        int mNextDestY;
 
         FloorItem *mPickUpTarget;
 

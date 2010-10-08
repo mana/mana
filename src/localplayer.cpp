@@ -96,7 +96,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mHp(1), mMaxHp(1),
     mSkillPoints(0),
     mTarget(NULL),
-    mPlayerFollowed(""),
     mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
@@ -1432,7 +1431,6 @@ void LocalPlayer::changeAwayMode()
     mAfkTime = 0;
     if (mAwayMode)
     {
-        cancelFollow();
         mAwayDialog = new OkDialog(_("Away"),
                 config.getValue("afkMessage", "I am away from keyboard"));
         mAwayDialog->addActionListener(mAwayListener);

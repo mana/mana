@@ -125,9 +125,6 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                         break;
                 }
 
-                mBrowserBox->addRow(strprintf("@@follow|%s@@",
-                                        strprintf(_("Follow %s"),
-                                                  name.c_str()).c_str()));
                 if (player_node->getNumberOfGuilds())
                     mBrowserBox->addRow(strprintf("@@guild|%s@@",
                                 strprintf(_("Invite %s to join your guild"),
@@ -247,12 +244,6 @@ void PopupMenu::handleLink(const std::string &link)
     else if (link == "guild" && being && being->getType() == Being::PLAYER)
     {
         player_node->inviteToGuild(being);
-    }
-
-    // Follow Player action
-    else if (link == "follow" && being)
-    {
-        player_node->setFollow(being->getName());
     }
 
     // Pick Up Floor Item action

@@ -778,26 +778,22 @@ void Game::handleInput()
             (joystick && joystick->isUp()))
         {
             direction |= Being::UP;
-            player_node->cancelFollow();
         }
         else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
                  (joystick && joystick->isDown()))
         {
             direction |= Being::DOWN;
-            player_node->cancelFollow();
         }
 
         if (keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
             (joystick && joystick->isLeft()))
         {
             direction |= Being::LEFT;
-            player_node->cancelFollow();
         }
         else if (keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
                  (joystick && joystick->isRight()))
         {
             direction |= Being::RIGHT;
-            player_node->cancelFollow();
         }
 
         if (keyboard.isKeyActive(keyboard.KEY_EMOTE) && direction != 0)
