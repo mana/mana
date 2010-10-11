@@ -987,15 +987,20 @@ void Being::showName()
 
     if (getType() == PLAYER)
     {
-        if (config.getValue("showgender", false))
+        Player* player =  static_cast<Player*>(this);
+        if (player)
         {
-            Player* player =  static_cast<Player*>(this);
-            if (player)
+            if (config.getValue("showgender", false))
             {
                 if (player->getGender() == GENDER_FEMALE)
                     mDisplayName += " \u2640";
                 else
                     mDisplayName += " \u2642";
+            }
+            if (Net::getNetworkType() == ServerInfo::TMWATHENA && player_node
+                && player_node->getShowIp() && player->getIp())
+            {
+                mDisplayName += strprintf(" %s", ipToString(player->getIp()));
             }
         }
     }

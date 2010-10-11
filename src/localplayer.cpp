@@ -106,7 +106,8 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mMessageTime(0),
     mAwayDialog(0),
     mAfkTime(0),
-    mAwayMode(false)
+    mAwayMode(false),
+    mShowIp(false)
 {
     mAwayListener = new AwayListener();
 

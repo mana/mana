@@ -138,6 +138,18 @@ class Player : public Being
          */
         virtual void optionChanged(const std::string &value);
 
+        /*
+         * Sets the IP or an IP hash.
+         * The TMW-Athena server sends this information only to GMs.
+         */
+        void setIp(int ip) { mIp = ip; }
+
+        /**
+         * Returns the player's IP or an IP hash.
+         * Value is 0 if not set by the server.
+         */
+        int getIp() const { return mIp; }
+
     protected:
         /**
          * Gets the way the monster blocks pathfinding for other objects.
@@ -156,6 +168,8 @@ class Player : public Being
         Party *mParty;
 
         bool mIsGM;
+
+        int mIp;
 };
 
 #endif

@@ -24,6 +24,7 @@
 #include "being.h"
 #include "beingmanager.h"
 #include "game.h"
+#include "player.h"
 #include "playerrelations.h"
 
 #include "gui/widgets/chattab.h"
@@ -46,6 +47,7 @@ AdminHandler::AdminHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_ADMIN_KICK_ACK,
+        SMSG_ADMIN_IP,
         0
     };
     handledMessages = _messages;
@@ -63,6 +65,13 @@ void AdminHandler::handleMessage(Net::MessageIn &msg)
                 localChatTab->chatLog(_("Kick failed!"), BY_SERVER);
             else
                 localChatTab->chatLog(_("Kick succeeded!"), BY_SERVER);
+            break;
+        case SMSG_ADMIN_IP:
+            id = msg.readInt32();
+            int ip = msg.readInt32();
+            Player *player = (Player *)beingManager->findBeing(id);
+            player->setIp(ip);
+            player->updateName();
             break;
     }
 }

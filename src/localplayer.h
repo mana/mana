@@ -354,6 +354,12 @@ class LocalPlayer : public Player
 
         std::pair<int, int> getExperience(int skill);
 
+        void setShowIp(bool show)
+        { mShowIp = show; }
+
+        bool getShowIp() const
+        { return mShowIp; }
+
         /** Tells that the path has been set by mouse. */
         void pathSetByMouse()
         { mPathSetByMouse = true; }
@@ -476,6 +482,8 @@ class LocalPlayer : public Player
 
         int mAfkTime;
         bool mAwayMode;
+
+        bool mShowIp;
 };
 
 extern LocalPlayer *player_node;

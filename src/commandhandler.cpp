@@ -21,6 +21,7 @@
 
 #include "commandhandler.h"
 
+#include "beingmanager.h"
 #include "channelmanager.h"
 #include "channel.h"
 #include "game.h"
@@ -125,6 +126,10 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     else if (type == "away")
     {
         handleAway(args, tab);
+    }
+    else if (type == "showip" && Net::getNetworkType() == ServerInfo::TMWATHENA)
+    {
+        handleShowIp(args, tab);
     }
     else
     {
@@ -477,6 +482,35 @@ void CommandHandler::handleToggle(const std::string &args, ChatTab *tab)
         case -1:
             tab->chatLog(strprintf(BOOLEAN_OPTIONS, "toggle"));
     }
+}
+
+void CommandHandler::handleShowIp(const std::string &args, ChatTab *tab)
+{
+    if (args.empty())
+    {
+        tab->chatLog(player_node->getShowIp() ?
+                _("Show IP: On") : _("Show IP: Off"));
+        return;
+    }
+
+    char opt = parseBoolean(args);
+
+    switch (opt)
+    {
+        case 0:
+            tab->chatLog(_("Show IP: Off"));
+            player_node->setShowIp(false);
+            break;
+        case 1:
+            tab->chatLog(_("Show IP: On"));
+            player_node->setShowIp(true);
+            break;
+        case -1:
+            tab->chatLog(strprintf(BOOLEAN_OPTIONS, "showip"));
+            return;
+    }
+
+    beingManager->updatePlayerNames();
 }
 
 void CommandHandler::handlePresent(const std::string &args, ChatTab *tab)

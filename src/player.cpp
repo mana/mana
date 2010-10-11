@@ -47,7 +47,8 @@ Player::Player(int id, int subtype, Map *map, bool isNPC):
     Being(id, subtype, map),
     mGender(GENDER_UNSPECIFIED),
     mParty(NULL),
-    mIsGM(false)
+    mIsGM(false),
+    mIp(0)
 {
     if (!isNPC)
     {
