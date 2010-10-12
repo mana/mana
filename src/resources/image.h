@@ -39,6 +39,8 @@
 #include <SDL_opengl.h>
 #endif
 
+#include <map>
+
 class Dye;
 class Position;
 
@@ -169,6 +171,15 @@ class Image : public Resource
         Uint8 *SDLgetAlphaChannel() const
         { return mAlphaChannel; }
 
+        SDL_Surface* duplicateSurface(SDL_Surface* tmpImage);
+
+        void cleanCache();
+
+        void terminateAlphaCache();
+
+        static void setEnableAlphaCache(bool n)
+        { mEnableAlphaCache = n; }
+
 #ifdef USE_OPENGL
 
         // OpenGL only public functions
@@ -208,14 +219,22 @@ class Image : public Resource
         /** SDL_Surface to SDL_Surface Image loader */
         static Image *_SDLload(SDL_Surface *tmpImage);
 
+        SDL_Surface *getByAlpha(float alpha);
+
         SDL_Surface *mSDLSurface;
 
         /** Alpha Channel pointer used for 32bit based SDL surfaces */
         Uint8 *mAlphaChannel;
 
-      // -----------------------
-      // OpenGL protected members
-      // -----------------------
+        std::map<float, SDL_Surface*> mAlphaCache;
+
+        bool mUseAlphaCache;
+
+        static bool mEnableAlphaCache;
+
+        // -----------------------
+        // OpenGL protected members
+        // -----------------------
 #ifdef USE_OPENGL
         /**
          * OpenGL Constructor.

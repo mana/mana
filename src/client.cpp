@@ -251,6 +251,8 @@ Client::Client(const Options &options):
                                 "Exiting.", mLocalDataDir.c_str()));
     }
 
+    Image::setEnableAlphaCache(config.getValue("alphaCache", true));
+
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
