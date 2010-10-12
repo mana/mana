@@ -291,8 +291,8 @@ Setup_Players::Setup_Players():
     place(0, 6, mShowGenderCheckBox, 2).setPadding(2);
     place(2, 5, ignore_action_label);
     place(2, 6, mIgnoreActionChoicesBox, 2).setPadding(2);
-    place(2, 7, mDefaultTrading);
-    place(2, 8, mDefaultWhisper);
+    place(0, 7, mDefaultTrading);
+    place(0, 8, mDefaultWhisper);
     place(0, 9, mWhisperTabCheckBox, 4).setPadding(4);
 
     player_relations.addListener(this);

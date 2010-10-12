@@ -224,7 +224,7 @@ Setup_Video::Setup_Video():
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
                                           mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
-    mNPCLogCheckBox(new CheckBox(_("Log NPC interactions"), mNPCLogEnabled)),
+    mNPCLogCheckBox(new CheckBox(_("Log NPC dialogue"), mNPCLogEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification"))),
     // TRANSLATORS: Refers to "Show pickup notification"
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
@@ -247,7 +247,7 @@ Setup_Video::Setup_Video():
 {
     setName(_("Video"));
 
-    mShowMonsterDamageCheckBox = new CheckBox(_("Show monster damage"),
+    mShowMonsterDamageCheckBox = new CheckBox(_("Show damage"),
                                               mShowMonsterDamageEnabled);
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
