@@ -532,12 +532,7 @@ int Client::exec()
             Net::getLoginHandler()->disconnect();
         }
         else if (mState == STATE_CONNECT_SERVER &&
-                 mOldState == STATE_CHOOSE_SERVER)
-        {
-            Net::connectToServer(mCurrentServer);
-        }
-        else if (mState == STATE_CONNECT_SERVER &&
-                 mOldState != STATE_CHOOSE_SERVER &&
+                 mOldState == STATE_CONNECT_SERVER &&
                  Net::getLoginHandler()->isConnected())
         {
             mState = STATE_LOGIN;
@@ -632,6 +627,9 @@ int Client::exec()
 
                 case STATE_CONNECT_SERVER:
                     logger->log("State: CONNECT SERVER");
+
+                    Net::connectToServer(mCurrentServer);
+
                     mCurrentDialog = new ConnectionDialog(
                             _("Connecting to server"), STATE_SWITCH_SERVER);
                     break;
@@ -924,9 +922,9 @@ int Client::exec()
                 case STATE_SWITCH_LOGIN:
                     logger->log("State: SWITCH LOGIN");
 
-                    Net::getLoginHandler()->logout();
+                    Net::getLoginHandler()->disconnect();
 
-                    mState = STATE_LOGIN;
+                    mState = STATE_CONNECT_SERVER;
                     break;
 
                 case STATE_SWITCH_CHARACTER:
