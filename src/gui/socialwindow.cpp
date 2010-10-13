@@ -184,7 +184,7 @@ public:
     {
         setCaption(party->getName());
 
-        setTabColor(&Theme::getThemeColor(Theme::PARTY));
+        setTabColor(&Theme::getThemeColor(Theme::PARTY_SOCIAL_TAB));
 
         mList = new AvatarListBox(party);
         mScroll = new ScrollArea(mList);
