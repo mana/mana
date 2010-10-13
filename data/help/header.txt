@@ -1,9 +1,9 @@
- 
-##1               T  H  E      M  A  N  A      W  O  R  L  D
+
+##1                      M  A  N  A      S O U R C E
 ##1               ==========================================
- 
-           ##2Version:##6 0.0.29.1          ##2Date:##3 9 June 2009
- 
-##2                    Website: http://themanaworld.org
- 
- 
+
+           ##2Version:##6 0.5.0          ##2Date:##6 October 2010
+
+##2                    Website: http://manasource.org
+
+

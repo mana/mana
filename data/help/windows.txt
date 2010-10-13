@@ -10,6 +10,3 @@
  the item. To reorder items within the shortcut-window simply click and drag
  them between the boxes. To remove items you simply drag them outside of the
  window and drop them.
-
- Currently only stackable items like food, but not weapons or clothes can be
- used with the shortcut window.

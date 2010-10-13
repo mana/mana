@@ -2,45 +2,67 @@
  
  
 ##3                            === COMMANDS ===
- 
-##2KEYBOARD:
 
- Use arrow keys to move around. Other keys:
+KEYBOARD:
+
+##2 Use arrow keys to move around.
  
- Other keys:
+##3Most useful keys:
  
+     ##2Enter##P              focus chat window / send message
+     ##2A##P                  target nearest monster
      ##2Ctrl##P               attack
+     ##2X##P                  target & attack
+     ##2left shift##P         stop attack
+     ##2Z##P                  pick up item
+     ##2S##P                  sit down / stand up
+     ##2R##P                  toggle ignore of incoming trades
+     ##2Escape##P             quit
+
+##3Advanced keys:
+
+     ##2space##P              select OK
+     ##2Alt + 0-9##P          show emotions
+     ##2Q##P                  target nearest player
+     ##2N##P                  target nearest NPC
+     ##2T##P                  talk to targeted NPC
+     ##2P##P                  take screenshot
+     ##20-9##P                item shortcut
+     ##2right Ctrl##P         wear outfit
+     ##2right Alt##P          copy outfit
+     ##2Page Up##P            scroll chat up
+     ##2Page Down##P          scroll chat down
+     ##2[##P                  previous chat tab
+     ##2]##P                  next chat tab
+     ##2H##P                  hide all non-sticky windows
+     ##2F##P                  toggle debug pathfinding feature
+
+##3Keys to toggle windows:
+
      ##2F1##P                 toggle the online help
-     ##2F2##P                 toggle profile window
+     ##2F2##P                 toggle status window
      ##2F3##P                 toggle inventory window
      ##2F4##P                 toggle equipment window
      ##2F5##P                 toggle skills window
      ##2F6##P                 toggle minimap
      ##2F7##P                 toggle chat window
-     ##2F8##P                 toggle shortcut window
-     ##2F9##P                 show setup window
+     ##2F8##P                 toggle item shortcut window
+     ##2F9##P                 toggle setup window
      ##2F10##P                toggle debug window
-     ##2Alt + 0-9##P          show emotions
-     ##2Alt + S##P            sit down / stand up
-     ##2Alt + F##P            toggle debug pathfinding feature
-     ##2Alt + P##P            take screenshot
-     ##2Alt + T##P            toggle ignore of incoming trades
-     ##2A##P                  target nearest monster
-     ##2H##P                  hide all non-sticky windows
-     ##2Z##P                  pick up item
-     ##2Enter##P              focus chat window / send message
+     ##2F11##P                toggle social window
+     ##2F12##P                toggle emote shortcut window
+     ##2O##P                  toggle outfit window
 
 
-##2MOUSE:
+##3MOUSE:
 
- Left click to execute default action: walk, pick up an item, attack a monster
- and talk to NPCs (be sure to click on their feet). Right click to show up a
- context menu. Holding [Left Shift] prevents from walking when attacking.
+##2 Left click to execute default action: walk, pick up an item, attack a monster
+ and talk to NPCs.  Right click to show up a context menu.
 
 
-##2COMMUNICATION:
+##3COMMUNICATION:
 
- Communication is often essential to success in this game. You can communicate
+##2 Communication is often essential to success in this game. You can communicate
  in several ways:  By chatting and showing emotions (see above), by trading
  (with the right-click context menu), and by whispering.
 
@@ -56,32 +78,28 @@
  For further help type /help in the chat console.
 
 
-##2IGNORING COMMUNICATION
+##3IGNORING COMMUNICATION
 
- You may find that not all communication is to your liking.  While most people
- are nice, some may offend you or try to make your life harder-- since this is
+##2 You may find that not all communication is to your liking.  While most people
+ are nice, some may offend you or try to make your life harder. Since this is
  an open game, there is nothing the developers can do to prevent this.
 
  However, you can protect yourself from such players by ignoring them.  Right-
- click on them to bring up the context menu, then select `Ignore' or
- `Disregard' (see below).  You can fine-tune your player relations in the
- `Setup' menu, which lists all the players you have added to it.  To open this
- menu, select `Setup' in the upper right corner of the screen, then `Players'.
+ click on them to bring up the context menu, then select `Ignore´ or
+ `Disregard´ (see below).  You can fine-tune your player relations in the
+ `Setup´ menu, which lists all the players you have added to it.  To open this
+ menu, select `Setup´ in the upper right corner of the screen, then `Players´.
 
  There you will find a list of all players you are acquainted with, as well as
  several configuration options:
 
- - ##2save player list##P: Should your acquaintance list be saved when you
-   quit the game?  If you enable this option, your list will survive when you
-   quit and re-start.
- - ##2allow trading##P: Do you wish to allow trade requests from arbitrary
-   players?
- - ##2allow whispers##P: Do you wish to allow arbitrary players to send
+ - ##2allow trading##P:  Do you wish to allow trade requests from arbitrary players?
+ ##2- allow whispers##P:  Do you wish to allow arbitrary players to send
    private messages to you in-game?
 
-##2THE PLAYER LIST
+##3THE PLAYER LIST
 
- The player list lists all of your acquaintances.  They are categorised as one
+##2 The player list lists all of your acquaintances.  They are categorised as one
  of the following:
 
  - ##2neutral##P:  As far as the game is concerned, this is the same as not
@@ -90,7 +108,6 @@
  - ##2friend##P:  You consider this player a friend.  The player may chat,
    message your in private, or trade with you at any point.
  - ##2disregarded##P:  You wish to disregard this player, meaning that his or
-   her chat messages are not logged and trade requests and whispers are
-   ignored.
+   her trade requests and whispers are ignored.
  - ##2ignored##P:  You wish to completely ignore this player.  You will not
-   even see floating text for him or her anymore, nor emotions.
+   even see emotions for him or her anymore.
