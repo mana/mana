@@ -279,7 +279,22 @@ static bool saveScreenshot()
 {
     static unsigned int screenshotCount = 0;
 
+    // We don't want to show IP addresses in screenshots
+    const bool showip = player_node->getShowIp();
+    if (showip)
+    {
+        player_node->setShowIp(false);
+        beingManager->updatePlayerNames();
+        gui->draw();
+    }
+
     SDL_Surface *screenshot = graphics->getScreenshot();
+
+    if (showip)
+    {
+        player_node->setShowIp(true);
+        beingManager->updatePlayerNames();
+    }
 
     // Search for an unused screenshot name
     std::stringstream filenameSuffix;
