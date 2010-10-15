@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<configuration>
+ <option name="dataDir" value="logs"/>
+ <option name="configDir" value="configs"/>
+ <option name="screenshotDir" value="screenshots"/>
+</configuration>

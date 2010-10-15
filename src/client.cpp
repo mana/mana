@@ -195,6 +195,7 @@ Client *Client::mInstance = 0;
 
 Client::Client(const Options &options):
     mOptions(options),
+    mRootDir(""),
     mCurrentDialog(0),
     mQuitDialog(0),
     mDesktop(0),
@@ -217,6 +218,7 @@ Client::Client(const Options &options):
         branding.init(options.brandingPath);
     }
 
+    initRootDir();
     initHomeDir();
     initConfiguration();
 
@@ -1001,6 +1003,57 @@ void Client::action(const gcn::ActionEvent &event)
     }
 }
 
+void Client::initRootDir()
+{
+    mRootDir = PHYSFS_getBaseDir();
+#ifdef WIN32
+    std::string portableName = mRootDir + "portable.xml";
+    struct stat statbuf;
+
+    if (!stat(portableName.c_str(), &statbuf) && S_ISREG(statbuf.st_mode))
+    {
+        std::string dir;
+        Configuration portable;
+        portable.init(portableName);
+
+        logger->log("Portable file: %s", portableName.c_str());
+
+        if (mOptions.localDataDir.empty())
+        {
+            dir = portable.getValue("dataDir", "");
+            if (!dir.empty())
+            {
+                mOptions.localDataDir = mRootDir + dir;
+                logger->log("Portable data dir: %s",
+                    mOptions.localDataDir.c_str());
+            }
+        }
+
+        if (mOptions.configDir.empty())
+        {
+            dir = portable.getValue("configDir", "");
+            if (!dir.empty())
+            {
+                mOptions.configDir = mRootDir + dir;
+                logger->log("Portable config dir: %s",
+                    mOptions.configDir.c_str());
+            }
+        }
+
+        if (mOptions.screenshotDir.empty())
+        {
+            dir = portable.getValue("screenshotDir", "");
+            if (!dir.empty())
+            {
+                mOptions.screenshotDir = mRootDir + dir;
+                logger->log("Portable screenshot dir: %s",
+                    mOptions.screenshotDir.c_str());
+            }
+        }
+    }
+#endif
+}
+
 /**
  * Initializes the home directory. On UNIX and FreeBSD, ~/.mana is used. On
  * Windows and other systems we use the current working directory.
@@ -1062,7 +1115,8 @@ void Client::initHomeDir()
     {
         std::string oldConfigFile = std::string(PHYSFS_getUserDir()) +
             "/.tmw/config.xml";
-        if (!stat(oldConfigFile.c_str(), &statbuf) && S_ISREG(statbuf.st_mode))
+        if (mRootDir.empty() && !stat(oldConfigFile.c_str(), &statbuf)
+            && S_ISREG(statbuf.st_mode))
         {
             std::ifstream oldConfig;
             std::ofstream newConfig;
@@ -1220,8 +1274,10 @@ void Client::initUpdatesDir()
 void Client::initScreenshotDir()
 {
     if (!mOptions.screenshotDir.empty())
+    {
         mScreenshotDir = mOptions.screenshotDir;
-    else
+    }
+    else if (mScreenshotDir.empty())
     {
 #ifdef WIN32
         mScreenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);

@@ -229,6 +229,11 @@ Section /o "Music" SecMusic
   Delete "$TEMP\tmwmusic-0.2.tar.gz"
 SectionEnd
 
+Section /o "Portable" SecPortable
+  SetOutPath "$INSTDIR"
+  File "portable.xml"
+SectionEnd
+
 Section "Translations" SecTrans
   SetOutPath "$INSTDIR"
   File /nonfatal /r "${SRCDIR}\translations"
@@ -238,6 +243,7 @@ SectionEnd
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "The core program files."
   !insertmacro MUI_DESCRIPTION_TEXT ${SecMusic} "Background music. (If selected the music will be downloaded from the internet.)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecPortable} "Portable client. (If selected client will work as portable client.)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Translations for the user interface into 23 different languages. Uncheck this component to leave it in English."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
