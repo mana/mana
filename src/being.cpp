@@ -448,22 +448,20 @@ void Being::setAction(Action action, int attackType)
 
 void Being::setDirection(Uint8 direction)
 {
-    if (mDirection == direction)
-        return;
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
+    {
+        if (mDirection == direction)
+            return;
+    }
 
     mDirection = direction;
 
-    // if the direction does not change much, keep the common component
-    int mFaceDirection = mDirection & direction;
-    if (!mFaceDirection)
-        mFaceDirection = direction;
-
     SpriteDirection dir;
-    if (mFaceDirection & UP)
+    if (mDirection & UP)
         dir = DIRECTION_UP;
-    else if (mFaceDirection & DOWN)
+    else if (mDirection & DOWN)
         dir = DIRECTION_DOWN;
-    else if (mFaceDirection & RIGHT)
+    else if (mDirection & RIGHT)
         dir = DIRECTION_RIGHT;
     else
         dir = DIRECTION_LEFT;
