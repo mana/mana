@@ -211,6 +211,7 @@ Setup_Video::Setup_Video():
     mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 60)),
+    mLowCPUEnabled(config.getValue("lowcpu", true)),
     mSpeechMode(static_cast<Being::Speech>(
             config.getValue("speech", Being::TEXT_OVERHEAD))),
     mModeListModel(new ModeListModel),
@@ -243,7 +244,9 @@ Setup_Video::Setup_Video():
     mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new Label),
-    mFontSize((int) config.getValue("fontSize", 11))
+    mFontSize((int) config.getValue("fontSize", 11)),
+    mLowCPUCheckBox(new CheckBox(_("Disable transparency (Low CPU mode)"),
+                                 mLowCPUEnabled))
 {
     setName(_("Video"));
 
@@ -277,6 +280,10 @@ Setup_Video::Setup_Video():
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setSelected(mFps > 0);
 
+    // If the openGL Mode is enabled, disabling the transaprency
+    // is irrelelvant.
+    mLowCPUCheckBox->setEnabled(!mOpenGLEnabled);
+
     // Pre-select the current video mode.
     std::string videoMode = toString(graphics->getWidth()) + "x"
                             + toString(graphics->getHeight());
@@ -297,6 +304,7 @@ Setup_Video::Setup_Video():
     mFpsSlider->setActionEventId("fpslimitslider");
     mOverlayDetailSlider->setActionEventId("overlaydetailslider");
     mOverlayDetailField->setActionEventId("overlaydetailfield");
+    mOpenGLCheckBox->setActionEventId("opengl");
     mParticleDetailSlider->setActionEventId("particledetailslider");
     mParticleDetailField->setActionEventId("particledetailfield");
 
@@ -304,6 +312,7 @@ Setup_Video::Setup_Video():
     mCustomCursorCheckBox->addActionListener(this);
     mShowMonsterDamageCheckBox->addActionListener(this);
     mVisibleNamesCheckBox->addActionListener(this);
+    mOpenGLCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
     mPickupChatCheckBox->addActionListener(this);
     mPickupParticleCheckBox->addActionListener(this);
@@ -317,6 +326,7 @@ Setup_Video::Setup_Video():
     mOverlayDetailField->addKeyListener(this);
     mParticleDetailSlider->addActionListener(this);
     mParticleDetailField->addKeyListener(this);
+    mLowCPUCheckBox->addActionListener(this);
 
     mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
     mSpeechSlider->setValue(mSpeechMode);
@@ -373,6 +383,8 @@ Setup_Video::Setup_Video():
     place(0, 11, mParticleDetailSlider);
     place(1, 11, particleDetailLabel);
     place(2, 11, mParticleDetailField, 3).setPadding(2);
+
+    place(0, 12, mLowCPUCheckBox, 4);
 
     setDimension(gcn::Rectangle(0, 0, 365, 300));
 }
@@ -444,14 +456,39 @@ void Setup_Video::apply()
         {
             new OkDialog(_("Changing to OpenGL"),
                          _("Applying change to OpenGL requires restart. "
-                           "In case OpenGL messes up your game graphics, restart "
-                           "the game with the command line option \"--no-opengl\"."));
+                           "In case OpenGL messes up your game graphics, "
+                           "restart the game with the command line option "
+                           "\"--no-opengl\"."));
         }
         else
         {
             new OkDialog(_("Deactivating OpenGL"),
                          _("Applying change to OpenGL requires restart."));
         }
+    }
+
+    // If LowCPU is enabled from a disabled state we warn the user
+    if (mLowCPUCheckBox->isSelected())
+    {
+        if (config.getValue("lowcpu", true) == false)
+        {
+            new OkDialog(_("Low CPU Mode Enabled"),
+                 _("You must restart to prevent graphical errors."));
+        }
+
+        mLowCPUEnabled = true;
+        config.setValue("lowcpu", true);
+    }
+    else
+    {
+        if (config.getValue("lowcpu", true) == true)
+        {
+            new OkDialog(_("Low CPU Mode Disabled"),
+                 _("You must restart to apply changes."));
+        }
+
+        mLowCPUEnabled = false;
+        config.setValue("lowcpu", false);
     }
 
     mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;
@@ -476,6 +513,7 @@ void Setup_Video::apply()
     mOpenGLEnabled = config.getValue("opengl", false);
     mPickupChatEnabled = config.getValue("showpickupchat", true);
     mPickupParticleEnabled = config.getValue("showpickupparticle", false);
+    mLowCPUEnabled = config.getValue("lowcpu", true);
 }
 
 void Setup_Video::cancel()
@@ -497,6 +535,7 @@ void Setup_Video::cancel()
     mParticleDetailSlider->setValue(mParticleDetail);
     std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : _("None");
     mFpsLabel->setCaption(text);
+    mLowCPUCheckBox->setSelected(mLowCPUEnabled);
 
     config.setValue("screen", mFullScreenEnabled);
 
@@ -627,5 +666,15 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         mFpsLabel->setCaption(text);
         mFpsSlider->setValue(mFps);
         mFpsSlider->setEnabled(mFps > 0);
+    }
+    else if (id == "opengl")
+    {
+        // Disable low cpu mode when in OpenGL.
+        mLowCPUCheckBox->setEnabled(!mOpenGLCheckBox->isSelected());
+        // Disable gui opacity slider when disabling transparency.
+        if (mLowCPUCheckBox->isEnabled())
+            mAlphaSlider->setEnabled(!mLowCPUCheckBox->isSelected());
+        else
+            mAlphaSlider->setEnabled(true);
     }
 }

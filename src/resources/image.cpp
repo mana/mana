@@ -29,6 +29,7 @@
 #endif
 
 #include "log.h"
+#include "configuration.h"
 
 #include <SDL_image.h>
 #include <SDL_rotozoom.h>
@@ -242,6 +243,9 @@ SDL_Surface *Image::getByAlpha(float alpha)
 
 void Image::setAlpha(float alpha)
 {
+    if (config.getValue("lowcpu", true) == true)
+        return;
+
     if (mAlpha == alpha)
         return;
 

@@ -330,21 +330,25 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
                         mSprites, mDebugFlags);
     }
 
-    // Draws beings with a lower opacity to make them visible
-    // even when covered by a wall or some other elements...
-    MapSprites::const_iterator si = mSprites.begin();
-    while (si != mSprites.end())
+    // If the transparency hasn't been disabled,
+    if (config.getValue("opengl", false) || !config.getValue("lowcpu", true))
     {
-        if (Sprite *sprite = *si)
+        // We draw beings with a lower opacity to make them visible
+        // even when covered by a wall or some other elements...
+        MapSprites::const_iterator si = mSprites.begin();
+        while (si != mSprites.end())
         {
-            // For now, just draw sprites with only one layer.
-            if (sprite->getNumberOfLayers() == 1)
+            if (Sprite *sprite = *si)
             {
-                sprite->setAlpha(0.3f);
-                sprite->draw(graphics, -scrollX, -scrollY);
+                // For now, just draw sprites with only one layer.
+                if (sprite->getNumberOfLayers() == 1)
+                {
+                    sprite->setAlpha(0.3f);
+                    sprite->draw(graphics, -scrollX, -scrollY);
+                }
             }
+            si++;
         }
-        si++;
     }
 
     drawAmbientLayers(graphics, FOREGROUND_LAYERS, scrollX, scrollY,

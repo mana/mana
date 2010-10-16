@@ -62,6 +62,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mPickupParticleEnabled;
         double mOpacity;
         int mFps;
+        bool mLowCPUEnabled;
         Being::Speech mSpeechMode;
 
         ModeListModel *mModeListModel;
@@ -106,6 +107,8 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         int mFontSize;
         gcn::DropDown *mFontSizeDropDown;
+
+        gcn::CheckBox *mLowCPUCheckBox;
 };
 
 #endif

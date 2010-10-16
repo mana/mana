@@ -1107,6 +1107,7 @@ void Client::initConfiguration()
     config.setValue("customcursor", true);
     config.setValue("useScreenshotDirectorySuffix", true);
     config.setValue("ChatLogLength", 128);
+    config.setValue("lowcpu", true);
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
