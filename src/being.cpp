@@ -261,7 +261,15 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     // Selecting the right color
     if (type == CRITICAL || type == FLEE)
     {
-        color = &userPalette->getColor(UserPalette::HIT_CRITICAL);
+        if (attacker == player_node)
+        {
+            color = &userPalette->getColor(
+                UserPalette::HIT_LOCAL_PLAYER_CRITICAL);
+        }
+        else
+        {
+            color = &userPalette->getColor(UserPalette::HIT_CRITICAL);
+        }
     }
     else if (!amount)
     {
@@ -269,7 +277,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
         {
             // This is intended to be the wrong direction to visually
             // differentiate between hits and misses
-            color = &userPalette->getColor(UserPalette::HIT_MONSTER_PLAYER);
+            color = &userPalette->getColor(UserPalette::HIT_LOCAL_PLAYER_MISS);
         }
         else
         {
@@ -278,7 +286,16 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     }
     else if (getType() == MONSTER)
     {
-        color = &userPalette->getColor(UserPalette::HIT_PLAYER_MONSTER);
+        if (attacker == player_node)
+        {
+            color = &userPalette->getColor(
+                UserPalette::HIT_LOCAL_PLAYER_MONSTER);
+        }
+        else
+        {
+            color = &userPalette->getColor(
+                UserPalette::HIT_PLAYER_MONSTER);
+        }
     }
     else
     {
