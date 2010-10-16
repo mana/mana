@@ -393,6 +393,19 @@ void Particle::adjustEmitterSize(int w, int h)
     }
 }
 
+float Particle::getCurrentAlpha() const
+{
+    float alpha = mAlpha;
+
+    if (mLifetimeLeft > -1 && mLifetimeLeft < mFadeOut)
+        alpha *= (float)mLifetimeLeft / (float)mFadeOut;
+
+    if (mLifetimePast < mFadeIn)
+        alpha *= (float)mLifetimePast / (float)mFadeIn;
+
+    return alpha;
+}
+
 void Particle::setMap(Map *map)
 {
     mMap = map;

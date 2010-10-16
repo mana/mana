@@ -286,6 +286,9 @@ class Particle : public Sprite
         { return 1; }
 
     protected:
+        /** Calculates the current alpha transparency taking current fade status into account*/
+        float getCurrentAlpha() const;
+
         bool mAlive;                /**< Is the particle supposed to be drawn and updated?*/
         Vector mPos;                /**< Position in pixels relative to map. */
         int mLifetimeLeft;          /**< Lifetime left in game ticks*/

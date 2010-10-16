@@ -56,14 +56,6 @@ void ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
         return;
     }
 
-    float alphafactor = mAlpha;
-
-    if (mLifetimeLeft > -1 && mLifetimeLeft < mFadeOut)
-        alphafactor *= (float) mLifetimeLeft / (float) mFadeOut;
-
-    if (mLifetimePast < mFadeIn)
-        alphafactor *= (float) mLifetimePast / (float) mFadeIn;
-
-    mImage->setAlpha(alphafactor);
+    mImage->setAlpha(getCurrentAlpha());
     graphics->drawImage(mImage, screenX, screenY);
 }
