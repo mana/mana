@@ -21,10 +21,6 @@
 
 #include <cmath>
 
-/**
- * Returns a random numeric value that is larger than or equal min and smaller
- * than max
- */
 
 enum ChangeFunc
 {
