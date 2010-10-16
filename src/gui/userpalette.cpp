@@ -33,21 +33,21 @@
 #include <math.h>
 
 const std::string ColorTypeNames[] = {
-    "Being",
-    "Player",
-    "Self",
-    "GM",
-    "NPC",
-    "Monster",
-    "Party",
-    "Guild",
-    "Particle",
-    "Experience",
-    "Pickup",
-    "Hit Player Monster",
-    "Hit Monster Player",
-    "Hit Critical",
-    "Miss"
+    "ColorBeing",
+    "ColorPlayer",
+    "ColorSelf",
+    "ColorGM",
+    "ColorNPC",
+    "ColorMonster",
+    "ColorParty",
+    "ColorGuild",
+    "ColorParticle",
+    "ColorExperience",
+    "ColorPickup",
+    "ColorHitPlayerMonster",
+    "ColorHitMonsterPlayer",
+    "ColorHitCritical",
+    "ColorMiss"
 };
 
 std::string UserPalette::getConfigName(const std::string &typeName)
