@@ -273,6 +273,7 @@ Setup_Video::Setup_Video():
 
     mAlphaSlider->setValue(mOpacity);
     mAlphaSlider->setWidth(90);
+    mAlphaSlider->setEnabled(!mLowCPUEnabled);
 
     mFpsLabel->setCaption(mFps > 0 ? toString(mFps) : _("None"));
     mFpsLabel->setWidth(60);
@@ -307,6 +308,7 @@ Setup_Video::Setup_Video():
     mOpenGLCheckBox->setActionEventId("opengl");
     mParticleDetailSlider->setActionEventId("particledetailslider");
     mParticleDetailField->setActionEventId("particledetailfield");
+    mLowCPUCheckBox->setActionEventId("lowcpu");
 
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
@@ -466,9 +468,8 @@ void Setup_Video::apply()
                          _("Applying change to OpenGL requires restart."));
         }
     }
-
     // If LowCPU is enabled from a disabled state we warn the user
-    if (mLowCPUCheckBox->isSelected())
+    else if (mLowCPUCheckBox->isSelected())
     {
         if (config.getValue("lowcpu", true) == false)
         {
@@ -531,11 +532,13 @@ void Setup_Video::cancel()
     mNameCheckBox->setSelected(mNameEnabled);
     mNPCLogCheckBox->setSelected(mNPCLogEnabled);
     mAlphaSlider->setValue(mOpacity);
+    mAlphaSlider->setEnabled(!mLowCPUEnabled);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
     std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : _("None");
     mFpsLabel->setCaption(text);
     mLowCPUCheckBox->setSelected(mLowCPUEnabled);
+    mLowCPUCheckBox->setEnabled(!mOpenGLEnabled);
 
     config.setValue("screen", mFullScreenEnabled);
 
@@ -559,6 +562,7 @@ void Setup_Video::cancel()
     config.setValue("opengl", mOpenGLEnabled);
     config.setValue("showpickupchat", mPickupChatEnabled);
     config.setValue("showpickupparticle", mPickupParticleEnabled);
+    config.setValue("lowcpu", mLowCPUEnabled);
 }
 
 void Setup_Video::action(const gcn::ActionEvent &event)
@@ -667,10 +671,17 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         mFpsSlider->setValue(mFps);
         mFpsSlider->setEnabled(mFps > 0);
     }
-    else if (id == "opengl")
+    else if (id == "opengl" || id == "lowcpu")
     {
         // Disable low cpu mode when in OpenGL.
-        mLowCPUCheckBox->setEnabled(!mOpenGLCheckBox->isSelected());
+        if (mOpenGLCheckBox->isSelected())
+        {
+            mLowCPUCheckBox->setSelected(false);
+            mLowCPUCheckBox->setEnabled(false);
+        }
+        else{
+            mLowCPUCheckBox->setEnabled(true);
+        }
         // Disable gui opacity slider when disabling transparency.
         if (mLowCPUCheckBox->isEnabled())
             mAlphaSlider->setEnabled(!mLowCPUCheckBox->isSelected());
