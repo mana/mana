@@ -127,12 +127,18 @@ class ParticleEmitter
         int mOutputPauseLeft;
 
         /*
-         * Graphical representation of the particle
+         * Graphical representation of the particles
          */
         Image *mParticleImage; /**< Particle image, if used */
         Animation mParticleAnimation; /**< Filename of particle animation file */
         Animation mParticleRotation; /**< Filename of particle rotation file */
         ParticleEmitterProp<float> mParticleAlpha; /**< Opacity of the graphical representation of the particles */
+
+        /*
+         * Death effect of the particles
+         */
+        std::string mDeathEffect;
+        char mDeathEffectConditions;
 
         /** List of emitters the spawned particles are equipped with */
         std::list<ParticleEmitter> mParticleChildEmitters;

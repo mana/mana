@@ -38,7 +38,7 @@ TextParticle::TextParticle(Map *map, const std::string &text,
 
 bool TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
-    if (!mAlive)
+    if (!isAlive())
         return false;
 
     int screenX = (int) mPos.x + offsetX;

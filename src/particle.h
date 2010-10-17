@@ -44,6 +44,16 @@ typedef Emitters::iterator EmitterIterator;
 class Particle : public Actor
 {
     public:
+        enum AliveStatus
+        {
+            ALIVE = 0,
+            DEAD_TIMEOUT = 1,
+            DEAD_FLOOR = 2,
+            DEAD_SKY = 4,
+            DEAD_IMPACT = 8,
+            DEAD_OTHER = 16,
+            DEAD_LONG_AGO = 128
+        };
         static const float PARTICLE_SKY; /**< Maximum Z position of particles */
         static int fastPhysics;          /**< Mode of squareroot calculation */
         static int particleCount;        /**< Current number of particles */
@@ -221,20 +231,20 @@ class Particle : public Actor
         void setAllowSizeAdjust(bool adjust)
         { mAllowSizeAdjust = adjust; }
 
-        bool isAlive()
-        { return mAlive; }
+        bool isAlive() const
+        { return mAlive == ALIVE; }
 
         /**
          * Determines whether the particle and its children are all dead
          */
-        bool isExtinct()
+        bool isExtinct() const
         { return !isAlive() && mChildParticles.empty(); }
 
         /**
          * Manually marks the particle for deletion.
          */
         void kill()
-        { mAlive = false; mAutoDelete = true; }
+        { mAlive = DEAD_OTHER; mAutoDelete = true; }
 
         /**
          * After calling this function the particle will only request
@@ -252,22 +262,28 @@ class Particle : public Actor
 
         virtual void setAlpha(float alpha) {}
 
+        virtual void setDeathEffect(const std::string &effectFile, char conditions)
+        { mDeathEffect = effectFile; mDeathEffectConditions = conditions; }
+
     protected:
-        bool mAlive;                /**< Is the particle supposed to be drawn and updated?*/
+        float mAlpha;               /**< Opacity of the graphical representation of the particle */
         int mLifetimeLeft;          /**< Lifetime left in game ticks*/
         int mLifetimePast;          /**< Age of the particle in game ticks*/
         int mFadeOut;               /**< Lifetime in game ticks left where fading out begins*/
         int mFadeIn;                /**< Age in game ticks where fading in is finished*/
-        float mAlpha;               /**< Opacity of the graphical representation of the particle */
+        Vector mVelocity;           /**< Speed in pixels per game-tick. */
 
+    private:
+        AliveStatus mAlive;                 /**< Is the particle supposed to be drawn and updated?*/
         // generic properties
         bool mAutoDelete;           /**< May the particle request its deletion by the parent particle? */
         Emitters mChildEmitters;    /**< List of child emitters. */
         Particles mChildParticles;  /**< List of particles controlled by this particle */
         bool mAllowSizeAdjust;      /**< Can the effect size be adjusted by the object props in the map file? */
+        std::string mDeathEffect;   /**< Particle effect file to be spawned when the particle dies */
+        char mDeathEffectConditions;/**< Bitfield of death conditions which trigger spawning of the death particle */
 
         // dynamic particle
-        Vector mVelocity;           /**< Speed in pixels per game-tick. */
         float mGravity;             /**< Downward acceleration in pixels per game-tick. */
         int mRandomness;            /**< Ammount of random vector change */
         float mBounce;              /**< How much the particle bounces off when hitting the ground */

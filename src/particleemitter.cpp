@@ -320,6 +320,30 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
                     mParticleAnimation.addTerminator();
                 }
             } // for frameNode
+        } else if (xmlStrEqual(propertyNode->name, BAD_CAST "deatheffect"))
+        {
+            mDeathEffect = (const char*)propertyNode->xmlChildrenNode->content;
+            mDeathEffectConditions = 0x00;
+            if (XML::getBoolProperty(propertyNode, "on-floor", true))
+            {
+                mDeathEffectConditions += Particle::DEAD_FLOOR;
+            }
+            if (XML::getBoolProperty(propertyNode, "on-sky", true))
+            {
+                mDeathEffectConditions += Particle::DEAD_SKY;
+            }
+            if (XML::getBoolProperty(propertyNode, "on-other", false))
+            {
+                mDeathEffectConditions += Particle::DEAD_OTHER;
+            }
+            if (XML::getBoolProperty(propertyNode, "on-impact", true))
+            {
+                mDeathEffectConditions += Particle::DEAD_IMPACT;
+            }
+            if (XML::getBoolProperty(propertyNode, "on-timeout", true))
+            {
+                mDeathEffectConditions += Particle::DEAD_TIMEOUT;
+            }
         }
     }
 }
@@ -467,6 +491,11 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
              i++)
         {
             newParticle->addEmitter(new ParticleEmitter(*i));
+        }
+
+        if (!mDeathEffect.empty())
+        {
+            newParticle->setDeathEffect(mDeathEffect, mDeathEffectConditions);
         }
 
         newParticles.push_back(newParticle);

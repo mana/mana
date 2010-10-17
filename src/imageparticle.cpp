@@ -41,7 +41,7 @@ ImageParticle::~ImageParticle()
 
 bool ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
-    if (!mAlive || !mImage)
+    if (!isAlive() || !mImage)
         return false;
 
     int screenX = (int) mPos.x + offsetX - mImage->getWidth() / 2;

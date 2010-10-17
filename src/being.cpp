@@ -530,19 +530,20 @@ void Being::fireMissile(Being *victim, const std::string &particle)
     if (!victim || particle.empty())
         return;
 
-    Particle *target = particleEngine->createChild();
-    Particle *missile = target->addEffect(particle, getPixelX(), getPixelY());
+    Particle *missile = particleEngine->addEffect(particle, getPixelX(), getPixelY());
 
     if (missile)
     {
-        target->setLifetime(2000);
+        Particle *target = particleEngine->createChild();
         target->moveBy(Vector(0.0f, 0.0f, 32.0f));
+        target->setLifetime(1000);
         victim->controlParticle(target);
 
         missile->setDestination(target, 7, 0);
         missile->setDieDistance(8);
         missile->setLifetime(900);
     }
+
 }
 
 void Being::setAction(Action action, int attackType)
@@ -582,7 +583,7 @@ void Being::setAction(Action action, int attackType)
                     {
                         switch (mSpriteDirection)
                         {
-                           case DIRECTION_DOWN: rotation = 0; break;
+                            case DIRECTION_DOWN: rotation = 0; break;
                             case DIRECTION_LEFT: rotation = 90; break;
                             case DIRECTION_UP: rotation = 180; break;
                             case DIRECTION_RIGHT: rotation = 270; break;
