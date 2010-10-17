@@ -137,7 +137,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
             case 'v':
                 options.printVersion = true;
                 break;
-            case 'S':
+            case 'L':
                 options.localDataDir = optarg;
                 break;
             case 'O':
