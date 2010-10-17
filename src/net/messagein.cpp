@@ -20,7 +20,6 @@
  */
 
 #include "net/messagein.h"
-#include "net/net.h"
 
 #define MAKEWORD(low,high) \
     ((unsigned short)(((unsigned char)(low)) | \
@@ -99,11 +98,8 @@ void MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
                 direction = 9;
                 break;
             case 8:
-                if (Net::getNetworkType() == ServerInfo::TMWATHENA)
-                {
-                    direction = 8;
-                    break;
-                }
+                direction = 8;
+                break;
             default:
                 // OOPSIE! Impossible or unknown
                 direction = 0;
