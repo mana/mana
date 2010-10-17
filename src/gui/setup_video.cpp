@@ -476,9 +476,6 @@ void Setup_Video::apply()
             new OkDialog(_("Low CPU Mode Enabled"),
                  _("You must restart to prevent graphical errors."));
         }
-
-        mLowCPUEnabled = true;
-        config.setValue("lowcpu", true);
     }
     else
     {
@@ -487,10 +484,8 @@ void Setup_Video::apply()
             new OkDialog(_("Low CPU Mode Disabled"),
                  _("You must restart to apply changes."));
         }
-
-        mLowCPUEnabled = false;
-        config.setValue("lowcpu", false);
     }
+    config.setValue("lowcpu", mLowCPUCheckBox->isSelected());
 
     mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;
     mFpsSlider->setEnabled(mFps > 0);
@@ -679,7 +674,8 @@ void Setup_Video::action(const gcn::ActionEvent &event)
             mLowCPUCheckBox->setSelected(false);
             mLowCPUCheckBox->setEnabled(false);
         }
-        else{
+        else
+        {
             mLowCPUCheckBox->setEnabled(true);
         }
         // Disable gui opacity slider when disabling transparency.
