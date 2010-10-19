@@ -26,6 +26,7 @@
 
 namespace ManaServ {
 namespace Attributes {
+
     void load();
 
     void unload();
@@ -38,6 +39,12 @@ namespace Attributes {
      * Returns the list of base attribute labels.
      */
     std::vector<std::string>& getLabels();
+
+    /**
+     * Give back the corresponding playerinfo Id from the attribute id
+     * defined in the xml file.
+     */
+    int getPlayerInfoIdFromAttrId(int attrId);
 
     /**
      * Give the attribute points given to a character

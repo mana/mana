@@ -21,6 +21,7 @@
 #include "net/manaserv/attributes.h"
 
 #include "log.h"
+#include "playerinfo.h"
 
 #include "gui/statuswindow.h"
 
@@ -46,20 +47,26 @@ namespace Attributes {
         unsigned int id;
         std::string name;
         std::string description;
+        /** Whether the attribute value can be modified by the player */
         bool modifiable;
+        /**< Attribute scope. */
+        std::string scope;
+        /** The playerInfo core Id the attribute is linked with or -1 if not */
+        int playerInfoId;
     } Attribute;
 
-    // tag -> effect
-    typedef std::map< std::string, std::string > TagMap;
-
+    /** Map for attributes. */
     typedef std::map<unsigned int, Attribute> AttributeMap;
-    AttributeMap attributes;
+    static AttributeMap attributes;
 
-    TagMap tags;
+    /** tags = effects on attributes. */
+    typedef std::map< std::string, std::string > TagMap;
+    static TagMap tags;
 
-    // List of modifiable attribute names used at character's creation.
+    /** List of modifiable attribute names used at character's creation. */
     static std::vector<std::string> attributeLabels;
 
+    /** Characters creation points. */
     static unsigned int creationPoints = 0;
     static unsigned int attributeMinimum = 0;
     static unsigned int attributeMaximum = 0;
@@ -95,9 +102,60 @@ namespace Attributes {
         for (it = attributes.begin(), it_end = attributes.end(); it != it_end;
                                                                            it++)
         {
-            if (it->second.modifiable)
+            if (it->second.modifiable &&
+               (it->second.scope == "character" || it->second.scope == "being"))
                 attributeLabels.push_back(it->second.name + ":");
         }
+    }
+
+    /**
+     * Fills the list of base attribute labels.
+     */
+    static int getPlayerInfoIdFromAttrType(std::string attrType)
+    {
+        toLower(attrType);
+        if (attrType == "level")
+            return ::LEVEL;
+        else if (attrType == "hp")
+            return ::HP;
+        else if (attrType == "max-hp")
+            return ::MAX_HP;
+        else if (attrType == "mp")
+            return ::MP;
+        else if (attrType == "max-mp")
+            return ::MAX_MP;
+        else if (attrType == "exp")
+            return ::EXP;
+        else if (attrType == "exp-needed")
+            return ::EXP_NEEDED;
+        else if (attrType == "money")
+            return ::MONEY;
+        else if (attrType == "total-weight")
+            return ::TOTAL_WEIGHT;
+        else if (attrType == "max-weight")
+            return ::MAX_WEIGHT;
+        else if (attrType == "skill-points")
+            return ::SKILL_POINTS;
+        else if (attrType == "char-points")
+            return ::CHAR_POINTS;
+        else if (attrType == "corr-points")
+            return ::CORR_POINTS;
+        else if (attrType == "none")
+            return -2; // Used to hide the attribute display.
+
+        return -1; // Not linked to a playerinfo stat.
+    }
+
+    int getPlayerInfoIdFromAttrId(int attrId)
+    {
+        AttributeMap::const_iterator it = attributes.find(attrId);
+
+        if (it != attributes.end())
+        {
+            return it->second.playerInfoId;
+        }
+
+        return -1;
     }
 
     static void loadBuiltins()
@@ -108,6 +166,8 @@ namespace Attributes {
             a.name = _("Strength");
             a.description = "";
             a.modifiable = true;
+            a.scope = "character";
+            a.playerInfoId = -1;
 
             attributes[a.id] = a;
             tags.insert(std::make_pair("str", _("Strength %+.1f")));
@@ -119,6 +179,8 @@ namespace Attributes {
             a.name = _("Agility");
             a.description = "";
             a.modifiable = true;
+            a.scope = "character";
+            a.playerInfoId = -1;
 
             attributes[a.id] = a;
             tags.insert(std::make_pair("agi", _("Agility %+.1f")));
@@ -130,6 +192,8 @@ namespace Attributes {
             a.name = _("Dexterity");
             a.description = "";
             a.modifiable = true;
+            a.scope = "character";
+            a.playerInfoId = -1;
 
             attributes[a.id] = a;
             tags.insert(std::make_pair("dex", _("Dexterity %+.1f")));
@@ -141,6 +205,8 @@ namespace Attributes {
             a.name = _("Vitality");
             a.description = "";
             a.modifiable = true;
+            a.scope = "character";
+            a.playerInfoId = -1;
 
             attributes[a.id] = a;
             tags.insert(std::make_pair("vit", _("Vitality %+.1f")));
@@ -152,6 +218,8 @@ namespace Attributes {
             a.name = _("Intelligence");
             a.description = "";
             a.modifiable = true;
+            a.scope = "character";
+            a.playerInfoId = -1;
 
             attributes[a.id] = a;
             tags.insert(std::make_pair("int", _("Intelligence %+.1f")));
@@ -163,6 +231,8 @@ namespace Attributes {
             a.name = _("Willpower");
             a.description = "";
             a.modifiable = true;
+            a.scope = "character";
+            a.playerInfoId = -1;
 
             attributes[a.id] = a;
             tags.insert(std::make_pair("wil", _("Willpower %+.1f")));
@@ -211,12 +281,15 @@ namespace Attributes {
                     continue;
                 }
 
+                // Create the attribute.
                 Attribute a;
                 a.id = id;
                 a.name = name;
                 a.description = XML::getProperty(node, "desc", "");
-                a.modifiable = XML::getProperty(node, "modifiable", "false")
-                              == "true";
+                a.modifiable = XML::getBoolProperty(node, "modifiable", false);
+                a.scope = XML::getProperty(node, "scope", "none");
+                a.playerInfoId = getPlayerInfoIdFromAttrType(
+                                 XML::getProperty(node, "player-info", ""));
 
                 attributes[id] = a;
 
@@ -319,9 +392,16 @@ namespace Attributes {
         AttributeMap::const_iterator it, it_end;
         for (it = attributes.begin(), it_end = attributes.end(); it != it_end;
                                                                            it++)
-            statusWindow->addAttribute(it->second.id, it->second.name,
-                                       it->second.modifiable,
-                                       it->second.description);
+        {
+            if (it->second.playerInfoId == -1 &&
+                (it->second.scope == "character" || it->second.scope == "being"))
+            {
+                statusWindow->addAttribute(it->second.id,
+                                           it->second.name,
+                                           it->second.modifiable,
+                                           it->second.description);
+            }
+        }
     }
 
 } // namespace Attributes

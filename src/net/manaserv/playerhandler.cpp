@@ -43,6 +43,7 @@
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
+#include "net/manaserv/attributes.h"
 
 /**
  * Max. distance we are willing to scroll after a teleport;
@@ -112,18 +113,23 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
         {
             while (msg.getUnreadLength())
             {
-                int attr = msg.readInt16();
+                int attrId = msg.readInt16();
                 double base = msg.readInt32() / 256.0;
                 double value = msg.readInt32() / 256.0;
 
-                /* TODO handle HP
-                if (attr == ATTR_HP)
-                    PlayerInfo::setAttribute(HP, value);
-                else if (attr == ATTR_MAX_HP)
-                    PlayerInfo::setAttribute(MAX_HP, value);*/
-
-                PlayerInfo::setStatBase(attr, base);
-                PlayerInfo::setStatMod(attr, value - base);
+                // Set the core player attribute the stat
+                // depending on attribute link.
+                int playerInfoId =
+                                  Attributes::getPlayerInfoIdFromAttrId(attrId);
+                if (playerInfoId > -1)
+                {
+                    PlayerInfo::setAttribute(playerInfoId, value);
+                }
+                else
+                {
+                    PlayerInfo::setStatBase(attrId, base);
+                    PlayerInfo::setStatMod(attrId, value - base);
+                }
             }
         } break;
 

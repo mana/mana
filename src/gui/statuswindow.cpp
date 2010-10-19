@@ -115,21 +115,22 @@ StatusWindow::StatusWindow():
 
     int max = PlayerInfo::getAttribute(MAX_HP);
     mHpLabel = new Label(_("HP:"));
-    mHpBar = new ProgressBar(max ? (float) PlayerInfo::getAttribute(HP) / max: 0,
-                             80, 15, Theme::PROG_HP);
+    mHpBar = new ProgressBar(max ? (float) PlayerInfo::getAttribute(HP) / max :
+                             0, 80, 15, Theme::PROG_HP);
 
     max = PlayerInfo::getAttribute(EXP_NEEDED);
     mXpLabel = new Label(_("Exp:"));
-    mXpBar = new ProgressBar(max ? (float) PlayerInfo::getAttribute(EXP) / max : 0,
-                             80, 15, Theme::PROG_EXP);
+    mXpBar = new ProgressBar(max ? (float) PlayerInfo::getAttribute(EXP) / max :
+                             0, 80, 15, Theme::PROG_EXP);
 
     bool magicBar = Net::getGameHandler()->canUseMagicBar();
     if (magicBar)
     {
         max = PlayerInfo::getAttribute(MAX_MP);
         mMpLabel = new Label(_("MP:"));
-        mMpBar = new ProgressBar(max ? (float) PlayerInfo::getAttribute(MAX_MP) / max : 0,
-                             80, 15, Net::getPlayerHandler()->canUseMagic() ?
+        mMpBar = new ProgressBar(max ?
+                             (float) PlayerInfo::getAttribute(MAX_MP) / max :
+                             0, 80, 15, Net::getPlayerHandler()->canUseMagic() ?
                              Theme::PROG_MP : Theme::PROG_NO_MP);
     }
 
@@ -140,11 +141,16 @@ StatusWindow::StatusWindow():
     place(1, 1, mHpBar, 4);
     place(5, 1, mXpLabel).setPadding(3);
     place(6, 1, mXpBar, 5);
+
+    int attributesFirstRow = 2;
     if (magicBar)
     {
         place(0, 2, mMpLabel).setPadding(3);
         // 5, 2 and 6, 2 Job Progress Bar
         place(1, 2, mMpBar, 4);
+
+        // We move the attribute row to the next one
+        attributesFirstRow = 3;
     }
 
     if (Net::getPlayerHandler()->getJobLocation() > 0)
@@ -156,35 +162,38 @@ StatusWindow::StatusWindow():
         place(5, 0, mJobLvlLabel, 3);
         place(5, 2, mJobLabel).setPadding(3);
         place(6, 2, mJobBar, 5);
+
+        // We move the attribute row to the next one
+        attributesFirstRow = 3;
     }
 
     // ----------------------
     // Stats Part
     // ----------------------
 
-    mAttrCont = new VertContainer(32);
+    mAttrCont = new VertContainer(28);
     mAttrScroll = new ScrollArea(mAttrCont);
     mAttrScroll->setOpaque(false);
     mAttrScroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
     mAttrScroll->setVerticalScrollPolicy(ScrollArea::SHOW_AUTO);
-    place(0, 3, mAttrScroll, 5, 3);
+    place(0, attributesFirstRow, mAttrScroll, 5, 3);
 
-    mDAttrCont = new VertContainer(32);
+    mDAttrCont = new VertContainer(28);
     mDAttrScroll = new ScrollArea(mDAttrCont);
     mDAttrScroll->setOpaque(false);
     mDAttrScroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
     mDAttrScroll->setVerticalScrollPolicy(ScrollArea::SHOW_AUTO);
-    place(6, 3, mDAttrScroll, 5, 3);
+    place(6, attributesFirstRow, mDAttrScroll, 5, 3);
 
-    getLayout().setRowHeight(3, Layout::AUTO_SET);
+    getLayout().setRowHeight(attributesFirstRow, Layout::AUTO_SET);
 
-    mCharacterPointsLabel = new Label("C");
-    place(0, 6, mCharacterPointsLabel, 5);
+    mCharacterPointsLabel = new Label("Character points: 0");
+    place(0, attributesFirstRow + 3, mCharacterPointsLabel, 4);
 
     if (Net::getPlayerHandler()->canCorrectAttributes())
     {
-        mCorrectionPointsLabel = new Label("C");
-        place(0, 7, mCorrectionPointsLabel, 5);
+        mCorrectionPointsLabel = new Label("Correction points: 0");
+        place(4, attributesFirstRow + 3, mCorrectionPointsLabel, 4);
     }
 
     loadWindowState();
@@ -197,7 +206,7 @@ StatusWindow::StatusWindow():
 
 
     mMoneyLabel->setCaption(strprintf(_("Money: %s"),
-                            Units::formatCurrency(PlayerInfo::getAttribute(MONEY)).c_str()));
+               Units::formatCurrency(PlayerInfo::getAttribute(MONEY)).c_str()));
     mMoneyLabel->adjustSize();
     mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
                                       PlayerInfo::getAttribute(CHAR_POINTS)));
@@ -334,7 +343,8 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
     float prog = 1.0;
 
     if (PlayerInfo::getAttribute(MAX_HP) > 0)
-        prog = (float) PlayerInfo::getAttribute(HP) / PlayerInfo::getAttribute(MAX_HP);
+        prog = (float) PlayerInfo::getAttribute(HP)
+               / PlayerInfo::getAttribute(MAX_HP);
     bar->setProgress(prog);
 }
 
@@ -352,7 +362,8 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
     float prog = 1.0f;
 
     if (PlayerInfo::getAttribute(MAX_MP) > 0)
-        prog = (float) PlayerInfo::getAttribute(MP) / PlayerInfo::getAttribute(MAX_MP);
+        prog = (float) PlayerInfo::getAttribute(MP)
+               / PlayerInfo::getAttribute(MAX_MP);
 
     if (Net::getPlayerHandler()->canUseMagic())
         bar->setProgressPalette(Theme::PROG_MP);
@@ -363,7 +374,7 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
 }
 
 void StatusWindow::updateProgressBar(ProgressBar *bar, int value, int max,
-                              bool percent)
+                                     bool percent)
 {
     if (!bar)
         return;
