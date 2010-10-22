@@ -211,7 +211,7 @@ Setup_Video::Setup_Video():
     mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 60)),
-    mLowCPUEnabled(config.getValue("lowcpu", true)),
+    mSDLTransparencyDisabled(config.getValue("disableTransparency", true)),
     mSpeechMode(static_cast<Being::Speech>(
             config.getValue("speech", Being::TEXT_OVERHEAD))),
     mModeListModel(new ModeListModel),
@@ -245,8 +245,9 @@ Setup_Video::Setup_Video():
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new Label),
     mFontSize((int) config.getValue("fontSize", 11)),
-    mLowCPUCheckBox(new CheckBox(_("Disable transparency (Low CPU mode)"),
-                                 mLowCPUEnabled))
+    mDisableSDLTransparencyCheckBox(
+                          new CheckBox(_("Disable transparency (Low CPU mode)"),
+                                       mSDLTransparencyDisabled))
 {
     setName(_("Video"));
 
@@ -273,7 +274,7 @@ Setup_Video::Setup_Video():
 
     mAlphaSlider->setValue(mOpacity);
     mAlphaSlider->setWidth(90);
-    mAlphaSlider->setEnabled(!mLowCPUEnabled);
+    mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
 
     mFpsLabel->setCaption(mFps > 0 ? toString(mFps) : _("None"));
     mFpsLabel->setWidth(60);
@@ -282,8 +283,8 @@ Setup_Video::Setup_Video():
     mFpsCheckBox->setSelected(mFps > 0);
 
     // If the openGL Mode is enabled, disabling the transaprency
-    // is irrelelvant.
-    mLowCPUCheckBox->setEnabled(!mOpenGLEnabled);
+    // is irrelevant.
+    mDisableSDLTransparencyCheckBox->setEnabled(!mOpenGLEnabled);
 
     // Pre-select the current video mode.
     std::string videoMode = toString(graphics->getWidth()) + "x"
@@ -308,7 +309,7 @@ Setup_Video::Setup_Video():
     mOpenGLCheckBox->setActionEventId("opengl");
     mParticleDetailSlider->setActionEventId("particledetailslider");
     mParticleDetailField->setActionEventId("particledetailfield");
-    mLowCPUCheckBox->setActionEventId("lowcpu");
+    mDisableSDLTransparencyCheckBox->setActionEventId("disableTransparency");
 
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
@@ -328,7 +329,7 @@ Setup_Video::Setup_Video():
     mOverlayDetailField->addKeyListener(this);
     mParticleDetailSlider->addActionListener(this);
     mParticleDetailField->addKeyListener(this);
-    mLowCPUCheckBox->addActionListener(this);
+    mDisableSDLTransparencyCheckBox->addActionListener(this);
 
     mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
     mSpeechSlider->setValue(mSpeechMode);
@@ -386,7 +387,7 @@ Setup_Video::Setup_Video():
     place(1, 11, particleDetailLabel);
     place(2, 11, mParticleDetailField, 3).setPadding(2);
 
-    place(0, 12, mLowCPUCheckBox, 4);
+    place(0, 12, mDisableSDLTransparencyCheckBox, 4);
 
     setDimension(gcn::Rectangle(0, 0, 365, 300));
 }
@@ -469,23 +470,24 @@ void Setup_Video::apply()
         }
     }
     // If LowCPU is enabled from a disabled state we warn the user
-    else if (mLowCPUCheckBox->isSelected())
+    else if (mDisableSDLTransparencyCheckBox->isSelected())
     {
-        if (config.getValue("lowcpu", true) == false)
+        if (config.getValue("disableTransparency", true) == false)
         {
-            new OkDialog(_("Low CPU Mode Enabled"),
-                 _("You must restart to prevent graphical errors."));
+            new OkDialog(_("Transparency disabled"),
+                 _("You must restart to apply changes."));
         }
     }
     else
     {
-        if (config.getValue("lowcpu", true) == true)
+        if (config.getValue("disableTransparency", true) == true)
         {
-            new OkDialog(_("Low CPU Mode Disabled"),
+            new OkDialog(_("Transparency enabled"),
                  _("You must restart to apply changes."));
         }
     }
-    config.setValue("lowcpu", mLowCPUCheckBox->isSelected());
+    config.setValue("disableTransparency",
+                                 mDisableSDLTransparencyCheckBox->isSelected());
 
     mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;
     mFpsSlider->setEnabled(mFps > 0);
@@ -509,7 +511,7 @@ void Setup_Video::apply()
     mOpenGLEnabled = config.getValue("opengl", false);
     mPickupChatEnabled = config.getValue("showpickupchat", true);
     mPickupParticleEnabled = config.getValue("showpickupparticle", false);
-    mLowCPUEnabled = config.getValue("lowcpu", true);
+    mSDLTransparencyDisabled = config.getValue("disableTransparency", true);
 }
 
 void Setup_Video::cancel()
@@ -527,13 +529,13 @@ void Setup_Video::cancel()
     mNameCheckBox->setSelected(mNameEnabled);
     mNPCLogCheckBox->setSelected(mNPCLogEnabled);
     mAlphaSlider->setValue(mOpacity);
-    mAlphaSlider->setEnabled(!mLowCPUEnabled);
+    mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
     std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : _("None");
     mFpsLabel->setCaption(text);
-    mLowCPUCheckBox->setSelected(mLowCPUEnabled);
-    mLowCPUCheckBox->setEnabled(!mOpenGLEnabled);
+    mDisableSDLTransparencyCheckBox->setSelected(mSDLTransparencyDisabled);
+    mDisableSDLTransparencyCheckBox->setEnabled(!mOpenGLEnabled);
 
     config.setValue("screen", mFullScreenEnabled);
 
@@ -557,7 +559,7 @@ void Setup_Video::cancel()
     config.setValue("opengl", mOpenGLEnabled);
     config.setValue("showpickupchat", mPickupChatEnabled);
     config.setValue("showpickupparticle", mPickupParticleEnabled);
-    config.setValue("lowcpu", mLowCPUEnabled);
+    config.setValue("disableTransparency", mSDLTransparencyDisabled);
 }
 
 void Setup_Video::action(const gcn::ActionEvent &event)
@@ -666,21 +668,23 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         mFpsSlider->setValue(mFps);
         mFpsSlider->setEnabled(mFps > 0);
     }
-    else if (id == "opengl" || id == "lowcpu")
+    else if (id == "opengl" || id == "disableTransparency")
     {
-        // Disable low cpu mode when in OpenGL.
+        // Disable transparency disabling when in OpenGL.
         if (mOpenGLCheckBox->isSelected())
         {
-            mLowCPUCheckBox->setSelected(false);
-            mLowCPUCheckBox->setEnabled(false);
+            mDisableSDLTransparencyCheckBox->setSelected(false);
+            mDisableSDLTransparencyCheckBox->setEnabled(false);
         }
         else
         {
-            mLowCPUCheckBox->setEnabled(true);
+            mDisableSDLTransparencyCheckBox->setEnabled(true);
         }
+
         // Disable gui opacity slider when disabling transparency.
-        if (mLowCPUCheckBox->isEnabled())
-            mAlphaSlider->setEnabled(!mLowCPUCheckBox->isSelected());
+        if (mDisableSDLTransparencyCheckBox->isEnabled())
+            mAlphaSlider->setEnabled(
+                                !mDisableSDLTransparencyCheckBox->isSelected());
         else
             mAlphaSlider->setEnabled(true);
     }

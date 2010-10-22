@@ -320,7 +320,7 @@ Client::Client(const Options &options):
     bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 0) == 1);
 
     // Set up the transparency option for low CPU when not using OpenGL.
-    if (!useOpenGL && (config.getValue("lowcpu", 0) == 1))
+    if (!useOpenGL && (config.getValue("disableTransparency", 0) == 1))
         Image::SDLdisableTransparency();
 
 #ifdef USE_OPENGL
@@ -1166,7 +1166,7 @@ void Client::initConfiguration()
     config.setValue("customcursor", true);
     config.setValue("useScreenshotDirectorySuffix", true);
     config.setValue("ChatLogLength", 128);
-    config.setValue("lowcpu", true);
+    config.setValue("disableTransparency", false);
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
