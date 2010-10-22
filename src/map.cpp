@@ -331,7 +331,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     }
 
     // If the transparency hasn't been disabled,
-    if (config.getValue("opengl", false) || !config.getValue("lowcpu", true))
+    if (Image::useOpenGL() || !Image::SDLisTransparencyDisabled())
     {
         // We draw beings with a lower opacity to make them visible
         // even when covered by a wall or some other elements...

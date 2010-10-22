@@ -253,7 +253,7 @@ Client::Client(const Options &options):
                                 "Exiting.", mLocalDataDir.c_str()));
     }
 
-    Image::setEnableAlphaCache(config.getValue("alphaCache", true));
+    Image::SDLsetEnableAlphaCache(config.getValue("alphaCache", true));
 
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -317,8 +317,13 @@ Client::Client(const Options &options):
     }
 #endif
 
-#ifdef USE_OPENGL
     bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 0) == 1);
+
+    // Set up the transparency option for low CPU when not using OpenGL.
+    if (!useOpenGL && (config.getValue("lowcpu", 0) == 1))
+        Image::SDLdisableTransparency();
+
+#ifdef USE_OPENGL
 
     // Setup image loading for the right image format
     Image::setLoadAsOpenGL(useOpenGL);
