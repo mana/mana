@@ -58,8 +58,8 @@ static void printHelp()
                                      "character") << endl
         << _("  -u --skip-update    : Skip the update downloads") << endl
         << _("  -d --data           : Directory to load game data from") << endl
-        << _("  -L --localdata-dir  : Directory to use as local data directory") << endl
-        << _("  -T --chat-log-dir   : Chat log dir to use") << endl
+        << _("     --localdata-dir  : Directory to use as local data directory") << endl
+        << _("     --chat-log-dir   : Chat log dir to use") << endl
         << _("     --screenshot-dir : Directory to store screenshots") << endl
 #ifdef USE_OPENGL
         << _("     --no-opengl      : Disable OpenGL for this session") << endl
@@ -74,7 +74,7 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Client::Options &options)
 {
-    const char *optstring = "hvud:U:P:Dc:s:p:C:L:T:";
+    const char *optstring = "hvud:U:P:Dc:s:p:C:";
 
     const struct option long_options[] = {
         { "config-dir",     required_argument, 0, 'C' },
