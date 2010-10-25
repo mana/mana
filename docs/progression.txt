@@ -123,7 +123,7 @@ Peon        17          Double Hit, Hard Hit(JL:5)           Beginner Lvl:10
 
 7. NOTES
 
-Every of these notes have to be discussed, if you have any feedback,
-suggestions, updates, commit or tell them at:
+Each of these notes have to be discussed, if you have any feedback,
+suggestions, updates, commit or let them know at:
 
-address: irc://irc.freenode.net      channel:  #themanaworld
+address: irc://irc.themanaworld.org      channel:  #themanaworld
