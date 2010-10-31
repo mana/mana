@@ -41,7 +41,7 @@ struct Character
 {
     Character() :
         slot(0),
-        dummy(new LocalPlayer)
+        dummy(0)
     {
     }
 

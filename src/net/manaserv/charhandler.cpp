@@ -361,7 +361,7 @@ void CharHandler::updateCharacters()
 
         Net::Character *character = new Net::Character;
         character->slot = info.slot;
-        LocalPlayer *player = character->dummy;
+        LocalPlayer *player = character->dummy = new LocalPlayer;
         player->setName(info.name);
         player->setGender(info.gender);
         player->setSprite(SPRITE_HAIR, info.hairStyle * -1,
