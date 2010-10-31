@@ -607,13 +607,8 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-                            const Vector &pos = player_node->getPosition();
-                            Map *map = viewport->getCurrentMap();
-                            Uint16 x = (int) pos.x / map->getTileWidth();
-                            Uint16 y = (int) (pos.y - 1)
-                                       / map->getTileHeight();
-                            // y - 1 needed to fix position, otherwise, it's
-                            // off under eAthena.
+                            int x = player_node->getTileX();
+                            int y = player_node->getTileY();
 
                             FloorItem *item =
                                 floorItemManager->findByCoordinates(x, y);

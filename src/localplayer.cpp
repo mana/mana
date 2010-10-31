@@ -707,8 +707,8 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-    int dx = item->getX() - (int) getPosition().x / mMap->getTileWidth();
-    int dy = item->getY() - ((int) getPosition().y - 1) / mMap->getTileHeight();
+    int dx = item->getX() - getTileX();
+    int dy = item->getY() - getTileY();
 
     if (dx * dx + dy * dy < 4)
     {
