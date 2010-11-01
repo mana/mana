@@ -185,7 +185,8 @@ bool Particle::update()
             {
                 mAlive = DEAD_FLOOR;
             }
-        } else if (mPos.z > PARTICLE_SKY)
+        }
+        else if (mPos.z > PARTICLE_SKY)
         {
                 mAlive = DEAD_SKY;
         }
@@ -429,6 +430,19 @@ void Particle::adjustEmitterSize(int w, int h)
             (*e)->adjustSize(w, h);
         }
     }
+}
+
+float Particle::getCurrentAlpha() const
+{
+    float alpha = mAlpha;
+
+    if (mLifetimeLeft > -1 && mLifetimeLeft < mFadeOut)
+        alpha *= (float)mLifetimeLeft / (float)mFadeOut;
+
+    if (mLifetimePast < mFadeIn)
+        alpha *= (float)mLifetimePast / (float)mFadeIn;
+
+    return alpha;
 }
 
 void Particle::clear()

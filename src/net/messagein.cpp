@@ -97,6 +97,9 @@ void MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
             case 7:
                 direction = 9;
                 break;
+            case 8:
+                direction = 8;
+                break;
             default:
                 // OOPSIE! Impossible or unknown
                 direction = 0;

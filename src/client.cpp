@@ -201,6 +201,7 @@ Client *Client::mInstance = 0;
 
 Client::Client(const Options &options):
     mOptions(options),
+    mRootDir(""),
     mCurrentDialog(0),
     mQuitDialog(0),
     mDesktop(0),
@@ -224,6 +225,7 @@ Client::Client(const Options &options):
         branding.setDefaultValues(getBrandingDefaults());
     }
 
+    initRootDir();
     initHomeDir();
     initConfiguration();
 
@@ -263,6 +265,8 @@ Client::Client(const Options &options):
         logger->error(strprintf("%s couldn't be set as home directory! "
                                 "Exiting.", mLocalDataDir.c_str()));
     }
+
+    Image::SDLsetEnableAlphaCache(config.getValue("alphaCache", true));
 
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -326,8 +330,13 @@ Client::Client(const Options &options):
     }
 #endif
 
-#ifdef USE_OPENGL
     bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 0) == 1);
+
+    // Set up the transparency option for low CPU when not using OpenGL.
+    if (!useOpenGL && (config.getValue("disableTransparency", 0) == 1))
+        Image::SDLdisableTransparency();
+
+#ifdef USE_OPENGL
 
     // Setup image loading for the right image format
     Image::setLoadAsOpenGL(useOpenGL);
@@ -546,12 +555,7 @@ int Client::exec()
             Net::getLoginHandler()->disconnect();
         }
         else if (mState == STATE_CONNECT_SERVER &&
-                 mOldState == STATE_CHOOSE_SERVER)
-        {
-            Net::connectToServer(mCurrentServer);
-        }
-        else if (mState == STATE_CONNECT_SERVER &&
-                 mOldState != STATE_CHOOSE_SERVER &&
+                 mOldState == STATE_CONNECT_SERVER &&
                  Net::getLoginHandler()->isConnected())
         {
             mState = STATE_LOGIN;
@@ -647,6 +651,9 @@ int Client::exec()
 
                 case STATE_CONNECT_SERVER:
                     logger->log("State: CONNECT SERVER");
+
+                    Net::connectToServer(mCurrentServer);
+
                     mCurrentDialog = new ConnectionDialog(
                             _("Connecting to server"), STATE_SWITCH_SERVER);
                     break;
@@ -945,9 +952,9 @@ int Client::exec()
                 case STATE_SWITCH_LOGIN:
                     logger->log("State: SWITCH LOGIN");
 
-                    Net::getLoginHandler()->logout();
+                    Net::getLoginHandler()->disconnect();
 
-                    mState = STATE_LOGIN;
+                    mState = STATE_CONNECT_SERVER;
                     break;
 
                 case STATE_SWITCH_CHARACTER:
@@ -1022,6 +1029,57 @@ void Client::action(const gcn::ActionEvent &event)
     }
 }
 
+void Client::initRootDir()
+{
+    mRootDir = PHYSFS_getBaseDir();
+#ifdef WIN32
+    std::string portableName = mRootDir + "portable.xml";
+    struct stat statbuf;
+
+    if (!stat(portableName.c_str(), &statbuf) && S_ISREG(statbuf.st_mode))
+    {
+        std::string dir;
+        Configuration portable;
+        portable.init(portableName);
+
+        logger->log("Portable file: %s", portableName.c_str());
+
+        if (mOptions.localDataDir.empty())
+        {
+            dir = portable.getValue("dataDir", "");
+            if (!dir.empty())
+            {
+                mOptions.localDataDir = mRootDir + dir;
+                logger->log("Portable data dir: %s",
+                    mOptions.localDataDir.c_str());
+            }
+        }
+
+        if (mOptions.configDir.empty())
+        {
+            dir = portable.getValue("configDir", "");
+            if (!dir.empty())
+            {
+                mOptions.configDir = mRootDir + dir;
+                logger->log("Portable config dir: %s",
+                    mOptions.configDir.c_str());
+            }
+        }
+
+        if (mOptions.screenshotDir.empty())
+        {
+            dir = portable.getValue("screenshotDir", "");
+            if (!dir.empty())
+            {
+                mOptions.screenshotDir = mRootDir + dir;
+                logger->log("Portable screenshot dir: %s",
+                    mOptions.screenshotDir.c_str());
+            }
+        }
+    }
+#endif
+}
+
 /**
  * Initializes the home directory. On UNIX and FreeBSD, ~/.mana is used. On
  * Windows and other systems we use the current working directory.
@@ -1083,7 +1141,8 @@ void Client::initHomeDir()
     {
         std::string oldConfigFile = std::string(PHYSFS_getUserDir()) +
             "/.tmw/config.xml";
-        if (!stat(oldConfigFile.c_str(), &statbuf) && S_ISREG(statbuf.st_mode))
+        if (mRootDir.empty() && !stat(oldConfigFile.c_str(), &statbuf)
+            && S_ISREG(statbuf.st_mode))
         {
             std::ifstream oldConfig;
             std::ofstream newConfig;
@@ -1128,6 +1187,7 @@ void Client::initConfiguration()
     config.setValue("customcursor", true);
     config.setValue("useScreenshotDirectorySuffix", true);
     config.setValue("ChatLogLength", 128);
+    config.setValue("disableTransparency", false);
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
@@ -1241,24 +1301,18 @@ void Client::initUpdatesDir()
 void Client::initScreenshotDir()
 {
     if (!mOptions.screenshotDir.empty())
-        mScreenshotDir = mOptions.screenshotDir;
-    else
     {
-        std::string configScreenshotDir =
-            config.getStringValue("screenshotDirectory");
-        if (!configScreenshotDir.empty())
-            mScreenshotDir = configScreenshotDir;
-        else
-        {
+        mScreenshotDir = mOptions.screenshotDir;
+    }
+    else if (mScreenshotDir.empty())
+    {
 #ifdef WIN32
-            mScreenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);
-            if (mScreenshotDir.empty())
-                mScreenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
+        mScreenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);
+        if (mScreenshotDir.empty())
+            mScreenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
 #else
-            mScreenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
+        mScreenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
 #endif
-        }
-        config.setValue("screenshotDirectory", mScreenshotDir);
 
         if (config.getBoolValue("useScreenshotDirectorySuffix"))
         {

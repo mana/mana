@@ -2340,8 +2340,8 @@ msgstr "Impossible de ramasser l'objet."
 #, fuzzy, c-format
 msgid "You picked up %d [@@%d|%s@@]."
 msgid_plural "You picked up %d [@@%d|%s@@]."
-msgstr[0] "vous avez ramassé un(e) %s [@@%d|%s@@]."
-msgstr[1] "vous avez ramassé un(e) %s [@@%d|%s@@]."
+msgstr[0] "vous avez ramassé %s [@@%d|%s@@]."
+msgstr[1] "vous avez ramassé %s [@@%d|%s@@]."
 
 #: src/main.cpp:43
 msgid "mana [options] [mana-file]"

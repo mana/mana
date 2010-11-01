@@ -183,6 +183,7 @@ public:
     void action(const gcn::ActionEvent &event);
 
 private:
+    void initRootDir();
     void initHomeDir();
     void initConfiguration();
     void initUpdatesDir();
@@ -200,6 +201,7 @@ private:
     std::string mUpdateHost;
     std::string mUpdatesDir;
     std::string mScreenshotDir;
+    std::string mRootDir;
 
     ServerInfo mCurrentServer;
 

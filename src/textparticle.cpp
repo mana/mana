@@ -44,16 +44,8 @@ bool TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     int screenX = (int) mPos.x + offsetX;
     int screenY = (int) mPos.y - (int) mPos.z + offsetY;
 
-    float alpha = mAlpha * 255.0f;
-
-    if (mLifetimeLeft > -1 && mLifetimeLeft < mFadeOut)
-        alpha = alpha * mLifetimeLeft / mFadeOut;
-
-    if (mLifetimePast < mFadeIn)
-        alpha = alpha * mLifetimePast / mFadeIn;
-
     gcn::Color color = *mColor;
-    color.a = (int)alpha;
+    color.a = getCurrentAlpha() * 255;
 
     TextRenderer::renderText(graphics, mText,
             screenX, screenY, gcn::Graphics::CENTER,

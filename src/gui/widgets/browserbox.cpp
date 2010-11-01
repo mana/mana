@@ -2,6 +2,7 @@
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
  *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2009  Aethyra Development Team
  *
  *  This file is part of The Mana Client.
  *
@@ -20,6 +21,8 @@
  */
 
 #include "gui/widgets/browserbox.h"
+
+#include "client.h"
 
 #include "gui/widgets/linkhandler.h"
 
@@ -40,7 +43,9 @@ BrowserBox::BrowserBox(unsigned int mode, bool opaque):
     mMaxRows(0),
     mHeight(0),
     mWidth(0),
-    mYStart(0)
+    mYStart(0),
+    mUpdateTime(-1),
+    mAlwaysUpdate(true)
 {
     setFocusable(true);
     addMouseListener(this);
@@ -74,13 +79,14 @@ void BrowserBox::addRow(const std::string &row)
 {
     std::string tmp = row;
     std::string newRow;
-    BROWSER_LINK bLink;
     std::string::size_type idx1, idx2, idx3;
     gcn::Font *font = getFont();
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
     {
+        BROWSER_LINK bLink;
+
         // Check for links in format "@@link|Caption@@"
         idx1 = tmp.find("@@");
         while (idx1 != std::string::npos)
@@ -92,7 +98,7 @@ void BrowserBox::addRow(const std::string &row)
                 break;
             bLink.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
             bLink.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
-            bLink.y1 = mTextRows.size() * font->getHeight();
+            bLink.y1 = static_cast<int>(mTextRows.size()) * font->getHeight();
             bLink.y2 = bLink.y1 + font->getHeight();
 
             newRow += tmp.substr(0, idx1);
@@ -150,7 +156,7 @@ void BrowserBox::addRow(const std::string &row)
     if (mMode == AUTO_SIZE)
     {
         std::string plain = newRow;
-        for (idx1 = plain.find("##"); idx1 != std::string::npos; idx1 = plain.find("##"))
+        while ((idx1 = plain.find("##")) != std::string::npos)
             plain.erase(idx1, 3);
 
         // Adjust the BrowserBox size
@@ -179,11 +185,11 @@ void BrowserBox::addRow(const std::string &row)
                 // Wraping between words (at blank spaces)
                 if ((nextChar < row.size()) && (row.at(nextChar) == ' '))
                 {
-                    int nextSpacePos = row.find(" ", (nextChar + 1));
+                    int nextSpacePos = static_cast<int>(
+                        row.find(" ", (nextChar + 1)));
                     if (nextSpacePos <= 0)
-                    {
-                        nextSpacePos = row.size() - 1;
-                    }
+                        nextSpacePos = static_cast<int>(row.size()) - 1;
+
                     int nextWordWidth = font->getWidth(
                             row.substr(nextChar,
                                 (nextSpacePos - nextChar)));
@@ -204,12 +210,14 @@ void BrowserBox::addRow(const std::string &row)
             }
         }
 
-        setHeight(font->getHeight() * (mTextRows.size() + y));
+        setHeight(font->getHeight() * (static_cast<int>(
+                  mTextRows.size()) + y));
     }
     else
     {
-        setHeight(font->getHeight() * mTextRows.size());
+        setHeight(font->getHeight() * static_cast<int>(mTextRows.size()));
     }
+    mUpdateTime = 0;
     updateHeight();
 }
 
@@ -225,7 +233,9 @@ void BrowserBox::clearRows()
 
 struct MouseOverLink
 {
-    MouseOverLink(int x, int y) : mX(x),mY(y) { }
+    MouseOverLink(int x, int y) : mX(x), mY(y)
+    { }
+
     bool operator() (BROWSER_LINK &link)
     {
         return (mX >= link.x1 && mX < link.x2 &&
@@ -249,7 +259,8 @@ void BrowserBox::mouseMoved(gcn::MouseEvent &event)
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
 
-    mSelectedLink = (i != mLinks.end()) ? (i - mLinks.begin()) : -1;
+    mSelectedLink = (i != mLinks.end())
+        ? static_cast<int>(i - mLinks.begin()) : -1;
 }
 
 void BrowserBox::draw(gcn::Graphics *graphics)
@@ -261,10 +272,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         mYStart = 0;
 
     if (getWidth() != mWidth)
-    {
-        mWidth = getWidth();
         updateHeight();
-    }
 
     if (mOpaque)
     {
@@ -296,7 +304,28 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         }
     }
 
+    gcn::Font *font = getFont();
+
+    for (LinePartIterator i = mLineParts.begin();
+        i != mLineParts.end();
+        i ++)
+    {
+        const LinePart &part = *i;
+        if (part.getY() + 50 < mYStart)
+            continue;
+        if (part.getY() > yEnd)
+            break;
+        graphics->setColor(part.getColor());
+        font->drawString(graphics, part.getText(), part.getX(), part.getY());
+    }
+
+    return;
+}
+
+int BrowserBox::calcHeight()
+{
     int x = 0, y = 0;
+    int wrappedLines = 0;
     int link = 0;
     gcn::Font *font = getFont();
 
@@ -305,27 +334,13 @@ void BrowserBox::draw(gcn::Graphics *graphics)
     char const *hyphen = "~";
     int hyphenWidth = font->getWidth(hyphen);
 
-    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+    gcn::Color selColor = Theme::getThemeColor(Theme::TEXT);
     const gcn::Color textColor = Theme::getThemeColor(Theme::TEXT);
-    TextRowsHeightIterator h = mTextRowsHeights.begin();
 
-    for (TextRowIterator i = mTextRows.begin();
-         i != mTextRows.end();
-         i++, h++)
+    mLineParts.clear();
+
+    for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
     {
-        bool hidden = false;
-        if (y + 50 < mYStart)
-        {
-            y += *(h);
-            continue;
-        }
-        else if (y > yEnd)
-        {
-            break;
-        }
-
-        gcn::Color selColor = textColor;
-        gcn::Color prevColor = selColor;
         const std::string row = *(i);
         bool wrapped = false;
         x = 0;
@@ -333,18 +348,18 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         // Check for separator lines
         if (row.find("---", 0) == 0)
         {
-            if (!hidden)
+            const int dashWidth = fontWidthMinus;
+            for (x = 0; x < getWidth(); x++)
             {
-                const int dashWidth = fontWidthMinus;
-                for (x = 0; x < getWidth(); x++)
-                {
-                    font->drawString(graphics, "-", x, y);
-                    x += dashWidth - 2;
-                }
+                mLineParts.push_back(LinePart(x, y, selColor, "-"));
+                x += dashWidth - 2;
             }
+
             y += fontHeight;
             continue;
         }
+
+        gcn::Color prevColor = selColor;
 
         // TODO: Check if we must take texture size limits into account here
         // TODO: Check if some of the O(n) calls can be removed
@@ -364,14 +379,14 @@ void BrowserBox::draw(gcn::Graphics *graphics)
             if (mUseLinksAndUserColors)
                 end = row.find("##", start + 1);
 
-            if (!hidden
-                && (mUseLinksAndUserColors ||
-                    (!mUseLinksAndUserColors && (start == 0))))
+            if (mUseLinksAndUserColors ||
+                (!mUseLinksAndUserColors && (start == 0)))
             {
                 // Check for color change in format "##x", x = [L,P,0..9]
                 if (row.find("##", start) == start && row.size() > start + 2)
                 {
                     const char c = row.at(start + 2);
+
                     bool valid;
                     const gcn::Color col = Theme::getThemeColor(c, valid);
 
@@ -381,7 +396,6 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                     }
                     else if (c == '<')
                     {
-                        link++;
                         prevColor = selColor;
                         selColor = col;
                     }
@@ -408,144 +422,12 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                                 selColor = textColor;
                         }
                     }
-                    start += 3;
-
-                    if (start == row.size())
-                        break;
-                }
-                graphics->setColor(selColor);
-            }
-
-            std::string::size_type len =
-                end == std::string::npos ? end : end - start;
-            std::string part = row.substr(start, len);
-
-            // Auto wrap mode
-            if (mMode == AUTO_WRAP && getWidth() > 0
-                && font->getWidth(part) > 0
-                && (x + font->getWidth(part) + 10) > getWidth())
-            {
-                bool forced = false;
-
-                /* FIXME: This code layout makes it easy to crash remote
-                   clients by talking garbage. Forged long utf-8 characters
-                   will cause either a buffer underflow in substr or an
-                   infinite loop in the main loop. */
-                do
-                {
-                    if (!forced)
-                        end = row.rfind(' ', end);
-
-                    // Check if we have to (stupidly) force-wrap
-                    if (end == std::string::npos || end <= start)
-                    {
-                        forced = true;
-                        end = row.size();
-                        x += hyphenWidth; // Account for the wrap-notifier
-                        continue;
-                    }
-
-                    // Skip to the start of the current character
-                    while ((row[end] & 192) == 128)
-                        end--;
-                    end--; // And then to the last byte of the previous one
-
-                    part = row.substr(start, end - start + 1);
-                }
-                while (end > start && font->getWidth(part) > 0
-                       && (x + font->getWidth(part) + 10) > getWidth());
-
-                if (forced)
-                {
-                    x -= hyphenWidth; // Remove the wrap-notifier accounting
-                    if (y >= mYStart)
-                    {
-                        font->drawString(graphics, hyphen,
-                                getWidth() - hyphenWidth, y);
-                    }
-                    end++; // Skip to the next character
-                }
-                else
-                {
-                    end += 2; // Skip to after the space
-                }
-
-                wrapped = true;
-            }
-
-            font->drawString(graphics, part, x, y);
-
-            if (mMode == AUTO_WRAP && font->getWidth(part) == 0)
-                break;
-
-            x += font->getWidth(part);
-        }
-        y += fontHeight;
-    }
-    setHeight(mHeight);
-}
-
-int BrowserBox::calcHeight()
-{
-    int x = 0, y = 0;
-    int wrappedLines = 0;
-    int link = 0;
-    gcn::Font *font = getFont();
-
-    int fontHeight = font->getHeight();
-    int fontWidthMinus = font->getWidth("-");
-    char const *hyphen = "~";
-    int hyphenWidth = font->getWidth(hyphen);
-
-    mTextRowsHeights.clear();
-
-    for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
-    {
-        const std::string row = *(i);
-        bool wrapped = false;
-        int yStart = y;
-        x = 0;
-
-        // Check for separator lines
-        if (row.find("---", 0) == 0)
-        {
-            const int dashWidth = fontWidthMinus;
-            for (x = 0; x < getWidth(); x++)
-                x += dashWidth - 2;
-
-            y += fontHeight;
-            continue;
-        }
-
-        // TODO: Check if we must take texture size limits into account here
-        // TODO: Check if some of the O(n) calls can be removed
-        for (std::string::size_type start = 0, end = std::string::npos;
-                start != std::string::npos;
-                start = end, end = std::string::npos)
-        {
-            // Wrapped line continuation shall be indented
-            if (wrapped)
-            {
-                y += fontHeight;
-                x = 15;
-                wrapped = false;
-            }
-
-            // "Tokenize" the string at control sequences
-            if (mUseLinksAndUserColors)
-                end = row.find("##", start + 1);
-
-            if (mUseLinksAndUserColors ||
-                    (!mUseLinksAndUserColors && (start == 0)))
-            {
-                // Check for color change in format "##x", x = [L,P,0..9]
-                if (row.find("##", start) == start && row.size() > start + 2)
-                {
-                    const char c = row.at(start + 2);
 
                     if (c == '<')
                     {
-                        const int size = font->getWidth(mLinks[link].caption) + 1;
+                        const int size =
+                            font->getWidth(mLinks[link].caption) + 1;
+
                         mLinks[link].x1 = x;
                         mLinks[link].y1 = y;
                         mLinks[link].x2 = mLinks[link].x1 + size;
@@ -605,6 +487,8 @@ int BrowserBox::calcHeight()
                 if (forced)
                 {
                     x -= hyphenWidth; // Remove the wrap-notifier accounting
+                    mLineParts.push_back(LinePart(getWidth() - hyphenWidth,
+                                         y, selColor, hyphen));
                     end++; // Skip to the next character
                 }
                 else
@@ -616,19 +500,26 @@ int BrowserBox::calcHeight()
                 wrappedLines++;
             }
 
+            mLineParts.push_back(LinePart(x, y, selColor, part.c_str()));
+
             if (mMode == AUTO_WRAP && font->getWidth(part) == 0)
                 break;
 
             x += font->getWidth(part);
         }
         y += fontHeight;
-        mTextRowsHeights.push_back(y - yStart);
     }
-    return (mTextRows.size() + wrappedLines) * fontHeight;
+    return (static_cast<int>(mTextRows.size()) + wrappedLines) * fontHeight;
 }
 
 void BrowserBox::updateHeight()
 {
-    mHeight = calcHeight();
-    setHeight(mHeight);
+    if (mAlwaysUpdate || !mUpdateTime || std::abs(mUpdateTime - tick_time) > 10
+        || mTextRows.size() < 3)
+    {
+        mWidth = getWidth();
+        mHeight = calcHeight();
+        setHeight(mHeight);
+        mUpdateTime = tick_time;
+    }
 }

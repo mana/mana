@@ -33,21 +33,24 @@
 #include <math.h>
 
 const std::string ColorTypeNames[] = {
-    "Being",
-    "Player",
-    "Self",
-    "GM",
-    "NPC",
-    "Monster",
-    "Party",
-    "Guild",
-    "Particle",
-    "Experience",
-    "Pickup",
-    "Hit Player Monster",
-    "Hit Monster Player",
-    "Hit Critical",
-    "Miss"
+    "ColorBeing",
+    "ColorPlayer",
+    "ColorSelf",
+    "ColorGM",
+    "ColorNPC",
+    "ColorMonster",
+    "ColorParty",
+    "ColorGuild",
+    "ColorParticle",
+    "ColorExperience",
+    "ColorPickup",
+    "ColorHitPlayerMonster",
+    "ColorHitMonsterPlayer",
+    "ColorHitCritical",
+    "ColorHitLocalPlayerMonster",
+    "ColorHitLocalPlayerCritical",
+    "ColorHitLocalPlayerMiss",
+    "ColorMiss"
 };
 
 std::string UserPalette::getConfigName(const std::string &typeName)
@@ -96,9 +99,16 @@ UserPalette::UserPalette():
     addColor(PARTICLE, 0xffffff, STATIC, _("Particle Effects"));
     addColor(PICKUP_INFO, 0x28dc28, STATIC, _("Pickup Notification"));
     addColor(EXP_INFO, 0xffff00, STATIC, _("Exp Notification"));
-    addColor(HIT_PLAYER_MONSTER, 0x0064ff, STATIC, _("Player Hits Monster"));
+    addColor(HIT_PLAYER_MONSTER, 0x0064ff, STATIC,
+             _("Other Player Hits Monster"));
     addColor(HIT_MONSTER_PLAYER, 0xff3232, STATIC, _("Monster Hits Player"));
     addColor(HIT_CRITICAL, 0xff0000, RAINBOW, _("Critical Hit"));
+    addColor(HIT_LOCAL_PLAYER_MONSTER, 0x00ff00, STATIC,
+             _("Local Player Hits Monster"));
+    addColor(HIT_LOCAL_PLAYER_CRITICAL, 0xff0000, RAINBOW,
+             _("Local Player Critical Hit"));
+    addColor(HIT_LOCAL_PLAYER_MISS, 0x00ffa6, STATIC,
+             _("Local Player Miss"));
     addColor(MISS, 0xffff00, STATIC, _("Misses"));
     commit(true);
 }

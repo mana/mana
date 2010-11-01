@@ -352,9 +352,16 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         return;
 
     mPlayerFollowMouse = false;
+    mBeingPopup->setVisible(false);
 
     const int pixelX = event.getX() + (int) mPixelViewX;
     const int pixelY = event.getY() + (int) mPixelViewY;
+
+    mHoverBeing = actorSpriteManager->findBeingByPixel(pixelX, pixelY);
+    mHoverItem = actorSpriteManager->findItem(pixelX / mMap->getTileWidth(),
+                                              pixelY / mMap->getTileHeight());
+
+    updateCursorType();
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
@@ -452,10 +459,8 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
           if (mLocalWalkTime != player_node->getActionTime())
           {
               mLocalWalkTime = player_node->getActionTime();
-              int destX = (event.getX() + mPixelViewX + 16) /
-                          mMap->getTileWidth();
-              int destY = (event.getY() + mPixelViewY + 16) /
-                          mMap->getTileHeight();
+              int destX = (event.getX() + mPixelViewX) / mMap->getTileWidth();
+              int destY = (event.getY() + mPixelViewY) / mMap->getTileHeight();
               player_node->setDestination(destX, destY);
           }
         }
@@ -502,6 +507,11 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     mHoverItem = actorSpriteManager->findItem(x / mMap->getTileWidth(),
                                               y / mMap->getTileHeight());
 
+    updateCursorType();
+}
+
+void Viewport::updateCursorType()
+{
     if (mHoverBeing)
     {
         switch (mHoverBeing->getType())

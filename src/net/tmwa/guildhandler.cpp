@@ -44,6 +44,7 @@ Guild *taGuild;
 GuildHandler::GuildHandler()
 {
     static const Uint16 _messages[] = {
+/*
         SMSG_GUILD_CREATE_RESPONSE,
         SMSG_GUILD_POSITION_INFO,
         SMSG_GUILD_MEMBER_LOGIN,
@@ -70,6 +71,7 @@ GuildHandler::GuildHandler()
         SMSG_GUILD_DEL_ALLIANCE,
         SMSG_GUILD_OPPOSITION_ACK,
         SMSG_GUILD_BROKEN,
+*/
         0
     };
     handledMessages = _messages;

@@ -32,7 +32,6 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
-#include <guichan/mouselistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
 #include <string>
@@ -136,8 +135,6 @@ class ServerDialog : public Window,
          */
         void valueChanged(const gcn::SelectionEvent &event);
 
-        void mouseClicked(gcn::MouseEvent &mouseEvent);
-
         void logic();
 
     protected:
@@ -194,6 +191,9 @@ class ServerDialog : public Window,
         float mDownloadProgress;
 
         ServerInfos mServers;
+#ifndef MANASERV_SUPPORT
+        ServerInfos mManaservServers;
+#endif
         ServerInfo *mServerInfo;
 };
 

@@ -122,6 +122,7 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "ScrollCenterOffsetY", 0);
     AddDEF(configData, "onlineServerList", "");
     AddDEF(configData, "theme", "");
+    AddDEF(configData, "disableTransparency", false);
 
     return configData;
 }

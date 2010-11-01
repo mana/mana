@@ -43,8 +43,10 @@ namespace TmwAthena {
 
 AdminHandler::AdminHandler()
 {
-    static const Uint16 _messages[] = {
+    static const Uint16 _messages[] =
+    {
         SMSG_ADMIN_KICK_ACK,
+        SMSG_ADMIN_IP,
         0
     };
     handledMessages = _messages;
@@ -62,6 +64,13 @@ void AdminHandler::handleMessage(Net::MessageIn &msg)
                 SERVER_NOTICE(_("Kick failed!"))
             else
                 SERVER_NOTICE(_("Kick succeeded!"))
+            break;
+        case SMSG_ADMIN_IP:
+            id = msg.readInt32();
+            int ip = msg.readInt32();
+            Being *player = actorSpriteManager->findBeing(id);
+            player->setIp(ip);
+            player->updateName();
             break;
     }
 }

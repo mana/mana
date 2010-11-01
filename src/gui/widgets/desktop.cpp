@@ -85,7 +85,7 @@ void Desktop::draw(gcn::Graphics *graphics)
 
     if (mWallpaper)
     {
-        if (!mWallpaper->isAnOpenGLOne())
+        if (!mWallpaper->useOpenGL())
             g->drawImage(mWallpaper,
                 (getWidth() - mWallpaper->getWidth()) / 2,
                 (getHeight() - mWallpaper->getHeight()) / 2);
@@ -114,7 +114,7 @@ void Desktop::setBestFittingWallpaper()
         if (mWallpaper)
             mWallpaper->decRef();
 
-        if (!nWallPaper->isAnOpenGLOne() && (nWallPaper->getWidth() != getWidth()
+        if (!nWallPaper->useOpenGL() && (nWallPaper->getWidth() != getWidth()
             || nWallPaper->getHeight() != getHeight()))
         {
             // We rescale to obtain a fullscreen wallpaper...

@@ -140,7 +140,7 @@ public:
                                         mGuild->getName().c_str()))
             mConfirmDialog = NULL;
         }
-        else if (event.getId() == "~yes")
+        else if (event.getId() == "no")
         {
             mConfirmDialog = NULL;
         }
@@ -180,7 +180,7 @@ public:
     {
         setCaption(party->getName());
 
-        setTabColor(&Theme::getThemeColor(Theme::PARTY));
+        setTabColor(&Theme::getThemeColor(Theme::PARTY_SOCIAL_TAB));
 
         mList = new AvatarListBox(party);
         mScroll = new ScrollArea(mList);
@@ -219,7 +219,7 @@ public:
                                         mParty->getName().c_str()))
             mConfirmDialog = NULL;
         }
-        else if (event.getId() == "~yes")
+        else if (event.getId() == "no")
         {
             mConfirmDialog = NULL;
         }
@@ -498,10 +498,12 @@ void SocialWindow::action(const gcn::ActionEvent &event)
                             "shorter name."));
             return;
         }
-
-        Net::getGuildHandler()->create(name);
-        SERVER_NOTICE(strprintf(_("Creating guild called %s."),
-                                            name.c_str()))
+        else if (!name.empty())
+        {
+            Net::getGuildHandler()->create(name);
+            SERVER_NOTICE(strprintf(_("Creating guild called %s."),
+                                    name.c_str()));
+        }
 
         mGuildCreateDialog = NULL;
     }
@@ -519,10 +521,12 @@ void SocialWindow::action(const gcn::ActionEvent &event)
                             "shorter name."));
             return;
         }
-
-        Net::getPartyHandler()->create(name);
-        SERVER_NOTICE(strprintf(_("Creating party called %s."),
-                                            name.c_str()));
+        else if (!name.empty())
+        {
+            Net::getPartyHandler()->create(name);
+            SERVER_NOTICE(strprintf(_("Creating party called %s."),
+                                    name.c_str()));
+        }
 
         mPartyCreateDialog = NULL;
     }

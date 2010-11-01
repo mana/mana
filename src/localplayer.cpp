@@ -84,7 +84,8 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mWalkingDir(0),
     mPathSetByMouse(false),
     mLocalWalkTime(-1),
-    mMessageTime(0)
+    mMessageTime(0),
+    mShowIp(false)
 {
     listen("Attributes");
 
@@ -635,8 +636,9 @@ void LocalPlayer::pickUp(FloorItem *item)
     if (!item)
         return;
 
-    int dx = item->getTileX() - (int) getPosition().x / 32;
-    int dy = item->getTileY() - (int) getPosition().y / 32;
+    int dx = item->getTileX() - (int) getPosition().x / mMap->getTileWidth();
+    int dy = item->getTileY() - ((int) getPosition().y - 1)
+             / mMap->getTileHeight();
 
     if (dx * dx + dy * dy < 4)
     {
@@ -931,20 +933,23 @@ void LocalPlayer::attack(Being *target, bool keep)
         if (mAction != STAND)
             return;
 
+        Uint8 direction = 0;
         if (abs(dist_y) >= abs(dist_x))
         {
             if (dist_y > 0)
-                setDirection(DOWN);
+                direction = DOWN;
             else
-                setDirection(UP);
+                direction = UP;
         }
         else
         {
             if (dist_x > 0)
-                setDirection(RIGHT);
+                direction = RIGHT;
             else
-                setDirection(LEFT);
+                direction = LEFT;
         }
+        Net::getPlayerHandler()->setDirection(direction);
+        setDirection(direction);
 
         mActionTime = tick_time;
         mTargetTime = tick_time;

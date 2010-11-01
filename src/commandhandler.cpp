@@ -21,6 +21,7 @@
 
 #include "commandhandler.h"
 
+#include "actorspritemanager.h"
 #include "channelmanager.h"
 #include "channel.h"
 #include "game.h"
@@ -46,7 +47,8 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
 {
     std::string::size_type pos = command.find(' ');
     std::string type(command, 0, pos);
-    std::string args(command, pos == std::string::npos ? command.size() : pos + 1);
+    std::string args(command, pos == std::string::npos ?
+                                     command.size() : pos + 1);
 
     if (type == "help") // Do help before tabs so they can't override it
     {
@@ -119,6 +121,10 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     else if (type == "present")
     {
         handlePresent(args, tab);
+    }
+    else if (type == "showip" && Net::getNetworkType() == ServerInfo::TMWATHENA)
+    {
+        handleShowIp(args, tab);
     }
     else
     {
@@ -460,6 +466,35 @@ void CommandHandler::handleToggle(const std::string &args, ChatTab *tab)
         case -1:
             tab->chatLog(strprintf(BOOLEAN_OPTIONS, "toggle"));
     }
+}
+
+void CommandHandler::handleShowIp(const std::string &args, ChatTab *tab)
+{
+    if (args.empty())
+    {
+        tab->chatLog(player_node->getShowIp() ?
+                _("Show IP: On") : _("Show IP: Off"));
+        return;
+    }
+
+    char opt = parseBoolean(args);
+
+    switch (opt)
+    {
+        case 0:
+            tab->chatLog(_("Show IP: Off"));
+            player_node->setShowIp(false);
+            break;
+        case 1:
+            tab->chatLog(_("Show IP: On"));
+            player_node->setShowIp(true);
+            break;
+        case -1:
+            tab->chatLog(strprintf(BOOLEAN_OPTIONS, "showip"));
+            return;
+    }
+
+    actorSpriteManager->updatePlayerNames();
 }
 
 void CommandHandler::handlePresent(const std::string &args, ChatTab *tab)

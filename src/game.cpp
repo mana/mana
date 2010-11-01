@@ -287,7 +287,22 @@ static bool saveScreenshot()
 {
     static unsigned int screenshotCount = 0;
 
+    // We don't want to show IP addresses in screenshots
+    const bool showip = player_node->getShowIp();
+    if (showip)
+    {
+        player_node->setShowIp(false);
+        actorSpriteManager->updatePlayerNames();
+        gui->draw();
+    }
+
     SDL_Surface *screenshot = graphics->getScreenshot();
+
+    if (showip)
+    {
+        player_node->setShowIp(true);
+        actorSpriteManager->updatePlayerNames();
+    }
 
     // Search for an unused screenshot name
     std::stringstream filenameSuffix;
@@ -304,7 +319,8 @@ static bool saveScreenshot()
         screenshotDirectory = std::string(PHYSFS_getUserDir());
     }
 
-    do {
+    do
+    {
         screenshotCount++;
         filenameSuffix.str("");
         filename.str("");
@@ -315,7 +331,8 @@ static bool saveScreenshot()
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
         testExists.close();
-    } while (!found);
+    }
+    while (!found);
 
     const bool success = ImageWriter::writePNG(screenshot, filename.str());
 
@@ -602,13 +619,8 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-                            const Vector &pos = player_node->getPosition();
-                            Map *map = viewport->getCurrentMap();
-                            Uint16 x = (int) pos.x / map->getTileWidth();
-                            Uint16 y = (int) (pos.y - 1)
-                                       / map->getTileHeight();
-                            // y - 1 needed to fix position, otherwise, it's
-                            // off under eAthena.
+                            int x = player_node->getTileX();
+                            int y = player_node->getTileY();
 
                             FloorItem *item =
                                     actorSpriteManager->findItem(x, y);

@@ -210,6 +210,7 @@ Setup_Video::Setup_Video():
     mPickupParticleEnabled(config.getBoolValue("showpickupparticle")),
     mOpacity(config.getFloatValue("guialpha")),
     mFps(config.getIntValue("fpslimit")),
+    mSDLTransparencyDisabled(config.getBoolValue("disableTransparency")),
     mSpeechMode(static_cast<Being::Speech>(config.getIntValue("speech"))),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
@@ -222,7 +223,7 @@ Setup_Video::Setup_Video():
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
                                           mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
-    mNPCLogCheckBox(new CheckBox(_("Log NPC interactions"), mNPCLogEnabled)),
+    mNPCLogCheckBox(new CheckBox(_("Log NPC dialogue"), mNPCLogEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification"))),
     // TRANSLATORS: Refers to "Show pickup notification"
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
@@ -241,11 +242,14 @@ Setup_Video::Setup_Video():
     mParticleDetail(3 - config.getIntValue("particleEmitterSkip")),
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new Label),
-    mFontSize(config.getIntValue("fontSize"))
+    mFontSize(config.getIntValue("fontSize")),
+    mDisableSDLTransparencyCheckBox(
+                          new CheckBox(_("Disable transparency (Low CPU mode)"),
+                                       mSDLTransparencyDisabled))
 {
     setName(_("Video"));
 
-    mShowMonsterDamageCheckBox = new CheckBox(_("Show monster damage"),
+    mShowMonsterDamageCheckBox = new CheckBox(_("Show damage"),
                                               mShowMonsterDamageEnabled);
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
@@ -268,12 +272,17 @@ Setup_Video::Setup_Video():
 
     mAlphaSlider->setValue(mOpacity);
     mAlphaSlider->setWidth(90);
+    mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
 
     mFpsLabel->setCaption(mFps > 0 ? toString(mFps) : _("None"));
     mFpsLabel->setWidth(60);
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setSelected(mFps > 0);
+
+    // If the openGL Mode is enabled, disabling the transaprency
+    // is irrelevant.
+    mDisableSDLTransparencyCheckBox->setEnabled(!mOpenGLEnabled);
 
     // Pre-select the current video mode.
     std::string videoMode = toString(graphics->getWidth()) + "x"
@@ -295,13 +304,16 @@ Setup_Video::Setup_Video():
     mFpsSlider->setActionEventId("fpslimitslider");
     mOverlayDetailSlider->setActionEventId("overlaydetailslider");
     mOverlayDetailField->setActionEventId("overlaydetailfield");
+    mOpenGLCheckBox->setActionEventId("opengl");
     mParticleDetailSlider->setActionEventId("particledetailslider");
     mParticleDetailField->setActionEventId("particledetailfield");
+    mDisableSDLTransparencyCheckBox->setActionEventId("disableTransparency");
 
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
     mShowMonsterDamageCheckBox->addActionListener(this);
     mVisibleNamesCheckBox->addActionListener(this);
+    mOpenGLCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
     mPickupChatCheckBox->addActionListener(this);
     mPickupParticleCheckBox->addActionListener(this);
@@ -315,6 +327,7 @@ Setup_Video::Setup_Video():
     mOverlayDetailField->addKeyListener(this);
     mParticleDetailSlider->addActionListener(this);
     mParticleDetailField->addKeyListener(this);
+    mDisableSDLTransparencyCheckBox->addActionListener(this);
 
     mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
     mSpeechSlider->setValue(mSpeechMode);
@@ -371,6 +384,8 @@ Setup_Video::Setup_Video():
     place(0, 11, mParticleDetailSlider);
     place(1, 11, particleDetailLabel);
     place(2, 11, mParticleDetailField, 3).setPadding(2);
+
+    place(0, 12, mDisableSDLTransparencyCheckBox, 4);
 
     setDimension(gcn::Rectangle(0, 0, 365, 300));
 }
@@ -442,8 +457,9 @@ void Setup_Video::apply()
         {
             new OkDialog(_("Changing to OpenGL"),
                          _("Applying change to OpenGL requires restart. "
-                           "In case OpenGL messes up your game graphics, restart "
-                           "the game with the command line option \"--no-opengl\"."));
+                           "In case OpenGL messes up your game graphics, "
+                           "restart the game with the command line option "
+                           "\"--no-opengl\"."));
         }
         else
         {
@@ -451,6 +467,25 @@ void Setup_Video::apply()
                          _("Applying change to OpenGL requires restart."));
         }
     }
+    // If LowCPU is enabled from a disabled state we warn the user
+    else if (mDisableSDLTransparencyCheckBox->isSelected())
+    {
+        if (config.getValue("disableTransparency", true) == false)
+        {
+            new OkDialog(_("Transparency disabled"),
+                 _("You must restart to apply changes."));
+        }
+    }
+    else
+    {
+        if (config.getValue("disableTransparency", true) == true)
+        {
+            new OkDialog(_("Transparency enabled"),
+                 _("You must restart to apply changes."));
+        }
+    }
+    config.setValue("disableTransparency",
+                                 mDisableSDLTransparencyCheckBox->isSelected());
 
     mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;
     mFpsSlider->setEnabled(mFps > 0);
@@ -467,13 +502,13 @@ void Setup_Video::apply()
     mParticleEffectsEnabled = config.getBoolValue("particleeffects");
     mNameEnabled = config.getBoolValue("showownname");
     mNPCLogEnabled = config.getBoolValue("logNpcInGui");
-    mSpeechMode = static_cast<Being::Speech>(
-            config.getIntValue("speech"));
+    mSpeechMode = static_cast<Being::Speech>(config.getIntValue("speech"));
     mOpacity = config.getFloatValue("guialpha");
     mOverlayDetail = config.getIntValue("OverlayDetail");
     mOpenGLEnabled = config.getBoolValue("opengl");
     mPickupChatEnabled = config.getBoolValue("showpickupchat");
     mPickupParticleEnabled = config.getBoolValue("showpickupparticle");
+    mSDLTransparencyDisabled = config.getBoolValue("disableTransparency");
 }
 
 void Setup_Video::cancel()
@@ -491,10 +526,13 @@ void Setup_Video::cancel()
     mNameCheckBox->setSelected(mNameEnabled);
     mNPCLogCheckBox->setSelected(mNPCLogEnabled);
     mAlphaSlider->setValue(mOpacity);
+    mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
     std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : _("None");
     mFpsLabel->setCaption(text);
+    mDisableSDLTransparencyCheckBox->setSelected(mSDLTransparencyDisabled);
+    mDisableSDLTransparencyCheckBox->setEnabled(!mOpenGLEnabled);
 
     config.setValue("screen", mFullScreenEnabled);
 
@@ -518,6 +556,7 @@ void Setup_Video::cancel()
     config.setValue("opengl", mOpenGLEnabled);
     config.setValue("showpickupchat", mPickupChatEnabled);
     config.setValue("showpickupparticle", mPickupParticleEnabled);
+    config.setValue("disableTransparency", mSDLTransparencyDisabled);
 }
 
 void Setup_Video::action(const gcn::ActionEvent &event)
@@ -625,5 +664,25 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         mFpsLabel->setCaption(text);
         mFpsSlider->setValue(mFps);
         mFpsSlider->setEnabled(mFps > 0);
+    }
+    else if (id == "opengl" || id == "disableTransparency")
+    {
+        // Disable transparency disabling when in OpenGL.
+        if (mOpenGLCheckBox->isSelected())
+        {
+            mDisableSDLTransparencyCheckBox->setSelected(false);
+            mDisableSDLTransparencyCheckBox->setEnabled(false);
+        }
+        else
+        {
+            mDisableSDLTransparencyCheckBox->setEnabled(true);
+        }
+
+        // Disable gui opacity slider when disabling transparency.
+        if (mDisableSDLTransparencyCheckBox->isEnabled())
+            mAlphaSlider->setEnabled(
+                                !mDisableSDLTransparencyCheckBox->isSelected());
+        else
+            mAlphaSlider->setEnabled(true);
     }
 }

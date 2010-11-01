@@ -64,8 +64,8 @@ class TextChunk
 
             if (!surface)
             {
-                throw "Rendering font to surface failed: " +
-                    std::string(TTF_GetError());
+                img = 0;
+                return;
             }
 
             img = Image::load(surface);
@@ -108,9 +108,7 @@ TrueTypeFont::~TrueTypeFont()
     --fontCounter;
 
     if (fontCounter == 0)
-    {
         TTF_Quit();
-    }
 }
 
 void TrueTypeFont::drawString(gcn::Graphics *graphics,
@@ -123,9 +121,7 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
     Graphics *g = dynamic_cast<Graphics *>(graphics);
 
     if (!g)
-    {
         throw "Not a valid graphics object!";
-    }
 
     gcn::Color col = g->getColor();
     const float alpha = col.a / 255.0f;
@@ -154,15 +150,16 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
     if (!found)
     {
         if (mCache.size() >= CACHE_SIZE)
-        {
             mCache.pop_back();
-        }
         mCache.push_front(chunk);
         mCache.front().generate(mFont);
     }
 
-    mCache.front().img->setAlpha(alpha);
-    g->drawImage(mCache.front().img, x, y);
+    if (mCache.front().img)
+    {
+        mCache.front().img->setAlpha(alpha);
+        g->drawImage(mCache.front().img, x, y);
+    }
 }
 
 int TrueTypeFont::getWidth(const std::string &text) const
@@ -174,7 +171,10 @@ int TrueTypeFont::getWidth(const std::string &text) const
             // Raise priority: move it to front
             // Assumption is that TTF::draw will be called next
             mCache.splice(mCache.begin(), mCache, i);
-            return i->img->getWidth();
+            if (i->img)
+                return i->img->getWidth();
+            else
+                return 0;
         }
     }
 

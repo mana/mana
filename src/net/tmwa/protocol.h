@@ -181,6 +181,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_PLAYER_STORAGE_CLOSE    0x00f8 /**< Storage access closed */
 
 #define SMSG_ADMIN_KICK_ACK          0x00cd
+#define SMSG_ADMIN_IP                0x020c
 
 #define SMSG_GUILD_CREATE_RESPONSE   0x0167
 #define SMSG_GUILD_POSITION_INFO     0x016c

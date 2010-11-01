@@ -2,6 +2,7 @@
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
  *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2009  Aethyra Development Team
  *
  *  This file is part of The Mana Client.
  *
@@ -30,10 +31,37 @@
 
 class LinkHandler;
 
-struct BROWSER_LINK {
+struct BROWSER_LINK
+{
     int x1, x2, y1, y2;     /**< Where link is placed */
     std::string link;
     std::string caption;
+};
+
+class LinePart
+{
+    public:
+        LinePart(int x, int y, gcn::Color color, std::string text) :
+            mX(x), mY(y), mColor(color), mText(text)
+        {
+        }
+
+        int getX() const
+        { return mX; }
+
+        int getY() const
+        { return mY; }
+
+        const std::string &getText() const
+        { return mText; }
+
+        const gcn::Color &getColor() const
+        { return mColor; }
+
+    private:
+        int mX, mY;
+        gcn::Color mColor;
+        std::string mText;
 };
 
 /**
@@ -72,7 +100,7 @@ class BrowserBox : public gcn::Widget,
         /**
          * Sets the maximum numbers of rows in the browser box. 0 = no limit.
          */
-        void setMaxRow(int max) {mMaxRows = max; };
+        void setMaxRow(unsigned max) {mMaxRows = max; };
 
         /**
          * Disable links & user defined colors to be used in chat input.
@@ -111,8 +139,9 @@ class BrowserBox : public gcn::Widget,
         /**
          * BrowserBox modes.
          */
-        enum {
-            AUTO_SIZE,
+        enum
+        {
+            AUTO_SIZE = 0,
             AUTO_WRAP       /**< Maybe it needs a fix or to be redone. */
         };
 
@@ -126,7 +155,8 @@ class BrowserBox : public gcn::Widget,
          *    windows and widgets. So, I think it's better keep BrowserBox
          *    opaque (white background) by default.
          */
-        enum {
+        enum
+        {
             RED = 0xff0000,         /**< Color 1 */
             GREEN = 0x009000,       /**< Color 2 */
             BLUE = 0x0000ff,        /**< Color 3 */
@@ -142,21 +172,29 @@ class BrowserBox : public gcn::Widget,
          * Highlight modes for links.
          * This can be used for a bitmask.
          */
-        enum {
+        enum
+        {
             UNDERLINE  = 1,
             BACKGROUND = 2
         };
 
+        typedef std::list<std::string> TextRows;
+
+        TextRows &getRows()
+        { return mTextRows; }
+
+        void setAlwaysUpdate(bool n)
+        { mAlwaysUpdate = n; }
+
     private:
         int calcHeight();
 
-        typedef std::list<std::string> TextRows;
         typedef TextRows::iterator TextRowIterator;
         TextRows mTextRows;
 
-        typedef std::list<int> TextRowsHeights;
-        typedef TextRowsHeights::iterator TextRowsHeightIterator;
-        TextRowsHeights mTextRowsHeights;
+        typedef std::list<LinePart> LinePartList;
+        typedef LinePartList::iterator LinePartIterator;
+        LinePartList mLineParts;
 
         typedef std::vector<BROWSER_LINK> Links;
         typedef Links::iterator LinkIterator;
@@ -172,6 +210,8 @@ class BrowserBox : public gcn::Widget,
         int mHeight;
         int mWidth;
         int mYStart;
+        int mUpdateTime;
+        bool mAlwaysUpdate;
 };
 
 #endif

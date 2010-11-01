@@ -42,7 +42,7 @@ namespace TmwAthena {
 PartyTab::PartyTab() :
     ChatTab(_("Party"))
 {
-    setTabColor(&Theme::getThemeColor(Theme::PARTY));
+    setTabColor(&Theme::getThemeColor(Theme::PARTY_CHAT_TAB));
 }
 
 PartyTab::~PartyTab()

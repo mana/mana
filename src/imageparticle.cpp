@@ -48,20 +48,12 @@ bool ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     int screenY = (int) mPos.y - (int)mPos.z + offsetY - mImage->getHeight()/2;
 
     // Check if on screen
-    if (screenX + mImage->getWidth() < 0 ||
-            screenX > graphics->getWidth() ||
-            screenY + mImage->getHeight() < 0 ||
-            screenY > graphics->getHeight())
+    if (screenX + mImage->getWidth() < 0
+        || screenX > graphics->getWidth()
+        || screenY + mImage->getHeight() < 0
+        || screenY > graphics->getHeight())
         return false;
 
-    float alphafactor = mAlpha;
-
-    if (mLifetimeLeft > -1 && mLifetimeLeft < mFadeOut)
-        alphafactor *= (float) mLifetimeLeft / (float) mFadeOut;
-
-    if (mLifetimePast < mFadeIn)
-        alphafactor *= (float) mLifetimePast / (float) mFadeIn;
-
-    mImage->setAlpha(alphafactor);
+    mImage->setAlpha(getCurrentAlpha());
     return graphics->drawImage(mImage, screenX, screenY);
 }

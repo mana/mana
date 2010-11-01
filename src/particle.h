@@ -266,7 +266,12 @@ class Particle : public Actor
         { mDeathEffect = effectFile; mDeathEffectConditions = conditions; }
 
     protected:
-        float mAlpha;               /**< Opacity of the graphical representation of the particle */
+        /** Opacity of the graphical representation of the particle */
+        float mAlpha;
+
+        /** Calculates the current alpha transparency taking current fade status into account*/
+        float getCurrentAlpha() const;
+
         int mLifetimeLeft;          /**< Lifetime left in game ticks*/
         int mLifetimePast;          /**< Age of the particle in game ticks*/
         int mFadeOut;               /**< Lifetime in game ticks left where fading out begins*/

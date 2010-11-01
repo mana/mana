@@ -199,13 +199,18 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     mDownloadStatus(DOWNLOADING_PREPARING),
     mDownloadProgress(-1.0f),
     mServers(ServerInfos()),
+#ifndef MANASERV_SUPPORT
+    mManaservServers(ServerInfos()),
+#endif
     mServerInfo(serverInfo)
 {
     setWindowName("ServerDialog");
 
     Label *serverLabel = new Label(_("Server:"));
     Label *portLabel = new Label(_("Port:"));
+#ifdef MANASERV_SUPPORT
     Label *typeLabel = new Label(_("Server type:"));
+#endif
     mServerNameField = new TextField(mServerInfo->hostname);
     mPortField = new TextField(toString(mServerInfo->port));
 
@@ -214,7 +219,6 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     mServersListModel = new ServersListModel(&mServers, this);
 
     mServersList = new ServersListBox(mServersListModel);
-    mServersList->addMouseListener(this);
 
     ScrollArea *usedScroll = new ScrollArea(mServersList);
     usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -244,6 +248,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     place(1, 0, mServerNameField, 4).setPadding(3);
     place(0, 1, portLabel);
     place(1, 1, mPortField, 4).setPadding(3);
+#ifdef MANASERV_SUPPORT
     place(0, 2, typeLabel);
     place(1, 2, mTypeField, 4).setPadding(3);
     place(0, 3, usedScroll, 5, 5).setPadding(3);
@@ -252,6 +257,14 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     place(1, 9, mDeleteButton);
     place(3, 9, mQuitButton);
     place(4, 9, mConnectButton);
+#else
+    place(0, 2, usedScroll, 5, 5).setPadding(3);
+    place(0, 7, mDescription, 5);
+    place(0, 8, mManualEntryButton);
+    place(1, 8, mDeleteButton);
+    place(3, 8, mQuitButton);
+    place(4, 8, mConnectButton);
+#endif
 
     // Make sure the list has enough height
     getLayout().setRowHeight(3, 80);
@@ -417,16 +430,6 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     mDeleteButton->setEnabled(myServer.save);
 }
 
-void ServerDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
-{
-    if (mouseEvent.getClickCount() == 2 &&
-        mouseEvent.getSource() == mServersList)
-    {
-        action(gcn::ActionEvent(mConnectButton,
-                                mConnectButton->getActionEventId()));
-    }
-}
-
 void ServerDialog::logic()
 {
     {
@@ -468,7 +471,11 @@ void ServerDialog::setFieldsReadOnly(bool readOnly)
         mServersList->setSelected(-1);
 
         mServerNameField->setText(std::string());
+#ifdef MANASERV_SUPPORT
         mPortField->setText(std::string());
+#else
+        mPortField->setText(std::string("6901"));
+#endif
 
         mServerNameField->requestFocus();
     }
@@ -590,7 +597,11 @@ void ServerDialog::loadServers()
             }
         }
 
+#ifdef MANASERV_SUPPORT
         if (!found)
+#else
+        if (!found && server.type != ServerInfo::MANASERV)
+#endif
             mServers.push_back(server);
     }
 }
@@ -616,7 +627,15 @@ void ServerDialog::loadCustomServers()
             break;
 
         server.save = true;
+
+#ifdef MANASERV_SUPPORT
         mServers.push_back(server);
+#else
+        if (server.type == ServerInfo::MANASERV)
+            mManaservServers.push_back(server);
+        else
+            mServers.push_back(server);
+#endif
     }
 }
 
@@ -659,6 +678,27 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer)
         ++savedServerCount;
     }
 
+#ifndef MANASERV_SUPPORT
+    for (unsigned i = 0;
+         i < mManaservServers.size() && savedServerCount < MAX_SERVERLIST; ++i)
+    {
+        const ServerInfo &server = mManaservServers.at(i);
+
+        // Only save servers that were loaded from settings
+        if (!(server.save && server.isValid()))
+            continue;
+
+        const std::string index = toString(savedServerCount);
+        const std::string nameKey = "MostUsedServerName" + index;
+        const std::string typeKey = "MostUsedServerType" + index;
+        const std::string portKey = "MostUsedServerPort" + index;
+
+        config.setValue(nameKey, toString(server.hostname));
+        config.setValue(typeKey, serverTypeToString(server.type));
+        config.setValue(portKey, toString(server.port));
+        ++savedServerCount;
+    }
+#endif
     // Insert an invalid entry at the end to make the loading stop there
     if (savedServerCount < MAX_SERVERLIST)
         config.setValue("MostUsedServerName" + toString(savedServerCount), "");

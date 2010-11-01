@@ -49,6 +49,9 @@ class UserPalette : public Palette, public gcn::ListModel
             HIT_PLAYER_MONSTER,
             HIT_MONSTER_PLAYER,
             HIT_CRITICAL,
+            HIT_LOCAL_PLAYER_MONSTER,
+            HIT_LOCAL_PLAYER_CRITICAL,
+            HIT_LOCAL_PLAYER_MISS,
             MISS,
             USER_COLOR_LAST
         };

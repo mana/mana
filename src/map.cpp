@@ -390,22 +390,26 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
         }
     }
 
-    // Draws beings with a lower opacity to make them visible
-    // even when covered by a wall or some other elements...
-    Actors::const_iterator ai = mActors.begin();
-    while (ai != mActors.end())
+    // If the transparency hasn't been disabled,
+    if (Image::useOpenGL() || !Image::SDLisTransparencyDisabled())
     {
-        if (Actor *actor = *ai)
+        // We draw beings with a lower opacity to make them visible
+        // even when covered by a wall or some other elements...
+        Actors::const_iterator ai = mActors.begin();
+        while (ai != mActors.end())
         {
-            // For now, just draw actors with only one layer.
-            if (actor->getNumberOfLayers() == 1)
+            if (Actor *actor = *ai)
             {
-                actor->setAlpha(0.3f);
-                actor->draw(graphics, -scrollX, -scrollY);
-                actor->setAlpha(1.0f);
+                // For now, just draw actors with only one layer.
+                if (actor->getNumberOfLayers() == 1)
+                {
+                    actor->setAlpha(0.3f);
+                    actor->draw(graphics, -scrollX, -scrollY);
+                    actor->setAlpha(1.0f);
+                }
             }
+            ai++;
         }
-        ai++;
     }
 
     drawAmbientLayers(graphics, FOREGROUND_LAYERS, scrollX, scrollY,

@@ -490,6 +490,18 @@ class Being : public ActorSprite, public ConfigListener, public Mana::Listener
          */
         void setGM(bool gm);
 
+        /**
+         * Sets the IP or an IP hash.
+         * The TMW-Athena server sends this information only to GMs.
+         */
+        void setIp(int ip) { mIp = ip; }
+
+        /**
+         * Returns the player's IP or an IP hash.
+         * Value is 0 if not set by the server.
+         */
+        int getIp() const { return mIp; }
+
         bool canTalk();
 
         void talkTo();
@@ -585,6 +597,8 @@ class Being : public ActorSprite, public ConfigListener, public Mana::Listener
         int mX, mY;   /**< Position in tile */
 
         int mDamageTaken;
+
+        int mIp;
 };
 
 #endif

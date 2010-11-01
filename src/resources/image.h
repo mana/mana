@@ -39,6 +39,8 @@
 #include <SDL_opengl.h>
 #endif
 
+#include <map>
+
 class Dye;
 class Position;
 
@@ -111,16 +113,10 @@ class Image : public Resource
         { return mBounds.h; }
 
         /**
-         * Tells if the image was loaded using OpenGL or SDL
+         * Tells if the system is using OpenGL or SDL
          * @return true if OpenGL, false if SDL.
          */
-        bool isAnOpenGLOne() const;
-
-        /**
-         * Tells if the image has got an alpha channel
-         * @return true if it's true, false otherwise.
-         */
-        bool hasAlphaChannel();
+        static bool useOpenGL();
 
         /**
          * Sets the alpha value of this image.
@@ -141,8 +137,22 @@ class Image : public Resource
          */
         virtual Image *getSubImage(int x, int y, int width, int height);
 
+        /**
+         * Tells if the image has got an alpha channel
+         * @return true if it's true, false otherwise.
+         */
+        bool hasAlphaChannel();
 
         // SDL only public functions
+
+        /**
+         * Disable the transparency handling (for low CPUs in SDL Mode)
+         */
+        static void SDLdisableTransparency()
+        { mDisableTransparency = true; }
+
+        static bool SDLisTransparencyDisabled()
+        { return mDisableTransparency; }
 
         /**
          * Gets an scaled instance of an image.
@@ -169,6 +179,15 @@ class Image : public Resource
         Uint8 *SDLgetAlphaChannel() const
         { return mAlphaChannel; }
 
+        SDL_Surface* SDLduplicateSurface(SDL_Surface* tmpImage);
+
+        void SDLcleanCache();
+
+        void SDLterminateAlphaCache();
+
+        static void SDLsetEnableAlphaCache(bool n)
+        { mEnableAlphaCache = n; }
+
 #ifdef USE_OPENGL
 
         // OpenGL only public functions
@@ -188,18 +207,17 @@ class Image : public Resource
 
     protected:
 
-      // -----------------------
-      // Generic protected members
-      // -----------------------
+        // -----------------------
+        // Generic protected members
+        // -----------------------
 
         SDL_Rect mBounds;
         bool mLoaded;
         float mAlpha;
-        bool mHasAlphaChannel;
 
-      // -----------------------
-      // SDL protected members
-      // -----------------------
+        // -----------------------
+        // SDL protected members
+        // -----------------------
 
         /** SDL Constructor */
         Image(SDL_Surface *image, bool hasAlphaChannel = false,
@@ -208,14 +226,27 @@ class Image : public Resource
         /** SDL_Surface to SDL_Surface Image loader */
         static Image *_SDLload(SDL_Surface *tmpImage);
 
+        SDL_Surface *getByAlpha(float alpha);
+
         SDL_Surface *mSDLSurface;
 
         /** Alpha Channel pointer used for 32bit based SDL surfaces */
         Uint8 *mAlphaChannel;
+        bool mHasAlphaChannel;
 
-      // -----------------------
-      // OpenGL protected members
-      // -----------------------
+        /** Alpha cache: The cache stores a copy of the image
+            for specific requested opacities, hence, increasing
+            the image disply speed */
+        std::map<float, SDL_Surface*> mAlphaCache;
+        bool mUseAlphaCache;
+        static bool mEnableAlphaCache;
+
+        /** Stores whether the transparency is disabled */
+        static bool mDisableTransparency;
+
+        // -----------------------
+        // OpenGL protected members
+        // -----------------------
 #ifdef USE_OPENGL
         /**
          * OpenGL Constructor.

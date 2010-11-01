@@ -533,3 +533,18 @@ SDL_Surface *ResourceManager::loadSDLSurface(const std::string &filename)
 
     return tmp;
 }
+
+void ResourceManager::scheduleDelete(SDL_Surface* surface)
+{
+    mDeletedSurfaces.insert(surface);
+}
+
+void ResourceManager::clearScheduled()
+{
+    for (std::set<SDL_Surface*>::iterator i = mDeletedSurfaces.begin(),
+         i_end = mDeletedSurfaces.end(); i != i_end; ++i)
+    {
+        SDL_FreeSurface(*i);
+    }
+    mDeletedSurfaces.clear();
+}

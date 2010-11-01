@@ -54,6 +54,7 @@ ChatTab::ChatTab(const std::string &name) : Tab()
     mTextOutput->setOpaque(false);
     mTextOutput->setMaxRow((int) config.getIntValue("ChatLogLength"));
     mTextOutput->setLinkHandler(chatWindow->mItemLinkHandler);
+    mTextOutput->setAlwaysUpdate(false);
 
     mScrollArea = new ScrollArea(mTextOutput);
     mScrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,

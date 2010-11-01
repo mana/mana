@@ -127,6 +127,8 @@ class Theme : public Palette, public ConfigListener
             BUTTON,
             BUTTON_DISABLED,
             TAB,
+            PARTY_CHAT_TAB,
+            PARTY_SOCIAL_TAB,
             BACKGROUND,
             HIGHLIGHT,
             TAB_FLASH,

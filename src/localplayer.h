@@ -164,6 +164,12 @@ class LocalPlayer : public Being
          */
         void pickedUp(const ItemInfo &itemInfo, int amount);
 
+        void setShowIp(bool show)
+        { mShowIp = show; }
+
+        bool getShowIp() const
+        { return mShowIp; }
+
         /** Tells that the path has been set by mouse. */
         void pathSetByMouse()
         { mPathSetByMouse = true; }
@@ -183,7 +189,7 @@ class LocalPlayer : public Being
         void event(const std::string &channel, const Mana::Event &event);
 
         /**
-         * Tells the engine whether to check
+         * Tells the engine wether to check
          * if the Player Name is to be displayed.
          */
         void setCheckNameSetting(bool checked) { mUpdateName = checked; }
@@ -224,6 +230,8 @@ class LocalPlayer : public Being
         /** Queued messages*/
         std::list<MessagePair> mMessages;
         int mMessageTime;
+
+        bool mShowIp;
 };
 
 extern LocalPlayer *player_node;

@@ -255,47 +255,13 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
 
         if (mSelectedIndex == index)
         {
-            if(event.getClickCount() == 2)
-            {
-                if (item->getInfo().getEquippable())
-                {
-                    if (item->isEquipped())
-                        item->doEvent("doUnequip");
-                    else
-                        item->doEvent("doEquip");
-                }
-                else
-                    item->doEvent("doUse");
-
-            }
-            else
-            {
-                mSelectionStatus = SEL_DESELECTING;
-            }
+            mSelectionStatus = SEL_DESELECTING;
         }
         else if (item && item->getId())
         {
-            if(event.getClickCount() == 2)
-            {
-                if (item->getInfo().getEquippable())
-                {
-                    if (item->isEquipped())
-                        item->doEvent("doUnequip");
-                    else
-                        item->doEvent("doEquip");
-                }
-                else
-                {
-                    item->doEvent("doUse");
-                }
-            }
-            else
-            {
-                setSelectedIndex(index);
-                mSelectionStatus = SEL_SELECTING;
-
-                itemShortcut->setItemSelected(item->getId());
-            }
+            setSelectedIndex(index);
+            mSelectionStatus = SEL_SELECTING;
+            itemShortcut->setItemSelected(item->getId());
 
             if (item->getInfo().getEquippable())
                 outfitWindow->setItemSelected(item->getId());

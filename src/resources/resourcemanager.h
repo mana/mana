@@ -26,6 +26,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <set>
 
 class Image;
 class ImageSet;
@@ -205,6 +206,10 @@ class ResourceManager
          */
         SDL_Surface *loadSDLSurface(const std::string &filename);
 
+        void scheduleDelete(SDL_Surface* surface);
+
+        void clearScheduled();
+
         /**
          * Returns an instance of the class, creating one if it does not
          * already exist.
@@ -227,6 +232,7 @@ class ResourceManager
         static ResourceManager *instance;
         typedef std::map<std::string, Resource*> Resources;
         typedef Resources::iterator ResourceIterator;
+        std::set<SDL_Surface*> mDeletedSurfaces;
         Resources mResources;
         Resources mOrphanedResources;
         time_t mOldestOrphan;

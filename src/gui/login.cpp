@@ -91,8 +91,6 @@ LoginDialog::LoginDialog(LoginData *loginData):
         mPassField->requestFocus();
 
     mLoginButton->setEnabled(canSubmit());
-    mRegisterButton->setEnabled(Net::getLoginHandler()
-                                ->isRegistrationEnabled());
 }
 
 LoginDialog::~LoginDialog()
@@ -120,10 +118,17 @@ void LoginDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "register")
     {
-        mLoginData->username = mUserField->getText();
-        mLoginData->password = mPassField->getText();
-
-        Client::setState(STATE_REGISTER_PREP);
+        if (Net::getLoginHandler()->isRegistrationEnabled())
+        {
+            mLoginData->username = mUserField->getText();
+            mLoginData->password = mPassField->getText();
+            Client::setState(STATE_REGISTER_PREP);
+        }
+        else
+        {
+            new OkDialog(_("Registration disabled"), _("You need to use the "
+                           "website to register an account for this server."));
+        }
     }
 }
 

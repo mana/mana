@@ -44,7 +44,8 @@ const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 BeingHandler::BeingHandler(bool enableSync):
    mSync(enableSync)
 {
-    static const Uint16 _messages[] = {
+    static const Uint16 _messages[] =
+    {
         SMSG_BEING_VISIBLE,
         SMSG_BEING_MOVE,
         SMSG_BEING_SPAWN,
@@ -354,7 +355,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             }
             break;
 
-        case SMSG_BEING_SELFEFFECT: {
+        case SMSG_BEING_SELFEFFECT:
+        {
             id = (Uint32)msg.readInt32();
             Being* being = actorSpriteManager->findBeing(id);
             if (!being)
@@ -562,7 +564,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
                 dstBeing->setTileCoords(srcX, srcY);
                 dstBeing->setDestination(dstX, dstY);
-
             }
             else
             {

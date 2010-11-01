@@ -34,7 +34,7 @@ AmbientOverlay::AmbientOverlay(Image *img, float parallax,
     mKeepRatio(keepRatio)
 {
 
-    if (keepRatio && !mImage->isAnOpenGLOne()
+    if (keepRatio && !mImage->useOpenGL()
         && defaultScreenWidth != 0
         && defaultScreenHeight != 0
         && graphics->getWidth() != defaultScreenWidth
@@ -92,7 +92,7 @@ void AmbientOverlay::update(int timePassed, float dx, float dy)
 
 void AmbientOverlay::draw(Graphics *graphics, int x, int y)
 {
-    if (!mImage->isAnOpenGLOne() || !mKeepRatio)
+    if (!mImage->useOpenGL() || !mKeepRatio)
         graphics->drawImagePattern(mImage,
             (int) -mPosX, (int) -mPosY, x + (int) mPosX, y + (int) mPosY);
     else

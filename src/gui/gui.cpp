@@ -160,6 +160,9 @@ Gui::~Gui()
 
 void Gui::logic()
 {
+    ResourceManager *resman = ResourceManager::getInstance();
+    resman->clearScheduled();
+
     // Fade out mouse cursor after extended inactivity
     if (mMouseInactivityTimer < 100 * 15)
     {

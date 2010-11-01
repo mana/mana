@@ -147,6 +147,11 @@ class CommandHandler
          * Handle away command.
          */
         void handleAway(const std::string &args, ChatTab *tab);
+
+        /*
+         * Handle showip command.
+         */
+        void handleShowIp(const std::string &args, ChatTab *tab);
 };
 
 extern CommandHandler *commandHandler;
