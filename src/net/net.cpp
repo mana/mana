@@ -133,17 +133,12 @@ void connectToServer(ServerInfo &server)
     {
         // TODO: Query the server about itself and choose the netcode based on
         // that
-
-#ifndef MANASERV_SUPPORT
-        server.type = ServerInfo::TMWATHENA;
-#else
         if (server.port == 6901)
             server.type = ServerInfo::TMWATHENA;
         else if (server.port == 9601)
             server.type = ServerInfo::MANASERV;
         else
             logger->error(_("Unknown Server Type! Exiting."));
-#endif
     }
 
     if (networkType == server.type && getGeneralHandler() != NULL)

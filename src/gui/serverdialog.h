@@ -193,9 +193,6 @@ class ServerDialog : public Window,
         float mDownloadProgress;
 
         ServerInfos mServers;
-#ifndef MANASERV_SUPPORT
-        ServerInfos mManaservServers;
-#endif
         ServerInfo *mServerInfo;
 };
 
