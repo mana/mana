@@ -97,7 +97,8 @@ Being::Being(int id, Type type, int subtype, Map *map):
     mIsGM(false),
     mType(type),
     mX(0), mY(0),
-    mDamageTaken(0)
+    mDamageTaken(0),
+    mIp(0)
 {
     setMap(map);
     setSubtype(subtype);
