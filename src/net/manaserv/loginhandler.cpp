@@ -196,7 +196,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful unregistration
             if (errMsg == ERRMSG_OK)
             {
-                Client::setState(STATE_UNREGISTER);
+                Client::setState(STATE_UNREGISTER_SUCCESS);
             }
             // Unregistration failed
             else
