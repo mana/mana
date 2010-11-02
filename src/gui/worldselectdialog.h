@@ -62,6 +62,8 @@ class WorldSelectDialog : public Window, public gcn::ActionListener,
 
         void keyPressed(gcn::KeyEvent &keyEvent);
 
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
+
     private:
         WorldListModel *mWorldListModel;
         gcn::ListBox *mWorldList;

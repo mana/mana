@@ -430,6 +430,16 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     mDeleteButton->setEnabled(myServer.save);
 }
 
+void ServerDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
+{
+    if (mouseEvent.getSource() == mServersList &&
+        isDoubleClick(mServersList->getSelected()))
+    {
+        action(gcn::ActionEvent(mConnectButton,
+                                mConnectButton->getActionEventId()));
+    }
+}
+
 void ServerDialog::logic()
 {
     {

@@ -135,6 +135,8 @@ class ServerDialog : public Window,
          */
         void valueChanged(const gcn::SelectionEvent &event);
 
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
+
         void logic();
 
     protected:

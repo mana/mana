@@ -172,6 +172,22 @@ int get_elapsed_time(int start_time)
                 * MILLISECONDS_IN_A_TICK;
 }
 
+bool isDoubleClick(int selected)
+{
+    const Uint32 maximumDelay = 500;
+    static Uint32 lastTime = 0;
+    static int lastSelected = -1;
+
+    if (selected == lastSelected && lastTime + maximumDelay >= SDL_GetTicks())
+    {
+        lastTime = 0;
+        return true;
+    }
+
+    lastTime = SDL_GetTicks();
+    lastSelected = selected;
+    return false;
+}
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {

@@ -68,6 +68,12 @@ extern LoginData loginData;
 int get_elapsed_time(int start_time);
 
 /**
+ * Returns if this call and the last call were done for the same
+ * selected index and within a short time.
+ */
+bool isDoubleClick(int selected);
+
+/**
  * All client states.
  */
 enum State {

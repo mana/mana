@@ -137,3 +137,13 @@ void WorldSelectDialog::keyPressed(gcn::KeyEvent &keyEvent)
         action(gcn::ActionEvent(NULL, mChooseWorld->getActionEventId()));
     }
 }
+
+void WorldSelectDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
+{
+    if (mouseEvent.getSource() == mWorldList &&
+        isDoubleClick(mWorldList->getSelected()))
+    {
+        action(gcn::ActionEvent(mChooseWorld,
+                                mChooseWorld->getActionEventId()));
+    }
+}
