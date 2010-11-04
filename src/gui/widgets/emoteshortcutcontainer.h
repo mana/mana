@@ -25,8 +25,7 @@
 
 #include <vector>
 
-class AnimatedSprite;
-class Image;
+class ImageSprite;
 
 /**
  * An emote shortcut container. Used to quickly use emoticons.
@@ -67,7 +66,7 @@ class EmoteShortcutContainer : public ShortcutContainer
         void mouseReleased(gcn::MouseEvent &event);
 
     private:
-        std::vector<const AnimatedSprite*> mEmoteImg;
+        std::vector<const ImageSprite*> mEmoteImg;
 
         bool mEmoteClicked;
         int mEmoteMoved;

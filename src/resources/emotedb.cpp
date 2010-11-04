@@ -20,16 +20,20 @@
 
 #include "resources/emotedb.h"
 
-#include "animatedsprite.h"
+#include "configuration.h"
 #include "log.h"
+#include "imagesprite.h"
+
+#include "resources/resourcemanager.h"
+#include "resources/image.h"
+#include "resources/imageset.h"
 
 #include "utils/xml.h"
-#include "configuration.h"
 
 namespace
 {
-    EmoteInfos mEmoteInfos;
-    EmoteInfo mUnknown;
+    Emotes mEmotes;
+    Emote mUnknown;
     bool mLoaded = false;
     int mLastEmote = 0;
 }
@@ -39,13 +43,12 @@ void EmoteDB::load()
     if (mLoaded)
         unload();
 
-    mLastEmote = 0;
+    mUnknown.name = "unknown";
+    mUnknown.effect = 0;
+    mUnknown.sprite = new ImageSprite(
+        ResourceManager::getInstance()->getImage("graphics/sprites/error.png"));
 
-    EmoteSprite *unknownSprite = new EmoteSprite;
-    unknownSprite->sprite = AnimatedSprite::load(
-                                       paths.getStringValue("spriteErrorFile"));
-    unknownSprite->name = "unknown";
-    mUnknown.sprites.push_back(unknownSprite);
+    mLastEmote = 0;
 
     logger->log("Initializing emote database...");
 
@@ -71,27 +74,46 @@ void EmoteDB::load()
             continue;
         }
 
-        EmoteInfo *currentInfo = new EmoteInfo;
+        Emote *currentEmote = new Emote;
 
-        for_each_xml_child_node(spriteNode, emoteNode)
+        currentEmote->name = XML::getProperty(emoteNode, "name", "unknown");
+        currentEmote->effect = XML::getProperty(emoteNode, "effectid", -1);
+
+        if (currentEmote->effect == -1)
         {
-            if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
-            {
-                EmoteSprite *currentSprite = new EmoteSprite;
-                std::string file = paths.getStringValue("sprites")
-                                   + (std::string) (const char*)
-                                     spriteNode->xmlChildrenNode->content;
-                currentSprite->sprite = AnimatedSprite::load(file,
-                                XML::getProperty(spriteNode, "variant", 0));
-                currentInfo->sprites.push_back(currentSprite);
-            }
-            else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
-            {
-                std::string particlefx = (const char*) spriteNode->xmlChildrenNode->content;
-                currentInfo->particles.push_back(particlefx);
-            }
+            logger->log("Emote Database: Warning: Emote with no attached effect!");
+            delete currentEmote;
+            continue;
         }
-        mEmoteInfos[id] = currentInfo;
+
+        const std::string imageName = XML::getProperty(emoteNode, "image", "");
+        const int width = XML::getProperty(emoteNode, "width", 0);
+        const int height = XML::getProperty(emoteNode, "height", 0);
+
+        if (imageName.empty() || !(width > 0) || !(height > 0))
+        {
+            logger->log("Emote Database: Warning: Emote with bad imageset values");
+            delete currentEmote;
+            continue;
+        }
+
+        ImageSet *is = ResourceManager::getInstance()->getImageSet(imageName,
+                                                                   width,
+                                                                   height);
+        if (!is || !(is->size() > 0))
+        {
+            logger->log("Emote Database: Error loading imageset");
+            delete is;
+            delete currentEmote;
+            continue;
+        }
+        else
+        {
+            // For now we just use the first image in the animation
+            currentEmote->sprite = new ImageSprite(is->get(0));
+        }
+
+        mEmotes[id] = currentEmote;
         if (id > mLastEmote)
             mLastEmote = id;
     }
@@ -101,36 +123,19 @@ void EmoteDB::load()
 
 void EmoteDB::unload()
 {
-    for (EmoteInfos::const_iterator i = mEmoteInfos.begin();
-         i != mEmoteInfos.end();
-         i++)
+    Emotes::iterator i;
+    for (i = mEmotes.begin(); i != mEmotes.end(); i++)
     {
-        while (!i->second->sprites.empty())
-        {
-            delete i->second->sprites.front()->sprite;
-            delete i->second->sprites.front();
-            i->second->sprites.pop_front();
-        }
         delete i->second;
     }
-
-    mEmoteInfos.clear();
-
-    while (!mUnknown.sprites.empty())
-    {
-        delete mUnknown.sprites.front()->sprite;
-        delete mUnknown.sprites.front();
-        mUnknown.sprites.pop_front();
-    }
-
     mLoaded = false;
 }
 
-const EmoteInfo *EmoteDB::get(int id)
+const Emote *EmoteDB::get(int id)
 {
-    EmoteInfos::const_iterator i = mEmoteInfos.find(id);
+    Emotes::const_iterator i = mEmotes.find(id);
 
-    if (i == mEmoteInfos.end())
+    if (i == mEmotes.end())
     {
         logger->log("EmoteDB: Warning, unknown emote ID %d requested", id);
         return &mUnknown;
@@ -139,12 +144,6 @@ const EmoteInfo *EmoteDB::get(int id)
     {
         return i->second;
     }
-}
-
-const AnimatedSprite *EmoteDB::getAnimation(int id)
-{
-    const EmoteInfo *info = get(id);
-    return info->sprites.front()->sprite;
 }
 
 const int &EmoteDB::getLast()

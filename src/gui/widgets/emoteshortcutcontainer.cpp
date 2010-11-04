@@ -20,11 +20,11 @@
 
 #include "gui/widgets/emoteshortcutcontainer.h"
 
-#include "animatedsprite.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
 #include "inventory.h"
+#include "imagesprite.h"
 #include "item.h"
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
@@ -56,7 +56,7 @@ EmoteShortcutContainer::EmoteShortcutContainer():
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); i++)
     {
-        mEmoteImg.push_back(EmoteDB::getAnimation(i));
+        mEmoteImg.push_back(EmoteDB::get(i)->sprite);
     }
 
     mMaxItems = EmoteDB::getLast() < MAX_ITEMS ? EmoteDB::getLast() : MAX_ITEMS;
@@ -106,7 +106,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
     if (mEmoteMoved)
     {
         // Draw the emote image being dragged by the cursor.
-        const AnimatedSprite* sprite = mEmoteImg[mEmoteMoved - 1];
+        const ImageSprite* sprite = mEmoteImg[mEmoteMoved - 1];
         if (sprite)
         {
             const int tPosX = mCursorPosX - (sprite->getWidth() / 2);

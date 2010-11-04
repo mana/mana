@@ -34,12 +34,11 @@
 #include "net/tmwa/protocol.h"
 
 #include "resources/colordb.h"
+#include "resources/emotedb.h"
 
 #include <iostream>
 
 namespace TmwAthena {
-
-const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
 BeingHandler::BeingHandler(bool enableSync):
    mSync(enableSync)
@@ -376,9 +375,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             if (player_relations.hasPermission(dstBeing, PlayerRelation::EMOTE))
             {
-                // only set emote if one doesnt already exist
-                if (!dstBeing->getEmotion())
-                    dstBeing->setEmote(msg.readInt8(), EMOTION_TIME);
+                const int fx = EmoteDB::get(msg.readInt8())->effect;
+                //TODO: figure out why the -1 is needed
+                effectManager->trigger(fx - 1, dstBeing);
             }
 
             break;

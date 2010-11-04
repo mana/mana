@@ -22,7 +22,7 @@
 
 #include "gui/emotepopup.h"
 
-#include "animatedsprite.h"
+#include "imagesprite.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
@@ -53,7 +53,7 @@ EmotePopup::EmotePopup():
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); ++i)
     {
-        mEmotes.push_back(EmoteDB::getAnimation(i));
+        mEmotes.push_back(EmoteDB::get(i)->sprite);
     }
 
     mSelectionImage = Theme::getImageFromTheme("selection.png");

@@ -37,8 +37,6 @@
 #define NAME "name" // constant for xml serialisation
 #define RELATION "relation" // constant for xml serialisation
 
-#define IGNORE_EMOTE_TIME 100
-
 // (De)serialisation class
 class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::string, PlayerRelation *>,
                                                              std::map<std::string, PlayerRelation *> *>
@@ -349,38 +347,11 @@ public:
     }
 };
 
-class PIS_emote : public PlayerIgnoreStrategy
-{
-public:
-    PIS_emote(int emote_nr, const std::string &description, const std::string &shortname) :
-        mEmotion(emote_nr)
-    {
-        mDescription = description;
-        mShortName = shortname;
-    }
-
-    virtual void ignore(Being *being, unsigned int flags)
-     {
-         being->setEmote(mEmotion, IGNORE_EMOTE_TIME);
-     }
-private:
-    int mEmotion;
-};
-
-
-
 std::vector<PlayerIgnoreStrategy *> *
 PlayerRelationsManager::getPlayerIgnoreStrategies()
 {
     if (mIgnoreStrategies.size() == 0)
     {
-        // not initialised yet?
-        mIgnoreStrategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE,
-                                                  _("Floating '...' bubble"),
-                                                   PLAYER_IGNORE_STRATEGY_EMOTE0));
-        mIgnoreStrategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE + 1,
-                                                  _("Floating bubble"),
-                                                  "emote1"));
         mIgnoreStrategies.push_back(new PIS_nothing());
         mIgnoreStrategies.push_back(new PIS_dotdotdot());
         mIgnoreStrategies.push_back(new PIS_blinkname());

@@ -25,21 +25,16 @@
 #include <map>
 #include <string>
 
-class AnimatedSprite;
+class ImageSprite;
 
-struct EmoteSprite
+struct Emote
 {
-    const AnimatedSprite *sprite;
     std::string name;
+    ImageSprite *sprite;
+    int effect;
 };
 
-struct EmoteInfo
-{
-    std::list<EmoteSprite*> sprites;
-    std::list<std::string> particles;
-};
-
-typedef std::map<int, EmoteInfo*> EmoteInfos;
+typedef std::map<int, Emote*> Emotes;
 
 /**
  * Emote information database.
@@ -50,13 +45,11 @@ namespace EmoteDB
 
     void unload();
 
-    const EmoteInfo *get(int id);
-
-    const AnimatedSprite *getAnimation(int id);
+    const Emote *get(int id);
 
     const int &getLast();
 
-    typedef EmoteInfos::iterator EmoteInfosIterator;
+    typedef Emotes::iterator EmotesIterator;
 }
 
 #endif

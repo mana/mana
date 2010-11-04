@@ -322,11 +322,6 @@ class Being : public ActorSprite, public ConfigListener, public Mana::Listener
          */
         void drawSpeech(int offsetX, int offsetY);
 
-        /**
-         * Draws the emotion picture above the being.
-         */
-        void drawEmotion(Graphics *graphics, int offsetX, int offsetY);
-
         Uint16 getSubType() const { return mSubType; }
 
          /**
@@ -444,22 +439,6 @@ class Being : public ActorSprite, public ConfigListener, public Mana::Listener
          */
         const Path &getPath() const { return mPath; }
 
-        /**
-         * Set the Emoticon type and time displayed above
-         * the being.
-         */
-        void setEmote(Uint8 emotion, Uint8 emote_time)
-        {
-            mEmotion = emotion;
-            mEmotionTime = emote_time;
-        }
-
-        /**
-         * Get the current Emoticon type displayed above
-         * the being.
-         */
-        Uint8 getEmotion() const { return mEmotion; }
-
         static void load();
 
         virtual void optionChanged(const std::string &value);
@@ -527,8 +506,6 @@ class Being : public ActorSprite, public ConfigListener, public Mana::Listener
 
         int mActionTime;      /**< Time spent in current action */
 
-        int mEmotion;         /**< Currently showing emotion */
-        int mEmotionTime;     /**< Time until emotion disappears */
         /** Time until the last speech sentence disappears */
         int mSpeechTime;
 

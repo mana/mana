@@ -80,7 +80,6 @@ Being::Being(int id, Type type, int subtype, Map *map):
     ActorSprite(id),
     mInfo(BeingInfo::Unknown),
     mActionTime(0),
-    mEmotion(0), mEmotionTime(0),
     mSpeechTime(0),
     mAttackType(1),
     mAttackSpeed(350),
@@ -869,13 +868,6 @@ void Being::logic()
                     mY * 32 + 32 + getYOffset());
     }
 
-    if (mEmotion != 0)
-    {
-        mEmotionTime--;
-        if (mEmotionTime == 0)
-            mEmotion = 0;
-    }
-
     ActorSprite::logic();
 
     int frameCount = getFrameCount();
@@ -889,19 +881,6 @@ void Being::logic()
         if (getType() != PLAYER)
             actorSpriteManager->destroy(this);
     }
-}
-
-void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
-{
-    if (!mEmotion)
-        return;
-
-    const int px = getPixelX() - offsetX - 16;
-    const int py = getPixelY() - offsetY - 64 - 32;
-    const int emotionIndex = mEmotion - 1;
-
-    if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
-        EmoteDB::getAnimation(emotionIndex)->draw(graphics, px, py);
 }
 
 void Being::drawSpeech(int offsetX, int offsetY)

@@ -30,7 +30,7 @@
 #include <list>
 #include <vector>
 
-class AnimatedSprite;
+class ImageSprite;
 class Image;
 
 namespace gcn {
@@ -105,7 +105,7 @@ class EmotePopup : public Popup
          */
         void distributeValueChangedEvent();
 
-        std::vector<const AnimatedSprite*> mEmotes;
+        std::vector<const ImageSprite*> mEmotes;
         Image *mSelectionImage;
         int mSelectedEmoteIndex;
         int mHoveredEmoteIndex;

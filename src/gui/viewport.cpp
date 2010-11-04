@@ -215,7 +215,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
         Being *b = static_cast<Being*>(*it);
         b->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
-        b->drawEmotion(graphics, (int) mPixelViewX, (int) mPixelViewY);
     }
 
     if (miniStatusWindow)
