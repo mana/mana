@@ -128,6 +128,9 @@ void EmoteDB::unload()
     {
         delete i->second;
     }
+
+    mEmotes.clear();
+
     mLoaded = false;
 }
 
