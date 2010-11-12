@@ -50,5 +50,5 @@ FloorItem::FloorItem(int id,
 
 const ItemInfo &FloorItem::getInfo() const
 {
-    return itemDb->get(mId);
+    return itemDb->get(mItemId);
 }
