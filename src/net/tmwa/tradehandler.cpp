@@ -191,7 +191,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                         // Successfully added item
                         if (item->isEquippable() && item->isEquipped())
                         {
-                            item->doEvent("doUnequip");
+                            item->doEvent(EVENT_DOUNEQUIP);
                         }
                         tradeWindow->addItem(item->getId(), true, quantity);
 

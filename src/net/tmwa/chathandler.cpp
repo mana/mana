@@ -82,7 +82,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                     break;
                 case 0x01:
                     {
-                        Mana::Event event("WhisperError");
+                        Mana::Event event(EVENT_WHISPERERROR);
                         event.setString("nick", nick);
                         event.setString("error", strprintf(_("Whisper could "
                                   "not be sent, %s is offline."), nick.c_str()));
@@ -91,7 +91,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                     break;
                 case 0x02:
                     {
-                        Mana::Event event("WhisperError");
+                        Mana::Event event(EVENT_WHISPERERROR);
                         event.setString("nick", nick);
                         event.setString("error", strprintf(_("Whisper could "
                                  "not be sent, ignored by %s."), nick.c_str()));
@@ -115,7 +115,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             {
                 if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
                 {
-                    Mana::Event event("Whisper");
+                    Mana::Event event(EVENT_WHISPER);
                     event.setString("nick", nick);
                     event.setString("message", chatMsg);
                     event.trigger(CHANNEL_CHAT);
@@ -174,7 +174,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             std::string reducedMessage = chatMsg;
             chatMsg = removeColors(sender_name) + " : " + reducedMessage;
 
-            Mana::Event event("Being");
+            Mana::Event event(EVENT_BEING);
             event.setString("message", chatMsg);
             event.setString("text", reducedMessage);
             event.setString("nick", sender_name);
@@ -205,7 +205,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
 
                 trim(chatMsg);
 
-                Mana::Event event("Player");
+                Mana::Event event(EVENT_PLAYER);
                 event.setString("message", mes);
                 event.setString("text", chatMsg);
                 event.setString("nick", player_node->getName());
@@ -217,7 +217,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             }
             else
             {
-                Mana::Event event("Announcement");
+                Mana::Event event(EVENT_ANNOUNCEMENT);
                 event.setString("message", chatMsg);
                 event.trigger(CHANNEL_CHAT);
             }

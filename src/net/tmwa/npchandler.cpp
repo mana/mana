@@ -85,14 +85,14 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
     case SMSG_NPC_CHOICE:
-        event = new Mana::Event("Menu");
+        event = new Mana::Event(EVENT_MENU);
         event->setInt("id", npcId);
         parseMenu(event, msg.readString(msg.getLength() - 8));
         event->trigger(CHANNEL_NPC);
         break;
 
     case SMSG_NPC_MESSAGE:
-        event = new Mana::Event("Message");
+        event = new Mana::Event(EVENT_MESSAGE);
         event->setInt("id", npcId);
         event->setString("text", msg.readString(msg.getLength() - 8));
         event->trigger(CHANNEL_NPC);
@@ -100,28 +100,28 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
 
      case SMSG_NPC_CLOSE:
         // Show the close button
-        event = new Mana::Event("Close");
+        event = new Mana::Event(EVENT_CLOSE);
         event->setInt("id", npcId);
         event->trigger(CHANNEL_NPC);
         break;
 
     case SMSG_NPC_NEXT:
         // Show the next button
-        event = new Mana::Event("Next");
+        event = new Mana::Event(EVENT_NEXT);
         event->setInt("id", npcId);
         event->trigger(CHANNEL_NPC);
         break;
 
     case SMSG_NPC_INT_INPUT:
         // Request for an integer
-        event = new Mana::Event("IntegerInput");
+        event = new Mana::Event(EVENT_INTEGERINPUT);
         event->setInt("id", npcId);
         event->trigger(CHANNEL_NPC);
         break;
 
     case SMSG_NPC_STR_INPUT:
         // Request for a string
-        event = new Mana::Event("StringInput");
+        event = new Mana::Event(EVENT_STRINGINPUT);
         event->setInt("id", npcId);
         event->trigger(CHANNEL_NPC);
         break;
@@ -137,35 +137,35 @@ void NpcHandler::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_NPC)
     {
-        if (event.getName() == "doTalk")
+        if (event.getName() == EVENT_DOTALK)
         {
             MessageOut outMsg(CMSG_NPC_TALK);
             outMsg.writeInt32(event.getInt("npcId"));
             outMsg.writeInt8(0); // Unused
         }
-        else if (event.getName() == "doNext")
+        else if (event.getName() == EVENT_DONEXT)
         {
             MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
             outMsg.writeInt32(event.getInt("npcId"));
         }
-        else if (event.getName() == "doClose")
+        else if (event.getName() == EVENT_DOCLOSE)
         {
             MessageOut outMsg(CMSG_NPC_CLOSE);
             outMsg.writeInt32(event.getInt("npcId"));
         }
-        else if (event.getName() == "doMenu")
+        else if (event.getName() == EVENT_DOMENU)
         {
             MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
             outMsg.writeInt32(event.getInt("npcId"));
             outMsg.writeInt8(event.getInt("choice"));
         }
-        else if (event.getName() == "doIntegerInput")
+        else if (event.getName() == EVENT_DOINTEGERINPUT)
         {
             MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
             outMsg.writeInt32(event.getInt("npcId"));
             outMsg.writeInt32(event.getInt("value"));
         }
-        else if (event.getName() == "doStringInput")
+        else if (event.getName() == EVENT_DOSTRINGINPUT)
         {
             const std::string &value = event.getString("value");
             MessageOut outMsg(CMSG_NPC_STR_RESPONSE);

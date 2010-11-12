@@ -222,7 +222,7 @@ void GeneralHandler::event(Channels channel,
 {
     if (channel == CHANNEL_GAME)
     {
-        if (event.getName() == "GuiWindowsLoaded")
+        if (event.getName() == EVENT_GUIWINDOWSLOADED)
         {
             inventoryWindow->setSplitAllowed(false);
             skillDialog->loadSkills("ea-skills.xml");
@@ -242,7 +242,7 @@ void GeneralHandler::event(Channels channel,
             statusWindow->addAttribute(FLEE, _("% Evade"), false, "");
             statusWindow->addAttribute(CRIT, _("% Critical"), false, "");
         }
-        else if (event.getName() == "GuiWindowsUnloading")
+        else if (event.getName() == EVENT_GUIWINDOWSUNLOADING)
         {
             socialWindow->removeTab(taGuild);
             socialWindow->removeTab(taParty);

@@ -172,7 +172,7 @@ void OutfitWindow::wearOutfit(int outfit)
         if (item && !item->isEquipped() && item->getQuantity())
         {
             if (item->isEquippable())
-                item->doEvent("doEquip");
+                item->doEvent(EVENT_DOEQUIP);
         }
     }
 }
@@ -341,7 +341,7 @@ void OutfitWindow::unequipNotInOutfit(int outfit)
                 Item *item = inventory->getItem(i);
 
                 if (item)
-                    item->doEvent("doUnequip");
+                    item->doEvent(EVENT_DOUNEQUIP);
             }
         }
     }

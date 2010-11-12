@@ -120,13 +120,13 @@ void InventoryHandler::event(Channels channel,
 
         int index = item->getInvIndex();
 
-        if (event.getName() == "doEquip")
+        if (event.getName() == EVENT_DOEQUIP)
         {
             MessageOut msg(PGMSG_EQUIP);
             msg.writeInt8(index);
             gameServerConnection->send(msg);
         }
-        else if (event.getName() == "doUnequip")
+        else if (event.getName() == EVENT_DOUNEQUIP)
         {
             MessageOut msg(PGMSG_UNEQUIP);
             msg.writeInt8(index);
@@ -136,13 +136,13 @@ void InventoryHandler::event(Channels channel,
             // for instance.
             mEquips.setEquipment(index, 0, 0);
         }
-        else if (event.getName() == "doUse")
+        else if (event.getName() == EVENT_DOUSE)
         {
             MessageOut msg(PGMSG_USE_ITEM);
             msg.writeInt8(index);
             gameServerConnection->send(msg);
         }
-        else if (event.getName() == "doDrop")
+        else if (event.getName() == EVENT_DODROP)
         {
             int amount = event.getInt("amount", 1);
 
@@ -151,7 +151,7 @@ void InventoryHandler::event(Channels channel,
             msg.writeInt8(amount);
             gameServerConnection->send(msg);
         }
-        else if (event.getName() == "doSplit")
+        else if (event.getName() == EVENT_DOSPLIT)
         {
             int amount = event.getInt("amount", 1);
 
@@ -165,7 +165,7 @@ void InventoryHandler::event(Channels channel,
                 gameServerConnection->send(msg);
             }
         }
-        else if (event.getName() == "doMove")
+        else if (event.getName() == EVENT_DOMOVE)
         {
             int newIndex = event.getInt("newIndex", -1);
 

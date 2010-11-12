@@ -379,29 +379,29 @@ void ChatWindow::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_NOTICES)
     {
-        if (event.getName() == "ServerNotice")
+        if (event.getName() == EVENT_SERVERNOTICE)
             localChatTab->chatLog(event.getString("message"), BY_SERVER);
     }
     else if (channel == CHANNEL_CHAT)
     {
-        if (event.getName() == "Whisper")
+        if (event.getName() == EVENT_WHISPER)
         {
             whisper(event.getString("nick"), event.getString("message"));
         }
-        else if (event.getName() == "WhisperError")
+        else if (event.getName() == EVENT_WHISPERERROR)
         {
             whisper(event.getString("nick"),
                     event.getString("error"), BY_SERVER);
         }
-        else if (event.getName() == "Player")
+        else if (event.getName() == EVENT_PLAYER)
         {
             localChatTab->chatLog(event.getString("message"), BY_PLAYER);
         }
-        else if (event.getName() == "Announcement")
+        else if (event.getName() == EVENT_ANNOUNCEMENT)
         {
             localChatTab->chatLog(event.getString("message"), BY_GM);
         }
-        else if (event.getName() == "Being")
+        else if (event.getName() == EVENT_BEING)
         {
             if (event.getInt("permissions") & PlayerRelation::SPEECH_LOG)
                 localChatTab->chatLog(event.getString("message"), BY_OTHER);

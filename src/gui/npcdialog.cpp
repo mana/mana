@@ -225,7 +225,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 printText = mItems[selectedIndex];
 
-                NpcEvent("doMenu")
+                NpcEvent(EVENT_DOMENU)
                 event.setInt("choice", selectedIndex + 1);
                 event.trigger(CHANNEL_NPC);
             }
@@ -233,7 +233,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             {
                 printText = mTextField->getText();
 
-                NpcEvent("doStringInput")
+                NpcEvent(EVENT_DOSTRINGINPUT)
                 event.setString("value", printText);
                 event.trigger(CHANNEL_NPC);
             }
@@ -241,7 +241,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             {
                 printText = strprintf("%d", mIntField->getValue());
 
-                NpcEvent("doIntegerInput")
+                NpcEvent(EVENT_DOINTEGERINPUT)
                 event.setInt("value", mIntField->getValue());
                 event.trigger(CHANNEL_NPC);
             }
@@ -281,13 +281,13 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
 void NpcDialog::nextDialog()
 {
-    NpcEvent("doNext");
+    NpcEvent(EVENT_DONEXT);
     event.trigger(CHANNEL_NPC);
 }
 
 void NpcDialog::closeDialog()
 {
-    NpcEvent("doClose");
+    NpcEvent(EVENT_DOCLOSE);
     event.trigger(CHANNEL_NPC);
     close();
 }
@@ -512,13 +512,13 @@ void NpcEventListener::event(Channels channel,
     if (channel != CHANNEL_NPC)
         return;
 
-    if (event.getName() == "Message")
+    if (event.getName() == EVENT_MESSAGE)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
         dialog->addText(event.getString("text"));
     }
-    else if (event.getName() == "Menu")
+    else if (event.getName() == EVENT_MENU)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -528,7 +528,7 @@ void NpcEventListener::event(Channels channel,
         for (int i = 1; i <= count; i++)
             dialog->addChoice(event.getString("choice" + toString(i)));
     }
-    else if (event.getName() == "IntegerInput")
+    else if (event.getName() == EVENT_INTEGERINPUT)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -538,7 +538,7 @@ void NpcEventListener::event(Channels channel,
 
         dialog->integerRequest(defaultValue, min, max);
     }
-    else if (event.getName() == "StringInput")
+    else if (event.getName() == EVENT_STRINGINPUT)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -551,7 +551,7 @@ void NpcEventListener::event(Channels channel,
             dialog->textRequest("");
         }
     }
-    else if (event.getName() == "Next")
+    else if (event.getName() == EVENT_NEXT)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -559,14 +559,14 @@ void NpcEventListener::event(Channels channel,
         if (!dialog)
         {
             int mNpcId = id;
-            NpcEvent("doNext");
+            NpcEvent(EVENT_DONEXT);
             event.trigger(CHANNEL_NPC);
             return;
         }
 
         dialog->showNextButton();
     }
-    else if (event.getName() == "Close")
+    else if (event.getName() == EVENT_CLOSE)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -574,18 +574,18 @@ void NpcEventListener::event(Channels channel,
         if (!dialog)
         {
             int mNpcId = id;
-            NpcEvent("doClose");
+            NpcEvent(EVENT_DOCLOSE);
             event.trigger(CHANNEL_NPC);
             return;
         }
 
         dialog->showCloseButton();
     }
-    else if (event.getName() == "CloseAll")
+    else if (event.getName() == EVENT_CLOSEALL)
     {
         NpcDialog::closeAll();
     }
-    else if (event.getName() == "End")
+    else if (event.getName() == EVENT_END)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -593,7 +593,7 @@ void NpcEventListener::event(Channels channel,
         if (dialog)
             dialog->close();
     }
-    else if (event.getName() == "Post")
+    else if (event.getName() == EVENT_POST)
     {
         new NpcPostDialog(event.getInt("id"));
     }

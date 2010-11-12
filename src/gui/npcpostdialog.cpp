@@ -97,7 +97,7 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
-            Mana::Event event("doSendLetter");
+            Mana::Event event(EVENT_DOSENDLETTER);
             event.setInt("npcId", mNpcId);
             event.setString("recipient", mSender->getText());
             event.setString("text", mText->getText());

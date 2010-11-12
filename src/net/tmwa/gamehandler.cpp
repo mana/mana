@@ -109,11 +109,11 @@ void GameHandler::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_GAME)
     {
-        if (event.getName() == "EnginesInitalized")
+        if (event.getName() == EVENT_ENGINESINITALIZED)
         {
             Game::instance()->changeMap(mMap);
         }
-        else if (event.getName() == "MapLoaded")
+        else if (event.getName() == EVENT_MAPLOADED)
         {
             MessageOut outMsg(CMSG_MAP_LOADED);
         }

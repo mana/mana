@@ -163,7 +163,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     else
         mes = "Unknown : " + chatMsg;
 
-    Mana::Event event(being == player_node ? "Player" : "Being");
+    Mana::Event event(being == player_node ? EVENT_PLAYER : EVENT_BEING);
     event.setString("message", mes);
     event.setString("text", chatMsg);
     event.setString("nick", being->getName());
@@ -231,7 +231,7 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
 
-    Mana::Event event("Whisper");
+    Mana::Event event(EVENT_WHISPER);
     event.setString("nick", userNick);
     event.setString("message", chatMsg);
     event.trigger(CHANNEL_CHAT);
@@ -240,7 +240,7 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
 void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
 {
     std::string chatMsg = msg.readString();
-    Mana::Event event("Announcement");
+    Mana::Event event(EVENT_ANNOUNCEMENT);
     event.setString("message", chatMsg);
     event.trigger(CHANNEL_CHAT);
 }

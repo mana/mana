@@ -435,7 +435,7 @@ void InventoryHandler::event(Channels channel,
 {
     if (channel == CHANNEL_ITEM)
     {
-        if (event.getName() == "doCloseInventory")
+        if (event.getName() == EVENT_DOCLOSEINVENTORY)
         {
             // No need to worry about type
             MessageOut outMsg(CMSG_CLOSE_STORAGE);
@@ -449,24 +449,24 @@ void InventoryHandler::event(Channels channel,
 
             int index = item->getInvIndex() + INVENTORY_OFFSET;
 
-            if (event.getName() == "doEquip")
+            if (event.getName() == EVENT_DOEQUIP)
             {
                 MessageOut outMsg(CMSG_PLAYER_EQUIP);
                 outMsg.writeInt16(index);
                 outMsg.writeInt16(0);
             }
-            else if (event.getName() == "doUnequip")
+            else if (event.getName() == EVENT_DOUNEQUIP)
             {
                 MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
                 outMsg.writeInt16(index);
             }
-            else if (event.getName() == "doUse")
+            else if (event.getName() == EVENT_DOUSE)
             {
                 MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
                 outMsg.writeInt16(index);
                 outMsg.writeInt32(item->getId()); // unused
             }
-            else if (event.getName() == "doDrop")
+            else if (event.getName() == EVENT_DODROP)
             {
                 int amount = event.getInt("amount", 1);
 
@@ -476,7 +476,7 @@ void InventoryHandler::event(Channels channel,
                 outMsg.writeInt16(index);
                 outMsg.writeInt16(amount);
             }
-            else if (event.getName() == "doMove")
+            else if (event.getName() == EVENT_DOMOVE)
             {
                 int newIndex = event.getInt("newIndex", -1);
 

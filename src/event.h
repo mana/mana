@@ -43,6 +43,60 @@ enum Channels
     CHANNEL_STORAGE
 };
 
+enum Events
+{
+    EVENT_ANNOUNCEMENT,
+    EVENT_BEING,
+    EVENT_CLOSE,
+    EVENT_CLOSEALL,
+    EVENT_CONSTRUCTED,
+    EVENT_DBSLOADING,
+    EVENT_DESTROYED,
+    EVENT_DESTRUCTED,
+    EVENT_DESTRUCTING,
+    EVENT_DOCLOSE,
+    EVENT_DOCLOSEINVENTORY,
+    EVENT_DODROP,
+    EVENT_DOEQUIP,
+    EVENT_DOINTEGERINPUT,
+    EVENT_DOMENU,
+    EVENT_DOMOVE,
+    EVENT_DONEXT,
+    EVENT_DOSENDLETTER,
+    EVENT_DOSPLIT,
+    EVENT_DOSTRINGINPUT,
+    EVENT_DOTALK,
+    EVENT_DOUNEQUIP,
+    EVENT_DOUSE,
+    EVENT_END,
+    EVENT_ENGINESINITALIZED,
+    EVENT_ENGINESINITALIZING,
+    EVENT_GUIWINDOWSLOADED,
+    EVENT_GUIWINDOWSLOADING,
+    EVENT_GUIWINDOWSUNLOADED,
+    EVENT_GUIWINDOWSUNLOADING,
+    EVENT_INTEGERINPUT,
+    EVENT_MAPLOADED,
+    EVENT_MENU,
+    EVENT_MESSAGE,
+    EVENT_NEXT,
+    EVENT_NPCCOUNT,
+    EVENT_PLAYER,
+    EVENT_POST,
+    EVENT_POSTCOUNT,
+    EVENT_SERVERNOTICE,
+    EVENT_STATECHANGE,
+    EVENT_STORAGECOUNT,
+    EVENT_STRINGINPUT,
+    EVENT_STUN,
+    EVENT_TRADING,
+    EVENT_UPDATEATTRIBUTE,
+    EVENT_UPDATESTAT,
+    EVENT_UPDATESTATUSEFFECT,
+    EVENT_WHISPER,
+    EVENT_WHISPERERROR
+};
+
 namespace Mana
 {
 
@@ -62,7 +116,7 @@ class VariableData;
 typedef std::map<std::string, VariableData *> VariableMap;
 
 #define SERVER_NOTICE(message) { \
-Mana::Event event("ServerNotice"); \
+Mana::Event event(EVENT_SERVERNOTICE); \
 event.setString("message", message); \
 event.trigger(CHANNEL_NOTICES, event); }
 
@@ -72,7 +126,7 @@ public:
     /**
      * Makes an event with the given name.
      */
-    Event(const std::string &name)
+    Event(Events name)
     { mEventName = name; }
 
     ~Event();
@@ -80,7 +134,7 @@ public:
     /**
      * Returns the name of the event.
      */
-    const std::string &getName() const
+    Events getName() const
     { return mEventName; }
 
 // Integers
@@ -247,8 +301,7 @@ public:
      * Sends an empty event with the given name to all classes listening to the
      * given channel.
      */
-    static inline void trigger(Channels channel,
-                               const std::string& name)
+    static inline void trigger(Channels channel, Events name)
     { trigger(channel, Mana::Event(name)); }
 
 protected:
@@ -274,7 +327,7 @@ protected:
 private:
     static ListenMap mBindings;
 
-    std::string mEventName;
+    Events mEventName;
 
     VariableMap mData;
 };

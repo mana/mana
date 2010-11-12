@@ -61,7 +61,7 @@ ActorSprite::~ActorSprite()
     mUsedTargetCursor = NULL;
 
     // Notify listeners of the destruction.
-    Mana::Event event("Destroyed");
+    Mana::Event event(EVENT_DESTROYED);
     event.setActor("source", this);
     event.trigger(CHANNEL_ACTORSPRITE);
 }
@@ -257,7 +257,7 @@ void ActorSprite::updateStunMode(int oldMode, int newMode)
 {
     if (this == player_node)
     {
-        Mana::Event event("Stun");
+        Mana::Event event(EVENT_STUN);
         event.setInt("oldMode", oldMode);
         event.setInt("newMode", newMode);
         event.trigger(CHANNEL_ACTORSPRITE);
@@ -271,7 +271,7 @@ void ActorSprite::updateStatusEffect(int index, bool newStatus)
 {
     if (this == player_node)
     {
-        Mana::Event event("UpdateStatusEffect");
+        Mana::Event event(EVENT_UPDATESTATUSEFFECT);
         event.setInt("index", index);
         event.setBool("newStatus", newStatus);
         event.trigger(CHANNEL_ACTORSPRITE);

@@ -158,7 +158,7 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
     if (event.getId() == "unequip" && mSelected > -1)
     {
         Item *item = mEquipment->getEquipment(mSelected);
-        item->doEvent("doUnequip");
+        item->doEvent(EVENT_DOUNEQUIP);
         setSelected(-1);
     }
 }

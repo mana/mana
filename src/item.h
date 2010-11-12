@@ -22,6 +22,8 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include "event.h"
+
 #include "resources/itemdb.h"
 
 class Image;
@@ -112,9 +114,9 @@ class Item
          */
         int getInvIndex() const { return mInvIndex; }
 
-        void doEvent(const std::string &eventName);
+        void doEvent(Events eventName);
 
-        void doEvent(const std::string &eventName, int amount);
+        void doEvent(Events eventName, int amount);
 
         /**
          * Returns information about this item type.

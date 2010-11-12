@@ -186,19 +186,19 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         return;
 
     if (event.getId() == "activate")
-        item->doEvent("doUse");
+        item->doEvent(EVENT_DOUSE);
     else if (event.getId() == "equip")
     {
         if (item->isEquippable())
         {
             if (item->isEquipped())
-                item->doEvent("doUnequip");
+                item->doEvent(EVENT_DOUNEQUIP);
             else
-                item->doEvent("doEquip");
+                item->doEvent(EVENT_DOEQUIP);
         }
         else
         {
-            item->doEvent("doUse");
+            item->doEvent(EVENT_DOUSE);
         }
     }
     else if (event.getId() == "drop")
@@ -256,7 +256,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
                 return;
             if (mInventory->isMainInventory())
             {
-                Mana::Event event("doMove");
+                Mana::Event event(EVENT_DOMOVE);
                 event.setItem("item", item);
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::INVENTORY);
@@ -265,7 +265,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
             }
             else
             {
-                Mana::Event event("doMove");
+                Mana::Event event(EVENT_DOMOVE);
                 event.setItem("item", item);
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::STORAGE);
@@ -368,7 +368,7 @@ void InventoryWindow::close()
     }
     else
     {
-        Mana::Event event("doCloseInventory");
+        Mana::Event event(EVENT_DOCLOSEINVENTORY);
         event.setInt("type", mInventory->getType());
         event.trigger(CHANNEL_ITEM);
         scheduleDelete();
@@ -377,7 +377,7 @@ void InventoryWindow::close()
 
 void InventoryWindow::event(Channels channel, const Mana::Event &event)
 {
-    if (event.getName() == "UpdateAttribute")
+    if (event.getName() == EVENT_UPDATEATTRIBUTE)
     {
         int id = event.getInt("id");
         if (id == TOTAL_WEIGHT ||

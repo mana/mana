@@ -176,7 +176,7 @@ void GeneralHandler::event(Channels channel,
 {
     if (channel == CHANNEL_CLIENT)
     {
-        if (event.getName() == "StateChange")
+        if (event.getName() == EVENT_STATECHANGE)
         {
             int newState = event.getInt("newState");
 
@@ -186,7 +186,7 @@ void GeneralHandler::event(Channels channel,
                 game->gameLoading();
             }
         }
-        else if (event.getName() == "DBsLoading")
+        else if (event.getName() == EVENT_DBSLOADING)
         {
             Attributes::load();
             Attributes::informItemDB();
@@ -194,7 +194,7 @@ void GeneralHandler::event(Channels channel,
     }
     else if (channel == CHANNEL_GAME)
     {
-        if (event.getName() == "GuiWindowsLoaded")
+        if (event.getName() == EVENT_GUIWINDOWSLOADED)
         {
             inventoryWindow->setSplitAllowed(true);
             skillDialog->loadSkills("mana-skills.xml");

@@ -1208,7 +1208,7 @@ bool Being::canTalk()
 
 void Being::talkTo()
 {
-    Mana::Event event("doTalk");
+    Mana::Event event(EVENT_DOTALK);
     event.setInt("npcId", mId);
     event.trigger(CHANNEL_NPC);
 }
@@ -1216,7 +1216,7 @@ void Being::talkTo()
 void Being::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_CHAT &&
-            (event.getName() == "Being" || event.getName() == "Player") &&
+            (event.getName() == EVENT_BEING || event.getName() == EVENT_PLAYER) &&
             event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
     {
         try

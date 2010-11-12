@@ -58,7 +58,7 @@ int mLevelProgress = 0;
 
 void triggerAttr(int id, int old)
 {
-    Mana::Event event("UpdateAttribute");
+    Mana::Event event(EVENT_UPDATEATTRIBUTE);
     event.setInt("id", id);
     event.setInt("oldValue", old);
     event.setInt("newValue", mData.mAttributes.find(id)->second);
@@ -68,7 +68,7 @@ void triggerAttr(int id, int old)
 void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
 {
     StatMap::iterator it = mData.mStats.find(id);
-    Mana::Event event("UpdateStat");
+    Mana::Event event(EVENT_UPDATESTAT);
     event.setInt("id", id);
     event.setInt("base", it->second.base);
     event.setInt("mod", it->second.mod);
@@ -216,7 +216,7 @@ void setStorageCount(int count)
 
     if (count != old)
     {
-        Mana::Event event("StorageCount");
+        Mana::Event event(EVENT_STORAGECOUNT);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
         event.trigger(CHANNEL_STORAGE);
@@ -237,7 +237,7 @@ void setNPCInteractionCount(int count)
 
     if (count != old)
     {
-        Mana::Event event("NPCCount");
+        Mana::Event event(EVENT_NPCCOUNT);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
         event.trigger(CHANNEL_NPC);
@@ -256,7 +256,7 @@ void setNPCPostCount(int count)
 
     if (count != old)
     {
-        Mana::Event event("PostCount");
+        Mana::Event event(EVENT_POSTCOUNT);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
         event.trigger(CHANNEL_NPC);
@@ -277,7 +277,7 @@ void setBuySellState(BuySellState buySellState)
 
     if (buySellState != old)
     {
-        Mana::Event event("StateChange");
+        Mana::Event event(EVENT_STATECHANGE);
         event.setInt("oldState", old);
         event.setInt("newState", buySellState);
         event.trigger(CHANNEL_BUYSELL);
@@ -296,7 +296,7 @@ void setTrading(bool trading)
 
     if (notify)
     {
-        Mana::Event event("Trading");
+        Mana::Event event(EVENT_TRADING);
         event.setBool("trading", trading);
         event.trigger(CHANNEL_STATUS);
     }
@@ -362,7 +362,7 @@ public:
     {
         if (channel == CHANNEL_CLIENT)
         {
-            if (event.getName() == "StateChange")
+            if (event.getName() == EVENT_STATECHANGE)
             {
                 int newState = event.getInt("newState");
 
@@ -378,7 +378,7 @@ public:
         }
         else if (channel == CHANNEL_GAME)
         {
-            if (event.getName() == "Destructed")
+            if (event.getName() == EVENT_DESTRUCTED)
             {
                 delete mInventory;
                 delete mEquipment;

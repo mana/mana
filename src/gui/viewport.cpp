@@ -558,7 +558,7 @@ void Viewport::hideBeingPopup()
 
 void Viewport::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == CHANNEL_ACTORSPRITE && event.getName() == "Destroyed")
+    if (channel == CHANNEL_ACTORSPRITE && event.getName() == EVENT_DESTROYED)
     {
         ActorSprite *actor = event.getActor("source");
 

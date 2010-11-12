@@ -75,13 +75,13 @@ void ItemShortcut::useItem(int index)
             if (item->getInfo().getEquippable())
             {
                 if (item->isEquipped())
-                    item->doEvent("doUnequip");
+                    item->doEvent(EVENT_DOUNEQUIP);
                 else
-                    item->doEvent("doEquip");
+                    item->doEvent(EVENT_DOEQUIP);
             }
             else
             {
-                item->doEvent("doUse");
+                item->doEvent(EVENT_DOUSE);
             }
         }
     }
