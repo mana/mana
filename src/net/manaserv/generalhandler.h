@@ -46,7 +46,7 @@ class GeneralHandler : public Net::GeneralHandler, public Mana::Listener
 
         void clearHandlers();
 
-        void event(const std::string &channel, const Mana::Event &event);
+        void event(Channels channel, const Mana::Event &event);
 
     protected:
         MessageHandlerPtr mBeingHandler;

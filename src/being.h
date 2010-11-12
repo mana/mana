@@ -485,7 +485,7 @@ class Being : public ActorSprite, public ConfigListener, public Mana::Listener
 
         void talkTo();
 
-        void event(const std::string &channel, const Mana::Event &event);
+        void event(Channels channel, const Mana::Event &event);
 
     protected:
         /**

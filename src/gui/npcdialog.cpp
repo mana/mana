@@ -55,7 +55,7 @@ typedef std::map<int, NpcDialog*> NpcDialogs;
 class NpcEventListener : public Mana::Listener
 {
 public:
-    void event(const std::string &channel, const Mana::Event &event);
+    void event(Channels channel, const Mana::Event &event);
 
     NpcDialog *getDialog(int id, bool make = true);
 
@@ -227,7 +227,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 NpcEvent("doMenu")
                 event.setInt("choice", selectedIndex + 1);
-                event.trigger("NPC");
+                event.trigger(CHANNEL_NPC);
             }
             else if (mInputState == NPC_INPUT_STRING)
             {
@@ -235,7 +235,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 NpcEvent("doStringInput")
                 event.setString("value", printText);
-                event.trigger("NPC");
+                event.trigger(CHANNEL_NPC);
             }
             else if (mInputState == NPC_INPUT_INTEGER)
             {
@@ -243,7 +243,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 NpcEvent("doIntegerInput")
                 event.setInt("value", mIntField->getValue());
-                event.trigger("NPC");
+                event.trigger(CHANNEL_NPC);
             }
             // addText will auto remove the input layout
             addText(strprintf("\n> \"%s\"\n", printText.c_str()), false);
@@ -282,13 +282,13 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 void NpcDialog::nextDialog()
 {
     NpcEvent("doNext");
-    event.trigger("NPC");
+    event.trigger(CHANNEL_NPC);
 }
 
 void NpcDialog::closeDialog()
 {
     NpcEvent("doClose");
-    event.trigger("NPC");
+    event.trigger(CHANNEL_NPC);
     close();
 }
 
@@ -436,7 +436,7 @@ void NpcDialog::setup()
 
     npcListener = new NpcEventListener();
 
-    npcListener->listen("NPC");
+    npcListener->listen(CHANNEL_NPC);
 }
 
 void NpcDialog::buildLayout()
@@ -506,10 +506,10 @@ void NpcDialog::buildLayout()
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
 }
 
-void NpcEventListener::event(const std::string &channel,
+void NpcEventListener::event(Channels channel,
                              const Mana::Event &event)
 {
-    if (channel != "NPC")
+    if (channel != CHANNEL_NPC)
         return;
 
     if (event.getName() == "Message")
@@ -560,7 +560,7 @@ void NpcEventListener::event(const std::string &channel,
         {
             int mNpcId = id;
             NpcEvent("doNext");
-            event.trigger("NPC");
+            event.trigger(CHANNEL_NPC);
             return;
         }
 
@@ -575,7 +575,7 @@ void NpcEventListener::event(const std::string &channel,
         {
             int mNpcId = id;
             NpcEvent("doClose");
-            event.trigger("NPC");
+            event.trigger(CHANNEL_NPC);
             return;
         }
 

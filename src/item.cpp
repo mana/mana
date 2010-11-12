@@ -76,7 +76,7 @@ void Item::doEvent(const std::string &eventName)
 {
     Mana::Event event(eventName);
     event.setItem("item", this);
-    event.trigger("Item");
+    event.trigger(CHANNEL_ITEM);
 }
 
 void Item::doEvent(const std::string &eventName, int amount)
@@ -84,7 +84,7 @@ void Item::doEvent(const std::string &eventName, int amount)
     Mana::Event event(eventName);
     event.setItem("item", this);
     event.setInt("amount", amount);
-    event.trigger("Item");
+    event.trigger(CHANNEL_ITEM);
 }
 
 bool Item::isEquippable() const

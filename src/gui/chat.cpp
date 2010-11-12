@@ -90,8 +90,8 @@ ChatWindow::ChatWindow():
     mAutoComplete(new ChatAutoComplete),
     mTmpVisible(false)
 {
-    listen("Chat");
-    listen("Notices");
+    listen(CHANNEL_CHAT);
+    listen(CHANNEL_NOTICES);
 
     setWindowName("Chat");
 
@@ -375,14 +375,14 @@ void ChatWindow::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void ChatWindow::event(const std::string &channel, const Mana::Event &event)
+void ChatWindow::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "Notices")
+    if (channel == CHANNEL_NOTICES)
     {
         if (event.getName() == "ServerNotice")
             localChatTab->chatLog(event.getString("message"), BY_SERVER);
     }
-    else if (channel == "Chat")
+    else if (channel == CHANNEL_CHAT)
     {
         if (event.getName() == "Whisper")
         {

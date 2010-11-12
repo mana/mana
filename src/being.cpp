@@ -115,7 +115,7 @@ Being::Being(int id, Type type, int subtype, Map *map):
         setShowName(true);
 
     updateColors();
-    listen("Chat");
+    listen(CHANNEL_CHAT);
 }
 
 Being::~Being()
@@ -1210,12 +1210,12 @@ void Being::talkTo()
 {
     Mana::Event event("doTalk");
     event.setInt("npcId", mId);
-    event.trigger("NPC");
+    event.trigger(CHANNEL_NPC);
 }
 
-void Being::event(const std::string &channel, const Mana::Event &event)
+void Being::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "Chat" &&
+    if (channel == CHANNEL_CHAT &&
             (event.getName() == "Being" || event.getName() == "Player") &&
             event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
     {

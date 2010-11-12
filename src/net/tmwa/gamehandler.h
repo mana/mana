@@ -41,7 +41,7 @@ class GameHandler : public MessageHandler, public Net::GameHandler,
 
         void handleMessage(Net::MessageIn &msg);
 
-        void event(const std::string &channel, const Mana::Event &event);
+        void event(Channels channel, const Mana::Event &event);
 
         void connect();
 

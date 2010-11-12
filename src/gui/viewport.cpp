@@ -72,7 +72,7 @@ Viewport::Viewport():
 
     setFocusable(true);
 
-    listen("ActorSprite");
+    listen(CHANNEL_ACTORSPRITE);
 }
 
 Viewport::~Viewport()
@@ -556,9 +556,9 @@ void Viewport::hideBeingPopup()
     mBeingPopup->setVisible(false);
 }
 
-void Viewport::event(const std::string &channel, const Mana::Event &event)
+void Viewport::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "ActorSprite" && event.getName() == "Destroyed")
+    if (channel == CHANNEL_ACTORSPRITE && event.getName() == "Destroyed")
     {
         ActorSprite *actor = event.getActor("source");
 

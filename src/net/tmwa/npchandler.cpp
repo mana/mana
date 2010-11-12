@@ -69,7 +69,7 @@ NpcHandler::NpcHandler()
     handledMessages = _messages;
     npcHandler = this;
 
-    listen("NPC");
+    listen(CHANNEL_NPC);
 }
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
@@ -88,42 +88,42 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         event = new Mana::Event("Menu");
         event->setInt("id", npcId);
         parseMenu(event, msg.readString(msg.getLength() - 8));
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case SMSG_NPC_MESSAGE:
         event = new Mana::Event("Message");
         event->setInt("id", npcId);
         event->setString("text", msg.readString(msg.getLength() - 8));
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
      case SMSG_NPC_CLOSE:
         // Show the close button
         event = new Mana::Event("Close");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case SMSG_NPC_NEXT:
         // Show the next button
         event = new Mana::Event("Next");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case SMSG_NPC_INT_INPUT:
         // Request for an integer
         event = new Mana::Event("IntegerInput");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case SMSG_NPC_STR_INPUT:
         // Request for a string
         event = new Mana::Event("StringInput");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
     }
 
@@ -133,9 +133,9 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         player_node->setAction(Being::STAND);
 }
 
-void NpcHandler::event(const std::string &channel, const Mana::Event &event)
+void NpcHandler::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "NPC")
+    if (channel == CHANNEL_NPC)
     {
         if (event.getName() == "doTalk")
         {

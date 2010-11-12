@@ -91,8 +91,8 @@ GeneralHandler::GeneralHandler():
 
     generalHandler = this;
 
-    listen("Client");
-    listen("Game");
+    listen(CHANNEL_CLIENT);
+    listen(CHANNEL_GAME);
 }
 
 void GeneralHandler::load()
@@ -171,10 +171,10 @@ void GeneralHandler::clearHandlers()
     clearNetworkHandlers();
 }
 
-void GeneralHandler::event(const std::string &channel,
+void GeneralHandler::event(Channels channel,
                            const Mana::Event &event)
 {
-    if (channel == "Client")
+    if (channel == CHANNEL_CLIENT)
     {
         if (event.getName() == "StateChange")
         {
@@ -192,7 +192,7 @@ void GeneralHandler::event(const std::string &channel,
             Attributes::informItemDB();
         }
     }
-    else if (channel == "Game")
+    else if (channel == CHANNEL_GAME)
     {
         if (event.getName() == "GuiWindowsLoaded")
         {

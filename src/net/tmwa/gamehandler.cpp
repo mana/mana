@@ -58,7 +58,7 @@ GameHandler::GameHandler()
     handledMessages = _messages;
     gameHandler = this;
 
-    listen("Game");
+    listen(CHANNEL_GAME);
 }
 
 void GameHandler::handleMessage(Net::MessageIn &msg)
@@ -105,9 +105,9 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void GameHandler::event(const std::string &channel, const Mana::Event &event)
+void GameHandler::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "Game")
+    if (channel == CHANNEL_GAME)
     {
         if (event.getName() == "EnginesInitalized")
         {

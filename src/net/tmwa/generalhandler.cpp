@@ -108,7 +108,7 @@ GeneralHandler::GeneralHandler():
 
     itemDb->setStatsList(stats);
 
-    listen("Game");
+    listen(CHANNEL_GAME);
 }
 
 GeneralHandler::~GeneralHandler()
@@ -217,10 +217,10 @@ void GeneralHandler::clearHandlers()
     mNetwork->clearHandlers();
 }
 
-void GeneralHandler::event(const std::string &channel,
+void GeneralHandler::event(Channels channel,
                            const Mana::Event &event)
 {
-    if (channel == "Game")
+    if (channel == CHANNEL_GAME)
     {
         if (event.getName() == "GuiWindowsLoaded")
         {

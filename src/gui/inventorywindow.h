@@ -112,7 +112,7 @@ class InventoryWindow : public Window,
 
         bool isMainInventory() { return mInventory->isMainInventory(); }
 
-        void event(const std::string &channel, const Mana::Event &event);
+        void event(Channels channel, const Mana::Event &event);
 
     private:
         /**

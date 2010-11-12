@@ -612,7 +612,7 @@ int Client::exec()
                 Mana::Event event("StateChange");
                 event.setInt("oldState", mOldState);
                 event.setInt("newState", mState);
-                event.trigger("Client");
+                event.trigger(CHANNEL_CLIENT);
             }
 
             if (mOldState == STATE_GAME)
@@ -772,7 +772,7 @@ int Client::exec()
                     paths.init("paths.xml", true);
                     paths.setDefaultValues(getPathsDefaults());
 
-                    Mana::Event::trigger("Client", "DBsLoading");
+                    Mana::Event::trigger(CHANNEL_CLIENT, "DBsLoading");
 
                     // Load XML databases
                     ColorDB::load();

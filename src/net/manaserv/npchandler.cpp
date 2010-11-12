@@ -52,7 +52,7 @@ NpcHandler::NpcHandler()
     handledMessages = _messages;
     npcHandler = this;
 
-    listen("NPC");
+    listen(CHANNEL_NPC);
 }
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
@@ -77,7 +77,7 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
             event->setString("choice" + toString(count), msg.readString());
         }
         event->setInt("choiceCount", count);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_NUMBER:
@@ -86,52 +86,52 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         event->setInt("min", msg.readInt32());
         event->setInt("max", msg.readInt32());
         event->setInt("default", msg.readInt32());
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_STRING:
         event = new Mana::Event("StringInput");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_POST:
         event = new Mana::Event("Post");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_ERROR:
         event = new Mana::Event("End");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_MESSAGE:
         event = new Mana::Event("Message");
         event->setInt("id", npcId);
         event->setString("text", msg.readString(msg.getUnreadLength()));
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         delete event;
 
         event = new Mana::Event("Next");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_CLOSE:
         event = new Mana::Event("Close");
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
     }
 
     delete event;
 }
 
-void NpcHandler::event(const std::string &channel, const Mana::Event &event)
+void NpcHandler::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "NPC")
+    if (channel == CHANNEL_NPC)
     {
         if (event.getName() == "doTalk")
         {

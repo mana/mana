@@ -87,14 +87,14 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mMessageTime(0),
     mShowIp(false)
 {
-    listen("Attributes");
+    listen(CHANNEL_ATTRIBUTES);
 
     mUpdateName = true;
 
     config.addListener("showownname", this);
     setShowName(config.getValue("showownname", 1));
 
-    listen("ActorSprite");
+    listen(CHANNEL_ACTORSPRITE);
 }
 
 LocalPlayer::~LocalPlayer()
@@ -1084,9 +1084,9 @@ void LocalPlayer::optionChanged(const std::string &value)
     }
 }
 
-void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
+void LocalPlayer::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "ActorSprite")
+    if (channel == CHANNEL_ACTORSPRITE)
     {
         if (event.getName() == "Destroyed")
         {
@@ -1099,7 +1099,7 @@ void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
                 mTarget = 0;
         }
     }
-    else if (channel == "Attributes")
+    else if (channel == CHANNEL_ATTRIBUTES)
     {
         if (event.getName() == "UpdateAttribute")
         {

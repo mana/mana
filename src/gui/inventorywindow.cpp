@@ -60,7 +60,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     mInventory(inventory),
     mSplit(false)
 {
-    listen("Attributes");
+    listen(CHANNEL_ATTRIBUTES);
 
     setWindowName(isMainInventory() ? "Inventory" : "Storage");
     setupWindow->registerWindowForReset(this);
@@ -261,7 +261,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::INVENTORY);
                 event.setInt("destination", Inventory::STORAGE);
-                event.trigger("Item");
+                event.trigger(CHANNEL_ITEM);
             }
             else
             {
@@ -270,7 +270,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::STORAGE);
                 event.setInt("destination", Inventory::INVENTORY);
-                event.trigger("Item");
+                event.trigger(CHANNEL_ITEM);
             }
         }
     }
@@ -370,12 +370,12 @@ void InventoryWindow::close()
     {
         Mana::Event event("doCloseInventory");
         event.setInt("type", mInventory->getType());
-        event.trigger("Item");
+        event.trigger(CHANNEL_ITEM);
         scheduleDelete();
     }
 }
 
-void InventoryWindow::event(const std::string &channel, const Mana::Event &event)
+void InventoryWindow::event(Channels channel, const Mana::Event &event)
 {
     if (event.getName() == "UpdateAttribute")
     {

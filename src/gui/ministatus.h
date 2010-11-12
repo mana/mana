@@ -45,7 +45,7 @@ class MiniStatusWindow : public Popup, public Mana::Listener
 
         void drawIcons(Graphics *graphics);
 
-        void event(const std::string &channel, const Mana::Event &event);
+        void event(Channels channel, const Mana::Event &event);
 
         void logic(); // Updates icons
 

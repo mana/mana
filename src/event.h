@@ -28,6 +28,21 @@
 class ActorSprite;
 class Item;
 
+enum Channels
+{
+    CHANNEL_ACTORSPRITE,
+    CHANNEL_ATTRIBUTES,
+    CHANNEL_BUYSELL,
+    CHANNEL_CHAT,
+    CHANNEL_CLIENT,
+    CHANNEL_GAME,
+    CHANNEL_ITEM,
+    CHANNEL_NOTICES,
+    CHANNEL_NPC,
+    CHANNEL_STATUS,
+    CHANNEL_STORAGE
+};
+
 namespace Mana
 {
 
@@ -41,7 +56,7 @@ enum BadEvent {
 class Listener;
 
 typedef std::set<Listener *> ListenerSet;
-typedef std::map<std::string, ListenerSet > ListenMap;
+typedef std::map<Channels, ListenerSet > ListenMap;
 
 class VariableData;
 typedef std::map<std::string, VariableData *> VariableMap;
@@ -49,7 +64,7 @@ typedef std::map<std::string, VariableData *> VariableMap;
 #define SERVER_NOTICE(message) { \
 Mana::Event event("ServerNotice"); \
 event.setString("message", message); \
-event.trigger("Notices", event); }
+event.trigger(CHANNEL_NOTICES, event); }
 
 class Event
 {
@@ -220,19 +235,19 @@ public:
     /**
      * Sends this event to all classes listening to the given channel.
      */
-    inline void trigger(const std::string &channel) const
+    inline void trigger(Channels channel) const
     { trigger(channel, *this); }
 
     /**
      * Sends the given event to all classes listening to the given channel.
      */
-    static void trigger(const std::string &channel, const Event &event);
+    static void trigger(Channels channel, const Event &event);
 
     /**
      * Sends an empty event with the given name to all classes listening to the
      * given channel.
      */
-    static inline void trigger(const std::string& channel,
+    static inline void trigger(Channels channel,
                                const std::string& name)
     { trigger(channel, Mana::Event(name)); }
 
@@ -243,13 +258,13 @@ protected:
      * Binds the given listener to the given channel. The listener will receive
      * all events triggered on the channel.
      */
-    static void bind(Listener *listener, const std::string &channel);
+    static void bind(Listener *listener, Channels channel);
 
     /**
      * Unbinds the given listener from the given channel. The listener will no
      * longer receive any events from the channel.
      */
-    static void unbind(Listener *listener, const std::string &channel);
+    static void unbind(Listener *listener, Channels channel);
 
     /**
      * Unbinds the given listener from all channels.

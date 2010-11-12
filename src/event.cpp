@@ -215,7 +215,7 @@ bool Event::hasActor(const std::string &key) const
 
 // Triggers
 
-void Event::trigger(const std::string &channel, const Event &event)
+void Event::trigger(Channels channel, const Event &event)
 {
     ListenMap::iterator it = mBindings.find(channel);
 
@@ -232,12 +232,12 @@ void Event::trigger(const std::string &channel, const Event &event)
     }
 }
 
-void Event::bind(Listener *listener, const std::string &channel)
+void Event::bind(Listener *listener, Channels channel)
 {
     mBindings[channel].insert(listener);
 }
 
-void Event::unbind(Listener *listener, const std::string &channel)
+void Event::unbind(Listener *listener, Channels channel)
 {
     mBindings[channel].erase(listener);
 }

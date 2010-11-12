@@ -101,7 +101,7 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
             event.setInt("npcId", mNpcId);
             event.setString("recipient", mSender->getText());
             event.setString("text", mText->getText());
-            event.trigger("NPC");
+            event.trigger(CHANNEL_NPC);
         }
         setVisible(false);
     }

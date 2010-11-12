@@ -59,7 +59,7 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             event.setInt("amount", amount);
             event.setInt("source", Inventory::INVENTORY);
             event.setInt("destination", Inventory::STORAGE);
-            event.trigger("Item");
+            event.trigger(CHANNEL_ITEM);
         }
             break;
         case StoreRemove:
@@ -69,7 +69,7 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             event.setInt("amount", amount);
             event.setInt("source", Inventory::STORAGE);
             event.setInt("destination", Inventory::INVENTORY);
-            event.trigger("Item");
+            event.trigger(CHANNEL_ITEM);
         }
             break;
         default:

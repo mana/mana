@@ -62,7 +62,7 @@ void triggerAttr(int id, int old)
     event.setInt("id", id);
     event.setInt("oldValue", old);
     event.setInt("newValue", mData.mAttributes.find(id)->second);
-    event.trigger("Attributes");
+    event.trigger(CHANNEL_ATTRIBUTES);
 }
 
 void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
@@ -77,7 +77,7 @@ void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
     event.setString("changed", changed);
     event.setInt("oldValue1", old1);
     event.setInt("oldValue2", old2);
-    event.trigger("Attributes");
+    event.trigger(CHANNEL_ATTRIBUTES);
 }
 
 // --- Attributes -------------------------------------------------------------
@@ -219,7 +219,7 @@ void setStorageCount(int count)
         Mana::Event event("StorageCount");
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger("Storage");
+        event.trigger(CHANNEL_STORAGE);
     }
 }
 
@@ -240,7 +240,7 @@ void setNPCInteractionCount(int count)
         Mana::Event event("NPCCount");
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger("NPC");
+        event.trigger(CHANNEL_NPC);
     }
 }
 
@@ -259,7 +259,7 @@ void setNPCPostCount(int count)
         Mana::Event event("PostCount");
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger("NPC");
+        event.trigger(CHANNEL_NPC);
     }
 }
 
@@ -280,7 +280,7 @@ void setBuySellState(BuySellState buySellState)
         Mana::Event event("StateChange");
         event.setInt("oldState", old);
         event.setInt("newState", buySellState);
-        event.trigger("BuySell");
+        event.trigger(CHANNEL_BUYSELL);
     }
 }
 
@@ -298,7 +298,7 @@ void setTrading(bool trading)
     {
         Mana::Event event("Trading");
         event.setBool("trading", trading);
-        event.trigger("Status");
+        event.trigger(CHANNEL_STATUS);
     }
 }
 
@@ -354,13 +354,13 @@ class PlayerLogic : Mana::Listener
 public:
     PlayerLogic()
     {
-        listen("Client");
-        listen("Game");
+        listen(CHANNEL_CLIENT);
+        listen(CHANNEL_GAME);
     }
 
-    void event(const std::string &channel, const Mana::Event &event)
+    void event(Channels channel, const Mana::Event &event)
     {
-        if (channel == "Client")
+        if (channel == CHANNEL_CLIENT)
         {
             if (event.getName() == "StateChange")
             {
@@ -376,7 +376,7 @@ public:
                 }
             }
         }
-        else if (channel == "Game")
+        else if (channel == CHANNEL_GAME)
         {
             if (event.getName() == "Destructed")
             {

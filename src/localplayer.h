@@ -186,7 +186,7 @@ class LocalPlayer : public Being
          */
         void optionChanged(const std::string &value);
 
-        void event(const std::string &channel, const Mana::Event &event);
+        void event(Channels channel, const Mana::Event &event);
 
         /**
          * Tells the engine wether to check
