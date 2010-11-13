@@ -4,6 +4,12 @@ AM_INIT_AUTOMAKE([1.9])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
 
+# Warns about deprecation for manaserv
+AC_MSG_WARN([************************************************])
+AC_MSG_WARN([* Autotools is deprecated as the client binary *])
+AC_MSG_WARN([* may be incompatible with Manaserv servers!!  *])
+AC_MSG_WARN([************************************************])
+
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_INSTALL
