@@ -49,6 +49,7 @@
 #include "net/gamehandler.h"
 #include "net/net.h"
 #include "net/playerhandler.h"
+#include "net/npchandler.h"
 
 #include "resources/beinginfo.h"
 #include "resources/colordb.h"
@@ -1208,9 +1209,7 @@ bool Being::canTalk()
 
 void Being::talkTo()
 {
-    Mana::Event event(EVENT_DOTALK);
-    event.setInt("npcId", mId);
-    event.trigger(CHANNEL_NPC);
+    Net::getNpcHandler()->talk(mId);
 }
 
 void Being::event(Channels channel, const Mana::Event &event)

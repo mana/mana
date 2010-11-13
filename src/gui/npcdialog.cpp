@@ -37,6 +37,9 @@
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
 
+#include "net/net.h"
+#include "net/npchandler.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -46,9 +49,6 @@
 #define CAPTION_NEXT _("Next")
 #define CAPTION_CLOSE _("Close")
 #define CAPTION_SUBMIT _("Submit")
-
-#define NpcEvent(name) Mana::Event event(name);\
-event.setInt("npcId", mNpcId);
 
 typedef std::map<int, NpcDialog*> NpcDialogs;
 
@@ -225,25 +225,19 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 printText = mItems[selectedIndex];
 
-                NpcEvent(EVENT_DOMENU)
-                event.setInt("choice", selectedIndex + 1);
-                event.trigger(CHANNEL_NPC);
+                Net::getNpcHandler()->menuSelect(mNpcId, selectedIndex + 1);
             }
             else if (mInputState == NPC_INPUT_STRING)
             {
                 printText = mTextField->getText();
 
-                NpcEvent(EVENT_DOSTRINGINPUT)
-                event.setString("value", printText);
-                event.trigger(CHANNEL_NPC);
+                Net::getNpcHandler()->stringInput(mNpcId, printText);
             }
             else if (mInputState == NPC_INPUT_INTEGER)
             {
                 printText = strprintf("%d", mIntField->getValue());
 
-                NpcEvent(EVENT_DOINTEGERINPUT)
-                event.setInt("value", mIntField->getValue());
-                event.trigger(CHANNEL_NPC);
+                Net::getNpcHandler()->integerInput(mNpcId, mIntField->getValue());
             }
             // addText will auto remove the input layout
             addText(strprintf("\n> \"%s\"\n", printText.c_str()), false);
@@ -281,14 +275,12 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
 void NpcDialog::nextDialog()
 {
-    NpcEvent(EVENT_DONEXT);
-    event.trigger(CHANNEL_NPC);
+    Net::getNpcHandler()->nextDialog(mNpcId);
 }
 
 void NpcDialog::closeDialog()
 {
-    NpcEvent(EVENT_DOCLOSE);
-    event.trigger(CHANNEL_NPC);
+    Net::getNpcHandler()->closeDialog(mNpcId);
     close();
 }
 
@@ -559,8 +551,7 @@ void NpcEventListener::event(Channels channel,
         if (!dialog)
         {
             int mNpcId = id;
-            NpcEvent(EVENT_DONEXT);
-            event.trigger(CHANNEL_NPC);
+            Net::getNpcHandler()->nextDialog(mNpcId);
             return;
         }
 
@@ -574,8 +565,7 @@ void NpcEventListener::event(Channels channel,
         if (!dialog)
         {
             int mNpcId = id;
-            NpcEvent(EVENT_DOCLOSE);
-            event.trigger(CHANNEL_NPC);
+            Net::getNpcHandler()->closeDialog(mNpcId);
             return;
         }
 

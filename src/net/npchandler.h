@@ -42,6 +42,22 @@ class NpcHandler
         virtual void sellItem(int beingId, int itemId, int amount) = 0;
 
         virtual void endShopping(int beingId) = 0;
+
+        virtual void talk(int npcId) = 0;
+
+        virtual void nextDialog(int npcId) = 0;
+
+        virtual void closeDialog(int npcId) = 0;
+
+        virtual void menuSelect(int npcId, int choice) = 0;
+
+        virtual void integerInput(int npcId, int value) = 0;
+
+        virtual void stringInput(int npcId, const std::string &value) = 0;
+
+        virtual void sendLetter(int npcId, const std::string &recipient,
+                                const std::string &text) = 0;
+
 };
 
 } // namespace Net

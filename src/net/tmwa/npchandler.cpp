@@ -68,8 +68,6 @@ NpcHandler::NpcHandler()
     };
     handledMessages = _messages;
     npcHandler = this;
-
-    listen(CHANNEL_NPC);
 }
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
@@ -133,50 +131,6 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         player_node->setAction(Being::STAND);
 }
 
-void NpcHandler::event(Channels channel, const Mana::Event &event)
-{
-    if (channel == CHANNEL_NPC)
-    {
-        if (event.getName() == EVENT_DOTALK)
-        {
-            MessageOut outMsg(CMSG_NPC_TALK);
-            outMsg.writeInt32(event.getInt("npcId"));
-            outMsg.writeInt8(0); // Unused
-        }
-        else if (event.getName() == EVENT_DONEXT)
-        {
-            MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
-            outMsg.writeInt32(event.getInt("npcId"));
-        }
-        else if (event.getName() == EVENT_DOCLOSE)
-        {
-            MessageOut outMsg(CMSG_NPC_CLOSE);
-            outMsg.writeInt32(event.getInt("npcId"));
-        }
-        else if (event.getName() == EVENT_DOMENU)
-        {
-            MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
-            outMsg.writeInt32(event.getInt("npcId"));
-            outMsg.writeInt8(event.getInt("choice"));
-        }
-        else if (event.getName() == EVENT_DOINTEGERINPUT)
-        {
-            MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
-            outMsg.writeInt32(event.getInt("npcId"));
-            outMsg.writeInt32(event.getInt("value"));
-        }
-        else if (event.getName() == EVENT_DOSTRINGINPUT)
-        {
-            const std::string &value = event.getString("value");
-            MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
-            outMsg.writeInt16(value.length() + 9);
-            outMsg.writeInt32(event.getInt("npcId"));
-            outMsg.writeString(value, value.length());
-            outMsg.writeInt8(0); // Prevent problems with string reading
-        }
-    }
-}
-
 void NpcHandler::startShopping(int beingId)
 {
     // TODO
@@ -215,6 +169,81 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
 void NpcHandler::endShopping(int beingId)
 {
     // TODO
+}
+
+void NpcHandler::talk(int npcId)
+{
+    MessageOut outMsg(CMSG_NPC_TALK);
+    outMsg.writeInt32(npcId);
+    outMsg.writeInt8(0); // Unused
+
+    Mana::Event event(EVENT_TALKSENT);
+    event.setInt("npcId", npcId);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::nextDialog(int npcId)
+{
+    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeInt32(npcId);
+
+    Mana::Event event(EVENT_NEXTSENT);
+    event.setInt("npcId", npcId);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::closeDialog(int npcId)
+{
+    MessageOut outMsg(CMSG_NPC_CLOSE);
+    outMsg.writeInt32(npcId);
+
+    Mana::Event event(EVENT_CLOSESENT);
+    event.setInt("npcId", npcId);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::menuSelect(int npcId, int choice)
+{
+    MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
+    outMsg.writeInt32(npcId);
+    outMsg.writeInt8(choice);
+
+    Mana::Event event(EVENT_MENUSENT);
+    event.setInt("npcId", npcId);
+    event.setInt("choice", choice);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::integerInput(int npcId, int value)
+{
+    MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
+    outMsg.writeInt32(npcId);
+    outMsg.writeInt32(value);
+
+    Mana::Event event(EVENT_INTEGERINPUTSENT);
+    event.setInt("npcId", npcId);
+    event.setInt("value", value);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::stringInput(int npcId, const std::string &value)
+{
+    MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
+    outMsg.writeInt16(value.length() + 9);
+    outMsg.writeInt32(npcId);
+    outMsg.writeString(value, value.length());
+    outMsg.writeInt8(0); // Prevent problems with string reading
+
+    Mana::Event event(EVENT_STRINGINPUTSENT);
+    event.setInt("npcId", npcId);
+    event.setString("value", value);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::sendLetter(int npcId, const std::string &recipient,
+            const std::string &text)
+{
+    //NOTE: eA doesn't have letters
 }
 
 } // namespace TmwAthena

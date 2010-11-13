@@ -32,15 +32,12 @@
 
 namespace ManaServ {
 
-class NpcHandler : public MessageHandler, public Net::NpcHandler,
-        public Mana::Listener
+class NpcHandler : public MessageHandler, public Net::NpcHandler
 {
     public:
         NpcHandler();
 
         void handleMessage(Net::MessageIn &msg);
-
-        void event(Channels channel, const Mana::Event &event);
 
         void startShopping(int beingId);
 
@@ -53,6 +50,22 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler,
         void sellItem(int beingId, int itemId, int amount);
 
         void endShopping(int beingId);
+
+        void talk(int npcId);
+
+        void nextDialog(int npcId);
+
+        void closeDialog(int npcId);
+
+        void menuSelect(int npcId, int choice);
+
+        void integerInput(int npcId, int value);
+
+        void stringInput(int npcId, const std::string &value);
+
+        void sendLetter(int npcId, const std::string &recipient,
+                        const std::string &text);
+
 };
 
 } // namespace ManaServ
