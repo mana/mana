@@ -32,7 +32,6 @@
 #include <map>
 #include <string>
 
-class ConfigListener;
 class ConfigurationObject;
 
 /**
@@ -215,17 +214,6 @@ class Configuration : public ConfigurationObject
          */
         void write();
 
-        /**
-         * Adds a listener to the listen list of the specified config option.
-         */
-        void addListener(const std::string &key, ConfigListener *listener);
-
-        /**
-         * Removes a listener from the listen list of the specified config
-         * option.
-         */
-        void removeListener(const std::string &key, ConfigListener *listener);
-
         void setValue(const std::string &key, const std::string &value);
 
         inline void setValue(const std::string &key, const char *value)
@@ -266,12 +254,6 @@ class Configuration : public ConfigurationObject
          * Clean up the default values member.
          */
         void cleanDefaults();
-
-        typedef std::list<ConfigListener*> Listeners;
-        typedef Listeners::iterator ListenerIterator;
-        typedef std::map<std::string, Listeners> ListenerMap;
-        typedef ListenerMap::iterator ListenerMapIterator;
-        ListenerMap mListenerMap;
 
         std::string mConfigPath;       /**< Location of config file */
         DefaultsData *mDefaultsData;   /**< Defaults of value for a given key */

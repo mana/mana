@@ -64,14 +64,12 @@ Viewport::Viewport():
     mScrollCenterOffsetX = config.getIntValue("ScrollCenterOffsetX");
     mScrollCenterOffsetY = config.getIntValue("ScrollCenterOffsetY");
 
-    config.addListener("ScrollLaziness", this);
-    config.addListener("ScrollRadius", this);
-
     mPopupMenu = new PopupMenu;
     mBeingPopup = new BeingPopup;
 
     setFocusable(true);
 
+    listen(CHANNEL_CONFIG);
     listen(CHANNEL_ACTORSPRITE);
 }
 
@@ -485,12 +483,6 @@ void Viewport::closePopupMenu()
     mPopupMenu->handleLink("cancel");
 }
 
-void Viewport::optionChanged(const std::string &name)
-{
-    mScrollLaziness = config.getIntValue("ScrollLaziness");
-    mScrollRadius = config.getIntValue("ScrollRadius");
-}
-
 void Viewport::mouseMoved(gcn::MouseEvent &event)
 {
     // Check if we are on the map
@@ -567,5 +559,15 @@ void Viewport::event(Channels channel, const Mana::Event &event)
 
         if (mHoverItem == actor)
             mHoverItem = 0;
+    }
+    else if (channel == CHANNEL_CONFIG &&
+             event.getName() == EVENT_CONFIGOPTIONCHANGED)
+    {
+        const std::string option = event.getString("option");
+        if (option == "ScrollLaziness" || option == "ScrollRadius")
+        {
+            mScrollLaziness = config.getIntValue("ScrollLaziness");
+            mScrollRadius = config.getIntValue("ScrollRadius");
+        }
     }
 }

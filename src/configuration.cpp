@@ -21,7 +21,7 @@
 
 #include "configuration.h"
 
-#include "configlistener.h"
+#include "event.h"
 #include "log.h"
 
 #include "utils/stringutils.h"
@@ -38,13 +38,9 @@ void Configuration::setValue(const std::string &key, const std::string &value)
     ConfigurationObject::setValue(key, value);
 
     // Notify listeners
-    ListenerMapIterator list = mListenerMap.find(key);
-    if (list != mListenerMap.end())
-    {
-        Listeners listeners = list->second;
-        for (ListenerIterator i = listeners.begin(); i != listeners.end(); i++)
-            (*i)->optionChanged(key);
-    }
+    Mana::Event event(EVENT_CONFIGOPTIONCHANGED);
+    event.setString("option", key);
+    event.trigger(CHANNEL_CONFIG);
 }
 
 std::string ConfigurationObject::getValue(const std::string &key,
@@ -357,16 +353,4 @@ void Configuration::write()
 
     xmlTextWriterEndDocument(writer);
     xmlFreeTextWriter(writer);
-}
-
-void Configuration::addListener(const std::string &key,
-                                ConfigListener *listener)
-{
-    mListenerMap[key].push_front(listener);
-}
-
-void Configuration::removeListener(const std::string &key,
-                                   ConfigListener *listener)
-{
-    mListenerMap[key].remove(listener);
 }

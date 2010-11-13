@@ -91,15 +91,14 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
     mUpdateName = true;
 
-    config.addListener("showownname", this);
     setShowName(config.getValue("showownname", 1));
 
+    listen(CHANNEL_CONFIG);
     listen(CHANNEL_ACTORSPRITE);
 }
 
 LocalPlayer::~LocalPlayer()
 {
-    config.removeListener("showownname", this);
 }
 
 void LocalPlayer::logic()
@@ -1076,14 +1075,6 @@ void LocalPlayer::addMessageToQueue(const std::string &message, int color)
     mMessages.push_back(MessagePair(message, color));
 }
 
-void LocalPlayer::optionChanged(const std::string &value)
-{
-    if (value == "showownname")
-    {
-        setShowName(config.getValue("showownname", 1));
-    }
-}
-
 void LocalPlayer::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_ACTORSPRITE)
@@ -1111,6 +1102,15 @@ void LocalPlayer::event(Channels channel, const Mana::Event &event)
                 addMessageToQueue(toString(change) + " xp");
             }
         }
+    }
+    else if (channel == CHANNEL_CONFIG)
+    {
+        if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+            event.getString("option") == "showownname")
+        {
+            setShowName(config.getValue("showownname", 1));
+        }
+
     }
 
     Being::event(channel, event);

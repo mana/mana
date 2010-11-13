@@ -29,8 +29,8 @@
 #include "gui/widgets/window.h"
 #include "gui/widgets/windowcontainer.h"
 
-#include "configlistener.h"
 #include "configuration.h"
+#include "listener.h"
 #include "graphics.h"
 #include "log.h"
 
@@ -50,19 +50,23 @@ SDLInput *guiInput = 0;
 // Bolded font
 gcn::Font *boldFont = 0;
 
-class GuiConfigListener : public ConfigListener
+class GuiConfigListener : public Mana::Listener
 {
     public:
         GuiConfigListener(Gui *g):
             mGui(g)
         {}
 
-        void optionChanged(const std::string &name)
+        void event(Channels channel, const Mana::Event &event)
         {
-            if (name == "customcursor")
+            if (channel == CHANNEL_CONFIG)
             {
-                bool bCustomCursor = config.getBoolValue("customcursor");
-                mGui->setUseCustomCursor(bCustomCursor);
+                if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+                    event.getString("option") == "customcursor")
+                {
+                    bool bCustomCursor = config.getBoolValue("customcursor");
+                    mGui->setUseCustomCursor(bCustomCursor);
+                }
             }
         }
     private:
@@ -137,12 +141,11 @@ Gui::Gui(Graphics *graphics):
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getBoolValue("customcursor"));
     mConfigListener = new GuiConfigListener(this);
-    config.addListener("customcursor", mConfigListener);
+    mConfigListener->listen(CHANNEL_CONFIG);
 }
 
 Gui::~Gui()
 {
-    config.removeListener("customcursor", mConfigListener);
     delete mConfigListener;
 
     if (mMouseCursors)

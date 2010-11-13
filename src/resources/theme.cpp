@@ -111,7 +111,7 @@ Theme::Theme():
 {
     initDefaultThemePath();
 
-    config.addListener("guialpha", this);
+    listen(CHANNEL_CONFIG);
     loadColors();
 
     mColors[HIGHLIGHT].ch = 'H';
@@ -130,7 +130,6 @@ Theme::Theme():
 Theme::~Theme()
 {
     delete_all(mSkins);
-    config.removeListener("guialpha", this);
     delete_all(mProgressColors);
 }
 
@@ -209,9 +208,14 @@ void Theme::updateAlpha()
         iter->second->updateAlpha(mMinimumOpacity);
 }
 
-void Theme::optionChanged(const std::string &)
+void Theme::event(Channels channel, const Mana::Event &event)
 {
-    updateAlpha();
+    if (channel == CHANNEL_CONFIG &&
+        event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+        event.getString("option") == "guialpha")
+    {
+        updateAlpha();
+    }
 }
 
 Skin *Theme::readSkin(const std::string &filename)

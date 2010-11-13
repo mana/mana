@@ -22,7 +22,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "configlistener.h"
+#include "listener.h"
 
 #include "net/serverinfo.h"
 
@@ -119,7 +119,7 @@ enum State {
  * The core part of the client. This class initializes all subsystems, runs
  * the event loop, and shuts everything down again.
  */
-class Client : public ConfigListener, public gcn::ActionListener
+class Client : public Mana::Listener, public gcn::ActionListener
 {
 public:
     /**
@@ -185,7 +185,7 @@ public:
     static const std::string &getScreenshotDirectory()
     { return instance()->mScreenshotDir; }
 
-    void optionChanged(const std::string &name);
+    void event(Channels channel, const Mana::Event &event);
     void action(const gcn::ActionEvent &event);
 
 private:

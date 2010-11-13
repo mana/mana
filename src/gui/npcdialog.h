@@ -22,7 +22,7 @@
 #ifndef NPCDIALOG_H
 #define NPCDIALOG_H
 
-#include "configlistener.h"
+#include "listener.h"
 
 #include "gui/widgets/window.h"
 
@@ -45,7 +45,7 @@ class Button;
  * \ingroup Interface
  */
 class NpcDialog : public Window, public gcn::ActionListener,
-                  public gcn::ListModel, public ConfigListener
+                  public gcn::ListModel, public Mana::Listener
 {
     public:
         /**
@@ -143,7 +143,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
 
         void setVisible(bool visible);
 
-        void optionChanged(const std::string &name);
+        void event(Channels channel, const Mana::Event &event);
 
         /**
          * Returns the first active instance. Useful for pushing user

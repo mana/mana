@@ -23,7 +23,6 @@
 #define VIEWPORT_H
 
 #include "actorspritemanager.h"
-#include "configlistener.h"
 #include "listener.h"
 #include "position.h"
 
@@ -54,7 +53,7 @@ const int walkingMouseDelay = 500;
  * coordinates.
  */
 class Viewport : public WindowContainer, public gcn::MouseListener,
-        public ConfigListener, public Mana::Listener
+        public Mana::Listener
 {
     public:
         /**
@@ -119,11 +118,6 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * maps.
          */
         void closePopupMenu();
-
-        /**
-         * A relevant config option changed.
-         */
-        void optionChanged(const std::string &name);
 
         /**
          * Returns camera x offset in pixels.

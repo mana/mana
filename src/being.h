@@ -23,7 +23,6 @@
 #define BEING_H
 
 #include "actorsprite.h"
-#include "configlistener.h"
 #include "listener.h"
 #include "map.h"
 #include "particlecontainer.h"
@@ -63,7 +62,7 @@ enum Gender
     GENDER_UNSPECIFIED = 2
 };
 
-class Being : public ActorSprite, public ConfigListener, public Mana::Listener
+class Being : public ActorSprite, public Mana::Listener
 {
     public:
         /**
@@ -440,8 +439,6 @@ class Being : public ActorSprite, public ConfigListener, public Mana::Listener
         const Path &getPath() const { return mPath; }
 
         static void load();
-
-        virtual void optionChanged(const std::string &value);
 
         void flashName(int time);
 

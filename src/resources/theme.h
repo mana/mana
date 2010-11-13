@@ -24,8 +24,8 @@
 #ifndef SKIN_H
 #define SKIN_H
 
-#include "configlistener.h"
 #include "graphics.h"
+#include "listener.h"
 
 #include "gui/palette.h"
 
@@ -100,7 +100,7 @@ class Skin
         Image *mStickyImageDown;   /**< Sticky Button Image */
 };
 
-class Theme : public Palette, public ConfigListener
+class Theme : public Palette, public Mana::Listener
 {
     public:
         static Theme *instance();
@@ -218,7 +218,7 @@ class Theme : public Palette, public ConfigListener
          */
         void setMinimumOpacity(float minimumOpacity);
 
-        void optionChanged(const std::string &);
+        void event(Channels channel, const Mana::Event &event);
 
     private:
         Theme();

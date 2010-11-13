@@ -143,7 +143,7 @@ NpcDialog::NpcDialog(int npcId)
     setVisible(true);
     requestFocus();
 
-    config.addListener("logNpcInGui", this);
+    listen(CHANNEL_CONFIG);
     PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
                                        + 1);
 }
@@ -161,7 +161,6 @@ NpcDialog::~NpcDialog()
 
     instances.remove(this);
 
-    config.removeListener("logNpcInGui", this);
     PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
                                        - 1);
 
@@ -383,9 +382,13 @@ void NpcDialog::setVisible(bool visible)
     }
 }
 
-void NpcDialog::optionChanged(const std::string &name)
+void NpcDialog::event(Channels channel, const Mana::Event &event)
 {
-    if (name == "logNpcInGui")
+    if (channel != CHANNEL_CONFIG)
+        return;
+
+    if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+        event.getString("option") == "logNpcInGui")
     {
         mLogInteraction = config.getBoolValue("logNpcInGui");
     }
