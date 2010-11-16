@@ -437,7 +437,6 @@ SET(SRCS
     commandhandler.h
     compoundsprite.cpp
     compoundsprite.h
-    configlistener.h
     configuration.cpp
     configuration.h
     defaults.cpp
