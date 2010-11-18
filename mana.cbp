@@ -137,7 +137,6 @@
 		<Unit filename="src\commandhandler.h" />
 		<Unit filename="src\compoundsprite.cpp" />
 		<Unit filename="src\compoundsprite.h" />
-		<Unit filename="src\configlistener.h" />
 		<Unit filename="src\configuration.cpp" />
 		<Unit filename="src\configuration.h" />
 		<Unit filename="src\defaults.cpp" />

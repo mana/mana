@@ -72,7 +72,6 @@
 ./src/commandhandler.h
 ./src/compoundsprite.cpp
 ./src/compoundsprite.h
-./src/configlistener.h
 ./src/configuration.cpp
 ./src/configuration.h
 ./src/defaults.cpp
