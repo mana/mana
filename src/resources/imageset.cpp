@@ -27,11 +27,11 @@
 
 #include "utils/dtor.h"
 
-ImageSet::ImageSet(Image *img, int width, int height)
+ImageSet::ImageSet(Image *img, int width, int height, int margin, int spacing)
 {
-    for (int y = 0; y + height <= img->getHeight(); y += height)
+    for (int y = margin; y + height <= img->getHeight() - margin; y += height + spacing)
     {
-        for (int x = 0; x + width <= img->getWidth(); x += width)
+        for (int x = margin; x + width <= img->getWidth() - margin; x += width + spacing)
         {
             mImages.push_back(img->getSubImage(x, y, width, height));
         }

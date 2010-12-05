@@ -392,6 +392,8 @@ Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
                                 Map *map)
 {
     int firstGid = XML::getProperty(node, "firstgid", 0);
+    int margin = XML::getProperty(node, "margin", 0);
+    int spacing = XML::getProperty(node, "spacing", 0);
     XML::Document* doc = NULL;
     Tileset *set = NULL;
     std::string pathDir(path);
@@ -426,7 +428,8 @@ Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
 
                 if (tilebmp)
                 {
-                    set = new Tileset(tilebmp, tw, th, firstGid);
+                    set = new Tileset(tilebmp, tw, th, firstGid, margin,
+                                      spacing);
                     tilebmp->decRef();
                 }
                 else

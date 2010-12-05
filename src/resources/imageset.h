@@ -37,7 +37,7 @@ class ImageSet : public Resource
         /**
          * Cuts the passed image in a grid of sub images.
          */
-        ImageSet(Image *img, int w, int h);
+        ImageSet(Image *img, int w, int h, int margin = 0, int spacing = 0);
 
         /**
          * Destructor.
