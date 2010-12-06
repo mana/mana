@@ -24,8 +24,6 @@
 
 #include "being.h"
 
-#include "net/serverinfo.h"
-
 #include <string>
 
 class LoginData

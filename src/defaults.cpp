@@ -20,8 +20,6 @@
 
 #include "defaults.h"
 
-#include "utils/stringutils.h"
-
 #include "being.h"
 #include "graphics.h"
 #include "client.h"

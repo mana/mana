@@ -28,7 +28,6 @@
 #include "gui/widgets/window.h"
 
 #include "net/inventoryhandler.h"
-#include "net/net.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>

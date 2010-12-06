@@ -22,8 +22,6 @@
 #ifndef CHANGEPASSWORDDIALOG_H
 #define CHANGEPASSWORDDIALOG_H
 
-#include "guichanfwd.h"
-
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>

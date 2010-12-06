@@ -22,8 +22,6 @@
 #ifndef OPENGLGRAPHICS_H
 #define OPENGLGRAPHICS_H
 
-#include "main.h"
-
 #include "graphics.h"
 
 #ifdef USE_OPENGL

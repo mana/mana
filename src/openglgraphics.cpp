@@ -25,8 +25,6 @@
 
 #include "resources/image.h"
 
-#include "utils/stringutils.h"
-
 #ifdef USE_OPENGL
 
 #ifdef __APPLE__

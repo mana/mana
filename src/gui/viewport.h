@@ -22,7 +22,6 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
-#include "actorspritemanager.h"
 #include "listener.h"
 #include "position.h"
 

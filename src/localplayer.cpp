@@ -23,19 +23,16 @@
 
 #include "client.h"
 #include "configuration.h"
-#include "effectmanager.h"
 #include "event.h"
 #include "flooritem.h"
 #include "graphics.h"
 #include "guild.h"
 #include "item.h"
-#include "log.h"
 #include "map.h"
 #include "particle.h"
 #include "playerinfo.h"
 #include "simpleanimation.h"
 #include "sound.h"
-#include "text.h"
 
 #include "gui/gui.h"
 #include "gui/okdialog.h"
@@ -54,8 +51,6 @@
 #include "resources/animation.h"
 #include "resources/imageset.h"
 #include "resources/iteminfo.h"
-#include "resources/resourcemanager.h"
-#include "resources/theme.h"
 #include "resources/userpalette.h"
 
 #include "utils/gettext.h"

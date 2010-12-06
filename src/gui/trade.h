@@ -22,8 +22,6 @@
 #ifndef TRADE_H
 #define TRADE_H
 
-#include "guichanfwd.h"
-
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>

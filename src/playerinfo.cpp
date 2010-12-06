@@ -27,7 +27,6 @@
 #include "listener.h"
 #include "log.h"
 
-#include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
 namespace PlayerInfo {

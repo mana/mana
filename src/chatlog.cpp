@@ -35,7 +35,6 @@
 #include <Carbon/Carbon.h>
 #endif
 
-#include "log.h"
 #include "configuration.h"
 
 #include "utils/stringutils.h"

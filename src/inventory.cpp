@@ -19,7 +19,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "event.h"
 #include "inventory.h"
 #include "item.h"
 #include "log.h"

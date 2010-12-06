@@ -52,7 +52,6 @@
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
 #include "gui/npcdialog.h"
-#include "gui/npcpostdialog.h"
 #include "gui/okdialog.h"
 #include "gui/outfitwindow.h"
 #include "gui/quitdialog.h"

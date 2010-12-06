@@ -25,7 +25,6 @@
 #include "actorsprite.h"
 #include "listener.h"
 #include "map.h"
-#include "particlecontainer.h"
 #include "position.h"
 #include "vector.h"
 

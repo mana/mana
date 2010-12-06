@@ -23,7 +23,6 @@
 #include "map.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 Actor::Actor():
         mMap(NULL)

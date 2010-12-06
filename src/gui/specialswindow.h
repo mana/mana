@@ -23,8 +23,6 @@
 
 #include <vector>
 
-#include "guichanfwd.h"
-
 #include "playerinfo.h"
 
 #include "gui/widgets/window.h"

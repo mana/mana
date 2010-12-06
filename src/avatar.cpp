@@ -20,10 +20,6 @@
 
 #include "avatar.h"
 
-#include "localplayer.h"
-
-#include <sstream>
-
 Avatar::Avatar(const std::string &name):
         mName(name),
         mHp(0), mMaxHp(0),

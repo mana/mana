@@ -22,8 +22,6 @@
 #ifndef SETUP_H
 #define SETUP_H
 
-#include "guichanfwd.h"
-
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>

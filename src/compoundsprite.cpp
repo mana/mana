@@ -22,12 +22,9 @@
 
 #include "game.h"
 #include "graphics.h"
-#include "openglgraphics.h"
 #include "map.h"
 
 #include "resources/image.h"
-
-#include "utils/dtor.h"
 
 #include <SDL.h>
 

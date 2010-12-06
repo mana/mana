@@ -22,8 +22,6 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include "main.h"
-
 #include "resources/resource.h"
 
 #include <SDL.h>

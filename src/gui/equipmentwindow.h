@@ -23,7 +23,6 @@
 #define EQUIPMENTWINDOW_H
 
 #include "equipment.h"
-#include "guichanfwd.h"
 
 #include "gui/widgets/window.h"
 

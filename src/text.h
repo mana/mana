@@ -24,7 +24,6 @@
 #define TEXT_H
 
 #include "graphics.h"
-#include "guichanfwd.h"
 
 #include <guichan/color.hpp>
 

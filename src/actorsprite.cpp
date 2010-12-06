@@ -21,7 +21,6 @@
 #include "actorsprite.h"
 
 #include "client.h"
-#include "effectmanager.h"
 #include "event.h"
 #include "imagesprite.h"
 #include "localplayer.h"

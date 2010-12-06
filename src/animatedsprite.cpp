@@ -22,14 +22,11 @@
 #include "animatedsprite.h"
 
 #include "graphics.h"
-#include "log.h"
 
 #include "resources/action.h"
 #include "resources/animation.h"
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-
-#include "utils/xml.h"
 
 #include <cassert>
 

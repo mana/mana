@@ -22,8 +22,6 @@
 #ifndef QUITDIALOG_H
 #define QUITDIALOG_H
 
-#include "guichanfwd.h"
-
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>

@@ -20,7 +20,6 @@
 
 #include "configuration.h"
 #include "keyboardconfig.h"
-#include "log.h"
 
 #include "gui/sdlinput.h"
 #include "gui/setup_keyboard.h"

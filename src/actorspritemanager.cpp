@@ -23,7 +23,6 @@
 
 #include "localplayer.h"
 
-#include "utils/stringutils.h"
 #include "utils/dtor.h"
 
 #include <cassert>

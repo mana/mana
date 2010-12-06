@@ -24,7 +24,6 @@
 
 #include "being.h"
 #include "flooritem.h"
-#include "localplayer.h"
 
 namespace Net {
 

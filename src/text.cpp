@@ -27,9 +27,7 @@
 #include "textrenderer.h"
 
 #include "gui/gui.h"
-#include "gui/palette.h"
 
-#include "resources/resourcemanager.h"
 #include "resources/image.h"
 #include "resources/theme.h"
 

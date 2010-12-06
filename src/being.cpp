@@ -37,9 +37,7 @@
 #include "playerrelations.h"
 #include "simpleanimation.h"
 #include "sound.h"
-#include "sprite.h"
 #include "text.h"
-#include "statuseffect.h"
 
 #include "gui/gui.h"
 #include "gui/socialwindow.h"
@@ -59,13 +57,10 @@
 #include "resources/iteminfo.h"
 #include "resources/monsterdb.h"
 #include "resources/npcdb.h"
-#include "resources/resourcemanager.h"
 #include "resources/theme.h"
 #include "resources/userpalette.h"
 
-#include "utils/dtor.h"
 #include "utils/stringutils.h"
-#include "utils/xml.h"
 
 #include <cassert>
 #include <cmath>

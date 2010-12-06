@@ -22,8 +22,6 @@
 #ifndef SKILLDIALOG_H
 #define SKILLDIALOG_H
 
-#include "guichanfwd.h"
-
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
