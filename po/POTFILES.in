@@ -52,7 +52,6 @@ src/gui/textdialog.cpp
 src/gui/trade.cpp
 src/gui/unregisterdialog.cpp
 src/gui/updatewindow.cpp
-src/gui/userpalette.cpp
 src/gui/widgets/channeltab.cpp
 src/gui/widgets/chattab.cpp
 src/gui/widgets/whispertab.cpp
@@ -69,7 +68,6 @@ src/net/manaserv/guildhandler.cpp
 src/net/manaserv/loginhandler.cpp
 src/net/manaserv/partyhandler.cpp
 src/net/manaserv/playerhandler.cpp
-src/net/manaserv/stats.cpp
 src/net/manaserv/tradehandler.cpp
 src/net/tmwa/adminhandler.cpp
 src/net/tmwa/buysellhandler.cpp
@@ -90,6 +88,5 @@ src/net/tmwa/tradehandler.cpp
 src/playerrelations.cpp
 src/resources/itemdb.cpp
 src/resources/monsterdb.cpp
-src/resources/monsterinfo.cpp
 src/utils/gettext.h
 src/utils/stringutils.h
