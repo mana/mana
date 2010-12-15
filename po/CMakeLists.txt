@@ -43,7 +43,12 @@ MACRO(MANA_GETTEXT_UPDATE_PO _potFile _languages)
 
    ADD_CUSTOM_TARGET(
       update-pot
-      COMMAND xgettext --files-from=POTFILES.in --directory=.. --output=${_potFile} -d mana --keyword=_ --keyword=N_
+      COMMAND xgettext --files-from=translatable-files --directory=. --output=${_potFile} -d mana --keyword=_ --keyword=N_
+      )
+
+   ADD_CUSTOM_TARGET(
+      update-translatable-files
+      COMMAND grep '_\(' -Irl ../src | sort > translatable-files
       )
 
    FOREACH(_lang ${_languages})
@@ -55,6 +60,7 @@ MACRO(MANA_GETTEXT_UPDATE_PO _potFile _languages)
          )
       ADD_DEPENDENCIES("update-translation-${_lang}" update-pot)
       ADD_DEPENDENCIES(update-po "update-translation-${_lang}")
+      ADD_DEPENDENCIES(update-pot update-translatable-files)
    ENDFOREACH()
 ENDMACRO()
 
