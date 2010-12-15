@@ -33,10 +33,44 @@ MACRO(MANA_GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFileArg)
       INSTALL(FILES ${_gmoFile} DESTINATION share/locale/${_lang}/LC_MESSAGES RENAME ${_potBasename}.mo)
       SET(_gmoFiles ${_gmoFiles} ${_gmoFile})
 
-   ENDFOREACH (_currentPoFile )
+   ENDFOREACH (_currentPoFile)
 
    ADD_CUSTOM_TARGET(translations ${_addToAll} DEPENDS ${_gmoFiles})
-ENDMACRO(MANA_GETTEXT_CREATE_TRANSLATIONS )
+ENDMACRO()
+
+MACRO(MANA_GETTEXT_UPDATE_PO _potFile _languages)
+   GET_FILENAME_COMPONENT(_absPotFile ${_potFile} ABSOLUTE)
+
+   ADD_CUSTOM_TARGET(
+      update-pot
+      COMMAND xgettext --files-from=POTFILES.in --directory=.. --output=${_potFile} -d mana --keyword=_ --keyword=N_
+      )
+
+   FOREACH(_lang ${_languages})
+      GET_FILENAME_COMPONENT(_absFile "${_lang}.po" ABSOLUTE)
+      SET(_currentPoFile ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.po)
+      ADD_CUSTOM_TARGET(
+         "update-translation-${_lang}"
+         COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} --quiet --update --backup=none -s ${_absFile} ${_absPotFile}
+         )
+      ADD_DEPENDENCIES("update-translation-${_lang}" update-pot)
+      ADD_DEPENDENCIES(update-po "update-translation-${_lang}")
+   ENDFOREACH()
+ENDMACRO()
+
+
+SET(languages)
+FILE(STRINGS LINGUAS _languages)
+FOREACH(_lang ${_languages})
+   STRING(REGEX REPLACE "#.*" "" _lang "${_lang}")
+   IF(NOT ${_lang} STREQUAL "")
+      SET(languages ${languages} ${_lang})
+   ENDIF()
+ENDFOREACH()
 
 FILE(GLOB POFILES *.po)
+
+ADD_CUSTOM_TARGET(update-po)
+
 MANA_GETTEXT_CREATE_TRANSLATIONS(mana.pot ALL ${POFILES})
+MANA_GETTEXT_UPDATE_PO(mana.pot "${languages}")
