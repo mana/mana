@@ -1,38 +1,5 @@
-# files created by autoreconf
-ABOUT-NLS
-Makefile.in
-aclocal.m4
-autom4te.cache
-config.guess
-config.h.in
-config.rpath
-config.sub
-configure
-depcomp
-install-sh
-m4/
-missing
-po/Makefile.in.in
-po/Makevars.template
-po/Rules-quot
-po/boldquot.sed
-po/en@boldquot.header
-po/en@quot.header
-po/insert-header.sin
-po/quot.sed
-po/remove-potcdate.*
-
-# files created by configure
-Makefile
-config.h
-config.log
-config.status
-config.status.lineno
-po/POTFILES
-.deps
-stamp-h1
-
 # files created by CMake
+Makefile
 CMakeFiles/
 CMakeCache.txt
 CPackConfig.cmake
@@ -43,10 +10,8 @@ install_manifest.txt
 # files created during build
 *.o
 *.gmo
-.dirstamp
-po/stamp-po
+po/translatable-files
 src/mana
-src/mana-ea
 
 # files created during Windows build
 .objs

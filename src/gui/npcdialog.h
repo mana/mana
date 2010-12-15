@@ -125,6 +125,8 @@ class NpcDialog : public Window, public gcn::ActionListener,
 
         bool isInputFocused() const;
 
+        bool isTextInputFocused() const;
+
         static bool isAnyInputFocused();
 
         /**

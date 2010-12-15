@@ -448,7 +448,8 @@ void Game::handleInput()
                 && !gui->getFocusHandler()->getModalFocused())
             {
                 NpcDialog *dialog = NpcDialog::getActive();
-                if (keyboard.isKeyActive(keyboard.KEY_OK))
+                if (keyboard.isKeyActive(keyboard.KEY_OK)
+                    && (!dialog || !dialog->isTextInputFocused()))
                 {
                     // Close the Browser if opened
                     if (helpWindow->isVisible())

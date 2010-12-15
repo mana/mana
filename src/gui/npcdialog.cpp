@@ -315,6 +315,11 @@ void NpcDialog::textRequest(const std::string &defaultText)
     buildLayout();
 }
 
+bool NpcDialog::isTextInputFocused() const
+{
+    return mTextField->isFocused();
+}
+
 bool NpcDialog::isInputFocused() const
 {
     return mTextField->isFocused() || mIntField->isFocused();
