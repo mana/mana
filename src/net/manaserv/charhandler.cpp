@@ -196,7 +196,6 @@ void CharHandler::handleCharacterDeleteResponse(Net::MessageIn &msg)
         delete mSelectedCharacter;
         mCharacters.remove(mSelectedCharacter);
         updateCharSelectDialog();
-        unlockCharSelectDialog();
         new OkDialog(_("Info"), _("Player deleted."));
     }
     else
@@ -217,6 +216,7 @@ void CharHandler::handleCharacterDeleteResponse(Net::MessageIn &msg)
         new OkDialog(_("Error"), errorMessage);
     }
     mSelectedCharacter = 0;
+    unlockCharSelectDialog();
 }
 
 void CharHandler::handleCharacterSelectResponse(Net::MessageIn &msg)
