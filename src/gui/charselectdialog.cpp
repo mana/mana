@@ -154,7 +154,8 @@ CharSelectDialog::CharSelectDialog(LoginData *loginData):
 
     place = getPlacer(0, 1);
 
-    for (int i = 0; i < MAX_CHARACTER_COUNT; i++) {
+    for (int i = 0; i < MAX_CHARACTER_COUNT; i++)
+    {
         mCharacterEntries[i] = new CharacterDisplay(this);
         place(i, 0, mCharacterEntries[i]);
     }
@@ -191,7 +192,8 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         {
             attemptCharacterSelect(selected);
         }
-        else if (eventId == "new" && !mCharacterEntries[selected]->getCharacter())
+        else if (eventId == "new"
+                 && !mCharacterEntries[selected]->getCharacter())
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
@@ -268,7 +270,8 @@ void CharSelectDialog::setCharacters(const Net::Characters &characters)
     for (i = characters.begin(); i != i_end; ++i)
     {
         Net::Character *character = *i;
-        if (character->slot >= MAX_CHARACTER_COUNT) {
+        if (character->slot >= MAX_CHARACTER_COUNT)
+        {
             logger->log("Warning: slot out of range: %d", character->slot);
             continue;
         }
@@ -309,9 +312,12 @@ bool CharSelectDialog::selectByName(const std::string &name,
     if (mLocked)
         return false;
 
-    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i) {
-        if (Net::Character *character = mCharacterEntries[i]->getCharacter()) {
-            if (character->dummy->getName() == name) {
+    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i)
+    {
+        if (Net::Character *character = mCharacterEntries[i]->getCharacter())
+        {
+            if (character->dummy->getName() == name)
+            {
                 mCharacterEntries[i]->requestFocus();
                 if (action == Choose)
                     attemptCharacterSelect(i);
