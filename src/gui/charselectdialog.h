@@ -96,8 +96,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
         gcn::Button *mUnregisterButton;
         gcn::Button *mChangeEmailButton;
 
-        enum { MAX_CHARACTER_COUNT = 3 };
-        CharacterDisplay *mCharacterEntries[MAX_CHARACTER_COUNT];
+        /** The player boxes */
+        std::vector<CharacterDisplay*> mCharacterEntries;
 
         LoginData *mLoginData;
 

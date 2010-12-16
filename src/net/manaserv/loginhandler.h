@@ -80,7 +80,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void handleLoginResponse(Net::MessageIn &msg);
         void handleRegisterResponse(Net::MessageIn &msg);
 
-        void readUpdateHost(Net::MessageIn &msg);
+        void readServerInfo(Net::MessageIn &msg);
 
         LoginData *mLoginData;
         unsigned int mMinUserNameLength;

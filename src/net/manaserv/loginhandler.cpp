@@ -251,7 +251,7 @@ void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
 
     if (errMsg == ERRMSG_OK)
     {
-        readUpdateHost(msg);
+        readServerInfo(msg);
         // No worlds atm, but future use :-D
         Client::setState(STATE_WORLD_SELECT);
     }
@@ -289,7 +289,7 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
 
     if (errMsg == ERRMSG_OK)
     {
-        readUpdateHost(msg);
+        readServerInfo(msg);
         Client::setState(STATE_WORLD_SELECT);
     }
     else
@@ -320,7 +320,7 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
     }
 }
 
-void LoginHandler::readUpdateHost(Net::MessageIn &msg)
+void LoginHandler::readServerInfo(Net::MessageIn &msg)
 {
     // Safety check for outdated manaserv versions (remove me later)
     if (msg.getUnreadLength() == 0)
@@ -332,6 +332,13 @@ void LoginHandler::readUpdateHost(Net::MessageIn &msg)
         mLoginData->updateHost = updateHost;
     else
         logger->log("Warning: server does not have an update host set!");
+
+    // Read the client data folder for dynamic data loading.
+    // This is only used by the QT client.
+    msg.readString();
+
+    // Read the number of character slots
+    mLoginData->characterSlots = msg.readInt8();
 }
 
 void LoginHandler::connect()
