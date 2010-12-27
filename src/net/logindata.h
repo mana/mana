@@ -31,12 +31,11 @@ class LoginData
 public:
     /**
      * Constructor
-     *
-     * Initialize character slots to 3 for TmwAthena compatibility
      */
-    LoginData():
-      characterSlots(3)
-    {}
+    LoginData()
+    {
+        resetCharacterSlots();
+    }
 
     std::string username;
     std::string password;
@@ -53,6 +52,14 @@ public:
 
     unsigned short characterSlots; /**< The number of character slots */
 
+    /**
+     * Initialize character slots to 3 for TmwAthena compatibility
+     */
+    void resetCharacterSlots()
+    {
+      characterSlots = 3; // Default value, used for TmwAthena.
+    }
+
     void clear()
     {
         username.clear();
@@ -62,7 +69,7 @@ public:
         email.clear();
         captchaResponse.clear();
         gender = GENDER_UNSPECIFIED;
-        characterSlots = 3; // Default value, used for TmwAthena.
+        resetCharacterSlots();
     }
 };
 
