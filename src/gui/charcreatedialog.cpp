@@ -156,7 +156,8 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "create")
     {
-        if (getName().length() >= 4)
+        if (Net::getNetworkType() == ServerInfo::MANASERV
+            || getName().length() >= 4)
         {
             // Attempt to create the character
             mCreateButton->setEnabled(false);
@@ -167,7 +168,12 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
                 atts.push_back((int) mAttributeSlider[i]->getValue());
             }
 
-            Net::getCharHandler()->newCharacter(getName(), mSlot,
+            int characterSlot = mSlot;
+            // On Manaserv, the slots start at 1, so we offset them.
+            if (Net::getNetworkType() == ServerInfo::MANASERV)
+                ++characterSlot;
+
+            Net::getCharHandler()->newCharacter(getName(), characterSlot,
                                                 mFemale->isSelected(),
                                                 mHairStyle,
                                                 mHairColor, atts);

@@ -281,13 +281,20 @@ void CharSelectDialog::setCharacters(const Net::Characters &characters)
     for (i = characters.begin(); i != i_end; ++i)
     {
         Net::Character *character = *i;
-        if (character->slot >= (int)mCharacterEntries.size())
+
+        // Slots Number start at 1 for Manaserv, so we offset them by one.
+        int characterSlot = character->slot;
+        if (Net::getNetworkType() == ServerInfo::MANASERV
+            && characterSlot > 0)
+            --characterSlot;
+
+        if (characterSlot >= (int)mCharacterEntries.size())
         {
             logger->log("Warning: slot out of range: %d", character->slot);
             continue;
         }
 
-        mCharacterEntries[character->slot]->setCharacter(character);
+        mCharacterEntries[characterSlot]->setCharacter(character);
     }
 }
 

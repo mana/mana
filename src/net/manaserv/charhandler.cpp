@@ -167,6 +167,9 @@ void CharHandler::handleCharacterCreateResponse(Net::MessageIn &msg)
                                    Attributes::getAttributeMinimum(),
                                    Attributes::getAttributeMaximum());
                 break;
+            case CREATE_INVALID_SLOT:
+                errorMessage = _("Invalid slot number.");
+                break;
             default:
                 errorMessage = _("Unknown error.");
                 break;
@@ -296,7 +299,7 @@ void CharHandler::chooseCharacter(Net::Character *character)
 }
 
 void CharHandler::newCharacter(const std::string &name,
-                               int /* slot */,
+                               int slot,
                                bool gender,
                                int hairstyle,
                                int hairColor,
@@ -308,6 +311,7 @@ void CharHandler::newCharacter(const std::string &name,
     msg.writeInt8(hairstyle);
     msg.writeInt8(hairColor);
     msg.writeInt8(gender);
+    msg.writeInt8(slot);
 
     std::vector<int>::const_iterator it, it_end;
     for (it = stats.begin(), it_end = stats.end(); it != it_end; it++)
