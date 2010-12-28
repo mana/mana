@@ -38,6 +38,12 @@ class Item;
 class Map;
 class OkDialog;
 
+class AwayListener : public gcn::ActionListener
+{
+    public:
+        void action(const gcn::ActionEvent &event);
+};
+
 /**
  * The local player character.
  */
@@ -178,6 +184,15 @@ class LocalPlayer : public Being
         bool isPathSetByMouse() const
         { return mPathSetByMouse; }
 
+        void changeAwayMode();
+
+        bool getAwayMode()
+        { return mAwayMode; }
+
+        void setAway(const std::string &message);
+
+        void afkRespond(ChatTab *tab, const std::string &nick);
+
         void addMessageToQueue(const std::string &message,
                                int color = UserPalette::EXP_INFO);
 
@@ -227,6 +242,11 @@ class LocalPlayer : public Being
         int mMessageTime;
 
         bool mShowIp;
+
+        AwayListener *mAwayListener;
+        OkDialog *mAwayDialog;
+        int mAfkTime;
+        bool mAwayMode;
 };
 
 extern LocalPlayer *player_node;

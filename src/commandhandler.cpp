@@ -126,6 +126,10 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handleShowIp(args, tab);
     }
+    else if (type == "away")
+    {
+        handleAway(args, tab);
+    }
     else
     {
         tab->chatLog(_("Unknown command."));
@@ -172,6 +176,9 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/query > Makes a tab for private messages "
                        "with another user"));
         tab->chatLog(_("/q > Alias of query"));
+
+        tab->chatLog(_("/away > Tell the other whispering players "
+                       "you're away from keyboard."));
 
         tab->chatLog(_("/ignore > ignore a player"));
         tab->chatLog(_("/unignore > stop ignoring a player"));
@@ -256,6 +263,14 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Command: /q <nick>"));
         tab->chatLog(_("This command tries to make a tab for whispers between"
                        "you and <nick>."));
+    }
+    else if (args == "away")
+    {
+        tab->chatLog(_("Command: /away <afk reason>"));
+        tab->chatLog(_("This command tells "
+                       "you're away from keyboard with the given reason."));
+        tab->chatLog(_("Command: /away"));
+        tab->chatLog(_("This command clears the away status and message."));
     }
     else if (args == "createparty")
     {
@@ -544,4 +559,9 @@ void CommandHandler::handleUnignore(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Player no longer ignored!"), BY_SERVER);
     else
         tab->chatLog(_("Player could not be unignored!"), BY_SERVER);
+}
+
+void CommandHandler::handleAway(const std::string &args, ChatTab *tab)
+{
+    player_node->setAway(args);
 }
