@@ -24,7 +24,7 @@
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
-#include "net/manaserv/protocol.h"
+#include "net/manaserv/manaserv_protocol.h"
 
 extern Net::SpecialHandler *specialHandler;
 

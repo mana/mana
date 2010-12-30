@@ -23,7 +23,7 @@
 
 #include "actorspritemanager.h"
 
-#include "net/manaserv/protocol.h"
+#include "net/manaserv/manaserv_protocol.h"
 #include "net/manaserv/messagein.h"
 
 #include "game.h"

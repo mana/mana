@@ -30,7 +30,7 @@
 
 #include "net/messagein.h"
 
-#include "net/manaserv/protocol.h"
+#include "net/manaserv/manaserv_protocol.h"
 
 
 namespace ManaServ {

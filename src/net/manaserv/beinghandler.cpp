@@ -34,7 +34,7 @@
 #include "net/messagein.h"
 
 #include "net/manaserv/playerhandler.h"
-#include "net/manaserv/protocol.h"
+#include "net/manaserv/manaserv_protocol.h"
 
 #include "resources/colordb.h"
 
