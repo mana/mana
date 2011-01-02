@@ -452,8 +452,6 @@
 ./src/resources/action.h
 ./src/resources/ambientlayer.cpp
 ./src/resources/ambientlayer.h
-./src/resources/ambientoverlay.cpp
-./src/resources/ambientoverlay.h
 ./src/resources/animation.cpp
 ./src/resources/animation.h
 ./src/resources/colordb.cpp

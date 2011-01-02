@@ -523,8 +523,6 @@
 		<Unit filename="src\resources\action.h" />
 		<Unit filename="src\resources\ambientlayer.cpp" />
 		<Unit filename="src\resources\ambientlayer.h" />
-		<Unit filename="src\resources\ambientoverlay.cpp" />
-		<Unit filename="src\resources\ambientoverlay.h" />
 		<Unit filename="src\resources\animation.cpp" />
 		<Unit filename="src\resources\animation.h" />
 		<Unit filename="src\resources\colordb.cpp" />
