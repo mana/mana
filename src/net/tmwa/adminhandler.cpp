@@ -69,9 +69,12 @@ void AdminHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_ADMIN_IP:
             id = msg.readInt32();
             int ip = msg.readInt32();
-            Player *player = (Player *)beingManager->findBeing(id);
-            player->setIp(ip);
-            player->updateName();
+            Being *being = beingManager->findBeing(id);
+            if (Player *player = dynamic_cast<Player *>(being))
+            {
+                player->setIp(ip);
+                player->updateName();
+            }
             break;
     }
 }
