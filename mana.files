@@ -1,7 +1,3 @@
-./CMakeCache.txt
-./CMakeFiles/CMakeRuleHashes.txt
-./CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp
-./CMakeFiles/TargetDirectories.txt
 ./CMakeLists.txt
 ./data/CMakeLists.txt
 ./data/fonts/CMakeLists.txt
@@ -66,7 +62,6 @@
 ./src/chatlog.h
 ./src/client.cpp
 ./src/client.h
-./src/CMakeFiles/mana.dir/link.txt
 ./src/CMakeLists.txt
 ./src/commandhandler.cpp
 ./src/commandhandler.h
@@ -331,6 +326,8 @@
 ./src/net/loginhandler.h
 ./src/net/manaserv/adminhandler.cpp
 ./src/net/manaserv/adminhandler.h
+./src/net/manaserv/attributes.cpp
+./src/net/manaserv/attributes.h
 ./src/net/manaserv/beinghandler.cpp
 ./src/net/manaserv/beinghandler.h
 ./src/net/manaserv/buysellhandler.cpp
@@ -358,6 +355,7 @@
 ./src/net/manaserv/itemhandler.h
 ./src/net/manaserv/loginhandler.cpp
 ./src/net/manaserv/loginhandler.h
+./src/net/manaserv/manaserv_protocol.h
 ./src/net/manaserv/messagehandler.cpp
 ./src/net/manaserv/messagehandler.h
 ./src/net/manaserv/messagein.cpp
@@ -372,11 +370,8 @@
 ./src/net/manaserv/partyhandler.h
 ./src/net/manaserv/playerhandler.cpp
 ./src/net/manaserv/playerhandler.h
-./src/net/manaserv/protocol.h
 ./src/net/manaserv/specialhandler.cpp
 ./src/net/manaserv/specialhandler.h
-./src/net/manaserv/stats.cpp
-./src/net/manaserv/stats.h
 ./src/net/manaserv/tradehandler.cpp
 ./src/net/manaserv/tradehandler.h
 ./src/net/messagehandler.h
