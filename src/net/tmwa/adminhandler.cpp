@@ -68,9 +68,11 @@ void AdminHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_ADMIN_IP:
             id = msg.readInt32();
             int ip = msg.readInt32();
-            Being *player = actorSpriteManager->findBeing(id);
-            player->setIp(ip);
-            player->updateName();
+            if (Being *player = actorSpriteManager->findBeing(id))
+            {
+                player->setIp(ip);
+                player->updateName();
+            }
             break;
     }
 }

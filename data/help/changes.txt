@@ -3,14 +3,14 @@
 
 ##3                         === RECENT CHANGES ===
 
- 0.5.0 (October 2010)
+ 0.5.0 (3 January 2011)
  - The Mana World client is now called the Mana client
  - Added support for branding the client differently via command line parameter
- - Added support for ManaServ and eAthena (TMW version) from the same binary
  - Added support for switching character or server without restart
  - Added downloading of server list
  - Added the ability to define multiple outfits to quickly switch between
  - Added /ignore, /unignore and /createparty commands
+ - Added away mode usable through new /away command
  - Added support for showing particle effects when monsters attack
  - Added highlights on hovering over buttons, tabs, sliders and scrollbars
  - Added --screenshot-dir command line parameter to set the screenshot directory
@@ -26,6 +26,8 @@
  - Added additional mouse cursors to indicate attack and talk actions
  - Added option to show gender next to player names
  - Added ability to unassign keyboard shortcuts
+ - Added option to disable transparency (for slow CPUs)
+ - Display an informative message for servers that don't allow registration
  - Combined Party and Guild (ManaServ) support in one Social window
  - Display the first key binding conflict in keyboard setup
  - The login wallpaper is now scaled when it doesn't exactly fit the screen
@@ -41,7 +43,9 @@
  - Fixed windows to stay on screen when resolution is lowered
  - Fixed some slowness due to chat window
  - Changed the default locations for configuration, updates and screenshots
+ - Removed autoconf and made CMake the new default build system
  - Many additional fixes and cleanups
+ - Updated Portuguese, Spanish and French translations
 
  0.0.29.1 (9 June 2009)
  - Added the ability to change your password after logging in

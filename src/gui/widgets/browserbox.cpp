@@ -280,7 +280,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
 
-    if (mSelectedLink >= 0)
+    if (mSelectedLink >= 0 && (unsigned) mSelectedLink < mLinks.size())
     {
         if ((mHighMode & BACKGROUND))
         {
@@ -326,7 +326,7 @@ int BrowserBox::calcHeight()
 {
     int x = 0, y = 0;
     int wrappedLines = 0;
-    int link = 0;
+    unsigned link = 0;
     gcn::Font *font = getFont();
 
     int fontHeight = font->getHeight();
@@ -423,7 +423,7 @@ int BrowserBox::calcHeight()
                         }
                     }
 
-                    if (c == '<')
+                    if (c == '<' && link < mLinks.size())
                     {
                         const int size =
                             font->getWidth(mLinks[link].caption) + 1;
