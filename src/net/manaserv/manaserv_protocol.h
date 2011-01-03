@@ -22,6 +22,8 @@
 #ifndef MANASERV_PROTOCOL_H
 #define MANASERV_PROTOCOL_H
 
+namespace ManaServ {
+
 /**
  * Enumerated type for communicated messages:
  *
@@ -53,7 +55,7 @@ enum {
     APMSG_LOGIN_RESPONSE           = 0x0012, // B error, S updatehost, S Client data URL, B Character slots
     PAMSG_LOGOUT                   = 0x0013, // -
     APMSG_LOGOUT_RESPONSE          = 0x0014, // B error
-    PAMSG_CHAR_CREATE              = 0x0020, // S name, B hair style, B hair color, B gender, B slot, W*6 stats
+    PAMSG_CHAR_CREATE              = 0x0020, // S name, B hair style, B hair color, B gender, B slot, {W stats}*
     APMSG_CHAR_CREATE_RESPONSE     = 0x0021, // B error
     PAMSG_CHAR_DELETE              = 0x0022, // B slot
     APMSG_CHAR_DELETE_RESPONSE     = 0x0023, // B error
@@ -90,7 +92,7 @@ enum {
     PGMSG_UNEQUIP                  = 0x0113, // B slot
     PGMSG_MOVE_ITEM                = 0x0114, // B slot1, B slot2, B amount
     GPMSG_INVENTORY                = 0x0120, // { W slot, W item id [, W amount] (if item id is nonzero) }*
-    GPMSG_INVENTORY_FULL           = 0x0121, // W inventory slot count { W slot, W itemId, W amount } { B equip slot, W invy slot}*
+    GPMSG_INVENTORY_FULL           = 0x0121, // W inventory slot count { W slot, W itemId, W amount }, { B equip slot, W invy slot}*
     GPMSG_EQUIP                    = 0x0122, // { W Invy slot, B equip slot type count { B equip slot, B number used} }*
     GPMSG_PLAYER_ATTRIBUTE_CHANGE  = 0x0130, // { W attribute, D base value (in 1/256ths), D modified value (in 1/256ths)}*
     GPMSG_PLAYER_EXP_CHANGE        = 0x0140, // { W skill, D exp got, D exp needed }*
@@ -259,7 +261,8 @@ enum {
     ERRMSG_ALREADY_TAKEN,               // name used was already taken
     ERRMSG_SERVER_FULL,                 // the server is overloaded
     ERRMSG_TIME_OUT,                    // data failed to arrive in due time
-    ERRMSG_LIMIT_REACHED                // limit reached
+    ERRMSG_LIMIT_REACHED,               // limit reached
+    ERRMSG_ADMINISTRATIVE_LOGOFF        // kicked by server administrator
 };
 
 // used in AGMSG_REGISTER_RESPONSE to show state of item db
@@ -376,8 +379,54 @@ enum {
     GUILD_EVENT_OFFLINE_PLAYER
 };
 
+/**
+  * Moves enum for beings and actors for others players vision.
+  * WARNING: Has to be in sync with the same enum in the Being class
+  * of the client!
+  */
+enum BeingAction
+{
+    STAND,
+    WALK,
+    ATTACK,
+    SIT,
+    DEAD,
+    HURT
+};
 
-enum
+/**
+  * Moves enum for beings and actors for others players attack types.
+  * WARNING: Has to be in sync with the same enum in the Being class
+  * of the client!
+  */
+enum AttackType
+{
+    HIT = 0x00,
+    CRITICAL = 0x0a,
+    MULTI = 0x08,
+    REFLECT = 0x04,
+    FLEE = 0x0b
+};
+
+/**
+ * Beings and actors directions
+ * WARNING: Has to be in sync with the same enum in the Being class
+ * of the client!
+ */
+enum BeingDirection
+{
+    DIRECTION_UP = 1,
+    DIRECTION_DOWN,
+    DIRECTION_LEFT,
+    DIRECTION_RIGHT
+};
+
+/**
+  * enum for sprites layers.
+  * WARNING: Has to be in sync with the same enum in the Sprite class
+  * of the client!
+  */
+enum SpriteLayer
 {
     SPRITE_BASE = 0,
     SPRITE_SHOE,
@@ -388,5 +437,7 @@ enum
     SPRITE_WEAPON,
     SPRITE_VECTOREND
 };
+
+}; // Namespace ManaServ
 
 #endif // MANASERV_PROTOCOL_H
