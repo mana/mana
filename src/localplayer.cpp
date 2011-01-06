@@ -745,13 +745,10 @@ void LocalPlayer::setWalkingDir(int dir)
 
         // Else, he is not pressing a key,
         // and the current path hasn't been sent by mouse,
-        // then, stop (sending to server).
+        // then let the path die (1/2 tile after that.)
+        // This permit to avoid desyncs with other clients.
         else if (!dir)
-        {
-            if (!mPathSetByMouse)
-                player_node->stopWalking(true);
             return;
-        }
 
         // If the delay to send another walk message to the server hasn't expired,
         // don't do anything or we could get disconnected for spamming the server
@@ -801,6 +798,10 @@ void LocalPlayer::startWalking(unsigned char dir)
         dx--;
     if (dir & RIGHT)
         dx++;
+
+    // Update the direction when the walk just start
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
+        setDirection(dir);
 
     if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {

@@ -715,24 +715,32 @@ void Being::logic()
         mText = 0;
     }
 
-    if ((Net::getNetworkType() == ServerInfo::MANASERV) && (mAction != DEAD))
+    if ((Net::getNetworkType() == ServerInfo::MANASERV) && (mAction != DEAD)
+        && !mWalkSpeed.isNull())
     {
         const Vector dest = (mPath.empty()) ?
             mDest : Vector(mPath.front().x,
                            mPath.front().y);
 
-        // This is a hack that stops NPCs from running off the map...
+        // Avoid going to flawed destinations
         if (mDest.x <= 0 && mDest.y <= 0)
+        {
+            // We make the being stop move in that case.
+            mDest = mPos;
+            mPath.clear();
+            // By returning now, we're losing one tick for the rest of the logic
+            // but as we have reset the destination, the next tick will be fine.
             return;
+        }
 
         // The Vector representing the difference between current position
         // and the next destination path node.
         Vector dir = dest - mPos;
 
-        const float nominalLength = dir.length();
+        float distance = dir.length();
 
         // When we've not reached our destination, move to it.
-        if (nominalLength > 0.0f && !mWalkSpeed.isNull())
+        if (distance > 0.0f)
         {
             // The deplacement of a point along a vector is calculated
             // using the Unit Vector (â) multiplied by the point speed.
@@ -743,7 +751,7 @@ void Being::logic()
                         normalizedDir.y * mWalkSpeed.y);
 
             // Test if we don't miss the destination by a move too far:
-            if (diff.length() > nominalLength)
+            if (diff.length() > distance)
             {
                 setPosition(mPos + dir);
 
@@ -752,32 +760,43 @@ void Being::logic()
                 if (!mPath.empty())
                     mPath.pop_front();
             }
-            // Otherwise, go to it using the nominal speed.
             else
+            {
+                // Otherwise, go to it using the nominal speed.
                 setPosition(mPos + diff);
+                // And reset the nominalLength to the actual move length
+                distance = diff.length();
+            }
 
             if (mAction != MOVE)
                 setAction(MOVE);
 
             // Update the player sprite direction.
-            // N.B.: We only change this if the distance is more than one pixel.
-            if (nominalLength > 1.0f)
+            // N.B.: We only change this if the distance is more than one pixel
+            // to avoid flawing the ending direction.
+            if (distance > 1.0f)
             {
-                int direction = 0;
-                const float dx = std::abs(dir.x);
-                float dy = std::abs(dir.y);
+                // The player direction is handled for keyboard
+                // by LocalPlayer::startWalking(), we shouldn't get
+                // in the way here for other cases.
+                // Hence, we set the direction in Being::logic() only when:
+                // 1. It is not the localPlayer
+                // 2. When it is the localPlayer but only by mouse
+                // (because in that case, the path can have more than one tile.)
+                if ((player_node == this && player_node->isPathSetByMouse())
+                    || player_node != this)
+                {
+                    int direction = 0;
+                    const float dx = std::abs(dir.x);
+                    float dy = std::abs(dir.y);
 
-                // When not using mouse for the player, we slightly prefer
-                // UP and DOWN position, especially when walking diagonally.
-                if (this == player_node && !player_node->isPathSetByMouse())
-                    dy = dy + 2;
+                    if (dx > dy)
+                        direction |= (dir.x > 0) ? RIGHT : LEFT;
+                    else
+                        direction |= (dir.y > 0) ? DOWN : UP;
 
-                if (dx > dy)
-                     direction |= (dir.x > 0) ? RIGHT : LEFT;
-                else
-                     direction |= (dir.y > 0) ? DOWN : UP;
-
-                setDirection(direction);
+                    setDirection(direction);
+                }
             }
         }
         else if (!mPath.empty())
