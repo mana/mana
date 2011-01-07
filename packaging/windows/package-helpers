@@ -1,0 +1,113 @@
+# Helper functions to do win32 cross builds. Source this file, and
+# you'll get a few mana- functions in your shell:
+# - mana-configure-win32 -- runs cmake to configure the source tree
+#   for a win32 build
+# - mana-build-win32 -- runs mana-configure-win32, followed by make
+# - mana-build-translations -- copies the translations into a dir
+#   structure suitable for nsis
+# - mana-build-nsis -- build the nsis installer (run the other stips
+#   first!)
+# - mana-build-win32-installer -- runs all steps required to get the
+#   windows installer
+# - mana-nuke-cmake-stuff -- cleans up all files created by cmake
+#
+# A few environement variables can influence those functions:
+# - MANA_BASE -- mana source top directory. Automatically set when
+#   you source this file from the top directory, or the windows packaging
+#   directory
+# - VERSION -- read from CMakeLists.txt if not specified
+# - TOOLCHAINFILE -- the cmake toolchainfile, searched in top dir,
+#   your home, and /build/nightlies. See toolchain.cmake.example
+#   for an example file
+# - MANALIBS -- the directory containing the dlls copied into the
+#   windows installer. Default is using the last directory in the
+#   toolchains SET(CMAKE_FIND_ROOT_PATH
+
+# MANA_BASE should point to the top directory of the source tree
+if [ -z "$MANA_BASE" ]; then
+    if [ -f INSTALL ]; then
+        MANA_BASE=`pwd`
+    elif [ -f setup.nsi ]; then
+        cd ../.. && MANA_BASE=`pwd`
+    else
+        echo "Unable to guess mana base directory, please set MANA_BASE manually"
+    fi
+else
+    echo "MANA_BASE already set to $MANA_BASE, ignoring"
+fi
+
+if [ -z "$VERSION" ]; then
+    VERSION=`grep 'SET(VERSION .*)' $MANA_BASE/CMakeLists.txt | \
+        sed 's/.* //' | sed 's/)//'`
+fi
+echo "Building for version $VERSION"
+
+if [ -z "`which unix2dos`" ]; then
+    echo "You're missing unix2dos. Please install it (probably in dos2unix)."
+fi
+
+# TOOLCHAINFILE should point to a cmake toolchain file,
+# see toolchain.cmake.example
+if [ -z "$TOOLCHAINFILE" ]; then
+    if [ -f $MANA_BASE/toolchain.cmake ]; then
+        TOOLCHAINFILE=$MANA_BASE/toolchain.cmake
+    elif [ -f ~/toolchain.cmake ]; then
+        TOOLCHAINFILE=~/.toolchain.cmake
+    elif [ -f /build/nightlies/toolchain.cmake ]; then
+        TOOLCHAINFILE=/build/nightlies/toolchain.cmake
+    else
+        echo "Unable to find a toolchain file, please set TOOLCHAINFILE manually"
+    fi
+else
+    echo "TOOLCHAINFILE already set to $TOOLCHAINFILE, ignoring"
+fi
+
+if [ -z "$MANALIBS" ]; then
+    MANALIBS=`grep 'SET(CMAKE_FIND_ROOT_PATH ' $TOOLCHAINFILE | \
+        sed 's/\s*)\s*//' | sed 's/.* //'`
+    if [ -z "$MANALIBS" ]; then
+        echo "Unable to guess library directory for MANALIBS"
+    fi
+fi
+
+# configure the build tree for a cross-build, which can be built
+# by just typing 'make'
+mana-configure-win32(){
+    cd $MANA_BASE
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DVERSION=$VERSION \
+        -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAINFILE
+}
+
+mana-build-win32(){
+    mana-configure-win32
+    make
+}
+
+# build the translations for use in the nsi
+mana-build-translations(){
+    cd $MANA_BASE/po
+    for i in *.gmo; do
+        _LC=`echo $i|sed 's/\..*//'`
+        mkdir -p ../translations/$_LC/LC_MESSAGES
+        cp -v $i ../translations/$_LC/LC_MESSAGES/mana.mo
+    done
+}
+
+mana-build-nsis(){
+    unix2dos -n $MANA_BASE/README $MANA_BASE/README.txt
+    cd $MANA_BASE/packaging/windows
+    makensis -DDLLDIR=$MANALIBS/lib -DPRODUCT_VERSION=$VERSION -DUPX=true -DEXESUFFIX=/src setup.nsi
+}
+
+# do everything...
+mana-build-win32-installer(){
+    mana-configure-win32
+    mana-build-win32
+    mana-build-translations
+    mana-build-nsis
+}
+
+mana-nuke-cmake-stuff(){
+    find $MANA_BASE -name CMakeFiles -type d -exec rm -Rf '{}' \; 2>/dev/null
+    find $MANA_BASE -name CMakeCache.txt -type f -exec rm '{}' \; 2>/dev/null
+}

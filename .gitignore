@@ -19,6 +19,7 @@ src/mana
 *.exe
 mana.depend
 mana.layout
+README.txt
 
 # files copied in on Windows
 include/*
