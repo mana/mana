@@ -155,6 +155,7 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
     Being::Action action = (Being::Action)msg.readInt8();
     int px = msg.readInt16();
     int py = msg.readInt16();
+    BeingDirection direction = (BeingDirection)msg.readInt8();
     Being *being;
 
     switch (type)
@@ -196,6 +197,7 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
 
     being->setPosition(px, py);
     being->setDestination(px, py);
+    being->setDirection(direction);
     being->setAction(action);
 }
 
@@ -257,19 +259,13 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
 void BeingHandler::handleBeingAttackMessage(Net::MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
-    const int direction = msg.readInt8();
+    const BeingDirection direction = (BeingDirection) msg.readInt8();
     const int attackType = msg.readInt8();
 
     if (!being)
         return;
 
-    switch (direction)
-    {
-        case DIRECTION_UP: being->setDirection(Being::UP); break;
-        case DIRECTION_DOWN: being->setDirection(Being::DOWN); break;
-        case DIRECTION_LEFT: being->setDirection(Being::LEFT); break;
-        case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
-    }
+    being->setDirection(direction);
 
     being->setAction(Being::ATTACK, attackType);
 }
@@ -349,16 +345,7 @@ void BeingHandler::handleBeingDirChangeMessage(Net::MessageIn &msg)
 
     // The direction for the player's character is handled on client side.
     if (being != player_node)
-    {
-        switch (data)
-        {
-          case DIRECTION_UP: being->setDirection(Being::UP); break;
-          case DIRECTION_DOWN: being->setDirection(Being::DOWN); break;
-          case DIRECTION_LEFT: being->setDirection(Being::LEFT); break;
-          case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
-          default: break;
-        }
-    }
+        being->setDirection((BeingDirection) data);
 }
 
 } // namespace ManaServ
