@@ -33,6 +33,8 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
+#include "net/net.h"
+
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
 
@@ -854,7 +856,9 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
 
                 // It costs extra to walk through a being (needs to be enough
                 // to make it more attractive to walk around).
-                if (occupied(x, y))
+                // N.B.: Specific to TmwAthena for now.
+                if (Net::getNetworkType() == ServerInfo::TMWATHENA &&
+                    occupied(x, y))
                 {
                     Gcost += 3 * basicCost;
                 }
