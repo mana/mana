@@ -388,7 +388,7 @@ void LoginHandler::loginAccount(LoginData *loginData)
 
     MessageOut msg(PAMSG_LOGIN);
 
-    msg.writeInt32(0); // client version
+    msg.writeInt32(PROTOCOL_VERSION); // client version
     msg.writeString(loginData->username);
     msg.writeString(sha256(loginData->username + loginData->password));
 
