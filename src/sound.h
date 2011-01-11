@@ -86,8 +86,10 @@ class Sound
          * Plays an item.
          *
          * @param path The resource path to the sound file.
+         * @param x The vertical distance of the sound in tiles.
+         * @param y The horizontal distance of the sound in tiles.
          */
-        void playSfx(const std::string &path);
+        void playSfx(const std::string &path, int x = 0, int y = 0);
 
     private:
         /** Logs various info about sound device. */

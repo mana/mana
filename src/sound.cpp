@@ -21,13 +21,13 @@
 
 #include <SDL.h>
 
+#include "configuration.h"
+#include "localplayer.h"
 #include "log.h"
 #include "sound.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/soundeffect.h"
-
-#include "configuration.h"
 
 Sound::Sound():
     mInstalled(false),
@@ -228,17 +228,34 @@ void Sound::fadeOutMusic(int ms)
     }
 }
 
-void Sound::playSfx(const std::string &path)
+void Sound::playSfx(const std::string &path, int x, int y)
 {
     if (!mInstalled || path.empty())
         return;
 
+    std::string tmpPath;
+    if (!path.find("sfx/"))
+        tmpPath = path;
+    else
+        tmpPath = paths.getValue("sfx", "sfx/") + path;
     ResourceManager *resman = ResourceManager::getInstance();
-    SoundEffect *sample = resman->getSoundEffect(path);
+    SoundEffect *sample = resman->getSoundEffect(tmpPath);
     if (sample)
     {
         logger->log("Sound::playSfx() Playing: %s", path.c_str());
-        sample->play(0, 120);
+        int vol = 120;
+        if (player_node && x > 0 && y > 0)
+        {
+            int dx = player_node->getTileX() - x;
+            int dy = player_node->getTileY() - y;
+            if (dx < 0)
+                dx = -dx;
+            if (dy < 0)
+                dy = -dy;
+            int dist = dx > dy ? dx : dy;
+            vol -= dist * 8;
+        }
+        sample->play(0, vol);
     }
 }
 

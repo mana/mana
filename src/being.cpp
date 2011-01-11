@@ -362,7 +362,18 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     if (amount > 0)
     {
-        sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT));
+        if (mInfo)
+        {
+            if (attacker)
+            {
+                sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT),
+                              attacker->getTileX(), attacker->getTileY());
+            }
+            else
+            {
+                sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT));
+            }
+        }
 
         if (getType() == MONSTER)
         {
@@ -394,7 +405,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
     }
 
     sound.playSfx(mInfo->getSound((damage > 0) ?
-                  SOUND_EVENT_HIT : SOUND_EVENT_MISS));
+                  SOUND_EVENT_HIT : SOUND_EVENT_MISS), mX, mY);
 }
 
 void Being::setName(const std::string &name)
@@ -619,7 +630,7 @@ void Being::setAction(Action action, int attackType)
             break;
         case DEAD:
             currentAction = SpriteAction::DEAD;
-            sound.playSfx(mInfo->getSound(SOUND_EVENT_DIE));
+            sound.playSfx(mInfo->getSound(SOUND_EVENT_DIE), mX, mY);
             break;
         case STAND:
             currentAction = SpriteAction::STAND;
