@@ -201,7 +201,9 @@ size_t AnimatedSprite::getCurrentFrame() const
 
 size_t AnimatedSprite::getFrameCount() const
 {
-    return mAnimation->getLength();
+    if (mAnimation)
+        return mAnimation->getLength();
+    return 0;
 }
 
 int AnimatedSprite::getWidth() const
