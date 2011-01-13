@@ -223,3 +223,9 @@ std::string autocomplete(std::vector<std::string> &candidates,
 
     return newName;
 }
+
+std::string normalize(const std::string &name)
+{
+    std::string normalized = name;
+    return toLower(trim(normalized));;
+}

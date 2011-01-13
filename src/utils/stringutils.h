@@ -120,6 +120,9 @@ std::string removeColors(std::string msg);
  */
 int compareStrI(const std::string &a, const std::string &b);
 
+/**
+ * Tells wether the character is a word separator.
+ */
 bool isWordSeparator(char chr);
 
 const std::string findSameSubstring(const std::string &str1,
@@ -135,7 +138,15 @@ const char* getSafeUtf8String(std::string text);
  */
 bool getBoolFromString(const std::string &text, bool def = false);
 
+/**
+ * Returns the most approaching string of base from candidates.
+ */
 std::string autocomplete(std::vector<std::string> &candidates,
                          std::string base);
+
+/**
+ * Normalize a string, which means lowercase and trim it.
+ */
+std::string normalize(const std::string &name);
 
 #endif // UTILS_STRINGUTILS_H
