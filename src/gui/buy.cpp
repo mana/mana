@@ -199,8 +199,10 @@ void BuyDialog::action(const gcn::ActionEvent &event)
 
         // Update money and adjust the max number of items that can be bought
         mMaxItems -= mAmountItems;
-        setMoney(mMoney -
-                mAmountItems * mShopItems->at(selectedItem)->getPrice());
+        int price = mShopItems->at(selectedItem)->getPrice();
+        if (price < 0)
+            price = 0;
+        setMoney(mMoney - mAmountItems * price);
 
         // Reset selection
         mAmountItems = 1;
@@ -229,11 +231,19 @@ void BuyDialog::updateButtonsAndLabels()
         int itemPrice = mShopItems->at(selectedItem)->getPrice();
 
         // Calculate how many the player can afford
-        mMaxItems = mMoney / itemPrice;
-        if (mAmountItems > mMaxItems)
+        if (itemPrice > 0)
         {
-            mAmountItems = mMaxItems;
+            mMaxItems = mMoney / itemPrice;
         }
+        else
+        {
+            // Let the player no more than 1 of them at a time, since it
+            // shouldn't be a permitted case.
+            mMaxItems = 1;
+        }
+
+        if (mAmountItems > mMaxItems)
+            mAmountItems = mMaxItems;
 
         // Calculate price of pending purchase
         price = mAmountItems * itemPrice;
