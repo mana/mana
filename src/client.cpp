@@ -210,8 +210,16 @@ public:
     }
 } loginListener;
 
-} // anonymous namespace
+class ServerChoiceListener : public gcn::ActionListener
+{
+public:
+    void action(const gcn::ActionEvent &)
+    {
+        Client::setState(STATE_CHOOSE_SERVER);
+    }
+} serverChoiceListener;
 
+} // anonymous namespace
 
 Client *Client::mInstance = 0;
 
@@ -782,6 +790,19 @@ int Client::exec()
                     // Load XML databases
                     ColorDB::load();
                     itemDb = new ItemDB;
+                    if (!itemDb || !itemDb->isLoaded())
+                    {
+                        // Warn and return to login screen
+                        errorMessage =
+                            _("This server is missing needed world data. "
+                              "Please contact the administrator(s).");
+                        mCurrentDialog = new OkDialog(
+                            _("ItemDB: Error while loading " ITEMS_DB_FILE "!"),
+                            errorMessage);
+                        mCurrentDialog->addActionListener(&serverChoiceListener);
+                        mCurrentDialog = NULL; // OkDialog deletes itself
+                        break;
+                    }
                     Being::load(); // Hairstyles
                     MonsterDB::load();
                     SpecialDB::load();

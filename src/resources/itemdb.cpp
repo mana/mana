@@ -89,11 +89,14 @@ void ItemDB::load()
     mUnknown->setSprite(errFile, GENDER_MALE);
     mUnknown->setSprite(errFile, GENDER_FEMALE);
 
-    XML::Document doc("items.xml");
+    XML::Document doc(ITEMS_DB_FILE);
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
-        logger->error("ItemDB: Error while loading items.xml!");
+    {
+        logger->log("ItemDB: Error while loading " ITEMS_DB_FILE "!");
+        return;
+    }
 
     for_each_xml_child_node(node, rootNode)
     {
@@ -104,7 +107,8 @@ void ItemDB::load()
 
         if (!id)
         {
-            logger->log("ItemDB: Invalid or missing item ID in items.xml!");
+            logger->log("ItemDB: Invalid or missing item ID in "
+                        ITEMS_DB_FILE "!");
             continue;
         }
         else if (mItemInfos.find(id) != mItemInfos.end())

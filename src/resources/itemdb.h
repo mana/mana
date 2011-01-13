@@ -28,6 +28,8 @@
 
 #include "utils/xml.h"
 
+#define ITEMS_DB_FILE "items.xml"
+
 class ItemInfo;
 class SpriteDisplay;
 
@@ -49,6 +51,12 @@ class ItemDB
          * Frees item data.
          */
         void unload();
+
+        /**
+         * Tells whether the item database is loaded.
+         */
+        bool isLoaded() const
+        { return mLoaded; }
 
         bool exists(int id);
 
