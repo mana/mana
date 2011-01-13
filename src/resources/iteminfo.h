@@ -155,8 +155,6 @@ class ItemInfo
 
         void addSound(EquipmentSoundEvent event, const std::string &filename);
 
-        void setWeaponType(int);
-
         SpriteDisplay mDisplay;           /**< Display info (like icon) */
         std::string mName;
         std::string mDescription;         /**< Short description. */
