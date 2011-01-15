@@ -50,13 +50,23 @@ DyePalette::DyePalette(const std::string &description)
             int n;
 
             if ('0' <= c && c <= '9')
+            {
                 n = c - '0';
+            }
             else if ('A' <= c && c <= 'F')
+            {
                 n = c - 'A' + 10;
+            }
             else if ('a' <= c && c <= 'f')
+            {
                 n = c - 'a' + 10;
+            }
             else
-                goto error;
+            {
+                logger->log("Error, invalid embedded palette: %s",
+                            description.c_str());
+                return;
+            }
 
             v = (v << 4) | n;
         }
@@ -72,7 +82,6 @@ DyePalette::DyePalette(const std::string &description)
         ++pos;
     }
 
-    error:
     logger->log("Error, invalid embedded palette: %s", description.c_str());
 }
 
