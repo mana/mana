@@ -253,6 +253,10 @@ void Sound::playSfx(const std::string &path, int x, int y)
             if (dy < 0)
                 dy = -dy;
             int dist = dx > dy ? dx : dy;
+
+            // Check for negative values
+            if (dist * 8 > vol)
+                return;
             vol -= dist * 8;
         }
         sample->play(0, vol);
