@@ -55,9 +55,7 @@ static void initDefaultWallpaperPaths()
     // Init the path
     wallpaperPath = branding.getValue("wallpapersPath", "");
 
-    if (!wallpaperPath.empty() && resman->isDirectory(wallpaperPath))
-        return;
-    else
+    if (wallpaperPath.empty() || !resman->isDirectory(wallpaperPath))
         wallpaperPath = paths.getValue("wallpapers", "");
 
     if (wallpaperPath.empty() || !resman->isDirectory(wallpaperPath))
@@ -66,12 +64,12 @@ static void initDefaultWallpaperPaths()
     // Init the default file
     wallpaperFile = branding.getValue("wallpaperFile", "");
 
-    if (!wallpaperFile.empty() && resman->isDirectory(wallpaperFile))
+    if (!wallpaperFile.empty() && !resman->isDirectory(wallpaperFile))
         return;
     else
         wallpaperFile = paths.getValue("wallpaperFile", "");
 
-    if (wallpaperFile.empty() || !resman->isDirectory(wallpaperFile))
+    if (wallpaperFile.empty() || resman->isDirectory(wallpaperFile))
         wallpaperFile = "login_wallpaper.png";
 }
 
