@@ -55,18 +55,22 @@ static void initDefaultWallpaperPaths()
     // Init the path
     wallpaperPath = branding.getStringValue("wallpapersPath");
 
-    if (!wallpaperPath.empty() && resman->isDirectory(wallpaperPath))
-        return;
-    else
-        wallpaperPath = paths.getValue("wallpapers", "graphics/images/");
+    if (wallpaperPath.empty() || !resman->isDirectory(wallpaperPath))
+        wallpaperPath = paths.getStringValue("wallpapers");
+
+    if (wallpaperPath.empty() || !resman->isDirectory(wallpaperPath))
+        wallpaperPath = "graphics/images/";
 
     // Init the default file
     wallpaperFile = branding.getStringValue("wallpaperFile");
 
-    if (!wallpaperFile.empty())
+    if (!wallpaperFile.empty() && !resman->isDirectory(wallpaperFile))
         return;
     else
-        wallpaperFile = paths.getValue("wallpaperFile", "login_wallpaper.png");
+        wallpaperFile = paths.getStringValue("wallpaperFile");
+
+    if (wallpaperFile.empty() || resman->isDirectory(wallpaperFile))
+        wallpaperFile = "login_wallpaper.png";
 }
 
 bool wallpaperCompare(WallpaperData a, WallpaperData b)
