@@ -1020,12 +1020,16 @@ int LocalPlayer::getAttackRange()
     }
     else
     {
-        // TODO: Fix this to be more generic
-        Item *weapon = PlayerInfo::getEquipment(EQUIP_FIGHT1_SLOT);
-        if (weapon)
+        if (Net::getNetworkType() == ServerInfo::TMWATHENA)
         {
-            const ItemInfo info = weapon->getInfo();
-            return info.getAttackRange();
+            // TODO: Fix this to be more generic
+            Item *weapon = PlayerInfo::getEquipment(
+                                                  TmwAthena::EQUIP_FIGHT1_SLOT);
+            if (weapon)
+            {
+                const ItemInfo info = weapon->getInfo();
+                return info.getAttackRange();
+            }
         }
         return 48; // unarmed range
     }

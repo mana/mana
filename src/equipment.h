@@ -39,22 +39,6 @@ class Equipment
          */
         ~Equipment() { mBackend = 0; }
 
-        enum Slot
-        {
-            EQUIP_TORSO_SLOT = 0,
-            EQUIP_GLOVES_SLOT = 1,
-            EQUIP_HEAD_SLOT = 2,
-            EQUIP_LEGS_SLOT = 3,
-            EQUIP_FEET_SLOT = 4,
-            EQUIP_RING1_SLOT = 5,
-            EQUIP_RING2_SLOT = 6,
-            EQUIP_NECK_SLOT = 7,
-            EQUIP_FIGHT1_SLOT = 8,
-            EQUIP_FIGHT2_SLOT = 9,
-            EQUIP_PROJECTILE_SLOT = 10,
-            EQUIP_VECTOREND
-        };
-
         class Backend {
             public:
                 virtual Item *getEquipment(int index) const = 0;

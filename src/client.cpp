@@ -789,7 +789,19 @@ int Client::exec()
 
                     // Load XML databases
                     ColorDB::load();
-                    itemDb = new ItemDB;
+                    switch (Net::getNetworkType())
+                    {
+                      case ServerInfo::TMWATHENA:
+                        itemDb = new TmwAthena::TaItemDB;
+                      break;
+                      case ServerInfo::MANASERV:
+                        itemDb = new ManaServ::ManaServItemDB;
+                      break;
+                      default:
+                        // Nothing
+                        itemDb = 0;
+                      break;
+                    }
                     if (!itemDb || !itemDb->isLoaded())
                     {
                         // Warn and return to login screen

@@ -98,15 +98,15 @@ GeneralHandler::GeneralHandler():
     handledMessages = _messages;
     generalHandler = this;
 
-    std::list<ItemDB::Stat> stats;
-    stats.push_back(ItemDB::Stat("str", _("Strength %+d")));
-    stats.push_back(ItemDB::Stat("agi", _("Agility %+d")));
-    stats.push_back(ItemDB::Stat("vit", _("Vitality %+d")));
-    stats.push_back(ItemDB::Stat("int", _("Intelligence %+d")));
-    stats.push_back(ItemDB::Stat("dex", _("Dexterity %+d")));
-    stats.push_back(ItemDB::Stat("luck", _("Luck %+d")));
+    std::list<ItemStat> stats;
+    stats.push_back(ItemStat("str", _("Strength %+d")));
+    stats.push_back(ItemStat("agi", _("Agility %+d")));
+    stats.push_back(ItemStat("vit", _("Vitality %+d")));
+    stats.push_back(ItemStat("int", _("Intelligence %+d")));
+    stats.push_back(ItemStat("dex", _("Dexterity %+d")));
+    stats.push_back(ItemStat("luck", _("Luck %+d")));
 
-    itemDb->setStatsList(stats);
+    setStatsList(stats);
 
     listen(CHANNEL_GAME);
 }

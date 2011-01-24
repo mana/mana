@@ -36,38 +36,9 @@ enum EquipmentSoundEvent
     EQUIP_EVENT_HIT
 };
 
-enum EquipmentSlot
-{
-    // Equipment rules:
-    // 1 Brest equipment
-    EQUIP_TORSO_SLOT = 0,
-    // 1 arms equipment
-    EQUIP_ARMS_SLOT = 1,
-    // 1 head equipment
-    EQUIP_HEAD_SLOT = 2,
-    // 1 legs equipment
-    EQUIP_LEGS_SLOT = 3,
-    // 1 feet equipment
-    EQUIP_FEET_SLOT = 4,
-    // 2 rings
-    EQUIP_RING1_SLOT = 5,
-    EQUIP_RING2_SLOT = 6,
-    // 1 necklace
-    EQUIP_NECKLACE_SLOT = 7,
-    // Fight:
-    //   2 one-handed weapons
-    //   or 1 two-handed weapon
-    //   or 1 one-handed weapon + 1 shield.
-    EQUIP_FIGHT1_SLOT = 8,
-    EQUIP_FIGHT2_SLOT = 9,
-    // Projectile:
-    //   this item does not amount to one, it only indicates the chosen projectile.
-    EQUIP_PROJECTILE_SLOT = 10
-};
-
-
 /**
  * Enumeration of available Item types.
+ * TODO: Dynamise this using an xml.
  */
 enum ItemType
 {
@@ -89,12 +60,21 @@ enum ItemType
     ITEM_SPRITE_HAIR // 15
 };
 
+// Used to make the compiler uderstand the iteminfo friendship.
+namespace TmwAthena { class TaItemDB; };
+namespace ManaServ { class ManaServItemDB; };
+
 /**
- * Defines a class for storing item infos. This includes information used when
- * the item is equipped.
+ * Defines a class for storing generic item infos.
+ * Specialized version for one or another protocol are defined below.
  */
 class ItemInfo
 {
+    friend class ItemDB;
+    friend void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
+    friend class TmwAthena::TaItemDB;
+    friend class ManaServ::ManaServItemDB;
+
     public:
         /**
          * Constructor.
@@ -114,7 +94,8 @@ class ItemInfo
         const std::string &getName() const
         { return mName; }
 
-        std::string getParticleEffect() const { return mParticle; }
+        std::string getParticleEffect() const
+        { return mParticle; }
 
         const SpriteDisplay &getDisplay() const
         { return mDisplay; }
@@ -122,7 +103,8 @@ class ItemInfo
         const std::string &getDescription() const
         { return mDescription; }
 
-        const std::vector<std::string> &getEffect() const { return mEffect; }
+        const std::vector<std::string> &getEffect() const
+        { return mEffect; }
 
         int getWeight() const
         { return mWeight; }
@@ -132,9 +114,11 @@ class ItemInfo
         void setAttackAction(std::string attackAction);
 
         // Handlers for seting and getting the string used for particles when attacking
-        void setMissileParticle(std::string s) { mMissileParticle = s; }
+        void setMissileParticle(std::string s)
+        { mMissileParticle = s; }
 
-        std::string getMissileParticle() const { return mMissileParticle; }
+        std::string getMissileParticle() const
+        { return mMissileParticle; }
 
         std::string getAttackAction() const
         { return mAttackAction; }
@@ -144,9 +128,14 @@ class ItemInfo
 
         const std::string &getSound(EquipmentSoundEvent event) const;
 
-        bool getEquippable() const { return mEquippable; }
+        bool getEquippable() const
+        { return mEquippable; }
 
-        bool getActivatable() const { return mActivatable; }
+        bool getActivatable() const
+        { return mActivatable; }
+
+        ItemType getItemType() const
+        { return mType; }
 
     private:
 
@@ -184,9 +173,82 @@ class ItemInfo
 
         /** Stores the names of sounds to be played at certain event. */
         std::map< EquipmentSoundEvent, std::vector<std::string> > mSounds;
-
-        friend class ItemDB;
-        friend void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
 };
+
+/*
+ * TmwAthena specialization of the itemInfo for TmwAthena
+ */
+namespace TmwAthena {
+
+enum EquipmentSlot
+{
+    // Equipment rules:
+    // 1 Brest equipment
+    EQUIP_TORSO_SLOT = 0,
+    // 1 arms equipment
+    EQUIP_ARMS_SLOT = 1,
+    // 1 head equipment
+    EQUIP_HEAD_SLOT = 2,
+    // 1 legs equipment
+    EQUIP_LEGS_SLOT = 3,
+    // 1 feet equipment
+    EQUIP_FEET_SLOT = 4,
+    // 2 rings
+    EQUIP_RING1_SLOT = 5,
+    EQUIP_RING2_SLOT = 6,
+    // 1 necklace
+    EQUIP_NECKLACE_SLOT = 7,
+    // Fight:
+    //   2 one-handed weapons
+    //   or 1 two-handed weapon
+    //   or 1 one-handed weapon + 1 shield.
+    EQUIP_FIGHT1_SLOT = 8,
+    EQUIP_FIGHT2_SLOT = 9,
+    // Projectile:
+    //   this item does not amount to one, it only indicates the chosen projectile.
+    EQUIP_PROJECTILE_SLOT = 10,
+    EQUIP_VECTOR_END = 11
+};
+
+/**
+ * Defines a class for storing TmwAthena specific item infos.
+ * Specialized version for one or another protocol are defined below.
+ */
+class TaItemInfo: public ItemInfo
+{
+    friend class TaItemDB;
+
+    public:
+        /**
+         * Constructor.
+         */
+        TaItemInfo():ItemInfo()
+        {}
+
+        // Declare TmwAthena Specific item info here
+};
+
+}; // namespace TmwAthena
+
+namespace ManaServ {
+
+/**
+ * Defines a class for storing Manaserv Specific item infos.
+ * Specialized version for one or another protocol are defined below.
+ */
+class ManaServItemInfo: public ItemInfo
+{
+    public:
+        /**
+         * Constructor.
+         */
+        ManaServItemInfo():ItemInfo()
+        {}
+
+        // Declare Manaserv Specific item info here
+};
+
+
+}; // namespace ManaServ
 
 #endif

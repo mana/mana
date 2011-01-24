@@ -34,6 +34,8 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+#include "net/net.h"
+
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
@@ -41,6 +43,43 @@
 #include <guichan/font.hpp>
 
 #include <guichan/widgets/label.hpp>
+
+#define ITEMPOPUP_WRAP_WIDTH 196
+
+static gcn::Color getColorFromItemType(ItemType type)
+{
+    switch (type)
+    {
+        case ITEM_UNUSABLE:
+            return Theme::getThemeColor(Theme::GENERIC);
+        case ITEM_USABLE:
+            return Theme::getThemeColor(Theme::USABLE);
+        case ITEM_EQUIPMENT_ONE_HAND_WEAPON:
+            return Theme::getThemeColor(Theme::ONEHAND);
+        case ITEM_EQUIPMENT_TWO_HANDS_WEAPON:
+            return Theme::getThemeColor(Theme::TWOHAND);
+        case ITEM_EQUIPMENT_TORSO:
+            return Theme::getThemeColor(Theme::TORSO);
+        case ITEM_EQUIPMENT_ARMS:
+            return Theme::getThemeColor(Theme::ARMS);
+        case ITEM_EQUIPMENT_HEAD:
+            return Theme::getThemeColor(Theme::HEAD);
+        case ITEM_EQUIPMENT_LEGS:
+            return Theme::getThemeColor(Theme::LEGS);
+        case ITEM_EQUIPMENT_SHIELD:
+            return Theme::getThemeColor(Theme::SHIELD);
+        case ITEM_EQUIPMENT_RING:
+            return Theme::getThemeColor(Theme::RING);
+        case ITEM_EQUIPMENT_NECKLACE:
+            return Theme::getThemeColor(Theme::NECKLACE);
+        case ITEM_EQUIPMENT_FEET:
+            return Theme::getThemeColor(Theme::FEET);
+        case ITEM_EQUIPMENT_AMMO:
+            return Theme::getThemeColor(Theme::AMMO);
+        default:
+            return Theme::getThemeColor(Theme::UNKNOWN_ITEM);
+    }
+}
 
 ItemPopup::ItemPopup():
     Popup("ItemPopup"),
@@ -116,14 +155,12 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
         mIcon->setImage(0);
     }
 
-    //mItemType = item.getType();
+    mItemType = item.getItemType();
 
     mItemName->setCaption(item.getName());
     mItemName->adjustSize();
-    mItemName->setForegroundColor(Theme::UNKNOWN_ITEM); // TODO
+    mItemName->setForegroundColor(getColorFromItemType(mItemType));
     mItemName->setPosition(getPadding() + space, getPadding());
-
-#define ITEMPOPUP_WRAP_WIDTH 196
 
     mItemDesc->setTextWrapped(item.getDescription(), ITEMPOPUP_WRAP_WIDTH);
     {
@@ -181,41 +218,6 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     mItemDesc->setPosition(getPadding(), nameHeight);
     mItemEffect->setPosition(getPadding(), nameHeight +
                             (numRowsDesc + 1) * fontHeight);
-}
-
-gcn::Color ItemPopup::getColor(ItemType type)
-{
-    switch (type)
-    {
-        case ITEM_UNUSABLE:
-            return Theme::getThemeColor(Theme::GENERIC);
-        case ITEM_USABLE:
-            return Theme::getThemeColor(Theme::USABLE);
-        case ITEM_EQUIPMENT_ONE_HAND_WEAPON:
-            return Theme::getThemeColor(Theme::ONEHAND);
-        case ITEM_EQUIPMENT_TWO_HANDS_WEAPON:
-            return Theme::getThemeColor(Theme::TWOHAND);
-        case ITEM_EQUIPMENT_TORSO:
-            return Theme::getThemeColor(Theme::TORSO);
-        case ITEM_EQUIPMENT_ARMS:
-            return Theme::getThemeColor(Theme::ARMS);
-        case ITEM_EQUIPMENT_HEAD:
-            return Theme::getThemeColor(Theme::HEAD);
-        case ITEM_EQUIPMENT_LEGS:
-            return Theme::getThemeColor(Theme::LEGS);
-        case ITEM_EQUIPMENT_SHIELD:
-            return Theme::getThemeColor(Theme::SHIELD);
-        case ITEM_EQUIPMENT_RING:
-            return Theme::getThemeColor(Theme::RING);
-        case ITEM_EQUIPMENT_NECKLACE:
-            return Theme::getThemeColor(Theme::NECKLACE);
-        case ITEM_EQUIPMENT_FEET:
-            return Theme::getThemeColor(Theme::FEET);
-        case ITEM_EQUIPMENT_AMMO:
-            return Theme::getThemeColor(Theme::AMMO);
-        default:
-            return Theme::getThemeColor(Theme::UNKNOWN_ITEM);
-    }
 }
 
 void ItemPopup::mouseMoved(gcn::MouseEvent &event)

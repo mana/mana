@@ -46,30 +46,30 @@
 
 extern Net::InventoryHandler *inventoryHandler;
 
-const Equipment::Slot EQUIP_POINTS[Equipment::EQUIP_VECTOREND] = {
-    Equipment::EQUIP_LEGS_SLOT,
-    Equipment::EQUIP_FIGHT1_SLOT,
-    Equipment::EQUIP_GLOVES_SLOT,
-    Equipment::EQUIP_RING2_SLOT,
-    Equipment::EQUIP_RING1_SLOT,
-    Equipment::EQUIP_FIGHT2_SLOT,
-    Equipment::EQUIP_FEET_SLOT,
-    Equipment::EQUIP_NECK_SLOT,
-    Equipment::EQUIP_HEAD_SLOT,
-    Equipment::EQUIP_TORSO_SLOT,
-    Equipment::EQUIP_PROJECTILE_SLOT};
-
 namespace TmwAthena {
+
+const EquipmentSlot EQUIP_POINTS[EQUIP_VECTOR_END] = {
+    EQUIP_LEGS_SLOT,
+    EQUIP_FIGHT1_SLOT,
+    EQUIP_ARMS_SLOT,
+    EQUIP_RING2_SLOT,
+    EQUIP_RING1_SLOT,
+    EQUIP_FIGHT2_SLOT,
+    EQUIP_FEET_SLOT,
+    EQUIP_NECKLACE_SLOT,
+    EQUIP_HEAD_SLOT,
+    EQUIP_TORSO_SLOT,
+    EQUIP_PROJECTILE_SLOT};
 
 int getSlot(int eAthenaSlot)
 {
     if (eAthenaSlot == 0)
     {
-        return Equipment::EQUIP_VECTOREND;
+        return EQUIP_VECTOR_END;
     }
 
     if (eAthenaSlot & 0x8000)
-        return Equipment::EQUIP_PROJECTILE_SLOT;
+        return EQUIP_PROJECTILE_SLOT;
 
     int mask = 1;
     int position = 0;
@@ -425,7 +425,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             index -= INVENTORY_OFFSET;
 
             logger->log("Arrows equipped: %i", index);
-            mEquips.setEquipment(Equipment::EQUIP_PROJECTILE_SLOT, index);
+            mEquips.setEquipment(EQUIP_PROJECTILE_SLOT, index);
             break;
     }
 }

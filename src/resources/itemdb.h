@@ -33,24 +33,59 @@
 class ItemInfo;
 class SpriteDisplay;
 
+// Used to make the compiler uderstand the iteminfo friendship.
+namespace TmwAthena { class TaItemDB; };
+namespace ManaServ { class ManaServItemDB; };
+
 /**
- * Item information database.
+ * Nano-description functions
+ */
+class ItemStat
+{
+    friend class ItemDB;
+    friend class TmwAthena::TaItemDB;
+    friend class ManaServ::ManaServItemDB;
+
+    public:
+        ItemStat(const std::string &tag,
+             const std::string &format):
+        mTag(tag), mFormat(format) {}
+
+        bool operator ==(std::string &name) const
+        { return mTag == name; }
+
+    private:
+        std::string mTag;
+        std::string mFormat;
+};
+
+// Used to set nano-description
+static std::list<ItemStat> extraStats;
+void setStatsList(const std::list<ItemStat> &stats);
+
+/**
+ * Item information database generic definition.
  */
 class ItemDB
 {
     public:
-        ItemDB() : mLoaded(false) { load(); }
+        ItemDB() :
+          mUnknown(0),
+          mLoaded(false)
+        {}
 
-        ~ItemDB() { unload(); }
+        ~ItemDB()
+        {}
+
         /**
          * Loads the item data from <code>items.xml</code>.
          */
-        void load();
+        virtual void load() = 0;
 
         /**
          * Frees item data.
          */
-        void unload();
+        virtual void unload();
 
         /**
          * Tells whether the item database is loaded.
@@ -63,26 +98,42 @@ class ItemDB
         const ItemInfo &get(int id);
         const ItemInfo &get(const std::string &name);
 
-        class Stat
-        {
-            public:
-                Stat(const std::string &tag,
-                     const std::string &format):
-                tag(tag), format(format) {}
+    protected:
+        /**
+         * Permits to load item definitions which are common
+         * for each protocols to avoid code duplication.
+         */
+        void loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node);
 
-                bool operator ==(std::string &name) const { return tag == name; }
+        /**
+         * Checks the items parameters consistency.
+         */
+        virtual void checkItemInfo(ItemInfo* itemInfo);
 
-            private:
-                std::string tag;
-                std::string format;
-                friend class ItemDB;
-        };
+        /**
+         * Register the item to mItemInfos and mNamedItemsInfos
+         */
+        void addItem(ItemInfo *itemInfo);
 
-        void setStatsList(const std::list<Stat> &stats);
+        // Default unknown reference
+        ItemInfo *mUnknown;
+
+        bool mLoaded;
 
     private:
+        /**
+         * Loads the sprite references contained in a <sprite> tag.
+         */
         void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
-        void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
+
+        /**
+         * Loads the sound references contained in a <sound> tag.
+         */
+         void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
+
+        /**
+         * Loads the floor item references contained in a <floor> tag.
+         */
         void loadFloorSprite(SpriteDisplay *display, xmlNodePtr node);
 
         // Items database
@@ -91,9 +142,68 @@ class ItemDB
 
         ItemInfos mItemInfos;
         NamedItemInfos mNamedItemInfos;
-        ItemInfo *mUnknown;
-        bool mLoaded;
 };
+
+namespace TmwAthena {
+
+class TaItemInfo;
+
+/**
+ * Item information database TmwAthena specific class.
+ */
+class TaItemDB: public ItemDB
+{
+    public:
+        TaItemDB() : ItemDB()
+        { load(); }
+
+        ~TaItemDB()
+        { unload(); }
+
+        /**
+         * Loads the item data from <code>items.xml</code>.
+         */
+        void load();
+
+    private:
+        /**
+         * Check items id specific hard limits and log errors found.
+         * TODO: Do it.
+         */
+        void checkHairWeaponsRacesSpecialIds()
+        {}
+
+        void checkItemInfo(ItemInfo* itemInfo);
+};
+
+}; // namespace TmwAthena
+
+namespace ManaServ {
+
+class ManaServItemInfo;
+
+/**
+ * Item information database TmwAthena specific class.
+ */
+class ManaServItemDB: public ItemDB
+{
+    public:
+        ManaServItemDB() : ItemDB()
+        { load(); }
+
+        ~ManaServItemDB()
+        { unload(); }
+
+        /**
+         * Loads the item data from <code>items.xml</code>.
+         */
+        void load();
+
+    private:
+        void checkItemInfo(ItemInfo* itemInfo);
+};
+
+}; // namespace ManaServ
 
 extern ItemDB *itemDb;
 

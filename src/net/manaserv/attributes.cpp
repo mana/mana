@@ -377,14 +377,14 @@ namespace Attributes {
 
     void informItemDB()
     {
-        std::list<ItemDB::Stat> dbStats;
+        std::list<ItemStat> dbStats;
 
         TagMap::const_iterator it, it_end;
         for (it = tags.begin(), it_end = tags.end(); it != it_end; ++it)
-            dbStats.push_back(ItemDB::Stat(it->first,
+            dbStats.push_back(ItemStat(it->first,
                                            it->second));
 
-        itemDb->setStatsList(dbStats);
+        setStatsList(dbStats);
     }
 
     void informStatusWindow()

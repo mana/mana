@@ -62,8 +62,6 @@ class ItemPopup : public Popup
         TextBox *mItemWeight;
         ItemType mItemType;
         Icon *mIcon;
-
-        static gcn::Color getColor(ItemType type);
 };
 
 #endif // ITEMPOPUP_H

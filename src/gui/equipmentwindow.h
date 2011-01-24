@@ -78,7 +78,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
             int posY;
         };
 
-        EquipBox mEquipBox[Equipment::EQUIP_VECTOREND]; /**< Equipment Boxes. */
+        EquipBox *mEquipBox; /**< Equipment Boxes. */
 
         ItemPopup *mItemPopup;
         gcn::Button *mUnequip;
