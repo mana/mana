@@ -59,16 +59,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         void mousePressed(gcn::MouseEvent& mouseEvent);
 
-    private:
-        void mouseExited(gcn::MouseEvent &event);
-        void mouseMoved(gcn::MouseEvent &event);
-
-        Item *getItem(int x, int y) const;
-
-        void setSelected(int index);
-
-        Equipment *mEquipment;
-
+  protected:
         /**
          * Equipment box.
          */
@@ -80,11 +71,44 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         EquipBox *mEquipBox; /**< Equipment Boxes. */
 
+        int mSelected; /**< Index of selected item. */
+        Equipment *mEquipment;
+
+    private:
+        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
+
+        Item *getItem(int x, int y) const;
+
+        void setSelected(int index);
+
         ItemPopup *mItemPopup;
         gcn::Button *mUnequip;
-
-        int mSelected; /**< Index of selected item. */
 };
+
+namespace TmwAthena {
+
+class TaEquipmentWindow : public EquipmentWindow
+{
+    public:
+        /**
+         * Constructor.
+         */
+        TaEquipmentWindow(Equipment *equipment);
+
+        /**
+         * Destructor.
+         */
+        ~TaEquipmentWindow();
+
+        /**
+         * Draws the equipment window using TmwAthena routine.
+         */
+        void draw(gcn::Graphics *graphics);
+
+};
+
+}; // namespace TmwAthena
 
 extern EquipmentWindow *equipmentWindow;
 

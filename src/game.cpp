@@ -155,7 +155,17 @@ static void createGuiWindows()
     minimap = new Minimap;
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
-    equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
+    switch (Net::getNetworkType())
+    {
+      case ServerInfo::TMWATHENA:
+        equipmentWindow = new TmwAthena::TaEquipmentWindow(
+                                                    PlayerInfo::getEquipment());
+        break;
+      case ServerInfo::MANASERV:
+      default:
+        equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
+        break;
+    }
     statusWindow = new StatusWindow;
     inventoryWindow = new InventoryWindow(PlayerInfo::getInventory());
     skillDialog = new SkillDialog;
