@@ -436,7 +436,7 @@ void LoginHandler::registerAccount(LoginData *loginData)
 
     MessageOut msg(PAMSG_REGISTER);
 
-    msg.writeInt32(0); // client version
+    msg.writeInt32(PROTOCOL_VERSION); // client version
     msg.writeString(loginData->username);
     // Use a hashed password for privacy reasons
     msg.writeString(sha256(loginData->username + loginData->password));
