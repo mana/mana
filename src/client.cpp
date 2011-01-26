@@ -336,17 +336,29 @@ Client::Client(const Options &options):
     // Add the local data directory to PhysicsFS search path
     resman->addToSearchPath(mLocalDataDir, false);
 
+    std::string iconFile = branding.getValue("appIcon", "icons/mana");
+#ifdef WIN32
+    iconFile += ".ico";
+#else
+    iconFile += ".png";
+#endif
+    iconFile = resman->getPath(iconFile);
+    logger->log("Loading icon from file: %s", iconFile.c_str());
 #ifdef WIN32
     static SDL_SysWMinfo pInfo;
     SDL_GetWMInfo(&pInfo);
-    HICON icon = LoadIcon(GetModuleHandle(NULL), "A");
+    // Attempt to load icon from .ico file
+    HICON icon = (HICON) LoadImage(NULL,
+                                   iconFile.c_str(),
+                                   IMAGE_ICON, 64, 64, LR_LOADFROMFILE);
+    // If it's failing, we load the default resource file.
+    if (!icon)
+        icon = LoadIcon(GetModuleHandle(NULL), "A");
+
     if (icon)
-    {
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
-    }
 #else
-    mIcon = IMG_Load(resman->getPath(
-            branding.getValue("appIcon", "icons/mana.png")).c_str());
+    mIcon = IMG_Load(iconFile.c_str());
     if (mIcon)
     {
         SDL_SetAlpha(mIcon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
