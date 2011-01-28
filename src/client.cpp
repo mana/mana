@@ -77,7 +77,8 @@
 #include "utils/stringutils.h"
 
 #ifdef __APPLE__
-#include <CoreFoundation/CFBundle.h>
+#include "window.h"
+#include "bundle.h"
 #endif
 
 #include <physfs.h>
@@ -211,16 +212,35 @@ Client::Client(const Options &options):
     mInstance = this;
 
     logger = new Logger;
+    
+    ResourceManager *resman = ResourceManager::getInstance();
+
+#if defined __APPLE__
+    std::string path;
+    path = getBundleResourcesPath();
+    path.append("/data");
+    resman->addToSearchPath(path.c_str(), false);
+    mPackageDir = path;
+#else
+    resman->addToSearchPath(PKG_DATADIR "data", false);
+    mPackageDir = PKG_DATADIR "data";
+#endif
 
     // Load branding information
     if (!options.brandingPath.empty())
     {
-        branding.init(options.brandingPath);
+        branding.init(options.brandingPath, true);
     }
-
+    
     initRootDir();
     initHomeDir();
     initConfiguration();
+    
+    if (!resman->setWriteDir(mLocalDataDir))
+    {
+        logger->error(strprintf("%s couldn't be set as home directory! "
+                                "Exiting.", mLocalDataDir.c_str()));
+    }
 
     // Configure logger
     logger->setLogFile(mLocalDataDir + std::string("/mana.log"));
@@ -245,33 +265,7 @@ Client::Client(const Options &options):
 
     SDL_WM_SetCaption(branding.getValue("appName", "Mana").c_str(), NULL);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    if (!resman->setWriteDir(mLocalDataDir))
-    {
-        logger->error(strprintf("%s couldn't be set as home directory! "
-                                "Exiting.", mLocalDataDir.c_str()));
-    }
-
     Image::SDLsetEnableAlphaCache(config.getValue("alphaCache", true));
-
-#if defined __APPLE__
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
-    char path[PATH_MAX];
-    if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path,
-                                          PATH_MAX))
-    {
-        fprintf(stderr, "Can't find Resources directory\n");
-    }
-    CFRelease(resourcesURL);
-    strncat(path, "/data", PATH_MAX - 1);
-    resman->addToSearchPath(path, false);
-    mPackageDir = path;
-#else
-    resman->addToSearchPath(PKG_DATADIR "data", false);
-    mPackageDir = PKG_DATADIR "data";
-#endif
 
     resman->addToSearchPath("data", false);
 
@@ -302,10 +296,15 @@ Client::Client(const Options &options):
     std::string iconFile = branding.getValue("appIcon", "icons/mana");
 #ifdef WIN32
     iconFile += ".ico";
+#elif defined (__APPLE__)
+    // MacOSX expects just the filename without extension
+    iconFile = iconFile.substr(iconFile.find_last_of("/")+1);    
 #else
     iconFile += ".png";
 #endif
+#ifndef __APPLE__
     iconFile = resman->getPath(iconFile);
+#endif
     logger->log("Loading icon from file: %s", iconFile.c_str());
 #ifdef WIN32
     static SDL_SysWMinfo pInfo;
@@ -320,6 +319,8 @@ Client::Client(const Options &options):
 
     if (icon)
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
+#elif defined(__APPLE__)
+    setIcon(iconFile.c_str());
 #else
     mIcon = IMG_Load(iconFile.c_str());
     if (mIcon)
