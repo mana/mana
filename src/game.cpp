@@ -795,9 +795,6 @@ void Game::handleInput()
             return;
         }
 
-        const Vector &pos = player_node->getPosition();
-        const Uint16 x = (int) pos.x / 32;
-        const Uint16 y = (int) pos.y / 32;
         unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction
@@ -915,6 +912,9 @@ void Game::handleInput()
         {
             if (joystick->buttonPressed(1))
             {
+                const int x = player_node->getTileX();
+                const int y = player_node->getTileY();
+
                 FloorItem *item = actorSpriteManager->findItem(x, y);
 
                 if (item)

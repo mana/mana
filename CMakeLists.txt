@@ -30,6 +30,7 @@ FIND_PACKAGE(Gettext)
 
 OPTION(WITH_OPENGL "Enable OpenGL support" ON)
 OPTION(ENABLE_NLS "Enable building of tranlations" ON)
+OPTION(ENABLE_MANASERV "Enable Manaserv support" OFF)
 
 IF (WIN32)
     SET(PKG_DATADIR ".")
@@ -37,16 +38,20 @@ IF (WIN32)
     SET(LOCALEDIR ".")
     CONFIGURE_FILE(src/winver.h.in src/winver.h)
 ELSE (WIN32)
-    IF (!OSX)
+    IF (NOT OSX)
         OPTION(USE_X11 "Use X11 Clipboard functionality" ON)
-    ENDIF (!OSX)
+    ENDIF ()
     SET(PKG_DATADIR ${CMAKE_INSTALL_PREFIX}/share/mana)
     SET(LOCALEDIR ${CMAKE_INSTALL_PREFIX}/share/locale)
     SET(PKG_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
 ENDIF (WIN32)
 
 ADD_SUBDIRECTORY(data)
-ADD_SUBDIRECTORY(libs/enet)
+
+IF (ENABLE_MANASERV)
+    ADD_SUBDIRECTORY(libs/enet)
+ENDIF()
+
 ADD_SUBDIRECTORY(src)
 
 IF (GETTEXT_FOUND AND ENABLE_NLS)

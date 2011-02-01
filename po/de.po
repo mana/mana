@@ -1,3 +1,12 @@
+# #-#-#-#-#  po_de.po (The Mana World 0.1.0)  #-#-#-#-#
+# German translation of The Mana World.
+# Copyright (C) 2007 The Mana World Development Team
+# This file is distributed under the same license as the The Mana World package.
+#
+# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007; 2011.
+# Jonathan Raphael Joachim Kolberg, 2009, 2010.
+# seeseekey <seeseekey@googlemail.com>, 2009.
+# #-#-#-#-#  de.po (The Mana World 0.1.0)  #-#-#-#-#
 # German translation of The Mana World.
 # Copyright (C) 2007-2009 The Mana World Development Team
 # Copyright (C) 2010 The Mana Development Team
@@ -9,6 +18,22 @@
 # Andrej, 2009.
 msgid ""
 msgstr ""
+"#-#-#-#-#  po_de.po (The Mana World 0.1.0)  #-#-#-#-#\n"
+"Project-Id-Version: The Mana World 0.1.0\n"
+"Report-Msgid-Bugs-To: dev@manasource.org\n"
+"POT-Creation-Date: 2010-12-06 19:23+0100\n"
+"PO-Revision-Date: 2011-01-03 22:40+0100\n"
+"Last-Translator: Matthias Hartmann <hartmann.matthias@gmail.com>\n"
+"Language-Team: Deutsch <kde-i18n-de@kde.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Launchpad-Export-Date: 2009-06-02 17:48+0000\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"#-#-#-#-#  de.po (The Mana World 0.1.0)  #-#-#-#-#\n"
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
 "POT-Creation-Date: 2010-12-13 20:04+0100\n"
@@ -40,7 +65,7 @@ msgstr "Anmelden"
 
 #: src/client.cpp:739
 msgid "Entering game world"
-msgstr ""
+msgstr "Betrete die Spielwelt"
 
 #: src/client.cpp:804
 #, fuzzy
@@ -69,7 +94,7 @@ msgstr "Fehler"
 
 #: src/client.cpp:888
 msgid "Requesting registration details"
-msgstr ""
+msgstr "Fordere Registrierungsdetails an"
 
 #: src/client.cpp:915
 msgid "Password Change"
@@ -100,7 +125,7 @@ msgstr "Leb wohl und komme jeder Zeit wieder..."
 #: src/client.cpp:1138 src/client.cpp:1161
 #, c-format
 msgid "%s doesn't exist and can't be created! Exiting."
-msgstr ""
+msgstr "%s existiert nicht und kann nicht erstellt werden! Beende."
 
 #: src/client.cpp:1281
 #, fuzzy, c-format
@@ -160,13 +185,19 @@ msgstr ""
 msgid "/q > Alias of query"
 msgstr "/q > Ersatz für query"
 
-#: src/commandhandler.cpp:176
-msgid "/ignore > ignore a player"
+#: src/commandhandler.cpp:181
+msgid "/away > Tell the other whispering players you're away from keyboard."
 msgstr ""
+"/away > Teilt den anderen flüsternden Spielern deine Abwesenheit von der "
+"Tastatur mit."
+
+#: src/commandhandler.cpp:184
+msgid "/ignore > ignore a player"
+msgstr "/ignore > Ignoriere einen Spieler"
 
 #: src/commandhandler.cpp:177
 msgid "/unignore > stop ignoring a player"
-msgstr ""
+msgstr "/unignore > Ignorierung eines Spielers aufheben"
 
 #: src/commandhandler.cpp:179
 msgid "/list > Display all public channels"
@@ -319,7 +350,26 @@ msgstr ""
 "Dieser Befehl erstellt einen neuen Tab für private Nachrichten zwischen Dir "
 "und Spieler <Name>."
 
-#: src/commandhandler.cpp:262
+#: src/commandhandler.cpp:270
+#, fuzzy
+msgid "Command: /away <afk reason>"
+msgstr "Befehl: /w <Name> <Nachricht>"
+
+#: src/commandhandler.cpp:271
+msgid "This command tells you're away from keyboard with the given reason."
+msgstr "Dieser Befehl teilt deine Abwesenheit und deren angegebenen Grund mit."
+
+#: src/commandhandler.cpp:273
+#, fuzzy
+msgid "Command: /away"
+msgstr "Befehl: /who"
+
+#: src/commandhandler.cpp:274
+#, fuzzy
+msgid "This command clears the away status and message."
+msgstr "Dieser Befehl setzt das Theme auf <Thema>."
+
+#: src/commandhandler.cpp:278
 #, fuzzy
 msgid "Command: /createparty <name>"
 msgstr "Befehl: /create <Party-Name>"
@@ -405,6 +455,7 @@ msgstr "Befehl: /item <Wert>"
 #: src/commandhandler.cpp:301
 msgid "This command stops ignoring the given player if they are being ignored"
 msgstr ""
+"Dieser Befehl hebt die Ignorierung des angegeben ignorierten Spieler auf."
 
 #: src/commandhandler.cpp:306
 msgid "Command: /where"
@@ -451,7 +502,7 @@ msgstr "Name der Party fehlt."
 #: src/commandhandler.cpp:432 src/commandhandler.cpp:509
 #: src/commandhandler.cpp:531
 msgid "Please specify a name."
-msgstr ""
+msgstr "Bitte gib einen Namen an."
 
 #: src/commandhandler.cpp:450
 msgid "Return toggles chat."
@@ -471,15 +522,15 @@ msgstr "Jetzt schließt jede Nachricht die Chatzeile."
 
 #: src/commandhandler.cpp:476 src/commandhandler.cpp:489
 msgid "Show IP: On"
-msgstr ""
+msgstr "IP Anzeige: An"
 
 #: src/commandhandler.cpp:476 src/commandhandler.cpp:485
 msgid "Show IP: Off"
-msgstr ""
+msgstr "IP Anzeige: Aus"
 
 #: src/commandhandler.cpp:515
 msgid "Player already ignored!"
-msgstr ""
+msgstr "Spieler wird bereits ignoriert!"
 
 #: src/commandhandler.cpp:522
 #, fuzzy
@@ -655,7 +706,7 @@ msgstr "Gib dein neues Passwort zweimal ein:"
 
 #: src/gui/changepassworddialog.cpp:110
 msgid "Enter the old password first."
-msgstr ""
+msgstr "Gib das alte Passwort zuerst an."
 
 #: src/gui/changepassworddialog.cpp:116
 #, c-format
@@ -685,14 +736,14 @@ msgstr "Name:"
 #: src/gui/charcreatedialog.cpp:70 src/gui/charcreatedialog.cpp:75
 #: src/gui/outfitwindow.cpp:67
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #. TRANSLATORS: This is an arrow symbol used to denote 'previous'.
 #. You may change this symbol if your language uses another.
 #: src/gui/charcreatedialog.cpp:73 src/gui/charcreatedialog.cpp:76
 #: src/gui/outfitwindow.cpp:66
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: src/gui/charcreatedialog.cpp:74
 msgid "Hair color:"
@@ -769,7 +820,7 @@ msgstr "Wähle"
 
 #: src/gui/charselectdialog.cpp:394 src/gui/charselectdialog.cpp:395
 msgid "(empty)"
-msgstr ""
+msgstr "(leer)"
 
 #: src/gui/chat.cpp:88
 msgid "Chat"
@@ -799,17 +850,17 @@ msgstr "Nein"
 
 #: src/gui/debugwindow.cpp:43
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
 #: src/gui/debugwindow.cpp:56
 #, c-format
 msgid "%d FPS (OpenGL)"
-msgstr ""
+msgstr "%d FPS (OpenGL)"
 
 #: src/gui/debugwindow.cpp:61 src/gui/debugwindow.cpp:64
 #, c-format
 msgid "%d FPS"
-msgstr ""
+msgstr "%d FPS"
 
 #: src/gui/debugwindow.cpp:65 src/gui/debugwindow.cpp:104
 #, c-format
@@ -829,7 +880,7 @@ msgstr "Übersichtskarte: %s"
 #: src/gui/debugwindow.cpp:68 src/gui/debugwindow.cpp:99
 #, c-format
 msgid "Cursor: (%d, %d)"
-msgstr ""
+msgstr "Cursor: (%d, %d)"
 
 #: src/gui/debugwindow.cpp:69 src/gui/debugwindow.cpp:111
 #, c-format
@@ -899,7 +950,7 @@ msgstr "Aufteilen"
 
 #: src/gui/inventorywindow.cpp:104 src/gui/outfitwindow.cpp:51
 msgid "Outfits"
-msgstr ""
+msgstr "Ausrüstung"
 
 #: src/gui/inventorywindow.cpp:106
 msgid "Weight:"
@@ -975,7 +1026,7 @@ msgstr "Teilen von Gegenständen deaktiviert."
 
 #: src/gui/login.cpp:129
 msgid "You need to use the website to register an account for this server."
-msgstr ""
+msgstr "Du musst auf der Webseite ein Konto für diesen Server erstellen."
 
 #: src/gui/minimap.cpp:45 src/gui/minimap.cpp:86
 msgid "Map"
@@ -983,7 +1034,7 @@ msgstr "Karte"
 
 #: src/gui/ministatus.cpp:235
 msgid "Need"
-msgstr ""
+msgstr "Muss"
 
 #: src/gui/npcdialog.cpp:48
 msgid "Waiting for server"
@@ -1003,7 +1054,7 @@ msgstr "NPC"
 
 #: src/gui/npcdialog.cpp:118
 msgid "Clear log"
-msgstr ""
+msgstr "Protokoll leeren"
 
 #: src/gui/npcdialog.cpp:134
 msgid "Reset"
@@ -1034,7 +1085,7 @@ msgstr "Es misslang den Brief zu senden oder er war ungültig."
 #: src/gui/outfitwindow.cpp:154
 #, c-format
 msgid "Outfit: %d"
-msgstr ""
+msgstr "Ausrüstung: %d"
 
 #: src/gui/outfitwindow.cpp:70
 msgid "Unequip first"
@@ -1092,7 +1143,7 @@ msgstr "Lade %s in deine Party ein"
 
 #: src/gui/popupmenu.cpp:141
 msgid "Kick player"
-msgstr ""
+msgstr "Spieler rauswerfen"
 
 #: src/gui/popupmenu.cpp:150
 #, c-format
@@ -1234,12 +1285,12 @@ msgstr "Fehler beim empfangen der Serverliste: %s\n"
 
 #: src/gui/serverdialog.cpp:550
 msgid "requires a newer version"
-msgstr ""
+msgstr "benötigt eine neuere Version"
 
 #: src/gui/serverdialog.cpp:552
 #, c-format
 msgid "requires v%s"
-msgstr ""
+msgstr "benötigt v%s"
 
 #: src/gui/setup_audio.cpp:42
 msgid "Sound"
@@ -1514,7 +1565,7 @@ msgstr "Eigener Name"
 
 #: src/gui/setup_video.cpp:226
 msgid "Log NPC dialogue"
-msgstr ""
+msgstr "Protokoliere NPC Gespräche"
 
 #: src/gui/setup_video.cpp:227
 msgid "Show pickup notification"
@@ -1537,7 +1588,7 @@ msgstr "FPS-Limit:"
 
 #: src/gui/setup_video.cpp:247
 msgid "Disable transparency (Low CPU mode)"
-msgstr ""
+msgstr "Transparenz deaktivieren (für langsame PCs)"
 
 #: src/gui/setup_video.cpp:250
 msgid "Video"
@@ -1606,10 +1657,13 @@ msgid ""
 "Applying change to OpenGL requires restart. In case OpenGL messes up your "
 "game graphics, restart the game with the command line option \"--no-opengl\"."
 msgstr ""
+"Der Wechsel zu OpenGL erfordert einen Neustart. Falls mit OpenGL Grafiken "
+"fehlerhaft dargestellt werden sollten bitte das Spiel mit der "
+"Kommandozeilenoption \"--no-opengl\" neustarten."
 
 #: src/gui/setup_video.cpp:466
 msgid "Deactivating OpenGL"
-msgstr ""
+msgstr "Deaktiviere OpenGL"
 
 #: src/gui/setup_video.cpp:467
 msgid "Applying change to OpenGL requires restart."
@@ -1624,11 +1678,11 @@ msgstr "Teilen der Erfahrungspunkte deaktiviert."
 
 #: src/gui/setup_video.cpp:476 src/gui/setup_video.cpp:484
 msgid "You must restart to apply changes."
-msgstr ""
+msgstr "Bitte neustarten um Änderungen zu übernehmen."
 
 #: src/gui/setup_video.cpp:483
 msgid "Transparency enabled"
-msgstr ""
+msgstr "Transparenz aktiviert."
 
 #: src/gui/setup_video.cpp:576 src/gui/setup_video.cpp:581
 #, fuzzy
@@ -1725,7 +1779,7 @@ msgstr "Spieler %s einladen"
 #: src/gui/socialwindow.cpp:218
 #, c-format
 msgid "Party %s quit requested."
-msgstr ""
+msgstr "Partie %s Auflösung beauftragt."
 
 #: src/gui/socialwindow.cpp:232
 #, fuzzy
@@ -1739,7 +1793,7 @@ msgstr "Wen möchtest du einladen?"
 
 #: src/gui/socialwindow.cpp:242
 msgid "Leave Party?"
-msgstr ""
+msgstr "Partie verlassen?"
 
 #: src/gui/socialwindow.cpp:243
 #, fuzzy, c-format
@@ -1792,7 +1846,7 @@ msgstr "Partyeinladung von %s abgelehnt."
 
 #: src/gui/socialwindow.cpp:497
 msgid "Creating guild failed, please choose a shorter name."
-msgstr ""
+msgstr "Gilde konnte nicht erstellt werden, bitte einen kürzen Namen wählen."
 
 #: src/gui/socialwindow.cpp:504
 #, c-format
@@ -1801,7 +1855,7 @@ msgstr "Erstelle der Gilde %s."
 
 #: src/gui/socialwindow.cpp:520
 msgid "Creating party failed, please choose a shorter name."
-msgstr ""
+msgstr "Partie konte nicht erstellt werden, bitte einen kürzeren Namen wählen."
 
 #: src/gui/socialwindow.cpp:527
 #, fuzzy, c-format
@@ -1860,7 +1914,7 @@ msgstr "Nehme Partyeinladung an"
 
 #: src/gui/socialwindow.cpp:621
 msgid "Cannot create party. You are already in a party"
-msgstr ""
+msgstr "Konnte keine Partie erstellen. Du bist schon in einer Partie."
 
 #: src/gui/socialwindow.cpp:626
 #, fuzzy
@@ -1876,8 +1930,17 @@ msgstr "Wähle den Namen deiner Gilde"
 msgid "Specials"
 msgstr "Special"
 
-#: src/gui/statuswindow.cpp:113 src/gui/statuswindow.cpp:215
-#: src/gui/statuswindow.cpp:262
+#: src/gui/specialswindow.cpp:174
+#, c-format
+msgid "Specials Set %d"
+msgstr "Spezial Sets %d"
+
+#: src/gui/specialswindow.cpp:191
+#, c-format
+msgid "Special %d"
+msgstr "Spezial %d"
+
+#: src/gui/statuswindow.cpp:109 src/gui/statuswindow.cpp:253
 #, c-format
 msgid "Level: %d"
 msgstr "Stufe: %d"
@@ -2104,11 +2167,11 @@ msgstr "Kann keine leere Nachricht senden!"
 
 #: src/gui/widgets/whispertab.cpp:72
 msgid "/ignore > Ignore the other player"
-msgstr ""
+msgstr "/ignore > Anderen Spieler ignorieren"
 
 #: src/gui/widgets/whispertab.cpp:73
 msgid "/unignore > Stop ignoring the other player"
-msgstr ""
+msgstr "/unignore > Anderen Spieler nicht mehr ignorieren"
 
 #: src/gui/widgets/whispertab.cpp:74
 msgid "/close > Close the whisper tab"
@@ -2301,11 +2364,11 @@ msgstr "Statusfenster"
 
 #: src/keyboardconfig.cpp:82
 msgid "Wear Outfit"
-msgstr ""
+msgstr "Ausrüstung anziehen"
 
 #: src/keyboardconfig.cpp:83
 msgid "Copy Outfit"
-msgstr ""
+msgstr "Ausrüstung kopieren"
 
 #: src/keyboardconfig.cpp:84 src/keyboardconfig.cpp:85
 #: src/keyboardconfig.cpp:86 src/keyboardconfig.cpp:87
@@ -2369,9 +2432,13 @@ msgid_plural "You picked up %d [@@%d|%s@@]."
 msgstr[0] "Du hast %s [@@%d|%s@@] aufgehoben."
 msgstr[1] "Du hast %s [@@%d|%s@@] aufgehoben."
 
+#: src/localplayer.cpp:1435
+msgid "Away"
+msgstr "Abwesend"
+
 #: src/main.cpp:42
 msgid "mana [options] [mana-file]"
-msgstr ""
+msgstr "mana [Optionen] [mana-Datei]"
 
 #: src/main.cpp:43
 msgid "[mana-file] : The mana file is an XML file (.mana)"
@@ -2625,7 +2692,7 @@ msgstr "Liste Kanäle"
 
 #: src/net/manaserv/chathandler.cpp:226
 msgid "End of channel list."
-msgstr ""
+msgstr "Ende der Channel-Liste."
 
 #: src/net/manaserv/chathandler.cpp:303
 #, c-format
@@ -2635,17 +2702,17 @@ msgstr "%s ist dem Kanal beigetreten."
 #: src/net/manaserv/chathandler.cpp:308
 #, c-format
 msgid "%s left the channel."
-msgstr ""
+msgstr "%s hat den Channel verlassen."
 
 #: src/net/manaserv/chathandler.cpp:324
 #, c-format
 msgid "%s has set mode %s on user %s."
-msgstr ""
+msgstr "%s hat den Modus %s auf den Spieler %s gesetzt."
 
 #: src/net/manaserv/chathandler.cpp:334
 #, c-format
 msgid "%s has kicked %s."
-msgstr ""
+msgstr "%s hat %s gekickt."
 
 #: src/net/manaserv/chathandler.cpp:339
 #, fuzzy
@@ -2713,6 +2780,8 @@ msgstr "Die neue E-Mailadresse ist bereits vorhanden."
 msgid ""
 "Client registration is not allowed. Please contact server administration."
 msgstr ""
+"Client Registrierung wurde deaktiviert. Bitte den Serveradministrator "
+"kontaktieren."
 
 #: src/net/manaserv/loginhandler.cpp:263 src/net/manaserv/loginhandler.cpp:300
 msgid "Client version is too old."
@@ -2729,7 +2798,7 @@ msgstr "Account abgelaufen"
 
 #: src/net/manaserv/loginhandler.cpp:275
 msgid "Login attempt too soon after previous attempt."
-msgstr ""
+msgstr "Anmeldeversuch zu früh nach vorherigem Versuch."
 
 #: src/net/manaserv/loginhandler.cpp:303
 msgid "Wrong username, password or email address."
@@ -2746,6 +2815,7 @@ msgstr "E-Mailadresse bereits vorhanden"
 #: src/net/manaserv/loginhandler.cpp:312
 msgid "You took too long with the captcha or your response was incorrect."
 msgstr ""
+"Du hast für das Captcha zu lange gebraucht oder deine Eingabe war inkorrekt."
 
 #: src/net/manaserv/partyhandler.cpp:87
 msgid "Joined party."
@@ -2821,7 +2891,7 @@ msgstr "Verkauf fehlgeschlagen."
 
 #: src/net/tmwa/charserverhandler.cpp:103
 msgid "Access denied. Most likely, there are too many players on this server."
-msgstr ""
+msgstr "Zugriff verweigert. Wahrscheinlich zu viele Spieler auf dem Server."
 
 #: src/net/tmwa/charserverhandler.cpp:107
 msgid "Cannot use this ID."
@@ -3067,7 +3137,7 @@ msgstr "Name der Party fehlt."
 
 #: src/net/tmwa/guildhandler.cpp:296
 msgid "Could not inivte user to guild."
-msgstr ""
+msgstr "Konnte User nicht in Gilde einladen."
 
 #: src/net/tmwa/guildhandler.cpp:301
 #, fuzzy
@@ -3081,7 +3151,7 @@ msgstr "%s ist nun Mitglied Deiner Party."
 
 #: src/net/tmwa/guildhandler.cpp:311
 msgid "Your guild is full."
-msgstr ""
+msgstr "Deine Gilde ist voll."
 
 #: src/net/tmwa/guildhandler.cpp:316
 #, fuzzy
@@ -3090,7 +3160,7 @@ msgstr "Unbekannte Reaktion auf die Einladung von %s."
 
 #: src/net/tmwa/guildhandler.cpp:393
 msgid "Guild creation isn't supported yet."
-msgstr ""
+msgstr "Gildenerstellung wird nocht nicht unterstützt."
 
 #: src/net/tmwa/gui/partytab.cpp:43
 msgid "Party"
@@ -3270,7 +3340,7 @@ msgstr "Dieser Spielername ist bereits vergeben"
 
 #: src/net/tmwa/network.cpp:145
 msgid "Empty address given to Network::connect()!"
-msgstr ""
+msgstr "Empty address given to Network::connect()!"
 
 #: src/net/tmwa/network.cpp:345
 msgid "Unable to resolve host \""
@@ -3325,11 +3395,11 @@ msgstr "Ein unbekanntes Mitglied hat versucht, \"%s\" zu sagen."
 #: src/net/tmwa/partyhandler.cpp:335
 #, c-format
 msgid "Inviting failed, because you can't see a player called %s."
-msgstr ""
+msgstr "Einladung fehlgeschlagen, da du den Spieler %s nicht sehen kannst."
 
 #: src/net/tmwa/partyhandler.cpp:340
 msgid "You can only inivte when you are in a party!"
-msgstr ""
+msgstr "Du kannst nur einladen wenn du in einer Partie bist."
 
 #: src/net/tmwa/partyhandler.cpp:368
 #, c-format
@@ -3549,13 +3619,21 @@ msgstr "@@ignore|Ignoriere %s komplett@@"
 
 #: src/playerrelations.cpp:324
 msgid "Print '...'"
-msgstr ""
+msgstr "Drucke '..'"
 
 #: src/playerrelations.cpp:340
 msgid "Blink name"
-msgstr ""
+msgstr "Blinkender Name"
 
-#: src/resources/itemdb.cpp:44
+#: src/playerrelations.cpp:379
+msgid "Floating '...' bubble"
+msgstr "Schwebende '...' Blase"
+
+#: src/playerrelations.cpp:382
+msgid "Floating bubble"
+msgstr "Schwebende Blase"
+
+#: src/resources/itemdb.cpp:53
 #, c-format
 msgid "Attack %+d"
 msgstr "Angriff %+d"

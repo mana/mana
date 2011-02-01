@@ -13,6 +13,8 @@
 ;    -DPRODUCT_VERSION=0.1.`date +%Y%m%d`
 ;    -DUPX=upx
 ;    -DEXESUFFIX=/src
+;
+; Make sure that README has DOS line endings, and copy it to README.txt
 
 CRCCheck on
 SetCompress off
@@ -83,7 +85,7 @@ SetCompressor /SOLID lzma
 ; Finish page
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_FUNCTION RunMana
-!define MUI_FINISHPAGE_SHOWREADME 'notepad.exe "$\"$INSTDIR\README$\""'
+!define MUI_FINISHPAGE_SHOWREADME 'notepad.exe "$\"$INSTDIR\README.txt$\""'
 !define MUI_PAGE_CUSTOMFUNCTION_PRE changeFinishImage
 !define MUI_FINISHPAGE_LINK "Visit Mana website for the latest news, FAQs and support"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://themanaworld.org"
@@ -200,7 +202,7 @@ Section "Core files (required)" SecCore
   File "${SRCDIR}\AUTHORS"
   File "${SRCDIR}\COPYING"
   File "${SRCDIR}\NEWS"
-  File "${SRCDIR}\README"
+  File "${SRCDIR}\README.txt"
   SetOutPath "$INSTDIR\data\fonts"
   File "${SRCDIR}\data\fonts\*.ttf"
   SetOutPath "$INSTDIR\data\graphics"
@@ -254,7 +256,7 @@ SectionEnd
 Section -AdditionalIcons
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
   CreateShortCut "$SMPROGRAMS\Mana\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
-  CreateShortCut "$SMPROGRAMS\Mana\Readme.lnk" "notepad.exe" "$INSTDIR\README"
+  CreateShortCut "$SMPROGRAMS\Mana\Readme.lnk" "notepad.exe" "$INSTDIR\README.txt"
   CreateShortCut "$SMPROGRAMS\Mana\FAQ.lnk" "$INSTDIR\docs\FAQ.txt"
   CreateShortCut "$SMPROGRAMS\Mana\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
