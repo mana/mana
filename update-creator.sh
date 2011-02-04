@@ -1,9 +1,7 @@
 #!/bin/sh
-find \( -name \*.cpp \
-        -o -name \*.h \
-        -o -name \*.txt \
-        -o -name \*.xml \
-        -o -name \*.mana \
-     \) ! -wholename \*/CMakeFiles/\* \
-        ! -name CMakeCache.txt \
-  | sort > mana.files
+git ls-files \*.cpp \
+             \*.h \
+             \*.txt \
+             \*.xml \
+             \*.mana \
+    > mana.files
