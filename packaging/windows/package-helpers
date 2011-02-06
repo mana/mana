@@ -22,6 +22,14 @@
 # - MANALIBS -- the directory containing the dlls copied into the
 #   windows installer. Default is using the last directory in the
 #   toolchains SET(CMAKE_FIND_ROOT_PATH
+#
+# Also, please note that the untgz nsis Plugins is needed to create
+# an installer.
+# The default nsis Plugins folder in most Linux distros is:
+# in /usr/share/nsis/Plugins/
+#
+# The default folder to use the toolchain in most Linux distros is:
+# /usr/i586msvc-mingw32/
 
 # MANA_BASE should point to the top directory of the source tree
 if [ -z "$MANA_BASE" ]; then
