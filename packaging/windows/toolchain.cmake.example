@@ -9,9 +9,14 @@ ENDIF()
 SET(CMAKE_C_COMPILER ${TOOLCHAIN}gcc)
 SET(CMAKE_CXX_COMPILER ${TOOLCHAIN}g++)
 
+# which rc compiler to use
+SET(CMAKE_RC_COMPILER ${TOOLCHAIN}windres)
+
 # here is the target environment located
 # the directories specified here should contain two directories,
 # 'include' for the headers, 'lib' for dlls and .a files
+# For instance, the mingw32 headers can be installed at:
+# /usr/i586-mingw32msvc/
 SET(CMAKE_FIND_ROOT_PATH  /build/mingw32 /build/tmw-libs )
 
 # adjust the default behaviour of the FIND_XXX() commands:
