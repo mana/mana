@@ -154,17 +154,14 @@ void connectToServer(ServerInfo &server)
 
         switch (server.type)
         {
-#ifdef MANASERV_SUPPORT
             case ServerInfo::MANASERV:
                 new ManaServ::GeneralHandler;
                 break;
-#endif
             case ServerInfo::TMWATHENA:
                 new TmwAthena::GeneralHandler;
                 break;
-
             default:
-                // Shouldn't happen...
+                logger->error(_("Server protocol unsupported"));
                 break;
         }
 
