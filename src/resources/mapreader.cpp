@@ -275,7 +275,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
         if (encoding == "base64")
         {
-            if (!compression.empty() && compression != "gzip")
+            if (!compression.empty() && compression != "gzip" && compression != "zlib")
             {
                 logger->log("Warning: only gzip layer compression supported!");
                 return;
@@ -311,7 +311,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
             if (binData)
             {
-                if (compression == "gzip")
+                if (compression == "gzip" || compression == "zlib")
                 {
                     // Inflate the gzipped layer data
                     unsigned char *inflated;
