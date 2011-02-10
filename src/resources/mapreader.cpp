@@ -288,7 +288,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
             int len = strlen((const char*)dataChild->content) + 1;
             unsigned char *charData = new unsigned char[len + 1];
-            const char *charStart = (const char*)dataChild->content;
+            const char *charStart = (const char*) xmlNodeGetContent(dataChild);
             unsigned char *charIndex = charData;
 
             while (*charStart)
@@ -355,6 +355,39 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                     }
                 }
                 free(binData);
+            }
+        }
+        else if (encoding == "csv")
+        {
+            xmlNodePtr dataChild = childNode->xmlChildrenNode;
+            if (!dataChild)
+                continue;
+
+            const char *data = (const char*) xmlNodeGetContent(dataChild);
+            std::string csv(data);
+
+            size_t pos = 0;
+            size_t oldPos = 0;
+
+            while (oldPos != csv.npos)
+            {
+                pos = csv.find_first_of(",", oldPos);
+
+                const int gid = atoi(csv.substr(oldPos, pos - oldPos).c_str());
+
+                setTile(map, layer, x, y, gid);
+
+                x++;
+                if (x == w)
+                {
+                    x = 0; y++;
+
+                    // When we're done, don't crash on too much data
+                    if (y == h)
+                        break;
+                }
+
+                oldPos = pos + 1;
             }
         }
         else
