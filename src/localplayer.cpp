@@ -1247,6 +1247,12 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
         {
             localChatTab->chatLog(_("Unable to pick up item."), BY_SERVER);
         }
+        if (mMap && config.getValue("showpickupparticle", 0))
+        {
+            // Show pickup notification
+            addMessageToQueue(_("Unable to pick up item."),
+                              UserPalette::PICKUP_INFO);
+        }
     }
     else
     {
