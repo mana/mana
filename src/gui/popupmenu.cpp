@@ -344,6 +344,11 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
 
     if (isInventory)
     {
+        if (InventoryWindow::isStorageActive())
+        {
+            mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
+        }
+
         if (item->isEquipment())
         {
             if (item->isEquipped())
@@ -362,11 +367,6 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
         if (Net::getInventoryHandler()->canSplit(item))
         {
             mBrowserBox->addRow(strprintf("@@split|%s@@", _("Split")));
-        }
-
-        if (InventoryWindow::isStorageActive())
-        {
-            mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }
     }
     // Assume in storage for now
