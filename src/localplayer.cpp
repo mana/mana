@@ -1282,7 +1282,11 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
         if (mMap && config.getValue("showpickupparticle", 0))
         {
             // Show pickup notification
-            addMessageToQueue(itemInfo.getName(), UserPalette::PICKUP_INFO);
+            std::string msg = "";
+            if (amount > 1)
+                msg = strprintf("%i ", amount);
+            msg += itemInfo.getName();
+            addMessageToQueue(msg, UserPalette::PICKUP_INFO);
         }
     }
 }
