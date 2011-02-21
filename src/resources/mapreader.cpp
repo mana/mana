@@ -275,9 +275,11 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
         if (encoding == "base64")
         {
-            if (!compression.empty() && compression != "gzip" && compression != "zlib")
+            if (!compression.empty() && compression != "gzip"
+                && compression != "zlib")
             {
-                logger->log("Warning: only gzip layer compression supported!");
+                logger->log("Warning: only gzip or zlib layer "
+                            "compression supported!");
                 return;
             }
 

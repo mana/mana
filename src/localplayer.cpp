@@ -984,13 +984,32 @@ void LocalPlayer::stopAttack()
     mLastTarget = -1;
 }
 
-void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
+void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
+                           unsigned char fail)
 {
-    if (!amount)
+    if (fail)
     {
+        const char* msg;
+        switch (fail)
+        {
+            case PICKUP_BAD_ITEM:
+                msg = N_("Tried to pick up nonexistent item."); break;
+            case PICKUP_TOO_HEAVY: msg = N_("Item is too heavy."); break;
+            case PICKUP_TOO_FAR: msg = N_("Item is too far away"); break;
+            case PICKUP_INV_FULL: msg = N_("Inventory is full."); break;
+            case PICKUP_STACK_FULL: msg = N_("Stack is too big."); break;
+            case PICKUP_DROP_STEAL:
+                msg = N_("Item belongs to someone else."); break;
+            default: msg = N_("Unknown problem picking up item."); break;
+        }
         if (config.getValue("showpickupchat", 1))
         {
-            SERVER_NOTICE(_("Unable to pick up item."))
+            SERVER_NOTICE(_(msg))
+        }
+        if (mMap && config.getValue("showpickupparticle", 0))
+        {
+            // Show pickup notification
+            addMessageToQueue(_(msg), UserPalette::PICKUP_INFO);
         }
     }
     else
@@ -1007,7 +1026,11 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
         if (mMap && config.getValue("showpickupparticle", 0))
         {
             // Show pickup notification
-            addMessageToQueue(itemInfo.getName(), UserPalette::PICKUP_INFO);
+            std::string msg = "";
+            if (amount > 1)
+                msg = strprintf("%i ", amount);
+            msg += itemInfo.getName();
+            addMessageToQueue(msg, UserPalette::PICKUP_INFO);
         }
     }
 }

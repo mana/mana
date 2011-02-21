@@ -353,6 +353,11 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
 
     if (isInventory)
     {
+        if (PlayerInfo::getStorageCount() > 0)
+        {
+            mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
+        }
+
         if (item->getInfo().getEquippable())
         {
             if (item->isEquipped())
@@ -371,11 +376,6 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
         if (Net::getInventoryHandler()->canSplit(item))
         {
             mBrowserBox->addRow(strprintf("@@split|%s@@", _("Split")));
-        }
-
-        if (PlayerInfo::getStorageCount() > 0)
-        {
-            mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }
     }
     // Assume in storage for now

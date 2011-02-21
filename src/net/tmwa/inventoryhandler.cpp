@@ -226,13 +226,14 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             {
                 const ItemInfo &itemInfo = itemDb->get(itemId);
 
-                if (msg.readInt8() > 0)
+                unsigned char err = msg.readInt8();
+                if (err)
                 {
-                    player_node->pickedUp(itemInfo, 0);
+                    player_node->pickedUp(itemInfo, 0, err);
                 }
                 else
                 {
-                    player_node->pickedUp(itemInfo, amount);
+                    player_node->pickedUp(itemInfo, amount, PICKUP_OKAY);
 
                     Item *item = inventory->getItem(index);
 

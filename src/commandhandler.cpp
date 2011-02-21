@@ -49,6 +49,7 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     std::string type(command, 0, pos);
     std::string args(command, pos == std::string::npos ?
                                      command.size() : pos + 1);
+    trim(args);
 
     if (type == "help") // Do help before tabs so they can't override it
     {
@@ -401,8 +402,21 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleQuery(const std::string &args, ChatTab *tab)
 {
-    if (chatWindow->addWhisperTab(args, true))
+    if (args.empty())
+    {
+        tab->chatLog(_("No <nick> was given."), BY_SERVER);
         return;
+    }
+
+    if (args.length() > 1 && args[0] == '\"' && args[args.length() - 1] == '\"')
+    {
+        if (chatWindow->addWhisperTab(args.substr(1, args.length() - 2), true))
+            return;
+    }
+    else if (chatWindow->addWhisperTab(args, true))
+    {
+        return;
+    }
 
     tab->chatLog(strprintf(_("Cannot create a whisper tab for nick \"%s\"! "
             "It either already exists, or is you."), args.c_str()), BY_SERVER);
