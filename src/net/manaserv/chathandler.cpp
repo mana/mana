@@ -27,6 +27,7 @@
 #include "channel.h"
 #include "channelmanager.h"
 #include "event.h"
+#include "log.h"
 #include "playerrelations.h"
 
 #include "gui/widgets/channeltab.h"
@@ -155,13 +156,14 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
 
     Being *being = actorSpriteManager->findBeing(id);
 
-    std::string mes;
-    if (being)
+    if (!being)
     {
-        mes = being->getName() + " : " + chatMsg;
+        logger->log("Warning: Received GPMSG_SAY for unknown being with id %i."
+                    " (Message is: %s)", id, chatMsg.c_str());
+        return;
     }
-    else
-        mes = "Unknown : " + chatMsg;
+
+    std::string mes = being->getName() + " : " + chatMsg;
 
     Mana::Event event(being == player_node ? EVENT_PLAYER : EVENT_BEING);
     event.setString("message", mes);
