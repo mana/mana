@@ -442,7 +442,7 @@
 		<Unit filename="src\net\manaserv\partyhandler.h" />
 		<Unit filename="src\net\manaserv\playerhandler.cpp" />
 		<Unit filename="src\net\manaserv\playerhandler.h" />
-		<Unit filename="src\net\manaserv\protocol.h" />
+		<Unit filename="src\net\manaserv\manaserv_protocol.h" />
 		<Unit filename="src\net\manaserv\specialhandler.cpp" />
 		<Unit filename="src\net\manaserv\specialhandler.h" />
 		<Unit filename="src\net\manaserv\tradehandler.cpp" />
