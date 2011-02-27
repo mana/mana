@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-20 14:34+0100\n"
-"PO-Revision-Date: 2010-12-10 22:55-0300\n"
+"PO-Revision-Date: 2011-02-26 19:45-0300\n"
 "Last-Translator: alastrim <alasmirt@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "Language: pt_BR\n"
@@ -603,7 +603,7 @@ msgstr "Atribuir"
 
 #: ../src/keyboardconfig.cpp:44 ../src/net/tmwa/generalhandler.cpp:224
 msgid "Attack"
-msgstr "Atacar"
+msgstr "Ataque"
 
 #: ../src/resources/itemdb.cpp:53
 #, c-format
@@ -1408,7 +1408,7 @@ msgstr ""
 
 #: ../src/net/tmwa/inventoryhandler.cpp:290
 msgid "Failed to use item."
-msgstr "Falha ao usar ítem."
+msgstr "Falha ao usar item."
 
 #: ../src/client.cpp:927
 msgid "Farewell, come back any time..."
@@ -1662,9 +1662,8 @@ msgid "Inventory Window"
 msgstr "Janela de inventário"
 
 #: ../src/localplayer.cpp:1254
-#, fuzzy
 msgid "Inventory is full."
-msgstr "Servidor cheio."
+msgstr "O inventário está cheio."
 
 #: ../src/gui/socialwindow.cpp:334
 msgid "Invite"
@@ -1708,7 +1707,7 @@ msgstr ""
 #: ../src/keyboardconfig.cpp:68 ../src/keyboardconfig.cpp:69
 #, c-format
 msgid "Item Shortcut %d"
-msgstr "Atalho para Ítem %d"
+msgstr "Atalho para item %d"
 
 #: ../src/keyboardconfig.cpp:77
 msgid "Item Shortcut Window"
@@ -1716,15 +1715,15 @@ msgstr "Janela de atalhos para itens"
 
 #: ../src/localplayer.cpp:1257
 msgid "Item belongs to someone else."
-msgstr ""
+msgstr "Este item pertence a outra pessoa."
 
 #: ../src/localplayer.cpp:1253
 msgid "Item is too far away"
-msgstr ""
+msgstr "Este item está muito longe."
 
 #: ../src/localplayer.cpp:1252
 msgid "Item is too heavy."
-msgstr ""
+msgstr "Este item é muito pesado."
 
 #: ../src/net/tmwa/gui/partytab.cpp:135 ../src/net/tmwa/partyhandler.cpp:207
 msgid "Item sharing disabled."
@@ -1874,11 +1873,11 @@ msgstr "Nível: %d (%+d)"
 
 #: ../src/net/tmwa/generalhandler.cpp:226
 msgid "M.Attack"
-msgstr "Ataque M."
+msgstr "Ataque Mágico"
 
 #: ../src/net/tmwa/generalhandler.cpp:227
 msgid "M.Defense"
-msgstr "Defesa M."
+msgstr "Defesa Mágica"
 
 #: ../src/gui/statuswindow.cpp:209
 msgid "MP"
@@ -2067,7 +2066,7 @@ msgstr "Não"
 
 #: ../src/commandhandler.cpp:408
 msgid "No <nick> was given."
-msgstr ""
+msgstr "<nick> não foi informado."
 
 #: ../src/net/manaserv/charhandler.cpp:137
 msgid "No empty slot."
@@ -2514,7 +2513,7 @@ msgstr "Screenshot"
 
 #: ../src/game.cpp:333
 msgid "Screenshot saved as "
-msgstr "Screenshot salva como"
+msgstr "Screenshot salva como "
 
 #: ../src/keyboardconfig.cpp:99
 msgid "Scroll Chat Down"
@@ -2605,7 +2604,6 @@ msgid "Show IP: On"
 msgstr "Mostrar IP: Ligado"
 
 #: ../src/gui/setup_video.cpp:254
-#, fuzzy
 msgid "Show damage"
 msgstr "Mostrar dano"
 
@@ -2718,7 +2716,7 @@ msgstr "Dividir"
 
 #: ../src/localplayer.cpp:1255
 msgid "Stack is too big."
-msgstr ""
+msgstr "Esta pilha é muito grande."
 
 #: ../src/gui/recorder.cpp:104
 msgid "Starting to record..."
@@ -3147,9 +3145,8 @@ msgid "Transparency enabled"
 msgstr "Transparência habilitada."
 
 #: ../src/localplayer.cpp:1251
-#, fuzzy
 msgid "Tried to pick up nonexistent item."
-msgstr "Impossível pegar ítem."
+msgstr "Você tentou pegar um item não existente."
 
 #: ../src/commandhandler.cpp:335
 msgid "Type /help for a list of commands."
@@ -3210,9 +3207,8 @@ msgid "Unignore %s"
 msgstr "Deixar de Ignorar %s"
 
 #: ../src/net/net.cpp:145
-#, fuzzy
 msgid "Unknown Server Type! Exiting."
-msgstr "Tipo de item desconhecido"
+msgstr "Tipo de servidor desconhecido! Saindo."
 
 #: ../src/net/manaserv/chathandler.cpp:327
 msgid "Unknown channel event."
@@ -3259,9 +3255,8 @@ msgid "Unknown item"
 msgstr "Item desconhecido"
 
 #: ../src/localplayer.cpp:1258
-#, fuzzy
 msgid "Unknown problem picking up item."
-msgstr "Impossível pegar ítem."
+msgstr "Problema desconhecido ao tentar pegar item."
 
 #: ../src/gui/charselectdialog.cpp:141 ../src/gui/unregisterdialog.cpp:47
 #: ../src/gui/unregisterdialog.cpp:55
@@ -3278,7 +3273,7 @@ msgstr "ID não registrado."
 
 #: ../src/gui/skilldialog.cpp:221
 msgid "Up"
-msgstr "Acima"
+msgstr "+"
 
 #: ../src/gui/updatewindow.cpp:124
 msgid "Updating..."
