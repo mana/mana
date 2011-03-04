@@ -288,9 +288,9 @@ void ItemDB::checkItemInfo(ItemInfo* itemInfo)
 
     if (id >= 0)
     {
-        checkParameter(id, itemInfo->mName, std::string(""));
-        checkParameter(id, itemInfo->mDescription, std::string(""));
-        checkParameter(id, itemInfo->mDisplay.image, std::string(""));
+        checkParameter(id, itemInfo->mName, std::string());
+        checkParameter(id, itemInfo->mDescription, std::string());
+        checkParameter(id, itemInfo->mDisplay.image, std::string());
         checkParameter(id, itemInfo->mWeight, 0);
     }
 }
