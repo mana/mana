@@ -27,6 +27,8 @@
 #include <guichan/widgets/container.hpp>
 #include <guichan/widgets/tabbedarea.hpp>
 
+#include "gui/widgets/button.h"
+
 #include <string>
 
 class Tab;
@@ -107,11 +109,52 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
 
         void widgetResized(const gcn::Event &event);
 
+        void adjustTabPositions();
+
+        void action(const gcn::ActionEvent& actionEvent);
+
         // Inherited from MouseListener
 
         void mousePressed(gcn::MouseEvent &mouseEvent);
     private:
         typedef std::vector< std::pair<gcn::Tab*, gcn::Widget*> > TabContainer;
+
+        /** The tab arrows */
+        gcn::Button *mArrowButton[2];
+
+        /** Check whether the arrow should be clickable */
+        void updateArrowEnableState();
+
+        /**
+         * Update the overall width of all tab. Used to know whether the arrows
+         * have to be drawn or not.
+         */
+        void updateTabsWidth();
+
+        /**
+         * The overall width of all tab.
+         */
+        int mTabsWidth;
+
+        /**
+         * Update the overall width of visible tab. Used to know whether
+         * the arrows have to be enable or not.
+         */
+        void updateVisibleTabsWidth();
+
+        /**
+         * The overall width of visible tab.
+         */
+        int mVisibleTabsWidth;
+
+
+        /**
+         * The tab scroll index. When scrolling with the arrows, the tabs
+         * must be displayed according to the current index.
+         * So the first tab displayed may not be the first in the list.
+         * @note the index must start at 0.
+         */
+        unsigned mTabScrollIndex;
 };
 
 #endif
