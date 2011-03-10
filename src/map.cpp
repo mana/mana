@@ -831,7 +831,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                     MetaTile *t1 = getMetaTile(curr.x, curr.y + dy);
                     MetaTile *t2 = getMetaTile(curr.x + dx, curr.y);
 
-                    if ((t1->blockmask | t2->blockmask) & BLOCKMASK_WALL)
+                    if ((t1->blockmask | t2->blockmask) & walkmask)
                         continue;
                 }
 
