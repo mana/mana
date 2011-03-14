@@ -282,6 +282,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
                 if (PlayerInfo::getAttribute(HP) == 0 && !deathNotice)
                 {
+                    viewport->shakeScreen(100);
                     deathNotice = new OkDialog(_("Message"),
                                                randomDeathMessage(),
                                                false);

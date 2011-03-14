@@ -42,6 +42,8 @@
 
 #include "utils/stringutils.h"
 
+#include <cmath>
+
 extern volatile int tick_time;
 
 Viewport::Viewport():
@@ -121,9 +123,9 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     if (mScrollLaziness < 1)
         mScrollLaziness = 1; // Avoids division by zero
 
-    // Apply lazy scrolling
     while (lastTick < tick_time)
     {
+        // Apply lazy scrolling
         if (player_x > mPixelViewX + mScrollRadius)
         {
             mPixelViewX += (player_x - mPixelViewX - mScrollRadius) /
@@ -143,6 +145,22 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         {
             mPixelViewY += (player_y - mPixelViewY + mScrollRadius) /
                             mScrollLaziness;
+        }
+
+        // manage shake effect
+        for (ShakeEffects::iterator i = mShakeEffects.begin();
+             i != mShakeEffects.end();
+             i++)
+        {
+            // apply the effect to viewport
+            mPixelViewX += i->x *= -i->decay;
+            mPixelViewY += i->y *= -i->decay;
+            // check death conditions
+            if (abs(i->x) + abs(i->y) < 1.0f ||
+                (i->duration > 0 && --i->duration == 0))
+            {
+                i = mShakeEffects.erase(i);
+            }
         }
         lastTick++;
     }
@@ -220,6 +238,24 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
     // Draw contained widgets
     WindowContainer::draw(gcnGraphics);
+}
+
+void Viewport::shakeScreen(int intensity)
+{
+    float direction = rand()%628 / 100.0f; // random value between 0 and 2PI
+    float x = std::sin(direction) * intensity;
+    float y = std::cos(direction) * intensity;
+    shakeScreen(x, y);
+}
+
+void Viewport::shakeScreen(float x, float y, float decay, unsigned duration)
+{
+    ShakeEffect effect;
+    effect.x = x;
+    effect.y = y;
+    effect.decay = decay;
+    effect.duration = duration;
+    mShakeEffects.push_back(effect);
 }
 
 void Viewport::logic()

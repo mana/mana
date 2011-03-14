@@ -36,6 +36,7 @@ class EffectHandler : public MessageHandler
     private:
         void handleCreateEffectPos(Net::MessageIn &msg);
         void handleCreateEffectBeing(Net::MessageIn &msg);
+        void handleShake(Net::MessageIn &msg);
 };
 
 } // namespace ManaServ

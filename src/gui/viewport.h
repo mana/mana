@@ -29,6 +29,8 @@
 
 #include <guichan/mouselistener.hpp>
 
+#include <list>
+
 class ActorSprite;
 class Being;
 class BeingPopup;
@@ -153,6 +155,22 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void hideBeingPopup();
 
+        /**
+         * Makes the screen shake in a random direction
+         */
+        void shakeScreen(int intensity);
+
+        /**
+         * Makes the screen shake in a specific direction
+         */
+        void shakeScreen(float x, float y, float decay = 0.95f, unsigned duration = 0);
+
+        /**
+         * Stops all active screen shake effects
+         */
+        void shakeScreenStop()
+        { mShakeEffects.clear(); }
+
         void event(Channels channel, const Mana::Event &event);
 
     private:
@@ -189,6 +207,16 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         float mPixelViewX;           /**< Current viewpoint in pixels. */
         float mPixelViewY;           /**< Current viewpoint in pixels. */
         int mShowDebugPath;         /**< Show a path from player to pointer. */
+
+        struct ShakeEffect
+        {
+            float x;
+            float y;
+            float decay;
+            unsigned duration;
+        };
+        typedef std::list<ShakeEffect> ShakeEffects;
+        ShakeEffects mShakeEffects;
 
         bool mPlayerFollowMouse;
 

@@ -25,6 +25,8 @@
 #include "effectmanager.h"
 #include "log.h"
 
+#include "gui/viewport.h"
+
 #include "net/messagein.h"
 
 #include "net/manaserv/manaserv_protocol.h"
@@ -36,6 +38,7 @@ EffectHandler::EffectHandler()
     static const Uint16 _messages[] = {
         GPMSG_CREATE_EFFECT_POS,
         GPMSG_CREATE_EFFECT_BEING,
+        GPMSG_SHAKE,
         0
     };
     handledMessages = _messages;
@@ -50,6 +53,9 @@ void EffectHandler::handleMessage(Net::MessageIn &msg)
             break;
         case GPMSG_CREATE_EFFECT_BEING:
             handleCreateEffectBeing(msg);
+            break;
+        case GPMSG_SHAKE:
+            handleShake(msg);
             break;
         default:
             break;
@@ -73,6 +79,38 @@ void EffectHandler::handleCreateEffectBeing(Net::MessageIn &msg)
         effectManager->trigger(eid, b);
     else
         logger->log("Warning: CreateEffect called for unknown being #%d", bid);
+}
+
+void EffectHandler::handleShake(Net::MessageIn &msg)
+{
+    int16_t intensityX = 0;
+    int16_t intensityY = 0;
+    float decay;
+    int duration;
+
+    switch (msg.getUnreadLength())
+    {
+        case 4:
+            intensityX =  msg.readInt16();
+            intensityY =  msg.readInt16();
+            viewport->shakeScreen(intensityX, intensityY);
+            break;
+        case 6:
+            intensityX =  msg.readInt16();
+            intensityY =  msg.readInt16();
+            decay =  msg.readInt16() / 10000.0f;
+            viewport->shakeScreen(intensityX, intensityY, decay);
+            break;
+        case 8:
+            intensityX =  msg.readInt16();
+            intensityY =  msg.readInt16();
+            decay =  msg.readInt16() / 10000.0f;
+            duration =  msg.readInt16();
+            viewport->shakeScreen(intensityX, intensityY, decay, duration);
+            break;
+        default:
+            logger->log("Warning: Received GPMSG_SHAKE message with unexpected length of %d bytes", msg.getUnreadLength());
+    }
 }
 
 } // namespace ManaServ
