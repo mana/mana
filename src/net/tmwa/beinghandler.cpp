@@ -216,31 +216,40 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->setAction(Being::STAND);
-                Vector pos(srcX * tileWidth + tileWidth / 2,
-                           srcY * tileHeight + tileHeight / 2);
+                //dstBeing->setAction(Being::STAND); Useless
+                // Avoid dealing with flawed destination
+                if (srcX && srcY && dstX && dstY)
+                {
+                    Vector pos(srcX * tileWidth + tileWidth / 2,
+                              srcY * tileHeight + tileHeight / 2);
 
-                dstX = dstX * tileWidth + tileWidth / 2;
-                dstY = dstY * tileHeight + tileHeight / 2;
-                // Don't set the position as the movement algorithm can guess
-                // it and it would break the animation played, when we're
-                // close enough.
-                if (std::abs((float)dstX - pos.x) > POS_DEST_DIFF_TOLERANCE
-                    || std::abs((float)dstY - pos.y) > POS_DEST_DIFF_TOLERANCE)
-                    dstBeing->setPosition(pos);
+                    Vector dest(dstX * tileWidth + tileWidth / 2,
+                                dstY * tileHeight + tileHeight / 2);
+                    // Don't set the position as the movement algorithm
+                    // can guess it and it would break the animation played,
+                    // when we're close enough.
+                    if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+                        || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+                        dstBeing->setPosition(pos);
 
-                // We turn the destination back to a pixel one.
-                dstBeing->setDestination(dstX, dstY);
+                    // We turn the destination back to a pixel one.
+                    dstBeing->setDestination(dest.x, dest.y);
+                }
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                Vector pos(x * tileWidth + tileWidth / 2,
-                           y * tileHeight + tileHeight / 2);
-                dstBeing->setPosition(pos);
-                dstBeing->setDirection(dir);
+
+                // Avoid dealing with flawed destination
+                if (x && y)
+                {
+                    Vector pos(x * tileWidth + tileWidth / 2,
+                               y * tileHeight + tileHeight / 2);
+                    dstBeing->setPosition(pos);
+                    dstBeing->setDirection(dir);
+                }
             }
 
             msg.readInt8();   // unknown
@@ -281,20 +290,23 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readCoordinatePair(srcX, srcY, dstX, dstY);
             msg.readInt32();  // Server tick
 
-            //dstBeing->setAction(Being::STAND); <-- Not needed anymore.
+            //dstBeing->setAction(Being::STAND); // Useless.
+            // Avoid dealing with flawed destination
+            if (srcX && srcY && dstX && dstY)
+            {
+                Vector pos(srcX * tileWidth + tileWidth / 2,
+                          srcY * tileHeight + tileHeight / 2);
+                Vector dest(dstX * tileWidth + tileWidth / 2,
+                            dstY * tileHeight + tileHeight / 2);
+                // Don't set the position as the movement algorithm can guess
+                // it and it would break the animation played, when we're
+                // close enough.
+                if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+                    || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+                    dstBeing->setPosition(pos);
 
-            Vector pos(srcX * tileWidth + tileWidth / 2,
-                       srcY * tileHeight + tileHeight / 2);
-            Vector dest(dstX * tileWidth + tileWidth / 2,
-                        dstY * tileHeight + tileHeight / 2);
-            // Don't set the position as the movement algorithm can guess
-            // it and it would break the animation played, when we're
-            // close enough.
-            if (std::abs((float)dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
-                || std::abs((float)dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
-                dstBeing->setPosition(pos);
-
-            dstBeing->setDestination(dest.x, dest.y);
+                dstBeing->setDestination(dest.x, dest.y);
+            }
         }
             break;
 
@@ -603,28 +615,39 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                Vector pos(srcX * tileWidth + tileWidth / 2,
-                       srcY * tileHeight + tileHeight / 2);
-                Vector dest(dstX * tileWidth + tileWidth / 2,
-                        dstY * tileHeight + tileHeight / 2);
 
-                // Don't set the position as the movement algorithm can guess
-                // it and it would break the animation played, when we're
-                // close enough.
-                if (std::abs((float)dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
-                   || std::abs((float)dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
-                    dstBeing->setPosition(pos);
+                //dstBeing->setAction(Being::STAND); // Useless.
+                // Avoid dealing with flawed destination
+                if (srcX && srcY && dstX && dstY)
+                {
+                    Vector pos(srcX * tileWidth + tileWidth / 2,
+                          srcY * tileHeight + tileHeight / 2);
+                    Vector dest(dstX * tileWidth + tileWidth / 2,
+                            dstY * tileHeight + tileHeight / 2);
 
-                dstBeing->setDestination(dest.x, dest.y);
+                    // Don't set the position as the movement algorithm
+                    // can guess it and it would break the animation played,
+                    // when we're close enough.
+                    if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+                      || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+                        dstBeing->setPosition(pos);
+
+                    dstBeing->setDestination(dest.x, dest.y);
+                }
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                dstBeing->setPosition(Vector(x * tileWidth + tileWidth / 2,
-                                             y * tileHeight + tileHeight / 2));
-                dstBeing->setDirection(dir);
+                // Avoid dealing with flawed destination
+                if (x && y)
+                {
+                    Vector pos(x * tileWidth + tileWidth / 2,
+                               y * tileHeight + tileHeight / 2);
+                    dstBeing->setPosition(pos);
+                    dstBeing->setDirection(dir);
+                }
             }
 
             gmstatus = msg.readInt16();
@@ -681,10 +704,17 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     Uint16 x, y;
                     x = msg.readInt16();
                     y = msg.readInt16();
-                    dstBeing->setPosition(Vector(x * tileWidth + tileWidth / 2,
-                                              y * tileHeight + tileHeight / 2));
-                    if (dstBeing->getCurrentAction() == Being::MOVE)
-                        dstBeing->setAction(Being::STAND);
+                    // Avoid dealing with flawed destination
+                    if (x && y)
+                    {
+                        Vector pos(x * tileWidth + tileWidth / 2,
+                                   y * tileHeight + tileHeight / 2);
+                        dstBeing->setPosition(pos);
+                        if (dstBeing->getCurrentAction() == Being::MOVE)
+                        {
+                            dstBeing->setAction(Being::STAND);
+                        }
+                    }
                 }
             }
             break;

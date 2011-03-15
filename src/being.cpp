@@ -673,6 +673,8 @@ void Being::logic()
         mText = 0;
     }
 
+    ActorSprite::logic();
+
     if ((mAction != DEAD) && !mSpeedPixelsPerTick.isNull())
     {
         const Vector dest = (mPath.empty()) ?
@@ -680,7 +682,7 @@ void Being::logic()
                            mPath.front().y);
 
         // Avoid going to flawed destinations
-        if (mDest.x <= 0 || mDest.y <= 0)
+        if (dest.x <= 0 || dest.y <= 0)
         {
             // We make the being stop move in that case.
             mDest = mPos;
@@ -767,8 +769,6 @@ void Being::logic()
             setAction(STAND);
         }
     }
-
-    ActorSprite::logic();
 
     // Remove it after 3 secs. TODO: Just play the dead animation before removing
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
