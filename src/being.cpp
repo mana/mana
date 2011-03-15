@@ -680,7 +680,7 @@ void Being::logic()
                            mPath.front().y);
 
         // Avoid going to flawed destinations
-        if (mDest.x <= 0 && mDest.y <= 0)
+        if (mDest.x <= 0 || mDest.y <= 0)
         {
             // We make the being stop move in that case.
             mDest = mPos;
