@@ -643,17 +643,9 @@ Vector PlayerHandler::getPixelsPerTickMoveSpeed(Vector speed, Map *map)
 
     Vector speedInTicks;
 
-    // We don't use z for now.
-    speedInTicks.z = 0;
-
-    speedInTicks.x = ((1 / speed.x) * 1000) / MILLISECONDS_IN_A_TICK;
-    speedInTicks.x = speedInTicks.x
-        * (float)map->getTileWidth()
-        / 1000 * (float) MILLISECONDS_IN_A_TICK;
-    speedInTicks.y = ((1 / speed.y) * 1000) / MILLISECONDS_IN_A_TICK;
-    speedInTicks.y = speedInTicks.y
-        * (float)map->getTileHeight()
-        / 1000 * (float) MILLISECONDS_IN_A_TICK;
+    speedInTicks.z = 0; // We don't use z for now.
+    speedInTicks.x = 1 / speed.x * (float)map->getTileWidth();
+    speedInTicks.y = 1 / speed.y * (float)map->getTileHeight();
 
     return speedInTicks;
 }
