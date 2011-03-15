@@ -770,10 +770,6 @@ void Being::logic()
 
     ActorSprite::logic();
 
-    int frameCount = getFrameCount();
-    if (frameCount < 10)
-        frameCount = 10;
-
     // Remove it after 3 secs. TODO: Just play the dead animation before removing
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
         get_elapsed_time(mActionTime) > 3000)

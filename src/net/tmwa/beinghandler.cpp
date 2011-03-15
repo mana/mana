@@ -39,8 +39,12 @@
 #include "resources/emotedb.h"
 
 #include <iostream>
+#include <cmath>
 
 namespace TmwAthena {
+
+// Number of pixels where we decide that the position doesn't need to be reset.
+static const float POS_DEST_DIFF_TOLERANCE = 48.0f;
 
 BeingHandler::BeingHandler(bool enableSync):
    mSync(enableSync)
@@ -215,10 +219,17 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 dstBeing->setAction(Being::STAND);
                 Vector pos(srcX * tileWidth + tileWidth / 2,
                            srcY * tileHeight + tileHeight / 2);
-                dstBeing->setPosition(pos);
-                // We turn the destination back to a pixel one.
+
                 dstX = dstX * tileWidth + tileWidth / 2;
                 dstY = dstY * tileHeight + tileHeight / 2;
+                // Don't set the position as the movement algorithm can guess
+                // it and it would break the animation played, when we're
+                // close enough.
+                if (std::abs((float)dstX - pos.x) > POS_DEST_DIFF_TOLERANCE
+                    || std::abs((float)dstY - pos.y) > POS_DEST_DIFF_TOLERANCE)
+                    dstBeing->setPosition(pos);
+
+                // We turn the destination back to a pixel one.
                 dstBeing->setDestination(dstX, dstY);
             }
             else
@@ -249,6 +260,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              break;
 
         case SMSG_BEING_MOVE2:
+        {
             /*
              * A simplified movement packet, used by the
              * later versions of eAthena for both mobs and
@@ -269,11 +281,21 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readCoordinatePair(srcX, srcY, dstX, dstY);
             msg.readInt32();  // Server tick
 
-            dstBeing->setAction(Being::STAND);
-            dstBeing->setPosition(Vector(srcX * tileWidth + tileWidth / 2,
-                                         srcY * tileHeight + tileHeight / 2));
-            dstBeing->setDestination(dstX * tileWidth + tileWidth / 2,
-                                     dstY * tileHeight + tileHeight / 2);
+            //dstBeing->setAction(Being::STAND); <-- Not needed anymore.
+
+            Vector pos(srcX * tileWidth + tileWidth / 2,
+                       srcY * tileHeight + tileHeight / 2);
+            Vector dest(dstX * tileWidth + tileWidth / 2,
+                        dstY * tileHeight + tileHeight / 2);
+            // Don't set the position as the movement algorithm can guess
+            // it and it would break the animation played, when we're
+            // close enough.
+            if (std::abs((float)dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+                || std::abs((float)dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+                dstBeing->setPosition(pos);
+
+            dstBeing->setDestination(dest.x, dest.y);
+        }
             break;
 
         case SMSG_BEING_REMOVE:
@@ -581,10 +603,19 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->setPosition(Vector(srcX * tileWidth + tileWidth / 2,
-                                           srcY * tileHeight + tileHeight / 2));
-                dstBeing->setDestination(dstX * tileWidth + tileWidth / 2,
-                                         dstY * tileHeight + tileHeight / 2);
+                Vector pos(srcX * tileWidth + tileWidth / 2,
+                       srcY * tileHeight + tileHeight / 2);
+                Vector dest(dstX * tileWidth + tileWidth / 2,
+                        dstY * tileHeight + tileHeight / 2);
+
+                // Don't set the position as the movement algorithm can guess
+                // it and it would break the animation played, when we're
+                // close enough.
+                if (std::abs((float)dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+                   || std::abs((float)dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+                    dstBeing->setPosition(pos);
+
+                dstBeing->setDestination(dest.x, dest.y);
             }
             else
             {
