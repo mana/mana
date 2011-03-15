@@ -215,8 +215,11 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 player_node->setAction(Being::STAND);
-                player_node->setPosition(Vector(x * tileWidth + tileWidth / 2,
-                                              y * tileHeight + tileHeight / 2));
+                Vector pos(x * tileWidth + tileWidth / 2,
+                           y * tileHeight + tileHeight / 2);
+                player_node->setPosition(pos);
+                // Stop movement
+                player_node->setDestination(pos.x, pos.y);
 
                 logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
                            (int) scrollOffsetY);
