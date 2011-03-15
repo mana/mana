@@ -163,7 +163,7 @@ class ItemInfo
          * Attack action sub-types (bow, sword, ...) are defined in items.xml.
          */
         std::string mAttackAction;
-        int mAttackRange;      /**< Attack range, will be zero if non weapon. */
+        int mAttackRange;      /**< Attack range, will be -1 if no weapon. */
 
         // Particle to be shown when weapon attacks
         std::string mMissileParticle;

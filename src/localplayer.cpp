@@ -69,7 +69,7 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
     Being(id, PLAYER, subtype, 0),
-    mAttackRange(0),
+    mAttackRange(-1),
     mTargetTime(-1),
     mLastTarget(-1),
     mTarget(NULL),
@@ -114,14 +114,10 @@ void LocalPlayer::logic()
     {
         if (mMessageTime == 0)
         {
-            //const Vector &pos = getPosition();
-
             MessagePair info = mMessages.front();
 
             particleEngine->addTextRiseFadeOutEffect(
                     info.first,
-                    /*(int) pos.x,
-                    (int) pos.y - 48,*/
                     getPixelX(),
                     getPixelY() - 48,
                     &userPalette->getColor(info.second),
@@ -913,27 +909,50 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
     }
 }
 
-int LocalPlayer::getAttackRange()
+void LocalPlayer::setAttackRange(int range)
 {
-    if (mAttackRange > -1)
+    // Still no map, so don't do anything for now.
+    if (!mMap)
+      return;
+    // When the range is more than the minimal, we accept it
+    int unarmedRange = mMap->getTileWidth() / 2 * 3;
+    if (range >= unarmedRange)
     {
-        return mAttackRange;
+        mAttackRange = range;
+    }
+    else if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+    {
+        // TODO: Fix this to be more generic
+        Item *weapon = PlayerInfo::getEquipment(
+                                              TmwAthena::EQUIP_FIGHT1_SLOT);
+        if (weapon)
+        {
+            const ItemInfo info = weapon->getInfo();
+            if (info.getAttackRange() >= unarmedRange)
+                mAttackRange = info.getAttackRange();
+            else
+                mAttackRange = unarmedRange;
+        }
     }
     else
     {
-        if (Net::getNetworkType() == ServerInfo::TMWATHENA)
-        {
-            // TODO: Fix this to be more generic
-            Item *weapon = PlayerInfo::getEquipment(
-                                                  TmwAthena::EQUIP_FIGHT1_SLOT);
-            if (weapon)
-            {
-                const ItemInfo info = weapon->getInfo();
-                return info.getAttackRange();
-            }
-        }
-        return 48; // unarmed range
+        mAttackRange = unarmedRange;
     }
+}
+
+int LocalPlayer::getAttackRange()
+{
+    // Still no map, so don't return anything for now.
+    if (!mMap)
+      return -1;
+    // When the range is realistic, we return it
+    int unarmedRange = mMap->getTileWidth() / 2 * 3;
+    if (mAttackRange < unarmedRange)
+    {
+        // This will set a proper value to the attack range.
+        setAttackRange(unarmedRange);
+    }
+    return mAttackRange;
 }
 
 bool LocalPlayer::withinAttackRange(Being *target)

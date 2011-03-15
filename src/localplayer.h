@@ -111,7 +111,7 @@ class LocalPlayer : public Being
         /**
          * Sets the attack range.
          */
-        void setAttackRange(int range) { mAttackRange = range; }
+        void setAttackRange(int range);
 
         /**
          * Gets the attack range.
