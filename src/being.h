@@ -118,43 +118,13 @@ class Being : public ActorSprite, public Mana::Listener
 
         virtual ~Being();
 
-        Type getType() const { return mType; }
+        Type getType() const
+        { return mType; }
 
         /**
          * Removes all path nodes from this being.
          */
         void clearPath();
-
-        /**
-         * Returns the time spent in the current action.
-         */
-        int getActionTime() const { return mActionTime; }
-
-        /**
-         * Set the current action time.
-         * @see Ea::BeingHandler that set it to tick time.
-         */
-        void setActionTime(int actionTime) { mActionTime = actionTime; }
-
-        /**
-         * Makes this being take the next tile of its path.
-         * TODO: Used by eAthena only?
-         */
-        virtual void nextTile();
-
-        /**
-         * Get the current X pixel offset.
-         * TODO: Used by eAthena only?
-         */
-        int getXOffset() const
-        { return getOffset(LEFT, RIGHT); }
-
-        /**
-         * Get the current Y pixel offset.
-         * TODO: Used by eAthena only?
-         */
-        int getYOffset() const
-        { return getOffset(UP, DOWN); }
 
         /**
          * Creates a path for the being from current position to ex and ey
@@ -164,25 +134,20 @@ class Being : public ActorSprite, public Mana::Listener
         /**
          * Returns the destination for this being.
          */
-        const Vector &getDestination() const { return mDest; }
+        const Vector &getDestination() const
+        { return mDest; }
 
         /**
          * Returns the tile x coord
          */
         int getTileX() const
-        { return mX; }
+        { return mPos.x / mMap->getTileWidth(); }
 
         /**
          * Returns the tile y coord
          */
         int getTileY() const
-        { return mY; }
-
-        /**
-         * Sets the tile x and y coord
-         */
-        void setTileCoords(int x, int y)
-        { mX = x; mY = y; }
+        { return mPos.y / mMap->getTileHeight(); }
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -343,18 +308,18 @@ class Being : public ActorSprite, public Mana::Listener
         Map::BlockType getBlockType() const;
 
         /**
-         * Sets the walk speed.
-         * in pixels per second for eAthena,
+         * Sets the move speed.
+         * in ticks per tile for eAthena,
          * in tiles per second for Manaserv.
          */
-        void setWalkSpeed(Vector speed) { mWalkSpeed = speed; }
+        void setMoveSpeed(Vector speed);
 
         /**
-         * Gets the walk speed.
-         * in pixels per second for eAthena,
+         * Gets the original Move speed.
+         * in ticks per tile for eAthena,
          * in tiles per second for Manaserv (0.1 precision).
          */
-        Vector getWalkSpeed() const { return mWalkSpeed; }
+        Vector getMoveSpeed() const { return mMoveSpeed; }
 
         /**
          * Sets the attack speed.
@@ -483,6 +448,8 @@ class Being : public ActorSprite, public Mana::Listener
 
         void event(Channels channel, const Mana::Event &event);
 
+        void setMap(Map *map);
+
     protected:
         /**
          * Sets the new path for this being.
@@ -500,7 +467,7 @@ class Being : public ActorSprite, public Mana::Listener
 
         BeingInfo *mInfo;
 
-        int mActionTime;      /**< Time spent in current action */
+        int mActionTime;      /**< Time spent in current action. TODO: Remove use of it */
 
         /** Time until the last speech sentence disappears */
         int mSpeechTime;
@@ -547,13 +514,6 @@ class Being : public ActorSprite, public Mana::Listener
 
     private:
 
-        /**
-         * Calculates the offset in the given directions.
-         * If walking in direction 'neg' the value is negated.
-         * TODO: Used by eAthena only?
-         */
-        int getOffset(char pos, char neg) const;
-
         const Type mType;
 
         /** Speech Bubble components */
@@ -561,13 +521,16 @@ class Being : public ActorSprite, public Mana::Listener
 
         /**
          * Walk speed for x and y movement values.
-         * In pixels per second for eAthena,
+         * In ticks per tile for eAthena,
          * In pixels per ticks for Manaserv.
          * @see MILLISECONDS_IN_A_TICK
          */
-        Vector mWalkSpeed;
+        Vector mMoveSpeed;
 
-        int mX, mY;   /**< Position in tile */
+        /**
+         * Being speed in pixel per ticks. Used internally for the being logic.
+         */
+        Vector mSpeedPixelsPerTick;
 
         int mDamageTaken;
 

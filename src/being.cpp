@@ -71,7 +71,6 @@ static const int DEFAULT_BEING_WIDTH = 32;
 static const int DEFAULT_BEING_HEIGHT = 32;
 int Being::mNumberOfHairstyles = 1;
 
-// TODO: mWalkTime used by eAthena only
 Being::Being(int id, Type type, int subtype, Map *map):
     ActorSprite(id),
     mInfo(BeingInfo::Unknown),
@@ -91,7 +90,7 @@ Being::Being(int id, Type type, int subtype, Map *map):
     mParty(NULL),
     mIsGM(false),
     mType(type),
-    mX(0), mY(0),
+    mSpeedPixelsPerTick(Vector(0.0f, 0.0f, 0.0f)),
     mDamageTaken(0),
     mIp(0)
 {
@@ -100,7 +99,7 @@ Being::Being(int id, Type type, int subtype, Map *map):
 
     mSpeechBubble = new SpeechBubble;
 
-    mWalkSpeed = Net::getPlayerHandler()->getDefaultWalkSpeed();
+    mMoveSpeed = Net::getPlayerHandler()->getDefaultMoveSpeed();
 
     if (getType() == PLAYER)
         mShowName = config.getBoolValue("visiblenames");
@@ -168,6 +167,15 @@ Map::BlockType Being::getBlockType() const
     return mInfo->getBlockType();
 }
 
+void Being::setMoveSpeed(Vector speed)
+{
+    mMoveSpeed = speed;
+    // If we already can, recalculate the system speed right away.
+    if (mMap)
+        mSpeedPixelsPerTick =
+                      Net::getPlayerHandler()->getPixelsPerTickMoveSpeed(speed);
+}
+
 void Being::setPosition(const Vector &pos)
 {
     Actor::setPosition(pos);
@@ -181,21 +189,12 @@ void Being::setPosition(const Vector &pos)
 
 void Being::setDestination(int dstX, int dstY)
 {
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
-    {
-        if (mMap)
-            setPath(mMap->findPath(mX, mY, dstX, dstY, getWalkMask()));
-        return;
-    }
-
-    // Manaserv's part:
-
     // We can't calculate anything without a map anyway.
     if (!mMap)
         return;
 
     // Don't handle flawed destinations from server...
-    if (dstX == 0 || dstY == 0)
+    if (dstX <= 0 || dstY <= 0)
         return;
 
     // If the destination is unwalkable, don't bother trying to get there
@@ -237,13 +236,6 @@ void Being::clearPath()
 void Being::setPath(const Path &path)
 {
     mPath = path;
-
-    if ((Net::getNetworkType() == ServerInfo::TMWATHENA) &&
-            mAction != MOVE && mAction != DEAD)
-    {
-        nextTile();
-        mActionTime = tick_time;
-    }
 }
 
 void Being::setSpeech(const std::string &text, int time)
@@ -398,14 +390,9 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
     else
         fireMissile(victim, mInfo->getAttack(mAttackType)->missileParticle);
 
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
-    {
-        reset();
-        mActionTime = tick_time;
-    }
-
     sound.playSfx(mInfo->getSound((damage > 0) ?
-                  SOUND_EVENT_HIT : SOUND_EVENT_MISS), mX, mY);
+                  SOUND_EVENT_HIT : SOUND_EVENT_MISS),
+                  getPixelX(), getPixelY());
 }
 
 void Being::setName(const std::string &name)
@@ -597,28 +584,26 @@ void Being::setAction(Action action, int attackType)
                 currentAction = mInfo->getAttack(attackType)->action;
                 reset();
 
-                if (Net::getNetworkType() == ServerInfo::MANASERV)
+                int rotation = 0;
+                //attack particle effect
+                std::string particleEffect = mInfo->getAttack(attackType)
+                                              ->particleEffect;
+                if (!particleEffect.empty() && Particle::enabled)
                 {
-                    int rotation = 0;
-                    //attack particle effect
-                    std::string particleEffect = mInfo->getAttack(attackType)
-                                                 ->particleEffect;
-                    if (!particleEffect.empty() && Particle::enabled)
+                    switch (mSpriteDirection)
                     {
-                        switch (mSpriteDirection)
-                        {
-                            case DIRECTION_DOWN: rotation = 0; break;
-                            case DIRECTION_LEFT: rotation = 90; break;
-                            case DIRECTION_UP: rotation = 180; break;
-                            case DIRECTION_RIGHT: rotation = 270; break;
-                            default: break;
-                        }
-                        Particle *p;
-                        p = particleEngine->addEffect(particleEffect, 0, 0,
-                                                      rotation);
-                        controlParticle(p);
+                        case DIRECTION_DOWN: rotation = 0; break;
+                        case DIRECTION_LEFT: rotation = 90; break;
+                        case DIRECTION_UP: rotation = 180; break;
+                        case DIRECTION_RIGHT: rotation = 270; break;
+                        default: break;
                     }
+                    Particle *p;
+                    p = particleEngine->addEffect(particleEffect, 0, 0,
+                                                  rotation);
+                    controlParticle(p);
                 }
+
             }
 
             break;
@@ -630,7 +615,8 @@ void Being::setAction(Action action, int attackType)
             break;
         case DEAD:
             currentAction = SpriteAction::DEAD;
-            sound.playSfx(mInfo->getSound(SOUND_EVENT_DIE), mX, mY);
+            sound.playSfx(mInfo->getSound(SOUND_EVENT_DIE),
+                          getPixelX(), getPixelY());
             break;
         case STAND:
             currentAction = SpriteAction::STAND;
@@ -649,11 +635,8 @@ void Being::setAction(Action action, int attackType)
 
 void Being::setDirection(Uint8 direction)
 {
-    if (Net::getNetworkType() == ServerInfo::MANASERV)
-    {
-        if (mDirection == direction)
-            return;
-    }
+    if (mDirection == direction)
+        return;
 
     mDirection = direction;
 
@@ -671,45 +654,9 @@ void Being::setDirection(Uint8 direction)
     CompoundSprite::setDirection(dir);
 }
 
-/** Note: Used by Tmw-Athena only */
-void Being::nextTile()
-{
-    if (mPath.empty())
-    {
-        setAction(STAND);
-        return;
-    }
-
-    Position pos = mPath.front();
-    mPath.pop_front();
-
-    int dir = 0;
-    if (pos.x > mX)
-        dir |= RIGHT;
-    else if (pos.x < mX)
-        dir |= LEFT;
-    if (pos.y > mY)
-        dir |= DOWN;
-    else if (pos.y < mY)
-        dir |= UP;
-
-    setDirection(dir);
-
-    if (!mMap->getWalk(pos.x, pos.y, getWalkMask()))
-    {
-        setAction(STAND);
-        return;
-    }
-
-    mX = pos.x;
-    mY = pos.y;
-    setAction(MOVE);
-    mActionTime += (int)(mWalkSpeed.x / 10);
-}
-
 int Being::getCollisionRadius() const
 {
-    // FIXME: Get this from XML file
+    // FIXME: Get this from XML file once a better pathfinding algorithm is up.
     return 16;
 }
 
@@ -726,8 +673,7 @@ void Being::logic()
         mText = 0;
     }
 
-    if ((Net::getNetworkType() == ServerInfo::MANASERV) && (mAction != DEAD)
-        && !mWalkSpeed.isNull())
+    if ((mAction != DEAD) && !mSpeedPixelsPerTick.isNull())
     {
         const Vector dest = (mPath.empty()) ?
             mDest : Vector(mPath.front().x,
@@ -758,8 +704,8 @@ void Being::logic()
             // â = a / ||a|| (||a|| is the a length.)
             // Then, diff = (dir/||dir||) * speed.
             const Vector normalizedDir = dir.normalized();
-            Vector diff(normalizedDir.x * mWalkSpeed.x,
-                        normalizedDir.y * mWalkSpeed.y);
+            Vector diff(normalizedDir.x * mSpeedPixelsPerTick.x,
+                        normalizedDir.y * mSpeedPixelsPerTick.y);
 
             // Test if we don't miss the destination by a move too far:
             if (diff.length() > distance)
@@ -821,75 +767,6 @@ void Being::logic()
             setAction(STAND);
         }
     }
-    else if (Net::getNetworkType() == ServerInfo::TMWATHENA)
-    {
-        int frameCount = getFrameCount();
-
-        switch (mAction)
-        {
-            case STAND:
-            case SIT:
-            case DEAD:
-            case HURT:
-               break;
-
-            case MOVE:
-                if ((int) ((get_elapsed_time(mActionTime) * frameCount)
-                        / getWalkSpeed().x) >= frameCount)
-                    nextTile();
-                break;
-
-            case ATTACK:
-                int rotation = 0;
-                std::string particleEffect = "";
-
-                int curFrame = (get_elapsed_time(mActionTime) * frameCount)
-                               / mAttackSpeed;
-
-                //attack particle effect
-                if (mEquippedWeapon)
-                {
-                    particleEffect = mEquippedWeapon->getParticleEffect();
-
-                    if (!particleEffect.empty() &&
-                        findSameSubstring(particleEffect,
-                                     paths.getStringValue("particles")).empty())
-                        particleEffect = paths.getStringValue("particles")
-                                         + particleEffect;
-                }
-                else
-                {
-                    particleEffect = mInfo->getAttack(mAttackType)
-                                             ->particleEffect;
-                }
-
-                if (!particleEffect.empty() && Particle::enabled
-                    && curFrame == 1)
-                {
-                    switch (mDirection)
-                    {
-                        case DOWN: rotation = 0; break;
-                        case LEFT: rotation = 90; break;
-                        case UP: rotation = 180; break;
-                        case RIGHT: rotation = 270; break;
-                        default: break;
-                    }
-                    Particle *p;
-                    p = particleEngine->addEffect(particleEffect, 0, 0,
-                                                  rotation);
-                    controlParticle(p);
-                }
-
-                if (curFrame >= frameCount)
-                    nextTile();
-
-                break;
-        }
-
-        // Update pixel coordinates
-        setPosition(mX * 32 + 16 + getXOffset(),
-                    mY * 32 + 32 + getYOffset());
-    }
 
     ActorSprite::logic();
 
@@ -897,9 +774,9 @@ void Being::logic()
     if (frameCount < 10)
         frameCount = 10;
 
+    // Remove it after 3 secs. TODO: Just play the dead animation before removing
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
-        (int) ((get_elapsed_time(mActionTime)
-                / getWalkSpeed().x) >= frameCount))
+        get_elapsed_time(mActionTime) > 3000)
     {
         if (getType() != PLAYER)
             actorSpriteManager->destroy(this);
@@ -958,36 +835,6 @@ void Being::drawSpeech(int offsetX, int offsetY)
 
         mText = NULL;
     }
-}
-
-/** Note: Used by Tmw-Athena only */
-int Being::getOffset(char pos, char neg) const
-{
-    // Check whether we're walking in the requested direction
-    if (mAction != MOVE ||  !(mDirection & (pos | neg)))
-        return 0;
-
-    int offset = 0;
-
-    if (mMap)
-    {
-        offset = (pos == LEFT && neg == RIGHT) ?
-                 (int)((get_elapsed_time(mActionTime)
-                        * mMap->getTileWidth()) / mWalkSpeed.x) :
-                 (int)((get_elapsed_time(mActionTime)
-                        * mMap->getTileHeight()) / mWalkSpeed.y);
-    }
-
-    // We calculate the offset _from_ the _target_ location
-    offset -= 32;
-    if (offset > 0)
-        offset = 0;
-
-    // Going into negative direction? Invert the offset.
-    if (mDirection & pos)
-        offset = -offset;
-
-    return offset;
 }
 
 int Being::getWidth() const
@@ -1229,8 +1076,8 @@ void Being::talkTo()
 void Being::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_CHAT &&
-            (event.getName() == EVENT_BEING || event.getName() == EVENT_PLAYER) &&
-            event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
+            (event.getName() == EVENT_BEING || event.getName() == EVENT_PLAYER)
+            && event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
     {
         try
         {
@@ -1251,4 +1098,16 @@ void Being::event(Channels channel, const Mana::Event &event)
         }
     }
 
+}
+
+void Being::setMap(Map *map)
+{
+    Actor::setMap(map);
+
+    // Recalculate pixel/tick speed
+    if (map && !mMoveSpeed.isNull())
+    {
+        mSpeedPixelsPerTick =
+            Net::getPlayerHandler()->getPixelsPerTickMoveSpeed(mMoveSpeed, map);
+    }
 }

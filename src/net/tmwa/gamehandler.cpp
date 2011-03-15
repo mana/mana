@@ -76,7 +76,8 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
                     x, y, direction);
             // Switch now or we'll have problems
             Client::setState(STATE_GAME);
-            player_node->setTileCoords(x, y);
+            // Stores the position until the map is loaded.
+            mTileX = x; mTileY = y;
          }  break;
 
         case SMSG_SERVER_PING:
@@ -111,7 +112,17 @@ void GameHandler::event(Channels channel, const Mana::Event &event)
     {
         if (event.getName() == EVENT_ENGINESINITALIZED)
         {
-            Game::instance()->changeMap(mMap);
+            Game *game = Game::instance();
+            game->changeMap(mMap);
+            Map *map = game->getCurrentMap();
+            int tileWidth = map->getTileWidth();
+            int tileHeight = map->getTileHeight();
+            if (mTileX && mTileY)
+            {
+                player_node->setPosition(Vector(mTileX * tileWidth + tileWidth / 2,
+                                         mTileY * tileHeight + tileHeight / 2));
+                mTileX = mTileY = 0;
+            }
         }
         else if (event.getName() == EVENT_MAPLOADED)
         {

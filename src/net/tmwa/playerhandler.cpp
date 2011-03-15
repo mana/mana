@@ -20,7 +20,9 @@
  */
 
 #include "net/tmwa/playerhandler.h"
+#include "net/tmwa/beinghandler.h"
 
+#include "client.h"
 #include "event.h"
 #include "game.h"
 #include "localplayer.h"
@@ -198,20 +200,23 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 float scrollOffsetX = 0.0f;
                 float scrollOffsetY = 0.0f;
 
-                /* Scroll if neccessary */
+                /* Scroll if necessary */
+                Map *map = game->getCurrentMap();
+                int tileWidth = map->getTileWidth();
+                int tileHeight = map->getTileHeight();
+                int tileX = player_node->getTileX();
+                int tileY = player_node->getTileY();
                 if (!sameMap
-                    || (abs(x - player_node->getTileX()) > MAP_TELEPORT_SCROLL_DISTANCE)
-                    || (abs(y - player_node->getTileY()) > MAP_TELEPORT_SCROLL_DISTANCE))
+                    || (abs(x - tileX) > MAP_TELEPORT_SCROLL_DISTANCE)
+                    || (abs(y - tileY) > MAP_TELEPORT_SCROLL_DISTANCE))
                 {
-                    Map *map = game->getCurrentMap();
-                    scrollOffsetX = (x - player_node->getTileX())
-                                    * map->getTileWidth();
-                    scrollOffsetY = (y - player_node->getTileY())
-                                    * map->getTileHeight();
+                    scrollOffsetX = (x - tileX) * tileWidth;
+                    scrollOffsetY = (y - tileY) * tileHeight;
                 }
 
                 player_node->setAction(Being::STAND);
-                player_node->setTileCoords(x, y);
+                player_node->setPosition(Vector(x * tileWidth + tileWidth / 2,
+                                              y * tileHeight + tileHeight / 2));
 
                 logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
                            (int) scrollOffsetY);
@@ -228,7 +233,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 switch (type)
                 {
                     case 0x0000:
-                      player_node->setWalkSpeed(Vector(value, value, 0));
+                      player_node->setMoveSpeed(Vector(value / 10,
+                                                       value / 10, 0));
                     break;
                     case 0x0004: break; // manner
                     case 0x0005: PlayerInfo::setAttribute(HP, value); break;
@@ -552,8 +558,12 @@ void PlayerHandler::setDirection(char direction)
 
 void PlayerHandler::setDestination(int x, int y, int direction)
 {
+    // The destination coordinates are received in pixel, so we translate them
+    // into tiles.
+    Map *map = Game::instance()->getCurrentMap();
     MessageOut outMsg(CMSG_PLAYER_CHANGE_DEST);
-    outMsg.writeCoordinates(x, y, direction);
+    outMsg.writeCoordinates(x / map->getTileWidth(), y / map->getTileHeight(),
+                            direction);
 }
 
 void PlayerHandler::changeAction(Being::Action action)
@@ -602,11 +612,50 @@ int PlayerHandler::getJobLocation()
     return JOB;
 }
 
-Vector PlayerHandler::getDefaultWalkSpeed()
+Vector PlayerHandler::getDefaultMoveSpeed()
 {
     // Return an normalized speed for any side
     // as the offset is calculated elsewhere.
-    return Vector(150, 150, 0);
+    // in ticks per tile.
+    return Vector(15.0f, 15.0f, 0.0f);
+}
+
+Vector PlayerHandler::getPixelsPerTickMoveSpeed(Vector speed, Map *map)
+{
+    Game *game = Game::instance();
+
+    if (game && !map)
+        map = game->getCurrentMap();
+
+    if (!map)
+    {
+        logger->log("TmwAthena::PlayerHandler: Speed not given back"
+                    " because Map not yet initialized.");
+        return Vector(0.0f, 0.0f, 0.0f);
+    }
+
+    if (speed.x == 0 || speed.y == 0)
+    {
+        logger->log("TmwAthena::PlayerHandler: "
+                    "Invalid Speed given from server.");
+        speed = getDefaultMoveSpeed();
+    }
+
+    Vector speedInTicks;
+
+    // We don't use z for now.
+    speedInTicks.z = 0;
+
+    speedInTicks.x = ((1 / speed.x) * 1000) / MILLISECONDS_IN_A_TICK;
+    speedInTicks.x = speedInTicks.x
+        * (float)map->getTileWidth()
+        / 1000 * (float) MILLISECONDS_IN_A_TICK;
+    speedInTicks.y = ((1 / speed.y) * 1000) / MILLISECONDS_IN_A_TICK;
+    speedInTicks.y = speedInTicks.y
+        * (float)map->getTileHeight()
+        / 1000 * (float) MILLISECONDS_IN_A_TICK;
+
+    return speedInTicks;
 }
 
 } // namespace TmwAthena

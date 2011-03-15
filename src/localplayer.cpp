@@ -157,15 +157,8 @@ void LocalPlayer::logic()
         else
         {
             // Find whether target is in range
-            // TODO: Make this nicer, probably using getPosition() only
-            const int rangeX =
-                (Net::getNetworkType() == ServerInfo::MANASERV) ?
-                abs(mTarget->getPosition().x - getPosition().x) :
-                abs(mTarget->getTileX() - getTileX());
-            const int rangeY =
-                (Net::getNetworkType() == ServerInfo::MANASERV) ?
-                abs(mTarget->getPosition().y - getPosition().y) :
-                abs(mTarget->getTileY() - getTileY());
+            const int rangeX = abs(mTarget->getPosition().x - getPosition().x);
+            const int rangeY = abs(mTarget->getPosition().y - getPosition().y);
 
             const int attackRange = getAttackRange();
             const TargetCursorType targetType = rangeX > attackRange ||
@@ -549,56 +542,22 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
 
 void LocalPlayer::nextTile(unsigned char dir = 0)
 {
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+    if (!mMap || !dir)
+        return;
+
+    const Vector &pos = getPosition();
+    Position destination = getNextWalkPosition(dir);
+
+    if ((int)pos.x != destination.x
+        || (int)pos.y != destination.y)
     {
-        // TODO: Fix picking up when reaching target (this method is obsolete)
-        // TODO: Fix holding walking button to keep walking smoothly
-        if (mPath.empty())
-        {
-            if (mPickUpTarget)
-                pickUp(mPickUpTarget);
-
-            if (mWalkingDir)
-                startWalking(mWalkingDir);
-        }
-
-        // TODO: Fix automatically walking within range of target, when wanted
-        if (mGoingToTarget && mTarget && withinAttackRange(mTarget))
-        {
-            mAction = Being::STAND;
-            attack(mTarget, true);
-            mGoingToTarget = false;
-            mPath.clear();
-            return;
-        }
-        else if (mGoingToTarget && !mTarget)
-        {
-            mGoingToTarget = false;
-            mPath.clear();
-        }
-
-
-        Being::nextTile();
+        setDestination(destination.x, destination.y);
     }
-    else
+    else if (dir != mDirection)
     {
-        if (!mMap || !dir)
-            return;
-
-        const Vector &pos = getPosition();
-        Position destination = getNextWalkPosition(dir);
-
-        if ((int)pos.x != destination.x
-            || (int)pos.y != destination.y)
-        {
-            setDestination(destination.x, destination.y);
-        }
-        else if (dir != mDirection)
-        {
-            // If the being can't move, just change direction
-            Net::getPlayerHandler()->setDirection(dir);
-            setDirection(dir);
-        }
+        // If the being can't move, just change direction
+        Net::getPlayerHandler()->setDirection(dir);
+        setDirection(dir);
     }
 }
 
@@ -637,9 +596,10 @@ void LocalPlayer::pickUp(FloorItem *item)
     if (!item)
         return;
 
-    int dx = item->getTileX() - (int) getPosition().x / mMap->getTileWidth();
-    int dy = item->getTileY() - ((int) getPosition().y - 1)
-             / mMap->getTileHeight();
+    int tileWidth = mMap->getTileWidth();
+    int tileHeight = mMap->getTileHeight();
+    int dx = item->getTileX() - (int) getPosition().x / tileWidth;
+    int dy = item->getTileY() - ((int) getPosition().y - 1) / tileHeight;
 
     if (dx * dx + dy * dy < 4)
     {
@@ -648,17 +608,9 @@ void LocalPlayer::pickUp(FloorItem *item)
     }
     else
     {
-        if (Net::getNetworkType() == ServerInfo::MANASERV)
-        {
-            setDestination(item->getPixelX() + 16, item->getPixelY() + 16);
-            mPickUpTarget = item;
-        }
-        else
-        {
-            setDestination(item->getTileX(), item->getTileY());
-            mPickUpTarget = item;
-            stopAttack();
-        }
+        setDestination(item->getPixelX() + tileWidth / 2,
+                       item->getPixelY() + tileHeight / 2);
+        mPickUpTarget = item;
     }
 }
 
@@ -716,12 +668,10 @@ void LocalPlayer::setDestination(int x, int y)
     {
         Being::setDestination(x, y);
 
-        // Manaserv:
         // If the destination given to being class is accepted,
         // we inform the Server.
-        if ((x == mDest.x && y == mDest.y)
-            || Net::getNetworkType() == ServerInfo::TMWATHENA)
-                Net::getPlayerHandler()->setDestination(x, y, mDirection);
+        if ((x == mDest.x && y == mDest.y))
+            Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }
 
     mPickUpTarget = NULL;
@@ -732,29 +682,26 @@ void LocalPlayer::setWalkingDir(int dir)
 {
     // This function is called by Game::handleInput()
 
-    if (Net::getNetworkType() == ServerInfo::MANASERV)
-    {
-        // First if player is pressing key for the direction he is already
-        // going, do nothing more...
+    // First if player is pressing key for the direction he is already
+    // going, do nothing more...
 
-        // Else if he is pressing a key, and its different from what he has
-        // been pressing, stop (do not send this stop to the server) and
-        // start in the new direction
-        if (dir && (dir != getWalkingDir()))
-            player_node->stopWalking(false);
+    // Else if he is pressing a key, and its different from what he has
+    // been pressing, stop (do not send this stop to the server) and
+    // start in the new direction
+    if (dir && (dir != getWalkingDir()))
+        player_node->stopWalking(false);
 
-        // Else, he is not pressing a key,
-        // and the current path hasn't been sent by mouse,
-        // then let the path die (1/2 tile after that.)
-        // This permit to avoid desyncs with other clients.
-        else if (!dir)
-            return;
+    // Else, he is not pressing a key,
+    // and the current path hasn't been sent by mouse,
+    // then let the path die (1/2 tile after that.)
+    // This permit to avoid desyncs with other clients.
+    else if (!dir)
+        return;
 
-        // If the delay to send another walk message to the server hasn't expired,
-        // don't do anything or we could get disconnected for spamming the server
-        if (get_elapsed_time(mLocalWalkTime) < walkingKeyboardDelay)
-            return;
-    }
+    // If the delay to send another walk message to the server hasn't expired,
+    // don't do anything or we could get disconnected for spamming the server
+    if (get_elapsed_time(mLocalWalkTime) < walkingKeyboardDelay)
+        return;
 
     mWalkingDir = dir;
 
@@ -763,7 +710,7 @@ void LocalPlayer::setWalkingDir(int dir)
     {
         startWalking(dir);
     }
-    else if (mAction == MOVE && (Net::getNetworkType() == ServerInfo::MANASERV))
+    else if (mAction == MOVE)
     {
         nextTile(dir);
     }
@@ -779,13 +726,8 @@ void LocalPlayer::startWalking(unsigned char dir)
     if (mAction == MOVE && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
-        if (Net::getNetworkType() == ServerInfo::MANASERV)
-        {
-            const Vector &pos = getPosition();
-            Being::setDestination(pos.x, pos.y);
-        }
-        else
-            Being::setDestination(getTileX(), getTileY());
+        const Vector &pos = getPosition();
+        Being::setDestination(pos.x, pos.y);
         return;
     }
 
@@ -800,37 +742,9 @@ void LocalPlayer::startWalking(unsigned char dir)
         dx++;
 
     // Update the direction when the walk just start
-    if (Net::getNetworkType() == ServerInfo::MANASERV)
-        setDirection(dir);
+    setDirection(dir);
 
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
-    {
-        // Prevent skipping corners over colliding tiles
-        if (dx && !mMap->getWalk(getTileX() + dx, getTileY(), getWalkMask()))
-            dx = 0;
-        if (dy && !mMap->getWalk(getTileX(), getTileY() + dy, getWalkMask()))
-            dy = 0;
-
-        // Choose a straight direction when diagonal target is blocked
-        if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy,
-                                       getWalkMask()))
-            dx = 0;
-
-        // Walk to where the player can actually go
-        if ((dx || dy) && mMap->getWalk(getTileX() + dx, getTileY() + dy,
-                                        getWalkMask()))
-        {
-            setDestination(getTileX() + dx, getTileY() + dy);
-        }
-        else if (dir != mDirection)
-        {
-            // If the being can't move, just change direction
-            Net::getPlayerHandler()->setDirection(dir);
-            setDirection(dir);
-        }
-    }
-    else
-        nextTile(dir);
+    nextTile(dir);
 }
 
 void LocalPlayer::stopWalking(bool sendToServer)
@@ -881,15 +795,12 @@ void LocalPlayer::emote(Uint8 emotion)
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
-    if (Net::getNetworkType() == ServerInfo::MANASERV)
-    {
-        if (mLastAction != -1)
-            return;
+    if (mLastAction != -1)
+        return;
 
-        // Can only attack when standing still
-        if (mAction != STAND && mAction != ATTACK)
-            return;
-    }
+    // Can only attack when standing still
+    if (mAction != STAND && mAction != ATTACK)
+        return;
 
     mKeepAttacking = keep;
 
@@ -902,60 +813,27 @@ void LocalPlayer::attack(Being *target, bool keep)
         setTarget(target);
     }
 
-    if (Net::getNetworkType() == ServerInfo::MANASERV)
+    Vector plaPos = this->getPosition();
+    Vector tarPos = mTarget->getPosition();
+    int dist_x = plaPos.x - tarPos.x;
+    int dist_y = plaPos.y - tarPos.y;
+
+    if (abs(dist_y) >= abs(dist_x))
     {
-        Vector plaPos = this->getPosition();
-        Vector tarPos = mTarget->getPosition();
-        int dist_x = plaPos.x - tarPos.x;
-        int dist_y = plaPos.y - tarPos.y;
-
-        if (abs(dist_y) >= abs(dist_x))
-        {
-            if (dist_y < 0)
-                setDirection(DOWN);
-            else
-                setDirection(UP);
-        }
+        if (dist_y < 0)
+            setDirection(DOWN);
         else
-        {
-            if (dist_x < 0)
-                setDirection(RIGHT);
-            else
-                setDirection(LEFT);
-        }
-
-        mLastAction = tick_time;
+            setDirection(UP);
     }
     else
     {
-        int dist_x = target->getTileX() - getTileX();
-        int dist_y = target->getTileY() - getTileY();
-
-        // Must be standing to attack
-        if (mAction != STAND)
-            return;
-
-        Uint8 direction = 0;
-        if (abs(dist_y) >= abs(dist_x))
-        {
-            if (dist_y > 0)
-                direction = DOWN;
-            else
-                direction = UP;
-        }
+        if (dist_x < 0)
+            setDirection(RIGHT);
         else
-        {
-            if (dist_x > 0)
-                direction = RIGHT;
-            else
-                direction = LEFT;
-        }
-        Net::getPlayerHandler()->setDirection(direction);
-        setDirection(direction);
-
-        mActionTime = tick_time;
-        mTargetTime = tick_time;
+            setDirection(LEFT);
     }
+
+    mLastAction = tick_time;
 
     setAction(ATTACK);
 
@@ -966,11 +844,11 @@ void LocalPlayer::attack(Being *target, bool keep)
             sound.playSfx(soundFile);
     }
     else
+    {
         sound.playSfx(paths.getValue("attackSfxFile", "fist-swish.ogg"));
+    }
 
     Net::getPlayerHandler()->attack(target->getId());
-    if ((Net::getNetworkType() == ServerInfo::TMWATHENA) && !keep)
-        stopAttack();
 }
 
 void LocalPlayer::stopAttack()
@@ -1060,44 +938,23 @@ int LocalPlayer::getAttackRange()
 
 bool LocalPlayer::withinAttackRange(Being *target)
 {
-    if (Net::getNetworkType() == ServerInfo::MANASERV)
-    {
-        const Vector &targetPos = target->getPosition();
-        const Vector &pos = getPosition();
-        const int dx = abs(targetPos.x - pos.x);
-        const int dy = abs(targetPos.y - pos.y);
-        const int range = getAttackRange();
+    const Vector &targetPos = target->getPosition();
+    const Vector &pos = getPosition();
+    const int dx = abs(targetPos.x - pos.x);
+    const int dy = abs(targetPos.y - pos.y);
+    const int range = getAttackRange();
 
-        return !(dx > range || dy > range);
-    }
-    else
-    {
-        int dist_x = abs(target->getTileX() - getTileX());
-        int dist_y = abs(target->getTileY() - getTileY());
-
-        if (dist_x > getAttackRange() || dist_y > getAttackRange())
-            return false;
-
-        return true;
-    }
+    return !(dx > range || dy > range);
 }
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
     mLastTarget = -1;
-    if (Net::getNetworkType() == ServerInfo::MANASERV)
-    {
-        mTarget = target;
-        mGoingToTarget = true;
-        const Vector &targetPos = target->getPosition();
-        setDestination(targetPos.x, targetPos.y);
-    }
-    else
-    {
-        setTarget(target);
-        mGoingToTarget = true;
-        setDestination(target->getTileX(), target->getTileY());
-    }
+
+    mTarget = target;
+    mGoingToTarget = true;
+    const Vector &targetPos = target->getPosition();
+    setDestination(targetPos.x, targetPos.y);
 }
 
 void LocalPlayer::addMessageToQueue(const std::string &message, int color)

@@ -22,6 +22,7 @@
 #include <SDL.h>
 
 #include "configuration.h"
+#include "game.h"
 #include "localplayer.h"
 #include "log.h"
 #include "sound.h"
@@ -246,8 +247,10 @@ void Sound::playSfx(const std::string &path, int x, int y)
         int vol = 120;
         if (player_node && x > 0 && y > 0)
         {
-            int dx = player_node->getTileX() - x;
-            int dy = player_node->getTileY() - y;
+            Vector pos = player_node->getPosition();
+            Map *map = Game::instance()->getCurrentMap();
+            int dx = ((int)pos.x - x) / map->getTileWidth();
+            int dy = ((int)pos.y - y) / map->getTileHeight();
             if (dx < 0)
                 dx = -dx;
             if (dy < 0)

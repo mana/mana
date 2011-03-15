@@ -20,11 +20,13 @@
  */
 
 #include "net/tmwa/beinghandler.h"
+#include "net/tmwa/playerhandler.h"
 
 #include "actorspritemanager.h"
 #include "being.h"
 #include "client.h"
 #include "effectmanager.h"
+#include "game.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "log.h"
@@ -101,7 +103,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
         return;
 
     int id;
-    short job, speed, gender;
+    short job, gender;
+    float speed;
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves;
     Uint16 weapon, shield;
@@ -114,13 +117,18 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     Being *srcBeing, *dstBeing;
     int hairStyle, hairColor, flag;
 
+    // Prepare useful translation variables
+    Map *map = Game::instance()->getCurrentMap();
+    int tileWidth = map->getTileWidth();
+    int tileHeight = map->getTileHeight();
+
     switch (msg.getId())
     {
         case SMSG_BEING_VISIBLE:
         case SMSG_BEING_MOVE:
             // Information about a being in range
             id = msg.readInt32();
-            speed = msg.readInt16();
+            speed = (float)msg.readInt16();
             stunMode = msg.readInt16();  // opt1
             statusEffects = msg.readInt16();  // opt2
             statusEffects |= ((Uint32)msg.readInt16()) << 16;  // option
@@ -146,15 +154,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (msg.getId() == SMSG_BEING_VISIBLE)
             {
                 dstBeing->clearPath();
-                dstBeing->setActionTime(tick_time);
                 dstBeing->setAction(Being::STAND);
             }
 
-
             // Prevent division by 0 when calculating frame
-            if (speed == 0) { speed = 150; }
+            if (speed == 0)
+                speed = 150.0f; // In ticks per tile * 10
 
-            dstBeing->setWalkSpeed(Vector(speed, speed, 0));
+            dstBeing->setMoveSpeed(Vector(speed / 10, speed / 10));
             dstBeing->setSubtype(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
@@ -206,7 +213,12 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
                 dstBeing->setAction(Being::STAND);
-                dstBeing->setTileCoords(srcX, srcY);
+                Vector pos(srcX * tileWidth + tileWidth / 2,
+                           srcY * tileHeight + tileHeight / 2);
+                dstBeing->setPosition(pos);
+                // We turn the destination back to a pixel one.
+                dstX = dstX * tileWidth + tileWidth / 2;
+                dstY = dstY * tileHeight + tileHeight / 2;
                 dstBeing->setDestination(dstX, dstY);
             }
             else
@@ -214,7 +226,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                dstBeing->setTileCoords(x, y);
+                Vector pos(x * tileWidth + tileWidth / 2,
+                           y * tileHeight + tileHeight / 2);
+                dstBeing->setPosition(pos);
                 dstBeing->setDirection(dir);
             }
 
@@ -256,9 +270,10 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt32();  // Server tick
 
             dstBeing->setAction(Being::STAND);
-            dstBeing->setTileCoords(srcX, srcY);
-            dstBeing->setDestination(dstX, dstY);
-
+            dstBeing->setPosition(Vector(srcX * tileWidth + tileWidth / 2,
+                                         srcY * tileHeight + tileHeight / 2));
+            dstBeing->setDestination(dstX * tileWidth + tileWidth / 2,
+                                     dstY * tileHeight + tileHeight / 2);
             break;
 
         case SMSG_BEING_REMOVE:
@@ -519,7 +534,12 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 }
             }
 
-            dstBeing->setWalkSpeed(Vector(speed, speed, 0));
+            // The original speed is ticks per tile * 10
+            if (speed)
+                dstBeing->setMoveSpeed(Vector(speed / 10, speed / 10));
+            else
+                dstBeing->setMoveSpeed(Net::getPlayerHandler()->getDefaultMoveSpeed());
+
             dstBeing->setSubtype(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
@@ -561,15 +581,18 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->setTileCoords(srcX, srcY);
-                dstBeing->setDestination(dstX, dstY);
+                dstBeing->setPosition(Vector(srcX * tileWidth + tileWidth / 2,
+                                           srcY * tileHeight + tileHeight / 2));
+                dstBeing->setDestination(dstX * tileWidth + tileWidth / 2,
+                                         dstY * tileHeight + tileHeight / 2);
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                dstBeing->setTileCoords(x, y);
+                dstBeing->setPosition(Vector(x * tileWidth + tileWidth / 2,
+                                             y * tileHeight + tileHeight / 2));
                 dstBeing->setDirection(dir);
             }
 
@@ -598,7 +621,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();   // Lv
             msg.readInt8();   // unknown
 
-            dstBeing->setActionTime(tick_time);
             dstBeing->reset();
 
             dstBeing->setStunMode(stunMode);
@@ -628,7 +650,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     Uint16 x, y;
                     x = msg.readInt16();
                     y = msg.readInt16();
-                    dstBeing->setTileCoords(x, y);
+                    dstBeing->setPosition(Vector(x * tileWidth + tileWidth / 2,
+                                              y * tileHeight + tileHeight / 2));
                     if (dstBeing->getCurrentAction() == Being::MOVE)
                         dstBeing->setAction(Being::STAND);
                 }
