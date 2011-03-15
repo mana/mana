@@ -673,8 +673,6 @@ void Being::logic()
         mText = 0;
     }
 
-    ActorSprite::logic();
-
     if ((mAction != DEAD) && !mSpeedPixelsPerTick.isNull())
     {
         const Vector dest = (mPath.empty()) ?
@@ -732,8 +730,10 @@ void Being::logic()
 
             // Update the player sprite direction.
             // N.B.: We only change this if the distance is more than one pixel
-            // to avoid flawing the ending direction.
-            if (distance > 1.0f)
+            // to avoid flawing the ending direction,
+            // or More than the speed in pixel per ticks for very slow beings.
+            float maxDistance = mSpeedPixelsPerTick.length();
+            if (distance > (maxDistance < 1.0f) ? maxDistance : 1.0f)
             {
                 // The player direction is handled for keyboard
                 // by LocalPlayer::startWalking(), we shouldn't get
@@ -769,6 +769,8 @@ void Being::logic()
             setAction(STAND);
         }
     }
+
+    ActorSprite::logic();
 
     // Remove it after 3 secs. TODO: Just play the dead animation before removing
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
