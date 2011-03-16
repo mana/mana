@@ -710,6 +710,40 @@ Position Map::checkNodeOffsets(int radius, unsigned char walkMask,
     return Position(tx * 32 + fx, ty * 32 + fy);
 }
 
+Path Map::findTilePath(int startPixelX, int startPixelY, int endPixelX,
+                         int endPixelY, unsigned char walkMask, int maxCost)
+{
+    Path myPath = findPath(startPixelX / mTileWidth, startPixelY / mTileHeight,
+                           endPixelX / mTileWidth, endPixelY / mTileHeight,
+                           walkMask, maxCost);
+
+    // Don't compute empty coordinates.
+    if (myPath.empty())
+        return myPath;
+
+    // Convert the map path to pixels over tiles
+    // And add interpolation between the starting and ending offsets
+    Path::iterator it = myPath.begin();
+    while (it != myPath.end())
+    {
+        // A position that is valid on the start and end tile is not
+        // necessarily valid on all the tiles in between, so check the offsets.
+        *it = Position(it->x * mTileWidth + mTileWidth / 2,
+                       it->y * mTileHeight + mTileHeight / 2);
+        it++;
+    }
+
+    // Remove the last path node, as it's more clever to go to the destination.
+    // It also permit to avoid zigzag at the end of the path,
+    // especially with mouse.
+    Position destination((endPixelX / mTileWidth) * mTileWidth + mTileWidth / 2,
+                         (endPixelY / mTileHeight) * mTileHeight + mTileHeight / 2);
+    myPath.pop_back();
+    myPath.push_back(destination);
+
+    return myPath;
+}
+
 Path Map::findPixelPath(int startPixelX, int startPixelY, int endPixelX,
                          int endPixelY,
                          int radius, unsigned char walkMask, int maxCost)

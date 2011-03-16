@@ -69,6 +69,9 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         Vector getPixelsPerTickMoveSpeed(Vector speed, Map *map = 0);
 
+        bool usePixelPrecision()
+        { return true; }
+
     private:
         void handleMapChangeMessage(Net::MessageIn &msg);
 };

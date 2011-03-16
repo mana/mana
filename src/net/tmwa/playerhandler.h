@@ -61,6 +61,9 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
         Vector getDefaultMoveSpeed();
 
         Vector getPixelsPerTickMoveSpeed(Vector speed, Map *map = 0);
+
+        bool usePixelPrecision()
+        { return false; }
 };
 
 } // namespace TmwAthena

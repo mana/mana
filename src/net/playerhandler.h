@@ -74,6 +74,12 @@ class PlayerHandler
          * Convert the original speed in pixel per tick for internal use.
          */
         virtual Vector getPixelsPerTickMoveSpeed(Vector speed, Map *map = 0) = 0;
+
+        /**
+         * Tells whether the client has to use pixel paths.
+         * Return false when tiles-center positions only are to be used.
+         */
+        virtual bool usePixelPrecision() = 0;
 };
 
 } // namespace Net

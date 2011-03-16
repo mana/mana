@@ -37,6 +37,7 @@
 #include "gui/beingpopup.h"
 
 #include "net/net.h"
+#include "net/playerhandler.h"
 
 #include "resources/resourcemanager.h"
 
@@ -270,12 +271,38 @@ void Viewport::_drawDebugPath(Graphics *graphics)
                         (int) playerPos.y - (int) mPixelViewY - playerRadius,
                               playerRadius * 2, playerRadius * 2));
 
-    debugPath = mMap->findPixelPath(
-        (int) playerPos.x,
-        (int) playerPos.y,
-        mMouseX + (int) mPixelViewX,
-        mMouseY + (int) mPixelViewY,
-        playerRadius, 0xFF);
+    // Prepare the walkmask corresponding to the protocol
+    unsigned char walkMask = 0;
+    switch (Net::getNetworkType())
+    {
+      case ServerInfo::TMWATHENA:
+        walkMask = Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER;
+        break;
+      case ServerInfo::MANASERV:
+      default:
+        walkMask = Map::BLOCKMASK_WALL;
+        break;
+    }
+
+    // Adapt the path finding to the precision requested
+    if (Net::getPlayerHandler()->usePixelPrecision())
+    {
+        debugPath = mMap->findPixelPath(
+                    (int) playerPos.x,
+                    (int) playerPos.y,
+                    mMouseX + (int) mPixelViewX,
+                    mMouseY + (int) mPixelViewY,
+                    playerRadius, walkMask);
+    }
+    else
+    {
+        debugPath = mMap->findTilePath(
+                    (int) playerPos.x,
+                    (int) playerPos.y,
+                    mMouseX + (int) mPixelViewX,
+                    mMouseY + (int) mPixelViewY,
+                    walkMask);
+    }
 
     // We draw the path proposed by mouse
     _drawPath(graphics, debugPath, gcn::Color(128, 0, 128));

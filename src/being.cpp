@@ -198,21 +198,37 @@ void Being::setDestination(int dstX, int dstY)
         return;
 
     // If the destination is unwalkable, don't bother trying to get there
-    if (!mMap->getWalk(dstX / 32, dstY / 32))
+    int tileWidth = mMap->getTileWidth();
+    int tileHeight = mMap->getTileHeight();
+    if (!mMap->getWalk(dstX / tileWidth, dstY / tileHeight))
         return;
 
-    Position dest = mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
-                                           dstX, dstY);
-    Path thisPath = mMap->findPixelPath((int) mPos.x, (int) mPos.y,
-                                        dest.x, dest.y,
-                                        getCollisionRadius(), getWalkMask());
+    Position dest(dstX, dstY);
+    Path thisPath;
+    if (Net::getPlayerHandler()->usePixelPrecision())
+    {
+        dest = mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+                                      dstX, dstY);
+        thisPath = mMap->findPixelPath((int) mPos.x, (int) mPos.y,
+                                       dest.x, dest.y,
+                                       getCollisionRadius(), getWalkMask());
+    }
+    else
+    {
+        // We center the destination.
+        dest.x = (dstX / tileWidth) * tileWidth + tileWidth / 2;
+        dest.y = (dstY / tileHeight) * tileHeight + tileHeight / 2;
+        // and find a tile centered pixel path
+        thisPath = mMap->findTilePath((int) mPos.x, (int) mPos.y,
+                                       dest.x, dest.y, getWalkMask());
+    }
 
     if (thisPath.empty())
     {
         // If there is no path but the destination is on the same walkable tile,
         // we accept it.
-        if ((int)mPos.x / 32 == dest.x / 32
-            && (int)mPos.y / 32 == dest.y / 32)
+        if ((int)mPos.x / tileWidth == dest.x / tileWidth
+            && (int)mPos.y / tileHeight == dest.y / tileHeight)
         {
             mDest.x = dest.x;
             mDest.y = dest.y;

@@ -287,6 +287,14 @@ class Map : public Properties
 
         /**
          * Find a pixel path from one location to the next.
+         * Path node are centered on their corresponding tiles in that case.
+         */
+        Path findTilePath(int startPixelX, int startPixelY, int endPixelX,
+                          int endPixelY, unsigned char walkMask,
+                          int maxCost = 20);
+
+        /**
+         * Find a pixel path from one location to the next.
          */
         Path findPixelPath(int startPixelX, int startPixelY,
                           int destPixelX, int destPixelY,
