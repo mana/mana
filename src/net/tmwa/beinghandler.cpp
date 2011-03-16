@@ -101,6 +101,44 @@ Being *createBeing(int id, short job)
     return being;
 }
 
+void handleMoveMessage(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY,
+                       Being *dstBeing, int tileWidth, int tileHeight)
+{
+    // Avoid dealing with flawed destination
+    if (srcX && srcY && dstX && dstY)
+    {
+        Vector pos(srcX * tileWidth + tileWidth / 2,
+                  srcY * tileHeight + tileHeight / 2);
+
+        Vector dest(dstX * tileWidth + tileWidth / 2,
+                    dstY * tileHeight + tileHeight / 2);
+
+        // Don't set the position as the movement algorithm
+        // can guess it and it would break the animation played,
+        // when we're close enough.
+        if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+            || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+            dstBeing->setPosition(pos);
+
+        // We turn the destination back to a pixel one.
+        dstBeing->setDestination(dest.x, dest.y);
+    }
+}
+
+void handlePosMessage(Uint16 x, Uint16 y, Being *dstBeing,
+                      int tileWidth, int tileHeight, Uint8 dir = 0)
+{
+    // Avoid dealing with flawed destination
+    if (x && y)
+    {
+        Vector pos(x * tileWidth + tileWidth / 2,
+                    y * tileHeight + tileHeight / 2);
+        dstBeing->setPosition(pos);
+        if (dir)
+            dstBeing->setDirection(dir);
+    }
+}
+
 void BeingHandler::handleMessage(Net::MessageIn &msg)
 {
     if (!actorSpriteManager)
@@ -216,41 +254,15 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                //dstBeing->setAction(Being::STAND); Useless
-                // Avoid dealing with flawed destination
-                if (srcX && srcY && dstX && dstY)
-                {
-                    Vector pos(srcX * tileWidth + tileWidth / 2,
-                              srcY * tileHeight + tileHeight / 2);
-
-                    Vector dest(dstX * tileWidth + tileWidth / 2,
-                                dstY * tileHeight + tileHeight / 2);
-                    // Don't set the position as the movement algorithm
-                    // can guess it and it would break the animation played,
-                    // when we're close enough.
-                    if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
-                        || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
-                        dstBeing->setPosition(pos);
-
-                    // We turn the destination back to a pixel one.
-                    dstBeing->setDestination(dest.x, dest.y);
-                }
+                handleMoveMessage(srcX, srcY, dstX, dstY, dstBeing,
+                                  tileWidth, tileHeight);
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-
-                // Avoid dealing with flawed destination
-                if (x && y)
-                {
-                    Vector pos(x * tileWidth + tileWidth / 2,
-                               y * tileHeight + tileHeight / 2);
-                    dstBeing->setPosition(pos);
-                    if (dir)
-                        dstBeing->setDirection(dir);
-                }
+                handlePosMessage(x, y, dstBeing, tileWidth, tileHeight, dir);
             }
 
             msg.readInt8();   // unknown
@@ -290,24 +302,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             Uint16 srcX, srcY, dstX, dstY;
             msg.readCoordinatePair(srcX, srcY, dstX, dstY);
             msg.readInt32();  // Server tick
-
-            //dstBeing->setAction(Being::STAND); // Useless.
-            // Avoid dealing with flawed destination
-            if (srcX && srcY && dstX && dstY)
-            {
-                Vector pos(srcX * tileWidth + tileWidth / 2,
-                          srcY * tileHeight + tileHeight / 2);
-                Vector dest(dstX * tileWidth + tileWidth / 2,
-                            dstY * tileHeight + tileHeight / 2);
-                // Don't set the position as the movement algorithm can guess
-                // it and it would break the animation played, when we're
-                // close enough.
-                if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
-                    || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
-                    dstBeing->setPosition(pos);
-
-                dstBeing->setDestination(dest.x, dest.y);
-            }
+            handleMoveMessage(srcX, srcY, dstX, dstY, dstBeing,
+                              tileWidth, tileHeight);
         }
             break;
 
@@ -618,40 +614,15 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-
-                //dstBeing->setAction(Being::STAND); // Useless.
-                // Avoid dealing with flawed destination
-                if (srcX && srcY && dstX && dstY)
-                {
-                    Vector pos(srcX * tileWidth + tileWidth / 2,
-                          srcY * tileHeight + tileHeight / 2);
-                    Vector dest(dstX * tileWidth + tileWidth / 2,
-                            dstY * tileHeight + tileHeight / 2);
-
-                    // Don't set the position as the movement algorithm
-                    // can guess it and it would break the animation played,
-                    // when we're close enough.
-                    if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
-                      || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
-                        dstBeing->setPosition(pos);
-
-                    dstBeing->setDestination(dest.x, dest.y);
-                }
+                handleMoveMessage(srcX, srcY, dstX, dstY, dstBeing,
+                                  tileWidth, tileHeight);
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                // Avoid dealing with flawed destination
-                if (x && y)
-                {
-                    Vector pos(x * tileWidth + tileWidth / 2,
-                               y * tileHeight + tileHeight / 2);
-                    dstBeing->setPosition(pos);
-                    if (dir)
-                        dstBeing->setDirection(dir);
-                }
+                handlePosMessage(x, y, dstBeing, tileWidth, tileHeight, dir);
             }
 
             gmstatus = msg.readInt16();
@@ -706,17 +677,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     Uint16 x, y;
                     x = msg.readInt16();
                     y = msg.readInt16();
-                    // Avoid dealing with flawed destination
-                    if (x && y)
-                    {
-                        Vector pos(x * tileWidth + tileWidth / 2,
-                                   y * tileHeight + tileHeight / 2);
-                        dstBeing->setPosition(pos);
-                        if (dstBeing->getCurrentAction() == Being::MOVE)
-                        {
-                            dstBeing->setAction(Being::STAND);
-                        }
-                    }
+                    handlePosMessage(x, y, dstBeing, tileWidth, tileHeight);
                 }
             }
             break;
