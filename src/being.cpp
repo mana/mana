@@ -635,7 +635,7 @@ void Being::setAction(Action action, int attackType)
 
 void Being::setDirection(Uint8 direction)
 {
-    if (mDirection == direction)
+    if (!direction || mDirection == direction)
         return;
 
     mDirection = direction;

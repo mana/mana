@@ -248,7 +248,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     Vector pos(x * tileWidth + tileWidth / 2,
                                y * tileHeight + tileHeight / 2);
                     dstBeing->setPosition(pos);
-                    dstBeing->setDirection(dir);
+                    if (dir)
+                        dstBeing->setDirection(dir);
                 }
             }
 
@@ -528,15 +529,17 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             }
             break;
         case SMSG_BEING_CHANGE_DIRECTION:
+        {
             if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
             }
 
             msg.readInt16(); // unused
-
-            dstBeing->setDirection(msg.readInt8());
-
+            Uint8 dir = msg.readInt8();
+            if (dir)
+                dstBeing->setDirection(dir);
+        }
             break;
 
         case SMSG_PLAYER_UPDATE_1:
@@ -646,7 +649,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     Vector pos(x * tileWidth + tileWidth / 2,
                                y * tileHeight + tileHeight / 2);
                     dstBeing->setPosition(pos);
-                    dstBeing->setDirection(dir);
+                    if (dir)
+                        dstBeing->setDirection(dir);
                 }
             }
 
@@ -674,8 +678,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             msg.readInt8();   // Lv
             msg.readInt8();   // unknown
-
-            dstBeing->reset();
 
             dstBeing->setStunMode(stunMode);
             dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
