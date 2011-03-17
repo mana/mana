@@ -42,8 +42,7 @@ FloorItem::FloorItem(int id,
     //       these translations aren't necessary anymore. The sprites know
     //       best where their base point should be.
     mPos.x = x * map->getTileWidth() + 16;
-    mPos.y = y * map->getTileHeight() +
-             ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
+    mPos.y = y * map->getTileHeight() + 16;
 
     setupSpriteDisplay(itemDb->get(itemId).getDisplay());
 }
