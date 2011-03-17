@@ -69,7 +69,7 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
     Being(id, PLAYER, subtype, 0),
-    mAttackRange(-1),
+    mAttackRange(ATTACK_RANGE_NOT_SET),
     mTargetTime(-1),
     mLastTarget(-1),
     mTarget(NULL),
@@ -911,48 +911,22 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
 
 void LocalPlayer::setAttackRange(int range)
 {
-    // Still no map, so don't do anything for now.
-    if (!mMap)
-      return;
     // When the range is more than the minimal, we accept it
-    int unarmedRange = mMap->getTileWidth() / 2 * 3;
-    if (range >= unarmedRange)
+    if (range > ATTACK_RANGE_NOT_SET)
     {
         mAttackRange = range;
     }
     else if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         // TODO: Fix this to be more generic
-        Item *weapon = PlayerInfo::getEquipment(
-                                              TmwAthena::EQUIP_FIGHT1_SLOT);
+        Item *weapon = PlayerInfo::getEquipment(TmwAthena::EQUIP_FIGHT1_SLOT);
         if (weapon)
         {
             const ItemInfo info = weapon->getInfo();
-            if (info.getAttackRange() >= unarmedRange)
+            if (info.getAttackRange() > ATTACK_RANGE_NOT_SET)
                 mAttackRange = info.getAttackRange();
-            else
-                mAttackRange = unarmedRange;
         }
     }
-    else
-    {
-        mAttackRange = unarmedRange;
-    }
-}
-
-int LocalPlayer::getAttackRange()
-{
-    // Still no map, so don't return anything for now.
-    if (!mMap)
-      return -1;
-    // When the range is realistic, we return it
-    int unarmedRange = mMap->getTileWidth() / 2 * 3;
-    if (mAttackRange < unarmedRange)
-    {
-        // This will set a proper value to the attack range.
-        setAttackRange(unarmedRange);
-    }
-    return mAttackRange;
 }
 
 bool LocalPlayer::withinAttackRange(Being *target)

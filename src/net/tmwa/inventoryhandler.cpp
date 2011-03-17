@@ -416,7 +416,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             {
                 mEquips.setEquipment(getSlot(equipType), -1);
                 // Reset the attack range to unarmed.
-                player_node->setAttackRange(-1);
+                player_node->setAttackRange(ATTACK_RANGE_NOT_SET);
             }
             break;
 
@@ -433,7 +433,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             {
                 logger->log("Couldn't set attacke range due to the lack"
                             "of an initialized map.");
-                player_node->setAttackRange(-1);
+                player_node->setAttackRange(ATTACK_RANGE_NOT_SET);
             }
         }
             break;
