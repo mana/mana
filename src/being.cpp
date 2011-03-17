@@ -746,10 +746,10 @@ void Being::logic()
 
             // Update the player sprite direction.
             // N.B.: We only change this if the distance is more than one pixel
-            // to avoid flawing the ending direction,
-            // or More than the speed in pixel per ticks for very slow beings.
+            // to avoid flawing the ending direction for players,
+            // but always for very slow beings.
             float maxDistance = mSpeedPixelsPerTick.length();
-            if (distance > (maxDistance < 1.0f) ? maxDistance : 1.0f)
+            if (distance > ((maxDistance > 1.0f) ? 1.0f : 0.0f))
             {
                 // The player direction is handled for keyboard
                 // by LocalPlayer::startWalking(), we shouldn't get
