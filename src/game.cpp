@@ -631,30 +631,40 @@ void Game::handleInput()
                         {
                             int x = player_node->getTileX();
                             int y = player_node->getTileY();
-
-                            FloorItem *item =
-                                    actorSpriteManager->findItem(x, y);
-
-                            // If none below the player, try the tile in front
-                            // of the player
-                            if (!item)
+                            // Let's look for items around until you find one.
+                            bool found = false;
+                            for (int xX = x - 1; xX < x + 2; ++xX)
                             {
-                                // Temporary until tile-based picking is
-                                // removed.
-                                switch (player_node->getSpriteDirection())
+                                for (int yY = y - 1; yY < y + 2; ++yY)
                                 {
-                                    case DIRECTION_UP   : --y; break;
-                                    case DIRECTION_DOWN : ++y; break;
-                                    case DIRECTION_LEFT : --x; break;
-                                    case DIRECTION_RIGHT: ++x; break;
-                                    default: break;
+                                    FloorItem *item =
+                                           actorSpriteManager->findItem(xX, yY);
+                                    if (item)
+                                    {
+                                        found = true;
+                                        player_node->pickUp(item);
+                                        // We found it, so set the player
+                                        // direction accordingly,
+                                        Uint8 dir = 0;
+                                        if (xX < x)
+                                            dir |= Being::LEFT;
+                                        else if (xX > x)
+                                            dir |= Being::RIGHT;
+                                        if (yY < y)
+                                            dir |= Being::UP;
+                                        else if (yY > y)
+                                            dir |= Being::DOWN;
+
+                                        if (dir)
+                                            player_node->setDirection(dir);
+
+                                        // Get out of the loops
+                                        break;
+                                    }
                                 }
-
-                                item = actorSpriteManager->findItem(x, y);
+                                if (found)
+                                    break;
                             }
-
-                            if (item)
-                                player_node->pickUp(item);
 
                             used = true;
                         }

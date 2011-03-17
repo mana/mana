@@ -604,8 +604,8 @@ void LocalPlayer::pickUp(FloorItem *item)
     }
     else
     {
-        setDestination(item->getPixelX() + tileWidth / 2,
-                       item->getPixelY() + tileHeight / 2);
+        setDestination(item->getTileX() * tileWidth + tileWidth / 2,
+                       item->getTileY() * tileHeight + tileHeight / 2);
         mPickUpTarget = item;
     }
 }
