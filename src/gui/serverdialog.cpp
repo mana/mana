@@ -52,6 +52,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 static const int MAX_SERVERLIST = 6;
 
@@ -591,6 +592,59 @@ void ServerDialog::loadServers()
         if (!found)
             mServers.push_back(server);
     }
+
+    reorderList(config.getIntValue("serverListOrder"));
+}
+
+/**
+ * Returns true if serv1 must appear before serv2
+ */
+bool ServerDialog::sortByLastUsage(const ServerInfo& serv1, const ServerInfo& serv2)
+{
+    int rank1 = -1;
+    int rank2 = -1;
+
+    for (int i = 0; i < MAX_SERVERLIST; ++i)
+    {
+        const std::string index = toString(i);
+        const std::string nameKey = "MostUsedServerName" + index;
+        std::string serv = config.getValue(nameKey, "");
+        if (serv == serv1.hostname)
+            rank1 = i;
+        else if (serv == serv2.hostname)
+            rank2 = i;
+    }
+
+    if (rank1 > rank2)
+        return true;
+
+    if (rank2 > rank1)
+        return false;
+
+    if (rank1 == rank2)
+        return ServerDialog::sortByName(serv1, serv2);
+}
+
+/**
+ * Returns true if serv1 must appear before serv2
+ */
+bool ServerDialog::sortByName(const ServerInfo& serv1, const ServerInfo& serv2)
+{
+    return compareStrI(serv1.name, serv2.name) < 0;
+}
+
+/**
+ * Reorders the server list
+ * @param orderBy
+ *  - 0 : Order by last change (default)
+ *  - 1 : Order by name
+ */
+void ServerDialog::reorderList(int orderBy)
+{
+    if (orderBy == 0)
+        std::sort(mServers.begin(), mServers.end(), ServerDialog::sortByLastUsage);
+    else
+        std::sort(mServers.begin(), mServers.end(), ServerDialog::sortByName);
 }
 
 void ServerDialog::loadCustomServers()

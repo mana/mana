@@ -156,6 +156,31 @@ public:
     }
 };
 
+const char *SERVLIST_ORDER_BY[2] =
+{
+    N_("Last usage"),
+    N_("Name")
+};
+
+class ServerListOrderListModel : public gcn::ListModel
+{
+public:
+    virtual ~ServerListOrderListModel() { }
+
+    virtual int getNumberOfElements()
+    {
+        return 2;
+    }
+
+    virtual std::string getElementAt(int i)
+    {
+        if (i >= getNumberOfElements())
+            return _("???");
+
+        return SERVLIST_ORDER_BY[i];
+    }
+};
+
 static const char *speechModeToString(Being::Speech mode)
 {
     switch (mode)
@@ -243,6 +268,7 @@ Setup_Video::Setup_Video():
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new Label),
     mFontSize(config.getIntValue("fontSize")),
+    mServerListOrder(config.getIntValue("serverListOrder")),
     mDisableSDLTransparencyCheckBox(
                           new CheckBox(_("Disable transparency (Low CPU mode)"),
                                        mSDLTransparencyDisabled))
@@ -260,9 +286,13 @@ Setup_Video::Setup_Video():
     overlayDetailLabel = new Label(_("Ambient FX"));
     particleDetailLabel = new Label(_("Particle detail"));
     fontSizeLabel = new Label(_("Font size"));
+    serverListOrderLabel = new Label(_("Order servers by"));
 
     mFontSizeListModel = new FontSizeChoiceListModel;
     mFontSizeDropDown = new DropDown(mFontSizeListModel);
+
+    mServerListOrderListModel = new ServerListOrderListModel;
+    mServerListOrderDropDown = new DropDown(mServerListOrderListModel);
 
     mModeList->setEnabled(true);
 
@@ -341,6 +371,9 @@ Setup_Video::Setup_Video():
     mFontSizeDropDown->setSelected(mFontSize - 10);
     mFontSizeDropDown->adjustHeight();
 
+    mServerListOrderDropDown->setSelected(mServerListOrder);
+    mServerListOrderDropDown->adjustHeight();
+
     // Do the layout
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
@@ -387,6 +420,9 @@ Setup_Video::Setup_Video():
 
     place(0, 12, mDisableSDLTransparencyCheckBox, 4);
 
+    place(0, 13, serverListOrderLabel, 3);
+    place(1, 13, mServerListOrderDropDown, 2);
+
     setDimension(gcn::Rectangle(0, 0, 365, 300));
 }
 
@@ -395,6 +431,7 @@ Setup_Video::~Setup_Video()
     delete mModeListModel;
     delete mModeList;
     delete mFontSizeListModel;
+    delete mServerListOrderListModel;
 }
 
 void Setup_Video::apply()
@@ -493,6 +530,7 @@ void Setup_Video::apply()
     // FPS change
     config.setValue("fpslimit", mFps);
     config.setValue("fontSize", mFontSizeDropDown->getSelected() + 10);
+    config.setValue("serverListOrder", mServerListOrderDropDown->getSelected());
 
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getBoolValue("screen");

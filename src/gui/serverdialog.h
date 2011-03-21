@@ -158,6 +158,11 @@ class ServerDialog : public Window,
 
         void setFieldsReadOnly(bool readOnly);
 
+        static bool sortByLastUsage(const ServerInfo& serv1, const ServerInfo& serv2);
+        static bool sortByName(const ServerInfo& serv1, const ServerInfo& serv2);
+
+        void reorderList(int orderBy);
+
         TextField *mServerNameField;
         TextField *mPortField;
         Label  *mDescription;
