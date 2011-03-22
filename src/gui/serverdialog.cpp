@@ -621,8 +621,7 @@ bool ServerDialog::sortByLastUsage(const ServerInfo& serv1, const ServerInfo& se
     if (rank2 > rank1)
         return false;
 
-    if (rank1 == rank2)
-        return ServerDialog::sortByName(serv1, serv2);
+    return ServerDialog::sortByName(serv1, serv2);
 }
 
 /**
