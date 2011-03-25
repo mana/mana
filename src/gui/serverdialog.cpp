@@ -367,8 +367,8 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "remove")
     {
         int index = mServersList->getSelected();
-        mServersList->setSelected(0);
         mServers.erase(mServers.begin() + index);
+        mServersList->setSelected(0);
 
         saveCustomServers();
     }
