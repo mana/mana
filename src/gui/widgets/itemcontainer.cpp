@@ -101,14 +101,38 @@ void ItemContainer::draw(gcn::Graphics *graphics)
 
     g->setFont(getFont());
 
+    mFilteredMap.clear();
+    int currentIndex = 0;
+    //Filter checking
+    for (int i = 0; i < mGridColumns; i++)
+    {
+        for (int j = 0; j < mGridRows; j++)
+        {
+            int itemIndex = j * mGridColumns + i;
+            Item *item = mInventory->getItem(itemIndex);
+            if (!item || item->getId() == 0)
+                continue;
+
+            if (mFilter.size() > 0)
+            {
+                if (normalize(item->getInfo().getName()).find(mFilter) == std::string::npos)
+                    continue;
+            }
+
+            mFilteredMap[currentIndex] = item;
+            currentIndex++;
+        }
+    }
+
     for (int i = 0; i < mGridColumns; i++)
     {
         for (int j = 0; j < mGridRows; j++)
         {
             int itemX = i * BOX_WIDTH;
             int itemY = j * BOX_HEIGHT;
-            int itemIndex = (j * mGridColumns) + i;
-            Item *item = mInventory->getItem(itemIndex);
+            int itemIndex = j * mGridColumns + i;
+
+            Item *item = getItemAt(itemIndex);
 
             if (!item || item->getId() == 0)
                 continue;
@@ -178,7 +202,18 @@ void ItemContainer::setSelectedIndex(int newIndex)
 
 Item *ItemContainer::getSelectedItem() const
 {
-    return mInventory->getItem(mSelectedIndex);
+    return getItemAt(mSelectedIndex);
+}
+
+Item *ItemContainer::getItemAt(int index) const
+{
+    std::map<int, Item*>::const_iterator i = mFilteredMap.find(index);
+    return i == mFilteredMap.end() ? 0 : i->second;
+}
+
+void ItemContainer::setFilter(const std::string &filter)
+{
+    mFilter = normalize(filter);
 }
 
 void ItemContainer::distributeValueChangedEvent()
@@ -245,7 +280,10 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
         if (index == Inventory::NO_SLOT_INDEX)
             return;
 
-        Item *item = mInventory->getItem(index);
+        Item *item = getItemAt(index);
+
+        if (!item)
+            return;
 
         // put item name into chat window
         if (mDescItems)
@@ -320,7 +358,7 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
 // Show ItemTooltip
 void ItemContainer::mouseMoved(gcn::MouseEvent &event)
 {
-    Item *item = mInventory->getItem(getSlotIndex(event.getX(), event.getY()));
+    Item *item = getItemAt(getSlotIndex(event.getX(), event.getY()));
 
     if (item)
     {

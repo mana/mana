@@ -604,7 +604,7 @@ void Game::handleInput()
                     break;
             }
             if (keyboard.isEnabled() && !chatWindow->isInputFocused() &&
-                !NpcDialog::isAnyInputFocused())
+                !NpcDialog::isAnyInputFocused() && !InventoryWindow::isAnyInputFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
 

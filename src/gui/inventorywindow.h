@@ -26,6 +26,7 @@
 #include "listener.h"
 
 #include "gui/widgets/window.h"
+#include "gui/widgets/textfield.h"
 
 #include "net/inventoryhandler.h"
 
@@ -107,6 +108,10 @@ class InventoryWindow : public Window,
          */
         void updateButtons();
 
+        bool isInputFocused() const;
+
+        static bool isAnyInputFocused();
+
         void slotsChanged(Inventory* inventory);
 
         bool isMainInventory() { return mInventory->isMainInventory(); }
@@ -126,12 +131,14 @@ class InventoryWindow : public Window,
         Inventory *mInventory;
         ItemContainer *mItems;
 
+        TextField *mFilterText;
+
         std::string mWeight, mSlots;
 
         gcn::Button *mUseButton, *mEquipButton, *mDropButton, *mSplitButton,
                     *mOutfitButton, *mStoreButton, *mRetrieveButton;
 
-        gcn::Label *mWeightLabel, *mSlotsLabel;
+        gcn::Label *mWeightLabel, *mSlotsLabel, *mFilterLabel;
 
         ProgressBar *mWeightBar, *mSlotsBar;
 

@@ -58,6 +58,7 @@ InventoryWindow::WindowList InventoryWindow::instances;
 InventoryWindow::InventoryWindow(Inventory *inventory):
     Window(inventory->isMainInventory() ? _("Inventory") : _("Storage")),
     mInventory(inventory),
+    mFilterText(new TextField),
     mSplit(false)
 {
     listen(CHANNEL_ATTRIBUTES);
@@ -73,6 +74,9 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     setMinHeight(179);
     addKeyListener(this);
 
+    mFilterText->setWidth(150);
+    mFilterText->addKeyListener(this);
+
     mItems = new ItemContainer(mInventory);
     mItems->addSelectionListener(this);
 
@@ -80,6 +84,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mSlotsLabel = new Label(_("Slots:"));
+    mFilterLabel = new Label(_("Search:"));
     mSlotsBar = new ProgressBar(0.0f, 100, 20, Theme::PROG_INVY_SLOTS);
 
     if (isMainInventory())
@@ -109,13 +114,15 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
         place(0, 0, mWeightLabel).setPadding(3);
         place(1, 0, mWeightBar, 3);
         place(4, 0, mSlotsLabel).setPadding(3);
-        place(5, 0, mSlotsBar, 2);
-        place(0, 1, invenScroll, 7).setPadding(3);
-        place(0, 2, mUseButton);
-        place(1, 2, mEquipButton);
-        place(2, 2, mDropButton);
-        place(3, 2, mSplitButton);
-        place(6, 2, mOutfitButton);
+        place(5, 0, mSlotsBar, 3);
+        place(0, 1, mFilterLabel, 4);
+        place(1, 1, mFilterText, 4);
+        place(0, 2, invenScroll, 8).setPadding(3);
+        place(0, 3, mUseButton);
+        place(1, 3, mEquipButton);
+        place(2, 3, mDropButton);
+        place(3, 3, mSplitButton);
+        place(7, 3, mOutfitButton);
 
         updateWeight();
     }
@@ -126,13 +133,15 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
 
         place(0, 0, mSlotsLabel).setPadding(3);
         place(1, 0, mSlotsBar, 3);
-        place(0, 1, invenScroll, 4, 4);
-        place(0, 5, mStoreButton);
-        place(1, 5, mRetrieveButton);
+        place(0, 1, mFilterLabel).setPadding(3);
+        place(1, 1, mFilterText, 3);
+        place(0, 2, invenScroll, 4, 4);
+        place(0, 6, mStoreButton);
+        place(1, 6, mRetrieveButton);
     }
 
     Layout &layout = getLayout();
-    layout.setRowHeight(1, Layout::AUTO_SET);
+    layout.setRowHeight(2, Layout::AUTO_SET);
 
     mInventory->addInventoyListener(this);
 
@@ -289,6 +298,12 @@ void InventoryWindow::keyPressed(gcn::KeyEvent &event)
 
 void InventoryWindow::keyReleased(gcn::KeyEvent &event)
 {
+    if (isInputFocused())
+    {
+        mItems->setFilter(mFilterText->getText());
+        return;
+    }
+
     switch (event.getKey().getValue())
     {
         case Key::LEFT_SHIFT:
@@ -403,6 +418,27 @@ void InventoryWindow::updateWeight()
     mWeightBar->setProgress((float) total / max);
     mWeightBar->setText(strprintf("%s/%s", Units::formatWeight(total).c_str(),
                                   Units::formatWeight(max).c_str()));
+}
+
+bool InventoryWindow::isInputFocused() const
+{
+    return mFilterText->isFocused();
+}
+
+bool InventoryWindow::isAnyInputFocused()
+{
+    WindowList::iterator it = instances.begin();
+    WindowList::iterator it_end = instances.end();
+
+    for (; it != it_end; it++)
+    {
+        if ((*it)->isInputFocused())
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void InventoryWindow::slotsChanged(Inventory* inventory)

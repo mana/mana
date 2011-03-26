@@ -27,6 +27,7 @@
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
+#include <map>
 #include <list>
 
 class Image;
@@ -97,6 +98,12 @@ class ItemContainer : public gcn::Widget,
          * Sets selected item to NULL.
          */
         void selectNone();
+
+
+        /**
+         * Sets item filter
+         */
+        void setFilter(const std::string &filter);
 
         /**
          * Adds a listener to the list that's notified each time a change to
@@ -170,6 +177,8 @@ class ItemContainer : public gcn::Widget,
          */
         int getSlotIndex(int x, int y) const;
 
+        Item *getItemAt(int) const;
+
         Inventory *mInventory;
         int mGridColumns, mGridRows;
         Image *mSelImg;
@@ -180,6 +189,10 @@ class ItemContainer : public gcn::Widget,
         bool mSwapItems;
         bool mDescItems;
         int mDragPosX, mDragPosY;
+
+        std::map<int, Item*> mFilteredMap;
+
+        std::string mFilter;
 
         ItemPopup *mItemPopup;
 
