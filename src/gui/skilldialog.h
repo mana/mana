@@ -23,6 +23,7 @@
 #define SKILLDIALOG_H
 
 #include "gui/widgets/window.h"
+#include "listener.h"
 
 #include <guichan/actionlistener.hpp>
 
@@ -41,12 +42,14 @@ struct SkillInfo;
  *
  * \ingroup Interface
  */
-class SkillDialog : public Window, public gcn::ActionListener
+class SkillDialog : public Window, public gcn::ActionListener, public Mana::Listener
 {
     public:
         SkillDialog();
 
         ~SkillDialog();
+
+        void event(Channels channel, const Mana::Event &event);
 
         /**
          * Called when receiving actions from widget.
