@@ -203,7 +203,7 @@ void Being::setDestination(int dstX, int dstY)
     if (!mMap->getWalk(dstX / tileWidth, dstY / tileHeight))
         return;
 
-    Position dest(dstX, dstY);
+    Position dest(0, 0);
     Path thisPath;
     if (Net::getPlayerHandler()->usePixelPrecision())
     {

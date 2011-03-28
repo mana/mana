@@ -101,8 +101,9 @@ Being *createBeing(int id, short job)
     return being;
 }
 
-void handleMoveMessage(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY,
-                       Being *dstBeing, int tileWidth, int tileHeight)
+static void handleMoveMessage(Uint16 srcX, Uint16 srcY,
+                              Uint16 dstX, Uint16 dstY,
+                              Being *dstBeing, int tileWidth, int tileHeight)
 {
     // Avoid dealing with flawed destination
     if (srcX && srcY && dstX && dstY)
@@ -120,13 +121,12 @@ void handleMoveMessage(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY,
             || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
             dstBeing->setPosition(pos);
 
-        // We turn the destination back to a pixel one.
         dstBeing->setDestination(dest.x, dest.y);
     }
 }
 
-void handlePosMessage(Uint16 x, Uint16 y, Being *dstBeing,
-                      int tileWidth, int tileHeight, Uint8 dir = 0)
+static void handlePosMessage(Uint16 x, Uint16 y, Being *dstBeing,
+                             int tileWidth, int tileHeight, Uint8 dir = 0)
 {
     // Avoid dealing with flawed destination
     if (x && y)
