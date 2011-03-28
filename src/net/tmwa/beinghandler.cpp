@@ -133,7 +133,17 @@ void handlePosMessage(Uint16 x, Uint16 y, Being *dstBeing,
     {
         Vector pos(x * tileWidth + tileWidth / 2,
                     y * tileHeight + tileHeight / 2);
-        dstBeing->setPosition(pos);
+        Vector beingPos = dstBeing->getPosition();
+        // Don't set the position as the movement algorithm
+        // can guess it and it would break the animation played,
+        // when we're close enough.
+        if (std::abs(beingPos.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+            || std::abs(beingPos.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+            dstBeing->setPosition(pos);
+
+        // Set also the destination to the desired position.
+        dstBeing->setDestination(pos.x, pos.y);
+
         if (dir)
             dstBeing->setDirection(dir);
     }
