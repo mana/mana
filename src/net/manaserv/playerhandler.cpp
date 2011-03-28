@@ -412,16 +412,18 @@ int PlayerHandler::getJobLocation()
     return -1;
 }
 
-Vector PlayerHandler::getDefaultMoveSpeed()
+Vector PlayerHandler::getDefaultMoveSpeed() const
 {
     // Return default speed at 6 tiles per second.
     return Vector(6.0f, 6.0f, 0.0f);
 }
 
-Vector PlayerHandler::getPixelsPerTickMoveSpeed(Vector speed, Map *map)
+Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
 {
     // We don't use z for now.
-    speed.z = 0;
+    Vector speedInTicks;
+    // speedInTicks.x = speedInTicks.y = speedInTicks.z = 0;
+    // ^ Done by constructor
 
     Game *game = Game::instance();
     if (game && !map)
@@ -431,18 +433,17 @@ Vector PlayerHandler::getPixelsPerTickMoveSpeed(Vector speed, Map *map)
     {
         logger->log("Manaserv::PlayerHandler: Speed wasn't given back"
                     " because Map not initialized.");
-        speed.x = speed.y = 0;
-        return speed;
+        return speedInTicks;
     }
 
-    speed.x = speed.x
+    speedInTicks.x = speed.x
         * (float)map->getTileWidth()
         / 1000 * (float) MILLISECONDS_IN_A_TICK;
-    speed.y = speed.y
+    speedInTicks.y = speed.y
         * (float)map->getTileHeight()
         / 1000 * (float) MILLISECONDS_IN_A_TICK;
 
-    return speed;
+    return speedInTicks;
 }
 
 } // namespace ManaServ

@@ -65,9 +65,9 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         int getJobLocation();
 
-        Vector getDefaultMoveSpeed();
+        Vector getDefaultMoveSpeed() const;
 
-        Vector getPixelsPerTickMoveSpeed(Vector speed, Map *map = 0);
+        Vector getPixelsPerTickMoveSpeed(const Vector &speed, Map *map = 0);
 
         bool usePixelPrecision()
         { return true; }

@@ -167,7 +167,7 @@ Map::BlockType Being::getBlockType() const
     return mInfo->getBlockType();
 }
 
-void Being::setMoveSpeed(Vector speed)
+void Being::setMoveSpeed(const Vector &speed)
 {
     mMoveSpeed = speed;
     // If we already can, recalculate the system speed right away.

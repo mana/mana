@@ -615,7 +615,7 @@ int PlayerHandler::getJobLocation()
     return JOB;
 }
 
-Vector PlayerHandler::getDefaultMoveSpeed()
+Vector PlayerHandler::getDefaultMoveSpeed() const
 {
     // Return an normalized speed for any side
     // as the offset is calculated elsewhere.
@@ -623,30 +623,23 @@ Vector PlayerHandler::getDefaultMoveSpeed()
     return Vector(15.0f, 15.0f, 0.0f);
 }
 
-Vector PlayerHandler::getPixelsPerTickMoveSpeed(Vector speed, Map *map)
+Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
 {
     Game *game = Game::instance();
 
     if (game && !map)
         map = game->getCurrentMap();
 
-    if (!map)
+    if (!map || speed.x == 0 || speed.y == 0)
     {
-        logger->log("TmwAthena::PlayerHandler: Speed not given back"
-                    " because Map not yet initialized.");
-        return Vector(0.0f, 0.0f, 0.0f);
-    }
-
-    if (speed.x == 0 || speed.y == 0)
-    {
-        logger->log("TmwAthena::PlayerHandler: "
-                    "Invalid Speed given from server.");
-        speed = getDefaultMoveSpeed();
+        logger->log("TmwAthena::PlayerHandler: Speed set to default: "
+                    "Map not yet initialized or invalid speed.");
+        return getDefaultMoveSpeed();
     }
 
     Vector speedInTicks;
 
-    speedInTicks.z = 0; // We don't use z for now.
+    // speedInTicks.z = 0; // We don't use z for now.
     speedInTicks.x = 1 / speed.x * (float)map->getTileWidth();
     speedInTicks.y = 1 / speed.y * (float)map->getTileHeight();
 

@@ -66,14 +66,15 @@ class PlayerHandler
          * Get the original default movement speed.
          * Example:
          * In ticks per tiles for eAthena
-         * In pixels per second for Manaserv
+         * In tiles per second for Manaserv
          */
-        virtual Vector getDefaultMoveSpeed() = 0;
+        virtual Vector getDefaultMoveSpeed() const = 0;
 
         /**
          * Convert the original speed in pixel per tick for internal use.
          */
-        virtual Vector getPixelsPerTickMoveSpeed(Vector speed, Map *map = 0) = 0;
+        virtual Vector getPixelsPerTickMoveSpeed(const Vector &speed,
+                                                 Map *map = 0) = 0;
 
         /**
          * Tells whether the client has to use pixel paths.

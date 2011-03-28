@@ -22,9 +22,6 @@
 #ifndef NET_TA_BEINGHANDLER_H
 #define NET_TA_BEINGHANDLER_H
 
-#include "vector.h"
-
-#include "net/net.h"
 #include "net/tmwa/messagehandler.h"
 
 namespace TmwAthena {

@@ -310,9 +310,9 @@ class Being : public ActorSprite, public Mana::Listener
         /**
          * Sets the move speed.
          * in ticks per tile for eAthena,
-         * in tiles per second for Manaserv.
+         * in tiles per second for Manaserv (0.1 precision).
          */
-        void setMoveSpeed(Vector speed);
+        void setMoveSpeed(const Vector &speed);
 
         /**
          * Gets the original Move speed.
@@ -522,13 +522,13 @@ class Being : public ActorSprite, public Mana::Listener
         /**
          * Walk speed for x and y movement values.
          * In ticks per tile for eAthena,
-         * In pixels per ticks for Manaserv.
-         * @see MILLISECONDS_IN_A_TICK
+         * In pixels per second for Manaserv.
          */
         Vector mMoveSpeed;
 
         /**
          * Being speed in pixel per ticks. Used internally for the being logic.
+         * @see MILLISECONDS_IN_A_TICK
          */
         Vector mSpeedPixelsPerTick;
 

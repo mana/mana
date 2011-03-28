@@ -71,7 +71,6 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
     //       these translations aren't necessary anymore. The sprites know
     //       best where their base point should be.
     const int px = getPixelX() + offsetX - 16;
-    // Temporary fix to the Y offset.
     const int py = getPixelY() + offsetY - 16;
 
     if (mUsedTargetCursor)
