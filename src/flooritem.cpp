@@ -38,11 +38,7 @@ FloorItem::FloorItem(int id,
 {
     setMap(map);
 
-    // TODO: Eventually, we probably should fix all sprite offsets so that
-    //       these translations aren't necessary anymore. The sprites know
-    //       best where their base point should be.
-    mPos.x = x * map->getTileWidth() + 16;
-    mPos.y = y * map->getTileHeight() + 16;
+    mPos = map->getTileCenter(x, y);
 
     setupSpriteDisplay(itemDb->get(itemId).getDisplay());
 }

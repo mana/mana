@@ -607,6 +607,18 @@ bool Map::occupied(int x, int y) const
     return false;
 }
 
+Vector Map::getTileCenter(int x, int y)
+{
+    Vector tileCenterPos;
+
+    if (!contains(x, y))
+        return tileCenterPos;
+
+    tileCenterPos.x = x * mTileWidth + mTileWidth / 2;
+    tileCenterPos.y = y * mTileHeight + mTileHeight / 2;
+    return tileCenterPos;
+}
+
 bool Map::contains(int x, int y) const
 {
     return x >= 0 && y >= 0 && x < mWidth && y < mHeight;

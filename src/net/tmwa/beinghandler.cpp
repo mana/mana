@@ -101,18 +101,15 @@ Being *createBeing(int id, short job)
     return being;
 }
 
-static void handleMoveMessage(Uint16 srcX, Uint16 srcY,
-                              Uint16 dstX, Uint16 dstY,
-                              Being *dstBeing, int tileWidth, int tileHeight)
+static void handleMoveMessage(Map *map, Being *dstBeing,
+                              Uint16 srcX, Uint16 srcY,
+                              Uint16 dstX, Uint16 dstY)
 {
     // Avoid dealing with flawed destination
-    if (srcX && srcY && dstX && dstY)
+    if (map && dstBeing && srcX && srcY && dstX && dstY)
     {
-        Vector pos(srcX * tileWidth + tileWidth / 2,
-                  srcY * tileHeight + tileHeight / 2);
-
-        Vector dest(dstX * tileWidth + tileWidth / 2,
-                    dstY * tileHeight + tileHeight / 2);
+        Vector pos = map->getTileCenter(srcX, srcY);
+        Vector dest = map->getTileCenter(dstX, dstY);
 
         // Don't set the position as the movement algorithm
         // can guess it and it would break the animation played,
@@ -125,14 +122,13 @@ static void handleMoveMessage(Uint16 srcX, Uint16 srcY,
     }
 }
 
-static void handlePosMessage(Uint16 x, Uint16 y, Being *dstBeing,
-                             int tileWidth, int tileHeight, Uint8 dir = 0)
+static void handlePosMessage(Map *map, Being *dstBeing, Uint16 x, Uint16 y,
+                             Uint8 dir = 0)
 {
     // Avoid dealing with flawed destination
-    if (x && y)
+    if (map && dstBeing && x && y)
     {
-        Vector pos(x * tileWidth + tileWidth / 2,
-                    y * tileHeight + tileHeight / 2);
+        Vector pos =  map->getTileCenter(x, y);
         Vector beingPos = dstBeing->getPosition();
         // Don't set the position as the movement algorithm
         // can guess it and it would break the animation played,
@@ -171,8 +167,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
     // Prepare useful translation variables
     Map *map = Game::instance()->getCurrentMap();
-    int tileWidth = map->getTileWidth();
-    int tileHeight = map->getTileHeight();
 
     switch (msg.getId())
     {
@@ -264,15 +258,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                handleMoveMessage(srcX, srcY, dstX, dstY, dstBeing,
-                                  tileWidth, tileHeight);
+                handleMoveMessage(map, dstBeing, srcX, srcY, dstX, dstY);
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                handlePosMessage(x, y, dstBeing, tileWidth, tileHeight, dir);
+                handlePosMessage(map, dstBeing, x, y, dir);
             }
 
             msg.readInt8();   // unknown
@@ -312,8 +305,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             Uint16 srcX, srcY, dstX, dstY;
             msg.readCoordinatePair(srcX, srcY, dstX, dstY);
             msg.readInt32();  // Server tick
-            handleMoveMessage(srcX, srcY, dstX, dstY, dstBeing,
-                              tileWidth, tileHeight);
+            handleMoveMessage(map, dstBeing, srcX, srcY, dstX, dstY);
         }
             break;
 
@@ -624,15 +616,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                handleMoveMessage(srcX, srcY, dstX, dstY, dstBeing,
-                                  tileWidth, tileHeight);
+                handleMoveMessage(map, dstBeing, srcX, srcY, dstX, dstY);
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                handlePosMessage(x, y, dstBeing, tileWidth, tileHeight, dir);
+                handlePosMessage(map, dstBeing, x, y, dir);
             }
 
             gmstatus = msg.readInt16();
@@ -687,7 +678,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     Uint16 x, y;
                     x = msg.readInt16();
                     y = msg.readInt16();
-                    handlePosMessage(x, y, dstBeing, tileWidth, tileHeight);
+                    handlePosMessage(map, dstBeing, x, y);
                 }
             }
             break;

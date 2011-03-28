@@ -267,6 +267,14 @@ class Map : public Properties
         int getTileHeight() const
         { return mTileHeight; }
 
+        /**
+         * Returns the nearest tile center position in pixels coordinates.
+         *
+         * @param x the horizontal tile position
+         * @param y the vertical tile position
+         */
+        Vector getTileCenter(int x, int y);
+
         const std::string getMusicFile() const;
         const std::string getName() const;
 

@@ -202,21 +202,18 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
                 /* Scroll if necessary */
                 Map *map = game->getCurrentMap();
-                int tileWidth = map->getTileWidth();
-                int tileHeight = map->getTileHeight();
                 int tileX = player_node->getTileX();
                 int tileY = player_node->getTileY();
                 if (!sameMap
                     || (abs(x - tileX) > MAP_TELEPORT_SCROLL_DISTANCE)
                     || (abs(y - tileY) > MAP_TELEPORT_SCROLL_DISTANCE))
                 {
-                    scrollOffsetX = (x - tileX) * tileWidth;
-                    scrollOffsetY = (y - tileY) * tileHeight;
+                    scrollOffsetX = (x - tileX) * map->getTileWidth();
+                    scrollOffsetY = (y - tileY) * map->getTileHeight();
                 }
 
                 player_node->setAction(Being::STAND);
-                Vector pos(x * tileWidth + tileWidth / 2,
-                           y * tileHeight + tileHeight / 2);
+                Vector pos = map->getTileCenter(x, y);
                 player_node->setPosition(pos);
                 // Stop movement
                 player_node->setDestination(pos.x, pos.y);
