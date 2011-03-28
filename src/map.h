@@ -294,25 +294,19 @@ class Map : public Properties
         { return checkNodeOffsets(radius, walkMask, Position(x, y)); }
 
         /**
-         * Find a pixel path from one location to the next.
-         * Path node are centered on their corresponding tiles in that case.
+         * Find a tile-centered path in pixel coordinates
+         * from one location to the next.
          */
         Path findTilePath(int startPixelX, int startPixelY, int endPixelX,
                           int endPixelY, unsigned char walkMask,
                           int maxCost = 20);
 
         /**
-         * Find a pixel path from one location to the next.
+         * Find a pixel path from one location to the next using free offsets.
          */
         Path findPixelPath(int startPixelX, int startPixelY,
                           int destPixelX, int destPixelY,
                           int radius, unsigned char walkmask, int maxCost = 20);
-
-        /**
-         * Find a path from one location to the next.
-         */
-        Path findPath(int startX, int startY, int destX, int destY,
-                      unsigned char walkmask, int maxCost = 20);
 
         /**
          * Adds a particle effect
@@ -353,6 +347,11 @@ class Map : public Properties
         void removeActor(Actors::iterator iterator);
 
     private:
+        /**
+         * Find a path from one location to the next in tile coordinates.
+         */
+        Path findPath(int startX, int startY, int destX, int destY,
+                      unsigned char walkmask, int maxCost = 20);
 
         enum LayerType
         {
