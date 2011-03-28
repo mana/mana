@@ -22,23 +22,27 @@
 #include "flooritem.h"
 
 #include "net/net.h"
+#include "net/playerhandler.h"
 
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
 FloorItem::FloorItem(int id,
                      int itemId,
-                     int x,
-                     int y,
+                     const Vector &position,
                      Map *map):
     ActorSprite(id),
     mItemId(itemId),
-    mX(x),
-    mY(y)
+    mX(0), mY(0)
 {
-    setMap(map);
+    mPos = position;
 
-    mPos = map->getTileCenter(x, y);
+    setMap(map);
+    if (map)
+    {
+        mX = (int)position.x / map->getTileWidth();
+        mY = (int)position.y / map->getTileHeight();
+    }
 
     setupSpriteDisplay(itemDb->get(itemId).getDisplay());
 }
