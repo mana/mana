@@ -196,6 +196,14 @@ void CharHandler::handleCharacterDeleteResponse(Net::MessageIn &msg)
     if (errMsg == ERRMSG_OK)
     {
         // Character deletion successful
+        for (unsigned i = 0; i < mCachedCharacterInfos.size(); ++i)
+        {
+            if (mCachedCharacterInfos[i].slot == mSelectedCharacter->slot)
+            {
+                mCachedCharacterInfos.erase(mCachedCharacterInfos.begin() + i);
+                break;
+            }
+        }
         delete mSelectedCharacter;
         mCharacters.remove(mSelectedCharacter);
         updateCharSelectDialog();
@@ -248,9 +256,20 @@ void CharHandler::handleCharacterSelectResponse(Net::MessageIn &msg)
 
         Client::setState(STATE_CONNECT_GAME);
     }
-    else if (errMsg == ERRMSG_FAILURE)
+    else
     {
-        errorMessage = _("No gameservers are available.");
+        switch (errMsg)
+        {
+            case ERRMSG_FAILURE:
+                errorMessage = _("No gameservers are available.");
+                break;
+            case ERRMSG_INVALID_ARGUMENT:
+                errorMessage = _("Invalid character slot selected.");
+                break;
+            default:
+                errorMessage = strprintf(_("Unhandled character select "
+                                           "error message %i."), errMsg);
+        }
         delete_all(mCharacters);
         mCharacters.clear();
         Client::setState(STATE_ERROR);
