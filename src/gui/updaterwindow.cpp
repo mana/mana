@@ -106,7 +106,8 @@ std::vector<updateFile> loadTxtFile(const std::string &fileName)
             thisFile.required = true;
             thisFile.desc = "";
 
-            files.push_back(thisFile);
+            if (!thisFile.name.empty())
+                files.push_back(thisFile);
         }
     }
     else
