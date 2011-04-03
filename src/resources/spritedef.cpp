@@ -164,6 +164,8 @@ void SpriteDef::loadImageSet(xmlNodePtr node, const std::string &palettes)
         logger->error("Couldn't load imageset!");
     }
 
+    imageSet->setOffsetX(XML::getProperty(node, "offsetX", 0));
+    imageSet->setOffsetY(XML::getProperty(node, "offsetY", 0));
     mImageSets[name] = imageSet;
 }
 
@@ -229,8 +231,10 @@ void SpriteDef::loadAnimation(xmlNodePtr animationNode,
     {
         const int delay = XML::getProperty(frameNode, "delay",
                                            DEFAULT_FRAME_DELAY);
-        int offsetX = XML::getProperty(frameNode, "offsetX", 0);
-        int offsetY = XML::getProperty(frameNode, "offsetY", 0);
+        int offsetX = XML::getProperty(frameNode, "offsetX", 0) +
+                imageSet->getOffsetX();
+        int offsetY = XML::getProperty(frameNode, "offsetY", 0) +
+                imageSet->getOffsetY();
 
         if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
         {

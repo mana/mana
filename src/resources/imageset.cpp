@@ -27,7 +27,10 @@
 
 #include "utils/dtor.h"
 
-ImageSet::ImageSet(Image *img, int width, int height, int margin, int spacing)
+ImageSet::ImageSet(Image *img, int width, int height,
+                   int margin, int spacing) :
+    mOffsetX(0),
+    mOffsetY(0)
 {
     for (int y = margin; y + height <= img->getHeight() - margin; y += height + spacing)
     {
