@@ -170,6 +170,7 @@ InstallDir "$PROGRAMFILES\Mana"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
+RequestExecutionLevel admin
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
