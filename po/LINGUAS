@@ -1,38 +1,38 @@
 # Set of available languages.
-#ar # Disabled because of current client limitations (shaping, RTL)
-#bg # Not enough translations
-#ca # Not enough translations
-#cs # Not enough translations
-da
+#ar    # Disabled because of current client limitations (shaping, RTL)
+#bg    # Not enough translations
+#ca    # Not enough translations
+#cs    # Not enough translations
+#da    # not enough translations
 de
-en_GB
-#eo # Not enough translations
+#en_GB # Not enough translations
+#eo    # Not enough translations
 es
-#et # Not enough translations
-#fa # Disabled because of current client limitations (shaping, RTL)
-#fi # Not enough translations
+#et    # Not enough translations
+#fa    # Disabled because of current client limitations (shaping, RTL)
+#fi    # Not enough translations
 fr
-#he # Disabled because of current client limitations (RTL)
-hr
-hu
-#id # Not enough translations
-it
-#ja # Disabled because of current client limitations (font fallbacking)
-#ka # Not enough translations
-#nb # Not enough translations
-#nds # Not enough translations
-nl
-pl
-pt
+#he    # Disabled because of current client limitations (RTL)
+#hr    # Not enough translations
+#hu    # Not enough translations
+#id    # Not enough translations
+#it    # Not enough translations
+#ja    # Disabled because of current client limitations (font fallbacking)
+#ka    # Not enough translations
+#nb    # Not enough translations
+#nds   # Not enough translations
+#nl    # Not enough translations
+#pl    # Not enough translations
+#pt    # Not enough translations
 pt_BR
 ru
-#sk # Not enough translations
-#sq # Not enough translations
-sv
-#te # Disabled because of current client limitations (font fallbacking)
-#th # Disabled because of current client limitations (font fallbacking)
-#tr # Not enough translations
-#uk # Not enough translations
+#sk    # Not enough translations
+#sq    # Not enough translations
+#sv    # Not enough translations
+#te    # Disabled because of current client limitations (font fallbacking)
+#th    # Disabled because of current client limitations (font fallbacking)
+#tr    # Not enough translations
+#uk    # Not enough translations
 #zh_CN # Disabled because of current client limitations (font fallbacking)
 #zh_HK # Disabled because of current client limitations (font fallbacking)
 #zh_TW # Disabled because of current client limitations (font fallbacking)
