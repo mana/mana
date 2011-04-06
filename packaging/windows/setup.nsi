@@ -237,16 +237,6 @@ Section "Core files (required)" SecCore
   File "${SRCDIR}\docs\FAQ.txt"
 SectionEnd
 
-Section /o "Music" SecMusic
-  AddSize 17602
-  CreateDirectory "$INSTDIR\data\music"
-  SetOutPath "$INSTDIR\data\music"
-  NSISdl::download "http://downloads.sourceforge.net/themanaworld/tmwmusic-0.2.tar.gz" "$TEMP\tmwmusic-0.2.tar.gz"
-  ;Requires an additional plugin from http://nsis.sourceforge.net/UnTGZ_plug-in  Place untgz.dll in your nsis/plugin dir
-  untgz::extract -j -d "$INSTDIR\data\music" "$TEMP\tmwmusic-0.2.tar.gz"
-  Delete "$TEMP\tmwmusic-0.2.tar.gz"
-SectionEnd
-
 Section /o "Portable" SecPortable
   SetOutPath "$INSTDIR"
   File "portable.xml"
@@ -260,7 +250,6 @@ SectionEnd
 ;Package descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "The core program files."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecMusic} "Background music. (If selected the music will be downloaded from the internet.)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecPortable} "Portable client. (If selected client will work as portable client.)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Translations for the user interface. Uncheck this component to leave it in English."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
