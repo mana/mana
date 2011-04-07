@@ -275,7 +275,7 @@ static void checkParameter(int id, const T param, const T errorValue)
         std::stringstream errMsg;
         errMsg << "ItemDB: Missing " << param << " attribute for item id "
                << id << "!";
-        logger->log(errMsg.str().c_str());
+        logger->log("%s", errMsg.str().c_str());
     }
 }
 
