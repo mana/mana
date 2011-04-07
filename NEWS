@@ -1,3 +1,17 @@
+0.5.1 (14 March 2011)
+- Added particle notification for "Unable to pick up item."
+- Added the amount of items picked up to the particle notification
+- Added more specific messages when failing to pick up an item
+- Added support for zlib map layer compression and CSV encoding
+- Fixed paste under X11
+- Fixed a segfault when attempting to buy free items
+- Fixed wallpaper loading logic
+- Fixed window icon branding on Windows
+- Fixed pick-up with joystick
+- Fixed enet and manaserv parts still being compiled in
+- Fixed query command handling
+- Updated German, French, Russian and Brazilian Portuguese translations
+
 0.5.0 (3 January 2011)
 - The Mana World client is now called the Mana client
 - Added support for branding the client differently via command line parameter

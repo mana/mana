@@ -620,8 +620,8 @@ SET(SRCS_MANA
     )
 
 IF (WIN32)
-    SET(SRCS_MANA
-        ${SRCS_MANA}
+    SET(SRCS
+        ${SRCS}
         utils/specialfolder.cpp
         utils/specialfolder.h
         mana.rc

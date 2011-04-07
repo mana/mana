@@ -107,6 +107,21 @@ enum
 };
 
 /**
+ * Reasons an item can fail to be picked up.
+ */
+enum
+{
+    PICKUP_OKAY,
+    PICKUP_BAD_ITEM,
+    PICKUP_TOO_HEAVY,
+    PICKUP_TOO_FAR,
+    PICKUP_INV_FULL,
+    PICKUP_STACK_FULL,
+    PICKUP_DROP_STEAL,
+};
+
+
+/**
  * The local player character.
  */
 class LocalPlayer : public Player
@@ -273,7 +288,8 @@ class LocalPlayer : public Player
         /**
          * Shows item pickup notifications.
          */
-        void pickedUp(const ItemInfo &itemInfo, int amount);
+        void pickedUp(const ItemInfo &itemInfo, int amount,
+                      unsigned char fail);
 
         int getHp() const
         { return mHp; }

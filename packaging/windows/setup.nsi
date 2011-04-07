@@ -170,6 +170,7 @@ InstallDir "$PROGRAMFILES\Mana"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
+RequestExecutionLevel admin
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
@@ -198,7 +199,22 @@ Section "Core files (required)" SecCore
   SetOutPath "$INSTDIR"
 
   File "${EXEDIR}\mana.exe"
-  File "${DLLDIR}\*.dll"
+  File "${DLLDIR}\guichan.dll"
+  File "${DLLDIR}\guichan_sdl.dll"
+  File "${DLLDIR}\libcurl-4.dll"
+  File "${DLLDIR}\libiconv2.dll"
+  File "${DLLDIR}\libiconv-2.dll"
+  File "${DLLDIR}\libintl3.dll"
+  File "${DLLDIR}\libpng12-0.dll"
+  File "${DLLDIR}\libxml2-2.dll"
+  File "${DLLDIR}\physfs.dll"
+  File "${DLLDIR}\SDL.dll"
+  File "${DLLDIR}\SDL_gfx.dll"
+  File "${DLLDIR}\SDL_image.dll"
+  File "${DLLDIR}\SDL_mixer.dll"
+  File "${DLLDIR}\SDL_net.dll"
+  File "${DLLDIR}\SDL_ttf.dll"
+  File "${DLLDIR}\zlib1.dll"
   File "${SRCDIR}\AUTHORS"
   File "${SRCDIR}\COPYING"
   File "${SRCDIR}\NEWS"
@@ -221,16 +237,6 @@ Section "Core files (required)" SecCore
   File "${SRCDIR}\docs\FAQ.txt"
 SectionEnd
 
-Section /o "Music" SecMusic
-  AddSize 17602
-  CreateDirectory "$INSTDIR\data\music"
-  SetOutPath "$INSTDIR\data\music"
-  NSISdl::download "http://downloads.sourceforge.net/themanaworld/tmwmusic-0.2.tar.gz" "$TEMP\tmwmusic-0.2.tar.gz"
-  ;Requires an additional plugin from http://nsis.sourceforge.net/UnTGZ_plug-in  Place untgz.dll in your nsis/plugin dir
-  untgz::extract -j -d "$INSTDIR\data\music" "$TEMP\tmwmusic-0.2.tar.gz"
-  Delete "$TEMP\tmwmusic-0.2.tar.gz"
-SectionEnd
-
 Section /o "Portable" SecPortable
   SetOutPath "$INSTDIR"
   File "portable.xml"
@@ -244,9 +250,8 @@ SectionEnd
 ;Package descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "The core program files."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecMusic} "Background music. (If selected the music will be downloaded from the internet.)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecPortable} "Portable client. (If selected client will work as portable client.)"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Translations for the user interface into 23 different languages. Uncheck this component to leave it in English."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Translations for the user interface. Uncheck this component to leave it in English."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
