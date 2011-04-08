@@ -62,7 +62,7 @@ ActorSprite::~ActorSprite()
     // Notify listeners of the destruction.
     Mana::Event event(Mana::Event::Destroyed);
     event.setActor("source", this);
-    event.trigger(CHANNEL_ACTORSPRITE);
+    event.trigger(Mana::Event::ActorSpriteChannel);
 }
 
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
@@ -259,7 +259,7 @@ void ActorSprite::updateStunMode(int oldMode, int newMode)
         Mana::Event event(Mana::Event::Stun);
         event.setInt("oldMode", oldMode);
         event.setInt("newMode", newMode);
-        event.trigger(CHANNEL_ACTORSPRITE);
+        event.trigger(Mana::Event::ActorSpriteChannel);
     }
 
     handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
@@ -273,7 +273,7 @@ void ActorSprite::updateStatusEffect(int index, bool newStatus)
         Mana::Event event(Mana::Event::UpdateStatusEffect);
         event.setInt("index", index);
         event.setBool("newStatus", newStatus);
-        event.trigger(CHANNEL_ACTORSPRITE);
+        event.trigger(Mana::Event::ActorSpriteChannel);
     }
 
     handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);

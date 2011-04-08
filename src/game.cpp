@@ -128,7 +128,7 @@ ChatTab *localChatTab = NULL;
  */
 static void initEngines()
 {
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::EnginesInitializing);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::EnginesInitializing);
 
     actorSpriteManager = new ActorSpriteManager;
     commandHandler = new CommandHandler;
@@ -138,7 +138,7 @@ static void initEngines()
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();
 
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::EnginesInitialized);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::EnginesInitialized);
 }
 
 /**
@@ -146,7 +146,7 @@ static void initEngines()
  */
 static void createGuiWindows()
 {
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::GuiWindowsLoading);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::GuiWindowsLoading);
 
     setupWindow->clearWindowsForReset();
 
@@ -183,7 +183,7 @@ static void createGuiWindows()
 
     NpcDialog::setup();
 
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::GuiWindowsLoaded);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::GuiWindowsLoaded);
 }
 
 #define del_0(X) { delete X; X = 0; }
@@ -193,7 +193,7 @@ static void createGuiWindows()
  */
 static void destroyGuiWindows()
 {
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::GuiWindowsUnloading);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::GuiWindowsUnloading);
 
     del_0(localChatTab) // Need to do this first, so it can remove itself
     del_0(chatWindow)
@@ -212,9 +212,9 @@ static void destroyGuiWindows()
     del_0(specialsWindow)
     del_0(socialWindow)
 
-    Mana::Event::trigger(CHANNEL_NPC, Mana::Event::CloseAll); // Cleanup remaining NPC dialogs
+    Mana::Event::trigger(Mana::Event::NpcChannel, Mana::Event::CloseAll); // Cleanup remaining NPC dialogs
 
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::GuiWindowsUnloaded);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::GuiWindowsUnloaded);
 }
 
 Game *Game::mInstance = 0;
@@ -266,12 +266,12 @@ Game::Game():
 
     setupWindow->setInGame(true);
 
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::Constructed);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::Constructed);
 }
 
 Game::~Game()
 {
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::Destructing);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::Destructing);
 
     delete mWindowMenu;
 
@@ -289,7 +289,7 @@ Game::~Game()
 
     mInstance = 0;
 
-    Mana::Event::trigger(CHANNEL_GAME, Mana::Event::Destructed);
+    Mana::Event::trigger(Mana::Event::GameChannel, Mana::Event::Destructed);
 }
 
 static bool saveScreenshot()
@@ -992,5 +992,5 @@ void Game::changeMap(const std::string &mapPath)
 
     Mana::Event event(Mana::Event::MapLoaded);
     event.setString("mapPath", mapPath);
-    event.trigger(CHANNEL_GAME);
+    event.trigger(Mana::Event::GameChannel);
 }

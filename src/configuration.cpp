@@ -40,7 +40,7 @@ void Configuration::setValue(const std::string &key, const std::string &value)
     // Notify listeners
     Mana::Event event(Mana::Event::ConfigOptionChanged);
     event.setString("option", key);
-    event.trigger(CHANNEL_CONFIG);
+    event.trigger(Mana::Event::ConfigChannel);
 }
 
 std::string ConfigurationObject::getValue(const std::string &key,

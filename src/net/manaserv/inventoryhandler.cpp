@@ -52,7 +52,7 @@ InventoryHandler::InventoryHandler()
     handledMessages = _messages;
     inventoryHandler = this;
 
-    listen(CHANNEL_ITEM);
+    listen(Mana::Event::ItemChannel);
 }
 
 void InventoryHandler::handleMessage(Net::MessageIn &msg)
@@ -108,10 +108,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void InventoryHandler::event(Channels channel,
+void InventoryHandler::event(Mana::Event::Channel channel,
                              const Mana::Event &event)
 {
-    if (channel == CHANNEL_ITEM)
+    if (channel == Mana::Event::ItemChannel)
     {
         Item *item = event.getItem("item");
 

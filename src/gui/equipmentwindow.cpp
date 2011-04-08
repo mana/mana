@@ -113,7 +113,7 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
     if (event.getId() == "unequip" && mSelected > -1)
     {
         Item *item = mEquipment->getEquipment(mSelected);
-        item->doEvent(EVENT_DOUNEQUIP);
+        item->doEvent(Mana::Event::DoUnequip);
         setSelected(-1);
     }
 }

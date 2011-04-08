@@ -349,7 +349,7 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
         Mana::Event event(Mana::Event::DoMove);
         event.setItem("item", item);
         event.setInt("newIndex", index);
-        event.trigger(CHANNEL_ITEM);
+        event.trigger(Mana::Event::ItemChannel);
     }
     selectNone();
 }
@@ -421,7 +421,7 @@ void ItemContainer::keyAction()
         Mana::Event event(Mana::Event::DoMove);
         event.setItem("item", item);
         event.setInt("newIndex", mHighlightedIndex);
-        event.trigger(CHANNEL_ITEM);
+        event.trigger(Mana::Event::ItemChannel);
         setSelectedIndex(mHighlightedIndex);
     }
     // If the highlight is on an item then select it.
@@ -437,7 +437,7 @@ void ItemContainer::keyAction()
         Mana::Event event(Mana::Event::DoMove);
         event.setItem("item", item);
         event.setInt("newIndex", mHighlightedIndex);
-        event.trigger(CHANNEL_ITEM);
+        event.trigger(Mana::Event::ItemChannel);
         selectNone();
     }
 }

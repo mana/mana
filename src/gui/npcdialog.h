@@ -145,7 +145,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
 
         void setVisible(bool visible);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Mana::Event::Channel channel, const Mana::Event &event);
 
         /**
          * Returns the first active instance. Useful for pushing user

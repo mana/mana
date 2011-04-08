@@ -174,7 +174,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     event.setInt("permissions", player_relations
                  .checkPermissionSilently(being->getName(),
                  PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT));
-    event.trigger(CHANNEL_CHAT);
+    event.trigger(Mana::Event::ChatChannel);
 }
 
 void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
@@ -237,7 +237,7 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
     Mana::Event event(Mana::Event::Whisper);
     event.setString("nick", userNick);
     event.setString("message", chatMsg);
-    event.trigger(CHANNEL_CHAT);
+    event.trigger(Mana::Event::ChatChannel);
 }
 
 void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
@@ -245,7 +245,7 @@ void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
     std::string chatMsg = msg.readString();
     Mana::Event event(Mana::Event::Announcement);
     event.setString("message", chatMsg);
-    event.trigger(CHANNEL_CHAT);
+    event.trigger(Mana::Event::ChatChannel);
 }
 
 void ChatHandler::handleChatMessage(Net::MessageIn &msg)

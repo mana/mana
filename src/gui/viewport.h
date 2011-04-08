@@ -171,7 +171,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void shakeScreenStop()
         { mShakeEffects.clear(); }
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Mana::Event::Channel channel, const Mana::Event &event);
 
     private:
         /**

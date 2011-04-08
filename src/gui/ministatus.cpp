@@ -47,7 +47,7 @@ extern volatile int tick_time;
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
-    listen(CHANNEL_ATTRIBUTES);
+    listen(Mana::Event::AttributesChannel);
 
     mHpBar = new ProgressBar(0, 100, 20, Theme::PROG_HP);
     StatusWindow::updateHPBar(mHpBar);
@@ -119,9 +119,10 @@ void MiniStatusWindow::drawIcons(Graphics *graphics)
     }
 }
 
-void MiniStatusWindow::event(Channels channel, const Mana::Event &event)
+void MiniStatusWindow::event(Mana::Event::Channel channel,
+                             const Mana::Event &event)
 {
-    if (channel == CHANNEL_ATTRIBUTES)
+    if (channel == Mana::Event::AttributesChannel)
     {
         if (event.getType() == Mana::Event::UpdateAttribute)
         {
@@ -140,7 +141,7 @@ void MiniStatusWindow::event(Channels channel, const Mana::Event &event)
             }
         }
     }
-    else if (channel == CHANNEL_ACTORSPRITE)
+    else if (channel == Mana::Event::ActorSpriteChannel)
     {
         if (event.getType() == Mana::Event::UpdateStatusEffect)
         {

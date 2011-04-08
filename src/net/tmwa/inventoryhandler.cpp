@@ -110,7 +110,7 @@ InventoryHandler::InventoryHandler()
     mStorage = 0;
     mStorageWindow = 0;
 
-    listen(CHANNEL_ITEM);
+    listen(Mana::Event::ItemChannel);
 }
 
 InventoryHandler::~InventoryHandler()
@@ -431,10 +431,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void InventoryHandler::event(Channels channel,
+void InventoryHandler::event(Mana::Event::Channel channel,
                              const Mana::Event &event)
 {
-    if (channel == CHANNEL_ITEM)
+    if (channel == Mana::Event::ItemChannel)
     {
         if (event.getType() == Mana::Event::DoCloseInventory)
         {

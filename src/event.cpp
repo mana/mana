@@ -26,7 +26,7 @@
 namespace Mana
 {
 
-ListenMap Event::mBindings;
+Event::ListenMap Event::mBindings;
 
 Event::~Event()
 {
@@ -215,7 +215,7 @@ bool Event::hasActor(const std::string &key) const
 
 // Triggers
 
-void Event::trigger(Channels channel, const Event &event)
+void Event::trigger(Channel channel, const Event &event)
 {
     ListenMap::iterator it = mBindings.find(channel);
 
@@ -232,12 +232,12 @@ void Event::trigger(Channels channel, const Event &event)
     }
 }
 
-void Event::bind(Listener *listener, Channels channel)
+void Event::bind(Listener *listener, Channel channel)
 {
     mBindings[channel].insert(listener);
 }
 
-void Event::unbind(Listener *listener, Channels channel)
+void Event::unbind(Listener *listener, Channel channel)
 {
     mBindings[channel].erase(listener);
 }

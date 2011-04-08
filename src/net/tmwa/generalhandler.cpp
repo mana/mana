@@ -108,7 +108,7 @@ GeneralHandler::GeneralHandler():
 
     setStatsList(stats);
 
-    listen(CHANNEL_GAME);
+    listen(Mana::Event::GameChannel);
 }
 
 GeneralHandler::~GeneralHandler()
@@ -217,10 +217,10 @@ void GeneralHandler::clearHandlers()
     mNetwork->clearHandlers();
 }
 
-void GeneralHandler::event(Channels channel,
+void GeneralHandler::event(Mana::Event::Channel channel,
                            const Mana::Event &event)
 {
-    if (channel == CHANNEL_GAME)
+    if (channel == Mana::Event::GameChannel)
     {
         if (event.getType() == Mana::Event::GuiWindowsLoaded)
         {

@@ -218,7 +218,7 @@ class Theme : public Palette, public Mana::Listener
          */
         void setMinimumOpacity(float minimumOpacity);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Mana::Event::Channel channel, const Mana::Event &event);
 
     private:
         Theme();

@@ -33,11 +33,11 @@ class Listener
 public:
     virtual ~Listener();
 
-    void listen(Channels channel);
+    void listen(Event::Channel channel);
 
-    void ignore(Channels channel);
+    void ignore(Event::Channel channel);
 
-    virtual void event(Channels channel, const Event &event) = 0;
+    virtual void event(Event::Channel channel, const Event &event) = 0;
 };
 
 } // namespace Mana

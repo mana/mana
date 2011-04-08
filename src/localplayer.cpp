@@ -85,7 +85,7 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mAfkTime(0),
     mAwayMode(false)
 {
-    listen(CHANNEL_ATTRIBUTES);
+    listen(Mana::Event::AttributesChannel);
 
     mAwayListener = new AwayListener();
 
@@ -93,8 +93,8 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
     setShowName(config.getValue("showownname", 1));
 
-    listen(CHANNEL_CONFIG);
-    listen(CHANNEL_ACTORSPRITE);
+    listen(Mana::Event::ConfigChannel);
+    listen(Mana::Event::ActorSpriteChannel);
 }
 
 LocalPlayer::~LocalPlayer()
@@ -1105,9 +1105,9 @@ void LocalPlayer::addMessageToQueue(const std::string &message, int color)
     mMessages.push_back(MessagePair(message, color));
 }
 
-void LocalPlayer::event(Channels channel, const Mana::Event &event)
+void LocalPlayer::event(Mana::Event::Channel channel, const Mana::Event &event)
 {
-    if (channel == CHANNEL_ACTORSPRITE)
+    if (channel == Mana::Event::ActorSpriteChannel)
     {
         if (event.getType() == Mana::Event::Destroyed)
         {
@@ -1120,7 +1120,7 @@ void LocalPlayer::event(Channels channel, const Mana::Event &event)
                 mTarget = 0;
         }
     }
-    else if (channel == CHANNEL_ATTRIBUTES)
+    else if (channel == Mana::Event::AttributesChannel)
     {
         if (event.getType() == Mana::Event::UpdateAttribute)
         {
@@ -1133,7 +1133,7 @@ void LocalPlayer::event(Channels channel, const Mana::Event &event)
             }
         }
     }
-    else if (channel == CHANNEL_CONFIG)
+    else if (channel == Mana::Event::ConfigChannel)
     {
         if (event.getType() == Mana::Event::ConfigOptionChanged &&
             event.getString("option") == "showownname")

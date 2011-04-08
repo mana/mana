@@ -91,8 +91,8 @@ GeneralHandler::GeneralHandler():
 
     generalHandler = this;
 
-    listen(CHANNEL_CLIENT);
-    listen(CHANNEL_GAME);
+    listen(Mana::Event::ClientChannel);
+    listen(Mana::Event::GameChannel);
 }
 
 void GeneralHandler::load()
@@ -171,10 +171,10 @@ void GeneralHandler::clearHandlers()
     clearNetworkHandlers();
 }
 
-void GeneralHandler::event(Channels channel,
+void GeneralHandler::event(Mana::Event::Channel channel,
                            const Mana::Event &event)
 {
-    if (channel == CHANNEL_CLIENT)
+    if (channel == Mana::Event::ClientChannel)
     {
         if (event.getType() == Mana::Event::StateChange)
         {
@@ -192,7 +192,7 @@ void GeneralHandler::event(Channels channel,
             Attributes::informItemDB();
         }
     }
-    else if (channel == CHANNEL_GAME)
+    else if (channel == Mana::Event::GameChannel)
     {
         if (event.getType() == Mana::Event::GuiWindowsLoaded)
         {

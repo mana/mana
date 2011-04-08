@@ -28,22 +28,6 @@
 class ActorSprite;
 class Item;
 
-enum Channels
-{
-    CHANNEL_ACTORSPRITE,
-    CHANNEL_ATTRIBUTES,
-    CHANNEL_BUYSELL,
-    CHANNEL_CHAT,
-    CHANNEL_CLIENT,
-    CHANNEL_CONFIG,
-    CHANNEL_GAME,
-    CHANNEL_ITEM,
-    CHANNEL_NOTICES,
-    CHANNEL_NPC,
-    CHANNEL_STATUS,
-    CHANNEL_STORAGE
-};
-
 namespace Mana
 {
 
@@ -57,14 +41,28 @@ enum BadEvent {
 class Listener;
 
 typedef std::set<Listener *> ListenerSet;
-typedef std::map<Channels, ListenerSet > ListenMap;
-
 class VariableData;
 typedef std::map<std::string, VariableData *> VariableMap;
 
 class Event
 {
 public:
+    enum Channel
+    {
+        ActorSpriteChannel,
+        AttributesChannel,
+        BuySellChannel,
+        ChatChannel,
+        ClientChannel,
+        ConfigChannel,
+        GameChannel,
+        ItemChannel,
+        NoticesChannel,
+        NpcChannel,
+        StatusChannel,
+        StorageChannel
+    };
+
     enum Type
     {
         Announcement,
@@ -286,19 +284,19 @@ public:
     /**
      * Sends this event to all classes listening to the given channel.
      */
-    inline void trigger(Channels channel) const
+    inline void trigger(Channel channel) const
     { trigger(channel, *this); }
 
     /**
      * Sends the given event to all classes listening to the given channel.
      */
-    static void trigger(Channels channel, const Event &event);
+    static void trigger(Channel channel, const Event &event);
 
     /**
      * Sends an empty event with the given name to all classes listening to the
      * given channel.
      */
-    static inline void trigger(Channels channel, Type type)
+    static inline void trigger(Channel channel, Type type)
     { trigger(channel, Mana::Event(type)); }
 
 protected:
@@ -308,13 +306,13 @@ protected:
      * Binds the given listener to the given channel. The listener will receive
      * all events triggered on the channel.
      */
-    static void bind(Listener *listener, Channels channel);
+    static void bind(Listener *listener, Channel channel);
 
     /**
      * Unbinds the given listener from the given channel. The listener will no
      * longer receive any events from the channel.
      */
-    static void unbind(Listener *listener, Channels channel);
+    static void unbind(Listener *listener, Channel channel);
 
     /**
      * Unbinds the given listener from all channels.
@@ -322,6 +320,7 @@ protected:
     static void remove(Listener *listener);
 
 private:
+    typedef std::map<Channel, ListenerSet > ListenMap;
     static ListenMap mBindings;
 
     Type mType;
@@ -333,6 +332,6 @@ private:
 #define SERVER_NOTICE(message) { \
 Mana::Event event(Mana::Event::ServerNotice); \
 event.setString("message", message); \
-event.trigger(CHANNEL_NOTICES, event); }
+event.trigger(Mana::Event::NoticesChannel, event); }
 
 #endif // EVENT_H

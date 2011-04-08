@@ -133,7 +133,7 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
 
         void handleMessage(Net::MessageIn &msg);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Mana::Event::Channel channel, const Mana::Event &event);
 
         bool canSplit(const Item *item);
 

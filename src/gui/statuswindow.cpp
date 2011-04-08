@@ -96,7 +96,7 @@ class ChangeDisplay : public AttrDisplay, gcn::ActionListener
 StatusWindow::StatusWindow():
     Window(player_node->getName())
 {
-    listen(CHANNEL_ATTRIBUTES);
+    listen(Mana::Event::AttributesChannel);
 
     setWindowName("Status");
     setupWindow->registerWindowForReset(this);
@@ -217,7 +217,8 @@ StatusWindow::StatusWindow():
     mLvlLabel->adjustSize();
 }
 
-void StatusWindow::event(Channels channel, const Mana::Event &event)
+void StatusWindow::event(Mana::Event::Channel channel,
+                         const Mana::Event &event)
 {
     if (event.getType() == Mana::Event::UpdateAttribute)
     {

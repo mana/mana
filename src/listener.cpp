@@ -30,12 +30,12 @@ Listener::~Listener()
     Event::remove(this);
 }
 
-void Listener::listen(Channels channel)
+void Listener::listen(Event::Channel channel)
 {
     Event::bind(this, channel);
 }
 
-void Listener::ignore(Channels channel)
+void Listener::ignore(Event::Channel channel)
 {
     Event::unbind(this, channel);
 }

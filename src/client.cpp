@@ -471,12 +471,12 @@ Client::Client(const Options &options):
     // Initialize frame limiting
     SDL_initFramerate(&mFpsManager);
 
-    listen(CHANNEL_CONFIG);
+    listen(Mana::Event::ConfigChannel);
 
     //TODO: fix having to fake a option changed event
     Mana::Event fakeevent(Mana::Event::ConfigOptionChanged);
     fakeevent.setString("option", "fpslimit");
-    event(CHANNEL_CONFIG, fakeevent);
+    event(Mana::Event::ConfigChannel, fakeevent);
 
     // Initialize PlayerInfo
     PlayerInfo::init();
@@ -637,7 +637,7 @@ int Client::exec()
                 Mana::Event event(Mana::Event::StateChange);
                 event.setInt("oldState", mOldState);
                 event.setInt("newState", mState);
-                event.trigger(CHANNEL_CLIENT);
+                event.trigger(Mana::Event::ClientChannel);
             }
 
             if (mOldState == STATE_GAME)
@@ -797,7 +797,7 @@ int Client::exec()
                     paths.init("paths.xml", true);
                     paths.setDefaultValues(getPathsDefaults());
 
-                    Mana::Event::trigger(CHANNEL_CLIENT, Mana::Event::LoadingDatabases);
+                    Mana::Event::trigger(Mana::Event::ClientChannel, Mana::Event::LoadingDatabases);
 
                     // Load XML databases
                     ColorDB::load();
@@ -1072,9 +1072,9 @@ int Client::exec()
     return 0;
 }
 
-void Client::event(Channels channel, const Mana::Event &event)
+void Client::event(Mana::Event::Channel channel, const Mana::Event &event)
 {
-    if (channel == CHANNEL_CONFIG &&
+    if (channel == Mana::Event::ConfigChannel &&
         event.getType() == Mana::Event::ConfigOptionChanged &&
         event.getString("option") == "fpslimit")
     {

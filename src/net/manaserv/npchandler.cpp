@@ -75,7 +75,7 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
             event->setString("choice" + toString(count), msg.readString());
         }
         event->setInt("choiceCount", count);
-        event->trigger(CHANNEL_NPC);
+        event->trigger(Mana::Event::NpcChannel);
         break;
 
     case GPMSG_NPC_NUMBER:
@@ -84,43 +84,43 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
         event->setInt("min", msg.readInt32());
         event->setInt("max", msg.readInt32());
         event->setInt("default", msg.readInt32());
-        event->trigger(CHANNEL_NPC);
+        event->trigger(Mana::Event::NpcChannel);
         break;
 
     case GPMSG_NPC_STRING:
         event = new Mana::Event(Mana::Event::StringInput);
         event->setInt("id", npcId);
-        event->trigger(CHANNEL_NPC);
+        event->trigger(Mana::Event::NpcChannel);
         break;
 
     case GPMSG_NPC_POST:
         event = new Mana::Event(Mana::Event::Post);
         event->setInt("id", npcId);
-        event->trigger(CHANNEL_NPC);
+        event->trigger(Mana::Event::NpcChannel);
         break;
 
     case GPMSG_NPC_ERROR:
         event = new Mana::Event(Mana::Event::End);
         event->setInt("id", npcId);
-        event->trigger(CHANNEL_NPC);
+        event->trigger(Mana::Event::NpcChannel);
         break;
 
     case GPMSG_NPC_MESSAGE:
         event = new Mana::Event(Mana::Event::Message);
         event->setInt("id", npcId);
         event->setString("text", msg.readString(msg.getUnreadLength()));
-        event->trigger(CHANNEL_NPC);
+        event->trigger(Mana::Event::NpcChannel);
         delete event;
 
         event = new Mana::Event(Mana::Event::Next);
         event->setInt("id", npcId);
-        event->trigger(CHANNEL_NPC);
+        event->trigger(Mana::Event::NpcChannel);
         break;
 
     case GPMSG_NPC_CLOSE:
         event = new Mana::Event(Mana::Event::Close);
         event->setInt("id", npcId);
-        event->trigger(CHANNEL_NPC);
+        event->trigger(Mana::Event::NpcChannel);
         break;
     }
 
@@ -171,7 +171,7 @@ void NpcHandler::talk(int npcId)
 
     Mana::Event event(Mana::Event::TalkSent);
     event.setInt("npcId", npcId);
-    event.trigger(CHANNEL_NPC);
+    event.trigger(Mana::Event::NpcChannel);
 }
 
 void NpcHandler::nextDialog(int npcId)
@@ -182,7 +182,7 @@ void NpcHandler::nextDialog(int npcId)
 
     Mana::Event event(Mana::Event::NextSent);
     event.setInt("npcId", npcId);
-    event.trigger(CHANNEL_NPC);
+    event.trigger(Mana::Event::NpcChannel);
 }
 
 void NpcHandler::closeDialog(int npcId)
@@ -193,7 +193,7 @@ void NpcHandler::closeDialog(int npcId)
 
     Mana::Event event(Mana::Event::CloseSent);
     event.setInt("npcId", npcId);
-    event.trigger(CHANNEL_NPC);
+    event.trigger(Mana::Event::NpcChannel);
 }
 
 void NpcHandler::menuSelect(int npcId, int choice)
@@ -206,7 +206,7 @@ void NpcHandler::menuSelect(int npcId, int choice)
     Mana::Event event(Mana::Event::MenuSent);
     event.setInt("npcId", npcId);
     event.setInt("choice", choice);
-    event.trigger(CHANNEL_NPC);
+    event.trigger(Mana::Event::NpcChannel);
 }
 
 void NpcHandler::integerInput(int npcId, int value)
@@ -219,7 +219,7 @@ void NpcHandler::integerInput(int npcId, int value)
     Mana::Event event(Mana::Event::IntegerInputSent);
     event.setInt("npcId", npcId);
     event.setInt("value", value);
-    event.trigger(CHANNEL_NPC);
+    event.trigger(Mana::Event::NpcChannel);
 }
 
 void NpcHandler::stringInput(int npcId, const std::string &value)
@@ -232,7 +232,7 @@ void NpcHandler::stringInput(int npcId, const std::string &value)
     Mana::Event event(Mana::Event::StringInputSent);
     event.setInt("npcId", npcId);
     event.setString("value", value);
-    event.trigger(CHANNEL_NPC);
+    event.trigger(Mana::Event::NpcChannel);
 }
 
 void NpcHandler::sendLetter(int npcId, const std::string &recipient,
@@ -247,7 +247,7 @@ void NpcHandler::sendLetter(int npcId, const std::string &recipient,
     event.setInt("npcId", npcId);
     event.setString("recipient", recipient);
     event.setString("text", text);
-    event.trigger(CHANNEL_NPC);
+    event.trigger(Mana::Event::NpcChannel);
 }
 
 } // namespace ManaServ
