@@ -60,9 +60,6 @@ class ItemContainer : public gcn::Widget,
          */
         ItemContainer(Inventory *inventory, bool forceQuantity = false);
 
-        /**
-         * Destructor.
-         */
         virtual ~ItemContainer();
 
         /**

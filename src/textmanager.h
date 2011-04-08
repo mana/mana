@@ -30,9 +30,6 @@ class Text;
 class TextManager
 {
     public:
-        /**
-         * Constructor
-         */
         TextManager();
 
         /**

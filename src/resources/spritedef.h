@@ -113,14 +113,8 @@ class SpriteDef : public Resource
         makeSpriteDirection(const std::string &direction);
 
     private:
-        /**
-         * Constructor.
-         */
         SpriteDef() {}
 
-        /**
-         * Destructor.
-         */
         ~SpriteDef();
 
         /**

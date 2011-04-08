@@ -38,7 +38,8 @@
 
 namespace TmwAthena {
 
-class EquipBackend : public Equipment::Backend {
+class EquipBackend : public Equipment::Backend
+{
     public:
         EquipBackend()
         {

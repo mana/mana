@@ -38,14 +38,8 @@ class ItemPopup;
 class ItemShortcutContainer : public ShortcutContainer
 {
     public:
-        /**
-         * Constructor. Initializes the graphic.
-         */
         ItemShortcutContainer();
 
-        /**
-         * Destructor.
-         */
         virtual ~ItemShortcutContainer();
 
         /**

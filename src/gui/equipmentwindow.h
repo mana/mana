@@ -40,14 +40,8 @@ class ItemPopup;
 class EquipmentWindow : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         */
         EquipmentWindow(Equipment *equipment);
 
-        /**
-         * Destructor.
-         */
         ~EquipmentWindow();
 
         /**
@@ -91,25 +85,17 @@ namespace TmwAthena {
 class TaEquipmentWindow : public EquipmentWindow
 {
     public:
-        /**
-         * Constructor.
-         */
         TaEquipmentWindow(Equipment *equipment);
-
-        /**
-         * Destructor.
-         */
         ~TaEquipmentWindow();
 
         /**
          * Draws the equipment window using TmwAthena routine.
          */
         void draw(gcn::Graphics *graphics);
-
 };
 
-}; // namespace TmwAthena
+} // namespace TmwAthena
 
 extern EquipmentWindow *equipmentWindow;
 
-#endif
+#endif // EQUIPMENTWINDOW_H

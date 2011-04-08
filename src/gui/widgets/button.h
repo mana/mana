@@ -46,9 +46,6 @@ class Button : public gcn::Button
         Button(const std::string &caption, const std::string &actionEventId,
                 gcn::ActionListener *listener);
 
-        /**
-         * Destructor.
-         */
         ~Button();
 
         /**

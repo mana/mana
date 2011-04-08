@@ -37,14 +37,8 @@ class Label;
 class OutfitWindow : public Window, gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         */
         OutfitWindow();
 
-        /**
-         * Destructor.
-         */
         ~OutfitWindow();
 
         void action(const gcn::ActionEvent &event);

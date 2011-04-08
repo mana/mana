@@ -111,16 +111,8 @@ class ServerDialog : public Window,
                      public gcn::SelectionListener
 {
     public:
-        /**
-         * Constructor
-         *
-         * @see Window::Window
-         */
         ServerDialog(ServerInfo *serverInfo, const std::string &dir);
 
-        /**
-         * Destructor
-         */
         ~ServerDialog();
 
         /**

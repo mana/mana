@@ -43,16 +43,8 @@ class WorldListModel;
 class WorldSelectDialog : public Window, public gcn::ActionListener,
                           public gcn::KeyListener {
     public:
-        /**
-         * Constructor
-         *
-         * @see Window::Window
-         */
         WorldSelectDialog(Worlds worlds);
 
-        /**
-         * Destructor.
-         */
         ~WorldSelectDialog();
 
         /**

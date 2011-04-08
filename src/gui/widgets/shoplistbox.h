@@ -37,9 +37,6 @@ class ItemPopup;
 class ShopListBox : public ListBox
 {
     public:
-        /**
-         * Constructor.
-         */
         ShopListBox(gcn::ListModel *listModel);
 
         /**
@@ -47,9 +44,6 @@ class ShopListBox : public ListBox
          */
         ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel);
 
-        /**
-         * Destructor
-         */
         ~ShopListBox();
 
         /**

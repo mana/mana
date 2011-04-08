@@ -47,14 +47,8 @@ class SDLInput;
 class Gui : public gcn::Gui
 {
     public:
-        /**
-         * Constructor.
-         */
         Gui(Graphics *screen);
 
-        /**
-         * Destructor.
-         */
         ~Gui();
 
         /**

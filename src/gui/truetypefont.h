@@ -56,9 +56,6 @@ class TrueTypeFont : public gcn::Font
          */
         TrueTypeFont(const std::string &filename, int size, int style = 0);
 
-        /**
-         * Destructor.
-         */
         ~TrueTypeFont();
 
         virtual int getWidth(const std::string &text) const;

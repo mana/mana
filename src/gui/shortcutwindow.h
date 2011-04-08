@@ -35,14 +35,8 @@ class ShortcutContainer;
 class ShortcutWindow : public Window
 {
     public:
-        /**
-         * Constructor.
-         */
         ShortcutWindow(const std::string &title, ShortcutContainer *content);
 
-        /**
-         * Destructor.
-         */
         ~ShortcutWindow();
 
     private:

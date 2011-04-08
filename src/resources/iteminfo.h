@@ -76,9 +76,6 @@ class ItemInfo
     friend class ManaServ::ManaServItemDB;
 
     public:
-        /**
-         * Constructor.
-         */
         ItemInfo():
             mType(ITEM_UNUSABLE),
             mWeight(0),
@@ -219,16 +216,13 @@ class TaItemInfo: public ItemInfo
     friend class TaItemDB;
 
     public:
-        /**
-         * Constructor.
-         */
-        TaItemInfo():ItemInfo()
+        TaItemInfo() : ItemInfo()
         {}
 
         // Declare TmwAthena Specific item info here
 };
 
-}; // namespace TmwAthena
+} // namespace TmwAthena
 
 namespace ManaServ {
 
@@ -239,16 +233,13 @@ namespace ManaServ {
 class ManaServItemInfo: public ItemInfo
 {
     public:
-        /**
-         * Constructor.
-         */
-        ManaServItemInfo():ItemInfo()
+        ManaServItemInfo() : ItemInfo()
         {}
 
         // Declare Manaserv Specific item info here
 };
 
 
-}; // namespace ManaServ
+} // namespace ManaServ
 
 #endif

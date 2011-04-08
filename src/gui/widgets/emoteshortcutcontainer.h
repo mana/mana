@@ -35,14 +35,8 @@ class ImageSprite;
 class EmoteShortcutContainer : public ShortcutContainer
 {
     public:
-        /**
-         * Constructor. Initializes the graphic.
-         */
         EmoteShortcutContainer();
 
-        /**
-         * Destructor.
-         */
         virtual ~EmoteShortcutContainer();
 
         /**

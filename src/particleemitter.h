@@ -41,9 +41,6 @@ class Particle;
 class ParticleEmitter
 {
     public:
-        /**
-         * Constructor.
-         */
         ParticleEmitter(xmlNodePtr emitterNode,  Particle *target, Map *map, int rotation = 0);
 
         /**
@@ -56,9 +53,6 @@ class ParticleEmitter
          */
         ParticleEmitter & operator=(const ParticleEmitter &o);
 
-        /**
-         * Destructor.
-         */
         ~ParticleEmitter();
 
         /**

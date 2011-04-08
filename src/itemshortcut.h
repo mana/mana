@@ -32,14 +32,8 @@ class Item;
 class ItemShortcut
 {
     public:
-        /**
-         * Constructor.
-         */
         ItemShortcut();
 
-        /**
-         * Destructor.
-         */
         ~ItemShortcut();
 
         /**

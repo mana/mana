@@ -36,9 +36,6 @@
 class Music : public Resource
 {
     public:
-        /**
-         * Destructor.
-         */
         virtual ~Music();
 
         /**
@@ -68,9 +65,6 @@ class Music : public Resource
         virtual void stop();
 
     protected:
-        /**
-         * Constructor.
-         */
         Music(Mix_Chunk *music);
 
         //Mix_Music *music;

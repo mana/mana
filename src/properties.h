@@ -32,9 +32,6 @@
 class Properties
 {
     public:
-        /**
-         * Destructor.
-         */
         virtual ~Properties() {}
 
         /**

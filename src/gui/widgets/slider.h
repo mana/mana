@@ -31,7 +31,8 @@ class Image;
  *
  * \ingroup GUI
  */
-class Slider : public gcn::Slider {
+class Slider : public gcn::Slider
+{
     public:
         /**
          * Constructor with scale start equal to 0.
@@ -40,12 +41,12 @@ class Slider : public gcn::Slider {
 
         /**
          * Constructor.
+         *
+         * @param scaleStart The minimum value of the slider
+         * @param scaleEnd   The maximum value of the slider
          */
         Slider(double scaleStart, double scaleEnd);
 
-        /**
-         * Destructor.
-         */
         ~Slider();
 
         /**

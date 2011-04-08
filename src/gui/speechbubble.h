@@ -32,9 +32,6 @@ class TextBox;
 class SpeechBubble : public Popup
 {
     public:
-        /**
-         * Constructor. Initializes the speech bubble.
-         */
         SpeechBubble();
 
         /**

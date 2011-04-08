@@ -52,9 +52,6 @@ class ShopItem : public Item
          */
         ShopItem(int id, int price);
 
-        /**
-         * Destructor.
-         */
         ~ShopItem();
 
         /**

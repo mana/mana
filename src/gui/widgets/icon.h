@@ -36,6 +36,8 @@ class Icon : public gcn::Widget
     public:
         /**
          * Constructor.
+         *
+         * @param filename The file name of the image to display
          */
         Icon(const std::string &filename);
 
@@ -44,7 +46,7 @@ class Icon : public gcn::Widget
          */
         Icon(Image *image);
 
-        /** 
+        /**
          * Gets the current Image.
          */
         Image *getImage() const { return mImage; }

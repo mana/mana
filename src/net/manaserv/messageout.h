@@ -29,14 +29,8 @@ namespace ManaServ {
 class MessageOut : public Net::MessageOut
 {
     public:
-        /**
-         * Constructor.
-         */
         MessageOut(short id);
 
-        /**
-         * Destructor.
-         */
         ~MessageOut();
 
         void writeInt16(Sint16 value);        /**< Writes a short. */

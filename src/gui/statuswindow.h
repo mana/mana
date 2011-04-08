@@ -43,9 +43,6 @@ class VertContainer;
 class StatusWindow : public Window, public EventListener
 {
     public:
-        /**
-         * Constructor.
-         */
         StatusWindow();
 
         void event(Event::Channel channel, const Event &event);

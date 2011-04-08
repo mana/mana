@@ -58,9 +58,6 @@ class Inventory
          */
         Inventory(Type type, int size = -1);
 
-        /**
-         * Destructor.
-         */
         ~Inventory();
 
         /**

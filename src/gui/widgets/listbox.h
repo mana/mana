@@ -36,9 +36,6 @@ class SelectionListener;
 class ListBox : public gcn::ListBox
 {
     public:
-        /**
-         * Constructor.
-         */
         ListBox(gcn::ListModel *listModel);
 
         ~ListBox();

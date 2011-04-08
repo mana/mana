@@ -61,14 +61,8 @@ extern Graphics *graphics;
 class ModeListModel : public gcn::ListModel
 {
     public:
-        /**
-         * Constructor.
-         */
         ModeListModel();
 
-        /**
-         * Destructor.
-         */
         virtual ~ModeListModel() { }
 
         /**

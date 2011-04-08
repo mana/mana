@@ -30,9 +30,6 @@
 class Logger
 {
     public:
-        /**
-         * Constructor.
-         */
         Logger();
 
         /**

@@ -39,9 +39,6 @@ class Tab;
 class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
 {
     public:
-        /**
-         * Constructor.
-         */
         TabbedArea();
 
         /**

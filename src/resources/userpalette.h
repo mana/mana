@@ -56,14 +56,8 @@ class UserPalette : public Palette, public gcn::ListModel
             USER_COLOR_LAST
         };
 
-        /**
-         * Constructor
-         */
         UserPalette();
 
-        /**
-         * Destructor
-         */
         ~UserPalette();
 
         /**

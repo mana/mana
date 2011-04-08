@@ -38,11 +38,6 @@ class WrongDataNoticeListener;
 class UnRegisterDialog : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor
-         *
-         * @see Window::Window
-         */
         UnRegisterDialog(LoginData *loginData);
 
         ~UnRegisterDialog();

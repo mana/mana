@@ -50,9 +50,6 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
         friend class CharDeleteConfirm;
         friend class Net::CharHandler;
 
-        /**
-         * Constructor.
-         */
         CharSelectDialog(LoginData *loginData);
 
         ~CharSelectDialog();

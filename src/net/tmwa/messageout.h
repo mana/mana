@@ -39,9 +39,6 @@ class Network;
 class MessageOut : public Net::MessageOut
 {
     public:
-        /**
-         * Constructor.
-         */
         MessageOut(short id);
 
         void writeInt16(Sint16 value);        /**< Writes a short. */

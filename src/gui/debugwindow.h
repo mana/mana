@@ -34,9 +34,6 @@ class Label;
 class DebugWindow : public Window
 {
     public:
-        /**
-         * Constructor.
-         */
         DebugWindow();
 
         /**

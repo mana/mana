@@ -34,14 +34,8 @@ class Image;
 class Item
 {
     public:
-        /**
-         * Constructor.
-         */
         Item(int id = -1, int quantity = 0, bool equipped = false);
 
-        /**
-         * Destructor.
-         */
         virtual ~Item();
 
         /**
@@ -131,7 +125,6 @@ class Item
         bool mEquipped;       /**< Item is equipped. */
         bool mInEquipment;    /**< Item is in equipment */
         int mInvIndex;        /**< Inventory index. */
-
 };
 
-#endif
+#endif // ITEM_H

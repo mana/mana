@@ -37,9 +37,6 @@ class Window;
 class PopupMenu : public Popup, public LinkHandler
 {
     public:
-        /**
-         * Constructor.
-         */
         PopupMenu();
 
         /**

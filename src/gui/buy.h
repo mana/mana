@@ -42,16 +42,8 @@ class BuyDialog : public Window, public gcn::ActionListener,
                   public gcn::SelectionListener
 {
     public:
-        /**
-         * Constructor.
-         *
-         * @see Window::Window
-         */
         BuyDialog(int npcId);
 
-        /**
-         * Destructor
-         */
         ~BuyDialog();
 
         /**

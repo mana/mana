@@ -29,14 +29,8 @@ class Item;
 class Equipment
 {
     public:
-        /**
-         * Constructor.
-         */
         Equipment(): mBackend(0) {}
 
-        /**
-         * Destructor.
-         */
         ~Equipment() { mBackend = 0; }
 
         class Backend {
