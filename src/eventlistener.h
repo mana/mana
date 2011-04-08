@@ -18,17 +18,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LISTENER_H
-#define LISTENER_H
+#ifndef EVENTLISTENER_H
+#define EVENTLISTENER_H
 
 #include "event.h"
 
 #include <string>
 
-class Listener
+class EventListener
 {
 public:
-    virtual ~Listener();
+    virtual ~EventListener();
 
     void listen(Event::Channel channel);
 
@@ -37,4 +37,4 @@ public:
     virtual void event(Event::Channel channel, const Event &event) = 0;
 };
 
-#endif
+#endif // EVENTLISTENER_H

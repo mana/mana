@@ -22,7 +22,7 @@
 #ifndef NET_TA_NPCHANDLER_H
 #define NET_TA_NPCHANDLER_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "net/npchandler.h"
 

@@ -22,7 +22,7 @@
 #ifndef NET_TMWA_GENERALHANDLER_H
 #define NET_TMWA_GENERALHANDLER_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "net/generalhandler.h"
 #include "net/net.h"
@@ -32,7 +32,7 @@
 namespace TmwAthena {
 
 class GeneralHandler : public MessageHandler, public Net::GeneralHandler,
-        public Listener
+        public EventListener
 {
     public:
         GeneralHandler();

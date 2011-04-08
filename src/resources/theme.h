@@ -25,7 +25,7 @@
 #define SKIN_H
 
 #include "graphics.h"
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/palette.h"
 
@@ -100,7 +100,7 @@ class Skin
         Image *mStickyImageDown;   /**< Sticky Button Image */
 };
 
-class Theme : public Palette, public Listener
+class Theme : public Palette, public EventListener
 {
     public:
         static Theme *instance();

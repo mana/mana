@@ -23,7 +23,7 @@
 #define INVENTORYWINDOW_H
 
 #include "inventory.h"
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/window.h"
 #include "gui/widgets/textfield.h"
@@ -49,7 +49,7 @@ class InventoryWindow : public Window,
                         public gcn::KeyListener,
                         public gcn::SelectionListener,
                         public InventoryListener,
-                        public Listener
+                        public EventListener
 {
     public:
         /**

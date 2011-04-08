@@ -453,6 +453,8 @@ SET(SRCS
     equipment.h
     event.cpp
     event.h
+    eventlistener.cpp
+    eventlistener.h
     flooritem.cpp
     flooritem.h
     game.cpp
@@ -476,8 +478,6 @@ SET(SRCS
     joystick.h
     keyboardconfig.cpp
     keyboardconfig.h
-    listener.cpp
-    listener.h
     localplayer.cpp
     localplayer.h
     log.cpp

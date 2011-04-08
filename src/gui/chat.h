@@ -22,7 +22,7 @@
 #ifndef CHAT_H
 #define CHAT_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/window.h"
 #include "gui/widgets/textfield.h"
@@ -77,7 +77,7 @@ struct CHATLOG
  */
 class ChatWindow : public Window,
                    public gcn::ActionListener,
-                   public Listener
+                   public EventListener
 {
     public:
         /**

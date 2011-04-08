@@ -20,7 +20,7 @@
 
 #include "event.h"
 
-#include "listener.h"
+#include "eventlistener.h"
 #include "variabledata.h"
 
 Event::ListenMap Event::mBindings;
@@ -229,17 +229,17 @@ void Event::trigger(Channel channel, const Event &event)
     }
 }
 
-void Event::bind(Listener *listener, Channel channel)
+void Event::bind(EventListener *listener, Channel channel)
 {
     mBindings[channel].insert(listener);
 }
 
-void Event::unbind(Listener *listener, Channel channel)
+void Event::unbind(EventListener *listener, Channel channel)
 {
     mBindings[channel].erase(listener);
 }
 
-void Event::remove(Listener *listener)
+void Event::remove(EventListener *listener)
 {
     ListenMap::iterator it = mBindings.begin();
     while (it != mBindings.end())

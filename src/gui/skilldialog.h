@@ -23,7 +23,7 @@
 #define SKILLDIALOG_H
 
 #include "gui/widgets/window.h"
-#include "listener.h"
+#include "eventlistener.h"
 
 #include <guichan/actionlistener.hpp>
 
@@ -42,7 +42,7 @@ struct SkillInfo;
  *
  * \ingroup Interface
  */
-class SkillDialog : public Window, public gcn::ActionListener, public Listener
+class SkillDialog : public Window, public gcn::ActionListener, public EventListener
 {
     public:
         SkillDialog();

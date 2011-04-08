@@ -22,7 +22,7 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
-#include "listener.h"
+#include "eventlistener.h"
 #include "position.h"
 
 #include "gui/widgets/windowcontainer.h"
@@ -54,7 +54,7 @@ const int walkingMouseDelay = 500;
  * coordinates.
  */
 class Viewport : public WindowContainer, public gcn::MouseListener,
-        public Listener
+        public EventListener
 {
     public:
         /**

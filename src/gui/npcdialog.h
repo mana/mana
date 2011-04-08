@@ -22,7 +22,7 @@
 #ifndef NPCDIALOG_H
 #define NPCDIALOG_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/window.h"
 
@@ -45,7 +45,7 @@ class Button;
  * \ingroup Interface
  */
 class NpcDialog : public Window, public gcn::ActionListener,
-                  public gcn::ListModel, public Listener
+                  public gcn::ListModel, public EventListener
 {
     public:
         /**
