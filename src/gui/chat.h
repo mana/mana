@@ -158,7 +158,7 @@ class ChatWindow : public Window,
 	void mousePressed(gcn::MouseEvent &event);
 	void mouseDragged(gcn::MouseEvent &event);
 
-	void event(Channels channel, const Mana::Event &event);
+	void event(Mana::Event::Channel channel, const Mana::Event &event);
 
         /**
          * Scrolls the chat window

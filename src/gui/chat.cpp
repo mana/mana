@@ -90,8 +90,8 @@ ChatWindow::ChatWindow():
     mAutoComplete(new ChatAutoComplete),
     mTmpVisible(false)
 {
-    listen(CHANNEL_CHAT);
-    listen(CHANNEL_NOTICES);
+    listen(Mana::Event::ChatChannel);
+    listen(Mana::Event::NoticesChannel);
 
     setWindowName("Chat");
 
@@ -375,14 +375,14 @@ void ChatWindow::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void ChatWindow::event(Channels channel, const Mana::Event &event)
+void ChatWindow::event(Mana::Event::Channel channel, const Mana::Event &event)
 {
-    if (channel == CHANNEL_NOTICES)
+    if (channel == Mana::Event::NoticesChannel)
     {
         if (event.getType() == Mana::Event::ServerNotice)
             localChatTab->chatLog(event.getString("message"), BY_SERVER);
     }
-    else if (channel == CHANNEL_CHAT)
+    else if (channel == Mana::Event::ChatChannel)
     {
         if (event.getType() == Mana::Event::Whisper)
         {

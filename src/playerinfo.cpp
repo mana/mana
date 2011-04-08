@@ -61,7 +61,7 @@ void triggerAttr(int id, int old)
     event.setInt("id", id);
     event.setInt("oldValue", old);
     event.setInt("newValue", mData.mAttributes.find(id)->second);
-    event.trigger(CHANNEL_ATTRIBUTES);
+    event.trigger(Mana::Event::AttributesChannel);
 }
 
 void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
@@ -76,7 +76,7 @@ void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
     event.setString("changed", changed);
     event.setInt("oldValue1", old1);
     event.setInt("oldValue2", old2);
-    event.trigger(CHANNEL_ATTRIBUTES);
+    event.trigger(Mana::Event::AttributesChannel);
 }
 
 // --- Attributes -------------------------------------------------------------
@@ -218,7 +218,7 @@ void setStorageCount(int count)
         Mana::Event event(Mana::Event::StorageCount);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger(CHANNEL_STORAGE);
+        event.trigger(Mana::Event::StorageChannel);
     }
 }
 
@@ -239,7 +239,7 @@ void setNPCInteractionCount(int count)
         Mana::Event event(Mana::Event::NpcCount);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger(CHANNEL_NPC);
+        event.trigger(Mana::Event::NpcChannel);
     }
 }
 
@@ -258,7 +258,7 @@ void setNPCPostCount(int count)
         Mana::Event event(Mana::Event::PostCount);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger(CHANNEL_NPC);
+        event.trigger(Mana::Event::NpcChannel);
     }
 }
 
@@ -279,7 +279,7 @@ void setBuySellState(BuySellState buySellState)
         Mana::Event event(Mana::Event::StateChange);
         event.setInt("oldState", old);
         event.setInt("newState", buySellState);
-        event.trigger(CHANNEL_BUYSELL);
+        event.trigger(Mana::Event::BuySellChannel);
     }
 }
 
@@ -297,7 +297,7 @@ void setTrading(bool trading)
     {
         Mana::Event event(Mana::Event::Trading);
         event.setBool("trading", trading);
-        event.trigger(CHANNEL_STATUS);
+        event.trigger(Mana::Event::StatusChannel);
     }
 }
 
@@ -353,13 +353,13 @@ class PlayerLogic : Mana::Listener
 public:
     PlayerLogic()
     {
-        listen(CHANNEL_CLIENT);
-        listen(CHANNEL_GAME);
+        listen(Mana::Event::ClientChannel);
+        listen(Mana::Event::GameChannel);
     }
 
-    void event(Channels channel, const Mana::Event &event)
+    void event(Mana::Event::Channel channel, const Mana::Event &event)
     {
-        if (channel == CHANNEL_CLIENT)
+        if (channel == Mana::Event::ClientChannel)
         {
             if (event.getType() == Mana::Event::StateChange)
             {
@@ -375,7 +375,7 @@ public:
                 }
             }
         }
-        else if (channel == CHANNEL_GAME)
+        else if (channel == Mana::Event::GameChannel)
         {
             if (event.getType() == Mana::Event::Destructed)
             {

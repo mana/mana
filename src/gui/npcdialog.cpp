@@ -55,7 +55,7 @@ typedef std::map<int, NpcDialog*> NpcDialogs;
 class NpcEventListener : public Mana::Listener
 {
 public:
-    void event(Channels channel, const Mana::Event &event);
+    void event(Mana::Event::Channel channel, const Mana::Event &event);
 
     NpcDialog *getDialog(int id, bool make = true);
 
@@ -143,7 +143,7 @@ NpcDialog::NpcDialog(int npcId)
     setVisible(true);
     requestFocus();
 
-    listen(CHANNEL_CONFIG);
+    listen(Mana::Event::ConfigChannel);
     PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
                                        + 1);
 }
@@ -387,9 +387,9 @@ void NpcDialog::setVisible(bool visible)
     }
 }
 
-void NpcDialog::event(Channels channel, const Mana::Event &event)
+void NpcDialog::event(Mana::Event::Channel channel, const Mana::Event &event)
 {
-    if (channel != CHANNEL_CONFIG)
+    if (channel != Mana::Event::ConfigChannel)
         return;
 
     if (event.getType() == Mana::Event::ConfigOptionChanged &&
@@ -436,7 +436,7 @@ void NpcDialog::setup()
 
     npcListener = new NpcEventListener();
 
-    npcListener->listen(CHANNEL_NPC);
+    npcListener->listen(Mana::Event::NpcChannel);
 }
 
 void NpcDialog::buildLayout()
@@ -506,10 +506,10 @@ void NpcDialog::buildLayout()
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
 }
 
-void NpcEventListener::event(Channels channel,
+void NpcEventListener::event(Mana::Event::Channel channel,
                              const Mana::Event &event)
 {
-    if (channel != CHANNEL_NPC)
+    if (channel != Mana::Event::NpcChannel)
         return;
 
     if (event.getType() == Mana::Event::Message)

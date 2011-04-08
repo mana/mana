@@ -71,8 +71,8 @@ Viewport::Viewport():
 
     setFocusable(true);
 
-    listen(CHANNEL_CONFIG);
-    listen(CHANNEL_ACTORSPRITE);
+    listen(Mana::Event::ConfigChannel);
+    listen(Mana::Event::ActorSpriteChannel);
 }
 
 Viewport::~Viewport()
@@ -584,9 +584,9 @@ void Viewport::hideBeingPopup()
     mBeingPopup->setVisible(false);
 }
 
-void Viewport::event(Channels channel, const Mana::Event &event)
+void Viewport::event(Mana::Event::Channel channel, const Mana::Event &event)
 {
-    if (channel == CHANNEL_ACTORSPRITE
+    if (channel == Mana::Event::ActorSpriteChannel
             && event.getType() == Mana::Event::Destroyed)
     {
         ActorSprite *actor = event.getActor("source");
@@ -597,7 +597,7 @@ void Viewport::event(Channels channel, const Mana::Event &event)
         if (mHoverItem == actor)
             mHoverItem = 0;
     }
-    else if (channel == CHANNEL_CONFIG &&
+    else if (channel == Mana::Event::ConfigChannel &&
              event.getType() == Mana::Event::ConfigOptionChanged)
     {
         const std::string option = event.getString("option");

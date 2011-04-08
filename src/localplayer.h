@@ -212,7 +212,7 @@ class LocalPlayer : public Being
         void addMessageToQueue(const std::string &message,
                                int color = UserPalette::EXP_INFO);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Mana::Event::Channel channel, const Mana::Event &event);
 
         /**
          * Tells the engine wether to check

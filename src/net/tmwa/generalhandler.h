@@ -51,7 +51,7 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler,
 
         void clearHandlers();
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Mana::Event::Channel channel, const Mana::Event &event);
 
     protected:
         MessageHandlerPtr mAdminHandler;

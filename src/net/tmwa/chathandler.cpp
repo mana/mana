@@ -86,7 +86,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                         event.setString("nick", nick);
                         event.setString("error", strprintf(_("Whisper could "
                                   "not be sent, %s is offline."), nick.c_str()));
-                        event.trigger(CHANNEL_CHAT);
+                        event.trigger(Mana::Event::ChatChannel);
                     }
                     break;
                 case 0x02:
@@ -95,7 +95,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                         event.setString("nick", nick);
                         event.setString("error", strprintf(_("Whisper could "
                                  "not be sent, ignored by %s."), nick.c_str()));
-                        event.Event::trigger(CHANNEL_CHAT);
+                        event.Event::trigger(Mana::Event::ChatChannel);
                     }
                     break;
             }
@@ -118,7 +118,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                     Mana::Event event(Mana::Event::Whisper);
                     event.setString("nick", nick);
                     event.setString("message", chatMsg);
-                    event.trigger(CHANNEL_CHAT);
+                    event.trigger(Mana::Event::ChatChannel);
                 }
             }
             else
@@ -180,7 +180,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             event.setString("nick", sender_name);
             event.setInt("beingId", beingId);
             event.setInt("permissions", perms);
-            event.trigger(CHANNEL_CHAT);
+            event.trigger(Mana::Event::ChatChannel);
 
             break;
         }
@@ -213,13 +213,13 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                 event.setInt("permissions", player_relations.getDefault()
                              & (PlayerRelation::SPEECH_LOG
                                 | PlayerRelation::SPEECH_FLOAT));
-                event.trigger(CHANNEL_CHAT);
+                event.trigger(Mana::Event::ChatChannel);
             }
             else
             {
                 Mana::Event event(Mana::Event::Announcement);
                 event.setString("message", chatMsg);
-                event.trigger(CHANNEL_CHAT);
+                event.trigger(Mana::Event::ChatChannel);
             }
             break;
         }

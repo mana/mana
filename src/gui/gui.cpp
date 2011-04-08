@@ -57,9 +57,9 @@ class GuiConfigListener : public Mana::Listener
             mGui(g)
         {}
 
-        void event(Channels channel, const Mana::Event &event)
+        void event(Mana::Event::Channel channel, const Mana::Event &event)
         {
-            if (channel == CHANNEL_CONFIG)
+            if (channel == Mana::Event::ConfigChannel)
             {
                 if (event.getType() == Mana::Event::ConfigOptionChanged &&
                     event.getString("option") == "customcursor")
@@ -141,7 +141,7 @@ Gui::Gui(Graphics *graphics):
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getBoolValue("customcursor"));
     mConfigListener = new GuiConfigListener(this);
-    mConfigListener->listen(CHANNEL_CONFIG);
+    mConfigListener->listen(Mana::Event::ConfigChannel);
 }
 
 Gui::~Gui()

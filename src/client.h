@@ -185,7 +185,7 @@ public:
     static const std::string &getScreenshotDirectory()
     { return instance()->mScreenshotDir; }
 
-    void event(Channels channel, const Mana::Event &event);
+    void event(Mana::Event::Channel channel, const Mana::Event &event);
     void action(const gcn::ActionEvent &event);
 
 private:

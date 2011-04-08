@@ -61,7 +61,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     mFilterText(new TextField),
     mSplit(false)
 {
-    listen(CHANNEL_ATTRIBUTES);
+    listen(Mana::Event::AttributesChannel);
 
     setWindowName(isMainInventory() ? "Inventory" : "Storage");
     setupWindow->registerWindowForReset(this);
@@ -270,7 +270,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::INVENTORY);
                 event.setInt("destination", Inventory::STORAGE);
-                event.trigger(CHANNEL_ITEM);
+                event.trigger(Mana::Event::ItemChannel);
             }
             else
             {
@@ -279,7 +279,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::STORAGE);
                 event.setInt("destination", Inventory::INVENTORY);
-                event.trigger(CHANNEL_ITEM);
+                event.trigger(Mana::Event::ItemChannel);
             }
         }
     }
@@ -385,12 +385,12 @@ void InventoryWindow::close()
     {
         Mana::Event event(Mana::Event::DoCloseInventory);
         event.setInt("type", mInventory->getType());
-        event.trigger(CHANNEL_ITEM);
+        event.trigger(Mana::Event::ItemChannel);
         scheduleDelete();
     }
 }
 
-void InventoryWindow::event(Channels channel, const Mana::Event &event)
+void InventoryWindow::event(Mana::Event::Channel channel, const Mana::Event &event)
 {
     if (event.getType() == Mana::Event::UpdateAttribute)
     {

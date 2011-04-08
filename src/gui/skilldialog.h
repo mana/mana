@@ -49,7 +49,7 @@ class SkillDialog : public Window, public gcn::ActionListener, public Mana::List
 
         ~SkillDialog();
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Mana::Event::Channel channel, const Mana::Event &event);
 
         /**
          * Called when receiving actions from widget.

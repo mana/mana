@@ -48,7 +48,7 @@ class StatusWindow : public Window, public Mana::Listener
          */
         StatusWindow();
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Mana::Event::Channel channel, const Mana::Event &event);
 
         void updateAttrs();
 

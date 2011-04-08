@@ -76,7 +76,7 @@ void Item::doEvent(Mana::Event::Type eventName)
 {
     Mana::Event event(eventName);
     event.setItem("item", this);
-    event.trigger(CHANNEL_ITEM);
+    event.trigger(Mana::Event::ItemChannel);
 }
 
 void Item::doEvent(Mana::Event::Type eventName, int amount)
@@ -84,7 +84,7 @@ void Item::doEvent(Mana::Event::Type eventName, int amount)
     Mana::Event event(eventName);
     event.setItem("item", this);
     event.setInt("amount", amount);
-    event.trigger(CHANNEL_ITEM);
+    event.trigger(Mana::Event::ItemChannel);
 }
 
 bool Item::isEquippable() const

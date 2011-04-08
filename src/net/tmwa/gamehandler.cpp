@@ -58,7 +58,7 @@ GameHandler::GameHandler()
     handledMessages = _messages;
     gameHandler = this;
 
-    listen(CHANNEL_GAME);
+    listen(Mana::Event::GameChannel);
 }
 
 void GameHandler::handleMessage(Net::MessageIn &msg)
@@ -105,9 +105,9 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void GameHandler::event(Channels channel, const Mana::Event &event)
+void GameHandler::event(Mana::Event::Channel channel, const Mana::Event &event)
 {
-    if (channel == CHANNEL_GAME)
+    if (channel == Mana::Event::GameChannel)
     {
         if (event.getType() == Mana::Event::EnginesInitialized)
         {
