@@ -247,8 +247,8 @@ class Configuration : public ConfigurationObject
 
         bool getBoolValue(const std::string &key) const;
 
-        Mana::VariableData* getDefault(const std::string &key,
-                                       Mana::VariableData::DataType type) const;
+        VariableData* getDefault(const std::string &key,
+                                       VariableData::DataType type) const;
     private:
         /**
          * Clean up the default values member.

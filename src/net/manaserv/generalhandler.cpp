@@ -91,8 +91,8 @@ GeneralHandler::GeneralHandler():
 
     generalHandler = this;
 
-    listen(Mana::Event::ClientChannel);
-    listen(Mana::Event::GameChannel);
+    listen(Event::ClientChannel);
+    listen(Event::GameChannel);
 }
 
 void GeneralHandler::load()
@@ -171,12 +171,12 @@ void GeneralHandler::clearHandlers()
     clearNetworkHandlers();
 }
 
-void GeneralHandler::event(Mana::Event::Channel channel,
-                           const Mana::Event &event)
+void GeneralHandler::event(Event::Channel channel,
+                           const Event &event)
 {
-    if (channel == Mana::Event::ClientChannel)
+    if (channel == Event::ClientChannel)
     {
-        if (event.getType() == Mana::Event::StateChange)
+        if (event.getType() == Event::StateChange)
         {
             int newState = event.getInt("newState");
 
@@ -186,15 +186,15 @@ void GeneralHandler::event(Mana::Event::Channel channel,
                 game->gameLoading();
             }
         }
-        else if (event.getType() == Mana::Event::LoadingDatabases)
+        else if (event.getType() == Event::LoadingDatabases)
         {
             Attributes::load();
             Attributes::informItemDB();
         }
     }
-    else if (channel == Mana::Event::GameChannel)
+    else if (channel == Event::GameChannel)
     {
-        if (event.getType() == Mana::Event::GuiWindowsLoaded)
+        if (event.getType() == Event::GuiWindowsLoaded)
         {
             inventoryWindow->setSplitAllowed(true);
             skillDialog->loadSkills("mana-skills.xml");

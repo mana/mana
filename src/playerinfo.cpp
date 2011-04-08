@@ -57,17 +57,17 @@ int mLevelProgress = 0;
 
 void triggerAttr(int id, int old)
 {
-    Mana::Event event(Mana::Event::UpdateAttribute);
+    Event event(Event::UpdateAttribute);
     event.setInt("id", id);
     event.setInt("oldValue", old);
     event.setInt("newValue", mData.mAttributes.find(id)->second);
-    event.trigger(Mana::Event::AttributesChannel);
+    event.trigger(Event::AttributesChannel);
 }
 
 void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
 {
     StatMap::iterator it = mData.mStats.find(id);
-    Mana::Event event(Mana::Event::UpdateStat);
+    Event event(Event::UpdateStat);
     event.setInt("id", id);
     event.setInt("base", it->second.base);
     event.setInt("mod", it->second.mod);
@@ -76,7 +76,7 @@ void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
     event.setString("changed", changed);
     event.setInt("oldValue1", old1);
     event.setInt("oldValue2", old2);
-    event.trigger(Mana::Event::AttributesChannel);
+    event.trigger(Event::AttributesChannel);
 }
 
 // --- Attributes -------------------------------------------------------------
@@ -215,10 +215,10 @@ void setStorageCount(int count)
 
     if (count != old)
     {
-        Mana::Event event(Mana::Event::StorageCount);
+        Event event(Event::StorageCount);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger(Mana::Event::StorageChannel);
+        event.trigger(Event::StorageChannel);
     }
 }
 
@@ -236,10 +236,10 @@ void setNPCInteractionCount(int count)
 
     if (count != old)
     {
-        Mana::Event event(Mana::Event::NpcCount);
+        Event event(Event::NpcCount);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger(Mana::Event::NpcChannel);
+        event.trigger(Event::NpcChannel);
     }
 }
 
@@ -255,10 +255,10 @@ void setNPCPostCount(int count)
 
     if (count != old)
     {
-        Mana::Event event(Mana::Event::PostCount);
+        Event event(Event::PostCount);
         event.setInt("oldCount", old);
         event.setInt("newCount", count);
-        event.trigger(Mana::Event::NpcChannel);
+        event.trigger(Event::NpcChannel);
     }
 }
 
@@ -276,10 +276,10 @@ void setBuySellState(BuySellState buySellState)
 
     if (buySellState != old)
     {
-        Mana::Event event(Mana::Event::StateChange);
+        Event event(Event::StateChange);
         event.setInt("oldState", old);
         event.setInt("newState", buySellState);
-        event.trigger(Mana::Event::BuySellChannel);
+        event.trigger(Event::BuySellChannel);
     }
 }
 
@@ -295,9 +295,9 @@ void setTrading(bool trading)
 
     if (notify)
     {
-        Mana::Event event(Mana::Event::Trading);
+        Event event(Event::Trading);
         event.setBool("trading", trading);
-        event.trigger(Mana::Event::StatusChannel);
+        event.trigger(Event::StatusChannel);
     }
 }
 
@@ -348,20 +348,20 @@ void logic()
     mSpecialRechargeUpdateNeeded++;
 }
 
-class PlayerLogic : Mana::Listener
+class PlayerLogic : Listener
 {
 public:
     PlayerLogic()
     {
-        listen(Mana::Event::ClientChannel);
-        listen(Mana::Event::GameChannel);
+        listen(Event::ClientChannel);
+        listen(Event::GameChannel);
     }
 
-    void event(Mana::Event::Channel channel, const Mana::Event &event)
+    void event(Event::Channel channel, const Event &event)
     {
-        if (channel == Mana::Event::ClientChannel)
+        if (channel == Event::ClientChannel)
         {
-            if (event.getType() == Mana::Event::StateChange)
+            if (event.getType() == Event::StateChange)
             {
                 int newState = event.getInt("newState");
 
@@ -375,9 +375,9 @@ public:
                 }
             }
         }
-        else if (channel == Mana::Event::GameChannel)
+        else if (channel == Event::GameChannel)
         {
-            if (event.getType() == Mana::Event::Destructed)
+            if (event.getType() == Event::Destructed)
             {
                 delete mInventory;
                 delete mEquipment;

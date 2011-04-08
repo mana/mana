@@ -50,18 +50,18 @@ SDLInput *guiInput = 0;
 // Bolded font
 gcn::Font *boldFont = 0;
 
-class GuiConfigListener : public Mana::Listener
+class GuiConfigListener : public Listener
 {
     public:
         GuiConfigListener(Gui *g):
             mGui(g)
         {}
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event)
+        void event(Event::Channel channel, const Event &event)
         {
-            if (channel == Mana::Event::ConfigChannel)
+            if (channel == Event::ConfigChannel)
             {
-                if (event.getType() == Mana::Event::ConfigOptionChanged &&
+                if (event.getType() == Event::ConfigOptionChanged &&
                     event.getString("option") == "customcursor")
                 {
                     bool bCustomCursor = config.getBoolValue("customcursor");
@@ -141,7 +141,7 @@ Gui::Gui(Graphics *graphics):
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getBoolValue("customcursor"));
     mConfigListener = new GuiConfigListener(this);
-    mConfigListener->listen(Mana::Event::ConfigChannel);
+    mConfigListener->listen(Event::ConfigChannel);
 }
 
 Gui::~Gui()

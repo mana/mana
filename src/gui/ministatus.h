@@ -38,14 +38,14 @@ class TextPopup;
  *
  * \ingroup Interface
  */
-class MiniStatusWindow : public Popup, public Mana::Listener
+class MiniStatusWindow : public Popup, public Listener
 {
     public:
         MiniStatusWindow();
 
         void drawIcons(Graphics *graphics);
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         void logic(); // Updates icons
 

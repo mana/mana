@@ -42,14 +42,14 @@ struct SkillInfo;
  *
  * \ingroup Interface
  */
-class SkillDialog : public Window, public gcn::ActionListener, public Mana::Listener
+class SkillDialog : public Window, public gcn::ActionListener, public Listener
 {
     public:
         SkillDialog();
 
         ~SkillDialog();
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         /**
          * Called when receiving actions from widget.

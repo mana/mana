@@ -23,9 +23,6 @@
 #include "listener.h"
 #include "variabledata.h"
 
-namespace Mana
-{
-
 Event::ListenMap Event::mBindings;
 
 Event::~Event()
@@ -251,5 +248,3 @@ void Event::remove(Listener *listener)
         it++;
     }
 }
-
-} // namespace Mana

@@ -85,7 +85,7 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mAfkTime(0),
     mAwayMode(false)
 {
-    listen(Mana::Event::AttributesChannel);
+    listen(Event::AttributesChannel);
 
     mAwayListener = new AwayListener();
 
@@ -93,8 +93,8 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
     setShowName(config.getValue("showownname", 1));
 
-    listen(Mana::Event::ConfigChannel);
-    listen(Mana::Event::ActorSpriteChannel);
+    listen(Event::ConfigChannel);
+    listen(Event::ActorSpriteChannel);
 }
 
 LocalPlayer::~LocalPlayer()
@@ -1105,11 +1105,11 @@ void LocalPlayer::addMessageToQueue(const std::string &message, int color)
     mMessages.push_back(MessagePair(message, color));
 }
 
-void LocalPlayer::event(Mana::Event::Channel channel, const Mana::Event &event)
+void LocalPlayer::event(Event::Channel channel, const Event &event)
 {
-    if (channel == Mana::Event::ActorSpriteChannel)
+    if (channel == Event::ActorSpriteChannel)
     {
-        if (event.getType() == Mana::Event::Destroyed)
+        if (event.getType() == Event::Destroyed)
         {
             ActorSprite *actor = event.getActor("source");
 
@@ -1120,9 +1120,9 @@ void LocalPlayer::event(Mana::Event::Channel channel, const Mana::Event &event)
                 mTarget = 0;
         }
     }
-    else if (channel == Mana::Event::AttributesChannel)
+    else if (channel == Event::AttributesChannel)
     {
-        if (event.getType() == Mana::Event::UpdateAttribute)
+        if (event.getType() == Event::UpdateAttribute)
         {
             if (event.getInt("id") == EXP)
             {
@@ -1133,9 +1133,9 @@ void LocalPlayer::event(Mana::Event::Channel channel, const Mana::Event &event)
             }
         }
     }
-    else if (channel == Mana::Event::ConfigChannel)
+    else if (channel == Event::ConfigChannel)
     {
-        if (event.getType() == Mana::Event::ConfigOptionChanged &&
+        if (event.getType() == Event::ConfigOptionChanged &&
             event.getString("option") == "showownname")
         {
             setShowName(config.getValue("showownname", 1));

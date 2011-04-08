@@ -77,7 +77,7 @@ struct CHATLOG
  */
 class ChatWindow : public Window,
                    public gcn::ActionListener,
-                   public Mana::Listener
+                   public Listener
 {
     public:
         /**
@@ -158,7 +158,7 @@ class ChatWindow : public Window,
 	void mousePressed(gcn::MouseEvent &event);
 	void mouseDragged(gcn::MouseEvent &event);
 
-	void event(Mana::Event::Channel channel, const Mana::Event &event);
+	void event(Event::Channel channel, const Event &event);
 
         /**
          * Scrolls the chat window

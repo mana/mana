@@ -26,9 +26,6 @@
 class ActorSprite;
 class Item;
 
-namespace Mana
-{
-
 class VariableData
 {
     public:
@@ -125,7 +122,5 @@ public:
 private:
     ActorSprite *mData;
 };
-
-} // namespace Mana
 
 #endif

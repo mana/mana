@@ -108,7 +108,7 @@ GeneralHandler::GeneralHandler():
 
     setStatsList(stats);
 
-    listen(Mana::Event::GameChannel);
+    listen(Event::GameChannel);
 }
 
 GeneralHandler::~GeneralHandler()
@@ -217,12 +217,12 @@ void GeneralHandler::clearHandlers()
     mNetwork->clearHandlers();
 }
 
-void GeneralHandler::event(Mana::Event::Channel channel,
-                           const Mana::Event &event)
+void GeneralHandler::event(Event::Channel channel,
+                           const Event &event)
 {
-    if (channel == Mana::Event::GameChannel)
+    if (channel == Event::GameChannel)
     {
-        if (event.getType() == Mana::Event::GuiWindowsLoaded)
+        if (event.getType() == Event::GuiWindowsLoaded)
         {
             inventoryWindow->setSplitAllowed(false);
             skillDialog->loadSkills("ea-skills.xml");
@@ -242,7 +242,7 @@ void GeneralHandler::event(Mana::Event::Channel channel,
             statusWindow->addAttribute(FLEE, _("% Evade"), false, "");
             statusWindow->addAttribute(CRIT, _("% Critical"), false, "");
         }
-        else if (event.getType() == Mana::Event::GuiWindowsUnloading)
+        else if (event.getType() == Event::GuiWindowsUnloading)
         {
             socialWindow->removeTab(taGuild);
             socialWindow->removeTab(taParty);

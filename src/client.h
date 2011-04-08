@@ -119,7 +119,7 @@ enum State {
  * The core part of the client. This class initializes all subsystems, runs
  * the event loop, and shuts everything down again.
  */
-class Client : public Mana::Listener, public gcn::ActionListener
+class Client : public Listener, public gcn::ActionListener
 {
 public:
     /**
@@ -185,7 +185,7 @@ public:
     static const std::string &getScreenshotDirectory()
     { return instance()->mScreenshotDir; }
 
-    void event(Mana::Event::Channel channel, const Mana::Event &event);
+    void event(Event::Channel channel, const Event &event);
     void action(const gcn::ActionEvent &event);
 
 private:

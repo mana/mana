@@ -22,9 +22,6 @@
 
 #include "event.h"
 
-namespace Mana
-{
-
 Listener::~Listener()
 {
     Event::remove(this);
@@ -39,5 +36,3 @@ void Listener::ignore(Event::Channel channel)
 {
     Event::unbind(this, channel);
 }
-
-} // namespace Mana

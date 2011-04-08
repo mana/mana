@@ -61,7 +61,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     mFilterText(new TextField),
     mSplit(false)
 {
-    listen(Mana::Event::AttributesChannel);
+    listen(Event::AttributesChannel);
 
     setWindowName(isMainInventory() ? "Inventory" : "Storage");
     setupWindow->registerWindowForReset(this);
@@ -195,19 +195,19 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         return;
 
     if (event.getId() == "activate")
-        item->doEvent(Mana::Event::DoUse);
+        item->doEvent(Event::DoUse);
     else if (event.getId() == "equip")
     {
         if (item->isEquippable())
         {
             if (item->isEquipped())
-                item->doEvent(Mana::Event::DoUnequip);
+                item->doEvent(Event::DoUnequip);
             else
-                item->doEvent(Mana::Event::DoEquip);
+                item->doEvent(Event::DoEquip);
         }
         else
         {
-            item->doEvent(Mana::Event::DoUse);
+            item->doEvent(Event::DoUse);
         }
     }
     else if (event.getId() == "drop")
@@ -265,21 +265,21 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
                 return;
             if (mInventory->isMainInventory())
             {
-                Mana::Event event(Mana::Event::DoMove);
+                Event event(Event::DoMove);
                 event.setItem("item", item);
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::INVENTORY);
                 event.setInt("destination", Inventory::STORAGE);
-                event.trigger(Mana::Event::ItemChannel);
+                event.trigger(Event::ItemChannel);
             }
             else
             {
-                Mana::Event event(Mana::Event::DoMove);
+                Event event(Event::DoMove);
                 event.setItem("item", item);
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::STORAGE);
                 event.setInt("destination", Inventory::INVENTORY);
-                event.trigger(Mana::Event::ItemChannel);
+                event.trigger(Event::ItemChannel);
             }
         }
     }
@@ -383,16 +383,16 @@ void InventoryWindow::close()
     }
     else
     {
-        Mana::Event event(Mana::Event::DoCloseInventory);
+        Event event(Event::DoCloseInventory);
         event.setInt("type", mInventory->getType());
-        event.trigger(Mana::Event::ItemChannel);
+        event.trigger(Event::ItemChannel);
         scheduleDelete();
     }
 }
 
-void InventoryWindow::event(Mana::Event::Channel channel, const Mana::Event &event)
+void InventoryWindow::event(Event::Channel channel, const Event &event)
 {
-    if (event.getType() == Mana::Event::UpdateAttribute)
+    if (event.getType() == Event::UpdateAttribute)
     {
         int id = event.getInt("id");
         if (id == TOTAL_WEIGHT ||

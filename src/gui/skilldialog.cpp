@@ -212,7 +212,7 @@ private:
 SkillDialog::SkillDialog():
     Window(_("Skills"))
 {
-    listen(Mana::Event::AttributesChannel);
+    listen(Event::AttributesChannel);
 
     setWindowName("Skills");
     setCloseButton(true);
@@ -280,9 +280,9 @@ void SkillDialog::update()
     }
 }
 
-void SkillDialog::event(Mana::Event::Channel channel, const Mana::Event &event)
+void SkillDialog::event(Event::Channel channel, const Event &event)
 {
-    if (event.getType() == Mana::Event::UpdateAttribute)
+    if (event.getType() == Event::UpdateAttribute)
     {
         if (event.getInt("id") == SKILL_POINTS)
         {
