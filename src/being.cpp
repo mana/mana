@@ -109,8 +109,8 @@ Being::Being(int id, Type type, int subtype, Map *map):
         setShowName(true);
 
     updateColors();
-    listen(Mana::Event::ConfigChannel);
-    listen(Mana::Event::ChatChannel);
+    listen(Event::ConfigChannel);
+    listen(Event::ChatChannel);
 }
 
 Being::~Being()
@@ -1226,11 +1226,11 @@ void Being::talkTo()
     Net::getNpcHandler()->talk(mId);
 }
 
-void Being::event(Mana::Event::Channel channel, const Mana::Event &event)
+void Being::event(Event::Channel channel, const Event &event)
 {
-    if (channel == Mana::Event::ChatChannel &&
-            (event.getType() == Mana::Event::Being
-             || event.getType() == Mana::Event::Player) &&
+    if (channel == Event::ChatChannel &&
+            (event.getType() == Event::Being
+             || event.getType() == Event::Player) &&
             event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
     {
         try
@@ -1240,11 +1240,11 @@ void Being::event(Mana::Event::Channel channel, const Mana::Event &event)
                 setSpeech(event.getString("text"));
             }
         }
-        catch (Mana::BadEvent badEvent)
+        catch (BadEvent badEvent)
         {}
     }
-    else if (channel == Mana::Event::ConfigChannel &&
-             event.getType() == Mana::Event::ConfigOptionChanged)
+    else if (channel == Event::ConfigChannel &&
+             event.getType() == Event::ConfigOptionChanged)
     {
         if (getType() == PLAYER && event.getString("option") == "visiblenames")
         {

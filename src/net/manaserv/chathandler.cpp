@@ -165,8 +165,8 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
 
     std::string mes = being->getName() + " : " + chatMsg;
 
-    Mana::Event event(being == player_node ? Mana::Event::Player
-                                           : Mana::Event::Being);
+    Event event(being == player_node ? Event::Player
+                                           : Event::Being);
     event.setString("message", mes);
     event.setString("text", chatMsg);
     event.setString("nick", being->getName());
@@ -174,7 +174,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     event.setInt("permissions", player_relations
                  .checkPermissionSilently(being->getName(),
                  PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT));
-    event.trigger(Mana::Event::ChatChannel);
+    event.trigger(Event::ChatChannel);
 }
 
 void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
@@ -234,18 +234,18 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
 
-    Mana::Event event(Mana::Event::Whisper);
+    Event event(Event::Whisper);
     event.setString("nick", userNick);
     event.setString("message", chatMsg);
-    event.trigger(Mana::Event::ChatChannel);
+    event.trigger(Event::ChatChannel);
 }
 
 void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
 {
     std::string chatMsg = msg.readString();
-    Mana::Event event(Mana::Event::Announcement);
+    Event event(Event::Announcement);
     event.setString("message", chatMsg);
-    event.trigger(Mana::Event::ChatChannel);
+    event.trigger(Event::ChatChannel);
 }
 
 void ChatHandler::handleChatMessage(Net::MessageIn &msg)

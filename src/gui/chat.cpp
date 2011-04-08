@@ -90,8 +90,8 @@ ChatWindow::ChatWindow():
     mAutoComplete(new ChatAutoComplete),
     mTmpVisible(false)
 {
-    listen(Mana::Event::ChatChannel);
-    listen(Mana::Event::NoticesChannel);
+    listen(Event::ChatChannel);
+    listen(Event::NoticesChannel);
 
     setWindowName("Chat");
 
@@ -375,33 +375,33 @@ void ChatWindow::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void ChatWindow::event(Mana::Event::Channel channel, const Mana::Event &event)
+void ChatWindow::event(Event::Channel channel, const Event &event)
 {
-    if (channel == Mana::Event::NoticesChannel)
+    if (channel == Event::NoticesChannel)
     {
-        if (event.getType() == Mana::Event::ServerNotice)
+        if (event.getType() == Event::ServerNotice)
             localChatTab->chatLog(event.getString("message"), BY_SERVER);
     }
-    else if (channel == Mana::Event::ChatChannel)
+    else if (channel == Event::ChatChannel)
     {
-        if (event.getType() == Mana::Event::Whisper)
+        if (event.getType() == Event::Whisper)
         {
             whisper(event.getString("nick"), event.getString("message"));
         }
-        else if (event.getType() == Mana::Event::WhisperError)
+        else if (event.getType() == Event::WhisperError)
         {
             whisper(event.getString("nick"),
                     event.getString("error"), BY_SERVER);
         }
-        else if (event.getType() == Mana::Event::Player)
+        else if (event.getType() == Event::Player)
         {
             localChatTab->chatLog(event.getString("message"), BY_PLAYER);
         }
-        else if (event.getType() == Mana::Event::Announcement)
+        else if (event.getType() == Event::Announcement)
         {
             localChatTab->chatLog(event.getString("message"), BY_GM);
         }
-        else if (event.getType() == Mana::Event::Being)
+        else if (event.getType() == Event::Being)
         {
             if (event.getInt("permissions") & PlayerRelation::SPEECH_LOG)
                 localChatTab->chatLog(event.getString("message"), BY_OTHER);

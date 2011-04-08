@@ -45,7 +45,7 @@ class Button;
  * \ingroup Interface
  */
 class NpcDialog : public Window, public gcn::ActionListener,
-                  public gcn::ListModel, public Mana::Listener
+                  public gcn::ListModel, public Listener
 {
     public:
         /**
@@ -145,7 +145,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
 
         void setVisible(bool visible);
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         /**
          * Returns the first active instance. Useful for pushing user

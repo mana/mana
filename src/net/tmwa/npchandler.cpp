@@ -38,7 +38,7 @@
 
 extern Net::NpcHandler *npcHandler;
 
-static void parseMenu(Mana::Event *event, const std::string &options)
+static void parseMenu(Event *event, const std::string &options)
 {
     std::istringstream iss(options);
 
@@ -78,50 +78,50 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
     }
 
     int npcId = msg.readInt32();
-    Mana::Event *event = 0;
+    Event *event = 0;
 
     switch (msg.getId())
     {
     case SMSG_NPC_CHOICE:
-        event = new Mana::Event(Mana::Event::Menu);
+        event = new Event(Event::Menu);
         event->setInt("id", npcId);
         parseMenu(event, msg.readString(msg.getLength() - 8));
-        event->trigger(Mana::Event::NpcChannel);
+        event->trigger(Event::NpcChannel);
         break;
 
     case SMSG_NPC_MESSAGE:
-        event = new Mana::Event(Mana::Event::Message);
+        event = new Event(Event::Message);
         event->setInt("id", npcId);
         event->setString("text", msg.readString(msg.getLength() - 8));
-        event->trigger(Mana::Event::NpcChannel);
+        event->trigger(Event::NpcChannel);
         break;
 
      case SMSG_NPC_CLOSE:
         // Show the close button
-        event = new Mana::Event(Mana::Event::Close);
+        event = new Event(Event::Close);
         event->setInt("id", npcId);
-        event->trigger(Mana::Event::NpcChannel);
+        event->trigger(Event::NpcChannel);
         break;
 
     case SMSG_NPC_NEXT:
         // Show the next button
-        event = new Mana::Event(Mana::Event::Next);
+        event = new Event(Event::Next);
         event->setInt("id", npcId);
-        event->trigger(Mana::Event::NpcChannel);
+        event->trigger(Event::NpcChannel);
         break;
 
     case SMSG_NPC_INT_INPUT:
         // Request for an integer
-        event = new Mana::Event(Mana::Event::IntegerInput);
+        event = new Event(Event::IntegerInput);
         event->setInt("id", npcId);
-        event->trigger(Mana::Event::NpcChannel);
+        event->trigger(Event::NpcChannel);
         break;
 
     case SMSG_NPC_STR_INPUT:
         // Request for a string
-        event = new Mana::Event(Mana::Event::StringInput);
+        event = new Event(Event::StringInput);
         event->setInt("id", npcId);
-        event->trigger(Mana::Event::NpcChannel);
+        event->trigger(Event::NpcChannel);
         break;
     }
 
@@ -177,9 +177,9 @@ void NpcHandler::talk(int npcId)
     outMsg.writeInt32(npcId);
     outMsg.writeInt8(0); // Unused
 
-    Mana::Event event(Mana::Event::TalkSent);
+    Event event(Event::TalkSent);
     event.setInt("npcId", npcId);
-    event.trigger(Mana::Event::NpcChannel);
+    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::nextDialog(int npcId)
@@ -187,9 +187,9 @@ void NpcHandler::nextDialog(int npcId)
     MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(npcId);
 
-    Mana::Event event(Mana::Event::NextSent);
+    Event event(Event::NextSent);
     event.setInt("npcId", npcId);
-    event.trigger(Mana::Event::NpcChannel);
+    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::closeDialog(int npcId)
@@ -197,9 +197,9 @@ void NpcHandler::closeDialog(int npcId)
     MessageOut outMsg(CMSG_NPC_CLOSE);
     outMsg.writeInt32(npcId);
 
-    Mana::Event event(Mana::Event::CloseSent);
+    Event event(Event::CloseSent);
     event.setInt("npcId", npcId);
-    event.trigger(Mana::Event::NpcChannel);
+    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::menuSelect(int npcId, int choice)
@@ -208,10 +208,10 @@ void NpcHandler::menuSelect(int npcId, int choice)
     outMsg.writeInt32(npcId);
     outMsg.writeInt8(choice);
 
-    Mana::Event event(Mana::Event::MenuSent);
+    Event event(Event::MenuSent);
     event.setInt("npcId", npcId);
     event.setInt("choice", choice);
-    event.trigger(Mana::Event::NpcChannel);
+    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::integerInput(int npcId, int value)
@@ -220,10 +220,10 @@ void NpcHandler::integerInput(int npcId, int value)
     outMsg.writeInt32(npcId);
     outMsg.writeInt32(value);
 
-    Mana::Event event(Mana::Event::IntegerInputSent);
+    Event event(Event::IntegerInputSent);
     event.setInt("npcId", npcId);
     event.setInt("value", value);
-    event.trigger(Mana::Event::NpcChannel);
+    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::stringInput(int npcId, const std::string &value)
@@ -234,10 +234,10 @@ void NpcHandler::stringInput(int npcId, const std::string &value)
     outMsg.writeString(value, value.length());
     outMsg.writeInt8(0); // Prevent problems with string reading
 
-    Mana::Event event(Mana::Event::StringInputSent);
+    Event event(Event::StringInputSent);
     event.setInt("npcId", npcId);
     event.setString("value", value);
-    event.trigger(Mana::Event::NpcChannel);
+    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::sendLetter(int npcId, const std::string &recipient,

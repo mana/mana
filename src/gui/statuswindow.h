@@ -40,7 +40,7 @@ class VertContainer;
  *
  * \ingroup Interface
  */
-class StatusWindow : public Window, public Mana::Listener
+class StatusWindow : public Window, public Listener
 {
     public:
         /**
@@ -48,7 +48,7 @@ class StatusWindow : public Window, public Mana::Listener
          */
         StatusWindow();
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         void updateAttrs();
 

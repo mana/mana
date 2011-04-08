@@ -65,7 +65,7 @@ void RespawnRequestListener::action(const gcn::ActionEvent &event)
 {
     Net::getPlayerHandler()->respawn();
 
-    Mana::Event::trigger(Mana::Event::NpcChannel, Mana::Event::CloseAll);
+    Event::trigger(Event::NpcChannel, Event::CloseAll);
 }
 
 PlayerHandler::PlayerHandler()

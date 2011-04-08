@@ -82,20 +82,20 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                     break;
                 case 0x01:
                     {
-                        Mana::Event event(Mana::Event::WhisperError);
+                        Event event(Event::WhisperError);
                         event.setString("nick", nick);
                         event.setString("error", strprintf(_("Whisper could "
                                   "not be sent, %s is offline."), nick.c_str()));
-                        event.trigger(Mana::Event::ChatChannel);
+                        event.trigger(Event::ChatChannel);
                     }
                     break;
                 case 0x02:
                     {
-                        Mana::Event event(Mana::Event::WhisperError);
+                        Event event(Event::WhisperError);
                         event.setString("nick", nick);
                         event.setString("error", strprintf(_("Whisper could "
                                  "not be sent, ignored by %s."), nick.c_str()));
-                        event.Event::trigger(Mana::Event::ChatChannel);
+                        event.Event::trigger(Event::ChatChannel);
                     }
                     break;
             }
@@ -115,10 +115,10 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             {
                 if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
                 {
-                    Mana::Event event(Mana::Event::Whisper);
+                    Event event(Event::Whisper);
                     event.setString("nick", nick);
                     event.setString("message", chatMsg);
-                    event.trigger(Mana::Event::ChatChannel);
+                    event.trigger(Event::ChatChannel);
                 }
             }
             else
@@ -174,13 +174,13 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             std::string reducedMessage = chatMsg;
             chatMsg = removeColors(sender_name) + " : " + reducedMessage;
 
-            Mana::Event event(Mana::Event::Being);
+            Event event(Event::Being);
             event.setString("message", chatMsg);
             event.setString("text", reducedMessage);
             event.setString("nick", sender_name);
             event.setInt("beingId", beingId);
             event.setInt("permissions", perms);
-            event.trigger(Mana::Event::ChatChannel);
+            event.trigger(Event::ChatChannel);
 
             break;
         }
@@ -205,7 +205,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
 
                 trim(chatMsg);
 
-                Mana::Event event(Mana::Event::Player);
+                Event event(Event::Player);
                 event.setString("message", mes);
                 event.setString("text", chatMsg);
                 event.setString("nick", player_node->getName());
@@ -213,13 +213,13 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                 event.setInt("permissions", player_relations.getDefault()
                              & (PlayerRelation::SPEECH_LOG
                                 | PlayerRelation::SPEECH_FLOAT));
-                event.trigger(Mana::Event::ChatChannel);
+                event.trigger(Event::ChatChannel);
             }
             else
             {
-                Mana::Event event(Mana::Event::Announcement);
+                Event event(Event::Announcement);
                 event.setString("message", chatMsg);
-                event.trigger(Mana::Event::ChatChannel);
+                event.trigger(Event::ChatChannel);
             }
             break;
         }

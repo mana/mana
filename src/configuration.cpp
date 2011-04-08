@@ -38,9 +38,9 @@ void Configuration::setValue(const std::string &key, const std::string &value)
     ConfigurationObject::setValue(key, value);
 
     // Notify listeners
-    Mana::Event event(Mana::Event::ConfigOptionChanged);
+    Event event(Event::ConfigOptionChanged);
     event.setString("option", key);
-    event.trigger(Mana::Event::ConfigChannel);
+    event.trigger(Event::ConfigChannel);
 }
 
 std::string ConfigurationObject::getValue(const std::string &key,
@@ -125,8 +125,8 @@ void Configuration::setDefaultValues(DefaultsData *defaultsData)
     mDefaultsData = defaultsData;
 }
 
-Mana::VariableData* Configuration::getDefault(const std::string &key,
-                                              Mana::VariableData::DataType type
+VariableData* Configuration::getDefault(const std::string &key,
+                                              VariableData::DataType type
                                              ) const
 {
     if (mDefaultsData)
@@ -153,9 +153,9 @@ int Configuration::getIntValue(const std::string &key) const
     Options::const_iterator iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
-        Mana::VariableData* vd = getDefault(key, Mana::VariableData::DATA_INT);
+        VariableData* vd = getDefault(key, VariableData::DATA_INT);
         if (vd)
-            defaultValue = ((Mana::IntData*)vd)->getData();
+            defaultValue = ((IntData*)vd)->getData();
     }
     else
     {
@@ -170,11 +170,11 @@ std::string Configuration::getStringValue(const std::string &key) const
     Options::const_iterator iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
-        Mana::VariableData* vd = getDefault(key,
-                                            Mana::VariableData::DATA_STRING);
+        VariableData* vd = getDefault(key,
+                                            VariableData::DATA_STRING);
 
         if (vd)
-            defaultValue = ((Mana::StringData*)vd)->getData();
+            defaultValue = ((StringData*)vd)->getData();
     }
     else
     {
@@ -190,11 +190,11 @@ float Configuration::getFloatValue(const std::string &key) const
     Options::const_iterator iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
-        Mana::VariableData* vd = getDefault(key,
-            Mana::VariableData::DATA_FLOAT);
+        VariableData* vd = getDefault(key,
+            VariableData::DATA_FLOAT);
 
         if (vd)
-            defaultValue = ((Mana::FloatData*)vd)->getData();
+            defaultValue = ((FloatData*)vd)->getData();
     }
     else
     {
@@ -209,11 +209,11 @@ bool Configuration::getBoolValue(const std::string &key) const
     Options::const_iterator iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
-        Mana::VariableData* vd = getDefault(key,
-            Mana::VariableData::DATA_BOOL);
+        VariableData* vd = getDefault(key,
+            VariableData::DATA_BOOL);
 
         if (vd)
-            defaultValue = ((Mana::BoolData*)vd)->getData();
+            defaultValue = ((BoolData*)vd)->getData();
     }
     else
     {

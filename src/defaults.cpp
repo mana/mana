@@ -26,8 +26,6 @@
 
 #include <stdlib.h>
 
-using namespace Mana;
-
 VariableData* createData(int defData)
 {
     return new IntData(defData);

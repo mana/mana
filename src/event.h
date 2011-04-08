@@ -28,9 +28,6 @@
 class ActorSprite;
 class Item;
 
-namespace Mana
-{
-
 // Possible exception that can be thrown
 enum BadEvent {
     BAD_KEY,
@@ -297,7 +294,7 @@ public:
      * given channel.
      */
     static inline void trigger(Channel channel, Type type)
-    { trigger(channel, Mana::Event(type)); }
+    { trigger(channel, Event(type)); }
 
 protected:
     friend class Listener;
@@ -327,11 +324,9 @@ private:
     VariableMap mData;
 };
 
-} // namespace Mana
-
 #define SERVER_NOTICE(message) { \
-Mana::Event event(Mana::Event::ServerNotice); \
+Event event(Event::ServerNotice); \
 event.setString("message", message); \
-event.trigger(Mana::Event::NoticesChannel, event); }
+event.trigger(Event::NoticesChannel, event); }
 
 #endif // EVENT_H

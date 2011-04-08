@@ -74,13 +74,13 @@ void ItemShortcut::useItem(int index)
             if (item->getInfo().getEquippable())
             {
                 if (item->isEquipped())
-                    item->doEvent(Mana::Event::DoUnequip);
+                    item->doEvent(Event::DoUnequip);
                 else
-                    item->doEvent(Mana::Event::DoEquip);
+                    item->doEvent(Event::DoEquip);
             }
             else
             {
-                item->doEvent(Mana::Event::DoUse);
+                item->doEvent(Event::DoUse);
             }
         }
     }

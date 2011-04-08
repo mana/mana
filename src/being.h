@@ -61,7 +61,7 @@ enum Gender
     GENDER_UNSPECIFIED = 2
 };
 
-class Being : public ActorSprite, public Mana::Listener
+class Being : public ActorSprite, public Listener
 {
     public:
         /**
@@ -481,7 +481,7 @@ class Being : public ActorSprite, public Mana::Listener
 
         void talkTo();
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
     protected:
         /**

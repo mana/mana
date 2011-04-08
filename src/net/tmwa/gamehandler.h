@@ -34,14 +34,14 @@
 namespace TmwAthena {
 
 class GameHandler : public MessageHandler, public Net::GameHandler,
-        public Mana::Listener
+        public Listener
 {
     public:
         GameHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         void connect();
 

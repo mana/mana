@@ -114,9 +114,9 @@ class Item
          */
         int getInvIndex() const { return mInvIndex; }
 
-        void doEvent(Mana::Event::Type eventType);
+        void doEvent(Event::Type eventType);
 
-        void doEvent(Mana::Event::Type eventType, int amount);
+        void doEvent(Event::Type eventType, int amount);
 
         /**
          * Returns information about this item type.

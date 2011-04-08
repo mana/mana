@@ -47,29 +47,29 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             tradeWindow->tradeItem(item, amount);
             break;
         case ItemDrop:
-            item->doEvent(Mana::Event::DoDrop, amount);
+            item->doEvent(Event::DoDrop, amount);
             break;
         case ItemSplit:
-            item->doEvent(Mana::Event::DoSplit, amount);
+            item->doEvent(Event::DoSplit, amount);
             break;
         case StoreAdd:
         {
-            Mana::Event event(Mana::Event::DoMove);
+            Event event(Event::DoMove);
             event.setItem("item", item);
             event.setInt("amount", amount);
             event.setInt("source", Inventory::INVENTORY);
             event.setInt("destination", Inventory::STORAGE);
-            event.trigger(Mana::Event::ItemChannel);
+            event.trigger(Event::ItemChannel);
         }
             break;
         case StoreRemove:
         {
-            Mana::Event event(Mana::Event::DoMove);
+            Event event(Event::DoMove);
             event.setItem("item", item);
             event.setInt("amount", amount);
             event.setInt("source", Inventory::STORAGE);
             event.setInt("destination", Inventory::INVENTORY);
-            event.trigger(Mana::Event::ItemChannel);
+            event.trigger(Event::ItemChannel);
         }
             break;
         default:

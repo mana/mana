@@ -49,7 +49,7 @@ class InventoryWindow : public Window,
                         public gcn::KeyListener,
                         public gcn::SelectionListener,
                         public InventoryListener,
-                        public Mana::Listener
+                        public Listener
 {
     public:
         /**
@@ -116,7 +116,7 @@ class InventoryWindow : public Window,
 
         bool isMainInventory() { return mInventory->isMainInventory(); }
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
     private:
         /**

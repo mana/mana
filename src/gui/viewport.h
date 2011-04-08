@@ -54,7 +54,7 @@ const int walkingMouseDelay = 500;
  * coordinates.
  */
 class Viewport : public WindowContainer, public gcn::MouseListener,
-        public Mana::Listener
+        public Listener
 {
     public:
         /**
@@ -171,7 +171,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void shakeScreenStop()
         { mShakeEffects.clear(); }
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
     private:
         /**

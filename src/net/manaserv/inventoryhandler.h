@@ -59,14 +59,14 @@ class EquipBackend : public Equipment::Backend
 };
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler,
-        public Mana::Listener
+        public Listener
 {
     public:
         InventoryHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         bool canSplit(const Item *item);
 

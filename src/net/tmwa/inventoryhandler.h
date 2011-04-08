@@ -119,7 +119,7 @@ class InventoryItem
 typedef std::list<InventoryItem> InventoryItems;
 
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
-        public Mana::Listener
+        public Listener
 {
     public:
         enum {
@@ -133,7 +133,7 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
 
         void handleMessage(Net::MessageIn &msg);
 
-        void event(Mana::Event::Channel channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         bool canSplit(const Item *item);
 
