@@ -219,7 +219,7 @@ StatusWindow::StatusWindow():
 
 void StatusWindow::event(Channels channel, const Mana::Event &event)
 {
-    if (event.getName() == EVENT_UPDATEATTRIBUTE)
+    if (event.getType() == Mana::Event::UpdateAttribute)
     {
         switch(event.getInt("id"))
         {
@@ -265,7 +265,7 @@ void StatusWindow::event(Channels channel, const Mana::Event &event)
             break;
         }
     }
-    else if (event.getName() == EVENT_UPDATESTAT)
+    else if (event.getType() == Mana::Event::UpdateStat)
     {
         int id = event.getInt("id");
 

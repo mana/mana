@@ -123,7 +123,7 @@ void MiniStatusWindow::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_ATTRIBUTES)
     {
-        if (event.getName() == EVENT_UPDATEATTRIBUTE)
+        if (event.getType() == Mana::Event::UpdateAttribute)
         {
             int id = event.getInt("id");
             if (id == HP || id == MAX_HP)
@@ -142,7 +142,7 @@ void MiniStatusWindow::event(Channels channel, const Mana::Event &event)
     }
     else if (channel == CHANNEL_ACTORSPRITE)
     {
-        if (event.getName() == EVENT_UPDATESTATUSEFFECT)
+        if (event.getType() == Mana::Event::UpdateStatusEffect)
         {
             int index = event.getInt("index");
             bool newStatus = event.getBool("newStatus");

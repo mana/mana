@@ -72,14 +72,14 @@ void Item::setId(int id)
                                                            "unknown-item.png"));
 }
 
-void Item::doEvent(Events eventName)
+void Item::doEvent(Mana::Event::Type eventName)
 {
     Mana::Event event(eventName);
     event.setItem("item", this);
     event.trigger(CHANNEL_ITEM);
 }
 
-void Item::doEvent(Events eventName, int amount)
+void Item::doEvent(Mana::Event::Type eventName, int amount)
 {
     Mana::Event event(eventName);
     event.setItem("item", this);

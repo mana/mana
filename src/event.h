@@ -44,61 +44,6 @@ enum Channels
     CHANNEL_STORAGE
 };
 
-enum Events
-{
-    EVENT_ANNOUNCEMENT,
-    EVENT_BEING,
-    EVENT_CLOSE,
-    EVENT_CLOSEALL,
-    EVENT_CLOSESENT,
-    EVENT_CONFIGOPTIONCHANGED,
-    EVENT_CONSTRUCTED,
-    EVENT_DBSLOADING,
-    EVENT_DESTROYED,
-    EVENT_DESTRUCTED,
-    EVENT_DESTRUCTING,
-    EVENT_DOCLOSEINVENTORY,
-    EVENT_DODROP,
-    EVENT_DOEQUIP,
-    EVENT_DOMOVE,
-    EVENT_DOSPLIT,
-    EVENT_DOUNEQUIP,
-    EVENT_DOUSE,
-    EVENT_END,
-    EVENT_ENGINESINITALIZED,
-    EVENT_ENGINESINITALIZING,
-    EVENT_GUIWINDOWSLOADED,
-    EVENT_GUIWINDOWSLOADING,
-    EVENT_GUIWINDOWSUNLOADED,
-    EVENT_GUIWINDOWSUNLOADING,
-    EVENT_INTEGERINPUT,
-    EVENT_INTEGERINPUTSENT,
-    EVENT_MAPLOADED,
-    EVENT_MENU,
-    EVENT_MENUSENT,
-    EVENT_MESSAGE,
-    EVENT_NEXT,
-    EVENT_NEXTSENT,
-    EVENT_NPCCOUNT,
-    EVENT_PLAYER,
-    EVENT_POST,
-    EVENT_POSTCOUNT,
-    EVENT_SENDLETTERSENT,
-    EVENT_SERVERNOTICE,
-    EVENT_STATECHANGE,
-    EVENT_STORAGECOUNT,
-    EVENT_STRINGINPUT,
-    EVENT_STRINGINPUTSENT,
-    EVENT_STUN,
-    EVENT_TALKSENT,
-    EVENT_TRADING,
-    EVENT_UPDATEATTRIBUTE,
-    EVENT_UPDATESTAT,
-    EVENT_UPDATESTATUSEFFECT,
-    EVENT_WHISPER,
-    EVENT_WHISPERERROR
-};
-
 namespace Mana
 {
 
@@ -117,27 +62,77 @@ typedef std::map<Channels, ListenerSet > ListenMap;
 class VariableData;
 typedef std::map<std::string, VariableData *> VariableMap;
 
-#define SERVER_NOTICE(message) { \
-Mana::Event event(EVENT_SERVERNOTICE); \
-event.setString("message", message); \
-event.trigger(CHANNEL_NOTICES, event); }
-
 class Event
 {
 public:
+    enum Type
+    {
+        Announcement,
+        Being,
+        Close,
+        CloseAll,
+        CloseSent,
+        ConfigOptionChanged,
+        Constructed,
+        LoadingDatabases,
+        Destroyed,
+        Destructed,
+        Destructing,
+        DoCloseInventory,
+        DoDrop,
+        DoEquip,
+        DoMove,
+        DoSplit,
+        DoUnequip,
+        DoUse,
+        End,
+        EnginesInitialized,
+        EnginesInitializing,
+        GuiWindowsLoaded,
+        GuiWindowsLoading,
+        GuiWindowsUnloaded,
+        GuiWindowsUnloading,
+        IntegerInput,
+        IntegerInputSent,
+        MapLoaded,
+        Menu,
+        MenuSent,
+        Message,
+        Next,
+        NextSent,
+        NpcCount,
+        Player,
+        Post,
+        PostCount,
+        SendLetterSent,
+        ServerNotice,
+        StateChange,
+        StorageCount,
+        StringInput,
+        StringInputSent,
+        Stun,
+        TalkSent,
+        Trading,
+        UpdateAttribute,
+        UpdateStat,
+        UpdateStatusEffect,
+        Whisper,
+        WhisperError
+    };
+
     /**
      * Makes an event with the given name.
      */
-    Event(Events name)
-    { mEventName = name; }
+    Event(Type type)
+    { mType = type; }
 
     ~Event();
 
     /**
      * Returns the name of the event.
      */
-    Events getName() const
-    { return mEventName; }
+    Type getType() const
+    { return mType; }
 
 // Integers
 
@@ -303,8 +298,8 @@ public:
      * Sends an empty event with the given name to all classes listening to the
      * given channel.
      */
-    static inline void trigger(Channels channel, Events name)
-    { trigger(channel, Mana::Event(name)); }
+    static inline void trigger(Channels channel, Type type)
+    { trigger(channel, Mana::Event(type)); }
 
 protected:
     friend class Listener;
@@ -329,11 +324,15 @@ protected:
 private:
     static ListenMap mBindings;
 
-    Events mEventName;
-
+    Type mType;
     VariableMap mData;
 };
 
 } // namespace Mana
 
-#endif
+#define SERVER_NOTICE(message) { \
+Mana::Event event(Mana::Event::ServerNotice); \
+event.setString("message", message); \
+event.trigger(CHANNEL_NOTICES, event); }
+
+#endif // EVENT_H

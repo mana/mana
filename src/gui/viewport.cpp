@@ -586,7 +586,8 @@ void Viewport::hideBeingPopup()
 
 void Viewport::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == CHANNEL_ACTORSPRITE && event.getName() == EVENT_DESTROYED)
+    if (channel == CHANNEL_ACTORSPRITE
+            && event.getType() == Mana::Event::Destroyed)
     {
         ActorSprite *actor = event.getActor("source");
 
@@ -597,7 +598,7 @@ void Viewport::event(Channels channel, const Mana::Event &event)
             mHoverItem = 0;
     }
     else if (channel == CHANNEL_CONFIG &&
-             event.getName() == EVENT_CONFIGOPTIONCHANGED)
+             event.getType() == Mana::Event::ConfigOptionChanged)
     {
         const std::string option = event.getString("option");
         if (option == "ScrollLaziness" || option == "ScrollRadius")

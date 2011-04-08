@@ -282,7 +282,7 @@ void SkillDialog::update()
 
 void SkillDialog::event(Channels channel, const Mana::Event &event)
 {
-    if (event.getName() == EVENT_UPDATEATTRIBUTE)
+    if (event.getType() == Mana::Event::UpdateAttribute)
     {
         if (event.getInt("id") == SKILL_POINTS)
         {
