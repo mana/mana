@@ -392,7 +392,7 @@ void NpcDialog::event(Channels channel, const Mana::Event &event)
     if (channel != CHANNEL_CONFIG)
         return;
 
-    if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+    if (event.getType() == Mana::Event::ConfigOptionChanged &&
         event.getString("option") == "logNpcInGui")
     {
         mLogInteraction = config.getBoolValue("logNpcInGui");
@@ -512,13 +512,13 @@ void NpcEventListener::event(Channels channel,
     if (channel != CHANNEL_NPC)
         return;
 
-    if (event.getName() == EVENT_MESSAGE)
+    if (event.getType() == Mana::Event::Message)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
         dialog->addText(event.getString("text"));
     }
-    else if (event.getName() == EVENT_MENU)
+    else if (event.getType() == Mana::Event::Menu)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -528,7 +528,7 @@ void NpcEventListener::event(Channels channel,
         for (int i = 1; i <= count; i++)
             dialog->addChoice(event.getString("choice" + toString(i)));
     }
-    else if (event.getName() == EVENT_INTEGERINPUT)
+    else if (event.getType() == Mana::Event::IntegerInput)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -538,7 +538,7 @@ void NpcEventListener::event(Channels channel,
 
         dialog->integerRequest(defaultValue, min, max);
     }
-    else if (event.getName() == EVENT_STRINGINPUT)
+    else if (event.getType() == Mana::Event::StringInput)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -551,7 +551,7 @@ void NpcEventListener::event(Channels channel,
             dialog->textRequest("");
         }
     }
-    else if (event.getName() == EVENT_NEXT)
+    else if (event.getType() == Mana::Event::Next)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -565,7 +565,7 @@ void NpcEventListener::event(Channels channel,
 
         dialog->showNextButton();
     }
-    else if (event.getName() == EVENT_CLOSE)
+    else if (event.getType() == Mana::Event::Close)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -579,11 +579,11 @@ void NpcEventListener::event(Channels channel,
 
         dialog->showCloseButton();
     }
-    else if (event.getName() == EVENT_CLOSEALL)
+    else if (event.getType() == Mana::Event::CloseAll)
     {
         NpcDialog::closeAll();
     }
-    else if (event.getName() == EVENT_END)
+    else if (event.getType() == Mana::Event::End)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -591,7 +591,7 @@ void NpcEventListener::event(Channels channel,
         if (dialog)
             dialog->close();
     }
-    else if (event.getName() == EVENT_POST)
+    else if (event.getType() == Mana::Event::Post)
     {
         new NpcPostDialog(event.getInt("id"));
     }

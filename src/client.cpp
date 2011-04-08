@@ -474,7 +474,7 @@ Client::Client(const Options &options):
     listen(CHANNEL_CONFIG);
 
     //TODO: fix having to fake a option changed event
-    Mana::Event fakeevent(EVENT_CONFIGOPTIONCHANGED);
+    Mana::Event fakeevent(Mana::Event::ConfigOptionChanged);
     fakeevent.setString("option", "fpslimit");
     event(CHANNEL_CONFIG, fakeevent);
 
@@ -634,7 +634,7 @@ int Client::exec()
         if (mState != mOldState)
         {
             {
-                Mana::Event event(EVENT_STATECHANGE);
+                Mana::Event event(Mana::Event::StateChange);
                 event.setInt("oldState", mOldState);
                 event.setInt("newState", mState);
                 event.trigger(CHANNEL_CLIENT);
@@ -797,7 +797,7 @@ int Client::exec()
                     paths.init("paths.xml", true);
                     paths.setDefaultValues(getPathsDefaults());
 
-                    Mana::Event::trigger(CHANNEL_CLIENT, EVENT_DBSLOADING);
+                    Mana::Event::trigger(CHANNEL_CLIENT, Mana::Event::LoadingDatabases);
 
                     // Load XML databases
                     ColorDB::load();
@@ -1075,7 +1075,7 @@ int Client::exec()
 void Client::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_CONFIG &&
-        event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+        event.getType() == Mana::Event::ConfigOptionChanged &&
         event.getString("option") == "fpslimit")
     {
         const int fpsLimit = config.getIntValue("fpslimit");

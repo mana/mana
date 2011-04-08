@@ -1109,7 +1109,7 @@ void LocalPlayer::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_ACTORSPRITE)
     {
-        if (event.getName() == EVENT_DESTROYED)
+        if (event.getType() == Mana::Event::Destroyed)
         {
             ActorSprite *actor = event.getActor("source");
 
@@ -1122,7 +1122,7 @@ void LocalPlayer::event(Channels channel, const Mana::Event &event)
     }
     else if (channel == CHANNEL_ATTRIBUTES)
     {
-        if (event.getName() == EVENT_UPDATEATTRIBUTE)
+        if (event.getType() == Mana::Event::UpdateAttribute)
         {
             if (event.getInt("id") == EXP)
             {
@@ -1135,7 +1135,7 @@ void LocalPlayer::event(Channels channel, const Mana::Event &event)
     }
     else if (channel == CHANNEL_CONFIG)
     {
-        if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+        if (event.getType() == Mana::Event::ConfigOptionChanged &&
             event.getString("option") == "showownname")
         {
             setShowName(config.getValue("showownname", 1));

@@ -61,7 +61,7 @@ class GuiConfigListener : public Mana::Listener
         {
             if (channel == CHANNEL_CONFIG)
             {
-                if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+                if (event.getType() == Mana::Event::ConfigOptionChanged &&
                     event.getString("option") == "customcursor")
                 {
                     bool bCustomCursor = config.getBoolValue("customcursor");

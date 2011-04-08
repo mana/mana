@@ -1229,7 +1229,8 @@ void Being::talkTo()
 void Being::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_CHAT &&
-            (event.getName() == EVENT_BEING || event.getName() == EVENT_PLAYER) &&
+            (event.getType() == Mana::Event::Being
+             || event.getType() == Mana::Event::Player) &&
             event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
     {
         try
@@ -1243,7 +1244,7 @@ void Being::event(Channels channel, const Mana::Event &event)
         {}
     }
     else if (channel == CHANNEL_CONFIG &&
-             event.getName() == EVENT_CONFIGOPTIONCHANGED)
+             event.getType() == Mana::Event::ConfigOptionChanged)
     {
         if (getType() == PLAYER && event.getString("option") == "visiblenames")
         {

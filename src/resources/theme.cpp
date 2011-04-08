@@ -211,7 +211,7 @@ void Theme::updateAlpha()
 void Theme::event(Channels channel, const Mana::Event &event)
 {
     if (channel == CHANNEL_CONFIG &&
-        event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+        event.getType() == Mana::Event::ConfigOptionChanged &&
         event.getString("option") == "guialpha")
     {
         updateAlpha();

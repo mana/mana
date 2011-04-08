@@ -195,19 +195,19 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         return;
 
     if (event.getId() == "activate")
-        item->doEvent(EVENT_DOUSE);
+        item->doEvent(Mana::Event::DoUse);
     else if (event.getId() == "equip")
     {
         if (item->isEquippable())
         {
             if (item->isEquipped())
-                item->doEvent(EVENT_DOUNEQUIP);
+                item->doEvent(Mana::Event::DoUnequip);
             else
-                item->doEvent(EVENT_DOEQUIP);
+                item->doEvent(Mana::Event::DoEquip);
         }
         else
         {
-            item->doEvent(EVENT_DOUSE);
+            item->doEvent(Mana::Event::DoUse);
         }
     }
     else if (event.getId() == "drop")
@@ -265,7 +265,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
                 return;
             if (mInventory->isMainInventory())
             {
-                Mana::Event event(EVENT_DOMOVE);
+                Mana::Event event(Mana::Event::DoMove);
                 event.setItem("item", item);
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::INVENTORY);
@@ -274,7 +274,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
             }
             else
             {
-                Mana::Event event(EVENT_DOMOVE);
+                Mana::Event event(Mana::Event::DoMove);
                 event.setItem("item", item);
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::STORAGE);
@@ -383,7 +383,7 @@ void InventoryWindow::close()
     }
     else
     {
-        Mana::Event event(EVENT_DOCLOSEINVENTORY);
+        Mana::Event event(Mana::Event::DoCloseInventory);
         event.setInt("type", mInventory->getType());
         event.trigger(CHANNEL_ITEM);
         scheduleDelete();
@@ -392,7 +392,7 @@ void InventoryWindow::close()
 
 void InventoryWindow::event(Channels channel, const Mana::Event &event)
 {
-    if (event.getName() == EVENT_UPDATEATTRIBUTE)
+    if (event.getType() == Mana::Event::UpdateAttribute)
     {
         int id = event.getInt("id");
         if (id == TOTAL_WEIGHT ||
