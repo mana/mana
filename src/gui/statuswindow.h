@@ -22,7 +22,7 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/window.h"
 
@@ -40,7 +40,7 @@ class VertContainer;
  *
  * \ingroup Interface
  */
-class StatusWindow : public Window, public Listener
+class StatusWindow : public Window, public EventListener
 {
     public:
         /**

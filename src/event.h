@@ -35,9 +35,9 @@ enum BadEvent {
     KEY_ALREADY_EXISTS
 };
 
-class Listener;
+class EventListener;
 
-typedef std::set<Listener *> ListenerSet;
+typedef std::set<EventListener *> ListenerSet;
 class VariableData;
 typedef std::map<std::string, VariableData *> VariableMap;
 
@@ -297,24 +297,24 @@ public:
     { trigger(channel, Event(type)); }
 
 protected:
-    friend class Listener;
+    friend class EventListener;
 
     /**
      * Binds the given listener to the given channel. The listener will receive
      * all events triggered on the channel.
      */
-    static void bind(Listener *listener, Channel channel);
+    static void bind(EventListener *listener, Channel channel);
 
     /**
      * Unbinds the given listener from the given channel. The listener will no
      * longer receive any events from the channel.
      */
-    static void unbind(Listener *listener, Channel channel);
+    static void unbind(EventListener *listener, Channel channel);
 
     /**
      * Unbinds the given listener from all channels.
      */
-    static void remove(Listener *listener);
+    static void remove(EventListener *listener);
 
 private:
     typedef std::map<Channel, ListenerSet > ListenMap;

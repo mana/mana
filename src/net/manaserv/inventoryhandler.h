@@ -23,7 +23,7 @@
 #define NET_MANASERV_INVENTORYHANDLER_H
 
 #include "equipment.h"
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "net/inventoryhandler.h"
 
@@ -59,7 +59,7 @@ class EquipBackend : public Equipment::Backend
 };
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler,
-        public Listener
+        public EventListener
 {
     public:
         InventoryHandler();

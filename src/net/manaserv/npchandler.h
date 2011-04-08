@@ -22,7 +22,7 @@
 #ifndef NET_MANASERV_NPCHANDLER_H
 #define NET_MANASERV_NPCHANDLER_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "net/npchandler.h"
 

@@ -24,7 +24,7 @@
 #include "log.h"
 #include "playerinfo.h"
 #include "configuration.h"
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/setup.h"
 

@@ -24,7 +24,7 @@
 
 #include "equipment.h"
 #include "inventory.h"
-#include "listener.h"
+#include "eventlistener.h"
 #include "playerinfo.h"
 
 #include "gui/inventorywindow.h"
@@ -119,7 +119,7 @@ class InventoryItem
 typedef std::list<InventoryItem> InventoryItems;
 
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
-        public Listener
+        public EventListener
 {
     public:
         enum {

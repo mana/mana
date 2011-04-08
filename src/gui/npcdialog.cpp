@@ -23,7 +23,7 @@
 
 #include "configuration.h"
 #include "event.h"
-#include "listener.h"
+#include "eventlistener.h"
 #include "playerinfo.h"
 
 #include "gui/npcpostdialog.h"
@@ -52,7 +52,7 @@
 
 typedef std::map<int, NpcDialog*> NpcDialogs;
 
-class NpcEventListener : public Listener
+class NpcEventListener : public EventListener
 {
 public:
     void event(Event::Channel channel, const Event &event);

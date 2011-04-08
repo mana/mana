@@ -18,21 +18,21 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "event.h"
 
-Listener::~Listener()
+EventListener::~EventListener()
 {
     Event::remove(this);
 }
 
-void Listener::listen(Event::Channel channel)
+void EventListener::listen(Event::Channel channel)
 {
     Event::bind(this, channel);
 }
 
-void Listener::ignore(Event::Channel channel)
+void EventListener::ignore(Event::Channel channel)
 {
     Event::unbind(this, channel);
 }

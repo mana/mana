@@ -24,7 +24,7 @@
 #include "equipment.h"
 #include "event.h"
 #include "inventory.h"
-#include "listener.h"
+#include "eventlistener.h"
 #include "log.h"
 
 #include "resources/iteminfo.h"
@@ -348,7 +348,7 @@ void logic()
     mSpecialRechargeUpdateNeeded++;
 }
 
-class PlayerLogic : Listener
+class PlayerLogic : EventListener
 {
 public:
     PlayerLogic()

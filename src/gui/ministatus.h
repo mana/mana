@@ -22,7 +22,7 @@
 #ifndef MINISTATUS_H
 #define MINISTATUS_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/popup.h"
 
@@ -38,7 +38,7 @@ class TextPopup;
  *
  * \ingroup Interface
  */
-class MiniStatusWindow : public Popup, public Listener
+class MiniStatusWindow : public Popup, public EventListener
 {
     public:
         MiniStatusWindow();

@@ -30,7 +30,7 @@
 #include "gui/widgets/windowcontainer.h"
 
 #include "configuration.h"
-#include "listener.h"
+#include "eventlistener.h"
 #include "graphics.h"
 #include "log.h"
 
@@ -50,7 +50,7 @@ SDLInput *guiInput = 0;
 // Bolded font
 gcn::Font *boldFont = 0;
 
-class GuiConfigListener : public Listener
+class GuiConfigListener : public EventListener
 {
     public:
         GuiConfigListener(Gui *g):
