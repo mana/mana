@@ -37,9 +37,6 @@ class HelpWindow : public Window, public LinkHandler,
                    public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         */
         HelpWindow();
 
         /**

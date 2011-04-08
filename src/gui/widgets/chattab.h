@@ -37,9 +37,6 @@ class ScrollArea;
 class ChatTab : public Tab, public AutoCompleteLister
 {
     public:
-        /**
-         * Constructor.
-         */
         ChatTab(const std::string &name);
         ~ChatTab();
 

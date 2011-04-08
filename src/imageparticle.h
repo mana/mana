@@ -41,9 +41,6 @@ class ImageParticle : public Particle
          */
         ImageParticle(Map *map, Image *image);
 
-        /**
-         * Destructor.
-         */
         ~ImageParticle();
 
         /**

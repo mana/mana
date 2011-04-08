@@ -36,11 +36,6 @@ class TextBox;
 class OkDialog : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         *
-         * @see Window::Window
-         */
         OkDialog(const std::string &title, const std::string &msg,
                  bool modal = true, Window *parent = NULL);
 

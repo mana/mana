@@ -36,11 +36,6 @@ class TextBox;
 class ConfirmDialog : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         *
-         * @see Window::Window
-         */
         ConfirmDialog(const std::string &title, const std::string &msg,
                       Window *parent = NULL);
 

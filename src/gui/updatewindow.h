@@ -71,9 +71,6 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
                   const std::string &updatesDir,
                   bool applyUpdates);
 
-    /**
-     * Destructor
-     */
     ~UpdaterWindow();
 
     /**

@@ -45,9 +45,6 @@ class QuitDialog : public Window, public gcn::ActionListener,
          */
         QuitDialog(QuitDialog **pointerToMe);
 
-        /**
-         * Destructor
-         */
         ~QuitDialog();
 
         /**

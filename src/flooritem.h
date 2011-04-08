@@ -72,4 +72,4 @@ class FloorItem : public ActorSprite
         int mX, mY;
 };
 
-#endif
+#endif // FLOORITEM_H

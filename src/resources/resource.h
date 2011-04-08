@@ -33,9 +33,6 @@ class Resource
     friend class ResourceManager;
 
     public:
-        /**
-         * Constructor
-         */
         Resource(): mRefCount(0) {}
 
         /**
@@ -59,9 +56,6 @@ class Resource
         { return mIdPath; }
 
     protected:
-        /**
-         * Destructor.
-         */
         virtual ~Resource();
 
     private:

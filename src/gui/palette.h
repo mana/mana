@@ -127,14 +127,8 @@ class Palette
         typedef std::set<Palette*> Palettes;
         static Palettes mInstances;
 
-        /**
-         * Constructor
-         */
         Palette(int size);
 
-        /**
-         * Destructor
-         */
         ~Palette();
 
         void advanceGradient();

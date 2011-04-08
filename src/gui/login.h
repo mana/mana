@@ -42,11 +42,6 @@ class LoginDialog : public Window, public gcn::ActionListener,
                     public gcn::KeyListener
 {
     public:
-        /**
-         * Constructor
-         *
-         * @see Window::Window
-         */
         LoginDialog(LoginData *loginData);
 
         ~LoginDialog();

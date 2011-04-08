@@ -34,14 +34,8 @@
 class LayoutHelper : public gcn::WidgetListener
 {
     public:
-        /**
-         * Constructor.
-         */
         LayoutHelper(gcn::Container *container);
 
-        /**
-         * Destructor.
-         */
         ~LayoutHelper();
 
         /**

@@ -34,9 +34,6 @@ namespace ManaServ {
 class MessageIn : public Net::MessageIn
 {
     public:
-        /**
-         * Constructor.
-         */
         MessageIn(const char *data, unsigned int length);
 
         int readInt16();            /**< Reads a short. */

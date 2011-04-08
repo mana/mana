@@ -52,14 +52,8 @@ class InventoryWindow : public Window,
                         public EventListener
 {
     public:
-        /**
-         * Constructor.
-         */
         InventoryWindow(Inventory *inventory);
 
-        /**
-         * Destructor.
-         */
         ~InventoryWindow();
 
         /**

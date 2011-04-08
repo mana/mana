@@ -38,14 +38,8 @@ class ShortcutContainer : public gcn::Widget,
                           public gcn::MouseListener
 {
     public:
-        /**
-         * Constructor. Initializes the shortcut container.
-         */
         ShortcutContainer();
 
-        /**
-         * Destructor.
-         */
         ~ShortcutContainer() {}
 
         /**

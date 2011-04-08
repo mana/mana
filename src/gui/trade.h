@@ -42,14 +42,8 @@ class ScrollArea;
 class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
 {
     public:
-        /**
-         * Constructor.
-         */
         TradeWindow();
 
-        /**
-         * Destructor.
-         */
         ~TradeWindow();
 
         /**

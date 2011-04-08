@@ -47,9 +47,6 @@ typedef std::vector<MapLayer*> Layers;
  */
 struct MetaTile
 {
-    /**
-     * Constructor.
-     */
     MetaTile() : whichList(0), blockmask(0) {}
 
     // Pathfinding members
@@ -93,9 +90,6 @@ class MapLayer
          */
         MapLayer(int x, int y, int width, int height, bool isFringeLayer);
 
-        /**
-         * Destructor.
-         */
         ~MapLayer();
 
         /**
@@ -176,9 +170,6 @@ class Map : public Properties
          */
         Map(int width, int height, int tileWidth, int tileHeight);
 
-        /**
-         * Destructor.
-         */
         ~Map();
 
         /**

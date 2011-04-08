@@ -36,9 +36,6 @@
 class SoundEffect : public Resource
 {
     public:
-        /**
-         * Destructor.
-         */
         virtual ~SoundEffect();
 
         /**
@@ -64,9 +61,6 @@ class SoundEffect : public Resource
         virtual bool play(int loops, int volume);
 
     protected:
-        /**
-         * Constructor.
-         */
         SoundEffect(Mix_Chunk *soundEffect): mChunk(soundEffect) {}
 
         Mix_Chunk *mChunk;

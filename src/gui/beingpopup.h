@@ -32,14 +32,8 @@ class Label;
 class BeingPopup : public Popup
 {
     public:
-        /**
-         * Constructor. Initializes the being popup.
-         */
         BeingPopup();
 
-        /**
-         * Destructor. Cleans up the being popup on deletion.
-         */
         ~BeingPopup();
 
         /**

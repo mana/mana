@@ -32,14 +32,8 @@
 class Setup_Keyboard : public SetupTab, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor
-         */
         Setup_Keyboard();
 
-        /**
-         * Destructor
-         */
         ~Setup_Keyboard();
 
         void apply();

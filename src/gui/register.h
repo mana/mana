@@ -63,9 +63,6 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          */
         RegisterDialog(LoginData *loginData);
 
-        /**
-         * Destructor
-         */
         ~RegisterDialog();
 
         /**

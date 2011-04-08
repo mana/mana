@@ -89,9 +89,6 @@ class MessageIn
         virtual ~MessageIn() {}
 
     protected:
-        /**
-         * Constructor.
-         */
         MessageIn(const char *data, unsigned int length);
 
         const char *mData;             /**< The message data. */

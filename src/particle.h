@@ -68,9 +68,6 @@ class Particle : public Actor
          */
         Particle(Map *map);
 
-        /**
-         * Destructor.
-         */
         ~Particle();
 
         /**

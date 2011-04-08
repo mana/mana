@@ -59,9 +59,6 @@ class MessageOut
         virtual ~MessageOut() {}
 
     protected:
-        /**
-         * Constructor.
-         */
         MessageOut(short id);
 
         /**

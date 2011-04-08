@@ -36,11 +36,6 @@ class TextField;
 class TextDialog : public Window, public gcn::ActionListener
 {
 public:
-    /**
-     * Constructor.
-     *
-     * @see Window::Window
-     */
     TextDialog(const std::string &title, const std::string &msg,
                Window *parent = NULL, bool autoCompleteEnabled = false);
 

@@ -38,16 +38,8 @@ class WrongDataNoticeListener;
 class ChangeEmailDialog : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         *
-         * @see Window::Window
-         */
         ChangeEmailDialog(LoginData *loginData);
 
-        /**
-         * Destructor.
-         */
         ~ChangeEmailDialog();
 
         /**

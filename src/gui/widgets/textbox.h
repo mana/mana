@@ -34,9 +34,6 @@
 class TextBox : public gcn::TextBox
 {
     public:
-        /**
-         * Constructor.
-         */
         TextBox();
 
         inline void setTextColor(const gcn::Color *color)

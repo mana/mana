@@ -57,14 +57,8 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         public EventListener
 {
     public:
-        /**
-         * Constructor.
-         */
         Viewport();
 
-        /**
-         * Destructor.
-         */
         ~Viewport();
 
         /**

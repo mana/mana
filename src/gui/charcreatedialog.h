@@ -45,14 +45,8 @@ class PlayerBox;
 class CharCreateDialog : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         */
         CharCreateDialog(CharSelectDialog *parent, int slot);
 
-        /**
-         * Destructor.
-         */
         ~CharCreateDialog();
 
         void action(const gcn::ActionEvent &event);

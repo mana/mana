@@ -34,15 +34,7 @@ class FlowContainer : public Container,
                       public gcn::WidgetListener
 {
     public:
-        /**
-         * Constructor. Initializes the shortcut container.
-         */
         FlowContainer(int boxWidth, int boxHeight);
-
-        /**
-         * Destructor.
-         */
-        ~FlowContainer() {}
 
         /**
          * Invoked when a widget changes its size. This is used to determine

@@ -40,7 +40,7 @@ class VariableData
         DATA_ACTOR
     };
 
-    virtual ~VariableData() {};
+    virtual ~VariableData() {}
 
     virtual int getType() const = 0;
 };

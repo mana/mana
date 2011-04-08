@@ -53,9 +53,6 @@ class Image : public Resource
 #endif
 
     public:
-        /**
-         * Destructor.
-         */
         virtual ~Image();
 
         /**
@@ -274,9 +271,6 @@ class Image : public Resource
 class SubImage : public Image
 {
     public:
-        /**
-         * Constructor.
-         */
         SubImage(Image *parent, SDL_Surface *image,
                  int x, int y, int width, int height);
 #ifdef USE_OPENGL
@@ -284,9 +278,6 @@ class SubImage : public Image
                  int width, int height, int texWidth, int textHeight);
 #endif
 
-        /**
-         * Destructor.
-         */
         ~SubImage();
 
         /**

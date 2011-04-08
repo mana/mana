@@ -43,14 +43,8 @@ class ChannelTab : public ChatTab
     protected:
         friend class Channel;
 
-        /**
-         * Constructor.
-         */
         ChannelTab(Channel *channel);
 
-        /**
-         * Destructor.
-         */
         ~ChannelTab();
 
         void handleInput(const std::string &msg);

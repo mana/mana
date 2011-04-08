@@ -27,9 +27,6 @@
 class ChatLogger
 {
     public:
-        /**
-         * Constructor.
-         */
         ChatLogger();
 
         /**

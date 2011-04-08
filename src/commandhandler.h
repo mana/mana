@@ -37,14 +37,8 @@ extern ChatTab *localChatTab;
 class CommandHandler
 {
     public:
-        /**
-         * Constructor
-         */
         CommandHandler();
 
-        /**
-         * Destructor
-         */
         ~CommandHandler() {}
 
         /**

@@ -78,14 +78,8 @@ class Graphics : public gcn::SDLGraphics
             BLIT_GFX
         };
 
-        /**
-         * Constructor.
-         */
         Graphics();
 
-        /**
-         * Destructor.
-         */
         virtual ~Graphics();
 
         /**

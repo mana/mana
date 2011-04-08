@@ -29,9 +29,6 @@
 class LoginData
 {
 public:
-    /**
-     * Constructor
-     */
     LoginData()
     {
         resetCharacterSlots();
@@ -57,7 +54,7 @@ public:
      */
     void resetCharacterSlots()
     {
-      characterSlots = 3; // Default value, used for TmwAthena.
+        characterSlots = 3; // Default value, used for TmwAthena.
     }
 
     void clear()

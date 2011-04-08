@@ -36,21 +36,15 @@ class TextBox;
 class TextPopup : public Popup
 {
     public:
-        /**
-         * Constructor. Initializes the item popup.
-         */
         TextPopup();
 
-        /**
-         * Destructor. Cleans up the item popup on deletion.
-         */
         ~TextPopup();
 
         /**
          * Sets the text to be displayed.
          */
         void show(int x, int y, const std::string &str1)
-        { show(x, y, str1, (const char*)""); };
+        { show(x, y, str1, (const char*)""); }
 
         /**
          * Sets the text to be displayed.

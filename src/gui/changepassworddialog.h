@@ -38,16 +38,8 @@ class WrongDataNoticeListener;
 class ChangePasswordDialog : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor
-         *
-         * @see Window::Window
-         */
         ChangePasswordDialog(LoginData *loginData);
 
-        /**
-         * Destructor
-         */
         ~ChangePasswordDialog();
 
         /**

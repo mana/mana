@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (c) 2009  Aethyra Development Team 
+ *  Copyright (c) 2009  Aethyra Development Team
  *
  *  This file is part of The Mana Client.
  *
@@ -32,9 +32,6 @@
 class Label : public gcn::Label
 {
     public:
-        /**
-         * Constructor.
-         */
         Label();
 
         /**

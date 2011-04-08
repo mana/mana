@@ -33,27 +33,18 @@
 class Vector
 {
     public:
-        /**
-         * Constructor.
-         */
         Vector():
             x(0.0f),
             y(0.0f),
             z(0.0f)
         {}
 
-        /**
-         * Constructor.
-         */
         Vector(float x, float y, float z = 0.0f):
             x(x),
             y(y),
             z(z)
         {}
 
-        /**
-         * Copy constructor.
-         */
         Vector(const Vector &v):
             x(v.x),
             y(v.y),

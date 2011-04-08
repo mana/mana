@@ -41,16 +41,8 @@ class ShopListBox;
 class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
 {
     public:
-        /**
-         * Constructor.
-         *
-         * @see Window::Window
-         */
         SellDialog(int npcId);
 
-        /**
-         * Destructor
-         */
         virtual ~SellDialog();
 
         /**

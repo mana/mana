@@ -32,9 +32,6 @@ class TextField;
 class NpcPostDialog : public Window, public gcn::ActionListener
 {
 public:
-    /**
-     * Constructor
-     */
     NpcPostDialog(int npcId);
 
     ~NpcPostDialog();

@@ -80,9 +80,6 @@ class ChatWindow : public Window,
                    public EventListener
 {
     public:
-        /**
-         * Constructor.
-         */
         ChatWindow();
 
         /**

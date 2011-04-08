@@ -29,14 +29,8 @@
 class EmoteShortcut
 {
     public:
-        /**
-         * Constructor.
-         */
         EmoteShortcut();
 
-        /**
-         * Destructor.
-         */
         ~EmoteShortcut();
 
         /**

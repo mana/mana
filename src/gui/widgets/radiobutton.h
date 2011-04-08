@@ -32,15 +32,9 @@ class Image;
 class RadioButton : public gcn::RadioButton
 {
     public:
-        /**
-         * Constructor.
-         */
         RadioButton(const std::string &caption,const std::string &group,
                 bool marked = false);
 
-        /**
-         * Destructor.
-         */
         ~RadioButton();
 
         /**

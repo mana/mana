@@ -48,11 +48,6 @@ class NpcDialog : public Window, public gcn::ActionListener,
                   public gcn::ListModel, public EventListener
 {
     public:
-        /**
-         * Constructor.
-         *
-         * @see Window::Window
-         */
         NpcDialog(int npcId);
 
         ~NpcDialog();

@@ -30,9 +30,6 @@
 class Tileset : public ImageSet
 {
     public:
-        /**
-         * Constructor.
-         */
         Tileset(Image *img, int w, int h, int firstGid, int margin, int spacing):
             ImageSet(img, w, h, margin, spacing),
             mFirstGid(firstGid)

@@ -41,9 +41,6 @@ class PlayerBox : public gcn::ScrollArea
          */
         PlayerBox(const Being *being = 0);
 
-        /**
-         * Destructor.
-         */
         ~PlayerBox();
 
         /**
