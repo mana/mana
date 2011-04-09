@@ -148,6 +148,8 @@
 		<Unit filename="src\equipment.h" />
 		<Unit filename="src\event.cpp" />
 		<Unit filename="src\event.h" />
+		<Unit filename="src\eventlistener.cpp" />
+		<Unit filename="src\eventlistener.h" />
 		<Unit filename="src\flooritem.cpp" />
 		<Unit filename="src\flooritem.h" />
 		<Unit filename="src\game.cpp" />
@@ -372,8 +374,6 @@
 		<Unit filename="src\joystick.h" />
 		<Unit filename="src\keyboardconfig.cpp" />
 		<Unit filename="src\keyboardconfig.h" />
-		<Unit filename="src\listener.cpp" />
-		<Unit filename="src\listener.h" />
 		<Unit filename="src\localplayer.cpp" />
 		<Unit filename="src\localplayer.h" />
 		<Unit filename="src\log.cpp" />
