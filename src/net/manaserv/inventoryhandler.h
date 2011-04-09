@@ -29,33 +29,35 @@
 
 #include "net/manaserv/messagehandler.h"
 
+#include <vector>
+
 namespace ManaServ {
 
-class EquipBackend : public Equipment::Backend
+class EquipBackend : public Equipment::Backend, public EventListener
 {
     public:
-        EquipBackend()
-        { memset(mEquipment, 0, sizeof(mEquipment)); }
+        EquipBackend();
 
-        Item *getEquipment(int index) const
-        { return 0; }
+        Item *getEquipment(int index) const;
+        void clear();
 
-        void clear()
-        {
-        }
+        void equip(int inventorySlot, int equipSlot, int amountUsed = 1);
+        void unequip(int inventorySlot);
 
-        void setEquipment(unsigned int slot, unsigned int used, int reference)
-        {
-            printf("Equip: %d at %dx%d\n", reference, slot, used);
-        }
-
-        void addEquipment(unsigned int slot, int reference)
-        {
-            printf("Equip: %d at %d\n", reference, slot);
-        }
+        void event(Event::Channel channel, const Event &event);
 
     private:
-        Item *mEquipment[EQUIPMENT_SIZE];
+        void readEquipFile();
+
+        struct SlotType {
+            std::string name;
+            int count;
+            bool visible;
+            int firstIndex;
+        };
+
+        std::vector<Item*> mSlots;
+        std::vector<SlotType> mSlotTypes;
 };
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler,
@@ -73,7 +75,7 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler,
         size_t getSize(int type) const;
 
     private:
-        EquipBackend mEquips;
+        EquipBackend mEquipBackend;
 };
 
 } // namespace ManaServ

@@ -26,7 +26,10 @@
 #include "item.h"
 #include "itemshortcut.h"
 #include "localplayer.h"
+#include "log.h"
 #include "playerinfo.h"
+
+#include "gui/inventorywindow.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
@@ -40,6 +43,125 @@ extern Net::InventoryHandler *inventoryHandler;
 namespace ManaServ {
 
 extern Connection *gameServerConnection;
+
+EquipBackend::EquipBackend()
+{
+    listen(Event::ClientChannel);
+}
+
+Item *EquipBackend::getEquipment(int index) const
+{
+    if (index < 0 || (unsigned) index >= mSlots.size())
+        return 0;
+    return mSlots.at(index);
+}
+
+void EquipBackend::clear()
+{
+    for (std::vector<Item*>::iterator i = mSlots.begin(), i_end = mSlots.end();
+         i != i_end; ++i)
+    {
+        if (Item *item = *i)
+            item->setEquipped(false);
+    }
+    mSlots.assign(mSlots.size(), 0);
+}
+
+void EquipBackend::equip(int inventorySlot, int equipSlot, int amountUsed)
+{
+    if (equipSlot < 0 || (unsigned) equipSlot >= mSlotTypes.size())
+    {
+        logger->log("ManaServ::EquipBackend: Equipment slot out of range");
+        return;
+    }
+
+    const SlotType &slotType = mSlotTypes.at(equipSlot);
+    Item *item = PlayerInfo::getInventory()->getItem(inventorySlot);
+
+    if (!item)
+    {
+        logger->log("ManaServ::EquipBackend: No item at index %d",
+                    inventorySlot);
+        return;
+    }
+
+    // Start at first index and search upwards for free slots to place the
+    // item at the given inventory slot in
+    int i = slotType.firstIndex;
+    const int end_i = i + slotType.count;
+
+    for (; i < end_i && amountUsed > 0; ++i)
+    {
+        if (!mSlots.at(i))
+        {
+            mSlots[i] = item;
+            --amountUsed;
+
+            item->setEquipped(true);
+            inventoryWindow->updateButtons();
+        }
+    }
+}
+
+void EquipBackend::unequip(int inventorySlot)
+{
+    Item *item = PlayerInfo::getInventory()->getItem(inventorySlot);
+
+    if (!item)
+    {
+        logger->log("ManaServ::EquipBackend: No item at index %d",
+                    inventorySlot);
+        return;
+    }
+
+    for (unsigned i = 0; i < mSlots.size(); ++i)
+        if (mSlots.at(i) == item)
+            mSlots[i] = 0;
+
+    item->setEquipped(false);
+    inventoryWindow->updateButtons();
+}
+
+void EquipBackend::event(Event::Channel, const Event &event)
+{
+    if (event.getType() == Event::LoadingDatabases)
+        readEquipFile();
+}
+
+void EquipBackend::readEquipFile()
+{
+    mSlots.clear();
+    mSlotTypes.clear();
+
+    XML::Document doc("equip.xml");
+    xmlNodePtr rootNode = doc.rootNode();
+
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "equip-slots"))
+    {
+        logger->log("ManaServ::EquipBackend: Error while reading equip.xml!");
+        return;
+    }
+
+    int slotCount = 0;
+
+    for_each_xml_child_node(childNode, rootNode)
+    {
+        if (!xmlStrEqual(childNode->name, BAD_CAST "slot"))
+            continue;
+
+        SlotType slotType;
+        slotType.name = XML::getProperty(childNode, "name", std::string());
+        slotType.count = XML::getProperty(childNode, "count", 1);
+        slotType.visible = XML::getBoolProperty(childNode, "visible", false);
+        slotType.firstIndex = slotCount;
+
+        mSlotTypes.push_back(slotType);
+        slotCount += slotType.count;
+    }
+
+    mSlots.resize(slotCount);
+}
+
 
 InventoryHandler::InventoryHandler()
 {
@@ -62,21 +184,21 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
         case GPMSG_INVENTORY_FULL:
             {
                 PlayerInfo::clearInventory();
-                PlayerInfo::getEquipment()->setBackend(&mEquips);
+                PlayerInfo::getEquipment()->setBackend(&mEquipBackend);
                 int count = msg.readInt16();
                 while (count--)
                 {
-                    unsigned int slot = msg.readInt16();
+                    int slot = msg.readInt16();
                     int id = msg.readInt16();
-                    unsigned int amount = msg.readInt16();
+                    int amount = msg.readInt16();
                     PlayerInfo::setInventoryItem(slot, id, amount);
                 }
                 while (msg.getUnreadLength())
                 {
-                    unsigned int slot = msg.readInt8();
-                    unsigned int ref = msg.readInt16();
+                    int equipSlot = msg.readInt8();
+                    int inventorySlot = msg.readInt16();
 
-                    mEquips.addEquipment(slot, ref);
+                    mEquipBackend.equip(inventorySlot, equipSlot);
                 }
             }
             break;
@@ -94,14 +216,25 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
         case GPMSG_EQUIP:
             while (msg.getUnreadLength())
             {
-                unsigned int ref = msg.readInt16();
-                int count = msg.readInt8();
-                while (count--)
-                {
-                    unsigned int slot = msg.readInt8();
-                    unsigned int used = msg.readInt8();
+                int inventorySlot = msg.readInt16();
+                int equipSlotCount = msg.readInt8();
 
-                    mEquips.setEquipment(slot, used, ref);
+                if (equipSlotCount == 0)
+                {
+                    // No slots means to unequip this item
+                    mEquipBackend.unequip(inventorySlot);
+                }
+                else
+                {
+                    // Otherwise equip the item in the given slots
+                    while (equipSlotCount--)
+                    {
+                        unsigned int equipSlot = msg.readInt8();
+                        unsigned int amountUsed = msg.readInt8();
+
+                        mEquipBackend.equip(inventorySlot, equipSlot,
+                                            amountUsed);
+                    }
                 }
             }
             break;
@@ -131,10 +264,6 @@ void InventoryHandler::event(Event::Channel channel,
             MessageOut msg(PGMSG_UNEQUIP);
             msg.writeInt8(index);
             gameServerConnection->send(msg);
-
-            // Tidy equipment directly to avoid weapon still shown bug,
-            // for instance.
-            mEquips.setEquipment(index, 0, 0);
         }
         else if (event.getType() == Event::DoUse)
         {

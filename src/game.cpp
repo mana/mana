@@ -156,13 +156,11 @@ static void createGuiWindows()
     tradeWindow = new TradeWindow;
     switch (Net::getNetworkType())
     {
-      case ServerInfo::TMWATHENA:
-        equipmentWindow = new TmwAthena::TaEquipmentWindow(
-                                                    PlayerInfo::getEquipment());
-        break;
-      case ServerInfo::MANASERV:
-      default:
-        equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
+    case ServerInfo::TMWATHENA:
+    case ServerInfo::MANASERV:
+    default:
+        equipmentWindow =
+                new TmwAthena::TaEquipmentWindow(PlayerInfo::getEquipment());
         break;
     }
     statusWindow = new StatusWindow;
