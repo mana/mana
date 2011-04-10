@@ -285,6 +285,11 @@ size_t CompoundSprite::getFrameCount(size_t layer)
 
 void CompoundSprite::redraw() const
 {
+    // TODO Detect image size needed to avoid cutting off large sprites, and
+    // reduce memory for smaller ones
+    mNeedsRedraw = false;
+    return;
+
     // TODO OpenGL support
     if (Image::getLoadAsOpenGL())
     {
