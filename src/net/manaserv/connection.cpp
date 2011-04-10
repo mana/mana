@@ -60,11 +60,7 @@ bool Connection::connect(const std::string &address, short port)
     enetAddress.port = port;
 
     // Initiate the connection, allocating channel 0.
-#if defined(ENET_VERSION) && ENET_VERSION >= ENET_CUTOFF
     mConnection = enet_host_connect(mClient, &enetAddress, 1, 0);
-#else
-    mConnection = enet_host_connect(mClient, &enetAddress, 1);
-#endif
 
     if (!mConnection)
     {

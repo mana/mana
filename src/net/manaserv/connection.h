@@ -26,12 +26,6 @@
 
 #include <iosfwd>
 
-#ifdef ENET_VERSION_CREATE
-#define ENET_CUTOFF ENET_VERSION_CREATE(1,3,0)
-#else
-#define ENET_CUTOFF 0xFFFFFFFF
-#endif
-
 namespace ManaServ
 {
     class MessageOut;
