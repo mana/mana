@@ -398,6 +398,40 @@ void Game::logic()
 }
 
 /**
+ * handle item pick up case.
+ */
+static void handleItemPickUp()
+{
+    int x = player_node->getTileX();
+    int y = player_node->getTileY();
+
+    // Let's look for items around until you find one.
+    bool found = false;
+    for (int xX = x - 1; xX < x + 2; ++xX)
+    {
+        for (int yY = y - 1; yY < y + 2; ++yY)
+        {
+            FloorItem *item = actorSpriteManager->findItem(xX, yY);
+            if (item)
+            {
+                found = true;
+                player_node->pickUp(item);
+
+                // We found it, so set the player
+                // direction accordingly,
+                player_node->lookAt(
+                                  player_node->getMap()->getTileCenter(xX, yY));
+
+                // Get out of the loops
+                break;
+            }
+        }
+        if (found)
+            break;
+    }
+}
+
+/**
  * The huge input handling method.
  */
 void Game::handleInput()
@@ -629,42 +663,7 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-                            int x = player_node->getTileX();
-                            int y = player_node->getTileY();
-                            // Let's look for items around until you find one.
-                            bool found = false;
-                            for (int xX = x - 1; xX < x + 2; ++xX)
-                            {
-                                for (int yY = y - 1; yY < y + 2; ++yY)
-                                {
-                                    FloorItem *item =
-                                           actorSpriteManager->findItem(xX, yY);
-                                    if (item)
-                                    {
-                                        found = true;
-                                        player_node->pickUp(item);
-                                        // We found it, so set the player
-                                        // direction accordingly,
-                                        Uint8 dir = 0;
-                                        if (xX < x)
-                                            dir |= Being::LEFT;
-                                        else if (xX > x)
-                                            dir |= Being::RIGHT;
-                                        if (yY < y)
-                                            dir |= Being::UP;
-                                        else if (yY > y)
-                                            dir |= Being::DOWN;
-
-                                        if (dir)
-                                            player_node->setDirection(dir);
-
-                                        // Get out of the loops
-                                        break;
-                                    }
-                                }
-                                if (found)
-                                    break;
-                            }
+                            handleItemPickUp();
 
                             used = true;
                         }

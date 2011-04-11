@@ -649,6 +649,86 @@ void Being::setAction(Action action, int attackType)
         mActionTime = tick_time;
 }
 
+void Being::lookAt(const Vector &destPos)
+{
+    // We first handle simple cases
+
+    // If the two positions are the same,
+    // don't update the direction since it's only a matter of keeping
+    // the previous one.
+    if (mPos.x == destPos.x && mPos.y == destPos.y)
+        return;
+
+    if (mPos.x == destPos.x)
+    {
+        if (mPos.y > destPos.y)
+            setDirection(UP);
+        else
+            setDirection(DOWN);
+        return;
+    }
+
+    if (mPos.y == destPos.y)
+    {
+        if (mPos.x > destPos.x)
+            setDirection(LEFT);
+        else
+            setDirection(RIGHT);
+        return;
+    }
+
+    // Now let's handle diagonal cases
+    // First, find the lower angle:
+    if (mPos.x < destPos.x)
+    {
+        // Up-right direction
+        if (mPos.y > destPos.y)
+        {
+            // Compute tan of the angle
+            if ((mPos.y - destPos.y) / (destPos.x - mPos.x) < 1)
+                // The angle is less than 45°, we look to the right
+                setDirection(RIGHT);
+            else
+                setDirection(UP);
+            return;
+        }
+        else // Down-right
+        {
+            // Compute tan of the angle
+            if ((destPos.y - mPos.y) / (destPos.x - mPos.x) < 1)
+                // The angle is less than 45°, we look to the right
+                setDirection(RIGHT);
+            else
+                setDirection(DOWN);
+            return;
+        }
+    }
+    else
+    {
+        // Up-left direction
+        if (mPos.y > destPos.y)
+        {
+            // Compute tan of the angle
+            if ((mPos.y - destPos.y) / (mPos.x - destPos.x) < 1)
+                // The angle is less than 45°, we look to the left
+                setDirection(LEFT);
+            else
+                setDirection(UP);
+            return;
+        }
+        else // Down-left
+        {
+            // Compute tan of the angle
+            if ((destPos.y - mPos.y) / (mPos.x - destPos.x) < 1)
+                // The angle is less than 45°, we look to the left
+                setDirection(LEFT);
+            else
+                setDirection(DOWN);
+            return;
+        }
+    }
+}
+
 void Being::setDirection(Uint8 direction)
 {
     if (!direction || mDirection == direction)

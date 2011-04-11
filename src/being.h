@@ -450,6 +450,11 @@ class Being : public ActorSprite, public Mana::Listener
 
         void setMap(Map *map);
 
+        /**
+         * Make the being look at a given pixel position.
+         */
+        void lookAt(const Vector &destPos);
+
     protected:
         /**
          * Sets the new path for this being.
