@@ -401,6 +401,9 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
     if (this != player_node)
         setAction(Being::ATTACK, 1);
 
+    if (victim)
+        lookAt(victim->getPosition());
+
     if (getType() == PLAYER && victim && mEquippedWeapon)
         fireMissile(victim, mEquippedWeapon->getMissileParticle());
     else
