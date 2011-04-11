@@ -659,14 +659,39 @@ void LocalPlayer::setTarget(Being *target)
 
 void LocalPlayer::setDestination(int x, int y)
 {
+    int srcX = x;
+    int srcY = y;
+    int dstX = (int)mDest.x;
+    int dstY = (int)mDest.y;
+    int tileWidth = mMap->getTileWidth();
+    int tileHeight = mMap->getTileHeight();
+    if (!Net::getPlayerHandler()->usePixelPrecision())
+    {
+        // For tile-based clients, we accept positions on the same tile.
+        srcX = srcX / tileWidth;
+        srcY = srcY / tileHeight;
+        dstX = dstX / tileWidth;
+        dstY = dstY / tileHeight;
+    }
+
     // Only send a new message to the server when destination changes
-    if (x != mDest.x || y != mDest.y)
+    if (srcX != dstX || srcY != dstY)
     {
         Being::setDestination(x, y);
+        // Note: Being::setDestination() updates mDest, so we get the new
+        // destination.
+        dstX = (int)mDest.x;
+        dstY = (int)mDest.y;
+
+        if (!Net::getPlayerHandler()->usePixelPrecision())
+        {
+            dstX = dstX / tileWidth;
+            dstY = dstY / tileHeight;
+        }
 
         // If the destination given to being class is accepted,
         // we inform the Server.
-        if ((x == mDest.x && y == mDest.y))
+        if (srcX == dstX && srcY == dstY)
             Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }
 
