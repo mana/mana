@@ -105,8 +105,8 @@ LocalPlayer::~LocalPlayer()
 
 void LocalPlayer::logic()
 {
-    // Actions are allowed once per second
-    if (get_elapsed_time(mLastAction) >= 1000)
+    // Actions are allowed at 5.5 per second
+    if (get_elapsed_time(mLastAction) >= 182)
         mLastAction = -1;
 
     // Show XP messages
