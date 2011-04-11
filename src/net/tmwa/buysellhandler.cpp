@@ -112,11 +112,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_NPC_BUY_RESPONSE:
-            if (msg.readInt8() == 0)
-            {
-                localChatTab->chatLog(_("Thanks for buying."), BY_SERVER);
-            }
-            else
+            if (msg.readInt8() != 0)
             {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
@@ -126,11 +122,8 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_NPC_SELL_RESPONSE:
-            if (msg.readInt8() == 0)
-                localChatTab->chatLog(_("Thanks for selling."), BY_SERVER);
-            else
+            if (msg.readInt8() != 0)
                 localChatTab->chatLog(_("Unable to sell."), BY_SERVER);
-
             break;
     }
 }
