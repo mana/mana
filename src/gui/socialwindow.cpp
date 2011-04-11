@@ -310,6 +310,7 @@ private:
 
 SocialWindow::SocialWindow() :
     Window(_("Social")),
+    mGuildInvited(0),
     mGuildAcceptDialog(NULL),
     mPartyAcceptDialog(NULL)
 {
@@ -459,14 +460,12 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         // check if they accepted the invite
         if (eventId == "yes")
         {
-            SERVER_NOTICE(strprintf(_("Accepted guild invite from %s."),
-                    mPartyInviter.c_str()))
+            SERVER_NOTICE(_("Accepted guild invite"))
             Net::getGuildHandler()->inviteResponse(mGuildInvited, true);
         }
         else if (eventId == "no")
         {
-            SERVER_NOTICE(strprintf(_("Rejected guild invite from %s."),
-                    mPartyInviter.c_str()))
+            SERVER_NOTICE(_("Rejected guild invite."))
             Net::getGuildHandler()->inviteResponse(mGuildInvited, false);
         }
 
