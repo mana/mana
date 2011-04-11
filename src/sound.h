@@ -68,16 +68,25 @@ class Sound
          * @param path The full path to the music file.
          * @param ms   Duration of fade-in effect (ms)
          */
-        void fadeInMusic(const std::string &path, int ms = 2000);
+        void fadeInMusic(const std::string &path, int ms = 1000);
 
         /**
          * Fades out currently running background music track.
          *
          * @param ms   Duration of fade-out effect (ms)
          */
-        void fadeOutMusic(int ms);
+        void fadeOutMusic(int ms = 1000);
 
-        int getMaxVolume() const;
+        /**
+         * Fades out a background music and play a new one.
+         *
+         * @param path The full path to the fade in music file.
+         * @param ms   Duration of fade-out effect (ms)
+         */
+        void fadeOutAndPlayMusic(const std::string &path, int ms = 1000);
+
+        int getMaxVolume() const
+        { return MIX_MAX_VOLUME; }
 
         void setMusicVolume(int volume);
         void setSfxVolume(int volume);
@@ -91,12 +100,25 @@ class Sound
          */
         void playSfx(const std::string &path, int x = 0, int y = 0);
 
+        /**
+         * The sound logic.
+         * Currently used to check whether the music file can be freed after
+         * a fade out, and whether new music has to be played.
+         */
+        void logic();
+
     private:
         /** Logs various info about sound device. */
         void info();
 
         /** Halts and frees currently playing music. */
         void haltMusic();
+
+        /**
+         * When calling fadeOutAndPlayMusic(),
+         * the music file below will then be played
+         */
+        std::string mNextMusicPath;
 
         bool mInstalled;
 

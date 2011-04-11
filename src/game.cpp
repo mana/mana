@@ -982,9 +982,9 @@ void Game::changeMap(const std::string &mapPath)
     if (newMusic != oldMusic)
     {
         if (newMusic.empty())
-            sound.stopMusic();
+            sound.fadeOutMusic();
         else
-            sound.playMusic(newMusic);
+            sound.fadeOutAndPlayMusic(newMusic);
     }
 
     delete mCurrentMap;

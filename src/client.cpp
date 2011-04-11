@@ -568,6 +568,8 @@ int Client::exec()
             if (game)
                 game->logic();
 
+            sound.logic();
+
             ++lastTickTime;
         }
 
