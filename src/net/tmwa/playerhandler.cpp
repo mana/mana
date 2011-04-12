@@ -598,8 +598,13 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
+    static Uint32 lastTime = 0;
+    if (SDL_GetTicks() < lastTime + 100)
+        return;
+
     MessageOut outMsg(CMSG_ITEM_PICKUP);
     outMsg.writeInt32(floorItem->getId());
+    lastTime = SDL_GetTicks();
 }
 
 void PlayerHandler::setDirection(char direction)
