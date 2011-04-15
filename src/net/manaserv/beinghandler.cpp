@@ -40,6 +40,8 @@
 
 #include "utils/gettext.h"
 
+#define POSITION_DIFF_TOLERANCE 48
+
 namespace ManaServ {
 
 BeingHandler::BeingHandler()
@@ -217,20 +219,27 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         int id = msg.readInt16();
         int flags = msg.readInt8();
         Being *being = actorSpriteManager->findBeing(id);
-        int sx = 0;
-        int sy = 0;
-        int speed = 0;
+        int sx, sy, dx, dy, speed = 0;
+
+        if ((!flags & (MOVING_POSITION | MOVING_DESTINATION)))
+            continue;
 
         if (flags & MOVING_POSITION)
         {
             sx = msg.readInt16();
             sy = msg.readInt16();
+        }
+
+        if (flags & MOVING_DESTINATION)
+        {
+            dx = msg.readInt16();
+            dy = msg.readInt16();
             speed = msg.readInt8();
         }
-        if (!being || !(flags & (MOVING_POSITION | MOVING_DESTINATION)))
-        {
+
+        if (!being)
             continue;
-        }
+
         if (speed)
         {
            /*
@@ -241,18 +250,25 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
             * with the Being::logic() function calls
             * @see MILLISECONDS_IN_A_TICK
             */
-            being->setWalkSpeed(
-                               giveSpeedInPixelsPerTicks((float) speed / 10));
+            being->setWalkSpeed(giveSpeedInPixelsPerTicks((float) speed / 10));
         }
 
         // Ignore messages from the server for the local player
         if (being == player_node)
             continue;
 
+        // If the position differs too much from the actual one, we resync
+        // the being position
         if (flags & MOVING_POSITION)
         {
-            being->setDestination(sx, sy);
+            Vector serverPos(sx, sy);
+            if (serverPos.length()
+                - being->getPosition().length() > POSITION_DIFF_TOLERANCE)
+                being->setPosition(serverPos);
         }
+
+        if (flags & MOVING_DESTINATION)
+            being->setDestination(dx, dy);
     }
 }
 
