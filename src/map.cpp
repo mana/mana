@@ -611,9 +611,6 @@ Vector Map::getTileCenter(int x, int y)
 {
     Vector tileCenterPos;
 
-    if (!contains(x, y))
-        return tileCenterPos;
-
     tileCenterPos.x = x * mTileWidth + mTileWidth / 2;
     tileCenterPos.y = y * mTileHeight + mTileHeight / 2;
     return tileCenterPos;

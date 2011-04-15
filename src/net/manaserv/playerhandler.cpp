@@ -420,10 +420,7 @@ Vector PlayerHandler::getDefaultMoveSpeed() const
 
 Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
 {
-    // We don't use z for now.
     Vector speedInTicks;
-    // speedInTicks.x = speedInTicks.y = speedInTicks.z = 0;
-    // ^ Done by constructor
 
     Game *game = Game::instance();
     if (game && !map)

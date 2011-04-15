@@ -268,7 +268,7 @@ class Map : public Properties
         { return mTileHeight; }
 
         /**
-         * Returns the nearest tile center position in pixels coordinates.
+         * Returns the tile center position in pixel coordinates.
          *
          * @param x the horizontal tile position
          * @param y the vertical tile position

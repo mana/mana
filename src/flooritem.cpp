@@ -38,11 +38,9 @@ FloorItem::FloorItem(int id,
     mPos = position;
 
     setMap(map);
-    if (map)
-    {
-        mX = (int)position.x / map->getTileWidth();
-        mY = (int)position.y / map->getTileHeight();
-    }
+
+    mX = (int)position.x / map->getTileWidth();
+    mY = (int)position.y / map->getTileHeight();
 
     setupSpriteDisplay(itemDb->get(itemId).getDisplay());
 }
