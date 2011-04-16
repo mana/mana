@@ -3,6 +3,14 @@
 
 ##3                         === RECENT CHANGES ===
 
+ 0.5.2 (17 April 2011)
+ - Removed NPC "Thanks for buying/selling" messages from the chat
+ - Added a few missing authentication failure reasons
+ - Avoid kick from server due to picking up items too fast
+ - Fixed updating of buy dialog after buying
+ - Fixed compile on GNU HURD
+ - Updated French and Finnish translations
+
  0.5.1 (14 March 2011)
  - Added particle notification for "Unable to pick up item."
  - Added the amount of items picked up to the particle notification
@@ -141,30 +149,4 @@
  - Trade window is now resizable
  - Obscure precise home directory name when making screenshots
  - Fixed follow-parent of nested and being-following particle emitters
-
- 0.0.27 (9 December 2008)
- - Added support for showing map name above minimap
- - Added showing how long the ban is when banned
- - Added --data parameter for developers
- - Added particle effect for critical hits
- - Added support for dynamic skill names and hair colors
- - Added support for status effects
- - Added ability to add equipment to the shortcut bar
- - Added ability to change configuration during login phase (from Aethyra)
- - Mouse cursor will now hide when not used for some time
- - Inventory window now displays amount of slots used
- - Center minimap on player when it is larger than the minimap window
- - Extended particle emitters with properties that can change over time
- - Extended the GUI font to support more characters
- - Only require a restart to switch to full screen with OpenGL on Windows
- - Make sure news and update file list aren't cached (from Aethyra)
- - Made NPC dialogs resizable (from Aethyra)
- - Made window shortcuts configurable
- - Fixed visibility of trade window on startup
- - Fixed a client input freeze when closing NPC script from server
- - Fixed dead players to lie on the ground instead of standing around
- - Fixed shortcuts being activated when trade window was visible
- - Fixed a crash when equipment window is open
- - Fixed money value on failing to buy (from Aethyra)
- - Fixed crash in right-click menu when used after a being disappeared
 
