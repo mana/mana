@@ -52,14 +52,7 @@ extern volatile int fps;
 extern volatile int tick_time;
 extern volatile int cur_time;
 
-class ErrorListener : public gcn::ActionListener
-{
-    public:
-        void action(const gcn::ActionEvent &event);
-};
-
 extern std::string errorMessage;
-extern ErrorListener errorListener;
 extern LoginData loginData;
 
 /**
@@ -167,6 +160,20 @@ public:
 
     int exec();
 
+    /**
+     * Pops up an OkDialog with the given \a title and \a message, and
+     * switches to the given \a state when Ok is pressed.
+     */
+    void showOkDialog(const std::string &title,
+                      const std::string &message,
+                      State state);
+
+    /**
+     * Pops up an error dialog with the given \a message, and switches to the
+     * given \a state when Ok is pressed.
+     */
+    void showErrorDialog(const std::string &message, State state);
+
     static void setState(State state)
     { instance()->mState = state; }
 
@@ -218,6 +225,7 @@ private:
 
     State mState;
     State mOldState;
+    State mStateAfterOkDialog;
 
     SDL_Surface *mIcon;
 

@@ -96,7 +96,6 @@ Joystick *joystick = NULL;
 OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
 QuitDialog *quitDialog = NULL;
-OkDialog *disconnectedDialog = NULL;
 
 ChatWindow *chatWindow;
 StatusWindow *statusWindow;
@@ -225,8 +224,6 @@ Game::Game():
 {
     assert(!mInstance);
     mInstance = this;
-
-    disconnectedDialog = NULL;
 
     // Create the viewport
     viewport = new Viewport;
@@ -386,14 +383,9 @@ void Game::logic()
             return; // Disconnect gets handled by STATE_ERROR
 
         errorMessage = _("The connection to the server was lost.");
-
-        if (!disconnectedDialog)
-        {
-            disconnectedDialog = new OkDialog(_("Network Error"),
-                                              errorMessage);
-            disconnectedDialog->addActionListener(&errorListener);
-            disconnectedDialog->requestMoveToTop();
-        }
+        Client::instance()->showOkDialog(_("Network Error"),
+                                         errorMessage,
+                                         STATE_CHOOSE_SERVER);
     }
 }
 

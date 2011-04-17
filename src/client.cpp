@@ -107,7 +107,6 @@ static const int defaultMusicVolume = 60;
 
 // TODO: Get rid fo these globals
 std::string errorMessage;
-ErrorListener errorListener;
 LoginData loginData;
 
 Configuration config;         /**< XML file configuration reader */
@@ -123,11 +122,6 @@ Graphics *graphics;
 ItemDB *itemDb;
 
 Sound sound;
-
-void ErrorListener::action(const gcn::ActionEvent &)
-{
-    Client::setState(STATE_CHOOSE_SERVER);
-}
 
 volatile int tick_time;       /**< Tick counter */
 volatile int fps = 0;         /**< Frames counted in the last second */
@@ -189,37 +183,6 @@ bool isDoubleClick(int selected)
     return false;
 }
 
-// This anonymous namespace hides whatever is inside from other modules.
-namespace {
-
-class AccountListener : public gcn::ActionListener
-{
-public:
-    void action(const gcn::ActionEvent &)
-    {
-        Client::setState(STATE_CHAR_SELECT);
-    }
-} accountListener;
-
-class LoginListener : public gcn::ActionListener
-{
-public:
-    void action(const gcn::ActionEvent &)
-    {
-        Client::setState(STATE_LOGIN);
-    }
-} loginListener;
-
-class ServerChoiceListener : public gcn::ActionListener
-{
-public:
-    void action(const gcn::ActionEvent &)
-    {
-        Client::setState(STATE_CHOOSE_SERVER);
-    }
-} serverChoiceListener;
-
-} // anonymous namespace
 
 Client *Client::mInstance = 0;
 
@@ -232,6 +195,7 @@ Client::Client(const Options &options):
     mSetupButton(0),
     mState(STATE_CHOOSE_SERVER),
     mOldState(STATE_START),
+    mStateAfterOkDialog(mState),
     mIcon(0),
     mLogicCounterId(0),
     mSecondsCounterId(0),
@@ -822,11 +786,9 @@ int Client::exec()
                         errorMessage =
                             _("This server is missing needed world data. "
                               "Please contact the administrator(s).");
-                        mCurrentDialog = new OkDialog(
-                            _("ItemDB: Error while loading " ITEMS_DB_FILE "!"),
-                            errorMessage);
-                        mCurrentDialog->addActionListener(&serverChoiceListener);
-                        mCurrentDialog = NULL; // OkDialog deletes itself
+                        showOkDialog(_("ItemDB: Error while loading "
+                                       ITEMS_DB_FILE "!"), errorMessage,
+                                     STATE_CHOOSE_SERVER);
                         break;
                     }
                     Being::load(); // Hairstyles
@@ -916,16 +878,12 @@ int Client::exec()
 
                 case STATE_LOGIN_ERROR:
                     logger->log("State: LOGIN ERROR");
-                    mCurrentDialog = new OkDialog(_("Error"), errorMessage);
-                    mCurrentDialog->addActionListener(&loginListener);
-                    mCurrentDialog = NULL; // OkDialog deletes itself
+                    showErrorDialog(errorMessage, STATE_LOGIN);
                     break;
 
                 case STATE_ACCOUNTCHANGE_ERROR:
                     logger->log("State: ACCOUNT CHANGE ERROR");
-                    mCurrentDialog = new OkDialog(_("Error"), errorMessage);
-                    mCurrentDialog->addActionListener(&accountListener);
-                    mCurrentDialog = NULL; // OkDialog deletes itself
+                    showErrorDialog(errorMessage, STATE_CHAR_SELECT);
                     break;
 
                 case STATE_REGISTER_PREP:
@@ -959,10 +917,9 @@ int Client::exec()
 
                 case STATE_CHANGEPASSWORD_SUCCESS:
                     logger->log("State: CHANGE PASSWORD SUCCESS");
-                    mCurrentDialog = new OkDialog(_("Password Change"),
-                            _("Password changed successfully!"));
-                    mCurrentDialog->addActionListener(&accountListener);
-                    mCurrentDialog = NULL; // OkDialog deletes itself
+                    showOkDialog(_("Password Change"),
+                                 _("Password changed successfully!"),
+                                 STATE_CHAR_SELECT);
                     loginData.password = loginData.newPassword;
                     loginData.newPassword = "";
                     break;
@@ -979,10 +936,9 @@ int Client::exec()
 
                 case STATE_CHANGEEMAIL_SUCCESS:
                     logger->log("State: CHANGE EMAIL SUCCESS");
-                    mCurrentDialog = new OkDialog(_("Email Change"),
-                            _("Email changed successfully!"));
-                    mCurrentDialog->addActionListener(&accountListener);
-                    mCurrentDialog = NULL; // OkDialog deletes itself
+                    showOkDialog(_("Email Change"),
+                                 _("Email changed successfully!"),
+                                 STATE_CHAR_SELECT);
                     break;
 
                 case STATE_UNREGISTER:
@@ -1000,12 +956,10 @@ int Client::exec()
                     logger->log("State: UNREGISTER SUCCESS");
                     Net::getLoginHandler()->disconnect();
 
-                    mCurrentDialog = new OkDialog(_("Unregister Successful"),
-                            _("Farewell, come back any time..."));
+                    showOkDialog(_("Unregister Successful"),
+                                 _("Farewell, come back any time..."),
+                                 STATE_CHOOSE_SERVER);
                     loginData.clear();
-                    //The errorlistener sets the state to STATE_CHOOSE_SERVER
-                    mCurrentDialog->addActionListener(&errorListener);
-                    mCurrentDialog = NULL; // OkDialog deletes itself
                     break;
 
                 case STATE_SWITCH_SERVER:
@@ -1058,9 +1012,7 @@ int Client::exec()
                 case STATE_ERROR:
                     logger->log("State: ERROR");
                     logger->log("Error: %s", errorMessage.c_str());
-                    mCurrentDialog = new OkDialog(_("Error"), errorMessage);
-                    mCurrentDialog->addActionListener(&errorListener);
-                    mCurrentDialog = NULL; // OkDialog deletes itself
+                    showErrorDialog(errorMessage, STATE_CHOOSE_SERVER);
                     Net::getGameHandler()->disconnect();
                     break;
 
@@ -1072,6 +1024,20 @@ int Client::exec()
     }
 
     return 0;
+}
+
+void Client::showOkDialog(const std::string &title,
+                             const std::string &message,
+                             State state)
+{
+    OkDialog *okDialog = new OkDialog(title, message);
+    okDialog->addActionListener(this);
+    mStateAfterOkDialog = state;
+}
+
+void Client::showErrorDialog(const std::string &message, State state)
+{
+    showOkDialog(_("Error"), message, state);
 }
 
 void Client::event(Event::Channel channel, const Event &event)
@@ -1101,6 +1067,10 @@ void Client::action(const gcn::ActionEvent &event)
         if (window->isVisible())
             window->requestMoveToTop();
     }
+
+    // If this came from the OkDialog used by showOkDialog
+    if (event.getId() == "ok")
+        mState = mStateAfterOkDialog;
 }
 
 void Client::initRootDir()
