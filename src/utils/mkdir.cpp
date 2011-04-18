@@ -28,8 +28,8 @@
 
 #include <sys/stat.h>
 
-#ifdef _MKDIR_TEST_
-// compile with -D_MKDIR_TEST_ to get a standalone binary
+#ifdef MKDIR_TEST
+// compile with -DMKDIR_TEST to get a standalone binary
 #include <cstdio>
 #include <cstdlib>
 #endif
@@ -96,7 +96,7 @@ int mkdir_r(const char *pathname) {
                 return -1;
             }
 
-#ifdef _MKDIR_TEST_
+#ifdef MKDIR_TEST
             printf("%s\n", tmp);
 #endif
             *p = '/';
@@ -105,7 +105,7 @@ int mkdir_r(const char *pathname) {
     return 0;
 }
 
-#ifdef _MKDIR_TEST_
+#ifdef MKDIR_TEST
 int main(int argc, char** argv) {
     if (argc < 2) exit(1);
     mkdir_r(argv[1]);

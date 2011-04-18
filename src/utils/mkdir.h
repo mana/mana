@@ -18,8 +18,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MKDIR_H
-#define _MKDIR_H
+#ifndef MKDIR_H
+#define MKDIR_H
 
 int mkdir_r(const char *pathname);
 

@@ -19,8 +19,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SHOPITEM_H
-#define _SHOPITEM_H
+#ifndef SHOPITEM_H
+#define SHOPITEM_H
 
 #include "item.h"
 

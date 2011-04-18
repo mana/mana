@@ -19,8 +19,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _UPDATERWINDOW_H
-#define _UPDATERWINDOW_H
+#ifndef UPDATERWINDOW_H
+#define UPDATERWINDOW_H
 
 #include "gui/widgets/window.h"
 
