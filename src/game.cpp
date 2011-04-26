@@ -390,6 +390,40 @@ void Game::logic()
 }
 
 /**
+ * handle item pick up case.
+ */
+static void handleItemPickUp()
+{
+    int x = player_node->getTileX();
+    int y = player_node->getTileY();
+
+    // Let's look for items around until you find one.
+    bool found = false;
+    for (int xX = x - 1; xX < x + 2; ++xX)
+    {
+        for (int yY = y - 1; yY < y + 2; ++yY)
+        {
+            FloorItem *item = actorSpriteManager->findItem(xX, yY);
+            if (item)
+            {
+                found = true;
+                player_node->pickUp(item);
+
+                // We found it, so set the player
+                // direction accordingly,
+                player_node->lookAt(
+                                  player_node->getMap()->getTileCenter(xX, yY));
+
+                // Get out of the loops
+                break;
+            }
+        }
+        if (found)
+            break;
+    }
+}
+
+/**
  * The huge input handling method.
  */
 void Game::handleInput()
@@ -621,32 +655,7 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-                            int x = player_node->getTileX();
-                            int y = player_node->getTileY();
-
-                            FloorItem *item =
-                                    actorSpriteManager->findItem(x, y);
-
-                            // If none below the player, try the tile in front
-                            // of the player
-                            if (!item)
-                            {
-                                // Temporary until tile-based picking is
-                                // removed.
-                                switch (player_node->getSpriteDirection())
-                                {
-                                    case DIRECTION_UP   : --y; break;
-                                    case DIRECTION_DOWN : ++y; break;
-                                    case DIRECTION_LEFT : --x; break;
-                                    case DIRECTION_RIGHT: ++x; break;
-                                    default: break;
-                                }
-
-                                item = actorSpriteManager->findItem(x, y);
-                            }
-
-                            if (item)
-                                player_node->pickUp(item);
+                            handleItemPickUp();
 
                             used = true;
                         }

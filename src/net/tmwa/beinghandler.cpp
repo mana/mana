@@ -20,11 +20,13 @@
  */
 
 #include "net/tmwa/beinghandler.h"
+#include "net/tmwa/playerhandler.h"
 
 #include "actorspritemanager.h"
 #include "being.h"
 #include "client.h"
 #include "effectmanager.h"
+#include "game.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "log.h"
@@ -37,8 +39,12 @@
 #include "resources/emotedb.h"
 
 #include <iostream>
+#include <cmath>
 
 namespace TmwAthena {
+
+// Number of pixels where we decide that the position doesn't need to be reset.
+static const float POS_DEST_DIFF_TOLERANCE = 48.0f;
 
 BeingHandler::BeingHandler(bool enableSync):
    mSync(enableSync)
@@ -95,13 +101,58 @@ Being *createBeing(int id, short job)
     return being;
 }
 
+static void handleMoveMessage(Map *map, Being *dstBeing,
+                              Uint16 srcX, Uint16 srcY,
+                              Uint16 dstX, Uint16 dstY)
+{
+    // Avoid dealing with flawed destination
+    if (map && dstBeing && srcX && srcY && dstX && dstY)
+    {
+        Vector pos = map->getTileCenter(srcX, srcY);
+        Vector dest = map->getTileCenter(dstX, dstY);
+
+        // Don't set the position as the movement algorithm
+        // can guess it and it would break the animation played,
+        // when we're close enough.
+        if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+            || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+            dstBeing->setPosition(pos);
+
+        dstBeing->setDestination(dest.x, dest.y);
+    }
+}
+
+static void handlePosMessage(Map *map, Being *dstBeing, Uint16 x, Uint16 y,
+                             Uint8 dir = 0)
+{
+    // Avoid dealing with flawed destination
+    if (map && dstBeing && x && y)
+    {
+        Vector pos =  map->getTileCenter(x, y);
+        Vector beingPos = dstBeing->getPosition();
+        // Don't set the position as the movement algorithm
+        // can guess it and it would break the animation played,
+        // when we're close enough.
+        if (std::abs(beingPos.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+            || std::abs(beingPos.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+            dstBeing->setPosition(pos);
+
+        // Set also the destination to the desired position.
+        dstBeing->setDestination(pos.x, pos.y);
+
+        if (dir)
+            dstBeing->setDirection(dir);
+    }
+}
+
 void BeingHandler::handleMessage(Net::MessageIn &msg)
 {
     if (!actorSpriteManager)
         return;
 
     int id;
-    short job, speed, gender;
+    short job, gender;
+    float speed;
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves;
     Uint16 weapon, shield;
@@ -114,13 +165,16 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     Being *srcBeing, *dstBeing;
     int hairStyle, hairColor, flag;
 
+    // Prepare useful translation variables
+    Map *map = Game::instance()->getCurrentMap();
+
     switch (msg.getId())
     {
         case SMSG_BEING_VISIBLE:
         case SMSG_BEING_MOVE:
             // Information about a being in range
             id = msg.readInt32();
-            speed = msg.readInt16();
+            speed = (float)msg.readInt16();
             stunMode = msg.readInt16();  // opt1
             statusEffects = msg.readInt16();  // opt2
             statusEffects |= ((Uint32)msg.readInt16()) << 16;  // option
@@ -146,15 +200,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (msg.getId() == SMSG_BEING_VISIBLE)
             {
                 dstBeing->clearPath();
-                dstBeing->setActionTime(tick_time);
                 dstBeing->setAction(Being::STAND);
             }
 
-
             // Prevent division by 0 when calculating frame
-            if (speed == 0) { speed = 150; }
+            if (speed == 0)
+                speed = 150.0f; // In ticks per tile * 10
 
-            dstBeing->setWalkSpeed(Vector(speed, speed, 0));
+            dstBeing->setMoveSpeed(Vector(speed / 10, speed / 10));
             dstBeing->setSubtype(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
@@ -205,17 +258,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->setAction(Being::STAND);
-                dstBeing->setTileCoords(srcX, srcY);
-                dstBeing->setDestination(dstX, dstY);
+                handleMoveMessage(map, dstBeing, srcX, srcY, dstX, dstY);
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                dstBeing->setTileCoords(x, y);
-                dstBeing->setDirection(dir);
+                handlePosMessage(map, dstBeing, x, y, dir);
             }
 
             msg.readInt8();   // unknown
@@ -235,6 +285,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              break;
 
         case SMSG_BEING_MOVE2:
+        {
             /*
              * A simplified movement packet, used by the
              * later versions of eAthena for both mobs and
@@ -254,11 +305,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             Uint16 srcX, srcY, dstX, dstY;
             msg.readCoordinatePair(srcX, srcY, dstX, dstY);
             msg.readInt32();  // Server tick
-
-            dstBeing->setAction(Being::STAND);
-            dstBeing->setTileCoords(srcX, srcY);
-            dstBeing->setDestination(dstX, dstY);
-
+            handleMoveMessage(map, dstBeing, srcX, srcY, dstX, dstY);
+        }
             break;
 
         case SMSG_BEING_REMOVE:
@@ -479,15 +527,17 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             }
             break;
         case SMSG_BEING_CHANGE_DIRECTION:
+        {
             if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
             }
 
             msg.readInt16(); // unused
-
-            dstBeing->setDirection(msg.readInt8());
-
+            Uint8 dir = msg.readInt8();
+            if (dir)
+                dstBeing->setDirection(dir);
+        }
             break;
 
         case SMSG_PLAYER_UPDATE_1:
@@ -519,7 +569,12 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 }
             }
 
-            dstBeing->setWalkSpeed(Vector(speed, speed, 0));
+            // The original speed is ticks per tile * 10
+            if (speed)
+                dstBeing->setMoveSpeed(Vector(speed / 10, speed / 10));
+            else
+                dstBeing->setMoveSpeed(Net::getPlayerHandler()->getDefaultMoveSpeed());
+
             dstBeing->setSubtype(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
@@ -561,16 +616,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->setTileCoords(srcX, srcY);
-                dstBeing->setDestination(dstX, dstY);
+                handleMoveMessage(map, dstBeing, srcX, srcY, dstX, dstY);
             }
             else
             {
                 Uint8 dir;
                 Uint16 x, y;
                 msg.readCoordinates(x, y, dir);
-                dstBeing->setTileCoords(x, y);
-                dstBeing->setDirection(dir);
+                handlePosMessage(map, dstBeing, x, y, dir);
             }
 
             gmstatus = msg.readInt16();
@@ -597,9 +650,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             msg.readInt8();   // Lv
             msg.readInt8();   // unknown
-
-            dstBeing->setActionTime(tick_time);
-            dstBeing->reset();
 
             dstBeing->setStunMode(stunMode);
             dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
@@ -628,9 +678,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     Uint16 x, y;
                     x = msg.readInt16();
                     y = msg.readInt16();
-                    dstBeing->setTileCoords(x, y);
-                    if (dstBeing->getCurrentAction() == Being::MOVE)
-                        dstBeing->setAction(Being::STAND);
+                    handlePosMessage(map, dstBeing, x, y);
                 }
             }
             break;

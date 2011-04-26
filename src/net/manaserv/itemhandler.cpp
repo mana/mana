@@ -26,8 +26,6 @@
 #include "net/manaserv/manaserv_protocol.h"
 #include "net/manaserv/messagein.h"
 
-#include "game.h"
-#include "map.h"
 #include "log.h"
 
 namespace ManaServ {
@@ -58,21 +56,7 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
 
                 if (itemId)
                 {
-                    if (Game *game = Game::instance())
-                    {
-                        if (Map *map = game->getCurrentMap())
-                        {
-                            actorSpriteManager->createItem(id, itemId,
-                                                     x / map->getTileWidth(),
-                                                     y / map->getTileHeight());
-                        }
-                        else
-                        {
-                            logger->log(
-                                    "ItemHandler: An item wasn't created "
-                                    "because of Game/Map not initialized...");
-                        }
-                    }
+                    actorSpriteManager->createItem(id, itemId, Vector(x, y));
                 }
                 else if (FloorItem *item = actorSpriteManager->findItem(id))
                 {

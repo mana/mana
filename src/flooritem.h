@@ -35,16 +35,14 @@ class FloorItem : public ActorSprite
         /**
          * Constructor.
          *
-         * @param id     the unique ID of this item instance
-         * @param itemId the item ID
-         * @param x      the x position in tiles
-         * @param y      the y position in tiles
-         * @param map    the map this item is on
+         * @param id            the unique ID of this item instance
+         * @param itemId        the item ID
+         * @param position      the position in pixels
+         * @param map           the map this item is on
          */
         FloorItem(int id,
                   int itemId,
-                  int x,
-                  int y,
+                  const Vector &position,
                   Map *map);
 
         Type getType() const { return FLOOR_ITEM; }

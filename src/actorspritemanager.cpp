@@ -124,9 +124,9 @@ Being *ActorSpriteManager::createBeing(int id, ActorSprite::Type type, int subty
     return being;
 }
 
-FloorItem *ActorSpriteManager::createItem(int id, int itemId, int x, int y)
+FloorItem *ActorSpriteManager::createItem(int id, int itemId, const Vector &pos)
 {
-    FloorItem *floorItem = new FloorItem(id, itemId, x, y, mMap);
+    FloorItem *floorItem = new FloorItem(id, itemId, pos, mMap);
 
     mActors.insert(floorItem);
     return floorItem;

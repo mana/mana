@@ -35,14 +35,6 @@ class BeingHandler : public MessageHandler
 
         void handleMessage(Net::MessageIn &msg);
 
-        /**
-         * Translate a given speed in tiles per seconds
-         * into pixels per ticks.
-         * Used to optimize Being::logic() calls.
-         * @see MILLISECONDS_IN_A_TICKS
-         */
-        static Vector giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds);
-
     private:
         void handleBeingAttackMessage(Net::MessageIn &msg);
         void handleBeingEnterMessage(Net::MessageIn &msg);

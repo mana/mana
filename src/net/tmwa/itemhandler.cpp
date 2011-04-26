@@ -21,11 +21,13 @@
 
 #include "net/tmwa/itemhandler.h"
 
-#include "actorspritemanager.h"
-
 #include "net/messagein.h"
 
 #include "net/tmwa/protocol.h"
+
+#include "actorspritemanager.h"
+#include "game.h"
+#include "map.h"
 
 namespace TmwAthena {
 
@@ -54,7 +56,13 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
                 int y = msg.readInt16();
                 msg.skip(4);     // amount,subX,subY / subX,subY,amount
 
-                actorSpriteManager->createItem(id, itemId, x, y);
+                Game *game = Game::instance();
+                if (!game)
+                    break;
+
+                if (Map *map = game->getCurrentMap())
+                    actorSpriteManager->createItem(id, itemId,
+                                                   map->getTileCenter(x, y));
             }
             break;
 

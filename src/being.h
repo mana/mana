@@ -118,43 +118,13 @@ class Being : public ActorSprite, public EventListener
 
         virtual ~Being();
 
-        Type getType() const { return mType; }
+        Type getType() const
+        { return mType; }
 
         /**
          * Removes all path nodes from this being.
          */
         void clearPath();
-
-        /**
-         * Returns the time spent in the current action.
-         */
-        int getActionTime() const { return mActionTime; }
-
-        /**
-         * Set the current action time.
-         * @see Ea::BeingHandler that set it to tick time.
-         */
-        void setActionTime(int actionTime) { mActionTime = actionTime; }
-
-        /**
-         * Makes this being take the next tile of its path.
-         * TODO: Used by eAthena only?
-         */
-        virtual void nextTile();
-
-        /**
-         * Get the current X pixel offset.
-         * TODO: Used by eAthena only?
-         */
-        int getXOffset() const
-        { return getOffset(LEFT, RIGHT); }
-
-        /**
-         * Get the current Y pixel offset.
-         * TODO: Used by eAthena only?
-         */
-        int getYOffset() const
-        { return getOffset(UP, DOWN); }
 
         /**
          * Creates a path for the being from current position to ex and ey
@@ -164,25 +134,20 @@ class Being : public ActorSprite, public EventListener
         /**
          * Returns the destination for this being.
          */
-        const Vector &getDestination() const { return mDest; }
+        const Vector &getDestination() const
+        { return mDest; }
 
         /**
          * Returns the tile x coord
          */
         int getTileX() const
-        { return mX; }
+        { return mPos.x / mMap->getTileWidth(); }
 
         /**
          * Returns the tile y coord
          */
         int getTileY() const
-        { return mY; }
-
-        /**
-         * Sets the tile x and y coord
-         */
-        void setTileCoords(int x, int y)
-        { mX = x; mY = y; }
+        { return mPos.y / mMap->getTileHeight(); }
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -343,18 +308,18 @@ class Being : public ActorSprite, public EventListener
         Map::BlockType getBlockType() const;
 
         /**
-         * Sets the walk speed.
-         * in pixels per second for eAthena,
-         * in tiles per second for Manaserv.
-         */
-        void setWalkSpeed(Vector speed) { mWalkSpeed = speed; }
-
-        /**
-         * Gets the walk speed.
-         * in pixels per second for eAthena,
+         * Sets the move speed.
+         * in ticks per tile for eAthena,
          * in tiles per second for Manaserv (0.1 precision).
          */
-        Vector getWalkSpeed() const { return mWalkSpeed; }
+        void setMoveSpeed(const Vector &speed);
+
+        /**
+         * Gets the original Move speed.
+         * in ticks per tile for eAthena,
+         * in tiles per second for Manaserv (0.1 precision).
+         */
+        Vector getMoveSpeed() const { return mMoveSpeed; }
 
         /**
          * Sets the attack speed.
@@ -483,6 +448,13 @@ class Being : public ActorSprite, public EventListener
 
         void event(Event::Channel channel, const Event &event);
 
+        void setMap(Map *map);
+
+        /**
+         * Make the being look at a given pixel position.
+         */
+        void lookAt(const Vector &destPos);
+
     protected:
         /**
          * Sets the new path for this being.
@@ -500,7 +472,7 @@ class Being : public ActorSprite, public EventListener
 
         BeingInfo *mInfo;
 
-        int mActionTime;      /**< Time spent in current action */
+        int mActionTime;      /**< Time spent in current action. TODO: Remove use of it */
 
         /** Time until the last speech sentence disappears */
         int mSpeechTime;
@@ -547,13 +519,6 @@ class Being : public ActorSprite, public EventListener
 
     private:
 
-        /**
-         * Calculates the offset in the given directions.
-         * If walking in direction 'neg' the value is negated.
-         * TODO: Used by eAthena only?
-         */
-        int getOffset(char pos, char neg) const;
-
         const Type mType;
 
         /** Speech Bubble components */
@@ -561,13 +526,16 @@ class Being : public ActorSprite, public EventListener
 
         /**
          * Walk speed for x and y movement values.
-         * In pixels per second for eAthena,
-         * In pixels per ticks for Manaserv.
+         * In ticks per tile for eAthena,
+         * In pixels per second for Manaserv.
+         */
+        Vector mMoveSpeed;
+
+        /**
+         * Being speed in pixel per ticks. Used internally for the being logic.
          * @see MILLISECONDS_IN_A_TICK
          */
-        Vector mWalkSpeed;
-
-        int mX, mY;   /**< Position in tile */
+        Vector mSpeedPixelsPerTick;
 
         int mDamageTaken;
 

@@ -91,37 +91,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
-{
-    Vector speedInTicks;
-    Game *game = Game::instance();
-    Map *map = 0;
-    if (game)
-    {
-        map = game->getCurrentMap();
-        if (map)
-        {
-            speedInTicks.x = speedInTilesPerSeconds
-                * (float)map->getTileWidth()
-                / 1000 * (float) MILLISECONDS_IN_A_TICK;
-            speedInTicks.y = speedInTilesPerSeconds
-                * (float)map->getTileHeight()
-                / 1000 * (float) MILLISECONDS_IN_A_TICK;
-        }
-    }
-
-    if (!game || !map)
-    {
-        speedInTicks.x = speedInTicks.y = 0;
-        logger->log("Manaserv::BeingHandler: Speed wasn't given back"
-                    " because game/Map not initialized.");
-    }
-    // We don't use z for now.
-    speedInTicks.z = 0;
-
-    return speedInTicks;
-}
-
 static void handleLooks(Being *being, Net::MessageIn &msg)
 {
     // Order of sent slots. Has to be in sync with the server code.
@@ -246,11 +215,10 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
             * The being's speed is transfered in tiles per second * 10
             * to keep it transferable in a Byte.
             * We set it back to tiles per second and in a float.
-            * Then, we translate it in pixels per ticks, to correspond
-            * with the Being::logic() function calls
-            * @see MILLISECONDS_IN_A_TICK
             */
-            being->setWalkSpeed(giveSpeedInPixelsPerTicks((float) speed / 10));
+            float speedTilesSeconds = (float) speed / 10;
+            being->setMoveSpeed(Vector(speedTilesSeconds, speedTilesSeconds,
+                                       0));
         }
 
         // Ignore messages from the server for the local player

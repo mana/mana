@@ -258,6 +258,14 @@ class Map : public Properties
         int getTileHeight() const
         { return mTileHeight; }
 
+        /**
+         * Returns the tile center position in pixel coordinates.
+         *
+         * @param x the horizontal tile position
+         * @param y the vertical tile position
+         */
+        Vector getTileCenter(int x, int y);
+
         const std::string getMusicFile() const;
         const std::string getName() const;
 
@@ -277,17 +285,19 @@ class Map : public Properties
         { return checkNodeOffsets(radius, walkMask, Position(x, y)); }
 
         /**
-         * Find a pixel path from one location to the next.
+         * Find a tile-centered path in pixel coordinates
+         * from one location to the next.
+         */
+        Path findTilePath(int startPixelX, int startPixelY, int endPixelX,
+                          int endPixelY, unsigned char walkMask,
+                          int maxCost = 20);
+
+        /**
+         * Find a pixel path from one location to the next using free offsets.
          */
         Path findPixelPath(int startPixelX, int startPixelY,
                           int destPixelX, int destPixelY,
                           int radius, unsigned char walkmask, int maxCost = 20);
-
-        /**
-         * Find a path from one location to the next.
-         */
-        Path findPath(int startX, int startY, int destX, int destY,
-                      unsigned char walkmask, int maxCost = 20);
 
         /**
          * Adds a particle effect
@@ -328,6 +338,11 @@ class Map : public Properties
         void removeActor(Actors::iterator iterator);
 
     private:
+        /**
+         * Find a path from one location to the next in tile coordinates.
+         */
+        Path findPath(int startX, int startY, int destX, int destY,
+                      unsigned char walkmask, int maxCost = 20);
 
         enum LayerType
         {

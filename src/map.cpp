@@ -604,6 +604,15 @@ bool Map::occupied(int x, int y) const
     return false;
 }
 
+Vector Map::getTileCenter(int x, int y)
+{
+    Vector tileCenterPos;
+
+    tileCenterPos.x = x * mTileWidth + mTileWidth / 2;
+    tileCenterPos.y = y * mTileHeight + mTileHeight / 2;
+    return tileCenterPos;
+}
+
 bool Map::contains(int x, int y) const
 {
     return x >= 0 && y >= 0 && x < mWidth && y < mHeight;
@@ -705,6 +714,30 @@ Position Map::checkNodeOffsets(int radius, unsigned char walkMask,
         fy = radius;
 
     return Position(tx * 32 + fx, ty * 32 + fy);
+}
+
+Path Map::findTilePath(int startPixelX, int startPixelY, int endPixelX,
+                         int endPixelY, unsigned char walkMask, int maxCost)
+{
+    Path myPath = findPath(startPixelX / mTileWidth, startPixelY / mTileHeight,
+                           endPixelX / mTileWidth, endPixelY / mTileHeight,
+                           walkMask, maxCost);
+
+    // Don't compute empty coordinates.
+    if (myPath.empty())
+        return myPath;
+
+    // Convert the map path to pixels from the tile position
+    Path::iterator it = myPath.begin();
+    while (it != myPath.end())
+    {
+        // The new pixel position will be the tile center.
+        *it = Position(it->x * mTileWidth + mTileWidth / 2,
+                       it->y * mTileHeight + mTileHeight / 2);
+        ++it;
+    }
+
+    return myPath;
 }
 
 Path Map::findPixelPath(int startPixelX, int startPixelY, int endPixelX,

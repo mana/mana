@@ -59,8 +59,12 @@ class ActorSpriteManager
 
         /**
          * Create a FloorItem and add it to the list of ActorSprites.
+         *
+         * @param id            the unique ID of this item instance
+         * @param itemId        the item ID
+         * @param position      the position in pixels
          */
-        FloorItem *createItem(int id, int itemId, int x, int y);
+        FloorItem *createItem(int id, int itemId, const Vector &position);
 
         /**
          * Destroys the given ActorSprite at the end of

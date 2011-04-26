@@ -24,6 +24,7 @@
 #include "configuration.h"
 #include "equipment.h"
 #include "event.h"
+#include "game.h"
 #include "inventory.h"
 #include "item.h"
 #include "itemshortcut.h"
@@ -408,13 +409,33 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             flag = msg.readInt8();
 
             if (!flag)
+            {
                 SERVER_NOTICE(_("Unable to unequip."))
+            }
             else
+            {
                 mEquips.setEquipment(getSlot(equipType), -1);
+                // Reset the attack range to unarmed.
+                player_node->setAttackRange(ATTACK_RANGE_NOT_SET);
+            }
             break;
 
         case SMSG_PLAYER_ATTACK_RANGE:
-            player_node->setAttackRange(msg.readInt16());
+        {
+            // The range is in tiles, so we translate it back to pixels
+            Map *map = Game::instance()->getCurrentMap();
+            if (map)
+            {
+                player_node->setAttackRange(msg.readInt16()
+                                            * map->getTileWidth());
+            }
+            else
+            {
+                logger->log("Couldn't set attacke range due to the lack"
+                            "of an initialized map.");
+                player_node->setAttackRange(ATTACK_RANGE_NOT_SET);
+            }
+        }
             break;
 
         case SMSG_PLAYER_ARROW_EQUIP:

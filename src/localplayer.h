@@ -58,6 +58,11 @@ enum
     PICKUP_DROP_STEAL
 };
 
+/**
+ * Attack range not set value
+ */
+enum { ATTACK_RANGE_NOT_SET = -1 };
+
 
 /**
  * The local player character.
@@ -105,12 +110,14 @@ class LocalPlayer : public Being
         /**
          * Sets the attack range.
          */
-        void setAttackRange(int range) { mAttackRange = range; }
+        void setAttackRange(int range);
 
         /**
          * Gets the attack range.
          */
-        int getAttackRange();
+        int getAttackRange()
+        { return mAttackRange; }
+
         void attack(Being *target = NULL, bool keep = false);
 
         void setGMLevel(int level);

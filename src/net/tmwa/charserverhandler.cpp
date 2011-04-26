@@ -185,7 +185,11 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
 
             mNetwork->disconnect();
             Client::setState(STATE_CHANGE_MAP);
-            player_node->setTileCoords(x, y);
+            Map *map = player_node->getMap();
+            int tileWidth = map->getTileWidth();
+            int tileHeight = map->getTileHeight();
+            player_node->setPosition(Vector(x * tileWidth + tileWidth / 2,
+                                            y * tileHeight + tileHeight / 2));
             player_node->setMap(0);
         }
         break;

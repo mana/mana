@@ -37,6 +37,7 @@
 #include "gui/beingpopup.h"
 
 #include "net/net.h"
+#include "net/playerhandler.h"
 
 #include "resources/resourcemanager.h"
 
@@ -297,43 +298,53 @@ void Viewport::_drawDebugPath(Graphics *graphics)
 
     Path debugPath;
 
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+    const Vector &playerPos = player_node->getPosition();
+    const int playerRadius = player_node->getCollisionRadius();
+    // Draw player collision rectangle
+    graphics->setColor(gcn::Color(128, 128, 0, 120));
+    graphics->fillRectangle(
+        gcn::Rectangle((int) playerPos.x - (int) mPixelViewX - playerRadius,
+                        (int) playerPos.y - (int) mPixelViewY - playerRadius,
+                              playerRadius * 2, playerRadius * 2));
+
+    // Prepare the walkmask corresponding to the protocol
+    unsigned char walkMask = 0;
+    switch (Net::getNetworkType())
     {
-        const int mouseTileX = (mMouseX + (int) mPixelViewX) / 32;
-        const int mouseTileY = (mMouseY + (int) mPixelViewY) / 32;
-        const Vector &playerPos = player_node->getPosition();
-
-        debugPath = mMap->findPath(
-            (int) (playerPos.x - 16) / 32,
-            (int) (playerPos.y - 32) / 32,
-            mouseTileX, mouseTileY, 0xFF);
-
-        _drawPath(graphics, debugPath);
+      case ServerInfo::TMWATHENA:
+        walkMask = Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER;
+        break;
+      case ServerInfo::MANASERV:
+      default:
+        walkMask = Map::BLOCKMASK_WALL;
+        break;
     }
-    else if (Net::getNetworkType() == ServerInfo::MANASERV)
-    {
-        const Vector &playerPos = player_node->getPosition();
-        const int playerRadius = player_node->getCollisionRadius();
-        // Draw player collision rectangle
-        graphics->setColor(gcn::Color(128, 128, 0, 120));
-        graphics->fillRectangle(
-            gcn::Rectangle((int) playerPos.x - (int) mPixelViewX - playerRadius,
-                           (int) playerPos.y - (int) mPixelViewY - playerRadius,
-                                 playerRadius * 2, playerRadius * 2));
 
+    // Adapt the path finding to the precision requested
+    if (Net::getPlayerHandler()->usePixelPrecision())
+    {
         debugPath = mMap->findPixelPath(
-            (int) playerPos.x,
-            (int) playerPos.y,
-            mMouseX + (int) mPixelViewX,
-            mMouseY + (int) mPixelViewY,
-            playerRadius, 0xFF);
-
-        // We draw the path proposed by mouse
-        _drawPath(graphics, debugPath, gcn::Color(128, 0, 128));
-
-        // But also the one currently walked on.
-        _drawPath(graphics, player_node->getPath(), gcn::Color(0, 0, 255));
+                    (int) playerPos.x,
+                    (int) playerPos.y,
+                    mMouseX + (int) mPixelViewX,
+                    mMouseY + (int) mPixelViewY,
+                    playerRadius, walkMask);
     }
+    else
+    {
+        debugPath = mMap->findTilePath(
+                    (int) playerPos.x,
+                    (int) playerPos.y,
+                    mMouseX + (int) mPixelViewX,
+                    mMouseY + (int) mPixelViewY,
+                    walkMask);
+    }
+
+    // We draw the path proposed by mouse
+    _drawPath(graphics, debugPath, gcn::Color(128, 0, 128));
+
+    // But also the one currently walked on.
+    _drawPath(graphics, player_node->getPath(), gcn::Color(0, 0, 255));
 }
 
 void Viewport::_drawPath(Graphics *graphics, const Path &path,
@@ -341,33 +352,16 @@ void Viewport::_drawPath(Graphics *graphics, const Path &path,
 {
     graphics->setColor(color);
 
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+    for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
     {
-        for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
-        {
-            int squareX = i->x * 32 - (int) mPixelViewX + 12;
-            int squareY = i->y * 32 - (int) mPixelViewY + 12;
+        int squareX = i->x - (int) mPixelViewX;
+        int squareY = i->y - (int) mPixelViewY;
 
-            graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-            graphics->drawText(
-                    toString(mMap->getMetaTile(i->x, i->y)->Gcost),
-                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
-        }
-    }
-    else if (Net::getNetworkType() == ServerInfo::MANASERV)
-    {
-        for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
-        {
-            int squareX = i->x - (int) mPixelViewX;
-            int squareY = i->y - (int) mPixelViewY;
-
-            graphics->fillRectangle(gcn::Rectangle(squareX - 4, squareY - 4,
-                                                   8, 8));
-            graphics->drawText(
-                    toString(mMap->getMetaTile(i->x / 32, i->y / 32)->Gcost),
-                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
-        }
-
+        graphics->fillRectangle(gcn::Rectangle(squareX - 4, squareY - 4,
+                                                8, 8));
+        graphics->drawText(
+                toString(mMap->getMetaTile(i->x / 32, i->y / 32)->Gcost),
+                squareX + 4, squareY + 12, gcn::Graphics::CENTER);
     }
 }
 
@@ -477,25 +471,12 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
 
     if (mPlayerFollowMouse && !event.isShiftPressed())
     {
-        if (Net::getNetworkType() == ServerInfo::MANASERV)
+        if (get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
         {
-          if (get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
-          {
-              mLocalWalkTime = tick_time;
-              player_node->setDestination(event.getX() + (int) mPixelViewX,
-                                          event.getY() + (int) mPixelViewY);
-              player_node->pathSetByMouse();
-          }
-        }
-        else
-        {
-          if (mLocalWalkTime != player_node->getActionTime())
-          {
-              mLocalWalkTime = player_node->getActionTime();
-              int destX = (event.getX() + mPixelViewX) / mMap->getTileWidth();
-              int destY = (event.getY() + mPixelViewY) / mMap->getTileHeight();
-              player_node->setDestination(destX, destY);
-          }
+            mLocalWalkTime = tick_time;
+            player_node->setDestination(event.getX() + (int) mPixelViewX,
+                                        event.getY() + (int) mPixelViewY);
+            player_node->pathSetByMouse();
         }
     }
 }
@@ -503,9 +484,6 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
 void Viewport::mouseReleased(gcn::MouseEvent &event)
 {
     mPlayerFollowMouse = false;
-
-    // Only useful for eAthena but doesn't hurt under ManaServ
-    mLocalWalkTime = -1;
 }
 
 void Viewport::showPopup(Window *parent, int x, int y, Item *item,

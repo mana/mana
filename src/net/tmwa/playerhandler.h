@@ -58,7 +58,12 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         int getJobLocation();
 
-        Vector getDefaultWalkSpeed();
+        Vector getDefaultMoveSpeed() const;
+
+        Vector getPixelsPerTickMoveSpeed(const Vector &speed, Map *map = 0);
+
+        bool usePixelPrecision()
+        { return false; }
 };
 
 } // namespace TmwAthena

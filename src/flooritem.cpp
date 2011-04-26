@@ -22,28 +22,25 @@
 #include "flooritem.h"
 
 #include "net/net.h"
+#include "net/playerhandler.h"
 
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
 FloorItem::FloorItem(int id,
                      int itemId,
-                     int x,
-                     int y,
+                     const Vector &position,
                      Map *map):
     ActorSprite(id),
     mItemId(itemId),
-    mX(x),
-    mY(y)
+    mX(0), mY(0)
 {
+    mPos = position;
+
     setMap(map);
 
-    // TODO: Eventually, we probably should fix all sprite offsets so that
-    //       these translations aren't necessary anymore. The sprites know
-    //       best where their base point should be.
-    mPos.x = x * map->getTileWidth() + 16;
-    mPos.y = y * map->getTileHeight() +
-             ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
+    mX = (int)position.x / map->getTileWidth();
+    mY = (int)position.y / map->getTileHeight();
 
     setupSpriteDisplay(itemDb->get(itemId).getDisplay());
 }

@@ -65,8 +65,13 @@ class GameHandler : public MessageHandler, public Net::GameHandler,
         bool canUseMagicBar() const { return true; }
 
     private:
-        std::string mMap;
+        std::string mMap; ///< Keeps the map filename.
         int mCharID; /// < Saved for map-server switching
+        /**
+         * Keeps the local character position until the map is loaded
+         * to permit the translation in pixels.
+         */
+        int mTileX, mTileY;
 };
 
 } // namespace TmwAthena

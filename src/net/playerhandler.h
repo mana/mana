@@ -62,7 +62,25 @@ class PlayerHandler
 
         virtual int getJobLocation() = 0;
 
-        virtual Vector getDefaultWalkSpeed() = 0;
+        /**
+         * Get the original default movement speed.
+         * Example:
+         * In ticks per tiles for eAthena
+         * In tiles per second for Manaserv
+         */
+        virtual Vector getDefaultMoveSpeed() const = 0;
+
+        /**
+         * Convert the original speed in pixel per tick for internal use.
+         */
+        virtual Vector getPixelsPerTickMoveSpeed(const Vector &speed,
+                                                 Map *map = 0) = 0;
+
+        /**
+         * Tells whether the client has to use pixel paths.
+         * Return false when tiles-center positions only are to be used.
+         */
+        virtual bool usePixelPrecision() = 0;
 };
 
 } // namespace Net
