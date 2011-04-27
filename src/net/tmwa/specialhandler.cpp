@@ -107,7 +107,8 @@ void SpecialHandler::handleMessage(Net::MessageIn &msg)
 
                 player_node->setAttributeBase(skillId, level);
                 player_node->setAttributeEffective(skillId, level);
-                skillDialog->setModifiable(skillId, up);
+                if (skillDialog)
+                    skillDialog->setModifiable(skillId, up);
             }
             break;
 

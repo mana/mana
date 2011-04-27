@@ -233,6 +233,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
+                if (!player_node)
+                    break;
                 int type = msg.readInt16();
                 int value = msg.readInt32();
 
