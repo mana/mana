@@ -495,8 +495,6 @@ int Client::exec()
 
     while (mState != STATE_EXIT)
     {
-        bool handledEvents = false;
-
         if (game)
         {
             // Let the game handle the events while it is active
@@ -507,8 +505,6 @@ int Client::exec()
             // Handle SDL events
             while (SDL_PollEvent(&event))
             {
-                handledEvents = true;
-
                 switch (event.type)
                 {
                     case SDL_QUIT:
