@@ -188,7 +188,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         int id = msg.readInt16();
         int flags = msg.readInt8();
         Being *being = actorSpriteManager->findBeing(id);
-        int sx, sy, dx, dy, speed = 0;
+        int sx = 0, sy = 0, dx = 0, dy = 0, speed = 0;
 
         if ((!flags & (MOVING_POSITION | MOVING_DESTINATION)))
             continue;
