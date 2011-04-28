@@ -212,7 +212,7 @@ void GeneralHandler::flushNetwork()
 void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(false);
-    skillDialog->loadSkills("ea-skills.xml");
+    skillDialog->loadSkills();
 
     statusWindow->addAttribute(STR, _("Strength"), true, "");
     statusWindow->addAttribute(AGI, _("Agility"), true, "");

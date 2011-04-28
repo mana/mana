@@ -166,7 +166,7 @@ void GeneralHandler::flushNetwork()
 void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(true);
-    skillDialog->loadSkills("mana-skills.xml");
+    skillDialog->loadSkills();
     specialsWindow->loadSpecials("specials.xml");
 
     player_node->setExpNeeded(100);
