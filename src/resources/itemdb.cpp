@@ -199,7 +199,13 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
         std::string attackAction = XML::getProperty(node, "attack-action",
                                                     SpriteAction::INVALID);
         int attackRange = XML::getProperty(node, "attack-range", 0);
-        std::string missileParticle = XML::getProperty(node, "missile-particle", "");
+        std::string missileParticleFile = XML::getProperty(node,
+                                                           "missile-particle",
+                                                           "");
+        int hitEffectId = XML::getProperty(node, "hit-effect-id",
+                                           paths.getIntValue("hitEffectId"));
+        int criticalEffectId = XML::getProperty(node, "critical-hit-effect-id",
+                                      paths.getIntValue("criticalHitEffectId"));
 
         // Load Ta Item Type
         std::string typeStr = XML::getProperty(node, "type", "other");
@@ -218,7 +224,9 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
         itemInfo->mWeight = weight;
         itemInfo->mAttackAction = attackAction;
         itemInfo->mAttackRange = attackRange;
-        itemInfo->setMissileParticle(missileParticle);
+        itemInfo->setMissileParticleFile(missileParticleFile);
+        itemInfo->setHitEffectId(hitEffectId);
+        itemInfo->setCriticalHitEffectId(criticalEffectId);
 
         // Load <sprite>, <sound>, and <floor>
         for_each_xml_child_node(itemChild, node)

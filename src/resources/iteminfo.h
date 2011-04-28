@@ -109,13 +109,25 @@ class ItemInfo
         const std::string &getSprite(Gender gender) const;
 
         // Handlers for seting and getting the string used for particles when attacking
-        void setMissileParticle(std::string s)
-        { mMissileParticle = s; }
+        void setMissileParticleFile(const std::string &s)
+        { mMissileParticleFile = s; }
 
-        std::string getMissileParticle() const
-        { return mMissileParticle; }
+        const std::string &getMissileParticleFile() const
+        { return mMissileParticleFile; }
 
-        std::string getAttackAction() const
+        void setHitEffectId(int s)
+        { mHitEffectId = s; }
+
+        int getHitEffectId() const
+        { return mHitEffectId; }
+
+        void setCriticalHitEffectId(int s)
+        { mCriticalHitEffectId = s; }
+
+        int getCriticalHitEffectId() const
+        { return mCriticalHitEffectId; }
+
+        const std::string &getAttackAction() const
         { return mAttackAction; }
 
         int getAttackRange() const
@@ -162,8 +174,10 @@ class ItemInfo
         /** Attack range, will be equal to ATTACK_RANGE_NOT_SET if no weapon. */
         int mAttackRange;
 
-        // Particle to be shown when weapon attacks
-        std::string mMissileParticle;
+        /** Effects to be shown when weapon attacks - see also effects.xml */
+        std::string mMissileParticleFile;
+        int mHitEffectId;
+        int mCriticalHitEffectId;
 
         /** Maps gender to sprite filenames. */
         std::map<int, std::string> mAnimationFiles;

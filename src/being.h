@@ -176,6 +176,9 @@ class Being : public ActorSprite, public EventListener
          */
         virtual void handleAttack(Being *victim, int damage, AttackType type);
 
+        const ItemInfo *getEquippedWeapon() const
+        { return mEquippedWeapon; }
+
         /**
          * Returns the name of the being.
          */

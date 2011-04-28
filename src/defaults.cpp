@@ -160,6 +160,8 @@ DefaultsData* getPathsDefaults()
     AddDEF(pathsData, "particles", "graphics/particles/");
     AddDEF(pathsData, "levelUpEffectFile", "levelup.particle.xml");
     AddDEF(pathsData, "portalEffectFile", "warparea.particle.xml");
+    AddDEF(pathsData, "hitEffectId", 26);
+    AddDEF(pathsData, "criticalHitEffectId", 28);
 
     AddDEF(pathsData, "minimaps", "graphics/minimaps/");
     AddDEF(pathsData, "maps", "maps/");

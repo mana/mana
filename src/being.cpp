@@ -389,10 +389,24 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
             updateName();
         }
 
-        if (type != CRITICAL)
-            effectManager->trigger(26, this);
+        // Init the particle effect path based on current weapon or default.
+        int hitEffectId = 0;
+        const ItemInfo *attackerWeapon = attacker->getEquippedWeapon();
+        if (attacker->getType() == PLAYER && attackerWeapon)
+        {
+            if (type != CRITICAL)
+                hitEffectId = attackerWeapon->getHitEffectId();
+            else
+                hitEffectId = attackerWeapon->getCriticalHitEffectId();
+        }
         else
-            effectManager->trigger(28, this);
+        {
+            if (type != CRITICAL)
+                hitEffectId = paths.getIntValue("hitEffectId");
+            else
+                hitEffectId = paths.getIntValue("criticalHitEffectId");
+        }
+        effectManager->trigger(hitEffectId, this);
     }
 }
 
@@ -405,7 +419,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
         lookAt(victim->getPosition());
 
     if (getType() == PLAYER && victim && mEquippedWeapon)
-        fireMissile(victim, mEquippedWeapon->getMissileParticle());
+        fireMissile(victim, mEquippedWeapon->getMissileParticleFile());
     else
         fireMissile(victim, mInfo->getAttack(mAttackType)->missileParticle);
 
