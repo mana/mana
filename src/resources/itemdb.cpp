@@ -180,9 +180,6 @@ void ItemDB::unload()
 
 void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
 {
-        if (!xmlStrEqual(node->name, BAD_CAST "item"))
-            return;
-
         int id = XML::getProperty(node, "id", 0);
 
         if (!id)
@@ -332,6 +329,9 @@ void TaItemDB::load()
 
     for_each_xml_child_node(node, rootNode)
     {
+        if (!xmlStrEqual(node->name, BAD_CAST "item"))
+            continue;
+
         TaItemInfo *itemInfo = new TaItemInfo;
 
         loadCommonRef(itemInfo, node);
@@ -430,6 +430,9 @@ void ManaServItemDB::load()
 
     for_each_xml_child_node(node, rootNode)
     {
+        if (!xmlStrEqual(node->name, BAD_CAST "item"))
+            continue;
+
         ManaServItemInfo *itemInfo = new ManaServItemInfo;
 
         loadCommonRef(itemInfo, node);
