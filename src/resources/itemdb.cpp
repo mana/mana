@@ -196,7 +196,8 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-        std::string attackAction = XML::getProperty(node, "attack-action", "");
+        std::string attackAction = XML::getProperty(node, "attack-action",
+                                                    SpriteAction::INVALID);
         int attackRange = XML::getProperty(node, "attack-range", 0);
         std::string missileParticle = XML::getProperty(node, "missile-particle", "");
 
@@ -215,7 +216,7 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
         itemInfo->mDescription = description;
         itemInfo->mView = view;
         itemInfo->mWeight = weight;
-        itemInfo->setAttackAction(attackAction);
+        itemInfo->mAttackAction = attackAction;
         itemInfo->mAttackRange = attackRange;
         itemInfo->setMissileParticle(missileParticle);
 

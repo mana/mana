@@ -41,14 +41,6 @@ const std::string &ItemInfo::getSprite(Gender gender) const
     }
 }
 
-void ItemInfo::setAttackAction(std::string attackAction)
-{
-    if (attackAction.empty())
-        mAttackAction = SpriteAction::ATTACK; // (Equal to unarmed animation)
-    else
-        mAttackAction = attackAction;
-}
-
 void ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
 {
     mSounds[event].push_back(paths.getStringValue("sfx") + filename);

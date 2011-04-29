@@ -108,8 +108,6 @@ class ItemInfo
 
         const std::string &getSprite(Gender gender) const;
 
-        void setAttackAction(std::string attackAction);
-
         // Handlers for seting and getting the string used for particles when attacking
         void setMissileParticle(std::string s)
         { mMissileParticle = s; }
