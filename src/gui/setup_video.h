@@ -32,7 +32,6 @@
 
 class ModeListModel;
 class FontSizeChoiceListModel;
-class ServerListOrderListModel;
 
 class Setup_Video : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener
@@ -68,7 +67,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         ModeListModel *mModeListModel;
         FontSizeChoiceListModel *mFontSizeListModel;
-        ServerListOrderListModel *mServerListOrderListModel;
 
         gcn::Label *speechLabel;
         gcn::Label *alphaLabel;
@@ -77,7 +75,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::Label *overlayDetailLabel;
         gcn::Label *particleDetailLabel;
         gcn::Label *fontSizeLabel;
-        gcn::Label *serverListOrderLabel;
 
         gcn::ListBox *mModeList;
         gcn::CheckBox *mFsCheckBox;
@@ -110,9 +107,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         int mFontSize;
         gcn::DropDown *mFontSizeDropDown;
-
-        int mServerListOrder;
-        gcn::DropDown *mServerListOrderDropDown;
 
         gcn::CheckBox *mDisableSDLTransparencyCheckBox;
 };
