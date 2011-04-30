@@ -10,3 +10,5 @@ SET (FILES
     target-cursor-normal-m.png
     target-cursor-normal-s.png
     )
+
+INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/)
