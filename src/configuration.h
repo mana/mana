@@ -192,6 +192,8 @@ class ConfigurationObject
 class Configuration : public ConfigurationObject
 {
     public:
+        Configuration() : mDefaultsData(0) {}
+
         ~Configuration();
 
         /**
