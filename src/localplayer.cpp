@@ -823,10 +823,17 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (mAction != STAND && mAction != ATTACK)
         return;
 
-    mKeepAttacking = keep;
-
     if (!target || target->getType() == ActorSprite::NPC)
         return;
+
+    // Can't attack more times than its attack speed
+    static int lastAttackTime = 0;
+    if (get_elapsed_time(lastAttackTime) < mAttackSpeed)
+        return;
+
+    lastAttackTime = tick_time;
+
+    mKeepAttacking = keep;
 
     if (mTarget != target || !mTarget)
     {
