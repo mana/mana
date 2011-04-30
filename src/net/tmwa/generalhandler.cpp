@@ -225,7 +225,7 @@ void GeneralHandler::event(Event::Channel channel,
         if (event.getType() == Event::GuiWindowsLoaded)
         {
             inventoryWindow->setSplitAllowed(false);
-            skillDialog->loadSkills("ea-skills.xml");
+            skillDialog->loadSkills();
 
             statusWindow->addAttribute(STR, _("Strength"), true, "");
             statusWindow->addAttribute(AGI, _("Agility"), true, "");

@@ -66,15 +66,15 @@ ENDMACRO()
 
 
 SET(languages)
+SET(POFILES)
 FILE(STRINGS LINGUAS _languages)
 FOREACH(_lang ${_languages})
    STRING(REGEX REPLACE "#.*" "" _lang "${_lang}")
    IF(NOT ${_lang} STREQUAL "")
       SET(languages ${languages} ${_lang})
+      SET(POFILES ${POFILES} "${_lang}.po")
    ENDIF()
 ENDFOREACH()
-
-FILE(GLOB POFILES *.po)
 
 ADD_CUSTOM_TARGET(update-po)
 

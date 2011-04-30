@@ -1,3 +1,11 @@
+0.5.2 (17 April 2011)
+- Removed NPC "Thanks for buying/selling" messages from the chat
+- Added a few missing authentication failure reasons
+- Avoid kick from server due to picking up items too fast
+- Fixed updating of buy dialog after buying
+- Fixed compile on GNU HURD
+- Updated French and Finnish translations
+
 0.5.1 (14 March 2011)
 - Added particle notification for "Unable to pick up item."
 - Added the amount of items picked up to the particle notification

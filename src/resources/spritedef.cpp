@@ -268,7 +268,7 @@ void SpriteDef::loadAnimation(xmlNodePtr animationNode,
                 if (!img)
                 {
                     logger->log("No image at index %d", start + variant_offset);
-                    continue;
+                    break;
                 }
 
                 animation->addFrame(img, delay, offsetX, offsetY);

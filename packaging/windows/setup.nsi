@@ -3,8 +3,8 @@
 ; like the old install script.
 ;
 ; DLLDIR - directory containing required dlls
-; EXEDIR - directory containing mana.exe
-; EXESUFFIX - offset to SRCDIR pointing to a directory containing mana.exe
+; EXEDIR - directory containing ${PRODUCT_NAME_SHORT}.exe
+; EXESUFFIX - offset to SRCDIR pointing to a directory containing ${PRODUCT_NAME_SHORT}.exe
 ; PRODUCT_VERSION - software version
 ; UPX - upx binary name
 ;
@@ -37,17 +37,19 @@ SetCompressor /SOLID lzma
   !define DLLDIR ${SRCDIR}/dll
 !endif
 
-;--- (and without !defines ) ---
-!System "${UPX} --best --crp-ms=999999 --compress-icons=0 --nrv2d ${EXEDIR}\mana.exe"
-
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Mana"
+!define PRODUCT_NAME_SHORT "mana"
+
+;--- (and without !defines ) ---
+!System "${UPX} --best --crp-ms=999999 --compress-icons=0 --nrv2d ${EXEDIR}\${PRODUCT_NAME_SHORT}.exe"
+
 !ifndef PRODUCT_VERSION
-  !define PRODUCT_VERSION "0.0.29.1"
+  !define PRODUCT_VERSION "0.5-git"
 !endif
 !define PRODUCT_PUBLISHER "Mana Development Team"
 !define PRODUCT_WEB_SITE "http://manasource.org"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\mana.exe"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME_SHORT}.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
@@ -93,7 +95,7 @@ SetCompressor /SOLID lzma
 
 Function RunMana
 SetOutPath $INSTDIR
-Exec "$INSTDIR\mana.exe"
+Exec "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
 FunctionEnd
 
 Function changeFinishImage
@@ -165,11 +167,12 @@ ReserveFile "setup_finish.bmp"
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "mana-${PRODUCT_VERSION}-win32.exe"
+OutFile "${PRODUCT_NAME_SHORT}-${PRODUCT_VERSION}-win32.exe"
 InstallDir "$PROGRAMFILES\Mana"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
+RequestExecutionLevel admin
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
@@ -182,8 +185,8 @@ Section "Core files (required)" SecCore
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   CreateDirectory "$SMPROGRAMS\Mana"
-  CreateShortCut "$SMPROGRAMS\Mana\Mana.lnk" "$INSTDIR\mana.exe"
-  CreateShortCut "$DESKTOP\Mana.lnk" "$INSTDIR\mana.exe"
+  CreateShortCut "$SMPROGRAMS\Mana\Mana.lnk" "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
+  CreateShortCut "$DESKTOP\Mana.lnk" "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
   CreateDirectory "$INSTDIR\data"
   CreateDirectory "$INSTDIR\data\fonts"
   CreateDirectory "$INSTDIR\data\graphics"
@@ -197,8 +200,23 @@ Section "Core files (required)" SecCore
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
 
-  File "${EXEDIR}\mana.exe"
-  File "${DLLDIR}\*.dll"
+  File "${EXEDIR}\${PRODUCT_NAME_SHORT}.exe"
+  File "${DLLDIR}\guichan.dll"
+  File "${DLLDIR}\guichan_sdl.dll"
+  File "${DLLDIR}\libcurl-4.dll"
+  File "${DLLDIR}\libiconv2.dll"
+  File "${DLLDIR}\libiconv-2.dll"
+  File "${DLLDIR}\libintl3.dll"
+  File "${DLLDIR}\libpng12-0.dll"
+  File "${DLLDIR}\libxml2-2.dll"
+  File "${DLLDIR}\physfs.dll"
+  File "${DLLDIR}\SDL.dll"
+  File "${DLLDIR}\SDL_gfx.dll"
+  File "${DLLDIR}\SDL_image.dll"
+  File "${DLLDIR}\SDL_mixer.dll"
+  File "${DLLDIR}\SDL_net.dll"
+  File "${DLLDIR}\SDL_ttf.dll"
+  File "${DLLDIR}\zlib1.dll"
   File "${SRCDIR}\AUTHORS"
   File "${SRCDIR}\COPYING"
   File "${SRCDIR}\NEWS"
@@ -223,16 +241,6 @@ Section "Core files (required)" SecCore
   File "${SRCDIR}\docs\FAQ.txt"
 SectionEnd
 
-Section /o "Music" SecMusic
-  AddSize 17602
-  CreateDirectory "$INSTDIR\data\music"
-  SetOutPath "$INSTDIR\data\music"
-  NSISdl::download "http://downloads.sourceforge.net/themanaworld/tmwmusic-0.2.tar.gz" "$TEMP\tmwmusic-0.2.tar.gz"
-  ;Requires an additional plugin from http://nsis.sourceforge.net/UnTGZ_plug-in  Place untgz.dll in your nsis/plugin dir
-  untgz::extract -j -d "$INSTDIR\data\music" "$TEMP\tmwmusic-0.2.tar.gz"
-  Delete "$TEMP\tmwmusic-0.2.tar.gz"
-SectionEnd
-
 Section /o "Portable" SecPortable
   SetOutPath "$INSTDIR"
   File "portable.xml"
@@ -246,9 +254,8 @@ SectionEnd
 ;Package descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "The core program files."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecMusic} "Background music. (If selected the music will be downloaded from the internet.)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecPortable} "Portable client. (If selected client will work as portable client.)"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Translations for the user interface into 23 different languages. Uncheck this component to leave it in English."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Translations for the user interface. Uncheck this component to leave it in English."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
@@ -263,10 +270,10 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\mana.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\mana.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"

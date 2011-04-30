@@ -129,7 +129,6 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
                 SERVER_NOTICE(_("Thanks for selling."))
             else
                 SERVER_NOTICE(_("Unable to sell."))
-
             break;
     }
 }

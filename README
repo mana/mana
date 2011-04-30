@@ -1,14 +1,14 @@
 THE MANA CLIENT
 ===============
 
- Version: 0.5.1       Date: 2011-03-14
+ Version: 0.5.2       Date: 2011-04-17
 
  Development team:
   - See AUTHORS file for a list
 
  Powered by:
 
-  - SDL, SDL_image, SDL_mixer, SDL_ttf, SDL_net (Media framework)
+  - SDL, SDL_gfx, SDL_image, SDL_mixer, SDL_ttf, SDL_net (Media framework)
   - Guichan (GUI framework)
   - libxml2 (XML parsing and writing)
   - PhysFS (Data files)

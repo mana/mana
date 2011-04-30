@@ -105,7 +105,8 @@ void SpecialHandler::handleMessage(Net::MessageIn &msg)
                 int up = msg.readInt8();
 
                 PlayerInfo::setStatBase(skillId, level);
-                skillDialog->setModifiable(skillId, up);
+                if (skillDialog)
+                    skillDialog->setModifiable(skillId, up);
             }
             break;
 

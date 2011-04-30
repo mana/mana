@@ -197,7 +197,7 @@ void GeneralHandler::event(Event::Channel channel,
         if (event.getType() == Event::GuiWindowsLoaded)
         {
             inventoryWindow->setSplitAllowed(true);
-            skillDialog->loadSkills("mana-skills.xml");
+            skillDialog->loadSkills();
 
             PlayerInfo::setAttribute(EXP_NEEDED, 100);
 

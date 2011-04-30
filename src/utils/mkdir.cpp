@@ -36,17 +36,13 @@
 
 #include "mkdir.h"
 
+/// Create a directory, making leading components first if necessary
 int mkdir_r(const char *pathname) {
-    char tmp[PATH_MAX];
+    size_t len = strlen(pathname);
+    char tmp[len+2];
     char *p;
 
-    if (strlen(pathname) >= PATH_MAX-2)
-        return -1;
-
-    strncpy(tmp, pathname, sizeof(tmp)-1);
-    tmp[PATH_MAX-1] = '\0';
-
-    int len=strlen(tmp);
+    strcpy(tmp, pathname);
 
     // terminate the pathname with '/'
     if (tmp[len-1] != '/') {

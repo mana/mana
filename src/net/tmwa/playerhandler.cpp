@@ -22,8 +22,7 @@
 #include "net/tmwa/playerhandler.h"
 #include "net/tmwa/beinghandler.h"
 
-#include "client.h"
-#include "event.h"
+#include "configuration.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -227,6 +226,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
+                if (!player_node)
+                    break;
                 int type = msg.readInt16();
                 int value = msg.readInt32();
 
@@ -312,14 +313,24 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     PlayerInfo::setStatExperience(JOB, msg.readInt32(),
                                                   PlayerInfo::getStatExperience(JOB).second);
                     break;
-                case 0x0014: {
+
+                case 0x0014:
+                    {
                         int oldMoney = PlayerInfo::getAttribute(MONEY);
                         int newMoney = msg.readInt32();
+                        std::string money = Units::formatCurrency(
+                                            newMoney - oldMoney);
                         PlayerInfo::setAttribute(MONEY, newMoney);
                         if (newMoney > oldMoney)
-                            SERVER_NOTICE(strprintf(_("You picked up %s."),
-                                         Units::formatCurrency(newMoney -
-                                         oldMoney).c_str()))
+                        {
+                            if (config.getBoolValue("showpickupchat"))
+                                SERVER_NOTICE(strprintf(_("You picked up %s."),
+                                            Units::formatCurrency(newMoney -
+                                            oldMoney).c_str()))
+                            if (config.getBoolValue("showpickupparticle"))
+                                player_node->addMessageToQueue(money,
+                                                      UserPalette::PICKUP_INFO);
+                        }
                     }
                     break;
                 case 0x0016:
@@ -543,11 +554,17 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
-    if (floorItem)
-    {
-        MessageOut outMsg(CMSG_ITEM_PICKUP);
-        outMsg.writeInt32(floorItem->getId());
-    }
+    static Uint32 lastTime = 0;
+
+    // Avoid spamming the server with pick-up requests to prevent the player
+    // from being kicked.
+    if (!floorItem || SDL_GetTicks() < lastTime + 100)
+        return;
+
+    MessageOut outMsg(CMSG_ITEM_PICKUP);
+    outMsg.writeInt32(floorItem->getId());
+
+    lastTime = SDL_GetTicks();
 }
 
 void PlayerHandler::setDirection(char direction)
