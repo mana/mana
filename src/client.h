@@ -56,14 +56,12 @@ extern std::string errorMessage;
 extern LoginData loginData;
 
 /**
- * get_elapsed_time
- *
  * @param startTime The value to check in client ticks.
  *
  * @return the elapsed time in milliseconds.
  * between startTime and the current client tick value.
  *
- * @warning This function can't handle delays > 10 seconds.
+ * @warning This function can't handle delays > 100 seconds.
  * @see MILLISECONDS_IN_A_TICK
  * @see tick_time
  */
