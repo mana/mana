@@ -149,7 +149,7 @@ namespace XML
             logger->log("Error in unknown xml file on line %d",
                         error->line);
 
-        logger->log(error->message);
+        logger->log("%s", error->message);
 
         // No need to keep errors around
         xmlCtxtResetLastError(error->ctxt);
