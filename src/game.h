@@ -68,8 +68,8 @@ class Game
         const std::string &getCurrentMapName() { return mMapName; }
 
     private:
-
         int mLastTarget;
+        bool mDisconnected;
 
         WindowMenu *mWindowMenu;
 

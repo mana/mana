@@ -220,7 +220,8 @@ Game *Game::mInstance = 0;
 
 Game::Game():
     mLastTarget(ActorSprite::UNKNOWN),
-    mCurrentMap(0), mMapName("")
+    mDisconnected(false),
+    mCurrentMap(0)
 {
     assert(!mInstance);
     mInstance = this;
@@ -374,7 +375,7 @@ void Game::logic()
     cur_time = time(NULL);
 
     // Handle network stuff
-    if (!Net::getGameHandler()->isConnected())
+    if (!Net::getGameHandler()->isConnected() && !mDisconnected)
     {
         if (Client::getState() == STATE_CHANGE_MAP)
             return; // Not a problem here
@@ -386,6 +387,7 @@ void Game::logic()
         Client::instance()->showOkDialog(_("Network Error"),
                                          errorMessage,
                                          STATE_CHOOSE_SERVER);
+        mDisconnected = true;
     }
 }
 
