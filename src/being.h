@@ -326,13 +326,14 @@ class Being : public ActorSprite, public EventListener
 
         /**
          * Sets the attack speed.
-         * @todo In what unit?
+         * @note The attack speed is to be set in milliseconds
+         * before next attack.
          */
         void setAttackSpeed(int speed) { mAttackSpeed = speed; }
 
         /**
          * Gets the attack speed.
-         * @todo In what unit?
+         * @note The attack speed is in milliseconds before next attack.
          */
         int getAttackSpeed() const { return mAttackSpeed; }
 
