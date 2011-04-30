@@ -3,8 +3,8 @@
 ; like the old install script.
 ;
 ; DLLDIR - directory containing required dlls
-; EXEDIR - directory containing mana.exe
-; EXESUFFIX - offset to SRCDIR pointing to a directory containing mana.exe
+; EXEDIR - directory containing ${PRODUCT_NAME_SHORT}.exe
+; EXESUFFIX - offset to SRCDIR pointing to a directory containing ${PRODUCT_NAME_SHORT}.exe
 ; PRODUCT_VERSION - software version
 ; UPX - upx binary name
 ;
@@ -37,17 +37,19 @@ SetCompressor /SOLID lzma
   !define DLLDIR ${SRCDIR}/dll
 !endif
 
-;--- (and without !defines ) ---
-!System "${UPX} --best --crp-ms=999999 --compress-icons=0 --nrv2d ${EXEDIR}\mana.exe"
-
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Mana"
+!define PRODUCT_NAME_SHORT "mana"
+
+;--- (and without !defines ) ---
+!System "${UPX} --best --crp-ms=999999 --compress-icons=0 --nrv2d ${EXEDIR}\${PRODUCT_NAME_SHORT}.exe"
+
 !ifndef PRODUCT_VERSION
-  !define PRODUCT_VERSION "0.0.29.1"
+  !define PRODUCT_VERSION "0.5-git"
 !endif
 !define PRODUCT_PUBLISHER "Mana Development Team"
 !define PRODUCT_WEB_SITE "http://manasource.org"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\mana.exe"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME_SHORT}.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
@@ -93,7 +95,7 @@ SetCompressor /SOLID lzma
 
 Function RunMana
 SetOutPath $INSTDIR
-Exec "$INSTDIR\mana.exe"
+Exec "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
 FunctionEnd
 
 Function changeFinishImage
@@ -165,7 +167,7 @@ ReserveFile "setup_finish.bmp"
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "mana-${PRODUCT_VERSION}-win32.exe"
+OutFile "${PRODUCT_NAME_SHORT}-${PRODUCT_VERSION}-win32.exe"
 InstallDir "$PROGRAMFILES\Mana"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -183,8 +185,8 @@ Section "Core files (required)" SecCore
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   CreateDirectory "$SMPROGRAMS\Mana"
-  CreateShortCut "$SMPROGRAMS\Mana\Mana.lnk" "$INSTDIR\mana.exe"
-  CreateShortCut "$DESKTOP\Mana.lnk" "$INSTDIR\mana.exe"
+  CreateShortCut "$SMPROGRAMS\Mana\Mana.lnk" "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
+  CreateShortCut "$DESKTOP\Mana.lnk" "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
   CreateDirectory "$INSTDIR\data"
   CreateDirectory "$INSTDIR\data\fonts"
   CreateDirectory "$INSTDIR\data\graphics"
@@ -198,7 +200,7 @@ Section "Core files (required)" SecCore
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
 
-  File "${EXEDIR}\mana.exe"
+  File "${EXEDIR}\${PRODUCT_NAME_SHORT}.exe"
   File "${DLLDIR}\guichan.dll"
   File "${DLLDIR}\guichan_sdl.dll"
   File "${DLLDIR}\libcurl-4.dll"
@@ -266,10 +268,10 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\mana.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\mana.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${PRODUCT_NAME_SHORT}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
