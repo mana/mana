@@ -56,12 +56,21 @@ extern std::string errorMessage;
 extern LoginData loginData;
 
 /**
- * Returns elapsed time. (Warning: supposes the delay is always < 100 seconds)
+ * get_elapsed_time
+ *
+ * @param startTime The value to check in client ticks.
+ *
+ * @return the elapsed time in milliseconds.
+ * between startTime and the current client tick value.
+ *
+ * @warning This function can't handle delays > 10 seconds.
+ * @see MILLISECONDS_IN_A_TICK
+ * @see tick_time
  */
-int get_elapsed_time(int start_time);
+int get_elapsed_time(int startTime);
 
 /**
- * Returns if this call and the last call were done for the same
+ * Returns whether this call and the last call were done for the same
  * selected index and within a short time.
  */
 bool isDoubleClick(int selected);

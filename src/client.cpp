@@ -153,16 +153,12 @@ Uint32 nextSecond(Uint32 interval, void *param)
     return interval;
 }
 
-/**
- * @return the elapsed time in milliseconds
- * between two tick values.
- */
-int get_elapsed_time(int start_time)
+int get_elapsed_time(int startTime)
 {
-    if (start_time <= tick_time)
-        return (tick_time - start_time) * MILLISECONDS_IN_A_TICK;
+    if (startTime <= tick_time)
+        return (tick_time - startTime) * MILLISECONDS_IN_A_TICK;
     else
-        return (tick_time + (MAX_TICK_VALUE - start_time))
+        return (tick_time + (MAX_TICK_VALUE - startTime))
                 * MILLISECONDS_IN_A_TICK;
 }
 
