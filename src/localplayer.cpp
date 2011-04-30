@@ -905,7 +905,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
         {
             SERVER_NOTICE(_(msg))
         }
-        if (mMap && config.getValue("showpickupparticle", 0))
+        if (mMap && config.getBoolValue("showpickupparticle"))
         {
             // Show pickup notification
             addMessageToQueue(_(msg), UserPalette::PICKUP_INFO);
@@ -913,7 +913,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
     }
     else
     {
-        if (config.getValue("showpickupchat", 1))
+        if (config.getBoolValue("showpickupchat"))
         {
             // TRANSLATORS: This sentence may be translated differently
             // for different grammatical numbers (singular, plural, ...)
@@ -922,7 +922,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
                     amount, itemInfo.getId(), itemInfo.getName().c_str()))
         }
 
-        if (mMap && config.getValue("showpickupparticle", 0))
+        if (mMap && config.getBoolValue("showpickupparticle"))
         {
             // Show pickup notification
             std::string msg = "";
