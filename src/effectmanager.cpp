@@ -34,8 +34,12 @@ EffectManager::EffectManager()
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "effects"))
     {
-        logger->log("Error loading being effects file: effects.xml");
-        return;
+        // Handle old naming until the 0.5.x versions are obsolete.
+        if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
+        {
+            logger->log("Error loading being effects file: effects.xml");
+            return;
+        }
     }
     else
     {
