@@ -163,7 +163,7 @@ static EffectDescription *getEffectDescription(int effectId)
         XML::Document doc(EFFECTS_FILE);
         xmlNodePtr root = doc.rootNode();
 
-        if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
+        if (!root || !xmlStrEqual(root->name, BAD_CAST "effects"))
         {
             logger->log("Error loading being effects file: "
                     EFFECTS_FILE);

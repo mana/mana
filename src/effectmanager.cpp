@@ -32,7 +32,7 @@ EffectManager::EffectManager()
     XML::Document doc("effects.xml");
     xmlNodePtr root = doc.rootNode();
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
+    if (!root || !xmlStrEqual(root->name, BAD_CAST "effects"))
     {
         logger->log("Error loading being effects file: effects.xml");
         return;
