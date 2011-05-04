@@ -393,7 +393,8 @@ Client::Client(const Options &options):
     userPalette = new UserPalette;
     setupWindow = new Setup;
 
-    sound.playMusic(branding.getValue("loginMusic", "Magick - Real.ogg"));
+    sound.playMusic(branding.getValue("loginMusic",
+                                      "music/system/Magick - Real.ogg"));
 
     // Initialize default server
     mCurrentServer.hostname = options.serverName;
