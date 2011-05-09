@@ -522,7 +522,7 @@ void InventoryHandler::event(Event::Channel channel,
                     else if (source == Inventory::STORAGE
                              && destination == Inventory::INVENTORY)
                     {
-                        MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
+                        MessageOut outMsg(CMSG_MOVE_FROM_STORAGE);
                         outMsg.writeInt16(index - INVENTORY_OFFSET
                                           + STORAGE_OFFSET);
                         outMsg.writeInt32(amount);

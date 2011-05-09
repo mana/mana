@@ -111,7 +111,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_PLAYER_ARROW_EQUIP      0x013c
 #define SMSG_PLAYER_ARROW_MESSAGE    0x013b
 #define SMSG_PLAYER_SKILLS           0x010f
-#define SMSG_PLAYER_SKILL_UP         0x010e
+#define SMSG_PLAYER_SKILL_UP         0x010e // same as SMSG_GUILD_SKILL_UP
 #define SMSG_SKILL_FAILED            0x0110
 #define SMSG_SKILL_DAMAGE            0x01de
 #define SMSG_ITEM_USE_RESPONSE       0x00a8
@@ -203,7 +203,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_GUILD_EXPULSION         0x015c
 #define SMSG_GUILD_EXPULSION_LIST    0x0163
 #define SMSG_GUILD_MESSAGE           0x017f
-#define SMSG_GUILD_SKILL_UP          0x010e
+#define SMSG_GUILD_SKILL_UP          0x010e // same as SMSG_PLAYER_SKILL_UP
 #define SMSG_GUILD_REQ_ALLIANCE      0x0171
 #define SMSG_GUILD_REQ_ALLIANCE_ACK  0x0173
 #define SMSG_GUILD_DEL_ALLIANCE      0x0184
@@ -230,8 +230,6 @@ static const int STORAGE_OFFSET = 1;
 
 #define CMSG_CHAT_MESSAGE            0x008c
 #define CMSG_CHAT_WHISPER            0x0096
-#define CMSG_CHAT_ANNOUNCE           0x0099
-#define CMSG_CHAT_WHO                0x00c1
 
 #define CMSG_SKILL_LEVELUP_REQUEST   0x0112
 #define CMSG_STAT_UPDATE_REQUEST     0x00bb
@@ -249,10 +247,10 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_ITEM_PICKUP             0x009f
 #define CMSG_PLAYER_CHANGE_DIR       0x009b
 #define CMSG_PLAYER_CHANGE_DEST      0x0085
-#define CMSG_PLAYER_CHANGE_ACT       0x0089
+#define CMSG_PLAYER_CHANGE_ACT       0x0089 // same as CMSG_PLAYER_ATTACK
 #define CMSG_PLAYER_RESTART          0x00b2
 #define CMSG_PLAYER_EMOTE            0x00bf
-#define CMSG_PLAYER_ATTACK           0x0089
+#define CMSG_PLAYER_ATTACK           0x0089 // same as CMSG_PLAYER_CHANGE_ACT
 #define CMSG_WHO_REQUEST             0x00c1
 
 #define CMSG_NPC_TALK                0x0090
@@ -281,7 +279,7 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_PARTY_MESSAGE           0x0108
 
 #define CMSG_MOVE_TO_STORAGE         0x00f3 /** Move item to storage */
-#define CSMG_MOVE_FROM_STORAGE       0x00f5 /** Remove item from storage */
+#define CMSG_MOVE_FROM_STORAGE       0x00f5 /** Remove item from storage */
 #define CMSG_CLOSE_STORAGE           0x00f7 /** Request storage close */
 
 #define CMSG_ADMIN_ANNOUNCE          0x0099
