@@ -28,12 +28,13 @@
 
 #include <SDL.h>
 
-#define BUFFER_WIDTH 100
-#define BUFFER_HEIGHT 100
-
 CompoundSprite::CompoundSprite():
         mImage(NULL),
         mAlphaImage(NULL),
+        mWidth(0),
+        mHeight(0),
+        mOffsetX(0),
+        mOffsetY(0),
         mNeedsRedraw(false)
 {
     mAlpha = 1.0f;
@@ -95,9 +96,15 @@ bool CompoundSprite::draw(Graphics* graphics, int posX, int posY) const
     if (mNeedsRedraw)
         redraw();
 
+    if (empty()) // Nothing to draw
+        return false;
+
+    posX += mOffsetX;
+    posY += mOffsetY;
+
     if (mAlpha == 1.0f && mImage)
     {
-        return graphics->drawImage(mImage, posX + mOffsetX, posY + mOffsetY);
+        return graphics->drawImage(mImage, posX, posY);
     }
     else if (mAlpha && mAlphaImage)
     {
@@ -105,53 +112,24 @@ bool CompoundSprite::draw(Graphics* graphics, int posX, int posY) const
             mAlphaImage->setAlpha(mAlpha);
 
         return graphics->drawImage(mAlphaImage,
-                                   posX + mOffsetX, posY + mOffsetY);
+                                   posX, posY);
     }
     else
     {
         SpriteConstIterator it, it_end;
         for (it = begin(), it_end = end(); it != it_end; it++)
         {
-            if (*it)
+            Sprite *s = *it;
+            if (s)
             {
-                if ((*it)->getAlpha() != mAlpha)
-                    (*it)->setAlpha(mAlpha);
-                (*it)->draw(graphics, posX, posY);
+                if (s->getAlpha() != mAlpha)
+                    s->setAlpha(mAlpha);
+                s->draw(graphics, posX - s->getWidth() / 2, posY - s->getHeight());
             }
         }
     }
 
     return false;
-}
-
-int CompoundSprite::getWidth() const
-{
-    Sprite *base = NULL;
-
-    SpriteConstIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
-        if ((base = (*it)))
-            break;
-
-    if (base)
-        return base->getWidth();
-
-    return 0;
-}
-
-int CompoundSprite::getHeight() const
-{
-    Sprite *base = NULL;
-
-    SpriteConstIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
-        if ((base = (*it)))
-            break;
-
-    if (base)
-        return base->getHeight();
-
-    return 0;
 }
 
 const Image* CompoundSprite::getImage() const
@@ -175,13 +153,9 @@ bool CompoundSprite::setDirection(SpriteDirection direction)
 int CompoundSprite::getNumberOfLayers() const
 {
     if (mImage || mAlphaImage)
-    {
         return 1;
-    }
     else
-    {
         return size();
-    }
 }
 
 size_t CompoundSprite::getCurrentFrame() const
@@ -250,7 +224,6 @@ void CompoundSprite::ensureSize(size_t layerCount)
         return;
 
     resize(layerCount, NULL);
-    mNeedsRedraw = true;
 }
 
 /**
@@ -283,18 +256,91 @@ size_t CompoundSprite::getFrameCount(size_t layer)
     return 0;
 }
 
+static void updateValues(int &dimension, int &pos, int imgDim, int imgOffset)
+{
+    // Handle going beyond the left/up
+    if (imgOffset < 0)
+    {
+        int temp = -(pos + imgOffset); // Negated for easier use
+
+        if (temp > 0)
+        {
+            pos += temp;
+            dimension += temp;
+        }
+    }
+
+    // Handle going beyond the right/down
+    int temp = pos + imgOffset + imgDim;
+    if (temp > dimension)
+        dimension = temp;
+}
+
 void CompoundSprite::redraw() const
 {
-    // TODO Detect image size needed to avoid cutting off large sprites, and
-    // reduce memory for smaller ones
-    mNeedsRedraw = false;
-    return;
-
     // TODO OpenGL support
     if (Image::getLoadAsOpenGL())
     {
+        // Temporary fix for position
+        Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
+        if (map)
+        {
+            mOffsetX = map->getTileWidth() / 2;
+            mOffsetY = map->getTileHeight();
+        }
+        else // Char selection screen fix
+        {
+            mOffsetX = 16;
+            mOffsetY = 32;
+        }
         mNeedsRedraw = false;
         return;
+    }
+
+    Sprite *s = NULL;
+    SpriteConstIterator it = begin(), it_end = end();
+    for (it = begin(), it_end = end(); it != it_end; it++)
+        if ((s = *it))
+            break;
+
+    if (!s)
+    {
+        mWidth = mHeight = mOffsetX = mOffsetY = 0;
+        mNeedsRedraw = false;
+        return;
+    }
+
+    mWidth = s->getWidth();
+    mHeight = s->getHeight();
+    mOffsetX = s->getOffsetX();
+    mOffsetY = s->getOffsetY();
+    int posX = mWidth / 2;
+    int posY = mHeight;
+
+    for (it++; it != it_end; ++it)
+    {
+        s = *it;
+
+        if (s)
+        {
+            updateValues(mWidth, posX, s->getWidth(), s->getOffsetX() - s->getWidth() / 2);
+            updateValues(mHeight, posY, s->getHeight(), s->getOffsetY());
+        }
+    }
+
+    mOffsetX -= posX;
+    mOffsetY -= posY;
+
+    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
+    if (map)
+    {
+        mOffsetX += map->getTileWidth() / 2;
+        mOffsetY += map->getTileHeight();
+    }
+    else // Char selection screen fix
+    {
+        mOffsetX += 16;
+        mOffsetY += 32;
     }
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -309,8 +355,7 @@ void CompoundSprite::redraw() const
     int amask = 0xff000000;
 #endif
 
-    SDL_Surface *surface = SDL_CreateRGBSurface(SDL_HWSURFACE,
-                                            BUFFER_WIDTH, BUFFER_HEIGHT,
+    SDL_Surface *surface = SDL_CreateRGBSurface(SDL_HWSURFACE, mWidth, mHeight,
                                             32, rmask, gmask, bmask, amask);
 
     if (!surface)
@@ -321,36 +366,17 @@ void CompoundSprite::redraw() const
     graphics->setTarget(surface);
     graphics->_beginDraw();
 
-    int tileX = 32 / 2;
-    int tileY = 32;
-
-    Game *game = Game::instance();
-    if (game)
+    for (it = begin(), it_end = end(); it != it_end; ++it)
     {
-        Map *map = game->getCurrentMap();
-        tileX = map->getTileWidth() / 2;
-        tileY = map->getTileWidth();
-    }
+        s = *it;
 
-    int posX = BUFFER_WIDTH / 2 - tileX;
-    int posY = BUFFER_HEIGHT - tileY;
-
-    mOffsetX = tileX - BUFFER_WIDTH / 2;
-    mOffsetY = tileY - BUFFER_HEIGHT;
-
-    SpriteConstIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
-    {
-        if (*it)
-        {
-            (*it)->draw(graphics, posX, posY);
-        }
+        if (s)
+            s->draw(graphics, posX - s->getWidth() / 2, posY - s->getHeight());
     }
 
     delete graphics;
 
-    SDL_Surface *surfaceA = SDL_CreateRGBSurface(SDL_HWSURFACE,
-                                            BUFFER_WIDTH, BUFFER_HEIGHT,
+    SDL_Surface *surfaceA = SDL_CreateRGBSurface(SDL_HWSURFACE, mWidth, mHeight,
                                             32, rmask, gmask, bmask, amask);
 
     SDL_SetAlpha(surface, 0, SDL_ALPHA_OPAQUE);

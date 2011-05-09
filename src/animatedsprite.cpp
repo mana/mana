@@ -222,6 +222,16 @@ int AnimatedSprite::getHeight() const
         return 0;
 }
 
+int AnimatedSprite::getOffsetX() const
+{
+    return mFrame ? mFrame->offsetX : 0;
+}
+
+int AnimatedSprite::getOffsetY() const
+{
+    return mFrame ? mFrame->offsetY : 0;
+}
+
 const Image* AnimatedSprite::getImage() const
 {
     return mFrame ? mFrame->image : 0;

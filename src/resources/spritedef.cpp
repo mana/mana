@@ -227,8 +227,6 @@ void SpriteDef::loadAnimation(xmlNodePtr animationNode,
         const int delay = XML::getProperty(frameNode, "delay", 0);
         int offsetX = XML::getProperty(frameNode, "offsetX", 0);
         int offsetY = XML::getProperty(frameNode, "offsetY", 0);
-        offsetY -= imageSet->getHeight() - 32;
-        offsetX -= imageSet->getWidth() / 2 - 16;
 
         if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
         {

@@ -381,16 +381,6 @@ class Being : public ActorSprite, public EventListener
         }
 
         /**
-         * Returns the horizontal size of the current base sprite of the being.
-         */
-        virtual int getWidth() const;
-
-        /**
-         * Returns the vertical size of the current base sprite of the being.
-         */
-        virtual int getHeight() const;
-
-        /**
          * Returns the being's pixel radius used to detect collisions.
          */
         virtual int getCollisionRadius() const;

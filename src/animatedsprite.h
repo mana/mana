@@ -66,6 +66,10 @@ class AnimatedSprite : public Sprite
 
         int getHeight() const;
 
+        int getOffsetX() const;
+
+        int getOffsetY() const;
+
         const Image* getImage() const;
 
         bool setDirection(SpriteDirection direction);

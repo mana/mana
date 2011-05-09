@@ -60,14 +60,26 @@ class Sprite
         virtual bool draw(Graphics* graphics, int posX, int posY) const = 0;
 
         /**
-         * Gets the width in pixels of the image of the current frame
+         * Gets the width in pixels of the image 
          */
         virtual int getWidth() const = 0;
 
         /**
-         * Gets the height in pixels of the image of the current frame
+         * Gets the height in pixels of the image
          */
         virtual int getHeight() const = 0;
+
+        /**
+         * Gets the horizontal offset that the sprite will be drawn at
+         */
+        virtual int getOffsetX() const
+        { return 0; }
+
+        /**
+         * Gets the vertical offset that the sprite will be drawn at
+         */
+        virtual int getOffsetY() const
+        { return 0; }
 
         /**
          * Returns a reference to the current image being drawn.

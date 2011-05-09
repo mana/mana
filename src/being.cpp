@@ -943,16 +943,6 @@ void Being::drawSpeech(int offsetX, int offsetY)
     }
 }
 
-int Being::getWidth() const
-{
-    return std::max(CompoundSprite::getWidth(), DEFAULT_BEING_WIDTH);
-}
-
-int Being::getHeight() const
-{
-    return std::max(CompoundSprite::getHeight(), DEFAULT_BEING_HEIGHT);
-}
-
 void Being::updateCoords()
 {
     if (!mDispName)
