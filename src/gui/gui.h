@@ -129,4 +129,9 @@ extern SDLInput *guiInput;                    /**< GUI input */
  */
 extern gcn::Font *boldFont;
 
+/**
+ * Monospaced text font
+ */
+extern gcn::Font *monoFont;
+
 #endif // GUI_H

@@ -50,6 +50,9 @@ SDLInput *guiInput = 0;
 // Bolded font
 gcn::Font *boldFont = 0;
 
+// Mono font
+gcn::Font *monoFont = 0;
+
 class GuiConfigListener : public EventListener
 {
     public:
@@ -136,6 +139,19 @@ Gui::Gui(Graphics *graphics):
                       std::string("': ") + e.getMessage());
     }
 
+    // Set mono font
+    fontFile = branding.getValue("monoFont", "fonts/dejavusans-mono.ttf");
+    path = resman->getPath(fontFile);
+    try
+    {
+        monoFont = new TrueTypeFont(path, fontSize);
+    }
+    catch (gcn::Exception e)
+    {
+        logger->error(std::string("Unable to load '") + fontFile +
+                      std::string("': ") + e.getMessage());
+    }
+
     gcn::Widget::setGlobalFont(mGuiFont);
 
     // Initialize mouse cursor and listen for changes to the option
@@ -153,6 +169,7 @@ Gui::~Gui()
 
     delete mGuiFont;
     delete boldFont;
+    delete monoFont;
     delete mInfoParticleFont;
     delete getTop();
 

@@ -24,6 +24,7 @@
 
 #include "keyboardconfig.h"
 
+#include "gui/gui.h"
 #include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
@@ -79,6 +80,7 @@ Setup_Keyboard::Setup_Keyboard():
     refreshKeys();
 
     mKeyList->addActionListener(this);
+    mKeyList->setFont(monoFont);
 
     ScrollArea *scrollArea = new ScrollArea(mKeyList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -176,9 +178,17 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
 void Setup_Keyboard::refreshAssignedKey(int index)
 {
     std::string caption;
-    char *temp = SDL_GetKeyName(
-        (SDLKey) keyboard.getKeyValue(index));
-    caption = keyboard.getKeyCaption(index) + ": " + toString(temp);
+    if (keyboard.getKeyValue(index) == keyboard.KEY_NO_VALUE)
+        caption = keyboard.getKeyCaption(index) + ": ";
+    else
+    {
+        char *temp = SDL_GetKeyName(
+            (SDLKey) keyboard.getKeyValue(index));
+
+        caption = strprintf("%-25s",
+            (keyboard.getKeyCaption(index) + ": ").c_str()) + toString(temp);
+
+    }
     mKeyListModel->setElementAt(index, caption);
 }
 

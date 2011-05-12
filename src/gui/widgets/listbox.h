@@ -41,6 +41,16 @@ class ListBox : public gcn::ListBox
         ~ListBox();
 
         /**
+         * Sets the font to render the text in.
+         *
+         * @param font the font to use.
+         */
+        inline void setFont(gcn::Font *font)
+        {
+            mFont = font;
+        }
+
+        /**
          * Draws the list box.
          */
         void draw(gcn::Graphics *graphics);
@@ -61,6 +71,9 @@ class ListBox : public gcn::ListBox
         void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
 
         void mouseDragged(gcn::MouseEvent &event);
+
+    private:
+        gcn::Font *mFont;
 
     protected:
         static float mAlpha;

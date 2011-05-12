@@ -144,6 +144,7 @@ DefaultsData* getBrandingDefaults()
     AddDEF(brandingData, "theme", "");
     AddDEF(brandingData, "font", "fonts/dejavusans.ttf");
     AddDEF(brandingData, "boldFont", "fonts/dejavusans-bold.ttf");
+    AddDEF(brandingData, "monoFont", "fonts/dejavusans-mono.ttf");
 
     return brandingData;
 }

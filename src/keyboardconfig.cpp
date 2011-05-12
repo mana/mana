@@ -162,7 +162,8 @@ bool KeyboardConfig::hasConflicts()
                 continue;
 
             // Allow collisions between shortcut and emote keys
-            if ((i >= KEY_SHORTCUT_1 && i <= KEY_SHORTCUT_12) && (j >= KEY_EMOTE_1 && j <= KEY_EMOTE_12))
+            if ((i >= KEY_SHORTCUT_1 && i <= KEY_SHORTCUT_12) &&
+                    (j >= KEY_EMOTE_1 && j <= KEY_EMOTE_12))
                 continue;
 
             // Why?
@@ -181,9 +182,9 @@ bool KeyboardConfig::hasConflicts()
             if (mKey[i].value == mKey[j].value)
             {
                 mBindError = strprintf(_("Conflict \"%s\" and \"%s\" keys. "
-                                         "Resolve them, or gameplay may result"
-                                         " in strange behaviour."),
-                                       mKey[i].caption.c_str(), mKey[j].caption.c_str());
+                    "Resolve them, or gameplay may result"
+                    " in strange behaviour."),
+                    mKey[i].caption.c_str(), mKey[j].caption.c_str());
                 return true;
             }
         }
