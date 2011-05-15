@@ -566,8 +566,8 @@ void SocialWindow::showGuildInvite(const std::string &guildName,
     mGuildInvited = guildId;
 }
 
-void SocialWindow::showPartyInvite(const std::string &partyName,
-                                   const std::string &inviter)
+void SocialWindow::showPartyInvite(const std::string &inviter,
+                                   const std::string &partyName)
 {
     // check there isnt already an invite showing
     if (mPartyInviter != "")

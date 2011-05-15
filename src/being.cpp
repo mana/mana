@@ -551,11 +551,6 @@ void Being::setParty(Party *party)
         old->removeMember(mId);
     }
 
-    if (party)
-    {
-        party->addMember(mId, mName);
-    }
-
     updateColors();
 
     if (this == player_node && socialWindow)

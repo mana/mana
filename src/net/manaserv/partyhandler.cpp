@@ -60,6 +60,8 @@ PartyHandler::PartyHandler():
     };
     handledMessages = _messages;
     partyHandler = this;
+
+    mParty->setName("Party");
 }
 
 void PartyHandler::handleMessage(Net::MessageIn &msg)
@@ -83,10 +85,16 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
         {
             if (msg.readInt8() == ERRMSG_OK)
             {
-                //
-                SERVER_NOTICE(_("Joined party."));
+                player_node->setParty(mParty);
+                while (msg.getUnreadLength())
+                {
+                    std::string name = msg.readString();
+                    mParty->addMember(0, name);
+                }
             }
-        }
+            else
+                SERVER_NOTICE(_("Joining party failed."));
+        } break;
 
         case CPMSG_PARTY_QUIT_RESPONSE:
         {
@@ -99,13 +107,13 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
         case CPMSG_PARTY_NEW_MEMBER:
         {
-            int id = msg.readInt16(); // being id
+            int id = msg.readInt32();
             std::string name = msg.readString();
 
             SERVER_NOTICE(strprintf(_("%s joined the party."),
                                             name.c_str()));
 
-            if (id == player_node->getId())
+            if (name == player_node->getName())
                 player_node->setParty(mParty);
 
             mParty->addMember(id, name);
@@ -113,7 +121,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
         case CPMSG_PARTY_MEMBER_LEFT:
         {
-            mParty->removeMember(msg.readString());
+            // mParty->removeMember(msg.readString());
         } break;
 
         case CPMSG_PARTY_REJECTED:

@@ -146,7 +146,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     nick = being->getName();
                 }
 
-                socialWindow->showPartyInvite(partyName, nick);
+                socialWindow->showPartyInvite(nick, partyName);
                 break;
             }
         case SMSG_PARTY_SETTINGS:
