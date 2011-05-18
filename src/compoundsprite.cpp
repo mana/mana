@@ -281,6 +281,9 @@ void CompoundSprite::redraw() const
     // TODO OpenGL support
     if (Image::getLoadAsOpenGL())
     {
+        mWidth = at(0)->getWidth();
+        mHeight = at(0)->getHeight();
+
         // Temporary fix for position
         Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
         if (map)
