@@ -256,25 +256,23 @@ size_t CompoundSprite::getFrameCount(size_t layer)
     return 0;
 }
 
-static void updateValues(int &dimension, int &pos, int imgDim, int imgOffset)
+static void updateValues(int &dimension, int &pos, int imgDimUL, int imgDimRD, int imgOffset)
 {
     // Handle going beyond the left/up
-    if (imgOffset < 0)
+    int temp = -(pos + imgOffset - imgDimUL); // Negated for easier use
+    if (temp > 0)
     {
-        int temp = -(pos + imgOffset); // Negated for easier use
-
-        if (temp > 0)
-        {
-            pos += temp;
-            dimension += temp;
-        }
+        pos += temp;
+        dimension += temp;
     }
 
     // Handle going beyond the right/down
-    int temp = pos + imgOffset + imgDim;
+    temp = pos + imgOffset + imgDimRD;
     if (temp > dimension)
         dimension = temp;
 }
+
+#include "localplayer.h"
 
 void CompoundSprite::redraw() const
 {
@@ -300,35 +298,29 @@ void CompoundSprite::redraw() const
         return;
     }
 
+
+    mWidth = mHeight = mOffsetX = mOffsetY = 0;
     Sprite *s = NULL;
     SpriteConstIterator it = begin(), it_end = end();
-    for (it = begin(), it_end = end(); it != it_end; it++)
-        if ((s = *it))
-            break;
 
-    if (!s)
-    {
-        mWidth = mHeight = mOffsetX = mOffsetY = 0;
-        mNeedsRedraw = false;
-        return;
-    }
+    int posX = 0;
+    int posY = 0;
 
-    mWidth = s->getWidth();
-    mHeight = s->getHeight();
-    mOffsetX = s->getOffsetX();
-    mOffsetY = s->getOffsetY();
-    int posX = mWidth / 2;
-    int posY = mHeight;
-
-    for (it++; it != it_end; ++it)
+    for (it = begin(); it != it_end; ++it)
     {
         s = *it;
 
         if (s)
         {
-            updateValues(mWidth, posX, s->getWidth(), s->getOffsetX() - s->getWidth() / 2);
-            updateValues(mHeight, posY, s->getHeight(), s->getOffsetY());
+            updateValues(mWidth, posX, s->getWidth() / 2, s->getWidth() / 2, s->getOffsetX());
+            updateValues(mHeight, posY, s->getHeight(), 0, s->getOffsetY());
         }
+    }
+
+    if (mWidth == 0 && mHeight == 0)
+    {
+        mNeedsRedraw = false;
+        return;
     }
 
     mOffsetX -= posX;
