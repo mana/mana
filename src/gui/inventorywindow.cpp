@@ -143,7 +143,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     Layout &layout = getLayout();
     layout.setRowHeight(2, Layout::AUTO_SET);
 
-    mInventory->addInventoyListener(this);
+    mInventory->addInventoryListener(this);
 
     instances.push_back(this);
 
@@ -160,7 +160,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
 InventoryWindow::~InventoryWindow()
 {
     instances.remove(this);
-    mInventory->removeInventoyListener(this);
+    mInventory->removeInventoryListener(this);
 
     if (!isMainInventory())
         PlayerInfo::setStorageCount(PlayerInfo::getStorageCount() - 1);

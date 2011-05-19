@@ -151,12 +151,12 @@ int Inventory::getLastUsedSlot() const
     return -1;
 }
 
-void Inventory::addInventoyListener(InventoryListener* listener)
+void Inventory::addInventoryListener(InventoryListener* listener)
 {
     mInventoryListeners.push_back(listener);
 }
 
-void Inventory::removeInventoyListener(InventoryListener* listener)
+void Inventory::removeInventoryListener(InventoryListener* listener)
 {
     mInventoryListeners.remove(listener);
 }
