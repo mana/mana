@@ -221,6 +221,8 @@ SkillDialog::SkillDialog():
     setResizable(true);
     setSaveVisible(true);
     setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
+    setMinHeight(113);
+    setMinWidth(240);
     setupWindow->registerWindowForReset(this);
 
     mTabs = new TabbedArea();

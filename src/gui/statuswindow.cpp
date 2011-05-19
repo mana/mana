@@ -104,7 +104,9 @@ StatusWindow::StatusWindow():
     setCloseButton(true);
     setSaveVisible(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 365, 275);
+                   (windowContainer->getHeight() - 255) / 2, 480, 275);
+    setMinWidth(480);
+    setMinHeight(131);
 
     // ----------------------
     // Status Part
