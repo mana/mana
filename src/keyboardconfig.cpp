@@ -53,7 +53,6 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyBeingSit", SDLK_s, _("Sit")},
     {"keyScreenshot", SDLK_p, _("Screenshot")},
     {"keyTrade", SDLK_r, _("Enable/Disable Trading")},
-    {"keyPathfind", SDLK_f, _("Find Path to Mouse")},
     {"keyShortcut1", SDLK_1, strprintf(_("Item Shortcut %d"), 1)},
     {"keyShortcut2", SDLK_2, strprintf(_("Item Shortcut %d"), 2)},
     {"keyShortcut3", SDLK_3, strprintf(_("Item Shortcut %d"), 3)},

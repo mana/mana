@@ -722,11 +722,6 @@ void Game::handleInput()
                         saveScreenshot();
                         used = true;
                         break;
-                    case KeyboardConfig::KEY_PATHFIND:
-                        // Find path to mouse (debug purpose)
-                        viewport->toggleDebugPath();
-                        used = true;
-                        break;
                     case KeyboardConfig::KEY_TRADE:
                         // Toggle accepting of incoming trade requests
                         unsigned int deflt = player_relations.getDefault();

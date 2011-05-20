@@ -77,9 +77,9 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void logic();
 
         /**
-         * Toggles whether the path debug graphics are shown
+         * Sets whether the path debug graphics are shown
          */
-        void toggleDebugPath();
+        void setShowDebugPath(int debugFlags);
 
         /**
          * Handles mouse press on map.

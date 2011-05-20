@@ -583,15 +583,11 @@ void Viewport::updateCursorType()
     }
 }
 
-void Viewport::toggleDebugPath()
+void Viewport::setShowDebugPath(int debugFlags)
 {
-    mShowDebugPath++;
-    if (mShowDebugPath > Map::MAP_SPECIAL3)
-        mShowDebugPath = Map::MAP_NORMAL;
+    mShowDebugPath = debugFlags;
     if (mMap)
-    {
-        mMap->setDebugFlags(mShowDebugPath);
-    }
+        mMap->setDebugFlags(debugFlags);
 }
 
 void Viewport::hideBeingPopup()

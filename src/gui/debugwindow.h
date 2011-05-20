@@ -24,8 +24,6 @@
 
 #include "gui/widgets/window.h"
 
-class Label;
-
 /**
  * The debug window.
  *
@@ -35,19 +33,6 @@ class DebugWindow : public Window
 {
     public:
         DebugWindow();
-
-        /**
-         * Logic (updates components' size and infos)
-         */
-        void logic();
-
-    private:
-        Label *mMusicFileLabel, *mMapLabel, *mMinimapLabel;
-        Label *mTileMouseLabel, *mFPSLabel;
-        Label *mParticleCountLabel, *mParticleDetailLabel;
-        Label *mAmbientDetailLabel;
-
-        std::string mFPSText;
 };
 
 extern DebugWindow *debugWindow;

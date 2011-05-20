@@ -169,7 +169,6 @@ class KeyboardConfig
             KEY_SIT,
             KEY_SCREENSHOT,
             KEY_TRADE,
-            KEY_PATHFIND,
             KEY_SHORTCUT_1,
             KEY_SHORTCUT_2,
             KEY_SHORTCUT_3,
