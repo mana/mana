@@ -68,6 +68,11 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         void valueChanged(const gcn::SelectionEvent &event);
 
         /**
+         * Allows for quick-selling by extending double-click events.
+         */
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
+
+        /**
          * Gives Player's Money amount
          */
         void setMoney(int amount);

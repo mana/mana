@@ -21,6 +21,7 @@
 
 #include "gui/inventorywindow.h"
 
+#include "client.h"
 #include "inventory.h"
 #include "item.h"
 #include "units.h"
@@ -240,10 +241,17 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 {
     Window::mouseClicked(event);
 
+    Item *item = mItems->getSelectedItem();
+
+    if (event.getSource() == mItems && item && isDoubleClick((int)item))
+    {
+
+        if (isMainInventory() && item->getInfo().getActivatable())
+            action(gcn::ActionEvent(mUseButton, mUseButton->getActionEventId()));
+    }
+
     if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        Item *item = mItems->getSelectedItem();
-
         if (!item)
             return;
 

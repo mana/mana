@@ -21,6 +21,7 @@
 
 #include "gui/npcdialog.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "event.h"
 #include "eventlistener.h"
@@ -396,6 +397,20 @@ void NpcDialog::event(Event::Channel channel, const Event &event)
         event.getString("option") == "logNpcInGui")
     {
         mLogInteraction = config.getBoolValue("logNpcInGui");
+    }
+}
+
+void NpcDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
+{
+    if (mouseEvent.getSource() == mItemList &&
+        isDoubleClick(mItemList->getSelected()))
+    {
+        action(gcn::ActionEvent(mButton, mButton->getActionEventId()));
+    }
+    if (mouseEvent.getSource() == mTextBox && isDoubleClick((int)mTextBox))
+    {
+        if (mActionState == NPC_ACTION_NEXT || mActionState == NPC_ACTION_CLOSE)
+            action(gcn::ActionEvent(mButton, mButton->getActionEventId()));
     }
 }
 

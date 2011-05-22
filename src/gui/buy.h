@@ -77,6 +77,11 @@ class BuyDialog : public Window, public gcn::ActionListener,
         void valueChanged(const gcn::SelectionEvent &event);
 
         /**
+         * Allows for quick-buying by extending double-click events.
+         */
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
+
+        /**
          * Returns the name of item number i in the shop inventory.
          */
         std::string getElementAt(int i);

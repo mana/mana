@@ -21,6 +21,7 @@
 
 #include "gui/buy.h"
 
+#include "client.h"
 #include "playerinfo.h"
 #include "shopitem.h"
 #include "units.h"
@@ -220,6 +221,15 @@ void BuyDialog::valueChanged(const gcn::SelectionEvent &event)
 
     updateButtonsAndLabels();
     mSlider->gcn::Slider::setScale(1, mMaxItems);
+}
+
+void BuyDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
+{
+    if (mouseEvent.getSource() == mShopItemList &&
+        isDoubleClick(mShopItemList->getSelected()))
+    {
+        action(gcn::ActionEvent(mBuyButton, mBuyButton->getActionEventId()));
+    }
 }
 
 void BuyDialog::updateButtonsAndLabels()

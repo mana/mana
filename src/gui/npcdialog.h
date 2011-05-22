@@ -44,8 +44,10 @@ class Button;
  *
  * \ingroup Interface
  */
-class NpcDialog : public Window, public gcn::ActionListener,
-                  public gcn::ListModel, public EventListener
+class NpcDialog : public Window,
+                  public gcn::ActionListener,
+                  public gcn::ListModel,
+                  public EventListener
 {
     public:
         NpcDialog(int npcId);
@@ -125,7 +127,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
         static bool isAnyInputFocused();
 
         /**
-         * Requests a interger from the user.
+         * Requests an integer from the user.
          */
         void integerRequest(int defaultValue, int min, int max);
 
@@ -141,6 +143,8 @@ class NpcDialog : public Window, public gcn::ActionListener,
         void setVisible(bool visible);
 
         void event(Event::Channel channel, const Event &event);
+
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
 
         /**
          * Returns the first active instance. Useful for pushing user

@@ -278,12 +278,19 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
     {
         const int index = getSlotIndex(event.getX(), event.getY());
         if (index == Inventory::NO_SLOT_INDEX)
+        {
+            mSelectionStatus = SEL_DESELECTING;
             return;
+        }
 
         Item *item = getItemAt(index);
 
         if (!item)
+        {
+            mSelectionStatus = SEL_DESELECTING;
             return;
+        }
+
 
         // put item name into chat window
         if (mDescItems)
@@ -293,7 +300,6 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
 
         if (mSelectedIndex == index)
         {
-            mSelectionStatus = SEL_DESELECTING;
         }
         else if (item && item->getId())
         {

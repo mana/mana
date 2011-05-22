@@ -21,6 +21,7 @@
 
 #include "gui/sell.h"
 
+#include "client.h"
 #include "playerinfo.h"
 #include "shopitem.h"
 #include "units.h"
@@ -246,6 +247,15 @@ void SellDialog::valueChanged(const gcn::SelectionEvent &event)
 
     updateButtonsAndLabels();
     mSlider->gcn::Slider::setScale(1, mMaxItems);
+}
+
+void SellDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
+{
+    if (mouseEvent.getSource() == mShopItemList &&
+        isDoubleClick(mShopItemList->getSelected()))
+    {
+        action(gcn::ActionEvent(mSellButton, mSellButton->getActionEventId()));
+    }
 }
 
 void SellDialog::setMoney(int amount)
