@@ -36,11 +36,11 @@ class SetupTab;
  *
  * @see Setup_Audio
  * @see Setup_Colors
+ * @see Setup_Interface
  * @see Setup_Joystick
  * @see Setup_Keyboard
  * @see Setup_Players
  * @see Setup_Video
- * @see Setup_Interface
  *
  * \ingroup GUI
  */

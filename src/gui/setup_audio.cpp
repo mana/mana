@@ -75,7 +75,7 @@ Setup_Audio::Setup_Audio():
     place(1, 2, musicLabel);
     place(0, 3, mDownloadMusicCheckBox);
 
-    setDimension(gcn::Rectangle(0, 0, 365, 280));
+    setDimension(gcn::Rectangle(0, 0, 370, 280));
 }
 
 void Setup_Audio::apply()

@@ -185,7 +185,7 @@ Setup_Interface::Setup_Interface():
     place(2, 9, speechLabel, 2);
     place(4, 9, mSpeechLabel, 2).setPadding(2);
 
-    setDimension(gcn::Rectangle(0, 0, 365, 300));
+    setDimension(gcn::Rectangle(0, 0, 370, 300));
 }
 
 Setup_Interface::~Setup_Interface()

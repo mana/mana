@@ -105,7 +105,7 @@ Setup_Keyboard::Setup_Keyboard():
     place(2, 6, mAssignKeyButton);
     place(3, 6, mUnassignKeyButton);
 
-    setDimension(gcn::Rectangle(0, 0, 365, 280));
+    setDimension(gcn::Rectangle(0, 0, 370, 280));
 }
 
 Setup_Keyboard::~Setup_Keyboard()

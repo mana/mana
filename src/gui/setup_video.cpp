@@ -267,7 +267,7 @@ Setup_Video::Setup_Video():
     place(2, 8, particleDetailLabel);
     place(3, 8, mParticleDetailField).setPadding(2);
 
-    setDimension(gcn::Rectangle(0, 0, 365, 300));
+    setDimension(gcn::Rectangle(0, 0, 370, 300));
 }
 
 Setup_Video::~Setup_Video()

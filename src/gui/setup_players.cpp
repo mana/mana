@@ -304,7 +304,7 @@ Setup_Players::Setup_Players():
 
     player_relations.addListener(this);
 
-    setDimension(gcn::Rectangle(0, 0, 365, 280));
+    setDimension(gcn::Rectangle(0, 0, 370, 280));
 }
 
 Setup_Players::~Setup_Players()
