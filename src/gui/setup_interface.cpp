@@ -37,6 +37,7 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
+#include "gui/widgets/spacer.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/dropdown.h"
 
@@ -105,7 +106,7 @@ Setup_Interface::Setup_Interface():
                                        mVisibleNamesEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
     mNPCLogCheckBox(new CheckBox(_("Log NPC dialogue"), mNPCLogEnabled)),
-    mPickupNotifyLabel(new Label(_("Show pickup notification"))),
+    mPickupNotifyLabel(new Label(_("Show pickup notification:"))),
     // TRANSLATORS: Refers to "Show pickup notification"
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
     // TRANSLATORS: Refers to "Show pickup notification"
@@ -119,12 +120,14 @@ Setup_Interface::Setup_Interface():
     setName(_("Interface"));
 
     // Create widgets
+    Spacer *space = new Spacer(0,10);
+
     mShowMonsterDamageCheckBox = new CheckBox(_("Show damage"),
                                               mShowMonsterDamageEnabled);
 
-    speechLabel = new Label(_("Overhead text"));
+    speechLabel = new Label(_("Overhead text:"));
     alphaLabel = new Label(_("Gui opacity"));
-    fontSizeLabel = new Label(_("Font size"));
+    fontSizeLabel = new Label(_("Font size:"));
 
     mFontSizeListModel = new FontSizeChoiceListModel;
     mFontSizeDropDown = new DropDown(mFontSizeListModel);
@@ -170,13 +173,19 @@ Setup_Interface::Setup_Interface():
     place(0, 1, mShowMonsterDamageCheckBox, 3);
     place(3, 1, mNPCLogCheckBox, 3);
 
+    place(0, 2, space, 1, 1);
+
     place(0, 3, mPickupNotifyLabel, 6);
 
     place(0, 4, mPickupChatCheckBox, 3);
     place(3, 4, mPickupParticleCheckBox, 3);
 
+    place(0, 5, space, 1, 1);
+
     place(0, 6, fontSizeLabel, 2);
     place(2, 6, mFontSizeDropDown, 2);
+
+    place(0, 7, space, 1, 1);
 
     place(0, 8, mAlphaSlider, 2);
     place(2, 8, alphaLabel, 2);

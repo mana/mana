@@ -37,6 +37,7 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
+#include "gui/widgets/spacer.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/dropdown.h"
 
@@ -182,11 +183,13 @@ Setup_Video::Setup_Video():
 {
     setName(_("Video"));
 
+    Spacer *space = new Spacer(0,10);
+
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    overlayDetailLabel = new Label(_("Ambient FX"));
-    particleDetailLabel = new Label(_("Particle detail"));
+    overlayDetailLabel = new Label(_("Ambient FX:"));
+    particleDetailLabel = new Label(_("Particle detail:"));
 
     mModeList->setEnabled(true);
 
@@ -199,6 +202,9 @@ Setup_Video::Setup_Video():
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setSelected(mFps > 0);
+
+    overlayDetailLabel->setAlignment(Graphics::RIGHT);
+    particleDetailLabel->setAlignment(Graphics::RIGHT);
 
     // If the openGL Mode is enabled, disabling the transaprency
     // is irrelevant.
@@ -250,10 +256,16 @@ Setup_Video::Setup_Video():
     place(2, 0, mFsCheckBox, 2);
     place(4, 0, mOpenGLCheckBox, 2);
 
+    place(2, 1, space, 4, 1);
+
     place(2, 2, mCustomCursorCheckBox, 2);
     place(4, 2, mParticleEffectsCheckBox, 2);
 
+    place(2, 3, space, 4, 1);
+
     place(2, 4, mDisableSDLTransparencyCheckBox, 4);
+
+    place(2, 5, space, 4, 1);
 
     place(0, 6, mFpsSlider, 2);
     place(2, 6, mFpsCheckBox).setPadding(3);
