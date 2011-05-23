@@ -40,6 +40,7 @@ class SetupTab;
  * @see Setup_Keyboard
  * @see Setup_Players
  * @see Setup_Video
+ * @see Setup_Interface
  *
  * \ingroup GUI
  */

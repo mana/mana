@@ -29,6 +29,7 @@
 #include "gui/setup_keyboard.h"
 #include "gui/setup_players.h"
 #include "gui/setup_video.h"
+#include "gui/setup_interface.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
@@ -68,6 +69,7 @@ Setup::Setup():
 
     mTabs.push_back(new Setup_Video);
     mTabs.push_back(new Setup_Audio);
+    mTabs.push_back(new Setup_Interface);
     mTabs.push_back(new Setup_Joystick);
     mTabs.push_back(new Setup_Keyboard);
     mTabs.push_back(new Setup_Colors);

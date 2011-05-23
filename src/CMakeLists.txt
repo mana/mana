@@ -290,6 +290,8 @@ SET(SRCS
     gui/setup_keyboard.h
     gui/setup_players.cpp
     gui/setup_players.h
+    gui/setup_interface.cpp
+    gui/setup_interface.h
     gui/setup_video.cpp
     gui/setup_video.h
     gui/shortcutwindow.cpp

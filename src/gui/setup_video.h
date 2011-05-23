@@ -31,7 +31,6 @@
 #include <guichan/keylistener.hpp>
 
 class ModeListModel;
-class FontSizeChoiceListModel;
 
 class Setup_Video : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener
@@ -53,46 +52,23 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
-        bool mShowMonsterDamageEnabled;
-        bool mVisibleNamesEnabled;
         bool mParticleEffectsEnabled;
-        bool mNameEnabled;
-        bool mNPCLogEnabled;
-        bool mPickupChatEnabled;
-        bool mPickupParticleEnabled;
-        double mOpacity;
         int mFps;
         bool mSDLTransparencyDisabled;
-        Being::Speech mSpeechMode;
 
         ModeListModel *mModeListModel;
-        FontSizeChoiceListModel *mFontSizeListModel;
 
-        gcn::Label *speechLabel;
-        gcn::Label *alphaLabel;
-        gcn::Label *scrollRadiusLabel;
-        gcn::Label *scrollLazinessLabel;
+        //gcn::Label *scrollRadiusLabel;
+        //gcn::Label *scrollLazinessLabel;
         gcn::Label *overlayDetailLabel;
         gcn::Label *particleDetailLabel;
-        gcn::Label *fontSizeLabel;
 
         gcn::ListBox *mModeList;
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
-        gcn::CheckBox *mShowMonsterDamageCheckBox;
-        gcn::CheckBox *mVisibleNamesCheckBox;
         gcn::CheckBox *mParticleEffectsCheckBox;
-        gcn::CheckBox *mNameCheckBox;
-        gcn::CheckBox *mNPCLogCheckBox;
 
-        gcn::Label *mPickupNotifyLabel;
-        gcn::CheckBox *mPickupChatCheckBox;
-        gcn::CheckBox *mPickupParticleCheckBox;
-
-        gcn::Slider *mSpeechSlider;
-        gcn::Label *mSpeechLabel;
-        gcn::Slider *mAlphaSlider;
         gcn::CheckBox *mFpsCheckBox;
         gcn::Slider *mFpsSlider;
         gcn::Label *mFpsLabel;
@@ -104,9 +80,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         int mParticleDetail;
         gcn::Slider *mParticleDetailSlider;
         gcn::Label *mParticleDetailField;
-
-        int mFontSize;
-        gcn::DropDown *mFontSizeDropDown;
 
         gcn::CheckBox *mDisableSDLTransparencyCheckBox;
 };

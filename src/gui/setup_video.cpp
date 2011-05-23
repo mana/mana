@@ -123,45 +123,6 @@ int ModeListModel::getIndexOf(const std::string &widthXHeightMode)
     return -1;
 }
 
-const char *SIZE_NAME[4] =
-{
-    N_("Tiny"),
-    N_("Small"),
-    N_("Medium"),
-    N_("Large"),
-};
-
-class FontSizeChoiceListModel : public gcn::ListModel
-{
-public:
-    virtual ~FontSizeChoiceListModel() { }
-
-    virtual int getNumberOfElements()
-    {
-        return 4;
-    }
-
-    virtual std::string getElementAt(int i)
-    {
-        if (i >= getNumberOfElements())
-            return _("???");
-
-        return SIZE_NAME[i];
-    }
-};
-
-static const char *speechModeToString(Being::Speech mode)
-{
-    switch (mode)
-    {
-        case Being::NO_SPEECH:         return _("No text");
-        case Being::TEXT_OVERHEAD:     return _("Text");
-        case Being::NO_NAME_IN_BUBBLE: return _("Bubbles, no names");
-        case Being::NAME_IN_BUBBLE:    return _("Bubbles with names");
-    }
-    return "";
-}
-
 const char *Setup_Video::overlayDetailToString(int detail)
 {
     if (detail == -1)
@@ -195,38 +156,17 @@ Setup_Video::Setup_Video():
     mFullScreenEnabled(config.getBoolValue("screen")),
     mOpenGLEnabled(config.getBoolValue("opengl")),
     mCustomCursorEnabled(config.getBoolValue("customcursor")),
-    mShowMonsterDamageEnabled(config.getBoolValue("showMonstersTakedDamage")),
-    mVisibleNamesEnabled(config.getBoolValue("visiblenames")),
     mParticleEffectsEnabled(config.getBoolValue("particleeffects")),
-    mNameEnabled(config.getBoolValue("showownname")),
-    mNPCLogEnabled(config.getBoolValue("logNpcInGui")),
-    mPickupChatEnabled(config.getBoolValue("showpickupchat")),
-    mPickupParticleEnabled(config.getBoolValue("showpickupparticle")),
-    mOpacity(config.getFloatValue("guialpha")),
     mFps(config.getIntValue("fpslimit")),
     mSDLTransparencyDisabled(config.getBoolValue("disableTransparency")),
-    mSpeechMode(static_cast<Being::Speech>(config.getIntValue("speech"))),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
     mOpenGLCheckBox(new CheckBox(_("OpenGL"), mOpenGLEnabled)),
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"),
                                        mCustomCursorEnabled)),
-    mVisibleNamesCheckBox(new CheckBox(_("Visible names"),
-                                       mVisibleNamesEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
                                           mParticleEffectsEnabled)),
-    mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
-    mNPCLogCheckBox(new CheckBox(_("Log NPC dialogue"), mNPCLogEnabled)),
-    mPickupNotifyLabel(new Label(_("Show pickup notification"))),
-    // TRANSLATORS: Refers to "Show pickup notification"
-    mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
-    // TRANSLATORS: Refers to "Show pickup notification"
-    mPickupParticleCheckBox(new CheckBox(_("as particle"),
-                                         mPickupParticleEnabled)),
-    mSpeechSlider(new Slider(0, 3)),
-    mSpeechLabel(new Label("")),
-    mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox(_("FPS limit:"))),
     mFpsSlider(new Slider(10, 120)),
     mFpsLabel(new Label),
@@ -236,37 +176,23 @@ Setup_Video::Setup_Video():
     mParticleDetail(3 - config.getIntValue("particleEmitterSkip")),
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new Label),
-    mFontSize(config.getIntValue("fontSize")),
     mDisableSDLTransparencyCheckBox(
                           new CheckBox(_("Disable transparency (Low CPU mode)"),
                                        mSDLTransparencyDisabled))
 {
     setName(_("Video"));
 
-    mShowMonsterDamageCheckBox = new CheckBox(_("Show damage"),
-                                              mShowMonsterDamageEnabled);
-
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    speechLabel = new Label(_("Overhead text"));
-    alphaLabel = new Label(_("Gui opacity"));
     overlayDetailLabel = new Label(_("Ambient FX"));
     particleDetailLabel = new Label(_("Particle detail"));
-    fontSizeLabel = new Label(_("Font size"));
-
-    mFontSizeListModel = new FontSizeChoiceListModel;
-    mFontSizeDropDown = new DropDown(mFontSizeListModel);
 
     mModeList->setEnabled(true);
 
 #ifndef USE_OPENGL
     mOpenGLCheckBox->setEnabled(false);
 #endif
-
-    mAlphaSlider->setValue(mOpacity);
-    mAlphaSlider->setWidth(90);
-    mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
 
     mFpsLabel->setCaption(mFps > 0 ? toString(mFps) : _("None"));
     mFpsLabel->setWidth(60);
@@ -283,48 +209,31 @@ Setup_Video::Setup_Video():
                             + toString(graphics->getHeight());
     mModeList->setSelected(mModeListModel->getIndexOf(videoMode));
 
+    // Set actions
     mModeList->setActionEventId("videomode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
-    mShowMonsterDamageCheckBox->setActionEventId("monsterdamage");
-    mVisibleNamesCheckBox->setActionEventId("visiblenames");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
-    mPickupChatCheckBox->setActionEventId("pickupchat");
-    mPickupParticleCheckBox->setActionEventId("pickupparticle");
-    mNameCheckBox->setActionEventId("showownname");
-    mNPCLogCheckBox->setActionEventId("lognpc");
-    mAlphaSlider->setActionEventId("guialpha");
+    mDisableSDLTransparencyCheckBox->setActionEventId("disableTransparency");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
-    mSpeechSlider->setActionEventId("speech");
     mFpsSlider->setActionEventId("fpslimitslider");
     mOverlayDetailSlider->setActionEventId("overlaydetailslider");
     mOverlayDetailField->setActionEventId("overlaydetailfield");
     mOpenGLCheckBox->setActionEventId("opengl");
     mParticleDetailSlider->setActionEventId("particledetailslider");
     mParticleDetailField->setActionEventId("particledetailfield");
-    mDisableSDLTransparencyCheckBox->setActionEventId("disableTransparency");
 
+    // Set listeners
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
-    mShowMonsterDamageCheckBox->addActionListener(this);
-    mVisibleNamesCheckBox->addActionListener(this);
     mOpenGLCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
-    mPickupChatCheckBox->addActionListener(this);
-    mPickupParticleCheckBox->addActionListener(this);
-    mNameCheckBox->addActionListener(this);
-    mNPCLogCheckBox->addActionListener(this);
-    mAlphaSlider->addActionListener(this);
+    mDisableSDLTransparencyCheckBox->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
-    mSpeechSlider->addActionListener(this);
     mFpsSlider->addActionListener(this);
     mOverlayDetailSlider->addActionListener(this);
     mOverlayDetailField->addKeyListener(this);
     mParticleDetailSlider->addActionListener(this);
     mParticleDetailField->addKeyListener(this);
-    mDisableSDLTransparencyCheckBox->addActionListener(this);
-
-    mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
-    mSpeechSlider->setValue(mSpeechMode);
 
     mOverlayDetailField->setCaption(overlayDetailToString(mOverlayDetail));
     mOverlayDetailSlider->setValue(mOverlayDetail);
@@ -332,54 +241,31 @@ Setup_Video::Setup_Video():
     mParticleDetailField->setCaption(particleDetailToString(mParticleDetail));
     mParticleDetailSlider->setValue(mParticleDetail);
 
-    mFontSizeDropDown->setSelected(mFontSize - 10);
-    mFontSizeDropDown->adjustHeight();
-
     // Do the layout
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, scrollArea, 1, 5).setPadding(2);
-    place(1, 0, mFsCheckBox, 2);
-    place(3, 0, mOpenGLCheckBox, 1);
+    place(0, 0, scrollArea, 2, 6).setPadding(2);
 
-    place(1, 1, mCustomCursorCheckBox, 3);
-    place(3, 1, mShowMonsterDamageCheckBox, 3);
+    place(2, 0, mFsCheckBox, 2);
+    place(4, 0, mOpenGLCheckBox, 2);
 
-    place(1, 2, mVisibleNamesCheckBox, 3);
-    place(3, 2, mNameCheckBox, 1);
+    place(2, 2, mCustomCursorCheckBox, 2);
+    place(4, 2, mParticleEffectsCheckBox, 2);
 
-    place(1, 3, mParticleEffectsCheckBox, 3);
-    place(3, 3, mNPCLogCheckBox, 1);
+    place(2, 4, mDisableSDLTransparencyCheckBox, 4);
 
-    place(1, 4, mPickupNotifyLabel, 4);
+    place(0, 6, mFpsSlider, 2);
+    place(2, 6, mFpsCheckBox).setPadding(3);
+    place(3, 6, mFpsLabel).setPadding(1);
 
-    place(1, 5, mPickupChatCheckBox, 1);
-    place(2, 5, mPickupParticleCheckBox, 2);
+    place(0, 7, mOverlayDetailSlider, 2);
+    place(2, 7, overlayDetailLabel);
+    place(3, 7, mOverlayDetailField).setPadding(2);
 
-    place(0, 6, fontSizeLabel, 3);
-    place(1, 6, mFontSizeDropDown, 2);
-
-    place(0, 7, mAlphaSlider);
-    place(1, 7, alphaLabel, 3);
-
-    place(0, 8, mFpsSlider);
-    place(1, 8, mFpsCheckBox).setPadding(3);
-    place(2, 8, mFpsLabel).setPadding(1);
-
-    place(0, 9, mSpeechSlider);
-    place(1, 9, speechLabel);
-    place(2, 9, mSpeechLabel, 3).setPadding(2);
-
-    place(0, 10, mOverlayDetailSlider);
-    place(1, 10, overlayDetailLabel);
-    place(2, 10, mOverlayDetailField, 3).setPadding(2);
-
-    place(0, 11, mParticleDetailSlider);
-    place(1, 11, particleDetailLabel);
-    place(2, 11, mParticleDetailField, 3).setPadding(2);
-
-    place(0, 12, mDisableSDLTransparencyCheckBox, 4);
+    place(0, 8, mParticleDetailSlider, 2);
+    place(2, 8, particleDetailLabel);
+    place(3, 8, mParticleDetailField).setPadding(2);
 
     setDimension(gcn::Rectangle(0, 0, 365, 300));
 }
@@ -388,7 +274,6 @@ Setup_Video::~Setup_Video()
 {
     delete mModeListModel;
     delete mModeList;
-    delete mFontSizeListModel;
 }
 
 void Setup_Video::apply()
@@ -486,22 +371,13 @@ void Setup_Video::apply()
 
     // FPS change
     config.setValue("fpslimit", mFps);
-    config.setValue("fontSize", mFontSizeDropDown->getSelected() + 10);
 
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getBoolValue("screen");
     mCustomCursorEnabled = config.getBoolValue("customcursor");
-    mShowMonsterDamageEnabled = config.getBoolValue("showMonstersTakedDamage");
-    mVisibleNamesEnabled = config.getBoolValue("visiblenames");
     mParticleEffectsEnabled = config.getBoolValue("particleeffects");
-    mNameEnabled = config.getBoolValue("showownname");
-    mNPCLogEnabled = config.getBoolValue("logNpcInGui");
-    mSpeechMode = static_cast<Being::Speech>(config.getIntValue("speech"));
-    mOpacity = config.getFloatValue("guialpha");
     mOverlayDetail = config.getIntValue("OverlayDetail");
     mOpenGLEnabled = config.getBoolValue("opengl");
-    mPickupChatEnabled = config.getBoolValue("showpickupchat");
-    mPickupParticleEnabled = config.getBoolValue("showpickupparticle");
     mSDLTransparencyDisabled = config.getBoolValue("disableTransparency");
 }
 
@@ -511,16 +387,9 @@ void Setup_Video::cancel()
     mFsCheckBox->setSelected(mFullScreenEnabled);
     mOpenGLCheckBox->setSelected(mOpenGLEnabled);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
-    mShowMonsterDamageCheckBox->setSelected(mShowMonsterDamageEnabled);
-    mVisibleNamesCheckBox->setSelected(mVisibleNamesEnabled);
     mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
-    mSpeechSlider->setValue(mSpeechMode);
-    mNameCheckBox->setSelected(mNameEnabled);
-    mNPCLogCheckBox->setSelected(mNPCLogEnabled);
-    mAlphaSlider->setValue(mOpacity);
-    mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
     std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : _("None");
@@ -538,18 +407,8 @@ void Setup_Video::cancel()
     config.setValue("screenheight", graphics->getHeight());
 
     config.setValue("customcursor", mCustomCursorEnabled);
-    config.setValue("showMonstersTakedDamage", mShowMonsterDamageEnabled);
-    config.setValue("visiblenames", mVisibleNamesEnabled);
     config.setValue("particleeffects", mParticleEffectsEnabled);
-    config.setValue("speech", mSpeechMode);
-    config.setValue("showownname", mNameEnabled);
-    if (player_node)
-        player_node->setCheckNameSetting(true);
-    config.setValue("logNpcInGui", mNPCLogEnabled);
-    config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled);
-    config.setValue("showpickupchat", mPickupChatEnabled);
-    config.setValue("showpickupparticle", mPickupParticleEnabled);
     config.setValue("disableTransparency", mSDLTransparencyDisabled);
 }
 
@@ -579,21 +438,9 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         config.setValue("screenwidth", width);
         config.setValue("screenheight", height);
     }
-    else if (id == "guialpha")
-    {
-        config.setValue("guialpha", mAlphaSlider->getValue());
-    }
     else if (id == "customcursor")
     {
         config.setValue("customcursor", mCustomCursorCheckBox->isSelected());
-    }
-    else if (id == "monsterdamage")
-    {
-        config.setValue("showMonstersTakedDamage", mShowMonsterDamageCheckBox->isSelected());
-    }
-    else if (id == "visiblenames")
-    {
-        config.setValue("visiblenames", mVisibleNamesCheckBox->isSelected());
     }
     else if (id == "particleeffects")
     {
@@ -606,34 +453,6 @@ void Setup_Video::action(const gcn::ActionEvent &event)
             new OkDialog(_("Particle Effect Settings Changed."),
                          _("Changes will take effect on map change."));
         }
-    }
-    else if (id == "pickupchat")
-    {
-        config.setValue("showpickupchat", mPickupChatCheckBox->isSelected());
-    }
-    else if (id == "pickupparticle")
-    {
-        config.setValue("showpickupparticle",
-                        mPickupParticleCheckBox->isSelected());
-    }
-    else if (id == "speech")
-    {
-        Being::Speech val = (Being::Speech)mSpeechSlider->getValue();
-        mSpeechLabel->setCaption(speechModeToString(val));
-        mSpeechSlider->setValue(val);
-        config.setValue("speech", val);
-    }
-    else if (id == "showownname")
-    {
-        // Notify the local player that settings have changed for the name
-        // and requires an update
-        if (player_node)
-            player_node->setCheckNameSetting(true);
-        config.setValue("showownname", mNameCheckBox->isSelected());
-    }
-    else if (id == "lognpc")
-    {
-        config.setValue("logNpcInGui", mNPCLogCheckBox->isSelected());
     }
     else if (id == "overlaydetailslider")
     {
@@ -671,12 +490,5 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         {
             mDisableSDLTransparencyCheckBox->setEnabled(true);
         }
-
-        // Disable gui opacity slider when disabling transparency.
-        if (mDisableSDLTransparencyCheckBox->isEnabled())
-            mAlphaSlider->setEnabled(
-                                !mDisableSDLTransparencyCheckBox->isSelected());
-        else
-            mAlphaSlider->setEnabled(true);
     }
 }
