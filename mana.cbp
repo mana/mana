@@ -335,6 +335,8 @@
 		<Unit filename="src\gui\widgets\shortcutcontainer.h" />
 		<Unit filename="src\gui\widgets\slider.cpp" />
 		<Unit filename="src\gui\widgets\slider.h" />
+		<Unit filename="src\gui\widgets\spacer.cpp" />
+		<Unit filename="src\gui\widgets\spacer.h" />
 		<Unit filename="src\gui\widgets\tab.cpp" />
 		<Unit filename="src\gui\widgets\tab.h" />
 		<Unit filename="src\gui\widgets\tabbedarea.cpp" />

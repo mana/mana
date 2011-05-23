@@ -188,6 +188,8 @@ SET(SRCS
     gui/widgets/shortcutcontainer.h
     gui/widgets/slider.cpp
     gui/widgets/slider.h
+    gui/widgets/spacer.cpp
+    gui/widgets/spacer.h
     gui/widgets/tab.cpp
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp
