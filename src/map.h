@@ -156,13 +156,17 @@ class Map : public Properties
             BLOCKMASK_MONSTER   = 0x02  // = bin 0000 0010
         };
 
-        enum DebugType
+        enum DebugFlags
         {
-            MAP_NORMAL  = 0,
-            MAP_DEBUG   = 1,
-            MAP_SPECIAL = 2,
-            MAP_SPECIAL2 = 3,
-            MAP_SPECIAL3 = 4
+            MAP_GRID = 0x1,
+            MAP_COLLISION_TILES = 0x2,
+            MAP_BEING_COLLISION_RADIUS = 0x4,
+            MAP_BEING_POSITION = 0x8,
+            MAP_BEING_PATH = 0x10,
+            MAP_MOUSE_PATH = 0x20,
+            MAP_SPECIAL1 = 0x40,
+            MAP_SPECIAL2 = 0x80,
+            MAP_SPECIAL3 = 0x100
         };
 
         /**

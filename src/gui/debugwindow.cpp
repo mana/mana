@@ -29,6 +29,7 @@
 #include "gui/setup.h"
 #include "gui/viewport.h"
 
+#include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/layouthelper.h"
@@ -129,79 +130,112 @@ class DebugSwitches : public Container, public gcn::ActionListener
 public:
     DebugSwitches()
     {
-        mapNormal = new RadioButton(_("Normal"), "mapdebug");
-        mapDebug = new RadioButton(_("Debug"), "mapdebug");
-        mapSpecial = new RadioButton(_("Special"), "mapdebug");
-        mapSpecial2 = new RadioButton(_("Special 2"), "mapdebug");
-        mapSpecial3 = new RadioButton(_("Special 3"), "mapdebug");
+        Label *showLabel = new Label(_("Show:"));
+        mGrid = new CheckBox(_("Grid"));
+        mCollisionTiles = new CheckBox(_("Collision tiles"));
+        mBeingCollisionRadius = new CheckBox(_("Being collision radius"));
+        mBeingPosition = new CheckBox(_("Being positions"));
+        mBeingPath = new CheckBox(_("Being path"));
+        mMousePath = new CheckBox(_("Mouse path"));
+
+        Label *specialsLabel = new Label(_("Specials:"));
+        mSpecialNormal = new RadioButton(_("Normal"), "mapdebug");
+        mSpecial1 = new RadioButton(_("Special 1"), "mapdebug");
+        mSpecial2 = new RadioButton(_("Special 2"), "mapdebug");
+        mSpecial3 = new RadioButton(_("Special 3"), "mapdebug");
 
         LayoutHelper h = (this);
         ContainerPlacer place = h.getPlacer(0, 0);
 
-        place(0, 0, mapNormal, 1);
-        place(0, 1, mapDebug, 1);
-        place(0, 2, mapSpecial, 1);
-        place(0, 3, mapSpecial2, 1);
-        place(0, 4, mapSpecial3, 1);
+        place(0, 0, showLabel, 1);
+        place(0, 1, mGrid, 1);
+        place(0, 2, mCollisionTiles, 1);
+        place(0, 3, mBeingCollisionRadius, 1);
+        place(0, 4, mBeingPosition, 1);
+        place(0, 5, mBeingPath, 1);
+        place(0, 6, mMousePath, 1);
+        place(1, 0, specialsLabel, 1);
+        place(1, 1, mSpecialNormal, 1);
+        place(1, 2, mSpecial1, 1);
+        place(1, 3, mSpecial2, 1);
+        place(1, 4, mSpecial3, 1);
 
         h.reflowLayout(0, 0);
 
-        mapNormal->setSelected(true);
+        mSpecialNormal->setSelected(true);
 
-        mapNormal->addActionListener(this);
-        mapDebug->addActionListener(this);
-        mapSpecial->addActionListener(this);
-        mapSpecial2->addActionListener(this);
-        mapSpecial3->addActionListener(this);
+        mGrid->addActionListener(this);
+        mCollisionTiles->addActionListener(this);
+        mBeingCollisionRadius->addActionListener(this);
+        mBeingPosition->addActionListener(this);
+        mBeingPath->addActionListener(this);
+        mMousePath->addActionListener(this);
+        mSpecialNormal->addActionListener(this);
+        mSpecial1->addActionListener(this);
+        mSpecial2->addActionListener(this);
+        mSpecial3->addActionListener(this);
     }
 
     void action(const gcn::ActionEvent &event)
     {
-        if (mapNormal->isSelected())
-            viewport->setShowDebugPath(Map::MAP_NORMAL);
-        else if (mapDebug->isSelected())
-            viewport->setShowDebugPath(Map::MAP_DEBUG);
-        else if (mapSpecial->isSelected())
-            viewport->setShowDebugPath(Map::MAP_SPECIAL);
-        else if (mapSpecial2->isSelected())
-            viewport->setShowDebugPath(Map::MAP_SPECIAL2);
-        else if (mapSpecial3->isSelected())
-            viewport->setShowDebugPath(Map::MAP_SPECIAL3);
+        int flags = 0;
+
+        if (mGrid->isSelected())
+            flags |= Map::MAP_GRID;
+        if (mCollisionTiles->isSelected())
+            flags |= Map::MAP_COLLISION_TILES;
+        if (mBeingCollisionRadius->isSelected())
+            flags |= Map::MAP_BEING_COLLISION_RADIUS;
+        if (mBeingPosition->isSelected())
+            flags |= Map::MAP_BEING_POSITION;
+        if (mBeingPath->isSelected())
+            flags |= Map::MAP_BEING_PATH;
+        if (mMousePath->isSelected())
+            flags |= Map::MAP_MOUSE_PATH;
+        if (mSpecial1->isSelected())
+            flags |= Map::MAP_SPECIAL1;
+        if (mSpecial2->isSelected())
+            flags |= Map::MAP_SPECIAL2;
+        if (mSpecial3->isSelected())
+            flags |= Map::MAP_SPECIAL3;
+
+        viewport->setShowDebugPath(flags);
     }
 
 private:
-    RadioButton *mapNormal;
-    RadioButton *mapDebug;
-    RadioButton *mapSpecial;
-    RadioButton *mapSpecial2;
-    RadioButton *mapSpecial3;
+    CheckBox *mGrid;
+    CheckBox *mCollisionTiles;
+    CheckBox *mBeingCollisionRadius;
+    CheckBox *mBeingPosition;
+    CheckBox *mBeingPath;
+    CheckBox *mMousePath;
+    RadioButton *mSpecialNormal;
+    RadioButton *mSpecial1;
+    RadioButton *mSpecial2;
+    RadioButton *mSpecial3;
 };
 
-DebugWindow::DebugWindow():
-    Window(_("Debug"))
+DebugWindow::DebugWindow()
+    : Window(_("Debug"))
 {
     setupWindow->registerWindowForReset(this);
 
     setResizable(true);
     setCloseButton(true);
-
     setMinWidth(100);
     setMinHeight(100);
-    setDefaultSize(0, 120, 300, 180);
-
+    setDefaultSize(0, 120, 300, 190);
     loadWindowState();
 
-    TabbedArea *mTabs = new TabbedArea;
-
-    place(0, 0, mTabs, 2, 2);
-
+    TabbedArea *tabs = new TabbedArea;
+    place(0, 0, tabs, 2, 2);
     widgetResized(NULL);
 
-    Tab *tabInfo = new Tab();
-    tabInfo->setCaption("Info");
-    mTabs->addTab(tabInfo, new DebugInfo);
+    Tab *tabInfo = new Tab;
+    tabInfo->setCaption(_("Info"));
+    tabs->addTab(tabInfo, new DebugInfo);
 
-    Tab *tabSwitches = new Tab();
-    tabSwitches->setCaption("Switches");
-    mTabs->addTab(tabSwitches, new DebugSwitches);
+    Tab *tabSwitches = new Tab;
+    tabSwitches->setCaption(_("Switches"));
+    tabs->addTab(tabSwitches, new DebugSwitches);
 }

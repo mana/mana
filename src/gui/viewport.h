@@ -200,7 +200,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mMouseY;                 /**< Current mouse position in pixels. */
         float mPixelViewX;           /**< Current viewpoint in pixels. */
         float mPixelViewY;           /**< Current viewpoint in pixels. */
-        int mShowDebugPath;         /**< Show a path from player to pointer. */
+        int mDebugFlags;             /**< Flags for showing debug graphics. */
 
         struct ShakeEffect
         {

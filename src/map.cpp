@@ -153,7 +153,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
             }
         }
 
-        if (debugFlags != Map::MAP_SPECIAL3)
+        if (!(debugFlags & Map::MAP_SPECIAL3))
         {
             const int py0 = y32 + dy;
 
@@ -164,8 +164,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
                 {
                     const int px = (x * 32) + dx;
                     const int py = py0 - img->getHeight();
-                    if ((debugFlags != Map::MAP_SPECIAL
-                        && debugFlags != Map::MAP_SPECIAL2)
+                    if (!(debugFlags & (Map::MAP_SPECIAL1 | Map::MAP_SPECIAL2))
                         || img->getHeight() <= 32)
                     {
                         int width = 0;
@@ -217,7 +216,7 @@ Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),
     mTileWidth(tileWidth), mTileHeight(tileHeight),
     mMaxTileHeight(height),
-    mDebugFlags(MAP_NORMAL),
+    mDebugFlags(0),
     mOnClosedList(1), mOnOpenList(2),
     mLastScrollX(0.0f), mLastScrollY(0.0f)
 {
@@ -363,7 +362,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 
     bool overFringe = false;
 
-    if (mDebugFlags == MAP_SPECIAL3)
+    if (mDebugFlags & MAP_SPECIAL3)
     {
         for (; layeri != mLayers.end(); ++layeri)
         {
@@ -380,7 +379,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     {
         for (; layeri != mLayers.end() && !overFringe; ++layeri)
         {
-            if ((*layeri)->isFringeLayer() && mDebugFlags == MAP_SPECIAL2)
+            if ((*layeri)->isFringeLayer() && (mDebugFlags & MAP_SPECIAL2))
                 overFringe = true;
 
             (*layeri)->draw(graphics,
@@ -436,13 +435,16 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
         {
 
             graphics->setColor(gcn::Color(0, 0, 0, 64));
-            if (debugFlags < MAP_SPECIAL)
+            if (debugFlags & MAP_GRID)
             {
                 graphics->drawRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
                     y * mTileHeight - scrollY,
                     33, 33));
             }
+
+            if (!(debugFlags & MAP_COLLISION_TILES))
+                continue;
 
             if (!getWalk(x, y, BLOCKMASK_WALL))
             {
