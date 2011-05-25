@@ -12,7 +12,6 @@
 				<Option object_output=".objs\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters='-u -d &quot;..\manaserv\example\clientdata&quot;' />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
 					<Add option="-g" />
