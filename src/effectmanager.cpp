@@ -63,7 +63,7 @@ EffectManager::~EffectManager()
 {
 }
 
-bool EffectManager::trigger(int id, Being* being)
+bool EffectManager::trigger(int id, Being* being, int rotation)
 {
     bool rValue = false;
     for (std::list<EffectDescription>::iterator i = mEffects.begin(); i != mEffects.end(); ++i)
@@ -74,7 +74,7 @@ bool EffectManager::trigger(int id, Being* being)
             if (!(*i).GFX.empty())
             {
                 Particle *selfFX;
-                selfFX = particleEngine->addEffect((*i).GFX, 0, 0);
+                selfFX = particleEngine->addEffect((*i).GFX, 0, 0, rotation);
                 being->controlParticle(selfFX);
             }
             if (!(*i).SFX.empty())
@@ -85,7 +85,7 @@ bool EffectManager::trigger(int id, Being* being)
     return rValue;
 }
 
-bool EffectManager::trigger(int id, int x, int y)
+bool EffectManager::trigger(int id, int x, int y, int rotation)
 {
     bool rValue = false;
     for (std::list<EffectDescription>::iterator i = mEffects.begin(); i != mEffects.end(); ++i)
@@ -94,7 +94,7 @@ bool EffectManager::trigger(int id, int x, int y)
         {
             rValue = true;
             if (!(*i).GFX.empty())
-                particleEngine->addEffect((*i).GFX, x, y);
+                particleEngine->addEffect((*i).GFX, x, y, rotation);
             if (!(*i).SFX.empty())
                 sound.playSfx((*i).SFX);
             break;

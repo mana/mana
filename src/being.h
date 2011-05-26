@@ -172,9 +172,9 @@ class Being : public ActorSprite, public EventListener
          *
          * @param victim the victim being
          * @param damage the amount of damage dealt (0 means miss)
-         * @param type the attack type
+         * @param attackId the attack id
          */
-        virtual void handleAttack(Being *victim, int damage, AttackType type);
+        virtual void handleAttack(Being *victim, int damage, int attackId = 1);
 
         const ItemInfo *getEquippedWeapon() const
         { return mEquippedWeapon; }
@@ -471,7 +471,6 @@ class Being : public ActorSprite, public EventListener
         /** Time until the last speech sentence disappears */
         int mSpeechTime;
 
-        int mAttackType;
         int mAttackSpeed;     /**< Attack speed */
 
         Action mAction;       /**< Action the being is performing */

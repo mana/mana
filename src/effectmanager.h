@@ -42,15 +42,19 @@ class EffectManager
 
         /**
          * Triggers a effect with the id, at
-         * the specified being.
+         * the specified being,
+         * and with the given rotation in degree:
+         * 0° = Down, 90° = left, ...
          */
-        bool trigger(int id, Being* being);
+        bool trigger(int id, Being* being, int rotation = 0);
 
         /**
          * Triggers a effect with the id, at
-         * the specified x and y coordinate.
+         * the specified x and y coordinate,
+         * and with the given rotation in degree:
+         * 0° = Down, 90° = left, ...
          */
-        bool trigger(int id, int x, int y);
+        bool trigger(int id, int x, int y, int rotation = 0);
 
    private:
         std::list<EffectDescription> mEffects;

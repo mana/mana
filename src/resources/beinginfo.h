@@ -32,16 +32,16 @@
 #include <vector>
 
 struct Attack {
-    std::string action;
-    std::string particleEffect;
-    std::string missileParticle;
+    std::string mAction;
+    int mEffectId;
+    std::string mMissileParticleFilename;
 
-    Attack(std::string action, std::string particleEffect,
-           std::string missileParticle)
+    Attack(std::string action, int effectId,
+           std::string missileParticleFilename)
     {
-        this->action = action;
-        this->particleEffect = particleEffect;
-        this->missileParticle = missileParticle;
+        mAction = action;
+        mEffectId = effectId;
+        mMissileParticleFilename = missileParticleFilename;
     }
 };
 
@@ -95,11 +95,10 @@ class BeingInfo
 
         const std::string &getSound(SoundEvent event) const;
 
-        void addAttack(int id, std::string action,
-                       const std::string &particleEffect,
-                       const std::string &missileParticle);
+        void addAttack(int id, std::string action, int effectId,
+                       const std::string &missileParticleFilename);
 
-        const Attack *getAttack(int type) const;
+        const Attack *getAttack(int id) const;
 
         void setWalkMask(unsigned char mask)
         { mWalkMask = mask; }

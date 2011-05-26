@@ -88,20 +88,19 @@ const std::string &BeingInfo::getSound(SoundEvent event) const
                                   i->second->at(rand() % i->second->size());
 }
 
-const Attack *BeingInfo::getAttack(int type) const
+const Attack *BeingInfo::getAttack(int id) const
 {
-    static Attack *empty = new Attack(SpriteAction::ATTACK, "", "");
+    static Attack *empty = new Attack(SpriteAction::ATTACK, -1, std::string());
 
-    Attacks::const_iterator i = mAttacks.find(type);
+    Attacks::const_iterator i = mAttacks.find(id);
     return (i == mAttacks.end()) ? empty : (*i).second;
 }
 
-void BeingInfo::addAttack(int id, std::string action,
-                          const std::string &particleEffect,
-                          const std::string &missileParticle)
+void BeingInfo::addAttack(int id, std::string action, int effectId,
+                          const std::string &missileParticleFilename)
 {
     if (mAttacks[id])
         delete mAttacks[id];
 
-    mAttacks[id] = new Attack(action, particleEffect, missileParticle);
+    mAttacks[id] = new Attack(action, effectId, missileParticleFilename);
 }
