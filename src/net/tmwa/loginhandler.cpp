@@ -244,11 +244,7 @@ void LoginHandler::getRegistrationDetails()
 
 void LoginHandler::loginAccount(LoginData *loginData)
 {
-    // Since we're attempting to use the tAthena protocol,
-    // let's reset the character slots to the good value,
-    // in case we just logged out a Manaserv server
-    // with a different config.
-    loginData->resetCharacterSlots();
+    loginData->characterSlots = 9;
 
     sendLoginRegister(loginData->username, loginData->password);
 }

@@ -31,7 +31,7 @@ class LoginData
 public:
     LoginData()
     {
-        resetCharacterSlots();
+        characterSlots = 3;
     }
 
     std::string username;
@@ -50,11 +50,11 @@ public:
     unsigned short characterSlots; /**< The number of character slots */
 
     /**
-     * Initialize character slots to 3 for TmwAthena compatibility
+     * Initialize character slots to 3 for backwards compatibility
      */
     void resetCharacterSlots()
     {
-        characterSlots = 3; // Default value, used for TmwAthena.
+        characterSlots = 3;
     }
 
     void clear()
