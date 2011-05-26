@@ -243,7 +243,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
     Item *item = mItems->getSelectedItem();
 
-    if (event.getSource() == mItems && item && isDoubleClick((int)item))
+    if (event.getSource() == mItems && item && isDoubleClick(item->getInvIndex()))
     {
 
         if (isMainInventory() && item->getInfo().getActivatable())

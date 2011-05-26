@@ -407,7 +407,7 @@ void NpcDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
     {
         action(gcn::ActionEvent(mButton, mButton->getActionEventId()));
     }
-    if (mouseEvent.getSource() == mTextBox && isDoubleClick((int)mTextBox))
+    if (mouseEvent.getSource() == mTextBox && isDoubleClick((int)(long)mTextBox))
     {
         if (mActionState == NPC_ACTION_NEXT || mActionState == NPC_ACTION_CLOSE)
             action(gcn::ActionEvent(mButton, mButton->getActionEventId()));
