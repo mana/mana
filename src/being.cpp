@@ -1201,7 +1201,7 @@ void Being::event(Event::Channel channel, const Event &event)
 
 void Being::setMap(Map *map)
 {
-    Actor::setMap(map);
+    ActorSprite::setMap(map);
 
     // Recalculate pixel/tick speed
     if (map && !mMoveSpeed.isNull())
