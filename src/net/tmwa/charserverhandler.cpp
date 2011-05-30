@@ -159,10 +159,10 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
             mapServer.hostname = ipToString(msg.readInt32());
             mapServer.port = msg.readInt16();
 
-            // Prevent the selected local player from being deleted
             player_node = mSelectedCharacter->dummy;
             PlayerInfo::setBackend(mSelectedCharacter->data);
 
+            // Prevent the selected local player from being deleted
             mSelectedCharacter->dummy = 0;
 
             delete_all(mCharacters);

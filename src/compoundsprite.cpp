@@ -281,19 +281,8 @@ void CompoundSprite::redraw() const
     {
         mWidth = at(0)->getWidth();
         mHeight = at(0)->getHeight();
-
-        // Temporary fix for position
-        Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
-        if (map)
-        {
-            mOffsetX = map->getTileWidth() / 2;
-            mOffsetY = map->getTileHeight();
-        }
-        else // Char selection screen fix
-        {
-            mOffsetX = 16;
-            mOffsetY = 32;
-        }
+        mOffsetX = 0;
+        mOffsetY = 0;
         mNeedsRedraw = false;
         return;
     }
@@ -326,18 +315,6 @@ void CompoundSprite::redraw() const
     mOffsetX -= posX;
     mOffsetY -= posY;
 
-    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
-    if (map)
-    {
-        mOffsetX += map->getTileWidth() / 2;
-        mOffsetY += map->getTileHeight();
-    }
-    else // Char selection screen fix
-    {
-        mOffsetX += 16;
-        mOffsetY += 32;
-    }
-
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     int rmask = 0xff000000;
     int gmask = 0x00ff0000;
@@ -368,6 +345,12 @@ void CompoundSprite::redraw() const
         if (s)
             s->draw(graphics, posX - s->getWidth() / 2, posY - s->getHeight());
     }
+
+    // Uncomment to see buffer sizes
+    /*graphics->fillRectangle(gcn::Rectangle(0, 0, 3, 3));
+    graphics->fillRectangle(gcn::Rectangle(mWidth - 3, 0, 3, 3));
+    graphics->fillRectangle(gcn::Rectangle(mWidth - 3, mHeight - 3, 3, 3));
+    graphics->fillRectangle(gcn::Rectangle(0, mHeight - 3, 3, 3));*/
 
     delete graphics;
 

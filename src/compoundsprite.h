@@ -96,6 +96,9 @@ public:
      */
     virtual size_t getFrameCount(size_t layer);
 
+    void doRedraw()
+    { mNeedsRedraw = true; }
+
 private:
     typedef CompoundSprite::iterator SpriteIterator;
     typedef CompoundSprite::const_iterator SpriteConstIterator;

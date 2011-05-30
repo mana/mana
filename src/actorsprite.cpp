@@ -22,6 +22,7 @@
 
 #include "client.h"
 #include "event.h"
+#include "game.h"
 #include "imagesprite.h"
 #include "localplayer.h"
 #include "log.h"
@@ -67,17 +68,20 @@ ActorSprite::~ActorSprite()
 
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
-    // TODO: Eventually, we probably should fix all sprite offsets so that
-    //       these translations aren't necessary anymore. The sprites know
-    //       best where their base point should be.
-    const int px = getPixelX() + offsetX - 16;
-    const int py = getPixelY() + offsetY - 16;
+    int px = getPixelX() + offsetX;
+    int py = getPixelY() + offsetY;
 
     if (mUsedTargetCursor)
     {
         mUsedTargetCursor->reset();
         mUsedTargetCursor->update(tick_time * MILLISECONDS_IN_A_TICK);
         mUsedTargetCursor->draw(graphics, px, py);
+    }
+
+    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
+    if (map)
+    {
+        py += map->getTileHeight() / 2;
     }
 
     return drawSpriteAt(graphics, px, py);
@@ -450,8 +454,8 @@ void ActorSprite::loadTargetCursor(const std::string &filename,
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)
     {
         anim->addFrame(currentImageSet->get(i), 75,
-                      (16 - (currentImageSet->getWidth() / 2)),
-                      (16 - (currentImageSet->getHeight() / 2)));
+                      -(currentImageSet->getWidth() / 2),
+                      -(currentImageSet->getHeight() / 2));
     }
 
     SimpleAnimation *currentCursor = new SimpleAnimation(anim);

@@ -953,11 +953,9 @@ void Being::updateCoords()
 
     // Monster names show above the sprite instead of below it
     if (getType() == MONSTER)
-        mDispName->adviseXY(getPixelX(),
-            getPixelY() - getHeight() - getOffsetY()
-            - mDispName->getHeight());
+        mDispName->adviseXY(getPixelX(), getPixelY() - getHeight());
     else
-        mDispName->adviseXY(getPixelX(), getPixelY());
+        mDispName->adviseXY(getPixelX(), getPixelY() + mDispName->getHeight());
 }
 
 void Being::flashName(int time)
