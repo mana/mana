@@ -954,7 +954,8 @@ void Being::updateCoords()
     // Monster names show above the sprite instead of below it
     if (getType() == MONSTER)
         mDispName->adviseXY(getPixelX(),
-                getPixelY() - getHeight() - mDispName->getHeight());
+            getPixelY() - getHeight() - getOffsetY()
+            - mDispName->getHeight());
     else
         mDispName->adviseXY(getPixelX(), getPixelY());
 }
