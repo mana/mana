@@ -44,11 +44,13 @@ extern Net::PartyHandler *partyHandler;
 namespace ManaServ {
 
 extern Connection *chatServerConnection;
+extern Connection *gameServerConnection;
 
 PartyHandler::PartyHandler():
         mParty(Party::getParty(PARTY_ID))
 {
     static const Uint16 _messages[] = {
+        GPMSG_PARTY_INVITE_ERROR,
         CPMSG_PARTY_INVITE_RESPONSE,
         CPMSG_PARTY_INVITED,
         CPMSG_PARTY_ACCEPT_INVITE_RESPONSE,
@@ -68,6 +70,14 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
+        case GPMSG_PARTY_INVITE_ERROR:
+        {
+            std::string name = msg.readString();
+            SERVER_NOTICE(strprintf(_("Party invite failed, because no player "
+                                      "called %s is within the visual range."),
+                                    name.c_str()));
+        } break;
+
         case CPMSG_PARTY_INVITE_RESPONSE:
         {
             if (msg.readInt8() == ERRMSG_OK)
@@ -150,11 +160,11 @@ void PartyHandler::invite(Being *being)
 
 void PartyHandler::invite(const std::string &name)
 {
-    MessageOut msg(PCMSG_PARTY_INVITE);
+    MessageOut msg(PGMSG_PARTY_INVITE);
 
     msg.writeString(name);
 
-    chatServerConnection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
