@@ -110,8 +110,15 @@ void ActorSprite::logic()
         }
     }
 
+    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
+    float py = mPos.y;
+    if (map)
+    {
+        py += (float)map->getTileHeight() / 2;
+    }
+
     // Update particle effects
-    mChildParticleEffects.moveTo(mPos.x, mPos.y);
+    mChildParticleEffects.moveTo(mPos.x, py);
 }
 
 void ActorSprite::actorLogic()
