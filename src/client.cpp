@@ -214,7 +214,7 @@ Client::Client(const Options &options):
     initConfiguration();
 
     chatLogger = new ChatLogger;
-    if (options.chatLogDir == "")
+    if (options.chatLogDir.empty())
         chatLogger->setLogDir(mLocalDataDir + std::string("/logs/"));
     else
         chatLogger->setLogDir(options.chatLogDir);
@@ -1020,8 +1020,8 @@ int Client::exec()
 }
 
 void Client::showOkDialog(const std::string &title,
-                             const std::string &message,
-                             State state)
+                          const std::string &message,
+                          State state)
 {
     OkDialog *okDialog = new OkDialog(title, message);
     okDialog->addActionListener(this);

@@ -103,6 +103,6 @@ class MessageIn
         unsigned int mPos;
 };
 
-}
+} // namespace Net
 
 #endif // NET_MESSAGEIN_H

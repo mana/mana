@@ -73,4 +73,4 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler,
 
 } // namespace TmwAthena
 
-#endif // NET_TA_GENERALHANDLER_H
+#endif // NET_TMWA_GENERALHANDLER_H

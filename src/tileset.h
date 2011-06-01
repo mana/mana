@@ -48,4 +48,4 @@ class Tileset : public ImageSet
         int mFirstGid;
 };
 
-#endif
+#endif // TILESET_H

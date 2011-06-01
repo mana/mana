@@ -119,11 +119,10 @@ void Inventory::removeItemAt(int index)
 {
     delete mItems[index];
     mItems[index] = 0;
-    mUsed--;
-    if (mUsed < 0) // Already at 0, no need to distribute event
-        mUsed = 0;
-    else
+    if (mUsed > 0) {
+        mUsed--;
         distributeSlotsChangedEvent();
+    }
 }
 
 bool Inventory::contains(Item *item) const

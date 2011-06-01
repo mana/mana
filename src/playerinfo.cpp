@@ -33,25 +33,23 @@ namespace PlayerInfo {
 
 class PlayerLogic;
 
-PlayerLogic *mListener = 0;
+static PlayerLogic *mListener = 0;
 
-PlayerInfoBackend mData;
+static PlayerInfoBackend mData;
 
-Inventory *mInventory = 0;
-Equipment *mEquipment = 0;
+static Inventory *mInventory = 0;
+static Equipment *mEquipment = 0;
 
-bool mStorageCount = 0;
+static bool mStorageCount = 0;
 
-bool mNPCCount = 0;
-bool mNPCPostCount = 0;
+static bool mNPCCount = 0;
+static bool mNPCPostCount = 0;
 
-BuySellState mBuySellState = BUYSELL_NONE;
-bool mTrading = false;
+static BuySellState mBuySellState = BUYSELL_NONE;
+static bool mTrading = false;
 
-std::map<int, Special> mSpecials;
-char mSpecialRechargeUpdateNeeded = 0;
-
-int mLevelProgress = 0;
+static std::map<int, Special> mSpecials;
+static char mSpecialRechargeUpdateNeeded = 0;
 
 // --- Triggers ---------------------------------------------------------------
 

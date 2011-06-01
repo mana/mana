@@ -49,7 +49,7 @@ extern Net::InventoryHandler *inventoryHandler;
 
 namespace TmwAthena {
 
-const EquipmentSlot EQUIP_POINTS[EQUIP_VECTOR_END] = {
+static const EquipmentSlot EQUIP_POINTS[EQUIP_VECTOR_END] = {
     EQUIP_LEGS_SLOT,
     EQUIP_FIGHT1_SLOT,
     EQUIP_ARMS_SLOT,
@@ -60,9 +60,10 @@ const EquipmentSlot EQUIP_POINTS[EQUIP_VECTOR_END] = {
     EQUIP_NECKLACE_SLOT,
     EQUIP_HEAD_SLOT,
     EQUIP_TORSO_SLOT,
-    EQUIP_PROJECTILE_SLOT};
+    EQUIP_PROJECTILE_SLOT
+};
 
-int getSlot(int eAthenaSlot)
+static int getSlot(int eAthenaSlot)
 {
     if (eAthenaSlot == 0)
     {

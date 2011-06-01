@@ -78,7 +78,7 @@ BeingHandler::BeingHandler(bool enableSync):
     handledMessages = _messages;
 }
 
-Being *createBeing(int id, short job)
+static Being *createBeing(int id, short job)
 {
     ActorSprite::Type type = ActorSprite::UNKNOWN;
     if (job <= 25 || (job >= 4001 && job <= 4049))

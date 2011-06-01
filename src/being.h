@@ -261,7 +261,8 @@ class Being : public ActorSprite, public EventListener
          * Sets visible equipments for this being.
          */
         void setSprite(unsigned int slot, int id,
-                       const std::string &color = "", bool isWeapon = false);
+                       const std::string &color = std::string(),
+                       bool isWeapon = false);
 
         void setSpriteID(unsigned int slot, int id);
 

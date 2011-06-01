@@ -33,9 +33,13 @@
 class ItemInfo;
 class SpriteDisplay;
 
-// Used to make the compiler uderstand the iteminfo friendship.
-namespace TmwAthena { class TaItemDB; };
-namespace ManaServ { class ManaServItemDB; };
+namespace TmwAthena {
+class TaItemDB;
+}
+
+namespace ManaServ {
+class ManaServItemDB;
+}
 
 /**
  * Nano-description functions
@@ -48,10 +52,10 @@ class ItemStat
 
     public:
         ItemStat(const std::string &tag,
-             const std::string &format):
+                 const std::string &format):
         mTag(tag), mFormat(format) {}
 
-        bool operator ==(std::string &name) const
+        bool operator ==(const std::string &name) const
         { return mTag == name; }
 
     private:
@@ -176,7 +180,7 @@ class TaItemDB: public ItemDB
         void checkItemInfo(ItemInfo* itemInfo);
 };
 
-}; // namespace TmwAthena
+} // namespace TmwAthena
 
 namespace ManaServ {
 
@@ -203,7 +207,7 @@ class ManaServItemDB: public ItemDB
         void checkItemInfo(ItemInfo* itemInfo);
 };
 
-}; // namespace ManaServ
+} // namespace ManaServ
 
 extern ItemDB *itemDb;
 

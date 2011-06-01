@@ -92,11 +92,9 @@ MiniStatusWindow::MiniStatusWindow():
 void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
 {
     if (index >= (int) mIcons.size())
-        mIcons.resize(index + 1, NULL);
+        mIcons.resize(index + 1);
 
-    if (mIcons[index])
-        delete mIcons[index];
-
+    delete mIcons[index];
     mIcons[index] = sprite;
 }
 

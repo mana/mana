@@ -1061,10 +1061,10 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
         ensureSize(slot + 1);
 
     if (slot >= mSpriteIDs.size())
-        mSpriteIDs.resize(slot + 1, 0);
+        mSpriteIDs.resize(slot + 1);
 
     if (slot >= mSpriteColors.size())
-        mSpriteColors.resize(slot + 1, "");
+        mSpriteColors.resize(slot + 1);
 
     // id = 0 means unequip
     if (id == 0)
@@ -1072,12 +1072,12 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
         removeSprite(slot);
 
         if (isWeapon)
-            mEquippedWeapon = NULL;
+            mEquippedWeapon = 0;
     }
     else
     {
         std::string filename = itemDb->get(id).getSprite(mGender);
-        AnimatedSprite *equipmentSprite = NULL;
+        AnimatedSprite *equipmentSprite = 0;
 
         if (!filename.empty())
         {

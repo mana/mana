@@ -33,7 +33,7 @@ Resource::~Resource()
 
 void Resource::incRef()
 {
-    mRefCount++;
+    ++mRefCount;
 }
 
 void Resource::decRef()
@@ -44,7 +44,7 @@ void Resource::decRef()
         assert(false);
     }
 
-    mRefCount--;
+    --mRefCount;
 
     if (mRefCount == 0)
     {

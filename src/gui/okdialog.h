@@ -48,4 +48,4 @@ class OkDialog : public Window, public gcn::ActionListener
         TextBox *mTextBox;
 };
 
-#endif
+#endif // OK_DIALOG_H

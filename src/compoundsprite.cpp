@@ -184,7 +184,7 @@ void CompoundSprite::addSprite(Sprite* sprite)
     mNeedsRedraw = true;
 }
 
-void CompoundSprite::setSprite(int layer, Sprite* sprite)
+void CompoundSprite::setSprite(int layer, Sprite *sprite)
 {
     // Skip if it won't change anything
     if (at(layer) == sprite)
@@ -199,7 +199,7 @@ void CompoundSprite::setSprite(int layer, Sprite* sprite)
 void CompoundSprite::removeSprite(int layer)
 {
     // Skip if it won't change anything
-    if (at(layer) == NULL)
+    if (!at(layer))
         return;
 
     delete at(layer);
@@ -223,7 +223,7 @@ void CompoundSprite::ensureSize(size_t layerCount)
     if (size() >= layerCount)
         return;
 
-    resize(layerCount, NULL);
+    resize(layerCount);
 }
 
 /**
@@ -234,8 +234,7 @@ size_t CompoundSprite::getCurrentFrame(size_t layer)
     if (layer >= size())
         return 0;
 
-    Sprite *s = getSprite(layer);
-    if (s)
+    if (Sprite *s = getSprite(layer))
         return s->getCurrentFrame();
 
     return 0;

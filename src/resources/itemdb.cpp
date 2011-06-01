@@ -551,4 +551,4 @@ void ManaServItemDB::checkItemInfo(ItemInfo* itemInfo)
     // Add specific Manaserv checks here
 }
 
-}; // namespace ManaServ
+} // namespace ManaServ

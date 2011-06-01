@@ -118,8 +118,6 @@ void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
     }
 }
 
-// Don't do anything on scrollwheel. ScrollArea will deal with that.
-
 void ListBox::mousePressed(gcn::MouseEvent &mouseEvent)
 {
     if (mouseEvent.getButton() != gcn::MouseEvent::LEFT)
@@ -134,10 +132,12 @@ void ListBox::mousePressed(gcn::MouseEvent &mouseEvent)
 
 void ListBox::mouseWheelMovedUp(gcn::MouseEvent &mouseEvent)
 {
+    // Don't do anything on scrollwheel. ScrollArea will deal with that.
 }
 
 void ListBox::mouseWheelMovedDown(gcn::MouseEvent &mouseEvent)
 {
+    // Don't do anything on scrollwheel. ScrollArea will deal with that.
 }
 
 void ListBox::mouseDragged(gcn::MouseEvent &event)

@@ -49,10 +49,6 @@ class EquipBackend : public Equipment::Backend
         Item *getEquipment(int index) const
         {
             int invyIndex = mEquipment[index];
-            if (invyIndex == -1)
-            {
-                return NULL;
-            }
             return PlayerInfo::getInventory()->getItem(invyIndex);
         }
 
@@ -62,11 +58,8 @@ class EquipBackend : public Equipment::Backend
             {
                 if (mEquipment[i] != -1)
                 {
-                    Item* item = PlayerInfo::getInventory()->getItem(i);
-                    if (item)
-                    {
+                    if (Item *item = PlayerInfo::getInventory()->getItem(i))
                         item->setEquipped(false);
-                    }
                 }
 
                 mEquipment[i] = -1;
@@ -75,20 +68,16 @@ class EquipBackend : public Equipment::Backend
 
         void setEquipment(int index, int inventoryIndex)
         {
+            Inventory *inventory = PlayerInfo::getInventory();
+
             // Unequip existing item
-            Item* item = PlayerInfo::getInventory()->getItem(mEquipment[index]);
-            if (item)
-            {
+            if (Item *item = inventory->getItem(mEquipment[index]))
                 item->setEquipped(false);
-            }
 
             mEquipment[index] = inventoryIndex;
 
-            item = PlayerInfo::getInventory()->getItem(inventoryIndex);
-            if (item)
-            {
+            if (Item *item = inventory->getItem(inventoryIndex))
                 item->setEquipped(true);
-            }
 
             inventoryWindow->updateButtons();
         }

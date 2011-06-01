@@ -60,9 +60,13 @@ enum ItemType
     ITEM_SPRITE_HAIR // 15
 };
 
-// Used to make the compiler uderstand the iteminfo friendship.
-namespace TmwAthena { class TaItemDB; };
-namespace ManaServ { class ManaServItemDB; };
+namespace TmwAthena {
+class TaItemDB;
+}
+
+namespace ManaServ {
+class ManaServItemDB;
+}
 
 /**
  * Defines a class for storing generic item infos.
@@ -256,4 +260,4 @@ class ManaServItemInfo: public ItemInfo
 
 } // namespace ManaServ
 
-#endif
+#endif // ITEMINFO_H
