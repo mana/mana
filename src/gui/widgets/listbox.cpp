@@ -125,9 +125,14 @@ void ListBox::mousePressed(gcn::MouseEvent &mouseEvent)
 
     int y = std::max(0, mouseEvent.getY());
     if (y / (int)getRowHeight() < getListModel()->getNumberOfElements())
+    {
         setSelected(y / getRowHeight());
+        distributeActionEvent();
+    }
     else
+    {
         setSelected(-1);
+    }
 }
 
 void ListBox::mouseWheelMovedUp(gcn::MouseEvent &mouseEvent)
