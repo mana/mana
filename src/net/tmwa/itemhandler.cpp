@@ -33,7 +33,7 @@ namespace TmwAthena {
 
 ItemHandler::ItemHandler()
 {
-    static const Uint16 _messages[] = {
+    static const uint16_t _messages[] = {
         SMSG_ITEM_VISIBLE,
         SMSG_ITEM_DROPPED,
         SMSG_ITEM_REMOVE,

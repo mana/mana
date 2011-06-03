@@ -22,8 +22,7 @@
 #ifndef NET_MESSAGEIN_H
 #define NET_MESSAGEIN_H
 
-#include <SDL_types.h>
-
+#include <cstdint>
 #include <string>
 
 namespace Net {
@@ -39,7 +38,7 @@ class MessageIn
         /**
          * Returns the message ID.
          */
-        Uint16 getId() const { return mId; }
+        uint16_t getId() const { return mId; }
 
         /**
          * Returns the message length.
@@ -51,28 +50,39 @@ class MessageIn
          */
         unsigned int getUnreadLength() const { return mLength - mPos; }
 
-        virtual Uint8 readInt8();             /**< Reads a byte. */
-        virtual Uint16 readInt16() = 0;       /**< Reads a short. */
-        virtual Uint32 readInt32() = 0;       /**< Reads a "long". */
+        /**
+         * Reads an unsigned 8-bit integer from the message.
+         */
+        virtual uint8_t readInt8();
+
+        /**
+         * Reads an unsigned 16-bit integer from the message.
+         */
+        virtual uint16_t readInt16() = 0;
+
+        /**
+         * Reads an unsigned 32-bit integer from the message.
+         */
+        virtual uint32_t readInt32() = 0;
 
         /**
          * Reads a 3-byte block containing tile-based coordinates. Used by
          * manaserv.
          */
-        virtual void readCoordinates(Uint16 &x, Uint16 &y);
+        virtual void readCoordinates(uint16_t &x, uint16_t &y);
 
         /**
          * Reads a special 3 byte block used by eAthena, containing x and y
          * coordinates and direction.
          */
-        virtual void readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction);
+        virtual void readCoordinates(uint16_t &x, uint16_t &y, uint8_t &direction);
 
         /**
          * Reads a special 5 byte block used by eAthena, containing a source
          * and destination coordinate pair.
          */
-        virtual void readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
-                                        Uint16 &dstX, Uint16 &dstY);
+        virtual void readCoordinatePair(uint16_t &srcX, uint16_t &srcY,
+                                        uint16_t &dstX, uint16_t &dstY);
 
         /**
          * Skips a given number of bytes.

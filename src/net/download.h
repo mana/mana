@@ -18,9 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <SDL_types.h>
-
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 
 #ifndef NET_DOWNLOAD_H
@@ -62,7 +60,7 @@ class Download
          */
         void noCache();
 
-        void setFile(const std::string &filename, Sint64 adler32 = -1);
+        void setFile(const std::string &filename, int64_t adler32 = -1);
 
         void setWriteFunction(WriteFunction write);
 
@@ -95,7 +93,7 @@ class Download
         } mOptions;
         std::string mFileName;
         WriteFunction mWriteFunction;
-        unsigned long mAdler;
+        int64_t mAdler;
         DownloadUpdate mUpdateFunction;
         SDL_Thread *mThread;
         CURL *mCurl;

@@ -25,6 +25,8 @@
     ((unsigned short)(((unsigned char)(low)) | \
     ((unsigned short)((unsigned char)(high))) << 8))
 
+#include <cstring>
+
 namespace Net {
 
 MessageIn::MessageIn(const char *data, unsigned int length):
@@ -34,9 +36,9 @@ MessageIn::MessageIn(const char *data, unsigned int length):
 {
 }
 
-Uint8 MessageIn::readInt8()
+uint8_t MessageIn::readInt8()
 {
-    Uint8 value = 0;
+    uint8_t value = 0;
     if (mPos < mLength)
     {
         value = mData[mPos];
@@ -45,7 +47,7 @@ Uint8 MessageIn::readInt8()
     return value;
 }
 
-void MessageIn::readCoordinates(Uint16 &x, Uint16 &y)
+void MessageIn::readCoordinates(uint16_t &x, uint16_t &y)
 {
     if (mPos + 3 <= mLength)
     {
@@ -56,12 +58,12 @@ void MessageIn::readCoordinates(Uint16 &x, Uint16 &y)
     mPos += 3;
 }
 
-void MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
+void MessageIn::readCoordinates(uint16_t &x, uint16_t &y, uint8_t &direction)
 {
     if (mPos + 3 <= mLength)
     {
         const char *data = mData + mPos;
-        Sint16 temp;
+        uint16_t temp;
 
         temp = MAKEWORD(data[1] & 0x00c0, data[0] & 0x00ff);
         x = temp >> 6;
@@ -70,7 +72,7 @@ void MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
 
         direction = data[2] & 0x000f;
 
-        // Translate from eAthena format
+        // Translate from tmwAthena format
         switch (direction)
         {
             case 0:
@@ -108,13 +110,13 @@ void MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
     mPos += 3;
 }
 
-void MessageIn::readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
-                                   Uint16 &dstX, Uint16 &dstY)
+void MessageIn::readCoordinatePair(uint16_t &srcX, uint16_t &srcY,
+                                   uint16_t &dstX, uint16_t &dstY)
 {
     if (mPos + 5 <= mLength)
     {
         const char *data = mData + mPos;
-        Sint16 temp;
+        uint16_t temp;
 
         temp = MAKEWORD(data[3], data[2] & 0x000f);
         dstX = temp >> 2;

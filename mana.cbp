@@ -21,6 +21,7 @@
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DENABLE_NLS" />
+					<Add option="-std=c++0x" />
 				</Compiler>
 				<Linker>
 					<Add option="-enable-auto-import" />
@@ -60,6 +61,7 @@
 					<Add option="-DMANASERV_SUPPORT" />
 					<Add option="-DUSE_OPENGL" />
 					<Add directory="\usr\local\include\libxml2" />
+					<Add option="-std=c++0x" />
 				</Compiler>
 				<Linker>
 					<Add option="`sdl-config --libs`" />

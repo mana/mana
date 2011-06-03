@@ -21,9 +21,6 @@
 
 #include "net/tmwa/messagein.h"
 
-#include <SDL.h>
-#include <SDL_endian.h>
-
 namespace TmwAthena  {
 
 MessageIn::MessageIn(const char *data, unsigned int length):
@@ -33,9 +30,9 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mId = readInt16();
 }
 
-Uint16 MessageIn::readInt16()
+uint16_t MessageIn::readInt16()
 {
-    Uint16 value = 0;
+    uint16_t value = 0;
     if (mPos + 2 <= mLength)
     {
         value = (mData[mPos + 1] << 8) | mData[mPos];
@@ -44,9 +41,9 @@ Uint16 MessageIn::readInt16()
     return value;
 }
 
-Uint32 MessageIn::readInt32()
+uint32_t MessageIn::readInt32()
 {
-    Uint32 value = 0;
+    uint32_t value = 0;
     if (mPos + 4 <= mLength)
     {
         value = (mData[mPos + 3] << 24) | (mData[mPos + 2] << 16) | (mData[mPos + 1] << 8) | mData[mPos];

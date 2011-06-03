@@ -35,7 +35,7 @@ namespace ManaServ {
 
 EffectHandler::EffectHandler()
 {
-    static const Uint16 _messages[] = {
+    static const uint16_t _messages[] = {
         GPMSG_CREATE_EFFECT_POS,
         GPMSG_CREATE_EFFECT_BEING,
         GPMSG_SHAKE,
@@ -65,8 +65,8 @@ void EffectHandler::handleMessage(Net::MessageIn &msg)
 void EffectHandler::handleCreateEffectPos(Net::MessageIn &msg)
 {
     int id = msg.readInt16();
-    Uint16 x = msg.readInt16();
-    Uint16 y = msg.readInt16();
+    uint16_t x = msg.readInt16();
+    uint16_t y = msg.readInt16();
     effectManager->trigger(id, x, y);
 }
 

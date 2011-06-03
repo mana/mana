@@ -39,7 +39,7 @@ class FindBeingFunctor
                 return false;
             Being* b = static_cast<Being*>(actor);
 
-            Uint16 other_y = y + ((b->getType() == ActorSprite::NPC) ? 1 : 0);
+            uint16_t other_y = y + ((b->getType() == ActorSprite::NPC) ? 1 : 0);
             const Vector &pos = b->getPosition();
             return ((int) pos.x / 32 == x &&
                     ((int) pos.y / 32 == y || (int) pos.y / 32 == other_y) &&
@@ -47,7 +47,7 @@ class FindBeingFunctor
                     (type == ActorSprite::UNKNOWN || b->getType() == type));
         }
 
-        Uint16 x, y;
+        uint16_t x, y;
         ActorSprite::Type type;
 } beingFinder;
 

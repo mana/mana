@@ -27,8 +27,6 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
-#include <SDL_types.h>
-
 class Item;
 class ShopItems;
 class ShopListBox;

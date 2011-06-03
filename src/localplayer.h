@@ -179,7 +179,7 @@ class LocalPlayer : public Being
         void stopWalking(bool sendToServer = true);
 
         void toggleSit();
-        void emote(Uint8 emotion);
+        void emote(uint8_t emotion);
 
         /**
          * Shows item pickup notifications.

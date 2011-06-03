@@ -24,8 +24,6 @@
 
 #include "net/messagein.h"
 
-#include <SDL_types.h>
-
 #include <memory>
 
 namespace Net {
@@ -36,7 +34,7 @@ namespace Net {
 class MessageHandler
 {
     public:
-        const Uint16 *handledMessages;
+        const uint16_t *handledMessages;
 
         virtual void handleMessage(MessageIn &msg) = 0;
 

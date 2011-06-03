@@ -43,7 +43,7 @@ namespace TmwAthena {
 
 AdminHandler::AdminHandler()
 {
-    static const Uint16 _messages[] =
+    static const uint16_t _messages[] =
     {
         SMSG_ADMIN_KICK_ACK,
         SMSG_ADMIN_IP,

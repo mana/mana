@@ -26,8 +26,7 @@
 #include "map.h"
 #include "particlecontainer.h"
 
-#include <SDL_types.h>
-
+#include <cstdint>
 #include <set>
 #include <list>
 
@@ -143,7 +142,7 @@ public:
      *
      * These are NOT the same as the status effect indices.
      */
-    void setStatusEffectBlock(int offset, Uint16 flags);
+    void setStatusEffectBlock(int offset, uint16_t flags);
 
     virtual void setAlpha(float alpha)
     { CompoundSprite::setAlpha(alpha); }
@@ -195,7 +194,7 @@ protected:
                             bool forceDisplay = true);
 
     int mId;
-    Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
+    uint16_t mStunMode;               /**< Stun mode; zero if not stunned */
     std::set<int> mStatusEffects;   /**< set of active status effects */
 
     ParticleList mStunParticleEffects;

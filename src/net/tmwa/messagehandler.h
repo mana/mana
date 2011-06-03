@@ -27,8 +27,6 @@
 
 #include "net/tmwa/messageout.h"
 
-#include <SDL_types.h>
-
 #include <memory>
 
 namespace TmwAthena {

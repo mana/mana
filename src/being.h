@@ -30,8 +30,6 @@
 
 #include <guichan/color.hpp>
 
-#include <SDL_types.h>
-
 #include <map>
 #include <set>
 #include <string>
@@ -289,12 +287,12 @@ class Being : public ActorSprite, public EventListener
          */
         void drawSpeech(int offsetX, int offsetY);
 
-        Uint16 getSubType() const { return mSubType; }
+        uint16_t getSubType() const { return mSubType; }
 
          /**
           * Set Being's subtype (mostly for view for monsters and NPCs)
           */
-        void setSubtype(Uint16 subtype);
+        void setSubtype(uint16_t subtype);
 
         const BeingInfo *getInfo() const
         { return mInfo; }
@@ -356,12 +354,12 @@ class Being : public ActorSprite, public EventListener
         /**
          * Returns the current direction.
          */
-        Uint8 getDirection() const { return mDirection; }
+        uint8_t getDirection() const { return mDirection; }
 
         /**
          * Sets the current direction.
          */
-        void setDirection(Uint8 direction);
+        void setDirection(uint8_t direction);
 
         /**
          * Returns the direction the being is facing.
@@ -475,10 +473,10 @@ class Being : public ActorSprite, public EventListener
         int mAttackSpeed;     /**< Attack speed */
 
         Action mAction;       /**< Action the being is performing */
-        Uint16 mSubType;      /**< Subtype (graphical view, basically) */
+        uint16_t mSubType;      /**< Subtype (graphical view, basically) */
 
-        Uint8 mDirection;               /**< Facing direction */
-        Uint8 mSpriteDirection;         /**< Facing direction */
+        uint8_t mDirection;             /**< Facing direction */
+        uint8_t mSpriteDirection;       /**< Facing direction */
         std::string mName;              /**< Name of character */
         std::string mPartyName;
 

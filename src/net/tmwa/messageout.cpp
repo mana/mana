@@ -31,7 +31,7 @@
 
 namespace TmwAthena {
 
-MessageOut::MessageOut(Uint16 id):
+MessageOut::MessageOut(uint16_t id):
         Net::MessageOut(id)
 {
     mNetwork = TmwAthena::Network::instance();
@@ -44,7 +44,7 @@ void MessageOut::expand(size_t bytes)
     mNetwork->mOutSize += bytes;
 }
 
-void MessageOut::writeInt16(Uint16 value)
+void MessageOut::writeInt16(uint16_t value)
 {
     expand(2);
     mData[mPos] = value;
@@ -52,7 +52,7 @@ void MessageOut::writeInt16(Uint16 value)
     mPos += 2;
 }
 
-void MessageOut::writeInt32(Uint32 value)
+void MessageOut::writeInt32(uint32_t value)
 {
     expand(4);
     mData[mPos] = value;
@@ -62,13 +62,13 @@ void MessageOut::writeInt32(Uint32 value)
     mPos += 4;
 }
 
-void MessageOut::writeCoordinates(Uint16 x, Uint16 y, Uint8 direction)
+void MessageOut::writeCoordinates(uint16_t x, uint16_t y, uint8_t direction)
 {
     char *data = mData + mPos;
     mNetwork->mOutSize += 3;
     mPos += 3;
 
-    Uint16 temp = x;
+    int16_t temp = x;
     temp <<= 6;
     data[0] = temp >> 8;
     data[1] = temp;

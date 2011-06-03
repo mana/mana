@@ -225,7 +225,7 @@ void ActorSprite::setStatusEffect(int index, bool active)
     }
 }
 
-void ActorSprite::setStatusEffectBlock(int offset, Uint16 newEffects)
+void ActorSprite::setStatusEffectBlock(int offset, uint16_t newEffects)
 {
     for (int i = 0; i < STATUS_EFFECTS; i++)
     {

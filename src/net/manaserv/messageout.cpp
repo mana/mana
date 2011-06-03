@@ -24,11 +24,10 @@
 #include <enet/enet.h>
 
 #include <cstring>
-#include <string>
 
 namespace ManaServ {
 
-MessageOut::MessageOut(Uint16 id):
+MessageOut::MessageOut(uint16_t id):
         Net::MessageOut(id)
 {
     writeInt16(id);
@@ -45,7 +44,7 @@ void MessageOut::expand(size_t bytes)
     mDataSize = mPos + bytes;
 }
 
-void MessageOut::writeInt16(Uint16 value)
+void MessageOut::writeInt16(uint16_t value)
 {
     expand(2);
     uint16_t t = ENET_HOST_TO_NET_16(value);
@@ -53,7 +52,7 @@ void MessageOut::writeInt16(Uint16 value)
     mPos += 2;
 }
 
-void MessageOut::writeInt32(Uint32 value)
+void MessageOut::writeInt32(uint32_t value)
 {
     expand(4);
     uint32_t t = ENET_HOST_TO_NET_32(value);

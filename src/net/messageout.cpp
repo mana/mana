@@ -22,18 +22,17 @@
 #include "net/messageout.h"
 
 #include <cstring>
-#include <string>
 
 namespace Net {
 
-MessageOut::MessageOut(short id):
+MessageOut::MessageOut(uint16_t id):
     mData(0),
     mDataSize(0),
     mPos(0)
 {
 }
 
-void MessageOut::writeInt8(Uint8 value)
+void MessageOut::writeInt8(uint8_t value)
 {
     expand(1);
     mData[mPos] = value;

@@ -22,9 +22,8 @@
 #ifndef NET_MESSAGEOUT_H
 #define NET_MESSAGEOUT_H
 
-#include <SDL_types.h>
-
-#include <iosfwd>
+#include <cstdint>
+#include <string>
 
 namespace Net {
 
@@ -36,9 +35,20 @@ namespace Net {
 class MessageOut
 {
     public:
-        virtual void writeInt8(Uint8 value);          /**< Writes a byte. */
-        virtual void writeInt16(Uint16 value) = 0;    /**< Writes a short. */
-        virtual void writeInt32(Uint32 value) = 0;    /**< Writes a "long". */
+        /**
+         * Writes an unsigned 8-bit integer to the message.
+         */
+        virtual void writeInt8(uint8_t value);
+
+        /**
+         * Writes an unsigned 16-bit integer to the message.
+         */
+        virtual void writeInt16(uint16_t value) = 0;
+
+        /**
+         * Writes an unsigned 32-bit integer to the message.
+         */
+        virtual void writeInt32(uint32_t value) = 0;
 
         /**
          * Writes a string. If a fixed length is not given (-1), it is stored
@@ -59,7 +69,7 @@ class MessageOut
         virtual ~MessageOut() {}
 
     protected:
-        MessageOut(short id);
+        MessageOut(uint16_t id);
 
         /**
          * Expand the packet data to be able to hold more data.

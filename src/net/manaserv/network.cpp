@@ -89,7 +89,7 @@ Connection *getConnection()
 
 void registerHandler(MessageHandler *handler)
 {
-    for (const Uint16 *i = handler->handledMessages; *i; i++)
+    for (const uint16_t *i = handler->handledMessages; *i; i++)
     {
         mMessageHandlers[*i] = handler;
     }
@@ -97,7 +97,7 @@ void registerHandler(MessageHandler *handler)
 
 void unregisterHandler(MessageHandler *handler)
 {
-    for (const Uint16 *i = handler->handledMessages; *i; i++)
+    for (const uint16_t *i = handler->handledMessages; *i; i++)
     {
         mMessageHandlers.erase(*i);
     }

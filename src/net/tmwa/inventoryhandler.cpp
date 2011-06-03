@@ -43,8 +43,6 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <SDL_types.h>
-
 extern Net::InventoryHandler *inventoryHandler;
 
 namespace TmwAthena {

@@ -39,7 +39,7 @@ extern Connection *gameServerConnection;
 
 NpcHandler::NpcHandler()
 {
-    static const Uint16 _messages[] = {
+    static const uint16_t _messages[] = {
         GPMSG_NPC_CHOICE,
         GPMSG_NPC_POST,
         GPMSG_NPC_MESSAGE,

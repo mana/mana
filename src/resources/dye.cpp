@@ -60,7 +60,7 @@ DyePalette::DyePalette(const std::string &description)
 
             v = (v << 4) | n;
         }
-        Color c = { { v >> 16, v >> 8, v } };
+        Color c = { { (unsigned char) (v >> 16), (unsigned char) (v >> 8), (unsigned char) v } };
         mColors.push_back(c);
         pos += 6;
 
@@ -74,18 +74,6 @@ DyePalette::DyePalette(const std::string &description)
 
     error:
     logger->log("Error, invalid embedded palette: %s", description.c_str());
-}
-
-void DyePalette::addFirstColor(const int color[3])
-{
-    Color c = { {color[0], color[1], color[2]} };
-    mColors.insert(mColors.begin(), c);
-}
-
-void DyePalette::addLastColor(const int color[3])
-{
-    Color c = { {color[0], color[1], color[2]} };
-    mColors.push_back(c);
 }
 
 void DyePalette::getColor(int intensity, int color[3]) const

@@ -24,7 +24,6 @@
 
 #include "net/messagein.h"
 
-#include <SDL_types.h>
 #include <string>
 
 namespace TmwAthena {
@@ -39,8 +38,8 @@ namespace TmwAthena {
     public:
         MessageIn(const char *data, unsigned int length);
 
-        Uint16 readInt16();            /**< Reads a short. */
-        Uint32 readInt32();            /**< Reads a "long". */
+        uint16_t readInt16();
+        uint32_t readInt32();
 };
 
 }

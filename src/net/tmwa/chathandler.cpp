@@ -44,7 +44,7 @@ namespace TmwAthena {
 
 ChatHandler::ChatHandler()
 {
-    static const Uint16 _messages[] = {
+    static const uint16_t _messages[] = {
         SMSG_BEING_CHAT,
         SMSG_PLAYER_CHAT,
         SMSG_WHISPER,

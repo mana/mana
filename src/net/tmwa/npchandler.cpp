@@ -34,8 +34,6 @@
 
 #include "utils/stringutils.h"
 
-#include <SDL_types.h>
-
 extern Net::NpcHandler *npcHandler;
 
 static void parseMenu(Event *event, const std::string &options)
@@ -57,7 +55,7 @@ namespace TmwAthena {
 
 NpcHandler::NpcHandler()
 {
-    static const Uint16 _messages[] = {
+    static const uint16_t _messages[] = {
         SMSG_NPC_CHOICE,
         SMSG_NPC_MESSAGE,
         SMSG_NPC_NEXT,

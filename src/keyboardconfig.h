@@ -21,8 +21,7 @@
 #ifndef KEYBOARDCONFIG_H
 #define KEYBOARDCONFIG_H
 
-#include <SDL_types.h>
-
+#include <cstdint>
 #include <string>
 
 /**
@@ -228,7 +227,7 @@ class KeyboardConfig
 
         KeyFunction mKey[KEY_TOTAL];   /**< Pointer to all the key data */
 
-        Uint8 *mActiveKeys;            /**< Stores a list of all the keys */
+        uint8_t *mActiveKeys;          /**< Stores a list of all the keys */
 
         std::string mBindError;
 };
