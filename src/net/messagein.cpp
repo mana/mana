@@ -34,14 +34,14 @@ MessageIn::MessageIn(const char *data, unsigned int length):
 {
 }
 
-int MessageIn::readInt8()
+Uint8 MessageIn::readInt8()
 {
-    int value = -1;
+    Uint8 value = 0;
     if (mPos < mLength)
     {
-        value = (unsigned char) mData[mPos];
+        value = mData[mPos];
     }
-    mPos += 1;
+    mPos++;
     return value;
 }
 

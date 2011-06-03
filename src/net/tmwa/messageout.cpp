@@ -31,7 +31,7 @@
 
 namespace TmwAthena {
 
-MessageOut::MessageOut(short id):
+MessageOut::MessageOut(Uint16 id):
         Net::MessageOut(id)
 {
     mNetwork = TmwAthena::Network::instance();
@@ -44,52 +44,39 @@ void MessageOut::expand(size_t bytes)
     mNetwork->mOutSize += bytes;
 }
 
-void MessageOut::writeInt16(Sint16 value)
+void MessageOut::writeInt16(Uint16 value)
 {
     expand(2);
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    Sint16 swap=SDL_Swap16(value);
-    memcpy(mData + mPos, &swap, sizeof(Sint16));
-#else
-    memcpy(mData + mPos, &value, sizeof(Sint16));
-#endif
+    mData[mPos] = value;
+    mData[mPos + 1] = value >> 8;
     mPos += 2;
 }
 
-void MessageOut::writeInt32(Sint32 value)
+void MessageOut::writeInt32(Uint32 value)
 {
     expand(4);
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    Sint32 swap=SDL_Swap32(value);
-    memcpy(mData + mPos, &swap, sizeof(Sint32));
-#else
-    memcpy(mData + mPos, &value, sizeof(Sint32));
-#endif
+    mData[mPos] = value;
+    mData[mPos + 1] = value >> 8;
+    mData[mPos + 2] = value >> 16;
+    mData[mPos + 3] = value >> 24;
     mPos += 4;
 }
 
-#define LOBYTE(w)  ((unsigned char)(w))
-#define HIBYTE(w)  ((unsigned char)(((unsigned short)(w)) >> 8))
-
-void MessageOut::writeCoordinates(unsigned short x, unsigned short y,
-                                  unsigned char direction)
+void MessageOut::writeCoordinates(Uint16 x, Uint16 y, Uint8 direction)
 {
     char *data = mData + mPos;
     mNetwork->mOutSize += 3;
     mPos += 3;
 
-    short temp;
-    temp = x;
+    Uint16 temp = x;
     temp <<= 6;
-    data[0] = 0;
-    data[1] = 1;
-    data[2] = 2;
-    data[0] = HIBYTE(temp);
-    data[1] = (unsigned char) temp;
+    data[0] = temp >> 8;
+    data[1] = temp;
+
     temp = y;
     temp <<= 4;
-    data[1] |= HIBYTE(temp);
-    data[2] = LOBYTE(temp);
+    data[1] |= temp << 8;
+    data[2] = temp;
 
     // Translate direction to eAthena format
     switch (direction)
@@ -120,7 +107,7 @@ void MessageOut::writeCoordinates(unsigned short x, unsigned short y,
             break;
         default:
             // OOPSIE! Impossible or unknown
-            direction = (unsigned char) -1;
+            direction = 15;
     }
     data[2] |= direction;
 }

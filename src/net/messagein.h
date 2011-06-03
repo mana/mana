@@ -39,7 +39,7 @@ class MessageIn
         /**
          * Returns the message ID.
          */
-        int getId() const { return mId; }
+        Uint16 getId() const { return mId; }
 
         /**
          * Returns the message length.
@@ -51,9 +51,9 @@ class MessageIn
          */
         unsigned int getUnreadLength() const { return mLength - mPos; }
 
-        virtual int readInt8();             /**< Reads a byte. */
-        virtual int readInt16() = 0;        /**< Reads a short. */
-        virtual int readInt32() = 0;        /**< Reads a long. */
+        virtual Uint8 readInt8();             /**< Reads a byte. */
+        virtual Uint16 readInt16() = 0;       /**< Reads a short. */
+        virtual Uint32 readInt32() = 0;       /**< Reads a "long". */
 
         /**
          * Reads a 3-byte block containing tile-based coordinates. Used by

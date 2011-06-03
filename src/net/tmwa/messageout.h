@@ -39,16 +39,16 @@ class Network;
 class MessageOut : public Net::MessageOut
 {
     public:
-        MessageOut(short id);
+        MessageOut(Uint16 id);
 
-        void writeInt16(Sint16 value);        /**< Writes a short. */
-        void writeInt32(Sint32 value);        /**< Writes a long. */
+        void writeInt16(Uint16 value);        /**< Writes a short. */
+        void writeInt32(Uint32 value);        /**< Writes a "long". */
 
         /**
          * Encodes coordinates and direction in 3 bytes.
          */
-        void writeCoordinates(unsigned short x, unsigned short y,
-                              unsigned char direction);
+        void writeCoordinates(Uint16 x, Uint16 y,
+                              Uint8 direction);
 
     private:
         void expand(size_t size);

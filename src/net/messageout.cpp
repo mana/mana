@@ -33,7 +33,7 @@ MessageOut::MessageOut(short id):
 {
 }
 
-void MessageOut::writeInt8(Sint8 value)
+void MessageOut::writeInt8(Uint8 value)
 {
     expand(1);
     mData[mPos] = value;
@@ -57,7 +57,7 @@ void MessageOut::writeString(const std::string &string, int length)
     expand(length);
 
     // Write the actual string
-    memcpy(mData + mPos, string.c_str(), stringLength);
+    memcpy(mData + mPos, string.data(), stringLength);
 
     // Pad remaining space with zeros
     if (length > stringLength)

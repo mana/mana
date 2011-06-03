@@ -24,10 +24,6 @@
 #include <SDL.h>
 #include <SDL_endian.h>
 
-#define MAKEWORD(low,high) \
-    ((unsigned short)(((unsigned char)(low)) | \
-    ((unsigned short)((unsigned char)(high))) << 8))
-
 namespace TmwAthena  {
 
 MessageIn::MessageIn(const char *data, unsigned int length):
@@ -37,35 +33,23 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mId = readInt16();
 }
 
-int MessageIn::readInt16()
+Uint16 MessageIn::readInt16()
 {
-    Sint16 value = -1;
+    Uint16 value = 0;
     if (mPos + 2 <= mLength)
     {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        Sint16 swap;
-        memcpy(&swap, mData + mPos, sizeof(Sint16));
-        value = SDL_Swap16(swap);
-#else
-        memcpy(&value, mData + mPos, sizeof(Sint16));
-#endif
+        value = (mData[mPos + 1] << 8) | mData[mPos];
     }
     mPos += 2;
     return value;
 }
 
-int MessageIn::readInt32()
+Uint32 MessageIn::readInt32()
 {
-    Sint32 value = -1;
+    Uint32 value = 0;
     if (mPos + 4 <= mLength)
     {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        Sint32 swap;
-        memcpy(&swap, mData + mPos, sizeof(Sint32));
-        value = SDL_Swap32(swap);
-#else
-        memcpy(&value, mData + mPos, sizeof(Sint32));
-#endif
+        value = (mData[mPos + 3] << 24) | (mData[mPos + 2] << 16) | (mData[mPos + 1] << 8) | mData[mPos];
     }
     mPos += 4;
     return value;

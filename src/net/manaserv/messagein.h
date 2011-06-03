@@ -36,8 +36,8 @@ class MessageIn : public Net::MessageIn
     public:
         MessageIn(const char *data, unsigned int length);
 
-        int readInt16();            /**< Reads a short. */
-        int readInt32();            /**< Reads a long. */
+        Uint16 readInt16();            /**< Reads a short. */
+        Uint32 readInt32();            /**< Reads a "long". */
 };
 
 }

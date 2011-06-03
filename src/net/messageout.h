@@ -36,9 +36,9 @@ namespace Net {
 class MessageOut
 {
     public:
-        virtual void writeInt8(Sint8 value);          /**< Writes a byte. */
-        virtual void writeInt16(Sint16 value) = 0;    /**< Writes a short. */
-        virtual void writeInt32(Sint32 value) = 0;    /**< Writes a long. */
+        virtual void writeInt8(Uint8 value);          /**< Writes a byte. */
+        virtual void writeInt16(Uint16 value) = 0;    /**< Writes a short. */
+        virtual void writeInt32(Uint32 value) = 0;    /**< Writes a "long". */
 
         /**
          * Writes a string. If a fixed length is not given (-1), it is stored

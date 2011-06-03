@@ -32,9 +32,9 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mId = readInt16();
 }
 
-int MessageIn::readInt16()
+Uint16 MessageIn::readInt16()
 {
-    int value = -1;
+    Uint16 value = 0;
     if (mPos + 2 <= mLength)
     {
         uint16_t t;
@@ -45,9 +45,9 @@ int MessageIn::readInt16()
     return value;
 }
 
-int MessageIn::readInt32()
+Uint32 MessageIn::readInt32()
 {
-    int value = -1;
+    Uint32 value = 0;
     if (mPos + 4 <= mLength)
     {
         uint32_t t;

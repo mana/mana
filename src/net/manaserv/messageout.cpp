@@ -28,7 +28,7 @@
 
 namespace ManaServ {
 
-MessageOut::MessageOut(short id):
+MessageOut::MessageOut(Uint16 id):
         Net::MessageOut(id)
 {
     writeInt16(id);
@@ -45,7 +45,7 @@ void MessageOut::expand(size_t bytes)
     mDataSize = mPos + bytes;
 }
 
-void MessageOut::writeInt16(Sint16 value)
+void MessageOut::writeInt16(Uint16 value)
 {
     expand(2);
     uint16_t t = ENET_HOST_TO_NET_16(value);
@@ -53,7 +53,7 @@ void MessageOut::writeInt16(Sint16 value)
     mPos += 2;
 }
 
-void MessageOut::writeInt32(Sint32 value)
+void MessageOut::writeInt32(Uint32 value)
 {
     expand(4);
     uint32_t t = ENET_HOST_TO_NET_32(value);
