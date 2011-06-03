@@ -48,38 +48,6 @@
 					<Add library="winmm" />
 				</Linker>
 			</Target>
-			<Target title="Unix">
-				<Option platforms="Unix;" />
-				<Option output="mana" prefix_auto="1" extension_auto="1" />
-				<Option type="0" />
-				<Option compiler="gcc" />
-				<Option parameters='-u -d &quot;../manadata&quot;' />
-				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-g" />
-					<Add option="`sdl-config --cflags`" />
-					<Add option="-DMANASERV_SUPPORT" />
-					<Add option="-DUSE_OPENGL" />
-					<Add directory="\usr\local\include\libxml2" />
-					<Add option="-std=c++0x" />
-				</Compiler>
-				<Linker>
-					<Add option="`sdl-config --libs`" />
-					<Add library="guichan" />
-					<Add library="guichan_sdl" />
-					<Add library="guichan_opengl" />
-					<Add library="GL" />
-					<Add library="physfs" />
-					<Add library="curl" />
-					<Add library="xml2" />
-					<Add library="SDL_mixer" />
-					<Add library="SDL_net" />
-					<Add library="SDL_image" />
-					<Add library="SDL_ttf" />
-					<Add library="SDL_gfx" />
-					<Add library="png" />
-				</Linker>
-			</Target>
 		</Build>
 		<VirtualTargets>
 			<Add alias="All" targets="Windows;" />
