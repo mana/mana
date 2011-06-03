@@ -309,7 +309,8 @@ void Being::setSpeech(const std::string &text, int time)
     }
 }
 
-void Being::takeDamage(Being *attacker, int amount, AttackType type)
+void Being::takeDamage(Being *attacker, int amount,
+                       AttackType type, int attackId)
 {
     gcn::Font *font;
     std::string damage = amount ? toString(amount) : type == FLEE ?
@@ -399,6 +400,15 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
                 hitEffectId = attackerWeapon->getHitEffectId();
             else
                 hitEffectId = attackerWeapon->getCriticalHitEffectId();
+        }
+        else if (attacker && attacker->getType() == MONSTER)
+        {
+            const Attack *attack = attacker->getInfo()->getAttack(attackId);
+
+            if (type != CRITICAL)
+                hitEffectId = attack->mHitEffectId;
+            else
+                hitEffectId = attack->mCriticalHitEffectId;
         }
         else
         {

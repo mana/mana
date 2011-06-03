@@ -33,14 +33,16 @@
 
 struct Attack {
     std::string mAction;
-    int mEffectId;
+    int mEffectId, mHitEffectId, mCriticalHitEffectId;
     std::string mMissileParticleFilename;
 
-    Attack(std::string action, int effectId,
-           std::string missileParticleFilename)
+    Attack(std::string action, int effectId, int hitEffectId,
+           int criticalHitEffectId, std::string missileParticleFilename)
     {
         mAction = action;
         mEffectId = effectId;
+        mHitEffectId = hitEffectId;
+        mCriticalHitEffectId = criticalHitEffectId;
         mMissileParticleFilename = missileParticleFilename;
     }
 };
@@ -96,6 +98,7 @@ class BeingInfo
         const std::string &getSound(SoundEvent event) const;
 
         void addAttack(int id, std::string action, int effectId,
+                       int hitEffectId, int criticalHitEffectId,
                        const std::string &missileParticleFilename);
 
         const Attack *getAttack(int id) const;

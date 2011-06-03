@@ -90,17 +90,20 @@ const std::string &BeingInfo::getSound(SoundEvent event) const
 
 const Attack *BeingInfo::getAttack(int id) const
 {
-    static Attack *empty = new Attack(SpriteAction::ATTACK, -1, std::string());
+    static Attack *empty = new Attack(SpriteAction::ATTACK, -1, -1, -1,
+                                      std::string());
 
     Attacks::const_iterator i = mAttacks.find(id);
     return (i == mAttacks.end()) ? empty : (*i).second;
 }
 
 void BeingInfo::addAttack(int id, std::string action, int effectId,
+                          int hitEffectId, int criticalHitEffectId,
                           const std::string &missileParticleFilename)
 {
     if (mAttacks[id])
         delete mAttacks[id];
 
-    mAttacks[id] = new Attack(action, effectId, missileParticleFilename);
+    mAttacks[id] = new Attack(action, effectId, hitEffectId,
+                              criticalHitEffectId, missileParticleFilename);
 }
