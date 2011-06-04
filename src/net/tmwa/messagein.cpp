@@ -21,6 +21,9 @@
 
 #include "net/tmwa/messagein.h"
 
+#include <SDL.h>
+#include <SDL_endian.h>
+
 namespace TmwAthena  {
 
 MessageIn::MessageIn(const char *data, unsigned int length):
@@ -35,7 +38,13 @@ uint16_t MessageIn::readInt16()
     uint16_t value = 0;
     if (mPos + 2 <= mLength)
     {
-        value = (mData[mPos + 1] << 8) | mData[mPos];
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        uint16_t swap;
+        memcpy(&swap, mData + mPos, sizeof(uint16_t));
+        value = SDL_Swap16(swap);
+#else
+        memcpy(&value, mData + mPos, sizeof(uint16_t));
+#endif
     }
     mPos += 2;
     return value;
@@ -46,7 +55,13 @@ uint32_t MessageIn::readInt32()
     uint32_t value = 0;
     if (mPos + 4 <= mLength)
     {
-        value = (mData[mPos + 3] << 24) | (mData[mPos + 2] << 16) | (mData[mPos + 1] << 8) | mData[mPos];
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        uint32_t swap;
+        memcpy(&swap, mData + mPos, sizeof(uint32_t));
+        value = SDL_Swap32(swap);
+#else
+        memcpy(&value, mData + mPos, sizeof(uint32_t));
+#endif
     }
     mPos += 4;
     return value;

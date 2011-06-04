@@ -47,18 +47,24 @@ void MessageOut::expand(size_t bytes)
 void MessageOut::writeInt16(uint16_t value)
 {
     expand(2);
-    mData[mPos] = value;
-    mData[mPos + 1] = value >> 8;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    uint16_t swap=SDL_Swap16(value);
+    memcpy(mData + mPos, &swap, sizeof(uint16_t));
+#else
+    memcpy(mData + mPos, &value, sizeof(uint16_t));
+#endif
     mPos += 2;
 }
 
 void MessageOut::writeInt32(uint32_t value)
 {
     expand(4);
-    mData[mPos] = value;
-    mData[mPos + 1] = value >> 8;
-    mData[mPos + 2] = value >> 16;
-    mData[mPos + 3] = value >> 24;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    uint32_t swap=SDL_Swap32(value);
+    memcpy(mData + mPos, &swap, sizeof(uint32_t));
+#else
+    memcpy(mData + mPos, &value, sizeof(uint32_t));
+#endif
     mPos += 4;
 }
 
