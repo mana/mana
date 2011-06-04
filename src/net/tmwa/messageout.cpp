@@ -68,21 +68,27 @@ void MessageOut::writeInt32(uint32_t value)
     mPos += 4;
 }
 
+#define LOBYTE(w)  ((unsigned char)(w))
+#define HIBYTE(w)  ((unsigned char)(((unsigned short)(w)) >> 8))
+
 void MessageOut::writeCoordinates(uint16_t x, uint16_t y, uint8_t direction)
 {
     char *data = mData + mPos;
     mNetwork->mOutSize += 3;
     mPos += 3;
 
-    int16_t temp = x;
+    short temp;
+    temp = x;
     temp <<= 6;
-    data[0] = temp >> 8;
-    data[1] = temp;
-
+    data[0] = 0;
+    data[1] = 1;
+    data[2] = 2;
+    data[0] = HIBYTE(temp);
+    data[1] = (unsigned char) temp;
     temp = y;
     temp <<= 4;
-    data[1] |= temp << 8;
-    data[2] = temp;
+    data[1] |= HIBYTE(temp);
+    data[2] = LOBYTE(temp);
 
     // Translate direction to eAthena format
     switch (direction)
