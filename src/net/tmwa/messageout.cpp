@@ -74,14 +74,14 @@ void MessageOut::writeCoordinates(uint16_t x, uint16_t y, uint8_t direction)
     mNetwork->mOutSize += 3;
     mPos += 3;
 
-    int16_t temp = x;
+    uint16_t temp = x;
     temp <<= 6;
     data[0] = temp >> 8;
     data[1] = temp;
 
     temp = y;
     temp <<= 4;
-    data[1] |= temp << 8;
+    data[1] |= temp >> 8;
     data[2] = temp;
 
     // Translate direction to eAthena format
