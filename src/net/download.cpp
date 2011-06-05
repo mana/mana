@@ -276,7 +276,7 @@ int Download::downloadThread(void *ptr)
 
                         // Remove the corrupted file
                         ::remove(d->mFileName.c_str());
-                        logger->log("Checksum for file %s failed: (%lx/%llx)",
+                        logger->log("Checksum for file %s failed: (%lx/%lx)",
                             d->mFileName.c_str(),
                             adler, d->mAdler);
                         attempts++;

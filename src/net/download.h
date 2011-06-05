@@ -93,7 +93,7 @@ class Download
         } mOptions;
         std::string mFileName;
         WriteFunction mWriteFunction;
-        int64_t mAdler;
+        unsigned long mAdler;
         DownloadUpdate mUpdateFunction;
         SDL_Thread *mThread;
         CURL *mCurl;
