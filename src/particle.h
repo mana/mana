@@ -95,7 +95,7 @@ class Particle : public Actor
         /**
          * Necessary for sorting with the other sprites.
          */
-        virtual int getPixelY() const
+        virtual int getDrawPixelY() const
         { return (int) (mPos.y + mPos.z) - 64; }
 
         /**

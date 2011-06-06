@@ -83,8 +83,14 @@ public:
     /**
      * Returns the pixel Y coordinate of the actor.
      */
-    virtual int getPixelY() const
+    int getPixelY() const
     { return (int) mPos.y; }
+
+    /**
+     * Returns the pixel Y coordinate that the actor should be drawn at.
+     */
+    virtual int getDrawPixelY() const
+    { return getPixelY(); }
 
     /**
      * Returns the x coordinate in tiles of the actor.

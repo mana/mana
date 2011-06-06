@@ -302,7 +302,7 @@ void Being::setSpeech(const std::string &text, int time)
             delete mText;
 
         mText = new Text(mSpeech,
-                         getPixelX(), getPixelY() - getHeight(),
+                         getPixelX(), getDrawPixelY() - getHeight(),
                          gcn::Graphics::CENTER,
                          &userPalette->getColor(UserPalette::PARTICLE),
                          true);
@@ -364,7 +364,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage,
-                                        getPixelX(), getPixelY() - 16,
+                                        getPixelX(), getDrawPixelY() - 16,
                                         color, font, true);
 
     if (amount > 0)
@@ -895,7 +895,7 @@ void Being::logic()
 void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = getPixelX() - offsetX;
-    const int py = getPixelY() - offsetY;
+    const int py = getDrawPixelY() - offsetY;
     const int speech = config.getIntValue("speech");
 
     // Draw speech above this being
@@ -929,7 +929,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
         if (! mText)
         {
             mText = new Text(mSpeech,
-                             getPixelX(), getPixelY() - getHeight(),
+                             getPixelX(), getDrawPixelY() - getHeight(),
                              gcn::Graphics::CENTER,
                              &userPalette->getColor(UserPalette::PARTICLE),
                              true);
@@ -953,9 +953,9 @@ void Being::updateCoords()
 
     // Monster names show above the sprite instead of below it
     if (getType() == MONSTER)
-        mDispName->adviseXY(getPixelX(), getPixelY() - getHeight());
+        mDispName->adviseXY(getPixelX(), getDrawPixelY() - getHeight());
     else
-        mDispName->adviseXY(getPixelX(), getPixelY() + mDispName->getHeight());
+        mDispName->adviseXY(getPixelX(), getDrawPixelY() + mDispName->getHeight());
 }
 
 void Being::flashName(int time)
@@ -1004,7 +1004,7 @@ void Being::showName()
         font = boldFont;
     }
 
-    mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
+    mDispName = new FlashText(mDisplayName, getPixelX(), getDrawPixelY(),
                               gcn::Graphics::CENTER, mNameColor, font);
 
     updateCoords();
