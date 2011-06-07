@@ -270,14 +270,14 @@ void BeingHandler::handleBeingAttackMessage(Net::MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     const BeingDirection direction = (BeingDirection) msg.readInt8();
-    const int attackType = msg.readInt8();
+    const int attackId = msg.readInt8();
 
     if (!being)
         return;
 
     being->setDirection(direction);
 
-    being->setAction(Being::ATTACK, attackType);
+    being->setAction(Being::ATTACK, attackId);
 }
 
 void BeingHandler::handleBeingsDamageMessage(Net::MessageIn &msg)

@@ -341,7 +341,7 @@ class Being : public ActorSprite, public EventListener
         /**
          * Sets the current action.
          */
-        virtual void setAction(Action action, int attackType = 0);
+        virtual void setAction(Action action, int attackId = 1);
 
         /**
          * Get the being's action currently performed.

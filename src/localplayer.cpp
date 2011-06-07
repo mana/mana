@@ -173,7 +173,7 @@ void LocalPlayer::logic()
     Being::logic();
 }
 
-void LocalPlayer::setAction(Action action, int attackType)
+void LocalPlayer::setAction(Action action, int attackId)
 {
     if (action == DEAD)
     {
@@ -181,7 +181,7 @@ void LocalPlayer::setAction(Action action, int attackType)
         setTarget(NULL);
     }
 
-    Being::setAction(action, attackType);
+    Being::setAction(action, attackId);
 }
 
 void LocalPlayer::setGMLevel(int level)

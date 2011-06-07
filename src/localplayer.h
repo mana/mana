@@ -76,7 +76,7 @@ class LocalPlayer : public Being
 
         virtual void logic();
 
-        virtual void setAction(Action action, int attackType = 0);
+        virtual void setAction(Action action, int attackId = 1);
 
         /**
          * Compute the next pathnode location when walking using keyboard.
