@@ -64,6 +64,17 @@ static ItemType itemTypeFromString(const std::string &name, int id = 0)
     else return ITEM_UNUSABLE;
 }
 
+void ItemDB::loadEmptyItemDefinition()
+{
+    mUnknown->mName = _("Unknown item");
+    mUnknown->mDisplay = SpriteDisplay();
+    std::string errFile = paths.getStringValue("spriteErrorFile");
+    mUnknown->setSprite(errFile, GENDER_MALE);
+    mUnknown->setSprite(errFile, GENDER_FEMALE);
+    mUnknown->setHitEffectId(paths.getIntValue("hitEffectId"));
+    mUnknown->setCriticalHitEffectId(paths.getIntValue("criticalHitEffectId"));
+}
+
 /*
  * Common itemDB functions
  */
@@ -321,11 +332,7 @@ void TaItemDB::load()
     logger->log("Initializing TmwAthena item database...");
 
     mUnknown = new TaItemInfo;
-    mUnknown->mName = _("Unknown item");
-    mUnknown->mDisplay = SpriteDisplay();
-    std::string errFile = paths.getStringValue("spriteErrorFile");
-    mUnknown->setSprite(errFile, GENDER_MALE);
-    mUnknown->setSprite(errFile, GENDER_FEMALE);
+    loadEmptyItemDefinition();
 
     XML::Document doc(ITEMS_DB_FILE);
     xmlNodePtr rootNode = doc.rootNode();
@@ -422,11 +429,7 @@ void ManaServItemDB::load()
     logger->log("Initializing ManaServ item database...");
 
     mUnknown = new ManaServItemInfo;
-    mUnknown->mName = _("Unknown item");
-    mUnknown->mDisplay = SpriteDisplay();
-    std::string errFile = paths.getStringValue("spriteErrorFile");
-    mUnknown->setSprite(errFile, GENDER_MALE);
-    mUnknown->setSprite(errFile, GENDER_FEMALE);
+    loadEmptyItemDefinition();
 
     XML::Document doc(ITEMS_DB_FILE);
     xmlNodePtr rootNode = doc.rootNode();

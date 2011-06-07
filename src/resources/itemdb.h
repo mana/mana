@@ -115,9 +115,14 @@ class ItemDB
         virtual void checkItemInfo(ItemInfo* itemInfo);
 
         /**
-         * Register the item to mItemInfos and mNamedItemsInfos
+         * Registers the item to mItemInfos and mNamedItemsInfos
          */
         void addItem(ItemInfo *itemInfo);
+
+        /**
+         * Loads the empty item definition.
+         */
+        void loadEmptyItemDefinition();
 
         // Default unknown reference
         ItemInfo *mUnknown;
