@@ -22,6 +22,7 @@
 #include "resources/beinginfo.h"
 
 #include "log.h"
+#include "configuration.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
@@ -90,7 +91,10 @@ const std::string &BeingInfo::getSound(SoundEvent event) const
 
 const Attack *BeingInfo::getAttack(int id) const
 {
-    static Attack *empty = new Attack(SpriteAction::ATTACK, -1, -1, -1,
+    static Attack *empty = new Attack(SpriteAction::ATTACK,
+                                      -1, // Default strike effect on monster
+                                      paths.getIntValue("hitEffectId"),
+                                      paths.getIntValue("criticalHitEffectId"),
                                       std::string());
 
     Attacks::const_iterator i = mAttacks.find(id);
