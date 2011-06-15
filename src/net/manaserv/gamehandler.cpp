@@ -127,11 +127,6 @@ void GameHandler::quit(bool reconnectAccount)
     gameServerConnection->send(msg);
 }
 
-void GameHandler::ping(int tick)
-{
-    // TODO
-}
-
 void GameHandler::gameLoading()
 {
     MessageOut msg(PGMSG_CONNECT);

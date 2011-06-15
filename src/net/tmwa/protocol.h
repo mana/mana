@@ -66,7 +66,6 @@ static const int STORAGE_OFFSET = 1;
  *********************************/
 #define SMSG_SERVER_VERSION_RESPONSE 0x7531
 
-#define SMSG_SERVER_PING             0x007f /**< Contains server tick */
 #define SMSG_CONNECTION_PROBLEM      0x0081
 
 #define SMSG_UPDATE_HOST             0x0063 /**< Custom update host packet */
@@ -224,7 +223,6 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_CHAR_DELETE             0x0068
 
 #define CMSG_MAP_SERVER_CONNECT      0x0072
-#define CMSG_CLIENT_PING             0x007e /**< Send to server with tick */
 #define CMSG_MAP_LOADED              0x007d
 #define CMSG_CLIENT_QUIT             0x018A
 

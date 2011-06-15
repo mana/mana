@@ -49,7 +49,6 @@ GameHandler::GameHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_MAP_LOGIN_SUCCESS,
-        SMSG_SERVER_PING,
         SMSG_WHO_ANSWER,
         SMSG_CHAR_SWITCH_RESPONSE,
         SMSG_MAP_QUIT_RESPONSE,
@@ -79,11 +78,6 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             // Stores the position until the map is loaded.
             mTileX = x; mTileY = y;
          }  break;
-
-        case SMSG_SERVER_PING:
-            // We ignore this for now
-            // int tick = msg.readInt32()
-            break;
 
         case SMSG_WHO_ANSWER:
             SERVER_NOTICE(strprintf(_("Online users: %d"), msg.readInt32()))
@@ -175,12 +169,6 @@ void GameHandler::who()
 void GameHandler::quit()
 {
     MessageOut outMsg(CMSG_CLIENT_QUIT);
-}
-
-void GameHandler::ping(int tick)
-{
-    MessageOut msg(CMSG_CLIENT_PING);
-    msg.writeInt32(tick);
 }
 
 void GameHandler::setMap(const std::string map)

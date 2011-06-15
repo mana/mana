@@ -243,17 +243,6 @@ Game::Game():
     // Initialize beings
     actorSpriteManager->setPlayer(player_node);
 
-    /*
-     * To prevent the server from sending data before the client
-     * has initialized, I've modified it to wait for a "ping"
-     * from the client to complete its initialization
-     *
-     * Note: This only affects the latest eAthena version.  This
-     * packet is handled by the older version, but its response
-     * is ignored by the client
-     */
-    Net::getGameHandler()->ping(tick_time);
-
     Joystick::init();
     // TODO: The user should be able to choose which one to use
     // Open the first device

@@ -53,8 +53,6 @@ class GameHandler : public MessageHandler, public Net::GameHandler,
 
         void quit();
 
-        void ping(int tick);
-
         bool removeDeadBeings() const { return true; }
 
         void clear();

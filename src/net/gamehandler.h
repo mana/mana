@@ -41,8 +41,6 @@ class GameHandler
 
         virtual void quit() = 0;
 
-        virtual void ping(int tick) = 0;
-
         virtual bool removeDeadBeings() const = 0;
 
         /**
