@@ -102,8 +102,7 @@ void Button::setButtonIcon(const std::string& iconFile, int frameHeight,
         mButtonIcon = new Image*[BUTTON_COUNT];
         for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            mButtonIcon[mode] = btnIcons->getSubImage(mode * frameWidth
-                                                      + (mode ? 1 : 0), 0,
+            mButtonIcon[mode] = btnIcons->getSubImage(mode * frameWidth, 0,
                                                       frameWidth, frameHeight);
         }
 
