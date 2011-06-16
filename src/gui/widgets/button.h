@@ -25,6 +25,7 @@
 #include <guichan/widgets/button.hpp>
 
 class ImageRect;
+class Image;
 
 /**
  * Button widget. Same as the Guichan button but with custom look.
@@ -58,12 +59,31 @@ class Button : public gcn::Button
          */
         void updateAlpha();
 
+        void adjustSize();
+
+        void setCaption(const std::string& caption);
+
+        /**
+         * Set the icons available next to the text
+         *
+         * @note: The image given must be formatted to give horizontally
+         * frames of the given width and height for the following states:
+         * Standard, Highlighted, Pressed, and Disabled.
+         * If the image is too short, the missing states won't be loaded.
+         */
+        void setButtonIcon(const std::string& iconFile = std::string(),
+                           int frameHeight = 0,  int frameWidth = 0);
+
     private:
         void init();
 
-        static ImageRect button[4];    /**< Button state graphics */
-        static int mInstances;         /**< Number of button instances */
+        void removeButtonIcon();
+
+        static ImageRect* mButton;  /**< Button state graphics */
+        static int mInstances;      /**< Number of button instances */
         static float mAlpha;
+
+        Image** mButtonIcon;        /**< Button Icons graphics */
 };
 
 #endif

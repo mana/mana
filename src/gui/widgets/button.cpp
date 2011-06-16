@@ -36,6 +36,7 @@
 
 int Button::mInstances = 0;
 float Button::mAlpha = 1.0;
+ImageRect *Button::mButton;
 
 enum{
     BUTTON_STANDARD,    // 0
@@ -59,22 +60,74 @@ static ButtonData const data[BUTTON_COUNT] = {
     { "button_disabled.png", 25, 23 }
 };
 
-ImageRect Button::button[BUTTON_COUNT];
-
-Button::Button()
+Button::Button():
+    mButtonIcon(0)
 {
     init();
+    adjustSize();
 }
 
 Button::Button(const std::string &caption, const std::string &actionEventId,
     gcn::ActionListener *listener):
-    gcn::Button(caption)
+    gcn::Button(caption),
+    mButtonIcon(0)
 {
     init();
     setActionEventId(actionEventId);
 
     if (listener)
         addActionListener(listener);
+
+    adjustSize();
+}
+
+void Button::setButtonIcon(const std::string& iconFile, int frameHeight,
+                           int frameWidth)
+{
+    // We clean up possible older references.
+    if (mButtonIcon)
+        removeButtonIcon();
+
+    // If nothing relevant was set, we can quit now.
+    if (iconFile.empty() || !frameWidth || !frameHeight)
+        return;
+
+    // Load the icon frames.
+    Image *btnIcons = Theme::getImageFromTheme(iconFile);
+    if (!btnIcons)
+        return;
+
+    if (btnIcons->getWidth() > 0 && btnIcons->getHeight() > 0)
+    {
+        mButtonIcon = new Image*[BUTTON_COUNT];
+        for (int mode = 0; mode < BUTTON_COUNT; ++mode)
+        {
+            mButtonIcon[mode] = btnIcons->getSubImage(mode * frameWidth
+                                                      + (mode ? 1 : 0), 0,
+                                                      frameWidth, frameHeight);
+        }
+
+        adjustSize();
+    }
+
+    btnIcons->decRef();
+}
+
+void Button::removeButtonIcon()
+{
+    if (!mButtonIcon)
+        return;
+
+    // Delete potential button icons
+    for (int mode = 0; mode < BUTTON_COUNT; ++mode)
+    {
+        delete mButtonIcon[mode];
+        mButtonIcon[mode] = 0;
+    }
+    delete[] mButtonIcon;
+    mButtonIcon = 0;
+
+    adjustSize();
 }
 
 void Button::init()
@@ -85,10 +138,11 @@ void Button::init()
     {
         // Load the skin
         Image *btn[BUTTON_COUNT];
+        mButton = new ImageRect[BUTTON_COUNT];
 
         int a, x, y, mode;
 
-        for (mode = 0; mode < BUTTON_COUNT; mode++)
+        for (mode = 0; mode < BUTTON_COUNT; ++mode)
         {
             btn[mode] = Theme::getImageFromTheme(data[mode].file);
             a = 0;
@@ -96,7 +150,7 @@ void Button::init()
             {
                 for (x = 0; x < 3; x++)
                 {
-                    button[mode].grid[a] = btn[mode]->getSubImage(
+                    mButton[mode].grid[a] = btn[mode]->getSubImage(
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,
                             data[y + 1].gridY - data[y].gridY + 1);
@@ -116,11 +170,14 @@ Button::~Button()
 
     if (mInstances == 0)
     {
-        for (int mode = 0; mode < BUTTON_COUNT; mode++)
+        for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            for_each(button[mode].grid, button[mode].grid + 9, dtor<Image*>());
+            for_each(mButton[mode].grid, mButton[mode].grid + 9,
+                dtor<Image*>());
         }
+        delete[] mButton;
     }
+    removeButtonIcon();
 }
 
 void Button::updateAlpha()
@@ -131,12 +188,10 @@ void Button::updateAlpha()
     if (mAlpha != alpha)
     {
         mAlpha = alpha;
-        for (int a = 0; a < 9; a++)
+        for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            button[BUTTON_DISABLED].grid[a]->setAlpha(mAlpha);
-            button[BUTTON_PRESSED].grid[a]->setAlpha(mAlpha);
-            button[BUTTON_HIGHLIGHTED].grid[a]->setAlpha(mAlpha);
-            button[BUTTON_STANDARD].grid[a]->setAlpha(mAlpha);
+            for (int a = 0; a < 9; ++a)
+                mButton[mode].grid[a]->setAlpha(mAlpha);
         }
     }
 }
@@ -157,35 +212,93 @@ void Button::draw(gcn::Graphics *graphics)
     updateAlpha();
 
     static_cast<Graphics*>(graphics)->
-        drawImageRect(0, 0, getWidth(), getHeight(), button[mode]);
+        drawImageRect(0, 0, getWidth(), getHeight(), mButton[mode]);
 
     if (mode == BUTTON_DISABLED)
         graphics->setColor(Theme::getThemeColor(Theme::BUTTON_DISABLED));
     else
         graphics->setColor(Theme::getThemeColor(Theme::BUTTON));
 
-    int textX;
+    int textX = 0;
     int textY = getHeight() / 2 - getFont()->getHeight() / 2;
+    int btnIconX = 0;
+    int btnIconY = getHeight() / 2
+                   - ((mButtonIcon && mButtonIcon[mode]) ?
+                      mButtonIcon[mode]->getHeight() / 2 : 0);
+
+    int btnIconWidth = (mButtonIcon && mButtonIcon[mode]) ?
+                           mButtonIcon[mode]->getWidth() : 0;
 
     switch (getAlignment())
     {
         case gcn::Graphics::LEFT:
-            textX = 4;
+            if (btnIconWidth)
+            {
+                btnIconX = 4;
+                textX = btnIconX + mButtonIcon[mode]->getWidth() + 2;
+            }
+            else
+            {
+                textX = 4;
+            }
             break;
         case gcn::Graphics::CENTER:
-            textX = getWidth() / 2;
+            if (btnIconWidth)
+            {
+                btnIconX = getWidth() / 2 - (getFont()->getWidth(mCaption)
+                    + mButtonIcon[mode]->getWidth() + 2) / 2;
+                textX = getWidth() / 2 + mButtonIcon[mode]->getWidth() / 2 + 2;
+            }
+            else
+            {
+                textX = getWidth() / 2;
+            }
             break;
         case gcn::Graphics::RIGHT:
+            if (btnIconWidth)
+                btnIconX = getWidth() - 4 - getFont()->getWidth(mCaption) - 2;
             textX = getWidth() - 4;
             break;
         default:
-            throw GCN_EXCEPTION("Button::draw. Unknown alignment.");
+            throw GCN_EXCEPTION("Button::draw(). Unknown alignment.");
     }
 
     graphics->setFont(getFont());
 
     if (isPressed())
-        graphics->drawText(getCaption(), textX + 1, textY + 1, getAlignment());
-    else
-        graphics->drawText(getCaption(), textX, textY, getAlignment());
+    {
+        textX++; textY++;
+        btnIconX++; btnIconY++;
+    }
+
+    if (btnIconWidth)
+        static_cast<Graphics*>(graphics)->drawImage(mButtonIcon[mode],
+                                                    btnIconX, btnIconY);
+    graphics->drawText(getCaption(), textX, textY, getAlignment());
+}
+
+void Button::adjustSize()
+{
+    // Size of the image button.
+    int iconWidth = 0, iconHeight = 0;
+    if (mButtonIcon)
+    {
+        for (int mode = 0; mode < BUTTON_COUNT; ++mode)
+        {
+            iconWidth = std::max(iconWidth, mButtonIcon[mode] ?
+                            mButtonIcon[mode]->getWidth() + 2 : 0);
+            iconHeight = std::max(iconHeight, mButtonIcon[mode] ?
+                             mButtonIcon[mode]->getHeight() : 0);
+        }
+    }
+
+    setWidth(std::max(getFont()->getWidth(mCaption) + iconWidth + 2, iconWidth)
+             + 2 * mSpacing);
+    setHeight(std::max(getFont()->getHeight(), iconHeight) + 2 * mSpacing);
+}
+
+void Button::setCaption(const std::string& caption)
+{
+    mCaption = caption;
+    adjustSize();
 }
