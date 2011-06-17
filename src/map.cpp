@@ -94,10 +94,12 @@ void TileAnimation::update(int ticks)
     }
 }
 
-MapLayer::MapLayer(int x, int y, int width, int height, bool isFringeLayer):
+MapLayer::MapLayer(int x, int y, int width, int height, bool isFringeLayer,
+                   Map *map):
     mX(x), mY(y),
     mWidth(width), mHeight(height),
-    mIsFringeLayer(isFringeLayer)
+    mIsFringeLayer(isFringeLayer),
+    mMap(map)
 {
     const int size = mWidth * mHeight;
     mTiles = new Image*[size];
@@ -135,37 +137,38 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
 
     Actors::const_iterator ai = actors.begin();
 
-    int dx = (mX * 32) - scrollX;
-    int dy = (mY * 32) - scrollY + 32;
+    int dx = (mX * mMap->getTileWidth()) - scrollX;
+    int dy = (mY * mMap->getTileHeight()) - scrollY + mMap->getTileHeight();
 
     for (int y = startY; y < endY; y++)
     {
-        int y32 = y * 32;
+        int pixelY = y * mMap->getTileHeight();
 
         // If drawing the fringe layer, make sure all actors above this row of
         // tiles have been drawn
         if (mIsFringeLayer)
         {
-            while (ai != actors.end() && (*ai)->getPixelY() <= y * 32)
+            while (ai != actors.end() && (*ai)->getPixelY()
+                   <= y * mMap->getTileHeight())
             {
                 (*ai)->draw(graphics, -scrollX, -scrollY);
-                ai++;
+                ++ai;
             }
         }
 
         if (!(debugFlags & Map::MAP_SPECIAL3))
         {
-            const int py0 = y32 + dy;
+            const int py0 = pixelY + dy;
 
             for (int x = startX; x < endX; x++)
             {
                 Image *img = getTile(x, y);
                 if (img)
                 {
-                    const int px = (x * 32) + dx;
+                    const int px = (x * mMap->getTileWidth()) + dx;
                     const int py = py0 - img->getHeight();
                     if (!(debugFlags & (Map::MAP_SPECIAL1 | Map::MAP_SPECIAL2))
-                        || img->getHeight() <= 32)
+                        || img->getHeight() <= mMap->getTileHeight())
                     {
                         int width = 0;
                         int c = getTileDrawWidth(x, y, endX, width);
@@ -440,7 +443,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
                 graphics->drawRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
                     y * mTileHeight - scrollY,
-                    33, 33));
+                    mTileWidth + 1, mTileHeight + 1));
             }
 
             if (!(debugFlags & MAP_COLLISION_TILES))
@@ -452,7 +455,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
                 graphics->fillRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
                     y * mTileHeight - scrollY,
-                    32, 32));
+                    mTileWidth, mTileHeight));
             }
 
             if (!getWalk(x, y, BLOCKMASK_MONSTER))
@@ -461,7 +464,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
                 graphics->fillRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
                     y * mTileHeight - scrollY,
-                    32, 32));
+                    mTileWidth, mTileHeight));
             }
 
             if (!getWalk(x, y, BLOCKMASK_CHARACTER))
@@ -470,7 +473,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
                 graphics->fillRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
                     y * mTileHeight - scrollY,
-                    32, 32));
+                    mTileWidth, mTileHeight));
             }
         }
     }
@@ -667,20 +670,20 @@ Position Map::checkNodeOffsets(int radius, unsigned char walkMask,
                                const Position &position) const
 {
     // Pre-computing character's position in tiles
-    const int tx = position.x / 32;
-    const int ty = position.y / 32;
+    const int tx = position.x / mTileWidth;
+    const int ty = position.y / mTileHeight;
 
     // Pre-computing character's position offsets.
-    int fx = position.x % 32;
-    int fy = position.y % 32;
+    int fx = position.x % mTileWidth;
+    int fy = position.y % mTileHeight;
 
     // Compute the being radius:
     // FIXME: Hande beings with more than 1/2 tile radius by not letting them
     // go or spawn in too narrow places. The server will have to be aware
     // of being's radius value (in tiles) to handle this gracefully.
-    if (radius > 32 / 2) radius = 32 / 2;
+    if (radius > mTileWidth / 2) radius = mTileWidth / 2;
     // set a default value if no value returned.
-    if (radius < 1) radius = 32 / 3;
+    if (radius < 1) radius = mTileWidth / 3;
 
     // We check diagonal first as they are more restrictive.
     // Top-left border check
@@ -691,36 +694,37 @@ Position Map::checkNodeOffsets(int radius, unsigned char walkMask,
     }
     // Top-right border check
     if (!getWalk(tx + 1, ty - 1, walkMask)
-        && (fy < radius) && fx > (32 - radius))
+        && (fy < radius) && fx > (mTileWidth - radius))
     {
-        fx = 32 -radius;
+        fx = mTileWidth - radius;
         fy = radius;
     }
     // Bottom-left border check
     if (!getWalk(tx - 1, ty + 1, walkMask)
-        && fy > (32 - radius) && fx < radius)
+        && fy > (mTileHeight - radius) && fx < radius)
     {
         fx = radius;
-        fy = 32 - radius;
+        fy = mTileHeight - radius;
     }
     // Bottom-right border check
     if (!getWalk(tx + 1, ty + 1, walkMask)
-        && fy > (32 - radius) && fx > (32 - radius))
+        && fy > (mTileHeight - radius) && fx > (mTileWidth - radius))
     {
-        fx = fy = 32 -radius;
+        fx = mTileWidth - radius;
+        fy = mTileHeight -radius;
     }
 
     // Fix coordinates so that the player does not seem to dig into walls.
-    if (fx > (32 - radius) && !getWalk(tx + 1, ty, walkMask))
-        fx = 32 - radius;
+    if (fx > (mTileWidth - radius) && !getWalk(tx + 1, ty, walkMask))
+        fx = mTileWidth - radius;
     else if (fx < radius && !getWalk(tx - 1, ty, walkMask))
         fx = radius;
-    else if (fy > (32 - radius) && !getWalk(tx, ty + 1, walkMask))
-        fy = 32 - radius;
+    else if (fy > (mTileHeight - radius) && !getWalk(tx, ty + 1, walkMask))
+        fy = mTileHeight - radius;
     else if (fy < radius && !getWalk(tx, ty - 1, walkMask))
         fy = radius;
 
-    return Position(tx * 32 + fx, ty * 32 + fy);
+    return Position(tx * mTileWidth + fx, ty * mTileHeight + fy);
 }
 
 Path Map::findTilePath(int startPixelX, int startPixelY, int endPixelX,
@@ -751,20 +755,21 @@ Path Map::findPixelPath(int startPixelX, int startPixelY, int endPixelX,
                          int endPixelY,
                          int radius, unsigned char walkMask, int maxCost)
 {
-    Path myPath = findPath(startPixelX / 32, startPixelY / 32,
-                           endPixelX / 32, endPixelY / 32, walkMask, maxCost);
+    Path myPath = findPath(startPixelX / mTileWidth, startPixelY / mTileHeight,
+                           endPixelX / mTileWidth, endPixelY / mTileHeight,
+                           walkMask, maxCost);
 
     // Don't compute empty coordinates.
     if (myPath.empty())
         return myPath;
 
     // Find the starting offset
-    float startOffsetX = (startPixelX % 32);
-    float startOffsetY = (startPixelY % 32);
+    float startOffsetX = (startPixelX % mTileWidth);
+    float startOffsetY = (startPixelY % mTileHeight);
 
     // Find the ending offset
-    float endOffsetX = (endPixelX % 32);
-    float endOffsetY = (endPixelY % 32);
+    float endOffsetX = (endPixelX % mTileWidth);
+    float endOffsetY = (endPixelY % mTileHeight);
 
     // Find the distance, and divide it by the number of steps
     int changeX = (int)((endOffsetX - startOffsetX) / myPath.size());
@@ -779,10 +784,10 @@ Path Map::findPixelPath(int startPixelX, int startPixelY, int endPixelX,
         // A position that is valid on the start and end tile is not
         // necessarily valid on all the tiles in between, so check the offsets.
         *it = checkNodeOffsets(radius, walkMask,
-                               it->x * 32 + startOffsetX + changeX * i,
-                               it->y * 32 + startOffsetY + changeY * i);
-        i++;
-        it++;
+                               it->x * mTileWidth + startOffsetX + changeX * i,
+                               it->y * mTileHeight + startOffsetY + changeY * i);
+        ++i;
+        ++it;
     }
 
     // Remove the last path node, as it's more clever to go to the destination.
@@ -800,7 +805,9 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                    unsigned char walkmask, int maxCost)
 {
     // The basic walking cost of a tile.
-    static int const basicCost = 100;
+    static const int basicCost = 100;
+    // Used to compute the path G cost for diagonal moves.
+    static const int GCOST_SQRT2 = 362 / 256;
 
     // Path to be built up (empty by default)
     Path path;
@@ -874,7 +881,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
 
                 // Calculate G cost for this route, ~sqrt(2) for moving diagonal
                 int Gcost = curr.tile->Gcost +
-                    (dx == 0 || dy == 0 ? basicCost : basicCost * 362 / 256);
+                    (dx == 0 || dy == 0 ? basicCost : basicCost * GCOST_SQRT2);
 
                 /* Demote an arbitrary direction to speed pathfinding by
                    adding a defect (TODO: change depending on the desired
@@ -916,7 +923,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                        forbidden here. */
                     int dx = std::abs(x - destX), dy = std::abs(y - destY);
                     newTile->Hcost = std::abs(dx - dy) * basicCost +
-                        std::min(dx, dy) * (basicCost * 362 / 256);
+                        std::min(dx, dy) * (basicCost * GCOST_SQRT2);
 
                     // Set the current tile as the parent of the new tile
                     newTile->parentX = curr.x;
@@ -998,7 +1005,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
     return path;
 }
 
-void Map::addParticleEffect(const std::string &effectFile, int x, int y, int w, int h)
+void Map::addParticleEffect(const std::string &effectFile, int x, int y, int w,
+                            int h)
 {
     ParticleEffectData newEffect;
     newEffect.file = effectFile;

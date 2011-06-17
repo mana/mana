@@ -90,7 +90,8 @@ class MapLayer
          * fringe layer. The fringe layer is the layer that draws the actors.
          * There can be only one fringe layer per map.
          */
-        MapLayer(int x, int y, int width, int height, bool isFringeLayer);
+        MapLayer(int x, int y, int width, int height, bool isFringeLayer,
+                 Map *map);
 
         ~MapLayer();
 
@@ -134,6 +135,7 @@ class MapLayer
         int mWidth, mHeight;
         bool mIsFringeLayer;    /**< Whether the actors are drawn. */
         Image **mTiles;
+        Map *mMap;              /** The mother map pointer */
 };
 
 /**

@@ -254,7 +254,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
     if (!isCollisionLayer)
     {
-        layer = new MapLayer(offsetX, offsetY, w, h, isFringeLayer);
+        layer = new MapLayer(offsetX, offsetY, w, h, isFringeLayer, map);
         map->addLayer(layer);
     }
 
