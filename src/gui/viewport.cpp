@@ -402,7 +402,8 @@ void Viewport::_drawPath(Graphics *graphics, const Path &path,
         graphics->fillRectangle(gcn::Rectangle(squareX - 4, squareY - 4,
                                                 8, 8));
         graphics->drawText(
-                toString(mMap->getMetaTile(i->x / 32, i->y / 32)->Gcost),
+                toString(mMap->getMetaTile(i->x / mMap->getTileWidth(),
+                                           i->y / mMap->getTileHeight())->Gcost),
                 squareX + 4, squareY + 12, gcn::Graphics::CENTER);
     }
 }

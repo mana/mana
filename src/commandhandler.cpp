@@ -339,8 +339,8 @@ void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 {
     std::ostringstream where;
     where << Game::instance()->getCurrentMapName() << ", coordinates: "
-          << ((player_node->getPixelX() - 16) / 32) << ", "
-          << ((player_node->getPixelY() - 32) / 32);
+          << player_node->getTileX() << ", "
+          << player_node->getTileY();
 
     tab->chatLog(where.str(), BY_SERVER);
 }

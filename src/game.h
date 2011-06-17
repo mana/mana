@@ -67,6 +67,12 @@ class Game
 
         const std::string &getCurrentMapName() { return mMapName; }
 
+        /**
+         * Convenience functions used to get the current tile width and height.
+         */
+        int getCurrentTileWidth() const;
+        int getCurrentTileHeight() const;
+
     private:
         int mLastTarget;
         bool mDisconnected;

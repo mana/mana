@@ -21,6 +21,7 @@
 
 #include "simpleanimation.h"
 
+#include "game.h"
 #include "graphics.h"
 #include "log.h"
 
@@ -132,15 +133,19 @@ void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode)
         return;
 
     // Get animation frames
-    for (   xmlNodePtr frameNode = animationNode->xmlChildrenNode;
-            frameNode;
+    for (xmlNodePtr frameNode = animationNode->xmlChildrenNode; frameNode;
             frameNode = frameNode->next)
     {
         int delay = XML::getProperty(frameNode, "delay", 0);
         int offsetX = XML::getProperty(frameNode, "offsetX", 0);
         int offsetY = XML::getProperty(frameNode, "offsetY", 0);
-        offsetY -= imageset->getHeight() - 32;
-        offsetX -= imageset->getWidth() / 2 - 16;
+        Game *game = Game::instance();
+        if (game)
+        {
+            offsetX -= imageset->getWidth() / 2
+                - game->getCurrentTileWidth() / 2;
+            offsetY -= imageset->getHeight() - game->getCurrentTileHeight();
+        }
 
         if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
         {

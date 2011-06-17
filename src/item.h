@@ -28,6 +28,8 @@
 
 class Image;
 
+const int ITEM_ICON_SIZE = 32;
+
 /**
  * Represents one or more instances of a certain item type.
  */

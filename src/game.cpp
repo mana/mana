@@ -979,3 +979,19 @@ void Game::changeMap(const std::string &mapPath)
     event.setString("mapPath", mapPath);
     event.trigger(Event::GameChannel);
 }
+
+int Game::getCurrentTileWidth() const
+{
+    if (mCurrentMap)
+        return mCurrentMap->getTileWidth();
+
+    return DEFAULT_TILE_LENGTH;
+}
+
+int Game::getCurrentTileHeight() const
+{
+    if (mCurrentMap)
+        return mCurrentMap->getTileHeight();
+
+    return DEFAULT_TILE_LENGTH;
+}

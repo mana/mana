@@ -40,6 +40,8 @@ class Tileset;
 typedef std::vector<Tileset*> Tilesets;
 typedef std::vector<MapLayer*> Layers;
 
+#define DEFAULT_TILE_LENGTH 32
+
 /**
  * A meta tile stores additional information about a location on a tile map.
  * This is information that doesn't need to be repeated for each tile in each
