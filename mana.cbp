@@ -14,14 +14,15 @@
 				<Option compiler="gcc" />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
-					<Add option="-g" />
 					<Add option="-O3" />
+					<Add option="-std=c++0x" />
 					<Add option="-Wall" />
+					<Add option="-g" />
 					<Add option="-Wno-switch" />
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DENABLE_NLS" />
-					<Add option="-std=c++0x" />
+					<Add option="-DWIN32" />
 				</Compiler>
 				<Linker>
 					<Add option="-enable-auto-import" />
@@ -62,24 +63,42 @@
 		<Linker>
 			<Add directory="lib" />
 		</Linker>
+		<Unit filename="libs\enet\callbacks.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs\enet\compress.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs\enet\host.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="libs\enet\include\enet\callbacks.h" />
-		<Unit filename="libs\enet\callbacks.c" />
-		<Unit filename="libs\enet\compress.c" />
 		<Unit filename="libs\enet\include\enet\enet.h" />
-		<Unit filename="libs\enet\host.c" />
 		<Unit filename="libs\enet\include\enet\list.h" />
-		<Unit filename="libs\enet\list.c" />
-		<Unit filename="libs\enet\packet.c" />
-		<Unit filename="libs\enet\peer.c" />
 		<Unit filename="libs\enet\include\enet\protocol.h" />
-		<Unit filename="libs\enet\protocol.c" />
 		<Unit filename="libs\enet\include\enet\time.h" />
 		<Unit filename="libs\enet\include\enet\types.h" />
 		<Unit filename="libs\enet\include\enet\unix.h" />
-		<Unit filename="libs\enet\unix.c" />
 		<Unit filename="libs\enet\include\enet\utility.h" />
 		<Unit filename="libs\enet\include\enet\win32.h" />
-		<Unit filename="libs\enet\win32.c" />
+		<Unit filename="libs\enet\list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs\enet\packet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs\enet\peer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs\enet\protocol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs\enet\unix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libs\enet\win32.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src\SDLMain.h" />
 		<Unit filename="src\SDLMain.m" />
 		<Unit filename="src\actor.cpp" />

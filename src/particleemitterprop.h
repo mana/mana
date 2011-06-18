@@ -21,6 +21,8 @@
 
 #include <cmath>
 
+static const double PI = 3.14159265;
+
 
 enum ChangeFunc
 {
@@ -64,7 +66,7 @@ template <typename T> struct ParticleEmitterProp
         switch (changeFunc)
         {
             case FUNC_SINE:
-                val += (T) std::sin(M_PI * 2 * ((double)(tick%changePeriod) / (double)changePeriod)) * changeAmplitude;
+                val += (T) std::sin(PI * 2 * ((double)(tick%changePeriod) / (double)changePeriod)) * changeAmplitude;
                 break;
             case FUNC_SAW:
                 val += (T) (changeAmplitude * ((double)(tick%changePeriod) / (double)changePeriod)) * 2 - changeAmplitude;
