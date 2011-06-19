@@ -51,9 +51,8 @@ PartyHandler::PartyHandler():
 {
     static const Uint16 _messages[] = {
         GPMSG_PARTY_INVITE_ERROR,
-        CPMSG_PARTY_INVITE_RESPONSE,
         CPMSG_PARTY_INVITED,
-        CPMSG_PARTY_ACCEPT_INVITE_RESPONSE,
+        CPMSG_PARTY_INVITE_ANSWER_RESPONSE,
         CPMSG_PARTY_QUIT_RESPONSE,
         CPMSG_PARTY_NEW_MEMBER,
         CPMSG_PARTY_MEMBER_LEFT,
@@ -78,32 +77,35 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                                     name.c_str()));
         } break;
 
-        case CPMSG_PARTY_INVITE_RESPONSE:
-        {
-            if (msg.readInt8() == ERRMSG_OK)
-            {
-
-            }
-        } break;
-
         case CPMSG_PARTY_INVITED:
         {
             socialWindow->showPartyInvite(msg.readString());
         } break;
 
-        case CPMSG_PARTY_ACCEPT_INVITE_RESPONSE:
+        case CPMSG_PARTY_INVITE_ANSWER_RESPONSE:
         {
-            if (msg.readInt8() == ERRMSG_OK)
+            switch (msg.readInt8())
             {
-                player_node->setParty(mParty);
-                while (msg.getUnreadLength())
-                {
-                    std::string name = msg.readString();
-                    mParty->addMember(0, name);
-                }
+                case ERRMSG_OK:
+                    player_node->setParty(mParty);
+                    while (msg.getUnreadLength())
+                    {
+                        std::string name = msg.readString();
+                        mParty->addMember(0, name);
+                    }
+                    break;
+                case ERRMSG_TIME_OUT:
+                    SERVER_NOTICE(_("Joining party failed, because the "
+                                    "invitation has timed out on the server."));
+                    break;
+                case ERRMSG_FAILURE:
+                    SERVER_NOTICE(_("Joining party failed, because the "
+                                    "inviter has left the game."));
+                    break;
+                default:
+                    logger->log("Unknown CPMSG_PARTY_INVITE_ANSWER_RESPONSE.");
+                    break;
             }
-            else
-                SERVER_NOTICE(_("Joining party failed."));
         } break;
 
         case CPMSG_PARTY_QUIT_RESPONSE:
@@ -117,16 +119,19 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
         case CPMSG_PARTY_NEW_MEMBER:
         {
-            int id = msg.readInt32();
             std::string name = msg.readString();
+            std::string inviter = msg.readString();
+            std::string s;
+            if (!inviter.empty())
+                s = strprintf(_(" on invitation from %s"), inviter.c_str());
 
-            SERVER_NOTICE(strprintf(_("%s joined the party."),
-                                            name.c_str()));
+            SERVER_NOTICE(strprintf(_("%s joined the party%s."),
+                                    name.c_str(), s.c_str()));
 
             if (name == player_node->getName())
                 player_node->setParty(mParty);
 
-            mParty->addMember(id, name);
+            mParty->addMember(0, name);
         } break;
 
         case CPMSG_PARTY_MEMBER_LEFT:
@@ -137,8 +142,25 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
         case CPMSG_PARTY_REJECTED:
         {
             std::string name = msg.readString();
-            SERVER_NOTICE(strprintf(
-                        _("%s rejected your invite."), name.c_str()));
+            switch (msg.readInt8())
+            {
+                case ERRMSG_OK:
+                    SERVER_NOTICE(strprintf(_("%s rejected your invite."),
+                                            name.c_str()));
+                    break;
+                case ERRMSG_LIMIT_REACHED:
+                    SERVER_NOTICE(_("Party invitation rejected by server, "
+                                    "because of too many invitations in a "
+                                    "short time."));
+                    break;
+                case ERRMSG_FAILURE:
+                    SERVER_NOTICE(strprintf(_("%s is already in a party."),
+                                            name.c_str()));
+                    break;
+                default:
+                    logger->log("Unknown CPMSG_PARTY_REJECTED.");
+                    break;
+            }
         } break;
     }
 }
@@ -169,10 +191,10 @@ void PartyHandler::invite(const std::string &name)
 
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
 {
-    MessageOut msg = MessageOut(accept ? PCMSG_PARTY_ACCEPT_INVITE :
-                                PCMSG_PARTY_REJECT_INVITE);
+    MessageOut msg = MessageOut(PCMSG_PARTY_INVITE_ANSWER);
 
     msg.writeString(inviter);
+    msg.writeInt8(accept);
 
     chatServerConnection->send(msg);
 }

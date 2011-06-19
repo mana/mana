@@ -22,6 +22,8 @@
 
 #include "actorspritemanager.h"
 
+#include "net/net.h"
+
 PartyMember::PartyMember(Party *party, int id, const std::string &name):
         Avatar(name), mId(id), mParty(party), mLeader(false)
 {
@@ -44,7 +46,7 @@ Party::~Party()
 PartyMember *Party::addMember(int id, const std::string &name)
 {
     PartyMember *m;
-    if ((m = getMember(id)))
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA && (m = getMember(id)))
     {
         return m;
     }
