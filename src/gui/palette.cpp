@@ -32,6 +32,7 @@
 
 #include <math.h>
 
+static const double PI = 3.14159265;
 const gcn::Color Palette::BLACK = gcn::Color(0, 0, 0);
 Palette::Palettes Palette::mInstances;
 
@@ -116,7 +117,7 @@ void Palette::advanceGradient()
 
             if (mGradVector[i]->grad == PULSE)
             {
-                colVal = (int) (255.0 * sin(M_PI * colIndex / numOfColors));
+                colVal = (int) (255.0 * sin(PI * colIndex / numOfColors));
 
                 const gcn::Color &col = mGradVector[i]->testColor;
 
@@ -128,11 +129,11 @@ void Palette::advanceGradient()
             {
                 if (colIndex % 2)
                 { // falling curve
-                    colVal = (int)(255.0 * (cos(M_PI * pos / delay) + 1) / 2);
+                    colVal = (int)(255.0 * (cos(PI * pos / delay) + 1) / 2);
                 }
                 else
                 { // ascending curve
-                    colVal = (int)(255.0 * (cos(M_PI * (delay - pos) / delay) +
+                    colVal = (int)(255.0 * (cos(PI * (delay - pos) / delay) +
                                    1) / 2);
                 }
 
@@ -152,7 +153,7 @@ void Palette::advanceGradient()
                 const gcn::Color &destCol =
                         RAINBOW_COLORS[(colIndex + 1) % numOfColors];
 
-                startColVal = (cos(M_PI * pos / delay) + 1) / 2;
+                startColVal = (cos(PI * pos / delay) + 1) / 2;
                 destColVal = 1 - startColVal;
 
                 mGradVector[i]->color.r =(int)(startColVal * startCol.r +

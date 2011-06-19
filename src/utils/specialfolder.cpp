@@ -39,7 +39,7 @@ std::string getSpecialFolderLocation(int folderId)
     std::string ret;
     LPITEMIDLIST pItemIdList;
     LPMALLOC pMalloc;
-    char szPath[_MAX_PATH];
+    char szPath[MAX_PATH];
 
     // get the item ID list for folderId
     HRESULT hr = SHGetSpecialFolderLocation(NULL, folderId, &pItemIdList);

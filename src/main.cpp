@@ -173,7 +173,7 @@ static void initInternationalization()
 {
 #if ENABLE_NLS
 #ifdef WIN32
-    putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+    SetEnvironmentVariable("LANG", _nl_locale_name_default());
     // mingw doesn't like LOCALEDIR to be defined for some reason
     bindtextdomain("mana", "translations/");
 #else
