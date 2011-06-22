@@ -213,12 +213,12 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
     if (!mMap || (!dx && !dy))
         return Position((int)pos.x, (int)pos.y);
 
-    int tileW = mMap->getTileWidth();
-    int tileH = mMap->getTileHeight();
+    const int tileW = mMap->getTileWidth();
+    const int tileH = mMap->getTileHeight();
 
     // Get the current tile pos and its offset
-    int tileX = (int)pos.x / tileW;
-    int tileY = (int)pos.y / tileH;
+    const int tileX = (int)pos.x / tileW;
+    const int tileY = (int)pos.y / tileH;
     int offsetX = (int)pos.x % tileW;
     int offsetY = (int)pos.y % tileH;
 

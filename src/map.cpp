@@ -711,7 +711,7 @@ Position Map::checkNodeOffsets(int radius, unsigned char walkMask,
         && fy > (mTileHeight - radius) && fx > (mTileWidth - radius))
     {
         fx = mTileWidth - radius;
-        fy = mTileHeight -radius;
+        fy = mTileHeight - radius;
     }
 
     // Fix coordinates so that the player does not seem to dig into walls.
@@ -805,9 +805,9 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                    unsigned char walkmask, int maxCost)
 {
     // The basic walking cost of a tile.
-    static const int basicCost = 100;
+    const int basicCost = 100;
     // Used to compute the path G cost for diagonal moves.
-    static const int GCOST_SQRT2 = 362 / 256;
+    const int GCOST_SQRT2 = 362 / 256;
 
     // Path to be built up (empty by default)
     Path path;

@@ -196,8 +196,8 @@ void Being::setDestination(int dstX, int dstY)
         return;
 
     // If the destination is unwalkable, don't bother trying to get there
-    int tileWidth = mMap->getTileWidth();
-    int tileHeight = mMap->getTileHeight();
+    const int tileWidth = mMap->getTileWidth();
+    const int tileHeight = mMap->getTileHeight();
     if (!mMap->getWalk(dstX / tileWidth, dstY / tileHeight))
         return;
 

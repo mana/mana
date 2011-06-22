@@ -50,7 +50,7 @@
  * everything beyond will reset the port hard.
  * @todo: Make this parameter read from config.
  */
-static const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
+const int MAP_TELEPORT_SCROLL_DISTANCE = 256;
 
 extern Net::PlayerHandler *playerHandler;
 
@@ -297,10 +297,8 @@ void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
 
     /* Scroll if neccessary */
     if (!sameMap
-            || (abs(x - (int) playerPos.x) > MAP_TELEPORT_SCROLL_DISTANCE
-                * game->getCurrentTileWidth())
-            || (abs(y - (int) playerPos.y) > MAP_TELEPORT_SCROLL_DISTANCE
-                * game->getCurrentTileHeight()))
+            || (abs(x - (int) playerPos.x) > MAP_TELEPORT_SCROLL_DISTANCE)
+            || (abs(y - (int) playerPos.y) > MAP_TELEPORT_SCROLL_DISTANCE))
     {
         scrollOffsetX = x - (int) playerPos.x;
         scrollOffsetY = y - (int) playerPos.y;
