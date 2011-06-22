@@ -30,9 +30,10 @@ AnimationParticle::AnimationParticle(Map *map, Animation *animation):
 {
 }
 
-AnimationParticle::AnimationParticle(Map *map, xmlNodePtr animationNode):
+AnimationParticle::AnimationParticle(Map *map, xmlNodePtr animationNode,
+                                     const std::string& dyePalettes):
     ImageParticle(map, 0),
-    mAnimation(new SimpleAnimation(animationNode))
+    mAnimation(new SimpleAnimation(animationNode, dyePalettes))
 {
 }
 
