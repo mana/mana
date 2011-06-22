@@ -43,6 +43,7 @@ bool Minimap::mShow = true;
 
 Minimap::Minimap():
     Window(_("Map")),
+    mMap(0),
     mMapImage(0),
     mWidthProportion(0.5),
     mHeightProportion(0.5)
@@ -96,6 +97,7 @@ void Minimap::setMap(Map *map)
 
     if (map)
     {
+        mMap = map;
         std::string tempname =
             "graphics/minimaps/" + map->getFilename() + ".png";
         ResourceManager *resman = ResourceManager::getInstance();
@@ -159,14 +161,17 @@ void Minimap::draw(gcn::Graphics *graphics)
     int mapOriginX = 0;
     int mapOriginY = 0;
 
-    if (mMapImage)
+    if (mMapImage && mMap)
     {
         if (mMapImage->getWidth() > a.width ||
             mMapImage->getHeight() > a.height)
         {
             const Vector &p = player_node->getPosition();
-            mapOriginX = (int) (((a.width) / 2) - (int) (p.x * mWidthProportion) / 32);
-            mapOriginY = (int) (((a.height) / 2) - (int) (p.y * mHeightProportion) / 32);
+            mapOriginX = (int) (((a.width) / 2) - (int) (p.x * mWidthProportion)
+                         / mMap->getTileWidth());
+            mapOriginY = (int) (((a.height) / 2)
+                         - (int) (p.y * mHeightProportion)
+                         / mMap->getTileHeight());
 
             const int minOriginX = a.width - mMapImage->getWidth();
             const int minOriginY = a.height - mMapImage->getHeight();
@@ -230,10 +235,15 @@ void Minimap::draw(gcn::Graphics *graphics)
         const int offsetWidth = (int) ((dotSize - 1) * mWidthProportion);
         const Vector &pos = being->getPosition();
 
-        graphics->fillRectangle(gcn::Rectangle(
-                    (int) (pos.x * mWidthProportion) / 32 + mapOriginX - offsetWidth,
-                    (int) (pos.y * mHeightProportion) / 32 + mapOriginY - offsetHeight,
-                    dotSize, dotSize));
+        if (mMap)
+        {
+            graphics->fillRectangle(gcn::Rectangle(
+                (int) (pos.x * mWidthProportion) / mMap->getTileWidth()
+                + mapOriginX - offsetWidth,
+                (int) (pos.y * mHeightProportion) / mMap->getTileHeight()
+                + mapOriginY - offsetHeight,
+                dotSize, dotSize));
+        }
     }
 
     graphics->popClipArea();

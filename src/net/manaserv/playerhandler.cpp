@@ -46,12 +46,11 @@
 #include "net/manaserv/attributes.h"
 
 /**
- * Max. distance we are willing to scroll after a teleport;
+ * Max. distance in tiles we are willing to scroll after a teleport;
  * everything beyond will reset the port hard.
- * 32 is the nominal tile width/height.
  * @todo: Make this parameter read from config.
  */
-static const int MAP_TELEPORT_SCROLL_DISTANCE = 8 * 32;
+const int MAP_TELEPORT_SCROLL_DISTANCE = 256;
 
 extern Net::PlayerHandler *playerHandler;
 

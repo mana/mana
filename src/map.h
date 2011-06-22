@@ -40,6 +40,8 @@ class Tileset;
 typedef std::vector<Tileset*> Tilesets;
 typedef std::vector<MapLayer*> Layers;
 
+#define DEFAULT_TILE_LENGTH 32
+
 /**
  * A meta tile stores additional information about a location on a tile map.
  * This is information that doesn't need to be repeated for each tile in each
@@ -88,7 +90,8 @@ class MapLayer
          * fringe layer. The fringe layer is the layer that draws the actors.
          * There can be only one fringe layer per map.
          */
-        MapLayer(int x, int y, int width, int height, bool isFringeLayer);
+        MapLayer(int x, int y, int width, int height, bool isFringeLayer,
+                 Map *map);
 
         ~MapLayer();
 
@@ -132,6 +135,7 @@ class MapLayer
         int mWidth, mHeight;
         bool mIsFringeLayer;    /**< Whether the actors are drawn. */
         Image **mTiles;
+        Map *mMap;              /** The mother map pointer */
 };
 
 /**

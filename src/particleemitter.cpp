@@ -29,6 +29,7 @@
 #include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
+#include "map.h"
 
 #include <cmath>
 
@@ -199,8 +200,12 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
                 int delay = XML::getProperty(frameNode, "delay", 0);
                 int offsetX = XML::getProperty(frameNode, "offsetX", 0);
                 int offsetY = XML::getProperty(frameNode, "offsetY", 0);
-                offsetY -= imageset->getHeight() - 32;
-                offsetX -= imageset->getWidth() / 2 - 16;
+                if (mMap)
+                {
+                    offsetX -= imageset->getWidth() / 2
+                               - mMap->getTileWidth() / 2;
+                    offsetY -= imageset->getHeight() - mMap->getTileHeight();
+                }
 
                 if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
                 {

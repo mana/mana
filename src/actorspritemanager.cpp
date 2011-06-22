@@ -21,6 +21,7 @@
 
 #include "actorspritemanager.h"
 
+#include "game.h"
 #include "localplayer.h"
 
 #include "utils/dtor.h"
@@ -37,12 +38,17 @@ class FindBeingFunctor
         {
             if (actor->getType() == ActorSprite::FLOOR_ITEM)
                 return false;
+            Game *game = Game::instance();
+            if (!game)
+                return false;
+
             Being* b = static_cast<Being*>(actor);
 
             uint16_t other_y = y + ((b->getType() == ActorSprite::NPC) ? 1 : 0);
             const Vector &pos = b->getPosition();
-            return ((int) pos.x / 32 == x &&
-                    ((int) pos.y / 32 == y || (int) pos.y / 32 == other_y) &&
+            return ((int) pos.x / game->getCurrentTileWidth() == x &&
+                    ((int) pos.y / game->getCurrentTileHeight() == y
+                    || (int) pos.y / game->getCurrentTileHeight() == other_y) &&
                     b->isAlive() &&
                     (type == ActorSprite::UNKNOWN || b->getType() == type));
         }
@@ -272,10 +278,14 @@ Being *ActorSpriteManager::findNearestLivingBeing(int x, int y,
                                                   ActorSprite::Type type,
                                                   Being *excluded) const
 {
+    Game *game = Game::instance();
+    if (!game)
+        return 0;
+
     Being *closestBeing = 0;
     int dist = 0;
 
-    const int maxDist = maxTileDist * 32;
+    const int maxDist = maxTileDist * game->getCurrentTileWidth();
 
     for_actors
     {

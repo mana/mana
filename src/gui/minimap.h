@@ -58,6 +58,7 @@ class Minimap : public Window
         void draw(gcn::Graphics *graphics);
 
     private:
+        Map *mMap;
         Image *mMapImage;
         float mWidthProportion;
         float mHeightProportion;

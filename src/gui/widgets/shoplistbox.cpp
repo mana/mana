@@ -36,8 +36,6 @@
 #include <guichan/font.hpp>
 #include <guichan/listmodel.hpp>
 
-const int ITEM_ICON_SIZE = 32;
-
 float ShopListBox::mAlpha = 1.0;
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel):

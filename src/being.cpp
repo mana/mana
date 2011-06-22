@@ -27,6 +27,7 @@
 #include "configuration.h"
 #include "effectmanager.h"
 #include "event.h"
+#include "game.h"
 #include "graphics.h"
 #include "guild.h"
 #include "localplayer.h"
@@ -67,8 +68,6 @@
 
 #define HAIR_FILE "hair.xml"
 
-static const int DEFAULT_BEING_WIDTH = 32;
-static const int DEFAULT_BEING_HEIGHT = 32;
 int Being::mNumberOfHairstyles = 1;
 
 Being::Being(int id, Type type, int subtype, Map *map):
@@ -197,8 +196,8 @@ void Being::setDestination(int dstX, int dstY)
         return;
 
     // If the destination is unwalkable, don't bother trying to get there
-    int tileWidth = mMap->getTileWidth();
-    int tileHeight = mMap->getTileHeight();
+    const int tileWidth = mMap->getTileWidth();
+    const int tileHeight = mMap->getTileHeight();
     if (!mMap->getWalk(dstX / tileWidth, dstY / tileHeight))
         return;
 
@@ -592,7 +591,8 @@ void Being::fireMissile(Being *victim, const std::string &particle)
     if (missile)
     {
         Particle *target = particleEngine->createChild();
-        target->moveBy(Vector(0.0f, 0.0f, 32.0f));
+        target->moveBy(Vector(0.0f, 0.0f,
+                       Game::instance()->getCurrentTileWidth()));
         target->setLifetime(1000);
         victim->controlParticle(target);
 

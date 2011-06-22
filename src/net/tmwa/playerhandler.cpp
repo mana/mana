@@ -50,7 +50,7 @@ extern OkDialog *deathNotice;
 
 // Max. distance we are willing to scroll after a teleport;
 // everything beyond will reset the port hard.
-static const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
+const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
 
 // TODO Move somewhere else
 namespace {

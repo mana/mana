@@ -196,9 +196,13 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
         const int itemY = 25 + (i / mGridWidth) * mBoxHeight;
 
         graphics->setColor(gcn::Color(0, 0, 0, 64));
-        graphics->drawRectangle(gcn::Rectangle(itemX, itemY, 32, 32));
+        graphics->drawRectangle(gcn::Rectangle(itemX, itemY,
+                                               ITEM_ICON_SIZE,
+                                               ITEM_ICON_SIZE));
         graphics->setColor(gcn::Color(255, 255, 255, 32));
-        graphics->fillRectangle(gcn::Rectangle(itemX, itemY, 32, 32));
+        graphics->fillRectangle(gcn::Rectangle(itemX, itemY,
+                                               ITEM_ICON_SIZE,
+                                               ITEM_ICON_SIZE));
 
         if (mItems[mCurrentOutfit][i] < 0)
         {

@@ -109,8 +109,8 @@ void GameHandler::event(Event::Channel channel, const Event &event)
             Game *game = Game::instance();
             game->changeMap(mMap);
             Map *map = game->getCurrentMap();
-            int tileWidth = map->getTileWidth();
-            int tileHeight = map->getTileHeight();
+            const int tileWidth = map->getTileWidth();
+            const int tileHeight = map->getTileHeight();
             if (mTileX && mTileY)
             {
                 player_node->setPosition(Vector(mTileX * tileWidth + tileWidth / 2,
