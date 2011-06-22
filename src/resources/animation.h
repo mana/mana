@@ -70,7 +70,7 @@ class Animation
         int getLength() const { return mFrames.size(); }
 
         /**
-         * Returns the duration of this animation.
+         * Returns the duration of this animation in milliseconds.
          */
         int getDuration() const { return mDuration; }
 

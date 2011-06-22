@@ -70,6 +70,8 @@ public:
 
     size_t getFrameCount() const;
 
+    int getDuration() const;
+
     size_t size() const
     { return std::vector<Sprite*>::size(); }
 

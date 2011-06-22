@@ -255,6 +255,17 @@ size_t CompoundSprite::getFrameCount(size_t layer)
     return 0;
 }
 
+int CompoundSprite::getDuration() const
+{
+    int duration = 0;
+    SpriteConstIterator it, it_end;
+    for (it = begin(), it_end = end(); it != it_end; it++)
+        if ((*it) && (*it)->getDuration() > duration)
+            duration = (*it)->getDuration();
+
+    return duration;
+}
+
 static void updateValues(int &dimension, int &pos, int imgDimUL, int imgDimRD, int imgOffset)
 {
     // Handle going beyond the left/up

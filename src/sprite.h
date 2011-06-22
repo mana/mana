@@ -26,6 +26,9 @@
 class Graphics;
 class Image;
 
+// Default frame display delay in milliseconds
+const int DEFAULT_FRAME_DELAY = 75;
+
 class Sprite
 {
     public:
@@ -60,7 +63,7 @@ class Sprite
         virtual bool draw(Graphics* graphics, int posX, int posY) const = 0;
 
         /**
-         * Gets the width in pixels of the image 
+         * Gets the width in pixels of the image
          */
         virtual int getWidth() const = 0;
 
@@ -114,6 +117,11 @@ class Sprite
          * Returns the frame count for the sprite.
          */
         virtual size_t getFrameCount() const = 0;
+
+        /**
+         * Returns the duration of the current sprite animation in milliseconds.
+         */
+        virtual int getDuration() const = 0;
 
     protected:
         float mAlpha;                  /**< The alpha opacity used to draw */

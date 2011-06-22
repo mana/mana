@@ -893,10 +893,12 @@ void Being::logic()
 
     ActorSprite::logic();
 
-    // Remove it after 3 secs. TODO: Just play the dead animation before removing
+    // Remove it after 1.5 secs if the dead animation isn't long enough,
+    // or simply play it until it's finished.
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
-        get_elapsed_time(mActionTime) > 3000)
+        get_elapsed_time(mActionTime) > std::max(getDuration(), 1500))
     {
+
         if (getType() != PLAYER)
             actorSpriteManager->destroy(this);
     }

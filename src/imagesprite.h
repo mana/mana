@@ -66,6 +66,9 @@ public:
     size_t getFrameCount() const
     { return 1; }
 
+    int getDuration() const
+    { return 0; }
+
 private:
     Image *mImage;
 };

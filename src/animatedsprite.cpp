@@ -206,6 +206,13 @@ size_t AnimatedSprite::getFrameCount() const
     return 0;
 }
 
+int AnimatedSprite::getDuration() const
+{
+    if (mAnimation)
+        return mAnimation->getDuration();
+    return 0;
+}
+
 int AnimatedSprite::getWidth() const
 {
     if (mFrame)

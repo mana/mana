@@ -81,6 +81,8 @@ class AnimatedSprite : public Sprite
 
         size_t getFrameCount() const;
 
+        int getDuration() const;
+
     private:
         bool updateCurrentAnimation(unsigned int dt);
 

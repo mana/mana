@@ -22,6 +22,7 @@
 #include "resources/spritedef.h"
 
 #include "log.h"
+#include "sprite.h"
 
 #include "resources/action.h"
 #include "resources/animation.h"
@@ -224,7 +225,8 @@ void SpriteDef::loadAnimation(xmlNodePtr animationNode,
     // Get animation frames
     for_each_xml_child_node(frameNode, animationNode)
     {
-        const int delay = XML::getProperty(frameNode, "delay", 0);
+        const int delay = XML::getProperty(frameNode, "delay",
+                                           DEFAULT_FRAME_DELAY);
         int offsetX = XML::getProperty(frameNode, "offsetX", 0);
         int offsetY = XML::getProperty(frameNode, "offsetY", 0);
 
