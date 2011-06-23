@@ -293,7 +293,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 switch (flag)
                 {
                     case 0:
-                        guildTab->chatLog(_("Could not inivte user to guild."),
+                        guildTab->chatLog(_("Could not invite user to guild."),
                                           BY_SERVER);
                         break;
 
