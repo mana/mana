@@ -806,8 +806,6 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
 {
     // The basic walking cost of a tile.
     const int basicCost = 100;
-    // Used to compute the path G cost for diagonal moves.
-    const int GCOST_SQRT2 = 362 / 256;
 
     // Path to be built up (empty by default)
     Path path;
@@ -881,7 +879,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
 
                 // Calculate G cost for this route, ~sqrt(2) for moving diagonal
                 int Gcost = curr.tile->Gcost +
-                    (dx == 0 || dy == 0 ? basicCost : basicCost * GCOST_SQRT2);
+                    (dx == 0 || dy == 0 ? basicCost : basicCost * 362 / 256);
 
                 /* Demote an arbitrary direction to speed pathfinding by
                    adding a defect (TODO: change depending on the desired
@@ -923,7 +921,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                        forbidden here. */
                     int dx = std::abs(x - destX), dy = std::abs(y - destY);
                     newTile->Hcost = std::abs(dx - dy) * basicCost +
-                        std::min(dx, dy) * (basicCost * GCOST_SQRT2);
+                        std::min(dx, dy) * (basicCost * 362 / 256);
 
                     // Set the current tile as the parent of the new tile
                     newTile->parentX = curr.x;
