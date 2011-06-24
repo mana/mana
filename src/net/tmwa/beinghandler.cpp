@@ -345,22 +345,25 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_SKILL_DAMAGE:
+        {
             msg.readInt16(); // Skill Id
             srcBeing = actorSpriteManager->findBeing(msg.readInt32());
             dstBeing = actorSpriteManager->findBeing(msg.readInt32());
             msg.readInt32(); // Server tick
-            msg.readInt32(); // src speed
+            int attackSpeed = msg.readInt32(); // src speed
             msg.readInt32(); // dst speed
             param1 = msg.readInt32(); // Damage
             msg.readInt16(); // Skill level
             msg.readInt16(); // Div
             msg.readInt8(); // Skill hit/type (?)
+            if (attackSpeed && srcBeing && srcBeing != player_node)
+                srcBeing->setAttackSpeed(attackSpeed);
             if (dstBeing)
                 dstBeing->takeDamage(srcBeing, param1, Being::HIT); // Perhaps a new skill attack type should be created and used?
             if (srcBeing)
                 srcBeing->handleAttack(dstBeing, param1, Being::HIT);
             break;
-
+        }
         case SMSG_BEING_ACTION:
             srcBeing = actorSpriteManager->findBeing(msg.readInt32());
             dstBeing = actorSpriteManager->findBeing(msg.readInt32());
