@@ -71,10 +71,16 @@ class PlayerHandler
         virtual Vector getDefaultMoveSpeed() const = 0;
 
         /**
-         * Convert the original speed in pixel per tick for internal use.
+         * Convert the original server-dependant speed for internal use.
          */
         virtual Vector getPixelsPerTickMoveSpeed(const Vector &speed,
                                                  Map *map = 0) = 0;
+
+        /**
+         * Convert the original speed into the keyboard move delay.
+         * The delay is set in milliseconds per tiles.
+         */
+        virtual int getKeyboardMoveDelay(const Vector& speed) = 0;
 
         /**
          * Tells whether the client has to use pixel paths.
