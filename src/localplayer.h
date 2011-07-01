@@ -147,6 +147,8 @@ class LocalPlayer : public Being
          */
         void setTarget(Being *target);
 
+        void setMoveSpeed(const Vector &speed);
+
         /**
          * Sets a new destination for this being to walk to.
          */
@@ -252,6 +254,13 @@ class LocalPlayer : public Being
 
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
+
+        /**
+         * The delay between two permitted setDestination() call using
+         * the keyboard.
+         * It's set in milliseconds per tile.
+         */
+        int mKeyboardMoveDelay;
 
         typedef std::pair<std::string, int> MessagePair;
         /** Queued messages*/
