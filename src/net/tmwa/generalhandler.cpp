@@ -238,8 +238,13 @@ void GeneralHandler::event(Event::Channel channel,
             statusWindow->addAttribute(DEF, _("Defense"), false, "");
             statusWindow->addAttribute(MATK, _("M.Attack"), false, "");
             statusWindow->addAttribute(MDEF, _("M.Defense"), false, "");
+            // NOTE: Don't remove the gettext comments as they are used
+            // by the xgettext invocation.
+            //xgettext:no-c-format
             statusWindow->addAttribute(HIT, _("% Accuracy"), false, "");
+            //xgettext:no-c-format
             statusWindow->addAttribute(FLEE, _("% Evade"), false, "");
+            //xgettext:no-c-format
             statusWindow->addAttribute(CRIT, _("% Critical"), false, "");
         }
         else if (event.getType() == Event::GuiWindowsUnloading)

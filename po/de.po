@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 01:55+0200\n"
+"POT-Creation-Date: 2011-07-01 23:22+0200\n"
 "PO-Revision-Date: 2011-06-23 16:44+0100\n"
 "Last-Translator: Yohann Ferreira <yohann ferreira orange fr>\n"
 "Language-Team: Deutsch <kde-i18n-de@kde.org>\n"
@@ -145,17 +145,17 @@ msgstr "##1 Update wurde nicht erfolgreich abgeschlossen."
 msgid "##1  you try again later."
 msgstr "##1 es später erneut zu versuchen."
 
-#: ../src/net/tmwa/generalhandler.cpp:241
+#: ../src/net/tmwa/generalhandler.cpp:244
 #, no-c-format
 msgid "% Accuracy"
 msgstr "% Accuracy"
 
-#: ../src/net/tmwa/generalhandler.cpp:243
+#: ../src/net/tmwa/generalhandler.cpp:248
 #, no-c-format
 msgid "% Critical"
 msgstr "% Critical"
 
-#: ../src/net/tmwa/generalhandler.cpp:242
+#: ../src/net/tmwa/generalhandler.cpp:246
 #, no-c-format
 msgid "% Evade"
 msgstr "% Evade"

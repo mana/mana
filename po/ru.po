@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 01:55+0200\n"
+"POT-Creation-Date: 2011-07-01 23:22+0200\n"
 "PO-Revision-Date: 2011-02-23 01:02+0500\n"
 "Last-Translator: Mpa4Hu <ymen9@pisem.net>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -119,18 +119,18 @@ msgstr "##1  Процесс обновления не завершен!"
 msgid "##1  you try again later."
 msgstr "##1  попробуйте позднее."
 
-#: ../src/net/tmwa/generalhandler.cpp:241
-#, fuzzy, c-format
+#: ../src/net/tmwa/generalhandler.cpp:244
+#, fuzzy, no-c-format
 msgid "% Accuracy"
 msgstr "% Точность"
 
-#: ../src/net/tmwa/generalhandler.cpp:243
-#, fuzzy, c-format
+#: ../src/net/tmwa/generalhandler.cpp:248
+#, fuzzy, no-c-format
 msgid "% Critical"
 msgstr "% Критический"
 
-#: ../src/net/tmwa/generalhandler.cpp:242
-#, fuzzy, c-format
+#: ../src/net/tmwa/generalhandler.cpp:246
+#, fuzzy, no-c-format
 msgid "% Evade"
 msgstr "% Уварот"
 

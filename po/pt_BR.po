@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 01:55+0200\n"
+"POT-Creation-Date: 2011-07-01 23:22+0200\n"
 "PO-Revision-Date: 2011-02-26 19:45-0300\n"
 "Last-Translator: alastrim <alasmirt@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
@@ -122,17 +122,17 @@ msgstr "##1  O processo de update está incompleto."
 msgid "##1  you try again later."
 msgstr "##1 você tente novamente mais tarde."
 
-#: ../src/net/tmwa/generalhandler.cpp:241
+#: ../src/net/tmwa/generalhandler.cpp:244
 #, no-c-format
 msgid "% Accuracy"
 msgstr "% Exatidão"
 
-#: ../src/net/tmwa/generalhandler.cpp:243
+#: ../src/net/tmwa/generalhandler.cpp:248
 #, no-c-format
 msgid "% Critical"
 msgstr "% Críticos"
 
-#: ../src/net/tmwa/generalhandler.cpp:242
+#: ../src/net/tmwa/generalhandler.cpp:246
 #, no-c-format
 msgid "% Evade"
 msgstr "% Evasão"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 01:55+0200\n"
+"POT-Creation-Date: 2011-07-01 23:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3086,18 +3086,18 @@ msgstr ""
 msgid "M.Defense"
 msgstr ""
 
-#: ../src/net/tmwa/generalhandler.cpp:241
-#, c-format
+#: ../src/net/tmwa/generalhandler.cpp:244
+#, no-c-format
 msgid "% Accuracy"
 msgstr ""
 
-#: ../src/net/tmwa/generalhandler.cpp:242
-#, c-format
+#: ../src/net/tmwa/generalhandler.cpp:246
+#, no-c-format
 msgid "% Evade"
 msgstr ""
 
-#: ../src/net/tmwa/generalhandler.cpp:243
-#, c-format
+#: ../src/net/tmwa/generalhandler.cpp:248
+#, no-c-format
 msgid "% Critical"
 msgstr ""
 
