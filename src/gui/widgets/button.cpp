@@ -83,21 +83,24 @@ Button::Button(const std::string &caption, const std::string &actionEventId,
     adjustSize();
 }
 
-void Button::setButtonIcon(const std::string& iconFile, int frameHeight,
-                           int frameWidth)
+void Button::setButtonIcon(const std::string& iconFile)
 {
     // We clean up possible older references.
     if (mButtonIcon)
         removeButtonIcon();
 
     // If nothing relevant was set, we can quit now.
-    if (iconFile.empty() || !frameWidth || !frameHeight)
+    if (iconFile.empty())
         return;
 
     // Load the icon frames.
     Image *btnIcons = Theme::getImageFromTheme(iconFile);
     if (!btnIcons)
         return;
+
+    // Compute the sub images size.
+    int frameWidth = btnIcons->getWidth() / 4;
+    int frameHeight = btnIcons->getHeight();
 
     if (btnIcons->getWidth() > 0 && btnIcons->getHeight() > 0)
     {

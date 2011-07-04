@@ -1,6 +1,7 @@
 SET (FILES
     bubble.png
     button.png
+    button-icon-social.png
     button_disabled.png
     buttonhi.png
     buttonpress.png
