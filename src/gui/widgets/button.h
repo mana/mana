@@ -72,15 +72,14 @@ class Button : public gcn::Button
          * Standard, Highlighted, Pressed, and Disabled.
          * If the image is too short, the missing states won't be loaded.
          */
-        void setButtonIcon(const std::string& iconFile = std::string(),
-                           int frameHeight = 0,  int frameWidth = 0);
+        void setButtonIcon(const std::string& iconFile = std::string());
 
         /**
          * Set the button popup text when hovering it for a few seconds.
          *
          * @note: An empty text will disable the popup.
          */
-        void setButtonPopupText(const std::string& text = "");
+        void setButtonPopupText(const std::string& text = std::string());
 
         void logic();
         void mouseMoved(gcn::MouseEvent &event);

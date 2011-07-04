@@ -61,7 +61,7 @@ WindowMenu::WindowMenu():
     // if (specialsWindow->hasSpecials())
         addButton(N_("Specials"), x, h);
 
-    addButton(N_("Social"), x, h);
+    addButton(N_("Social"), x, h, "button-icon-social.png");
     addButton(N_("Shortcut"), x, h);
     addButton(N_("Setup"), x, h);
 
@@ -156,12 +156,22 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
     }
 }
 
-void WindowMenu::addButton(const char* text, int &x, int &h)
+void WindowMenu::addButton(const std::string& text, int &x, int &h,
+                           const std::string& iconPath)
 {
-    Button *btn = new Button(gettext(text), text, this);
-    btn->setButtonPopupText(gettext(text));
+    Button *btn = new Button("", text, this);
+    if (!iconPath.empty())
+    {
+        btn->setButtonPopupText(gettext(text.c_str()));
+        btn->setButtonIcon(iconPath);
+    }
+    else
+    {
+        btn->setCaption(gettext(text.c_str()));
+    }
+
     btn->setPosition(x, 0);
     add(btn);
     x += btn->getWidth() + 3;
-    h = btn->getHeight();
+    h = std::max(h, btn->getHeight());
 }
