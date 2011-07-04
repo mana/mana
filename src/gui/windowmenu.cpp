@@ -158,7 +158,8 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
 
 void WindowMenu::addButton(const char* text, int &x, int &h)
 {
-    gcn::Button *btn = new Button(gettext(text), text, this);
+    Button *btn = new Button(gettext(text), text, this);
+    btn->setButtonPopupText(gettext(text));
     btn->setPosition(x, 0);
     add(btn);
     x += btn->getWidth() + 3;
