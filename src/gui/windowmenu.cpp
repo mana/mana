@@ -63,7 +63,7 @@ WindowMenu::WindowMenu():
 
     addButton(N_("Social"), x, h, "button-icon-social.png");
     addButton(N_("Shortcut"), x, h);
-    addButton(N_("Setup"), x, h);
+    addButton(N_("Setup"), x, h, "button-icon-setup.png");
 
     setDimension(gcn::Rectangle(graphics->getWidth() - x - 3, 3,
                                 x - 3, h));
