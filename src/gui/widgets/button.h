@@ -26,6 +26,7 @@
 
 class ImageRect;
 class Image;
+class TextPopup;
 
 /**
  * Button widget. Same as the Guichan button but with custom look.
@@ -74,6 +75,17 @@ class Button : public gcn::Button
         void setButtonIcon(const std::string& iconFile = std::string(),
                            int frameHeight = 0,  int frameWidth = 0);
 
+        /**
+         * Set the button popup text when hovering it for a few seconds.
+         *
+         * @note: An empty text will disable the popup.
+         */
+        void setButtonPopupText(const std::string& text = "");
+
+        void logic();
+        void mouseMoved(gcn::MouseEvent &event);
+        void mouseExited(gcn::MouseEvent &event);
+
     private:
         void init();
 
@@ -84,6 +96,9 @@ class Button : public gcn::Button
         static float mAlpha;
 
         Image** mButtonIcon;        /**< Button Icons graphics */
+
+        static TextPopup* mTextPopup;       /**< The buttons popup */
+        std::string mPopupText;             /**< the current button text */
 };
 
 #endif
