@@ -160,10 +160,9 @@ void WindowMenu::addButton(const std::string& text, int &x, int &h,
                            const std::string& iconPath)
 {
     Button *btn = new Button("", text, this);
-    if (!iconPath.empty())
+    if (!iconPath.empty() && btn->setButtonIcon(iconPath))
     {
         btn->setButtonPopupText(gettext(text.c_str()));
-        btn->setButtonIcon(iconPath);
     }
     else
     {
