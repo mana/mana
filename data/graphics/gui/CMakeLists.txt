@@ -1,6 +1,8 @@
 SET (FILES
     bubble.png
     button.png
+    button-icon-confirm.png
+    button-icon-cancel.png
     button-icon-equipment.png
     button-icon-inventory.png
     button-icon-setup.png
