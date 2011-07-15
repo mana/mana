@@ -67,7 +67,7 @@ WindowMenu::WindowMenu():
 
     addButton(N_("Social"), x, h, "button-icon-social.png",
         KeyboardConfig::KEY_WINDOW_SOCIAL);
-    addButton(N_("Shortcut"), x, h, "button-icon-shortcut.png",
+    addButton(N_("Shortcuts"), x, h, "button-icon-shortcut.png",
         KeyboardConfig::KEY_WINDOW_SHORTCUT);
     addButton(N_("Setup"), x, h, "button-icon-setup.png",
         KeyboardConfig::KEY_WINDOW_SETUP);
@@ -131,7 +131,7 @@ void WindowMenu::action(const gcn::ActionEvent &event)
     {
         window = socialWindow;
     }
-    else if (event.getId() == "Shortcut")
+    else if (event.getId() == "Shortcuts")
     {
         window = itemShortcutWindow;
     }
@@ -231,9 +231,9 @@ void WindowMenu::updatePopUpCaptions()
                 button->setButtonPopupText(createShortcutCaption("Social",
                                             KeyboardConfig::KEY_WINDOW_SOCIAL));
             }
-            else if (eventId == "Shortcut")
+            else if (eventId == "Shortcuts")
             {
-                button->setButtonPopupText(createShortcutCaption("Shortcut",
+                button->setButtonPopupText(createShortcutCaption("Shortcuts",
                                           KeyboardConfig::KEY_WINDOW_SHORTCUT));
             }
             else if (eventId == "Setup")
