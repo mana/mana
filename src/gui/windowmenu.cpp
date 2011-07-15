@@ -50,19 +50,19 @@ WindowMenu::WindowMenu():
 {
     int x = 0, h = 0;
 
-    addButton(":-)", x, h);
-    addButton(N_("Status"), x, h);
-    addButton(N_("Equipment"), x, h);
-    addButton(N_("Inventory"), x, h);
+    addButton(":-)", x, h, "button-icon-smilies.png");
+    addButton(N_("Status"), x, h, "button-icon-status.png");
+    addButton(N_("Equipment"), x, h, "button-icon-equipment.png");
+    addButton(N_("Inventory"), x, h, "button-icon-inventory.png");
 
     if (skillDialog->hasSkills())
-        addButton(N_("Skills"), x, h);
+        addButton(N_("Skills"), x, h, "button-icon-skills.png");
 
     // if (specialsWindow->hasSpecials())
-        addButton(N_("Specials"), x, h);
+        addButton(N_("Specials"), x, h, "button-icon-specials.png");
 
     addButton(N_("Social"), x, h, "button-icon-social.png");
-    addButton(N_("Shortcut"), x, h);
+    addButton(N_("Shortcut"), x, h, "button-icon-shortcut.png");
     addButton(N_("Setup"), x, h, "button-icon-setup.png");
 
     setDimension(gcn::Rectangle(graphics->getWidth() - x - 3, 3,
