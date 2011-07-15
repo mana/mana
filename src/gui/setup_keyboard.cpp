@@ -22,6 +22,7 @@
 
 #include "gui/setup_keyboard.h"
 
+#include "game.h"
 #include "keyboardconfig.h"
 
 #include "gui/gui.h"
@@ -190,6 +191,8 @@ void Setup_Keyboard::refreshAssignedKey(int index)
 
     }
     mKeyListModel->setElementAt(index, caption);
+    if (Game *game = Game::instance())
+        game->updateWindowMenuCaptions();
 }
 
 void Setup_Keyboard::newKeyCallback(int index)

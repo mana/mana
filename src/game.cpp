@@ -64,7 +64,6 @@
 #include "gui/textdialog.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
-#include "gui/windowmenu.h"
 
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/emoteshortcutcontainer.h"

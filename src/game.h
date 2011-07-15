@@ -24,8 +24,9 @@
 
 #include <string>
 
+#include "gui/windowmenu.h"
+
 class Map;
-class WindowMenu;
 
 /**
  * The main class responsible for running the game. The game starts after you
@@ -72,6 +73,12 @@ class Game
          */
         int getCurrentTileWidth() const;
         int getCurrentTileHeight() const;
+
+        /**
+         * Update the key shortcuts in the window menu.
+         */
+        void updateWindowMenuCaptions()
+        { mWindowMenu->updatePopUpCaptions(); }
 
     private:
         int mLastTarget;
