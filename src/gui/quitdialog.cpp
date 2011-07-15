@@ -44,7 +44,9 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
     mSwitchAccountServer = new RadioButton(_("Switch server"), "quitdialog");
     mSwitchCharacter = new RadioButton(_("Switch character"), "quitdialog");
     mOkButton = new Button(_("OK"), "ok", this);
+    mOkButton->setButtonIcon("button-icon-confirm.png");
     mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mCancelButton->setButtonIcon("button-icon-cancel.png");
 
     addKeyListener(this);
 
