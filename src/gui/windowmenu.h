@@ -49,6 +49,11 @@ class WindowMenu : public Container,
 
         void valueChanged(const gcn::SelectionEvent &event);
 
+        /**
+         * Update the pop-up captions with new key shortcuts.
+         */
+        void updatePopUpCaptions();
+
     private:
         inline void addButton(const std::string& text, int &x, int &h,
                               const std::string& iconPath = std::string(),
