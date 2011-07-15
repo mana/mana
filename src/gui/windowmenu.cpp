@@ -51,19 +51,26 @@ WindowMenu::WindowMenu():
     int x = 0, h = 0;
 
     addButton(":-)", x, h, "button-icon-smilies.png");
-    addButton(N_("Status"), x, h, "button-icon-status.png");
-    addButton(N_("Equipment"), x, h, "button-icon-equipment.png");
-    addButton(N_("Inventory"), x, h, "button-icon-inventory.png");
+    addButton(N_("Status"), x, h, "button-icon-status.png",
+              KeyboardConfig::KEY_WINDOW_STATUS);
+    addButton(N_("Inventory"), x, h, "button-icon-inventory.png",
+              KeyboardConfig::KEY_WINDOW_INVENTORY);
+    addButton(N_("Equipment"), x, h, "button-icon-equipment.png",
+              KeyboardConfig::KEY_WINDOW_EQUIPMENT);
 
     if (skillDialog->hasSkills())
-        addButton(N_("Skills"), x, h, "button-icon-skills.png");
+        addButton(N_("Skills"), x, h, "button-icon-skills.png",
+                  KeyboardConfig::KEY_WINDOW_SKILL);
 
     // if (specialsWindow->hasSpecials())
         addButton(N_("Specials"), x, h, "button-icon-specials.png");
 
-    addButton(N_("Social"), x, h, "button-icon-social.png");
-    addButton(N_("Shortcut"), x, h, "button-icon-shortcut.png");
-    addButton(N_("Setup"), x, h, "button-icon-setup.png");
+    addButton(N_("Social"), x, h, "button-icon-social.png",
+        KeyboardConfig::KEY_WINDOW_SOCIAL);
+    addButton(N_("Shortcut"), x, h, "button-icon-shortcut.png",
+        KeyboardConfig::KEY_WINDOW_SHORTCUT);
+    addButton(N_("Setup"), x, h, "button-icon-setup.png",
+        KeyboardConfig::KEY_WINDOW_SETUP);
 
     setDimension(gcn::Rectangle(graphics->getWidth() - x - 3, 3,
                                 x - 3, h));
@@ -157,12 +164,22 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
 }
 
 void WindowMenu::addButton(const std::string& text, int &x, int &h,
-                           const std::string& iconPath)
+                           const std::string& iconPath,
+                           KeyboardConfig::KeyAction key)
 {
     Button *btn = new Button("", text, this);
     if (!iconPath.empty() && btn->setButtonIcon(iconPath))
     {
-        btn->setButtonPopupText(gettext(text.c_str()));
+        // When in image button mode, we have room to show
+        // the keyboard shortcut.
+        std::string caption = gettext(text.c_str());
+        if (key != KeyboardConfig::KEY_NO_VALUE)
+        {
+            caption += " (";
+            caption += SDL_GetKeyName((SDLKey) keyboard.getKeyValue(key));
+            caption += ")";
+        }
+        btn->setButtonPopupText(caption);
     }
     else
     {

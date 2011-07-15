@@ -22,6 +22,8 @@
 #ifndef WINDOWMENU_H
 #define WINDOWMENU_H
 
+#include "keyboardconfig.h"
+
 #include "gui/widgets/container.h"
 
 #include <guichan/actionlistener.hpp>
@@ -49,7 +51,9 @@ class WindowMenu : public Container,
 
     private:
         inline void addButton(const std::string& text, int &x, int &h,
-                              const std::string& iconPath = std::string());
+                              const std::string& iconPath = std::string(),
+                              KeyboardConfig::KeyAction key =
+                                                  KeyboardConfig::KEY_NO_VALUE);
 
         EmotePopup *mEmotePopup;
 };
