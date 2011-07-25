@@ -41,6 +41,8 @@ SET (FILES
     speechbubble.xml
     sticky_button.png
     tab.png
+    tab_arrows_left.png
+    tab_arrows_right.png
     tab_hilight.png
     tabselected.png
     unknown-item.png

@@ -117,7 +117,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
         typedef std::vector< std::pair<gcn::Tab*, gcn::Widget*> > TabContainer;
 
         /** The tab arrows */
-        gcn::Button *mArrowButton[2];
+        Button *mArrowButton[2];
 
         /** Check whether the arrow should be clickable */
         void updateArrowEnableState();
