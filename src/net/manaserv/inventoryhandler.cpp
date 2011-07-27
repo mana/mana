@@ -195,7 +195,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 }
                 while (msg.getUnreadLength())
                 {
-                    int equipSlot = msg.readInt8();
+                    int equipSlot = msg.readInt16();
                     int inventorySlot = msg.readInt16();
 
                     mEquipBackend.equip(inventorySlot, equipSlot);
@@ -217,7 +217,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             while (msg.getUnreadLength())
             {
                 int inventorySlot = msg.readInt16();
-                int equipSlotCount = msg.readInt8();
+                int equipSlotCount = msg.readInt16();
 
                 if (equipSlotCount == 0)
                 {
@@ -229,8 +229,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                     // Otherwise equip the item in the given slots
                     while (equipSlotCount--)
                     {
-                        unsigned int equipSlot = msg.readInt8();
-                        unsigned int amountUsed = msg.readInt8();
+                        unsigned int equipSlot = msg.readInt16();
+                        unsigned int amountUsed = msg.readInt16();
 
                         mEquipBackend.equip(inventorySlot, equipSlot,
                                             amountUsed);
@@ -256,19 +256,19 @@ void InventoryHandler::event(Event::Channel channel,
         if (event.getType() == Event::DoEquip)
         {
             MessageOut msg(PGMSG_EQUIP);
-            msg.writeInt8(index);
+            msg.writeInt16(index);
             gameServerConnection->send(msg);
         }
         else if (event.getType() == Event::DoUnequip)
         {
             MessageOut msg(PGMSG_UNEQUIP);
-            msg.writeInt8(index);
+            msg.writeInt16(index);
             gameServerConnection->send(msg);
         }
         else if (event.getType() == Event::DoUse)
         {
             MessageOut msg(PGMSG_USE_ITEM);
-            msg.writeInt8(index);
+            msg.writeInt16(index);
             gameServerConnection->send(msg);
         }
         else if (event.getType() == Event::DoDrop)
@@ -276,8 +276,8 @@ void InventoryHandler::event(Event::Channel channel,
             int amount = event.getInt("amount", 1);
 
             MessageOut msg(PGMSG_DROP);
-            msg.writeInt8(index);
-            msg.writeInt8(amount);
+            msg.writeInt16(index);
+            msg.writeInt16(amount);
             gameServerConnection->send(msg);
         }
         else if (event.getType() == Event::DoSplit)
@@ -288,9 +288,9 @@ void InventoryHandler::event(Event::Channel channel,
             if (newIndex > Inventory::NO_SLOT_INDEX)
             {
                 MessageOut msg(PGMSG_MOVE_ITEM);
-                msg.writeInt8(index);
-                msg.writeInt8(newIndex);
-                msg.writeInt8(amount);
+                msg.writeInt16(index);
+                msg.writeInt16(newIndex);
+                msg.writeInt16(amount);
                 gameServerConnection->send(msg);
             }
         }
@@ -304,9 +304,9 @@ void InventoryHandler::event(Event::Channel channel,
                     return;
 
                 MessageOut msg(PGMSG_MOVE_ITEM);
-                msg.writeInt8(index);
-                msg.writeInt8(newIndex);
-                msg.writeInt8(item->getQuantity());
+                msg.writeInt16(index);
+                msg.writeInt16(newIndex);
+                msg.writeInt16(item->getQuantity());
                 gameServerConnection->send(msg);
             }
             else
@@ -315,7 +315,8 @@ void InventoryHandler::event(Event::Channel channel,
                 int destination = event.getInt("destination");
                 int amount = event.getInt("amount", 1);*/
 
-                // TODO
+                // TODO Support drag'n'drop to the map ground, or with other
+                // windows.
             }
         }
     }
