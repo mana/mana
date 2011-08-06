@@ -44,6 +44,7 @@ extern std::string netToken;
 LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
+        APMSG_LOGIN_RNDTRGR_RESPONSE,
         APMSG_LOGIN_RESPONSE,
         APMSG_REGISTER_RESPONSE,
         APMSG_RECONNECT_RESPONSE,
@@ -62,6 +63,10 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
+        case APMSG_LOGIN_RNDTRGR_RESPONSE:
+            handleLoginRandomResponse(msg);
+            break;
+
         case APMSG_LOGIN_RESPONSE:
             handleLoginResponse(msg);
             break;
@@ -245,6 +250,12 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
+void LoginHandler::handleLoginRandomResponse(Net::MessageIn &msg)
+{
+    mLoginData->randomSeed = msg.readString();
+    loginAccountContinue();
+}
+
 void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
 {
     const int errMsg = msg.readInt8();
@@ -385,14 +396,25 @@ unsigned int LoginHandler::getMaxUserNameLength() const
 void LoginHandler::loginAccount(LoginData *loginData)
 {
     mLoginData = loginData;
+    mTmpPassword = loginData->password;
 
+    MessageOut msg(PAMSG_LOGIN_RNDTRGR);
+    msg.writeString(mLoginData->username);
+
+    accountServerConnection->send(msg);
+}
+
+void LoginHandler::loginAccountContinue()
+{
     MessageOut msg(PAMSG_LOGIN);
 
     msg.writeInt32(PROTOCOL_VERSION); // client version
-    msg.writeString(loginData->username);
-    msg.writeString(sha256(loginData->username + loginData->password));
+    msg.writeString(mLoginData->username);
+
+    msg.writeString(sha256(sha256(sha256(mLoginData->username + mTmpPassword)) + mLoginData->randomSeed));
 
     accountServerConnection->send(msg);
+    mTmpPassword = "";
 }
 
 void LoginHandler::logout()

@@ -77,12 +77,16 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void reconnect();
 
     private:
+        void handleLoginRandomResponse(Net::MessageIn &msg);
         void handleLoginResponse(Net::MessageIn &msg);
         void handleRegisterResponse(Net::MessageIn &msg);
 
         void readServerInfo(Net::MessageIn &msg);
 
+        void loginAccountContinue();
+
         LoginData *mLoginData;
+        std::string mTmpPassword;
         unsigned int mMinUserNameLength;
         unsigned int mMaxUserNameLength;
 };

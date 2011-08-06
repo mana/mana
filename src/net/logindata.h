@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2009-2011  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -36,6 +36,7 @@ public:
 
     std::string username;
     std::string password;
+    std::string randomSeed;
     std::string newPassword;
     std::string updateHost;
 
@@ -61,6 +62,7 @@ public:
     {
         username.clear();
         password.clear();
+        randomSeed.clear();
         newPassword.clear();
         updateHost.clear();
         email.clear();
