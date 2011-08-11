@@ -42,6 +42,16 @@ extern Net::InventoryHandler *inventoryHandler;
 
 namespace ManaServ {
 
+struct EquipItemInfo
+{
+
+    EquipItemInfo(int itemId, int equipSlot, int amountUsed):
+        mItemId(itemId), mEquipSlot(equipSlot), mAmountUsed(amountUsed)
+    {}
+
+    int mItemId, mEquipSlot, mAmountUsed;
+};
+
 extern Connection *gameServerConnection;
 
 EquipBackend::EquipBackend()
@@ -67,7 +77,7 @@ void EquipBackend::clear()
     mSlots.assign(mSlots.size(), 0);
 }
 
-void EquipBackend::equip(int inventorySlot, int equipSlot, int amountUsed)
+void EquipBackend::equip(int itemId, int equipSlot, int amountUsed)
 {
     if (equipSlot < 0 || (unsigned) equipSlot >= mSlotTypes.size())
     {
@@ -75,15 +85,16 @@ void EquipBackend::equip(int inventorySlot, int equipSlot, int amountUsed)
         return;
     }
 
-    const SlotType &slotType = mSlotTypes.at(equipSlot);
-    Item *item = PlayerInfo::getInventory()->getItem(inventorySlot);
-
-    if (!item)
+    if (!itemDb->exists(itemId))
     {
-        logger->log("ManaServ::EquipBackend: No item at index %d",
-                    inventorySlot);
+        logger->log("ManaServ::EquipBackend: No item with id %d",
+                    itemId);
         return;
     }
+
+    const SlotType &slotType = mSlotTypes.at(equipSlot);
+
+    Item *itemInstance = new Item(itemId, 1, true);
 
     // Start at first index and search upwards for free slots to place the
     // item at the given inventory slot in
@@ -94,32 +105,39 @@ void EquipBackend::equip(int inventorySlot, int equipSlot, int amountUsed)
     {
         if (!mSlots.at(i))
         {
-            mSlots[i] = item;
+            mSlots[i] = itemInstance;
             --amountUsed;
-
-            item->setEquipped(true);
-            inventoryWindow->updateButtons();
         }
     }
 }
 
-void EquipBackend::unequip(int inventorySlot)
+void EquipBackend::unequip(int equipmentSlot)
 {
-    Item *item = PlayerInfo::getInventory()->getItem(inventorySlot);
-
-    if (!item)
+    if (equipmentSlot < 0 || (unsigned) equipmentSlot >= mSlotTypes.size())
     {
-        logger->log("ManaServ::EquipBackend: No item at index %d",
-                    inventorySlot);
+        logger->log("ManaServ::EquipBackend: Equipment slot out of range");
         return;
     }
 
-    for (unsigned i = 0; i < mSlots.size(); ++i)
-        if (mSlots.at(i) == item)
-            mSlots[i] = 0;
+    const SlotType &slotType = mSlotTypes.at(equipmentSlot);
 
-    item->setEquipped(false);
-    inventoryWindow->updateButtons();
+    // Start at first index and search upwards for free slots to place the
+    // item at the given inventory slot in
+    int i = slotType.firstIndex;
+    const int end_i = i + slotType.count;
+    bool deleteDone = false;
+    for (; i < end_i; ++i)
+    {
+        if (mSlots.at(i))
+        {
+            if (!deleteDone)
+            {
+                delete mSlots[i];
+                deleteDone = true;
+            }
+            mSlots[i] = 0;
+        }
+    }
 }
 
 void EquipBackend::event(Event::Channel, const Event &event)
@@ -151,7 +169,7 @@ void EquipBackend::readEquipFile()
 
         SlotType slotType;
         slotType.name = XML::getProperty(childNode, "name", std::string());
-        slotType.count = XML::getProperty(childNode, "count", 1);
+        slotType.count = XML::getProperty(childNode, "capacity", 1);
         slotType.visible = XML::getBoolProperty(childNode, "visible", false);
         slotType.firstIndex = slotCount;
 
@@ -193,12 +211,37 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                     int amount = msg.readInt16();
                     PlayerInfo::setInventoryItem(slot, id, amount);
                 }
+
+                // A map of { item instance, {equip slot, item id, amount used}}
+                std::map<int, EquipItemInfo> equipItemsInfo;
+                std::map<int, EquipItemInfo>::iterator it;
                 while (msg.getUnreadLength())
                 {
                     int equipSlot = msg.readInt16();
-                    int inventorySlot = msg.readInt16();
+                    int itemId = msg.readInt16();
+                    int itemInstance = msg.readInt16();
 
-                    mEquipBackend.equip(inventorySlot, equipSlot);
+                    // Turn the data received into a usable format
+                    it = equipItemsInfo.find(itemInstance);
+                    if (it == equipItemsInfo.end())
+                    {
+                        // Add a new entry
+                        equipItemsInfo.insert(std::make_pair(itemInstance,
+                            EquipItemInfo(itemId, equipSlot, 1)));
+                    }
+                    else
+                    {
+                        // Add amount to the existing entry
+                        it->second.mAmountUsed++;
+                    }
+                }
+
+                for (it = equipItemsInfo.begin(); it != equipItemsInfo.end();
+                     ++it)
+                {
+                    mEquipBackend.equip(it->second.mItemId,
+                                        it->second.mEquipSlot,
+                                        it->second.mAmountUsed);
                 }
             }
             break;
@@ -214,28 +257,31 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case GPMSG_EQUIP:
-            while (msg.getUnreadLength())
             {
-                int inventorySlot = msg.readInt16();
+                int itemId = msg.readInt16();
                 int equipSlotCount = msg.readInt16();
 
-                if (equipSlotCount == 0)
-                {
-                    // No slots means to unequip this item
-                    mEquipBackend.unequip(inventorySlot);
-                }
-                else
-                {
-                    // Otherwise equip the item in the given slots
-                    while (equipSlotCount--)
-                    {
-                        unsigned int equipSlot = msg.readInt16();
-                        unsigned int amountUsed = msg.readInt16();
+                if (equipSlotCount <= 0)
+                    break;
 
-                        mEquipBackend.equip(inventorySlot, equipSlot,
+                // Otherwise equip the item in the given slots
+                while (equipSlotCount--)
+                {
+                    unsigned int equipSlot = msg.readInt16();
+                    unsigned int amountUsed = msg.readInt16();
+
+                    if (amountUsed == 0)
+                    {
+                        // No slots means to unequip this item
+                        mEquipBackend.unequip(equipSlot);
+                    }
+                    else
+                    {
+                        mEquipBackend.equip(itemId, equipSlot,
                                             amountUsed);
                     }
                 }
+
             }
             break;
     }

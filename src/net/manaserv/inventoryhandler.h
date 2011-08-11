@@ -41,8 +41,8 @@ class EquipBackend : public Equipment::Backend, public EventListener
         Item *getEquipment(int index) const;
         void clear();
 
-        void equip(int inventorySlot, int equipSlot, int amountUsed = 1);
-        void unequip(int inventorySlot);
+        void equip(int itemId, int equipSlot, int amountUsed = 1);
+        void unequip(int equipSlot);
 
         void event(Event::Channel channel, const Event &event);
 
