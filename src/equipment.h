@@ -22,8 +22,6 @@
 #ifndef EQUIPMENT_H
 #define EQUIPMENT_H
 
-#define EQUIPMENT_SIZE 11
-
 class Item;
 
 class Equipment

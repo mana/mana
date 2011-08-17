@@ -34,6 +34,8 @@
 
 #include "net/tmwa/messagehandler.h"
 
+#include "resources/iteminfo.h"
+
 #include <list>
 
 namespace TmwAthena {
@@ -54,7 +56,7 @@ class EquipBackend : public Equipment::Backend
 
         void clear()
         {
-            for (int i = 0; i < EQUIPMENT_SIZE; i++)
+            for (int i = 0; i < EQUIP_VECTOR_END; i++)
             {
                 if (mEquipment[i] != -1)
                 {
@@ -83,7 +85,7 @@ class EquipBackend : public Equipment::Backend
         }
 
     private:
-        int mEquipment[EQUIPMENT_SIZE];
+        int mEquipment[EQUIP_VECTOR_END];
 };
 
 /**
