@@ -123,6 +123,31 @@ ItemPopup::~ItemPopup()
     }
 }
 
+void ItemPopup::setEquipmentText(const std::string& text)
+{
+    mItemEquipSlot = text;
+}
+
+void ItemPopup::setNoItem()
+{
+    mIcon->setImage(0);
+
+    std::string caption = _("No item");
+    if (!mItemEquipSlot.empty())
+    {
+        caption += " (";
+        caption += mItemEquipSlot;
+        caption += ")";
+    }
+    mItemName->setCaption(caption);
+    mItemName->adjustSize();
+
+    mItemName->setForegroundColor(Theme::getThemeColor(Theme::GENERIC));
+    mItemName->setPosition(getPadding(), getPadding());
+
+    setContentSize(mItemName->getWidth() + 2 * getPadding(), 0);
+}
+
 void ItemPopup::setItem(const ItemInfo &item, bool showImage)
 {
     if (item.getName() == mItemName->getCaption())
@@ -157,7 +182,11 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
 
     mItemType = item.getItemType();
 
-    mItemName->setCaption(item.getName());
+    std::string caption = item.getName();
+    if (!mItemEquipSlot.empty())
+        caption += " (" + mItemEquipSlot + ")";
+
+    mItemName->setCaption(caption);
     mItemName->adjustSize();
     mItemName->setForegroundColor(getColorFromItemType(mItemType));
     mItemName->setPosition(getPadding() + space, getPadding());
@@ -226,5 +255,6 @@ void ItemPopup::mouseMoved(gcn::MouseEvent &event)
 
     // When the mouse moved on top of the popup, hide it
     setVisible(false);
+    mItemEquipSlot.clear();
 }
 
