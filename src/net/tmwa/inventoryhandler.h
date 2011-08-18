@@ -84,6 +84,16 @@ class EquipBackend : public Equipment::Backend
             inventoryWindow->updateButtons();
         }
 
+        void triggerUnequip(int slotIndex) const
+        {
+            Item *item = getEquipment(slotIndex);
+            if (item)
+                item->doEvent(Event::DoUnequip);
+        }
+
+        int getSlotNumber() const
+        { return EQUIP_VECTOR_END; }
+
     private:
         int mEquipment[EQUIP_VECTOR_END];
 };

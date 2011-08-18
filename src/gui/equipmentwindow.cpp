@@ -97,26 +97,22 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "unequip" && mSelected > -1)
     {
-        Item *item = mEquipment->getEquipment(mSelected);
-        item->doEvent(Event::DoUnequip);
+        mEquipment->triggerUnequip(mSelected);
         setSelected(-1);
     }
 }
 
 Item *EquipmentWindow::getItem(int x, int y) const
 {
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+    for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
     {
-        for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
-        {
-            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                 BOX_WIDTH, BOX_HEIGHT);
+        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                BOX_WIDTH, BOX_HEIGHT);
 
-            if (tRect.isPointInRect(x, y))
-                return mEquipment->getEquipment(i);
-        }
+        if (tRect.isPointInRect(x, y))
+            return mEquipment->getEquipment(i);
     }
-    return NULL;
+    return 0;
 }
 
 void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
@@ -129,17 +125,14 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
     {
         // Checks if any of the presses were in the equip boxes.
-        if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+        for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
         {
-            for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
-            {
-                Item *item = mEquipment->getEquipment(i);
-                gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                     BOX_WIDTH, BOX_HEIGHT);
+            Item *item = mEquipment->getEquipment(i);
+            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                    BOX_WIDTH, BOX_HEIGHT);
 
-                if (tRect.isPointInRect(x, y) && item)
-                    setSelected(i);
-            }
+            if (tRect.isPointInRect(x, y) && item)
+                setSelected(i);
         }
     }
     else if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
