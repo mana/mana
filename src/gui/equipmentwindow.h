@@ -79,6 +79,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         void mouseMoved(gcn::MouseEvent &event);
 
         Item *getItem(int x, int y) const;
+        const std::string getSlotName(int x, int y) const;
 
         void setSelected(int index);
 

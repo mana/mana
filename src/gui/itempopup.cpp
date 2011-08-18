@@ -145,6 +145,9 @@ void ItemPopup::setNoItem()
     mItemName->setForegroundColor(Theme::getThemeColor(Theme::GENERIC));
     mItemName->setPosition(getPadding(), getPadding());
 
+    mItemDesc->setText(std::string());
+    mItemEffect->setText(std::string());
+
     setContentSize(mItemName->getWidth() + 2 * getPadding(), 0);
 }
 
