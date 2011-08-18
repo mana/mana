@@ -29,6 +29,7 @@
 #include "log.h"
 #include "playerinfo.h"
 
+#include "gui/equipmentwindow.h"
 #include "gui/inventorywindow.h"
 
 #include "net/manaserv/connection.h"
@@ -38,6 +39,10 @@
 
 #include "resources/iteminfo.h"
 
+#include "utils/stringutils.h"
+
+#define EQUIP_FILE "equip.xml"
+
 extern Net::InventoryHandler *inventoryHandler;
 
 namespace ManaServ {
@@ -45,11 +50,11 @@ namespace ManaServ {
 struct EquipItemInfo
 {
 
-    EquipItemInfo(int itemId, int equipSlot, int amountUsed):
-        mItemId(itemId), mEquipSlot(equipSlot), mAmountUsed(amountUsed)
+    EquipItemInfo(int itemId, int slotTypeId, int amountUsed):
+        mItemId(itemId), mSlotTypeId(slotTypeId), mAmountUsed(amountUsed)
     {}
 
-    int mItemId, mEquipSlot, mAmountUsed;
+    int mItemId, mSlotTypeId, mAmountUsed;
 };
 
 extern Connection *gameServerConnection;
@@ -59,29 +64,68 @@ EquipBackend::EquipBackend()
     listen(Event::ClientChannel);
 }
 
-Item *EquipBackend::getEquipment(int index) const
+Item *EquipBackend::getEquipment(int slotIndex) const
 {
-    if (index < 0 || (unsigned) index >= mSlots.size())
-        return 0;
-    return mSlots.at(index);
+    Slots::const_iterator it = mSlots.find(slotIndex);
+    return it == mSlots.end() ? 0 : it->second.item;
 }
+
+std::string EquipBackend::getSlotName(int slotIndex) const
+{
+    Slots::const_iterator it = mSlots.find(slotIndex);
+    return it == mSlots.end() ? std::string() : it->second.name;
+}
+
+void EquipBackend::triggerUnequip(int slotIndex) const
+{
+    // First get the itemInstance
+    Slots::const_iterator it = mSlots.find(slotIndex);
+
+    if (it == mSlots.end() || it->second.itemInstance == 0 || !it->second.item)
+        return;
+
+    Event event(Event::DoUnequip);
+    event.setItem("item", it->second.item);
+    event.setInt("itemInstance", it->second.itemInstance);
+    event.trigger(Event::ItemChannel);
+}
+
 
 void EquipBackend::clear()
 {
-    for (std::vector<Item*>::iterator i = mSlots.begin(), i_end = mSlots.end();
-         i != i_end; ++i)
+    for (Slots::iterator i = mSlots.begin(), i_end = mSlots.end();
+        i != i_end; ++i)
     {
-        if (Item *item = *i)
-            item->setEquipped(false);
+        if (i->second.item)
+        {
+            delete i->second.item;
+            i->second.item = 0;
+        }
     }
-    mSlots.assign(mSlots.size(), 0);
+    mSlots.clear();
 }
 
-void EquipBackend::equip(int itemId, int equipSlot, int amountUsed)
+void EquipBackend::equip(int itemId, int slotTypeId, int amountUsed,
+                         int itemInstance)
 {
-    if (equipSlot < 0 || (unsigned) equipSlot >= mSlotTypes.size())
+    if (itemInstance <= 0)
     {
-        logger->log("ManaServ::EquipBackend: Equipment slot out of range");
+        logger->log("ManaServ::EquipBackend: Equipment slot %i"
+                    " has an invalid item instance.", slotTypeId);
+        return;
+    }
+
+    Slots::iterator it = mSlots.begin();
+    Slots::iterator it_end = mSlots.end();
+    bool slotTypeFound = false;
+    for (; it != it_end; ++it)
+        if (it->second.slotTypeId == (unsigned)slotTypeId)
+            slotTypeFound = true;
+
+    if (!slotTypeFound)
+    {
+        logger->log("ManaServ::EquipBackend: Equipment slot %i"
+                    " is not existing.", slotTypeId);
         return;
     }
 
@@ -92,50 +136,52 @@ void EquipBackend::equip(int itemId, int equipSlot, int amountUsed)
         return;
     }
 
-    const SlotType &slotType = mSlotTypes.at(equipSlot);
-
-    Item *itemInstance = new Item(itemId, 1, true);
-
-    // Start at first index and search upwards for free slots to place the
-    // item at the given inventory slot in
-    int i = slotType.firstIndex;
-    const int end_i = i + slotType.count;
-
-    for (; i < end_i && amountUsed > 0; ++i)
+    // Place the item in the slots with corresponding id until
+    // the capacity requested has been reached
+    for (it = mSlots.begin(); it != it_end && amountUsed > 0; ++it)
     {
-        if (!mSlots.at(i))
+        // If we're on the right slot type and that its unit
+        // isn't already equipped, we can equip there.
+        // The slots are already sorted by id, and subId anyway.
+        if (it->second.slotTypeId == (unsigned)slotTypeId
+            && (!it->second.itemInstance) && (!it->second.item))
         {
-            mSlots[i] = itemInstance;
+            it->second.itemInstance = itemInstance;
+            it->second.item = new Item(itemId, 1, true);
             --amountUsed;
         }
     }
 }
 
-void EquipBackend::unequip(int equipmentSlot)
+void EquipBackend::unequip(int itemInstance)
 {
-    if (equipmentSlot < 0 || (unsigned) equipmentSlot >= mSlotTypes.size())
+    Slots::iterator it = mSlots.begin();
+    Slots::iterator it_end = mSlots.end();
+    bool itemInstanceFound = false;
+    for (; it != it_end; ++it)
+        if (it->second.itemInstance == (unsigned)itemInstance)
+            itemInstanceFound = true;
+
+    if (!itemInstanceFound)
     {
-        logger->log("ManaServ::EquipBackend: Equipment slot out of range");
+        logger->log("ManaServ::EquipBackend: Equipment item instance %i"
+                    " is not existing. The item couldn't be unequipped!",
+                    itemInstance);
         return;
     }
 
-    const SlotType &slotType = mSlotTypes.at(equipmentSlot);
-
-    // Start at first index and search upwards for free slots to place the
-    // item at the given inventory slot in
-    int i = slotType.firstIndex;
-    const int end_i = i + slotType.count;
-    bool deleteDone = false;
-    for (; i < end_i; ++i)
+    for (it = mSlots.begin(); it != it_end; ++it)
     {
-        if (mSlots.at(i))
+        if (it->second.itemInstance != (unsigned)itemInstance)
+        continue;
+
+        // We remove the item
+        it->second.itemInstance = 0;
+        // We also delete the item objects
+        if (it->second.item)
         {
-            if (!deleteDone)
-            {
-                delete mSlots[i];
-                deleteDone = true;
-            }
-            mSlots[i] = 0;
+            delete it->second.item;
+            it->second.item = 0;
         }
     }
 }
@@ -148,38 +194,56 @@ void EquipBackend::event(Event::Channel, const Event &event)
 
 void EquipBackend::readEquipFile()
 {
-    mSlots.clear();
-    mSlotTypes.clear();
+    clear();
 
-    XML::Document doc("equip.xml");
+    XML::Document doc(EQUIP_FILE);
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "equip-slots"))
     {
-        logger->log("ManaServ::EquipBackend: Error while reading equip.xml!");
+        logger->log("ManaServ::EquipBackend: Error while reading "
+                    EQUIP_FILE "!");
         return;
     }
 
-    int slotCount = 0;
+    // The current client slot index
+    unsigned int slotIndex = 0;
 
     for_each_xml_child_node(childNode, rootNode)
     {
         if (!xmlStrEqual(childNode->name, BAD_CAST "slot"))
             continue;
 
-        SlotType slotType;
-        slotType.name = XML::getProperty(childNode, "name", std::string());
-        slotType.count = XML::getProperty(childNode, "capacity", 1);
-        slotType.visible = XML::getBoolProperty(childNode, "visible", false);
-        slotType.firstIndex = slotCount;
+        Slot slot;
+        slot.slotTypeId = XML::getProperty(childNode, "id", 0);
+        std::string name = XML::getProperty(childNode, "name", std::string());
+        const int capacity = XML::getProperty(childNode, "capacity", 1);
 
-        mSlotTypes.push_back(slotType);
-        slotCount += slotType.count;
+        if (slot.slotTypeId > 0 && capacity > 0)
+        {
+            if (name.empty())
+                slot.name = toString(slot.slotTypeId);
+            else
+                slot.name = name;
+
+            // The map is filled until the capacity is reached
+            for (int i = 1; i < capacity + 1; ++i)
+            {
+                // Add the capacity part in the name
+                // when there is more than one slot unit. i.e: 1/3, 2/3
+                if (capacity > 1)
+                {
+                    slot.name = name + " " + toString(i)
+                        + "/" + toString(capacity);
+                }
+
+                slot.subId = i;
+                mSlots.insert(std::make_pair(slotIndex, slot));
+                ++slotIndex;
+            }
+        }
     }
-
-    mSlots.resize(slotCount);
 }
-
 
 InventoryHandler::InventoryHandler()
 {
@@ -212,12 +276,12 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                     PlayerInfo::setInventoryItem(slot, id, amount);
                 }
 
-                // A map of { item instance, {equip slot, item id, amount used}}
+                // A map of { item instance, {slot type id, item id, amount used}}
                 std::map<int, EquipItemInfo> equipItemsInfo;
                 std::map<int, EquipItemInfo>::iterator it;
                 while (msg.getUnreadLength())
                 {
-                    int equipSlot = msg.readInt16();
+                    int slotTypeId = msg.readInt16();
                     int itemId = msg.readInt16();
                     int itemInstance = msg.readInt16();
 
@@ -227,7 +291,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                     {
                         // Add a new entry
                         equipItemsInfo.insert(std::make_pair(itemInstance,
-                            EquipItemInfo(itemId, equipSlot, 1)));
+                            EquipItemInfo(itemId, slotTypeId, 1)));
                     }
                     else
                     {
@@ -240,8 +304,9 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                      ++it)
                 {
                     mEquipBackend.equip(it->second.mItemId,
-                                        it->second.mEquipSlot,
-                                        it->second.mAmountUsed);
+                                        it->second.mSlotTypeId,
+                                        it->second.mAmountUsed,
+                                        it->first);
                 }
             }
             break;
@@ -267,18 +332,22 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 // Otherwise equip the item in the given slots
                 while (equipSlotCount--)
                 {
-                    unsigned int equipSlot = msg.readInt16();
+                    unsigned int parameter = msg.readInt16();
                     unsigned int amountUsed = msg.readInt16();
 
                     if (amountUsed == 0)
                     {
-                        // No slots means to unequip this item
-                        mEquipBackend.unequip(equipSlot);
+                        // No amount means to unequip this item
+                        // Note that in that case, the parameter is
+                        // in fact the itemInstanceId
+                        mEquipBackend.unequip(parameter);
                     }
                     else
                     {
-                        mEquipBackend.equip(itemId, equipSlot,
-                                            amountUsed);
+                        int itemInstance = msg.readInt16();
+                        // The parameter is in that case the slot type id.
+                        mEquipBackend.equip(itemId, parameter,
+                                            amountUsed, itemInstance);
                     }
                 }
 
@@ -293,8 +362,9 @@ void InventoryHandler::event(Event::Channel channel,
     if (channel == Event::ItemChannel)
     {
         Item *item = event.getItem("item");
+        int itemInstance = event.getInt("itemInstance", 0);
 
-        if (!item)
+        if (!item && itemInstance == 0)
             return;
 
         int index = item->getInvIndex();
@@ -308,7 +378,7 @@ void InventoryHandler::event(Event::Channel channel,
         else if (event.getType() == Event::DoUnequip)
         {
             MessageOut msg(PGMSG_UNEQUIP);
-            msg.writeInt16(index);
+            msg.writeInt16(itemInstance);
             gameServerConnection->send(msg);
         }
         else if (event.getType() == Event::DoUse)
@@ -370,8 +440,7 @@ void InventoryHandler::event(Event::Channel channel,
 
 bool InventoryHandler::canSplit(const Item *item)
 {
-    return item && !item->getInfo().getEquippable()
-           && item->getQuantity() > 1;
+    return item && item->getQuantity() > 1;
 }
 
 size_t InventoryHandler::getSize(int type) const

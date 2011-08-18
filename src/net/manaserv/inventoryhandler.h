@@ -38,26 +38,59 @@ class EquipBackend : public Equipment::Backend, public EventListener
     public:
         EquipBackend();
 
-        Item *getEquipment(int index) const;
+        Item *getEquipment(int slotIndex) const;
+        std::string getSlotName(int slotIndex) const;
         void clear();
 
-        void equip(int itemId, int equipSlot, int amountUsed = 1);
-        void unequip(int equipSlot);
+        void equip(int itemId, int slotTypeId, int amountUsed = 1,
+                   int itemInstance = 0);
+        void unequip(int slotTypeId);
 
         void event(Event::Channel channel, const Event &event);
+
+        int getSlotNumber() const
+        { return mSlots.size(); }
+
+        void triggerUnequip(int slotIndex) const;
 
     private:
         void readEquipFile();
 
-        struct SlotType {
-            std::string name;
-            int count;
-            bool visible;
-            int firstIndex;
-        };
+        struct Slot {
+            Slot():
+                item(0),
+                slotTypeId(0),
+                subId(0),
+                itemInstance(0)
+            {}
 
-        std::vector<Item*> mSlots;
-        std::vector<SlotType> mSlotTypes;
+            // Generic info
+            std::string name;
+
+            // The Item reference, used for graphical representation
+            // and info.
+            Item *item;
+
+            // Manaserv specific info
+
+            // Used to know which (server-side) slot id it is.
+            unsigned int slotTypeId;
+            // Static part
+            // The sub id is used to know in which order the slots are
+            // when the slotType has more than one slot capacity:
+            // I.e.: capacity = 6, subId will be between 1 and 6
+            // for each slots in the map.
+            // This is used to sort the multimap along with the slot id.
+            unsigned int subId;
+
+            // This is the (per character) unique item Id, used especially when
+            // equipping the same item multiple times on the same slot type.
+            unsigned int itemInstance;
+         };
+
+        // slot client index, slot info
+        typedef std::map<unsigned int, Slot> Slots;
+        Slots mSlots;
 };
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler,

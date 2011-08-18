@@ -22,6 +22,8 @@
 #ifndef EQUIPMENT_H
 #define EQUIPMENT_H
 
+#include <string>
+
 class Item;
 
 class Equipment
@@ -33,16 +35,33 @@ class Equipment
 
         class Backend {
             public:
-                virtual Item *getEquipment(int index) const = 0;
+                virtual Item *getEquipment(int slotIndex) const = 0;
+                virtual std::string getSlotName(int slotIndex) const
+                { return std::string(); }
+
                 virtual void clear() = 0;
                 virtual ~Backend() { }
+                virtual int getSlotNumber() const = 0;
+                virtual void triggerUnequip(int slotIndex) const = 0;
+            private:
+                virtual void readEquipFile()
+                {}
         };
 
         /**
          * Get equipment at the given slot.
          */
-        Item *getEquipment(int index) const
-        { return mBackend ? mBackend->getEquipment(index) : 0; }
+        Item *getEquipment(int slotIndex) const
+        { return mBackend ? mBackend->getEquipment(slotIndex) : 0; }
+
+        const std::string getSlotName(int slotIndex) const
+        { return mBackend ? mBackend->getSlotName(slotIndex) : std::string(); }
+
+        int getSlotNumber() const
+        { return mBackend ? mBackend->getSlotNumber() : 0; }
+
+        void triggerUnequip(int slotIndex) const
+        { if (mBackend) mBackend->triggerUnequip(slotIndex); }
 
         /**
          * Clears equipment.
