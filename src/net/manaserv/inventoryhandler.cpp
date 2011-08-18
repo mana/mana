@@ -308,6 +308,9 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                                         it->second.mAmountUsed,
                                         it->first);
                 }
+                // The backend is ready, we can setup the equipment window.
+                if (equipmentWindow)
+                    equipmentWindow->loadEquipBoxes();
             }
             break;
 
