@@ -192,6 +192,19 @@ Item *EquipmentWindow::getItem(int x, int y) const
     return 0;
 }
 
+const std::string EquipmentWindow::getSlotName(int x, int y) const
+{
+    for (int i = 0; i < mBoxesNumber; ++i)
+    {
+        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                             BOX_WIDTH, BOX_HEIGHT);
+
+        if (tRect.isPointInRect(x, y))
+            return mEquipment->getSlotName(i);
+    }
+    return std::string();
+}
+
 void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
 {
     Window::mousePressed(mouseEvent);
@@ -231,15 +244,23 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
     const int x = event.getX();
     const int y = event.getY();
 
-    Item *item = getItem(x, y);
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
 
     // Show ItemTooltip
-    if (item)
+    std::string slotName = getSlotName(x, y);
+    if (!slotName.empty())
     {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
+        mItemPopup->setEquipmentText(slotName);
 
-        mItemPopup->setItem(item->getInfo());
+        Item *item = getItem(x, y);
+        if (item)
+        {
+            mItemPopup->setItem(item->getInfo());
+        }
+        else
+            mItemPopup->setNoItem();
+
         mItemPopup->position(x + getX(), y + getY());
     }
     else

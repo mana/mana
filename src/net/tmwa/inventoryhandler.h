@@ -36,6 +36,8 @@
 
 #include "resources/iteminfo.h"
 
+#include "utils/gettext.h"
+
 #include <list>
 
 namespace TmwAthena {
@@ -52,6 +54,37 @@ class EquipBackend : public Equipment::Backend
         {
             int invyIndex = mEquipment[index];
             return PlayerInfo::getInventory()->getItem(invyIndex);
+        }
+
+        std::string getSlotName(int slotIndex) const
+        {
+            switch (slotIndex)
+            {
+                case EQUIP_TORSO_SLOT:
+                    return std::string(_("Torso"));
+                case EQUIP_ARMS_SLOT:
+                    return std::string(_("Arms"));
+                case EQUIP_HEAD_SLOT:
+                    return std::string(_("Head"));
+                case EQUIP_LEGS_SLOT:
+                    return std::string(_("Legs"));
+                case EQUIP_FEET_SLOT:
+                    return std::string(_("Feet"));
+                case EQUIP_RING1_SLOT:
+                    return std::string(_("Ring 1/2"));
+                case EQUIP_RING2_SLOT:
+                    return std::string(_("Ring 2/2"));
+                case EQUIP_NECKLACE_SLOT:
+                    return std::string(_("Necklace"));
+                case EQUIP_FIGHT1_SLOT:
+                    return std::string(_("Hand 1/2"));
+                case EQUIP_FIGHT2_SLOT:
+                    return std::string(_("Hand 2/2"));
+                case EQUIP_PROJECTILE_SLOT:
+                    return std::string(_("Ammo"));
+                default:
+                    return std::string();
+            }
         }
 
         void clear()
