@@ -53,6 +53,11 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         void mousePressed(gcn::MouseEvent& mouseEvent);
 
+        /**
+         * Loads the correct amount of displayed equip boxes.
+         */
+        void loadEquipBoxes();
+
   protected:
         /**
          * Equipment box.
@@ -67,6 +72,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         int mSelected; /**< Index of selected item. */
         Equipment *mEquipment;
+        int mBoxesNumber; /**< Number of equipment boxes to display */
 
     private:
         void mouseExited(gcn::MouseEvent &event);
@@ -79,22 +85,6 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         ItemPopup *mItemPopup;
         gcn::Button *mUnequip;
 };
-
-namespace TmwAthena {
-
-class TaEquipmentWindow : public EquipmentWindow
-{
-    public:
-        TaEquipmentWindow(Equipment *equipment);
-        ~TaEquipmentWindow();
-
-        /**
-         * Draws the equipment window using TmwAthena routine.
-         */
-        void draw(gcn::Graphics *graphics);
-};
-
-} // namespace TmwAthena
 
 extern EquipmentWindow *equipmentWindow;
 
