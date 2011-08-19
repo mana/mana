@@ -51,7 +51,13 @@ class EquipBackend : public Equipment::Backend, public EventListener
         int getSlotNumber() const
         { return mSlots.size(); }
 
+        unsigned int getVisibleSlotsNumber() const
+        { return mVisibleSlots; }
+
         void triggerUnequip(int slotIndex) const;
+
+        bool isWeaponSlot(int slotTypeId) const;
+        bool isAmmoSlot(int slotTypeId) const;
 
     private:
         void readEquipFile();
@@ -61,7 +67,9 @@ class EquipBackend : public Equipment::Backend, public EventListener
                 item(0),
                 slotTypeId(0),
                 subId(0),
-                itemInstance(0)
+                itemInstance(0),
+                weaponSlot(false),
+                ammoSlot(false)
             {}
 
             // Generic info
@@ -86,7 +94,15 @@ class EquipBackend : public Equipment::Backend, public EventListener
             // This is the (per character) unique item Id, used especially when
             // equipping the same item multiple times on the same slot type.
             unsigned int itemInstance;
+
+            // Tell whether the slot is a weapon slot
+            bool weaponSlot;
+
+            // Tell whether the slot is an ammo slot
+            bool ammoSlot;
          };
+
+        unsigned int mVisibleSlots;
 
         // slot client index, slot info
         typedef std::map<unsigned int, Slot> Slots;
@@ -106,6 +122,15 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler,
         bool canSplit(const Item *item);
 
         size_t getSize(int type) const;
+
+        bool isWeaponSlot(unsigned int slotTypeId) const
+        { return mEquipBackend.isWeaponSlot(slotTypeId); }
+
+        bool isAmmoSlot(unsigned int slotTypeId) const
+        { return mEquipBackend.isAmmoSlot(slotTypeId); }
+
+        unsigned int getVisibleSlotsNumber() const
+        { return mEquipBackend.getVisibleSlotsNumber(); }
 
     private:
         EquipBackend mEquipBackend;

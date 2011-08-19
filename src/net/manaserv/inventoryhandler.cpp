@@ -62,6 +62,7 @@ extern Connection *gameServerConnection;
 EquipBackend::EquipBackend()
 {
     listen(Event::ClientChannel);
+    mVisibleSlots = 0;
 }
 
 Item *EquipBackend::getEquipment(int slotIndex) const
@@ -208,6 +209,7 @@ void EquipBackend::readEquipFile()
 
     // The current client slot index
     unsigned int slotIndex = 0;
+    mVisibleSlots = 0;
 
     for_each_xml_child_node(childNode, rootNode)
     {
@@ -218,6 +220,11 @@ void EquipBackend::readEquipFile()
         slot.slotTypeId = XML::getProperty(childNode, "id", 0);
         std::string name = XML::getProperty(childNode, "name", std::string());
         const int capacity = XML::getProperty(childNode, "capacity", 1);
+        slot.weaponSlot =  XML::getBoolProperty(childNode, "weapon", false);
+        slot.ammoSlot =  XML::getBoolProperty(childNode, "ammo", false);
+
+        if (XML::getBoolProperty(childNode, "visible", false))
+            ++mVisibleSlots;
 
         if (slot.slotTypeId > 0 && capacity > 0)
         {
@@ -243,6 +250,28 @@ void EquipBackend::readEquipFile()
             }
         }
     }
+}
+
+bool EquipBackend::isWeaponSlot(int slotTypeId) const
+{
+    for (Slots::const_iterator it = mSlots.begin(), it_end = mSlots.end();
+        it != it_end; ++it)
+    {
+        if (it->second.slotTypeId == (unsigned)slotTypeId)
+            return it->second.weaponSlot;
+    }
+    return false;
+}
+
+bool EquipBackend::isAmmoSlot(int slotTypeId) const
+{
+    for (Slots::const_iterator it = mSlots.begin(), it_end = mSlots.end();
+        it != it_end; ++it)
+    {
+        if (it->second.slotTypeId == (unsigned)slotTypeId)
+            return it->second.ammoSlot;
+    }
+    return false;
 }
 
 InventoryHandler::InventoryHandler()
