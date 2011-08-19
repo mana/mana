@@ -28,6 +28,16 @@
 
 namespace ManaServ {
 
+/**
+ * enum for sprites layers.
+ */
+enum SpriteLayer
+{
+    SPRITE_LAYER_BASE = 0,
+    SPRITE_LAYER_HAIR,
+    FIXED_SPRITE_LAYER_SIZE
+};
+
 class BeingHandler : public MessageHandler
 {
     public:

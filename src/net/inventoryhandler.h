@@ -38,6 +38,13 @@ class InventoryHandler
 
         // TODO: fix/remove me
         virtual size_t getSize(int type) const = 0;
+
+        virtual bool isWeaponSlot(unsigned int slotTypeId) const = 0;
+
+        virtual bool isAmmoSlot(unsigned int slotTypeId) const = 0;
+
+        virtual unsigned int getVisibleSlotsNumber() const
+        { return 0; }
 };
 
 } // namespace Net
