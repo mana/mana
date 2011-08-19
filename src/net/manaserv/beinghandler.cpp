@@ -31,8 +31,10 @@
 
 #include "gui/okdialog.h"
 
+#include "net/net.h"
 #include "net/messagein.h"
 
+#include "net/manaserv/inventoryhandler.h"
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/manaserv_protocol.h"
 
@@ -93,29 +95,17 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
 static void handleLooks(Being *being, Net::MessageIn &msg)
 {
-    // Order of sent slots. Has to be in sync with the server code.
-    static int const nb_slots = 4;
-    static int const slots[nb_slots] =
-        { SPRITE_WEAPON, SPRITE_HAT, SPRITE_TOPCLOTHES,
-          SPRITE_BOTTOMCLOTHES };
+    int lookChanges = msg.readInt8();
 
-    int mask = msg.readInt8();
+    if (lookChanges <= 0)
+        return;
 
-    if (mask & (1 << 7))
+    while (lookChanges-- > 0)
     {
-        // The equipment has to be cleared first.
-        for (int i = 0; i < nb_slots; ++i)
-        {
-            being->setSprite(slots[i], 0);
-        }
-    }
-
-    // Fill slots enumerated by the bitmask.
-    for (int i = 0; i < nb_slots; ++i)
-    {
-        if (!(mask & (1 << i))) continue;
-        int id = msg.readInt16();
-        being->setSprite(slots[i], id,"", (slots[i] == SPRITE_WEAPON));
+        unsigned int slotTypeId = msg.readInt8();
+        being->setSprite(slotTypeId + FIXED_SPRITE_LAYER_SIZE,
+                         msg.readInt16(), "",
+                         Net::getInventoryHandler()->isWeaponSlot(slotTypeId));
     }
 }
 
@@ -154,7 +144,7 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
                 being->setName(name);
             }
             int hs = msg.readInt8(), hc = msg.readInt8();
-            being->setSprite(SPRITE_HAIR, hs * -1, ColorDB::get(hc));
+            being->setSprite(SPRITE_LAYER_HAIR, hs * -1, ColorDB::get(hc));
             being->setGender(msg.readInt8() == GENDER_MALE ?
                              GENDER_MALE : GENDER_FEMALE);
             handleLooks(being, msg);
@@ -342,7 +332,7 @@ void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
     {
         int style = msg.readInt16();
         int color = msg.readInt16();
-        being->setSprite(SPRITE_HAIR, style * -1, ColorDB::get(color));
+        being->setSprite(SPRITE_LAYER_HAIR, style * -1, ColorDB::get(color));
     }
 }
 
