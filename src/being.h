@@ -279,6 +279,9 @@ class Being : public ActorSprite, public EventListener
          */
         int getNumberOfLayers() const;
 
+        virtual bool drawnWhenBehind() const
+        { return CompoundSprite::drawnWhenBehind(); }
+
         /**
          * Performs being logic.
          */

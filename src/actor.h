@@ -89,8 +89,15 @@ public:
     /**
      * Returns the pixel Y coordinate that the actor should be drawn at.
      */
-    virtual int getDrawPixelY() const
+    virtual int getDrawOrder() const
     { return getPixelY(); }
+
+    /**
+     * Determines wether the actor should be drawn translucent when behind
+     * another object
+     */
+    virtual bool drawnWhenBehind() const
+    { return false; }
 
     /**
      * Returns the x coordinate in tiles of the actor.
