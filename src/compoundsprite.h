@@ -68,6 +68,8 @@ public:
 
     size_t getCurrentFrame() const;
 
+    virtual bool drawWhenBehindStuff() const;
+
     size_t getFrameCount() const;
 
     int getDuration() const;

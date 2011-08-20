@@ -69,7 +69,7 @@ ActorSprite::~ActorSprite()
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = getPixelX() + offsetX;
-    int py = getDrawPixelY() + offsetY;
+    int py = getPixelY() + offsetY;
 
     if (mUsedTargetCursor)
     {
