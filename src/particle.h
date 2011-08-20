@@ -95,8 +95,13 @@ class Particle : public Actor
         /**
          * Necessary for sorting with the other sprites.
          */
-        virtual int getDrawPixelY() const
-        { return (int) (mPos.y + mPos.z) - 64; }
+        virtual int getDrawOrder() const;
+
+        /**
+         * Do not draw particles when beind other objects
+         */
+        virtual bool drawnWhenBehind() const
+        { return false; }
 
         /**
          * Creates a blank particle as a child of the current particle

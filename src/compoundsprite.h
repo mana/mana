@@ -66,6 +66,8 @@ public:
 
     int getNumberOfLayers() const;
 
+    virtual bool drawnWhenBehind() const;
+
     size_t getCurrentFrame() const;
 
     size_t getFrameCount() const;

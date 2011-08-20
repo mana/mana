@@ -115,7 +115,7 @@ void LocalPlayer::logic()
             particleEngine->addTextRiseFadeOutEffect(
                     info.first,
                     getPixelX(),
-                    getDrawPixelY() - 48,
+                    getPixelY() - 32 - 16,
                     &userPalette->getColor(info.second),
                     gui->getInfoParticleFont(), true);
 
