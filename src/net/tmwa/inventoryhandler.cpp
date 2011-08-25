@@ -31,6 +31,7 @@
 #include "localplayer.h"
 #include "log.h"
 
+#include "gui/equipmentwindow.h"
 #include "gui/widgets/chattab.h"
 
 #include "net/messagein.h"
@@ -388,6 +389,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 {
                     mEquips.setEquipment(getSlot(equipType), index);
                 }
+
+                // Load the equipment boxes
+                if (equipmentWindow)
+                    equipmentWindow->loadEquipBoxes();
             }
             break;
 

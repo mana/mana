@@ -64,7 +64,6 @@
 #include "gui/textdialog.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
-#include "gui/windowmenu.h"
 
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/emoteshortcutcontainer.h"
@@ -154,15 +153,7 @@ static void createGuiWindows()
     minimap = new Minimap;
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
-    switch (Net::getNetworkType())
-    {
-    case ServerInfo::TMWATHENA:
-    case ServerInfo::MANASERV:
-    default:
-        equipmentWindow =
-                new TmwAthena::TaEquipmentWindow(PlayerInfo::getEquipment());
-        break;
-    }
+    equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
     statusWindow = new StatusWindow;
     inventoryWindow = new InventoryWindow(PlayerInfo::getInventory());
     skillDialog = new SkillDialog;

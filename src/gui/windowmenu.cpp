@@ -50,20 +50,27 @@ WindowMenu::WindowMenu():
 {
     int x = 0, h = 0;
 
-    addButton(":-)", x, h);
-    addButton(N_("Status"), x, h);
-    addButton(N_("Equipment"), x, h);
-    addButton(N_("Inventory"), x, h);
+    addButton(":-)", x, h, "button-icon-smilies.png");
+    addButton(N_("Status"), x, h, "button-icon-status.png",
+              KeyboardConfig::KEY_WINDOW_STATUS);
+    addButton(N_("Inventory"), x, h, "button-icon-inventory.png",
+              KeyboardConfig::KEY_WINDOW_INVENTORY);
+    addButton(N_("Equipment"), x, h, "button-icon-equipment.png",
+              KeyboardConfig::KEY_WINDOW_EQUIPMENT);
 
     if (skillDialog->hasSkills())
-        addButton(N_("Skills"), x, h);
+        addButton(N_("Skills"), x, h, "button-icon-skills.png",
+                  KeyboardConfig::KEY_WINDOW_SKILL);
 
-    // if (specialsWindow->hasSpecials())
-        addButton(N_("Specials"), x, h);
+    if (specialsWindow->hasSpecials())
+        addButton(N_("Specials"), x, h, "button-icon-specials.png");
 
-    addButton(N_("Social"), x, h);
-    addButton(N_("Shortcut"), x, h);
-    addButton(N_("Setup"), x, h);
+    addButton(N_("Social"), x, h, "button-icon-social.png",
+        KeyboardConfig::KEY_WINDOW_SOCIAL);
+    addButton(N_("Shortcuts"), x, h, "button-icon-shortcut.png",
+        KeyboardConfig::KEY_WINDOW_SHORTCUT);
+    addButton(N_("Setup"), x, h, "button-icon-setup.png",
+        KeyboardConfig::KEY_WINDOW_SETUP);
 
     setDimension(gcn::Rectangle(graphics->getWidth() - x - 3, 3,
                                 x - 3, h));
@@ -124,7 +131,7 @@ void WindowMenu::action(const gcn::ActionEvent &event)
     {
         window = socialWindow;
     }
-    else if (event.getId() == "Shortcut")
+    else if (event.getId() == "Shortcuts")
     {
         window = itemShortcutWindow;
     }
@@ -156,11 +163,84 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
     }
 }
 
-void WindowMenu::addButton(const char* text, int &x, int &h)
+static std::string createShortcutCaption(const std::string& text,
+                                       KeyboardConfig::KeyAction key)
 {
-    gcn::Button *btn = new Button(gettext(text), text, this);
+    std::string caption = gettext(text.c_str());
+    if (key != KeyboardConfig::KEY_NO_VALUE)
+    {
+        caption += " (";
+        caption += SDL_GetKeyName((SDLKey) keyboard.getKeyValue(key));
+        caption += ")";
+    }
+    return caption;
+}
+
+void WindowMenu::addButton(const std::string& text, int &x, int &h,
+                           const std::string& iconPath,
+                           KeyboardConfig::KeyAction key)
+{
+    Button *btn = new Button("", text, this);
+    if (!iconPath.empty() && btn->setButtonIcon(iconPath))
+    {
+        // When in image button mode, we have room to show
+        // the keyboard shortcut.
+        btn->setButtonPopupText(createShortcutCaption(text, key));
+    }
+    else
+    {
+        btn->setCaption(gettext(text.c_str()));
+    }
+
     btn->setPosition(x, 0);
     add(btn);
     x += btn->getWidth() + 3;
-    h = btn->getHeight();
+    h = std::max(h, btn->getHeight());
+}
+
+void WindowMenu::updatePopUpCaptions()
+{
+    for (WidgetList::iterator it = mWidgets.begin(); it != mWidgets.end(); ++it)
+    {
+        Button *button = dynamic_cast<Button*> (*it);
+        if (button)
+        {
+            std::string eventId = button->getActionEventId();
+            if (eventId == "Status")
+            {
+                button->setButtonPopupText(createShortcutCaption("Status",
+                                            KeyboardConfig::KEY_WINDOW_STATUS));
+            }
+            else if (eventId == "Equipment")
+            {
+                button->setButtonPopupText(createShortcutCaption("Equipment",
+                                         KeyboardConfig::KEY_WINDOW_EQUIPMENT));
+            }
+            else if (eventId == "Inventory")
+            {
+                button->setButtonPopupText(createShortcutCaption("Inventory",
+                                         KeyboardConfig::KEY_WINDOW_INVENTORY));
+            }
+            else if (eventId == "Skills")
+            {
+                button->setButtonPopupText(createShortcutCaption("Skills",
+                                             KeyboardConfig::KEY_WINDOW_SKILL));
+            }
+            else if (eventId == "Social")
+            {
+                button->setButtonPopupText(createShortcutCaption("Social",
+                                            KeyboardConfig::KEY_WINDOW_SOCIAL));
+            }
+            else if (eventId == "Shortcuts")
+            {
+                button->setButtonPopupText(createShortcutCaption("Shortcuts",
+                                          KeyboardConfig::KEY_WINDOW_SHORTCUT));
+            }
+            else if (eventId == "Setup")
+            {
+                button->setButtonPopupText(createShortcutCaption("Setup",
+                                             KeyboardConfig::KEY_WINDOW_SETUP));
+            }
+        }
+    }
 }

@@ -29,6 +29,8 @@
 
 #include <vector>
 
+class Button;
+
 /**
  * The quit dialog.
  *
@@ -62,8 +64,8 @@ class QuitDialog : public Window, public gcn::ActionListener,
         gcn::RadioButton *mForceQuit;
         gcn::RadioButton *mSwitchAccountServer;
         gcn::RadioButton *mSwitchCharacter;
-        gcn::Button *mOkButton;
-        gcn::Button *mCancelButton;
+        Button *mOkButton;
+        Button *mCancelButton;
 
         QuitDialog **mMyPointer;
 };

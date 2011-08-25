@@ -69,6 +69,8 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         Vector getPixelsPerTickMoveSpeed(const Vector &speed, Map *map = 0);
 
+        int getKeyboardMoveDelay(const Vector& speed);
+
         bool usePixelPrecision()
         { return true; }
 

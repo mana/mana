@@ -25,6 +25,7 @@
 #include "graphics.h"
 
 #include "gui/palette.h"
+#include "gui/textpopup.h"
 
 #include "resources/image.h"
 #include "resources/theme.h"
@@ -36,7 +37,8 @@
 
 int Button::mInstances = 0;
 float Button::mAlpha = 1.0;
-ImageRect *Button::mButton;
+ImageRect* Button::mButton;
+TextPopup* Button::mTextPopup = 0;
 
 enum{
     BUTTON_STANDARD,    // 0
@@ -81,23 +83,26 @@ Button::Button(const std::string &caption, const std::string &actionEventId,
     adjustSize();
 }
 
-void Button::setButtonIcon(const std::string& iconFile, int frameHeight,
-                           int frameWidth)
+bool Button::setButtonIcon(const std::string& iconFile)
 {
     // We clean up possible older references.
     if (mButtonIcon)
         removeButtonIcon();
 
     // If nothing relevant was set, we can quit now.
-    if (iconFile.empty() || !frameWidth || !frameHeight)
-        return;
+    if (iconFile.empty())
+        return false;
 
     // Load the icon frames.
     Image *btnIcons = Theme::getImageFromTheme(iconFile);
     if (!btnIcons)
-        return;
+        return false;
 
-    if (btnIcons->getWidth() > 0 && btnIcons->getHeight() > 0)
+    // Compute the sub images size.
+    const int frameWidth = btnIcons->getWidth() / 4;
+    const int frameHeight = btnIcons->getHeight();
+
+    if (frameWidth > 0 && frameHeight > 0)
     {
         mButtonIcon = new Image*[BUTTON_COUNT];
         for (int mode = 0; mode < BUTTON_COUNT; ++mode)
@@ -110,6 +115,7 @@ void Button::setButtonIcon(const std::string& iconFile, int frameHeight,
     }
 
     btnIcons->decRef();
+    return (mButtonIcon);
 }
 
 void Button::removeButtonIcon()
@@ -159,6 +165,10 @@ void Button::init()
             btn[mode]->decRef();
         }
         updateAlpha();
+
+        // Load the popup
+        if (!mTextPopup)
+            mTextPopup = new TextPopup();
     }
     mInstances++;
 }
@@ -175,6 +185,9 @@ Button::~Button()
                 dtor<Image*>());
         }
         delete[] mButton;
+
+        // Remove the popup
+        delete mTextPopup;
     }
     removeButtonIcon();
 }
@@ -300,4 +313,51 @@ void Button::setCaption(const std::string& caption)
 {
     mCaption = caption;
     adjustSize();
+}
+
+void Button::logic()
+{
+    gcn::Button::logic();
+    mTextPopup->logic();
+}
+
+void Button::mouseMoved(gcn::MouseEvent &event)
+{
+    gcn::Button::mouseMoved(event);
+    mTextPopup->mouseMoved(event);
+
+    int x = event.getX();
+    int y = event.getY();
+
+    if (event.getSource() == this && !mPopupText.empty())
+    {
+        if (mParent)
+        {
+            x += mParent->getX();
+            y += mParent->getY();
+        }
+
+        mTextPopup->show(x + getX(), y + getY(), mPopupText);
+    }
+    else
+    {
+        mTextPopup->setVisible(false);
+    }
+}
+
+void Button::mouseExited(gcn::MouseEvent &event)
+{
+    gcn::Button::mouseExited(event);
+    mTextPopup->mouseExited(event);
+
+    mTextPopup->setVisible(false);
+}
+
+void Button::setButtonPopupText(const std::string& text)
+{
+    mPopupText = text;
+    if (!mPopupText.empty())
+        mTextPopup->show(getX(), getY(), mPopupText);
+    else
+        mTextPopup->setVisible(false);
 }

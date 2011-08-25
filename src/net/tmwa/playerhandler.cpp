@@ -22,6 +22,7 @@
 #include "net/tmwa/playerhandler.h"
 #include "net/tmwa/beinghandler.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "game.h"
 #include "localplayer.h"
@@ -659,6 +660,11 @@ Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
     speedInTicks.y = 1 / speed.y * (float)map->getTileHeight();
 
     return speedInTicks;
+}
+
+int PlayerHandler::getKeyboardMoveDelay(const Vector& speed)
+{
+    return std::min(speed.x, speed.y) * MILLISECONDS_IN_A_TICK;
 }
 
 } // namespace TmwAthena
