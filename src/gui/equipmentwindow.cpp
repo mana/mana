@@ -50,11 +50,27 @@
 static const int BOX_WIDTH = 36;
 static const int BOX_HEIGHT = 36;
 
+// Positions of the boxes, 2nd dimension is X and Y respectively.
+const int boxPosition[][2] = {
+    { 90,  40 },    // EQUIP_TORSO_SLOT
+    { 8,   78 },    // EQUIP_GLOVES_SLOT
+    { 70,  0 },     // EQUIP_HEAD_SLOT
+    { 50,  208 },   // EQUIP_LEGS_SLOT
+    { 90,  208 },   // EQUIP_FEET_SLOT
+    { 8,   168 },   // EQUIP_RING1_SLOT
+    { 129, 168 },   // EQUIP_RING2_SLOT
+    { 50,  40 },    // EQUIP_NECK_SLOT
+    { 8,   123 },   // EQUIP_FIGHT1_SLOT
+    { 129, 123 },   // EQUIP_FIGHT2_SLOT
+    { 129, 78 }     // EQUIP_PROJECTILE_SLOT
+};
+
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window(_("Equipment")),
     mEquipBox(0),
     mSelected(-1),
-    mEquipment(equipment)
+    mEquipment(equipment),
+    mBoxesNumber(0)
 {
     mItemPopup = new ItemPopup;
     setupWindow->registerWindowForReset(this);
@@ -80,9 +96,27 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     add(mUnequip);
 }
 
+void EquipmentWindow::loadEquipBoxes()
+{
+    if (mEquipBox)
+        delete[] mEquipBox;
+
+    // Load equipment boxes.
+    mBoxesNumber = mEquipment->getSlotNumber();
+    mEquipBox = new EquipBox[mBoxesNumber];
+
+    for (int i = 0; i < mBoxesNumber; i++)
+    {
+        mEquipBox[i].posX = boxPosition[i][0] + getPadding();
+        mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
+    }
+}
+
 EquipmentWindow::~EquipmentWindow()
 {
     delete mItemPopup;
+    if (mEquipBox)
+        delete[] mEquipBox;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
@@ -91,32 +125,84 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     Window::draw(graphics);
 
     Window::drawChildren(graphics);
+
+    // Draw equipment boxes
+    Graphics *g = static_cast<Graphics*>(graphics);
+
+    for (int i = 0; i < mBoxesNumber; i++)
+    {
+        if (i == mSelected)
+        {
+            const gcn::Color color = Theme::getThemeColor(Theme::HIGHLIGHT);
+
+            // Set color to the highlight color
+            g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
+            g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX,
+                                            mEquipBox[i].posY,
+                                            BOX_WIDTH, BOX_HEIGHT));
+        }
+
+        // Set color black
+        g->setColor(gcn::Color(0, 0, 0));
+        // Draw box border
+        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
+                                        BOX_WIDTH, BOX_HEIGHT));
+
+        Item *item = mEquipment->getEquipment(i);
+        if (item)
+        {
+            // Draw Item.
+            Image *image = item->getImage();
+            // Ensure the image is drawn with maximum opacity
+            image->setAlpha(1.0f);
+            g->drawImage(image,
+                          mEquipBox[i].posX + 2,
+                          mEquipBox[i].posY + 2);
+            if (i == TmwAthena::EQUIP_PROJECTILE_SLOT)
+            {
+                g->setColor(Theme::getThemeColor(Theme::TEXT));
+                graphics->drawText(toString(item->getQuantity()),
+                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
+                                    mEquipBox[i].posY - getFont()->getHeight(),
+                                    gcn::Graphics::CENTER);
+            }
+        }
+    }
 }
 
 void EquipmentWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "unequip" && mSelected > -1)
     {
-        Item *item = mEquipment->getEquipment(mSelected);
-        item->doEvent(Event::DoUnequip);
+        mEquipment->triggerUnequip(mSelected);
         setSelected(-1);
     }
 }
 
 Item *EquipmentWindow::getItem(int x, int y) const
 {
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+    for (int i = 0; i < mBoxesNumber; ++i)
     {
-        for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
-        {
-            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                 BOX_WIDTH, BOX_HEIGHT);
+        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                BOX_WIDTH, BOX_HEIGHT);
 
-            if (tRect.isPointInRect(x, y))
-                return mEquipment->getEquipment(i);
-        }
+        if (tRect.isPointInRect(x, y))
+            return mEquipment->getEquipment(i);
     }
-    return NULL;
+    return 0;
+}
+
+const std::string EquipmentWindow::getSlotName(int x, int y) const
+{
+    for (int i = 0; i < mBoxesNumber; ++i)
+    {
+        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                             BOX_WIDTH, BOX_HEIGHT);
+
+        if (tRect.isPointInRect(x, y))
+            return mEquipment->getSlotName(i);
+    }
+    return std::string();
 }
 
 void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
@@ -129,17 +215,14 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
     {
         // Checks if any of the presses were in the equip boxes.
-        if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+        for (int i = 0; i < mBoxesNumber; ++i)
         {
-            for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
-            {
-                Item *item = mEquipment->getEquipment(i);
-                gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                     BOX_WIDTH, BOX_HEIGHT);
+            Item *item = mEquipment->getEquipment(i);
+            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                    BOX_WIDTH, BOX_HEIGHT);
 
-                if (tRect.isPointInRect(x, y) && item)
-                    setSelected(i);
-            }
+            if (tRect.isPointInRect(x, y) && item)
+                setSelected(i);
         }
     }
     else if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
@@ -156,20 +239,28 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     }
 }
 
-// Show ItemTooltip
 void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
 {
     const int x = event.getX();
     const int y = event.getY();
 
-    Item *item = getItem(x, y);
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
 
-    if (item)
+    // Show ItemTooltip
+    std::string slotName = getSlotName(x, y);
+    if (!slotName.empty())
     {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
+        mItemPopup->setEquipmentText(slotName);
 
-        mItemPopup->setItem(item->getInfo());
+        Item *item = getItem(x, y);
+        if (item)
+        {
+            mItemPopup->setItem(item->getInfo());
+        }
+        else
+            mItemPopup->setNoItem();
+
         mItemPopup->position(x + getX(), y + getY());
     }
     else
@@ -178,7 +269,6 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
     }
 }
 
-// Hide ItemTooltip
 void EquipmentWindow::mouseExited(gcn::MouseEvent &event)
 {
     mItemPopup->setVisible(false);
@@ -189,86 +279,3 @@ void EquipmentWindow::setSelected(int index)
     mSelected = index;
     mUnequip->setEnabled(mSelected != -1);
 }
-
-namespace TmwAthena {
-
-TaEquipmentWindow::TaEquipmentWindow(Equipment *equipment):
-    EquipmentWindow(equipment)
-{
-    // Positions of the boxes, 2nd dimension is X and Y respectively.
-    const int boxPosition[][2] = {
-        { 90,  40 },    // EQUIP_TORSO_SLOT
-        { 8,   78 },    // EQUIP_GLOVES_SLOT
-        { 70,  0 },     // EQUIP_HEAD_SLOT
-        { 50,  208 },   // EQUIP_LEGS_SLOT
-        { 90,  208 },   // EQUIP_FEET_SLOT
-        { 8,   168 },   // EQUIP_RING1_SLOT
-        { 129, 168 },   // EQUIP_RING2_SLOT
-        { 50,  40 },    // EQUIP_NECK_SLOT
-        { 8,   123 },   // EQUIP_FIGHT1_SLOT
-        { 129, 123 },   // EQUIP_FIGHT2_SLOT
-        { 129, 78 }     // EQUIP_PROJECTILE_SLOT
-    };
-
-    // Load equipment boxes.
-    mEquipBox = new EquipBox[TmwAthena::EQUIP_VECTOR_END];
-
-    for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
-    {
-        mEquipBox[i].posX = boxPosition[i][0] + getPadding();
-        mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
-    }
-}
-
-TaEquipmentWindow::~TaEquipmentWindow()
-{
-    delete[] mEquipBox;
-}
-
-void TaEquipmentWindow::draw(gcn::Graphics *graphics)
-{
-    EquipmentWindow::draw(graphics);
-
-    // Draw equipment boxes
-    Graphics *g = static_cast<Graphics*>(graphics);
-
-    for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
-    {
-        if (i == mSelected)
-        {
-            const gcn::Color color = Theme::getThemeColor(Theme::HIGHLIGHT);
-
-            // Set color to the highlight color
-            g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
-            g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
-                                            BOX_WIDTH, BOX_HEIGHT));
-        }
-
-        // Set color black
-        g->setColor(gcn::Color(0, 0, 0));
-        // Draw box border
-        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
-                                        BOX_WIDTH, BOX_HEIGHT));
-
-        Item *item = mEquipment->getEquipment(i);
-        if (item)
-        {
-            // Draw Item.
-            Image *image = item->getImage();
-            image->setAlpha(1.0f); // Ensure the image is drawn with maximum opacity
-            g->drawImage(image,
-                          mEquipBox[i].posX + 2,
-                          mEquipBox[i].posY + 2);
-            if (i == TmwAthena::EQUIP_PROJECTILE_SLOT)
-            {
-                g->setColor(Theme::getThemeColor(Theme::TEXT));
-                graphics->drawText(toString(item->getQuantity()),
-                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
-                                    mEquipBox[i].posY - getFont()->getHeight(),
-                                    gcn::Graphics::CENTER);
-            }
-        }
-    }
-}
-
-} // namespace TmwAthena
