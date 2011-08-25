@@ -186,10 +186,10 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcRect.w = width;
     srcRect.h = height;
 
-    //if (mBlitMode == BLIT_NORMAL)
+    if (mBlitMode == BLIT_NORMAL)
         return !(SDL_BlitSurface(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
-    //else
-    //    return !(SDL_gfxBlitRGBA(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
+    else
+        return !(SDL_gfxBlitRGBA(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
 }
 
 void Graphics::drawImage(gcn::Image const *image, int srcX, int srcY,
