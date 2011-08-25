@@ -325,7 +325,7 @@ void Map::addTileset(Tileset *tileset)
 
 bool actorCompare(const Actor *a, const Actor *b)
 {
-    return a->getPixelY() < b->getPixelY();
+    return a->getDrawOrder() < b->getDrawOrder();
 }
 
 void Map::update(int ticks)
@@ -397,13 +397,12 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     {
         // We draw beings with a lower opacity to make them visible
         // even when covered by a wall or some other elements...
-        Actors::const_iterator ai = mActors.begin();
+        auto ai = mActors.begin();
         while (ai != mActors.end())
         {
             if (Actor *actor = *ai)
             {
-                // For now, just draw actors with only one layer.
-                if (actor->getNumberOfLayers() == 1)
+                if (actor->drawWhenBehindStuff())
                 {
                     actor->setAlpha(0.3f);
                     actor->draw(graphics, -scrollX, -scrollY);

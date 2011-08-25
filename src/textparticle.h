@@ -37,8 +37,17 @@ class TextParticle : public Particle
         virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         // hack to improve text visibility
-        virtual int getPixelY() const
-        { return (int) (mPos.y + mPos.z); }
+        virtual int getDrawOrder() const
+        { return (int) (mPos.y) + 32; }
+
+        /** In contrary to other particles, text particles should not be
+         *  obscured by objects, because their information is too
+         *  important.
+         */
+        virtual bool drawWhenBehindStuff() const
+        { return true; }
+
+
 
     private:
         std::string mText;             /**< Text of the particle. */

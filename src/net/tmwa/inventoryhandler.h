@@ -34,6 +34,10 @@
 
 #include "net/tmwa/messagehandler.h"
 
+#include "resources/iteminfo.h"
+
+#include "utils/gettext.h"
+
 #include <list>
 
 namespace TmwAthena {
@@ -52,9 +56,40 @@ class EquipBackend : public Equipment::Backend
             return PlayerInfo::getInventory()->getItem(invyIndex);
         }
 
+        std::string getSlotName(int slotIndex) const
+        {
+            switch (slotIndex)
+            {
+                case EQUIP_TORSO_SLOT:
+                    return std::string(_("Torso"));
+                case EQUIP_ARMS_SLOT:
+                    return std::string(_("Arms"));
+                case EQUIP_HEAD_SLOT:
+                    return std::string(_("Head"));
+                case EQUIP_LEGS_SLOT:
+                    return std::string(_("Legs"));
+                case EQUIP_FEET_SLOT:
+                    return std::string(_("Feet"));
+                case EQUIP_RING1_SLOT:
+                    return std::string(_("Ring 1/2"));
+                case EQUIP_RING2_SLOT:
+                    return std::string(_("Ring 2/2"));
+                case EQUIP_NECKLACE_SLOT:
+                    return std::string(_("Necklace"));
+                case EQUIP_FIGHT1_SLOT:
+                    return std::string(_("Hand 1/2"));
+                case EQUIP_FIGHT2_SLOT:
+                    return std::string(_("Hand 2/2"));
+                case EQUIP_PROJECTILE_SLOT:
+                    return std::string(_("Ammo"));
+                default:
+                    return std::string();
+            }
+        }
+
         void clear()
         {
-            for (int i = 0; i < EQUIPMENT_SIZE; i++)
+            for (int i = 0; i < EQUIP_VECTOR_END; i++)
             {
                 if (mEquipment[i] != -1)
                 {
@@ -82,8 +117,30 @@ class EquipBackend : public Equipment::Backend
             inventoryWindow->updateButtons();
         }
 
+        void triggerUnequip(int slotIndex) const
+        {
+            Item *item = getEquipment(slotIndex);
+            if (item)
+                item->doEvent(Event::DoUnequip);
+        }
+
+        int getSlotNumber() const
+        { return EQUIP_VECTOR_END; }
+
+        // Note the slot type id is equal to the slot Index for tA.
+        bool isWeaponSlot(unsigned int slotTypeId) const
+        {
+            return (slotTypeId == EQUIP_FIGHT1_SLOT
+                    || slotTypeId == EQUIP_FIGHT1_SLOT);
+        }
+
+        bool isAmmoSlot(unsigned int slotTypeId) const
+        {
+            return (slotTypeId == EQUIP_PROJECTILE_SLOT);
+        }
+
     private:
-        int mEquipment[EQUIPMENT_SIZE];
+        int mEquipment[EQUIP_VECTOR_END];
 };
 
 /**
@@ -128,6 +185,12 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
         bool canSplit(const Item *item);
 
         size_t getSize(int type) const;
+
+        bool isWeaponSlot(unsigned int slotTypeId) const
+        { return mEquips.isWeaponSlot(slotTypeId); }
+
+        bool isAmmoSlot(unsigned int slotTypeId) const
+        { return mEquips.isAmmoSlot(slotTypeId); }
 
     private:
         EquipBackend mEquips;

@@ -77,6 +77,9 @@ class AnimatedSprite : public Sprite
         int getNumberOfLayers()
         { return 1; }
 
+        virtual bool drawWhenBehindStuff() const
+        { return true; }
+
         size_t getCurrentFrame() const;
 
         size_t getFrameCount() const;

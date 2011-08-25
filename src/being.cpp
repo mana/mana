@@ -301,7 +301,7 @@ void Being::setSpeech(const std::string &text, int time)
             delete mText;
 
         mText = new Text(mSpeech,
-                         getPixelX(), getDrawPixelY() - getHeight(),
+                         getPixelX(), getPixelY() - getHeight(),
                          gcn::Graphics::CENTER,
                          &userPalette->getColor(UserPalette::PARTICLE),
                          true);
@@ -364,7 +364,7 @@ void Being::takeDamage(Being *attacker, int amount,
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage,
-                                        getPixelX(), getDrawPixelY() - 16,
+                                        getPixelX(), getPixelY() - getHeight(),
                                         color, font, true);
 
     if (amount > 0)
@@ -907,7 +907,7 @@ void Being::logic()
 void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = getPixelX() - offsetX;
-    const int py = getDrawPixelY() - offsetY;
+    const int py = getPixelY() - offsetY;
     const int speech = config.getIntValue("speech");
 
     // Draw speech above this being
@@ -941,7 +941,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
         if (! mText)
         {
             mText = new Text(mSpeech,
-                             getPixelX(), getDrawPixelY() - getHeight(),
+                             getPixelX(), getPixelY() - getHeight(),
                              gcn::Graphics::CENTER,
                              &userPalette->getColor(UserPalette::PARTICLE),
                              true);
@@ -965,9 +965,9 @@ void Being::updateCoords()
 
     // Monster names show above the sprite instead of below it
     if (getType() == MONSTER)
-        mDispName->adviseXY(getPixelX(), getDrawPixelY() - getHeight());
+        mDispName->adviseXY(getPixelX(), getPixelY() - getHeight());
     else
-        mDispName->adviseXY(getPixelX(), getDrawPixelY() + mDispName->getHeight());
+        mDispName->adviseXY(getPixelX(), getPixelY() + mDispName->getHeight());
 }
 
 void Being::flashName(int time)
@@ -1016,7 +1016,7 @@ void Being::showName()
         font = boldFont;
     }
 
-    mDispName = new FlashText(mDisplayName, getPixelX(), getDrawPixelY(),
+    mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
                               gcn::Graphics::CENTER, mNameColor, font);
 
     updateCoords();
@@ -1067,8 +1067,6 @@ void Being::updateColors()
 void Being::setSprite(unsigned int slot, int id, const std::string &color,
                       bool isWeapon)
 {
-    assert(slot < Net::getCharHandler()->maxSprite());
-
     if (slot >= size())
         ensureSize(slot + 1);
 

@@ -279,6 +279,9 @@ class Being : public ActorSprite, public EventListener
          */
         int getNumberOfLayers() const;
 
+        virtual bool drawWhenBehindStuff() const
+        { return CompoundSprite::drawWhenBehindStuff(); }
+
         /**
          * Performs being logic.
          */
@@ -316,7 +319,7 @@ class Being : public ActorSprite, public EventListener
          * in ticks per tile for eAthena,
          * in tiles per second for Manaserv (0.1 precision).
          */
-        void setMoveSpeed(const Vector &speed);
+        virtual void setMoveSpeed(const Vector &speed);
 
         /**
          * Gets the original Move speed.

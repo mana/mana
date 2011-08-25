@@ -58,11 +58,6 @@
 
 #include <cassert>
 
-// This is the minimal delay between to permitted
-// setDestination() calls using the keyboard.
-// TODO: This can fine tuned later on when running is added...
-const short walkingKeyboardDelay = 1000;
-
 #define AWAY_LIMIT_TIMER 60
 
 LocalPlayer *player_node = NULL;
@@ -79,6 +74,7 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mWalkingDir(0),
     mPathSetByMouse(false),
     mLocalWalkTime(-1),
+    mKeyboardMoveDelay(500),
     mMessageTime(0),
     mShowIp(false),
     mAwayDialog(0),
@@ -119,7 +115,7 @@ void LocalPlayer::logic()
             particleEngine->addTextRiseFadeOutEffect(
                     info.first,
                     getPixelX(),
-                    getDrawPixelY() - 48,
+                    getPixelY() - 48,
                     &userPalette->getColor(info.second),
                     gui->getInfoParticleFont(), true);
 
@@ -741,8 +737,9 @@ void LocalPlayer::setWalkingDir(int dir)
 
     // If the delay to send another walk message to the server hasn't expired,
     // don't do anything or we could get disconnected for spamming the server
-    if (get_elapsed_time(mLocalWalkTime) < walkingKeyboardDelay)
+    if (get_elapsed_time(mLocalWalkTime) < mKeyboardMoveDelay)
         return;
+    mLocalWalkTime = tick_time;
 
     mWalkingDir = dir;
 
@@ -806,6 +803,12 @@ void LocalPlayer::stopWalking(bool sendToServer)
     mPathSetByMouse = false;
 
     clearPath();
+}
+
+void LocalPlayer::setMoveSpeed(const Vector& speed)
+{
+    Being::setMoveSpeed(speed);
+    mKeyboardMoveDelay = Net::getPlayerHandler()->getKeyboardMoveDelay(speed);
 }
 
 void LocalPlayer::toggleSit()

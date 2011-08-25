@@ -453,6 +453,12 @@ float Particle::getCurrentAlpha() const
     return alpha;
 }
 
+int Particle::getDrawOrder() const
+{
+    return (int)(mPos.y) - 16;
+}
+
+
 void Particle::clear()
 {
     delete_all(mChildEmitters);
