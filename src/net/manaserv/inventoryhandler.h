@@ -38,6 +38,8 @@ class EquipBackend : public Equipment::Backend, public EventListener
     public:
         EquipBackend();
 
+        ~EquipBackend();
+
         Item *getEquipment(int slotIndex) const;
         std::string getSlotName(int slotIndex) const;
         void clear();

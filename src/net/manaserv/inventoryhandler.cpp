@@ -65,6 +65,11 @@ EquipBackend::EquipBackend()
     mVisibleSlots = 0;
 }
 
+EquipBackend::~EquipBackend()
+{
+    clear();
+}
+
 Item *EquipBackend::getEquipment(int slotIndex) const
 {
     Slots::const_iterator it = mSlots.find(slotIndex);
