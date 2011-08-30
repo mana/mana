@@ -106,7 +106,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * TODO Find some way to get rid of Item here
          */
         void showPopup(Window *parent, int x, int y, Item *item,
-                       bool isInventory = true);
+                       bool isInventory = true, bool canDrop = true);
 
         /**
          * Closes the popup menu. Needed for when the player dies or switching

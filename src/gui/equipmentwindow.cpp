@@ -211,30 +211,32 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
 
     const int x = mouseEvent.getX();
     const int y = mouseEvent.getY();
+    Item *item = 0;
 
-    if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
+    // Checks if any of the presses were in the equip boxes.
+    for (int i = 0; i < mBoxesNumber; ++i)
     {
-        // Checks if any of the presses were in the equip boxes.
-        for (int i = 0; i < mBoxesNumber; ++i)
-        {
-            Item *item = mEquipment->getEquipment(i);
-            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                    BOX_WIDTH, BOX_HEIGHT);
+        item = mEquipment->getEquipment(i);
+        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                BOX_WIDTH, BOX_HEIGHT);
 
-            if (tRect.isPointInRect(x, y) && item)
-                setSelected(i);
+        if (tRect.isPointInRect(x, y) && item)
+        {
+            setSelected(i);
+            break;
         }
     }
-    else if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
+
+    if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
     {
-        if (Item *item = getItem(x, y))
+        if (item)
         {
             /* Convert relative to the window coordinates to absolute screen
              * coordinates.
              */
             const int mx = x + getX();
             const int my = y + getY();
-            viewport->showPopup(this, mx, my, item, true);
+            viewport->showPopup(this, mx, my, item, true, false);
         }
     }
 }
