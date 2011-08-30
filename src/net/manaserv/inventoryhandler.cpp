@@ -65,6 +65,11 @@ EquipBackend::EquipBackend()
     mVisibleSlots = 0;
 }
 
+EquipBackend::~EquipBackend()
+{
+    clear();
+}
+
 Item *EquipBackend::getEquipment(int slotIndex) const
 {
     Slots::const_iterator it = mSlots.find(slotIndex);
@@ -211,19 +216,19 @@ void EquipBackend::readEquipFile()
     unsigned int slotIndex = 0;
     mVisibleSlots = 0;
 
-    for_each_xml_child_node(childNode, rootNode)
+    for_each_xml_child_node(slotNode, rootNode)
     {
-        if (!xmlStrEqual(childNode->name, BAD_CAST "slot"))
+        if (!xmlStrEqual(slotNode->name, BAD_CAST "slot"))
             continue;
 
         Slot slot;
-        slot.slotTypeId = XML::getProperty(childNode, "id", 0);
-        std::string name = XML::getProperty(childNode, "name", std::string());
-        const int capacity = XML::getProperty(childNode, "capacity", 1);
-        slot.weaponSlot =  XML::getBoolProperty(childNode, "weapon", false);
-        slot.ammoSlot =  XML::getBoolProperty(childNode, "ammo", false);
+        slot.slotTypeId = XML::getProperty(slotNode, "id", 0);
+        std::string name = XML::getProperty(slotNode, "name", std::string());
+        const int capacity = XML::getProperty(slotNode, "capacity", 1);
+        slot.weaponSlot =  XML::getBoolProperty(slotNode, "weapon", false);
+        slot.ammoSlot =  XML::getBoolProperty(slotNode, "ammo", false);
 
-        if (XML::getBoolProperty(childNode, "visible", false))
+        if (XML::getBoolProperty(slotNode, "visible", false))
             ++mVisibleSlots;
 
         if (slot.slotTypeId > 0 && capacity > 0)
@@ -249,6 +254,23 @@ void EquipBackend::readEquipFile()
                 ++slotIndex;
             }
         }
+
+        // Read the box properties
+        readBoxNode(slotNode);
+    }
+}
+
+void EquipBackend::readBoxNode(xmlNodePtr slotNode)
+{
+    for_each_xml_child_node(boxNode, slotNode)
+    {
+        if (!xmlStrEqual(boxNode->name, BAD_CAST "box"))
+            continue;
+
+        int x = XML::getProperty(boxNode, "x" , 0);
+        int y = XML::getProperty(boxNode, "y" , 0);
+
+        mBoxesPositions.push_back(Position(x, y));
     }
 }
 
@@ -272,6 +294,13 @@ bool EquipBackend::isAmmoSlot(int slotTypeId) const
             return it->second.ammoSlot;
     }
     return false;
+}
+
+Position EquipBackend::getBoxPosition(unsigned int slotIndex) const
+{
+    if (slotIndex < mBoxesPositions.size())
+        return mBoxesPositions.at(slotIndex);
+    return Position(0, 0);
 }
 
 InventoryHandler::InventoryHandler()

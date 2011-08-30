@@ -50,21 +50,6 @@
 static const int BOX_WIDTH = 36;
 static const int BOX_HEIGHT = 36;
 
-// Positions of the boxes, 2nd dimension is X and Y respectively.
-const int boxPosition[][2] = {
-    { 90,  40 },    // EQUIP_TORSO_SLOT
-    { 8,   78 },    // EQUIP_GLOVES_SLOT
-    { 70,  0 },     // EQUIP_HEAD_SLOT
-    { 50,  208 },   // EQUIP_LEGS_SLOT
-    { 90,  208 },   // EQUIP_FEET_SLOT
-    { 8,   168 },   // EQUIP_RING1_SLOT
-    { 129, 168 },   // EQUIP_RING2_SLOT
-    { 50,  40 },    // EQUIP_NECK_SLOT
-    { 8,   123 },   // EQUIP_FIGHT1_SLOT
-    { 129, 123 },   // EQUIP_FIGHT2_SLOT
-    { 129, 78 }     // EQUIP_PROJECTILE_SLOT
-};
-
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window(_("Equipment")),
     mEquipBox(0),
@@ -105,10 +90,11 @@ void EquipmentWindow::loadEquipBoxes()
     mBoxesNumber = mEquipment->getSlotNumber();
     mEquipBox = new EquipBox[mBoxesNumber];
 
-    for (int i = 0; i < mBoxesNumber; i++)
+    for (int i = 0; i < mBoxesNumber; ++i)
     {
-        mEquipBox[i].posX = boxPosition[i][0] + getPadding();
-        mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
+        Position boxPosition = Net::getInventoryHandler()->getBoxPosition(i);
+        mEquipBox[i].posX = boxPosition.x + getPadding();
+        mEquipBox[i].posY = boxPosition.y + getTitleBarHeight();
     }
 }
 
@@ -211,30 +197,32 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
 
     const int x = mouseEvent.getX();
     const int y = mouseEvent.getY();
+    Item *item = 0;
 
-    if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
+    // Checks if any of the presses were in the equip boxes.
+    for (int i = 0; i < mBoxesNumber; ++i)
     {
-        // Checks if any of the presses were in the equip boxes.
-        for (int i = 0; i < mBoxesNumber; ++i)
-        {
-            Item *item = mEquipment->getEquipment(i);
-            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                    BOX_WIDTH, BOX_HEIGHT);
+        item = mEquipment->getEquipment(i);
+        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                BOX_WIDTH, BOX_HEIGHT);
 
-            if (tRect.isPointInRect(x, y) && item)
-                setSelected(i);
+        if (tRect.isPointInRect(x, y) && item)
+        {
+            setSelected(i);
+            break;
         }
     }
-    else if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
+
+    if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
     {
-        if (Item *item = getItem(x, y))
+        if (item)
         {
             /* Convert relative to the window coordinates to absolute screen
              * coordinates.
              */
             const int mx = x + getX();
             const int my = y + getY();
-            viewport->showPopup(this, mx, my, item, true);
+            viewport->showPopup(this, mx, my, item, true, false);
         }
     }
 }

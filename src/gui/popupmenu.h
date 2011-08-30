@@ -55,7 +55,7 @@ class PopupMenu : public Popup, public LinkHandler
          * at the specified mouse coordinates.
          */
         void showPopup(Window *parent, int x, int y, Item *item,
-                       bool isInventory);
+                       bool isInventory, bool canDrop = true);
 
         /**
          * Handles link action.

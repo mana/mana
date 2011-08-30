@@ -58,6 +58,12 @@ class EquipmentWindow : public Window, public gcn::ActionListener
          */
         void loadEquipBoxes();
 
+        /**
+         * Returns the current selected slot or -1 if none.
+         */
+        int getSelected()
+        { return mSelected; }
+
   protected:
         /**
          * Equipment box.
