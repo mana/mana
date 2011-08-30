@@ -24,10 +24,26 @@
 
 #include "inventory.h"
 #include "item.h"
+#include "position.h"
 
 #include <iosfwd>
 
 namespace Net {
+
+// Default positions of the boxes, 2nd dimension is X and Y respectively.
+const int fallBackBoxesPosition[][2] = {
+    { 90,  40 },    // EQUIP_TORSO_SLOT
+    { 8,   78 },    // EQUIP_GLOVES_SLOT
+    { 70,  0 },     // EQUIP_HEAD_SLOT
+    { 50,  208 },   // EQUIP_LEGS_SLOT
+    { 90,  208 },   // EQUIP_FEET_SLOT
+    { 8,   168 },   // EQUIP_RING1_SLOT
+    { 129, 168 },   // EQUIP_RING2_SLOT
+    { 50,  40 },    // EQUIP_NECK_SLOT
+    { 8,   123 },   // EQUIP_FIGHT1_SLOT
+    { 129, 123 },   // EQUIP_FIGHT2_SLOT
+    { 129, 78 }     // EQUIP_PROJECTILE_SLOT
+};
 
 class InventoryHandler
 {
@@ -45,6 +61,15 @@ class InventoryHandler
 
         virtual unsigned int getVisibleSlotsNumber() const
         { return 0; }
+
+        virtual Position getBoxPosition(unsigned int slotIndex) const
+        {
+            if (slotIndex < (sizeof(fallBackBoxesPosition)
+                             / sizeof(fallBackBoxesPosition[0][0])))
+                return Position(fallBackBoxesPosition[slotIndex][0],
+                                fallBackBoxesPosition[slotIndex][1]);
+            return Position(0,0);
+        }
 };
 
 } // namespace Net

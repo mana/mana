@@ -59,8 +59,12 @@ class EquipBackend : public Equipment::Backend, public EventListener
         bool isWeaponSlot(int slotTypeId) const;
         bool isAmmoSlot(int slotTypeId) const;
 
+        Position getBoxPosition(unsigned int slotIndex) const;
+
     private:
         void readEquipFile();
+
+        void readBoxNode(xmlNodePtr slotNode);
 
         struct Slot {
             Slot():
@@ -107,6 +111,7 @@ class EquipBackend : public Equipment::Backend, public EventListener
         // slot client index, slot info
         typedef std::map<unsigned int, Slot> Slots;
         Slots mSlots;
+        std::vector<Position> mBoxesPositions;
 };
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler,
@@ -131,6 +136,9 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler,
 
         unsigned int getVisibleSlotsNumber() const
         { return mEquipBackend.getVisibleSlotsNumber(); }
+
+        Position getBoxPosition(unsigned int slotIndex) const
+        { return mEquipBackend.getBoxPosition(slotIndex); }
 
     private:
         EquipBackend mEquipBackend;
