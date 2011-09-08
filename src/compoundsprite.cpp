@@ -292,6 +292,7 @@ static void updateValues(int &dimension, int &pos, int imgDimUL, int imgDimRD, i
 
 void CompoundSprite::redraw() const
 {
+#ifdef USE_OPENGL
     // TODO OpenGL support
     if (Image::getLoadAsOpenGL())
     {
@@ -302,7 +303,7 @@ void CompoundSprite::redraw() const
         mNeedsRedraw = false;
         return;
     }
-
+#endif
 
     mWidth = mHeight = mOffsetX = mOffsetY = 0;
     Sprite *s = NULL;
