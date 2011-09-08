@@ -30,7 +30,6 @@
 #define NO_SDL_GLEXT
 
 #include <SDL_opengl.h>
-#endif
 
 class OpenGLGraphics : public Graphics
 {
@@ -129,5 +128,6 @@ class OpenGLGraphics : public Graphics
         bool mColorAlpha;
         bool mSync;
 };
+#endif //USE_OPENGL
 
 #endif
