@@ -480,23 +480,25 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
                static_cast<GLubyte>(mColor.a));
 }
 
-void OpenGLGraphics::drawRescaledImagePattern(Image *image, int x, int y,
-                                              int w, int h, int scaledWidth,
+void OpenGLGraphics::drawRescaledImagePattern(Image *image,
+                                              int x, int y,
+                                              int w, int h,
+                                              int scaledWidth,
                                               int scaledHeight)
 {
     if (!image)
         return;
 
+    if (scaledWidth == 0 || scaledHeight == 0)
+        return;
+
     const int srcX = image->mBounds.x;
     const int srcY = image->mBounds.y;
 
-    const int iw = scaledWidth;
-    const int ih = scaledHeight;
+    const int iw = image->getWidth();
+    const int ih = image->getHeight();
     if (iw == 0 || ih == 0)
         return;
-
-    const float tw = static_cast<float>(image->getTextureWidth());
-    const float th = static_cast<float>(image->getTextureHeight());
 
     glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
 
@@ -507,23 +509,31 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image, int x, int y,
     unsigned int vp = 0;
     const unsigned int vLimit = vertexBufSize * 4;
 
-    float texX1 = static_cast<float>(srcX) / tw;
-    float texY1 = static_cast<float>(srcY) / th;
-
     // Draw a set of textured rectangles
     if (image->getTextureType() == GL_TEXTURE_2D)
     {
-        for (int py = 0; py < h; py += ih)
-        {
-            const int height = (py + ih >= h) ? h - py : ih;
-            const int dstY = y + py;
-            for (int px = 0; px < w; px += iw)
-            {
-                int width = (px + iw >= w) ? w - px : iw;
-                int dstX = x + px;
+        const float tw = static_cast<float>(image->getTextureWidth());
+        const float th = static_cast<float>(image->getTextureHeight());
 
-                float texX2 = static_cast<float>(srcX + width) / tw;
-                float texY2 = static_cast<float>(srcY + height) / th;
+        const float texX1 = static_cast<float>(srcX) / tw;
+        const float texY1 = static_cast<float>(srcY) / th;
+
+        const float tFractionW = iw / tw;
+        const float tFractionH = ih / th;
+
+        for (int py = 0; py < h; py += scaledHeight)
+        {
+            const int height = (py + scaledHeight >= h) ? h - py : scaledHeight;
+            const int dstY = y + py;
+            for (int px = 0; px < w; px += scaledWidth)
+            {
+                int width = (px + scaledWidth >= w) ? w - px : scaledWidth;
+                int dstX = x + px;
+                const float visibleFractionW = (float) width / scaledWidth;
+                const float visibleFractionH = (float) height / scaledHeight;
+
+                const float texX2 = texX1 + tFractionW * visibleFractionW;
+                const float texY2 = texY1 + tFractionH * visibleFractionH;
 
                 mFloatTexArray[vp + 0] = texX1;
                 mFloatTexArray[vp + 1] = texY1;
@@ -540,14 +550,14 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image, int x, int y,
                 mIntVertArray[vp + 0] = dstX;
                 mIntVertArray[vp + 1] = dstY;
 
-                mIntVertArray[vp + 2] = dstX + scaledWidth;
+                mIntVertArray[vp + 2] = dstX + width;
                 mIntVertArray[vp + 3] = dstY;
 
-                mIntVertArray[vp + 4] = dstX + scaledWidth;
-                mIntVertArray[vp + 5] = dstY + scaledHeight;
+                mIntVertArray[vp + 4] = dstX + width;
+                mIntVertArray[vp + 5] = dstY + height;
 
                 mIntVertArray[vp + 6] = dstX;
-                mIntVertArray[vp + 7] = dstY + scaledHeight;
+                mIntVertArray[vp + 7] = dstY + height;
 
                 vp += 8;
                 if (vp >= vLimit)
@@ -562,38 +572,41 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image, int x, int y,
     }
     else
     {
-        for (int py = 0; py < h; py += ih)
+        const float scaleFactorW = (float) scaledWidth / iw;
+        const float scaleFactorH = (float) scaledHeight / ih;
+
+        for (int py = 0; py < h; py += scaledHeight)
         {
-            const int height = (py + ih >= h) ? h - py : ih;
+            const int height = (py + scaledHeight >= h) ? h - py : scaledHeight;
             const int dstY = y + py;
-            for (int px = 0; px < w; px += iw)
+            for (int px = 0; px < w; px += scaledWidth)
             {
-                int width = (px + iw >= w) ? w - px : iw;
+                int width = (px + scaledWidth >= w) ? w - px : scaledWidth;
                 int dstX = x + px;
 
                 mIntTexArray[vp + 0] = srcX;
                 mIntTexArray[vp + 1] = srcY;
 
-                mIntTexArray[vp + 2] = srcX + width;
+                mIntTexArray[vp + 2] = srcX + width / scaleFactorW;
                 mIntTexArray[vp + 3] = srcY;
 
-                mIntTexArray[vp + 4] = srcX + width;
-                mIntTexArray[vp + 5] = srcY + height;
+                mIntTexArray[vp + 4] = srcX + width / scaleFactorW;
+                mIntTexArray[vp + 5] = srcY + height / scaleFactorH;
 
                 mIntTexArray[vp + 6] = srcX;
-                mIntTexArray[vp + 7] = srcY + height;
+                mIntTexArray[vp + 7] = srcY + height / scaleFactorH;
 
                 mIntVertArray[vp + 0] = dstX;
                 mIntVertArray[vp + 1] = dstY;
 
-                mIntVertArray[vp + 2] = dstX + scaledWidth;
+                mIntVertArray[vp + 2] = dstX + width;
                 mIntVertArray[vp + 3] = dstY;
 
-                mIntVertArray[vp + 4] = dstX + scaledWidth;
-                mIntVertArray[vp + 5] = dstY + scaledHeight;
+                mIntVertArray[vp + 4] = dstX + width;
+                mIntVertArray[vp + 5] = dstY + height;
 
                 mIntVertArray[vp + 6] = dstX;
-                mIntVertArray[vp + 7] = dstY + scaledHeight;
+                mIntVertArray[vp + 7] = dstY + height;
 
                 vp += 8;
                 if (vp >= vLimit)

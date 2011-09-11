@@ -2,6 +2,7 @@
 - Fixed endless loop when a sprite definition promises too many images
 - Fixed crash when selecting a character that has a Dark Talisman equipped
 - Fixed drawing glitch with overwide tiles
+- Fixed scaling of overlays in OpenGL mode
 - Fixed building without OpenGL
 
 0.5.2 (17 April 2011)
