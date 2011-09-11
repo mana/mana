@@ -386,7 +386,7 @@ class Map : public Properties
 
         int mWidth, mHeight;
         int mTileWidth, mTileHeight;
-        int mMaxTileHeight;
+        int mMaxTileHeight, mMaxTileWidth;
         MetaTile *mMetaTiles;
         Layers mLayers;
         Tilesets mTilesets;

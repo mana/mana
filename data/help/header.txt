@@ -1,8 +1,8 @@
 
-##1                      M  A  N  A      S O U R C E
+##1                      M  A  N  A      C L I E N T
 ##1               ==========================================
 
-           ##2Version:##6 0.5.2          ##2Date:##3 17 April 2011
+           ##2Version:##6 0.5.3          ##2Date:##3 11 September 2011
 
 ##2                    Website: http://manasource.org
 
