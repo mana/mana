@@ -162,6 +162,7 @@ class Map : public Properties
 
         enum DebugFlags
         {
+            MAP_NORMAL = 0x0,
             MAP_GRID = 0x1,
             MAP_COLLISION_TILES = 0x2,
             MAP_BEING_COLLISION_RADIUS = 0x4,
