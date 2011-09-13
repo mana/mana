@@ -181,23 +181,23 @@ public:
         int flags = 0;
 
         if (mGrid->isSelected())
-            flags |= Map::MAP_GRID;
+            flags |= Map::DEBUG_GRID;
         if (mCollisionTiles->isSelected())
-            flags |= Map::MAP_COLLISION_TILES;
+            flags |= Map::DEBUG_COLLISION_TILES;
         if (mBeingCollisionRadius->isSelected())
-            flags |= Map::MAP_BEING_COLLISION_RADIUS;
+            flags |= Map::DEBUG_BEING_COLLISION_RADIUS;
         if (mBeingPosition->isSelected())
-            flags |= Map::MAP_BEING_POSITION;
+            flags |= Map::DEBUG_BEING_POSITION;
         if (mBeingPath->isSelected())
-            flags |= Map::MAP_BEING_PATH;
+            flags |= Map::DEBUG_BEING_PATH;
         if (mMousePath->isSelected())
-            flags |= Map::MAP_MOUSE_PATH;
+            flags |= Map::DEBUG_MOUSE_PATH;
         if (mSpecial1->isSelected())
-            flags |= Map::MAP_SPECIAL1;
+            flags |= Map::DEBUG_SPECIAL1;
         if (mSpecial2->isSelected())
-            flags |= Map::MAP_SPECIAL2;
+            flags |= Map::DEBUG_SPECIAL2;
         if (mSpecial3->isSelected())
-            flags |= Map::MAP_SPECIAL3;
+            flags |= Map::DEBUG_SPECIAL3;
 
         viewport->setShowDebugPath(flags);
     }

@@ -123,7 +123,7 @@ class MapLayer
                   int endX, int endY,
                   int scrollX, int scrollY,
                   const Actors &actors,
-                  int mDebugFlags) const;
+                  int debugFlags) const;
 
         bool isFringeLayer()
         { return mIsFringeLayer; }
@@ -162,16 +162,16 @@ class Map : public Properties
 
         enum DebugFlags
         {
-            MAP_NORMAL = 0x0,
-            MAP_GRID = 0x1,
-            MAP_COLLISION_TILES = 0x2,
-            MAP_BEING_COLLISION_RADIUS = 0x4,
-            MAP_BEING_POSITION = 0x8,
-            MAP_BEING_PATH = 0x10,
-            MAP_MOUSE_PATH = 0x20,
-            MAP_SPECIAL1 = 0x40,
-            MAP_SPECIAL2 = 0x80,
-            MAP_SPECIAL3 = 0x100
+            DEBUG_NONE = 0x0,
+            DEBUG_GRID = 0x1,
+            DEBUG_COLLISION_TILES = 0x2,
+            DEBUG_BEING_COLLISION_RADIUS = 0x4,
+            DEBUG_BEING_POSITION = 0x8,
+            DEBUG_BEING_PATH = 0x10,
+            DEBUG_MOUSE_PATH = 0x20,
+            DEBUG_SPECIAL1 = 0x40,
+            DEBUG_SPECIAL2 = 0x80,
+            DEBUG_SPECIAL3 = 0x100
         };
 
         /**
@@ -324,9 +324,9 @@ class Map : public Properties
         void addAnimation(int gid, TileAnimation *animation)
         { mTileAnimations[gid] = animation; }
 
-        void setDebugFlags(int n) {mDebugFlags = n;}
+        void setDebugFlags(int flags) { mDebugFlags = flags; }
 
-        int getDebugFlags() const {return mDebugFlags;}
+        int getDebugFlags() const { return mDebugFlags; }
 
         /**
          * Gets the tile animation for a specific gid

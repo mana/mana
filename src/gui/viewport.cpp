@@ -201,7 +201,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
         if (mDebugFlags)
         {
-            if (mDebugFlags & (Map::MAP_GRID | Map::MAP_COLLISION_TILES))
+            if (mDebugFlags & (Map::DEBUG_GRID | Map::DEBUG_COLLISION_TILES))
             {
                 mMap->drawCollision(graphics, (int) mPixelViewX,
                                     (int) mPixelViewY, mDebugFlags);
@@ -294,7 +294,7 @@ void Viewport::_followMouse()
 
 void Viewport::_drawDebugPath(Graphics *graphics)
 {
-    if (mDebugFlags & Map::MAP_MOUSE_PATH)
+    if (mDebugFlags & Map::DEBUG_MOUSE_PATH)
     {
         // Get the current mouse position
         SDL_GetMouseState(&mMouseX, &mMouseY);
@@ -359,7 +359,7 @@ void Viewport::_drawDebugPath(Graphics *graphics)
         const Vector &beingPos = being->getPosition();
         graphics->setColor(gcn::Color(128, 128, 0, 150));
 
-        if (mDebugFlags & Map::MAP_BEING_COLLISION_RADIUS)
+        if (mDebugFlags & Map::DEBUG_BEING_COLLISION_RADIUS)
         {
             const int radius = being->getCollisionRadius();
             graphics->fillRectangle(gcn::Rectangle(
@@ -370,10 +370,10 @@ void Viewport::_drawDebugPath(Graphics *graphics)
                                         radius * 2, radius * 2));
         }
 
-        if (mDebugFlags & Map::MAP_BEING_PATH)
+        if (mDebugFlags & Map::DEBUG_BEING_PATH)
             _drawPath(graphics, being->getPath(), gcn::Color(0, 0, 255, 150));
 
-        if (mDebugFlags & Map::MAP_BEING_POSITION)
+        if (mDebugFlags & Map::DEBUG_BEING_POSITION)
         {
             // Draw the absolute x, y position using a cross.
             graphics->setColor(gcn::Color(0, 0, 255, 255));
