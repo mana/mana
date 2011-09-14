@@ -111,7 +111,6 @@ Network::Network():
 {
     SDLNet_Init();
 
-    mMutex = SDL_CreateMutex();
     mInstance = this;
 }
 
@@ -122,7 +121,6 @@ Network::~Network()
     if (mState != IDLE && mState != NET_ERROR)
         disconnect();
 
-    SDL_DestroyMutex(mMutex);
     mInstance = 0;
 
     delete[] mInBuffer;
@@ -246,8 +244,7 @@ void Network::flush()
 
     int ret;
 
-
-    SDL_mutexP(mMutex);
+    MutexLocker lock(&mMutex);
     ret = SDLNet_TCP_Send(mSocket, mOutBuffer, mOutSize);
     if (ret < (int)mOutSize)
     {
@@ -255,18 +252,14 @@ void Network::flush()
                  std::string(SDLNet_GetError()));
     }
     mOutSize = 0;
-    SDL_mutexV(mMutex);
 }
 
 void Network::skip(int len)
 {
-    SDL_mutexP(mMutex);
+    MutexLocker lock(&mMutex);
     mToSkip += len;
     if (!mInSize)
-    {
-        SDL_mutexV(mMutex);
         return;
-    }
 
     if (mInSize >= mToSkip)
     {
@@ -279,14 +272,13 @@ void Network::skip(int len)
         mToSkip -= mInSize;
         mInSize = 0;
     }
-    SDL_mutexV(mMutex);
 }
 
 bool Network::messageReady()
 {
     int len = -1, msgId;
 
-    SDL_mutexP(mMutex);
+    MutexLocker lock(&mMutex);
     if (mInSize >= 2)
     {
         msgId = readWord(0);
@@ -300,10 +292,7 @@ bool Network::messageReady()
 
     }
 
-    bool ret = (mInSize >= static_cast<unsigned int>(len));
-    SDL_mutexV(mMutex);
-
-    return ret;
+    return mInSize >= static_cast<unsigned int>(len);
 }
 
 MessageIn Network::getNextMessage()
@@ -314,7 +303,7 @@ MessageIn Network::getNextMessage()
             break;
     }
 
-    SDL_mutexP(mMutex);
+    MutexLocker lock(&mMutex);
     int msgId = readWord(0);
     int len;
     if (msgId == SMSG_SERVER_VERSION_RESPONSE)
@@ -329,10 +318,7 @@ MessageIn Network::getNextMessage()
     logger->log("Received packet 0x%x of length %d", msgId, len);
 #endif
 
-    MessageIn msg(mInBuffer, len);
-    SDL_mutexV(mMutex);
-
-    return msg;
+    return MessageIn(mInBuffer, len);
 }
 
 bool Network::realConnect()
@@ -399,8 +385,9 @@ void Network::receive()
                 break;
 
             case 1:
+            {
                 // Receive data from the socket
-                SDL_mutexP(mMutex);
+                MutexLocker lock(&mMutex);
                 ret = SDLNet_TCP_Recv(mSocket, mInBuffer + mInSize, BUFFER_SIZE - mInSize);
 
                 if (!ret)
@@ -432,8 +419,8 @@ void Network::receive()
                         }
                     }
                 }
-                SDL_mutexV(mMutex);
                 break;
+            }
 
             default:
                 // more than one socket is ready..
