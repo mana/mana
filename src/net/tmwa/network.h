@@ -22,6 +22,8 @@
 #ifndef NET_TA_NETWORK_H
 #define NET_TA_NETWORK_H
 
+#include "utils/mutex.h"
+
 #include "net/serverinfo.h"
 
 #include "net/tmwa/messagehandler.h"
@@ -116,7 +118,7 @@ class Network
         std::string mError;
 
         SDL_Thread *mWorkerThread;
-        SDL_mutex *mMutex;
+        Mutex mMutex;
 
         typedef std::map<Uint16, MessageHandler*> MessageHandlers;
         typedef MessageHandlers::iterator MessageHandlerIterator;
