@@ -53,9 +53,13 @@ class MutexLocker
 {
 public:
     MutexLocker(Mutex *mutex);
+    MutexLocker(MutexLocker&&);
     ~MutexLocker();
 
 private:
+    MutexLocker(const MutexLocker&);  // prevent copying
+    MutexLocker& operator=(const MutexLocker&);
+
     Mutex *mMutex;
 };
 
@@ -89,9 +93,15 @@ inline MutexLocker::MutexLocker(Mutex *mutex):
     mMutex->lock();
 }
 
+inline MutexLocker::MutexLocker(MutexLocker&& rhs):
+    mMutex(rhs.mMutex)
+{
+    rhs.mMutex = NULL;
+}
 inline MutexLocker::~MutexLocker()
 {
-    mMutex->unlock();
+    if (mMutex)
+        mMutex->unlock();
 }
 
 #endif // MUTEX_H
