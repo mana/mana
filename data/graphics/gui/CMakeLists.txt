@@ -1,6 +1,17 @@
 SET (FILES
     bubble.png
     button.png
+    button-icon-confirm.png
+    button-icon-cancel.png
+    button-icon-equipment.png
+    button-icon-inventory.png
+    button-icon-setup.png
+    button-icon-shortcut.png
+    button-icon-skills.png
+    button-icon-smilies.png
+    button-icon-social.png
+    button-icon-specials.png
+    button-icon-status.png
     button_disabled.png
     buttonhi.png
     buttonpress.png
@@ -30,6 +41,8 @@ SET (FILES
     speechbubble.xml
     sticky_button.png
     tab.png
+    tab_arrows_left.png
+    tab_arrows_right.png
     tab_hilight.png
     tabselected.png
     unknown-item.png

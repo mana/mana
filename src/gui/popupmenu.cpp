@@ -32,6 +32,7 @@
 #include "playerrelations.h"
 
 #include "gui/chat.h"
+#include "gui/equipmentwindow.h"
 #include "gui/inventorywindow.h"
 #include "gui/itemamount.h"
 
@@ -266,15 +267,20 @@ void PopupMenu::handleLink(const std::string &link)
     {
     }
 
-    else if (link == "activate")
+    else if (link == "activate" || link == "equip" || link == "unequip")
     {
         assert(mItem);
         if (mItem->isEquippable())
         {
             if (mItem->isEquipped())
-                mItem->doEvent(Event::DoUnequip);
+            {
+                PlayerInfo::getEquipment()->triggerUnequip(
+                                                equipmentWindow->getSelected());
+            }
             else
+            {
                 mItem->doEvent(Event::DoEquip);
+            }
         }
         else
         {
@@ -347,7 +353,7 @@ void PopupMenu::handleLink(const std::string &link)
 }
 
 void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
-                          bool isInventory)
+                          bool isInventory, bool canDrop)
 {
     assert(item);
     mItem = item;
@@ -364,17 +370,20 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
         if (item->getInfo().getEquippable())
         {
             if (item->isEquipped())
-                mBrowserBox->addRow(strprintf("@@equip|%s@@", _("Unequip")));
+                mBrowserBox->addRow(strprintf("@@unequip|%s@@", _("Unequip")));
             else
                 mBrowserBox->addRow(strprintf("@@equip|%s@@", _("Equip")));
         }
         if (item->getInfo().getActivatable())
             mBrowserBox->addRow(strprintf("@@activate|%s@@", _("Activate")));
 
-        if (item->getQuantity() > 1)
-            mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop...")));
-        else
-            mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop")));
+        if (canDrop)
+        {
+            if (item->getQuantity() > 1)
+                mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop...")));
+            else
+                mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop")));
+        }
 
         if (Net::getInventoryHandler()->canSplit(item))
         {

@@ -51,6 +51,9 @@ class SpecialsWindow : public Window, public gcn::ActionListener {
 
         void draw(gcn::Graphics *graphics);
 
+        bool hasSpecials()
+        { return !mEntries.empty(); }
+
     private:
         // (re)constructs the list of specials
         void rebuild(const std::map<int, Special> &specialData);

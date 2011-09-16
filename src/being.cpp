@@ -1067,8 +1067,6 @@ void Being::updateColors()
 void Being::setSprite(unsigned int slot, int id, const std::string &color,
                       bool isWeapon)
 {
-    assert(slot < Net::getCharHandler()->maxSprite());
-
     if (slot >= size())
         ensureSize(slot + 1);
 

@@ -49,6 +49,16 @@ class ItemPopup : public Popup
         ~ItemPopup();
 
         /**
+         * Tells the item popup to say: No Item.
+         */
+        void setNoItem();
+
+        /**
+         * Tells in which equipment slot the item is equipped.
+         */
+        void setEquipmentText(const std::string& text = std::string());
+
+        /**
          * Sets the info to be displayed given a particular item.
          */
         void setItem(const ItemInfo &item, bool showImage = false);
@@ -60,6 +70,7 @@ class ItemPopup : public Popup
         TextBox *mItemDesc;
         TextBox *mItemEffect;
         TextBox *mItemWeight;
+        std::string mItemEquipSlot;
         ItemType mItemType;
         Icon *mIcon;
 };

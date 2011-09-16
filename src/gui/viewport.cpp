@@ -530,9 +530,9 @@ void Viewport::mouseReleased(gcn::MouseEvent &event)
 }
 
 void Viewport::showPopup(Window *parent, int x, int y, Item *item,
-                         bool isInventory)
+                         bool isInventory, bool canDrop)
 {
-    mPopupMenu->showPopup(parent, x, y, item, isInventory);
+    mPopupMenu->showPopup(parent, x, y, item, isInventory, canDrop);
 }
 
 void Viewport::closePopupMenu()

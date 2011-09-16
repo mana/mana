@@ -33,8 +33,12 @@ TabbedArea::TabbedArea() : gcn::TabbedArea(),
     mWidgetContainer->setOpaque(false);
     addWidgetListener(this);
 
-    mArrowButton[0] = new Button("<", "shift_left", this);
-    mArrowButton[1] = new Button(">", "shift_right", this);
+    mArrowButton[0] = new Button("", "shift_left", this);
+    mArrowButton[1] = new Button("", "shift_right", this);
+    if (!mArrowButton[0]->setButtonIcon("tab_arrows_left.png"))
+        mArrowButton[0]->setCaption("<");
+    if (!mArrowButton[1]->setButtonIcon("tab_arrows_right.png"))
+        mArrowButton[1]->setCaption(">");
 
     add(mArrowButton[0]);
     add(mArrowButton[1]);

@@ -38,26 +38,82 @@ class EquipBackend : public Equipment::Backend, public EventListener
     public:
         EquipBackend();
 
-        Item *getEquipment(int index) const;
+        ~EquipBackend();
+
+        Item *getEquipment(int slotIndex) const;
+        std::string getSlotName(int slotIndex) const;
         void clear();
 
-        void equip(int inventorySlot, int equipSlot, int amountUsed = 1);
-        void unequip(int inventorySlot);
+        void equip(int itemId, int slotTypeId, int amountUsed = 1,
+                   int itemInstance = 0);
+        void unequip(int slotTypeId);
 
         void event(Event::Channel channel, const Event &event);
+
+        int getSlotNumber() const
+        { return mSlots.size(); }
+
+        unsigned int getVisibleSlotsNumber() const
+        { return mVisibleSlots; }
+
+        void triggerUnequip(int slotIndex) const;
+
+        bool isWeaponSlot(int slotTypeId) const;
+        bool isAmmoSlot(int slotTypeId) const;
+
+        Position getBoxPosition(unsigned int slotIndex) const;
 
     private:
         void readEquipFile();
 
-        struct SlotType {
-            std::string name;
-            int count;
-            bool visible;
-            int firstIndex;
-        };
+        void readBoxNode(xmlNodePtr slotNode);
 
-        std::vector<Item*> mSlots;
-        std::vector<SlotType> mSlotTypes;
+        struct Slot {
+            Slot():
+                item(0),
+                slotTypeId(0),
+                subId(0),
+                itemInstance(0),
+                weaponSlot(false),
+                ammoSlot(false)
+            {}
+
+            // Generic info
+            std::string name;
+
+            // The Item reference, used for graphical representation
+            // and info.
+            Item *item;
+
+            // Manaserv specific info
+
+            // Used to know which (server-side) slot id it is.
+            unsigned int slotTypeId;
+            // Static part
+            // The sub id is used to know in which order the slots are
+            // when the slotType has more than one slot capacity:
+            // I.e.: capacity = 6, subId will be between 1 and 6
+            // for each slots in the map.
+            // This is used to sort the multimap along with the slot id.
+            unsigned int subId;
+
+            // This is the (per character) unique item Id, used especially when
+            // equipping the same item multiple times on the same slot type.
+            unsigned int itemInstance;
+
+            // Tell whether the slot is a weapon slot
+            bool weaponSlot;
+
+            // Tell whether the slot is an ammo slot
+            bool ammoSlot;
+         };
+
+        unsigned int mVisibleSlots;
+
+        // slot client index, slot info
+        typedef std::map<unsigned int, Slot> Slots;
+        Slots mSlots;
+        std::vector<Position> mBoxesPositions;
 };
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler,
@@ -73,6 +129,18 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler,
         bool canSplit(const Item *item);
 
         size_t getSize(int type) const;
+
+        bool isWeaponSlot(unsigned int slotTypeId) const
+        { return mEquipBackend.isWeaponSlot(slotTypeId); }
+
+        bool isAmmoSlot(unsigned int slotTypeId) const
+        { return mEquipBackend.isAmmoSlot(slotTypeId); }
+
+        unsigned int getVisibleSlotsNumber() const
+        { return mEquipBackend.getVisibleSlotsNumber(); }
+
+        Position getBoxPosition(unsigned int slotIndex) const
+        { return mEquipBackend.getBoxPosition(slotIndex); }
 
     private:
         EquipBackend mEquipBackend;
