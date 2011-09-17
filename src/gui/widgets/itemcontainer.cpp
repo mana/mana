@@ -228,6 +228,11 @@ void ItemContainer::distributeValueChangedEvent()
     }
 }
 
+void ItemContainer::hidePopup()
+{
+    mItemPopup->setVisible(false);
+}
+
 void ItemContainer::keyPressed(gcn::KeyEvent &event)
 {
     /*switch (event.getKey().getValue())

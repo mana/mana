@@ -237,6 +237,12 @@ Item *InventoryWindow::getSelectedItem() const
     return mItems->getSelectedItem();
 }
 
+void InventoryWindow::widgetHidden(const gcn::Event &event)
+{
+    Window::widgetHidden(event);
+    mItems->hidePopup();
+}
+
 void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 {
     Window::mouseClicked(event);
