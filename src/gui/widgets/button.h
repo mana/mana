@@ -96,7 +96,11 @@ class Button : public gcn::Button
 
         Image** mButtonIcon;        /**< Button Icons graphics */
 
-        static TextPopup* mTextPopup;       /**< The buttons popup */
+        /**
+         * The buttons popup
+         * @note: This is a global object. One for all the buttons.
+         */
+        static TextPopup* mTextPopup;
         std::string mPopupText;             /**< the current button text */
 };
 
