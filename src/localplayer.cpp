@@ -1031,10 +1031,17 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
         {
             if (event.getInt("id") == EXP)
             {
-                int change = event.getInt("newValue")
-                        - event.getInt("oldValue");
+                int change = 0,
+                    oldXp = event.getInt("oldValue"),
+                    newXp = event.getInt("newValue");
 
-                addMessageToQueue(toString(change) + " xp");
+                if (newXp < oldXp)
+                    change = PlayerInfo::getAttribute(EXP_NEEDED) - oldXp;
+                else
+                    change = newXp - oldXp;
+
+                if (change > 0)
+                    addMessageToQueue(toString(change) + " xp");
             }
         }
     }
