@@ -183,13 +183,12 @@ void WindowMenu::addButton(const std::string& text, int &x, int &h,
     Button *btn = new Button("", text, this);
     if (!iconPath.empty() && btn->setButtonIcon(iconPath))
     {
-        // When in image button mode, we have room to show
-        // the keyboard shortcut.
         btn->setButtonPopupText(createShortcutCaption(text, key));
     }
     else
     {
         btn->setCaption(gettext(text.c_str()));
+        btn->setButtonPopupText(createShortcutCaption("", key));
     }
 
     btn->setPosition(x, 0);
@@ -203,44 +202,44 @@ void WindowMenu::updatePopUpCaptions()
     for (WidgetList::iterator it = mWidgets.begin(); it != mWidgets.end(); ++it)
     {
         Button *button = dynamic_cast<Button*> (*it);
-        if (button)
+        if (!button)
+            continue;
+
+        std::string eventId = button->getActionEventId();
+        if (eventId == "Status")
         {
-            std::string eventId = button->getActionEventId();
-            if (eventId == "Status")
-            {
-                button->setButtonPopupText(createShortcutCaption("Status",
-                                            KeyboardConfig::KEY_WINDOW_STATUS));
-            }
-            else if (eventId == "Equipment")
-            {
-                button->setButtonPopupText(createShortcutCaption("Equipment",
-                                         KeyboardConfig::KEY_WINDOW_EQUIPMENT));
-            }
-            else if (eventId == "Inventory")
-            {
-                button->setButtonPopupText(createShortcutCaption("Inventory",
-                                         KeyboardConfig::KEY_WINDOW_INVENTORY));
-            }
-            else if (eventId == "Skills")
-            {
-                button->setButtonPopupText(createShortcutCaption("Skills",
-                                             KeyboardConfig::KEY_WINDOW_SKILL));
-            }
-            else if (eventId == "Social")
-            {
-                button->setButtonPopupText(createShortcutCaption("Social",
-                                            KeyboardConfig::KEY_WINDOW_SOCIAL));
-            }
-            else if (eventId == "Shortcuts")
-            {
-                button->setButtonPopupText(createShortcutCaption("Shortcuts",
-                                          KeyboardConfig::KEY_WINDOW_SHORTCUT));
-            }
-            else if (eventId == "Setup")
-            {
-                button->setButtonPopupText(createShortcutCaption("Setup",
-                                             KeyboardConfig::KEY_WINDOW_SETUP));
-            }
+            button->setButtonPopupText(createShortcutCaption("Status",
+                                        KeyboardConfig::KEY_WINDOW_STATUS));
+        }
+        else if (eventId == "Equipment")
+        {
+            button->setButtonPopupText(createShortcutCaption("Equipment",
+                                        KeyboardConfig::KEY_WINDOW_EQUIPMENT));
+        }
+        else if (eventId == "Inventory")
+        {
+            button->setButtonPopupText(createShortcutCaption("Inventory",
+                                        KeyboardConfig::KEY_WINDOW_INVENTORY));
+        }
+        else if (eventId == "Skills")
+        {
+            button->setButtonPopupText(createShortcutCaption("Skills",
+                                            KeyboardConfig::KEY_WINDOW_SKILL));
+        }
+        else if (eventId == "Social")
+        {
+            button->setButtonPopupText(createShortcutCaption("Social",
+                                        KeyboardConfig::KEY_WINDOW_SOCIAL));
+        }
+        else if (eventId == "Shortcuts")
+        {
+            button->setButtonPopupText(createShortcutCaption("Shortcuts",
+                                        KeyboardConfig::KEY_WINDOW_SHORTCUT));
+        }
+        else if (eventId == "Setup")
+        {
+            button->setButtonPopupText(createShortcutCaption("Setup",
+                                            KeyboardConfig::KEY_WINDOW_SETUP));
         }
     }
 }
