@@ -160,7 +160,13 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
         case GPMSG_LEVEL_PROGRESS:
         {
-            PlayerInfo::setAttribute(EXP, msg.readInt8());
+            // Don't show the first XP notification as it is sent by the server
+            // to initialize the current XP level.
+            static bool firstTime = true;
+            if (firstTime)
+                firstTime = false;
+            else
+                PlayerInfo::setAttribute(EXP, msg.readInt8());
         } break;
 
 
