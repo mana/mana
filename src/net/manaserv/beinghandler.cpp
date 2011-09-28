@@ -145,8 +145,8 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
             }
             int hs = msg.readInt8(), hc = msg.readInt8();
             being->setSprite(SPRITE_LAYER_HAIR, hs * -1, ColorDB::get(hc));
-            being->setGender(msg.readInt8() == GENDER_MALE ?
-                             GENDER_MALE : GENDER_FEMALE);
+            being->setGender(msg.readInt8() == ManaServ::GENDER_MALE ?
+                             ::GENDER_MALE : ::GENDER_FEMALE);
             handleLooks(being, msg);
         } break;
 
