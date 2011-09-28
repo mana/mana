@@ -67,6 +67,11 @@ class InventoryWindow : public Window,
         Item* getSelectedItem() const;
 
         /**
+         * Handles closing of the window
+         */
+        virtual void widgetHidden(const gcn::Event &event);
+
+        /**
          * Handles the mouse clicks.
          */
         void mouseClicked(gcn::MouseEvent &event);
