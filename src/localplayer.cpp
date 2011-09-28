@@ -620,6 +620,7 @@ void LocalPlayer::pickUp(FloorItem *item)
     }
     else
     {
+        pathSetByMouse();
         setDestination(item->getTileX() * tileWidth + tileWidth / 2,
                        item->getTileY() * tileHeight + tileHeight / 2);
         mPickUpTarget = item;
