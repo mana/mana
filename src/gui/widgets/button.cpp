@@ -37,8 +37,8 @@
 
 int Button::mInstances = 0;
 float Button::mAlpha = 1.0;
-ImageRect* Button::mButton;
-TextPopup* Button::mTextPopup = 0;
+ImageRect *Button::mButton;
+TextPopup *Button::mTextPopup = 0;
 
 enum{
     BUTTON_STANDARD,    // 0
@@ -188,6 +188,7 @@ Button::~Button()
 
         // Remove the popup
         delete mTextPopup;
+        mTextPopup = 0;
     }
     removeButtonIcon();
 }
