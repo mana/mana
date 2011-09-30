@@ -128,7 +128,7 @@ DefaultsData* getBrandingDefaults()
     DefaultsData* brandingData = new DefaultsData;
     // Init config defaults
     AddDEF(brandingData, "wallpapersPath", "");
-    AddDEF(brandingData, "wallpapersFile", "");
+    AddDEF(brandingData, "wallpaperFile", "");
     AddDEF(brandingData, "appName", "Mana");
     AddDEF(brandingData, "appIcon", "icons/mana");
     AddDEF(brandingData, "loginMusic", "Magick - Real.ogg");
