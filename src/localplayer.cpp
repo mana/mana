@@ -1031,10 +1031,27 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
         {
             if (event.getInt("id") == EXP)
             {
-                int change = event.getInt("newValue")
-                        - event.getInt("oldValue");
+                int change = 0;
+                int oldXp = event.getInt("oldValue");
+                int newXp = event.getInt("newValue");
 
-                addMessageToQueue(toString(change) + " xp");
+                // When the new XP is lower than the old one,
+                // it means that a new level has been reached.
+                // Thus, the xp difference can only be obtained
+                // with the exp needed for the next level.
+                // The new XP value is then the XP obtained for the new level.
+                if (newXp < oldXp)
+                {
+                    change = PlayerInfo::getAttribute(EXP_NEEDED)
+                        - oldXp + newXp;
+                }
+                else
+                {
+                    change = newXp - oldXp;
+                }
+
+                if (change > 0)
+                    addMessageToQueue(toString(change) + " xp");
             }
         }
     }
