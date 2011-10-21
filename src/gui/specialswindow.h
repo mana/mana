@@ -38,7 +38,8 @@ class TabbedArea;
 
 struct SpecialEntry;
 
-class SpecialsWindow : public Window, public gcn::ActionListener {
+class SpecialsWindow : public Window, public gcn::ActionListener
+{
     public:
         SpecialsWindow();
 
@@ -51,7 +52,7 @@ class SpecialsWindow : public Window, public gcn::ActionListener {
 
         void draw(gcn::Graphics *graphics);
 
-        bool hasSpecials()
+        bool hasSpecials() const
         { return !mEntries.empty(); }
 
     private:

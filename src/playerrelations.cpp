@@ -249,7 +249,7 @@ void PlayerRelationsManager::setRelation(const std::string &player_name,
     signalUpdate(player_name);
 }
 
-std::vector<std::string> * PlayerRelationsManager::getPlayers()
+std::vector<std::string> * PlayerRelationsManager::getPlayers() const
 {
     std::vector<std::string> *retval = new std::vector<std::string>();
 
@@ -273,10 +273,11 @@ void PlayerRelationsManager::removePlayer(const std::string &name)
 }
 
 
-PlayerRelation::Relation PlayerRelationsManager::getRelation(const std::string &name)
+PlayerRelation::Relation PlayerRelationsManager::getRelation(const std::string &name) const
 {
-    if (mRelations[name])
-        return mRelations[name]->mRelation;
+    std::map<std::string, PlayerRelation *>::const_iterator it = mRelations.find(name);
+    if (it != mRelations.end())
+        return it->second->mRelation;
 
     return PlayerRelation::NEUTRAL;
 }

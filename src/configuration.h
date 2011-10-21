@@ -113,9 +113,9 @@ class ConfigurationObject
         /**
          * Serialises a container into a list of configuration options
          *
-         * \param IT Iterator type over CONT
-         * \param T Elements that IT iterates over
-         * \param CONT The associated container type
+         * \tparam IT Iterator type over CONT
+         * \tparam T Elements that IT iterates over
+         * \tparam CONT The associated container type
          *
          * \param name Name of the list the elements should be stored under
          * \param begin Iterator start
@@ -151,9 +151,9 @@ class ConfigurationObject
        /**
         * Serialises a container into a list of configuration options
         *
-        * \param IT Iterator type over CONT
-        * \param T Elements that IT iterates over
-        * \param CONT The associated container type
+        * \tparam IT Iterator type over CONT
+        * \tparam T Elements that IT iterates over
+        * \tparam CONT The associated container type
         *
         * \param name Name of the list the elements should be read from under
         * \param empty Initial (empty) container to write to

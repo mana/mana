@@ -128,11 +128,11 @@ class ResourceManager
         /**
          * Adds a preformatted resource to the resource map.
          *
-         * @param path The file name.
-         * @param Resource  The Resource to add.
-         * @return true if successfull, false otherwise.
+         * @param idPath   The resource identifier path.
+         * @param resource The Resource to add.
+         * @return true if successful, false otherwise.
          */
-        bool addResource(const std::string &idPath, Resource* resource);
+        bool addResource(const std::string &idPath, Resource *resource);
 
         /**
         * Copies a file from one place to another (useful for extracting

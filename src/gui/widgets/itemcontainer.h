@@ -54,11 +54,8 @@ class ItemContainer : public gcn::Widget,
          * Constructor. Initializes the graphic.
          *
          * @param inventory
-         * @param gridColumns Amount of columns in grid.
-         * @param gridRows    Amount of rows in grid.
-         * @param offset      Index offset
          */
-        ItemContainer(Inventory *inventory, bool forceQuantity = false);
+        ItemContainer(Inventory *inventory);
 
         virtual ~ItemContainer();
 
@@ -184,7 +181,6 @@ class ItemContainer : public gcn::Widget,
         int mSelectedIndex, mHighlightedIndex;
         int mLastUsedSlot;
         SelectionState mSelectionStatus;
-        bool mForceQuantity;
         bool mSwapItems;
         bool mDescItems;
         int mDragPosX, mDragPosY;
@@ -201,4 +197,4 @@ class ItemContainer : public gcn::Widget,
         SelectionListenerList mSelectionListeners;
 };
 
-#endif
+#endif // ITEMCONTAINER_H

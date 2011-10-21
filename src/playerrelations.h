@@ -135,7 +135,7 @@ public:
     /**
      * Updates the relationship with this player.
      */
-    PlayerRelation::Relation getRelation(const std::string &name);
+    PlayerRelation::Relation getRelation(const std::string &name) const;
 
     /**
      * Deletes the information recorded for a player.
@@ -182,16 +182,16 @@ public:
      * For a given ignore strategy short name, find the appropriate index in
      * the ignore strategies vector.
      *
-     * \param The short name of the ignore strategy to look up
+     * \param shortName The short name of the ignore strategy to look up
      * \return The appropriate index, or -1
      */
-    int getPlayerIgnoreStrategyIndex(const std::string &shortname);
+    int getPlayerIgnoreStrategyIndex(const std::string &shortName);
 
     /**
      * Retrieves a sorted vector of all players for which we have any relations
      * recorded.
      */
-    std::vector<std::string> *getPlayers();
+    std::vector<std::string> *getPlayers() const;
 
     /**
      * Removes all recorded player info.

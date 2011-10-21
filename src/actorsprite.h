@@ -185,7 +185,7 @@ protected:
     /**
      * Handle an update to a status or stun effect
      *
-     * \param The StatusEffect to effect
+     * \param effect   The StatusEffect to effect
      * \param effectId -1 for stun, otherwise the effect index
      */
     virtual void handleStatusEffect(StatusEffect *effect, int effectId);

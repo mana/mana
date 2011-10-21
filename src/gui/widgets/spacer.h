@@ -37,17 +37,17 @@ class Spacer : public gcn::Widget
         /**
          * Constructor.
          *
-         * @note Can be called empty, will default to a 5x5 px space
+         * @note Can be called empty, will default to a space of 5x5 pixels.
          *
-         * @param w - width in px.
-         * @param h - height in px.
+         * @param w width in pixels.
+         * @param h height in pixels.
          */
-        Spacer(int x = 5, int y = 5);
+        Spacer(int w = 5, int h = 5);
 
         /**
-         * Draws the Space.
+         * Draws nothing.
          */
-        void draw(gcn::Graphics *g){}
+        void draw(gcn::Graphics *g) {}
 };
 
 #endif // SPACER_H
