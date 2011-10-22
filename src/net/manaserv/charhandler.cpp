@@ -101,8 +101,8 @@ void CharHandler::handleCharacterInfo(Net::MessageIn &msg)
     CachedCharacterInfo info;
     info.slot = msg.readInt8();
     info.name = msg.readString();
-    info.gender = msg.readInt8() == GENDER_MALE ? GENDER_MALE :
-                                                  GENDER_FEMALE;
+    info.gender = msg.readInt8() == ManaServ::GENDER_MALE ?
+                                        ::GENDER_MALE : ::GENDER_FEMALE;
     info.hairStyle = msg.readInt8();
     info.hairColor = msg.readInt8();
     info.level = msg.readInt16();

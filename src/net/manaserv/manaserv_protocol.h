@@ -438,6 +438,16 @@ enum SpriteLayer
     SPRITE_VECTOREND
 };
 
+/**
+ * Beings Genders
+ */
+enum BeingGender
+{
+    GENDER_MALE = 0,
+    GENDER_FEMALE,
+    GENDER_UNSPECIFIED
+};
+
 } // namespace ManaServ
 
 #endif // MANASERV_PROTOCOL_H
