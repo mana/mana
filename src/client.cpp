@@ -86,7 +86,7 @@
 #include <physfs.h>
 #include <SDL_image.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <SDL_syswm.h>
 #include "utils/specialfolder.h"
 #else
@@ -278,7 +278,7 @@ Client::Client(const Options &options):
         std::string path = options.brandingPath;
 
         // Strip blah.mana from the path
-#ifdef WIN32
+#ifdef _WIN32
         int loc1 = path.find_last_of('/');
         int loc2 = path.find_last_of('\\');
         int loc = std::max(loc1, loc2);
@@ -297,14 +297,14 @@ Client::Client(const Options &options):
     resman->addToSearchPath(mLocalDataDir, false);
 
     std::string iconFile = branding.getValue("appIcon", "icons/mana");
-#ifdef WIN32
+#ifdef _WIN32
     iconFile += ".ico";
 #else
     iconFile += ".png";
 #endif
     iconFile = resman->getPath(iconFile);
     logger->log("Loading icon from file: %s", iconFile.c_str());
-#ifdef WIN32
+#ifdef _WIN32
     static SDL_SysWMinfo pInfo;
     SDL_GetWMInfo(&pInfo);
     // Attempt to load icon from .ico file
@@ -1069,7 +1069,7 @@ void Client::action(const gcn::ActionEvent &event)
 void Client::initRootDir()
 {
     mRootDir = PHYSFS_getBaseDir();
-#ifdef WIN32
+#ifdef _WIN32
     std::string portableName = mRootDir + "portable.xml";
     struct stat statbuf;
 
@@ -1135,7 +1135,7 @@ void Client::initHomeDir()
 #elif defined __HAIKU__
         mLocalDataDir = std::string(PHYSFS_getUserDir()) +
            "/config/data/Mana";
-#elif defined WIN32
+#elif defined _WIN32
         mLocalDataDir = getSpecialFolderLocation(CSIDL_LOCAL_APPDATA);
         if (mLocalDataDir.empty())
             mLocalDataDir = std::string(PHYSFS_getUserDir());
@@ -1163,7 +1163,7 @@ void Client::initHomeDir()
         mConfigDir = std::string(PHYSFS_getUserDir()) +
            "/config/settings/Mana" +
            branding.getValue("appName", "manasource");
-#elif defined WIN32
+#elif defined _WIN32
         mConfigDir = getSpecialFolderLocation(CSIDL_APPDATA);
         if (mConfigDir.empty())
             mConfigDir = mLocalDataDir;
@@ -1315,7 +1315,7 @@ void Client::initUpdatesDir()
     {
         if (!resman->mkdir("/" + mUpdatesDir))
         {
-#if defined WIN32
+#if defined _WIN32
             std::string newDir = mLocalDataDir + "\\" + mUpdatesDir;
             std::string::size_type loc = newDir.find("/", 0);
 
@@ -1351,7 +1351,7 @@ void Client::initScreenshotDir()
     }
     else if (mScreenshotDir.empty())
     {
-#ifdef WIN32
+#ifdef _WIN32
         mScreenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);
         if (mScreenshotDir.empty())
             mScreenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);

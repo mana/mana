@@ -22,7 +22,7 @@
 #include <cstring>
 #include <cerrno>
 
-#if defined WIN32
+#if defined _WIN32
 #include <windows.h>
 #endif
 
@@ -51,7 +51,7 @@ int mkdir_r(const char *pathname) {
     }
 
     for (p=tmp; *p; p++) {
-#if defined WIN32
+#if defined _WIN32
         if (*p == '/' || *p == '\\')
 #else
         if (*p == '/')
@@ -77,13 +77,13 @@ int mkdir_r(const char *pathname) {
                     return -1;
             }
 
-#if defined WIN32
+#if defined _WIN32
             if (!CreateDirectory(tmp, 0))
 #else
             if (mkdir(tmp, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH))
 #endif
             {
-#if defined WIN32
+#if defined _WIN32
                 // hack, hack. just assume that x: might be a drive
                 // letter, and try again
                 if (!(strlen(tmp) == 2 &&
