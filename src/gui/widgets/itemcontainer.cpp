@@ -52,7 +52,7 @@
 static const int BOX_WIDTH = 35;
 static const int BOX_HEIGHT = 43;
 
-ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
+ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory),
     mGridColumns(1),
     mGridRows(1),
@@ -60,7 +60,6 @@ ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
     mHighlightedIndex(-1),
     mLastUsedSlot(-1),
     mSelectionStatus(SEL_NONE),
-    mForceQuantity(forceQuantity),
     mSwapItems(false),
     mDescItems(false)
 {
@@ -159,7 +158,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
             }
             // Draw item caption
             std::string caption;
-            if (item->getQuantity() > 1 || mForceQuantity)
+            if (item->getQuantity() > 1)
                 caption = toString(item->getQuantity());
             else if (item->isEquipped())
                 caption = "Eq.";

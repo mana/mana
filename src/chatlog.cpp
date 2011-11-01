@@ -29,7 +29,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #elif defined __APPLE__
 #include <Carbon/Carbon.h>
@@ -167,7 +167,7 @@ void ChatLogger::setServerName(const std::string &serverName)
 
 void ChatLogger::makeDir(const std::string &dir)
 {
-#ifdef WIN32
+#ifdef _WIN32
     mkdir(dir.c_str());
 #else
     mkdir(dir.c_str(), 0750);

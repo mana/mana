@@ -70,9 +70,9 @@ class Palette
          *
          * @return the requested color
          */
-        inline const gcn::Color &getColor(int type, int alpha = 255)
+        const gcn::Color &getColor(int type, int alpha = 255)
         {
-            gcn::Color* col = &mColors[type].color;
+            gcn::Color *col = &mColors[type].color;
             col->a = alpha;
             return *col;
         }
@@ -84,7 +84,7 @@ class Palette
          *
          * @return the gradient type of the color with the given index
          */
-        inline GradientType getGradientType(int type)
+        GradientType getGradientType(int type) const
         {
             return mColors[type].grad;
         }
@@ -96,7 +96,7 @@ class Palette
          *
          * @return the color char of the color with the given index
          */
-        inline char getColorChar(int type)
+        char getColorChar(int type) const
         {
             return mColors[type].ch;
         }
@@ -108,8 +108,8 @@ class Palette
          *
          * @return the gradient delay of the color with the given index
          */
-        inline int getGradientDelay(int type)
-            { return mColors[type].delay; }
+        int getGradientDelay(int type) const
+        { return mColors[type].delay; }
 
         /**
          * Updates all colors, that are non-static.
@@ -147,7 +147,7 @@ class Palette
             int delay;
             int committedDelay;
 
-            void set(int type, gcn::Color& color, GradientType grad, int delay)
+            void set(int type, gcn::Color &color, GradientType grad, int delay)
             {
                 ColorElem::type = type;
                 ColorElem::color = color;
@@ -157,7 +157,7 @@ class Palette
                 ColorElem::gradientIndex = rand();
             }
 
-            inline int getRGB()
+            int getRGB() const
             {
                 return (committedColor.r << 16) | (committedColor.g << 8) |
                         committedColor.b;

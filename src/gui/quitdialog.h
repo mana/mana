@@ -41,9 +41,9 @@ class QuitDialog : public Window, public gcn::ActionListener,
 {
     public:
         /**
-         * Constructor
+         * Constructor.
          *
-         * @pointerToMe  will be set to NULL when the QuitDialog is destroyed
+         * @param pointerToMe  will be set to NULL when the QuitDialog is destroyed
          */
         QuitDialog(QuitDialog **pointerToMe);
 

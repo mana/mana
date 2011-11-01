@@ -114,8 +114,6 @@ class UserPalette : public Palette, public gcn::ListModel
 
         /**
          * Sets the gradient delay for the specified color.
-         *
-         * @param grad gradient type to set
          */
         void setGradientDelay(int type, int delay)
         { mColors[type].delay = delay; }
@@ -191,7 +189,6 @@ class UserPalette : public Palette, public gcn::ListModel
         /**
          * Initialise color
          *
-         * @param c character that needs initialising
          * @param rgb default color if not found in config
          * @param text identifier of color
          */

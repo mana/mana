@@ -26,7 +26,7 @@ namespace ManaServ {
 
 enum {
     PROTOCOL_VERSION = 1,
-    SUPPORTED_DB_VERSION = 17
+    SUPPORTED_DB_VERSION = 18
 };
 
 /**
@@ -426,8 +426,6 @@ enum BeingDirection
 
 /**
  * Beings Genders
- * WARNING: Has to be in sync with the same enum in the Being class
- * of the client!
  */
 enum BeingGender
 {

@@ -45,7 +45,6 @@ class ChatTab : public Tab, public AutoCompleteLister
          *
          * @param line Text message.
          * @param own  Type of message (usually the owner-type).
-         * @param channelName which channel to send the message to.
          * @param ignoreRecord should this not be recorded?
          */
         void chatLog(std::string line, Own own = BY_SERVER,

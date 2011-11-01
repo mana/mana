@@ -183,12 +183,12 @@ class Theme : public Palette, public EventListener
          *
          * @return the requested color
          */
-        inline static const gcn::Color &getThemeColor(int type, int alpha = 255)
+        static const gcn::Color &getThemeColor(int type, int alpha = 255)
         {
             return mInstance->getColor(type, alpha);
         }
 
-        const static gcn::Color &getThemeColor(char c, bool &valid)
+        static const gcn::Color &getThemeColor(char c, bool &valid)
         {
             return mInstance->getColor(c, valid);
         }

@@ -41,9 +41,7 @@ class DropDown : public gcn::DropDown
          * Contructor.
          *
          * @param listModel the ListModel to use.
-         * @param scrollArea the ScrollArea to use.
-         * @param listBox the listBox to use.
-         * @see ListModel, ScrollArea, ListBox.
+         * @see ListModel
          */
         DropDown(gcn::ListModel *listModel = 0);
 

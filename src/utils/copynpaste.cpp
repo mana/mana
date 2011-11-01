@@ -35,7 +35,7 @@
 #include <SDL_syswm.h>
 #include "copynpaste.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 bool RetrieveBuffer(std::string& text, std::string::size_type& pos)
 {
   bool  ret = false;

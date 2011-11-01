@@ -131,15 +131,14 @@ public:
         signalBeforeUpdate();
 
         freeWidgets();
-        std::vector<std::string> *player_names = player_relations.getPlayers();
         if (mPlayers)
             delete mPlayers;
-        mPlayers = player_names;
+        mPlayers = player_relations.getPlayers();
 
         // set up widgets
-        for (unsigned int r = 0; r < player_names->size(); ++r)
+        for (unsigned int r = 0; r < mPlayers->size(); ++r)
         {
-            std::string name = (*player_names)[r];
+            std::string name = (*mPlayers)[r];
             gcn::Widget *widget = new Label(name);
             mWidgets.push_back(widget);
 

@@ -52,7 +52,7 @@
 
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
-#elif defined WIN32
+#elif defined _WIN32
 #include "winver.h"
 #elif defined __APPLE__
 #define PACKAGE_VERSION "0.5.3"

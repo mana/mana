@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef WIN32
+#ifdef _WIN32
 #include "specialfolder.h"
 #include <windows.h>
 

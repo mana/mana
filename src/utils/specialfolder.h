@@ -21,7 +21,7 @@
 #ifndef SPECIALFOLDER_H
 #define SPECIALFOLDER_H
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <shlobj.h>
 #include <string>
 std::string getSpecialFolderLocation(int folderId);

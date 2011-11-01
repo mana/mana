@@ -165,14 +165,14 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
     }
 }
 
-#ifdef WIN32
+#ifdef _WIN32
 extern "C" char const *_nl_locale_name_default(void);
 #endif
 
 static void initInternationalization()
 {
 #if ENABLE_NLS
-#ifdef WIN32
+#ifdef _WIN32
     SetEnvironmentVariable("LANG", _nl_locale_name_default());
     // mingw doesn't like LOCALEDIR to be defined for some reason
     bindtextdomain("mana", "translations/");
