@@ -255,7 +255,17 @@ void ChatHandler::handleChatMessage(Net::MessageIn &msg)
     std::string chatMsg = msg.readString();
 
     Channel *channel = channelManager->findById(channelId);
-    channel->getTab()->chatLog(userNick, chatMsg);
+    if (channel)
+    {
+        ChannelTab *tab = channel->getTab();
+        if (tab)
+            tab->chatLog(userNick, chatMsg);
+    }
+    else
+    {
+        // Can't find channel
+        logger->log("Couldn't find chat channel id: %hi", channelId);
+    }
 }
 
 void ChatHandler::handleQuitChannelResponse(Net::MessageIn &msg)
