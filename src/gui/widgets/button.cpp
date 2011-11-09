@@ -357,8 +357,6 @@ void Button::mouseExited(gcn::MouseEvent &event)
 void Button::setButtonPopupText(const std::string& text)
 {
     mPopupText = text;
-    if (!mPopupText.empty())
-        mTextPopup->show(getX(), getY(), mPopupText);
-    else
+    if (mPopupText.empty())
         mTextPopup->setVisible(false);
 }
