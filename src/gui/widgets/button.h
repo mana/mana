@@ -79,7 +79,8 @@ class Button : public gcn::Button
          *
          * @note: An empty text will disable the popup.
          */
-        void setButtonPopupText(const std::string& text = std::string());
+        void setButtonPopupText(const std::string& text = std::string())
+        { mPopupText = text; }
 
         void logic();
         void mouseMoved(gcn::MouseEvent &event);
