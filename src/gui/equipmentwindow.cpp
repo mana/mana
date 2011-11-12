@@ -95,6 +95,15 @@ void EquipmentWindow::loadEquipBoxes()
         Position boxPosition = Net::getInventoryHandler()->getBoxPosition(i);
         mEquipBox[i].posX = boxPosition.x + getPadding();
         mEquipBox[i].posY = boxPosition.y + getTitleBarHeight();
+
+        const std::string &backgroundFile =
+            Net::getInventoryHandler()->getBoxBackground(i);
+
+        if (!backgroundFile.empty())
+        {
+            mEquipBox[i].backgroundImage =
+                Theme::instance()->getImageFromTheme(backgroundFile);
+        }
     }
 }
 
@@ -117,6 +126,16 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
     for (int i = 0; i < mBoxesNumber; i++)
     {
+        // When there is a background image, draw it centered in the box:
+        if (mEquipBox[i].backgroundImage)
+        {
+            int posX = mEquipBox[i].posX
+                + (BOX_WIDTH - mEquipBox[i].backgroundImage->getWidth()) / 2;
+            int posY = mEquipBox[i].posY
+                + (BOX_HEIGHT - mEquipBox[i].backgroundImage->getHeight()) / 2;
+            g->drawImage(mEquipBox[i].backgroundImage, posX, posY);
+        }
+
         if (i == mSelected)
         {
             const gcn::Color color = Theme::getThemeColor(Theme::HIGHLIGHT);

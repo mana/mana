@@ -45,6 +45,22 @@ const int fallBackBoxesPosition[][2] = {
     { 129, 78 }     // EQUIP_PROJECTILE_SLOT
 };
 
+const std::string fallBackBoxesBackground[] = {
+    "equip-box-chest.png",
+    "equip-box-hands.png",
+    "equip-box-head.png",
+    "equip-box-legs.png",
+    "equip-box-feet.png",
+    "equip-box-ring.png",
+    "equip-box-ring.png",
+    "equip-box-neck.png",
+    "equip-box-weapon.png",
+    "equip-box-shield.png",
+    "equip-box-ammo.png"
+};
+
+static const std::string empty = std::string();
+
 class InventoryHandler
 {
     public:
@@ -69,6 +85,13 @@ class InventoryHandler
                 return Position(fallBackBoxesPosition[slotIndex][0],
                                 fallBackBoxesPosition[slotIndex][1]);
             return Position(0,0);
+        }
+
+        virtual const std::string& getBoxBackground(unsigned int slotIndex) const
+        {
+            if (slotIndex < sizeof(fallBackBoxesBackground))
+                return fallBackBoxesBackground[slotIndex];
+            return empty; // The empty string
         }
 };
 

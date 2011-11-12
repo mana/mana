@@ -271,6 +271,10 @@ void EquipBackend::readBoxNode(xmlNodePtr slotNode)
         int y = XML::getProperty(boxNode, "y" , 0);
 
         mBoxesPositions.push_back(Position(x, y));
+
+        std::string backgroundFile =
+            XML::getProperty(boxNode, "background" , std::string());
+        mBoxesBackgroundFile.push_back(backgroundFile);
     }
 }
 
@@ -301,6 +305,13 @@ Position EquipBackend::getBoxPosition(unsigned int slotIndex) const
     if (slotIndex < mBoxesPositions.size())
         return mBoxesPositions.at(slotIndex);
     return Position(0, 0);
+}
+
+const std::string& EquipBackend::getBoxBackground(unsigned int slotIndex) const
+{
+    if (slotIndex < mBoxesBackgroundFile.size())
+        return mBoxesBackgroundFile.at(slotIndex);
+    return Net::empty;
 }
 
 InventoryHandler::InventoryHandler()

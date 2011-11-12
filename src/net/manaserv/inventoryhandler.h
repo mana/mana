@@ -63,6 +63,8 @@ class EquipBackend : public Equipment::Backend, public EventListener
 
         Position getBoxPosition(unsigned int slotIndex) const;
 
+        const std::string& getBoxBackground(unsigned int slotIndex) const;
+
     private:
         void readEquipFile();
 
@@ -114,6 +116,7 @@ class EquipBackend : public Equipment::Backend, public EventListener
         typedef std::map<unsigned int, Slot> Slots;
         Slots mSlots;
         std::vector<Position> mBoxesPositions;
+        std::vector<std::string> mBoxesBackgroundFile;
 };
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler,
@@ -141,6 +144,9 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler,
 
         Position getBoxPosition(unsigned int slotIndex) const
         { return mEquipBackend.getBoxPosition(slotIndex); }
+
+        const std::string& getBoxBackground(unsigned int slotIndex) const
+        { return mEquipBackend.getBoxBackground(slotIndex); }
 
     private:
         EquipBackend mEquipBackend;

@@ -23,6 +23,7 @@
 #define EQUIPMENTWINDOW_H
 
 #include "equipment.h"
+#include "resources/image.h"
 
 #include "gui/widgets/window.h"
 
@@ -70,8 +71,15 @@ class EquipmentWindow : public Window, public gcn::ActionListener
          */
         struct EquipBox
         {
+            EquipBox() :
+                posX(0),
+                posY(0),
+                backgroundImage(0)
+            {}
+
             int posX;
             int posY;
+            Image* backgroundImage;
         };
 
         EquipBox *mEquipBox; /**< Equipment Boxes. */
