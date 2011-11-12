@@ -73,10 +73,6 @@ class Channel
 
         ChannelTab *getTab() { return mTab; }
 
-    protected:
-        friend class ChannelTab;
-        void setTab(ChannelTab *tab) { mTab = tab; }
-
     private:
         unsigned short mId;
         std::string mName;

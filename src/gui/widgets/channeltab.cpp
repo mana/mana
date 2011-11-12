@@ -32,7 +32,6 @@ ChannelTab::ChannelTab(Channel *channel) :
     ChatTab(channel->getName()),
     mChannel(channel)
 {
-    channel->setTab(this);
 }
 
 ChannelTab::~ChannelTab()
@@ -97,10 +96,6 @@ bool ChannelTab::handleCommand(const std::string &type,
     else if (type == "users")
     {
         Net::getChatHandler()->userList(mChannel->getName());
-    }
-    else if (type == "topic")
-    {
-        Net::getChatHandler()->setChannelTopic(mChannel->getId(), args);
     }
     else if (type == "topic")
     {

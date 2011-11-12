@@ -254,12 +254,9 @@ void ChatHandler::handleChatMessage(Net::MessageIn &msg)
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
 
-    Channel *channel = channelManager->findById(channelId);
-    if (channel)
+    if (Channel *channel = channelManager->findById(channelId))
     {
-        ChannelTab *tab = channel->getTab();
-        if (tab)
-            tab->chatLog(userNick, chatMsg);
+        channel->getTab()->chatLog(userNick, chatMsg);
     }
     else
     {
