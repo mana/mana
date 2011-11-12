@@ -333,8 +333,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
          it != it_end; it++)
     {
         std::string file = paths.getStringValue("sprites") + it->sprite;
-        int variant = it->variant;
-        addSprite(AnimatedSprite::load(file, variant));
+        addSprite(file, it->variant);
     }
 
     // Ensure that something is shown, if desired
@@ -342,8 +341,8 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     {
         if (display.image.empty())
         {
-            addSprite(AnimatedSprite::load(paths.getStringValue("sprites")
-                + paths.getStringValue("spriteErrorFile")));
+            addSprite(paths.getStringValue("sprites")
+                + paths.getStringValue("spriteErrorFile"));
         }
         else
         {
@@ -356,7 +355,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
                 img = Theme::getImageFromTheme(
                     paths.getStringValue("unknownItemFile"));
 
-            addSprite(new ImageSprite(img));
+            addImageSprite(img);
         }
     }
 

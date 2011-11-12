@@ -465,6 +465,13 @@ class Being : public ActorSprite, public EventListener
          */
         int getSpeechTextYPosition() const;
 
+        /**
+         * update the potential alternate sprite to show
+         * instead of the nominal one.
+         * @see the <replace> node in the 'items.xml' file for more info.
+         */
+        void updateAlternateSprites();
+
         BeingInfo *mInfo;
 
         int mActionTime;      /**< Time spent in current action. TODO: Remove use of it */
@@ -499,8 +506,10 @@ class Being : public ActorSprite, public EventListener
 
         Vector mDest;  /**< destination coordinates. */
 
-        std::vector<int> mSpriteIDs;
-        std::vector<std::string> mSpriteColors;
+        // <equipment slot, item id>
+        std::map<int, int> mSpriteIDs;
+        // <equipment slot, color string>
+        std::map<int, std::string> mSpriteColors;
         Gender mGender;
 
         // Character guild information

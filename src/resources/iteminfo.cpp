@@ -24,12 +24,12 @@
 #include "resources/itemdb.h"
 #include "configuration.h"
 
-const std::string &ItemInfo::getSprite(Gender gender) const
+const std::string &ItemInfo::getSpriteFile(Gender gender) const
 {
     if (mView)
     {
         // Forward the request to the item defining how to view this item
-        return itemDb->get(mView).getSprite(gender);
+        return itemDb->get(mView).getSpriteFile(gender);
     }
     else
     {

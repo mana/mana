@@ -138,12 +138,19 @@ class ItemDB
         /**
          * Loads the sound references contained in a <sound> tag.
          */
-         void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
+        void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
 
         /**
          * Loads the floor item references contained in a <floor> tag.
          */
         void loadFloorSprite(SpriteDisplay *display, xmlNodePtr node);
+
+        /**
+         * Loads the sprite replacement definition in a <replace> tag.
+         * This is used to replace a sprite by another for a certain
+         * layer and certain directions to avoid display glitches.
+         */
+        void loadReplacementSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
 
         // Items database
         typedef std::map<int, ItemInfo*> ItemInfos;

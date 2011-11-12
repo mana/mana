@@ -1059,15 +1059,6 @@ void Being::updateColors()
 void Being::setSprite(unsigned int slot, int id, const std::string &color,
                       bool isWeapon)
 {
-    if (slot >= size())
-        ensureSize(slot + 1);
-
-    if (slot >= mSpriteIDs.size())
-        mSpriteIDs.resize(slot + 1);
-
-    if (slot >= mSpriteColors.size())
-        mSpriteColors.resize(slot + 1);
-
     // id = 0 means unequip
     if (id == 0)
     {
@@ -1078,22 +1069,13 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
     }
     else
     {
-        std::string filename = itemDb->get(id).getSprite(mGender);
-        AnimatedSprite *equipmentSprite = 0;
+        std::string filename = itemDb->get(id).getSpriteFile(mGender);
 
-        if (!filename.empty())
-        {
-            if (!color.empty())
+        if (!filename.empty() && !color.empty())
                 filename += "|" + color;
 
-            equipmentSprite = AnimatedSprite::load(
-                                    paths.getStringValue("sprites") + filename);
-        }
-
-        if (equipmentSprite)
-            equipmentSprite->setDirection(getSpriteDirection());
-
-        CompoundSprite::setSprite(slot, equipmentSprite);
+        CompoundSprite::setSprite(slot,
+                                  paths.getStringValue("sprites") + filename);
 
         if (isWeapon)
             mEquippedWeapon = &itemDb->get(id);
@@ -1103,6 +1085,64 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
 
     mSpriteIDs[slot] = id;
     mSpriteColors[slot] = color;
+
+    updateAlternateSprites();
+}
+
+void Being::updateAlternateSprites()
+{
+    resetAlternateSprites();
+
+    std::map <int, int>::const_iterator it2, it2_end;
+    for (std::map<int, int>::const_iterator it = mSpriteIDs.begin();
+        it != mSpriteIDs.end(); ++it)
+    {
+        int itemId = it->second;
+        // Avoid item ids equal to zero.
+        if (!itemId)
+            continue;
+
+        const ItemInfo itemInfo = itemDb->get(itemId);
+        const std::multimap <int, SpriteReplacement> replaceInfo =
+                                                 itemInfo.getReplaceSpriteMap();
+
+        // Avoid checking when there are no replacement at all.
+        if (!replaceInfo.size())
+            continue;
+
+        for (it2 = mSpriteIDs.begin(), it2_end = mSpriteIDs.end();
+             it2 != it2_end; ++it2)
+        {
+            // Avoid checking the same slot.
+            if (it->first == it2->first)
+                continue;
+
+            // Check whether one slot has to be replaced.
+            std::pair<std::multimap<int, SpriteReplacement>::const_iterator,
+                     std::multimap<int, SpriteReplacement>::const_iterator> ret;
+            std::multimap <int, SpriteReplacement>::const_iterator it3;
+            ret = replaceInfo.equal_range(it2->second);
+            for (it3 = ret.first; it3 != ret.second; ++it3)
+            {
+                // When a replacement definition matches,
+                // we set the alternate sprite.
+                if (!it3->second.mItemIdTo)
+                    continue;
+
+                std::string spriteFile =
+                    itemDb->get(it3->second.mItemIdTo).getSpriteFile(mGender);
+                if (!spriteFile.empty())
+                {
+                    spriteFile = paths.getStringValue("sprites") + spriteFile;
+                    if (!mSpriteColors[it2->first].empty())
+                        spriteFile = spriteFile + "|" + mSpriteColors[it2->first];
+
+                    setAlternateSprite(it2->first, spriteFile, 0,
+                                        it3->second.mDirectionList);
+                }
+            } // it3: parsing replace info.
+        } // it2: Sprite to check for possible sprite replacement
+    } // it1: sprite to get replace info from
 }
 
 void Being::setSpriteID(unsigned int slot, int id)
@@ -1133,10 +1173,13 @@ void Being::setGender(Gender gender)
         mGender = gender;
 
         // Reload all subsprites
-        for (unsigned int i = 0; i < mSpriteIDs.size(); i++)
+        for (std::map<int, int>::const_iterator itId = mSpriteIDs.begin(),
+            it_end = mSpriteIDs.end(); itId != it_end; ++itId)
         {
-            if (mSpriteIDs.at(i) != 0)
-                setSprite(i, mSpriteIDs.at(i), mSpriteColors.at(i));
+            std::map<int, std::string>::const_iterator itColors =
+                mSpriteColors.find(itId->first);
+            if (itId->second != 0 && itColors != mSpriteColors.end())
+                setSprite(itId->first, itId->second, itColors->second);
         }
 
         updateName();

@@ -68,6 +68,18 @@ namespace ManaServ {
 class ManaServItemDB;
 }
 
+typedef std::list<SpriteDirection> DirectionList;
+
+struct SpriteReplacement {
+    SpriteReplacement(int itemIdTo, DirectionList directionList) :
+        mItemIdTo(itemIdTo),
+        mDirectionList(directionList)
+    {}
+
+    int mItemIdTo;
+    DirectionList mDirectionList;
+};
+
 /**
  * Defines a class for storing generic item infos.
  * Specialized version for one or another protocol are defined below.
@@ -86,8 +98,7 @@ class ItemInfo
             mView(0),
             mId(0),
             mAttackAction(SpriteAction::INVALID)
-        {
-        }
+        {}
 
         int getId() const
         { return mId; }
@@ -110,7 +121,7 @@ class ItemInfo
         int getWeight() const
         { return mWeight; }
 
-        const std::string &getSprite(Gender gender) const;
+        const std::string &getSpriteFile(Gender gender) const;
 
         // Handlers for seting and getting the string used for particles when attacking
         void setMissileParticleFile(const std::string &s)
@@ -147,6 +158,13 @@ class ItemInfo
 
         ItemType getItemType() const
         { return mType; }
+
+        /**
+         * Get the sprite replacement definition pointer
+         * for the given sprite direction.
+         */
+        const std::multimap<int, SpriteReplacement>& getReplaceSpriteMap() const
+        { return mSpriteReplacementMap; }
 
     private:
 
@@ -188,6 +206,9 @@ class ItemInfo
 
         /** Stores the names of sounds to be played at certain event. */
         std::map< EquipmentSoundEvent, std::vector<std::string> > mSounds;
+
+        // <item id from, {item id to, direction list}>
+        std::multimap<int, SpriteReplacement> mSpriteReplacementMap;
 };
 
 /*
