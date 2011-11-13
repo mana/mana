@@ -37,6 +37,8 @@
 BrowserBox::BrowserBox(unsigned int mode, bool opaque):
     gcn::Widget(),
     mMode(mode), mHighMode(UNDERLINE | BACKGROUND),
+    mShadows(false),
+    mOutline(false),
     mOpaque(opaque),
     mUseLinksAndUserColors(true),
     mSelectedLink(-1),
@@ -304,8 +306,6 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         }
     }
 
-    gcn::Font *font = getFont();
-
     for (LinePartIterator i = mLineParts.begin();
         i != mLineParts.end();
         i ++)
@@ -315,8 +315,41 @@ void BrowserBox::draw(gcn::Graphics *graphics)
             continue;
         if (part.getY() > yEnd)
             break;
+
+        // Use the correct font
+        graphics->setFont(getFont());
+
+        // Handle text shadows
+        if (mShadows)
+        {
+            graphics->setColor(Theme::getThemeColor(Theme::SHADOW,
+                                                    part.getColor().a / 2));
+            if (mOutline)
+            {
+                graphics->drawText(part.getText(), part.getX() + 2,
+                                   part.getY() + 2);
+            }
+            else
+            {
+                graphics->drawText(part.getText(), part.getX() + 1,
+                                   part.getY() + 1);
+            }
+        }
+
+        if (mOutline)
+        {
+            // Text outline
+            graphics->setColor(Theme::getThemeColor(Theme::OUTLINE,
+                                                    part.getColor().a / 4));
+            graphics->drawText(part.getText(), part.getX() + 1, part.getY());
+            graphics->drawText(part.getText(), part.getX() - 1, part.getY());
+            graphics->drawText(part.getText(), part.getX(), part.getY() + 1);
+            graphics->drawText(part.getText(), part.getX(), part.getY() - 1);
+        }
+
+        // the main text
         graphics->setColor(part.getColor());
-        font->drawString(graphics, part.getText(), part.getX(), part.getY());
+        graphics->drawText(part.getText(), part.getX(), part.getY());
     }
 
     return;

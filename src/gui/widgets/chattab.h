@@ -34,7 +34,7 @@ class ScrollArea;
 /**
  * A tab for the chat window. This is special to ease chat handling.
  */
-class ChatTab : public Tab, public AutoCompleteLister
+class ChatTab : public Tab, public AutoCompleteLister, public EventListener
 {
     public:
         ChatTab(const std::string &name);
@@ -102,6 +102,8 @@ class ChatTab : public Tab, public AutoCompleteLister
 
         virtual void saveToLogFile(std::string &msg);
 
+        void event(Event::Channel channel, const Event &event);
+
     protected:
         friend class ChatWindow;
         friend class WhisperWindow;
@@ -111,6 +113,12 @@ class ChatTab : public Tab, public AutoCompleteLister
         virtual void handleInput(const std::string &msg);
 
         virtual void handleCommand(const std::string &msg);
+
+        /**
+         * Adapts the text format to the current gui opacity,
+         * for better readability.
+         */
+        void updateTextFormat(int alpha);
 
         void addRow(std::string &line);
 

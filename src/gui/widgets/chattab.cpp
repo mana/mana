@@ -27,6 +27,7 @@
 #include "configuration.h"
 #include "localplayer.h"
 
+#include "gui/gui.h"
 #include "gui/recorder.h"
 
 #include "gui/widgets/browserbox.h"
@@ -63,6 +64,11 @@ ChatTab::ChatTab(const std::string &name) : Tab()
     mScrollArea->setOpaque(false);
 
     chatWindow->addTab(this);
+
+    listen(Event::ConfigChannel);
+
+    // Initiate the text format
+    updateTextFormat(((Window*)getParent())->getGuiAlpha());
 }
 
 ChatTab::~ChatTab()
@@ -72,6 +78,37 @@ ChatTab::~ChatTab()
 
     delete mTextOutput;
     delete mScrollArea;
+}
+
+void ChatTab::updateTextFormat(int alpha)
+{
+    if (alpha > 200)
+    {
+        mTextOutput->setOutlinedText(false);
+        mTextOutput->setShadowedText(false);
+    }
+    else if (alpha <= 200 && alpha > 100)
+    {
+        mTextOutput->setOutlinedText(false);
+        mTextOutput->setShadowedText(true);
+    }
+    else
+    {
+        mTextOutput->setOutlinedText(true);
+        mTextOutput->setShadowedText(false);
+    }
+}
+
+void ChatTab::event(Event::Channel channel, const Event &event)
+{
+    // Update the text outline and shadow according to the gui opacity.
+    if (channel == Event::ConfigChannel &&
+        event.getType() == Event::ConfigOptionChanged &&
+        event.getString("option") == "guialpha")
+    {
+        int alpha = ((Window*)getParent())->getGuiAlpha();
+        updateTextFormat(alpha);
+    }
 }
 
 void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)

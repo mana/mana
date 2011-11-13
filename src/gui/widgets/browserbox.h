@@ -92,6 +92,16 @@ class BrowserBox : public gcn::Widget,
         void setHighlightMode(unsigned int highMode);
 
         /**
+         * Sets whether the font will use a shadow for text.
+         */
+        void setShadowedText(bool shadows) { mShadows = shadows; }
+
+        /**
+         * Sets whether the font will use a shadow for text.
+         */
+        void setOutlinedText(bool outline) { mOutline = outline; }
+
+        /**
          * Sets the maximum numbers of rows in the browser box. 0 = no limit.
          */
         void setMaxRow(unsigned max) {mMaxRows = max; };
@@ -197,6 +207,8 @@ class BrowserBox : public gcn::Widget,
         LinkHandler *mLinkHandler;
         unsigned int mMode;
         unsigned int mHighMode;
+        bool mShadows;
+        bool mOutline;
         bool mOpaque;
         bool mUseLinksAndUserColors;
         int mSelectedLink;
