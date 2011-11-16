@@ -1090,7 +1090,8 @@ void LocalPlayer::setMaxWeight(int value)
 {
     mMaxWeight = value;
 
-    inventoryWindow->updateWeight();
+    if (inventoryWindow)
+        inventoryWindow->updateWeight();
 }
 
 void LocalPlayer::setAttributeBase(int num, int value, bool notify)

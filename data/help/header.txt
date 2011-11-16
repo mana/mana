@@ -2,7 +2,7 @@
 ##1                      M  A  N  A      S O U R C E
 ##1               ==========================================
 
-           ##2Version:##6 0.5.1          ##2Date:##14 March 2011
+           ##2Version:##6 0.5.2          ##2Date:##3 17 April 2011
 
 ##2                    Website: http://manasource.org
 

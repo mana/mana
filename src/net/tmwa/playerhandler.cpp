@@ -21,6 +21,7 @@
 
 #include "net/tmwa/playerhandler.h"
 
+#include "configuration.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -232,6 +233,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
+                if (!player_node)
+                    break;
                 int type = msg.readInt16();
                 int value = msg.readInt32();
 
@@ -337,14 +340,20 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     player_node->setExperience(JOB, msg.readInt32(),
                                     player_node->getExperience(JOB).second);
                     break;
-                case 0x0014: {
-                        int curGp = player_node->getMoney();
+                case 0x0014:
+                    {
+                        const int curGp = player_node->getMoney();
                         player_node->setMoney(msg.readInt32());
-                        if (player_node->getMoney() > curGp)
+                        if (player_node->getMoney() <= curGp)
+                            break;
+                        std::string money = Units::formatCurrency(
+                                            player_node->getMoney() - curGp);
+                        if (config.getValue("showpickupchat", 1))
                             localChatTab->chatLog(strprintf(_("You picked up "
-                                                              "%s."),
-                                Units::formatCurrency(player_node->getMoney()
-                                    - curGp).c_str()), BY_SERVER);
+                                            "%s."), money.c_str()), BY_SERVER);
+                        if (config.getValue("showpickupparticle", 1))
+                            player_node->addMessageToQueue(money,
+                                                    UserPalette::PICKUP_INFO);
                     }
                     break;
                 case 0x0016:
@@ -591,8 +600,13 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
+    static Uint32 lastTime = 0;
+    if (SDL_GetTicks() < lastTime + 100)
+        return;
+
     MessageOut outMsg(CMSG_ITEM_PICKUP);
     outMsg.writeInt32(floorItem->getId());
+    lastTime = SDL_GetTicks();
 }
 
 void PlayerHandler::setDirection(char direction)

@@ -54,6 +54,8 @@
 #include <set>
 #include <string>
 
+#define SKILLS_FILE "skills.xml"
+
 class SkillModel;
 class SkillEntry;
 
@@ -230,8 +232,7 @@ SkillDialog::SkillDialog():
 
 SkillDialog::~SkillDialog()
 {
-    // Clear gui
-    loadSkills("");
+    clearSkills();
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)
@@ -279,7 +280,7 @@ void SkillDialog::update()
     }
 }
 
-void SkillDialog::loadSkills(const std::string &file)
+void SkillDialog::clearSkills()
 {
     // Fixes issues with removing tabs
     if (mTabs->getSelectedTabIndex() != -1)
@@ -296,11 +297,13 @@ void SkillDialog::loadSkills(const std::string &file)
 
     delete_all(mSkills);
     mSkills.clear();
+}
 
-    if (file.length() == 0)
-        return;
+void SkillDialog::loadSkills()
+{
+    clearSkills();
 
-    XML::Document doc(file);
+    XML::Document doc(SKILLS_FILE);
     xmlNodePtr root = doc.rootNode();
 
     int setCount = 0;
@@ -311,7 +314,7 @@ void SkillDialog::loadSkills(const std::string &file)
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
     {
-        logger->log("Error loading skills file: %s", file.c_str());
+        logger->log("Error loading skills file: %s", SKILLS_FILE);
 
         if (Net::getNetworkType() == ServerInfo::TMWATHENA)
         {

@@ -203,11 +203,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         if (price < 0)
             price = 0;
         setMoney(mMoney - mAmountItems * price);
-
-        // Reset selection
-        mAmountItems = 1;
-        mSlider->setValue(1);
-        mSlider->gcn::Slider::setScale(1, mMaxItems);
+        valueChanged(gcn::SelectionEvent(mShopItemList));
     }
 }
 
