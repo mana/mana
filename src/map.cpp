@@ -120,8 +120,10 @@ Image* MapLayer::getTile(int x, int y) const
     return mTiles[x + y * mWidth];
 }
 
-void MapLayer::draw(Graphics *graphics, int startX, int startY,
-                    int endX, int endY, int scrollX, int scrollY,
+void MapLayer::draw(Graphics *graphics,
+                    int startX, int startY,
+                    int endX, int endY,
+                    int scrollX, int scrollY,
                     const MapSprites &sprites, int debugFlags) const
 {
     startX -= mX;
@@ -178,7 +180,8 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
 Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),
     mTileWidth(tileWidth), mTileHeight(tileHeight),
-    mMaxTileHeight(height),
+    mMaxTileHeight(tileHeight),
+    mMaxTileWidth(tileWidth),
     mDebugFlags(MAP_NORMAL),
     mOnClosedList(1), mOnOpenList(2),
     mLastScrollX(0.0f), mLastScrollY(0.0f)
@@ -281,6 +284,8 @@ void Map::addTileset(Tileset *tileset)
 
     if (tileset->getHeight() > mMaxTileHeight)
         mMaxTileHeight = tileset->getHeight();
+    if (tileset->getWidth() > mMaxTileWidth)
+        mMaxTileWidth = tileset->getWidth();
 }
 
 bool spriteCompare(const Sprite *a, const Sprite *b)
@@ -304,7 +309,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     // Calculate range of tiles which are on-screen
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
     endPixelY += mMaxTileHeight - mTileHeight;
-    int startX = scrollX / mTileWidth;
+    int startX = (scrollX - mMaxTileWidth + mTileWidth) / mTileWidth;
     int startY = scrollY / mTileHeight;
     int endX = (graphics->getWidth() + scrollX + mTileWidth - 1) / mTileWidth;
     int endY = endPixelY / mTileHeight;

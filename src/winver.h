@@ -1,6 +1,6 @@
 /* VERSION DEFINITIONS */
 #define VER_MAJOR 0
 #define VER_MINOR 5
-#define VER_RELEASE 2
+#define VER_RELEASE 3
 #define VER_BUILD 0
-#define PACKAGE_VERSION "0.5.2.0"
+#define PACKAGE_VERSION "0.5.3.0"
