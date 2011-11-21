@@ -81,26 +81,6 @@ class ServersListModel : public gcn::ListModel
 };
 
 /**
- * Server Type List Model
- */
-class TypeListModel : public gcn::ListModel
-{
-    public:
-        TypeListModel() {}
-
-        /**
-         * Used to get number of line in the list
-         */
-        int getNumberOfElements() { return 2; }
-
-        /**
-         * Used to get an element from the list
-         */
-        std::string getElementAt(int elementIndex);
-};
-
-
-/**
  * The server choice dialog.
  *
  * \ingroup Interface
@@ -135,6 +115,9 @@ class ServerDialog : public Window,
         friend class ServersListModel;
         MutexLocker lock() { return MutexLocker(&mMutex); }
 
+        friend class CustomServerDialog;
+        void saveCustomServers(const ServerInfo &currentServer = ServerInfo());
+
     private:
         /**
          * Called to load a list of available server from an online xml file.
@@ -143,15 +126,10 @@ class ServerDialog : public Window,
         void loadServers();
 
         void loadCustomServers();
-        void saveCustomServers(const ServerInfo &currentServer = ServerInfo());
 
         static int downloadUpdate(void *ptr, DownloadStatus status,
                                   size_t total, size_t remaining);
 
-        void setFieldsReadOnly(bool readOnly);
-
-        TextField *mServerNameField;
-        TextField *mPortField;
         Label  *mDescription;
         Button *mQuitButton;
         Button *mConnectButton;
@@ -160,9 +138,6 @@ class ServerDialog : public Window,
 
         ListBox *mServersList;
         ServersListModel *mServersListModel;
-
-        DropDown *mTypeField;
-        TypeListModel *mTypeListModel;
 
         const std::string &mDir;
 

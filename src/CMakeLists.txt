@@ -233,6 +233,8 @@ SET(SRCS
     gui/confirmdialog.h
     gui/connectiondialog.cpp
     gui/connectiondialog.h
+    gui/customserverdialog.cpp
+    gui/customserverdialog.h
     gui/debugwindow.cpp
     gui/debugwindow.h
     gui/emotepopup.cpp

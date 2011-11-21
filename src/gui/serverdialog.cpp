@@ -28,6 +28,7 @@
 #include "log.h"
 #include "main.h"
 
+#include "gui/customserverdialog.h"
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
 
@@ -115,16 +116,6 @@ void ServersListModel::setVersionString(int index, const std::string &version)
     }
 }
 
-std::string TypeListModel::getElementAt(int elementIndex)
-{
-    if (elementIndex == 0)
-        return "TmwAthena";
-    else if (elementIndex == 1)
-        return "ManaServ";
-    else
-        return "Unknown";
-}
-
 class ServersListBox : public ListBox
 {
 public:
@@ -203,12 +194,6 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 {
     setWindowName("ServerDialog");
 
-    Label *serverLabel = new Label(_("Server:"));
-    Label *portLabel = new Label(_("Port:"));
-    Label *typeLabel = new Label(_("Server type:"));
-    mServerNameField = new TextField(mServerInfo->hostname);
-    mPortField = new TextField(toString(mServerInfo->port));
-
     loadCustomServers();
 
     mServersListModel = new ServersListModel(&mServers, this);
@@ -218,11 +203,6 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     ScrollArea *usedScroll = new ScrollArea(mServersList);
     usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mTypeListModel = new TypeListModel();
-    mTypeField = new DropDown(mTypeListModel);
-    mTypeField->setSelected((serverInfo->type == ServerInfo::MANASERV) ?
-                            1 : 0);
-
     mDescription = new Label(std::string());
 
     mQuitButton = new Button(_("Quit"), "quit", this);
@@ -230,27 +210,16 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     mManualEntryButton = new Button(_("Custom Server"), "addEntry", this);
     mDeleteButton = new Button(_("Delete"), "remove", this);
 
-    mServerNameField->setActionEventId("connect");
-    mPortField->setActionEventId("connect");
-
-    mServerNameField->addActionListener(this);
-    mPortField->addActionListener(this);
-    mManualEntryButton->addActionListener(this);
+    mServersList->setActionEventId("connect");
     mServersList->addSelectionListener(this);
     usedScroll->setVerticalScrollAmount(0);
 
-    place(0, 0, serverLabel);
-    place(1, 0, mServerNameField, 4).setPadding(3);
-    place(0, 1, portLabel);
-    place(1, 1, mPortField, 4).setPadding(3);
-    place(0, 2, typeLabel);
-    place(1, 2, mTypeField, 4).setPadding(3);
-    place(0, 3, usedScroll, 5, 5).setPadding(3);
-    place(0, 8, mDescription, 5);
-    place(0, 9, mManualEntryButton);
-    place(1, 9, mDeleteButton);
-    place(3, 9, mQuitButton);
-    place(4, 9, mConnectButton);
+    place(0, 0, usedScroll, 5, 5).setPadding(3);
+    place(0, 5, mDescription, 5);
+    place(0, 6, mManualEntryButton);
+    place(1, 6, mDeleteButton);
+    place(3, 6, mQuitButton);
+    place(4, 6, mConnectButton);
 
     // Make sure the list has enough height
     getLayout().setRowHeight(3, 80);
@@ -276,21 +245,11 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     loadWindowState();
 
-    setFieldsReadOnly(true);
     mServersList->setSelected(0); // Do this after for the Delete button
+
     setVisible(true);
 
-    if (mServerNameField->getText().empty())
-    {
-        mServerNameField->requestFocus();
-    }
-    else
-    {
-        if (mPortField->getText().empty())
-            mPortField->requestFocus();
-        else
-            mConnectButton->requestFocus();
-    }
+    mServersList->requestFocus();
 
     downloadServerList();
 }
@@ -304,7 +263,6 @@ ServerDialog::~ServerDialog()
         mDownload = 0;
     }
     delete mServersListModel;
-    delete mTypeListModel;
 }
 
 void ServerDialog::action(const gcn::ActionEvent &event)
@@ -312,16 +270,17 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "ok")
     {
         // Give focus back to the server dialog.
-        mServerNameField->requestFocus();
+        mServersList->requestFocus();
     }
     else if (event.getId() == "connect")
     {
+        int index = mServersList->getSelected();
+
         // Check login
-        if (mServerNameField->getText().empty()
-            || mPortField->getText().empty())
+        if (index < 0)
         {
             OkDialog *dlg = new OkDialog(_("Error"),
-                _("Please type both the address and the port of a server."));
+                _("Please select a server."));
             dlg->addActionListener(this);
         }
         else
@@ -329,27 +288,18 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             mDownload->cancel();
             mQuitButton->setEnabled(false);
             mConnectButton->setEnabled(false);
+            mDeleteButton->setEnabled(false);
+            mManualEntryButton->setEnabled(false);
 
-            mServerInfo->hostname = mServerNameField->getText();
-            mServerInfo->port = (short) atoi(mPortField->getText().c_str());
-            switch (mTypeField->getSelected())
-            {
-                case 0:
-                    mServerInfo->type = ServerInfo::TMWATHENA;
-                    break;
-                case 1:
-                    mServerInfo->type = ServerInfo::MANASERV;
-                    break;
-                default:
-                    mServerInfo->type = ServerInfo::UNKNOWN;
-            }
+            const ServerInfo &serverInfo = mServersListModel->getServer(index);
+            mServerInfo->hostname = serverInfo.hostname;
+            mServerInfo->port = serverInfo.port;
+            mServerInfo->type = serverInfo.type;
 
             // Save the selected server
             mServerInfo->save = true;
 
             chatLogger->setServerName(mServerInfo->hostname);
-
-            saveCustomServers(*mServerInfo);
 
             Client::setState(STATE_CONNECT_SERVER);
         }
@@ -361,7 +311,8 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "addEntry")
     {
-        setFieldsReadOnly(false);
+        // Add a custom server: It will delete itself using guichan logic.
+        new CustomServerDialog(this);
     }
     else if (event.getId() == "remove")
     {
@@ -399,19 +350,6 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     // Update the server and post fields according to the new selection
     const ServerInfo &myServer = mServersListModel->getServer(index);
     mDescription->setCaption(myServer.description);
-    mServerNameField->setText(myServer.hostname);
-    mPortField->setText(toString(myServer.port));
-    switch (myServer.type)
-    {
-        case ServerInfo::TMWATHENA:
-        case ServerInfo::UNKNOWN:
-            mTypeField->setSelected(0);
-            break;
-        case ServerInfo::MANASERV:
-            mTypeField->setSelected(1);
-            break;
-    }
-    setFieldsReadOnly(true);
 
     mDeleteButton->setEnabled(myServer.save);
 }
@@ -434,7 +372,7 @@ void ServerDialog::logic()
         {
             mDownloadStatus = DOWNLOADING_OVER;
 
-            mDescription->setCaption(std::string());
+            mDescription->setCaption(mServers[0].description);
         }
         else if (mDownloadStatus == DOWNLOADING_IN_PROGRESS)
         {
@@ -457,27 +395,6 @@ void ServerDialog::logic()
     }
 
     Window::logic();
-}
-
-void ServerDialog::setFieldsReadOnly(bool readOnly)
-{
-    if (!readOnly)
-    {
-        mDescription->setCaption(std::string());
-        mServersList->setSelected(-1);
-
-        mServerNameField->setText(std::string());
-        mPortField->setText(std::string());
-        mServerNameField->requestFocus();
-    }
-
-    mManualEntryButton->setEnabled(readOnly);
-    mDeleteButton->setEnabled(false);
-    mDescription->setVisible(readOnly);
-
-    mServerNameField->setEnabled(!readOnly);
-    mPortField->setEnabled(!readOnly);
-    mTypeField->setEnabled(!readOnly);
 }
 
 void ServerDialog::downloadServerList()
@@ -575,17 +492,20 @@ void ServerDialog::loadServers()
         MutexLocker lock(&mMutex);
         // Add the server to the local list if it's not already present
         bool found = false;
-        for (unsigned int i = 0; i < mServers.size(); i++)
+        int i = 0;
+        for (ServerInfos::iterator it = mServers.begin(); it != mServers.end();
+             ++it)
         {
-            if (mServers[i] == server)
+            if (*it == server)
             {
                 // Use the name listed in the server list
-                mServers[i].name = server.name;
-                mServers[i].version = server.version;
+                (*it).name = server.name;
+                (*it).version = server.version;
                 mServersListModel->setVersionString(i, version);
                 found = true;
                 break;
             }
+            ++i;
         }
 
         if (!found)
@@ -598,16 +518,20 @@ void ServerDialog::loadCustomServers()
     for (int i = 0; i < MAX_SERVERLIST; ++i)
     {
         const std::string index = toString(i);
-        const std::string nameKey = "MostUsedServerName" + index;
+        const std::string nameKey = "MostUsedServerDescName" + index;
+        const std::string hostNameKey = "MostUsedServerName" + index;
         const std::string typeKey = "MostUsedServerType" + index;
         const std::string portKey = "MostUsedServerPort" + index;
+        const std::string descriptionKey = "MostUsedServerDescription" + index;
 
         ServerInfo server;
-        server.hostname = config.getValue(nameKey, "");
+        server.name = config.getValue(nameKey, "");
+        server.hostname = config.getValue(hostNameKey, "");
         server.type = ServerInfo::parseType(config.getValue(typeKey, ""));
 
         const int defaultPort = defaultPortForServerType(server.type);
         server.port = (unsigned short) config.getValue(portKey, defaultPort);
+        server.description = config.getValue(descriptionKey, "");
 
         // Stop on the first invalid server
         if (!server.isValid())
@@ -621,15 +545,16 @@ void ServerDialog::loadCustomServers()
 
 void ServerDialog::saveCustomServers(const ServerInfo &currentServer)
 {
+    ServerInfos::iterator it, it_end = mServers.end();
+
     // Make sure the current server is mentioned first
     if (currentServer.isValid())
     {
-        ServerInfos::iterator i, i_end = mServers.end();
-        for (i = mServers.begin(); i != i_end; ++i)
+        for (it = mServers.begin(); it != it_end; ++it)
         {
-            if (*i == currentServer)
+            if (*it == currentServer)
             {
-                mServers.erase(i);
+                mServers.erase(it);
                 break;
             }
         }
@@ -638,29 +563,36 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer)
 
     int savedServerCount = 0;
 
-    for (unsigned i = 0;
-         i < mServers.size() && savedServerCount < MAX_SERVERLIST; ++i)
+    for (it = mServers.begin(), it_end = mServers.end();
+         it != it_end && savedServerCount < MAX_SERVERLIST; ++it)
     {
-        const ServerInfo &server = mServers.at(i);
+        const ServerInfo &server = *it;
 
         // Only save servers that were loaded from settings
         if (!(server.save && server.isValid()))
             continue;
 
         const std::string index = toString(savedServerCount);
-        const std::string nameKey = "MostUsedServerName" + index;
+        const std::string nameKey = "MostUsedServerDescName" + index;
+        const std::string hostNameKey = "MostUsedServerName" + index;
         const std::string typeKey = "MostUsedServerType" + index;
         const std::string portKey = "MostUsedServerPort" + index;
+        const std::string descriptionKey = "MostUsedServerDescription" + index;
 
-        config.setValue(nameKey, toString(server.hostname));
+        config.setValue(hostNameKey, toString(server.hostname));
         config.setValue(typeKey, serverTypeToString(server.type));
         config.setValue(portKey, toString(server.port));
+        config.setValue(nameKey, server.name);
+        config.setValue(descriptionKey, server.description);
         ++savedServerCount;
     }
 
     // Insert an invalid entry at the end to make the loading stop there
     if (savedServerCount < MAX_SERVERLIST)
         config.setValue("MostUsedServerName" + toString(savedServerCount), "");
+
+    // Restore the correct description
+    mDescription->setCaption(mServers[0].description);
 }
 
 int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,

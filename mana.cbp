@@ -165,6 +165,8 @@
 		<Unit filename="src\gui\confirmdialog.h" />
 		<Unit filename="src\gui\connectiondialog.cpp" />
 		<Unit filename="src\gui\connectiondialog.h" />
+		<Unit filename="src\gui\customserverdialog.cpp" />
+		<Unit filename="src\gui\customserverdialog.h" />
 		<Unit filename="src\gui\debugwindow.cpp" />
 		<Unit filename="src\gui\debugwindow.h" />
 		<Unit filename="src\gui\emotepopup.cpp" />
