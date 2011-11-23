@@ -39,6 +39,7 @@
 
 SpriteReference *SpriteReference::Empty = new SpriteReference(
                                     paths.getStringValue("spriteErrorFile"), 0);
+std::set<std::string> processedFiles;
 
 Action *SpriteDef::getAction(const std::string &action) const
 {
@@ -59,6 +60,9 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
     std::string palettes;
     if (pos != std::string::npos)
         palettes = animationFile.substr(pos + 1);
+
+    processedFiles.clear();
+    processedFiles.insert(animationFile);
 
     XML::Document doc(animationFile.substr(0, pos));
     xmlNodePtr rootNode = doc.rootNode();
@@ -284,14 +288,21 @@ void SpriteDef::loadAnimation(xmlNodePtr animationNode,
 
 void SpriteDef::includeSprite(xmlNodePtr includeNode)
 {
-    // TODO: Perform circular dependency check, since it's easy to crash the
-    // client this way.
-    const std::string filename = XML::getProperty(includeNode, "file", "");
+    std::string filename = XML::getProperty(includeNode, "file", "");
 
     if (filename.empty())
         return;
+    filename = paths.getStringValue("sprites") + filename;
 
-    XML::Document doc(paths.getStringValue("sprites") + filename);
+    if (processedFiles.find(filename) != processedFiles.end())
+    {
+        logger->log("Error, Tried to include %s which already is included.",
+                    filename.c_str());
+        return;
+    }
+    processedFiles.insert(filename);
+
+    XML::Document doc(filename);
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "sprite"))
