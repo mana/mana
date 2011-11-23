@@ -204,6 +204,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mDescription = new Label(std::string());
+    mDownloadText = new Label(std::string());
 
     mQuitButton = new Button(_("Quit"), "quit", this);
     mConnectButton = new Button(_("Connect"), "connect", this);
@@ -217,11 +218,12 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     place(0, 0, usedScroll, 6, 5).setPadding(3);
     place(0, 5, mDescription, 5);
-    place(0, 6, mManualEntryButton);
-    place(1, 6, mModifyButton);
-    place(2, 6, mDeleteButton);
-    place(4, 6, mQuitButton);
-    place(5, 6, mConnectButton);
+    place(0, 6, mDownloadText, 5);
+    place(0, 7, mManualEntryButton);
+    place(1, 7, mModifyButton);
+    place(2, 7, mDeleteButton);
+    place(4, 7, mQuitButton);
+    place(5, 7, mConnectButton);
 
     // Make sure the list has enough height
     getLayout().setRowHeight(3, 80);
@@ -393,24 +395,25 @@ void ServerDialog::logic()
             mDownloadStatus = DOWNLOADING_OVER;
 
             mDescription->setCaption(mServers[0].description);
+            mDownloadText->setCaption(std::string());
         }
         else if (mDownloadStatus == DOWNLOADING_IN_PROGRESS)
         {
-            mDescription->setCaption(strprintf(_("Downloading server list..."
+            mDownloadText->setCaption(strprintf(_("Downloading server list..."
                                                  "%2.2f%%"),
-                                     mDownloadProgress * 100));
+                                      mDownloadProgress * 100));
         }
         else if (mDownloadStatus == DOWNLOADING_IDLE)
         {
-            mDescription->setCaption(_("Waiting for server..."));
+            mDownloadText->setCaption(_("Waiting for server..."));
         }
         else if (mDownloadStatus == DOWNLOADING_PREPARING)
         {
-            mDescription->setCaption(_("Preparing download"));
+            mDownloadText->setCaption(_("Preparing download"));
         }
         else if (mDownloadStatus == DOWNLOADING_ERROR)
         {
-            mDescription->setCaption(_("Error retreiving server list!"));
+            mDownloadText->setCaption(_("Error retreiving server list!"));
         }
     }
 

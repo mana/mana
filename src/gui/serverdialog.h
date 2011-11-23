@@ -162,6 +162,7 @@ class ServerDialog : public Window,
         ServerDialogDownloadStatus mDownloadStatus;
 
         Net::Download *mDownload;
+        Label  *mDownloadText;
 
         Mutex mMutex;
         float mDownloadProgress;
