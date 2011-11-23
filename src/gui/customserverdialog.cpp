@@ -44,9 +44,10 @@ std::string TypeListModel::getElementAt(int elementIndex)
         return "Unknown";
 }
 
-CustomServerDialog::CustomServerDialog(ServerDialog *parent):
+CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
     Window(_("Add a custom Server"), true, static_cast<Window*>(parent)),
-    mServerDialog(parent)
+    mServerDialog(parent),
+    mIndex(index)
 {
     setWindowName("CustomServerDialog");
 
@@ -110,6 +111,18 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent):
 
     loadWindowState();
 
+    // Add the entry's info when in modify mode.
+    if (index > -1)
+    {
+        const ServerInfo &serverInfo = mServerDialog->mServers[index];
+        mNameField->setText(serverInfo.name);
+        mDescriptionField->setText(serverInfo.description);
+        mServerAddressField->setText(serverInfo.hostname);
+        mPortField->setText(toString(serverInfo.port));
+        mTypeField->setSelected(serverInfo.type ? ServerInfo::MANASERV :
+                                ServerInfo::TMWATHENA);
+    }
+
     setVisible(true);
 
     mNameField->requestFocus();
@@ -169,7 +182,7 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
             serverInfo.save = true;
 
             //Add server
-            mServerDialog->saveCustomServers(serverInfo);
+            mServerDialog->saveCustomServers(serverInfo, mIndex);
             scheduleDelete();
         }
     }

@@ -116,7 +116,13 @@ class ServerDialog : public Window,
         MutexLocker lock() { return MutexLocker(&mMutex); }
 
         friend class CustomServerDialog;
-        void saveCustomServers(const ServerInfo &currentServer = ServerInfo());
+        /**
+         * Saves the new server entry in the custom server list.
+         * Removes the given entry when the serverInfo is empty.
+         * Modifies the server entry given at index when it's not -1.
+         */
+        void saveCustomServers(const ServerInfo &currentServer = ServerInfo(),
+                               int index = -1);
 
     private:
         /**
@@ -134,6 +140,7 @@ class ServerDialog : public Window,
         Button *mQuitButton;
         Button *mConnectButton;
         Button *mManualEntryButton;
+        Button *mModifyButton;
         Button *mDeleteButton;
 
         ListBox *mServersList;

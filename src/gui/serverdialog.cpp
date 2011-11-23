@@ -207,19 +207,21 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     mQuitButton = new Button(_("Quit"), "quit", this);
     mConnectButton = new Button(_("Connect"), "connect", this);
-    mManualEntryButton = new Button(_("Custom Server"), "addEntry", this);
+    mManualEntryButton = new Button(_("Add custom Server..."), "addEntry", this);
+    mModifyButton = new Button(_("Modify..."), "modify", this);
     mDeleteButton = new Button(_("Delete"), "remove", this);
 
     mServersList->setActionEventId("connect");
     mServersList->addSelectionListener(this);
     usedScroll->setVerticalScrollAmount(0);
 
-    place(0, 0, usedScroll, 5, 5).setPadding(3);
+    place(0, 0, usedScroll, 6, 5).setPadding(3);
     place(0, 5, mDescription, 5);
     place(0, 6, mManualEntryButton);
-    place(1, 6, mDeleteButton);
-    place(3, 6, mQuitButton);
-    place(4, 6, mConnectButton);
+    place(1, 6, mModifyButton);
+    place(2, 6, mDeleteButton);
+    place(4, 6, mQuitButton);
+    place(5, 6, mConnectButton);
 
     // Make sure the list has enough height
     getLayout().setRowHeight(3, 80);
@@ -290,6 +292,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             mConnectButton->setEnabled(false);
             mDeleteButton->setEnabled(false);
             mManualEntryButton->setEnabled(false);
+            mModifyButton->setEnabled(false);
 
             const ServerInfo &serverInfo = mServersListModel->getServer(index);
             mServerInfo->hostname = serverInfo.hostname;
@@ -313,6 +316,21 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     {
         // Add a custom server: It will delete itself using guichan logic.
         new CustomServerDialog(this);
+    }
+    else if (event.getId() == "modify")
+    {
+        int index = mServersList->getSelected();
+        // Check whether a server is selected.
+        if (index < 0)
+        {
+            OkDialog *dlg = new OkDialog(_("Error"),
+                _("Please select a custom server."));
+            dlg->addActionListener(this);
+        }
+        else
+        {
+            new CustomServerDialog(this, index);
+        }
     }
     else if (event.getId() == "remove")
     {
@@ -344,6 +362,7 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     if (index == -1)
     {
         mDeleteButton->setEnabled(false);
+        mModifyButton->setEnabled(false);
         return;
     }
 
@@ -352,6 +371,7 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     mDescription->setCaption(myServer.description);
 
     mDeleteButton->setEnabled(myServer.save);
+    mModifyButton->setEnabled(myServer.save);
 }
 
 void ServerDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
@@ -543,22 +563,29 @@ void ServerDialog::loadCustomServers()
     }
 }
 
-void ServerDialog::saveCustomServers(const ServerInfo &currentServer)
+void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
 {
     ServerInfos::iterator it, it_end = mServers.end();
 
     // Make sure the current server is mentioned first
     if (currentServer.isValid())
     {
-        for (it = mServers.begin(); it != it_end; ++it)
+        if (index > -1)
         {
-            if (*it == currentServer)
-            {
-                mServers.erase(it);
-                break;
-            }
+            mServers[index] = currentServer;
         }
-        mServers.insert(mServers.begin(), currentServer);
+        else
+        {
+            for (it = mServers.begin(); it != it_end; ++it)
+            {
+                if (*it == currentServer)
+                {
+                    mServers.erase(it);
+                    break;
+                }
+            }
+            mServers.insert(mServers.begin(), currentServer);
+        }
     }
 
     int savedServerCount = 0;
@@ -592,7 +619,9 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer)
         config.setValue("MostUsedServerName" + toString(savedServerCount), "");
 
     // Restore the correct description
-    mDescription->setCaption(mServers[0].description);
+    if (index < 0)
+        index = 0;
+    mDescription->setCaption(mServers[index].description);
 }
 
 int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,

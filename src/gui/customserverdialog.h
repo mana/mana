@@ -66,7 +66,7 @@ class CustomServerDialog : public Window,
                      public gcn::KeyListener
 {
     public:
-        CustomServerDialog(ServerDialog *parent);
+        CustomServerDialog(ServerDialog *parent, int index = -1);
 
         ~CustomServerDialog();
 
@@ -91,6 +91,8 @@ class CustomServerDialog : public Window,
         TypeListModel *mTypeListModel;
 
         ServerDialog *mServerDialog;
+        // The index of the entry to modify, -1 when only adding a new entry.
+        int mIndex;
 };
 
 #endif // CUSTOMSERVERDIALOG_H
