@@ -60,7 +60,9 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
         if (name.empty())
             return container;
 
-        if (!(*container)[name])
+        std::map<std::string, PlayerRelation *>::iterator it =
+            (*container).find(name);
+        if (it != (*container).end())
         {
             int v = (int)cobj->getValue(RELATION, PlayerRelation::NEUTRAL);
             (*container)[name] = new PlayerRelation(static_cast<PlayerRelation::Relation>(v));
@@ -182,31 +184,37 @@ void PlayerRelationsManager::signalUpdate(const std::string &name)
     }
 }
 
-unsigned int PlayerRelationsManager::checkPermissionSilently(const std::string &player_name, unsigned int flags)
+unsigned int PlayerRelationsManager::checkPermissionSilently(
+                                                  const std::string &playerName,
+                                                  unsigned int flags)
 {
-    PlayerRelation *r = mRelations[player_name];
+    PlayerRelation *r = 0;
+
+    std::map<std::string, PlayerRelation *>::const_iterator it =
+        mRelations.find(playerName);
+    if (it != mRelations.end())
+        r = it->second;
     if (!r)
         return mDefaultPermissions & flags;
-    else
+
+    unsigned int permissions =
+        PlayerRelation::RELATION_PERMISSIONS[r->mRelation];
+
+    switch (r->mRelation)
     {
-        unsigned int permissions = PlayerRelation::RELATION_PERMISSIONS[r->mRelation];
+    case PlayerRelation::NEUTRAL:
+        permissions = mDefaultPermissions;
+        break;
 
-        switch (r->mRelation)
-        {
-        case PlayerRelation::NEUTRAL:
-            permissions = mDefaultPermissions;
-            break;
+    case PlayerRelation::FRIEND:
+        permissions |= mDefaultPermissions; // widen
+        break;
 
-        case PlayerRelation::FRIEND:
-            permissions |= mDefaultPermissions; // widen
-            break;
-
-        default:
-            permissions &= mDefaultPermissions; // narrow
-        }
-
-        return permissions & flags;
+    default:
+        permissions &= mDefaultPermissions; // narrow
     }
+
+    return permissions & flags;
 }
 
 bool PlayerRelationsManager::hasPermission(Being *being, unsigned int flags)
@@ -237,16 +245,21 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
     return permitted;
 }
 
-void PlayerRelationsManager::setRelation(const std::string &player_name,
+void PlayerRelationsManager::setRelation(const std::string &playerName,
                                          PlayerRelation::Relation relation)
 {
-    PlayerRelation *r = mRelations[player_name];
-    if (r == NULL)
-        mRelations[player_name] = new PlayerRelation(relation);
+    PlayerRelation *r = 0;
+
+    std::map<std::string, PlayerRelation *>::iterator it =
+        mRelations.find(playerName);
+    if (it != mRelations.end())
+        r = it->second;
+    if (!r)
+        mRelations[playerName] = new PlayerRelation(relation);
     else
         r->mRelation = relation;
 
-    signalUpdate(player_name);
+    signalUpdate(playerName);
 }
 
 std::vector<std::string> * PlayerRelationsManager::getPlayers() const
@@ -264,12 +277,16 @@ std::vector<std::string> * PlayerRelationsManager::getPlayers() const
 
 void PlayerRelationsManager::removePlayer(const std::string &name)
 {
-    if (mRelations[name])
-        delete mRelations[name];
+    std::map<std::string, PlayerRelation *>::iterator it =
+        mRelations.find(name);
+    if (it != mRelations.end())
+    {
+        delete it->second;
 
-    mRelations.erase(name);
+        mRelations.erase(it);
 
-    signalUpdate(name);
+        signalUpdate(name);
+    }
 }
 
 

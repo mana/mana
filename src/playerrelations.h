@@ -37,6 +37,10 @@ struct PlayerRelation
     static const unsigned int WHISPER      = (1 << 3);
     static const unsigned int TRADE        = (1 << 4);
 
+    /**
+     * There are four types of relations:
+     * NEUTRAL, FRIEND, DISREGARDED, and IGNORED.
+     */
     static const unsigned int RELATIONS_NR = 4;
     static const unsigned int RELATION_PERMISSIONS[RELATIONS_NR];
 
