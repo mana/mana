@@ -1267,46 +1267,30 @@ void Client::initConfiguration()
  */
 void Client::initUpdatesDir()
 {
-    std::stringstream updates;
-
     // If updatesHost is currently empty, fill it from config file
     if (mUpdateHost.empty())
-    {
         mUpdateHost = config.getStringValue("updatehost");
-    }
 
-    // Don't go out of range int he next check
-    if (mUpdateHost.length() < 2)
+    // Exit on empty update host.
+    if (mUpdateHost.empty())
         return;
 
-    // Remove any trailing slash at the end of the update host
-    if (!mUpdateHost.empty() && mUpdateHost.at(mUpdateHost.size() - 1) == '/')
-        mUpdateHost.resize(mUpdateHost.size() - 1);
+    logger->log("Setting update host: %s", mUpdateHost.c_str());
 
-    // Parse out any "http://" or "ftp://", and set the updates directory
-    size_t pos;
-    pos = mUpdateHost.find("://");
-    if (pos != mUpdateHost.npos)
+    std::string updateHost = getHostNameFromURL(mUpdateHost);
+
+    // Exit on a wrong update host.
+    if (updateHost.length() < 2)
     {
-        if (pos + 3 < mUpdateHost.length() && !mUpdateHost.empty())
-        {
-            updates << "updates/" << mUpdateHost.substr(pos + 3);
-            mUpdatesDir = updates.str();
-        }
-        else
-        {
-            logger->log("Error: Invalid update host: %s", mUpdateHost.c_str());
-            errorMessage = strprintf(_("Invalid update host: %s"),
-                                     mUpdateHost.c_str());
-            mState = STATE_ERROR;
-        }
+        // Show the original updateHostname in the error message.
+        errorMessage = strprintf(_("Invalid update host: %s"),
+                                 mUpdateHost.c_str());
+        mState = STATE_ERROR;
+        return;
     }
-    else
-    {
-        logger->log("Warning: no protocol was specified for the update host");
-        updates << "updates/" << mUpdateHost;
-        mUpdatesDir = updates.str();
-    }
+
+    mUpdateHost = updateHost;
+    mUpdatesDir = "updates/" + mUpdateHost;
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -1330,13 +1314,17 @@ void Client::initUpdatesDir()
             {
                 logger->log("Error: %s can't be made, but doesn't exist!",
                             newDir.c_str());
-                errorMessage = _("Error creating updates directory!");
+                errorMessage =
+                    strprintf(_("Error creating updates directory!\n(%s)"),
+                                newDir.c_str());
                 mState = STATE_ERROR;
             }
 #else
             logger->log("Error: %s/%s can't be made, but doesn't exist!",
                         mLocalDataDir.c_str(), mUpdatesDir.c_str());
-            errorMessage = _("Error creating updates directory!");
+            errorMessage =
+                strprintf(_("Error creating updates directory!\n(%s/%s)"),
+                            mLocalDataDir.c_str(), mUpdatesDir.c_str());
             mState = STATE_ERROR;
 #endif
         }

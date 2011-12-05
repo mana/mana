@@ -21,6 +21,8 @@
 
 #include "utils/stringutils.h"
 
+#include "log.h"
+
 #include <string.h>
 #include <algorithm>
 #include <cstdarg>
@@ -227,5 +229,50 @@ std::string autocomplete(std::vector<std::string> &candidates,
 std::string normalize(const std::string &name)
 {
     std::string normalized = name;
-    return toLower(trim(normalized));;
+    return toLower(trim(normalized));
+}
+
+std::string removeTrailingSymbol(const std::string& s, const char c)
+{
+    // Remove the trailing symblol at the end of the string
+    if (!s.empty() && s.at(s.size() - 1) == c)
+        return s.substr(0, s.size() - 1);
+    return std::string(s);
+}
+
+std::string getHostNameFromURL(const std::string& url)
+{
+    std::string myHostName;
+
+    // Don't go out of range in the next check
+    if (url.length() < 2)
+        return myHostName;
+
+    // Remove any trailing slash at the end of the update host
+    myHostName = removeTrailingSymbol(url, '/');
+
+    // Parse out any "http://", "ftp://", ect...
+    size_t pos = myHostName.find("://");
+    if (pos == myHostName.npos)
+    {
+        logger->log("Warning: no protocol was specified for the url: %s",
+                    url.c_str());
+    }
+
+    if (myHostName.empty() || pos + 3 >= myHostName.length())
+    {
+        logger->log("Error: Invalid url: %s", url.c_str());
+        return myHostName;
+    }
+    myHostName = myHostName.substr(pos + 3);
+
+    // Remove possible trailing port (i.e.: localhost:8000 -> localhost)
+    pos = myHostName.find(":");
+    if (pos != myHostName.npos)
+        myHostName = myHostName.substr(0, pos);
+
+    // remove possible other junk
+    removeBadChars(myHostName);
+
+    return myHostName;
 }

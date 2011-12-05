@@ -149,4 +149,15 @@ std::string autocomplete(std::vector<std::string> &candidates,
  */
 std::string normalize(const std::string &name);
 
+/**
+ * Remove a potential trailing symbol from a string.
+ */
+std::string removeTrailingSymbol(const std::string& s, const char c);
+
+/**
+ * Gets the hostname out of the given URL.
+ * i.e.: http://www.manasource.org:9601 -> www.manasource.org
+ */
+std::string getHostNameFromURL(const std::string& url);
+
 #endif // UTILS_STRINGUTILS_H
