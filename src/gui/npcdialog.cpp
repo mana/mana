@@ -307,6 +307,11 @@ void NpcDialog::addChoice(const std::string &choice)
     mItems.push_back(choice);
 }
 
+void NpcDialog::initChoiceSelection()
+{
+    mItemList->setSelected(0);
+}
+
 void NpcDialog::textRequest(const std::string &defaultText)
 {
     mActionState = NPC_ACTION_INPUT;
@@ -542,6 +547,7 @@ void NpcEventListener::event(Event::Channel channel,
         int count = event.getInt("choiceCount");
         for (int i = 1; i <= count; i++)
             dialog->addChoice(event.getString("choice" + toString(i)));
+        dialog->initChoiceSelection();
     }
     else if (event.getType() == Event::IntegerInput)
     {

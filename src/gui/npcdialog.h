@@ -116,6 +116,11 @@ class NpcDialog : public Window,
         void addChoice(const std::string &);
 
         /**
+         * Put focus on the first choice.
+         */
+        void initChoiceSelection();
+
+        /**
          * Requests a text string from the user.
          */
         void textRequest(const std::string &defaultText = "");
