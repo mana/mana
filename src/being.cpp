@@ -847,34 +847,26 @@ void Being::logic()
             if (mAction != MOVE)
                 setAction(MOVE);
 
-            // Update the player sprite direction.
-            // N.B.: We only change this if the distance is more than one pixel
-            // to avoid flawing the ending direction for players,
-            // but always for very slow beings.
-            float maxDistance = mSpeedPixelsPerTick.length();
-            if (distance > ((maxDistance > 1.0f) ? 1.0f : 0.0f))
+            // The player direction is handled for keyboard
+            // by LocalPlayer::startWalking(), we shouldn't get
+            // in the way here for other cases.
+            // Hence, we set the direction in Being::logic() only when:
+            // 1. It is not the localPlayer
+            // 2. When it is the localPlayer but only by mouse
+            // (because in that case, the path can have more than one tile.)
+            if ((player_node == this && player_node->isPathSetByMouse())
+                || player_node != this)
             {
-                // The player direction is handled for keyboard
-                // by LocalPlayer::startWalking(), we shouldn't get
-                // in the way here for other cases.
-                // Hence, we set the direction in Being::logic() only when:
-                // 1. It is not the localPlayer
-                // 2. When it is the localPlayer but only by mouse
-                // (because in that case, the path can have more than one tile.)
-                if ((player_node == this && player_node->isPathSetByMouse())
-                    || player_node != this)
-                {
-                    int direction = 0;
-                    const float dx = std::abs(dir.x);
-                    float dy = std::abs(dir.y);
+                int direction = 0;
+                const float dx = std::abs(dir.x);
+                float dy = std::abs(dir.y);
 
-                    if (dx > dy)
-                        direction |= (dir.x > 0) ? RIGHT : LEFT;
-                    else
-                        direction |= (dir.y > 0) ? DOWN : UP;
+                if (dx > dy)
+                    direction |= (dir.x > 0) ? RIGHT : LEFT;
+                else
+                    direction |= (dir.y > 0) ? DOWN : UP;
 
-                    setDirection(direction);
-                }
+                setDirection(direction);
             }
         }
         else if (!mPath.empty())
