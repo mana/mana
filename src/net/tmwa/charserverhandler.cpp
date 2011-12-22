@@ -247,7 +247,7 @@ void CharServerHandler::readPlayerData(Net::MessageIn &msg, Net::Character *char
     character->dummy = tempPlayer;
 
     for (int i = 0; i < 6; i++)
-        character->data.mStats[i + STR].base = msg.readInt8();
+        character->data.mStats[i + STRENGTH].base = msg.readInt8();
 
     character->slot = msg.readInt8(); // character slot
     msg.readInt8();                        // unknown

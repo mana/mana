@@ -248,7 +248,7 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             }
         } break;
 
-        case Key::DELETE:
+        case Key::DELETE_KEY:
         {
             unsigned sz = mText.size();
             while (mCaretPosition < sz)

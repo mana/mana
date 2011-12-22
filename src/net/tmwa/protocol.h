@@ -25,12 +25,12 @@
 enum {
     JOB = 0xa,
 
-    STR = 0xd,
-    AGI,
-    VIT,
-    INT,
-    DEX,
-    LUK,
+    STRENGTH = 0xd,
+    AGILITY,
+    VITALITY,
+    INTELLIGENCE,
+    DEXTERITY,
+    LUCK,
 
     ATK,
     DEF,

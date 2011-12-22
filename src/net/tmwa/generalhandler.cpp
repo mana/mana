@@ -227,12 +227,13 @@ void GeneralHandler::event(Event::Channel channel,
             inventoryWindow->setSplitAllowed(false);
             skillDialog->loadSkills();
 
-            statusWindow->addAttribute(STR, _("Strength"), true, "");
-            statusWindow->addAttribute(AGI, _("Agility"), true, "");
-            statusWindow->addAttribute(VIT, _("Vitality"), true, "");
-            statusWindow->addAttribute(INT, _("Intelligence"), true, "");
-            statusWindow->addAttribute(DEX, _("Dexterity"), true, "");
-            statusWindow->addAttribute(LUK, _("Luck"), true, "");
+            statusWindow->addAttribute(STRENGTH, _("Strength"), true, "");
+            statusWindow->addAttribute(AGILITY, _("Agility"), true, "");
+            statusWindow->addAttribute(VITALITY, _("Vitality"), true, "");
+            statusWindow->addAttribute(INTELLIGENCE, _("Intelligence"),
+                                       true, "");
+            statusWindow->addAttribute(DEXTERITY, _("Dexterity"), true, "");
+            statusWindow->addAttribute(LUCK, _("Luck"), true, "");
 
             statusWindow->addAttribute(ATK, _("Attack"), false, "");
             statusWindow->addAttribute(DEF, _("Defense"), false, "");

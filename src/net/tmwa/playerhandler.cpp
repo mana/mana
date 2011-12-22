@@ -377,75 +377,75 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
             {
                 int val = msg.readInt8();
-                PlayerInfo::setStatBase(STR, val);
+                PlayerInfo::setStatBase(STRENGTH, val);
                 if (val >= 99)
                 {
-                    statusWindow->setPointsNeeded(STR, 0);
+                    statusWindow->setPointsNeeded(STRENGTH, 0);
                     msg.readInt8();
                 }
                 else
                 {
-                    statusWindow->setPointsNeeded(STR, msg.readInt8());
+                    statusWindow->setPointsNeeded(STRENGTH, msg.readInt8());
                 }
 
                 val = msg.readInt8();
-                PlayerInfo::setStatBase(AGI, val);
+                PlayerInfo::setStatBase(AGILITY, val);
                 if (val >= 99)
                 {
-                    statusWindow->setPointsNeeded(AGI, 0);
+                    statusWindow->setPointsNeeded(AGILITY, 0);
                     msg.readInt8();
                 }
                 else
                 {
-                    statusWindow->setPointsNeeded(AGI, msg.readInt8());
+                    statusWindow->setPointsNeeded(AGILITY, msg.readInt8());
                 }
 
                 val = msg.readInt8();
-                PlayerInfo::setStatBase(VIT, val);
+                PlayerInfo::setStatBase(VITALITY, val);
                 if (val >= 99)
                 {
-                    statusWindow->setPointsNeeded(VIT, 0);
+                    statusWindow->setPointsNeeded(VITALITY, 0);
                     msg.readInt8();
                 }
                 else
                 {
-                    statusWindow->setPointsNeeded(VIT, msg.readInt8());
+                    statusWindow->setPointsNeeded(VITALITY, msg.readInt8());
                 }
 
                 val = msg.readInt8();
-                PlayerInfo::setStatBase(INT, val);
+                PlayerInfo::setStatBase(INTELLIGENCE, val);
                 if (val >= 99)
                 {
-                    statusWindow->setPointsNeeded(INT, 0);
+                    statusWindow->setPointsNeeded(INTELLIGENCE, 0);
                     msg.readInt8();
                 }
                 else
                 {
-                    statusWindow->setPointsNeeded(INT, msg.readInt8());
+                    statusWindow->setPointsNeeded(INTELLIGENCE, msg.readInt8());
                 }
 
                 val = msg.readInt8();
-                PlayerInfo::setStatBase(DEX, val);
+                PlayerInfo::setStatBase(DEXTERITY, val);
                 if (val >= 99)
                 {
-                    statusWindow->setPointsNeeded(DEX, 0);
+                    statusWindow->setPointsNeeded(DEXTERITY, 0);
                     msg.readInt8();
                 }
                 else
                 {
-                    statusWindow->setPointsNeeded(DEX, msg.readInt8());
+                    statusWindow->setPointsNeeded(DEXTERITY, msg.readInt8());
                 }
 
                 val = msg.readInt8();
-                PlayerInfo::setStatBase(LUK, val);
+                PlayerInfo::setStatBase(LUCK, val);
                 if (val >= 99)
                 {
-                    statusWindow->setPointsNeeded(LUK, 0);
+                    statusWindow->setPointsNeeded(LUCK, 0);
                     msg.readInt8();
                 }
                 else
                 {
-                    statusWindow->setPointsNeeded(LUK, msg.readInt8());
+                    statusWindow->setPointsNeeded(LUCK, msg.readInt8());
                 }
 
                 PlayerInfo::setStatBase(ATK, msg.readInt16(), false);
@@ -476,22 +476,22 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
             switch (msg.readInt16())
             {
                 case 0x0020:
-                    statusWindow->setPointsNeeded(STR, msg.readInt8());
+                    statusWindow->setPointsNeeded(STRENGTH, msg.readInt8());
                     break;
                 case 0x0021:
-                    statusWindow->setPointsNeeded(AGI, msg.readInt8());
+                    statusWindow->setPointsNeeded(AGILITY, msg.readInt8());
                     break;
                 case 0x0022:
-                    statusWindow->setPointsNeeded(VIT, msg.readInt8());
+                    statusWindow->setPointsNeeded(VITALITY, msg.readInt8());
                     break;
                 case 0x0023:
-                    statusWindow->setPointsNeeded(INT, msg.readInt8());
+                    statusWindow->setPointsNeeded(INTELLIGENCE, msg.readInt8());
                     break;
                 case 0x0024:
-                    statusWindow->setPointsNeeded(DEX, msg.readInt8());
+                    statusWindow->setPointsNeeded(DEXTERITY, msg.readInt8());
                     break;
                 case 0x0025:
-                    statusWindow->setPointsNeeded(LUK, msg.readInt8());
+                    statusWindow->setPointsNeeded(LUCK, msg.readInt8());
                     break;
             }
             break;
@@ -531,7 +531,7 @@ void PlayerHandler::emote(int emoteId)
 
 void PlayerHandler::increaseAttribute(int attr)
 {
-    if (attr >= STR && attr <= LUK)
+    if (attr >= STRENGTH && attr <= LUCK)
     {
         MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
         outMsg.writeInt16(attr);
