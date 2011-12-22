@@ -536,7 +536,7 @@ void Theme::loadColors(std::string file)
     if (file == "")
         file = defaultThemePath;
 
-    file += "/colors.xml";
+    file += "/" COLORS_XML_FILE;
 
     XML::Document doc(file);
     xmlNodePtr root = doc.rootNode();

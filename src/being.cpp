@@ -66,8 +66,6 @@
 #include <cassert>
 #include <cmath>
 
-#define HAIR_FILE "hair.xml"
-
 int Being::mNumberOfHairstyles = 1;
 
 Being::Being(int id, Type type, int subtype, Map *map):

@@ -21,6 +21,7 @@
 #include "actorsprite.h"
 
 #include "client.h"
+#include "configuration.h"
 #include "event.h"
 #include "game.h"
 #include "imagesprite.h"
@@ -323,7 +324,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     for (it = display.sprites.begin(), it_end = display.sprites.end();
          it != it_end; it++)
     {
-        std::string file = "graphics/sprites/" + (*it)->sprite;
+        std::string file = paths.getStringValue("sprites") + (*it)->sprite;
         int variant = (*it)->variant;
         addSprite(AnimatedSprite::load(file, variant));
     }
@@ -332,15 +333,20 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     if (size() == 0 && forceDisplay)
     {
         if (display.image.empty())
-            addSprite(AnimatedSprite::load("graphics/sprites/error.xml"));
+        {
+            addSprite(AnimatedSprite::load(paths.getStringValue("sprites")
+                + paths.getStringValue("spriteErrorFile")));
+        }
         else
         {
             ResourceManager *resman = ResourceManager::getInstance();
-            std::string imagePath = "graphics/items/" + display.image;
+            std::string imagePath = paths.getStringValue("itemIcons")
+                                    + display.image;
             Image *img = resman->getImage(imagePath);
 
             if (!img)
-                img = Theme::getImageFromTheme("unknown-item.png");
+                img = Theme::getImageFromTheme(
+                    paths.getStringValue("unknownItemFile"));
 
             addSprite(new ImageSprite(img));
         }

@@ -38,18 +38,18 @@ void ColorDB::load()
     if (mLoaded)
         unload();
 
-    XML::Document *doc = new XML::Document("hair.xml");
+    XML::Document *doc = new XML::Document(HAIR_XML_FILE);
     xmlNodePtr root = doc->rootNode();
     bool hairXml = true;
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
-        logger->log("Trying to fall back on colors.xml");
+        logger->log("Trying to fall back on " COLORS_XML_FILE);
 
         hairXml = false;
 
         delete doc;
-        doc = new XML::Document("colors.xml");
+        doc = new XML::Document(COLORS_XML_FILE);
         root = doc->rootNode();
 
         if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
@@ -101,7 +101,7 @@ std::string &ColorDB::get(int id)
 
     if (i == mColors.end())
     {
-        logger->log("ColorDB: Error, unknown dye ID# %d", id);
+        logger->log("ColorDB: Error, unknown dye Id# %d", id);
         return mFail;
     }
     else
