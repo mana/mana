@@ -158,6 +158,8 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
                            ? ActorSprite::MONSTER : ActorSprite::NPC, subtype);
             std::string name = msg.readString();
             if (name.length() > 0) being->setName(name);
+            being->setGender(msg.readInt8() == ManaServ::GENDER_MALE ?
+                             ::GENDER_MALE : ::GENDER_FEMALE);
         } break;
 
         default:

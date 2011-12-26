@@ -112,8 +112,8 @@ enum {
     PGMSG_RESPAWN                  = 0x0180, // -
     GPMSG_BEING_ENTER              = 0x0200, // B type, W being id, B action, W*2 position, B direction
                                              // character: S name, B hair style, B hair color, B gender, B sprite layers changed, { B slot type, W item id }*
-                                             // monster: W type id
-                                             // npc: W type id
+                                             // monster: W type id gender
+                                             // npc: W type id gender
     GPMSG_BEING_LEAVE              = 0x0201, // W being id
     GPMSG_ITEM_APPEAR              = 0x0202, // W item id, W*2 position
     GPMSG_BEING_LOOKS_CHANGE       = 0x0210, // B sprite layers changed, { B slot type, W item id }*
