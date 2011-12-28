@@ -44,7 +44,7 @@ Setup::Setup():
     Window(_("Setup"))
 {
     setCloseButton(true);
-    int width = 385;
+    int width = 395;
     int height = 360;
     setContentSize(width, height);
 
