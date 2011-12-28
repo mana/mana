@@ -121,8 +121,8 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
         place(0, 2, invenScroll, 8).setPadding(3);
         place(0, 3, mUseButton);
         place(1, 3, mEquipButton);
-        place(2, 3, mDropButton);
-        place(3, 3, mSplitButton);
+        place(3, 3, mDropButton);
+        place(4, 3, mSplitButton);
         place(7, 3, mOutfitButton);
 
         updateWeight();
@@ -371,6 +371,8 @@ void InventoryWindow::updateButtons()
     else
         mEquipButton->setEnabled(false);
 
+    mEquipButton->adjustSize();
+
     mUseButton->setEnabled(item->getInfo().getActivatable());
 
     if (item->getQuantity() > 1)
@@ -382,6 +384,8 @@ void InventoryWindow::updateButtons()
         mSplitButton->setEnabled(true);
     else
         mSplitButton->setEnabled(false);
+
+    mSplitButton->adjustSize();
 }
 
 void InventoryWindow::setSplitAllowed(bool allowed)
