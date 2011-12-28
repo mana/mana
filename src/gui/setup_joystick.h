@@ -41,8 +41,8 @@ class Setup_Joystick : public SetupTab, public gcn::ActionListener
     private:
         gcn::Label *mCalibrateLabel;
         gcn::Button *mCalibrateButton;
-        bool mOriginalJoystickEnabled;
-        gcn::CheckBox *mJoystickEnabled;
+        bool mJoystickEnabled;
+        gcn::CheckBox *mJoystickCheckBox;
 };
 
 #endif

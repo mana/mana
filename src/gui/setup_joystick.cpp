@@ -36,20 +36,20 @@ extern Joystick *joystick;
 Setup_Joystick::Setup_Joystick():
     mCalibrateLabel(new Label(_("Press the button to start calibration"))),
     mCalibrateButton(new Button(_("Calibrate"), "calibrate", this)),
-    mJoystickEnabled(new CheckBox(_("Enable joystick")))
+    mJoystickCheckBox(new CheckBox(_("Enable joystick")))
 {
     setName(_("Joystick"));
 
-    mOriginalJoystickEnabled = !config.getBoolValue("joystickEnabled");
-    mJoystickEnabled->setSelected(mOriginalJoystickEnabled);
+    mJoystickEnabled = config.getBoolValue("joystickEnabled");
+    mJoystickCheckBox->setSelected(mJoystickEnabled);
 
-    mJoystickEnabled->addActionListener(this);
+    mJoystickCheckBox->addActionListener(this);
 
     // Do the layout
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, mJoystickEnabled);
+    place(0, 0, mJoystickCheckBox);
     place(0, 1, mCalibrateLabel);
     place.getCell().matchColWidth(0, 0);
     place = h.getPlacer(0, 1);
@@ -65,9 +65,9 @@ void Setup_Joystick::action(const gcn::ActionEvent &event)
         return;
     }
 
-    if (event.getSource() == mJoystickEnabled)
+    if (event.getSource() == mJoystickCheckBox)
     {
-        joystick->setEnabled(mJoystickEnabled->isSelected());
+        joystick->setEnabled(mJoystickCheckBox->isSelected());
     }
     else
     {
@@ -91,9 +91,9 @@ void Setup_Joystick::cancel()
 {
     if (joystick)
     {
-        joystick->setEnabled(mOriginalJoystickEnabled);
+        joystick->setEnabled(mJoystickEnabled);
     }
-    mJoystickEnabled->setSelected(mOriginalJoystickEnabled);
+    mJoystickCheckBox->setSelected(mJoystickEnabled);
 }
 
 void Setup_Joystick::apply()
