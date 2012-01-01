@@ -137,7 +137,7 @@ void GameHandler::gameLoading()
 
     // Attack range from item DB
     // TODO: Deharcode it through equipment handling
-    player_node->setAttackRange(48);
+    local_player->setAttackRange(48);
 }
 
 } // namespace ManaServ

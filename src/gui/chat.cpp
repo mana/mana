@@ -472,7 +472,7 @@ void ChatWindow::whisper(const std::string &nick,
     if (mes.empty())
         return;
 
-    std::string playerName = player_node->getName();
+    std::string playerName = local_player->getName();
     std::string tempNick = nick;
 
     toLower(playerName);
@@ -502,7 +502,7 @@ void ChatWindow::whisper(const std::string &nick,
         else
         {
             tab->chatLog(nick, mes);
-            player_node->afkRespond(tab, nick);
+            local_player->afkRespond(tab, nick);
         }
     }
     else
@@ -523,7 +523,7 @@ void ChatWindow::whisper(const std::string &nick,
 
 ChatTab *ChatWindow::addWhisperTab(const std::string &nick, bool switchTo)
 {
-    std::string playerName = player_node->getName();
+    std::string playerName = local_player->getName();
     std::string tempNick = nick;
 
     toLower(playerName);

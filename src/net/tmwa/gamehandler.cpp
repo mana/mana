@@ -113,7 +113,7 @@ void GameHandler::event(Event::Channel channel, const Event &event)
             const int tileHeight = map->getTileHeight();
             if (mTileX && mTileY)
             {
-                player_node->setPosition(Vector(mTileX * tileWidth + tileWidth / 2,
+                local_player->setPosition(Vector(mTileX * tileWidth + tileWidth / 2,
                                          mTileY * tileHeight + tileHeight / 2));
                 mTileX = mTileY = 0;
             }
@@ -135,9 +135,9 @@ void GameHandler::connect()
 
     if (Client::getState() == STATE_CONNECT_GAME)
     {
-        mCharID = player_node->getId();
+        mCharID = local_player->getId();
         // Change the player's ID to the account ID to match what eAthena uses
-        player_node->setId(token.account_ID);
+        local_player->setId(token.account_ID);
     }
 
     // Send login infos

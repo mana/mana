@@ -200,7 +200,7 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
 
 void PartyTab::getAutoCompleteList(std::vector<std::string> &names) const
 {
-    Party *p = player_node->getParty();
+    Party *p = local_player->getParty();
 
     if (p)
         p->getNames(names);

@@ -339,8 +339,8 @@ void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 {
     std::ostringstream where;
     where << Game::instance()->getCurrentMapName() << ", coordinates: "
-          << player_node->getTileX() << ", "
-          << player_node->getTileY();
+          << local_player->getTileX() << ", "
+          << local_player->getTileY();
 
     tab->chatLog(where.str(), BY_SERVER);
 }
@@ -385,7 +385,7 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
 
     if (msg.length() > 0)
     {
-        std::string playerName = player_node->getName();
+        std::string playerName = local_player->getName();
         std::string tempNick = recvnick;
 
         toLower(playerName);
@@ -501,7 +501,7 @@ void CommandHandler::handleShowIp(const std::string &args, ChatTab *tab)
 {
     if (args.empty())
     {
-        tab->chatLog(player_node->getShowIp() ?
+        tab->chatLog(local_player->getShowIp() ?
                 _("Show IP: On") : _("Show IP: Off"));
         return;
     }
@@ -512,11 +512,11 @@ void CommandHandler::handleShowIp(const std::string &args, ChatTab *tab)
     {
         case 0:
             tab->chatLog(_("Show IP: Off"));
-            player_node->setShowIp(false);
+            local_player->setShowIp(false);
             break;
         case 1:
             tab->chatLog(_("Show IP: On"));
-            player_node->setShowIp(true);
+            local_player->setShowIp(true);
             break;
         case -1:
             tab->chatLog(strprintf(BOOLEAN_OPTIONS, "showip"));
@@ -577,5 +577,5 @@ void CommandHandler::handleUnignore(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleAway(const std::string &args, ChatTab *tab)
 {
-    player_node->setAway(args);
+    local_player->setAway(args);
 }

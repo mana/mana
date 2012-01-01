@@ -106,7 +106,7 @@ void SpecialsWindow::action(const gcn::ActionEvent &event)
 
         if (disp)
         {
-            /*Being *target = player_node->getTarget();
+            /*Being *target = local_player->getTarget();
 
             if (target)
                 Net::getSpecialHandler()->use(disp->mInfo->id, 1, target->getId());

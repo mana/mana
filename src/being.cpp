@@ -319,7 +319,7 @@ void Being::takeDamage(Being *attacker, int amount,
     // Selecting the right color
     if (type == CRITICAL || type == FLEE)
     {
-        if (attacker == player_node)
+        if (attacker == local_player)
         {
             color = &userPalette->getColor(
                 UserPalette::HIT_LOCAL_PLAYER_CRITICAL);
@@ -331,7 +331,7 @@ void Being::takeDamage(Being *attacker, int amount,
     }
     else if (!amount)
     {
-        if (attacker == player_node)
+        if (attacker == local_player)
         {
             // This is intended to be the wrong direction to visually
             // differentiate between hits and misses
@@ -344,7 +344,7 @@ void Being::takeDamage(Being *attacker, int amount,
     }
     else if (getType() == MONSTER)
     {
-        if (attacker == player_node)
+        if (attacker == local_player)
         {
             color = &userPalette->getColor(
                 UserPalette::HIT_LOCAL_PLAYER_MONSTER);
@@ -426,7 +426,7 @@ void Being::handleAttack(Being *victim, int damage, int attackId)
     // TODO: Add attack type handling, see Attack struct and AttackType
     // and make use of it by grouping attacks per attack type and add random
     // attack use on tA, based on normal and critical attack types.
-    if (this != player_node)
+    if (this != local_player)
         setAction(Being::ATTACK, attackId);
 
     if (victim)
@@ -493,7 +493,7 @@ void Being::addGuild(Guild *guild)
     mGuilds[guild->getId()] = guild;
     guild->addMember(mId, mName);
 
-    if (this == player_node && socialWindow)
+    if (this == local_player && socialWindow)
     {
         socialWindow->addTab(guild);
     }
@@ -501,7 +501,7 @@ void Being::addGuild(Guild *guild)
 
 void Being::removeGuild(int id)
 {
-    if (this == player_node && socialWindow)
+    if (this == local_player && socialWindow)
     {
         socialWindow->removeTab(mGuilds[id]);
     }
@@ -544,7 +544,7 @@ void Being::clearGuilds()
     {
         Guild *guild = itr->second;
 
-        if (this == player_node && socialWindow)
+        if (this == local_player && socialWindow)
             socialWindow->removeTab(guild);
 
         guild->removeMember(mId);
@@ -568,7 +568,7 @@ void Being::setParty(Party *party)
 
     updateColors();
 
-    if (this == player_node && socialWindow)
+    if (this == local_player && socialWindow)
     {
         if (old)
             socialWindow->removeTab(old);
@@ -851,11 +851,11 @@ void Being::logic()
             // by LocalPlayer::startWalking(), we shouldn't get
             // in the way here for other cases.
             // Hence, we set the direction in Being::logic() only when:
-            // 1. It is not the localPlayer
-            // 2. When it is the localPlayer but only by mouse
+            // 1. It is not the local_player
+            // 2. When it is the local_player but only by mouse
             // (because in that case, the path can have more than one tile.)
-            if ((player_node == this && player_node->isPathSetByMouse())
-                || player_node != this)
+            if ((local_player == this && local_player->isPathSetByMouse())
+                || local_player != this)
             {
                 int direction = 0;
                 const float dx = std::abs(dir.x);
@@ -984,8 +984,8 @@ void Being::showName()
         }
 
         // Display the IP when under tmw-Athena (GM only).
-        if (Net::getNetworkType() == ServerInfo::TMWATHENA && player_node
-        && player_node->getShowIp() && player->getIp())
+        if (Net::getNetworkType() == ServerInfo::TMWATHENA && local_player
+        && local_player->getShowIp() && player->getIp())
         {
             mDisplayName += strprintf(" %s", ipToString(player->getIp()));
         }
@@ -1000,7 +1000,7 @@ void Being::showName()
     }
 
     gcn::Font *font = 0;
-    if (player_node && player_node->getTarget() == this
+    if (local_player && local_player->getTarget() == this
         && getType() != MONSTER)
     {
         font = boldFont;
@@ -1024,7 +1024,7 @@ void Being::updateColors()
         mNameColor = &userPalette->getColor(UserPalette::NPC);
         mTextColor = &userPalette->getColor(UserPalette::NPC);
     }
-    else if (this == player_node)
+    else if (this == local_player)
     {
         mNameColor = &userPalette->getColor(UserPalette::SELF);
         mTextColor = &Theme::getThemeColor(Theme::PLAYER);
@@ -1038,7 +1038,7 @@ void Being::updateColors()
             mTextColor = &userPalette->getColor(UserPalette::GM);
             mNameColor = &userPalette->getColor(UserPalette::GM);
         }
-        else if (mParty && mParty == player_node->getParty())
+        else if (mParty && mParty == local_player->getParty())
         {
             mNameColor = &userPalette->getColor(UserPalette::PARTY);
         }

@@ -208,8 +208,8 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                 Event event(Event::Player);
                 event.setString("message", mes);
                 event.setString("text", chatMsg);
-                event.setString("nick", player_node->getName());
-                event.setInt("beingId", player_node->getId());
+                event.setString("nick", local_player->getName());
+                event.setInt("beingId", local_player->getId());
                 event.setInt("permissions", player_relations.getDefault()
                              & (PlayerRelation::SPEECH_LOG
                                 | PlayerRelation::SPEECH_FLOAT));
@@ -234,7 +234,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
 
 void ChatHandler::talk(const std::string &text)
 {
-    std::string mes = player_node->getName() + " : " + text;
+    std::string mes = local_player->getName() + " : " + text;
 
     MessageOut outMsg(CMSG_CHAT_MESSAGE);
     // Added + 1 in order to let eAthena parse admin commands correctly

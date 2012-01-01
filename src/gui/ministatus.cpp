@@ -207,7 +207,7 @@ void MiniStatusWindow::logic()
     if (config.getValue("xpBarMonsterCounterExp", 0)!=0)
     {
         updatedText << " | "
-            << (int)(((float)player_node->mXpForNextLevel - (float)player_node->mXp)
+            << (int)(((float)local_player->mXpForNextLevel - (float)local_player->mXp)
              / (float)config.getValue("xpBarMonsterCounterExp", 0))
             << " "
             << config.getValue("xpBarMonsterCounterName", "Monsters") <<" left...";

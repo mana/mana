@@ -132,9 +132,9 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
         case OBJECT_CHARACTER:
         {
             std::string name = msg.readString();
-            if (player_node->getName() == name)
+            if (local_player->getName() == name)
             {
-                being = player_node;
+                being = local_player;
                 being->setId(id);
             }
             else
@@ -222,7 +222,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         }
 
         // Ignore messages from the server for the local player
-        if (being == player_node)
+        if (being == local_player)
             continue;
 
         // If the position differs too much from the actual one, we resync
@@ -294,7 +294,7 @@ void BeingHandler::handleBeingActionChangeMessage(Net::MessageIn &msg)
 
     being->setAction(action);
 
-    if (action == Being::DEAD && being == player_node)
+    if (action == Being::DEAD && being == local_player)
     {
         static char const *const deadMsg[] =
         {
@@ -346,7 +346,7 @@ void BeingHandler::handleBeingDirChangeMessage(Net::MessageIn &msg)
     int data = msg.readInt8();
 
     // The direction for the player's character is handled on client side.
-    if (being != player_node)
+    if (being != local_player)
         being->setDirection((BeingDirection) data);
 }
 

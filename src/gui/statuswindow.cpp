@@ -94,7 +94,7 @@ class ChangeDisplay : public AttrDisplay, gcn::ActionListener
 };
 
 StatusWindow::StatusWindow():
-    Window(player_node->getName())
+    Window(local_player->getName())
 {
     listen(Event::AttributesChannel);
 

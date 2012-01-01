@@ -275,6 +275,6 @@ class LocalPlayer : public Being
         bool mAwayMode;
 };
 
-extern LocalPlayer *player_node;
+extern LocalPlayer *local_player;
 
 #endif // LOCALPLAYER_H

@@ -161,7 +161,7 @@ PlayerHandler::PlayerHandler()
 
 void PlayerHandler::handleMessage(Net::MessageIn &msg)
 {
-    if (!player_node)
+    if (!local_player)
         return;
 
     switch (msg.getId())
@@ -186,7 +186,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                  * We must clear the local player's target *before* the call
                  * to changeMap, as it deletes all beings.
                  */
-                player_node->stopAttack();
+                local_player->stopAttack();
 
                 Game *game = Game::instance();
 
@@ -202,8 +202,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
                 /* Scroll if necessary */
                 Map *map = game->getCurrentMap();
-                int tileX = player_node->getTileX();
-                int tileY = player_node->getTileY();
+                int tileX = local_player->getTileX();
+                int tileY = local_player->getTileY();
                 if (!sameMap
                     || (abs(x - tileX) > MAP_TELEPORT_SCROLL_DISTANCE)
                     || (abs(y - tileY) > MAP_TELEPORT_SCROLL_DISTANCE))
@@ -212,11 +212,11 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     scrollOffsetY = (y - tileY) * map->getTileHeight();
                 }
 
-                player_node->setAction(Being::STAND);
+                local_player->setAction(Being::STAND);
                 Vector pos = map->getTileCenter(x, y);
-                player_node->setPosition(pos);
+                local_player->setPosition(pos);
                 // Stop movement
-                player_node->setDestination(pos.x, pos.y);
+                local_player->setDestination(pos.x, pos.y);
 
                 logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
                            (int) scrollOffsetY);
@@ -227,7 +227,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
-                if (!player_node)
+                if (!local_player)
                     break;
                 int type = msg.readInt16();
                 int value = msg.readInt32();
@@ -235,7 +235,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 switch (type)
                 {
                     case 0x0000:
-                      player_node->setMoveSpeed(Vector(value / 10,
+                      local_player->setMoveSpeed(Vector(value / 10,
                                                        value / 10, 0));
                     break;
                     case 0x0004: break; // manner
@@ -281,11 +281,11 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
                     case 0x0034: PlayerInfo::setStatBase(CRIT, value); break;
 
-                    case 0x0035: player_node->setAttackSpeed(value); break;
+                    case 0x0035: local_player->setAttackSpeed(value); break;
 
                     case 0x0037: PlayerInfo::setStatBase(JOB, value); break;
 
-                    case 500: player_node->setGMLevel(value); break;
+                    case 500: local_player->setGMLevel(value); break;
                 }
 
                 if (PlayerInfo::getAttribute(HP) == 0 && !deathNotice)
@@ -295,7 +295,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                                                randomDeathMessage(),
                                                false);
                     deathNotice->addActionListener(&deathListener);
-                    player_node->setAction(Being::DEAD);
+                    local_player->setAction(Being::DEAD);
                 }
             }
 
@@ -329,7 +329,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                                             Units::formatCurrency(newMoney -
                                             oldMoney).c_str()))
                             if (config.getBoolValue("showpickupparticle"))
-                                player_node->addMessageToQueue(money,
+                                local_player->addMessageToQueue(money,
                                                       UserPalette::PICKUP_INFO);
                         }
                     }

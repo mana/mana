@@ -848,8 +848,8 @@ int Client::exec()
 
                 case STATE_GAME:
                     logger->log("Memorizing selected character %s",
-                            player_node->getName().c_str());
-                    config.setValue("lastCharacter", player_node->getName());
+                            local_player->getName().c_str());
+                    config.setValue("lastCharacter", local_player->getName());
 
                     // Fade out logon-music here too to give the desired effect
                     // of "flowing" into the game.

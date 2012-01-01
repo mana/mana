@@ -43,7 +43,7 @@
 #include <string>
 #include <iostream>
 
-extern Being *player_node;
+extern Being *local_player;
 
 extern Net::ChatHandler *chatHandler;
 
@@ -165,7 +165,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
 
     std::string mes = being->getName() + " : " + chatMsg;
 
-    Event event(being == player_node ? Event::Player
+    Event event(being == local_player ? Event::Player
                                            : Event::Being);
     event.setString("message", mes);
     event.setString("text", chatMsg);

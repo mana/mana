@@ -60,7 +60,7 @@
 
 #define AWAY_LIMIT_TIMER 60
 
-LocalPlayer *player_node = NULL;
+LocalPlayer *local_player = NULL;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
     Being(id, PLAYER, subtype, 0),
@@ -727,7 +727,7 @@ void LocalPlayer::setWalkingDir(int dir)
     // been pressing, stop (do not send this stop to the server) and
     // start in the new direction
     if (dir && (dir != getWalkingDir()))
-        player_node->stopWalking(false);
+        local_player->stopWalking(false);
 
     // Else, he is not pressing a key,
     // and the current path hasn't been sent by mouse,
@@ -1118,8 +1118,8 @@ void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
 
 void AwayListener::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok" && player_node->getAwayMode())
+    if (event.getId() == "ok" && local_player->getAwayMode())
     {
-        player_node->changeAwayMode();
+        local_player->changeAwayMode();
     }
 }

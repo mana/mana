@@ -119,7 +119,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 GuildMember *member;
 
                 short guildId = msg.readInt16();
-                guild = player_node->getGuild(guildId);
+                guild = local_player->getGuild(guildId);
 
                 if (!guild)
                     return;
@@ -147,7 +147,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
             char eventId = msg.readInt8();
             GuildMember *member;
 
-            Guild *guild = player_node->getGuild(guildId);
+            Guild *guild = local_player->getGuild(guildId);
             if (guild)
             {
                 switch(eventId)
@@ -226,12 +226,12 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 // Must remove tab first, as it wont find the guild
                 // name after its removed from the player
                 int guildId = msg.readInt16();
-                Guild *guild = player_node->getGuild(guildId);
+                Guild *guild = local_player->getGuild(guildId);
                 if (guild)
                 {
                     Channel *channel = channelManager->findByName(guild->getName());
                     channelManager->removeChannel(channel);
-                    player_node->removeGuild(guildId);
+                    local_player->removeGuild(guildId);
                 }
             }
         } break;
@@ -250,7 +250,7 @@ void GuildHandler::joinedGuild(Net::MessageIn &msg)
     Guild *guild = Guild::getGuild(guildId);
     guild->setName(guildName);
     guild->setRights(permissions);
-    player_node->addGuild(guild);
+    local_player->addGuild(guild);
     Net::getGuildHandler()->memberList(guildId);
 
     // Automatically create the guild channel

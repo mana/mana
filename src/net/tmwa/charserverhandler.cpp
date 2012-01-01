@@ -153,13 +153,13 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_CHAR_MAP_INFO:
         {
-            msg.skip(4); // CharID, must be the same as player_node->charID
+            msg.skip(4); // CharID, must be the same as local_player->charID
             GameHandler *gh = static_cast<GameHandler*>(Net::getGameHandler());
             gh->setMap(msg.readString(16));
             mapServer.hostname = ipToString(msg.readInt32());
             mapServer.port = msg.readInt16();
 
-            player_node = mSelectedCharacter->dummy;
+            local_player = mSelectedCharacter->dummy;
             PlayerInfo::setBackend(mSelectedCharacter->data);
 
             // Prevent the selected local player from being deleted
@@ -185,12 +185,12 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
 
             mNetwork->disconnect();
             Client::setState(STATE_CHANGE_MAP);
-            Map *map = player_node->getMap();
+            Map *map = local_player->getMap();
             const int tileWidth = map->getTileWidth();
             const int tileHeight = map->getTileHeight();
-            player_node->setPosition(Vector(x * tileWidth + tileWidth / 2,
+            local_player->setPosition(Vector(x * tileWidth + tileWidth / 2,
                                             y * tileHeight + tileHeight / 2));
-            player_node->setMap(0);
+            local_player->setMap(0);
         }
         break;
     }

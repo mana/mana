@@ -126,11 +126,11 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                         break;
                 }
 
-                if (player_node->getNumberOfGuilds())
+                if (local_player->getNumberOfGuilds())
                     mBrowserBox->addRow(strprintf("@@guild|%s@@",
                                 strprintf(_("Invite %s to join your guild"),
                                                     name.c_str()).c_str()));
-                if (player_node->isInParty() ||
+                if (local_player->isInParty() ||
                     Net::getNetworkType() == ServerInfo::MANASERV)
                 {
                     mBrowserBox->addRow(strprintf("@@party|%s@@",
@@ -138,7 +138,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                                                     name.c_str()).c_str()));
                 }
 
-                if (player_node->isGM())
+                if (local_player->isGM())
                 {
                     mBrowserBox->addRow("##3---");
                     mBrowserBox->addRow(strprintf("@@admin-kick|%s@@",
@@ -162,7 +162,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                                               strprintf(_("Attack %s"),
                                                     name.c_str()).c_str()));
 
-                if (player_node->isGM())
+                if (local_player->isGM())
                     mBrowserBox->addRow(strprintf("@@admin-kick|%s@@",
                                                   _("Kick monster")));
             }
@@ -220,7 +220,7 @@ void PopupMenu::handleLink(const std::string &link)
     // Attack action
     else if (link == "attack" && being)
     {
-        player_node->attack(being, true);
+        local_player->attack(being, true);
     }
     else if (link == "whisper" && being)
     {
@@ -253,13 +253,13 @@ void PopupMenu::handleLink(const std::string &link)
     else if (link == "guild" && being &&
              being->getType() == ActorSprite::PLAYER)
     {
-        player_node->inviteToGuild(being);
+        local_player->inviteToGuild(being);
     }
 
     // Pick Up Floor Item action
     else if ((link == "pickup") && mFloorItem)
     {
-        player_node->pickUp(mFloorItem);
+        local_player->pickUp(mFloorItem);
     }
 
     // Look To action

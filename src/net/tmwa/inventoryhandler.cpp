@@ -230,11 +230,11 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 unsigned char err = msg.readInt8();
                 if (err)
                 {
-                    player_node->pickedUp(itemInfo, 0, err);
+                    local_player->pickedUp(itemInfo, 0, err);
                 }
                 else
                 {
-                    player_node->pickedUp(itemInfo, amount, PICKUP_OKAY);
+                    local_player->pickedUp(itemInfo, amount, PICKUP_OKAY);
 
                     Item *item = inventory->getItem(index);
 
@@ -420,7 +420,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             {
                 mEquips.setEquipment(getSlot(equipType), -1);
                 // Reset the attack range to unarmed.
-                player_node->setAttackRange(ATTACK_RANGE_NOT_SET);
+                local_player->setAttackRange(ATTACK_RANGE_NOT_SET);
             }
             break;
 
@@ -430,14 +430,14 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             Map *map = Game::instance()->getCurrentMap();
             if (map)
             {
-                player_node->setAttackRange(msg.readInt16()
+                local_player->setAttackRange(msg.readInt16()
                                             * map->getTileWidth());
             }
             else
             {
                 logger->log("Couldn't set attacke range due to the lack"
                             "of an initialized map.");
-                player_node->setAttackRange(ATTACK_RANGE_NOT_SET);
+                local_player->setAttackRange(ATTACK_RANGE_NOT_SET);
             }
         }
             break;

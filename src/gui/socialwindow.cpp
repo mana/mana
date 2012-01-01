@@ -341,9 +341,9 @@ SocialWindow::SocialWindow() :
 
     mCreatePopup = new CreatePopup();
 
-    if (player_node->getParty())
+    if (local_player->getParty())
     {
-        addTab(player_node->getParty());
+        addTab(local_player->getParty());
     }
     else
         updateButtons();
@@ -614,7 +614,7 @@ void SocialWindow::showPartyInvite(const std::string &inviter,
 
 void SocialWindow::showPartyCreate()
 {
-    if (player_node->getParty())
+    if (local_player->getParty())
     {
         new OkDialog(_("Create Party"),
                      _("Cannot create party. You are already in a party"),

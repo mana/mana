@@ -230,8 +230,8 @@ void Setup_Interface::cancel()
     config.setValue("visiblenames", mVisibleNamesEnabled);
     config.setValue("speech", mSpeechMode);
     config.setValue("showownname", mNameEnabled);
-    if (player_node)
-        player_node->setCheckNameSetting(true);
+    if (local_player)
+        local_player->setCheckNameSetting(true);
     config.setValue("logNpcInGui", mNPCLogEnabled);
     config.setValue("guialpha", mOpacity);
     config.setValue("showpickupchat", mPickupChatEnabled);
@@ -274,8 +274,8 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
     {
         // Notify the local player that settings have changed for the name
         // and requires an update
-        if (player_node)
-            player_node->setCheckNameSetting(true);
+        if (local_player)
+            local_player->setCheckNameSetting(true);
         config.setValue("showownname", mNameCheckBox->isSelected());
     }
     else if (id == "lognpc")

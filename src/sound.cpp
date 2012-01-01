@@ -290,9 +290,9 @@ void Sound::playSfx(const std::string &path, int x, int y)
     {
         logger->log("Sound::playSfx() Playing: %s", path.c_str());
         int vol = 120;
-        if (player_node && x > 0 && y > 0)
+        if (local_player && x > 0 && y > 0)
         {
-            Vector pos = player_node->getPosition();
+            Vector pos = local_player->getPosition();
             Map *map = Game::instance()->getCurrentMap();
             int dx = ((int)pos.x - x) / map->getTileWidth();
             int dy = ((int)pos.y - y) / map->getTileHeight();

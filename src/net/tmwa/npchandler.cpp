@@ -125,8 +125,8 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
 
     delete event;
 
-    if (player_node->getCurrentAction() != Being::SIT)
-        player_node->setAction(Being::STAND);
+    if (local_player->getCurrentAction() != Being::SIT)
+        local_player->setAction(Being::STAND);
 }
 
 void NpcHandler::startShopping(int beingId)

@@ -240,7 +240,7 @@ void ActorSprite::setStatusEffectBlock(int offset, uint16_t newEffects)
 void ActorSprite::internalTriggerEffect(int effectId, bool sfx, bool gfx)
 {
     logger->log("Special effect #%d on %s", effectId,
-                getId() == player_node->getId() ? "self" : "other");
+                getId() == local_player->getId() ? "self" : "other");
 
     EffectDescription *ed = getEffectDescription(effectId);
 
@@ -264,7 +264,7 @@ void ActorSprite::internalTriggerEffect(int effectId, bool sfx, bool gfx)
 
 void ActorSprite::updateStunMode(int oldMode, int newMode)
 {
-    if (this == player_node)
+    if (this == local_player)
     {
         Event event(Event::Stun);
         event.setInt("oldMode", oldMode);
@@ -278,7 +278,7 @@ void ActorSprite::updateStunMode(int oldMode, int newMode)
 
 void ActorSprite::updateStatusEffect(int index, bool newStatus)
 {
-    if (this == player_node)
+    if (this == local_player)
     {
         Event event(Event::UpdateStatusEffect);
         event.setInt("index", index);

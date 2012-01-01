@@ -425,7 +425,7 @@ void GuildHandler::leave(int guildId)
     MessageOut msg(CMSG_GUILD_LEAVE);
     msg.writeInt32(guildId);
     msg.writeInt32(0); // Account ID
-    msg.writeInt32(player_node->getId());
+    msg.writeInt32(local_player->getId());
     msg.writeString("", 30); // Message
 }
 

@@ -252,7 +252,7 @@ void CharHandler::handleCharacterSelectResponse(Net::MessageIn &msg)
                     chatServer.port);
 
         // Prevent the selected local player from being deleted
-        player_node = mSelectedCharacter->dummy;
+        local_player = mSelectedCharacter->dummy;
         PlayerInfo::setBackend(mSelectedCharacter->data);
         mSelectedCharacter->dummy = 0;
 

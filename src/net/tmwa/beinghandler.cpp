@@ -318,8 +318,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 break;
 
             // If this is player's current target, clear it.
-            if (dstBeing == player_node->getTarget())
-                player_node->stopAttack();
+            if (dstBeing == local_player->getTarget())
+                local_player->stopAttack();
 
             if (msg.readInt8() == 1)
                 dstBeing->setAction(Being::DEAD);
@@ -336,8 +336,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 break;
 
             // If this is player's current target, clear it.
-            if (dstBeing == player_node->getTarget())
-                player_node->stopAttack();
+            if (dstBeing == local_player->getTarget())
+                local_player->stopAttack();
 
             if (msg.readInt8() == 1)
                 dstBeing->setAction(Being::STAND);
@@ -356,7 +356,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt16(); // Skill level
             msg.readInt16(); // Div
             msg.readInt8(); // Skill hit/type (?)
-            if (attackSpeed && srcBeing && srcBeing != player_node)
+            if (attackSpeed && srcBeing && srcBeing != local_player)
                 srcBeing->setAttackSpeed(attackSpeed);
             if (dstBeing)
                 dstBeing->takeDamage(srcBeing, param1, Being::HIT); // Perhaps a new skill attack type should be created and used?
@@ -566,7 +566,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     break;
             }
 
-            if (Party *party = player_node->getParty()){
+            if (Party *party = local_player->getParty()){
                 if (party->isMember(id))
                 {
                     dstBeing->setParty(party);
@@ -674,7 +674,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              */
 
             id = msg.readInt32();
-            if (mSync || id != player_node->getId())
+            if (mSync || id != local_player->getId())
             {
                 dstBeing = actorSpriteManager->findBeing(id);
                 if (dstBeing)

@@ -104,7 +104,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     member->setOnline(online);
                 }
 
-                player_node->setParty(taParty);
+                local_player->setParty(taParty);
             }
             break;
         case SMSG_PARTY_INVITE_RESPONSE:
@@ -229,7 +229,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 int id = msg.readInt32();
                 std::string nick = msg.readString(24);
                 msg.readInt8();     // fail
-                if (id == player_node->getId())
+                if (id == local_player->getId())
                 {
                     taParty->removeFromMembers();
                     taParty->clearMembers();
@@ -344,7 +344,7 @@ void PartyHandler::invite(const std::string &name)
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
 {
     MessageOut outMsg(CMSG_PARTY_INVITED);
-    outMsg.writeInt32(player_node->getId());
+    outMsg.writeInt32(local_player->getId());
     outMsg.writeInt32(accept ? 1 : 0);
 }
 

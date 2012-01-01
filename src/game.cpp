@@ -232,7 +232,7 @@ Game::Game():
     initEngines();
 
     // Initialize beings
-    actorSpriteManager->setPlayer(player_node);
+    actorSpriteManager->setPlayer(local_player);
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use
@@ -255,7 +255,7 @@ Game::~Game()
 
     del_0(actorSpriteManager)
     if (Client::getState() != STATE_CHANGE_MAP)
-        del_0(player_node)
+        del_0(local_player)
     del_0(channelManager)
     del_0(commandHandler)
     del_0(joystick)
@@ -273,10 +273,10 @@ static bool saveScreenshot()
     static unsigned int screenshotCount = 0;
 
     // We don't want to show IP addresses in screenshots
-    const bool showip = player_node->getShowIp();
+    const bool showip = local_player->getShowIp();
     if (showip)
     {
-        player_node->setShowIp(false);
+        local_player->setShowIp(false);
         actorSpriteManager->updatePlayerNames();
         gui->draw();
     }
@@ -285,7 +285,7 @@ static bool saveScreenshot()
 
     if (showip)
     {
-        player_node->setShowIp(true);
+        local_player->setShowIp(true);
         actorSpriteManager->updatePlayerNames();
     }
 
@@ -374,8 +374,8 @@ void Game::logic()
  */
 static void handleItemPickUp()
 {
-    int x = player_node->getTileX();
-    int y = player_node->getTileY();
+    int x = local_player->getTileX();
+    int y = local_player->getTileY();
 
     // Let's look for items around until you find one.
     bool found = false;
@@ -387,12 +387,12 @@ static void handleItemPickUp()
             if (item)
             {
                 found = true;
-                player_node->pickUp(item);
+                local_player->pickUp(item);
 
                 // We found it, so set the player
                 // direction accordingly,
-                player_node->lookAt(
-                                  player_node->getMap()->getTileCenter(xX, yY));
+                local_player->lookAt(
+                                  local_player->getMap()->getTileCenter(xX, yY));
 
                 // Get out of the loops
                 break;
@@ -652,7 +652,7 @@ void Game::handleInput()
                         break;
                     case KeyboardConfig::KEY_SIT:
                         // Player sit action
-                        player_node->toggleSit();
+                        local_player->toggleSit();
                         used = true;
                         break;
                     case KeyboardConfig::KEY_HIDE_WINDOWS:
@@ -766,7 +766,7 @@ void Game::handleInput()
         return;
 
     // Moving player around
-    if (player_node->isAlive() && !PlayerInfo::isTalking() &&
+    if (local_player->isAlive() && !PlayerInfo::isTalking() &&
         !chatWindow->isInputFocused() && !quitDialog && !TextDialog::isActive())
     {
         // Get the state of the keyboard keys
@@ -808,24 +808,24 @@ void Game::handleInput()
 
         if (keyboard.isKeyActive(keyboard.KEY_EMOTE) && direction != 0)
         {
-            if (player_node->getDirection() != direction)
+            if (local_player->getDirection() != direction)
             {
-                player_node->setDirection(direction);
+                local_player->setDirection(direction);
                 Net::getPlayerHandler()->setDirection(direction);
             }
             direction = 0;
         }
         else
         {
-            player_node->setWalkingDir(direction);
+            local_player->setWalkingDir(direction);
         }
 
         // Attacking monsters
         if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
            (joystick && joystick->buttonPressed(0)))
         {
-            if (player_node->getTarget())
-                player_node->attack(player_node->getTarget(), true);
+            if (local_player->getTarget())
+                local_player->attack(local_player->getTarget(), true);
         }
 
         if (keyboard.isKeyActive(keyboard.KEY_TARGET_ATTACK))
@@ -834,13 +834,13 @@ void Game::handleInput()
 
             bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
             // A set target has highest priority
-            if (!player_node->getTarget())
+            if (!local_player->getTarget())
             {
                 // Only auto target Monsters
-                target = actorSpriteManager->findNearestLivingBeing(player_node,
+                target = actorSpriteManager->findNearestLivingBeing(local_player,
                                                     20, ActorSprite::MONSTER);
             }
-            player_node->attack(target, newTarget);
+            local_player->attack(target, newTarget);
         }
 
         // Target the nearest player/monster/npc
@@ -859,13 +859,13 @@ void Game::handleInput()
             else if (keyboard.isKeyActive(keyboard.KEY_TARGET_NPC))
                 currentTarget = ActorSprite::NPC;
 
-            Being *target = actorSpriteManager->findNearestLivingBeing(player_node,
+            Being *target = actorSpriteManager->findNearestLivingBeing(local_player,
                                                     20, currentTarget);
 
-            if (target && (target != player_node->getTarget() ||
+            if (target && (target != local_player->getTarget() ||
                     currentTarget != mLastTarget))
             {
-                player_node->setTarget(target);
+                local_player->setTarget(target);
                 mLastTarget = currentTarget;
             }
         }
@@ -878,7 +878,7 @@ void Game::handleInput()
         if (event.type == SDL_KEYDOWN &&
             keyboard.getKeyIndex(event.key.keysym.sym) == KeyboardConfig::KEY_TALK)
         {
-            Being *target = player_node->getTarget();
+            Being *target = local_player->getTarget();
 
             if (target)
             {
@@ -891,24 +891,24 @@ void Game::handleInput()
         if (!keyboard.isKeyActive(keyboard.KEY_ATTACK)
             && keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
-            player_node->stopAttack();
+            local_player->stopAttack();
         }
 
         if (joystick)
         {
             if (joystick->buttonPressed(1))
             {
-                const int x = player_node->getTileX();
-                const int y = player_node->getTileY();
+                const int x = local_player->getTileX();
+                const int y = local_player->getTileY();
 
                 FloorItem *item = actorSpriteManager->findItem(x, y);
 
                 if (item)
-                    player_node->pickUp(item);
+                    local_player->pickUp(item);
             }
             else if (joystick->buttonPressed(2))
             {
-                player_node->toggleSit();
+                local_player->toggleSit();
             }
         }
     }
@@ -929,8 +929,8 @@ void Game::changeMap(const std::string &mapPath)
 
     // Unset the map of the player so that its particles are cleared before
     // being deleted in the next step
-    if (player_node)
-        player_node->setMap(0);
+    if (local_player)
+        local_player->setMap(0);
 
     particleEngine->clear();
 

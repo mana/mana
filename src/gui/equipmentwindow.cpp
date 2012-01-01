@@ -63,7 +63,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     // Control that shows the Player
     PlayerBox *playerBox = new PlayerBox;
     playerBox->setDimension(gcn::Rectangle(50, 80, 74, 123));
-    playerBox->setPlayer(player_node);
+    playerBox->setPlayer(local_player);
 
     setWindowName("Equipment");
     setCloseButton(true);

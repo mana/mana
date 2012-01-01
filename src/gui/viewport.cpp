@@ -97,7 +97,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 {
     static int lastTick = tick_time;
 
-    if (!mMap || !player_node)
+    if (!mMap || !local_player)
     {
         gcnGraphics->setColor(gcn::Color(64, 64, 64));
         gcnGraphics->fillRectangle(
@@ -117,7 +117,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 2;
     int midTileY = (graphics->getHeight() + mScrollCenterOffsetX) / 2;
 
-    const Vector &playerPos = player_node->getPosition();
+    const Vector &playerPos = local_player->getPosition();
     const int player_x = (int) playerPos.x - midTileX;
     const int player_y = (int) playerPos.y - midTileY;
 
@@ -211,10 +211,10 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         }
     }
 
-    if (player_node->getCheckNameSetting())
+    if (local_player->getCheckNameSetting())
     {
-        player_node->setCheckNameSetting(false);
-        player_node->setName(player_node->getName());
+        local_player->setCheckNameSetting(false);
+        local_player->setName(local_player->getName());
     }
 
     // Draw text
@@ -320,7 +320,7 @@ void Viewport::_drawDebugPath(Graphics *graphics)
         if (mouseDestination.x != lastMouseDestination.x
             || mouseDestination.y != lastMouseDestination.y)
         {
-            const Vector &playerPos = player_node->getPosition();
+            const Vector &playerPos = local_player->getPosition();
 
             // Adapt the path finding to the precision requested
             if (Net::getPlayerHandler()->usePixelPrecision())
@@ -329,7 +329,7 @@ void Viewport::_drawDebugPath(Graphics *graphics)
                                                 (int) playerPos.y,
                                                 mouseDestination.x,
                                                 mouseDestination.y,
-                                                player_node->getCollisionRadius(),
+                                                local_player->getCollisionRadius(),
                                                 walkMask);
             }
             else
@@ -414,7 +414,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         return;
 
     // Check if we are alive and kickin'
-    if (!mMap || !player_node || !player_node->isAlive())
+    if (!mMap || !local_player || !local_player->isAlive())
         return;
 
     // Check if we are busy
@@ -436,7 +436,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        if (mHoverBeing && mHoverBeing != player_node)
+        if (mHoverBeing && mHoverBeing != local_player)
         {
             mPopupMenu->showPopup(event.getX(), event.getY(), mHoverBeing);
             return;
@@ -468,28 +468,28 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                 // Ignore it if its dead
                 if (mHoverBeing->isAlive())
                 {
-                    if (player_node->withinAttackRange(mHoverBeing) ||
+                    if (local_player->withinAttackRange(mHoverBeing) ||
                         keyboard.isKeyActive(keyboard.KEY_ATTACK))
-                        player_node->attack(mHoverBeing,
+                        local_player->attack(mHoverBeing,
                             !keyboard.isKeyActive(keyboard.KEY_TARGET));
                     else
-                        player_node->setGotoTarget(mHoverBeing);
+                        local_player->setGotoTarget(mHoverBeing);
                 }
              }
         // Picks up a item if we clicked on one
         }
         else if (mHoverItem)
         {
-            player_node->pickUp(mHoverItem);
+            local_player->pickUp(mHoverItem);
         }
-        else if (player_node->getCurrentAction() == Being::SIT)
+        else if (local_player->getCurrentAction() == Being::SIT)
         {
             return;
         }
         // Just walk around
         else
         {
-            player_node->stopAttack();
+            local_player->stopAttack();
             mPlayerFollowMouse = true;
 
             // Make the player go to the mouse position
@@ -503,13 +503,13 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                 pixelX, pixelY, 20, ActorSprite::MONSTER);
 
         if (target)
-             player_node->setTarget(target);
+             local_player->setTarget(target);
     }
 }
 
 void Viewport::mouseDragged(gcn::MouseEvent &event)
 {
-    if (!mMap || !player_node)
+    if (!mMap || !local_player)
         return;
 
     if (mPlayerFollowMouse && !event.isShiftPressed())
@@ -517,9 +517,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
         if (get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
         {
             mLocalWalkTime = tick_time;
-            player_node->setDestination(event.getX() + (int) mPixelViewX,
+            local_player->setDestination(event.getX() + (int) mPixelViewX,
                                         event.getY() + (int) mPixelViewY);
-            player_node->pathSetByMouse();
+            local_player->pathSetByMouse();
         }
     }
 }
@@ -543,7 +543,7 @@ void Viewport::closePopupMenu()
 void Viewport::mouseMoved(gcn::MouseEvent &event)
 {
     // Check if we are on the map
-    if (!mMap || !player_node)
+    if (!mMap || !local_player)
         return;
 
     const int x = (event.getX() + (int) mPixelViewX);

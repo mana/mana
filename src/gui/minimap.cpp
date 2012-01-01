@@ -166,7 +166,7 @@ void Minimap::draw(gcn::Graphics *graphics)
         if (mMapImage->getWidth() > a.width ||
             mMapImage->getHeight() > a.height)
         {
-            const Vector &p = player_node->getPosition();
+            const Vector &p = local_player->getPosition();
             mapOriginX = (int) (((a.width) / 2) - (int) (p.x * mWidthProportion)
                          / mMap->getTileWidth());
             mapOriginY = (int) (((a.height) / 2)
@@ -203,7 +203,7 @@ void Minimap::draw(gcn::Graphics *graphics)
 
         int type = UserPalette::PC;
 
-        if (being == player_node)
+        if (being == local_player)
         {
             type = UserPalette::SELF;
             dotSize = 3;

@@ -105,7 +105,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
             gameServerConnection->disconnect();
             Client::setState(STATE_CHANGE_MAP);
-            player_node->setMap(0);
+            local_player->setMap(0);
         } break;
 
         case GPMSG_PLAYER_ATTRIBUTE_CHANGE:
@@ -154,7 +154,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                                                paths.getStringValue("particles")
                                      + paths.getStringValue("levelUpEffectFile")
                                                          ,0, 0);
-            player_node->controlParticle(effect);
+            local_player->controlParticle(effect);
         } break;
 
 
@@ -291,7 +291,7 @@ void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
     // Switch the actual map, deleting the previous one
     game->changeMap(mapName);
 
-    const Vector &playerPos = player_node->getPosition();
+    const Vector &playerPos = local_player->getPosition();
     float scrollOffsetX = 0.0f;
     float scrollOffsetY = 0.0f;
 
@@ -304,9 +304,9 @@ void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
         scrollOffsetY = y - (int) playerPos.y;
     }
 
-    player_node->setAction(Being::STAND);
-    player_node->setPosition(x, y);
-    player_node->setDestination(x, y);
+    local_player->setAction(Being::STAND);
+    local_player->setPosition(x, y);
+    local_player->setDestination(x, y);
 
     logger->log("Adjust scrolling by %d,%d", (int) scrollOffsetX,
                                              (int) scrollOffsetY);
@@ -373,7 +373,7 @@ void PlayerHandler::setDestination(int x, int y, int /* direction */)
 
 void PlayerHandler::changeAction(Being::Action action)
 {
-    player_node->setAction(action);
+    local_player->setAction(action);
 
     MessageOut msg(PGMSG_ACTION_CHANGE);
     msg.writeInt8(action);

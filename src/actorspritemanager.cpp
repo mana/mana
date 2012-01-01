@@ -112,13 +112,13 @@ void ActorSpriteManager::setMap(Map *map)
 {
     mMap = map;
 
-    if (player_node)
-        player_node->setMap(map);
+    if (local_player)
+        local_player->setMap(map);
 }
 
 void ActorSpriteManager::setPlayer(LocalPlayer *player)
 {
-    player_node = player;
+    local_player = player;
     mActors.insert(player);
 }
 
@@ -140,7 +140,7 @@ FloorItem *ActorSpriteManager::createItem(int id, int itemId, const Vector &pos)
 
 void ActorSpriteManager::destroy(ActorSprite *actor)
 {
-    if (!actor || actor == player_node)
+    if (!actor || actor == local_player)
         return;
 
     mDeleteActors.insert(actor);
@@ -184,7 +184,7 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
         int uptol = being->getHeight();
 
         if ((being->isAlive()) &&
-            (being != player_node) &&
+            (being != local_player) &&
             (being->getPixelX() - xtol <= x) &&
             (being->getPixelX() + xtol >= x) &&
             (being->getPixelY() - uptol <= y) &&
@@ -261,16 +261,16 @@ void ActorSpriteManager::logic()
 
 void ActorSpriteManager::clear()
 {
-    if (player_node)
-        mActors.erase(player_node);
+    if (local_player)
+        mActors.erase(local_player);
 
     for_actors
         delete *it;
     mActors.clear();
     mDeleteActors.clear();
 
-    if (player_node)
-        mActors.insert(player_node);
+    if (local_player)
+        mActors.insert(local_player);
 }
 
 Being *ActorSpriteManager::findNearestLivingBeing(int x, int y,

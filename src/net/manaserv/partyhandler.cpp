@@ -87,7 +87,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             switch (msg.readInt8())
             {
                 case ERRMSG_OK:
-                    player_node->setParty(mParty);
+                    local_player->setParty(mParty);
                     while (msg.getUnreadLength())
                     {
                         std::string name = msg.readString();
@@ -113,7 +113,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 mParty->clearMembers();
-                player_node->setParty(NULL);
+                local_player->setParty(NULL);
             }
         } break;
 
@@ -128,8 +128,8 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             SERVER_NOTICE(strprintf(_("%s joined the party%s."),
                                     name.c_str(), s.c_str()));
 
-            if (name == player_node->getName())
-                player_node->setParty(mParty);
+            if (name == local_player->getName())
+                local_player->setParty(mParty);
 
             mParty->addMember(0, name);
         } break;
