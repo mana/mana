@@ -601,11 +601,21 @@ void Game::handleInput()
                     }
                     used = true;
                     break;
-               // Quitting confirmation dialog
-               case KeyboardConfig::KEY_QUIT:
+                case KeyboardConfig::KEY_QUIT:
+                {
+                    // Close possible stuck NPC dialogs.
+                    NpcDialog *npcDialog = NpcDialog::getActive();
+                    if (npcDialog && npcDialog->isWaitingForTheServer())
+                    {
+                        npcDialog->close();
+                        return;
+                    }
+
+                    // Otherwise, show the quit confirmation dialog.
                     quitDialog = new QuitDialog(&quitDialog);
                     quitDialog->requestMoveToTop();
                     return;
+                }
                 default:
                     break;
             }

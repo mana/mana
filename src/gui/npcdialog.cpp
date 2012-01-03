@@ -81,7 +81,7 @@ NpcDialog::NpcDialog(int npcId)
     // Basic Window Setup
     setWindowName("NpcText");
     setResizable(true);
-    //setupWindow->registerWindowForReset(this);
+    setCloseButton(false);
     setFocusable(true);
 
     setMinWidth(200);
@@ -119,18 +119,18 @@ NpcDialog::NpcDialog(int npcId)
     mClearButton = new Button(_("Clear log"), "clear", this);
 
     // Setup button
-    mButton = new Button("", "ok", this);
+    mNextButton = new Button("", "ok", this);
 
     //Setup more and less buttons (int input)
     mPlusButton = new Button(_("+"), "inc", this);
     mMinusButton = new Button(_("-"), "dec", this);
 
-    int width = std::max(mButton->getFont()->getWidth(CAPTION_WAITING),
-                         mButton->getFont()->getWidth(CAPTION_NEXT));
-    width = std::max(width, mButton->getFont()->getWidth(CAPTION_CLOSE));
-    width = std::max(width, mButton->getFont()->getWidth(CAPTION_SUBMIT));
+    int width = std::max(mNextButton->getFont()->getWidth(CAPTION_WAITING),
+                         mNextButton->getFont()->getWidth(CAPTION_NEXT));
+    width = std::max(width, mNextButton->getFont()->getWidth(CAPTION_CLOSE));
+    width = std::max(width, mNextButton->getFont()->getWidth(CAPTION_SUBMIT));
 
-    mButton->setWidth(8 + width);
+    mNextButton->setWidth(8 + width);
 
     mResetButton = new Button(_("Reset"), "reset", this);
 
@@ -159,6 +159,7 @@ NpcDialog::~NpcDialog()
     delete mResetButton;
     delete mPlusButton;
     delete mMinusButton;
+    delete mNextButton;
 
     instances.remove(this);
 
@@ -210,7 +211,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         }
         else if (mActionState == NPC_ACTION_CLOSE)
         {
-            closeDialog();
+            close();
         }
         else if (mActionState == NPC_ACTION_INPUT)
         {
@@ -278,10 +279,10 @@ void NpcDialog::nextDialog()
     Net::getNpcHandler()->nextDialog(mNpcId);
 }
 
-void NpcDialog::closeDialog()
+void NpcDialog::close()
 {
     Net::getNpcHandler()->closeDialog(mNpcId);
-    close();
+    Window::close();
 }
 
 int NpcDialog::getNumberOfElements()
@@ -410,12 +411,13 @@ void NpcDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
     if (mouseEvent.getSource() == mItemList &&
         isDoubleClick(mItemList->getSelected()))
     {
-        action(gcn::ActionEvent(mButton, mButton->getActionEventId()));
+        action(gcn::ActionEvent(mNextButton, mNextButton->getActionEventId()));
     }
     if (mouseEvent.getSource() == mTextBox && isDoubleClick((int)(long)mTextBox))
     {
         if (mActionState == NPC_ACTION_NEXT || mActionState == NPC_ACTION_CLOSE)
-            action(gcn::ActionEvent(mButton, mButton->getActionEventId()));
+            action(gcn::ActionEvent(mNextButton,
+                                    mNextButton->getActionEventId()));
     }
 }
 
@@ -435,7 +437,7 @@ NpcDialog *NpcDialog::getActive()
         }
     }
 
-    return NULL;
+    return 0;
 }
 
 void NpcDialog::closeAll()
@@ -467,32 +469,32 @@ void NpcDialog::buildLayout()
     {
         if (mActionState == NPC_ACTION_WAIT)
         {
-            mButton->setCaption(CAPTION_WAITING);
+            mNextButton->setCaption(CAPTION_WAITING);
         }
         else if (mActionState == NPC_ACTION_NEXT)
         {
-            mButton->setCaption(CAPTION_NEXT);
+            mNextButton->setCaption(CAPTION_NEXT);
         }
         else if (mActionState == NPC_ACTION_CLOSE)
         {
-            mButton->setCaption(CAPTION_CLOSE);
+            mNextButton->setCaption(CAPTION_CLOSE);
         }
         place(0, 0, mScrollArea, 5, 3);
         place(3, 3, mClearButton);
-        place(4, 3, mButton);
+        place(4, 3, mNextButton);
     }
     else if (mInputState != NPC_INPUT_NONE)
     {
         if (!mLogInteraction)
             setText(mNewText);
 
-        mButton->setCaption(CAPTION_SUBMIT);
+        mNextButton->setCaption(CAPTION_SUBMIT);
         if (mInputState == NPC_INPUT_LIST)
         {
             place(0, 0, mScrollArea, 6, 3);
             place(0, 3, mListScrollArea, 6, 3);
             place(2, 6, mClearButton, 2);
-            place(4, 6, mButton, 2);
+            place(4, 6, mNextButton, 2);
 
             mItemList->setSelected(-1);
         }
@@ -502,7 +504,7 @@ void NpcDialog::buildLayout()
             place(0, 3, mTextField, 6);
             place(0, 4, mResetButton, 2);
             place(2, 4, mClearButton, 2);
-            place(4, 4, mButton, 2);
+            place(4, 4, mNextButton, 2);
         }
         else if (mInputState == NPC_INPUT_INTEGER)
         {
@@ -512,14 +514,16 @@ void NpcDialog::buildLayout()
             place(5, 3, mPlusButton, 1);
             place(0, 4, mResetButton, 2);
             place(2, 4, mClearButton, 2);
-            place(4, 4, mButton, 2);
+            place(4, 4, mNextButton, 2);
         }
     }
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    mButton->setEnabled(mActionState != NPC_ACTION_WAIT);
+    bool waitState = isWaitingForTheServer();
+    mNextButton->setEnabled(!waitState);
+    setCloseButton(waitState);
 
     redraw();
 

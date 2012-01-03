@@ -92,8 +92,9 @@ class NpcDialog : public Window,
 
         /**
          * Notifies the server that the client has performed a close action.
+         * @overrides Window::close()
          */
-        void closeDialog();
+        void close();
 
         /**
          * Returns the number of items in the choices list.
@@ -157,6 +158,9 @@ class NpcDialog : public Window,
          */
         static NpcDialog *getActive();
 
+        bool isWaitingForTheServer() const
+        { return mActionState == NPC_ACTION_WAIT; }
+
         /**
          * Closes all instances.
          */
@@ -196,7 +200,7 @@ class NpcDialog : public Window,
         Button *mClearButton;
 
         // Used for the button
-        Button *mButton;
+        Button *mNextButton;
 
         // Will reset the text and integer input to the provided default
         Button *mResetButton;
