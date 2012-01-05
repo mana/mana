@@ -33,7 +33,17 @@ extern Connection *chatServerConnection;
 
 AdminHandler::AdminHandler()
 {
+    static const uint16_t _messages[] =
+    {
+        0
+    };
+    handledMessages = _messages;
     adminHandler = this;
+}
+
+void AdminHandler::handleMessage(Net::MessageIn &msg)
+{
+
 }
 
 void AdminHandler::announce(const std::string &text)

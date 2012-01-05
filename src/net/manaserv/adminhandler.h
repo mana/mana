@@ -24,12 +24,16 @@
 
 #include "net/adminhandler.h"
 
+#include "net/manaserv/messagehandler.h"
+
 namespace ManaServ {
 
-class AdminHandler : public Net::AdminHandler
+class AdminHandler : public Net::AdminHandler, public MessageHandler
 {
     public:
         AdminHandler();
+
+        void handleMessage(Net::MessageIn &msg);
 
         void announce(const std::string &text);
 

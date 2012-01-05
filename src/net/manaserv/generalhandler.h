@@ -49,6 +49,7 @@ class GeneralHandler : public Net::GeneralHandler, public EventListener
         void event(Event::Channel channel, const Event &event);
 
     protected:
+        MessageHandlerPtr mAdminHandler;
         MessageHandlerPtr mBeingHandler;
         MessageHandlerPtr mBuySellHandler;
         MessageHandlerPtr mCharHandler;

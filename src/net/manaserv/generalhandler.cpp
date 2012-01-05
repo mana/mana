@@ -30,6 +30,7 @@
 #include "gui/skilldialog.h"
 #include "gui/specialswindow.h"
 
+#include "net/manaserv/adminhandler.h"
 #include "net/manaserv/beinghandler.h"
 #include "net/manaserv/buysellhandler.h"
 #include "net/manaserv/charhandler.h"
@@ -67,6 +68,7 @@ ServerInfo gameServer;
 ServerInfo chatServer;
 
 GeneralHandler::GeneralHandler():
+        mAdminHandler(new AdminHandler),
         mBeingHandler(new BeingHandler),
         mBuySellHandler(new BuySellHandler),
         mCharHandler(new CharHandler),
@@ -97,6 +99,7 @@ GeneralHandler::GeneralHandler():
 
 void GeneralHandler::load()
 {
+    registerHandler(mAdminHandler.get());
     registerHandler(mBeingHandler.get());
     registerHandler(mBuySellHandler.get());
     registerHandler(mCharHandler.get());
