@@ -26,6 +26,7 @@
 #include <string>
 
 class Channel;
+class ChatWindow;
 
 class ChannelManager
 {
@@ -40,6 +41,7 @@ public:
     void removeChannel(Channel *channel);
 
 private:
+    friend class ChatWindow;
     std::list<Channel*> mChannels;
 };
 
