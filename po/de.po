@@ -1277,17 +1277,17 @@ msgstr "Löschen"
 #: ../src/net/manaserv/attributes.cpp:192
 #: ../src/net/tmwa/generalhandler.cpp:234
 msgid "Dexterity"
-msgstr "Ausdauer"
+msgstr "Geschicklichkeit"
 
 #: ../src/net/manaserv/attributes.cpp:199
 #, fuzzy, c-format
 msgid "Dexterity %+.1f"
-msgstr "Ausdauer %+d"
+msgstr "Geschicklichkeit: %+d"
 
 #: ../src/net/tmwa/generalhandler.cpp:106
 #, c-format
 msgid "Dexterity %+d"
-msgstr "Ausdauer %+d"
+msgstr "Geschicklichkeit: %+d"
 
 #: ../src/net/tmwa/charserverhandler.cpp:274
 msgid "Dexterity:"
