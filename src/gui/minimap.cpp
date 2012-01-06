@@ -217,11 +217,11 @@ void Minimap::draw(gcn::Graphics *graphics)
             switch (being->getType())
             {
                 case ActorSprite::MONSTER:
-                    graphics->setColor(userPalette->getColor(UserPalette::MONSTER));
+                    type = UserPalette::MONSTER;
                     break;
 
                 case ActorSprite::NPC:
-                    graphics->setColor(userPalette->getColor(UserPalette::NPC));
+                    type = UserPalette::NPC;
                     break;
 
                 default:
