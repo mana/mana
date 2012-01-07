@@ -206,8 +206,6 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         if (mActionState == NPC_ACTION_NEXT)
         {
             nextDialog();
-            // TRANSLATORS: Please leave the \n sequences intact.
-            addText(_("\n> Next\n"), false);
         }
         else if (mActionState == NPC_ACTION_CLOSE)
         {
