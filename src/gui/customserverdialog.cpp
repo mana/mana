@@ -45,7 +45,7 @@ std::string TypeListModel::getElementAt(int elementIndex)
 }
 
 CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
-    Window(_("Add a custom Server"), true, static_cast<Window*>(parent)),
+    Window(_("Add a custom Server"), true, parent),
     mServerDialog(parent),
     mIndex(index)
 {
@@ -73,25 +73,25 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
     mPortField->addActionListener(this);
 
     place(0, 0, nameLabel);
-    place(1, 0, mNameField, 3).setPadding(3);
+    place(1, 0, mNameField, 4).setPadding(3);
     place(0, 1, serverAdressLabel);
-    place(1, 1, mServerAddressField, 3).setPadding(3);
+    place(1, 1, mServerAddressField, 4).setPadding(3);
     place(0, 2, portLabel);
-    place(1, 2, mPortField, 3).setPadding(3);
+    place(1, 2, mPortField, 4).setPadding(3);
     place(0, 3, typeLabel);
-    place(3, 3, mTypeField, 1).setPadding(3);
+    place(1, 3, mTypeField).setPadding(3);
     place(0, 4, descriptionLabel);
-    place(1, 4, mDescriptionField, 3).setPadding(3);
-    place(3, 5, mOkButton);
-    place(2, 5, mCancelButton);
+    place(1, 4, mDescriptionField, 4).setPadding(3);
+    place(4, 5, mOkButton);
+    place(3, 5, mCancelButton);
 
     // Do this manually instead of calling reflowLayout so we can enforce a
     // minimum width.
     int width = 0, height = 0;
     getLayout().reflow(width, height);
-    if (width < 400)
+    if (width < 300)
     {
-        width = 400;
+        width = 300;
         getLayout().reflow(width, height);
     }
     if (height < 120)
