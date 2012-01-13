@@ -199,6 +199,10 @@ void Minimap::draw(gcn::Graphics *graphics)
             continue;
 
         const Being *being = static_cast<Being*>(*it);
+
+        if (!being->isAlive())
+            continue;
+
         int dotSize = 2;
 
         int type = UserPalette::PC;
