@@ -131,14 +131,6 @@ void LocalPlayer::logic()
     if (get_elapsed_time(mLastTarget) >= 250)
         mLastTarget = -1;
 
-    // Remove target if its been on a being for more than a minute
-    if (get_elapsed_time(mTargetTime) >= 60000)
-    {
-        mTargetTime = -1;
-        setTarget(NULL);
-        mLastTarget = -1;
-    }
-
     if (mTarget)
     {
         if (mTarget->getType() == ActorSprite::NPC)
