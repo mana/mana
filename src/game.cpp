@@ -830,11 +830,11 @@ void Game::handleInput()
 
         if (keyboard.isKeyActive(keyboard.KEY_TARGET_ATTACK))
         {
-            Being *target = 0;
+            Being *target = local_player->getTarget();
 
             bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
             // A set target has highest priority
-            if (!local_player->getTarget())
+            if (!target)
             {
                 // Only auto target Monsters
                 target = actorSpriteManager->findNearestLivingBeing(local_player,
