@@ -172,6 +172,11 @@ void Being::setMoveSpeed(const Vector &speed)
                       Net::getPlayerHandler()->getPixelsPerTickMoveSpeed(speed);
 }
 
+int Being::getSpeechTextYPosition() const
+{
+    return getPixelY() - std::min(getHeight(), 64) - 6;
+}
+
 void Being::setPosition(const Vector &pos)
 {
     Actor::setPosition(pos);
@@ -179,8 +184,7 @@ void Being::setPosition(const Vector &pos)
     updateCoords();
 
     if (mText)
-        mText->adviseXY((int)pos.x,
-                        (int)pos.y - getHeight() - mText->getHeight() - 6);
+        mText->adviseXY(getPixelX(), getSpeechTextYPosition());
 }
 
 void Being::setDestination(int dstX, int dstY)
@@ -299,7 +303,7 @@ void Being::setSpeech(const std::string &text, int time)
             delete mText;
 
         mText = new Text(mSpeech,
-                         getPixelX(), getPixelY() - getHeight(),
+                         getPixelX(), getSpeechTextYPosition(),
                          gcn::Graphics::CENTER,
                          &userPalette->getColor(UserPalette::PARTICLE),
                          true);
@@ -897,7 +901,6 @@ void Being::logic()
 void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = getPixelX() - offsetX;
-    const int py = getPixelY() - offsetY;
     const int speech = config.getIntValue("speech");
 
     // Draw speech above this being
@@ -921,7 +924,8 @@ void Being::drawSpeech(int offsetX, int offsetY)
 
         mSpeechBubble->setText(mSpeech, showName);
         mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() / 2),
-                                   py - getHeight() - (mSpeechBubble->getHeight()));
+                                   getSpeechTextYPosition()
+                                   - mSpeechBubble->getHeight() - offsetY);
         mSpeechBubble->setVisible(true);
     }
     else if (mSpeechTime > 0 && speech == TEXT_OVERHEAD)

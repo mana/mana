@@ -468,6 +468,11 @@ class Being : public ActorSprite, public EventListener
 
         void updateColors();
 
+        /**
+         * Gets the advised Y chat text position.
+         */
+        int getSpeechTextYPosition() const;
+
         BeingInfo *mInfo;
 
         int mActionTime;      /**< Time spent in current action. TODO: Remove use of it */
