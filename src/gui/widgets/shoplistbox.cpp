@@ -77,60 +77,77 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     if (config.getFloatValue("guialpha") != mAlpha)
         mAlpha = config.getFloatValue("guialpha");
 
-    int alpha = (int)(mAlpha * 255.0f);
-    const gcn::Color* highlightColor =
-            &Theme::getThemeColor(Theme::HIGHLIGHT, alpha);
+    const int alpha = (int)(mAlpha * 255.0f);
+    const gcn::Color &highlightColor =
+            Theme::getThemeColor(Theme::HIGHLIGHT, alpha);
+    const gcn::Color &backgroundColor =
+            Theme::getThemeColor(Theme::BACKGROUND, alpha);
+    const gcn::Color &warningColor =
+            Theme::getThemeColor(Theme::SHOP_WARNING, alpha);
+    const gcn::Color &textColor =
+            Theme::getThemeColor(Theme::TEXT);
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
     graphics->setFont(getFont());
+    const int fontHeight = getFont()->getHeight();
 
     // Draw the list elements
     for (int i = 0, y = 0;
          i < mListModel->getNumberOfElements();
          ++i, y += mRowHeight)
     {
-        gcn::Color temp;
-        const gcn::Color* backgroundColor =
-                &Theme::getThemeColor(Theme::BACKGROUND, alpha);
+        ShopItem *shopItem = mShopItems ? mShopItems->at(i) : 0;
 
-        if (mShopItems &&
-                mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
+        if (shopItem && mPlayerMoney < shopItem->getPrice() && mPriceCheck)
         {
             if (i != mSelected)
             {
-                backgroundColor = &Theme::getThemeColor(Theme::SHOP_WARNING,
-                                                        alpha);
+                graphics->setColor(warningColor);
             }
             else
             {
-                temp = Theme::getThemeColor(Theme::SHOP_WARNING, alpha);
-                temp.r = (temp.r + highlightColor->r) / 2;
-                temp.g = (temp.g + highlightColor->g) / 2;
-                temp.b = (temp.g + highlightColor->b) / 2;
-                backgroundColor = &temp;
+                gcn::Color blend = warningColor;
+                blend.r = (blend.r + highlightColor.r) / 2;
+                blend.g = (blend.g + highlightColor.g) / 2;
+                blend.b = (blend.g + highlightColor.b) / 2;
+                graphics->setColor(blend);
             }
         }
         else if (i == mSelected)
         {
-            backgroundColor = highlightColor;
+            graphics->setColor(highlightColor);
+        }
+        else
+        {
+            graphics->setColor(backgroundColor);
         }
 
-        graphics->setColor(*backgroundColor);
         graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
 
-        if (mShopItems)
+        if (shopItem)
         {
-            Image *icon = mShopItems->at(i)->getImage();
-            if (icon)
+            if (Image *icon = shopItem->getImage())
             {
                 icon->setAlpha(1.0f);
                 graphics->drawImage(icon, 1, y);
             }
+
+            // Draw the item quantity when it's not just a single item
+            if (shopItem->getQuantity() > 1)
+            {
+                graphics->setColor(textColor);
+                graphics->drawText(toString(shopItem->getQuantity()),
+                                   1 + ITEM_ICON_SIZE,
+                                   y + ITEM_ICON_SIZE - fontHeight,
+                                   Graphics::RIGHT);
+            }
         }
-        graphics->setColor(Theme::getThemeColor(Theme::TEXT));
-        graphics->drawText(mListModel->getElementAt(i), ITEM_ICON_SIZE + 5,
-                y + (ITEM_ICON_SIZE - getFont()->getHeight()) / 2);
+
+        graphics->setColor(textColor);
+        graphics->drawText(mListModel->getElementAt(i),
+                           ITEM_ICON_SIZE + 5,
+                           y + (ITEM_ICON_SIZE - fontHeight) / 2);
     }
 }
 
