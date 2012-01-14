@@ -388,47 +388,26 @@ void ActorSprite::unload()
     loaded = false;
 }
 
-static const char *cursorType(int type)
-{
-    switch (type)
-    {
-    case ActorSprite::TCT_IN_RANGE:
-        return "in-range";
-    case ActorSprite::TCT_NORMAL:
-        return "normal";
-    default:
-        assert(false);
-    }
-}
-
-static const char *cursorSize(int size)
-{
-    switch (size)
-    {
-    case ActorSprite::TC_LARGE:
-        return "l";
-    case ActorSprite::TC_MEDIUM:
-        return "m";
-    case ActorSprite::TC_SMALL:
-        return "s";
-    default:
-        assert(false);
-    }
-}
-
 void ActorSprite::initTargetCursor()
 {
-    static std::string targetCursor = "graphics/target-cursor-%s-%s.png";
-    static int targetWidths[NUM_TC] = {44, 62, 82};
-    static int targetHeights[NUM_TC] = {35, 44, 60};
+    static const std::string targetCursor = "graphics/target-cursor-%s-%s.png";
+    static const char * const cursorTypeStr[NUM_TCT] = {
+        "normal",
+        "in-range"
+    };
+    static const int targetWidths[NUM_TC] = { 44, 62, 82 };
+    static const int targetHeights[NUM_TC] = { 35, 44, 60 };
+    static const char * const cursorSizeStr[NUM_TC] = { "s", "m", "l" };
 
     // Load target cursors
-    for (int size = TC_SMALL; size < NUM_TC; size++)
+    for (int size = 0; size < NUM_TC; size++)
     {
-        for (int type = TCT_NORMAL; type < NUM_TCT; type++)
+        for (int type = 0; type < NUM_TCT; type++)
         {
-            loadTargetCursor(strprintf(targetCursor.c_str(), cursorType(type),
-                                       cursorSize(size)), targetWidths[size],
+            loadTargetCursor(strprintf(targetCursor.c_str(),
+                                       cursorTypeStr[type],
+                                       cursorSizeStr[size]),
+                             targetWidths[size],
                              targetHeights[size], type, size);
         }
     }
@@ -436,9 +415,9 @@ void ActorSprite::initTargetCursor()
 
 void ActorSprite::cleanupTargetCursors()
 {
-    for (int size = TC_SMALL; size < NUM_TC; size++)
+    for (int size = 0; size < NUM_TC; size++)
     {
-        for (int type = TCT_NORMAL; type < NUM_TCT; type++)
+        for (int type = 0; type < NUM_TCT; type++)
         {
             delete targetCursor[type][size];
             if (targetCursorImages[type][size])
