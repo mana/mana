@@ -48,10 +48,10 @@ namespace XML
     Document::Document(const std::string &filename, bool useResman):
         mDoc(0)
     {
-        XMLContext *ctx = new XMLContext();
-        ctx->file = filename;
-        ctx->resman = useResman;
-        xmlSetStructuredErrorFunc(ctx, xmlLogger);
+        XMLContext ctx;
+        ctx.file = filename;
+        ctx.resman = useResman;
+        xmlSetStructuredErrorFunc(&ctx, xmlLogger);
 
         int size;
         char *data = NULL;
