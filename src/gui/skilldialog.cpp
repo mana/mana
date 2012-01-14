@@ -233,7 +233,7 @@ SkillDialog::SkillDialog():
     place(0, 5, mPointsLabel, 4);
     place(4, 5, mIncreaseButton);
 
-    setLocationRelativeTo(getParent());
+    center();
     loadWindowState();
 }
 

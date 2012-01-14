@@ -89,7 +89,7 @@ SpecialsWindow::SpecialsWindow():
 
     place(0, 0, mTabs, 5, 5);
 
-    setLocationRelativeTo(getParent());
+    center();
     loadWindowState();
 }
 

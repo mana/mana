@@ -82,7 +82,7 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
     place(2, 0, mCancelButton);
 
     reflowLayout(150, 0);
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     requestModalFocus();
     mOkButton->requestFocus();

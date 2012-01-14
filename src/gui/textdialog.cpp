@@ -40,7 +40,7 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
     gcn::Button *cancelButton = new Button(_("Cancel"), "CANCEL", this);
 
     // In TextField the escape key will either cause autoComplete or lose focus
-    mTextField = new TextField("", ! autoCompleteEnabled);
+    mTextField = new TextField(std::string(), ! autoCompleteEnabled);
     if (autoCompleteEnabled)
         mTextField->setAutoComplete(actorSpriteManager->getPlayerNameLister());
 
@@ -55,7 +55,7 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
 
     if (getParent())
     {
-        setLocationRelativeTo(getParent());
+        center();
         getParent()->moveToTop(this);
     }
     setVisible(true);

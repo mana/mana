@@ -45,7 +45,7 @@ std::string TypeListModel::getElementAt(int elementIndex)
 }
 
 CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
-    Window(_("Add a custom Server"), true, parent),
+    Window(_("Custom Server"), true, parent),
     mServerDialog(parent),
     mIndex(index)
 {
@@ -123,6 +123,7 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
                                 ServerInfo::TMWATHENA);
     }
 
+    setLocationRelativeTo(getParentWindow());
     setVisible(true);
 
     mNameField->requestFocus();

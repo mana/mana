@@ -76,7 +76,7 @@ NpcPostDialog::NpcPostDialog(int npcId):
     add(sendButton);
     add(cancelButton);
 
-    setLocationRelativeTo(getParent());
+    center();
 
     instances.push_back(this);
     setVisible(true);
