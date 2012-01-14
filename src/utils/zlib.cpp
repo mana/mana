@@ -152,15 +152,14 @@ void *loadCompressedFile(const std::string &filename, int &filesize)
         unsigned char *inflated;
         unsigned int inflatedSize;
 
-        if (inflated && filename.find(".gz", filename.length() - 3)
-                != std::string::npos)
+        if (filename.find(".gz", filename.length() - 3) != std::string::npos)
         {
             // Inflate the gzipped map data
             inflatedSize =
                 inflateMemory((unsigned char*) buffer, filesize, inflated);
             free(buffer);
 
-            if (inflated == NULL)
+            if (!inflated)
             {
                 logger->log("Could not decompress file: %s",
                             filename.c_str());
