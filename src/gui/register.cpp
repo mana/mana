@@ -25,7 +25,7 @@
 #include "configuration.h"
 #include "log.h"
 
-#include "gui/login.h"
+#include "gui/logindialog.h"
 #include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"

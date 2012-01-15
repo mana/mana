@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat.h"
+#include "chatwindow.h"
 
 #include "actorspritemanager.h"
 #include "channel.h"

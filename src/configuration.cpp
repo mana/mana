@@ -105,10 +105,8 @@ void Configuration::cleanDefaults()
         for (DefaultsData::const_iterator iter = mDefaultsData->begin();
              iter != mDefaultsData->end(); iter++)
         {
-            if (iter->second)
-                delete(iter->second);
+            delete iter->second;
         }
-        mDefaultsData->clear();
         delete mDefaultsData;
         mDefaultsData = 0;
     }

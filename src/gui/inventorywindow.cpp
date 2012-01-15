@@ -28,7 +28,7 @@
 #include "keyboardconfig.h"
 #include "playerinfo.h"
 
-#include "gui/itemamount.h"
+#include "gui/itemamountwindow.h"
 #include "gui/setup.h"
 #include "gui/sdlinput.h"
 #include "gui/viewport.h"

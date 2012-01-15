@@ -28,9 +28,9 @@
 #include "localplayer.h"
 #include "playerinfo.h"
 
-#include "gui/buy.h"
-#include "gui/buysell.h"
-#include "gui/sell.h"
+#include "gui/buydialog.h"
+#include "gui/buyselldialog.h"
+#include "gui/selldialog.h"
 
 #include "net/messagein.h"
 

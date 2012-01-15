@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/trade.h"
+#include "gui/tradewindow.h"
 
 #include "event.h"
 #include "inventory.h"
@@ -29,7 +29,7 @@
 #include "units.h"
 
 #include "gui/inventorywindow.h"
-#include "gui/itemamount.h"
+#include "gui/itemamountwindow.h"
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"

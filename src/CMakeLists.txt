@@ -215,10 +215,10 @@ SET(SRCS
     gui/widgets/windowcontainer.h
     gui/beingpopup.cpp
     gui/beingpopup.h
-    gui/buy.cpp
-    gui/buy.h
-    gui/buysell.cpp
-    gui/buysell.h
+    gui/buydialog.cpp
+    gui/buydialog.h
+    gui/buyselldialog.cpp
+    gui/buyselldialog.h
     gui/changeemaildialog.cpp
     gui/changeemaildialog.h
     gui/changepassworddialog.cpp
@@ -227,8 +227,8 @@ SET(SRCS
     gui/charselectdialog.h
     gui/charcreatedialog.cpp
     gui/charcreatedialog.h
-    gui/chat.cpp
-    gui/chat.h
+    gui/chatwindow.cpp
+    gui/chatwindow.h
     gui/confirmdialog.cpp
     gui/confirmdialog.h
     gui/connectiondialog.cpp
@@ -245,20 +245,20 @@ SET(SRCS
     gui/focushandler.h
     gui/gui.cpp
     gui/gui.h
-    gui/help.cpp
-    gui/help.h
+    gui/helpwindow.cpp
+    gui/helpwindow.h
     gui/inventorywindow.cpp
     gui/inventorywindow.h
     gui/itempopup.cpp
     gui/itempopup.h
-    gui/itemamount.cpp
-    gui/itemamount.h
-    gui/login.cpp
-    gui/login.h
+    gui/itemamountwindow.cpp
+    gui/itemamountwindow.h
+    gui/logindialog.cpp
+    gui/logindialog.h
     gui/minimap.cpp
     gui/minimap.h
-    gui/ministatus.cpp
-    gui/ministatus.h
+    gui/ministatuswindow.cpp
+    gui/ministatuswindow.h
     gui/npcdialog.cpp
     gui/npcdialog.h
     gui/npcpostdialog.cpp
@@ -279,8 +279,8 @@ SET(SRCS
     gui/register.h
     gui/sdlinput.cpp
     gui/sdlinput.h
-    gui/sell.cpp
-    gui/sell.h
+    gui/selldialog.cpp
+    gui/selldialog.h
     gui/serverdialog.cpp
     gui/serverdialog.h
     gui/setup.cpp
@@ -315,14 +315,14 @@ SET(SRCS
     gui/textdialog.h
     gui/textpopup.cpp
     gui/textpopup.h
-    gui/trade.cpp
-    gui/trade.h
+    gui/tradewindow.cpp
+    gui/tradewindow.h
     gui/truetypefont.cpp
     gui/truetypefont.h
     gui/unregisterdialog.cpp
     gui/unregisterdialog.h
-    gui/updatewindow.cpp
-    gui/updatewindow.h
+    gui/updaterwindow.cpp
+    gui/updaterwindow.h
     gui/viewport.cpp
     gui/viewport.h
     gui/windowmenu.cpp
@@ -437,8 +437,8 @@ SET(SRCS
     avatar.h
     being.cpp
     being.h
-    chatlog.cpp
-    chatlog.h
+    chatlogger.cpp
+    chatlogger.h
     client.cpp
     client.h
     channel.cpp

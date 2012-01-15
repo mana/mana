@@ -22,7 +22,7 @@
 #ifndef CHATTAB_H
 #define CHATTAB_H
 
-#include "gui/chat.h"
+#include "gui/chatwindow.h"
 
 #include "gui/widgets/tab.h"
 #include "gui/widgets/textfield.h"

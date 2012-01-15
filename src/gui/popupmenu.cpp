@@ -31,10 +31,10 @@
 #include "playerinfo.h"
 #include "playerrelations.h"
 
-#include "gui/chat.h"
+#include "gui/chatwindow.h"
 #include "gui/equipmentwindow.h"
 #include "gui/inventorywindow.h"
-#include "gui/itemamount.h"
+#include "gui/itemamountwindow.h"
 
 #include "gui/widgets/browserbox.h"
 

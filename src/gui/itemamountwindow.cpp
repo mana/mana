@@ -19,12 +19,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/itemamount.h"
+#include "gui/itemamountwindow.h"
 
 #include "item.h"
 #include "keyboardconfig.h"
 
-#include "gui/trade.h"
+#include "gui/tradewindow.h"
 #include "gui/itempopup.h"
 #include "gui/viewport.h"
 

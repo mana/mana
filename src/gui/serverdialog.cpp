@@ -21,7 +21,7 @@
 
 #include "gui/serverdialog.h"
 
-#include "chatlog.h"
+#include "chatlogger.h"
 #include "client.h"
 #include "configuration.h"
 #include "gui.h"

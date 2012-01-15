@@ -28,7 +28,7 @@
 #include "playerinfo.h"
 
 #include "gui/confirmdialog.h"
-#include "gui/trade.h"
+#include "gui/tradewindow.h"
 
 #include "net/net.h"
 

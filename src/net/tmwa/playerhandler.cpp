@@ -30,11 +30,11 @@
 #include "playerinfo.h"
 #include "units.h"
 
-#include "gui/buy.h"
-#include "gui/buysell.h"
+#include "gui/buydialog.h"
+#include "gui/buyselldialog.h"
 #include "gui/gui.h"
 #include "gui/okdialog.h"
-#include "gui/sell.h"
+#include "gui/selldialog.h"
 #include "gui/statuswindow.h"
 #include "gui/viewport.h"
 

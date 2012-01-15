@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "chatlog.h"
+#include "chatlogger.h"
 
 #include <iostream>
 #include <sstream>
@@ -148,14 +148,14 @@ void ChatLogger::writeTo(std::ofstream &file, const std::string &str) const
 void ChatLogger::setServerName(const std::string &serverName)
 {
     mServerName = serverName;
-    if (mServerName == "")
+    if (mServerName.empty())
         mServerName = config.getStringValue("MostUsedServerName0");
 
     if (mLogFile.is_open())
         mLogFile.close();
 
     secureName(mServerName);
-    if (mLogDir != "")
+    if (!mLogDir.empty())
     {
         DIR *dir = opendir((mLogDir + "/" + mServerName).c_str());
         if (!dir)

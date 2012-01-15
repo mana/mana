@@ -29,7 +29,7 @@
 #include "log.h"
 #include "playerinfo.h"
 
-#include "gui/chat.h"
+#include "gui/chatwindow.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"

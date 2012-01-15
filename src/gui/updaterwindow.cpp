@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/updatewindow.h"
+#include "gui/updaterwindow.h"
 
 #include "client.h"
 #include "configuration.h"

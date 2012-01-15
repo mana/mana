@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/ministatus.h"
+#include "gui/ministatuswindow.h"
 
 #include "animatedsprite.h"
 #include "configuration.h"

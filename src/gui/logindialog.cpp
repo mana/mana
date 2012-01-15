@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/login.h"
+#include "gui/logindialog.h"
 
 #include "client.h"
 #include "configuration.h"

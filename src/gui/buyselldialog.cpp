@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buysell.h"
+#include "buyselldialog.h"
 
 #include "playerinfo.h"
 

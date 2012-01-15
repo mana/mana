@@ -25,8 +25,8 @@
 #include "item.h"
 #include "playerinfo.h"
 
-#include "gui/buy.h"
-#include "gui/sell.h"
+#include "gui/buydialog.h"
+#include "gui/selldialog.h"
 
 #include "net/messagein.h"
 

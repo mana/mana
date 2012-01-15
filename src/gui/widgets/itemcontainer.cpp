@@ -27,7 +27,7 @@
 #include "itemshortcut.h"
 #include "log.h"
 
-#include "gui/chat.h"
+#include "gui/chatwindow.h"
 #include "gui/itempopup.h"
 #include "gui/outfitwindow.h"
 #include "gui/palette.h"

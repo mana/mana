@@ -22,7 +22,7 @@
 #include "client.h"
 #include "main.h"
 
-#include "chatlog.h"
+#include "chatlogger.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "event.h"
@@ -42,7 +42,7 @@
 #include "gui/charselectdialog.h"
 #include "gui/connectiondialog.h"
 #include "gui/gui.h"
-#include "gui/login.h"
+#include "gui/logindialog.h"
 #include "gui/okdialog.h"
 #include "gui/quitdialog.h"
 #include "gui/register.h"
@@ -50,7 +50,7 @@
 #include "gui/serverdialog.h"
 #include "gui/setup.h"
 #include "gui/unregisterdialog.h"
-#include "gui/updatewindow.h"
+#include "gui/updaterwindow.h"
 #include "gui/worldselectdialog.h"
 
 #include "gui/widgets/button.h"
