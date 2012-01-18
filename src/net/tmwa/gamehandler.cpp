@@ -108,14 +108,15 @@ void GameHandler::event(Event::Channel channel, const Event &event)
         {
             Game *game = Game::instance();
             game->changeMap(mMap);
-            Map *map = game->getCurrentMap();
-            const int tileWidth = map->getTileWidth();
-            const int tileHeight = map->getTileHeight();
-            if (mTileX && mTileY)
+
+            // It could be that loading the map failed
+            if (Map *map = game->getCurrentMap())
             {
-                local_player->setPosition(Vector(mTileX * tileWidth + tileWidth / 2,
-                                         mTileY * tileHeight + tileHeight / 2));
-                mTileX = mTileY = 0;
+                if (mTileX && mTileY)
+                {
+                    local_player->setPosition(map->getTileCenter(mTileX, mTileY));
+                    mTileX = mTileY = 0;
+                }
             }
         }
         else if (event.getType() == Event::MapLoaded)
