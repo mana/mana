@@ -77,12 +77,6 @@ class PlayerHandler
                                                  Map *map = 0) = 0;
 
         /**
-         * Convert the original speed into the keyboard move delay.
-         * The delay is set in milliseconds per tiles.
-         */
-        virtual int getKeyboardMoveDelay(const Vector& speed) = 0;
-
-        /**
          * Tells whether the client has to use pixel paths.
          * Return false when tiles-center positions only are to be used.
          */

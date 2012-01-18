@@ -79,23 +79,6 @@ class LocalPlayer : public Being
         virtual void setAction(Action action, int attackId = 1);
 
         /**
-         * Compute the next pathnode location when walking using keyboard.
-         * used by nextTile().
-         */
-        Position getNextWalkPosition(unsigned char dir);
-
-        /**
-         * Adds a new tile to the path when walking.
-         * @note Eathena
-         * Also, when specified, it picks up an item at the end of a path
-         * or attack target.
-         */
-        virtual void nextTile()
-        { nextTile(0); }
-
-        virtual void nextTile(unsigned char dir);
-
-        /**
          * Check the player has permission to invite users to specific guild
          */
         bool checkInviteRights(const std::string &guildName);
@@ -147,15 +130,14 @@ class LocalPlayer : public Being
          */
         void setTarget(Being *target);
 
-        void setMoveSpeed(const Vector &speed);
-
         /**
          * Sets a new destination for this being to walk to.
          */
         virtual void setDestination(int x, int y);
 
         /**
-         * Sets a new direction to keep walking in.
+         * Sets a new direction to keep walking in, when using the keyboard
+         * or the joystick.
          */
         void setWalkingDir(int dir);
 
@@ -174,11 +156,6 @@ class LocalPlayer : public Being
          * Returns whether the target is in range to attack
          */
         bool withinAttackRange(Being *target);
-
-        /**
-         * Stops the player dead in his tracks
-         */
-        void stopWalking(bool sendToServer = true);
 
         void toggleSit();
         void emote(uint8_t emotion);
@@ -233,7 +210,24 @@ class LocalPlayer : public Being
         /** Whether or not the name settings have changed */
         bool mUpdateName;
 
+        /** Make the character starts to walk. */
         void startWalking(unsigned char dir);
+
+        /**
+         * Stops the player dead in his tracks
+         */
+        void stopWalking(bool sendToServer = true);
+
+        /**
+         * set the next path tile when walking and using the keyboard.
+         */
+        virtual void nextTile(unsigned char dir);
+
+        /**
+         * Compute the next pathnode location when walking using keyboard.
+         * used by nextTile().
+         */
+        Position getNextWalkPosition(unsigned char dir);
 
         int mAttackRange;
 
@@ -254,13 +248,6 @@ class LocalPlayer : public Being
 
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
-
-        /**
-         * The delay between two permitted setDestination() call using
-         * the keyboard.
-         * It's set in milliseconds per tile.
-         */
-        int mKeyboardMoveDelay;
 
         typedef std::pair<std::string, int> MessagePair;
         /** Queued messages*/

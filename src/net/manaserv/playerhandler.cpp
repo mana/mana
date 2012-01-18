@@ -442,12 +442,4 @@ Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
     return speedInTicks;
 }
 
-int PlayerHandler::getKeyboardMoveDelay(const Vector& speed)
-{
-    int maxSpeed = std::max(speed.x, speed.y);
-    if (maxSpeed <= 0)
-        maxSpeed = 2;
-    return 1000 / maxSpeed;
-}
-
 } // namespace ManaServ

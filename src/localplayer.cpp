@@ -74,7 +74,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mWalkingDir(0),
     mPathSetByMouse(false),
     mLocalWalkTime(-1),
-    mKeyboardMoveDelay(500),
     mMessageTime(0),
     mShowIp(false),
     mAwayDialog(0),
@@ -712,10 +711,14 @@ void LocalPlayer::setWalkingDir(int dir)
 {
     // This function is called by Game::handleInput()
 
-    // First if player is pressing key for the direction he is already
-    // going, do nothing more...
+    // Don't compute a new path before the last one set by keyboard is finished.
+    // This permits to avoid movement glitches and server spamming.
+    const Vector &pos = getPosition();
+    const Vector &dest = getDestination();
+    if (!isPathSetByMouse() && (pos.x != dest.x || pos.y != dest.y))
+        return;
 
-    // Else if he is pressing a key, and its different from what he has
+    // If the player is pressing a key, and its different from what he has
     // been pressing, stop (do not send this stop to the server) and
     // start in the new direction
     if (dir && (dir != getWalkingDir()))
@@ -728,12 +731,7 @@ void LocalPlayer::setWalkingDir(int dir)
     else if (!dir)
         return;
 
-    // If the delay to send another walk message to the server hasn't expired,
-    // don't do anything or we could get disconnected for spamming the server
-    if (get_elapsed_time(mLocalWalkTime) < mKeyboardMoveDelay)
-        return;
     mLocalWalkTime = tick_time;
-
     mWalkingDir = dir;
 
     // If we're not already walking, start walking.
@@ -796,12 +794,6 @@ void LocalPlayer::stopWalking(bool sendToServer)
     mPathSetByMouse = false;
 
     clearPath();
-}
-
-void LocalPlayer::setMoveSpeed(const Vector& speed)
-{
-    Being::setMoveSpeed(speed);
-    mKeyboardMoveDelay = Net::getPlayerHandler()->getKeyboardMoveDelay(speed);
 }
 
 void LocalPlayer::toggleSit()

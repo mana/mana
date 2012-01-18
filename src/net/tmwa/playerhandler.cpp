@@ -662,9 +662,4 @@ Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
     return speedInTicks;
 }
 
-int PlayerHandler::getKeyboardMoveDelay(const Vector& speed)
-{
-    return std::min(speed.x, speed.y) * MILLISECONDS_IN_A_TICK;
-}
-
 } // namespace TmwAthena
