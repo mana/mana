@@ -173,6 +173,12 @@ Being *ActorSpriteManager::findBeing(int x, int y, ActorSprite::Type type) const
 
 Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
 {
+    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
+    if (!map)
+        return 0;
+
+    const int halfTileHeight = map->getTileHeight() / 2;
+
     for_actors
     {
         if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
@@ -180,15 +186,18 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
 
         Being *being = static_cast<Being*>(*it);
 
-        int xtol = being->getWidth() / 2;
-        int uptol = being->getHeight();
+        const int halfWidth = std::max(16, being->getWidth() / 2);
+        const int height = std::max(32, being->getHeight());
 
-        if ((being->isAlive()) &&
-            (being != local_player) &&
-            (being->getPixelX() - xtol <= x) &&
-            (being->getPixelX() + xtol >= x) &&
-            (being->getPixelY() - uptol <= y) &&
-            (being->getPixelY() >= y))
+        // Being sprites are drawn half a tile lower than they actually stand
+        const int bottom = being->getPixelY() + halfTileHeight;
+
+        if (being->isAlive() &&
+            being != local_player &&
+            being->getPixelX() - halfWidth <= x &&
+            being->getPixelX() + halfWidth >= x &&
+            bottom - height <= y &&
+            bottom >= y)
             return being;
     }
 
