@@ -38,7 +38,7 @@
 #include "net/tmwa/network.h"
 #include "net/tmwa/protocol.h"
 
-#include "resources/colordb.h"
+#include "resources/hairdb.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
@@ -240,7 +240,7 @@ void CharServerHandler::readPlayerData(Net::MessageIn &msg, Net::Character *char
     tempPlayer->setSprite(SPRITE_SHIELD, msg.readInt16());
     tempPlayer->setSprite(SPRITE_HAT, msg.readInt16()); // head option top
     tempPlayer->setSprite(SPRITE_TOPCLOTHES, msg.readInt16()); // head option mid
-    tempPlayer->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(msg.readInt16()));
+    tempPlayer->setSprite(SPRITE_HAIR, hairStyle * -1, HairDB::get(msg.readInt16()));
     tempPlayer->setSprite(SPRITE_MISC2, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
 

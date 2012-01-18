@@ -42,7 +42,7 @@
 #include "net/messageout.h"
 #include "net/net.h"
 
-#include "resources/colordb.h"
+#include "resources/hairdb.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -57,7 +57,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mPlayer = new Being(0, ActorSprite::PLAYER, 0, NULL);
     mPlayer->setGender(GENDER_MALE);
 
-    int numberOfHairColors = ColorDB::size();
+    int numberOfHairColors = HairDB::size();
 
     mHairStyle = rand() % mPlayer->getNumOfHairstyles();
     mHairColor = rand() % numberOfHairColors;
@@ -363,10 +363,10 @@ void CharCreateDialog::updateHair()
     if (mHairStyle < 0)
        mHairStyle += Being::getNumOfHairstyles();
 
-    mHairColor %= ColorDB::size();
+    mHairColor %= HairDB::size();
     if (mHairColor < 0)
-       mHairColor += ColorDB::size();
+       mHairColor += HairDB::size();
 
     mPlayer->setSprite(Net::getCharHandler()->hairSprite(),
-                      mHairStyle * -1, ColorDB::get(mHairColor));
+                      mHairStyle * -1, HairDB::get(mHairColor));
 }

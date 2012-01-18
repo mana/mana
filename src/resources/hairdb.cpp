@@ -1,6 +1,7 @@
 /*
  *  Color database
  *  Copyright (C) 2008  Aethyra Development Team
+ *  Copyright (C) 2009-2012  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -18,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "resources/colordb.h"
+#include "resources/hairdb.h"
 
 #include "log.h"
 
@@ -28,12 +29,12 @@
 
 namespace
 {
-    ColorDB::Colors mColors;
+    HairDB::Colors mColors;
     bool mLoaded = false;
     std::string mFail = "#ffffff";
 }
 
-void ColorDB::load()
+void HairDB::load()
 {
     if (mLoaded)
         unload();
@@ -84,7 +85,7 @@ void ColorDB::load()
     mLoaded = true;
 }
 
-void ColorDB::unload()
+void HairDB::unload()
 {
     logger->log("Unloading color database...");
 
@@ -92,7 +93,7 @@ void ColorDB::unload()
     mLoaded = false;
 }
 
-std::string &ColorDB::get(int id)
+std::string &HairDB::get(int id)
 {
     if (!mLoaded)
         load();
@@ -110,7 +111,7 @@ std::string &ColorDB::get(int id)
     }
 }
 
-int ColorDB::size()
+int HairDB::size()
 {
     return mColors.size();
 }

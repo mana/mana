@@ -49,7 +49,7 @@
 #include "net/messageout.h"
 #include "net/net.h"
 
-#include "resources/colordb.h"
+#include "resources/hairdb.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

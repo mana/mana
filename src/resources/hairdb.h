@@ -1,6 +1,7 @@
 /*
  *  Color database
  *  Copyright (C) 2008  Aethyra Development Team
+ *  Copyright (C) 2009-2012  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -18,16 +19,16 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COLOR_MANAGER_H
-#define COLOR_MANAGER_H
+#ifndef HAIR_MANAGER_H
+#define HAIR_MANAGER_H
 
 #include <map>
 #include <string>
 
 /**
- * Color information database.
+ * Hair information database.
  */
-namespace ColorDB
+namespace HairDB
 {
     /**
      * Loads the color data from <code>colors.xml</code>.
@@ -43,7 +44,7 @@ namespace ColorDB
 
     int size();
 
-    // Color DB
+    // Hair Color DB
     typedef std::map<int, std::string> Colors;
     typedef Colors::iterator ColorIterator;
 }

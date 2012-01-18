@@ -38,7 +38,7 @@
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/manaserv_protocol.h"
 
-#include "resources/colordb.h"
+#include "resources/hairdb.h"
 
 #include "utils/gettext.h"
 
@@ -144,7 +144,7 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
                 being->setName(name);
             }
             int hs = msg.readInt8(), hc = msg.readInt8();
-            being->setSprite(SPRITE_LAYER_HAIR, hs * -1, ColorDB::get(hc));
+            being->setSprite(SPRITE_LAYER_HAIR, hs * -1, HairDB::get(hc));
             being->setGender(msg.readInt8() == ManaServ::GENDER_MALE ?
                              ::GENDER_MALE : ::GENDER_FEMALE);
             handleLooks(being, msg);
@@ -334,7 +334,7 @@ void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
     {
         int style = msg.readInt16();
         int color = msg.readInt16();
-        being->setSprite(SPRITE_LAYER_HAIR, style * -1, ColorDB::get(color));
+        being->setSprite(SPRITE_LAYER_HAIR, style * -1, HairDB::get(color));
     }
 }
 

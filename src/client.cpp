@@ -64,7 +64,7 @@
 #include "net/net.h"
 #include "net/worldinfo.h"
 
-#include "resources/colordb.h"
+#include "resources/hairdb.h"
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
@@ -449,7 +449,7 @@ Client::~Client()
     SDL_RemoveTimer(mSecondsCounterId);
 
     // Unload XML databases
-    ColorDB::unload();
+    HairDB::unload();
     EmoteDB::unload();
     delete itemDb;
     MonsterDB::unload();
@@ -759,7 +759,7 @@ int Client::exec()
                     Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
 
                     // Load XML databases
-                    ColorDB::load();
+                    HairDB::load();
                     switch (Net::getNetworkType())
                     {
                       case ServerInfo::TMWATHENA:

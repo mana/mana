@@ -41,7 +41,7 @@
 #include "net/manaserv/manaserv_protocol.h"
 #include "net/manaserv/attributes.h"
 
-#include "resources/colordb.h"
+#include "resources/hairdb.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
@@ -392,7 +392,7 @@ void CharHandler::updateCharacters()
         player->setName(info.name);
         player->setGender(info.gender);
         player->setSprite(SPRITE_LAYER_HAIR, info.hairStyle * -1,
-                          ColorDB::get(info.hairColor));
+                          HairDB::get(info.hairColor));
         character->data.mAttributes[LEVEL] = info.level;
         character->data.mAttributes[CHAR_POINTS] = info.characterPoints;
         character->data.mAttributes[CORR_POINTS] = info.correctionPoints;

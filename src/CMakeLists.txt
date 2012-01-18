@@ -363,12 +363,12 @@ SET(SRCS
     resources/animation.h
     resources/beinginfo.cpp
     resources/beinginfo.h
-    resources/colordb.cpp
-    resources/colordb.h
     resources/dye.cpp
     resources/dye.h
     resources/emotedb.cpp
     resources/emotedb.h
+    resources/hairdb.cpp
+    resources/hairdb.h
     resources/image.cpp
     resources/image.h
     resources/imageloader.cpp

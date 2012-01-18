@@ -528,12 +528,12 @@
 		<Unit filename="src\resources\animation.h" />
 		<Unit filename="src\resources\beinginfo.cpp" />
 		<Unit filename="src\resources\beinginfo.h" />
-		<Unit filename="src\resources\colordb.cpp" />
-		<Unit filename="src\resources\colordb.h" />
 		<Unit filename="src\resources\dye.cpp" />
 		<Unit filename="src\resources\dye.h" />
 		<Unit filename="src\resources\emotedb.cpp" />
 		<Unit filename="src\resources\emotedb.h" />
+		<Unit filename="src\resources\hairdb.cpp" />
+		<Unit filename="src\resources\hairdb.h" />
 		<Unit filename="src\resources\image.cpp" />
 		<Unit filename="src\resources\image.h" />
 		<Unit filename="src\resources\imageloader.cpp" />

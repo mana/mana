@@ -51,7 +51,7 @@
 #include "net/npchandler.h"
 
 #include "resources/beinginfo.h"
-#include "resources/colordb.h"
+#include "resources/hairdb.h"
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
