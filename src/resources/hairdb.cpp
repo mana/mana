@@ -1,5 +1,5 @@
 /*
- *  Color database
+ *  Hair database
  *  Copyright (C) 2008  Aethyra Development Team
  *  Copyright (C) 2009-2012  The Mana Developers
  *
@@ -25,58 +25,51 @@
 
 #include "utils/xml.h"
 
-#include <libxml/tree.h>
+#include <assert.h>
 
-namespace
-{
-    HairDB::Colors mColors;
-    bool mLoaded = false;
-    std::string mFail = "#ffffff";
-}
+#define COLOR_WHITE "#ffffff"
+#define HAIR_XML_FILE "hair.xml"
 
 void HairDB::load()
 {
     if (mLoaded)
         unload();
 
+    // Default entry
+    mHairColors[0] = COLOR_WHITE;
+
     XML::Document *doc = new XML::Document(HAIR_XML_FILE);
     xmlNodePtr root = doc->rootNode();
-    bool hairXml = true;
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
+    if (!root || (!xmlStrEqual(root->name, BAD_CAST "colors")
+        && !xmlStrEqual(root->name, BAD_CAST "hair")))
     {
-        logger->log("Trying to fall back on " COLORS_XML_FILE);
-
-        hairXml = false;
-
+        logger->log("HairDb: Failed to find any old <colors> or new "
+                    "<hair> nodes.");
         delete doc;
-        doc = new XML::Document(COLORS_XML_FILE);
-        root = doc->rootNode();
-
-        if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
-        {
-            logger->log("ColorDB: Failed to find any color files.");
-            mColors[0] = mFail;
-            mLoaded = true;
-
-            delete doc;
-
-            return;
-        }
+        mLoaded = true;
+        return;
     }
-    for_each_xml_child_node(node, root)
+
+    // Old colors.xml file style. The hair style will be declared
+    // in the items.xml file.
+    if (xmlStrEqual(root->name, BAD_CAST "colors"))
     {
-        if (xmlStrEqual(node->name, BAD_CAST "color"))
+        loadHairColorsNode(root);
+    }
+    else if (xmlStrEqual(root->name, BAD_CAST "hair"))
+    {
+        // Loading new format: hair styles + colors.
+        for_each_xml_child_node(node, root)
         {
-            int id = XML::getProperty(node, "id", 0);
-
-            if (mColors.find(id) != mColors.end())
+            if (xmlStrEqual(node->name, BAD_CAST "styles"))
             {
-                logger->log("ColorDB: Redefinition of dye ID %d", id);
+                loadHairStylesNode(root);
             }
-
-            mColors[id] = hairXml ? XML::getProperty(node, "value", "#FFFFFF") :
-                                    XML::getProperty(node, "dye", "#FFFFFF");
+            else if (xmlStrEqual(node->name, BAD_CAST "colors"))
+            {
+                loadHairColorsNode(node);
+            }
         }
     }
 
@@ -87,31 +80,88 @@ void HairDB::load()
 
 void HairDB::unload()
 {
-    logger->log("Unloading color database...");
+    if (!mLoaded)
+        return;
 
-    mColors.clear();
+    logger->log("Unloading hair style and color database...");
+
+    mHairColors.clear();
+    mHairStyles.clear();
+
     mLoaded = false;
 }
 
-std::string &HairDB::get(int id)
+void HairDB::loadHairColorsNode(xmlNodePtr colorsNode)
+{
+    for_each_xml_child_node(node, colorsNode)
+    {
+        if (xmlStrEqual(node->name, BAD_CAST "color"))
+        {
+            int id = XML::getProperty(node, "id", 0);
+
+            if (mHairColors.find(id) != mHairColors.end())
+                logger->log("HairDb: Redefinition of color Id %d", id);
+
+            mHairColors[id] = XML::getProperty(node, "value", COLOR_WHITE);
+        }
+    }
+}
+
+void HairDB::loadHairStylesNode(xmlNodePtr stylesNode)
+{
+    // TODO: Add support of the races.xml file.
+}
+
+void HairDB::addHairStyle(int id)
+{
+    // TODO: Adapt the sprite handling with hair styles separated from items.
+    // And remove that hack for negative ids.
+    if (id < 0)
+        id = -id;
+
+    if (mHairStyles.find(id) != mHairStyles.end())
+        logger->log("Warning: Redefinition of hairstyle id %i:", id);
+
+    mHairStyles.insert(id);
+}
+
+const std::string &HairDB::getHairColor(int id)
 {
     if (!mLoaded)
         load();
 
-    ColorIterator i = mColors.find(id);
+    ColorConstIterator it = mHairColors.find(id);
+    if (it != mHairColors.end())
+        return it->second;
 
-    if (i == mColors.end())
-    {
-        logger->log("ColorDB: Error, unknown dye Id# %d", id);
-        return mFail;
-    }
-    else
-    {
-        return i->second;
-    }
+    logger->log("HairDb: Error, unknown color Id# %d", id);
+    return mHairColors[0];
 }
 
-int HairDB::size()
+std::vector<int> HairDB::getHairStyleIds(int maxId) const
 {
-    return mColors.size();
+    std::vector<int> hairStylesIds;
+    for (HairStylesConstIterator it = mHairStyles.begin(),
+        it_end = mHairStyles.end(); it != it_end; ++it)
+    {
+        // Don't give ids higher than the requested maximum.
+        if (maxId > 0 && (*it) > maxId)
+            continue;
+        hairStylesIds.push_back(*it);
+    }
+    return hairStylesIds;
+}
+
+std::vector<int> HairDB::getHairColorIds(int maxId) const
+{
+    std::vector<int> hairColorsIds;
+    for (ColorConstIterator it = mHairColors.begin(),
+        it_end = mHairColors.end(); it != it_end; ++it)
+    {
+        // Don't give ids higher than the requested maximum.
+        if (maxId > 0 && it->first > maxId)
+            continue;
+        hairColorsIds.push_back(it->first);
+    }
+    return hairColorsIds;
 }

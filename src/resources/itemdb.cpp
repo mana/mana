@@ -25,7 +25,7 @@
 
 #include "net/net.h"
 
-#include "resources/iteminfo.h"
+#include "resources/hairdb.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
@@ -382,6 +382,10 @@ void TaItemDB::load()
         checkItemInfo(itemInfo);
 
         addItem(itemInfo);
+
+        // Insert hairstyle id while letting the info as an item.
+        if (itemInfo->mType == ITEM_SPRITE_HAIR)
+            hairDB.addHairStyle(itemInfo->mId);
     }
 
     checkHairWeaponsRacesSpecialIds();
@@ -528,6 +532,11 @@ void ManaServItemDB::load()
                                 (const char*)effectChild->xmlChildrenNode->content);
                 }
             }
+
+            // FIXME: Load hair styles through the races.xml file
+            if (itemInfo->mType == ITEM_SPRITE_HAIR)
+                hairDB.addHairStyle(itemInfo->mId);
+
             // Set Item Type based on subnodes info
             // TODO: Improve it once the itemTypes are loaded through xml
             itemInfo->mType = ITEM_UNUSABLE;

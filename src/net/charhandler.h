@@ -83,6 +83,18 @@ class CharHandler
 
         virtual unsigned int maxSprite() const = 0;
 
+        /**
+         * Returns the max permitted hair color Id at character creation time,
+         * or 0 if no limit should be applied.
+         */
+        virtual int getCharCreateMaxHairColorId() const = 0;
+
+        /**
+         * Returns the max permitted hair style Id at character creation time,
+         * or 0 if no limit should be applied.
+         */
+        virtual int getCharCreateMaxHairStyleId() const = 0;
+
     protected:
         CharHandler():
             mSelectedCharacter(0),

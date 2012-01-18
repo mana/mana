@@ -119,7 +119,8 @@ KeyboardConfig keyboard;
 UserPalette *userPalette;
 Graphics *graphics;
 
-ItemDB *itemDb;
+ItemDB *itemDb;               /**< Items info database */
+HairDB hairDB;                /**< Hair styles and colors info database */
 
 Sound sound;
 
@@ -452,7 +453,7 @@ Client::~Client()
     SDL_RemoveTimer(mSecondsCounterId);
 
     // Unload XML databases
-    HairDB::unload();
+    hairDB.unload();
     EmoteDB::unload();
     delete itemDb;
     MonsterDB::unload();
@@ -761,7 +762,7 @@ int Client::exec()
                     Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
 
                     // Load XML databases
-                    HairDB::load();
+                    hairDB.load();
                     switch (Net::getNetworkType())
                     {
                       case ServerInfo::TMWATHENA:
@@ -786,7 +787,6 @@ int Client::exec()
                                      STATE_CHOOSE_SERVER);
                         break;
                     }
-                    Being::load(); // Hairstyles
                     MonsterDB::load();
                     SpecialDB::load();
                     NPCDB::load();

@@ -1,5 +1,5 @@
 /*
- *  Color database
+ *  Hair database
  *  Copyright (C) 2008  Aethyra Development Team
  *  Copyright (C) 2009-2012  The Mana Developers
  *
@@ -22,16 +22,26 @@
 #ifndef HAIR_MANAGER_H
 #define HAIR_MANAGER_H
 
+#include "iteminfo.h"
+
 #include <map>
 #include <string>
 
 /**
  * Hair information database.
  */
-namespace HairDB
+class HairDB
 {
+  public:
+    HairDB():
+        mLoaded(false)
+    {}
+
+    ~HairDB()
+    { unload(); }
+
     /**
-     * Loads the color data from <code>colors.xml</code>.
+     * Loads the color data from <code>hair.xml</code>.
      */
     void load();
 
@@ -40,13 +50,55 @@ namespace HairDB
      */
     void unload();
 
-    std::string &get(int id);
+    const std::string &getHairColor(int id);
 
-    int size();
+    /**
+     * Returns the available hair style ids
+     * @param maxId the max permited id. If not 0, the hairDb won't
+     * return ids > to the parameter.
+     */
+    std::vector<int> getHairStyleIds(int maxId = 0) const;
 
-    // Hair Color DB
+    /**
+     * Returns the available hair color ids
+     * @param maxId the max permited id. If not 0, the hairDb won't
+     * return ids > to the parameter.
+     */
+    std::vector<int> getHairColorIds(int maxId = 0) const;
+
+    /**
+     * Add a hair style to the database.
+     * @see ItemDB for the itemInfo.
+     */
+    void addHairStyle(int id);
+
+  private:
+    /**
+     * Load the hair colors, contained in a <colors> node.
+     */
+    void loadHairColorsNode(xmlNodePtr colorsNode);
+
+    /**
+     * Load the hair styles, contained in a <styles> node.
+     * Used only by Manaserv. TMW-Athena is considering hairstyles as items.
+     * @see ItemDB
+     */
+    void loadHairStylesNode(xmlNodePtr stylesNode);
+
+    // Hair colors Db
     typedef std::map<int, std::string> Colors;
     typedef Colors::iterator ColorIterator;
-}
+    typedef Colors::const_iterator ColorConstIterator;
+    Colors mHairColors;
+
+    typedef std::set<int> HairStyles;
+    typedef HairStyles::iterator HairStylesIterator;
+    typedef HairStyles::const_iterator HairStylesConstIterator;
+    HairStyles mHairStyles;
+
+    bool mLoaded;
+};
+
+extern HairDB hairDB;
 
 #endif

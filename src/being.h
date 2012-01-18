@@ -269,12 +269,6 @@ class Being : public ActorSprite, public EventListener
         void setSpriteColor(unsigned int slot, const std::string &color = "");
 
         /**
-         * Get the number of hairstyles implemented
-         */
-        static int getNumOfHairstyles()
-        { return mNumberOfHairstyles; }
-
-        /**
          * Get the number of layers used to draw the being
          */
         int getNumberOfLayers() const;
@@ -400,8 +394,6 @@ class Being : public ActorSprite, public EventListener
          */
         const Path &getPath() const { return mPath; }
 
-        static void load();
-
         void flashName(int time);
 
         int getDamageTaken() const
@@ -499,8 +491,6 @@ class Being : public ActorSprite, public EventListener
 
         /** Engine-related infos about weapon. */
         const ItemInfo *mEquippedWeapon;
-
-        static int mNumberOfHairstyles;          /** Number of hair styles in use */
 
         Path mPath;
         std::string mSpeech;

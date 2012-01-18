@@ -245,7 +245,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 dstBeing->setGender((gender == 0)
                                     ? GENDER_FEMALE : GENDER_MALE);
                 // Set these after the gender, as the sprites may be gender-specific
-                dstBeing->setSprite(SPRITE_HAIR, hairStyle * -1, HairDB::get(hairColor));
+                dstBeing->setSprite(SPRITE_HAIR, hairStyle * -1,
+                                    hairDB.getHairColor(hairColor));
                 dstBeing->setSprite(SPRITE_BOTTOMCLOTHES, headBottom);
                 dstBeing->setSprite(SPRITE_TOPCLOTHES, headMid);
                 dstBeing->setSprite(SPRITE_HAT, headTop);
@@ -486,7 +487,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     dstBeing->setSprite(SPRITE_TOPCLOTHES, id);
                     break;
                 case 6:     // eAthena LOOK_HAIR_COLOR
-                    dstBeing->setSpriteColor(SPRITE_HAIR, HairDB::get(id));
+                    dstBeing->setSpriteColor(SPRITE_HAIR,
+                                             hairDB.getHairColor(id));
                     break;
                 case 8:     // eAthena LOOK_SHIELD
                     dstBeing->setSprite(SPRITE_SHIELD, id);
@@ -613,7 +615,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             //dstBeing->setSprite(SPRITE_CAPE, cape);
             //dstBeing->setSprite(SPRITE_MISC1, misc1);
             //dstBeing->setSprite(SPRITE_MISC2, misc2);
-            dstBeing->setSprite(SPRITE_HAIR, hairStyle * -1, HairDB::get(hairColor));
+            dstBeing->setSprite(SPRITE_HAIR, hairStyle * -1,
+                                hairDB.getHairColor(hairColor));
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {

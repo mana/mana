@@ -34,6 +34,7 @@
 #include <string>
 #include <vector>
 
+class Button;
 class LocalPlayer;
 class PlayerBox;
 
@@ -83,11 +84,11 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;
-        gcn::Button *mNextHairColorButton;
-        gcn::Button *mPrevHairColorButton;
+        Button *mNextHairColorButton;
+        Button *mPrevHairColorButton;
         gcn::Label *mHairColorLabel;
-        gcn::Button *mNextHairStyleButton;
-        gcn::Button *mPrevHairStyleButton;
+        Button *mNextHairStyleButton;
+        Button *mPrevHairStyleButton;
         gcn::Label *mHairStyleLabel;
 
         gcn::RadioButton *mMale;
@@ -107,8 +108,11 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         Being *mPlayer;
         PlayerBox *mPlayerBox;
 
-        int mHairStyle;
-        int mHairColor;
+        // A vector containing the available hair color or style ids
+        std::vector<int> mHairColorsIds;
+        std::vector<int> mHairStylesIds;
+        int mHairStyleId;
+        int mHairColorId;
 
         int mSlot;
 };

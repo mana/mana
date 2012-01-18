@@ -73,6 +73,14 @@ class CharHandler : public MessageHandler, public Net::CharHandler
 
         unsigned int maxSprite() const;
 
+        // No limitation on Manaserv
+        int getCharCreateMaxHairColorId() const
+        { return 0; }
+
+        // No limitation on Manaserv
+        int getCharCreateMaxHairStyleId() const
+        { return 0; }
+
         void clear();
 
     private:

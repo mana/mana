@@ -66,8 +66,6 @@
 #include <cassert>
 #include <cmath>
 
-int Being::mNumberOfHairstyles = 1;
-
 Being::Being(int id, Type type, int subtype, Map *map):
     ActorSprite(id),
     mInfo(BeingInfo::Unknown),
@@ -1120,19 +1118,6 @@ void Being::setSpriteColor(unsigned int slot, const std::string &color)
 int Being::getNumberOfLayers() const
 {
     return CompoundSprite::getNumberOfLayers();
-}
-
-void Being::load()
-{
-    // Hairstyles are encoded as negative numbers. Count how far negative
-    // we can go.
-    int hairstyles = 1;
-
-    while (itemDb->get(-hairstyles).getSprite(GENDER_MALE) !=
-                                        paths.getStringValue("spriteErrorFile"))
-        hairstyles++;
-
-    mNumberOfHairstyles = hairstyles;
 }
 
 void Being::updateName()

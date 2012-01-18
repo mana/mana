@@ -57,23 +57,30 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mPlayer = new Being(0, ActorSprite::PLAYER, 0, NULL);
     mPlayer->setGender(GENDER_MALE);
 
-    int numberOfHairColors = HairDB::size();
+    mHairStylesIds = hairDB.getHairStyleIds(
+        Net::getCharHandler()->getCharCreateMaxHairStyleId());
+    mHairStyleId = rand() * mHairStylesIds.size() / RAND_MAX;
 
-    mHairStyle = rand() % mPlayer->getNumOfHairstyles();
-    mHairColor = rand() % numberOfHairColors;
+    mHairColorsIds = hairDB.getHairColorIds(
+        Net::getCharHandler()->getCharCreateMaxHairColorId());
+    mHairColorId = rand() * mHairColorsIds.size() / RAND_MAX;
+
     updateHair();
 
     mNameField = new TextField("");
     mNameLabel = new Label(_("Name:"));
-    // TRANSLATORS: This is an arrow symbol used to denote 'next'.
-    // You may change this symbol if your language uses another.
-    mNextHairColorButton = new Button(_(">"), "nextcolor", this);
-    // TRANSLATORS: This is an arrow symbol used to denote 'previous'.
-    // You may change this symbol if your language uses another.
-    mPrevHairColorButton = new Button(_("<"), "prevcolor", this);
+
+    mNextHairColorButton = new Button("", "nextcolor", this);
+    mPrevHairColorButton = new Button("", "prevcolor", this);
+    mPrevHairColorButton->setButtonIcon("tab_arrows_left.png");
+    mNextHairColorButton->setButtonIcon("tab_arrows_right.png");
+
     mHairColorLabel = new Label(_("Hair color:"));
-    mNextHairStyleButton = new Button(_(">"), "nextstyle", this);
-    mPrevHairStyleButton = new Button(_("<"), "prevstyle", this);
+    mNextHairStyleButton = new Button("", "nextstyle", this);
+    mPrevHairStyleButton = new Button("", "prevstyle", this);
+    mPrevHairStyleButton->setButtonIcon("tab_arrows_left.png");
+    mNextHairStyleButton->setButtonIcon("tab_arrows_right.png");
+
     mHairStyleLabel = new Label(_("Hair style:"));
     mCreateButton = new Button(_("Create"), "create", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
@@ -173,10 +180,14 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
             if (Net::getNetworkType() == ServerInfo::MANASERV)
                 ++characterSlot;
 
+            // Should avoid the most common crash case
+            int hairStyle = mHairStylesIds.empty() ?
+                0 : mHairStylesIds.at(mHairStyleId);
+            int hairColor = mHairColorsIds.empty() ?
+                0 : mHairColorsIds.at(mHairColorId);
             Net::getCharHandler()->newCharacter(getName(), characterSlot,
                                                 mFemale->isSelected(),
-                                                mHairStyle,
-                                                mHairColor, atts);
+                                                hairStyle, hairColor, atts);
         }
         else
         {
@@ -189,22 +200,22 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
         scheduleDelete();
     else if (event.getId() == "nextcolor")
     {
-        mHairColor++;
+        ++mHairColorId;
         updateHair();
     }
     else if (event.getId() == "prevcolor")
     {
-        mHairColor--;
+        --mHairColorId;
         updateHair();
     }
     else if (event.getId() == "nextstyle")
     {
-        mHairStyle++;
+        ++mHairStyleId;
         updateHair();
     }
     else if (event.getId() == "prevstyle")
     {
-        mHairStyle--;
+        --mHairStyleId;
         updateHair();
     }
     else if (event.getId() == "statslider")
@@ -214,13 +225,9 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "gender")
     {
         if (mMale->isSelected())
-        {
             mPlayer->setGender(GENDER_MALE);
-        }
         else
-        {
             mPlayer->setGender(GENDER_FEMALE);
-        }
     }
 }
 
@@ -359,14 +366,24 @@ void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
 
 void CharCreateDialog::updateHair()
 {
-    mHairStyle %= Being::getNumOfHairstyles();
-    if (mHairStyle < 0)
-       mHairStyle += Being::getNumOfHairstyles();
+    if (mHairColorId < 0)
+        mHairColorId = mHairColorsIds.size() - 1;
 
-    mHairColor %= HairDB::size();
-    if (mHairColor < 0)
-       mHairColor += HairDB::size();
+    if (mHairColorId > (int)mHairColorsIds.size() - 1)
+        mHairColorId = 0;
+
+    if (mHairStyleId < 0)
+        mHairStyleId = mHairStylesIds.size() - 1;
+
+    if (mHairStyleId > (int)mHairStylesIds.size() - 1)
+        mHairStyleId = 0;
+
+    // Should avoid the most common crash case
+    int hairStyle = mHairStylesIds.empty() ?
+        0 : mHairStylesIds.at(mHairStyleId);
+    int hairColor = mHairColorsIds.empty() ?
+        0 : mHairColorsIds.at(mHairColorId);
 
     mPlayer->setSprite(Net::getCharHandler()->hairSprite(),
-                      mHairStyle * -1, HairDB::get(mHairColor));
+                       hairStyle * -1, hairDB.getHairColor(hairColor));
 }
