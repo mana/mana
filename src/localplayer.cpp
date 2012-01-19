@@ -605,6 +605,10 @@ void LocalPlayer::pickUp(FloorItem *item)
     if (dx * dx + dy * dy < 4)
     {
         Net::getPlayerHandler()->pickUp(item);
+        // We found it, so set the player direction to it
+        // if the player does not move
+        if (getDestination() == getPosition())
+            lookAt(item->getPosition());
         mPickUpTarget = NULL;
     }
     else

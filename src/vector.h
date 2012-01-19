@@ -182,6 +182,11 @@ class Vector
         float x, y, z;
 };
 
+inline bool operator == (const Vector &a, const Vector &b)
+{
+    return a.x == b.x && a.y == b.y && a.z == b.z;
+}
+
 /**
  * Appends a string representation of a vector to the output stream.
  */

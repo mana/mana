@@ -96,7 +96,7 @@ class ActorSpriteManager
         /**
          * Returns a FloorItem at specific coordinates.
          */
-        FloorItem *findItem(int x, int y) const;
+        FloorItem *findItem(int x, int y, int maxDist = 0) const;
 
         /**
          * Returns a being nearest to specific coordinates.

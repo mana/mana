@@ -218,18 +218,23 @@ FloorItem *ActorSpriteManager::findItem(int id) const
     return NULL;
 }
 
-FloorItem *ActorSpriteManager::findItem(int x, int y) const
+FloorItem *ActorSpriteManager::findItem(int x, int y, int maxDist) const
 {
+    FloorItem *item = 0;
+    int smallestDist = 0;
     for_actors
     {
-        if ((*it)->getTileX() == x && (*it)->getTileY() == y &&
-            (*it)->getType() == ActorSprite::FLOOR_ITEM)
+        int dist = std::max(std::abs((*it)->getTileX() - x),
+                            std::abs((*it)->getTileY() - y));
+        if (((*it)->getType() == ActorSprite::FLOOR_ITEM) &&
+            ((!item && dist <= maxDist) || dist < smallestDist))
         {
-            return static_cast<FloorItem*>(*it);
+            item = static_cast<FloorItem*>(*it);
+            smallestDist = dist;
         }
     }
 
-    return NULL;
+    return item;
 }
 
 Being *ActorSpriteManager::findBeingByName(const std::string &name,

@@ -377,29 +377,11 @@ static void handleItemPickUp()
     int y = local_player->getTileY();
 
     // Let's look for items around until you find one.
-    bool found = false;
-    for (int xX = x - 1; xX < x + 2; ++xX)
-    {
-        for (int yY = y - 1; yY < y + 2; ++yY)
-        {
-            FloorItem *item = actorSpriteManager->findItem(xX, yY);
-            if (item)
-            {
-                found = true;
-                local_player->pickUp(item);
+    FloorItem *item = actorSpriteManager->findItem(x, y, 1);
+    if (!item)
+        return;
 
-                // We found it, so set the player
-                // direction accordingly,
-                local_player->lookAt(
-                                  local_player->getMap()->getTileCenter(xX, yY));
-
-                // Get out of the loops
-                break;
-            }
-        }
-        if (found)
-            break;
-    }
+    local_player->pickUp(item);
 }
 
 /**
