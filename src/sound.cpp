@@ -284,29 +284,25 @@ void Sound::playSfx(const std::string &path, int x, int y)
         tmpPath = path;
     else
         tmpPath = paths.getValue("sfx", "sfx/") + path;
+
     ResourceManager *resman = ResourceManager::getInstance();
-    SoundEffect *sample = resman->getSoundEffect(tmpPath);
-    if (sample)
+
+    if (SoundEffect *sample = resman->getSoundEffect(tmpPath))
     {
         logger->log("Sound::playSfx() Playing: %s", path.c_str());
         int vol = 120;
-        if (local_player && x > 0 && y > 0)
-        {
-            Vector pos = local_player->getPosition();
-            Map *map = Game::instance()->getCurrentMap();
-            int dx = ((int)pos.x - x) / map->getTileWidth();
-            int dy = ((int)pos.y - y) / map->getTileHeight();
-            if (dx < 0)
-                dx = -dx;
-            if (dy < 0)
-                dy = -dy;
-            int dist = dx > dy ? dx : dy;
 
-            // Check for negative values
-            if (dist * 8 > vol)
-                return;
-            vol -= dist * 8;
+        if (local_player && (x > 0 || y > 0))
+        {
+            const Vector &pos = local_player->getPosition();
+            const int dx = std::abs((int) pos.x - x);
+            const int dy = std::abs((int) pos.y - y);
+            const int dist = std::max(dx, dy);
+
+            // Volume goes down one level with each 4 pixels
+            vol -= std::min(120, dist / 4);
         }
+
         sample->play(0, vol);
     }
 }

@@ -599,10 +599,8 @@ void LocalPlayer::pickUp(FloorItem *item)
     if (!item)
         return;
 
-    int tileWidth = mMap->getTileWidth();
-    int tileHeight = mMap->getTileHeight();
-    int dx = item->getTileX() - (int) getPosition().x / tileWidth;
-    int dy = item->getTileY() - ((int) getPosition().y - 1) / tileHeight;
+    int dx = item->getTileX() - getTileX();
+    int dy = item->getTileY() - getTileY();
 
     if (dx * dx + dy * dy < 4)
     {
@@ -612,8 +610,7 @@ void LocalPlayer::pickUp(FloorItem *item)
     else
     {
         pathSetByMouse();
-        setDestination(item->getTileX() * tileWidth + tileWidth / 2,
-                       item->getTileY() * tileHeight + tileHeight / 2);
+        setDestination(item->getPixelX(), item->getPixelY());
         mPickUpTarget = item;
     }
 }

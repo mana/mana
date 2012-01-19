@@ -376,7 +376,7 @@ void Being::takeDamage(Being *attacker, int amount,
             if (attacker)
             {
                 sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT),
-                              attacker->getTileX(), attacker->getTileY());
+                              attacker->getPixelX(), attacker->getPixelY());
             }
             else
             {
