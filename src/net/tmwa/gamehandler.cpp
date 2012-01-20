@@ -177,4 +177,11 @@ void GameHandler::setMap(const std::string map)
     mMap = map.substr(0, map.rfind("."));
 }
 
+int GameHandler::getPickupRange() const
+{
+    if (Game *game = Game::instance())
+        return game->getCurrentTileWidth();
+    return DEFAULT_TILE_LENGTH;
+}
+
 } // namespace TmwAthena

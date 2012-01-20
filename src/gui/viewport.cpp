@@ -468,12 +468,17 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                 // Ignore it if its dead
                 if (mHoverBeing->isAlive())
                 {
-                    if (local_player->withinAttackRange(mHoverBeing) ||
-                        keyboard.isKeyActive(keyboard.KEY_ATTACK))
+                    if (local_player->withinRange(mHoverBeing,
+                                                 local_player->getAttackRange())
+                        || keyboard.isKeyActive(keyboard.KEY_ATTACK))
+                    {
                         local_player->attack(mHoverBeing,
                             !keyboard.isKeyActive(keyboard.KEY_TARGET));
+                    }
                     else
+                    {
                         local_player->setGotoTarget(mHoverBeing);
+                    }
                 }
              }
         // Picks up a item if we clicked on one

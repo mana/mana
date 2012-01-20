@@ -92,7 +92,7 @@ class LocalPlayer : public Being
         /**
          * Gets the attack range.
          */
-        int getAttackRange()
+        int getAttackRange() const
         { return mAttackRange; }
 
         void attack(Being *target = NULL, bool keep = false);
@@ -147,9 +147,9 @@ class LocalPlayer : public Being
         void setGotoTarget(Being *target);
 
         /**
-         * Returns whether the target is in range to attack
+         * Returns whether the target is in range (in pixels).
          */
-        bool withinAttackRange(Being *target);
+        bool withinRange(Actor *target, int range) const;
 
         void toggleSit();
         void emote(uint8_t emotion);

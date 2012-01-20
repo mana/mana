@@ -348,10 +348,9 @@ void PlayerHandler::pickUp(FloorItem *floorItem)
 {
     if (floorItem)
     {
-        int id = floorItem->getId();
         MessageOut msg(PGMSG_PICKUP);
-        msg.writeInt16(id >> 16);
-        msg.writeInt16(id & 0xFFFF);
+        msg.writeInt16(floorItem->getPixelX());
+        msg.writeInt16(floorItem->getPixelY());
         gameServerConnection->send(msg);
     }
 }

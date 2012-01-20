@@ -62,6 +62,10 @@ class GameHandler : public MessageHandler, public Net::GameHandler,
         /** The tmwAthena protocol is making use of the MP status bar. */
         bool canUseMagicBar() const { return true; }
 
+        int getPickupRange() const;
+
+        int getNpcTalkRange() const { return DEFAULT_TILE_LENGTH * 30; }
+
     private:
         std::string mMap; ///< Keeps the map filename.
         int mCharID; /// < Saved for map-server switching

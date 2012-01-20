@@ -27,6 +27,8 @@
 
 #include "net/manaserv/messagehandler.h"
 
+#include "net/manaserv/manaserv_protocol.h"
+
 namespace ManaServ {
 
 class GameHandler : public MessageHandler, public Net::GameHandler
@@ -56,6 +58,10 @@ class GameHandler : public MessageHandler, public Net::GameHandler
 
         /** The ManaServ protocol doesn't use the MP status bar. */
         bool canUseMagicBar() const { return false; }
+
+        int getPickupRange() const { return PICKUP_RANGE; }
+
+        int getNpcTalkRange() const { return NPC_TALK_RANGE; }
 };
 
 } // namespace ManaServ

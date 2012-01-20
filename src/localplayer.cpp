@@ -40,6 +40,7 @@
 #include "gui/widgets/chattab.h"
 
 #include "net/chathandler.h"
+#include "net/gamehandler.h"
 #include "net/guildhandler.h"
 #include "net/inventoryhandler.h"
 #include "net/net.h"
@@ -133,20 +134,15 @@ void LocalPlayer::logic()
     {
         if (mTarget->getType() == ActorSprite::NPC)
         {
-            // NPCs are always in range
-            mTarget->setTargetType(TCT_IN_RANGE);
+            mTarget->setTargetType(
+                withinRange(mTarget,
+                            Net::getGameHandler()->getNpcTalkRange()) ?
+                            TCT_IN_RANGE : TCT_NORMAL);
         }
         else
         {
-            // Find whether target is in range
-            const int rangeX = abs(mTarget->getPosition().x - getPosition().x);
-            const int rangeY = abs(mTarget->getPosition().y - getPosition().y);
-
-            const int attackRange = getAttackRange();
-            const TargetCursorType targetType = rangeX > attackRange ||
-                                                rangeY > attackRange ?
-                                                TCT_NORMAL : TCT_IN_RANGE;
-            mTarget->setTargetType(targetType);
+            mTarget->setTargetType(withinRange(mTarget, getAttackRange()) ?
+                                   TCT_IN_RANGE : TCT_NORMAL);
 
             if (!mTarget->isAlive())
                 stopAttack();
@@ -154,6 +150,12 @@ void LocalPlayer::logic()
             if (mKeepAttacking && mTarget)
                 attack(mTarget, true);
         }
+    }
+    else if (mPickUpTarget
+        && withinRange(mPickUpTarget, Net::getGameHandler()->getPickupRange()))
+    {
+        Net::getPlayerHandler()->pickUp(mPickUpTarget);
+        mPickUpTarget = 0;
     }
 
     Being::logic();
@@ -589,17 +591,14 @@ void LocalPlayer::pickUp(FloorItem *item)
     if (!item)
         return;
 
-    int dx = item->getTileX() - getTileX();
-    int dy = item->getTileY() - getTileY();
-
-    if (dx * dx + dy * dy < 4)
+    if (withinRange(item, Net::getGameHandler()->getPickupRange()))
     {
         Net::getPlayerHandler()->pickUp(item);
         // We found it, so set the player direction to it
         // if the player does not move
         if (getDestination() == getPosition())
             lookAt(item->getPosition());
-        mPickUpTarget = NULL;
+        mPickUpTarget = 0;
     }
     else
     {
@@ -694,7 +693,7 @@ void LocalPlayer::setDestination(int x, int y)
             Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }
 
-    mPickUpTarget = NULL;
+    mPickUpTarget = 0;
     mKeepAttacking = false;
 }
 
@@ -937,14 +936,15 @@ void LocalPlayer::setAttackRange(int range)
     }
 }
 
-bool LocalPlayer::withinAttackRange(Being *target)
+bool LocalPlayer::withinRange(Actor *target, int range) const
 {
+    if (!target || range < 0)
+        return false;
+
     const Vector &targetPos = target->getPosition();
     const Vector &pos = getPosition();
     const int dx = abs(targetPos.x - pos.x);
     const int dy = abs(targetPos.y - pos.y);
-    const int range = getAttackRange();
-
     return !(dx > range || dy > range);
 }
 

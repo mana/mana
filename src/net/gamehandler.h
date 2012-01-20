@@ -47,6 +47,16 @@ class GameHandler
          * Tells whether the protocol is using the MP status bar
          */
         virtual bool canUseMagicBar() const = 0;
+
+        /**
+         * Tells the range is pixel where the player can pickup items from.
+         */
+        virtual int getPickupRange() const = 0;
+
+        /**
+         * Tells the range is pixel where the player can talk to an NPC from.
+         */
+        virtual int getNpcTalkRange() const = 0;
 };
 
 } // namespace Net

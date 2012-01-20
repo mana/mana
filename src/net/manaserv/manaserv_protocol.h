@@ -93,8 +93,8 @@ enum {
     // Game
     GPMSG_PLAYER_MAP_CHANGE        = 0x0100, // S filename, W x, W y
     GPMSG_PLAYER_SERVER_CHANGE     = 0x0101, // B*32 token, S game address, W game port
-    PGMSG_PICKUP                   = 0x0110, // W*2 position
-    PGMSG_DROP                     = 0x0111, // B slot, B amount
+    PGMSG_PICKUP                   = 0x0110, // W * 2 items position
+    PGMSG_DROP                     = 0x0111, // W slot, W amount
     PGMSG_EQUIP                    = 0x0112, // W inventory slot
     PGMSG_UNEQUIP                  = 0x0113, // W item Instance id
     PGMSG_MOVE_ITEM                = 0x0114, // W slot1, W slot2, W amount
@@ -440,6 +440,12 @@ enum BeingGender
     GENDER_FEMALE,
     GENDER_UNSPECIFIED
 };
+
+/** The permited range to pick up an item */
+const int PICKUP_RANGE = 32 + 16;
+
+/** The permited range to to talk to a NPC. */
+const int NPC_TALK_RANGE = 32 * 7;
 
 } // namespace ManaServ
 
