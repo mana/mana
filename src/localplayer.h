@@ -59,12 +59,6 @@ enum
 };
 
 /**
- * Attack range not set value
- */
-enum { ATTACK_RANGE_NOT_SET = -1 };
-
-
-/**
  * The local player character.
  */
 class LocalPlayer : public Being
@@ -231,8 +225,9 @@ class LocalPlayer : public Being
 
         int mAttackRange;
 
-        int mTargetTime;      /** How long the being has been targeted **/
-        int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
+        int mTargetTime;      /**< How long the being has been targeted **/
+        /** Time stamp of last targeting action, -1 if none. */
+        int mLastTargetTime;
 
         int mGMLevel;
 
@@ -241,13 +236,10 @@ class LocalPlayer : public Being
         FloorItem *mPickUpTarget;
 
         bool mGoingToTarget;
-        bool mKeepAttacking;  /** Whether or not to continue to attack */
-        int mLastAction;      /**< Time stamp of the last action, -1 if none. */
+        bool mKeepAttacking;  /**< Whether or not to continue to attack */
+        int mLastActionTime;  /**< Time stamp of the last action, -1 if none. */
         int mWalkingDir;      /**< The direction the player is walking in. */
         bool mPathSetByMouse; /**< Tells if the path was set using mouse */
-
-        int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
-                                  messages flooding */
 
         typedef std::pair<std::string, int> MessagePair;
         /** Queued messages*/

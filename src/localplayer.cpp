@@ -58,22 +58,21 @@
 
 #include <cassert>
 
-#define AWAY_LIMIT_TIMER 60
+const int AWAY_LIMIT_TIMER = 60;
 
-LocalPlayer *local_player = NULL;
+LocalPlayer *local_player = 0;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
     Being(id, PLAYER, subtype, 0),
-    mAttackRange(ATTACK_RANGE_NOT_SET),
+    mAttackRange(-1),
     mTargetTime(-1),
-    mLastTarget(-1),
-    mTarget(NULL),
-    mPickUpTarget(NULL),
+    mLastTargetTime(-1),
+    mTarget(0),
+    mPickUpTarget(0),
     mGoingToTarget(false), mKeepAttacking(false),
-    mLastAction(-1),
+    mLastActionTime(-1),
     mWalkingDir(0),
     mPathSetByMouse(false),
-    mLocalWalkTime(-1),
     mMessageTime(0),
     mShowIp(false),
     mAwayDialog(0),
@@ -101,8 +100,8 @@ LocalPlayer::~LocalPlayer()
 void LocalPlayer::logic()
 {
     // Actions are allowed at 5.5 per second
-    if (get_elapsed_time(mLastAction) >= 182)
-        mLastAction = -1;
+    if (get_elapsed_time(mLastActionTime) >= 182)
+        mLastActionTime = -1;
 
     // Show XP messages
     if (!mMessages.empty())
@@ -127,8 +126,8 @@ void LocalPlayer::logic()
     PlayerInfo::logic();
 
     // Targeting allowed 4 times a second
-    if (get_elapsed_time(mLastTarget) >= 250)
-        mLastTarget = -1;
+    if (get_elapsed_time(mLastTargetTime) >= 250)
+        mLastTargetTime = -1;
 
     if (mTarget)
     {
@@ -164,8 +163,8 @@ void LocalPlayer::setAction(Action action, int attackId)
 {
     if (action == DEAD)
     {
-        mLastTarget = -1;
-        setTarget(NULL);
+        mLastTargetTime = -1;
+        setTarget(0);
     }
 
     Being::setAction(action, attackId);
@@ -566,11 +565,8 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
 
 bool LocalPlayer::checkInviteRights(const std::string &guildName)
 {
-    Guild *guild = getGuild(guildName);
-    if (guild)
-    {
+    if (Guild *guild = getGuild(guildName))
         return guild->getInviteRights();
-    }
 
     return false;
 }
@@ -626,11 +622,11 @@ Being *LocalPlayer::getTarget() const
 
 void LocalPlayer::setTarget(Being *target)
 {
-    if ((mLastTarget != -1 || target == this) && target)
+    if ((mLastTargetTime != -1 || target == this) && target)
         return;
 
     if (target)
-        mLastTarget = tick_time;
+        mLastTargetTime = tick_time;
 
     if (target == mTarget)
         return;
@@ -732,7 +728,6 @@ void LocalPlayer::setWalkingDir(int dir)
     else if (!dir)
         return;
 
-    mLocalWalkTime = tick_time;
     mWalkingDir = dir;
 
     // If we're not already walking, start walking.
@@ -782,7 +777,6 @@ void LocalPlayer::stopWalking(bool sendToServer)
     if (mAction == MOVE && mWalkingDir)
     {
         mWalkingDir = 0;
-        mLocalWalkTime = 0;
 
         setDestination((int) getPosition().x, (int) getPosition().y);
         if (sendToServer)
@@ -799,9 +793,9 @@ void LocalPlayer::stopWalking(bool sendToServer)
 
 void LocalPlayer::toggleSit()
 {
-    if (mLastAction != -1)
+    if (mLastActionTime != -1)
         return;
-    mLastAction = tick_time;
+    mLastActionTime = tick_time;
 
     Being::Action newAction;
     switch (mAction)
@@ -816,16 +810,16 @@ void LocalPlayer::toggleSit()
 
 void LocalPlayer::emote(Uint8 emotion)
 {
-    if (mLastAction != -1)
+    if (mLastActionTime != -1)
         return;
-    mLastAction = tick_time;
+    mLastActionTime = tick_time;
 
     Net::getPlayerHandler()->emote(emotion);
 }
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
-    if (mLastAction != -1)
+    if (mLastActionTime != -1)
         return;
 
     // Can only attack when standing still
@@ -846,7 +840,7 @@ void LocalPlayer::attack(Being *target, bool keep)
 
     if (mTarget != target || !mTarget)
     {
-        mLastTarget = -1;
+        mLastTargetTime = -1;
         setTarget(target);
     }
 
@@ -870,7 +864,7 @@ void LocalPlayer::attack(Being *target, bool keep)
             setDirection(LEFT);
     }
 
-    mLastAction = tick_time;
+    mLastActionTime = tick_time;
 
     setAction(ATTACK);
 
@@ -894,9 +888,9 @@ void LocalPlayer::stopAttack()
     {
         if (mAction == ATTACK)
             setAction(STAND);
-        setTarget(NULL);
+        setTarget(0);
     }
-    mLastTarget = -1;
+    mLastTargetTime = -1;
 }
 
 void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
@@ -953,7 +947,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
 void LocalPlayer::setAttackRange(int range)
 {
     // When the range is more than the minimal, we accept it
-    if (range > ATTACK_RANGE_NOT_SET)
+    if (range > -1)
     {
         mAttackRange = range;
     }
@@ -964,7 +958,7 @@ void LocalPlayer::setAttackRange(int range)
         if (weapon)
         {
             const ItemInfo info = weapon->getInfo();
-            if (info.getAttackRange() > ATTACK_RANGE_NOT_SET)
+            if (info.getAttackRange() > -1)
                 mAttackRange = info.getAttackRange();
         }
     }
@@ -983,7 +977,7 @@ bool LocalPlayer::withinAttackRange(Being *target)
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
-    mLastTarget = -1;
+    mLastTargetTime = -1;
 
     mTarget = target;
     mGoingToTarget = true;
