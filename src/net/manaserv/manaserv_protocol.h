@@ -26,7 +26,7 @@ namespace ManaServ {
 
 enum {
     PROTOCOL_VERSION = 1,
-    SUPPORTED_DB_VERSION = 18
+    SUPPORTED_DB_VERSION = 19
 };
 
 /**
@@ -94,13 +94,13 @@ enum {
     GPMSG_PLAYER_MAP_CHANGE        = 0x0100, // S filename, W x, W y
     GPMSG_PLAYER_SERVER_CHANGE     = 0x0101, // B*32 token, S game address, W game port
     PGMSG_PICKUP                   = 0x0110, // W*2 position
-    PGMSG_DROP                     = 0x0111, // W slot, W amount
+    PGMSG_DROP                     = 0x0111, // B slot, B amount
     PGMSG_EQUIP                    = 0x0112, // W inventory slot
     PGMSG_UNEQUIP                  = 0x0113, // W item Instance id
     PGMSG_MOVE_ITEM                = 0x0114, // W slot1, W slot2, W amount
     GPMSG_INVENTORY                = 0x0120, // { W slot, W item id [, W amount] (if item id is nonzero) }*
-    GPMSG_INVENTORY_FULL           = 0x0121, // W inventory slot count { W slot, W itemId, W amount }, { W equip slot type, W item id, W item instance}*
-    GPMSG_EQUIP                    = 0x0122, // W item Id, W equip slot type count //{ W equip slot, W capacity used, W item instance}*//<- When equipping, //{ W item instance, W 0}*//<- When unequipping
+    GPMSG_INVENTORY_FULL           = 0x0121, // W inventory slot count { W slot, W itemId, W amount }, { W equip slot, W item Id, W item Instance}*
+    GPMSG_EQUIP                    = 0x0122, // W item Id, W equip slot type count //{ W equip slot, W capacity used}*//<- When equipping, //{ W item instance, W 0}*//<- When unequipping
     GPMSG_PLAYER_ATTRIBUTE_CHANGE  = 0x0130, // { W attribute, D base value (in 1/256ths), D modified value (in 1/256ths)}*
     GPMSG_PLAYER_EXP_CHANGE        = 0x0140, // { W skill, D exp got, D exp needed }*
     GPMSG_LEVELUP                  = 0x0150, // W new level, W character points, W correction points
@@ -126,7 +126,7 @@ enum {
     GPMSG_BEINGS_MOVE              = 0x0280, // { W being id, B flags [, [W*2 position,] W*2 destination, B speed] }*
     GPMSG_ITEMS                    = 0x0281, // { W item id, W*2 position }*
     PGMSG_ATTACK                   = 0x0290, // W being id
-    GPMSG_BEING_ATTACK             = 0x0291, // W being id, B direction, B attack id
+    GPMSG_BEING_ATTACK             = 0x0291, // W being id, B direction, B attack Id
     PGMSG_USE_SPECIAL              = 0x0292, // B specialID
     GPMSG_SPECIAL_STATUS           = 0x0293, // { B specialID, D current, D max, D recharge }
     PGMSG_SAY                      = 0x02A0, // S text
@@ -230,17 +230,23 @@ enum {
 
     // Inter-server
     GAMSG_REGISTER              = 0x0500, // S address, W port, S password, D items db revision, { W map id }*
-    AGMSG_REGISTER_RESPONSE     = 0x0501, // C item version, C password response
-    AGMSG_ACTIVE_MAP            = 0x0502, // W map id
+    AGMSG_REGISTER_RESPONSE     = 0x0501, // C item version, C password response, { S globalvar_key, S globalvar_value }
+    AGMSG_ACTIVE_MAP            = 0x0502, // W map id, W Number of mapvar_key mapvar_value sent, { S mapvar_key, S mapvar_value }, W Number of map items, { D item Id, W amount, W posX, W posY }
     AGMSG_PLAYER_ENTER          = 0x0510, // B*32 token, D id, S name, serialised character data
     GAMSG_PLAYER_DATA           = 0x0520, // D id, serialised character data
     GAMSG_REDIRECT              = 0x0530, // D id
     AGMSG_REDIRECT_RESPONSE     = 0x0531, // D id, B*32 token, S game address, W game port
     GAMSG_PLAYER_RECONNECT      = 0x0532, // D id, B*32 token
     GAMSG_PLAYER_SYNC           = 0x0533, // serialised sync data
-    GAMSG_SET_QUEST             = 0x0540, // D id, S name, S value
-    GAMSG_GET_QUEST             = 0x0541, // D id, S name
-    AGMSG_GET_QUEST_RESPONSE    = 0x0542, // D id, S name, S value
+    GAMSG_SET_VAR_CHR           = 0x0540, // D id, S name, S value
+    GAMSG_GET_VAR_CHR           = 0x0541, // D id, S name
+    AGMSG_GET_VAR_CHR_RESPONSE  = 0x0542, // D id, S name, S value
+    //reserved GAMSG_SET_VAR_ACC           = 0x0543, // D charid, S name, S value
+    //reserved GAMSG_GET_VAR_ACC           = 0x0544, // D charid, S name
+    //reserved AGMSG_GET_VAR_ACC_RESPONSE  = 0x0545, // D charid, S name, S value
+    GAMSG_SET_VAR_MAP           = 0x0546, // D mapid, S name, S value
+    GAMSG_SET_VAR_WORLD         = 0x0547, // S name, S value
+    AGMSG_SET_VAR_WORLD         = 0x0548, // S name, S value
     GAMSG_BAN_PLAYER            = 0x0550, // D id, W duration
     GAMSG_CHANGE_PLAYER_LEVEL   = 0x0555, // D id, W level
     GAMSG_CHANGE_ACCOUNT_LEVEL  = 0x0556, // D id, W level
@@ -251,6 +257,8 @@ enum {
     GCMSG_STORE_POST            = 0x05A5, // D sender id, S receiver name, S letter, { W attachment item id, W quantity }
     CGMSG_STORE_POST_RESPONSE   = 0x05A6, // D id, B error
     GAMSG_TRANSACTION           = 0x0600, // D character id, D action, S message
+    GAMSG_CREATE_ITEM_ON_MAP    = 0x0601, // D map id, D item id, W amount, W pos x, W pos y
+    GAMSG_REMOVE_ITEM_ON_MAP    = 0x0602, // D map id, D item id, W amount, W pos x, W pos y
     GAMSG_ANNOUNCE              = 0x0603, // S text, W senderid, S sendername
 
     XXMSG_INVALID = 0x7FFF
@@ -290,8 +298,7 @@ enum {
     SYNC_CHARACTER_POINTS    = 0x01,       // D charId, D charPoints, D corrPoints
     SYNC_CHARACTER_ATTRIBUTE = 0x02,       // D charId, D attrId, DF base, DF mod
     SYNC_CHARACTER_SKILL     = 0x03,       // D charId, B skillId, D skill value
-    SYNC_ONLINE_STATUS       = 0x04,       // D charId, B 0x00 = offline, 0x01 = online
-    SYNC_END_OF_BUFFER       = 0xFF        // shows, that the buffer ends here.
+    SYNC_ONLINE_STATUS       = 0x04        // D charId, B 0 = offline, 1 = online
 };
 
 // Login specific return values
