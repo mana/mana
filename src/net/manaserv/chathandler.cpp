@@ -243,8 +243,9 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
 void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
 {
     std::string chatMsg = msg.readString();
+    std::string sender = msg.readString();
     Event event(Event::Announcement);
-    event.setString("message", chatMsg);
+    event.setString("message", sender + " : " + chatMsg);
     event.trigger(Event::ChatChannel);
 }
 

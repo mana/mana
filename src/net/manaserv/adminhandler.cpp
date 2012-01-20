@@ -48,14 +48,12 @@ void AdminHandler::handleMessage(Net::MessageIn &msg)
 
 void AdminHandler::announce(const std::string &text)
 {
-    MessageOut msg(PCMSG_ANNOUNCE);
-    msg.writeString(text);
-    chatServerConnection->send(msg);
+    // TODO send warning about using @announce instead
 }
 
 void AdminHandler::localAnnounce(const std::string &text)
 {
-    // TODO
+    // TODO add @command for this
 }
 
 void AdminHandler::hide(bool hide)
