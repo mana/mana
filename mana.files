@@ -467,12 +467,12 @@ src/resources/animation.cpp
 src/resources/animation.h
 src/resources/beinginfo.cpp
 src/resources/beinginfo.h
-src/resources/colordb.cpp
-src/resources/colordb.h
 src/resources/dye.cpp
 src/resources/dye.h
 src/resources/emotedb.cpp
 src/resources/emotedb.h
+src/resources/hairdb.cpp
+src/resources/hairdb.h
 src/resources/image.cpp
 src/resources/image.h
 src/resources/imageloader.cpp
