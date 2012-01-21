@@ -184,7 +184,7 @@ Client *Client::mInstance = 0;
 
 Client::Client(const Options &options):
     mOptions(options),
-    mRootDir(""),
+    mGame(0),
     mCurrentDialog(0),
     mQuitDialog(0),
     mDesktop(0),
@@ -487,15 +487,14 @@ int Client::exec()
 {
     int lastTickTime = tick_time;
 
-    Game *game = 0;
     SDL_Event event;
 
     while (mState != STATE_EXIT)
     {
-        if (game)
+        if (mGame)
         {
             // Let the game handle the events while it is active
-            game->handleInput();
+            mGame->handleInput();
         }
         else
         {
@@ -510,6 +509,10 @@ int Client::exec()
 
                     case SDL_KEYDOWN:
                         break;
+
+                    case SDL_VIDEORESIZE:
+                        resizeVideo(event.resize.w, event.resize.h);
+                        break;
                 }
 
                 guiInput->pushInput(event);
@@ -522,8 +525,8 @@ int Client::exec()
         while (get_elapsed_time(lastTickTime) > 0)
         {
             gui->logic();
-            if (game)
-                game->logic();
+            if (mGame)
+                mGame->logic();
 
             sound.logic();
 
@@ -579,10 +582,7 @@ int Client::exec()
                                      - 3, 3);
             top->add(mSetupButton);
 
-            int screenWidth = config.getIntValue("screenwidth");
-            int screenHeight = config.getIntValue("screenheight");
-
-            mDesktop->setSize(screenWidth, screenHeight);
+            mDesktop->setSize(graphics->getWidth(), graphics->getHeight());
         }
 
         if (mState == STATE_SWITCH_LOGIN && mOldState == STATE_GAME)
@@ -601,8 +601,8 @@ int Client::exec()
 
             if (mOldState == STATE_GAME)
             {
-                delete game;
-                game = 0;
+                delete mGame;
+                mGame = 0;
             }
 
             mOldState = mState;
@@ -866,7 +866,7 @@ int Client::exec()
                     mCurrentDialog = NULL;
 
                     logger->log("State: GAME");
-                    game = new Game;
+                    mGame = new Game;
                     break;
 
                 case STATE_LOGIN_ERROR:
@@ -1381,4 +1381,31 @@ void Client::accountLogin(LoginData *loginData)
     if (loginData->remember)
         config.setValue("username", loginData->username);
     config.setValue("remember", loginData->remember);
+}
+
+void Client::resizeVideo(int width, int height)
+{
+    // Keep a minimum size. This isn't adhered to by the actual window, but
+    // it keeps some window positions from getting messed up.
+    width = std::max(640, width);
+    height = std::max(480, height);
+
+    if (graphics->getWidth() == width && graphics->getHeight() == height)
+        return;
+
+    if (graphics->resize(width, height))
+    {
+        gui->videoResized();
+
+        if (mDesktop)
+            mDesktop->setSize(width, height);
+
+        if (mSetupButton)
+            mSetupButton->setPosition(width - mSetupButton->getWidth() - 3, 3);
+
+        if (mGame)
+            mGame->videoResized(width, height);
+
+        gui->draw();
+    }
 }

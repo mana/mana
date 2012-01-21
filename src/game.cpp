@@ -217,8 +217,7 @@ Game::Game():
 
     // Create the viewport
     viewport = new Viewport;
-    viewport->setDimension(gcn::Rectangle(0, 0, graphics->getWidth(),
-                                          graphics->getHeight()));
+    viewport->setSize(graphics->getWidth(), graphics->getHeight());
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
     top->add(viewport);
@@ -417,8 +416,13 @@ void Game::handleInput()
     {
         bool used = false;
 
+        if (event.type == SDL_VIDEORESIZE)
+        {
+            // Let the client deal with this one (it'll pass down from there)
+            Client::instance()->resizeVideo(event.resize.w, event.resize.h);
+        }
         // Keyboard events (for discontinuous keys)
-        if (event.type == SDL_KEYDOWN)
+        else if (event.type == SDL_KEYDOWN)
         {
             gcn::Window *requestedWindow = NULL;
 
@@ -995,4 +999,10 @@ int Game::getCurrentTileHeight() const
         return mCurrentMap->getTileHeight();
 
     return DEFAULT_TILE_LENGTH;
+}
+
+void Game::videoResized(int width, int height)
+{
+    viewport->setSize(width, height);
+    mWindowMenu->setPosition(width - 3 - mWindowMenu->getWidth(), 3);
 }

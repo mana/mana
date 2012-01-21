@@ -61,6 +61,8 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 
     if (fs)
         displayFlags |= SDL_FULLSCREEN;
+    else
+        displayFlags |= SDL_RESIZABLE;
 
     if (hwaccel)
         displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
@@ -110,6 +112,31 @@ bool Graphics::setFullscreen(bool fs)
         return true;
 
     return setVideoMode(mWidth, mHeight, mBpp, fs, mHWAccel);
+}
+
+bool Graphics::resize(int width, int height)
+{
+    if (mWidth == width && mHeight == height)
+        return true;
+
+    const int prevWidth = mWidth;
+    const int prevHeight = mHeight;
+
+    _endDraw();
+
+    bool success = setVideoMode(width, height, mBpp, mFullscreen, mHWAccel);
+
+    // If it didn't work, try to restore the previous size. If that didn't
+    // work either, bail out (but then we're in deep trouble).
+    if (!success)
+    {
+        if (!setVideoMode(prevWidth, prevHeight, mBpp, mFullscreen, mHWAccel))
+            return false;
+    }
+
+    _beginDraw();
+
+    return success;
 }
 
 int Graphics::getWidth() const

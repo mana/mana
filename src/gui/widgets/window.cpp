@@ -328,7 +328,7 @@ void Window::setVisible(bool visible, bool forceSticky)
 
     // Check if the window is off screen...
     if (visible)
-        checkIfIsOffScreen();
+        ensureOnScreen();
 
     gcn::Window::setVisible((!forceSticky && isSticky()) || visible);
 }
@@ -547,7 +547,7 @@ void Window::loadWindowState()
     }
 
     // Check if the window is off screen...
-    checkIfIsOffScreen();
+    ensureOnScreen();
 }
 
 void Window::saveWindowState()
@@ -666,6 +666,22 @@ void Window::resetToDefaultSize()
     saveWindowState();
 }
 
+void Window::adjustPositionAfterResize(int oldScreenWidth, int oldScreenHeight)
+{
+    gcn::Rectangle dimension = getDimension();
+
+    // If window was aligned to the right or bottom, keep it there
+    const int rightMargin = oldScreenWidth - (getX() + getWidth());
+    const int bottomMargin = oldScreenHeight - (getY() + getHeight());
+    if (getX() > 0 && getX() > rightMargin)
+        dimension.x = graphics->getWidth() - rightMargin - getWidth();
+    if (getY() > 0 && getY() > bottomMargin)
+        dimension.y = graphics->getHeight() - bottomMargin - getHeight();
+
+    setDimension(dimension);
+    ensureOnScreen();
+}
+
 int Window::getResizeHandles(gcn::MouseEvent &event)
 {
     int resizeHandles = 0;
@@ -761,62 +777,25 @@ void Window::center()
     setLocationRelativeTo(getParent());
 }
 
-void Window::checkIfIsOffScreen(bool partially, bool entirely)
+void Window::ensureOnScreen()
 {
-    // Move the window onto screen if it has become off screen
-    // For instance, because of resolution change...
-
-    // First of all, don't deal when a window hasn't got
-    // any size initialized yet...
+    // Skip when a window hasn't got any size initialized yet
     if (getWidth() == 0 && getHeight() == 0)
         return;
 
-    // Made partially the default behaviour
-    if (!partially && !entirely)
-        partially = true;
+    gcn::Rectangle dimension = getDimension();
 
-  // Keep guichan window inside screen (supports resizing any side)
+    // Check the left and bottom screen boundaries
+    if (dimension.x + dimension.width > graphics->getWidth())
+        dimension.x = graphics->getWidth() - dimension.width;
+    if (dimension.y + dimension.height > graphics->getHeight())
+        dimension.y = graphics->getHeight() - dimension.height;
 
-    gcn::Rectangle winDimension =  getDimension();
+    // But never allow the windows to disappear in to the right and top
+    if (dimension.x < 0)
+        dimension.x = 0;
+    if (dimension.y < 0)
+        dimension.y = 0;
 
-    if (winDimension.x < 0)
-    {
-        winDimension.width += winDimension.x;
-        winDimension.x = 0;
-    }
-    if (winDimension.y < 0)
-    {
-        winDimension.height += winDimension.y;
-        winDimension.y = 0;
-    }
-
-    // Look if the window is partially off-screen limits...
-    if (partially)
-    {
-        if (winDimension.x + winDimension.width > graphics->getWidth())
-        {
-            winDimension.x = graphics->getWidth() - winDimension.width;
-        }
-
-        if (winDimension.y + winDimension.height > graphics->getHeight())
-        {
-            winDimension.y = graphics->getHeight() - winDimension.height;
-        }
-        setDimension(winDimension);
-        return;
-    }
-
-    if (entirely)
-    {
-        if (winDimension.x > graphics->getWidth())
-        {
-            winDimension.x = graphics->getWidth() - winDimension.width;
-        }
-
-        if (winDimension.y > graphics->getHeight())
-        {
-            winDimension.y = graphics->getHeight() - winDimension.height;
-        }
-    }
-    setDimension(winDimension);
+    setDimension(dimension);
 }

@@ -295,6 +295,13 @@ class Window : public gcn::Window, gcn::WidgetListener
         virtual void resetToDefaultSize();
 
         /**
+         * Adjusts the window position after the application window has been
+         * resized.
+         */
+        void adjustPositionAfterResize(int oldScreenWidth,
+                                       int oldScreenHeight);
+
+        /**
          * Gets the layout handler for this window.
          */
         Layout &getLayout();
@@ -352,11 +359,11 @@ class Window : public gcn::Window, gcn::WidgetListener
         };
 
         /**
-         * Check if the window is off-screen and then move it to be visible
-         * again. This is internally used by loadWindowState
-         * and setVisible(true) members.
+         * Ensures the window is on the screen, moving it if necessary. This is
+         * used by loadWindowState and setVisible(true), and when the screen
+         * is resized.
          */
-        void checkIfIsOffScreen(bool partially = true, bool entirely = true);
+        void ensureOnScreen();
 
         /**
          * Determines if the mouse is in a resize area and returns appropriate

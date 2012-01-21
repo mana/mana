@@ -93,6 +93,11 @@ class Graphics : public gcn::SDLGraphics
         bool setFullscreen(bool fs);
 
         /**
+         * Resize the window to the specified size.
+         */
+        bool resize(int width, int height);
+
+        /**
          * Blits an image onto the screen.
          *
          * @return <code>true</code> if the image was blitted properly

@@ -33,6 +33,7 @@
 
 #include <string>
 
+class Game;
 class Button;
 class Desktop;
 class LoginData;
@@ -202,6 +203,8 @@ public:
     void event(Event::Channel channel, const Event &event);
     void action(const gcn::ActionEvent &event);
 
+    void resizeVideo(int width, int height);
+
 private:
     void initRootDir();
     void initHomeDir();
@@ -225,6 +228,7 @@ private:
 
     ServerInfo mCurrentServer;
 
+    Game *mGame;
     Window *mCurrentDialog;
     QuitDialog *mQuitDialog;
     Desktop *mDesktop;

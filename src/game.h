@@ -80,6 +80,8 @@ class Game
         void updateWindowMenuCaptions()
         { mWindowMenu->updatePopUpCaptions(); }
 
+        void videoResized(int width, int height);
+
     private:
         int mLastTarget;
         bool mDisconnected;
