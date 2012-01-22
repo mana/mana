@@ -37,8 +37,6 @@
 
 #include <set>
 
-SpriteReference *SpriteReference::Empty = new SpriteReference(
-                                    paths.getStringValue("spriteErrorFile"), 0);
 std::set<std::string> processedFiles;
 
 Action *SpriteDef::getAction(const std::string &action) const

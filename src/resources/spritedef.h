@@ -35,12 +35,12 @@ class ImageSet;
 
 struct SpriteReference
 {
-    static SpriteReference *Empty;
-
     SpriteReference() {}
 
-    SpriteReference(std::string sprite, int variant)
-    { this->sprite = sprite; this->variant = variant; }
+    SpriteReference(std::string sprite, int variant):
+        sprite(sprite),
+        variant(variant)
+    {}
 
     std::string sprite;
     int variant;
@@ -49,11 +49,11 @@ struct SpriteReference
 struct SpriteDisplay
 {
     std::string image;
-    std::list<SpriteReference*> sprites;
+    std::list<SpriteReference> sprites;
     std::list<std::string> particles;
 };
 
-typedef std::list<SpriteReference*>::const_iterator SpriteRefs;
+typedef std::list<SpriteReference>::const_iterator SpriteRefs;
 
 /*
  * Remember those are the main action.

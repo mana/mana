@@ -324,8 +324,8 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     for (it = display.sprites.begin(), it_end = display.sprites.end();
          it != it_end; it++)
     {
-        std::string file = paths.getStringValue("sprites") + (*it)->sprite;
-        int variant = (*it)->variant;
+        std::string file = paths.getStringValue("sprites") + it->sprite;
+        int variant = it->variant;
         addSprite(AnimatedSprite::load(file, variant));
     }
 

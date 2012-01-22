@@ -86,9 +86,9 @@ void MonsterDB::load()
         {
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {
-                SpriteReference *currentSprite = new SpriteReference;
-                currentSprite->sprite = (const char*)spriteNode->xmlChildrenNode->content;
-                currentSprite->variant = XML::getProperty(spriteNode, "variant", 0);
+                SpriteReference currentSprite;
+                currentSprite.sprite = (const char*)spriteNode->xmlChildrenNode->content;
+                currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
                 display.sprites.push_back(currentSprite);
             }
             else if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))

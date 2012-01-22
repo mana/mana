@@ -37,7 +37,9 @@ BeingInfo::BeingInfo():
         mBlockType(Map::BLOCKTYPE_CHARACTER)
 {
     SpriteDisplay display;
-    display.sprites.push_back(SpriteReference::Empty);
+
+    SpriteReference errorSprite(paths.getStringValue("spriteErrorFile"), 0);
+    display.sprites.push_back(errorSprite);
 
     setDisplay(display);
 }
