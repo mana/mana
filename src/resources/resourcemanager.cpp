@@ -32,6 +32,7 @@
 #include "resources/spritedef.h"
 
 #include "utils/zlib.h"
+#include "utils/physfsrwops.h"
 
 #include <physfs.h>
 
@@ -273,14 +274,14 @@ struct ResourceLoader
     ResourceManager *manager;
     std::string path;
     ResourceManager::loader fun;
+
     static Resource *load(void *v)
     {
         ResourceLoader *l = static_cast< ResourceLoader * >(v);
-        int fileSize;
-        void *buffer = l->manager->loadFile(l->path, fileSize);
-        if (!buffer) return NULL;
-        Resource *res = l->fun(buffer, fileSize);
-        free(buffer);
+        SDL_RWops *rw = PHYSFSRWOPS_openRead(l->path.c_str());
+        if (!rw)
+            return NULL;
+        Resource *res = l->fun(rw);
         return res;
     }
 };
@@ -316,16 +317,14 @@ struct DyedImageLoader
             d = new Dye(path.substr(p + 1));
             path = path.substr(0, p);
         }
-        int fileSize;
-        void *buffer = l->manager->loadFile(path, fileSize);
-        if (!buffer)
+        SDL_RWops *rw = PHYSFSRWOPS_openRead(path.c_str());
+        if (!rw)
         {
             delete d;
             return NULL;
         }
-        Resource *res = d ? Image::load(buffer, fileSize, *d)
-                          : Image::load(buffer, fileSize);
-        free(buffer);
+        Resource *res = d ? Image::load(rw, *d)
+                          : Image::load(rw);
         delete d;
         return res;
     }
@@ -520,18 +519,10 @@ std::vector<std::string> ResourceManager::loadTextFile(
 
 SDL_Surface *ResourceManager::loadSDLSurface(const std::string &filename)
 {
-    int fileSize;
-    void *buffer = loadFile(filename, fileSize);
-    SDL_Surface *tmp = NULL;
-
-    if (buffer)
-    {
-        SDL_RWops *rw = SDL_RWFromMem(buffer, fileSize);
-        tmp = IMG_Load_RW(rw, 1);
-        ::free(buffer);
-    }
-
-    return tmp;
+    SDL_Surface *surface = 0;
+    if (SDL_RWops *rw = PHYSFSRWOPS_openRead(filename.c_str()))
+        surface = IMG_Load_RW(rw, 1);
+    return surface;
 }
 
 void ResourceManager::scheduleDelete(SDL_Surface* surface)

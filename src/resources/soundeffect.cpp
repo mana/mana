@@ -28,11 +28,8 @@ SoundEffect::~SoundEffect()
     Mix_FreeChunk(mChunk);
 }
 
-Resource *SoundEffect::load(void *buffer, unsigned bufferSize)
+Resource *SoundEffect::load(SDL_RWops *rw)
 {
-    // Load the raw file data from the buffer in an RWops structure
-    SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
-
     // Load the music data and free the RWops structure
     Mix_Chunk *tmpSoundEffect = Mix_LoadWAV_RW(rw, 1);
 

@@ -35,11 +35,8 @@ Music::~Music()
     Mix_FreeChunk(mChunk);
 }
 
-Resource *Music::load(void *buffer, unsigned bufferSize)
+Resource *Music::load(SDL_RWops *rw)
 {
-    // Load the raw file data from the buffer in an RWops structure
-    SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
-
     // Use Mix_LoadMUS to load the raw music data
     //Mix_Music* music = Mix_LoadMUS_RW(rw); Need to be implemeted
     Mix_Chunk *tmpMusic = Mix_LoadWAV_RW(rw, 1);

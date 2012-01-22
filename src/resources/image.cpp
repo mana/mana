@@ -105,10 +105,8 @@ Image::~Image()
     unload();
 }
 
-Resource *Image::load(void *buffer, unsigned bufferSize)
+Resource *Image::load(SDL_RWops *rw)
 {
-    // Load the raw file data from the buffer in an RWops structure
-    SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
     SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
 
     if (!tmpImage)
@@ -123,9 +121,8 @@ Resource *Image::load(void *buffer, unsigned bufferSize)
     return image;
 }
 
-Resource *Image::load(void *buffer, unsigned bufferSize, Dye const &dye)
+Resource *Image::load(SDL_RWops *rw, Dye const &dye)
 {
-    SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
     SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
 
     if (!tmpImage)

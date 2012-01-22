@@ -412,6 +412,8 @@ SET(SRCS
     utils/dtor.h
     utils/gettext.h
     utils/mathutils.h
+    utils/physfsrwops.c
+    utils/physfsrwops.h
     utils/sha256.cpp
     utils/sha256.h
     utils/stringutils.cpp

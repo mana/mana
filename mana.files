@@ -540,6 +540,8 @@ src/utils/mathutils.h
 src/utils/mkdir.cpp
 src/utils/mkdir.h
 src/utils/mutex.h
+src/utils/physfsrwops.c
+src/utils/physfsrwops.h
 src/utils/sha256.cpp
 src/utils/sha256.h
 src/utils/specialfolder.cpp
