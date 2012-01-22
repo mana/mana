@@ -157,15 +157,6 @@ class Image : public Resource
         Image* SDLgetScaledImage(int width, int height);
 
         /**
-         * Merges two image SDL_Surfaces together. This is for SDL use only, as
-         * reducing the number of surfaces that SDL has to render can cut down
-         * on the number of blit operations necessary, which in turn can help
-         * improve overall framerates. Don't use unless you are using it to
-         * reduce the number of overall layers that need to be drawn through SDL.
-         */
-        Image *SDLmerge(Image *image, int x, int y);
-
-        /**
          * Get the alpha Channel of a SDL surface.
          */
         Uint8 *SDLgetAlphaChannel() const
