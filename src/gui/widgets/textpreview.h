@@ -39,7 +39,7 @@ class TextPreview : public gcn::Widget
          *
          * @param color the color to set
          */
-        inline void setTextColor(const gcn::Color *color)
+        void setTextColor(const gcn::Color *color)
         {
             mTextColor = color;
         }
@@ -49,7 +49,7 @@ class TextPreview : public gcn::Widget
          *
          * @param alpha whether to use alpha values for the text or not
          */
-        inline void useTextAlpha(bool alpha)
+        void useTextAlpha(bool alpha)
         {
             mTextAlpha = alpha;
         }
@@ -60,7 +60,7 @@ class TextPreview : public gcn::Widget
          *
          * @param color the color to set
          */
-        inline void setTextBGColor(const gcn::Color *color)
+        void setTextBGColor(const gcn::Color *color)
         {
             mTextBGColor = color;
         }
@@ -70,7 +70,7 @@ class TextPreview : public gcn::Widget
          *
          * @param color the color to set
          */
-        inline void setBGColor(const gcn::Color *color)
+        void setBGColor(const gcn::Color *color)
         {
             mBGColor = color;
         }
@@ -80,7 +80,7 @@ class TextPreview : public gcn::Widget
          *
          * @param font the font to use.
          */
-        inline void setFont(gcn::Font *font)
+        void setFont(gcn::Font *font)
         {
             mFont = font;
         }
@@ -90,7 +90,7 @@ class TextPreview : public gcn::Widget
          *
          * @param shadow true, if a shadow is wanted, false else
          */
-        inline void setShadow(bool shadow)
+        void setShadow(bool shadow)
         {
             mShadow = shadow;
         }
@@ -100,7 +100,7 @@ class TextPreview : public gcn::Widget
          *
          * @param outline true, if an outline is wanted, false else
          */
-        inline void setOutline(bool outline)
+        void setOutline(bool outline)
         {
             mOutline = outline;
         }

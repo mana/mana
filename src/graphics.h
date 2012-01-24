@@ -180,8 +180,8 @@ class Graphics : public gcn::SDLGraphics
          * Draws a rectangle using images. 4 corner images, 4 side images and 1
          * image for the inside.
          */
-        inline void drawImageRect(const gcn::Rectangle &area,
-                const ImageRect &imgRect)
+        void drawImageRect(const gcn::Rectangle &area,
+                           const ImageRect &imgRect)
         {
             drawImageRect(area.x, area.y, area.width, area.height, imgRect);
         }

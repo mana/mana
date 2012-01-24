@@ -32,18 +32,18 @@
  */
 class TextRenderer
 {
-    public:
+public:
     /**
      * Renders a specified text.
      */
-    static inline void renderText(gcn::Graphics *graphics,
-                                  const std::string &text,
-                                  int x, int y,
-                                  gcn::Graphics::Alignment align,
-                                  const gcn::Color &color,
-                                  gcn::Font *font,
-                                  bool outline = false,
-                                  bool shadow = false)
+    static void renderText(gcn::Graphics *graphics,
+                           const std::string &text,
+                           int x, int y,
+                           gcn::Graphics::Alignment align,
+                           const gcn::Color &color,
+                           gcn::Font *font,
+                           bool outline = false,
+                           bool shadow = false)
     {
         graphics->setFont(font);
 

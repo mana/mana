@@ -218,22 +218,22 @@ class Configuration : public ConfigurationObject
 
         void setValue(const std::string &key, const std::string &value);
 
-        inline void setValue(const std::string &key, const char *value)
+        void setValue(const std::string &key, const char *value)
         { setValue(key, std::string(value)); }
 
-        inline void setValue(const std::string &key, float value)
+        void setValue(const std::string &key, float value)
         { setValue(key, toString(value)); }
 
-        inline void setValue(const std::string &key, double value)
+        void setValue(const std::string &key, double value)
         { setValue(key, toString(value)); }
 
-        inline void setValue(const std::string &key, int value)
+        void setValue(const std::string &key, int value)
         { setValue(key, toString(value)); }
 
-        inline void setValue(const std::string &key, unsigned value)
+        void setValue(const std::string &key, unsigned value)
         { setValue(key, toString(value)); }
 
-        inline void setValue(const std::string &key, bool value)
+        void setValue(const std::string &key, bool value)
         { setValue(key, value ? "1" : "0"); }
 
         /**

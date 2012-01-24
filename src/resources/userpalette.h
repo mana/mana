@@ -67,7 +67,7 @@ class UserPalette : public Palette, public gcn::ListModel
          *
          * @return the requested committed color
          */
-        inline const gcn::Color &getCommittedColor(int type)
+        const gcn::Color &getCommittedColor(int type)
         {
             return mColors[type].committedColor;
         }
@@ -79,7 +79,7 @@ class UserPalette : public Palette, public gcn::ListModel
          *
          * @return the requested test color
          */
-        inline const gcn::Color &getTestColor(int type)
+        const gcn::Color &getTestColor(int type)
         {
             return mColors[type].testColor;
         }
@@ -90,7 +90,7 @@ class UserPalette : public Palette, public gcn::ListModel
          * @param type the color type requested
          * @param color the color that should be tested
          */
-        inline void setTestColor(int type, gcn::Color color)
+        void setTestColor(int type, gcn::Color color)
         {
             mColors[type].testColor = color;
         }
@@ -123,7 +123,7 @@ class UserPalette : public Palette, public gcn::ListModel
          *
          * @return the number of colors known
          */
-        inline int getNumberOfElements() { return mColors.size(); }
+        int getNumberOfElements() { return mColors.size(); }
 
         /**
          * Returns the name of the ith color.
@@ -137,7 +137,7 @@ class UserPalette : public Palette, public gcn::ListModel
         /**
          * Commit the colors
          */
-        inline void commit()
+        void commit()
         {
             commit(false);
         }

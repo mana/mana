@@ -45,7 +45,7 @@ class ListBox : public gcn::ListBox
          *
          * @param font the font to use.
          */
-        inline void setFont(gcn::Font *font)
+        void setFont(gcn::Font *font)
         {
             mFont = font;
         }

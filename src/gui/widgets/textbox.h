@@ -36,7 +36,7 @@ class TextBox : public gcn::TextBox
     public:
         TextBox();
 
-        inline void setTextColor(const gcn::Color *color)
+        void setTextColor(const gcn::Color *color)
         { mTextColor = color; }
 
         /**
@@ -52,7 +52,7 @@ class TextBox : public gcn::TextBox
         /**
          * Draws the text.
          */
-        inline void draw(gcn::Graphics *graphics)
+        void draw(gcn::Graphics *graphics)
         {
             setForegroundColor(*mTextColor);
             gcn::TextBox::draw(graphics);

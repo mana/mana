@@ -102,10 +102,6 @@ class OpenGLGraphics : public Graphics
 
         void setTargetPlane(int width, int height);
 
-        void drawQuadArrayfi(int size);
-
-        void drawQuadArrayii(int size);
-
         /**
          * Takes a screenshot and returns it as SDL surface.
          */
@@ -119,6 +115,10 @@ class OpenGLGraphics : public Graphics
         void setTexturingAndBlending(bool enable);
 
     private:
+        void drawQuadArrayfi(int size);
+
+        void drawQuadArrayii(int size);
+
         GLfloat *mFloatTexArray;
         GLint *mIntTexArray;
         GLint *mIntVertArray;

@@ -145,7 +145,7 @@ public:
      * Returns the given variable if it is set and an integer, returning the
      * given default otherwise.
      */
-    inline int getInt(const std::string &key, int defaultValue) const
+    int getInt(const std::string &key, int defaultValue) const
     { try { return getInt(key); } catch (BadEvent) { return defaultValue; }}
 
     /**
@@ -169,8 +169,8 @@ public:
      * Returns the given variable if it is set and a string, returning the
      * given default otherwise.
      */
-    inline std::string getString(const std::string &key,
-                                 const std::string &defaultValue) const
+    std::string getString(const std::string &key,
+                          const std::string &defaultValue) const
     { try { return getString(key); } catch (BadEvent) { return defaultValue; }}
 
     /**
@@ -195,7 +195,7 @@ public:
      * Returns the given variable if it is set and a floating-point, returning
      * the given default otherwise.
      */
-    inline double getFloat(const std::string &key, float defaultValue) const
+    double getFloat(const std::string &key, float defaultValue) const
     { try { return getFloat(key); } catch (BadEvent) { return defaultValue; }}
 
     /**
@@ -219,7 +219,7 @@ public:
      * Returns the given variable if it is set and a boolean, returning the
      * given default otherwise.
      */
-    inline bool getBool(const std::string &key, bool defaultValue) const
+    bool getBool(const std::string &key, bool defaultValue) const
     { try { return getBool(key); } catch (BadEvent) { return defaultValue; }}
 
     /**
@@ -243,7 +243,7 @@ public:
      * Returns the given variable if it is set and an Item, returning the
      * given default otherwise.
      */
-    inline Item *getItem(const std::string &key, Item *defaultValue) const
+    Item *getItem(const std::string &key, Item *defaultValue) const
     { try { return getItem(key); } catch (BadEvent) { return defaultValue; }}
 
     /**
@@ -267,8 +267,8 @@ public:
      * Returns the given variable if it is set and an actor, returning the
      * given default otherwise.
      */
-    inline ActorSprite *getActor(const std::string &key,
-                                 ActorSprite *defaultValue) const
+    ActorSprite *getActor(const std::string &key,
+                          ActorSprite *defaultValue) const
     { try { return getActor(key); } catch (BadEvent) { return defaultValue; }}
 
     /**
@@ -281,7 +281,7 @@ public:
     /**
      * Sends this event to all classes listening to the given channel.
      */
-    inline void trigger(Channel channel) const
+    void trigger(Channel channel) const
     { trigger(channel, *this); }
 
     /**
@@ -293,7 +293,7 @@ public:
      * Sends an empty event with the given name to all classes listening to the
      * given channel.
      */
-    static inline void trigger(Channel channel, Type type)
+    static void trigger(Channel channel, Type type)
     { trigger(channel, Event(type)); }
 
 protected:

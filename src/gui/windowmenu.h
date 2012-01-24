@@ -55,10 +55,10 @@ class WindowMenu : public Container,
         void updatePopUpCaptions();
 
     private:
-        inline void addButton(const std::string& text, int &x, int &h,
-                              const std::string& iconPath = std::string(),
-                              KeyboardConfig::KeyAction key =
-                                                  KeyboardConfig::KEY_NO_VALUE);
+        void addButton(const std::string& text, int &x, int &h,
+                       const std::string& iconPath = std::string(),
+                       KeyboardConfig::KeyAction key =
+                            KeyboardConfig::KEY_NO_VALUE);
 
         EmotePopup *mEmotePopup;
 };

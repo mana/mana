@@ -379,7 +379,7 @@ class Being : public ActorSprite, public EventListener
          *
          * @see setPosition(const Vector &pos)
          */
-        inline void setPosition(float x, float y, float z = 0.0f)
+        void setPosition(float x, float y, float z = 0.0f)
         {
             setPosition(Vector(x, y, z));
         }
