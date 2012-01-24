@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2010  The Mana Developers
+ *  Copyright (C) 2010-2012  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *

@@ -2,7 +2,7 @@
  *  The Mana World
  *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
  *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2009-2012  The Mana Developers
  *
  *  This file is part of The Mana World.
  *
