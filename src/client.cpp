@@ -1408,5 +1408,10 @@ void Client::resizeVideo(int width, int height)
             mGame->videoResized(width, height);
 
         gui->draw();
+
+        // Since everything appears to have worked out, remember to store the
+        // new size in the configuration.
+        config.setValue("screenwidth", width);
+        config.setValue("screenheight", height);
     }
 }
