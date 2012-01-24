@@ -30,6 +30,8 @@
 
 #include <string>
 
+class Music;
+
 /** Sound engine
  *
  * \ingroup CORE
@@ -53,9 +55,9 @@ class Sound
         /**
          * Starts background music.
          *
-         * @param path The full path to the music file.
+         * @param fileName The name of the music file.
          */
-        void playMusic(const std::string &path);
+        void playMusic(const std::string &fileName);
 
         /**
          * Stops currently running background music track.
@@ -65,10 +67,10 @@ class Sound
         /**
          * Fades in background music.
          *
-         * @param path The full path to the music file.
-         * @param ms   Duration of fade-in effect (ms)
+         * @param fileName The name of the music file.
+         * @param ms       Duration of fade-in effect (ms)
          */
-        void fadeInMusic(const std::string &path, int ms = 1000);
+        void fadeInMusic(const std::string &fileName, int ms = 1000);
 
         /**
          * Fades out currently running background music track.
@@ -80,10 +82,10 @@ class Sound
         /**
          * Fades out a background music and play a new one.
          *
-         * @param path The full path to the fade in music file.
-         * @param ms   Duration of fade-out effect (ms)
+         * @param fileName The name of the music file.
+         * @param ms       Duration of fade-out effect (ms)
          */
-        void fadeOutAndPlayMusic(const std::string &path, int ms = 1000);
+        void fadeOutAndPlayMusic(const std::string &fileName, int ms = 1000);
 
         int getMaxVolume() const
         { return MIX_MAX_VOLUME; }
@@ -118,7 +120,7 @@ class Sound
          * When calling fadeOutAndPlayMusic(),
          * the music file below will then be played
          */
-        std::string mNextMusicPath;
+        std::string mNextMusicFile;
 
         bool mInstalled;
 
@@ -126,7 +128,7 @@ class Sound
         int mMusicVolume;
 
         std::string mCurrentMusicFile;
-        Mix_Music *mMusic;
+        Music *mMusic;
 };
 
 extern Sound sound;

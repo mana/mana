@@ -202,11 +202,15 @@ Client::Client(const Options &options):
 
     logger = new Logger;
 
+    // Set default values for configuration files
+    branding.setDefaultValues(getBrandingDefaults());
+    paths.setDefaultValues(getPathsDefaults());
+    config.setDefaultValues(getConfigDefaults());
+
     // Load branding information
     if (!options.brandingPath.empty())
     {
         branding.init(options.brandingPath);
-        branding.setDefaultValues(getBrandingDefaults());
     }
 
     initRootDir();
@@ -393,8 +397,7 @@ Client::Client(const Options &options):
     userPalette = new UserPalette;
     setupWindow = new Setup;
 
-    sound.playMusic(branding.getValue("loginMusic",
-                                      "music/system/Magick - Real.ogg"));
+    sound.playMusic(branding.getStringValue("loginMusic"));
 
     // Initialize default server
     mCurrentServer.hostname = options.serverName;
@@ -754,7 +757,6 @@ int Client::exec()
 
                     // Read default paths file 'data/paths.xml'
                     paths.init("paths.xml", true);
-                    paths.setDefaultValues(getPathsDefaults());
 
                     Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
 
@@ -1257,7 +1259,6 @@ void Client::initConfiguration()
     {
         fclose(configFile);
         config.init(configPath);
-        config.setDefaultValues(getConfigDefaults());
     }
 }
 

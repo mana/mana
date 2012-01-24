@@ -51,24 +51,19 @@ class Music : public Resource
         /**
          * Plays the music.
          *
-         * @param loops     Number of times to repeat the playback.
+         * @param loops     Number of times to repeat the playback (-1 means
+         *                  forever).
+         * @param fadeIn    Duration in milliseconds to fade in the music.
          *
          * @return <code>true</code> if the playback started properly
          *         <code>false</code> otherwise.
          */
-        virtual bool play(int loops);
-
-        /**
-         * Stops the music.
-         */
-        virtual void stop();
+        bool play(int loops = -1, int fadeIn = 0);
 
     protected:
-        Music(Mix_Chunk *music);
+        Music(Mix_Music *music);
 
-        //Mix_Music *music;
-        Mix_Chunk *mChunk;
-        int mChannel;
+        Mix_Music *mMusic;
 };
 
 #endif

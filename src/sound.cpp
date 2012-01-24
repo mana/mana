@@ -27,6 +27,7 @@
 #include "log.h"
 #include "sound.h"
 
+#include "resources/music.h"
 #include "resources/resourcemanager.h"
 #include "resources/soundeffect.h"
 
@@ -156,53 +157,25 @@ void Sound::setSfxVolume(int volume)
         Mix_Volume(-1, mSfxVolume);
 }
 
-static Mix_Music *loadMusic(const std::string &filename)
+static Music *loadMusic(const std::string &fileName)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    std::string path = resman->getPath(paths.getStringValue("music") + filename);
-
-    if (path.find(".zip/") != std::string::npos ||
-        path.find(".zip\\") != std::string::npos)
-    {
-        // Music file is a virtual file inside a zip archive - we have to copy
-        // it to a temporary physical file so that SDL_mixer can stream it.
-        logger->log("Loading music \"%s\" from temporary file tempMusic.ogg",
-                    path.c_str());
-        bool success = resman->copyFile(
-                               paths.getStringValue("music")
-                               + filename, "tempMusic.ogg");
-        if (success)
-            path = resman->getPath("tempMusic.ogg");
-        else
-            return NULL;
-    }
-    else
-    {
-        logger->log("Loading music \"%s\"", path.c_str());
-    }
-
-    Mix_Music *music = Mix_LoadMUS(path.c_str());
-
-    if (!music)
-    {
-        logger->log("Mix_LoadMUS() Error loading '%s': %s", path.c_str(),
-                    Mix_GetError());
-    }
-
-    return music;
+    return resman->getMusic(paths.getStringValue("music") + fileName);
 }
 
-void Sound::playMusic(const std::string &filename)
+
+void Sound::playMusic(const std::string &fileName)
 {
-    mCurrentMusicFile = filename;
+    mCurrentMusicFile = fileName;
 
     if (!mInstalled)
         return;
 
     haltMusic();
 
-    if ((mMusic = loadMusic(filename)))
-        Mix_PlayMusic(mMusic, -1); // Loop forever
+    mMusic = loadMusic(fileName);
+    if (mMusic)
+        mMusic->play();
 }
 
 void Sound::stopMusic()
@@ -215,17 +188,18 @@ void Sound::stopMusic()
     haltMusic();
 }
 
-void Sound::fadeInMusic(const std::string &path, int ms)
+void Sound::fadeInMusic(const std::string &fileName, int ms)
 {
-    mCurrentMusicFile = path;
+    mCurrentMusicFile = fileName;
 
     if (!mInstalled)
         return;
 
     haltMusic();
 
-    if ((mMusic = loadMusic(path.c_str())))
-        Mix_FadeInMusic(mMusic, -1, ms); // Loop forever
+    mMusic = loadMusic(fileName);
+    if (mMusic)
+        mMusic->play(-1, ms);
 }
 
 void Sound::fadeOutMusic(int ms)
@@ -249,9 +223,9 @@ void Sound::fadeOutMusic(int ms)
     }
 }
 
-void Sound::fadeOutAndPlayMusic(const std::string &path, int ms)
+void Sound::fadeOutAndPlayMusic(const std::string &fileName, int ms)
 {
-    mNextMusicPath = path;
+    mNextMusicFile = fileName;
     fadeOutMusic(ms);
 }
 
@@ -261,15 +235,15 @@ void Sound::logic()
     {
         if (mMusic)
         {
-            Mix_FreeMusic(mMusic);
-            mMusic = NULL;
+            mMusic->decRef();
+            mMusic = 0;
         }
         sFadingOutEnded = false;
 
-        if (!mNextMusicPath.empty())
+        if (!mNextMusicFile.empty())
         {
-            playMusic(mNextMusicPath);
-            mNextMusicPath.clear();
+            playMusic(mNextMusicFile);
+            mNextMusicFile.clear();
         }
     }
 }
@@ -325,6 +299,6 @@ void Sound::haltMusic()
         return;
 
     Mix_HaltMusic();
-    Mix_FreeMusic(mMusic);
-    mMusic = NULL;
+    mMusic->decRef();
+    mMusic = 0;
 }

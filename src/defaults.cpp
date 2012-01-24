@@ -131,7 +131,7 @@ DefaultsData* getBrandingDefaults()
     AddDEF(brandingData, "wallpaperFile", "");
     AddDEF(brandingData, "appName", "Mana");
     AddDEF(brandingData, "appIcon", "icons/mana");
-    AddDEF(brandingData, "loginMusic", "Magick - Real.ogg");
+    AddDEF(brandingData, "loginMusic", "system/Magick - Real.ogg");
     AddDEF(brandingData, "defaultServer", "");
     AddDEF(brandingData, "defaultPort", DEFAULT_PORT);
     AddDEF(brandingData, "defaultServerType", "tmwathena");
