@@ -601,6 +601,10 @@
 		<Unit filename="src\utils\mkdir.cpp" />
 		<Unit filename="src\utils\mkdir.h" />
 		<Unit filename="src\utils\mutex.h" />
+		<Unit filename="src\utils\physfsrwops.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src\utils\physfsrwops.h" />
 		<Unit filename="src\utils\sha256.cpp" />
 		<Unit filename="src\utils\sha256.h" />
 		<Unit filename="src\utils\specialfolder.cpp" />
