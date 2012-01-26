@@ -135,7 +135,6 @@ DefaultsData* getBrandingDefaults()
     AddDEF(brandingData, "defaultServer", "");
     AddDEF(brandingData, "defaultPort", DEFAULT_PORT);
     AddDEF(brandingData, "defaultServerType", "tmwathena");
-    AddDEF(brandingData, "onlineServerList", "a");
     AddDEF(brandingData, "appShort", "mana");
     AddDEF(brandingData, "defaultUpdateHost", "");
     AddDEF(brandingData, "helpPath", "");
