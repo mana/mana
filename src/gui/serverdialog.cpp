@@ -298,11 +298,13 @@ void ServerDialog::action(const gcn::ActionEvent &event)
 
             const ServerInfo &serverInfo = mServersListModel->getServer(index);
             mServerInfo->hostname = serverInfo.hostname;
+            mServerInfo->name = serverInfo.name;
             mServerInfo->port = serverInfo.port;
             mServerInfo->type = serverInfo.type;
 
             // Save the selected server
             mServerInfo->save = true;
+            saveCustomServers(*mServerInfo);
 
             chatLogger->setServerName(mServerInfo->hostname);
 
@@ -587,7 +589,7 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
                     break;
                 }
             }
-            mServers.insert(mServers.begin(), currentServer);
+            mServers.push_front(currentServer);
         }
     }
 

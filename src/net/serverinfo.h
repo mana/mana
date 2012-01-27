@@ -25,7 +25,7 @@
 #include "utils/stringutils.h"
 
 #include <string>
-#include <vector>
+#include <deque>
 
 class ServerInfo
 {
@@ -111,6 +111,6 @@ public:
     }
 };
 
-typedef std::vector<ServerInfo> ServerInfos;
+typedef std::deque<ServerInfo> ServerInfos;
 
 #endif // SERVERINFO_H
