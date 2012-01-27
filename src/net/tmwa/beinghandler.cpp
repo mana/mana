@@ -361,7 +361,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (dstBeing)
                 dstBeing->takeDamage(srcBeing, param1, Being::HIT); // Perhaps a new skill attack type should be created and used?
             if (srcBeing)
-                srcBeing->handleAttack(dstBeing, param1, Being::HIT);
+                srcBeing->handleAttack(dstBeing, param1);
             break;
         }
         case SMSG_BEING_ACTION:
@@ -386,8 +386,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                         dstBeing->takeDamage(srcBeing, param1,
                                 (Being::AttackType)type);
                     if (srcBeing)
-                        srcBeing->handleAttack(dstBeing, param1,
-                                (Being::AttackType)type);
+                        srcBeing->handleAttack(dstBeing, param1);
                     break;
 
                 case 0x02: // Sit
