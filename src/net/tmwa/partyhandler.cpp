@@ -1,6 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2008  Lloyd Bryant <lloyd_bryant@netzero.net>
+ *  Copyright (C) 2009-2012  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *

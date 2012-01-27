@@ -1,6 +1,7 @@
 /*
  *  Support for non-overlapping floating text
  *  Copyright (C) 2008  Douglas Boffey <DougABoffey@netscape.net>
+ *  Copyright (C) 2009-2012  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
