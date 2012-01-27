@@ -2,7 +2,7 @@
 Mana Hacking Guide
 ----------------------------
 
-This guide is also available at http://gitorious.org/mana/pages/Hacking
+This guide is also available at http://doc.manasource.org/hacking
 including more tips about C++ programming in general.
 
 With multiple coders working on the same source files, there needs to be a
@@ -133,5 +133,5 @@ necessary.
   be used. Hungarian style should be avoided.
 
 * Whenever you add a new source file somewhere in ./src do not forget to add
-  them in ./src/Makefile.am as well!
+  them in ./src/CMakeLists.txt as well!
 
