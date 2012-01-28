@@ -21,6 +21,7 @@
 
 #include "gui/setup_video.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"
@@ -99,28 +100,26 @@ ModeListModel::ModeListModel()
         logger->log("All resolutions available");
     else
     {
-        //logger->log("Available Modes");
         for (int i = 0; modes[i]; ++i)
         {
-            const std::string modeString =
-                toString((int)modes[i]->w) + "x" + toString((int) modes[i]->h);
-            //logger->log(modeString.c_str());
-            mVideoModes.push_back(modeString);
+            const int width = modes[i]->w;
+            const int height = modes[i]->h;
+
+            // Skip the unreasonably small modes
+            if (width < 640 || height < 480)
+                continue;
+
+            mVideoModes.push_back(toString(width) + "x" + toString(height));
         }
     }
 }
 
 int ModeListModel::getIndexOf(const std::string &widthXHeightMode)
 {
-    std::string currentMode = "";
-    for (int i = 0; i < getNumberOfElements(); i++)
-    {
-        currentMode = getElementAt(i);
-        if (currentMode == widthXHeightMode)
-        {
+    for (unsigned i = 0; i < mVideoModes.size(); i++)
+        if (mVideoModes.at(i) == widthXHeightMode)
             return i;
-        }
-    }
+
     return -1;
 }
 
@@ -291,9 +290,22 @@ Setup_Video::~Setup_Video()
 
 void Setup_Video::apply()
 {
-    // Full screen changes
+    // Video mode changes
+    int screenWidth = graphics->getWidth();
+    int screenHeight = graphics->getHeight();
+
+    if (mModeList->getSelected() > -1)
+    {
+        std::string mode = mModeListModel->getElementAt(mModeList->getSelected());
+        screenWidth = atoi(mode.substr(0, mode.find("x")).c_str());
+        screenHeight = atoi(mode.substr(mode.find("x") + 1).c_str());
+    }
+
     bool fullscreen = mFsCheckBox->isSelected();
-    if (fullscreen != config.getBoolValue("screen"))
+
+    if (fullscreen != graphics->getFullscreen() ||
+            screenWidth != graphics->getWidth() ||
+            screenHeight != graphics->getHeight())
     {
         /* The OpenGL test is only necessary on Windows, since switching
          * to/from full screen works fine on Linux. On Windows we'd have to
@@ -304,39 +316,41 @@ void Setup_Video::apply()
 
 #if defined(_WIN32) || defined(__APPLE__)
         // checks for opengl usage
-        if (!config.getBoolValue("opengl"))
+        if (config.getBoolValue("opengl"))
         {
-#endif
-            if (!graphics->setFullscreen(fullscreen))
-            {
-                fullscreen = !fullscreen;
-                if (!graphics->setFullscreen(fullscreen))
-                {
-                    std::stringstream errorMessage;
-                    if (fullscreen)
-                    {
-                        errorMessage << _("Failed to switch to windowed mode "
-                                          "and restoration of old mode also "
-                                          "failed!") << std::endl;
-                    }
-                    else
-                    {
-                        errorMessage << _("Failed to switch to fullscreen mode "
-                                          "and restoration of old mode also "
-                                          "failed!") << std::endl;
-                    }
-                    logger->error(errorMessage.str());
-                }
-            }
-#if defined(_WIN32) || defined(__APPLE__)
+            new OkDialog(_("Changing Video Mode"),
+                         _("Restart needed for changes to take effect."));
+
+            config.setValue("screen", fullscreen);
+            config.setValue("screenwidth", screenWidth);
+            config.setValue("screenheight", screenHeight);
         }
         else
-        {
-            new OkDialog(_("Switching to Full Screen"),
-                         _("Restart needed for changes to take effect."));
-        }
 #endif
-        config.setValue("screen", fullscreen);
+        {
+            if (!graphics->changeVideoMode(screenWidth,
+                                           screenHeight,
+                                           graphics->getBpp(),
+                                           fullscreen,
+                                           graphics->getHWAccel()))
+            {
+                std::stringstream errorMessage;
+                if (fullscreen)
+                    errorMessage << _("Failed to switch to fullscreen mode.");
+                else
+                    errorMessage << _("Failed to switch to windowed mode.");
+
+                new OkDialog(_("Error"), errorMessage.str());
+            }
+            else
+            {
+                Client::instance()->videoResized(screenWidth, screenHeight);
+
+                config.setValue("screen", fullscreen);
+                config.setValue("screenwidth", screenWidth);
+                config.setValue("screenheight", screenHeight);
+            }
+        }
     }
 
     // OpenGL change
@@ -348,7 +362,7 @@ void Setup_Video::apply()
         if (mOpenGLCheckBox->isSelected())
         {
             new OkDialog(_("Changing to OpenGL"),
-                         _("Applying change to OpenGL requires restart. "
+                         _("Applying change to OpenGL requires restart.\n\n"
                            "In case OpenGL messes up your game graphics, "
                            "restart the game with the command line option "
                            "\"--no-opengl\"."));
@@ -416,8 +430,6 @@ void Setup_Video::cancel()
     std::string videoMode = toString(graphics->getWidth()) + "x"
                             + toString(graphics->getHeight());
     mModeList->setSelected(mModeListModel->getIndexOf(videoMode));
-    config.setValue("screenwidth", graphics->getWidth());
-    config.setValue("screenheight", graphics->getHeight());
 
     config.setValue("customcursor", mCustomCursorEnabled);
     config.setValue("particleeffects", mParticleEffectsEnabled);
@@ -429,23 +441,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
 {
     const std::string &id = event.getId();
 
-    if (id == "videomode")
-    {
-        const std::string mode = mModeListModel->getElementAt(mModeList->getSelected());
-        const int width = atoi(mode.substr(0, mode.find("x")).c_str());
-        const int height = atoi(mode.substr(mode.find("x") + 1).c_str());
-
-        // TODO: Find out why the drawing area doesn't resize without a restart
-        if (width != graphics->getWidth() || height != graphics->getHeight())
-        {
-            new OkDialog(_("Screen Resolution Changed"),
-                    _("Restart your client for the change to take effect."));
-        }
-
-        config.setValue("screenwidth", width);
-        config.setValue("screenheight", height);
-    }
-    else if (id == "customcursor")
+    if (id == "customcursor")
     {
         config.setValue("customcursor", mCustomCursorCheckBox->isSelected());
     }

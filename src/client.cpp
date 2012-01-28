@@ -515,7 +515,7 @@ int Client::exec()
                         break;
 
                     case SDL_VIDEORESIZE:
-                        resizeVideo(event.resize.w, event.resize.h);
+                        handleVideoResize(event.resize.w, event.resize.h);
                         break;
                 }
 
@@ -1391,7 +1391,7 @@ void Client::accountLogin(LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
-void Client::resizeVideo(int width, int height)
+void Client::handleVideoResize(int width, int height)
 {
     // Keep a minimum size. This isn't adhered to by the actual window, but
     // it keeps some window positions from getting messed up.
@@ -1401,24 +1401,31 @@ void Client::resizeVideo(int width, int height)
     if (graphics->getWidth() == width && graphics->getHeight() == height)
         return;
 
-    if (graphics->resize(width, height))
+    if (graphics->changeVideoMode(width,
+                                  height,
+                                  graphics->getBpp(),
+                                  false,
+                                  graphics->getHWAccel()))
     {
-        gui->videoResized();
-
-        if (mDesktop)
-            mDesktop->setSize(width, height);
-
-        if (mSetupButton)
-            mSetupButton->setPosition(width - mSetupButton->getWidth() - 3, 3);
-
-        if (mGame)
-            mGame->videoResized(width, height);
-
-        gui->draw();
+        videoResized(width, height);
 
         // Since everything appears to have worked out, remember to store the
         // new size in the configuration.
         config.setValue("screenwidth", width);
         config.setValue("screenheight", height);
     }
+}
+
+void Client::videoResized(int width, int height)
+{
+    gui->videoResized();
+
+    if (mDesktop)
+        mDesktop->setSize(width, height);
+
+    if (mSetupButton)
+        mSetupButton->setPosition(width - mSetupButton->getWidth() - 3, 3);
+
+    if (mGame)
+        mGame->videoResized(width, height);
 }

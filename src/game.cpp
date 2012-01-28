@@ -401,7 +401,7 @@ void Game::handleInput()
         if (event.type == SDL_VIDEORESIZE)
         {
             // Let the client deal with this one (it'll pass down from there)
-            Client::instance()->resizeVideo(event.resize.w, event.resize.h);
+            Client::instance()->handleVideoResize(event.resize.w, event.resize.h);
         }
         // Keyboard events (for discontinuous keys)
         else if (event.type == SDL_KEYDOWN)

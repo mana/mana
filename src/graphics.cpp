@@ -27,6 +27,8 @@
 #include "resources/image.h"
 #include "resources/imageloader.h"
 
+#include "utils/gettext.h"
+
 #include <SDL_gfxBlitFunc.h>
 
 Graphics::Graphics():
@@ -53,12 +55,6 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 
     int displayFlags = SDL_ANYFORMAT;
 
-    mWidth = w;
-    mHeight = h;
-    mBpp = bpp;
-    mFullscreen = fs;
-    mHWAccel = hwaccel;
-
     if (fs)
         displayFlags |= SDL_FULLSCREEN;
     else
@@ -74,6 +70,12 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     if (!mTarget)
         return false;
 
+    mWidth = w;
+    mHeight = h;
+    mBpp = bpp;
+    mFullscreen = fs;
+    mHWAccel = hwaccel;
+
     char videoDriverName[64];
 
     if (SDL_VideoDriverName(videoDriverName, 64))
@@ -84,54 +86,49 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();
 
     logger->log("Possible to create hardware surfaces: %s",
-            ((vi->hw_available) ? "yes" : "no"));
+                vi->hw_available ? "yes" : "no");
     logger->log("Window manager available: %s",
-            ((vi->wm_available) ? "yes" : "no"));
+                vi->wm_available ? "yes" : "no");
     logger->log("Accelerated hardware to hardware blits: %s",
-            ((vi->blit_hw) ? "yes" : "no"));
+                vi->blit_hw ? "yes" : "no");
     logger->log("Accelerated hardware to hardware colorkey blits: %s",
-            ((vi->blit_hw_CC) ? "yes" : "no"));
+                vi->blit_hw_CC ? "yes" : "no");
     logger->log("Accelerated hardware to hardware alpha blits: %s",
-            ((vi->blit_hw_A) ? "yes" : "no"));
+                vi->blit_hw_A ? "yes" : "no");
     logger->log("Accelerated software to hardware blits: %s",
-            ((vi->blit_sw) ? "yes" : "no"));
+                vi->blit_sw ? "yes" : "no");
     logger->log("Accelerated software to hardware colorkey blits: %s",
-            ((vi->blit_sw_CC) ? "yes" : "no"));
+                vi->blit_sw_CC ? "yes" : "no");
     logger->log("Accelerated software to hardware alpha blits: %s",
-            ((vi->blit_sw_A) ? "yes" : "no"));
+                vi->blit_sw_A ? "yes" : "no");
     logger->log("Accelerated color fills: %s",
-            ((vi->blit_fill) ? "yes" : "no"));
+                vi->blit_fill ? "yes" : "no");
     logger->log("Available video memory: %d", vi->video_mem);
 
     return true;
 }
 
-bool Graphics::setFullscreen(bool fs)
+bool Graphics::changeVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 {
-    if (mFullscreen == fs)
+    // Just return success if we're already in this mode
+    if (mWidth == w &&
+            mHeight == h &&
+            mBpp == bpp &&
+            mFullscreen == fs &&
+            mHWAccel == hwaccel)
         return true;
-
-    return setVideoMode(mWidth, mHeight, mBpp, fs, mHWAccel);
-}
-
-bool Graphics::resize(int width, int height)
-{
-    if (mWidth == width && mHeight == height)
-        return true;
-
-    const int prevWidth = mWidth;
-    const int prevHeight = mHeight;
 
     _endDraw();
 
-    bool success = setVideoMode(width, height, mBpp, mFullscreen, mHWAccel);
+    bool success = setVideoMode(w, h, bpp, fs, hwaccel);
 
-    // If it didn't work, try to restore the previous size. If that didn't
-    // work either, bail out (but then we're in deep trouble).
-    if (!success)
-    {
-        if (!setVideoMode(prevWidth, prevHeight, mBpp, mFullscreen, mHWAccel))
-            return false;
+    // If it didn't work, try to restore the previous mode. If that doesn't
+    // work either, we're in big trouble and bail out.
+    if (!success) {
+        if (!setVideoMode(mWidth, mHeight, mBpp, mFullscreen, mHWAccel)) {
+            logger->error(_("Failed to change video mode and couldn't "
+                            "switch back to the previous mode!"));
+        }
     }
 
     _beginDraw();

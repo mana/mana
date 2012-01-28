@@ -203,7 +203,16 @@ public:
     void event(Event::Channel channel, const Event &event);
     void action(const gcn::ActionEvent &event);
 
-    void resizeVideo(int width, int height);
+    /**
+     * Should be called after the window has been resized by the user.
+     */
+    void handleVideoResize(int width, int height);
+
+    /**
+     * Should be called after a succesful resize or change of resolution, makes
+     * sure the GUI and game adapt to the new size.
+     */
+    void videoResized(int width, int height);
 
 private:
     void initRootDir();

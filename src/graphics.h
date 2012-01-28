@@ -88,14 +88,10 @@ class Graphics : public gcn::SDLGraphics
         virtual bool setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
 
         /**
-         * Set fullscreen mode.
+         * Change the video mode. Can be used for switching to full screen,
+         * changing resolution or adapting after window resize.
          */
-        bool setFullscreen(bool fs);
-
-        /**
-         * Resize the window to the specified size.
-         */
-        bool resize(int width, int height);
+        bool changeVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
 
         /**
          * Blits an image onto the screen.
@@ -122,7 +118,7 @@ class Graphics : public gcn::SDLGraphics
                                    dstX, dstY,
                                    width, height,
                                    desiredWidth, desiredHeight,
-                                   false); };
+                                   false); }
 
         /**
          * Draws a resclaled version of the image
@@ -207,6 +203,23 @@ class Graphics : public gcn::SDLGraphics
          * Returns the height of the screen.
          */
         int getHeight() const;
+
+        /**
+         * Returns the amount of bits per pixel that was requested (not the
+         * actual amount that's currently active).
+         */
+        int getBpp() const { return mBpp; }
+
+        /**
+         * Returns whether we're in a full screen mode.
+         */
+        bool getFullscreen() const { return mFullscreen; }
+
+        /**
+         * Returns whether old-fashioned SDL-based hardware acceleration was
+         * requested (not whether it's currently active).
+         */
+        bool getHWAccel() const { return mHWAccel; }
 
         /**
          * Takes a screenshot and returns it as SDL surface.
