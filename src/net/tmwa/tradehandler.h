@@ -51,6 +51,9 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
         void finish();
 
         void cancel();
+
+    private:
+        bool mTrading;
 };
 
 } // namespace TmwAthena

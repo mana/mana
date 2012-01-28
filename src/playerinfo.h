@@ -222,17 +222,6 @@ namespace PlayerInfo
      */
     void setBuySellState(BuySellState buySellState);
 
-    /**
-     * Returns true if the player is involved in a trade at the moment, false
-     * otherwise.
-     */
-    bool isTrading();
-
-    /**
-     * Sets whether the player is currently involved in trade or not.
-     */
-    void setTrading(bool trading);
-
 // --- Specials ---------------------------------------------------------------
 
     /**

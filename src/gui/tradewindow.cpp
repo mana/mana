@@ -273,7 +273,6 @@ void TradeWindow::action(const gcn::ActionEvent &event)
     {
         setVisible(false);
         reset();
-        PlayerInfo::setTrading(false);
 
         Net::getTradeHandler()->cancel();
     }

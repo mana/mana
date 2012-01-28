@@ -98,14 +98,14 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 if (player_relations.hasPermission(tradePartnerName,
                                                    PlayerRelation::TRADE))
                 {
-                    if (PlayerInfo::isTrading() || confirmDlg)
+                    if (mTrading || confirmDlg)
                     {
                         Net::getTradeHandler()->respond(false);
                         break;
                     }
 
                     tradePartnerName = tradePartnerNameTemp;
-                    PlayerInfo::setTrading(true);
+                    mTrading = true;
                     confirmDlg = new ConfirmDialog(_("Request for Trade"),
                             strprintf(_("%s wants to trade with you, do you "
                                       "accept?"), tradePartnerName.c_str()));
@@ -148,7 +148,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                     // otherwise ignore silently
 
                     tradeWindow->setVisible(false);
-                    PlayerInfo::setTrading(false);
+                    mTrading = false;
                     break;
                 default: // Shouldn't happen as well, but to be sure
                     SERVER_NOTICE(_("Unhandled trade cancel packet."))
@@ -224,14 +224,14 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
             SERVER_NOTICE(_("Trade canceled."))
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            PlayerInfo::setTrading(false);
+            mTrading = false;
             break;
 
         case SMSG_TRADE_COMPLETE:
             SERVER_NOTICE(_("Trade completed."))
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            PlayerInfo::setTrading(false);
+            mTrading = false;
             break;
     }
 }
@@ -245,7 +245,7 @@ void TradeHandler::request(Being *being)
 void TradeHandler::respond(bool accept)
 {
     if (!accept)
-        PlayerInfo::setTrading(false);
+        mTrading = false;
 
     MessageOut outMsg(CMSG_TRADE_RESPONSE);
     outMsg.writeInt8(accept ? 3 : 4);

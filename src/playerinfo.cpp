@@ -46,7 +46,6 @@ static bool mNPCCount = 0;
 static bool mNPCPostCount = 0;
 
 static BuySellState mBuySellState = BUYSELL_NONE;
-static bool mTrading = false;
 
 static std::map<int, Special> mSpecials;
 static char mSpecialRechargeUpdateNeeded = 0;
@@ -278,24 +277,6 @@ void setBuySellState(BuySellState buySellState)
         event.setInt("oldState", old);
         event.setInt("newState", buySellState);
         event.trigger(Event::BuySellChannel);
-    }
-}
-
-bool isTrading()
-{
-    return mTrading;
-}
-
-void setTrading(bool trading)
-{
-    bool notify = mTrading != trading;
-    mTrading = trading;
-
-    if (notify)
-    {
-        Event event(Event::Trading);
-        event.setBool("trading", trading);
-        event.trigger(Event::StatusChannel);
     }
 }
 

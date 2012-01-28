@@ -56,7 +56,6 @@ public:
         ItemChannel,
         NoticesChannel,
         NpcChannel,
-        StatusChannel,
         StorageChannel
     };
 
@@ -107,7 +106,6 @@ public:
         StringInputSent,
         Stun,
         TalkSent,
-        Trading,
         UpdateAttribute,
         UpdateStat,
         UpdateStatusEffect,

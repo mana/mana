@@ -68,6 +68,7 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
 
     private:
         bool mAcceptTradeRequests;
+        bool mTrading;
 };
 
 } // namespace ManaServ

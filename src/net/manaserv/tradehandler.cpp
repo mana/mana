@@ -109,7 +109,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 respond(false);
                 break;
             }
-            PlayerInfo::setTrading(true);
+            mTrading = true;
             tradePartnerName = being->getName();
             tradePartnerID = being->getId();
             ConfirmDialog *dlg = new ConfirmDialog(_("Request for Trade"),
@@ -148,14 +148,14 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
             SERVER_NOTICE(_("Trade canceled."))
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            PlayerInfo::setTrading(false);
+            mTrading = false;
             break;
 
         case GPMSG_TRADE_COMPLETE:
             SERVER_NOTICE(_("Trade completed."))
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            PlayerInfo::setTrading(false);
+            mTrading = false;
             break;
     }
 }
@@ -176,7 +176,7 @@ void TradeHandler::respond(bool accept)
     gameServerConnection->send(msg);
 
     if (!accept)
-        PlayerInfo::setTrading(false);
+        mTrading = false;
 }
 
 void TradeHandler::addItem(Item *item, int amount)
