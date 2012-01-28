@@ -26,6 +26,8 @@
 
 #include "resources/image.h"
 
+#include "utils/dtor.h"
+
 #include <SDL.h>
 
 CompoundSprite::CompoundSprite():
@@ -42,11 +44,8 @@ CompoundSprite::CompoundSprite():
 
 CompoundSprite::~CompoundSprite()
 {
-    SpriteIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
-        delete (*it);
-
-    clear();
+    delete_all(mSprites);
+    mSprites.clear();
 
     delete mImage;
     delete mAlphaImage;
@@ -57,7 +56,7 @@ bool CompoundSprite::reset()
     bool ret = false;
 
     SpriteIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
+    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
         if (*it)
             ret |= (*it)->reset();
 
@@ -70,7 +69,7 @@ bool CompoundSprite::play(std::string action)
     bool ret = false;
 
     SpriteIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
+    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
         if (*it)
             ret |= (*it)->play(action);
 
@@ -83,7 +82,7 @@ bool CompoundSprite::update(int time)
     bool ret = false;
 
     SpriteIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
+    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
         if (*it)
             ret |= (*it)->update(time);
 
@@ -91,12 +90,12 @@ bool CompoundSprite::update(int time)
     return ret;
 }
 
-bool CompoundSprite::draw(Graphics* graphics, int posX, int posY) const
+bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
 {
     if (mNeedsRedraw)
         redraw();
 
-    if (empty()) // Nothing to draw
+    if (mSprites.empty()) // Nothing to draw
         return false;
 
     posX += mOffsetX;
@@ -117,7 +116,7 @@ bool CompoundSprite::draw(Graphics* graphics, int posX, int posY) const
     else
     {
         SpriteConstIterator it, it_end;
-        for (it = begin(), it_end = end(); it != it_end; it++)
+        for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
         {
             Sprite *s = *it;
             if (s)
@@ -132,7 +131,7 @@ bool CompoundSprite::draw(Graphics* graphics, int posX, int posY) const
     return false;
 }
 
-const Image* CompoundSprite::getImage() const
+const Image *CompoundSprite::getImage() const
 {
     return mImage;
 }
@@ -142,7 +141,7 @@ bool CompoundSprite::setDirection(SpriteDirection direction)
     bool ret = false;
 
     SpriteIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
+    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
         if (*it)
             ret |= (*it)->setDirection(direction);
 
@@ -167,7 +166,7 @@ bool CompoundSprite::drawnWhenBehind() const
 size_t CompoundSprite::getCurrentFrame() const
 {
     SpriteConstIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
+    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
         if (*it)
             return (*it)->getCurrentFrame();
 
@@ -177,59 +176,60 @@ size_t CompoundSprite::getCurrentFrame() const
 size_t CompoundSprite::getFrameCount() const
 {
     SpriteConstIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
+    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
         if (*it)
             return (*it)->getFrameCount();
 
     return 0;
 }
 
-void CompoundSprite::addSprite(Sprite* sprite)
+void CompoundSprite::addSprite(Sprite *sprite)
 {
-    push_back(sprite);
+    mSprites.push_back(sprite);
     mNeedsRedraw = true;
 }
 
 void CompoundSprite::setSprite(int layer, Sprite *sprite)
 {
     // Skip if it won't change anything
-    if (at(layer) == sprite)
+    if (mSprites.at(layer) == sprite)
         return;
 
-    if (at(layer))
-        delete at(layer);
-    at(layer) = sprite;
+    if (mSprites.at(layer))
+        delete mSprites.at(layer);
+    mSprites[layer] = sprite;
     mNeedsRedraw = true;
 }
 
 void CompoundSprite::removeSprite(int layer)
 {
     // Skip if it won't change anything
-    if (!at(layer))
+    if (!mSprites.at(layer))
         return;
 
-    delete at(layer);
-    at(layer) = NULL;
+    delete mSprites.at(layer);
+    mSprites.at(layer) = NULL;
     mNeedsRedraw = true;
 }
 
 void CompoundSprite::clear()
 {
     // Skip if it won't change anything
-    if (empty())
+    if (mSprites.empty())
         return;
 
-    std::vector<Sprite*>::clear();
+    delete_all(mSprites);
+    mSprites.clear();
     mNeedsRedraw = true;
 }
 
 void CompoundSprite::ensureSize(size_t layerCount)
 {
     // Skip if it won't change anything
-    if (size() >= layerCount)
+    if (mSprites.size() >= layerCount)
         return;
 
-    resize(layerCount);
+    mSprites.resize(layerCount);
 }
 
 /**
@@ -237,7 +237,7 @@ void CompoundSprite::ensureSize(size_t layerCount)
  */
 size_t CompoundSprite::getCurrentFrame(size_t layer)
 {
-    if (layer >= size())
+    if (layer >= mSprites.size())
         return 0;
 
     if (Sprite *s = getSprite(layer))
@@ -251,7 +251,7 @@ size_t CompoundSprite::getCurrentFrame(size_t layer)
  */
 size_t CompoundSprite::getFrameCount(size_t layer)
 {
-    if (layer >= size())
+    if (layer >= mSprites.size())
         return 0;
 
     Sprite *s = getSprite(layer);
@@ -265,7 +265,7 @@ int CompoundSprite::getDuration() const
 {
     int duration = 0;
     SpriteConstIterator it, it_end;
-    for (it = begin(), it_end = end(); it != it_end; it++)
+    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
         if ((*it) && (*it)->getDuration() > duration)
             duration = (*it)->getDuration();
 
@@ -296,8 +296,8 @@ void CompoundSprite::redraw() const
     // TODO OpenGL support
     if (Image::getLoadAsOpenGL())
     {
-        mWidth = at(0)->getWidth();
-        mHeight = at(0)->getHeight();
+        mWidth = mSprites.at(0)->getWidth();
+        mHeight = mSprites.at(0)->getHeight();
         mOffsetX = 0;
         mOffsetY = 0;
         mNeedsRedraw = false;
@@ -307,12 +307,12 @@ void CompoundSprite::redraw() const
 
     mWidth = mHeight = mOffsetX = mOffsetY = 0;
     Sprite *s = NULL;
-    SpriteConstIterator it = begin(), it_end = end();
+    SpriteConstIterator it, it_end = mSprites.end();
 
     int posX = 0;
     int posY = 0;
 
-    for (it = begin(); it != it_end; ++it)
+    for (it = mSprites.begin(); it != it_end; ++it)
     {
         s = *it;
 
@@ -355,7 +355,7 @@ void CompoundSprite::redraw() const
     graphics->setTarget(surface);
     graphics->_beginDraw();
 
-    for (it = begin(), it_end = end(); it != it_end; ++it)
+    for (it = mSprites.begin(); it != it_end; ++it)
     {
         s = *it;
 
