@@ -194,18 +194,6 @@ bool AnimatedSprite::setDirection(SpriteDirection direction)
     return false;
 }
 
-size_t AnimatedSprite::getCurrentFrame() const
-{
-    return mFrameIndex;
-}
-
-size_t AnimatedSprite::getFrameCount() const
-{
-    if (mAnimation)
-        return mAnimation->getLength();
-    return 0;
-}
-
 int AnimatedSprite::getDuration() const
 {
     if (mAnimation)

@@ -80,10 +80,6 @@ class AnimatedSprite : public Sprite
         virtual bool drawnWhenBehind() const
         { return true; }
 
-        size_t getCurrentFrame() const;
-
-        size_t getFrameCount() const;
-
         int getDuration() const;
 
     private:

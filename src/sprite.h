@@ -87,7 +87,7 @@ class Sprite
         /**
          * Returns a reference to the current image being drawn.
          */
-        virtual const Image* getImage() const = 0;
+        virtual const Image *getImage() const = 0;
 
         /**
          * Sets the direction.
@@ -107,16 +107,6 @@ class Sprite
          */
         virtual float getAlpha() const
         { return mAlpha; }
-
-        /**
-         * Returns the current frame number for the sprite.
-         */
-        virtual size_t getCurrentFrame() const = 0;
-
-        /**
-         * Returns the frame count for the sprite.
-         */
-        virtual size_t getFrameCount() const = 0;
 
         /**
          * Returns the duration of the current sprite animation in milliseconds.

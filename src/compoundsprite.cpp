@@ -163,26 +163,6 @@ bool CompoundSprite::drawnWhenBehind() const
     return (getNumberOfLayers() == 1);
 }
 
-size_t CompoundSprite::getCurrentFrame() const
-{
-    SpriteConstIterator it, it_end;
-    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
-        if (*it)
-            return (*it)->getCurrentFrame();
-
-    return 0;
-}
-
-size_t CompoundSprite::getFrameCount() const
-{
-    SpriteConstIterator it, it_end;
-    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
-        if (*it)
-            return (*it)->getFrameCount();
-
-    return 0;
-}
-
 void CompoundSprite::addSprite(Sprite *sprite)
 {
     mSprites.push_back(sprite);
@@ -230,35 +210,6 @@ void CompoundSprite::ensureSize(size_t layerCount)
         return;
 
     mSprites.resize(layerCount);
-}
-
-/**
- * Returns the curent frame in the current animation of the given layer.
- */
-size_t CompoundSprite::getCurrentFrame(size_t layer)
-{
-    if (layer >= mSprites.size())
-        return 0;
-
-    if (Sprite *s = getSprite(layer))
-        return s->getCurrentFrame();
-
-    return 0;
-}
-
-/**
- * Returns the frame count in the current animation of the given layer.
- */
-size_t CompoundSprite::getFrameCount(size_t layer)
-{
-    if (layer >= mSprites.size())
-        return 0;
-
-    Sprite *s = getSprite(layer);
-    if (s)
-        return s->getFrameCount();
-
-    return 0;
 }
 
 int CompoundSprite::getDuration() const
