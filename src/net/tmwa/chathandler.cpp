@@ -111,8 +111,21 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
 
             chatMsg = msg.readString(chatMsgLength);
 
+            // This is a sure sign of some special command, none of which are
+            // supported at the moment.
+            if (chatMsg.compare(0, 3, "\302\202!") == 0)
+                return;
+
             if (nick != "Server")
             {
+                // Ignore the shop commands since this client doesn't support
+                // them at the moment.
+                if (chatMsg.find("!selllist ") == 0 ||
+                        chatMsg.find("!buylist ") == 0 ||
+                        chatMsg.find("!buyitem ") == 0 ||
+                        chatMsg.find("!sellitem ") == 0)
+                    return;
+
                 if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
                 {
                     Event event(Event::Whisper);
