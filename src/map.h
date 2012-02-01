@@ -221,7 +221,7 @@ class Map : public Properties
         /**
          * Finds the tile set that a tile with the given global id is part of.
          */
-        Tileset *getTilesetWithGid(int gid) const;
+        Tileset *getTilesetWithGid(unsigned gid) const;
 
         /**
          * Get tile reference.

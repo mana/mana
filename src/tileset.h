@@ -30,7 +30,8 @@
 class Tileset : public ImageSet
 {
     public:
-        Tileset(Image *img, int w, int h, int firstGid, int margin, int spacing):
+        Tileset(Image *img, int w, int h, unsigned firstGid,
+                int margin, int spacing):
             ImageSet(img, w, h, margin, spacing),
             mFirstGid(firstGid)
         {
@@ -39,13 +40,13 @@ class Tileset : public ImageSet
         /**
          * Returns the first gid.
          */
-        int getFirstGid() const
+        unsigned getFirstGid() const
         {
             return mFirstGid;
         }
 
     private:
-        int mFirstGid;
+        unsigned mFirstGid;
 };
 
 #endif // TILESET_H

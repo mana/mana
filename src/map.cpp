@@ -549,7 +549,7 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
     }
 }
 
-Tileset *Map::getTilesetWithGid(int gid) const
+Tileset *Map::getTilesetWithGid(unsigned gid) const
 {
     Tileset *s = NULL;
     for (Tilesets::const_iterator it = mTilesets.begin(),

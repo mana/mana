@@ -220,8 +220,19 @@ void MapReader::readProperties(xmlNodePtr node, Properties *props)
     }
 }
 
-static void setTile(Map *map, MapLayer *layer, int x, int y, int gid)
+static void setTile(Map *map, MapLayer *layer, int x, int y, unsigned gid)
 {
+    // Bits on the far end of the 32-bit global tile ID are used for tile flags
+    const int FlippedHorizontallyFlag   = 0x80000000;
+    const int FlippedVerticallyFlag     = 0x40000000;
+    const int FlippedAntiDiagonallyFlag = 0x20000000;
+
+    // Clear the flags
+    // TODO: It would be nice to properly support these flags later
+    gid &= ~(FlippedHorizontallyFlag |
+             FlippedVerticallyFlag |
+             FlippedAntiDiagonallyFlag);
+
     const Tileset * const set = map->getTilesetWithGid(gid);
     if (layer)
     {
@@ -333,7 +344,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
                 for (int i = 0; i < binLen - 3; i += 4)
                 {
-                    const int gid = binData[i] |
+                    const unsigned gid = binData[i] |
                         binData[i + 1] << 8 |
                         binData[i + 2] << 16 |
                         binData[i + 3] << 24;
@@ -375,7 +386,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
             {
                 pos = csv.find_first_of(",", oldPos);
 
-                const int gid = atoi(csv.substr(oldPos, pos - oldPos).c_str());
+                unsigned gid = atol(csv.substr(oldPos, pos - oldPos).c_str());
 
                 setTile(map, layer, x, y, gid);
 
@@ -400,7 +411,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                 if (!xmlStrEqual(childNode2->name, BAD_CAST "tile"))
                     continue;
 
-                const int gid = XML::getProperty(childNode2, "gid", -1);
+                unsigned gid = XML::getProperty(childNode2, "gid", 0);
                 setTile(map, layer, x, y, gid);
 
                 x++;
@@ -426,7 +437,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
                                 Map *map)
 {
-    int firstGid = XML::getProperty(node, "firstgid", 0);
+    unsigned firstGid = XML::getProperty(node, "firstgid", 0);
     int margin = XML::getProperty(node, "margin", 0);
     int spacing = XML::getProperty(node, "spacing", 0);
     XML::Document* doc = NULL;
