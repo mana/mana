@@ -443,7 +443,9 @@ class Being : public ActorSprite, public EventListener
         /**
          * Make the being look at a given pixel position.
          */
-        void lookAt(const Vector &destPos);
+        void lookAt(const Vector &destVec);
+        void lookAt(const Position &destPos)
+        { lookAt(Vector(destPos.x, destPos.y)); }
 
     protected:
         /**

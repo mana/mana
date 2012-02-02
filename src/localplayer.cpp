@@ -546,6 +546,7 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
     if ((int)pos.x != destination.x
         || (int)pos.y != destination.y)
     {
+        lookAt(destination);
         setDestination(destination.x, destination.y);
     }
     else if (dir != mDirection)
@@ -758,9 +759,6 @@ void LocalPlayer::startWalking(unsigned char dir)
         dx--;
     if (dir & RIGHT)
         dx++;
-
-    // Update the direction when the walk just start
-    setDirection(dir);
 
     nextTile(dir);
 }
