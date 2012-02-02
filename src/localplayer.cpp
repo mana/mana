@@ -844,25 +844,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         setTarget(target);
     }
 
-    Vector plaPos = this->getPosition();
-    Vector tarPos = mTarget->getPosition();
-    int dist_x = plaPos.x - tarPos.x;
-    int dist_y = plaPos.y - tarPos.y;
-
-    if (abs(dist_y) >= abs(dist_x))
-    {
-        if (dist_y < 0)
-            setDirection(DOWN);
-        else
-            setDirection(UP);
-    }
-    else
-    {
-        if (dist_x < 0)
-            setDirection(RIGHT);
-        else
-            setDirection(LEFT);
-    }
+    lookAt(mTarget->getPosition());
 
     mLastActionTime = tick_time;
 
