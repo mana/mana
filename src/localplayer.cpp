@@ -955,6 +955,7 @@ void LocalPlayer::setGotoTarget(Being *target)
     mTarget = target;
     mGoingToTarget = true;
     const Vector &targetPos = target->getPosition();
+    pathSetByMouse();
     setDestination(targetPos.x, targetPos.y);
 }
 
