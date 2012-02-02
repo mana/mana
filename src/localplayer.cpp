@@ -243,56 +243,53 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
         // Going top-right
         if (dx > 0 && dy < 0)
         {
-            if (!wTopRight)
+            // Choose a straight direction when diagonal target is blocked
+            if (!wTop && wRight)
+                dy = 0;
+            else if (wTop && !wRight)
+                dx = 0;
+            else if (!wTop && !wRight)
+                return Position(tileX * tileW + tileW
+                                - getCollisionRadius(),
+                                tileY * tileH + getCollisionRadius());
+            else if (!wTopRight)
             {
-                // Choose a straight direction when diagonal target is blocked
-                if (!wTop && wRight)
+                // Both straight direction are walkable
+                // Go right when below the corner
+                if (offsetY >=
+                    (offsetX / tileH - (offsetX / tileW * tileH)))
                     dy = 0;
-                else if (wTop && !wRight)
+                else // Go up otherwise
                     dx = 0;
-                else if (!wTop && !wRight)
-                    return Position(tileX * tileW + tileW
-                                    - getCollisionRadius(),
-                                    tileY * tileH + getCollisionRadius());
-                else // Both straight direction are walkable
-                {
-                    // Go right when below the corner
-                    if (offsetY >=
-                        (offsetX / tileH - (offsetX / tileW * tileH)))
-                        dy = 0;
-                    else // Go up otherwise
-                        dx = 0;
-                }
             }
-            else // The diagonal is walkable
+            else // The top-right diagonal is walkable
+            {
                 return mMap->checkNodeOffsets(getCollisionRadius(),
-                                              getWalkMask(),
-                                    Position((int)pos.x + tileW,
-                                             (int)pos.y - tileH));
+                                                getWalkMask(),
+                                                Position((int)pos.x + tileW,
+                                                        (int)pos.y - tileH));
+            }
         }
 
         // Going top-left
         if (dx < 0 && dy < 0)
         {
-            if (!wTopLeft)
+            // Choose a straight direction when diagonal target is blocked
+            if (!wTop && wLeft)
+                dy = 0;
+            else if (wTop && !wLeft)
+                dx = 0;
+            else if (!wTop && !wLeft)
+                return Position(tileX * tileW + getCollisionRadius(),
+                                tileY * tileH + getCollisionRadius());
+            else if (!wTopLeft)
             {
-                // Choose a straight direction when diagonal target is blocked
-                if (!wTop && wLeft)
+                // Go left when below the corner
+                if (offsetY >= (offsetX / mMap->getTileWidth()
+                    * mMap->getTileHeight()))
                     dy = 0;
-                else if (wTop && !wLeft)
+                else // Go up otherwise
                     dx = 0;
-                else if (!wTop && !wLeft)
-                    return Position(tileX * tileW + getCollisionRadius(),
-                                    tileY * tileH + getCollisionRadius());
-                else // Both straight direction are walkable
-                {
-                    // Go left when below the corner
-                    if (offsetY >= (offsetX / mMap->getTileWidth()
-                        * mMap->getTileHeight()))
-                        dy = 0;
-                    else // Go up otherwise
-                        dx = 0;
-                }
             }
             else // The diagonal is walkable
                 return mMap->checkNodeOffsets(getCollisionRadius(),
@@ -304,26 +301,24 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
         // Going bottom-left
         if (dx < 0 && dy > 0)
         {
-            if (!wBottomLeft)
+            // Choose a straight direction when diagonal target is blocked
+            if (!wBottom && wLeft)
+                dy = 0;
+            else if (wBottom && !wLeft)
+                dx = 0;
+            else if (!wBottom && !wLeft)
+                return Position(tileX * tileW + getCollisionRadius(),
+                                tileY * tileH + tileH - getCollisionRadius());
+            else if (!wBottomLeft)
             {
-                // Choose a straight direction when diagonal target is blocked
-                if (!wBottom && wLeft)
-                    dy = 0;
-                else if (wBottom && !wLeft)
+                // Both straight direction are walkable
+                // Go down when below the corner
+                if (offsetY >= (offsetX / mMap->getTileHeight()
+                    - (offsetX / mMap->getTileWidth()
+                        * mMap->getTileHeight()) ))
                     dx = 0;
-                else if (!wBottom && !wLeft)
-                    return Position(tileX * tileW + getCollisionRadius(),
-                                    tileY * tileH + tileH - getCollisionRadius());
-                else // Both straight direction are walkable
-                {
-                    // Go down when below the corner
-                    if (offsetY >= (offsetX / mMap->getTileHeight()
-                        - (offsetX / mMap->getTileWidth()
-                           * mMap->getTileHeight()) ))
-                        dx = 0;
-                    else // Go left otherwise
-                        dy = 0;
-                }
+                else // Go left otherwise
+                    dy = 0;
             }
             else // The diagonal is walkable
                 return mMap->checkNodeOffsets(getCollisionRadius(),
@@ -335,25 +330,23 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
         // Going bottom-right
         if (dx > 0 && dy > 0)
         {
-            if (!wBottomRight)
+            // Choose a straight direction when diagonal target is blocked
+            if (!wBottom && wRight)
+                dy = 0;
+            else if (wBottom && !wRight)
+                dx = 0;
+            else if (!wBottom && !wRight)
+                return Position(tileX * tileW + tileW - getCollisionRadius(),
+                                tileY * tileH + tileH - getCollisionRadius());
+            else if (!wBottomRight)
             {
-                // Choose a straight direction when diagonal target is blocked
-                if (!wBottom && wRight)
-                    dy = 0;
-                else if (wBottom && !wRight)
+                // Both straight direction are walkable
+                // Go down when below the corner
+                if (offsetY >= (offsetX / mMap->getTileWidth()
+                    * mMap->getTileHeight()))
                     dx = 0;
-                else if (!wBottom && !wRight)
-                    return Position(tileX * tileW + tileW - getCollisionRadius(),
-                                    tileY * tileH + tileH - getCollisionRadius());
-                else // Both straight direction are walkable
-                {
-                    // Go down when below the corner
-                    if (offsetY >= (offsetX / mMap->getTileWidth()
-                        * mMap->getTileHeight()))
-                        dx = 0;
-                    else // Go right otherwise
-                        dy = 0;
-                }
+                else // Go right otherwise
+                    dy = 0;
             }
             else // The diagonal is walkable
                 return mMap->checkNodeOffsets(getCollisionRadius(),
