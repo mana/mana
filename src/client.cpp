@@ -581,7 +581,9 @@ int Client::exec()
 
             mDesktop = new Desktop;
             top->add(mDesktop);
-            mSetupButton = new Button(_("Setup"), "Setup", this);
+            mSetupButton = new Button("", "Setup", this);
+            mSetupButton->setButtonPopupText(_("Setup"));
+            mSetupButton->setButtonIcon("button-icon-setup.png");
             mSetupButton->setPosition(top->getWidth() - mSetupButton->getWidth()
                                      - 3, 3);
             top->add(mSetupButton);

@@ -89,7 +89,7 @@ class Button : public gcn::Button
     private:
         void init();
 
-        void removeButtonIcon();
+        void removeButtonIcon(bool adjustButtonSize = true);
 
         static ImageRect* mButton;  /**< Button state graphics */
         static int mInstances;      /**< Number of button instances */

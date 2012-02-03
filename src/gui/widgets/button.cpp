@@ -118,7 +118,7 @@ bool Button::setButtonIcon(const std::string& iconFile)
     return (mButtonIcon);
 }
 
-void Button::removeButtonIcon()
+void Button::removeButtonIcon(bool adjustButtonSize)
 {
     if (!mButtonIcon)
         return;
@@ -132,7 +132,8 @@ void Button::removeButtonIcon()
     delete[] mButtonIcon;
     mButtonIcon = 0;
 
-    adjustSize();
+    if (adjustButtonSize)
+        adjustSize();
 }
 
 void Button::init()
@@ -190,7 +191,8 @@ Button::~Button()
         delete mTextPopup;
         mTextPopup = 0;
     }
-    removeButtonIcon();
+    // Don' try to readjust the size when it's about to be deleted.
+    removeButtonIcon(false);
 }
 
 void Button::updateAlpha()
