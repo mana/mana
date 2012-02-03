@@ -628,11 +628,6 @@ bool Map::contains(int x, int y) const
     return x >= 0 && y >= 0 && x < mWidth && y < mHeight;
 }
 
-bool Map::containsPixel(int x, int y) const
-{
-    return contains(x / mTileWidth, y / mTileHeight);
-}
-
 MetaTile *Map::getMetaTile(int x, int y) const
 {
     return &mMetaTiles[x + y * mWidth];

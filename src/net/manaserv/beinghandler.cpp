@@ -119,14 +119,6 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
     BeingDirection direction = (BeingDirection)msg.readInt8();
     Being *being;
 
-    if (!Game::instance()->getCurrentMap()->containsPixel(px, py))
-    {
-        logger->log("Warning: Received GPMSG_BEING_ENTER for being id %i "
-                    "with position outside the map boundaries "
-                    "(x = %i, y = %i)", id, px, py);
-        return;
-    }
-
     switch (type)
     {
         case OBJECT_CHARACTER:
@@ -230,14 +222,6 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         // the being position
         if (flags & MOVING_POSITION)
         {
-            if (!being->getMap()->containsPixel(sx, sy))
-            {
-                logger->log("Warning: Received GPMSG_BEINGS_MOVE for being id "
-                            "%i with position outside the map boundaries "
-                            "(x = %i, y = %i)", id, sx, sy);
-                continue;
-            }
-
             Vector serverPos(sx, sy);
             if (serverPos.length()
                 - being->getPosition().length() > POSITION_DIFF_TOLERANCE)
@@ -245,17 +229,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         }
 
         if (flags & MOVING_DESTINATION)
-        {
-            if (!being->getMap()->containsPixel(dx, dy))
-            {
-                logger->log("Warning: Received GPMSG_BEINGS_MOVE for being id "
-                            "%i with destination outside the map boundaries "
-                            "(x = %i, y = %i)", id, dx, dy);
-                continue;
-            }
-
             being->setDestination(dx, dy);
-        }
     }
 }
 

@@ -333,11 +333,6 @@ class Map : public Properties
          */
         TileAnimation *getAnimationForGid(int gid) const;
 
-        /**
-         * Tells whether the given pixel falls within the map boundaries.
-         */
-        bool containsPixel(int x, int y) const;
-
     protected:
         friend class Actor;
 
