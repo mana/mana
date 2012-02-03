@@ -132,23 +132,48 @@ void LocalPlayer::logic()
 
     if (mTarget)
     {
-        if (mTarget->getType() == ActorSprite::NPC)
+        ActorSprite::Type targetType = mTarget->getType();
+        switch (targetType)
         {
-            mTarget->setTargetType(
-                withinRange(mTarget,
-                            Net::getGameHandler()->getNpcTalkRange()) ?
-                            TCT_IN_RANGE : TCT_NORMAL);
-        }
-        else
-        {
-            mTarget->setTargetType(withinRange(mTarget, getAttackRange()) ?
-                                   TCT_IN_RANGE : TCT_NORMAL);
+            case ActorSprite::NPC:
+                mTarget->setTargetType(
+                    withinRange(mTarget,
+                                Net::getGameHandler()->getNpcTalkRange()) ?
+                                    TCT_IN_RANGE : TCT_NORMAL);
+                break;
+            case ActorSprite::MONSTER:
+            case ActorSprite::PLAYER:
+            {
+                // Dealing with attacks
+                bool withinAttackRange = withinRange(mTarget, getAttackRange());
+                mTarget->setTargetType(withinAttackRange ?
+                                       TCT_IN_RANGE : TCT_NORMAL);
 
-            if (!mTarget->isAlive())
-                stopAttack();
-
-            if (mKeepAttacking && mTarget)
-                attack(mTarget, true);
+                if (!mTarget->isAlive())
+                {
+                    stopAttack();
+                }
+                else if (mGoingToTarget && !withinAttackRange
+                    && getPath().empty())
+                {
+                    setDestination(mTarget->getPosition());
+                    mKeepAttacking = true;
+                }
+                else if (withinAttackRange)
+                {
+                    mGoingToTarget = false;
+                    if (!getPath().empty())
+                    {
+                        stopWalking();
+                        mKeepAttacking = true;
+                    }
+                    if (mKeepAttacking)
+                        attack(mTarget, true);
+                }
+                break;
+            }
+            default:
+                break;
         }
     }
     else if (mPickUpTarget
@@ -692,9 +717,6 @@ void LocalPlayer::setDestination(int x, int y)
         if (srcX == dstX && srcY == dstY)
             Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }
-
-    mPickUpTarget = 0;
-    mKeepAttacking = false;
 }
 
 void LocalPlayer::setWalkingDir(int dir)
@@ -736,8 +758,6 @@ void LocalPlayer::setWalkingDir(int dir)
 
 void LocalPlayer::startWalking(unsigned char dir)
 {
-    // This function is called by setWalkingDir(),
-    // but also by nextTile() for TMW-Athena...
     if (!mMap || !dir)
         return;
 
@@ -764,7 +784,7 @@ void LocalPlayer::startWalking(unsigned char dir)
 
 void LocalPlayer::stopWalking(bool sendToServer)
 {
-    if (mAction == MOVE && mWalkingDir)
+    if (mAction == MOVE)
     {
         mWalkingDir = 0;
 
@@ -863,6 +883,7 @@ void LocalPlayer::stopAttack()
         setTarget(0);
     }
     mLastTargetTime = -1;
+    mKeepAttacking = false;
 }
 
 void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
@@ -950,13 +971,17 @@ bool LocalPlayer::withinRange(Actor *target, int range) const
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
+    if (!target)
+        return;
+
     mLastTargetTime = -1;
 
-    mTarget = target;
+    setTarget(target);
     mGoingToTarget = true;
-    const Vector &targetPos = target->getPosition();
+    mKeepAttacking = true;
+
     pathSetByMouse();
-    setDestination(targetPos.x, targetPos.y);
+    setDestination(target->getPosition());
 }
 
 void LocalPlayer::addMessageToQueue(const std::string &message, int color)

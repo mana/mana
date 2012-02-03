@@ -128,6 +128,8 @@ class LocalPlayer : public Being
          * Sets a new destination for this being to walk to.
          */
         virtual void setDestination(int x, int y);
+        virtual void setDestination(const Vector &dest)
+        { setDestination((int)dest.x, (int)dest.y); }
 
         /**
          * Sets a new direction to keep walking in, when using the keyboard
