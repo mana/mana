@@ -682,6 +682,9 @@ void LocalPlayer::setTarget(Being *target)
 
 void LocalPlayer::setDestination(int x, int y)
 {
+    if (!mMap)
+        return;
+
     int srcX = x;
     int srcY = y;
     int dstX = (int)mDest.x;
