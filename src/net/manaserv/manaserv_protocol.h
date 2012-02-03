@@ -167,6 +167,7 @@ enum {
     PGMSG_USE_ITEM                 = 0x0300, // B slot
     GPMSG_USE_RESPONSE             = 0x0301, // B error
     GPMSG_BEINGS_DAMAGE            = 0x0310, // { W being id, W amount }*
+    PGMSG_TRIGGER_EMOTICON         = 0x0315, // W emoticon id
     GPMSG_CREATE_EFFECT_POS        = 0x0320, // W effect id, W*2 position
     GPMSG_CREATE_EFFECT_BEING      = 0x0321, // W effect id, W BeingID
     GPMSG_SHAKE                    = 0x0330, // W intensityX, W intensityY, [W decay_times_10000, [W duration]]
