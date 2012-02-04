@@ -902,6 +902,7 @@ int Client::exec()
                 case STATE_REGISTER_ATTEMPT:
                     logger->log("Username is %s", loginData.username.c_str());
                     Net::getLoginHandler()->registerAccount(&loginData);
+                    loginData.password = "";
                     break;
 
                 case STATE_CHANGEPASSWORD:
@@ -921,7 +922,7 @@ int Client::exec()
                     showOkDialog(_("Password Change"),
                                  _("Password changed successfully!"),
                                  STATE_CHAR_SELECT);
-                    loginData.password = loginData.newPassword;
+                    loginData.password = "";
                     loginData.newPassword = "";
                     break;
 
