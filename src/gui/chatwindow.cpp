@@ -406,22 +406,10 @@ void ChatWindow::event(Event::Channel channel, const Event &event)
         {
             // Show on local tab
             localChatTab->chatLog(event.getString("message"), BY_GM);
-            // Spread over channels
-            for (std::list<Channel*>::iterator
-                 it = channelManager->mChannels.begin(),
-                 it_end = channelManager->mChannels.end();
-                 it != it_end; ++it)
-            {
-                if (*it)
-                    (*it)->getTab()->chatLog(event.getString("message"), BY_GM);
-            }
-            // Spread over whispers
-            for (TabMap::const_iterator it = mWhispers.begin(),
-                 it_end = mWhispers.end(); it != it_end; ++it)
-            {
-                if (it->second)
-                    it->second->chatLog(event.getString("message"), BY_GM);
-            }
+            // Show on selected tab if it is not the global one
+            ChatTab *selected = getFocused();
+            if (selected && selected != localChatTab)
+                selected->chatLog(event.getString("message"), BY_GM);
         }
         else if (event.getType() == Event::Being)
         {
