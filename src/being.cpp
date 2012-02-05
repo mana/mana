@@ -596,9 +596,16 @@ void Being::fireMissile(Being *victim, const std::string &particle)
         target->setLifetime(1000);
         victim->controlParticle(target);
 
-        missile->setDestination(target, 7, 0);
-        missile->setDieDistance(8);
-        missile->setLifetime(900);
+        float acceleration = missile->getAcceleration();
+        float momentum = missile->getMomentum();
+        // Gives a minimum acceleration if none defined.
+        if (acceleration == 0.0f)
+            acceleration = 7.0f;
+        missile->setDestination(target, acceleration, momentum);
+
+        // Make the missile die when touching the victim.
+        missile->setDieDistance((float)victim->getCollisionRadius());
+        missile->setLifetime(1000);
     }
 
 }
