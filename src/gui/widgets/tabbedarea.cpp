@@ -33,12 +33,10 @@ TabbedArea::TabbedArea() : gcn::TabbedArea(),
     mWidgetContainer->setOpaque(false);
     addWidgetListener(this);
 
-    mArrowButton[0] = new Button("", "shift_left", this);
-    mArrowButton[1] = new Button("", "shift_right", this);
-    if (!mArrowButton[0]->setButtonIcon("tab_arrows_left.png"))
-        mArrowButton[0]->setCaption("<");
-    if (!mArrowButton[1]->setButtonIcon("tab_arrows_right.png"))
-        mArrowButton[1]->setCaption(">");
+    mArrowButton[0] = new Button(std::string(), "shift_left", this);
+    mArrowButton[1] = new Button(std::string(), "shift_right", this);
+    mArrowButton[0]->setButtonIcon("tab_arrows_left.png");
+    mArrowButton[1]->setButtonIcon("tab_arrows_right.png");
 
     add(mArrowButton[0]);
     add(mArrowButton[1]);
@@ -88,21 +86,18 @@ gcn::Widget *TabbedArea::getWidget(const std::string &name) const
 
 gcn::Widget *TabbedArea::getCurrentWidget()
 {
-    gcn::Tab *tab = getSelectedTab();
-
-    if (tab)
+    if (gcn::Tab *tab = getSelectedTab())
         return getWidget(tab->getCaption());
-    else
-        return NULL;
+
+    return NULL;
 }
 
 void TabbedArea::addTab(gcn::Tab* tab, gcn::Widget* widget)
 {
     gcn::TabbedArea::addTab(tab, widget);
 
-    int width = getWidth() - 2 * getFrameSize();
-    int height = getHeight() - 2 * getFrameSize() - mTabContainer->getHeight();
-    widget->setSize(width, height);
+    widget->setSize(mWidgetContainer->getWidth(),
+                    mWidgetContainer->getHeight());
 
     updateTabsWidth();
     updateArrowEnableState();
@@ -182,9 +177,7 @@ void TabbedArea::setSelectedTab(gcn::Tab *tab)
 {
     gcn::TabbedArea::setSelectedTab(tab);
 
-    Tab *newTab = dynamic_cast<Tab*>(tab);
-
-    if (newTab)
+    if (Tab *newTab = dynamic_cast<Tab*>(tab))
         newTab->setCurrent();
 
     widgetResized(NULL);
@@ -192,15 +185,13 @@ void TabbedArea::setSelectedTab(gcn::Tab *tab)
 
 void TabbedArea::widgetResized(const gcn::Event &event)
 {
-    int width = getWidth() - 2 * getFrameSize()
-                - 2 * mWidgetContainer->getFrameSize();
-    int height = getHeight() - 2 * getFrameSize() - mWidgetContainer->getY()
-                 - 2 * mWidgetContainer->getFrameSize();
-    mWidgetContainer->setSize(width, height);
+    adjustSize();
 
-    gcn::Widget *w = getCurrentWidget();
-    if (w)
-        w->setSize(width, height);
+    if (gcn::Widget *w = getCurrentWidget())
+    {
+        w->setSize(mWidgetContainer->getWidth(),
+                   mWidgetContainer->getHeight());
+    }
 
     // Check whether there is room to show more tabs now.
     int innerWidth = getWidth() - 4 - mArrowButton[0]->getWidth()
@@ -214,7 +205,7 @@ void TabbedArea::widgetResized(const gcn::Event &event)
     }
 
     // Move the right arrow to fit the windows content.
-    mArrowButton[1]->setPosition(width - mArrowButton[1]->getWidth(), 0);
+    mArrowButton[1]->setPosition(getWidth() - mArrowButton[1]->getWidth(), 0);
 
     updateArrowEnableState();
     adjustTabPositions();
@@ -302,9 +293,7 @@ void TabbedArea::action(const gcn::ActionEvent& actionEvent)
 void TabbedArea::updateArrowEnableState()
 {
     updateTabsWidth();
-    if (mTabsWidth > getWidth() - 4
-        - mArrowButton[0]->getWidth()
-        - mArrowButton[1]->getWidth())
+    if (mTabsWidth > getWidth() - 2)
     {
         mArrowButton[0]->setVisible(true);
         mArrowButton[1]->setVisible(true);
@@ -323,7 +312,7 @@ void TabbedArea::updateArrowEnableState()
         mArrowButton[0]->setEnabled(true);
 
     // Right arrow consistency check
-    if (mVisibleTabsWidth < getWidth() - 4
+    if (mVisibleTabsWidth < getWidth() - 2
         - mArrowButton[0]->getWidth()
         - mArrowButton[1]->getWidth())
     {

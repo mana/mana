@@ -36,6 +36,7 @@
 #include "gui/widgets/channeltab.h"
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/itemlinkhandler.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/textfield.h"
@@ -101,7 +102,7 @@ ChatWindow::ChatWindow():
     setupWindow->registerWindowForReset(this);
 
     // no title presented, title bar is padding so window can be moved.
-    gcn::Window::setTitleBarHeight(gcn::Window::getPadding() + 4);
+    setTitleBarHeight(getPadding() + 4);
     setShowTitle(false);
     setResizable(true);
     setDefaultVisible(true);
@@ -118,6 +119,7 @@ ChatWindow::ChatWindow():
 
     mChatTabs = new TabbedArea;
 
+    getLayout().setPadding(3);
     place(0, 0, mChatTabs, 3, 3);
     place(0, 3, mChatInput, 3);
 
