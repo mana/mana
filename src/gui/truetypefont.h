@@ -63,6 +63,13 @@ class TrueTypeFont : public gcn::Font
         virtual int getHeight() const;
 
         /**
+         * Returns the height of a line of text. This is not the visual height
+         * as returned by getHeight() but the recommended spacing between lines
+         * of text.
+         */
+        int getLineHeight() const;
+
+        /**
          * @see Font::drawString
          */
         void drawString(gcn::Graphics *graphics,

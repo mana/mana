@@ -24,6 +24,7 @@
 
 #include "client.h"
 
+#include "gui/truetypefont.h"
 #include "gui/widgets/linkhandler.h"
 
 #include "resources/theme.h"
@@ -79,15 +80,21 @@ void BrowserBox::disableLinksAndUserColors()
 
 void BrowserBox::addRow(const std::string &row)
 {
-    std::string tmp = row;
     std::string newRow;
-    std::string::size_type idx1, idx2, idx3;
+
     gcn::Font *font = getFont();
+    const int fontHeight = font->getHeight();
+
+    int lineHeight = fontHeight;
+    if (TrueTypeFont *ttf = dynamic_cast<TrueTypeFont*>(font))
+        lineHeight = ttf->getLineHeight();
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
     {
-        BROWSER_LINK bLink;
+        BrowserLink bLink;
+        std::string tmp = row;
+        std::string::size_type idx1, idx2, idx3;
 
         // Check for links in format "@@link|Caption@@"
         idx1 = tmp.find("@@");
@@ -100,8 +107,8 @@ void BrowserBox::addRow(const std::string &row)
                 break;
             bLink.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
             bLink.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
-            bLink.y1 = static_cast<int>(mTextRows.size()) * font->getHeight();
-            bLink.y2 = bLink.y1 + font->getHeight();
+            bLink.y1 = static_cast<int>(mTextRows.size()) * lineHeight;
+            bLink.y2 = bLink.y1 + fontHeight;
 
             newRow += tmp.substr(0, idx1);
 
@@ -145,8 +152,8 @@ void BrowserBox::addRow(const std::string &row)
             mTextRows.pop_front();
             for (unsigned int i = 0; i < mLinks.size(); i++)
             {
-                mLinks[i].y1 -= font->getHeight();
-                mLinks[i].y2 -= font->getHeight();
+                mLinks[i].y1 -= lineHeight;
+                mLinks[i].y2 -= lineHeight;
 
                 if (mLinks[i].y1 < 0)
                     mLinks.erase(mLinks.begin() + i);
@@ -158,8 +165,9 @@ void BrowserBox::addRow(const std::string &row)
     if (mMode == AUTO_SIZE)
     {
         std::string plain = newRow;
-        while ((idx1 = plain.find("##")) != std::string::npos)
-            plain.erase(idx1, 3);
+        std::string::size_type index;
+        while ((index = plain.find("##")) != std::string::npos)
+            plain.erase(index, 3);
 
         // Adjust the BrowserBox size
         int w = font->getWidth(plain);
@@ -167,25 +175,27 @@ void BrowserBox::addRow(const std::string &row)
             setWidth(w);
     }
 
+    // TODO: Optimize! There's no point in wrapping all text rows again, just
+    // do the one that was just added (but take into account discarded rows?).
     if (mMode == AUTO_WRAP)
     {
-        unsigned int y = 0;
+        unsigned int wrapCount = 0;
         unsigned int nextChar;
-        const char *hyphen = "~";
-        int hyphenWidth = font->getWidth(hyphen);
+        const char *tilde = "~";
+        int tildeWidth = font->getWidth(tilde);
         int x = 0;
 
         for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
         {
             std::string row = *i;
-            for (unsigned int j = 0; j < row.size(); j++)
+            for (unsigned int j = 0; j < row.size(); ++j)
             {
                 std::string character = row.substr(j, 1);
                 x += font->getWidth(character);
                 nextChar = j + 1;
 
                 // Wraping between words (at blank spaces)
-                if ((nextChar < row.size()) && (row.at(nextChar) == ' '))
+                if (nextChar < row.size() && row.at(nextChar) == ' ')
                 {
                     int nextSpacePos = static_cast<int>(
                         row.find(" ", (nextChar + 1)));
@@ -196,28 +206,28 @@ void BrowserBox::addRow(const std::string &row)
                             row.substr(nextChar,
                                 (nextSpacePos - nextChar)));
 
-                    if ((x + nextWordWidth + 10) > getWidth())
+                    if (x + nextWordWidth + 10 > getWidth())
                     {
-                        x = 15; // Ident in new line
-                        y += 1;
-                        j++;
+                        x = 15; // Indent in new line
+                        ++wrapCount;
+                        ++j;
                     }
                 }
                 // Wrapping looong lines (brutal force)
-                else if ((x + 2 * hyphenWidth) > getWidth())
+                else if (x + 2 * tildeWidth > getWidth())
                 {
                     x = 15; // Ident in new line
-                    y += 1;
+                    ++wrapCount;
                 }
             }
         }
 
-        setHeight(font->getHeight() * (static_cast<int>(
-                  mTextRows.size()) + y));
+        setHeight(lineHeight * (mTextRows.size() + wrapCount - 1)
+                  + fontHeight);
     }
     else
     {
-        setHeight(font->getHeight() * static_cast<int>(mTextRows.size()));
+        setHeight(lineHeight * (mTextRows.size() - 1) + fontHeight);
     }
     mUpdateTime = 0;
     updateHeight();
@@ -238,7 +248,7 @@ struct MouseOverLink
     MouseOverLink(int x, int y) : mX(x), mY(y)
     { }
 
-    bool operator() (BROWSER_LINK &link)
+    bool operator() (BrowserLink &link) const
     {
         return (mX >= link.x1 && mX < link.x2 &&
                 mY >= link.y1 && mY < link.y2);
@@ -362,13 +372,16 @@ int BrowserBox::calcHeight()
     unsigned link = 0;
     gcn::Font *font = getFont();
 
-    int fontHeight = font->getHeight();
-    int fontWidthMinus = font->getWidth("-");
-    char const *hyphen = "~";
-    int hyphenWidth = font->getWidth(hyphen);
+    const int fontHeight = font->getHeight();
+    const int minusWidth = font->getWidth("-");
+    const int tildeWidth = font->getWidth("~");
+
+    int lineHeight = fontHeight;
+    if (TrueTypeFont *ttf = dynamic_cast<TrueTypeFont*>(font))
+        lineHeight = ttf->getLineHeight();
 
     gcn::Color selColor = Theme::getThemeColor(Theme::TEXT);
-    const gcn::Color textColor = Theme::getThemeColor(Theme::TEXT);
+    const gcn::Color &textColor = Theme::getThemeColor(Theme::TEXT);
 
     mLineParts.clear();
 
@@ -381,14 +394,13 @@ int BrowserBox::calcHeight()
         // Check for separator lines
         if (row.find("---", 0) == 0)
         {
-            const int dashWidth = fontWidthMinus;
             for (x = 0; x < getWidth(); x++)
             {
                 mLineParts.push_back(LinePart(x, y, selColor, "-"));
-                x += dashWidth - 2;
+                x += minusWidth - 2;
             }
 
-            y += fontHeight;
+            y += lineHeight;
             continue;
         }
 
@@ -403,7 +415,7 @@ int BrowserBox::calcHeight()
             // Wrapped line continuation shall be indented
             if (wrapped)
             {
-                y += fontHeight;
+                y += lineHeight;
                 x = 15;
                 wrapped = false;
             }
@@ -474,11 +486,11 @@ int BrowserBox::calcHeight()
                 }
             }
 
-            std::string::size_type len =
-                end == std::string::npos ? end : end - start;
-
             if (start >= row.length())
                 break;
+
+            std::string::size_type len =
+                end == std::string::npos ? end : end - start;
 
             std::string part = row.substr(start, len);
 
@@ -503,7 +515,7 @@ int BrowserBox::calcHeight()
                     {
                         forced = true;
                         end = row.size();
-                        x += hyphenWidth; // Account for the wrap-notifier
+                        x += tildeWidth; // Account for the wrap-notifier
                         continue;
                     }
 
@@ -519,9 +531,9 @@ int BrowserBox::calcHeight()
 
                 if (forced)
                 {
-                    x -= hyphenWidth; // Remove the wrap-notifier accounting
-                    mLineParts.push_back(LinePart(getWidth() - hyphenWidth,
-                                         y, selColor, hyphen));
+                    x -= tildeWidth; // Remove the wrap-notifier accounting
+                    mLineParts.push_back(LinePart(getWidth() - tildeWidth,
+                                                  y, selColor, "~"));
                     end++; // Skip to the next character
                 }
                 else
@@ -533,16 +545,17 @@ int BrowserBox::calcHeight()
                 wrappedLines++;
             }
 
-            mLineParts.push_back(LinePart(x, y, selColor, part.c_str()));
+            mLineParts.push_back(LinePart(x, y, selColor, part));
 
-            if (mMode == AUTO_WRAP && font->getWidth(part) == 0)
+            const int partWidth = font->getWidth(part);
+            if (mMode == AUTO_WRAP && partWidth == 0)
                 break;
 
-            x += font->getWidth(part);
+            x += partWidth;
         }
-        y += fontHeight;
+        y += lineHeight;
     }
-    return (static_cast<int>(mTextRows.size()) + wrappedLines) * fontHeight;
+    return (mTextRows.size() + wrappedLines - 1) * lineHeight + fontHeight;
 }
 
 void BrowserBox::updateHeight()

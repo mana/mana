@@ -31,7 +31,7 @@
 
 class LinkHandler;
 
-struct BROWSER_LINK
+struct BrowserLink
 {
     int x1, x2, y1, y2;     /**< Where link is placed */
     std::string link;
@@ -104,7 +104,7 @@ class BrowserBox : public gcn::Widget,
         /**
          * Sets the maximum numbers of rows in the browser box. 0 = no limit.
          */
-        void setMaxRow(unsigned max) {mMaxRows = max; };
+        void setMaxRow(unsigned max) {mMaxRows = max; }
 
         /**
          * Disable links & user defined colors to be used in chat input.
@@ -200,7 +200,7 @@ class BrowserBox : public gcn::Widget,
         typedef LinePartList::iterator LinePartIterator;
         LinePartList mLineParts;
 
-        typedef std::vector<BROWSER_LINK> Links;
+        typedef std::vector<BrowserLink> Links;
         typedef Links::iterator LinkIterator;
         Links mLinks;
 

@@ -189,3 +189,8 @@ int TrueTypeFont::getHeight() const
 {
     return TTF_FontHeight(mFont);
 }
+
+int TrueTypeFont::getLineHeight() const
+{
+    return TTF_FontLineSkip(mFont);
+}
