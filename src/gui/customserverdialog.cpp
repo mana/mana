@@ -119,8 +119,8 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
         mDescriptionField->setText(serverInfo.description);
         mServerAddressField->setText(serverInfo.hostname);
         mPortField->setText(toString(serverInfo.port));
-        mTypeField->setSelected(serverInfo.type ? ServerInfo::MANASERV :
-                                ServerInfo::TMWATHENA);
+        mTypeField->setSelected(serverInfo.type == ServerInfo::TMWATHENA ?
+                                0 : 1);
     }
 
     setLocationRelativeTo(getParentWindow());
