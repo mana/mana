@@ -130,6 +130,8 @@ class LocalPlayer : public Being
         virtual void setDestination(int x, int y);
         virtual void setDestination(const Vector &dest)
         { setDestination((int)dest.x, (int)dest.y); }
+        virtual void setDestination(const Position &dest)
+        { setDestination(dest.x, dest.y); }
 
         /**
          * Sets a new direction to keep walking in, when using the keyboard
@@ -147,6 +149,13 @@ class LocalPlayer : public Being
          * Sets going to being to attack
          */
         void setGotoTarget(Being *target);
+
+        /**
+         * Cancel a possible target destination in progress,
+         * but not the targeting.
+         */
+        void cancelGoToTarget()
+        { mGoingToTarget = mKeepAttacking = false; }
 
         /**
          * Returns whether the target is in range (in pixels).

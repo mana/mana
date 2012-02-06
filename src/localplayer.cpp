@@ -153,22 +153,30 @@ void LocalPlayer::logic()
                 {
                     stopAttack();
                 }
-                else if (mGoingToTarget && !withinAttackRange
-                    && getPath().empty())
+                else if (mGoingToTarget)
                 {
-                    setDestination(mTarget->getPosition());
-                    mKeepAttacking = true;
-                }
-                else if (withinAttackRange)
-                {
-                    mGoingToTarget = false;
-                    if (!getPath().empty())
+                    if (!withinAttackRange && getPath().empty())
                     {
-                        stopWalking();
-                        mKeepAttacking = true;
+                        setDestination(mTarget->getPosition());
                     }
-                    if (mKeepAttacking)
-                        attack(mTarget, true);
+                    else if (withinAttackRange)
+                    {
+                        // Truncate the path to terminate at the next node.
+                        // This permits to avoid a walking glitch in tile path
+                        // mode.
+                        if (!mPath.empty())
+                        {
+                            pathSetByMouse();
+                            setDestination(mPath.front());
+                        }
+
+                        mKeepAttacking = true;
+                        mGoingToTarget = false;
+                    }
+                }
+                else if (withinAttackRange && mKeepAttacking)
+                {
+                    attack(mTarget, true);
                 }
                 break;
             }
@@ -616,6 +624,8 @@ void LocalPlayer::pickUp(FloorItem *item)
     if (!item)
         return;
 
+    cancelGoToTarget();
+
     if (withinRange(item, Net::getGameHandler()->getPickupRange()))
     {
         Net::getPlayerHandler()->pickUp(item);
@@ -745,6 +755,8 @@ void LocalPlayer::setWalkingDir(int dir)
     // This permit to avoid desyncs with other clients.
     else if (!dir)
         return;
+
+    cancelGoToTarget();
 
     mWalkingDir = dir;
 
@@ -886,7 +898,7 @@ void LocalPlayer::stopAttack()
         setTarget(0);
     }
     mLastTargetTime = -1;
-    mKeepAttacking = false;
+    cancelGoToTarget();
 }
 
 void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
