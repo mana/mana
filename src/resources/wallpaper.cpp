@@ -41,68 +41,73 @@ struct WallpaperData
     int height;
 };
 
+inline std::ostream& operator <<(std::ostream &os, const WallpaperData &d)
+{
+    os << d.filename << "[" << d.width << "x" << d.height << "]";
+    return os;
+}
+
 static std::vector<WallpaperData> wallpaperData;
 static bool haveBackup; // Is the backup (no size given) version available?
 
 static std::string wallpaperPath;
 static std::string wallpaperFile;
 
-// Search for the wallpaper path values sequentially..
-static void initDefaultWallpaperPaths()
+static void initWallpaperPaths()
 {
-    ResourceManager *resman = ResourceManager::getInstance();
-
     // Init the path
-    wallpaperPath = branding.getStringValue("wallpapersPath");
+    wallpaperPath = paths.getStringValue("wallpapers");
 
-    if (wallpaperPath.empty() || !resman->isDirectory(wallpaperPath))
-        wallpaperPath = paths.getStringValue("wallpapers");
+    if (wallpaperPath.empty())
+    {
+        wallpaperPath = branding.getStringValue("wallpapersPath");
 
-    if (wallpaperPath.empty() || !resman->isDirectory(wallpaperPath))
-        wallpaperPath = "graphics/images/";
+        if (wallpaperPath.empty())
+            wallpaperPath = "graphics/images/";
+    }
 
     // Init the default file
-    wallpaperFile = branding.getStringValue("wallpaperFile");
+    wallpaperFile = paths.getStringValue("wallpaperFile");
 
-    if (!wallpaperFile.empty() && !resman->isDirectory(wallpaperFile))
-        return;
-    else
-        wallpaperFile = paths.getStringValue("wallpaperFile");
+    if (wallpaperFile.empty())
+    {
+        wallpaperFile = branding.getStringValue("wallpaperFile");
 
-    if (wallpaperFile.empty() || resman->isDirectory(wallpaperFile))
-        wallpaperFile = "login_wallpaper.png";
+        if (wallpaperFile.empty())
+            wallpaperFile = "login_wallpaper.png";
+    }
 }
 
-bool wallpaperCompare(WallpaperData a, WallpaperData b)
+bool wallpaperCompare(const WallpaperData &a, const WallpaperData &b)
 {
     int aa = a.width * a.height;
     int ab = b.width * b.height;
 
     return (aa > ab || (aa == ab && a.width > b.width));
 }
-#include <iostream>
+
 void Wallpaper::loadWallpapers()
 {
     wallpaperData.clear();
 
-    initDefaultWallpaperPaths();
+    initWallpaperPaths();
 
-    char **imgs = PHYSFS_enumerateFiles(wallpaperPath.c_str());
+    char **fileNames = PHYSFS_enumerateFiles(wallpaperPath.c_str());
 
-    for (char **i = imgs; *i != NULL; i++)
+    for (char **fileName = fileNames; *fileName; fileName++)
     {
         int width;
         int height;
 
         // If the backup file is found, we tell it.
-        if (strncmp (*i, wallpaperFile.c_str(), strlen(*i)) == 0)
+        if (strncmp(*fileName, wallpaperFile.c_str(), strlen(*fileName)) == 0)
             haveBackup = true;
 
         // If the image format is terminated by: "_<width>x<height>.png"
         // It is taken as a potential wallpaper.
 
         // First, get the base filename of the image:
-        std::string filename = *i;
+        std::string filename = *fileName;
         filename = filename.substr(0, filename.rfind("_"));
 
         // Check that the base filename doesn't have any '%' markers.
@@ -111,11 +116,11 @@ void Wallpaper::loadWallpapers()
             // Then, append the width and height search mask.
             filename.append("_%dx%d.png");
 
-            if (sscanf(*i, filename.c_str(), &width, &height) == 2)
+            if (sscanf(*fileName, filename.c_str(), &width, &height) == 2)
             {
                 WallpaperData wp;
                 wp.filename = wallpaperPath;
-                wp.filename.append(*i);
+                wp.filename.append(*fileName);
                 wp.width = width;
                 wp.height = height;
                 wallpaperData.push_back(wp);
@@ -123,7 +128,7 @@ void Wallpaper::loadWallpapers()
         }
     }
 
-    PHYSFS_freeList(imgs);
+    PHYSFS_freeList(fileNames);
 
     std::sort(wallpaperData.begin(), wallpaperData.end(), wallpaperCompare);
 }

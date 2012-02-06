@@ -54,7 +54,7 @@ class Desktop : public Container, gcn::WidgetListener
          */
         void reloadWallpaper();
 
-        void widgetResized(const gcn::Event &event);
+        void widgetResized(const gcn::Event &);
 
         void draw(gcn::Graphics *graphics);
 
