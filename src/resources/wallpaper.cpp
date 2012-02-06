@@ -103,12 +103,10 @@ void Wallpaper::loadWallpapers()
 
         // First, get the base filename of the image:
         std::string filename = *i;
-        unsigned int separator = filename.rfind("_");
-        filename = filename.substr(0, separator);
+        filename = filename.substr(0, filename.rfind("_"));
 
         // Check that the base filename doesn't have any '%' markers.
-        separator = filename.find("%");
-        if (separator == std::string::npos)
+        if (filename.find("%") == std::string::npos)
         {
             // Then, append the width and height search mask.
             filename.append("_%dx%d.png");
