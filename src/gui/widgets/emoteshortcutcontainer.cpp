@@ -96,10 +96,10 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         g->drawText(key, emoteX + 2, emoteY + 2, gcn::Graphics::LEFT);
 
-        if (emoteShortcut->getEmote(i))
+        int emoteId = emoteShortcut->getEmote(i);
+        if (emoteId > 0 && emoteId <= EmoteDB::getLast())
         {
-            mEmoteImg[emoteShortcut->getEmote(i) - 1]->draw(g, emoteX + 2,
-                                                            emoteY + 10);
+            mEmoteImg[emoteId - 1]->draw(g, emoteX + 2, emoteY + 10);
         }
 
     }
