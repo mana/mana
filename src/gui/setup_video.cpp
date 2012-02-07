@@ -187,6 +187,7 @@ Setup_Video::Setup_Video():
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    scrollArea->setSize(100, 200);
 
     overlayDetailLabel = new Label(_("Ambient FX:"));
     particleDetailLabel = new Label(_("Particle detail:"));
@@ -249,35 +250,35 @@ Setup_Video::Setup_Video():
 
     // Do the layout
     LayoutHelper h(this);
+
     ContainerPlacer place = h.getPlacer(0, 0);
+    place.getCell().setHAlign(LayoutCell::FILL);
 
-    place(0, 0, scrollArea, 2, 6).setPadding(2);
+    place(0, 0, scrollArea, 1, 4).setPadding(2).setHAlign(LayoutCell::FILL);
+    place(1, 0, space, 1, 4);
+    place(2, 0, mFsCheckBox);
+    place(2, 1, mOpenGLCheckBox);
+    place(2, 2, mCustomCursorCheckBox);
 
-    place(2, 0, mFsCheckBox, 2);
-    place(4, 0, mOpenGLCheckBox, 2);
+    place = h.getPlacer(0, 1);
+    place.getCell().setHAlign(LayoutCell::FILL);
 
-    place(2, 1, space, 4, 1);
+    place(0, 0, space, 3);
+    place(0, 1, mDisableSDLTransparencyCheckBox, 4);
 
-    place(2, 2, mCustomCursorCheckBox, 2);
-    place(4, 2, mParticleEffectsCheckBox, 2);
+    place(0, 2, mFpsCheckBox);
+    place(1, 2, mFpsSlider, 2);
+    place(3, 2, mFpsLabel);
 
-    place(2, 3, space, 4, 1);
+    place(0, 3, mParticleEffectsCheckBox, 4);
 
-    place(2, 4, mDisableSDLTransparencyCheckBox, 4);
+    place(0, 4, particleDetailLabel);
+    place(1, 4, mParticleDetailSlider, 2);
+    place(3, 4, mParticleDetailField);
 
-    place(2, 5, space, 4, 1);
-
-    place(0, 6, mFpsSlider, 2);
-    place(2, 6, mFpsCheckBox).setPadding(3);
-    place(3, 6, mFpsLabel).setPadding(1);
-
-    place(0, 7, mOverlayDetailSlider, 2);
-    place(2, 7, overlayDetailLabel);
-    place(3, 7, mOverlayDetailField).setPadding(2);
-
-    place(0, 8, mParticleDetailSlider, 2);
-    place(2, 8, particleDetailLabel);
-    place(3, 8, mParticleDetailField).setPadding(2);
+    place(0, 5, overlayDetailLabel);
+    place(1, 5, mOverlayDetailSlider, 2);
+    place(3, 5, mOverlayDetailField);
 
     setDimension(gcn::Rectangle(0, 0, 370, 300));
 }
