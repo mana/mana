@@ -106,7 +106,6 @@ public:
             return TMWATHENA;
         else if (compareStrI(type, "manaserv") == 0)
             return MANASERV;
-
         return UNKNOWN;
     }
 };

@@ -281,10 +281,14 @@ void ServerDialog::action(const gcn::ActionEvent &event)
         int index = mServersList->getSelected();
 
         // Check login
-        if (index < 0)
+        if (index < 0
+#ifndef ENABLE_MANASERV
+            || mServersListModel->getServer(index).type == ServerInfo::MANASERV
+#endif
+        )
         {
             OkDialog *dlg = new OkDialog(_("Error"),
-                _("Please select a server."));
+                _("Please select a valid server."));
             dlg->addActionListener(this);
         }
         else
@@ -470,7 +474,11 @@ void ServerDialog::loadServers()
         server.type = ServerInfo::parseType(type);
 
         // Ignore unknown server types
-        if (server.type == ServerInfo::UNKNOWN)
+        if (server.type == ServerInfo::UNKNOWN
+#ifndef ENABLE_MANASERV
+            || server.type == ServerInfo::MANASERV
+#endif
+        )
         {
             logger->log("Ignoring server entry with unknown type: %s",
                         type.c_str());

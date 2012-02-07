@@ -154,9 +154,11 @@ void connectToServer(ServerInfo &server)
 
         switch (server.type)
         {
+#ifdef ENABLE_MANASERV
             case ServerInfo::MANASERV:
                 new ManaServ::GeneralHandler;
                 break;
+#endif
             case ServerInfo::TMWATHENA:
                 new TmwAthena::GeneralHandler;
                 break;
