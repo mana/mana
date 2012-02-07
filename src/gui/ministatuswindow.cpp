@@ -37,6 +37,8 @@
 #include "net/playerhandler.h"
 #include "net/gamehandler.h"
 
+#include "net/tmwa/protocol.h"
+
 #include "resources/theme.h"
 
 #include "utils/gettext.h"
@@ -136,6 +138,14 @@ void MiniStatusWindow::event(Event::Channel channel,
             else if (id == EXP || id == EXP_NEEDED)
             {
                 StatusWindow::updateXPBar(mXpBar);
+            }
+        }
+        if (event.getType() == Event::UpdateStat)
+        {
+            if (Net::getNetworkType() == ServerInfo::TMWATHENA &&
+                    event.getInt("id") == TmwAthena::MATK)
+            {
+                StatusWindow::updateMPBar(mMpBar);
             }
         }
     }

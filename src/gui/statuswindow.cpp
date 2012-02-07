@@ -39,6 +39,8 @@
 #include "net/playerhandler.h"
 #include "net/gamehandler.h"
 
+#include "net/tmwa/protocol.h"
+
 #include "resources/theme.h"
 
 #include "utils/gettext.h"
@@ -287,6 +289,12 @@ void StatusWindow::event(Event::Channel channel,
             if (it != mAttrs.end())
             {
                 it->second->update();
+            }
+
+            if (Net::getNetworkType() == ServerInfo::TMWATHENA &&
+                    id == TmwAthena::MATK)
+            {
+                updateMPBar(mMpBar, true);
             }
         }
     }

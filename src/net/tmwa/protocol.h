@@ -22,6 +22,8 @@
 #ifndef TA_PROTOCOL_H
 #define TA_PROTOCOL_H
 
+namespace TmwAthena {
+
 enum {
     JOB = 0xa,
 
@@ -304,5 +306,7 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_GUILD_MESSAGE           0x017e
 #define CMSG_GUILD_OPPOSITION        0x0180
 #define CMSG_GUILD_ALLIANCE_DELETE   0x0183
+
+}
 
 #endif
