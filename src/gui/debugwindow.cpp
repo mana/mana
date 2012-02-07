@@ -220,16 +220,16 @@ DebugWindow::DebugWindow()
 {
     setupWindow->registerWindowForReset(this);
 
+    setWindowName("Debug");
     setResizable(true);
     setCloseButton(true);
     setMinWidth(100);
     setMinHeight(100);
     setDefaultSize(0, 120, 300, 190);
-    loadWindowState();
 
     TabbedArea *tabs = new TabbedArea;
     place(0, 0, tabs, 2, 2);
-    widgetResized(NULL);
+    loadWindowState();
 
     Tab *tabInfo = new Tab;
     tabInfo->setCaption(_("Info"));
