@@ -105,30 +105,39 @@ void Desktop::draw(gcn::Graphics *graphics)
 
 void Desktop::setBestFittingWallpaper()
 {
-    const std::string wallpaperName =
-            Wallpaper::getWallpaper(getWidth(), getHeight());
+    const int width = getWidth();
+    const int height = getHeight();
 
-    Image *nWallPaper = ResourceManager::getInstance()->getImage(wallpaperName);
+    if (width == 0 || height == 0)
+        return;
 
-    if (nWallPaper)
+    const std::string wallpaperName = Wallpaper::getWallpaper(width, height);
+
+    if (wallpaperName.empty())
+        return;
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *wallpaper = resman->getImage(wallpaperName);
+
+    if (wallpaper)
     {
         if (mWallpaper)
-            mWallpaper->decRef();
+            mWallpaper->decRef(Resource::DeleteImmediately);
 
-        if (!nWallPaper->useOpenGL() && (nWallPaper->getWidth() != getWidth()
-            || nWallPaper->getHeight() != getHeight()))
+        mWallpaper = wallpaper;
+
+        // In software mode we try to prescale the image for performance
+        if (!wallpaper->useOpenGL() &&
+                (wallpaper->getWidth() != width ||
+                 wallpaper->getHeight() != height))
         {
-            // We rescale to obtain a fullscreen wallpaper...
-            Image *newRsclWlPpr = nWallPaper->SDLgetScaledImage(getWidth(), getHeight());
-            std::string idPath = nWallPaper->getIdPath();
-
-            // We replace the resource in the resource manager
-            nWallPaper->decRef();
-            ResourceManager::getInstance()->addResource(idPath, newRsclWlPpr);
-            mWallpaper = newRsclWlPpr;
+            if (Image *prescaled = wallpaper->SDLgetScaledImage(width, height))
+            {
+                // Make sure the original can be freed
+                wallpaper->decRef();
+                mWallpaper = prescaled;
+            }
         }
-            else
-                mWallpaper = nWallPaper;
     }
     else
     {

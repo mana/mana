@@ -27,16 +27,7 @@
 
 #include <cassert>
 
-Resource::~Resource()
-{
-}
-
-void Resource::incRef()
-{
-    ++mRefCount;
-}
-
-void Resource::decRef()
+void Resource::decRef(OrphanPolicy orphanPolicy)
 {
     // Reference may not already have reached zero
     if (mRefCount == 0) {
@@ -48,8 +39,18 @@ void Resource::decRef()
 
     if (mRefCount == 0)
     {
-        // Warn the manager that this resource is no longer used.
         ResourceManager *resman = ResourceManager::getInstance();
-        resman->release(this);
+
+        switch (orphanPolicy)
+        {
+            case DeleteLater:
+            default:
+                resman->release(this);
+                break;
+            case DeleteImmediately:
+                resman->remove(this);
+                delete this;
+                break;
+        }
     }
 }

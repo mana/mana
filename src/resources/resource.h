@@ -33,21 +33,26 @@ class Resource
     friend class ResourceManager;
 
     public:
-        Resource(): mRefCount(0) {}
+        enum OrphanPolicy {
+            DeleteLater,
+            DeleteImmediately
+        };
+
+        Resource():
+            mRefCount(0)
+        {}
 
         /**
          * Increments the internal reference count.
          */
-        void incRef();
+        void incRef() { ++mRefCount; }
 
         /**
-         * Decrements the reference count and deletes the object
-         * if no references are left.
-         *
-         * @return <code>true</code> if the object was deleted
-         *         <code>false</code> otherwise.
+         * Decrements the reference count. When no references are left, either
+         * schedules the object for deletion or deletes it immediately,
+         * depending on the \a orphanPolicy.
          */
-        void decRef();
+        void decRef(OrphanPolicy orphanPolicy = DeleteLater);
 
         /**
          * Return the path identifying this resource.
@@ -56,7 +61,7 @@ class Resource
         { return mIdPath; }
 
     protected:
-        virtual ~Resource();
+        virtual ~Resource() {}
 
     private:
         std::string mIdPath; /**< Path identifying this resource. */

@@ -32,6 +32,7 @@ AmbientLayer::AmbientLayer(Image *img, float parallax,
     mSpeedX(speedX), mSpeedY(speedY),
     mKeepRatio(keepRatio)
 {
+    mImage->incRef();
 
     if (keepRatio && !mImage->useOpenGL()
         && defaultScreenWidth != 0
@@ -47,17 +48,10 @@ AmbientLayer::AmbientLayer(Image *img, float parallax,
 
         if (rescaledOverlay)
         {
-            // Replace the resource with the new one...
-            std::string idPath = mImage->getIdPath() + "_rescaled";
-            ResourceManager::getInstance()->addResource(idPath, rescaledOverlay);
+            mImage->decRef();
             mImage = rescaledOverlay;
-            rescaledOverlay->incRef();
         }
-        else
-            mImage->incRef();
     }
-    else
-        mImage->incRef();
 }
 
 AmbientLayer::~AmbientLayer()

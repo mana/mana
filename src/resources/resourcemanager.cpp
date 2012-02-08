@@ -117,9 +117,11 @@ void ResourceManager::cleanOrphans()
     timeval tv;
     gettimeofday(&tv, NULL);
     // Delete orphaned resources after 30 seconds.
-    time_t oldest = tv.tv_sec, threshold = oldest - 30;
+    time_t oldest = tv.tv_sec;
+    time_t threshold = oldest - 30;
 
-    if (mOrphanedResources.empty() || mOldestOrphan >= threshold) return;
+    if (mOrphanedResources.empty() || mOldestOrphan >= threshold)
+        return;
 
     ResourceIterator iter = mOrphanedResources.begin();
     while (iter != mOrphanedResources.end())
@@ -128,7 +130,8 @@ void ResourceManager::cleanOrphans()
         time_t t = res->mTimeStamp;
         if (t >= threshold)
         {
-            if (t < oldest) oldest = t;
+            if (t < oldest)
+                oldest = t;
             ++iter;
         }
         else
@@ -232,6 +235,17 @@ bool ResourceManager::addResource(const std::string &idPath,
         return true;
     }
     return false;
+}
+
+Resource *ResourceManager::get(const std::string &idPath)
+{
+    ResourceIterator resIter = mResources.find(idPath);
+    if (resIter != mResources.end())
+    {
+        resIter->second->incRef();
+        return resIter->second;
+    }
+    return 0;
 }
 
 Resource *ResourceManager::get(const std::string &idPath, generator fun,
@@ -392,10 +406,16 @@ void ResourceManager::release(Resource *res)
     time_t timestamp = tv.tv_sec;
 
     res->mTimeStamp = timestamp;
-    if (mOrphanedResources.empty()) mOldestOrphan = timestamp;
+    if (mOrphanedResources.empty())
+        mOldestOrphan = timestamp;
 
     mOrphanedResources.insert(*resIter);
     mResources.erase(resIter);
+}
+
+void ResourceManager::remove(Resource *res)
+{
+    mResources.erase(res->mIdPath);
 }
 
 ResourceManager *ResourceManager::getInstance()

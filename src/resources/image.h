@@ -147,14 +147,15 @@ class Image : public Resource
         { return mDisableTransparency; }
 
         /**
-         * Gets an scaled instance of an image.
+         * Gets an scaled instance of an image. The returned image is managed
+         * by the ResourceManager.
          *
-         * @param width The desired width of the scaled image.
+         * @param width  The desired width of the scaled image.
          * @param height The desired height of the scaled image.
          *
-         * @return A new Image* object.
+         * @return An Image resource, or 0 on failure.
          */
-        Image* SDLgetScaledImage(int width, int height);
+        Image *SDLgetScaledImage(int width, int height);
 
         /**
          * Get the alpha Channel of a SDL surface.

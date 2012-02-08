@@ -326,31 +326,52 @@ void Image::setAlpha(float alpha)
     }
 }
 
-Image* Image::SDLgetScaledImage(int width, int height)
+Image *Image::SDLgetScaledImage(int width, int height)
 {
-    // No scaling on incorrect new values.
     if (width == 0 || height == 0)
-    return NULL;
+        return 0;
 
-    // No scaling when there is ... no different given size ...
+    // Increase our reference count and return ourselves in case of same size
     if (width == getWidth() && height == getHeight())
-        return NULL;
-
-    Image* scaledImage = NULL;
-    SDL_Surface* scaledSurface = NULL;
-
-    if (mSDLSurface)
     {
-        scaledSurface = zoomSurface(mSDLSurface,
-                    (double) width / getWidth(),
-                    (double) height / getHeight(),
-                    1);
-
-        // The load function takes care of the SDL<->OpenGL implementation
-        // and about freeing the given SDL_surface*.
-        if (scaledSurface)
-            scaledImage = load(scaledSurface);
+        incRef();
+        return this;
     }
+
+    if (!mSDLSurface)
+        return 0;
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    // Generate a unique ID path for storing the scaled version in the
+    // resource manager.
+    std::string idPath = getIdPath();
+    idPath += ":scaled:";
+    idPath += toString(width);
+    idPath += "x";
+    idPath += toString(height);
+
+    // Try whether a scaled version is already available
+    Image *scaledImage = static_cast<Image*>(resman->get(idPath));
+
+    if (!scaledImage)
+    {
+        // No scaled version with this size exists already, so create one
+        SDL_Surface *scaledSurface = zoomSurface(mSDLSurface,
+                                                 (double) width / getWidth(),
+                                                 (double) height / getHeight(),
+                                                 1);
+
+        if (scaledSurface)
+        {
+            scaledImage = load(scaledSurface);
+            SDL_FreeSurface(scaledSurface);
+
+            // Place the scaled image in the resource manager
+            resman->addResource(idPath, scaledImage);
+        }
+    }
+
     return scaledImage;
 }
 

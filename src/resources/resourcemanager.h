@@ -107,6 +107,16 @@ class ResourceManager
         std::string getPath(const std::string &file);
 
         /**
+         * Returns the resource with the specified idPath, or 0 when no such
+         * resource is available. Increments the reference count.
+         *
+         * @param idPath The resource identifier path.
+         * @return A valid resource or <code>NULL</code> if the resource could
+         *         not be found.
+         */
+        Resource *get(const std::string &idPath);
+
+        /**
          * Creates a resource and adds it to the resource map.
          *
          * @param idPath The resource identifier path.
@@ -178,11 +188,6 @@ class ResourceManager
         SpriteDef *getSprite(const std::string &path, int variant = 0);
 
         /**
-         * Releases a resource, placing it in the set of orphaned resources.
-         */
-        void release(Resource *);
-
-        /**
          * Allocates data into a buffer pointer for raw data loading. The
          * returned data is expected to be freed using <code>free()</code>.
          *
@@ -224,6 +229,18 @@ class ResourceManager
         static void deleteInstance();
 
     private:
+        /**
+         * Releases a resource, placing it in the set of orphaned resources.
+         * Only called from Resource::decRef,
+         */
+        void release(Resource *);
+
+        /**
+         * Removes a resource from the list of resources managed by the
+         * resource manager. Only called from Resource::decRef,
+         */
+        void remove(Resource *);
+
         /**
          * Deletes the resource after logging a cleanup message.
          */

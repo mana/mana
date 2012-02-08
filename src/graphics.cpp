@@ -161,14 +161,16 @@ bool Graphics::drawRescaledImage(Image *image, int srcX, int srcY,
                                bool useColor)
 {
     // Check that preconditions for blitting are met.
-    if (!mTarget || !image) return false;
-    if (!image->mSDLSurface) return false;
+    if (!mTarget || !image)
+        return false;
+    if (!image->mSDLSurface)
+        return false;
 
     Image *tmpImage = image->SDLgetScaledImage(desiredWidth, desiredHeight);
     bool returnValue = false;
 
-    if (!tmpImage) return false;
-    if (!tmpImage->mSDLSurface) return false;
+    if (!tmpImage)
+        return false;
 
     dstX += mClipStack.top().xOffset;
     dstY += mClipStack.top().yOffset;
@@ -183,9 +185,10 @@ bool Graphics::drawRescaledImage(Image *image, int srcX, int srcY,
     srcRect.w = width;
     srcRect.h = height;
 
-    returnValue = !(SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
+    returnValue = !(SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect,
+                                    mTarget, &dstRect) < 0);
 
-    delete tmpImage;
+    tmpImage->decRef(Resource::DeleteImmediately);
 
     return returnValue;
 }
@@ -228,13 +231,16 @@ void Graphics::drawImage(gcn::Image const *image, int srcX, int srcY,
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
 {
     // Check that preconditions for blitting are met.
-    if (!mTarget || !image) return;
-    if (!image->mSDLSurface) return;
+    if (!mTarget || !image)
+        return;
+    if (!image->mSDLSurface)
+        return;
 
     const int iw = image->getWidth();
     const int ih = image->getHeight();
 
-    if (iw == 0 || ih == 0) return;
+    if (iw == 0 || ih == 0)
+        return;
 
     for (int py = 0; py < h; py += ih)     // Y position on pattern plane
     {
@@ -259,22 +265,32 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     }
 }
 
-void Graphics::drawRescaledImagePattern(Image *image, int x, int y,
-               int w, int h, int scaledWidth, int scaledHeight)
+void Graphics::drawRescaledImagePattern(Image *image,
+                                        int x, int y,
+                                        int w, int h,
+                                        int scaledWidth, int scaledHeight)
 {
     // Check that preconditions for blitting are met.
-    if (!mTarget || !image) return;
-    if (!image->mSDLSurface) return;
+    if (!mTarget || !image)
+        return;
+    if (!image->mSDLSurface)
+        return;
 
-    if (scaledHeight == 0 || scaledWidth == 0) return;
+    if (scaledHeight == 0 || scaledWidth == 0)
+        return;
 
     Image *tmpImage = image->SDLgetScaledImage(scaledWidth, scaledHeight);
-    if (!tmpImage) return;
+    if (!tmpImage)
+        return;
 
     const int iw = tmpImage->getWidth();
     const int ih = tmpImage->getHeight();
 
-    if (iw == 0 || ih == 0) return;
+    if (iw == 0 || ih == 0)
+    {
+        tmpImage->decRef(Resource::DeleteImmediately);
+        return;
+    }
 
     for (int py = 0; py < h; py += ih)     // Y position on pattern plane
     {
@@ -298,7 +314,7 @@ void Graphics::drawRescaledImagePattern(Image *image, int x, int y,
         }
     }
 
-    delete tmpImage;
+    tmpImage->decRef(Resource::DeleteImmediately);
 }
 
 void Graphics::drawImageRect(int x, int y, int w, int h,
