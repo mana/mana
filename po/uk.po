@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
-"Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-12-13 20:04+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-08 16:46+0100\n"
 "PO-Revision-Date: 2009-10-16 13:01+0000\n"
 "Last-Translator: tivasyk <tivasyk@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -20,361 +20,423 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: src/client.cpp:598 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:66
-msgid "Setup"
-msgstr "Налаштування"
-
-#: src/client.cpp:679
-#, fuzzy
-msgid "Connecting to server"
-msgstr "Очікування відповіді сервера"
-
-#: src/client.cpp:706
-#, fuzzy
-msgid "Logging in"
-msgstr "Логін"
-
-#: src/client.cpp:739
-msgid "Entering game world"
+#: ../src/main.cpp:45
+msgid "              to the mana client."
 msgstr ""
 
-#: src/client.cpp:804
-#, fuzzy
-msgid "Requesting characters"
-msgstr "Вимагається приєднання до каналу %s."
-
-#: src/client.cpp:833
-msgid "Connecting to the game server"
+#: ../src/main.cpp:44
+msgid "              used to set custom parameters"
 msgstr ""
 
-#: src/client.cpp:843
+#: ../src/main.cpp:62
 #, fuzzy
-msgid "Changing game servers"
-msgstr "Сервер"
+msgid "     --chat-log-dir   : Chat log dir to use"
+msgstr "  -C --config-file : файл, з якого необхідно завантажити налаштування"
 
-#: src/client.cpp:872 src/client.cpp:879 src/client.cpp:1014
-#: src/gui/changeemaildialog.cpp:156 src/gui/changepassworddialog.cpp:149
-#: src/gui/charcreatedialog.cpp:177 src/gui/register.cpp:218
-#: src/gui/serverdialog.cpp:323 src/gui/unregisterdialog.cpp:133
-#: src/net/manaserv/charhandler.cpp:174 src/net/manaserv/charhandler.cpp:217
-#: src/net/tmwa/charserverhandler.cpp:134
-#: src/net/tmwa/charserverhandler.cpp:151
-msgid "Error"
-msgstr "Помилка"
+#: ../src/main.cpp:61
+#, fuzzy
+msgid "     --localdata-dir  : Directory to use as local data directory"
+msgstr "  -S --home-dir : тека, котру необхідно вживати як домашню"
 
-#: src/client.cpp:888
-msgid "Requesting registration details"
+#: ../src/main.cpp:65
+msgid "     --no-opengl      : Disable OpenGL for this session"
 msgstr ""
 
-#: src/client.cpp:915
+#: ../src/main.cpp:63
 #, fuzzy
-msgid "Password Change"
-msgstr "Пароль:"
+msgid "     --screenshot-dir : Directory to store screenshots"
+msgstr "  -S --home-dir : тека, котру необхідно вживати як домашню"
 
-#: src/client.cpp:916
-msgid "Password changed successfully!"
+#: ../src/main.cpp:56
+#, fuzzy
+msgid "     --update-host    : Use this update host"
+msgstr "  -H --update-host : сервер, з якого необхідно завантажити оновлення"
+
+#: ../src/main.cpp:50
+#, fuzzy
+msgid "  -C --config-dir     : Configuration directory to use"
+msgstr "  -C --config-file : файл, з якого необхідно завантажити налаштування"
+
+#: ../src/main.cpp:57
+msgid "  -D --default        : Choose default character server and character"
 msgstr ""
 
-#: src/client.cpp:935
+#: ../src/main.cpp:52
 #, fuzzy
-msgid "Email Change"
-msgstr "Заміна"
+msgid "  -P --password       : Login with this password"
+msgstr "  -P --password : зареєструватися на сервері зі вказаним паролем"
 
-#: src/client.cpp:936
-msgid "Email changed successfully!"
+#: ../src/main.cpp:51
+#, fuzzy
+msgid "  -U --username       : Login with this username"
+msgstr "  -P --password : зареєструватися на сервері зі вказаним паролем"
+
+#: ../src/main.cpp:53
+#, fuzzy
+msgid "  -c --character      : Login with this character"
+msgstr "  -P --password : зареєструватися на сервері зі вказаним паролем"
+
+#: ../src/main.cpp:60
+#, fuzzy
+msgid "  -d --data           : Directory to load game data from"
+msgstr "  -d --data : тека, з якої необхідно завантажити данні"
+
+#: ../src/main.cpp:49
+#, fuzzy
+msgid "  -h --help           : Display this help"
+msgstr "  -h --help : показати ще раз цю довідку"
+
+#: ../src/main.cpp:55
+#, fuzzy
+msgid "  -p --port           : Login server port"
+msgstr "  -P --password : зареєструватися на сервері зі вказаним паролем"
+
+#: ../src/main.cpp:54
+msgid "  -s --server         : Login server name or IP"
 msgstr ""
 
-#: src/client.cpp:956
+#: ../src/main.cpp:59
 #, fuzzy
-msgid "Unregister Successful"
-msgstr "Не зареєстрований"
+msgid "  -u --skip-update    : Skip the update downloads"
+msgstr "  -H --update-host : сервер, з якого необхідно завантажити оновлення"
 
-#: src/client.cpp:957
-msgid "Farewell, come back any time..."
+#: ../src/main.cpp:48
+#, fuzzy
+msgid "  -v --version        : Display the version"
+msgstr "  -h --help : показати ще раз цю довідку"
+
+#: ../src/net/manaserv/partyhandler.cpp:126
+#, c-format
+msgid " on invitation from %s"
 msgstr ""
 
-#: src/client.cpp:1138 src/client.cpp:1161
+#: ../src/gui/updaterwindow.cpp:421
+msgid "##1  It is strongly recommended that"
+msgstr "##1 Настійно рекомендовано:"
+
+#: ../src/gui/updaterwindow.cpp:419
+msgid "##1  The update process is incomplete."
+msgstr "##1 Процес поновлення не завершився!"
+
+#: ../src/gui/updaterwindow.cpp:423
+#, fuzzy
+msgid "##1  you try again later."
+msgstr "##1 спробувати ще раз пізніше"
+
+#: ../src/net/tmwa/generalhandler.cpp:245
+#, fuzzy, no-c-format
+msgid "% Accuracy"
+msgstr "Точність (%):"
+
+#: ../src/net/tmwa/generalhandler.cpp:249
+#, fuzzy, no-c-format
+msgid "% Critical"
+msgstr "Критичний удар"
+
+#: ../src/net/tmwa/generalhandler.cpp:247
+#, fuzzy, no-c-format
+msgid "% Evade"
+msgstr "Ухиляння (%):"
+
+#: ../src/gui/debugwindow.cpp:59
+#, c-format
+msgid "%d FPS"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:54
+#, c-format
+msgid "%d FPS (OpenGL)"
+msgstr ""
+
+#: ../src/client.cpp:1160 ../src/client.cpp:1188
 #, c-format
 msgid "%s doesn't exist and can't be created! Exiting."
 msgstr ""
 
-#: src/client.cpp:1281
+#: ../src/net/manaserv/chathandler.cpp:314
+#, c-format
+msgid "%s entered the channel."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:601
+#, c-format
+msgid "%s has invited you to join the %s party."
+msgstr "%s запрошує вас до групи %s."
+
+#: ../src/gui/socialwindow.cpp:558
 #, fuzzy, c-format
-msgid "Invalid update host: %s"
-msgstr "Невідомий сервер оновлення: "
+msgid "%s has invited you to join the guild %s."
+msgstr "%s запрошує вас до групи %s."
 
-#: src/client.cpp:1315 src/client.cpp:1321
-msgid "Error creating updates directory!"
-msgstr "Неможливо створити теку для оновлень!"
+#: ../src/gui/socialwindow.cpp:596
+#, c-format
+msgid "%s has invited you to join their party."
+msgstr "%s запрошує вас приєднатись до їх групи."
 
-#: src/commandhandler.cpp:131 src/commandhandler.cpp:317
-msgid "Unknown command."
-msgstr "Чорт зна яка команда"
+#: ../src/net/manaserv/chathandler.cpp:345
+#, c-format
+msgid "%s has kicked %s."
+msgstr ""
 
-#: src/commandhandler.cpp:160
+#: ../src/net/tmwa/partyhandler.cpp:247
+#, c-format
+msgid "%s has left your party."
+msgstr ""
+
+#: ../src/net/manaserv/chathandler.cpp:335
+#, c-format
+msgid "%s has set mode %s on user %s."
+msgstr ""
+
+#: ../src/net/tmwa/partyhandler.cpp:120
+#, c-format
+msgid "%s is already a member of a party."
+msgstr ""
+
+#: ../src/net/manaserv/partyhandler.cpp:157
+#, c-format
+msgid "%s is already in a party."
+msgstr ""
+
+#: ../src/net/tmwa/partyhandler.cpp:369
+#, c-format
+msgid "%s is not in your party!"
+msgstr ""
+
+#: ../src/net/tmwa/partyhandler.cpp:128
+#, c-format
+msgid "%s is now a member of your party."
+msgstr ""
+
+#: ../src/net/manaserv/partyhandler.cpp:128
+#, c-format
+msgid "%s joined the party%s."
+msgstr ""
+
+#: ../src/net/manaserv/chathandler.cpp:319
+#, c-format
+msgid "%s left the channel."
+msgstr ""
+
+#: ../src/net/tmwa/partyhandler.cpp:124
+#, c-format
+msgid "%s refused your invitation."
+msgstr ""
+
+#: ../src/net/manaserv/partyhandler.cpp:148
+#, fuzzy, c-format
+msgid "%s rejected your invite."
+msgstr "Відхилено запрошення від %s."
+
+#: ../src/net/manaserv/tradehandler.cpp:116
+#: ../src/net/tmwa/tradehandler.cpp:110
+#, c-format
+msgid "%s wants to trade with you, do you accept?"
+msgstr ""
+
+#: ../src/gui/widgets/chattab.cpp:190
+#, fuzzy, c-format
+msgid "%s whispers: %s"
+msgstr "%s шепоче: "
+
+#: ../src/gui/charselectdialog.cpp:418 ../src/gui/charselectdialog.cpp:419
+msgid "(empty)"
+msgstr ""
+
+#: ../src/commandhandler.cpp:221
+msgid "*** only available to a GM ***"
+msgstr "*** доступне лише для GM ***"
+
+#: ../src/gui/buydialog.cpp:75 ../src/gui/itemamountwindow.cpp:112
+#: ../src/gui/npcdialog.cpp:125 ../src/gui/selldialog.cpp:75
+#: ../src/gui/statuswindow.cpp:474
+msgid "+"
+msgstr ""
+
+#: ../src/gui/buydialog.cpp:78 ../src/gui/itemamountwindow.cpp:111
+#: ../src/gui/npcdialog.cpp:126 ../src/gui/selldialog.cpp:76
+#: ../src/gui/statuswindow.cpp:486
+msgid "-"
+msgstr ""
+
+#: ../src/commandhandler.cpp:165
 msgid "-- Help --"
 msgstr "-- Довідка --"
 
-#: src/commandhandler.cpp:161
-msgid "/help > Display this help"
-msgstr "/help > Показати це вікно"
+#: ../src/commandhandler.cpp:200
+msgid "/announce > Global announcement (GM only)"
+msgstr "/announce > Глобальне оголошення (лише для GM)"
 
-#: src/commandhandler.cpp:163
-msgid "/where > Display map name"
-msgstr "/where > Показати ім'я мапи"
+#: ../src/commandhandler.cpp:181
+msgid "/away > Tell the other whispering players you're away from keyboard."
+msgstr ""
 
-#: src/commandhandler.cpp:164
-msgid "/who > Display number of online users"
-msgstr "/who > Показати кількість гравців он-лайн"
-
-#: src/commandhandler.cpp:165
-msgid "/me > Tell something about yourself"
-msgstr "/me > Розказати щось про себе"
-
-#: src/commandhandler.cpp:167
+#: ../src/commandhandler.cpp:172
 msgid "/clear > Clears this window"
 msgstr "/clear > Очистити оце вікно"
 
-#: src/commandhandler.cpp:169
-msgid "/msg > Send a private message to a user"
-msgstr "/msg > Надіслати приватне повідомлення користувачеві"
+#: ../src/gui/widgets/whispertab.cpp:74
+msgid "/close > Close the whisper tab"
+msgstr "Закрити вкладку приватної бесіди"
 
-#: src/commandhandler.cpp:170
-msgid "/whisper > Alias of msg"
-msgstr "/whisper > Варіант msg"
-
-#: src/commandhandler.cpp:171
-msgid "/w > Alias of msg"
-msgstr "/w > Варіант msg"
-
-#: src/commandhandler.cpp:172
-msgid "/query > Makes a tab for private messages with another user"
-msgstr "/query > Створює закладку для приватної розмови з іншим користувачем"
-
-#: src/commandhandler.cpp:174
-msgid "/q > Alias of query"
-msgstr "/q > Варіант query"
-
-#: src/commandhandler.cpp:176
-msgid "/ignore > ignore a player"
-msgstr ""
-
-#: src/commandhandler.cpp:177
-msgid "/unignore > stop ignoring a player"
-msgstr ""
-
-#: src/commandhandler.cpp:179
-msgid "/list > Display all public channels"
-msgstr "/list > Показати усі публічні канали"
-
-#: src/commandhandler.cpp:180
-msgid "/join > Join or create a channel"
-msgstr "/join > Приєднатись чи створити канал"
-
-#: src/commandhandler.cpp:182
+#: ../src/commandhandler.cpp:190
 #, fuzzy
 msgid "/createparty > Create a new party"
 msgstr "/party > Запросити гравця до групи"
 
-#: src/commandhandler.cpp:183
+#: ../src/net/tmwa/gui/partytab.cpp:64
+msgid "/exp > Show/change party experience sharing options"
+msgstr ""
+
+#: ../src/commandhandler.cpp:166
+msgid "/help > Display this help"
+msgstr "/help > Показати це вікно"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:61 ../src/net/tmwa/gui/partytab.cpp:59
+msgid "/help > Display this help."
+msgstr ""
+
+#: ../src/gui/widgets/whispertab.cpp:72
+msgid "/ignore > Ignore the other player"
+msgstr ""
+
+#: ../src/commandhandler.cpp:184
+msgid "/ignore > ignore a player"
+msgstr ""
+
+#: ../src/net/tmwa/gui/guildtab.cpp:62
+#, fuzzy
+msgid "/invite > Invite a player to your guild"
+msgstr "/party > Запросити гравця до групи"
+
+#: ../src/net/tmwa/gui/partytab.cpp:60
+msgid "/invite > Invite a player to your party"
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:63
+msgid "/item > Show/change party item sharing options"
+msgstr ""
+
+#: ../src/commandhandler.cpp:188
+msgid "/join > Join or create a channel"
+msgstr "/join > Приєднатись чи створити канал"
+
+#: ../src/gui/widgets/channeltab.cpp:52
+msgid "/kick > Kick a user from the channel"
+msgstr "/kick > Вигнати користувача з каналу"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:64
+#, fuzzy
+msgid "/kick > Kick some one from the guild you are in"
+msgstr "/kick > Вигнати користувача з каналу"
+
+#: ../src/net/tmwa/gui/partytab.cpp:62
+msgid "/kick > Kick some one from the party you are in"
+msgstr ""
+
+#: ../src/net/tmwa/gui/guildtab.cpp:63
+msgid "/leave > Leave the guild you are in"
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:61
+msgid "/leave > Leave the party you are in"
+msgstr ""
+
+#: ../src/commandhandler.cpp:187
+msgid "/list > Display all public channels"
+msgstr "/list > Показати усі публічні канали"
+
+#: ../src/commandhandler.cpp:170
+msgid "/me > Tell something about yourself"
+msgstr "/me > Розказати щось про себе"
+
+#: ../src/commandhandler.cpp:174
+msgid "/msg > Send a private message to a user"
+msgstr "/msg > Надіслати приватне повідомлення користувачеві"
+
+#: ../src/gui/widgets/channeltab.cpp:51
+msgid "/op > Make a user a channel operator"
+msgstr "/op > Призначити користувача оператором каналу"
+
+#: ../src/commandhandler.cpp:191
 msgid "/party > Invite a user to party"
 msgstr "/party > Запросити гравця до групи"
 
-#: src/commandhandler.cpp:185
-msgid "/record > Start recording the chat to an external file"
-msgstr "/record > Розпочати запис чату у зовнішній файл"
-
-#: src/commandhandler.cpp:187
-msgid "/toggle > Determine whether <return> toggles the chat log"
-msgstr "/toggle > Встановити, чи \"Ентер\" перемикатиме вас на вікно чату"
-
-#: src/commandhandler.cpp:189
+#: ../src/commandhandler.cpp:197
 msgid "/present > Get list of players present (sent to chat log, if logging)"
 msgstr ""
 "/present > Показати список всіх гравців он-лайн (надсилає в лог чату, якщо "
 "увімкнена опція логу чату)"
 
-#: src/commandhandler.cpp:192
-msgid "/announce > Global announcement (GM only)"
-msgstr "/announce > Глобальне оголошення (лише для GM)"
+#: ../src/commandhandler.cpp:179
+msgid "/q > Alias of query"
+msgstr "/q > Варіант query"
 
-#: src/commandhandler.cpp:196
-msgid "For more information, type /help <command>."
-msgstr "Хочете знати більше - введіть /help <команда>."
+#: ../src/commandhandler.cpp:177
+msgid "/query > Makes a tab for private messages with another user"
+msgstr "/query > Створює закладку для приватної розмови з іншим користувачем"
 
-#: src/commandhandler.cpp:200
-msgid "Command: /help"
-msgstr "Команда: /help"
+#: ../src/gui/widgets/channeltab.cpp:50
+msgid "/quit > Leave a channel"
+msgstr "/quit > Полишити канал"
 
-#: src/commandhandler.cpp:201
-msgid "This command displays a list of all commands available."
-msgstr "Ця команда показує список всіх доступних команд"
+#: ../src/commandhandler.cpp:193
+msgid "/record > Start recording the chat to an external file"
+msgstr "/record > Розпочати запис чату у зовнішній файл"
 
-#: src/commandhandler.cpp:203
-msgid "Command: /help <command>"
-msgstr "Команда: /help <_команда_>"
+#: ../src/commandhandler.cpp:195
+msgid "/toggle > Determine whether <return> toggles the chat log"
+msgstr "/toggle > Встановити, чи \"Ентер\" перемикатиме вас на вікно чату"
 
-#: src/commandhandler.cpp:204
-msgid "This command displays help on <command>."
-msgstr "Ця команда відображає коротку інформацію про <_команда_>"
+#: ../src/gui/widgets/channeltab.cpp:49
+msgid "/topic > Set the topic of the current channel"
+msgstr "/topic > Встановлює тему для поточного каналу"
 
-#: src/commandhandler.cpp:212
-msgid "Command: /announce <msg>"
-msgstr "Команда: /announce <_текст_>"
-
-#: src/commandhandler.cpp:213
-msgid "*** only available to a GM ***"
-msgstr "*** доступне лише для GM ***"
-
-#: src/commandhandler.cpp:214
-msgid "This command sends the message <msg> to all players currently online."
+#: ../src/gui/widgets/whispertab.cpp:73
+msgid "/unignore > Stop ignoring the other player"
 msgstr ""
-"Ця команда надсилає <_текст_> всім гравцям, що знаходяться в режимі он-лайн"
 
-#: src/commandhandler.cpp:219
-msgid "Command: /clear"
-msgstr "Команда: /clear"
-
-#: src/commandhandler.cpp:220
-msgid "This command clears the chat log of previous chat."
-msgstr "Ця команда очищає вікно логу чату від попередніх повідомлень"
-
-#: src/commandhandler.cpp:224
-#, fuzzy
-msgid "Command: /ignore <player>"
-msgstr "Команда: /join <_канал_>"
-
-#: src/commandhandler.cpp:225
-#, fuzzy
-msgid "This command ignores the given player regardless of current relations."
-msgstr "Відображає кількість гравців он-лайн"
-
-#: src/commandhandler.cpp:230
-msgid "Command: /join <channel>"
-msgstr "Команда: /join <_канал_>"
-
-#: src/commandhandler.cpp:231
-msgid "This command makes you enter <channel>."
-msgstr "Ця команда приєднує вас до <_канал_>"
-
-#: src/commandhandler.cpp:232
-msgid "If <channel> doesn't exist, it's created."
-msgstr "Якщо <_канал_> не існує, він буде створений"
-
-#: src/commandhandler.cpp:236
-msgid "Command: /list"
-msgstr "Команда: /list"
-
-#: src/commandhandler.cpp:237
-msgid "This command shows a list of all channels."
-msgstr "Ця команда показує список всіх доступних каналів"
-
-#: src/commandhandler.cpp:241
-msgid "Command: /me <message>"
-msgstr "Команда: /me <_текст_>"
-
-#: src/commandhandler.cpp:242
-msgid "This command tell others you are (doing) <msg>."
-msgstr "Ця команда каже всім гравцям <_текст_> (або що ви робите)"
-
-#: src/commandhandler.cpp:246
-msgid "Command: /msg <nick> <message>"
-msgstr "Команда: /msg <_ім'я_> <_текст_>"
-
-#: src/commandhandler.cpp:247
-msgid "Command: /whisper <nick> <message>"
-msgstr "Команда: /whisper <_ім'я_> <_текст_>"
-
-#: src/commandhandler.cpp:248
-msgid "Command: /w <nick> <message>"
-msgstr "Команда: /w <_ім'я_> <_текст_>"
-
-#: src/commandhandler.cpp:249
-msgid "This command sends the text <message> to <nick>."
-msgstr "Ця команда надсилає <_текст_> гравцеві <_ім'я_>."
-
-#: src/commandhandler.cpp:250 src/commandhandler.cpp:269
-#: src/gui/widgets/channeltab.cpp:82 src/gui/widgets/channeltab.cpp:91
-#: src/net/tmwa/gui/guildtab.cpp:75 src/net/tmwa/gui/partytab.cpp:75
-msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
+#: ../src/commandhandler.cpp:185
+msgid "/unignore > stop ignoring a player"
 msgstr ""
-"Якщо <_ім'я_> містить пробіли, візьміть все _ім'я_ в подвійні лапки (\r\n"
-"name surname\")"
 
-#: src/commandhandler.cpp:255
-msgid "Command: /query <nick>"
-msgstr "Команда: /query <_ім'я_>"
+#: ../src/gui/widgets/channeltab.cpp:48
+msgid "/users > Lists the users in the current channel"
+msgstr "/users > Показує перелік користувачів поточного каналу"
 
-#: src/commandhandler.cpp:256
-msgid "Command: /q <nick>"
-msgstr "Команда: /q <_ім'я_>"
+#: ../src/commandhandler.cpp:176
+msgid "/w > Alias of msg"
+msgstr "/w > Варіант msg"
 
-#: src/commandhandler.cpp:257
-msgid "This command tries to make a tab for whispers betweenyou and <nick>."
+#: ../src/commandhandler.cpp:168
+msgid "/where > Display map name"
+msgstr "/where > Показати ім'я мапи"
+
+#: ../src/commandhandler.cpp:175
+msgid "/whisper > Alias of msg"
+msgstr "/whisper > Варіант msg"
+
+#: ../src/commandhandler.cpp:169
+msgid "/who > Display number of online users"
+msgstr "/who > Показати кількість гравців он-лайн"
+
+#: ../src/gui/outfitwindow.cpp:66
+msgid "<"
 msgstr ""
-"Ця команда намагається створити закладинку для перешіптування між вами та "
-"гравцем <_ім'я_>"
 
-#: src/commandhandler.cpp:262
-#, fuzzy
-msgid "Command: /createparty <name>"
-msgstr "Команда: /party <_ім'я_>"
-
-#: src/commandhandler.cpp:263
-#, fuzzy
-msgid "This command creates a new party called <name>."
-msgstr "Ця команда приєднує вас до <_канал_>"
-
-#: src/commandhandler.cpp:267
-msgid "Command: /party <nick>"
-msgstr "Команда: /party <_ім'я_>"
-
-#: src/commandhandler.cpp:268 src/net/tmwa/gui/partytab.cpp:74
-msgid "This command invites <nick> to party with you."
-msgstr "Ця команда запрошує гравця <_ім'я_> до вас в групу"
-
-#: src/commandhandler.cpp:274
-msgid "Command: /present"
-msgstr "Команда: /present"
-
-#: src/commandhandler.cpp:275
+#: ../src/net/tmwa/gui/partytab.cpp:97
 msgid ""
-"This command gets a list of players within hearing and sends it to either "
-"the record log if recording, or the chat log otherwise."
+"<policy> can be one of \"1\", \"yes\", \"true\" to enable experience "
+"sharing, or \"0\", \"no\", \"false\" to disable experience sharing."
 msgstr ""
-"Ця команда отримує список гравців, які можуть почути вас і надсилає його або "
-"в файл логу чату (якщо увімкнена опція ведення логу), або до вікна чату"
 
-#: src/commandhandler.cpp:281
-msgid "Command: /record <filename>"
-msgstr "Команда: /record <_файл_>"
-
-#: src/commandhandler.cpp:282
-msgid "This command starts recording the chat log to the file <filename>."
-msgstr ""
-"Ця команда вмикає ведення журналу чату (записує весь вміст чату у <_файл_>)"
-
-#: src/commandhandler.cpp:284
-msgid "Command: /record"
-msgstr "Команда: /record"
-
-#: src/commandhandler.cpp:285
-msgid "This command finishes a recording session."
-msgstr "Завершує ведення журналу (логу) чату"
-
-#: src/commandhandler.cpp:289
-msgid "Command: /toggle <state>"
-msgstr "Команда: /toggle <_режим_>"
-
-#: src/commandhandler.cpp:290
+#: ../src/net/tmwa/gui/partytab.cpp:87
 msgid ""
-"This command sets whether the return key should toggle the chat log, or "
-"whether the chat log turns off automatically."
+"<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
+"\"0\", \"no\", \"false\" to disable item sharing."
 msgstr ""
-"Ця команда встановлює, чи буде натиснення клавіші Enter автоматично "
-"перемикатиме на вікно чату"
 
-#: src/commandhandler.cpp:292
+#: ../src/commandhandler.cpp:308
 msgid ""
 "<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or "
 "\"0\", \"no\", \"false\" to turn the toggle off."
@@ -382,48 +444,308 @@ msgstr ""
 "<_режим_> може бути \"1\", \"yes\", або \"true\" щоб увімкнути опцію, або ж "
 "\"0\", \"no\", чи \"false\" щоб вимкнути її."
 
-#: src/commandhandler.cpp:295
-msgid "Command: /toggle"
-msgstr "Команда: /toggle"
-
-#: src/commandhandler.cpp:296
-msgid "This command displays the return toggle status."
-msgstr "Показує режим клавіші Enter"
-
-#: src/commandhandler.cpp:300 src/gui/widgets/whispertab.cpp:95
-#, fuzzy
-msgid "Command: /unignore <player>"
-msgstr "Команда: /announce <_текст_>"
-
-#: src/commandhandler.cpp:301
-msgid "This command stops ignoring the given player if they are being ignored"
+#: ../src/gui/outfitwindow.cpp:67
+msgid ">"
 msgstr ""
 
-#: src/commandhandler.cpp:306
-msgid "Command: /where"
-msgstr "Команда: /where"
+#: ../src/gui/setup_interface.cpp:78 ../src/gui/setup_players.cpp:205
+msgid "???"
+msgstr "???"
 
-#: src/commandhandler.cpp:307
-msgid "This command displays the name of the current map."
-msgstr "Показує назву поточної локації"
+#: ../src/gui/socialwindow.cpp:563
+#, fuzzy
+msgid "Accept Guild Invite"
+msgstr "Запрошення до групи прийнято"
 
-#: src/commandhandler.cpp:311
-msgid "Command: /who"
-msgstr "Команда: /who"
+#: ../src/gui/socialwindow.cpp:609
+msgid "Accept Party Invite"
+msgstr "Запрошення до групи прийнято"
 
-#: src/commandhandler.cpp:312
-msgid "This command displays the number of players currently online."
-msgstr "Відображає кількість гравців он-лайн"
+#: ../src/gui/socialwindow.cpp:463
+#, fuzzy
+msgid "Accepted guild invite"
+msgstr "Запрошення до групи прийнято"
 
-#: src/commandhandler.cpp:318
-msgid "Type /help for a list of commands."
-msgstr "Введіть /help щоб побачити список всіх команд"
+#: ../src/gui/socialwindow.cpp:444
+#, fuzzy, c-format
+msgid "Accepted party invite from %s."
+msgstr "Прийнято запрошення від %s."
 
-#: src/commandhandler.cpp:384
-msgid "Cannot send empty whispers!"
-msgstr "Не можна надсилати порожні повідомлення!"
+#: ../src/game.cpp:709
+msgid "Accepting incoming trade requests"
+msgstr "Приймання вхідних пропозицій торгівлі"
 
-#: src/commandhandler.cpp:392
+#: ../src/net/manaserv/tradehandler.cpp:95
+msgid "Accepting incoming trade requests."
+msgstr ""
+
+#: ../src/net/tmwa/charserverhandler.cpp:103
+msgid "Access denied. Most likely, there are too many players on this server."
+msgstr ""
+
+#: ../src/gui/charselectdialog.cpp:120
+msgid "Account and Character Management"
+msgstr "Керування обліковими записами та персонажами"
+
+#: ../src/net/manaserv/loginhandler.cpp:283
+#, fuzzy
+msgid "Account banned"
+msgstr "Обліковий запис: %s"
+
+#: ../src/net/manaserv/loginhandler.cpp:98
+#, fuzzy
+msgid "Account banned."
+msgstr "Обліковий запис: %s"
+
+#: ../src/net/tmwa/loginhandler.cpp:162
+msgid "Account expired."
+msgstr ""
+
+#: ../src/net/manaserv/loginhandler.cpp:129
+#: ../src/net/manaserv/loginhandler.cpp:160
+msgid "Account not connected. Please login first."
+msgstr ""
+
+#: ../src/net/tmwa/loginhandler.cpp:86
+msgid "Account was not found. Please re-login."
+msgstr ""
+
+#: ../src/gui/changeemaildialog.cpp:49 ../src/gui/changepassworddialog.cpp:52
+#, c-format
+msgid "Account: %s"
+msgstr "Обліковий запис: %s"
+
+#: ../src/gui/inventorywindow.cpp:107 ../src/gui/popupmenu.cpp:378
+msgid "Activate"
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:76
+msgid "Add"
+msgstr "Додати"
+
+#: ../src/gui/serverdialog.cpp:211
+#, fuzzy
+msgid "Add custom Server..."
+msgstr "Красивий вказівник"
+
+#: ../src/gui/popupmenu.cpp:175
+#, fuzzy
+msgid "Add name to chat"
+msgstr "@@name|додати ім'я до чату@@"
+
+#: ../src/gui/popupmenu.cpp:194 ../src/gui/popupmenu.cpp:399
+#, fuzzy
+msgid "Add to chat"
+msgstr "@@chat|Додати до чату@@"
+
+#: ../src/gui/customserverdialog.cpp:55
+msgid "Address:"
+msgstr ""
+
+#: ../src/net/manaserv/attributes.cpp:179
+#: ../src/net/tmwa/generalhandler.cpp:231
+msgid "Agility"
+msgstr "Спритність"
+
+#: ../src/net/manaserv/attributes.cpp:186
+#, fuzzy, c-format
+msgid "Agility %+.1f"
+msgstr "Спритність"
+
+#: ../src/net/tmwa/generalhandler.cpp:103
+#, c-format
+msgid "Agility %+d"
+msgstr ""
+
+#: ../src/net/tmwa/charserverhandler.cpp:272
+msgid "Agility:"
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:55
+msgid "Agree trade"
+msgstr "Згодитися торгувати"
+
+#: ../src/gui/tradewindow.cpp:56
+msgid "Agreed. Waiting..."
+msgstr "Згода. Чекаємо..."
+
+#: ../src/gui/itemamountwindow.cpp:115
+msgid "All"
+msgstr "Все"
+
+#: ../src/gui/setup_players.cpp:224
+msgid "Allow trading"
+msgstr "Дозволити торгівлю"
+
+#: ../src/gui/setup_players.cpp:226
+msgid "Allow whispers"
+msgstr "Дозволити шепіт (приватне спілкування)"
+
+#: ../src/net/manaserv/loginhandler.cpp:95
+#: ../src/net/manaserv/loginhandler.cpp:280
+#, fuzzy
+msgid "Already logged in."
+msgstr "Вже записується"
+
+#: ../src/gui/recorder.cpp:97
+msgid "Already recording."
+msgstr "Вже записується"
+
+#: ../src/gui/setup_video.cpp:191
+#, fuzzy
+msgid "Ambient FX:"
+msgstr "Звуки оточення"
+
+#: ../src/net/tmwa/inventoryhandler.h:84
+msgid "Ammo"
+msgstr "Боєприпаси"
+
+#: ../src/net/tmwa/partyhandler.cpp:300
+#, c-format
+msgid "An unknown member tried to say: %s"
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:289
+#: ../src/net/tmwa/playerhandler.cpp:113
+msgid "Annihilated."
+msgstr ""
+
+#: ../src/gui/setup.cpp:52
+msgid "Apply"
+msgstr "Застосувати"
+
+#: ../src/gui/setup_video.cpp:358
+msgid "Applying change to OpenGL requires restart."
+msgstr "Потрібно перезапустити для застосування змін OpenGL"
+
+#: ../src/gui/setup_video.cpp:350
+msgid ""
+"Applying change to OpenGL requires restart. In case OpenGL messes up your "
+"game graphics, restart the game with the command line option \"--no-opengl\"."
+msgstr ""
+
+#: ../src/gui/charselectdialog.cpp:73
+msgid "Are you sure you want to delete this character?"
+msgstr "Ви дійсно бажаєте знищити персонажа?"
+
+#: ../src/gui/socialwindow.cpp:164
+#, fuzzy, c-format
+msgid "Are you sure you want to leave guild %s?"
+msgstr "Ви дійсно хочете вийти?"
+
+#: ../src/gui/socialwindow.cpp:243
+#, fuzzy, c-format
+msgid "Are you sure you want to leave party %s?"
+msgstr "Ви дійсно хочете вийти?"
+
+#: ../src/net/tmwa/inventoryhandler.h:66
+msgid "Arms"
+msgstr "Руки"
+
+#: ../src/gui/setup_keyboard.cpp:89
+msgid "Assign"
+msgstr "Призначити"
+
+#: ../src/net/manaserv/charhandler.cpp:167
+#, c-format
+msgid "At least one statis out of the permitted range: (%u - %u)."
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:45 ../src/net/tmwa/generalhandler.cpp:238
+msgid "Attack"
+msgstr "Нападати"
+
+#: ../src/resources/itemdb.cpp:321
+#, c-format
+msgid "Attack %+d"
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:88 ../src/gui/popupmenu.cpp:162
+#, fuzzy, c-format
+msgid "Attack %s"
+msgstr "Нападати"
+
+#: ../src/gui/chatwindow.cpp:334
+msgid "Attendance written to record log."
+msgstr "Аудиторія занесена до журналу"
+
+#: ../src/gui/setup_audio.cpp:47
+msgid "Audio"
+msgstr "Аудіо"
+
+#: ../src/net/tmwa/generalhandler.cpp:132
+msgid "Authentication failed."
+msgstr ""
+
+#: ../src/localplayer.cpp:1071
+msgid "Away"
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:101
+#, fuzzy, c-format
+msgid "Befriend %s"
+msgstr "@@friend|Товаришувати з %s@@"
+
+#: ../src/resources/userpalette.cpp:91
+msgid "Being"
+msgstr "Істота"
+
+#: ../src/gui/debugwindow.cpp:136
+msgid "Being collision radius"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:138
+#, fuzzy
+msgid "Being path"
+msgstr "Істота"
+
+#: ../src/gui/debugwindow.cpp:137
+msgid "Being positions"
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:125
+msgid "Bereft of life, you rest in peace."
+msgstr ""
+
+#: ../src/playerrelations.cpp:358 ../src/playerrelations.cpp.orig:344
+msgid "Blink name"
+msgstr ""
+
+#: ../src/gui/setup_colors.cpp:140
+#, fuzzy
+msgid "Blue:"
+msgstr "Синій: "
+
+#: ../src/gui/setup_interface.cpp:91
+msgid "Bubbles with names"
+msgstr "Бульбашки та імена"
+
+#: ../src/gui/setup_interface.cpp:90
+msgid "Bubbles, no names"
+msgstr "Лише бульбашки, без імен"
+
+#: ../src/gui/buydialog.cpp:50 ../src/gui/buydialog.cpp:79
+#: ../src/gui/buyselldialog.cpp:47
+msgid "Buy"
+msgstr "Придбати"
+
+#: ../src/gui/setup_joystick.cpp:38 ../src/gui/setup_joystick.cpp:76
+msgid "Calibrate"
+msgstr "Налаштувати"
+
+#: ../src/gui/buyselldialog.cpp:47 ../src/gui/changeemaildialog.cpp:55
+#: ../src/gui/changepassworddialog.cpp:58 ../src/gui/charcreatedialog.cpp:86
+#: ../src/gui/connectiondialog.cpp:44 ../src/gui/customserverdialog.cpp:70
+#: ../src/gui/itemamountwindow.cpp:114 ../src/gui/npcpostdialog.cpp:57
+#: ../src/gui/popupmenu.cpp:179 ../src/gui/popupmenu.cpp:198
+#: ../src/gui/popupmenu.cpp:401 ../src/gui/quitdialog.cpp:48
+#: ../src/gui/register.cpp:74 ../src/gui/setup.cpp:52
+#: ../src/gui/socialwindow.cpp:275 ../src/gui/textdialog.cpp:40
+#: ../src/gui/unregisterdialog.cpp:56 ../src/gui/updaterwindow.cpp:151
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: ../src/commandhandler.cpp:421
 #, c-format
 msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
@@ -432,3269 +754,3229 @@ msgstr ""
 "Неможливо створити закладинку для спілкування з гравцем \"%s\" - або така "
 "вже існує, або ви намагаєтесь перешіптуватись сам з собою =Р"
 
-#: src/commandhandler.cpp:406
-#, c-format
-msgid "Requesting to join channel %s."
-msgstr "Вимагається приєднання до каналу %s."
-
-#: src/commandhandler.cpp:419 src/net/tmwa/gui/partytab.cpp:109
-msgid "Party name is missing."
+#: ../src/gui/socialwindow.cpp:620
+msgid "Cannot create party. You are already in a party"
 msgstr ""
 
-#: src/commandhandler.cpp:432 src/commandhandler.cpp:509
-#: src/commandhandler.cpp:531
-msgid "Please specify a name."
+#: ../src/net/tmwa/playerhandler.cpp:367
+msgid "Cannot raise skill!"
 msgstr ""
 
-#: src/commandhandler.cpp:450
-msgid "Return toggles chat."
-msgstr "Enter перемикає на чат"
+#: ../src/gui/widgets/whispertab.cpp:53
+msgid "Cannot send empty chat!"
+msgstr "Чи ж можна говорити без слів?"
 
-#: src/commandhandler.cpp:450
-msgid "Message closes chat."
-msgstr "Повідомлення закриваж вікно чату"
+#: ../src/commandhandler.cpp:400
+msgid "Cannot send empty whispers!"
+msgstr "Не можна надсилати порожні повідомлення!"
 
-#: src/commandhandler.cpp:459
-msgid "Return now toggles chat."
-msgstr "Enter тепер перемикає на вікно чату"
-
-#: src/commandhandler.cpp:463
-msgid "Message now closes chat."
-msgstr "Тепер повідомлення закриватиме вікно чату"
-
-#: src/commandhandler.cpp:476 src/commandhandler.cpp:489
-msgid "Show IP: On"
+#: ../src/net/tmwa/specialhandler.cpp:160
+msgid "Cannot shout!"
 msgstr ""
 
-#: src/commandhandler.cpp:476 src/commandhandler.cpp:485
-msgid "Show IP: Off"
-msgstr ""
-
-#: src/commandhandler.cpp:515
-msgid "Player already ignored!"
-msgstr ""
-
-#: src/commandhandler.cpp:522
-msgid "Player successfully ignored!"
-msgstr ""
-
-#: src/commandhandler.cpp:524
-msgid "Player could not be ignored!"
-msgstr ""
-
-#: src/commandhandler.cpp:539
-msgid "Player wasn't ignored!"
-msgstr ""
-
-#: src/commandhandler.cpp:544
-msgid "Player no longer ignored!"
-msgstr ""
-
-#: src/commandhandler.cpp:546
-msgid "Player could not be unignored!"
-msgstr ""
-
-#: src/commandhandler.h:31
-#, c-format
-msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
-msgstr ""
-"Можливими опціями для /%s є: \"yes\", \"no\", \"true\", \"false\", \"1\", "
-"\"0\"."
-
-#: src/game.cpp:172
-msgid "General"
-msgstr "Загальне"
-
-#: src/game.cpp:342
+#: ../src/net/tmwa/charserverhandler.cpp:107
 #, fuzzy
-msgid "Screenshot saved as "
-msgstr "Фотознімок екрану (скріншот) збережено до теки ~/"
+msgid "Cannot use this ID."
+msgstr "Не можна надсилати порожні повідомлення!"
 
-#: src/game.cpp:347
-msgid "Saving screenshot failed!"
-msgstr "Збереження скріншоту провалилось!"
+#: ../src/gui/tradewindow.cpp:103
+msgid "Change"
+msgstr "Заміна"
 
-#: src/game.cpp:378
-#, fuzzy
-msgid "The connection to the server was lost."
-msgstr "Втрачено з'єднання з сервером, програма завершуєтьсся"
-
-#: src/game.cpp:382
-msgid "Network Error"
-msgstr "Мережева помилка"
-
-#: src/game.cpp:721
-msgid "Ignoring incoming trade requests"
-msgstr "Ігнорування вхідних пропозицій торгівлі"
-
-#: src/game.cpp:726
-msgid "Accepting incoming trade requests"
-msgstr "Приймання вхідних пропозицій торгівлі"
-
-#: src/game.cpp:954
-#, fuzzy
-msgid "Could Not Load Map"
-msgstr "Неможливо завантажити локацію"
-
-#: src/game.cpp:955
-#, c-format
-msgid "Error while loading %s"
-msgstr "Помилка під час завантаження %s"
-
-#: src/gui/beingpopup.cpp:76
-#, fuzzy, c-format
-msgid "Party: %s"
-msgstr "Група (%s)"
-
-#: src/gui/buy.cpp:49 src/gui/buy.cpp:78 src/gui/buysell.cpp:47
-msgid "Buy"
-msgstr "Придбати"
-
-#: src/gui/buy.cpp:69 src/gui/buy.cpp:261 src/gui/sell.cpp:71
-#: src/gui/sell.cpp:288
-#, c-format
-msgid "Price: %s / Total: %s"
-msgstr "Ціна: %s / Загалом: %s"
-
-#. TRANSLATORS: This is a narrow symbol used to denote 'increasing'.
-#. You may change this symbol if your language uses another.
-#: src/gui/buy.cpp:74 src/gui/itemamount.cpp:112 src/gui/npcdialog.cpp:124
-#: src/gui/sell.cpp:74 src/gui/statuswindow.cpp:463
-msgid "+"
-msgstr ""
-
-#. TRANSLATORS: This is a narrow symbol used to denote 'decreasing'.
-#. You may change this symbol if your language uses another.
-#: src/gui/buy.cpp:77 src/gui/itemamount.cpp:111 src/gui/npcdialog.cpp:125
-#: src/gui/sell.cpp:75 src/gui/statuswindow.cpp:475
-msgid "-"
-msgstr ""
-
-#: src/gui/buy.cpp:79 src/gui/quitdialog.cpp:40 src/gui/quitdialog.cpp:42
-#: src/gui/quitdialog.cpp:43 src/gui/sell.cpp:77 src/gui/serverdialog.cpp:228
-#: src/keyboardconfig.cpp:102
-msgid "Quit"
-msgstr "Вийти"
-
-#: src/gui/buy.cpp:80 src/gui/sell.cpp:78 src/gui/statuswindow.cpp:384
-#: src/gui/statuswindow.cpp:462 src/gui/statuswindow.cpp:496
-msgid "Max"
-msgstr "Максимум"
-
-#: src/gui/buysell.cpp:38
-msgid "Shop"
-msgstr "Магазин"
-
-#: src/gui/buysell.cpp:47 src/gui/sell.cpp:49 src/gui/sell.cpp:76
-msgid "Sell"
-msgstr "Продати"
-
-#: src/gui/buysell.cpp:47 src/gui/changeemaildialog.cpp:55
-#: src/gui/changepassworddialog.cpp:58 src/gui/charcreatedialog.cpp:79
-#: src/gui/connectiondialog.cpp:44 src/gui/itemamount.cpp:114
-#: src/gui/npcpostdialog.cpp:57 src/gui/popupmenu.cpp:175
-#: src/gui/popupmenu.cpp:194 src/gui/popupmenu.cpp:389
-#: src/gui/quitdialog.cpp:47 src/gui/register.cpp:74 src/gui/setup.cpp:51
-#: src/gui/socialwindow.cpp:275 src/gui/textdialog.cpp:40
-#: src/gui/unregisterdialog.cpp:56 src/gui/updatewindow.cpp:144
-msgid "Cancel"
-msgstr "Скасувати"
-
-#: src/gui/changeemaildialog.cpp:45 src/gui/changeemaildialog.cpp:54
-msgid "Change Email Address"
-msgstr "Змінити адресу електронної пошти"
-
-#: src/gui/changeemaildialog.cpp:49 src/gui/changepassworddialog.cpp:52
-#, c-format
-msgid "Account: %s"
-msgstr "Обліковий запис: %s"
-
-#: src/gui/changeemaildialog.cpp:51
-#, fuzzy
-msgid "Type new email address twice:"
-msgstr "Двічі введіть вашу нову адресу електронної пошти:"
-
-#: src/gui/changeemaildialog.cpp:127
-#, fuzzy, c-format
-msgid "The new email address needs to be at least %d characters long."
-msgstr "Ім'я користувача повинне складатись хоча б з %d символів."
-
-#: src/gui/changeemaildialog.cpp:134
-#, fuzzy, c-format
-msgid "The new email address needs to be less than %d characters long."
-msgstr "Ім'я користувача повинне складатись не більш, як з %d символів."
-
-#: src/gui/changeemaildialog.cpp:141
-msgid "The email address entries mismatch."
-msgstr ""
-
-#: src/gui/changepassworddialog.cpp:47 src/gui/changepassworddialog.cpp:56
-#: src/gui/charselectdialog.cpp:128
-msgid "Change Password"
-msgstr "Змінити пароль"
-
-#: src/gui/changepassworddialog.cpp:61 src/gui/login.cpp:55
-#: src/gui/register.cpp:68 src/gui/unregisterdialog.cpp:53
-msgid "Password:"
-msgstr "Пароль:"
-
-#: src/gui/changepassworddialog.cpp:63
-#, fuzzy
-msgid "Type new password twice:"
-msgstr "Введіть новий пароль двічі:"
-
-#: src/gui/changepassworddialog.cpp:110
-msgid "Enter the old password first."
-msgstr ""
-
-#: src/gui/changepassworddialog.cpp:116
-#, fuzzy, c-format
-msgid "The new password needs to be at least %d characters long."
-msgstr "Пароль повинен складатись мінімум з %d символів."
-
-#: src/gui/changepassworddialog.cpp:123
-#, fuzzy, c-format
-msgid "The new password needs to be less than %d characters long."
-msgstr "Пароль повинен складатись менш, ніж з %d символів."
-
-#: src/gui/changepassworddialog.cpp:130
-msgid "The new password entries mismatch."
-msgstr ""
-
-#: src/gui/charcreatedialog.cpp:53
-msgid "Create Character"
-msgstr "Створити персонажа"
-
-#: src/gui/charcreatedialog.cpp:67 src/gui/login.cpp:54
-#: src/gui/register.cpp:67
-msgid "Name:"
-msgstr "Ім'я"
-
-#. TRANSLATORS: This is an arrow symbol used to denote 'next'.
-#. You may change this symbol if your language uses another.
-#: src/gui/charcreatedialog.cpp:70 src/gui/charcreatedialog.cpp:75
-#: src/gui/outfitwindow.cpp:67
-msgid ">"
-msgstr ""
-
-#. TRANSLATORS: This is an arrow symbol used to denote 'previous'.
-#. You may change this symbol if your language uses another.
-#: src/gui/charcreatedialog.cpp:73 src/gui/charcreatedialog.cpp:76
-#: src/gui/outfitwindow.cpp:66
-msgid "<"
-msgstr ""
-
-#: src/gui/charcreatedialog.cpp:74
-#, fuzzy
-msgid "Hair color:"
-msgstr "Колір волосся:"
-
-#: src/gui/charcreatedialog.cpp:77
-#, fuzzy
-msgid "Hair style:"
-msgstr "Зачіска:"
-
-#: src/gui/charcreatedialog.cpp:78 src/gui/charselectdialog.cpp:392
-#: src/gui/socialwindow.cpp:329
-msgid "Create"
-msgstr "Створити"
-
-#: src/gui/charcreatedialog.cpp:80 src/gui/register.cpp:90
-msgid "Male"
-msgstr "Чоловік"
-
-#: src/gui/charcreatedialog.cpp:81 src/gui/register.cpp:91
-msgid "Female"
-msgstr "Жінка"
-
-#: src/gui/charcreatedialog.cpp:99 src/gui/charcreatedialog.cpp:251
-#, c-format
-msgid "Please distribute %d points"
-msgstr "Будь ласка, розподіліть %d балів"
-
-#: src/gui/charcreatedialog.cpp:178
-msgid "Your name needs to be at least 4 characters."
-msgstr "Ім'я повинно містити принаймні 4 символи"
-
-#: src/gui/charcreatedialog.cpp:242
-msgid "Character stats OK"
-msgstr "Характеристики персонажа в нормі"
-
-#: src/gui/charcreatedialog.cpp:256
-#, c-format
-msgid "Please remove %d points"
-msgstr "Будь ласка, видаліть %d балів"
-
-#: src/gui/charselectdialog.cpp:69
-msgid "Confirm Character Delete"
-msgstr "Підтвердіть видалення персонажа"
-
-#: src/gui/charselectdialog.cpp:70
-msgid "Are you sure you want to delete this character?"
-msgstr "Ви дійсно бажаєте знищити персонажа?"
-
-#: src/gui/charselectdialog.cpp:117
-msgid "Account and Character Management"
-msgstr "Керування обліковими записами та персонажами"
-
-#: src/gui/charselectdialog.cpp:127
-msgid "Switch Login"
-msgstr ""
-
-#: src/gui/charselectdialog.cpp:141 src/gui/unregisterdialog.cpp:47
-#: src/gui/unregisterdialog.cpp:55
-msgid "Unregister"
-msgstr "Не зареєстрований"
-
-#: src/gui/charselectdialog.cpp:150
+#: ../src/gui/charselectdialog.cpp:154
 #, fuzzy
 msgid "Change Email"
 msgstr "Змінити адресу електронної пошти"
 
-#: src/gui/charselectdialog.cpp:336 src/gui/serverdialog.cpp:231
-#: src/gui/setup_players.cpp:229
-msgid "Delete"
-msgstr "Видалити"
+#: ../src/gui/changeemaildialog.cpp:45 ../src/gui/changeemaildialog.cpp:54
+msgid "Change Email Address"
+msgstr "Змінити адресу електронної пошти"
 
-#: src/gui/charselectdialog.cpp:380
+#: ../src/gui/worldselectdialog.cpp:76
 #, fuzzy
-msgid "Choose"
-msgstr "Закрити"
+msgid "Change Login"
+msgstr "Заміна"
 
-#: src/gui/charselectdialog.cpp:394 src/gui/charselectdialog.cpp:395
-msgid "(empty)"
-msgstr ""
+#: ../src/gui/changepassworddialog.cpp:47
+#: ../src/gui/changepassworddialog.cpp:56 ../src/gui/charselectdialog.cpp:132
+msgid "Change Password"
+msgstr "Змінити пароль"
 
-#: src/gui/chat.cpp:88
-msgid "Chat"
-msgstr "Чат"
-
-#: src/gui/chat.cpp:311
-#, fuzzy, c-format
-msgid "Present: %s; %d players are present."
-msgstr "%d гравців он-лайн"
-
-#: src/gui/chat.cpp:329
-msgid "Attendance written to record log."
-msgstr "Аудиторія занесена до журналу"
-
-#: src/gui/chat.cpp:493
-#, c-format
-msgid "Whispering to %s: %s"
-msgstr "Шепчу до %s: %s"
-
-#: src/gui/confirmdialog.cpp:42
-msgid "Yes"
-msgstr "Так"
-
-#: src/gui/confirmdialog.cpp:43
-msgid "No"
-msgstr "Ні"
-
-#: src/gui/debugwindow.cpp:43
-msgid "Debug"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:56
-#, c-format
-msgid "%d FPS (OpenGL)"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:61 src/gui/debugwindow.cpp:64
-#, c-format
-msgid "%d FPS"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:65 src/gui/debugwindow.cpp:104
-#, c-format
-msgid "Music: %s"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:66 src/gui/debugwindow.cpp:108
-#, fuzzy, c-format
-msgid "Map: %s"
-msgstr "Ім'я: %s"
-
-#: src/gui/debugwindow.cpp:67 src/gui/debugwindow.cpp:106
-#, fuzzy, c-format
-msgid "Minimap: %s"
-msgstr "Вікно мінімапи"
-
-#: src/gui/debugwindow.cpp:68 src/gui/debugwindow.cpp:99
-#, c-format
-msgid "Cursor: (%d, %d)"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:69 src/gui/debugwindow.cpp:111
-#, fuzzy, c-format
-msgid "Particle count: %d"
-msgstr "Ефекти часток"
-
-#: src/gui/debugwindow.cpp:116
-#, fuzzy, c-format
-msgid "Particle detail: %s"
-msgstr "Деталізація ефектів частинок"
-
-#: src/gui/debugwindow.cpp:121
-#, fuzzy, c-format
-msgid "Ambient FX: %s"
-msgstr "Звуки оточення"
-
-#: src/gui/equipmentwindow.cpp:69 src/gui/windowmenu.cpp:55
-msgid "Equipment"
-msgstr "Обладунки"
-
-#: src/gui/equipmentwindow.cpp:87 src/gui/inventorywindow.cpp:89
-#: src/gui/inventorywindow.cpp:337 src/gui/popupmenu.cpp:359
-msgid "Unequip"
-msgstr "Зняти"
-
-#: src/gui/help.cpp:37
-msgid "Help"
-msgstr "Довідка"
-
-#: src/gui/help.cpp:51 src/gui/npcdialog.cpp:50
-msgid "Close"
-msgstr "Закрити"
-
-#: src/gui/inventorywindow.cpp:59 src/gui/windowmenu.cpp:56
-msgid "Inventory"
-msgstr "Сумка"
-
-#: src/gui/inventorywindow.cpp:59
-msgid "Storage"
-msgstr ""
-
-#: src/gui/inventorywindow.cpp:82
-msgid "Slots:"
-msgstr "Комірки"
-
-#: src/gui/inventorywindow.cpp:87 src/gui/inventorywindow.cpp:100
-#: src/gui/inventorywindow.cpp:339 src/gui/popupmenu.cpp:361
-msgid "Equip"
-msgstr "Зняти"
-
-#: src/gui/inventorywindow.cpp:88
-msgid "Use"
-msgstr "Використати"
-
-#: src/gui/inventorywindow.cpp:101 src/gui/popupmenu.cpp:364
-msgid "Activate"
-msgstr ""
-
-#: src/gui/inventorywindow.cpp:102 src/gui/inventorywindow.cpp:348
-#: src/gui/popupmenu.cpp:367
-#, fuzzy
-msgid "Drop..."
-msgstr "Викинути"
-
-#: src/gui/inventorywindow.cpp:103 src/gui/popupmenu.cpp:373
-msgid "Split"
-msgstr "Поділити"
-
-#: src/gui/inventorywindow.cpp:104 src/gui/outfitwindow.cpp:51
-msgid "Outfits"
-msgstr ""
-
-#: src/gui/inventorywindow.cpp:106
-msgid "Weight:"
-msgstr "Вага:"
-
-#: src/gui/inventorywindow.cpp:124 src/gui/popupmenu.cpp:378
-msgid "Store"
-msgstr ""
-
-#: src/gui/inventorywindow.cpp:125 src/gui/popupmenu.cpp:385
-msgid "Retrieve"
-msgstr ""
-
-#: src/gui/inventorywindow.cpp:350 src/gui/popupmenu.cpp:369
-msgid "Drop"
-msgstr "Викинути"
-
-#: src/gui/itemamount.cpp:113 src/gui/okdialog.cpp:42
-#: src/gui/quitdialog.cpp:46 src/gui/textdialog.cpp:39 src/gui/trade.cpp:72
-#: src/gui/trade.cpp:74
-msgid "OK"
-msgstr "Ок"
-
-#: src/gui/itemamount.cpp:115
-msgid "All"
-msgstr "Все"
-
-#: src/gui/itemamount.cpp:141
-msgid "Select amount of items to trade."
-msgstr "Вкажіть кількість предметів"
-
-#: src/gui/itemamount.cpp:144
-msgid "Select amount of items to drop."
-msgstr "Вкажіть кількість предметів, щоб викинути"
-
-#: src/gui/itemamount.cpp:147
-msgid "Select amount of items to store."
-msgstr "Вкажіть кількість предметів для зберігання"
-
-#: src/gui/itemamount.cpp:150
-msgid "Select amount of items to retrieve."
-msgstr "Вкажіть кількість предметів для отримання"
-
-#: src/gui/itemamount.cpp:153
-msgid "Select amount of items to split."
-msgstr "Вкажіть кількість предметів для розподілу"
-
-#: src/gui/itempopup.cpp:137
-#, fuzzy, c-format
-msgid "Weight: %s"
-msgstr "Вага: "
-
-#: src/gui/login.cpp:51 src/gui/login.cpp:63
-msgid "Login"
-msgstr "Логін"
-
-#: src/gui/login.cpp:60
-#, fuzzy
-msgid "Remember username"
-msgstr "Запам'ятати ім'я користувача"
-
-#: src/gui/login.cpp:61 src/gui/register.cpp:58 src/gui/register.cpp:73
-msgid "Register"
-msgstr "Зареєструватись"
-
-#: src/gui/login.cpp:62
+#: ../src/gui/logindialog.cpp:62
 #, fuzzy
 msgid "Change Server"
 msgstr "Сервер"
 
-#: src/gui/login.cpp:129
-msgid "Registration disabled"
-msgstr ""
+#: ../src/gui/setup_video.cpp:460
+msgid "Changes will take effect on map change."
+msgstr "Зміни буде застосовано після завантаження мапи"
 
-#: src/gui/login.cpp:129
-msgid "You need to use the website to register an account for this server."
-msgstr ""
-
-#: src/gui/minimap.cpp:45 src/gui/minimap.cpp:86
-msgid "Map"
-msgstr "Локація"
-
-#: src/gui/ministatus.cpp:235
-msgid "Need"
-msgstr ""
-
-#: src/gui/npcdialog.cpp:48
-msgid "Waiting for server"
-msgstr "Очікування відповіді сервера"
-
-#: src/gui/npcdialog.cpp:49
-msgid "Next"
-msgstr "Далі"
-
-#: src/gui/npcdialog.cpp:51
-msgid "Submit"
-msgstr "Підтвердити"
-
-#: src/gui/npcdialog.cpp:73 src/gui/npcpostdialog.cpp:41
-msgid "NPC"
-msgstr "NPC"
-
-#: src/gui/npcdialog.cpp:118
-msgid "Clear log"
-msgstr ""
-
-#: src/gui/npcdialog.cpp:134
-msgid "Reset"
-msgstr "Спробувати знову"
-
-#. TRANSLATORS: Please leave the \n sequences intact.
-#: src/gui/npcdialog.cpp:208
+#: ../src/client.cpp:853
 #, fuzzy
-msgid ""
-"\n"
-"> Next\n"
-msgstr "Далі"
+msgid "Changing game servers"
+msgstr "Сервер"
 
-#: src/gui/npcpostdialog.cpp:47
-msgid "To:"
-msgstr "Для:"
-
-#: src/gui/npcpostdialog.cpp:54
-msgid "Send"
-msgstr "Надіслати"
-
-#: src/gui/npcpostdialog.cpp:99
-msgid "Failed to send as sender or letter invalid."
-msgstr "Неможливо надіслати, так як адресант або лист некорректні"
-
-#: src/gui/outfitwindow.cpp:68 src/gui/outfitwindow.cpp:141
-#: src/gui/outfitwindow.cpp:154
-#, c-format
-msgid "Outfit: %d"
-msgstr ""
-
-#: src/gui/outfitwindow.cpp:70
-#, fuzzy
-msgid "Unequip first"
-msgstr "Зняти"
-
-#: src/gui/popupmenu.cpp:83
-#, fuzzy, c-format
-msgid "Trade with %s..."
-msgstr "@@trade|Торгувати з %s@@"
-
-#: src/gui/popupmenu.cpp:87 src/gui/popupmenu.cpp:158
-#, fuzzy, c-format
-msgid "Attack %s"
-msgstr "Нападати"
-
-#: src/gui/popupmenu.cpp:91
-#, fuzzy, c-format
-msgid "Whisper %s"
-msgstr "Шепіт"
-
-#: src/gui/popupmenu.cpp:100
-#, fuzzy, c-format
-msgid "Befriend %s"
-msgstr "@@friend|Товаришувати з %s@@"
-
-#: src/gui/popupmenu.cpp:105
-#, fuzzy, c-format
-msgid "Disregard %s"
-msgstr "Не зважати"
-
-#: src/gui/popupmenu.cpp:108
-#, fuzzy, c-format
-msgid "Ignore %s"
-msgstr "Ігнорувати повністю"
-
-#: src/gui/popupmenu.cpp:114 src/gui/popupmenu.cpp:123
-#, c-format
-msgid "Unignore %s"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:117
-#, fuzzy, c-format
-msgid "Completely ignore %s"
-msgstr "@@ignore|Повністю ігнорувати %s@@"
-
-#: src/gui/popupmenu.cpp:130
-#, fuzzy, c-format
-msgid "Invite %s to join your guild"
-msgstr "@@guild|Запросити %s до вашої гільдії@@"
-
-#: src/gui/popupmenu.cpp:134
-#, fuzzy, c-format
-msgid "Invite %s to join your party"
-msgstr "@@party|Запросити %s до вашої групи@@"
-
-#: src/gui/popupmenu.cpp:141
-msgid "Kick player"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:150
-#, fuzzy, c-format
-msgid "Talk to %s"
-msgstr "@@talk|Шоворити з %s@@"
-
-#: src/gui/popupmenu.cpp:163
-#, fuzzy
-msgid "Kick monster"
-msgstr "@@admin-kick|Викинути тварюку@@"
-
-#: src/gui/popupmenu.cpp:171
-#, fuzzy
-msgid "Add name to chat"
-msgstr "@@name|додати ім'я до чату@@"
-
-#: src/gui/popupmenu.cpp:188
-#, fuzzy, c-format
-msgid "Pick up %s"
-msgstr "Підняти"
-
-#: src/gui/popupmenu.cpp:190 src/gui/popupmenu.cpp:387
-#, fuzzy
-msgid "Add to chat"
-msgstr "@@chat|Додати до чату@@"
-
-#: src/gui/quitdialog.cpp:44
-msgid "Switch server"
-msgstr "Змінити сервер"
-
-#: src/gui/quitdialog.cpp:45
-msgid "Switch character"
-msgstr "Змінити персонажа"
-
-#: src/gui/recorder.cpp:87
-msgid "Finishing recording."
-msgstr "Запис завершено"
-
-#: src/gui/recorder.cpp:91
-msgid "Not currently recording."
-msgstr "На даний момент запис не ведеться"
-
-#: src/gui/recorder.cpp:96
-msgid "Already recording."
-msgstr "Вже записується"
-
-#: src/gui/recorder.cpp:104
-msgid "Starting to record..."
-msgstr "Починається запис..."
-
-#: src/gui/recorder.cpp:112
-msgid "Failed to start recording."
-msgstr "Початок запису провалився."
-
-#: src/gui/recorder.h:38
-msgid "Recording..."
-msgstr "Запис..."
-
-#: src/gui/recorder.h:39
-msgid "Stop recording"
-msgstr "Припинити запис"
-
-#: src/gui/register.cpp:69
-msgid "Confirm:"
-msgstr "Підтвердіть:"
-
-#: src/gui/register.cpp:100
-msgid "Email:"
-msgstr "Пошта:"
-
-#: src/gui/register.cpp:166
-#, c-format
-msgid "The username needs to be at least %d characters long."
-msgstr "Ім'я користувача повинне складатись хоча б з %d символів."
-
-#: src/gui/register.cpp:174
-#, c-format
-msgid "The username needs to be less than %d characters long."
-msgstr "Ім'я користувача повинне складатись не більш, як з %d символів."
-
-#: src/gui/register.cpp:182 src/gui/unregisterdialog.cpp:117
-#, c-format
-msgid "The password needs to be at least %d characters long."
-msgstr "Пароль повинен складатись мінімум з %d символів."
-
-#: src/gui/register.cpp:190 src/gui/unregisterdialog.cpp:124
-#, c-format
-msgid "The password needs to be less than %d characters long."
-msgstr "Пароль повинен складатись менш, ніж з %d символів."
-
-#: src/gui/register.cpp:197
-msgid "Passwords do not match."
-msgstr "Не ідентичні паролі!"
-
-#: src/gui/serverdialog.cpp:197
-#, fuzzy
-msgid "Choose Your Server"
-msgstr "Оберіть сервер"
-
-#: src/gui/serverdialog.cpp:206 src/gui/widgets/chattab.cpp:142
-msgid "Server:"
-msgstr "Сервер:"
-
-#: src/gui/serverdialog.cpp:207
-msgid "Port:"
-msgstr "Порт:"
-
-#: src/gui/serverdialog.cpp:208
-#, fuzzy
-msgid "Server type:"
-msgstr "Сервер:"
-
-#: src/gui/serverdialog.cpp:229
-#, fuzzy
-msgid "Connect"
-msgstr "З'єднуюсь..."
-
-#: src/gui/serverdialog.cpp:230
-#, fuzzy
-msgid "Custom Server"
-msgstr "Красивий вказівник"
-
-#: src/gui/serverdialog.cpp:324
-msgid "Please type both the address and the port of a server."
-msgstr "Будь ласка, введіть порт і адресу серверу"
-
-#: src/gui/serverdialog.cpp:441
-#, c-format
-msgid "Downloading server list...%2.2f%%"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:447
-#, fuzzy
-msgid "Waiting for server..."
-msgstr "Очікування відповіді сервера"
-
-#: src/gui/serverdialog.cpp:451
-msgid "Preparing download"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:455
-msgid "Error retreiving server list!"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:550
-msgid "requires a newer version"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:552
-#, c-format
-msgid "requires v%s"
-msgstr ""
-
-#: src/gui/setup_audio.cpp:42
-msgid "Sound"
-msgstr "ЗвукАуді"
-
-#: src/gui/setup_audio.cpp:43
-msgid "Download music"
-msgstr ""
-
-#: src/gui/setup_audio.cpp:47
-msgid "Audio"
-msgstr "Аудіо"
-
-#: src/gui/setup_audio.cpp:50
-msgid "Sfx volume"
-msgstr "Гучність ефектів"
-
-#: src/gui/setup_audio.cpp:51
-msgid "Music volume"
-msgstr "Гучність музики"
-
-#: src/gui/setup_audio.cpp:94
-#, fuzzy
-msgid "Notice"
-msgstr "Без тексту"
-
-#: src/gui/setup_audio.cpp:94
-msgid "You may have to restart your client if you want to download new music"
-msgstr ""
-
-#: src/gui/setup_audio.cpp:106
-msgid "Sound Engine"
-msgstr ""
-
-#: src/gui/setup_colors.cpp:46
-msgid "This is what the color looks like"
-msgstr "Ось, як виглядає цей колір"
-
-#: src/gui/setup_colors.cpp:51
-msgid "Colors"
-msgstr "Кольори"
-
-#: src/gui/setup_colors.cpp:72
-#, fuzzy
-msgid "Type:"
-msgstr "Тип: "
-
-#: src/gui/setup_colors.cpp:83 src/gui/setup_colors.cpp:331
-msgid "Static"
-msgstr "Статичне"
-
-#: src/gui/setup_colors.cpp:85 src/gui/setup_colors.cpp:86
-#: src/gui/setup_colors.cpp:332
-msgid "Pulse"
-msgstr "Пульсуюче"
-
-#: src/gui/setup_colors.cpp:87 src/gui/setup_colors.cpp:88
-#: src/gui/setup_colors.cpp:333
-msgid "Rainbow"
-msgstr "Веселка"
-
-#: src/gui/setup_colors.cpp:89 src/gui/setup_colors.cpp:90
-#: src/gui/setup_colors.cpp:333
-msgid "Spectrum"
-msgstr "Спектр"
-
-#: src/gui/setup_colors.cpp:94
-#, fuzzy
-msgid "Delay:"
-msgstr "Затримка: "
-
-#: src/gui/setup_colors.cpp:109
-#, fuzzy
-msgid "Red:"
-msgstr "Червоний: "
-
-#: src/gui/setup_colors.cpp:124
-#, fuzzy
-msgid "Green:"
-msgstr "Зелений: "
-
-#: src/gui/setup_colors.cpp:139
-#, fuzzy
-msgid "Blue:"
-msgstr "Синій: "
-
-#: src/gui/setup.cpp:51
-msgid "Apply"
-msgstr "Застосувати"
-
-#: src/gui/setup.cpp:51
-msgid "Reset Windows"
-msgstr "Збити налаштування вікон"
-
-#: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:78
-msgid "Press the button to start calibration"
-msgstr "Натисніть кнопку для початку налаштування"
-
-#: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:76
-msgid "Calibrate"
-msgstr "Налаштувати"
-
-#: src/gui/setup_joystick.cpp:39
-msgid "Enable joystick"
-msgstr "Використовувати джойстик"
-
-#: src/gui/setup_joystick.cpp:41
-msgid "Joystick"
-msgstr "Джойстик"
-
-#: src/gui/setup_joystick.cpp:83
-msgid "Stop"
-msgstr ""
-
-#: src/gui/setup_joystick.cpp:84
-msgid "Rotate the stick"
-msgstr ""
-
-#: src/gui/setup_keyboard.cpp:77
-msgid "Keyboard"
-msgstr "Клавіатура"
-
-#: src/gui/setup_keyboard.cpp:86
-msgid "Assign"
-msgstr "Призначити"
-
-#: src/gui/setup_keyboard.cpp:90
-#, fuzzy
-msgid "Unassign"
-msgstr "Призначити"
-
-#: src/gui/setup_keyboard.cpp:94
-msgid "Default"
-msgstr "Типово"
-
-#: src/gui/setup_keyboard.cpp:125
-msgid "Key Conflict(s) Detected."
-msgstr "Деякі скорочення дублюють одне одного"
-
-#: src/gui/setup_players.cpp:58
-msgid "Name"
-msgstr "Назва"
-
-#: src/gui/setup_players.cpp:59
-msgid "Relation"
-msgstr "Стосунки"
-
-#: src/gui/setup_players.cpp:64
-msgid "Neutral"
-msgstr "Нейтрально"
-
-#: src/gui/setup_players.cpp:65
-msgid "Friend"
-msgstr "Друзі"
-
-#: src/gui/setup_players.cpp:66
-msgid "Disregarded"
-msgstr "Не зважати"
-
-#: src/gui/setup_players.cpp:67
-msgid "Ignored"
-msgstr "Ігнорувати повністю"
-
-#: src/gui/setup_players.cpp:206 src/gui/setup_video.cpp:153
-msgid "???"
-msgstr "???"
-
-#: src/gui/setup_players.cpp:225
-msgid "Allow trading"
-msgstr "Дозволити торгівлю"
-
-#: src/gui/setup_players.cpp:227
-msgid "Allow whispers"
-msgstr "Дозволити шепіт (приватне спілкування)"
-
-#: src/gui/setup_players.cpp:231
-msgid "Put all whispers in tabs"
-msgstr "Шепіт (приватне спілкування) в окремих вкладках"
-
-#: src/gui/setup_players.cpp:233
-#, fuzzy
-msgid "Show gender"
-msgstr "Показувати ім'я"
-
-#: src/gui/setup_players.cpp:235
-msgid "Enable Chat log"
-msgstr ""
-
-#: src/gui/setup_players.cpp:237
-msgid "Players"
-msgstr "Гравці"
-
-#: src/gui/setup_players.cpp:262
-msgid "When ignoring:"
-msgstr ""
-
-#: src/gui/setup_video.cpp:134
-msgid "Tiny"
-msgstr "Крихітний"
-
-#: src/gui/setup_video.cpp:135
-msgid "Small"
-msgstr "Малий"
-
-#: src/gui/setup_video.cpp:136
-msgid "Medium"
-msgstr "Середній"
-
-#: src/gui/setup_video.cpp:137
-msgid "Large"
-msgstr "Великий"
-
-#: src/gui/setup_video.cpp:163
-msgid "No text"
-msgstr "Без тексту"
-
-#: src/gui/setup_video.cpp:164
-msgid "Text"
-msgstr "Текст"
-
-#: src/gui/setup_video.cpp:165
-msgid "Bubbles, no names"
-msgstr "Лише бульбашки, без імен"
-
-#: src/gui/setup_video.cpp:166
-msgid "Bubbles with names"
-msgstr "Бульбашки та імена"
-
-#: src/gui/setup_video.cpp:178
-msgid "off"
-msgstr "вимкнено"
-
-#: src/gui/setup_video.cpp:179 src/gui/setup_video.cpp:192
-msgid "low"
-msgstr "низький"
-
-#: src/gui/setup_video.cpp:180 src/gui/setup_video.cpp:194
-msgid "high"
-msgstr "високий"
-
-#: src/gui/setup_video.cpp:193
-msgid "medium"
-msgstr "середній"
-
-#: src/gui/setup_video.cpp:195
-msgid "max"
-msgstr "максимальний"
-
-#: src/gui/setup_video.cpp:217
-msgid "Full screen"
-msgstr "На повний екран"
-
-#: src/gui/setup_video.cpp:218
-msgid "OpenGL"
-msgstr "OpenGL"
-
-#: src/gui/setup_video.cpp:219
-msgid "Custom cursor"
-msgstr "Красивий вказівник"
-
-#: src/gui/setup_video.cpp:221
-msgid "Visible names"
-msgstr "Видимі імена"
-
-#: src/gui/setup_video.cpp:223
-msgid "Particle effects"
-msgstr "Ефекти частинок"
-
-#: src/gui/setup_video.cpp:225
-#, fuzzy
-msgid "Show own name"
-msgstr "Показувати ім'я"
-
-#: src/gui/setup_video.cpp:226
-msgid "Log NPC dialogue"
-msgstr ""
-
-#: src/gui/setup_video.cpp:227
-msgid "Show pickup notification"
-msgstr "Повідомляти, коли піднято предмет"
-
-#. TRANSLATORS: Refers to "Show pickup notification"
-#: src/gui/setup_video.cpp:229
-msgid "in chat"
-msgstr "у балачці"
-
-#. TRANSLATORS: Refers to "Show pickup notification"
-#: src/gui/setup_video.cpp:231
-msgid "as particle"
-msgstr "як частинки"
-
-#: src/gui/setup_video.cpp:236
-#, fuzzy
-msgid "FPS limit:"
-msgstr "Обмеження частоти кадрів"
-
-#: src/gui/setup_video.cpp:247
-msgid "Disable transparency (Low CPU mode)"
-msgstr ""
-
-#: src/gui/setup_video.cpp:250
-msgid "Video"
-msgstr "Відео"
-
-#: src/gui/setup_video.cpp:252
-#, fuzzy
-msgid "Show damage"
-msgstr "Показувати ім'я"
-
-#: src/gui/setup_video.cpp:258
-msgid "Overhead text"
-msgstr "Текст зверху"
-
-#: src/gui/setup_video.cpp:259
-msgid "Gui opacity"
-msgstr "Прозорість інтерфейсу"
-
-#: src/gui/setup_video.cpp:260
-msgid "Ambient FX"
-msgstr "Звуки оточення"
-
-#: src/gui/setup_video.cpp:261
-#, fuzzy
-msgid "Particle detail"
-msgstr "Деталізація ефектів частинок"
-
-#: src/gui/setup_video.cpp:262
-msgid "Font size"
-msgstr "Розмір шрифта"
-
-#: src/gui/setup_video.cpp:277 src/gui/setup_video.cpp:532
-#: src/gui/setup_video.cpp:662
-#, fuzzy
-msgid "None"
-msgstr "Ні"
-
-#: src/gui/setup_video.cpp:426
-#, fuzzy
-msgid ""
-"Failed to switch to windowed mode and restoration of old mode also failed!"
-msgstr "Невдалося встановити режим і відновити попередній!"
-
-#: src/gui/setup_video.cpp:432
-#, fuzzy
-msgid ""
-"Failed to switch to fullscreen mode and restoration of old mode also failed!"
-msgstr "Невдалося встановити режим і відновити попередній!"
-
-#: src/gui/setup_video.cpp:443
-#, fuzzy
-msgid "Switching to Full Screen"
-msgstr "Перемикання на повний екран"
-
-#: src/gui/setup_video.cpp:444
-msgid "Restart needed for changes to take effect."
-msgstr "Потрібно перезапустити для застосування змін"
-
-#: src/gui/setup_video.cpp:458
+#: ../src/gui/setup_video.cpp:349
 #, fuzzy
 msgid "Changing to OpenGL"
 msgstr "Перемикання OpenGL"
 
-#: src/gui/setup_video.cpp:459
-msgid ""
-"Applying change to OpenGL requires restart. In case OpenGL messes up your "
-"game graphics, restart the game with the command line option \"--no-opengl\"."
-msgstr ""
-
-#: src/gui/setup_video.cpp:466
-msgid "Deactivating OpenGL"
-msgstr ""
-
-#: src/gui/setup_video.cpp:467
-msgid "Applying change to OpenGL requires restart."
-msgstr "Потрібно перезапустити для застосування змін OpenGL"
-
-#: src/gui/setup_video.cpp:475
-msgid "Transparency disabled"
-msgstr ""
-
-#: src/gui/setup_video.cpp:476 src/gui/setup_video.cpp:484
-msgid "You must restart to apply changes."
-msgstr ""
-
-#: src/gui/setup_video.cpp:483
-msgid "Transparency enabled"
-msgstr ""
-
-#: src/gui/setup_video.cpp:576 src/gui/setup_video.cpp:581
-#, fuzzy
-msgid "Screen Resolution Changed"
-msgstr "Розподільчу здатність встановлено"
-
-#: src/gui/setup_video.cpp:577 src/gui/setup_video.cpp:582
-msgid "Restart your client for the change to take effect."
-msgstr "Перезавантажте клієнт, щоби застосувати зміни"
-
-#: src/gui/setup_video.cpp:579
-msgid "Some windows may be moved to fit the lowered resolution."
-msgstr ""
-
-#: src/gui/setup_video.cpp:612
-#, fuzzy
-msgid "Particle Effect Settings Changed."
-msgstr "Налаштування ефектів частинок застосовано"
-
-#: src/gui/setup_video.cpp:613
-msgid "Changes will take effect on map change."
-msgstr "Зміни буде застосовано після завантаження мапи"
-
-#: src/gui/skilldialog.cpp:212 src/gui/windowmenu.cpp:59
-msgid "Skills"
-msgstr "Навички"
-
-#: src/gui/skilldialog.cpp:223
-msgid "Up"
-msgstr ""
-
-#: src/gui/skilldialog.cpp:269
-#, c-format
-msgid "Skill points available: %d"
-msgstr ""
-
-#: src/gui/skilldialog.cpp:351
-#, c-format
-msgid "Skill Set %d"
-msgstr ""
-
-#: src/gui/skilldialog.cpp:360
-#, fuzzy, c-format
-msgid "Skill %d"
-msgstr "Навички"
-
-#: src/gui/skilldialog.cpp:442
-#, fuzzy, c-format
-msgid "Lvl: %d (%+d)"
-msgstr "Рівень: %d"
-
-#: src/gui/skilldialog.cpp:453
-#, fuzzy, c-format
-msgid "Lvl: %d"
-msgstr "Рівень: %d"
-
-#: src/gui/socialwindow.cpp:126
-#, c-format
-msgid "Invited user %s to guild %s."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:139
-#, c-format
-msgid "Guild %s quit requested."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:153
-msgid "Member Invite to Guild"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:154
-#, c-format
-msgid "Who would you like to invite to guild %s?"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:163
-#, fuzzy
-msgid "Leave Guild?"
-msgstr "Створити гільдію"
-
-#: src/gui/socialwindow.cpp:164
-#, fuzzy, c-format
-msgid "Are you sure you want to leave guild %s?"
-msgstr "Ви дійсно хочете вийти?"
-
-#: src/gui/socialwindow.cpp:207 src/net/tmwa/partyhandler.cpp:330
-#, fuzzy, c-format
-msgid "Invited user %s to party."
-msgstr "/party > Запросити гравця до групи"
-
-#: src/gui/socialwindow.cpp:218
-#, c-format
-msgid "Party %s quit requested."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:232
-#, fuzzy
-msgid "Member Invite to Party"
-msgstr "/party > Запросити гравця до групи"
-
-#: src/gui/socialwindow.cpp:233
-#, c-format
-msgid "Who would you like to invite to party %s?"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:242
-msgid "Leave Party?"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:243
-#, fuzzy, c-format
-msgid "Are you sure you want to leave party %s?"
-msgstr "Ви дійсно хочете вийти?"
-
-#: src/gui/socialwindow.cpp:272
-msgid "Create Guild"
-msgstr "Створити гільдію"
-
-#: src/gui/socialwindow.cpp:273 src/gui/socialwindow.cpp:620
-#, fuzzy
-msgid "Create Party"
-msgstr "Створити персонажа"
-
-#: src/gui/socialwindow.cpp:312 src/gui/windowmenu.cpp:64
-msgid "Social"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:330
-#, fuzzy
-msgid "Invite"
-msgstr "Запросити гравця"
-
-#: src/gui/socialwindow.cpp:331
-#, fuzzy
-msgid "Leave"
-msgstr "Великий"
-
-#: src/gui/socialwindow.cpp:443
-#, fuzzy, c-format
-msgid "Accepted party invite from %s."
-msgstr "Прийнято запрошення від %s."
-
-#: src/gui/socialwindow.cpp:449
-#, fuzzy, c-format
-msgid "Rejected party invite from %s."
-msgstr "Відхилено запрошення від %s."
-
-#: src/gui/socialwindow.cpp:462
-#, fuzzy, c-format
-msgid "Accepted guild invite from %s."
-msgstr "Прийнято запрошення від %s."
-
-#: src/gui/socialwindow.cpp:468
-#, fuzzy, c-format
-msgid "Rejected guild invite from %s."
-msgstr "Відхилено запрошення від %s."
-
-#: src/gui/socialwindow.cpp:497
-msgid "Creating guild failed, please choose a shorter name."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:504
-#, c-format
-msgid "Creating guild called %s."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:520
-msgid "Creating party failed, please choose a shorter name."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:527
-#, c-format
-msgid "Creating party called %s."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:541
-#, fuzzy
-msgid "Guild Name"
-msgstr "Гільдія"
-
-#: src/gui/socialwindow.cpp:542
-#, fuzzy
-msgid "Choose your guild's name."
-msgstr "Оберіть сервер"
-
-#: src/gui/socialwindow.cpp:554
-#, fuzzy
-msgid "Received guild request, but one already exists."
-msgstr "Отримано запрошення до групи, але одне вже є."
-
-#: src/gui/socialwindow.cpp:559
-#, fuzzy, c-format
-msgid "%s has invited you to join the guild %s."
-msgstr "%s запрошує вас до групи %s."
-
-#: src/gui/socialwindow.cpp:564
-#, fuzzy
-msgid "Accept Guild Invite"
-msgstr "Запрошення до групи прийнято"
-
-#: src/gui/socialwindow.cpp:576
-msgid "Received party request, but one already exists."
-msgstr "Отримано запрошення до групи, але одне вже є."
-
-#: src/gui/socialwindow.cpp:585
-#, fuzzy
-msgid "You have been invited you to join a party."
-msgstr "%s запрошує вас приєднатись до їх групи."
-
-#: src/gui/socialwindow.cpp:589
-#, fuzzy, c-format
-msgid "You have been invited to join the %s party."
-msgstr "%s запрошує вас до групи %s."
-
-#: src/gui/socialwindow.cpp:597
-#, c-format
-msgid "%s has invited you to join their party."
-msgstr "%s запрошує вас приєднатись до їх групи."
-
-#: src/gui/socialwindow.cpp:602
-#, c-format
-msgid "%s has invited you to join the %s party."
-msgstr "%s запрошує вас до групи %s."
-
-#: src/gui/socialwindow.cpp:610
-msgid "Accept Party Invite"
-msgstr "Запрошення до групи прийнято"
-
-#: src/gui/socialwindow.cpp:621
-msgid "Cannot create party. You are already in a party"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:626
-#, fuzzy
-msgid "Party Name"
-msgstr "Група"
-
-#: src/gui/socialwindow.cpp:627
-#, fuzzy
-msgid "Choose your party's name."
-msgstr "Оберіть сервер"
-
-#: src/gui/specialswindow.cpp:79 src/gui/windowmenu.cpp:62
-msgid "Specials"
-msgstr ""
-
-#: src/gui/statuswindow.cpp:113 src/gui/statuswindow.cpp:215
-#: src/gui/statuswindow.cpp:262
-#, c-format
-msgid "Level: %d"
-msgstr "Рівень: %d"
-
-#: src/gui/statuswindow.cpp:114 src/gui/statuswindow.cpp:208
-#: src/gui/statuswindow.cpp:239
-#, c-format
-msgid "Money: %s"
-msgstr "Кошти: %s"
-
-#: src/gui/statuswindow.cpp:117
-msgid "HP:"
-msgstr ""
-
-#: src/gui/statuswindow.cpp:122
-msgid "Exp:"
-msgstr ""
-
-#: src/gui/statuswindow.cpp:130
-msgid "MP:"
-msgstr ""
-
-#: src/gui/statuswindow.cpp:158 src/gui/statuswindow.cpp:275
-#, c-format
-msgid "Job: %d"
-msgstr "Професія: %d"
-
-#: src/gui/statuswindow.cpp:159
-msgid "Job:"
-msgstr "Професія:"
-
-#: src/gui/statuswindow.cpp:211 src/gui/statuswindow.cpp:247
-#, fuzzy, c-format
-msgid "Character points: %d"
-msgstr "Характеристики персонажа в нормі"
-
-#: src/gui/statuswindow.cpp:255
-#, c-format
-msgid "Correction points: %d"
-msgstr ""
-
-#: src/gui/trade.cpp:53
-msgid "Propose trade"
-msgstr "Запропонувати торгівлю"
-
-#: src/gui/trade.cpp:54
-msgid "Confirmed. Waiting..."
-msgstr "Прийнято. Чекаємо..."
-
-#: src/gui/trade.cpp:55
-msgid "Agree trade"
-msgstr "Згодитися торгувати"
-
-#: src/gui/trade.cpp:56
-msgid "Agreed. Waiting..."
-msgstr "Згода. Чекаємо..."
-
-#: src/gui/trade.cpp:59
-msgid "Trade: You"
-msgstr "Торгівля: ти"
-
-#: src/gui/trade.cpp:73 src/gui/trade.cpp:74
-msgid "Trade"
-msgstr "Обмінятися"
-
-#: src/gui/trade.cpp:76
-msgid "Add"
-msgstr "Додати"
-
-#: src/gui/trade.cpp:98 src/gui/trade.cpp:134
-#, fuzzy, c-format
-msgid "You get %s"
-msgstr "Ти отримуєш: %s."
-
-#: src/gui/trade.cpp:99
-msgid "You give:"
-msgstr "Ти віддаєш: %s."
-
-#: src/gui/trade.cpp:103
-msgid "Change"
-msgstr "Заміна"
-
-#: src/gui/trade.cpp:262
-msgid "Failed adding item. You can not overlap one kind of item on the window."
-msgstr "Не вдається додати предмет. Не можна накладати предмети одного типу."
-
-#: src/gui/trade.cpp:304
-msgid "You don't have enough money."
-msgstr "У тебе недостатньо грошей!"
-
-#: src/gui/unregisterdialog.cpp:51
-#, c-format
-msgid "Name: %s"
-msgstr "Ім'я: %s"
-
-#: src/gui/updatewindow.cpp:124
-msgid "Updating..."
-msgstr "Оновлення..."
-
-#: src/gui/updatewindow.cpp:142
-msgid "Connecting..."
-msgstr "З'єднуюсь..."
-
-#: src/gui/updatewindow.cpp:145
-msgid "Play"
-msgstr ""
-
-#: src/gui/updatewindow.cpp:417
-msgid "##1  The update process is incomplete."
-msgstr "##1 Процес поновлення не завершився!"
-
-#. TRANSLATORS: Continues "you try again later.".
-#: src/gui/updatewindow.cpp:419
-msgid "##1  It is strongly recommended that"
-msgstr "##1 Настійно рекомендовано:"
-
-#. TRANSLATORS: Begins "It is strongly recommended that".
-#: src/gui/updatewindow.cpp:421
-#, fuzzy
-msgid "##1  you try again later."
-msgstr "##1 спробувати ще раз пізніше"
-
-#: src/gui/updatewindow.cpp:515
-msgid "Completed"
-msgstr "Закінчено"
-
-#: src/gui/widgets/channeltab.cpp:49
-msgid "/users > Lists the users in the current channel"
-msgstr "/users > Показує перелік користувачів поточного каналу"
-
-#: src/gui/widgets/channeltab.cpp:50
-msgid "/topic > Set the topic of the current channel"
-msgstr "/topic > Встановлює тему для поточного каналу"
-
-#: src/gui/widgets/channeltab.cpp:51
-msgid "/quit > Leave a channel"
-msgstr "/quit > Полишити канал"
-
-#: src/gui/widgets/channeltab.cpp:52
-msgid "/op > Make a user a channel operator"
-msgstr "/op > Призначити користувача оператором каналу"
-
-#: src/gui/widgets/channeltab.cpp:53
-msgid "/kick > Kick a user from the channel"
-msgstr "/kick > Вигнати користувача з каналу"
-
-#: src/gui/widgets/channeltab.cpp:63
-msgid "Command: /users"
-msgstr "Команда: /users"
-
-#: src/gui/widgets/channeltab.cpp:64
-msgid "This command shows the users in this channel."
-msgstr "Ця команда показує користувачів каналу"
-
-#: src/gui/widgets/channeltab.cpp:68
-msgid "Command: /topic <message>"
-msgstr "Команда: /topic <тема каналу>"
-
-#: src/gui/widgets/channeltab.cpp:69
-msgid "This command sets the topic to <message>."
-msgstr "Ця команда встановлює тему каналу"
-
-#: src/gui/widgets/channeltab.cpp:73
-msgid "Command: /quit"
-msgstr "Команда: /quit"
-
-#: src/gui/widgets/channeltab.cpp:74
-msgid "This command leaves the current channel."
-msgstr "Команда закриває поточний канал"
-
-#: src/gui/widgets/channeltab.cpp:75
-msgid "If you're the last person in the channel, it will be deleted."
-msgstr "Якщо ти останній користувач каналу — його буде закрито"
-
-#: src/gui/widgets/channeltab.cpp:80
-msgid "Command: /op <nick>"
-msgstr "Комманда: /op <псевдонім>"
-
-#: src/gui/widgets/channeltab.cpp:81
-msgid "This command makes <nick> a channel operator."
-msgstr ""
-"Ця команда призначає оператором каналу користувача зі вказаним псевдонімом"
-
-#: src/gui/widgets/channeltab.cpp:84
+#: ../src/gui/widgets/channeltab.cpp:83
 msgid "Channel operators can kick and op other users from the channel."
 msgstr ""
 "Оператори каналу можуть виганяти користувачів, або призначати нових "
 "операторів"
 
-#: src/gui/widgets/channeltab.cpp:89
-msgid "Command: /kick <nick>"
-msgstr "Команда: /kick <псевдонім>"
+#: ../src/net/tmwa/chathandler.cpp:265 ../src/net/tmwa/chathandler.cpp:271
+#: ../src/net/tmwa/chathandler.cpp:276 ../src/net/tmwa/chathandler.cpp:281
+#: ../src/net/tmwa/chathandler.cpp:286 ../src/net/tmwa/chathandler.cpp:291
+#: ../src/net/tmwa/chathandler.cpp:296 ../src/net/tmwa/chathandler.cpp:301
+msgid "Channels are not supported!"
+msgstr ""
 
-#: src/gui/widgets/channeltab.cpp:90
-msgid "This command makes <nick> leave the channel."
-msgstr "Ця команда виганяє з каналу користувача зі вказаним псевдонімом"
+#: ../src/net/tmwa/charserverhandler.cpp:146
+msgid "Character deleted."
+msgstr ""
 
-#: src/gui/widgets/channeltab.cpp:119
-msgid "Need a user to op!"
-msgstr "Потрібно вказати користувача для призначення оператором"
-
-#: src/gui/widgets/channeltab.cpp:126
-msgid "Need a user to kick!"
-msgstr "Потрібно вказати користувача для вигнання з каналу"
-
-#: src/gui/widgets/chattab.cpp:121
-msgid "Global announcement:"
-msgstr "Глобальне повідомлення:"
-
-#: src/gui/widgets/chattab.cpp:127
-#, c-format
-msgid "Global announcement from %s:"
-msgstr "Глобальне повідомлення від %s:"
-
-#: src/gui/widgets/chattab.cpp:153
+#: ../src/gui/statuswindow.cpp:215 ../src/gui/statuswindow.cpp:252
 #, fuzzy, c-format
-msgid "%s whispers: %s"
-msgstr "%s шепоче: "
+msgid "Character points: %d"
+msgstr "Характеристики персонажа в нормі"
 
-#: src/gui/widgets/whispertab.cpp:53
-msgid "Cannot send empty chat!"
-msgstr "Чи ж можна говорити без слів?"
+#: ../src/gui/charcreatedialog.cpp:255
+msgid "Character stats OK"
+msgstr "Характеристики персонажа в нормі"
 
-#: src/gui/widgets/whispertab.cpp:72
-msgid "/ignore > Ignore the other player"
+#: ../src/net/manaserv/charhandler.cpp:149
+#, fuzzy
+msgid "Character's name already exists."
+msgstr "Отримано запрошення до групи, але одне вже є."
+
+#: ../src/net/manaserv/charhandler.cpp:161
+#, fuzzy
+msgid "Character's stats are too high."
+msgstr "Характеристики персонажа в нормі"
+
+#: ../src/net/manaserv/charhandler.cpp:164
+#, fuzzy
+msgid "Character's stats are too low."
+msgstr "Характеристики персонажа в нормі"
+
+#: ../src/gui/chatwindow.cpp:92
+msgid "Chat"
+msgstr "Чат"
+
+#: ../src/keyboardconfig.cpp:76
+msgid "Chat Window"
+msgstr "Вікно балачки"
+
+#: ../src/net/tmwa/specialhandler.cpp:154
+msgid "Chat creating failed!"
 msgstr ""
 
-#: src/gui/widgets/whispertab.cpp:73
-msgid "/unignore > Stop ignoring the other player"
-msgstr ""
-
-#: src/gui/widgets/whispertab.cpp:74
-msgid "/close > Close the whisper tab"
-msgstr "Закрити вкладку приватної бесіди"
-
-#: src/gui/widgets/whispertab.cpp:84
-msgid "Command: /close"
-msgstr "Команда: /close"
-
-#: src/gui/widgets/whispertab.cpp:85
-msgid "This command closes the current whisper tab."
-msgstr "Ця команда закриває вкладку приватної бесіди"
-
-#: src/gui/widgets/whispertab.cpp:89
+#: ../src/gui/charselectdialog.cpp:404
 #, fuzzy
-msgid "Command: /ignore"
-msgstr "Команда: /where"
+msgid "Choose"
+msgstr "Закрити"
 
-#: src/gui/widgets/whispertab.cpp:90
-#, fuzzy
-msgid "This command ignores the other player regardless of current relations."
-msgstr "Відображає кількість гравців он-лайн"
-
-#: src/gui/widgets/whispertab.cpp:96
-#, fuzzy
-msgid "This command stops ignoring the other player if they are being ignored."
-msgstr ""
-"Ця команда вмикає ведення журналу чату (записує весь вміст чату у <_файл_>)"
-
-#: src/gui/windowmenu.cpp:54
-msgid "Status"
-msgstr "Стан"
-
-#: src/gui/windowmenu.cpp:65
-msgid "Shortcut"
-msgstr ""
-
-#: src/gui/worldselectdialog.cpp:71
-#, fuzzy
-msgid "Select World"
-msgstr "Оберіть сервер"
-
-#: src/gui/worldselectdialog.cpp:76
-#, fuzzy
-msgid "Change Login"
-msgstr "Заміна"
-
-#: src/gui/worldselectdialog.cpp:77
+#: ../src/gui/worldselectdialog.cpp:77
 #, fuzzy
 msgid "Choose World"
 msgstr "Оберіть сервер"
 
-#: src/keyboardconfig.cpp:39
-msgid "Move Up"
-msgstr "Підняти"
-
-#: src/keyboardconfig.cpp:40
-msgid "Move Down"
-msgstr "Опустити"
-
-#: src/keyboardconfig.cpp:41
-msgid "Move Left"
-msgstr "Пересунути вліво"
-
-#: src/keyboardconfig.cpp:42
-msgid "Move Right"
-msgstr "Пересунути вправо"
-
-#: src/keyboardconfig.cpp:43 src/net/tmwa/generalhandler.cpp:237
-msgid "Attack"
-msgstr "Нападати"
-
-#: src/keyboardconfig.cpp:44
-msgid "Target & Attack"
-msgstr "Вибрати ціль і нападати"
-
-#: src/keyboardconfig.cpp:45
-msgid "Smilie"
-msgstr "Емоція"
-
-#: src/keyboardconfig.cpp:46
-msgid "Talk"
-msgstr "Розмовляти"
-
-#: src/keyboardconfig.cpp:47
-msgid "Stop Attack"
-msgstr "Зупинити напад"
-
-#: src/keyboardconfig.cpp:48
+#: ../src/gui/serverdialog.cpp:188
 #, fuzzy
-msgid "Target Monster"
-msgstr "Вибрати найближчу ціль"
+msgid "Choose Your Server"
+msgstr "Оберіть сервер"
 
-#: src/keyboardconfig.cpp:49
-msgid "Target NPC"
-msgstr "Вибрати комп'ютерного персонажа"
-
-#: src/keyboardconfig.cpp:50
-msgid "Target Player"
-msgstr "Вибрати ігрока"
-
-#: src/keyboardconfig.cpp:51
-msgid "Pickup"
-msgstr "Підняти"
-
-#: src/keyboardconfig.cpp:52
-msgid "Hide Windows"
-msgstr "Сховати вікна"
-
-#: src/keyboardconfig.cpp:53
-msgid "Sit"
-msgstr "Присісти й відпочити"
-
-#: src/keyboardconfig.cpp:54
-msgid "Screenshot"
-msgstr "Знімок екрану"
-
-#: src/keyboardconfig.cpp:55
-msgid "Enable/Disable Trading"
-msgstr "Дозволити/заборонити торгівлю"
-
-#: src/keyboardconfig.cpp:56
-msgid "Find Path to Mouse"
-msgstr "Прямувати до вказівника миші"
-
-#: src/keyboardconfig.cpp:57 src/keyboardconfig.cpp:58
-#: src/keyboardconfig.cpp:59 src/keyboardconfig.cpp:60
-#: src/keyboardconfig.cpp:61 src/keyboardconfig.cpp:62
-#: src/keyboardconfig.cpp:63 src/keyboardconfig.cpp:64
-#: src/keyboardconfig.cpp:65 src/keyboardconfig.cpp:66
-#: src/keyboardconfig.cpp:67 src/keyboardconfig.cpp:68
-#, c-format
-msgid "Item Shortcut %d"
-msgstr "Скорочений доступ %d"
-
-#: src/keyboardconfig.cpp:69
-msgid "Help Window"
-msgstr "Вікно підказки"
-
-#: src/keyboardconfig.cpp:70
-msgid "Status Window"
-msgstr "Вікно стану"
-
-#: src/keyboardconfig.cpp:71
-msgid "Inventory Window"
-msgstr "Вікно майна"
-
-#: src/keyboardconfig.cpp:72
-msgid "Equipment Window"
-msgstr "Вікно екіпіровки"
-
-#: src/keyboardconfig.cpp:73
-msgid "Skill Window"
-msgstr "Вікно навичок"
-
-#: src/keyboardconfig.cpp:74
-msgid "Minimap Window"
-msgstr "Вікно мінімапи"
-
-#: src/keyboardconfig.cpp:75
-msgid "Chat Window"
-msgstr "Вікно балачки"
-
-#: src/keyboardconfig.cpp:76
-msgid "Item Shortcut Window"
-msgstr "Вікно скороченого доступу"
-
-#: src/keyboardconfig.cpp:77
-msgid "Setup Window"
-msgstr "Вікно налаштувань"
-
-#: src/keyboardconfig.cpp:78
-msgid "Debug Window"
-msgstr "Вікно зневаждення"
-
-#: src/keyboardconfig.cpp:79
+#: ../src/gui/socialwindow.cpp:541
 #, fuzzy
-msgid "Social Window"
-msgstr "Вікно навичок"
+msgid "Choose your guild's name."
+msgstr "Оберіть сервер"
 
-#: src/keyboardconfig.cpp:80
-msgid "Emote Shortcut Window"
-msgstr "Вікно емоцій"
-
-#: src/keyboardconfig.cpp:81
+#: ../src/gui/socialwindow.cpp:626
 #, fuzzy
-msgid "Outfits Window"
-msgstr "Вікно стану"
+msgid "Choose your party's name."
+msgstr "Оберіть сервер"
 
-#: src/keyboardconfig.cpp:82
-msgid "Wear Outfit"
+#: ../src/gui/npcdialog.cpp:119
+msgid "Clear log"
 msgstr ""
 
-#: src/keyboardconfig.cpp:83
-msgid "Copy Outfit"
+#: ../src/net/manaserv/loginhandler.cpp:244
+msgid ""
+"Client registration is not allowed. Please contact server administration."
 msgstr ""
 
-#: src/keyboardconfig.cpp:84 src/keyboardconfig.cpp:85
-#: src/keyboardconfig.cpp:86 src/keyboardconfig.cpp:87
-#: src/keyboardconfig.cpp:88 src/keyboardconfig.cpp:89
-#: src/keyboardconfig.cpp:90 src/keyboardconfig.cpp:91
-#: src/keyboardconfig.cpp:92 src/keyboardconfig.cpp:93
-#: src/keyboardconfig.cpp:94 src/keyboardconfig.cpp:95
-#, c-format
-msgid "Emote Shortcut %d"
+#: ../src/net/tmwa/loginhandler.cpp:172
+msgid "Client too old."
 msgstr ""
 
-#: src/keyboardconfig.cpp:96
-msgid "Toggle Chat"
-msgstr "Перейти до балачки"
-
-#: src/keyboardconfig.cpp:97
-msgid "Scroll Chat Up"
-msgstr "Гортати балачку вище"
-
-#: src/keyboardconfig.cpp:98
-msgid "Scroll Chat Down"
-msgstr "Гортати балачку нижче"
-
-#: src/keyboardconfig.cpp:99
-msgid "Previous Chat Tab"
-msgstr "Попередня вкладка балачки"
-
-#: src/keyboardconfig.cpp:100
-msgid "Next Chat Tab"
-msgstr "Наступна вкладка балачки"
-
-#: src/keyboardconfig.cpp:101
-msgid "Select OK"
+#: ../src/net/manaserv/loginhandler.cpp:274
+#: ../src/net/manaserv/loginhandler.cpp:311
+msgid "Client version is too old."
 msgstr ""
 
-#: src/keyboardconfig.cpp:103
-msgid "Ignore input 1"
+#: ../src/gui/helpwindow.cpp:51 ../src/gui/npcdialog.cpp:51
+msgid "Close"
+msgstr "Закрити"
+
+#: ../src/gui/debugwindow.cpp:135
+msgid "Collision tiles"
 msgstr ""
 
-#: src/keyboardconfig.cpp:104
-msgid "Ignore input 2"
+#: ../src/gui/setup_colors.cpp:52
+msgid "Colors"
+msgstr "Кольори"
+
+#: ../src/commandhandler.cpp:220
+msgid "Command: /announce <msg>"
+msgstr "Команда: /announce <_текст_>"
+
+#: ../src/commandhandler.cpp:273
+#, fuzzy
+msgid "Command: /away"
+msgstr "Команда: /who"
+
+#: ../src/commandhandler.cpp:270
+#, fuzzy
+msgid "Command: /away <afk reason>"
+msgstr "Команда: /w <_ім'я_> <_текст_>"
+
+#: ../src/commandhandler.cpp:227
+msgid "Command: /clear"
+msgstr "Команда: /clear"
+
+#: ../src/gui/widgets/whispertab.cpp:84
+msgid "Command: /close"
+msgstr "Команда: /close"
+
+#: ../src/commandhandler.cpp:278
+#, fuzzy
+msgid "Command: /createparty <name>"
+msgstr "Команда: /party <_ім'я_>"
+
+#: ../src/net/tmwa/gui/partytab.cpp:100
+msgid "Command: /exp"
 msgstr ""
 
-#: src/keyboardconfig.cpp:183
+#: ../src/net/tmwa/gui/partytab.cpp:95
+msgid "Command: /exp <policy>"
+msgstr ""
+
+#: ../src/commandhandler.cpp:208
+msgid "Command: /help"
+msgstr "Команда: /help"
+
+#: ../src/commandhandler.cpp:211
+msgid "Command: /help <command>"
+msgstr "Команда: /help <_команда_>"
+
+#: ../src/gui/widgets/whispertab.cpp:89
+#, fuzzy
+msgid "Command: /ignore"
+msgstr "Команда: /where"
+
+#: ../src/commandhandler.cpp:232
+#, fuzzy
+msgid "Command: /ignore <player>"
+msgstr "Команда: /join <_канал_>"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:73 ../src/net/tmwa/gui/partytab.cpp:73
+msgid "Command: /invite <nick>"
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:90
+msgid "Command: /item"
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:85
+msgid "Command: /item <policy>"
+msgstr ""
+
+#: ../src/commandhandler.cpp:238
+msgid "Command: /join <channel>"
+msgstr "Команда: /join <_канал_>"
+
+#: ../src/gui/widgets/channeltab.cpp:88
+msgid "Command: /kick <nick>"
+msgstr "Команда: /kick <псевдонім>"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:80 ../src/net/tmwa/gui/partytab.cpp:80
+msgid "Command: /leave"
+msgstr ""
+
+#: ../src/commandhandler.cpp:244
+msgid "Command: /list"
+msgstr "Команда: /list"
+
+#: ../src/commandhandler.cpp:249
+msgid "Command: /me <message>"
+msgstr "Команда: /me <_текст_>"
+
+#: ../src/commandhandler.cpp:254
+msgid "Command: /msg <nick> <message>"
+msgstr "Команда: /msg <_ім'я_> <_текст_>"
+
+#: ../src/gui/widgets/channeltab.cpp:79
+msgid "Command: /op <nick>"
+msgstr "Комманда: /op <псевдонім>"
+
+#: ../src/commandhandler.cpp:283
+msgid "Command: /party <nick>"
+msgstr "Команда: /party <_ім'я_>"
+
+#: ../src/commandhandler.cpp:290
+msgid "Command: /present"
+msgstr "Команда: /present"
+
+#: ../src/commandhandler.cpp:264
+msgid "Command: /q <nick>"
+msgstr "Команда: /q <_ім'я_>"
+
+#: ../src/commandhandler.cpp:263
+msgid "Command: /query <nick>"
+msgstr "Команда: /query <_ім'я_>"
+
+#: ../src/gui/widgets/channeltab.cpp:72
+msgid "Command: /quit"
+msgstr "Команда: /quit"
+
+#: ../src/commandhandler.cpp:300
+msgid "Command: /record"
+msgstr "Команда: /record"
+
+#: ../src/commandhandler.cpp:297
+msgid "Command: /record <filename>"
+msgstr "Команда: /record <_файл_>"
+
+#: ../src/commandhandler.cpp:311
+msgid "Command: /toggle"
+msgstr "Команда: /toggle"
+
+#: ../src/commandhandler.cpp:305
+msgid "Command: /toggle <state>"
+msgstr "Команда: /toggle <_режим_>"
+
+#: ../src/gui/widgets/channeltab.cpp:67
+msgid "Command: /topic <message>"
+msgstr "Команда: /topic <тема каналу>"
+
+#: ../src/commandhandler.cpp:316 ../src/gui/widgets/whispertab.cpp:95
+#, fuzzy
+msgid "Command: /unignore <player>"
+msgstr "Команда: /announce <_текст_>"
+
+#: ../src/gui/widgets/channeltab.cpp:62
+msgid "Command: /users"
+msgstr "Команда: /users"
+
+#: ../src/commandhandler.cpp:256
+msgid "Command: /w <nick> <message>"
+msgstr "Команда: /w <_ім'я_> <_текст_>"
+
+#: ../src/commandhandler.cpp:322
+msgid "Command: /where"
+msgstr "Команда: /where"
+
+#: ../src/commandhandler.cpp:255
+msgid "Command: /whisper <nick> <message>"
+msgstr "Команда: /whisper <_ім'я_> <_текст_>"
+
+#: ../src/commandhandler.cpp:327
+msgid "Command: /who"
+msgstr "Команда: /who"
+
+#: ../src/gui/updaterwindow.cpp:517
+msgid "Completed"
+msgstr "Закінчено"
+
+#: ../src/playerrelations.cpp:328 ../src/playerrelations.cpp.orig:314
+#, fuzzy
+msgid "Completely ignore"
+msgstr "@@ignore|Повністю ігнорувати %s@@"
+
+#: ../src/gui/popupmenu.cpp:118
+#, fuzzy, c-format
+msgid "Completely ignore %s"
+msgstr "@@ignore|Повністю ігнорувати %s@@"
+
+#: ../src/gui/charselectdialog.cpp:72
+msgid "Confirm Character Delete"
+msgstr "Підтвердіть видалення персонажа"
+
+#: ../src/gui/register.cpp:69
+msgid "Confirm:"
+msgstr "Підтвердіть:"
+
+#: ../src/gui/tradewindow.cpp:54
+msgid "Confirmed. Waiting..."
+msgstr "Прийнято. Чекаємо..."
+
+#: ../src/keyboardconfig.cpp:185
 #, fuzzy, c-format
 msgid ""
 "Conflict \"%s\" and \"%s\" keys. Resolve them, or gameplay may result in "
 "strange behaviour."
 msgstr "Необхідно усунути повтори, інакше керування може бути ускладненим"
 
-#: src/localplayer.cpp:985
-msgid "Unable to pick up item."
+#: ../src/gui/serverdialog.cpp:210
+#, fuzzy
+msgid "Connect"
+msgstr "З'єднуюсь..."
+
+#: ../src/client.cpp:664
+#, fuzzy
+msgid "Connecting to server"
+msgstr "Очікування відповіді сервера"
+
+#: ../src/client.cpp:843
+msgid "Connecting to the game server"
 msgstr ""
 
-#. TRANSLATORS: This sentence may be translated differently
-#. for different grammatical numbers (singular, plural, ...)
-#: src/localplayer.cpp:994
+#: ../src/gui/updaterwindow.cpp:149
+msgid "Connecting..."
+msgstr "З'єднуюсь..."
+
+#: ../src/net/tmwa/network.cpp:405
+msgid "Connection to server terminated. "
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:84
+msgid "Copy Outfit"
+msgstr ""
+
+#: ../src/gui/statuswindow.cpp:260
 #, c-format
-msgid "You picked up %d [@@%d|%s@@]."
-msgid_plural "You picked up %d [@@%d|%s@@]."
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/main.cpp:42
-msgid "mana [options] [mana-file]"
+msgid "Correction points: %d"
 msgstr ""
 
-#: src/main.cpp:43
-msgid "[mana-file] : The mana file is an XML file (.mana)"
+#: ../src/game.cpp:937
+#, fuzzy
+msgid "Could Not Load Map"
+msgstr "Неможливо завантажити локацію"
+
+#: ../src/net/tmwa/partyhandler.cpp:83
+msgid "Could not create party."
 msgstr ""
 
-#: src/main.cpp:44
-msgid "              used to set custom parameters"
+#: ../src/net/tmwa/guildhandler.cpp:296
+msgid "Could not invite user to guild."
 msgstr ""
 
-#: src/main.cpp:45
-msgid "              to the mana client."
+#: ../src/net/tmwa/specialhandler.cpp:157
+msgid "Could not join party!"
 msgstr ""
 
-#: src/main.cpp:47
-msgid "Options:"
-msgstr "Параметри:"
-
-#: src/main.cpp:48
-#, fuzzy
-msgid "  -v --version        : Display the version"
-msgstr "  -h --help : показати ще раз цю довідку"
-
-#: src/main.cpp:49
-#, fuzzy
-msgid "  -h --help           : Display this help"
-msgstr "  -h --help : показати ще раз цю довідку"
-
-#: src/main.cpp:50
-#, fuzzy
-msgid "  -C --config-dir     : Configuration directory to use"
-msgstr "  -C --config-file : файл, з якого необхідно завантажити налаштування"
-
-#: src/main.cpp:51
-#, fuzzy
-msgid "  -U --username       : Login with this username"
-msgstr "  -P --password : зареєструватися на сервері зі вказаним паролем"
-
-#: src/main.cpp:52
-#, fuzzy
-msgid "  -P --password       : Login with this password"
-msgstr "  -P --password : зареєструватися на сервері зі вказаним паролем"
-
-#: src/main.cpp:53
-#, fuzzy
-msgid "  -c --character      : Login with this character"
-msgstr "  -P --password : зареєструватися на сервері зі вказаним паролем"
-
-#: src/main.cpp:54
-msgid "  -s --server         : Login server name or IP"
+#: ../src/net/tmwa/specialhandler.cpp:211
+msgid "Could not steal anything..."
 msgstr ""
 
-#: src/main.cpp:55
-#, fuzzy
-msgid "  -p --port           : Login server port"
-msgstr "  -P --password : зареєструватися на сервері зі вказаним паролем"
+#: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:416
+#: ../src/gui/socialwindow.cpp:330
+msgid "Create"
+msgstr "Створити"
 
-#: src/main.cpp:56
-#, fuzzy
-msgid "     --update-host    : Use this update host"
-msgstr "  -H --update-host : сервер, з якого необхідно завантажити оновлення"
+#: ../src/gui/charcreatedialog.cpp:53
+msgid "Create Character"
+msgstr "Створити персонажа"
 
-#: src/main.cpp:57
-msgid "  -D --default        : Choose default character server and character"
+#: ../src/gui/socialwindow.cpp:272
+msgid "Create Guild"
+msgstr "Створити гільдію"
+
+#: ../src/gui/socialwindow.cpp:273 ../src/gui/socialwindow.cpp:619
+#, fuzzy
+msgid "Create Party"
+msgstr "Створити персонажа"
+
+#: ../src/gui/socialwindow.cpp:503
+#, c-format
+msgid "Creating guild called %s."
 msgstr ""
 
-#: src/main.cpp:59
-#, fuzzy
-msgid "  -u --skip-update    : Skip the update downloads"
-msgstr "  -H --update-host : сервер, з якого необхідно завантажити оновлення"
-
-#: src/main.cpp:60
-#, fuzzy
-msgid "  -d --data           : Directory to load game data from"
-msgstr "  -d --data : тека, з якої необхідно завантажити данні"
-
-#: src/main.cpp:61
-#, fuzzy
-msgid "     --localdata-dir  : Directory to use as local data directory"
-msgstr "  -S --home-dir : тека, котру необхідно вживати як домашню"
-
-#: src/main.cpp:62
-#, fuzzy
-msgid "     --chat-log-dir   : Chat log dir to use"
-msgstr "  -C --config-file : файл, з якого необхідно завантажити налаштування"
-
-#: src/main.cpp:63
-#, fuzzy
-msgid "     --screenshot-dir : Directory to store screenshots"
-msgstr "  -S --home-dir : тека, котру необхідно вживати як домашню"
-
-#: src/main.cpp:65
-msgid "     --no-opengl      : Disable OpenGL for this session"
+#: ../src/gui/socialwindow.cpp:496
+msgid "Creating guild failed, please choose a shorter name."
 msgstr ""
 
-#: src/net/manaserv/beinghandler.cpp:303 src/net/tmwa/playerhandler.cpp:94
-msgid "You are dead."
+#: ../src/gui/socialwindow.cpp:526
+#, c-format
+msgid "Creating party called %s."
 msgstr ""
 
-#: src/net/manaserv/beinghandler.cpp:304 src/net/tmwa/playerhandler.cpp:95
-msgid "We regret to inform you that your character was killed in battle."
+#: ../src/gui/socialwindow.cpp:519
+msgid "Creating party failed, please choose a shorter name."
 msgstr ""
 
-#: src/net/manaserv/beinghandler.cpp:306 src/net/tmwa/playerhandler.cpp:97
-msgid "You are not that alive anymore."
+#: ../src/resources/userpalette.cpp:105
+msgid "Critical Hit"
+msgstr "Критичний удар"
+
+#: ../src/gui/debugwindow.cpp:96
+#, c-format
+msgid "Cursor: (%d, %d)"
 msgstr ""
 
-#: src/net/manaserv/beinghandler.cpp:307 src/net/tmwa/playerhandler.cpp:98
-msgid "The cold hands of the grim reaper are grabbing for your soul."
+#: ../src/gui/customserverdialog.cpp:48
+#, fuzzy
+msgid "Custom Server"
+msgstr "Красивий вказівник"
+
+#: ../src/gui/setup_video.cpp:167
+msgid "Custom cursor"
+msgstr "Красивий вказівник"
+
+#: ../src/gui/setup_video.cpp:357
+msgid "Deactivating OpenGL"
 msgstr ""
 
-#: src/net/manaserv/beinghandler.cpp:308 src/net/tmwa/playerhandler.cpp:99
+#: ../src/gui/debugwindow.cpp:219
+msgid "Debug"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:79
+msgid "Debug Window"
+msgstr "Вікно зневаждення"
+
+#: ../src/gui/setup_keyboard.cpp:97
+msgid "Default"
+msgstr "Типово"
+
+#: ../src/net/tmwa/generalhandler.cpp:239
+#, fuzzy
+msgid "Defense"
+msgstr "Захист:"
+
+#: ../src/resources/itemdb.cpp:322
+#, c-format
+msgid "Defense %+d"
+msgstr ""
+
+#: ../src/gui/setup_colors.cpp:95
+#, fuzzy
+msgid "Delay:"
+msgstr "Затримка: "
+
+#: ../src/gui/charselectdialog.cpp:360 ../src/gui/serverdialog.cpp:213
+#: ../src/gui/setup_players.cpp:228
+msgid "Delete"
+msgstr "Видалити"
+
+#: ../src/gui/customserverdialog.cpp:58
+#, fuzzy
+msgid "Description:"
+msgstr "Опис: %s"
+
+#: ../src/net/manaserv/attributes.cpp:192
+#: ../src/net/tmwa/generalhandler.cpp:235
+msgid "Dexterity"
+msgstr "Вправність"
+
+#: ../src/net/manaserv/attributes.cpp:199
+#, fuzzy, c-format
+msgid "Dexterity %+.1f"
+msgstr "Вправність"
+
+#: ../src/net/tmwa/generalhandler.cpp:106
+#, c-format
+msgid "Dexterity %+d"
+msgstr ""
+
+#: ../src/net/tmwa/charserverhandler.cpp:275
+msgid "Dexterity:"
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:181
+msgid "Disable transparency (Low CPU mode)"
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:106
+#, fuzzy, c-format
+msgid "Disregard %s"
+msgstr "Не зважати"
+
+#: ../src/gui/setup_players.cpp:66
+msgid "Disregarded"
+msgstr "Не зважати"
+
+#: ../src/net/manaserv/beinghandler.cpp:287
+#: ../src/net/tmwa/playerhandler.cpp:109
+msgid "Do you want your possessions identified?"
+msgstr ""
+
+#: ../src/gui/setup_audio.cpp:43
+msgid "Download music"
+msgstr ""
+
+#: ../src/gui/serverdialog.cpp:404
+#, c-format
+msgid "Downloading server list...%2.2f%%"
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:381 ../src/gui/popupmenu.cpp:385
+msgid "Drop"
+msgstr "Викинути"
+
+#: ../src/gui/inventorywindow.cpp:108 ../src/gui/inventorywindow.cpp:379
+#: ../src/gui/popupmenu.cpp:383
+#, fuzzy
+msgid "Drop..."
+msgstr "Викинути"
+
+#: ../src/net/tmwa/generalhandler.cpp:148
+msgid "Duplicated login."
+msgstr ""
+
+#: ../src/client.cpp:941
+#, fuzzy
+msgid "Email Change"
+msgstr "Заміна"
+
+#: ../src/net/manaserv/loginhandler.cpp:320
+msgid "Email address already exists."
+msgstr ""
+
+#: ../src/client.cpp:942
+msgid "Email changed successfully!"
+msgstr ""
+
+#: ../src/gui/register.cpp:100
+msgid "Email:"
+msgstr "Пошта:"
+
+#: ../src/keyboardconfig.cpp:85 ../src/keyboardconfig.cpp:86
+#: ../src/keyboardconfig.cpp:87 ../src/keyboardconfig.cpp:88
+#: ../src/keyboardconfig.cpp:89 ../src/keyboardconfig.cpp:90
+#: ../src/keyboardconfig.cpp:91 ../src/keyboardconfig.cpp:92
+#: ../src/keyboardconfig.cpp:93 ../src/keyboardconfig.cpp:94
+#: ../src/keyboardconfig.cpp:95 ../src/keyboardconfig.cpp:96
+#, c-format
+msgid "Emote Shortcut %d"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:81
+msgid "Emote Shortcut Window"
+msgstr "Вікно емоцій"
+
+#: ../src/net/tmwa/specialhandler.cpp:148
+msgid "Emote failed!"
+msgstr ""
+
+#: ../src/net/tmwa/network.cpp:146
+msgid "Empty address given to Network::connect()!"
+msgstr ""
+
+#: ../src/gui/setup_players.cpp:234
+msgid "Enable Chat log"
+msgstr ""
+
+#: ../src/gui/setup_joystick.cpp:39
+msgid "Enable joystick"
+msgstr "Використовувати джойстик"
+
+#: ../src/keyboardconfig.cpp:57
+msgid "Enable/Disable Trading"
+msgstr "Дозволити/заборонити торгівлю"
+
+#: ../src/net/manaserv/chathandler.cpp:229
+msgid "End of channel list."
+msgstr ""
+
+#: ../src/gui/changepassworddialog.cpp:110
+msgid "Enter the old password first."
+msgstr ""
+
+#: ../src/client.cpp:724
+msgid "Entering game world"
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:93 ../src/gui/inventorywindow.cpp:106
+#: ../src/gui/inventorywindow.cpp:368 ../src/gui/popupmenu.cpp:375
+msgid "Equip"
+msgstr "Зняти"
+
+#: ../src/net/tmwa/playerhandler.cpp:507
+msgid "Equip arrows first."
+msgstr ""
+
+#: ../src/gui/equipmentwindow.cpp:54 ../src/gui/windowmenu.cpp:58
+msgid "Equipment"
+msgstr "Обладунки"
+
+#: ../src/keyboardconfig.cpp:73
+msgid "Equipment Window"
+msgstr "Вікно екіпіровки"
+
+#: ../src/client.cpp:1042 ../src/gui/changeemaildialog.cpp:156
+#: ../src/gui/changepassworddialog.cpp:149 ../src/gui/charcreatedialog.cpp:194
+#: ../src/gui/customserverdialog.cpp:155 ../src/gui/register.cpp:218
+#: ../src/gui/serverdialog.cpp:286 ../src/gui/serverdialog.cpp:330
+#: ../src/gui/unregisterdialog.cpp:133 ../src/net/manaserv/charhandler.cpp:179
+#: ../src/net/manaserv/charhandler.cpp:229
+#: ../src/net/tmwa/charserverhandler.cpp:134
+#: ../src/net/tmwa/charserverhandler.cpp:151
+msgid "Error"
+msgstr "Помилка"
+
+#: ../src/net/manaserv/guildhandler.cpp:87
+msgid "Error creating guild."
+msgstr ""
+
+#: ../src/client.cpp:1326
+#, fuzzy, c-format
+msgid ""
+"Error creating updates directory!\n"
+"(%s)"
+msgstr "Неможливо створити теку для оновлень!"
+
+#: ../src/client.cpp:1334
+#, fuzzy, c-format
+msgid ""
+"Error creating updates directory!\n"
+"(%s/%s)"
+msgstr "Неможливо створити теку для оновлень!"
+
+#: ../src/net/manaserv/chathandler.cpp:211
+#, fuzzy
+msgid "Error joining channel."
+msgstr "Команда: /join <_канал_>"
+
+#: ../src/gui/serverdialog.cpp:418
+msgid "Error retreiving server list!"
+msgstr ""
+
+#: ../src/game.cpp:938
+#, c-format
+msgid "Error while loading %s"
+msgstr "Помилка під час завантаження %s"
+
+#: ../src/resources/userpalette.cpp:101
+msgid "Exp Notification"
+msgstr "Повідомлення про зміну досвіду"
+
+#: ../src/gui/statuswindow.cpp:126
+msgid "Exp:"
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:170 ../src/net/tmwa/partyhandler.cpp:179
+msgid "Experience sharing disabled."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:167 ../src/net/tmwa/partyhandler.cpp:173
+msgid "Experience sharing enabled."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:173 ../src/net/tmwa/partyhandler.cpp:185
+msgid "Experience sharing not possible."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:176
+msgid "Experience sharing unknown."
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:171
+#, fuzzy
+msgid "FPS limit:"
+msgstr "Обмеження частоти кадрів"
+
+#: ../src/net/tmwa/tradehandler.cpp:211
+msgid "Failed adding item for unknown reason."
+msgstr ""
+
+#: ../src/net/tmwa/tradehandler.cpp:207
+msgid "Failed adding item. Trade partner has no free slot."
+msgstr ""
+
+#: ../src/net/tmwa/tradehandler.cpp:202
+msgid "Failed adding item. Trade partner is over weighted."
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:262
+msgid "Failed adding item. You can not overlap one kind of item on the window."
+msgstr "Не вдається додати предмет. Не можна накладати предмети одного типу."
+
+#: ../src/net/tmwa/charserverhandler.cpp:134
+msgid "Failed to create character. Most likely the name is already taken."
+msgstr ""
+
+#: ../src/net/tmwa/charserverhandler.cpp:151
+msgid "Failed to delete character."
+msgstr ""
+
+#: ../src/net/manaserv/guildhandler.cpp:209
+msgid "Failed to promote member."
+msgstr ""
+
+#: ../src/gui/npcpostdialog.cpp:99
+msgid "Failed to send as sender or letter invalid."
+msgstr "Неможливо надіслати, так як адресант або лист некорректні"
+
+#: ../src/gui/recorder.cpp:113
+msgid "Failed to start recording."
+msgstr "Початок запису провалився."
+
+#: ../src/gui/setup_video.cpp:323
+#, fuzzy
+msgid ""
+"Failed to switch to fullscreen mode and restoration of old mode also failed!"
+msgstr "Невдалося встановити режим і відновити попередній!"
+
+#: ../src/gui/setup_video.cpp:317
+#, fuzzy
+msgid ""
+"Failed to switch to windowed mode and restoration of old mode also failed!"
+msgstr "Невдалося встановити режим і відновити попередній!"
+
+#: ../src/net/tmwa/inventoryhandler.cpp:287
+msgid "Failed to use item."
+msgstr ""
+
+#: ../src/client.cpp:962
+msgid "Farewell, come back any time..."
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:72
+msgid "Feet"
+msgstr ""
+
+#: ../src/gui/charcreatedialog.cpp:88 ../src/gui/register.cpp:91
+msgid "Female"
+msgstr "Жінка"
+
+#: ../src/gui/recorder.cpp:88
+msgid "Finishing recording."
+msgstr "Запис завершено"
+
+#: ../src/gui/setup_interface.cpp:130
+#, fuzzy
+msgid "Font size:"
+msgstr "Розмір шрифта"
+
+#: ../src/commandhandler.cpp:204
+msgid "For more information, type /help <command>."
+msgstr "Хочете знати більше - введіть /help <команда>."
+
+#: ../src/gui/setup_players.cpp:65
+msgid "Friend"
+msgstr "Друзі"
+
+#: ../src/gui/setup_video.cpp:165
+msgid "Full screen"
+msgstr "На повний екран"
+
+#: ../src/resources/userpalette.cpp:94
+msgid "GM Names"
+msgstr "Імена GM"
+
+#: ../src/net/tmwa/gamehandler.cpp:96
+#, fuzzy
+msgid "Game"
+msgstr "Назва"
+
+#: ../src/net/manaserv/beinghandler.cpp:281
+#: ../src/net/tmwa/playerhandler.cpp:101
 msgid "Game Over!"
 msgstr ""
 
-#: src/net/manaserv/beinghandler.cpp:309 src/net/tmwa/playerhandler.cpp:101
+#: ../src/game.cpp:170
+msgid "General"
+msgstr "Загальне"
+
+#: ../src/gui/widgets/chattab.cpp:164
+#, c-format
+msgid "Global announcement from %s:"
+msgstr "Глобальне повідомлення від %s:"
+
+#: ../src/gui/widgets/chattab.cpp:158
+msgid "Global announcement:"
+msgstr "Глобальне повідомлення:"
+
+#: ../src/net/tmwa/generalhandler.cpp:209
+msgid "Got disconnected from server!"
+msgstr ""
+
+#: ../src/gui/setup_colors.cpp:125
+#, fuzzy
+msgid "Green:"
+msgstr "Зелений: "
+
+#: ../src/gui/debugwindow.cpp:134
+msgid "Grid"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:129
+msgid "Gui opacity"
+msgstr "Прозорість інтерфейсу"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:45
+msgid "Guild"
+msgstr "Гільдія"
+
+#: ../src/gui/socialwindow.cpp:139
+#, c-format
+msgid "Guild %s quit requested."
+msgstr ""
+
+#: ../src/resources/userpalette.cpp:98
+#, fuzzy
+msgid "Guild Members"
+msgstr "Гільдія"
+
+#: ../src/gui/socialwindow.cpp:540
+#, fuzzy
+msgid "Guild Name"
+msgstr "Гільдія"
+
+#: ../src/net/manaserv/guildhandler.cpp:82
+msgid "Guild created."
+msgstr ""
+
+#: ../src/net/tmwa/guildhandler.cpp:393
+msgid "Guild creation isn't supported yet."
+msgstr ""
+
+#: ../src/net/tmwa/gui/guildtab.cpp:89
+msgid "Guild name is missing."
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:323
+#, c-format
+msgid "HP %+d"
+msgstr ""
+
+#: ../src/gui/statuswindow.cpp:121
+msgid "HP:"
+msgstr ""
+
+#: ../src/gui/charcreatedialog.cpp:78
+#, fuzzy
+msgid "Hair color:"
+msgstr "Колір волосся:"
+
+#: ../src/gui/charcreatedialog.cpp:84
+#, fuzzy
+msgid "Hair style:"
+msgstr "Зачіска:"
+
+#: ../src/net/tmwa/inventoryhandler.h:80
+msgid "Hand 1/2"
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:82
+msgid "Hand 2/2"
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:68
+msgid "Head"
+msgstr ""
+
+#: ../src/gui/helpwindow.cpp:37
+msgid "Help"
+msgstr "Довідка"
+
+#: ../src/keyboardconfig.cpp:70
+msgid "Help Window"
+msgstr "Вікно підказки"
+
+#: ../src/keyboardconfig.cpp:54
+msgid "Hide Windows"
+msgstr "Сховати вікна"
+
+#: ../src/net/tmwa/specialhandler.cpp:199
+msgid "Huh? What's that?"
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:286
+#: ../src/net/tmwa/playerhandler.cpp:107
+msgid "I guess this did not run too well."
+msgstr ""
+
+#: ../src/commandhandler.cpp:240
+msgid "If <channel> doesn't exist, it's created."
+msgstr "Якщо <_канал_> не існує, він буде створений"
+
+#: ../src/commandhandler.cpp:258 ../src/commandhandler.cpp:285
+#: ../src/gui/widgets/channeltab.cpp:81 ../src/gui/widgets/channeltab.cpp:90
+#: ../src/net/tmwa/gui/guildtab.cpp:75 ../src/net/tmwa/gui/partytab.cpp:75
+msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
+msgstr ""
+"Якщо <_ім'я_> містить пробіли, візьміть все _ім'я_ в подвійні лапки (\r\n"
+"name surname\")"
+
+#: ../src/net/tmwa/playerhandler.cpp:126
+msgid "If you weren't so animated, you'd be pushing up the daisies."
+msgstr ""
+
+#: ../src/gui/widgets/channeltab.cpp:74
+msgid "If you're the last person in the channel, it will be deleted."
+msgstr "Якщо ти останній користувач каналу — його буде закрито"
+
+#: ../src/gui/popupmenu.cpp:109
+#, fuzzy, c-format
+msgid "Ignore %s"
+msgstr "Ігнорувати повністю"
+
+#: ../src/keyboardconfig.cpp:104
+msgid "Ignore input 1"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:105
+msgid "Ignore input 2"
+msgstr ""
+
+#: ../src/gui/setup_players.cpp:67
+msgid "Ignored"
+msgstr "Ігнорувати повністю"
+
+#: ../src/game.cpp:704
+msgid "Ignoring incoming trade requests"
+msgstr "Ігнорування вхідних пропозицій торгівлі"
+
+#: ../src/net/manaserv/tradehandler.cpp:97
+msgid "Ignoring incoming trade requests."
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:235 ../src/net/manaserv/charhandler.cpp:212
+#: ../src/net/tmwa/charserverhandler.cpp:146
+msgid "Info"
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:102
+msgid "Insert coin to continue."
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:172
+msgid "Insufficient HP!"
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:175
+msgid "Insufficient SP!"
+msgstr ""
+
+#: ../src/net/manaserv/attributes.cpp:218
+#: ../src/net/tmwa/generalhandler.cpp:233
+msgid "Intelligence"
+msgstr "Інтелект"
+
+#: ../src/net/manaserv/attributes.cpp:225
+#, fuzzy, c-format
+msgid "Intelligence %+.1f"
+msgstr "Інтелект"
+
+#: ../src/net/tmwa/generalhandler.cpp:105
+#, c-format
+msgid "Intelligence %+d"
+msgstr ""
+
+#: ../src/net/tmwa/charserverhandler.cpp:274
+msgid "Intelligence:"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:120
+msgid "Interface"
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:269
+#, fuzzy
+msgid "Invalid character slot selected."
+msgstr "Підтвердіть видалення персонажа"
+
+#: ../src/net/manaserv/charhandler.cpp:158
+msgid "Invalid gender."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:155
+msgid "Invalid hair color."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:152
+msgid "Invalid hairstyle."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:146
+msgid "Invalid name."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:173
+msgid "Invalid slot number."
+msgstr ""
+
+#: ../src/client.cpp:1294
+#, fuzzy, c-format
+msgid "Invalid update host: %s"
+msgstr "Невідомий сервер оновлення: "
+
+#: ../src/gui/inventorywindow.cpp:60 ../src/gui/windowmenu.cpp:56
+msgid "Inventory"
+msgstr "Сумка"
+
+#: ../src/keyboardconfig.cpp:72
+msgid "Inventory Window"
+msgstr "Вікно майна"
+
+#: ../src/localplayer.cpp:916
+#, fuzzy
+msgid "Inventory is full."
+msgstr "Сумка"
+
+#: ../src/gui/socialwindow.cpp:331
+#, fuzzy
+msgid "Invite"
+msgstr "Запросити гравця"
+
+#: ../src/gui/popupmenu.cpp:131
+#, fuzzy, c-format
+msgid "Invite %s to join your guild"
+msgstr "@@guild|Запросити %s до вашої гільдії@@"
+
+#: ../src/gui/popupmenu.cpp:137
+#, fuzzy, c-format
+msgid "Invite %s to join your party"
+msgstr "@@party|Запросити %s до вашої групи@@"
+
+#: ../src/net/manaserv/guildhandler.cpp:97
+msgid "Invite sent."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:126
+#, c-format
+msgid "Invited user %s to guild %s."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:207 ../src/net/tmwa/partyhandler.cpp:331
+#, fuzzy, c-format
+msgid "Invited user %s to party."
+msgstr "/party > Запросити гравця до групи"
+
+#: ../src/net/tmwa/partyhandler.cpp:336
+#, c-format
+msgid "Inviting failed, because you can't see a player called %s."
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:58 ../src/keyboardconfig.cpp:59
+#: ../src/keyboardconfig.cpp:60 ../src/keyboardconfig.cpp:61
+#: ../src/keyboardconfig.cpp:62 ../src/keyboardconfig.cpp:63
+#: ../src/keyboardconfig.cpp:64 ../src/keyboardconfig.cpp:65
+#: ../src/keyboardconfig.cpp:66 ../src/keyboardconfig.cpp:67
+#: ../src/keyboardconfig.cpp:68 ../src/keyboardconfig.cpp:69
+#, c-format
+msgid "Item Shortcut %d"
+msgstr "Скорочений доступ %d"
+
+#: ../src/keyboardconfig.cpp:77
+msgid "Item Shortcut Window"
+msgstr "Вікно скороченого доступу"
+
+#: ../src/localplayer.cpp:919
+msgid "Item belongs to someone else."
+msgstr ""
+
+#: ../src/localplayer.cpp:915
+msgid "Item is too far away"
+msgstr ""
+
+#: ../src/localplayer.cpp:914
+msgid "Item is too heavy."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:135 ../src/net/tmwa/partyhandler.cpp:203
+msgid "Item sharing disabled."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:132 ../src/net/tmwa/partyhandler.cpp:197
+msgid "Item sharing enabled."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:138 ../src/net/tmwa/partyhandler.cpp:209
+msgid "Item sharing not possible."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:141
+msgid "Item sharing unknown."
+msgstr ""
+
+#: ../src/client.cpp:787
+#, fuzzy
+msgid "ItemDB: Error while loading "
+msgstr "Помилка під час завантаження %s"
+
+#: ../src/gui/statuswindow.cpp:163
+msgid "Job:"
+msgstr "Професія:"
+
+#: ../src/gui/statuswindow.cpp:162 ../src/gui/statuswindow.cpp:280
+#, c-format
+msgid "Job: %d"
+msgstr "Професія: %d"
+
+#: ../src/net/manaserv/partyhandler.cpp:98
+msgid ""
+"Joining party failed, because the invitation has timed out on the server."
+msgstr ""
+
+#: ../src/net/manaserv/partyhandler.cpp:102
+msgid "Joining party failed, because the inviter has left the game."
+msgstr ""
+
+#: ../src/gui/setup_joystick.cpp:41
+msgid "Joystick"
+msgstr "Джойстик"
+
+#: ../src/gui/setup_keyboard.cpp:128
+msgid "Key Conflict(s) Detected."
+msgstr "Деякі скорочення дублюють одне одного"
+
+#: ../src/gui/setup_keyboard.cpp:79
+msgid "Keyboard"
+msgstr "Клавіатура"
+
+#: ../src/net/tmwa/adminhandler.cpp:64
+msgid "Kick failed!"
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:167
+#, fuzzy
+msgid "Kick monster"
+msgstr "@@admin-kick|Викинути тварюку@@"
+
+#: ../src/gui/popupmenu.cpp:145
+msgid "Kick player"
+msgstr ""
+
+#: ../src/net/tmwa/adminhandler.cpp:66
+msgid "Kick succeeded!"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:62
+msgid "Large"
+msgstr "Великий"
+
+#: ../src/gui/socialwindow.cpp:332
+#, fuzzy
+msgid "Leave"
+msgstr "Великий"
+
+#: ../src/gui/socialwindow.cpp:163
+#, fuzzy
+msgid "Leave Guild?"
+msgstr "Створити гільдію"
+
+#: ../src/gui/socialwindow.cpp:242
+msgid "Leave Party?"
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:70
+msgid "Legs"
+msgstr ""
+
+#: ../src/gui/statuswindow.cpp:117 ../src/gui/statuswindow.cpp:219
+#: ../src/gui/statuswindow.cpp:267
+#, c-format
+msgid "Level: %d"
+msgstr "Рівень: %d"
+
+#: ../src/net/manaserv/chathandler.cpp:217
+#, fuzzy
+msgid "Listing channels."
+msgstr "Вимагається приєднання до каналу %s."
+
+#: ../src/resources/userpalette.cpp:109
+#, fuzzy
+msgid "Local Player Critical Hit"
+msgstr "Критичний удар"
+
+#: ../src/resources/userpalette.cpp:107
+#, fuzzy
+msgid "Local Player Hits Monster"
+msgstr "Гравець вдарив Тварюку"
+
+#: ../src/resources/userpalette.cpp:111
+msgid "Local Player Miss"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:108
+msgid "Log NPC dialogue"
+msgstr ""
+
+#: ../src/client.cpp:691
+#, fuzzy
+msgid "Logging in"
+msgstr "Логін"
+
+#: ../src/gui/logindialog.cpp:51 ../src/gui/logindialog.cpp:63
+msgid "Login"
+msgstr "Логін"
+
+#: ../src/net/manaserv/loginhandler.cpp:286
+msgid "Login attempt too soon after previous attempt."
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:290
+#: ../src/net/tmwa/playerhandler.cpp:115
+msgid "Looks like you got your head handed to you."
+msgstr ""
+
+#: ../src/net/tmwa/generalhandler.cpp:236
+msgid "Luck"
+msgstr "Талан"
+
+#: ../src/net/tmwa/generalhandler.cpp:107
+#, c-format
+msgid "Luck %+d"
+msgstr ""
+
+#: ../src/net/tmwa/charserverhandler.cpp:276
+msgid "Luck:"
+msgstr ""
+
+#: ../src/gui/skilldialog.cpp:472
+#, fuzzy, c-format
+msgid "Lvl: %d"
+msgstr "Рівень: %d"
+
+#: ../src/gui/skilldialog.cpp:461
+#, fuzzy, c-format
+msgid "Lvl: %d (%+d)"
+msgstr "Рівень: %d"
+
+#: ../src/net/tmwa/generalhandler.cpp:240
+#, fuzzy
+msgid "M.Attack"
+msgstr "Маг. напад:"
+
+#: ../src/net/tmwa/generalhandler.cpp:241
+#, fuzzy
+msgid "M.Defense"
+msgstr "Маг. захист:"
+
+#: ../src/resources/itemdb.cpp:324
+#, c-format
+msgid "MP %+d"
+msgstr ""
+
+#: ../src/gui/statuswindow.cpp:134
+msgid "MP:"
+msgstr ""
+
+#: ../src/net/tmwa/chathandler.cpp:230
+#, fuzzy
+msgid "MVP player."
+msgstr "Гравець"
+
+#: ../src/gui/charcreatedialog.cpp:87 ../src/gui/register.cpp:90
+msgid "Male"
+msgstr "Чоловік"
+
+#: ../src/gui/minimap.cpp:45 ../src/gui/minimap.cpp:87
+msgid "Map"
+msgstr "Локація"
+
+#: ../src/gui/debugwindow.cpp:103
+#, fuzzy, c-format
+msgid "Map: %s"
+msgstr "Ім'я: %s"
+
+#: ../src/gui/buydialog.cpp:81 ../src/gui/selldialog.cpp:79
+#: ../src/gui/statuswindow.cpp:395 ../src/gui/statuswindow.cpp:473
+#: ../src/gui/statuswindow.cpp:507
+msgid "Max"
+msgstr "Максимум"
+
+#: ../src/gui/setup_interface.cpp:61
+msgid "Medium"
+msgstr "Середній"
+
+#: ../src/gui/socialwindow.cpp:153
+msgid "Member Invite to Guild"
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:232
+#, fuzzy
+msgid "Member Invite to Party"
+msgstr "/party > Запросити гравця до групи"
+
+#: ../src/net/manaserv/guildhandler.cpp:204
+msgid "Member was promoted successfully."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:254 ../src/net/tmwa/playerhandler.cpp:294
+msgid "Message"
+msgstr ""
+
+#: ../src/commandhandler.cpp:479
+msgid "Message closes chat."
+msgstr "Повідомлення закриваж вікно чату"
+
+#: ../src/commandhandler.cpp:492
+msgid "Message now closes chat."
+msgstr "Тепер повідомлення закриватиме вікно чату"
+
+#: ../src/keyboardconfig.cpp:75
+msgid "Minimap Window"
+msgstr "Вікно мінімапи"
+
+#: ../src/gui/debugwindow.cpp:101
+#, fuzzy, c-format
+msgid "Minimap: %s"
+msgstr "Вікно мінімапи"
+
+#: ../src/resources/userpalette.cpp:112
+msgid "Misses"
+msgstr "Промах"
+
+#: ../src/gui/serverdialog.cpp:212
+msgid "Modify..."
+msgstr ""
+
+#: ../src/gui/statuswindow.cpp:118 ../src/gui/statuswindow.cpp:212
+#: ../src/gui/statuswindow.cpp:244
+#, c-format
+msgid "Money: %s"
+msgstr "Кошти: %s"
+
+#: ../src/resources/userpalette.cpp:104
+#, fuzzy
+msgid "Monster Hits Player"
+msgstr "Тварюка вдарила гравця"
+
+#: ../src/resources/userpalette.cpp:96
+msgid "Monsters"
+msgstr "Тварюки"
+
+#: ../src/gui/debugwindow.cpp:139
+msgid "Mouse path"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:42
+msgid "Move Down"
+msgstr "Опустити"
+
+#: ../src/keyboardconfig.cpp:43
+msgid "Move Left"
+msgstr "Пересунути вліво"
+
+#: ../src/keyboardconfig.cpp:44
+msgid "Move Right"
+msgstr "Пересунути вправо"
+
+#: ../src/keyboardconfig.cpp:41
+msgid "Move Up"
+msgstr "Підняти"
+
+#: ../src/gui/setup_audio.cpp:51
+msgid "Music volume"
+msgstr "Гучність музики"
+
+#: ../src/gui/debugwindow.cpp:100
+#, c-format
+msgid "Music: %s"
+msgstr ""
+
+#: ../src/gui/npcdialog.cpp:74 ../src/gui/npcpostdialog.cpp:41
+msgid "NPC"
+msgstr "NPC"
+
+#: ../src/resources/userpalette.cpp:95
+msgid "NPCs"
+msgstr "NPC"
+
+#: ../src/gui/setup_players.cpp:58
+msgid "Name"
+msgstr "Назва"
+
+#: ../src/gui/charcreatedialog.cpp:71 ../src/gui/customserverdialog.cpp:54
+#: ../src/gui/logindialog.cpp:54 ../src/gui/register.cpp:67
+msgid "Name:"
+msgstr "Ім'я"
+
+#: ../src/gui/unregisterdialog.cpp:51
+#, c-format
+msgid "Name: %s"
+msgstr "Ім'я: %s"
+
+#: ../src/net/tmwa/inventoryhandler.h:78
+#, fuzzy
+msgid "Necklace"
+msgstr "Ошийники"
+
+#: ../src/gui/ministatuswindow.cpp:244
+msgid "Need"
+msgstr ""
+
+#: ../src/gui/widgets/channeltab.cpp:121
+msgid "Need a user to kick!"
+msgstr "Потрібно вказати користувача для вигнання з каналу"
+
+#: ../src/gui/widgets/channeltab.cpp:114
+msgid "Need a user to op!"
+msgstr "Потрібно вказати користувача для призначення оператором"
+
+#: ../src/game.cpp:364
+msgid "Network Error"
+msgstr "Мережева помилка"
+
+#: ../src/gui/setup_players.cpp:64
+msgid "Neutral"
+msgstr "Нейтрально"
+
+#: ../src/net/manaserv/loginhandler.cpp:154
+#, fuzzy
+msgid "New email address incorrect."
+msgstr "Двічі введіть вашу нову адресу електронної пошти:"
+
+#: ../src/net/manaserv/loginhandler.cpp:123
+#, fuzzy
+msgid "New password incorrect."
+msgstr "Введіть новий пароль двічі:"
+
+#: ../src/net/tmwa/loginhandler.cpp:92
+msgid "New password too short."
+msgstr ""
+
+#: ../src/gui/npcdialog.cpp:50
+msgid "Next"
+msgstr "Далі"
+
+#: ../src/keyboardconfig.cpp:101
+msgid "Next Chat Tab"
+msgstr "Наступна вкладка балачки"
+
+#: ../src/gui/confirmdialog.cpp:43
+msgid "No"
+msgstr "Ні"
+
+#: ../src/commandhandler.cpp:407
+msgid "No <nick> was given."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:143
+msgid "No empty slot."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:266
+msgid "No gameservers are available."
+msgstr ""
+
+#: ../src/gui/itempopup.cpp:135
+msgid "No item"
+msgstr ""
+
+#: ../src/net/tmwa/generalhandler.cpp:135
+msgid "No servers available."
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:88
+msgid "No text"
+msgstr "Без тексту"
+
+#: ../src/net/manaserv/beinghandler.cpp:282
+#: ../src/net/tmwa/playerhandler.cpp:103
 msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
 msgstr ""
 
-#: src/net/manaserv/beinghandler.cpp:311 src/net/tmwa/playerhandler.cpp:103
-msgid ""
-"Your plan of breaking your enemies weapon by bashing it with your throat "
-"failed."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:313 src/net/tmwa/playerhandler.cpp:105
-msgid "I guess this did not run too well."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:314 src/net/tmwa/playerhandler.cpp:107
-msgid "Do you want your possessions identified?"
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:315 src/net/tmwa/playerhandler.cpp:109
-msgid "Sadly, no trace of you was ever found..."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:316 src/net/tmwa/playerhandler.cpp:111
-msgid "Annihilated."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:317 src/net/tmwa/playerhandler.cpp:113
-msgid "Looks like you got your head handed to you."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:318 src/net/tmwa/playerhandler.cpp:115
-msgid ""
-"You screwed up again, dump your body down the tubes and get you another one."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:323
-msgid "Press OK to respawn."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:324
+#: ../src/gui/setup_video.cpp:200 ../src/gui/setup_video.cpp:407
+#: ../src/gui/setup_video.cpp:481
 #, fuzzy
-msgid "You Died"
-msgstr "Ти віддаєш: %s."
+msgid "None"
+msgstr "Ні"
 
-#: src/net/manaserv/charhandler.cpp:138 src/net/manaserv/charhandler.cpp:209
+#: ../src/gui/debugwindow.cpp:142
+msgid "Normal"
+msgstr ""
+
+#: ../src/gui/recorder.cpp:92
+msgid "Not currently recording."
+msgstr "На даний момент запис не ведеться"
+
+#: ../src/net/manaserv/charhandler.cpp:140
+#: ../src/net/manaserv/charhandler.cpp:221
 msgid "Not logged in."
 msgstr ""
 
-#: src/net/manaserv/charhandler.cpp:141
-msgid "No empty slot."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:144
-msgid "Invalid name."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:147
-#, fuzzy
-msgid "Character's name already exists."
-msgstr "Отримано запрошення до групи, але одне вже є."
-
-#: src/net/manaserv/charhandler.cpp:150
-msgid "Invalid hairstyle."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:153
-msgid "Invalid hair color."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:156
-msgid "Invalid gender."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:159
-#, fuzzy
-msgid "Character's stats are too high."
-msgstr "Характеристики персонажа в нормі"
-
-#: src/net/manaserv/charhandler.cpp:162
-#, fuzzy
-msgid "Character's stats are too low."
-msgstr "Характеристики персонажа в нормі"
-
-#: src/net/manaserv/charhandler.cpp:165
-#, c-format
-msgid "At least one statis out of the permitted range: (%u - %u)."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:171 src/net/manaserv/loginhandler.cpp:96
-#: src/net/manaserv/loginhandler.cpp:127 src/net/manaserv/loginhandler.cpp:161
-#: src/net/manaserv/loginhandler.cpp:279 src/net/manaserv/loginhandler.cpp:316
-#: src/net/tmwa/loginhandler.cpp:95 src/net/tmwa/loginhandler.cpp:182
-#, fuzzy
-msgid "Unknown error."
-msgstr "Чорт зна яка команда"
-
-#: src/net/manaserv/charhandler.cpp:200 src/net/tmwa/charserverhandler.cpp:146
-msgid "Info"
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:200
-msgid "Player deleted."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:212
-#, fuzzy
-msgid "Selection out of range."
-msgstr "Вкажіть кількість предметів"
-
-#: src/net/manaserv/charhandler.cpp:215
-#, fuzzy, c-format
-msgid "Unknown error (%d)."
-msgstr "Чорт зна яка команда"
-
-#: src/net/manaserv/charhandler.cpp:250
-msgid "No gameservers are available."
-msgstr ""
-
-#: src/net/manaserv/chathandler.cpp:187 src/net/manaserv/chathandler.cpp:313
-#: src/net/manaserv/guildhandler.cpp:260
-#, c-format
-msgid "Topic: %s"
-msgstr ""
-
-#: src/net/manaserv/chathandler.cpp:191 src/net/manaserv/chathandler.cpp:274
-#, fuzzy
-msgid "Players in this channel:"
-msgstr "Гравець вдарив Тварюку"
-
-#: src/net/manaserv/chathandler.cpp:208
-#, fuzzy
-msgid "Error joining channel."
-msgstr "Команда: /join <_канал_>"
-
-#: src/net/manaserv/chathandler.cpp:214
-#, fuzzy
-msgid "Listing channels."
-msgstr "Вимагається приєднання до каналу %s."
-
-#: src/net/manaserv/chathandler.cpp:226
-msgid "End of channel list."
-msgstr ""
-
-#: src/net/manaserv/chathandler.cpp:303
-#, c-format
-msgid "%s entered the channel."
-msgstr ""
-
-#: src/net/manaserv/chathandler.cpp:308
-#, c-format
-msgid "%s left the channel."
-msgstr ""
-
-#: src/net/manaserv/chathandler.cpp:324
-#, c-format
-msgid "%s has set mode %s on user %s."
-msgstr ""
-
-#: src/net/manaserv/chathandler.cpp:334
-#, c-format
-msgid "%s has kicked %s."
-msgstr ""
-
-#: src/net/manaserv/chathandler.cpp:339
-#, fuzzy
-msgid "Unknown channel event."
-msgstr "Чорт зна яка команда"
-
-#: src/net/manaserv/guildhandler.cpp:82
-msgid "Guild created."
-msgstr ""
-
-#: src/net/manaserv/guildhandler.cpp:87
-msgid "Error creating guild."
-msgstr ""
-
-#: src/net/manaserv/guildhandler.cpp:97
-msgid "Invite sent."
-msgstr ""
-
-#: src/net/manaserv/guildhandler.cpp:204
-msgid "Member was promoted successfully."
-msgstr ""
-
-#: src/net/manaserv/guildhandler.cpp:209
-msgid "Failed to promote member."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:87
-msgid "Wrong magic_token."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:90 src/net/manaserv/loginhandler.cpp:269
-#, fuzzy
-msgid "Already logged in."
-msgstr "Вже записується"
-
-#: src/net/manaserv/loginhandler.cpp:93
-#, fuzzy
-msgid "Account banned."
-msgstr "Обліковий запис: %s"
-
-#: src/net/manaserv/loginhandler.cpp:118
-#, fuzzy
-msgid "New password incorrect."
-msgstr "Введіть новий пароль двічі:"
-
-#: src/net/manaserv/loginhandler.cpp:121 src/net/tmwa/loginhandler.cpp:89
-msgid "Old password incorrect."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:124 src/net/manaserv/loginhandler.cpp:155
-msgid "Account not connected. Please login first."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:149
-#, fuzzy
-msgid "New email address incorrect."
-msgstr "Двічі введіть вашу нову адресу електронної пошти:"
-
-#: src/net/manaserv/loginhandler.cpp:152
-msgid "Old email address incorrect."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:158
-msgid "The new email address already exists."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:239
-msgid ""
-"Client registration is not allowed. Please contact server administration."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:263 src/net/manaserv/loginhandler.cpp:300
-msgid "Client version is too old."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:266
-msgid "Wrong username or password."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:272
-#, fuzzy
-msgid "Account banned"
-msgstr "Обліковий запис: %s"
-
-#: src/net/manaserv/loginhandler.cpp:275
-msgid "Login attempt too soon after previous attempt."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:303
-msgid "Wrong username, password or email address."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:306
-msgid "Username already exists."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:309
-msgid "Email address already exists."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:312
-msgid "You took too long with the captcha or your response was incorrect."
-msgstr ""
-
-#: src/net/manaserv/partyhandler.cpp:87
-msgid "Joined party."
-msgstr ""
-
-#: src/net/manaserv/partyhandler.cpp:105
-#, c-format
-msgid "%s joined the party."
-msgstr ""
-
-#: src/net/manaserv/partyhandler.cpp:123
-#, fuzzy, c-format
-msgid "%s rejected your invite."
-msgstr "Відхилено запрошення від %s."
-
-#: src/net/manaserv/tradehandler.cpp:95
-msgid "Accepting incoming trade requests."
-msgstr ""
-
-#: src/net/manaserv/tradehandler.cpp:97
-msgid "Ignoring incoming trade requests."
-msgstr ""
-
-#: src/net/manaserv/tradehandler.cpp:115 src/net/tmwa/tradehandler.cpp:109
-msgid "Request for Trade"
-msgstr ""
-
-#: src/net/manaserv/tradehandler.cpp:116 src/net/tmwa/tradehandler.cpp:110
-#, c-format
-msgid "%s wants to trade with you, do you accept?"
-msgstr ""
-
-#: src/net/manaserv/tradehandler.cpp:134
-#, c-format
-msgid "Trading with %s"
-msgstr ""
-
-#: src/net/manaserv/tradehandler.cpp:148 src/net/tmwa/tradehandler.cpp:224
-msgid "Trade canceled."
-msgstr ""
-
-#: src/net/manaserv/tradehandler.cpp:155 src/net/tmwa/tradehandler.cpp:231
-msgid "Trade completed."
-msgstr ""
-
-#: src/net/tmwa/adminhandler.cpp:64
-msgid "Kick failed!"
-msgstr ""
-
-#: src/net/tmwa/adminhandler.cpp:66
-msgid "Kick succeeded!"
-msgstr ""
-
-#: src/net/tmwa/buysellhandler.cpp:109
+#: ../src/net/tmwa/buysellhandler.cpp:109
 msgid "Nothing to sell."
 msgstr ""
 
-#: src/net/tmwa/buysellhandler.cpp:116
-msgid "Thanks for buying."
-msgstr ""
-
-#: src/net/tmwa/buysellhandler.cpp:123
-msgid "Unable to buy."
-msgstr ""
-
-#: src/net/tmwa/buysellhandler.cpp:129
-msgid "Thanks for selling."
-msgstr ""
-
-#: src/net/tmwa/buysellhandler.cpp:131
-msgid "Unable to sell."
-msgstr ""
-
-#: src/net/tmwa/charserverhandler.cpp:103
-msgid "Access denied. Most likely, there are too many players on this server."
-msgstr ""
-
-#: src/net/tmwa/charserverhandler.cpp:107
+#: ../src/gui/setup_audio.cpp:94
 #, fuzzy
-msgid "Cannot use this ID."
-msgstr "Не можна надсилати порожні повідомлення!"
+msgid "Notice"
+msgstr "Без тексту"
 
-#: src/net/tmwa/charserverhandler.cpp:110
-#, fuzzy
-msgid "Unknown char-server failure."
-msgstr "Чорт зна яка команда"
+#: ../src/gui/itemamountwindow.cpp:113 ../src/gui/okdialog.cpp:42
+#: ../src/gui/quitdialog.cpp:46 ../src/gui/textdialog.cpp:39
+#: ../src/gui/tradewindow.cpp:72 ../src/gui/tradewindow.cpp:74
+msgid "OK"
+msgstr "Ок"
 
-#: src/net/tmwa/charserverhandler.cpp:134
-msgid "Failed to create character. Most likely the name is already taken."
+#: ../src/gui/customserverdialog.cpp:69
+msgid "Ok"
+msgstr "Ок"
+
+#: ../src/net/manaserv/loginhandler.cpp:157
+msgid "Old email address incorrect."
 msgstr ""
 
-#: src/net/tmwa/charserverhandler.cpp:146
-msgid "Character deleted."
+#: ../src/net/manaserv/loginhandler.cpp:126
+#: ../src/net/tmwa/loginhandler.cpp:89
+msgid "Old password incorrect."
 msgstr ""
 
-#: src/net/tmwa/charserverhandler.cpp:151
-msgid "Failed to delete character."
-msgstr ""
-
-#: src/net/tmwa/charserverhandler.cpp:266
-msgid "Strength:"
-msgstr ""
-
-#: src/net/tmwa/charserverhandler.cpp:267
-msgid "Agility:"
-msgstr ""
-
-#: src/net/tmwa/charserverhandler.cpp:268
-msgid "Vitality:"
-msgstr ""
-
-#: src/net/tmwa/charserverhandler.cpp:269
-msgid "Intelligence:"
-msgstr ""
-
-#: src/net/tmwa/charserverhandler.cpp:270
-msgid "Dexterity:"
-msgstr ""
-
-#: src/net/tmwa/charserverhandler.cpp:271
-msgid "Luck:"
-msgstr ""
-
-#: src/net/tmwa/chathandler.cpp:87
-#, c-format
-msgid "Whisper could not be sent, %s is offline."
-msgstr ""
-
-#: src/net/tmwa/chathandler.cpp:96
-#, c-format
-msgid "Whisper could not be sent, ignored by %s."
-msgstr ""
-
-#: src/net/tmwa/chathandler.cpp:230
-#, fuzzy
-msgid "MVP player."
-msgstr "Гравець"
-
-#: src/net/tmwa/chathandler.cpp:265 src/net/tmwa/chathandler.cpp:271
-#: src/net/tmwa/chathandler.cpp:276 src/net/tmwa/chathandler.cpp:281
-#: src/net/tmwa/chathandler.cpp:286 src/net/tmwa/chathandler.cpp:291
-#: src/net/tmwa/chathandler.cpp:296 src/net/tmwa/chathandler.cpp:301
-msgid "Channels are not supported!"
-msgstr ""
-
-#: src/net/tmwa/gamehandler.cpp:88
+#: ../src/net/tmwa/gamehandler.cpp:83
 #, c-format
 msgid "Online users: %d"
 msgstr ""
 
-#: src/net/tmwa/gamehandler.cpp:101
+#: ../src/gui/setup_video.cpp:166
+msgid "OpenGL"
+msgstr "OpenGL"
+
+#: ../src/commandhandler.h:31
+#, c-format
+msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
+msgstr ""
+"Можливими опціями для /%s є: \"yes\", \"no\", \"true\", \"false\", \"1\", "
+"\"0\"."
+
+#: ../src/main.cpp:47
+msgid "Options:"
+msgstr "Параметри:"
+
+#: ../src/resources/userpalette.cpp:103
 #, fuzzy
-msgid "Game"
-msgstr "Назва"
+msgid "Other Player Hits Monster"
+msgstr "Гравець вдарив Тварюку"
 
-#: src/net/tmwa/gamehandler.cpp:101
-msgid "Request to quit denied!"
-msgstr ""
+#: ../src/resources/userpalette.cpp:92
+msgid "Other Players' Names"
+msgstr "Імена інших гравців"
 
-#: src/net/tmwa/generalhandler.cpp:102
+#: ../src/gui/outfitwindow.cpp:68 ../src/gui/outfitwindow.cpp:141
+#: ../src/gui/outfitwindow.cpp:154
 #, c-format
-msgid "Strength %+d"
+msgid "Outfit: %d"
 msgstr ""
 
-#: src/net/tmwa/generalhandler.cpp:103
-#, c-format
-msgid "Agility %+d"
+#: ../src/gui/inventorywindow.cpp:110 ../src/gui/outfitwindow.cpp:51
+msgid "Outfits"
 msgstr ""
 
-#: src/net/tmwa/generalhandler.cpp:104
-#, c-format
-msgid "Vitality %+d"
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:105
-#, c-format
-msgid "Intelligence %+d"
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:106
-#, c-format
-msgid "Dexterity %+d"
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:107
-#, c-format
-msgid "Luck %+d"
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:132
-msgid "Authentication failed."
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:135
-msgid "No servers available."
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:139
-msgid "Someone else is trying to use this account."
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:142
-msgid "This account is already logged in."
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:145
-msgid "Speed hack detected."
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:148
-msgid "Duplicated login."
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:151
-msgid "Unknown connection error."
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:209
-msgid "Got disconnected from server!"
-msgstr ""
-
-#: src/net/tmwa/generalhandler.cpp:230
-msgid "Strength"
-msgstr "Сила"
-
-#: src/net/tmwa/generalhandler.cpp:231
-msgid "Agility"
-msgstr "Спритність"
-
-#: src/net/tmwa/generalhandler.cpp:232
-msgid "Vitality"
-msgstr "Витривалість"
-
-#: src/net/tmwa/generalhandler.cpp:233
-msgid "Intelligence"
-msgstr "Інтелект"
-
-#: src/net/tmwa/generalhandler.cpp:234
-msgid "Dexterity"
-msgstr "Вправність"
-
-#: src/net/tmwa/generalhandler.cpp:235
-msgid "Luck"
-msgstr "Талан"
-
-#: src/net/tmwa/generalhandler.cpp:238
+#: ../src/keyboardconfig.cpp:82
 #, fuzzy
-msgid "Defense"
-msgstr "Захист:"
+msgid "Outfits Window"
+msgstr "Вікно стану"
 
-#: src/net/tmwa/generalhandler.cpp:239
+#: ../src/gui/setup_interface.cpp:128
 #, fuzzy
-msgid "M.Attack"
-msgstr "Маг. напад:"
+msgid "Overhead text:"
+msgstr "Текст зверху"
 
-#: src/net/tmwa/generalhandler.cpp:240
+#: ../src/resources/userpalette.cpp:93
+msgid "Own Name"
+msgstr "Власне ім'я"
+
+#: ../src/gui/setup_video.cpp:459
 #, fuzzy
-msgid "M.Defense"
-msgstr "Маг. захист:"
+msgid "Particle Effect Settings Changed."
+msgstr "Налаштування ефектів частинок застосовано"
 
-#: src/net/tmwa/generalhandler.cpp:241
+#: ../src/resources/userpalette.cpp:99
+msgid "Particle Effects"
+msgstr "Ефекти часток"
+
+#: ../src/gui/debugwindow.cpp:107
 #, fuzzy, c-format
-msgid "% Accuracy"
-msgstr "Точність (%):"
+msgid "Particle count: %d"
+msgstr "Ефекти часток"
 
-#: src/net/tmwa/generalhandler.cpp:242
-#, fuzzy, c-format
-msgid "% Evade"
-msgstr "Ухиляння (%):"
-
-#: src/net/tmwa/generalhandler.cpp:243
-#, fuzzy, c-format
-msgid "% Critical"
-msgstr "Критичний удар"
-
-#: src/net/tmwa/gui/guildtab.cpp:45
-msgid "Guild"
-msgstr "Гільдія"
-
-#: src/net/tmwa/gui/guildtab.cpp:61 src/net/tmwa/gui/partytab.cpp:59
-msgid "/help > Display this help."
-msgstr ""
-
-#: src/net/tmwa/gui/guildtab.cpp:62
+#: ../src/gui/setup_video.cpp:192
 #, fuzzy
-msgid "/invite > Invite a player to your guild"
-msgstr "/party > Запросити гравця до групи"
+msgid "Particle detail:"
+msgstr "Деталізація ефектів частинок"
 
-#: src/net/tmwa/gui/guildtab.cpp:63
-msgid "/leave > Leave the guild you are in"
-msgstr ""
+#: ../src/gui/setup_video.cpp:169
+msgid "Particle effects"
+msgstr "Ефекти частинок"
 
-#: src/net/tmwa/gui/guildtab.cpp:64
-#, fuzzy
-msgid "/kick > Kick some one from the guild you are in"
-msgstr "/kick > Вигнати користувача з каналу"
-
-#: src/net/tmwa/gui/guildtab.cpp:73 src/net/tmwa/gui/partytab.cpp:73
-msgid "Command: /invite <nick>"
-msgstr ""
-
-#: src/net/tmwa/gui/guildtab.cpp:74
-#, fuzzy
-msgid "This command invites <nick> to the guild you're in."
-msgstr "Ця команда запрошує гравця <_ім'я_> до вас в групу"
-
-#: src/net/tmwa/gui/guildtab.cpp:80 src/net/tmwa/gui/partytab.cpp:80
-msgid "Command: /leave"
-msgstr ""
-
-#: src/net/tmwa/gui/guildtab.cpp:81
-#, fuzzy
-msgid "This command causes the player to leave the guild."
-msgstr "Ця команда встановлює тему каналу"
-
-#: src/net/tmwa/gui/guildtab.cpp:89
-msgid "Guild name is missing."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:296
-msgid "Could not inivte user to guild."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:301
-msgid "User rejected guild invite."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:306
-msgid "User is now part of your guild."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:311
-msgid "Your guild is full."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:316
-msgid "Unknown guild invite response."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:393
-msgid "Guild creation isn't supported yet."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:43
+#: ../src/net/tmwa/gui/partytab.cpp:43
 msgid "Party"
 msgstr "Група"
 
-#: src/net/tmwa/gui/partytab.cpp:60
-msgid "/invite > Invite a player to your party"
+#: ../src/gui/socialwindow.cpp:218
+#, c-format
+msgid "Party %s quit requested."
 msgstr ""
 
-#: src/net/tmwa/gui/partytab.cpp:61
-msgid "/leave > Leave the party you are in"
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:62
-msgid "/kick > Kick some one from the party you are in"
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:63
-msgid "/item > Show/change party item sharing options"
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:64
-msgid "/exp > Show/change party experience sharing options"
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:81
-msgid "This command causes the player to leave the party."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:85
-msgid "Command: /item <policy>"
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:86
-msgid "This command changes the party's item sharing policy."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:87
-msgid ""
-"<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
-"\"0\", \"no\", \"false\" to disable item sharing."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:90
-msgid "Command: /item"
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:91
-msgid "This command displays the party's current item sharing policy."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:95
-msgid "Command: /exp <policy>"
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:96
-msgid "This command changes the party's experience sharing policy."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:97
-msgid ""
-"<policy> can be one of \"1\", \"yes\", \"true\" to enable experience "
-"sharing, or \"0\", \"no\", \"false\" to disable experience sharing."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:100
-msgid "Command: /exp"
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:101
-msgid "This command displays the party's current experience sharing policy."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:132 src/net/tmwa/partyhandler.cpp:196
-msgid "Item sharing enabled."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:135 src/net/tmwa/partyhandler.cpp:202
-msgid "Item sharing disabled."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:138 src/net/tmwa/partyhandler.cpp:208
-msgid "Item sharing not possible."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:141
-msgid "Item sharing unknown."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:167 src/net/tmwa/partyhandler.cpp:172
-msgid "Experience sharing enabled."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:170 src/net/tmwa/partyhandler.cpp:178
-msgid "Experience sharing disabled."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:173 src/net/tmwa/partyhandler.cpp:184
-msgid "Experience sharing not possible."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:176
-msgid "Experience sharing unknown."
-msgstr ""
-
-#: src/net/tmwa/inventoryhandler.cpp:285
-msgid "Failed to use item."
-msgstr ""
-
-#: src/net/tmwa/inventoryhandler.cpp:399
-msgid "Unable to equip."
-msgstr ""
-
-#: src/net/tmwa/inventoryhandler.cpp:410
-msgid "Unable to unequip."
-msgstr ""
-
-#: src/net/tmwa/loginhandler.cpp:86
-msgid "Account was not found. Please re-login."
-msgstr ""
-
-#: src/net/tmwa/loginhandler.cpp:92
-msgid "New password too short."
-msgstr ""
-
-#: src/net/tmwa/loginhandler.cpp:156
+#: ../src/resources/userpalette.cpp:97
 #, fuzzy
-msgid "Unregistered ID."
-msgstr "Не зареєстрований"
+msgid "Party Members"
+msgstr "Група"
 
-#: src/net/tmwa/loginhandler.cpp:159
+#: ../src/gui/socialwindow.cpp:625
 #, fuzzy
-msgid "Wrong password."
-msgstr "Змінити пароль"
+msgid "Party Name"
+msgstr "Група"
 
-#: src/net/tmwa/loginhandler.cpp:162
-msgid "Account expired."
+#: ../src/net/manaserv/partyhandler.cpp:152
+msgid ""
+"Party invitation rejected by server, because of too many invitations in a "
+"short time."
 msgstr ""
 
-#: src/net/tmwa/loginhandler.cpp:165
+#: ../src/net/manaserv/partyhandler.cpp:75
+#, c-format
+msgid ""
+"Party invite failed, because no player called %s is within the visual range."
+msgstr ""
+
+#: ../src/commandhandler.cpp:448 ../src/net/tmwa/gui/partytab.cpp:109
+msgid "Party name is missing."
+msgstr ""
+
+#: ../src/net/tmwa/partyhandler.cpp:85
+msgid "Party successfully created."
+msgstr ""
+
+#: ../src/gui/beingpopup.cpp:76
+#, fuzzy, c-format
+msgid "Party: %s"
+msgstr "Група (%s)"
+
+#: ../src/client.cpp:922
+#, fuzzy
+msgid "Password Change"
+msgstr "Пароль:"
+
+#: ../src/client.cpp:923
+msgid "Password changed successfully!"
+msgstr ""
+
+#: ../src/gui/changepassworddialog.cpp:61 ../src/gui/logindialog.cpp:55
+#: ../src/gui/register.cpp:68 ../src/gui/unregisterdialog.cpp:53
+msgid "Password:"
+msgstr "Пароль:"
+
+#: ../src/gui/register.cpp:197
+msgid "Passwords do not match."
+msgstr "Не ідентичні паролі!"
+
+#: ../src/gui/popupmenu.cpp:192
+#, fuzzy, c-format
+msgid "Pick up %s"
+msgstr "Підняти"
+
+#: ../src/keyboardconfig.cpp:53
+msgid "Pickup"
+msgstr "Підняти"
+
+#: ../src/resources/userpalette.cpp:100
+msgid "Pickup Notification"
+msgstr "Повідомлення про підбирання"
+
+#: ../src/gui/updaterwindow.cpp:152
+msgid "Play"
+msgstr ""
+
+#: ../src/commandhandler.cpp:544
+msgid "Player already ignored!"
+msgstr ""
+
+#: ../src/commandhandler.cpp:553
+msgid "Player could not be ignored!"
+msgstr ""
+
+#: ../src/commandhandler.cpp:575
+msgid "Player could not be unignored!"
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:212
+msgid "Player deleted."
+msgstr ""
+
+#: ../src/commandhandler.cpp:573
+msgid "Player no longer ignored!"
+msgstr ""
+
+#: ../src/commandhandler.cpp:551
+msgid "Player successfully ignored!"
+msgstr ""
+
+#: ../src/commandhandler.cpp:568
+msgid "Player wasn't ignored!"
+msgstr ""
+
+#: ../src/gui/setup_players.cpp:236
+msgid "Players"
+msgstr "Гравці"
+
+#: ../src/net/manaserv/chathandler.cpp:194
+#: ../src/net/manaserv/chathandler.cpp:285
+#, fuzzy
+msgid "Players in this channel:"
+msgstr "Гравець вдарив Тварюку"
+
+#: ../src/gui/customserverdialog.cpp:156
+#, fuzzy
+msgid "Please at least type both the address and the port of the server."
+msgstr "Будь ласка, введіть порт і адресу серверу"
+
+#: ../src/gui/charcreatedialog.cpp:106 ../src/gui/charcreatedialog.cpp:264
+#, c-format
+msgid "Please distribute %d points"
+msgstr "Будь ласка, розподіліть %d балів"
+
+#: ../src/gui/charcreatedialog.cpp:269
+#, c-format
+msgid "Please remove %d points"
+msgstr "Будь ласка, видаліть %d балів"
+
+#: ../src/gui/serverdialog.cpp:331
+msgid "Please select a custom server."
+msgstr ""
+
+#: ../src/gui/serverdialog.cpp:287
+msgid "Please select a server."
+msgstr ""
+
+#: ../src/commandhandler.cpp:461 ../src/commandhandler.cpp:538
+#: ../src/commandhandler.cpp:560
+msgid "Please specify a name."
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:214
+msgid "Poison had no effect..."
+msgstr ""
+
+#: ../src/gui/customserverdialog.cpp:56
+msgid "Port:"
+msgstr "Порт:"
+
+#: ../src/gui/serverdialog.cpp:414
+msgid "Preparing download"
+msgstr ""
+
+#: ../src/gui/chatwindow.cpp:316
+#, fuzzy, c-format
+msgid "Present: %s; %d players are present."
+msgstr "%d гравців он-лайн"
+
+#: ../src/net/manaserv/beinghandler.cpp:296
+msgid "Press OK to respawn."
+msgstr ""
+
+#: ../src/gui/setup_joystick.cpp:37 ../src/gui/setup_joystick.cpp:78
+msgid "Press the button to start calibration"
+msgstr "Натисніть кнопку для початку налаштування"
+
+#: ../src/keyboardconfig.cpp:100
+msgid "Previous Chat Tab"
+msgstr "Попередня вкладка балачки"
+
+#: ../src/gui/buydialog.cpp:70 ../src/gui/buydialog.cpp:277
+#: ../src/gui/selldialog.cpp:72 ../src/gui/selldialog.cpp:298
+#, c-format
+msgid "Price: %s / Total: %s"
+msgstr "Ціна: %s / Загалом: %s"
+
+#: ../src/playerrelations.cpp:342 ../src/playerrelations.cpp.orig:328
+msgid "Print '...'"
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:53
+msgid "Propose trade"
+msgstr "Запропонувати торгівлю"
+
+#: ../src/gui/setup_colors.cpp:86 ../src/gui/setup_colors.cpp:87
+#: ../src/gui/setup_colors.cpp:333
+msgid "Pulse"
+msgstr "Пульсуюче"
+
+#: ../src/gui/setup_players.cpp:230
+msgid "Put all whispers in tabs"
+msgstr "Шепіт (приватне спілкування) в окремих вкладках"
+
+#: ../src/gui/buydialog.cpp:80 ../src/gui/quitdialog.cpp:40
+#: ../src/gui/quitdialog.cpp:42 ../src/gui/quitdialog.cpp:43
+#: ../src/gui/selldialog.cpp:78 ../src/gui/serverdialog.cpp:209
+#: ../src/keyboardconfig.cpp:103
+msgid "Quit"
+msgstr "Вийти"
+
+#: ../src/gui/setup_colors.cpp:88 ../src/gui/setup_colors.cpp:89
+#: ../src/gui/setup_colors.cpp:334
+msgid "Rainbow"
+msgstr "Веселка"
+
+#: ../src/gui/socialwindow.cpp:553
+#, fuzzy
+msgid "Received guild request, but one already exists."
+msgstr "Отримано запрошення до групи, але одне вже є."
+
+#: ../src/gui/socialwindow.cpp:575
+msgid "Received party request, but one already exists."
+msgstr "Отримано запрошення до групи, але одне вже є."
+
+#: ../src/gui/recorder.h:39
+msgid "Recording..."
+msgstr "Запис..."
+
+#: ../src/gui/setup_colors.cpp:110
+#, fuzzy
+msgid "Red:"
+msgstr "Червоний: "
+
+#: ../src/gui/logindialog.cpp:61 ../src/gui/register.cpp:58
+#: ../src/gui/register.cpp:73
+msgid "Register"
+msgstr "Зареєструватись"
+
+#: ../src/gui/logindialog.cpp:129
+msgid "Registration disabled"
+msgstr ""
+
+#: ../src/net/tmwa/loginhandler.cpp:165
 #, fuzzy
 msgid "Rejected from server."
 msgstr "Відхилено запрошення від %s."
 
-#: src/net/tmwa/loginhandler.cpp:168
+#: ../src/gui/socialwindow.cpp:468
+#, fuzzy
+msgid "Rejected guild invite."
+msgstr "Відхилено запрошення від %s."
+
+#: ../src/gui/socialwindow.cpp:450
+#, fuzzy, c-format
+msgid "Rejected party invite from %s."
+msgstr "Відхилено запрошення від %s."
+
+#: ../src/gui/setup_players.cpp:59
+msgid "Relation"
+msgstr "Стосунки"
+
+#: ../src/gui/logindialog.cpp:60
+#, fuzzy
+msgid "Remember username"
+msgstr "Запам'ятати ім'я користувача"
+
+#: ../src/net/manaserv/tradehandler.cpp:115
+#: ../src/net/tmwa/tradehandler.cpp:109
+msgid "Request for Trade"
+msgstr ""
+
+#: ../src/net/tmwa/gamehandler.cpp:96
+msgid "Request to quit denied!"
+msgstr ""
+
+#: ../src/client.cpp:810
+#, fuzzy
+msgid "Requesting characters"
+msgstr "Вимагається приєднання до каналу %s."
+
+#: ../src/client.cpp:894
+msgid "Requesting registration details"
+msgstr ""
+
+#: ../src/commandhandler.cpp:435
+#, c-format
+msgid "Requesting to join channel %s."
+msgstr "Вимагається приєднання до каналу %s."
+
+#: ../src/gui/npcdialog.cpp:135
+msgid "Reset"
+msgstr "Спробувати знову"
+
+#: ../src/gui/setup.cpp:52
+msgid "Reset Windows"
+msgstr "Збити налаштування вікон"
+
+#: ../src/gui/setup_video.cpp:335
+msgid "Restart needed for changes to take effect."
+msgstr "Потрібно перезапустити для застосування змін"
+
+#: ../src/gui/setup_video.cpp:441
+msgid "Restart your client for the change to take effect."
+msgstr "Перезавантажте клієнт, щоби застосувати зміни"
+
+#: ../src/gui/inventorywindow.cpp:133 ../src/gui/popupmenu.cpp:397
+msgid "Retrieve"
+msgstr ""
+
+#: ../src/commandhandler.cpp:488
+msgid "Return now toggles chat."
+msgstr "Enter тепер перемикає на вікно чату"
+
+#: ../src/commandhandler.cpp:479
+msgid "Return toggles chat."
+msgstr "Enter перемикає на чат"
+
+#: ../src/net/tmwa/inventoryhandler.h:74
+#, fuzzy
+msgid "Ring 1/2"
+msgstr "Кільця"
+
+#: ../src/net/tmwa/inventoryhandler.h:76
+#, fuzzy
+msgid "Ring 2/2"
+msgstr "Кільця"
+
+#: ../src/gui/setup_joystick.cpp:84
+msgid "Rotate the stick"
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:288
+#: ../src/net/tmwa/playerhandler.cpp:111
+msgid "Sadly, no trace of you was ever found..."
+msgstr ""
+
+#: ../src/game.cpp:332
+msgid "Saving screenshot failed!"
+msgstr "Збереження скріншоту провалилось!"
+
+#: ../src/gui/setup_video.cpp:440
+#, fuzzy
+msgid "Screen Resolution Changed"
+msgstr "Розподільчу здатність встановлено"
+
+#: ../src/keyboardconfig.cpp:56
+msgid "Screenshot"
+msgstr "Знімок екрану"
+
+#: ../src/game.cpp:327
+#, fuzzy
+msgid "Screenshot saved as "
+msgstr "Фотознімок екрану (скріншот) збережено до теки ~/"
+
+#: ../src/keyboardconfig.cpp:99
+msgid "Scroll Chat Down"
+msgstr "Гортати балачку нижче"
+
+#: ../src/keyboardconfig.cpp:98
+msgid "Scroll Chat Up"
+msgstr "Гортати балачку вище"
+
+#: ../src/gui/inventorywindow.cpp:88
+msgid "Search:"
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:184
+msgid "Seems you need more money... ;-)"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:102
+msgid "Select OK"
+msgstr ""
+
+#: ../src/gui/worldselectdialog.cpp:71
+#, fuzzy
+msgid "Select World"
+msgstr "Оберіть сервер"
+
+#: ../src/gui/itemamountwindow.cpp:144
+msgid "Select amount of items to drop."
+msgstr "Вкажіть кількість предметів, щоб викинути"
+
+#: ../src/gui/itemamountwindow.cpp:150
+msgid "Select amount of items to retrieve."
+msgstr "Вкажіть кількість предметів для отримання"
+
+#: ../src/gui/itemamountwindow.cpp:153
+msgid "Select amount of items to split."
+msgstr "Вкажіть кількість предметів для розподілу"
+
+#: ../src/gui/itemamountwindow.cpp:147
+msgid "Select amount of items to store."
+msgstr "Вкажіть кількість предметів для зберігання"
+
+#: ../src/gui/itemamountwindow.cpp:141
+msgid "Select amount of items to trade."
+msgstr "Вкажіть кількість предметів"
+
+#: ../src/net/manaserv/charhandler.cpp:224
+#, fuzzy
+msgid "Selection out of range."
+msgstr "Вкажіть кількість предметів"
+
+#: ../src/gui/buyselldialog.cpp:47 ../src/gui/selldialog.cpp:50
+#: ../src/gui/selldialog.cpp:77
+msgid "Sell"
+msgstr "Продати"
+
+#: ../src/gui/npcpostdialog.cpp:54
+msgid "Send"
+msgstr "Надіслати"
+
+#: ../src/net/tmwa/loginhandler.cpp:182
+msgid "Server overpopulated."
+msgstr ""
+
+#: ../src/net/net.cpp:164
+msgid "Server protocol unsupported"
+msgstr ""
+
+#: ../src/gui/customserverdialog.cpp:57
+#, fuzzy
+msgid "Server type:"
+msgstr "Сервер:"
+
+#: ../src/gui/widgets/chattab.cpp:179
+msgid "Server:"
+msgstr "Сервер:"
+
+#: ../src/client.cpp:585 ../src/gui/setup.cpp:44 ../src/gui/windowmenu.cpp:72
+msgid "Setup"
+msgstr "Налаштування"
+
+#: ../src/keyboardconfig.cpp:78
+msgid "Setup Window"
+msgstr "Вікно налаштувань"
+
+#: ../src/gui/setup_audio.cpp:50
+msgid "Sfx volume"
+msgstr "Гучність ефектів"
+
+#: ../src/gui/buyselldialog.cpp:38
+msgid "Shop"
+msgstr "Магазин"
+
+#: ../src/gui/windowmenu.cpp:70
+#, fuzzy
+msgid "Shortcuts"
+msgstr "Скорочений доступ %d"
+
+#: ../src/commandhandler.cpp:505 ../src/commandhandler.cpp:514
+msgid "Show IP: Off"
+msgstr ""
+
+#: ../src/commandhandler.cpp:505 ../src/commandhandler.cpp:518
+msgid "Show IP: On"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:125
+#, fuzzy
+msgid "Show damage"
+msgstr "Показувати ім'я"
+
+#: ../src/gui/setup_players.cpp:232
+#, fuzzy
+msgid "Show gender"
+msgstr "Показувати ім'я"
+
+#: ../src/gui/setup_interface.cpp:107
+#, fuzzy
+msgid "Show own name"
+msgstr "Показувати ім'я"
+
+#: ../src/gui/setup_interface.cpp:109
+#, fuzzy
+msgid "Show pickup notification:"
+msgstr "Повідомляти, коли піднято предмет"
+
+#: ../src/gui/debugwindow.cpp:133
+msgid "Show:"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:55
+msgid "Sit"
+msgstr "Присісти й відпочити"
+
+#: ../src/net/tmwa/specialhandler.cpp:151
+msgid "Sit failed!"
+msgstr ""
+
+#: ../src/gui/skilldialog.cpp:379
+#, fuzzy, c-format
+msgid "Skill %d"
+msgstr "Навички"
+
+#: ../src/gui/skilldialog.cpp:370
+#, c-format
+msgid "Skill Set %d"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:74
+msgid "Skill Window"
+msgstr "Вікно навичок"
+
+#: ../src/gui/skilldialog.cpp:275
+#, c-format
+msgid "Skill points available: %d"
+msgstr ""
+
+#: ../src/gui/skilldialog.cpp:215 ../src/gui/windowmenu.cpp:62
+msgid "Skills"
+msgstr "Навички"
+
+#: ../src/gui/inventorywindow.cpp:87
+msgid "Slots:"
+msgstr "Комірки"
+
+#: ../src/gui/setup_interface.cpp:60
+msgid "Small"
+msgstr "Малий"
+
+#: ../src/keyboardconfig.cpp:47
+msgid "Smilie"
+msgstr "Емоція"
+
+#: ../src/gui/socialwindow.cpp:312 ../src/gui/windowmenu.cpp:68
+msgid "Social"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:80
+#, fuzzy
+msgid "Social Window"
+msgstr "Вікно навичок"
+
+#: ../src/net/tmwa/generalhandler.cpp:139
+msgid "Someone else is trying to use this account."
+msgstr ""
+
+#: ../src/gui/setup_audio.cpp:42
+msgid "Sound"
+msgstr "ЗвукАуді"
+
+#: ../src/gui/setup_audio.cpp:106
+msgid "Sound Engine"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:143
+msgid "Special 1"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:144
+msgid "Special 2"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:145
+msgid "Special 3"
+msgstr ""
+
+#: ../src/gui/specialswindow.cpp:79 ../src/gui/windowmenu.cpp:66
+msgid "Specials"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:141
+msgid "Specials:"
+msgstr ""
+
+#: ../src/gui/setup_colors.cpp:90 ../src/gui/setup_colors.cpp:91
+#: ../src/gui/setup_colors.cpp:334
+msgid "Spectrum"
+msgstr "Спектр"
+
+#: ../src/net/tmwa/generalhandler.cpp:145
+msgid "Speed hack detected."
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:109 ../src/gui/popupmenu.cpp:390
+msgid "Split"
+msgstr "Поділити"
+
+#: ../src/localplayer.cpp:917
+msgid "Stack is too big."
+msgstr ""
+
+#: ../src/gui/recorder.cpp:105
+msgid "Starting to record..."
+msgstr "Починається запис..."
+
+#: ../src/gui/setup_colors.cpp:84 ../src/gui/setup_colors.cpp:332
+msgid "Static"
+msgstr "Статичне"
+
+#: ../src/gui/windowmenu.cpp:54
+msgid "Status"
+msgstr "Стан"
+
+#: ../src/keyboardconfig.cpp:71
+msgid "Status Window"
+msgstr "Вікно стану"
+
+#: ../src/gui/setup_joystick.cpp:83
+msgid "Stop"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:49
+msgid "Stop Attack"
+msgstr "Зупинити напад"
+
+#: ../src/gui/recorder.h:40
+msgid "Stop recording"
+msgstr "Припинити запис"
+
+#: ../src/gui/inventorywindow.cpp:60
+msgid "Storage"
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:132 ../src/gui/popupmenu.cpp:367
+msgid "Store"
+msgstr ""
+
+#: ../src/net/manaserv/attributes.cpp:166
+#: ../src/net/tmwa/generalhandler.cpp:230
+msgid "Strength"
+msgstr "Сила"
+
+#: ../src/net/manaserv/attributes.cpp:173
+#, fuzzy, c-format
+msgid "Strength %+.1f"
+msgstr "Сила"
+
+#: ../src/net/tmwa/generalhandler.cpp:102
+#, c-format
+msgid "Strength %+d"
+msgstr ""
+
+#: ../src/net/tmwa/charserverhandler.cpp:271
+msgid "Strength:"
+msgstr ""
+
+#: ../src/gui/npcdialog.cpp:52
+msgid "Submit"
+msgstr "Підтвердити"
+
+#: ../src/gui/charselectdialog.cpp:131
+msgid "Switch Login"
+msgstr ""
+
+#: ../src/gui/quitdialog.cpp:45
+msgid "Switch character"
+msgstr "Змінити персонажа"
+
+#: ../src/gui/quitdialog.cpp:44
+msgid "Switch server"
+msgstr "Змінити сервер"
+
+#: ../src/gui/debugwindow.cpp:239
+#, fuzzy
+msgid "Switches"
+msgstr "Змінити сервер"
+
+#: ../src/gui/setup_video.cpp:334
+#, fuzzy
+msgid "Switching to Full Screen"
+msgstr "Перемикання на повний екран"
+
+#: ../src/keyboardconfig.cpp:48
+msgid "Talk"
+msgstr "Розмовляти"
+
+#: ../src/gui/popupmenu.cpp:154
+#, fuzzy, c-format
+msgid "Talk to %s"
+msgstr "@@talk|Шоворити з %s@@"
+
+#: ../src/keyboardconfig.cpp:46
+msgid "Target & Attack"
+msgstr "Вибрати ціль і нападати"
+
+#: ../src/keyboardconfig.cpp:50
+#, fuzzy
+msgid "Target Monster"
+msgstr "Вибрати найближчу ціль"
+
+#: ../src/keyboardconfig.cpp:51
+msgid "Target NPC"
+msgstr "Вибрати комп'ютерного персонажа"
+
+#: ../src/keyboardconfig.cpp:52
+msgid "Target Player"
+msgstr "Вибрати ігрока"
+
+#: ../src/gui/setup_interface.cpp:89
+msgid "Text"
+msgstr "Текст"
+
+#: ../src/net/tmwa/buysellhandler.cpp:116
+msgid "Thanks for buying."
+msgstr ""
+
+#: ../src/net/tmwa/buysellhandler.cpp:129
+msgid "Thanks for selling."
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:280
+#: ../src/net/tmwa/playerhandler.cpp:100
+msgid "The cold hands of the grim reaper are grabbing for your soul."
+msgstr ""
+
+#: ../src/game.cpp:363
+#, fuzzy
+msgid "The connection to the server was lost."
+msgstr "Втрачено з'єднання з сервером, програма завершуєтьсся"
+
+#: ../src/gui/changeemaildialog.cpp:141
+msgid "The email address entries mismatch."
+msgstr ""
+
+#: ../src/net/manaserv/loginhandler.cpp:163
+msgid "The new email address already exists."
+msgstr ""
+
+#: ../src/gui/changeemaildialog.cpp:127
+#, fuzzy, c-format
+msgid "The new email address needs to be at least %d characters long."
+msgstr "Ім'я користувача повинне складатись хоча б з %d символів."
+
+#: ../src/gui/changeemaildialog.cpp:134
+#, fuzzy, c-format
+msgid "The new email address needs to be less than %d characters long."
+msgstr "Ім'я користувача повинне складатись не більш, як з %d символів."
+
+#: ../src/gui/changepassworddialog.cpp:130
+msgid "The new password entries mismatch."
+msgstr ""
+
+#: ../src/gui/changepassworddialog.cpp:116
+#, fuzzy, c-format
+msgid "The new password needs to be at least %d characters long."
+msgstr "Пароль повинен складатись мінімум з %d символів."
+
+#: ../src/gui/changepassworddialog.cpp:123
+#, fuzzy, c-format
+msgid "The new password needs to be less than %d characters long."
+msgstr "Пароль повинен складатись менш, ніж з %d символів."
+
+#: ../src/gui/register.cpp:182 ../src/gui/unregisterdialog.cpp:117
+#, c-format
+msgid "The password needs to be at least %d characters long."
+msgstr "Пароль повинен складатись мінімум з %d символів."
+
+#: ../src/gui/register.cpp:190 ../src/gui/unregisterdialog.cpp:124
+#, c-format
+msgid "The password needs to be less than %d characters long."
+msgstr "Пароль повинен складатись менш, ніж з %d символів."
+
+#: ../src/gui/register.cpp:166
+#, c-format
+msgid "The username needs to be at least %d characters long."
+msgstr "Ім'я користувача повинне складатись хоча б з %d символів."
+
+#: ../src/gui/register.cpp:174
+#, c-format
+msgid "The username needs to be less than %d characters long."
+msgstr "Ім'я користувача повинне складатись не більш, як з %d символів."
+
+#: ../src/net/tmwa/generalhandler.cpp:142
+msgid "This account is already logged in."
+msgstr ""
+
+#: ../src/net/tmwa/gui/guildtab.cpp:81
+#, fuzzy
+msgid "This command causes the player to leave the guild."
+msgstr "Ця команда встановлює тему каналу"
+
+#: ../src/net/tmwa/gui/partytab.cpp:81
+msgid "This command causes the player to leave the party."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:96
+msgid "This command changes the party's experience sharing policy."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:86
+msgid "This command changes the party's item sharing policy."
+msgstr ""
+
+#: ../src/commandhandler.cpp:274
+#, fuzzy
+msgid "This command clears the away status and message."
+msgstr "Ця команда встановлює тему каналу"
+
+#: ../src/commandhandler.cpp:228
+msgid "This command clears the chat log of previous chat."
+msgstr "Ця команда очищає вікно логу чату від попередніх повідомлень"
+
+#: ../src/gui/widgets/whispertab.cpp:85
+msgid "This command closes the current whisper tab."
+msgstr "Ця команда закриває вкладку приватної бесіди"
+
+#: ../src/commandhandler.cpp:279
+#, fuzzy
+msgid "This command creates a new party called <name>."
+msgstr "Ця команда приєднує вас до <_канал_>"
+
+#: ../src/commandhandler.cpp:209
+msgid "This command displays a list of all commands available."
+msgstr "Ця команда показує список всіх доступних команд"
+
+#: ../src/commandhandler.cpp:212
+msgid "This command displays help on <command>."
+msgstr "Ця команда відображає коротку інформацію про <_команда_>"
+
+#: ../src/commandhandler.cpp:323
+msgid "This command displays the name of the current map."
+msgstr "Показує назву поточної локації"
+
+#: ../src/commandhandler.cpp:328
+msgid "This command displays the number of players currently online."
+msgstr "Відображає кількість гравців он-лайн"
+
+#: ../src/net/tmwa/gui/partytab.cpp:101
+msgid "This command displays the party's current experience sharing policy."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:91
+msgid "This command displays the party's current item sharing policy."
+msgstr ""
+
+#: ../src/commandhandler.cpp:312
+msgid "This command displays the return toggle status."
+msgstr "Показує режим клавіші Enter"
+
+#: ../src/commandhandler.cpp:301
+msgid "This command finishes a recording session."
+msgstr "Завершує ведення журналу (логу) чату"
+
+#: ../src/commandhandler.cpp:291
+msgid ""
+"This command gets a list of players within hearing and sends it to either "
+"the record log if recording, or the chat log otherwise."
+msgstr ""
+"Ця команда отримує список гравців, які можуть почути вас і надсилає його або "
+"в файл логу чату (якщо увімкнена опція ведення логу), або до вікна чату"
+
+#: ../src/commandhandler.cpp:233
+#, fuzzy
+msgid "This command ignores the given player regardless of current relations."
+msgstr "Відображає кількість гравців он-лайн"
+
+#: ../src/gui/widgets/whispertab.cpp:90
+#, fuzzy
+msgid "This command ignores the other player regardless of current relations."
+msgstr "Відображає кількість гравців он-лайн"
+
+#: ../src/commandhandler.cpp:284 ../src/net/tmwa/gui/partytab.cpp:74
+msgid "This command invites <nick> to party with you."
+msgstr "Ця команда запрошує гравця <_ім'я_> до вас в групу"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:74
+#, fuzzy
+msgid "This command invites <nick> to the guild you're in."
+msgstr "Ця команда запрошує гравця <_ім'я_> до вас в групу"
+
+#: ../src/gui/widgets/channeltab.cpp:73
+msgid "This command leaves the current channel."
+msgstr "Команда закриває поточний канал"
+
+#: ../src/gui/widgets/channeltab.cpp:80
+msgid "This command makes <nick> a channel operator."
+msgstr ""
+"Ця команда призначає оператором каналу користувача зі вказаним псевдонімом"
+
+#: ../src/gui/widgets/channeltab.cpp:89
+msgid "This command makes <nick> leave the channel."
+msgstr "Ця команда виганяє з каналу користувача зі вказаним псевдонімом"
+
+#: ../src/commandhandler.cpp:239
+msgid "This command makes you enter <channel>."
+msgstr "Ця команда приєднує вас до <_канал_>"
+
+#: ../src/commandhandler.cpp:222
+msgid "This command sends the message <msg> to all players currently online."
+msgstr ""
+"Ця команда надсилає <_текст_> всім гравцям, що знаходяться в режимі он-лайн"
+
+#: ../src/commandhandler.cpp:257
+msgid "This command sends the text <message> to <nick>."
+msgstr "Ця команда надсилає <_текст_> гравцеві <_ім'я_>."
+
+#: ../src/gui/widgets/channeltab.cpp:68
+msgid "This command sets the topic to <message>."
+msgstr "Ця команда встановлює тему каналу"
+
+#: ../src/commandhandler.cpp:306
+msgid ""
+"This command sets whether the return key should toggle the chat log, or "
+"whether the chat log turns off automatically."
+msgstr ""
+"Ця команда встановлює, чи буде натиснення клавіші Enter автоматично "
+"перемикатиме на вікно чату"
+
+#: ../src/commandhandler.cpp:245
+msgid "This command shows a list of all channels."
+msgstr "Ця команда показує список всіх доступних каналів"
+
+#: ../src/gui/widgets/channeltab.cpp:63
+msgid "This command shows the users in this channel."
+msgstr "Ця команда показує користувачів каналу"
+
+#: ../src/commandhandler.cpp:298
+msgid "This command starts recording the chat log to the file <filename>."
+msgstr ""
+"Ця команда вмикає ведення журналу чату (записує весь вміст чату у <_файл_>)"
+
+#: ../src/commandhandler.cpp:317
+msgid "This command stops ignoring the given player if they are being ignored"
+msgstr ""
+
+#: ../src/gui/widgets/whispertab.cpp:96
+#, fuzzy
+msgid "This command stops ignoring the other player if they are being ignored."
+msgstr ""
+"Ця команда вмикає ведення журналу чату (записує весь вміст чату у <_файл_>)"
+
+#: ../src/commandhandler.cpp:250
+msgid "This command tell others you are (doing) <msg>."
+msgstr "Ця команда каже всім гравцям <_текст_> (або що ви робите)"
+
+#: ../src/commandhandler.cpp:271
+msgid "This command tells you're away from keyboard with the given reason."
+msgstr ""
+
+#: ../src/commandhandler.cpp:265
+msgid "This command tries to make a tab for whispers betweenyou and <nick>."
+msgstr ""
+"Ця команда намагається створити закладинку для перешіптування між вами та "
+"гравцем <_ім'я_>"
+
+#: ../src/gui/setup_colors.cpp:47
+msgid "This is what the color looks like"
+msgstr "Ось, як виглядає цей колір"
+
+#: ../src/client.cpp:785
+msgid ""
+"This server is missing needed world data. Please contact the administrator"
+"(s)."
+msgstr ""
+
+#: ../src/net/tmwa/loginhandler.cpp:185
+msgid "This user name is already taken."
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:59
+msgid "Tiny"
+msgstr "Крихітний"
+
+#: ../src/gui/npcpostdialog.cpp:47
+msgid "To:"
+msgstr "Для:"
+
+#: ../src/keyboardconfig.cpp:97
+msgid "Toggle Chat"
+msgstr "Перейти до балачки"
+
+#: ../src/net/manaserv/chathandler.cpp:190
+#: ../src/net/manaserv/chathandler.cpp:324
+#: ../src/net/manaserv/guildhandler.cpp:260
+#, c-format
+msgid "Topic: %s"
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:64
+msgid "Torso"
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:73 ../src/gui/tradewindow.cpp:74
+msgid "Trade"
+msgstr "Обмінятися"
+
+#: ../src/net/manaserv/tradehandler.cpp:148
+#: ../src/net/tmwa/tradehandler.cpp:224
+msgid "Trade canceled."
+msgstr ""
+
+#: ../src/net/tmwa/tradehandler.cpp:134
+msgid "Trade cancelled due to an unknown reason."
+msgstr ""
+
+#: ../src/net/manaserv/tradehandler.cpp:155
+#: ../src/net/tmwa/tradehandler.cpp:231
+msgid "Trade completed."
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:145
+msgid "Trade failed!"
+msgstr ""
+
+#: ../src/net/tmwa/tradehandler.cpp:146
+#, c-format
+msgid "Trade with %s cancelled."
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:84
+#, fuzzy, c-format
+msgid "Trade with %s..."
+msgstr "@@trade|Торгувати з %s@@"
+
+#: ../src/gui/tradewindow.cpp:59
+msgid "Trade: You"
+msgstr "Торгівля: ти"
+
+#: ../src/net/tmwa/tradehandler.cpp:139
+#, c-format
+msgid "Trade: You and %s"
+msgstr ""
+
+#: ../src/net/tmwa/tradehandler.cpp:130
+msgid "Trading isn't possible. Character doesn't exist."
+msgstr ""
+
+#: ../src/net/tmwa/tradehandler.cpp:126
+msgid "Trading isn't possible. Trade partner is too far away."
+msgstr ""
+
+#: ../src/net/manaserv/tradehandler.cpp:134
+#, c-format
+msgid "Trading with %s"
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:366
+msgid "Transparency disabled"
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:374
+msgid "Transparency enabled"
+msgstr ""
+
+#: ../src/localplayer.cpp:913
+msgid "Tried to pick up nonexistent item."
+msgstr ""
+
+#: ../src/commandhandler.cpp:334
+msgid "Type /help for a list of commands."
+msgstr "Введіть /help щоб побачити список всіх команд"
+
+#: ../src/gui/changeemaildialog.cpp:51
+#, fuzzy
+msgid "Type new email address twice:"
+msgstr "Двічі введіть вашу нову адресу електронної пошти:"
+
+#: ../src/gui/changepassworddialog.cpp:63
+#, fuzzy
+msgid "Type new password twice:"
+msgstr "Введіть новий пароль двічі:"
+
+#: ../src/gui/setup_colors.cpp:73
+#, fuzzy
+msgid "Type:"
+msgstr "Тип: "
+
+#: ../src/net/tmwa/buysellhandler.cpp:123
+msgid "Unable to buy."
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.cpp:405
+msgid "Unable to equip."
+msgstr ""
+
+#: ../src/net/tmwa/network.cpp:335
+msgid "Unable to resolve host \""
+msgstr ""
+
+#: ../src/net/tmwa/buysellhandler.cpp:131
+msgid "Unable to sell."
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.cpp:417
+msgid "Unable to unequip."
+msgstr ""
+
+#: ../src/gui/setup_keyboard.cpp:93
+#, fuzzy
+msgid "Unassign"
+msgstr "Призначити"
+
+#: ../src/gui/equipmentwindow.cpp:74 ../src/gui/inventorywindow.cpp:95
+#: ../src/gui/inventorywindow.cpp:366 ../src/gui/popupmenu.cpp:373
+msgid "Unequip"
+msgstr "Зняти"
+
+#: ../src/gui/outfitwindow.cpp:70
+#, fuzzy
+msgid "Unequip first"
+msgstr "Зняти"
+
+#: ../src/net/manaserv/charhandler.cpp:272
+#, c-format
+msgid "Unhandled character select error message %i."
+msgstr ""
+
+#: ../src/net/tmwa/tradehandler.cpp:154
+msgid "Unhandled trade cancel packet."
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:115 ../src/gui/popupmenu.cpp:124
+#, c-format
+msgid "Unignore %s"
+msgstr ""
+
+#: ../src/net/net.cpp:141
+#, fuzzy
+msgid "Unknown Server Type! Exiting."
+msgstr "Невідомий тип предмета"
+
+#: ../src/net/manaserv/chathandler.cpp:350
+#, fuzzy
+msgid "Unknown channel event."
+msgstr "Чорт зна яка команда"
+
+#: ../src/net/tmwa/charserverhandler.cpp:110
+#, fuzzy
+msgid "Unknown char-server failure."
+msgstr "Чорт зна яка команда"
+
+#: ../src/commandhandler.cpp:136 ../src/commandhandler.cpp:333
+msgid "Unknown command."
+msgstr "Чорт зна яка команда"
+
+#: ../src/net/tmwa/generalhandler.cpp:151
+msgid "Unknown connection error."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:227
+#, fuzzy, c-format
+msgid "Unknown error (%d)."
+msgstr "Чорт зна яка команда"
+
+#: ../src/net/manaserv/charhandler.cpp:176
+#: ../src/net/manaserv/loginhandler.cpp:101
+#: ../src/net/manaserv/loginhandler.cpp:132
+#: ../src/net/manaserv/loginhandler.cpp:166
+#: ../src/net/manaserv/loginhandler.cpp:290
+#: ../src/net/manaserv/loginhandler.cpp:327
+#: ../src/net/tmwa/loginhandler.cpp:95 ../src/net/tmwa/loginhandler.cpp:191
+#, fuzzy
+msgid "Unknown error."
+msgstr "Чорт зна яка команда"
+
+#: ../src/net/tmwa/guildhandler.cpp:316
+msgid "Unknown guild invite response."
+msgstr ""
+
+#: ../src/net/tmwa/partyhandler.cpp:132
+#, c-format
+msgid "Unknown invite response for %s."
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:69
+msgid "Unknown item"
+msgstr ""
+
+#: ../src/localplayer.cpp:920
+msgid "Unknown problem picking up item."
+msgstr ""
+
+#: ../src/gui/charselectdialog.cpp:145 ../src/gui/unregisterdialog.cpp:47
+#: ../src/gui/unregisterdialog.cpp:55
+msgid "Unregister"
+msgstr "Не зареєстрований"
+
+#: ../src/client.cpp:961
+#, fuzzy
+msgid "Unregister Successful"
+msgstr "Не зареєстрований"
+
+#: ../src/net/tmwa/loginhandler.cpp:156
+#, fuzzy
+msgid "Unregistered ID."
+msgstr "Не зареєстрований"
+
+#: ../src/gui/skilldialog.cpp:230
+msgid "Up"
+msgstr ""
+
+#: ../src/gui/updaterwindow.cpp:125
+msgid "Updating..."
+msgstr "Оновлення..."
+
+#: ../src/gui/inventorywindow.cpp:94
+msgid "Use"
+msgstr "Використати"
+
+#: ../src/net/tmwa/guildhandler.cpp:306
+msgid "User is now part of your guild."
+msgstr ""
+
+#: ../src/net/tmwa/guildhandler.cpp:301
+msgid "User rejected guild invite."
+msgstr ""
+
+#: ../src/net/manaserv/loginhandler.cpp:317
+msgid "Username already exists."
+msgstr ""
+
+#: ../src/net/tmwa/loginhandler.cpp:188
+msgid "Username permanently erased."
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:184
+msgid "Video"
+msgstr "Відео"
+
+#: ../src/gui/setup_interface.cpp:105
+msgid "Visible names"
+msgstr "Видимі імена"
+
+#: ../src/net/manaserv/attributes.cpp:205
+#: ../src/net/tmwa/generalhandler.cpp:232
+msgid "Vitality"
+msgstr "Витривалість"
+
+#: ../src/net/manaserv/attributes.cpp:212
+#, fuzzy, c-format
+msgid "Vitality %+.1f"
+msgstr "Витривалість"
+
+#: ../src/net/tmwa/generalhandler.cpp:104
+#, c-format
+msgid "Vitality %+d"
+msgstr ""
+
+#: ../src/net/tmwa/charserverhandler.cpp:273
+msgid "Vitality:"
+msgstr ""
+
+#: ../src/gui/npcdialog.cpp:49
+msgid "Waiting for server"
+msgstr "Очікування відповіді сервера"
+
+#: ../src/gui/serverdialog.cpp:410
+#, fuzzy
+msgid "Waiting for server..."
+msgstr "Очікування відповіді сервера"
+
+#: ../src/net/tmwa/specialhandler.cpp:208
+msgid "Warp failed..."
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:277
+#: ../src/net/tmwa/playerhandler.cpp:97
+msgid "We regret to inform you that your character was killed in battle."
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:83
+msgid "Wear Outfit"
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:112
+msgid "Weight:"
+msgstr "Вага:"
+
+#: ../src/gui/itempopup.cpp:206
+#, fuzzy, c-format
+msgid "Weight: %s"
+msgstr "Вага: "
+
+#: ../src/gui/setup_players.cpp:261
+msgid "When ignoring:"
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:92
+#, fuzzy, c-format
+msgid "Whisper %s"
+msgstr "Шепіт"
+
+#: ../src/net/tmwa/chathandler.cpp:87
+#, c-format
+msgid "Whisper could not be sent, %s is offline."
+msgstr ""
+
+#: ../src/net/tmwa/chathandler.cpp:96
+#, c-format
+msgid "Whisper could not be sent, ignored by %s."
+msgstr ""
+
+#: ../src/gui/chatwindow.cpp:504
+#, c-format
+msgid "Whispering to %s: %s"
+msgstr "Шепчу до %s: %s"
+
+#: ../src/gui/socialwindow.cpp:154
+#, c-format
+msgid "Who would you like to invite to guild %s?"
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:233
+#, c-format
+msgid "Who would you like to invite to party %s?"
+msgstr ""
+
+#: ../src/net/manaserv/attributes.cpp:231
+#, fuzzy
+msgid "Willpower"
+msgstr "Шепіт"
+
+#: ../src/net/manaserv/attributes.cpp:238
+#, fuzzy, c-format
+msgid "Willpower %+.1f"
+msgstr "Шепіт"
+
+#: ../src/net/manaserv/loginhandler.cpp:92
+msgid "Wrong magic_token."
+msgstr ""
+
+#: ../src/net/tmwa/loginhandler.cpp:159
+#, fuzzy
+msgid "Wrong password."
+msgstr "Змінити пароль"
+
+#: ../src/net/manaserv/loginhandler.cpp:277
+msgid "Wrong username or password."
+msgstr ""
+
+#: ../src/net/manaserv/loginhandler.cpp:314
+msgid "Wrong username, password or email address."
+msgstr ""
+
+#: ../src/gui/confirmdialog.cpp:42
+msgid "Yes"
+msgstr "Так"
+
+#: ../src/net/manaserv/beinghandler.cpp:297
+#, fuzzy
+msgid "You Died"
+msgstr "Ти віддаєш: %s."
+
+#: ../src/net/tmwa/playerhandler.cpp:132
+msgid "You are an ex-player."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:255
+msgid ""
+"You are carrying more than half your weight. You are unable to regain health."
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:276
+#: ../src/net/tmwa/playerhandler.cpp:96
+msgid "You are dead."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:121
+msgid "You are no more."
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:279
+#: ../src/net/tmwa/playerhandler.cpp:99
+msgid "You are not that alive anymore."
+msgstr ""
+
+#: ../src/net/tmwa/partyhandler.cpp:341
+msgid "You can only inivte when you are in a party!"
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:181
+msgid "You cannot do that right now!"
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:187
+msgid "You cannot use this skill with that kind of weapon!"
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:303
+msgid "You don't have enough money."
+msgstr "У тебе недостатньо грошей!"
+
+#: ../src/gui/tradewindow.cpp:98 ../src/gui/tradewindow.cpp:134
+#, fuzzy, c-format
+msgid "You get %s"
+msgstr "Ти отримуєш: %s."
+
+#: ../src/gui/tradewindow.cpp:99
+msgid "You give:"
+msgstr "Ти віддаєш: %s."
+
+#: ../src/gui/socialwindow.cpp:588
+#, fuzzy, c-format
+msgid "You have been invited to join the %s party."
+msgstr "%s запрошує вас до групи %s."
+
+#: ../src/gui/socialwindow.cpp:584
+#, fuzzy
+msgid "You have been invited you to join a party."
+msgstr "%s запрошує вас приєднатись до їх групи."
+
+#: ../src/net/tmwa/loginhandler.cpp:168
 msgid ""
 "You have been permanently banned from the game. Please contact the GM team."
 msgstr ""
 
-#: src/net/tmwa/loginhandler.cpp:172
+#: ../src/net/tmwa/loginhandler.cpp:175
 #, c-format
 msgid ""
 "You have been temporarily banned from the game until %s.\n"
 "Please contact the GM team via the forums."
 msgstr ""
 
-#: src/net/tmwa/loginhandler.cpp:179
-msgid "This user name is already taken."
-msgstr ""
-
-#: src/net/tmwa/network.cpp:145
-msgid "Empty address given to Network::connect()!"
-msgstr ""
-
-#: src/net/tmwa/network.cpp:345
-msgid "Unable to resolve host \""
-msgstr ""
-
-#: src/net/tmwa/network.cpp:414
-msgid "Connection to server terminated. "
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:82
-msgid "Could not create party."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:84
-msgid "Party successfully created."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:119
-#, c-format
-msgid "%s is already a member of a party."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:123
-#, c-format
-msgid "%s refused your invitation."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:127
-#, c-format
-msgid "%s is now a member of your party."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:131
-#, c-format
-msgid "Unknown invite response for %s."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:236
-msgid "You have left the party."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:246
-#, c-format
-msgid "%s has left your party."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:299
-#, c-format
-msgid "An unknown member tried to say: %s"
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:335
-#, c-format
-msgid "Inviting failed, because you can't see a player called %s."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:340
-msgid "You can only inivte when you are in a party!"
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:368
-#, c-format
-msgid "%s is not in your party!"
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:100
-msgid "Insert coin to continue."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:118
-msgid "You're not dead yet. You're just resting."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:119
-msgid "You are no more."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:120
+#: ../src/net/tmwa/playerhandler.cpp:122
 msgid "You have ceased to be."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:121
-msgid "You've expired and gone to meet your maker."
+#: ../src/net/tmwa/partyhandler.cpp:237
+msgid "You have left the party."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:122
+#: ../src/net/tmwa/specialhandler.cpp:178
+msgid "You have no memos!"
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:169
+msgid "You have not yet reached a high enough lvl!"
+msgstr ""
+
+#: ../src/gui/setup_audio.cpp:94
+msgid "You may have to restart your client if you want to download new music"
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:367 ../src/gui/setup_video.cpp:375
+msgid "You must restart to apply changes."
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:193
+msgid "You need another blue gem!"
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:190
+msgid "You need another red gem!"
+msgstr ""
+
+#: ../src/gui/logindialog.cpp:129
+msgid "You need to use the website to register an account for this server."
+msgstr ""
+
+#: ../src/localplayer.cpp:938
+#, c-format
+msgid "You picked up %d [@@%d|%s@@]."
+msgid_plural "You picked up %d [@@%d|%s@@]."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/net/tmwa/playerhandler.cpp:328
+#, fuzzy, c-format
+msgid "You picked up %s."
+msgstr "Ти отримуєш: %s."
+
+#: ../src/net/manaserv/beinghandler.cpp:291
+#: ../src/net/tmwa/playerhandler.cpp:117
+msgid ""
+"You screwed up again, dump your body down the tubes and get you another one."
+msgstr ""
+
+#: ../src/net/manaserv/loginhandler.cpp:323
+msgid "You took too long with the captcha or your response was incorrect."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:124
 msgid "You're a stiff."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:123
-msgid "Bereft of life, you rest in peace."
+#: ../src/net/tmwa/specialhandler.cpp:196
+msgid "You're carrying to much to do this!"
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:124
-msgid "If you weren't so animated, you'd be pushing up the daisies."
+#: ../src/net/tmwa/playerhandler.cpp:120
+msgid "You're not dead yet. You're just resting."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:125
-msgid "Your metabolic processes are now history."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:126
+#: ../src/net/tmwa/playerhandler.cpp:128
 msgid "You're off the twig."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:127
+#: ../src/net/tmwa/playerhandler.cpp:133
+msgid "You're pining for the fjords."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:123
+msgid "You've expired and gone to meet your maker."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:129
 msgid "You've kicked the bucket."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:128
+#: ../src/net/tmwa/playerhandler.cpp:130
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
 "bleedin' choir invisibile."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:130
-msgid "You are an ex-player."
+#: ../src/net/tmwa/guildhandler.cpp:311
+msgid "Your guild is full."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:131
-msgid "You're pining for the fjords."
+#: ../src/net/tmwa/playerhandler.cpp:127
+msgid "Your metabolic processes are now history."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:246 src/net/tmwa/playerhandler.cpp:285
-msgid "Message"
-msgstr ""
+#: ../src/gui/charcreatedialog.cpp:195
+msgid "Your name needs to be at least 4 characters."
+msgstr "Ім'я повинно містити принаймні 4 символи"
 
-#: src/net/tmwa/playerhandler.cpp:247
+#: ../src/net/manaserv/beinghandler.cpp:284
+#: ../src/net/tmwa/playerhandler.cpp:105
 msgid ""
-"You are carrying more than half your weight. You are unable to regain health."
+"Your plan of breaking your enemies weapon by bashing it with your throat "
+"failed."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:313
-#, fuzzy, c-format
-msgid "You picked up %s."
-msgstr "Ти отримуєш: %s."
-
-#: src/net/tmwa/playerhandler.cpp:348
-msgid "Cannot raise skill!"
+#: ../src/main.cpp:43
+msgid "[mana-file] : The mana file is an XML file (.mana)"
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:488
-msgid "Equip arrows first."
+#: ../src/gui/setup_interface.cpp:113
+msgid "as particle"
+msgstr "як частинки"
+
+#: ../src/gui/setup_video.cpp:136 ../src/gui/setup_video.cpp:150
+msgid "high"
+msgstr "високий"
+
+#: ../src/gui/setup_interface.cpp:111
+msgid "in chat"
+msgstr "у балачці"
+
+#: ../src/gui/setup_video.cpp:135 ../src/gui/setup_video.cpp:148
+msgid "low"
+msgstr "низький"
+
+#: ../src/main.cpp:42
+msgid "mana [options] [mana-file]"
 msgstr ""
 
-#: src/net/tmwa/specialhandler.cpp:144
-msgid "Trade failed!"
+#: ../src/gui/setup_video.cpp:151
+msgid "max"
+msgstr "максимальний"
+
+#: ../src/gui/setup_video.cpp:149
+msgid "medium"
+msgstr "середній"
+
+#: ../src/gui/setup_video.cpp:134
+msgid "off"
+msgstr "вимкнено"
+
+#: ../src/gui/serverdialog.cpp:492
+msgid "requires a newer version"
 msgstr ""
 
-#: src/net/tmwa/specialhandler.cpp:147
-msgid "Emote failed!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:150
-msgid "Sit failed!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:153
-msgid "Chat creating failed!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:156
-msgid "Could not join party!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:159
-msgid "Cannot shout!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:168
-msgid "You have not yet reached a high enough lvl!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:171
-msgid "Insufficient HP!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:174
-msgid "Insufficient SP!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:177
-msgid "You have no memos!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:180
-msgid "You cannot do that right now!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:183
-msgid "Seems you need more money... ;-)"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:186
-msgid "You cannot use this skill with that kind of weapon!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:189
-msgid "You need another red gem!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:192
-msgid "You need another blue gem!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:195
-msgid "You're carrying to much to do this!"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:198
-msgid "Huh? What's that?"
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:207
-msgid "Warp failed..."
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:210
-msgid "Could not steal anything..."
-msgstr ""
-
-#: src/net/tmwa/specialhandler.cpp:213
-msgid "Poison had no effect..."
-msgstr ""
-
-#: src/net/tmwa/tradehandler.cpp:126
-msgid "Trading isn't possible. Trade partner is too far away."
-msgstr ""
-
-#: src/net/tmwa/tradehandler.cpp:130
-msgid "Trading isn't possible. Character doesn't exist."
-msgstr ""
-
-#: src/net/tmwa/tradehandler.cpp:134
-msgid "Trade cancelled due to an unknown reason."
-msgstr ""
-
-#: src/net/tmwa/tradehandler.cpp:139
+#: ../src/gui/serverdialog.cpp:494
 #, c-format
-msgid "Trade: You and %s"
+msgid "requires v%s"
 msgstr ""
 
-#: src/net/tmwa/tradehandler.cpp:146
-#, c-format
-msgid "Trade with %s cancelled."
-msgstr ""
-
-#: src/net/tmwa/tradehandler.cpp:154
-msgid "Unhandled trade cancel packet."
-msgstr ""
-
-#: src/net/tmwa/tradehandler.cpp:202
-msgid "Failed adding item. Trade partner is over weighted."
-msgstr ""
-
-#: src/net/tmwa/tradehandler.cpp:207
-msgid "Failed adding item. Trade partner has no free slot."
-msgstr ""
-
-#: src/net/tmwa/tradehandler.cpp:211
-msgid "Failed adding item for unknown reason."
-msgstr ""
-
-#: src/playerrelations.cpp:310
-#, fuzzy
-msgid "Completely ignore"
-msgstr "@@ignore|Повністю ігнорувати %s@@"
-
-#: src/playerrelations.cpp:324
-msgid "Print '...'"
-msgstr ""
-
-#: src/playerrelations.cpp:340
-msgid "Blink name"
-msgstr ""
-
-#: src/resources/itemdb.cpp:44
-#, c-format
-msgid "Attack %+d"
-msgstr ""
-
-#: src/resources/itemdb.cpp:45
-#, c-format
-msgid "Defense %+d"
-msgstr ""
-
-#: src/resources/itemdb.cpp:46
-#, c-format
-msgid "HP %+d"
-msgstr ""
-
-#: src/resources/itemdb.cpp:47
-#, c-format
-msgid "MP %+d"
-msgstr ""
-
-#: src/resources/itemdb.cpp:92
-msgid "Unknown item"
-msgstr ""
-
-#: src/resources/itemdb.cpp:135 src/resources/monsterdb.cpp:77
+#: ../src/resources/beinginfo.cpp:33 ../src/resources/itemdb.cpp:271
+#: ../src/resources/monsterdb.cpp:77
 msgid "unnamed"
 msgstr ""
 
-#~ msgid "Text Shadow"
-#~ msgstr "Відтінок тексту"
-
-#~ msgid "Text Outline"
-#~ msgstr "Виділення тексту"
-
-#~ msgid "Progress Bar Labels"
-#~ msgstr "Позначки на індикаторах прогресу"
-
-#~ msgid "Background"
-#~ msgstr "Тло"
-
-#~ msgid "Highlight"
-#~ msgstr "Підсвічення"
-
-#~ msgid "Tab Highlight"
-#~ msgstr "Підсвічення закладинок"
-
 #, fuzzy
-#~ msgid "Item Too Expensive"
-#~ msgstr "Предмет надто дорогий"
+#~ msgid ""
+#~ "\n"
+#~ "> Next\n"
+#~ msgstr "Далі"
 
-#, fuzzy
-#~ msgid "Item Is Equipped"
-#~ msgstr "Предмет одягнено"
+#~ msgid " can't be created, but it doesn't exist! Exiting."
+#~ msgstr " ще не існує, і неможливо створити! Закінчую."
 
-#~ msgid "GM"
-#~ msgstr "GM"
+#~ msgid " host: "
+#~ msgstr " сервер: "
 
-#~ msgid "Player"
-#~ msgstr "Гравець"
+#~ msgid " video mode: "
+#~ msgstr " відеорежим: "
 
-#~ msgid "Whisper"
-#~ msgstr "Шепіт"
-
-#~ msgid "Is"
-#~ msgstr "Є"
-
-#~ msgid "Server"
-#~ msgstr "Сервер"
-
-#~ msgid "Logger"
-#~ msgstr "Логер"
-
-#~ msgid "Hyperlink"
-#~ msgstr "Посилання"
-
-#~ msgid "Being"
-#~ msgstr "Істота"
-
-#~ msgid "Other Players' Names"
-#~ msgstr "Імена інших гравців"
-
-#~ msgid "Own Name"
-#~ msgstr "Власне ім'я"
-
-#~ msgid "GM Names"
-#~ msgstr "Імена GM"
-
-#~ msgid "NPCs"
-#~ msgstr "NPC"
-
-#~ msgid "Monsters"
-#~ msgstr "Тварюки"
-
-#~ msgid "Unknown Item Type"
-#~ msgstr "Невідомий тип предмета"
-
-#~ msgid "Generics"
-#~ msgstr "Загальні"
-
-#~ msgid "Hats"
-#~ msgstr "Капелюхи"
-
-#~ msgid "Usables"
-#~ msgstr "Використання"
-
-#~ msgid "Shirts"
-#~ msgstr "Сорочки"
-
-#, fuzzy
-#~ msgid "One Handed Weapons"
-#~ msgstr "\"Однорука\" зброя"
-
-#~ msgid "Pants"
-#~ msgstr "Штанці"
-
-#~ msgid "Shoes"
-#~ msgstr "Чоботи"
-
-#, fuzzy
-#~ msgid "Two Handed Weapons"
-#~ msgstr "\"Однорука\" зброя"
-
-#~ msgid "Shields"
-#~ msgstr "Щити"
-
-#~ msgid "Rings"
-#~ msgstr "Кільця"
-
-#~ msgid "Necklaces"
-#~ msgstr "Ошийники"
-
-#~ msgid "Arms"
-#~ msgstr "Руки"
-
-#~ msgid "Ammo"
-#~ msgstr "Боєприпаси"
-
-#~ msgid "Particle Effects"
-#~ msgstr "Ефекти часток"
-
-#~ msgid "Pickup Notification"
-#~ msgstr "Повідомлення про підбирання"
-
-#~ msgid "Exp Notification"
-#~ msgstr "Повідомлення про зміну досвіду"
-
-#, fuzzy
-#~ msgid "Player Hits Monster"
-#~ msgstr "Гравець вдарив Тварюку"
-
-#, fuzzy
-#~ msgid "Monster Hits Player"
-#~ msgstr "Тварюка вдарила гравця"
-
-#~ msgid "Critical Hit"
-#~ msgstr "Критичний удар"
-
-#~ msgid "Misses"
-#~ msgstr "Промах"
-
-#~ msgid "HP Bar"
-#~ msgstr "Рядок HP"
-
-#~ msgid "3/4 HP Bar"
-#~ msgstr "3/4 рядка НР"
+#~ msgid "% Reflex:"
+#~ msgstr "РЕакція (%)"
 
 #~ msgid "1/2 HP Bar"
 #~ msgstr "1/2 рядка НР"
@@ -3702,24 +3984,73 @@ msgstr ""
 #~ msgid "1/4 HP Bar"
 #~ msgstr "1/4 здоров'я"
 
-#, fuzzy
-#~ msgid "Money"
-#~ msgstr "Кошти: %d"
+#~ msgid "2 Handed Weapons"
+#~ msgstr "\"Дворука\" зброя"
+
+#~ msgid "3/4 HP Bar"
+#~ msgstr "3/4 рядка НР"
+
+#~ msgid "@@admin-kick|Kick player@@"
+#~ msgstr "@@admin-kick|Викинути гравця@@"
+
+#~ msgid "@@attack|Attack %s@@"
+#~ msgstr "@@attack|Напасти на %s@@"
+
+#~ msgid "@@cancel|Cancel@@"
+#~ msgstr "@@cancel|Скасувати@@"
+
+#~ msgid "@@disregard|Disregard %s@@"
+#~ msgstr "@@disregard|Нехтувати %s@@"
+
+#~ msgid "@@drop|Drop@@"
+#~ msgstr "@@drop|Викинути@@"
+
+#~ msgid "@@ignore|Ignore %s@@"
+#~ msgstr "@@ignore|Ігнорувати %s@@"
+
+#~ msgid "@@pickup|Pick up %s@@"
+#~ msgstr "@@pickup|Підняти %s@@"
+
+#~ msgid "@@retrieve|Retrieve@@"
+#~ msgstr "@@retrieve|Забрати@@"
+
+#~ msgid "@@split|Split@@"
+#~ msgstr "@@split|Розділити@@"
+
+#~ msgid "@@store|Store@@"
+#~ msgstr "@@store|Помістити@@"
+
+#~ msgid "@@unignore|Un-Ignore %s@@"
+#~ msgstr "@@unignore|Не ігнорувати %s@@"
+
+#~ msgid "@@use|Equip@@"
+#~ msgstr "@@use|Зняти@@"
+
+#~ msgid "@@use|Unequip@@"
+#~ msgstr "@@use|Зняти@@"
+
+#~ msgid "@@use|Use@@"
+#~ msgstr "@@use|Використати@@"
 
 #, fuzzy
-#~ msgid "Job"
-#~ msgstr "Професія:"
+#~ msgid "Accepted guild invite from %s."
+#~ msgstr "Прийнято запрошення від %s."
 
 #, fuzzy
-#~ msgid "Level"
-#~ msgstr "Рівень: %d"
+#~ msgid "Ambient FX: %s"
+#~ msgstr "Звуки оточення"
 
-#, fuzzy
-#~ msgid "Willpower"
-#~ msgstr "Шепіт"
+#~ msgid "Attack:"
+#~ msgstr "Напад:"
 
-#~ msgid "no"
-#~ msgstr "ні"
+#~ msgid "Axe"
+#~ msgstr "Сокира"
+
+#~ msgid "Background"
+#~ msgstr "Тло"
+
+#~ msgid "Bow"
+#~ msgstr "Лук"
 
 #~ msgid "Buddy"
 #~ msgstr "Товариш"
@@ -3727,35 +4058,8 @@ msgstr ""
 #~ msgid "Buddy List"
 #~ msgstr "Список товаришів"
 
-#~ msgid "Description: %s"
-#~ msgstr "Опис: %s"
-
-#~ msgid "Effect: %s"
-#~ msgstr "Ефект: %s"
-
-#~ msgid "Previous"
-#~ msgstr "Повернутись"
-
-#~ msgid "New"
-#~ msgstr "Новий"
-
-#~ msgid "Job Level: %d"
-#~ msgstr "Рівень професії: %d"
-
-#~ msgid "Present: "
-#~ msgstr "Присутній: "
-
-#~ msgid "Quit Guild"
-#~ msgstr "Покинути гільдію"
-
-#~ msgid "Ok"
-#~ msgstr "Ок"
-
-#~ msgid "Recent:"
-#~ msgstr "Нещодавні:"
-
-#~ msgid "Magic"
-#~ msgstr "Магія"
+#~ msgid "Buddys"
+#~ msgstr "Приятелі"
 
 #~ msgid "Cast Test Spell 1"
 #~ msgstr "Вимовити пробне закляття №1"
@@ -3766,140 +4070,193 @@ msgstr ""
 #~ msgid "Cast Test Spell 3"
 #~ msgstr "Вимовити пробне закляття №3"
 
-#~ msgid "2 Handed Weapons"
-#~ msgstr "\"Дворука\" зброя"
-
-#~ msgid "@@attack|Attack %s@@"
-#~ msgstr "@@attack|Напасти на %s@@"
-
-#~ msgid "@@disregard|Disregard %s@@"
-#~ msgstr "@@disregard|Нехтувати %s@@"
-
-#~ msgid "@@ignore|Ignore %s@@"
-#~ msgstr "@@ignore|Ігнорувати %s@@"
-
-#~ msgid "@@unignore|Un-Ignore %s@@"
-#~ msgstr "@@unignore|Не ігнорувати %s@@"
-
-#~ msgid "@@admin-kick|Kick player@@"
-#~ msgstr "@@admin-kick|Викинути гравця@@"
-
-#~ msgid "@@cancel|Cancel@@"
-#~ msgstr "@@cancel|Скасувати@@"
-
-#~ msgid "@@pickup|Pick up %s@@"
-#~ msgstr "@@pickup|Підняти %s@@"
-
-#~ msgid "@@use|Unequip@@"
-#~ msgstr "@@use|Зняти@@"
-
-#~ msgid "@@use|Equip@@"
-#~ msgstr "@@use|Зняти@@"
-
-#~ msgid "@@use|Use@@"
-#~ msgstr "@@use|Використати@@"
-
-#~ msgid "@@drop|Drop@@"
-#~ msgstr "@@drop|Викинути@@"
-
-#~ msgid "@@split|Split@@"
-#~ msgstr "@@split|Розділити@@"
-
-#~ msgid "@@store|Store@@"
-#~ msgstr "@@store|Помістити@@"
-
-#~ msgid "@@retrieve|Retrieve@@"
-#~ msgstr "@@retrieve|Забрати@@"
-
-#~ msgid "Failed to switch to "
-#~ msgstr "Не вдалося перемкнути до "
-
-#~ msgid "windowed"
-#~ msgstr "у вікні"
-
-#~ msgid "fullscreen"
-#~ msgstr "на весь екран"
-
-#~ msgid "Weapons"
-#~ msgstr "Зброя"
-
-#~ msgid "Crafts"
-#~ msgstr "Ремесла"
-
-#~ msgid "Stats"
-#~ msgstr "Статистика"
-
-#~ msgid "Total"
-#~ msgstr "Загалом"
-
 #~ msgid "Cost"
 #~ msgstr "Ціна"
-
-#~ msgid "Attack:"
-#~ msgstr "Напад:"
-
-#~ msgid "% Reflex:"
-#~ msgstr "РЕакція (%)"
-
-#~ msgid "Max level"
-#~ msgstr "Найвищий рівень"
-
-#~ msgid " host: "
-#~ msgstr " сервер: "
-
-#~ msgid "Guilds"
-#~ msgstr "Гільдії"
-
-#~ msgid "Buddys"
-#~ msgstr "Приятелі"
-
-#~ msgid "Party Window"
-#~ msgstr "Вікно групи"
-
-#~ msgid "Unarmed"
-#~ msgstr "Без зброї"
-
-#~ msgid "Knife"
-#~ msgstr "Ніж"
-
-#~ msgid "Sword"
-#~ msgstr "Меч"
-
-#~ msgid "Polearm"
-#~ msgstr "Патериця"
-
-#~ msgid "Staff"
-#~ msgstr "Палиця"
-
-#~ msgid "Whip"
-#~ msgstr "Батіг"
-
-#~ msgid "Bow"
-#~ msgstr "Лук"
-
-#~ msgid "Shooting"
-#~ msgstr "Стрільба"
-
-#~ msgid "Mace"
-#~ msgstr "Булава"
-
-#~ msgid "Axe"
-#~ msgstr "Сокира"
-
-#~ msgid "Thrown"
-#~ msgstr "Для кидання"
-
-#~ msgid "Craft"
-#~ msgstr "Ремесло"
-
-#~ msgid "Unknown Skill"
-#~ msgstr "Невідома навичка"
-
-#~ msgid " can't be created, but it doesn't exist! Exiting."
-#~ msgstr " ще не існує, і неможливо створити! Закінчую."
 
 #~ msgid "Couldn't set "
 #~ msgstr "Неможливо встановити "
 
-#~ msgid " video mode: "
-#~ msgstr " відеорежим: "
+#~ msgid "Craft"
+#~ msgstr "Ремесло"
+
+#~ msgid "Crafts"
+#~ msgstr "Ремесла"
+
+#~ msgid "Effect: %s"
+#~ msgstr "Ефект: %s"
+
+#~ msgid "Failed to switch to "
+#~ msgstr "Не вдалося перемкнути до "
+
+#~ msgid "Find Path to Mouse"
+#~ msgstr "Прямувати до вказівника миші"
+
+#~ msgid "GM"
+#~ msgstr "GM"
+
+#~ msgid "Generics"
+#~ msgstr "Загальні"
+
+#~ msgid "Guilds"
+#~ msgstr "Гільдії"
+
+#~ msgid "HP Bar"
+#~ msgstr "Рядок HP"
+
+#~ msgid "Hats"
+#~ msgstr "Капелюхи"
+
+#~ msgid "Highlight"
+#~ msgstr "Підсвічення"
+
+#~ msgid "Hyperlink"
+#~ msgstr "Посилання"
+
+#~ msgid "Is"
+#~ msgstr "Є"
+
+#, fuzzy
+#~ msgid "Item Is Equipped"
+#~ msgstr "Предмет одягнено"
+
+#, fuzzy
+#~ msgid "Item Too Expensive"
+#~ msgstr "Предмет надто дорогий"
+
+#, fuzzy
+#~ msgid "Job"
+#~ msgstr "Професія:"
+
+#~ msgid "Job Level: %d"
+#~ msgstr "Рівень професії: %d"
+
+#~ msgid "Knife"
+#~ msgstr "Ніж"
+
+#, fuzzy
+#~ msgid "Level"
+#~ msgstr "Рівень: %d"
+
+#~ msgid "Logger"
+#~ msgstr "Логер"
+
+#~ msgid "Mace"
+#~ msgstr "Булава"
+
+#~ msgid "Magic"
+#~ msgstr "Магія"
+
+#~ msgid "Max level"
+#~ msgstr "Найвищий рівень"
+
+#, fuzzy
+#~ msgid "Money"
+#~ msgstr "Кошти: %d"
+
+#~ msgid "New"
+#~ msgstr "Новий"
+
+#, fuzzy
+#~ msgid "One Handed Weapons"
+#~ msgstr "\"Однорука\" зброя"
+
+#~ msgid "Pants"
+#~ msgstr "Штанці"
+
+#, fuzzy
+#~ msgid "Particle detail: %s"
+#~ msgstr "Деталізація ефектів частинок"
+
+#~ msgid "Party Window"
+#~ msgstr "Вікно групи"
+
+#~ msgid "Player"
+#~ msgstr "Гравець"
+
+#~ msgid "Polearm"
+#~ msgstr "Патериця"
+
+#~ msgid "Present: "
+#~ msgstr "Присутній: "
+
+#~ msgid "Previous"
+#~ msgstr "Повернутись"
+
+#~ msgid "Progress Bar Labels"
+#~ msgstr "Позначки на індикаторах прогресу"
+
+#~ msgid "Quit Guild"
+#~ msgstr "Покинути гільдію"
+
+#~ msgid "Recent:"
+#~ msgstr "Нещодавні:"
+
+#~ msgid "Server"
+#~ msgstr "Сервер"
+
+#~ msgid "Shields"
+#~ msgstr "Щити"
+
+#~ msgid "Shirts"
+#~ msgstr "Сорочки"
+
+#~ msgid "Shoes"
+#~ msgstr "Чоботи"
+
+#~ msgid "Shooting"
+#~ msgstr "Стрільба"
+
+#~ msgid "Staff"
+#~ msgstr "Палиця"
+
+#~ msgid "Stats"
+#~ msgstr "Статистика"
+
+#~ msgid "Sword"
+#~ msgstr "Меч"
+
+#~ msgid "Tab Highlight"
+#~ msgstr "Підсвічення закладинок"
+
+#~ msgid "Text Outline"
+#~ msgstr "Виділення тексту"
+
+#~ msgid "Text Shadow"
+#~ msgstr "Відтінок тексту"
+
+#~ msgid "Thrown"
+#~ msgstr "Для кидання"
+
+#~ msgid "Total"
+#~ msgstr "Загалом"
+
+#, fuzzy
+#~ msgid "Two Handed Weapons"
+#~ msgstr "\"Однорука\" зброя"
+
+#~ msgid "Unarmed"
+#~ msgstr "Без зброї"
+
+#~ msgid "Unknown Skill"
+#~ msgstr "Невідома навичка"
+
+#~ msgid "Usables"
+#~ msgstr "Використання"
+
+#~ msgid "Weapons"
+#~ msgstr "Зброя"
+
+#~ msgid "Whip"
+#~ msgstr "Батіг"
+
+#~ msgid "Whisper"
+#~ msgstr "Шепіт"
+
+#~ msgid "fullscreen"
+#~ msgstr "на весь екран"
+
+#~ msgid "no"
+#~ msgstr "ні"
+
+#~ msgid "windowed"
+#~ msgstr "у вікні"
