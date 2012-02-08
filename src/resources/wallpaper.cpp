@@ -78,6 +78,9 @@ static void initWallpaperPaths()
     }
 }
 
+/**
+ * Comparison function that puts the largest wallpaper first.
+ */
 bool wallpaperCompare(const WallpaperData &a, const WallpaperData &b)
 {
     int aa = a.width * a.height;
@@ -135,38 +138,33 @@ void Wallpaper::loadWallpapers()
 
 std::string Wallpaper::getWallpaper(int width, int height)
 {
+    if (wallpaperData.empty())
+        return haveBackup ? (wallpaperPath + wallpaperFile) : std::string();
+
+    WallpaperData wallpaper;
+
+    // Search for the smallest wallpaper at least as large as the screen
     std::vector<WallpaperData>::iterator iter;
-    WallpaperData wp;
-
-    // Wallpaper filename container
-    std::vector<std::string> wallPaperVector;
-
     for (iter = wallpaperData.begin(); iter != wallpaperData.end(); iter++)
     {
-        wp = *iter;
-        if (wp.width <= width && wp.height <= height)
-            wallPaperVector.push_back(wp.filename);
-    }
+        const WallpaperData &wp = *iter;
 
-    if (!wallPaperVector.empty())
-    {
-        // If we've got more than one occurence of a valid wallpaper...
-        if (wallPaperVector.size() > 0)
+        if (wp.width >= width && wp.height >= height)
         {
-          // Return randomly a wallpaper between vector[0] and
-          // vector[vector.size() - 1]
-          srand((unsigned) time(0));
-          return wallPaperVector
-          [int(wallPaperVector.size() * rand() / (RAND_MAX + 1.0))];
+            if (wallpaper.filename.empty() ||
+                    (wallpaper.width < wp.width &&
+                     wallpaper.height < wp.height))
+            {
+                wallpaper = wp;
+            }
         }
-        else // If there at least one, we return it
-          return wallPaperVector[0];
     }
 
-    // Return the backup file if everything else failed...
-    if (haveBackup)
-        return std::string(wallpaperPath + wallpaperFile);
+    // When no fitting wallpaper was found yet, pick the biggest one
+    if (wallpaper.filename.empty())
+    {
+        wallpaper = wallpaperData.front();
+    }
 
-    // Return an empty string if everything else failed
-    return std::string();
+    return wallpaper.filename;
 }
