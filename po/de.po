@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-08 16:46+0100\n"
-"PO-Revision-Date: 2011-06-23 16:44+0100\n"
-"Last-Translator: Yohann Ferreira <yohann ferreira orange fr>\n"
+"POT-Creation-Date: 2012-02-08 16:48+0100\n"
+"PO-Revision-Date: 2012-02-07 12:32+0100\n"
+"Last-Translator: Erik Schilling <ablu.erikschilling@googlemail.com>\n"
 "Language-Team: Deutsch <kde-i18n-de@kde.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -39,11 +39,11 @@ msgstr ""
 
 #: ../src/main.cpp:45
 msgid "              to the mana client."
-msgstr ""
+msgstr "              zu dem Mana Client."
 
 #: ../src/main.cpp:44
 msgid "              used to set custom parameters"
-msgstr ""
+msgstr "              benutzt um benutzerdefinierte Parameter zu setzen"
 
 #: ../src/main.cpp:62
 #, fuzzy
@@ -542,7 +542,7 @@ msgstr "Account: %s"
 
 #: ../src/gui/inventorywindow.cpp:107 ../src/gui/popupmenu.cpp:378
 msgid "Activate"
-msgstr ""
+msgstr "Aktivieren"
 
 #: ../src/gui/tradewindow.cpp:76
 msgid "Add"
@@ -563,7 +563,7 @@ msgstr "Zu Chat hinzufügen"
 
 #: ../src/gui/customserverdialog.cpp:55
 msgid "Address:"
-msgstr ""
+msgstr "Addresse:"
 
 #: ../src/net/manaserv/attributes.cpp:179
 #: ../src/net/tmwa/generalhandler.cpp:231
@@ -731,7 +731,7 @@ msgstr "Aktionen"
 
 #: ../src/gui/debugwindow.cpp:137
 msgid "Being positions"
-msgstr ""
+msgstr "Lebewesenpositionen"
 
 #: ../src/net/tmwa/playerhandler.cpp:125
 msgid "Bereft of life, you rest in peace."
@@ -946,7 +946,7 @@ msgstr "Schließen"
 
 #: ../src/gui/debugwindow.cpp:135
 msgid "Collision tiles"
-msgstr ""
+msgstr "Kollisionstiles"
 
 #: ../src/gui/setup_colors.cpp:52
 msgid "Colors"
@@ -1565,7 +1565,7 @@ msgstr "Leb wohl und komme jeder Zeit wieder..."
 
 #: ../src/net/tmwa/inventoryhandler.h:72
 msgid "Feet"
-msgstr ""
+msgstr "Füße"
 
 #: ../src/gui/charcreatedialog.cpp:88 ../src/gui/register.cpp:91
 msgid "Female"
@@ -1628,7 +1628,7 @@ msgstr "Grün: "
 
 #: ../src/gui/debugwindow.cpp:134
 msgid "Grid"
-msgstr ""
+msgstr "Gitter"
 
 #: ../src/gui/setup_interface.cpp:129
 msgid "Gui opacity"
@@ -1684,15 +1684,15 @@ msgstr "Frisur:"
 
 #: ../src/net/tmwa/inventoryhandler.h:80
 msgid "Hand 1/2"
-msgstr ""
+msgstr "Hand 1/2"
 
 #: ../src/net/tmwa/inventoryhandler.h:82
 msgid "Hand 2/2"
-msgstr ""
+msgstr "Hand 2/2"
 
 #: ../src/net/tmwa/inventoryhandler.h:68
 msgid "Head"
-msgstr ""
+msgstr "Kopf"
 
 #: ../src/gui/helpwindow.cpp:37
 msgid "Help"
@@ -1800,7 +1800,7 @@ msgstr "Intelligenz:"
 
 #: ../src/gui/setup_interface.cpp:120
 msgid "Interface"
-msgstr ""
+msgstr "Oberfläche"
 
 #: ../src/net/manaserv/charhandler.cpp:269
 #, fuzzy
@@ -1941,6 +1941,8 @@ msgstr "Beruf: %d"
 msgid ""
 "Joining party failed, because the invitation has timed out on the server."
 msgstr ""
+"Das Beitreten der Party is fehlgeschlagen, da die Einladung auf dem Server "
+"abgelaufen ist."
 
 #: ../src/net/manaserv/partyhandler.cpp:102
 #, fuzzy
@@ -1996,7 +1998,7 @@ msgstr "Partie verlassen?"
 
 #: ../src/net/tmwa/inventoryhandler.h:70
 msgid "Legs"
-msgstr ""
+msgstr "Beine"
 
 #: ../src/gui/statuswindow.cpp:117 ../src/gui/statuswindow.cpp:219
 #: ../src/gui/statuswindow.cpp:267
@@ -2153,7 +2155,7 @@ msgstr "Verfehlt"
 
 #: ../src/gui/serverdialog.cpp:212
 msgid "Modify..."
-msgstr ""
+msgstr "Bearbeiten..."
 
 #: ../src/gui/statuswindow.cpp:118 ../src/gui/statuswindow.cpp:212
 #: ../src/gui/statuswindow.cpp:244
@@ -2171,7 +2173,7 @@ msgstr "Monster"
 
 #: ../src/gui/debugwindow.cpp:139
 msgid "Mouse path"
-msgstr ""
+msgstr "Mauspfad"
 
 #: ../src/keyboardconfig.cpp:42
 msgid "Move Down"
@@ -2311,7 +2313,7 @@ msgstr "Nein"
 
 #: ../src/gui/debugwindow.cpp:142
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: ../src/gui/recorder.cpp:92
 msgid "Not currently recording."
@@ -2449,12 +2451,16 @@ msgid ""
 "Party invitation rejected by server, because of too many invitations in a "
 "short time."
 msgstr ""
+"Partyeinladung wurde aufgrund von zu vielen Einladungen in zu kurzer Zeit "
+"verworfen."
 
 #: ../src/net/manaserv/partyhandler.cpp:75
 #, c-format
 msgid ""
 "Party invite failed, because no player called %s is within the visual range."
 msgstr ""
+"Partyeinladung fehlgeschlagen, da der Spieler %s nicht in der sichtbaren "
+"Reichweite ist."
 
 #: ../src/commandhandler.cpp:448 ../src/net/tmwa/gui/partytab.cpp:109
 msgid "Party name is missing."
@@ -3416,7 +3422,7 @@ msgstr "Thema: %s"
 
 #: ../src/net/tmwa/inventoryhandler.h:64
 msgid "Torso"
-msgstr ""
+msgstr "Oberkörper"
 
 #: ../src/gui/tradewindow.cpp:73 ../src/gui/tradewindow.cpp:74
 msgid "Trade"
@@ -3539,7 +3545,7 @@ msgstr "erstes ausziehen"
 #: ../src/net/manaserv/charhandler.cpp:272
 #, c-format
 msgid "Unhandled character select error message %i."
-msgstr ""
+msgstr "Unbehandelter Fehler beim Auswählen eines Characters: %i"
 
 #: ../src/net/tmwa/tradehandler.cpp:154
 msgid "Unhandled trade cancel packet."
@@ -3976,7 +3982,7 @@ msgstr ""
 
 #: ../src/main.cpp:43
 msgid "[mana-file] : The mana file is an XML file (.mana)"
-msgstr ""
+msgstr "[mana-file] : Die mana-file ist eine XML Datei (.mana)"
 
 #: ../src/gui/setup_interface.cpp:113
 msgid "as particle"
