@@ -114,7 +114,7 @@ void MiniStatusWindow::drawIcons(Graphics *graphics)
     {
         if (mIcons[i])
         {
-            mIcons[i]->draw(graphics, icon_x, 15);
+            mIcons[i]->draw(graphics, icon_x, 3);
             icon_x += 2 + mIcons[i]->getWidth();
         }
     }
