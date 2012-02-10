@@ -254,7 +254,7 @@ void Sound::playSfx(const std::string &path, int x, int y)
         return;
 
     std::string tmpPath;
-    if (!path.find("sfx/"))
+    if (!path.compare(0, 4, "sfx/"))
         tmpPath = path;
     else
         tmpPath = paths.getValue("sfx", "sfx/") + path;

@@ -46,7 +46,7 @@ class Button : public gcn::Button
          * adds the given action listener.
          */
         Button(const std::string &caption, const std::string &actionEventId,
-                gcn::ActionListener *listener);
+               gcn::ActionListener *listener);
 
         ~Button();
 
@@ -62,7 +62,7 @@ class Button : public gcn::Button
 
         void adjustSize();
 
-        void setCaption(const std::string& caption);
+        void setCaption(const std::string &caption);
 
         /**
          * Set the icons available next to the text
@@ -72,14 +72,14 @@ class Button : public gcn::Button
          * Standard, Highlighted, Pressed, and Disabled.
          * If the image is too short, the missing states won't be loaded.
          */
-        bool setButtonIcon(const std::string& iconFile = std::string());
+        bool setButtonIcon(const std::string &iconFile);
 
         /**
          * Set the button popup text when hovering it for a few seconds.
          *
          * @note: An empty text will disable the popup.
          */
-        void setButtonPopupText(const std::string& text = std::string())
+        void setButtonPopupText(const std::string &text)
         { mPopupText = text; }
 
         void logic();

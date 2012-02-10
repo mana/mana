@@ -68,8 +68,6 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
          */
         gcn::Widget *getCurrentWidget();
 
-        using gcn::TabbedArea::addTab;
-
         /**
          * Add a tab. Overridden since it needs to size the widget.
          *

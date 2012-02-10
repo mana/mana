@@ -94,7 +94,7 @@ class Sound
         void setSfxVolume(int volume);
 
         /**
-         * Plays an item.
+         * Plays a sound at the specified location.
          *
          * @param path The resource path to the sound file.
          * @param x The vertical distance of the sound in pixels.

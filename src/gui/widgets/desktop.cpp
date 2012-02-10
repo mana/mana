@@ -86,7 +86,7 @@ void Desktop::draw(gcn::Graphics *graphics)
 
     if (mWallpaper)
     {
-        if (!mWallpaper->useOpenGL())
+        if (!Image::useOpenGL())
             g->drawImage(mWallpaper,
                 (getWidth() - mWallpaper->getWidth()) / 2,
                 (getHeight() - mWallpaper->getHeight()) / 2);
