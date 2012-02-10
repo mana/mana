@@ -125,7 +125,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
             if (!inviter.empty())
                 s = strprintf(_(" on invitation from %s"), inviter.c_str());
 
-            SERVER_NOTICE(strprintf(_("%s joined the party%s."),
+            SERVER_NOTICE(strprintf(_("%s joined the party %s."),
                                     name.c_str(), s.c_str()));
 
             if (name == local_player->getName())

@@ -338,7 +338,7 @@ void PartyHandler::invite(const std::string &name)
     }
     else
     {
-        SERVER_NOTICE(_("You can only inivte when you are in a party!"))
+        SERVER_NOTICE(_("You can only invite when you are in a party!"))
     }
 }
 
