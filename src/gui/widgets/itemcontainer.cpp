@@ -116,10 +116,13 @@ void ItemContainer::draw(gcn::Graphics *graphics)
             {
                 if (normalize(item->getInfo().getName()).find(mFilter) == std::string::npos)
                     continue;
+                mFilteredMap[currentIndex] = item;
+                currentIndex++;
             }
-
-            mFilteredMap[currentIndex] = item;
-            currentIndex++;
+            else
+            {
+                mFilteredMap[itemIndex] = item;
+            }
         }
     }
 
