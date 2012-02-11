@@ -251,9 +251,16 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
     if (event.getSource() == mItems && item && isDoubleClick(item->getInvIndex()))
     {
-
         if (isMainInventory() && item->getInfo().getActivatable())
-            action(gcn::ActionEvent(mUseButton, mUseButton->getActionEventId()));
+        {
+            action(gcn::ActionEvent(mUseButton,
+                                    mUseButton->getActionEventId()));
+        }
+        else if (isMainInventory() && item->getInfo().getEquippable())
+        {
+            action(gcn::ActionEvent(mEquipButton,
+                                    mEquipButton->getActionEventId()));
+        }
     }
 
     if (event.getButton() == gcn::MouseEvent::RIGHT)

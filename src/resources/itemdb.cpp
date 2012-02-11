@@ -355,6 +355,7 @@ void TaItemDB::load()
         // Everything not unusable or usable is equippable by the Ta type system.
         itemInfo->mEquippable  = itemInfo->mType != ITEM_UNUSABLE
                                  && itemInfo->mType != ITEM_USABLE;
+        itemInfo->mActivatable = itemInfo->mType == ITEM_USABLE;
 
         // Load nano description
         std::vector<std::string> effect;
