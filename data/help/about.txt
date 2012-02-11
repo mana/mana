@@ -1,9 +1,9 @@
  <- @@index|Back to Index@@
  
  
-##3                      === ABOUT MANA ===
+##3                           === ABOUT MANA ===
  
- ##2Mana##P is a serious effort to create an innovative free and open
+ ##2Mana##0 is a serious effort to create an innovative free and open
  source MMORPG Client. Mana uses 2D graphics and aims to create a large
  and diverse interactive world. It is licensed under the GPL, making
  sure this game can't ever run away from you.
@@ -23,3 +23,4 @@
 ##2                          PhysFS (Data files)
 ##2                        libcurl (HTTP downloads)
 ##2                            zlib (Archives)
+

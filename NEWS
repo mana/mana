@@ -8,12 +8,12 @@
 - Added customizable hit and attack effects
 - Added support for floor item sprites
 - Added support for different target cursor sizes for NPCs
-- Added support for 'zlib' compressed layer data and 'CSV' layer data
 - Added background support to the equipment boxes
 - Added offsetX/Y to 'imageset' element that applies to all its frames
 - Made it possible to separate the dye colors for particle effects
 - Emotes are now customizable particle effects
 - Allow resizing of the game in windowed mode
+- Allow switching between windowed and fullscreen without restart
 - Layered sprites are now buffered for performance and overlay support
 - Announcements now go to the active chat tab in addition to global chat
 - Fade out music when switching maps
@@ -30,7 +30,9 @@
 - Fixed 'switch character' action after choosing character on command line
 - Fixed hair colors and styles handling
 - Fixed interpretation of collision layer with flipped tiles
+- Fixed searching for wallpapers on 64-bit machines
 - Many changes and fixes to manaserv support, which is still experimental
+- Updated the German translation
 
 0.5.3 (11 September 2011)
 - Fixed endless loop when a sprite definition promises too many images

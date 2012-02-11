@@ -21,6 +21,7 @@
 
 #include "gui/helpwindow.h"
 
+#include "gui/gui.h"
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"
@@ -56,6 +57,7 @@ HelpWindow::HelpWindow():
                           345 - okButton->getHeight());
 
     mBrowserBox->setLinkHandler(this);
+    mBrowserBox->setFont(monoFont);
 
     place(0, 0, mScrollArea, 5, 3).setPadding(3);
     place(4, 3, okButton);

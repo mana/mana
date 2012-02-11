@@ -2,13 +2,14 @@
 
 
 ##3                            === SUPPORT ===
-
+##0
  If you're having troubles, plase first of all read the FAQ. If you
  can't find a solution to your problem, feel free to check our
  Bugs/Support section of the forum:
 
 ##2     http://forums.themanaworld.org/viewforum.php?f=3
-
+##0
  or come visit us on our IRC channel:
 
-##2     #mana ##P@##2 irc.freenode.net
+##2     #mana ##0@##2 irc.freenode.net
+

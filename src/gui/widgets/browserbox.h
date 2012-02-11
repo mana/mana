@@ -121,10 +121,6 @@ class BrowserBox : public gcn::Widget,
          */
         void clearRows();
 
-//        void setSize(int width, int height);
-
-//        void widgetResized(const gcn::Event &event);
-
         /**
          * Handles mouse actions.
          */
@@ -137,8 +133,6 @@ class BrowserBox : public gcn::Widget,
         void draw(gcn::Graphics *graphics);
 
         void updateHeight();
-
-//        void widgetResized(const gcn::Event &event);
 
         /**
          * BrowserBox modes.

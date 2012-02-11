@@ -2,85 +2,85 @@
  
  
 ##3                            === COMMANDS ===
-
+##0
 KEYBOARD:
 
 ##2 Use arrow keys to move around.
- 
+
 ##3Most useful keys:
  
-     ##2Enter##P              focus chat window / send message
-     ##2A##P                  target nearest monster
-     ##2Ctrl##P               attack
-     ##2X##P                  target & attack
-     ##2left shift##P         stop attack
-     ##2Z##P                  pick up item
-     ##2S##P                  sit down / stand up
-     ##2R##P                  toggle ignore of incoming trades
-     ##2Escape##P             quit
+     ##2Enter##0              focus chat window / send message
+     ##2A##0                  target nearest monster
+     ##2Ctrl##0               attack
+     ##2X##0                  target & attack
+     ##2left shift##0         stop attack
+     ##2Z##0                  pick up item
+     ##2S##0                  sit down / stand up
+     ##2R##0                  toggle ignore of incoming trades
+     ##2Escape##0             quit
 
 ##3Advanced keys:
 
-     ##2space##P              select OK
-     ##2Alt + 0-9##P          show emotions
-     ##2Q##P                  target nearest player
-     ##2N##P                  target nearest NPC
-     ##2T##P                  talk to targeted NPC
-     ##2P##P                  take screenshot
-     ##20-9##P                item shortcut
-     ##2right Ctrl##P         wear outfit
-     ##2right Alt##P          copy outfit
-     ##2Page Up##P            scroll chat up
-     ##2Page Down##P          scroll chat down
-     ##2[##P                  previous chat tab
-     ##2]##P                  next chat tab
-     ##2H##P                  hide all non-sticky windows
-     ##2F##P                  toggle debug pathfinding feature
+     ##2space##0              select OK
+     ##2Alt + 0-9##0          show emotions
+     ##2Q##0                  target nearest player
+     ##2N##0                  target nearest NPC
+     ##2T##0                  talk to targeted NPC
+     ##2P##0                  take screenshot
+     ##20-9##0                item shortcut
+     ##2right Ctrl##0         wear outfit
+     ##2right Alt##0          copy outfit
+     ##2Page Up##0            scroll chat up
+     ##2Page Down##0          scroll chat down
+     ##2[##0                  previous chat tab
+     ##2]##0                  next chat tab
+     ##2H##0                  hide all non-sticky windows
+     ##2F##0                  toggle debug pathfinding feature
 
 ##3Keys to toggle windows:
 
-     ##2F1##P                 toggle the online help
-     ##2F2##P                 toggle status window
-     ##2F3##P                 toggle inventory window
-     ##2F4##P                 toggle equipment window
-     ##2F5##P                 toggle skills window
-     ##2F6##P                 toggle minimap
-     ##2F7##P                 toggle chat window
-     ##2F8##P                 toggle item shortcut window
-     ##2F9##P                 toggle setup window
-     ##2F10##P                toggle debug window
-     ##2F11##P                toggle social window
-     ##2F12##P                toggle emote shortcut window
-     ##2O##P                  toggle outfit window
+     ##2F1##0                 toggle the online help
+     ##2F2##0                 toggle status window
+     ##2F3##0                 toggle inventory window
+     ##2F4##0                 toggle equipment window
+     ##2F5##0                 toggle skills window
+     ##2F6##0                 toggle minimap
+     ##2F7##0                 toggle chat window
+     ##2F8##0                 toggle item shortcut window
+     ##2F9##0                 toggle setup window
+     ##2F10##0                toggle debug window
+     ##2F11##0                toggle social window
+     ##2F12##0                toggle emote shortcut window
+     ##2O##0                  toggle outfit window
 
 
 ##3MOUSE:
-
-##2 Left click to execute default action: walk, pick up an item, attack a monster
+##0
+ Left click to execute default action: walk, pick up an item, attack a monster
  and talk to NPCs.  Right click to show up a context menu.
 
 
 ##3COMMUNICATION:
-
-##2 Communication is often essential to success in this game. You can communicate
+##0
+ Communication is often essential to success in this game. You can communicate
  in several ways:  By chatting and showing emotions (see above), by trading
  (with the right-click context menu), and by whispering.
 
  To whisper, type
-
+##2
  /whisper <name> <message>
-
+##0
  This will send <message> to player <name>, if that player is logged in. If the
  name has a space in it, put double quotes around it like this:
-
+##2
  /whisper "<name>" <message>
-
+##0
  For further help type /help in the chat console.
 
 
 ##3IGNORING COMMUNICATION
-
-##2 You may find that not all communication is to your liking.  While most people
+##0
+ You may find that not all communication is to your liking.  While most people
  are nice, some may offend you or try to make your life harder. Since this is
  an open game, there is nothing the developers can do to prevent this.
 
@@ -93,21 +93,22 @@ KEYBOARD:
  There you will find a list of all players you are acquainted with, as well as
  several configuration options:
 
- - ##2allow trading##P:  Do you wish to allow trade requests from arbitrary players?
- ##2- allow whispers##P:  Do you wish to allow arbitrary players to send
+ - allow trading:  Do you wish to allow trade requests from arbitrary players?
+ - allow whispers:  Do you wish to allow arbitrary players to send
    private messages to you in-game?
 
 ##3THE PLAYER LIST
-
-##2 The player list lists all of your acquaintances.  They are categorised as one
+##0
+ The player list lists all of your acquaintances.  They are categorised as one
  of the following:
 
- - ##2neutral##P:  As far as the game is concerned, this is the same as not
+ - ##2neutral##0:  As far as the game is concerned, this is the same as not
    having the player listed:  the player may chat with you, but may only trade
    or whisper if you have this option allowed for everyone.
- - ##2friend##P:  You consider this player a friend.  The player may chat,
+ - ##2friend##0:  You consider this player a friend.  The player may chat,
    message your in private, or trade with you at any point.
- - ##2disregarded##P:  You wish to disregard this player, meaning that his or
+ - ##2disregarded##0:  You wish to disregard this player, meaning that his or
    her trade requests and whispers are ignored.
- - ##2ignored##P:  You wish to completely ignore this player.  You will not
+ - ##2ignored##0:  You wish to completely ignore this player.  You will not
    even see emotions for him or her anymore.
+
