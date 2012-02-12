@@ -174,7 +174,7 @@ void LocalPlayer::logic()
                         mGoingToTarget = false;
                     }
                 }
-                else if (withinAttackRange && mKeepAttacking)
+                else if (mKeepAttacking)
                 {
                     attack(mTarget, true);
                 }
