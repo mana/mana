@@ -75,6 +75,8 @@ public:
      */
     virtual Type getType() const { return UNKNOWN; }
 
+    virtual int getDrawOrder() const;
+
     virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
 
     virtual bool drawSpriteAt(Graphics *graphics, int x, int y) const;

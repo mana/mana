@@ -150,7 +150,7 @@ void MapLayer::draw(Graphics *graphics,
         // tiles have been drawn
         if (mIsFringeLayer)
         {
-            while (ai != actors.end() && (*ai)->getPixelY()
+            while (ai != actors.end() && (*ai)->getDrawOrder()
                    <= y * mMap->getTileHeight())
             {
                 (*ai)->draw(graphics, -scrollX, -scrollY);

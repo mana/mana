@@ -23,7 +23,6 @@
 #include "client.h"
 #include "configuration.h"
 #include "event.h"
-#include "game.h"
 #include "imagesprite.h"
 #include "localplayer.h"
 #include "log.h"
@@ -67,6 +66,17 @@ ActorSprite::~ActorSprite()
     event.trigger(Event::ActorSpriteChannel);
 }
 
+int ActorSprite::getDrawOrder() const
+{
+    int drawOrder = Actor::getDrawOrder();
+
+    // See note at ActorSprite::draw
+    if (mMap)
+        drawOrder += mMap->getTileHeight() / 2;
+
+    return drawOrder;
+}
+
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = getPixelX() + offsetX;
@@ -79,11 +89,11 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
         mUsedTargetCursor->draw(graphics, px, py);
     }
 
-    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
-    if (map)
-    {
-        py += map->getTileHeight() / 2;
-    }
+    // This is makes sure that actors positioned on the center of a tile have
+    // their sprite aligned to the bottom of that tile, mainly to maintain
+    // compatibility with older clients.
+    if (mMap)
+        py += mMap->getTileHeight() / 2;
 
     return drawSpriteAt(graphics, px, py);
 }
@@ -111,12 +121,10 @@ void ActorSprite::logic()
         }
     }
 
-    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
+    // See note at ActorSprite::draw
     float py = mPos.y;
-    if (map)
-    {
-        py += (float)map->getTileHeight() / 2;
-    }
+    if (mMap)
+        py += mMap->getTileHeight() / 2;
 
     // Update particle effects
     mChildParticleEffects.moveTo(mPos.x, py);
