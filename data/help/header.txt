@@ -2,7 +2,7 @@
 ##1                      M  A  N  A      C L I E N T
 ##1               =========================================
 
-             ##2Version:##0 0.6.0          ##2Date:##0 .. February 2012
+             ##2Version:##0 0.6.0          ##2Date:##0 12 February 2012
 
 ##2                    Website:##0 http://manasource.org
 

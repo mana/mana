@@ -1,4 +1,4 @@
-0.6.0 (.. February 2012)
+0.6.0 (12 February 2012)
 - Added support for a larger number of character slots
 - Added scrolling to tab bars when there isn't enough space
 - Added a search bar to storage and inventory windows
@@ -18,11 +18,13 @@
 - Announcements now go to the active chat tab in addition to global chat
 - Fade out music when switching maps
 - Stream music files directly from the archives
+- Ignore ManaPlus shop commands sent over whisper
 - Changed the window buttons to use icons
 - Show selected target name with bold font
 - Sounds that are further away are now more silent
 - The NPC dialog can now be closed while it is waiting on the server
 - Replaced '> Next' in NPC dialogs with just an empty line
+- Made items equippable by double click in inventory
 - Made the update window bigger and resizable
 - Removed auto-untargeting after fighting for a minute
 - Fixed the chat bubble position
@@ -32,7 +34,7 @@
 - Fixed interpretation of collision layer with flipped tiles
 - Fixed searching for wallpapers on 64-bit machines
 - Many changes and fixes to manaserv support, which is still experimental
-- Updated the German translation
+- Updated the German, French and Spanish translations
 
 0.5.3 (11 September 2011)
 - Fixed endless loop when a sprite definition promises too many images
