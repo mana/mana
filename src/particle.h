@@ -93,11 +93,6 @@ class Particle : public Actor
         virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
-         * Necessary for sorting with the other sprites.
-         */
-        virtual int getDrawOrder() const;
-
-        /**
          * Do not draw particles when beind other objects
          */
         virtual bool drawnWhenBehind() const
