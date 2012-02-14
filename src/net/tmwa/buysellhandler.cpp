@@ -111,11 +111,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_NPC_BUY_RESPONSE:
-            if (msg.readInt8() == 0)
-            {
-                SERVER_NOTICE(_("Thanks for buying."))
-            }
-            else
+            if (msg.readInt8() != 0)
             {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
@@ -125,9 +121,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_NPC_SELL_RESPONSE:
-            if (msg.readInt8() == 0)
-                SERVER_NOTICE(_("Thanks for selling."))
-            else
+            if (msg.readInt8() != 0)
                 SERVER_NOTICE(_("Unable to sell."))
             break;
     }
