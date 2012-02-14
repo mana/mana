@@ -23,8 +23,9 @@
 #define NET_TA_INVENTORYHANDLER_H
 
 #include "equipment.h"
-#include "inventory.h"
 #include "eventlistener.h"
+#include "inventory.h"
+#include "log.h"
 #include "playerinfo.h"
 
 #include "gui/inventorywindow.h"
@@ -104,16 +105,24 @@ class EquipBackend : public Equipment::Backend
         void setEquipment(int index, int inventoryIndex)
         {
             Inventory *inventory = PlayerInfo::getInventory();
+            Item *newItem = inventory->getItem(inventoryIndex);
+
+            if (!newItem && inventoryIndex >= 0)
+            {
+                logger->log("EquipBackend: Warning, trying to equip "
+                            "non-existing item from inventory index %i at "
+                            "equipment slot %i.", inventoryIndex, index);
+                return;
+            }
 
             // Unequip existing item
-            if (Item *item = inventory->getItem(mEquipment[index]))
-                item->setEquipped(false);
+            if (Item *oldItem = inventory->getItem(mEquipment[index]))
+                oldItem->setEquipped(false);
+
+            if (newItem)
+                newItem->setEquipped(true);
 
             mEquipment[index] = inventoryIndex;
-
-            if (Item *item = inventory->getItem(inventoryIndex))
-                item->setEquipped(true);
-
             inventoryWindow->updateButtons();
         }
 
