@@ -57,7 +57,7 @@ msgstr "Erfrage Charaktere"
 
 #: ../src/client.cpp:843
 msgid "Connecting to the game server"
-msgstr "Verbinde zum Spielserver"
+msgstr "Verbinde mit Spielserver"
 
 #: ../src/client.cpp:853
 msgid "Changing game servers"
