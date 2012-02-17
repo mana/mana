@@ -179,6 +179,9 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
 
     const int halfTileHeight = map->getTileHeight() / 2;
 
+    Being *closest = 0;
+    int closestDist;
+
     for_actors
     {
         if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
@@ -188,20 +191,28 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
 
         const int halfWidth = std::max(16, being->getWidth() / 2);
         const int height = std::max(32, being->getHeight());
+        const int halfHeight = height / 2;
 
         // Being sprites are drawn half a tile lower than they actually stand
         const int bottom = being->getPixelY() + halfTileHeight;
 
-        if (being->isAlive() &&
-            being != local_player &&
-            being->getPixelX() - halfWidth <= x &&
-            being->getPixelX() + halfWidth >= x &&
-            bottom - height <= y &&
-            bottom >= y)
-            return being;
+        const int dist = std::max(std::abs(bottom - halfHeight - y),
+                                  std::abs(being->getPixelX() - x));
+
+        if ((being->isAlive() &&
+             being != local_player &&
+             being->getPixelX() - halfWidth <= x &&
+             being->getPixelX() + halfWidth >= x &&
+             bottom - height <= y &&
+             bottom >= y) &&
+             (!closest || closestDist > dist))
+        {
+            closest = being;
+            closestDist = dist;
+        }
     }
 
-    return NULL;
+    return closest;
 }
 
 FloorItem *ActorSpriteManager::findItem(int id) const
