@@ -39,11 +39,17 @@ class Setup_Audio : public SetupTab, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
     private:
-        int mMusicVolume, mSfxVolume;
-        bool mSoundEnabled, mDownloadEnabled;
+        int mMusicVolume;
+        int mSfxVolume;
+        int mNotificationsVolume;
+        bool mSoundEnabled;
+        bool mDownloadEnabled;
 
-        gcn::CheckBox *mSoundCheckBox, *mDownloadMusicCheckBox;
-        gcn::Slider *mSfxSlider, *mMusicSlider;
+        gcn::CheckBox *mSoundCheckBox;
+        gcn::CheckBox *mDownloadMusicCheckBox;
+        gcn::Slider *mSfxSlider;
+        gcn::Slider *mNotificationsSlider;
+        gcn::Slider *mMusicSlider;
 };
 
-#endif
+#endif // GUI_SETUP_AUDIO_H

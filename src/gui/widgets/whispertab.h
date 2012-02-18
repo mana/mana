@@ -57,6 +57,9 @@ class WhisperTab : public ChatTab
 
         void handleCommand(const std::string &msg);
 
+        bool checkNotify(Own) const
+        { return true; }
+
     private:
         std::string mNick;
 };

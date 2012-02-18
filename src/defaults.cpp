@@ -85,6 +85,7 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "hwaccel", false);
     AddDEF(configData, "sound", false);
     AddDEF(configData, "sfxVolume", 100);
+    AddDEF(configData, "notificationsVolume", 100);
     AddDEF(configData, "musicVolume", 60);
     AddDEF(configData, "remember", false);
     AddDEF(configData, "username", "");

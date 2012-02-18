@@ -31,6 +31,10 @@
 #include "resources/resourcemanager.h"
 #include "resources/soundeffect.h"
 
+enum {
+    CHANNEL_NOTIFICATIONS = 0
+};
+
 /**
  * This will be set to true, when a music can be freed after a fade out
  * Currently used by fadeOutCallBack()
@@ -49,6 +53,7 @@ static void fadeOutCallBack()
 Sound::Sound():
     mInstalled(false),
     mSfxVolume(100),
+    mNotificationsVolume(100),
     mMusicVolume(60),
     mMusic(NULL)
 {
@@ -90,8 +95,10 @@ void Sound::init()
     }
 
     Mix_AllocateChannels(16);
+    Mix_ReserveChannels(1); // reserve one channel for notification sounds
     Mix_VolumeMusic(mMusicVolume);
     Mix_Volume(-1, mSfxVolume);
+    Mix_Volume(CHANNEL_NOTIFICATIONS, mNotificationsVolume);
 
     info();
 
@@ -154,7 +161,18 @@ void Sound::setSfxVolume(int volume)
     mSfxVolume = volume;
 
     if (mInstalled)
+    {
         Mix_Volume(-1, mSfxVolume);
+        Mix_Volume(CHANNEL_NOTIFICATIONS, mNotificationsVolume);
+    }
+}
+
+void Sound::setNotificationsVolume(int volume)
+{
+    mNotificationsVolume = volume;
+
+    if (mInstalled)
+        Mix_Volume(CHANNEL_NOTIFICATIONS, mNotificationsVolume);
 }
 
 static Music *loadMusic(const std::string &fileName)
@@ -278,6 +296,17 @@ void Sound::playSfx(const std::string &path, int x, int y)
         }
 
         sample->play(0, vol);
+    }
+}
+
+void Sound::playNotification(const std::string &path)
+{
+    const std::string fullPath = paths.getValue("sfx", "sfx/") + path;
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    if (SoundEffect *sample = resman->getSoundEffect(fullPath))
+    {
+        sample->play(0, 128, CHANNEL_NOTIFICATIONS);
     }
 }
 

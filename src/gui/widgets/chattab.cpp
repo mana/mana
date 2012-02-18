@@ -23,9 +23,11 @@
 
 #include "actorspritemanager.h"
 #include "chatlogger.h"
+#include "client.h"
 #include "commandhandler.h"
 #include "configuration.h"
 #include "localplayer.h"
+#include "sound.h"
 
 #include "gui/gui.h"
 #include "gui/recorder.h"
@@ -237,10 +239,20 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
     }
 
     mScrollArea->logic();
+
     chatWindow->mRecorder->record(line.substr(3));
-    if (this != getTabbedArea()->getSelectedTab() &&
-        own != BY_PLAYER)
-        setFlash(true);
+
+    if (own != BY_PLAYER)
+    {
+        bool currentTab = getTabbedArea()->getSelectedTab() == this;
+
+        if (!currentTab)
+            setFlash(true);
+
+        if (!(currentTab && Client::hasInputFocus()) && own != BY_SERVER)
+            if (checkNotify(own))
+                sound.playNotification("system/newmessage.ogg");
+    }
 }
 
 void ChatTab::chatLog(const std::string &nick, const std::string &msg)
@@ -316,6 +328,11 @@ void ChatTab::handleInput(const std::string &msg)
 void ChatTab::handleCommand(const std::string &msg)
 {
     commandHandler->handleCommand(msg, this);
+}
+
+bool ChatTab::checkNotify(Own own) const
+{
+    return own == ACT_WHISPER;
 }
 
 void ChatTab::getAutoCompleteList(std::vector<std::string> &names) const

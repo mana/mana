@@ -37,31 +37,38 @@
 Setup_Audio::Setup_Audio():
     mMusicVolume(config.getIntValue("musicVolume")),
     mSfxVolume(config.getIntValue("sfxVolume")),
+    mNotificationsVolume(config.getIntValue("notificationsVolume")),
     mSoundEnabled(config.getBoolValue("sound")),
     mDownloadEnabled(config.getBoolValue("download-music")),
     mSoundCheckBox(new CheckBox(_("Sound"), mSoundEnabled)),
     mDownloadMusicCheckBox(new CheckBox(_("Download music"), mDownloadEnabled)),
     mSfxSlider(new Slider(0, sound.getMaxVolume())),
+    mNotificationsSlider(new Slider(0, sound.getMaxVolume())),
     mMusicSlider(new Slider(0, sound.getMaxVolume()))
 {
     setName(_("Audio"));
     setDimension(gcn::Rectangle(0, 0, 250, 200));
 
     gcn::Label *sfxLabel = new Label(_("Sfx volume"));
+    gcn::Label *notificationsLabel = new Label(_("Notifications volume"));
     gcn::Label *musicLabel = new Label(_("Music volume"));
 
     mSfxSlider->setActionEventId("sfx");
+    mNotificationsSlider->setActionEventId("notifications");
     mMusicSlider->setActionEventId("music");
 
     mSfxSlider->addActionListener(this);
+    mNotificationsSlider->addActionListener(this);
     mMusicSlider->addActionListener(this);
 
     mSoundCheckBox->setPosition(10, 10);
 
     mSfxSlider->setValue(mSfxVolume);
+    mNotificationsSlider->setValue(mNotificationsVolume);
     mMusicSlider->setValue(mMusicVolume);
 
     mSfxSlider->setWidth(90);
+    mNotificationsSlider->setWidth(90);
     mMusicSlider->setWidth(90);
 
     // Do the layout
@@ -71,9 +78,11 @@ Setup_Audio::Setup_Audio():
     place(0, 0, mSoundCheckBox);
     place(0, 1, mSfxSlider);
     place(1, 1, sfxLabel);
-    place(0, 2, mMusicSlider);
-    place(1, 2, musicLabel);
-    place(0, 3, mDownloadMusicCheckBox);
+    place(0, 2, mNotificationsSlider);
+    place(1, 2, notificationsLabel);
+    place(0, 3, mMusicSlider);
+    place(1, 3, musicLabel);
+    place(0, 4, mDownloadMusicCheckBox);
 
     setDimension(gcn::Rectangle(0, 0, 370, 280));
 }
@@ -83,6 +92,7 @@ void Setup_Audio::apply()
     mSoundEnabled = mSoundCheckBox->isSelected();
     mDownloadEnabled = mDownloadMusicCheckBox->isSelected();
     mSfxVolume = config.getIntValue("sfxVolume");
+    mNotificationsVolume = config.getIntValue("sfxVolume");
     mMusicVolume = config.getIntValue("musicVolume");
 
     config.setValue("sound", mSoundEnabled);
@@ -134,12 +144,20 @@ void Setup_Audio::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "sfx")
     {
-        config.setValue("sfxVolume", (int) mSfxSlider->getValue());
-        sound.setSfxVolume((int) mSfxSlider->getValue());
+        int volume = (int) mSfxSlider->getValue();
+        config.setValue("sfxVolume", volume);
+        sound.setSfxVolume(volume);
+    }
+    else if (event.getId() == "notifications")
+    {
+        int volume = (int) mNotificationsSlider->getValue();
+        config.setValue("notificationsVolume", volume);
+        sound.setNotificationsVolume(volume);
     }
     else if (event.getId() == "music")
     {
-        config.setValue("musicVolume", (int) mMusicSlider->getValue());
-        sound.setMusicVolume((int) mMusicSlider->getValue());
+        int volume = (int) mMusicSlider->getValue();
+        config.setValue("musicVolume", volume);
+        sound.setMusicVolume(volume);
     }
 }

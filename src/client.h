@@ -214,6 +214,15 @@ public:
      */
     void videoResized(int width, int height);
 
+    static bool isActive()
+    { return SDL_GetAppState() & SDL_APPACTIVE; }
+
+    static bool hasInputFocus()
+    { return SDL_GetAppState() & SDL_APPINPUTFOCUS; }
+
+    static bool hasMouseFocus()
+    { return SDL_GetAppState() & SDL_APPMOUSEFOCUS; }
+
 private:
     void initRootDir();
     void initHomeDir();

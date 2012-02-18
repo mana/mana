@@ -92,6 +92,7 @@ class Sound
 
         void setMusicVolume(int volume);
         void setSfxVolume(int volume);
+        void setNotificationsVolume(int volume);
 
         /**
          * Plays a sound at the specified location.
@@ -101,6 +102,13 @@ class Sound
          * @param y The horizontal distance of the sound in pixels.
          */
         void playSfx(const std::string &path, int x = 0, int y = 0);
+
+        /**
+         * Plays a sound on the notification channel.
+         *
+         * @param path The resource path to the sound file.
+         */
+        void playNotification(const std::string &path);
 
         /**
          * The sound logic.
@@ -125,6 +133,7 @@ class Sound
         bool mInstalled;
 
         int mSfxVolume;
+        int mNotificationsVolume;
         int mMusicVolume;
 
         std::string mCurrentMusicFile;

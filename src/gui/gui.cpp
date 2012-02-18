@@ -29,6 +29,7 @@
 #include "gui/widgets/window.h"
 #include "gui/widgets/windowcontainer.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "eventlistener.h"
 #include "graphics.h"
@@ -204,7 +205,7 @@ void Gui::draw()
     int mouseX, mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
 
-    if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
+    if ((Client::hasMouseFocus() || button & SDL_BUTTON(1))
             && mCustomCursor
             && mMouseCursorAlpha > 0.0f)
     {

@@ -380,6 +380,7 @@ Client::Client(const Options &options):
             sound.init();
 
         sound.setSfxVolume(config.getIntValue("sfxVolume"));
+        sound.setNotificationsVolume(config.getIntValue("notificationsVolume"));
         sound.setMusicVolume(config.getIntValue("musicVolume"));
     }
     catch (const char *err)
@@ -541,7 +542,7 @@ int Client::exec()
         lastTickTime = tick_time;
 
         // Update the screen when application is active, delay otherwise.
-        if (SDL_GetAppState() & SDL_APPACTIVE)
+        if (isActive())
         {
             frame_count++;
             gui->draw();

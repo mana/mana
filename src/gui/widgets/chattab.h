@@ -115,6 +115,15 @@ class ChatTab : public Tab, public AutoCompleteLister, public EventListener
         virtual void handleCommand(const std::string &msg);
 
         /**
+         * Returns whether a notify sound may be played for the given type of
+         * message. By default, only returns true for inline whispers.
+         *
+         * Is never called for server-messages or when the window has focus
+         * and this is the current tab.
+         */
+        virtual bool checkNotify(Own own) const;
+
+        /**
          * Adapts the text format to the current gui opacity,
          * for better readability.
          */
