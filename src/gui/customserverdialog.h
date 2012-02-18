@@ -86,7 +86,7 @@ class CustomServerDialog : public Window,
         TextField *mDescriptionField;
         Button *mOkButton;
         Button *mCancelButton;
-#ifdef ENABLE_MANASERV
+#ifdef MANASERV_SUPPORT
         DropDown *mTypeField;
         TypeListModel *mTypeListModel;
 #endif

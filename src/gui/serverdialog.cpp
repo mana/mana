@@ -282,7 +282,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
 
         // Check login
         if (index < 0
-#ifndef ENABLE_MANASERV
+#ifndef MANASERV_SUPPORT
             || mServersListModel->getServer(index).type == ServerInfo::MANASERV
 #endif
         )
@@ -475,7 +475,7 @@ void ServerDialog::loadServers()
 
         // Ignore unknown server types
         if (server.type == ServerInfo::UNKNOWN
-#ifndef ENABLE_MANASERV
+#ifndef MANASERV_SUPPORT
             || server.type == ServerInfo::MANASERV
 #endif
         )
