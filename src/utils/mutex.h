@@ -53,7 +53,9 @@ class MutexLocker
 {
 public:
     MutexLocker(Mutex *mutex);
+#ifdef ENABLE_CPP0X
     MutexLocker(MutexLocker&&);
+#endif
     ~MutexLocker();
 
 private:
@@ -93,11 +95,14 @@ inline MutexLocker::MutexLocker(Mutex *mutex):
     mMutex->lock();
 }
 
+#ifdef ENABLE_CPP0X
 inline MutexLocker::MutexLocker(MutexLocker&& rhs):
     mMutex(rhs.mMutex)
 {
     rhs.mMutex = NULL;
 }
+#endif
+
 inline MutexLocker::~MutexLocker()
 {
     if (mMutex)

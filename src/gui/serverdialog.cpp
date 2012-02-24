@@ -90,13 +90,13 @@ ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
 
 int ServersListModel::getNumberOfElements()
 {
-    MutexLocker lock = mParent->lock();
+    MutexLocker lock(mParent->getMutex());
     return mServers->size();
 }
 
 std::string ServersListModel::getElementAt(int elementIndex)
 {
-    MutexLocker lock = mParent->lock();
+    MutexLocker lock(mParent->getMutex());
     const ServerInfo &server = mServers->at(elementIndex);
     std::string myServer;
     myServer += server.hostname;

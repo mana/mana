@@ -113,7 +113,7 @@ class ServerDialog : public Window,
 
     protected:
         friend class ServersListModel;
-        MutexLocker lock() { return MutexLocker(&mMutex); }
+        Mutex *getMutex() { return &mMutex; }
 
         friend class CustomServerDialog;
         /**
