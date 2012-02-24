@@ -35,6 +35,9 @@ Music::~Music()
 
 Resource *Music::load(SDL_RWops *rw)
 {
+#if SDL_MIXER_MAJOR_VERSION >= 1 &&\
+       	SDL_MIXER_MINOR_VERSION >= 2 &&\
+       	SDL_MIXER_PATCHLEVEL >= 9
     if (Mix_Music *music = Mix_LoadMUS_RW(rw))
     {
         return new Music(music);
@@ -44,6 +47,10 @@ Resource *Music::load(SDL_RWops *rw)
         logger->log("Error, failed to load music: %s", Mix_GetError());
         return 0;
     }
+#else
+    SDL_FreeRW(rw);
+    return 0;
+#endif
 }
 
 bool Music::play(int loops, int fadeIn)
