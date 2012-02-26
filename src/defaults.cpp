@@ -105,7 +105,7 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "guialpha", 0.8f);
     AddDEF(configData, "ChatLogLength", 0);
     AddDEF(configData, "enableChatLog", false);
-    AddDEF(configData, "whispertab", false);
+    AddDEF(configData, "whispertab", true);
     AddDEF(configData, "customcursor", true);
     AddDEF(configData, "showownname", false);
     AddDEF(configData, "showpickupparticle", false);
