@@ -534,6 +534,7 @@ void ServerDialog::loadServers()
                 // Use the name listed in the server list
                 (*it).name = server.name;
                 (*it).version = server.version;
+                (*it).description = server.description;
                 mServersListModel->setVersionString(i, version);
                 found = true;
                 break;
