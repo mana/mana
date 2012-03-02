@@ -157,8 +157,8 @@ bool isWordSeparator(char chr)
     return (chr == ' ' || chr == ',' || chr == '.' || chr == '"');
 }
 
-const std::string findSameSubstring(const std::string &str1,
-                                    const std::string &str2)
+std::string findSameSubstring(const std::string &str1,
+                              const std::string &str2)
 {
     int minLength = str1.length() > str2.length() ? str2.length() : str1.length();
     for (int f = 0; f < minLength; f ++)
@@ -171,9 +171,9 @@ const std::string findSameSubstring(const std::string &str1,
     return str1.substr(0, minLength);
 }
 
-const char* getSafeUtf8String(std::string text)
+const char *getSafeUtf8String(const std::string &text)
 {
-    char* buf = new char[text.size() + UTF8_MAX_SIZE];
+    char *buf = new char[text.size() + UTF8_MAX_SIZE];
     memcpy(buf, text.c_str(), text.size());
     memset(buf + text.size(), 0, UTF8_MAX_SIZE);
     return buf;

@@ -644,12 +644,12 @@ void Map::removeActor(Actors::iterator iterator)
     mActors.erase(iterator);
 }
 
-const std::string Map::getMusicFile() const
+std::string Map::getMusicFile() const
 {
     return getProperty("music");
 }
 
-const std::string Map::getName() const
+std::string Map::getName() const
 {
     if (hasProperty("name"))
         return getProperty("name");
@@ -657,7 +657,7 @@ const std::string Map::getName() const
     return getProperty("mapname");
 }
 
-const std::string Map::getFilename() const
+std::string Map::getFilename() const
 {
     std::string fileName = getProperty("_filename");
     int lastSlash = fileName.rfind("/") + 1;

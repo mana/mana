@@ -57,7 +57,7 @@ class TextChunk
             sdlCol.r = color.r;
             sdlCol.g = color.g;
 
-            const char* str = getSafeUtf8String(text);
+            const char *str = getSafeUtf8String(text);
             SDL_Surface *surface = TTF_RenderUTF8_Blended(
                     font, str, sdlCol);
             delete[] str;
@@ -179,7 +179,7 @@ int TrueTypeFont::getWidth(const std::string &text) const
     }
 
     int w, h;
-    const char* str = getSafeUtf8String(text);
+    const char *str = getSafeUtf8String(text);
     TTF_SizeUTF8(mFont, str, &w, &h);
     delete[] str;
     return w;

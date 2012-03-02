@@ -125,10 +125,10 @@ int compareStrI(const std::string &a, const std::string &b);
  */
 bool isWordSeparator(char chr);
 
-const std::string findSameSubstring(const std::string &str1,
-                                    const std::string &str2);
+std::string findSameSubstring(const std::string &str1,
+                              const std::string &str2);
 
-const char* getSafeUtf8String(std::string text);
+const char *getSafeUtf8String(const std::string &text);
 
 /**
  * Returns a bool value depending on the given string value.

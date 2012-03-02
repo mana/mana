@@ -32,7 +32,7 @@
 
 #include <math.h>
 
-const std::string ColorTypeNames[] = {
+static const std::string ColorTypeNames[] = {
     "ColorBeing",
     "ColorPlayer",
     "ColorSelf",

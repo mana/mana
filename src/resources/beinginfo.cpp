@@ -84,7 +84,7 @@ void BeingInfo::addSound(SoundEvent event, const std::string &filename)
 
 const std::string &BeingInfo::getSound(SoundEvent event) const
 {
-    static std::string empty("");
+    static const std::string empty;
 
     SoundEvents::const_iterator i = mSounds.find(event);
     return (i == mSounds.end()) ? empty :

@@ -275,13 +275,13 @@ class Map : public Properties
          */
         Vector getTileCenter(int x, int y);
 
-        const std::string getMusicFile() const;
-        const std::string getName() const;
+        std::string getMusicFile() const;
+        std::string getName() const;
 
         /**
          * Gives the map id based on filepath (ex: 009-1)
          */
-        const std::string getFilename() const;
+        std::string getFilename() const;
 
         /**
          * Check the current position against surrounding blocking tiles, and

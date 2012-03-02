@@ -42,8 +42,8 @@ class Properties
          * @return the value of the given property or the given default when it
          *         doesn't exist.
          */
-        const std::string getProperty(const std::string &name,
-                                       const std::string &def = "") const
+        std::string getProperty(const std::string &name,
+                                const std::string &def = "") const
         {
             PropertyMap::const_iterator i = mProperties.find(name);
             return (i != mProperties.end()) ? i->second : def;

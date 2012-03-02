@@ -197,7 +197,7 @@ Item *EquipmentWindow::getItem(int x, int y) const
     return 0;
 }
 
-const std::string EquipmentWindow::getSlotName(int x, int y) const
+std::string EquipmentWindow::getSlotName(int x, int y) const
 {
     for (int i = 0; i < mBoxesNumber; ++i)
     {
