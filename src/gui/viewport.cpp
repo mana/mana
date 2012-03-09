@@ -97,8 +97,12 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 {
     static int lastTick = tick_time;
 
+    // Check whether map was successfully loaded since
+    // the rest of this function relies on it
     if (!mMap || !local_player)
     {
+        // Render unicolor background to avoid
+        // rendering issues
         gcnGraphics->setColor(gcn::Color(64, 64, 64));
         gcnGraphics->fillRectangle(
                 gcn::Rectangle(0, 0, getWidth(), getHeight()));
@@ -178,37 +182,47 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     };
 
     // Don't move camera so that the end of the map is on screen
-    const int viewXmax =
-        mMap->getWidth() * mMap->getTileWidth() - graphics->getWidth();
-    const int viewYmax =
-        mMap->getHeight() * mMap->getTileHeight() - graphics->getHeight();
-    if (mMap)
+    const int mapWidthPixels = mMap->getWidth() * mMap->getTileWidth();
+    const int mapHeightPixels = mMap->getHeight() * mMap->getTileHeight();
+    const int viewXmax = mapWidthPixels - graphics->getWidth();
+    const int viewYmax = mapHeightPixels - graphics->getHeight();
+    if (mPixelViewX < 0)
+        mPixelViewX = 0;
+    if (mPixelViewY < 0)
+        mPixelViewY = 0;
+    if (mPixelViewX > viewXmax)
+        mPixelViewX = viewXmax;
+    if (mPixelViewY > viewYmax)
+        mPixelViewY = viewYmax;
+
+    // Center camera on map if the map is smaller than the screen
+    if (mapWidthPixels < graphics->getWidth())
+        mPixelViewX = (mapWidthPixels - graphics->getWidth()) / 2;
+    if (mapHeightPixels < graphics->getHeight())
+        mPixelViewY = (mapHeightPixels - graphics->getHeight()) / 2;
+
+    // Draw black background if map is smaller than the screen
+    if (        mapWidthPixels < graphics->getWidth()
+            ||  mapHeightPixels < graphics->getHeight())
     {
-        if (mPixelViewX < 0)
-            mPixelViewX = 0;
-        if (mPixelViewY < 0)
-            mPixelViewY = 0;
-        if (mPixelViewX > viewXmax)
-            mPixelViewX = viewXmax;
-        if (mPixelViewY > viewYmax)
-            mPixelViewY = viewYmax;
+        gcnGraphics->setColor(gcn::Color(0, 0, 0));
+        gcnGraphics->fillRectangle(
+                gcn::Rectangle(0, 0, getWidth(), getHeight()));
+
     }
 
     // Draw tiles and sprites
-    if (mMap)
+    mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
+
+    if (mDebugFlags)
     {
-        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
-
-        if (mDebugFlags)
+        if (mDebugFlags & (Map::DEBUG_GRID | Map::DEBUG_COLLISION_TILES))
         {
-            if (mDebugFlags & (Map::DEBUG_GRID | Map::DEBUG_COLLISION_TILES))
-            {
-                mMap->drawCollision(graphics, (int) mPixelViewX,
-                                    (int) mPixelViewY, mDebugFlags);
-            }
-
-            _drawDebugPath(graphics);
+            mMap->drawCollision(graphics, (int) mPixelViewX,
+                                (int) mPixelViewY, mDebugFlags);
         }
+
+        _drawDebugPath(graphics);
     }
 
     if (local_player->getCheckNameSetting())
