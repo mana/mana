@@ -405,10 +405,11 @@ void GuildHandler::invite(int guildId, const std::string &name)
 
 void GuildHandler::invite(int guildId, Being *being)
 {
+    /* Disabled serverside anyway
     MessageOut msg(CMSG_GUILD_INVITE);
     msg.writeInt32(being->getId());
     msg.writeInt32(0); // Unused
-    msg.writeInt32(0); // Unused
+    msg.writeInt32(0); // Unused */
 }
 
 void GuildHandler::inviteResponse(int guildId, bool response)

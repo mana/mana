@@ -91,10 +91,20 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
         case CPMSG_GUILD_INVITE_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_INVITE_RESPONSE");
-            if (msg.readInt8() == ERRMSG_OK)
+            const unsigned char response = msg.readInt8();
+            if (response == ERRMSG_OK)
             {
                 // TODO - Acknowledge invite was sent
                 SERVER_NOTICE(_("Invite sent."))
+            }
+            else if (response == ERRMSG_ALREADY_MEMBER)
+            {
+                SERVER_NOTICE(_("Invited player is already in that guild."));
+            }
+            else if (response == ERRMSG_LIMIT_REACHED)
+            {
+                SERVER_NOTICE(_("Invited player already is member "
+                                "of too many guilds."));
             }
         } break;
 
@@ -283,9 +293,10 @@ void GuildHandler::invite(int guildId, Being *being)
 
 void GuildHandler::inviteResponse(int guildId, bool response)
 {
-    /*MessageOut msg(PCMSG_GUILD_ACCEPT);
-    msg.writeString(name);
-    chatServerConnection->send(msg);*/
+    MessageOut msg(PCMSG_GUILD_ACCEPT);
+    msg.writeInt16(guildId);
+    msg.writeInt8(response ? 1 : 0);
+    chatServerConnection->send(msg);
 }
 
 void GuildHandler::leave(int guildId)
