@@ -69,18 +69,6 @@ static std::string serverTypeToString(ServerInfo::Type type)
     }
 }
 
-static unsigned short defaultPortForServerType(ServerInfo::Type type)
-{
-    switch (type)
-    {
-    default:
-    case ServerInfo::TMWATHENA:
-        return 6901;
-    case ServerInfo::MANASERV:
-        return 9601;
-    }
-}
-
 ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
         mServers(servers),
         mVersionStrings(servers->size(), VersionString(0, "")),
@@ -510,7 +498,7 @@ void ServerDialog::loadServers()
                 if (server.port == 0)
                 {
                     // If no port is given, use the default for the given type
-                    server.port = defaultPortForServerType(server.type);
+                    server.port = ServerInfo::defaultPortForServerType(server.type);
                 }
             }
             else if (xmlStrEqual(subNode->name, BAD_CAST "description"))
@@ -563,7 +551,7 @@ void ServerDialog::loadCustomServers()
         server.hostname = config.getValue(hostNameKey, "");
         server.type = ServerInfo::parseType(config.getValue(typeKey, ""));
 
-        const int defaultPort = defaultPortForServerType(server.type);
+        const int defaultPort = ServerInfo::defaultPortForServerType(server.type);
         server.port = (unsigned short) config.getValue(portKey, defaultPort);
         server.description = config.getValue(descriptionKey, "");
 

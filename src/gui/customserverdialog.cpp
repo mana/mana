@@ -161,12 +161,10 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "addServer")
     {
         // Check the given information
-        if (mServerAddressField->getText().empty()
-            || mPortField->getText().empty())
+        if (mServerAddressField->getText().empty())
         {
             OkDialog *dlg = new OkDialog(_("Error"),
-                _("Please at least type both the address and the port "
-                  "of the server."));
+                _("Please type in at least the address of the server."));
             dlg->addActionListener(this);
         }
         else
@@ -178,7 +176,6 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
             serverInfo.name = mNameField->getText();
             serverInfo.description = mDescriptionField->getText();
             serverInfo.hostname = mServerAddressField->getText();
-            serverInfo.port = (short) atoi(mPortField->getText().c_str());
 #ifdef MANASERV_SUPPORT
             switch (mTypeField->getSelected())
             {
@@ -194,6 +191,10 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
 #else
             serverInfo.type = ServerInfo::TMWATHENA;
 #endif
+            if (mPortField->getText().empty())
+                serverInfo.port = ServerInfo::defaultPortForServerType(serverInfo.type);
+            else
+                serverInfo.port = (short) atoi(mPortField->getText().c_str());
 
             // Tell the server has to be saved
             serverInfo.save = true;

@@ -108,6 +108,18 @@ public:
             return MANASERV;
         return UNKNOWN;
     }
+
+    static unsigned short defaultPortForServerType(Type type)
+    {
+        switch (type)
+        {
+            default:
+            case ServerInfo::TMWATHENA:
+                return 6901;
+            case ServerInfo::MANASERV:
+                return 9601;
+        }
+    }
 };
 
 typedef std::deque<ServerInfo> ServerInfos;
