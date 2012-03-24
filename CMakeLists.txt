@@ -31,6 +31,7 @@ FIND_PACKAGE(Gettext)
 OPTION(WITH_OPENGL "Enable OpenGL support" ON)
 OPTION(ENABLE_NLS "Enable building of tranlations" ON)
 OPTION(ENABLE_MANASERV "Enable Manaserv support" OFF)
+OPTION(ENABLE_CPP0X "Enable use of C++0x features" ON)
 
 IF (WIN32)
     SET(PKG_DATADIR ".")

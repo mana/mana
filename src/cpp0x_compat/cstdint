@@ -1,0 +1,7 @@
+/*
+ * Compatibility header used when the compiler doesn't support C++0x.
+ *
+ * It doesn't seem necessary for it to contain anything, at least GCC 4.2.1
+ * compiles Mana fine so it apparently understands types like uint16_t by
+ * default.
+ */
