@@ -47,3 +47,7 @@ docs/SOURCE/html/*
 
 # static libraries
 *.a
+
+# Xcode settings
+Xcode/mana.xcodeproj/xcuserdata
+Xcode/mana.xcodeproj/project.xcworkspace/xcuserdata
