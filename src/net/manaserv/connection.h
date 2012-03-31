@@ -23,6 +23,7 @@
 #define NET_MANASERV_CONNECTION_H
 
 #include <enet/enet.h>
+#include "net/manaserv/network.h"
 
 #include <iosfwd>
 

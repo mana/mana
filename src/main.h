@@ -55,7 +55,7 @@
 #elif defined _WIN32
 #include "winver.h"
 #elif defined __APPLE__
-#define PACKAGE_VERSION "0.5.3"
+#define PACKAGE_VERSION "0.6.0"
 #endif
 
 #ifdef PACKAGE_VERSION
