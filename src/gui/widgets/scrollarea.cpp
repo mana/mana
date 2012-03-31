@@ -212,7 +212,7 @@ void ScrollArea::logic()
 
 void ScrollArea::updateAlpha()
 {
-        float alpha = std::max(config.getFloatValue("guialpha"),
+    float alpha = std::max(config.getFloatValue("guialpha"),
                                Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)
