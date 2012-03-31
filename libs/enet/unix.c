@@ -30,7 +30,7 @@
 #include <sys/poll.h>
 #endif
 
-#if !defined (HAS_SOCKLEN_T) && !defined (_SOCKLEN_T)
+#ifndef HAS_SOCKLEN_T
 typedef int socklen_t;
 #endif
 

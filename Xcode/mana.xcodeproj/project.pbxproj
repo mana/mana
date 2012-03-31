@@ -1974,9 +1974,9 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
-					"-DVERSION=0.6.0",
 					"-DWITH_OPENGL",
 					"-DENABLE_MANASERV",
+					"-DHAS_SOCKLEN_T",
 				);
 				SDKROOT = macosx10.6;
 			};
@@ -1992,6 +1992,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "VERSION=\"0.6.0\"";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				"GCC_SYMBOLS_PRIVATE_EXTERN[arch=i386]" = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2012,9 +2013,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
-					"-DVERSION=0.6.0",
 					"-DWITH_OPENGL",
 					"-DENABLE_MANASERV",
+					"-DHAS_SOCKLEN_T",
 				);
 				SDKROOT = macosx10.6;
 			};
@@ -2085,6 +2086,7 @@
 				FC0479E6151E4DB800C5E9E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
