@@ -31,11 +31,9 @@
 #include <guichan/color.hpp>
 
 #include <map>
-#include <set>
 #include <string>
 #include <vector>
 
-#define FIRST_IGNORE_EMOTE 14
 #define STATUS_EFFECTS 32
 
 #define SPEECH_TIME 500

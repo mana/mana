@@ -48,9 +48,9 @@ namespace EmoteDB
 
     const Emote *get(int id);
 
-    const int &getLast();
+    int getLast();
 
     typedef Emotes::iterator EmotesIterator;
 }
 
-#endif
+#endif // EMOTE_DB_H

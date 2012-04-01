@@ -427,9 +427,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             if (player_relations.hasPermission(dstBeing, PlayerRelation::EMOTE))
             {
-                const int fx = EmoteDB::get(msg.readInt8())->effect;
-                //TODO: figure out why the -1 is needed
-                effectManager->trigger(fx - 1, dstBeing);
+                const int fx = EmoteDB::get(msg.readInt8() - 1)->effect;
+                effectManager->trigger(fx, dstBeing);
             }
 
             break;

@@ -45,7 +45,7 @@ void EmoteDB::load()
         unload();
 
     mUnknown.name = "unknown";
-    mUnknown.effect = 0;
+    mUnknown.effect = -1;
     mUnknown.sprite = new ImageSprite(
         ResourceManager::getInstance()->getImage("graphics/sprites/error.png"));
 
@@ -91,7 +91,7 @@ void EmoteDB::load()
         const int width = XML::getProperty(emoteNode, "width", 0);
         const int height = XML::getProperty(emoteNode, "height", 0);
 
-        if (imageName.empty() || !(width > 0) || !(height > 0))
+        if (imageName.empty() || width <= 0 || height <= 0)
         {
             logger->log("Emote Database: Warning: Emote with bad imageset values");
             delete currentEmote;
@@ -150,7 +150,7 @@ const Emote *EmoteDB::get(int id)
     }
 }
 
-const int &EmoteDB::getLast()
+int EmoteDB::getLast()
 {
     return mLastEmote;
 }

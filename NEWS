@@ -2,6 +2,7 @@
 - Made it easier to click beings that are next to other beings
 - Removed NPC trade messages from chat (again)
 - Fixed swapping of ring and necklace equipment slots
+- Fixed problems with using the last emote
 - Fixed drawing order of particles
 - Fixed manaserv-enabled builds
 - Fixed category of mana.desktop file
