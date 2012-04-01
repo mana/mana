@@ -45,7 +45,7 @@ SetCompressor /SOLID lzma
 !System "${UPX} --best --crp-ms=999999 --compress-icons=0 --nrv2d ${EXEDIR}\${PRODUCT_NAME_SHORT}.exe"
 
 !ifndef PRODUCT_VERSION
-  !define PRODUCT_VERSION "0.5-git"
+  !define PRODUCT_VERSION "0.6-git"
 !endif
 !define PRODUCT_PUBLISHER "Mana Development Team"
 !define PRODUCT_WEB_SITE "http://manasource.org"

@@ -1,3 +1,15 @@
+0.6.1 (2 April 2012)
+- Made it easier to click beings that are next to other beings
+- Removed NPC trade messages from chat (again)
+- Fixed swapping of ring and necklace equipment slots
+- Fixed drawing order of particles
+- Fixed manaserv-enabled builds
+- Fixed category of mana.desktop file
+- Fixed display of server description
+- Fixed issues with rendering very small maps
+- Fixed compile for Mac OSX and reintroduced Xcode project
+- Updated Finnish, Brazilian Portuguese and Polish translations
+
 0.6.0 (12 February 2012)
 - Added support for a larger number of character slots
 - Added scrolling to tab bars when there isn't enough space
