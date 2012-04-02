@@ -1,6 +1,7 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2012  The Mana Developers
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2012  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -18,9 +19,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* VERSION DEFINITIONS */
-#define VER_MAJOR 0
-#define VER_MINOR 6
-#define VER_RELEASE 1
-#define VER_BUILD 0
-#define PACKAGE_VERSION "0.6.1.0"
+#import <AppKit/AppKit.h>
+#include <string>
+
+void MacDialogBox(const std::string &error)
+{
+    NSString *errorMessage = [NSString stringWithCString:error.c_str() 
+                                                encoding:[NSString defaultCStringEncoding]];
+    NSAlert *alert = [NSAlert alertWithMessageText:errorMessage
+                                     defaultButton:@"OK"
+                                   alternateButton:nil
+                                       otherButton:nil
+                         informativeTextWithFormat:@""];
+    
+    [alert runModal];
+}

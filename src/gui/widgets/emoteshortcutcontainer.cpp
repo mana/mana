@@ -60,7 +60,7 @@ EmoteShortcutContainer::EmoteShortcutContainer():
         mEmoteImg.push_back(EmoteDB::get(i)->sprite);
     }
 
-    mMaxItems = EmoteDB::getLast() < MAX_ITEMS ? EmoteDB::getLast() : MAX_ITEMS;
+    mMaxItems = std::min(EmoteDB::getLast(), MAX_ITEMS);
 
     mBoxHeight = mBackgroundImg->getHeight();
     mBoxWidth = mBackgroundImg->getWidth();
@@ -97,11 +97,10 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
         g->drawText(key, emoteX + 2, emoteY + 2, gcn::Graphics::LEFT);
 
         int emoteId = emoteShortcut->getEmote(i);
-        if (emoteId > 0 && emoteId <= EmoteDB::getLast())
+        if (emoteId > 0 && emoteId <= EmoteDB::getLast() + 1)
         {
             mEmoteImg[emoteId - 1]->draw(g, emoteX + 2, emoteY + 10);
         }
-
     }
 
     if (mEmoteMoved)

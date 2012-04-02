@@ -31,8 +31,7 @@
 #include "utils/gettext.h"
 
 #define PLAYER_IGNORE_STRATEGY_NOP "nop"
-#define PLAYER_IGNORE_STRATEGY_EMOTE0 "emote0"
-#define DEFAULT_IGNORE_STRATEGY PLAYER_IGNORE_STRATEGY_EMOTE0
+#define DEFAULT_IGNORE_STRATEGY PLAYER_IGNORE_STRATEGY_NOP
 
 #define NAME "name" // constant for xml serialisation
 #define RELATION "relation" // constant for xml serialisation

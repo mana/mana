@@ -24,7 +24,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__
-#include <Carbon/Carbon.h>
+void MacDialogBox(const std::string &error);
 #endif
 
 #include <sys/time.h>
@@ -109,15 +109,7 @@ void Logger::error(const std::string &error_text)
 #ifdef _WIN32
     MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
 #elif defined __APPLE__
-    Str255 msg;
-    CFStringRef error;
-    error = CFStringCreateWithCString(NULL,
-                                      error_text.c_str(),
-                                      kCFStringEncodingMacRoman);
-    CFStringGetPascalString(error, msg, 255, kCFStringEncodingMacRoman);
-    StandardAlert(kAlertStopAlert,
-                  "\pError",
-                  (ConstStr255Param) msg, NULL, NULL);
+    MacDialogBox(error_text);
 #elif defined __linux__ || __linux
     std::cerr << "Error: " << error_text << std::endl;
     std::string msg="xmessage \"" + error_text + "\"";

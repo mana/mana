@@ -220,9 +220,11 @@ int Download::downloadThread(void *ptr)
                 curl_easy_setopt(d->mCurl, CURLOPT_WRITEDATA, file);
             }
 
-            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT,
-                             strprintf(PACKAGE_EXTENDED_VERSION,
-                          branding.getStringValue("appShort").c_str()).c_str());
+            const std::string appShort = branding.getStringValue("appShort");
+            const std::string userAgent =
+                    strprintf(PACKAGE_EXTENDED_VERSION, appShort.c_str());
+
+            curl_easy_setopt(d->mCurl, CURLOPT_USERAGENT, userAgent.c_str());
             curl_easy_setopt(d->mCurl, CURLOPT_ERRORBUFFER, d->mError);
             curl_easy_setopt(d->mCurl, CURLOPT_URL, d->mUrl.c_str());
             curl_easy_setopt(d->mCurl, CURLOPT_NOPROGRESS, 0);
