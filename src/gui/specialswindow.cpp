@@ -48,6 +48,8 @@
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
+#include "localplayer.h"
+
 #include <string>
 
 #define SPECIALS_WIDTH 200
@@ -106,12 +108,20 @@ void SpecialsWindow::action(const gcn::ActionEvent &event)
 
         if (disp)
         {
-            /*Being *target = local_player->getTarget();
+            if (disp->mInfo->targetMode == SpecialInfo::TARGET_BEING)
+            {
+                Being *target = local_player->getTarget();
 
-            if (target)
-                Net::getSpecialHandler()->use(disp->mInfo->id, 1, target->getId());
-            else*/
-                Net::getSpecialHandler()->use(disp->mInfo->id);
+                if (target)
+                    Net::getSpecialHandler()->use(disp->mInfo->id, 1, target->getId());
+                else
+                    Net::getSpecialHandler()->use(disp->mInfo->id);
+            }
+            else
+            {
+                // TODO: Allow the player to aim at a position on the map and
+                //       Use special on the map position.
+            }
         }
     }
     else if (event.getId() == "close")
@@ -202,22 +212,11 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     mNameLabel->setPosition(35, 0);
     add(mNameLabel);
 
-    if (info->hasLevel)
-    {
-        mLevelLabel = new Label(toString(info->level));
-        mLevelLabel->setPosition(getWidth() - mLevelLabel->getWidth(), 0);
-        add(mLevelLabel);
-    }
+    mUse = new Button("Use", "use", specialsWindow);
+    mUse->setPosition(getWidth() - mUse->getWidth(), 13);
+    add(mUse);
 
-
-    if (info->isActive)
-    {
-        mUse = new Button("Use", "use", specialsWindow);
-        mUse->setPosition(getWidth() - mUse->getWidth(), 13);
-        add(mUse);
-    }
-
-    if (info->hasRechargeBar)
+    if (info->rechargeable)
     {
         float progress = (float)info->rechargeCurrent / (float)info->rechargeNeeded;
         mRechargeBar = new ProgressBar(progress, 100, 10, Theme::PROG_MP);

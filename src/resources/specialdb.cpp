@@ -34,14 +34,11 @@ namespace
 
 SpecialInfo::TargetMode SpecialDB::targetModeFromString(const std::string& str)
 {
-    if      (str=="self")   return SpecialInfo::TARGET_SELF;
-    else if (str=="friend") return SpecialInfo::TARGET_FRIEND;
-    else if (str=="enemy")  return SpecialInfo::TARGET_ENEMY;
-    else if (str=="being")  return SpecialInfo::TARGET_BEING;
+    if (str=="being")  return SpecialInfo::TARGET_BEING;
     else if (str=="point")  return SpecialInfo::TARGET_POINT;
 
     logger->log("SpecialDB: Warning, unknown target mode \"%s\"", str.c_str() );
-    return SpecialInfo::TARGET_SELF;
+    return SpecialInfo::TARGET_BEING;
 }
 
 void SpecialDB::load()
@@ -80,13 +77,9 @@ void SpecialDB::load()
                     info->name = XML::getProperty(special, "name", "");
                     info->icon = XML::getProperty(special, "icon", "");
 
-                    info->isActive = XML::getBoolProperty(special, "active", false);
-                    info->targetMode = targetModeFromString(XML::getProperty(special, "target", "self"));
+                    info->targetMode = targetModeFromString(XML::getProperty(special, "target", "being"));
 
-                    info->level = XML::getProperty(special, "level", -1);
-                    info->hasLevel = info->level > -1;
-
-                    info->hasRechargeBar = XML::getBoolProperty(special, "recharge", false);
+                    info->rechargeable = XML::getBoolProperty(special, "rechargeable", true);
                     info->rechargeNeeded = 0;
                     info->rechargeCurrent = 0;
 

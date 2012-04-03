@@ -44,19 +44,27 @@ void SpecialHandler::handleMessage(Net::MessageIn &msg)
 
 void SpecialHandler::use(int id)
 {
-    MessageOut msg(PGMSG_USE_SPECIAL);
+    MessageOut msg(PGMSG_USE_SPECIAL_ON_BEING);
     msg.writeInt8(id);
+    msg.writeInt16(0);
     gameServerConnection->send(msg);
 }
 
 void SpecialHandler::use(int id, int level, int beingId)
 {
-    // TODO
+    MessageOut msg(PGMSG_USE_SPECIAL_ON_BEING);
+    msg.writeInt8(id);
+    msg.writeInt16(beingId);
+    gameServerConnection->send(msg);
 }
 
 void SpecialHandler::use(int id, int level, int x, int y)
 {
-    // TODO
+    MessageOut msg(PGMSG_USE_SPECIAL_ON_POINT);
+    msg.writeInt8(id);
+    msg.writeInt16(x);
+    msg.writeInt16(y);
+    gameServerConnection->send(msg);
 }
 
 void SpecialHandler::use(int id, const std::string &map)

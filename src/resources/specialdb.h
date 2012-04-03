@@ -28,9 +28,6 @@ struct SpecialInfo
 {
     enum TargetMode
     {
-        TARGET_SELF,    // no target selection
-        TARGET_FRIEND,  // target friendly being
-        TARGET_ENEMY,   // target hostile being
         TARGET_BEING,   // target any being
         TARGET_POINT    // target map location
     };
@@ -39,13 +36,9 @@ struct SpecialInfo
     std::string name; // displayed name of special
     std::string icon; // filename of graphical icon
 
-    bool isActive; // true when the special can be used
     TargetMode targetMode; // target mode
 
-    bool hasLevel; // true when the special has levels
-    int level; // level of special when applicable
-
-    bool hasRechargeBar; // true when the special has a recharge bar
+    bool rechargeable; // true when the special has a recharge bar
     int rechargeNeeded; // maximum recharge when applicable
     int rechargeCurrent; // current recharge when applicable
 };
