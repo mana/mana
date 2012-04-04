@@ -180,7 +180,7 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
     const int halfTileHeight = map->getTileHeight() / 2;
 
     Being *closest = 0;
-    int closestDist;
+    int closestDist = 0;
 
     for_actors
     {
