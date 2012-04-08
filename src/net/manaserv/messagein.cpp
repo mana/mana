@@ -27,10 +27,23 @@
 namespace ManaServ {
 
 MessageIn::MessageIn(const char *data, unsigned int length):
-        Net::MessageIn(data, length)
+    mData(data),
+    mLength(length),
+    mPos(0)
 {
     // Read the message ID
     mId = readInt16();
+}
+
+uint8_t MessageIn::readInt8()
+{
+    uint8_t value = 0;
+    if (mPos < mLength)
+    {
+        value = mData[mPos];
+    }
+    mPos++;
+    return value;
 }
 
 uint16_t MessageIn::readInt16()
@@ -59,4 +72,26 @@ uint32_t MessageIn::readInt32()
     return value;
 }
 
+std::string MessageIn::readString(int length)
+{
+    // Get string length
+    if (length < 0)
+        length = readInt16();
+
+    // Make sure the string isn't erroneous
+    if (length < 0 || mPos + length > mLength)
+    {
+        mPos = mLength + 1;
+        return "";
+    }
+
+    // Read the string
+    char const *stringBeg = mData + mPos;
+    char const *stringEnd = (char const *)memchr(stringBeg, '\0', length);
+    std::string readString(stringBeg,
+                           stringEnd ? stringEnd - stringBeg : length);
+    mPos += length;
+    return readString;
 }
+
+} // ManaServ

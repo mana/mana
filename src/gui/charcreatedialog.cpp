@@ -39,7 +39,6 @@
 #include "gui/widgets/textfield.h"
 
 #include "net/charhandler.h"
-#include "net/messageout.h"
 #include "net/net.h"
 
 #include "resources/hairdb.h"

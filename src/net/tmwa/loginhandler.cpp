@@ -25,9 +25,9 @@
 #include "log.h"
 
 #include "net/logindata.h"
-#include "net/messagein.h"
-#include "net/messageout.h"
 
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/network.h"
 #include "net/tmwa/protocol.h"
 
@@ -62,7 +62,7 @@ LoginHandler::~LoginHandler()
     delete_all(mWorlds);
 }
 
-void LoginHandler::handleMessage(Net::MessageIn &msg)
+void LoginHandler::handleMessage(MessageIn &msg)
 {
     int code, worldCount;
 

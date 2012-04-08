@@ -38,9 +38,8 @@
 #include "gui/statuswindow.h"
 #include "gui/viewport.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
-
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/stringutils.h"
@@ -159,7 +158,7 @@ PlayerHandler::PlayerHandler()
     playerHandler = this;
 }
 
-void PlayerHandler::handleMessage(Net::MessageIn &msg)
+void PlayerHandler::handleMessage(MessageIn &msg)
 {
     if (!local_player)
         return;

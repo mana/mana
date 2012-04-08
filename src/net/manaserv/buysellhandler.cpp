@@ -28,10 +28,8 @@
 #include "gui/buydialog.h"
 #include "gui/selldialog.h"
 
-#include "net/messagein.h"
-
 #include "net/manaserv/manaserv_protocol.h"
-
+#include "net/manaserv/messagein.h"
 
 namespace ManaServ {
 
@@ -45,7 +43,7 @@ BuySellHandler::BuySellHandler()
     handledMessages = _messages;
 }
 
-void BuySellHandler::handleMessage(Net::MessageIn &msg)
+void BuySellHandler::handleMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being || being->getType() != ActorSprite::NPC)

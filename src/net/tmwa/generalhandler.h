@@ -39,7 +39,7 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler,
 
         ~GeneralHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void load();
 

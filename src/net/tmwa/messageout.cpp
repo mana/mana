@@ -27,15 +27,16 @@
 #include <SDL_endian.h>
 
 #include <cstring>
-#include <string>
 
 namespace TmwAthena {
 
 MessageOut::MessageOut(uint16_t id):
-        Net::MessageOut(id)
+    mDataSize(0),
+    mPos(0)
 {
     mNetwork = TmwAthena::Network::instance();
     mData = mNetwork->mOutBuffer + mNetwork->mOutSize;
+
     writeInt16(id);
 }
 
@@ -44,11 +45,18 @@ void MessageOut::expand(size_t bytes)
     mNetwork->mOutSize += bytes;
 }
 
+void MessageOut::writeInt8(uint8_t value)
+{
+    expand(1);
+    mData[mPos] = value;
+    mPos += 1;
+}
+
 void MessageOut::writeInt16(uint16_t value)
 {
     expand(2);
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    uint16_t swap=SDL_Swap16(value);
+    uint16_t swap = SDL_Swap16(value);
     memcpy(mData + mPos, &swap, sizeof(uint16_t));
 #else
     memcpy(mData + mPos, &value, sizeof(uint16_t));
@@ -60,7 +68,7 @@ void MessageOut::writeInt32(uint32_t value)
 {
     expand(4);
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    uint32_t swap=SDL_Swap32(value);
+    uint32_t swap = SDL_Swap32(value);
     memcpy(mData + mPos, &swap, sizeof(uint32_t));
 #else
     memcpy(mData + mPos, &value, sizeof(uint32_t));
@@ -68,10 +76,37 @@ void MessageOut::writeInt32(uint32_t value)
     mPos += 4;
 }
 
+void MessageOut::writeString(const std::string &string, int length)
+{
+    int stringLength = string.length();
+    if (length < 0)
+    {
+        // Write the length at the start if not fixed
+        writeInt16(stringLength);
+        length = stringLength;
+    }
+    else if (length < stringLength)
+    {
+        // Make sure the length of the string is no longer than specified
+        stringLength = length;
+    }
+    expand(length);
+
+    // Write the actual string
+    memcpy(mData + mPos, string.data(), stringLength);
+
+    // Pad remaining space with zeros
+    if (length > stringLength)
+    {
+        memset(mData + mPos + stringLength, '\0', length - stringLength);
+    }
+    mPos += length;
+}
+
 void MessageOut::writeCoordinates(uint16_t x, uint16_t y, uint8_t direction)
 {
     char *data = mData + mPos;
-    mNetwork->mOutSize += 3;
+    expand(3);
     mPos += 3;
 
     uint16_t temp = x;

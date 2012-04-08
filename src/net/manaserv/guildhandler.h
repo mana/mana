@@ -35,7 +35,7 @@ public:
 
     bool isSupported() { return true; }
 
-    void handleMessage(Net::MessageIn &msg);
+    void handleMessage(MessageIn &msg);
 
     void create(const std::string &name);
 
@@ -63,7 +63,7 @@ public:
     void endAlliance(int guildId, int otherGuildId);
 
 protected:
-    void joinedGuild(Net::MessageIn &msg);
+    void joinedGuild(MessageIn &msg);
 };
 
 } // namespace ManaServ

@@ -37,7 +37,7 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
     public:
         NpcHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void startShopping(int beingId);
 

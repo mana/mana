@@ -25,11 +25,11 @@
 #include "event.h"
 #include "localplayer.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
 #include "net/net.h"
 #include "net/npchandler.h"
 
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/stringutils.h"
@@ -68,7 +68,7 @@ NpcHandler::NpcHandler()
     npcHandler = this;
 }
 
-void NpcHandler::handleMessage(Net::MessageIn &msg)
+void NpcHandler::handleMessage(MessageIn &msg)
 {
     if (msg.getId() == SMSG_NPC_CHOICE || msg.getId() == SMSG_NPC_MESSAGE)
     {

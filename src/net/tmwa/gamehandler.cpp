@@ -29,10 +29,9 @@
 
 #include "gui/okdialog.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "net/tmwa/loginhandler.h"
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/network.h"
 #include "net/tmwa/protocol.h"
 
@@ -60,7 +59,7 @@ GameHandler::GameHandler()
     listen(Event::GameChannel);
 }
 
-void GameHandler::handleMessage(Net::MessageIn &msg)
+void GameHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

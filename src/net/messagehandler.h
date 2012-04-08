@@ -22,9 +22,7 @@
 #ifndef NET_MESSAGEHANDLER_H
 #define NET_MESSAGEHANDLER_H
 
-#include "net/messagein.h"
-
-#include <memory>
+#include <cstdint>
 
 namespace Net {
 
@@ -36,11 +34,9 @@ class MessageHandler
     public:
         const uint16_t *handledMessages;
 
-        virtual void handleMessage(MessageIn &msg) = 0;
-
         virtual ~MessageHandler() {}
 };
 
-}
+} // namespace Net
 
 #endif // NET_MESSAGEHANDLER_H

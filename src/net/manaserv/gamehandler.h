@@ -36,7 +36,7 @@ class GameHandler : public MessageHandler, public Net::GameHandler
     public:
         GameHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void connect();
 

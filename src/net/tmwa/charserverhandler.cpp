@@ -29,12 +29,12 @@
 #include "gui/okdialog.h"
 
 #include "net/logindata.h"
-#include "net/messagein.h"
-#include "net/messageout.h"
 #include "net/net.h"
 
 #include "net/tmwa/gamehandler.h"
 #include "net/tmwa/loginhandler.h"
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/network.h"
 #include "net/tmwa/protocol.h"
 
@@ -68,7 +68,7 @@ CharServerHandler::CharServerHandler()
     charHandler = this;
 }
 
-void CharServerHandler::handleMessage(Net::MessageIn &msg)
+void CharServerHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -196,7 +196,7 @@ void CharServerHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void CharServerHandler::readPlayerData(Net::MessageIn &msg, Net::Character *character)
+void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character)
 {
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();

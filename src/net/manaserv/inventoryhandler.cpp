@@ -328,7 +328,7 @@ InventoryHandler::InventoryHandler()
     listen(Event::ItemChannel);
 }
 
-void InventoryHandler::handleMessage(Net::MessageIn &msg)
+void InventoryHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

@@ -187,7 +187,7 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
 
         ~InventoryHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void event(Event::Channel channel, const Event &event);
 

@@ -31,7 +31,7 @@ class BeingHandler : public MessageHandler
     public:
         BeingHandler(bool enableSync);
 
-        virtual void handleMessage(Net::MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 
     private:
         // Should we honor server "Stop Walking" packets

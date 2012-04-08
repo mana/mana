@@ -27,9 +27,8 @@
 
 #include "gui/skilldialog.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
-
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/gettext.h"
@@ -82,7 +81,7 @@ SpecialHandler::SpecialHandler()
     specialHandler = this;
 }
 
-void SpecialHandler::handleMessage(Net::MessageIn &msg)
+void SpecialHandler::handleMessage(MessageIn &msg)
 {
     int skillCount;
     int skillId;

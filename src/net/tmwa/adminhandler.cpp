@@ -30,6 +30,8 @@
 #include "net/chathandler.h"
 #include "net/net.h"
 
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/gettext.h"
@@ -53,7 +55,7 @@ AdminHandler::AdminHandler()
     adminHandler = this;
 }
 
-void AdminHandler::handleMessage(Net::MessageIn &msg)
+void AdminHandler::handleMessage(MessageIn &msg)
 {
     int id;
     switch (msg.getId())

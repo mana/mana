@@ -76,7 +76,7 @@ CharHandler::~CharHandler()
     clear();
 }
 
-void CharHandler::handleMessage(Net::MessageIn &msg)
+void CharHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -98,7 +98,7 @@ void CharHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void CharHandler::handleCharacterInfo(Net::MessageIn &msg)
+void CharHandler::handleCharacterInfo(MessageIn &msg)
 {
     CachedCharacterInfo info;
     info.slot = msg.readInt8();
@@ -126,7 +126,7 @@ void CharHandler::handleCharacterInfo(Net::MessageIn &msg)
     updateCharacters();
 }
 
-void CharHandler::handleCharacterCreateResponse(Net::MessageIn &msg)
+void CharHandler::handleCharacterCreateResponse(MessageIn &msg)
 {
     const int errMsg = msg.readInt8();
 
@@ -192,7 +192,7 @@ void CharHandler::handleCharacterCreateResponse(Net::MessageIn &msg)
     }
 }
 
-void CharHandler::handleCharacterDeleteResponse(Net::MessageIn &msg)
+void CharHandler::handleCharacterDeleteResponse(MessageIn &msg)
 {
     int errMsg = msg.readInt8();
     if (errMsg == ERRMSG_OK)
@@ -232,7 +232,7 @@ void CharHandler::handleCharacterDeleteResponse(Net::MessageIn &msg)
     unlockCharSelectDialog();
 }
 
-void CharHandler::handleCharacterSelectResponse(Net::MessageIn &msg)
+void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
 {
     int errMsg = msg.readInt8();
 

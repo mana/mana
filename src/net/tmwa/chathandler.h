@@ -36,7 +36,7 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
     public:
         ChatHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void talk(const std::string &text);
 

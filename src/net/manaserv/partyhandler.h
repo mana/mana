@@ -37,7 +37,7 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
 public:
     PartyHandler();
 
-    void handleMessage(Net::MessageIn &msg);
+    void handleMessage(MessageIn &msg);
 
     void create(const std::string &name = "");
 

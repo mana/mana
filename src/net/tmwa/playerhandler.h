@@ -34,7 +34,7 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
     public:
         PlayerHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void attack(int id);
         void emote(int emoteId);

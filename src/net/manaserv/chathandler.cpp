@@ -74,7 +74,7 @@ ChatHandler::ChatHandler()
     chatHandler = this;
 }
 
-void ChatHandler::handleMessage(Net::MessageIn &msg)
+void ChatHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -143,7 +143,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
+void ChatHandler::handleGameChatMessage(MessageIn &msg)
 {
     short id = msg.readInt16();
     std::string chatMsg = msg.readString();
@@ -177,7 +177,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     event.trigger(Event::ChatChannel);
 }
 
-void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
+void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
 {
     if (msg.readInt8() == ERRMSG_OK)
     {
@@ -212,7 +212,7 @@ void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
     }
 }
 
-void ChatHandler::handleListChannelsResponse(Net::MessageIn &msg)
+void ChatHandler::handleListChannelsResponse(MessageIn &msg)
 {
     SERVER_NOTICE(_("Listing channels."))
     while (msg.getUnreadLength())
@@ -229,7 +229,7 @@ void ChatHandler::handleListChannelsResponse(Net::MessageIn &msg)
     SERVER_NOTICE(_("End of channel list."))
 }
 
-void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
+void ChatHandler::handlePrivateMessage(MessageIn &msg)
 {
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
@@ -240,7 +240,7 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
     event.trigger(Event::ChatChannel);
 }
 
-void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
+void ChatHandler::handleAnnouncement(MessageIn &msg)
 {
     std::string chatMsg = msg.readString();
     std::string sender = msg.readString();
@@ -249,7 +249,7 @@ void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
     event.trigger(Event::ChatChannel);
 }
 
-void ChatHandler::handleChatMessage(Net::MessageIn &msg)
+void ChatHandler::handleChatMessage(MessageIn &msg)
 {
     short channelId = msg.readInt16();
     std::string userNick = msg.readString();
@@ -266,7 +266,7 @@ void ChatHandler::handleChatMessage(Net::MessageIn &msg)
     }
 }
 
-void ChatHandler::handleQuitChannelResponse(Net::MessageIn &msg)
+void ChatHandler::handleQuitChannelResponse(MessageIn &msg)
 {
     if (msg.readInt8() == ERRMSG_OK)
     {
@@ -276,7 +276,7 @@ void ChatHandler::handleQuitChannelResponse(Net::MessageIn &msg)
     }
 }
 
-void ChatHandler::handleListChannelUsersResponse(Net::MessageIn &msg)
+void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
 {
     std::string channelName = msg.readString();
     std::string userNick;
@@ -299,7 +299,7 @@ void ChatHandler::handleListChannelUsersResponse(Net::MessageIn &msg)
     }
 }
 
-void ChatHandler::handleChannelEvent(Net::MessageIn &msg)
+void ChatHandler::handleChannelEvent(MessageIn &msg)
 {
     short channelId = msg.readInt16();
     char eventId = msg.readInt8();
@@ -353,7 +353,7 @@ void ChatHandler::handleChannelEvent(Net::MessageIn &msg)
     }
 }
 
-void ChatHandler::handleWhoResponse(Net::MessageIn &msg)
+void ChatHandler::handleWhoResponse(MessageIn &msg)
 {
     std::string userNick;
 

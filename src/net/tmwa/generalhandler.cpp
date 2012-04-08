@@ -32,8 +32,6 @@
 #include "gui/socialwindow.h"
 #include "gui/statuswindow.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
 #include "net/serverinfo.h"
 
 #include "net/tmwa/adminhandler.h"
@@ -46,6 +44,8 @@
 #include "net/tmwa/inventoryhandler.h"
 #include "net/tmwa/itemhandler.h"
 #include "net/tmwa/loginhandler.h"
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/network.h"
 #include "net/tmwa/npchandler.h"
 #include "net/tmwa/partyhandler.h"
@@ -116,7 +116,7 @@ GeneralHandler::~GeneralHandler()
     delete mNetwork;
 }
 
-void GeneralHandler::handleMessage(Net::MessageIn &msg)
+void GeneralHandler::handleMessage(MessageIn &msg)
 {
     int code;
 

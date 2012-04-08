@@ -32,8 +32,7 @@
 #include "gui/buyselldialog.h"
 #include "gui/selldialog.h"
 
-#include "net/messagein.h"
-
+#include "net/tmwa/messagein.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/gettext.h"
@@ -54,7 +53,7 @@ BuySellHandler::BuySellHandler()
     handledMessages = _messages;
 }
 
-void BuySellHandler::handleMessage(Net::MessageIn &msg)
+void BuySellHandler::handleMessage(MessageIn &msg)
 {
     int n_items;
 

@@ -33,7 +33,7 @@ class SpecialHandler : public MessageHandler, public Net::SpecialHandler
     public:
         SpecialHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void use(int id);
 

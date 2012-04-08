@@ -27,9 +27,8 @@
 
 #include "gui/viewport.h"
 
-#include "net/messagein.h"
-
 #include "net/manaserv/manaserv_protocol.h"
+#include "net/manaserv/messagein.h"
 
 namespace ManaServ {
 
@@ -44,7 +43,7 @@ EffectHandler::EffectHandler()
     handledMessages = _messages;
 }
 
-void EffectHandler::handleMessage(Net::MessageIn &msg)
+void EffectHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -62,7 +61,7 @@ void EffectHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void EffectHandler::handleCreateEffectPos(Net::MessageIn &msg)
+void EffectHandler::handleCreateEffectPos(MessageIn &msg)
 {
     int id = msg.readInt16();
     uint16_t x = msg.readInt16();
@@ -70,7 +69,7 @@ void EffectHandler::handleCreateEffectPos(Net::MessageIn &msg)
     effectManager->trigger(id, x, y);
 }
 
-void EffectHandler::handleCreateEffectBeing(Net::MessageIn &msg)
+void EffectHandler::handleCreateEffectBeing(MessageIn &msg)
 {
     int eid = msg.readInt16();
     int bid = msg.readInt16();
@@ -81,7 +80,7 @@ void EffectHandler::handleCreateEffectBeing(Net::MessageIn &msg)
         logger->log("Warning: CreateEffect called for unknown being #%d", bid);
 }
 
-void EffectHandler::handleShake(Net::MessageIn &msg)
+void EffectHandler::handleShake(MessageIn &msg)
 {
     int16_t intensityX = 0;
     int16_t intensityY = 0;

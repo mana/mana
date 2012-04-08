@@ -33,7 +33,7 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
     public:
         TradeHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         /**
          * Returns whether trade requests are accepted.

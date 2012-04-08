@@ -31,7 +31,7 @@ class ItemHandler : public MessageHandler
     public:
         ItemHandler();
 
-        virtual void handleMessage(Net::MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 } // namespace TmwAthena

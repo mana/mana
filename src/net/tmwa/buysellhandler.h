@@ -33,7 +33,7 @@ class BuySellHandler : public MessageHandler
     public:
         BuySellHandler();
 
-        virtual void handleMessage(Net::MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 
     private:
         int mNpcId;

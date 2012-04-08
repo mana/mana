@@ -26,6 +26,7 @@
 
 #include "net/manaserv/chathandler.h"
 #include "net/manaserv/connection.h"
+#include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 
 extern Net::GameHandler *gameHandler;
@@ -50,7 +51,7 @@ GameHandler::GameHandler()
     gameHandler = this;
 }
 
-void GameHandler::handleMessage(Net::MessageIn &msg)
+void GameHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

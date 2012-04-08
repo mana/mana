@@ -32,9 +32,9 @@
 #include "gui/tradewindow.h"
 
 #include "net/inventoryhandler.h"
-#include "net/messagein.h"
-#include "net/messageout.h"
 
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "resources/iteminfo.h"
@@ -81,7 +81,7 @@ TradeHandler::TradeHandler()
 }
 
 
-void TradeHandler::handleMessage(Net::MessageIn &msg)
+void TradeHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

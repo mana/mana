@@ -24,8 +24,8 @@
 #include "log.h"
 
 #include "net/messagehandler.h"
-#include "net/messagein.h"
 
+#include "net/tmwa/messagein.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/gettext.h"

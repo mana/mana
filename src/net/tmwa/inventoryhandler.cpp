@@ -34,9 +34,8 @@
 #include "gui/equipmentwindow.h"
 #include "gui/widgets/chattab.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
-
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "resources/iteminfo.h"
@@ -125,7 +124,7 @@ InventoryHandler::~InventoryHandler()
     delete mStorage;
 }
 
-void InventoryHandler::handleMessage(Net::MessageIn &msg)
+void InventoryHandler::handleMessage(MessageIn &msg)
 {
     int number, flag;
     int index, amount, itemId, equipType;

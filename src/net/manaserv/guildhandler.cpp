@@ -32,7 +32,6 @@
 
 #include "gui/widgets/channeltab.h"
 
-#include "net/messagein.h"
 #include "net/net.h"
 
 #include "net/manaserv/connection.h"
@@ -70,7 +69,7 @@ GuildHandler::GuildHandler()
     guildHandler = this;
 }
 
-void GuildHandler::handleMessage(Net::MessageIn &msg)
+void GuildHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -265,7 +264,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void GuildHandler::joinedGuild(Net::MessageIn &msg)
+void GuildHandler::joinedGuild(MessageIn &msg)
 {
     std::string guildName = msg.readString();
     short guildId = msg.readInt16();

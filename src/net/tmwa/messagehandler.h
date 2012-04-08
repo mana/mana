@@ -23,14 +23,12 @@
 #define NET_TA_MESSAGEHANDLER_H
 
 #include "net/messagehandler.h"
-#include "net/messagein.h"
-
-#include "net/tmwa/messageout.h"
 
 #include <memory>
 
 namespace TmwAthena {
 
+class MessageIn;
 class Network;
 
 /**
@@ -42,6 +40,8 @@ class MessageHandler : public Net::MessageHandler
         MessageHandler();
 
         ~MessageHandler();
+
+        virtual void handleMessage(MessageIn &msg) = 0;
 
         void setNetwork(Network *network);
 

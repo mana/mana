@@ -32,4 +32,4 @@ MessageHandler::~MessageHandler()
     unregisterHandler(this);
 }
 
-}
+} // namespace ManaServ

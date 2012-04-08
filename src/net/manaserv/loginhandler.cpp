@@ -59,7 +59,7 @@ LoginHandler::LoginHandler()
     loginHandler = this;
 }
 
-void LoginHandler::handleMessage(Net::MessageIn &msg)
+void LoginHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -250,13 +250,13 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void LoginHandler::handleLoginRandomResponse(Net::MessageIn &msg)
+void LoginHandler::handleLoginRandomResponse(MessageIn &msg)
 {
     mLoginData->randomSeed = msg.readString();
     loginAccountContinue();
 }
 
-void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
+void LoginHandler::handleLoginResponse(MessageIn &msg)
 {
     const int errMsg = msg.readInt8();
 
@@ -294,7 +294,7 @@ void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
     }
 }
 
-void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
+void LoginHandler::handleRegisterResponse(MessageIn &msg)
 {
     const int errMsg = msg.readInt8();
 
@@ -331,7 +331,7 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
     }
 }
 
-void LoginHandler::readServerInfo(Net::MessageIn &msg)
+void LoginHandler::readServerInfo(MessageIn &msg)
 {
     // Safety check for outdated manaserv versions (remove me later)
     if (msg.getUnreadLength() == 0)

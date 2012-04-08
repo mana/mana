@@ -43,17 +43,17 @@ class BeingHandler : public MessageHandler
     public:
         BeingHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
     private:
-        void handleBeingAttackMessage(Net::MessageIn &msg);
-        void handleBeingEnterMessage(Net::MessageIn &msg);
-        void handleBeingLeaveMessage(Net::MessageIn &msg);
-        void handleBeingsMoveMessage(Net::MessageIn &msg);
-        void handleBeingsDamageMessage(Net::MessageIn &msg);
-        void handleBeingActionChangeMessage(Net::MessageIn &msg);
-        void handleBeingLooksChangeMessage(Net::MessageIn &msg);
-        void handleBeingDirChangeMessage(Net::MessageIn &msg);
+        void handleBeingAttackMessage(MessageIn &msg);
+        void handleBeingEnterMessage(MessageIn &msg);
+        void handleBeingLeaveMessage(MessageIn &msg);
+        void handleBeingsMoveMessage(MessageIn &msg);
+        void handleBeingsDamageMessage(MessageIn &msg);
+        void handleBeingActionChangeMessage(MessageIn &msg);
+        void handleBeingLooksChangeMessage(MessageIn &msg);
+        void handleBeingDirChangeMessage(MessageIn &msg);
 };
 
 } // namespace ManaServ

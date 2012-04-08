@@ -28,9 +28,8 @@
 #include "localplayer.h"
 #include "playerrelations.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
-
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/gettext.h"
@@ -57,7 +56,7 @@ ChatHandler::ChatHandler()
     chatHandler = this;
 }
 
-void ChatHandler::handleMessage(Net::MessageIn &msg)
+void ChatHandler::handleMessage(MessageIn &msg)
 {
     Being *being;
     std::string chatMsg;

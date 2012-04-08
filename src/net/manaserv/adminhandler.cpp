@@ -41,7 +41,7 @@ AdminHandler::AdminHandler()
     adminHandler = this;
 }
 
-void AdminHandler::handleMessage(Net::MessageIn &msg)
+void AdminHandler::handleMessage(MessageIn &msg)
 {
 
 }

@@ -65,7 +65,7 @@ PartyHandler::PartyHandler():
     mParty->setName("Party");
 }
 
-void PartyHandler::handleMessage(Net::MessageIn &msg)
+void PartyHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

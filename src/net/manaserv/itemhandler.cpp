@@ -40,7 +40,7 @@ ItemHandler::ItemHandler()
     handledMessages = _messages;
 }
 
-void ItemHandler::handleMessage(Net::MessageIn &msg)
+void ItemHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

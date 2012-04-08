@@ -28,9 +28,8 @@
 
 #include "gui/socialwindow.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
-
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "net/tmwa/gui/partytab.h"
@@ -74,7 +73,7 @@ PartyHandler::~PartyHandler()
     partyTab = 0;
 }
 
-void PartyHandler::handleMessage(Net::MessageIn &msg)
+void PartyHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

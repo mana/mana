@@ -34,7 +34,7 @@ class GuildHandler : public Net::GuildHandler, public MessageHandler
 
         ~GuildHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void create(const std::string &name);
 

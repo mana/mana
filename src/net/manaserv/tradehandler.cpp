@@ -97,7 +97,7 @@ void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
         SERVER_NOTICE(_("Ignoring incoming trade requests."))
 }
 
-void TradeHandler::handleMessage(Net::MessageIn &msg)
+void TradeHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

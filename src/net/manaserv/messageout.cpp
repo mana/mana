@@ -28,7 +28,9 @@
 namespace ManaServ {
 
 MessageOut::MessageOut(uint16_t id):
-        Net::MessageOut(id)
+    mData(0),
+    mDataSize(0),
+    mPos(0)
 {
     writeInt16(id);
 }
@@ -42,6 +44,13 @@ void MessageOut::expand(size_t bytes)
 {
     mData = (char*)realloc(mData, mPos + bytes);
     mDataSize = mPos + bytes;
+}
+
+void MessageOut::writeInt8(uint8_t value)
+{
+    expand(1);
+    mData[mPos] = value;
+    mPos += 1;
 }
 
 void MessageOut::writeInt16(uint16_t value)
@@ -58,6 +67,33 @@ void MessageOut::writeInt32(uint32_t value)
     uint32_t t = ENET_HOST_TO_NET_32(value);
     memcpy(mData + mPos, &t, 4);
     mPos += 4;
+}
+
+void MessageOut::writeString(const std::string &string, int length)
+{
+    int stringLength = string.length();
+    if (length < 0)
+    {
+        // Write the length at the start if not fixed
+        writeInt16(stringLength);
+        length = stringLength;
+    }
+    else if (length < stringLength)
+    {
+        // Make sure the length of the string is no longer than specified
+        stringLength = length;
+    }
+    expand(length);
+
+    // Write the actual string
+    memcpy(mData + mPos, string.data(), stringLength);
+
+    // Pad remaining space with zeros
+    if (length > stringLength)
+    {
+        memset(mData + mPos + stringLength, '\0', length - stringLength);
+    }
+    mPos += length;
 }
 
 } // namespace ManaServ

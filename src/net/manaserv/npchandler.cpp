@@ -53,7 +53,7 @@ NpcHandler::NpcHandler()
     npcHandler = this;
 }
 
-void NpcHandler::handleMessage(Net::MessageIn &msg)
+void NpcHandler::handleMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being || being->getType() != ActorSprite::NPC)

@@ -44,7 +44,7 @@ class CharHandler : public MessageHandler, public Net::CharHandler
 
         ~CharHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void setCharSelectDialog(CharSelectDialog *window);
 
@@ -108,10 +108,10 @@ class CharHandler : public MessageHandler, public Net::CharHandler
             CachedAttributes attribute;
         };
 
-        void handleCharacterInfo(Net::MessageIn &msg);
-        void handleCharacterCreateResponse(Net::MessageIn &msg);
-        void handleCharacterDeleteResponse(Net::MessageIn &msg);
-        void handleCharacterSelectResponse(Net::MessageIn &msg);
+        void handleCharacterInfo(MessageIn &msg);
+        void handleCharacterCreateResponse(MessageIn &msg);
+        void handleCharacterDeleteResponse(MessageIn &msg);
+        void handleCharacterSelectResponse(MessageIn &msg);
 
         void updateCharacters();
 

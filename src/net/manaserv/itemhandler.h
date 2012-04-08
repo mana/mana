@@ -31,7 +31,7 @@ class ItemHandler : public MessageHandler
     public:
         ItemHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 };
 
 } // namespace ManaServ

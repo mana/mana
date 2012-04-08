@@ -40,7 +40,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
     public:
         CharServerHandler();
 
-        virtual void handleMessage(Net::MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 
         void setCharSelectDialog(CharSelectDialog *window);
 
@@ -82,7 +82,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
         void connect();
 
     private:
-        void readPlayerData(Net::MessageIn &msg, Net::Character *character);
+        void readPlayerData(MessageIn &msg, Net::Character *character);
 };
 
 } // namespace TmwAthena

@@ -32,9 +32,9 @@
 #include "gui/okdialog.h"
 
 #include "net/net.h"
-#include "net/messagein.h"
 
 #include "net/manaserv/inventoryhandler.h"
+#include "net/manaserv/messagein.h"
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/manaserv_protocol.h"
 
@@ -62,7 +62,7 @@ BeingHandler::BeingHandler()
     handledMessages = _messages;
 }
 
-void BeingHandler::handleMessage(Net::MessageIn &msg)
+void BeingHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -93,7 +93,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-static void handleLooks(Being *being, Net::MessageIn &msg)
+static void handleLooks(Being *being, MessageIn &msg)
 {
     int lookChanges = msg.readInt8();
 
@@ -109,7 +109,7 @@ static void handleLooks(Being *being, Net::MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
+void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
     int type = msg.readInt8();
     int id = msg.readInt16();
@@ -165,7 +165,7 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
     being->setAction(action);
 }
 
-void BeingHandler::handleBeingLeaveMessage(Net::MessageIn &msg)
+void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being)
@@ -174,7 +174,7 @@ void BeingHandler::handleBeingLeaveMessage(Net::MessageIn &msg)
     actorSpriteManager->destroy(being);
 }
 
-void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
+void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
@@ -233,7 +233,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingAttackMessage(Net::MessageIn &msg)
+void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     const BeingDirection direction = (BeingDirection) msg.readInt8();
@@ -247,7 +247,7 @@ void BeingHandler::handleBeingAttackMessage(Net::MessageIn &msg)
     being->setAction(Being::ATTACK, attackId);
 }
 
-void BeingHandler::handleBeingsDamageMessage(Net::MessageIn &msg)
+void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
@@ -260,7 +260,7 @@ void BeingHandler::handleBeingsDamageMessage(Net::MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingActionChangeMessage(Net::MessageIn &msg)
+void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     Being::Action action = (Being::Action) msg.readInt8();
@@ -299,7 +299,7 @@ void BeingHandler::handleBeingActionChangeMessage(Net::MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
+void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being || being->getType() != ActorSprite::PLAYER)
@@ -314,7 +314,7 @@ void BeingHandler::handleBeingLooksChangeMessage(Net::MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingDirChangeMessage(Net::MessageIn &msg)
+void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being)

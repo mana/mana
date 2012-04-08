@@ -389,10 +389,6 @@ src/net/manaserv/specialhandler.h
 src/net/manaserv/tradehandler.cpp
 src/net/manaserv/tradehandler.h
 src/net/messagehandler.h
-src/net/messagein.cpp
-src/net/messagein.h
-src/net/messageout.cpp
-src/net/messageout.h
 src/net/net.cpp
 src/net/net.h
 src/net/npchandler.h

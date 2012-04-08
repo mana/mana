@@ -33,6 +33,8 @@
 #include "party.h"
 #include "playerrelations.h"
 
+#include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "resources/hairdb.h"
@@ -146,7 +148,7 @@ static void handlePosMessage(Map *map, Being *dstBeing, Uint16 x, Uint16 y,
     }
 }
 
-void BeingHandler::handleMessage(Net::MessageIn &msg)
+void BeingHandler::handleMessage(MessageIn &msg)
 {
     if (!actorSpriteManager)
         return;

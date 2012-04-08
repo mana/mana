@@ -85,7 +85,7 @@ PlayerHandler::PlayerHandler()
     playerHandler = this;
 }
 
-void PlayerHandler::handleMessage(Net::MessageIn &msg)
+void PlayerHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
@@ -277,7 +277,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
+void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 {
     const std::string mapName = msg.readString();
     const unsigned short x = msg.readInt16();

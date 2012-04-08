@@ -46,7 +46,6 @@
 #include "net/charhandler.h"
 #include "net/logindata.h"
 #include "net/loginhandler.h"
-#include "net/messageout.h"
 #include "net/net.h"
 
 #include "resources/hairdb.h"

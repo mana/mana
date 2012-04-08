@@ -350,10 +350,6 @@ SET(SRCS
     net/logindata.h
     net/loginhandler.h
     net/messagehandler.h
-    net/messagein.cpp
-    net/messagein.h
-    net/messageout.cpp
-    net/messageout.h
     net/npchandler.h
     net/net.cpp
     net/net.h

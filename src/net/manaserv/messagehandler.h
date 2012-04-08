@@ -24,7 +24,11 @@
 
 #include "net/messagehandler.h"
 
+#include <memory>
+
 namespace ManaServ {
+
+class MessageIn;
 
 /**
  * \ingroup Network
@@ -34,10 +38,11 @@ class MessageHandler : public Net::MessageHandler
     public:
         ~MessageHandler();
 
+        virtual void handleMessage(MessageIn &msg) = 0;
 };
 
 typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
 
-}
+} // namespace ManaServ
 
 #endif // NET_MANASERV_MESSAGEHANDLER_H

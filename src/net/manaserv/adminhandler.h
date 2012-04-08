@@ -33,7 +33,7 @@ class AdminHandler : public Net::AdminHandler, public MessageHandler
     public:
         AdminHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void announce(const std::string &text);
 

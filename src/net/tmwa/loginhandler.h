@@ -40,7 +40,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
 
         ~LoginHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void connect();
 

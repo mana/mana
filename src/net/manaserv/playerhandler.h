@@ -41,7 +41,7 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
     public:
         PlayerHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void attack(int id);
         void emote(int emoteId);
@@ -73,7 +73,7 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
         { return true; }
 
     private:
-        void handleMapChangeMessage(Net::MessageIn &msg);
+        void handleMapChangeMessage(MessageIn &msg);
 };
 
 } // namespace ManaServ

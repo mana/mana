@@ -21,8 +21,7 @@
 
 #include "net/tmwa/itemhandler.h"
 
-#include "net/messagein.h"
-
+#include "net/tmwa/messagein.h"
 #include "net/tmwa/protocol.h"
 
 #include "actorspritemanager.h"
@@ -42,7 +41,7 @@ ItemHandler::ItemHandler()
     handledMessages = _messages;
 }
 
-void ItemHandler::handleMessage(Net::MessageIn &msg)
+void ItemHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

@@ -28,6 +28,7 @@
 #include "gui/socialwindow.h"
 
 #include "net/tmwa/messagein.h"
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "net/tmwa/gui/guildtab.h"
@@ -85,7 +86,7 @@ GuildHandler::~GuildHandler()
     guildTab = 0;
 }
 
-void GuildHandler::handleMessage(Net::MessageIn &msg)
+void GuildHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {

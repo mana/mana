@@ -37,7 +37,7 @@ SpecialHandler::SpecialHandler()
     specialHandler = this;
 }
 
-void SpecialHandler::handleMessage(Net::MessageIn &msg)
+void SpecialHandler::handleMessage(MessageIn &msg)
 {
     // TODO
 }

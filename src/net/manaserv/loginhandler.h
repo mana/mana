@@ -36,7 +36,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
     public:
         LoginHandler();
 
-        void handleMessage(Net::MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
         void connect();
 
@@ -77,11 +77,11 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void reconnect();
 
     private:
-        void handleLoginRandomResponse(Net::MessageIn &msg);
-        void handleLoginResponse(Net::MessageIn &msg);
-        void handleRegisterResponse(Net::MessageIn &msg);
+        void handleLoginRandomResponse(MessageIn &msg);
+        void handleLoginResponse(MessageIn &msg);
+        void handleRegisterResponse(MessageIn &msg);
 
-        void readServerInfo(Net::MessageIn &msg);
+        void readServerInfo(MessageIn &msg);
 
         void loginAccountContinue();
 

@@ -22,21 +22,55 @@
 #ifndef NET_MANASERV_MESSAGEOUT_H
 #define NET_MANASERV_MESSAGEOUT_H
 
-#include "net/messageout.h"
+#include <cstdint>
+#include <string>
 
 namespace ManaServ {
 
-class MessageOut : public Net::MessageOut
+/**
+ * Used for building an outgoing message to manaserv.
+ *
+ * \ingroup Network
+ */
+class MessageOut
 {
     public:
         MessageOut(uint16_t id);
 
         ~MessageOut();
 
+        /**
+         * Writes an unsigned 8-bit integer to the message.
+         */
+        void writeInt8(uint8_t value);
+
+        /**
+         * Writes an unsigned 16-bit integer to the message.
+         */
         void writeInt16(uint16_t value);
+
+        /**
+         * Writes an unsigned 32-bit integer to the message.
+         */
         void writeInt32(uint32_t value);
 
-    protected:
+        /**
+         * Writes a string. If a fixed length is not given (-1), it is stored
+         * as a short at the start of the string.
+         */
+        void writeString(const std::string &string, int length = -1);
+
+        /**
+         * Returns the content of the message.
+         */
+        char *getData() const { return mData; }
+
+        /**
+         * Returns the length of the data.
+         */
+        unsigned int getDataSize() const { return mDataSize; }
+
+    private:
         /**
          * Expand the packet data to be able to hold more data.
          *
@@ -45,8 +79,12 @@ class MessageOut : public Net::MessageOut
          * added.
          */
         void expand(size_t size);
+
+        char *mData;                         /**< Data building up. */
+        unsigned int mDataSize;              /**< Size of data. */
+        unsigned int mPos;                   /**< Position in the data. */
 };
 
-}
+} // namespace ManaServ
 
 #endif // NET_MANASERV_MESSAGEOUT_H
