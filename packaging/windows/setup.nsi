@@ -165,6 +165,31 @@ FunctionEnd
 ReserveFile "setup_finish.bmp"
 
 ; MUI end ------
+Function checkAlreadyInstalled
+; check for already installed instance
+  ClearErrors
+  ReadRegStr $R0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion"
+  StrCmp $R0 "" 0 +2
+  Return
+  MessageBox MB_YESNO|MB_ICONQUESTION "${PRODUCT_NAME} version $R0 seems \
+    to be already installed on your system.$\nWould you like to \
+    proceed with the installation of the ${PRODUCT_VERSION} version ?$\n\
+    Beware! This will uninstall the already installed instance first." IDYES UnInstall
+  MessageBox MB_OK|MB_ICONEXCLAMATION "Installation Canceled!"
+  Quit
+  UnInstall:
+    ClearErrors
+    ReadRegStr $R0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
+    DetailPrint "Uninstalling already installed instance first!"
+    ExecWait '$R0 _?=$INSTDIR'
+    IfErrors OnError 0
+    Return
+  OnError:
+    MessageBox MB_OK|MB_ICONSTOP "Error while uinstalling already \
+      installed version. Please uninstall it manually and start the \
+      installer again."
+    Quit
+FunctionEnd
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "${PRODUCT_NAME_SHORT}-${PRODUCT_VERSION}-win32.exe"
@@ -178,6 +203,7 @@ Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
   InitPluginsDir
   File /oname=$PLUGINSDIR\setup_finish.bmp "setup_finish.bmp"
+  Call checkAlreadyInstalled
 FunctionEnd
 
 Section "Core files (required)" SecCore

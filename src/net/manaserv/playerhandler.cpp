@@ -45,6 +45,8 @@
 #include "net/manaserv/manaserv_protocol.h"
 #include "net/manaserv/attributes.h"
 
+#include "resources/emotedb.h"
+
 /**
  * Max. distance in tiles we are willing to scroll after a teleport;
  * everything beyond will reset the port hard.
@@ -322,7 +324,9 @@ void PlayerHandler::attack(int id)
 
 void PlayerHandler::emote(int emoteId)
 {
-    // TODO
+    MessageOut msg(PGMSG_TRIGGER_EMOTICON);
+    msg.writeInt16(emoteId);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::increaseAttribute(int attr)

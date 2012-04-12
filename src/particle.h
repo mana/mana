@@ -262,6 +262,12 @@ class Particle : public Actor
         virtual void setDeathEffect(const std::string &effectFile, char conditions)
         { mDeathEffect = effectFile; mDeathEffectConditions = conditions; }
 
+        float getAcceleration() const
+        { return mAcceleration; }
+
+        float getMomentum() const
+        { return mMomentum; }
+
     protected:
         /** Opacity of the graphical representation of the particle */
         float mAlpha;

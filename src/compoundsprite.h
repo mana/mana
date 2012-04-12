@@ -73,25 +73,85 @@ public:
     size_t size() const
     { return mSprites.size(); }
 
-    void addSprite(Sprite *sprite);
+    /**
+     * Add a sprite on the highest layer id available.
+     * @deprecated Should not be used we can't be sure of the layer id used.
+     * @param sprite The sprite filename to load and add.
+     * @param variant Offset in the same image. This is permitting to reuse
+     * the same image for multiple sprites.
+     */
+    void addSprite(const std::string &spriteFile, int variant = 0);
 
-    void setSprite(int layer, Sprite *sprite);
+    /**
+     * Add an image (non-animated) sprite, with no directions handling,
+     * and no alternate.
+     */
+    void addImageSprite(Image *image);
+
+    /**
+     * Add a sprite on the given layer id.
+     * @param layer The layer id.
+     * @param sprite The sprite filename to load and add.
+     * @param variant Offset in the same image. This is permitting to reuse
+     * the same image for multiple sprites.
+     */
+    void setSprite(int layer, const std::string &spriteFile, int variant = 0);
+
+    /** Set the alternative sprite used with the sprite directions given. */
+    void setAlternateSprite(int layer,
+                            const std::string& spriteFile,
+                            int variant = 0,
+                            const std::list<SpriteDirection> &directions =
+                                std::list<SpriteDirection>());
 
     Sprite *getSprite(int layer) const
     { return mSprites.at(layer); }
 
+    /**
+     * Removes a sprite, but also its potential alternate if present.
+     */
     void removeSprite(int layer);
 
-    void clear();
+    /**
+     * Removes an alternate display sprite.
+     */
+    void removeAlternateSprite(int layer,
+                               const std::list<SpriteDirection> &directions);
 
-    void ensureSize(size_t layerCount);
+    // Deals with deleting the Sprites* pointers
+    void clear();
 
     void doRedraw()
     { mNeedsRedraw = true; }
 
+    /** Removes every alternate sprite reference. Used when updating them. */
+    void resetAlternateSprites();
+
 private:
-    typedef std::vector<Sprite*>::iterator SpriteIterator;
-    typedef std::vector<Sprite*>::const_iterator SpriteConstIterator;
+
+    typedef std::map<int, Sprite*>::iterator SpriteIterator;
+    typedef std::map<int, Sprite*>::const_iterator SpriteConstIterator;
+
+    /**
+     * Add a sprite on the highest layer id available.
+     * @deprecated Should not be used we can't be sure of the layer id used.
+     * @param sprite The sprite object to add.
+     */
+    void addSprite(Sprite* sprite);
+
+    /**
+     * Add a sprite on the given layer id.
+     * @param layer The layer id.
+     * @param sprite The sprite object to add.
+     */
+    void setSprite(int layer, Sprite* sprite);
+
+    /** Register the sprite for display according to the directions given. */
+    void registerSprite(int layer, Sprite *sprite, bool alternate,
+                        SpriteDirection direction = DIRECTION_DEFAULT);
+
+    /** Unregister the sprite to not display it anymore. */
+    void unregisterSprite(int layer, Sprite *sprite, bool alternate);
 
     void redraw() const;
 
@@ -103,7 +163,28 @@ private:
 
     mutable bool mNeedsRedraw;
 
-    std::vector<Sprite*> mSprites;
+    /** The sprites direction */
+    SpriteDirection mDirection;
+
+    // The sprite ordered list to compound the multi-layer sprite.
+    std::map<int, Sprite*> mSprites;
+    // Alternate sprites used to display nicely with certain equipments.
+    std::map<int, Sprite*> mAlternateSprites[DIRECTION_INVALID];
+    /**
+     * A list keeping the actual sprite used to be display depending on the
+     * direction of the being.
+     * The map will be organized this way:
+     * @param int The compound sprite layer.
+     * @param std::map<int, Sprite*> the sprite pointer used for the direction
+     * (int) given.
+     * Note that the sprite pointer is either one of mSprites
+     * or mAlternateSprites depending on the direction and equipment used.
+     * So the Sprite* pointer life cycle management is done with those.
+     * Note also that removal of the main sprite implies the removal
+     * of its alternate.
+     */
+     // <layer, <direction, Sprite*>>
+    std::map<int, std::map<SpriteDirection, Sprite*> > mDisplayedSprites;
 };
 
 #endif // COMPOUNDSPRITE_H

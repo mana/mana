@@ -344,8 +344,11 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
 
         int lifetime = XML::getProperty(effectChildNode, "lifetime", -1);
         newParticle->setLifetime(lifetime);
-        bool resizeable = "false" != XML::getProperty(effectChildNode, "size-adjustable", "false");
+        bool resizeable =
+            XML::getBoolProperty(effectChildNode, "size-adjustable", false);
         newParticle->setAllowSizeAdjust(resizeable);
+        mAcceleration = XML::getProperty(effectChildNode, "acceleration", 0.0f);
+        mMomentum = XML::getProperty(effectChildNode, "momentum", 1.0f);
 
         // Look for additional emitters for this particle
         for_each_xml_child_node(emitterNode, effectChildNode)

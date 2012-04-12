@@ -258,6 +258,10 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
             {
                 loadFloorSprite(&display, itemChild);
             }
+            else if (xmlStrEqual(itemChild->name, BAD_CAST "replace"))
+            {
+                loadReplacementSpriteRef(itemInfo, itemChild);
+            }
 
         }
 
@@ -309,6 +313,55 @@ void ItemDB::checkItemInfo(ItemInfo* itemInfo)
         checkParameter(id, itemInfo->mDescription, std::string());
         checkParameter(id, itemInfo->mDisplay.image, std::string());
         checkParameter(id, itemInfo->mWeight, 0);
+    }
+}
+
+static int parseDirectionName(std::string name)
+{
+    int id = DIRECTION_DEFAULT;
+    if (name == "down" || name == "downall")
+        id = DIRECTION_DOWN;
+    else if (name == "left")
+        id = DIRECTION_LEFT;
+    else if (name == "up" || name == "upall")
+        id = DIRECTION_UP;
+    else if (name == "right")
+        id = DIRECTION_RIGHT;
+
+    return id;
+}
+
+void ItemDB::loadReplacementSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
+{
+    int direction = parseDirectionName(XML::getProperty(node,
+                                                        "direction", "all"));
+    DirectionList directionList;
+    switch (direction)
+    {
+        default:
+        {
+            directionList.push_back((SpriteDirection)direction);
+            break;
+        }
+        case DIRECTION_DEFAULT:
+        {
+            for (int dir = DIRECTION_DEFAULT; dir < DIRECTION_INVALID; ++dir)
+                directionList.push_back((SpriteDirection)dir);
+
+            break;
+        }
+
+    }
+    for_each_xml_child_node(itemNode, node)
+    {
+        if (xmlStrEqual(itemNode->name, BAD_CAST "item"))
+        {
+            int from = XML::getProperty(itemNode, "from", 0);
+            int to = XML::getProperty(itemNode, "to", 0);
+
+            itemInfo->mSpriteReplacementMap.insert(std::make_pair(from,
+                                         SpriteReplacement(to, directionList)));
+        }
     }
 }
 
