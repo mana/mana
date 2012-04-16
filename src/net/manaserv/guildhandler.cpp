@@ -62,6 +62,7 @@ GuildHandler::GuildHandler()
         CPMSG_GUILD_INVITED,
         CPMSG_GUILD_REJOIN,
         CPMSG_GUILD_QUIT_RESPONSE,
+        CPMSG_GUILD_KICK_NOTIFICATION,
         0
     };
     handledMessages = _messages;
@@ -91,10 +92,19 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
         case CPMSG_GUILD_INVITE_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_INVITE_RESPONSE");
-            if (msg.readInt8() == ERRMSG_OK)
+            const unsigned char response = msg.readInt8();
+            if (response == ERRMSG_OK)
             {
                 // TODO - Acknowledge invite was sent
                 SERVER_NOTICE(_("Invite sent."))
+            }
+            else if (response == ERRMSG_ALREADY_MEMBER)
+            {
+                SERVER_NOTICE(_("Invited player is already in that guild."));
+            }
+            else if (response == ERRMSG_LIMIT_REACHED)
+            {
+                SERVER_NOTICE(_("Invited player can't join another guild."));
             }
         } break;
 
@@ -235,6 +245,23 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 }
             }
         } break;
+        case CPMSG_GUILD_KICK_NOTIFICATION:
+        {
+            logger->log("Received CPMSG_GUILD_KICK_NOTIFICATION");
+
+            const int guildId = msg.readInt16();
+            std::string player = msg.readString();
+            Guild *guild = local_player->getGuild(guildId);
+            if (guild)
+            {
+                Channel *channel = channelManager->findByName(guild->getName());
+                channelManager->removeChannel(channel);
+                local_player->removeGuild(guildId);
+                SERVER_NOTICE(strprintf(
+                                  _("Player %s kicked you out of guild %s"),
+                                  player.c_str(), guild->getName().c_str()));
+            }
+        } break;
     }
 }
 
@@ -283,9 +310,10 @@ void GuildHandler::invite(int guildId, Being *being)
 
 void GuildHandler::inviteResponse(int guildId, bool response)
 {
-    /*MessageOut msg(PCMSG_GUILD_ACCEPT);
-    msg.writeString(name);
-    chatServerConnection->send(msg);*/
+    MessageOut msg(PCMSG_GUILD_ACCEPT);
+    msg.writeInt16(guildId);
+    msg.writeInt8(response ? 1 : 0);
+    chatServerConnection->send(msg);
 }
 
 void GuildHandler::leave(int guildId)
