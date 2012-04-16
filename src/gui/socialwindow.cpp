@@ -123,9 +123,10 @@ public:
 
             if (!name.empty())
             {
+                Net::getGuildHandler()->invite(mGuild->getId(), name);
                 SERVER_NOTICE(strprintf(_("Invited user %s to guild %s."),
-	                          name.c_str(),
-	                          mGuild->getName().c_str()))
+                              name.c_str(),
+                              mGuild->getName().c_str()))
             }
             mInviteDialog = NULL;
         }
