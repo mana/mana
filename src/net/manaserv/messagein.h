@@ -22,6 +22,8 @@
 #ifndef NET_MANASERV_MESSAGEIN_H
 #define NET_MANASERV_MESSAGEIN_H
 
+#include "net/manaserv/manaserv_protocol.h"
+
 #include <cstdint>
 #include <string>
 
@@ -75,14 +77,16 @@ class MessageIn
         std::string readString(int length = -1);
 
     private:
-        const char *mData;             /**< The message data. */
-        unsigned int mLength;          /**< The length of the data. */
-        unsigned short mId;            /**< The message ID. */
+        bool readValueType(ManaServ::ValueType type);
+
+        const char *mData;            /**< The message data. */
+        unsigned int mLength;         /**< The length of the data. */
+        unsigned short mId;           /**< The message ID. */
+        bool mDebugMode;              /**< Includes debugging information. */
 
         /**
-         * Actual position in the packet. From 0 to packet->length.
-         * A value bigger than packet->length means EOP was reached when
-         * reading it.
+         * Actual position in the packet. From 0 to packet->length. A value
+         * bigger than packet->length means EOP was reached when reading it.
          */
         unsigned int mPos;
 };

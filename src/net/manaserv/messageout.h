@@ -22,6 +22,8 @@
 #ifndef NET_MANASERV_MESSAGEOUT_H
 #define NET_MANASERV_MESSAGEOUT_H
 
+#include "net/manaserv/manaserv_protocol.h"
+
 #include <cstdint>
 #include <string>
 
@@ -80,9 +82,12 @@ class MessageOut
          */
         void expand(size_t size);
 
-        char *mData;                         /**< Data building up. */
-        unsigned int mDataSize;              /**< Size of data. */
-        unsigned int mPos;                   /**< Position in the data. */
+        void writeValueType(ManaServ::ValueType type);
+
+        char *mData;                /**< Data building up. */
+        unsigned int mPos;          /**< Position in the data. */
+        unsigned int mDataSize;     /**< Size of data. */
+        bool mDebugMode;            /**< Include debugging information. */
 };
 
 } // namespace ManaServ

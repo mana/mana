@@ -29,10 +29,16 @@ namespace ManaServ {
 
 MessageOut::MessageOut(uint16_t id):
     mData(0),
+    mPos(0),
     mDataSize(0),
-    mPos(0)
+    mDebugMode(false)
 {
+    bool debug = true;
+    if (debug)
+        id |= ManaServ::XXMSG_DEBUG_FLAG;
+
     writeInt16(id);
+    mDebugMode = debug;
 }
 
 MessageOut::~MessageOut()
@@ -48,6 +54,9 @@ void MessageOut::expand(size_t bytes)
 
 void MessageOut::writeInt8(uint8_t value)
 {
+    if (mDebugMode)
+        writeValueType(ManaServ::Int8);
+
     expand(1);
     mData[mPos] = value;
     mPos += 1;
@@ -55,6 +64,9 @@ void MessageOut::writeInt8(uint8_t value)
 
 void MessageOut::writeInt16(uint16_t value)
 {
+    if (mDebugMode)
+        writeValueType(ManaServ::Int16);
+
     expand(2);
     uint16_t t = ENET_HOST_TO_NET_16(value);
     memcpy(mData + mPos, &t, 2);
@@ -63,6 +75,9 @@ void MessageOut::writeInt16(uint16_t value)
 
 void MessageOut::writeInt32(uint32_t value)
 {
+    if (mDebugMode)
+        writeValueType(ManaServ::Int32);
+
     expand(4);
     uint32_t t = ENET_HOST_TO_NET_32(value);
     memcpy(mData + mPos, &t, 4);
@@ -71,6 +86,12 @@ void MessageOut::writeInt32(uint32_t value)
 
 void MessageOut::writeString(const std::string &string, int length)
 {
+    if (mDebugMode)
+    {
+        writeValueType(ManaServ::String);
+        writeInt16(length);
+    }
+
     int stringLength = string.length();
     if (length < 0)
     {
@@ -88,12 +109,19 @@ void MessageOut::writeString(const std::string &string, int length)
     // Write the actual string
     memcpy(mData + mPos, string.data(), stringLength);
 
-    // Pad remaining space with zeros
     if (length > stringLength)
     {
+        // Pad remaining space with zeros
         memset(mData + mPos + stringLength, '\0', length - stringLength);
     }
     mPos += length;
+}
+
+void MessageOut::writeValueType(ManaServ::ValueType type)
+{
+    expand(1);
+    mData[mPos] = type;
+    mPos += 1;
 }
 
 } // namespace ManaServ

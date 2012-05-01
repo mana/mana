@@ -29,15 +29,24 @@ namespace ManaServ {
 MessageIn::MessageIn(const char *data, unsigned int length):
     mData(data),
     mLength(length),
+    mDebugMode(false),
     mPos(0)
 {
     // Read the message ID
     mId = readInt16();
+
+    // Read and clear the debug flag
+    mDebugMode = mId & ManaServ::XXMSG_DEBUG_FLAG;
+    mId &= ~ManaServ::XXMSG_DEBUG_FLAG;
 }
 
 uint8_t MessageIn::readInt8()
 {
     uint8_t value = 0;
+
+    if (!readValueType(ManaServ::Int8))
+        return value;
+
     if (mPos < mLength)
     {
         value = mData[mPos];
@@ -49,6 +58,10 @@ uint8_t MessageIn::readInt8()
 uint16_t MessageIn::readInt16()
 {
     uint16_t value = 0;
+
+    if (!readValueType(ManaServ::Int16))
+        return value;
+
     if (mPos + 2 <= mLength)
     {
         uint16_t t;
@@ -62,6 +75,10 @@ uint16_t MessageIn::readInt16()
 uint32_t MessageIn::readInt32()
 {
     uint32_t value = 0;
+
+    if (!readValueType(ManaServ::Int32))
+        return value;
+
     if (mPos + 4 <= mLength)
     {
         uint32_t t;
@@ -74,24 +91,55 @@ uint32_t MessageIn::readInt32()
 
 std::string MessageIn::readString(int length)
 {
+    if (!readValueType(ManaServ::String))
+        return std::string();
+
+    if (mDebugMode)
+    {
+        int fixedLength = (int16_t) readInt16();
+        if (fixedLength != length)
+        {
+            // String does not have the expected length
+            mPos = mLength + 1;
+            return std::string();
+        }
+    }
+
     // Get string length
     if (length < 0)
+    {
         length = readInt16();
+    }
 
     // Make sure the string isn't erroneous
     if (length < 0 || mPos + length > mLength)
     {
         mPos = mLength + 1;
-        return "";
+        return std::string();
     }
 
     // Read the string
-    char const *stringBeg = mData + mPos;
-    char const *stringEnd = (char const *)memchr(stringBeg, '\0', length);
+    const char *stringBeg = mData + mPos;
+    const char *stringEnd = (const char *)memchr(stringBeg, '\0', length);
     std::string readString(stringBeg,
                            stringEnd ? stringEnd - stringBeg : length);
     mPos += length;
+
     return readString;
+}
+
+bool MessageIn::readValueType(ManaServ::ValueType type)
+{
+    if (!mDebugMode) // Verification not possible
+        return true;
+
+    if (mPos >= mLength)
+        return false;
+
+    uint8_t t = mData[mPos];
+    ++mPos;
+
+    return t == type;
 }
 
 } // ManaServ

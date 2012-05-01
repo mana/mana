@@ -26,7 +26,19 @@ namespace ManaServ {
 
 enum {
     PROTOCOL_VERSION = 1,
-    SUPPORTED_DB_VERSION = 19
+    SUPPORTED_DB_VERSION = 21
+};
+
+/**
+ * The type of a value in a message. Prepended before each value when the
+ * protocol is running in debug mode.
+ */
+enum ValueType {
+    Int8,
+    Int16,
+    Int32,
+    String,
+    Double
 };
 
 /**
@@ -43,7 +55,7 @@ enum {
  * Components: B byte, W word, D double word, S variable-size string
  *             C tile-based coordinates (B*3)
  *
- * Hosts:      P (player's client), A (account server), C (char server),
+ * Hosts:      P (player's client), A (account server), C (chat server),
  *             G (game server)
  *
  * TODO - Document specific error codes for each packet
@@ -232,7 +244,7 @@ enum {
 
     // Inter-server
     GAMSG_REGISTER              = 0x0500, // S address, W port, S password, D items db revision, { W map id }*
-    AGMSG_REGISTER_RESPONSE     = 0x0501, // C item version, C password response, { S globalvar_key, S globalvar_value }
+    AGMSG_REGISTER_RESPONSE     = 0x0501, // W item version, W password response, { S globalvar_key, S globalvar_value }
     AGMSG_ACTIVE_MAP            = 0x0502, // W map id, W Number of mapvar_key mapvar_value sent, { S mapvar_key, S mapvar_value }, W Number of map items, { D item Id, W amount, W posX, W posY }
     AGMSG_PLAYER_ENTER          = 0x0510, // B*32 token, D id, S name, serialised character data
     GAMSG_PLAYER_DATA           = 0x0520, // D id, serialised character data
@@ -252,7 +264,7 @@ enum {
     GAMSG_BAN_PLAYER            = 0x0550, // D id, W duration
     GAMSG_CHANGE_PLAYER_LEVEL   = 0x0555, // D id, W level
     GAMSG_CHANGE_ACCOUNT_LEVEL  = 0x0556, // D id, W level
-    GAMSG_STATISTICS            = 0x0560, // { W map id, W thing nb, W monster nb, W player nb, { D character id }* }*
+    GAMSG_STATISTICS            = 0x0560, // { W map id, W entity nb, W monster nb, W player nb, { D character id }* }*
     CGMSG_CHANGED_PARTY         = 0x0590, // D character id, D party id
     GCMSG_REQUEST_POST          = 0x05A0, // D character id
     CGMSG_POST_RESPONSE         = 0x05A1, // D receiver id, { S sender name, S letter, W num attachments { W attachment item id, W quantity } }
@@ -263,7 +275,8 @@ enum {
     GAMSG_REMOVE_ITEM_ON_MAP    = 0x0602, // D map id, D item id, W amount, W pos x, W pos y
     GAMSG_ANNOUNCE              = 0x0603, // S text, W senderid, S sendername
 
-    XXMSG_INVALID = 0x7FFF
+    XXMSG_DEBUG_FLAG            = 0x8000, // Message in debug mode
+    XXMSG_INVALID               = 0x7FFF
 };
 
 // Generic return values
@@ -340,8 +353,8 @@ enum AttribmodResponseCode {
     ATTRIBMOD_DENIED
 };
 
-// Object type enumeration
-enum ThingType
+// Entity type enumeration
+enum EntityType
 {
     // A simple item.
     OBJECT_ITEM = 0,
