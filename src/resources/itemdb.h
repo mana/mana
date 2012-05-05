@@ -78,7 +78,7 @@ class ItemDB
           mLoaded(false)
         {}
 
-        ~ItemDB()
+        virtual ~ItemDB()
         {}
 
         /**

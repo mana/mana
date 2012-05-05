@@ -1,7 +1,10 @@
 /*
  * Compatibility header used when the compiler doesn't support C++0x.
  *
- * It doesn't seem necessary for it to contain anything, at least GCC 4.2.1
- * compiles Mana fine so it apparently understands types like uint16_t by
- * default.
+ * While GCC 4.2.1 understands types like uint16_t by default, later versions
+ * are more strict so here are some typedefs for types used in our code.
  */
+
+typedef unsigned char  uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int   uint32_t;

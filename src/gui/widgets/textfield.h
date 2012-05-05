@@ -63,6 +63,7 @@ struct TextHistory {
 
 class AutoCompleteLister {
 public:
+    virtual ~AutoCompleteLister() {}
     virtual void getAutoCompleteList(std::vector<std::string>&) const {}
 };
 
