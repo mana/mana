@@ -49,15 +49,15 @@ enum {
 struct TabData
 {
     char const *file;
-    int gridX;
-    int gridY;
+    int gridX[4];
+    int gridY[4];
 };
 
 static TabData const data[TAB_COUNT] = {
-    { "tab.png", 0, 0 },
-    { "tab_hilight.png", 9, 4 },
-    { "tabselected.png", 16, 19 },
-    { "tab.png", 25, 23 }
+    { "tab.png", {0, 9, 16, 25}, {0, 13, 19, 20} },
+    { "tab_hilight.png", {0, 9, 16, 25}, {0, 13, 19, 20} },
+    { "tabselected.png", {0, 9, 16, 25}, {0, 4, 12, 20} },
+    { "tab.png", {0, 9, 16, 25}, {0, 13, 19, 20} }
 };
 
 ImageRect Tab::tabImg[TAB_COUNT];
@@ -103,9 +103,9 @@ void Tab::init()
                 for (x = 0; x < 3; x++)
                 {
                     tabImg[mode].grid[a] = tab[mode]->getSubImage(
-                            data[x].gridX, data[y].gridY,
-                            data[x + 1].gridX - data[x].gridX + 1,
-                            data[y + 1].gridY - data[y].gridY + 1);
+                            data[mode].gridX[x], data[mode].gridY[y],
+                            data[mode].gridX[x + 1] - data[mode].gridX[x] + 1,
+                            data[mode].gridY[y + 1] - data[mode].gridY[y] + 1);
                     tabImg[mode].grid[a]->setAlpha(mAlpha);
                     a++;
                 }
