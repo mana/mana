@@ -108,7 +108,7 @@ void NpcHandler::handleMessage(MessageIn &msg)
     case GPMSG_NPC_MESSAGE:
         event = new Event(Event::Message);
         event->setInt("id", npcId);
-        event->setString("text", msg.readString(msg.getUnreadLength()));
+        event->setString("text", msg.readString());
         event->trigger(Event::NpcChannel);
         delete event;
 
