@@ -37,6 +37,7 @@ namespace
     Emote mUnknown;
     bool mLoaded = false;
     int mLastEmote = 0;
+    int mFirstEmote = -1;
 }
 
 void EmoteDB::load()
@@ -49,6 +50,7 @@ void EmoteDB::load()
     mUnknown.sprite = new ImageSprite(
         ResourceManager::getInstance()->getImage("graphics/sprites/error.png"));
 
+    mFirstEmote = -1;
     mLastEmote = 0;
 
     logger->log("Initializing emote database...");
@@ -115,6 +117,10 @@ void EmoteDB::load()
         }
 
         mEmotes[id] = currentEmote;
+
+        if (mFirstEmote == -1)
+            mFirstEmote = id;
+
         if (id > mLastEmote)
             mLastEmote = id;
     }
@@ -148,6 +154,11 @@ const Emote *EmoteDB::get(int id)
     {
         return i->second;
     }
+}
+
+int EmoteDB::getFirst()
+{
+    return mFirstEmote;
 }
 
 int EmoteDB::getLast()

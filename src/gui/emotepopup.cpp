@@ -51,7 +51,7 @@ EmotePopup::EmotePopup():
     mColumnCount(1)
 {
     // Setup emote sprites
-    for (int i = 0; i <= EmoteDB::getLast(); ++i)
+    for (int i = EmoteDB::getFirst(); i <= EmoteDB::getLast(); ++i)
     {
         mEmotes.push_back(EmoteDB::get(i)->sprite);
     }

@@ -24,6 +24,7 @@
 #include "actorspritemanager.h"
 #include "being.h"
 #include "client.h"
+#include "effectmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -38,6 +39,7 @@
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/manaserv_protocol.h"
 
+#include "resources/emotedb.h"
 #include "resources/hairdb.h"
 
 #include "utils/gettext.h"
@@ -57,6 +59,7 @@ BeingHandler::BeingHandler()
         GPMSG_BEING_ACTION_CHANGE,
         GPMSG_BEING_LOOKS_CHANGE,
         GPMSG_BEING_DIR_CHANGE,
+        GPMSG_BEING_EMOTE,
         0
     };
     handledMessages = _messages;
@@ -89,6 +92,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
         case GPMSG_BEING_DIR_CHANGE:
             handleBeingDirChangeMessage(msg);
+            break;
+        case GPMSG_BEING_EMOTE:
+            handleBeingEmoteMessage(msg);
             break;
     }
 }
@@ -324,6 +330,17 @@ void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
     // The direction for the player's character is handled on client side.
     if (being != local_player)
         being->setDirection((BeingDirection) data);
+}
+
+void BeingHandler::handleBeingEmoteMessage(MessageIn &msg)
+{
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
+    if (!being)
+        return;
+
+    const int fx = EmoteDB::get(msg.readInt16())->effect;
+    if (fx > -1)
+        effectManager->trigger(fx, being);
 }
 
 } // namespace ManaServ

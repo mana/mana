@@ -48,6 +48,7 @@ namespace EmoteDB
 
     const Emote *get(int id);
 
+    int getFirst();
     int getLast();
 
     typedef Emotes::iterator EmotesIterator;
