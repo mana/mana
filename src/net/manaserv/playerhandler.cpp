@@ -140,8 +140,10 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 int skill = msg.readInt16();
                 int current = msg.readInt32();
                 int next = msg.readInt32();
+                int level = msg.readInt16();
 
                 PlayerInfo::setStatExperience(skill, current, next);
+                PlayerInfo::setStatBase(skill, level);
             }
         } break;
 

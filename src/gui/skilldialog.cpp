@@ -278,8 +278,7 @@ void SkillDialog::update()
 
     for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end(); it++)
     {
-        if ((*it).second->modifiable)
-            (*it).second->update();
+        (*it).second->update();
     }
 }
 
@@ -291,6 +290,12 @@ void SkillDialog::event(Event::Channel channel, const Event &event)
         {
             update();
         }
+    }
+    else if (event.getType() == Event::UpdateStat)
+    {
+        SkillMap::iterator it = mSkills.find(event.getInt("id"));
+        if (it != mSkills.end())
+            it->second->update();
     }
 }
 
@@ -476,8 +481,8 @@ void SkillInfo::update()
 
     if (exp.second)
     {
-        skillExp = strprintf("%d / %d", exp.first, exp.second);
-        progress = (float) exp.first / exp.second;
+        progress = exp.second != 0 ? (float) exp.first / exp.second : 0;
+        skillExp = strprintf("%.2f%%", progress * 100);
     }
     else
     {
