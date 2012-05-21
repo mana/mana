@@ -72,7 +72,7 @@ WindowMenu::WindowMenu():
     addButton(N_("Setup"), x, h, "button-icon-setup.png",
         KeyboardConfig::KEY_WINDOW_SETUP);
 
-    setDimension(gcn::Rectangle(graphics->getWidth() - x - 3, 3,
+    setDimension(gcn::Rectangle(graphics->getWidth() - x, 3,
                                 x - 3, h));
     setVisible(true);
 }
