@@ -59,6 +59,10 @@ bool Sprite::reset()
     mFrameIndex = 0;
     mFrameTime = 0;
 
+    if (mAnimation)
+        mFrame = mAnimation->getFrame(0);
+    else
+        mFrame = nullptr;
     return ret;
 }
 
@@ -74,8 +78,6 @@ bool Sprite::play(const std::string &spriteAction)
     if (animation && animation != mAnimation && animation->getLength() > 0)
     {
         mAnimation = animation;
-        mFrame = mAnimation->getFrame(0);
-
         reset();
 
         return true;
@@ -160,7 +162,6 @@ bool Sprite::setDirection(SpriteDirection direction)
         if (animation && animation != mAnimation && animation->getLength() > 0)
         {
             mAnimation = animation;
-            mFrame = mAnimation->getFrame(0);
             reset();
         }
 
