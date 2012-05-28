@@ -51,6 +51,7 @@
 
 #include <guichan/focushandler.hpp>
 #include <guichan/focuslistener.hpp>
+#include <guichan/font.hpp>
 
 #include <sstream>
 
@@ -508,6 +509,28 @@ void ChatWindow::whisper(const std::string &nick,
         {
             localChatTab->chatLog(nick + " : " + mes, ACT_WHISPER, false);
         }
+    }
+}
+
+void ChatWindow::widgetResized(const gcn::Event &event)
+{
+    Window::widgetResized(event);
+    int fontHeight = getFont()->getHeight();
+    const gcn::Rectangle area = getChildrenArea();
+    int currHeight = getHeight();
+    int diff = currHeight % fontHeight;
+    int desiredHeight = currHeight;
+    if (diff < fontHeight / 2 && diff != 0 && diff > 4)
+    {
+        desiredHeight = (currHeight - diff) + fontHeight;
+    }
+    else if (diff > fontHeight / 2 && diff < fontHeight - 4)
+    {
+        desiredHeight = currHeight - diff;
+    }
+    if (desiredHeight != currHeight)
+    {
+        setHeight(desiredHeight);
     }
 }
 

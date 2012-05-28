@@ -180,8 +180,9 @@ class ChatWindow : public Window,
 
         void whisper(const std::string &nick, const std::string &mes,
                      Own own = BY_OTHER);
-
         ChatTab *addWhisperTab(const std::string &nick, bool switchTo = false);
+
+        virtual void widgetResized(const gcn::Event &event);
 
     protected:
         friend class ChatTab;
