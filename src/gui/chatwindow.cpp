@@ -519,7 +519,8 @@ void ChatWindow::widgetResized(const gcn::Event &event)
     int currHeight = getHeight();
     int diff = currHeight % fontHeight;
     int desiredHeight = currHeight;
-    if (diff < fontHeight / 2 && diff != 0 && diff > 4)
+    //the 4 is for leaving a little bit space for not looking to compact
+    if (diff < fontHeight / 2 && diff > 4)
     {
         desiredHeight = (currHeight - diff) + fontHeight;
     }
