@@ -183,6 +183,8 @@ class ChatWindow : public Window,
 
         ChatTab *addWhisperTab(const std::string &nick, bool switchTo = false);
 
+        virtual void widgetResized(const gcn::Event &event);
+
     protected:
         friend class ChatTab;
         friend class WhisperTab;
