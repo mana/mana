@@ -516,7 +516,6 @@ void ChatWindow::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
     int fontHeight = getFont()->getHeight();
-    const gcn::Rectangle area = getChildrenArea();
     int currHeight = getHeight();
     int diff = currHeight % fontHeight;
     int desiredHeight = currHeight;
