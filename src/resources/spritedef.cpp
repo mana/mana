@@ -161,7 +161,8 @@ void SpriteDef::loadImageSet(xmlNodePtr node, const std::string &palettes)
 
     if (!imageSet)
     {
-        logger->error("Couldn't load imageset!");
+        logger->error(strprintf("Couldn't load imageset (%s)!",
+                                imageSrc.c_str()).c_str());
     }
 
     imageSet->setOffsetX(XML::getProperty(node, "offsetX", 0));
