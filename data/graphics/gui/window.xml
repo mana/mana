@@ -1,18 +1,18 @@
-<skinset name="Default" image="window.png">
+<skinset name="Default" image="lpc_window.png">
 	<widget type="Window">
 		<!-- Top Row -->
-		<part type="top-left-corner" xpos="0" ypos="0" width="4" height="4" />
-		<part type="top-edge" xpos="4" ypos="0" width="32" height="4" />
-		<part type="top-right-corner" xpos="36" ypos="0" width="4" height="4" />
+		<part type="top-left-corner" xpos="0" ypos="0" width="32" height="13" />
+		<part type="top-edge" xpos="32" ypos="0" width="33" height="13" />
+		<part type="top-right-corner" xpos="65" ypos="0" width="32" height="13" />
 
 		<!-- Middle Row -->
-		<part type="left-edge" xpos="0" ypos="4" width="4" height="216" />
-		<part type="bg-quad" xpos="4" ypos="4" width="32" height="216" />
-		<part type="right-edge" xpos="36" ypos="4" width="4" height="216" />
+		<part type="left-edge" xpos="0" ypos="13" width="32" height="7" />
+		<part type="bg-quad" xpos="32" ypos="13" width="33" height="7" />
+		<part type="right-edge" xpos="65" ypos="13" width="32" height="7" />
 
 		<!-- Bottom Row -->
-		<part type="bottom-left-corner" xpos="0" ypos="220" width="4" height="4" />
-		<part type="bottom-edge" xpos="4" ypos="220" width="32" height="4" />
-		<part type="bottom-right-corner" xpos="36" ypos="220" width="4" height="4" />
+		<part type="bottom-left-corner" xpos="0" ypos="20" width="32" height="12" />
+		<part type="bottom-edge" xpos="32" ypos="20" width="33" height="12" />
+		<part type="bottom-right-corner" xpos="65" ypos="20" width="32" height="12" />
 	</widget>
 </skinset>

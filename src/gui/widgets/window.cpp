@@ -68,8 +68,8 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     instances++;
 
     setFrameSize(0);
-    setPadding(3);
-    setTitleBarHeight(20);
+    setPadding(5);
+    setTitleBarHeight(25);
 
     // Loads the skin
     mSkin = Theme::instance()->load(skin);
@@ -123,7 +123,7 @@ void Window::draw(gcn::Graphics *graphics)
     {
         g->setColor(Theme::getThemeColor(Theme::TEXT));
         g->setFont(getFont());
-        g->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
+        g->drawText(getCaption(), 7, 10, gcn::Graphics::LEFT);
     }
 
     // Draw Close Button
