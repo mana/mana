@@ -148,6 +148,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     center();
     setVisible(true);
     mNameField->requestFocus();
+    setFixedGender(true, GENDER_MALE);
 }
 
 CharCreateDialog::~CharCreateDialog()
@@ -359,6 +360,8 @@ void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
     if (fixed)
     {
         mMale->setEnabled(false);
+        mMale->setVisible(false);
+        mFemale->setVisible(false);
         mFemale->setEnabled(false);
     }
 }
