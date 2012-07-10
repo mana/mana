@@ -30,6 +30,7 @@
 #include "utils/gettext.h"
 
 #include <SDL_gfxBlitFunc.h>
+#include <SDL/SDL_rotozoom.h>
 
 Graphics::Graphics():
     mWidth(0),
@@ -38,8 +39,10 @@ Graphics::Graphics():
     mBpp(0),
     mFullscreen(false),
     mHWAccel(false),
-    mBlitMode(BLIT_NORMAL)
+    mBlitMode(BLIT_NORMAL),
+    mScreenSurface(0)
 {
+    mTarget = 0;
 }
 
 Graphics::~Graphics()
@@ -66,13 +69,22 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     else
         displayFlags |= SDL_SWSURFACE;
 
-    setTarget(SDL_SetVideoMode(w, h, bpp, displayFlags));
+    SDL_FreeSurface(mTarget);
+    mTarget = 0;
+
+    mScreenSurface = SDL_SetVideoMode(w, h, bpp, displayFlags);
+    const SDL_PixelFormat& fmt = *(mScreenSurface->format);
+    setTarget(SDL_CreateRGBSurface(SDL_SWSURFACE, 640, 360, fmt.BitsPerPixel, fmt.Rmask, fmt.Gmask, fmt.Bmask, 0));
 
     if (!mTarget)
         return false;
 
-    mWidth = w;
-    mHeight = h;
+    mWidth = 640;
+    mHeight = 360;
+
+    // Calculate scaling factor
+    mScale = std::min(w / 640, h / 360);
+
     mBpp = bpp;
     mFullscreen = fs;
     mHWAccel = hwaccel;
@@ -112,8 +124,8 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 bool Graphics::changeVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 {
     // Just return success if we're already in this mode
-    if (mWidth == w &&
-            mHeight == h &&
+    if (mScreenSurface && mScreenSurface->w == w &&
+            mScreenSurface->h == h &&
             mBpp == bpp &&
             mFullscreen == fs &&
             mHWAccel == hwaccel)
@@ -123,12 +135,14 @@ bool Graphics::changeVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 
     bool success = setVideoMode(w, h, bpp, fs, hwaccel);
 
-    // If it didn't work, try to restore the previous mode. If that doesn't
+    // If it didn't work, try to restore fallback resolution. If that doesn't
     // work either, we're in big trouble and bail out.
-    if (!success) {
-        if (!setVideoMode(mWidth, mHeight, mBpp, mFullscreen, mHWAccel)) {
+    if (!success)
+    {
+        if (!setVideoMode(640, 360, mBpp, mFullscreen, mHWAccel))
+        {
             logger->error(_("Failed to change video mode and couldn't "
-                            "switch back to the previous mode!"));
+                            "switch back to the fallback mode!"));
         }
     }
 
@@ -362,7 +376,27 @@ void Graphics::drawImageRect(int x, int y, int w, int h,
 
 void Graphics::updateScreen()
 {
-    SDL_Flip(mTarget);
+    // Center viewport
+    SDL_Rect dstRect;
+    dstRect.x = (mScreenSurface->w-getWidth() * mScale) / 2;
+    dstRect.y = (mScreenSurface->h-getHeight() * mScale) / 2;
+
+    // Zoom in if necessary
+    if (mScale > 1)
+    {
+        SDL_Surface *tmp = zoomSurface(mTarget, mScale, mScale, 0);
+
+        // Copy temporary surface to screen
+        SDL_BlitSurface(tmp, NULL, mScreenSurface, &dstRect);
+        SDL_FreeSurface(tmp);
+    }
+    else
+    {
+        // Copy mTarget directly to screen
+        SDL_BlitSurface(mTarget, NULL, mScreenSurface, &dstRect);
+    }
+
+    SDL_Flip(mScreenSurface);
 }
 
 SDL_Surface *Graphics::getScreenshot()

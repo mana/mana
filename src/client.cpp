@@ -1399,9 +1399,6 @@ void Client::handleVideoResize(int width, int height)
     width = std::max(640, width);
     height = std::max(360, height);
 
-    if (graphics->getWidth() == width && graphics->getHeight() == height)
-        return;
-
     if (graphics->changeVideoMode(width,
                                   height,
                                   graphics->getBpp(),
