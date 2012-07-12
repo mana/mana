@@ -79,10 +79,8 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     if (requestedRatio < targetRatio) {
         // Screen is higher / narrower than target aspect ratio: calculate
         // scale based on height.
-        std::cout << ((double) h / 360) << std::endl;
         mScale = (int) std::floor((double) h / 360);
     } else {
-        std::cout << ((double) w / 640) << std::endl;
         mScale = (int) std::floor((double) w / 640);
     }
 
