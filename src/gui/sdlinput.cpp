@@ -60,6 +60,8 @@
 
 #include <guichan/exception.hpp>
 
+#include "graphics.h"
+
 SDLInput::SDLInput()
 {
     mMouseInWindow = true;
@@ -73,14 +75,12 @@ bool SDLInput::isKeyQueueEmpty()
 
 gcn::KeyInput SDLInput::dequeueKeyInput()
 {
-    gcn::KeyInput keyInput;
-
     if (mKeyInputQueue.empty())
     {
         throw GCN_EXCEPTION("The queue is empty.");
     }
 
-    keyInput = mKeyInputQueue.front();
+    gcn::KeyInput keyInput = mKeyInputQueue.front();
     mKeyInputQueue.pop();
 
     return keyInput;
@@ -93,15 +93,18 @@ bool SDLInput::isMouseQueueEmpty()
 
 gcn::MouseInput SDLInput::dequeueMouseInput()
 {
-    gcn::MouseInput mouseInput;
-
     if (mMouseInputQueue.empty())
     {
         throw GCN_EXCEPTION("The queue is empty.");
     }
 
-    mouseInput = mMouseInputQueue.front();
+    gcn::MouseInput mouseInput = mMouseInputQueue.front();
     mMouseInputQueue.pop();
+
+    // Scale the mouse input by the graphics scale ratio
+    int scale = graphics->getScale();
+    mouseInput.setX(mouseInput.getX() / scale);
+    mouseInput.setY(mouseInput.getY() / scale);
 
     return mouseInput;
 }

@@ -254,6 +254,9 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
 
+    mouseX /= graphics->getScale();
+    mouseY /= graphics->getScale();
+
     // Show ItemTooltip
     std::string slotName = getSlotName(x, y);
     if (!slotName.empty())

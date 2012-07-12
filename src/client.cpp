@@ -1397,7 +1397,7 @@ void Client::handleVideoResize(int width, int height)
     // Keep a minimum size. This isn't adhered to by the actual window, but
     // it keeps some window positions from getting messed up.
     width = std::max(640, width);
-    height = std::max(480, height);
+    height = std::max(360, height);
 
     if (graphics->getWidth() == width && graphics->getHeight() == height)
         return;
@@ -1408,7 +1408,8 @@ void Client::handleVideoResize(int width, int height)
                                   false,
                                   graphics->getHWAccel()))
     {
-        videoResized(width, height);
+        videoResized(graphics->getWidth(),
+                     graphics->getHeight());
 
         // Since everything appears to have worked out, remember to store the
         // new size in the configuration.

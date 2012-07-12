@@ -34,6 +34,7 @@
 Graphics::Graphics():
     mWidth(0),
     mHeight(0),
+    mScale(1),
     mBpp(0),
     mFullscreen(false),
     mHWAccel(false),
@@ -134,16 +135,6 @@ bool Graphics::changeVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     _beginDraw();
 
     return success;
-}
-
-int Graphics::getWidth() const
-{
-    return mWidth;
-}
-
-int Graphics::getHeight() const
-{
-    return mHeight;
 }
 
 bool Graphics::drawImage(Image *image, int x, int y)

@@ -197,12 +197,17 @@ class Graphics : public gcn::SDLGraphics
         /**
          * Returns the width of the screen.
          */
-        int getWidth() const;
+        int getWidth() const { return mWidth; }
 
         /**
          * Returns the height of the screen.
          */
-        int getHeight() const;
+        int getHeight() const { return mHeight; }
+
+        /**
+         * Returns the current scale ratio of the screen.
+         */
+        int getScale() const { return mScale; }
 
         /**
          * Returns the amount of bits per pixel that was requested (not the
@@ -231,6 +236,7 @@ class Graphics : public gcn::SDLGraphics
     protected:
         int mWidth;
         int mHeight;
+        int mScale;
         int mBpp;
         bool mFullscreen;
         bool mHWAccel;

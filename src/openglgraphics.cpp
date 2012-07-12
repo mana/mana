@@ -33,6 +33,8 @@
 
 #include <SDL.h>
 
+#include <cmath>
+
 #ifndef GL_TEXTURE_RECTANGLE_ARB
 #define GL_TEXTURE_RECTANGLE_ARB 0x84F5
 #define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB 0x84F8
@@ -70,8 +72,22 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 
     int displayFlags = SDL_ANYFORMAT | SDL_OPENGL;
 
-    mWidth = w;
-    mHeight = h;
+    const double targetRatio = (double) 640 / 360; // 1.77778
+    const double requestedRatio = (double) w / h;
+    mScale = 1;
+
+    if (requestedRatio < targetRatio) {
+        // Screen is higher / narrower than target aspect ratio: calculate
+        // scale based on height.
+        std::cout << ((double) h / 360) << std::endl;
+        mScale = (int) std::floor((double) h / 360);
+    } else {
+        std::cout << ((double) w / 640) << std::endl;
+        mScale = (int) std::floor((double) w / 640);
+    }
+
+    mWidth = w / mScale;
+    mHeight = h / mScale;
     mBpp = bpp;
     mFullscreen = fs;
     mHWAccel = hwaccel;
@@ -646,7 +662,7 @@ void OpenGLGraphics::_beginDraw()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glOrtho(0.0, (double)mTarget->w, (double)mTarget->h, 0.0, -1.0, 1.0);
+    glOrtho(0.0, (double) mWidth, (double) mHeight, 0.0, -1.0, 1.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -659,7 +675,7 @@ void OpenGLGraphics::_beginDraw()
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    pushClipArea(gcn::Rectangle(0, 0, mTarget->w, mTarget->h));
+    pushClipArea(gcn::Rectangle(0, 0, mWidth, mHeight));
 }
 
 void OpenGLGraphics::_endDraw()
@@ -712,6 +728,8 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
 
 bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 {
+    const double ratio = (double) mTarget->w / mWidth;
+
     int transX = 0;
     int transY = 0;
 
@@ -726,12 +744,15 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
     transX += mClipStack.top().xOffset;
     transY += mClipStack.top().yOffset;
 
+    int x = (int) (mClipStack.top().x * ratio);
+    int y = mTarget->h - (int) ((mClipStack.top().y +
+                                 mClipStack.top().height) * ratio);
+    int width = (int) (mClipStack.top().width * ratio);
+    int height = (int) (mClipStack.top().height * ratio);
+
     glPushMatrix();
     glTranslatef(transX, transY, 0);
-    glScissor(mClipStack.top().x,
-              mTarget->h - mClipStack.top().y - mClipStack.top().height,
-              mClipStack.top().width,
-              mClipStack.top().height);
+    glScissor(x, y, width, height);
 
     return result;
 }
@@ -743,11 +764,15 @@ void OpenGLGraphics::popClipArea()
     if (mClipStack.empty())
         return;
 
+    const double ratio = (double) mTarget->w / mWidth;
+    int x = (int) (mClipStack.top().x * ratio);
+    int y = mTarget->h - (int) ((mClipStack.top().y +
+                                 mClipStack.top().height) * ratio);
+    int width = (int) (mClipStack.top().width * ratio);
+    int height = (int) (mClipStack.top().height * ratio);
+
     glPopMatrix();
-    glScissor(mClipStack.top().x,
-              mTarget->h - mClipStack.top().y - mClipStack.top().height,
-              mClipStack.top().width,
-              mClipStack.top().height);
+    glScissor(x, y, width, height);
 }
 
 void OpenGLGraphics::setColor(const gcn::Color& color)

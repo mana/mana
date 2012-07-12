@@ -205,6 +205,9 @@ void Gui::draw()
     int mouseX, mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
 
+    mouseX /= graphics->getScale();
+    mouseY /= graphics->getScale();
+
     if ((Client::hasMouseFocus() || button & SDL_BUTTON(1))
             && mCustomCursor
             && mMouseCursorAlpha > 0.0f)
