@@ -726,8 +726,6 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
 
 bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 {
-    const double ratio = (double) mTarget->w / mWidth;
-
     int transX = 0;
     int transY = 0;
 
@@ -742,11 +740,11 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
     transX += mClipStack.top().xOffset;
     transY += mClipStack.top().yOffset;
 
-    int x = (int) (mClipStack.top().x * ratio);
+    int x = (int) (mClipStack.top().x * mScale);
     int y = mTarget->h - (int) ((mClipStack.top().y +
-                                 mClipStack.top().height) * ratio);
-    int width = (int) (mClipStack.top().width * ratio);
-    int height = (int) (mClipStack.top().height * ratio);
+                                 mClipStack.top().height) * mScale);
+    int width = (int) (mClipStack.top().width * mScale);
+    int height = (int) (mClipStack.top().height * mScale);
 
     glPushMatrix();
     glTranslatef(transX, transY, 0);
@@ -762,12 +760,11 @@ void OpenGLGraphics::popClipArea()
     if (mClipStack.empty())
         return;
 
-    const double ratio = (double) mTarget->w / mWidth;
-    int x = (int) (mClipStack.top().x * ratio);
+    int x = (int) (mClipStack.top().x * mScale);
     int y = mTarget->h - (int) ((mClipStack.top().y +
-                                 mClipStack.top().height) * ratio);
-    int width = (int) (mClipStack.top().width * ratio);
-    int height = (int) (mClipStack.top().height * ratio);
+                                 mClipStack.top().height) * mScale);
+    int width = (int) (mClipStack.top().width * mScale);
+    int height = (int) (mClipStack.top().height * mScale);
 
     glPopMatrix();
     glScissor(x, y, width, height);
