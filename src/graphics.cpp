@@ -72,19 +72,21 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     SDL_FreeSurface(mTarget);
     mTarget = 0;
 
+    // Calculate scaling factor
+    mScale = std::max(w / 640, h / 360);
+
     mScreenSurface = SDL_SetVideoMode(w, h, bpp, displayFlags);
     const SDL_PixelFormat& fmt = *(mScreenSurface->format);
-    setTarget(SDL_CreateRGBSurface(SDL_SWSURFACE, 640, 360, fmt.BitsPerPixel, fmt.Rmask, fmt.Gmask, fmt.Bmask, 0));
+    setTarget(SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                   w / mScale, h / mScale,
+                                   fmt.BitsPerPixel,
+                                   fmt.Rmask, fmt.Gmask, fmt.Bmask, 0));
 
     if (!mTarget)
         return false;
 
-    mWidth = 640;
-    mHeight = 360;
-
-    // Calculate scaling factor
-    mScale = std::min(w / 640, h / 360);
-
+    mWidth = mTarget->w;
+    mHeight = mTarget->h;
     mBpp = bpp;
     mFullscreen = fs;
     mHWAccel = hwaccel;

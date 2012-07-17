@@ -74,7 +74,6 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 
     const double targetRatio = (double) 640 / 360; // 1.77778
     const double requestedRatio = (double) w / h;
-    mScale = 1;
 
     if (requestedRatio < targetRatio) {
         // Screen is higher / narrower than target aspect ratio: calculate
