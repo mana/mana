@@ -55,6 +55,7 @@ SET (FILES
     vscroll_up_highlight.png
     vscroll_up_pressed.png
     window.png
+    lpc_window.png
     window.xml
     )
 
