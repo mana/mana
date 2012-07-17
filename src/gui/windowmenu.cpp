@@ -62,8 +62,7 @@ WindowMenu::WindowMenu():
         addButton(N_("Skills"), x, h, "button-icon-skills.png",
                   KeyboardConfig::KEY_WINDOW_SKILL);
 
-    if (specialsWindow->hasSpecials())
-        addButton(N_("Specials"), x, h, "button-icon-specials.png");
+    addButton(N_("Specials"), x, h, "button-icon-specials.png");
 
     addButton(N_("Social"), x, h, "button-icon-social.png",
         KeyboardConfig::KEY_WINDOW_SOCIAL);
