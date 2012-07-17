@@ -116,7 +116,7 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 #endif
 
     // Setup OpenGL
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, mWidth * mScale, mHeight * mScale);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
     int gotDoubleBuffer;
     SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
