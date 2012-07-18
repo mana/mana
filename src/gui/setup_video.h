@@ -44,15 +44,10 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         void action(const gcn::ActionEvent &event);
 
-        static const char *overlayDetailToString(int detail = -1);
-
-        static const char *particleDetailToString(int detail = -1);
-
     private:
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
-        bool mParticleEffectsEnabled;
         int mFps;
         bool mSDLTransparencyDisabled;
 
@@ -60,26 +55,15 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         //gcn::Label *scrollRadiusLabel;
         //gcn::Label *scrollLazinessLabel;
-        gcn::Label *overlayDetailLabel;
-        gcn::Label *particleDetailLabel;
 
         gcn::ListBox *mModeList;
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
-        gcn::CheckBox *mParticleEffectsCheckBox;
 
         gcn::CheckBox *mFpsCheckBox;
         gcn::Slider *mFpsSlider;
         gcn::Label *mFpsLabel;
-
-        int mOverlayDetail;
-        gcn::Slider *mOverlayDetailSlider;
-        gcn::Label *mOverlayDetailField;
-
-        int mParticleDetail;
-        gcn::Slider *mParticleDetailSlider;
-        gcn::Label *mParticleDetailField;
 
         gcn::CheckBox *mDisableSDLTransparencyCheckBox;
 };

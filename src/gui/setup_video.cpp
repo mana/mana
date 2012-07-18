@@ -28,7 +28,6 @@
 #include "localplayer.h"
 #include "log.h"
 #include "main.h"
-#include "particle.h"
 
 #include "gui/okdialog.h"
 
@@ -123,40 +122,10 @@ int ModeListModel::getIndexOf(const std::string &widthXHeightMode)
     return -1;
 }
 
-const char *Setup_Video::overlayDetailToString(int detail)
-{
-    if (detail == -1)
-        detail = config.getIntValue("OverlayDetail");
-
-    switch (detail)
-    {
-        case 0: return _("off");
-        case 1: return _("low");
-        case 2: return _("high");
-    }
-    return "";
-}
-
-const char *Setup_Video::particleDetailToString(int detail)
-{
-    if (detail == -1)
-        detail = 3 - config.getIntValue("particleEmitterSkip");
-
-    switch (detail)
-    {
-        case 0: return _("low");
-        case 1: return _("medium");
-        case 2: return _("high");
-        case 3: return _("max");
-    }
-    return "";
-}
-
 Setup_Video::Setup_Video():
     mFullScreenEnabled(config.getBoolValue("screen")),
     mOpenGLEnabled(config.getBoolValue("opengl")),
     mCustomCursorEnabled(config.getBoolValue("customcursor")),
-    mParticleEffectsEnabled(config.getBoolValue("particleeffects")),
     mFps(config.getIntValue("fpslimit")),
     mSDLTransparencyDisabled(config.getBoolValue("disableTransparency")),
     mModeListModel(new ModeListModel),
@@ -165,17 +134,9 @@ Setup_Video::Setup_Video():
     mOpenGLCheckBox(new CheckBox(_("OpenGL"), mOpenGLEnabled)),
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"),
                                        mCustomCursorEnabled)),
-    mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
-                                          mParticleEffectsEnabled)),
     mFpsCheckBox(new CheckBox(_("FPS limit:"))),
     mFpsSlider(new Slider(10, 120)),
     mFpsLabel(new Label),
-    mOverlayDetail(config.getIntValue("OverlayDetail")),
-    mOverlayDetailSlider(new Slider(0, 2)),
-    mOverlayDetailField(new Label),
-    mParticleDetail(3 - config.getIntValue("particleEmitterSkip")),
-    mParticleDetailSlider(new Slider(0, 3)),
-    mParticleDetailField(new Label),
     mDisableSDLTransparencyCheckBox(
                           new CheckBox(_("Disable transparency (Low CPU mode)"),
                                        mSDLTransparencyDisabled))
@@ -187,9 +148,6 @@ Setup_Video::Setup_Video():
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setSize(100, 200);
-
-    overlayDetailLabel = new Label(_("Ambient FX:"));
-    particleDetailLabel = new Label(_("Particle detail:"));
 
     mModeList->setEnabled(true);
 
@@ -203,9 +161,6 @@ Setup_Video::Setup_Video():
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setSelected(mFps > 0);
 
-    overlayDetailLabel->setAlignment(Graphics::RIGHT);
-    particleDetailLabel->setAlignment(Graphics::RIGHT);
-
     // If the openGL Mode is enabled, disabling the transaprency
     // is irrelevant.
     mDisableSDLTransparencyCheckBox->setEnabled(!mOpenGLEnabled);
@@ -218,34 +173,18 @@ Setup_Video::Setup_Video():
     // Set actions
     mModeList->setActionEventId("videomode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
-    mParticleEffectsCheckBox->setActionEventId("particleeffects");
     mDisableSDLTransparencyCheckBox->setActionEventId("disableTransparency");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
     mFpsSlider->setActionEventId("fpslimitslider");
-    mOverlayDetailSlider->setActionEventId("overlaydetailslider");
-    mOverlayDetailField->setActionEventId("overlaydetailfield");
     mOpenGLCheckBox->setActionEventId("opengl");
-    mParticleDetailSlider->setActionEventId("particledetailslider");
-    mParticleDetailField->setActionEventId("particledetailfield");
 
     // Set listeners
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
     mOpenGLCheckBox->addActionListener(this);
-    mParticleEffectsCheckBox->addActionListener(this);
     mDisableSDLTransparencyCheckBox->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
     mFpsSlider->addActionListener(this);
-    mOverlayDetailSlider->addActionListener(this);
-    mOverlayDetailField->addKeyListener(this);
-    mParticleDetailSlider->addActionListener(this);
-    mParticleDetailField->addKeyListener(this);
-
-    mOverlayDetailField->setCaption(overlayDetailToString(mOverlayDetail));
-    mOverlayDetailSlider->setValue(mOverlayDetail);
-
-    mParticleDetailField->setCaption(particleDetailToString(mParticleDetail));
-    mParticleDetailSlider->setValue(mParticleDetail);
 
     // Do the layout
     LayoutHelper h(this);
@@ -258,26 +197,10 @@ Setup_Video::Setup_Video():
     place(2, 0, mFsCheckBox);
     place(2, 1, mOpenGLCheckBox);
     place(2, 2, mCustomCursorCheckBox);
-
-    place = h.getPlacer(0, 1);
-    place.getCell().setHAlign(LayoutCell::FILL);
-
-    place(0, 0, space, 3);
-    place(0, 1, mDisableSDLTransparencyCheckBox, 4);
-
-    place(0, 2, mFpsCheckBox);
-    place(1, 2, mFpsSlider, 2);
-    place(3, 2, mFpsLabel);
-
-    place(0, 3, mParticleEffectsCheckBox, 4);
-
-    place(0, 4, particleDetailLabel);
-    place(1, 4, mParticleDetailSlider, 2);
-    place(3, 4, mParticleDetailField);
-
-    place(0, 5, overlayDetailLabel);
-    place(1, 5, mOverlayDetailSlider, 2);
-    place(3, 5, mOverlayDetailField);
+    place(2, 3, mDisableSDLTransparencyCheckBox, 4);
+    place(2, 4, mFpsCheckBox);
+    place(3, 4, mFpsSlider, 2);
+    place(5, 4, mFpsLabel);
 
     setDimension(gcn::Rectangle(0, 0, 370, 300));
 }
@@ -402,8 +325,6 @@ void Setup_Video::apply()
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getBoolValue("screen");
     mCustomCursorEnabled = config.getBoolValue("customcursor");
-    mParticleEffectsEnabled = config.getBoolValue("particleeffects");
-    mOverlayDetail = config.getIntValue("OverlayDetail");
     mOpenGLEnabled = config.getBoolValue("opengl");
     mSDLTransparencyDisabled = config.getBoolValue("disableTransparency");
 }
@@ -414,11 +335,8 @@ void Setup_Video::cancel()
     mFsCheckBox->setSelected(mFullScreenEnabled);
     mOpenGLCheckBox->setSelected(mOpenGLEnabled);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
-    mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
-    mOverlayDetailSlider->setValue(mOverlayDetail);
-    mParticleDetailSlider->setValue(mParticleDetail);
     std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : _("None");
     mFpsLabel->setCaption(text);
     mDisableSDLTransparencyCheckBox->setSelected(mSDLTransparencyDisabled);
@@ -432,7 +350,6 @@ void Setup_Video::cancel()
     mModeList->setSelected(mModeListModel->getIndexOf(videoMode));
 
     config.setValue("customcursor", mCustomCursorEnabled);
-    config.setValue("particleeffects", mParticleEffectsEnabled);
     config.setValue("opengl", mOpenGLEnabled);
     config.setValue("disableTransparency", mSDLTransparencyDisabled);
 }
@@ -444,31 +361,6 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     if (id == "customcursor")
     {
         config.setValue("customcursor", mCustomCursorCheckBox->isSelected());
-    }
-    else if (id == "particleeffects")
-    {
-        config.setValue("particleeffects",
-                        mParticleEffectsCheckBox->isSelected());
-        Particle::enabled = mParticleEffectsCheckBox->isSelected();
-
-        if (Game::instance())
-        {
-            new OkDialog(_("Particle Effect Settings Changed."),
-                         _("Changes will take effect on map change."));
-        }
-    }
-    else if (id == "overlaydetailslider")
-    {
-        int val = (int) mOverlayDetailSlider->getValue();
-        mOverlayDetailField->setCaption(overlayDetailToString(val));
-        config.setValue("OverlayDetail", val);
-    }
-    else if (id == "particledetailslider")
-    {
-        int val = (int) mParticleDetailSlider->getValue();
-        mParticleDetailField->setCaption(particleDetailToString(val));
-        config.setValue("particleEmitterSkip", 3 - val);
-        Particle::emitterSkip = 4 - val;
     }
     else if (id == "fpslimitcheckbox" || id == "fpslimitslider")
     {
