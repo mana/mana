@@ -82,3 +82,32 @@ Zuzanna K. Filutowska  <platyna users.sourceforge.net>
 == Sound files ==
 
 data/sfx/system/newmessage.ogg (Psi-IM, GPL)
+
+== Client theming for the Liberated Pixel Cup ==
+
+daneeklu (opengameart.org) (CC BY-SA 3.0, GPLv3):
+  data/graphics/gui/buttong.png
+  data/graphics/gui/button_disabled.png
+  data/graphics/gui/buttonhi.png
+  data/graphics/gui/buttonpress.png
+  data/graphics/gui/checkbox.png
+  data/graphics/gui/close_button.png
+  data/graphics/gui/hscroll_left_default.png
+  data/graphics/gui/hscroll_left_highlight.png
+  data/graphics/gui/hscroll_left_pressed.png
+  data/graphics/gui/hscroll_right_default.png
+  data/graphics/gui/hscroll_right_highlight.png
+  data/graphics/gui/hscroll_right_pressed.png
+  data/graphics/gui/slider.png
+  data/graphics/gui/slider_highlight.png
+  data/graphics/gui/tab.png
+  data/graphics/gui/tab_highlight.png
+  data/graphics/gui/tabselected.png
+  data/graphics/gui/vscoll_down_default.png
+  data/graphics/gui/vscroll_down_highlight.png
+  data/graphics/gui/vscroll_down_pressed.png
+  data/graphics/gui/vscroll_grey.png
+  data/graphics/gui/vscroll_highlight.png
+  data/graphics/gui/vscroll_up_default.png
+  data/graphics/gui/vscroll_up_highlight.png
+  data/graphics/gui/vscroll_up_pressed.png
