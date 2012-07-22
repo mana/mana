@@ -491,7 +491,7 @@ Image *Image::_GLload(SDL_Surface *tmpImage)
         SDL_LockSurface(tmpImage);
 
     glTexImage2D(
-            mTextureType, 0, 4,
+            mTextureType, 0, GL_RGBA8,
             tmpImage->w, tmpImage->h,
             0, GL_RGBA, GL_UNSIGNED_BYTE,
             tmpImage->pixels);
