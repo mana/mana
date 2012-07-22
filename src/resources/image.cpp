@@ -438,24 +438,21 @@ Image *Image::_SDLload(SDL_Surface *tmpImage)
 }
 
 #ifdef USE_OPENGL
-Image *Image::_GLload(SDL_Surface *tmpImage)
+Image *Image::_GLload(SDL_Surface *image)
 {
     // Flush current error flag.
     glGetError();
 
-    int width = tmpImage->w;
-    int height = tmpImage->h;
+    int width = image->w;
+    int height = image->h;
     int realWidth = powerOfTwo(width);
     int realHeight = powerOfTwo(height);
 
     if (realWidth < width || realHeight < height)
     {
         logger->log("Warning: image too large, cropping to %dx%d texture!",
-                tmpImage->w, tmpImage->h);
+                    realWidth, realHeight);
     }
-
-    // Make sure the alpha channel is not used, but copied to destination
-    SDL_SetAlpha(tmpImage, 0, SDL_ALPHA_OPAQUE);
 
     // Determine 32-bit masks based on byte order
     Uint32 rmask, gmask, bmask, amask;
@@ -471,39 +468,52 @@ Image *Image::_GLload(SDL_Surface *tmpImage)
     amask = 0xff000000;
 #endif
 
-    SDL_Surface *oldImage = tmpImage;
-    tmpImage = SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth, realHeight,
-        32, rmask, gmask, bmask, amask);
+    bool needsConversion = !(realWidth == width &&
+                             realHeight == height &&
+                             image->format->BytesPerPixel == 4 &&
+                             image->format->Rmask == rmask &&
+                             image->format->Gmask == gmask &&
+                             image->format->Bmask == bmask &&
+                             image->format->Amask == amask);
 
-    if (!tmpImage)
+    if (needsConversion)
     {
-        logger->log("Error, image convert failed: out of memory");
-        return NULL;
-    }
+        SDL_Surface *oldImage = image;
+        image = SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth, realHeight,
+                                     32, rmask, gmask, bmask, amask);
 
-    SDL_BlitSurface(oldImage, NULL, tmpImage, NULL);
+        if (!image)
+        {
+            logger->log("Error, image convert failed: out of memory");
+            return NULL;
+        }
+
+        // Make sure the alpha channel is not used, but copied to destination
+        SDL_SetAlpha(oldImage, 0, SDL_ALPHA_OPAQUE);
+        SDL_BlitSurface(oldImage, NULL, image, NULL);
+    }
 
     GLuint texture;
     glGenTextures(1, &texture);
     OpenGLGraphics::bindTexture(mTextureType, texture);
 
-    if (SDL_MUSTLOCK(tmpImage))
-        SDL_LockSurface(tmpImage);
+    if (SDL_MUSTLOCK(image))
+        SDL_LockSurface(image);
 
-    glTexImage2D(
-            mTextureType, 0, GL_RGBA8,
-            tmpImage->w, tmpImage->h,
-            0, GL_RGBA, GL_UNSIGNED_BYTE,
-            tmpImage->pixels);
+    glTexImage2D(mTextureType, 0, GL_RGBA8,
+                 image->w, image->h,
+                 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                 image->pixels);
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(mTextureType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(mTextureType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    if (SDL_MUSTLOCK(tmpImage))
-        SDL_UnlockSurface(tmpImage);
+    if (SDL_MUSTLOCK(image))
+        SDL_UnlockSurface(image);
 
-    SDL_FreeSurface(tmpImage);
+    if (needsConversion)
+        SDL_FreeSurface(image);
 
     GLenum error = glGetError();
     if (error)
