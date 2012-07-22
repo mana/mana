@@ -243,7 +243,7 @@ class Image : public Resource
          */
         static int powerOfTwo(int input);
 
-        static Image *_GLload(SDL_Surface *tmpImage);
+        static Image *_GLload(SDL_Surface *image);
 
         GLuint mGLImage;
         int mTexWidth, mTexHeight;
