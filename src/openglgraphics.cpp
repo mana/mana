@@ -126,14 +126,17 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     char const *glExtensions = (char const *)glGetString(GL_EXTENSIONS);
     GLint texSize;
     bool rectTex = strstr(glExtensions, "GL_ARB_texture_rectangle");
-    if (rectTex)
+    bool npotTex = strstr(glExtensions, "GL_ARB_texture_non_power_of_two");
+    if (rectTex && !npotTex)
     {
         Image::mTextureType = GL_TEXTURE_RECTANGLE_ARB;
+        Image::mPowerOfTwoTextures = false;
         glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB, &texSize);
     }
     else
     {
         Image::mTextureType = GL_TEXTURE_2D;
+        Image::mPowerOfTwoTextures = !npotTex;
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &texSize);
     }
     Image::mTextureSize = texSize;

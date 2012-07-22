@@ -36,6 +36,7 @@
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
+bool Image::mPowerOfTwoTextures = true;
 int Image::mTextureType = 0;
 int Image::mTextureSize = 0;
 #endif
@@ -544,7 +545,7 @@ void Image::setLoadAsOpenGL(bool useOpenGL)
 int Image::powerOfTwo(int input)
 {
     int value;
-    if (mTextureType == GL_TEXTURE_2D)
+    if (mPowerOfTwoTextures)
     {
         value = 1;
         while (value < input && value < mTextureSize)
