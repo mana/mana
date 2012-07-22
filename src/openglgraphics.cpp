@@ -617,8 +617,6 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image,
 
 void OpenGLGraphics::updateScreen()
 {
-    glFlush();
-    glFinish();
     SDL_GL_SwapBuffers();
 }
 
