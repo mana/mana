@@ -290,19 +290,6 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
                                        int desiredWidth, int desiredHeight,
                                        bool useColor)
 {
-    return drawRescaledImage(image, srcX, srcY,
-                             dstX, dstY,
-                             width, height,
-                             desiredWidth, desiredHeight,
-                             useColor, true);
-}
-
-bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
-                                       int dstX, int dstY,
-                                       int width, int height,
-                                       int desiredWidth, int desiredHeight,
-                                       bool useColor, bool smooth)
-{
     if (!image)
         return false;
 
@@ -312,11 +299,6 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
         return drawImage(image, srcX, srcY, dstX, dstY,
                          width, height, useColor);
     }
-
-    // When the desired image is smaller than the current one,
-    // disable smooth effect.
-    if (width > desiredWidth && height > desiredHeight)
-        smooth = false;
 
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
@@ -331,20 +313,6 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
     // Draw a textured quad.
     drawRescaledQuad(image, srcX, srcY, dstX, dstY, width, height,
                      desiredWidth, desiredHeight);
-
-    if (smooth) // A basic smooth effect...
-    {
-        glColor4f(1.0f, 1.0f, 1.0f, 0.2f);
-        drawRescaledQuad(image, srcX, srcY, dstX - 1, dstY - 1, width, height,
-                         desiredWidth + 1, desiredHeight + 1);
-        drawRescaledQuad(image, srcX, srcY, dstX + 1, dstY + 1, width, height,
-                         desiredWidth - 1, desiredHeight - 1);
-
-        drawRescaledQuad(image, srcX, srcY, dstX + 1, dstY, width, height,
-                         desiredWidth - 1, desiredHeight);
-        drawRescaledQuad(image, srcX, srcY, dstX, dstY + 1, width, height,
-                         desiredWidth, desiredHeight - 1);
-    }
 
     if (!useColor)
     {
@@ -652,7 +620,6 @@ void OpenGLGraphics::_beginDraw()
     glLoadIdentity();
 
     glEnable(GL_SCISSOR_TEST);
-    glEnableClientState(GL_VERTEX_ARRAY);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -789,10 +756,6 @@ void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect)
 void OpenGLGraphics::fillRectangle(const gcn::Rectangle& rect)
 {
     drawRectangle(rect, true);
-}
-
-void OpenGLGraphics::setTargetPlane(int width, int height)
-{
 }
 
 void OpenGLGraphics::setTexturingAndBlending(bool enable)

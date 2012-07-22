@@ -52,22 +52,13 @@ class OpenGLGraphics : public Graphics
                        bool useColor);
 
         /**
-         * Draws a resclaled version of the image
+         * Draws a rescaled version of the image
          */
         bool drawRescaledImage(Image *image, int srcX, int srcY,
                                int dstX, int dstY,
                                int width, int height,
                                int desiredWidth, int desiredHeight,
                                bool useColor);
-
-        /**
-         * Used to get the smooth rescale option over the standard function.
-         */
-        bool drawRescaledImage(Image *image, int srcX, int srcY,
-                               int dstX, int dstY,
-                               int width, int height,
-                               int desiredWidth, int desiredHeight,
-                               bool useColor, bool smooth);
 
         void drawImagePattern(Image *image,
                               int x, int y,
@@ -99,8 +90,6 @@ class OpenGLGraphics : public Graphics
         void drawRectangle(const gcn::Rectangle &rect);
 
         void fillRectangle(const gcn::Rectangle &rect);
-
-        void setTargetPlane(int width, int height);
 
         /**
          * Takes a screenshot and returns it as SDL surface.
