@@ -142,8 +142,8 @@ DefaultsData* getBrandingDefaults()
     AddDEF(brandingData, "onlineServerList", "");
     AddDEF(brandingData, "guiThemePath", "");
     AddDEF(brandingData, "theme", "");
-    AddDEF(brandingData, "font", "fonts/dejavusans.ttf");
-    AddDEF(brandingData, "boldFont", "fonts/dejavusans-bold.ttf");
+    AddDEF(brandingData, "font", "fonts/DejaVuSerifCondensed.ttf");
+    AddDEF(brandingData, "boldFont", "fonts/DejaVuSerifCondensed-Bold.ttf");
     AddDEF(brandingData, "monoFont", "fonts/dejavusans-mono.ttf");
 
     return brandingData;

@@ -1,6 +1,6 @@
 SET (FILES
-    dejavusans.ttf
-    dejavusans-bold.ttf
+    DejaVuSerifCondensed.ttf
+    DejaVuSerifCondensed-Bold.ttf
     dejavusans-mono.ttf
     )
 
