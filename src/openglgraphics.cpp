@@ -162,8 +162,8 @@ static inline void drawQuad(Image *image,
             dstX, dstY + height
         };
 
-        glVertexPointer(2, GL_FLOAT, 0, &vert);
-        glTexCoordPointer(2, GL_INT, 0, &tex);
+        glVertexPointer(2, GL_INT, 0, &vert);
+        glTexCoordPointer(2, GL_FLOAT, 0, &tex);
 
         glDrawArrays(GL_QUADS, 0, 4);
     }
@@ -224,8 +224,8 @@ static inline void drawRescaledQuad(Image *image,
             dstX, dstY + desiredHeight
         };
 
-        glVertexPointer(2, GL_FLOAT, 0, &vert);
-        glTexCoordPointer(2, GL_INT, 0, &tex);
+        glVertexPointer(2, GL_INT, 0, &vert);
+        glTexCoordPointer(2, GL_FLOAT, 0, &tex);
 
         glDrawArrays(GL_QUADS, 0, 4);
     }
