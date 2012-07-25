@@ -46,7 +46,8 @@ GLuint OpenGLGraphics::mLastImage = 0;
 
 OpenGLGraphics::OpenGLGraphics():
     mAlpha(false), mTexture(false), mColorAlpha(false),
-    mSync(false)
+    mSync(false),
+    mReduceInputLag(true)
 {
     mFloatTexArray = new GLfloat[vertexBufSize * 4];
     mIntTexArray = new GLint[vertexBufSize * 4];
@@ -63,6 +64,11 @@ OpenGLGraphics::~OpenGLGraphics()
 void OpenGLGraphics::setSync(bool sync)
 {
     mSync = sync;
+}
+
+void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
+{
+    mReduceInputLag = reduceInputLag;
 }
 
 bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
@@ -618,6 +624,19 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image,
 void OpenGLGraphics::updateScreen()
 {
     SDL_GL_SwapBuffers();
+
+    /*
+     * glFinish flushes all OpenGL commands and makes sure they have been
+     * executed before continuing. If we do not do this we allow the next
+     * frame to be prepared while the current one isn't even displaying yet,
+     * which can cause input lag that is especially noticable at mouse
+     * movement.
+     *
+     * The setting is optional since calling glFinish can reduce performance
+     * and increase CPU usage.
+     */
+    if (mReduceInputLag)
+        glFinish();
 }
 
 void OpenGLGraphics::_beginDraw()

@@ -43,6 +43,16 @@ class OpenGLGraphics : public Graphics
         void setSync(bool sync);
         bool getSync() const { return mSync; }
 
+        /**
+         * Sets whether input lag should be reduced.
+         *
+         * This means waiting until the graphics card has finished drawing and
+         * displaying the current frame until continuing towards the next,
+         * possibly at the cost of performance and CPU usage.
+         */
+        void setReduceInputLag(bool reduceInputLag);
+        bool getReduceInputLag() const { return mReduceInputLag; }
+
         bool setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
 
         bool drawImage(Image *image,
@@ -114,6 +124,7 @@ class OpenGLGraphics : public Graphics
         bool mAlpha, mTexture;
         bool mColorAlpha;
         bool mSync;
+        bool mReduceInputLag;
 };
 #endif //USE_OPENGL
 
