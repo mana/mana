@@ -105,7 +105,7 @@ ModeListModel::ModeListModel()
             const int height = modes[i]->h;
 
             // Skip the unreasonably small modes
-            if (width < 640 || height < 480)
+            if (width < 640 || height < 360)
                 continue;
 
             mVideoModes.push_back(toString(width) + "x" + toString(height));
