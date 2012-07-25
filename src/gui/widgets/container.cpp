@@ -21,7 +21,10 @@
 
 #include "gui/widgets/container.h"
 
-Container::Container()
+#include "gui/widgets/layouthelper.h"
+
+Container::Container():
+    mLayoutHelper(0)
 {
     setOpaque(false);
 }
@@ -30,4 +33,24 @@ Container::~Container()
 {
     while (!mWidgets.empty())
         delete mWidgets.front();
+
+    delete mLayoutHelper;
+}
+
+Layout &Container::getLayout()
+{
+    if (!mLayoutHelper)
+        mLayoutHelper = new LayoutHelper(this);
+    return mLayoutHelper->getLayout();
+}
+
+LayoutCell &Container::place(int x, int y, gcn::Widget *wg, int w, int h)
+{
+    add(wg);
+    return getLayout().place(wg, x, y, w, h);
+}
+
+ContainerPlacer Container::getPlacer(int x, int y)
+{
+    return ContainerPlacer(this, &getLayout().at(x, y));
 }

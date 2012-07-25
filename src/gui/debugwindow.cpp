@@ -66,7 +66,7 @@ public:
         mTileMouseLabel = new Label("");
         mParticleCountLabel = new Label("");
 
-        LayoutHelper h = (this);
+        LayoutHelper h(this);
         ContainerPlacer place = h.getPlacer(0, 0);
 
         place(0, 0, mFPSLabel, 1);
@@ -144,7 +144,7 @@ public:
         mSpecial2 = new RadioButton(_("Special 2"), "mapdebug");
         mSpecial3 = new RadioButton(_("Special 3"), "mapdebug");
 
-        LayoutHelper h = (this);
+        LayoutHelper h(this);
         ContainerPlacer place = h.getPlacer(0, 0);
 
         place(0, 0, showLabel, 1);

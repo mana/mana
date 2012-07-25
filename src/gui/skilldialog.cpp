@@ -31,7 +31,6 @@
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"

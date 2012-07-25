@@ -39,7 +39,6 @@
 #include "gui/widgets/container.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
-#include "gui/widgets/layouthelper.h"
 #include "gui/widgets/playerbox.h"
 #include "gui/widgets/textfield.h"
 
@@ -358,9 +357,6 @@ CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
 
     mDelete = new Button(_("Delete"), "delete", charSelectDialog);
 
-    LayoutHelper h(this);
-    ContainerPlacer place = h.getPlacer(0, 0);
-
     place(0, 0, mPlayerBox, 3, 5);
     place(0, 5, mName, 3);
     place(0, 6, mLevel, 3);
@@ -370,7 +366,7 @@ CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
 
     update();
 
-    h.reflowLayout(80, 112 + mName->getHeight() + mLevel->getHeight() +
+    setSize(80, 112 + mName->getHeight() + mLevel->getHeight() +
             mMoney->getHeight() + mButton->getHeight() + mDelete->getHeight());
 }
 

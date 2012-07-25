@@ -29,7 +29,6 @@
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
 #include "gui/widgets/slider.h"
 
 #include "utils/gettext.h"
@@ -47,7 +46,6 @@ Setup_Audio::Setup_Audio():
     mMusicSlider(new Slider(0, sound.getMaxVolume()))
 {
     setName(_("Audio"));
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
 
     gcn::Label *sfxLabel = new Label(_("Sfx volume"));
     gcn::Label *notificationsLabel = new Label(_("Notifications volume"));
@@ -72,9 +70,6 @@ Setup_Audio::Setup_Audio():
     mMusicSlider->setWidth(90);
 
     // Do the layout
-    LayoutHelper h(this);
-    ContainerPlacer place = h.getPlacer(0, 0);
-
     place(0, 0, mSoundCheckBox);
     place(0, 1, mSfxSlider);
     place(1, 1, sfxLabel);
@@ -83,8 +78,6 @@ Setup_Audio::Setup_Audio():
     place(0, 3, mMusicSlider);
     place(1, 3, musicLabel);
     place(0, 4, mDownloadMusicCheckBox);
-
-    setDimension(gcn::Rectangle(0, 0, 370, 280));
 }
 
 void Setup_Audio::apply()

@@ -33,7 +33,7 @@
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
@@ -187,11 +187,7 @@ Setup_Video::Setup_Video():
     mFpsSlider->addActionListener(this);
 
     // Do the layout
-    LayoutHelper h(this);
-
-    ContainerPlacer place = h.getPlacer(0, 0);
-    place.getCell().setHAlign(LayoutCell::FILL);
-
+    getLayout().setHAlign(LayoutCell::FILL);
     place(0, 0, scrollArea, 1, 4).setPadding(2).setHAlign(LayoutCell::FILL);
     place(1, 0, space, 1, 4);
     place(2, 0, mFsCheckBox);
@@ -201,8 +197,6 @@ Setup_Video::Setup_Video():
     place(2, 4, mFpsCheckBox);
     place(3, 4, mFpsSlider, 2);
     place(5, 4, mFpsLabel);
-
-    setDimension(gcn::Rectangle(0, 0, 370, 300));
 }
 
 Setup_Video::~Setup_Video()

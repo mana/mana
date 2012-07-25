@@ -24,6 +24,11 @@
 
 #include <guichan/widgets/container.hpp>
 
+class ContainerPlacer;
+class Layout;
+class LayoutCell;
+class LayoutHelper;
+
 /**
  * A widget container.
  *
@@ -38,6 +43,25 @@ class Container : public gcn::Container
     public:
         Container();
         ~Container();
+
+    protected:
+        /**
+         * Gets the layout handler for this container.
+         */
+        Layout &getLayout();
+
+        /**
+         * Adds a widget to the container and sets it at given cell.
+         */
+        LayoutCell &place(int x, int y, gcn::Widget *wg, int w = 1, int h = 1);
+
+        /**
+         * Returns a proxy for adding widgets in an inner table of the layout.
+         */
+        ContainerPlacer getPlacer(int x, int y);
+
+    private:
+        LayoutHelper *mLayoutHelper;
 };
 
 #endif

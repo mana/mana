@@ -35,7 +35,6 @@
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
 #include "gui/widgets/linkhandler.h"
 #include "gui/widgets/popup.h"
 #include "gui/widgets/scrollarea.h"
