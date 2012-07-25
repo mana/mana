@@ -27,7 +27,6 @@
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
 
 #include "utils/gettext.h"
 
@@ -46,16 +45,9 @@ Setup_Joystick::Setup_Joystick():
     mJoystickCheckBox->addActionListener(this);
 
     // Do the layout
-    LayoutHelper h(this);
-    ContainerPlacer place = h.getPlacer(0, 0);
-
-    place(0, 0, mJoystickCheckBox);
-    place(0, 1, mCalibrateLabel);
-    place.getCell().matchColWidth(0, 0);
-    place = h.getPlacer(0, 1);
-    place(0, 0, mCalibrateButton);
-
-    setDimension(gcn::Rectangle(0, 0, 370, 75));
+    place(0, 0, mJoystickCheckBox, 2);
+    place(0, 1, mCalibrateLabel, 2);
+    place(0, 2, mCalibrateButton);
 }
 
 void Setup_Joystick::action(const gcn::ActionEvent &event)

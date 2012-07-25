@@ -31,7 +31,7 @@
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/table.h"
 
@@ -99,8 +99,7 @@ public:
     {
         freeWidgets();
         delete mListModel;
-        if (mPlayers)
-            delete mPlayers;
+        delete mPlayers;
     }
 
     virtual int getRows() const
@@ -287,9 +286,6 @@ Setup_Players::Setup_Players():
     reset();
 
     // Do the layout
-    LayoutHelper h(this);
-    ContainerPlacer place = h.getPlacer(0, 0);
-
     place(0, 0, mPlayerTitleTable, 4);
     place(0, 1, mPlayerScrollArea, 4, 4).setPadding(2);
     place(0, 5, mDeleteButton);
@@ -302,8 +298,6 @@ Setup_Players::Setup_Players():
     place(0, 10, mWhisperTabCheckBox, 4).setPadding(4);
 
     player_relations.addListener(this);
-
-    setDimension(gcn::Rectangle(0, 0, 370, 280));
 }
 
 Setup_Players::~Setup_Players()

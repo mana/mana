@@ -32,11 +32,6 @@ LayoutHelper::~LayoutHelper()
     mContainer->removeWidgetListener(this);
 }
 
-Layout &LayoutHelper::getLayout()
-{
-    return mLayout;
-}
-
 LayoutCell &LayoutHelper::place(int x, int y, gcn::Widget *wg, int w, int h)
 {
     mContainer->add(wg);

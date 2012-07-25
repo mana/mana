@@ -23,5 +23,4 @@
 
 SetupTab::SetupTab()
 {
-    setOpaque(false);
 }

@@ -28,7 +28,7 @@
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/itemlinkhandler.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
@@ -155,9 +155,6 @@ Setup_Colors::Setup_Colors() :
     setOpaque(false);
 
     // Do the layout
-    LayoutHelper h(this);
-    ContainerPlacer place = h.getPlacer(0, 0);
-
     place(0, 0, mScroll, 6, 6).setPadding(2);
     place(0, 6, mPreviewBox, 6).setPadding(2);
     place(0, 7, mGradTypeLabel, 3);
@@ -177,8 +174,6 @@ Setup_Colors::Setup_Colors() :
     place(5, 11, mGradDelayText).setPadding(1);
 
     mGradTypeText->setCaption("");
-
-    setDimension(gcn::Rectangle(0, 0, 370, 280));
 }
 
 Setup_Colors::~Setup_Colors()

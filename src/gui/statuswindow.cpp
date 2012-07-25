@@ -29,7 +29,7 @@
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/vertcontainer.h"
@@ -65,7 +65,6 @@ class AttrDisplay : public Container
         const int mId;
         const std::string mName;
 
-        LayoutHelper *mLayout;
         Label *mLabel;
         Label *mValue;
 };
@@ -433,13 +432,10 @@ AttrDisplay::AttrDisplay(int id, const std::string &name):
 
     mLabel->setAlignment(Graphics::CENTER);
     mValue->setAlignment(Graphics::CENTER);
-
-    mLayout = new LayoutHelper(this);
 }
 
 AttrDisplay::~AttrDisplay()
 {
-    delete mLayout;
 }
 
 std::string AttrDisplay::update()
@@ -458,9 +454,6 @@ DerDisplay::DerDisplay(int id, const std::string &name):
         AttrDisplay(id, name)
 {
     // Do the layout
-    LayoutHelper h(this);
-    ContainerPlacer place = mLayout->getPlacer(0, 0);
-
     place(0, 0, mLabel, 3);
     place(3, 0, mValue, 2);
 
@@ -474,8 +467,6 @@ ChangeDisplay::ChangeDisplay(int id, const std::string &name):
     mInc = new Button(_("+"), "inc", this);
 
     // Do the layout
-    ContainerPlacer place = mLayout->getPlacer(0, 0);
-
     place(0, 0, mLabel, 3);
     place(4, 0, mValue, 2);
     place(6, 0, mInc);

@@ -29,7 +29,7 @@
 #include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
@@ -98,15 +98,10 @@ Setup_Keyboard::Setup_Keyboard():
     mMakeDefaultButton->addActionListener(this);
 
     // Do the layout
-    LayoutHelper h(this);
-    ContainerPlacer place = h.getPlacer(0, 0);
-
     place(0, 0, scrollArea, 4, 6).setPadding(2);
     place(0, 6, mMakeDefaultButton);
     place(2, 6, mAssignKeyButton);
     place(3, 6, mUnassignKeyButton);
-
-    setDimension(gcn::Rectangle(0, 0, 370, 280));
 }
 
 Setup_Keyboard::~Setup_Keyboard()

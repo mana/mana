@@ -34,7 +34,7 @@
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
@@ -248,9 +248,7 @@ Setup_Video::Setup_Video():
     mParticleDetailSlider->setValue(mParticleDetail);
 
     // Do the layout
-    LayoutHelper h(this);
-
-    ContainerPlacer place = h.getPlacer(0, 0);
+    ContainerPlacer place = getPlacer(0, 0);
     place.getCell().setHAlign(LayoutCell::FILL);
 
     place(0, 0, scrollArea, 1, 4).setPadding(2).setHAlign(LayoutCell::FILL);
@@ -259,7 +257,7 @@ Setup_Video::Setup_Video():
     place(2, 1, mOpenGLCheckBox);
     place(2, 2, mCustomCursorCheckBox);
 
-    place = h.getPlacer(0, 1);
+    place = getPlacer(0, 1);
     place.getCell().setHAlign(LayoutCell::FILL);
 
     place(0, 0, space, 3);
@@ -278,8 +276,6 @@ Setup_Video::Setup_Video():
     place(0, 5, overlayDetailLabel);
     place(1, 5, mOverlayDetailSlider, 2);
     place(3, 5, mOverlayDetailField);
-
-    setDimension(gcn::Rectangle(0, 0, 370, 300));
 }
 
 Setup_Video::~Setup_Video()

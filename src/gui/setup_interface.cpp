@@ -33,7 +33,7 @@
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
@@ -164,9 +164,6 @@ Setup_Interface::Setup_Interface():
     mFontSizeDropDown->adjustHeight();
 
     // Do the layout
-    LayoutHelper h(this);
-    ContainerPlacer place = h.getPlacer(0, 0);
-
     place(0, 0, mVisibleNamesCheckBox, 3);
     place(3, 0, mNameCheckBox, 3);
 
@@ -193,8 +190,6 @@ Setup_Interface::Setup_Interface():
     place(0, 9, mSpeechSlider, 2);
     place(2, 9, speechLabel, 2);
     place(4, 9, mSpeechLabel, 2).setPadding(2);
-
-    setDimension(gcn::Rectangle(0, 0, 370, 300));
 }
 
 Setup_Interface::~Setup_Interface()

@@ -34,14 +34,14 @@
 class LayoutHelper : public gcn::WidgetListener
 {
     public:
-        LayoutHelper(gcn::Container *container);
+        explicit LayoutHelper(gcn::Container *container);
 
         ~LayoutHelper();
 
         /**
          * Gets the layout handler.
          */
-        Layout &getLayout();
+        Layout &getLayout() { return mLayout; }
 
         /**
          * Computes the position of the widgets according to the current

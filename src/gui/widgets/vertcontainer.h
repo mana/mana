@@ -28,7 +28,7 @@
 /**
  * A widget container.
  *
- * This container places it's contents veritcally.
+ * This container places its contents vertically.
  */
 class VertContainer : public Container, public gcn::WidgetListener
 {
