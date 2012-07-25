@@ -4,6 +4,7 @@
  2. How do I...
  3. Crosscompiling using CMake
  4. Creating an installer binary for Windows
+ 5. Compiling on OS X
 
 This readme explains the most common parameters to CMake needed for
 building mana, as well as setting up a cross build environement to
@@ -134,3 +135,13 @@ $ makensis -DDLLDIR=/build/mana-libs/lib/ -DPRODUCT_VERSION=0.1.0.0 \
            -DUPX=true -DEXESUFFIX=/src setup.nsi
 
 and end up with the installer in mana-0.1.0.0-win32.exe
+
+
+5. Compiling on OS X
+--------------------
+
+To create an OSX compatible binary:
+$ export CC=/usr/bin/clang
+$ export CXX=/usr/bin/clang++
+$ cmake -DENABLE_CPP0X=OFF
+$ make
