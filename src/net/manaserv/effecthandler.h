@@ -36,6 +36,7 @@ class EffectHandler : public MessageHandler
     private:
         void handleCreateEffectPos(MessageIn &msg);
         void handleCreateEffectBeing(MessageIn &msg);
+        void handleCreateTextParticle(MessageIn &msg);
         void handleShake(MessageIn &msg);
 };
 

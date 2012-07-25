@@ -22,6 +22,7 @@
 #include "animationparticle.h"
 #include "imageparticle.h"
 #include "log.h"
+#include "map.h"
 #include "particle.h"
 #include "particleemitter.h"
 #include "rotationalparticle.h"
@@ -30,7 +31,8 @@
 #include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
-#include "map.h"
+
+#include "utils/stringutils.h"
 
 #include <cmath>
 
@@ -267,11 +269,17 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
         }
         else if (xmlStrEqual(propertyNode->name, BAD_CAST "animation"))
         {
+            std::string imagesetPath =
+                    XML::getProperty(propertyNode, "imageset", "");
             ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
-                XML::getProperty(propertyNode, "imageset", ""),
+                imagesetPath,
                 XML::getProperty(propertyNode, "width", 0),
                 XML::getProperty(propertyNode, "height", 0)
             );
+
+            if (!imageset)
+                logger->error(strprintf("Failed to load \"%s\"",
+                                        imagesetPath.c_str()));
 
             // Get animation frames
             for_each_xml_child_node(frameNode, propertyNode)
