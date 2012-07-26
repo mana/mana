@@ -78,8 +78,6 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
         typedef std::map<int, SkillInfo*> SkillMap;
         SkillMap mSkills;
         TabbedArea *mTabs;
-        Label *mPointsLabel;
-        Button *mIncreaseButton;
 };
 
 extern SkillDialog *skillDialog;

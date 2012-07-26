@@ -225,12 +225,8 @@ SkillDialog::SkillDialog():
     setupWindow->registerWindowForReset(this);
 
     mTabs = new TabbedArea();
-    mPointsLabel = new Label("0");
-    mIncreaseButton = new Button(_("Up"), "inc", this);
 
     place(0, 0, mTabs, 5, 5);
-    place(0, 5, mPointsLabel, 4);
-    place(4, 5, mIncreaseButton);
 
     center();
     loadWindowState();
@@ -243,16 +239,8 @@ SkillDialog::~SkillDialog()
 
 void SkillDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "inc")
-    {
-        SkillTab *tab = static_cast<SkillTab*>(mTabs->getSelectedTab());
-        if (SkillInfo *info = tab->getSelectedInfo())
-            Net::getPlayerHandler()->increaseSkill(info->id);
-    }
-    else if (event.getId() == "close")
-    {
+    if (event.getId() == "close")
         setVisible(false);
-    }
 }
 
 std::string SkillDialog::update(int id)
@@ -271,10 +259,6 @@ std::string SkillDialog::update(int id)
 
 void SkillDialog::update()
 {
-    mPointsLabel->setCaption(strprintf(_("Skill points available: %d"),
-                                       PlayerInfo::getAttribute(SKILL_POINTS)));
-    mPointsLabel->adjustSize();
-
     for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end(); it++)
     {
         (*it).second->update();
