@@ -43,10 +43,10 @@ TextPopup::TextPopup():
     const int fontHeight = getFont()->getHeight();
 
     mText1 = new Label;
-    mText1->setPosition(getPadding(), getPadding());
+    mText1->setPosition(0, 0);
 
     mText2 = new Label;
-    mText2->setPosition(getPadding(), fontHeight + getPadding());
+    mText2->setPosition(0, fontHeight);
 
     add(mText1);
     add(mText2);
@@ -68,13 +68,10 @@ void TextPopup::show(int x, int y, const std::string &str1, const std::string &s
     if (mText2->getWidth() > minWidth)
         minWidth = mText2->getWidth();
 
-    minWidth += 4 * getPadding();
-    setWidth(minWidth);
-
     if (!str2.empty())
-        setHeight((getPadding() + mText1->getFont()->getHeight()) * 2);
+        setContentSize(minWidth, mText1->getFont()->getHeight() * 2);
     else
-        setHeight(2 * getPadding() + mText1->getFont()->getHeight());
+        setContentSize(minWidth, mText1->getFont()->getHeight());
 
     const int distance = 20;
 

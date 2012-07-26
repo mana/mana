@@ -88,7 +88,6 @@ ItemPopup::ItemPopup():
     // Item Name
     mItemName = new Label;
     mItemName->setFont(boldFont);
-    mItemName->setPosition(getPadding(), getPadding());
 
     // Item Description
     mItemDesc = new TextBox;
@@ -143,12 +142,12 @@ void ItemPopup::setNoItem()
     mItemName->adjustSize();
 
     mItemName->setForegroundColor(Theme::getThemeColor(Theme::GENERIC));
-    mItemName->setPosition(getPadding(), getPadding());
+    mItemName->setPosition(0, 0);
 
     mItemDesc->setText(std::string());
     mItemEffect->setText(std::string());
 
-    setContentSize(mItemName->getWidth() + 2 * getPadding(), 0);
+    setContentSize(mItemName->getWidth(), 0);
 }
 
 void ItemPopup::setItem(const ItemInfo &item, bool showImage)
@@ -171,12 +170,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
 
         mIcon->setImage(image);
         if (image)
-        {
-            int x = getPadding();
-            int y = getPadding();
-            mIcon->setPosition(x, y);
             space = mIcon->getWidth();
-        }
     }
     else
     {
@@ -192,7 +186,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     mItemName->setCaption(caption);
     mItemName->adjustSize();
     mItemName->setForegroundColor(getColorFromItemType(mItemType));
-    mItemName->setPosition(getPadding() + space, getPadding());
+    mItemName->setPosition(space, 0);
 
     mItemDesc->setTextWrapped(item.getDescription(), ITEMPOPUP_WRAP_WIDTH);
     {
@@ -235,7 +229,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
         setContentSize(minWidth, nameHeight +
                         (numRowsDesc + numRowsWeight + 1) * fontHeight);
 
-        mItemWeight->setPosition(getPadding(),
+        mItemWeight->setPosition(0,
                                 nameHeight + (numRowsDesc + 1) * fontHeight);
     }
     else
@@ -243,12 +237,12 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
         setContentSize(minWidth, nameHeight + (numRowsDesc + numRowsEffect +
                         numRowsWeight + 1) * fontHeight);
 
-        mItemWeight->setPosition(getPadding(), nameHeight + (numRowsDesc +
+        mItemWeight->setPosition(0, nameHeight + (numRowsDesc +
                                     numRowsEffect + 1) * fontHeight);
     }
 
-    mItemDesc->setPosition(getPadding(), nameHeight);
-    mItemEffect->setPosition(getPadding(), nameHeight +
+    mItemDesc->setPosition(0, nameHeight);
+    mItemEffect->setPosition(0, nameHeight +
                             (numRowsDesc + 1) * fontHeight);
 }
 

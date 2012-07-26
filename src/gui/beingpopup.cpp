@@ -41,13 +41,12 @@ BeingPopup::BeingPopup():
     // Being Name
     mBeingName = new Label("A");
     mBeingName->setFont(boldFont);
-    mBeingName->setPosition(getPadding(), getPadding());
 
-    const int fontHeight = mBeingName->getHeight() + getPadding();
+    const int fontHeight = mBeingName->getHeight() + 3;
 
     // Being's party
     mBeingParty = new Label("A");
-    mBeingParty->setPosition(getPadding(), fontHeight);
+    mBeingParty->setPosition(0, fontHeight);
 
     add(mBeingName);
     add(mBeingParty);
@@ -80,12 +79,12 @@ void BeingPopup::show(int x, int y, Being *b)
         if (minWidth < mBeingParty->getWidth())
             minWidth = mBeingParty->getWidth();
 
-        setContentSize(minWidth + 10, (height * 2) + 10);
+        setContentSize(minWidth, height * 2);
     }
     else
     {
         mBeingParty->setCaption("");
-        setContentSize(minWidth + 10, height + 10);
+        setContentSize(minWidth, height);
     }
 
     position(x, y);

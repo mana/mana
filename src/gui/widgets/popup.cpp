@@ -37,8 +37,8 @@
 
 Popup::Popup(const std::string &name, const std::string &skin):
     mPopupName(name),
-    mMinWidth(100),
-    mMinHeight(40),
+    mMinWidth(64),
+    mMinHeight(25),
     mMaxWidth(graphics->getWidth()),
     mMaxHeight(graphics->getHeight())
 {
@@ -47,7 +47,7 @@ Popup::Popup(const std::string &name, const std::string &skin):
     if (!windowContainer)
         throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
 
-    setPadding(3);
+    setPadding(8);
 
     // Loads the skin
     mSkin = Theme::instance()->load(skin);
@@ -82,7 +82,9 @@ void Popup::draw(gcn::Graphics *graphics)
 
 gcn::Rectangle Popup::getChildrenArea()
 {
-    return gcn::Rectangle(getPadding(), 0, getWidth() - getPadding() * 2,
+    return gcn::Rectangle(getPadding(),
+                          getPadding(),
+                          getWidth() - getPadding() * 2,
                           getHeight() - getPadding() * 2);
 }
 
