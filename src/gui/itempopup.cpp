@@ -147,7 +147,7 @@ void ItemPopup::setNoItem()
     mItemDesc->setText(std::string());
     mItemEffect->setText(std::string());
 
-    setContentSize(mItemName->getWidth(), 0);
+    setContentSize(mItemName->getWidth(), mItemName->getHeight());
 }
 
 void ItemPopup::setItem(const ItemInfo &item, bool showImage)
