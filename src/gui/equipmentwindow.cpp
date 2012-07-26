@@ -25,14 +25,11 @@
 #include "graphics.h"
 #include "inventory.h"
 #include "item.h"
-#include "localplayer.h"
 
 #include "gui/equipmentwindow.h"
 #include "gui/itempopup.h"
 #include "gui/setup.h"
 #include "gui/viewport.h"
-
-#include "gui/widgets/playerbox.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"
@@ -60,11 +57,6 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     mItemPopup = new ItemPopup;
     setupWindow->registerWindowForReset(this);
 
-    // Control that shows the Player
-    PlayerBox *playerBox = new PlayerBox;
-    playerBox->setDimension(gcn::Rectangle(50, 80, 74, 123));
-    playerBox->setPlayer(local_player);
-
     setWindowName("Equipment");
     setCloseButton(true);
     setSaveVisible(true);
@@ -77,7 +69,6 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
                           area.height - mUnequip->getHeight() - 5);
     mUnequip->setEnabled(false);
 
-    add(playerBox);
     add(mUnequip);
 }
 
