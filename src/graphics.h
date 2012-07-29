@@ -99,7 +99,7 @@ class Graphics : public gcn::SDLGraphics
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        bool drawImage(Image *image, int x, int y);
+        bool drawImage(const Image *image, int x, int y);
 
         /**
          * Overrides with our own drawing method.
@@ -135,13 +135,13 @@ class Graphics : public gcn::SDLGraphics
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        virtual bool drawImage(Image *image,
+        virtual bool drawImage(const Image *image,
                                int srcX, int srcY,
                                int dstX, int dstY,
                                int width, int height,
                                bool useColor = false);
 
-        virtual void drawImagePattern(Image *image,
+        virtual void drawImagePattern(const Image *image,
                                       int x, int y,
                                       int w, int h);
 
