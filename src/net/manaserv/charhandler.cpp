@@ -290,11 +290,6 @@ void CharHandler::setCharCreateDialog(CharCreateDialog *window)
 
     if (!mCharCreateDialog)
         return;
-
-    mCharCreateDialog->setAttributes(Attributes::getLabels(),
-                                     Attributes::getCreationPoints(),
-                                     Attributes::getAttributeMinimum(),
-                                     Attributes::getAttributeMaximum());
 }
 
 void CharHandler::requestCharacters()

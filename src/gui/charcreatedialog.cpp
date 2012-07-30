@@ -101,11 +101,8 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mNameField->setActionEventId("create");
     mNameField->addActionListener(this);
 
-    mAttributesLeft = new Label(
-            strprintf(_("Please distribute %d points"), 99));
-
     int w = 200;
-    int h = 330;
+    int h = 160;
     setContentSize(w, h);
     mPlayerBox->setDimension(gcn::Rectangle(80, 30, 110, 85));
     mNameLabel->setPosition(5, 5);
@@ -117,7 +114,6 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mPrevHairStyleButton->setPosition(90, 64);
     mNextHairStyleButton->setPosition(165, 64);
     mHairStyleLabel->setPosition(5, 70);
-    mAttributesLeft->setPosition(15, 280);
     updateSliders();
     mCancelButton->setPosition(
             w - 5 - mCancelButton->getWidth(),
@@ -138,7 +134,6 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     add(mNextHairStyleButton);
     add(mPrevHairStyleButton);
     add(mHairStyleLabel);
-    add(mAttributesLeft);
     add(mCreateButton);
     add(mCancelButton);
 
@@ -240,6 +235,9 @@ std::string CharCreateDialog::getName() const
 
 void CharCreateDialog::updateSliders()
 {
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
+        return;
+
     for (unsigned i = 0; i < mAttributeSlider.size(); i++)
     {
         // Update captions
