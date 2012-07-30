@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<!--
+Example branding file
+
+With a branding file you can customize the appearance and various
+other default settings. To use a branding file just pass its
+filename / path as a command line parameter
+-->
+
+<configuration>
+ <option name="appName" value="Mana"/>
+ <option name="appShort" value="mana"/>
+ <option name="appIcon" value="icons/mana.png"/>
+ <option name="defaultServer" value="localhost"/>
+ <option name="defaultPort" value="9601"/>
+ <option name="defaultServerType" value="manaserv"/>
+</configuration>
