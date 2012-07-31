@@ -121,6 +121,7 @@ class Theme : public Palette, public EventListener
 
         enum ThemePalette {
             TEXT,
+            NPC_DIALOG_TEXT,
             SHADOW,
             OUTLINE,
             PROGRESS_BAR,

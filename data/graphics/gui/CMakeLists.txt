@@ -29,6 +29,8 @@ SET (FILES
     hscroll_right_pressed.png
     item_shortcut_bgr.png
     mouse.png
+    npcdialog.png
+    npcdialog.xml
     progress-indicator.png
     radioin.png
     radioin_highlight.png

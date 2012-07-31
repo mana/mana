@@ -48,7 +48,6 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         bool mShowMonsterDamageEnabled;
         bool mVisibleNamesEnabled;
         bool mNameEnabled;
-        bool mNPCLogEnabled;
         bool mPickupChatEnabled;
         bool mPickupParticleEnabled;
         double mOpacity;
@@ -63,7 +62,6 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mShowMonsterDamageCheckBox;
         gcn::CheckBox *mVisibleNamesCheckBox;
         gcn::CheckBox *mNameCheckBox;
-        gcn::CheckBox *mNPCLogCheckBox;
 
         gcn::Label *mPickupNotifyLabel;
         gcn::CheckBox *mPickupChatCheckBox;

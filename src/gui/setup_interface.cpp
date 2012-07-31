@@ -97,7 +97,6 @@ Setup_Interface::Setup_Interface():
     mShowMonsterDamageEnabled(config.getBoolValue("showMonstersTakedDamage")),
     mVisibleNamesEnabled(config.getBoolValue("visiblenames")),
     mNameEnabled(config.getBoolValue("showownname")),
-    mNPCLogEnabled(config.getBoolValue("logNpcInGui")),
     mPickupChatEnabled(config.getBoolValue("showpickupchat")),
     mPickupParticleEnabled(config.getBoolValue("showpickupparticle")),
     mOpacity(config.getFloatValue("guialpha")),
@@ -105,7 +104,6 @@ Setup_Interface::Setup_Interface():
     mVisibleNamesCheckBox(new CheckBox(_("Visible names"),
                                        mVisibleNamesEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
-    mNPCLogCheckBox(new CheckBox(_("Log NPC dialogue"), mNPCLogEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification:"))),
     // TRANSLATORS: Refers to "Show pickup notification"
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
@@ -143,7 +141,6 @@ Setup_Interface::Setup_Interface():
     mPickupChatCheckBox->setActionEventId("pickupchat");
     mPickupParticleCheckBox->setActionEventId("pickupparticle");
     mNameCheckBox->setActionEventId("showownname");
-    mNPCLogCheckBox->setActionEventId("lognpc");
     mAlphaSlider->setActionEventId("guialpha");
     mSpeechSlider->setActionEventId("speech");
 
@@ -153,7 +150,6 @@ Setup_Interface::Setup_Interface():
     mPickupChatCheckBox->addActionListener(this);
     mPickupParticleCheckBox->addActionListener(this);
     mNameCheckBox->addActionListener(this);
-    mNPCLogCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mSpeechSlider->addActionListener(this);
 
@@ -168,7 +164,6 @@ Setup_Interface::Setup_Interface():
     place(3, 0, mNameCheckBox, 3);
 
     place(0, 1, mShowMonsterDamageCheckBox, 3);
-    place(3, 1, mNPCLogCheckBox, 3);
 
     place(0, 2, space, 1, 1);
 
@@ -204,7 +199,6 @@ void Setup_Interface::apply()
     mShowMonsterDamageEnabled = config.getBoolValue("showMonstersTakedDamage");
     mVisibleNamesEnabled = config.getBoolValue("visiblenames");
     mNameEnabled = config.getBoolValue("showownname");
-    mNPCLogEnabled = config.getBoolValue("logNpcInGui");
     mSpeechMode = static_cast<Being::Speech>(config.getIntValue("speech"));
     mOpacity = config.getFloatValue("guialpha");
     mPickupChatEnabled = config.getBoolValue("showpickupchat");
@@ -217,7 +211,6 @@ void Setup_Interface::cancel()
     mVisibleNamesCheckBox->setSelected(mVisibleNamesEnabled);
     mSpeechSlider->setValue(mSpeechMode);
     mNameCheckBox->setSelected(mNameEnabled);
-    mNPCLogCheckBox->setSelected(mNPCLogEnabled);
     mAlphaSlider->setValue(mOpacity);
     //mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
 
@@ -227,7 +220,6 @@ void Setup_Interface::cancel()
     config.setValue("showownname", mNameEnabled);
     if (local_player)
         local_player->setCheckNameSetting(true);
-    config.setValue("logNpcInGui", mNPCLogEnabled);
     config.setValue("guialpha", mOpacity);
     config.setValue("showpickupchat", mPickupChatEnabled);
     config.setValue("showpickupparticle", mPickupParticleEnabled);
@@ -273,10 +265,5 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
             local_player->setCheckNameSetting(true);
         config.setValue("showownname", mNameCheckBox->isSelected());
     }
-    else if (id == "lognpc")
-    {
-        config.setValue("logNpcInGui", mNPCLogCheckBox->isSelected());
-    }
-
 }
 

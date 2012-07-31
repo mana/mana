@@ -101,7 +101,6 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "downTolerance", 100);
     AddDEF(configData, "leftTolerance", 100);
     AddDEF(configData, "rightTolerance", 100);
-    AddDEF(configData, "logNpcInGui", true);
     AddDEF(configData, "download-music", false);
     AddDEF(configData, "guialpha", 0.8f);
     AddDEF(configData, "ChatLogLength", 0);

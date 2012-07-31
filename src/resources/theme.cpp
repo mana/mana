@@ -396,6 +396,7 @@ static int readColorType(const std::string &type)
 {
     static std::string colors[] = {
         "TEXT",
+        "NPC_DIALOG_TEXT",
         "SHADOW",
         "OUTLINE",
         "PROGRESS_BAR",

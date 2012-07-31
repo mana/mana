@@ -1,0 +1,18 @@
+<skinset name="NpcDialog" image="npcdialog.png">
+	<widget type="Window">
+		<!-- Top Row -->
+		<part type="top-left-corner" xpos="0" ypos="0" width="4" height="4" />
+		<part type="top-edge" xpos="4" ypos="0" width="32" height="4" />
+		<part type="top-right-corner" xpos="36" ypos="0" width="4" height="4" />
+
+		<!-- Middle Row -->
+		<part type="left-edge" xpos="0" ypos="4" width="4" height="216" />
+		<part type="bg-quad" xpos="4" ypos="4" width="32" height="216" />
+		<part type="right-edge" xpos="36" ypos="4" width="4" height="216" />
+
+		<!-- Bottom Row -->
+		<part type="bottom-left-corner" xpos="0" ypos="220" width="4" height="4" />
+		<part type="bottom-edge" xpos="4" ypos="220" width="32" height="4" />
+		<part type="bottom-right-corner" xpos="36" ypos="220" width="4" height="4" />
+	</widget>
+</skinset>

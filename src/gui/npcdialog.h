@@ -27,7 +27,9 @@
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
+
 
 #include <list>
 #include <string>
@@ -47,7 +49,7 @@ class Button;
 class NpcDialog : public Window,
                   public gcn::ActionListener,
                   public gcn::ListModel,
-                  public EventListener
+                  public gcn::KeyListener
 {
     public:
         NpcDialog(int npcId);
@@ -59,6 +61,27 @@ class NpcDialog : public Window,
          */
         void action(const gcn::ActionEvent &event);
 
+        void keyPressed(gcn::KeyEvent &keyEvent);
+
+        /**
+         * Moves the dialog forward
+         */
+        void proceed();
+
+        /**
+         * Update the text being written to the screen
+         *
+         * @overload Window::logic
+         */
+        void logic();
+
+        /**
+         * Has the dialog window animate playing the text
+         *
+         * @param string The text that will be played
+         */
+        void playText(const std::string &string);
+
         /**
         * Sets the text shows in the dialog.
         *
@@ -67,28 +90,17 @@ class NpcDialog : public Window,
         void setText(const std::string &string);
 
         /**
-         * Adds the text to the text shows in the dialog. Also adds a newline
-         * to the end.
-         *
-         * @param string The text to add.
+         * When called the window's next interaction
+         * with the player will be to request the next
+         * stage in the interaction.
          */
-        void addText(const std::string &string, bool save = true);
+        void setStateNext();
 
         /**
-         * When called, the widget will show a "Next" button.
+         * When called the window's next interaction
+         * with the player will be to close the window.
          */
-        void showNextButton();
-
-        /**
-         * When called, the widget will show a "Close" button and will close
-         * the dialog when clicked.
-         */
-        void showCloseButton();
-
-        /**
-         * Notifies the server that client has performed a next action.
-         */
-        void nextDialog();
+        void setStateClose();
 
         /**
          * Notifies the server that the client has performed a close action.
@@ -139,18 +151,9 @@ class NpcDialog : public Window,
 
         void move(int amount);
 
-        /**
-         * Called when resizing the window.
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
-
         void setVisible(bool visible);
 
-        void event(Event::Channel channel, const Event &event);
-
-        void mouseClicked(gcn::MouseEvent &mouseEvent);
+        void mousePressed(gcn::MouseEvent &mouseEvent);
 
         /**
          * Returns the first active instance. Useful for pushing user
@@ -175,16 +178,19 @@ class NpcDialog : public Window,
         void buildLayout();
 
         int mNpcId;
-        bool mLogInteraction;
 
         int mDefaultInt;
         std::string mDefaultString;
 
         // Used for the main input area
-        gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
+        // Target string to be displayed into mTextBox
         std::string mText;
-        std::string mNewText;
+        // Timer for when to add a new character
+        int mTextPlayTime;
+        // When set, if playText() is called again
+        // It will clear the existing values
+        bool mClearTextOnNextPlay;
 
         // Used for choice input
         ListBox *mItemList;
@@ -194,16 +200,7 @@ class NpcDialog : public Window,
         // Used for string and integer input
         TextField *mTextField;
         IntTextField *mIntField;
-        Button *mPlusButton;
-        Button *mMinusButton;
-
-        Button *mClearButton;
-
-        // Used for the button
-        Button *mNextButton;
-
-        // Will reset the text and integer input to the provided default
-        Button *mResetButton;
+        Button *mSubmitButton;
 
         enum NpcInputState
         {
