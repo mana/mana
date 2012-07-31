@@ -532,8 +532,6 @@
 		<Unit filename="src\resources\hairdb.h" />
 		<Unit filename="src\resources\image.cpp" />
 		<Unit filename="src\resources\image.h" />
-		<Unit filename="src\resources\imageloader.cpp" />
-		<Unit filename="src\resources\imageloader.h" />
 		<Unit filename="src\resources\imageset.cpp" />
 		<Unit filename="src\resources\imageset.h" />
 		<Unit filename="src\resources\imagewriter.cpp" />

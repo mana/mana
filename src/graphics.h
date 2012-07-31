@@ -102,12 +102,6 @@ class Graphics : public gcn::SDLGraphics
         bool drawImage(Image *image, int x, int y);
 
         /**
-         * Overrides with our own drawing method.
-         */
-        void drawImage(gcn::Image const *image, int srcX, int srcY,
-                       int dstX, int dstY, int width, int height);
-
-        /**
          * Draws a resclaled version of the image
          */
         bool drawRescaledImage(Image *image, int srcX, int srcY,
