@@ -78,7 +78,6 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyWindowSetup", SDLK_F9, _("Setup Window")},
     {"keyWindowDebug", SDLK_F10, _("Debug Window")},
     {"keyWindowSocial", SDLK_F11, _("Social Window")},
-    {"keyWindowEmoteBar", SDLK_F12, _("Emote Shortcut Window")},
     {"keyWindowOutfit", SDLK_o, _("Outfits Window")},
     {"keyWearOutfit", SDLK_RCTRL, _("Wear Outfit")},
     {"keyCopyOutfit", SDLK_RALT, _("Copy Outfit")},

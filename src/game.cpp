@@ -107,7 +107,6 @@ TradeWindow *tradeWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 ShortcutWindow *itemShortcutWindow;
-ShortcutWindow *emoteShortcutWindow;
 OutfitWindow *outfitWindow;
 SpecialsWindow *specialsWindow;
 SocialWindow *socialWindow;
@@ -161,8 +160,6 @@ static void createGuiWindows()
     debugWindow = new DebugWindow;
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",
                                             new ItemShortcutContainer);
-    emoteShortcutWindow = new ShortcutWindow("EmoteShortcut",
-                                             new EmoteShortcutContainer);
     outfitWindow = new OutfitWindow();
     specialsWindow = new SpecialsWindow();
     socialWindow = new SocialWindow();
@@ -195,7 +192,6 @@ static void destroyGuiWindows()
     del_0(helpWindow)
     del_0(debugWindow)
     del_0(itemShortcutWindow)
-    del_0(emoteShortcutWindow)
     del_0(outfitWindow)
     del_0(specialsWindow)
     del_0(socialWindow)
@@ -684,9 +680,6 @@ void Game::handleInput()
                         break;
                     case KeyboardConfig::KEY_WINDOW_SOCIAL:
                         requestedWindow = socialWindow;
-                        break;
-                    case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
-                        requestedWindow = emoteShortcutWindow;
                         break;
                     case KeyboardConfig::KEY_WINDOW_OUTFIT:
                         requestedWindow = outfitWindow;

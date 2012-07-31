@@ -193,7 +193,6 @@ class KeyboardConfig
             KEY_WINDOW_SETUP,
             KEY_WINDOW_DEBUG,
             KEY_WINDOW_SOCIAL,
-            KEY_WINDOW_EMOTE_SHORTCUT,
             KEY_WINDOW_OUTFIT,
             KEY_WEAR_OUTFIT,
             KEY_COPY_OUTFIT,
