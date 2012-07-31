@@ -125,7 +125,7 @@ class MapLayer
                   const Actors &actors,
                   int debugFlags) const;
 
-        bool isFringeLayer()
+        bool isFringeLayer() const
         { return mIsFringeLayer; }
 
         int getTileDrawWidth(int x1, int y1, int endX, int &width) const;
