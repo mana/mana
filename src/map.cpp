@@ -201,12 +201,17 @@ int MapLayer::getTileDrawWidth(int x1, int y1, int endX, int &width) const
     Image *img1 = getTile(x1, y1);
     int c = 0;
     width = img1->getWidth();
+
+    // Images that don't match the tile width can't be drawn as a pattern
+    if (width != mMap->getTileWidth())
+        return c;
+
     for (int x = x1 + 1; x < endX; x++)
     {
         Image *img = getTile(x, y1);
         if (img != img1)
             break;
-        c ++;
+        c++;
         width += img->getWidth();
     }
     return c;
