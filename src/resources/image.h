@@ -84,7 +84,7 @@ class Image : public Resource
         /**
          * Frees the resources created by SDL.
          */
-        virtual void unload();
+        void unload();
 
         /**
          * Tells is the image is loaded
@@ -95,13 +95,13 @@ class Image : public Resource
         /**
          * Returns the width of the image.
          */
-        virtual int getWidth() const
+        int getWidth() const
         { return mBounds.w; }
 
         /**
          * Returns the height of the image.
          */
-        virtual int getHeight() const
+        int getHeight() const
         { return mBounds.h; }
 
         /**
@@ -113,7 +113,7 @@ class Image : public Resource
         /**
          * Sets the alpha value of this image.
          */
-        virtual void setAlpha(float alpha);
+        void setAlpha(float alpha);
 
         /**
          * Returns the alpha value of this image.
@@ -127,7 +127,7 @@ class Image : public Resource
          * @return <code>NULL</code> if creation failed and a valid
          *         object otherwise.
          */
-        virtual Image *getSubImage(int x, int y, int width, int height);
+        Image *getSubImage(int x, int y, int width, int height);
 
         /**
          * Tells if the image has got an alpha channel
@@ -269,14 +269,6 @@ class SubImage : public Image
 #endif
 
         ~SubImage();
-
-        /**
-         * Creates a new image with the desired clipping rectangle.
-         *
-         * @return <code>NULL</code> if creation failed and a valid
-         *         image otherwise.
-         */
-        Image *getSubImage(int x, int y, int width, int height);
 
     private:
         Image *mParent;

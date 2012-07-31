@@ -108,7 +108,8 @@ class MapLayer
         /**
          * Get tile image, with x and y in layer coordinates.
          */
-        Image *getTile(int x, int y) const;
+        Image *getTile(int x, int y) const
+        { return mTiles[x + y * mWidth]; }
 
         /**
          * Draws this layer to the given graphics context. The coordinates are
