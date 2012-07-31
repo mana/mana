@@ -576,11 +576,17 @@ Image *Image::getSubImage(int x, int y, int width, int height)
     // Create a new clipped sub-image
 #ifdef USE_OPENGL
     if (mUseOpenGL)
-        return new SubImage(this, mGLImage, x, y, width, height,
+        return new SubImage(this, mGLImage,
+                            mBounds.x + x,
+                            mBounds.y + y,
+                            width, height,
                             mTexWidth, mTexHeight);
 #endif
 
-    return new SubImage(this, mSDLSurface, x, y, width, height);
+    return new SubImage(this, mSDLSurface,
+                        mBounds.x + x,
+                        mBounds.y + y,
+                        width, height);
 }
 
 void Image::SDLterminateAlphaCache()
@@ -646,9 +652,4 @@ SubImage::~SubImage()
     mGLImage = 0;
 #endif
     mParent->decRef();
-}
-
-Image *SubImage::getSubImage(int x, int y, int w, int h)
-{
-    return mParent->getSubImage(mBounds.x + x, mBounds.y + y, w, h);
 }

@@ -116,11 +116,6 @@ void MapLayer::setTile(int x, int y, Image *img)
     setTile(x + y * mWidth, img);
 }
 
-Image* MapLayer::getTile(int x, int y) const
-{
-    return mTiles[x + y * mWidth];
-}
-
 void MapLayer::draw(Graphics *graphics,
                     int startX, int startY,
                     int endX, int endY,
