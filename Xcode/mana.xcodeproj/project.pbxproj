@@ -225,7 +225,6 @@
 		FC047CAF151E500C00C5E9E7 /* emotedb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C82151E500C00C5E9E7 /* emotedb.cpp */; };
 		FC047CB0151E500C00C5E9E7 /* hairdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C84151E500C00C5E9E7 /* hairdb.cpp */; };
 		FC047CB1151E500C00C5E9E7 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C86151E500C00C5E9E7 /* image.cpp */; };
-		FC047CB2151E500C00C5E9E7 /* imageloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C88151E500C00C5E9E7 /* imageloader.cpp */; };
 		FC047CB3151E500C00C5E9E7 /* imageset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C8A151E500C00C5E9E7 /* imageset.cpp */; };
 		FC047CB4151E500C00C5E9E7 /* imagewriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C8C151E500C00C5E9E7 /* imagewriter.cpp */; };
 		FC047CB5151E500C00C5E9E7 /* itemdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C8E151E500C00C5E9E7 /* itemdb.cpp */; };
@@ -767,8 +766,6 @@
 		FC047C85151E500C00C5E9E7 /* hairdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hairdb.h; sourceTree = "<group>"; };
 		FC047C86151E500C00C5E9E7 /* image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = image.cpp; sourceTree = "<group>"; };
 		FC047C87151E500C00C5E9E7 /* image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
-		FC047C88151E500C00C5E9E7 /* imageloader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imageloader.cpp; sourceTree = "<group>"; };
-		FC047C89151E500C00C5E9E7 /* imageloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imageloader.h; sourceTree = "<group>"; };
 		FC047C8A151E500C00C5E9E7 /* imageset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imageset.cpp; sourceTree = "<group>"; };
 		FC047C8B151E500C00C5E9E7 /* imageset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imageset.h; sourceTree = "<group>"; };
 		FC047C8C151E500C00C5E9E7 /* imagewriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imagewriter.cpp; sourceTree = "<group>"; };
@@ -1479,8 +1476,6 @@
 				FC047C85151E500C00C5E9E7 /* hairdb.h */,
 				FC047C86151E500C00C5E9E7 /* image.cpp */,
 				FC047C87151E500C00C5E9E7 /* image.h */,
-				FC047C88151E500C00C5E9E7 /* imageloader.cpp */,
-				FC047C89151E500C00C5E9E7 /* imageloader.h */,
 				FC047C8A151E500C00C5E9E7 /* imageset.cpp */,
 				FC047C8B151E500C00C5E9E7 /* imageset.h */,
 				FC047C8C151E500C00C5E9E7 /* imagewriter.cpp */,
@@ -1879,7 +1874,6 @@
 				FC047CAF151E500C00C5E9E7 /* emotedb.cpp in Sources */,
 				FC047CB0151E500C00C5E9E7 /* hairdb.cpp in Sources */,
 				FC047CB1151E500C00C5E9E7 /* image.cpp in Sources */,
-				FC047CB2151E500C00C5E9E7 /* imageloader.cpp in Sources */,
 				FC047CB3151E500C00C5E9E7 /* imageset.cpp in Sources */,
 				FC047CB4151E500C00C5E9E7 /* imagewriter.cpp in Sources */,
 				FC047CB5151E500C00C5E9E7 /* itemdb.cpp in Sources */,

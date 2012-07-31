@@ -478,8 +478,6 @@ src/resources/hairdb.cpp
 src/resources/hairdb.h
 src/resources/image.cpp
 src/resources/image.h
-src/resources/imageloader.cpp
-src/resources/imageloader.h
 src/resources/imageset.cpp
 src/resources/imageset.h
 src/resources/imagewriter.cpp
