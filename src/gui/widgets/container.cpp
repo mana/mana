@@ -54,3 +54,11 @@ ContainerPlacer Container::getPlacer(int x, int y)
 {
     return ContainerPlacer(this, &getLayout().at(x, y));
 }
+
+void Container::updateLayout()
+{
+    const gcn::Rectangle area = getChildrenArea();
+    int w = area.width;
+    int h = area.height;
+    getLayout().reflow(w, h);
+}

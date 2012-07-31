@@ -58,9 +58,8 @@ WindowMenu::WindowMenu():
     addButton(N_("Equipment"), x, h, "button-icon-equipment.png",
               KeyboardConfig::KEY_WINDOW_EQUIPMENT);
 
-    if (skillDialog->hasSkills())
-        addButton(N_("Skills"), x, h, "button-icon-skills.png",
-                  KeyboardConfig::KEY_WINDOW_SKILL);
+    addButton(N_("Skills"), x, h, "button-icon-skills.png",
+              KeyboardConfig::KEY_WINDOW_SKILL);
 
     addButton(N_("Specials"), x, h, "button-icon-specials.png");
 
@@ -71,8 +70,7 @@ WindowMenu::WindowMenu():
     addButton(N_("Setup"), x, h, "button-icon-setup.png",
         KeyboardConfig::KEY_WINDOW_SETUP);
 
-    setDimension(gcn::Rectangle(graphics->getWidth() - x, 3,
-                                x - 3, h));
+    setSize(x - 3, h);
     setVisible(true);
 }
 

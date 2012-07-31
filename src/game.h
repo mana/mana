@@ -24,9 +24,9 @@
 
 #include <string>
 
-#include "gui/windowmenu.h"
-
 class Map;
+class WindowMenu;
+class MiniStatusWindow;
 
 /**
  * The main class responsible for running the game. The game starts after you
@@ -77,8 +77,7 @@ class Game
         /**
          * Update the key shortcuts in the window menu.
          */
-        void updateWindowMenuCaptions()
-        { mWindowMenu->updatePopUpCaptions(); }
+        void updateWindowMenuCaptions();
 
         void videoResized(int width, int height);
 
@@ -87,6 +86,7 @@ class Game
         bool mDisconnected;
 
         WindowMenu *mWindowMenu;
+        MiniStatusWindow *mMiniStatusWindow;
 
         Map *mCurrentMap;
         std::string mMapName;

@@ -65,11 +65,6 @@ class Popup : public Container, public gcn::MouseListener
         ~Popup();
 
         /**
-         * Sets the window container to be used by new popups.
-         */
-        static void setWindowContainer(WindowContainer *windowContainer);
-
-        /**
          * Draws the popup.
          */
         void draw(gcn::Graphics *graphics);

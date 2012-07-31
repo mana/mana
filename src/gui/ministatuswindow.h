@@ -24,7 +24,9 @@
 
 #include "eventlistener.h"
 
-#include "gui/widgets/popup.h"
+#include "gui/widgets/container.h"
+
+#include <guichan/mouselistener.hpp>
 
 #include <vector>
 
@@ -38,7 +40,9 @@ class TextPopup;
  *
  * \ingroup Interface
  */
-class MiniStatusWindow : public Popup, public EventListener
+class MiniStatusWindow : public Container,
+                         public EventListener,
+                         public gcn::MouseListener
 {
     public:
         MiniStatusWindow();
@@ -49,8 +53,7 @@ class MiniStatusWindow : public Popup, public EventListener
 
         void logic(); // Updates icons
 
-        void draw(gcn::Graphics *graphics)
-        { drawChildren(graphics); }
+        void draw(gcn::Graphics *graphics);
 
         void mouseMoved(gcn::MouseEvent &mouseEvent);
         void mouseExited(gcn::MouseEvent &event);
@@ -76,7 +79,5 @@ class MiniStatusWindow : public Popup, public EventListener
         std::vector<int> mStatusEffectIcons;
         std::vector<AnimatedSprite *> mIcons;
 };
-
-extern MiniStatusWindow *miniStatusWindow;
 
 #endif

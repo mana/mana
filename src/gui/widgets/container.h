@@ -44,7 +44,6 @@ class Container : public gcn::Container
         Container();
         ~Container();
 
-    protected:
         /**
          * Gets the layout handler for this container.
          */
@@ -59,6 +58,12 @@ class Container : public gcn::Container
          * Returns a proxy for adding widgets in an inner table of the layout.
          */
         ContainerPlacer getPlacer(int x, int y);
+
+        /**
+         * Updates the layout to match the available size in the container
+         * (happens automatically on resizes).
+         */
+        void updateLayout();
 
     private:
         LayoutHelper *mLayoutHelper;

@@ -64,10 +64,12 @@
 #include "gui/textdialog.h"
 #include "gui/tradewindow.h"
 #include "gui/viewport.h"
+#include "gui/windowmenu.h"
 
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/emoteshortcutcontainer.h"
 #include "gui/widgets/itemshortcutcontainer.h"
+#include "gui/widgets/layout.h"
 
 #include "net/gamehandler.h"
 #include "net/generalhandler.h"
@@ -98,7 +100,6 @@ QuitDialog *quitDialog = NULL;
 
 ChatWindow *chatWindow;
 StatusWindow *statusWindow;
-MiniStatusWindow *miniStatusWindow;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
 Minimap *minimap;
@@ -148,7 +149,6 @@ static void createGuiWindows()
     setupWindow->clearWindowsForReset();
 
     // Create dialogs
-    miniStatusWindow = new MiniStatusWindow;
     minimap = new Minimap;
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
@@ -160,9 +160,9 @@ static void createGuiWindows()
     debugWindow = new DebugWindow;
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",
                                             new ItemShortcutContainer);
-    outfitWindow = new OutfitWindow();
-    specialsWindow = new SpecialsWindow();
-    socialWindow = new SocialWindow();
+    outfitWindow = new OutfitWindow;
+    specialsWindow = new SpecialsWindow;
+    socialWindow = new SocialWindow;
 
     localChatTab = new ChatTab(_("General"));
 
@@ -183,7 +183,6 @@ static void destroyGuiWindows()
     del_0(localChatTab) // Need to do this first, so it can remove itself
     del_0(chatWindow)
     del_0(statusWindow)
-    del_0(miniStatusWindow)
     del_0(inventoryWindow)
     del_0(skillDialog)
     del_0(minimap)
@@ -219,10 +218,14 @@ Game::Game():
     top->add(viewport);
     viewport->requestMoveToBottom();
 
-    createGuiWindows();
-
     mWindowMenu = new WindowMenu;
-    windowContainer->add(mWindowMenu);
+    mMiniStatusWindow = new MiniStatusWindow;
+
+    windowContainer->place(2, 0, mMiniStatusWindow);
+    windowContainer->place(1, 0, mWindowMenu).setHAlign(Layout::RIGHT);
+    windowContainer->updateLayout();
+
+    createGuiWindows();
 
     initEngines();
 
@@ -245,6 +248,7 @@ Game::~Game()
     Event::trigger(Event::GameChannel, Event::Destructing);
 
     delete mWindowMenu;
+    delete mMiniStatusWindow;
 
     destroyGuiWindows();
 
@@ -976,8 +980,12 @@ int Game::getCurrentTileHeight() const
     return DEFAULT_TILE_LENGTH;
 }
 
+void Game::updateWindowMenuCaptions()
+{
+    mWindowMenu->updatePopUpCaptions();
+}
+
 void Game::videoResized(int width, int height)
 {
     viewport->setSize(width, height);
-    mWindowMenu->setPosition(width - 3 - mWindowMenu->getWidth(), 3);
 }

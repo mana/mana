@@ -32,6 +32,7 @@
 #include "gui/textpopup.h"
 
 #include "gui/widgets/progressbar.h"
+#include "gui/widgets/layout.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
@@ -46,8 +47,7 @@
 
 extern volatile int tick_time;
 
-MiniStatusWindow::MiniStatusWindow():
-    Popup("MiniStatus")
+MiniStatusWindow::MiniStatusWindow()
 {
     listen(Event::AttributesChannel);
     listen(Event::ActorSpriteChannel);
@@ -71,23 +71,22 @@ MiniStatusWindow::MiniStatusWindow():
 
     // Add the progressbars to the window
 
-    mHpBar->setPosition(0, 3);
+    int row = 0;
+    place(0, row++, mHpBar);
     if (mMpBar)
-        mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
-    mXpBar->setPosition(mMpBar ? mMpBar->getX() + mMpBar->getWidth() + 3 :
-                                 mHpBar->getX() + mHpBar->getWidth() + 3, 3);
+        place(0, row++, mMpBar);
+    place(0, row++, mXpBar);
 
-    add(mHpBar);
-    if (mMpBar)
-        add(mMpBar);
-    add(mXpBar);
+    Layout &layout = getLayout();
+    layout.setMargin(0);
 
-    setContentSize(mXpBar->getX() + mXpBar->getWidth(),
-                   mXpBar->getY() + mXpBar->getHeight());
+    int w = 0;
+    int h = 0;
+    layout.reflow(w, h);
+    setSize(w, h);
 
-    setVisible((bool) config.getValue(getPopupName() + "Visible", true));
-
-    mTextPopup = new TextPopup();
+    mTextPopup = new TextPopup;
+    setVisible(true);
 
     addMouseListener(this);
 }
@@ -173,14 +172,18 @@ void MiniStatusWindow::event(Event::Channel channel,
                 {
                     // delete sprite, if necessary
                     for (unsigned int i = 0; i < mStatusEffectIcons.size();)
+                    {
                         if (mStatusEffectIcons[i] == index)
                         {
                             mStatusEffectIcons.erase(mStatusEffectIcons.begin()
                                                      + i);
-                            miniStatusWindow->eraseIcon(i);
+                            eraseIcon(i);
                         }
                         else
-                            i++;
+                        {
+                            ++i;
+                        }
+                    }
                 }
                 else
                 {
@@ -189,17 +192,19 @@ void MiniStatusWindow::event(Event::Channel channel,
 
                     for (unsigned int i = 0; i < mStatusEffectIcons.size();
                          i++)
+                    {
                         if (mStatusEffectIcons[i] == index)
                         {
-                            miniStatusWindow->setIcon(i, sprite);
+                            setIcon(i, sprite);
                             found = true;
                             break;
                         }
+                    }
 
                     if (!found)
                     { // add new
                         int offset = mStatusEffectIcons.size();
-                        miniStatusWindow->setIcon(offset, sprite);
+                        setIcon(offset, sprite);
                         mStatusEffectIcons.push_back(index);
                     }
                 }
@@ -210,7 +215,7 @@ void MiniStatusWindow::event(Event::Channel channel,
 
 void MiniStatusWindow::logic()
 {
-    Popup::logic();
+    Container::logic();
 
     // Displays the number of monsters to next lvl
     // (disabled for now but interesting idea)
@@ -230,10 +235,14 @@ void MiniStatusWindow::logic()
             mIcons[i]->update(tick_time * 10);
 }
 
+void MiniStatusWindow::draw(gcn::Graphics *graphics)
+{
+    drawChildren(graphics);
+    drawIcons(static_cast<Graphics*>(graphics));
+}
+
 void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
 {
-    Popup::mouseMoved(event);
-
     const int x = event.getX();
     const int y = event.getY();
 
@@ -266,7 +275,5 @@ void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
 
 void MiniStatusWindow::mouseExited(gcn::MouseEvent &event)
 {
-    Popup::mouseExited(event);
-
     mTextPopup->setVisible(false);
 }

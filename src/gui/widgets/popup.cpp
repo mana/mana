@@ -66,11 +66,6 @@ Popup::~Popup()
     mSkin->instances--;
 }
 
-void Popup::setWindowContainer(WindowContainer *wc)
-{
-    windowContainer = wc;
-}
-
 void Popup::draw(gcn::Graphics *graphics)
 {
     Graphics *g = static_cast<Graphics*>(graphics);
