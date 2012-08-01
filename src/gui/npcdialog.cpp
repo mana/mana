@@ -89,7 +89,7 @@ NpcDialog::NpcDialog(int npcId)
     mTextBox->setEditable(false);
     mTextBox->setOpaque(false);
 
-    mTextBox->setTextColor(&(Theme::instance()->getColor(Theme::ThemePalette::NPC_DIALOG_TEXT)));
+    mTextBox->setTextColor(&(Theme::instance()->getColor(Theme::NPC_DIALOG_TEXT)));
 
     // Place the window
     setContentSize(getParent()->getWidth() / 2, 175);
