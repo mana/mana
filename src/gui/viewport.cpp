@@ -249,6 +249,26 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         b->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
     }
 
+    if (mDebugFlags & Map::DEBUG_BEING_IDS)
+    {
+        graphics->setColor(gcn::Color(255, 0, 255, 255));
+        ActorSpritesConstIterator it, it_end;
+        const ActorSprites &actors = actorSpriteManager->getAll();
+        for (it = actors.begin(), it_end = actors.end(); it != it_end; ++it)
+        {
+            Being *being = dynamic_cast<Being*>(*it);
+            if (!being)
+                continue;
+
+            const Vector &beingPos = being->getPosition();
+            std::string idString = toString(being->getId());
+            graphics->drawText(idString,
+                               beingPos.x - mPixelViewX,
+                               beingPos.y - mPixelViewY,
+                               gcn::Graphics::CENTER);
+        }
+    }
+
     if (miniStatusWindow)
         miniStatusWindow->drawIcons(graphics);
 
@@ -364,7 +384,7 @@ void Viewport::_drawDebugPath(Graphics *graphics)
     // Draw the path debug information for every beings.
     ActorSpritesConstIterator it, it_end;
     const ActorSprites &actors = actorSpriteManager->getAll();
-    for (it = actors.begin(), it_end = actors.end() ; it != it_end; it++)
+    for (it = actors.begin(), it_end = actors.end(); it != it_end; it++)
     {
         Being *being = dynamic_cast<Being*>(*it);
         if (!being)

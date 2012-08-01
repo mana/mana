@@ -137,6 +137,7 @@ public:
         mBeingPosition = new CheckBox(_("Being positions"));
         mBeingPath = new CheckBox(_("Being path"));
         mMousePath = new CheckBox(_("Mouse path"));
+        mBeingIds = new CheckBox(_("Being Ids"));
 
         Label *specialsLabel = new Label(_("Specials:"));
         mSpecialNormal = new RadioButton(_("Normal"), "mapdebug");
@@ -154,6 +155,7 @@ public:
         place(0, 4, mBeingPosition, 1);
         place(0, 5, mBeingPath, 1);
         place(0, 6, mMousePath, 1);
+        place(0, 7, mBeingIds, 1);
         place(1, 0, specialsLabel, 1);
         place(1, 1, mSpecialNormal, 1);
         place(1, 2, mSpecial1, 1);
@@ -170,10 +172,26 @@ public:
         mBeingPosition->addActionListener(this);
         mBeingPath->addActionListener(this);
         mMousePath->addActionListener(this);
+        mBeingIds->addActionListener(this);
         mSpecialNormal->addActionListener(this);
         mSpecial1->addActionListener(this);
         mSpecial2->addActionListener(this);
         mSpecial3->addActionListener(this);
+    }
+
+    ~DebugSwitches()
+    {
+        delete mGrid;
+        delete mCollisionTiles;
+        delete mBeingCollisionRadius;
+        delete mBeingPosition;
+        delete mBeingPath;
+        delete mMousePath;
+        delete mBeingIds;
+        delete mSpecialNormal;
+        delete mSpecial1;
+        delete mSpecial2;
+        delete mSpecial3;
     }
 
     void action(const gcn::ActionEvent &event)
@@ -192,6 +210,8 @@ public:
             flags |= Map::DEBUG_BEING_PATH;
         if (mMousePath->isSelected())
             flags |= Map::DEBUG_MOUSE_PATH;
+        if (mBeingIds->isSelected())
+            flags |= Map::DEBUG_BEING_IDS;
         if (mSpecial1->isSelected())
             flags |= Map::DEBUG_SPECIAL1;
         if (mSpecial2->isSelected())
@@ -209,6 +229,7 @@ private:
     CheckBox *mBeingPosition;
     CheckBox *mBeingPath;
     CheckBox *mMousePath;
+    CheckBox *mBeingIds;
     RadioButton *mSpecialNormal;
     RadioButton *mSpecial1;
     RadioButton *mSpecial2;
