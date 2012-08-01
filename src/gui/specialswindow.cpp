@@ -28,12 +28,7 @@
 #include "gui/widgets/container.h"
 #include "gui/widgets/icon.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/listbox.h"
 #include "gui/widgets/progressbar.h"
-#include "gui/widgets/scrollarea.h"
-#include "gui/widgets/tab.h"
-#include "gui/widgets/tabbedarea.h"
-#include "gui/widgets/flowcontainer.h"
 #include "gui/widgets/windowcontainer.h"
 
 #include "net/net.h"
@@ -85,10 +80,6 @@ SpecialsWindow::SpecialsWindow():
     setSaveVisible(true);
     setDefaultSize(windowContainer->getWidth() - 280, 40, SPECIALS_WIDTH + 20, 225);
     setupWindow->registerWindowForReset(this);
-
-    mTabs = new TabbedArea();
-
-    place(0, 0, mTabs, 5, 5);
 
     center();
     loadWindowState();

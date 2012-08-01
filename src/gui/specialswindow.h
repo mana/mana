@@ -31,11 +31,6 @@
 
 #include <map>
 
-class Label;
-class ScrollArea;
-class Tab;
-class TabbedArea;
-
 struct SpecialEntry;
 
 class SpecialsWindow : public Window, public gcn::ActionListener
@@ -59,7 +54,6 @@ class SpecialsWindow : public Window, public gcn::ActionListener
         // (re)constructs the list of specials
         void rebuild(const std::map<int, Special> &specialData);
 
-        TabbedArea *mTabs;
         std::map<int, SpecialEntry *> mEntries;
 };
 
