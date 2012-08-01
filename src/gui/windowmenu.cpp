@@ -50,7 +50,7 @@ WindowMenu::WindowMenu():
 {
     int x = 0, h = 0;
 
-    addButton(":-)", x, h, "button-icon-smilies.png");
+    //addButton(":-)", x, h, "button-icon-smilies.png");
     addButton(N_("Status"), x, h, "button-icon-status.png",
               KeyboardConfig::KEY_WINDOW_STATUS);
     addButton(N_("Inventory"), x, h, "button-icon-inventory.png",
