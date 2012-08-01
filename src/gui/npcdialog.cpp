@@ -189,6 +189,7 @@ void NpcDialog::setStateClose()
 {
     mActionState = NPC_ACTION_CLOSE;
     buildLayout();
+    proceed();
 }
 
 void NpcDialog::keyPressed(gcn::KeyEvent &keyEvent)
