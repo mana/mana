@@ -83,7 +83,7 @@ SpecialsWindow::SpecialsWindow():
     setCloseButton(true);
     setResizable(true);
     setSaveVisible(true);
-    setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
+    setDefaultSize(windowContainer->getWidth() - 280, 40, SPECIALS_WIDTH + 20, 225);
     setupWindow->registerWindowForReset(this);
 
     mTabs = new TabbedArea();
@@ -137,8 +137,8 @@ void SpecialsWindow::draw(gcn::Graphics *graphics)
     unsigned int found = 0; // number of entries in specialData which match mEntries
 
     for (std::map<int, Special>::iterator i = specialData.begin();
-      i != specialData.end();
-      i++)
+         i != specialData.end();
+         i++)
     {
         std::map<int, SpecialEntry *>::iterator e = mEntries.find(i->first);
         if (e == mEntries.end())
@@ -153,7 +153,8 @@ void SpecialsWindow::draw(gcn::Graphics *graphics)
         }
     }
     // a rebuild is needed when a) the number of specials changed or b) an existing entry isn't found anymore
-    if (foundNew || found != mEntries.size()) rebuild(specialData);
+    if (foundNew || found != mEntries.size())
+        rebuild(specialData);
 
     Window::draw(graphics);
 }
@@ -177,7 +178,7 @@ void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
             info->rechargeNeeded = i->second.neededMana;
             SpecialEntry* entry = new SpecialEntry(info);
             entry->setPosition(0, vPos);
-            vPos += entry->getHeight();
+            vPos += entry->getHeight() + 3;
             add(entry);
             mEntries[i->first] = entry;
         } else {
@@ -194,8 +195,6 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     mUse(NULL),
     mRechargeBar(NULL)
 {
-    setFrameSize(1);
-    setOpaque(false);
     setSize(SPECIALS_WIDTH, SPECIALS_HEIGHT);
 
     if (!info->icon.empty())
@@ -212,7 +211,7 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     add(mNameLabel);
 
     mUse = new Button("Use", "use", specialsWindow);
-    mUse->setPosition(getWidth() - mUse->getWidth(), 13);
+    mUse->setPosition(getWidth() - mUse->getWidth(), 5);
     add(mUse);
 
     if (info->rechargeable)
@@ -220,10 +219,9 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
         float progress = (float)info->rechargeCurrent / (float)info->rechargeNeeded;
         mRechargeBar = new ProgressBar(progress, 100, 10, Theme::PROG_MP);
         mRechargeBar->setSmoothProgress(false);
-        mRechargeBar->setPosition(0, 13);
+        mRechargeBar->setPosition(mNameLabel->getX(), 18);
         add(mRechargeBar);
     }
-
 }
 
 void SpecialEntry::update(int current, int needed)
