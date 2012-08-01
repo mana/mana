@@ -1,0 +1,18 @@
+<skinset name="Default" image="scrolls.png">
+	<widget type="Window">
+		<!-- Top Row -->
+		<part type="top-left-corner" xpos="0" ypos="0" width="64" height="64" />
+		<part type="top-edge" xpos="64" ypos="0" width="167" height="64" />
+		<part type="top-right-corner" xpos="231" ypos="0" width="64" height="64" />
+
+		<!-- Middle Row -->
+		<part type="left-edge" xpos="0" ypos="64" width="64" height="155" />
+		<part type="bg-quad" xpos="64" ypos="64" width="167" height="155" />
+		<part type="right-edge" xpos="231" ypos="64" width="64" height="155" />
+
+		<!-- Bottom Row -->
+		<part type="bottom-left-corner" xpos="0" ypos="219" width="64" height="64" />
+		<part type="bottom-edge" xpos="64" ypos="219" width="167" height="64" />
+		<part type="bottom-right-corner" xpos="231" ypos="219" width="64" height="64" />
+	</widget>
+</skinset>
