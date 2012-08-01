@@ -50,7 +50,7 @@ Minimap::Minimap():
 {
     setWindowName("Minimap");
     mShow = config.getValue(getWindowName() + "Show", true);
-    setDefaultSize(5, 25, 100, 100);
+    setDefaultSize(5, 25, 150, 150);
     // set this to false as the minimap window size is changed
     //depending on the map size
     setResizable(false);
@@ -116,10 +116,10 @@ void Minimap::setMap(Map *map)
         const int offsetX = 2 * getPadding();
         const int offsetY = getTitleBarHeight() + getPadding();
         const int titleWidth = getFont()->getWidth(getCaption()) + 15;
-        const int mapWidth = mMapImage->getWidth() < 100 ?
-                             mMapImage->getWidth() + offsetX : 100;
-        const int mapHeight = mMapImage->getHeight() < 100 ?
-                              mMapImage->getHeight() + offsetY : 100;
+        const int mapWidth = mMapImage->getWidth() < 150 ?
+                             mMapImage->getWidth() + offsetX : 150;
+        const int mapHeight = mMapImage->getHeight() < 150 ?
+                              mMapImage->getHeight() + offsetY : 150;
 
         setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);
         setMinHeight(mapHeight);
@@ -154,8 +154,9 @@ void Minimap::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
 
-    const gcn::Rectangle a = getChildrenArea();
-
+    gcn::Rectangle a = getChildrenArea();
+    a.width = a.width - 3;
+    a.height = a.height - 3;
     graphics->pushClipArea(a);
 
     int mapOriginX = 0;
