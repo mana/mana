@@ -22,13 +22,13 @@
 #ifndef MINIMAP_H
 #define MINIMAP_H
 
-#include "gui/widgets/window.h"
+#include <guichan/widget.hpp>
 
 class Image;
 class Map;
 
 /**
- * Minimap window. Shows a minimap image and the name of the current map.
+ * Shows a minimap image.
  *
  * The name of the map is defined by the map property "name". The minimap image
  * is defined by the map property "minimap". The path to the image should be
@@ -36,7 +36,7 @@ class Map;
  *
  * \ingroup Interface
  */
-class Minimap : public Window
+class Minimap : public gcn::Widget
 {
     public:
         Minimap();
@@ -48,11 +48,6 @@ class Minimap : public Window
         void setMap(Map *map);
 
         /**
-         * Toggles the displaying of the minimap.
-         */
-        void toggle();
-
-        /**
          * Draws the minimap.
          */
         void draw(gcn::Graphics *graphics);
@@ -62,9 +57,6 @@ class Minimap : public Window
         Image *mMapImage;
         float mWidthProportion;
         float mHeightProportion;
-        static bool mShow;
 };
-
-extern Minimap *minimap;
 
 #endif

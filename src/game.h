@@ -25,8 +25,8 @@
 #include <string>
 
 class Map;
-class WindowMenu;
 class MiniStatusWindow;
+class WindowMenu;
 
 /**
  * The main class responsible for running the game. The game starts after you

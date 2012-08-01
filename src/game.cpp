@@ -102,7 +102,6 @@ ChatWindow *chatWindow;
 StatusWindow *statusWindow;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
-Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 TradeWindow *tradeWindow;
 HelpWindow *helpWindow;
@@ -149,7 +148,6 @@ static void createGuiWindows()
     setupWindow->clearWindowsForReset();
 
     // Create dialogs
-    minimap = new Minimap;
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
     equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
@@ -185,7 +183,6 @@ static void destroyGuiWindows()
     del_0(statusWindow)
     del_0(inventoryWindow)
     del_0(skillDialog)
-    del_0(minimap)
     del_0(equipmentWindow)
     del_0(tradeWindow)
     del_0(helpWindow)
@@ -214,16 +211,18 @@ Game::Game():
     viewport = new Viewport;
     viewport->setSize(graphics->getWidth(), graphics->getHeight());
 
-    gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+    WindowContainer *top = static_cast<WindowContainer*>(gui->getTop());
     top->add(viewport);
     viewport->requestMoveToBottom();
 
     mWindowMenu = new WindowMenu;
     mMiniStatusWindow = new MiniStatusWindow;
 
-    windowContainer->place(2, 0, mMiniStatusWindow);
-    windowContainer->place(1, 0, mWindowMenu).setHAlign(Layout::RIGHT);
-    windowContainer->updateLayout();
+    top->place(1, 0, mWindowMenu)
+            .setHAlign(Layout::RIGHT)
+            .setVAlign(Layout::LEFT);
+    top->place(2, 0, mMiniStatusWindow);
+    top->updateLayout();
 
     createGuiWindows();
 
@@ -667,9 +666,6 @@ void Game::handleInput()
                     case KeyboardConfig::KEY_WINDOW_SKILL:
                         requestedWindow = skillDialog;
                         break;
-                    case KeyboardConfig::KEY_WINDOW_MINIMAP:
-                        minimap->toggle();
-                        break;
                     case KeyboardConfig::KEY_WINDOW_CHAT:
                         requestedWindow = chatWindow;
                         break;
@@ -936,7 +932,7 @@ void Game::changeMap(const std::string &mapPath)
     }
 
     // Notify the minimap and beingManager about the map change
-    minimap->setMap(newMap);
+    mMiniStatusWindow->setMap(newMap);
     actorSpriteManager->setMap(newMap);
     particleEngine->setMap(newMap);
     viewport->setMap(newMap);
