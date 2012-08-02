@@ -28,14 +28,11 @@
 #include "statuseffect.h"
 
 #include "gui/gui.h"
-#include "gui/minimap.h"
 #include "gui/statuswindow.h"
 #include "gui/textpopup.h"
 
-#include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/progressbar.h"
-#include "gui/widgets/spacer.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
@@ -50,16 +47,10 @@
 
 extern volatile int tick_time;
 
-MiniStatusWindow::MiniStatusWindow():
-    mMinimap(new Minimap),
-    mRegionLabel(new Label),
-    mWindowSkin(Theme::instance()->load("window.xml"))
+MiniStatusWindow::MiniStatusWindow()
 {
     listen(Event::AttributesChannel);
     listen(Event::ActorSpriteChannel);
-
-    mRegionLabel->setAlignment(gcn::Graphics::CENTER);
-    mRegionLabel->adjustSize();
 
     mHpBar = new ProgressBar(0, 100, 20, Theme::PROG_HP);
     StatusWindow::updateHPBar(mHpBar);
@@ -79,18 +70,12 @@ MiniStatusWindow::MiniStatusWindow():
     StatusWindow::updateXPBar(mXpBar);
 
     int row = 0;
-    place(0, row++, mRegionLabel);
-    place(0, row++, mMinimap);
-    place(0, row++, new Spacer);
     place(0, row++, mHpBar);
     if (mMpBar)
         place(0, row++, mMpBar);
     place(0, row++, mXpBar);
 
     Layout &layout = getLayout();
-    layout.setMargin(0);
-    layout.setPadding(7);
-
     int w = 0;
     int h = 0;
     layout.reflow(w, h);
@@ -246,22 +231,9 @@ void MiniStatusWindow::logic()
             mIcons[i]->update(tick_time * 10);
 }
 
-static gcn::Rectangle adjust(const gcn::Rectangle &rect,
-                             int left, int top, int right, int bottom)
-{
-    return gcn::Rectangle(rect.x + left,
-                          rect.y + top,
-                          rect.width - left + right,
-                          rect.height - top + bottom);
-}
-
 void MiniStatusWindow::draw(gcn::Graphics *graphics)
 {
     Graphics *g = static_cast<Graphics*>(graphics);
-    g->drawImageRect(adjust(mMinimap->getDimension(),
-                            -5, -10 - mRegionLabel->getHeight(),
-                            8, 8),
-                     mWindowSkin->getBorder());
 
     drawChildren(graphics);
     drawIcons(g);
@@ -302,10 +274,4 @@ void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
 void MiniStatusWindow::mouseExited(gcn::MouseEvent &event)
 {
     mTextPopup->setVisible(false);
-}
-
-void MiniStatusWindow::setMap(Map *map)
-{
-    mMinimap->setMap(map);
-    mRegionLabel->setCaption(map ? map->getName() : std::string());
 }

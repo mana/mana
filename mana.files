@@ -138,6 +138,8 @@ src/gui/logindialog.cpp
 src/gui/logindialog.h
 src/gui/minimap.cpp
 src/gui/minimap.h
+src/gui/minimapwindow.cpp
+src/gui/minimapwindow.h
 src/gui/ministatuswindow.cpp
 src/gui/ministatuswindow.h
 src/gui/npcdialog.cpp

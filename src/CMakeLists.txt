@@ -265,6 +265,8 @@ SET(SRCS
     gui/logindialog.h
     gui/minimap.cpp
     gui/minimap.h
+    gui/minimapwindow.cpp
+    gui/minimapwindow.h
     gui/ministatuswindow.cpp
     gui/ministatuswindow.h
     gui/npcdialog.cpp

@@ -32,11 +32,7 @@
 
 class AnimatedSprite;
 class Graphics;
-class Label;
-class Map;
-class Minimap;
 class ProgressBar;
-class Skin;
 class TextPopup;
 
 /**
@@ -62,8 +58,6 @@ class MiniStatusWindow : public Container,
         void mouseMoved(gcn::MouseEvent &mouseEvent);
         void mouseExited(gcn::MouseEvent &event);
 
-        void setMap(Map *map);
-
     private:
         bool isInBar(ProgressBar *bar, int x, int y) const;
 
@@ -74,9 +68,6 @@ class MiniStatusWindow : public Container,
 
         void eraseIcon(int index);
 
-        Minimap *mMinimap;
-        Label *mRegionLabel;
-
         /*
          * Mini Status Bars
          */
@@ -84,8 +75,6 @@ class MiniStatusWindow : public Container,
         ProgressBar *mMpBar;
         ProgressBar *mXpBar;
         TextPopup *mTextPopup;
-
-        Skin *mWindowSkin;
 
         std::vector<int> mStatusEffectIcons;
         std::vector<AnimatedSprite *> mIcons;

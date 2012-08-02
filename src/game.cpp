@@ -49,7 +49,7 @@
 #include "gui/helpwindow.h"
 #include "gui/inventorywindow.h"
 #include "gui/shortcutwindow.h"
-#include "gui/minimap.h"
+#include "gui/minimapwindow.h"
 #include "gui/ministatuswindow.h"
 #include "gui/npcdialog.h"
 #include "gui/okdialog.h"
@@ -216,12 +216,14 @@ Game::Game():
     viewport->requestMoveToBottom();
 
     mWindowMenu = new WindowMenu;
+    mMinimapWindow = new MinimapWindow;
     mMiniStatusWindow = new MiniStatusWindow;
 
-    top->place(1, 0, mWindowMenu)
+    top->place(0, 0, mMinimapWindow);
+    top->place(1, 0, mMiniStatusWindow).setVAlign(Layout::LEFT);
+    top->place(3, 0, mWindowMenu)
             .setHAlign(Layout::RIGHT)
             .setVAlign(Layout::LEFT);
-    top->place(2, 0, mMiniStatusWindow);
     top->updateLayout();
 
     createGuiWindows();
@@ -247,6 +249,7 @@ Game::~Game()
     Event::trigger(Event::GameChannel, Event::Destructing);
 
     delete mWindowMenu;
+    delete mMinimapWindow;
     delete mMiniStatusWindow;
 
     destroyGuiWindows();
@@ -932,7 +935,7 @@ void Game::changeMap(const std::string &mapPath)
     }
 
     // Notify the minimap and beingManager about the map change
-    mMiniStatusWindow->setMap(newMap);
+    mMinimapWindow->setMap(newMap);
     actorSpriteManager->setMap(newMap);
     particleEngine->setMap(newMap);
     viewport->setMap(newMap);

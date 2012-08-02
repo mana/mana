@@ -189,6 +189,8 @@
 		<Unit filename="src\gui\logindialog.h" />
 		<Unit filename="src\gui\minimap.cpp" />
 		<Unit filename="src\gui\minimap.h" />
+		<Unit filename="src\gui\minimapwindow.cpp" />
+		<Unit filename="src\gui\minimapwindow.h" />
 		<Unit filename="src\gui\ministatuswindow.cpp" />
 		<Unit filename="src\gui\ministatuswindow.h" />
 		<Unit filename="src\gui\npcdialog.cpp" />

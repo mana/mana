@@ -25,6 +25,7 @@
 #include <string>
 
 class Map;
+class MinimapWindow;
 class MiniStatusWindow;
 class WindowMenu;
 
@@ -86,6 +87,7 @@ class Game
         bool mDisconnected;
 
         WindowMenu *mWindowMenu;
+        MinimapWindow *mMinimapWindow;
         MiniStatusWindow *mMiniStatusWindow;
 
         Map *mCurrentMap;
