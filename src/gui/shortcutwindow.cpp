@@ -40,8 +40,8 @@ ShortcutWindow::ShortcutWindow(const std::string &title,
     // no title presented, title bar is padding so window can be moved.
     gcn::Window::setTitleBarHeight(gcn::Window::getPadding());
     setShowTitle(false);
-    setResizable(true);
-    setDefaultVisible(false);
+    setMovable(false);
+    setDefaultVisible(true);
     setSaveVisible(true);
     setupWindow->registerWindowForReset(this);
 
@@ -56,7 +56,7 @@ ShortcutWindow::ShortcutWindow(const std::string &title,
     setDefaultSize(mItems->getBoxWidth() * 6 + border,
                    mItems->getBoxHeight() * 2 + border,
                    ImageRect::LOWER_RIGHT,
-                   0, 0);
+                   6, 6);
 
     mBoxesWidth += mItems->getBoxWidth() + border;
 

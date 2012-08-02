@@ -107,7 +107,7 @@ ChatWindow::ChatWindow():
     setResizable(true);
     setDefaultVisible(true);
     setSaveVisible(true);
-    setDefaultSize(600, 123, ImageRect::LOWER_LEFT);
+    setDefaultSize(400, 123, ImageRect::LOWER_LEFT, -6, 6);
     setMinWidth(150);
     setMinHeight(90);
 
