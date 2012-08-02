@@ -23,6 +23,7 @@
 
 #include "actorspritemanager.h"
 #include "effectmanager.h"
+#include "localplayer.h"
 #include "log.h"
 
 #include "gui/viewport.h"
@@ -37,6 +38,7 @@ EffectHandler::EffectHandler()
     static const uint16_t _messages[] = {
         GPMSG_CREATE_EFFECT_POS,
         GPMSG_CREATE_EFFECT_BEING,
+        GPMSG_CREATE_TEXT_PARTICLE,
         GPMSG_SHAKE,
         0
     };
@@ -52,6 +54,9 @@ void EffectHandler::handleMessage(MessageIn &msg)
             break;
         case GPMSG_CREATE_EFFECT_BEING:
             handleCreateEffectBeing(msg);
+            break;
+        case GPMSG_CREATE_TEXT_PARTICLE:
+            handleCreateTextParticle(msg);
             break;
         case GPMSG_SHAKE:
             handleShake(msg);
@@ -78,6 +83,13 @@ void EffectHandler::handleCreateEffectBeing(MessageIn &msg)
         effectManager->trigger(eid, b);
     else
         logger->log("Warning: CreateEffect called for unknown being #%d", bid);
+}
+
+void EffectHandler::handleCreateTextParticle(MessageIn &msg)
+{
+    const std::string &text = msg.readString();
+    if (local_player)
+        local_player->addMessageToQueue(text);
 }
 
 void EffectHandler::handleShake(MessageIn &msg)

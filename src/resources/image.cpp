@@ -496,6 +496,8 @@ Image *Image::_GLload(SDL_Surface *tmpImage)
                 tmpImage->pixels);
 
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glTexParameteri(mTextureType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(mTextureType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         if (SDL_MUSTLOCK(tmpImage))
             SDL_UnlockSurface(tmpImage);

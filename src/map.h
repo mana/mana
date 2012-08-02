@@ -169,9 +169,10 @@ class Map : public Properties
             DEBUG_BEING_POSITION = 0x8,
             DEBUG_BEING_PATH = 0x10,
             DEBUG_MOUSE_PATH = 0x20,
-            DEBUG_SPECIAL1 = 0x40,
-            DEBUG_SPECIAL2 = 0x80,
-            DEBUG_SPECIAL3 = 0x100
+            DEBUG_BEING_IDS = 0x40,
+            DEBUG_SPECIAL1 = 0x80,
+            DEBUG_SPECIAL2 = 0x100,
+            DEBUG_SPECIAL3 = 0x200
         };
 
         /**
