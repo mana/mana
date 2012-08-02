@@ -102,7 +102,7 @@ class Graphics : public gcn::SDLGraphics
         bool drawImage(Image *image, int x, int y);
 
         /**
-         * Draws a resclaled version of the image
+         * Draws a rescaled version of the image.
          */
         bool drawRescaledImage(Image *image, int srcX, int srcY,
                                int dstX, int dstY,
@@ -115,7 +115,7 @@ class Graphics : public gcn::SDLGraphics
                                    false); }
 
         /**
-         * Draws a resclaled version of the image
+         * Draws a rescaled version of the image.
          */
         virtual bool drawRescaledImage(Image *image, int srcX, int srcY,
                                int dstX, int dstY,

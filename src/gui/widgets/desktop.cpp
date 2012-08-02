@@ -32,12 +32,16 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 #include "resources/wallpaper.h"
 
 #include "utils/stringutils.h"
 
 Desktop::Desktop()
     : mWallpaper(0)
+    , mBackground(ResourceManager::getInstance()->getImage("graphics/images/bg_image.png"))
+    , mOverlay(ResourceManager::getInstance()->getImage("graphics/images/bg_overlay.png"))
+    , mBgSkin(Theme::instance()->load("bg.xml"))
 {
     addWidgetListener(this);
 
@@ -59,6 +63,10 @@ Desktop::~Desktop()
 {
     if (mWallpaper)
         mWallpaper->decRef();
+
+    mBgSkin->instances--;
+    mBackground->decRef();
+    mOverlay->decRef();
 }
 
 void Desktop::reloadWallpaper()
@@ -94,6 +102,41 @@ void Desktop::draw(gcn::Graphics *graphics)
             g->drawRescaledImage(mWallpaper, 0, 0, 0, 0,
                 mWallpaper->getWidth(), mWallpaper->getHeight(),
                 getWidth(), getHeight(), false);
+    }
+
+    mBgSkin->setAlpha(1.0f);
+    g->drawImageRect(gcn::Rectangle(5, 5, getWidth() - 10, getHeight() - 10),
+                     mBgSkin->getBorder());
+
+    gcn::Rectangle innerArea(5 + 64,
+                             5 + 64,
+                             getWidth() - 10 - 64 * 2,
+                             getHeight() - 10 - 64 * 2);
+
+    if (innerArea.width > 0 && innerArea.height > 0)
+    {
+        g->pushClipArea(innerArea);
+
+        float scale = std::max((float) innerArea.width / mBackground->getWidth(),
+                               (float) innerArea.height / mBackground->getHeight());
+
+        int width = scale * mBackground->getWidth();
+        int height = scale * mBackground->getHeight();
+
+        g->drawRescaledImage(mBackground, 0, 0,
+                             (innerArea.width - width) / 2,
+                             (innerArea.height - height) / 2,
+                             mBackground->getWidth(),
+                             mBackground->getHeight(),
+                             width, height, false);
+
+        g->drawRescaledImage(mOverlay, 0, 0, -1, -1,
+                             mOverlay->getWidth(),
+                             mOverlay->getHeight(),
+                             innerArea.width + 2,
+                             innerArea.height + 2, false);
+
+        g->popClipArea();
     }
 
     // Draw a thin border under the application version...

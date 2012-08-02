@@ -188,8 +188,8 @@ bool Graphics::drawRescaledImage(Image *image, int srcX, int srcY,
     SDL_Rect srcRect;
     dstRect.x = dstX; dstRect.y = dstY;
     srcRect.x = srcX; srcRect.y = srcY;
-    srcRect.w = width;
-    srcRect.h = height;
+    srcRect.w = tmpImage->getWidth();
+    srcRect.h = tmpImage->getHeight();
 
     returnValue = !(SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect,
                                     mTarget, &dstRect) < 0);

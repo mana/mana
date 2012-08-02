@@ -29,6 +29,7 @@
 #include <guichan/widgetlistener.hpp>
 
 class Image;
+class Skin;
 
 /**
  * Desktop widget, for drawing a background image and color.
@@ -62,6 +63,9 @@ class Desktop : public Container, gcn::WidgetListener
         void setBestFittingWallpaper();
 
         Image *mWallpaper;
+        Image *mBackground;
+        Image *mOverlay;
+        Skin *mBgSkin;
         gcn::Label *mVersionLabel;
 };
 

@@ -1,4 +1,5 @@
 SET (FILES
+    bg.xml
     bubble.png
     button.png
     button-icon-confirm.png
@@ -37,6 +38,7 @@ SET (FILES
     radioout.png
     radioout_highlight.png
     resize.png
+    scrolls.png
     selection.png
     slider.png
     slider_hilight.png

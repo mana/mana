@@ -89,6 +89,11 @@ class Skin
          */
         void updateAlpha(float minimumOpacityAllowed = 0.0f);
 
+        /**
+         * Sets the alpha, overriding GUI opacity level.
+         */
+        void setAlpha(float alpha);
+
         int instances;
 
     private:
