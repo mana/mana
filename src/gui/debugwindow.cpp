@@ -179,21 +179,6 @@ public:
         mSpecial3->addActionListener(this);
     }
 
-    ~DebugSwitches()
-    {
-        delete mGrid;
-        delete mCollisionTiles;
-        delete mBeingCollisionRadius;
-        delete mBeingPosition;
-        delete mBeingPath;
-        delete mMousePath;
-        delete mBeingIds;
-        delete mSpecialNormal;
-        delete mSpecial1;
-        delete mSpecial2;
-        delete mSpecial3;
-    }
-
     void action(const gcn::ActionEvent &event)
     {
         int flags = 0;
