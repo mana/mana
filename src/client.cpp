@@ -331,7 +331,7 @@ Client::Client(const Options &options):
     }
 #endif
 
-    bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 0) == 1);
+    bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 1) == 1);
 
     // Set up the transparency option for low CPU when not using OpenGL.
     if (!useOpenGL && (config.getValue("disableTransparency", 0) == 1))
@@ -1225,11 +1225,7 @@ void Client::initConfiguration()
 {
     // Fill configuration with defaults
     config.setValue("hwaccel", false);
-#if defined __APPLE__ && defined USE_OPENGL
     config.setValue("opengl", true);
-#else
-    config.setValue("opengl", false);
-#endif
     config.setValue("screen", false);
     config.setValue("sound", true);
     config.setValue("guialpha", 0.8f);

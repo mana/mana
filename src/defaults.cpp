@@ -78,7 +78,7 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "particleEmitterSkip", 1);
     AddDEF(configData, "particleeffects", true);
     AddDEF(configData, "logToStandardOut", false);
-    AddDEF(configData, "opengl", false);
+    AddDEF(configData, "opengl", true);
     AddDEF(configData, "screenwidth", defaultScreenWidth);
     AddDEF(configData, "screenheight", defaultScreenHeight);
     AddDEF(configData, "screen", false);
