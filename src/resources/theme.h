@@ -172,6 +172,7 @@ class Theme : public Palette, public EventListener
             PROG_INVY_SLOTS,
             PROG_WEIGHT,
             PROG_JOB,
+            PROG_DOWNLOAD,
             THEME_PROG_END
         };
 

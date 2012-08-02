@@ -37,6 +37,7 @@
 #include "net/download.h"
 
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -147,7 +148,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mBrowserBox = new BrowserBox;
     mScrollArea = new ScrollArea(mBrowserBox);
     mLabel = new Label(_("Connecting..."));
-    mProgressBar = new ProgressBar(0.0, 310, 20);
+    mProgressBar = new ProgressBar(0.0, 310, 20, Theme::PROG_DOWNLOAD);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayButton = new Button(_("Play"), "play", this);
 
