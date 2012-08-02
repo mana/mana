@@ -65,6 +65,12 @@ class Container : public gcn::Container
          */
         void updateLayout();
 
+        /**
+         * Removes the layout, making it forget about any widgets (needed when
+         * reusing a container with new widgets).
+         */
+        void clearLayout();
+
     private:
         LayoutHelper *mLayoutHelper;
 };

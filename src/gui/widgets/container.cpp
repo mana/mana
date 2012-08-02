@@ -62,3 +62,9 @@ void Container::updateLayout()
     int h = area.height;
     getLayout().reflow(w, h);
 }
+
+void Container::clearLayout()
+{
+    delete mLayoutHelper;
+    mLayoutHelper = 0;
+}

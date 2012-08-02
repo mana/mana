@@ -252,6 +252,9 @@ Game::~Game()
     delete mMinimapWindow;
     delete mMiniStatusWindow;
 
+    WindowContainer *top = static_cast<WindowContainer*>(gui->getTop());
+    top->clearLayout();
+
     destroyGuiWindows();
 
     del_0(actorSpriteManager)
