@@ -48,5 +48,5 @@
 	<progressbar id="INVY_SLOTS" color="#e1c819" />
 	<progressbar id="WEIGHT" color="#0000ff,ffff00,ff0000" />
 	<progressbar id="JOB" color="#e187cb" />
-	<progressbar id="DOWNLOAD" color="#ff0000" />
+	<progressbar id="DOWNLOAD" color="#ded387" />
 </colors>
