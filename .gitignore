@@ -51,3 +51,7 @@ docs/SOURCE/html/*
 # Xcode settings
 Xcode/mana.xcodeproj/xcuserdata
 Xcode/mana.xcodeproj/project.xcworkspace/xcuserdata
+
+# OS X stuff
+.DS_Store
+mana
