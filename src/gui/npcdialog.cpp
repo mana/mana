@@ -153,7 +153,7 @@ void NpcDialog::logic()
     {
         mTextPlayTime = tick_time;
 
-        ushort currentLength = mTextBox->getText().length();
+        size_t currentLength = mTextBox->getText().length();
         if (currentLength < mText.length())
         {
             setText(mText.substr(0, currentLength + 1));
