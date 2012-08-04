@@ -52,6 +52,5 @@ docs/SOURCE/html/*
 Xcode/mana.xcodeproj/xcuserdata
 Xcode/mana.xcodeproj/project.xcworkspace/xcuserdata
 
-# OS X stuff
+# OS X leftovers
 .DS_Store
-mana
