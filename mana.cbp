@@ -27,7 +27,6 @@
 					<Add option="-enable-auto-import" />
 					<Add library="guichan" />
 					<Add library="guichan_sdl" />
-					<Add library="guichan_opengl" />
 					<Add library="wsock32" />
 					<Add library="SDL_image" />
 					<Add library="SDL_mixer" />
