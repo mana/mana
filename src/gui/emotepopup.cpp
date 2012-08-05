@@ -112,7 +112,7 @@ void EmotePopup::mousePressed(gcn::MouseEvent &event)
     if (index != -1)
     {
         setSelectedEmoteIndex(index);
-        emoteShortcut->setEmoteSelected(index + 1);
+        emoteShortcut->setEmoteSelected(index);
     }
 }
 
@@ -125,7 +125,7 @@ void EmotePopup::mouseMoved(gcn::MouseEvent &event)
 
 int EmotePopup::getSelectedEmote() const
 {
-    return 1 + mSelectedEmoteIndex;
+    return mSelectedEmoteIndex;
 }
 
 void EmotePopup::setSelectedEmoteIndex(int index)

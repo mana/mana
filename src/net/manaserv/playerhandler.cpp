@@ -324,7 +324,9 @@ void PlayerHandler::attack(int id)
 
 void PlayerHandler::emote(int emoteId)
 {
-    // TODO
+    MessageOut msg(PGMSG_BEING_EMOTE);
+    msg.writeInt16(emoteId);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::increaseAttribute(int attr)

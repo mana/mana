@@ -54,6 +54,7 @@ class BeingHandler : public MessageHandler
         void handleBeingActionChangeMessage(MessageIn &msg);
         void handleBeingLooksChangeMessage(MessageIn &msg);
         void handleBeingDirChangeMessage(MessageIn &msg);
+        void handleBeingEmoteMessage(MessageIn &msg);
 };
 
 } // namespace ManaServ

@@ -115,6 +115,7 @@ void EmoteDB::load()
         }
 
         mEmotes[id] = currentEmote;
+
         if (id > mLastEmote)
             mLastEmote = id;
     }

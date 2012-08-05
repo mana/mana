@@ -64,7 +64,7 @@ void EmoteShortcut::useEmote(int index)
     {
        if (mEmotes[index - 1] > 0)
        {
-          local_player->emote(mEmotes[index - 1]);
+          local_player->emote(mEmotes[index - 1] - 1);
        }
     }
 }
