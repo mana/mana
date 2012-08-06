@@ -51,7 +51,7 @@ EmotePopup::EmotePopup():
     mColumnCount(1)
 {
     // Setup emote sprites
-    for (int i = EmoteDB::getFirst(); i <= EmoteDB::getLast(); ++i)
+    for (int i = 0; i <= EmoteDB::getLast(); ++i)
     {
         mEmotes.push_back(EmoteDB::get(i)->sprite);
     }
@@ -112,7 +112,7 @@ void EmotePopup::mousePressed(gcn::MouseEvent &event)
     if (index != -1)
     {
         setSelectedEmoteIndex(index);
-        emoteShortcut->setEmoteSelected(index + 1);
+        emoteShortcut->setEmoteSelected(index);
     }
 }
 
@@ -125,7 +125,7 @@ void EmotePopup::mouseMoved(gcn::MouseEvent &event)
 
 int EmotePopup::getSelectedEmote() const
 {
-    return 1 + mSelectedEmoteIndex;
+    return mSelectedEmoteIndex;
 }
 
 void EmotePopup::setSelectedEmoteIndex(int index)

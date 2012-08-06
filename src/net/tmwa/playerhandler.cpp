@@ -525,7 +525,7 @@ void PlayerHandler::attack(int id)
 void PlayerHandler::emote(int emoteId)
 {
     MessageOut outMsg(CMSG_PLAYER_EMOTE);
-    outMsg.writeInt8(emoteId);
+    outMsg.writeInt8(emoteId + 1);
 }
 
 void PlayerHandler::increaseAttribute(int attr)
