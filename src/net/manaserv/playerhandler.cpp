@@ -248,6 +248,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
         case GPMSG_SPECIAL_STATUS :
         {
+            PlayerInfo::clearSpecialStatus();
             while (msg.getUnreadLength())
             {
                 // { B specialID, L current, L max, L recharge }

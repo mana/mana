@@ -282,6 +282,11 @@ void setBuySellState(BuySellState buySellState)
 
 // --- Specials ---------------------------------------------------------------
 
+void clearSpecialStatus()
+{
+    mSpecials.clear();
+}
+
 void setSpecialStatus(int id, int current, int max, int recharge)
 {
     logger->log("SpecialUpdate Skill #%d -- (%d/%d) -> %d", id, current, max,
