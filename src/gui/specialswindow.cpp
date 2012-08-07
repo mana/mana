@@ -152,6 +152,13 @@ void SpecialsWindow::draw(gcn::Graphics *graphics)
 
 void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
 {
+    // remove current entries so they don't get drawn underneath
+    for (std::map<int, SpecialEntry*>::const_iterator i = mEntries.begin();
+         i != mEntries.end(); i++)
+    {
+        remove(i->second);
+    }
+
     make_dtor(mEntries);
     mEntries.clear();
     int vPos = 0; //vertical position of next placed element
