@@ -127,19 +127,20 @@ void SpecialsWindow::draw(gcn::Graphics *graphics)
     bool foundNew = false;
     unsigned int found = 0; // number of entries in specialData which match mEntries
 
-    for (std::map<int, Special>::iterator i = specialData.begin();
-         i != specialData.end();
-         i++)
+    for (std::map<int, Special>::iterator it = specialData.begin();
+         it != specialData.end(); ++it)
     {
-        std::map<int, SpecialEntry *>::iterator e = mEntries.find(i->first);
+        std::map<int, SpecialEntry *>::iterator e = mEntries.find(it->first);
         if (e == mEntries.end())
         {
             // found a new special - abort update and rebuild from scratch
             foundNew = true;
             break;
-        } else {
+        }
+        else
+        {
             // update progress bar of special
-            e->second->update(i->second.currentMana, i->second.neededMana);
+            e->second->update(it->second.currentMana, it->second.neededMana);
             found++;
         }
     }
@@ -157,24 +158,25 @@ void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
     mEntries.clear();
     int vPos = 0; //vertical position of next placed element
 
-    for (std::map<int, Special>::const_iterator i = specialData.begin();
-         i != specialData.end();
-         i++)
+    for (std::map<int, Special>::const_iterator it = specialData.begin();
+         it != specialData.end(); ++it)
     {
-        logger->log("Updating special GUI for %d", i->first);
+        logger->log("Updating special GUI for %d", it->first);
 
-        SpecialInfo* info = SpecialDB::get(i->first);
+        SpecialInfo *info = SpecialDB::get(it->first);
         if (info)
         {
-            info->rechargeCurrent = i->second.currentMana;
-            info->rechargeNeeded = i->second.neededMana;
+            info->rechargeCurrent = it->second.currentMana;
+            info->rechargeNeeded = it->second.neededMana;
             SpecialEntry* entry = new SpecialEntry(info);
             entry->setPosition(0, vPos);
             vPos += entry->getHeight() + 3;
             add(entry);
-            mEntries[i->first] = entry;
-        } else {
-            logger->log("Warning: No info available of special %d", i->first);
+            mEntries[it->first] = entry;
+        }
+        else
+        {
+            logger->log("Warning: No info available of special %d", it->first);
         }
     }
 }
