@@ -102,9 +102,6 @@
  */
 static const int MAX_TICK_VALUE = 10000;
 
-static const int defaultSfxVolume = 100;
-static const int defaultMusicVolume = 60;
-
 // TODO: Get rid fo these globals
 std::string errorMessage;
 LoginData loginData;
