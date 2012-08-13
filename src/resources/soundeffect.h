@@ -24,11 +24,7 @@
 
 #include "resources/resource.h"
 
-#ifdef __APPLE__
-#include <SDL/SDL_mixer.h>
-#else
 #include <SDL_mixer.h>
-#endif
 
 /**
  * Defines a class for loading and storing sound effects.
