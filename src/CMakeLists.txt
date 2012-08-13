@@ -652,7 +652,16 @@ IF (WIN32)
         utils/specialfolder.h
         mana.rc
     )
-ENDIF ()
+ENDIF (WIN32)
+
+IF (APPLE)
+    SET(SRCS
+        ${SRCS}
+        log.mm
+        SDLMain.h
+        SDLMain.m
+    )
+ENDIF (APPLE)
 
 SET (PROGRAMS mana)
 

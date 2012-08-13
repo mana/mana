@@ -25,14 +25,10 @@
 
 #include <guichan/font.hpp>
 
-#ifdef __APPLE__
-#include <SDL/SDL_ttf.h>
-#else
 #ifdef __WIN32__
 #include <SDL/SDL_ttf.h>
 #else
 #include <SDL_ttf.h>
-#endif
 #endif
 
 #include <list>

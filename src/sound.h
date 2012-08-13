@@ -22,11 +22,7 @@
 #ifndef SOUND_H
 #define SOUND_H
 
-#ifdef __APPLE__
-#include <SDL/SDL_mixer.h>
-#else
 #include <SDL_mixer.h>
-#endif
 
 #include <string>
 

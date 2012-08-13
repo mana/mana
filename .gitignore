@@ -48,6 +48,7 @@ docs/SOURCE/html/*
 # static libraries
 *.a
 
-# Xcode settings
+# OSX
 Xcode/mana.xcodeproj/xcuserdata
 Xcode/mana.xcodeproj/project.xcworkspace/xcuserdata
+.DS_Store
