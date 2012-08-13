@@ -51,4 +51,6 @@ docs/SOURCE/html/*
 # OSX
 Xcode/mana.xcodeproj/xcuserdata
 Xcode/mana.xcodeproj/project.xcworkspace/xcuserdata
+Xcode/mana-10.7.xcodeproj/xcuserdata
+Xcode/mana-10.7.xcodeproj/project.xcworkspace/xcuserdata
 .DS_Store
