@@ -117,6 +117,14 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
     int px = msg.readInt16();
     int py = msg.readInt16();
     BeingDirection direction = (BeingDirection)msg.readInt8();
+    Gender gender;
+    int genderAsInt = msg.readInt8();
+    if (genderAsInt == ::GENDER_FEMALE)
+        gender = ::GENDER_FEMALE;
+    else if (genderAsInt == ::GENDER_MALE)
+        gender = ::GENDER_MALE;
+    else
+        gender = ::GENDER_UNSPECIFIED;
     Being *being;
 
     switch (type)
@@ -138,8 +146,6 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
             int hs = msg.readInt8(), hc = msg.readInt8();
             being->setSprite(SPRITE_LAYER_HAIR, hs * -1,
                              hairDB.getHairColor(hc));
-            being->setGender(msg.readInt8() == ManaServ::GENDER_MALE ?
-                             ::GENDER_MALE : ::GENDER_FEMALE);
             handleLooks(being, msg);
         } break;
 
@@ -151,8 +157,6 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
                            ? ActorSprite::MONSTER : ActorSprite::NPC, subtype);
             std::string name = msg.readString();
             if (name.length() > 0) being->setName(name);
-            being->setGender(msg.readInt8() == ManaServ::GENDER_MALE ?
-                             ::GENDER_MALE : ::GENDER_FEMALE);
         } break;
 
         default:
@@ -163,6 +167,7 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
     being->setDestination(px, py);
     being->setDirection(direction);
     being->setAction(action);
+    being->setGender(gender);
 }
 
 void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
