@@ -181,6 +181,11 @@ void ChatHandler::handleMessage(MessageIn &msg)
                            | PlayerRelation::SPEECH_FLOAT);
             }
 
+            // This is a sure sign of some special command of manaplus,
+            // none of those are supported at the moment.
+            if (chatMsg.compare(0, 2, "\302\202") == 0)
+               return;
+
             trim(chatMsg);
 
             std::string reducedMessage = chatMsg;
