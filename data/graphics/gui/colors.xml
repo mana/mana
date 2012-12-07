@@ -15,9 +15,9 @@
 	<color id="ITEM_EQUIPPED" color="#000091" />
 	<color id="CHAT" color="#000000" />
 	<color id="GM" color="#ff0000" />
-	<color id="PLAYER" color="#1fa052" />
+    <color id="PLAYER" color="#003000"/>
 	<color id="WHISPER" color="#0000ff" />
-	<color id="IS" color="#a08527" />
+    <color id="IS" color="#a08527" />-->
 	<color id="PARTY" color="#ff00d8" />
 	<color id="GUILD" color="#ff00d8" />
 	<color id="SERVER" color="#8415e2" />
