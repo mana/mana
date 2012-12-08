@@ -71,8 +71,8 @@ class InventoryHandler
         // TODO: fix/remove me
         virtual size_t getSize(int type) const = 0;
 
-        virtual const std::string& getSlotName(unsigned int slotIndex) const
-        { return empty; } // The empty string
+        virtual std::string getSlotName(int slotIndex) const
+        { return std::string(); }
 
         virtual bool isWeaponSlot(unsigned int slotTypeId) const = 0;
 

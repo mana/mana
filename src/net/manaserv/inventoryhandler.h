@@ -133,7 +133,7 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler,
 
         size_t getSize(int type) const;
 
-        const std::string& getSlotName(unsigned int slotIndex) const
+        std::string getSlotName(int slotIndex) const
         { return mEquipBackend.getSlotName(slotIndex); }
 
         bool isWeaponSlot(unsigned int slotTypeId) const

@@ -105,10 +105,13 @@ static void handleLooks(Being *being, MessageIn &msg)
         unsigned int slotTypeId = msg.readInt8();
         Net::InventoryHandler *ih = Net::getInventoryHandler();
         std::string name = ih->getSlotName(slotTypeId);
+        std::cout << name << std::endl;
 
         int layer = 0;
-        if (name == "Hand")
-            layer = SPRITE_LAYER_HAND;
+        if (name == "Hand 1/2")
+            layer = SPRITE_LAYER_WEAPON;
+        else if (name == "Hand 2/2")
+            layer = SPRITE_LAYER_SHIELD;
         else if (name == "Torso")
             layer = SPRITE_LAYER_TORSO;
         else if (name == "Head")
