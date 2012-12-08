@@ -1,3 +1,5 @@
+*.swp
+
 # files created by CMake
 Makefile
 CMakeFiles/
