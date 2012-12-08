@@ -270,9 +270,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
 
         // Check login
         if (index < 0
-#ifndef MANASERV_SUPPORT
             || mServersListModel->getServer(index).type == ServerInfo::MANASERV
-#endif
         )
         {
             OkDialog *dlg = new OkDialog(_("Error"),
@@ -463,9 +461,7 @@ void ServerDialog::loadServers()
 
         // Ignore unknown server types
         if (server.type == ServerInfo::UNKNOWN
-#ifndef MANASERV_SUPPORT
             || server.type == ServerInfo::MANASERV
-#endif
         )
         {
             logger->log("Ignoring server entry with unknown type: %s",

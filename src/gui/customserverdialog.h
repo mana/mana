@@ -86,10 +86,8 @@ class CustomServerDialog : public Window,
         TextField *mDescriptionField;
         Button *mOkButton;
         Button *mCancelButton;
-#ifdef MANASERV_SUPPORT
         DropDown *mTypeField;
         TypeListModel *mTypeListModel;
-#endif
         ServerDialog *mServerDialog;
         // The index of the entry to modify, -1 when only adding a new entry.
         int mIndex;
