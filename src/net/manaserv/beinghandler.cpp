@@ -105,7 +105,6 @@ static void handleLooks(Being *being, MessageIn &msg)
         unsigned int slotTypeId = msg.readInt8();
         Net::InventoryHandler *ih = Net::getInventoryHandler();
         std::string name = ih->getSlotName(slotTypeId);
-        std::cout << name << std::endl;
 
         int layer = 0;
         if (name == "Hand 1/2")
