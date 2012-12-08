@@ -1,8 +1,9 @@
 /*
- *  The Mana Client
+ *  The Mana Fire Client
  *  Copyright (C) 2011-2012  The Mana Developers
+ *  Copyright (C) 2012-2012  The Land of Fire Developers
  *
- *  This file is part of The Mana Client.
+ *  This file is part of The Mana Fire Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,9 +25,7 @@
 class Button;
 class Label;
 class TextField;
-class DropDown;
 class ServerDialog;
-class TypeListModel;
 
 #include "gui/widgets/window.h"
 
@@ -36,25 +35,6 @@ class TypeListModel;
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
 
-
-/**
- * Server Type List Model
- */
-class TypeListModel : public gcn::ListModel
-{
-    public:
-        TypeListModel() {}
-
-        /**
-         * Used to get number of line in the list
-         */
-        int getNumberOfElements() { return 2; }
-
-        /**
-         * Used to get an element from the list
-         */
-        std::string getElementAt(int elementIndex);
-};
 
 /**
  * The custom server addition dialog.
@@ -67,8 +47,6 @@ class CustomServerDialog : public Window,
 {
     public:
         CustomServerDialog(ServerDialog *parent, int index = -1);
-
-        ~CustomServerDialog();
 
         /**
          * Called when receiving actions from the widgets.
@@ -86,8 +64,6 @@ class CustomServerDialog : public Window,
         TextField *mDescriptionField;
         Button *mOkButton;
         Button *mCancelButton;
-        DropDown *mTypeField;
-        TypeListModel *mTypeListModel;
         ServerDialog *mServerDialog;
         // The index of the entry to modify, -1 when only adding a new entry.
         int mIndex;
