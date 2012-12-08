@@ -1969,7 +1969,6 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DWITH_OPENGL",
-					"-DENABLE_MANASERV",
 					"-DHAS_SOCKLEN_T",
 				);
 				SDKROOT = macosx10.6;
@@ -2008,7 +2007,6 @@
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DWITH_OPENGL",
-					"-DENABLE_MANASERV",
 					"-DHAS_SOCKLEN_T",
 				);
 				SDKROOT = macosx10.6;
