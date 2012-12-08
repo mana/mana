@@ -534,55 +534,6 @@ SET(SRCS
     vector.h
     )
 
-SET(SRCS_TMWA
-    net/tmwa/gui/guildtab.cpp
-    net/tmwa/gui/guildtab.h
-    net/tmwa/gui/partytab.cpp
-    net/tmwa/gui/partytab.h
-    net/tmwa/adminhandler.cpp
-    net/tmwa/adminhandler.h
-    net/tmwa/beinghandler.cpp
-    net/tmwa/beinghandler.h
-    net/tmwa/buysellhandler.cpp
-    net/tmwa/buysellhandler.h
-    net/tmwa/charserverhandler.cpp
-    net/tmwa/charserverhandler.h
-    net/tmwa/chathandler.cpp
-    net/tmwa/chathandler.h
-    net/tmwa/gamehandler.cpp
-    net/tmwa/gamehandler.h
-    net/tmwa/generalhandler.cpp
-    net/tmwa/generalhandler.h
-    net/tmwa/guildhandler.cpp
-    net/tmwa/guildhandler.h
-    net/tmwa/inventoryhandler.cpp
-    net/tmwa/inventoryhandler.h
-    net/tmwa/itemhandler.cpp
-    net/tmwa/itemhandler.h
-    net/tmwa/loginhandler.cpp
-    net/tmwa/loginhandler.h
-    net/tmwa/messagehandler.cpp
-    net/tmwa/messagehandler.h
-    net/tmwa/messagein.cpp
-    net/tmwa/messagein.h
-    net/tmwa/messageout.cpp
-    net/tmwa/messageout.h
-    net/tmwa/network.cpp
-    net/tmwa/network.h
-    net/tmwa/npchandler.cpp
-    net/tmwa/npchandler.h
-    net/tmwa/partyhandler.cpp
-    net/tmwa/partyhandler.h
-    net/tmwa/playerhandler.cpp
-    net/tmwa/playerhandler.h
-    net/tmwa/protocol.h
-    net/tmwa/specialhandler.cpp
-    net/tmwa/specialhandler.h
-    net/tmwa/token.h
-    net/tmwa/tradehandler.cpp
-    net/tmwa/tradehandler.h
-    )
-
 SET(SRCS_MANA
     net/manaserv/adminhandler.cpp
     net/manaserv/adminhandler.h
@@ -656,7 +607,7 @@ ENDIF (APPLE)
 
 SET (PROGRAMS mana)
 
-ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA})
+ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_MANA})
 
 TARGET_LINK_LIBRARIES(mana
     ${INTERNAL_LIBRARIES}

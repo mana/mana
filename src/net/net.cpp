@@ -38,8 +38,6 @@
 #include "net/specialhandler.h"
 #include "net/tradehandler.h"
 
-#include "net/tmwa/generalhandler.h"
-
 #include "net/manaserv/generalhandler.h"
 
 #include "utils/gettext.h"
@@ -156,9 +154,6 @@ void connectToServer(ServerInfo &server)
         {
             case ServerInfo::MANASERV:
                 new ManaServ::GeneralHandler;
-                break;
-            case ServerInfo::TMWATHENA:
-                new TmwAthena::GeneralHandler;
                 break;
             default:
                 logger->error(_("Server protocol unsupported"));
