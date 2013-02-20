@@ -187,16 +187,24 @@ Setup_Video::Setup_Video():
     mFpsSlider->addActionListener(this);
 
     // Do the layout
-    getLayout().setHAlign(LayoutCell::FILL);
+    ContainerPlacer place = getPlacer(0, 0);
+    place.getCell().setHAlign(LayoutCell::FILL);
+
     place(0, 0, scrollArea, 1, 4).setPadding(2).setHAlign(LayoutCell::FILL);
     place(1, 0, space, 1, 4);
     place(2, 0, mFsCheckBox);
     place(2, 1, mOpenGLCheckBox);
     place(2, 2, mCustomCursorCheckBox);
-    place(2, 3, mDisableSDLTransparencyCheckBox, 4);
-    place(2, 4, mFpsCheckBox);
-    place(3, 4, mFpsSlider, 2);
-    place(5, 4, mFpsLabel);
+
+    place = getPlacer(0, 1);
+    place.getCell().setHAlign(LayoutCell::FILL);
+
+    place(0, 0, space, 3);
+    place(0, 1, mDisableSDLTransparencyCheckBox, 4);
+
+    place(0, 2, mFpsCheckBox);
+    place(1, 2, mFpsSlider, 2);
+    place(3, 2, mFpsLabel);
 }
 
 Setup_Video::~Setup_Video()

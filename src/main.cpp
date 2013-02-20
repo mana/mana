@@ -150,7 +150,8 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 options.noOpenGL = true;
                 break;
             case 'T':
-                options.chatLogDir = std::string(optarg);
+                options.chatLogDir = optarg;
+                break;
             case 'i':
                 options.screenshotDir = optarg;
                 break;

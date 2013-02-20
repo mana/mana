@@ -225,6 +225,11 @@ namespace PlayerInfo
 // --- Specials ---------------------------------------------------------------
 
     /**
+     * Removes all specials.
+     */
+    void clearSpecialStatus();
+
+    /**
      * Changes the status of the given special.
      */
     void setSpecialStatus(int id, int current, int max, int recharge);

@@ -105,6 +105,10 @@ void GuildHandler::handleMessage(MessageIn &msg)
             {
                 SERVER_NOTICE(_("Invited player can't join another guild."));
             }
+            else // any other failure
+            {
+                SERVER_NOTICE(_("Invite failed."));
+            }
         } break;
 
         case CPMSG_GUILD_ACCEPT_RESPONSE:
