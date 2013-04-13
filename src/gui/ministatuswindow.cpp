@@ -167,8 +167,6 @@ void MiniStatusWindow::event(Event::Channel channel,
 
                 AnimatedSprite *sprite = effect->getIcon();
 
-                typedef std::vector<int> IntMap;
-
                 if (!sprite)
                 {
                     // delete sprite, if necessary
