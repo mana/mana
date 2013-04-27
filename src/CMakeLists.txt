@@ -369,6 +369,8 @@ SET(SRCS
     resources/attributes.h
     resources/beinginfo.cpp
     resources/beinginfo.h
+    resources/chardb.cpp
+    resources/chardb.h
     resources/dye.cpp
     resources/dye.h
     resources/emotedb.cpp
