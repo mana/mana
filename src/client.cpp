@@ -64,6 +64,7 @@
 #include "net/net.h"
 #include "net/worldinfo.h"
 
+#include "resources/chardb.h"
 #include "resources/hairdb.h"
 #include "resources/emotedb.h"
 #include "resources/image.h"
@@ -451,6 +452,7 @@ Client::~Client()
     SDL_RemoveTimer(mSecondsCounterId);
 
     // Unload XML databases
+    CharDB::unload();
     hairDB.unload();
     EmoteDB::unload();
     delete itemDb;
@@ -762,6 +764,7 @@ int Client::exec()
                     Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
 
                     // Load XML databases
+                    CharDB::load();
                     hairDB.load();
                     switch (Net::getNetworkType())
                     {

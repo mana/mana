@@ -41,6 +41,7 @@
 #include "net/charhandler.h"
 #include "net/net.h"
 
+#include "resources/chardb.h"
 #include "resources/hairdb.h"
 
 #include "utils/gettext.h"
@@ -55,6 +56,10 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
 {
     mPlayer = new Being(0, ActorSprite::PLAYER, 0, NULL);
     mPlayer->setGender(GENDER_MALE);
+
+    const std::vector<int> &items = CharDB::getDefaultItems();
+    for (size_t i = 0; i < items.size(); ++i)
+        mPlayer->setSprite(i + 1, items.at(i));
 
     mHairStylesIds = hairDB.getHairStyleIds(
         Net::getCharHandler()->getCharCreateMaxHairStyleId());
@@ -196,7 +201,9 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
         }
     }
     else if (event.getId() == "cancel")
+    {
         scheduleDelete();
+    }
     else if (event.getId() == "nextcolor")
     {
         ++mHairColorId;

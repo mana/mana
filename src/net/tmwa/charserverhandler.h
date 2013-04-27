@@ -69,15 +69,8 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
 
         unsigned int maxSprite() const;
 
-        // Must be < 12 at character creation time, but can be higher
-        // after that.
-        int getCharCreateMaxHairColorId() const
-        { return 11; }
-
-        // Must be < 20 at character creation time, but can be higher
-        // after that.
-        int getCharCreateMaxHairStyleId() const
-        { return 19; }
+        int getCharCreateMaxHairColorId() const;
+        int getCharCreateMaxHairStyleId() const;
 
         void connect();
 

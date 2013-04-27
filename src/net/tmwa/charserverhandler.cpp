@@ -39,6 +39,7 @@
 #include "net/tmwa/protocol.h"
 
 #include "resources/attributes.h"
+#include "resources/chardb.h"
 #include "resources/hairdb.h"
 
 #include "utils/dtor.h"
@@ -279,10 +280,17 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
 
-    mCharCreateDialog->setAttributes(attributes,
-                                     Attributes::getCreationPoints(),
-                                     Attributes::getAttributeMinimum(),
-                                     Attributes::getAttributeMaximum());
+    unsigned minStat = CharDB::getMinStat();
+    if (minStat == 0)
+        minStat = Attributes::getAttributeMinimum();
+    unsigned maxStat = CharDB::getMaxStat();
+    if (maxStat == 0)
+        maxStat = Attributes::getAttributeMaximum();
+    unsigned sumStat = CharDB::getSumStat();
+    if (sumStat == 0)
+        sumStat = Attributes::getCreationPoints();
+
+    mCharCreateDialog->setAttributes(attributes, sumStat, minStat, maxStat);
     mCharCreateDialog->setFixedGender(true, token.sex);
 }
 
@@ -344,6 +352,18 @@ unsigned int CharServerHandler::hairSprite() const
 unsigned int CharServerHandler::maxSprite() const
 {
     return SPRITE_VECTOREND;
+}
+
+int CharServerHandler::getCharCreateMaxHairColorId() const
+{
+    const int max = CharDB::getMaxHairColor();
+    return max ? max : 11; // default maximum
+}
+
+int CharServerHandler::getCharCreateMaxHairStyleId() const
+{
+    const int max = CharDB::getMaxHairStyle();
+    return max ? max : 19; // default maximum
 }
 
 void CharServerHandler::connect()
