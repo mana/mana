@@ -38,6 +38,7 @@
 #include "net/tmwa/network.h"
 #include "net/tmwa/protocol.h"
 
+#include "resources/attributes.h"
 #include "resources/hairdb.h"
 
 #include "utils/dtor.h"
@@ -278,7 +279,10 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
 
-    mCharCreateDialog->setAttributes(attributes, 30, 1, 9);
+    mCharCreateDialog->setAttributes(attributes,
+                                     Attributes::getCreationPoints(),
+                                     Attributes::getAttributeMinimum(),
+                                     Attributes::getAttributeMaximum());
     mCharCreateDialog->setFixedGender(true, token.sex);
 }
 
