@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2010-2012  The Mana Developers
+ *  Copyright (C) 2010-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "net/manaserv/attributes.h"
+#include "resources/attributes.h"
 
 #include "log.h"
 #include "playerinfo.h"
@@ -35,11 +35,10 @@
 #include <map>
 
 #define DEFAULT_ATTRIBUTESDB_FILE "attributes.xml"
-#define DEFAULT_POINTS 60
+#define DEFAULT_POINTS 30
 #define DEFAULT_MIN_PTS 1
-#define DEFAULT_MAX_PTS 20
+#define DEFAULT_MAX_PTS 9
 
-namespace ManaServ {
 namespace Attributes {
 
     typedef struct
@@ -67,9 +66,9 @@ namespace Attributes {
     static std::vector<std::string> attributeLabels;
 
     /** Characters creation points. */
-    static unsigned int creationPoints = 0;
-    static unsigned int attributeMinimum = 0;
-    static unsigned int attributeMaximum = 0;
+    static unsigned int creationPoints = DEFAULT_POINTS;
+    static unsigned int attributeMinimum = DEFAULT_MIN_PTS;
+    static unsigned int attributeMaximum = DEFAULT_MAX_PTS;
 
     unsigned int getCreationPoints()
     {
@@ -381,8 +380,7 @@ namespace Attributes {
 
         TagMap::const_iterator it, it_end;
         for (it = tags.begin(), it_end = tags.end(); it != it_end; ++it)
-            dbStats.push_back(ItemStat(it->first,
-                                           it->second));
+            dbStats.push_back(ItemStat(it->first, it->second));
 
         setStatsList(dbStats);
     }
@@ -405,4 +403,3 @@ namespace Attributes {
     }
 
 } // namespace Attributes
-} // namespace ManaServ
