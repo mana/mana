@@ -368,7 +368,7 @@ void SkillDialog::loadSkills()
 
     for_each_xml_child_node(set, root)
     {
-        if (xmlStrEqual(set->name, BAD_CAST "set"))
+        if (xmlStrEqual(set->name, BAD_CAST "set") || xmlStrEqual(set->name, BAD_CAST "skill-set"))
         {
             setCount++;
             setName = XML::getProperty(set, "name", strprintf(_("Skill Set %d"), setCount));
