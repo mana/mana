@@ -58,14 +58,12 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         void unlock();
 
         void setAttributes(const std::vector<std::string> &labels,
-                           unsigned int available,
-                           unsigned int min, unsigned int max);
+                           unsigned available,
+                           unsigned min, unsigned max);
 
         void setFixedGender(bool fixed, Gender gender = GENDER_FEMALE);
 
     private:
-        int getDistributedPoints() const;
-
         void updateSliders();
 
         /**
@@ -94,13 +92,13 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::RadioButton *mMale;
         gcn::RadioButton *mFemale;
 
+        std::vector<int> mAttributes;
         std::vector<gcn::Slider*> mAttributeSlider;
         std::vector<gcn::Label*> mAttributeLabel;
         std::vector<gcn::Label*> mAttributeValue;
         gcn::Label *mAttributesLeft;
 
-        int mMaxPoints;
-        int mUsedPoints;
+        unsigned mMaxPoints;
 
         gcn::Button *mCreateButton;
         gcn::Button *mCancelButton;
