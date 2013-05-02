@@ -71,7 +71,7 @@ ShortcutWindow::ShortcutWindow(const std::string &title,
     layout.setRowHeight(0, Layout::AUTO_SET);
     layout.setMargin(0);
 
-    loadWindowState();
+    resetToDefaultSize();
 }
 
 ShortcutWindow::~ShortcutWindow()
