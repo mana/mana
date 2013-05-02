@@ -892,7 +892,7 @@ void Being::logic()
     {
 
         if (getType() != PLAYER)
-            actorSpriteManager->destroy(this);
+            actorSpriteManager->scheduleDelete(this);
     }
 }
 

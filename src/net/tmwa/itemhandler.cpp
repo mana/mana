@@ -67,7 +67,7 @@ void ItemHandler::handleMessage(MessageIn &msg)
 
         case SMSG_ITEM_REMOVE:
             if (FloorItem *item = actorSpriteManager->findItem(msg.readInt32()))
-                actorSpriteManager->destroy(item);
+                actorSpriteManager->destroyActor(item);
             break;
     }
 }

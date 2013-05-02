@@ -176,7 +176,7 @@ void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
     if (!being)
         return;
 
-    actorSpriteManager->destroy(being);
+    actorSpriteManager->destroyActor(being);
 }
 
 void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
