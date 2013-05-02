@@ -60,7 +60,7 @@ void ItemHandler::handleMessage(MessageIn &msg)
                 }
                 else if (FloorItem *item = actorSpriteManager->findItem(id))
                 {
-                    actorSpriteManager->destroy(item);
+                    actorSpriteManager->destroyActor(item);
                 }
             }
         } break;
