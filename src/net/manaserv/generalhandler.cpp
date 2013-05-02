@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -47,8 +47,9 @@
 #include "net/manaserv/partyhandler.h"
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/specialhandler.h"
-#include "net/manaserv/attributes.h"
 #include "net/manaserv/tradehandler.h"
+
+#include "resources/attributes.h"
 
 #include "utils/gettext.h"
 

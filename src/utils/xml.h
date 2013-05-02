@@ -26,10 +26,6 @@
 
 #include <string>
 
-// Define commonly used xml file
-#define HAIR_XML_FILE "hair.xml"
-#define COLORS_XML_FILE "colors.xml"
-
 /**
  * XML helper functions.
  */

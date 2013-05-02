@@ -18,7 +18,8 @@ data/help/index.txt
 data/help/support.txt
 data/help/windows.txt
 data/icons/CMakeLists.txt
-docs/FAQ.txt
+data/sfx/CMakeLists.txt
+data/sfx/system/CMakeLists.txt
 docs/HACKING.txt
 docs/example.mana
 docs/items.txt
@@ -342,8 +343,6 @@ src/net/logindata.h
 src/net/loginhandler.h
 src/net/manaserv/adminhandler.cpp
 src/net/manaserv/adminhandler.h
-src/net/manaserv/attributes.cpp
-src/net/manaserv/attributes.h
 src/net/manaserv/beinghandler.cpp
 src/net/manaserv/beinghandler.h
 src/net/manaserv/buysellhandler.cpp
@@ -470,6 +469,8 @@ src/resources/ambientlayer.cpp
 src/resources/ambientlayer.h
 src/resources/animation.cpp
 src/resources/animation.h
+src/resources/attributes.cpp
+src/resources/attributes.h
 src/resources/beinginfo.cpp
 src/resources/beinginfo.h
 src/resources/dye.cpp

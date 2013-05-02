@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -57,11 +57,11 @@
 #include "net/tmwa/gui/guildtab.h"
 #include "net/tmwa/gui/partytab.h"
 
+#include "resources/attributes.h"
 #include "resources/itemdb.h"
 
 #include "utils/gettext.h"
 
-#include <assert.h>
 #include <list>
 
 extern Net::GeneralHandler *generalHandler;
@@ -108,6 +108,7 @@ GeneralHandler::GeneralHandler():
 
     setStatsList(stats);
 
+    listen(Event::ClientChannel);
     listen(Event::GameChannel);
 }
 
@@ -185,12 +186,17 @@ void GeneralHandler::reload()
     static_cast<LoginHandler*>(mLoginHandler.get())->clearWorlds();
     static_cast<CharServerHandler*>(mCharHandler.get())->setCharCreateDialog(0);
     static_cast<CharServerHandler*>(mCharHandler.get())->setCharSelectDialog(0);
+
+    Attributes::unload();
+    Attributes::load();
 }
 
 void GeneralHandler::unload()
 {
     if (mNetwork)
         mNetwork->clearHandlers();
+
+    Attributes::unload();
 }
 
 void GeneralHandler::flushNetwork()
@@ -220,7 +226,14 @@ void GeneralHandler::clearHandlers()
 void GeneralHandler::event(Event::Channel channel,
                            const Event &event)
 {
-    if (channel == Event::GameChannel)
+    if (channel == Event::ClientChannel)
+    {
+        if (event.getType() == Event::LoadingDatabases)
+        {
+            Attributes::load();
+        }
+    }
+    else if (channel == Event::GameChannel)
     {
         if (event.getType() == Event::GuiWindowsLoaded)
         {

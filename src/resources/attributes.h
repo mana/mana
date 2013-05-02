@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2010-2012  The Mana Developers
+ *  Copyright (C) 2010-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -18,13 +18,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_ATTRIBUTES_H
-#define NET_MANASERV_ATTRIBUTES_H
+#ifndef RESOURCES_ATTRIBUTES_H
+#define RESOURCES_ATTRIBUTES_H
 
 #include <string>
 #include <vector>
 
-namespace ManaServ {
 namespace Attributes {
 
     void load();
@@ -65,6 +64,5 @@ namespace Attributes {
     unsigned int getAttributeMaximum();
 
 } // namespace Attributes
-} // namespace ManaServ
 
-#endif // NET_MANASERV_ATTRIBUTES_H
+#endif // RESOURCES_ATTRIBUTES_H

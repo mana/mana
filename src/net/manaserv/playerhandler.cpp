@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -20,7 +20,6 @@
  */
 
 #include "net/manaserv/playerhandler.h"
-#include "net/manaserv/beinghandler.h"
 
 #include "client.h"
 #include "effectmanager.h"
@@ -43,7 +42,8 @@
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
-#include "net/manaserv/attributes.h"
+
+#include "resources/attributes.h"
 
 /**
  * Max. distance in tiles we are willing to scroll after a teleport;

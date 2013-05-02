@@ -367,8 +367,12 @@ SET(SRCS
     resources/ambientlayer.h
     resources/animation.cpp
     resources/animation.h
+    resources/attributes.cpp
+    resources/attributes.h
     resources/beinginfo.cpp
     resources/beinginfo.h
+    resources/chardb.cpp
+    resources/chardb.h
     resources/dye.cpp
     resources/dye.h
     resources/emotedb.cpp
@@ -595,8 +599,6 @@ SET(SRCS_TMWA
 SET(SRCS_MANA
     net/manaserv/adminhandler.cpp
     net/manaserv/adminhandler.h
-    net/manaserv/attributes.cpp
-    net/manaserv/attributes.h
     net/manaserv/beinghandler.cpp
     net/manaserv/beinghandler.h
     net/manaserv/buysellhandler.cpp
