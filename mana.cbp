@@ -394,8 +394,6 @@
 		<Unit filename="src\net\loginhandler.h" />
 		<Unit filename="src\net\manaserv\adminhandler.cpp" />
 		<Unit filename="src\net\manaserv\adminhandler.h" />
-		<Unit filename="src\net\manaserv\attributes.cpp" />
-		<Unit filename="src\net\manaserv\attributes.h" />
 		<Unit filename="src\net\manaserv\beinghandler.cpp" />
 		<Unit filename="src\net\manaserv\beinghandler.h" />
 		<Unit filename="src\net\manaserv\buysellhandler.cpp" />
@@ -522,6 +520,8 @@
 		<Unit filename="src\resources\ambientlayer.h" />
 		<Unit filename="src\resources\animation.cpp" />
 		<Unit filename="src\resources\animation.h" />
+		<Unit filename="src\resources\attributes.cpp" />
+		<Unit filename="src\resources\attributes.h" />
 		<Unit filename="src\resources\beinginfo.cpp" />
 		<Unit filename="src\resources\beinginfo.h" />
 		<Unit filename="src\resources\dye.cpp" />
