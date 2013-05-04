@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -22,6 +22,9 @@
 #ifndef NPC_DB_H
 #define NPC_DB_H
 
+#include <string>
+#include "utils/xml.h"
+
 class BeingInfo;
 
 /**
@@ -29,7 +32,11 @@ class BeingInfo;
  */
 namespace NPCDB
 {
-    void load();
+    void init();
+
+    void readNPCNode(xmlNodePtr node, const std::string &filename);
+
+    void checkStatus();
 
     void unload();
 

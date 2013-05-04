@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -22,6 +22,8 @@
 #ifndef MONSTER_DB_H
 #define MONSTER_DB_H
 
+#include "utils/xml.h"
+
 class BeingInfo;
 
 /**
@@ -29,7 +31,11 @@ class BeingInfo;
  */
 namespace MonsterDB
 {
-    void load();
+    void init();
+
+    void readMonsterNode(xmlNodePtr node, const std::string &filename);
+
+    void checkStatus();
 
     void unload();
 

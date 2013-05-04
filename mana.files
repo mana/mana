@@ -499,6 +499,8 @@ src/resources/resource.cpp
 src/resources/resource.h
 src/resources/resourcemanager.cpp
 src/resources/resourcemanager.h
+src/resources/settingsmanager.cpp
+src/resources/settingsmanager.h
 src/resources/soundeffect.cpp
 src/resources/soundeffect.h
 src/resources/specialdb.cpp
@@ -542,6 +544,8 @@ src/utils/mathutils.h
 src/utils/mkdir.cpp
 src/utils/mkdir.h
 src/utils/mutex.h
+src/utils/path.cpp
+src/utils/path.h
 src/utils/physfsrwops.c
 src/utils/physfsrwops.h
 src/utils/sha256.cpp

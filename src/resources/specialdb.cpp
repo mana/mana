@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2010-2012  The Mana Developers
+ *  Copyright (C) 2010-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -23,7 +23,6 @@
 #include "log.h"
 
 #include "utils/dtor.h"
-#include "utils/xml.h"
 
 
 namespace
@@ -41,62 +40,50 @@ SpecialInfo::TargetMode SpecialDB::targetModeFromString(const std::string& str)
     return SpecialInfo::TARGET_BEING;
 }
 
-void SpecialDB::load()
+
+void SpecialDB::init()
 {
     if (mLoaded)
         unload();
+}
 
-    logger->log("Initializing special database...");
+void SpecialDB::readSpecialSetNode(xmlNodePtr node, const std::string &filename)
+{
+    std::string setName = XML::getProperty(node, "name", "Actions");
 
-    XML::Document doc("specials.xml");
-    xmlNodePtr root = doc.rootNode();
-
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "specials"))
+    for_each_xml_child_node(special, node)
     {
-        logger->log("Error loading specials file specials.xml");
-        return;
-    }
-
-    std::string setName;
-
-    for_each_xml_child_node(set, root)
-    {
-        if (xmlStrEqual(set->name, BAD_CAST "set") ||
-            xmlStrEqual(set->name, BAD_CAST "special-set"))
+        if (xmlStrEqual(special->name, BAD_CAST "special"))
         {
-            setName = XML::getProperty(set, "name", "Actions");
+            SpecialInfo *info = new SpecialInfo();
+            int id = XML::getProperty(special, "id", 0);
+            info->id = id;
+            info->set = setName;
+            info->name = XML::getProperty(special, "name", "");
+            info->icon = XML::getProperty(special, "icon", "");
 
+            info->targetMode = targetModeFromString(XML::getProperty(special, "target", "being"));
 
-            for_each_xml_child_node(special, set)
+            info->rechargeable = XML::getBoolProperty(special, "rechargeable", true);
+            info->rechargeNeeded = 0;
+            info->rechargeCurrent = 0;
+
+            if (mSpecialInfos.find(id) != mSpecialInfos.end())
             {
-                if (xmlStrEqual(special->name, BAD_CAST "special"))
-                {
-                    SpecialInfo *info = new SpecialInfo();
-                    int id = XML::getProperty(special, "id", 0);
-                    info->id = id;
-                    info->set = setName;
-                    info->name = XML::getProperty(special, "name", "");
-                    info->icon = XML::getProperty(special, "icon", "");
-
-                    info->targetMode = targetModeFromString(XML::getProperty(special, "target", "being"));
-
-                    info->rechargeable = XML::getBoolProperty(special, "rechargeable", true);
-                    info->rechargeNeeded = 0;
-                    info->rechargeCurrent = 0;
-
-                    if (mSpecialInfos.find(id) != mSpecialInfos.end())
-                    {
-                        logger->log("SpecialDB: Duplicate special ID %d (ignoring)", id);
-                    } else {
-                        mSpecialInfos[id] = info;
-                    }
-                }
+                logger->log("SpecialDB: Duplicate special ID %d in %s, ignoring", id, filename.c_str());
+            } else {
+                mSpecialInfos[id] = info;
             }
         }
     }
 
+}
+
+void SpecialDB::checkStatus()
+{
     mLoaded = true;
 }
+
 
 void SpecialDB::unload()
 {

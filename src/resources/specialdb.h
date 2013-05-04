@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2010-2012  The Mana Developers
+ *  Copyright (C) 2010-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -23,6 +23,7 @@
 
 #include <string>
 #include <map>
+#include "utils/xml.h"
 
 struct SpecialInfo
 {
@@ -48,7 +49,11 @@ struct SpecialInfo
  */
 namespace SpecialDB
 {
-    void load();
+    void init();
+
+    void readSpecialSetNode(xmlNodePtr node, const std::string &filename);
+
+    void checkStatus();
 
     void unload();
 

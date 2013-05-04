@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -24,8 +24,6 @@
 #include "event.h"
 #include "log.h"
 #include "sound.h"
-
-#include "utils/xml.h"
 
 #include "configuration.h"
 
@@ -114,58 +112,52 @@ StatusEffect *StatusEffect::getStunEffect(int index, bool enabling)
     return stunEffects[enabling][index];
 }
 
-void StatusEffect::load()
+void StatusEffect::init()
 {
     if (mLoaded)
         unload();
+}
 
-    XML::Document doc(STATUS_EFFECTS_FILE);
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "status-effects"))
+void StatusEffect::readStatusEffectNode(xmlNodePtr node, const std::string &filename)
+{
+    status_effect_map *the_map = NULL;
+    int index = atoi(XML::getProperty(node, "id", "-1").c_str());
+    if (xmlStrEqual(node->name, BAD_CAST "status-effect"))
     {
-        logger->log("Error loading status effects file: " STATUS_EFFECTS_FILE);
-        return;
+        the_map = &statusEffects;
+        int block_index = atoi(XML::getProperty(node, "block-id", "-1").c_str());
+
+        if (index >= 0 && block_index >= 0)
+            blockEffectIndexMap[block_index] = index;
+    }
+    else if (xmlStrEqual(node->name, BAD_CAST "stun-effect"))
+        the_map = &stunEffects;
+
+    if (the_map)
+    {
+        StatusEffect *startEffect = new StatusEffect;
+        StatusEffect *endEffect = new StatusEffect;
+
+        startEffect->mMessage = XML::getProperty(node, "start-message", "");
+        startEffect->mSFXEffect = XML::getProperty(node, "start-audio", "");
+        startEffect->mParticleEffect = XML::getProperty(node, "start-particle", "");
+        startEffect->mIcon = XML::getProperty(node, "icon", "");
+        startEffect->mAction = XML::getProperty(node, "action", "");
+        startEffect->mPersistentParticleEffect = (XML::getProperty(node, "persistent-particle-effect", "no")) != "no";
+
+        endEffect->mMessage = XML::getProperty(node, "end-message", "");
+        endEffect->mSFXEffect = XML::getProperty(node, "end-audio", "");
+        endEffect->mParticleEffect = XML::getProperty(node, "end-particle", "");
+
+        (*the_map)[1][index] = startEffect;
+        (*the_map)[0][index] = endEffect;
     }
 
-    for_each_xml_child_node(node, rootNode)
-    {
-        status_effect_map *the_map = NULL;
+}
 
-        int index = atoi(XML::getProperty(node, "id", "-1").c_str());
-
-        if (xmlStrEqual(node->name, BAD_CAST "status-effect"))
-        {
-            the_map = &statusEffects;
-            int block_index = atoi(XML::getProperty(node, "block-id", "-1").c_str());
-
-            if (index >= 0 && block_index >= 0)
-                blockEffectIndexMap[block_index] = index;
-
-        }
-        else if (xmlStrEqual(node->name, BAD_CAST "stun-effect"))
-            the_map = &stunEffects;
-
-        if (the_map)
-        {
-            StatusEffect *startEffect = new StatusEffect;
-            StatusEffect *endEffect = new StatusEffect;
-
-            startEffect->mMessage = XML::getProperty(node, "start-message", "");
-            startEffect->mSFXEffect = XML::getProperty(node, "start-audio", "");
-            startEffect->mParticleEffect = XML::getProperty(node, "start-particle", "");
-            startEffect->mIcon = XML::getProperty(node, "icon", "");
-            startEffect->mAction = XML::getProperty(node, "action", "");
-            startEffect->mPersistentParticleEffect = (XML::getProperty(node, "persistent-particle-effect", "no")) != "no";
-
-            endEffect->mMessage = XML::getProperty(node, "end-message", "");
-            endEffect->mSFXEffect = XML::getProperty(node, "end-audio", "");
-            endEffect->mParticleEffect = XML::getProperty(node, "end-particle", "");
-
-            (*the_map)[1][index] = startEffect;
-            (*the_map)[0][index] = endEffect;
-        }
-    }
+void StatusEffect::checkStatus()
+{
+    mLoaded = true;
 }
 
 void unloadMap(std::map<int, StatusEffect *> map)

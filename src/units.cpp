@@ -50,7 +50,8 @@ enum UnitType {
 
 struct UnitDescription units[UNIT_END];
 
-void Units::loadUnits()
+
+void Units::init()
 {
     { // Setup default weight
         struct UnitDescription ud;
@@ -90,72 +91,66 @@ void Units::loadUnits()
 
         units[UNIT_CURRENCY] = ud;
     }
+}
 
-    XML::Document doc("units.xml");
-    xmlNodePtr root = doc.rootNode();
+void Units::readUnitNode(xmlNodePtr node, const std::string &filename)
+{
+    struct UnitDescription ud;
+    int level = 1;
+    const std::string type = XML::getProperty(node, "type", "");
+    ud.conversion = XML::getProperty(node, "conversion", 1);
+    ud.mix = XML::getProperty(node, "mix", "no") == "yes";
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "units"))
+    struct UnitLevel bu;
+    bu.symbol = XML::getProperty(node, "base", "¤");
+    bu.count = 1;
+    bu.round = XML::getProperty(node, "round", 2);
+
+    ud.levels.push_back(bu);
+
+    for_each_xml_child_node(uLevel, node)
     {
-        logger->log("Error loading unit definition file: units.xml");
-        return;
-    }
-
-    for_each_xml_child_node(node, root)
-    {
-        if (xmlStrEqual(node->name, BAD_CAST "unit"))
+        if (xmlStrEqual(uLevel->name, BAD_CAST "level"))
         {
-            struct UnitDescription ud;
-            int level = 1;
-            const std::string type = XML::getProperty(node, "type", "");
-            ud.conversion = XML::getProperty(node, "conversion", 1);
-            ud.mix = XML::getProperty(node, "mix", "no") == "yes";
+            struct UnitLevel ul;
+            ul.symbol = XML::getProperty(uLevel, "symbol",
+                                            strprintf("¤%d",level));
+            ul.count = XML::getProperty(uLevel, "count", -1);
+            ul.round = XML::getProperty(uLevel, "round", bu.round);
 
-            struct UnitLevel bu;
-            bu.symbol = XML::getProperty(node, "base", "¤");
-            bu.count = 1;
-            bu.round = XML::getProperty(node, "round", 2);
-
-            ud.levels.push_back(bu);
-
-            for_each_xml_child_node(uLevel, node)
+            if (ul.count > 0)
             {
-                if (xmlStrEqual(uLevel->name, BAD_CAST "level"))
-                {
-                    struct UnitLevel ul;
-                    ul.symbol = XML::getProperty(uLevel, "symbol",
-                                                    strprintf("¤%d",level));
-                    ul.count = XML::getProperty(uLevel, "count", -1);
-                    ul.round = XML::getProperty(uLevel, "round", bu.round);
-
-                    if (ul.count > 0)
-                    {
-                        ud.levels.push_back(ul);
-                        level++;
-                    }
-                    else
-                    {
-                        logger->log("Error bad unit count: %d for %s in %s",
-                                        ul.count, ul.symbol.c_str(), bu.symbol.c_str());
-                    }
-                }
+                ud.levels.push_back(ul);
+                level++;
             }
-
-            // Add one more level for saftey
-            struct UnitLevel ll;
-            ll.symbol = "";
-            ll.count = INT_MAX;
-            ll.round = 0;
-
-            ud.levels.push_back(ll);
-
-            if (type == "weight")
-                units[UNIT_WEIGHT] = ud;
-            else if (type == "currency")
-                units[UNIT_CURRENCY] = ud;
             else
-                logger->log("Error unknown unit type: %s", type.c_str());
+            {
+                logger->log("Error bad unit count: %d for %s in %s",
+                                ul.count, ul.symbol.c_str(), bu.symbol.c_str());
+            }
         }
     }
+
+    // Add one more level for saftey
+    struct UnitLevel ll;
+    ll.symbol = "";
+    ll.count = INT_MAX;
+    ll.round = 0;
+
+    ud.levels.push_back(ll);
+
+    if (type == "weight")
+        units[UNIT_WEIGHT] = ud;
+    else if (type == "currency")
+        units[UNIT_CURRENCY] = ud;
+    else
+        logger->log("Error unknown unit type: %s in %s", type.c_str(), filename.c_str());
+
+}
+
+void Units::checkStatus()
+{
+
 }
 
 std::string formatUnit(int value, int type)

@@ -1,7 +1,7 @@
 /*
  *  Hair database
  *  Copyright (C) 2008  Aethyra Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -23,58 +23,32 @@
 
 #include "log.h"
 
-#include "utils/xml.h"
-
 #include <assert.h>
 
 #define COLOR_WHITE "#ffffff"
-#define HAIR_XML_FILE "hair.xml"
 
-void HairDB::load()
+
+void HairDB::init()
 {
     if (mLoaded)
         unload();
 
     // Default entry
     mHairColors[0] = COLOR_WHITE;
+}
 
-    XML::Document *doc = new XML::Document(HAIR_XML_FILE);
-    xmlNodePtr root = doc->rootNode();
+void HairDB::readHairColorNode(xmlNodePtr node, const std::string &filename)
+{
+    int id = XML::getProperty(node, "id", 0);
 
-    if (!root || (!xmlStrEqual(root->name, BAD_CAST "colors")
-        && !xmlStrEqual(root->name, BAD_CAST "hair")))
-    {
-        logger->log("HairDb: Failed to find any old <colors> or new "
-                    "<hair> nodes.");
-        delete doc;
-        mLoaded = true;
-        return;
-    }
+    if (mHairColors.find(id) != mHairColors.end())
+        logger->log("HairDb: Redefinition of color Id %d in %s", id, filename.c_str());
 
-    // Old colors.xml file style. The hair style will be declared
-    // in the items.xml file.
-    if (xmlStrEqual(root->name, BAD_CAST "colors"))
-    {
-        loadHairColorsNode(root);
-    }
-    else if (xmlStrEqual(root->name, BAD_CAST "hair"))
-    {
-        // Loading new format: hair styles + colors.
-        for_each_xml_child_node(node, root)
-        {
-            if (xmlStrEqual(node->name, BAD_CAST "styles"))
-            {
-                loadHairStylesNode(root);
-            }
-            else if (xmlStrEqual(node->name, BAD_CAST "colors"))
-            {
-                loadHairColorsNode(node);
-            }
-        }
-    }
+    mHairColors[id] = XML::getProperty(node, "value", COLOR_WHITE);
+}
 
-    delete doc;
-
+void HairDB::checkStatus()
+{
     mLoaded = true;
 }
 
@@ -89,27 +63,6 @@ void HairDB::unload()
     mHairStyles.clear();
 
     mLoaded = false;
-}
-
-void HairDB::loadHairColorsNode(xmlNodePtr colorsNode)
-{
-    for_each_xml_child_node(node, colorsNode)
-    {
-        if (xmlStrEqual(node->name, BAD_CAST "color"))
-        {
-            int id = XML::getProperty(node, "id", 0);
-
-            if (mHairColors.find(id) != mHairColors.end())
-                logger->log("HairDb: Redefinition of color Id %d", id);
-
-            mHairColors[id] = XML::getProperty(node, "value", COLOR_WHITE);
-        }
-    }
-}
-
-void HairDB::loadHairStylesNode(xmlNodePtr stylesNode)
-{
-    // TODO: Add support of the races.xml file.
 }
 
 void HairDB::addHairStyle(int id)
@@ -128,8 +81,10 @@ void HairDB::addHairStyle(int id)
 const std::string &HairDB::getHairColor(int id)
 {
     if (!mLoaded)
-        load();
-
+    {
+        // no idea if this can happen, but that check existed before
+        logger->log("WARNING: HairDB::getHairColor() called before settings were loaded!");
+    }
     ColorConstIterator it = mHairColors.find(id);
     if (it != mHairColors.end())
         return it->second;

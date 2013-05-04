@@ -75,6 +75,7 @@
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 #include "resources/userpalette.h"
+#include "resources/settingsmanager.h"
 
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
@@ -452,13 +453,9 @@ Client::~Client()
     SDL_RemoveTimer(mSecondsCounterId);
 
     // Unload XML databases
+    SettingsManager::unload();
     CharDB::unload();
-    hairDB.unload();
-    EmoteDB::unload();
     delete itemDb;
-    MonsterDB::unload();
-    NPCDB::unload();
-    StatusEffect::unload();
 
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
@@ -761,11 +758,16 @@ int Client::exec()
                     // Read default paths file 'data/paths.xml'
                     paths.init("paths.xml", true);
 
+                    // TODO remove this as soon as inventoryhandler stops using this event
                     Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
 
+                    // load game settings
+
+
                     // Load XML databases
+                    SettingsManager::load();
+
                     CharDB::load();
-                    hairDB.load();
                     switch (Net::getNetworkType())
                     {
                       case ServerInfo::TMWATHENA:
@@ -790,12 +792,6 @@ int Client::exec()
                                      STATE_CHOOSE_SERVER);
                         break;
                     }
-                    MonsterDB::load();
-                    SpecialDB::load();
-                    NPCDB::load();
-                    EmoteDB::load();
-                    StatusEffect::load();
-                    Units::loadUnits();
 
                     ActorSprite::load();
 

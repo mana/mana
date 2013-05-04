@@ -23,14 +23,16 @@
 #define UNITS_H
 
 #include <string>
+#include "utils/xml.h"
 
 class Units
 {
     public:
-        /**
-        * Loads and parses the units.xml file (if found).
-        */
-        static void loadUnits();
+        static void init();
+
+        static void readUnitNode(xmlNodePtr node, const std::string &filename);
+
+        static void checkStatus();
 
         /**
         * Formats the given number in the correct currency format.

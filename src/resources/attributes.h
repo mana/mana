@@ -24,9 +24,18 @@
 #include <string>
 #include <vector>
 
-namespace Attributes {
+#include "utils/xml.h"
 
-    void load();
+namespace Attributes
+{
+
+    void init();
+
+    void readAttributeNode(xmlNodePtr node, const std::string &filename);
+
+    void readPointsNode(xmlNodePtr node, const std::string &filename);
+
+    void checkStatus();
 
     void unload();
 
