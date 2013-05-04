@@ -1,7 +1,7 @@
 /*
  *  Emote database
  *  Copyright (C) 2009  Aethyra Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -29,8 +29,6 @@
 #include "resources/image.h"
 #include "resources/imageset.h"
 
-#include "utils/xml.h"
-
 namespace
 {
     Emotes mEmotes;
@@ -39,7 +37,7 @@ namespace
     int mLastEmote = 0;
 }
 
-void EmoteDB::load()
+void EmoteDB::init()
 {
     if (mLoaded)
         unload();
@@ -51,74 +49,66 @@ void EmoteDB::load()
 
     mLastEmote = 0;
 
-    logger->log("Initializing emote database...");
+}
 
-    XML::Document doc("emotes.xml");
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "emotes"))
+void EmoteDB::readEmoteNode(xmlNodePtr node, const std::string &filename)
+{
+    int id = XML::getProperty(node, "id", -1);
+    if (id == -1)
     {
-        logger->log("Emote Database: Error while loading emotes.xml!");
+        logger->log("Emote Database: Emote with missing ID in %s!", filename.c_str());
         return;
     }
 
-    //iterate <emote>s
-    for_each_xml_child_node(emoteNode, rootNode)
+    Emote *currentEmote = new Emote;
+
+    currentEmote->name = XML::getProperty(node, "name", "unknown");
+    currentEmote->effect = XML::getProperty(node, "effectid", -1);
+
+    if (currentEmote->effect == -1)
     {
-        if (!xmlStrEqual(emoteNode->name, BAD_CAST "emote"))
-            continue;
-
-        int id = XML::getProperty(emoteNode, "id", -1);
-        if (id == -1)
-        {
-            logger->log("Emote Database: Emote with missing ID in emotes.xml!");
-            continue;
-        }
-
-        Emote *currentEmote = new Emote;
-
-        currentEmote->name = XML::getProperty(emoteNode, "name", "unknown");
-        currentEmote->effect = XML::getProperty(emoteNode, "effectid", -1);
-
-        if (currentEmote->effect == -1)
-        {
-            logger->log("Emote Database: Warning: Emote with no attached effect!");
-            delete currentEmote;
-            continue;
-        }
-
-        const std::string imageName = XML::getProperty(emoteNode, "image", "");
-        const int width = XML::getProperty(emoteNode, "width", 0);
-        const int height = XML::getProperty(emoteNode, "height", 0);
-
-        if (imageName.empty() || width <= 0 || height <= 0)
-        {
-            logger->log("Emote Database: Warning: Emote with bad imageset values");
-            delete currentEmote;
-            continue;
-        }
-
-        ImageSet *is = ResourceManager::getInstance()->getImageSet(imageName,
-                                                                   width,
-                                                                   height);
-        if (!is || !(is->size() > 0))
-        {
-            logger->log("Emote Database: Error loading imageset");
-            delete is;
-            delete currentEmote;
-            continue;
-        }
-        else
-        {
-            // For now we just use the first image in the animation
-            currentEmote->sprite = new ImageSprite(is->get(0));
-        }
-
-        mEmotes[id] = currentEmote;
-        if (id > mLastEmote)
-            mLastEmote = id;
+        logger->log("Emote Database: Warning: Emote %s has no attached effect in %s!",
+                    currentEmote->name.c_str(), filename.c_str());
+        delete currentEmote;
+        return;
     }
 
+    const std::string imageName = XML::getProperty(node, "image", "");
+    const int width = XML::getProperty(node, "width", 0);
+    const int height = XML::getProperty(node, "height", 0);
+
+    if (imageName.empty() || width <= 0 || height <= 0)
+    {
+        logger->log("Emote Database: Warning: Emote %s has bad imageset values in %s",
+                    currentEmote->name.c_str(), filename.c_str());
+        delete currentEmote;
+        return;
+    }
+
+    ImageSet *is = ResourceManager::getInstance()->getImageSet(imageName,
+                                                               width,
+                                                               height);
+    if (!is || !(is->size() > 0))
+    {
+        logger->log("Emote Database: Error loading imageset for emote %s in %s",
+                    currentEmote->name.c_str(), filename.c_str());
+        delete is;
+        delete currentEmote;
+        return;
+    }
+    else
+    {
+        // For now we just use the first image in the animation
+        currentEmote->sprite = new ImageSprite(is->get(0));
+    }
+
+    mEmotes[id] = currentEmote;
+    if (id > mLastEmote)
+        mLastEmote = id;
+}
+
+void EmoteDB::checkStatus()
+{
     mLoaded = true;
 }
 

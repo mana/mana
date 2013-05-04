@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -35,61 +35,52 @@ namespace
     bool mLoaded = false;
 }
 
-void NPCDB::load()
+
+void NPCDB::init()
 {
     if (mLoaded)
         unload();
 
-    logger->log("Initializing NPC database...");
+}
 
-    XML::Document doc("npcs.xml");
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "npcs"))
+void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
+{
+    int id = XML::getProperty(node, "id", 0);
+    if (id == 0)
     {
-        logger->error("NPC Database: Error while loading npcs.xml!");
+        logger->log("NPC Database: NPC with missing ID in %s", filename.c_str());
+        return;
     }
 
-    //iterate <npc>s
-    for_each_xml_child_node(npcNode, rootNode)
+    BeingInfo *currentInfo = new BeingInfo;
+
+    currentInfo->setTargetCursorSize(XML::getProperty(node,
+                                     "targetCursor", "medium"));
+
+    SpriteDisplay display;
+    for_each_xml_child_node(spriteNode, node)
     {
-        if (!xmlStrEqual(npcNode->name, BAD_CAST "npc"))
-            continue;
-
-        int id = XML::getProperty(npcNode, "id", 0);
-        if (id == 0)
+        if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
         {
-            logger->log("NPC Database: NPC with missing ID in npcs.xml!");
-            continue;
+            SpriteReference currentSprite;
+            currentSprite.sprite = (const char*)spriteNode->xmlChildrenNode->content;
+            currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
+            display.sprites.push_back(currentSprite);
         }
-
-        BeingInfo *currentInfo = new BeingInfo;
-
-        currentInfo->setTargetCursorSize(XML::getProperty(npcNode,
-                                         "targetCursor", "medium"));
-
-        SpriteDisplay display;
-        for_each_xml_child_node(spriteNode, npcNode)
+        else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
         {
-            if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
-            {
-                SpriteReference currentSprite;
-                currentSprite.sprite = (const char*)spriteNode->xmlChildrenNode->content;
-                currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
-                display.sprites.push_back(currentSprite);
-            }
-            else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
-            {
-                std::string particlefx = (const char*)spriteNode->xmlChildrenNode->content;
-                display.particles.push_back(particlefx);
-            }
+            std::string particlefx = (const char*)spriteNode->xmlChildrenNode->content;
+            display.particles.push_back(particlefx);
         }
-
-        currentInfo->setDisplay(display);
-
-        mNPCInfos[id] = currentInfo;
     }
 
+    currentInfo->setDisplay(display);
+
+    mNPCInfos[id] = currentInfo;
+}
+
+void NPCDB::checkStatus()
+{
     mLoaded = true;
 }
 

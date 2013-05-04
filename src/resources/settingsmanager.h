@@ -1,7 +1,6 @@
 /*
- *  Emote database
- *  Copyright (C) 2009  Aethyra Development Team
- *  Copyright (C) 2009-2013  The Mana Developers
+ *  The Mana Client
+ *  Copyright (C) 2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -19,43 +18,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTE_DB_H
-#define EMOTE_DB_H
+#ifndef SETTINGSMANAGER_HPP
+#define SETTINGSMANAGER_HPP
 
-#include <list>
-#include <map>
 #include <string>
-#include "utils/xml.h"
+#include <list>
+#include <set>
 
-class ImageSprite;
-
-struct Emote
+namespace SettingsManager
 {
-    std::string name;
-    ImageSprite *sprite;
-    int effect;
-};
-
-typedef std::map<int, Emote*> Emotes;
-
-/**
- * Emote information database.
- */
-namespace EmoteDB
-{
-    void init();
-
-    void readEmoteNode(xmlNodePtr node, const std::string &filename);
-
-    void checkStatus();
-
+    void load();
     void unload();
-
-    const Emote *get(int id);
-
-    int getLast();
-
-    typedef Emotes::iterator EmotesIterator;
 }
 
-#endif // EMOTE_DB_H
+
+#endif // SETTINGSMANAGER_HPP

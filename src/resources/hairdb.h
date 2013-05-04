@@ -1,7 +1,7 @@
 /*
  *  Hair database
  *  Copyright (C) 2008  Aethyra Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -26,6 +26,7 @@
 
 #include <map>
 #include <string>
+#include "utils/xml.h"
 
 /**
  * Hair information database.
@@ -40,10 +41,11 @@ class HairDB
     ~HairDB()
     { unload(); }
 
-    /**
-     * Loads the color data from <code>hair.xml</code>.
-     */
-    void load();
+    void init();
+
+    void readHairColorNode(xmlNodePtr node, const std::string &filename);
+
+    void checkStatus();
 
     /**
      * Clear the color data

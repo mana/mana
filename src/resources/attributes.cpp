@@ -29,7 +29,6 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-#include "utils/xml.h"
 
 #include <list>
 #include <map>
@@ -238,119 +237,120 @@ namespace Attributes {
         }
     }
 
-    void load()
+    void init()
     {
-        logger->log("Initializing attributes database...");
+        if (attributes.size())
+            unload();
+    }
 
-        XML::Document doc(DEFAULT_ATTRIBUTESDB_FILE);
-        xmlNodePtr rootNode = doc.rootNode();
+    /**
+     * Read attribute node
+     */
+    void readAttributeNode(xmlNodePtr node, const std::string &filename)
+    {
+        int id = XML::getProperty(node, "id", 0);
 
-        if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "attributes"))
+        if (!id)
         {
-            logger->log("Attributes: Error while loading "
-                        DEFAULT_ATTRIBUTESDB_FILE ". Using Built-ins.");
-            loadBuiltins();
-            fillLabels();
+            logger->log("Attributes: Invalid or missing stat ID in "
+                        DEFAULT_ATTRIBUTESDB_FILE "!");
+            return;
+        }
+        else if (attributes.find(id) != attributes.end())
+        {
+            logger->log("Attributes: Redefinition of stat ID %d", id);
+        }
+
+        std::string name = XML::getProperty(node, "name", "");
+
+        if (name.empty())
+        {
+            logger->log("Attributes: Invalid or missing stat name in "
+                        DEFAULT_ATTRIBUTESDB_FILE "!");
             return;
         }
 
-        for_each_xml_child_node(node, rootNode)
+        // Create the attribute.
+        Attribute a;
+        a.id = id;
+        a.name = name;
+        a.description = XML::getProperty(node, "desc", "");
+        a.modifiable = XML::getBoolProperty(node, "modifiable", false);
+        a.scope = XML::getProperty(node, "scope", "none");
+        a.playerInfoId = getPlayerInfoIdFromAttrType(
+                         XML::getProperty(node, "player-info", ""));
+
+        attributes[id] = a;
+
+        unsigned int count = 0;
+        for_each_xml_child_node(effectNode, node)
         {
-            if (xmlStrEqual(node->name, BAD_CAST "attribute"))
+            if (!xmlStrEqual(effectNode->name, BAD_CAST "modifier"))
+                 continue;
+            ++count;
+            std::string tag = XML::getProperty(effectNode, "tag", "");
+            if (tag.empty())
             {
-                int id = XML::getProperty(node, "id", 0);
-
-                if (!id)
-                {
-                    logger->log("Attributes: Invalid or missing stat ID in "
-                                DEFAULT_ATTRIBUTESDB_FILE "!");
-                    continue;
-                }
-                else if (attributes.find(id) != attributes.end())
-                {
-                    logger->log("Attributes: Redefinition of stat ID %d", id);
-                }
-
-                std::string name = XML::getProperty(node, "name", "");
-
                 if (name.empty())
                 {
-                    logger->log("Attributes: Invalid or missing stat name in "
-                                DEFAULT_ATTRIBUTESDB_FILE "!");
+                    logger->log("Attribute modifier in attribute %u:%s: "
+                                "Empty name definition "
+                                "on empty tag definition, skipping.",
+                                a.id, a.name.c_str());
+                    --count;
                     continue;
                 }
+                tag = name.substr(0, name.size() > 3 ? 3 : name.size());
+                tag = toLower(tag) + toString(count);
+             }
 
-                // Create the attribute.
-                Attribute a;
-                a.id = id;
-                a.name = name;
-                a.description = XML::getProperty(node, "desc", "");
-                a.modifiable = XML::getBoolProperty(node, "modifiable", false);
-                a.scope = XML::getProperty(node, "scope", "none");
-                a.playerInfoId = getPlayerInfoIdFromAttrType(
-                                 XML::getProperty(node, "player-info", ""));
+            std::string effect = XML::getProperty(effectNode, "effect", "");
+            if (effect.empty())
+             {
+                if (name.empty())
+                {
+                    logger->log("Attribute modifier in attribute %u:%s: "
+                                "Empty name definition "
+                                "on empty effect definition, skipping.",
+                                a.id, a.name.c_str());
+                    --count;
+                    continue;
+                }
+                else
+                    effect = name + " %+f";
+             }
+            tags.insert(std::make_pair(tag, effect));
+         }
+        logger->log("Found %d tags for attribute %d.", count, id);
 
-                attributes[id] = a;
+    }
 
-                unsigned int count = 0;
-                for_each_xml_child_node(effectNode, node)
-                 {
-                    if (!xmlStrEqual(effectNode->name, BAD_CAST "modifier"))
-                         continue;
-                    ++count;
-                    std::string tag = XML::getProperty(effectNode, "tag", "");
-                    if (tag.empty())
-                    {
-                        if (name.empty())
-                        {
-                            logger->log("Attribute modifier in attribute %u:%s: "
-                                        "Empty name definition "
-                                        "on empty tag definition, skipping.",
-                                        a.id, a.name.c_str());
-                            --count;
-                            continue;
-                        }
-                        tag = name.substr(0, name.size() > 3 ? 3 : name.size());
-                        tag = toLower(tag) + toString(count);
-                     }
+    /**
+     * Read points node
+     */
+    void readPointsNode(xmlNodePtr node, const std::string &filename)
+    {
+        creationPoints = XML::getProperty(node, "start",DEFAULT_POINTS);
+        attributeMinimum = XML::getProperty(node, "minimum",
+                                                       DEFAULT_MIN_PTS);
+        attributeMaximum = XML::getProperty(node, "maximum",
+                                                       DEFAULT_MAX_PTS);
+        logger->log("Loaded points: start: %i, min: %i, max: %i.",
+                    creationPoints, attributeMinimum, attributeMaximum);
+    }
 
-                    std::string effect = XML::getProperty(effectNode, "effect", "");
-                    if (effect.empty())
-                     {
-                        if (name.empty())
-                        {
-                            logger->log("Attribute modifier in attribute %u:%s: "
-                                        "Empty name definition "
-                                        "on empty effect definition, skipping.",
-                                        a.id, a.name.c_str());
-                            --count;
-                            continue;
-                        }
-                        else
-                            effect = name + " %+f";
-                     }
-                    tags.insert(std::make_pair(tag, effect));
-                 }
-                logger->log("Found %d tags for attribute %d.", count, id);
-
-            }// End attribute
-            else if (xmlStrEqual(node->name, BAD_CAST "points"))
-            {
-                creationPoints = XML::getProperty(node, "start",DEFAULT_POINTS);
-                attributeMinimum = XML::getProperty(node, "minimum",
-                                                               DEFAULT_MIN_PTS);
-                attributeMaximum = XML::getProperty(node, "maximum",
-                                                               DEFAULT_MAX_PTS);
-                logger->log("Loaded points: start: %i, min: %i, max: %i.",
-                            creationPoints, attributeMinimum, attributeMaximum);
-            }
-            else
-            {
-                continue;
-            }
-        }
+    /**
+     * Check if all the data loaded by readPointsNode and readAttributeNode is ok
+     */
+    void checkStatus()
+    {
         logger->log("Found %d tags for %d attributes.", int(tags.size()),
                                                         int(attributes.size()));
+
+        if (attributes.size() == 0)
+        {
+            loadBuiltins();
+        }
 
         fillLabels();
 

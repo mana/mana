@@ -186,17 +186,12 @@ void GeneralHandler::reload()
     static_cast<LoginHandler*>(mLoginHandler.get())->clearWorlds();
     static_cast<CharServerHandler*>(mCharHandler.get())->setCharCreateDialog(0);
     static_cast<CharServerHandler*>(mCharHandler.get())->setCharSelectDialog(0);
-
-    Attributes::unload();
-    Attributes::load();
 }
 
 void GeneralHandler::unload()
 {
     if (mNetwork)
         mNetwork->clearHandlers();
-
-    Attributes::unload();
 }
 
 void GeneralHandler::flushNetwork()
@@ -226,14 +221,7 @@ void GeneralHandler::clearHandlers()
 void GeneralHandler::event(Event::Channel channel,
                            const Event &event)
 {
-    if (channel == Event::ClientChannel)
-    {
-        if (event.getType() == Event::LoadingDatabases)
-        {
-            Attributes::load();
-        }
-    }
-    else if (channel == Event::GameChannel)
+    if (channel == Event::GameChannel)
     {
         if (event.getType() == Event::GuiWindowsLoaded)
         {

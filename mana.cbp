@@ -552,6 +552,8 @@
 		<Unit filename="src\resources\resource.h" />
 		<Unit filename="src\resources\resourcemanager.cpp" />
 		<Unit filename="src\resources\resourcemanager.h" />
+		<Unit filename="src\resources\settingsmanager.cpp" />
+		<Unit filename="src\resources\settingsmanager.h" />
 		<Unit filename="src\resources\soundeffect.cpp" />
 		<Unit filename="src\resources\soundeffect.h" />
 		<Unit filename="src\resources\specialdb.cpp" />
@@ -598,6 +600,8 @@
 		<Unit filename="src\utils\physfsrwops.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src\utils\path.cpp" />
+		<Unit filename="src\utils\path.h" />
 		<Unit filename="src\utils\physfsrwops.h" />
 		<Unit filename="src\utils\sha256.cpp" />
 		<Unit filename="src\utils\sha256.h" />
