@@ -761,13 +761,12 @@ int Client::exec()
                     // TODO remove this as soon as inventoryhandler stops using this event
                     Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
 
-                    // load game settings
-
-
                     // Load XML databases
-                    SettingsManager::load();
-
                     CharDB::load();
+
+                    if (itemDb)
+                        delete itemDb;
+
                     switch (Net::getNetworkType())
                     {
                       case ServerInfo::TMWATHENA:
@@ -781,17 +780,10 @@ int Client::exec()
                         itemDb = 0;
                       break;
                     }
-                    if (!itemDb || !itemDb->isLoaded())
-                    {
-                        // Warn and return to login screen
-                        errorMessage =
-                            _("This server is missing needed world data. "
-                              "Please contact the administrator(s).");
-                        showOkDialog(_("ItemDB: Error while loading "
-                                       ITEMS_DB_FILE "!"), errorMessage,
-                                     STATE_CHOOSE_SERVER);
-                        break;
-                    }
+                    assert(itemDb);
+
+                    // load settings.xml
+                    SettingsManager::load();
 
                     ActorSprite::load();
 
