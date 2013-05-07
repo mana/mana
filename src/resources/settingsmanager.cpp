@@ -21,8 +21,9 @@
 #include "resources/settingsmanager.h"
 
 #include "resources/attributes.h"
-#include "resources/monsterdb.h"
 #include "resources/hairdb.h"
+#include "resources/itemdb.h"
+#include "resources/monsterdb.h"
 #include "resources/specialdb.h"
 #include "resources/npcdb.h"
 #include "resources/emotedb.h"
@@ -48,6 +49,7 @@ namespace SettingsManager
         // initialize managers
         Attributes::init();
         hairDB.init();
+        itemDb->init();
         MonsterDB::init();
         SpecialDB::init();
         NPCDB::init();
@@ -60,6 +62,7 @@ namespace SettingsManager
 
         Attributes::checkStatus();
         hairDB.checkStatus();
+        itemDb->checkStatus();
         MonsterDB::checkStatus();
         SpecialDB::checkStatus();
         NPCDB::checkStatus();
@@ -80,6 +83,7 @@ namespace SettingsManager
         NPCDB::unload();
         SpecialDB::unload();
         MonsterDB::unload();
+        itemDb->unload();
         hairDB.unload();
         Attributes::unload();
     }
@@ -148,6 +152,10 @@ namespace SettingsManager
             else if (xmlStrEqual(childNode->name, BAD_CAST "color"))
             {
                 hairDB.readHairColorNode(childNode, filename);
+            }
+            else if (xmlStrEqual(childNode->name, BAD_CAST "item"))
+            {
+                itemDb->readItemNode(childNode, filename);
             }
             else if (xmlStrEqual(childNode->name, BAD_CAST "monster"))
             {

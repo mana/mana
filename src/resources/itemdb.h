@@ -82,11 +82,6 @@ class ItemDB
         {}
 
         /**
-         * Loads the item data from <code>items.xml</code>.
-         */
-        virtual void load() = 0;
-
-        /**
          * Frees item data.
          */
         virtual void unload();
@@ -102,12 +97,18 @@ class ItemDB
         const ItemInfo &get(int id);
         const ItemInfo &get(const std::string &name);
 
+        virtual void init() = 0;
+
+        virtual void readItemNode(xmlNodePtr node, const std::string &filename) = 0;
+
+        virtual void checkStatus() = 0;
+
     protected:
         /**
          * Permits to load item definitions which are common
          * for each protocols to avoid code duplication.
          */
-        void loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node);
+        void loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node, const std::string &filename);
 
         /**
          * Checks the items parameters consistency.
@@ -164,16 +165,16 @@ class TaItemDB: public ItemDB
 {
     public:
         TaItemDB() : ItemDB()
-        { load(); }
+        { }
 
         ~TaItemDB()
         { unload(); }
 
-        /**
-         * Loads the item data from <code>items.xml</code>.
-         */
-        void load();
+        virtual void init();
 
+        virtual void readItemNode(xmlNodePtr node, const std::string &filename);
+
+        virtual void checkStatus();
     private:
         /**
          * Check items id specific hard limits and log errors found.
@@ -198,15 +199,16 @@ class ManaServItemDB: public ItemDB
 {
     public:
         ManaServItemDB() : ItemDB()
-        { load(); }
+        { }
 
         ~ManaServItemDB()
         { unload(); }
 
-        /**
-         * Loads the item data from <code>items.xml</code>.
-         */
-        void load();
+        virtual void init();
+
+        virtual void readItemNode(xmlNodePtr node, const std::string &filename);
+
+        virtual void checkStatus();
 
     private:
         void checkItemInfo(ItemInfo* itemInfo);
