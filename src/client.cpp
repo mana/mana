@@ -755,9 +755,6 @@ int Client::exec()
                             false);
                     }
 
-                    // Read default paths file 'data/paths.xml'
-                    paths.init("paths.xml", true);
-
                     // TODO remove this as soon as inventoryhandler stops using this event
                     Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
 

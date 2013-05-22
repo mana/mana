@@ -326,9 +326,6 @@ void TaItemDB::init()
 {
     if (mLoaded)
         unload();
-
-    mUnknown = new TaItemInfo;
-    loadEmptyItemDefinition();
 }
 
 void TaItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
@@ -376,6 +373,9 @@ void TaItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
 
 void TaItemDB::checkStatus()
 {
+    mUnknown = new TaItemInfo;
+    loadEmptyItemDefinition();
+
     checkHairWeaponsRacesSpecialIds();
 
     mLoaded = true;
@@ -417,9 +417,6 @@ void ManaServItemDB::init()
 
     // Initialize the trigger table for effect descriptions
     initTriggerTable();
-
-    mUnknown = new ManaServItemInfo;
-    loadEmptyItemDefinition();
 }
 
 void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
@@ -530,6 +527,9 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
 
 void ManaServItemDB::checkStatus()
 {
+    mUnknown = new ManaServItemInfo;
+    loadEmptyItemDefinition();
+
     mLoaded = true;
 }
 
