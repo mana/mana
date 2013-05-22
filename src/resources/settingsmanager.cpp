@@ -20,6 +20,7 @@
 
 #include "resources/settingsmanager.h"
 
+#include "configuration.h"
 #include "resources/attributes.h"
 #include "resources/hairdb.h"
 #include "resources/itemdb.h"
@@ -39,14 +40,15 @@
 
 namespace SettingsManager
 {
-    std::string mSettingsFile;
-    std::set<std::string> mIncludedFiles;
+    static std::string mSettingsFile;
+    static std::set<std::string> mIncludedFiles;
 
     static void loadFile(const std::string &filename);
 
     void load()
     {
         // initialize managers
+        paths.clear();
         Attributes::init();
         hairDB.init();
         itemDb->init();
@@ -139,6 +141,17 @@ namespace SettingsManager
                         loadFile(realIncludeFile);
                     }
                 }
+            }
+            else if (xmlStrEqual(childNode->name, BAD_CAST "option"))
+            {
+                // options from paths.xml
+                std::string name = XML::getProperty(childNode, "name", std::string());
+                std::string value = XML::getProperty(childNode, "value", std::string());
+
+                if (!name.empty())
+                    paths.setValue(name, value);
+                else
+                    logger->log("Warning: option without a name found in %s", filename.c_str());
             }
             else if (xmlStrEqual(childNode->name, BAD_CAST "attribute"))
             {
