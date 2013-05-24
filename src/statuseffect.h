@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2013  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -26,6 +26,7 @@
 #include "animatedsprite.h"
 
 #include "resources/animation.h"
+#include "utils/xml.h"
 
 class StatusEffect
 {
@@ -94,7 +95,11 @@ public:
      */
     static int blockEffectIndexToEffectIndex(int blocKIndex);
 
-    static void load();
+    static void init();
+
+    static void readStatusEffectNode(xmlNodePtr node, const std::string &filename);
+
+    static void checkStatus();
 
     static void unload();
 private:

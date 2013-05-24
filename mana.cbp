@@ -396,8 +396,6 @@
 		<Unit filename="src\net\loginhandler.h" />
 		<Unit filename="src\net\manaserv\adminhandler.cpp" />
 		<Unit filename="src\net\manaserv\adminhandler.h" />
-		<Unit filename="src\net\manaserv\attributes.cpp" />
-		<Unit filename="src\net\manaserv\attributes.h" />
 		<Unit filename="src\net\manaserv\beinghandler.cpp" />
 		<Unit filename="src\net\manaserv\beinghandler.h" />
 		<Unit filename="src\net\manaserv\buysellhandler.cpp" />
@@ -524,6 +522,8 @@
 		<Unit filename="src\resources\ambientlayer.h" />
 		<Unit filename="src\resources\animation.cpp" />
 		<Unit filename="src\resources\animation.h" />
+		<Unit filename="src\resources\attributes.cpp" />
+		<Unit filename="src\resources\attributes.h" />
 		<Unit filename="src\resources\beinginfo.cpp" />
 		<Unit filename="src\resources\beinginfo.h" />
 		<Unit filename="src\resources\dye.cpp" />
@@ -554,6 +554,8 @@
 		<Unit filename="src\resources\resource.h" />
 		<Unit filename="src\resources\resourcemanager.cpp" />
 		<Unit filename="src\resources\resourcemanager.h" />
+		<Unit filename="src\resources\settingsmanager.cpp" />
+		<Unit filename="src\resources\settingsmanager.h" />
 		<Unit filename="src\resources\soundeffect.cpp" />
 		<Unit filename="src\resources\soundeffect.h" />
 		<Unit filename="src\resources\specialdb.cpp" />
@@ -600,6 +602,8 @@
 		<Unit filename="src\utils\physfsrwops.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src\utils\path.cpp" />
+		<Unit filename="src\utils\path.h" />
 		<Unit filename="src\utils\physfsrwops.h" />
 		<Unit filename="src\utils\sha256.cpp" />
 		<Unit filename="src\utils\sha256.h" />

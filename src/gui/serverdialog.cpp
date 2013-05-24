@@ -424,7 +424,7 @@ void ServerDialog::downloadServerList()
 
     // Fall back to manasource.org when neither branding nor config set it
     if (listFile.empty())
-        listFile = "http://manasource.org/serverlist.xml";
+        listFile = "http://www.manasource.org/serverlist.xml";
 
     mDownload = new Net::Download(this, listFile, &downloadUpdate);
     mDownload->setFile(mDir + "/serverlist.xml");

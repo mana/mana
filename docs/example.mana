@@ -13,7 +13,7 @@ filename / path as a command line parameter
  <option name="appShort" value="mana"/>
  <option name="appIcon" value="icons/mana.png"/>
  <option name="loginMusic" value="Magick - Real.ogg"/>
- <option name="onlineServerList" value="http://manasource.org/serverlist.xml"/>
+ <option name="onlineServerList" value="http://www.manasource.org/serverlist.xml"/>
  <option name="defaultServer" value="testing.manasource.org"/>
  <option name="defaultPort" value="9601"/>
  <option name="defaultServerType" value="manaserv"/>

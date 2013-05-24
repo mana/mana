@@ -75,6 +75,7 @@
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 #include "resources/userpalette.h"
+#include "resources/settingsmanager.h"
 
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
@@ -452,13 +453,9 @@ Client::~Client()
     SDL_RemoveTimer(mSecondsCounterId);
 
     // Unload XML databases
+    SettingsManager::unload();
     CharDB::unload();
-    hairDB.unload();
-    EmoteDB::unload();
     delete itemDb;
-    MonsterDB::unload();
-    NPCDB::unload();
-    StatusEffect::unload();
 
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
@@ -758,14 +755,15 @@ int Client::exec()
                             false);
                     }
 
-                    // Read default paths file 'data/paths.xml'
-                    paths.init("paths.xml", true);
-
+                    // TODO remove this as soon as inventoryhandler stops using this event
                     Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
 
                     // Load XML databases
                     CharDB::load();
-                    hairDB.load();
+
+                    if (itemDb)
+                        delete itemDb;
+
                     switch (Net::getNetworkType())
                     {
                       case ServerInfo::TMWATHENA:
@@ -779,23 +777,10 @@ int Client::exec()
                         itemDb = 0;
                       break;
                     }
-                    if (!itemDb || !itemDb->isLoaded())
-                    {
-                        // Warn and return to login screen
-                        errorMessage =
-                            _("This server is missing needed world data. "
-                              "Please contact the administrator(s).");
-                        showOkDialog(_("ItemDB: Error while loading "
-                                       ITEMS_DB_FILE "!"), errorMessage,
-                                     STATE_CHOOSE_SERVER);
-                        break;
-                    }
-                    MonsterDB::load();
-                    SpecialDB::load();
-                    NPCDB::load();
-                    EmoteDB::load();
-                    StatusEffect::load();
-                    Units::loadUnits();
+                    assert(itemDb);
+
+                    // load settings.xml
+                    SettingsManager::load();
 
                     ActorSprite::load();
 

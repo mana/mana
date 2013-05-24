@@ -401,6 +401,8 @@ SET(SRCS
     resources/resource.h
     resources/resourcemanager.cpp
     resources/resourcemanager.h
+    resources/settingsmanager.cpp
+    resources/settingsmanager.h
     resources/soundeffect.h
     resources/soundeffect.cpp
     resources/specialdb.cpp
@@ -420,6 +422,8 @@ SET(SRCS
     utils/dtor.h
     utils/gettext.h
     utils/mathutils.h
+    utils/path.cpp
+    utils/path.h
     utils/physfsrwops.c
     utils/physfsrwops.h
     utils/sha256.cpp

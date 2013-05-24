@@ -31,7 +31,6 @@
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-#include "utils/xml.h"
 #include "configuration.h"
 
 #include <libxml/tree.h>
@@ -189,18 +188,17 @@ void ItemDB::unload()
     mLoaded = false;
 }
 
-void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
+void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node, const std::string &filename)
 {
         int id = XML::getProperty(node, "id", 0);
 
         if (!id)
         {
-            logger->log("ItemDB: Invalid or missing item Id in "
-                        ITEMS_DB_FILE "!");
+            logger->log("ItemDB: Invalid or missing item Id in %s!", filename.c_str());
             return;
         }
         else if (mItemInfos.find(id) != mItemInfos.end())
-            logger->log("ItemDB: Redefinition of item Id %d", id);
+            logger->log("ItemDB: Redefinition of item Id %d in %s", id, filename.c_str());
 
         int view = XML::getProperty(node, "view", 0);
 
@@ -324,70 +322,59 @@ static char const *const fields[][2] =
     { "mp",        N_("MP %+d")        }
 };
 
-void TaItemDB::load()
+void TaItemDB::init()
 {
     if (mLoaded)
         unload();
+}
 
-    logger->log("Initializing TmwAthena item database...");
+void TaItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
+{
+    TaItemInfo *itemInfo = new TaItemInfo;
 
+    loadCommonRef(itemInfo, node, filename);
+
+    // Everything not unusable or usable is equippable by the Ta type system.
+    itemInfo->mEquippable  = itemInfo->mType != ITEM_UNUSABLE
+                             && itemInfo->mType != ITEM_USABLE;
+    itemInfo->mActivatable = itemInfo->mType == ITEM_USABLE;
+
+    // Load nano description
+    std::vector<std::string> effect;
+    for (int i = 0; i < int(sizeof(fields) / sizeof(fields[0])); ++i)
+    {
+        int value = XML::getProperty(node, fields[i][0], 0);
+        if (!value)
+            continue;
+        effect.push_back(strprintf(gettext(fields[i][1]), value));
+    }
+    for (std::list<ItemStat>::iterator it = extraStats.begin();
+            it != extraStats.end(); it++)
+    {
+        int value = XML::getProperty(node, it->mTag.c_str(), 0);
+        if (!value)
+            continue;
+        effect.push_back(strprintf(it->mFormat.c_str(), value));
+    }
+    std::string temp = XML::getProperty(node, "effect", "");
+    if (!temp.empty())
+        effect.push_back(temp);
+
+    itemInfo->mEffect = effect;
+
+    checkItemInfo(itemInfo);
+
+    addItem(itemInfo);
+
+    // Insert hairstyle id while letting the info as an item.
+    if (itemInfo->mType == ITEM_SPRITE_HAIR)
+        hairDB.addHairStyle(itemInfo->mId);
+}
+
+void TaItemDB::checkStatus()
+{
     mUnknown = new TaItemInfo;
     loadEmptyItemDefinition();
-
-    XML::Document doc(ITEMS_DB_FILE);
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
-    {
-        logger->error("ItemDB: Error while loading " ITEMS_DB_FILE "!");
-        return;
-    }
-
-    for_each_xml_child_node(node, rootNode)
-    {
-        if (!xmlStrEqual(node->name, BAD_CAST "item"))
-            continue;
-
-        TaItemInfo *itemInfo = new TaItemInfo;
-
-        loadCommonRef(itemInfo, node);
-
-        // Everything not unusable or usable is equippable by the Ta type system.
-        itemInfo->mEquippable  = itemInfo->mType != ITEM_UNUSABLE
-                                 && itemInfo->mType != ITEM_USABLE;
-        itemInfo->mActivatable = itemInfo->mType == ITEM_USABLE;
-
-        // Load nano description
-        std::vector<std::string> effect;
-        for (int i = 0; i < int(sizeof(fields) / sizeof(fields[0])); ++i)
-        {
-            int value = XML::getProperty(node, fields[i][0], 0);
-            if (!value)
-                continue;
-            effect.push_back(strprintf(gettext(fields[i][1]), value));
-        }
-        for (std::list<ItemStat>::iterator it = extraStats.begin();
-                it != extraStats.end(); it++)
-        {
-            int value = XML::getProperty(node, it->mTag.c_str(), 0);
-            if (!value)
-                continue;
-            effect.push_back(strprintf(it->mFormat.c_str(), value));
-        }
-        std::string temp = XML::getProperty(node, "effect", "");
-        if (!temp.empty())
-            effect.push_back(temp);
-
-        itemInfo->mEffect = effect;
-
-        checkItemInfo(itemInfo);
-
-        addItem(itemInfo);
-
-        // Insert hairstyle id while letting the info as an item.
-        if (itemInfo->mType == ITEM_SPRITE_HAIR)
-            hairDB.addHairStyle(itemInfo->mId);
-    }
 
     checkHairWeaponsRacesSpecialIds();
 
@@ -423,136 +410,125 @@ static void initTriggerTable()
     }
 }
 
-void ManaServItemDB::load()
+void ManaServItemDB::init()
 {
     if (mLoaded)
         unload();
 
     // Initialize the trigger table for effect descriptions
     initTriggerTable();
+}
 
-    logger->log("Initializing ManaServ item database...");
+void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
+{
+    ManaServItemInfo *itemInfo = new ManaServItemInfo;
 
+    loadCommonRef(itemInfo, node, filename);
+
+    // We default eqippable and activatable to false as their actual value will be set
+    // within the <equip> and <effect> sub-nodes..
+    itemInfo->mActivatable = false;
+    itemInfo->mEquippable = false;
+
+    // Load <equip>, and <effect> sub nodes.
+    std::vector<std::string> effect;
+    for_each_xml_child_node(itemChild, node)
+    {
+        if (xmlStrEqual(itemChild->name, BAD_CAST "equip"))
+        {
+            // The fact that there is a way to equip is enough.
+            // Discard any details, but mark the item as equippable.
+            itemInfo->mEquippable = true;
+        }
+        else if (xmlStrEqual(itemChild->name, BAD_CAST "effect"))
+        {
+            std::string trigger = XML::getProperty(
+                    itemChild, "trigger", "");
+            if (trigger.empty())
+            {
+                logger->log("Found empty trigger effect label in %s, skipping.", filename.c_str());
+                continue;
+            }
+
+            if (trigger == "activation")
+                itemInfo->mActivatable = true;
+
+            std::map<std::string, const char* >::const_iterator triggerLabel =
+                    triggerTable.find(trigger);
+            if (triggerLabel == triggerTable.end())
+            {
+                logger->log("Warning: unknown trigger %s in item %d!",
+                            trigger.c_str(), itemInfo->mId);
+                continue;
+            }
+
+            for_each_xml_child_node(effectChild, itemChild)
+            {
+                if (xmlStrEqual(effectChild->name, BAD_CAST "modifier"))
+                {
+                    std::string attribute = XML::getProperty(
+                            effectChild, "attribute", "");
+                    double value = XML::getFloatProperty(
+                            effectChild, "value", 0.0);
+                    int duration = XML::getProperty(
+                            effectChild, "duration", 0);
+                    if (attribute.empty() || !value)
+                    {
+                        logger->log("Warning: incomplete modifier definition in %s, skipping.", filename.c_str());
+                        continue;
+                    }
+                    std::list<ItemStat>::const_iterator
+                            it = extraStats.begin(),
+                            it_end = extraStats.end();
+                    while (it != it_end && !(*it == attribute))
+                        ++it;
+                    if (it == extraStats.end())
+                    {
+                        logger->log("Warning: unknown modifier tag %s in %s, skipping.", attribute.c_str(), filename.c_str());
+                        continue;
+                    }
+                    effect.push_back(
+                            strprintf(strprintf(
+                                    duration ?
+                                    strprintf("%%s%%s. This effect lasts %d ticks.", duration).c_str()
+                                    : "%s%s.", it->mFormat.c_str(), triggerLabel->second).c_str(), value));
+                }
+                else if (xmlStrEqual(effectChild->name, BAD_CAST "modifier"))
+                    effect.push_back(strprintf("Provides an autoattack%s.",
+                                               triggerLabel->second));
+                else if (xmlStrEqual(effectChild->name, BAD_CAST "consumes"))
+                    effect.push_back(strprintf("This will be consumed%s.",
+                                               triggerLabel->second));
+                else if (xmlStrEqual(effectChild->name, BAD_CAST "label"))
+                    effect.push_back(
+                            (const char*)effectChild->xmlChildrenNode->content);
+            }
+        }
+
+        // FIXME: Load hair styles through the races.xml file
+        if (itemInfo->mType == ITEM_SPRITE_HAIR)
+            hairDB.addHairStyle(itemInfo->mId);
+
+        // Set Item Type based on subnodes info
+        // TODO: Improve it once the itemTypes are loaded through xml
+        itemInfo->mType = ITEM_UNUSABLE;
+        if (itemInfo->mActivatable)
+            itemInfo->mType = ITEM_USABLE;
+        else if (itemInfo->mEquippable)
+            itemInfo->mType = ITEM_EQUIPMENT_TORSO;
+    } // end for_each_xml_child_node(itemChild, node)
+
+    itemInfo->mEffect = effect;
+
+    checkItemInfo(itemInfo);
+
+    addItem(itemInfo);
+}
+
+void ManaServItemDB::checkStatus()
+{
     mUnknown = new ManaServItemInfo;
     loadEmptyItemDefinition();
-
-    XML::Document doc(ITEMS_DB_FILE);
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
-    {
-        logger->log("ItemDB: Error while loading " ITEMS_DB_FILE "!");
-        return;
-    }
-
-    for_each_xml_child_node(node, rootNode)
-    {
-        if (!xmlStrEqual(node->name, BAD_CAST "item"))
-            continue;
-
-        ManaServItemInfo *itemInfo = new ManaServItemInfo;
-
-        loadCommonRef(itemInfo, node);
-
-        // We default eqippable and activatable to false as their actual value will be set
-        // within the <equip> and <effect> sub-nodes..
-        itemInfo->mActivatable = false;
-        itemInfo->mEquippable = false;
-
-        // Load <equip>, and <effect> sub nodes.
-        std::vector<std::string> effect;
-        for_each_xml_child_node(itemChild, node)
-        {
-            if (xmlStrEqual(itemChild->name, BAD_CAST "equip"))
-            {
-                // The fact that there is a way to equip is enough.
-                // Discard any details, but mark the item as equippable.
-                itemInfo->mEquippable = true;
-            }
-            else if (xmlStrEqual(itemChild->name, BAD_CAST "effect"))
-            {
-                std::string trigger = XML::getProperty(
-                        itemChild, "trigger", "");
-                if (trigger.empty())
-                {
-                    logger->log("Found empty trigger effect label, skipping.");
-                    continue;
-                }
-
-                if (trigger == "activation")
-                    itemInfo->mActivatable = true;
-
-                std::map<std::string, const char* >::const_iterator triggerLabel =
-                        triggerTable.find(trigger);
-                if (triggerLabel == triggerTable.end())
-                {
-                    logger->log("Warning: unknown trigger %s in item %d!",
-                                trigger.c_str(), itemInfo->mId);
-                    continue;
-                }
-
-                for_each_xml_child_node(effectChild, itemChild)
-                {
-                    if (xmlStrEqual(effectChild->name, BAD_CAST "modifier"))
-                    {
-                        std::string attribute = XML::getProperty(
-                                effectChild, "attribute", "");
-                        double value = XML::getFloatProperty(
-                                effectChild, "value", 0.0);
-                        int duration = XML::getProperty(
-                                effectChild, "duration", 0);
-                        if (attribute.empty() || !value)
-                        {
-                            logger->log("Warning: incomplete modifier definition, skipping.");
-                            continue;
-                        }
-                        std::list<ItemStat>::const_iterator
-                                it = extraStats.begin(),
-                                it_end = extraStats.end();
-                        while (it != it_end && !(*it == attribute))
-                            ++it;
-                        if (it == extraStats.end())
-                        {
-                            logger->log("Warning: unknown modifier tag %s, skipping.", attribute.c_str());
-                            continue;
-                        }
-                        effect.push_back(
-                                strprintf(strprintf(
-                                        duration ?
-                                        strprintf("%%s%%s. This effect lasts %d ticks.", duration).c_str()
-                                        : "%s%s.", it->mFormat.c_str(), triggerLabel->second).c_str(), value));
-                    }
-                    else if (xmlStrEqual(effectChild->name, BAD_CAST "modifier"))
-                        effect.push_back(strprintf("Provides an autoattack%s.",
-                                                   triggerLabel->second));
-                    else if (xmlStrEqual(effectChild->name, BAD_CAST "consumes"))
-                        effect.push_back(strprintf("This will be consumed%s.",
-                                                   triggerLabel->second));
-                    else if (xmlStrEqual(effectChild->name, BAD_CAST "label"))
-                        effect.push_back(
-                                (const char*)effectChild->xmlChildrenNode->content);
-                }
-            }
-
-            // FIXME: Load hair styles through the races.xml file
-            if (itemInfo->mType == ITEM_SPRITE_HAIR)
-                hairDB.addHairStyle(itemInfo->mId);
-
-            // Set Item Type based on subnodes info
-            // TODO: Improve it once the itemTypes are loaded through xml
-            itemInfo->mType = ITEM_UNUSABLE;
-            if (itemInfo->mActivatable)
-                itemInfo->mType = ITEM_USABLE;
-            else if (itemInfo->mEquippable)
-                itemInfo->mType = ITEM_EQUIPMENT_TORSO;
-        } // end for_each_xml_child_node(itemChild, node)
-
-        itemInfo->mEffect = effect;
-
-        checkItemInfo(itemInfo);
-
-        addItem(itemInfo);
-    }
 
     mLoaded = true;
 }

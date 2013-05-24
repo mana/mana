@@ -133,10 +133,6 @@ void GeneralHandler::reload()
     netToken.clear();
     gameServer.clear();
     chatServer.clear();
-
-    Attributes::unload();
-    Attributes::load();
-    Attributes::informItemDB();
 }
 
 void GeneralHandler::unload()
@@ -154,7 +150,6 @@ void GeneralHandler::unload()
     delete gameServerConnection;
     delete chatServerConnection;
 
-    Attributes::unload();
     finalize();
 }
 
@@ -189,11 +184,6 @@ void GeneralHandler::event(Event::Channel channel,
                 GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
                 game->gameLoading();
             }
-        }
-        else if (event.getType() == Event::LoadingDatabases)
-        {
-            Attributes::load();
-            Attributes::informItemDB();
         }
     }
     else if (channel == Event::GameChannel)

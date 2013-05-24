@@ -138,7 +138,14 @@ FloorItem *ActorSpriteManager::createItem(int id, int itemId, const Vector &pos)
     return floorItem;
 }
 
-void ActorSpriteManager::destroy(ActorSprite *actor)
+void ActorSpriteManager::destroyActor(ActorSprite *actor)
+{
+    mActors.erase(actor);
+    mDeleteActors.erase(actor);
+    delete actor;
+}
+
+void ActorSpriteManager::scheduleDelete(ActorSprite *actor)
 {
     if (!actor || actor == local_player)
         return;

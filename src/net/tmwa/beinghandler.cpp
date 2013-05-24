@@ -327,7 +327,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == 1)
                 dstBeing->setAction(Being::DEAD);
             else
-                actorSpriteManager->destroy(dstBeing);
+                actorSpriteManager->destroyActor(dstBeing);
 
             break;
 

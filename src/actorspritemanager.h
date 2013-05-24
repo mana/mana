@@ -67,10 +67,15 @@ class ActorSpriteManager
         FloorItem *createItem(int id, int itemId, const Vector &position);
 
         /**
+         * Immediately destroys the given \a actor.
+         */
+        void destroyActor(ActorSprite *actor);
+
+        /**
          * Destroys the given ActorSprite at the end of
          * ActorSpriteManager::logic.
          */
-        void destroy(ActorSprite *actor);
+        void scheduleDelete(ActorSprite *actor);
 
         /**
          * Returns a specific Being, by id;
