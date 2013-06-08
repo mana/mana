@@ -52,7 +52,10 @@ class MessageIn
         /**
          * Returns the length of unread data.
          */
-        unsigned int getUnreadLength() const { return mLength - mPos; }
+        unsigned int getUnreadLength() const
+        {
+            return (mPos < mLength) ? mLength - mPos : 0;
+        }
 
         /**
          * Reads an unsigned 8-bit integer from the message.
