@@ -22,7 +22,7 @@ msgstr ""
 
 #: ../src/main.cpp:45
 msgid "              to the mana client."
-msgstr "              mana клиента ."
+msgstr "             клиента mana."
 
 #: ../src/main.cpp:44
 msgid "              used to set custom parameters"
@@ -162,7 +162,7 @@ msgstr "%s приглашает вас к себе в группу."
 #: ../src/net/manaserv/chathandler.cpp:345
 #, c-format
 msgid "%s has kicked %s."
-msgstr "%s кикнул %s"
+msgstr "%s кикнул %s."
 
 #: ../src/net/tmwa/partyhandler.cpp:247
 #, c-format
@@ -172,7 +172,7 @@ msgstr "%s вышел из группы."
 #: ../src/net/manaserv/chathandler.cpp:335
 #, c-format
 msgid "%s has set mode %s on user %s."
-msgstr "%s использовал %s на пользователе %s"
+msgstr "%s использовал %s на пользователе %s."
 
 #: ../src/net/tmwa/partyhandler.cpp:120
 #, c-format
