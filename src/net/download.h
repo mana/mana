@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib> // pulls in int64_t
+#include <cstdint>
 #include <cstdio>
 #include <string>
 
