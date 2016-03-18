@@ -136,9 +136,10 @@ bool Particle::update()
 
         if (mRandomness > 0)
         {
-            mVelocity.x += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
-            mVelocity.y += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
-            mVelocity.z += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
+            const int rand2 = mRandomness * 2;
+            mVelocity.x += (rand() % rand2 - mRandomness) / 1000.0f;
+            mVelocity.y += (rand() % rand2 - mRandomness) / 1000.0f;
+            mVelocity.z += (rand() % rand2 - mRandomness) / 1000.0f;
         }
 
         mVelocity.z -= mGravity;
