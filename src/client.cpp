@@ -416,7 +416,7 @@ Client::Client(const Options &options):
         mCurrentServer.port = (short) branding.getValue("defaultPort",
                                                                   DEFAULT_PORT);
         mCurrentServer.type = ServerInfo::parseType(
-                           branding.getValue("defaultServerType", "tmwathena"));
+                           branding.getValue("defaultServerType", "ManaServ"));
     }
 
     if (chatLogger)

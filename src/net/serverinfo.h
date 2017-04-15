@@ -99,12 +99,7 @@ public:
 
     static Type parseType(const std::string &type)
     {
-        if (compareStrI(type, "tmwathena") == 0)
-            return TMWATHENA;
-        // Used for backward compatibility
-        else if (compareStrI(type, "eathena") == 0)
-            return TMWATHENA;
-        else if (compareStrI(type, "manaserv") == 0)
+        if (compareStrI(type, "manaserv") == 0)
             return MANASERV;
         return UNKNOWN;
     }

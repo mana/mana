@@ -1,8 +1,9 @@
 /*
- *  The Mana Client
+ *  The Mana Fire Client
  *  Copyright (C) 2011-2012  The Mana Developers
+ *  Copyright (C) 2012-2012  The Land of Fire Developers
  *
- *  This file is part of The Mana Client.
+ *  This file is part of The Mana Fire Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,24 +28,11 @@
 #include "gui/serverdialog.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/textfield.h"
 
 #include "utils/gettext.h"
-
-std::string TypeListModel::getElementAt(int elementIndex)
-{
-    if (elementIndex == 0)
-        return "TmwAthena";
-#ifdef MANASERV_SUPPORT
-    else if (elementIndex == 1)
-        return "ManaServ";
-#endif
-    else
-        return "Unknown";
-}
 
 CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
     Window(_("Custom Server"), true, parent),
@@ -56,18 +44,9 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
     Label *nameLabel = new Label(_("Name:"));
     Label *serverAdressLabel = new Label(_("Address:"));
     Label *portLabel = new Label(_("Port:"));
-#ifdef MANASERV_SUPPORT
-    Label *typeLabel = new Label(_("Server type:"));
-#endif
     Label *descriptionLabel = new Label(_("Description:"));
     mServerAddressField = new TextField(std::string());
     mPortField = new TextField(std::string());
-
-#ifdef MANASERV_SUPPORT
-    mTypeListModel = new TypeListModel();
-    mTypeField = new DropDown(mTypeListModel);
-    mTypeField->setSelected(0); // TmwAthena by default for now.
-#endif
 
     mNameField = new TextField(std::string());
     mDescriptionField = new TextField(std::string());
@@ -84,10 +63,6 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
     place(1, 1, mServerAddressField, 4).setPadding(3);
     place(0, 2, portLabel);
     place(1, 2, mPortField, 4).setPadding(3);
-#ifdef MANASERV_SUPPORT
-    place(0, 3, typeLabel);
-    place(1, 3, mTypeField).setPadding(3);
-#endif
     place(0, 4, descriptionLabel);
     place(1, 4, mDescriptionField, 4).setPadding(3);
     place(4, 5, mOkButton);
@@ -127,23 +102,12 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
         mDescriptionField->setText(serverInfo.description);
         mServerAddressField->setText(serverInfo.hostname);
         mPortField->setText(toString(serverInfo.port));
-#ifdef MANASERV_SUPPORT
-        mTypeField->setSelected(serverInfo.type == ServerInfo::TMWATHENA ?
-                                0 : 1);
-#endif
     }
 
     setLocationRelativeTo(getParentWindow());
     setVisible(true);
 
     mNameField->requestFocus();
-}
-
-CustomServerDialog::~CustomServerDialog()
-{
-#ifdef MANASERV_SUPPORT
-    delete mTypeListModel;
-#endif
 }
 
 void CustomServerDialog::logic()
@@ -176,21 +140,7 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
             serverInfo.name = mNameField->getText();
             serverInfo.description = mDescriptionField->getText();
             serverInfo.hostname = mServerAddressField->getText();
-#ifdef MANASERV_SUPPORT
-            switch (mTypeField->getSelected())
-            {
-                case 0:
-                    serverInfo.type = ServerInfo::TMWATHENA;
-                    break;
-                case 1:
-                    serverInfo.type = ServerInfo::MANASERV;
-                    break;
-                default:
-                    serverInfo.type = ServerInfo::UNKNOWN;
-            }
-#else
-            serverInfo.type = ServerInfo::TMWATHENA;
-#endif
+            serverInfo.type = ServerInfo::MANASERV;
             if (mPortField->getText().empty())
                 serverInfo.port = ServerInfo::defaultPortForServerType(serverInfo.type);
             else

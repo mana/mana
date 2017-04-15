@@ -22,7 +22,6 @@
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DENABLE_NLS" />
-					<Add option="-DMANASERV_SUPPORT=1" />
 				</Compiler>
 				<Linker>
 					<Add option="-enable-auto-import" />

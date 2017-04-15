@@ -34,8 +34,15 @@ namespace ManaServ {
 enum SpriteLayer
 {
     SPRITE_LAYER_BASE = 0,
+    SPRITE_LAYER_FEET,
+    SPRITE_LAYER_LEGS,
+    SPRITE_LAYER_TORSO,
     SPRITE_LAYER_HAIR,
+    SPRITE_LAYER_HEAD,
+    SPRITE_LAYER_WEAPON,
+    SPRITE_LAYER_SHIELD,
     FIXED_SPRITE_LAYER_SIZE
+
 };
 
 class BeingHandler : public MessageHandler

@@ -30,7 +30,6 @@ FIND_PACKAGE(Gettext)
 
 OPTION(WITH_OPENGL "Enable OpenGL support" ON)
 OPTION(ENABLE_NLS "Enable building of tranlations" ON)
-OPTION(ENABLE_MANASERV "Enable Manaserv support" ON)
 OPTION(ENABLE_CPP0X "Enable use of C++0x features" OFF)
 
 IF (WIN32)
@@ -49,9 +48,7 @@ ENDIF (WIN32)
 
 ADD_SUBDIRECTORY(data)
 
-IF (ENABLE_MANASERV)
-    ADD_SUBDIRECTORY(libs/enet)
-ENDIF()
+ADD_SUBDIRECTORY(libs/enet)
 
 ADD_SUBDIRECTORY(src)
 

@@ -1,9 +1,10 @@
 /*
- *  The Mana Client
+ *  The Mana Fire Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
  *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2012-2012  The Land of Fire Developers
  *
- *  This file is part of The Mana Client.
+ *  This file is part of The Mana Fire Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -60,8 +61,6 @@ static std::string serverTypeToString(ServerInfo::Type type)
 {
     switch (type)
     {
-    case ServerInfo::TMWATHENA:
-        return "TmwAthena";
     case ServerInfo::MANASERV:
         return "ManaServ";
     default:
@@ -269,11 +268,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
         int index = mServersList->getSelected();
 
         // Check login
-        if (index < 0
-#ifndef MANASERV_SUPPORT
-            || mServersListModel->getServer(index).type == ServerInfo::MANASERV
-#endif
-        )
+        if (index < 0)
         {
             OkDialog *dlg = new OkDialog(_("Error"),
                 _("Please select a valid server."));
@@ -463,9 +458,7 @@ void ServerDialog::loadServers()
 
         // Ignore unknown server types
         if (server.type == ServerInfo::UNKNOWN
-#ifndef MANASERV_SUPPORT
             || server.type == ServerInfo::MANASERV
-#endif
         )
         {
             logger->log("Ignoring server entry with unknown type: %s",

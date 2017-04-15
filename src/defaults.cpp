@@ -135,7 +135,7 @@ DefaultsData* getBrandingDefaults()
     AddDEF(brandingData, "loginMusic", "system/Magick - Real.ogg");
     AddDEF(brandingData, "defaultServer", "");
     AddDEF(brandingData, "defaultPort", DEFAULT_PORT);
-    AddDEF(brandingData, "defaultServerType", "tmwathena");
+    AddDEF(brandingData, "defaultServerType", "ManaServ");
     AddDEF(brandingData, "appShort", "mana");
     AddDEF(brandingData, "defaultUpdateHost", "");
     AddDEF(brandingData, "helpPath", "");

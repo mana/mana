@@ -103,9 +103,26 @@ static void handleLooks(Being *being, MessageIn &msg)
     while (lookChanges-- > 0)
     {
         unsigned int slotTypeId = msg.readInt8();
-        being->setSprite(slotTypeId + FIXED_SPRITE_LAYER_SIZE,
-                         msg.readInt16(), "",
-                         Net::getInventoryHandler()->isWeaponSlot(slotTypeId));
+        Net::InventoryHandler *ih = Net::getInventoryHandler();
+        std::string name = ih->getSlotName(slotTypeId);
+
+        int layer = 0;
+        if (name == "Hand 1/2")
+            layer = SPRITE_LAYER_WEAPON;
+        else if (name == "Hand 2/2")
+            layer = SPRITE_LAYER_SHIELD;
+        else if (name == "Torso")
+            layer = SPRITE_LAYER_TORSO;
+        else if (name == "Head")
+            layer = SPRITE_LAYER_HEAD;
+        else if (name == "Legs")
+            layer = SPRITE_LAYER_LEGS;
+        else if (name == "Feet")
+            layer = SPRITE_LAYER_FEET;
+        else
+            layer = slotTypeId + FIXED_SPRITE_LAYER_SIZE;
+
+        being->setSprite(layer, msg.readInt16(), "", ih->isWeaponSlot(slotTypeId));
     }
 }
 

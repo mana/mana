@@ -1,9 +1,10 @@
 /*
- *  The Mana Client
+ *  The Mana Fire Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
  *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2012-2012  The Land of Fire Developers
  *
- *  This file is part of The Mana Client.
+ *  This file is part of The Mana Fire Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
