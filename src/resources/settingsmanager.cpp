@@ -85,7 +85,8 @@ namespace SettingsManager
         NPCDB::unload();
         SpecialDB::unload();
         MonsterDB::unload();
-        itemDb->unload();
+        if (itemDb)
+            itemDb->unload();
         hairDB.unload();
         Attributes::unload();
     }
@@ -209,4 +210,3 @@ namespace SettingsManager
     }
 
 }
-

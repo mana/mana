@@ -761,8 +761,7 @@ int Client::exec()
                     // Load XML databases
                     CharDB::load();
 
-                    if (itemDb)
-                        delete itemDb;
+                    delete itemDb;
 
                     switch (Net::getNetworkType())
                     {
