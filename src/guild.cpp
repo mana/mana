@@ -169,7 +169,7 @@ void Guild::setRights(short rights)
 
 bool Guild::isMember(GuildMember *member) const
 {
-    if (member->mGuild > 0 && member->mGuild != this)
+    if (member->mGuild != nullptr && member->mGuild != this)
         return false;
 
     MemberList::const_iterator itr = mMembers.begin(),

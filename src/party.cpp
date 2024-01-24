@@ -168,7 +168,7 @@ void Party::setRights(short rights)
 
 bool Party::isMember(PartyMember *member) const
 {
-    if (member->mParty > 0 && member->mParty != this)
+    if (member->mParty != nullptr && member->mParty != this)
         return false;
 
     MemberList::const_iterator itr = mMembers.begin(),
