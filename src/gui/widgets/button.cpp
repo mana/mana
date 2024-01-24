@@ -182,7 +182,7 @@ Button::~Button()
     {
         for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            for_each(mButton[mode].grid, mButton[mode].grid + 9,
+            std::for_each(mButton[mode].grid, mButton[mode].grid + 9,
                 dtor<Image*>());
         }
         delete[] mButton;

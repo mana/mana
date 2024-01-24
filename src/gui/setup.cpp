@@ -38,6 +38,8 @@
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 
+#include <functional>
+
 extern Window *statusWindow;
 
 Setup::Setup():
@@ -103,12 +105,12 @@ void Setup::action(const gcn::ActionEvent &event)
     if (event.getId() == "Apply")
     {
         setVisible(false);
-        for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::apply));
+        for_each(mTabs.begin(), mTabs.end(), std::mem_fn(&SetupTab::apply));
     }
     else if (event.getId() == "Cancel")
     {
         setVisible(false);
-        for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::cancel));
+        for_each(mTabs.begin(), mTabs.end(), std::mem_fn(&SetupTab::cancel));
     }
     else if (event.getId() == "Reset Windows")
     {

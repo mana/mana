@@ -102,7 +102,7 @@ DropDown::~DropDown()
         buttons[1][0]->decRef();
         buttons[1][1]->decRef();
 
-        for_each(skin.grid, skin.grid + 9, dtor<Image*>());
+        std::for_each(skin.grid, skin.grid + 9, dtor<Image*>());
     }
 
     delete mScrollArea;

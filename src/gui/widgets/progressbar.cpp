@@ -88,7 +88,7 @@ ProgressBar::~ProgressBar()
 
     if (mInstances == 0)
     {
-        for_each(mBorder.grid, mBorder.grid + 9, dtor<Image*>());
+        std::for_each(mBorder.grid, mBorder.grid + 9, dtor<Image*>());
     }
 }
 

@@ -84,7 +84,7 @@ TextField::~TextField()
     instances--;
 
     if (instances == 0)
-        for_each(skin.grid, skin.grid + 9, dtor<Image*>());
+        std::for_each(skin.grid, skin.grid + 9, dtor<Image*>());
 }
 
 void TextField::updateAlpha()

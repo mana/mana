@@ -37,7 +37,7 @@ Event::~Event()
 
 // Integers
 
-void Event::setInt(const std::string &key, int value) throw (BadEvent)
+void Event::setInt(const std::string &key, int value)
 {
     if (mData.find(key) != mData.end())
         throw KEY_ALREADY_EXISTS;
@@ -45,7 +45,7 @@ void Event::setInt(const std::string &key, int value) throw (BadEvent)
     mData[key] = new IntData(value);
 }
 
-int Event::getInt(const std::string &key) const throw (BadEvent)
+int Event::getInt(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     if (it == mData.end())
@@ -66,7 +66,7 @@ bool Event::hasInt(const std::string &key) const
 
 // Strings
 
-void Event::setString(const std::string &key, const std::string &value) throw (BadEvent)
+void Event::setString(const std::string &key, const std::string &value)
 {
     if (mData.find(key) != mData.end())
         throw KEY_ALREADY_EXISTS;
@@ -74,7 +74,7 @@ void Event::setString(const std::string &key, const std::string &value) throw (B
     mData[key] = new StringData(value);
 }
 
-const std::string &Event::getString(const std::string &key) const throw (BadEvent)
+const std::string &Event::getString(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     if (it == mData.end())
@@ -96,7 +96,7 @@ bool Event::hasString(const std::string &key) const
 
 // Floats
 
-void Event::setFloat(const std::string &key, double value) throw (BadEvent)
+void Event::setFloat(const std::string &key, double value)
 {
     if (mData.find(key) != mData.end())
         throw KEY_ALREADY_EXISTS;
@@ -104,7 +104,7 @@ void Event::setFloat(const std::string &key, double value) throw (BadEvent)
     mData[key] = new FloatData(value);
 }
 
-double Event::getFloat(const std::string &key) const throw (BadEvent)
+double Event::getFloat(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     if (it == mData.end())
@@ -125,7 +125,7 @@ bool Event::hasFloat(const std::string &key) const
 
 // Booleans
 
-void Event::setBool(const std::string &key, bool value) throw (BadEvent)
+void Event::setBool(const std::string &key, bool value)
 {
     if (mData.find(key) != mData.end())
         throw KEY_ALREADY_EXISTS;
@@ -133,7 +133,7 @@ void Event::setBool(const std::string &key, bool value) throw (BadEvent)
     mData[key] = new BoolData(value);
 }
 
-bool Event::getBool(const std::string &key) const throw (BadEvent)
+bool Event::getBool(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     if (it == mData.end())
@@ -154,7 +154,7 @@ bool Event::hasBool(const std::string &key) const
 
 // Items
 
-void Event::setItem(const std::string &key, Item *value) throw (BadEvent)
+void Event::setItem(const std::string &key, Item *value)
 {
     if (mData.find(key) != mData.end())
         throw KEY_ALREADY_EXISTS;
@@ -162,7 +162,7 @@ void Event::setItem(const std::string &key, Item *value) throw (BadEvent)
     mData[key] = new ItemData(value);
 }
 
-Item *Event::getItem(const std::string &key) const throw (BadEvent)
+Item *Event::getItem(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     if (it == mData.end())
@@ -183,7 +183,7 @@ bool Event::hasItem(const std::string &key) const
 
 // Actors
 
-void Event::setActor(const std::string &key, ActorSprite *value) throw (BadEvent)
+void Event::setActor(const std::string &key, ActorSprite *value)
 {
     if (mData.find(key) != mData.end())
         throw KEY_ALREADY_EXISTS;
@@ -191,7 +191,7 @@ void Event::setActor(const std::string &key, ActorSprite *value) throw (BadEvent
     mData[key] = new ActorData(value);
 }
 
-ActorSprite *Event::getActor(const std::string &key) const throw (BadEvent)
+ActorSprite *Event::getActor(const std::string &key) const
 {
     VariableMap::const_iterator it = mData.find(key);
     if (it == mData.end())

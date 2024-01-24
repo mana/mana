@@ -117,7 +117,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void setStatus(Status s);
 
-        typedef const std::auto_ptr<Inventory> InventoryPtr;
+        typedef const std::unique_ptr<Inventory> InventoryPtr;
         InventoryPtr mMyInventory;
         InventoryPtr mPartnerInventory;
 
