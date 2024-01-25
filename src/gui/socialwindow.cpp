@@ -615,7 +615,7 @@ void SocialWindow::showPartyCreate()
     {
         new OkDialog(_("Create Party"),
                      _("Cannot create party. You are already in a party"),
-                     this);
+                     true, this);
         return;
     }
 
