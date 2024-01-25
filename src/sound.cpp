@@ -22,7 +22,6 @@
 #include <SDL.h>
 
 #include "configuration.h"
-#include "game.h"
 #include "localplayer.h"
 #include "log.h"
 #include "sound.h"

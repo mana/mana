@@ -24,7 +24,6 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/palette.h"
 #include "gui/sdlinput.h"
 
 #include "resources/image.h"

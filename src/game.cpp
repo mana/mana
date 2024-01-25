@@ -42,7 +42,6 @@
 #include "sound.h"
 
 #include "gui/chatwindow.h"
-#include "gui/confirmdialog.h"
 #include "gui/debugwindow.h"
 #include "gui/equipmentwindow.h"
 #include "gui/gui.h"
@@ -70,7 +69,6 @@
 #include "gui/widgets/itemshortcutcontainer.h"
 
 #include "net/gamehandler.h"
-#include "net/generalhandler.h"
 #include "net/net.h"
 #include "net/playerhandler.h"
 

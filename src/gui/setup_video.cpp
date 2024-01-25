@@ -26,7 +26,6 @@
 #include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
-#include "main.h"
 #include "particle.h"
 
 #include "gui/okdialog.h"
@@ -38,8 +37,6 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
 #include "gui/widgets/spacer.h"
-#include "gui/widgets/textfield.h"
-#include "gui/widgets/dropdown.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

@@ -34,7 +34,6 @@
 #endif
 #include "playerrelations.h"
 #include "sound.h"
-#include "statuseffect.h"
 #include "units.h"
 
 #include "gui/changeemaildialog.h"
@@ -66,12 +65,8 @@
 
 #include "resources/chardb.h"
 #include "resources/hairdb.h"
-#include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
-#include "resources/monsterdb.h"
-#include "resources/specialdb.h"
-#include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 #include "resources/userpalette.h"
