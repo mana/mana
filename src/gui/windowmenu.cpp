@@ -170,7 +170,7 @@ static std::string createShortcutCaption(const std::string& text,
     if (key != KeyboardConfig::KEY_NO_VALUE)
     {
         caption += " (";
-        caption += SDL_GetKeyName((SDLKey) keyboard.getKeyValue(key));
+        caption += SDL_GetKeyName((SDL_Scancode) keyboard.getKeyValue(key));
         caption += ")";
     }
     return caption;

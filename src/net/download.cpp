@@ -124,7 +124,7 @@ bool Download::start()
 {
     logger->log("Starting download: %s", mUrl.c_str());
 
-    mThread = SDL_CreateThread(downloadThread, this);
+    mThread = SDL_CreateThread(downloadThread, "Download", this);
 
     if (!mThread)
     {

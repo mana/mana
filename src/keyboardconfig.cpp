@@ -101,8 +101,8 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyChatNextTab", SDLK_RIGHTBRACKET, _("Next Chat Tab")},
     {"keyOK", SDLK_SPACE, _("Select OK")},
     {"keyQuit", SDLK_ESCAPE, _("Quit")},
-    {"keyIgnoreInput1", SDLK_LSUPER, _("Ignore input 1")},
-    {"keyIgnoreInput2", SDLK_RSUPER, _("Ignore input 2")}
+    {"keyIgnoreInput1", SDLK_LGUI, _("Ignore input 1")},
+    {"keyIgnoreInput2", SDLK_RGUI, _("Ignore input 2")}
 };
 
 void KeyboardConfig::init()
@@ -233,5 +233,5 @@ bool KeyboardConfig::isKeyActive(int index) const
 
 void KeyboardConfig::refreshActiveKeys()
 {
-    mActiveKeys = SDL_GetKeyState(NULL);
+    mActiveKeys = SDL_GetKeyboardState(NULL);
 }

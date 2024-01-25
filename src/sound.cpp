@@ -112,7 +112,6 @@ void Sound::info()
 {
     SDL_version compiledVersion;
     const SDL_version *linkedVersion;
-    char driver[40] = "Unknown";
     const char *format = "Unknown";
     int rate = 0;
     Uint16 audioFormat = 0;
@@ -121,7 +120,7 @@ void Sound::info()
     MIX_VERSION(&compiledVersion);
     linkedVersion = Mix_Linked_Version();
 
-    SDL_AudioDriverName(driver, 40);
+    const char *driver = SDL_GetCurrentAudioDriver();
 
     Mix_QuerySpec(&rate, &audioFormat, &channels);
     switch (audioFormat)

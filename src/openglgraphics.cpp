@@ -61,7 +61,13 @@ OpenGLGraphics::~OpenGLGraphics()
 
 void OpenGLGraphics::setSync(bool sync)
 {
+    if (mSync == sync)
+        return;
+
     mSync = sync;
+
+    if (mContext)
+        SDL_GL_SetSwapInterval(sync ? 1 : 0);
 }
 
 void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
@@ -69,44 +75,57 @@ void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
     mReduceInputLag = reduceInputLag;
 }
 
-bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
+bool OpenGLGraphics::setVideoMode(int w, int h, bool fs)
 {
     logger->log("Setting video mode %dx%d %s",
             w, h, fs ? "fullscreen" : "windowed");
 
-    int displayFlags = SDL_ANYFORMAT | SDL_OPENGL;
+    // TODO_SDL2: Support SDL_WINDOW_ALLOW_HIGHDPI, but check handling of clip area
 
-    mWidth = w;
-    mHeight = h;
-    mBpp = bpp;
-    mFullscreen = fs;
-    mHWAccel = hwaccel;
+    int windowFlags = SDL_WINDOW_OPENGL;
 
     if (fs)
     {
-        displayFlags |= SDL_FULLSCREEN;
+        windowFlags |= SDL_WINDOW_FULLSCREEN;
     }
     else
     {
         // Resizing currently not supported on Windows, where it would require
         // reuploading all textures.
 #if !defined(_WIN32)
-        displayFlags |= SDL_RESIZABLE;
+        windowFlags |= SDL_WINDOW_RESIZABLE;
 #endif
     }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    if (!(mTarget = SDL_SetVideoMode(w, h, bpp, displayFlags)))
+    SDL_Window *window = SDL_CreateWindow("Mana",
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          w, h, windowFlags);
+    if (!window) {
+        logger->log("Failed to create window: %s", SDL_GetError());
         return false;
+    }
 
-#ifdef __APPLE__
+    SDL_SetWindowMinimumSize(window, 640, 480);
+
+    SDL_GLContext glContext = SDL_GL_CreateContext(window);
+    if (!glContext) {
+        logger->log("Failed to create OpenGL context: %s", SDL_GetError());
+        return false;
+    }
+
+    mTarget = window;
+    mContext = glContext;
+    mWidth = w;
+    mHeight = h;
+    mFullscreen = fs;
+
     if (mSync)
     {
-        const GLint VBL = 1;
-        CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
+        SDL_GL_SetSwapInterval(1);
     }
-#endif
 
     // Setup OpenGL
     glViewport(0, 0, w, h);
@@ -137,6 +156,18 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
                 rectTex ? " (rectangle textures)" : "");
 
     return true;
+}
+
+void OpenGLGraphics::videoResized(int w, int h)
+{
+    _endDraw();
+
+    mWidth = w;
+    mHeight = h;
+
+    glViewport(0, 0, w, h);
+
+    _beginDraw();
 }
 
 static inline void drawQuad(Image *image,
@@ -610,7 +641,7 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image,
 
 void OpenGLGraphics::updateScreen()
 {
-    SDL_GL_SwapBuffers();
+    SDL_GL_SwapWindow(mTarget);
 
     /*
      * glFinish flushes all OpenGL commands and makes sure they have been
@@ -634,7 +665,7 @@ void OpenGLGraphics::_beginDraw()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glOrtho(0.0, (double)mTarget->w, (double)mTarget->h, 0.0, -1.0, 1.0);
+    glOrtho(0.0, (double)mWidth, (double)mHeight, 0.0, -1.0, 1.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -646,7 +677,7 @@ void OpenGLGraphics::_beginDraw()
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    pushClipArea(gcn::Rectangle(0, 0, mTarget->w, mTarget->h));
+    pushClipArea(gcn::Rectangle(0, 0, mWidth, mHeight));
 }
 
 void OpenGLGraphics::_endDraw()
@@ -656,8 +687,8 @@ void OpenGLGraphics::_endDraw()
 
 SDL_Surface* OpenGLGraphics::getScreenshot()
 {
-    int h = mTarget->h;
-    int w = mTarget->w;
+    int w, h;
+    SDL_GL_GetDrawableSize(mTarget, &w, &h);
     GLint pack = 1;
 
     SDL_Surface *screenshot = SDL_CreateRGBSurface(
@@ -708,6 +739,7 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
         transY = -mClipStack.top().yOffset;
     }
 
+    // Skip Graphics::popClipArea since we don't need to interact with SDL2
     bool result = gcn::Graphics::pushClipArea(area);
 
     transX += mClipStack.top().xOffset;
@@ -716,7 +748,7 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
     glPushMatrix();
     glTranslatef(transX, transY, 0);
     glScissor(mClipStack.top().x,
-              mTarget->h - mClipStack.top().y - mClipStack.top().height,
+              mHeight - mClipStack.top().y - mClipStack.top().height,
               mClipStack.top().width,
               mClipStack.top().height);
 
@@ -725,6 +757,7 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 
 void OpenGLGraphics::popClipArea()
 {
+    // Skip Graphics::popClipArea since we don't need to interact with SDL2
     gcn::Graphics::popClipArea();
 
     if (mClipStack.empty())
@@ -732,7 +765,7 @@ void OpenGLGraphics::popClipArea()
 
     glPopMatrix();
     glScissor(mClipStack.top().x,
-              mTarget->h - mClipStack.top().y - mClipStack.top().height,
+              mHeight - mClipStack.top().y - mClipStack.top().height,
               mClipStack.top().width,
               mClipStack.top().height);
 }

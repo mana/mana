@@ -28,6 +28,7 @@
 
 #include "utils/stringutils.h"
 
+#include <guichan/color.hpp>
 #include <guichan/exception.hpp>
 
 const unsigned int CACHE_SIZE = 256;
@@ -53,9 +54,10 @@ class TextChunk
         void generate(TTF_Font *font)
         {
             SDL_Color sdlCol;
-            sdlCol.b = color.b;
             sdlCol.r = color.r;
             sdlCol.g = color.g;
+            sdlCol.b = color.b;
+            sdlCol.a = color.a;
 
             const char *str = getSafeUtf8String(text);
             SDL_Surface *surface = TTF_RenderUTF8_Blended(

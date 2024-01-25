@@ -159,7 +159,7 @@ bool Network::connect(ServerInfo server)
     mToSkip = 0;
 
     mState = CONNECTING;
-    mWorkerThread = SDL_CreateThread(networkThread, this);
+    mWorkerThread = SDL_CreateThread(networkThread, "Network", this);
     if (!mWorkerThread)
     {
         setError("Unable to create network worker thread");

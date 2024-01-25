@@ -241,11 +241,6 @@ Client::Client(const Options &options):
     }
     atexit(SDL_Quit);
 
-    SDL_EnableUNICODE(1);
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-    SDL_WM_SetCaption(branding.getValue("appName", "Mana").c_str(), NULL);
-
     ResourceManager *resman = ResourceManager::getInstance();
 
     if (!resman->setWriteDir(mLocalDataDir))
@@ -253,8 +248,6 @@ Client::Client(const Options &options):
         logger->error(strprintf("%s couldn't be set as home directory! "
                                 "Exiting.", mLocalDataDir.c_str()));
     }
-
-    Image::SDLsetEnableAlphaCache(config.getValue("alphaCache", true));
 
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -300,6 +293,39 @@ Client::Client(const Options &options):
     // Add the local data directory to PhysicsFS search path
     resman->addToSearchPath(mLocalDataDir, false);
 
+    bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 1) == 1);
+
+    // Set up the transparency option for low CPU when not using OpenGL.
+    if (!useOpenGL && (config.getValue("disableTransparency", 0) == 1))
+        Image::SDLdisableTransparency();
+
+#ifdef USE_OPENGL
+    // Setup image loading for the right image format
+    Image::setLoadAsOpenGL(useOpenGL);
+
+    // Create the graphics context
+    graphics = useOpenGL ? new OpenGLGraphics : new Graphics;
+#else
+    // Create the graphics context
+    graphics = new Graphics;
+#endif
+
+    const int width = config.getIntValue("screenwidth");
+    const int height = config.getIntValue("screenheight");
+    const bool fullscreen = config.getBoolValue("screen");
+
+    // Try to set the desired video mode
+    if (!graphics->setVideoMode(width, height, fullscreen))
+    {
+        logger->error(strprintf("Couldn't set %dx%d video mode: %s",
+            width, height, SDL_GetError()));
+    }
+
+    SDL_SetWindowTitle(graphics->getTarget(),
+                       branding.getValue("appName", "Mana").c_str());
+
+    Image::setRenderer(graphics->getRenderer());
+
     std::string iconFile = branding.getValue("appIcon", "icons/mana");
 #ifdef _WIN32
     iconFile += ".ico";
@@ -325,41 +351,9 @@ Client::Client(const Options &options):
     mIcon = IMG_Load(iconFile.c_str());
     if (mIcon)
     {
-        SDL_SetAlpha(mIcon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-        SDL_WM_SetIcon(mIcon, NULL);
+        SDL_SetWindowIcon(graphics->getTarget(), mIcon);
     }
 #endif
-
-    bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 1) == 1);
-
-    // Set up the transparency option for low CPU when not using OpenGL.
-    if (!useOpenGL && (config.getValue("disableTransparency", 0) == 1))
-        Image::SDLdisableTransparency();
-
-#ifdef USE_OPENGL
-
-    // Setup image loading for the right image format
-    Image::setLoadAsOpenGL(useOpenGL);
-
-    // Create the graphics context
-    graphics = useOpenGL ? new OpenGLGraphics : new Graphics;
-#else
-    // Create the graphics context
-    graphics = new Graphics;
-#endif
-
-    const int width = config.getIntValue("screenwidth");
-    const int height = config.getIntValue("screenheight");
-    const int bpp = 0;
-    const bool fullscreen = config.getBoolValue("screen");
-    const bool hwaccel = config.getBoolValue("hwaccel");
-
-    // Try to set the desired video mode
-    if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
-    {
-        logger->error(strprintf("Couldn't set %dx%dx%d video mode: %s",
-            width, height, bpp, SDL_GetError()));
-    }
 
     // Initialize for drawing
     graphics->_beginDraw();
@@ -511,8 +505,12 @@ int Client::exec()
                     case SDL_KEYDOWN:
                         break;
 
-                    case SDL_VIDEORESIZE:
-                        handleVideoResize(event.resize.w, event.resize.h);
+                    case SDL_WINDOWEVENT:
+                        switch (event.window.event) {
+                            case SDL_WINDOWEVENT_RESIZED:
+                                handleVideoResize(event.window.data1, event.window.data2);
+                                break;
+                        }
                         break;
                 }
 
@@ -1374,27 +1372,17 @@ void Client::accountLogin(LoginData *loginData)
 
 void Client::handleVideoResize(int width, int height)
 {
-    // Keep a minimum size. This isn't adhered to by the actual window, but
-    // it keeps some window positions from getting messed up.
-    width = std::max(640, width);
-    height = std::max(480, height);
-
     if (graphics->getWidth() == width && graphics->getHeight() == height)
         return;
 
-    if (graphics->changeVideoMode(width,
-                                  height,
-                                  graphics->getBpp(),
-                                  false,
-                                  graphics->getHWAccel()))
-    {
-        videoResized(width, height);
+    graphics->videoResized(width, height);
 
-        // Since everything appears to have worked out, remember to store the
-        // new size in the configuration.
-        config.setValue("screenwidth", width);
-        config.setValue("screenheight", height);
-    }
+    videoResized(width, height);
+
+    // Since everything appears to have worked out, remember to store the
+    // new size in the configuration.
+    config.setValue("screenwidth", width);
+    config.setValue("screenheight", height);
 }
 
 void Client::videoResized(int width, int height)
@@ -1409,4 +1397,19 @@ void Client::videoResized(int width, int height)
 
     if (mGame)
         mGame->videoResized(width, height);
+}
+
+bool Client::isActive()
+{
+    return !(SDL_GetWindowFlags(graphics->getTarget()) & SDL_WINDOW_MINIMIZED);
+}
+
+bool Client::hasInputFocus()
+{
+    return SDL_GetWindowFlags(graphics->getTarget()) & SDL_WINDOW_INPUT_FOCUS;
+}
+
+bool Client::hasMouseFocus()
+{
+    return SDL_GetWindowFlags(graphics->getTarget()) & SDL_WINDOW_MOUSE_FOCUS;
 }

@@ -26,7 +26,6 @@
 #include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
-#include "log.h"
 #include "main.h"
 #include "particle.h"
 
@@ -91,26 +90,21 @@ class ModeListModel : public gcn::ListModel
 ModeListModel::ModeListModel()
 {
     /* Get available fullscreen/hardware modes */
-    SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
-
-    /* Check which modes are available */
-    if (modes == (SDL_Rect **)0)
-        logger->log("No modes available");
-    else if (modes == (SDL_Rect **)-1)
-        logger->log("All resolutions available");
-    else
+    const int numModes = SDL_GetNumDisplayModes(0);
+    for (int i = 0; i < numModes; i++)
     {
-        for (int i = 0; modes[i]; ++i)
-        {
-            const int width = modes[i]->w;
-            const int height = modes[i]->h;
+        SDL_DisplayMode mode;
+        if (SDL_GetDisplayMode(0, i, &mode) != 0)
+            continue;
 
-            // Skip the unreasonably small modes
-            if (width < 640 || height < 480)
-                continue;
+        // Skip the unreasonably small modes
+        if (mode.w < 640 || mode.h < 480)
+            continue;
 
-            mVideoModes.push_back(toString(width) + "x" + toString(height));
-        }
+        // TODO_SDL2: Modes now dinstinguish between pixel format and refresh rate as well
+        // TODO_SDL2: Fullscreen mode needs display selection
+
+        mVideoModes.push_back(toString(mode.w) + "x" + toString(mode.h));
     }
 }
 
@@ -326,9 +320,7 @@ void Setup_Video::apply()
         {
             if (!graphics->changeVideoMode(screenWidth,
                                            screenHeight,
-                                           graphics->getBpp(),
-                                           fullscreen,
-                                           graphics->getHWAccel()))
+                                           fullscreen))
             {
                 std::stringstream errorMessage;
                 if (fullscreen)

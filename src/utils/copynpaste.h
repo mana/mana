@@ -1,7 +1,6 @@
 /*
- *  Retrieve string pasted depending on OS mechanisms.
- *  Copyright (C) 2001-2010  Wormux Team
- *  Copyright (C) 2010-2012  The Mana Developers
+ *  Clipboard Interaction.
+ *  Copyright (C) 2010-2024  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -25,10 +24,7 @@
  * Attempts to retrieve text from the clipboard buffer and inserts it in
  * \a text at position \pos. The characters are encoded in utf-8.
  *
- * Implemented for Windows, X11 and Mac OS X.
- *
  * @return <code>true</code> when successful or <code>false</code> when there
  *         was a problem retrieving the clipboard buffer.
  */
-bool RetrieveBuffer(std::string& text, std::string::size_type& pos);
-
+bool insertFromClipboard(std::string &text, std::string::size_type &pos);

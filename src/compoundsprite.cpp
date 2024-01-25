@@ -20,7 +20,6 @@
 
 #include "compoundsprite.h"
 
-#include "game.h"
 #include "graphics.h"
 #include "map.h"
 
@@ -223,6 +222,7 @@ int CompoundSprite::getDuration() const
     return duration;
 }
 
+#if 0
 static void updateValues(int &dimension, int &pos, int imgDimUL, int imgDimRD, int imgOffset)
 {
     // Handle going beyond the left/up
@@ -238,11 +238,18 @@ static void updateValues(int &dimension, int &pos, int imgDimUL, int imgDimRD, i
     if (temp > dimension)
         dimension = temp;
 }
-
-#include "localplayer.h"
+#endif
 
 void CompoundSprite::redraw() const
 {
+#if 1   // TODO_SDL2: Does it make sense to implement CompoundSprite?
+    mWidth = mSprites.at(0)->getWidth();
+    mHeight = mSprites.at(0)->getHeight();
+    mOffsetX = 0;
+    mOffsetY = 0;
+    mNeedsRedraw = false;
+#else
+
 #ifdef USE_OPENGL
     // TODO OpenGL support
     if (Image::getLoadAsOpenGL())
@@ -295,7 +302,7 @@ void CompoundSprite::redraw() const
     int amask = 0xff000000;
 #endif
 
-    SDL_Surface *surface = SDL_CreateRGBSurface(SDL_HWSURFACE, mWidth, mHeight,
+    SDL_Surface *surface = SDL_CreateRGBSurface(0, mWidth, mHeight,
                                             32, rmask, gmask, bmask, amask);
 
     if (!surface)
@@ -322,7 +329,7 @@ void CompoundSprite::redraw() const
 
     delete graphics;
 
-    SDL_Surface *surfaceA = SDL_CreateRGBSurface(SDL_HWSURFACE, mWidth, mHeight,
+    SDL_Surface *surfaceA = SDL_CreateRGBSurface(0, mWidth, mHeight,
                                             32, rmask, gmask, bmask, amask);
 
     SDL_SetAlpha(surface, 0, SDL_ALPHA_OPAQUE);
@@ -338,4 +345,5 @@ void CompoundSprite::redraw() const
     SDL_FreeSurface(surfaceA);
 
     mNeedsRedraw = false;
+#endif
 }

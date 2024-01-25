@@ -26,6 +26,7 @@
 
 #include <guichan/gui.hpp>
 
+class TextInput;
 class Graphics;
 class GuiConfigListener;
 class ImageSet;
@@ -114,6 +115,7 @@ class Gui : public gcn::Gui
 
     protected:
         void handleMouseMoved(const gcn::MouseInput &mouseInput);
+        void handleTextInput(const TextInput &textInput);
 
     private:
         GuiConfigListener *mConfigListener;

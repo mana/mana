@@ -37,7 +37,7 @@ void Joystick::init()
     joystickCount = SDL_NumJoysticks();
     logger->log("%i joysticks/gamepads found", joystickCount);
     for (int i = 0; i < joystickCount; i++)
-        logger->log("- %s", SDL_JoystickName(i));
+        logger->log("- %s", SDL_JoystickNameForIndex(i));
 }
 
 Joystick::Joystick(int no):

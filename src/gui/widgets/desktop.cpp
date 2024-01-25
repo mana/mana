@@ -86,14 +86,9 @@ void Desktop::draw(gcn::Graphics *graphics)
 
     if (mWallpaper)
     {
-        if (!Image::useOpenGL())
-            g->drawImage(mWallpaper,
-                (getWidth() - mWallpaper->getWidth()) / 2,
-                (getHeight() - mWallpaper->getHeight()) / 2);
-        else
-            g->drawRescaledImage(mWallpaper, 0, 0, 0, 0,
-                mWallpaper->getWidth(), mWallpaper->getHeight(),
-                getWidth(), getHeight(), false);
+        g->drawRescaledImage(mWallpaper, 0, 0, 0, 0,
+            mWallpaper->getWidth(), mWallpaper->getHeight(),
+            getWidth(), getHeight(), false);
     }
 
     // Draw a thin border under the application version...
@@ -125,19 +120,6 @@ void Desktop::setBestFittingWallpaper()
             mWallpaper->decRef(Resource::DeleteImmediately);
 
         mWallpaper = wallpaper;
-
-        // In software mode we try to prescale the image for performance
-        if (!wallpaper->useOpenGL() &&
-                (wallpaper->getWidth() != width ||
-                 wallpaper->getHeight() != height))
-        {
-            if (Image *prescaled = wallpaper->SDLgetScaledImage(width, height))
-            {
-                // Make sure the original can be freed
-                wallpaper->decRef();
-                mWallpaper = prescaled;
-            }
-        }
     }
     else
     {

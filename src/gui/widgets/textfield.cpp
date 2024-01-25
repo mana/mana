@@ -36,6 +36,8 @@
 
 #include <guichan/font.hpp>
 
+#include <SDL.h>
+
 #undef DELETE //Win32 compatibility hack
 
 int TextField::instances = 0;
@@ -162,33 +164,7 @@ int TextField::getValue() const
 
 void TextField::keyPressed(gcn::KeyEvent &keyEvent)
 {
-    int val = keyEvent.getKey().getValue();
-
-    if (val >= 32)
-    {
-        int l;
-        if (val < 128) l = 1;            // 0xxxxxxx
-        else if (val < 0x800) l = 2;     // 110xxxxx 10xxxxxx
-        else if (val < 0x10000) l = 3;   // 1110xxxx 10xxxxxx 10xxxxxx
-        else l = 4;                      // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-
-        char buf[4];
-        for (int i = 0; i < l; ++i)
-        {
-            buf[i] = val >> (6 * (l - i - 1));
-            if (i > 0) buf[i] = (buf[i] & 63) | 128;
-        }
-
-        if (l > 1) buf[0] |= 255 << (8 - l);
-
-        mText.insert(mCaretPosition, std::string(buf, buf + l));
-        mCaretPosition += l;
-    }
-
-    /* In UTF-8, 10xxxxxx is only used for inner parts of characters. So skip
-       them when processing key presses. */
-
-    switch (val)
+    switch (keyEvent.getKey().getValue())
     {
         case Key::LEFT:
         {
@@ -302,13 +278,20 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
                 return;
             break;
 
-        case 22: // Control code 22, SYNCHRONOUS IDLE, sent on Ctrl+v
-            handlePaste();
+        case SDLK_v:
+            if (keyEvent.isControlPressed())
+                handlePaste();
             break;
     }
 
     keyEvent.consume();
     fixScroll();
+}
+
+void TextField::textInput(const TextInput &textInput)
+{
+    mText.insert(mCaretPosition, textInput.getText());
+    mCaretPosition += textInput.getText().length();
 }
 
 void TextField::autoComplete()
@@ -383,7 +366,7 @@ void TextField::handlePaste()
     std::string text = getText();
     std::string::size_type caretPos = getCaretPosition();
 
-    if (RetrieveBuffer(text, caretPos)) {
+    if (insertFromClipboard(text, caretPos)) {
         setText(text);
         setCaretPosition(caretPos);
     }
