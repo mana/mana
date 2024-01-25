@@ -143,6 +143,6 @@ In your mana directory:
 
 $ export CC=/usr/bin/clang
 $ export CXX=/usr/bin/clang++
-$ cmake -DENABLE_CPP0X=OFF
+$ cmake .
 $ make
 $ src/mana
