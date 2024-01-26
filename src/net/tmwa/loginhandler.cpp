@@ -274,7 +274,17 @@ void LoginHandler::chooseServer(unsigned int server)
         return;
 
     charServer.clear();
-    charServer.hostname = ipToString(mWorlds[server]->address);
+
+    if (mServer.persistentIp)
+    {
+        charServer.hostname = mServer.hostname;
+        charServer.persistentIp = mServer.persistentIp;
+    }
+    else
+    {
+        charServer.hostname = ipToString(mWorlds[server]->address);
+    }
+
     charServer.port = mWorlds[server]->port;
 
     Client::setState(STATE_UPDATE);

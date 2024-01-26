@@ -132,7 +132,7 @@ Network::~Network()
     SDLNet_Quit();
 }
 
-bool Network::connect(ServerInfo server)
+bool Network::connect(const ServerInfo &server)
 {
     if (mState != IDLE && mState != NET_ERROR)
     {

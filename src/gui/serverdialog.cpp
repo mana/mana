@@ -501,9 +501,18 @@ void ServerDialog::loadServers()
                     server.port = ServerInfo::defaultPortForServerType(server.type);
                 }
             }
-            else if (xmlStrEqual(subNode->name, BAD_CAST "description"))
+            else if (subNode->xmlChildrenNode && subNode->xmlChildrenNode->content)
             {
-                server.description = (const char*) subNode->xmlChildrenNode->content;
+                const char *text = (const char*) subNode->xmlChildrenNode->content;
+
+                if (xmlStrEqual(subNode->name, BAD_CAST "description"))
+                {
+                    server.description = text;
+                }
+                else if (xmlStrEqual(subNode->name, BAD_CAST "persistentIp"))
+                {
+                    server.persistentIp = strcmp(text, "1") == 0 || strcmp(text, "true") == 0;
+                }
             }
         }
 

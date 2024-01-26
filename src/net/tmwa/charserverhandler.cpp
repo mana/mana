@@ -158,7 +158,14 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             msg.skip(4); // CharID, must be the same as local_player->charID
             GameHandler *gh = static_cast<GameHandler*>(Net::getGameHandler());
             gh->setMap(msg.readString(16));
-            mapServer.hostname = ipToString(msg.readInt32());
+
+            const auto ip = msg.readInt32();
+
+            if (charServer.persistentIp)
+                mapServer.hostname = charServer.hostname;
+            else
+                mapServer.hostname = ipToString(ip);
+
             mapServer.port = msg.readInt16();
 
             local_player = mSelectedCharacter->dummy;

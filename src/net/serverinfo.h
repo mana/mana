@@ -38,35 +38,16 @@ public:
 
     typedef std::pair<int, std::string> VersionString;
 
-    Type type;
+    Type type = UNKNOWN;
     std::string name;
     std::string hostname;
-    unsigned short port;
+    unsigned short port = 0;
 
     std::string description;
-    VersionString version;
+    VersionString version = std::make_pair(0, std::string());
 
-    bool save;
-
-    ServerInfo()
-    {
-        type = UNKNOWN;
-        port = 0;
-        save = false;
-        version.first = 0;
-    }
-
-    ServerInfo(const ServerInfo &info)
-    {
-        type = info.type;
-        name = info.name;
-        hostname = info.hostname;
-        port = info.port;
-        description = info.description;
-        version.first = info.version.first;
-        version.second = info.version.second;
-        save = info.save;
-    }
+    bool save = false;
+    bool persistentIp = true;
 
     bool isValid() const
     {
@@ -75,14 +56,7 @@ public:
 
     void clear()
     {
-        type = UNKNOWN;
-        name.clear();
-        hostname.clear();
-        port = 0;
-        description.clear();
-        version.first = 0;
-        version.second.clear();
-        save = false;
+        *this = ServerInfo();
     }
 
     bool operator==(const ServerInfo &other) const
