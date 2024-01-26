@@ -153,7 +153,7 @@ void ChangeEmailDialog::action(const gcn::ActionEvent &event)
                 mWrongDataNoticeListener->setTarget(this->mSecondEmailField);
             }
 
-            OkDialog *dlg = new OkDialog(_("Error"), errorMessage.str());
+            auto *dlg = new OkDialog(_("Error"), errorMessage.str());
             dlg->addActionListener(mWrongDataNoticeListener);
         }
         else

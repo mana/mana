@@ -29,7 +29,7 @@
 
 #include <guichan/graphics.hpp>
 
-Image *ResizeGrip::gripImage = 0;
+Image *ResizeGrip::gripImage = nullptr;
 int ResizeGrip::mInstances = 0;
 float ResizeGrip::mAlpha = 1.0;
 

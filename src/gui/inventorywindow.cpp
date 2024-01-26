@@ -452,8 +452,8 @@ bool InventoryWindow::isInputFocused() const
 
 bool InventoryWindow::isAnyInputFocused()
 {
-    WindowList::iterator it = instances.begin();
-    WindowList::iterator it_end = instances.end();
+    auto it = instances.begin();
+    auto it_end = instances.end();
 
     for (; it != it_end; it++)
     {

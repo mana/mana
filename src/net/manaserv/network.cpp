@@ -42,8 +42,8 @@ namespace {
 namespace ManaServ
 {
 
-typedef std::map<unsigned short, MessageHandler*> MessageHandlers;
-typedef MessageHandlers::iterator MessageHandlerIterator;
+using MessageHandlers = std::map<unsigned short, MessageHandler *>;
+using MessageHandlerIterator = MessageHandlers::iterator;
 static MessageHandlers mMessageHandlers;
 
 void initialize()
@@ -53,7 +53,7 @@ void initialize()
         logger->error("Failed to initialize ENet.");
     }
 
-    client = enet_host_create(NULL, 3, 0, 0, 0);
+    client = enet_host_create(nullptr, 3, 0, 0, 0);
 
     if (!client)
     {
@@ -119,7 +119,7 @@ namespace
     {
         MessageIn msg((const char *)packet->data, packet->dataLength);
 
-        MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
+        auto iter = mMessageHandlers.find(msg.getId());
 
         if (iter != mMessageHandlers.end())
         {
@@ -150,7 +150,7 @@ void flush()
             case ENET_EVENT_TYPE_CONNECT:
                 logger->log("Connected to port %d.", event.peer->address.port);
                 // Store any relevant server information here.
-                event.peer->data = 0;
+                event.peer->data = nullptr;
                 break;
 
             case ENET_EVENT_TYPE_RECEIVE:
@@ -160,7 +160,7 @@ void flush()
             case ENET_EVENT_TYPE_DISCONNECT:
                 logger->log("Disconnected.");
                 // Reset the server information.
-                event.peer->data = 0;
+                event.peer->data = nullptr;
                 break;
 
             case ENET_EVENT_TYPE_NONE:

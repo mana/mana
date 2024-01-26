@@ -60,7 +60,7 @@ class PopupMenu : public Popup, public LinkHandler
         /**
          * Handles link action.
          */
-        void handleLink(const std::string &link);
+        void handleLink(const std::string &link) override;
 
     private:
         BrowserBox* mBrowserBox;

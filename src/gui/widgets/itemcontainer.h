@@ -57,33 +57,33 @@ class ItemContainer : public gcn::Widget,
          */
         ItemContainer(Inventory *inventory);
 
-        virtual ~ItemContainer();
+        ~ItemContainer() override;
 
         void hidePopup();
 
         /**
          * Necessary for checking how full the inventory is.
          */
-        void logic();
+        void logic() override;
 
         /**
          * Draws the items.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         // KeyListener
-        void keyPressed(gcn::KeyEvent &event);
-        void keyReleased(gcn::KeyEvent &event);
+        void keyPressed(gcn::KeyEvent &event) override;
+        void keyReleased(gcn::KeyEvent &event) override;
 
         // MouseListener
-        void mousePressed(gcn::MouseEvent &event);
-        void mouseDragged(gcn::MouseEvent &event);
-        void mouseReleased(gcn::MouseEvent &event);
-        void mouseMoved(gcn::MouseEvent &event);
-        void mouseExited(gcn::MouseEvent &event);
+        void mousePressed(gcn::MouseEvent &event) override;
+        void mouseDragged(gcn::MouseEvent &event) override;
+        void mouseReleased(gcn::MouseEvent &event) override;
+        void mouseMoved(gcn::MouseEvent &event) override;
+        void mouseExited(gcn::MouseEvent &event) override;
 
         // WidgetListener
-        void widgetResized(const gcn::Event &event);
+        void widgetResized(const gcn::Event &event) override;
 
         /**
          * Returns the selected item.
@@ -191,8 +191,8 @@ class ItemContainer : public gcn::Widget,
 
         ItemPopup *mItemPopup;
 
-        typedef std::list<gcn::SelectionListener*> SelectionListenerList;
-        typedef SelectionListenerList::iterator SelectionListenerIterator;
+        using SelectionListenerList = std::list<gcn::SelectionListener *>;
+        using SelectionListenerIterator = SelectionListenerList::iterator;
 
         SelectionListenerList mSelectionListeners;
 };

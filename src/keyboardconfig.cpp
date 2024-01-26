@@ -233,5 +233,5 @@ bool KeyboardConfig::isKeyActive(int index) const
 
 void KeyboardConfig::refreshActiveKeys()
 {
-    mActiveKeys = SDL_GetKeyboardState(NULL);
+    mActiveKeys = SDL_GetKeyboardState(nullptr);
 }

@@ -43,7 +43,7 @@ extern Net::PartyHandler *partyHandler;
 
 namespace TmwAthena {
 
-PartyTab *partyTab = 0;
+PartyTab *partyTab = nullptr;
 Party *taParty;
 
 PartyHandler::PartyHandler():
@@ -70,7 +70,7 @@ PartyHandler::PartyHandler():
 PartyHandler::~PartyHandler()
 {
     delete partyTab;
-    partyTab = 0;
+    partyTab = nullptr;
 }
 
 void PartyHandler::handleMessage(MessageIn &msg)
@@ -237,7 +237,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     if (partyTab)
                     {
                         delete partyTab;
-                        partyTab = 0;
+                        partyTab = nullptr;
                     }
                     socialWindow->removeTab(taParty);
                 }
@@ -248,7 +248,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
 
                     if (Being *b = actorSpriteManager->findBeing(id))
                     {
-                        b->setParty(NULL);
+                        b->setParty(nullptr);
                     }
 
                     taParty->removeMember(id);

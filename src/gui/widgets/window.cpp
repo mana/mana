@@ -44,9 +44,9 @@ int Window::mouseResize = 0;
 Window::Window(const std::string &caption, bool modal, Window *parent,
                const std::string &skin):
     gcn::Window(caption),
-    mGrip(0),
+    mGrip(nullptr),
     mParent(parent),
-    mLayout(NULL),
+    mLayout(nullptr),
     mWindowName("window"),
     mShowTitle(true),
     mModal(modal),
@@ -114,7 +114,7 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics *graphics)
 {
-    Graphics *g = static_cast<Graphics*>(graphics);
+    auto *g = static_cast<Graphics*>(graphics);
 
     g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
 
@@ -260,7 +260,7 @@ void Window::setResizable(bool r)
     {
         remove(mGrip);
         delete mGrip;
-        mGrip = 0;
+        mGrip = nullptr;
     }
 }
 
@@ -757,7 +757,7 @@ void Window::reflowLayout(int w, int h)
     assert(mLayout);
     mLayout->reflow(w, h);
     delete mLayout;
-    mLayout = NULL;
+    mLayout = nullptr;
     setContentSize(w, h);
 }
 

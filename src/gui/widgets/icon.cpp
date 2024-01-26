@@ -27,7 +27,7 @@
 #include "resources/resourcemanager.h"
 
 Icon::Icon(const std::string &file)
-    : mImage(0)
+    : mImage(nullptr)
 {
     mImage = ResourceManager::getInstance()->getImage(file);
     if (mImage)
@@ -52,7 +52,7 @@ void Icon::draw(gcn::Graphics *g)
 {
     if (mImage)
     {
-        Graphics *graphics = static_cast<Graphics*>(g);
+        auto *graphics = static_cast<Graphics*>(g);
         const int x = (getWidth() - mImage->getWidth()) / 2;
         const int y = (getHeight() - mImage->getHeight()) / 2;
         graphics->drawImage(mImage, x, y);

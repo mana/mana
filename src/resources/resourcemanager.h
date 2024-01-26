@@ -47,8 +47,8 @@ class ResourceManager
 
     public:
 
-        typedef Resource *(*loader)(SDL_RWops *);
-        typedef Resource *(*generator)(void *);
+        using loader = Resource *(*)(SDL_RWops *);
+        using generator = Resource *(*)(void *);
 
         ResourceManager();
 
@@ -249,8 +249,8 @@ class ResourceManager
         void cleanOrphans();
 
         static ResourceManager *instance;
-        typedef std::map<std::string, Resource*> Resources;
-        typedef Resources::iterator ResourceIterator;
+        using Resources = std::map<std::string, Resource *>;
+        using ResourceIterator = Resources::iterator;
         std::set<SDL_Surface*> mDeletedSurfaces;
         Resources mResources;
         Resources mOrphanedResources;

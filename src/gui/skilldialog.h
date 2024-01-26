@@ -47,14 +47,14 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
     public:
         SkillDialog();
 
-        ~SkillDialog();
+        ~SkillDialog() override;
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
         /**
          * Called when receiving actions from widget.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Update the given skill's display
@@ -75,7 +75,7 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
         bool hasSkills() { return !mSkills.empty(); }
 
     private:
-        typedef std::map<int, SkillInfo*> SkillMap;
+        using SkillMap = std::map<int, SkillInfo *>;
         SkillMap mSkills;
         TabbedArea *mTabs;
         Label *mPointsLabel;

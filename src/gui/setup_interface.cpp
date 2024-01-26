@@ -65,14 +65,14 @@ const char *SIZE_NAME[4] =
 class FontSizeChoiceListModel : public gcn::ListModel
 {
 public:
-    virtual ~FontSizeChoiceListModel() { }
+    ~FontSizeChoiceListModel() override { }
 
-    virtual int getNumberOfElements()
+    int getNumberOfElements() override
     {
         return 4;
     }
 
-    virtual std::string getElementAt(int i)
+    std::string getElementAt(int i) override
     {
         if (i >= getNumberOfElements())
             return _("???");
@@ -120,7 +120,7 @@ Setup_Interface::Setup_Interface():
     setName(_("Interface"));
 
     // Create widgets
-    Spacer *space = new Spacer(0,10);
+    auto *space = new Spacer(0,10);
 
     mShowMonsterDamageCheckBox = new CheckBox(_("Show damage"),
                                               mShowMonsterDamageEnabled);
@@ -260,7 +260,7 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
     }
     else if (id == "speech")
     {
-        Being::Speech val = (Being::Speech)mSpeechSlider->getValue();
+        auto val = (Being::Speech)mSpeechSlider->getValue();
         mSpeechLabel->setCaption(speechModeToString(val));
         mSpeechSlider->setValue(val);
         config.setValue("speech", val);

@@ -39,7 +39,7 @@ extern Net::GuildHandler *guildHandler;
 
 namespace TmwAthena {
 
-GuildTab *guildTab = 0;
+GuildTab *guildTab = nullptr;
 Guild *taGuild;
 
 GuildHandler::GuildHandler()
@@ -83,7 +83,7 @@ GuildHandler::GuildHandler()
 GuildHandler::~GuildHandler()
 {
     delete guildTab;
-    guildTab = 0;
+    guildTab = nullptr;
 }
 
 void GuildHandler::handleMessage(MessageIn &msg)

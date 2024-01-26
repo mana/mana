@@ -37,12 +37,12 @@ class ConfirmDialog : public Window, public gcn::ActionListener
 {
     public:
         ConfirmDialog(const std::string &title, const std::string &msg,
-                      Window *parent = NULL);
+                      Window *parent = nullptr);
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
     private:
         TextBox *mTextBox;

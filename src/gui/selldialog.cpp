@@ -316,8 +316,8 @@ void SellDialog::setVisible(bool visible)
 
 void SellDialog::closeAll()
 {
-    DialogList::iterator it = instances.begin();
-    DialogList::iterator it_end = instances.end();
+    auto it = instances.begin();
+    auto it_end = instances.end();
 
     for (; it != it_end; it++)
     {

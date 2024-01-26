@@ -54,7 +54,7 @@ OutfitWindow::OutfitWindow():
     mGridWidth(3),
     mGridHeight(3),
     mItemClicked(false),
-    mItemMoved(NULL),
+    mItemMoved(nullptr),
     mItemSelected(-1),
     mCurrentOutfit(0)
 {
@@ -188,7 +188,7 @@ void OutfitWindow::copyOutfit(int outfit)
 void OutfitWindow::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
-    Graphics *g = static_cast<Graphics*>(graphics);
+    auto *g = static_cast<Graphics*>(graphics);
 
     for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
@@ -295,13 +295,13 @@ void OutfitWindow::mouseReleased(gcn::MouseEvent &event)
         const int index = getIndexFromGrid(event.getX(), event.getY());
         if (index == -1)
         {
-            mItemMoved = NULL;
+            mItemMoved = nullptr;
             return;
         }
         if (mItemMoved)
         {
             mItems[mCurrentOutfit][index] = mItemMoved->getId();
-            mItemMoved = NULL;
+            mItemMoved = nullptr;
         }
         if (mItemClicked)
             mItemClicked = false;

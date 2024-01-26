@@ -30,7 +30,7 @@ class Graphics;
 class Image;
 class Map;
 
-typedef std::list<Actor*> Actors;
+using Actors = std::list<Actor *>;
 
 class Actor
 {

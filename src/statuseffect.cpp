@@ -55,7 +55,7 @@ void StatusEffect::deliverMessage()
 Particle *StatusEffect::getParticle()
 {
     if (mParticleEffect.empty())
-        return NULL;
+        return nullptr;
     else
         return particleEngine->addEffect(mParticleEffect, 0, 0);
 }
@@ -63,7 +63,7 @@ Particle *StatusEffect::getParticle()
 AnimatedSprite *StatusEffect::getIcon()
 {
     if (mIcon.empty())
-        return NULL;
+        return nullptr;
     else
     {
         AnimatedSprite *sprite = AnimatedSprite::load(
@@ -120,7 +120,7 @@ void StatusEffect::init()
 
 void StatusEffect::readStatusEffectNode(xmlNodePtr node, const std::string &filename)
 {
-    status_effect_map *the_map = NULL;
+    status_effect_map *the_map = nullptr;
     int index = atoi(XML::getProperty(node, "id", "-1").c_str());
     if (xmlStrEqual(node->name, BAD_CAST "status-effect"))
     {
@@ -135,8 +135,8 @@ void StatusEffect::readStatusEffectNode(xmlNodePtr node, const std::string &file
 
     if (the_map)
     {
-        StatusEffect *startEffect = new StatusEffect;
-        StatusEffect *endEffect = new StatusEffect;
+        auto *startEffect = new StatusEffect;
+        auto *endEffect = new StatusEffect;
 
         startEffect->mMessage = XML::getProperty(node, "start-message", "");
         startEffect->mSFXEffect = XML::getProperty(node, "start-audio", "");

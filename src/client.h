@@ -159,7 +159,7 @@ public:
     };
 
     Client(const Options &options);
-    ~Client();
+    ~Client() override;
 
     /**
      * Provides access to the client instance.
@@ -200,8 +200,8 @@ public:
     static const std::string &getScreenshotDirectory()
     { return instance()->mScreenshotDir; }
 
-    void event(Event::Channel channel, const Event &event);
-    void action(const gcn::ActionEvent &event);
+    void event(Event::Channel channel, const Event &event) override;
+    void action(const gcn::ActionEvent &event) override;
 
     /**
      * Should be called after the window has been resized by the user.

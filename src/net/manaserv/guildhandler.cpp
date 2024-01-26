@@ -285,7 +285,7 @@ void GuildHandler::joinedGuild(MessageIn &msg)
 
     // Automatically create the guild channel
     // COMMENT: Should this go here??
-    Channel *channel = new Channel(channelId, guildName, announcement);
+    auto *channel = new Channel(channelId, guildName, announcement);
     channelManager->addChannel(channel);
     channel->getTab()->chatLog(strprintf(_("Topic: %s"), announcement.c_str()),
                                BY_CHANNEL);

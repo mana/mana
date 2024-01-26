@@ -38,9 +38,9 @@ class AnimationParticle : public ImageParticle
         AnimationParticle(Map *map, xmlNodePtr animationNode,
                           const std::string& dyePalettes = std::string());
 
-        ~AnimationParticle();
+        ~AnimationParticle() override;
 
-        virtual bool update();
+        bool update() override;
 
     private:
         SimpleAnimation *mAnimation; /**< Used animation for this particle */

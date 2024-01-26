@@ -40,7 +40,7 @@ struct Character
 {
     Character() :
         slot(0),
-        dummy(0)
+        dummy(nullptr)
     {
     }
 
@@ -54,7 +54,7 @@ struct Character
     PlayerInfoBackend data;
 };
 
-typedef std::list<Character*> Characters;
+using Characters = std::list<Character *>;
 
 class CharHandler
 {
@@ -97,9 +97,9 @@ class CharHandler
 
     protected:
         CharHandler():
-            mSelectedCharacter(0),
-            mCharSelectDialog(0),
-            mCharCreateDialog(0)
+            mSelectedCharacter(nullptr),
+            mCharSelectDialog(nullptr),
+            mCharCreateDialog(nullptr)
         {}
 
         void updateCharSelectDialog();

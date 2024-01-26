@@ -40,31 +40,31 @@ class ItemShortcutContainer : public ShortcutContainer
     public:
         ItemShortcutContainer();
 
-        virtual ~ItemShortcutContainer();
+        ~ItemShortcutContainer() override;
 
         /**
          * Draws the items.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Handles mouse when dragged.
          */
-        void mouseDragged(gcn::MouseEvent &event);
+        void mouseDragged(gcn::MouseEvent &event) override;
 
         /**
          * Handles mouse when pressed.
          */
-        void mousePressed(gcn::MouseEvent &event);
+        void mousePressed(gcn::MouseEvent &event) override;
 
         /**
          * Handles mouse release.
          */
-        void mouseReleased(gcn::MouseEvent &event);
+        void mouseReleased(gcn::MouseEvent &event) override;
 
     private:
-        void mouseExited(gcn::MouseEvent &event);
-        void mouseMoved(gcn::MouseEvent &event);
+        void mouseExited(gcn::MouseEvent &event) override;
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         bool mItemClicked;
         Item *mItemMoved;

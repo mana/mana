@@ -76,12 +76,12 @@ Being::Being(int id, Type type, int subtype, Map *map):
     mSubType(0xFFFF),
     mDirection(DOWN),
     mSpriteDirection(DIRECTION_DOWN),
-    mDispName(0),
+    mDispName(nullptr),
     mShowName(false),
-    mEquippedWeapon(NULL),
-    mText(0),
+    mEquippedWeapon(nullptr),
+    mText(nullptr),
     mGender(GENDER_UNSPECIFIED),
-    mParty(NULL),
+    mParty(nullptr),
     mIsGM(false),
     mType(type),
     mSpeedPixelsPerTick(Vector(0.0f, 0.0f, 0.0f)),
@@ -111,9 +111,9 @@ Being::~Being()
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
-    mSpeechBubble = 0;
-    mDispName = 0;
-    mText = 0;
+    mSpeechBubble = nullptr;
+    mDispName = nullptr;
+    mText = nullptr;
 }
 
 void Being::setSubtype(Uint16 subtype)
@@ -391,7 +391,7 @@ void Being::takeDamage(Being *attacker, int amount,
         // Init the particle effect path based on current weapon or default.
         int hitEffectId = 0;
         const ItemInfo *attackerWeapon = attacker ?
-            attacker->getEquippedWeapon() : 0;
+            attacker->getEquippedWeapon() : nullptr;
 
         if (attackerWeapon && attacker->getType() == PLAYER)
         {
@@ -473,7 +473,7 @@ void Being::setShowName(bool doShowName)
     else
     {
         delete mDispName;
-        mDispName = 0;
+        mDispName = nullptr;
     }
 }
 
@@ -524,7 +524,7 @@ Guild *Being::getGuild(const std::string &guildName) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 Guild *Being::getGuild(int id) const
@@ -536,7 +536,7 @@ Guild *Being::getGuild(int id) const
         return itr->second;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void Being::clearGuilds()
@@ -791,7 +791,7 @@ void Being::logic()
     if (mSpeechTime == 0 && mText)
     {
         delete mText;
-        mText = 0;
+        mText = nullptr;
     }
 
     if ((mAction != DEAD) && !mSpeedPixelsPerTick.isNull())
@@ -915,7 +915,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
         if (mText)
         {
             delete mText;
-            mText = NULL;
+            mText = nullptr;
         }
 
         mSpeechBubble->setCaption(showName ? mName : "", mTextColor);
@@ -946,7 +946,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
         if (mText)
             delete mText;
 
-        mText = NULL;
+        mText = nullptr;
     }
 }
 
@@ -971,10 +971,10 @@ void Being::flashName(int time)
 void Being::showName()
 {
     delete mDispName;
-    mDispName = 0;
+    mDispName = nullptr;
     std::string mDisplayName(mName);
 
-    Being* player =  static_cast<Being*>(this);
+    auto* player =  static_cast<Being*>(this);
     if (player)
     {
         if (config.getBoolValue("showgender"))
@@ -1001,7 +1001,7 @@ void Being::showName()
         }
     }
 
-    gcn::Font *font = 0;
+    gcn::Font *font = nullptr;
     if (local_player && local_player->getTarget() == this
         && getType() != MONSTER)
     {
@@ -1074,12 +1074,12 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
         removeSprite(slot);
 
         if (isWeapon)
-            mEquippedWeapon = 0;
+            mEquippedWeapon = nullptr;
     }
     else
     {
         std::string filename = itemDb->get(id).getSprite(mGender);
-        AnimatedSprite *equipmentSprite = 0;
+        AnimatedSprite *equipmentSprite = nullptr;
 
         if (!filename.empty())
         {

@@ -52,11 +52,11 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
 
         CharSelectDialog(LoginData *loginData);
 
-        ~CharSelectDialog();
+        ~CharSelectDialog() override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
-        void keyPressed(gcn::KeyEvent &keyEvent);
+        void keyPressed(gcn::KeyEvent &keyEvent) override;
 
         enum SelectAction {
             Focus,

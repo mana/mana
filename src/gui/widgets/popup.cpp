@@ -73,7 +73,7 @@ void Popup::setWindowContainer(WindowContainer *wc)
 
 void Popup::draw(gcn::Graphics *graphics)
 {
-    Graphics *g = static_cast<Graphics*>(graphics);
+    auto *g = static_cast<Graphics*>(graphics);
 
     g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
 

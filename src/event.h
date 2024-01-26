@@ -37,9 +37,9 @@ enum BadEvent {
 
 class EventListener;
 
-typedef std::set<EventListener *> ListenerSet;
+using ListenerSet = std::set<EventListener *>;
 class VariableData;
-typedef std::map<std::string, VariableData *> VariableMap;
+using VariableMap = std::map<std::string, VariableData *>;
 
 class Event
 {
@@ -315,7 +315,7 @@ protected:
     static void remove(EventListener *listener);
 
 private:
-    typedef std::map<Channel, ListenerSet > ListenMap;
+    using ListenMap = std::map<Channel, ListenerSet>;
     static ListenMap mBindings;
 
     Type mType;

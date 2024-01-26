@@ -87,7 +87,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
                 for (int i = 0; i < count; ++i)
                 {
-                    Net::Character *character = new Net::Character;
+                    auto *character = new Net::Character;
                     readPlayerData(msg, character);
                     mCharacters.push_back(character);
                     logger->log("CharServer: Player: %s (%d)",
@@ -117,7 +117,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
         case SMSG_CHAR_CREATE_SUCCEEDED:
             {
-                Net::Character *character = new Net::Character;
+                auto *character = new Net::Character;
                 readPlayerData(msg, character);
                 mCharacters.push_back(character);
 
@@ -127,7 +127,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                 if (mCharCreateDialog)
                 {
                     mCharCreateDialog->scheduleDelete();
-                    mCharCreateDialog = 0;
+                    mCharCreateDialog = nullptr;
                 }
             }
             break;
@@ -142,7 +142,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
         case SMSG_CHAR_DELETE_SUCCEEDED:
             delete mSelectedCharacter;
             mCharacters.remove(mSelectedCharacter);
-            mSelectedCharacter = 0;
+            mSelectedCharacter = nullptr;
             updateCharSelectDialog();
             unlockCharSelectDialog();
             new OkDialog(_("Info"), _("Character deleted."));
@@ -156,7 +156,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
         case SMSG_CHAR_MAP_INFO:
         {
             msg.skip(4); // CharID, must be the same as local_player->charID
-            GameHandler *gh = static_cast<GameHandler*>(Net::getGameHandler());
+            auto *gh = static_cast<GameHandler*>(Net::getGameHandler());
             gh->setMap(msg.readString(16));
 
             const auto ip = msg.readInt32();
@@ -172,7 +172,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             PlayerInfo::setBackend(mSelectedCharacter->data);
 
             // Prevent the selected local player from being deleted
-            mSelectedCharacter->dummy = 0;
+            mSelectedCharacter->dummy = nullptr;
 
             delete_all(mCharacters);
             mCharacters.clear();
@@ -185,7 +185,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
         case SMSG_CHANGE_MAP_SERVER:
         {
-            GameHandler *gh = static_cast<GameHandler*>(Net::getGameHandler());
+            auto *gh = static_cast<GameHandler*>(Net::getGameHandler());
             gh->setMap(msg.readString(16));
             int x = msg.readInt16();
             int y = msg.readInt16();
@@ -199,7 +199,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             const int tileHeight = map->getTileHeight();
             local_player->setPosition(Vector(x * tileWidth + tileWidth / 2,
                                             y * tileHeight + tileHeight / 2));
-            local_player->setMap(0);
+            local_player->setMap(nullptr);
         }
         break;
     }
@@ -210,7 +210,7 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
 
-    LocalPlayer *tempPlayer = new LocalPlayer(msg.readInt32(), 0);
+    auto *tempPlayer = new LocalPlayer(msg.readInt32(), 0);
     tempPlayer->setGender(token.sex);
 
     character->data.mAttributes[EXP] = msg.readInt32();
@@ -309,7 +309,7 @@ void CharServerHandler::requestCharacters()
 void CharServerHandler::chooseCharacter(Net::Character *character)
 {
     mSelectedCharacter = character;
-    mCharSelectDialog = 0;
+    mCharSelectDialog = nullptr;
 
     MessageOut outMsg(CMSG_CHAR_SELECT);
     outMsg.writeInt8(mSelectedCharacter->slot);

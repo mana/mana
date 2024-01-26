@@ -40,26 +40,26 @@
 class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::string, PlayerRelation *>,
                                                              std::map<std::string, PlayerRelation *> *>
 {
-    virtual ConfigurationObject *writeConfigItem(std::pair<std::string, PlayerRelation *> value,
-                                                 ConfigurationObject *cobj)
+    ConfigurationObject *writeConfigItem(std::pair<std::string, PlayerRelation *> value,
+                                                 ConfigurationObject *cobj) override
     {
         if (!value.second)
-            return NULL;
+            return nullptr;
         cobj->setValue(NAME, value.first);
         cobj->setValue(RELATION, toString(value.second->mRelation));
 
         return cobj;
     }
 
-    virtual std::map<std::string, PlayerRelation *> *
+    std::map<std::string, PlayerRelation *> *
     readConfigItem(ConfigurationObject *cobj,
-                   std::map<std::string, PlayerRelation *> *container)
+                   std::map<std::string, PlayerRelation *> *container) override
     {
         std::string name = cobj->getValue(NAME, "");
         if (name.empty())
             return container;
 
-        std::map<std::string, PlayerRelation *>::iterator it =
+        auto it =
             (*container).find(name);
         if (it != (*container).end())
         {
@@ -89,7 +89,7 @@ PlayerRelation::PlayerRelation(Relation relation)
 PlayerRelationsManager::PlayerRelationsManager() :
     mPersistIgnores(false),
     mDefaultPermissions(PlayerRelation::DEFAULT),
-    mIgnoreStrategy(0)
+    mIgnoreStrategy(nullptr)
 {
 }
 
@@ -187,7 +187,7 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(
                                                   const std::string &playerName,
                                                   unsigned int flags)
 {
-    PlayerRelation *r = 0;
+    PlayerRelation *r = nullptr;
 
     std::map<std::string, PlayerRelation *>::const_iterator it =
         mRelations.find(playerName);
@@ -247,9 +247,9 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
 void PlayerRelationsManager::setRelation(const std::string &playerName,
                                          PlayerRelation::Relation relation)
 {
-    PlayerRelation *r = 0;
+    PlayerRelation *r = nullptr;
 
-    std::map<std::string, PlayerRelation *>::iterator it =
+    auto it =
         mRelations.find(playerName);
     if (it != mRelations.end())
         r = it->second;
@@ -263,9 +263,9 @@ void PlayerRelationsManager::setRelation(const std::string &playerName,
 
 std::vector<std::string> * PlayerRelationsManager::getPlayers() const
 {
-    std::vector<std::string> *retval = new std::vector<std::string>();
+    auto *retval = new std::vector<std::string>();
 
-    for (std::map<std::string, PlayerRelation *>::const_iterator it = mRelations.begin(); it != mRelations.end(); it++)
+    for (auto it = mRelations.begin(); it != mRelations.end(); it++)
         if (it->second)
             retval->push_back(it->first);
 
@@ -276,7 +276,7 @@ std::vector<std::string> * PlayerRelationsManager::getPlayers() const
 
 void PlayerRelationsManager::removePlayer(const std::string &name)
 {
-    std::map<std::string, PlayerRelation *>::iterator it =
+    auto it =
         mRelations.find(name);
     if (it != mRelations.end())
     {
@@ -291,7 +291,7 @@ void PlayerRelationsManager::removePlayer(const std::string &name)
 
 PlayerRelation::Relation PlayerRelationsManager::getRelation(const std::string &name) const
 {
-    std::map<std::string, PlayerRelation *>::const_iterator it = mRelations.find(name);
+    auto it = mRelations.find(name);
     if (it != mRelations.end())
         return it->second->mRelation;
 
@@ -328,7 +328,7 @@ public:
         mShortName = PLAYER_IGNORE_STRATEGY_NOP;
     }
 
-    virtual void ignore(Being *being, unsigned int flags)
+    void ignore(Being *being, unsigned int flags) override
     {
     }
 };
@@ -342,7 +342,7 @@ public:
         mShortName = "dotdotdot";
     }
 
-    virtual void ignore(Being *being, unsigned int flags)
+    void ignore(Being *being, unsigned int flags) override
      {
          being->setSpeech("...", 500);
      }
@@ -358,7 +358,7 @@ public:
         mShortName = "blinkname";
     }
 
-    virtual void ignore(Being *being, unsigned int flags)
+    void ignore(Being *being, unsigned int flags) override
     {
         being->flashName(200);
     }

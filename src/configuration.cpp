@@ -46,27 +46,27 @@ void Configuration::setValue(const std::string &key, const std::string &value)
 std::string ConfigurationObject::getValue(const std::string &key,
                                           const std::string &deflt) const
 {
-    Options::const_iterator iter = mOptions.find(key);
+    auto iter = mOptions.find(key);
     return ((iter != mOptions.end()) ? iter->second : deflt);
 }
 
 int ConfigurationObject::getValue(const std::string &key, int deflt) const
 {
-    Options::const_iterator iter = mOptions.find(key);
+    auto iter = mOptions.find(key);
     return (iter != mOptions.end()) ? atoi(iter->second.c_str()) : deflt;
 }
 
 unsigned ConfigurationObject::getValue(const std::string &key,
                                        unsigned deflt) const
 {
-    Options::const_iterator iter = mOptions.find(key);
+    auto iter = mOptions.find(key);
     return (iter != mOptions.end()) ? atol(iter->second.c_str()) : deflt;
 }
 
 double ConfigurationObject::getValue(const std::string &key,
                                      double deflt) const
 {
-    Options::const_iterator iter = mOptions.find(key);
+    auto iter = mOptions.find(key);
     return (iter != mOptions.end()) ? atof(iter->second.c_str()) : deflt;
 }
 
@@ -108,7 +108,7 @@ void Configuration::cleanDefaults()
             delete iter->second;
         }
         delete mDefaultsData;
-        mDefaultsData = 0;
+        mDefaultsData = nullptr;
     }
 }
 
@@ -142,13 +142,13 @@ VariableData* Configuration::getDefault(const std::string &key,
                         mConfigPath.c_str(), key.c_str());
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 int Configuration::getIntValue(const std::string &key) const
 {
     int defaultValue = 0;
-    Options::const_iterator iter = mOptions.find(key);
+    auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
         VariableData* vd = getDefault(key, VariableData::DATA_INT);
@@ -165,7 +165,7 @@ int Configuration::getIntValue(const std::string &key) const
 std::string Configuration::getStringValue(const std::string &key) const
 {
     std::string defaultValue = "";
-    Options::const_iterator iter = mOptions.find(key);
+    auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
         VariableData* vd = getDefault(key,
@@ -185,7 +185,7 @@ std::string Configuration::getStringValue(const std::string &key) const
 float Configuration::getFloatValue(const std::string &key) const
 {
     float defaultValue = 0.0f;
-    Options::const_iterator iter = mOptions.find(key);
+    auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
         VariableData* vd = getDefault(key,
@@ -204,7 +204,7 @@ float Configuration::getFloatValue(const std::string &key) const
 bool Configuration::getBoolValue(const std::string &key) const
 {
     bool defaultValue = false;
-    Options::const_iterator iter = mOptions.find(key);
+    auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
         VariableData* vd = getDefault(key,
@@ -237,7 +237,7 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
                 if (xmlStrEqual(subnode->name, BAD_CAST name.c_str())
                     && subnode->type == XML_ELEMENT_NODE)
                 {
-                    ConfigurationObject *cobj = new ConfigurationObject;
+                    auto *cobj = new ConfigurationObject;
 
                     cobj->initFromXML(subnode); // Recurse
 
@@ -306,7 +306,7 @@ void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
         xmlTextWriterWriteAttribute(writer, BAD_CAST "name", BAD_CAST name);
 
         // Recurse on all elements
-        for (ConfigurationList::const_iterator
+        for (auto
              elt_it = it->second.begin(); elt_it != it->second.end(); elt_it++)
         {
             xmlTextWriterStartElement(writer, BAD_CAST name);
@@ -344,7 +344,7 @@ void Configuration::write()
     logger->log("Configuration::write() writing configuration...");
 
     xmlTextWriterSetIndent(writer, 1);
-    xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
+    xmlTextWriterStartDocument(writer, nullptr, nullptr, nullptr);
     xmlTextWriterStartElement(writer, BAD_CAST "configuration");
 
     writeToXML(writer);

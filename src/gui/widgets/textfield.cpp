@@ -46,8 +46,8 @@ ImageRect TextField::skin;
 TextField::TextField(const std::string &text, bool loseFocusOnTab):
     gcn::TextField(text),
     mNumeric(false),
-    mAutoComplete(NULL),
-    mHistory(NULL)
+    mAutoComplete(nullptr),
+    mHistory(nullptr)
 {
     setFrameSize(2);
 
@@ -203,7 +203,7 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             if (mHistory && !mHistory->atEnd())
             {
                 // Move forward through the history
-                TextHistoryIterator prevHist = mHistory->current++;
+                auto prevHist = mHistory->current++;
 
                 if (!mHistory->atEnd())
                 {
@@ -324,7 +324,7 @@ void TextField::autoComplete()
         if (newName == "" && mHistory)
         {
 
-            TextHistoryIterator i = mHistory->history.begin();
+            auto i = mHistory->history.begin();
             std::vector<std::string> nameList;
 
             while (i != mHistory->history.end())

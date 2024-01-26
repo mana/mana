@@ -37,34 +37,34 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
     public:
         NpcHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void startShopping(int beingId);
+        void startShopping(int beingId) override;
 
-        void buy(int beingId);
+        void buy(int beingId) override;
 
-        void sell(int beingId);
+        void sell(int beingId) override;
 
-        void buyItem(int beingId, int itemId, int amount);
+        void buyItem(int beingId, int itemId, int amount) override;
 
-        void sellItem(int beingId, int itemId, int amount);
+        void sellItem(int beingId, int itemId, int amount) override;
 
-        void endShopping(int beingId);
+        void endShopping(int beingId) override;
 
-        void talk(int npcId);
+        void talk(int npcId) override;
 
-        void nextDialog(int npcId);
+        void nextDialog(int npcId) override;
 
-        void closeDialog(int npcId);
+        void closeDialog(int npcId) override;
 
-        void menuSelect(int npcId, int choice);
+        void menuSelect(int npcId, int choice) override;
 
-        void integerInput(int npcId, int value);
+        void integerInput(int npcId, int value) override;
 
-        void stringInput(int npcId, const std::string &value);
+        void stringInput(int npcId, const std::string &value) override;
 
         void sendLetter(int npcId, const std::string &recipient,
-                        const std::string &text);
+                        const std::string &text) override;
 
 };
 

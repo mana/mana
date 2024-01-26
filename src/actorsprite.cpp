@@ -51,14 +51,14 @@ ActorSprite::ActorSprite(int id):
     mStatusParticleEffects(&mStunParticleEffects, false),
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
-    mUsedTargetCursor(NULL)
+    mUsedTargetCursor(nullptr)
 {}
 
 ActorSprite::~ActorSprite()
 {
-    setMap(NULL);
+    setMap(nullptr);
 
-    mUsedTargetCursor = NULL;
+    mUsedTargetCursor = nullptr;
 
     // Notify listeners of the destruction.
     Event event(Event::Destroyed);
@@ -112,7 +112,7 @@ void ActorSprite::logic()
     if (mMustResetParticles)
     {
         mMustResetParticles = false;
-        for (std::set<int>::iterator it = mStatusEffects.begin();
+        for (auto it = mStatusEffects.begin();
              it != mStatusEffects.end(); it++)
         {
             const StatusEffect *effect = StatusEffect::getStatusEffect(*it, true);
@@ -161,13 +161,13 @@ struct EffectDescription {
     std::string mSFXEffect;
 };
 
-static EffectDescription *default_effect = NULL;
+static EffectDescription *default_effect = nullptr;
 static std::map<int, EffectDescription *> effects;
 static bool effects_initialized = false;
 
 static EffectDescription *getEffectDescription(xmlNodePtr node, int *id)
 {
-    EffectDescription *ed = new EffectDescription;
+    auto *ed = new EffectDescription;
 
     *id = atoi(XML::getProperty(node, "id", "-1").c_str());
     ed->mSFXEffect = XML::getProperty(node, "audio", "");
@@ -187,7 +187,7 @@ static EffectDescription *getEffectDescription(int effectId)
         {
             logger->log("Error loading being effects file: "
                     EFFECTS_FILE);
-            return NULL;
+            return nullptr;
         }
 
         for_each_xml_child_node(node, root)
@@ -449,7 +449,7 @@ void ActorSprite::loadTargetCursor(const std::string &filename,
         return;
     }
 
-    Animation *anim = new Animation;
+    auto *anim = new Animation;
 
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)
     {
@@ -458,7 +458,7 @@ void ActorSprite::loadTargetCursor(const std::string &filename,
                       -(currentImageSet->getHeight() / 2));
     }
 
-    SimpleAnimation *currentCursor = new SimpleAnimation(anim);
+    auto *currentCursor = new SimpleAnimation(anim);
 
     targetCursorImages[type][size] = currentImageSet;
     targetCursor[type][size] = currentCursor;

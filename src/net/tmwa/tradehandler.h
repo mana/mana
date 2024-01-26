@@ -34,23 +34,23 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
     public:
         TradeHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void request(Being *being);
+        void request(Being *being) override;
 
-        void respond(bool accept);
+        void respond(bool accept) override;
 
-        void addItem(Item *item, int amount);
+        void addItem(Item *item, int amount) override;
 
-        void removeItem(int slotNum, int amount);
+        void removeItem(int slotNum, int amount) override;
 
-        void setMoney(int amount);
+        void setMoney(int amount) override;
 
-        void confirm();
+        void confirm() override;
 
-        void finish();
+        void finish() override;
 
-        void cancel();
+        void cancel() override;
 
     private:
         bool mTrading;

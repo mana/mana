@@ -51,7 +51,7 @@ class Image : public Resource
 #endif
 
     public:
-        virtual ~Image();
+        ~Image() override;
 
         /**
          * Loads an image from an SDL_RWops structure.
@@ -224,7 +224,7 @@ class SubImage : public Image
                  int width, int height, int texWidth, int textHeight);
 #endif
 
-        ~SubImage();
+        ~SubImage() override;
 
     private:
         Image *mParent;

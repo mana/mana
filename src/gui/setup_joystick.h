@@ -33,10 +33,10 @@ class Setup_Joystick : public SetupTab, public gcn::ActionListener
     public:
         Setup_Joystick();
 
-        void apply();
-        void cancel();
+        void apply() override;
+        void cancel() override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
     private:
         gcn::Label *mCalibrateLabel;

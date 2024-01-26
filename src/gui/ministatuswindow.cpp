@@ -64,7 +64,7 @@ MiniStatusWindow::MiniStatusWindow():
         StatusWindow::updateMPBar(mMpBar);
     }
     else
-        mMpBar = 0;
+        mMpBar = nullptr;
 
     mXpBar = new ProgressBar(0, 100, 20, Theme::PROG_EXP);
     StatusWindow::updateXPBar(mXpBar);

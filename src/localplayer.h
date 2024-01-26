@@ -41,7 +41,7 @@ class OkDialog;
 class AwayListener : public gcn::ActionListener
 {
     public:
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 };
 
 /**
@@ -66,11 +66,11 @@ class LocalPlayer : public Being
     public:
         LocalPlayer(int id= 65535, int subtype = 0);
 
-        ~LocalPlayer();
+        ~LocalPlayer() override;
 
-        virtual void logic();
+        void logic() override;
 
-        virtual void setAction(Action action, int attackId = 1);
+        void setAction(Action action, int attackId = 1) override;
 
         /**
          * Check the player has permission to invite users to specific guild
@@ -95,7 +95,7 @@ class LocalPlayer : public Being
         int getAttackRange() const
         { return mAttackRange; }
 
-        void attack(Being *target = NULL, bool keep = false);
+        void attack(Being *target = nullptr, bool keep = false);
 
         void setGMLevel(int level);
 
@@ -197,7 +197,7 @@ class LocalPlayer : public Being
         void addMessageToQueue(const std::string &message,
                                int color = UserPalette::EXP_INFO);
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
         /**
          * Tells the engine wether to check
@@ -252,7 +252,7 @@ class LocalPlayer : public Being
         int mWalkingDir;      /**< The direction the player is walking in. */
         bool mPathSetByMouse; /**< Tells if the path was set using mouse */
 
-        typedef std::pair<std::string, int> MessagePair;
+        using MessagePair = std::pair<std::string, int>;
         /** Queued messages*/
         std::list<MessagePair> mMessages;
         int mMessageTime;

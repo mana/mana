@@ -34,7 +34,7 @@ class BeingPopup : public Popup
     public:
         BeingPopup();
 
-        ~BeingPopup();
+        ~BeingPopup() override;
 
         /**
          * Sets the info to be displayed given a particular player.

@@ -86,20 +86,20 @@ const std::string &BeingInfo::getSound(SoundEvent event) const
 {
     static const std::string empty;
 
-    SoundEvents::const_iterator i = mSounds.find(event);
+    auto i = mSounds.find(event);
     return (i == mSounds.end()) ? empty :
                                   i->second->at(rand() % i->second->size());
 }
 
 const Attack *BeingInfo::getAttack(int id) const
 {
-    static Attack *empty = new Attack(SpriteAction::ATTACK,
+    static auto *empty = new Attack(SpriteAction::ATTACK,
                                       -1, // Default strike effect on monster
                                       paths.getIntValue("hitEffectId"),
                                       paths.getIntValue("criticalHitEffectId"),
                                       std::string());
 
-    Attacks::const_iterator it = mAttacks.find(id);
+    auto it = mAttacks.find(id);
     return (it == mAttacks.end()) ? empty : it->second;
 }
 
@@ -107,7 +107,7 @@ void BeingInfo::addAttack(int id, std::string action, int effectId,
                           int hitEffectId, int criticalHitEffectId,
                           const std::string &missileParticleFilename)
 {
-    Attacks::iterator it = mAttacks.find(id);
+    auto it = mAttacks.find(id);
     if (it != mAttacks.end())
         delete it->second;
 

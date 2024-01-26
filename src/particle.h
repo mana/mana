@@ -33,10 +33,10 @@ class Map;
 class Particle;
 class ParticleEmitter;
 
-typedef std::list<Particle *> Particles;
-typedef Particles::iterator ParticleIterator;
-typedef std::list<ParticleEmitter *> Emitters;
-typedef Emitters::iterator EmitterIterator;
+using Particles = std::list<Particle *>;
+using ParticleIterator = Particles::iterator;
+using Emitters = std::list<ParticleEmitter *>;
+using EmitterIterator = Emitters::iterator;
 
 /**
  * A particle spawned by a ParticleEmitter.
@@ -68,7 +68,7 @@ class Particle : public Actor
          */
         Particle(Map *map);
 
-        ~Particle();
+        ~Particle() override;
 
         /**
          * Deletes all child particles and emitters.
@@ -90,12 +90,12 @@ class Particle : public Actor
         /**
          * Draws the particle image.
          */
-        virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
+        bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
         /**
          * Do not draw particles when beind other objects
          */
-        virtual bool drawnWhenBehind() const
+        bool drawnWhenBehind() const override
         { return false; }
 
         /**
@@ -251,13 +251,13 @@ class Particle : public Actor
         { mAutoDelete = false; }
 
         /** We consider particles (at least for now) to be one layer-sprites */
-        virtual int getNumberOfLayers() const
+        int getNumberOfLayers() const override
         { return 1; }
 
-        virtual float getAlpha() const
+        float getAlpha() const override
         { return 1.0f; }
 
-        virtual void setAlpha(float alpha) {}
+        void setAlpha(float alpha) override {}
 
         virtual void setDeathEffect(const std::string &effectFile, char conditions)
         { mDeathEffect = effectFile; mDeathEffectConditions = conditions; }

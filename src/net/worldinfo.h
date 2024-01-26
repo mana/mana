@@ -33,6 +33,6 @@ struct WorldInfo {
     std::string updateHost;
 };
 
-typedef std::vector<WorldInfo*> Worlds;
+using Worlds = std::vector<WorldInfo *>;
 
 #endif // WORLD_INFO_H

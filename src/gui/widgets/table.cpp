@@ -40,9 +40,9 @@ class GuiTableActionListener : public gcn::ActionListener
 public:
     GuiTableActionListener(GuiTable *_table, gcn::Widget *_widget, int _row, int _column);
 
-    virtual ~GuiTableActionListener();
+    ~GuiTableActionListener() override;
 
-    virtual void action(const gcn::ActionEvent& actionEvent);
+    void action(const gcn::ActionEvent& actionEvent) override;
 
 protected:
     GuiTable *mTable;
@@ -70,7 +70,7 @@ GuiTableActionListener::~GuiTableActionListener()
     if (mWidget)
     {
         mWidget->removeActionListener(this);
-        mWidget->_setParent(NULL);
+        mWidget->_setParent(nullptr);
     }
 }
 
@@ -87,10 +87,10 @@ GuiTable::GuiTable(TableModel *initial_model, gcn::Color background,
     mWrappingEnabled(false),
     mOpaque(opacity),
     mBackgroundColor(background),
-    mModel(NULL),
+    mModel(nullptr),
     mSelectedRow(0),
     mSelectedColumn(0),
-    mTopWidget(NULL)
+    mTopWidget(nullptr)
 {
     setModel(initial_model);
     setFocusable(true);
@@ -367,7 +367,7 @@ void GuiTable::moveToBottom(gcn::Widget *widget)
 {
     gcn::Widget::moveToBottom(widget);
     if (widget == mTopWidget)
-        mTopWidget = NULL;
+        mTopWidget = nullptr;
 }
 
 gcn::Rectangle GuiTable::getChildrenArea() const
@@ -484,7 +484,7 @@ void GuiTable::modelUpdated(bool completed)
     }
     else
     { // before the update?
-        mTopWidget = NULL; // No longer valid in general
+        mTopWidget = nullptr; // No longer valid in general
         uninstallActionListeners();
     }
 }
@@ -503,10 +503,10 @@ gcn::Widget *GuiTable::getWidgetAt(int x, int y) const
         if (w && w->isFocusable())
             return w;
         else
-            return NULL; // Grab the event locally
+            return nullptr; // Grab the event locally
     }
     else
-        return NULL;
+        return nullptr;
 }
 
 int GuiTable::getRowForY(int y) const

@@ -37,7 +37,7 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
         /**
          * Handle the given message appropriately.
          */
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
         void connect();
 
@@ -45,31 +45,31 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
 
         void disconnect();
 
-        void talk(const std::string &text);
+        void talk(const std::string &text) override;
 
-        void me(const std::string &text);
+        void me(const std::string &text) override;
 
         void privateMessage(const std::string &recipient,
-                            const std::string &text);
+                            const std::string &text) override;
 
-        void channelList();
+        void channelList() override;
 
         void enterChannel(const std::string &channel,
-                          const std::string &password);
+                          const std::string &password) override;
 
-        void quitChannel(int channelId);
+        void quitChannel(int channelId) override;
 
-        void sendToChannel(int channelId, const std::string &text);
+        void sendToChannel(int channelId, const std::string &text) override;
 
-        void userList(const std::string &channel);
+        void userList(const std::string &channel) override;
 
-        void setChannelTopic(int channelId, const std::string &text);
+        void setChannelTopic(int channelId, const std::string &text) override;
 
-        void setUserMode(int channelId, const std::string &name, int mode);
+        void setUserMode(int channelId, const std::string &name, int mode) override;
 
-        void kickUser(int channelId, const std::string &name);
+        void kickUser(int channelId, const std::string &name) override;
 
-        void who();
+        void who() override;
 
     private:
         /**

@@ -38,25 +38,25 @@ class EquipBackend : public Equipment::Backend, public EventListener
     public:
         EquipBackend();
 
-        ~EquipBackend();
+        ~EquipBackend() override;
 
-        Item *getEquipment(int slotIndex) const;
-        std::string getSlotName(int slotIndex) const;
-        void clear();
+        Item *getEquipment(int slotIndex) const override;
+        std::string getSlotName(int slotIndex) const override;
+        void clear() override;
 
         void equip(int itemId, int slotTypeId, int amountUsed = 1,
                    int itemInstance = 0);
         void unequip(int slotTypeId);
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
-        int getSlotNumber() const
+        int getSlotNumber() const override
         { return mSlots.size(); }
 
         unsigned int getVisibleSlotsNumber() const
         { return mVisibleSlots; }
 
-        void triggerUnequip(int slotIndex) const;
+        void triggerUnequip(int slotIndex) const override;
 
         bool isWeaponSlot(int slotTypeId) const;
         bool isAmmoSlot(int slotTypeId) const;
@@ -66,13 +66,13 @@ class EquipBackend : public Equipment::Backend, public EventListener
         const std::string& getBoxBackground(unsigned int slotIndex) const;
 
     private:
-        void readEquipFile();
+        void readEquipFile() override;
 
         void readBoxNode(xmlNodePtr slotNode);
 
         struct Slot {
             Slot():
-                item(0),
+                item(nullptr),
                 slotTypeId(0),
                 subId(0),
                 itemInstance(0),
@@ -113,7 +113,7 @@ class EquipBackend : public Equipment::Backend, public EventListener
         unsigned int mVisibleSlots;
 
         // slot client index, slot info
-        typedef std::map<unsigned int, Slot> Slots;
+        using Slots = std::map<unsigned int, Slot>;
         Slots mSlots;
         std::vector<Position> mBoxesPositions;
         std::vector<std::string> mBoxesBackgroundFile;
@@ -125,27 +125,27 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler,
     public:
         InventoryHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
-        bool canSplit(const Item *item);
+        bool canSplit(const Item *item) override;
 
-        size_t getSize(int type) const;
+        size_t getSize(int type) const override;
 
-        bool isWeaponSlot(unsigned int slotTypeId) const
+        bool isWeaponSlot(unsigned int slotTypeId) const override
         { return mEquipBackend.isWeaponSlot(slotTypeId); }
 
-        bool isAmmoSlot(unsigned int slotTypeId) const
+        bool isAmmoSlot(unsigned int slotTypeId) const override
         { return mEquipBackend.isAmmoSlot(slotTypeId); }
 
-        unsigned int getVisibleSlotsNumber() const
+        unsigned int getVisibleSlotsNumber() const override
         { return mEquipBackend.getVisibleSlotsNumber(); }
 
-        Position getBoxPosition(unsigned int slotIndex) const
+        Position getBoxPosition(unsigned int slotIndex) const override
         { return mEquipBackend.getBoxPosition(slotIndex); }
 
-        const std::string& getBoxBackground(unsigned int slotIndex) const
+        const std::string& getBoxBackground(unsigned int slotIndex) const override
         { return mEquipBackend.getBoxBackground(slotIndex); }
 
     private:

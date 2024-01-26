@@ -31,7 +31,7 @@ class ItemHandler : public MessageHandler
     public:
         ItemHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 };
 
 } // namespace TmwAthena

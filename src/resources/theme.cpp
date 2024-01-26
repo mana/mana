@@ -42,7 +42,7 @@
 
 static std::string defaultThemePath;
 std::string Theme::mThemePath;
-Theme *Theme::mInstance = 0;
+Theme *Theme::mInstance = nullptr;
 
 // Set the theme path...
 static void initDefaultThemePath()
@@ -144,7 +144,7 @@ Theme *Theme::instance()
 void Theme::deleteInstance()
 {
     delete mInstance;
-    mInstance = 0;
+    mInstance = nullptr;
 }
 
 gcn::Color Theme::getProgressColor(int type, float progress)
@@ -160,7 +160,7 @@ gcn::Color Theme::getProgressColor(int type, float progress)
 Skin *Theme::load(const std::string &filename, const std::string &defaultPath)
 {
     // Check if this skin was already loaded
-    SkinIterator skinIterator = mSkins.find(filename);
+    auto skinIterator = mSkins.find(filename);
     if (mSkins.end() != skinIterator)
     {
         skinIterator->second->instances++;
@@ -204,7 +204,7 @@ void Theme::setMinimumOpacity(float minimumOpacity)
 
 void Theme::updateAlpha()
 {
-    for (SkinIterator iter = mSkins.begin(); iter != mSkins.end(); ++iter)
+    for (auto iter = mSkins.begin(); iter != mSkins.end(); ++iter)
         iter->second->updateAlpha(mMinimumOpacity);
 }
 
@@ -221,7 +221,7 @@ void Theme::event(Event::Channel channel, const Event &event)
 Skin *Theme::readSkin(const std::string &filename)
 {
     if (filename.empty())
-        return 0;
+        return nullptr;
 
     logger->log("Loading skin '%s'.", filename.c_str());
 
@@ -229,14 +229,14 @@ Skin *Theme::readSkin(const std::string &filename)
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
-        return 0;
+        return nullptr;
 
     const std::string skinSetImage = XML::getProperty(rootNode, "image", "");
 
     if (skinSetImage.empty())
     {
         logger->log("Theme::readSkin(): Skinset does not define an image!");
-        return 0;
+        return nullptr;
     }
 
     logger->log("Theme::load(): <skinset> defines '%s' as a skin image.",

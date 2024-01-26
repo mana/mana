@@ -77,7 +77,7 @@ class Graphics : public gcn::Graphics
     public:
         Graphics() = default;
 
-        virtual ~Graphics();
+        ~Graphics() override;
 
         /**
          * Sets the target SDL_Window to draw to. This funtion also pushes a
@@ -214,32 +214,32 @@ class Graphics : public gcn::Graphics
 
         gcn::Font *getFont() const { return mFont; }
 
-        virtual bool pushClipArea(gcn::Rectangle area);
+        bool pushClipArea(gcn::Rectangle area) override;
 
-        virtual void popClipArea();
+        void popClipArea() override;
 
-        virtual void drawImage(const gcn::Image *image,
+        void drawImage(const gcn::Image *image,
                                int srcX,
                                int srcY,
                                int dstX,
                                int dstY,
                                int width,
-                               int height) {}   // not used
+                               int height) override {}   // not used
 
-        virtual void drawPoint(int x, int y);
+        void drawPoint(int x, int y) override;
 
-        virtual void drawLine(int x1, int y1, int x2, int y2);
+        void drawLine(int x1, int y1, int x2, int y2) override;
 
-        virtual void drawRectangle(const gcn::Rectangle &rectangle);
+        void drawRectangle(const gcn::Rectangle &rectangle) override;
 
-        virtual void fillRectangle(const gcn::Rectangle &rectangle);
+        void fillRectangle(const gcn::Rectangle &rectangle) override;
 
-        virtual void setColor(const gcn::Color &color)
+        void setColor(const gcn::Color &color) override
         {
             mColor = color;
         }
 
-        virtual const gcn::Color &getColor() const
+        const gcn::Color &getColor() const override
         {
             return mColor;
         }

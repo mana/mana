@@ -30,8 +30,8 @@ class TextInput;
 class ImageRect;
 class TextField;
 
-typedef std::list<std::string> TextHistoryList;
-typedef TextHistoryList::iterator TextHistoryIterator;
+using TextHistoryList = std::list<std::string>;
+using TextHistoryIterator = TextHistoryList::iterator;
 
 struct TextHistory {
     TextHistoryList history;     /**< Command history. */
@@ -80,12 +80,12 @@ class TextField : public gcn::TextField
          * Constructor, initializes the text field with the given string.
          */
         TextField(const std::string &text = "", bool loseFocusOnTab = true);
-        ~TextField();
+        ~TextField() override;
 
         /**
          * Draws the text field.
          */
-        virtual void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Update the alpha value to the graphic components.
@@ -95,7 +95,7 @@ class TextField : public gcn::TextField
         /**
          * Draws the background and border.
          */
-        void drawFrame(gcn::Graphics *graphics);
+        void drawFrame(gcn::Graphics *graphics) override;
 
         /**
          * Determine whether the field should be numeric or not
@@ -114,7 +114,7 @@ class TextField : public gcn::TextField
         /**
          * Processes one keypress.
          */
-        void keyPressed(gcn::KeyEvent &keyEvent);
+        void keyPressed(gcn::KeyEvent &keyEvent) override;
 
         /**
          * Handle text input (should possibly be new event in Guichan).

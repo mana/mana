@@ -218,17 +218,17 @@ class Theme : public Palette, public EventListener
          */
         void setMinimumOpacity(float minimumOpacity);
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
     private:
         Theme();
-        ~Theme();
+        ~Theme() override;
 
         Skin *readSkin(const std::string &filename);
 
         // Map containing all window skins
-        typedef std::map<std::string, Skin*> Skins;
-        typedef Skins::iterator SkinIterator;
+        using Skins = std::map<std::string, Skin *>;
+        using SkinIterator = Skins::iterator;
 
         Skins mSkins;
 
@@ -245,7 +245,7 @@ class Theme : public Palette, public EventListener
          */
         float mMinimumOpacity;
 
-        typedef std::vector<DyePalette*> ProgressColors;
+        using ProgressColors = std::vector<DyePalette *>;
         ProgressColors mProgressColors;
 };
 

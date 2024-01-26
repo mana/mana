@@ -128,11 +128,11 @@ public:
      * Get size of members list.
      * @return Returns the number of members in the party.
      */
-    int getNumberOfElements() {
+    int getNumberOfElements() override {
         return mMembers.size();
     }
 
-    Avatar *getAvatarAt(int i);
+    Avatar *getAvatarAt(int i) override;
 
     /**
      * Get whether user can invite users to this party.
@@ -156,7 +156,7 @@ public:
     static Party *getParty(int id);
 
 private:
-    typedef std::map<int, Party*> PartyMap;
+    using PartyMap = std::map<int, Party *>;
     static PartyMap parties;
 
     /**
@@ -164,9 +164,9 @@ private:
      */
     Party(short id);
 
-    ~Party();
+    ~Party() override;
 
-    typedef std::vector<PartyMember*> MemberList;
+    using MemberList = std::vector<PartyMember *>;
     MemberList mMembers;
     std::string mName;
     short mId;

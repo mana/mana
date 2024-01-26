@@ -36,7 +36,7 @@ public:
         TMWATHENA
     };
 
-    typedef std::pair<int, std::string> VersionString;
+    using VersionString = std::pair<int, std::string>;
 
     Type type = UNKNOWN;
     std::string name;
@@ -96,6 +96,6 @@ public:
     }
 };
 
-typedef std::deque<ServerInfo> ServerInfos;
+using ServerInfos = std::deque<ServerInfo>;
 
 #endif // SERVERINFO_H

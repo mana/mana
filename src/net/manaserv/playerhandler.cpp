@@ -105,7 +105,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
             gameServerConnection->disconnect();
             Client::setState(STATE_CHANGE_MAP);
-            local_player->setMap(0);
+            local_player->setMap(nullptr);
         } break;
 
         case GPMSG_PLAYER_ATTRIBUTE_CHANGE:

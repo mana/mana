@@ -42,43 +42,43 @@ class CharHandler : public MessageHandler, public Net::CharHandler
     public:
         CharHandler();
 
-        ~CharHandler();
+        ~CharHandler() override;
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void setCharSelectDialog(CharSelectDialog *window);
+        void setCharSelectDialog(CharSelectDialog *window) override;
 
         /**
          * Sets the character create dialog. The handler will clean up this
          * dialog when a new character is succesfully created, and will unlock
          * the dialog when a new character failed to be created.
          */
-        void setCharCreateDialog(CharCreateDialog *window);
+        void setCharCreateDialog(CharCreateDialog *window) override;
 
-        void requestCharacters();
+        void requestCharacters() override;
 
-        void chooseCharacter(Net::Character *character);
+        void chooseCharacter(Net::Character *character) override;
 
         void newCharacter(const std::string &name, int slot,
                           bool gender, int hairstyle, int hairColor,
-                          const std::vector<int> &stats);
+                          const std::vector<int> &stats) override;
 
-        void deleteCharacter(Net::Character *character);
+        void deleteCharacter(Net::Character *character) override;
 
-        void switchCharacter();
+        void switchCharacter() override;
 
-        unsigned int baseSprite() const;
+        unsigned int baseSprite() const override;
 
-        unsigned int hairSprite() const;
+        unsigned int hairSprite() const override;
 
-        unsigned int maxSprite() const;
+        unsigned int maxSprite() const override;
 
         // No limitation on Manaserv
-        int getCharCreateMaxHairColorId() const
+        int getCharCreateMaxHairColorId() const override
         { return 0; }
 
         // No limitation on Manaserv
-        int getCharCreateMaxHairStyleId() const
+        int getCharCreateMaxHairStyleId() const override
         { return 0; }
 
         void clear();
@@ -94,7 +94,7 @@ class CharHandler : public MessageHandler, public Net::CharHandler
             double mod;
         };
 
-        typedef std::map<int, CachedAttrbiute> CachedAttributes;
+        using CachedAttributes = std::map<int, CachedAttrbiute>;
 
         struct CachedCharacterInfo {
             int slot;

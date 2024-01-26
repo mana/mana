@@ -35,7 +35,7 @@ ProgressIndicator::ProgressIndicator()
     ImageSet *images = Theme::getImageSetFromTheme("progress-indicator.png",
                                                    32, 32);
 
-    Animation *anim = new Animation;
+    auto *anim = new Animation;
     for (ImageSet::size_type i = 0; i < images->size(); ++i)
         anim->addFrame(images->get(i), 100, 0, 0);
 

@@ -52,12 +52,12 @@ class NpcDialog : public Window,
     public:
         NpcDialog(int npcId);
 
-        ~NpcDialog();
+        ~NpcDialog() override;
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
         * Sets the text shows in the dialog.
@@ -94,17 +94,17 @@ class NpcDialog : public Window,
          * Notifies the server that the client has performed a close action.
          * @overrides Window::close()
          */
-        void close();
+        void close() override;
 
         /**
          * Returns the number of items in the choices list.
          */
-        int getNumberOfElements();
+        int getNumberOfElements() override;
 
         /**
          * Returns the name of item number i of the choices list.
          */
-        std::string getElementAt(int i);
+        std::string getElementAt(int i) override;
 
         /**
          * Makes this dialog request a choice selection from the user.
@@ -144,13 +144,13 @@ class NpcDialog : public Window,
          *
          * @param event The calling event
          */
-        void widgetResized(const gcn::Event &event);
+        void widgetResized(const gcn::Event &event) override;
 
-        void setVisible(bool visible);
+        void setVisible(bool visible) override;
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
-        void mouseClicked(gcn::MouseEvent &mouseEvent);
+        void mouseClicked(gcn::MouseEvent &mouseEvent) override;
 
         /**
          * Returns the first active instance. Useful for pushing user
@@ -169,7 +169,7 @@ class NpcDialog : public Window,
         static void setup();
 
     private:
-        typedef std::list<NpcDialog*> DialogList;
+        using DialogList = std::list<NpcDialog *>;
         static DialogList instances;
 
         void buildLayout();

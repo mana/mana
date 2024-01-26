@@ -71,7 +71,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
                   const std::string &updatesDir,
                   bool applyUpdates);
 
-    ~UpdaterWindow();
+    ~UpdaterWindow() override;
 
     /**
      * Set's progress bar status
@@ -94,11 +94,11 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
      */
     void loadNews();
 
-    void action(const gcn::ActionEvent &event);
+    void action(const gcn::ActionEvent &event) override;
 
-    void keyPressed(gcn::KeyEvent &keyEvent);
+    void keyPressed(gcn::KeyEvent &keyEvent) override;
 
-    void logic();
+    void logic() override;
 
     int updateState;
 

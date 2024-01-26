@@ -63,7 +63,7 @@ VariableData* createData(bool defData)
 
 DefaultsData* getConfigDefaults()
 {
-    DefaultsData* configData = new DefaultsData;
+    auto* configData = new DefaultsData;
     // Init main config defaults
     AddDEF(configData, "OverlayDetail", 2);
     AddDEF(configData, "speechBubblecolor", "000000");
@@ -125,7 +125,7 @@ DefaultsData* getConfigDefaults()
 
 DefaultsData* getBrandingDefaults()
 {
-    DefaultsData* brandingData = new DefaultsData;
+    auto* brandingData = new DefaultsData;
     // Init config defaults
     AddDEF(brandingData, "wallpapersPath", "");
     AddDEF(brandingData, "wallpaperFile", "");
@@ -150,7 +150,7 @@ DefaultsData* getBrandingDefaults()
 
 DefaultsData* getPathsDefaults()
 {
-    DefaultsData *pathsData = new DefaultsData;
+    auto *pathsData = new DefaultsData;
     // Init paths.xml defaults
     AddDEF(pathsData, "itemIcons", "graphics/items/");
     AddDEF(pathsData, "unknownItemFile", "unknown-item.png");

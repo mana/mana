@@ -59,7 +59,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
     public:
         Viewport();
 
-        ~Viewport();
+        ~Viewport() override;
 
         /**
          * Sets the map displayed by the viewport.
@@ -69,12 +69,12 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         /**
          * Draws the viewport.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Implements player to keep following mouse.
          */
-        void logic();
+        void logic() override;
 
         /**
          * Sets whether the path debug graphics are shown
@@ -84,22 +84,22 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         /**
          * Handles mouse press on map.
          */
-        void mousePressed(gcn::MouseEvent &event);
+        void mousePressed(gcn::MouseEvent &event) override;
 
         /**
          * Handles mouse move on map
          */
-        void mouseDragged(gcn::MouseEvent &event);
+        void mouseDragged(gcn::MouseEvent &event) override;
 
         /**
          * Handles mouse button release on map.
          */
-        void mouseReleased(gcn::MouseEvent &event);
+        void mouseReleased(gcn::MouseEvent &event) override;
 
         /**
          * Handles mouse move on map.
          */
-        void mouseMoved(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         /**
          * Shows a popup for an item.
@@ -165,7 +165,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void shakeScreenStop()
         { mShakeEffects.clear(); }
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
     private:
         /**
@@ -209,7 +209,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
             float decay;
             unsigned duration;
         };
-        typedef std::list<ShakeEffect> ShakeEffects;
+        using ShakeEffects = std::list<ShakeEffect>;
         ShakeEffects mShakeEffects;
 
         bool mPlayerFollowMouse;

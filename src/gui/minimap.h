@@ -40,7 +40,7 @@ class Minimap : public Window
 {
     public:
         Minimap();
-        ~Minimap();
+        ~Minimap() override;
 
         /**
          * Sets the map image that should be displayed.
@@ -55,7 +55,7 @@ class Minimap : public Window
         /**
          * Draws the minimap.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
     private:
         Map *mMap;

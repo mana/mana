@@ -34,7 +34,7 @@ class OpenGLGraphics : public Graphics
     public:
         OpenGLGraphics();
 
-        ~OpenGLGraphics();
+        ~OpenGLGraphics() override;
 
         /**
          * Sets whether vertical refresh syncing is enabled. Takes effect
@@ -53,15 +53,15 @@ class OpenGLGraphics : public Graphics
         void setReduceInputLag(bool reduceInputLag);
         bool getReduceInputLag() const { return mReduceInputLag; }
 
-        bool setVideoMode(int w, int h, bool fs);
+        bool setVideoMode(int w, int h, bool fs) override;
 
-        void videoResized(int w, int h);
+        void videoResized(int w, int h) override;
 
         bool drawImage(Image *image,
                        int srcX, int srcY,
                        int dstX, int dstY,
                        int width, int height,
-                       bool useColor);
+                       bool useColor) override;
 
         /**
          * Draws a rescaled version of the image
@@ -70,43 +70,43 @@ class OpenGLGraphics : public Graphics
                                int dstX, int dstY,
                                int width, int height,
                                int desiredWidth, int desiredHeight,
-                               bool useColor);
+                               bool useColor) override;
 
         void drawImagePattern(Image *image,
                               int x, int y,
-                              int w, int h);
+                              int w, int h) override;
 
         /**
          * Draw a pattern based on a rescaled version of the given image...
          */
         void drawRescaledImagePattern(Image *image,
                                       int x, int y, int w, int h,
-                                      int scaledWidth, int scaledHeight);
+                                      int scaledWidth, int scaledHeight) override;
 
-        void updateScreen();
+        void updateScreen() override;
 
-        void _beginDraw();
-        void _endDraw();
+        void _beginDraw() override;
+        void _endDraw() override;
 
-        bool pushClipArea(gcn::Rectangle area);
-        void popClipArea();
+        bool pushClipArea(gcn::Rectangle area) override;
+        void popClipArea() override;
 
-        void setColor(const gcn::Color &color);
+        void setColor(const gcn::Color &color) override;
 
-        void drawPoint(int x, int y);
+        void drawPoint(int x, int y) override;
 
-        void drawLine(int x1, int y1, int x2, int y2);
+        void drawLine(int x1, int y1, int x2, int y2) override;
 
         void drawRectangle(const gcn::Rectangle &rect, bool filled);
 
-        void drawRectangle(const gcn::Rectangle &rect);
+        void drawRectangle(const gcn::Rectangle &rect) override;
 
-        void fillRectangle(const gcn::Rectangle &rect);
+        void fillRectangle(const gcn::Rectangle &rect) override;
 
         /**
          * Takes a screenshot and returns it as SDL surface.
          */
-        SDL_Surface *getScreenshot();
+        SDL_Surface *getScreenshot() override;
 
         static void bindTexture(GLenum target, GLuint texture);
 

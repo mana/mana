@@ -43,8 +43,8 @@ bool Minimap::mShow = true;
 
 Minimap::Minimap():
     Window(_("Map")),
-    mMap(0),
-    mMapImage(0),
+    mMap(nullptr),
+    mMapImage(nullptr),
     mWidthProportion(0.5),
     mHeightProportion(0.5)
 {
@@ -92,7 +92,7 @@ void Minimap::setMap(Map *map)
     if (mMapImage)
     {
         mMapImage->decRef();
-        mMapImage = 0;
+        mMapImage = nullptr;
     }
 
     if (map)
@@ -192,7 +192,7 @@ void Minimap::draw(gcn::Graphics *graphics)
 
     const ActorSprites &actors = actorSpriteManager->getAll();
 
-    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+    for (auto it = actors.begin(), it_end = actors.end();
          it != it_end; it++)
     {
         if ((*it)->getType() == ActorSprite::FLOOR_ITEM)

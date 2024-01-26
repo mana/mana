@@ -43,7 +43,7 @@
 ItemShortcutContainer::ItemShortcutContainer():
     ShortcutContainer(),
     mItemClicked(false),
-    mItemMoved(NULL)
+    mItemMoved(nullptr)
 {
     addMouseListener(this);
     addWidgetListener(this);
@@ -73,7 +73,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
         mBackgroundImg->setAlpha(mAlpha);
     }
 
-    Graphics *g = static_cast<Graphics*>(graphics);
+    auto *g = static_cast<Graphics*>(graphics);
 
     graphics->setFont(getFont());
 
@@ -196,7 +196,7 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
 
         // Convert relative to the window coordinates to absolute screen
         // coordinates.
-        viewport->showPopup(NULL, viewport->getMouseX(), viewport->getMouseY(), item);
+        viewport->showPopup(nullptr, viewport->getMouseX(), viewport->getMouseY(), item);
     }
 }
 
@@ -210,13 +210,13 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         const int index = getIndexFromGrid(event.getX(), event.getY());
         if (index == -1)
         {
-            mItemMoved = NULL;
+            mItemMoved = nullptr;
             return;
         }
         if (mItemMoved)
         {
             itemShortcut->setItems(index, mItemMoved->getId());
-            mItemMoved = NULL;
+            mItemMoved = nullptr;
         }
         else if (itemShortcut->getItem(index) && mItemClicked)
         {

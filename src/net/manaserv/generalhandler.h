@@ -36,17 +36,17 @@ class GeneralHandler : public Net::GeneralHandler, public EventListener
     public:
         GeneralHandler();
 
-        void load();
+        void load() override;
 
-        void reload();
+        void reload() override;
 
-        void unload();
+        void unload() override;
 
-        void flushNetwork();
+        void flushNetwork() override;
 
-        void clearHandlers();
+        void clearHandlers() override;
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
     protected:
         MessageHandlerPtr mAdminHandler;

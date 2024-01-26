@@ -38,14 +38,14 @@ class SpecialsWindow : public Window, public gcn::ActionListener
     public:
         SpecialsWindow();
 
-        ~SpecialsWindow();
+        ~SpecialsWindow() override;
 
         /**
          * Called when receiving actions from widget.
          */
-        void action(const gcn::ActionEvent &actionEvent);
+        void action(const gcn::ActionEvent &actionEvent) override;
 
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         bool hasSpecials() const
         { return !mEntries.empty(); }

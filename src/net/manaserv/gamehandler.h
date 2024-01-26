@@ -36,32 +36,32 @@ class GameHandler : public MessageHandler, public Net::GameHandler
     public:
         GameHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void connect();
+        void connect() override;
 
-        bool isConnected();
+        bool isConnected() override;
 
-        void disconnect();
+        void disconnect() override;
 
-        void who();
+        void who() override;
 
         void quit(bool reconnectAccount);
 
-        void quit() { quit(false); }
+        void quit() override { quit(false); }
 
-        bool removeDeadBeings() const { return false; }
+        bool removeDeadBeings() const override { return false; }
 
         void clear();
 
         void gameLoading();
 
         /** The ManaServ protocol doesn't use the MP status bar. */
-        bool canUseMagicBar() const { return false; }
+        bool canUseMagicBar() const override { return false; }
 
-        int getPickupRange() const { return PICKUP_RANGE; }
+        int getPickupRange() const override { return PICKUP_RANGE; }
 
-        int getNpcTalkRange() const { return NPC_TALK_RANGE; }
+        int getNpcTalkRange() const override { return NPC_TALK_RANGE; }
 };
 
 } // namespace ManaServ

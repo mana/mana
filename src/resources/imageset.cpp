@@ -53,7 +53,7 @@ Image* ImageSet::get(size_type i) const
     if (i >= mImages.size())
     {
         logger->log("Warning: No sprite %d in this image set", (int) i);
-        return NULL;
+        return nullptr;
     }
     else
     {

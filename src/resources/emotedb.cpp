@@ -60,7 +60,7 @@ void EmoteDB::readEmoteNode(xmlNodePtr node, const std::string &filename)
         return;
     }
 
-    Emote *currentEmote = new Emote;
+    auto *currentEmote = new Emote;
 
     currentEmote->name = XML::getProperty(node, "name", "unknown");
     currentEmote->effect = XML::getProperty(node, "effectid", -1);

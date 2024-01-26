@@ -24,7 +24,7 @@
 #include "gui/widgets/layouthelper.h"
 
 Container::Container():
-    mLayoutHelper(0)
+    mLayoutHelper(nullptr)
 {
     setOpaque(false);
 }

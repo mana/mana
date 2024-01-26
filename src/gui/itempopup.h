@@ -46,7 +46,7 @@ class ItemPopup : public Popup
         /**
          * Destructor. Cleans up the item popup on deletion.
          */
-        ~ItemPopup();
+        ~ItemPopup() override;
 
         /**
          * Tells the item popup to say: No Item.
@@ -63,7 +63,7 @@ class ItemPopup : public Popup
          */
         void setItem(const ItemInfo &item, bool showImage = false);
 
-        void mouseMoved(gcn::MouseEvent &mouseEvent);
+        void mouseMoved(gcn::MouseEvent &mouseEvent) override;
 
     private:
         gcn::Label *mItemName;

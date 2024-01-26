@@ -45,7 +45,7 @@ class StatusWindow : public Window, public EventListener
     public:
         StatusWindow();
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
         void updateAttrs();
 
@@ -81,7 +81,7 @@ class StatusWindow : public Window, public EventListener
         gcn::Label *mCharacterPointsLabel;
         gcn::Label *mCorrectionPointsLabel;
 
-        typedef std::map<int, AttrDisplay*> Attrs;
+        using Attrs = std::map<int, AttrDisplay *>;
         Attrs mAttrs;
 };
 

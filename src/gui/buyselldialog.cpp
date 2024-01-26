@@ -37,20 +37,20 @@ BuySellDialog::DialogList BuySellDialog::instances;
 BuySellDialog::BuySellDialog(int npcId):
     Window(_("Shop")),
     mNpcId(npcId),
-    mBuyButton(0)
+    mBuyButton(nullptr)
 {
     setWindowName("BuySell");
     //setupWindow->registerWindowForReset(this);
     setCloseButton(true);
 
     static const char *buttonNames[] = {
-        N_("Buy"), N_("Sell"), N_("Cancel"), 0
+        N_("Buy"), N_("Sell"), N_("Cancel"), nullptr
     };
     int x = 10, y = 10;
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
-        Button *btn = new Button(gettext(*curBtn), *curBtn, this);
+        auto *btn = new Button(gettext(*curBtn), *curBtn, this);
         if (!mBuyButton)
             mBuyButton = btn; // For focus request
         btn->setPosition(x, y);
@@ -109,8 +109,8 @@ void BuySellDialog::action(const gcn::ActionEvent &event)
 
 void BuySellDialog::closeAll()
 {
-    DialogList::iterator it = instances.begin();
-    DialogList::iterator it_end = instances.end();
+    auto it = instances.begin();
+    auto it_end = instances.end();
 
     for (; it != it_end; it++)
     {

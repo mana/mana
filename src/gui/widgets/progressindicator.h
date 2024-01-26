@@ -33,10 +33,10 @@ class ProgressIndicator : public gcn::Widget
 {
 public:
     ProgressIndicator();
-    ~ProgressIndicator();
+    ~ProgressIndicator() override;
 
-    void logic();
-    void draw(gcn::Graphics *graphics);
+    void logic() override;
+    void draw(gcn::Graphics *graphics) override;
 
 private:
     SimpleAnimation *mIndicator;

@@ -54,12 +54,12 @@ class InventoryWindow : public Window,
     public:
         InventoryWindow(Inventory *inventory);
 
-        ~InventoryWindow();
+        ~InventoryWindow() override;
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Returns the selected item.
@@ -69,27 +69,27 @@ class InventoryWindow : public Window,
         /**
          * Handles closing of the window
          */
-        virtual void widgetHidden(const gcn::Event &event);
+        void widgetHidden(const gcn::Event &event) override;
 
         /**
          * Handles the mouse clicks.
          */
-        void mouseClicked(gcn::MouseEvent &event);
+        void mouseClicked(gcn::MouseEvent &event) override;
 
         /**
          * Handles the key presses.
          */
-        void keyPressed(gcn::KeyEvent &event);
+        void keyPressed(gcn::KeyEvent &event) override;
 
         /**
          * Handles the key releases.
          */
-        void keyReleased(gcn::KeyEvent &event);
+        void keyReleased(gcn::KeyEvent &event) override;
 
         /**
          * Updates labels to currently selected item.
          */
-        void valueChanged(const gcn::SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event) override;
 
         /**
          * Sets whether the split button should be shown.
@@ -100,7 +100,7 @@ class InventoryWindow : public Window,
          * Closes the Storage Window, as well as telling the server that the
          * window has been closed.
          */
-        void close();
+        void close() override;
 
         /**
          * Updates the buttons.
@@ -111,11 +111,11 @@ class InventoryWindow : public Window,
 
         static bool isAnyInputFocused();
 
-        void slotsChanged(Inventory* inventory);
+        void slotsChanged(Inventory* inventory) override;
 
         bool isMainInventory() { return mInventory->isMainInventory(); }
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
     private:
         /**
@@ -124,7 +124,7 @@ class InventoryWindow : public Window,
         void updateWeight();
 
 
-        typedef std::list<InventoryWindow*> WindowList;
+        using WindowList = std::list<InventoryWindow *>;
         static WindowList instances;
 
         Inventory *mInventory;

@@ -43,7 +43,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                                  Map *map, int rotation,
                                  const std::string& dyePalettes):
     mOutputPauseLeft(0),
-    mParticleImage(0)
+    mParticleImage(nullptr)
 {
     mMap = map;
     mParticleTarget = target;
@@ -464,12 +464,12 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
         }
         else if (mParticleRotation.getLength() > 0)
         {
-            Animation *newAnimation = new Animation(mParticleRotation);
+            auto *newAnimation = new Animation(mParticleRotation);
             newParticle = new RotationalParticle(mMap, newAnimation);
         }
         else if (mParticleAnimation.getLength() > 0)
         {
-            Animation *newAnimation = new Animation(mParticleAnimation);
+            auto *newAnimation = new Animation(mParticleAnimation);
             newParticle = new AnimationParticle(mMap, newAnimation);
         }
         else
@@ -506,7 +506,7 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
         newParticle->setFadeIn(mParticleFadeIn.value(tick));
         newParticle->setAlpha(mParticleAlpha.value(tick));
 
-        for (std::list<ParticleEmitter>::iterator i = mParticleChildEmitters.begin();
+        for (auto i = mParticleChildEmitters.begin();
              i != mParticleChildEmitters.end();
              i++)
         {

@@ -25,12 +25,12 @@
 #include "resources/image.h"
 
 Actor::Actor():
-        mMap(NULL)
+        mMap(nullptr)
 {}
 
 Actor::~Actor()
 {
-    setMap(NULL);
+    setMap(nullptr);
 }
 
 void Actor::setMap(Map *map)

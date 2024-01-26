@@ -41,12 +41,12 @@ class ImageParticle : public Particle
          */
         ImageParticle(Map *map, Image *image);
 
-        ~ImageParticle();
+        ~ImageParticle() override;
 
         /**
          * Draws the particle image
          */
-        virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
+        bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
     protected:
         Image *mImage;   /**< The image used for this particle. */

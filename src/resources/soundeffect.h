@@ -32,7 +32,7 @@
 class SoundEffect : public Resource
 {
     public:
-        virtual ~SoundEffect();
+        ~SoundEffect() override;
 
         /**
          * Loads a sample from a buffer in memory.

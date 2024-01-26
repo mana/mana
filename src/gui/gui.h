@@ -50,19 +50,19 @@ class Gui : public gcn::Gui
     public:
         Gui(Graphics *screen);
 
-        ~Gui();
+        ~Gui() override;
 
         /**
          * Performs logic of the GUI. Overridden to track mouse pointer
          * activity.
          */
-        void logic();
+        void logic() override;
 
         /**
          * Draws the whole Gui by calling draw functions down in the
          * Gui hierarchy. It also draws the mouse pointer.
          */
-        void draw();
+        void draw() override;
 
         /**
          * Called when the application window has been resized.
@@ -114,7 +114,7 @@ class Gui : public gcn::Gui
         };
 
     protected:
-        void handleMouseMoved(const gcn::MouseInput &mouseInput);
+        void handleMouseMoved(const gcn::MouseInput &mouseInput) override;
         void handleTextInput(const TextInput &textInput);
 
     private:

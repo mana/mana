@@ -45,7 +45,7 @@ class Properties
         std::string getProperty(const std::string &name,
                                 const std::string &def = "") const
         {
-            PropertyMap::const_iterator i = mProperties.find(name);
+            auto i = mProperties.find(name);
             return (i != mProperties.end()) ? i->second : def;
         }
 
@@ -59,7 +59,7 @@ class Properties
          */
         float getFloatProperty(const std::string &name, float def = 0.0f) const
         {
-            PropertyMap::const_iterator i = mProperties.find(name);
+            auto i = mProperties.find(name);
             float ret = def;
             if (i != mProperties.end())
             {
@@ -80,7 +80,7 @@ class Properties
          */
         bool getBoolProperty(const std::string &name, bool def = false) const
         {
-            PropertyMap::const_iterator i = mProperties.find(name);
+            auto i = mProperties.find(name);
             bool ret = def;
             if (i != mProperties.end())
             {
@@ -116,7 +116,7 @@ class Properties
         }
 
     private:
-        typedef std::map<std::string, std::string> PropertyMap;
+        using PropertyMap = std::map<std::string, std::string>;
         PropertyMap mProperties;
 };
 

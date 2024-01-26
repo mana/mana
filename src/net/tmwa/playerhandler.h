@@ -34,35 +34,35 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
     public:
         PlayerHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void attack(int id);
-        void emote(int emoteId);
+        void attack(int id) override;
+        void emote(int emoteId) override;
 
-        void increaseAttribute(int attr);
-        void decreaseAttribute(int attr);
-        void increaseSkill(int skillId);
+        void increaseAttribute(int attr) override;
+        void decreaseAttribute(int attr) override;
+        void increaseSkill(int skillId) override;
 
-        void pickUp(FloorItem *floorItem);
-        void setDirection(char direction);
-        void setDestination(int x, int y, int direction = -1);
-        void changeAction(Being::Action action);
+        void pickUp(FloorItem *floorItem) override;
+        void setDirection(char direction) override;
+        void setDestination(int x, int y, int direction = -1) override;
+        void changeAction(Being::Action action) override;
 
-        void respawn();
+        void respawn() override;
 
-        void ignorePlayer(const std::string &player, bool ignore);
-        void ignoreAll(bool ignore);
+        void ignorePlayer(const std::string &player, bool ignore) override;
+        void ignoreAll(bool ignore) override;
 
-        bool canUseMagic();
-        bool canCorrectAttributes();
+        bool canUseMagic() override;
+        bool canCorrectAttributes() override;
 
-        int getJobLocation();
+        int getJobLocation() override;
 
-        Vector getDefaultMoveSpeed() const;
+        Vector getDefaultMoveSpeed() const override;
 
-        Vector getPixelsPerTickMoveSpeed(const Vector &speed, Map *map = 0);
+        Vector getPixelsPerTickMoveSpeed(const Vector &speed, Map *map = nullptr) override;
 
-        bool usePixelPrecision()
+        bool usePixelPrecision() override
         { return false; }
 };
 

@@ -44,17 +44,17 @@ class ShopListBox : public ListBox
          */
         ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel);
 
-        ~ShopListBox();
+        ~ShopListBox() override;
 
         /**
          * Draws the list box.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Returns the height of a row.
          */
-        unsigned int getRowHeight() const { return mRowHeight; }
+        unsigned int getRowHeight() const override { return mRowHeight; }
 
         /**
          * gives information about the current player's money
@@ -75,12 +75,12 @@ class ShopListBox : public ListBox
         /**
          ** Show ItemTooltip
          */
-        void mouseMoved(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         /**
          ** Hide ItemTooltip
          */
-         void mouseExited(gcn::MouseEvent &event);
+         void mouseExited(gcn::MouseEvent &event) override;
 
     private:
         int mPlayerMoney;

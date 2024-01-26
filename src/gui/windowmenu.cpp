@@ -46,7 +46,7 @@ extern Window *statusWindow;
 extern Window *socialWindow;
 
 WindowMenu::WindowMenu():
-    mEmotePopup(0)
+    mEmotePopup(nullptr)
 {
     int x = 0, h = 0;
 
@@ -84,7 +84,7 @@ WindowMenu::~WindowMenu()
 
 void WindowMenu::action(const gcn::ActionEvent &event)
 {
-    Window *window = 0;
+    Window *window = nullptr;
 
     if (event.getId() == ":-)")
     {
@@ -104,7 +104,7 @@ void WindowMenu::action(const gcn::ActionEvent &event)
         else
         {
             windowContainer->scheduleDelete(mEmotePopup);
-            mEmotePopup = 0;
+            mEmotePopup = nullptr;
         }
     }
     else if (event.getId() == "Status")
@@ -159,7 +159,7 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
             Net::getPlayerHandler()->emote(emote);
 
         windowContainer->scheduleDelete(mEmotePopup);
-        mEmotePopup = 0;
+        mEmotePopup = nullptr;
     }
 }
 
@@ -180,7 +180,7 @@ void WindowMenu::addButton(const std::string& text, int &x, int &h,
                            const std::string& iconPath,
                            KeyboardConfig::KeyAction key)
 {
-    Button *btn = new Button("", text, this);
+    auto *btn = new Button("", text, this);
     if (!iconPath.empty() && btn->setButtonIcon(iconPath))
     {
         btn->setButtonPopupText(createShortcutCaption(text, key));
@@ -199,9 +199,9 @@ void WindowMenu::addButton(const std::string& text, int &x, int &h,
 
 void WindowMenu::updatePopUpCaptions()
 {
-    for (WidgetList::iterator it = mWidgets.begin(); it != mWidgets.end(); ++it)
+    for (auto it = mWidgets.begin(); it != mWidgets.end(); ++it)
     {
-        Button *button = dynamic_cast<Button*> (*it);
+        auto *button = dynamic_cast<Button*> (*it);
         if (!button)
             continue;
 

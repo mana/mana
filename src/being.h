@@ -112,9 +112,9 @@ class Being : public ActorSprite, public EventListener
          */
         Being(int id, Type type, int subtype, Map *map);
 
-        virtual ~Being();
+        ~Being() override;
 
-        Type getType() const
+        Type getType() const override
         { return mType; }
 
         /**
@@ -136,13 +136,13 @@ class Being : public ActorSprite, public EventListener
         /**
          * Returns the tile x coord
          */
-        int getTileX() const
+        int getTileX() const override
         { return mPos.x / mMap->getTileWidth(); }
 
         /**
          * Returns the tile y coord
          */
-        int getTileY() const
+        int getTileY() const override
         { return mPos.y / mMap->getTileHeight(); }
 
         /**
@@ -248,7 +248,7 @@ class Being : public ActorSprite, public EventListener
         { return mGuilds.size(); }
 
         bool isInParty() const
-        { return mParty != NULL; }
+        { return mParty != nullptr; }
 
         void setParty(Party *party);
 
@@ -269,15 +269,15 @@ class Being : public ActorSprite, public EventListener
         /**
          * Get the number of layers used to draw the being
          */
-        int getNumberOfLayers() const;
+        int getNumberOfLayers() const override;
 
-        virtual bool drawnWhenBehind() const
+        bool drawnWhenBehind() const override
         { return CompoundSprite::drawnWhenBehind(); }
 
         /**
          * Performs being logic.
          */
-        virtual void logic();
+        void logic() override;
 
         /**
          * Draws the speech text above the being.
@@ -294,7 +294,7 @@ class Being : public ActorSprite, public EventListener
         const BeingInfo *getInfo() const
         { return mInfo; }
 
-        TargetCursorSize getTargetCursorSize() const;
+        TargetCursorSize getTargetCursorSize() const override;
 
         /**
          * Gets the way the object is blocked by other objects.
@@ -304,7 +304,7 @@ class Being : public ActorSprite, public EventListener
         /**
          * Gets the way the monster blocks pathfinding for other objects
          */
-        Map::BlockType getBlockType() const;
+        Map::BlockType getBlockType() const override;
 
         /**
          * Sets the move speed.
@@ -364,7 +364,7 @@ class Being : public ActorSprite, public EventListener
         SpriteDirection getSpriteDirection() const
         { return SpriteDirection(mSpriteDirection); }
 
-        void setPosition(const Vector &pos);
+        void setPosition(const Vector &pos) override;
 
         /**
          * Overloaded method provided for convenience.
@@ -434,9 +434,9 @@ class Being : public ActorSprite, public EventListener
 
         void talkTo();
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
-        void setMap(Map *map);
+        void setMap(Map *map) override;
 
         /**
          * Make the being look at a given pixel position.

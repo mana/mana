@@ -51,10 +51,10 @@ NpcPostDialog::NpcPostDialog(int npcId):
     mSender->setWidth(65);
 
     // create button for sending
-    Button *sendButton = new Button(_("Send"), "send", this);
+    auto *sendButton = new Button(_("Send"), "send", this);
     sendButton->setPosition(400 - sendButton->getWidth(),
                             170 - sendButton->getHeight());
-    Button *cancelButton = new Button(_("Cancel"), "cancel", this);
+    auto *cancelButton = new Button(_("Cancel"), "cancel", this);
     cancelButton->setPosition(sendButton->getX() - (cancelButton->getWidth() + 2),
                               sendButton->getY());
 
@@ -64,7 +64,7 @@ NpcPostDialog::NpcPostDialog(int npcId):
     mText->setEditable(true);
 
     // create scroll box for letter text
-    ScrollArea *scrollArea = new ScrollArea(mText);
+    auto *scrollArea = new ScrollArea(mText);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(
                 5, mSender->getHeight() + 5,
@@ -124,8 +124,8 @@ void NpcPostDialog::setVisible(bool visible)
 
 void NpcPostDialog::closeAll()
 {
-    DialogList::iterator it = instances.begin();
-    DialogList::iterator it_end = instances.end();
+    auto it = instances.begin();
+    auto it_end = instances.end();
 
     for (; it != it_end; it++)
     {

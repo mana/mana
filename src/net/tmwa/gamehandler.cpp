@@ -93,7 +93,7 @@ void GameHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8())
             {
                 new OkDialog(_("Game"), _("Request to quit denied!"), false,
-                                                                          NULL);
+                                                                          nullptr);
             }
             break;
     }

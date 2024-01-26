@@ -88,14 +88,14 @@ class HairDB
     void loadHairStylesNode(xmlNodePtr stylesNode);
 
     // Hair colors Db
-    typedef std::map<int, std::string> Colors;
-    typedef Colors::iterator ColorIterator;
-    typedef Colors::const_iterator ColorConstIterator;
+    using Colors = std::map<int, std::string>;
+    using ColorIterator = Colors::iterator;
+    using ColorConstIterator = Colors::const_iterator;
     Colors mHairColors;
 
-    typedef std::set<int> HairStyles;
-    typedef HairStyles::iterator HairStylesIterator;
-    typedef HairStyles::const_iterator HairStylesConstIterator;
+    using HairStyles = std::set<int>;
+    using HairStylesIterator = HairStyles::iterator;
+    using HairStylesConstIterator = HairStyles::const_iterator;
     HairStyles mHairStyles;
 
     bool mLoaded;

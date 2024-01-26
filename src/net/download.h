@@ -35,15 +35,13 @@ enum DownloadStatus
     DOWNLOAD_STATUS_COMPLETE
 };
 
-typedef int (*DownloadUpdate)(void *ptr, DownloadStatus status,
-                              size_t total, size_t remaining);
+using DownloadUpdate = int (*)(void *, DownloadStatus, size_t, size_t);
 
 // Matches what CURL expects
-typedef size_t (*WriteFunction)( void *ptr, size_t size, size_t nmemb,
-                                 void *stream);
+using WriteFunction = size_t (*)(void *, size_t, size_t, void *);
 
 struct SDL_Thread;
-typedef void CURL;
+using CURL = void;
 struct curl_slist;
 
 namespace Net {

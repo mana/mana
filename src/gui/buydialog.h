@@ -44,7 +44,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
     public:
         BuyDialog(int npcId);
 
-        ~BuyDialog();
+        ~BuyDialog() override;
 
         /**
          * Resets the dialog, clearing shop inventory.
@@ -64,7 +64,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Returns the number of items in the shop inventory.
@@ -74,12 +74,12 @@ class BuyDialog : public Window, public gcn::ActionListener,
         /**
          * Updates the labels according to the selected item.
          */
-        void valueChanged(const gcn::SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event) override;
 
         /**
          * Allows for quick-buying by extending double-click events.
          */
-        void mouseClicked(gcn::MouseEvent &mouseEvent);
+        void mouseClicked(gcn::MouseEvent &mouseEvent) override;
 
         /**
          * Returns the name of item number i in the shop inventory.
@@ -94,7 +94,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         /**
          * Sets the visibility of this window.
          */
-        void setVisible(bool visible);
+        void setVisible(bool visible) override;
 
         /**
          * Closes all instances.
@@ -102,7 +102,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         static void closeAll();
 
     private:
-        typedef std::list<BuyDialog*> DialogList;
+        using DialogList = std::list<BuyDialog *>;
         static DialogList instances;
 
         int mNpcId;

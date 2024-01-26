@@ -34,9 +34,9 @@ class VertContainer : public Container, public gcn::WidgetListener
 {
     public:
         VertContainer(int spacing);
-        virtual void add(gcn::Widget *widget);
-        virtual void clear();
-        void widgetResized(const gcn::Event &event);
+        void add(gcn::Widget *widget) override;
+        void clear() override;
+        void widgetResized(const gcn::Event &event) override;
 
     private:
         int mSpacing;

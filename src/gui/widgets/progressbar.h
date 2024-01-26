@@ -44,12 +44,12 @@ class ProgressBar : public gcn::Widget
                     int width = 40, int height = 7,
                     int color = -1);
 
-        ~ProgressBar();
+        ~ProgressBar() override;
 
         /**
          * Performs progress bar logic (fading colors)
          */
-        void logic();
+        void logic() override;
 
         /**
          * Update the alpha value to the graphic components.
@@ -59,7 +59,7 @@ class ProgressBar : public gcn::Widget
         /**
          * Draws the progress bar.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Sets the current progress.

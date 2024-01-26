@@ -184,7 +184,7 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         short channelId = msg.readInt16();
         std::string channelName = msg.readString();
         std::string announcement = msg.readString();
-        Channel *channel = new Channel(channelId, channelName, announcement);
+        auto *channel = new Channel(channelId, channelName, announcement);
         channelManager->addChannel(channel);
         ChatTab *tab = channel->getTab();
         tab->chatLog(strprintf(_("Topic: %s"), announcement.c_str()), BY_CHANNEL);

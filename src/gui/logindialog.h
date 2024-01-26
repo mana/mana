@@ -44,17 +44,17 @@ class LoginDialog : public Window, public gcn::ActionListener,
     public:
         LoginDialog(LoginData *loginData);
 
-        ~LoginDialog();
+        ~LoginDialog() override;
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Called when a key is pressed in one of the text fields.
          */
-        void keyPressed(gcn::KeyEvent &keyEvent);
+        void keyPressed(gcn::KeyEvent &keyEvent) override;
 
     private:
         /**

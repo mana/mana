@@ -187,7 +187,7 @@ void CharHandler::handleCharacterCreateResponse(MessageIn &msg)
         if (mCharCreateDialog)
         {
             mCharCreateDialog->scheduleDelete();
-            mCharCreateDialog = 0;
+            mCharCreateDialog = nullptr;
         }
     }
 }
@@ -228,7 +228,7 @@ void CharHandler::handleCharacterDeleteResponse(MessageIn &msg)
         }
         new OkDialog(_("Error"), errorMessage);
     }
-    mSelectedCharacter = 0;
+    mSelectedCharacter = nullptr;
     unlockCharSelectDialog();
 }
 
@@ -254,7 +254,7 @@ void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
         // Prevent the selected local player from being deleted
         local_player = mSelectedCharacter->dummy;
         PlayerInfo::setBackend(mSelectedCharacter->data);
-        mSelectedCharacter->dummy = 0;
+        mSelectedCharacter->dummy = nullptr;
 
         Client::setState(STATE_CONNECT_GAME);
     }
@@ -386,7 +386,7 @@ void CharHandler::updateCharacters()
     {
         const CachedCharacterInfo &info = mCachedCharacterInfos.at(i);
 
-        Net::Character *character = new Net::Character;
+        auto *character = new Net::Character;
         character->slot = info.slot;
         LocalPlayer *player = character->dummy = new LocalPlayer;
         player->setName(info.name);
@@ -397,7 +397,7 @@ void CharHandler::updateCharacters()
         character->data.mAttributes[CHAR_POINTS] = info.characterPoints;
         character->data.mAttributes[CORR_POINTS] = info.correctionPoints;
 
-        for (CachedAttributes::const_iterator it = info.attribute.begin(),
+        for (auto it = info.attribute.begin(),
              it_end = info.attribute.end(); it != it_end; it++)
         {
             character->data.mStats[i].base = it->second.base;
@@ -412,8 +412,8 @@ void CharHandler::updateCharacters()
 
 void CharHandler::clear()
 {
-    setCharCreateDialog(0);
-    setCharSelectDialog(0);
+    setCharCreateDialog(nullptr);
+    setCharSelectDialog(nullptr);
 
     mCachedCharacterInfos.clear();
     updateCharacters();

@@ -27,7 +27,7 @@ Event::ListenMap Event::mBindings;
 
 Event::~Event()
 {
-    VariableMap::iterator it = mData.begin();
+    auto it = mData.begin();
     while (it != mData.end())
     {
         delete it->second;
@@ -47,7 +47,7 @@ void Event::setInt(const std::string &key, int value)
 
 int Event::getInt(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     if (it == mData.end())
         throw BAD_KEY;
 
@@ -59,7 +59,7 @@ int Event::getInt(const std::string &key) const
 
 bool Event::hasInt(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_INT);
 }
@@ -76,7 +76,7 @@ void Event::setString(const std::string &key, const std::string &value)
 
 const std::string &Event::getString(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     if (it == mData.end())
         throw BAD_KEY;
 
@@ -89,7 +89,7 @@ const std::string &Event::getString(const std::string &key) const
 
 bool Event::hasString(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_STRING);
 }
@@ -106,7 +106,7 @@ void Event::setFloat(const std::string &key, double value)
 
 double Event::getFloat(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     if (it == mData.end())
         throw BAD_KEY;
 
@@ -118,7 +118,7 @@ double Event::getFloat(const std::string &key) const
 
 bool Event::hasFloat(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_FLOAT);
 }
@@ -135,7 +135,7 @@ void Event::setBool(const std::string &key, bool value)
 
 bool Event::getBool(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     if (it == mData.end())
         throw BAD_KEY;
 
@@ -147,7 +147,7 @@ bool Event::getBool(const std::string &key) const
 
 bool Event::hasBool(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_BOOL);
 }
@@ -164,7 +164,7 @@ void Event::setItem(const std::string &key, Item *value)
 
 Item *Event::getItem(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     if (it == mData.end())
         throw BAD_KEY;
 
@@ -176,7 +176,7 @@ Item *Event::getItem(const std::string &key) const
 
 bool Event::hasItem(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_ITEM);
 }
@@ -193,7 +193,7 @@ void Event::setActor(const std::string &key, ActorSprite *value)
 
 ActorSprite *Event::getActor(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     if (it == mData.end())
         throw BAD_KEY;
 
@@ -205,7 +205,7 @@ ActorSprite *Event::getActor(const std::string &key) const
 
 bool Event::hasActor(const std::string &key) const
 {
-    VariableMap::const_iterator it = mData.find(key);
+    auto it = mData.find(key);
     return !(it == mData.end()
              || it->second->getType() != VariableData::DATA_ACTOR);
 }
@@ -214,14 +214,14 @@ bool Event::hasActor(const std::string &key) const
 
 void Event::trigger(Channel channel, const Event &event)
 {
-    ListenMap::iterator it = mBindings.find(channel);
+    auto it = mBindings.find(channel);
 
     // Make sure something is listening
     if (it == mBindings.end())
         return;
 
     // Loop though all listeners
-    ListenerSet::iterator lit = it->second.begin();
+    auto lit = it->second.begin();
     while (lit != it->second.end())
     {
         (*lit)->event(channel, event);
@@ -241,7 +241,7 @@ void Event::unbind(EventListener *listener, Channel channel)
 
 void Event::remove(EventListener *listener)
 {
-    ListenMap::iterator it = mBindings.begin();
+    auto it = mBindings.begin();
     while (it != mBindings.end())
     {
         it->second.erase(listener);

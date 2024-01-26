@@ -40,37 +40,37 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
     public:
         CharServerHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void setCharSelectDialog(CharSelectDialog *window);
+        void setCharSelectDialog(CharSelectDialog *window) override;
 
         /**
          * Sets the character create dialog. The handler will clean up this
          * dialog when a new character is succesfully created, and will unlock
          * the dialog when a new character failed to be created.
          */
-        void setCharCreateDialog(CharCreateDialog *window);
+        void setCharCreateDialog(CharCreateDialog *window) override;
 
-        void requestCharacters();
+        void requestCharacters() override;
 
-        void chooseCharacter(Net::Character *character);
+        void chooseCharacter(Net::Character *character) override;
 
         void newCharacter(const std::string &name, int slot, bool gender,
                           int hairstyle, int hairColor,
-                          const std::vector<int> &stats);
+                          const std::vector<int> &stats) override;
 
-        void deleteCharacter(Net::Character *character);
+        void deleteCharacter(Net::Character *character) override;
 
-        void switchCharacter();
+        void switchCharacter() override;
 
-        unsigned int baseSprite() const;
+        unsigned int baseSprite() const override;
 
-        unsigned int hairSprite() const;
+        unsigned int hairSprite() const override;
 
-        unsigned int maxSprite() const;
+        unsigned int maxSprite() const override;
 
-        int getCharCreateMaxHairColorId() const;
-        int getCharCreateMaxHairStyleId() const;
+        int getCharCreateMaxHairColorId() const override;
+        int getCharCreateMaxHairStyleId() const override;
 
         void connect();
 

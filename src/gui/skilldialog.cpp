@@ -77,7 +77,7 @@ struct SkillInfo
     gcn::Color color;
 
     SkillInfo() :
-        icon(NULL)
+        icon(nullptr)
     {}
 
     ~SkillInfo()
@@ -106,18 +106,18 @@ struct SkillInfo
     void draw(Graphics *graphics, int y, int width);
 };
 
-typedef std::vector<SkillInfo*> SkillList;
+using SkillList = std::vector<SkillInfo *>;
 
 class SkillModel : public gcn::ListModel
 {
 public:
-    int getNumberOfElements()
+    int getNumberOfElements() override
     { return mVisibleSkills.size(); }
 
     SkillInfo *getSkillAt(int i) const
     { return mVisibleSkills.at(i); }
 
-    std::string getElementAt(int i)
+    std::string getElementAt(int i) override
     { return getSkillAt(i)->name; }
 
     void updateVisibilities();
@@ -141,21 +141,21 @@ public:
     {
         const int selected = getSelected();
         if (selected < 0 || selected > mListModel->getNumberOfElements())
-            return 0;
+            return nullptr;
 
         return static_cast<SkillModel*>(mListModel)->getSkillAt(selected);
     }
 
-    void draw(gcn::Graphics *gcnGraphics)
+    void draw(gcn::Graphics *gcnGraphics) override
     {
         if (!mListModel)
             return;
 
-        SkillModel* model = static_cast<SkillModel*>(mListModel);
+        auto* model = static_cast<SkillModel*>(mListModel);
 
         updateAlpha();
 
-        Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
+        auto *graphics = static_cast<Graphics*>(gcnGraphics);
 
         graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
                                                 (int) (mAlpha * 255.0f)));
@@ -183,7 +183,7 @@ public:
         }
     }
 
-    unsigned int getRowHeight() const { return 34; }
+    unsigned int getRowHeight() const override { return 34; }
 };
 
 class SkillTab : public Tab
@@ -195,10 +195,10 @@ public:
         setCaption(name);
     }
 
-    ~SkillTab()
+    ~SkillTab() override
     {
         delete mListBox;
-        mListBox = 0;
+        mListBox = nullptr;
     }
 
     SkillInfo *getSelectedInfo()
@@ -245,7 +245,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "inc")
     {
-        SkillTab *tab = static_cast<SkillTab*>(mTabs->getSelectedTab());
+        auto *tab = static_cast<SkillTab*>(mTabs->getSelectedTab());
         if (SkillInfo *info = tab->getSelectedInfo())
             Net::getPlayerHandler()->increaseSkill(info->id);
     }
@@ -257,7 +257,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 
 std::string SkillDialog::update(int id)
 {
-    SkillMap::iterator i = mSkills.find(id);
+    auto i = mSkills.find(id);
 
     if (i != mSkills.end())
     {
@@ -275,7 +275,7 @@ void SkillDialog::update()
                                        PlayerInfo::getAttribute(SKILL_POINTS)));
     mPointsLabel->adjustSize();
 
-    for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end(); it++)
+    for (auto it = mSkills.begin(); it != mSkills.end(); it++)
     {
         (*it).second->update();
     }
@@ -292,7 +292,7 @@ void SkillDialog::event(Event::Channel channel, const Event &event)
     }
     else if (event.getType() == Event::UpdateStat)
     {
-        SkillMap::iterator it = mSkills.find(event.getInt("id"));
+        auto it = mSkills.find(event.getInt("id"));
         if (it != mSkills.end())
             it->second->update();
     }
@@ -336,8 +336,8 @@ void SkillDialog::loadSkills()
 
         if (Net::getNetworkType() == ServerInfo::TMWATHENA)
         {
-            SkillModel *model = new SkillModel();
-            SkillInfo *skill = new SkillInfo;
+            auto *model = new SkillModel();
+            auto *skill = new SkillInfo;
             skill->id = 1;
             skill->name = "basic";
             skill->setIcon("");
@@ -374,7 +374,7 @@ void SkillDialog::loadSkills()
             setCount++;
             setName = XML::getProperty(set, "name", strprintf(_("Skill Set %d"), setCount));
 
-            SkillModel *model = new SkillModel();
+            auto *model = new SkillModel();
 
             for_each_xml_child_node(node, set)
             {
@@ -384,7 +384,7 @@ void SkillDialog::loadSkills()
                     std::string name = XML::getProperty(node, "name", strprintf(_("Skill %d"), id));
                     std::string icon = XML::getProperty(node, "icon", "");
 
-                    SkillInfo *skill = new SkillInfo;
+                    auto *skill = new SkillInfo;
                     skill->id = id;
                     skill->name = name;
                     skill->setIcon(icon);
@@ -417,7 +417,7 @@ void SkillDialog::loadSkills()
 
 void SkillDialog::setModifiable(int id, bool modifiable)
 {
-    SkillMap::iterator it = mSkills.find(id);
+    auto it = mSkills.find(id);
 
     if (it != mSkills.end())
     {
@@ -431,7 +431,7 @@ void SkillModel::updateVisibilities()
 {
     mVisibleSkills.clear();
 
-    for (SkillList::iterator it = mSkills.begin(); it != mSkills.end(); it++)
+    for (auto it = mSkills.begin(); it != mSkills.end(); it++)
     {
         if ((*it)->visible)
         {

@@ -37,12 +37,12 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
 {
     public:
         Setup_Interface();
-        ~Setup_Interface();
+        ~Setup_Interface() override;
 
-        void apply();
-        void cancel();
+        void apply() override;
+        void cancel() override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
     private:
         bool mShowMonsterDamageEnabled;

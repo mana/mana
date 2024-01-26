@@ -39,7 +39,7 @@ class MessageHandler : public Net::MessageHandler
     public:
         MessageHandler();
 
-        ~MessageHandler();
+        ~MessageHandler() override;
 
         virtual void handleMessage(MessageIn &msg) = 0;
 
@@ -49,7 +49,7 @@ class MessageHandler : public Net::MessageHandler
         Network *mNetwork;
 };
 
-typedef const std::unique_ptr<MessageHandler> MessageHandlerPtr;
+using MessageHandlerPtr = const std::unique_ptr<MessageHandler>;
 
 }
 

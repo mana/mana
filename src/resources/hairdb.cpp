@@ -96,7 +96,7 @@ const std::string &HairDB::getHairColor(int id)
 std::vector<int> HairDB::getHairStyleIds(int maxId) const
 {
     std::vector<int> hairStylesIds;
-    for (HairStylesConstIterator it = mHairStyles.begin(),
+    for (auto it = mHairStyles.begin(),
         it_end = mHairStyles.end(); it != it_end; ++it)
     {
         // Don't give ids higher than the requested maximum.
@@ -110,7 +110,7 @@ std::vector<int> HairDB::getHairStyleIds(int maxId) const
 std::vector<int> HairDB::getHairColorIds(int maxId) const
 {
     std::vector<int> hairColorsIds;
-    for (ColorConstIterator it = mHairColors.begin(),
+    for (auto it = mHairColors.begin(),
         it_end = mHairColors.end(); it != it_end; ++it)
     {
         // Don't give ids higher than the requested maximum.

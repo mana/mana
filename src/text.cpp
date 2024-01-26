@@ -50,7 +50,7 @@ Text::Text(const std::string &text, int x, int y,
     else
         mFont = font;
 
-    if (textManager == 0)
+    if (textManager == nullptr)
     {
         textManager = new TextManager;
         Image *sbImage = Theme::getImageFromTheme("bubble.png|W:#"
@@ -100,7 +100,7 @@ Text::~Text()
     if (--mInstances == 0)
     {
         delete textManager;
-        textManager = 0;
+        textManager = nullptr;
         delete mBubble.grid[0];
         delete mBubble.grid[1];
         delete mBubble.grid[2];

@@ -37,14 +37,14 @@ class TextDialog : public Window, public gcn::ActionListener
 {
 public:
     TextDialog(const std::string &title, const std::string &msg,
-               Window *parent = NULL, bool autoCompleteEnabled = false);
+               Window *parent = nullptr, bool autoCompleteEnabled = false);
 
-    ~TextDialog();
+    ~TextDialog() override;
 
     /**
      * Called when receiving actions from the widgets.
      */
-    void action(const gcn::ActionEvent &event);
+    void action(const gcn::ActionEvent &event) override;
 
     /**
      * Get the text in the textfield

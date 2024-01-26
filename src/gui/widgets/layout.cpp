@@ -71,11 +71,11 @@ void LayoutCell::computeSizes()
 {
     assert(mType == ARRAY);
 
-    for (std::vector< std::vector< LayoutCell * > >::iterator
+    for (auto
          i = mArray->mCells.begin(), i_end = mArray->mCells.end();
          i != i_end; ++i)
     {
-        for (std::vector< LayoutCell * >::iterator
+        for (auto
              j = i->begin(), j_end = i->end(); j != j_end; ++j)
         {
             LayoutCell *cell = *j;
@@ -93,10 +93,10 @@ LayoutArray::LayoutArray(): mSpacing(4)
 
 LayoutArray::~LayoutArray()
 {
-    for (std::vector< std::vector< LayoutCell * > >::iterator
+    for (auto
          i = mCells.begin(), i_end = mCells.end(); i != i_end; ++i)
     {
-        for (std::vector< LayoutCell * >::iterator
+        for (auto
              j = i->begin(), j_end = i->end(); j != j_end; ++j)
         {
             delete *j;
@@ -133,10 +133,10 @@ void LayoutArray::resizeGrid(int w, int h)
         mSizes[0].resize(w, Layout::AUTO_DEF);
     }
 
-    for (std::vector< std::vector< LayoutCell * > >::iterator
+    for (auto
          i = mCells.begin(), i_end = mCells.end(); i != i_end; ++i)
     {
-        i->resize(w, NULL);
+        i->resize(w, nullptr);
     }
 }
 

@@ -51,12 +51,12 @@ class KeyListModel : public gcn::ListModel
         /**
          * Returns the number of elements in container.
          */
-        int getNumberOfElements() { return keyboard.KEY_TOTAL; }
+        int getNumberOfElements() override { return keyboard.KEY_TOTAL; }
 
         /**
          * Returns element from container.
          */
-        std::string getElementAt(int i) { return mKeyFunctions[i]; }
+        std::string getElementAt(int i) override { return mKeyFunctions[i]; }
 
         /**
          * Sets element from container.
@@ -83,7 +83,7 @@ Setup_Keyboard::Setup_Keyboard():
     mKeyList->addActionListener(this);
     mKeyList->setFont(monoFont);
 
-    ScrollArea *scrollArea = new ScrollArea(mKeyList);
+    auto *scrollArea = new ScrollArea(mKeyList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mAssignKeyButton = new Button(_("Assign"), "assign", this);

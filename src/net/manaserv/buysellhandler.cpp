@@ -57,7 +57,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
     {
         case GPMSG_NPC_BUY:
         {
-            BuyDialog* dialog = new BuyDialog(npcId);
+            auto* dialog = new BuyDialog(npcId);
 
             dialog->reset();
             dialog->setMoney(PlayerInfo::getAttribute(MONEY));
@@ -74,7 +74,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
 
         case GPMSG_NPC_SELL:
         {
-            SellDialog* dialog = new SellDialog(npcId);
+            auto* dialog = new SellDialog(npcId);
 
             dialog->reset();
             dialog->setMoney(PlayerInfo::getAttribute(MONEY));

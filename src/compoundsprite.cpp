@@ -30,8 +30,8 @@
 #include <SDL.h>
 
 CompoundSprite::CompoundSprite():
-        mImage(NULL),
-        mAlphaImage(NULL),
+        mImage(nullptr),
+        mAlphaImage(nullptr),
         mWidth(0),
         mHeight(0),
         mOffsetX(0),
@@ -187,7 +187,7 @@ void CompoundSprite::removeSprite(int layer)
         return;
 
     delete mSprites.at(layer);
-    mSprites.at(layer) = NULL;
+    mSprites.at(layer) = nullptr;
     mNeedsRedraw = true;
 }
 

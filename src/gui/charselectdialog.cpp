@@ -74,7 +74,7 @@ class CharDeleteConfirm : public ConfirmDialog
         {
         }
 
-        void action(const gcn::ActionEvent &event)
+        void action(const gcn::ActionEvent &event) override
         {
             if (event.getId() == "yes")
                 mMaster->attemptCharacterDelete(mIndex);
@@ -97,7 +97,7 @@ class CharacterDisplay : public Container
         Net::Character *getCharacter() const
         { return mCharacter; }
 
-        void requestFocus();
+        void requestFocus() override;
 
         void setActive(bool active);
 
@@ -117,8 +117,8 @@ class CharacterDisplay : public Container
 CharSelectDialog::CharSelectDialog(LoginData *loginData):
     Window(_("Account and Character Management")),
     mLocked(false),
-    mUnregisterButton(0),
-    mChangeEmailButton(0),
+    mUnregisterButton(nullptr),
+    mChangeEmailButton(nullptr),
     mCharacterEntries(0),
     mLoginData(loginData),
     mCharHandler(Net::getCharHandler())
@@ -203,7 +203,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
                  && !mCharacterEntries[selected]->getCharacter())
         {
             // Start new character dialog
-            CharCreateDialog *charCreateDialog =
+            auto *charCreateDialog =
                     new CharCreateDialog(this, selected);
             mCharHandler->setCharCreateDialog(charCreateDialog);
         }
@@ -273,7 +273,7 @@ void CharSelectDialog::setCharacters(const Net::Characters &characters)
     std::vector<CharacterDisplay*>::iterator iter, iter_end;
     for (iter = mCharacterEntries.begin(), iter_end = mCharacterEntries.end();
          iter != iter_end; ++iter)
-        (*iter)->setCharacter(0);
+        (*iter)->setCharacter(nullptr);
 
     Net::Characters::const_iterator i, i_end = characters.end();
     for (i = characters.begin(); i != i_end; ++i)
@@ -347,7 +347,7 @@ bool CharSelectDialog::selectByName(const std::string &name,
 
 
 CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
-    mCharacter(0),
+    mCharacter(nullptr),
     mPlayerBox(new PlayerBox)
 {
     mButton = new Button("", "go", charSelectDialog);
@@ -376,7 +376,7 @@ void CharacterDisplay::setCharacter(Net::Character *character)
         return;
 
     mCharacter = character;
-    mPlayerBox->setPlayer(character ? character->dummy : 0);
+    mPlayerBox->setPlayer(character ? character->dummy : nullptr);
     update();
 }
 

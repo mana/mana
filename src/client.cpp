@@ -175,19 +175,19 @@ bool isDoubleClick(int selected)
 }
 
 
-Client *Client::mInstance = 0;
+Client *Client::mInstance = nullptr;
 
 Client::Client(const Options &options):
     mOptions(options),
-    mGame(0),
-    mCurrentDialog(0),
-    mQuitDialog(0),
-    mDesktop(0),
-    mSetupButton(0),
+    mGame(nullptr),
+    mCurrentDialog(nullptr),
+    mQuitDialog(nullptr),
+    mDesktop(nullptr),
+    mSetupButton(nullptr),
     mState(STATE_CHOOSE_SERVER),
     mOldState(STATE_START),
     mStateAfterOkDialog(mState),
-    mIcon(0),
+    mIcon(nullptr),
     mLogicCounterId(0),
     mSecondsCounterId(0),
     mLimitFps(false)
@@ -419,8 +419,8 @@ Client::Client(const Options &options):
 
     // Initialize logic and seconds counters
     tick_time = 0;
-    mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, NULL);
-    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
+    mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, nullptr);
+    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, nullptr);
 
     // Initialize frame limiting
     SDL_initFramerate(&mFpsManager);
@@ -470,7 +470,7 @@ Client::~Client()
 
     delete logger;
 
-    mInstance = 0;
+    mInstance = nullptr;
 }
 
 int Client::exec()
@@ -567,7 +567,7 @@ int Client::exec()
         else if (mOldState == STATE_START ||
                  (mOldState == STATE_GAME && mState != STATE_GAME))
         {
-            gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+            auto *top = static_cast<gcn::Container*>(gui->getTop());
 
             mDesktop = new Desktop;
             top->add(mDesktop);
@@ -598,7 +598,7 @@ int Client::exec()
             if (mOldState == STATE_GAME)
             {
                 delete mGame;
-                mGame = 0;
+                mGame = nullptr;
             }
 
             mOldState = mState;
@@ -607,7 +607,7 @@ int Client::exec()
             if (mCurrentDialog)
             {
                 delete mCurrentDialog;
-                mCurrentDialog = NULL;
+                mCurrentDialog = nullptr;
             }
             // State has changed, while the quitDialog was active, it might
             // not be correct anymore
@@ -702,7 +702,7 @@ int Client::exec()
                             if (mOptions.chooseDefault)
                             {
                                 ((WorldSelectDialog*) mCurrentDialog)->action(
-                                    gcn::ActionEvent(NULL, "ok"));
+                                    gcn::ActionEvent(nullptr, "ok"));
                             }
                         }
                     }
@@ -766,7 +766,7 @@ int Client::exec()
                       break;
                       default:
                         // Nothing
-                        itemDb = 0;
+                        itemDb = nullptr;
                       break;
                     }
                     assert(itemDb);
@@ -846,10 +846,10 @@ int Client::exec()
 
                     delete mSetupButton;
                     delete mDesktop;
-                    mSetupButton = NULL;
-                    mDesktop = NULL;
+                    mSetupButton = nullptr;
+                    mDesktop = nullptr;
 
-                    mCurrentDialog = NULL;
+                    mCurrentDialog = nullptr;
 
                     logger->log("State: GAME");
                     mGame = new Game;
@@ -1010,7 +1010,7 @@ void Client::showOkDialog(const std::string &title,
                           const std::string &message,
                           State state)
 {
-    OkDialog *okDialog = new OkDialog(title, message);
+    auto *okDialog = new OkDialog(title, message);
     okDialog->addActionListener(this);
     mStateAfterOkDialog = state;
 }
@@ -1036,7 +1036,7 @@ void Client::event(Event::Channel channel, const Event &event)
 
 void Client::action(const gcn::ActionEvent &event)
 {
-    Window *window = 0;
+    Window *window = nullptr;
 
     if (event.getId() == "Setup")
         window = setupWindow;
@@ -1218,7 +1218,7 @@ void Client::initConfiguration()
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
-    FILE *configFile = 0;
+    FILE *configFile = nullptr;
     std::string configPath;
 
     configPath = mConfigDir + "/config.xml";

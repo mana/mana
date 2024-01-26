@@ -57,12 +57,12 @@ class Window : public gcn::Window, gcn::WidgetListener
          * @param skin    The location where the window's skin XML can be found.
          */
         Window(const std::string &caption = "Window", bool modal = false,
-               Window *parent = NULL, const std::string &skin = "window.xml");
+               Window *parent = nullptr, const std::string &skin = "window.xml");
 
         /**
          * Destructor. Deletes all the added widgets.
          */
-        ~Window();
+        ~Window() override;
 
         /**
          * Sets the window container to be used by new windows.
@@ -72,7 +72,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Draws the window.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Sets the size of this window.
@@ -100,12 +100,12 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Called whenever the widget changes size.
          */
-        void widgetResized(const gcn::Event &event);
+        void widgetResized(const gcn::Event &event) override;
 
         /**
          * Called whenever the widget is hidden.
          */
-        virtual void widgetHidden(const gcn::Event &event);
+        void widgetHidden(const gcn::Event &event) override;
 
         /**
          * Sets whether or not the window has a close button.
@@ -215,31 +215,31 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Starts window resizing when appropriate.
          */
-        void mousePressed(gcn::MouseEvent &event);
+        void mousePressed(gcn::MouseEvent &event) override;
 
         /**
          * Implements window resizing and makes sure the window is not
          * dragged/resized outside of the screen.
          */
-        void mouseDragged(gcn::MouseEvent &event);
+        void mouseDragged(gcn::MouseEvent &event) override;
 
         /**
          * Implements custom cursor image changing context, based on mouse
          * relative position.
          */
-        void mouseMoved(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         /**
          * When the mouse button has been let go, this ensures that the mouse
          * custom cursor is restored back to it's standard image.
          */
-        void mouseReleased(gcn::MouseEvent &event);
+        void mouseReleased(gcn::MouseEvent &event) override;
 
         /**
          * When the mouse leaves the window this ensures that the custom cursor
          * is restored back to it's standard image.
          */
-        void mouseExited(gcn::MouseEvent &event);
+        void mouseExited(gcn::MouseEvent &event) override;
 
         /**
          * Sets the name of the window. This is not the window title.

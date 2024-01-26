@@ -96,7 +96,7 @@ void ItemContainer::logic()
 
 void ItemContainer::draw(gcn::Graphics *graphics)
 {
-    Graphics *g = static_cast<Graphics*>(graphics);
+    auto *g = static_cast<Graphics*>(graphics);
 
     g->setFont(getFont());
 
@@ -209,7 +209,7 @@ Item *ItemContainer::getSelectedItem() const
 
 Item *ItemContainer::getItemAt(int index) const
 {
-    std::map<int, Item*>::const_iterator i = mFilteredMap.find(index);
+    auto i = mFilteredMap.find(index);
     return i == mFilteredMap.end() ? 0 : i->second;
 }
 

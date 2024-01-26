@@ -37,12 +37,12 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 {
     public:
         Setup_Video();
-        ~Setup_Video();
+        ~Setup_Video() override;
 
-        void apply();
-        void cancel();
+        void apply() override;
+        void cancel() override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         static const char *overlayDetailToString(int detail = -1);
 

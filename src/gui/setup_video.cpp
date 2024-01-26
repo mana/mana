@@ -61,17 +61,17 @@ class ModeListModel : public gcn::ListModel
     public:
         ModeListModel();
 
-        virtual ~ModeListModel() { }
+        ~ModeListModel() override { }
 
         /**
          * Returns the number of elements in container.
          */
-        int getNumberOfElements() { return mVideoModes.size(); }
+        int getNumberOfElements() override { return mVideoModes.size(); }
 
         /**
          * Returns element from container.
          */
-        std::string getElementAt(int i) { return mVideoModes[i]; }
+        std::string getElementAt(int i) override { return mVideoModes[i]; }
 
         /**
          * Returns the index corresponding to the given video mode.
@@ -173,9 +173,9 @@ Setup_Video::Setup_Video():
 {
     setName(_("Video"));
 
-    Spacer *space = new Spacer(0,10);
+    auto *space = new Spacer(0,10);
 
-    ScrollArea *scrollArea = new ScrollArea(mModeList);
+    auto *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setSize(100, 200);
 

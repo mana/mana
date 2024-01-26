@@ -41,14 +41,14 @@ class Setup_Colors : public SetupTab,
 {
     public:
         Setup_Colors();
-        ~Setup_Colors();
+        ~Setup_Colors() override;
 
-        void apply();
-        void cancel();
+        void apply() override;
+        void cancel() override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
-        void valueChanged(const gcn::SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event) override;
 
     private:
         static const std::string rawmsg;

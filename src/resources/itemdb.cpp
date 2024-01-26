@@ -180,7 +180,7 @@ void ItemDB::unload()
     logger->log("Unloading item database...");
 
     delete mUnknown;
-    mUnknown = NULL;
+    mUnknown = nullptr;
 
     delete_all(mItemInfos);
     mItemInfos.clear();
@@ -330,7 +330,7 @@ void TaItemDB::init()
 
 void TaItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
 {
-    TaItemInfo *itemInfo = new TaItemInfo;
+    auto *itemInfo = new TaItemInfo;
 
     loadCommonRef(itemInfo, node, filename);
 
@@ -348,7 +348,7 @@ void TaItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
             continue;
         effect.push_back(strprintf(gettext(fields[i][1]), value));
     }
-    for (std::list<ItemStat>::iterator it = extraStats.begin();
+    for (auto it = extraStats.begin();
             it != extraStats.end(); it++)
     {
         int value = XML::getProperty(node, it->mTag.c_str(), 0);
@@ -421,7 +421,7 @@ void ManaServItemDB::init()
 
 void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
 {
-    ManaServItemInfo *itemInfo = new ManaServItemInfo;
+    auto *itemInfo = new ManaServItemInfo;
 
     loadCommonRef(itemInfo, node, filename);
 

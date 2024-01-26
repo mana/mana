@@ -63,7 +63,7 @@ class IntTextField : public TextField
         /**
          * Responds to key presses.
          */
-        void keyPressed(gcn::KeyEvent &event);
+        void keyPressed(gcn::KeyEvent &event) override;
 
     private:
         int mMin;            /**< Minimum value */

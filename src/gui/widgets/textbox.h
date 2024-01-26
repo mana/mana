@@ -52,7 +52,7 @@ class TextBox : public gcn::TextBox
         /**
          * Draws the text.
          */
-        void draw(gcn::Graphics *graphics)
+        void draw(gcn::Graphics *graphics) override
         {
             setForegroundColor(*mTextColor);
             gcn::TextBox::draw(graphics);

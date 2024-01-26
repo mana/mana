@@ -25,7 +25,7 @@
 
 #include <cstring>
 
-TextManager *textManager = 0;
+TextManager *textManager = nullptr;
 
 TextManager::TextManager()
 {
@@ -33,7 +33,7 @@ TextManager::TextManager()
 
 void TextManager::addText(Text *text)
 {
-    place(text, 0, text->mX, text->mY, text->mHeight);
+    place(text, nullptr, text->mX, text->mY, text->mHeight);
     mTextList.push_back(text);
 }
 
@@ -46,7 +46,7 @@ void TextManager::moveText(Text *text, int x, int y)
 
 void TextManager::removeText(const Text *text)
 {
-    for (TextList::iterator ptr = mTextList.begin(),
+    for (auto ptr = mTextList.begin(),
              pEnd = mTextList.end(); ptr != pEnd; ++ptr)
     {
         if (*ptr == text)
@@ -63,7 +63,7 @@ TextManager::~TextManager()
 
 void TextManager::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
-    for (TextList::iterator bPtr = mTextList.begin(), ePtr = mTextList.end();
+    for (auto bPtr = mTextList.begin(), ePtr = mTextList.end();
          bPtr != ePtr; ++bPtr)
     {
         (*bPtr)->draw(graphics, xOff, yOff);

@@ -51,12 +51,12 @@ Setup::Setup():
     setContentSize(width, height);
 
     static const char *buttonNames[] = {
-        N_("Apply"), N_("Cancel"), N_("Reset Windows"), 0
+        N_("Apply"), N_("Cancel"), N_("Reset Windows"), nullptr
     };
     int x = width;
     for (const char **curBtn = buttonNames; *curBtn; ++curBtn)
     {
-        Button *btn = new Button(gettext(*curBtn), *curBtn, this);
+        auto *btn = new Button(gettext(*curBtn), *curBtn, this);
         x -= btn->getWidth() + 5;
         btn->setPosition(x, height - btn->getHeight() - 5);
         add(btn);
@@ -66,7 +66,7 @@ Setup::Setup():
             mResetWindows = btn;
     }
 
-    TabbedArea *panel = new TabbedArea;
+    auto *panel = new TabbedArea;
     panel->setDimension(gcn::Rectangle(5, 5, width - 10, height - 40));
 
     mTabs.push_back(new Setup_Video);
@@ -77,7 +77,7 @@ Setup::Setup():
     mTabs.push_back(new Setup_Colors);
     mTabs.push_back(new Setup_Players);
 
-    for (std::list<SetupTab*>::iterator i = mTabs.begin(), i_end = mTabs.end();
+    for (auto i = mTabs.begin(), i_end = mTabs.end();
          i != i_end; ++i)
     {
         SetupTab *tab = *i;
@@ -86,7 +86,7 @@ Setup::Setup():
 
     add(panel);
 
-    Label *version = new Label(FULL_VERSION);
+    auto *version = new Label(FULL_VERSION);
     version->setPosition(9, height - version->getHeight() - 9);
     add(version);
 
@@ -119,7 +119,7 @@ void Setup::action(const gcn::ActionEvent &event)
         if (!statusWindow)
             return;
 
-        for (std::list<Window*>::iterator it = mWindowsToReset.begin();
+        for (auto it = mWindowsToReset.begin();
                 it != mWindowsToReset.end(); it++)
         {
             (*it)->resetToDefaultSize();

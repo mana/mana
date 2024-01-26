@@ -43,7 +43,7 @@
 
 #include <sys/time.h>
 
-ResourceManager *ResourceManager::instance = NULL;
+ResourceManager *ResourceManager::instance = nullptr;
 
 ResourceManager::ResourceManager()
   : mOldestOrphan(0)
@@ -56,13 +56,13 @@ ResourceManager::~ResourceManager()
     mResources.insert(mOrphanedResources.begin(), mOrphanedResources.end());
 
     // Release any remaining spritedefs first because they depend on image sets
-    ResourceIterator iter = mResources.begin();
+    auto iter = mResources.begin();
     while (iter != mResources.end())
     {
-        if (dynamic_cast<SpriteDef*>(iter->second) != 0)
+        if (dynamic_cast<SpriteDef*>(iter->second) != nullptr)
         {
             cleanUp(iter->second);
-            ResourceIterator toErase = iter;
+            auto toErase = iter;
             ++iter;
             mResources.erase(toErase);
         }
@@ -76,10 +76,10 @@ ResourceManager::~ResourceManager()
     iter = mResources.begin();
     while (iter != mResources.end())
     {
-        if (dynamic_cast<ImageSet*>(iter->second) != 0)
+        if (dynamic_cast<ImageSet*>(iter->second) != nullptr)
         {
             cleanUp(iter->second);
-            ResourceIterator toErase = iter;
+            auto toErase = iter;
             ++iter;
             mResources.erase(toErase);
         }
@@ -115,7 +115,7 @@ void ResourceManager::cleanUp(Resource *res)
 void ResourceManager::cleanOrphans()
 {
     timeval tv;
-    gettimeofday(&tv, NULL);
+    gettimeofday(&tv, nullptr);
     // Delete orphaned resources after 30 seconds.
     time_t oldest = tv.tv_sec;
     time_t threshold = oldest - 30;
@@ -123,7 +123,7 @@ void ResourceManager::cleanOrphans()
     if (mOrphanedResources.empty() || mOldestOrphan >= threshold)
         return;
 
-    ResourceIterator iter = mOrphanedResources.begin();
+    auto iter = mOrphanedResources.begin();
     while (iter != mOrphanedResources.end())
     {
         Resource *res = iter->second;
@@ -137,7 +137,7 @@ void ResourceManager::cleanOrphans()
         else
         {
             logger->log("ResourceManager::release(%s)", res->mIdPath.c_str());
-            ResourceIterator toErase = iter;
+            auto toErase = iter;
             ++iter;
             mOrphanedResources.erase(toErase);
             delete res; // delete only after removal from list, to avoid issues in recursion
@@ -239,20 +239,20 @@ bool ResourceManager::addResource(const std::string &idPath,
 
 Resource *ResourceManager::get(const std::string &idPath)
 {
-    ResourceIterator resIter = mResources.find(idPath);
+    auto resIter = mResources.find(idPath);
     if (resIter != mResources.end())
     {
         resIter->second->incRef();
         return resIter->second;
     }
-    return 0;
+    return nullptr;
 }
 
 Resource *ResourceManager::get(const std::string &idPath, generator fun,
                                void *data)
 {
     // Check if the id exists, and return the value if it does.
-    ResourceIterator resIter = mResources.find(idPath);
+    auto resIter = mResources.find(idPath);
     if (resIter != mResources.end())
     {
         resIter->second->incRef();
@@ -291,10 +291,10 @@ struct ResourceLoader
 
     static Resource *load(void *v)
     {
-        ResourceLoader *l = static_cast< ResourceLoader * >(v);
+        auto *l = static_cast< ResourceLoader * >(v);
         SDL_RWops *rw = PHYSFSRWOPS_openRead(l->path.c_str());
         if (!rw)
-            return NULL;
+            return nullptr;
         Resource *res = l->fun(rw);
         return res;
     }
@@ -322,10 +322,10 @@ struct DyedImageLoader
     std::string path;
     static Resource *load(void *v)
     {
-        DyedImageLoader *l = static_cast< DyedImageLoader * >(v);
+        auto *l = static_cast< DyedImageLoader * >(v);
         std::string path = l->path;
         std::string::size_type p = path.find('|');
-        Dye *d = NULL;
+        Dye *d = nullptr;
         if (p != std::string::npos)
         {
             d = new Dye(path.substr(p + 1));
@@ -335,7 +335,7 @@ struct DyedImageLoader
         if (!rw)
         {
             delete d;
-            return NULL;
+            return nullptr;
         }
         Resource *res = d ? Image::load(rw, *d)
                           : Image::load(rw);
@@ -357,10 +357,10 @@ struct ImageSetLoader
     int w, h;
     static Resource *load(void *v)
     {
-        ImageSetLoader *l = static_cast< ImageSetLoader * >(v);
+        auto *l = static_cast< ImageSetLoader * >(v);
         Image *img = l->manager->getImage(l->path);
-        if (!img) return NULL;
-        ImageSet *res = new ImageSet(img, l->w, l->h);
+        if (!img) return nullptr;
+        auto *res = new ImageSet(img, l->w, l->h);
         img->decRef();
         return res;
     }
@@ -381,7 +381,7 @@ struct SpriteDefLoader
     int variant;
     static Resource *load(void *v)
     {
-        SpriteDefLoader *l = static_cast< SpriteDefLoader * >(v);
+        auto *l = static_cast< SpriteDefLoader * >(v);
         return SpriteDef::load(l->path, l->variant);
     }
 };
@@ -396,13 +396,13 @@ SpriteDef *ResourceManager::getSprite(const std::string &path, int variant)
 
 void ResourceManager::release(Resource *res)
 {
-    ResourceIterator resIter = mResources.find(res->mIdPath);
+    auto resIter = mResources.find(res->mIdPath);
 
     // The resource has to exist
     assert(resIter != mResources.end() && resIter->second == res);
 
     timeval tv;
-    gettimeofday(&tv, NULL);
+    gettimeofday(&tv, nullptr);
     time_t timestamp = tv.tv_sec;
 
     res->mTimeStamp = timestamp;
@@ -429,7 +429,7 @@ ResourceManager *ResourceManager::getInstance()
 void ResourceManager::deleteInstance()
 {
     delete instance;
-    instance = NULL;
+    instance = nullptr;
 }
 
 void *ResourceManager::loadFile(const std::string &filename, int &filesize,
@@ -439,11 +439,11 @@ void *ResourceManager::loadFile(const std::string &filename, int &filesize,
     PHYSFS_file *file = PHYSFS_openRead(filename.c_str());
 
     // If the handler is an invalid pointer indicate failure
-    if (file == NULL)
+    if (file == nullptr)
     {
         logger->log("Warning: Failed to load %s: %s",
                 filename.c_str(), PHYSFS_getLastError());
-        return NULL;
+        return nullptr;
     }
 
     // Log the real dir of the file
@@ -471,11 +471,11 @@ void *ResourceManager::loadFile(const std::string &filename, int &filesize,
             inflateMemory((unsigned char*) buffer, filesize, inflated);
         free(buffer);
 
-        if (inflated == NULL)
+        if (inflated == nullptr)
         {
             logger->log("Could not decompress file: %s",
                         filename.c_str());
-            return NULL;
+            return nullptr;
         }
 
         filesize = inflatedSize;
@@ -539,7 +539,7 @@ std::vector<std::string> ResourceManager::loadTextFile(
 
 SDL_Surface *ResourceManager::loadSDLSurface(const std::string &filename)
 {
-    SDL_Surface *surface = 0;
+    SDL_Surface *surface = nullptr;
     if (SDL_RWops *rw = PHYSFSRWOPS_openRead(filename.c_str()))
         surface = IMG_Load_RW(rw, 1);
     return surface;
@@ -552,7 +552,7 @@ void ResourceManager::scheduleDelete(SDL_Surface* surface)
 
 void ResourceManager::clearScheduled()
 {
-    for (std::set<SDL_Surface*>::iterator i = mDeletedSurfaces.begin(),
+    for (auto i = mDeletedSurfaces.begin(),
          i_end = mDeletedSurfaces.end(); i != i_end; ++i)
     {
         SDL_FreeSurface(*i);

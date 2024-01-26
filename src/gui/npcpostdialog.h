@@ -34,14 +34,14 @@ class NpcPostDialog : public Window, public gcn::ActionListener
 public:
     NpcPostDialog(int npcId);
 
-    ~NpcPostDialog();
+    ~NpcPostDialog() override;
 
     /**
      * Called when receiving actions from the widgets.
      */
-    void action(const gcn::ActionEvent &event);
+    void action(const gcn::ActionEvent &event) override;
 
-    void setVisible(bool visible);
+    void setVisible(bool visible) override;
 
     /**
      * Closes all instances.
@@ -49,7 +49,7 @@ public:
     static void closeAll();
 
 private:
-    typedef std::list<NpcPostDialog*> DialogList;
+    using DialogList = std::list<NpcPostDialog *>;
     static DialogList instances;
 
     int mNpcId;

@@ -56,9 +56,9 @@ void WrongDataNoticeListener::action(const gcn::ActionEvent &event)
 
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window(_("Register")),
-    mEmailField(0),
-    mMaleButton(0),
-    mFemaleButton(0),
+    mEmailField(nullptr),
+    mMaleButton(nullptr),
+    mFemaleButton(nullptr),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
@@ -215,7 +215,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
                 mWrongDataNoticeListener->setTarget(this->mPasswordField);
             }
 
-            OkDialog *dlg = new OkDialog(_("Error"), errorMessage);
+            auto *dlg = new OkDialog(_("Error"), errorMessage);
             dlg->addActionListener(mWrongDataNoticeListener);
         }
         else

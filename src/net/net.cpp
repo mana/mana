@@ -44,19 +44,19 @@
 
 #include "utils/gettext.h"
 
-Net::AdminHandler *adminHandler = NULL;
-Net::CharHandler *charHandler = NULL;
-Net::ChatHandler *chatHandler = NULL;
-Net::GeneralHandler *generalHandler = NULL;
-Net::InventoryHandler *inventoryHandler = NULL;
-Net::LoginHandler *loginHandler = NULL;
-Net::GameHandler *gameHandler = NULL;
-Net::GuildHandler *guildHandler = NULL;
-Net::NpcHandler *npcHandler = NULL;
-Net::PartyHandler *partyHandler = NULL;
-Net::PlayerHandler *playerHandler = NULL;
-Net::SpecialHandler *specialHandler = NULL;
-Net::TradeHandler *tradeHandler = NULL;
+Net::AdminHandler *adminHandler = nullptr;
+Net::CharHandler *charHandler = nullptr;
+Net::ChatHandler *chatHandler = nullptr;
+Net::GeneralHandler *generalHandler = nullptr;
+Net::InventoryHandler *inventoryHandler = nullptr;
+Net::LoginHandler *loginHandler = nullptr;
+Net::GameHandler *gameHandler = nullptr;
+Net::GuildHandler *guildHandler = nullptr;
+Net::NpcHandler *npcHandler = nullptr;
+Net::PartyHandler *partyHandler = nullptr;
+Net::PlayerHandler *playerHandler = nullptr;
+Net::SpecialHandler *specialHandler = nullptr;
+Net::TradeHandler *tradeHandler = nullptr;
 
 Net::AdminHandler *Net::getAdminHandler()
 {
@@ -141,13 +141,13 @@ void connectToServer(ServerInfo &server)
             logger->error(_("Unknown Server Type! Exiting."));
     }
 
-    if (networkType == server.type && getGeneralHandler() != NULL)
+    if (networkType == server.type && getGeneralHandler() != nullptr)
     {
         getGeneralHandler()->reload();
     }
     else
     {
-        if (networkType != ServerInfo::UNKNOWN && getGeneralHandler() != NULL)
+        if (networkType != ServerInfo::UNKNOWN && getGeneralHandler() != nullptr)
         {
             getGeneralHandler()->unload();
         }

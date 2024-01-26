@@ -37,10 +37,10 @@ void Animation::addFrame(Image *image, int delay, int offsetX, int offsetY)
 
 void Animation::addTerminator()
 {
-    addFrame(NULL, 0, 0, 0);
+    addFrame(nullptr, 0, 0, 0);
 }
 
 bool Animation::isTerminator(const Frame &candidate)
 {
-    return (candidate.image == NULL);
+    return (candidate.image == nullptr);
 }

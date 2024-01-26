@@ -38,8 +38,8 @@ struct Position
     int y;
 };
 
-typedef std::list<Position> Path;
-typedef Path::iterator PathIterator;
+using Path = std::list<Position>;
+using PathIterator = Path::iterator;
 
 /**
  * Appends a string representation of a position to the output stream.

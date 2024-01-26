@@ -35,28 +35,28 @@ class RadioButton : public gcn::RadioButton
         RadioButton(const std::string &caption,const std::string &group,
                 bool marked = false);
 
-        ~RadioButton();
+        ~RadioButton() override;
 
         /**
          * Draws the radiobutton, not the caption.
          */
-        void drawBox(gcn::Graphics* graphics);
+        void drawBox(gcn::Graphics* graphics) override;
 
         /**
          * Implementation of the draw methods.
          * Thus, avoiding the rhomb around the radio button.
          */
-        void draw(gcn::Graphics* graphics);
+        void draw(gcn::Graphics* graphics) override;
 
         /**
          * Called when the mouse enteres the widget area.
          */
-        void mouseEntered(gcn::MouseEvent& event);
+        void mouseEntered(gcn::MouseEvent& event) override;
 
         /**
          * Called when the mouse leaves the widget area.
          */
-        void mouseExited(gcn::MouseEvent& event);
+        void mouseExited(gcn::MouseEvent& event) override;
 
     private:
         static int instances;

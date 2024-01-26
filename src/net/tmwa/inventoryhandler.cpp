@@ -107,8 +107,8 @@ InventoryHandler::InventoryHandler()
     handledMessages = _messages;
     inventoryHandler = this;
 
-    mStorage = 0;
-    mStorageWindow = 0;
+    mStorage = nullptr;
+    mStorageWindow = nullptr;
 
     listen(Event::ItemChannel);
 }
@@ -118,7 +118,7 @@ InventoryHandler::~InventoryHandler()
     if (mStorageWindow)
     {
         mStorageWindow->close();
-        mStorageWindow = 0;
+        mStorageWindow = nullptr;
     }
 
     delete mStorage;
@@ -312,8 +312,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 if (!mStorage)
                     mStorage = new Inventory(Inventory::STORAGE, size);
 
-                InventoryItems::iterator it = mInventoryItems.begin();
-                InventoryItems::iterator it_end = mInventoryItems.end();
+                auto it = mInventoryItems.begin();
+                auto it_end = mInventoryItems.end();
                 for (; it != it_end; it++)
                     mStorage->setItem((*it).slot, (*it).id, (*it).quantity);
                 mInventoryItems.clear();
@@ -359,11 +359,11 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             // Storage access has been closed
 
             // Storage window deletes itself
-            mStorageWindow = 0;
+            mStorageWindow = nullptr;
 
             mStorage->clear();
             delete mStorage;
-            mStorage = 0;
+            mStorage = nullptr;
             break;
 
         case SMSG_PLAYER_EQUIPMENT:

@@ -50,8 +50,8 @@ struct Stat
     int expNeed;
 };
 
-typedef std::map<int, int> IntMap;
-typedef std::map<int, Stat> StatMap;
+using IntMap = std::map<int, int>;
+using StatMap = std::map<int, Stat>;
 
 /**
  * Backend for core player information.
@@ -84,7 +84,7 @@ struct Special
     int recharge;
 };
 
-typedef std::map<int, Special> SpecialsMap;
+using SpecialsMap = std::map<int, Special>;
 
 /**
  * A database like namespace which holds global info about the localplayer

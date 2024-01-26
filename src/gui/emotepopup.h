@@ -50,15 +50,15 @@ class EmotePopup : public Popup
          */
         EmotePopup();
 
-        virtual ~EmotePopup();
+        ~EmotePopup() override;
 
         /**
          * Draws the emotes.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
-        void mousePressed(gcn::MouseEvent &event);
-        void mouseMoved(gcn::MouseEvent &event);
+        void mousePressed(gcn::MouseEvent &event) override;
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         /**
          * Returns the selected emote.
@@ -113,7 +113,7 @@ class EmotePopup : public Popup
         int mRowCount;
         int mColumnCount;
 
-        typedef std::list<gcn::SelectionListener*> Listeners;
+        using Listeners = std::list<gcn::SelectionListener *>;
 
         Listeners mListeners;
 

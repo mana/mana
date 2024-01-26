@@ -47,7 +47,7 @@ class Spacer : public gcn::Widget
         /**
          * Draws nothing.
          */
-        void draw(gcn::Graphics *g) {}
+        void draw(gcn::Graphics *g) override {}
 };
 
 #endif // SPACER_H

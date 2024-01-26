@@ -135,7 +135,7 @@ class Inventory
         { return mType == INVENTORY; }
 
     protected:
-        typedef std::list<InventoryListener*> InventoryListenerList;
+        using InventoryListenerList = std::list<InventoryListener *>;
         InventoryListenerList mInventoryListeners;
 
         void distributeSlotsChangedEvent();

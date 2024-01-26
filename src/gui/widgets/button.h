@@ -48,12 +48,12 @@ class Button : public gcn::Button
         Button(const std::string &caption, const std::string &actionEventId,
                gcn::ActionListener *listener);
 
-        ~Button();
+        ~Button() override;
 
         /**
          * Draws the button.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Update the alpha value to the button components.
@@ -82,9 +82,9 @@ class Button : public gcn::Button
         void setButtonPopupText(const std::string &text)
         { mPopupText = text; }
 
-        void logic();
-        void mouseMoved(gcn::MouseEvent &event);
-        void mouseExited(gcn::MouseEvent &event);
+        void logic() override;
+        void mouseMoved(gcn::MouseEvent &event) override;
+        void mouseExited(gcn::MouseEvent &event) override;
 
     private:
         void init();

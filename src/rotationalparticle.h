@@ -38,9 +38,9 @@ class RotationalParticle : public ImageParticle
         RotationalParticle(Map *map, xmlNodePtr animationNode,
                            const std::string& dyePalettes = std::string());
 
-        ~RotationalParticle();
+        ~RotationalParticle() override;
 
-        virtual bool update();
+        bool update() override;
 
     private:
         SimpleAnimation *mAnimation; /**< Used animation for this particle */

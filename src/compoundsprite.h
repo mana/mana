@@ -32,43 +32,43 @@ class CompoundSprite : public Sprite
 public:
     CompoundSprite();
 
-    ~CompoundSprite();
+    ~CompoundSprite() override;
 
-    virtual bool reset();
+    bool reset() override;
 
-    virtual bool play(std::string action);
+    bool play(std::string action) override;
 
-    virtual bool update(int time);
+    bool update(int time) override;
 
-    virtual bool draw(Graphics *graphics, int posX, int posY) const;
+    bool draw(Graphics *graphics, int posX, int posY) const override;
 
     /**
      * Gets the width in pixels of the first sprite in the list.
      */
-    virtual int getWidth() const
+    int getWidth() const override
     { return mWidth; }
 
     /**
      * Gets the height in pixels of the first sprite in the list.
      */
-    virtual int getHeight() const
+    int getHeight() const override
     { return mHeight; }
 
-    int getOffsetX() const
+    int getOffsetX() const override
     { return mOffsetX; }
 
-    int getOffsetY() const
+    int getOffsetY() const override
     { return mOffsetY; }
 
-    virtual const Image *getImage() const;
+    const Image *getImage() const override;
 
-    virtual bool setDirection(SpriteDirection direction);
+    bool setDirection(SpriteDirection direction) override;
 
     int getNumberOfLayers() const;
 
     virtual bool drawnWhenBehind() const;
 
-    int getDuration() const;
+    int getDuration() const override;
 
     size_t size() const
     { return mSprites.size(); }
@@ -90,8 +90,8 @@ public:
     { mNeedsRedraw = true; }
 
 private:
-    typedef std::vector<Sprite*>::iterator SpriteIterator;
-    typedef std::vector<Sprite*>::const_iterator SpriteConstIterator;
+    using SpriteIterator = std::vector<Sprite *>::iterator;
+    using SpriteConstIterator = std::vector<Sprite *>::const_iterator;
 
     void redraw() const;
 

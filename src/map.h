@@ -37,8 +37,8 @@ class Particle;
 class SimpleAnimation;
 class Tileset;
 
-typedef std::vector<Tileset*> Tilesets;
-typedef std::vector<MapLayer*> Layers;
+using Tilesets = std::vector<Tileset *>;
+using Layers = std::vector<MapLayer *>;
 
 const int DEFAULT_TILE_LENGTH = 32;
 
@@ -181,7 +181,7 @@ class Map : public Properties
          */
         Map(int width, int height, int tileWidth, int tileHeight);
 
-        ~Map();
+        ~Map() override;
 
         /**
          * Initialize ambient layers. Has to be called after all the properties

@@ -37,13 +37,13 @@ void TableModel::removeListener(TableModelListener *listener)
 
 void TableModel::signalBeforeUpdate()
 {
-    for (std::set<TableModelListener *>::const_iterator it = listeners.begin(); it != listeners.end(); it++)
+    for (auto it = listeners.begin(); it != listeners.end(); it++)
         (*it)->modelUpdated(false);
 }
 
 void TableModel::signalAfterUpdate()
 {
-    for (std::set<TableModelListener *>::const_iterator it = listeners.begin(); it != listeners.end(); it++)
+    for (auto it = listeners.begin(); it != listeners.end(); it++)
         (*it)->modelUpdated(true);
 }
 

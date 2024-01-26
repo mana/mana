@@ -54,7 +54,7 @@ Sound::Sound():
     mSfxVolume(100),
     mNotificationsVolume(100),
     mMusicVolume(60),
-    mMusic(NULL)
+    mMusic(nullptr)
 {
     // This set up our callback function used to
     // handle fade outs endings.
@@ -65,7 +65,7 @@ Sound::Sound():
 Sound::~Sound()
 {
     // Unlink the callback function.
-    Mix_HookMusicFinished(NULL);
+    Mix_HookMusicFinished(nullptr);
 }
 
 void Sound::init()
@@ -252,7 +252,7 @@ void Sound::logic()
         if (mMusic)
         {
             mMusic->decRef();
-            mMusic = 0;
+            mMusic = nullptr;
         }
         sFadingOutEnded = false;
 
@@ -327,5 +327,5 @@ void Sound::haltMusic()
 
     Mix_HaltMusic();
     mMusic->decRef();
-    mMusic = 0;
+    mMusic = nullptr;
 }

@@ -127,7 +127,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
             for (int i = 0; i < worldCount; i++)
             {
-                WorldInfo *world = new WorldInfo;
+                auto *world = new WorldInfo;
 
                 world->address = msg.readInt32();
                 world->port = msg.readInt16();

@@ -46,7 +46,7 @@ unsigned char *php3_base64_encode(const unsigned char *string, int length, int *
 {
     const unsigned char *current = string;
     int i = 0;
-    unsigned char *result = (unsigned char *)malloc(((length + 3 - length % 3) * 4 / 3 + 1) * sizeof(char));
+    auto *result = (unsigned char *)malloc(((length + 3 - length % 3) * 4 / 3 + 1) * sizeof(char));
 
     while (length > 2)
     { /* keep going until we have less than 24 bits */
@@ -91,11 +91,11 @@ unsigned char *php3_base64_decode(const unsigned char *string, int length, int *
     int ch, i = 0, j = 0, k;
     char *chp;
 
-    unsigned char *result = (unsigned char *)malloc(length + 1);
+    auto *result = (unsigned char *)malloc(length + 1);
 
-    if (result == NULL)
+    if (result == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     /* run through the whole string, converting as we go */
@@ -113,7 +113,7 @@ unsigned char *php3_base64_decode(const unsigned char *string, int length, int *
         if (ch == ' ') ch = '+';
 
         chp = strchr(base64_table, ch);
-        if (chp == NULL) continue;
+        if (chp == nullptr) continue;
         ch = chp - base64_table;
 
         switch(i % 4)
@@ -145,7 +145,7 @@ unsigned char *php3_base64_decode(const unsigned char *string, int length, int *
             case 0:
             case 1:
                 free(result);
-                return NULL;
+                return nullptr;
             case 2:
                 k++;
             case 3:

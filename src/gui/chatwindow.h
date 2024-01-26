@@ -85,13 +85,13 @@ class ChatWindow : public Window,
         /**
          * Destructor: used to write back values to the config file
          */
-        ~ChatWindow();
+        ~ChatWindow() override;
 
         /**
          * Reset the chat window and recorder window attached to it to their
          * default positions.
          */
-        void resetToDefaultSize();
+        void resetToDefaultSize() override;
 
         /**
          * Gets the focused tab.
@@ -121,7 +121,7 @@ class ChatWindow : public Window,
         /**
          * Performs action.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Request focus for typing chat message.
@@ -150,12 +150,12 @@ class ChatWindow : public Window,
         void addItemText(const std::string &item);
 
         /** Override to reset mTmpVisible */
-        void setVisible(bool visible);
+        void setVisible(bool visible) override;
 
-	void mousePressed(gcn::MouseEvent &event);
-	void mouseDragged(gcn::MouseEvent &event);
+	void mousePressed(gcn::MouseEvent &event) override;
+	void mouseDragged(gcn::MouseEvent &event) override;
 
-	void event(Event::Channel channel, const Event &event);
+	void event(Event::Channel channel, const Event &event) override;
 
         /**
          * Scrolls the chat window
@@ -214,7 +214,7 @@ class ChatWindow : public Window,
         /** Tabbed area for holding each channel. */
         TabbedArea *mChatTabs;
 
-        typedef std::map<const std::string, ChatTab*> TabMap;
+        using TabMap = std::map<const std::string, ChatTab *>;
         /** Manage whisper tabs */
         TabMap mWhispers;
 

@@ -76,7 +76,7 @@ void NpcHandler::handleMessage(MessageIn &msg)
     }
 
     int npcId = msg.readInt32();
-    Event *event = 0;
+    Event *event = nullptr;
 
     switch (msg.getId())
     {

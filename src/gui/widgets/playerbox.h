@@ -39,9 +39,9 @@ class PlayerBox : public gcn::ScrollArea
          * Constructor. Takes the initial player character that this box should
          * display, which defaults to <code>NULL</code>.
          */
-        PlayerBox(const Being *being = 0);
+        PlayerBox(const Being *being = nullptr);
 
-        ~PlayerBox();
+        ~PlayerBox() override;
 
         /**
          * Sets a new player character to be displayed by this box. Setting the
@@ -54,12 +54,12 @@ class PlayerBox : public gcn::ScrollArea
         /**
          * Draws the scroll area.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Draws the background and border of the scroll area.
          */
-        void drawFrame(gcn::Graphics *graphics);
+        void drawFrame(gcn::Graphics *graphics) override;
 
     private:
         const Being *mBeing; /**< The character used for display */

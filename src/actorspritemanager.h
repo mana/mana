@@ -31,9 +31,9 @@
 class LocalPlayer;
 class Map;
 
-typedef std::set<ActorSprite*> ActorSprites;
-typedef ActorSprites::iterator ActorSpritesIterator;
-typedef ActorSprites::const_iterator ActorSpritesConstIterator;
+using ActorSprites = std::set<ActorSprite *>;
+using ActorSpritesIterator = ActorSprites::iterator;
+using ActorSpritesConstIterator = ActorSprites::const_iterator;
 
 class ActorSpriteManager
 {
@@ -115,7 +115,7 @@ class ActorSpriteManager
          */
         Being *findNearestLivingBeing(int x, int y, int maxTileDist,
                                       ActorSprite::Type type = Being::UNKNOWN,
-                                      Being *excluded = 0) const;
+                                      Being *excluded = nullptr) const;
 
         /**
          * Returns a being nearest to another being.

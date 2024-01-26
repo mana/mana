@@ -59,7 +59,7 @@ class Icon : public gcn::Widget
         /**
          * Draws the Icon.
          */
-        void draw(gcn::Graphics *g);
+        void draw(gcn::Graphics *g) override;
 
     private:
         Image *mImage;

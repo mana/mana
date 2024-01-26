@@ -49,7 +49,7 @@ Resource *Music::load(SDL_RWops *rw)
     }
 #else
     SDL_FreeRW(rw);
-    return 0;
+    return nullptr;
 #endif
 }
 

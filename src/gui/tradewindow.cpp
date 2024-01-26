@@ -86,13 +86,13 @@ TradeWindow::TradeWindow():
     mMyItemContainer = new ItemContainer(mMyInventory.get());
     mMyItemContainer->addSelectionListener(this);
 
-    ScrollArea *myScroll = new ScrollArea(mMyItemContainer);
+    auto *myScroll = new ScrollArea(mMyItemContainer);
     myScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mPartnerItemContainer = new ItemContainer(mPartnerInventory.get());
     mPartnerItemContainer->addSelectionListener(this);
 
-    ScrollArea *partnerScroll = new ScrollArea(mPartnerItemContainer);
+    auto *partnerScroll = new ScrollArea(mPartnerItemContainer);
     partnerScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mMoneyLabel = new Label(strprintf(_("You get %s"), ""));

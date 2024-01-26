@@ -50,10 +50,10 @@ class GuiTable : public gcn::Widget,
     friend class GuiTableActionListener;
 
 public:
-    GuiTable(TableModel * initial_model = NULL, gcn::Color background = 0xffffff,
+    GuiTable(TableModel * initial_model = nullptr, gcn::Color background = 0xffffff,
              bool opacity = true);
 
-    virtual ~GuiTable();
+    ~GuiTable() override;
 
     /**
      * Retrieves the active table model
@@ -101,18 +101,18 @@ public:
     void setLinewiseSelection(bool linewise);
 
     // Inherited from Widget
-    virtual void draw(gcn::Graphics* graphics);
+    void draw(gcn::Graphics* graphics) override;
 
     virtual gcn::Widget *getWidgetAt(int x, int y) const;
 
-    virtual void moveToTop(gcn::Widget *child);
+    void moveToTop(gcn::Widget *child) override;
 
-    virtual void moveToBottom(gcn::Widget *child);
+    void moveToBottom(gcn::Widget *child) override;
 
-    virtual void _setFocusHandler(gcn::FocusHandler* focusHandler);
+    void _setFocusHandler(gcn::FocusHandler* focusHandler) override;
 
     // Inherited from KeyListener
-    virtual void keyPressed(gcn::KeyEvent& keyEvent);
+    void keyPressed(gcn::KeyEvent& keyEvent) override;
 
     /**
      * Sets the table to be opaque, that is sets the table
@@ -131,16 +131,16 @@ public:
     virtual bool isOpaque() const {return mOpaque;}
 
     // Inherited from MouseListener
-    virtual void mousePressed(gcn::MouseEvent& mouseEvent);
+    void mousePressed(gcn::MouseEvent& mouseEvent) override;
 
-    virtual void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
+    void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent) override;
 
-    virtual void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
+    void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent) override;
 
-    virtual void mouseDragged(gcn::MouseEvent& mouseEvent);
+    void mouseDragged(gcn::MouseEvent& mouseEvent) override;
 
     // Constraints inherited from TableModelListener
-    virtual void modelUpdated(bool);
+    void modelUpdated(bool) override;
 
 protected:
     /** Frees all action listeners on inner widgets. */

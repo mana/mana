@@ -83,7 +83,7 @@ static gcn::Color getColorFromItemType(ItemType type)
 
 ItemPopup::ItemPopup():
     Popup("ItemPopup"),
-    mIcon(0)
+    mIcon(nullptr)
 {
     // Item Name
     mItemName = new Label;
@@ -102,7 +102,7 @@ ItemPopup::ItemPopup():
     mItemWeight = new TextBox;
     mItemWeight->setEditable(false);
 
-    mIcon = new Icon(0);
+    mIcon = new Icon(nullptr);
 
     add(mItemName);
     add(mItemDesc);
@@ -130,7 +130,7 @@ void ItemPopup::setEquipmentText(const std::string& text)
 
 void ItemPopup::setNoItem()
 {
-    mIcon->setImage(0);
+    mIcon->setImage(nullptr);
 
     std::string caption = _("No item");
     if (!mItemEquipSlot.empty())
@@ -180,7 +180,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     }
     else
     {
-        mIcon->setImage(0);
+        mIcon->setImage(nullptr);
     }
 
     mItemType = item.getItemType();
@@ -198,7 +198,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     {
         const std::vector<std::string> &effect = item.getEffect();
         std::string temp = "";
-        for (std::vector<std::string>::const_iterator it = effect.begin(),
+        for (auto it = effect.begin(),
              it_end = effect.end(); it != it_end; ++it)
             temp += temp.empty() ? *it : "\n" + *it;
         mItemEffect->setTextWrapped(temp, ITEMPOPUP_WRAP_WIDTH);

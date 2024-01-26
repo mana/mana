@@ -52,7 +52,7 @@ static const int BOX_HEIGHT = 36;
 
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window(_("Equipment")),
-    mEquipBox(0),
+    mEquipBox(nullptr),
     mSelected(-1),
     mEquipment(equipment),
     mBoxesNumber(0)
@@ -61,7 +61,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     setupWindow->registerWindowForReset(this);
 
     // Control that shows the Player
-    PlayerBox *playerBox = new PlayerBox;
+    auto *playerBox = new PlayerBox;
     playerBox->setDimension(gcn::Rectangle(50, 80, 74, 123));
     playerBox->setPlayer(local_player);
 
@@ -122,7 +122,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     Window::drawChildren(graphics);
 
     // Draw equipment boxes
-    Graphics *g = static_cast<Graphics*>(graphics);
+    auto *g = static_cast<Graphics*>(graphics);
 
     for (int i = 0; i < mBoxesNumber; i++)
     {
@@ -194,7 +194,7 @@ Item *EquipmentWindow::getItem(int x, int y) const
         if (tRect.isPointInRect(x, y))
             return mEquipment->getEquipment(i);
     }
-    return 0;
+    return nullptr;
 }
 
 std::string EquipmentWindow::getSlotName(int x, int y) const
@@ -216,7 +216,7 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
 
     const int x = mouseEvent.getX();
     const int y = mouseEvent.getY();
-    Item *item = 0;
+    Item *item = nullptr;
 
     // Checks if any of the presses were in the equip boxes.
     for (int i = 0; i < mBoxesNumber; ++i)

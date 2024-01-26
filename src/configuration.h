@@ -126,7 +126,7 @@ class ConfigurationObject
         void setList(const std::string &name, IT begin, IT end,
                      ConfigurationListManager<T, CONT> *manager)
         {
-            ConfigurationObject *nextobj = new ConfigurationObject;
+            auto *nextobj = new ConfigurationObject;
             deleteList(name);
             ConfigurationList *list = &(mContainerOptions[name]);
 
@@ -177,10 +177,10 @@ class ConfigurationObject
 
         void deleteList(const std::string &name);
 
-        typedef std::map<std::string, std::string> Options;
+        using Options = std::map<std::string, std::string>;
         Options mOptions;
 
-        typedef std::list<ConfigurationObject *> ConfigurationList;
+        using ConfigurationList = std::list<ConfigurationObject *>;
         std::map<std::string, ConfigurationList> mContainerOptions;
 };
 
@@ -192,9 +192,9 @@ class ConfigurationObject
 class Configuration : public ConfigurationObject
 {
     public:
-        Configuration() : mDefaultsData(0) {}
+        Configuration() : mDefaultsData(nullptr) {}
 
-        ~Configuration();
+        ~Configuration() override;
 
         /**
          * Reads config file and parse all options into memory.
@@ -216,7 +216,7 @@ class Configuration : public ConfigurationObject
          */
         void write();
 
-        void setValue(const std::string &key, const std::string &value);
+        void setValue(const std::string &key, const std::string &value) override;
 
         void setValue(const std::string &key, const char *value)
         { setValue(key, std::string(value)); }

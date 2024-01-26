@@ -74,7 +74,7 @@ class BrowserBox : public gcn::Widget,
     public:
         BrowserBox(unsigned int mode = AUTO_SIZE, bool opaque = true);
 
-        ~BrowserBox();
+        ~BrowserBox() override;
 
         /**
          * Sets the handler for links.
@@ -124,13 +124,13 @@ class BrowserBox : public gcn::Widget,
         /**
          * Handles mouse actions.
          */
-        void mousePressed(gcn::MouseEvent &event);
-        void mouseMoved(gcn::MouseEvent &event);
+        void mousePressed(gcn::MouseEvent &event) override;
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         /**
          * Draws the browser box.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         void updateHeight();
 
@@ -176,7 +176,7 @@ class BrowserBox : public gcn::Widget,
             BACKGROUND = 2
         };
 
-        typedef std::list<std::string> TextRows;
+        using TextRows = std::list<std::string>;
 
         TextRows &getRows()
         { return mTextRows; }
@@ -187,15 +187,15 @@ class BrowserBox : public gcn::Widget,
     private:
         int calcHeight();
 
-        typedef TextRows::iterator TextRowIterator;
+        using TextRowIterator = TextRows::iterator;
         TextRows mTextRows;
 
-        typedef std::list<LinePart> LinePartList;
-        typedef LinePartList::iterator LinePartIterator;
+        using LinePartList = std::list<LinePart>;
+        using LinePartIterator = LinePartList::iterator;
         LinePartList mLineParts;
 
-        typedef std::vector<BrowserLink> Links;
-        typedef Links::iterator LinkIterator;
+        using Links = std::vector<BrowserLink>;
+        using LinkIterator = Links::iterator;
         Links mLinks;
 
         LinkHandler *mLinkHandler;

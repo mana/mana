@@ -51,9 +51,9 @@ ConfirmDialog *confirmDlg;
 namespace {
     struct RequestTradeListener : public gcn::ActionListener
     {
-        void action(const gcn::ActionEvent &event)
+        void action(const gcn::ActionEvent &event) override
         {
-            confirmDlg = 0;
+            confirmDlg = nullptr;
             Net::getTradeHandler()->respond(event.getId() == "yes");
         }
     } listener;
@@ -77,7 +77,7 @@ TradeHandler::TradeHandler()
     };
     handledMessages = _messages;
     tradeHandler = this;
-    confirmDlg = 0;
+    confirmDlg = nullptr;
 }
 
 

@@ -112,12 +112,12 @@ public:
     {
     }
 
-    void draw(gcn::Graphics *graphics)
+    void draw(gcn::Graphics *graphics) override
     {
         if (!mListModel)
             return;
 
-        ServersListModel *model = static_cast<ServersListModel*>(mListModel);
+        auto *model = static_cast<ServersListModel*>(mListModel);
 
         updateAlpha();
 
@@ -165,7 +165,7 @@ public:
         }
     }
 
-    unsigned int getRowHeight() const
+    unsigned int getRowHeight() const override
     {
         return 2 * getFont()->getHeight();
     }
@@ -188,7 +188,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     mServersList = new ServersListBox(mServersListModel);
 
-    ScrollArea *usedScroll = new ScrollArea(mServersList);
+    auto *usedScroll = new ScrollArea(mServersList);
     usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mDescription = new Label(std::string());
@@ -252,7 +252,7 @@ ServerDialog::~ServerDialog()
     {
         mDownload->cancel();
         delete mDownload;
-        mDownload = 0;
+        mDownload = nullptr;
     }
     delete mServersListModel;
 }
@@ -275,7 +275,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
 #endif
         )
         {
-            OkDialog *dlg = new OkDialog(_("Error"),
+            auto *dlg = new OkDialog(_("Error"),
                 _("Please select a valid server."));
             dlg->addActionListener(this);
         }
@@ -319,7 +319,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
         // Check whether a server is selected.
         if (index < 0)
         {
-            OkDialog *dlg = new OkDialog(_("Error"),
+            auto *dlg = new OkDialog(_("Error"),
                 _("Please select a custom server."));
             dlg->addActionListener(this);
         }
@@ -348,7 +348,7 @@ void ServerDialog::keyPressed(gcn::KeyEvent &keyEvent)
     }
     else if (key.getValue() == Key::ENTER)
     {
-        action(gcn::ActionEvent(NULL, mConnectButton->getActionEventId()));
+        action(gcn::ActionEvent(nullptr, mConnectButton->getActionEventId()));
     }
 }
 
@@ -523,7 +523,7 @@ void ServerDialog::loadServers()
         // Add the server to the local list if it's not already present
         bool found = false;
         int i = 0;
-        for (ServerInfos::iterator it = mServers.begin(); it != mServers.end();
+        for (auto it = mServers.begin(); it != mServers.end();
              ++it)
         {
             if (*it == server)
@@ -641,7 +641,7 @@ int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,
     if (status == DOWNLOAD_STATUS_CANCELLED)
         return -1;
 
-    ServerDialog *sd = reinterpret_cast<ServerDialog*>(ptr);
+    auto *sd = reinterpret_cast<ServerDialog*>(ptr);
     bool finished = false;
 
     if (status == DOWNLOAD_STATUS_COMPLETE)

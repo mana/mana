@@ -71,7 +71,7 @@ class ChatInput : public TextField, public gcn::FocusListener
          * Called if the chat input loses focus. It will set itself to
          * invisible as result.
          */
-        void focusLost(const gcn::Event &event)
+        void focusLost(const gcn::Event &event) override
         {
             setVisible(false);
         }
@@ -79,9 +79,9 @@ class ChatInput : public TextField, public gcn::FocusListener
 
 class ChatAutoComplete : public AutoCompleteLister
 {
-    void getAutoCompleteList(std::vector<std::string> &list) const
+    void getAutoCompleteList(std::vector<std::string> &list) const override
     {
-        ChatTab *tab = static_cast<ChatTab*>(chatWindow->mChatTabs
+        auto *tab = static_cast<ChatTab*>(chatWindow->mChatTabs
                                              ->getSelectedTab());
 
         return tab->getAutoCompleteList(list);
@@ -278,7 +278,7 @@ void ChatWindow::removeAllWhispers()
         tabs.push_back(iter->second);
     }
 
-    for (std::list<ChatTab*>::iterator it = tabs.begin();
+    for (auto it = tabs.begin();
          it != tabs.end(); ++it)
     {
         delete *it;
@@ -299,7 +299,7 @@ void ChatWindow::doPresent()
     std::string response = "";
     int playercount = 0;
 
-    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+    for (auto it = actors.begin(), it_end = actors.end();
          it != it_end; it++)
     {
         if ((*it)->getType() == ActorSprite::PLAYER)
@@ -471,7 +471,7 @@ void ChatWindow::whisper(const std::string &nick,
     if (tempNick.compare(playerName) == 0)
         return;
 
-    ChatTab *tab = 0;
+    ChatTab *tab = nullptr;
     TabMap::const_iterator i = mWhispers.find(tempNick);
 
     if (i != mWhispers.end())
@@ -521,7 +521,7 @@ ChatTab *ChatWindow::addWhisperTab(const std::string &nick, bool switchTo)
 
     if (mWhispers.find(tempNick) != mWhispers.end()
         || tempNick.compare(playerName) == 0)
-        return NULL;
+        return nullptr;
 
     ChatTab *ret = new WhisperTab(nick);
     mWhispers[tempNick] = ret;

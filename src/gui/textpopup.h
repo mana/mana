@@ -38,7 +38,7 @@ class TextPopup : public Popup
     public:
         TextPopup();
 
-        ~TextPopup();
+        ~TextPopup() override;
 
         /**
          * Sets the text to be displayed.
@@ -51,7 +51,7 @@ class TextPopup : public Popup
          */
         void show(int x, int y, const std::string &str1, const std::string &str2);
 
-        void mouseMoved(gcn::MouseEvent &mouseEvent);
+        void mouseMoved(gcn::MouseEvent &mouseEvent) override;
 
     private:
         gcn::Label *mText1;

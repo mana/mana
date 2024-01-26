@@ -48,7 +48,7 @@
 extern volatile int tick_time;
 
 Viewport::Viewport():
-    mMap(0),
+    mMap(nullptr),
     mMouseX(0),
     mMouseY(0),
     mPixelViewX(0.0f),
@@ -56,8 +56,8 @@ Viewport::Viewport():
     mDebugFlags(0),
     mPlayerFollowMouse(false),
     mLocalWalkTime(-1),
-    mHoverBeing(0),
-    mHoverItem(0)
+    mHoverBeing(nullptr),
+    mHoverItem(nullptr)
 {
     setOpaque(false);
     addMouseListener(this);
@@ -109,7 +109,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         return;
     }
 
-    Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
+    auto *graphics = static_cast<Graphics*>(gcnGraphics);
 
     // Avoid freaking out when tick_time overflows
     if (tick_time < lastTick)
@@ -153,7 +153,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         }
 
         // manage shake effect
-        for (ShakeEffects::iterator i = mShakeEffects.begin();
+        for (auto i = mShakeEffects.begin();
              i != mShakeEffects.end();
              i++)
         {
@@ -239,13 +239,13 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
     // Draw player names, speech, and emotion sprite as needed
     const ActorSprites &actors = actorSpriteManager->getAll();
-    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+    for (auto it = actors.begin(), it_end = actors.end();
          it != it_end; it++)
     {
         if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        Being *b = static_cast<Being*>(*it);
+        auto *b = static_cast<Being*>(*it);
         b->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
     }
 
@@ -256,7 +256,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         const ActorSprites &actors = actorSpriteManager->getAll();
         for (it = actors.begin(), it_end = actors.end(); it != it_end; ++it)
         {
-            Being *being = dynamic_cast<Being*>(*it);
+            auto *being = dynamic_cast<Being*>(*it);
             if (!being)
                 continue;
 
@@ -310,8 +310,8 @@ void Viewport::_followMouse()
     if (mPlayerFollowMouse && button & SDL_BUTTON(1))
     {
         // We create a mouse event and send it to mouseDragged.
-        const Uint8 *keys = SDL_GetKeyboardState(NULL);
-        gcn::MouseEvent mouseEvent(NULL,
+        const Uint8 *keys = SDL_GetKeyboardState(nullptr);
+        gcn::MouseEvent mouseEvent(nullptr,
                       (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]),
                       false,
                       false,
@@ -386,7 +386,7 @@ void Viewport::_drawDebugPath(Graphics *graphics)
     const ActorSprites &actors = actorSpriteManager->getAll();
     for (it = actors.begin(), it_end = actors.end(); it != it_end; it++)
     {
-        Being *being = dynamic_cast<Being*>(*it);
+        auto *being = dynamic_cast<Being*>(*it);
         if (!being)
             continue;
 
@@ -428,7 +428,7 @@ void Viewport::_drawPath(Graphics *graphics, const Path &path,
 {
     graphics->setColor(color);
 
-    for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
+    for (auto i = path.begin(); i != path.end(); ++i)
     {
         int squareX = i->x - (int) mPixelViewX;
         int squareY = i->y - (int) mPixelViewY;
@@ -648,10 +648,10 @@ void Viewport::event(Event::Channel channel, const Event &event)
         ActorSprite *actor = event.getActor("source");
 
         if (mHoverBeing == actor)
-            mHoverBeing = 0;
+            mHoverBeing = nullptr;
 
         if (mHoverItem == actor)
-            mHoverItem = 0;
+            mHoverItem = nullptr;
     }
     else if (channel == Event::ConfigChannel &&
              event.getType() == Event::ConfigOptionChanged)

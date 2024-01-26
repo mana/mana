@@ -74,7 +74,7 @@ GuildMember *Guild::addMember(const std::string &name)
 
 GuildMember *Guild::getMember(int id) const
 {
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -83,12 +83,12 @@ GuildMember *Guild::getMember(int id) const
         ++itr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 GuildMember *Guild::getMember(const std::string &name) const
 {
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -99,12 +99,12 @@ GuildMember *Guild::getMember(const std::string &name) const
         ++itr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void Guild::removeMember(GuildMember *member)
 {
-    MemberList::iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -119,7 +119,7 @@ void Guild::removeMember(GuildMember *member)
 
 void Guild::removeMember(int id)
 {
-    MemberList::iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -131,7 +131,7 @@ void Guild::removeMember(int id)
 
 void Guild::removeMember(const std::string &name)
 {
-    MemberList::iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -145,7 +145,7 @@ void Guild::removeMember(const std::string &name)
 
 void Guild::removeFromMembers()
 {
-    MemberList::iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while(itr != itr_end)
     {
@@ -172,7 +172,7 @@ bool Guild::isMember(GuildMember *member) const
     if (member->mGuild != nullptr && member->mGuild != this)
         return false;
 
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                      itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -189,7 +189,7 @@ bool Guild::isMember(GuildMember *member) const
 
 bool Guild::isMember(int id) const
 {
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                      itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -203,7 +203,7 @@ bool Guild::isMember(int id) const
 
 bool Guild::isMember(const std::string &name) const
 {
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                      itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -220,7 +220,7 @@ bool Guild::isMember(const std::string &name) const
 void Guild::getNames(std::vector<std::string> &names) const
 {
     names.clear();
-    MemberList::const_iterator it = mMembers.begin(),
+    auto it = mMembers.begin(),
                                      it_end = mMembers.end();
     while (it != it_end)
     {
@@ -231,7 +231,7 @@ void Guild::getNames(std::vector<std::string> &names) const
 
 Guild *Guild::getGuild(int id)
 {
-    GuildMap::iterator it = guilds.find(id);
+    auto it = guilds.find(id);
     if (it != guilds.end())
         return it->second;
 

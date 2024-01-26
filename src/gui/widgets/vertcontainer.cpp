@@ -45,7 +45,7 @@ void VertContainer::clear()
 
 void VertContainer::widgetResized(const gcn::Event &event)
 {
-    for (WidgetListIterator it = mWidgets.begin(); it != mWidgets.end(); it++)
+    for (auto it = mWidgets.begin(); it != mWidgets.end(); it++)
     {
         (*it)->setWidth(getWidth());
     }

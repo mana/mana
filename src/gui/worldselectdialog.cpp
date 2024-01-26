@@ -51,14 +51,14 @@ class WorldListModel : public gcn::ListModel
         {
         }
 
-        virtual ~WorldListModel() {}
+        ~WorldListModel() override {}
 
-        int getNumberOfElements()
+        int getNumberOfElements() override
         {
             return mWorlds.size();
         }
 
-        std::string getElementAt(int i)
+        std::string getElementAt(int i) override
         {
             const WorldInfo *si = mWorlds[i];
             return si->name + " (" + toString(si->online_users) + ")";
@@ -72,7 +72,7 @@ WorldSelectDialog::WorldSelectDialog(Worlds worlds):
 {
     mWorldListModel = new WorldListModel(worlds);
     mWorldList = new ListBox(mWorldListModel);
-    ScrollArea *worldsScroll = new ScrollArea(mWorldList);
+    auto *worldsScroll = new ScrollArea(mWorldList);
     mChangeLoginButton = new Button(_("Change Login"), "login", this);
     mChooseWorld = new Button(_("Choose World"), "world", this);
 
@@ -130,11 +130,11 @@ void WorldSelectDialog::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (key.getValue() == Key::ESCAPE)
     {
-        action(gcn::ActionEvent(NULL, mChangeLoginButton->getActionEventId()));
+        action(gcn::ActionEvent(nullptr, mChangeLoginButton->getActionEventId()));
     }
     else if (key.getValue() == Key::ENTER)
     {
-        action(gcn::ActionEvent(NULL, mChooseWorld->getActionEventId()));
+        action(gcn::ActionEvent(nullptr, mChooseWorld->getActionEventId()));
     }
 }
 

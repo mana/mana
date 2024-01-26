@@ -115,7 +115,7 @@ UserPalette::UserPalette():
 
 UserPalette::~UserPalette()
 {
-    for (Colors::iterator col = mColors.begin(),
+    for (auto col = mColors.begin(),
          colEnd = mColors.end(); col != colEnd; ++col)
     {
         const std::string &configName = ColorTypeNames[col->type];
@@ -176,7 +176,7 @@ std::string UserPalette::getElementAt(int i)
 
 void UserPalette::commit(bool commitNonStatic)
 {
-    for (Colors::iterator i = mColors.begin(), iEnd = mColors.end();
+    for (auto i = mColors.begin(), iEnd = mColors.end();
          i != iEnd; ++i)
     {
         i->committedGrad = i->grad;
@@ -194,7 +194,7 @@ void UserPalette::commit(bool commitNonStatic)
 
 void UserPalette::rollback()
 {
-    for (Colors::iterator i = mColors.begin(), iEnd = mColors.end();
+    for (auto i = mColors.begin(), iEnd = mColors.end();
          i != iEnd; ++i)
     {
         if (i->grad != i->committedGrad)

@@ -39,7 +39,7 @@ class Recorder : public Window, public gcn::ActionListener
         Recorder(ChatWindow *chat, const std::string &title = _("Recording..."),
                  const std::string &buttonTxt = _("Stop recording"));
 
-        virtual ~Recorder();
+        ~Recorder() override;
 
         /**
          * Outputs the message to the recorder file
@@ -65,7 +65,7 @@ class Recorder : public Window, public gcn::ActionListener
          *
          * @param event is the event that is generated
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
     private:
         ChatWindow *mChat;

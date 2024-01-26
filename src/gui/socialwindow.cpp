@@ -54,25 +54,25 @@ protected:
     friend class SocialWindow;
 
     SocialTab():
-            mInviteDialog(NULL),
-            mConfirmDialog(NULL)
+            mInviteDialog(nullptr),
+            mConfirmDialog(nullptr)
     {}
 
-    virtual ~SocialTab()
+    ~SocialTab() override
     {
         // Cleanup dialogs
         if (mInviteDialog)
         {
             mInviteDialog->close();
             mInviteDialog->scheduleDelete();
-            mInviteDialog = NULL;
+            mInviteDialog = nullptr;
         }
 
         if (mConfirmDialog)
         {
             mConfirmDialog->close();
             mConfirmDialog->scheduleDelete();
-            mConfirmDialog = NULL;
+            mConfirmDialog = nullptr;
         }
     }
 
@@ -103,15 +103,15 @@ public:
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
     }
 
-    ~GuildTab()
+    ~GuildTab() override
     {
         delete mList;
-        mList = 0;
+        mList = nullptr;
         delete mScroll;
-        mScroll = 0;
+        mScroll = nullptr;
     }
 
-    void action(const gcn::ActionEvent &event)
+    void action(const gcn::ActionEvent &event) override
     {
         if (event.getId() == "do invite")
         {
@@ -124,27 +124,27 @@ public:
                               name.c_str(),
                               mGuild->getName().c_str()))
             }
-            mInviteDialog = NULL;
+            mInviteDialog = nullptr;
         }
         else if (event.getId() == "~do invite")
         {
-            mInviteDialog = NULL;
+            mInviteDialog = nullptr;
         }
         else if (event.getId() == "yes")
         {
             Net::getGuildHandler()->leave(mGuild->getId());
             SERVER_NOTICE(strprintf(_("Guild %s quit requested."),
                                         mGuild->getName().c_str()))
-            mConfirmDialog = NULL;
+            mConfirmDialog = nullptr;
         }
         else if (event.getId() == "no")
         {
-            mConfirmDialog = NULL;
+            mConfirmDialog = nullptr;
         }
     }
 
 protected:
-    void invite()
+    void invite() override
     {
         // TODO - Give feedback on whether the invite succeeded
         mInviteDialog = new TextDialog(_("Member Invite to Guild"),
@@ -155,7 +155,7 @@ protected:
         mInviteDialog->addActionListener(this);
     }
 
-    void leave()
+    void leave() override
     {
         mConfirmDialog = new ConfirmDialog(_("Leave Guild?"),
                        strprintf(_("Are you sure you want to leave guild %s?"),
@@ -186,15 +186,15 @@ public:
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
     }
 
-    ~PartyTab()
+    ~PartyTab() override
     {
         delete mList;
-        mList = 0;
+        mList = nullptr;
         delete mScroll;
-        mScroll = 0;
+        mScroll = nullptr;
     }
 
-    void action(const gcn::ActionEvent &event)
+    void action(const gcn::ActionEvent &event) override
     {
         if (event.getId() == "do invite")
         {
@@ -203,27 +203,27 @@ public:
             if (!name.empty())
                 SERVER_NOTICE(strprintf(_("Invited user %s to party."),
                               name.c_str()))
-            mInviteDialog = NULL;
+            mInviteDialog = nullptr;
         }
         else if (event.getId() == "~do invite")
         {
-            mInviteDialog = NULL;
+            mInviteDialog = nullptr;
         }
         else if (event.getId() == "yes")
         {
             Net::getPartyHandler()->leave();
             SERVER_NOTICE(strprintf(_("Party %s quit requested."),
                                         mParty->getName().c_str()))
-            mConfirmDialog = NULL;
+            mConfirmDialog = nullptr;
         }
         else if (event.getId() == "no")
         {
-            mConfirmDialog = NULL;
+            mConfirmDialog = nullptr;
         }
     }
 
 protected:
-    void invite()
+    void invite() override
     {
         // TODO - Give feedback on whether the invite succeeded
         mInviteDialog = new TextDialog(_("Member Invite to Party"),
@@ -234,7 +234,7 @@ protected:
         mInviteDialog->addActionListener(this);
     }
 
-    void leave()
+    void leave() override
     {
         mConfirmDialog = new ConfirmDialog(_("Leave Party?"),
                        strprintf(_("Are you sure you want to leave party %s?"),
@@ -277,7 +277,7 @@ public:
                        mBrowserBox->getHeight() + 8);
     }
 
-    void handleLink(const std::string &link)
+    void handleLink(const std::string &link) override
     {
         if (link == "guild")
         {
@@ -308,8 +308,8 @@ private:
 SocialWindow::SocialWindow() :
     Window(_("Social")),
     mGuildInvited(0),
-    mGuildAcceptDialog(NULL),
-    mPartyAcceptDialog(NULL)
+    mGuildAcceptDialog(nullptr),
+    mPartyAcceptDialog(nullptr)
 {
     setWindowName("Social");
     setVisible(false);
@@ -334,7 +334,7 @@ SocialWindow::SocialWindow() :
     place(2, 0, mLeaveButton);
     place(0, 1, mTabs, 4, 4);
 
-    widgetResized(NULL);
+    widgetResized(nullptr);
 
     mCreatePopup = new CreatePopup();
 
@@ -353,7 +353,7 @@ SocialWindow::~SocialWindow()
     {
         mGuildAcceptDialog->close();
         mGuildAcceptDialog->scheduleDelete();
-        mGuildAcceptDialog = NULL;
+        mGuildAcceptDialog = nullptr;
 
         mGuildInvited = 0;
     }
@@ -362,7 +362,7 @@ SocialWindow::~SocialWindow()
     {
         mPartyAcceptDialog->close();
         mPartyAcceptDialog->scheduleDelete();
-        mPartyAcceptDialog = NULL;
+        mPartyAcceptDialog = nullptr;
 
         mPartyInviter = "";
     }
@@ -374,7 +374,7 @@ bool SocialWindow::addTab(Guild *guild)
     if (mGuilds.find(guild) != mGuilds.end())
         return false;
 
-    GuildTab *tab = new GuildTab(guild);
+    auto *tab = new GuildTab(guild);
     mGuilds[guild] = tab;
 
     mTabs->addTab(tab, tab->mScroll);
@@ -386,7 +386,7 @@ bool SocialWindow::addTab(Guild *guild)
 
 bool SocialWindow::removeTab(Guild *guild)
 {
-    GuildMap::iterator it = mGuilds.find(guild);
+    auto it = mGuilds.find(guild);
     if (it == mGuilds.end())
         return false;
 
@@ -404,7 +404,7 @@ bool SocialWindow::addTab(Party *party)
     if (mParties.find(party) != mParties.end())
         return false;
 
-    PartyTab *tab = new PartyTab(party);
+    auto *tab = new PartyTab(party);
     mParties[party] = tab;
 
     mTabs->addTab(tab, tab->mScroll);
@@ -416,7 +416,7 @@ bool SocialWindow::addTab(Party *party)
 
 bool SocialWindow::removeTab(Party *party)
 {
-    PartyMap::iterator it = mParties.find(party);
+    auto it = mParties.find(party);
     if (it == mParties.end())
         return false;
 
@@ -450,7 +450,7 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         }
 
         mPartyInviter = "";
-        mPartyAcceptDialog = NULL;
+        mPartyAcceptDialog = nullptr;
     }
     else if (event.getSource() == mGuildAcceptDialog)
     {
@@ -467,7 +467,7 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         }
 
         mGuildInvited = 0;
-        mGuildAcceptDialog = NULL;
+        mGuildAcceptDialog = nullptr;
     }
     else if (event.getId() == "create")
     {
@@ -501,11 +501,11 @@ void SocialWindow::action(const gcn::ActionEvent &event)
                                     name.c_str()));
         }
 
-        mGuildCreateDialog = NULL;
+        mGuildCreateDialog = nullptr;
     }
     else if (event.getId() == "~create guild")
     {
-        mGuildCreateDialog = NULL;
+        mGuildCreateDialog = nullptr;
     }
     else if (event.getId() == "create party")
     {
@@ -524,11 +524,11 @@ void SocialWindow::action(const gcn::ActionEvent &event)
                                     name.c_str()));
         }
 
-        mPartyCreateDialog = NULL;
+        mPartyCreateDialog = nullptr;
     }
     else if (event.getId() == "~create party")
     {
-        mPartyCreateDialog = NULL;
+        mPartyCreateDialog = nullptr;
     }
 }
 

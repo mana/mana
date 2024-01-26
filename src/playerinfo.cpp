@@ -33,12 +33,12 @@ namespace PlayerInfo {
 
 class PlayerLogic;
 
-static PlayerLogic *mListener = 0;
+static PlayerLogic *mListener = nullptr;
 
 static PlayerInfoBackend mData;
 
-static Inventory *mInventory = 0;
-static Equipment *mEquipment = 0;
+static Inventory *mInventory = nullptr;
+static Equipment *mEquipment = nullptr;
 
 static bool mStorageCount = 0;
 
@@ -63,7 +63,7 @@ void triggerAttr(int id, int old)
 
 void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
 {
-    StatMap::iterator it = mData.mStats.find(id);
+    auto it = mData.mStats.find(id);
     Event event(Event::UpdateStat);
     event.setInt("id", id);
     event.setInt("base", it->second.base);
@@ -319,7 +319,7 @@ void logic()
     if ((mSpecialRechargeUpdateNeeded%11) == 0)
     {
         mSpecialRechargeUpdateNeeded = 0;
-        for (SpecialsMap::iterator it = mSpecials.begin(),
+        for (auto it = mSpecials.begin(),
              it_end = mSpecials.end(); it != it_end; it++)
         {
             it->second.currentMana += it->second.recharge;
@@ -341,7 +341,7 @@ public:
         listen(Event::GameChannel);
     }
 
-    void event(Event::Channel channel, const Event &event)
+    void event(Event::Channel channel, const Event &event) override
     {
         if (channel == Event::ClientChannel)
         {
@@ -351,7 +351,7 @@ public:
 
                 if (newState == STATE_GAME)
                 {
-                    if (mInventory == 0)
+                    if (mInventory == nullptr)
                     {
                         mInventory = new Inventory(Inventory::INVENTORY);
                         mEquipment = new Equipment();
@@ -366,8 +366,8 @@ public:
                 delete mInventory;
                 delete mEquipment;
 
-                mInventory = 0;
-                mEquipment = 0;
+                mInventory = nullptr;
+                mEquipment = nullptr;
             }
         }
     }

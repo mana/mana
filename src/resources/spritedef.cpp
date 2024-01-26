@@ -41,12 +41,12 @@ std::set<std::string> processedFiles;
 
 Action *SpriteDef::getAction(const std::string &action) const
 {
-    Actions::const_iterator i = mActions.find(action);
+    auto i = mActions.find(action);
 
     if (i == mActions.end())
     {
         logger->log("Warning: no action \"%s\" defined!", action.c_str());
-        return NULL;
+        return nullptr;
     }
 
     return i->second;
@@ -77,11 +77,11 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
         }
         else
         {
-            return NULL;
+            return nullptr;
         }
     }
 
-    SpriteDef *def = new SpriteDef;
+    auto *def = new SpriteDef;
     def->loadSprite(rootNode, variant, palettes);
     def->substituteActions();
     return def;
@@ -91,7 +91,7 @@ void SpriteDef::substituteAction(std::string complete, std::string with)
 {
     if (mActions.find(complete) == mActions.end())
     {
-        Actions::iterator i = mActions.find(with);
+        auto i = mActions.find(with);
         if (i != mActions.end())
         {
             mActions[complete] = i->second;
@@ -175,7 +175,7 @@ void SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
     const std::string actionName = XML::getProperty(node, "name", "");
     const std::string imageSetName = XML::getProperty(node, "imageset", "");
 
-    ImageSetIterator si = mImageSets.find(imageSetName);
+    auto si = mImageSets.find(imageSetName);
     if (si == mImageSets.end())
     {
         logger->log("Warning: imageset \"%s\" not defined in %s",
@@ -190,7 +190,7 @@ void SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
                 actionName.c_str(), getIdPath().c_str());
         return;
     }
-    Action *action = new Action;
+    auto *action = new Action;
     mActions[actionName] = action;
 
     // When first action set it as default direction
@@ -224,7 +224,7 @@ void SpriteDef::loadAnimation(xmlNodePtr animationNode,
         return;
     }
 
-    Animation *animation = new Animation;
+    auto *animation = new Animation;
     action->setAnimation(directionType, animation);
 
     // Get animation frames
@@ -327,13 +327,13 @@ SpriteDef::~SpriteDef()
         actions.insert(i->second);
     }
 
-    for (std::set< Action * >::const_iterator i = actions.begin(),
+    for (auto i = actions.begin(),
          i_end = actions.end(); i != i_end; ++i)
     {
         delete *i;
     }
 
-    for (ImageSetIterator i = mImageSets.begin();
+    for (auto i = mImageSets.begin();
             i != mImageSets.end(); ++i)
     {
         i->second->decRef();

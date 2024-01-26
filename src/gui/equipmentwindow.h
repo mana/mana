@@ -43,16 +43,16 @@ class EquipmentWindow : public Window, public gcn::ActionListener
     public:
         EquipmentWindow(Equipment *equipment);
 
-        ~EquipmentWindow();
+        ~EquipmentWindow() override;
 
         /**
          * Draws the equipment window.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
-        void mousePressed(gcn::MouseEvent& mouseEvent);
+        void mousePressed(gcn::MouseEvent& mouseEvent) override;
 
         /**
          * Loads the correct amount of displayed equip boxes.
@@ -74,7 +74,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
             EquipBox() :
                 posX(0),
                 posY(0),
-                backgroundImage(0)
+                backgroundImage(nullptr)
             {}
 
             int posX;
@@ -89,8 +89,8 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         int mBoxesNumber; /**< Number of equipment boxes to display */
 
     private:
-        void mouseExited(gcn::MouseEvent &event);
-        void mouseMoved(gcn::MouseEvent &event);
+        void mouseExited(gcn::MouseEvent &event) override;
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         Item *getItem(int x, int y) const;
         std::string getSlotName(int x, int y) const;

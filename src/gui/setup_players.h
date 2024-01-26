@@ -39,16 +39,16 @@ class Setup_Players : public SetupTab,
 {
 public:
     Setup_Players();
-    virtual ~Setup_Players();
+    ~Setup_Players() override;
 
-    void apply();
-    void cancel();
+    void apply() override;
+    void cancel() override;
 
     void reset();
 
-    void action(const gcn::ActionEvent &event);
+    void action(const gcn::ActionEvent &event) override;
 
-    virtual void updatedPlayer(const std::string &name);
+    void updatedPlayer(const std::string &name) override;
 
 private:
     StaticTableModel *mPlayerTableTitleModel;

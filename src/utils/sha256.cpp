@@ -78,8 +78,8 @@
 #ifdef HAVE_STDINT_H
 #include <stdint.h>
 #else
-typedef unsigned char uint8_t;
-typedef unsigned int uint32_t;
+using uint8_t = unsigned char;
+using uint32_t = unsigned int;
 #endif
 
 #define SHA256_BLOCK_SIZE  (512 / 8)

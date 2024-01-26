@@ -48,12 +48,12 @@ class Setup : public Window, public gcn::ActionListener
 {
     public:
         Setup();
-        ~Setup();
+        ~Setup() override;
 
         /**
          * Event handling method.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Enables the reset button when in game.

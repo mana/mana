@@ -49,7 +49,7 @@ class ShopItems : public gcn::ListModel
          */
         ShopItems(bool mergeDuplicates = false);
 
-        ~ShopItems();
+        ~ShopItems() override;
 
         /**
          * Adds an item to the list.
@@ -70,14 +70,14 @@ class ShopItems : public gcn::ListModel
         /**
          * Returns the number of items in the shop.
          */
-        int getNumberOfElements();
+        int getNumberOfElements() override;
 
         /**
          * Returns the name of item number i in the shop.
          *
          * @param i the index to retrieve
          */
-        std::string getElementAt(int i);
+        std::string getElementAt(int i) override;
 
         /**
          * Returns the item number i in the shop.

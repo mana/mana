@@ -54,7 +54,7 @@ class AttrDisplay : public Container
             DERIVED, CHANGEABLE, UNKNOWN
         };
 
-        ~AttrDisplay();
+        ~AttrDisplay() override;
 
         virtual std::string update();
         virtual Type getType() { return UNKNOWN; }
@@ -73,19 +73,19 @@ class DerDisplay : public AttrDisplay
 {
     public:
         DerDisplay(int id, const std::string &name);
-        virtual Type getType() { return DERIVED; }
+        Type getType() override { return DERIVED; }
 };
 
 class ChangeDisplay : public AttrDisplay, gcn::ActionListener
 {
     public:
         ChangeDisplay(int id, const std::string &name);
-        std::string update();
-        virtual Type getType() { return CHANGEABLE; }
+        std::string update() override;
+        Type getType() override { return CHANGEABLE; }
         void setPointsNeeded(int needed);
 
     private:
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         int mNeeded;
 
@@ -284,7 +284,7 @@ void StatusWindow::event(Event::Channel channel,
         }
         else
         {
-            Attrs::iterator it = mAttrs.find(id);
+            auto it = mAttrs.find(id);
             if (it != mAttrs.end())
             {
                 it->second->update();
@@ -301,7 +301,7 @@ void StatusWindow::event(Event::Channel channel,
 
 void StatusWindow::updateAttrs()
 {
-    for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
+    for (auto it = mAttrs.begin(); it != mAttrs.end(); it++)
     {
         it->second->update();
     }
@@ -309,7 +309,7 @@ void StatusWindow::updateAttrs()
 
 void StatusWindow::setPointsNeeded(int id, int needed)
 {
-    Attrs::iterator it = mAttrs.find(id);
+    auto it = mAttrs.find(id);
 
     if (it != mAttrs.end())
     {
@@ -481,7 +481,7 @@ ChangeDisplay::ChangeDisplay(int id, const std::string &name):
     }
     else
     {
-        mDec = 0;
+        mDec = nullptr;
     }
 
     update();

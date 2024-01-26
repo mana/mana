@@ -55,7 +55,7 @@ void SpecialDB::readSpecialSetNode(xmlNodePtr node, const std::string &filename)
     {
         if (xmlStrEqual(special->name, BAD_CAST "special"))
         {
-            SpecialInfo *info = new SpecialInfo();
+            auto *info = new SpecialInfo();
             int id = XML::getProperty(special, "id", 0);
             info->id = id;
             info->set = setName;
@@ -98,16 +98,16 @@ void SpecialDB::unload()
 SpecialInfo *SpecialDB::get(int id)
 {
 
-    SpecialInfos::iterator i = mSpecialInfos.find(id);
+    auto i = mSpecialInfos.find(id);
 
     if (i == mSpecialInfos.end())
     {
-        return NULL;
+        return nullptr;
     }
     else
     {
         return i->second;
     }
-    return NULL;
+    return nullptr;
 }
 

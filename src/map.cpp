@@ -63,7 +63,7 @@ struct Location
 };
 
 TileAnimation::TileAnimation(Animation *ani):
-    mLastImage(NULL)
+    mLastImage(nullptr)
 {
     mAnimation = new SimpleAnimation(ani);
 }
@@ -85,7 +85,7 @@ void TileAnimation::update(int ticks)
     Image *img = mAnimation->getCurrentImage();
     if (img != mLastImage)
     {
-        for (std::list<std::pair<MapLayer*, int> >::iterator i =
+        for (auto i =
              mAffected.begin(); i != mAffected.end(); i++)
         {
             i->first->setTile(i->second, img);
@@ -103,7 +103,7 @@ MapLayer::MapLayer(int x, int y, int width, int height, bool isFringeLayer,
 {
     const int size = mWidth * mHeight;
     mTiles = new Image*[size];
-    std::fill_n(mTiles, size, (Image*) 0);
+    std::fill_n(mTiles, size, (Image*) nullptr);
 }
 
 MapLayer::~MapLayer()
@@ -132,7 +132,7 @@ void MapLayer::draw(Graphics *graphics,
     if (endX > mWidth) endX = mWidth;
     if (endY > mHeight) endY = mHeight;
 
-    Actors::const_iterator ai = actors.begin();
+    auto ai = actors.begin();
 
     int dx = (mX * mMap->getTileWidth()) - scrollX;
     int dy = (mY * mMap->getTileHeight()) - scrollY + mMap->getTileHeight();
@@ -336,7 +336,7 @@ bool actorCompare(const Actor *a, const Actor *b)
 void Map::update(int ticks)
 {
     // Update animated tiles
-    for (std::map<int, TileAnimation*>::iterator iAni = mTileAnimations.begin();
+    for (auto iAni = mTileAnimations.begin();
          iAni != mTileAnimations.end();
          iAni++)
     {
@@ -538,7 +538,7 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
     }
 
     // Draw overlays
-    for (std::list<AmbientLayer*>::iterator i = layers->begin();
+    for (auto i = layers->begin();
          i != layers->end(); i++)
     {
         (*i)->draw(graphics, graphics->getWidth(), graphics->getHeight());
@@ -551,8 +551,8 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
 
 Tileset *Map::getTilesetWithGid(unsigned gid) const
 {
-    Tileset *s = NULL;
-    for (Tilesets::const_iterator it = mTilesets.begin(),
+    Tileset *s = nullptr;
+    for (auto it = mTilesets.begin(),
          it_end = mTilesets.end(); it < it_end && (*it)->getFirstGid() <= gid;
          it++)
         s = *it;
@@ -739,7 +739,7 @@ Path Map::findTilePath(int startPixelX, int startPixelY, int endPixelX,
         return myPath;
 
     // Convert the map path to pixels from the tile position
-    Path::iterator it = myPath.begin();
+    auto it = myPath.begin();
     while (it != myPath.end())
     {
         // The new pixel position will be the tile center.
@@ -777,7 +777,7 @@ Path Map::findPixelPath(int startPixelX, int startPixelY, int endPixelX,
 
     // Convert the map path to pixels over tiles
     // And add interpolation between the starting and ending offsets
-    Path::iterator it = myPath.begin();
+    auto it = myPath.begin();
     int i = 0;
     while (it != myPath.end())
     {
@@ -1022,7 +1022,7 @@ void Map::initializeParticleEffects(Particle *particleEngine)
 
     if (config.getBoolValue("particleeffects"))
     {
-        for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
+        for (auto i = particleEffects.begin();
              i != particleEffects.end();
              i++
             )
@@ -1038,6 +1038,6 @@ void Map::initializeParticleEffects(Particle *particleEngine)
 
 TileAnimation *Map::getAnimationForGid(int gid) const
 {
-    std::map<int, TileAnimation*>::const_iterator i = mTileAnimations.find(gid);
+    auto i = mTileAnimations.find(gid);
     return (i == mTileAnimations.end()) ? NULL : i->second;
 }

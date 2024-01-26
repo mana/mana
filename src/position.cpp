@@ -29,7 +29,7 @@ std::ostream& operator <<(std::ostream &os, const Position &p)
 
 std::ostream& operator <<(std::ostream &os, const Path &path)
 {
-    Path::const_iterator i = path.begin(), i_end = path.end();
+    auto i = path.begin(), i_end = path.end();
 
     os << "(";
     while (i != i_end)

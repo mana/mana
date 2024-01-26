@@ -44,7 +44,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
     public:
         TradeWindow();
 
-        ~TradeWindow();
+        ~TradeWindow() override;
 
         /**
          * Displays expected money in the trade window.
@@ -90,18 +90,18 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          * Updates the labels and makes sure only one item is selected in
          * either my inventory or partner inventory.
          */
-        void valueChanged(const gcn::SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event) override;
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Closes the Trade Window, as well as telling the server that the
          * window has been closed.
          */
-        void close();
+        void close() override;
 
     private:
         enum Status
@@ -117,7 +117,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void setStatus(Status s);
 
-        typedef const std::unique_ptr<Inventory> InventoryPtr;
+        using InventoryPtr = const std::unique_ptr<Inventory>;
         InventoryPtr mMyInventory;
         InventoryPtr mPartnerInventory;
 

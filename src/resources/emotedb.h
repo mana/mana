@@ -36,7 +36,7 @@ struct Emote
     int effect;
 };
 
-typedef std::map<int, Emote*> Emotes;
+using Emotes = std::map<int, Emote *>;
 
 /**
  * Emote information database.
@@ -55,7 +55,7 @@ namespace EmoteDB
 
     int getLast();
 
-    typedef Emotes::iterator EmotesIterator;
+    using EmotesIterator = Emotes::iterator;
 }
 
 #endif // EMOTE_DB_H

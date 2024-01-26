@@ -49,7 +49,7 @@ class SocialWindow : public Window, gcn::ActionListener
 public:
     SocialWindow();
 
-    ~SocialWindow();
+    ~SocialWindow() override;
 
     bool addTab(Guild *guild);
 
@@ -62,7 +62,7 @@ public:
     /**
      * Handle events.
      */
-    void action(const gcn::ActionEvent &event);
+    void action(const gcn::ActionEvent &event) override;
 
     void showGuildInvite(const std::string &guildName, const int guildId,
                          const std::string &inviterName);
@@ -87,10 +87,10 @@ protected:
     ConfirmDialog *mPartyAcceptDialog;
     TextDialog *mPartyCreateDialog;
 
-    typedef std::map<Guild*, SocialTab*> GuildMap;
+    using GuildMap = std::map<Guild *, SocialTab *>;
     GuildMap mGuilds;
 
-    typedef std::map<Party*, SocialTab*> PartyMap;
+    using PartyMap = std::map<Party *, SocialTab *>;
     PartyMap mParties;
 
     CreatePopup *mCreatePopup;

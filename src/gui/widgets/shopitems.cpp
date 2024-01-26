@@ -52,7 +52,7 @@ void ShopItems::addItem(int id, int amount, int price)
 
 void ShopItems::addItem(int inventoryIndex, int id, int quantity, int price)
 {
-    ShopItem *item = 0;
+    ShopItem *item = nullptr;
     if (mMergeDuplicates)
     {
         item = findItem(id);
@@ -99,5 +99,5 @@ ShopItem *ShopItems::findItem(int id)
         }
     }
 
-    return 0;
+    return nullptr;
 }

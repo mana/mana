@@ -108,11 +108,11 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     mItemIcon = new Icon(image);
 
     // Buttons
-    Button *minusButton = new Button(_("-"), "dec", this);
-    Button *plusButton = new Button(_("+"), "inc", this);
-    Button *okButton = new Button(_("OK"), "ok", this);
-    Button *cancelButton = new Button(_("Cancel"), "cancel", this);
-    Button *addAllButton = new Button(_("All"), "all", this);
+    auto *minusButton = new Button(_("-"), "dec", this);
+    auto *plusButton = new Button(_("+"), "inc", this);
+    auto *okButton = new Button(_("OK"), "ok", this);
+    auto *cancelButton = new Button(_("Cancel"), "cancel", this);
+    auto *addAllButton = new Button(_("All"), "all", this);
 
     minusButton->adjustSize();
     minusButton->setWidth(plusButton->getWidth());

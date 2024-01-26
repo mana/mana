@@ -55,7 +55,7 @@ extern Connection *gameServerConnection;
 namespace {
     struct RequestTradeListener : public gcn::ActionListener
     {
-        void action(const gcn::ActionEvent &event)
+        void action(const gcn::ActionEvent &event) override
         {
             if (event.getId() == "yes")
             {
@@ -112,7 +112,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
             mTrading = true;
             tradePartnerName = being->getName();
             tradePartnerID = being->getId();
-            ConfirmDialog *dlg = new ConfirmDialog(_("Request for Trade"),
+            auto *dlg = new ConfirmDialog(_("Request for Trade"),
                     strprintf(_("%s wants to trade with you, do you accept?"),
                             tradePartnerName.c_str()));
             dlg->addActionListener(&listener);

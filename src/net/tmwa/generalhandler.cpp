@@ -184,8 +184,8 @@ void GeneralHandler::reload()
         mNetwork->disconnect();
 
     static_cast<LoginHandler*>(mLoginHandler.get())->clearWorlds();
-    static_cast<CharServerHandler*>(mCharHandler.get())->setCharCreateDialog(0);
-    static_cast<CharServerHandler*>(mCharHandler.get())->setCharSelectDialog(0);
+    static_cast<CharServerHandler*>(mCharHandler.get())->setCharCreateDialog(nullptr);
+    static_cast<CharServerHandler*>(mCharHandler.get())->setCharSelectDialog(nullptr);
 }
 
 void GeneralHandler::unload()
@@ -255,10 +255,10 @@ void GeneralHandler::event(Event::Channel channel,
             socialWindow->removeTab(taParty);
 
             delete guildTab;
-            guildTab = 0;
+            guildTab = nullptr;
 
             delete partyTab;
-            partyTab = 0;
+            partyTab = nullptr;
         }
     }
 }

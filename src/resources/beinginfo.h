@@ -47,7 +47,7 @@ struct Attack {
     }
 };
 
-typedef std::map<int, Attack*> Attacks;
+using Attacks = std::map<int, Attack *>;
 
 enum SoundEvent
 {
@@ -57,7 +57,7 @@ enum SoundEvent
     SOUND_EVENT_DIE
 };
 
-typedef std::map<SoundEvent, std::vector<std::string>* > SoundEvents;
+using SoundEvents = std::map<SoundEvent, std::vector<std::string> *>;
 
 /**
  * Holds information about a certain type of monster. This includes the name
@@ -128,7 +128,7 @@ class BeingInfo
         Map::BlockType mBlockType;
 };
 
-typedef std::map<int, BeingInfo*> BeingInfos;
-typedef BeingInfos::iterator BeingInfoIterator;
+using BeingInfos = std::map<int, BeingInfo *>;
+using BeingInfoIterator = BeingInfos::iterator;
 
 #endif // BEINGINFO_H

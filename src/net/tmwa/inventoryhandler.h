@@ -51,13 +51,13 @@ class EquipBackend : public Equipment::Backend
             memset(mEquipment, -1, sizeof(mEquipment));
         }
 
-        Item *getEquipment(int index) const
+        Item *getEquipment(int index) const override
         {
             int invyIndex = mEquipment[index];
             return PlayerInfo::getInventory()->getItem(invyIndex);
         }
 
-        std::string getSlotName(int slotIndex) const
+        std::string getSlotName(int slotIndex) const override
         {
             switch (slotIndex)
             {
@@ -88,7 +88,7 @@ class EquipBackend : public Equipment::Backend
             }
         }
 
-        void clear()
+        void clear() override
         {
             for (int i = 0; i < EQUIP_VECTOR_END; i++)
             {
@@ -126,14 +126,14 @@ class EquipBackend : public Equipment::Backend
             inventoryWindow->updateButtons();
         }
 
-        void triggerUnequip(int slotIndex) const
+        void triggerUnequip(int slotIndex) const override
         {
             Item *item = getEquipment(slotIndex);
             if (item)
                 item->doEvent(Event::DoUnequip);
         }
 
-        int getSlotNumber() const
+        int getSlotNumber() const override
         { return EQUIP_VECTOR_END; }
 
         // Note the slot type id is equal to the slot Index for tA.
@@ -172,7 +172,7 @@ class InventoryItem
         }
 };
 
-typedef std::list<InventoryItem> InventoryItems;
+using InventoryItems = std::list<InventoryItem>;
 
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
         public EventListener
@@ -185,20 +185,20 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
 
         InventoryHandler();
 
-        ~InventoryHandler();
+        ~InventoryHandler() override;
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
-        bool canSplit(const Item *item);
+        bool canSplit(const Item *item) override;
 
-        size_t getSize(int type) const;
+        size_t getSize(int type) const override;
 
-        bool isWeaponSlot(unsigned int slotTypeId) const
+        bool isWeaponSlot(unsigned int slotTypeId) const override
         { return mEquips.isWeaponSlot(slotTypeId); }
 
-        bool isAmmoSlot(unsigned int slotTypeId) const
+        bool isAmmoSlot(unsigned int slotTypeId) const override
         { return mEquips.isAmmoSlot(slotTypeId); }
 
     private:

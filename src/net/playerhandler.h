@@ -74,7 +74,7 @@ class PlayerHandler
          * Convert the original server-dependant speed for internal use.
          */
         virtual Vector getPixelsPerTickMoveSpeed(const Vector &speed,
-                                                 Map *map = 0) = 0;
+                                                 Map *map = nullptr) = 0;
 
         /**
          * Tells whether the client has to use pixel paths.

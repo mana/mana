@@ -38,43 +38,43 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
     public:
         LoginHandler();
 
-        ~LoginHandler();
+        ~LoginHandler() override;
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void connect();
+        void connect() override;
 
-        bool isConnected();
+        bool isConnected() override;
 
-        void disconnect();
+        void disconnect() override;
 
-        int supportedOptionalActions() const
+        int supportedOptionalActions() const override
         { return SetGenderOnRegister; }
 
-        bool isRegistrationEnabled();
+        bool isRegistrationEnabled() override;
 
-        void getRegistrationDetails();
+        void getRegistrationDetails() override;
 
-        unsigned int getMaxPasswordLength() const { return 25; }
+        unsigned int getMaxPasswordLength() const override { return 25; }
 
-        void loginAccount(LoginData *loginData);
+        void loginAccount(LoginData *loginData) override;
 
-        void logout();
+        void logout() override;
 
-        void changeEmail(const std::string &email);
+        void changeEmail(const std::string &email) override;
 
         void changePassword(const std::string &username,
                             const std::string &oldPassword,
-                            const std::string &newPassword);
+                            const std::string &newPassword) override;
 
-        void chooseServer(unsigned int server);
+        void chooseServer(unsigned int server) override;
 
-        void registerAccount(LoginData *loginData);
+        void registerAccount(LoginData *loginData) override;
 
         void unregisterAccount(const std::string &username,
-                               const std::string &password);
+                               const std::string &password) override;
 
-        Worlds getWorlds() const;
+        Worlds getWorlds() const override;
         void clearWorlds();
 
         const Token &getToken() const { return mToken; }

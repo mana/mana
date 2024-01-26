@@ -38,7 +38,7 @@ class ChatTab : public Tab, public AutoCompleteLister, public EventListener
 {
     public:
         ChatTab(const std::string &name);
-        ~ChatTab();
+        ~ChatTab() override;
 
         /**
          * Adds a line of text to our message list. Parameters:
@@ -98,17 +98,17 @@ class ChatTab : public Tab, public AutoCompleteLister, public EventListener
         { return false; }
 
 
-        void getAutoCompleteList(std::vector<std::string> &names) const;
+        void getAutoCompleteList(std::vector<std::string> &names) const override;
 
         virtual void saveToLogFile(std::string &msg);
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
     protected:
         friend class ChatWindow;
         friend class WhisperWindow;
 
-        virtual void setCurrent() { setFlash(false); }
+        void setCurrent() override { setFlash(false); }
 
         virtual void handleInput(const std::string &msg);
 

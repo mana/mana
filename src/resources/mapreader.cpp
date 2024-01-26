@@ -68,7 +68,7 @@ static std::string resolveRelativePath(std::string base, std::string relative)
 Map *MapReader::readMap(const std::string &filename)
 {
     logger->log("Attempting to read map %s", filename.c_str());
-    Map *map = NULL;
+    Map *map = nullptr;
 
     XML::Document doc(filename);
 
@@ -111,7 +111,7 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
         logger->log("MapReader: Warning: "
                     "Unitialized tile width or height value for map: %s",
                     path.c_str());
-        return 0;
+        return nullptr;
     }
 
     Map *map = new Map(w, h, tilew, tileh);
@@ -237,7 +237,7 @@ static void setTile(Map *map, MapLayer *layer, int x, int y, unsigned gid)
     if (layer)
     {
         // Set regular tile on a layer
-        Image * const img = set ? set->get(gid - set->getFirstGid()) : 0;
+        Image * const img = set ? set->get(gid - set->getFirstGid()) : nullptr;
         layer->setTile(x, y, img);
     }
     else
@@ -261,7 +261,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
     const bool isFringeLayer = (name.substr(0,6) == "fringe");
     const bool isCollisionLayer = (name.substr(0,9) == "collision");
 
-    MapLayer *layer = 0;
+    MapLayer *layer = nullptr;
 
     if (!isCollisionLayer)
     {
@@ -300,7 +300,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                 continue;
 
             int len = strlen((const char*)dataChild->content) + 1;
-            unsigned char *charData = new unsigned char[len + 1];
+            auto *charData = new unsigned char[len + 1];
             const char *charStart = (const char*) xmlNodeGetContent(dataChild);
             unsigned char *charIndex = charData;
 
@@ -440,8 +440,8 @@ Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
     unsigned firstGid = XML::getProperty(node, "firstgid", 0);
     int margin = XML::getProperty(node, "margin", 0);
     int spacing = XML::getProperty(node, "spacing", 0);
-    XML::Document* doc = NULL;
-    Tileset *set = NULL;
+    XML::Document* doc = nullptr;
+    Tileset *set = nullptr;
     std::string pathDir(path);
 
     if (xmlHasProp(node, BAD_CAST "source"))
@@ -507,7 +507,7 @@ Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
                 // create animation
                 if (!set) continue;
 
-                Animation *ani = new Animation;
+                auto *ani = new Animation;
                 for (int i = 0; ;i++)
                 {
                     std::map<std::string, int>::iterator iFrame, iDelay;

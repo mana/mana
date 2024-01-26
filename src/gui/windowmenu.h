@@ -43,11 +43,11 @@ class WindowMenu : public Container,
 {
     public:
         WindowMenu();
-        ~WindowMenu();
+        ~WindowMenu() override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
-        void valueChanged(const gcn::SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event) override;
 
         /**
          * Update the pop-up captions with new key shortcuts.

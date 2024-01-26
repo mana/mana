@@ -74,7 +74,7 @@ class ItemDB
 {
     public:
         ItemDB() :
-          mUnknown(0),
+          mUnknown(nullptr),
           mLoaded(false)
         {}
 
@@ -147,8 +147,8 @@ class ItemDB
         void loadFloorSprite(SpriteDisplay *display, xmlNodePtr node);
 
         // Items database
-        typedef std::map<int, ItemInfo*> ItemInfos;
-        typedef std::map<std::string, ItemInfo*> NamedItemInfos;
+        using ItemInfos = std::map<int, ItemInfo *>;
+        using NamedItemInfos = std::map<std::string, ItemInfo *>;
 
         ItemInfos mItemInfos;
         NamedItemInfos mNamedItemInfos;
@@ -167,14 +167,14 @@ class TaItemDB: public ItemDB
         TaItemDB() : ItemDB()
         { }
 
-        ~TaItemDB()
+        ~TaItemDB() override
         { unload(); }
 
-        virtual void init();
+        void init() override;
 
-        virtual void readItemNode(xmlNodePtr node, const std::string &filename);
+        void readItemNode(xmlNodePtr node, const std::string &filename) override;
 
-        virtual void checkStatus();
+        void checkStatus() override;
     private:
         /**
          * Check items id specific hard limits and log errors found.
@@ -183,7 +183,7 @@ class TaItemDB: public ItemDB
         void checkHairWeaponsRacesSpecialIds()
         {}
 
-        void checkItemInfo(ItemInfo* itemInfo);
+        void checkItemInfo(ItemInfo* itemInfo) override;
 };
 
 } // namespace TmwAthena
@@ -201,17 +201,17 @@ class ManaServItemDB: public ItemDB
         ManaServItemDB() : ItemDB()
         { }
 
-        ~ManaServItemDB()
+        ~ManaServItemDB() override
         { unload(); }
 
-        virtual void init();
+        void init() override;
 
-        virtual void readItemNode(xmlNodePtr node, const std::string &filename);
+        void readItemNode(xmlNodePtr node, const std::string &filename) override;
 
-        virtual void checkStatus();
+        void checkStatus() override;
 
     private:
-        void checkItemInfo(ItemInfo* itemInfo);
+        void checkItemInfo(ItemInfo* itemInfo) override;
 };
 
 } // namespace ManaServ

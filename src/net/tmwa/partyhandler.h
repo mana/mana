@@ -36,37 +36,37 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
     public:
         PartyHandler();
 
-        ~PartyHandler();
+        ~PartyHandler() override;
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void create(const std::string &name = "");
+        void create(const std::string &name = "") override;
 
-        void join(int partyId);
+        void join(int partyId) override;
 
-        void invite(Being *being);
+        void invite(Being *being) override;
 
-        void invite(const std::string &name);
+        void invite(const std::string &name) override;
 
-        void inviteResponse(const std::string &inviter, bool accept);
+        void inviteResponse(const std::string &inviter, bool accept) override;
 
-        void leave();
+        void leave() override;
 
-        void kick(Being *being);
+        void kick(Being *being) override;
 
-        void kick(const std::string &name);
+        void kick(const std::string &name) override;
 
-        void chat(const std::string &text);
+        void chat(const std::string &text) override;
 
-        void requestPartyMembers();
+        void requestPartyMembers() override;
 
-        PartyShare getShareExperience() { return mShareExp; }
+        PartyShare getShareExperience() override { return mShareExp; }
 
-        void setShareExperience(PartyShare share);
+        void setShareExperience(PartyShare share) override;
 
-        PartyShare getShareItems() { return mShareItems; }
+        PartyShare getShareItems() override { return mShareItems; }
 
-        void setShareItems(PartyShare share);
+        void setShareItems(PartyShare share) override;
 
     private:
         PartyShare mShareExp, mShareItems;

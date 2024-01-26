@@ -40,7 +40,7 @@
 
 namespace Attributes {
 
-    typedef struct
+    using Attribute = struct
     {
         unsigned int id;
         std::string name;
@@ -51,14 +51,14 @@ namespace Attributes {
         std::string scope;
         /** The playerInfo core Id the attribute is linked with or -1 if not */
         int playerInfoId;
-    } Attribute;
+    };
 
     /** Map for attributes. */
-    typedef std::map<unsigned int, Attribute> AttributeMap;
+    using AttributeMap = std::map<unsigned int, Attribute>;
     static AttributeMap attributes;
 
     /** tags = effects on attributes. */
-    typedef std::map< std::string, std::string > TagMap;
+    using TagMap = std::map<std::string, std::string>;
     static TagMap tags;
 
     /** List of modifiable attribute names used at character's creation. */
@@ -355,7 +355,7 @@ namespace Attributes {
         fillLabels();
 
         // Sanity checks on starting points
-        float modifiableAttributeCount = (float) attributeLabels.size();
+        auto modifiableAttributeCount = (float) attributeLabels.size();
         float averageValue = ((float) creationPoints) / modifiableAttributeCount;
         if (averageValue > attributeMaximum || averageValue < attributeMinimum
             || creationPoints < 1)

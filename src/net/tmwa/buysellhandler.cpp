@@ -88,7 +88,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             n_items = (msg.getLength() - 4) / 10;
             if (n_items > 0)
             {
-                SellDialog *dialog = new SellDialog(mNpcId);
+                auto *dialog = new SellDialog(mNpcId);
                 dialog->setMoney(PlayerInfo::getAttribute(MONEY));
 
                 for (int k = 0; k < n_items; k++)

@@ -70,7 +70,7 @@ Particle::Particle(Map *map):
     mRandomness(0),
     mBounce(0.0f),
     mFollow(false),
-    mTarget(NULL),
+    mTarget(nullptr),
     mAcceleration(0.0f),
     mInvDieDistance(-1.0f),
     mMomentum(1.0f)
@@ -195,11 +195,11 @@ bool Particle::update()
         // Update child emitters
         if ((mLifetimePast-1)%Particle::emitterSkip == 0)
         {
-            for (EmitterIterator e = mChildEmitters.begin();
+            for (auto e = mChildEmitters.begin();
                  e != mChildEmitters.end(); e++)
             {
                 Particles newParticles = (*e)->createParticles(mLifetimePast);
-                for (ParticleIterator p = newParticles.begin();
+                for (auto p = newParticles.begin();
                      p != newParticles.end(); p++)
                 {
                     (*p)->moveBy(mPos);
@@ -224,7 +224,7 @@ bool Particle::update()
 
     // Update child particles
 
-    for (ParticleIterator p = mChildParticles.begin();
+    for (auto p = mChildParticles.begin();
          p != mChildParticles.end();)
     {
         //move particle with its parent if desired
@@ -254,7 +254,7 @@ bool Particle::update()
 void Particle::moveBy(const Vector &change)
 {
     mPos += change;
-    for (ParticleIterator p = mChildParticles.begin();
+    for (auto p = mChildParticles.begin();
          p != mChildParticles.end(); p++)
     {
         if ((*p)->doesFollow())
@@ -271,7 +271,7 @@ void Particle::moveTo(float x, float y)
 
 Particle *Particle::createChild()
 {
-    Particle *newParticle = new Particle(mMap);
+    auto *newParticle = new Particle(mMap);
     mChildParticles.push_back(newParticle);
     return newParticle;
 }
@@ -279,7 +279,7 @@ Particle *Particle::createChild()
 Particle *Particle::addEffect(const std::string &particleEffectFile,
                               int pixelX, int pixelY, int rotation)
 {
-    Particle *newParticle = NULL;
+    Particle *newParticle = nullptr;
 
     std::string::size_type pos = particleEffectFile.find('|');
     std::string dyePalettes;
@@ -292,7 +292,7 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "effect"))
     {
         logger->log("Error loading particle: %s", particleEffectFile.c_str());
-        return NULL;
+        return nullptr;
     }
 
     ResourceManager *resman = ResourceManager::getInstance();
@@ -432,7 +432,7 @@ void Particle::adjustEmitterSize(int w, int h)
 {
     if (mAllowSizeAdjust)
     {
-        for (EmitterIterator e = mChildEmitters.begin();
+        for (auto e = mChildEmitters.begin();
              e != mChildEmitters.end(); e++)
         {
             (*e)->adjustSize(w, h);

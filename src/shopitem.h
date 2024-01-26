@@ -52,7 +52,7 @@ class ShopItem : public Item
          */
         ShopItem(int id, int price);
 
-        ~ShopItem();
+        ~ShopItem() override;
 
         /**
          * Add a duplicate. Id and price will be taken from this item.
@@ -126,10 +126,10 @@ class ShopItem : public Item
         /**
          * Struct to keep track of duplicates.
          */
-        typedef struct {
+        using DuplicateItem = struct {
             int inventoryIndex;
             int quantity;
-        } DuplicateItem;
+        };
         std::stack<DuplicateItem*> mDuplicates; /** <-- Stores duplicates */
 };
 

@@ -51,12 +51,12 @@
 #define CAPTION_CLOSE _("Close")
 #define CAPTION_SUBMIT _("Submit")
 
-typedef std::map<int, NpcDialog*> NpcDialogs;
+using NpcDialogs = std::map<int, NpcDialog *>;
 
 class NpcEventListener : public EventListener
 {
 public:
-    void event(Event::Channel channel, const Event &event);
+    void event(Event::Channel channel, const Event &event) override;
 
     NpcDialog *getDialog(int id, bool make = true);
 
@@ -66,7 +66,7 @@ private:
     NpcDialogs mNpcDialogs;
 };
 
-static NpcEventListener *npcListener = NULL;
+static NpcEventListener *npcListener = nullptr;
 
 NpcDialog::DialogList NpcDialog::instances;
 
@@ -333,8 +333,8 @@ bool NpcDialog::isInputFocused() const
 
 bool NpcDialog::isAnyInputFocused()
 {
-    DialogList::iterator it = instances.begin();
-    DialogList::iterator it_end = instances.end();
+    auto it = instances.begin();
+    auto it_end = instances.end();
 
     for (; it != it_end; it++)
     {
@@ -425,8 +425,8 @@ NpcDialog *NpcDialog::getActive()
     if (instances.size() == 1)
         return instances.front();
 
-    DialogList::iterator it = instances.begin();
-    DialogList::iterator it_end = instances.end();
+    auto it = instances.begin();
+    auto it_end = instances.end();
 
     for (; it != it_end; it++)
     {
@@ -436,13 +436,13 @@ NpcDialog *NpcDialog::getActive()
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void NpcDialog::closeAll()
 {
-    DialogList::iterator it = instances.begin();
-    DialogList::iterator it_end = instances.end();
+    auto it = instances.begin();
+    auto it_end = instances.end();
 
     for (; it != it_end; it++)
     {
@@ -623,8 +623,8 @@ void NpcEventListener::event(Event::Channel channel,
 
 NpcDialog *NpcEventListener::getDialog(int id, bool make)
 {
-    NpcDialogs::iterator diag = mNpcDialogs.find(id);
-    NpcDialog *dialog = 0;
+    auto diag = mNpcDialogs.find(id);
+    NpcDialog *dialog = nullptr;
 
     if (diag == mNpcDialogs.end())
     {
@@ -645,7 +645,7 @@ NpcDialog *NpcEventListener::getDialog(int id, bool make)
 
 void NpcEventListener::removeDialog(int id)
 {
-    NpcDialogs::iterator it = mNpcDialogs.find(id);
+    auto it = mNpcDialogs.find(id);
     if (it != mNpcDialogs.end())
         mNpcDialogs.erase(it);
 }

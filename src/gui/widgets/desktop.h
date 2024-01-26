@@ -47,16 +47,16 @@ class Desktop : public Container, gcn::WidgetListener
 {
     public:
         Desktop();
-        ~Desktop();
+        ~Desktop() override;
 
         /**
          * Has to be called after updates have been loaded.
          */
         void reloadWallpaper();
 
-        void widgetResized(const gcn::Event &);
+        void widgetResized(const gcn::Event &) override;
 
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
     private:
         void setBestFittingWallpaper();

@@ -37,7 +37,7 @@ class ShortcutWindow : public Window
     public:
         ShortcutWindow(const std::string &title, ShortcutContainer *content);
 
-        ~ShortcutWindow();
+        ~ShortcutWindow() override;
 
     private:
         ShortcutWindow();

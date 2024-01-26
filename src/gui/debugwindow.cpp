@@ -79,7 +79,7 @@ public:
         h.reflowLayout(0, 0);
     }
 
-    void logic()
+    void logic() override
     {
         if (!isVisible())
             return;
@@ -130,7 +130,7 @@ class DebugSwitches : public Container, public gcn::ActionListener
 public:
     DebugSwitches()
     {
-        Label *showLabel = new Label(_("Show:"));
+        auto *showLabel = new Label(_("Show:"));
         mGrid = new CheckBox(_("Grid"));
         mCollisionTiles = new CheckBox(_("Collision tiles"));
         mBeingCollisionRadius = new CheckBox(_("Being collision radius"));
@@ -139,7 +139,7 @@ public:
         mMousePath = new CheckBox(_("Mouse path"));
         mBeingIds = new CheckBox(_("Being Ids"));
 
-        Label *specialsLabel = new Label(_("Specials:"));
+        auto *specialsLabel = new Label(_("Specials:"));
         mSpecialNormal = new RadioButton(_("Normal"), "mapdebug");
         mSpecial1 = new RadioButton(_("Special 1"), "mapdebug");
         mSpecial2 = new RadioButton(_("Special 2"), "mapdebug");
@@ -179,7 +179,7 @@ public:
         mSpecial3->addActionListener(this);
     }
 
-    void action(const gcn::ActionEvent &event)
+    void action(const gcn::ActionEvent &event) override
     {
         int flags = 0;
 
@@ -233,7 +233,7 @@ DebugWindow::DebugWindow()
     setMinHeight(100);
     setDefaultSize(0, 120, 300, 190);
 
-    TabbedArea *tabs = new TabbedArea;
+    auto *tabs = new TabbedArea;
     place(0, 0, tabs, 2, 2);
     loadWindowState();
 

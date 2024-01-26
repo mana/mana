@@ -31,7 +31,7 @@ void FocusHandler::requestModalFocus(gcn::Widget *widget)
     if (mModalFocusedWidget && mModalFocusedWidget != widget)
     {
         mModalStack.push_front(mModalFocusedWidget);
-        mModalFocusedWidget = NULL;
+        mModalFocusedWidget = nullptr;
     }
 
     gcn::FocusHandler::requestModalFocus(widget);
@@ -85,7 +85,7 @@ void FocusHandler::checkForWindow()
 
         while (widget)
         {
-            Window *window = dynamic_cast<Window*>(widget);
+            auto *window = dynamic_cast<Window*>(widget);
 
             if (window)
             {

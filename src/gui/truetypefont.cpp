@@ -37,7 +37,7 @@ class TextChunk
 {
     public:
         TextChunk(const std::string &text, const gcn::Color &color) :
-            img(NULL), text(text), color(color)
+            img(nullptr), text(text), color(color)
         {
         }
 
@@ -66,7 +66,7 @@ class TextChunk
 
             if (!surface)
             {
-                img = 0;
+                img = nullptr;
                 return;
             }
 
@@ -80,7 +80,7 @@ class TextChunk
         gcn::Color color;
 };
 
-typedef std::list<TextChunk>::iterator CacheIterator;
+using CacheIterator = std::list<TextChunk>::iterator;
 
 static int fontCounter;
 
@@ -120,7 +120,7 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
     if (text.empty())
         return;
 
-    Graphics *g = dynamic_cast<Graphics *>(graphics);
+    auto *g = dynamic_cast<Graphics *>(graphics);
 
     if (!g)
         throw "Not a valid graphics object!";
@@ -137,7 +137,7 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
 
     bool found = false;
 
-    for (CacheIterator i = mCache.begin(); i != mCache.end(); ++i)
+    for (auto i = mCache.begin(); i != mCache.end(); ++i)
     {
         if (chunk == (*i))
         {
@@ -166,7 +166,7 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
 
 int TrueTypeFont::getWidth(const std::string &text) const
 {
-    for (CacheIterator i = mCache.begin(); i != mCache.end(); i++)
+    for (auto i = mCache.begin(); i != mCache.end(); i++)
     {
         if (i->text == text)
         {

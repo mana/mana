@@ -36,7 +36,7 @@ Action::~Action()
 
 Animation *Action::getAnimation(int direction) const
 {
-    Animations::const_iterator i = mAnimations.find(direction);
+    auto i = mAnimations.find(direction);
 
     // When the given direction is not available, return the first one.
     // (either DEFAULT, or more usually DOWN).

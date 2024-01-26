@@ -37,7 +37,7 @@
 #include "utils/stringutils.h"
 
 Desktop::Desktop()
-    : mWallpaper(0)
+    : mWallpaper(nullptr)
 {
     addWidgetListener(this);
 
@@ -74,7 +74,7 @@ void Desktop::widgetResized(const gcn::Event &)
 
 void Desktop::draw(gcn::Graphics *graphics)
 {
-    Graphics *g = static_cast<Graphics *>(graphics);
+    auto *g = static_cast<Graphics *>(graphics);
 
     if (!mWallpaper || (getWidth() > mWallpaper->getWidth() ||
                         getHeight() > mWallpaper->getHeight()))

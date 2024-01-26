@@ -48,12 +48,12 @@ class TypeListModel : public gcn::ListModel
         /**
          * Used to get number of line in the list
          */
-        int getNumberOfElements() { return 2; }
+        int getNumberOfElements() override { return 2; }
 
         /**
          * Used to get an element from the list
          */
-        std::string getElementAt(int elementIndex);
+        std::string getElementAt(int elementIndex) override;
 };
 
 /**
@@ -68,16 +68,16 @@ class CustomServerDialog : public Window,
     public:
         CustomServerDialog(ServerDialog *parent, int index = -1);
 
-        ~CustomServerDialog();
+        ~CustomServerDialog() override;
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
-        void keyPressed(gcn::KeyEvent &keyEvent);
+        void keyPressed(gcn::KeyEvent &keyEvent) override;
 
-        void logic();
+        void logic() override;
 
     private:
         TextField *mServerAddressField;

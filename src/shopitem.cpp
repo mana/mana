@@ -56,7 +56,7 @@ ShopItem::~ShopItem()
 
 void ShopItem::addDuplicate(int inventoryIndex, int quantity)
 {
-    DuplicateItem* di = new DuplicateItem;
+    auto* di = new DuplicateItem;
     di->inventoryIndex = inventoryIndex;
     di->quantity = quantity;
     mDuplicates.push(di);
@@ -65,7 +65,7 @@ void ShopItem::addDuplicate(int inventoryIndex, int quantity)
 
 void ShopItem::addDuplicate()
 {
-    DuplicateItem* di = new DuplicateItem;
+    auto* di = new DuplicateItem;
     di->inventoryIndex = -1;
     di->quantity = 0;
     mDuplicates.push(di);

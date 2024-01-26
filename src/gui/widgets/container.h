@@ -42,7 +42,7 @@ class Container : public gcn::Container
 {
     public:
         Container();
-        ~Container();
+        ~Container() override;
 
     protected:
         /**

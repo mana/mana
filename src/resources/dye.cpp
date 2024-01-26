@@ -179,7 +179,7 @@ void DyePalette::getColor(double intensity, int color[3]) const
 Dye::Dye(const std::string &description)
 {
     for (int i = 0; i < 7; ++i)
-        mDyePalettes[i] = 0;
+        mDyePalettes[i] = nullptr;
 
     if (description.empty())
         return;

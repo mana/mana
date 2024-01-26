@@ -57,8 +57,8 @@ std::string tradePartnerName;
 PopupMenu::PopupMenu():
     Popup("PopupMenu"),
     mBeingId(0),
-    mFloorItem(NULL),
-    mItem(NULL)
+    mFloorItem(nullptr),
+    mItem(nullptr)
 {
     mBrowserBox = new BrowserBox;
     mBrowserBox->setPosition(4, 4);
@@ -348,8 +348,8 @@ void PopupMenu::handleLink(const std::string &link)
     setVisible(false);
 
     mBeingId = 0;
-    mFloorItem = NULL;
-    mItem = NULL;
+    mFloorItem = nullptr;
+    mItem = nullptr;
 }
 
 void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,

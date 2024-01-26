@@ -133,8 +133,8 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mDownloadComplete(true),
     mUserCancel(false),
     mDownloadedBytes(0),
-    mMemoryBuffer(NULL),
-    mDownload(NULL),
+    mMemoryBuffer(nullptr),
+    mDownload(nullptr),
     mUpdateIndex(0),
     mLoadUpdates(applyUpdates)
 {
@@ -184,7 +184,7 @@ UpdaterWindow::~UpdaterWindow()
         mDownload->cancel();
 
         delete mDownload;
-        mDownload = 0;
+        mDownload = nullptr;
     }
     free(mMemoryBuffer);
 }
@@ -235,7 +235,7 @@ void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (key.getValue() == Key::ESCAPE)
     {
-        action(gcn::ActionEvent(NULL, mCancelButton->getActionEventId()));
+        action(gcn::ActionEvent(nullptr, mCancelButton->getActionEventId()));
         Client::setState(STATE_WORLD_SELECT);
     }
     else if (key.getValue() == Key::ENTER)
@@ -243,11 +243,11 @@ void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
         if (mDownloadStatus == UPDATE_COMPLETE ||
                 mDownloadStatus == UPDATE_ERROR)
         {
-            action(gcn::ActionEvent(NULL, mPlayButton->getActionEventId()));
+            action(gcn::ActionEvent(nullptr, mPlayButton->getActionEventId()));
         }
         else
         {
-            action(gcn::ActionEvent(NULL, mCancelButton->getActionEventId()));
+            action(gcn::ActionEvent(nullptr, mCancelButton->getActionEventId()));
         }
     }
 }
@@ -271,12 +271,12 @@ void UpdaterWindow::loadNews()
     while (line)
     {
         mBrowserBox->addRow(line);
-        line = strtok(NULL, "\n");
+        line = strtok(nullptr, "\n");
     }
 
     // Free the memory buffer now that we don't need it anymore
     free(mMemoryBuffer);
-    mMemoryBuffer = NULL;
+    mMemoryBuffer = nullptr;
 
     mScrollArea->setVerticalScrollAmount(0);
 }
@@ -284,7 +284,7 @@ void UpdaterWindow::loadNews()
 int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
                                   size_t dt, size_t dn)
 {
-    UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
+    auto *uw = reinterpret_cast<UpdaterWindow *>(ptr);
 
     if (status == DOWNLOAD_STATUS_COMPLETE)
     {
@@ -320,7 +320,7 @@ int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
 
 size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, void *stream)
 {
-    UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(stream);
+    auto *uw = reinterpret_cast<UpdaterWindow *>(stream);
     size_t totalMem = size * nmemb;
     uw->mMemoryBuffer = (char*) realloc(uw->mMemoryBuffer,
                                         uw->mDownloadedBytes + totalMem);

@@ -33,7 +33,7 @@ class BuySellHandler : public MessageHandler
     public:
         BuySellHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
     private:
         int mNpcId;

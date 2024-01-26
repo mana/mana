@@ -45,15 +45,15 @@ class MiniStatusWindow : public Popup, public EventListener
 
         void drawIcons(Graphics *graphics);
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
-        void logic(); // Updates icons
+        void logic() override; // Updates icons
 
-        void draw(gcn::Graphics *graphics)
+        void draw(gcn::Graphics *graphics) override
         { drawChildren(graphics); }
 
-        void mouseMoved(gcn::MouseEvent &mouseEvent);
-        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &mouseEvent) override;
+        void mouseExited(gcn::MouseEvent &event) override;
 
     private:
         bool isInBar(ProgressBar *bar, int x, int y) const;

@@ -32,7 +32,7 @@ namespace ManaServ
 {
 
 Connection::Connection(ENetHost *client):
-    mConnection(0), mClient(client)
+    mConnection(nullptr), mClient(client)
 {
     mPort = 0;
     connections++;
@@ -83,7 +83,7 @@ void Connection::disconnect()
     enet_host_flush(mClient);
     enet_peer_reset(mConnection);
 
-    mConnection = 0;
+    mConnection = nullptr;
 }
 
 bool Connection::isConnected()

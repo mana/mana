@@ -87,7 +87,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     const gcn::Color &textColor =
             Theme::getThemeColor(Theme::TEXT);
 
-    Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
+    auto *graphics = static_cast<Graphics*>(gcnGraphics);
 
     graphics->setFont(getFont());
     const int fontHeight = getFont()->getHeight();
@@ -97,7 +97,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
          i < mListModel->getNumberOfElements();
          ++i, y += mRowHeight)
     {
-        ShopItem *shopItem = mShopItems ? mShopItems->at(i) : 0;
+        ShopItem *shopItem = mShopItems ? mShopItems->at(i) : nullptr;
 
         if (shopItem && mPlayerMoney < shopItem->getPrice() && mPriceCheck)
         {

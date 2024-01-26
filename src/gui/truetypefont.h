@@ -52,11 +52,11 @@ class TrueTypeFont : public gcn::Font
          */
         TrueTypeFont(const std::string &filename, int size, int style = 0);
 
-        ~TrueTypeFont();
+        ~TrueTypeFont() override;
 
-        virtual int getWidth(const std::string &text) const;
+        int getWidth(const std::string &text) const override;
 
-        virtual int getHeight() const;
+        int getHeight() const override;
 
         /**
          * Returns the height of a line of text. This is not the visual height
@@ -70,7 +70,7 @@ class TrueTypeFont : public gcn::Font
          */
         void drawString(gcn::Graphics *graphics,
                         const std::string &text,
-                        int x, int y);
+                        int x, int y) override;
 
     private:
         TTF_Font *mFont;

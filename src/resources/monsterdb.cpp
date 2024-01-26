@@ -63,7 +63,7 @@ void MonsterDB::init()
  */
 void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
 {
-    BeingInfo *currentInfo = new BeingInfo;
+    auto *currentInfo = new BeingInfo;
 
     currentInfo->setWalkMask(Map::BLOCKMASK_WALL
                              | Map::BLOCKMASK_CHARACTER
@@ -171,7 +171,7 @@ void MonsterDB::unload()
 
 BeingInfo *MonsterDB::get(int id)
 {
-    BeingInfoIterator i = mMonsterInfos.find(id);
+    auto i = mMonsterInfos.find(id);
 
     if (i == mMonsterInfos.end())
     {

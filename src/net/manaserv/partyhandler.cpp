@@ -113,7 +113,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 mParty->clearMembers();
-                local_player->setParty(NULL);
+                local_player->setParty(nullptr);
             }
         } break;
 

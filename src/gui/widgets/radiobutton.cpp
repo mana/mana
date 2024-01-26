@@ -88,7 +88,7 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
         radioCheckedHi->setAlpha(mAlpha);
     }
 
-    Image *box = NULL;
+    Image *box = nullptr;
 
     if (isEnabled())
         if (isSelected())

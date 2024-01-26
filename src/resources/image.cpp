@@ -69,7 +69,7 @@ Image::Image(SDL_Texture *texture, int width, int height):
 #ifdef USE_OPENGL
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
     mAlpha(1.0f),
-    mTexture(0),
+    mTexture(nullptr),
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight)
@@ -102,7 +102,7 @@ Resource *Image::load(SDL_RWops *rw)
     if (!tmpImage)
     {
         logger->log("Error, image load failed: %s", IMG_GetError());
-        return NULL;
+        return nullptr;
     }
 
     Image *image = load(tmpImage);
@@ -118,11 +118,11 @@ Resource *Image::load(SDL_RWops *rw, Dye const &dye)
     if (!tmpImage)
     {
         logger->log("Error, image load failed: %s", IMG_GetError());
-        return NULL;
+        return nullptr;
     }
 
     SDL_PixelFormat rgba;
-    rgba.palette = NULL;
+    rgba.palette = nullptr;
     rgba.BitsPerPixel = 32;
     rgba.BytesPerPixel = 4;
     rgba.Rmask = 0xFF000000; rgba.Rloss = 0; rgba.Rshift = 24;
@@ -133,7 +133,7 @@ Resource *Image::load(SDL_RWops *rw, Dye const &dye)
     SDL_Surface *surf = SDL_ConvertSurface(tmpImage, &rgba, 0);
     SDL_FreeSurface(tmpImage);
 
-    Uint32 *pixels = static_cast< Uint32 * >(surf->pixels);
+    auto *pixels = static_cast< Uint32 * >(surf->pixels);
     for (Uint32 *p_end = pixels + surf->w * surf->h; pixels != p_end; ++pixels)
     {
         int alpha = *pixels & 255;
@@ -167,7 +167,7 @@ void Image::unload()
     if (mTexture)
     {
         SDL_DestroyTexture(mTexture);
-        mTexture = NULL;
+        mTexture = nullptr;
     }
 
 #ifdef USE_OPENGL
@@ -210,7 +210,7 @@ void Image::setAlpha(float alpha)
 Image *Image::_SDLload(SDL_Surface *image)
 {
     if (!image || !mRenderer)
-        return NULL;
+        return nullptr;
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(mRenderer, image);
     return new Image(texture, image->w, image->h);
@@ -269,12 +269,12 @@ Image *Image::_GLload(SDL_Surface *image)
         if (!image)
         {
             logger->log("Error, image convert failed: out of memory");
-            return NULL;
+            return nullptr;
         }
 
         // Make sure the alpha channel is not used, but copied to destination
         SDL_SetSurfaceBlendMode(oldImage, SDL_BLENDMODE_NONE);
-        SDL_BlitSurface(oldImage, NULL, image, NULL);
+        SDL_BlitSurface(oldImage, nullptr, image, nullptr);
     }
 
     GLuint texture;
@@ -325,7 +325,7 @@ Image *Image::_GLload(SDL_Surface *image)
                 break;
         }
         logger->log("Error: Image GL import failed: %s", errmsg.c_str());
-        return NULL;
+        return nullptr;
     }
 
     return new Image(texture, width, height, realWidth, realHeight);

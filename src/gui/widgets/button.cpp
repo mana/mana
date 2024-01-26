@@ -38,7 +38,7 @@
 int Button::mInstances = 0;
 float Button::mAlpha = 1.0;
 ImageRect *Button::mButton;
-TextPopup *Button::mTextPopup = 0;
+TextPopup *Button::mTextPopup = nullptr;
 
 enum{
     BUTTON_STANDARD,    // 0
@@ -63,7 +63,7 @@ static ButtonData const data[BUTTON_COUNT] = {
 };
 
 Button::Button():
-    mButtonIcon(0)
+    mButtonIcon(nullptr)
 {
     init();
     adjustSize();
@@ -72,7 +72,7 @@ Button::Button():
 Button::Button(const std::string &caption, const std::string &actionEventId,
     gcn::ActionListener *listener):
     gcn::Button(caption),
-    mButtonIcon(0)
+    mButtonIcon(nullptr)
 {
     init();
     setActionEventId(actionEventId);
@@ -127,10 +127,10 @@ void Button::removeButtonIcon(bool adjustButtonSize)
     for (int mode = 0; mode < BUTTON_COUNT; ++mode)
     {
         delete mButtonIcon[mode];
-        mButtonIcon[mode] = 0;
+        mButtonIcon[mode] = nullptr;
     }
     delete[] mButtonIcon;
-    mButtonIcon = 0;
+    mButtonIcon = nullptr;
 
     if (adjustButtonSize)
         adjustSize();
@@ -189,7 +189,7 @@ Button::~Button()
 
         // Remove the popup
         delete mTextPopup;
-        mTextPopup = 0;
+        mTextPopup = nullptr;
     }
     // Don' try to readjust the size when it's about to be deleted.
     removeButtonIcon(false);

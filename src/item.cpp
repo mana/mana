@@ -30,8 +30,8 @@
 #include "resources/theme.h"
 
 Item::Item(int id, int quantity, bool equipped):
-    mImage(0),
-    mDrawImage(0),
+    mImage(nullptr),
+    mDrawImage(nullptr),
     mQuantity(quantity),
     mEquipped(equipped), mInEquipment(false)
 {

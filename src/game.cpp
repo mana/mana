@@ -88,11 +88,11 @@
 #include <sstream>
 #include <string>
 
-Joystick *joystick = NULL;
+Joystick *joystick = nullptr;
 
-OkDialog *weightNotice = NULL;
-OkDialog *deathNotice = NULL;
-QuitDialog *quitDialog = NULL;
+OkDialog *weightNotice = nullptr;
+OkDialog *deathNotice = nullptr;
+QuitDialog *quitDialog = nullptr;
 
 ChatWindow *chatWindow;
 StatusWindow *statusWindow;
@@ -110,14 +110,14 @@ OutfitWindow *outfitWindow;
 SpecialsWindow *specialsWindow;
 SocialWindow *socialWindow;
 
-ActorSpriteManager *actorSpriteManager = NULL;
-ChannelManager *channelManager = NULL;
-CommandHandler *commandHandler = NULL;
-Particle *particleEngine = NULL;
-EffectManager *effectManager = NULL;
-Viewport *viewport = NULL;                    /**< Viewport on the map. */
+ActorSpriteManager *actorSpriteManager = nullptr;
+ChannelManager *channelManager = nullptr;
+CommandHandler *commandHandler = nullptr;
+Particle *particleEngine = nullptr;
+EffectManager *effectManager = nullptr;
+Viewport *viewport = nullptr;                    /**< Viewport on the map. */
 
-ChatTab *localChatTab = NULL;
+ChatTab *localChatTab = nullptr;
 
 /**
  * Initialize every game sub-engines in the right order
@@ -131,7 +131,7 @@ static void initEngines()
     channelManager = new ChannelManager;
     effectManager = new EffectManager;
 
-    particleEngine = new Particle(NULL);
+    particleEngine = new Particle(nullptr);
     particleEngine->setupEngine();
 
     Event::trigger(Event::GameChannel, Event::EnginesInitialized);
@@ -203,12 +203,12 @@ static void destroyGuiWindows()
     Event::trigger(Event::GameChannel, Event::GuiWindowsUnloaded);
 }
 
-Game *Game::mInstance = 0;
+Game *Game::mInstance = nullptr;
 
 Game::Game():
     mLastTarget(ActorSprite::UNKNOWN),
     mDisconnected(false),
-    mCurrentMap(0)
+    mCurrentMap(nullptr)
 {
     assert(!mInstance);
     mInstance = this;
@@ -217,7 +217,7 @@ Game::Game():
     viewport = new Viewport;
     viewport->setSize(graphics->getWidth(), graphics->getHeight());
 
-    gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+    auto *top = static_cast<gcn::Container*>(gui->getTop());
     top->add(viewport);
     viewport->requestMoveToBottom();
 
@@ -260,7 +260,7 @@ Game::~Game()
     del_0(viewport)
     del_0(mCurrentMap)
 
-    mInstance = 0;
+    mInstance = nullptr;
 
     Event::trigger(Event::GameChannel, Event::Destructed);
 }
@@ -347,7 +347,7 @@ void Game::logic()
     if (mCurrentMap)
         mCurrentMap->update();
 
-    cur_time = time(NULL);
+    cur_time = time(nullptr);
 
     // Handle network stuff
     if (!Net::getGameHandler()->isConnected() && !mDisconnected)
@@ -404,7 +404,7 @@ void Game::handleInput()
         // Keyboard events (for discontinuous keys)
         else if (event.type == SDL_KEYDOWN)
         {
-            gcn::Window *requestedWindow = NULL;
+            gcn::Window *requestedWindow = nullptr;
 
             if (setupWindow->isVisible() &&
                 keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
@@ -456,9 +456,9 @@ void Game::handleInput()
                         helpWindow->setVisible(false);
                     // Close the config window, cancelling changes if opened
                     else if (setupWindow->isVisible())
-                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
+                        setupWindow->action(gcn::ActionEvent(nullptr, "cancel"));
                     else if (dialog)
-                        dialog->action(gcn::ActionEvent(NULL, "ok"));
+                        dialog->action(gcn::ActionEvent(nullptr, "ok"));
                 }
                 if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
                 {
@@ -914,7 +914,7 @@ void Game::changeMap(const std::string &mapPath)
     // Unset the map of the player so that its particles are cleared before
     // being deleted in the next step
     if (local_player)
-        local_player->setMap(0);
+        local_player->setMap(nullptr);
 
     particleEngine->clear();
 

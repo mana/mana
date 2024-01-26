@@ -45,14 +45,14 @@
 #include <guichan/image.hpp>
 
 // Guichan stuff
-Gui *gui = 0;
-SDLInput *guiInput = 0;
+Gui *gui = nullptr;
+SDLInput *guiInput = nullptr;
 
 // Bolded font
-gcn::Font *boldFont = 0;
+gcn::Font *boldFont = nullptr;
 
 // Mono font
-gcn::Font *monoFont = 0;
+gcn::Font *monoFont = nullptr;
 
 class GuiConfigListener : public EventListener
 {
@@ -61,7 +61,7 @@ class GuiConfigListener : public EventListener
             mGui(g)
         {}
 
-        void event(Event::Channel channel, const Event &event)
+        void event(Event::Channel channel, const Event &event) override
         {
             if (channel == Event::ConfigChannel)
             {
@@ -79,7 +79,7 @@ class GuiConfigListener : public EventListener
 
 Gui::Gui(Graphics *graphics):
     mCustomCursor(false),
-    mMouseCursors(NULL),
+    mMouseCursors(nullptr),
     mMouseCursorAlpha(1.0f),
     mMouseInactivityTimer(0),
     mCursorType(CURSOR_POINTER)
@@ -97,7 +97,7 @@ Gui::Gui(Graphics *graphics):
     mFocusHandler = new FocusHandler;
 
     // Initialize top GUI widget
-    WindowContainer *guiTop = new WindowContainer;
+    auto *guiTop = new WindowContainer;
     guiTop->setFocusable(true);
     guiTop->setSize(graphics->getWidth(), graphics->getHeight());
     guiTop->setOpaque(false);
@@ -225,7 +225,7 @@ void Gui::draw()
 
 void Gui::videoResized()
 {
-    WindowContainer *top = static_cast<WindowContainer*>(getTop());
+    auto *top = static_cast<WindowContainer*>(getTop());
 
     int oldWidth = top->getWidth();
     int oldHeight = top->getHeight();
@@ -260,7 +260,7 @@ void Gui::setUseCustomCursor(bool customCursor)
             if (mMouseCursors)
             {
                 mMouseCursors->decRef();
-                mMouseCursors = NULL;
+                mMouseCursors = nullptr;
             }
         }
     }

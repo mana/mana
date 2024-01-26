@@ -32,34 +32,34 @@ class GuildHandler : public Net::GuildHandler, public MessageHandler
     public:
         GuildHandler();
 
-        ~GuildHandler();
+        ~GuildHandler() override;
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void create(const std::string &name);
+        void create(const std::string &name) override;
 
-        void invite(int guildId, const std::string &name);
+        void invite(int guildId, const std::string &name) override;
 
-        void invite(int guildId, Being *being);
+        void invite(int guildId, Being *being) override;
 
-        void inviteResponse(int guildId, bool response);
+        void inviteResponse(int guildId, bool response) override;
 
-        void leave(int guildId);
+        void leave(int guildId) override;
 
-        void kick(GuildMember *member, std::string reason = "");
+        void kick(GuildMember *member, std::string reason = "") override;
 
-        void chat(int guildId, const std::string &text);
+        void chat(int guildId, const std::string &text) override;
 
-        void memberList(int guildId);
+        void memberList(int guildId) override;
 
-        void changeMemberPostion(GuildMember *member, int level);
+        void changeMemberPostion(GuildMember *member, int level) override;
 
-        void requestAlliance(int guildId, int otherGuildId);
+        void requestAlliance(int guildId, int otherGuildId) override;
 
         void requestAllianceResponse(int guildId, int otherGuildId,
-                                     bool response);
+                                     bool response) override;
 
-        void endAlliance(int guildId, int otherGuildId);
+        void endAlliance(int guildId, int otherGuildId) override;
 
     private:
         // TmwAthena (and eAthena) only supports one guild per player

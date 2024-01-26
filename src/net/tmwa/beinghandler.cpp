@@ -90,7 +90,7 @@ static Being *createBeing(int id, short job)
     else if (job > 1000 && job <= 2000)
         type = ActorSprite::MONSTER;
     else if (job == 45)
-        return NULL; // Skip portals
+        return nullptr; // Skip portals
 
     Being *being = actorSpriteManager->createBeing(id, type, job);
 

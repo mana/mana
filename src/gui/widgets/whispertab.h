@@ -34,12 +34,12 @@ class WhisperTab : public ChatTab
     public:
         const std::string &getNick() const { return mNick; }
 
-        void showHelp();
+        void showHelp() override;
 
         bool handleCommand(const std::string &type,
-                           const std::string &args);
+                           const std::string &args) override;
 
-        void saveToLogFile(std::string &msg);
+        void saveToLogFile(std::string &msg) override;
 
     protected:
         friend class ChatWindow;
@@ -51,13 +51,13 @@ class WhisperTab : public ChatTab
          */
         WhisperTab(const std::string &nick);
 
-        ~WhisperTab();
+        ~WhisperTab() override;
 
-        void handleInput(const std::string &msg);
+        void handleInput(const std::string &msg) override;
 
-        void handleCommand(const std::string &msg);
+        void handleCommand(const std::string &msg) override;
 
-        bool checkNotify(Own) const
+        bool checkNotify(Own) const override
         { return true; }
 
     private:

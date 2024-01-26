@@ -53,7 +53,7 @@ struct SpriteDisplay
     std::list<std::string> particles;
 };
 
-typedef std::list<SpriteReference>::const_iterator SpriteRefs;
+using SpriteRefs = std::list<SpriteReference>::const_iterator;
 
 /*
  * Remember those are the main action.
@@ -115,7 +115,7 @@ class SpriteDef : public Resource
     private:
         SpriteDef() {}
 
-        ~SpriteDef();
+        ~SpriteDef() override;
 
         /**
          * Loads a sprite element.
@@ -156,10 +156,10 @@ class SpriteDef : public Resource
          */
         void substituteAction(std::string complete, std::string with);
 
-        typedef std::map<std::string, ImageSet*> ImageSets;
-        typedef ImageSets::iterator ImageSetIterator;
+        using ImageSets = std::map<std::string, ImageSet *>;
+        using ImageSetIterator = ImageSets::iterator;
 
-        typedef std::map<std::string, Action*> Actions;
+        using Actions = std::map<std::string, Action *>;
 
         ImageSets mImageSets;
         Actions mActions;

@@ -52,27 +52,27 @@ class AnimatedSprite : public Sprite
         static AnimatedSprite *load(const std::string &filename,
                                     int variant = 0);
 
-        virtual ~AnimatedSprite();
+        ~AnimatedSprite() override;
 
-        bool reset();
+        bool reset() override;
 
-        bool play(std::string action);
+        bool play(std::string action) override;
 
-        bool update(int time);
+        bool update(int time) override;
 
-        bool draw(Graphics* graphics, int posX, int posY) const;
+        bool draw(Graphics* graphics, int posX, int posY) const override;
 
-        int getWidth() const;
+        int getWidth() const override;
 
-        int getHeight() const;
+        int getHeight() const override;
 
-        int getOffsetX() const;
+        int getOffsetX() const override;
 
-        int getOffsetY() const;
+        int getOffsetY() const override;
 
-        const Image* getImage() const;
+        const Image* getImage() const override;
 
-        bool setDirection(SpriteDirection direction);
+        bool setDirection(SpriteDirection direction) override;
 
         int getNumberOfLayers()
         { return 1; }
@@ -80,7 +80,7 @@ class AnimatedSprite : public Sprite
         virtual bool drawnWhenBehind() const
         { return true; }
 
-        int getDuration() const;
+        int getDuration() const override;
 
     private:
         bool updateCurrentAnimation(unsigned int dt);

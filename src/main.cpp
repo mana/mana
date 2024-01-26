@@ -77,28 +77,28 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
     const char *optstring = "hvud:U:P:Dc:s:p:C:";
 
     const struct option long_options[] = {
-        { "config-dir",     required_argument, 0, 'C' },
-        { "data",           required_argument, 0, 'd' },
-        { "default",        no_argument,       0, 'D' },
-        { "password",       required_argument, 0, 'P' },
-        { "character",      required_argument, 0, 'c' },
-        { "help",           no_argument,       0, 'h' },
-        { "localdata-dir",  required_argument, 0, 'L' },
-        { "update-host",    required_argument, 0, 'H' },
-        { "port",           required_argument, 0, 'p' },
-        { "server",         required_argument, 0, 's' },
-        { "skip-update",    no_argument,       0, 'u' },
-        { "username",       required_argument, 0, 'U' },
-        { "no-opengl",      no_argument,       0, 'O' },
-        { "chat-log-dir",   required_argument, 0, 'T' },
-        { "version",        no_argument,       0, 'v' },
-        { "screenshot-dir", required_argument, 0, 'i' },
-        { 0 }
+        { "config-dir",     required_argument, nullptr, 'C' },
+        { "data",           required_argument, nullptr, 'd' },
+        { "default",        no_argument,       nullptr, 'D' },
+        { "password",       required_argument, nullptr, 'P' },
+        { "character",      required_argument, nullptr, 'c' },
+        { "help",           no_argument,       nullptr, 'h' },
+        { "localdata-dir",  required_argument, nullptr, 'L' },
+        { "update-host",    required_argument, nullptr, 'H' },
+        { "port",           required_argument, nullptr, 'p' },
+        { "server",         required_argument, nullptr, 's' },
+        { "skip-update",    no_argument,       nullptr, 'u' },
+        { "username",       required_argument, nullptr, 'U' },
+        { "no-opengl",      no_argument,       nullptr, 'O' },
+        { "chat-log-dir",   required_argument, nullptr, 'T' },
+        { "version",        no_argument,       nullptr, 'v' },
+        { "screenshot-dir", required_argument, nullptr, 'i' },
+        { nullptr }
     };
 
     while (optind < argc)
     {
-        int result = getopt_long(argc, argv, optstring, long_options, NULL);
+        int result = getopt_long(argc, argv, optstring, long_options, nullptr);
 
         if (result == -1)
             break;

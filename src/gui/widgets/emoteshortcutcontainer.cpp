@@ -79,7 +79,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
         mBackgroundImg->setAlpha(mAlpha);
     }
 
-    Graphics *g = static_cast<Graphics*>(graphics);
+    auto *g = static_cast<Graphics*>(graphics);
 
     graphics->setFont(getFont());
 

@@ -38,12 +38,12 @@ class ResizeGrip : public gcn::Widget
     public:
         ResizeGrip(const std::string &image = "resize.png");
 
-        ~ResizeGrip();
+        ~ResizeGrip() override;
 
         /**
          * Draws the resize grip.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
     private:
         static Image *gripImage;   /**< Resize grip image */

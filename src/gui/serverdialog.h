@@ -50,19 +50,19 @@ class DropDown;
 class ServersListModel : public gcn::ListModel
 {
     public:
-        typedef std::pair<int, std::string> VersionString;
+        using VersionString = std::pair<int, std::string>;
 
         ServersListModel(ServerInfos *servers, ServerDialog *parent);
 
         /**
          * Used to get number of line in the list
          */
-        int getNumberOfElements();
+        int getNumberOfElements() override;
 
         /**
          * Used to get an element from the list
          */
-        std::string getElementAt(int elementIndex);
+        std::string getElementAt(int elementIndex) override;
 
         /**
          * Used to get the corresponding Server struct
@@ -73,7 +73,7 @@ class ServersListModel : public gcn::ListModel
         void setVersionString(int index, const std::string &version);
 
     private:
-        typedef std::vector<VersionString> VersionStrings;
+        using VersionStrings = std::vector<VersionString>;
 
         ServerInfos *mServers;
         VersionStrings mVersionStrings;
@@ -93,23 +93,23 @@ class ServerDialog : public Window,
     public:
         ServerDialog(ServerInfo *serverInfo, const std::string &dir);
 
-        ~ServerDialog();
+        ~ServerDialog() override;
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
-        void keyPressed(gcn::KeyEvent &keyEvent);
+        void keyPressed(gcn::KeyEvent &keyEvent) override;
 
         /**
          * Called when the selected value changed in the servers list box.
          */
-        void valueChanged(const gcn::SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event) override;
 
-        void mouseClicked(gcn::MouseEvent &mouseEvent);
+        void mouseClicked(gcn::MouseEvent &mouseEvent) override;
 
-        void logic();
+        void logic() override;
 
     protected:
         friend class ServersListModel;

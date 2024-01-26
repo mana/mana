@@ -46,7 +46,7 @@ namespace XML
     };
 
     Document::Document(const std::string &filename, bool useResman):
-        mDoc(0)
+        mDoc(nullptr)
     {
         XMLContext ctx;
         ctx.file = filename;
@@ -54,7 +54,7 @@ namespace XML
         xmlSetStructuredErrorFunc(&ctx, xmlLogger);
 
         int size;
-        char *data = NULL;
+        char *data = nullptr;
         if (useResman)
         {
             ResourceManager *resman = ResourceManager::getInstance();
@@ -78,7 +78,7 @@ namespace XML
             logger->log("Error loading %s", filename.c_str());
         }
 
-        xmlSetStructuredErrorFunc(NULL, xmlLogger);
+        xmlSetStructuredErrorFunc(nullptr, xmlLogger);
     }
 
     Document::~Document()
@@ -89,7 +89,7 @@ namespace XML
 
     xmlNodePtr Document::rootNode()
     {
-        return mDoc ? xmlDocGetRootElement(mDoc) : 0;
+        return mDoc ? xmlDocGetRootElement(mDoc) : nullptr;
     }
 
     int getProperty(xmlNodePtr node, const char* name, int def)
@@ -152,12 +152,12 @@ namespace XML
             if (xmlStrEqual(child->name, BAD_CAST name))
                 return child;
 
-        return NULL;
+        return nullptr;
     }
 
     static void xmlLogger(void *ctx, xmlErrorPtr error)
     {
-        XMLContext *context = static_cast<XMLContext*>(ctx);
+        auto *context = static_cast<XMLContext*>(ctx);
 
         if (context)
             logger->log("Error in XML file '%s' on line %d",
@@ -180,7 +180,7 @@ namespace XML
         LIBXML_TEST_VERSION;
 
         // Handle libxml2 error messages
-        xmlSetStructuredErrorFunc(NULL, xmlLogger);
+        xmlSetStructuredErrorFunc(nullptr, xmlLogger);
     }
 
 } // namespace XML

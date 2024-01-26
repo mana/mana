@@ -42,14 +42,14 @@ class BuySellDialog : public Window, public gcn::ActionListener
          */
         BuySellDialog(int npcId);
 
-        ~BuySellDialog();
+        ~BuySellDialog() override;
 
-        void setVisible(bool visible);
+        void setVisible(bool visible) override;
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Closes all instances.
@@ -57,7 +57,7 @@ class BuySellDialog : public Window, public gcn::ActionListener
         static void closeAll();
 
     private:
-        typedef std::list<BuySellDialog*> DialogList;
+        using DialogList = std::list<BuySellDialog *>;
         static DialogList instances;
 
         int mNpcId;

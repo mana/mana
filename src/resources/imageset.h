@@ -39,7 +39,7 @@ class ImageSet : public Resource
          */
         ImageSet(Image *img, int w, int h, int margin = 0, int spacing = 0);
 
-        ~ImageSet();
+        ~ImageSet() override;
 
         /**
          * Returns the width of the images in the image set.
@@ -51,7 +51,7 @@ class ImageSet : public Resource
          */
         int getHeight() const { return mHeight; }
 
-        typedef std::vector<Image*>::size_type size_type;
+        using size_type = std::vector<Image *>::size_type;
         Image* get(size_type i) const;
 
         size_type size() const { return mImages.size(); }

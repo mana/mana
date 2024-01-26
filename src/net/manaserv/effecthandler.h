@@ -31,7 +31,7 @@ class EffectHandler : public MessageHandler
     public:
         EffectHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
     private:
         void handleCreateEffectPos(MessageIn &msg);

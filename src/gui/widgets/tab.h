@@ -35,7 +35,7 @@ class Tab : public gcn::Tab
 {
     public:
         Tab();
-        ~Tab();
+        ~Tab() override;
 
         /**
          * Update the alpha value to the graphic components.
@@ -45,7 +45,7 @@ class Tab : public gcn::Tab
         /**
          * Draw the tabbed area.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Set the normal color fo the tab's text.

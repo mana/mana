@@ -62,7 +62,7 @@ void NpcHandler::handleMessage(MessageIn &msg)
     }
 
     int npcId = being->getId(), count = 0;
-    Event *event = 0;
+    Event *event = nullptr;
 
     switch (msg.getId())
     {

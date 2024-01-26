@@ -39,32 +39,32 @@ class GameHandler : public MessageHandler, public Net::GameHandler,
     public:
         GameHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void event(Event::Channel channel, const Event &event);
+        void event(Event::Channel channel, const Event &event) override;
 
-        void connect();
+        void connect() override;
 
-        bool isConnected();
+        bool isConnected() override;
 
-        void disconnect();
+        void disconnect() override;
 
-        void who();
+        void who() override;
 
-        void quit();
+        void quit() override;
 
-        bool removeDeadBeings() const { return true; }
+        bool removeDeadBeings() const override { return true; }
 
         void clear();
 
         void setMap(const std::string map);
 
         /** The tmwAthena protocol is making use of the MP status bar. */
-        bool canUseMagicBar() const { return true; }
+        bool canUseMagicBar() const override { return true; }
 
-        int getPickupRange() const;
+        int getPickupRange() const override;
 
-        int getNpcTalkRange() const { return DEFAULT_TILE_LENGTH * 30; }
+        int getNpcTalkRange() const override { return DEFAULT_TILE_LENGTH * 30; }
 
     private:
         std::string mMap; ///< Keeps the map filename.

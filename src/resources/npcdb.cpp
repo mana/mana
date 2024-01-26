@@ -52,7 +52,7 @@ void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
         return;
     }
 
-    BeingInfo *currentInfo = new BeingInfo;
+    auto *currentInfo = new BeingInfo;
 
     currentInfo->setTargetCursorSize(XML::getProperty(node,
                                      "targetCursor", "medium"));
@@ -94,7 +94,7 @@ void NPCDB::unload()
 
 BeingInfo *NPCDB::get(int id)
 {
-    BeingInfoIterator i = mNPCInfos.find(id);
+    auto i = mNPCInfos.find(id);
 
     if (i == mNPCInfos.end())
     {

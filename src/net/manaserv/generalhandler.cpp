@@ -61,9 +61,9 @@ extern ManaServ::LoginHandler *loginHandler;
 
 namespace ManaServ {
 
-Connection *accountServerConnection = 0;
-Connection *chatServerConnection = 0;
-Connection *gameServerConnection = 0;
+Connection *accountServerConnection = nullptr;
+Connection *chatServerConnection = nullptr;
+Connection *gameServerConnection = nullptr;
 std::string netToken = "";
 ServerInfo gameServer;
 ServerInfo chatServer;
@@ -181,7 +181,7 @@ void GeneralHandler::event(Event::Channel channel,
 
             if (newState == STATE_GAME)
             {
-                GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
+                auto *game = static_cast<GameHandler*>(Net::getGameHandler());
                 game->gameLoading();
             }
         }

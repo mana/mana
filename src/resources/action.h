@@ -43,8 +43,8 @@ class Action
         Animation *getAnimation(int direction) const;
 
     protected:
-        typedef std::map<int, Animation*> Animations;
-        typedef Animations::iterator AnimationIterator;
+        using Animations = std::map<int, Animation *>;
+        using AnimationIterator = Animations::iterator;
         Animations mAnimations;
 };
 

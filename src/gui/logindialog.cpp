@@ -138,11 +138,11 @@ void LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (key.getValue() == Key::ESCAPE)
     {
-        action(gcn::ActionEvent(NULL, mServerButton->getActionEventId()));
+        action(gcn::ActionEvent(nullptr, mServerButton->getActionEventId()));
     }
     else if (key.getValue() == Key::ENTER)
     {
-        action(gcn::ActionEvent(NULL, mLoginButton->getActionEventId()));
+        action(gcn::ActionEvent(nullptr, mLoginButton->getActionEventId()));
     }
     else
     {

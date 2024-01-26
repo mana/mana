@@ -194,7 +194,7 @@ bool getBoolFromString(const std::string &text, bool def)
 std::string autocomplete(std::vector<std::string> &candidates,
                          std::string base)
 {
-    std::vector<std::string>::iterator i = candidates.begin();
+    auto i = candidates.begin();
     toLower(base);
     std::string newName("");
 

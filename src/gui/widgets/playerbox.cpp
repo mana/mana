@@ -71,7 +71,7 @@ PlayerBox::~PlayerBox()
 {
     instances--;
 
-    mBeing = 0;
+    mBeing = nullptr;
 
     if (instances == 0)
     {

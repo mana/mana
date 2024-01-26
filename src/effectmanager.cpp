@@ -67,7 +67,7 @@ EffectManager::~EffectManager()
 bool EffectManager::trigger(int id, Being* being, int rotation)
 {
     bool rValue = false;
-    for (std::list<EffectDescription>::iterator i = mEffects.begin(); i != mEffects.end(); ++i)
+    for (auto i = mEffects.begin(); i != mEffects.end(); ++i)
     {
         if ((*i).id == id)
         {
@@ -89,7 +89,7 @@ bool EffectManager::trigger(int id, Being* being, int rotation)
 bool EffectManager::trigger(int id, int x, int y, int rotation)
 {
     bool rValue = false;
-    for (std::list<EffectDescription>::iterator i = mEffects.begin(); i != mEffects.end(); ++i)
+    for (auto i = mEffects.begin(); i != mEffects.end(); ++i)
     {
         if ((*i).id == id)
         {

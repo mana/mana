@@ -120,8 +120,8 @@ class Network
         SDL_Thread *mWorkerThread;
         Mutex mMutex;
 
-        typedef std::map<Uint16, MessageHandler*> MessageHandlers;
-        typedef MessageHandlers::iterator MessageHandlerIterator;
+        using MessageHandlers = std::map<Uint16, MessageHandler *>;
+        using MessageHandlerIterator = MessageHandlers::iterator;
         MessageHandlers mMessageHandlers;
 
         static Network *mInstance;

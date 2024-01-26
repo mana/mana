@@ -91,7 +91,7 @@ namespace TmwAthena {
 
 int networkThread(void *data)
 {
-    Network *network = static_cast<Network*>(data);
+    auto *network = static_cast<Network*>(data);
 
     if (!network->realConnect())
         return -1;
@@ -101,16 +101,16 @@ int networkThread(void *data)
     return 0;
 }
 
-Network *Network::mInstance = 0;
+Network *Network::mInstance = nullptr;
 
 Network::Network():
-    mSocket(0),
+    mSocket(nullptr),
     mInBuffer(new char[BUFFER_SIZE]),
     mOutBuffer(new char[BUFFER_SIZE]),
     mInSize(0), mOutSize(0),
     mToSkip(0),
     mState(IDLE),
-    mWorkerThread(0)
+    mWorkerThread(nullptr)
 {
     SDLNet_Init();
 
@@ -124,7 +124,7 @@ Network::~Network()
     if (mState != IDLE && mState != NET_ERROR)
         disconnect();
 
-    mInstance = 0;
+    mInstance = nullptr;
 
     delete[] mInBuffer;
     delete[] mOutBuffer;
@@ -175,14 +175,14 @@ void Network::disconnect()
 
     if (mWorkerThread)
     {
-        SDL_WaitThread(mWorkerThread, NULL);
-        mWorkerThread = NULL;
+        SDL_WaitThread(mWorkerThread, nullptr);
+        mWorkerThread = nullptr;
     }
 
     if (mSocket)
     {
         SDLNet_TCP_Close(mSocket);
-        mSocket = 0;
+        mSocket = nullptr;
     }
 }
 
@@ -203,7 +203,7 @@ void Network::unregisterHandler(MessageHandler *handler)
         mMessageHandlers.erase(*i);
     }
 
-    handler->setNetwork(0);
+    handler->setNetwork(nullptr);
 }
 
 void Network::clearHandlers()
@@ -211,7 +211,7 @@ void Network::clearHandlers()
     MessageHandlerIterator i;
     for (i = mMessageHandlers.begin(); i != mMessageHandlers.end(); ++i)
     {
-        i->second->setNetwork(0);
+        i->second->setNetwork(nullptr);
     }
     mMessageHandlers.clear();
 }
@@ -222,7 +222,7 @@ void Network::dispatchMessages()
     {
         MessageIn msg = getNextMessage();
 
-        MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
+        auto iter = mMessageHandlers.find(msg.getId());
 
         if (msg.getLength() == 0)
             logger->error("Zero length packet received. Exiting.");

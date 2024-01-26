@@ -25,7 +25,7 @@
 
 #include "utils/dtor.h"
 
-WindowContainer *windowContainer = NULL;
+WindowContainer *windowContainer = nullptr;
 
 void WindowContainer::logic()
 {
@@ -43,7 +43,7 @@ void WindowContainer::scheduleDelete(gcn::Widget *widget)
 void WindowContainer::adjustAfterResize(int oldScreenWidth,
                                         int oldScreenHeight)
 {
-    for (WidgetListIterator i = mWidgets.begin(); i != mWidgets.end(); ++i)
-        if (Window *window = dynamic_cast<Window*>(*i))
+    for (auto i = mWidgets.begin(); i != mWidgets.end(); ++i)
+        if (auto *window = dynamic_cast<Window*>(*i))
             window->adjustPositionAfterResize(oldScreenWidth, oldScreenHeight);
 }

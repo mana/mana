@@ -36,7 +36,7 @@ class AvatarListModel : public gcn::ListModel
 public:
     virtual Avatar *getAvatarAt(int i) = 0;
 
-    std::string getElementAt(int i)
+    std::string getElementAt(int i) override
     { return getAvatarAt(i)->getName(); }
 };
 
@@ -45,14 +45,14 @@ class AvatarListBox : public ListBox
 public:
     AvatarListBox(AvatarListModel *model);
 
-    ~AvatarListBox();
+    ~AvatarListBox() override;
 
     /**
      * Draws the list box.
      */
-    void draw(gcn::Graphics *gcnGraphics);
+    void draw(gcn::Graphics *gcnGraphics) override;
 
-    void mousePressed(gcn::MouseEvent &event);
+    void mousePressed(gcn::MouseEvent &event) override;
 
 private:
     static int instances;

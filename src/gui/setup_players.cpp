@@ -70,14 +70,14 @@ static const char *RELATION_NAMES[PlayerRelation::RELATIONS_NR] =
 class PlayerRelationListModel : public gcn::ListModel
 {
 public:
-    virtual ~PlayerRelationListModel() { }
+    ~PlayerRelationListModel() override { }
 
-    virtual int getNumberOfElements()
+    int getNumberOfElements() override
     {
         return PlayerRelation::RELATIONS_NR;
     }
 
-    virtual std::string getElementAt(int i)
+    std::string getElementAt(int i) override
     {
         if (i >= getNumberOfElements() || i < 0)
             return "";
@@ -89,35 +89,35 @@ class PlayerTableModel : public TableModel
 {
 public:
     PlayerTableModel() :
-        mPlayers(NULL),
+        mPlayers(nullptr),
         mListModel(new PlayerRelationListModel)
     {
         playerRelationsUpdated();
     }
 
-    virtual ~PlayerTableModel()
+    ~PlayerTableModel() override
     {
         freeWidgets();
         delete mListModel;
         delete mPlayers;
     }
 
-    virtual int getRows() const
+    int getRows() const override
     {
         return mPlayers->size();
     }
 
-    virtual int getColumns() const
+    int getColumns() const override
     {
         return COLUMNS_NR;
     }
 
-    virtual int getRowHeight() const
+    int getRowHeight() const override
     {
         return ROW_HEIGHT;
     }
 
-    virtual int getColumnWidth(int index) const
+    int getColumnWidth(int index) const override
     {
         if (index == NAME_COLUMN)
             return NAME_COLUMN_WIDTH;
@@ -151,7 +151,7 @@ public:
 
     virtual void updateModelInRow(int row)
     {
-        gcn::DropDown *choicebox = static_cast<gcn::DropDown *>(
+        auto *choicebox = static_cast<gcn::DropDown *>(
                                    getElementAt(row, RELATION_CHOICE_COLUMN));
         player_relations.setRelation(getPlayerAt(row),
                                    static_cast<PlayerRelation::Relation>(
@@ -159,7 +159,7 @@ public:
     }
 
 
-    virtual gcn::Widget *getElementAt(int row, int column) const
+    gcn::Widget *getElementAt(int row, int column) const override
     {
         return mWidgets[WIDGET_AT(row, column)];
     }
@@ -168,7 +168,7 @@ public:
     {
         if (mPlayers)
             delete mPlayers;
-        mPlayers = NULL;
+        mPlayers = nullptr;
 
         delete_all(mWidgets);
         mWidgets.clear();
@@ -191,14 +191,14 @@ protected:
 class IgnoreChoicesListModel : public gcn::ListModel
 {
 public:
-    virtual ~IgnoreChoicesListModel() { }
+    ~IgnoreChoicesListModel() override { }
 
-    virtual int getNumberOfElements()
+    int getNumberOfElements() override
     {
         return player_relations.getPlayerIgnoreStrategies()->size();
     }
 
-    virtual std::string getElementAt(int i)
+    std::string getElementAt(int i) override
     {
         if (i >= getNumberOfElements())
             return _("???");

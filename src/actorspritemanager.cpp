@@ -42,7 +42,7 @@ class FindBeingFunctor
             if (!game)
                 return false;
 
-            Being* b = static_cast<Being*>(actor);
+            auto* b = static_cast<Being*>(actor);
 
             uint16_t other_y = y + ((b->getType() == ActorSprite::NPC) ? 1 : 0);
             const Vector &pos = b->getPosition();
@@ -59,7 +59,7 @@ class FindBeingFunctor
 
 class PlayerNamesLister : public AutoCompleteLister
 {
-    void getAutoCompleteList(std::vector<std::string>& names) const
+    void getAutoCompleteList(std::vector<std::string>& names) const override
     {
         names.clear();
 
@@ -69,7 +69,7 @@ class PlayerNamesLister : public AutoCompleteLister
             if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
                 continue;
 
-            Being *being = static_cast<Being*>(*it);
+            auto *being = static_cast<Being*>(*it);
             if (being->getType() == Being::PLAYER && being->getName() != "")
                 names.push_back(being->getName());
         }
@@ -78,7 +78,7 @@ class PlayerNamesLister : public AutoCompleteLister
 
 class PlayerNPCNamesLister : public AutoCompleteLister
 {
-    void getAutoCompleteList(std::vector<std::string>& names) const
+    void getAutoCompleteList(std::vector<std::string>& names) const override
     {
         names.clear();
 
@@ -88,7 +88,7 @@ class PlayerNPCNamesLister : public AutoCompleteLister
             if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
                 continue;
 
-            Being *being = static_cast<Being*>(*it);
+            auto *being = static_cast<Being*>(*it);
             if ((being->getType() == Being::PLAYER
                  || being->getType() == Being::NPC)
                 && being->getName() != "")
@@ -124,7 +124,7 @@ void ActorSpriteManager::setPlayer(LocalPlayer *player)
 
 Being *ActorSpriteManager::createBeing(int id, ActorSprite::Type type, int subtype)
 {
-    Being *being = new Being(id, type, subtype, mMap);
+    auto *being = new Being(id, type, subtype, mMap);
 
     mActors.insert(being);
     return being;
@@ -132,7 +132,7 @@ Being *ActorSpriteManager::createBeing(int id, ActorSprite::Type type, int subty
 
 FloorItem *ActorSpriteManager::createItem(int id, int itemId, const Vector &pos)
 {
-    FloorItem *floorItem = new FloorItem(id, itemId, pos, mMap);
+    auto *floorItem = new FloorItem(id, itemId, pos, mMap);
 
     mActors.insert(floorItem);
     return floorItem;
@@ -163,7 +163,7 @@ Being *ActorSpriteManager::findBeing(int id) const
             return static_cast<Being*>(actor);
     }
 
-    return NULL;
+    return nullptr;
 }
 
 Being *ActorSpriteManager::findBeing(int x, int y, ActorSprite::Type type) const
@@ -172,21 +172,21 @@ Being *ActorSpriteManager::findBeing(int x, int y, ActorSprite::Type type) const
     beingFinder.y = y;
     beingFinder.type = type;
 
-    ActorSpritesConstIterator it = find_if(mActors.begin(), mActors.end(),
+    auto it = find_if(mActors.begin(), mActors.end(),
                                            beingFinder);
 
-    return (it == mActors.end()) ? NULL : static_cast<Being*>(*it);
+    return (it == mActors.end()) ? nullptr : static_cast<Being*>(*it);
 }
 
 Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
 {
-    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : 0;
+    Map *map = Game::instance() ? Game::instance()->getCurrentMap() : nullptr;
     if (!map)
-        return 0;
+        return nullptr;
 
     const int halfTileHeight = map->getTileHeight() / 2;
 
-    Being *closest = 0;
+    Being *closest = nullptr;
     int closestDist = 0;
 
     for_actors
@@ -194,7 +194,7 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
         if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        Being *being = static_cast<Being*>(*it);
+        auto *being = static_cast<Being*>(*it);
 
         const int halfWidth = std::max(16, being->getWidth() / 2);
         const int height = std::max(32, being->getHeight());
@@ -233,12 +233,12 @@ FloorItem *ActorSpriteManager::findItem(int id) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 FloorItem *ActorSpriteManager::findItem(int x, int y, int maxDist) const
 {
-    FloorItem *item = 0;
+    FloorItem *item = nullptr;
     int smallestDist = 0;
     for_actors
     {
@@ -263,12 +263,12 @@ Being *ActorSpriteManager::findBeingByName(const std::string &name,
         if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        Being *being = static_cast<Being*>(*it);
+        auto *being = static_cast<Being*>(*it);
         if (being->getName() == name &&
            (type == ActorSprite::UNKNOWN || type == being->getType()))
             return being;
     }
-    return NULL;
+    return nullptr;
 }
 
 const ActorSprites &ActorSpriteManager::getAll() const
@@ -312,9 +312,9 @@ Being *ActorSpriteManager::findNearestLivingBeing(int x, int y,
 {
     Game *game = Game::instance();
     if (!game)
-        return 0;
+        return nullptr;
 
-    Being *closestBeing = 0;
+    Being *closestBeing = nullptr;
     int dist = 0;
 
     const int maxDist = maxTileDist * game->getCurrentTileWidth();
@@ -324,7 +324,7 @@ Being *ActorSpriteManager::findNearestLivingBeing(int x, int y,
         if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        Being *being = static_cast<Being*>(*it);
+        auto *being = static_cast<Being*>(*it);
         const Vector &pos = being->getPosition();
         int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
 
@@ -338,7 +338,7 @@ Being *ActorSpriteManager::findNearestLivingBeing(int x, int y,
         }
     }
 
-    return (maxDist >= dist) ? closestBeing : 0;
+    return (maxDist >= dist) ? closestBeing : nullptr;
 }
 
 Being *ActorSpriteManager::findNearestLivingBeing(Being *aroundBeing,
@@ -378,7 +378,7 @@ void ActorSpriteManager::updatePlayerNames()
         if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        Being *being = static_cast<Being*>(*it);
+        auto *being = static_cast<Being*>(*it);
         if (being->getType() == ActorSprite::PLAYER && being->getName() != "")
             being->updateName();
     }

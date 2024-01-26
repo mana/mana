@@ -36,12 +36,12 @@ class Setup_Keyboard : public SetupTab, public gcn::ActionListener
     public:
         Setup_Keyboard();
 
-        ~Setup_Keyboard();
+        ~Setup_Keyboard() override;
 
-        void apply();
-        void cancel();
+        void apply() override;
+        void cancel() override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Get an update on the assigned key.

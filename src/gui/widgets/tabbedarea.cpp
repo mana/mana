@@ -41,7 +41,7 @@ TabbedArea::TabbedArea() : gcn::TabbedArea(),
     add(mArrowButton[0]);
     add(mArrowButton[1]);
 
-    widgetResized(NULL);
+    widgetResized(nullptr);
 }
 
 int TabbedArea::getNumberOfTabs() const
@@ -51,7 +51,7 @@ int TabbedArea::getNumberOfTabs() const
 
 Tab *TabbedArea::getTab(const std::string &name) const
 {
-    TabContainer::const_iterator itr = mTabs.begin(), itr_end = mTabs.end();
+    auto itr = mTabs.begin(), itr_end = mTabs.end();
     while (itr != itr_end)
     {
         if ((*itr).first->getCaption() == name)
@@ -59,7 +59,7 @@ Tab *TabbedArea::getTab(const std::string &name) const
 
         ++itr;
     }
-    return NULL;
+    return nullptr;
 }
 
 void TabbedArea::draw(gcn::Graphics *graphics)
@@ -72,7 +72,7 @@ void TabbedArea::draw(gcn::Graphics *graphics)
 
 gcn::Widget *TabbedArea::getWidget(const std::string &name) const
 {
-    TabContainer::const_iterator itr = mTabs.begin(), itr_end = mTabs.end();
+    auto itr = mTabs.begin(), itr_end = mTabs.end();
     while (itr != itr_end)
     {
         if ((*itr).first->getCaption() == name)
@@ -81,7 +81,7 @@ gcn::Widget *TabbedArea::getWidget(const std::string &name) const
         ++itr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 gcn::Widget *TabbedArea::getCurrentWidget()
@@ -89,7 +89,7 @@ gcn::Widget *TabbedArea::getCurrentWidget()
     if (gcn::Tab *tab = getSelectedTab())
         return getWidget(tab->getCaption());
 
-    return NULL;
+    return nullptr;
 }
 
 void TabbedArea::addTab(gcn::Tab* tab, gcn::Widget* widget)
@@ -119,7 +119,7 @@ void TabbedArea::removeTab(Tab *tab)
         if (getNumberOfTabs() > 1)
             setSelectedTab(std::max(0, getSelectedTabIndex() - 1));
         else
-            mSelectedTab = 0;
+            mSelectedTab = nullptr;
     }
 
     TabContainer::iterator iter;
@@ -163,7 +163,7 @@ void TabbedArea::mousePressed(gcn::MouseEvent &mouseEvent)
     {
         gcn::Widget *widget = mTabContainer->getWidgetAt(mouseEvent.getX(),
                                                          mouseEvent.getY());
-        gcn::Tab *tab = dynamic_cast<gcn::Tab*>(widget);
+        auto *tab = dynamic_cast<gcn::Tab*>(widget);
 
         if (tab)
         {
@@ -180,7 +180,7 @@ void TabbedArea::setSelectedTab(gcn::Tab *tab)
     if (Tab *newTab = dynamic_cast<Tab*>(tab))
         newTab->setCurrent();
 
-    widgetResized(NULL);
+    widgetResized(nullptr);
 }
 
 void TabbedArea::widgetResized(const gcn::Event &event)

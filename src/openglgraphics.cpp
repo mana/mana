@@ -379,8 +379,8 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     if (iw == 0 || ih == 0)
         return;
 
-    const float tw = static_cast<float>(image->getTextureWidth());
-    const float th = static_cast<float>(image->getTextureHeight());
+    const auto tw = static_cast<float>(image->getTextureWidth());
+    const auto th = static_cast<float>(image->getTextureHeight());
 
     glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
 
@@ -528,8 +528,8 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image,
     // Draw a set of textured rectangles
     if (image->getTextureType() == GL_TEXTURE_2D)
     {
-        const float tw = static_cast<float>(image->getTextureWidth());
-        const float th = static_cast<float>(image->getTextureHeight());
+        const auto tw = static_cast<float>(image->getTextureWidth());
+        const auto th = static_cast<float>(image->getTextureHeight());
 
         const float texX1 = static_cast<float>(srcX) / tw;
         const float texY1 = static_cast<float>(srcY) / th;
@@ -706,7 +706,7 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
 
     // Flip the screenshot, as OpenGL has 0,0 in bottom left
     unsigned int lineSize = 3 * w;
-    GLubyte* buf = (GLubyte*)malloc(lineSize);
+    auto* buf = (GLubyte*)malloc(lineSize);
 
     for (int i = 0; i < (h / 2); i++)
     {

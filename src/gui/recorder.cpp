@@ -42,7 +42,7 @@ Recorder::Recorder(ChatWindow *chat, const std::string &title,
     const int offsetY = getTitleBarHeight() + getPadding() + 10;
 
     mChat = chat;
-    Button *button = new Button(buttonTxt, "activate", this);
+    auto *button = new Button(buttonTxt, "activate", this);
 
     // 123 is the default chat window height. If you change this in Chat, please
     // change it here as well

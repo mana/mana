@@ -32,7 +32,7 @@
 class Music : public Resource
 {
     public:
-        virtual ~Music();
+        ~Music() override;
 
         /**
          * Loads a music from a buffer in memory.

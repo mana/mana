@@ -65,6 +65,6 @@ namespace SpecialDB
     SpecialInfo::TargetMode targetModeFromString(const std::string& str);
 }
 
-typedef std::map<int, SpecialInfo *> SpecialInfos;
+using SpecialInfos = std::map<int, SpecialInfo *>;
 
 #endif

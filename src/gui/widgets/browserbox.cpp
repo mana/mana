@@ -86,7 +86,7 @@ void BrowserBox::addRow(const std::string &row)
     const int fontHeight = font->getHeight();
 
     int lineHeight = fontHeight;
-    if (TrueTypeFont *ttf = dynamic_cast<TrueTypeFont*>(font))
+    if (auto *ttf = dynamic_cast<TrueTypeFont*>(font))
         lineHeight = ttf->getLineHeight();
 
     // Use links and user defined colors
@@ -185,7 +185,7 @@ void BrowserBox::addRow(const std::string &row)
         int tildeWidth = font->getWidth(tilde);
         int x = 0;
 
-        for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
+        for (auto i = mTextRows.begin(); i != mTextRows.end(); i++)
         {
             std::string row = *i;
             for (unsigned int j = 0; j < row.size(); ++j)
@@ -259,7 +259,7 @@ struct MouseOverLink
 void BrowserBox::mousePressed(gcn::MouseEvent &event)
 {
     if (!mLinkHandler) return;
-    LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
+    auto i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
 
     if (i != mLinks.end())
@@ -268,7 +268,7 @@ void BrowserBox::mousePressed(gcn::MouseEvent &event)
 
 void BrowserBox::mouseMoved(gcn::MouseEvent &event)
 {
-    LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
+    auto i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
 
     mSelectedLink = (i != mLinks.end())
@@ -316,7 +316,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         }
     }
 
-    for (LinePartIterator i = mLineParts.begin();
+    for (auto i = mLineParts.begin();
         i != mLineParts.end();
         i ++)
     {
@@ -377,7 +377,7 @@ int BrowserBox::calcHeight()
     const int tildeWidth = font->getWidth("~");
 
     int lineHeight = fontHeight;
-    if (TrueTypeFont *ttf = dynamic_cast<TrueTypeFont*>(font))
+    if (auto *ttf = dynamic_cast<TrueTypeFont*>(font))
         lineHeight = ttf->getLineHeight();
 
     gcn::Color selColor = Theme::getThemeColor(Theme::TEXT);
@@ -385,7 +385,7 @@ int BrowserBox::calcHeight()
 
     mLineParts.clear();
 
-    for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
+    for (auto i = mTextRows.begin(); i != mTextRows.end(); i++)
     {
         const std::string row = *(i);
         bool wrapped = false;

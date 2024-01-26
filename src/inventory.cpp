@@ -42,7 +42,7 @@ Inventory::Inventory(Type type, int size):
     mUsed(0)
 {
     mItems = new Item*[mSize];
-    std::fill_n(mItems, mSize, (Item*) 0);
+    std::fill_n(mItems, mSize, (Item*) nullptr);
 }
 
 Inventory::~Inventory()
@@ -56,7 +56,7 @@ Inventory::~Inventory()
 Item *Inventory::getItem(int index) const
 {
     if (index < 0 || index >= mSize || !mItems[index] || mItems[index]->getQuantity() <= 0)
-        return 0;
+        return nullptr;
 
     return mItems[index];
 }
@@ -67,7 +67,7 @@ Item *Inventory::findItem(int itemId) const
         if (mItems[i] && mItems[i]->getId() == itemId)
             return mItems[i];
 
-    return NULL;
+    return nullptr;
 }
 
 void Inventory::addItem(int id, int quantity)
@@ -118,7 +118,7 @@ void Inventory::removeItem(int id)
 void Inventory::removeItemAt(int index)
 {
     delete mItems[index];
-    mItems[index] = 0;
+    mItems[index] = nullptr;
     if (mUsed > 0) {
         mUsed--;
         distributeSlotsChangedEvent();

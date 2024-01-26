@@ -25,7 +25,7 @@
 #include <string>
 #include "variabledata.h"
 
-typedef std::map<std::string, VariableData*> DefaultsData;
+using DefaultsData = std::map<std::string, VariableData *>;
 
 DefaultsData* getConfigDefaults();
 DefaultsData* getBrandingDefaults();

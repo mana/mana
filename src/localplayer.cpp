@@ -61,22 +61,22 @@
 
 const int AWAY_LIMIT_TIMER = 60;
 
-LocalPlayer *local_player = 0;
+LocalPlayer *local_player = nullptr;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
-    Being(id, PLAYER, subtype, 0),
+    Being(id, PLAYER, subtype, nullptr),
     mAttackRange(-1),
     mTargetTime(-1),
     mLastTargetTime(-1),
-    mTarget(0),
-    mPickUpTarget(0),
+    mTarget(nullptr),
+    mPickUpTarget(nullptr),
     mGoingToTarget(false), mKeepAttacking(false),
     mLastActionTime(-1),
     mWalkingDir(0),
     mPathSetByMouse(false),
     mMessageTime(0),
     mShowIp(false),
-    mAwayDialog(0),
+    mAwayDialog(nullptr),
     mAfkTime(0),
     mAwayMode(false)
 {
@@ -188,7 +188,7 @@ void LocalPlayer::logic()
         && withinRange(mPickUpTarget, Net::getGameHandler()->getPickupRange()))
     {
         Net::getPlayerHandler()->pickUp(mPickUpTarget);
-        mPickUpTarget = 0;
+        mPickUpTarget = nullptr;
     }
 
     Being::logic();
@@ -199,7 +199,7 @@ void LocalPlayer::setAction(Action action, int attackId)
     if (action == DEAD)
     {
         mLastTargetTime = -1;
-        setTarget(0);
+        setTarget(nullptr);
     }
 
     Being::setAction(action, attackId);
@@ -607,8 +607,8 @@ void LocalPlayer::inviteToGuild(Being *being)
 
     // TODO: Allow user to choose which guild to invite being to
     // For now, just invite to the first guild you have permissions to invite with
-    std::map<int, Guild*>::iterator itr = mGuilds.begin();
-    std::map<int, Guild*>::iterator itr_end = mGuilds.end();
+    auto itr = mGuilds.begin();
+    auto itr_end = mGuilds.end();
     for (; itr != itr_end; ++itr)
     {
         if (checkInviteRights(itr->second->getName()))
@@ -633,7 +633,7 @@ void LocalPlayer::pickUp(FloorItem *item)
         // if the player does not move
         if (getDestination() == getPosition())
             lookAt(item->getPosition());
-        mPickUpTarget = 0;
+        mPickUpTarget = nullptr;
     }
     else
     {
@@ -669,7 +669,7 @@ void LocalPlayer::setTarget(Being *target)
         mTargetTime = -1;
     }
 
-    Being *oldTarget = 0;
+    Being *oldTarget = nullptr;
     if (mTarget)
     {
         mTarget->untarget();
@@ -895,7 +895,7 @@ void LocalPlayer::stopAttack()
     {
         if (mAction == ATTACK)
             setAction(STAND);
-        setTarget(0);
+        setTarget(nullptr);
     }
     mLastTargetTime = -1;
     cancelGoToTarget();
@@ -1013,10 +1013,10 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
             ActorSprite *actor = event.getActor("source");
 
             if (mPickUpTarget == actor)
-                mPickUpTarget = 0;
+                mPickUpTarget = nullptr;
 
             if (mTarget == actor)
-                mTarget = 0;
+                mTarget = nullptr;
         }
     }
     else if (channel == Event::AttributesChannel)
@@ -1073,7 +1073,7 @@ void LocalPlayer::changeAwayMode()
         mAwayDialog->addActionListener(mAwayListener);
     }
 
-    mAwayDialog = 0;
+    mAwayDialog = nullptr;
 }
 
 void LocalPlayer::setAway(const std::string &message)

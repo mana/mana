@@ -33,18 +33,18 @@ class GuildTab : public ChatTab
 {
     public:
         GuildTab();
-        ~GuildTab();
+        ~GuildTab() override;
 
-        void showHelp();
+        void showHelp() override;
 
-        bool handleCommand(const std::string &type, const std::string &args);
+        bool handleCommand(const std::string &type, const std::string &args) override;
 
-        void saveToLogFile(std::string &msg);
+        void saveToLogFile(std::string &msg) override;
 
     protected:
-        void handleInput(const std::string &msg);
+        void handleInput(const std::string &msg) override;
 
-        void getAutoCompleteList(std::vector<std::string> &names) const;
+        void getAutoCompleteList(std::vector<std::string> &names) const override;
 };
 
 extern GuildTab *guildTab;

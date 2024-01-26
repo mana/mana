@@ -33,10 +33,10 @@ class Setup_Audio : public SetupTab, public gcn::ActionListener
     public:
         Setup_Audio();
 
-        void apply();
-        void cancel();
+        void apply() override;
+        void cancel() override;
 
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
     private:
         int mMusicVolume;

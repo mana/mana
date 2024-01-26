@@ -57,7 +57,7 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
 
     do
     {
-        if (strm.next_out == NULL)
+        if (strm.next_out == nullptr)
         {
             inflateEnd(&strm);
             return Z_MEM_ERROR;
@@ -80,7 +80,7 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
         {
             out = (unsigned char*) realloc(out, bufferSize * 2);
 
-            if (out == NULL)
+            if (out == nullptr)
             {
                 inflateEnd(&strm);
                 return Z_MEM_ERROR;
@@ -105,7 +105,7 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
     unsigned int outLength = 0;
     int ret = inflateMemory(in, inLength, out, outLength);
 
-    if (ret != Z_OK || out == NULL)
+    if (ret != Z_OK || out == nullptr)
     {
         if (ret == Z_MEM_ERROR)
         {
@@ -125,7 +125,7 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
         }
 
         free(out);
-        out = NULL;
+        out = nullptr;
         outLength = 0;
     }
 
@@ -163,7 +163,7 @@ void *loadCompressedFile(const std::string &filename, int &filesize)
             {
                 logger->log("Could not decompress file: %s",
                             filename.c_str());
-                return NULL;
+                return nullptr;
             }
 
             filesize = inflatedSize;
@@ -179,5 +179,5 @@ void *loadCompressedFile(const std::string &filename, int &filesize)
         logger->log("Error loading file from drive: %s", filename.c_str());
     }
 
-    return NULL;
+    return nullptr;
 }

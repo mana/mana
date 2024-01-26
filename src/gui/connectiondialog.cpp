@@ -39,9 +39,9 @@ ConnectionDialog::ConnectionDialog(const std::string &text,
     setMovable(false);
     setMinWidth(0);
 
-    ProgressIndicator *progressIndicator = new ProgressIndicator;
+    auto *progressIndicator = new ProgressIndicator;
     gcn::Label *label = new Label(text);
-    Button *cancelButton = new Button(_("Cancel"), "cancelButton", this);
+    auto *cancelButton = new Button(_("Cancel"), "cancelButton", this);
 
     place(0, 0, progressIndicator);
     place(0, 1, label);

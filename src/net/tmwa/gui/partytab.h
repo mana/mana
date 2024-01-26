@@ -33,18 +33,18 @@ class PartyTab : public ChatTab
 {
     public:
         PartyTab();
-        ~PartyTab();
+        ~PartyTab() override;
 
-        void showHelp();
+        void showHelp() override;
 
-        bool handleCommand(const std::string &type, const std::string &args);
+        bool handleCommand(const std::string &type, const std::string &args) override;
 
-        void saveToLogFile(std::string &msg);
+        void saveToLogFile(std::string &msg) override;
 
     protected:
-        void handleInput(const std::string &msg);
+        void handleInput(const std::string &msg) override;
 
-        virtual void getAutoCompleteList(std::vector<std::string>&) const;
+        void getAutoCompleteList(std::vector<std::string>&) const override;
 };
 
 extern PartyTab *partyTab;

@@ -30,8 +30,8 @@ class ItemLinkHandler : public LinkHandler
 {
     public:
         ItemLinkHandler();
-        ~ItemLinkHandler();
-        void handleLink(const std::string &link);
+        ~ItemLinkHandler() override;
+        void handleLink(const std::string &link) override;
 
     private:
         ItemPopup *mItemPopup;

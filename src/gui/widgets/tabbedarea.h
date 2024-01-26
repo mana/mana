@@ -44,7 +44,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
         /**
          * Draw the tabbed area.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Return how many tabs have been created.
@@ -74,7 +74,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
          * @param tab The tab widget for the tab.
          * @param widget The widget to view when the tab is selected.
          */
-        void addTab(gcn::Tab* tab, gcn::Widget* widget);
+        void addTab(gcn::Tab* tab, gcn::Widget* widget) override;
 
         /**
          * Add a tab. Overridden since it needs to create an instance of Tab
@@ -83,7 +83,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
          * @param caption The Caption to display
          * @param widget The widget to show when tab is selected
          */
-        void addTab(const std::string &caption, gcn::Widget *widget);
+        void addTab(const std::string &caption, gcn::Widget *widget) override;
 
         /**
          * Overload the remove tab function as it's broken in guichan 0.8.
@@ -93,27 +93,27 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
         /**
          * Overload the logic function since it's broken in guichan 0.8.
          */
-        void logic();
+        void logic() override;
 
         int getContainerHeight() const
         { return mWidgetContainer->getHeight(); }
 
-        void setSelectedTab(unsigned int index)
+        void setSelectedTab(unsigned int index) override
         { gcn::TabbedArea::setSelectedTab(index); }
 
-        void setSelectedTab(gcn::Tab *tab);
+        void setSelectedTab(gcn::Tab *tab) override;
 
-        void widgetResized(const gcn::Event &event);
+        void widgetResized(const gcn::Event &event) override;
 
         void adjustTabPositions();
 
-        void action(const gcn::ActionEvent& actionEvent);
+        void action(const gcn::ActionEvent& actionEvent) override;
 
         // Inherited from MouseListener
 
-        void mousePressed(gcn::MouseEvent &mouseEvent);
+        void mousePressed(gcn::MouseEvent &mouseEvent) override;
     private:
-        typedef std::vector< std::pair<gcn::Tab*, gcn::Widget*> > TabContainer;
+        using TabContainer = std::vector<std::pair<gcn::Tab *, gcn::Widget *>>;
 
         /** The tab arrows */
         Button *mArrowButton[2];

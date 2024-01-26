@@ -32,35 +32,35 @@ class ImageSprite : public Sprite
 public:
     ImageSprite(Image *image);
 
-    ~ImageSprite();
+    ~ImageSprite() override;
 
-    bool reset()
+    bool reset() override
     { return false; }
 
-    bool play(std::string action)
+    bool play(std::string action) override
     { return false; }
 
-    bool update(int time)
+    bool update(int time) override
     { return false; }
 
-    bool draw(Graphics* graphics, int posX, int posY) const;
+    bool draw(Graphics* graphics, int posX, int posY) const override;
 
-    int getWidth() const
+    int getWidth() const override
     { return mImage->getWidth(); }
 
-    int getHeight() const
+    int getHeight() const override
     { return mImage->getHeight(); }
 
-    const Image* getImage() const
+    const Image* getImage() const override
     { return mImage; }
 
-    virtual bool setDirection(SpriteDirection direction)
+    bool setDirection(SpriteDirection direction) override
     { return false; }
 
     int getNumberOfLayers()
     { return 1; }
 
-    int getDuration() const
+    int getDuration() const override
     { return 0; }
 
 private:

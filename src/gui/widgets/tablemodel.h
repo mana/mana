@@ -101,7 +101,7 @@ class StaticTableModel : public TableModel
 {
 public:
     StaticTableModel(int width, int height);
-    virtual ~StaticTableModel();
+    ~StaticTableModel() override;
 
     /**
      * Inserts a widget into the table model.
@@ -130,13 +130,13 @@ public:
      */
     virtual void resize();
 
-    virtual int getRows() const;
-    virtual int getColumns() const;
-    virtual int getRowHeight() const;
+    int getRows() const override;
+    int getColumns() const override;
+    int getRowHeight() const override;
     virtual int getWidth() const;
     virtual int getHeight() const;
-    virtual int getColumnWidth(int index) const;
-    virtual gcn::Widget *getElementAt(int row, int column) const;
+    int getColumnWidth(int index) const override;
+    gcn::Widget *getElementAt(int row, int column) const override;
 
 protected:
     int mRows, mColumns;

@@ -40,7 +40,7 @@ Resource *SoundEffect::load(SDL_RWops *rw)
     else
     {
         logger->log("Error, failed to load sound effect: %s", Mix_GetError());
-        return NULL;
+        return nullptr;
     }
 }
 

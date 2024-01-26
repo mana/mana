@@ -34,8 +34,8 @@
 #include <guichan/font.hpp>
 
 int AvatarListBox::instances = 0;
-Image *AvatarListBox::onlineIcon = 0;
-Image *AvatarListBox::offlineIcon = 0;
+Image *AvatarListBox::onlineIcon = nullptr;
+Image *AvatarListBox::offlineIcon = nullptr;
 
 AvatarListBox::AvatarListBox(AvatarListModel *model):
     ListBox(model)
@@ -67,11 +67,11 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
     if (!mListModel)
         return;
 
-    AvatarListModel* model = static_cast<AvatarListModel*>(mListModel);
+    auto* model = static_cast<AvatarListModel*>(mListModel);
 
     updateAlpha();
 
-    Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
+    auto *graphics = static_cast<Graphics*>(gcnGraphics);
 
     graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
                                             (int) (mAlpha * 255.0f)));

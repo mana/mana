@@ -28,7 +28,7 @@
 namespace TmwAthena {
 
 MessageHandler::MessageHandler()
-    : mNetwork(NULL)
+    : mNetwork(nullptr)
 {
 }
 

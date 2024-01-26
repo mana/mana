@@ -45,7 +45,7 @@ class FloorItem : public ActorSprite
                   const Vector &position,
                   Map *map);
 
-        Type getType() const { return FLOOR_ITEM; }
+        Type getType() const override { return FLOOR_ITEM; }
 
         /**
          * Returns the item ID.
@@ -59,10 +59,10 @@ class FloorItem : public ActorSprite
          */
         const ItemInfo &getInfo() const;
 
-        virtual int getTileX() const
+        int getTileX() const override
         { return mX; }
 
-        virtual int getTileY() const
+        int getTileY() const override
         { return mY; }
 
     private:

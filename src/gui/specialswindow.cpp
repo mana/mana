@@ -94,7 +94,7 @@ void SpecialsWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "use")
     {
-        SpecialEntry *disp = dynamic_cast<SpecialEntry*>(event.getSource()->getParent());
+        auto *disp = dynamic_cast<SpecialEntry*>(event.getSource()->getParent());
 
         if (disp)
         {
@@ -127,10 +127,10 @@ void SpecialsWindow::draw(gcn::Graphics *graphics)
     bool foundNew = false;
     unsigned int found = 0; // number of entries in specialData which match mEntries
 
-    for (std::map<int, Special>::iterator it = specialData.begin();
+    for (auto it = specialData.begin();
          it != specialData.end(); ++it)
     {
-        std::map<int, SpecialEntry *>::iterator e = mEntries.find(it->first);
+        auto e = mEntries.find(it->first);
         if (e == mEntries.end())
         {
             // found a new special - abort update and rebuild from scratch
@@ -158,7 +158,7 @@ void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
     mEntries.clear();
     int vPos = 0; //vertical position of next placed element
 
-    for (std::map<int, Special>::const_iterator it = specialData.begin();
+    for (auto it = specialData.begin();
          it != specialData.end(); ++it)
     {
         logger->log("Updating special GUI for %d", it->first);
@@ -168,7 +168,7 @@ void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
         {
             info->rechargeCurrent = it->second.currentMana;
             info->rechargeNeeded = it->second.neededMana;
-            SpecialEntry* entry = new SpecialEntry(info);
+            auto* entry = new SpecialEntry(info);
             entry->setPosition(0, vPos);
             vPos += entry->getHeight() + 3;
             add(entry);
@@ -184,10 +184,10 @@ void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
 
 SpecialEntry::SpecialEntry(SpecialInfo *info) :
     mInfo(info),
-    mIcon(NULL),
-    mLevelLabel(NULL),
-    mUse(NULL),
-    mRechargeBar(NULL)
+    mIcon(nullptr),
+    mLevelLabel(nullptr),
+    mUse(nullptr),
+    mRechargeBar(nullptr)
 {
     setSize(SPECIALS_WIDTH, SPECIALS_HEIGHT);
 

@@ -29,9 +29,9 @@ class Item;
 class Equipment
 {
     public:
-        Equipment(): mBackend(0) {}
+        Equipment(): mBackend(nullptr) {}
 
-        ~Equipment() { mBackend = 0; }
+        ~Equipment() { mBackend = nullptr; }
 
         class Backend {
             public:
@@ -52,7 +52,7 @@ class Equipment
          * Get equipment at the given slot.
          */
         Item *getEquipment(int slotIndex) const
-        { return mBackend ? mBackend->getEquipment(slotIndex) : 0; }
+        { return mBackend ? mBackend->getEquipment(slotIndex) : nullptr; }
 
         const std::string getSlotName(int slotIndex) const
         { return mBackend ? mBackend->getSlotName(slotIndex) : std::string(); }

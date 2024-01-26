@@ -43,34 +43,34 @@ class DropDown : public gcn::DropDown
          * @param listModel the ListModel to use.
          * @see ListModel
          */
-        DropDown(gcn::ListModel *listModel = 0);
+        DropDown(gcn::ListModel *listModel = nullptr);
 
-        ~DropDown();
+        ~DropDown() override;
 
         /**
          * Update the alpha value to the graphic components.
          */
         void updateAlpha();
 
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
-        void drawFrame(gcn::Graphics *graphics);
+        void drawFrame(gcn::Graphics *graphics) override;
 
         // Inherited from FocusListener
 
-        void focusLost(const gcn::Event& event);
+        void focusLost(const gcn::Event& event) override;
 
         // Inherited from KeyListener
 
-        void keyPressed(gcn::KeyEvent& keyEvent);
+        void keyPressed(gcn::KeyEvent& keyEvent) override;
 
         // Inherited from MouseListener
 
-        void mousePressed(gcn::MouseEvent& mouseEvent);
+        void mousePressed(gcn::MouseEvent& mouseEvent) override;
 
-        void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
+        void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent) override;
 
-        void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
+        void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent) override;
 
     protected:
         /**
@@ -78,7 +78,7 @@ class DropDown : public gcn::DropDown
          *
          * @param graphics a Graphics object to draw with.
          */
-        void drawButton(gcn::Graphics *graphics);
+        void drawButton(gcn::Graphics *graphics) override;
 
         // Add own Images.
         static int instances;

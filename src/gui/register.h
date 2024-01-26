@@ -41,7 +41,7 @@ class WrongDataNoticeListener : public gcn::ActionListener
 {
     public:
         void setTarget(gcn::TextField *textField);
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
     private:
         gcn::TextField *mTarget;
 };
@@ -63,17 +63,17 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          */
         RegisterDialog(LoginData *loginData);
 
-        ~RegisterDialog();
+        ~RegisterDialog() override;
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Called when a key is pressed in one of the text fields.
          */
-        void keyPressed(gcn::KeyEvent &keyEvent);
+        void keyPressed(gcn::KeyEvent &keyEvent) override;
 
     private:
         /**

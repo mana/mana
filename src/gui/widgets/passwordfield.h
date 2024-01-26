@@ -40,7 +40,7 @@ class PasswordField : public TextField
         /**
          * Draws the password field.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 };
 
 #endif

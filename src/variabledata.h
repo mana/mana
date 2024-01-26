@@ -52,7 +52,7 @@ public:
 
     int getData() const { return mData; }
 
-    int getType() const { return DATA_INT; }
+    int getType() const override { return DATA_INT; }
 
 private:
     int mData;
@@ -65,7 +65,7 @@ public:
 
     const std::string &getData() const { return mData; }
 
-    int getType() const { return DATA_STRING; }
+    int getType() const override { return DATA_STRING; }
 
 private:
     std::string mData;
@@ -78,7 +78,7 @@ public:
 
     double getData() const { return mData; }
 
-    int getType() const { return DATA_FLOAT; }
+    int getType() const override { return DATA_FLOAT; }
 
 private:
     double mData;
@@ -91,7 +91,7 @@ public:
 
     bool getData() const { return mData; }
 
-    int getType() const { return DATA_BOOL; }
+    int getType() const override { return DATA_BOOL; }
 
 private:
     bool mData;
@@ -104,7 +104,7 @@ public:
 
     Item *getData() const { return mData; }
 
-    int getType() const { return DATA_ITEM; }
+    int getType() const override { return DATA_ITEM; }
 
 private:
     Item *mData;
@@ -117,7 +117,7 @@ public:
 
     ActorSprite *getData() const { return mData; }
 
-    int getType() const { return DATA_ACTOR; }
+    int getType() const override { return DATA_ACTOR; }
 
 private:
     ActorSprite *mData;

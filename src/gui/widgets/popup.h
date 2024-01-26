@@ -62,7 +62,7 @@ class Popup : public Container, public gcn::MouseListener
         /**
          * Destructor. Deletes all the added widgets.
          */
-        ~Popup();
+        ~Popup() override;
 
         /**
          * Sets the window container to be used by new popups.
@@ -72,7 +72,7 @@ class Popup : public Container, public gcn::MouseListener
         /**
          * Draws the popup.
          */
-        void draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Sets the size of this popup.
@@ -84,7 +84,7 @@ class Popup : public Container, public gcn::MouseListener
          */
         void setLocationRelativeTo(gcn::Widget *widget);
 
-        void mouseMoved(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         /**
          * Sets the minimum width of the popup.
@@ -142,7 +142,7 @@ class Popup : public Container, public gcn::MouseListener
 
         // Inherited from BasicContainer
 
-        virtual gcn::Rectangle getChildrenArea();
+        gcn::Rectangle getChildrenArea() override;
 
         /**
          * Sets the location to display the popup. Tries to horizontally center

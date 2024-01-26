@@ -63,7 +63,7 @@ public:
 
     ActorSprite(int id);
 
-    ~ActorSprite();
+    ~ActorSprite() override;
 
     int getId() const
     { return mId; }
@@ -75,9 +75,9 @@ public:
      */
     virtual Type getType() const { return UNKNOWN; }
 
-    virtual int getDrawOrder() const;
+    int getDrawOrder() const override;
 
-    virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
+    bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
     virtual bool drawSpriteAt(Graphics *graphics, int x, int y) const;
 
@@ -85,7 +85,7 @@ public:
 
     static void actorLogic();
 
-    void setMap(Map* map);
+    void setMap(Map* map) override;
 
     /**
      * Gets the way the object blocks pathfinding for other objects
@@ -112,7 +112,7 @@ public:
     /**
      * Untargets the actor.
      */
-    void untarget() { mUsedTargetCursor = NULL; }
+    void untarget() { mUsedTargetCursor = nullptr; }
 
     /**
      * Triggers a visual effect, such as `level up'. Only draws the visual
@@ -146,16 +146,16 @@ public:
      */
     void setStatusEffectBlock(int offset, uint16_t flags);
 
-    virtual void setAlpha(float alpha)
+    void setAlpha(float alpha) override
     { CompoundSprite::setAlpha(alpha); }
 
-    virtual float getAlpha() const
+    float getAlpha() const override
     { return CompoundSprite::getAlpha(); }
 
-    virtual int getWidth() const
+    int getWidth() const override
     { return CompoundSprite::getWidth(); }
 
-    virtual int getHeight() const
+    int getHeight() const override
     { return CompoundSprite::getHeight(); }
 
     static void load();

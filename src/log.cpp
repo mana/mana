@@ -71,7 +71,7 @@ void Logger::log(const char *log_text, ...)
 
     // Get the current system time
     timeval tv;
-    gettimeofday(&tv, NULL);
+    gettimeofday(&tv, nullptr);
 
     // Print the log entry
     std::stringstream timeStr;

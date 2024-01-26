@@ -60,9 +60,9 @@ namespace {
      */
     struct WeightListener : public gcn::ActionListener
     {
-        void action(const gcn::ActionEvent &event)
+        void action(const gcn::ActionEvent &event) override
         {
-            weightNotice = NULL;
+            weightNotice = nullptr;
         }
     } weightListener;
 
@@ -71,10 +71,10 @@ namespace {
      */
     struct DeathListener : public gcn::ActionListener
     {
-        void action(const gcn::ActionEvent &event)
+        void action(const gcn::ActionEvent &event) override
         {
             Net::getPlayerHandler()->respawn();
-            deathNotice = NULL;
+            deathNotice = nullptr;
 
             BuyDialog::closeAll();
             BuySellDialog::closeAll();

@@ -34,17 +34,17 @@ class TextParticle : public Particle
         /**
          * Draws the particle image.
          */
-        virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const;
+        bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
         // hack to improve text visibility
-        virtual int getDrawOrder() const
+        int getDrawOrder() const override
         { return (int) (mPos.y) + 32; }
 
         /** In contrary to other particles, text particles should not be
          *  obscured by objects, because their information is too
          *  important.
          */
-        virtual bool drawnWhenBehind() const
+        bool drawnWhenBehind() const override
         { return true; }
 
     private:

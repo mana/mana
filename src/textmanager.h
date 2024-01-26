@@ -65,7 +65,7 @@ class TextManager
         void place(const Text *textObj, const Text *omit,
         int &x, int &y, int h);
 
-        typedef std::list<Text *> TextList; /**< The container type */
+        using TextList = std::list<Text *>; /**< The container type */
         TextList mTextList; /**< The container */
 };
 

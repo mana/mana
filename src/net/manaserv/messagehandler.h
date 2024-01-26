@@ -36,12 +36,12 @@ class MessageIn;
 class MessageHandler : public Net::MessageHandler
 {
     public:
-        ~MessageHandler();
+        ~MessageHandler() override;
 
         virtual void handleMessage(MessageIn &msg) = 0;
 };
 
-typedef const std::unique_ptr<MessageHandler> MessageHandlerPtr;
+using MessageHandlerPtr = const std::unique_ptr<MessageHandler>;
 
 } // namespace ManaServ
 

@@ -146,7 +146,7 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
                 mWrongDataNoticeListener->setTarget(this->mSecondPassField);
             }
 
-            OkDialog *dlg = new OkDialog(_("Error"), errorMessage.str());
+            auto *dlg = new OkDialog(_("Error"), errorMessage.str());
             dlg->addActionListener(mWrongDataNoticeListener);
         }
         else

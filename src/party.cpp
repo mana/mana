@@ -60,7 +60,7 @@ PartyMember *Party::addMember(int id, const std::string &name)
 
 PartyMember *Party::getMember(int id) const
 {
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -71,12 +71,12 @@ PartyMember *Party::getMember(int id) const
         ++itr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 PartyMember *Party::getMember(const std::string &name) const
 {
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -87,12 +87,12 @@ PartyMember *Party::getMember(const std::string &name) const
         ++itr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void Party::removeMember(PartyMember *member)
 {
-    MemberList::iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while(itr != itr_end)
     {
@@ -109,7 +109,7 @@ void Party::removeMember(PartyMember *member)
 
 void Party::removeMember(int id)
 {
-    MemberList::iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while(itr != itr_end)
     {
@@ -125,7 +125,7 @@ void Party::removeMember(int id)
 
 void Party::removeMember(const std::string &name)
 {
-    MemberList::iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while(itr != itr_end)
     {
@@ -141,13 +141,13 @@ void Party::removeMember(const std::string &name)
 
 void Party::removeFromMembers()
 {
-    MemberList::iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                itr_end = mMembers.end();
     while(itr != itr_end)
     {
         Being *b = actorSpriteManager->findBeing((*itr)->getID());
         if (b)
-            b->setParty(NULL);
+            b->setParty(nullptr);
         ++itr;
     }
 }
@@ -171,7 +171,7 @@ bool Party::isMember(PartyMember *member) const
     if (member->mParty != nullptr && member->mParty != this)
         return false;
 
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                      itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -188,7 +188,7 @@ bool Party::isMember(PartyMember *member) const
 
 bool Party::isMember(int id) const
 {
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                      itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -204,7 +204,7 @@ bool Party::isMember(int id) const
 
 bool Party::isMember(const std::string &name) const
 {
-    MemberList::const_iterator itr = mMembers.begin(),
+    auto itr = mMembers.begin(),
                                      itr_end = mMembers.end();
     while (itr != itr_end)
     {
@@ -221,7 +221,7 @@ bool Party::isMember(const std::string &name) const
 void Party::getNames(std::vector<std::string> &names) const
 {
     names.clear();
-    MemberList::const_iterator it = mMembers.begin(),
+    auto it = mMembers.begin(),
                                      it_end = mMembers.end();
     while (it != it_end)
     {
@@ -232,7 +232,7 @@ void Party::getNames(std::vector<std::string> &names) const
 
 Party *Party::getParty(int id)
 {
-    PartyMap::iterator it = parties.find(id);
+    auto it = parties.find(id);
     if (it != parties.end())
         return it->second;
 

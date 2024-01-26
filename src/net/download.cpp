@@ -66,11 +66,11 @@ Download::Download(void *ptr, const std::string &url,
         mPtr(ptr),
         mUrl(url),
         mFileName(""),
-        mWriteFunction(NULL),
+        mWriteFunction(nullptr),
         mUpdateFunction(updateFunction),
-        mThread(NULL),
-        mCurl(NULL),
-        mHeaders(NULL)
+        mThread(nullptr),
+        mCurl(nullptr),
+        mHeaders(nullptr)
 
 {
     mError = (char*) malloc(CURL_ERROR_SIZE);
@@ -145,8 +145,8 @@ void Download::cancel()
     mOptions.cancel = true;
     if (mThread && SDL_GetThreadID(mThread) != 0)
     {
-        SDL_WaitThread(mThread, NULL);
-        mThread = NULL;
+        SDL_WaitThread(mThread, nullptr);
+        mThread = nullptr;
     }
 }
 
@@ -158,7 +158,7 @@ char *Download::getError()
 int Download::downloadProgress(void *clientp, double dltotal, double dlnow,
                      double ultotal, double ulnow)
 {
-    Download *d = reinterpret_cast<Download*>(clientp);
+    auto *d = reinterpret_cast<Download*>(clientp);
 
     if (d->mOptions.cancel)
     {
@@ -174,7 +174,7 @@ int Download::downloadThread(void *ptr)
 {
     int attempts = 0;
     bool complete = false;
-    Download *d = reinterpret_cast<Download*>(ptr);
+    auto *d = reinterpret_cast<Download*>(ptr);
     CURLcode res;
     std::string outFilename;
 
@@ -189,13 +189,13 @@ int Download::downloadThread(void *ptr)
 
     while (attempts < 3 && !complete && !d->mOptions.cancel)
     {
-        FILE *file = NULL;
+        FILE *file = nullptr;
 
         d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_STARTING, 0, 0);
 
         if (d->mOptions.cancel)
         {
-            d->mThread = NULL;
+            d->mThread = nullptr;
             return 0;
         }
 
@@ -309,7 +309,7 @@ int Download::downloadThread(void *ptr)
         }
         if (d->mOptions.cancel)
         {
-            d->mThread = NULL;
+            d->mThread = nullptr;
             return 0;
         }
         attempts++;
@@ -328,7 +328,7 @@ int Download::downloadThread(void *ptr)
         d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_COMPLETE, 0, 0);
     }
 
-    d->mThread = NULL;
+    d->mThread = nullptr;
     return 0;
 }
 

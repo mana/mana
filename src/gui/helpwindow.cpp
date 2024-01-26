@@ -49,7 +49,7 @@ HelpWindow::HelpWindow():
     mBrowserBox = new BrowserBox;
     mBrowserBox->setOpaque(false);
     mScrollArea = new ScrollArea(mBrowserBox);
-    Button *okButton = new Button(_("Close"), "close", this);
+    auto *okButton = new Button(_("Close"), "close", this);
 
     mScrollArea->setDimension(gcn::Rectangle(5, 5, 445,
                                              335 - okButton->getHeight()));

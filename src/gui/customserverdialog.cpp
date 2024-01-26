@@ -53,13 +53,13 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
 {
     setWindowName("CustomServerDialog");
 
-    Label *nameLabel = new Label(_("Name:"));
-    Label *serverAdressLabel = new Label(_("Address:"));
-    Label *portLabel = new Label(_("Port:"));
+    auto *nameLabel = new Label(_("Name:"));
+    auto *serverAdressLabel = new Label(_("Address:"));
+    auto *portLabel = new Label(_("Port:"));
 #ifdef MANASERV_SUPPORT
-    Label *typeLabel = new Label(_("Server type:"));
+    auto *typeLabel = new Label(_("Server type:"));
 #endif
-    Label *descriptionLabel = new Label(_("Description:"));
+    auto *descriptionLabel = new Label(_("Description:"));
     mServerAddressField = new TextField(std::string());
     mPortField = new TextField(std::string());
 
@@ -163,7 +163,7 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
         // Check the given information
         if (mServerAddressField->getText().empty())
         {
-            OkDialog *dlg = new OkDialog(_("Error"),
+            auto *dlg = new OkDialog(_("Error"),
                 _("Please type in at least the address of the server."));
             dlg->addActionListener(this);
         }
@@ -220,6 +220,6 @@ void CustomServerDialog::keyPressed(gcn::KeyEvent &keyEvent)
     }
     else if (key.getValue() == Key::ENTER)
     {
-        action(gcn::ActionEvent(NULL, mOkButton->getActionEventId()));
+        action(gcn::ActionEvent(nullptr, mOkButton->getActionEventId()));
     }
 }

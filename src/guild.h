@@ -129,11 +129,11 @@ public:
      * Get size of members list.
      * @return Returns the number of members in the guild.
      */
-    int getNumberOfElements() {
+    int getNumberOfElements() override {
         return mMembers.size();
     }
 
-    Avatar *getAvatarAt(int i);
+    Avatar *getAvatarAt(int i) override;
 
     /**
      * Get whether user can invite users to this guild.
@@ -157,7 +157,7 @@ public:
     static Guild *getGuild(int id);
 
 private:
-    typedef std::map<int, Guild*> GuildMap;
+    using GuildMap = std::map<int, Guild *>;
     static GuildMap guilds;
 
     /**
@@ -165,7 +165,7 @@ private:
      */
     Guild(short id);
 
-    typedef std::vector<GuildMember*> MemberList;
+    using MemberList = std::vector<GuildMember *>;
     MemberList mMembers;
     std::string mName;
     short mId;

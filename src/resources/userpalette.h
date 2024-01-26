@@ -58,7 +58,7 @@ class UserPalette : public Palette, public gcn::ListModel
 
         UserPalette();
 
-        ~UserPalette();
+        ~UserPalette() override;
 
         /**
          * Gets the committed color associated with the specified type.
@@ -123,7 +123,7 @@ class UserPalette : public Palette, public gcn::ListModel
          *
          * @return the number of colors known
          */
-        int getNumberOfElements() { return mColors.size(); }
+        int getNumberOfElements() override { return mColors.size(); }
 
         /**
          * Returns the name of the ith color.
@@ -132,7 +132,7 @@ class UserPalette : public Palette, public gcn::ListModel
          *
          * @return the name of the color
          */
-        std::string getElementAt(int i);
+        std::string getElementAt(int i) override;
 
         /**
          * Commit the colors

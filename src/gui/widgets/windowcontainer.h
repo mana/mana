@@ -37,7 +37,7 @@ class WindowContainer : public Container
          * Do GUI logic. This functions adds automatic deletion of objects that
          * volunteered to be deleted.
          */
-        void logic();
+        void logic() override;
 
         /**
          * Schedule a widget for deletion. It will be deleted at the start of
@@ -55,8 +55,8 @@ class WindowContainer : public Container
         /**
          * List of widgets that are scheduled to be deleted.
          */
-        typedef std::list<gcn::Widget*> Widgets;
-        typedef Widgets::iterator WidgetIterator;
+        using Widgets = std::list<gcn::Widget *>;
+        using WidgetIterator = Widgets::iterator;
         Widgets mDeathList;
 };
 

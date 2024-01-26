@@ -54,7 +54,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mCharSelectDialog(parent),
     mSlot(slot)
 {
-    mPlayer = new Being(0, ActorSprite::PLAYER, 0, NULL);
+    mPlayer = new Being(0, ActorSprite::PLAYER, 0, nullptr);
     mPlayer->setGender(GENDER_MALE);
 
     const std::vector<int> &items = CharDB::getDefaultItems();
@@ -160,7 +160,7 @@ CharCreateDialog::~CharCreateDialog()
     delete mPlayer;
 
     // Make sure the char server handler knows that we're gone
-    Net::getCharHandler()->setCharCreateDialog(0);
+    Net::getCharHandler()->setCharCreateDialog(nullptr);
 }
 
 void CharCreateDialog::action(const gcn::ActionEvent &event)
@@ -330,18 +330,18 @@ void CharCreateDialog::setAttributes(const std::vector<std::string> &labels,
         {
             const int y = 140 + i * 20;
 
-            Label *attributeLabel = new Label(labels[i]);
+            auto *attributeLabel = new Label(labels[i]);
             attributeLabel->setWidth(70);
             attributeLabel->setPosition(5, y);
             add(attributeLabel);
 
-            Slider *attributeSlider = new Slider(min, max);
+            auto *attributeSlider = new Slider(min, max);
             attributeSlider->setDimension(gcn::Rectangle(75, y, 100, 10));
             attributeSlider->setActionEventId("statslider");
             attributeSlider->addActionListener(this);
             add(attributeSlider);
 
-            Label *attributeValue = new Label(toString(min));
+            auto *attributeValue = new Label(toString(min));
             attributeValue->setPosition(180, y);
             add(attributeValue);
 

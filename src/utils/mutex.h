@@ -96,7 +96,7 @@ inline MutexLocker::MutexLocker(Mutex *mutex):
 inline MutexLocker::MutexLocker(MutexLocker&& rhs):
     mMutex(rhs.mMutex)
 {
-    rhs.mMutex = NULL;
+    rhs.mMutex = nullptr;
 }
 
 inline MutexLocker::~MutexLocker()

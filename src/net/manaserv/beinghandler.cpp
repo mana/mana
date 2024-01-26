@@ -113,10 +113,10 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
     int type = msg.readInt8();
     int id = msg.readInt16();
-    Being::Action action = (Being::Action)msg.readInt8();
+    auto action = (Being::Action)msg.readInt8();
     int px = msg.readInt16();
     int py = msg.readInt16();
-    BeingDirection direction = (BeingDirection)msg.readInt8();
+    auto direction = (BeingDirection)msg.readInt8();
     Gender gender;
     int genderAsInt = msg.readInt8();
     if (genderAsInt == ::GENDER_FEMALE)
@@ -241,7 +241,7 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
-    const BeingDirection direction = (BeingDirection) msg.readInt8();
+    const auto direction = (BeingDirection) msg.readInt8();
     const int attackId = msg.readInt8();
 
     if (!being)
@@ -260,7 +260,7 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
         int damage = msg.readInt16();
         if (being)
         {
-            being->takeDamage(0, damage, Being::HIT);
+            being->takeDamage(nullptr, damage, Being::HIT);
         }
     }
 }
@@ -268,7 +268,7 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
 void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
-    Being::Action action = (Being::Action) msg.readInt8();
+    auto action = (Being::Action) msg.readInt8();
     if (!being)
         return;
 
@@ -299,7 +299,7 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
         };
         std::string message(deadMsg[rand()%13]);
         message.append(std::string(" ") + _("Press OK to respawn."));
-        OkDialog *dlg = new OkDialog(_("You Died"), message, false);
+        auto *dlg = new OkDialog(_("You Died"), message, false);
         dlg->addActionListener(&(ManaServ::respawnListener));
     }
 }

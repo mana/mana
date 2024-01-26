@@ -28,7 +28,7 @@
 namespace ManaServ {
 
 MessageOut::MessageOut(uint16_t id):
-    mData(0),
+    mData(nullptr),
     mPos(0),
     mDataSize(0),
     mDebugMode(false)

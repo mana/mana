@@ -43,7 +43,7 @@ class BeingHandler : public MessageHandler
     public:
         BeingHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
     private:
         void handleBeingAttackMessage(MessageIn &msg);

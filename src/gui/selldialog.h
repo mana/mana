@@ -41,7 +41,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
     public:
         SellDialog(int npcId);
 
-        virtual ~SellDialog();
+        ~SellDialog() override;
 
         /**
          * Resets the dialog, clearing inventory.
@@ -56,19 +56,19 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event) override;
 
         /**
          * Updates labels according to selected item.
          *
          * @see SelectionListener::selectionChanged
          */
-        void valueChanged(const gcn::SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event) override;
 
         /**
          * Allows for quick-selling by extending double-click events.
          */
-        void mouseClicked(gcn::MouseEvent &mouseEvent);
+        void mouseClicked(gcn::MouseEvent &mouseEvent) override;
 
         /**
          * Gives Player's Money amount
@@ -78,7 +78,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         /**
          * Sets the visibility of this window.
          */
-        void setVisible(bool visible);
+        void setVisible(bool visible) override;
 
         /**
          * Closes all instances.
@@ -86,7 +86,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         static void closeAll();
 
     private:
-        typedef std::list<SellDialog*> DialogList;
+        using DialogList = std::list<SellDialog *>;
         static DialogList instances;
 
         /**

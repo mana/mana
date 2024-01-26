@@ -34,15 +34,15 @@ class SpecialHandler : public MessageHandler, public Net::SpecialHandler
     public:
         SpecialHandler();
 
-        void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg) override;
 
-        void use(int id);
+        void use(int id) override;
 
-        void use(int id, int level, int beingId);
+        void use(int id, int level, int beingId) override;
 
-        void use(int id, int level, int x, int y);
+        void use(int id, int level, int x, int y) override;
 
-        void use(int id, const std::string &map);
+        void use(int id, const std::string &map) override;
 };
 
 } // namespace TmwAthena

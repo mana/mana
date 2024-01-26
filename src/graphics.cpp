@@ -310,7 +310,7 @@ SDL_Surface *Graphics::getScreenshot()
 
     SDL_Surface *screenshot = SDL_CreateRGBSurface(0, mWidth,
             mHeight, 24, rmask, gmask, bmask, amask);
-    SDL_RenderReadPixels(mRenderer, NULL, SDL_PIXELFORMAT_RGB888, screenshot->pixels, screenshot->pitch);
+    SDL_RenderReadPixels(mRenderer, nullptr, SDL_PIXELFORMAT_RGB888, screenshot->pixels, screenshot->pitch);
 
     return screenshot;
 }
@@ -332,7 +332,7 @@ void Graphics::updateSDLClipRect()
 {
     if (mClipStack.empty())
     {
-        SDL_RenderSetClipRect(mRenderer, NULL);
+        SDL_RenderSetClipRect(mRenderer, nullptr);
         return;
     }
 

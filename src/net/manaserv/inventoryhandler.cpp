@@ -72,20 +72,20 @@ EquipBackend::~EquipBackend()
 
 Item *EquipBackend::getEquipment(int slotIndex) const
 {
-    Slots::const_iterator it = mSlots.find(slotIndex);
-    return it == mSlots.end() ? 0 : it->second.item;
+    auto it = mSlots.find(slotIndex);
+    return it == mSlots.end() ? nullptr : it->second.item;
 }
 
 std::string EquipBackend::getSlotName(int slotIndex) const
 {
-    Slots::const_iterator it = mSlots.find(slotIndex);
+    auto it = mSlots.find(slotIndex);
     return it == mSlots.end() ? std::string() : it->second.name;
 }
 
 void EquipBackend::triggerUnequip(int slotIndex) const
 {
     // First get the itemInstance
-    Slots::const_iterator it = mSlots.find(slotIndex);
+    auto it = mSlots.find(slotIndex);
 
     if (it == mSlots.end() || it->second.itemInstance == 0 || !it->second.item)
         return;
@@ -99,13 +99,13 @@ void EquipBackend::triggerUnequip(int slotIndex) const
 
 void EquipBackend::clear()
 {
-    for (Slots::iterator i = mSlots.begin(), i_end = mSlots.end();
+    for (auto i = mSlots.begin(), i_end = mSlots.end();
         i != i_end; ++i)
     {
         if (i->second.item)
         {
             delete i->second.item;
-            i->second.item = 0;
+            i->second.item = nullptr;
         }
     }
     mSlots.clear();
@@ -121,8 +121,8 @@ void EquipBackend::equip(int itemId, int slotTypeId, int amountUsed,
         return;
     }
 
-    Slots::iterator it = mSlots.begin();
-    Slots::iterator it_end = mSlots.end();
+    auto it = mSlots.begin();
+    auto it_end = mSlots.end();
     bool slotTypeFound = false;
     for (; it != it_end; ++it)
         if (it->second.slotTypeId == (unsigned)slotTypeId)
@@ -161,8 +161,8 @@ void EquipBackend::equip(int itemId, int slotTypeId, int amountUsed,
 
 void EquipBackend::unequip(int itemInstance)
 {
-    Slots::iterator it = mSlots.begin();
-    Slots::iterator it_end = mSlots.end();
+    auto it = mSlots.begin();
+    auto it_end = mSlots.end();
     bool itemInstanceFound = false;
     for (; it != it_end; ++it)
         if (it->second.itemInstance == (unsigned)itemInstance)
@@ -187,7 +187,7 @@ void EquipBackend::unequip(int itemInstance)
         if (it->second.item)
         {
             delete it->second.item;
-            it->second.item = 0;
+            it->second.item = nullptr;
         }
     }
 }
@@ -280,7 +280,7 @@ void EquipBackend::readBoxNode(xmlNodePtr slotNode)
 
 bool EquipBackend::isWeaponSlot(int slotTypeId) const
 {
-    for (Slots::const_iterator it = mSlots.begin(), it_end = mSlots.end();
+    for (auto it = mSlots.begin(), it_end = mSlots.end();
         it != it_end; ++it)
     {
         if (it->second.slotTypeId == (unsigned)slotTypeId)
@@ -291,7 +291,7 @@ bool EquipBackend::isWeaponSlot(int slotTypeId) const
 
 bool EquipBackend::isAmmoSlot(int slotTypeId) const
 {
-    for (Slots::const_iterator it = mSlots.begin(), it_end = mSlots.end();
+    for (auto it = mSlots.begin(), it_end = mSlots.end();
         it != it_end; ++it)
     {
         if (it->second.slotTypeId == (unsigned)slotTypeId)

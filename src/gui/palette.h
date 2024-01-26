@@ -124,7 +124,7 @@ class Palette
         /** Time tick, that gradient-type colors were updated the last time. */
         int mRainbowTime;
 
-        typedef std::set<Palette*> Palettes;
+        using Palettes = std::set<Palette *>;
         static Palettes mInstances;
 
         Palette(int size);
@@ -163,7 +163,7 @@ class Palette
                         committedColor.b;
             }
         };
-        typedef std::vector<ColorElem> Colors;
+        using Colors = std::vector<ColorElem>;
         /** Vector containing the colors. */
         Colors mColors;
         std::vector<ColorElem*> mGradVector;

@@ -37,7 +37,7 @@
 #include <assert.h>
 
 QuitDialog::QuitDialog(QuitDialog** pointerToMe):
-    Window(_("Quit"), true, NULL), mMyPointer(pointerToMe)
+    Window(_("Quit"), true, nullptr), mMyPointer(pointerToMe)
 {
     mForceQuit = new RadioButton(_("Quit"), "quitdialog");
     mLogoutQuit = new RadioButton(_("Quit"), "quitdialog");
@@ -90,7 +90,7 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
 
 QuitDialog::~QuitDialog()
 {
-    if (mMyPointer) *mMyPointer = NULL;
+    if (mMyPointer) *mMyPointer = nullptr;
     // Optional widgets, so delete them by hand.
     delete mForceQuit;
     delete mLogoutQuit;
@@ -138,10 +138,10 @@ void QuitDialog::keyPressed(gcn::KeyEvent &keyEvent)
     switch (key.getValue())
     {
         case Key::ENTER:
-            action(gcn::ActionEvent(NULL, mOkButton->getActionEventId()));
+            action(gcn::ActionEvent(nullptr, mOkButton->getActionEventId()));
             break;
         case Key::ESCAPE:
-            action(gcn::ActionEvent(NULL, mCancelButton->getActionEventId()));
+            action(gcn::ActionEvent(nullptr, mCancelButton->getActionEventId()));
             break;
         case Key::UP:
             dir = -1;
@@ -153,7 +153,7 @@ void QuitDialog::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (dir != 0)
     {
-        std::vector<gcn::RadioButton*>::iterator it = mOptions.begin();
+        auto it = mOptions.begin();
 
         for (; it < mOptions.end(); it++)
         {

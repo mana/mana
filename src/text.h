@@ -40,7 +40,7 @@ class Text
         Text(const std::string &text, int x, int y,
              gcn::Graphics::Alignment alignment,
              const gcn::Color *color, bool isSpeech = false,
-             gcn::Font *font = 0);
+             gcn::Font *font = nullptr);
 
         /**
          * Destructor. The text is removed from the screen.
@@ -85,12 +85,12 @@ class FlashText : public Text
         FlashText(const std::string &text, int x, int y,
                   gcn::Graphics::Alignment alignment,
                   const gcn::Color* color,
-                  gcn::Font *font = 0);
+                  gcn::Font *font = nullptr);
 
         /**
          * Remove the text from the screen
          */
-        virtual ~FlashText() {}
+        ~FlashText() override {}
 
         /**
          * Flash the text for so many refreshes.
@@ -100,7 +100,7 @@ class FlashText : public Text
         /**
          * Draws the text.
          */
-        virtual void draw(gcn::Graphics *graphics, int xOff, int yOff);
+        void draw(gcn::Graphics *graphics, int xOff, int yOff) override;
 
     private:
         int mTime;             /**< Time left for flashing */

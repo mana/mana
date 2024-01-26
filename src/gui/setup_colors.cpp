@@ -63,7 +63,7 @@ Setup_Colors::Setup_Colors() :
     mPreview->setOpaque(false);
 
     // don't do anything with links
-    mPreview->setLinkHandler(NULL);
+    mPreview->setLinkHandler(nullptr);
 
     mPreviewBox = new ScrollArea(mPreview);
     mPreviewBox->setHeight(20);
@@ -234,7 +234,7 @@ void Setup_Colors::valueChanged(const gcn::SelectionEvent &event)
     mPreviewBox->setContent(mTextPreview);
     mTextPreview->setFont(boldFont);
     mTextPreview->setTextColor(col);
-    mTextPreview->setTextBGColor(NULL);
+    mTextPreview->setTextBGColor(nullptr);
     mTextPreview->setOpaque(false);
     mTextPreview->setShadow(true);
     mTextPreview->setOutline(true);
@@ -348,7 +348,7 @@ void Setup_Colors::updateColor()
         return;
 
     int type = userPalette->getColorTypeAt(mSelected);
-    Palette::GradientType grad = static_cast<Palette::GradientType>((int)
+    auto grad = static_cast<Palette::GradientType>((int)
                                                 mGradTypeSlider->getValue());
     int delay = (int) mGradDelaySlider->getValue();
     userPalette->setGradient(type, grad);
