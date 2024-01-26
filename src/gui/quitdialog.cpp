@@ -34,7 +34,7 @@
 
 #include "utils/gettext.h"
 
-#include <assert.h>
+#include <cassert>
 
 QuitDialog::QuitDialog(QuitDialog** pointerToMe):
     Window(_("Quit"), true, nullptr), mMyPointer(pointerToMe)

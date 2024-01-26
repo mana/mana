@@ -38,12 +38,8 @@ ChannelManager::~ChannelManager()
 Channel *ChannelManager::findById(int id) const
 {
     Channel *channel = nullptr;
-    for (auto itr = mChannels.begin(),
-                                             end = mChannels.end();
-         itr != end;
-         itr++)
+    for (auto c : mChannels)
     {
-        Channel *c = (*itr);
         if (c->getId() == id)
         {
             channel = c;
@@ -58,12 +54,8 @@ Channel *ChannelManager::findByName(const std::string &name) const
     Channel *channel = nullptr;
     if (!name.empty())
     {
-        for (auto itr = mChannels.begin(),
-                                                 end = mChannels.end();
-             itr != end;
-             itr++)
+        for (auto c : mChannels)
         {
-            Channel *c = (*itr);
             if (c->getName() == name)
             {
                 channel = c;

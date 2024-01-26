@@ -69,10 +69,10 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
                         gridx[x], gridy[y],
                         gridx[x + 1] - gridx[x] + 1,
                         gridy[y + 1] - gridy[y] + 1);
-                skin.grid[a]->setAlpha(config.getFloatValue("guialpha"));
                 a++;
             }
         }
+        skin.setAlpha(config.getFloatValue("guialpha"));
 
         textbox->decRef();
     }
@@ -96,8 +96,7 @@ void TextField::updateAlpha()
     if (alpha != mAlpha)
     {
         mAlpha = alpha;
-        for (int a = 0; a < 9; a++)
-            skin.grid[a]->setAlpha(mAlpha);
+        skin.setAlpha(mAlpha);
     }
 }
 

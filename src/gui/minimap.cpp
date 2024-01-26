@@ -190,15 +190,12 @@ void Minimap::draw(gcn::Graphics *graphics)
             drawImage(mMapImage, mapOriginX, mapOriginY);
     }
 
-    const ActorSprites &actors = actorSpriteManager->getAll();
-
-    for (auto it = actors.begin(), it_end = actors.end();
-         it != it_end; it++)
+    for (auto actor : actorSpriteManager->getAll())
     {
-        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+        if (actor->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        const Being *being = static_cast<Being*>(*it);
+        const Being *being = static_cast<Being*>(actor);
 
         if (!being->isAlive())
             continue;

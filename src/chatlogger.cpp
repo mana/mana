@@ -126,15 +126,15 @@ std::string ChatLogger::getDateString() const
 
 std::string ChatLogger::secureName(std::string &name) const
 {
-    for (unsigned int f = 0; f < name.length(); f ++)
+    for (char & f : name)
     {
-        if (name[f] < '0' && name[f] > '9' && name[f] < 'a' && name[f] > 'z'
-            && name[f] < 'A' && name[f] > 'Z'
-            && name[f] != '-' && name[f] != '+' && name[f] != '='
-            && name[f] != '.' && name[f] != ','&& name[f] != ')'
-            && name[f] != '(' && name[f] != '[' && name[f] != ')')
+        if (f < '0' && f > '9' && f < 'a' && f > 'z'
+            && f < 'A' && f > 'Z'
+            && f != '-' && f != '+' && f != '='
+            && f != '.' && f != ','&& f != ')'
+            && f != '(' && f != '[' && f != ')')
         {
-            name[f] = '_';
+            f = '_';
         }
     }
     return name;

@@ -52,7 +52,7 @@ class HairDB
      */
     void unload();
 
-    const std::string &getHairColor(int id);
+    const std::string &getHairColor(int id) const;
 
     /**
      * Returns the available hair style ids
@@ -89,13 +89,9 @@ class HairDB
 
     // Hair colors Db
     using Colors = std::map<int, std::string>;
-    using ColorIterator = Colors::iterator;
-    using ColorConstIterator = Colors::const_iterator;
     Colors mHairColors;
 
     using HairStyles = std::set<int>;
-    using HairStylesIterator = HairStyles::iterator;
-    using HairStylesConstIterator = HairStyles::const_iterator;
     HairStyles mHairStyles;
 
     bool mLoaded;

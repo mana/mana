@@ -67,19 +67,19 @@ EffectManager::~EffectManager()
 bool EffectManager::trigger(int id, Being* being, int rotation)
 {
     bool rValue = false;
-    for (auto i = mEffects.begin(); i != mEffects.end(); ++i)
+    for (auto &effect : mEffects)
     {
-        if ((*i).id == id)
+        if (effect.id == id)
         {
             rValue = true;
-            if (!(*i).GFX.empty())
+            if (!effect.GFX.empty())
             {
                 Particle *selfFX;
-                selfFX = particleEngine->addEffect((*i).GFX, 0, 0, rotation);
+                selfFX = particleEngine->addEffect(effect.GFX, 0, 0, rotation);
                 being->controlParticle(selfFX);
             }
-            if (!(*i).SFX.empty())
-                sound.playSfx((*i).SFX);
+            if (!effect.SFX.empty())
+                sound.playSfx(effect.SFX);
             break;
         }
     }
@@ -89,15 +89,15 @@ bool EffectManager::trigger(int id, Being* being, int rotation)
 bool EffectManager::trigger(int id, int x, int y, int rotation)
 {
     bool rValue = false;
-    for (auto i = mEffects.begin(); i != mEffects.end(); ++i)
+    for (auto &effect : mEffects)
     {
-        if ((*i).id == id)
+        if (effect.id == id)
         {
             rValue = true;
-            if (!(*i).GFX.empty())
-                particleEngine->addEffect((*i).GFX, x, y, rotation);
-            if (!(*i).SFX.empty())
-                sound.playSfx((*i).SFX);
+            if (!effect.GFX.empty())
+                particleEngine->addEffect(effect.GFX, x, y, rotation);
+            if (!effect.SFX.empty())
+                sound.playSfx(effect.SFX);
             break;
         }
     }

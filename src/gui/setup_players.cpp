@@ -135,9 +135,8 @@ public:
         mPlayers = player_relations.getPlayers();
 
         // set up widgets
-        for (unsigned int r = 0; r < mPlayers->size(); ++r)
+        for (const auto &name : *mPlayers)
         {
-            std::string name = (*mPlayers)[r];
             gcn::Widget *widget = new Label(name);
             mWidgets.push_back(widget);
 

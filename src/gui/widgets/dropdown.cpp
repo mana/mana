@@ -80,10 +80,11 @@ DropDown::DropDown(gcn::ListModel *listModel):
                                                       gridx[x] + 1,
                                                       gridy[y + 1] -
                                                       gridy[y] + 1);
-                skin.grid[a]->setAlpha(mAlpha);
                 a++;
             }
         }
+
+        skin.setAlpha(mAlpha);
 
         boxBorder->decRef();
     }
@@ -122,10 +123,7 @@ void DropDown::updateAlpha()
         buttons[1][0]->setAlpha(mAlpha);
         buttons[1][1]->setAlpha(mAlpha);
 
-        for (int a = 0; a < 9; a++)
-        {
-            skin.grid[a]->setAlpha(mAlpha);
-        }
+        skin.setAlpha(mAlpha);
     }
 }
 

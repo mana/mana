@@ -23,7 +23,7 @@
 
 #include "log.h"
 
-#include <string.h>
+#include <cstring>
 #include <algorithm>
 #include <cstdarg>
 #include <cstdio>

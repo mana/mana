@@ -523,15 +523,14 @@ void ServerDialog::loadServers()
         // Add the server to the local list if it's not already present
         bool found = false;
         int i = 0;
-        for (auto it = mServers.begin(); it != mServers.end();
-             ++it)
+        for (auto &s : mServers)
         {
-            if (*it == server)
+            if (s == server)
             {
                 // Use the name listed in the server list
-                (*it).name = server.name;
-                (*it).version = server.version;
-                (*it).description = server.description;
+                s.name = server.name;
+                s.version = server.version;
+                s.description = server.description;
                 mServersListModel->setVersionString(i, version);
                 found = true;
                 break;

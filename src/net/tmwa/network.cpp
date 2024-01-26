@@ -31,7 +31,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <assert.h>
+#include <cassert>
 #include <sstream>
 
 /** Warning: buffers and other variables are shared,

@@ -158,8 +158,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 identified = msg.readInt8();
                 amount = msg.readInt16();
                 msg.readInt16(); // Arrow
-                for (int i = 0; i < 4; i++)
-                    cards[i] = msg.readInt16();
+                for (int &card : cards)
+                    card = msg.readInt16();
 
                 index -= (msg.getId() == SMSG_PLAYER_INVENTORY) ?
                          INVENTORY_OFFSET : STORAGE_OFFSET;
@@ -195,8 +195,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 msg.readInt16();    // Another Equip Point?
                 msg.readInt8();   // Attribute (broken)
                 msg.readInt8();   // Refine level
-                for (int i = 0; i < 4; i++)
-                    cards[i] = msg.readInt16();
+                for (int &card : cards)
+                    card = msg.readInt16();
 
                 if (debugInventory)
                 {
@@ -218,8 +218,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             identified = msg.readInt8();
             msg.readInt8();  // attribute
             msg.readInt8();  // refine
-            for (int i = 0; i < 4; i++)
-                cards[i] = msg.readInt16();
+            for (int &card : cards)
+                card = msg.readInt16();
             msg.readInt16(); // EquipType
             itemType = msg.readInt8();
 
@@ -331,8 +331,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             identified = msg.readInt8();
             msg.readInt8();  // attribute
             msg.readInt8();  // refine
-            for (int i = 0; i < 4; i++)
-                cards[i] = msg.readInt16();
+            for (int &card : cards)
+                card = msg.readInt16();
 
             if (Item *item = mStorage->getItem(index))
             {

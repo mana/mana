@@ -31,7 +31,6 @@
 #include "statuseffect.h"
 #include "units.h"
 
-#include "net/manaserv/itemhandler.h"
 #include "net/net.h"
 
 #include "utils/xml.h"

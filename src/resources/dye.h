@@ -54,7 +54,7 @@ class DyePalette
 
         struct Color { unsigned char value[3]; };
 
-        std::vector< Color > mColors;
+        std::vector<Color> mColors;
 };
 
 /**

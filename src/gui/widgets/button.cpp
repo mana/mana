@@ -205,8 +205,7 @@ void Button::updateAlpha()
         mAlpha = alpha;
         for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            for (int a = 0; a < 9; ++a)
-                mButton[mode].grid[a]->setAlpha(mAlpha);
+            mButton[mode].setAlpha(mAlpha);
         }
     }
 }

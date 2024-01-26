@@ -71,15 +71,12 @@ void LayoutCell::computeSizes()
 {
     assert(mType == ARRAY);
 
-    for (auto
-         i = mArray->mCells.begin(), i_end = mArray->mCells.end();
-         i != i_end; ++i)
+    for (auto &row : mArray->mCells)
     {
-        for (auto
-             j = i->begin(), j_end = i->end(); j != j_end; ++j)
+        for (auto cell : row)
         {
-            LayoutCell *cell = *j;
-            if (cell && cell->mType == ARRAY) cell->computeSizes();
+            if (cell && cell->mType == ARRAY)
+                cell->computeSizes();
         }
     }
 
@@ -93,13 +90,11 @@ LayoutArray::LayoutArray(): mSpacing(4)
 
 LayoutArray::~LayoutArray()
 {
-    for (auto
-         i = mCells.begin(), i_end = mCells.end(); i != i_end; ++i)
+    for (auto &row : mCells)
     {
-        for (auto
-             j = i->begin(), j_end = i->end(); j != j_end; ++j)
+        for (auto &cell : row)
         {
-            delete *j;
+            delete cell;
         }
     }
 }
@@ -133,10 +128,9 @@ void LayoutArray::resizeGrid(int w, int h)
         mSizes[0].resize(w, Layout::AUTO_DEF);
     }
 
-    for (auto
-         i = mCells.begin(), i_end = mCells.end(); i != i_end; ++i)
+    for (auto &row : mCells)
     {
-        i->resize(w, nullptr);
+        row.resize(w, nullptr);
     }
 }
 

@@ -238,25 +238,21 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     // Draw player names, speech, and emotion sprite as needed
-    const ActorSprites &actors = actorSpriteManager->getAll();
-    for (auto it = actors.begin(), it_end = actors.end();
-         it != it_end; it++)
+    for (auto actor : actorSpriteManager->getAll())
     {
-        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+        if (actor->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        auto *b = static_cast<Being*>(*it);
-        b->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
+        auto *being = static_cast<Being*>(actor);
+        being->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
     }
 
     if (mDebugFlags & Map::DEBUG_BEING_IDS)
     {
         graphics->setColor(gcn::Color(255, 0, 255, 255));
-        ActorSpritesConstIterator it, it_end;
-        const ActorSprites &actors = actorSpriteManager->getAll();
-        for (it = actors.begin(), it_end = actors.end(); it != it_end; ++it)
+        for (auto actor : actorSpriteManager->getAll())
         {
-            auto *being = dynamic_cast<Being*>(*it);
+            auto *being = dynamic_cast<Being*>(actor);
             if (!being)
                 continue;
 
@@ -382,11 +378,9 @@ void Viewport::_drawDebugPath(Graphics *graphics)
     }
 
     // Draw the path debug information for every beings.
-    ActorSpritesConstIterator it, it_end;
-    const ActorSprites &actors = actorSpriteManager->getAll();
-    for (it = actors.begin(), it_end = actors.end(); it != it_end; it++)
+    for (auto actor : actorSpriteManager->getAll())
     {
-        auto *being = dynamic_cast<Being*>(*it);
+        auto *being = dynamic_cast<Being*>(actor);
         if (!being)
             continue;
 
@@ -428,16 +422,16 @@ void Viewport::_drawPath(Graphics *graphics, const Path &path,
 {
     graphics->setColor(color);
 
-    for (auto i = path.begin(); i != path.end(); ++i)
+    for (auto pos : path)
     {
-        int squareX = i->x - (int) mPixelViewX;
-        int squareY = i->y - (int) mPixelViewY;
+        int squareX = pos.x - (int) mPixelViewX;
+        int squareY = pos.y - (int) mPixelViewY;
 
         graphics->fillRectangle(gcn::Rectangle(squareX - 4, squareY - 4,
                                                 8, 8));
         graphics->drawText(
-                toString(mMap->getMetaTile(i->x / mMap->getTileWidth(),
-                                           i->y / mMap->getTileHeight())->Gcost),
+                toString(mMap->getMetaTile(pos.x / mMap->getTileWidth(),
+                                           pos.y / mMap->getTileHeight())->Gcost),
                 squareX + 4, squareY + 12, gcn::Graphics::CENTER);
     }
 }

@@ -99,13 +99,12 @@ void EquipBackend::triggerUnequip(int slotIndex) const
 
 void EquipBackend::clear()
 {
-    for (auto i = mSlots.begin(), i_end = mSlots.end();
-        i != i_end; ++i)
+    for (auto &slot : mSlots)
     {
-        if (i->second.item)
+        if (slot.second.item)
         {
-            delete i->second.item;
-            i->second.item = nullptr;
+            delete slot.second.item;
+            slot.second.item = nullptr;
         }
     }
     mSlots.clear();
@@ -280,22 +279,20 @@ void EquipBackend::readBoxNode(xmlNodePtr slotNode)
 
 bool EquipBackend::isWeaponSlot(int slotTypeId) const
 {
-    for (auto it = mSlots.begin(), it_end = mSlots.end();
-        it != it_end; ++it)
+    for (const auto &slot : mSlots)
     {
-        if (it->second.slotTypeId == (unsigned)slotTypeId)
-            return it->second.weaponSlot;
+        if (slot.second.slotTypeId == (unsigned)slotTypeId)
+            return slot.second.weaponSlot;
     }
     return false;
 }
 
 bool EquipBackend::isAmmoSlot(int slotTypeId) const
 {
-    for (auto it = mSlots.begin(), it_end = mSlots.end();
-        it != it_end; ++it)
+    for (const auto &slot : mSlots)
     {
-        if (it->second.slotTypeId == (unsigned)slotTypeId)
-            return it->second.ammoSlot;
+        if (slot.second.slotTypeId == (unsigned)slotTypeId)
+            return slot.second.ammoSlot;
     }
     return false;
 }

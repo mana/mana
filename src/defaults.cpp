@@ -24,7 +24,7 @@
 #include "graphics.h"
 #include "client.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 VariableData* createData(int defData)
 {

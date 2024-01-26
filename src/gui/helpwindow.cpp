@@ -102,8 +102,8 @@ void HelpWindow::loadFile(const std::string &file)
     std::vector<std::string> lines =
         resman->loadTextFile(helpPath + file + ".txt");
 
-    for (unsigned int i = 0; i < lines.size(); ++i)
+    for (const auto &line : lines)
     {
-        mBrowserBox->addRow(lines[i]);
+        mBrowserBox->addRow(line);
     }
 }

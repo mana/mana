@@ -318,8 +318,8 @@ void CharSelectDialog::setLocked(bool locked)
     if (mChangeEmailButton)
         mChangeEmailButton->setEnabled(!locked);
 
-    for (int i = 0; i < (int)mCharacterEntries.size(); ++i)
-        mCharacterEntries[i]->setActive(!mLocked);
+    for (auto &characterEntry : mCharacterEntries)
+        characterEntry->setActive(!mLocked);
 }
 
 bool CharSelectDialog::selectByName(const std::string &name,

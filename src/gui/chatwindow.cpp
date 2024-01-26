@@ -278,10 +278,9 @@ void ChatWindow::removeAllWhispers()
         tabs.push_back(iter->second);
     }
 
-    for (auto it = tabs.begin();
-         it != tabs.end(); ++it)
+    for (auto &tab : tabs)
     {
-        delete *it;
+        delete tab;
     }
 
     mWhispers.clear();
@@ -295,20 +294,18 @@ void ChatWindow::chatInput(const std::string &msg)
 
 void ChatWindow::doPresent()
 {
-    const ActorSprites &actors = actorSpriteManager->getAll();
     std::string response = "";
     int playercount = 0;
 
-    for (auto it = actors.begin(), it_end = actors.end();
-         it != it_end; it++)
+    for (auto actor : actorSpriteManager->getAll())
     {
-        if ((*it)->getType() == ActorSprite::PLAYER)
+        if (actor->getType() == ActorSprite::PLAYER)
         {
             if (!response.empty())
             {
                 response += ", ";
             }
-            response += static_cast<Being*>(*it)->getName();
+            response += static_cast<Being*>(actor)->getName();
             ++playercount;
         }
     }

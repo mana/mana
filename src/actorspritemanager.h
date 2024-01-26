@@ -32,8 +32,6 @@ class LocalPlayer;
 class Map;
 
 using ActorSprites = std::set<ActorSprite *>;
-using ActorSpritesIterator = ActorSprites::iterator;
-using ActorSpritesConstIterator = ActorSprites::const_iterator;
 
 class ActorSpriteManager
 {
@@ -143,9 +141,9 @@ class ActorSpriteManager
          * Returns true if the given ActorSprite is in the manager's list,
          * false otherwise.
          *
-         * \param actor the ActorSprite to search for
+         * \param someActor the ActorSprite to search for
          */
-        bool hasActorSprite(ActorSprite *actor) const;
+        bool hasActorSprite(ActorSprite *someActor) const;
 
         /**
          * Performs ActorSprite logic and deletes ActorSprite scheduled to be

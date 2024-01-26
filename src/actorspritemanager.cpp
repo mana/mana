@@ -24,12 +24,7 @@
 #include "game.h"
 #include "localplayer.h"
 
-#include "utils/dtor.h"
-
-#include <cassert>
-
-#define for_actors ActorSpritesConstIterator it, it_end; \
-for (it = mActors.begin(), it_end = mActors.end() ; it != it_end; it++)
+#include <algorithm>
 
 class FindBeingFunctor
 {
@@ -63,13 +58,11 @@ class PlayerNamesLister : public AutoCompleteLister
     {
         names.clear();
 
-        const ActorSprites &mActors = actorSpriteManager->getAll();
-        for_actors
-        {
-            if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+        for (auto actor : actorSpriteManager->getAll()) {
+            if (actor->getType() == ActorSprite::FLOOR_ITEM)
                 continue;
 
-            auto *being = static_cast<Being*>(*it);
+            auto *being = static_cast<Being *>(actor);
             if (being->getType() == Being::PLAYER && being->getName() != "")
                 names.push_back(being->getName());
         }
@@ -82,16 +75,15 @@ class PlayerNPCNamesLister : public AutoCompleteLister
     {
         names.clear();
 
-        const ActorSprites &mActors = actorSpriteManager->getAll();
-        for_actors
+        for (auto actor : actorSpriteManager->getAll())
         {
-            if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+            if (actor->getType() == ActorSprite::FLOOR_ITEM)
                 continue;
 
-            auto *being = static_cast<Being*>(*it);
-            if ((being->getType() == Being::PLAYER
-                 || being->getType() == Being::NPC)
-                && being->getName() != "")
+            auto *being = static_cast<Being *>(actor);
+            if ((being->getType() == Being::PLAYER ||
+                 being->getType() == Being::NPC) &&
+                    being->getName() != "")
                 names.push_back(being->getName());
         }
     }
@@ -155,12 +147,9 @@ void ActorSpriteManager::scheduleDelete(ActorSprite *actor)
 
 Being *ActorSpriteManager::findBeing(int id) const
 {
-    for_actors
-    {
-        ActorSprite *actor = *it;
-        if (actor->getId() == id &&
-            actor->getType() != ActorSprite::FLOOR_ITEM)
-            return static_cast<Being*>(actor);
+    for (auto actor : mActors) {
+        if (actor->getId() == id && actor->getType() != ActorSprite::FLOOR_ITEM)
+            return static_cast<Being *>(actor);
     }
 
     return nullptr;
@@ -189,12 +178,12 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
     Being *closest = nullptr;
     int closestDist = 0;
 
-    for_actors
+    for (auto actor : mActors)
     {
-        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+        if (actor->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        auto *being = static_cast<Being*>(*it);
+        auto *being = static_cast<Being *>(actor);
 
         const int halfWidth = std::max(16, being->getWidth() / 2);
         const int height = std::max(32, being->getHeight());
@@ -206,14 +195,11 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
         const int dist = std::max(std::abs(bottom - halfHeight - y),
                                   std::abs(being->getPixelX() - x));
 
-        if ((being->isAlive() &&
-             being != local_player &&
+        if ((being->isAlive() && being != local_player &&
              being->getPixelX() - halfWidth <= x &&
-             being->getPixelX() + halfWidth >= x &&
-             bottom - height <= y &&
+             being->getPixelX() + halfWidth >= x && bottom - height <= y &&
              bottom >= y) &&
-             (!closest || closestDist > dist))
-        {
+                (!closest || closestDist > dist)) {
             closest = being;
             closestDist = dist;
         }
@@ -224,13 +210,10 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
 
 FloorItem *ActorSpriteManager::findItem(int id) const
 {
-    for_actors
+    for (auto actor : mActors)
     {
-        if ((*it)->getId() == id &&
-            (*it)->getType() == ActorSprite::FLOOR_ITEM)
-        {
-            return static_cast<FloorItem*>(*it);
-        }
+        if (actor->getId() == id && actor->getType() == ActorSprite::FLOOR_ITEM)
+            return static_cast<FloorItem *>(actor);
     }
 
     return nullptr;
@@ -240,14 +223,14 @@ FloorItem *ActorSpriteManager::findItem(int x, int y, int maxDist) const
 {
     FloorItem *item = nullptr;
     int smallestDist = 0;
-    for_actors
+    for (auto actor : mActors)
     {
-        int dist = std::max(std::abs((*it)->getTileX() - x),
-                            std::abs((*it)->getTileY() - y));
-        if (((*it)->getType() == ActorSprite::FLOOR_ITEM) &&
-            ((!item && dist <= maxDist) || dist < smallestDist))
+        int dist = std::max(std::abs(actor->getTileX() - x),
+                            std::abs(actor->getTileY() - y));
+        if ((actor->getType() == ActorSprite::FLOOR_ITEM) &&
+                ((!item && dist <= maxDist) || dist < smallestDist))
         {
-            item = static_cast<FloorItem*>(*it);
+            item = static_cast<FloorItem *>(actor);
             smallestDist = dist;
         }
     }
@@ -258,14 +241,14 @@ FloorItem *ActorSpriteManager::findItem(int x, int y, int maxDist) const
 Being *ActorSpriteManager::findBeingByName(const std::string &name,
                                      ActorSprite::Type type) const
 {
-    for_actors
+    for (auto actor : mActors)
     {
-        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+        if (actor->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        auto *being = static_cast<Being*>(*it);
+        auto *being = static_cast<Being *>(actor);
         if (being->getName() == name &&
-           (type == ActorSprite::UNKNOWN || type == being->getType()))
+                (type == ActorSprite::UNKNOWN || type == being->getType()))
             return being;
     }
     return nullptr;
@@ -278,14 +261,13 @@ const ActorSprites &ActorSpriteManager::getAll() const
 
 void ActorSpriteManager::logic()
 {
-    for_actors
-        (*it)->logic();
+    for (auto actor : mActors)
+        actor->logic();
 
-    for (it = mDeleteActors.begin(), it_end = mDeleteActors.end();
-         it != it_end; ++it)
+    for (auto actor : mDeleteActors)
     {
-        mActors.erase(*it);
-        delete *it;
+        mActors.erase(actor);
+        delete actor;
     }
 
     mDeleteActors.clear();
@@ -296,8 +278,8 @@ void ActorSpriteManager::clear()
     if (local_player)
         mActors.erase(local_player);
 
-    for_actors
-        delete *it;
+    for (auto actor : mActors)
+        delete actor;
     mActors.clear();
     mDeleteActors.clear();
 
@@ -319,18 +301,18 @@ Being *ActorSpriteManager::findNearestLivingBeing(int x, int y,
 
     const int maxDist = maxTileDist * game->getCurrentTileWidth();
 
-    for_actors
+    for (auto actor : mActors)
     {
-        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+        if (actor->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        auto *being = static_cast<Being*>(*it);
+        auto *being = static_cast<Being *>(actor);
         const Vector &pos = being->getPosition();
-        int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
+        int d = abs(((int)pos.x) - x) + abs(((int)pos.y) - y);
 
-        if ((being->getType() == type || type == ActorSprite::UNKNOWN)
-                && (d < dist || !closestBeing)  // it is closer
-                && being->isAlive()             // no dead beings
+        if ((being->getType() == type || type == ActorSprite::UNKNOWN) &&
+                (d < dist || !closestBeing) // it is closer
+                && being->isAlive()         // no dead beings
                 && being != excluded)
         {
             dist = d;
@@ -350,15 +332,9 @@ Being *ActorSpriteManager::findNearestLivingBeing(Being *aroundBeing,
                                   aroundBeing);
 }
 
-bool ActorSpriteManager::hasActorSprite(ActorSprite *actor) const
+bool ActorSpriteManager::hasActorSprite(ActorSprite *someActor) const
 {
-    for_actors
-    {
-        if (actor == *it)
-            return true;
-    }
-
-    return false;
+    return mActors.find(someActor) != mActors.end();
 }
 
 AutoCompleteLister *ActorSpriteManager::getPlayerNameLister()
@@ -373,12 +349,12 @@ AutoCompleteLister *ActorSpriteManager::getPlayerNPCNameLister()
 
 void ActorSpriteManager::updatePlayerNames()
 {
-    for_actors
+    for (auto actor : mActors)
     {
-        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+        if (actor->getType() == ActorSprite::FLOOR_ITEM)
             continue;
 
-        auto *being = static_cast<Being*>(*it);
+        auto *being = static_cast<Being *>(actor);
         if (being->getType() == ActorSprite::PLAYER && being->getName() != "")
             being->updateName();
     }

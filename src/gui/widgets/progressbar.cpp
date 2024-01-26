@@ -71,10 +71,7 @@ ProgressBar::ProgressBar(float progress,
         mBorder.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
         mBorder.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
 
-        for (int i = 0; i < 9; i++)
-        {
-            mBorder.grid[i]->setAlpha(mAlpha);
-        }
+        mBorder.setAlpha(mAlpha);
 
         dBorders->decRef();
     }
@@ -129,12 +126,8 @@ void ProgressBar::updateAlpha()
     if (mAlpha != alpha)
     {
         mAlpha = alpha;
-        for (int i = 0; i < 9; i++)
-        {
-            mBorder.grid[i]->setAlpha(mAlpha);
-        }
+        mBorder.setAlpha(mAlpha);
     }
-
 }
 
 void ProgressBar::draw(gcn::Graphics *graphics)

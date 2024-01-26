@@ -341,20 +341,19 @@ void TaItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
 
     // Load nano description
     std::vector<std::string> effect;
-    for (int i = 0; i < int(sizeof(fields) / sizeof(fields[0])); ++i)
+    for (auto field : fields)
     {
-        int value = XML::getProperty(node, fields[i][0], 0);
+        int value = XML::getProperty(node, field[0], 0);
         if (!value)
             continue;
-        effect.push_back(strprintf(gettext(fields[i][1]), value));
+        effect.push_back(strprintf(gettext(field[1]), value));
     }
-    for (auto it = extraStats.begin();
-            it != extraStats.end(); it++)
+    for (auto &extraStat : extraStats)
     {
-        int value = XML::getProperty(node, it->mTag.c_str(), 0);
+        int value = XML::getProperty(node, extraStat.mTag.c_str(), 0);
         if (!value)
             continue;
-        effect.push_back(strprintf(it->mFormat.c_str(), value));
+        effect.push_back(strprintf(extraStat.mFormat.c_str(), value));
     }
     std::string temp = XML::getProperty(node, "effect", "");
     if (!temp.empty())

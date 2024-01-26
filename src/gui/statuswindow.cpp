@@ -301,9 +301,9 @@ void StatusWindow::event(Event::Channel channel,
 
 void StatusWindow::updateAttrs()
 {
-    for (auto it = mAttrs.begin(); it != mAttrs.end(); it++)
+    for (auto &attr : mAttrs)
     {
-        it->second->update();
+        attr.second->update();
     }
 }
 

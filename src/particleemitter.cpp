@@ -506,11 +506,9 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
         newParticle->setFadeIn(mParticleFadeIn.value(tick));
         newParticle->setAlpha(mParticleAlpha.value(tick));
 
-        for (auto i = mParticleChildEmitters.begin();
-             i != mParticleChildEmitters.end();
-             i++)
+        for (auto &particleChildEmitter : mParticleChildEmitters)
         {
-            newParticle->addEmitter(new ParticleEmitter(*i));
+            newParticle->addEmitter(new ParticleEmitter(particleChildEmitter));
         }
 
         if (!mDeathEffect.empty())

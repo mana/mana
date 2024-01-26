@@ -265,10 +265,10 @@ std::string SHA256Hash(const char *src, int len)
     // Convert it to hex
     const char* hxc = "0123456789abcdef";
     std::string hash = "";
-    for (int i = 0; i < SHA256_DIGEST_SIZE; i++)
+    for (unsigned char i : bytehash)
     {
-        hash += hxc[bytehash[i] / 16];
-        hash += hxc[bytehash[i] % 16];
+        hash += hxc[i / 16];
+        hash += hxc[i % 16];
     }
     return hash;
 }

@@ -30,9 +30,9 @@ void MacDialogBox(const std::string &error);
 #include <sys/time.h>
 #include <iostream>
 #include <sstream>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
 
 Logger::Logger():
     mLogToStandardOut(true)

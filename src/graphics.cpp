@@ -28,6 +28,15 @@
 
 #include <guichan/exception.hpp>
 
+void ImageRect::setAlpha(float alpha)
+{
+    for (auto img : grid)
+    {
+        img->setAlpha(alpha);
+    }
+}
+
+
 Graphics::~Graphics()
 {
     _endDraw();

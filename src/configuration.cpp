@@ -286,14 +286,13 @@ void Configuration::init(const std::string &filename, bool useResManager)
 
 void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
 {
-    for (Options::const_iterator i = mOptions.begin(), i_end = mOptions.end();
-         i != i_end; ++i)
+    for (const auto &option : mOptions)
     {
         xmlTextWriterStartElement(writer, BAD_CAST "option");
         xmlTextWriterWriteAttribute(writer,
-                BAD_CAST "name", BAD_CAST i->first.c_str());
+                BAD_CAST "name", BAD_CAST option.first.c_str());
         xmlTextWriterWriteAttribute(writer,
-                BAD_CAST "value", BAD_CAST i->second.c_str());
+                BAD_CAST "value", BAD_CAST option.second.c_str());
         xmlTextWriterEndElement(writer);
     }
 
@@ -306,11 +305,10 @@ void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
         xmlTextWriterWriteAttribute(writer, BAD_CAST "name", BAD_CAST name);
 
         // Recurse on all elements
-        for (auto
-             elt_it = it->second.begin(); elt_it != it->second.end(); elt_it++)
+        for (auto element : it->second)
         {
             xmlTextWriterStartElement(writer, BAD_CAST name);
-            (*elt_it)->writeToXML(writer);
+            element->writeToXML(writer);
             xmlTextWriterEndElement(writer);
         }
 

@@ -195,15 +195,13 @@ bool Particle::update()
         // Update child emitters
         if ((mLifetimePast-1)%Particle::emitterSkip == 0)
         {
-            for (auto e = mChildEmitters.begin();
-                 e != mChildEmitters.end(); e++)
+            for (auto &childEmitter : mChildEmitters)
             {
-                Particles newParticles = (*e)->createParticles(mLifetimePast);
-                for (auto p = newParticles.begin();
-                     p != newParticles.end(); p++)
+                Particles newParticles = childEmitter->createParticles(mLifetimePast);
+                for (auto &newParticle : newParticles)
                 {
-                    (*p)->moveBy(mPos);
-                    mChildParticles.push_back (*p);
+                    newParticle->moveBy(mPos);
+                    mChildParticles.push_back(newParticle);
                 }
             }
         }
@@ -212,7 +210,7 @@ bool Particle::update()
     // create death effect when the particle died
     if (mAlive != ALIVE && mAlive != DEAD_LONG_AGO)
     {
-        if ((mAlive & mDeathEffectConditions) > 0x00  && !mDeathEffect.empty())
+        if ((mAlive & mDeathEffectConditions) > 0x00 && !mDeathEffect.empty())
         {
             Particle* deathEffect = particleEngine->addEffect(mDeathEffect, 0, 0);
             deathEffect->moveBy(mPos);
@@ -254,12 +252,11 @@ bool Particle::update()
 void Particle::moveBy(const Vector &change)
 {
     mPos += change;
-    for (auto p = mChildParticles.begin();
-         p != mChildParticles.end(); p++)
+    for (auto &childParticle : mChildParticles)
     {
-        if ((*p)->doesFollow())
+        if (childParticle->doesFollow())
         {
-            (*p)->moveBy(change);
+            childParticle->moveBy(change);
         }
     }
 }
@@ -432,10 +429,9 @@ void Particle::adjustEmitterSize(int w, int h)
 {
     if (mAllowSizeAdjust)
     {
-        for (auto e = mChildEmitters.begin();
-             e != mChildEmitters.end(); e++)
+        for (auto &childEmitter : mChildEmitters)
         {
-            (*e)->adjustSize(w, h);
+            childEmitter->adjustSize(w, h);
         }
     }
 }

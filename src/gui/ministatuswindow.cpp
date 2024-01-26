@@ -110,12 +110,12 @@ void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
     // Draw icons
     int icon_x = mXpBar->getX() + mXpBar->getWidth() + 14;
-    for (unsigned int i = 0; i < mIcons.size(); i++)
+    for (auto &icon : mIcons)
     {
-        if (mIcons[i])
+        if (icon)
         {
-            mIcons[i]->draw(graphics, icon_x, 3);
-            icon_x += 2 + mIcons[i]->getWidth();
+            icon->draw(graphics, icon_x, 3);
+            icon_x += 2 + icon->getWidth();
         }
     }
 }
@@ -223,9 +223,9 @@ void MiniStatusWindow::logic()
     }
     */
 
-    for (unsigned int i = 0; i < mIcons.size(); i++)
-        if (mIcons[i])
-            mIcons[i]->update(tick_time * 10);
+    for (auto &icon : mIcons)
+        if (icon)
+            icon->update(tick_time * 10);
 }
 
 void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)

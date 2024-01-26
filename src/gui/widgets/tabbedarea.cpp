@@ -214,10 +214,9 @@ void TabbedArea::widgetResized(const gcn::Event &event)
 void TabbedArea::updateTabsWidth()
 {
     mTabsWidth = 0;
-    for (TabContainer::const_iterator itr = mTabs.begin(), itr_end = mTabs.end();
-         itr != itr_end; ++itr)
+    for (const auto &tab : mTabs)
     {
-        mTabsWidth += (*itr).first->getWidth();
+        mTabsWidth += tab.first->getWidth();
     }
     updateVisibleTabsWidth();
 }
@@ -234,11 +233,11 @@ void TabbedArea::updateVisibleTabsWidth()
 void TabbedArea::adjustTabPositions()
 {
     int maxTabHeight = 0;
-    for (unsigned i = 0; i < mTabs.size(); ++i)
+    for (auto &tab : mTabs)
     {
-        if (mTabs[i].first->getHeight() > maxTabHeight)
+        if (tab.first->getHeight() > maxTabHeight)
         {
-            maxTabHeight = mTabs[i].first->getHeight();
+            maxTabHeight = tab.first->getHeight();
         }
     }
 

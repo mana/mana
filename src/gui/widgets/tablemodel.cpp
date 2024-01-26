@@ -37,14 +37,14 @@ void TableModel::removeListener(TableModelListener *listener)
 
 void TableModel::signalBeforeUpdate()
 {
-    for (auto it = listeners.begin(); it != listeners.end(); it++)
-        (*it)->modelUpdated(false);
+    for (auto listener : listeners)
+        listener->modelUpdated(false);
 }
 
 void TableModel::signalAfterUpdate()
 {
-    for (auto it = listeners.begin(); it != listeners.end(); it++)
-        (*it)->modelUpdated(true);
+    for (auto listener : listeners)
+        listener->modelUpdated(true);
 }
 
 
@@ -146,9 +146,9 @@ int StaticTableModel::getWidth() const
 {
     int width = 0;
 
-    for (unsigned int i = 0; i < mWidths.size(); i++)
+    for (int w : mWidths)
     {
-        width += mWidths[i];
+        width += w;
     }
 
     return width;

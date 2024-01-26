@@ -320,23 +320,20 @@ void SpriteDef::includeSprite(xmlNodePtr includeNode)
 SpriteDef::~SpriteDef()
 {
     // Actions are shared, so ensure they are deleted only once.
-    std::set< Action * > actions;
-    for (Actions::const_iterator i = mActions.begin(),
-         i_end = mActions.end(); i != i_end; ++i)
+    std::set<Action*> actions;
+    for (const auto &action : mActions)
     {
-        actions.insert(i->second);
+        actions.insert(action.second);
     }
 
-    for (auto i = actions.begin(),
-         i_end = actions.end(); i != i_end; ++i)
+    for (auto action : actions)
     {
-        delete *i;
+        delete action;
     }
 
-    for (auto i = mImageSets.begin();
-            i != mImageSets.end(); ++i)
+    for (auto &imageSet : mImageSets)
     {
-        i->second->decRef();
+        imageSet.second->decRef();
     }
 }
 

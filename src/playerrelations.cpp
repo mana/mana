@@ -108,10 +108,9 @@ PlayerRelationsManager::~PlayerRelationsManager()
 void PlayerRelationsManager::clear()
 {
     std::vector<std::string> *names = getPlayers();
-    for (std::vector<std::string>::const_iterator
-             it = names->begin(); it != names->end(); it++)
+    for (const auto &name : *names)
     {
-        removePlayer(*it);
+        removePlayer(name);
     }
     delete names;
 }
@@ -261,13 +260,13 @@ void PlayerRelationsManager::setRelation(const std::string &playerName,
     signalUpdate(playerName);
 }
 
-std::vector<std::string> * PlayerRelationsManager::getPlayers() const
+std::vector<std::string> *PlayerRelationsManager::getPlayers() const
 {
     auto *retval = new std::vector<std::string>();
 
-    for (auto it = mRelations.begin(); it != mRelations.end(); it++)
-        if (it->second)
-            retval->push_back(it->first);
+    for (const auto &relation : mRelations)
+        if (relation.second)
+            retval->push_back(relation.first);
 
     sort(retval->begin(), retval->end());
 
@@ -276,8 +275,7 @@ std::vector<std::string> * PlayerRelationsManager::getPlayers() const
 
 void PlayerRelationsManager::removePlayer(const std::string &name)
 {
-    auto it =
-        mRelations.find(name);
+    auto it = mRelations.find(name);
     if (it != mRelations.end())
     {
         delete it->second;

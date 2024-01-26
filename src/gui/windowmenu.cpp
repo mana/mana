@@ -199,9 +199,9 @@ void WindowMenu::addButton(const std::string& text, int &x, int &h,
 
 void WindowMenu::updatePopUpCaptions()
 {
-    for (auto it = mWidgets.begin(); it != mWidgets.end(); ++it)
+    for (auto &widget : mWidgets)
     {
-        auto *button = dynamic_cast<Button*> (*it);
+        auto *button = dynamic_cast<Button*>(widget);
         if (!button)
             continue;
 

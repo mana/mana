@@ -122,26 +122,25 @@ void KeyboardConfig::init()
 
 void KeyboardConfig::retrieve()
 {
-    for (int i = 0; i < KEY_TOTAL; i++)
+    for (auto &key : mKey)
     {
-        mKey[i].value = (int) config.getValue(
-            mKey[i].configField, mKey[i].defaultValue);
+        key.value = (int) config.getValue(key.configField, key.defaultValue);
     }
 }
 
 void KeyboardConfig::store()
 {
-    for (int i = 0; i < KEY_TOTAL; i++)
+    for (auto &key : mKey)
     {
-        config.setValue(mKey[i].configField, mKey[i].value);
+        config.setValue(key.configField, key.value);
     }
 }
 
 void KeyboardConfig::makeDefault()
 {
-    for (int i = 0; i < KEY_TOTAL; i++)
+    for (auto &key : mKey)
     {
-        mKey[i].value = mKey[i].defaultValue;
+        key.value = key.defaultValue;
     }
 }
 

@@ -31,7 +31,7 @@
 
 #include <map>
 
-struct SpecialEntry;
+class SpecialEntry;
 
 class SpecialsWindow : public Window, public gcn::ActionListener
 {

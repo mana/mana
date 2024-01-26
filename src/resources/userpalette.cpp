@@ -30,7 +30,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <math.h>
+#include <cmath>
 
 static const std::string ColorTypeNames[] = {
     "ColorBeing",
@@ -115,19 +115,18 @@ UserPalette::UserPalette():
 
 UserPalette::~UserPalette()
 {
-    for (auto col = mColors.begin(),
-         colEnd = mColors.end(); col != colEnd; ++col)
+    for (auto &color : mColors)
     {
-        const std::string &configName = ColorTypeNames[col->type];
-        config.setValue(configName + "Gradient", col->committedGrad);
+        const std::string &configName = ColorTypeNames[color.type];
+        config.setValue(configName + "Gradient", color.committedGrad);
 
-        if (col->grad != STATIC)
-            config.setValue(configName + "Delay", col->delay);
+        if (color.grad != STATIC)
+            config.setValue(configName + "Delay", color.delay);
 
-        if (col->grad == STATIC || col->grad == PULSE)
+        if (color.grad == STATIC || color.grad == PULSE)
         {
             char buffer[20];
-            sprintf(buffer, "0x%06x", col->getRGB());
+            sprintf(buffer, "0x%06x", color.getRGB());
             config.setValue(configName, std::string(buffer));
         }
     }
@@ -176,39 +175,37 @@ std::string UserPalette::getElementAt(int i)
 
 void UserPalette::commit(bool commitNonStatic)
 {
-    for (auto i = mColors.begin(), iEnd = mColors.end();
-         i != iEnd; ++i)
+    for (auto &color : mColors)
     {
-        i->committedGrad = i->grad;
-        i->committedDelay = i->delay;
-        if (commitNonStatic || i->grad == STATIC)
+        color.committedGrad = color.grad;
+        color.committedDelay = color.delay;
+        if (commitNonStatic || color.grad == STATIC)
         {
-            i->committedColor = i->color;
+            color.committedColor = color.color;
         }
-        else if (i->grad == PULSE)
+        else if (color.grad == PULSE)
         {
-            i->committedColor = i->testColor;
+            color.committedColor = color.testColor;
         }
     }
 }
 
 void UserPalette::rollback()
 {
-    for (auto i = mColors.begin(), iEnd = mColors.end();
-         i != iEnd; ++i)
+    for (auto &color : mColors)
     {
-        if (i->grad != i->committedGrad)
+        if (color.grad != color.committedGrad)
         {
-            setGradient(i->type, i->committedGrad);
+            setGradient(color.type, color.committedGrad);
         }
-        setGradientDelay(i->type, i->committedDelay);
-        setColor(i->type, i->committedColor.r,
-                 i->committedColor.g, i->committedColor.b);
-        if (i->grad == PULSE)
+        setGradientDelay(color.type, color.committedDelay);
+        setColor(color.type, color.committedColor.r,
+                 color.committedColor.g, color.committedColor.b);
+        if (color.grad == PULSE)
         {
-            i->testColor.r = i->committedColor.r;
-            i->testColor.g = i->committedColor.g;
-            i->testColor.b = i->committedColor.b;
+            color.testColor.r = color.committedColor.r;
+            color.testColor.g = color.committedColor.g;
+            color.testColor.b = color.committedColor.b;
         }
     }
 }

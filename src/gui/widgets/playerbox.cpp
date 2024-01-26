@@ -56,10 +56,11 @@ PlayerBox::PlayerBox(const Being *being):
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,
                         bggridy[y + 1] - bggridy[y] + 1);
-                background.grid[a]->setAlpha(config.getFloatValue("guialpha"));
                 a++;
             }
         }
+
+        background.setAlpha(config.getFloatValue("guialpha"));
 
         textbox->decRef();
     }
@@ -92,10 +93,7 @@ void PlayerBox::draw(gcn::Graphics *graphics)
 
     if (config.getFloatValue("guialpha") != mAlpha)
     {
-        for (int a = 0; a < 9; a++)
-        {
-            background.grid[a]->setAlpha(config.getFloatValue("guialpha"));
-        }
+        background.setAlpha(config.getFloatValue("guialpha"));
     }
 }
 

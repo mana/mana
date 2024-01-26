@@ -74,9 +74,9 @@ Tab::~Tab()
 
     if (mInstances == 0)
     {
-        for (int mode = 0; mode < TAB_COUNT; mode++)
+        for (auto &imgRect : tabImg)
         {
-            std::for_each(tabImg[mode].grid, tabImg[mode].grid + 9, dtor<Image*>());
+            std::for_each(imgRect.grid, imgRect.grid + 9, dtor<Image*>());
         }
     }
 }
@@ -106,10 +106,10 @@ void Tab::init()
                             data[mode].gridX[x], data[mode].gridY[y],
                             data[mode].gridX[x + 1] - data[mode].gridX[x] + 1,
                             data[mode].gridY[y + 1] - data[mode].gridY[y] + 1);
-                    tabImg[mode].grid[a]->setAlpha(mAlpha);
                     a++;
                 }
             }
+            tabImg[mode].setAlpha(mAlpha);
             tab[mode]->decRef();
         }
     }
@@ -126,12 +126,10 @@ void Tab::updateAlpha()
     if (alpha != mAlpha)
     {
         mAlpha = alpha;
-        for (int a = 0; a < 9; a++)
+
+        for (auto &t : tabImg)
         {
-            for (int t = 0; t < TAB_COUNT; t++)
-            {
-                tabImg[t].grid[a]->setAlpha(mAlpha);
-            }
+            t.setAlpha(mAlpha);
         }
     }
 }

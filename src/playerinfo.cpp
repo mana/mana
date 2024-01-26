@@ -319,13 +319,12 @@ void logic()
     if ((mSpecialRechargeUpdateNeeded%11) == 0)
     {
         mSpecialRechargeUpdateNeeded = 0;
-        for (auto it = mSpecials.begin(),
-             it_end = mSpecials.end(); it != it_end; it++)
+        for (auto &special : mSpecials)
         {
-            it->second.currentMana += it->second.recharge;
-            if (it->second.currentMana > it->second.neededMana)
+            special.second.currentMana += special.second.recharge;
+            if (special.second.currentMana > special.second.neededMana)
             {
-                it->second.currentMana = it->second.neededMana;
+                special.second.currentMana = special.second.neededMana;
             }
         }
     }

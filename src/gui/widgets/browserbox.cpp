@@ -185,9 +185,8 @@ void BrowserBox::addRow(const std::string &row)
         int tildeWidth = font->getWidth(tilde);
         int x = 0;
 
-        for (auto i = mTextRows.begin(); i != mTextRows.end(); i++)
+        for (auto row : mTextRows)
         {
-            std::string row = *i;
             for (unsigned int j = 0; j < row.size(); ++j)
             {
                 std::string character = row.substr(j, 1);
@@ -316,11 +315,8 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         }
     }
 
-    for (auto i = mLineParts.begin();
-        i != mLineParts.end();
-        i ++)
+    for (auto &part : mLineParts)
     {
-        const LinePart &part = *i;
         if (part.getY() + 50 < mYStart)
             continue;
         if (part.getY() > yEnd)
@@ -385,9 +381,8 @@ int BrowserBox::calcHeight()
 
     mLineParts.clear();
 
-    for (auto i = mTextRows.begin(); i != mTextRows.end(); i++)
+    for (auto row : mTextRows)
     {
-        const std::string row = *(i);
         bool wrapped = false;
         x = 0;
 

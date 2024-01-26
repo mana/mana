@@ -87,9 +87,8 @@ void ParticleList::removeLocally(Particle *particle)
 
 void ParticleList::clearLocally()
 {
-    for (auto it = mElements.begin();
-         it != mElements.end(); it++)
-        (*it)->kill();
+    for (auto &element : mElements)
+        element->kill();
 
     mElements.clear();
 }
@@ -160,17 +159,16 @@ void ParticleVector::moveTo(float x, float y)
 {
     ParticleContainer::moveTo(x, y);
 
-    for (auto it = mIndexedElements.begin();
-         it != mIndexedElements.end(); it++)
+    for (auto &indexedElement : mIndexedElements)
     {
-        if (*it)
+        if (indexedElement)
         {
-            (*it)->moveTo(x, y);
+            indexedElement->moveTo(x, y);
 
-            if ((*it)->isExtinct())
+            if (indexedElement->isExtinct())
             {
-                (*it)->kill();
-                *it = NULL;
+                indexedElement->kill();
+                indexedElement = NULL;
             }
         }
     }

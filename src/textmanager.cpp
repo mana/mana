@@ -63,10 +63,9 @@ TextManager::~TextManager()
 
 void TextManager::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
-    for (auto bPtr = mTextList.begin(), ePtr = mTextList.end();
-         bPtr != ePtr; ++bPtr)
+    for (auto &text : mTextList)
     {
-        (*bPtr)->draw(graphics, xOff, yOff);
+        text->draw(graphics, xOff, yOff);
     }
 }
 
@@ -81,15 +80,14 @@ void TextManager::place(const Text *textObj, const Text *omit,
     int wantedTop = (TEST - h) / 2; // Entry in occupied at top of text
     int occupiedTop = y - wantedTop; // Line in map representing to of occupied
 
-    for (TextList::const_iterator ptr = mTextList.begin(),
-             pEnd = mTextList.end(); ptr != pEnd; ++ptr)
+    for (auto text : mTextList)
     {
-        if (*ptr != omit &&
-            (*ptr)->mX <= xRight &&
-            (*ptr)->mX + (*ptr)->mWidth > xLeft)
+        if (text != omit &&
+            text->mX <= xRight &&
+            text->mX + text->mWidth > xLeft)
         {
-            int from = (*ptr)->mY - occupiedTop;
-            int to = from + (*ptr)->mHeight - 1;
+            int from = text->mY - occupiedTop;
+            int to = from + text->mHeight - 1;
             if (to < 0 || from >= TEST) // out of range considered
                 continue;
             if (from < 0)

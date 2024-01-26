@@ -552,10 +552,9 @@ void ResourceManager::scheduleDelete(SDL_Surface* surface)
 
 void ResourceManager::clearScheduled()
 {
-    for (auto i = mDeletedSurfaces.begin(),
-         i_end = mDeletedSurfaces.end(); i != i_end; ++i)
+    for (auto mDeletedSurface : mDeletedSurfaces)
     {
-        SDL_FreeSurface(*i);
+        SDL_FreeSurface(mDeletedSurface);
     }
     mDeletedSurfaces.clear();
 }

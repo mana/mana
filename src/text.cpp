@@ -66,10 +66,7 @@ Text::Text(const std::string &text, int x, int y,
         mBubble.grid[8] = sbImage->getSubImage(10, 10, 5, 5);
         mBubbleArrow = sbImage->getSubImage(0, 15, 15, 10);
         const float bubbleAlpha = config.getFloatValue("speechBubbleAlpha");
-        for (int i = 0; i < 9; i++)
-        {
-             mBubble.grid[i]->setAlpha(bubbleAlpha);
-        }
+        mBubble.setAlpha(bubbleAlpha);
         mBubbleArrow->setAlpha(bubbleAlpha);
         sbImage->decRef();
     }
@@ -101,15 +98,8 @@ Text::~Text()
     {
         delete textManager;
         textManager = nullptr;
-        delete mBubble.grid[0];
-        delete mBubble.grid[1];
-        delete mBubble.grid[2];
-        delete mBubble.grid[3];
-        delete mBubble.grid[4];
-        delete mBubble.grid[5];
-        delete mBubble.grid[6];
-        delete mBubble.grid[7];
-        delete mBubble.grid[8];
+        for (auto img : mBubble.grid)
+            delete img;
         delete mBubbleArrow;
     }
 }

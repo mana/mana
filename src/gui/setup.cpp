@@ -77,10 +77,8 @@ Setup::Setup():
     mTabs.push_back(new Setup_Colors);
     mTabs.push_back(new Setup_Players);
 
-    for (auto i = mTabs.begin(), i_end = mTabs.end();
-         i != i_end; ++i)
+    for (auto tab : mTabs)
     {
-        SetupTab *tab = *i;
         panel->addTab(tab->getName(), tab);
     }
 
@@ -119,10 +117,9 @@ void Setup::action(const gcn::ActionEvent &event)
         if (!statusWindow)
             return;
 
-        for (auto it = mWindowsToReset.begin();
-                it != mWindowsToReset.end(); it++)
+        for (auto &window : mWindowsToReset)
         {
-            (*it)->resetToDefaultSize();
+            window->resetToDefaultSize();
         }
     }
 }

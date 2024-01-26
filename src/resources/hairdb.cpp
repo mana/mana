@@ -23,7 +23,7 @@
 
 #include "log.h"
 
-#include <assert.h>
+#include <cassert>
 
 #define COLOR_WHITE "#ffffff"
 
@@ -78,31 +78,30 @@ void HairDB::addHairStyle(int id)
     mHairStyles.insert(id);
 }
 
-const std::string &HairDB::getHairColor(int id)
+const std::string &HairDB::getHairColor(int id) const
 {
     if (!mLoaded)
     {
         // no idea if this can happen, but that check existed before
         logger->log("WARNING: HairDB::getHairColor() called before settings were loaded!");
     }
-    ColorConstIterator it = mHairColors.find(id);
+    auto it = mHairColors.find(id);
     if (it != mHairColors.end())
         return it->second;
 
     logger->log("HairDb: Error, unknown color Id# %d", id);
-    return mHairColors[0];
+    return mHairColors.at(0);
 }
 
 std::vector<int> HairDB::getHairStyleIds(int maxId) const
 {
     std::vector<int> hairStylesIds;
-    for (auto it = mHairStyles.begin(),
-        it_end = mHairStyles.end(); it != it_end; ++it)
+    for (int hairStyle : mHairStyles)
     {
         // Don't give ids higher than the requested maximum.
-        if (maxId > 0 && (*it) > maxId)
+        if (maxId > 0 && hairStyle > maxId)
             continue;
-        hairStylesIds.push_back(*it);
+        hairStylesIds.push_back(hairStyle);
     }
     return hairStylesIds;
 }
@@ -110,13 +109,12 @@ std::vector<int> HairDB::getHairStyleIds(int maxId) const
 std::vector<int> HairDB::getHairColorIds(int maxId) const
 {
     std::vector<int> hairColorsIds;
-    for (auto it = mHairColors.begin(),
-        it_end = mHairColors.end(); it != it_end; ++it)
+    for (const auto &hairColor : mHairColors)
     {
         // Don't give ids higher than the requested maximum.
-        if (maxId > 0 && it->first > maxId)
+        if (maxId > 0 && hairColor.first > maxId)
             continue;
-        hairColorsIds.push_back(it->first);
+        hairColorsIds.push_back(hairColor.first);
     }
     return hairColorsIds;
 }

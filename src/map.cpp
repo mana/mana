@@ -39,7 +39,7 @@
 #include "utils/stringutils.h"
 
 #include <queue>
-#include <limits.h>
+#include <climits>
 
 /**
  * A location on a tile map. Used for pathfinding, open list.
@@ -85,10 +85,9 @@ void TileAnimation::update(int ticks)
     Image *img = mAnimation->getCurrentImage();
     if (img != mLastImage)
     {
-        for (auto i =
-             mAffected.begin(); i != mAffected.end(); i++)
+        for (auto &affected : mAffected)
         {
-            i->first->setTile(i->second, img);
+            affected.first->setTile(affected.second, img);
         }
         mLastImage = img;
     }
@@ -229,10 +228,10 @@ Map::Map(int width, int height, int tileWidth, int tileHeight):
     const int size = mWidth * mHeight;
 
     mMetaTiles = new MetaTile[size];
-    for (int i = 0; i < NB_BLOCKTYPES; i++)
+    for (auto &occupation : mOccupation)
     {
-        mOccupation[i] = new unsigned[size];
-        memset(mOccupation[i], 0, size * sizeof(unsigned));
+        occupation = new unsigned[size];
+        memset(occupation, 0, size * sizeof(unsigned));
     }
 }
 
@@ -240,9 +239,9 @@ Map::~Map()
 {
     // delete metadata, layers, tilesets and overlays
     delete[] mMetaTiles;
-    for (int i = 0; i < NB_BLOCKTYPES; i++)
+    for (auto &occupation : mOccupation)
     {
-        delete[] mOccupation[i];
+        delete[] occupation;
     }
     delete_all(mLayers);
     delete_all(mTilesets);
@@ -321,11 +320,9 @@ bool actorCompare(const Actor *a, const Actor *b)
 void Map::update(int ticks)
 {
     // Update animated tiles
-    for (auto iAni = mTileAnimations.begin();
-         iAni != mTileAnimations.end();
-         iAni++)
+    for (auto &tileAnimation : mTileAnimations)
     {
-        iAni->second->update(ticks);
+        tileAnimation.second->update(ticks);
     }
 }
 
@@ -488,20 +485,19 @@ void Map::updateAmbientLayers(float scrollX, float scrollY)
     float dy = scrollY - mLastScrollY;
     int timePassed = get_elapsed_time(lastTick);
 
-    std::list<AmbientLayer*>::iterator i;
-    for (i = mBackgrounds.begin(); i != mBackgrounds.end(); i++)
+    for (auto &background : mBackgrounds)
     {
-        if (((*i)->mMask & mMask) == 0)
+        if ((background->mMask & mMask) == 0)
             continue;
 
-        (*i)->update(timePassed, dx, dy);
+        background->update(timePassed, dx, dy);
     }
-    for (i = mForegrounds.begin(); i != mForegrounds.end(); i++)
+    for (auto &foreground : mForegrounds)
     {
-        if (((*i)->mMask & mMask) == 0)
+        if ((foreground->mMask & mMask) == 0)
             continue;
 
-        (*i)->update(timePassed, dx, dy);
+        foreground->update(timePassed, dx, dy);
     }
     mLastScrollX = scrollX;
     mLastScrollY = scrollY;
@@ -532,13 +528,12 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
     }
 
     // Draw overlays
-    for (auto i = layers->begin();
-         i != layers->end(); i++)
+    for (auto &layer : *layers)
     {
-        if (((*i)->mMask & mMask) == 0)
+        if ((layer->mMask & mMask) == 0)
             continue;
 
-        (*i)->draw(graphics, graphics->getWidth(), graphics->getHeight());
+        layer->draw(graphics, graphics->getWidth(), graphics->getHeight());
 
         // Detail 1: only one overlay, higher: all overlays
         if (detail == 1)
@@ -597,12 +592,8 @@ bool Map::getWalk(int x, int y, unsigned char walkmask) const
 
 bool Map::occupied(int x, int y) const
 {
-    const ActorSprites &actors = actorSpriteManager->getAll();
-    ActorSpritesConstIterator it, it_end;
-    for (it = actors.begin(), it_end = actors.end(); it != it_end; it++)
+    for (auto actor : actorSpriteManager->getAll())
     {
-        const ActorSprite *actor = *it;
-
         if (actor->getTileX() == x && actor->getTileY() == y &&
             actor->getType() != ActorSprite::FLOOR_ITEM)
             return true;
@@ -1019,15 +1010,12 @@ void Map::initializeParticleEffects(Particle *particleEngine)
 
     if (config.getBoolValue("particleeffects"))
     {
-        for (auto i = particleEffects.begin();
-             i != particleEffects.end();
-             i++
-            )
+        for (auto &particleEffect : particleEffects)
         {
-            p = particleEngine->addEffect(i->file, i->x, i->y);
-            if (p && i->w > 0 && i->h > 0)
+            p = particleEngine->addEffect(particleEffect.file, particleEffect.x, particleEffect.y);
+            if (p && particleEffect.w > 0 && particleEffect.h > 0)
             {
-                p->adjustEmitterSize(i->w, i->h);
+                p->adjustEmitterSize(particleEffect.w, particleEffect.h);
             }
         }
     }

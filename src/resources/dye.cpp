@@ -23,7 +23,7 @@
 
 #include "log.h"
 
-#include <math.h>
+#include <cmath>
 #include <sstream>
 
 DyePalette::DyePalette(const std::string &description)
@@ -178,8 +178,8 @@ void DyePalette::getColor(double intensity, int color[3]) const
 
 Dye::Dye(const std::string &description)
 {
-    for (int i = 0; i < 7; ++i)
-        mDyePalettes[i] = nullptr;
+    for (auto &dyePalette : mDyePalettes)
+        dyePalette = nullptr;
 
     if (description.empty())
         return;
@@ -223,8 +223,8 @@ Dye::Dye(const std::string &description)
 
 Dye::~Dye()
 {
-    for (int i = 0; i < 7; ++i)
-        delete mDyePalettes[i];
+    for (auto &dyePalette : mDyePalettes)
+        delete dyePalette;
 }
 
 void Dye::update(int color[3]) const

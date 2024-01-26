@@ -67,6 +67,8 @@ public:
     };
 
     Image *grid[9];
+
+    void setAlpha(float alpha);
 };
 
 /**

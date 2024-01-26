@@ -397,11 +397,10 @@ void CharHandler::updateCharacters()
         character->data.mAttributes[CHAR_POINTS] = info.characterPoints;
         character->data.mAttributes[CORR_POINTS] = info.correctionPoints;
 
-        for (auto it = info.attribute.begin(),
-             it_end = info.attribute.end(); it != it_end; it++)
+        for (const auto &it : info.attribute)
         {
-            character->data.mStats[i].base = it->second.base;
-            character->data.mStats[i].mod = it->second.mod;
+            character->data.mStats[i].base = it.second.base;
+            character->data.mStats[i].mod = it.second.mod;
         }
 
         mCharacters.push_back(character);

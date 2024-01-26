@@ -112,12 +112,11 @@ void ActorSprite::logic()
     if (mMustResetParticles)
     {
         mMustResetParticles = false;
-        for (auto it = mStatusEffects.begin();
-             it != mStatusEffects.end(); it++)
+        for (int statusEffect : mStatusEffects)
         {
-            const StatusEffect *effect = StatusEffect::getStatusEffect(*it, true);
+            const StatusEffect *effect = StatusEffect::getStatusEffect(statusEffect, true);
             if (effect && effect->particleEffectIsPersistent())
-                updateStatusEffect(*it, true);
+                updateStatusEffect(statusEffect, true);
         }
     }
 

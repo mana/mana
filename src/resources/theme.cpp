@@ -71,8 +71,8 @@ Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
 Skin::~Skin()
 {
     // Clean up static resources
-    for (int i = 0; i < 9; i++)
-        delete mBorder.grid[i];
+    for (auto img : mBorder.grid)
+        delete img;
 
     mCloseImage->decRef();
     delete mStickyImageUp;
@@ -84,8 +84,7 @@ void Skin::updateAlpha(float minimumOpacityAllowed)
     const float alpha = std::max(minimumOpacityAllowed,
                                               config.getFloatValue("guialpha"));
 
-    std::for_each(mBorder.grid, mBorder.grid + 9,
-                  [=] (Image *img) { img->setAlpha(alpha); });
+    mBorder.setAlpha(alpha);
 
     mCloseImage->setAlpha(alpha);
     mStickyImageUp->setAlpha(alpha);
@@ -196,7 +195,8 @@ Skin *Theme::load(const std::string &filename, const std::string &defaultPath)
 
 void Theme::setMinimumOpacity(float minimumOpacity)
 {
-    if (minimumOpacity > 1.0f) return;
+    if (minimumOpacity > 1.0f)
+        return;
 
     mMinimumOpacity = minimumOpacity;
     updateAlpha();
@@ -204,8 +204,8 @@ void Theme::setMinimumOpacity(float minimumOpacity)
 
 void Theme::updateAlpha()
 {
-    for (auto iter = mSkins.begin(); iter != mSkins.end(); ++iter)
-        iter->second->updateAlpha(mMinimumOpacity);
+    for (auto &skin : mSkins)
+        skin.second->updateAlpha(mMinimumOpacity);
 }
 
 void Theme::event(Event::Channel channel, const Event &event)

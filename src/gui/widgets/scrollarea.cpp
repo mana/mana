@@ -107,10 +107,10 @@ void ScrollArea::init()
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,
                         bggridy[y + 1] - bggridy[y] + 1);
-                background.grid[a]->setAlpha(config.getFloatValue("guialpha"));
                 a++;
             }
         }
+        background.setAlpha(config.getFloatValue("guialpha"));
 
         textbox->decRef();
 
@@ -134,11 +134,12 @@ void ScrollArea::init()
                         vsgridx[x], vsgridy[y],
                         vsgridx[x + 1] - vsgridx[x],
                         vsgridy[y + 1] - vsgridy[y]);
-                vMarker.grid[a]->setAlpha(config.getFloatValue("guialpha"));
-                vMarkerHi.grid[a]->setAlpha(config.getFloatValue("guialpha"));
                 a++;
             }
         }
+
+        vMarker.setAlpha(config.getFloatValue("guialpha"));
+        vMarkerHi.setAlpha(config.getFloatValue("guialpha"));
 
         vscroll->decRef();
         vscrollHi->decRef();
@@ -218,12 +219,10 @@ void ScrollArea::updateAlpha()
     if (alpha != mAlpha)
     {
         mAlpha = alpha;
-        for (int a = 0; a < 9; a++)
-        {
-            background.grid[a]->setAlpha(mAlpha);
-            vMarker.grid[a]->setAlpha(mAlpha);
-            vMarkerHi.grid[a]->setAlpha(mAlpha);
-        }
+
+        background.setAlpha(mAlpha);
+        vMarker.setAlpha(mAlpha);
+        vMarkerHi.setAlpha(mAlpha);
     }
 }
 

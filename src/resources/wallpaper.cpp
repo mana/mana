@@ -31,7 +31,7 @@
 
 #include <algorithm>
 #include <cstring>
-#include <time.h>
+#include <ctime>
 #include <vector>
 
 struct WallpaperData
