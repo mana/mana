@@ -43,7 +43,7 @@ namespace SettingsManager
     static std::string mSettingsFile;
     static std::set<std::string> mIncludedFiles;
 
-    static void loadFile(const std::string &filename);
+    static bool loadFile(const std::string &filename);
 
     void load()
     {
@@ -60,7 +60,18 @@ namespace SettingsManager
         Units::init();
 
         // load stuff from settings
-        loadFile("settings.xml");
+        if (!loadFile("settings.xml"))
+        {
+            // fall back to loading certain known files for TMW compatibility
+            loadFile("paths.xml");
+            loadFile("items.xml");
+            loadFile("monsters.xml");
+            loadFile("npcs.xml");
+            loadFile("emotes.xml");
+            loadFile("status-effects.xml");
+            loadFile("hair.xml");
+            loadFile("units.xml");
+        }
 
         Attributes::checkStatus();
         hairDB.checkStatus();
@@ -94,7 +105,7 @@ namespace SettingsManager
     /**
      * Loads a settings file.
      */
-    static void loadFile(const std::string &filename)
+    static bool loadFile(const std::string &filename)
     {
         logger->log("Loading game settings from %s", filename.c_str());
 
@@ -108,9 +119,8 @@ namespace SettingsManager
         if (!node /*|| !xmlStrEqual(node->name, BAD_CAST "settings") */)
         {
             logger->log("Settings Manager: %s is not a valid settings file!", filename.c_str());
-            return;
+            return false;
         }
-
 
         // go through every node
         for_each_xml_child_node(childNode, node)
@@ -121,26 +131,36 @@ namespace SettingsManager
             if (xmlStrEqual(childNode->name, BAD_CAST "include"))
             {
                 // include an other file
-                const std::string includeFile = XML::getProperty(childNode, "file", std::string());
+                std::string includeFile = XML::getProperty(childNode, "file", std::string());
 
-                // check if file property was given
                 if (!includeFile.empty())
                 {
                     // build absolute path path
                     const utils::splittedPath splittedPath = utils::splitFileNameAndPath(filename);
-                    const std::string realIncludeFile = utils::cleanPath(
-                            utils::joinPaths(splittedPath.path, includeFile));
+                    includeFile = utils::cleanPath(utils::joinPaths(splittedPath.path, includeFile));
+                }
+                else
+                {
+                    // try to get name property, which has an absolute value
+                    includeFile = XML::getProperty(childNode, "name", std::string());
+                }
 
+                // check if file property was given
+                if (!includeFile.empty())
+                {
                     // check if we're not entering a loop
-                    if (mIncludedFiles.find(realIncludeFile) != mIncludedFiles.end())
+                    if (mIncludedFiles.find(includeFile) != mIncludedFiles.end())
                     {
-                        logger->log("Circular include loop detecting while including %s from %s", includeFile.c_str(), filename.c_str());
+                        logger->log("Warning: Circular include loop detecting while including %s from %s", includeFile.c_str(), filename.c_str());
                     }
                     else
                     {
-                        // include that file
-                        loadFile(realIncludeFile);
+                        loadFile(includeFile);
                     }
+                }
+                else
+                {
+                    logger->log("Warning: <include> element without 'file' or 'name' attribute in %s", filename.c_str());
                 }
             }
             else if (xmlStrEqual(childNode->name, BAD_CAST "option"))
@@ -207,6 +227,6 @@ namespace SettingsManager
         }
 
         mIncludedFiles.erase(filename);
+        return true;
     }
-
 }
