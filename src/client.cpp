@@ -288,7 +288,7 @@ Client::Client(const Options &options):
     // Add the local data directory to PhysicsFS search path
     resman->addToSearchPath(mLocalDataDir, false);
 
-    bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 1) == 1);
+    bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 0) == 1);
 
     // Set up the transparency option for low CPU when not using OpenGL.
     if (!useOpenGL && (config.getValue("disableTransparency", 0) == 1))
@@ -1201,8 +1201,7 @@ void Client::initHomeDir()
 void Client::initConfiguration()
 {
     // Fill configuration with defaults
-    config.setValue("hwaccel", false);
-    config.setValue("opengl", true);
+    config.setValue("opengl", false);
     config.setValue("screen", false);
     config.setValue("sound", true);
     config.setValue("guialpha", 0.8f);
