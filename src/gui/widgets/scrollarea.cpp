@@ -66,9 +66,9 @@ ScrollArea::~ScrollArea()
 
     if (instances == 0)
     {
-        for_each(background.grid, background.grid + 9, dtor<Image*>());
-        for_each(vMarker.grid, vMarker.grid + 9, dtor<Image*>());
-        for_each(vMarkerHi.grid, vMarkerHi.grid + 9, dtor<Image*>());
+        std::for_each(background.grid, background.grid + 9, dtor<Image*>());
+        std::for_each(vMarker.grid, vMarker.grid + 9, dtor<Image*>());
+        std::for_each(vMarkerHi.grid, vMarkerHi.grid + 9, dtor<Image*>());
 
         buttons[UP][0]->decRef();
         buttons[UP][1]->decRef();

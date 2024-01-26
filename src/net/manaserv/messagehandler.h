@@ -41,7 +41,7 @@ class MessageHandler : public Net::MessageHandler
         virtual void handleMessage(MessageIn &msg) = 0;
 };
 
-typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
+typedef const std::unique_ptr<MessageHandler> MessageHandlerPtr;
 
 } // namespace ManaServ
 

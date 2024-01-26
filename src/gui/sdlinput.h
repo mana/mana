@@ -61,12 +61,14 @@
 
 #include <queue>
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 #include <guichan/input.hpp>
 #include <guichan/keyinput.hpp>
 #include <guichan/mouseinput.hpp>
 #include <guichan/platform.hpp>
+
+#include <string>
 
 namespace Key
 {
@@ -122,6 +124,19 @@ namespace Key
     };
 }
 
+class TextInput
+{
+public:
+    TextInput(const char *text)
+        : mText(text)
+    {}
+
+    const std::string &getText() const { return mText; }
+
+private:
+    std::string mText;
+};
+
 /**
  * SDL implementation of Input.
  */
@@ -160,6 +175,10 @@ public:
 
     virtual gcn::MouseInput dequeueMouseInput();
 
+    bool isTextQueueEmpty() const;
+
+    TextInput dequeueTextInput();
+
 protected:
     /**
      * Converts a mouse button from SDL to a Guichan mouse button
@@ -181,6 +200,7 @@ protected:
 
     std::queue<gcn::KeyInput> mKeyInputQueue;
     std::queue<gcn::MouseInput> mMouseInputQueue;
+    std::queue<TextInput> mTextInputQueue;
 
     bool mMouseDown;
     bool mMouseInWindow;

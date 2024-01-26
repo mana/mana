@@ -132,12 +132,12 @@ public:
     /**
      * Sets the given variable to the given integer, if it isn't already set.
      */
-    void setInt(const std::string &key, int value) throw (BadEvent);
+    void setInt(const std::string &key, int value);
 
     /**
      * Returns the given variable if it is set and an integer.
      */
-    int getInt(const std::string &key) const throw (BadEvent);
+    int getInt(const std::string &key) const;
 
     /**
      * Returns the given variable if it is set and an integer, returning the
@@ -156,12 +156,12 @@ public:
     /**
      * Sets the given variable to the given string, if it isn't already set.
      */
-    void setString(const std::string &key, const std::string &value) throw (BadEvent);
+    void setString(const std::string &key, const std::string &value);
 
     /**
      * Returns the given variable if it is set and a string.
      */
-    const std::string &getString(const std::string &key) const throw (BadEvent);
+    const std::string &getString(const std::string &key) const;
 
     /**
      * Returns the given variable if it is set and a string, returning the
@@ -182,12 +182,12 @@ public:
      * Sets the given variable to the given floating-point, if it isn't already
      * set.
      */
-    void setFloat(const std::string &key, double value) throw (BadEvent);
+    void setFloat(const std::string &key, double value);
 
     /**
      * Returns the given variable if it is set and a floating-point.
      */
-    double getFloat(const std::string &key) const throw (BadEvent);
+    double getFloat(const std::string &key) const;
 
     /**
      * Returns the given variable if it is set and a floating-point, returning
@@ -206,12 +206,12 @@ public:
     /**
      * Sets the given variable to the given boolean, if it isn't already set.
      */
-    void setBool(const std::string &key, bool value) throw (BadEvent);
+    void setBool(const std::string &key, bool value);
 
     /**
      * Returns the given variable if it is set and a boolean.
      */
-    bool getBool(const std::string &key) const throw (BadEvent);
+    bool getBool(const std::string &key) const;
 
     /**
      * Returns the given variable if it is set and a boolean, returning the
@@ -230,12 +230,12 @@ public:
     /**
      * Sets the given variable to the given Item, if it isn't already set.
      */
-    void setItem(const std::string &key, Item *value) throw (BadEvent);
+    void setItem(const std::string &key, Item *value);
 
     /**
      * Returns the given variable if it is set and an Item.
      */
-    Item *getItem(const std::string &key) const throw (BadEvent);
+    Item *getItem(const std::string &key) const;
 
     /**
      * Returns the given variable if it is set and an Item, returning the
@@ -254,12 +254,12 @@ public:
     /**
      * Sets the given variable to the given actor, if it isn't already set.
      */
-    void setActor(const std::string &key, ActorSprite *value) throw (BadEvent);
+    void setActor(const std::string &key, ActorSprite *value);
 
     /**
      * Returns the given variable if it is set and an actor.
      */
-    ActorSprite *getActor(const std::string &key) const throw (BadEvent);
+    ActorSprite *getActor(const std::string &key) const;
 
     /**
      * Returns the given variable if it is set and an actor, returning the

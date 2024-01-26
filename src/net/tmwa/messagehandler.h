@@ -49,7 +49,7 @@ class MessageHandler : public Net::MessageHandler
         Network *mNetwork;
 };
 
-typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
+typedef const std::unique_ptr<MessageHandler> MessageHandlerPtr;
 
 }
 

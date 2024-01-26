@@ -22,12 +22,13 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include <guichan/sdl/sdlgraphics.hpp>
+#include <SDL.h>
+
+#include <guichan/color.hpp>
+#include <guichan/graphics.hpp>
 
 class Image;
 class ImageRect;
-
-struct SDL_Surface;
 
 static const int defaultScreenWidth = 800;
 static const int defaultScreenHeight = 600;
@@ -49,8 +50,9 @@ static const int defaultScreenHeight = 600;
  * Sections 0, 2, 6 and 8 will remain as is. 1, 3, 4, 5 and 7 will be
  * repeated to fit the size of the widget.
  */
-struct ImageRect
+class ImageRect
 {
+public:
     enum ImagePosition
     {
         UPPER_LEFT = 0,
@@ -70,28 +72,36 @@ struct ImageRect
 /**
  * A central point of control for graphics.
  */
-class Graphics : public gcn::SDLGraphics
+class Graphics : public gcn::Graphics
 {
     public:
-        enum BlitMode {
-            BLIT_NORMAL = 0,
-            BLIT_GFX
-        };
-
-        Graphics();
+        Graphics() = default;
 
         virtual ~Graphics();
 
         /**
+         * Sets the target SDL_Window to draw to. This funtion also pushes a
+         * clip areas corresponding to the dimension of the target.
+         *
+         * @param target the target to draw to.
+         */
+        virtual void setTarget(SDL_Window *target);
+
+        SDL_Window *getTarget() const { return mTarget; }
+        SDL_Renderer *getRenderer() const { return mRenderer; }
+
+        /**
          * Try to create a window with the given settings.
          */
-        virtual bool setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
+        virtual bool setVideoMode(int w, int h, bool fs);
 
         /**
          * Change the video mode. Can be used for switching to full screen,
          * changing resolution or adapting after window resize.
          */
-        bool changeVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
+        bool changeVideoMode(int w, int h, bool fs);
+
+        virtual void videoResized(int w, int h);
 
         /**
          * Blits an image onto the screen.
@@ -176,12 +186,6 @@ class Graphics : public gcn::SDLGraphics
             drawImageRect(area.x, area.y, area.width, area.height, imgRect);
         }
 
-        void setBlitMode(BlitMode mode)
-        { mBlitMode = mode; }
-
-        BlitMode getBlitMode()
-        { return mBlitMode; }
-
         /**
          * Updates the screen. This is done by either copying the buffer to the
          * screen or swapping pages.
@@ -189,12 +193,12 @@ class Graphics : public gcn::SDLGraphics
         virtual void updateScreen();
 
         /**
-         * Returns the width of the drawable surface.
+         * Returns the width of the screen.
          */
         int getWidth() const { return mWidth; }
 
         /**
-         * Returns the height of the drawable surface.
+         * Returns the height of the screen.
          */
         int getHeight() const { return mHeight; }
 
@@ -204,21 +208,9 @@ class Graphics : public gcn::SDLGraphics
         int getScale() const { return mScale; }
 
         /**
-         * Returns the amount of bits per pixel that was requested (not the
-         * actual amount that's currently active).
-         */
-        int getBpp() const { return mBpp; }
-
-        /**
          * Returns whether we're in a full screen mode.
          */
         bool getFullscreen() const { return mFullscreen; }
-
-        /**
-         * Returns whether old-fashioned SDL-based hardware acceleration was
-         * requested (not whether it's currently active).
-         */
-        bool getHWAccel() const { return mHWAccel; }
 
         /**
          * Takes a screenshot and returns it as SDL surface.
@@ -227,15 +219,49 @@ class Graphics : public gcn::SDLGraphics
 
         gcn::Font *getFont() const { return mFont; }
 
+        virtual bool pushClipArea(gcn::Rectangle area);
+
+        virtual void popClipArea();
+
+        virtual void drawImage(const gcn::Image *image,
+                               int srcX,
+                               int srcY,
+                               int dstX,
+                               int dstY,
+                               int width,
+                               int height) {}   // not used
+
+        virtual void drawPoint(int x, int y);
+
+        virtual void drawLine(int x1, int y1, int x2, int y2);
+
+        virtual void drawRectangle(const gcn::Rectangle &rectangle);
+
+        virtual void fillRectangle(const gcn::Rectangle &rectangle);
+
+        virtual void setColor(const gcn::Color &color)
+        {
+            mColor = color;
+        }
+
+        virtual const gcn::Color &getColor() const
+        {
+            return mColor;
+        }
+
     protected:
-        int mWidth;
-        int mHeight;
-        int mScale;
-        int mBpp;
-        bool mFullscreen;
-        bool mHWAccel;
-        BlitMode mBlitMode;
-        SDL_Surface *mScreenSurface;
+        void updateSDLClipRect();
+        int getScale(int w, int h);
+
+        int mWidth = 0;
+        int mHeight = 0;
+        int mScale = 1;
+        bool mFullscreen = false;
+        gcn::Color mColor;
+
+        SDL_Window *mTarget = nullptr;
+        SDL_Renderer *mRenderer = nullptr;
+        SDL_Texture *mScreenTexture = nullptr;
 };
 
 extern Graphics *graphics;

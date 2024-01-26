@@ -37,8 +37,8 @@ class OpenGLGraphics : public Graphics
         ~OpenGLGraphics();
 
         /**
-         * Sets whether vertical refresh syncing is enabled. Takes effect after
-         * the next call to setVideoMode(). Only implemented on MacOS for now.
+         * Sets whether vertical refresh syncing is enabled. Takes effect
+         * immediately.
          */
         void setSync(bool sync);
         bool getSync() const { return mSync; }
@@ -53,7 +53,9 @@ class OpenGLGraphics : public Graphics
         void setReduceInputLag(bool reduceInputLag);
         bool getReduceInputLag() const { return mReduceInputLag; }
 
-        bool setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
+        bool setVideoMode(int w, int h, bool fs);
+
+        void videoResized(int w, int h);
 
         bool drawImage(Image *image,
                        int srcX, int srcY,
@@ -118,6 +120,7 @@ class OpenGLGraphics : public Graphics
 
         void drawQuadArrayii(int size);
 
+        SDL_GLContext mContext = nullptr;
         GLfloat *mFloatTexArray;
         GLint *mIntTexArray;
         GLint *mIntVertArray;

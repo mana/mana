@@ -207,6 +207,11 @@ void TradeHandler::handleMessage(MessageIn &msg)
                          SERVER_NOTICE(_("Failed adding item. Trade "
                                  "partner has no free slot."))
                          break;
+                    case 3:
+                         // Add item failed - non tradable item
+                         SERVER_NOTICE(_("Failed adding item. You "
+                                 "cant trade this item."))
+                         break;
                     default:
                         SERVER_NOTICE(_("Failed adding item for "
                                 "unknown reason."))

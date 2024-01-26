@@ -28,7 +28,7 @@ packaging/windows/upx/*
 data/music/*.ogg
 
 # files created by Qt Creator
-mana.creator.user*
+CMakeLists.txt.user*
 
 # files created by gtags
 GPATH

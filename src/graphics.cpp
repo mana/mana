@@ -19,8 +19,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cassert>
-
 #include "graphics.h"
 #include "log.h"
 
@@ -28,122 +26,96 @@
 
 #include "utils/gettext.h"
 
-#include <SDL_gfxBlitFunc.h>
-#include <SDL/SDL_rotozoom.h>
-
-Graphics::Graphics():
-    mWidth(0),
-    mHeight(0),
-    mScale(1),
-    mBpp(0),
-    mFullscreen(false),
-    mHWAccel(false),
-    mBlitMode(BLIT_NORMAL),
-    mScreenSurface(0)
-{
-    mTarget = 0;
-}
+#include <guichan/exception.hpp>
 
 Graphics::~Graphics()
 {
     _endDraw();
 }
 
-bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
+void Graphics::setTarget(SDL_Window *target)
+{
+    _endDraw();
+
+    mTarget = target;
+
+    if (mTarget)
+        _beginDraw();
+}
+
+bool Graphics::setVideoMode(int w, int h, bool fs)
 {
     logger->log("Setting video mode %dx%d %s",
             w, h, fs ? "fullscreen" : "windowed");
 
-    logger->log("Bits per pixel: %d", bpp);
-
-    int displayFlags = SDL_ANYFORMAT;
+    int windowFlags = SDL_WINDOW_ALLOW_HIGHDPI;
 
     if (fs)
-        displayFlags |= SDL_FULLSCREEN;
+        windowFlags |= SDL_WINDOW_FULLSCREEN;
     else
-        displayFlags |= SDL_RESIZABLE;
+        windowFlags |= SDL_WINDOW_RESIZABLE;
 
-    if (hwaccel)
-        displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-    else
-        displayFlags |= SDL_SWSURFACE;
+    // TODO_SDL2: Support SDL_WINDOW_FULLSCREEN_DESKTOP
 
-    SDL_FreeSurface(mTarget);
-    mTarget = 0;
+    SDL_Window *window = nullptr;
+    SDL_Renderer *renderer = nullptr;
+    SDL_CreateWindowAndRenderer(w, h, windowFlags, &window, &renderer);
 
-    // Calculate scaling factor
-    mScale = std::max(w / 640, h / 360);
-
-    mScreenSurface = SDL_SetVideoMode(w, h, bpp, displayFlags);
-    const SDL_PixelFormat& fmt = *(mScreenSurface->format);
-    setTarget(SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                   w / mScale, h / mScale,
-                                   fmt.BitsPerPixel,
-                                   fmt.Rmask, fmt.Gmask, fmt.Bmask, 0));
-
-    if (!mTarget)
+    if (!window)
         return false;
 
-    mWidth = mTarget->w;
-    mHeight = mTarget->h;
-    mBpp = bpp;
+    SDL_SetWindowMinimumSize(window, 640, 360);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+    setTarget(window);
+
+    mRenderer = renderer;
+    videoResized(w, h);
     mFullscreen = fs;
-    mHWAccel = hwaccel;
 
-    char videoDriverName[64];
-
-    if (SDL_VideoDriverName(videoDriverName, 64))
-        logger->log("Using video driver: %s", videoDriverName);
+    if (const char *driver = SDL_GetCurrentVideoDriver())
+        logger->log("Using video driver: %s", driver);
     else
-        logger->log("Using video driver: unknown");
+        logger->log("Using video driver: not initialized");
 
-    const SDL_VideoInfo *vi = SDL_GetVideoInfo();
+    SDL_RendererInfo info;
 
-    logger->log("Possible to create hardware surfaces: %s",
-                vi->hw_available ? "yes" : "no");
-    logger->log("Window manager available: %s",
-                vi->wm_available ? "yes" : "no");
-    logger->log("Accelerated hardware to hardware blits: %s",
-                vi->blit_hw ? "yes" : "no");
-    logger->log("Accelerated hardware to hardware colorkey blits: %s",
-                vi->blit_hw_CC ? "yes" : "no");
-    logger->log("Accelerated hardware to hardware alpha blits: %s",
-                vi->blit_hw_A ? "yes" : "no");
-    logger->log("Accelerated software to hardware blits: %s",
-                vi->blit_sw ? "yes" : "no");
-    logger->log("Accelerated software to hardware colorkey blits: %s",
-                vi->blit_sw_CC ? "yes" : "no");
-    logger->log("Accelerated software to hardware alpha blits: %s",
-                vi->blit_sw_A ? "yes" : "no");
-    logger->log("Accelerated color fills: %s",
-                vi->blit_fill ? "yes" : "no");
-    logger->log("Available video memory: %d", vi->video_mem);
+    if (SDL_GetRendererInfo(mRenderer, &info) == 0) {
+        logger->log("Using renderer: %s", info.name);
+
+        logger->log("The renderer is a software fallback: %s",
+                    (info.flags & SDL_RENDERER_SOFTWARE) ? "yes" : "no");
+        logger->log("The renderer is hardware accelerated: %s",
+                    (info.flags & SDL_RENDERER_ACCELERATED) ? "yes" : "no");
+        logger->log("Vsync: %s",
+                    (info.flags & SDL_RENDERER_PRESENTVSYNC) ? "on" : "off");
+        logger->log("Renderer supports rendering to texture: %s",
+                    (info.flags & SDL_RENDERER_TARGETTEXTURE) ? "yes" : "no");
+        logger->log("Max texture size: %dx%d",
+                    info.max_texture_width, info.max_texture_height);
+    }
 
     return true;
 }
 
-bool Graphics::changeVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
+bool Graphics::changeVideoMode(int w, int h, bool fs)
 {
     // Just return success if we're already in this mode
-    if (mScreenSurface && mScreenSurface->w == w &&
-            mScreenSurface->h == h &&
-            mBpp == bpp &&
-            mFullscreen == fs &&
-            mHWAccel == hwaccel)
+    if (mWidth == w &&
+            mHeight == h &&
+            mFullscreen == fs)
         return true;
 
     _endDraw();
 
-    bool success = setVideoMode(w, h, bpp, fs, hwaccel);
+    bool success = setVideoMode(w, h, fs);
 
-    // If it didn't work, try to restore fallback resolution. If that doesn't
+    // If it didn't work, try to restore the previous mode. If that doesn't
     // work either, we're in big trouble and bail out.
-    if (!success)
-    {
-        if (!setVideoMode(640, 360, mBpp, mFullscreen, mHWAccel))
-        {
+    if (!success) {
+        if (!setVideoMode(mWidth, mHeight, mFullscreen)) {
             logger->error(_("Failed to change video mode and couldn't "
-                            "switch back to the fallback mode!"));
+                            "switch back to the previous mode!"));
         }
     }
 
@@ -152,12 +124,36 @@ bool Graphics::changeVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     return success;
 }
 
+void Graphics::videoResized(int w, int h)
+{
+    const int prevWidth = mWidth;
+    const int prevHeight = mHeight;
+
+    mScale = getScale(w, h);
+    mWidth = w / mScale;
+    mHeight = h / mScale;
+
+    if (mWidth != prevWidth || mHeight != prevHeight) {
+        if (mScreenTexture) {
+            SDL_DestroyTexture(mScreenTexture);
+            mScreenTexture = nullptr;
+        }
+
+        if (mScale > 1) {
+            auto pixelFormat = SDL_GetWindowPixelFormat(mTarget);
+            mScreenTexture = SDL_CreateTexture(mRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, mWidth, mHeight);
+        }
+
+        SDL_SetRenderTarget(mRenderer, mScreenTexture);
+    }
+}
+
 bool Graphics::drawImage(Image *image, int x, int y)
 {
-    if (image)
-        return drawImage(image, 0, 0, x, y, image->mBounds.w, image->mBounds.h);
-    else
+    if (!image)
         return false;
+
+    return drawImage(image, 0, 0, x, y, image->mBounds.w, image->mBounds.h);
 }
 
 bool Graphics::drawRescaledImage(Image *image, int srcX, int srcY,
@@ -167,43 +163,7 @@ bool Graphics::drawRescaledImage(Image *image, int srcX, int srcY,
                                bool useColor)
 {
     // Check that preconditions for blitting are met.
-    if (!mTarget || !image)
-        return false;
-    if (!image->mSDLSurface)
-        return false;
-
-    Image *tmpImage = image->SDLgetScaledImage(desiredWidth, desiredHeight);
-    bool returnValue = false;
-
-    if (!tmpImage)
-        return false;
-
-    dstX += mClipStack.top().xOffset;
-    dstY += mClipStack.top().yOffset;
-
-    srcX += image->mBounds.x;
-    srcY += image->mBounds.y;
-
-    SDL_Rect dstRect;
-    SDL_Rect srcRect;
-    dstRect.x = dstX; dstRect.y = dstY;
-    srcRect.x = srcX; srcRect.y = srcY;
-    srcRect.w = tmpImage->getWidth();
-    srcRect.h = tmpImage->getHeight();
-
-    returnValue = !(SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect,
-                                    mTarget, &dstRect) < 0);
-
-    tmpImage->decRef(Resource::DeleteImmediately);
-
-    return returnValue;
-}
-
-bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
-                         int width, int height, bool)
-{
-    // Check that preconditions for blitting are met.
-    if (!mTarget || !image || !image->mSDLSurface)
+    if (!mTarget || !image || !image->mTexture)
         return false;
 
     dstX += mClipStack.top().xOffset;
@@ -218,48 +178,35 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcRect.x = srcX; srcRect.y = srcY;
     srcRect.w = width;
     srcRect.h = height;
+    dstRect.w = desiredWidth;
+    dstRect.h = desiredHeight;
 
-    if (mBlitMode == BLIT_NORMAL)
-        return !(SDL_BlitSurface(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
-    else
-        return !(SDL_gfxBlitRGBA(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
+    return !(SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect) < 0);
+}
+
+bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
+                         int width, int height, bool useColor)
+{
+    if (!image)
+        return false;
+
+    return drawRescaledImage(image,
+                             srcX, srcY,
+                             dstX, dstY,
+                             width, height,
+                             width, height, useColor);
 }
 
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
 {
     // Check that preconditions for blitting are met.
-    if (!mTarget || !image)
-        return;
-    if (!image->mSDLSurface)
+    if (!image)
         return;
 
     const int iw = image->getWidth();
     const int ih = image->getHeight();
 
-    if (iw == 0 || ih == 0)
-        return;
-
-    for (int py = 0; py < h; py += ih)     // Y position on pattern plane
-    {
-        int dh = (py + ih >= h) ? h - py : ih;
-        int srcY = image->mBounds.y;
-        int dstY = y + py + mClipStack.top().yOffset;
-
-        for (int px = 0; px < w; px += iw) // X position on pattern plane
-        {
-            int dw = (px + iw >= w) ? w - px : iw;
-            int srcX = image->mBounds.x;
-            int dstX = x + px + mClipStack.top().xOffset;
-
-            SDL_Rect dstRect;
-            SDL_Rect srcRect;
-            dstRect.x = dstX; dstRect.y = dstY;
-            srcRect.x = srcX; srcRect.y = srcY;
-            srcRect.w = dw;   srcRect.h = dh;
-
-            SDL_BlitSurface(image->mSDLSurface, &srcRect, mTarget, &dstRect);
-        }
-    }
+    drawRescaledImagePattern(image, x, y, w, h, iw, ih);
 }
 
 void Graphics::drawRescaledImagePattern(Image *image,
@@ -268,50 +215,34 @@ void Graphics::drawRescaledImagePattern(Image *image,
                                         int scaledWidth, int scaledHeight)
 {
     // Check that preconditions for blitting are met.
-    if (!mTarget || !image)
-        return;
-    if (!image->mSDLSurface)
+    if (!mTarget || !image || !image->mTexture)
         return;
 
     if (scaledHeight == 0 || scaledWidth == 0)
         return;
 
-    Image *tmpImage = image->SDLgetScaledImage(scaledWidth, scaledHeight);
-    if (!tmpImage)
-        return;
-
-    const int iw = tmpImage->getWidth();
-    const int ih = tmpImage->getHeight();
-
-    if (iw == 0 || ih == 0)
+    for (int py = 0; py < h; py += scaledHeight)     // Y position on pattern plane
     {
-        tmpImage->decRef(Resource::DeleteImmediately);
-        return;
-    }
-
-    for (int py = 0; py < h; py += ih)     // Y position on pattern plane
-    {
-        int dh = (py + ih >= h) ? h - py : ih;
-        int srcY = tmpImage->mBounds.y;
+        int dh = (py + scaledHeight >= h) ? h - py : scaledHeight;
+        int srcY = image->mBounds.y;
         int dstY = y + py + mClipStack.top().yOffset;
 
-        for (int px = 0; px < w; px += iw) // X position on pattern plane
+        for (int px = 0; px < w; px += scaledWidth) // X position on pattern plane
         {
-            int dw = (px + iw >= w) ? w - px : iw;
-            int srcX = tmpImage->mBounds.x;
+            int dw = (px + scaledWidth >= w) ? w - px : scaledWidth;
+            int srcX = image->mBounds.x;
             int dstX = x + px + mClipStack.top().xOffset;
 
             SDL_Rect dstRect;
             SDL_Rect srcRect;
             dstRect.x = dstX; dstRect.y = dstY;
+            dstRect.w = dw;   dstRect.h = dh;
             srcRect.x = srcX; srcRect.y = srcY;
             srcRect.w = dw;   srcRect.h = dh;
 
-            SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect, mTarget, &dstRect);
+            SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect);
         }
     }
-
-    tmpImage->decRef(Resource::DeleteImmediately);
 }
 
 void Graphics::drawImageRect(int x, int y, int w, int h,
@@ -368,27 +299,16 @@ void Graphics::drawImageRect(int x, int y, int w, int h,
 
 void Graphics::updateScreen()
 {
-    // Center viewport
-    SDL_Rect dstRect;
-    dstRect.x = (mScreenSurface->w-getWidth() * mScale) / 2;
-    dstRect.y = (mScreenSurface->h-getHeight() * mScale) / 2;
-
-    // Zoom in if necessary
-    if (mScale > 1)
-    {
-        SDL_Surface *tmp = zoomSurface(mTarget, mScale, mScale, 0);
-
-        // Copy temporary surface to screen
-        SDL_BlitSurface(tmp, NULL, mScreenSurface, &dstRect);
-        SDL_FreeSurface(tmp);
+    if (!mScreenTexture) {
+        // Simple case when we're rendering directly to the window
+        SDL_RenderPresent(mRenderer);
+    } else {
+        // Otherwise, we now render the screen surface to the window
+        SDL_SetRenderTarget(mRenderer, NULL);
+        SDL_RenderCopy(mRenderer, mScreenTexture, NULL, NULL);
+        SDL_RenderPresent(mRenderer);
+        SDL_SetRenderTarget(mRenderer, mScreenTexture);
     }
-    else
-    {
-        // Copy mTarget directly to screen
-        SDL_BlitSurface(mTarget, NULL, mScreenSurface, &dstRect);
-    }
-
-    SDL_Flip(mScreenSurface);
 }
 
 SDL_Surface *Graphics::getScreenshot()
@@ -404,10 +324,145 @@ SDL_Surface *Graphics::getScreenshot()
 #endif
     int amask = 0x00000000;
 
-    SDL_Surface *screenshot = SDL_CreateRGBSurface(SDL_SWSURFACE, mTarget->w,
-            mTarget->h, 24, rmask, gmask, bmask, amask);
-
-    SDL_BlitSurface(mTarget, NULL, screenshot, NULL);
+    SDL_Surface *screenshot = SDL_CreateRGBSurface(0, mWidth,
+            mHeight, 24, rmask, gmask, bmask, amask);
+    SDL_RenderReadPixels(mRenderer, NULL, SDL_PIXELFORMAT_RGB888, screenshot->pixels, screenshot->pitch);
 
     return screenshot;
+}
+
+bool Graphics::pushClipArea(gcn::Rectangle area)
+{
+    bool result = gcn::Graphics::pushClipArea(area);
+    updateSDLClipRect();
+    return result;
+}
+
+void Graphics::popClipArea()
+{
+    gcn::Graphics::popClipArea();
+    updateSDLClipRect();
+}
+
+void Graphics::updateSDLClipRect()
+{
+    if (mClipStack.empty())
+    {
+        SDL_RenderSetClipRect(mRenderer, NULL);
+        return;
+    }
+
+    const gcn::ClipRectangle &carea = mClipStack.top();
+    SDL_Rect rect;
+    rect.x = carea.x;
+    rect.y = carea.y;
+    rect.w = carea.width;
+    rect.h = carea.height;
+
+    SDL_RenderSetClipRect(mRenderer, &rect);
+}
+
+int Graphics::getScale(int w, int h)
+{
+    return std::max(w / 640, h / 360);
+}
+
+void Graphics::drawPoint(int x, int y)
+{
+    if (mClipStack.empty())
+    {
+        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw funtion outside of _beginDraw() and _endDraw()?");
+    }
+
+    const gcn::ClipRectangle &top = mClipStack.top();
+
+    x += top.xOffset;
+    y += top.yOffset;
+
+    if (!top.isPointInRect(x, y))
+        return;
+
+    SDL_SetRenderDrawColor(mRenderer,
+                           (Uint8)(mColor.r),
+                           (Uint8)(mColor.g),
+                           (Uint8)(mColor.b),
+                           (Uint8)(mColor.a));
+    SDL_RenderDrawPoint(mRenderer, x, y);
+}
+
+void Graphics::drawLine(int x1, int y1, int x2, int y2)
+{
+    if (mClipStack.empty())
+    {
+        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw funtion outside of _beginDraw() and _endDraw()?");
+    }
+
+    const gcn::ClipRectangle &top = mClipStack.top();
+
+    x1 += top.xOffset;
+    y1 += top.yOffset;
+    x2 += top.xOffset;
+    y2 += top.yOffset;
+
+    SDL_SetRenderDrawColor(mRenderer,
+                           (Uint8)(mColor.r),
+                           (Uint8)(mColor.g),
+                           (Uint8)(mColor.b),
+                           (Uint8)(mColor.a));
+    SDL_RenderDrawLine(mRenderer, x1, y1, x2, y2);
+}
+
+void Graphics::drawRectangle(const gcn::Rectangle &rectangle)
+{
+    if (mClipStack.empty())
+    {
+        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw funtion outside of _beginDraw() and _endDraw()?");
+    }
+
+    const gcn::ClipRectangle &top = mClipStack.top();
+
+    SDL_Rect rect;
+    rect.x = rectangle.x + top.xOffset;
+    rect.y = rectangle.y + top.yOffset;
+    rect.w = rectangle.width;
+    rect.h = rectangle.height;
+
+    SDL_SetRenderDrawColor(mRenderer,
+                           (Uint8)(mColor.r),
+                           (Uint8)(mColor.g),
+                           (Uint8)(mColor.b),
+                           (Uint8)(mColor.a));
+    SDL_RenderDrawRect(mRenderer, &rect);
+}
+
+void Graphics::fillRectangle(const gcn::Rectangle &rectangle)
+{
+    if (mClipStack.empty())
+    {
+        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw funtion outside of _beginDraw() and _endDraw()?");
+    }
+
+    const gcn::ClipRectangle &top = mClipStack.top();
+
+    gcn::Rectangle area = rectangle;
+    area.x += top.xOffset;
+    area.y += top.yOffset;
+
+    if(!area.isIntersecting(top))
+    {
+        return;
+    }
+
+    SDL_Rect rect;
+    rect.x = area.x;
+    rect.y = area.y;
+    rect.w = area.width;
+    rect.h = area.height;
+
+    SDL_SetRenderDrawColor(mRenderer,
+                           (Uint8)(mColor.r),
+                           (Uint8)(mColor.g),
+                           (Uint8)(mColor.b),
+                           (Uint8)(mColor.a));
+    SDL_RenderFillRect(mRenderer, &rect);
 }

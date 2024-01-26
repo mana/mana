@@ -33,25 +33,6 @@ AmbientLayer::AmbientLayer(Image *img, float parallax,
     mKeepRatio(keepRatio)
 {
     mImage->incRef();
-
-    if (keepRatio && !mImage->useOpenGL()
-        && defaultScreenWidth != 0
-        && defaultScreenHeight != 0
-        && graphics->getWidth() != defaultScreenWidth
-        && graphics->getHeight() != defaultScreenHeight)
-    {
-        // Rescale the overlay to keep the ratio as if we were on
-        // the default resolution...
-        Image *rescaledOverlay = mImage->SDLgetScaledImage(
-         (int) mImage->getWidth() / defaultScreenWidth * graphics->getWidth(),
-     (int) mImage->getHeight() / defaultScreenHeight * graphics->getHeight());
-
-        if (rescaledOverlay)
-        {
-            mImage->decRef();
-            mImage = rescaledOverlay;
-        }
-    }
 }
 
 AmbientLayer::~AmbientLayer()
@@ -86,7 +67,7 @@ void AmbientLayer::update(int timePassed, float dx, float dy)
 
 void AmbientLayer::draw(Graphics *graphics, int x, int y)
 {
-    if (!mImage->useOpenGL() || !mKeepRatio)
+    if (!mKeepRatio)
         graphics->drawImagePattern(mImage,
             (int) -mPosX, (int) -mPosY, x + (int) mPosX, y + (int) mPosY);
     else
@@ -94,5 +75,4 @@ void AmbientLayer::draw(Graphics *graphics, int x, int y)
               (int) -mPosX, (int) -mPosY, x + (int) mPosX, y + (int) mPosY,
          (int) mImage->getWidth() / defaultScreenWidth * graphics->getWidth(),
      (int) mImage->getHeight() / defaultScreenHeight * graphics->getHeight());
-
 }

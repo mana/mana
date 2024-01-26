@@ -77,7 +77,7 @@ uint16_t packet_lengths[0x220] = {
    11,  7,VAR, 67, 12, 18,114,  6,  3,  6, 26, 26, 26, 26,  2,  3,
 // #0x01C0
     2, 14, 10,VAR, 22, 22,  4,  2, 13, 97,  0,  9,  9, 29,  6, 28,
-    8, 14, 10, 35,  6,  8,  4, 11, 54, 53, 60,  2,VAR, 47, 33,  6,
+    8, 14, 10, 35,  6,VAR,  4, 11, 54, 53, 60,  2,VAR, 47, 33,  6,
    30,  8, 34, 14,  2,  6, 26,  2, 28, 81,  6, 10, 26,  2,VAR,VAR,
   VAR,VAR, 20, 10, 32,  9, 34, 14,  2,  6, 48, 56,VAR,  4,  5, 10,
 // #0x0200
@@ -159,7 +159,7 @@ bool Network::connect(ServerInfo server)
     mToSkip = 0;
 
     mState = CONNECTING;
-    mWorkerThread = SDL_CreateThread(networkThread, this);
+    mWorkerThread = SDL_CreateThread(networkThread, "Network", this);
     if (!mWorkerThread)
     {
         setError("Unable to create network worker thread");

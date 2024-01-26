@@ -88,8 +88,8 @@ void Skin::updateAlpha(float minimumOpacityAllowed)
 
 void Skin::setAlpha(float alpha)
 {
-    for_each(mBorder.grid, mBorder.grid + 9,
-             std::bind2nd(std::mem_fun(&Image::setAlpha), alpha));
+    std::for_each(mBorder.grid, mBorder.grid + 9,
+                  [=] (Image *img) { img->setAlpha(alpha); });
 
     mCloseImage->setAlpha(alpha);
     mStickyImageUp->setAlpha(alpha);

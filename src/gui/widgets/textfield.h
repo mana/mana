@@ -26,6 +26,7 @@
 
 #include <vector>
 
+class TextInput;
 class ImageRect;
 class TextField;
 
@@ -114,6 +115,11 @@ class TextField : public gcn::TextField
          * Processes one keypress.
          */
         void keyPressed(gcn::KeyEvent &keyEvent);
+
+        /**
+         * Handle text input (should possibly be new event in Guichan).
+         */
+        void textInput(const TextInput &textInput);
 
         /**
          * Set the minimum value for a range

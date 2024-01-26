@@ -178,8 +178,8 @@ void Setup_Keyboard::refreshAssignedKey(int index)
         caption = keyboard.getKeyCaption(index) + ": ";
     else
     {
-        char *temp = SDL_GetKeyName(
-            (SDLKey) keyboard.getKeyValue(index));
+        const char *temp = SDL_GetKeyName(
+            (SDL_Scancode) keyboard.getKeyValue(index));
 
         caption = strprintf("%-25s",
             (keyboard.getKeyCaption(index) + ": ").c_str()) + toString(temp);

@@ -298,7 +298,7 @@ void LoginHandler::sendLoginRegister(const std::string &username,
                                      const std::string &password)
 {
     MessageOut outMsg(0x0064);
-    outMsg.writeInt32(0); // client version
+    outMsg.writeInt32(20); // client version
     outMsg.writeString(username, 24);
     outMsg.writeString(password, 24);
 

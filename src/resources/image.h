@@ -37,8 +37,6 @@
 #include <SDL_opengl.h>
 #endif
 
-#include <map>
-
 class Dye;
 class Position;
 
@@ -129,12 +127,6 @@ class Image : public Resource
          */
         Image *getSubImage(int x, int y, int width, int height);
 
-        /**
-         * Tells if the image has got an alpha channel
-         * @return true if it's true, false otherwise.
-         */
-        bool hasAlphaChannel();
-
         // SDL only public functions
 
         /**
@@ -146,31 +138,7 @@ class Image : public Resource
         static bool SDLisTransparencyDisabled()
         { return mDisableTransparency; }
 
-        /**
-         * Gets an scaled instance of an image. The returned image is managed
-         * by the ResourceManager.
-         *
-         * @param width  The desired width of the scaled image.
-         * @param height The desired height of the scaled image.
-         *
-         * @return An Image resource, or 0 on failure.
-         */
-        Image *SDLgetScaledImage(int width, int height);
-
-        /**
-         * Get the alpha Channel of a SDL surface.
-         */
-        Uint8 *SDLgetAlphaChannel() const
-        { return mAlphaChannel; }
-
-        SDL_Surface* SDLduplicateSurface(SDL_Surface* tmpImage);
-
-        void SDLcleanCache();
-
-        void SDLterminateAlphaCache();
-
-        static void SDLsetEnableAlphaCache(bool n)
-        { mEnableAlphaCache = n; }
+        static void setRenderer(SDL_Renderer *renderer);
 
 #ifdef USE_OPENGL
 
@@ -204,29 +172,17 @@ class Image : public Resource
         // -----------------------
 
         /** SDL Constructor */
-        Image(SDL_Surface *image, bool hasAlphaChannel = false,
-              Uint8 *alphaChannel = NULL);
+        Image(SDL_Texture *texture, int width, int height);
 
-        /** SDL_Surface to SDL_Surface Image loader */
+        /** SDL_Surface to SDL_Texture Image loader */
         static Image *_SDLload(SDL_Surface *tmpImage);
 
-        SDL_Surface *getByAlpha(float alpha);
-
-        SDL_Surface *mSDLSurface;
-
-        /** Alpha Channel pointer used for 32bit based SDL surfaces */
-        Uint8 *mAlphaChannel;
-        bool mHasAlphaChannel;
-
-        /** Alpha cache: The cache stores a copy of the image
-            for specific requested opacities, hence, increasing
-            the image disply speed */
-        std::map<float, SDL_Surface*> mAlphaCache;
-        bool mUseAlphaCache;
-        static bool mEnableAlphaCache;
+        SDL_Texture *mTexture;
 
         /** Stores whether the transparency is disabled */
         static bool mDisableTransparency;
+
+        static SDL_Renderer *mRenderer;
 
         // -----------------------
         // OpenGL protected members
@@ -261,7 +217,7 @@ class Image : public Resource
 class SubImage : public Image
 {
     public:
-        SubImage(Image *parent, SDL_Surface *image,
+        SubImage(Image *parent, SDL_Texture *texture,
                  int x, int y, int width, int height);
 #ifdef USE_OPENGL
         SubImage(Image *parent, GLuint image, int x, int y,

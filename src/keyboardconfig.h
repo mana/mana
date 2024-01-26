@@ -227,7 +227,7 @@ class KeyboardConfig
 
         KeyFunction mKey[KEY_TOTAL];   /**< Pointer to all the key data */
 
-        uint8_t *mActiveKeys;          /**< Stores a list of all the keys */
+        const uint8_t *mActiveKeys;    /**< Stores a list of all the keys */
 
         std::string mBindError;
 };

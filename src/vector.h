@@ -60,6 +60,14 @@ class Vector
             return x == 0.0f && y == 0.0f && z == 0.0f;
         }
 
+        Vector &operator=(const Vector &v)
+        {
+            x = v.x;
+            y = v.y;
+            z = v.z;
+            return *this;
+        }
+
         /**
          * Scale vector operator.
          */

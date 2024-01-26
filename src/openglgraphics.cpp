@@ -63,7 +63,13 @@ OpenGLGraphics::~OpenGLGraphics()
 
 void OpenGLGraphics::setSync(bool sync)
 {
+    if (mSync == sync)
+        return;
+
     mSync = sync;
+
+    if (mContext)
+        SDL_GL_SetSwapInterval(sync ? 1 : 0);
 }
 
 void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
@@ -71,55 +77,59 @@ void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
     mReduceInputLag = reduceInputLag;
 }
 
-bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
+bool OpenGLGraphics::setVideoMode(int w, int h, bool fs)
 {
     logger->log("Setting video mode %dx%d %s",
             w, h, fs ? "fullscreen" : "windowed");
 
-    int displayFlags = SDL_ANYFORMAT | SDL_OPENGL;
+    // TODO_SDL2: Support SDL_WINDOW_ALLOW_HIGHDPI, but check handling of clip area
 
-    const double targetRatio = (double) 640 / 360; // 1.77778
-    const double requestedRatio = (double) w / h;
+    int windowFlags = SDL_WINDOW_OPENGL;
 
-    if (requestedRatio < targetRatio) {
-        // Screen is higher / narrower than target aspect ratio: calculate
-        // scale based on height.
-        mScale = (int) std::floor((double) h / 360);
-    } else {
-        mScale = (int) std::floor((double) w / 640);
-    }
-
-    mWidth = w / mScale;
-    mHeight = h / mScale;
-    mBpp = bpp;
-    mFullscreen = fs;
-    mHWAccel = hwaccel;
+    mScale = getScale(w, h);
 
     if (fs)
     {
-        displayFlags |= SDL_FULLSCREEN;
+        windowFlags |= SDL_WINDOW_FULLSCREEN;
     }
     else
     {
         // Resizing currently not supported on Windows, where it would require
         // reuploading all textures.
 #if !defined(_WIN32)
-        displayFlags |= SDL_RESIZABLE;
+        windowFlags |= SDL_WINDOW_RESIZABLE;
 #endif
     }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    if (!(mTarget = SDL_SetVideoMode(w, h, bpp, displayFlags)))
+    SDL_Window *window = SDL_CreateWindow("Mana",
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          w, h, windowFlags);
+    if (!window) {
+        logger->log("Failed to create window: %s", SDL_GetError());
         return false;
+    }
 
-#ifdef __APPLE__
+    SDL_SetWindowMinimumSize(window, 640, 360);
+
+    SDL_GLContext glContext = SDL_GL_CreateContext(window);
+    if (!glContext) {
+        logger->log("Failed to create OpenGL context: %s", SDL_GetError());
+        return false;
+    }
+
+    mTarget = window;
+    mContext = glContext;
+    mWidth = w / mScale;
+    mHeight = h / mScale;
+    mFullscreen = fs;
+
     if (mSync)
     {
-        const GLint VBL = 1;
-        CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
+        SDL_GL_SetSwapInterval(1);
     }
-#endif
 
     // Setup OpenGL
     glViewport(0, 0, mWidth * mScale, mHeight * mScale);
@@ -150,6 +160,19 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
                 rectTex ? " (rectangle textures)" : "");
 
     return true;
+}
+
+void OpenGLGraphics::videoResized(int w, int h)
+{
+    _endDraw();
+
+    mScale = getScale(w, h);
+    mWidth = w / mScale;
+    mHeight = h / mScale;
+
+    glViewport(0, 0, w, h);
+
+    _beginDraw();
 }
 
 static inline void drawQuad(Image *image,
@@ -623,7 +646,7 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image,
 
 void OpenGLGraphics::updateScreen()
 {
-    SDL_GL_SwapBuffers();
+    SDL_GL_SwapWindow(mTarget);
 
     /*
      * glFinish flushes all OpenGL commands and makes sure they have been
@@ -647,7 +670,7 @@ void OpenGLGraphics::_beginDraw()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glOrtho(0.0, (double) mWidth, (double) mHeight, 0.0, -1.0, 1.0);
+    glOrtho(0.0, (double)mWidth, (double)mHeight, 0.0, -1.0, 1.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -669,8 +692,8 @@ void OpenGLGraphics::_endDraw()
 
 SDL_Surface* OpenGLGraphics::getScreenshot()
 {
-    int h = mTarget->h;
-    int w = mTarget->w;
+    int w, h;
+    SDL_GL_GetDrawableSize(mTarget, &w, &h);
     GLint pack = 1;
 
     SDL_Surface *screenshot = SDL_CreateRGBSurface(
@@ -721,13 +744,14 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
         transY = -mClipStack.top().yOffset;
     }
 
+    // Skip Graphics::popClipArea since we don't need to interact with SDL2
     bool result = gcn::Graphics::pushClipArea(area);
 
     transX += mClipStack.top().xOffset;
     transY += mClipStack.top().yOffset;
 
     int x = (int) (mClipStack.top().x * mScale);
-    int y = mTarget->h - (int) ((mClipStack.top().y +
+    int y = (int) ((mHeight - mClipStack.top().y -
                                  mClipStack.top().height) * mScale);
     int width = (int) (mClipStack.top().width * mScale);
     int height = (int) (mClipStack.top().height * mScale);
@@ -741,13 +765,14 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 
 void OpenGLGraphics::popClipArea()
 {
+    // Skip Graphics::popClipArea since we don't need to interact with SDL2
     gcn::Graphics::popClipArea();
 
     if (mClipStack.empty())
         return;
 
     int x = (int) (mClipStack.top().x * mScale);
-    int y = mTarget->h - (int) ((mClipStack.top().y +
+    int y = (int) ((mHeight - mClipStack.top().y -
                                  mClipStack.top().height) * mScale);
     int width = (int) (mClipStack.top().width * mScale);
     int height = (int) (mClipStack.top().height * mScale);

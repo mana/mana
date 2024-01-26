@@ -29,10 +29,8 @@
 #endif
 
 #include "log.h"
-#include "configuration.h"
 
 #include <SDL_image.h>
-#include <SDL_rotozoom.h>
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
@@ -40,47 +38,38 @@ bool Image::mPowerOfTwoTextures = true;
 int Image::mTextureType = 0;
 int Image::mTextureSize = 0;
 #endif
-bool Image::mEnableAlphaCache = false;
 
 // The low CPU mode is disabled per default
 bool Image::mDisableTransparency = false;
 
-Image::Image(SDL_Surface *image, bool hasAlphaChannel, Uint8 *alphaChannel):
+SDL_Renderer *Image::mRenderer;
+
+Image::Image(SDL_Texture *texture, int width, int height):
     mAlpha(1.0f),
-    mSDLSurface(image),
-    mAlphaChannel(alphaChannel),
-    mHasAlphaChannel(hasAlphaChannel)
+    mTexture(texture)
 {
 #ifdef USE_OPENGL
     mGLImage = 0;
 #endif
 
-    mUseAlphaCache = Image::mEnableAlphaCache;
-
     mBounds.x = 0;
     mBounds.y = 0;
+    mBounds.w = width;
+    mBounds.h = height;
 
-    mLoaded = false;
+    mLoaded = mTexture != nullptr;
 
-    if (mSDLSurface)
+    if (!mLoaded)
     {
-        mBounds.w = mSDLSurface->w;
-        mBounds.h = mSDLSurface->h;
-
-        mLoaded = true;
-    }
-    else
         logger->log(
           "Image::Image(SDL_Surface*): Couldn't load invalid Surface!");
+    }
 }
 
 #ifdef USE_OPENGL
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
     mAlpha(1.0f),
-    mSDLSurface(0),
-    mAlphaChannel(0),
-    mHasAlphaChannel(true),
-    mUseAlphaCache(false),
+    mTexture(0),
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight)
@@ -140,10 +129,8 @@ Resource *Image::load(SDL_RWops *rw, Dye const &dye)
     rgba.Gmask = 0x00FF0000; rgba.Gloss = 0; rgba.Gshift = 16;
     rgba.Bmask = 0x0000FF00; rgba.Bloss = 0; rgba.Bshift = 8;
     rgba.Amask = 0x000000FF; rgba.Aloss = 0; rgba.Ashift = 0;
-    rgba.colorkey = 0;
-    rgba.alpha = 255;
 
-    SDL_Surface *surf = SDL_ConvertSurface(tmpImage, &rgba, SDL_SWSURFACE);
+    SDL_Surface *surf = SDL_ConvertSurface(tmpImage, &rgba, 0);
     SDL_FreeSurface(tmpImage);
 
     Uint32 *pixels = static_cast< Uint32 * >(surf->pixels);
@@ -173,34 +160,14 @@ Image *Image::load(SDL_Surface *tmpImage)
     return _SDLload(tmpImage);
 }
 
-void Image::SDLcleanCache()
-{
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    for (std::map<float, SDL_Surface*>::iterator
-         i = mAlphaCache.begin(), i_end = mAlphaCache.end();
-         i != i_end; ++i)
-    {
-        if (mSDLSurface != i->second)
-            resman->scheduleDelete(i->second);
-        i->second = 0;
-    }
-    mAlphaCache.clear();
-}
-
 void Image::unload()
 {
     mLoaded = false;
 
-    if (mSDLSurface)
+    if (mTexture)
     {
-        SDLcleanCache();
-        // Free the image surface.
-        SDL_FreeSurface(mSDLSurface);
-        mSDLSurface = NULL;
-
-        delete[] mAlphaChannel;
-        mAlphaChannel = NULL;
+        SDL_DestroyTexture(mTexture);
+        mTexture = NULL;
     }
 
 #ifdef USE_OPENGL
@@ -221,27 +188,6 @@ bool Image::useOpenGL()
 #endif
 }
 
-bool Image::hasAlphaChannel()
-{
-    if (!mLoaded)
-        return false;
-
-#ifdef USE_OPENGL
-    if (mUseOpenGL)
-        return true;
-#endif
-
-    return mHasAlphaChannel;
-}
-
-SDL_Surface *Image::getByAlpha(float alpha)
-{
-    std::map<float, SDL_Surface*>::iterator it = mAlphaCache.find(alpha);
-    if (it != mAlphaCache.end())
-        return (*it).second;
-    return 0;
-}
-
 void Image::setAlpha(float alpha)
 {
     if (!useOpenGL() && mDisableTransparency)
@@ -253,188 +199,26 @@ void Image::setAlpha(float alpha)
     if (alpha < 0.0f || alpha > 1.0f)
         return;
 
-    if (mSDLSurface)
+    mAlpha = alpha;
+
+    if (mTexture)
     {
-        if (mUseAlphaCache)
-        {
-            SDL_Surface *surface = getByAlpha(mAlpha);
-            if (!surface)
-            {
-                if (mAlphaCache.size() > 100)
-                    SDLcleanCache();
-
-                mAlphaCache[mAlpha] = mSDLSurface;
-            }
-            surface = getByAlpha(alpha);
-            if (surface)
-            {
-                mAlphaCache.erase(alpha);
-                mSDLSurface = surface;
-                mAlpha = alpha;
-                return;
-            }
-            else
-            {
-                mSDLSurface = Image::SDLduplicateSurface(mSDLSurface);
-            }
-        }
-
-        mAlpha = alpha;
-
-        if (!hasAlphaChannel())
-        {
-            // Set the alpha value this image is drawn at
-            SDL_SetAlpha(mSDLSurface, SDL_SRCALPHA, (int) (255 * mAlpha));
-        }
-        else
-        {
-            if (SDL_MUSTLOCK(mSDLSurface))
-                SDL_LockSurface(mSDLSurface);
-
-            // Precompute as much as possible
-            int maxHeight = std::min((mBounds.y + mBounds.h), mSDLSurface->h);
-            int maxWidth = std::min((mBounds.x + mBounds.w), mSDLSurface->w);
-            int i = 0;
-
-            for (int y = mBounds.y; y < maxHeight; y++)
-              for (int x = mBounds.x; x < maxWidth; x++)
-              {
-                  i = y * mSDLSurface->w + x;
-                  // Only change the pixel if it was visible at load time...
-                  Uint8 sourceAlpha = mAlphaChannel[i];
-                  if (sourceAlpha > 0)
-                  {
-                      Uint8 r, g, b, a;
-                      SDL_GetRGBA(((Uint32*) mSDLSurface->pixels)[i],
-                                  mSDLSurface->format,
-                                  &r, &g, &b, &a);
-
-                      a = (Uint8) (sourceAlpha * mAlpha);
-
-                      // Here is the pixel we want to set
-                      ((Uint32 *)(mSDLSurface->pixels))[i] =
-                      SDL_MapRGBA(mSDLSurface->format, r, g, b, a);
-                  }
-              }
-
-            if (SDL_MUSTLOCK(mSDLSurface))
-                SDL_UnlockSurface(mSDLSurface);
-        }
-    }
-    else
-    {
-        mAlpha = alpha;
+        SDL_SetTextureAlphaMod(mTexture, (Uint8) (255 * mAlpha));
     }
 }
 
-Image *Image::SDLgetScaledImage(int width, int height)
+Image *Image::_SDLload(SDL_Surface *image)
 {
-    if (width == 0 || height == 0)
-        return 0;
+    if (!image || !mRenderer)
+        return NULL;
 
-    // Increase our reference count and return ourselves in case of same size
-    if (width == getWidth() && height == getHeight())
-    {
-        incRef();
-        return this;
-    }
-
-    if (!mSDLSurface)
-        return 0;
-
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    // Generate a unique ID path for storing the scaled version in the
-    // resource manager.
-    std::string idPath = getIdPath();
-    idPath += ":scaled:";
-    idPath += toString(width);
-    idPath += "x";
-    idPath += toString(height);
-
-    // Try whether a scaled version is already available
-    Image *scaledImage = static_cast<Image*>(resman->get(idPath));
-
-    if (!scaledImage)
-    {
-        // No scaled version with this size exists already, so create one
-        SDL_Surface *scaledSurface = zoomSurface(mSDLSurface,
-                                                 (double) width / getWidth(),
-                                                 (double) height / getHeight(),
-                                                 1);
-
-        if (scaledSurface)
-        {
-            scaledImage = load(scaledSurface);
-            SDL_FreeSurface(scaledSurface);
-
-            // Place the scaled image in the resource manager
-            resman->addResource(idPath, scaledImage);
-        }
-    }
-
-    return scaledImage;
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(mRenderer, image);
+    return new Image(texture, image->w, image->h);
 }
 
-SDL_Surface* Image::SDLduplicateSurface(SDL_Surface* tmpImage)
+void Image::setRenderer(SDL_Renderer *renderer)
 {
-    if (!tmpImage || !tmpImage->format)
-        return NULL;
-
-    return SDL_ConvertSurface(tmpImage, tmpImage->format, SDL_SWSURFACE);
-}
-
-Image *Image::_SDLload(SDL_Surface *tmpImage)
-{
-    if (!tmpImage)
-        return NULL;
-
-    bool hasAlpha = false;
-
-    // The alpha channel to be filled with alpha values
-    Uint8 *alphaChannel = new Uint8[tmpImage->w * tmpImage->h];
-
-    if (tmpImage->format->BitsPerPixel == 32)
-    {
-        // Figure out whether the image uses its alpha layer
-        for (int i = 0; i < tmpImage->w * tmpImage->h; ++i)
-        {
-            Uint8 r, g, b, a;
-            SDL_GetRGBA(
-                    ((Uint32*) tmpImage->pixels)[i],
-                    tmpImage->format,
-                    &r, &g, &b, &a);
-
-            if (a != 255)
-                hasAlpha = true;
-
-            alphaChannel[i] = a;
-        }
-    }
-
-    SDL_Surface *image;
-
-    // Convert the surface to the current display format
-    if (hasAlpha)
-        image = SDL_DisplayFormatAlpha(tmpImage);
-    else
-    {
-        image = SDL_DisplayFormat(tmpImage);
-
-        // We also delete the alpha channel since
-        // it's not used.
-        delete[] alphaChannel;
-        alphaChannel = NULL;
-    }
-
-    if (!image)
-    {
-        logger->log("Error: Image convert failed.");
-        delete[] alphaChannel;
-        return NULL;
-    }
-
-    return new Image(image, hasAlpha, alphaChannel);
+    mRenderer = renderer;
 }
 
 #ifdef USE_OPENGL
@@ -489,7 +273,7 @@ Image *Image::_GLload(SDL_Surface *image)
         }
 
         // Make sure the alpha channel is not used, but copied to destination
-        SDL_SetAlpha(oldImage, 0, SDL_ALPHA_OPAQUE);
+        SDL_SetSurfaceBlendMode(oldImage, SDL_BLENDMODE_NONE);
         SDL_BlitSurface(oldImage, NULL, image, NULL);
     }
 
@@ -583,38 +367,24 @@ Image *Image::getSubImage(int x, int y, int width, int height)
                             mTexWidth, mTexHeight);
 #endif
 
-    return new SubImage(this, mSDLSurface,
+    return new SubImage(this, mTexture,
                         mBounds.x + x,
                         mBounds.y + y,
                         width, height);
-}
-
-void Image::SDLterminateAlphaCache()
-{
-    SDLcleanCache();
-    mUseAlphaCache = false;
 }
 
 //============================================================================
 // SubImage Class
 //============================================================================
 
-SubImage::SubImage(Image *parent, SDL_Surface *image,
+SubImage::SubImage(Image *parent, SDL_Texture *texture,
                    int x, int y, int width, int height):
-    Image(image),
+    Image(texture, width, height),
     mParent(parent)
 {
     if (mParent)
     {
         mParent->incRef();
-        mParent->SDLterminateAlphaCache();
-        mHasAlphaChannel = mParent->hasAlphaChannel();
-        mAlphaChannel = mParent->SDLgetAlphaChannel();
-    }
-    else
-    {
-        mHasAlphaChannel = false;
-        mAlphaChannel = 0;
     }
 
     // Set up the rectangle.
@@ -622,7 +392,6 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
     mBounds.y = y;
     mBounds.w = width;
     mBounds.h = height;
-    mUseAlphaCache = false;
 }
 
 #ifdef USE_OPENGL
@@ -644,10 +413,8 @@ SubImage::SubImage(Image *parent, GLuint image,
 
 SubImage::~SubImage()
 {
-    // Avoid destruction of the image
-    mSDLSurface = 0;
-    // Avoid possible destruction of its alpha channel
-    mAlphaChannel = 0;
+    // Avoid destruction of the texture
+    mTexture = nullptr;
 #ifdef USE_OPENGL
     mGLImage = 0;
 #endif

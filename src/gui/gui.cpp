@@ -26,6 +26,7 @@
 #include "gui/sdlinput.h"
 #include "gui/truetypefont.h"
 
+#include "gui/widgets/textfield.h"
 #include "gui/widgets/window.h"
 #include "gui/widgets/windowcontainer.h"
 
@@ -190,6 +191,12 @@ void Gui::logic()
     Palette::advanceGradients();
 
     gcn::Gui::logic();
+
+    while (!guiInput->isTextQueueEmpty())
+    {
+        TextInput textInput = guiInput->dequeueTextInput();
+        handleTextInput(textInput);
+    }
 }
 
 void Gui::draw()
@@ -266,4 +273,15 @@ void Gui::handleMouseMoved(const gcn::MouseInput &mouseInput)
 {
     gcn::Gui::handleMouseMoved(mouseInput);
     mMouseInactivityTimer = 0;
+}
+
+void Gui::handleTextInput(const TextInput &textInput)
+{
+    if (auto focused = mFocusHandler->getFocused())
+    {
+        if (auto textField = dynamic_cast<TextField*>(focused))
+        {
+            textField->textInput(textInput);
+        }
+    }
 }

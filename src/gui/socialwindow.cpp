@@ -33,8 +33,6 @@
 #include "gui/widgets/avatarlistbox.h"
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/button.h"
-#include "gui/widgets/container.h"
-#include "gui/widgets/label.h"
 #include "gui/widgets/linkhandler.h"
 #include "gui/widgets/popup.h"
 #include "gui/widgets/scrollarea.h"
@@ -47,7 +45,6 @@
 
 #include "resources/theme.h"
 
-#include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -618,7 +615,7 @@ void SocialWindow::showPartyCreate()
     {
         new OkDialog(_("Create Party"),
                      _("Cannot create party. You are already in a party"),
-                     this);
+                     true, this);
         return;
     }
 

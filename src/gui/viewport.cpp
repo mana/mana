@@ -311,7 +311,7 @@ void Viewport::_followMouse()
     if (mPlayerFollowMouse && button & SDL_BUTTON(1))
     {
         // We create a mouse event and send it to mouseDragged.
-        Uint8 *keys = SDL_GetKeyState(NULL);
+        const Uint8 *keys = SDL_GetKeyboardState(NULL);
         gcn::MouseEvent mouseEvent(NULL,
                       (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]),
                       false,

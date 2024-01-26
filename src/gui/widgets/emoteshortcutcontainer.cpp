@@ -92,7 +92,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 
         // Draw emote keyboard shortcut.
         const char *key = SDL_GetKeyName(
-                         (SDLKey) keyboard.getKeyValue(keyboard.KEY_EMOTE_1 + i));
+                         (SDL_Scancode) keyboard.getKeyValue(keyboard.KEY_EMOTE_1 + i));
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         g->drawText(key, emoteX + 2, emoteY + 2, gcn::Graphics::LEFT);
 

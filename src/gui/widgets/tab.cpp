@@ -76,7 +76,7 @@ Tab::~Tab()
     {
         for (int mode = 0; mode < TAB_COUNT; mode++)
         {
-            for_each(tabImg[mode].grid, tabImg[mode].grid + 9, dtor<Image*>());
+            std::for_each(tabImg[mode].grid, tabImg[mode].grid + 9, dtor<Image*>());
         }
     }
 }

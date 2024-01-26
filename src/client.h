@@ -29,7 +29,7 @@
 #include <guichan/actionlistener.hpp>
 
 #include <SDL.h>
-#include <SDL_framerate.h>
+#include <SDL2_framerate.h>
 
 #include <string>
 
@@ -214,14 +214,9 @@ public:
      */
     void videoResized(int width, int height);
 
-    static bool isActive()
-    { return SDL_GetAppState() & SDL_APPACTIVE; }
-
-    static bool hasInputFocus()
-    { return SDL_GetAppState() & SDL_APPINPUTFOCUS; }
-
-    static bool hasMouseFocus()
-    { return SDL_GetAppState() & SDL_APPMOUSEFOCUS; }
+    static bool isActive();
+    static bool hasInputFocus();
+    static bool hasMouseFocus();
 
 private:
     void initRootDir();

@@ -75,7 +75,7 @@ PlayerBox::~PlayerBox()
 
     if (instances == 0)
     {
-        for_each(background.grid, background.grid + 9, dtor<Image*>());
+        std::for_each(background.grid, background.grid + 9, dtor<Image*>());
     }
 }
 
