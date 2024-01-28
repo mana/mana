@@ -25,20 +25,12 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
-AmbientLayer::AmbientLayer(Image *img, float parallax,
-                               float speedX, float speedY, bool keepRatio):
-    mImage(img), mParallax(parallax),
-    mPosX(0), mPosY(0),
-    mSpeedX(speedX), mSpeedY(speedY),
-    mKeepRatio(keepRatio)
-{
-    mImage->incRef();
-}
+AmbientLayer::AmbientLayer(Image *img)
+    : mImage(img)
+{}
 
 AmbientLayer::~AmbientLayer()
-{
-    mImage->decRef();
-}
+{}
 
 void AmbientLayer::update(int timePassed, float dx, float dy)
 {

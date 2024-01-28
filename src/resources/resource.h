@@ -69,4 +69,72 @@ class Resource
         unsigned mRefCount;  /**< Reference count. */
 };
 
+/**
+ * Automatically counting Resource reference.
+ */
+template<typename RESOURCE>
+class ResourceRef
+{
+public:
+    // Allow implicit construction from RESOURCE *
+    ResourceRef(RESOURCE *resource = nullptr)
+        : mResource(resource)
+    {
+        if (mResource)
+            mResource->incRef();
+    }
+
+    // Copy constructor
+    ResourceRef(const ResourceRef &other)
+        : mResource(other.mResource)
+    {
+        if (mResource)
+            mResource->incRef();
+    }
+
+    // Move constructor
+    ResourceRef(ResourceRef &&other)
+        : mResource(other.mResource)
+    {
+        other.mResource = nullptr;
+    }
+
+    // Destructor
+    ~ResourceRef()
+    {
+        if (mResource)
+            mResource->decRef();
+    }
+
+    // Assignment operator
+    ResourceRef &operator=(const ResourceRef &other)
+    {
+        if (this != &other)
+        {
+            if (mResource)
+                mResource->decRef();
+
+            mResource = other.mResource;
+
+            if (mResource)
+                mResource->incRef();
+        }
+        return *this;
+    }
+
+    // Allow dereferencing
+    RESOURCE *operator->() const
+    { return mResource; }
+
+    RESOURCE *get() const
+    { return mResource; }
+
+    // Allow implicit conversion to RESOURCE *
+    operator RESOURCE *() const
+    { return mResource; }
+
+private:
+    RESOURCE *mResource;
+};
+
 #endif

@@ -71,6 +71,27 @@ class Properties
         }
 
         /**
+         * Gets a map property as an int.
+         *
+         * @param name The name of the property.
+         * @param def  Default value, 0 by default.
+         * @return the value of the given property or the given default when it
+         *         doesn't exist.
+         */
+        float getIntProperty(const std::string &name, int def = 0) const
+        {
+            auto i = mProperties.find(name);
+            int ret = def;
+            if (i != mProperties.end())
+            {
+                std::stringstream ss;
+                ss.str(i->second);
+                ss >> ret;
+            }
+            return ret;
+        }
+
+        /**
          * Gets a map property as a boolean.
          *
          * @param name The name of the property.

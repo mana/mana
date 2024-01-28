@@ -152,6 +152,7 @@ PlayerHandler::PlayerHandler()
         SMSG_PLAYER_STAT_UPDATE_5,
         SMSG_PLAYER_STAT_UPDATE_6,
         SMSG_PLAYER_ARROW_MESSAGE,
+        SMSG_MAP_MASK,
         0
     };
     handledMessages = _messages;
@@ -510,6 +511,15 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         logger->log("0x013b: Unhandled message %i", type);
                         break;
                 }
+            }
+            break;
+
+        case SMSG_MAP_MASK:
+            {
+                const int mask = msg.readInt32();
+                msg.readInt32();  // unused
+                if (Map *map = Game::instance()->getCurrentMap())
+                    map->setMask(mask);
             }
             break;
     }

@@ -131,9 +131,13 @@ class MapLayer
 
         int getTileDrawWidth(int x1, int y1, int endX, int &width) const;
 
+        void setMask(int mask) { mMask = mask; }
+        int getMask() const { return mMask; }
+
     private:
         int mX, mY;
         int mWidth, mHeight;
+        int mMask = 1;
         bool mIsFringeLayer;    /**< Whether the actors are drawn. */
         Image **mTiles;
         Map *mMap;              /** The mother map pointer */
@@ -335,6 +339,8 @@ class Map : public Properties
          */
         TileAnimation *getAnimationForGid(int gid) const;
 
+        void setMask(int mask);
+
     protected:
         friend class Actor;
 
@@ -415,6 +421,7 @@ class Map : public Properties
 
         std::map<int, TileAnimation*> mTileAnimations;
 
+        int mMask = 1;
 };
 
 #endif

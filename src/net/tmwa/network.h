@@ -41,6 +41,7 @@
  * the protocol accordingly.
  */
 #define CLIENT_PROTOCOL_VERSION      1
+// 10 -> 11: SMSG_MAP_MASK DONE
 
 namespace TmwAthena {
 

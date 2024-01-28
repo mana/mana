@@ -276,6 +276,26 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
     // Load the tile data
     for_each_xml_child_node(childNode, node)
     {
+        if (xmlStrEqual(childNode->name, BAD_CAST "properties"))
+        {
+            for_each_xml_child_node(prop, childNode)
+            {
+                if (!xmlStrEqual(prop->name, BAD_CAST "property"))
+                    continue;
+
+                const std::string pname = XML::getProperty(prop, "name", "");
+                const std::string value = XML::getProperty(prop, "value", "");
+
+                // TODO: Consider supporting "Hidden", "Version" and "NotVersion"
+
+                if (pname == "Mask")
+                {
+                    layer->setMask(atoi(value.c_str()));
+                }
+            }
+            continue;
+        }
+
         if (!xmlStrEqual(childNode->name, BAD_CAST "data"))
             continue;
 

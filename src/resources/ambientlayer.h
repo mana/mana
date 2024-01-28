@@ -21,6 +21,8 @@
 #ifndef RESOURCES_AMBIENTOVERLAY_H
 #define RESOURCES_AMBIENTOVERLAY_H
 
+#include "resource.h"
+
 class Graphics;
 class Image;
 
@@ -31,29 +33,24 @@ class AmbientLayer
          * Constructor.
          *
          * @param img       the image this overlay displays
-         * @param parallax  scroll factor based on camera position
-         * @param speedX    scrolling speed in x-direction
-         * @param speedY    scrolling speed in y-direction
-         * @param keepRatio  rescale the image to keep
-         * the same ratio than in 800x600 resolution mode.
          */
-        AmbientLayer(Image *img, float parallax,
-                       float speedX, float speedY, bool keepRatio = false);
-
+        AmbientLayer(Image *img);
         ~AmbientLayer();
 
         void update(int timePassed, float dx, float dy);
 
         void draw(Graphics *graphics, int x, int y);
 
+        float mParallax = 0;      /**< Scroll factor based on camera position. */
+        float mSpeedX = 0;        /**< Scrolling speed in X direction. */
+        float mSpeedY = 0;        /**< Scrolling speed in Y direction. */
+        int mMask = 1;
+        bool mKeepRatio = false;  /**< Keep overlay ratio on every resolution like in 800x600 */
+
     private:
-        Image *mImage;
-        float mParallax;
-        float mPosX;              /**< Current layer X position. */
-        float mPosY;              /**< Current layer Y position. */
-        float mSpeedX;            /**< Scrolling speed in X direction. */
-        float mSpeedY;            /**< Scrolling speed in Y direction. */
-        bool mKeepRatio;          /**< Keep overlay ratio on every resolution */
+        ResourceRef<Image> mImage;
+        float mPosX = 0;          /**< Current layer X position. */
+        float mPosY = 0;          /**< Current layer Y position. */
 };
 
 #endif

@@ -40,7 +40,7 @@
 // indicator for a variable-length packet
 const uint16_t VAR = 1;
 
-uint16_t packet_lengths[0x220] = {
+uint16_t packet_lengths[] = {
    10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -82,9 +82,12 @@ uint16_t packet_lengths[0x220] = {
   VAR,VAR, 20, 10, 32,  9, 34, 14,  2,  6, 48, 56,VAR,  4,  5, 10,
 // #0x0200
    26,  0,  0,  0, 18,  0,  0,  0,  0,  0,  0, 19, 10,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    2,VAR, 16,  0,  8,VAR,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+  VAR,122,VAR,VAR,VAR,VAR, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 };
 
+static const int packet_lengths_size
+     = static_cast<int>(sizeof(packet_lengths) / sizeof(uint16_t));
 const unsigned int BUFFER_SIZE = 65536;
 
 namespace TmwAthena {
@@ -287,7 +290,7 @@ bool Network::messageReady()
     // TODO don't hard-code this single case
     if (msgId == SMSG_SERVER_VERSION_RESPONSE)
         len = 10;
-    else if (msgId < 0x220)
+    else if (msgId < packet_lengths_size)
         len = packet_lengths[msgId];
 
     if (len == VAR)

@@ -255,61 +255,46 @@ void Map::initializeAmbientLayers()
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
+    auto addAmbientLayer = [=](const std::string &name, std::list<AmbientLayer*> &list)
+    {
+        if (Image *img = resman->getImage(getProperty(name + "image")))
+        {
+            auto ambientLayer = new AmbientLayer(img);
+            ambientLayer->mParallax = getFloatProperty(name + "parallax");
+            ambientLayer->mSpeedX = getFloatProperty(name + "scrollX");
+            ambientLayer->mSpeedY = getFloatProperty(name + "scrollY");
+            ambientLayer->mMask = getIntProperty(name + "mask", 1);
+
+            list.push_back(ambientLayer);
+
+            // The AmbientLayer takes control over the image.
+            img->decRef();
+        }
+    };
+
     // search for "foreground*" or "overlay*" (old term) in map properties
     for (int i = 0; /* terminated by a break */; i++)
     {
-        std::string name;
         if (hasProperty("foreground" + toString(i) + "image"))
         {
-            name = "foreground" + toString(i);
+            addAmbientLayer("foreground" + toString(i), mForegrounds);
         }
         else if (hasProperty("overlay" + toString(i) + "image"))
         {
-            name = "overlay" + toString(i);
+            addAmbientLayer("overlay" + toString(i), mForegrounds);
         }
         else
         {
             break; // the FOR loop
         }
-
-        Image *img = resman->getImage(getProperty(name + "image"));
-        const float speedX = getFloatProperty(name + "scrollX");
-        const float speedY = getFloatProperty(name + "scrollY");
-        const float parallax = getFloatProperty(name + "parallax");
-        const bool keepRatio = getBoolProperty(name + "keepratio");
-
-        if (img)
-        {
-            mForegrounds.push_back(
-                    new AmbientLayer(img, parallax, speedX, speedY, keepRatio));
-
-            // The AmbientLayer takes control over the image.
-            img->decRef();
-        }
     }
-
 
     // search for "background*" in map properties
     for (int i = 0;
          hasProperty("background" + toString(i) + "image");
          i++)
     {
-        const std::string name = "background" + toString(i);
-
-        Image *img = resman->getImage(getProperty(name + "image"));
-        const float speedX = getFloatProperty(name + "scrollX");
-        const float speedY = getFloatProperty(name + "scrollY");
-        const float parallax = getFloatProperty(name + "parallax");
-        const bool keepRatio = getBoolProperty(name + "keepratio");
-
-        if (img)
-        {
-            mBackgrounds.push_back(
-                    new AmbientLayer(img, parallax, speedX, speedY, keepRatio));
-
-            // The AmbientLayer takes control over the image.
-            img->decRef();
-        }
+        addAmbientLayer("background" + toString(i), mBackgrounds);
     }
 }
 
@@ -387,6 +372,9 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     {
         for (; layeri != mLayers.end() && !overFringe; ++layeri)
         {
+            if (((*layeri)->getMask() & mMask) == 0)
+                continue;
+
             if ((*layeri)->isFringeLayer() && (mDebugFlags & DEBUG_SPECIAL2))
                 overFringe = true;
 
@@ -503,10 +491,16 @@ void Map::updateAmbientLayers(float scrollX, float scrollY)
     std::list<AmbientLayer*>::iterator i;
     for (i = mBackgrounds.begin(); i != mBackgrounds.end(); i++)
     {
+        if (((*i)->mMask & mMask) == 0)
+            continue;
+
         (*i)->update(timePassed, dx, dy);
     }
     for (i = mForegrounds.begin(); i != mForegrounds.end(); i++)
     {
+        if (((*i)->mMask & mMask) == 0)
+            continue;
+
         (*i)->update(timePassed, dx, dy);
     }
     mLastScrollX = scrollX;
@@ -541,6 +535,9 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
     for (auto i = layers->begin();
          i != layers->end(); i++)
     {
+        if (((*i)->mMask & mMask) == 0)
+            continue;
+
         (*i)->draw(graphics, graphics->getWidth(), graphics->getHeight());
 
         // Detail 1: only one overlay, higher: all overlays
@@ -1040,4 +1037,9 @@ TileAnimation *Map::getAnimationForGid(int gid) const
 {
     auto i = mTileAnimations.find(gid);
     return (i == mTileAnimations.end()) ? NULL : i->second;
+}
+
+void Map::setMask(int mask)
+{
+    mMask = mask;
 }

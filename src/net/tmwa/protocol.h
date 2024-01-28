@@ -213,6 +213,8 @@ static const int STORAGE_OFFSET = 1;
 
 #define SMSG_MVP                     0x010c
 
+#define SMSG_MAP_MASK                0x0226
+
 /**********************************
  *  Packets from client to server *
  **********************************/
