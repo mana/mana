@@ -228,7 +228,8 @@ bool KeyboardConfig::isKeyActive(int index) const
 {
     if (!mActiveKeys)
         return false;
-    return mActiveKeys[mKey[index].value];
+    int scanCode = SDL_GetScancodeFromKey(mKey[index].value);
+    return mActiveKeys[scanCode];
 }
 
 void KeyboardConfig::refreshActiveKeys()
