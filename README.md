@@ -1,45 +1,36 @@
 THE MANA CLIENT
 ===============
 
- Version: 0.6.1       Date: 2012-04-02
+With the Mana client you can play The Mana World and related games. The Mana
+World is a free 2D open source MMORPG. This client supports games hosted by
+either tmwAthena or manaserv.
 
- Development team:
-  - See AUTHORS file for a list
+The Mana client is written in C++ and builds upon:
 
- Powered by:
+- SDL2, SDL2\_gfx, SDL2\_image, SDL2\_mixer, SDL2\_ttf, SDL2\_net (Media framework)
+- Guichan (GUI framework)
+- libxml2 (XML parsing and writing)
+- PhysFS (Data files)
+- ENet (UDP networking library)
+- libcurl (HTTP downloads)
+- zlib (Archives)
 
-  - SDL, SDL_gfx, SDL_image, SDL_mixer, SDL_ttf, SDL_net (Media framework)
-  - Guichan (GUI framework)
-  - libxml2 (XML parsing and writing)
-  - PhysFS (Data files)
-  - ENet (UDP networking library)
-  - libcurl (HTTP downloads)
-  - zlib (Archives)
+See the `AUTHORS` file for the list of developers.
 
 
-0. Index
---------
+Account Creation
+----------------
 
-1. Account
-2. Commands
-3. Skills
-4. Support
+To create an account you can usually press the "Register" button after choosing
+your server. When this doesn't work, visit the website of the server you'd like
+to register on, since they may be using an online registration form instead.
 
-1. Account
-----------
-
-To create an account you can usually press the "Register" button after
-choosing your server. When this doesn't work, visit the website of the server
-you'd like to register on, since they may be using an online registration
-form instead.
-
-2. Commands
------------
-
-KEYBOARD:
+Keyboard and Mouse Input
+------------------------
 
 Use arrow keys to move around. Other keys:
 
+```
 - Ctrl               attack
 - F1                 toggle the online help
 - F2                 toggle profile window
@@ -60,15 +51,20 @@ Use arrow keys to move around. Other keys:
 - H                  hide all non-sticky windows
 - G or Z             pick up item
 - Enter              focus chat window / send message
-
-MOUSE:
+```
 
 Left click to execute default action: walk, pick up an item, attack a monster
-and talk to NPCs (be sure to click on their feet). Right click to show up a
-context menu. Holding [Left Shift] prevents from walking when attacking.
+and talk to NPCs. Right click to open a context menu. Holding left Shift
+prevents walking when attacking.
 
-/Commands:
 
+Chat Commands
+-------------
+
+Certain server interaction requires the use of slash-commands in the chat
+window. Here's a list of common commands:
+
+```
 - /help              Displays the list of commands
 - /announce          broadcasts a global msg(Gm Cammand only)
 - /clear             clears the chat window
@@ -97,14 +93,37 @@ Type /help party <option> for further help.
                        '1', 'y' or 't' to make the chatlog lose focus on a
                        blank line, and '0', 'n' or 'f' to make the chatlog lose
                        focus after every message.  /toggle displays the status)
-For more information, type /help <command>
+```
 
-4. Support
-----------
+For more information, type `/help <command>`.
+
+
+Support
+-------
 
 If you're having issues with this client, feel free to report them to us.
-There is a bug tracker at http://bugs.manasource.org/ and you can find us on
-IRC on irc.freenode.net in the #mana channel.
+There is a bug tracker at https://github.com/mana/mana/issues and you can find
+us on IRC on irc.libera.chat in the #mana channel.
 
 If you have feedback about a specific game that uses the Mana client, be sure
 to contact the developers of the game instead.
+
+Compiling the Client
+--------------------
+
+Installing the dependencies on Ubuntu
+
+    sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
+                     libsdl2-net-dev libsdl2-ttf-dev libsdl2-gfx-dev \
+                     libcurl4-openssl-dev libphysfs-dev libxml2-dev \
+                     libguichan-dev
+
+Once the dependencies are installed, use CMake:
+
+    cmake .
+    cmake --build . --parallel
+
+This produces an executable in `src/mana`. If running it without installing, be
+sure to run it from the repository root so that it can find its data files.
+
+See `README.cmake` for additional information.
