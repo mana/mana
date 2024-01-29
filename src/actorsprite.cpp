@@ -204,9 +204,7 @@ static EffectDescription *getEffectDescription(int effectId)
                 EffectDescription *effectDescription =
                     getEffectDescription(node, &id);
 
-                if (default_effect)
-                    delete default_effect;
-
+                delete default_effect;
                 default_effect = effectDescription;
             }
         }

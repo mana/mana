@@ -127,8 +127,8 @@ public:
         signalBeforeUpdate();
 
         freeWidgets();
-        if (mPlayers)
-            delete mPlayers;
+
+        delete mPlayers;
         mPlayers = player_relations.getPlayers();
 
         // set up widgets
@@ -162,8 +162,7 @@ public:
 
     virtual void freeWidgets()
     {
-        if (mPlayers)
-            delete mPlayers;
+        delete mPlayers;
         mPlayers = nullptr;
 
         delete_all(mWidgets);

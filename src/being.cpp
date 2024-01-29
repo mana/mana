@@ -297,9 +297,7 @@ void Being::setSpeech(const std::string &text, int time)
     const int speech = config.getIntValue("speech");
     if (speech == TEXT_OVERHEAD)
     {
-        if (mText)
-            delete mText;
-
+        delete mText;
         mText = new Text(mSpeech,
                          getPixelX(), getSpeechTextYPosition(),
                          gcn::Graphics::CENTER,
@@ -912,11 +910,8 @@ void Being::drawSpeech(int offsetX, int offsetY)
     {
         const bool showName = (speech == NAME_IN_BUBBLE);
 
-        if (mText)
-        {
-            delete mText;
-            mText = nullptr;
-        }
+        delete mText;
+        mText = nullptr;
 
         mSpeechBubble->setCaption(showName ? mName : "", mTextColor);
 
@@ -943,9 +938,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
     {
         mSpeechBubble->setVisible(false);
 
-        if (mText)
-            delete mText;
-
+        delete mText;
         mText = nullptr;
     }
 }

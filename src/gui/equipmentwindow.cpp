@@ -83,8 +83,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
 
 void EquipmentWindow::loadEquipBoxes()
 {
-    if (mEquipBox)
-        delete[] mEquipBox;
+    delete[] mEquipBox;
 
     // Load equipment boxes.
     mBoxesNumber = mEquipment->getSlotNumber();
@@ -110,8 +109,7 @@ void EquipmentWindow::loadEquipBoxes()
 EquipmentWindow::~EquipmentWindow()
 {
     delete mItemPopup;
-    if (mEquipBox)
-        delete[] mEquipBox;
+    delete[] mEquipBox;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)

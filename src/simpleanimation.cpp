@@ -53,8 +53,7 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode,
 
 SimpleAnimation::~SimpleAnimation()
 {
-    if (mAnimation)
-        delete mAnimation;
+    delete mAnimation;
 }
 
 bool SimpleAnimation::draw(Graphics *graphics, int posX, int posY) const
