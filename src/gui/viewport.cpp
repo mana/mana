@@ -312,7 +312,7 @@ void Viewport::_followMouse()
         // We create a mouse event and send it to mouseDragged.
         const Uint8 *keys = SDL_GetKeyboardState(nullptr);
         gcn::MouseEvent mouseEvent(nullptr,
-                      (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]),
+                      (keys[SDL_SCANCODE_LSHIFT] || keys[SDL_SCANCODE_RSHIFT]),
                       false,
                       false,
                       false,
