@@ -26,7 +26,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <set>
 
 class Image;
 class ImageSet;
@@ -35,7 +34,6 @@ class Resource;
 class SoundEffect;
 class SpriteDef;
 
-struct SDL_Surface;
 struct SDL_RWops;
 
 /**
@@ -208,16 +206,6 @@ class ResourceManager
         std::vector<std::string> loadTextFile(const std::string &fileName);
 
         /**
-         * Loads the given filename as an SDL surface. The returned surface is
-         * expected to be freed by the caller using SDL_FreeSurface.
-         */
-        SDL_Surface *loadSDLSurface(const std::string &filename);
-
-        void scheduleDelete(SDL_Surface* surface);
-
-        void clearScheduled();
-
-        /**
          * Returns an instance of the class, creating one if it does not
          * already exist.
          */
@@ -251,7 +239,6 @@ class ResourceManager
         static ResourceManager *instance;
         using Resources = std::map<std::string, Resource *>;
         using ResourceIterator = Resources::iterator;
-        std::set<SDL_Surface*> mDeletedSurfaces;
         Resources mResources;
         Resources mOrphanedResources;
         time_t mOldestOrphan;

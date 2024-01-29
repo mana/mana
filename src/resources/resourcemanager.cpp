@@ -536,25 +536,3 @@ std::vector<std::string> ResourceManager::loadTextFile(
     free(fileContents);
     return lines;
 }
-
-SDL_Surface *ResourceManager::loadSDLSurface(const std::string &filename)
-{
-    SDL_Surface *surface = nullptr;
-    if (SDL_RWops *rw = PHYSFSRWOPS_openRead(filename.c_str()))
-        surface = IMG_Load_RW(rw, 1);
-    return surface;
-}
-
-void ResourceManager::scheduleDelete(SDL_Surface* surface)
-{
-    mDeletedSurfaces.insert(surface);
-}
-
-void ResourceManager::clearScheduled()
-{
-    for (auto mDeletedSurface : mDeletedSurfaces)
-    {
-        SDL_FreeSurface(mDeletedSurface);
-    }
-    mDeletedSurfaces.clear();
-}
