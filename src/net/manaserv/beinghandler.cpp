@@ -179,13 +179,13 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
-        int id = msg.readInt16();
-        int flags = msg.readInt8();
-        Being *being = actorSpriteManager->findBeing(id);
-        int sx = 0, sy = 0, dx = 0, dy = 0, speed = 0;
+        const int id = msg.readInt16();
+        const int flags = msg.readInt8();
 
-        if ((!flags & (MOVING_POSITION | MOVING_DESTINATION)))
+        if (!(flags & (MOVING_POSITION | MOVING_DESTINATION)))
             continue;
+
+        int sx = 0, sy = 0, dx = 0, dy = 0, speed = 0;
 
         if (flags & MOVING_POSITION)
         {
@@ -200,6 +200,7 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
             speed = msg.readInt8();
         }
 
+        Being *being = actorSpriteManager->findBeing(id);
         if (!being)
             continue;
 
