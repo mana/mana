@@ -124,17 +124,27 @@ std::string ChatLogger::getDateString() const
     return date;
 }
 
-std::string ChatLogger::secureName(std::string &name) const
+std::string ChatLogger::secureName(std::string &name)
 {
-    for (char & f : name)
+    const size_t sz = name.length();
+    for (size_t f = 0; f < sz; f ++)
     {
-        if (f < '0' && f > '9' && f < 'a' && f > 'z'
-            && f < 'A' && f > 'Z'
-            && f != '-' && f != '+' && f != '='
-            && f != '.' && f != ','&& f != ')'
-            && f != '(' && f != '[' && f != ')')
+        const unsigned char ch = name[f];
+        if ((ch < '0' || ch > '9') &&
+            (ch < 'a' || ch > 'z') &&
+            (ch < 'A' || ch > 'Z') &&
+            ch != '-' &&
+            ch != '+' &&
+            ch != '=' &&
+            ch != '.' &&
+            ch != ',' &&
+            ch != ')' &&
+            ch != '(' &&
+            ch != '[' &&
+            ch != ']' &&
+            ch != '#')
         {
-            f = '_';
+            name[f] = '_';
         }
     }
     return name;

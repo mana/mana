@@ -45,7 +45,7 @@ class ChatLogger
 
         std::string getDateString() const;
 
-        std::string secureName(std::string &str) const;
+        static std::string secureName(std::string &str);
 
         void setServerName(const std::string &serverName);
 
