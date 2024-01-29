@@ -61,7 +61,6 @@ class SpecialEntry : public Container
     private:
         Icon *mIcon;        // icon to display
         Label *mNameLabel;  // name to display
-        Label *mLevelLabel; // level number label (only shown when applicable)
         Button *mUse; // use button (only shown when applicable)
         ProgressBar *mRechargeBar; // recharge bar (only shown when applicable)
 };
@@ -178,7 +177,6 @@ void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
 SpecialEntry::SpecialEntry(SpecialInfo *info) :
     mInfo(info),
     mIcon(nullptr),
-    mLevelLabel(nullptr),
     mUse(nullptr),
     mRechargeBar(nullptr)
 {
