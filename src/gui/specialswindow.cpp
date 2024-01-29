@@ -39,8 +39,6 @@
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
-#include "utils/xml.h"
 
 #include "localplayer.h"
 

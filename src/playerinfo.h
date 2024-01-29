@@ -22,7 +22,6 @@
 #define PLAYERINFO_H
 
 #include <map>
-#include <string>
 
 /**
  * Standard attributes for players.

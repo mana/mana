@@ -24,8 +24,6 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/palette.h"
-
 #include "gui/widgets/tabbedarea.h"
 
 #include "resources/image.h"

@@ -23,7 +23,6 @@
 #define NET_TA_CHARSERVERHANDLER_H
 
 #include "net/charhandler.h"
-#include "net/serverinfo.h"
 
 #include "net/tmwa/messagehandler.h"
 #include "net/tmwa/token.h"

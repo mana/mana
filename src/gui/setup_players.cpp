@@ -23,9 +23,6 @@
 
 #include "actorspritemanager.h"
 #include "configuration.h"
-#include "log.h"
-
-#include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"

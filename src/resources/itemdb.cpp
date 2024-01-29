@@ -23,10 +23,8 @@
 
 #include "log.h"
 
-#include "net/net.h"
-
 #include "resources/hairdb.h"
-#include "resources/resourcemanager.h"
+#include "resources/iteminfo.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"

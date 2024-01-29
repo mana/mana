@@ -27,8 +27,6 @@
 #include "eventlistener.h"
 #include "log.h"
 
-#include "resources/iteminfo.h"
-
 namespace PlayerInfo {
 
 class PlayerLogic;

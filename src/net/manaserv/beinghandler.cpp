@@ -23,17 +23,13 @@
 
 #include "actorspritemanager.h"
 #include "being.h"
-#include "client.h"
-#include "game.h"
 #include "localplayer.h"
-#include "log.h"
-#include "particle.h"
 
 #include "gui/okdialog.h"
 
 #include "net/net.h"
 
-#include "net/manaserv/inventoryhandler.h"
+#include "net/inventoryhandler.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/manaserv_protocol.h"

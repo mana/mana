@@ -23,14 +23,9 @@
 #include "resources/userpalette.h"
 
 #include "configuration.h"
-#include "client.h"
-
-#include "gui/gui.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-
-#include <cmath>
 
 static const std::string ColorTypeNames[] = {
     "ColorBeing",

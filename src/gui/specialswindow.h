@@ -21,8 +21,6 @@
 #ifndef SPECIALSWINDOW_H
 #define SPECIALSWINDOW_H
 
-#include <vector>
-
 #include "playerinfo.h"
 
 #include "gui/widgets/window.h"

@@ -28,14 +28,13 @@
 #include "gui/charcreatedialog.h"
 #include "gui/okdialog.h"
 
-#include "net/logindata.h"
+#include "net/inventoryhandler.h"
 #include "net/loginhandler.h"
 #include "net/net.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/gamehandler.h"
 #include "net/manaserv/beinghandler.h"
-#include "net/manaserv/inventoryhandler.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"

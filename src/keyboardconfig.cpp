@@ -23,11 +23,12 @@
 #include "configuration.h"
 #include "keyboardconfig.h"
 
-#include "gui/sdlinput.h"
 #include "gui/setup_keyboard.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+
+#include <SDL.h>
 
 struct KeyData
 {

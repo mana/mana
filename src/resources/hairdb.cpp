@@ -23,8 +23,6 @@
 
 #include "log.h"
 
-#include <cassert>
-
 #define COLOR_WHITE "#ffffff"
 
 

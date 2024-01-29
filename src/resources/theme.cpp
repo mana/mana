@@ -23,7 +23,6 @@
 
 #include "resources/theme.h"
 
-#include "client.h"
 #include "configuration.h"
 #include "log.h"
 

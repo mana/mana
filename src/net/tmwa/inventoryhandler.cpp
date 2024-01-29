@@ -21,7 +21,6 @@
 
 #include "net/tmwa/inventoryhandler.h"
 
-#include "configuration.h"
 #include "equipment.h"
 #include "event.h"
 #include "game.h"
@@ -32,7 +31,6 @@
 #include "log.h"
 
 #include "gui/equipmentwindow.h"
-#include "gui/widgets/chattab.h"
 
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/messageout.h"
@@ -41,7 +39,6 @@
 #include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 extern Net::InventoryHandler *inventoryHandler;
 

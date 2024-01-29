@@ -22,10 +22,10 @@
 #ifndef HAIR_MANAGER_H
 #define HAIR_MANAGER_H
 
-#include "iteminfo.h"
-
 #include <map>
+#include <set>
 #include <string>
+#include <vector>
 #include "utils/xml.h"
 
 /**

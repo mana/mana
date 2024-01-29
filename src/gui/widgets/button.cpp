@@ -24,7 +24,6 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/palette.h"
 #include "gui/textpopup.h"
 
 #include "resources/image.h"

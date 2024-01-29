@@ -21,7 +21,6 @@
 
 #include "gui/widgets/playerbox.h"
 
-#include "animatedsprite.h"
 #include "being.h"
 #include "configuration.h"
 #include "graphics.h"
