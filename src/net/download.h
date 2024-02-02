@@ -22,6 +22,8 @@
 #include <cstdio>
 #include <string>
 
+#include <curl/curl.h>
+
 #ifndef NET_DOWNLOAD_H
 #define NET_DOWNLOAD_H
 
@@ -81,8 +83,9 @@ class Download
 
     private:
         static int downloadThread(void *ptr);
-        static int downloadProgress(void *clientp, double dltotal, double dlnow,
-                                        double ultotal, double ulnow);
+        static int downloadProgress(void *clientp,
+                                    curl_off_t dltotal, curl_off_t dlnow,
+                                    curl_off_t ultotal, curl_off_t ulnow);
         void *mPtr;
         std::string mUrl;
         struct {

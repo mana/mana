@@ -26,8 +26,6 @@
 
 #include "utils/stringutils.h"
 
-#include <curl/curl.h>
-
 #include <SDL.h>
 #include <SDL_thread.h>
 
@@ -155,19 +153,21 @@ char *Download::getError()
     return mError;
 }
 
-int Download::downloadProgress(void *clientp, double dltotal, double dlnow,
-                     double ultotal, double ulnow)
+int Download::downloadProgress(void *clientp,
+                               curl_off_t dltotal, curl_off_t dlnow,
+                               curl_off_t ultotal, curl_off_t ulnow)
 {
     auto *d = reinterpret_cast<Download*>(clientp);
 
     if (d->mOptions.cancel)
     {
-        return d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_CANCELLED, (size_t) dltotal,
-                                  (size_t) dlnow);
+        return d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_CANCELLED,
+                                  (size_t) dltotal, (size_t) dlnow);
         return -5;
     }
 
-    return d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_IDLE, (size_t) dltotal, (size_t) dlnow);
+    return d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_IDLE,
+                              (size_t) dltotal, (size_t) dlnow);
 }
 
 int Download::downloadThread(void *ptr)
@@ -228,7 +228,7 @@ int Download::downloadThread(void *ptr)
             curl_easy_setopt(d->mCurl, CURLOPT_ERRORBUFFER, d->mError);
             curl_easy_setopt(d->mCurl, CURLOPT_URL, d->mUrl.c_str());
             curl_easy_setopt(d->mCurl, CURLOPT_NOPROGRESS, 0);
-            curl_easy_setopt(d->mCurl, CURLOPT_PROGRESSFUNCTION, downloadProgress);
+            curl_easy_setopt(d->mCurl, CURLOPT_XFERINFOFUNCTION, downloadProgress);
             curl_easy_setopt(d->mCurl, CURLOPT_PROGRESSDATA, ptr);
             curl_easy_setopt(d->mCurl, CURLOPT_NOSIGNAL, 1);
             curl_easy_setopt(d->mCurl, CURLOPT_CONNECTTIMEOUT, 15);
