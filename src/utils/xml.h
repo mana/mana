@@ -60,14 +60,19 @@ namespace XML
     };
 
     /**
-     * Gets an floating point property from an xmlNodePtr.
+     * Returns whether a certain property is present.
      */
-    double getFloatProperty(xmlNodePtr node, const char *name, double def);
+    bool hasProperty(xmlNodePtr node, const char *name);
 
     /**
      * Gets an integer property from an xmlNodePtr.
      */
     int getProperty(xmlNodePtr node, const char *name, int def);
+
+    /**
+     * Gets an floating point property from an xmlNodePtr.
+     */
+    double getFloatProperty(xmlNodePtr node, const char *name, double def);
 
     /**
      * Gets a string property from an xmlNodePtr.

@@ -121,6 +121,14 @@ namespace SettingsManager
             return false;
         }
 
+        if (xmlStrEqual(node->name, BAD_CAST "monsters"))
+        {
+            if (XML::hasProperty(node, "offset"))
+            {
+                MonsterDB::setMonsterIdOffset(XML::getProperty(node, "offset", 0));
+            }
+        }
+
         // go through every node
         for_each_xml_child_node(childNode, node)
         {

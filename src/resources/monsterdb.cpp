@@ -53,9 +53,13 @@ void MonsterDB::init()
     if (mLoaded)
         unload();
 
-    // This used to be read from offset attribute of monsters root tag, however
-    // I couldn't find any place it was used, so for now the default values are set
+    // This can be overridden by an 'offset' attribute on a 'monsters' root tag.
     mMonsterIdOffset = Net::getNetworkType() == ServerInfo::TMWATHENA ? OLD_TMWATHENA_OFFSET : 0;
+}
+
+void MonsterDB::setMonsterIdOffset(int offset)
+{
+    mMonsterIdOffset = offset;
 }
 
 /**

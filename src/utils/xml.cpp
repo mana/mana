@@ -92,6 +92,11 @@ namespace XML
         return mDoc ? xmlDocGetRootElement(mDoc) : nullptr;
     }
 
+    bool hasProperty(xmlNodePtr node, const char *name)
+    {
+        return xmlHasProp(node, BAD_CAST name) != nullptr;
+    }
+
     int getProperty(xmlNodePtr node, const char* name, int def)
     {
         int &ret = def;

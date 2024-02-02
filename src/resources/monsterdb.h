@@ -33,6 +33,8 @@ namespace MonsterDB
 {
     void init();
 
+    void setMonsterIdOffset(int offset);
+
     void readMonsterNode(xmlNodePtr node, const std::string &filename);
 
     void checkStatus();
