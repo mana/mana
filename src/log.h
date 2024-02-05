@@ -57,9 +57,10 @@ class Logger
             ;
 
         /**
-         * Log an error and quit. The error will pop-up on Windows and Mac, and
-         * will be printed to standard error everywhere else.
+         * Log an error and quit. The error will be printed to standard error
+         * and showm in a simple message box.
          */
+        __attribute__((noreturn))
         void error(const std::string &error_text);
 
     private:

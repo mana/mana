@@ -21,18 +21,13 @@
 
 #include "log.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#elif __APPLE__
-void MacDialogBox(const std::string &error);
-#endif
+#include <SDL.h>
 
 #include <sys/time.h>
 #include <iostream>
 #include <sstream>
 #include <cstdarg>
 #include <cstdio>
-#include <cstdlib>
 
 Logger::Logger():
     mLogToStandardOut(true)
@@ -106,16 +101,7 @@ void Logger::log(const char *log_text, ...)
 void Logger::error(const std::string &error_text)
 {
     log("Error: %s", error_text.c_str());
-#ifdef _WIN32
-    MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
-#elif defined __APPLE__
-    MacDialogBox(error_text);
-#elif defined __linux__ || __linux
     std::cerr << "Error: " << error_text << std::endl;
-    std::string msg="xmessage \"" + error_text + "\"";
-    system(msg.c_str());
-#else
-    std::cerr << "Error: " << error_text << std::endl;
-#endif
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", error_text.c_str(), NULL);
     exit(1);
 }

@@ -623,7 +623,6 @@ ENDIF (WIN32)
 IF (APPLE)
     SET(SRCS
         ${SRCS}
-        log.mm
         SDLMain.h
         SDLMain.m
     )
