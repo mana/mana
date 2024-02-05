@@ -27,14 +27,12 @@
 #include "net/net.h"
 
 #include <algorithm>
+#include <functional>
 
-struct SlotUsed : public std::unary_function<Item*, bool>
+static bool slotUsed(const Item *item)
 {
-    bool operator()(const Item *item) const
-    {
-        return item && item->getId() >= 0 && item->getQuantity() > 0;
-    }
-};
+    return item && item->getId() >= 0 && item->getQuantity() > 0;
+}
 
 Inventory::Inventory(Type type, int size):
     mType(type),
@@ -136,15 +134,14 @@ bool Inventory::contains(Item *item) const
 
 int Inventory::getFreeSlot() const
 {
-    Item **i = std::find_if(mItems, mItems + mSize,
-            std::not1(SlotUsed()));
+    Item **i = std::find_if(mItems, mItems + mSize, std::not_fn(slotUsed));
     return (i == mItems + mSize) ? -1 : (i - mItems);
 }
 
 int Inventory::getLastUsedSlot() const
 {
     for (int i = mSize - 1; i >= 0; i--)
-        if (SlotUsed()(mItems[i]))
+        if (slotUsed(mItems[i]))
             return i;
 
     return -1;
