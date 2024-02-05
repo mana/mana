@@ -116,7 +116,7 @@ Installing the dependencies on Ubuntu
     sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
                      libsdl2-net-dev libsdl2-ttf-dev libsdl2-gfx-dev \
                      libcurl4-openssl-dev libphysfs-dev libxml2-dev \
-                     libguichan-dev
+                     libguichan-dev gettext
 
 Once the dependencies are installed, use CMake:
 
