@@ -195,13 +195,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     mItemName->setPosition(getPadding() + space, getPadding());
 
     mItemDesc->setTextWrapped(item.getDescription(), ITEMPOPUP_WRAP_WIDTH);
-    {
-        const std::vector<std::string> &effect = item.getEffect();
-        std::string temp = "";
-        for (const auto &it : effect)
-            temp += temp.empty() ? it : "\n" + it;
-        mItemEffect->setTextWrapped(temp, ITEMPOPUP_WRAP_WIDTH);
-    }
+    mItemEffect->setTextWrapped(join(item.getEffect(), "\n"), ITEMPOPUP_WRAP_WIDTH);
     mItemWeight->setTextWrapped(strprintf(_("Weight: %s"),
                                 Units::formatWeight(item.getWeight()).c_str()),
                                 ITEMPOPUP_WRAP_WIDTH);

@@ -85,7 +85,7 @@ const char *ipToString(int address)
 std::string strprintf(char const *format, ...)
 {
     char buf[256];
-    va_list(args);
+    va_list args;
     va_start(args, format);
     int nb = vsnprintf(buf, 256, format, args);
     va_end(args);
@@ -191,7 +191,7 @@ bool getBoolFromString(const std::string &text, bool def)
         return def;
 }
 
-std::string autocomplete(std::vector<std::string> &candidates,
+std::string autocomplete(const std::vector<std::string> &candidates,
                          std::string base)
 {
     auto i = candidates.begin();
@@ -232,7 +232,7 @@ std::string normalize(const std::string &name)
     return toLower(trim(normalized));
 }
 
-std::string removeTrailingSymbol(const std::string& s, const char c)
+std::string removeTrailingSymbol(const std::string &s, const char c)
 {
     // Remove the trailing symblol at the end of the string
     if (!s.empty() && s.at(s.size() - 1) == c)
@@ -240,7 +240,7 @@ std::string removeTrailingSymbol(const std::string& s, const char c)
     return std::string(s);
 }
 
-std::string getHostNameFromURL(const std::string& url)
+std::string getHostNameFromURL(const std::string &url)
 {
     std::string myHostName;
 
@@ -275,4 +275,16 @@ std::string getHostNameFromURL(const std::string& url)
     removeBadChars(myHostName);
 
     return myHostName;
+}
+
+std::string join(const std::vector<std::string> &strings, const char *separator)
+{
+    std::string result;
+    if (auto i = strings.begin(), e = strings.end(); i != e)
+    {
+        result += *i++;
+        for (; i != e; ++i)
+            result.append(separator).append(*i);
+    }
+    return result;
 }

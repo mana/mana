@@ -141,7 +141,7 @@ bool getBoolFromString(const std::string &text, bool def = false);
 /**
  * Returns the most approaching string of base from candidates.
  */
-std::string autocomplete(std::vector<std::string> &candidates,
+std::string autocomplete(const std::vector<std::string> &candidates,
                          std::string base);
 
 /**
@@ -152,12 +152,18 @@ std::string normalize(const std::string &name);
 /**
  * Remove a potential trailing symbol from a string.
  */
-std::string removeTrailingSymbol(const std::string& s, const char c);
+std::string removeTrailingSymbol(const std::string &s, const char c);
 
 /**
  * Gets the hostname out of the given URL.
  * i.e.: http://www.manasource.org:9601 -> www.manasource.org
  */
-std::string getHostNameFromURL(const std::string& url);
+std::string getHostNameFromURL(const std::string &url);
+
+/**
+ * Joins a vector of strings into one string, separated by the given
+ * separator.
+ */
+std::string join(const std::vector<std::string> &strings, const char *separator);
 
 #endif // UTILS_STRINGUTILS_H
