@@ -1,0 +1,27 @@
+stages:
+  - build
+
+default:
+  image: ubuntu:22.04
+
+ubuntu-build:
+  stage: build
+  script:
+    - apt update
+    - apt install -y
+        build-essential
+        cmake
+        gettext
+        libcurl4-openssl-dev
+        libguichan-dev
+        libphysfs-dev
+        libpng-dev
+        libsdl2-dev
+        libsdl2-gfx-dev
+        libsdl2-image-dev
+        libsdl2-mixer-dev
+        libsdl2-net-dev
+        libsdl2-ttf-dev
+        libxml2-dev
+    - cmake .
+    - cmake --build . --parallel
