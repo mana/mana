@@ -64,10 +64,10 @@ struct SkillInfo
 {
     unsigned short id;
     std::string name;
-    Image *icon;
+    Image *icon = nullptr;
     bool modifiable;
     bool visible;
-    SkillModel *model;
+    SkillModel *model = nullptr;
 
     std::string skillLevel;
     int skillLevelWidth;
@@ -75,10 +75,6 @@ struct SkillInfo
     std::string skillExp;
     float progress;
     gcn::Color color;
-
-    SkillInfo() :
-        icon(nullptr)
-    {}
 
     ~SkillInfo()
     {

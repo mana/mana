@@ -87,7 +87,7 @@ class ChangeDisplay : public AttrDisplay, gcn::ActionListener
     private:
         void action(const gcn::ActionEvent &event) override;
 
-        int mNeeded;
+        int mNeeded = 1;
 
         Label *mPoints;
         Button *mDec;
@@ -461,7 +461,7 @@ DerDisplay::DerDisplay(int id, const std::string &name):
 }
 
 ChangeDisplay::ChangeDisplay(int id, const std::string &name):
-        AttrDisplay(id, name), mNeeded(1)
+    AttrDisplay(id, name)
 {
     mPoints = new Label(_("Max"));
     mInc = new Button(_("+"), "inc", this);

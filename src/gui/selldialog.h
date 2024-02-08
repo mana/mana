@@ -108,10 +108,10 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         gcn::Slider *mSlider;
 
         ShopItems *mShopItems;
-        int mPlayerMoney;
+        int mPlayerMoney = 0;
 
-        int mMaxItems;
-        int mAmountItems;
+        int mMaxItems = 0;
+        int mAmountItems = 0;
 };
 
 #endif

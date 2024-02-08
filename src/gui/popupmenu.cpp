@@ -55,10 +55,7 @@
 std::string tradePartnerName;
 
 PopupMenu::PopupMenu():
-    Popup("PopupMenu"),
-    mBeingId(0),
-    mFloorItem(nullptr),
-    mItem(nullptr)
+    Popup("PopupMenu")
 {
     mBrowserBox = new BrowserBox;
     mBrowserBox->setPosition(4, 4);

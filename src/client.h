@@ -129,20 +129,11 @@ public:
      */
     struct Options
     {
-        Options():
-            printHelp(false),
-            printVersion(false),
-            skipUpdate(false),
-            chooseDefault(false),
-            noOpenGL(false),
-            serverPort(0)
-        {}
-
-        bool printHelp;
-        bool printVersion;
-        bool skipUpdate;
-        bool chooseDefault;
-        bool noOpenGL;
+        bool printHelp = false;
+        bool printVersion = false;
+        bool skipUpdate = false;
+        bool chooseDefault = false;
+        bool noOpenGL = false;
         std::string username;
         std::string password;
         std::string character;
@@ -155,7 +146,7 @@ public:
         std::string screenshotDir;
 
         std::string serverName;
-        short serverPort;
+        short serverPort = 0;
     };
 
     Client(const Options &options);

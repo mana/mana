@@ -71,43 +71,34 @@ class EquipBackend : public Equipment::Backend, public EventListener
         void readBoxNode(xmlNodePtr slotNode);
 
         struct Slot {
-            Slot():
-                item(nullptr),
-                slotTypeId(0),
-                subId(0),
-                itemInstance(0),
-                weaponSlot(false),
-                ammoSlot(false)
-            {}
-
             // Generic info
             std::string name;
 
             // The Item reference, used for graphical representation
             // and info.
-            Item *item;
+            Item *item = nullptr;
 
             // Manaserv specific info
 
             // Used to know which (server-side) slot id it is.
-            unsigned int slotTypeId;
+            unsigned int slotTypeId = 0;
             // Static part
             // The sub id is used to know in which order the slots are
             // when the slotType has more than one slot capacity:
             // I.e.: capacity = 6, subId will be between 1 and 6
             // for each slots in the map.
             // This is used to sort the multimap along with the slot id.
-            unsigned int subId;
+            unsigned int subId = 0;
 
             // This is the (per character) unique item Id, used especially when
             // equipping the same item multiple times on the same slot type.
-            unsigned int itemInstance;
+            unsigned int itemInstance = 0;
 
             // Tell whether the slot is a weapon slot
-            bool weaponSlot;
+            bool weaponSlot = false;
 
             // Tell whether the slot is an ammo slot
-            bool ammoSlot;
+            bool ammoSlot = false;
          };
 
         unsigned int mVisibleSlots;

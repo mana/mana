@@ -192,7 +192,7 @@ class ConfigurationObject
 class Configuration : public ConfigurationObject
 {
     public:
-        Configuration() : mDefaultsData(nullptr) {}
+        Configuration() = default;
 
         ~Configuration() override;
 
@@ -258,7 +258,7 @@ class Configuration : public ConfigurationObject
         void cleanDefaults();
 
         std::string mConfigPath;       /**< Location of config file */
-        DefaultsData *mDefaultsData;   /**< Defaults of value for a given key */
+        DefaultsData *mDefaultsData = nullptr;   /**< Defaults of value for a given key */
 };
 
 extern Configuration branding;

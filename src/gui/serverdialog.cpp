@@ -175,9 +175,6 @@ public:
 ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     Window(_("Choose Your Server")),
     mDir(dir),
-    mDownloadStatus(DOWNLOADING_PREPARING),
-    mDownloadProgress(-1.0f),
-    mServers(ServerInfos()),
     mServerInfo(serverInfo)
 {
     setWindowName("ServerDialog");

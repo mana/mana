@@ -198,20 +198,20 @@ class BrowserBox : public gcn::Widget,
         using LinkIterator = Links::iterator;
         Links mLinks;
 
-        LinkHandler *mLinkHandler;
+        LinkHandler *mLinkHandler = nullptr;
         unsigned int mMode;
-        unsigned int mHighMode;
-        bool mShadows;
-        bool mOutline;
+        unsigned int mHighMode = UNDERLINE | BACKGROUND;
+        bool mShadows = false;
+        bool mOutline = false;
         bool mOpaque;
-        bool mUseLinksAndUserColors;
-        int mSelectedLink;
-        unsigned int mMaxRows;
-        int mHeight;
-        int mWidth;
-        int mYStart;
-        int mUpdateTime;
-        bool mAlwaysUpdate;
+        bool mUseLinksAndUserColors = true;
+        int mSelectedLink = -1;
+        unsigned int mMaxRows = 0;
+        int mHeight = 0;
+        int mWidth = 0;
+        int mYStart = 0;
+        int mUpdateTime = -1;
+        bool mAlwaysUpdate = true;
 };
 
 #endif

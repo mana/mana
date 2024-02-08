@@ -49,16 +49,14 @@ const int DEFAULT_TILE_LENGTH = 32;
  */
 struct MetaTile
 {
-    MetaTile() : whichList(0), blockmask(0) {}
-
     // Pathfinding members
     int Fcost;               /**< Estimation of total path cost */
     int Gcost;               /**< Cost from start to this location */
     int Hcost;               /**< Estimated cost to goal */
-    unsigned whichList;      /**< No list, open list or closed list */
+    unsigned whichList = 0;  /**< No list, open list or closed list */
     int parentX;             /**< X coordinate of parent tile */
     int parentY;             /**< Y coordinate of parent tile */
-    unsigned char blockmask; /**< Blocking properties of this tile */
+    unsigned char blockmask = 0; /**< Blocking properties of this tile */
 };
 
 /**

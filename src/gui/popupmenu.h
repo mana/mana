@@ -65,9 +65,9 @@ class PopupMenu : public Popup, public LinkHandler
     private:
         BrowserBox* mBrowserBox;
 
-        int mBeingId;
-        FloorItem* mFloorItem;
-        Item *mItem;
+        int mBeingId = 0;
+        FloorItem *mFloorItem = nullptr;
+        Item *mItem = nullptr;
 
         Window *mWindow;
 

@@ -38,19 +38,13 @@ namespace Net {
  */
 struct Character
 {
-    Character() :
-        slot(0),
-        dummy(nullptr)
-    {
-    }
-
     ~Character()
     {
         delete dummy;
     }
 
-    int slot;            /**< The index in the list of characters */
-    LocalPlayer *dummy;  /**< A dummy representing this character */
+    int slot = 0;                   /**< The index in the list of characters */
+    LocalPlayer *dummy = nullptr;   /**< A dummy representing this character */
     PlayerInfoBackend data;
 };
 
@@ -96,11 +90,7 @@ class CharHandler
         virtual int getCharCreateMaxHairStyleId() const = 0;
 
     protected:
-        CharHandler():
-            mSelectedCharacter(nullptr),
-            mCharSelectDialog(nullptr),
-            mCharCreateDialog(nullptr)
-        {}
+        CharHandler() = default;
 
         void updateCharSelectDialog();
         void unlockCharSelectDialog();
@@ -109,10 +99,10 @@ class CharHandler
         Net::Characters mCharacters;
 
         /** The selected character. */
-        Net::Character *mSelectedCharacter;
+        Net::Character *mSelectedCharacter = nullptr;
 
-        CharSelectDialog *mCharSelectDialog;
-        CharCreateDialog *mCharCreateDialog;
+        CharSelectDialog *mCharSelectDialog = nullptr;
+        CharCreateDialog *mCharCreateDialog = nullptr;
 };
 
 } // namespace Net

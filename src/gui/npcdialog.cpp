@@ -73,10 +73,7 @@ NpcDialog::DialogList NpcDialog::instances;
 NpcDialog::NpcDialog(int npcId)
     : Window(_("NPC")),
       mNpcId(npcId),
-      mLogInteraction(config.getBoolValue("logNpcInGui")),
-      mDefaultInt(0),
-      mInputState(NPC_INPUT_NONE),
-      mActionState(NPC_ACTION_WAIT)
+      mLogInteraction(config.getBoolValue("logNpcInGui"))
 {
     // Basic Window Setup
     setWindowName("NpcText");

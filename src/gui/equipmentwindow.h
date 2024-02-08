@@ -71,22 +71,16 @@ class EquipmentWindow : public Window, public gcn::ActionListener
          */
         struct EquipBox
         {
-            EquipBox() :
-                posX(0),
-                posY(0),
-                backgroundImage(nullptr)
-            {}
-
-            int posX;
-            int posY;
-            Image* backgroundImage;
+            int posX = 0;
+            int posY = 0;
+            Image *backgroundImage = nullptr;
         };
 
-        EquipBox *mEquipBox; /**< Equipment Boxes. */
+        EquipBox *mEquipBox = nullptr; /**< Equipment Boxes. */
 
-        int mSelected; /**< Index of selected item. */
+        int mSelected = -1; /**< Index of selected item. */
         Equipment *mEquipment;
-        int mBoxesNumber; /**< Number of equipment boxes to display */
+        int mBoxesNumber = 0; /**< Number of equipment boxes to display */
 
     private:
         void mouseExited(gcn::MouseEvent &event) override;

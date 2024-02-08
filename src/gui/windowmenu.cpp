@@ -45,8 +45,7 @@ extern Window *setupWindow;
 extern Window *statusWindow;
 extern Window *socialWindow;
 
-WindowMenu::WindowMenu():
-    mEmotePopup(nullptr)
+WindowMenu::WindowMenu()
 {
     int x = 0, h = 0;
 

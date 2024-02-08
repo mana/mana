@@ -72,20 +72,21 @@ class OutfitWindow : public Window, gcn::ActionListener
 
         int getIndexFromGrid(int pointX, int pointY) const;
 
-        int mBoxWidth;
-        int mBoxHeight;
+        int mBoxWidth = 33;
+        int mBoxHeight = 33;
         int mCursorPosX, mCursorPosY;
-        int mGridWidth, mGridHeight;
-        bool mItemClicked;
-        Item *mItemMoved;
+        int mGridWidth = 3;
+        int mGridHeight = 3;
+        bool mItemClicked = false;
+        Item *mItemMoved = nullptr;
 
         void save();
 
         int mItems[OUTFITS_COUNT][OUTFIT_ITEM_COUNT];
         bool mItemsUnequip[OUTFITS_COUNT];
-        int mItemSelected;
+        int mItemSelected = -1;
 
-        int mCurrentOutfit;
+        int mCurrentOutfit = 0;
 };
 
 extern OutfitWindow *outfitWindow;

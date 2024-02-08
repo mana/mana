@@ -47,17 +47,7 @@
 
 extern volatile int tick_time;
 
-Viewport::Viewport():
-    mMap(nullptr),
-    mMouseX(0),
-    mMouseY(0),
-    mPixelViewX(0.0f),
-    mPixelViewY(0.0f),
-    mDebugFlags(0),
-    mPlayerFollowMouse(false),
-    mLocalWalkTime(-1),
-    mHoverBeing(nullptr),
-    mHoverItem(nullptr)
+Viewport::Viewport()
 {
     setOpaque(false);
     addMouseListener(this);

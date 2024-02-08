@@ -33,10 +33,8 @@
  */
 class HairDB
 {
-  public:
-    HairDB():
-        mLoaded(false)
-    {}
+public:
+    HairDB() = default;
 
     ~HairDB()
     { unload(); }
@@ -74,7 +72,7 @@ class HairDB
      */
     void addHairStyle(int id);
 
-  private:
+private:
     /**
      * Load the hair colors, contained in a <colors> node.
      */
@@ -94,7 +92,7 @@ class HairDB
     using HairStyles = std::set<int>;
     HairStyles mHairStyles;
 
-    bool mLoaded;
+    bool mLoaded = false;
 };
 
 extern HairDB hairDB;

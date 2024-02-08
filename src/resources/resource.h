@@ -38,9 +38,7 @@ class Resource
             DeleteImmediately
         };
 
-        Resource():
-            mRefCount(0)
-        {}
+        Resource() = default;
 
         /**
          * Increments the internal reference count.
@@ -64,9 +62,9 @@ class Resource
         virtual ~Resource() {}
 
     private:
-        std::string mIdPath; /**< Path identifying this resource. */
-        time_t mTimeStamp;   /**< Time at which the resource was orphaned. */
-        unsigned mRefCount;  /**< Reference count. */
+        std::string mIdPath;    /**< Path identifying this resource. */
+        time_t mTimeStamp;      /**< Time at which the resource was orphaned. */
+        unsigned mRefCount = 0; /**< Reference count. */
 };
 
 /**

@@ -48,7 +48,7 @@ SellDialog::DialogList SellDialog::instances;
 
 SellDialog::SellDialog(int npcId):
     Window(_("Sell")),
-    mNpcId(npcId), mMaxItems(0), mAmountItems(0)
+    mNpcId(npcId)
 {
     setWindowName("Sell");
     //setupWindow->registerWindowForReset(this);

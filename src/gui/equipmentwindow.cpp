@@ -52,10 +52,7 @@ static const int BOX_HEIGHT = 36;
 
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window(_("Equipment")),
-    mEquipBox(nullptr),
-    mSelected(-1),
-    mEquipment(equipment),
-    mBoxesNumber(0)
+    mEquipment(equipment)
 {
     mItemPopup = new ItemPopup;
     setupWindow->registerWindowForReset(this);

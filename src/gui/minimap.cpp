@@ -42,11 +42,7 @@
 bool Minimap::mShow = true;
 
 Minimap::Minimap():
-    Window(_("Map")),
-    mMap(nullptr),
-    mMapImage(nullptr),
-    mWidthProportion(0.5),
-    mHeightProportion(0.5)
+    Window(_("Map"))
 {
     setWindowName("Minimap");
     mShow = config.getValue(getWindowName() + "Show", true);

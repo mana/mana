@@ -107,11 +107,11 @@ class EmotePopup : public Popup
 
         std::vector<const ImageSprite*> mEmotes;
         Image *mSelectionImage;
-        int mSelectedEmoteIndex;
-        int mHoveredEmoteIndex;
+        int mSelectedEmoteIndex = -1;
+        int mHoveredEmoteIndex = -1;
 
-        int mRowCount;
-        int mColumnCount;
+        int mRowCount = 1;
+        int mColumnCount = 1;
 
         using Listeners = std::list<gcn::SelectionListener *>;
 

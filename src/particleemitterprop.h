@@ -35,14 +35,10 @@ enum ChangeFunc
 
 template <typename T> struct ParticleEmitterProp
 {
-    ParticleEmitterProp():
-        changeFunc(FUNC_NONE)
-    {
-    }
-
     void set(T min, T max)
     {
-        minVal=min; maxVal=max;
+        minVal = min;
+        maxVal = max;
     }
 
     void set(T val)
@@ -66,24 +62,24 @@ template <typename T> struct ParticleEmitterProp
         switch (changeFunc)
         {
             case FUNC_SINE:
-                val += (T) std::sin(PI * 2 * ((double)(tick%changePeriod) / (double)changePeriod)) * changeAmplitude;
+                val += (T) std::sin(PI * 2 * ((double)(tick % changePeriod) / (double)changePeriod)) * changeAmplitude;
                 break;
             case FUNC_SAW:
-                val += (T) (changeAmplitude * ((double)(tick%changePeriod) / (double)changePeriod)) * 2 - changeAmplitude;
+                val += (T) (changeAmplitude * ((double)(tick % changePeriod) / (double)changePeriod)) * 2 - changeAmplitude;
                 break;
             case FUNC_TRIANGLE:
-                if ((tick%changePeriod) * 2 < changePeriod)
+                if ((tick % changePeriod) * 2 < changePeriod)
                 {
-                    val += changeAmplitude - (T)((tick%changePeriod) / (double)changePeriod) * changeAmplitude * 4;
+                    val += changeAmplitude - (T)((tick % changePeriod) / (double)changePeriod) * changeAmplitude * 4;
                 }
                 else
                 {
-                    val += changeAmplitude * -3 + (T)((tick%changePeriod) / (double)changePeriod) * changeAmplitude * 4;
+                    val += changeAmplitude * -3 + (T)((tick % changePeriod) / (double)changePeriod) * changeAmplitude * 4;
                     // I have no idea why this works but it does
                 }
                 break;
             case FUNC_SQUARE:
-                if ((tick%changePeriod) * 2 < changePeriod)
+                if ((tick % changePeriod) * 2 < changePeriod)
                     val += changeAmplitude;
                 else
                     val -= changeAmplitude;
@@ -100,7 +96,7 @@ template <typename T> struct ParticleEmitterProp
     T minVal;
     T maxVal;
 
-    ChangeFunc changeFunc;
+    ChangeFunc changeFunc = FUNC_NONE;
     T changeAmplitude;
     int changePeriod;
     int changePhase;

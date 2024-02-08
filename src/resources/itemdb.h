@@ -73,10 +73,7 @@ void setStatsList(const std::list<ItemStat> &stats);
 class ItemDB
 {
     public:
-        ItemDB() :
-          mUnknown(nullptr),
-          mLoaded(false)
-        {}
+        ItemDB() = default;
 
         virtual ~ItemDB()
         {}
@@ -126,9 +123,9 @@ class ItemDB
         void loadEmptyItemDefinition();
 
         // Default unknown reference
-        ItemInfo *mUnknown;
+        ItemInfo *mUnknown = nullptr;
 
-        bool mLoaded;
+        bool mLoaded = false;
 
     private:
         /**

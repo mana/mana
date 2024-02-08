@@ -81,10 +81,6 @@ class ItemInfo
 
     public:
         ItemInfo():
-            mType(ITEM_UNUSABLE),
-            mWeight(0),
-            mView(0),
-            mId(0),
             mAttackAction(SpriteAction::INVALID)
         {
         }
@@ -159,11 +155,11 @@ class ItemInfo
         std::string mName;
         std::string mDescription;         /**< Short description. */
         std::vector<std::string> mEffect; /**< Description of effects. */
-        ItemType mType;                   /**< Item type. */
+        ItemType mType = ITEM_UNUSABLE;   /**< Item type. */
         std::string mParticle;            /**< Particle effect used with this item */
-        int mWeight;                      /**< Weight in grams. */
-        int mView;                        /**< Item ID of how this item looks. */
-        int mId;                          /**< Item ID */
+        int mWeight = 0;                  /**< Weight in grams. */
+        int mView = 0;                    /**< Item ID of how this item looks. */
+        int mId = 0;                      /**< Item ID */
 
         bool mEquippable;                 /**< Whether this item can be equipped. */
         bool mActivatable;                /**< Whether this item can be activated. */

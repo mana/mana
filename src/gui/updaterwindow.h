@@ -134,7 +134,7 @@ private:
     };
 
     /** Status of the current download. */
-    UpdateDownloadStatus mDownloadStatus;
+    UpdateDownloadStatus mDownloadStatus = UPDATE_NEWS;
 
     /** Host where we get the updated files. */
     std::string mUpdateHost;
@@ -149,37 +149,37 @@ private:
     std::string mNewLabelCaption;
 
     /** The new progress value to be set in the logic method. */
-    float mDownloadProgress;
+    float mDownloadProgress = 0.0f;
 
     /** The mutex used to guard access to mNewLabelCaption and mDownloadProgress. */
     Mutex mDownloadMutex;
 
     /** The Adler32 checksum of the file currently downloading. */
-    unsigned long mCurrentChecksum;
+    unsigned long mCurrentChecksum = 0;
 
     /** A flag to indicate whether to use a memory buffer or a regular file. */
-    bool mStoreInMemory;
+    bool mStoreInMemory = true;
 
     /** Flag that show if current download is complete. */
-    bool mDownloadComplete;
+    bool mDownloadComplete = true;
 
     /** Flag that show if the user has canceled the update. */
-    bool mUserCancel;
+    bool mUserCancel = false;
 
     /** Byte count currently downloaded in mMemoryBuffer. */
-    int mDownloadedBytes;
+    int mDownloadedBytes = 0;
 
     /** Buffer for files downloaded to memory. */
-    char *mMemoryBuffer;
+    char *mMemoryBuffer = nullptr;
 
     /** Download handle. */
-    Net::Download *mDownload;
+    Net::Download *mDownload = nullptr;
 
     /** List of files to download. */
     std::vector<updateFile> mUpdateFiles;
 
     /** Index of the file to be downloaded. */
-    unsigned int mUpdateIndex;
+    unsigned int mUpdateIndex = 0;
 
     /** Tells ~UpdaterWindow() if it should load updates */
     bool mLoadUpdates;

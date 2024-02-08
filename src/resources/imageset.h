@@ -52,7 +52,7 @@ class ImageSet : public Resource
         int getHeight() const { return mHeight; }
 
         using size_type = std::vector<Image *>::size_type;
-        Image* get(size_type i) const;
+        Image *get(size_type i) const;
 
         size_type size() const { return mImages.size(); }
 
@@ -71,10 +71,10 @@ class ImageSet : public Resource
     private:
         std::vector<Image*> mImages;
 
-        int mHeight; /**< Height of the images in the image set. */
         int mWidth;  /**< Width of the images in the image set. */
-        int mOffsetX;
-        int mOffsetY;
+        int mHeight; /**< Height of the images in the image set. */
+        int mOffsetX = 0;
+        int mOffsetY = 0;
 };
 
 #endif

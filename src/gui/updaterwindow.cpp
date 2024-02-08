@@ -123,19 +123,9 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
                              const std::string &updatesDir,
                              bool applyUpdates):
     Window(_("Updating...")),
-    mDownloadStatus(UPDATE_NEWS),
     mUpdateHost(updateHost),
     mUpdatesDir(updatesDir),
     mCurrentFile("news.txt"),
-    mDownloadProgress(0.0f),
-    mCurrentChecksum(0),
-    mStoreInMemory(true),
-    mDownloadComplete(true),
-    mUserCancel(false),
-    mDownloadedBytes(0),
-    mMemoryBuffer(nullptr),
-    mDownload(nullptr),
-    mUpdateIndex(0),
     mLoadUpdates(applyUpdates)
 {
     setWindowName("UpdaterWindow");

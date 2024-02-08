@@ -29,8 +29,8 @@
 
 ImageSet::ImageSet(Image *img, int width, int height,
                    int margin, int spacing) :
-    mOffsetX(0),
-    mOffsetY(0)
+    mWidth(width),
+    mHeight(height)
 {
     for (int y = margin; y + height <= img->getHeight() - margin; y += height + spacing)
     {
@@ -39,8 +39,6 @@ ImageSet::ImageSet(Image *img, int width, int height,
             mImages.push_back(img->getSubImage(x, y, width, height));
         }
     }
-    mWidth = width;
-    mHeight = height;
 }
 
 ImageSet::~ImageSet()
@@ -48,15 +46,13 @@ ImageSet::~ImageSet()
     delete_all(mImages);
 }
 
-Image* ImageSet::get(size_type i) const
+Image *ImageSet::get(size_type i) const
 {
     if (i >= mImages.size())
     {
         logger->log("Warning: No sprite %d in this image set", (int) i);
         return nullptr;
     }
-    else
-    {
-        return mImages[i];
-    }
+
+    return mImages[i];
 }

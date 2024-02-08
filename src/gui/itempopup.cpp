@@ -82,8 +82,7 @@ static gcn::Color getColorFromItemType(ItemType type)
 }
 
 ItemPopup::ItemPopup():
-    Popup("ItemPopup"),
-    mIcon(nullptr)
+    Popup("ItemPopup")
 {
     // Item Name
     mItemName = new Label;

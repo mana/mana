@@ -86,7 +86,6 @@ class PlayerTableModel : public TableModel
 {
 public:
     PlayerTableModel() :
-        mPlayers(nullptr),
         mListModel(new PlayerRelationListModel)
     {
         playerRelationsUpdated();
@@ -175,7 +174,7 @@ public:
     }
 
 protected:
-    std::vector<std::string> *mPlayers;
+    std::vector<std::string> *mPlayers = nullptr;
     std::vector<gcn::Widget *> mWidgets;
     PlayerRelationListModel *mListModel;
 };

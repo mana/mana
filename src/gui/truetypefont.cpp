@@ -37,7 +37,7 @@ class TextChunk
 {
     public:
         TextChunk(const std::string &text, const gcn::Color &color) :
-            img(nullptr), text(text), color(color)
+            text(text), color(color)
         {
         }
 
@@ -75,7 +75,7 @@ class TextChunk
             SDL_FreeSurface(surface);
         }
 
-        Image *img;
+        Image *img = nullptr;
         std::string text;
         gcn::Color color;
 };

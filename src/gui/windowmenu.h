@@ -60,7 +60,7 @@ class WindowMenu : public Container,
                        KeyboardConfig::KeyAction key =
                             KeyboardConfig::KEY_NO_VALUE);
 
-        EmotePopup *mEmotePopup;
+        EmotePopup *mEmotePopup = nullptr;
 };
 
 #endif

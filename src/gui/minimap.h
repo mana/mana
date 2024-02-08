@@ -58,10 +58,10 @@ class Minimap : public Window
         void draw(gcn::Graphics *graphics) override;
 
     private:
-        Map *mMap;
-        Image *mMapImage;
-        float mWidthProportion;
-        float mHeightProportion;
+        Map *mMap = nullptr;
+        Image *mMapImage = nullptr;
+        float mWidthProportion = 0.5;
+        float mHeightProportion = 0.5;
         static bool mShow;
 };
 

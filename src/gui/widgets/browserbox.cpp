@@ -36,19 +36,8 @@
 #include <algorithm>
 
 BrowserBox::BrowserBox(unsigned int mode, bool opaque):
-    gcn::Widget(),
-    mMode(mode), mHighMode(UNDERLINE | BACKGROUND),
-    mShadows(false),
-    mOutline(false),
-    mOpaque(opaque),
-    mUseLinksAndUserColors(true),
-    mSelectedLink(-1),
-    mMaxRows(0),
-    mHeight(0),
-    mWidth(0),
-    mYStart(0),
-    mUpdateTime(-1),
-    mAlwaysUpdate(true)
+    mMode(mode),
+    mOpaque(opaque)
 {
     setFocusable(true);
     addMouseListener(this);
@@ -58,7 +47,7 @@ BrowserBox::~BrowserBox()
 {
 }
 
-void BrowserBox::setLinkHandler(LinkHandler* linkHandler)
+void BrowserBox::setLinkHandler(LinkHandler *linkHandler)
 {
     mLinkHandler = linkHandler;
 }
@@ -244,20 +233,24 @@ void BrowserBox::clearRows()
 
 struct MouseOverLink
 {
-    MouseOverLink(int x, int y) : mX(x), mY(y)
-    { }
+    MouseOverLink(int x, int y)
+        : mX(x), mY(y)
+    {}
 
     bool operator() (BrowserLink &link) const
     {
         return (mX >= link.x1 && mX < link.x2 &&
                 mY >= link.y1 && mY < link.y2);
     }
+
     int mX, mY;
 };
 
 void BrowserBox::mousePressed(gcn::MouseEvent &event)
 {
-    if (!mLinkHandler) return;
+    if (!mLinkHandler)
+        return;
+
     auto i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
 

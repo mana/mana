@@ -48,15 +48,7 @@
 #include <vector>
 
 OutfitWindow::OutfitWindow():
-    Window(_("Outfits")),
-    mBoxWidth(33),
-    mBoxHeight(33),
-    mGridWidth(3),
-    mGridHeight(3),
-    mItemClicked(false),
-    mItemMoved(nullptr),
-    mItemSelected(-1),
-    mCurrentOutfit(0)
+    Window(_("Outfits"))
 {
     setWindowName("Outfits");
     setResizable(true);

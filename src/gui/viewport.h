@@ -190,17 +190,17 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void updateCursorType();
 
-        Map *mMap;                   /**< The current map. */
+        Map *mMap = nullptr;        /**< The current map. */
 
         int mScrollRadius;
         int mScrollLaziness;
         int mScrollCenterOffsetX;
         int mScrollCenterOffsetY;
-        int mMouseX;                 /**< Current mouse position in pixels. */
-        int mMouseY;                 /**< Current mouse position in pixels. */
-        float mPixelViewX;           /**< Current viewpoint in pixels. */
-        float mPixelViewY;           /**< Current viewpoint in pixels. */
-        int mDebugFlags;             /**< Flags for showing debug graphics. */
+        int mMouseX = 0;            /**< Current mouse position in pixels. */
+        int mMouseY = 0;            /**< Current mouse position in pixels. */
+        float mPixelViewX = 0.0f;   /**< Current viewpoint in pixels. */
+        float mPixelViewY = 0.0f;   /**< Current viewpoint in pixels. */
+        int mDebugFlags = 0;        /**< Flags for showing debug graphics. */
 
         struct ShakeEffect
         {
@@ -212,14 +212,14 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         using ShakeEffects = std::list<ShakeEffect>;
         ShakeEffects mShakeEffects;
 
-        bool mPlayerFollowMouse;
+        bool mPlayerFollowMouse = false;
 
-        int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
+        int mLocalWalkTime = -1; /**< Timestamp before the next walk can be sent. */
 
         PopupMenu *mPopupMenu;       /**< Popup menu. */
-        Being *mHoverBeing;          /**< Being mouse is currently over. */
-        FloorItem *mHoverItem;       /**< FloorItem mouse is currently over. */
-        BeingPopup *mBeingPopup;     /**< Being information popup. */
+        Being *mHoverBeing = nullptr;       /**< Being mouse is currently over. */
+        FloorItem *mHoverItem = nullptr;    /**< FloorItem mouse is currently over. */
+        BeingPopup *mBeingPopup;            /**< Being information popup. */
 };
 
 extern Viewport *viewport;           /**< The viewport. */

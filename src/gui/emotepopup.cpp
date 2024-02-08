@@ -44,11 +44,7 @@ const int EmotePopup::gridHeight = 36; // emote icon height + 4
 
 static const int MAX_COLUMNS = 6;
 
-EmotePopup::EmotePopup():
-    mSelectedEmoteIndex(-1),
-    mHoveredEmoteIndex(-1),
-    mRowCount(1),
-    mColumnCount(1)
+EmotePopup::EmotePopup()
 {
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); ++i)

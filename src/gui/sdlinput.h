@@ -202,8 +202,8 @@ protected:
     std::queue<gcn::MouseInput> mMouseInputQueue;
     std::queue<TextInput> mTextInputQueue;
 
-    bool mMouseDown;
-    bool mMouseInWindow;
+    bool mMouseDown = false;
+    bool mMouseInWindow = true;
 };
 
 #endif

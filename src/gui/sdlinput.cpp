@@ -62,8 +62,6 @@
 
 SDLInput::SDLInput()
 {
-    mMouseInWindow = true;
-    mMouseDown = false;
 }
 
 bool SDLInput::isKeyQueueEmpty()

@@ -32,9 +32,8 @@ namespace ManaServ
 {
 
 Connection::Connection(ENetHost *client):
-    mConnection(nullptr), mClient(client)
+    mClient(client)
 {
-    mPort = 0;
     connections++;
 }
 

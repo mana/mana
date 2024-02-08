@@ -72,10 +72,10 @@ namespace ManaServ
             friend Connection *ManaServ::getConnection();
             Connection(ENetHost *client);
 
-            short mPort;
-            ENetPeer *mConnection;
+            short mPort = 0;
+            ENetPeer *mConnection = nullptr;
             ENetHost *mClient;
-            State mState;
+            State mState = OK;
     };
 }
 

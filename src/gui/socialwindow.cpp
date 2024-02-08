@@ -53,10 +53,7 @@ class SocialTab : public Tab
 protected:
     friend class SocialWindow;
 
-    SocialTab():
-            mInviteDialog(nullptr),
-            mConfirmDialog(nullptr)
-    {}
+    SocialTab() = default;
 
     ~SocialTab() override
     {
@@ -80,8 +77,8 @@ protected:
 
     virtual void leave() = 0;
 
-    TextDialog *mInviteDialog;
-    ConfirmDialog *mConfirmDialog;
+    TextDialog *mInviteDialog = nullptr;
+    ConfirmDialog *mConfirmDialog = nullptr;
     ScrollArea *mScroll;
     AvatarListBox *mList;
 };
@@ -90,7 +87,7 @@ class GuildTab : public SocialTab, public gcn::ActionListener
 {
 public:
     GuildTab(Guild *guild):
-            mGuild(guild)
+        mGuild(guild)
     {
         setCaption(guild->getName());
 

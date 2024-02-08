@@ -159,13 +159,13 @@ class ServerDialog : public Window,
         };
 
         /** Status of the current download. */
-        ServerDialogDownloadStatus mDownloadStatus;
+        ServerDialogDownloadStatus mDownloadStatus = DOWNLOADING_PREPARING;
 
-        Net::Download *mDownload;
-        Label  *mDownloadText;
+        Net::Download *mDownload = nullptr;
+        Label *mDownloadText;
 
         Mutex mMutex;
-        float mDownloadProgress;
+        float mDownloadProgress = -1.0f;
 
         ServerInfos mServers;
         ServerInfo *mServerInfo;

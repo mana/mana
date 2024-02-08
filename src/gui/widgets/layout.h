@@ -167,7 +167,7 @@ class LayoutCell
             LEFT, RIGHT, CENTER, FILL
         };
 
-        LayoutCell(): mType(NONE) {}
+        LayoutCell() = default;
 
         ~LayoutCell();
 
@@ -263,7 +263,7 @@ class LayoutCell
         char mExtent[2];
         char mAlign[2];
         char mNbFill[2];
-        char mType;
+        char mType = NONE;
 };
 
 /**

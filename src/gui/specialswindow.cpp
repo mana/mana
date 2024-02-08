@@ -59,10 +59,10 @@ class SpecialEntry : public Container
         SpecialInfo *mInfo;
 
     private:
-        Icon *mIcon;        // icon to display
-        Label *mNameLabel;  // name to display
-        Button *mUse; // use button (only shown when applicable)
-        ProgressBar *mRechargeBar; // recharge bar (only shown when applicable)
+        Icon *mIcon = nullptr;          // icon to display
+        Label *mNameLabel = nullptr;    // name to display
+        Button *mUse = nullptr;         // use button (only shown when applicable)
+        ProgressBar *mRechargeBar = nullptr; // recharge bar (only shown when applicable)
 };
 
 SpecialsWindow::SpecialsWindow():
@@ -175,10 +175,7 @@ void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
 
 
 SpecialEntry::SpecialEntry(SpecialInfo *info) :
-    mInfo(info),
-    mIcon(nullptr),
-    mUse(nullptr),
-    mRechargeBar(nullptr)
+    mInfo(info)
 {
     setSize(SPECIALS_WIDTH, SPECIALS_HEIGHT);
 

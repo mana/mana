@@ -29,9 +29,7 @@ class Item;
 class Equipment
 {
     public:
-        Equipment(): mBackend(nullptr) {}
-
-        ~Equipment() { mBackend = nullptr; }
+        Equipment() = default;
 
         class Backend {
             public:
@@ -78,7 +76,7 @@ class Equipment
         { mBackend = backend; }
 
     private:
-        Backend *mBackend;
+        Backend *mBackend = nullptr;
 };
 
 #endif

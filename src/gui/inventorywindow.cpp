@@ -59,8 +59,7 @@ InventoryWindow::WindowList InventoryWindow::instances;
 InventoryWindow::InventoryWindow(Inventory *inventory):
     Window(inventory->isMainInventory() ? _("Inventory") : _("Storage")),
     mInventory(inventory),
-    mFilterText(new TextField),
-    mSplit(false)
+    mFilterText(new TextField)
 {
     listen(Event::AttributesChannel);
 

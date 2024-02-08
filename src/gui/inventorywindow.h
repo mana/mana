@@ -141,7 +141,7 @@ class InventoryWindow : public Window,
 
         ProgressBar *mWeightBar, *mSlotsBar;
 
-        bool mSplit;
+        bool mSplit = false;
 };
 
 extern InventoryWindow *inventoryWindow;

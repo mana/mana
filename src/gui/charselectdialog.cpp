@@ -104,7 +104,7 @@ class CharacterDisplay : public Container
     private:
         void update();
 
-        Net::Character *mCharacter;
+        Net::Character *mCharacter = nullptr;
 
         PlayerBox *mPlayerBox;
         Label *mName;
@@ -347,7 +347,6 @@ bool CharSelectDialog::selectByName(const std::string &name,
 
 
 CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
-    mCharacter(nullptr),
     mPlayerBox(new PlayerBox)
 {
     mButton = new Button("", "go", charSelectDialog);

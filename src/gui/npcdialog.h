@@ -177,7 +177,7 @@ class NpcDialog : public Window,
         int mNpcId;
         bool mLogInteraction;
 
-        int mDefaultInt;
+        int mDefaultInt = 0;
         std::string mDefaultString;
 
         // Used for the main input area
@@ -221,8 +221,8 @@ class NpcDialog : public Window,
             NPC_ACTION_CLOSE
         };
 
-        NpcInputState mInputState;
-        NpcActionState mActionState;
+        NpcInputState mInputState = NPC_INPUT_NONE;
+        NpcActionState mActionState = NPC_ACTION_WAIT;
 };
 
 #endif // NPCDIALOG_H
