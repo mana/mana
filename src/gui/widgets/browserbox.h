@@ -26,7 +26,7 @@
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 
-#include <list>
+#include <deque>
 #include <vector>
 
 class LinkHandler;
@@ -38,30 +38,12 @@ struct BrowserLink
     std::string caption;
 };
 
-class LinePart
+struct LinePart
 {
-    public:
-        LinePart(int x, int y, gcn::Color color, std::string text) :
-            mX(x), mY(y), mColor(color), mText(text)
-        {
-        }
-
-        int getX() const
-        { return mX; }
-
-        int getY() const
-        { return mY; }
-
-        const std::string &getText() const
-        { return mText; }
-
-        const gcn::Color &getColor() const
-        { return mColor; }
-
-    private:
-        int mX, mY;
-        gcn::Color mColor;
-        std::string mText;
+    int x;
+    int y;
+    gcn::Color color;
+    std::string text;
 };
 
 /**
@@ -132,14 +114,14 @@ class BrowserBox : public gcn::Widget,
          */
         void draw(gcn::Graphics *graphics) override;
 
-        void updateHeight();
+        void maybeRelayoutText();
 
         /**
          * BrowserBox modes.
          */
         enum
         {
-            AUTO_SIZE = 0,
+            AUTO_SIZE,
             AUTO_WRAP       /**< Maybe it needs a fix or to be redone. */
         };
 
@@ -176,27 +158,17 @@ class BrowserBox : public gcn::Widget,
             BACKGROUND = 2
         };
 
-        using TextRows = std::list<std::string>;
-
-        TextRows &getRows()
-        { return mTextRows; }
-
         void setAlwaysUpdate(bool n)
         { mAlwaysUpdate = n; }
 
     private:
-        int calcHeight();
+        void relayoutText();
+        int layoutTextRow(const std::string &row, int y);
 
-        using TextRowIterator = TextRows::iterator;
-        TextRows mTextRows;
+        std::deque<std::string> mTextRows;
 
-        using LinePartList = std::list<LinePart>;
-        using LinePartIterator = LinePartList::iterator;
-        LinePartList mLineParts;
-
-        using Links = std::vector<BrowserLink>;
-        using LinkIterator = Links::iterator;
-        Links mLinks;
+        std::vector<LinePart> mLineParts;
+        std::vector<BrowserLink> mLinks;
 
         LinkHandler *mLinkHandler = nullptr;
         unsigned int mMode;
@@ -207,8 +179,7 @@ class BrowserBox : public gcn::Widget,
         bool mUseLinksAndUserColors = true;
         int mSelectedLink = -1;
         unsigned int mMaxRows = 0;
-        int mHeight = 0;
-        int mWidth = 0;
+        int mLastLayoutWidth = 0;
         int mYStart = 0;
         int mUpdateTime = -1;
         bool mAlwaysUpdate = true;

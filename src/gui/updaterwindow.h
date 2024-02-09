@@ -39,14 +39,13 @@ class Button;
 class ProgressBar;
 class ScrollArea;
 
-struct updateFile
+struct UpdateFile
 {
-    public:
-        std::string name;
-        std::string hash;
-        std::string type;
-        bool required;
-        std::string desc;
+    std::string name;
+    std::string hash;
+    std::string type;
+    bool required;
+    std::string desc;
 };
 
 /**
@@ -76,7 +75,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
     /**
      * Set's progress bar status
      */
-    void setProgress(float p);
+    void setProgress(float progress);
 
     /**
      * Set's label above progress
@@ -176,7 +175,7 @@ private:
     Net::Download *mDownload = nullptr;
 
     /** List of files to download. */
-    std::vector<updateFile> mUpdateFiles;
+    std::vector<UpdateFile> mUpdateFiles;
 
     /** Index of the file to be downloaded. */
     unsigned int mUpdateIndex = 0;

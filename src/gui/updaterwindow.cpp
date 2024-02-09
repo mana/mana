@@ -51,9 +51,9 @@ const std::string txtUpdateFile = "resources2.txt";
 /**
  * Load the given file into a vector of updateFiles.
  */
-std::vector<updateFile> loadXMLFile(const std::string &fileName)
+std::vector<UpdateFile> loadXMLFile(const std::string &fileName)
 {
-    std::vector<updateFile> files;
+    std::vector<UpdateFile> files;
     XML::Document doc(fileName, false);
     xmlNodePtr rootNode = doc.rootNode();
 
@@ -69,15 +69,12 @@ std::vector<updateFile> loadXMLFile(const std::string &fileName)
         if (!xmlStrEqual(fileNode->name, BAD_CAST "update"))
             continue;
 
-        updateFile file;
+        UpdateFile file;
         file.name = XML::getProperty(fileNode, "file", "");
         file.hash = XML::getProperty(fileNode, "hash", "");
         file.type = XML::getProperty(fileNode, "type", "data");
         file.desc = XML::getProperty(fileNode, "description", "");
-        if (XML::getProperty(fileNode, "required", "yes") == "yes")
-            file.required = true;
-        else
-            file.required = false;
+        file.required = XML::getProperty(fileNode, "required", "yes") == "yes";
 
         files.push_back(file);
     }
@@ -85,9 +82,9 @@ std::vector<updateFile> loadXMLFile(const std::string &fileName)
     return files;
 }
 
-std::vector<updateFile> loadTxtFile(const std::string &fileName)
+std::vector<UpdateFile> loadTxtFile(const std::string &fileName)
 {
-    std::vector<updateFile> files;
+    std::vector<UpdateFile> files;
     std::ifstream fileHandler;
     fileHandler.open(fileName.c_str(), std::ios::in);
 
@@ -99,7 +96,7 @@ std::vector<updateFile> loadTxtFile(const std::string &fileName)
             fileHandler.getline(name, 256, ' ');
             fileHandler.getline(hash, 50);
 
-            updateFile thisFile;
+            UpdateFile thisFile;
             thisFile.name = name;
             thisFile.hash = hash;
             thisFile.type = "data";
@@ -179,11 +176,11 @@ UpdaterWindow::~UpdaterWindow()
     free(mMemoryBuffer);
 }
 
-void UpdaterWindow::setProgress(float p)
+void UpdaterWindow::setProgress(float progress)
 {
     // Do delayed progress bar update, since Guichan isn't thread-safe
     MutexLocker lock(&mDownloadMutex);
-    mDownloadProgress = p;
+    mDownloadProgress = progress;
 }
 
 void UpdaterWindow::setLabel(const std::string &str)
@@ -359,10 +356,11 @@ void UpdaterWindow::loadUpdates()
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
-    if (!mUpdateFiles.size())
-    {   // updates not downloaded
+    if (mUpdateFiles.empty())
+    {
+        // updates not downloaded
         mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
-        if (!mUpdateFiles.size())
+        if (mUpdateFiles.empty())
         {
             logger->log("Warning this server does not have a"
                         " %s file falling back to %s", xmlUpdateFile.c_str(),
@@ -371,10 +369,9 @@ void UpdaterWindow::loadUpdates()
         }
     }
 
-    for (mUpdateIndex = 0; mUpdateIndex < mUpdateFiles.size(); mUpdateIndex++)
+    for (const UpdateFile &file : mUpdateFiles)
     {
-        resman->addToSearchPath(mUpdatesDir + "/"
-                                + mUpdateFiles[mUpdateIndex].name, false);
+        resman->addToSearchPath(mUpdatesDir + "/" + file.name, false);
     }
 }
 
@@ -435,7 +432,7 @@ void UpdaterWindow::logic()
                 if (mCurrentFile == xmlUpdateFile)
                 {
                     mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
-                    if (mUpdateFiles.size() == 0)
+                    if (mUpdateFiles.empty())
                     {
                         logger->log("Warning this server does not have a %s"
                                     " file falling back to %s",
@@ -462,7 +459,7 @@ void UpdaterWindow::logic()
             {
                 if (mUpdateIndex < mUpdateFiles.size())
                 {
-                    updateFile thisFile = mUpdateFiles[mUpdateIndex];
+                    UpdateFile thisFile = mUpdateFiles[mUpdateIndex];
                     if (!thisFile.required)
                     {
                         // This statement checks to see if the file type is music, and if download-music is true
