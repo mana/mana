@@ -29,7 +29,6 @@
 #include "localplayer.h"
 #include "sound.h"
 
-#include "gui/gui.h"
 #include "gui/recorder.h"
 
 #include "gui/widgets/browserbox.h"

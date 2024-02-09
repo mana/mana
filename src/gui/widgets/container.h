@@ -61,7 +61,7 @@ class Container : public gcn::Container
         ContainerPlacer getPlacer(int x, int y);
 
     private:
-        LayoutHelper *mLayoutHelper;
+        LayoutHelper *mLayoutHelper = nullptr;
 };
 
 #endif

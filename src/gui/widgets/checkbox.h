@@ -66,7 +66,7 @@ class CheckBox : public gcn::CheckBox
     private:
         static int instances;
         static float mAlpha;
-        bool mHasMouse;
+        bool mHasMouse = false;
         static Image *checkBoxNormal;
         static Image *checkBoxChecked;
         static Image *checkBoxDisabled;

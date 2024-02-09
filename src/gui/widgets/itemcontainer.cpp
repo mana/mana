@@ -30,12 +30,7 @@
 #include "gui/chatwindow.h"
 #include "gui/itempopup.h"
 #include "gui/outfitwindow.h"
-#include "gui/palette.h"
-#include "gui/sdlinput.h"
 #include "gui/viewport.h"
-
-#include "net/net.h"
-#include "net/inventoryhandler.h"
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
@@ -53,15 +48,7 @@ static const int BOX_WIDTH = 35;
 static const int BOX_HEIGHT = 43;
 
 ItemContainer::ItemContainer(Inventory *inventory):
-    mInventory(inventory),
-    mGridColumns(1),
-    mGridRows(1),
-    mSelectedIndex(-1),
-    mHighlightedIndex(-1),
-    mLastUsedSlot(-1),
-    mSelectionStatus(SEL_NONE),
-    mSwapItems(false),
-    mDescItems(false)
+    mInventory(inventory)
 {
     mItemPopup = new ItemPopup;
     setFocusable(true);
@@ -112,7 +99,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
             if (!item || item->getId() == 0)
                 continue;
 
-            if (mFilter.size() > 0)
+            if (!mFilter.empty())
             {
                 if (normalize(item->getInfo().getName()).find(mFilter) == std::string::npos)
                     continue;
@@ -220,13 +207,10 @@ void ItemContainer::setFilter(const std::string &filter)
 
 void ItemContainer::distributeValueChangedEvent()
 {
-    SelectionListenerIterator i, i_end;
-
-    for (i = mSelectionListeners.begin(), i_end = mSelectionListeners.end();
-         i != i_end; ++i)
+    for (auto listener : mSelectionListeners)
     {
         gcn::SelectionEvent event(this);
-        (*i)->valueChanged(event);
+        listener->valueChanged(event);
     }
 }
 

@@ -182,8 +182,6 @@ BeingInfo *MonsterDB::get(int id)
         logger->log("MonsterDB: Warning, unknown monster ID %d requested", id);
         return BeingInfo::Unknown;
     }
-    else
-    {
-        return i->second;
-    }
+
+    return i->second;
 }

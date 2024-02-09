@@ -563,7 +563,7 @@ void SocialWindow::showPartyInvite(const std::string &inviter,
                                    const std::string &partyName)
 {
     // check there isnt already an invite showing
-    if (mPartyInviter != "")
+    if (!mPartyInviter.empty())
     {
         SERVER_NOTICE(_("Received party request, but one already exists."))
         return;

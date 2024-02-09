@@ -63,8 +63,8 @@ class EmoteShortcutContainer : public ShortcutContainer
     private:
         std::vector<const ImageSprite*> mEmoteImg;
 
-        bool mEmoteClicked;
-        int mEmoteMoved;
+        bool mEmoteClicked = false;
+        int mEmoteMoved = 0;
 };
 
 #endif

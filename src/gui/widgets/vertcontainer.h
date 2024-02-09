@@ -40,7 +40,7 @@ class VertContainer : public Container, public gcn::WidgetListener
 
     private:
         int mSpacing;
-        int mCount;
+        int mCount = 0;
 };
 
 #endif

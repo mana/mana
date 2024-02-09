@@ -25,7 +25,6 @@
 #include "log.h"
 
 #include "gui/gui.h"
-#include "gui/palette.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/layout.h"
@@ -44,19 +43,8 @@ int Window::mouseResize = 0;
 Window::Window(const std::string &caption, bool modal, Window *parent,
                const std::string &skin):
     gcn::Window(caption),
-    mGrip(nullptr),
     mParent(parent),
-    mLayout(nullptr),
-    mWindowName("window"),
-    mShowTitle(true),
     mModal(modal),
-    mCloseButton(false),
-    mDefaultVisible(false),
-    mSaveVisible(false),
-    mStickyButton(false),
-    mSticky(false),
-    mMinWinWidth(100),
-    mMinWinHeight(40),
     mMaxWinWidth(graphics->getWidth()),
     mMaxWinHeight(graphics->getHeight())
 {
@@ -167,10 +155,12 @@ void Window::setContentSize(int width, int height)
 
 void Window::setLocationRelativeTo(gcn::Widget *widget)
 {
-    int wx, wy;
-    int x, y;
-
+    int wx;
+    int wy;
     widget->getAbsolutePosition(wx, wy);
+
+    int x;
+    int y;
     getAbsolutePosition(x, y);
 
     setPosition(getX() + (wx + (widget->getWidth() - getWidth()) / 2 - x),
@@ -611,7 +601,8 @@ void Window::setDefaultSize(int defaultWidth, int defaultHeight,
                             ImageRect::ImagePosition position,
                             int offsetX, int offsetY)
 {
-    int x = 0, y = 0;
+    int x = 0;
+    int y = 0;
 
     if (position == ImageRect::UPPER_LEFT)
     {

@@ -22,7 +22,6 @@
 
 #include "gui/widgets/popup.h"
 
-#include "configuration.h"
 #include "graphics.h"
 #include "log.h"
 
@@ -30,15 +29,12 @@
 
 #include "gui/widgets/windowcontainer.h"
 
-#include "resources/image.h"
 #include "resources/theme.h"
 
 #include <guichan/exception.hpp>
 
 Popup::Popup(const std::string &name, const std::string &skin):
     mPopupName(name),
-    mMinWidth(100),
-    mMinHeight(40),
     mMaxWidth(graphics->getWidth()),
     mMaxHeight(graphics->getHeight())
 {
@@ -105,10 +101,12 @@ void Popup::setContentSize(int width, int height)
 
 void Popup::setLocationRelativeTo(gcn::Widget *widget)
 {
-    int wx, wy;
-    int x, y;
-
+    int wx;
+    int wy;
     widget->getAbsolutePosition(wx, wy);
+
+    int x;
+    int y;
     getAbsolutePosition(x, y);
 
     setPosition(getX() + (wx + (widget->getWidth() - getWidth()) / 2 - x),

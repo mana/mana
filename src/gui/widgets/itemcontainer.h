@@ -176,14 +176,17 @@ class ItemContainer : public gcn::Widget,
         Item *getItemAt(int) const;
 
         Inventory *mInventory;
-        int mGridColumns, mGridRows;
+        int mGridColumns = 1;
+        int mGridRows = 1;
         Image *mSelImg;
-        int mSelectedIndex, mHighlightedIndex;
-        int mLastUsedSlot;
-        SelectionState mSelectionStatus;
-        bool mSwapItems;
-        bool mDescItems;
-        int mDragPosX, mDragPosY;
+        int mSelectedIndex = -1;
+        int mHighlightedIndex = -1;
+        int mLastUsedSlot = -1;
+        SelectionState mSelectionStatus = SEL_NONE;
+        bool mSwapItems = false;
+        bool mDescItems = false;
+        int mDragPosX = 0;
+        int mDragPosY = 0;
 
         std::map<int, Item*> mFilteredMap;
 
@@ -191,10 +194,7 @@ class ItemContainer : public gcn::Widget,
 
         ItemPopup *mItemPopup;
 
-        using SelectionListenerList = std::list<gcn::SelectionListener *>;
-        using SelectionListenerIterator = SelectionListenerList::iterator;
-
-        SelectionListenerList mSelectionListeners;
+        std::list<gcn::SelectionListener *> mSelectionListeners;
 };
 
 #endif // ITEMCONTAINER_H

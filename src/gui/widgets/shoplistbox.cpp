@@ -39,8 +39,7 @@
 float ShopListBox::mAlpha = 1.0;
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel):
-    ListBox(listModel),
-    mPlayerMoney(0)
+    ListBox(listModel)
 {
     mRowHeight = getFont()->getHeight();
     mPriceCheck = true;
@@ -50,7 +49,6 @@ ShopListBox::ShopListBox(gcn::ListModel *listModel):
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel):
     ListBox(listModel),
-    mPlayerMoney(0),
     mShopItems(shopListModel)
 {
     mRowHeight = std::max(getFont()->getHeight(), ITEM_ICON_SIZE);
@@ -192,4 +190,3 @@ void ShopListBox::mouseExited(gcn::MouseEvent &event)
 {
     mItemPopup->setVisible(false);
 }
-

@@ -22,9 +22,9 @@
 #ifndef EMOTE_DB_H
 #define EMOTE_DB_H
 
-#include <list>
 #include <map>
 #include <string>
+
 #include "utils/xml.h"
 
 class ImageSprite;

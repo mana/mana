@@ -19,9 +19,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <algorithm>
-#include <cmath>
-
 #include "animationparticle.h"
 #include "configuration.h"
 #include "resources/dye.h"
@@ -41,7 +38,6 @@
 
 #include <guichan/color.hpp>
 
-#include <algorithm>
 #include <cmath>
 
 #define SIN45 0.707106781f

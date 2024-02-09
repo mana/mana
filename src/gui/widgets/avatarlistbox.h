@@ -25,9 +25,7 @@
 
 #include "gui/widgets/listbox.h"
 
-#include <map>
 #include <string>
-#include <vector>
 
 class Image;
 
@@ -58,7 +56,6 @@ private:
     static int instances;
     static Image *onlineIcon;
     static Image *offlineIcon;
-
 };
 
 #endif

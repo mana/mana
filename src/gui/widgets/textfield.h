@@ -33,7 +33,8 @@ class TextField;
 using TextHistoryList = std::list<std::string>;
 using TextHistoryIterator = TextHistoryList::iterator;
 
-struct TextHistory {
+struct TextHistory
+{
     TextHistoryList history;     /**< Command history. */
     TextHistoryIterator current; /**< History iterator. */
 
@@ -90,7 +91,7 @@ class TextField : public gcn::TextField
         /**
          * Update the alpha value to the graphic components.
          */
-        void updateAlpha();
+        static void updateAlpha();
 
         /**
          * Draws the background and border.
@@ -168,14 +169,14 @@ class TextField : public gcn::TextField
         static int instances;
         static float mAlpha;
         static ImageRect skin;
-        bool mNumeric;
+        bool mNumeric = false;
         int mMinimum;
         int mMaximum;
         bool mLoseFocusOnTab;
 
-        AutoCompleteLister *mAutoComplete;
+        AutoCompleteLister *mAutoComplete = nullptr;
 
-        TextHistory *mHistory; /**< Text history. */
+        TextHistory *mHistory = nullptr; /**< Text history. */
 };
 
 #endif

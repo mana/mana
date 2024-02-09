@@ -23,7 +23,6 @@
 #ifndef POPUP_H
 #define POPUP_H
 
-#include "configuration.h"
 #include "guichanfwd.h"
 
 #include "gui/widgets/container.h"
@@ -154,8 +153,8 @@ class Popup : public Container, public gcn::MouseListener
 
     private:
         std::string mPopupName;       /**< Name of the popup */
-        int mMinWidth;                /**< Minimum popup width */
-        int mMinHeight;               /**< Minimum popup height */
+        int mMinWidth = 100;          /**< Minimum popup width */
+        int mMinHeight = 40;          /**< Minimum popup height */
         int mMaxWidth;                /**< Maximum popup width */
         int mMaxHeight;               /**< Maximum popup height */
         int mPadding;                 /**< Holds the padding of the popup. */

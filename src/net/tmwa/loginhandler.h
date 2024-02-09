@@ -29,7 +29,7 @@
 
 #include <string>
 
-struct LoginData;
+class LoginData;
 
 namespace TmwAthena {
 

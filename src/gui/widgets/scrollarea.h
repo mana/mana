@@ -67,7 +67,7 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         /**
          * Update the alpha value to the graphic components.
          */
-        void updateAlpha();
+        static void updateAlpha();
 
         /**
          * Draws the scroll area.
@@ -136,9 +136,10 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         static ImageRect vMarkerHi;
         static Image *buttons[4][2];
 
-        int mX,mY;
-        bool mHasMouse;
-        bool mOpaque;
+        int mX = 0;
+        int mY = 0;
+        bool mHasMouse = false;
+        bool mOpaque = true;
 };
 
 #endif

@@ -44,10 +44,7 @@ float TextField::mAlpha = 1.0;
 ImageRect TextField::skin;
 
 TextField::TextField(const std::string &text, bool loseFocusOnTab):
-    gcn::TextField(text),
-    mNumeric(false),
-    mAutoComplete(nullptr),
-    mHistory(nullptr)
+    gcn::TextField(text)
 {
     setFrameSize(2);
 
@@ -59,11 +56,11 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
         Image *textbox = Theme::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
-        int a = 0, x, y;
+        int a = 0;
 
-        for (y = 0; y < 3; y++)
+        for (int y = 0; y < 3; y++)
         {
-            for (x = 0; x < 3; x++)
+            for (int x = 0; x < 3; x++)
             {
                 skin.grid[a] = textbox->getSubImage(
                         gridx[x], gridy[y],
@@ -120,10 +117,9 @@ void TextField::drawFrame(gcn::Graphics *graphics)
 {
     //updateAlpha(); -> Not useful...
 
-    int w, h, bs;
-    bs = getFrameSize();
-    w = getWidth() + bs * 2;
-    h = getHeight() + bs * 2;
+    int bs = getFrameSize();
+    int w = getWidth() + bs * 2;
+    int h = getHeight() + bs * 2;
 
     static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
 }
@@ -215,7 +211,7 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
                     mHistory->current = prevHist;
                 }
             }
-            else if (getText() != "")
+            else if (!getText().empty())
             {
                 // Always clear (easy access to useful function)
                 setText("");
@@ -294,13 +290,13 @@ void TextField::textInput(const TextInput &textInput)
 
 void TextField::autoComplete()
 {
-    if (mAutoComplete && mText.size() > 0)
+    if (mAutoComplete && !mText.empty())
     {
         const int caretPos = getCaretPosition();
         int startName = 0;
         const std::string inputText = getText();
         std::string name = inputText.substr(0, caretPos);
-        std::string newName("");
+        std::string newName;
 
         for (int f = caretPos - 1; f > -1; f--)
         {
@@ -320,7 +316,7 @@ void TextField::autoComplete()
         mAutoComplete->getAutoCompleteList(nameList);
         newName = autocomplete(nameList, name);
 
-        if (newName == "" && mHistory)
+        if (newName.empty() && mHistory)
         {
 
             auto i = mHistory->history.begin();
@@ -335,7 +331,7 @@ void TextField::autoComplete()
                     f++;
                 }
                 line = line.substr(0, f);
-                if (line != "")
+                if (!line.empty())
                 {
                     nameList.push_back(line);
                 }
@@ -345,7 +341,7 @@ void TextField::autoComplete()
             newName = autocomplete(nameList, name);
         }
 
-        if (newName != "")
+        if (!newName.empty())
         {
             if(inputText[0] == '@' || inputText[0] == '/')
                 newName = "\"" + newName + "\"";

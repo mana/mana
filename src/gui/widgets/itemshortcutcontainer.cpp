@@ -31,19 +31,14 @@
 
 #include "gui/inventorywindow.h"
 #include "gui/itempopup.h"
-#include "gui/palette.h"
 #include "gui/viewport.h"
 
 #include "resources/image.h"
-#include "resources/iteminfo.h"
 #include "resources/theme.h"
 
 #include "utils/stringutils.h"
 
-ItemShortcutContainer::ItemShortcutContainer():
-    ShortcutContainer(),
-    mItemClicked(false),
-    mItemMoved(nullptr)
+ItemShortcutContainer::ItemShortcutContainer()
 {
     addMouseListener(this);
     addWidgetListener(this);
@@ -86,7 +81,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
-            (SDL_Scancode) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_1 + i));
+            (SDL_Scancode) keyboard.getKeyValue(KeyboardConfig::KEY_SHORTCUT_1 + i));
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 
@@ -122,8 +117,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
     if (mItemMoved)
     {
         // Draw the item image being dragged by the cursor.
-        Image* image = mItemMoved->getImage();
-        if (image)
+        if (Image* image = mItemMoved->getImage())
         {
             const int tPosX = mCursorPosX - (image->getWidth() / 2);
             const int tPosY = mCursorPosY - (image->getHeight() / 2);

@@ -173,18 +173,16 @@ void GuiTable::setLinewiseSelection(bool linewise)
 
 int GuiTable::getRowHeight() const
 {
-    if (mModel)
-        return mModel->getRowHeight() + 1; // border
-    else
+    if (!mModel)
         return 0;
+    return mModel->getRowHeight() + 1; // border
 }
 
 int GuiTable::getColumnWidth(int i) const
 {
-    if (mModel)
-        return mModel->getColumnWidth(i) + 1; // border
-    else
+    if (!mModel)
         return 0;
+    return mModel->getColumnWidth(i) + 1; // border
 }
 
 void GuiTable::setSelectedRow(int selected)

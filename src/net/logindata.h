@@ -29,10 +29,7 @@
 class LoginData
 {
 public:
-    LoginData()
-    {
-        characterSlots = 3;
-    }
+    LoginData() = default;
 
     std::string username;
     std::string password;
@@ -48,7 +45,7 @@ public:
     bool remember;            /**< Whether to store the username. */
     bool registerLogin;       /**< Whether an account is being registered. */
 
-    unsigned short characterSlots; /**< The number of character slots */
+    unsigned short characterSlots = 3;  /**< The number of character slots */
 
     /**
      * Initialize character slots to 3 for backwards compatibility

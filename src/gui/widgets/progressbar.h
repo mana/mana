@@ -54,7 +54,7 @@ class ProgressBar : public gcn::Widget
         /**
          * Update the alpha value to the graphic components.
          */
-        void updateAlpha();
+        static void updateAlpha();
 
         /**
          * Draws the progress bar.
@@ -120,12 +120,12 @@ class ProgressBar : public gcn::Widget
 
     private:
         float mProgress, mProgressToGo;
-        bool mSmoothProgress;
+        bool mSmoothProgress = true;
 
         int mProgressPalette; /** < Entry in ProgressPalette or -1 for none. */
         gcn::Color mColor;
         gcn::Color mColorToGo;
-        bool mSmoothColorChange;
+        bool mSmoothColorChange = true;
 
         std::string mText;
 

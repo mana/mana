@@ -32,7 +32,6 @@ class Channel;
 class ChannelTab : public ChatTab
 {
     public:
-
         Channel *getChannel() const { return mChannel; }
 
         void showHelp() override;

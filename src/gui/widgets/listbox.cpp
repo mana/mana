@@ -23,7 +23,6 @@
 
 #include "configuration.h"
 
-#include "gui/palette.h"
 #include "gui/sdlinput.h"
 
 #include "resources/theme.h"

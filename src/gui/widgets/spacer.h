@@ -23,7 +23,6 @@
 #define SPACER_H
 
 #include "guichan/graphics.hpp"
-#include "guichan/platform.hpp"
 #include "guichan/widget.hpp"
 
 /**

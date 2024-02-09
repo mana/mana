@@ -31,12 +31,9 @@
 namespace TmwAthena {
 
 MessageOut::MessageOut(uint16_t id):
-    mDataSize(0),
-    mPos(0)
+    mNetwork(TmwAthena::Network::instance()),
+    mData(mNetwork->mOutBuffer + mNetwork->mOutSize)
 {
-    mNetwork = TmwAthena::Network::instance();
-    mData = mNetwork->mOutBuffer + mNetwork->mOutSize;
-
     writeInt16(id);
 }
 

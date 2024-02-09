@@ -41,7 +41,7 @@ public:
      *
      * delParent means that the destructor should also free the parent.
      */
-    ParticleContainer(ParticleContainer *parent = NULL, bool delParent = true);
+    ParticleContainer(ParticleContainer *parent = nullptr, bool delParent = true);
     virtual ~ParticleContainer();
 
     /**
@@ -70,8 +70,8 @@ protected:
 class ParticleList : public ParticleContainer
 {
 public:
-    ParticleList(ParticleContainer *parent = NULL, bool delParent = true);
-    virtual ~ParticleList();
+    ParticleList(ParticleContainer *parent = nullptr, bool delParent = true);
+    ~ParticleList() override;
 
     /**
      * Takes control of and adds a particle
@@ -83,9 +83,9 @@ public:
      */
     void removeLocally(Particle *);
 
-    virtual void clearLocally();
+    void clearLocally() override;
 
-    virtual void moveTo(float x, float y);
+    void moveTo(float x, float y) override;
 
 protected:
     std::list<Particle *> mElements;    /**< Contained particle effects */
@@ -97,8 +97,8 @@ protected:
 class ParticleVector : public ParticleContainer
 {
 public:
-    ParticleVector(ParticleContainer *parent = NULL, bool delParent = true);
-    virtual ~ParticleVector();
+    ParticleVector(ParticleContainer *parent = nullptr, bool delParent = true);
+    ~ParticleVector() override;
 
     /**
      * Sets a particle at a specified index.  Kills the previous particle
@@ -111,8 +111,8 @@ public:
      */
     virtual void delLocally(int index);
 
-    virtual void clearLocally();
-    virtual void moveTo(float x, float y);
+    void clearLocally() override;
+    void moveTo(float x, float y) override;
 
 protected:
     std::vector<Particle *> mIndexedElements;

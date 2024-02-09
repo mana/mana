@@ -25,7 +25,6 @@
 #include "textrenderer.h"
 
 #include "gui/gui.h"
-#include "gui/palette.h"
 #include "gui/truetypefont.h"
 
 #include <typeinfo>
@@ -35,12 +34,9 @@ float TextPreview::mAlpha = 1.0;
 TextPreview::TextPreview(const std::string &text):
     mText(text)
 {
-    mTextAlpha = false;
     mFont = gui->getFont();
     mTextColor = &Theme::getThemeColor(Theme::TEXT);
-    mTextBGColor = nullptr;
     mBGColor = &Theme::getThemeColor(Theme::BACKGROUND);
-    mOpaque = false;
 }
 
 void TextPreview::draw(gcn::Graphics* graphics)

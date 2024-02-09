@@ -21,8 +21,8 @@
 #include "flowcontainer.h"
 
 FlowContainer::FlowContainer(int boxWidth, int boxHeight):
-    mBoxWidth(boxWidth), mBoxHeight(boxHeight),
-    mGridWidth(1), mGridHeight(1)
+    mBoxWidth(boxWidth),
+    mBoxHeight(boxHeight)
 {
     addWidgetListener(this);
 }

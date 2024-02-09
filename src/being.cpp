@@ -28,7 +28,6 @@
 #include "effectmanager.h"
 #include "event.h"
 #include "game.h"
-#include "graphics.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "log.h"
@@ -36,7 +35,6 @@
 #include "particle.h"
 #include "party.h"
 #include "playerrelations.h"
-#include "simpleanimation.h"
 #include "sound.h"
 #include "text.h"
 
@@ -51,8 +49,6 @@
 #include "net/npchandler.h"
 
 #include "resources/beinginfo.h"
-#include "resources/hairdb.h"
-#include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
@@ -63,30 +59,12 @@
 
 #include "utils/stringutils.h"
 
-#include <cassert>
 #include <cmath>
 
 Being::Being(int id, Type type, int subtype, Map *map):
     ActorSprite(id),
     mInfo(BeingInfo::Unknown),
-    mActionTime(0),
-    mSpeechTime(0),
-    mAttackSpeed(350),
-    mAction(STAND),
-    mSubType(0xFFFF),
-    mDirection(DOWN),
-    mSpriteDirection(DIRECTION_DOWN),
-    mDispName(nullptr),
-    mShowName(false),
-    mEquippedWeapon(nullptr),
-    mText(nullptr),
-    mGender(GENDER_UNSPECIFIED),
-    mParty(nullptr),
-    mIsGM(false),
-    mType(type),
-    mSpeedPixelsPerTick(Vector(0.0f, 0.0f, 0.0f)),
-    mDamageTaken(0),
-    mIp(0)
+    mType(type)
 {
     setMap(map);
     setSubtype(subtype);
@@ -512,15 +490,9 @@ void Being::removeGuild(int id)
 
 Guild *Being::getGuild(const std::string &guildName) const
 {
-    std::map<int, Guild*>::const_iterator itr, itr_end = mGuilds.end();
-    for (itr = mGuilds.begin(); itr != itr_end; ++itr)
-    {
-        Guild *guild = itr->second;
+    for (auto &[_, guild] : mGuilds)
         if (guild->getName() == guildName)
-        {
             return guild;
-        }
-    }
 
     return nullptr;
 }
@@ -539,11 +511,8 @@ Guild *Being::getGuild(int id) const
 
 void Being::clearGuilds()
 {
-    std::map<int, Guild*>::const_iterator itr, itr_end = mGuilds.end();
-    for (itr = mGuilds.begin(); itr != itr_end; ++itr)
+    for (auto &[_, guild] : mGuilds)
     {
-        Guild *guild = itr->second;
-
         if (this == local_player && socialWindow)
             socialWindow->removeTab(guild);
 

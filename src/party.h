@@ -53,7 +53,7 @@ protected:
 
     int mId;
     Party *mParty;
-    bool mLeader;
+    bool mLeader = false;
 };
 
 class Party : public AvatarListModel
@@ -166,11 +166,10 @@ private:
 
     ~Party() override;
 
-    using MemberList = std::vector<PartyMember *>;
-    MemberList mMembers;
+    std::vector<PartyMember *> mMembers;
     std::string mName;
     short mId;
-    bool mCanInviteUsers;
+    bool mCanInviteUsers = false;
 };
 
 #endif // PARTY_H

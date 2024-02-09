@@ -91,11 +91,13 @@ class ShortcutContainer : public gcn::Widget,
 
         static float mAlpha;
 
-        int mMaxItems;
-        int mBoxWidth;
-        int mBoxHeight;
-        int mCursorPosX, mCursorPosY;
-        int mGridWidth, mGridHeight;
+        int mMaxItems = 0;
+        int mBoxWidth = 0;
+        int mBoxHeight = 0;
+        int mCursorPosX = 0;
+        int mCursorPosY = 0;
+        int mGridWidth = 1;
+        int mGridHeight = 1;
 };
 
 #endif

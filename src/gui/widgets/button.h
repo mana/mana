@@ -91,18 +91,18 @@ class Button : public gcn::Button
 
         void removeButtonIcon(bool adjustButtonSize = true);
 
-        static ImageRect* mButton;  /**< Button state graphics */
-        static int mInstances;      /**< Number of button instances */
+        static ImageRect* mButton;      /**< Button state graphics */
+        static int mInstances;          /**< Number of button instances */
         static float mAlpha;
 
-        Image** mButtonIcon;        /**< Button Icons graphics */
+        Image** mButtonIcon = nullptr;  /**< Button Icons graphics */
 
         /**
          * The buttons popup
          * @note: This is a global object. One for all the buttons.
          */
         static TextPopup* mTextPopup;
-        std::string mPopupText;             /**< the current button text */
+        std::string mPopupText;         /**< the current button text */
 };
 
 #endif

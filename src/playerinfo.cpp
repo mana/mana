@@ -81,8 +81,8 @@ int getAttribute(int id)
     IntMap::const_iterator it = mData.mAttributes.find(id);
     if (it != mData.mAttributes.end())
         return it->second;
-    else
-        return 0;
+
+    return 0;
 }
 
 void setAttribute(int id, int value, bool notify)
@@ -100,8 +100,8 @@ int getStatBase(int id)
     StatMap::const_iterator it = mData.mStats.find(id);
     if (it != mData.mStats.end())
         return it->second.base;
-    else
-        return 0;
+
+    return 0;
 }
 
 void setStatBase(int id, int value, bool notify)
@@ -117,8 +117,8 @@ int getStatMod(int id)
     StatMap::const_iterator it = mData.mStats.find(id);
     if (it != mData.mStats.end())
         return it->second.mod;
-    else
-        return 0;
+
+    return 0;
 }
 
 void setStatMod(int id, int value, bool notify)
@@ -134,8 +134,8 @@ int getStatEffective(int id)
     StatMap::const_iterator it = mData.mStats.find(id);
     if (it != mData.mStats.end())
         return it->second.base + it->second.mod;
-    else
-        return 0;
+
+    return 0;
 }
 
 std::pair<int, int> getStatExperience(int id)

@@ -52,7 +52,7 @@ class Slider : public gcn::Slider
         /**
          * Update the alpha value to the graphic components.
          */
-        void updateAlpha();
+        static void updateAlpha();
 
         /**
          * Draws the slider.
@@ -84,7 +84,7 @@ class Slider : public gcn::Slider
         static Image *vStart, *vMid, *vEnd, *vGrip;
         static Image *hStartHi, *hMidHi, *hEndHi, *hGripHi;
         static Image *vStartHi, *vMidHi, *vEndHi, *vGripHi;
-        bool mHasMouse;
+        bool mHasMouse = false;
         static float mAlpha;
         static int mInstances;
 };

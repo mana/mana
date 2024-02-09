@@ -23,8 +23,6 @@
 
 #include "log.h"
 
-#include "net/messagehandler.h"
-
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/protocol.h"
 

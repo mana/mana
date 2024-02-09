@@ -46,7 +46,7 @@ class ItemInfo;
 class Item;
 class Particle;
 class Party;
-class Position;
+struct Position;
 class SpeechBubble;
 class Text;
 
@@ -465,49 +465,49 @@ class Being : public ActorSprite, public EventListener
          */
         int getSpeechTextYPosition() const;
 
-        BeingInfo *mInfo;
+        const BeingInfo *mInfo;
 
-        int mActionTime;      /**< Time spent in current action. TODO: Remove use of it */
+        int mActionTime = 0;    /**< Time spent in current action. TODO: Remove use of it */
 
         /** Time until the last speech sentence disappears */
-        int mSpeechTime;
+        int mSpeechTime = 0;
 
-        int mAttackSpeed;     /**< Attack speed */
+        int mAttackSpeed = 350; /**< Attack speed */
 
-        Action mAction;       /**< Action the being is performing */
-        uint16_t mSubType;      /**< Subtype (graphical view, basically) */
+        Action mAction = STAND;     /**< Action the being is performing */
+        uint16_t mSubType = 0xFFFF; /**< Subtype (graphical view, basically) */
 
-        uint8_t mDirection;             /**< Facing direction */
-        uint8_t mSpriteDirection;       /**< Facing direction */
+        uint8_t mDirection = DOWN;                  /**< Facing direction */
+        uint8_t mSpriteDirection = DIRECTION_DOWN;  /**< Facing direction */
         std::string mName;              /**< Name of character */
         std::string mPartyName;
 
         /**
-         * Holds a text object when the being displays it's name, 0 otherwise
+         * Holds a text object when the being displays its name, 0 otherwise
          */
-        FlashText *mDispName;
+        FlashText *mDispName = nullptr;
         const gcn::Color *mNameColor;
-        bool mShowName;
+        bool mShowName = false;
 
         /** Engine-related infos about weapon. */
-        const ItemInfo *mEquippedWeapon;
+        const ItemInfo *mEquippedWeapon = nullptr;
 
         Path mPath;
         std::string mSpeech;
-        Text *mText;
+        Text *mText = nullptr;
         const gcn::Color *mTextColor;
 
         Vector mDest;  /**< destination coordinates. */
 
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
-        Gender mGender;
+        Gender mGender = GENDER_UNSPECIFIED;
 
         // Character guild information
         std::map<int, Guild*> mGuilds;
-        Party *mParty;
+        Party *mParty = nullptr;
 
-        bool mIsGM;
+        bool mIsGM = false;
 
     private:
 
@@ -529,9 +529,9 @@ class Being : public ActorSprite, public EventListener
          */
         Vector mSpeedPixelsPerTick;
 
-        int mDamageTaken;
+        int mDamageTaken = 0;
 
-        int mIp;
+        int mIp = 0;
 };
 
 #endif

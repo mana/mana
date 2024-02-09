@@ -175,14 +175,15 @@ LayoutCell &LayoutArray::place(gcn::Widget *widget, int x, int y, int w, int h)
     cell.mPadding = 0;
     cell.mAlign[0] = LayoutCell::FILL;
     cell.mAlign[1] = LayoutCell::FILL;
-    short &cs = mSizes[0][x], &rs = mSizes[1][y];
+    short &cs = mSizes[0][x];
+    short &rs = mSizes[1][y];
     if (cs == Layout::AUTO_DEF && w == 1) cs = 0;
     if (rs == Layout::AUTO_DEF && h == 1) rs = 0;
     return cell;
 }
 
 void LayoutArray::align(int &pos, int &size, int dim,
-                        LayoutCell const &cell, short *sizes) const
+                        LayoutCell const &cell, const short *sizes) const
 {
     int size_max = sizes[0];
     for (int i = 1; i < cell.mExtent[dim]; ++i)
@@ -207,7 +208,8 @@ void LayoutArray::align(int &pos, int &size, int dim,
 
 std::vector< short > LayoutArray::getSizes(int dim, int upp) const
 {
-    int gridW = mSizes[0].size(), gridH = mSizes[1].size();
+    int gridW = mSizes[0].size();
+    int gridH = mSizes[1].size();
     std::vector< short > sizes = mSizes[dim];
 
     // Compute minimum sizes.
@@ -251,7 +253,8 @@ std::vector< short > LayoutArray::getSizes(int dim, int upp) const
 
     for (int i = 0; i < nb; ++i)
     {
-        if (mSizes[dim][i] > Layout::AUTO_DEF) continue;
+        if (mSizes[dim][i] > Layout::AUTO_DEF)
+            continue;
         int s = upp / nbFill;
         sizes[i] += s;
         upp -= s;
@@ -276,7 +279,8 @@ int LayoutArray::getSize(int dim) const
 
 void LayoutArray::reflow(int nx, int ny, int nw, int nh)
 {
-    int gridW = mSizes[0].size(), gridH = mSizes[1].size();
+    int gridW = mSizes[0].size();
+    int gridH = mSizes[1].size();
 
     std::vector< short > widths  = getSizes(0, nw);
     std::vector< short > heights = getSizes(1, nh);

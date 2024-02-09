@@ -68,11 +68,11 @@ DropDown::DropDown(gcn::ListModel *listModel):
         Image *boxBorder = Theme::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
-        int a = 0, x, y;
+        int a = 0;
 
-        for (y = 0; y < 3; y++)
+        for (int y = 0; y < 3; y++)
         {
-            for (x = 0; x < 3; x++)
+            for (int x = 0; x < 3; x++)
             {
                 skin.grid[a] = boxBorder->getSubImage(gridx[x], gridy[y],
                                                       gridx[x + 1] -

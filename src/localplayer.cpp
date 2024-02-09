@@ -25,13 +25,11 @@
 #include "configuration.h"
 #include "event.h"
 #include "flooritem.h"
-#include "graphics.h"
 #include "guild.h"
 #include "item.h"
 #include "map.h"
 #include "particle.h"
 #include "playerinfo.h"
-#include "simpleanimation.h"
 #include "sound.h"
 
 #include "gui/gui.h"
@@ -42,43 +40,22 @@
 #include "net/chathandler.h"
 #include "net/gamehandler.h"
 #include "net/guildhandler.h"
-#include "net/inventoryhandler.h"
 #include "net/net.h"
 #include "net/partyhandler.h"
 #include "net/playerhandler.h"
-#include "net/specialhandler.h"
-#include "net/tradehandler.h"
 
-#include "resources/animation.h"
-#include "resources/imageset.h"
 #include "resources/iteminfo.h"
 #include "resources/userpalette.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <cassert>
-
 const int AWAY_LIMIT_TIMER = 60;
 
 LocalPlayer *local_player = nullptr;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
-    Being(id, PLAYER, subtype, nullptr),
-    mAttackRange(-1),
-    mTargetTime(-1),
-    mLastTargetTime(-1),
-    mTarget(nullptr),
-    mPickUpTarget(nullptr),
-    mGoingToTarget(false), mKeepAttacking(false),
-    mLastActionTime(-1),
-    mWalkingDir(0),
-    mPathSetByMouse(false),
-    mMessageTime(0),
-    mShowIp(false),
-    mAwayDialog(nullptr),
-    mAfkTime(0),
-    mAwayMode(false)
+    Being(id, PLAYER, subtype, nullptr)
 {
     listen(Event::AttributesChannel);
 
@@ -216,9 +193,9 @@ void LocalPlayer::setGMLevel(int level)
 
 Position LocalPlayer::getNextWalkPosition(unsigned char dir)
 {
-
     // Compute where the next tile will be set.
-    int dx = 0, dy = 0;
+    int dx = 0;
+    int dy = 0;
     if (dir & Being::UP)
         dy--;
     if (dir & Being::DOWN)

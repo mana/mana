@@ -35,14 +35,14 @@ class Mutex
 public:
     Mutex();
     ~Mutex();
+    Mutex(Mutex&&) = delete;        // prevent moving
+    Mutex(const Mutex&) = delete;   // prevent copying
+    Mutex& operator=(const Mutex&) = delete;
 
     void lock();
     void unlock();
 
 private:
-    Mutex(const Mutex&);  // prevent copying
-    Mutex& operator=(const Mutex&);
-
     SDL_mutex *mMutex;
 };
 
@@ -54,12 +54,11 @@ class MutexLocker
 public:
     MutexLocker(Mutex *mutex);
     MutexLocker(MutexLocker&&);
+    MutexLocker(const MutexLocker&) = delete;  // prevent copying
+    MutexLocker& operator=(const MutexLocker&) = delete;
     ~MutexLocker();
 
 private:
-    MutexLocker(const MutexLocker&);  // prevent copying
-    MutexLocker& operator=(const MutexLocker&);
-
     Mutex *mMutex;
 };
 

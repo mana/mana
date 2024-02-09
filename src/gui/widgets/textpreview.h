@@ -131,12 +131,12 @@ class TextPreview : public gcn::Widget
         std::string mText;
         const gcn::Color *mTextColor;
         const gcn::Color *mBGColor;
-        const gcn::Color *mTextBGColor;
+        const gcn::Color *mTextBGColor = nullptr;
         static float mAlpha;
-        bool mTextAlpha;
-        bool mOpaque;
-        bool mShadow;
-        bool mOutline;
+        bool mTextAlpha = false;
+        bool mOpaque = false;
+        bool mShadow = false;
+        bool mOutline = false;
 };
 
 #endif

@@ -130,12 +130,10 @@ void SpecialsWindow::draw(gcn::Graphics *graphics)
             foundNew = true;
             break;
         }
-        else
-        {
-            // update progress bar of special
-            e->second->update(special.second.currentMana, special.second.neededMana);
-            found++;
-        }
+
+        // update progress bar of special
+        e->second->update(special.second.currentMana, special.second.neededMana);
+        found++;
     }
     // a rebuild is needed when a) the number of specials changed or b) an existing entry isn't found anymore
     if (foundNew || found != mEntries.size())

@@ -35,15 +35,13 @@ float Slider::mAlpha = 1.0;
 int Slider::mInstances = 0;
 
 Slider::Slider(double scaleEnd):
-    gcn::Slider(scaleEnd),
-    mHasMouse(false)
+    gcn::Slider(scaleEnd)
 {
     init();
 }
 
 Slider::Slider(double scaleStart, double scaleEnd):
-    gcn::Slider(scaleStart, scaleEnd),
-    mHasMouse(false)
+    gcn::Slider(scaleStart, scaleEnd)
 {
     init();
 }

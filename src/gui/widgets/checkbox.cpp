@@ -24,8 +24,6 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/palette.h"
-
 #include "resources/image.h"
 #include "resources/theme.h"
 
@@ -39,8 +37,7 @@ Image *CheckBox::checkBoxNormalHi;
 Image *CheckBox::checkBoxCheckedHi;
 
 CheckBox::CheckBox(const std::string &caption, bool selected):
-    gcn::CheckBox(caption, selected),
-    mHasMouse(false)
+    gcn::CheckBox(caption, selected)
 {
     if (instances == 0)
     {

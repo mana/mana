@@ -264,7 +264,7 @@ void CompoundSprite::redraw() const
 #endif
 
     mWidth = mHeight = mOffsetX = mOffsetY = 0;
-    Sprite *s = NULL;
+    Sprite *s = nullptr;
     SpriteConstIterator it, it_end = mSprites.end();
 
     int posX = 0;

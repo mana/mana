@@ -60,7 +60,7 @@ static TabData const data[TAB_COUNT] = {
 
 ImageRect Tab::tabImg[TAB_COUNT];
 
-Tab::Tab() : gcn::Tab(),
+Tab::Tab() :
     mTabColor(&Theme::getThemeColor(Theme::TAB))
 {
     init();
@@ -90,15 +90,13 @@ void Tab::init()
         // Load the skin
         Image *tab[TAB_COUNT];
 
-        int a, x, y, mode;
-
-        for (mode = 0; mode < TAB_COUNT; mode++)
+        for (int mode = 0; mode < TAB_COUNT; mode++)
         {
             tab[mode] = Theme::getImageFromTheme(data[mode].file);
-            a = 0;
-            for (y = 0; y < 3; y++)
+            int a = 0;
+            for (int y = 0; y < 3; y++)
             {
-                for (x = 0; x < 3; x++)
+                for (int x = 0; x < 3; x++)
                 {
                     tabImg[mode].grid[a] = tab[mode]->getSubImage(
                             data[mode].gridX[x], data[mode].gridY[y],

@@ -66,8 +66,8 @@ class ItemShortcutContainer : public ShortcutContainer
         void mouseExited(gcn::MouseEvent &event) override;
         void mouseMoved(gcn::MouseEvent &event) override;
 
-        bool mItemClicked;
-        Item *mItemMoved;
+        bool mItemClicked = false;
+        Item *mItemMoved = nullptr;
 
         ItemPopup *mItemPopup;
 };

@@ -28,7 +28,6 @@
 
 #include <cstdint>
 #include <set>
-#include <list>
 
 class SimpleAnimation;
 class StatusEffect;
@@ -196,7 +195,7 @@ protected:
                             bool forceDisplay = true);
 
     int mId;
-    uint16_t mStunMode;               /**< Stun mode; zero if not stunned */
+    uint16_t mStunMode = 0;         /**< Stun mode; zero if not stunned */
     std::set<int> mStatusEffects;   /**< set of active status effects */
 
     ParticleList mStunParticleEffects;
@@ -205,7 +204,7 @@ protected:
 
 private:
     /** Reset particle status effects on next redraw? */
-    bool mMustResetParticles;
+    bool mMustResetParticles = false;
 
     /** Load the target cursors into memory */
     static void initTargetCursor();
@@ -228,7 +227,7 @@ private:
     static bool loaded;
 
     /** Target cursor being used */
-    SimpleAnimation *mUsedTargetCursor;
+    SimpleAnimation *mUsedTargetCursor = nullptr;
 };
 
 #endif // ACTORSPRITE_H

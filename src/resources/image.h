@@ -38,7 +38,6 @@
 #endif
 
 class Dye;
-class Position;
 
 /**
  * Defines a class for loading and storing images.
@@ -87,7 +86,7 @@ class Image : public Resource
         /**
          * Tells is the image is loaded
          */
-        bool isLoaded()
+        bool isLoaded() const
         { return mLoaded; }
 
         /**
@@ -164,8 +163,8 @@ class Image : public Resource
         // -----------------------
 
         SDL_Rect mBounds;
-        bool mLoaded;
-        float mAlpha;
+        bool mLoaded = false;
+        float mAlpha = 1.0f;
 
         // -----------------------
         // SDL protected members
@@ -177,7 +176,7 @@ class Image : public Resource
         /** SDL_Surface to SDL_Texture Image loader */
         static Image *_SDLload(SDL_Surface *tmpImage);
 
-        SDL_Texture *mTexture;
+        SDL_Texture *mTexture = nullptr;
 
         /** Stores whether the transparency is disabled */
         static bool mDisableTransparency;
@@ -201,7 +200,7 @@ class Image : public Resource
 
         static Image *_GLload(SDL_Surface *image);
 
-        GLuint mGLImage;
+        GLuint mGLImage = 0;
         int mTexWidth, mTexHeight;
 
         static bool mUseOpenGL;

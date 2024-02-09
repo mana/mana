@@ -22,7 +22,6 @@
 #include "gui/charselectdialog.h"
 
 #include "client.h"
-#include "game.h"
 #include "localplayer.h"
 #include "units.h"
 #include "log.h"
@@ -31,7 +30,6 @@
 #include "gui/changepassworddialog.h"
 #include "gui/charcreatedialog.h"
 #include "gui/confirmdialog.h"
-#include "gui/okdialog.h"
 #include "gui/sdlinput.h"
 #include "gui/unregisterdialog.h"
 
@@ -40,14 +38,11 @@
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/playerbox.h"
-#include "gui/widgets/textfield.h"
 
 #include "net/charhandler.h"
 #include "net/logindata.h"
 #include "net/loginhandler.h"
 #include "net/net.h"
-
-#include "resources/hairdb.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

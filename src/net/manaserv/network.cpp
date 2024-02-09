@@ -42,9 +42,7 @@ namespace {
 namespace ManaServ
 {
 
-using MessageHandlers = std::map<unsigned short, MessageHandler *>;
-using MessageHandlerIterator = MessageHandlers::iterator;
-static MessageHandlers mMessageHandlers;
+static std::map<unsigned short, MessageHandler *> mMessageHandlers;
 
 void initialize()
 {

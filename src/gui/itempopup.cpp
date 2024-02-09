@@ -22,6 +22,7 @@
 
 #include "gui/itempopup.h"
 
+#include "configuration.h"
 #include "graphics.h"
 #include "units.h"
 
@@ -33,8 +34,6 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-
-#include "net/net.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"

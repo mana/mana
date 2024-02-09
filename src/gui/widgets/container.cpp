@@ -23,8 +23,7 @@
 
 #include "gui/widgets/layouthelper.h"
 
-Container::Container():
-    mLayoutHelper(nullptr)
+Container::Container()
 {
     setOpaque(false);
 }

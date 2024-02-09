@@ -28,9 +28,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <memory>
-#include <vector>
-
 class ChatTab;
 class FloorItem;
 class ImageSet;
@@ -187,7 +184,7 @@ class LocalPlayer : public Being
 
         void changeAwayMode();
 
-        bool getAwayMode()
+        bool getAwayMode() const
         { return mAwayMode; }
 
         void setAway(const std::string &message);
@@ -234,35 +231,35 @@ class LocalPlayer : public Being
          */
         Position getNextWalkPosition(unsigned char dir);
 
-        int mAttackRange;
+        int mAttackRange = -1;
 
-        int mTargetTime;      /**< How long the being has been targeted **/
+        int mTargetTime = -1;   /**< How long the being has been targeted **/
         /** Time stamp of last targeting action, -1 if none. */
-        int mLastTargetTime;
+        int mLastTargetTime = -1;
 
-        int mGMLevel;
+        int mGMLevel = 0;
 
-        Being *mTarget;
+        Being *mTarget = nullptr;
 
-        FloorItem *mPickUpTarget;
+        FloorItem *mPickUpTarget = nullptr;
 
-        bool mGoingToTarget;
-        bool mKeepAttacking;  /**< Whether or not to continue to attack */
-        int mLastActionTime;  /**< Time stamp of the last action, -1 if none. */
-        int mWalkingDir;      /**< The direction the player is walking in. */
-        bool mPathSetByMouse; /**< Tells if the path was set using mouse */
+        bool mGoingToTarget = false;
+        bool mKeepAttacking = false;    /**< Whether or not to continue to attack */
+        int mLastActionTime = -1;       /**< Time stamp of the last action, -1 if none. */
+        int mWalkingDir = 0;            /**< The direction the player is walking in. */
+        bool mPathSetByMouse = false;   /**< Tells if the path was set using mouse */
 
         using MessagePair = std::pair<std::string, int>;
         /** Queued messages*/
         std::list<MessagePair> mMessages;
-        int mMessageTime;
+        int mMessageTime = 0;
 
-        bool mShowIp;
+        bool mShowIp = false;
 
         AwayListener *mAwayListener;
-        OkDialog *mAwayDialog;
-        int mAfkTime;
-        bool mAwayMode;
+        OkDialog *mAwayDialog = nullptr;
+        int mAfkTime = 0;
+        bool mAwayMode = false;
 };
 
 extern LocalPlayer *local_player;

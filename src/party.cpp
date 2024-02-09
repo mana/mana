@@ -25,15 +25,14 @@
 #include "net/net.h"
 
 PartyMember::PartyMember(Party *party, int id, const std::string &name):
-        Avatar(name), mId(id), mParty(party), mLeader(false)
+    Avatar(name), mId(id), mParty(party)
 {
 }
 
 Party::PartyMap Party::parties;
 
 Party::Party(short id):
-    mId(id),
-    mCanInviteUsers(false)
+    mId(id)
 {
     parties[id] = this;
 }
@@ -60,41 +59,26 @@ PartyMember *Party::addMember(int id, const std::string &name)
 
 PartyMember *Party::getMember(int id) const
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while (itr != itr_end)
-    {
-        if ((*itr)->mId == id)
-        {
-            return (*itr);
-        }
-        ++itr;
-    }
+    for (auto member : mMembers)
+        if (member->mId == id)
+            return member;
 
     return nullptr;
 }
 
 PartyMember *Party::getMember(const std::string &name) const
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while (itr != itr_end)
-    {
-        if ((*itr)->getName() == name)
-        {
-            return (*itr);
-        }
-        ++itr;
-    }
+    for (auto member : mMembers)
+        if (member->getName() == name)
+            return member;
 
     return nullptr;
 }
 
 void Party::removeMember(PartyMember *member)
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while(itr != itr_end)
+    for (auto itr = mMembers.begin(), itr_end = mMembers.end();
+         itr != itr_end; ++itr)
     {
         if((*itr)->mId == member->mId &&
            (*itr)->getName() == member->getName())
@@ -103,53 +87,42 @@ void Party::removeMember(PartyMember *member)
             mMembers.erase(itr);
             delete member;
         }
-        ++itr;
     }
 }
 
 void Party::removeMember(int id)
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while(itr != itr_end)
+    for (auto itr = mMembers.begin(), itr_end = mMembers.end();
+         itr != itr_end; ++itr)
     {
-        if((*itr)->mId == id)
+        if ((*itr)->mId == id)
         {
             PartyMember *member = (*itr);
             mMembers.erase(itr);
             delete member;
         }
-        ++itr;
     }
 }
 
 void Party::removeMember(const std::string &name)
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while(itr != itr_end)
+    for (auto itr = mMembers.begin(), itr_end = mMembers.end();
+         itr != itr_end; ++itr)
     {
-        if((*itr)->getName() == name)
+        if ((*itr)->getName() == name)
         {
             PartyMember *member = (*itr);
             mMembers.erase(itr);
             delete member;
         }
-        ++itr;
     }
 }
 
 void Party::removeFromMembers()
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while(itr != itr_end)
-    {
-        Being *b = actorSpriteManager->findBeing((*itr)->getID());
-        if (b)
+    for (auto member : mMembers)
+        if (Being *b = actorSpriteManager->findBeing(member->getID()))
             b->setParty(nullptr);
-        ++itr;
-    }
 }
 
 Avatar *Party::getAvatarAt(int index)
@@ -171,16 +144,14 @@ bool Party::isMember(PartyMember *member) const
     if (member->mParty != nullptr && member->mParty != this)
         return false;
 
-    auto itr = mMembers.begin(),
-                                     itr_end = mMembers.end();
-    while (itr != itr_end)
+
+    for (auto mMember : mMembers)
     {
-        if ((*itr)->mId == member->mId &&
-            (*itr)->getName() == member->getName())
+        if (mMember->mId == member->mId &&
+            mMember->getName() == member->getName())
         {
             return true;
         }
-        ++itr;
     }
 
     return false;
@@ -188,32 +159,18 @@ bool Party::isMember(PartyMember *member) const
 
 bool Party::isMember(int id) const
 {
-    auto itr = mMembers.begin(),
-                                     itr_end = mMembers.end();
-    while (itr != itr_end)
-    {
-        if ((*itr)->mId == id)
-        {
+    for (auto member : mMembers)
+        if (member->mId == id)
             return true;
-        }
-        ++itr;
-    }
 
     return false;
 }
 
 bool Party::isMember(const std::string &name) const
 {
-    auto itr = mMembers.begin(),
-                                     itr_end = mMembers.end();
-    while (itr != itr_end)
-    {
-        if ((*itr)->getName() == name)
-        {
+    for (auto member : mMembers)
+        if (member->getName() == name)
             return true;
-        }
-        ++itr;
-    }
 
     return false;
 }
@@ -221,13 +178,8 @@ bool Party::isMember(const std::string &name) const
 void Party::getNames(std::vector<std::string> &names) const
 {
     names.clear();
-    auto it = mMembers.begin(),
-                                     it_end = mMembers.end();
-    while (it != it_end)
-    {
-        names.push_back((*it)->getName());
-        ++it;
-    }
+    for (auto member : mMembers)
+        names.push_back(member->getName());
 }
 
 Party *Party::getParty(int id)

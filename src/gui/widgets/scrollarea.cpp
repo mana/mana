@@ -36,23 +36,14 @@ ImageRect ScrollArea::vMarker;
 ImageRect ScrollArea::vMarkerHi;
 Image *ScrollArea::buttons[4][2];
 
-ScrollArea::ScrollArea():
-    gcn::ScrollArea(),
-    mX(0),
-    mY(0),
-    mHasMouse(false),
-    mOpaque(true)
+ScrollArea::ScrollArea()
 {
     addWidgetListener(this);
     init();
 }
 
 ScrollArea::ScrollArea(gcn::Widget *widget):
-    gcn::ScrollArea(widget),
-    mX(0),
-    mY(0),
-    mHasMouse(false),
-    mOpaque(true)
+    gcn::ScrollArea(widget)
 {
     init();
 }
@@ -97,11 +88,11 @@ void ScrollArea::init()
         Image *textbox = Theme::getImageFromTheme("deepbox.png");
         const int bggridx[4] = {0, 3, 28, 31};
         const int bggridy[4] = {0, 3, 28, 31};
-        int a = 0, x, y;
+        int a = 0;
 
-        for (y = 0; y < 3; y++)
+        for (int y = 0; y < 3; y++)
         {
-            for (x = 0; x < 3; x++)
+            for (int x = 0; x < 3; x++)
             {
                 background.grid[a] = textbox->getSubImage(
                         bggridx[x], bggridy[y],
@@ -122,9 +113,9 @@ void ScrollArea::init()
         int vsgridy[4] = {0, 4, 15, 19};
         a = 0;
 
-        for (y = 0; y < 3; y++)
+        for (int y = 0; y < 3; y++)
         {
-            for (x = 0; x < 3; x++)
+            for (int x = 0; x < 3; x++)
             {
                 vMarker.grid[a] = vscroll->getSubImage(
                         vsgridx[x], vsgridy[y],
@@ -384,5 +375,6 @@ void ScrollArea::mouseExited(gcn::MouseEvent& event)
 
 void ScrollArea::widgetResized(const gcn::Event &event)
 {
-    getContent()->setSize(getWidth() - 2 * getFrameSize(), getHeight() - 2 * getFrameSize());
+    getContent()->setSize(getWidth() - 2 * getFrameSize(),
+                          getHeight() - 2 * getFrameSize());
 }

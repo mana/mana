@@ -48,7 +48,7 @@ protected:
 
     GuildMember(Guild *guild, const std::string &name);
 
-    int mId;
+    int mId = 0;
     Guild *mGuild;
 };
 
@@ -165,11 +165,10 @@ private:
      */
     Guild(short id);
 
-    using MemberList = std::vector<GuildMember *>;
-    MemberList mMembers;
+    std::vector<GuildMember *> mMembers;
     std::string mName;
     short mId;
-    bool mCanInviteUsers;
+    bool mCanInviteUsers = false;
 };
 
 #endif // GUILD_H

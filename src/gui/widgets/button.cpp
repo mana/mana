@@ -70,8 +70,7 @@ Button::Button():
 
 Button::Button(const std::string &caption, const std::string &actionEventId,
     gcn::ActionListener *listener):
-    gcn::Button(caption),
-    mButtonIcon(nullptr)
+    gcn::Button(caption)
 {
     init();
     setActionEventId(actionEventId);

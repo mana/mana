@@ -161,8 +161,8 @@ class ItemInfo
         int mView = 0;                    /**< Item ID of how this item looks. */
         int mId = 0;                      /**< Item ID */
 
-        bool mEquippable;                 /**< Whether this item can be equipped. */
-        bool mActivatable;                /**< Whether this item can be activated. */
+        bool mEquippable = false;         /**< Whether this item can be equipped. */
+        bool mActivatable = false;        /**< Whether this item can be activated. */
 
         // Equipment related members.
         /** Attack type, in case of weapon.
@@ -172,12 +172,12 @@ class ItemInfo
         std::string mAttackAction;
 
         /** Attack range, will be equal to ATTACK_RANGE_NOT_SET if no weapon. */
-        int mAttackRange;
+        int mAttackRange = 0;
 
         /** Effects to be shown when weapon attacks - see also effects.xml */
         std::string mMissileParticleFile;
-        int mHitEffectId;
-        int mCriticalHitEffectId;
+        int mHitEffectId = 0;
+        int mCriticalHitEffectId = 0;
 
         /** Maps gender to sprite filenames. */
         std::map<int, std::string> mAnimationFiles;
@@ -230,7 +230,7 @@ class TaItemInfo: public ItemInfo
     friend class TaItemDB;
 
     public:
-        TaItemInfo() : ItemInfo()
+        TaItemInfo()
         {}
 
         // Declare TmwAthena Specific item info here
@@ -247,7 +247,7 @@ namespace ManaServ {
 class ManaServItemInfo: public ItemInfo
 {
     public:
-        ManaServItemInfo() : ItemInfo()
+        ManaServItemInfo()
         {}
 
         // Declare Manaserv Specific item info here

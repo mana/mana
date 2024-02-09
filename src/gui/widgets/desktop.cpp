@@ -26,8 +26,6 @@
 #include "log.h"
 #include "main.h"
 
-#include "gui/palette.h"
-
 #include "gui/widgets/label.h"
 
 #include "resources/image.h"
@@ -37,7 +35,6 @@
 #include "utils/stringutils.h"
 
 Desktop::Desktop()
-    : mWallpaper(nullptr)
 {
     addWidgetListener(this);
 

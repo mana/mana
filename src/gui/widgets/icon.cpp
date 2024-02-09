@@ -27,12 +27,8 @@
 #include "resources/resourcemanager.h"
 
 Icon::Icon(const std::string &file)
-    : mImage(nullptr)
-{
-    mImage = ResourceManager::getInstance()->getImage(file);
-    if (mImage)
-        setSize(mImage->getWidth(), mImage->getHeight());
-}
+    : Icon(ResourceManager::getInstance()->getImage(file))
+{}
 
 Icon::Icon(Image *image)
     : mImage(image)

@@ -61,7 +61,7 @@ class Desktop : public Container, gcn::WidgetListener
     private:
         void setBestFittingWallpaper();
 
-        Image *mWallpaper;
+        Image *mWallpaper = nullptr;
         gcn::Label *mVersionLabel;
 };
 

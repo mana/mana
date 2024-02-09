@@ -45,11 +45,11 @@ PlayerBox::PlayerBox(const Being *being):
         Image *textbox = Theme::getImageFromTheme("deepbox.png");
         int bggridx[4] = {0, 3, 28, 31};
         int bggridy[4] = {0, 3, 28, 31};
-        int a = 0, x, y;
+        int a = 0;
 
-        for (y = 0; y < 3; y++)
+        for (int y = 0; y < 3; y++)
         {
-            for (x = 0; x < 3; x++)
+            for (int x = 0; x < 3; x++)
             {
                 background.grid[a] = textbox->getSubImage(
                         bggridx[x], bggridy[y],
@@ -98,10 +98,9 @@ void PlayerBox::draw(gcn::Graphics *graphics)
 
 void PlayerBox::drawFrame(gcn::Graphics *graphics)
 {
-    int w, h, bs;
-    bs = getFrameSize();
-    w = getWidth() + bs * 2;
-    h = getHeight() + bs * 2;
+    const int bs = getFrameSize();
+    const int w = getWidth() + bs * 2;
+    const int h = getHeight() + bs * 2;
 
     static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, background);
 }

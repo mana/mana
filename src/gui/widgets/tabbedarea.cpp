@@ -25,10 +25,7 @@
 
 #include <guichan/widgets/container.hpp>
 
-TabbedArea::TabbedArea() : gcn::TabbedArea(),
-                           mTabsWidth(0),
-                           mVisibleTabsWidth(0),
-                           mTabScrollIndex(0)
+TabbedArea::TabbedArea()
 {
     mWidgetContainer->setOpaque(false);
     addWidgetListener(this);
@@ -51,13 +48,10 @@ int TabbedArea::getNumberOfTabs() const
 
 Tab *TabbedArea::getTab(const std::string &name) const
 {
-    auto itr = mTabs.begin(), itr_end = mTabs.end();
-    while (itr != itr_end)
+    for (auto itr = mTabs.begin(); itr != mTabs.end(); ++itr)
     {
         if ((*itr).first->getCaption() == name)
             return static_cast<Tab*>((*itr).first);
-
-        ++itr;
     }
     return nullptr;
 }
@@ -72,13 +66,10 @@ void TabbedArea::draw(gcn::Graphics *graphics)
 
 gcn::Widget *TabbedArea::getWidget(const std::string &name) const
 {
-    auto itr = mTabs.begin(), itr_end = mTabs.end();
-    while (itr != itr_end)
+    for (const auto &[tab, widget] : mTabs)
     {
-        if ((*itr).first->getCaption() == name)
-            return (*itr).second;
-
-        ++itr;
+        if (tab->getCaption() == name)
+            return widget;
     }
 
     return nullptr;

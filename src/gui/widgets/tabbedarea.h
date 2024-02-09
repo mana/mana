@@ -130,7 +130,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
         /**
          * The overall width of all tab.
          */
-        int mTabsWidth;
+        int mTabsWidth = 0;
 
         /**
          * Update the overall width of visible tab. Used to know whether
@@ -141,7 +141,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
         /**
          * The overall width of visible tab.
          */
-        int mVisibleTabsWidth;
+        int mVisibleTabsWidth = 0;
 
 
         /**
@@ -150,7 +150,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
          * So the first tab displayed may not be the first in the list.
          * @note the index must start at 0.
          */
-        unsigned mTabScrollIndex;
+        unsigned mTabScrollIndex = 0;
 };
 
 #endif

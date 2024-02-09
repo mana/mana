@@ -58,7 +58,7 @@ class ListBox : public gcn::ListBox
         /**
          * Update the alpha value to the graphic components.
          */
-        void updateAlpha();
+        static void updateAlpha();
 
         // Inherited from KeyListener
 

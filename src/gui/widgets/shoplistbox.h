@@ -83,7 +83,7 @@ class ShopListBox : public ListBox
          void mouseExited(gcn::MouseEvent &event) override;
 
     private:
-        int mPlayerMoney;
+        int mPlayerMoney = 0;
 
         /**
          * Keeps another pointer to the same listModel, permitting to

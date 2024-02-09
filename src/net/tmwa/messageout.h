@@ -88,9 +88,9 @@ class MessageOut
 
         Network *mNetwork;
 
-        char *mData;                         /**< Data building up. */
-        unsigned int mDataSize;              /**< Size of data. */
-        unsigned int mPos;                   /**< Position in the data. */
+        char *mData;                        /**< Data building up. */
+        unsigned int mDataSize = 0;         /**< Size of data. */
+        unsigned int mPos = 0;              /**< Position in the data. */
 };
 
 } // namespace TmwAthena

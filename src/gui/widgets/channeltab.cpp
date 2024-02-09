@@ -108,14 +108,14 @@ bool ChannelTab::handleCommand(const std::string &type,
     else if (type == "op")
     {
         // set the user mode 'o' to op a user
-        if (args != "")
+        if (!args.empty())
             Net::getChatHandler()->setUserMode(mChannel->getId(), args, 'o');
         else
             chatLog(_("Need a user to op!"), BY_CHANNEL);
     }
     else if (type == "kick")
     {
-        if (args != "")
+        if (!args.empty())
             Net::getChatHandler()->kickUser(mChannel->getId(), args);
         else
             chatLog(_("Need a user to kick!"), BY_CHANNEL);

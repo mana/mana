@@ -50,7 +50,7 @@ class DropDown : public gcn::DropDown
         /**
          * Update the alpha value to the graphic components.
          */
-        void updateAlpha();
+        static void updateAlpha();
 
         void draw(gcn::Graphics *graphics) override;
 

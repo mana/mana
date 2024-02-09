@@ -21,17 +21,9 @@
 
 #include "gui/widgets/shortcutcontainer.h"
 
-#include "configuration.h"
-
-#include "resources/image.h"
-
-#include "utils/stringutils.h"
-
 float ShortcutContainer::mAlpha = 1.0;
 
-ShortcutContainer::ShortcutContainer():
-    mGridWidth(1),
-    mGridHeight(1)
+ShortcutContainer::ShortcutContainer()
 {
 }
 
@@ -52,8 +44,8 @@ void ShortcutContainer::widgetResized(const gcn::Event &event)
 
 int ShortcutContainer::getIndexFromGrid(int pointX, int pointY) const
 {
-    const gcn::Rectangle tRect = gcn::Rectangle(0, 0, mGridWidth * mBoxWidth,
-                                                mGridHeight * mBoxHeight);
+    const gcn::Rectangle tRect(0, 0, mGridWidth * mBoxWidth,
+                               mGridHeight * mBoxHeight);
 
     int index = ((pointY / mBoxHeight) * mGridWidth) + pointX / mBoxWidth;
 

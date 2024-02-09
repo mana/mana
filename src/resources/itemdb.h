@@ -161,7 +161,7 @@ class TaItemInfo;
 class TaItemDB: public ItemDB
 {
     public:
-        TaItemDB() : ItemDB()
+        TaItemDB()
         { }
 
         ~TaItemDB() override
@@ -172,6 +172,7 @@ class TaItemDB: public ItemDB
         void readItemNode(xmlNodePtr node, const std::string &filename) override;
 
         void checkStatus() override;
+
     private:
         /**
          * Check items id specific hard limits and log errors found.
@@ -195,7 +196,7 @@ class ManaServItemInfo;
 class ManaServItemDB: public ItemDB
 {
     public:
-        ManaServItemDB() : ItemDB()
+        ManaServItemDB()
         { }
 
         ~ManaServItemDB() override

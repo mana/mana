@@ -24,20 +24,19 @@
 #include "actorspritemanager.h"
 
 GuildMember::GuildMember(Guild *guild, int id, const std::string &name):
-        Avatar(name), mId(id), mGuild(guild)
+    Avatar(name), mId(id), mGuild(guild)
 {
 }
 
 GuildMember::GuildMember(Guild *guild, const std::string &name):
-        Avatar(name), mId(0), mGuild(guild)
+    Avatar(name), mGuild(guild)
 {
 }
 
 Guild::GuildMap Guild::guilds;
 
 Guild::Guild(short id):
-    mId(id),
-    mCanInviteUsers(false)
+    mId(id)
 {
     guilds[id] = this;
 }
@@ -74,84 +73,63 @@ GuildMember *Guild::addMember(const std::string &name)
 
 GuildMember *Guild::getMember(int id) const
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while (itr != itr_end)
-    {
-        if ((*itr)->mId == id)
-            return (*itr);
-        ++itr;
-    }
+    for (auto member : mMembers)
+        if (member->mId == id)
+            return member;
 
     return nullptr;
 }
 
 GuildMember *Guild::getMember(const std::string &name) const
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while (itr != itr_end)
-    {
-        if ((*itr)->getName() == name)
-        {
-            return (*itr);
-        }
-        ++itr;
-    }
+    for (auto member : mMembers)
+        if (member->getName() == name)
+            return member;
 
     return nullptr;
 }
 
 void Guild::removeMember(GuildMember *member)
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while (itr != itr_end)
+    for (auto itr = mMembers.begin(), itr_end = mMembers.end();
+         itr != itr_end; ++itr)
     {
-        if((*itr)->mId == member->mId &&
-           (*itr)->getName() == member->getName())
+        if ((*itr)->mId == member->mId &&
+            (*itr)->getName() == member->getName())
         {
             mMembers.erase(itr);
         }
-        ++itr;
     }
 }
 
 void Guild::removeMember(int id)
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while (itr != itr_end)
+    for (auto itr = mMembers.begin(), itr_end = mMembers.end();
+         itr != itr_end; ++itr)
     {
         if ((*itr)->mId == id)
             mMembers.erase(itr);
-        ++itr;
     }
 }
 
 void Guild::removeMember(const std::string &name)
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while (itr != itr_end)
+    for (auto itr = mMembers.begin(), itr_end = mMembers.end();
+         itr != itr_end; ++itr)
     {
-        if((*itr)->getName() == name)
+        if ((*itr)->getName() == name)
         {
             mMembers.erase(itr);
         }
-        ++itr;
     }
 }
 
 void Guild::removeFromMembers()
 {
-    auto itr = mMembers.begin(),
-                               itr_end = mMembers.end();
-    while(itr != itr_end)
+    for (auto member : mMembers)
     {
-        Being *b = actorSpriteManager->findBeing((*itr)->getID());
+        Being *b = actorSpriteManager->findBeing(member->getID());
         b->removeGuild(getId());
-        ++itr;
     }
 }
 
@@ -172,16 +150,13 @@ bool Guild::isMember(GuildMember *member) const
     if (member->mGuild != nullptr && member->mGuild != this)
         return false;
 
-    auto itr = mMembers.begin(),
-                                     itr_end = mMembers.end();
-    while (itr != itr_end)
+    for (auto mMember : mMembers)
     {
-        if ((*itr)->mId == member->mId &&
-            (*itr)->getName() == member->getName())
+        if (mMember->mId == member->mId &&
+            mMember->getName() == member->getName())
         {
             return true;
         }
-        ++itr;
     }
 
     return false;
@@ -189,44 +164,20 @@ bool Guild::isMember(GuildMember *member) const
 
 bool Guild::isMember(int id) const
 {
-    auto itr = mMembers.begin(),
-                                     itr_end = mMembers.end();
-    while (itr != itr_end)
-    {
-        if ((*itr)->mId == id)
-            return true;
-        ++itr;
-    }
-
-    return false;
+    return getMember(id) != nullptr;
 }
 
 bool Guild::isMember(const std::string &name) const
 {
-    auto itr = mMembers.begin(),
-                                     itr_end = mMembers.end();
-    while (itr != itr_end)
-    {
-        if ((*itr)->getName() == name)
-        {
-            return true;
-        }
-        ++itr;
-    }
-
-    return false;
+    return getMember(name) != nullptr;
 }
 
 void Guild::getNames(std::vector<std::string> &names) const
 {
     names.clear();
-    auto it = mMembers.begin(),
-                                     it_end = mMembers.end();
-    while (it != it_end)
-    {
-        names.push_back((*it)->getName());
-        ++it;
-    }
+
+    for (auto member : mMembers)
+        names.push_back(member->getName());
 }
 
 Guild *Guild::getGuild(int id)

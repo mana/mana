@@ -45,19 +45,13 @@ bool Image::mDisableTransparency = false;
 SDL_Renderer *Image::mRenderer;
 
 Image::Image(SDL_Texture *texture, int width, int height):
-    mAlpha(1.0f),
+    mLoaded(texture != nullptr),
     mTexture(texture)
 {
-#ifdef USE_OPENGL
-    mGLImage = 0;
-#endif
-
     mBounds.x = 0;
     mBounds.y = 0;
     mBounds.w = width;
     mBounds.h = height;
-
-    mLoaded = mTexture != nullptr;
 
     if (!mLoaded)
     {
@@ -68,8 +62,7 @@ Image::Image(SDL_Texture *texture, int width, int height):
 
 #ifdef USE_OPENGL
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
-    mAlpha(1.0f),
-    mTexture(nullptr),
+    mLoaded(glimage != 0),
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight)
@@ -79,13 +72,10 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
     mBounds.w = width;
     mBounds.h = height;
 
-    if (mGLImage)
-        mLoaded = true;
-    else
+    if (!mLoaded)
     {
         logger->log(
-          "Image::Image(GLuint*, ...): Couldn't load invalid Surface!");
-        mLoaded = false;
+          "Image::Image(GLuint, ...): Couldn't load invalid Surface!");
     }
 }
 #endif

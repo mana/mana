@@ -136,18 +136,6 @@ class EquipBackend : public Equipment::Backend
         int getSlotNumber() const override
         { return EQUIP_VECTOR_END; }
 
-        // Note the slot type id is equal to the slot Index for tA.
-        bool isWeaponSlot(unsigned int slotTypeId) const
-        {
-            return (slotTypeId == EQUIP_FIGHT1_SLOT
-                    || slotTypeId == EQUIP_FIGHT1_SLOT);
-        }
-
-        bool isAmmoSlot(unsigned int slotTypeId) const
-        {
-            return (slotTypeId == EQUIP_PROJECTILE_SLOT);
-        }
-
     private:
         int mEquipment[EQUIP_VECTOR_END];
 };
@@ -195,11 +183,17 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
 
         size_t getSize(int type) const override;
 
+        // Note the slot type id is equal to the slot Index for tA.
         bool isWeaponSlot(unsigned int slotTypeId) const override
-        { return mEquips.isWeaponSlot(slotTypeId); }
+        {
+            return (slotTypeId == EQUIP_FIGHT1_SLOT
+                    || slotTypeId == EQUIP_FIGHT1_SLOT);
+        }
 
         bool isAmmoSlot(unsigned int slotTypeId) const override
-        { return mEquips.isAmmoSlot(slotTypeId); }
+        {
+            return (slotTypeId == EQUIP_PROJECTILE_SLOT);
+        }
 
     private:
         EquipBackend mEquips;

@@ -21,12 +21,10 @@
 
 #include "resources/emotedb.h"
 
-#include "configuration.h"
 #include "log.h"
 #include "imagesprite.h"
 
 #include "resources/resourcemanager.h"
-#include "resources/image.h"
 #include "resources/imageset.h"
 
 namespace
@@ -134,10 +132,8 @@ const Emote *EmoteDB::get(int id)
         logger->log("EmoteDB: Warning, unknown emote ID %d requested", id);
         return &mUnknown;
     }
-    else
-    {
-        return i->second;
-    }
+
+    return i->second;
 }
 
 int EmoteDB::getLast()

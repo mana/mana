@@ -23,7 +23,6 @@
 #include "graphics.h"
 
 #include "gui/gui.h"
-#include "gui/palette.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"

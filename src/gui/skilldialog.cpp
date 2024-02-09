@@ -24,12 +24,10 @@
 #include "log.h"
 #include "playerinfo.h"
 #include "configuration.h"
-#include "eventlistener.h"
 
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/container.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/progressbar.h"
@@ -52,7 +50,6 @@
 
 #include <guichan/font.hpp>
 
-#include <set>
 #include <string>
 
 #define SKILLS_FILE "skills.xml"

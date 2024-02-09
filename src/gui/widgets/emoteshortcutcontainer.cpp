@@ -24,28 +24,17 @@
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
-#include "inventory.h"
 #include "imagesprite.h"
 #include "item.h"
-#include "itemshortcut.h"
 #include "keyboardconfig.h"
-#include "localplayer.h"
-#include "log.h"
-
-#include "gui/palette.h"
 
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/theme.h"
 
-#include "utils/dtor.h"
-
 static const int MAX_ITEMS = 12;
 
-EmoteShortcutContainer::EmoteShortcutContainer():
-    ShortcutContainer(),
-    mEmoteClicked(false),
-    mEmoteMoved(0)
+EmoteShortcutContainer::EmoteShortcutContainer()
 {
     addMouseListener(this);
     addWidgetListener(this);

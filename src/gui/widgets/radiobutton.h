@@ -61,7 +61,7 @@ class RadioButton : public gcn::RadioButton
     private:
         static int instances;
         static float mAlpha;
-        bool mHasMouse;
+        bool mHasMouse = false;
         static Image *radioNormal;
         static Image *radioChecked;
         static Image *radioDisabled;

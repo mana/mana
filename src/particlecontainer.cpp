@@ -168,7 +168,7 @@ void ParticleVector::moveTo(float x, float y)
             if (indexedElement->isExtinct())
             {
                 indexedElement->kill();
-                indexedElement = NULL;
+                indexedElement = nullptr;
             }
         }
     }

@@ -47,11 +47,8 @@ bool ActorSprite::loaded = false;
 
 ActorSprite::ActorSprite(int id):
     mId(id),
-    mStunMode(0),
     mStatusParticleEffects(&mStunParticleEffects, false),
-    mChildParticleEffects(&mStatusParticleEffects, false),
-    mMustResetParticles(false),
-    mUsedTargetCursor(nullptr)
+    mChildParticleEffects(&mStatusParticleEffects, false)
 {}
 
 ActorSprite::~ActorSprite()

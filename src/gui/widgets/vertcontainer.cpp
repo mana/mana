@@ -21,8 +21,7 @@
 #include "gui/widgets/vertcontainer.h"
 
 VertContainer::VertContainer(int spacing):
-        mSpacing(spacing),
-        mCount(0)
+    mSpacing(spacing)
 {
     addWidgetListener(this);
 }

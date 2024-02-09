@@ -53,7 +53,8 @@ class FlowContainer : public Container,
     private:
         int mBoxWidth;
         int mBoxHeight;
-        int mGridWidth, mGridHeight;
+        int mGridWidth = 1;
+        int mGridHeight = 1;
 };
 
 #endif

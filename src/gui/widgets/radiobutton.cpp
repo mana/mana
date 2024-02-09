@@ -38,8 +38,7 @@ Image *RadioButton::radioCheckedHi;
 
 RadioButton::RadioButton(const std::string &caption, const std::string &group,
         bool marked):
-    gcn::RadioButton(caption, group, marked),
-    mHasMouse(false)
+    gcn::RadioButton(caption, group, marked)
 {
     if (instances == 0)
     {
@@ -136,4 +135,3 @@ void RadioButton::mouseExited(gcn::MouseEvent& event)
 {
     mHasMouse = false;
 }
-

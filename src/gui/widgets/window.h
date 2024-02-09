@@ -345,9 +345,9 @@ class Window : public gcn::Window, gcn::WidgetListener
         virtual void close();
 
         /**
-         * Gets the alpha value used by the window, in a GUIChan usable format.
+         * Gets the alpha value used by the window, in a Guichan usable format.
          */
-        int getGuiAlpha();
+        static int getGuiAlpha();
 
     private:
         enum ResizeHandles
@@ -374,19 +374,19 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
-        ResizeGrip *mGrip;            /**< Resize grip */
+        ResizeGrip *mGrip = nullptr;  /**< Resize grip */
         Window *mParent;              /**< The parent window */
-        Layout *mLayout;              /**< Layout handler */
-        std::string mWindowName;      /**< Name of the window */
-        bool mShowTitle;              /**< Window has a title bar */
+        Layout *mLayout = nullptr;    /**< Layout handler */
+        std::string mWindowName = "window"; /**< Name of the window */
+        bool mShowTitle = true;       /**< Window has a title bar */
         bool mModal;                  /**< Window is modal */
-        bool mCloseButton;            /**< Window has a close button */
-        bool mDefaultVisible;         /**< Window's default visibility */
-        bool mSaveVisible;            /**< Window will save visibility */
-        bool mStickyButton;           /**< Window has a sticky button */
-        bool mSticky;                 /**< Window resists hiding*/
-        int mMinWinWidth;             /**< Minimum window width */
-        int mMinWinHeight;            /**< Minimum window height */
+        bool mCloseButton = false;    /**< Window has a close button */
+        bool mDefaultVisible = false; /**< Window's default visibility */
+        bool mSaveVisible = false;    /**< Window will save visibility */
+        bool mStickyButton = false;   /**< Window has a sticky button */
+        bool mSticky = false;         /**< Window resists hiding*/
+        int mMinWinWidth = 100;       /**< Minimum window width */
+        int mMinWinHeight = 40;       /**< Minimum window height */
         int mMaxWinWidth;             /**< Maximum window width */
         int mMaxWinHeight;            /**< Maximum window height */
         int mDefaultX;                /**< Default window X position */
