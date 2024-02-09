@@ -24,4 +24,4 @@ ubuntu-build:
         libsdl2-ttf-dev
         libxml2-dev
     - cmake .
-    - cmake --build . --parallel
+    - cmake --build .
