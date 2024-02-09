@@ -31,6 +31,7 @@ class ItemLinkHandler : public LinkHandler
     public:
         ItemLinkHandler();
         ~ItemLinkHandler() override;
+
         void handleLink(const std::string &link) override;
 
     private:

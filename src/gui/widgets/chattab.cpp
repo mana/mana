@@ -49,15 +49,13 @@
 
 #define MAX_WORD_SIZE 50
 
-ChatTab::ChatTab(const std::string &name) : Tab()
+ChatTab::ChatTab(const std::string &name)
 {
     setCaption(name);
 
     mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mTextOutput->setOpaque(false);
-    mTextOutput->setMaxRow((int) config.getIntValue("ChatLogLength"));
+    mTextOutput->setMaxRows((int) config.getIntValue("ChatLogLength"));
     mTextOutput->setLinkHandler(chatWindow->mItemLinkHandler);
-    mTextOutput->setAlwaysUpdate(false);
 
     mScrollArea = new ScrollArea(mTextOutput);
     mScrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,

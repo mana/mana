@@ -60,10 +60,6 @@ Setup_Colors::Setup_Colors() :
     mTextPreview = new TextPreview(rawmsg);
 
     mPreview = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mPreview->setOpaque(false);
-
-    // don't do anything with links
-    mPreview->setLinkHandler(nullptr);
 
     mPreviewBox = new ScrollArea(mPreview);
     mPreviewBox->setHeight(20);

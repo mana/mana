@@ -47,7 +47,6 @@ HelpWindow::HelpWindow():
     setDefaultSize(500, 400, ImageRect::CENTER);
 
     mBrowserBox = new BrowserBox;
-    mBrowserBox->setOpaque(false);
     mScrollArea = new ScrollArea(mBrowserBox);
     auto *okButton = new Button(_("Close"), "close", this);
 

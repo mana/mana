@@ -27,15 +27,22 @@
 #include <guichan/widget.hpp>
 
 #include <deque>
+#include <optional>
 #include <vector>
 
 class LinkHandler;
+struct LayoutContext;
 
 struct BrowserLink
 {
-    int x1, x2, y1, y2;     /**< Where link is placed */
+    int x1 = 0, x2 = 0, y1 = 0, y2 = 0;     /**< Where link is placed */
     std::string link;
     std::string caption;
+
+    bool contains(int x, int y) const
+    {
+        return x >= x1 && x < x2 && y >= y1 && y < y2;
+    }
 };
 
 struct LinePart
@@ -46,6 +53,15 @@ struct LinePart
     std::string text;
 };
 
+struct TextRow
+{
+    std::string text;
+    std::vector<LinePart> parts;
+    std::vector<BrowserLink> links;
+    int width = 0;
+    int height = 0;
+};
+
 /**
  * A simple browser box able to handle links and forward events to the
  * parent conteiner.
@@ -54,24 +70,18 @@ class BrowserBox : public gcn::Widget,
                    public gcn::MouseListener
 {
     public:
-        BrowserBox(unsigned int mode = AUTO_SIZE, bool opaque = true);
-
+        BrowserBox(unsigned int mode = AUTO_SIZE);
         ~BrowserBox() override;
 
         /**
          * Sets the handler for links.
          */
-        void setLinkHandler(LinkHandler *linkHandler);
-
-        /**
-         * Sets the BrowserBox opacity.
-         */
-        void setOpaque(bool opaque);
+        void setLinkHandler(LinkHandler *handler) { mLinkHandler = handler; }
 
         /**
          * Sets the Highlight mode for links.
          */
-        void setHighlightMode(unsigned int highMode);
+        void setHighlightMode(unsigned int mode) { mHighlightMode = mode; }
 
         /**
          * Sets whether the font will use a shadow for text.
@@ -86,12 +96,12 @@ class BrowserBox : public gcn::Widget,
         /**
          * Sets the maximum numbers of rows in the browser box. 0 = no limit.
          */
-        void setMaxRow(unsigned max) {mMaxRows = max; }
+        void setMaxRows(unsigned maxRows) { mMaxRows = maxRows; }
 
         /**
          * Disable links & user defined colors to be used in chat input.
          */
-        void disableLinksAndUserColors();
+        void disableLinksAndUserColors() { mUseLinksAndUserColors = false; }
 
         /**
          * Adds a text row to the browser.
@@ -158,31 +168,23 @@ class BrowserBox : public gcn::Widget,
             BACKGROUND = 2
         };
 
-        void setAlwaysUpdate(bool n)
-        { mAlwaysUpdate = n; }
-
     private:
         void relayoutText();
-        int layoutTextRow(const std::string &row, int y);
+        void layoutTextRow(TextRow &row, LayoutContext &context);
+        void updateHoveredLink(int x, int y);
 
-        std::deque<std::string> mTextRows;
-
-        std::vector<LinePart> mLineParts;
-        std::vector<BrowserLink> mLinks;
+        std::deque<TextRow> mTextRows;
 
         LinkHandler *mLinkHandler = nullptr;
         unsigned int mMode;
-        unsigned int mHighMode = UNDERLINE | BACKGROUND;
+        unsigned int mHighlightMode = UNDERLINE | BACKGROUND;
         bool mShadows = false;
         bool mOutline = false;
-        bool mOpaque;
         bool mUseLinksAndUserColors = true;
-        int mSelectedLink = -1;
+        std::optional<BrowserLink> mHoveredLink;
         unsigned int mMaxRows = 0;
         int mLastLayoutWidth = 0;
-        int mYStart = 0;
-        int mUpdateTime = -1;
-        bool mAlwaysUpdate = true;
+        int mLastLayoutTime = -1;
 };
 
 #endif

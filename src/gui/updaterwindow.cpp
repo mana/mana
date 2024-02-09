@@ -131,7 +131,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     setMinWidth(320);
     setMinHeight(240);
 
-    mBrowserBox = new BrowserBox;
+    mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
     mScrollArea = new ScrollArea(mBrowserBox);
     mLabel = new Label(_("Connecting..."));
     mProgressBar = new ProgressBar(0.0, 310, 20);
@@ -139,7 +139,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mPlayButton = new Button(_("Play"), "play", this);
 
     mProgressBar->setSmoothProgress(false);
-    mBrowserBox->setOpaque(false);
+    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mPlayButton->setEnabled(false);
 
     place(0, 0, mScrollArea, 5, 3).setPadding(3);

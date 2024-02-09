@@ -259,7 +259,6 @@ public:
         mBrowserBox = new BrowserBox;
         mBrowserBox->setPosition(4, 4);
         mBrowserBox->setHighlightMode(BrowserBox::BACKGROUND);
-        mBrowserBox->setOpaque(false);
         mBrowserBox->setLinkHandler(this);
 
         if (Net::getGuildHandler()->isSupported())

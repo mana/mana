@@ -35,9 +35,36 @@
 
 #include <algorithm>
 
-BrowserBox::BrowserBox(unsigned int mode, bool opaque):
-    mMode(mode),
-    mOpaque(opaque)
+struct LayoutContext
+{
+    LayoutContext(const gcn::Font *font);
+
+    int y = 0;
+    const gcn::Font *font;
+    const int fontHeight;
+    const int minusWidth;
+    const int tildeWidth;
+    int lineHeight;
+    gcn::Color selColor;
+    const gcn::Color textColor;
+};
+
+LayoutContext::LayoutContext(const gcn::Font *font)
+    : font(font)
+    , fontHeight(font->getHeight())
+    , minusWidth(font->getWidth("-"))
+    , tildeWidth(font->getWidth("~"))
+    , lineHeight(fontHeight)
+    , selColor(Theme::getThemeColor(Theme::TEXT))
+    , textColor(Theme::getThemeColor(Theme::TEXT))
+{
+    if (auto *trueTypeFont = dynamic_cast<const TrueTypeFont*>(font))
+        lineHeight = trueTypeFont->getLineHeight();
+}
+
+
+BrowserBox::BrowserBox(unsigned int mode):
+    mMode(mode)
 {
     setFocusable(true);
     addMouseListener(this);
@@ -47,455 +74,410 @@ BrowserBox::~BrowserBox()
 {
 }
 
-void BrowserBox::setLinkHandler(LinkHandler *linkHandler)
-{
-    mLinkHandler = linkHandler;
-}
-
-void BrowserBox::setOpaque(bool opaque)
-{
-    mOpaque = opaque;
-}
-
-void BrowserBox::setHighlightMode(unsigned int highMode)
-{
-    mHighMode = highMode;
-}
-
-void BrowserBox::disableLinksAndUserColors()
-{
-    mUseLinksAndUserColors = false;
-}
-
 void BrowserBox::addRow(const std::string &row)
 {
-    std::string newRow;
-
-    gcn::Font *font = getFont();
-    const int fontHeight = font->getHeight();
-
-    int lineHeight = fontHeight;
-    if (auto *ttf = dynamic_cast<TrueTypeFont*>(font))
-        lineHeight = ttf->getLineHeight();
+    TextRow &newRow = mTextRows.emplace_back();
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
     {
-        BrowserLink bLink;
         std::string tmp = row;
-        std::string::size_type idx1, idx2, idx3;
 
         // Check for links in format "@@link|Caption@@"
-        idx1 = tmp.find("@@");
+        auto idx1 = tmp.find("@@");
         while (idx1 != std::string::npos)
         {
-            idx2 = tmp.find("|", idx1);
-            idx3 = tmp.find("@@", idx2);
+            const auto idx2 = tmp.find("|", idx1);
+            const auto idx3 = tmp.find("@@", idx2);
 
             if (idx2 == std::string::npos || idx3 == std::string::npos)
                 break;
-            bLink.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
-            bLink.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
-            bLink.y1 = static_cast<int>(mTextRows.size()) * lineHeight;
-            bLink.y2 = bLink.y1 + fontHeight;
 
-            newRow += tmp.substr(0, idx1);
+            BrowserLink &link = newRow.links.emplace_back();
+            link.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
+            link.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
 
-            std::string tmp2 = newRow;
-            idx1 = tmp2.find("##");
-            while (idx1 != std::string::npos)
-            {
-                tmp2.erase(idx1, 3);
-                idx1 = tmp2.find("##");
-            }
-            bLink.x1 = font->getWidth(tmp2) - 1;
-            bLink.x2 = bLink.x1 + font->getWidth(bLink.caption) + 1;
-
-            mLinks.push_back(bLink);
-
-            newRow += "##<" + bLink.caption;
+            newRow.text += tmp.substr(0, idx1);
+            newRow.text += "##<" + link.caption;
 
             tmp.erase(0, idx3 + 2);
             if (!tmp.empty())
             {
-                newRow += "##>";
+                newRow.text += "##>";
             }
             idx1 = tmp.find("@@");
         }
 
-        newRow += tmp;
+        newRow.text += tmp;
     }
     // Don't use links and user defined colors
     else
     {
-        newRow = row;
+        newRow.text = row;
     }
 
-    mTextRows.push_back(newRow);
+    // Layout the newly added row
+    LayoutContext context(getFont());
+    context.y = getHeight();
+    layoutTextRow(newRow, context);
 
-    //discard older rows when a row limit has been set
-    if (mMaxRows > 0)
+    // Auto size mode
+    if (mMode == AUTO_SIZE && newRow.width > getWidth())
+        setWidth(newRow.width);
+
+    // Discard older rows when a row limit has been set
+    // (this might invalidate the newRow reference)
+    int removedHeight = 0;
+    while (mMaxRows > 0 && mTextRows.size() > mMaxRows)
     {
-        while (mTextRows.size() > mMaxRows)
+        removedHeight += mTextRows.front().height;
+        mTextRows.pop_front();
+    }
+    if (removedHeight > 0)
+    {
+        for (auto &row : mTextRows)
         {
-            mTextRows.pop_front();
-            for (unsigned int i = 0; i < mLinks.size(); i++)
+            for (auto &part : row.parts)
             {
-                mLinks[i].y1 -= lineHeight;
-                mLinks[i].y2 -= lineHeight;
+                part.y -= removedHeight;
+            }
 
-                if (mLinks[i].y1 < 0)
-                    mLinks.erase(mLinks.begin() + i);
+            for (auto &link : row.links)
+            {
+                link.y1 -= removedHeight;
+                link.y2 -= removedHeight;
             }
         }
     }
 
-    // Auto size mode
-    if (mMode == AUTO_SIZE)
-    {
-        std::string plain = newRow;
-        std::string::size_type index;
-        while ((index = plain.find("##")) != std::string::npos)
-            plain.erase(index, 3);
-
-        // Adjust the BrowserBox size
-        int w = font->getWidth(plain);
-        if (w > getWidth())
-            setWidth(w);
-    }
-
-    mUpdateTime = 0;
-    maybeRelayoutText();
+    setHeight(context.y - removedHeight);
 }
 
 void BrowserBox::clearRows()
 {
     mTextRows.clear();
-    mLinks.clear();
-    setWidth(0);
-    setHeight(0);
-    mSelectedLink = -1;
+    setSize(0, 0);
+    mHoveredLink.reset();
     maybeRelayoutText();
 }
-
-struct MouseOverLink
-{
-    MouseOverLink(int x, int y)
-        : mX(x), mY(y)
-    {}
-
-    bool operator() (BrowserLink &link) const
-    {
-        return (mX >= link.x1 && mX < link.x2 &&
-                mY >= link.y1 && mY < link.y2);
-    }
-
-    int mX, mY;
-};
 
 void BrowserBox::mousePressed(gcn::MouseEvent &event)
 {
     if (!mLinkHandler)
         return;
 
-    auto i = find_if(mLinks.begin(), mLinks.end(),
-            MouseOverLink(event.getX(), event.getY()));
+    updateHoveredLink(event.getX(), event.getY());
 
-    if (i != mLinks.end())
-        mLinkHandler->handleLink(i->link);
+    if (mHoveredLink)
+        mLinkHandler->handleLink(mHoveredLink->link);
 }
 
 void BrowserBox::mouseMoved(gcn::MouseEvent &event)
 {
-    auto i = find_if(mLinks.begin(), mLinks.end(),
-            MouseOverLink(event.getX(), event.getY()));
-
-    mSelectedLink = (i != mLinks.end())
-        ? static_cast<int>(i - mLinks.begin()) : -1;
+    updateHoveredLink(event.getX(), event.getY());
 }
 
 void BrowserBox::draw(gcn::Graphics *graphics)
 {
     const gcn::ClipRectangle &cr = graphics->getCurrentClipArea();
-    mYStart = cr.y - cr.yOffset;
-    int yEnd = mYStart + cr.height;
-    if (mYStart < 0)
-        mYStart = 0;
+    int yStart = cr.y - cr.yOffset;
+    int yEnd = yStart + cr.height;
+    if (yStart < 0)
+        yStart = 0;
 
     if (getWidth() != mLastLayoutWidth)
         maybeRelayoutText();
 
-    if (mOpaque)
+    if (mHoveredLink)
     {
-        graphics->setColor(Theme::getThemeColor(Theme::BACKGROUND));
-        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
-    }
+        auto &link = *mHoveredLink;
 
-    if (mSelectedLink >= 0 && (unsigned) mSelectedLink < mLinks.size())
-    {
-        if ((mHighMode & BACKGROUND))
+        if (mHighlightMode & BACKGROUND)
         {
             graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT));
             graphics->fillRectangle(gcn::Rectangle(
-                        mLinks[mSelectedLink].x1,
-                        mLinks[mSelectedLink].y1,
-                        mLinks[mSelectedLink].x2 - mLinks[mSelectedLink].x1,
-                        mLinks[mSelectedLink].y2 - mLinks[mSelectedLink].y1
+                        link.x1,
+                        link.y1,
+                        link.x2 - link.x1,
+                        link.y2 - link.y1
                         ));
         }
 
-        if ((mHighMode & UNDERLINE))
+        if (mHighlightMode & UNDERLINE)
         {
             graphics->setColor(Theme::getThemeColor(Theme::HYPERLINK));
             graphics->drawLine(
-                    mLinks[mSelectedLink].x1,
-                    mLinks[mSelectedLink].y2,
-                    mLinks[mSelectedLink].x2,
-                    mLinks[mSelectedLink].y2);
+                    link.x1,
+                    link.y2,
+                    link.x2,
+                    link.y2);
         }
     }
 
-    for (const auto &part : mLineParts)
+    for (const auto &row : mTextRows)
     {
-        if (part.y + 50 < mYStart)
-            continue;
-        if (part.y > yEnd)
-            break;
-
-        // Use the correct font
-        graphics->setFont(getFont());
-
-        // Handle text shadows
-        if (mShadows)
+        for (const auto &part : row.parts)
         {
-            graphics->setColor(Theme::getThemeColor(Theme::SHADOW,
-                                                    part.color.a / 2));
+            if (part.y + 50 < yStart)
+                continue;
+            if (part.y > yEnd)
+                return;
+
+            // Use the correct font
+            graphics->setFont(getFont());
+
+            // Handle text shadows
+            if (mShadows)
+            {
+                graphics->setColor(Theme::getThemeColor(Theme::SHADOW,
+                                                        part.color.a / 2));
+
+                if (mOutline)
+                    graphics->drawText(part.text, part.x + 2, part.y + 2);
+                else
+                    graphics->drawText(part.text, part.x + 1, part.y + 1);
+            }
 
             if (mOutline)
-                graphics->drawText(part.text, part.x + 2, part.y + 2);
-            else
-                graphics->drawText(part.text, part.x + 1, part.y + 1);
-        }
+            {
+                // Text outline
+                graphics->setColor(Theme::getThemeColor(Theme::OUTLINE,
+                                                        part.color.a / 4));
+                graphics->drawText(part.text, part.x + 1, part.y);
+                graphics->drawText(part.text, part.x - 1, part.y);
+                graphics->drawText(part.text, part.x, part.y + 1);
+                graphics->drawText(part.text, part.x, part.y - 1);
+            }
 
-        if (mOutline)
-        {
-            // Text outline
-            graphics->setColor(Theme::getThemeColor(Theme::OUTLINE,
-                                                    part.color.a / 4));
-            graphics->drawText(part.text, part.x + 1, part.y);
-            graphics->drawText(part.text, part.x - 1, part.y);
-            graphics->drawText(part.text, part.x, part.y + 1);
-            graphics->drawText(part.text, part.x, part.y - 1);
+            // the main text
+            graphics->setColor(part.color);
+            graphics->drawText(part.text, part.x, part.y);
         }
-
-        // the main text
-        graphics->setColor(part.color);
-        graphics->drawText(part.text, part.x, part.y);
     }
 }
 
 /**
- * Relayouts all text rows.
+ * Relayouts all text rows and returns the new height of the BrowserBox.
  */
 void BrowserBox::relayoutText()
 {
-    int y = 0;
-    unsigned link = 0;
-    const gcn::Font *font = getFont();
+    LayoutContext context(getFont());
 
-    const int fontHeight = font->getHeight();
-    const int minusWidth = font->getWidth("-");
-    const int tildeWidth = font->getWidth("~");
+    for (auto &row : mTextRows)
+        layoutTextRow(row, context);
 
-    int lineHeight = fontHeight;
-    if (auto *trueTypeFont = dynamic_cast<const TrueTypeFont*>(font))
-        lineHeight = trueTypeFont->getLineHeight();
+    mLastLayoutWidth = getWidth();
+    mLastLayoutTime = tick_time;
+    setHeight(context.y);
+}
 
-    gcn::Color selColor = Theme::getThemeColor(Theme::TEXT);
-    const gcn::Color &textColor = Theme::getThemeColor(Theme::TEXT);
+/**
+ * Layers out the given \a row of text starting at the given \a context position.
+ * @return the context position for the next row.
+ */
+void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
+{
+    const int startY = context.y;
+    row.parts.clear();
 
-    mLineParts.clear();
+    unsigned linkIndex = 0;
+    bool wrapped = false;
+    int x = 0;
 
-    for (const auto &row : mTextRows)
+    // Check for separator lines
+    if (row.text.find("---", 0) == 0)
     {
-        bool wrapped = false;
-        int x = 0;
-
-        // Check for separator lines
-        if (row.find("---", 0) == 0)
+        for (x = 0; x < getWidth(); x += context.minusWidth - 1)
         {
-            for (x = 0; x < getWidth(); x++)
-            {
-                mLineParts.push_back(LinePart { x, y, selColor, "-" });
-                x += minusWidth - 2;
-            }
-
-            y += lineHeight;
-            continue;
+            row.parts.push_back(LinePart { x, context.y, context.selColor, "-" });
         }
 
-        gcn::Color prevColor = selColor;
+        context.y += row.height;
 
-        // TODO: Check if we must take texture size limits into account here
-        // TODO: Check if some of the O(n) calls can be removed
-        for (std::string::size_type start = 0, end = std::string::npos;
-                start != std::string::npos;
-                start = end, end = std::string::npos)
+        row.width = getWidth();
+        row.height = context.y - startY;
+        return;
+    }
+
+    gcn::Color prevColor = context.selColor;
+
+    // TODO: Check if we must take texture size limits into account here
+    // TODO: Check if some of the O(n) calls can be removed
+    for (std::string::size_type start = 0, end = std::string::npos;
+            start != std::string::npos;
+            start = end, end = std::string::npos)
+    {
+        // Wrapped line continuation shall be indented
+        if (wrapped)
         {
-            // Wrapped line continuation shall be indented
-            if (wrapped)
-            {
-                y += lineHeight;
-                x = 15;
-                wrapped = false;
-            }
+            context.y += context.lineHeight;
+            x = 15;
+            wrapped = false;
+        }
 
-            // "Tokenize" the string at control sequences
-            if (mUseLinksAndUserColors)
-                end = row.find("##", start + 1);
+        // "Tokenize" the string at control sequences
+        if (mUseLinksAndUserColors)
+            end = row.text.find("##", start + 1);
 
-            if (mUseLinksAndUserColors ||
-                (!mUseLinksAndUserColors && (start == 0)))
+        if (mUseLinksAndUserColors ||
+            (!mUseLinksAndUserColors && (start == 0)))
+        {
+            // Check for color change in format "##x", x = [L,P,0..9]
+            if (row.text.find("##", start) == start && row.text.size() > start + 2)
             {
-                // Check for color change in format "##x", x = [L,P,0..9]
-                if (row.find("##", start) == start && row.size() > start + 2)
+                const char c = row.text.at(start + 2);
+
+                bool valid;
+                const gcn::Color col = Theme::getThemeColor(c, valid);
+
+                if (c == '>')
                 {
-                    const char c = row.at(start + 2);
-
-                    bool valid;
-                    const gcn::Color col = Theme::getThemeColor(c, valid);
-
-                    if (c == '>')
-                    {
-                        selColor = prevColor;
-                    }
-                    else if (c == '<')
-                    {
-                        prevColor = selColor;
-                        selColor = col;
-                    }
-                    else if (valid)
-                    {
-                        selColor = col;
-                    }
-                    else
-                    {
-                        switch (c)
-                        {
-                            case '1': selColor = RED; break;
-                            case '2': selColor = GREEN; break;
-                            case '3': selColor = BLUE; break;
-                            case '4': selColor = ORANGE; break;
-                            case '5': selColor = YELLOW; break;
-                            case '6': selColor = PINK; break;
-                            case '7': selColor = PURPLE; break;
-                            case '8': selColor = GRAY; break;
-                            case '9': selColor = BROWN; break;
-                            case '0':
-                            default:
-                                selColor = textColor;
-                        }
-                    }
-
-                    // Update the position of the links
-                    if (c == '<' && link < mLinks.size())
-                    {
-                        const int size =
-                            font->getWidth(mLinks[link].caption) + 1;
-
-                        mLinks[link].x1 = x;
-                        mLinks[link].y1 = y;
-                        mLinks[link].x2 = mLinks[link].x1 + size;
-                        mLinks[link].y2 = y + fontHeight - 1;
-                        link++;
-                    }
-                    start += 3;
-
-                    if (start == row.size())
-                        break;
+                    context.selColor = prevColor;
                 }
-            }
-
-            if (start >= row.length())
-                break;
-
-            std::string::size_type len =
-                end == std::string::npos ? end : end - start;
-
-            std::string part = row.substr(start, len);
-
-            // Auto wrap mode
-            if (mMode == AUTO_WRAP && getWidth() > 0
-                && font->getWidth(part) > 0
-                && (x + font->getWidth(part) + 10) > getWidth())
-            {
-                bool forced = false;
-
-                /* FIXME: This code layout makes it easy to crash remote
-                   clients by talking garbage. Forged long utf-8 characters
-                   will cause either a buffer underflow in substr or an
-                   infinite loop in the main loop. */
-                do
+                else if (c == '<')
                 {
-                    if (!forced)
-                        end = row.rfind(' ', end);
-
-                    // Check if we have to (stupidly) force-wrap
-                    if (end == std::string::npos || end <= start)
-                    {
-                        forced = true;
-                        end = row.size();
-                        x += tildeWidth; // Account for the wrap-notifier
-                        continue;
-                    }
-
-                    // Skip to the start of the current character
-                    while ((row[end] & 192) == 128)
-                        end--;
-                    end--; // And then to the last byte of the previous one
-
-                    part = row.substr(start, end - start + 1);
+                    prevColor = context.selColor;
+                    context.selColor = col;
                 }
-                while (end > start && font->getWidth(part) > 0
-                       && (x + font->getWidth(part) + 10) > getWidth());
-
-                if (forced)
+                else if (valid)
                 {
-                    x -= tildeWidth; // Remove the wrap-notifier accounting
-                    mLineParts.push_back(LinePart { getWidth() - tildeWidth,
-                                                    y, selColor, "~" });
-                    end++; // Skip to the next character
+                    context.selColor = col;
                 }
                 else
                 {
-                    end += 2; // Skip to after the space
+                    switch (c)
+                    {
+                        case '1': context.selColor = RED; break;
+                        case '2': context.selColor = GREEN; break;
+                        case '3': context.selColor = BLUE; break;
+                        case '4': context.selColor = ORANGE; break;
+                        case '5': context.selColor = YELLOW; break;
+                        case '6': context.selColor = PINK; break;
+                        case '7': context.selColor = PURPLE; break;
+                        case '8': context.selColor = GRAY; break;
+                        case '9': context.selColor = BROWN; break;
+                        case '0':
+                        default:
+                            context.selColor = context.textColor;
+                    }
                 }
 
-                wrapped = true;
+                // Update the position of the links
+                if (c == '<' && linkIndex < row.links.size())
+                {
+                    auto &link = row.links[linkIndex];
+                    const int size = context.font->getWidth(link.caption) + 1;
+
+                    link.x1 = x;
+                    link.y1 = context.y;
+                    link.x2 = link.x1 + size;
+                    link.y2 = context.y + context.fontHeight - 1;
+
+                    linkIndex++;
+                }
+                start += 3;
+
+                if (start == row.text.size())
+                    break;
             }
-
-            mLineParts.push_back(LinePart { x, y, selColor, part });
-
-            const int partWidth = font->getWidth(part);
-            if (mMode == AUTO_WRAP && partWidth == 0)
-                break;
-
-            x += partWidth;
         }
 
-        y += lineHeight;
+        if (start >= row.text.length())
+            break;
+
+        std::string::size_type len =
+            end == std::string::npos ? end : end - start;
+
+        std::string part = row.text.substr(start, len);
+
+        // Auto wrap mode
+        if (mMode == AUTO_WRAP && getWidth() > 0
+            && context.font->getWidth(part) > 0
+            && (x + context.font->getWidth(part) + 10) > getWidth())
+        {
+            bool forced = false;
+
+            /* FIXME: This code layout makes it easy to crash remote
+               clients by talking garbage. Forged long utf-8 characters
+               will cause either a buffer underflow in substr or an
+               infinite loop in the main loop. */
+            do
+            {
+                if (!forced)
+                    end = row.text.rfind(' ', end);
+
+                // Check if we have to (stupidly) force-wrap
+                if (end == std::string::npos || end <= start)
+                {
+                    forced = true;
+                    end = row.text.size();
+                    x += context.tildeWidth; // Account for the wrap-notifier
+                    continue;
+                }
+
+                // Skip to the start of the current character
+                while ((row.text[end] & 192) == 128)
+                    end--;
+                end--; // And then to the last byte of the previous one
+
+                part = row.text.substr(start, end - start + 1);
+            }
+            while (end > start && context.font->getWidth(part) > 0
+                   && (x + context.font->getWidth(part) + 10) > getWidth());
+
+            if (forced)
+            {
+                x -= context.tildeWidth; // Remove the wrap-notifier accounting
+                row.parts.push_back(LinePart { getWidth() - context.tildeWidth,
+                                               context.y, context.selColor, "~" });
+                end++; // Skip to the next character
+            }
+            else
+            {
+                end += 2; // Skip to after the space
+            }
+
+            wrapped = true;
+        }
+
+        row.parts.push_back(LinePart { x, context.y, context.selColor, part });
+
+        const int partWidth = context.font->getWidth(part);
+        row.width = std::max(row.width, x + partWidth);
+
+        if (mMode == AUTO_WRAP && partWidth == 0)
+            break;
+
+        x += partWidth;
     }
 
-    mLastLayoutWidth = getWidth();
-    setHeight(y);
+    context.y += context.lineHeight;
+    row.height = context.y - startY;
+}
+
+void BrowserBox::updateHoveredLink(int x, int y)
+{
+    mHoveredLink.reset();
+
+    for (const auto &row : mTextRows)
+    {
+        for (const auto &link : row.links)
+        {
+            if (link.contains(x, y))
+            {
+                mHoveredLink = link;
+                return;
+            }
+        }
+    }
 }
 
 void BrowserBox::maybeRelayoutText()
 {
-    if (mAlwaysUpdate || !mUpdateTime || std::abs(mUpdateTime - tick_time) > 10
-        || mTextRows.size() < 3)
-    {
-        relayoutText();
-        mUpdateTime = tick_time;
-    }
+    // Reduce relayouting frequency when there is a lot of text
+    if (mTextRows.size() > 100)
+        if (mLastLayoutTime && std::abs(mLastLayoutTime - tick_time) < 10)
+            return;
+
+    relayoutText();
 }
