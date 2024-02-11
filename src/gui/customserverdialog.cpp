@@ -194,7 +194,7 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
             if (mPortField->getText().empty())
                 serverInfo.port = ServerInfo::defaultPortForServerType(serverInfo.type);
             else
-                serverInfo.port = (short) atoi(mPortField->getText().c_str());
+                serverInfo.port = static_cast<uint16_t>(atoi(mPortField->getText().c_str()));
 
             // Tell the server has to be saved
             serverInfo.save = true;

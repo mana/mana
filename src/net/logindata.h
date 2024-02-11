@@ -40,7 +40,7 @@ public:
     std::string email;
     std::string captchaResponse;
 
-    Gender gender;
+    Gender gender = GENDER_UNSPECIFIED;
 
     bool remember;            /**< Whether to store the username. */
     bool registerLogin;       /**< Whether an account is being registered. */

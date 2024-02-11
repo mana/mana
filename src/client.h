@@ -145,9 +145,10 @@ public:
         std::string configDir;
         std::string localDataDir;
         std::string screenshotDir;
+        std::string serverType;
 
         std::string serverName;
-        short serverPort = 0;
+        uint16_t serverPort = 0;
     };
 
     Client(const Options &options);

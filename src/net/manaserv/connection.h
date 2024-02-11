@@ -25,8 +25,6 @@
 #include <enet/enet.h>
 #include "net/manaserv/network.h"
 
-#include <iosfwd>
-
 namespace ManaServ
 {
     class MessageOut;
@@ -49,7 +47,7 @@ namespace ManaServ
              * This method is non-blocking, use isConnected to check whether the
              * server is connected.
              */
-            bool connect(const std::string &address, short port);
+            bool connect(const std::string &address, enet_uint16 port);
 
             /**
              * Disconnects from the given server.

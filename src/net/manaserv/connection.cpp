@@ -42,7 +42,7 @@ Connection::~Connection()
     connections--;
 }
 
-bool Connection::connect(const std::string &address, short port)
+bool Connection::connect(const std::string &address, enet_uint16 port)
 {
     logger->log("Net::Connection::connect(%s, %i)", address.c_str(), port);
 

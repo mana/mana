@@ -378,20 +378,34 @@ Client::Client(const Options &options):
     // Initialize default server
     mCurrentServer.hostname = options.serverName;
     mCurrentServer.port = options.serverPort;
+    mCurrentServer.type = ServerInfo::parseType(options.serverType);
     loginData.username = options.username;
     loginData.password = options.password;
     loginData.remember = config.getBoolValue("remember");
     loginData.registerLogin = false;
 
-    if (mCurrentServer.hostname.empty())
-        mCurrentServer.hostname = branding.getValue("defaultServer", std::string());
+    if (mCurrentServer.type == ServerInfo::UNKNOWN && mCurrentServer.port != 0)
+    {
+        mCurrentServer.type = ServerInfo::defaultServerTypeForPort(mCurrentServer.port);
+    }
+
+    if (mCurrentServer.type == ServerInfo::UNKNOWN)
+    {
+        mCurrentServer.type = ServerInfo::parseType(
+                    branding.getValue("defaultServerType", "tmwathena"));
+    }
 
     if (mCurrentServer.port == 0)
     {
-        mCurrentServer.port = (unsigned short) branding.getValue("defaultPort",
-                                                                  DEFAULT_PORT);
-        mCurrentServer.type = ServerInfo::parseType(
-                           branding.getValue("defaultServerType", "tmwathena"));
+        const uint16_t defaultPort = ServerInfo::defaultPortForServerType(mCurrentServer.type);
+        mCurrentServer.port = static_cast<uint16_t>(
+                    branding.getValue("defaultPort", defaultPort));
+    }
+
+    const bool noServerList = branding.getValue("onlineServerList", std::string()).empty();
+    if (mCurrentServer.hostname.empty() && noServerList)
+    {
+        mCurrentServer.hostname = branding.getValue("defaultServer", std::string());
     }
 
     if (chatLogger)
@@ -607,10 +621,7 @@ int Client::exec()
                     // If a server was passed on the command line, or branding
                     // provides a server and a blank server list, we skip the
                     // server selection dialog.
-                    if ((!mOptions.serverName.empty() && mOptions.serverPort)
-                        || (!branding.getValue("defaultServer","").empty() &&
-                            branding.getValue("defaultPort",0) &&
-                            branding.getValue("onlineServerList", "").empty()))
+                    if (!mCurrentServer.hostname.empty() && mCurrentServer.port)
                     {
                         mState = STATE_CONNECT_SERVER;
 
@@ -933,6 +944,7 @@ int Client::exec()
                     Net::getLoginHandler()->disconnect();
                     Net::getGameHandler()->disconnect();
 
+                    mCurrentServer.hostname.clear();
                     mState = STATE_CHOOSE_SERVER;
                     break;
 

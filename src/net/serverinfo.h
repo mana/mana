@@ -24,8 +24,9 @@
 
 #include "utils/stringutils.h"
 
-#include <string>
+#include <cstdint>
 #include <deque>
+#include <string>
 
 class ServerInfo
 {
@@ -41,7 +42,7 @@ public:
     Type type = UNKNOWN;
     std::string name;
     std::string hostname;
-    unsigned short port = 0;
+    uint16_t port = 0;
 
     std::string description;
     VersionString version = std::make_pair(0, std::string());
@@ -51,7 +52,7 @@ public:
 
     bool isValid() const
     {
-        return !(hostname.empty() || port == 0 || type == UNKNOWN);
+        return !hostname.empty() && port != 0 && type != UNKNOWN;
     }
 
     void clear()
@@ -76,23 +77,34 @@ public:
         if (compareStrI(type, "tmwathena") == 0)
             return TMWATHENA;
         // Used for backward compatibility
-        else if (compareStrI(type, "eathena") == 0)
+        if (compareStrI(type, "eathena") == 0)
             return TMWATHENA;
-        else if (compareStrI(type, "manaserv") == 0)
+        if (compareStrI(type, "manaserv") == 0)
             return MANASERV;
         return UNKNOWN;
     }
 
-    static unsigned short defaultPortForServerType(Type type)
+    static uint16_t defaultPortForServerType(Type type)
     {
         switch (type)
         {
             default:
+            case ServerInfo::UNKNOWN:
+                return 0;
             case ServerInfo::TMWATHENA:
                 return 6901;
             case ServerInfo::MANASERV:
                 return 9601;
         }
+    }
+
+    static Type defaultServerTypeForPort(uint16_t port)
+    {
+        if (port == 6901)
+            return TMWATHENA;
+        if (port == 9601)
+            return MANASERV;
+        return UNKNOWN;
     }
 };
 

@@ -51,7 +51,6 @@
 #include <guichan/font.hpp>
 
 #include <cstdlib>
-#include <iostream>
 #include <string>
 
 static const int MAX_SERVERLIST = 6;
@@ -65,13 +64,13 @@ static std::string serverTypeToString(ServerInfo::Type type)
     case ServerInfo::MANASERV:
         return "ManaServ";
     default:
-        return "";
+        return std::string();
     }
 }
 
 ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
         mServers(servers),
-        mVersionStrings(servers->size(), VersionString(0, "")),
+        mVersionStrings(servers->size(), VersionString(0, std::string())),
         mParent(parent)
 {
 }
@@ -96,7 +95,7 @@ std::string ServersListModel::getElementAt(int elementIndex)
 void ServersListModel::setVersionString(int index, const std::string &version)
 {
     if (version.empty())
-        mVersionStrings[index] = VersionString(0, "");
+        mVersionStrings[index] = VersionString(0, std::string());
     else
     {
         int width = gui->getFont()->getWidth(version);
@@ -421,7 +420,7 @@ void ServerDialog::downloadServerList()
 
     // Fall back to manasource.org when neither branding nor config set it
     if (listFile.empty())
-        listFile = "http://www.manasource.org/serverlist.xml";
+        listFile = "https://www.manasource.org/serverlist.xml";
 
     mDownload = new Net::Download(this, listFile, &downloadUpdate);
     mDownload->setFile(mDir + "/serverlist.xml");
@@ -490,7 +489,7 @@ void ServerDialog::loadServers()
         {
             if (xmlStrEqual(subNode->name, BAD_CAST "connection"))
             {
-                server.hostname = XML::getProperty(subNode, "hostname", "");
+                server.hostname = XML::getProperty(subNode, "hostname", std::string());
                 server.port = XML::getProperty(subNode, "port", 0);
                 if (server.port == 0)
                 {
@@ -552,13 +551,13 @@ void ServerDialog::loadCustomServers()
         const std::string descriptionKey = "MostUsedServerDescription" + index;
 
         ServerInfo server;
-        server.name = config.getValue(nameKey, "");
-        server.hostname = config.getValue(hostNameKey, "");
-        server.type = ServerInfo::parseType(config.getValue(typeKey, ""));
+        server.name = config.getValue(nameKey, std::string());
+        server.hostname = config.getValue(hostNameKey, std::string());
+        server.type = ServerInfo::parseType(config.getValue(typeKey, std::string()));
 
-        const int defaultPort = ServerInfo::defaultPortForServerType(server.type);
-        server.port = (unsigned short) config.getValue(portKey, defaultPort);
-        server.description = config.getValue(descriptionKey, "");
+        const uint16_t defaultPort = ServerInfo::defaultPortForServerType(server.type);
+        server.port = static_cast<uint16_t>(config.getValue(portKey, defaultPort));
+        server.description = config.getValue(descriptionKey, std::string());
 
         // Stop on the first invalid server
         if (!server.isValid())
@@ -623,7 +622,7 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
 
     // Insert an invalid entry at the end to make the loading stop there
     if (savedServerCount < MAX_SERVERLIST)
-        config.setValue("MostUsedServerName" + toString(savedServerCount), "");
+        config.setValue("MostUsedServerName" + toString(savedServerCount), std::string());
 
     // Restore the correct description
     if (index < 0)

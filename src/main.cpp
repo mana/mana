@@ -53,6 +53,7 @@ static void printHelp()
         << _("  -c --character      : Login with this character") << endl
         << _("  -s --server         : Login server name or IP") << endl
         << _("  -p --port           : Login server port") << endl
+        << _("  -y --server-type    : Login server type") << endl
         << _("     --update-host    : Use this update host") << endl
         << _("  -D --default        : Choose default character server and "
                                      "character") << endl
@@ -74,7 +75,7 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Client::Options &options)
 {
-    const char *optstring = "hvud:U:P:Dc:s:p:C:";
+    const char *optstring = "hvud:U:P:Dc:s:p:C:y:";
 
     const struct option long_options[] = {
         { "config-dir",     required_argument, nullptr, 'C' },
@@ -93,6 +94,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
         { "chat-log-dir",   required_argument, nullptr, 'T' },
         { "version",        no_argument,       nullptr, 'v' },
         { "screenshot-dir", required_argument, nullptr, 'i' },
+        { "server-type",    required_argument, nullptr, 'y' },
         { nullptr }
     };
 
@@ -132,7 +134,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 options.serverName = optarg;
                 break;
             case 'p':
-                options.serverPort = (short) atoi(optarg);
+                options.serverPort = static_cast<uint16_t>(atoi(optarg));
                 break;
             case 'u':
                 options.skipUpdate = true;
@@ -154,6 +156,9 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 break;
             case 'i':
                 options.screenshotDir = optarg;
+                break;
+            case 'y':
+                options.serverType = optarg;
                 break;
         }
     }

@@ -22,14 +22,12 @@
 #include "gui/logindialog.h"
 
 #include "client.h"
-#include "configuration.h"
 
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
-#include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/passwordfield.h"
@@ -40,12 +38,6 @@
 #include "net/net.h"
 
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
-
-static const int MAX_SERVER_LIST_SIZE = 5;
-static const int LOGIN_DIALOG_WIDTH = 220;
-static const int LOGIN_DIALOG_HEIGHT = 140;
-static const int FIELD_WIDTH = LOGIN_DIALOG_WIDTH - 70;
 
 LoginDialog::LoginDialog(LoginData *loginData):
     Window(_("Login")),
@@ -93,9 +85,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mLoginButton->setEnabled(canSubmit());
 }
 
-LoginDialog::~LoginDialog()
-{
-}
+LoginDialog::~LoginDialog() = default;
 
 void LoginDialog::action(const gcn::ActionEvent &event)
 {
