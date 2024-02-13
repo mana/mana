@@ -37,11 +37,9 @@ Resource *SoundEffect::load(SDL_RWops *rw)
     {
         return new SoundEffect(tmpSoundEffect);
     }
-    else
-    {
-        logger->log("Error, failed to load sound effect: %s", Mix_GetError());
-        return nullptr;
-    }
+
+    logger->log("Error, failed to load sound effect: %s", Mix_GetError());
+    return nullptr;
 }
 
 bool SoundEffect::play(int loops, int volume, int channel)
