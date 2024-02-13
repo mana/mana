@@ -37,8 +37,6 @@ class GameHandler
 
         virtual void disconnect() = 0;
 
-        virtual void who() = 0;
-
         virtual void quit() = 0;
 
         virtual bool removeDeadBeings() const = 0;

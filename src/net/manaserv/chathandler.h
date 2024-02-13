@@ -23,7 +23,6 @@
 #define NET_MANASERV_CHATHANDLER_H
 
 #include "net/chathandler.h"
-#include "net/serverinfo.h"
 
 #include "net/manaserv/messagehandler.h"
 
@@ -70,6 +69,8 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
         void kickUser(int channelId, const std::string &name) override;
 
         void who() override;
+
+        bool whoSupported() const override { return true; }
 
     private:
         /**

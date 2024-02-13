@@ -24,7 +24,7 @@
 
 #include "guild.h"
 
-#include <iosfwd>
+#include <string>
 
 class Being;
 
@@ -33,7 +33,7 @@ namespace Net {
 class GuildHandler
 {
     public:
-        virtual ~GuildHandler() {}
+        virtual ~GuildHandler() = default;
 
         virtual bool isSupported() { return false; }
 

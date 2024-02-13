@@ -27,7 +27,6 @@
 #include "net/serverinfo.h"
 
 #include "net/tmwa/messagehandler.h"
-#include "net/tmwa/messagein.h"
 #include "net/tmwa/messageout.h"
 
 #include <SDL_net.h>
@@ -35,6 +34,7 @@
 
 #include <map>
 #include <string>
+#include <unordered_map>
 
 /**
  * Protocol version, reported to the eAthena char and mapserver who can adjust
@@ -44,6 +44,8 @@
 // 10 -> 11: SMSG_MAP_MASK DONE
 
 namespace TmwAthena {
+
+struct PacketInfo;
 
 class Network
 {
@@ -75,10 +77,6 @@ class Network
 
         void skip(int len);
 
-        bool messageReady();
-
-        MessageIn getNextMessage();
-
         void dispatchMessages();
 
         void flush();
@@ -106,24 +104,24 @@ class Network
 
         void receive();
 
-        TCPsocket mSocket;
+        TCPsocket mSocket = nullptr;
 
         ServerInfo mServer;
 
         char *mInBuffer, *mOutBuffer;
-        unsigned int mInSize, mOutSize;
+        unsigned int mInSize = 0;
+        unsigned int mOutSize = 0;
 
-        unsigned int mToSkip;
+        unsigned int mToSkip = 0;
 
-        int mState;
+        int mState = IDLE;
         std::string mError;
 
-        SDL_Thread *mWorkerThread;
+        SDL_Thread *mWorkerThread = nullptr;
         Mutex mMutex;
 
-        using MessageHandlers = std::map<Uint16, MessageHandler *>;
-        using MessageHandlerIterator = MessageHandlers::iterator;
-        MessageHandlers mMessageHandlers;
+        std::unordered_map<uint16_t, const PacketInfo*> mPacketInfo;
+        std::map<uint16_t, MessageHandler *> mMessageHandlers;
 
         static Network *mInstance;
 };

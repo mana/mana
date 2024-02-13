@@ -115,11 +115,6 @@ void GameHandler::disconnect()
         chatHandler->disconnect();
 }
 
-void GameHandler::who()
-{
-    // TODO
-}
-
 void GameHandler::quit(bool reconnectAccount)
 {
     MessageOut msg(PGMSG_DISCONNECT);

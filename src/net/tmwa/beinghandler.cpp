@@ -20,7 +20,6 @@
  */
 
 #include "net/tmwa/beinghandler.h"
-#include "net/tmwa/playerhandler.h"
 
 #include "actorspritemanager.h"
 #include "being.h"
@@ -33,14 +32,15 @@
 #include "party.h"
 #include "playerrelations.h"
 
+#include "net/net.h"
+#include "net/playerhandler.h"
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
-#include "resources/hairdb.h"
 #include "resources/emotedb.h"
+#include "resources/hairdb.h"
 
-#include <iostream>
 #include <cmath>
 
 namespace TmwAthena {
@@ -56,13 +56,11 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_BEING_VISIBLE,
         SMSG_BEING_MOVE,
         SMSG_BEING_SPAWN,
-        SMSG_BEING_MOVE2,
         SMSG_BEING_REMOVE,
         SMSG_SKILL_DAMAGE,
         SMSG_BEING_ACTION,
         SMSG_BEING_SELFEFFECT,
         SMSG_BEING_EMOTION,
-        SMSG_BEING_CHANGE_LOOKS,
         SMSG_BEING_CHANGE_LOOKS2,
         SMSG_BEING_NAME_RESPONSE,
         SMSG_PLAYER_GUILD_PARTY_INFO,
@@ -288,31 +286,6 @@ void BeingHandler::handleMessage(MessageIn &msg)
              // Do nothing.
              break;
 
-        case SMSG_BEING_MOVE2:
-        {
-            /*
-             * A simplified movement packet, used by the
-             * later versions of eAthena for both mobs and
-             * players
-             */
-            dstBeing = actorSpriteManager->findBeing(msg.readInt32());
-
-            /*
-             * This packet doesn't have enough info to actually
-             * create a new being, so if the being isn't found,
-             * we'll just pretend the packet didn't happen
-             */
-
-            if (!dstBeing)
-                break;
-
-            Uint16 srcX, srcY, dstX, dstY;
-            msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-            msg.readInt32();  // Server tick
-            handleMoveMessage(map, dstBeing, srcX, srcY, dstX, dstY);
-        }
-            break;
-
         case SMSG_BEING_REMOVE:
             // A being should be removed or has died
             id = msg.readInt32();
@@ -435,7 +408,6 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             break;
 
-        case SMSG_BEING_CHANGE_LOOKS:
         case SMSG_BEING_CHANGE_LOOKS2:
         {
             /*
@@ -456,18 +428,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
 
             int type = msg.readInt8();
-            int id = 0;
-            int id2 = 0;
-
-            if (msg.getId() == SMSG_BEING_CHANGE_LOOKS)
-            {
-                id = msg.readInt8();
-            }
-            else
-            {        // SMSG_BEING_CHANGE_LOOKS2
-                id = msg.readInt16();
-                id2 = msg.readInt16();
-            }
+            int id = msg.readInt16();
+            int id2 = msg.readInt16();
 
             switch (type)
             {

@@ -44,8 +44,6 @@ class GameHandler : public MessageHandler, public Net::GameHandler
 
         void disconnect() override;
 
-        void who() override;
-
         void quit(bool reconnectAccount);
 
         void quit() override { quit(false); }

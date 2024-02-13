@@ -55,7 +55,6 @@ PartyHandler::PartyHandler():
         SMSG_PARTY_INVITE_RESPONSE,
         SMSG_PARTY_INVITED,
         SMSG_PARTY_SETTINGS,
-        SMSG_PARTY_MOVE,
         SMSG_PARTY_LEAVE,
         SMSG_PARTY_UPDATE_HP,
         SMSG_PARTY_UPDATE_COORDS,
@@ -138,7 +137,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
             {
                 int id = msg.readInt32();
                 std::string partyName = msg.readString(24);
-                std::string nick = "";
+                std::string nick;
                 Being *being;
 
                 if ((being = actorSpriteManager->findBeing(id)))
@@ -212,18 +211,6 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 }
                 break;
             }
-        case SMSG_PARTY_MOVE:
-            {
-                msg.readInt32();    // id
-                msg.skip(4);
-                msg.readInt16();    // x
-                msg.readInt16();    // y
-                msg.readInt8();     // online (if 0)
-                msg.readString(24); // party
-                msg.readString(24); // nick
-                msg.readString(16); // map
-            }
-            break;
         case SMSG_PARTY_LEAVE:
             {
                 int id = msg.readInt32();

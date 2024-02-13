@@ -45,7 +45,7 @@ AdminHandler::AdminHandler()
     static const uint16_t _messages[] =
     {
         SMSG_ADMIN_KICK_ACK,
-        SMSG_ADMIN_IP,
+        SMSG_BEING_IP_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -64,7 +64,7 @@ void AdminHandler::handleMessage(MessageIn &msg)
             else
                 SERVER_NOTICE(_("Kick succeeded!"))
             break;
-        case SMSG_ADMIN_IP:
+        case SMSG_BEING_IP_RESPONSE:
             id = msg.readInt32();
             int ip = msg.readInt32();
             if (Being *player = actorSpriteManager->findBeing(id))

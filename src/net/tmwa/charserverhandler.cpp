@@ -342,7 +342,7 @@ void CharServerHandler::deleteCharacter(Net::Character *character)
 void CharServerHandler::switchCharacter()
 {
     // This is really a map-server packet
-    MessageOut outMsg(CMSG_PLAYER_RESTART);
+    MessageOut outMsg(CMSG_PLAYER_REBOOT);
     outMsg.writeInt8(1);
 }
 

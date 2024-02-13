@@ -28,7 +28,6 @@
 #include "gui/skilldialog.h"
 
 #include "net/tmwa/messagein.h"
-#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/gettext.h"
@@ -222,31 +221,18 @@ void SpecialHandler::handleMessage(MessageIn &msg)
 
 void SpecialHandler::use(int id)
 {
-    // TODO
 }
 
 void SpecialHandler::use(int id, int level, int beingId)
 {
-    MessageOut outMsg(CMSG_SKILL_USE_BEING);
-    outMsg.writeInt16(level);
-    outMsg.writeInt16(id);
-    outMsg.writeInt16(beingId);
 }
 
 void SpecialHandler::use(int id, int level, int x, int y)
 {
-    MessageOut outMsg(CMSG_SKILL_USE_POSITION);
-    outMsg.writeInt16(level);
-    outMsg.writeInt16(id);
-    outMsg.writeInt16(x);
-    outMsg.writeInt16(y);
 }
 
 void SpecialHandler::use(int id, const std::string &map)
 {
-    MessageOut outMsg(CMSG_SKILL_USE_MAP);
-    outMsg.writeInt16(id);
-    outMsg.writeString(map, 16);
 }
 
 } // namespace TmwAthena

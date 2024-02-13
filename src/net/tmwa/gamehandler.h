@@ -49,8 +49,6 @@ class GameHandler : public MessageHandler, public Net::GameHandler,
 
         void disconnect() override;
 
-        void who() override;
-
         void quit() override;
 
         bool removeDeadBeings() const override { return true; }

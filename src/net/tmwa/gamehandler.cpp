@@ -36,7 +36,6 @@
 #include "net/tmwa/protocol.h"
 
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 extern Net::GameHandler *gameHandler;
 
@@ -48,7 +47,6 @@ GameHandler::GameHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_MAP_LOGIN_SUCCESS,
-        SMSG_WHO_ANSWER,
         SMSG_CHAR_SWITCH_RESPONSE,
         SMSG_MAP_QUIT_RESPONSE,
         0
@@ -77,10 +75,6 @@ void GameHandler::handleMessage(MessageIn &msg)
             // Stores the position until the map is loaded.
             mTileX = x; mTileY = y;
          }  break;
-
-        case SMSG_WHO_ANSWER:
-            SERVER_NOTICE(strprintf(_("Online users: %d"), msg.readInt32()))
-            break;
 
         case SMSG_CHAR_SWITCH_RESPONSE:
             if (msg.readInt8())
@@ -160,10 +154,6 @@ bool GameHandler::isConnected()
 void GameHandler::disconnect()
 {
     mNetwork->disconnect();
-}
-
-void GameHandler::who()
-{
 }
 
 void GameHandler::quit()

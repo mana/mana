@@ -24,7 +24,6 @@
 #include "actorspritemanager.h"
 #include "being.h"
 #include "event.h"
-#include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
 
@@ -49,7 +48,6 @@ ChatHandler::ChatHandler()
         SMSG_WHISPER,
         SMSG_WHISPER_RESPONSE,
         SMSG_GM_CHAT,
-        SMSG_MVP, // MVP
         0
     };
     handledMessages = _messages;
@@ -240,12 +238,6 @@ void ChatHandler::handleMessage(MessageIn &msg)
             }
             break;
         }
-
-        case SMSG_MVP:
-            // Display MVP player
-            msg.readInt32(); // id
-            SERVER_NOTICE(_("MVP player."))
-            break;
     }
 }
 
@@ -316,11 +308,6 @@ void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
 void ChatHandler::kickUser(int channelId, const std::string &name)
 {
     SERVER_NOTICE(_("Channels are not supported!"))
-}
-
-void ChatHandler::who()
-{
-    MessageOut outMsg(CMSG_WHO_REQUEST);
 }
 
 } // namespace TmwAthena

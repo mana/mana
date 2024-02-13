@@ -62,7 +62,9 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
 
         void kickUser(int channelId, const std::string &name) override;
 
-        void who() override;
+        void who() override {}
+
+        bool whoSupported() const override { return false; }
 
     private:
         using WhisperQueue = std::queue<std::string>;

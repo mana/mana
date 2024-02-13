@@ -20,7 +20,6 @@
  */
 
 #include "net/tmwa/playerhandler.h"
-#include "net/tmwa/beinghandler.h"
 
 #include "client.h"
 #include "configuration.h"
@@ -32,7 +31,6 @@
 
 #include "gui/buydialog.h"
 #include "gui/buyselldialog.h"
-#include "gui/gui.h"
 #include "gui/okdialog.h"
 #include "gui/selldialog.h"
 #include "gui/statuswindow.h"
@@ -527,7 +525,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
 void PlayerHandler::attack(int id)
 {
-    MessageOut outMsg(CMSG_PLAYER_ATTACK);
+    MessageOut outMsg(CMSG_PLAYER_CHANGE_ACT);
     outMsg.writeInt32(id);
     outMsg.writeInt8(0);
 }
@@ -611,7 +609,7 @@ void PlayerHandler::changeAction(Being::Action action)
 
 void PlayerHandler::respawn()
 {
-    MessageOut outMsg(CMSG_PLAYER_RESTART);
+    MessageOut outMsg(CMSG_PLAYER_REBOOT);
     outMsg.writeInt8(0);
 }
 

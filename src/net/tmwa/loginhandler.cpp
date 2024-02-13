@@ -307,8 +307,8 @@ void LoginHandler::unregisterAccount(const std::string &username,
 void LoginHandler::sendLoginRegister(const std::string &username,
                                      const std::string &password)
 {
-    MessageOut outMsg(0x0064);
-    outMsg.writeInt32(20); // client version
+    MessageOut outMsg(CMSG_LOGIN_REGISTER);
+    outMsg.writeInt32(6); // client version
     outMsg.writeString(username, 24);
     outMsg.writeString(password, 24);
 

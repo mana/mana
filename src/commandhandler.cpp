@@ -23,17 +23,13 @@
 
 #include "actorspritemanager.h"
 #include "channelmanager.h"
-#include "channel.h"
 #include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
 
-#include "gui/widgets/channeltab.h"
 #include "gui/widgets/chattab.h"
 
-#include "net/adminhandler.h"
 #include "net/chathandler.h"
-#include "net/gamehandler.h"
 #include "net/net.h"
 #include "net/partyhandler.h"
 
@@ -151,13 +147,16 @@ char CommandHandler::parseBoolean(const std::string &value)
 
 void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
 {
-    if (args == "")
+    if (args.empty())
     {
         tab->chatLog(_("-- Help --"));
         tab->chatLog(_("/help > Display this help"));
 
         tab->chatLog(_("/where > Display map name"));
-        tab->chatLog(_("/who > Display number of online users"));
+
+        if (Net::getChatHandler()->whoSupported())
+            tab->chatLog(_("/who > Display number of online users"));
+
         tab->chatLog(_("/me > Tell something about yourself"));
 
         tab->chatLog(_("/clear > Clears this window"));
@@ -304,7 +303,7 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Command: /where"));
         tab->chatLog(_("This command displays the name of the current map."));
     }
-    else if (args == "who")
+    else if (args == "who" && Net::getChatHandler()->whoSupported())
     {
         tab->chatLog(_("Command: /who"));
         tab->chatLog(_("This command displays the number of players currently "

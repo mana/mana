@@ -22,13 +22,14 @@
 #ifndef CHATHANDLER_H
 #define CHATHANDLER_H
 
-#include <iosfwd>
+#include <string>
 
 namespace Net {
+
 class ChatHandler
 {
     public:
-        virtual ~ChatHandler() {}
+        virtual ~ChatHandler() = default;
 
         virtual void talk(const std::string &text) = 0;
 
@@ -55,6 +56,8 @@ class ChatHandler
         virtual void kickUser(int channelId, const std::string &name) = 0;
 
         virtual void who() = 0;
+
+        virtual bool whoSupported() const = 0;
 };
 }
 

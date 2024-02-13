@@ -35,60 +35,201 @@
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
 
+namespace TmwAthena {
+
+struct PacketInfo
+{
+    uint16_t id;
+    uint16_t length;
+    const char *name;
+};
+
 // indicator for a variable-length packet
 const uint16_t VAR = 1;
 
-uint16_t packet_lengths[] = {
-   10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-// #0x0040
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0, 50,  3,VAR, 55, 17,  3, 37, 46,VAR, 23,VAR,  3,108,  3,  2,
-    3, 28, 19, 11,  3,VAR,  9,  5, 54, 53, 58, 60, 41,  2,  6,  6,
-// #0x0080
-    7,  3,  2,  2,  2,  5, 16, 12, 10,  7, 29, 23,VAR,VAR,VAR,  0,
-    7, 22, 28,  2,  6, 30,VAR,VAR,  3,VAR,VAR,  5,  9, 17, 17,  6,
-   23,  6,  6,VAR,VAR,VAR,VAR,  8,  7,  6,  7,  4,  7,  0,VAR,  6,
-    8,  8,  3,  3,VAR,  6,  6,VAR,  7,  6,  2,  5,  6, 44,  5,  3,
-// #0x00C0
-    7,  2,  6,  8,  6,  7,VAR,VAR,VAR,VAR,  3,  3,  6,  6,  2, 27,
-    3,  4,  4,  2,VAR,VAR,  3,VAR,  6, 14,  3,VAR, 28, 29,VAR,VAR,
-   30, 30, 26,  2,  6, 26,  3,  3,  8, 19,  5,  2,  3,  2,  2,  2,
-    3,  2,  6,  8, 21,  8,  8,  2,  2, 26,  3,VAR,  6, 27, 30, 10,
-// #0x0100
-    2,  6,  6, 30, 79, 31, 10, 10,VAR,VAR,  4,  6,  6,  2, 11,VAR,
-   10, 39,  4, 10, 31, 35, 10, 18,  2, 13, 15, 20, 68,  2,  3, 16,
-    6, 14,VAR,VAR, 21,  8,  8,  8,  8,  8,  2,  2,  3,  4,  2,VAR,
-    6, 86,  6,VAR,VAR,  7,VAR,  6,  3, 16,  4,  4,  4,  6, 24, 26,
-// #0x0140
-   22, 14,  6, 10, 23, 19,  6, 39,  8,  9,  6, 27,VAR,  2,  6,  6,
-  110,  6,VAR,VAR,VAR,VAR,VAR,  6,VAR, 54, 66, 54, 90, 42,  6, 42,
-  VAR,VAR,VAR,VAR,VAR, 30,VAR,  3, 14,  3, 30, 10, 43, 14,186,182,
-   14, 30, 10,  3,VAR,  6,106,VAR,  4,  5,  4,VAR,  6,  7,VAR,VAR,
-// #0x0180
-    6,  3,106, 10, 10, 34,  0,  6,  8,  4,  4,  4, 29,VAR, 10,  6,
-   90, 86, 24,  6, 30, 102,  9,  4,  8,  4, 14, 10,  4,  6,  2,  6,
-    3,  3, 35,  5, 11, 26,VAR,  4,  4,  6, 10, 12,  6,VAR,  4,  4,
-   11,  7,VAR, 67, 12, 18,114,  6,  3,  6, 26, 26, 26, 26,  2,  3,
-// #0x01C0
-    2, 14, 10,VAR, 22, 22,  4,  2, 13, 97,  0,  9,  9, 29,  6, 28,
-    8, 14, 10, 35,  6,VAR,  4, 11, 54, 53, 60,  2,VAR, 47, 33,  6,
-   30,  8, 34, 14,  2,  6, 26,  2, 28, 81,  6, 10, 26,  2,VAR,VAR,
-  VAR,VAR, 20, 10, 32,  9, 34, 14,  2,  6, 48, 56,VAR,  4,  5, 10,
-// #0x0200
-   26,  0,  0,  0, 18,  0,  0,  0,  0,  0,  0, 19, 10,  0,  0,  0,
-    2,VAR, 16,  0,  8,VAR,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-  VAR,122,VAR,VAR,VAR,VAR, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+static const PacketInfo packet_infos[] = {
+    // login server messages
+    { SMSG_UPDATE_HOST,               VAR, "SMSG_UPDATE_HOST" },
+    { CMSG_LOGIN_REGISTER,            55, "CMSG_LOGIN_REGISTER" },
+    { SMSG_LOGIN_DATA,                VAR, "SMSG_LOGIN_DATA" },
+    { SMSG_LOGIN_ERROR,               23, "SMSG_LOGIN_ERROR" },
+
+    // char server messages
+    { CMSG_CHAR_PASSWORD_CHANGE,      50, "CMSG_CHAR_PASSWORD_CHANGE" },
+    { SMSG_CHAR_PASSWORD_RESPONSE,    3, "SMSG_CHAR_PASSWORD_RESPONSE" },
+    { CMSG_CHAR_SERVER_CONNECT,       17, "CMSG_CHAR_SERVER_CONNECT" },
+    { CMSG_CHAR_SELECT,               3, "CMSG_CHAR_SELECT" },
+    { CMSG_CHAR_CREATE,               37, "CMSG_CHAR_CREATE" },
+    { CMSG_CHAR_DELETE,               46, "CMSG_CHAR_DELETE" },
+    { SMSG_CHAR_LOGIN,                VAR, "SMSG_CHAR_LOGIN" },
+    { SMSG_CHAR_LOGIN_ERROR,          3, "SMSG_CHAR_LOGIN_ERROR" },
+    { SMSG_CHAR_CREATE_SUCCEEDED,     108, "SMSG_CHAR_CREATE_SUCCEEDED" },
+    { SMSG_CHAR_CREATE_FAILED,        3, "SMSG_CHAR_CREATE_FAILED" },
+    { SMSG_CHAR_DELETE_SUCCEEDED,     2, "SMSG_CHAR_DELETE_SUCCEEDED" },
+    { SMSG_CHAR_DELETE_FAILED,        3, "SMSG_CHAR_DELETE_FAILED" },
+    { SMSG_CHAR_MAP_INFO,             28, "SMSG_CHAR_MAP_INFO" },
+
+    // map server messages
+    { CMSG_MAP_SERVER_CONNECT,        19, "CMSG_MAP_SERVER_CONNECT" },
+    { SMSG_MAP_LOGIN_SUCCESS,         11, "SMSG_MAP_LOGIN_SUCCESS" },
+    { SMSG_BEING_VISIBLE,             54, "SMSG_BEING_VISIBLE" },
+    { SMSG_BEING_MOVE,                60, "SMSG_BEING_MOVE" },
+    { SMSG_BEING_SPAWN,               41, "SMSG_BEING_SPAWN" },
+    { CMSG_MAP_LOADED,                2, "CMSG_MAP_LOADED" },
+    { CMSG_MAP_PING,                  6, "CMSG_MAP_PING" },
+    { SMSG_SERVER_PING,               6, "SMSG_SERVER_PING" },
+    { SMSG_BEING_REMOVE,              7, "SMSG_BEING_REMOVE" },
+    { CMSG_PLAYER_CHANGE_DEST,        5, "CMSG_PLAYER_CHANGE_DEST" },
+    { SMSG_WALK_RESPONSE,             12, "SMSG_WALK_RESPONSE" },
+    { SMSG_PLAYER_STOP,               10, "SMSG_PLAYER_STOP" },
+    { CMSG_PLAYER_CHANGE_ACT,         7, "CMSG_PLAYER_CHANGE_ACT" },
+    { SMSG_BEING_ACTION,              29, "SMSG_BEING_ACTION" },
+    { CMSG_CHAT_MESSAGE,              VAR, "CMSG_CHAT_MESSAGE" },
+    { SMSG_BEING_CHAT,                VAR, "SMSG_BEING_CHAT" },
+    { SMSG_PLAYER_CHAT,               VAR, "SMSG_PLAYER_CHAT" },
+    { CMSG_NPC_TALK,                  7, "CMSG_NPC_TALK" },
+    { SMSG_PLAYER_WARP,               22, "SMSG_PLAYER_WARP" },
+    { SMSG_CHANGE_MAP_SERVER,         28, "SMSG_CHANGE_MAP_SERVER" },
+    { CMSG_NAME_REQUEST,              6, "CMSG_NAME_REQUEST" },
+    { SMSG_BEING_NAME_RESPONSE,       30, "SMSG_BEING_NAME_RESPONSE" },
+    { CMSG_CHAT_WHISPER,              VAR, "CMSG_CHAT_WHISPER" },
+    { SMSG_WHISPER,                   VAR, "SMSG_WHISPER" },
+    { SMSG_WHISPER_RESPONSE,          3, "SMSG_WHISPER_RESPONSE" },
+    { SMSG_GM_CHAT,                   VAR, "SMSG_GM_CHAT" },
+    { CMSG_PLAYER_CHANGE_DIR,         5, "CMSG_PLAYER_CHANGE_DIR" },
+    { SMSG_BEING_CHANGE_DIRECTION,    9, "SMSG_BEING_CHANGE_DIRECTION" },
+    { SMSG_ITEM_VISIBLE,              17, "SMSG_ITEM_VISIBLE" },
+    { SMSG_ITEM_DROPPED,              17, "SMSG_ITEM_DROPPED" },
+    { CMSG_ITEM_PICKUP,               6, "CMSG_ITEM_PICKUP" },
+    { SMSG_PLAYER_INVENTORY_ADD,      23, "SMSG_PLAYER_INVENTORY_ADD" },
+    { SMSG_ITEM_REMOVE,               6, "SMSG_ITEM_REMOVE" },
+    { CMSG_PLAYER_INVENTORY_DROP,     6, "CMSG_PLAYER_INVENTORY_DROP" },
+    { SMSG_PLAYER_EQUIPMENT,          VAR, "SMSG_PLAYER_EQUIPMENT" },
+    { SMSG_PLAYER_STORAGE_EQUIP,      VAR, "SMSG_PLAYER_STORAGE_EQUIP" },
+    { CMSG_PLAYER_INVENTORY_USE,      8, "CMSG_PLAYER_INVENTORY_USE" },
+    { SMSG_ITEM_USE_RESPONSE,         7, "SMSG_ITEM_USE_RESPONSE" },
+    { CMSG_PLAYER_EQUIP,              6, "CMSG_PLAYER_EQUIP" },
+    { SMSG_PLAYER_EQUIP,              7, "SMSG_PLAYER_EQUIP" },
+    { CMSG_PLAYER_UNEQUIP,            4, "CMSG_PLAYER_UNEQUIP" },
+    { SMSG_PLAYER_UNEQUIP,            7, "SMSG_PLAYER_UNEQUIP" },
+    { SMSG_PLAYER_INVENTORY_REMOVE,   6, "SMSG_PLAYER_INVENTORY_REMOVE" },
+    { SMSG_PLAYER_STAT_UPDATE_1,      8, "SMSG_PLAYER_STAT_UPDATE_1" },
+    { SMSG_PLAYER_STAT_UPDATE_2,      8, "SMSG_PLAYER_STAT_UPDATE_2" },
+    { CMSG_PLAYER_REBOOT,             3, "CMSG_PLAYER_REBOOT" },
+    { SMSG_CHAR_SWITCH_RESPONSE,      3, "SMSG_CHAR_SWITCH_RESPONSE" },
+    { SMSG_NPC_MESSAGE,               VAR, "SMSG_NPC_MESSAGE" },
+    { SMSG_NPC_NEXT,                  6, "SMSG_NPC_NEXT" },
+    { SMSG_NPC_CLOSE,                 6, "SMSG_NPC_CLOSE" },
+    { SMSG_NPC_CHOICE,                VAR, "SMSG_NPC_CHOICE" },
+    { CMSG_NPC_LIST_CHOICE,           7, "CMSG_NPC_LIST_CHOICE" },
+    { CMSG_NPC_NEXT_REQUEST,          6, "CMSG_NPC_NEXT_REQUEST" },
+    { CMSG_STAT_UPDATE_REQUEST,       5, "CMSG_STAT_UPDATE_REQUEST" },
+    { SMSG_PLAYER_STAT_UPDATE_4,      6, "SMSG_PLAYER_STAT_UPDATE_4" },
+    { SMSG_PLAYER_STAT_UPDATE_5,      44, "SMSG_PLAYER_STAT_UPDATE_5" },
+    { SMSG_PLAYER_STAT_UPDATE_6,      5, "SMSG_PLAYER_STAT_UPDATE_6" },
+    { CMSG_PLAYER_EMOTE,              3, "CMSG_PLAYER_EMOTE" },
+    { SMSG_BEING_EMOTION,             7, "SMSG_BEING_EMOTION" },
+    { SMSG_NPC_BUY_SELL_CHOICE,       6, "SMSG_NPC_BUY_SELL_CHOICE" },
+    { CMSG_NPC_BUY_SELL_REQUEST,      7, "CMSG_NPC_BUY_SELL_REQUEST" },
+    { SMSG_NPC_BUY,                   VAR, "SMSG_NPC_BUY" },
+    { SMSG_NPC_SELL,                  VAR, "SMSG_NPC_SELL" },
+    { CMSG_NPC_BUY_REQUEST,           VAR, "CMSG_NPC_BUY_REQUEST" },
+    { CMSG_NPC_SELL_REQUEST,          VAR, "CMSG_NPC_SELL_REQUEST" },
+    { SMSG_NPC_BUY_RESPONSE,          3, "SMSG_NPC_BUY_RESPONSE" },
+    { SMSG_NPC_SELL_RESPONSE,         3, "SMSG_NPC_SELL_RESPONSE" },
+    { SMSG_ADMIN_KICK_ACK,            6, "SMSG_ADMIN_KICK_ACK" },
+    { CMSG_TRADE_REQUEST,             6, "CMSG_TRADE_REQUEST" },
+    { SMSG_TRADE_REQUEST,             26, "SMSG_TRADE_REQUEST" },
+    { CMSG_TRADE_RESPONSE,            3, "CMSG_TRADE_RESPONSE" },
+    { SMSG_TRADE_RESPONSE,            3, "SMSG_TRADE_RESPONSE" },
+    { CMSG_TRADE_ITEM_ADD_REQUEST,    8, "CMSG_TRADE_ITEM_ADD_REQUEST" },
+    { SMSG_TRADE_ITEM_ADD,            19, "SMSG_TRADE_ITEM_ADD" },
+    { CMSG_TRADE_ADD_COMPLETE,        2, "CMSG_TRADE_ADD_COMPLETE" },
+    { SMSG_TRADE_OK,                  3, "SMSG_TRADE_OK" },
+    { CMSG_TRADE_CANCEL_REQUEST,      2, "CMSG_TRADE_CANCEL_REQUEST" },
+    { SMSG_TRADE_CANCEL,              2, "SMSG_TRADE_CANCEL" },
+    { CMSG_TRADE_OK,                  2, "CMSG_TRADE_OK" },
+    { SMSG_TRADE_COMPLETE,            3, "SMSG_TRADE_COMPLETE" },
+    { SMSG_PLAYER_STORAGE_STATUS,     6, "SMSG_PLAYER_STORAGE_STATUS" },
+    { CMSG_MOVE_TO_STORAGE,           8, "CMSG_MOVE_TO_STORAGE" },
+    { SMSG_PLAYER_STORAGE_ADD,        21, "SMSG_PLAYER_STORAGE_ADD" },
+    { CMSG_MOVE_FROM_STORAGE,         8, "CMSG_MOVE_FROM_STORAGE" },
+    { SMSG_PLAYER_STORAGE_REMOVE,     8, "SMSG_PLAYER_STORAGE_REMOVE" },
+    { CMSG_CLOSE_STORAGE,             2, "CMSG_CLOSE_STORAGE" },
+    { SMSG_PLAYER_STORAGE_CLOSE,      2, "SMSG_PLAYER_STORAGE_CLOSE" },
+    { CMSG_PARTY_CREATE,              26, "CMSG_PARTY_CREATE" },
+    { SMSG_PARTY_CREATE,              3, "SMSG_PARTY_CREATE" },
+    { SMSG_PARTY_INFO,                VAR, "SMSG_PARTY_INFO" },
+    { CMSG_PARTY_INVITE,              6, "CMSG_PARTY_INVITE" },
+    { SMSG_PARTY_INVITE_RESPONSE,     27, "SMSG_PARTY_INVITE_RESPONSE" },
+    { SMSG_PARTY_INVITED,             30, "SMSG_PARTY_INVITED" },
+    { CMSG_PARTY_INVITED,             10, "CMSG_PARTY_INVITED" },
+    { CMSG_PARTY_LEAVE,               2, "CMSG_PARTY_LEAVE" },
+    { SMSG_PARTY_SETTINGS,            6, "SMSG_PARTY_SETTINGS" },
+    { CMSG_PARTY_SETTINGS,            6, "CMSG_PARTY_SETTINGS" },
+    { CMSG_PARTY_KICK,                30, "CMSG_PARTY_KICK" },
+    { SMSG_PARTY_LEAVE,               31, "SMSG_PARTY_LEAVE" },
+    { SMSG_PARTY_UPDATE_HP,           10, "SMSG_PARTY_UPDATE_HP" },
+    { SMSG_PARTY_UPDATE_COORDS,       10, "SMSG_PARTY_UPDATE_COORDS" },
+    { CMSG_PARTY_MESSAGE,             VAR, "CMSG_PARTY_MESSAGE" },
+    { SMSG_PARTY_MESSAGE,             VAR, "SMSG_PARTY_MESSAGE" },
+    { SMSG_PLAYER_SKILL_UP,           11, "SMSG_PLAYER_SKILL_UP" },
+    { SMSG_PLAYER_SKILLS,             VAR, "SMSG_PLAYER_SKILLS" },
+    { SMSG_SKILL_FAILED,              10, "SMSG_SKILL_FAILED" },
+    { CMSG_SKILL_LEVELUP_REQUEST,     4, "CMSG_SKILL_LEVELUP_REQUEST" },
+    { CMSG_PLAYER_STOP_ATTACK,        2, "CMSG_PLAYER_STOP_ATTACK" },
+    { SMSG_PLAYER_STATUS_CHANGE,      13, "SMSG_PLAYER_STATUS_CHANGE" },
+    { SMSG_PLAYER_MOVE_TO_ATTACK,     16, "SMSG_PLAYER_MOVE_TO_ATTACK" },
+    { SMSG_PLAYER_ATTACK_RANGE,       4, "SMSG_PLAYER_ATTACK_RANGE" },
+    { SMSG_PLAYER_ARROW_MESSAGE,      4, "SMSG_PLAYER_ARROW_MESSAGE" },
+    { SMSG_PLAYER_ARROW_EQUIP,        4, "SMSG_PLAYER_ARROW_EQUIP" },
+    { SMSG_PLAYER_STAT_UPDATE_3,      14, "SMSG_PLAYER_STAT_UPDATE_3" },
+    { SMSG_NPC_INT_INPUT,             6, "SMSG_NPC_INT_INPUT" },
+    { CMSG_NPC_INT_RESPONSE,          10, "CMSG_NPC_INT_RESPONSE" },
+    { CMSG_NPC_CLOSE,                 6, "CMSG_NPC_CLOSE" },
+    { SMSG_BEING_RESURRECT,           8, "SMSG_BEING_RESURRECT" },
+    { CMSG_CLIENT_QUIT,               4, "CMSG_CLIENT_QUIT" },
+    { SMSG_MAP_QUIT_RESPONSE,         4, "SMSG_MAP_QUIT_RESPONSE" },
+    { SMSG_PLAYER_GUILD_PARTY_INFO,   102, "SMSG_PLAYER_GUILD_PARTY_INFO" },
+    { SMSG_BEING_STATUS_CHANGE,       9, "SMSG_BEING_STATUS_CHANGE" },
+    { SMSG_PVP_MAP_MODE,              4, "SMSG_PVP_MAP_MODE" },
+    { SMSG_PVP_SET,                   14, "SMSG_PVP_SET" },
+    { SMSG_BEING_SELFEFFECT,          10, "SMSG_BEING_SELFEFFECT" },
+    { SMSG_TRADE_ITEM_ADD_RESPONSE,   7, "SMSG_TRADE_ITEM_ADD_RESPONSE" },
+    { SMSG_PLAYER_INVENTORY_USE,      13, "SMSG_PLAYER_INVENTORY_USE" },
+    { SMSG_NPC_STR_INPUT,             6, "SMSG_NPC_STR_INPUT" },
+    { CMSG_NPC_STR_RESPONSE,          VAR, "CMSG_NPC_STR_RESPONSE" },
+    { SMSG_BEING_CHANGE_LOOKS2,       11, "SMSG_BEING_CHANGE_LOOKS2" },
+    { SMSG_PLAYER_UPDATE_1,           54, "SMSG_PLAYER_UPDATE_1" },
+    { SMSG_PLAYER_UPDATE_2,           53, "SMSG_PLAYER_UPDATE_2" },
+    { SMSG_PLAYER_MOVE,               60, "SMSG_PLAYER_MOVE" },
+    { SMSG_SKILL_DAMAGE,              33, "SMSG_SKILL_DAMAGE" },
+    { SMSG_PLAYER_INVENTORY,          VAR, "SMSG_PLAYER_INVENTORY" },
+    { SMSG_PLAYER_STORAGE_ITEMS,      VAR, "SMSG_PLAYER_STORAGE_ITEMS" },
+    { SMSG_BEING_IP_RESPONSE,         10, "SMSG_BEING_IP_RESPONSE" },
+    { CMSG_ONLINE_LIST,               2, "CMSG_ONLINE_LIST" },
+    { SMSG_ONLINE_LIST,               VAR, "SMSG_ONLINE_LIST" },
+    { SMSG_NPC_COMMAND,               16, "SMSG_NPC_COMMAND" },
+    { SMSG_QUEST_SET_VAR,             8, "SMSG_QUEST_SET_VAR" },
+    { SMSG_QUEST_PLAYER_VARS,         VAR, "SMSG_QUEST_PLAYER_VARS" },
+    { SMSG_BEING_MOVE3,               VAR, "SMSG_BEING_MOVE3" },
+    { SMSG_MAP_MASK,                  10, "SMSG_MAP_MASK" },
+    { SMSG_MAP_MUSIC,                 VAR, "SMSG_MAP_MUSIC" },
+    { SMSG_NPC_CHANGETITLE,           VAR, "SMSG_NPC_CHANGETITLE" },
+    { SMSG_SCRIPT_MESSAGE,            VAR, "SMSG_SCRIPT_MESSAGE" },
+    { SMSG_PLAYER_CLIENT_COMMAND,     VAR, "SMSG_PLAYER_CLIENT_COMMAND" },
+    { SMSG_MAP_SET_TILES_TYPE,        34, "SMSG_MAP_SET_TILES_TYPE" },
+    { SMSG_PLAYER_HP,                 10, "SMSG_PLAYER_HP" },
+    { SMSG_PLAYER_HP_FULL,            14, "SMSG_PLAYER_HP_FULL" },
+
+    // any server messages
+    { SMSG_CONNECTION_PROBLEM,        3, "SMSG_CONNECTION_PROBLEM" },
+    { CMSG_SERVER_VERSION_REQUEST,    2, "CMSG_SERVER_VERSION_REQUEST" },
+    { SMSG_SERVER_VERSION_RESPONSE,   10, "SMSG_SERVER_VERSION_RESPONSE" },
+    { CMSG_CLIENT_DISCONNECT,         2, "CMSG_CLIENT_DISCONNECT" },
 };
 
-static const int packet_lengths_size
-     = static_cast<int>(sizeof(packet_lengths) / sizeof(uint16_t));
 const unsigned int BUFFER_SIZE = 65536;
-
-namespace TmwAthena {
 
 int networkThread(void *data)
 {
@@ -105,17 +246,18 @@ int networkThread(void *data)
 Network *Network::mInstance = nullptr;
 
 Network::Network():
-    mSocket(nullptr),
     mInBuffer(new char[BUFFER_SIZE]),
-    mOutBuffer(new char[BUFFER_SIZE]),
-    mInSize(0), mOutSize(0),
-    mToSkip(0),
-    mState(IDLE),
-    mWorkerThread(nullptr)
+    mOutBuffer(new char[BUFFER_SIZE])
 {
     SDLNet_Init();
 
     mInstance = this;
+
+    for (const auto &packetInfo : packet_infos)
+    {
+        assert(packetInfo.length != 0);
+        mPacketInfo[packetInfo.id] = &packetInfo;
+    }
 }
 
 Network::~Network()
@@ -209,35 +351,75 @@ void Network::unregisterHandler(MessageHandler *handler)
 
 void Network::clearHandlers()
 {
-    MessageHandlerIterator i;
-    for (i = mMessageHandlers.begin(); i != mMessageHandlers.end(); ++i)
+    for (auto& [_, messageHandler] : mMessageHandlers)
     {
-        i->second->setNetwork(nullptr);
+        messageHandler->setNetwork(nullptr);
     }
     mMessageHandlers.clear();
 }
 
 void Network::dispatchMessages()
 {
-    while (messageReady())
-    {
-        MessageIn msg = getNextMessage();
+    MutexLocker lock(&mMutex);
 
-        auto iter = mMessageHandlers.find(msg.getId());
+    while (true) {
+        // Not even a message ID has been received
+        if (mInSize < 2)
+            break;
 
-        if (msg.getLength() == 0)
-            logger->error("Zero length packet received. Exiting.");
+        const uint16_t msgId = readWord(0);
 
+        auto packetInfoIt = mPacketInfo.find(msgId);
+        if (packetInfoIt == mPacketInfo.end())
+        {
+            auto error = strprintf("Unknown packet 0x%x received.", msgId);
+            logger->error(error);
+            break;
+        }
+
+        auto packetInfo = packetInfoIt->second;
+
+        // Determine the length of the packet
+        uint16_t len = packetInfo->length;
+        if (len == VAR)
+        {
+            // We have not received the length yet
+            if (mInSize < 4)
+                break;
+
+            len = readWord(2);
+
+            if (len < 4)
+            {
+                auto error = strprintf("Variable length packet 0x%x has invalid length %d.",
+                                       msgId, len);
+                logger->error(error);
+                break;
+            }
+        }
+
+        // The message has not been fully received yet
+        if (mInSize < len)
+            break;
+
+#ifdef DEBUG
+        logger->log("Received %s (0x%x) of length %d", packetInfo->name, msgId, len);
+#endif
+
+        MessageIn message(mInBuffer, len);
+
+        // Dispatch the message to the appropriate handler
+        auto iter = mMessageHandlers.find(msgId);
         if (iter != mMessageHandlers.end())
         {
-            iter->second->handleMessage(msg);
+            iter->second->handleMessage(message);
         }
         else
         {
-            logger->log("Unhandled packet: %x", msg.getId());
+            logger->log("Unhandled packet %s (0x%x)", packetInfo->name, msgId);
         }
 
-        skip(msg.getLength());
+        skip(len);
     }
 }
 
@@ -276,54 +458,6 @@ void Network::skip(int len)
         mToSkip -= mInSize;
         mInSize = 0;
     }
-}
-
-bool Network::messageReady()
-{
-    MutexLocker lock(&mMutex);
-    if (mInSize < 2)
-        return false;
-    uint16_t msgId = readWord(0);
-    uint16_t len = 0;
-    // TODO don't hard-code this single case
-    if (msgId == SMSG_SERVER_VERSION_RESPONSE)
-        len = 10;
-    else if (msgId < packet_lengths_size)
-        len = packet_lengths[msgId];
-
-    if (len == VAR)
-    {
-        if (mInSize < 4)
-            return false;
-        len = readWord(2);
-    }
-    return mInSize >= len;
-}
-
-MessageIn Network::getNextMessage()
-{
-    while (!messageReady())
-    {
-        if (mState == NET_ERROR)
-            break;
-    }
-
-    MutexLocker lock(&mMutex);
-    uint16_t msgId = readWord(0);
-    uint16_t len = 0;
-    if (msgId == SMSG_SERVER_VERSION_RESPONSE)
-        len = 10;
-    else if (msgId < 0x220)
-        len = packet_lengths[msgId];
-
-    if (len == VAR)
-        len = readWord(2);
-
-#ifdef DEBUG
-    logger->log("Received packet 0x%x of length %d", msgId, len);
-#endif
-
-    return MessageIn(mInBuffer, len);
 }
 
 bool Network::realConnect()
