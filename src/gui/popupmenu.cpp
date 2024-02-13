@@ -327,12 +327,10 @@ void PopupMenu::handleLink(const std::string &link)
         chatWindow->addInputText(name);
     }
 
-    else if (link == "admin-kick" &&
-             being &&
-             (being->getType() == ActorSprite::PLAYER ||
-              being->getType() == ActorSprite::MONSTER))
+    else if (link == "admin-kick" && being &&
+             being->getType() == ActorSprite::PLAYER)
     {
-        Net::getAdminHandler()->kick(being->getId());
+        Net::getAdminHandler()->kick(being->getName());
     }
 
     // Unknown actions

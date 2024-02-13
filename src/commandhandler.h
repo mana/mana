@@ -53,11 +53,6 @@ class CommandHandler
         friend class WhisperTab;
 
         /**
-         * Handle an announce command.
-         */
-        void handleAnnounce(const std::string &args, ChatTab *tab);
-
-        /**
          * Handle a help command.
          */
         void handleHelp(const std::string &args, ChatTab *tab);

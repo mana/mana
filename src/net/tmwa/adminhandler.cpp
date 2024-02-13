@@ -24,18 +24,15 @@
 #include "actorspritemanager.h"
 #include "being.h"
 #include "event.h"
-#include "game.h"
 #include "playerrelations.h"
 
 #include "net/chathandler.h"
 #include "net/net.h"
 
 #include "net/tmwa/messagein.h"
-#include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 #include <string>
 
@@ -79,40 +76,9 @@ void AdminHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void AdminHandler::announce(const std::string &text)
-{
-    MessageOut outMsg(CMSG_ADMIN_ANNOUNCE);
-    outMsg.writeInt16(text.length() + 4);
-    outMsg.writeString(text, text.length());
-}
-
-void AdminHandler::localAnnounce(const std::string &text)
-{
-    MessageOut outMsg(CMSG_ADMIN_LOCAL_ANNOUNCE);
-    outMsg.writeInt16(text.length() + 4);
-    outMsg.writeString(text, text.length());
-}
-
-void AdminHandler::hide(bool hide)
-{
-    MessageOut outMsg(CMSG_ADMIN_HIDE);
-    outMsg.writeInt32(0); //unused
-}
-
-void AdminHandler::kick(int playerId)
-{
-    MessageOut outMsg(CMSG_ADMIN_KICK);
-    outMsg.writeInt32(playerId);
-}
-
 void AdminHandler::kick(const std::string &name)
 {
     Net::getChatHandler()->talk("@kick " + name);
-}
-
-void AdminHandler::ban(int playerId)
-{
-    // Not supported
 }
 
 void AdminHandler::ban(const std::string &name)
@@ -120,24 +86,9 @@ void AdminHandler::ban(const std::string &name)
     Net::getChatHandler()->talk("@ban " + name);
 }
 
-void AdminHandler::unban(int playerId)
-{
-    // Not supported
-}
-
 void AdminHandler::unban(const std::string &name)
 {
     Net::getChatHandler()->talk("@unban " + name);
-}
-
-void AdminHandler::mute(int playerId, int type, int limit)
-{
-    return; // Still looking into this
-
-    MessageOut outMsg(CMSG_ADMIN_MUTE);
-    outMsg.writeInt32(playerId);
-    outMsg.writeInt8(type);
-    outMsg.writeInt16(limit);
 }
 
 } // namespace TmwAthena

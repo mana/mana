@@ -59,10 +59,6 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         // Nothing to do
     }
-    else if (type == "announce")
-    {
-        handleAnnounce(args, tab);
-    }
     else if (type == "where")
     {
         handleWhere(args, tab);
@@ -153,11 +149,6 @@ char CommandHandler::parseBoolean(const std::string &value)
         return -1;
 }
 
-void CommandHandler::handleAnnounce(const std::string &args, ChatTab *tab)
-{
-    Net::getAdminHandler()->announce(args);
-}
-
 void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
 {
     if (args == "")
@@ -197,8 +188,6 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/present > Get list of players present "
                        "(sent to chat log, if logging)"));
 
-        tab->chatLog(_("/announce > Global announcement (GM only)"));
-
         tab->showHelp(); // Allow the tab to show it's help
 
         tab->chatLog(_("For more information, type /help <command>."));
@@ -214,13 +203,6 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
     else if (tab->handleCommand("help", args))
     {
         // Nothing to do
-    }
-    else if (args == "announce")
-    {
-        tab->chatLog(_("Command: /announce <msg>"));
-        tab->chatLog(_("*** only available to a GM ***"));
-        tab->chatLog(_("This command sends the message <msg> to "
-                            "all players currently online."));
     }
     else if (args == "clear")
     {

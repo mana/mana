@@ -36,25 +36,11 @@ class AdminHandler : public MessageHandler, public Net::AdminHandler
 
         void handleMessage(MessageIn &msg) override;
 
-        void announce(const std::string &text) override;
-
-        void localAnnounce(const std::string &text) override;
-
-        void hide(bool hide) override;
-
-        void kick(int playerId) override;
-
         void kick(const std::string &name) override;
-
-        void ban(int playerId) override;
 
         void ban(const std::string &name) override;
 
-        void unban(int playerId) override;
-
         void unban(const std::string &name) override;
-
-        void mute(int playerId, int type, int limit) override;
 };
 
 } // namespace TmwAthena

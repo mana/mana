@@ -46,32 +46,7 @@ void AdminHandler::handleMessage(MessageIn &msg)
 
 }
 
-void AdminHandler::announce(const std::string &text)
-{
-    // TODO send warning about using @announce instead
-}
-
-void AdminHandler::localAnnounce(const std::string &text)
-{
-    // TODO add @command for this
-}
-
-void AdminHandler::hide(bool hide)
-{
-    // TODO
-}
-
-void AdminHandler::kick(int playerId)
-{
-    // TODO
-}
-
 void AdminHandler::kick(const std::string &name)
-{
-    // TODO
-}
-
-void AdminHandler::ban(int playerId)
 {
     // TODO
 }
@@ -81,17 +56,7 @@ void AdminHandler::ban(const std::string &name)
     // TODO
 }
 
-void AdminHandler::unban(int playerId)
-{
-    // TODO
-}
-
 void AdminHandler::unban(const std::string &name)
-{
-    // TODO
-}
-
-void AdminHandler::mute(int playerId, int type, int limit)
 {
     // TODO
 }

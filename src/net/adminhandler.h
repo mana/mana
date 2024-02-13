@@ -22,36 +22,20 @@
 #ifndef ADMINHANDLER_H
 #define ADMINHANDLER_H
 
-#include <iosfwd>
+#include <string>
 
 namespace Net {
 
 class AdminHandler
 {
     public:
-        virtual ~AdminHandler() {}
-
-        virtual void announce(const std::string &text) = 0;
-
-        virtual void localAnnounce(const std::string &text) = 0;
-
-        virtual void hide(bool hide) = 0;
-
-        virtual void kick(int playerId) = 0;
+        virtual ~AdminHandler() = default;
 
         virtual void kick(const std::string &name) = 0;
 
-        virtual void ban(int playerId) = 0;
-
         virtual void ban(const std::string &name) = 0;
 
-        virtual void unban(int playerId) = 0;
-
         virtual void unban(const std::string &name) = 0;
-
-        virtual void mute(int playerId, int type, int limit) = 0;
-
-        // TODO
 };
 
 } // namespace Net
