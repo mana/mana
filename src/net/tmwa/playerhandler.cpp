@@ -516,8 +516,9 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             {
                 const int mask = msg.readInt32();
                 msg.readInt32();  // unused
-                if (Map *map = Game::instance()->getCurrentMap())
-                    map->setMask(mask);
+                if (auto game = Game::instance())
+                    if (Map *map = game->getCurrentMap())
+                        map->setMask(mask);
             }
             break;
     }
