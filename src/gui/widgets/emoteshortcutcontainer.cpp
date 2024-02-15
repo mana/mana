@@ -43,13 +43,7 @@ EmoteShortcutContainer::EmoteShortcutContainer()
 
     mBackgroundImg->setAlpha(config.getFloatValue("guialpha"));
 
-    // Setup emote sprites
-    for (int i = 0; i <= EmoteDB::getLast(); i++)
-    {
-        mEmoteImg.push_back(EmoteDB::get(i)->sprite);
-    }
-
-    mMaxItems = std::min(EmoteDB::getLast(), MAX_ITEMS);
+    mMaxItems = std::min(EmoteDB::getEmoteCount(), MAX_ITEMS);
 
     mBoxHeight = mBackgroundImg->getHeight();
     mBoxWidth = mBackgroundImg->getWidth();
@@ -81,28 +75,26 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 
         // Draw emote keyboard shortcut.
         const char *key = SDL_GetKeyName(
-                         (SDL_Scancode) keyboard.getKeyValue(keyboard.KEY_EMOTE_1 + i));
+                         (SDL_Scancode) keyboard.getKeyValue(KeyboardConfig::KEY_EMOTE_1 + i));
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         g->drawText(key, emoteX + 2, emoteY + 2, gcn::Graphics::LEFT);
 
         int emoteId = emoteShortcut->getEmote(i);
-        if (emoteId > 0 && emoteId <= EmoteDB::getLast() + 1)
+        if (emoteId != -1)
         {
-            mEmoteImg[emoteId - 1]->draw(g, emoteX + 2, emoteY + 10);
+            EmoteDB::get(emoteId).sprite->draw(g, emoteX + 2, emoteY + 10);
         }
     }
 
-    if (mEmoteMoved)
+    if (mEmoteMoved != -1)
     {
         // Draw the emote image being dragged by the cursor.
-        const ImageSprite* sprite = mEmoteImg[mEmoteMoved - 1];
-        if (sprite)
-        {
-            const int tPosX = mCursorPosX - (sprite->getWidth() / 2);
-            const int tPosY = mCursorPosY - (sprite->getHeight() / 2);
+        const ImageSprite *sprite = EmoteDB::get(mEmoteMoved).sprite;
 
-            sprite->draw(g, tPosX, tPosY);
-        }
+        const int tPosX = mCursorPosX - (sprite->getWidth() / 2);
+        const int tPosY = mCursorPosY - (sprite->getHeight() / 2);
+
+        sprite->draw(g, tPosX, tPosY);
     }
 }
 
@@ -110,22 +102,20 @@ void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (!mEmoteMoved && mEmoteClicked)
+        if (mEmoteMoved == -1 && mEmoteClicked)
         {
             const int index = getIndexFromGrid(event.getX(), event.getY());
-
             if (index == -1)
                 return;
 
             const int emoteId = emoteShortcut->getEmote(index);
-
-            if (emoteId)
+            if (emoteId != -1)
             {
                 mEmoteMoved = emoteId;
                 emoteShortcut->removeEmote(index);
             }
         }
-        if (mEmoteMoved)
+        if (mEmoteMoved != -1)
         {
             mCursorPosX = event.getX();
             mCursorPosY = event.getY();
@@ -144,9 +134,9 @@ void EmoteShortcutContainer::mousePressed(gcn::MouseEvent &event)
     if (emoteShortcut->isEmoteSelected())
     {
         emoteShortcut->setEmote(index);
-        emoteShortcut->setEmoteSelected(0);
+        emoteShortcut->setEmoteSelected(-1);
     }
-    else if (emoteShortcut->getEmote(index))
+    else if (emoteShortcut->getEmote(index) != -1)
     {
         mEmoteClicked = true;
     }
@@ -159,26 +149,25 @@ void EmoteShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         const int index = getIndexFromGrid(event.getX(), event.getY());
 
         if (emoteShortcut->isEmoteSelected())
-            emoteShortcut->setEmoteSelected(0);
+            emoteShortcut->setEmoteSelected(-1);
 
         if (index == -1)
         {
-            mEmoteMoved = 0;
+            mEmoteMoved = -1;
             return;
         }
 
-        if (mEmoteMoved)
+        if (mEmoteMoved != -1)
         {
             emoteShortcut->setEmotes(index, mEmoteMoved);
-            mEmoteMoved = 0;
+            mEmoteMoved = -1;
         }
-        else if (emoteShortcut->getEmote(index) && mEmoteClicked)
+        else if (mEmoteClicked)
         {
-            emoteShortcut->useEmote(index + 1);
+            emoteShortcut->useEmote(index);
         }
 
-        if (mEmoteClicked)
-            mEmoteClicked = false;
+        mEmoteClicked = false;
     }
 }
 

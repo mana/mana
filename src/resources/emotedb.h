@@ -22,7 +22,6 @@
 #ifndef EMOTE_DB_H
 #define EMOTE_DB_H
 
-#include <map>
 #include <string>
 
 #include "utils/xml.h"
@@ -31,12 +30,11 @@ class ImageSprite;
 
 struct Emote
 {
+    int id;
+    int effectId;
     std::string name;
     ImageSprite *sprite;
-    int effect;
 };
-
-using Emotes = std::map<int, Emote *>;
 
 /**
  * Emote information database.
@@ -51,11 +49,10 @@ namespace EmoteDB
 
     void unload();
 
-    const Emote *get(int id);
+    const Emote &get(int id);
+    const Emote &getByIndex(int index);
 
-    int getLast();
-
-    using EmotesIterator = Emotes::iterator;
+    int getEmoteCount();
 }
 
 #endif // EMOTE_DB_H

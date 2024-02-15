@@ -436,7 +436,7 @@ void Game::handleInput()
             {
                 // Emotions
                 int emotion = keyboard.getKeyEmoteOffset(event.key.keysym.sym);
-                if (emotion)
+                if (emotion != -1)
                 {
                     emoteShortcut->useEmote(emotion);
                     used = true;

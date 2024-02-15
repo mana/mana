@@ -810,13 +810,13 @@ void LocalPlayer::toggleSit()
     Net::getPlayerHandler()->changeAction(newAction);
 }
 
-void LocalPlayer::emote(Uint8 emotion)
+void LocalPlayer::emote(int emoteId)
 {
     if (mLastActionTime != -1)
         return;
     mLastActionTime = tick_time;
 
-    Net::getPlayerHandler()->emote(emotion);
+    Net::getPlayerHandler()->emote(emoteId);
 }
 
 void LocalPlayer::attack(Being *target, bool keep)

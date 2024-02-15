@@ -26,15 +26,11 @@
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
-#include "localplayer.h"
 #include "log.h"
 
 #include "resources/emotedb.h"
 #include "resources/image.h"
-#include "resources/iteminfo.h"
 #include "resources/theme.h"
-
-#include "utils/dtor.h"
 
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
@@ -46,12 +42,6 @@ static const int MAX_COLUMNS = 6;
 
 EmotePopup::EmotePopup()
 {
-    // Setup emote sprites
-    for (int i = 0; i <= EmoteDB::getLast(); ++i)
-    {
-        mEmotes.push_back(EmoteDB::get(i)->sprite);
-    }
-
     mSelectionImage = Theme::getImageFromTheme("selection.png");
     if (!mSelectionImage)
         logger->error("Unable to load selection.png");
@@ -72,8 +62,7 @@ void EmotePopup::draw(gcn::Graphics *graphics)
 {
     Popup::draw(graphics);
 
-    const int emoteCount = mEmotes.size();
-    const int emotesLeft = mEmotes.size() % mColumnCount;
+    const int emoteCount = EmoteDB::getEmoteCount();
 
     for (int i = 0; i < emoteCount ; i++)
     {
@@ -84,8 +73,11 @@ void EmotePopup::draw(gcn::Graphics *graphics)
         int emoteY = 4 + row * gridHeight;
 
         // Center the last row when there are less emotes than columns
-        if (emotesLeft > 0 && row == mRowCount - 1)
+        if (row == mRowCount - 1)
+        {
+            const int emotesLeft = emoteCount % mColumnCount;
             emoteX += (mColumnCount - emotesLeft) * gridWidth / 2;
+        }
 
         // Draw selection image below hovered item
         if (i == mHoveredEmoteIndex)
@@ -95,8 +87,15 @@ void EmotePopup::draw(gcn::Graphics *graphics)
         }
 
         // Draw emote icon
-        mEmotes[i]->draw(static_cast<Graphics*>(graphics), emoteX, emoteY);
+        EmoteDB::getByIndex(i).sprite->draw(static_cast<Graphics*>(graphics), emoteX, emoteY);
     }
+}
+
+void EmotePopup::mouseExited(gcn::MouseEvent &event)
+{
+    Popup::mouseExited(event);
+
+    mHoveredEmoteIndex = -1;
 }
 
 void EmotePopup::mousePressed(gcn::MouseEvent &event)
@@ -107,8 +106,10 @@ void EmotePopup::mousePressed(gcn::MouseEvent &event)
     const int index = getIndexAt(event.getX(), event.getY());
     if (index != -1)
     {
-        setSelectedEmoteIndex(index);
-        emoteShortcut->setEmoteSelected(index + 1);
+        const int emoteId = EmoteDB::getByIndex(index).id;
+
+        setSelectedEmoteId(emoteId);
+        emoteShortcut->setEmoteSelected(emoteId);
     }
 }
 
@@ -119,41 +120,45 @@ void EmotePopup::mouseMoved(gcn::MouseEvent &event)
     mHoveredEmoteIndex = getIndexAt(event.getX(), event.getY());
 }
 
-int EmotePopup::getSelectedEmote() const
+int EmotePopup::getSelectedEmoteId() const
 {
-    return 1 + mSelectedEmoteIndex;
+    return mSelectedEmoteId;
 }
 
-void EmotePopup::setSelectedEmoteIndex(int index)
+void EmotePopup::setSelectedEmoteId(int emoteId)
 {
-    if (index == mSelectedEmoteIndex)
+    if (emoteId == mSelectedEmoteId)
         return;
 
-    mSelectedEmoteIndex = index;
+    mSelectedEmoteId = emoteId;
     distributeValueChangedEvent();
 }
 
 int EmotePopup::getIndexAt(int x, int y) const
 {
-    const int emotesLeft = mEmotes.size() % mColumnCount;
+    if (mColumnCount <= 0)
+        return -1;
+
+    // Take into account the border
+    x -= 2;
+    y -= 4;
+
     const int row = y / gridHeight;
-    int column;
 
     // Take into account that the last row is centered
-    if (emotesLeft > 0 && row == mRowCount - 1)
+    if (row == mRowCount - 1)
     {
-        int emotesMissing = mColumnCount - emotesLeft;
-        column = std::min((x - emotesMissing * gridWidth / 2) / gridWidth,
-                          emotesLeft - 1);
-    }
-    else
-    {
-        column = std::min(x / gridWidth, mColumnCount - 1);
+        const int emotesLeft = EmoteDB::getEmoteCount() % mColumnCount;
+        const int emotesMissing = mColumnCount - emotesLeft;
+        x -= emotesMissing * gridWidth / 2;
+        if (x < 0)
+            return -1;
     }
 
-    int index = column + (row * mColumnCount);
+    const int column = std::min(x / gridWidth, mColumnCount - 1);
+    const int index = column + (row * mColumnCount);
 
-    if ((unsigned) index < mEmotes.size())
+    if (index >= 0 && index < EmoteDB::getEmoteCount())
         return index;
 
     return -1;
@@ -161,27 +166,28 @@ int EmotePopup::getIndexAt(int x, int y) const
 
 void EmotePopup::recalculateSize()
 {
-    const unsigned emoteCount = mEmotes.size();
+    const int emoteCount = EmoteDB::getEmoteCount();
 
-    mRowCount = emoteCount / MAX_COLUMNS;
-    if (emoteCount % MAX_COLUMNS > 0)
-        ++mRowCount;
+    if (emoteCount > 0) {
+        mRowCount = emoteCount / MAX_COLUMNS;
+        if (emoteCount % MAX_COLUMNS > 0)
+            ++mRowCount;
 
-    mColumnCount = emoteCount / mRowCount;
-    if (emoteCount % mRowCount > 0)
-        ++mColumnCount;
+        mColumnCount = std::min(MAX_COLUMNS, emoteCount);
+    } else {
+        mRowCount = 0;
+        mColumnCount = 0;
+    }
 
     setContentSize(mColumnCount * gridWidth, mRowCount * gridHeight);
 }
 
 void EmotePopup::distributeValueChangedEvent()
 {
-    gcn::SelectionEvent event(this);
-    Listeners::const_iterator i_end = mListeners.end();
-    Listeners::const_iterator i;
+    const gcn::SelectionEvent event(this);
 
-    for (i = mListeners.begin(); i != i_end; ++i)
+    for (auto &listener : mListeners)
     {
-        (*i)->valueChanged(event);
+        listener->valueChanged(event);
     }
 }

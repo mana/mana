@@ -45,7 +45,7 @@ class EmoteShortcut
          * @param index Index of the shortcut Emote.
          */
         int getEmote(int index) const
-        { return mEmotes[index]; }
+        { return mEmotes[index] - 1; }
 
         /**
          * Returns the amount of shortcut Emotes.
@@ -65,7 +65,7 @@ class EmoteShortcut
          * @param index Index of the emotes.
          */
         void setEmote(int index)
-        { mEmotes[index] = mEmoteSelected; }
+        { setEmotes(index, mEmoteSelected); }
 
         /**
          * Adds a emoticon to the emotes store specified by the index.
@@ -74,7 +74,7 @@ class EmoteShortcut
          * @param emoteId ID of the emote.
          */
         void setEmotes(int index, int emoteId)
-        { mEmotes[index] = emoteId; }
+        { mEmotes[index] = emoteId + 1; }
 
         /**
          * Set the Emote that is selected.
@@ -87,8 +87,8 @@ class EmoteShortcut
         /**
          * A flag to check if the Emote is selected.
          */
-        bool isEmoteSelected()
-        { return mEmoteSelected; }
+        bool isEmoteSelected() const
+        { return mEmoteSelected != -1; }
 
         /**
          * Remove a Emote from the shortcut.
@@ -110,7 +110,7 @@ class EmoteShortcut
         void save();
 
         int mEmotes[SHORTCUT_EMOTES];  /**< The emote stored. */
-        int mEmoteSelected;            /**< The emote held by cursor. */
+        int mEmoteSelected = -1;       /**< The emote held by cursor. */
 
 };
 

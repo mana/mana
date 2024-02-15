@@ -27,12 +27,14 @@
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
 
+#include <algorithm>
+#include <vector>
+
 namespace
 {
-    Emotes mEmotes;
+    std::vector<Emote> mEmotes;
     Emote mUnknown;
     bool mLoaded = false;
-    int mLastEmote = 0;
 }
 
 void EmoteDB::init()
@@ -41,33 +43,30 @@ void EmoteDB::init()
         unload();
 
     mUnknown.name = "unknown";
-    mUnknown.effect = -1;
+    mUnknown.effectId = -1;
     mUnknown.sprite = new ImageSprite(
         ResourceManager::getInstance()->getImage("graphics/sprites/error.png"));
-
-    mLastEmote = 0;
-
 }
 
 void EmoteDB::readEmoteNode(xmlNodePtr node, const std::string &filename)
 {
-    int id = XML::getProperty(node, "id", -1);
+    const int id = XML::getProperty(node, "id", -1);
     if (id == -1)
     {
         logger->log("Emote Database: Emote with missing ID in %s!", filename.c_str());
         return;
     }
 
-    auto *currentEmote = new Emote;
+    Emote currentEmote;
 
-    currentEmote->name = XML::getProperty(node, "name", "unknown");
-    currentEmote->effect = XML::getProperty(node, "effectid", -1);
+    currentEmote.id = id;
+    currentEmote.name = XML::getProperty(node, "name", "unknown");
+    currentEmote.effectId = XML::getProperty(node, "effectid", -1);
 
-    if (currentEmote->effect == -1)
+    if (currentEmote.effectId == -1)
     {
         logger->log("Emote Database: Warning: Emote %s has no attached effect in %s!",
-                    currentEmote->name.c_str(), filename.c_str());
-        delete currentEmote;
+                    currentEmote.name.c_str(), filename.c_str());
         return;
     }
 
@@ -78,31 +77,25 @@ void EmoteDB::readEmoteNode(xmlNodePtr node, const std::string &filename)
     if (imageName.empty() || width <= 0 || height <= 0)
     {
         logger->log("Emote Database: Warning: Emote %s has bad imageset values in %s",
-                    currentEmote->name.c_str(), filename.c_str());
-        delete currentEmote;
+                    currentEmote.name.c_str(), filename.c_str());
         return;
     }
 
     ImageSet *is = ResourceManager::getInstance()->getImageSet(imageName,
                                                                width,
                                                                height);
-    if (!is || !(is->size() > 0))
+    if (!is || is->size() == 0)
     {
         logger->log("Emote Database: Error loading imageset for emote %s in %s",
-                    currentEmote->name.c_str(), filename.c_str());
+                    currentEmote.name.c_str(), filename.c_str());
         delete is;
-        delete currentEmote;
         return;
     }
-    else
-    {
-        // For now we just use the first image in the animation
-        currentEmote->sprite = new ImageSprite(is->get(0));
-    }
 
-    mEmotes[id] = currentEmote;
-    if (id > mLastEmote)
-        mLastEmote = id;
+    // For now we just use the first image in the animation
+    currentEmote.sprite = new ImageSprite(is->get(0));
+
+    mEmotes.push_back(std::move(currentEmote));
 }
 
 void EmoteDB::checkStatus()
@@ -112,31 +105,31 @@ void EmoteDB::checkStatus()
 
 void EmoteDB::unload()
 {
-    Emotes::iterator i;
-    for (i = mEmotes.begin(); i != mEmotes.end(); i++)
-    {
-        delete i->second;
-    }
-
+    // todo: don't we need to delete the sprites?
     mEmotes.clear();
-
     mLoaded = false;
 }
 
-const Emote *EmoteDB::get(int id)
+const Emote &EmoteDB::get(int id)
 {
-    Emotes::const_iterator i = mEmotes.find(id);
+    auto i = std::find_if(mEmotes.begin(), mEmotes.end(),
+                          [id](const Emote &e) { return e.id == id; });
 
     if (i == mEmotes.end())
     {
         logger->log("EmoteDB: Warning, unknown emote ID %d requested", id);
-        return &mUnknown;
+        return mUnknown;
     }
 
-    return i->second;
+    return *i;
 }
 
-int EmoteDB::getLast()
+const Emote &EmoteDB::getByIndex(int index)
 {
-    return mLastEmote;
+    return mEmotes.at(index);
+}
+
+int EmoteDB::getEmoteCount()
+{
+    return mEmotes.size();
 }

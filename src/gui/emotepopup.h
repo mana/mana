@@ -28,9 +28,7 @@
 #include <guichan/mouselistener.hpp>
 
 #include <list>
-#include <vector>
 
-class ImageSprite;
 class Image;
 
 namespace gcn {
@@ -57,13 +55,14 @@ class EmotePopup : public Popup
          */
         void draw(gcn::Graphics *graphics) override;
 
+        void mouseExited(gcn::MouseEvent &event) override;
         void mousePressed(gcn::MouseEvent &event) override;
         void mouseMoved(gcn::MouseEvent &event) override;
 
         /**
          * Returns the selected emote.
          */
-        int getSelectedEmote() const;
+        int getSelectedEmoteId() const;
 
         /**
          * Adds a listener to the list that's notified each time a change to
@@ -87,7 +86,7 @@ class EmotePopup : public Popup
         /**
          * Sets the index of the currently selected emote.
          */
-        void setSelectedEmoteIndex(int index);
+        void setSelectedEmoteId(int emoteId);
 
         /**
          * Returns the index at the specified coordinates. Returns -1 when
@@ -105,17 +104,14 @@ class EmotePopup : public Popup
          */
         void distributeValueChangedEvent();
 
-        std::vector<const ImageSprite*> mEmotes;
         Image *mSelectionImage;
-        int mSelectedEmoteIndex = -1;
+        int mSelectedEmoteId = -1;
         int mHoveredEmoteIndex = -1;
 
         int mRowCount = 1;
         int mColumnCount = 1;
 
-        using Listeners = std::list<gcn::SelectionListener *>;
-
-        Listeners mListeners;
+        std::list<gcn::SelectionListener *> mListeners;
 
         static const int gridWidth;
         static const int gridHeight;

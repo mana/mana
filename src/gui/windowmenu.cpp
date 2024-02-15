@@ -153,9 +153,9 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
 {
     if (event.getSource() == mEmotePopup)
     {
-        int emote = mEmotePopup->getSelectedEmote();
-        if (emote)
-            Net::getPlayerHandler()->emote(emote);
+        int emoteId = mEmotePopup->getSelectedEmoteId();
+        if (emoteId != -1)
+            Net::getPlayerHandler()->emote(emoteId);
 
         windowContainer->scheduleDelete(mEmotePopup);
         mEmotePopup = nullptr;

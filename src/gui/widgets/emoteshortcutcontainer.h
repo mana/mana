@@ -24,10 +24,6 @@
 
 #include "gui/widgets/shortcutcontainer.h"
 
-#include <vector>
-
-class ImageSprite;
-
 /**
  * An emote shortcut container. Used to quickly use emoticons.
  *
@@ -61,10 +57,8 @@ class EmoteShortcutContainer : public ShortcutContainer
         void mouseReleased(gcn::MouseEvent &event) override;
 
     private:
-        std::vector<const ImageSprite*> mEmoteImg;
-
         bool mEmoteClicked = false;
-        int mEmoteMoved = 0;
+        int mEmoteMoved = -1;
 };
 
 #endif

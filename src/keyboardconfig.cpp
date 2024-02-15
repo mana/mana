@@ -218,10 +218,10 @@ int KeyboardConfig::getKeyEmoteOffset(int keyValue) const
     {
         if (keyValue == mKey[i].value)
         {
-            return 1 + i - KEY_EMOTE_1;
+            return i - KEY_EMOTE_1;
         }
     }
-    return 0;
+    return -1;
 }
 
 bool KeyboardConfig::isKeyActive(int index) const

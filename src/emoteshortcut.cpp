@@ -28,8 +28,7 @@
 
 EmoteShortcut *emoteShortcut;
 
-EmoteShortcut::EmoteShortcut():
-    mEmoteSelected(0)
+EmoteShortcut::EmoteShortcut()
 {
     load();
 }
@@ -43,9 +42,7 @@ void EmoteShortcut::load()
 {
     for (int i = 0; i < SHORTCUT_EMOTES; i++)
     {
-        int emoteId = (int) config.getValue("emoteshortcut" + toString(i), i + 1);
-
-        mEmotes[i] = emoteId;
+        mEmotes[i] = (int) config.getValue("emoteshortcut" + toString(i), i + 1);
     }
 }
 
@@ -53,18 +50,17 @@ void EmoteShortcut::save()
 {
     for (int i = 0; i < SHORTCUT_EMOTES; i++)
     {
-        const int emoteId = mEmotes[i] ? mEmotes[i] : 0;
-        config.setValue("emoteshortcut" + toString(i), emoteId);
+        config.setValue("emoteshortcut" + toString(i), mEmotes[i]);
     }
 }
 
 void EmoteShortcut::useEmote(int index)
 {
-    if ((index > 0) && (index <= SHORTCUT_EMOTES))
+    if (index >= 0 && index < SHORTCUT_EMOTES)
     {
-       if (mEmotes[index - 1] > 0)
-       {
-          local_player->emote(mEmotes[index - 1]);
-       }
+        if (mEmotes[index] > 0)
+        {
+            local_player->emote(mEmotes[index] - 1);
+        }
     }
 }

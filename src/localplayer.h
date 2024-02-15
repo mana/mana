@@ -160,7 +160,7 @@ class LocalPlayer : public Being
         bool withinRange(Actor *target, int range) const;
 
         void toggleSit();
-        void emote(uint8_t emotion);
+        void emote(int emoteId);
 
         /**
          * Shows item pickup notifications.
