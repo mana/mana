@@ -1,0 +1,3 @@
+[submodule "libs/guichan"]
+	path = libs/guichan
+	url = https://github.com/darkbitsorg/guichan.git

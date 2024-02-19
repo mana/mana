@@ -50,6 +50,20 @@ IF (ENABLE_MANASERV)
     ADD_SUBDIRECTORY(libs/enet)
 ENDIF()
 
+# On macOS we need to build Guichan ourselves since it is disabled in Homebrew
+# This might also be a good idea for the Windows build
+if(APPLE)
+    # This policy makes sure that the below options are not ignored by the
+    # added Guichan CMakeLists.txt
+    SET(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+    SET(ENABLE_ALLEGRO OFF)
+    SET(ENABLE_IRRLICHT OFF)
+    SET(ENABLE_SDL OFF)
+    SET(ENABLE_OPENGL OFF)
+    SET(BUILD_GUICHAN_SHARED OFF)
+    ADD_SUBDIRECTORY(libs/guichan)
+endif()
+
 ADD_SUBDIRECTORY(src)
 
 IF (GETTEXT_FOUND AND ENABLE_NLS)

@@ -10,7 +10,7 @@ The Mana client is written in C++ and builds upon:
 - SDL2, SDL2\_gfx, SDL2\_image, SDL2\_mixer, SDL2\_ttf, SDL2\_net (Media framework)
 - Guichan (GUI framework)
 - libxml2 (XML parsing and writing)
-- PhysFS (Data files)
+- PhysicsFS (Data files)
 - ENet (UDP networking library)
 - libcurl (HTTP downloads)
 - zlib (Archives)
@@ -66,9 +66,7 @@ window. Here's a list of common commands:
 
 ```
 - /help              Displays the list of commands
-- /announce          broadcasts a global msg(Gm Cammand only)
 - /clear             clears the chat window
-- /who               shows how many players are online
 - /where             displays the map name your currently on
 - /whisper           send a private msg to another player
                         (format: /whisper <charname> <message>)
@@ -111,19 +109,32 @@ to contact the developers of the game instead.
 Compiling the Client
 --------------------
 
-Installing the dependencies on Ubuntu
+Installing the dependencies on Ubuntu:
 
-    sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
+    sudo apt install build-essential cmake \
+                     libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
                      libsdl2-net-dev libsdl2-ttf-dev libsdl2-gfx-dev \
                      libcurl4-openssl-dev libphysfs-dev libxml2-dev \
                      libguichan-dev libpng-dev gettext
 
+Installing the dependencies on macOS (with Homebrew):
+
+    brew install sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_net sdl2_ttf \
+                 physfs curl
+
+Installing the dependencies on Fedora:
+
+    sudo dnf install gcc-c++ cmake physfs-devel libcurl-devel guichan-devel \
+                     SDL2_image-devel SDL2_mixer-devel SDL2_net-devel \
+                     SDL2_ttf-devel SDL2_gfx-devel
+
 Once the dependencies are installed, use CMake:
 
-    cmake .
-    cmake --build . --parallel
+    cmake -B build .
+    cmake --build build --parallel
 
-This produces an executable in `src/mana`. If running it without installing, be
-sure to run it from the repository root so that it can find its data files.
+This produces an executable in `build/src/mana`. If running it without
+installing, be sure to run it from the repository root so that it can find its
+data files.
 
 See `README.cmake` for additional information.
