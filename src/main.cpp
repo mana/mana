@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
     // Initialize PhysicsFS
     if (!PHYSFS_init(argv[0])) {
         std::cout << "Error while initializing PhysFS: "
-                << PHYSFS_getLastError() << std::endl;
+                << PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()) << std::endl;
         return 1;
     }
     atexit((void(*)()) PHYSFS_deinit);

@@ -1114,22 +1114,16 @@ void Client::initHomeDir()
 
     if (mLocalDataDir.empty())
     {
-#ifdef __APPLE__
-        // Use Application Directory instead of .mana
-        mLocalDataDir = std::string(PHYSFS_getUserDir()) +
-            "/Library/Application Support/" +
-            branding.getValue("appName", "Mana");
-#elif defined __HAIKU__
-        mLocalDataDir = std::string(PHYSFS_getUserDir()) +
-           "/config/data/Mana";
+#if defined __HAIKU__
+        mLocalDataDir = PHYSFS_getUserDir();
+        mLocalDataDir += "/config/data/Mana";
 #elif defined _WIN32
         mLocalDataDir = getSpecialFolderLocation(CSIDL_LOCAL_APPDATA);
         if (mLocalDataDir.empty())
-            mLocalDataDir = std::string(PHYSFS_getUserDir());
+            mLocalDataDir = PHYSFS_getUserDir();
         mLocalDataDir += "/Mana";
 #else
-        mLocalDataDir = std::string(PHYSFS_getUserDir()) +
-            "/.local/share/mana";
+        mLocalDataDir = PHYSFS_getPrefDir("manasource.org", "mana");
 #endif
     }
 
@@ -1147,17 +1141,12 @@ void Client::initHomeDir()
 #ifdef __APPLE__
         mConfigDir = mLocalDataDir + "/" + app;
 #elif defined __HAIKU__
-        mConfigDir = std::string(PHYSFS_getUserDir()) +
-           "/config/settings/Mana" +
-           branding.getValue("appName", "manasource");
+        mConfigDir = PHYSFS_getPrefDir("manasource.org", "Mana");
+        mConfigDir += app;
 #elif defined _WIN32
-        mConfigDir = getSpecialFolderLocation(CSIDL_APPDATA);
-        if (mConfigDir.empty())
-            mConfigDir = mLocalDataDir;
-        else
-            mConfigDir += "/mana/" + app;
+        mConfigDir = PHYSFS_getPrefDir("Mana", app.c_str());
 #else
-        mConfigDir = std::string(PHYSFS_getUserDir()) + "/.config/mana/" + app;
+        mConfigDir = std::string(PHYSFS_getUserDir()) + ".config/mana/" + app;
 #endif
     }
 
@@ -1165,33 +1154,6 @@ void Client::initHomeDir()
     {
         logger->error(strprintf(_("%s doesn't exist and can't be created! "
                                   "Exiting."), mConfigDir.c_str()));
-    }
-
-    struct stat statbuf;
-    std::string newConfigFile = mConfigDir + "/config.xml";
-    if (stat(newConfigFile.c_str(), &statbuf))
-    {
-        std::string oldConfigFile = std::string(PHYSFS_getUserDir()) +
-            "/.tmw/config.xml";
-        if (mRootDir.empty() && !stat(oldConfigFile.c_str(), &statbuf)
-            && S_ISREG(statbuf.st_mode))
-        {
-            std::ifstream oldConfig;
-            std::ofstream newConfig;
-            logger->log("Copying old TMW settings.");
-
-            oldConfig.open(oldConfigFile.c_str(), std::ios::binary);
-            newConfig.open(newConfigFile.c_str(), std::ios::binary);
-
-            if (!oldConfig.is_open() || !newConfig.is_open())
-                logger->log("Unable to copy old settings.");
-            else
-            {
-                newConfig << oldConfig.rdbuf();
-                newConfig.close();
-                oldConfig.close();
-            }
-        }
     }
 }
 

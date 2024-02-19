@@ -155,9 +155,9 @@ bool ResourceManager::setWriteDir(const std::string &path)
 bool ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
     logger->log("Adding to PhysicsFS: %s", path.c_str());
-    if (!PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0))
+    if (!PHYSFS_mount(path.c_str(), nullptr, append ? 1 : 0))
     {
-        logger->log("Error: %s", PHYSFS_getLastError());
+        logger->log("Error: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return false;
     }
     return true;
@@ -201,7 +201,12 @@ bool ResourceManager::exists(const std::string &path)
 
 bool ResourceManager::isDirectory(const std::string &path)
 {
-    return PHYSFS_isDirectory(path.c_str());
+    PHYSFS_Stat stat;
+    if (PHYSFS_stat(path.c_str(), &stat) != 0)
+    {
+        return stat.filetype == PHYSFS_FILETYPE_DIRECTORY;
+    }
+    return false;
 }
 
 std::string ResourceManager::getPath(const std::string &file)
@@ -442,7 +447,7 @@ void *ResourceManager::loadFile(const std::string &filename, int &filesize,
     if (file == nullptr)
     {
         logger->log("Warning: Failed to load %s: %s",
-                filename.c_str(), PHYSFS_getLastError());
+                filename.c_str(), PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return nullptr;
     }
 
@@ -455,7 +460,7 @@ void *ResourceManager::loadFile(const std::string &filename, int &filesize,
 
     // Allocate memory and load the file
     void *buffer = malloc(filesize);
-    PHYSFS_read(file, buffer, 1, filesize);
+    PHYSFS_readBytes(file, buffer, filesize);
 
     // Close the file and let the user deallocate the memory
     PHYSFS_close(file);
@@ -492,21 +497,21 @@ bool ResourceManager::copyFile(const std::string &src, const std::string &dst)
     PHYSFS_file *srcFile = PHYSFS_openRead(src.c_str());
     if (!srcFile)
     {
-        logger->log("Read error: %s", PHYSFS_getLastError());
+        logger->log("Read error: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return false;
     }
     PHYSFS_file *dstFile = PHYSFS_openWrite(dst.c_str());
     if (!dstFile)
     {
-        logger->log("Write error: %s", PHYSFS_getLastError());
+        logger->log("Write error: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         PHYSFS_close(srcFile);
         return false;
     }
 
     int fileSize = PHYSFS_fileLength(srcFile);
     void *buf = malloc(fileSize);
-    PHYSFS_read(srcFile, buf, 1, fileSize);
-    PHYSFS_write(dstFile, buf, 1, fileSize);
+    PHYSFS_readBytes(srcFile, buf, fileSize);
+    PHYSFS_writeBytes(dstFile, buf, fileSize);
 
     PHYSFS_close(srcFile);
     PHYSFS_close(dstFile);
