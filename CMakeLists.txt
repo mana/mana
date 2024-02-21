@@ -71,7 +71,10 @@ IF (GETTEXT_FOUND AND ENABLE_NLS)
 ENDIF()
 
 If(UNIX)
-    INSTALL(FILES mana.desktop DESTINATION share/applications)
+    INSTALL(FILES org.manasource.Mana.desktop DESTINATION share/applications)
+    INSTALL(FILES org.manasource.Mana.metainfo.xml DESTINATION share/metainfo)
+    INSTALL(FILES data/icons/mana.png DESTINATION share/icons/hicolor/128x128/apps RENAME org.manasource.Mana.png)
+    INSTALL(FILES data/icons/mana.svg DESTINATION share/icons/hicolor/scalable/apps RENAME org.manasource.Mana.svg)
 ENDIF()
 
 SET(CPACK_PACKAGE_NAME "mana")

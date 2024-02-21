@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.manasource.Mana</id>
+  <launchable type="desktop-id">org.manasource.Mana.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0</project_license>
+  <name>The Mana Client</name>
+  <summary>A 2D MMORPG client</summary>
+  <developer id="org.manasource">
+    <name>The Mana Developers</name>
+  </developer>
+  <description>
+    <p>
+        The Mana client is used for playing The Mana World and similar online games
+        based on either tmwAthena or Manaserv.
+    </p>
+    <p>
+        The Mana World (TMW) is a serious effort to create an innovative free and
+        open source MMORPG. TMW uses 2D graphics and aims to create a large and diverse
+        interactive world.
+    </p>
+  </description>
+  <url type="homepage">https://manasource.org/</url>
+  <releases>
+   <release version="0.6.1" type="stable" date="2012-04-08">
+     <description>
+       <p>This release fixes a few annoyances and other small bugs. It is now
+       easier to click beings that are close to other beings, NPC trading has
+       been removed from chat (again), the last emote can now be used and ring
+       and necklace slots were unswapped. Also, the Finnish, Brazilian
+       Portuguese and Polish translations were updated.</p>
+     </description>
+   </release>
+  </releases>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://wiki.themanaworld.org/images/c/cb/TMW_Screenshot_63.png</image>
+      <caption>Booth's Event</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://wiki.themanaworld.org/images/a/a3/Screenshot_partysystem.png</image>
+      <caption>Party system</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://wiki.themanaworld.org/images/5/5e/Mana_World_0.0.29.PNG</image>
+      <caption>Hurnscald Woodlands</caption>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">mild</content_attribute>
+    <content_attribute id="violence-fantasy">mild</content_attribute>
+    <content_attribute id="social-chat">intense</content_attribute>
+  </content_rating>
+</component>

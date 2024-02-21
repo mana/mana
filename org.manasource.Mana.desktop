@@ -1,0 +1,25 @@
+
+[Desktop Entry]
+Version=1.0
+Name=Mana
+Comment=A 2D MMORPG client
+Exec=mana
+StartupNotify=false
+Terminal=false
+Type=Application
+Icon=org.manasource.Mana
+Categories=Game;RolePlaying;
+Keywords=MMORPG;game;RPG;adventure;multiplayer;online;
+
+# Translations
+Comment[vls]=Nen 2D MMORPG client
+Comment[ru]=Клиент к 2D MMORPG игре
+Comment[it]=Un gioco fantasy online
+Comment[ja]=2DのMMORPGクライアント
+Comment[cs]=2D MMORPG klient
+Comment[nl_BE]=Een 2D MMORPG client
+Comment[de]=ein 2D MMORG Client
+Comment[sv_SE]=Ett fantasyrollspel online
+Comment[es]=Un cliente MMORPG 2D
+Comment[fr]=Un jeu en ligne dans un univers fantastique
+Comment[nl]=Een online role playing game
