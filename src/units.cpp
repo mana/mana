@@ -26,7 +26,6 @@
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
-#include <cmath>
 #include <climits>
 #include <vector>
 
@@ -37,7 +36,7 @@ struct UnitLevel {
 };
 
 struct UnitDescription {
-    std::vector<struct UnitLevel> levels;
+    std::vector<UnitLevel> levels;
     double conversion;
     bool mix;
 };
@@ -48,25 +47,25 @@ enum UnitType {
     UNIT_END
 };
 
-struct UnitDescription units[UNIT_END];
+UnitDescription units[UNIT_END];
 
 
 void Units::init()
 {
     { // Setup default weight
-        struct UnitDescription ud;
+        UnitDescription ud;
 
         ud.conversion = 1.0;
         ud.mix = false;
 
-        struct UnitLevel bu;
+        UnitLevel bu;
         bu.symbol = "g";
         bu.count = 1;
         bu.round = 0;
 
         ud.levels.push_back(bu);
 
-        struct UnitLevel ul;
+        UnitLevel ul;
         ul.symbol = "kg";
         ul.count = 1000;
         ul.round = 2;
@@ -77,12 +76,12 @@ void Units::init()
     }
 
     { // Setup default currency
-        struct UnitDescription ud;
+        UnitDescription ud;
 
         ud.conversion = 1.0;
         ud.mix = false;
 
-        struct UnitLevel bu;
+        UnitLevel bu;
         bu.symbol = "¤";
         bu.count = 1;
         bu.round = 0;
@@ -95,13 +94,13 @@ void Units::init()
 
 void Units::readUnitNode(xmlNodePtr node, const std::string &filename)
 {
-    struct UnitDescription ud;
+    UnitDescription ud;
     int level = 1;
     const std::string type = XML::getProperty(node, "type", "");
     ud.conversion = XML::getProperty(node, "conversion", 1);
     ud.mix = XML::getProperty(node, "mix", "no") == "yes";
 
-    struct UnitLevel bu;
+    UnitLevel bu;
     bu.symbol = XML::getProperty(node, "base", "¤");
     bu.count = 1;
     bu.round = XML::getProperty(node, "round", 2);
@@ -112,7 +111,7 @@ void Units::readUnitNode(xmlNodePtr node, const std::string &filename)
     {
         if (xmlStrEqual(uLevel->name, BAD_CAST "level"))
         {
-            struct UnitLevel ul;
+            UnitLevel ul;
             ul.symbol = XML::getProperty(uLevel, "symbol",
                                             strprintf("¤%d",level));
             ul.count = XML::getProperty(uLevel, "count", -1);
@@ -132,12 +131,9 @@ void Units::readUnitNode(xmlNodePtr node, const std::string &filename)
     }
 
     // Add one more level for saftey
-    struct UnitLevel ll;
-    ll.symbol = "";
+    UnitLevel &ll = ud.levels.emplace_back();
     ll.count = INT_MAX;
     ll.round = 0;
-
-    ud.levels.push_back(ll);
 
     if (type == "weight")
         units[UNIT_WEIGHT] = ud;
@@ -150,13 +146,12 @@ void Units::readUnitNode(xmlNodePtr node, const std::string &filename)
 
 void Units::checkStatus()
 {
-
 }
 
 std::string formatUnit(int value, int type)
 {
-    struct UnitDescription ud = units[type];
-    struct UnitLevel ul;
+    UnitDescription ud = units[type];
+    UnitLevel ul;
 
     // Shortcut for 0; do the same for values less than 0  (for now)
     if (value <= 0)
@@ -164,62 +159,59 @@ std::string formatUnit(int value, int type)
         ul = ud.levels[0];
         return strprintf("0%s", ul.symbol.c_str());
     }
-    else
+
+    double amount = ud.conversion * value;
+
+    // If only the first level is needed, act like mix if false
+    if (ud.mix && !ud.levels.empty() && ud.levels[1].count < amount)
     {
-        double amount = ud.conversion * value;
+        std::string output;
+        UnitLevel pl = ud.levels[0];
+        ul = ud.levels[1];
+        int levelAmount = (int) amount;
+        int nextAmount;
 
-        // If only the first level is needed, act like mix if false
-        if (ud.mix && ud.levels.size() > 0 && ud.levels[1].count < amount)
+        levelAmount /= ul.count;
+
+        amount -= levelAmount * ul.count;
+
+        if (amount > 0)
         {
-            std::string output;
-            struct UnitLevel pl = ud.levels[0];
-            ul = ud.levels[1];
-            int levelAmount = (int) amount;
-            int nextAmount;
-
-            levelAmount /= ul.count;
-
-            amount -= levelAmount * ul.count;
-
-            if (amount > 0)
-            {
-                output = strprintf("%.*f%s", pl.round, amount,
-                                    pl.symbol.c_str());
-            }
-
-            for (unsigned int i = 2; i < ud.levels.size(); i++)
-            {
-                pl = ul;
-                ul = ud.levels[i];
-
-                nextAmount = levelAmount / ul.count;
-                levelAmount %= ul.count;
-
-                if (levelAmount > 0) output = strprintf("%d%s",
-                    levelAmount, pl.symbol.c_str()) + output;
-
-                if (!nextAmount) break;
-                levelAmount = nextAmount;
-            }
-
-            return output;
+            output = strprintf("%.*f%s", pl.round, amount,
+                                pl.symbol.c_str());
         }
-        else
+
+        for (unsigned int i = 2; i < ud.levels.size(); i++)
         {
-            for (unsigned int i = 0; i < ud.levels.size(); i++)
-            {
-                ul = ud.levels[i];
-                if (amount < ul.count && ul.count > 0)
-                {
-                    ul = ud.levels[i - 1];
-                    break;
-                }
-                amount /= ul.count;
-            }
+            pl = ul;
+            ul = ud.levels[i];
 
-            return strprintf("%.*f%s", ul.round, amount, ul.symbol.c_str());
+            nextAmount = levelAmount / ul.count;
+            levelAmount %= ul.count;
+
+            if (levelAmount > 0) output = strprintf("%d%s",
+                levelAmount, pl.symbol.c_str()) + output;
+
+            if (!nextAmount)
+                break;
+            levelAmount = nextAmount;
         }
+
+        return output;
     }
+
+    for (unsigned int i = 0; i < ud.levels.size(); i++)
+    {
+        ul = ud.levels[i];
+        if (amount < ul.count && ul.count > 0)
+        {
+            ul = ud.levels[i - 1];
+            break;
+        }
+        amount /= ul.count;
+    }
+
+    return strprintf("%.*f%s", ul.round, amount, ul.symbol.c_str());
 }
 
 std::string Units::formatCurrency(int value)

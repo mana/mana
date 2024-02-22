@@ -53,9 +53,7 @@ BeingPopup::BeingPopup():
     add(mBeingParty);
 }
 
-BeingPopup::~BeingPopup()
-{
-}
+BeingPopup::~BeingPopup() = default;
 
 void BeingPopup::show(int x, int y, Being *b)
 {
@@ -84,7 +82,7 @@ void BeingPopup::show(int x, int y, Being *b)
     }
     else
     {
-        mBeingParty->setCaption("");
+        mBeingParty->setCaption(std::string());
         setContentSize(minWidth + 10, height + 10);
     }
 

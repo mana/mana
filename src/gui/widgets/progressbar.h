@@ -116,7 +116,7 @@ class ProgressBar : public gcn::Widget
          */
         static void render(Graphics *graphics, const gcn::Rectangle &area,
                            const gcn::Color &color, float progress,
-                           const std::string &text = "");
+                           const std::string &text = std::string());
 
     private:
         float mProgress, mProgressToGo;

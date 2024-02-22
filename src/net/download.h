@@ -94,12 +94,12 @@ class Download
             unsigned checkAdler: 1;
         } mOptions;
         std::string mFileName;
-        WriteFunction mWriteFunction;
+        WriteFunction mWriteFunction = nullptr;
         unsigned long mAdler;
         DownloadUpdate mUpdateFunction;
-        SDL_Thread *mThread;
-        CURL *mCurl;
-        curl_slist *mHeaders;
+        SDL_Thread *mThread = nullptr;
+        CURL *mCurl = nullptr;
+        curl_slist *mHeaders = nullptr;
         char *mError;
 };
 

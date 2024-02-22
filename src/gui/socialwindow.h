@@ -70,7 +70,7 @@ public:
     void showGuildCreate();
 
     void showPartyInvite(const std::string &inviter,
-                         const std::string &partyName = "");
+                         const std::string &partyName = std::string());
 
     void showPartyCreate();
 

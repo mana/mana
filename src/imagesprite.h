@@ -43,7 +43,7 @@ public:
     bool update(int time) override
     { return false; }
 
-    bool draw(Graphics* graphics, int posX, int posY) const override;
+    bool draw(Graphics *graphics, int posX, int posY) const override;
 
     int getWidth() const override
     { return mImage->getWidth(); }
@@ -51,14 +51,11 @@ public:
     int getHeight() const override
     { return mImage->getHeight(); }
 
-    const Image* getImage() const override
+    const Image *getImage() const override
     { return mImage; }
 
     bool setDirection(SpriteDirection direction) override
     { return false; }
-
-    int getNumberOfLayers()
-    { return 1; }
 
     int getDuration() const override
     { return 0; }

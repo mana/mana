@@ -298,14 +298,14 @@ static bool saveScreenshot()
         logger->log("Directory %s doesn't exist and can't be created! "
                     "Setting screenshot directory to home.",
                     screenshotDirectory.c_str());
-        screenshotDirectory = std::string(PHYSFS_getUserDir());
+        screenshotDirectory = PHYSFS_getUserDir();
     }
 
     do
     {
         screenshotCount++;
-        filenameSuffix.str("");
-        filename.str("");
+        filenameSuffix.str(std::string());
+        filename.str(std::string());
         filename << screenshotDirectory << "/";
         filenameSuffix << branding.getValue("appShort", "Mana")
                        << "_Screenshot_" << screenshotCount << ".png";

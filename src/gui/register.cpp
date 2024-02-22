@@ -209,8 +209,8 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
             else if (error == 2)
             {
                 // Reset password confirmation
-                mPasswordField->setText("");
-                mConfirmField->setText("");
+                mPasswordField->setText(std::string());
+                mConfirmField->setText(std::string());
 
                 mWrongDataNoticeListener->setTarget(this->mPasswordField);
             }

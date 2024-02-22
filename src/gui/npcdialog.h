@@ -124,7 +124,7 @@ class NpcDialog : public Window,
         /**
          * Requests a text string from the user.
          */
-        void textRequest(const std::string &defaultText = "");
+        void textRequest(const std::string &defaultText = std::string());
 
         bool isInputFocused() const;
 

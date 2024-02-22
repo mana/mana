@@ -106,7 +106,7 @@ NpcDialog::NpcDialog(int npcId)
     mItemList->setVisible(true);
 
     // Setup string input box
-    mTextField = new TextField("");
+    mTextField = new TextField(std::string());
     mTextField->setVisible(true);
 
     // Setup int input box
@@ -211,7 +211,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         }
         else if (mActionState == NPC_ACTION_INPUT)
         {
-            std::string printText = "";  // Text that will get printed in the textbox
+            std::string printText;  // Text that will get printed in the textbox
 
             if (mInputState == NPC_INPUT_LIST)
             {
@@ -243,7 +243,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         }
 
         if (!mLogInteraction)
-            setText("");
+            setText(std::string());
     }
     else if (event.getId() == "reset")
     {
@@ -569,7 +569,7 @@ void NpcEventListener::event(Event::Channel channel,
         }
         catch (BadEvent)
         {
-            dialog->textRequest("");
+            dialog->textRequest(std::string());
         }
     }
     else if (event.getType() == Event::Next)

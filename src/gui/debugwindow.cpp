@@ -59,12 +59,12 @@ public:
             mFPSText = _("%d FPS");
         }
 
-        mFPSLabel = new Label("");
-        mMusicFileLabel = new Label("");
-        mMapLabel = new Label("");
-        mMinimapLabel = new Label("");
-        mTileMouseLabel = new Label("");
-        mParticleCountLabel = new Label("");
+        mFPSLabel = new Label(std::string());
+        mMusicFileLabel = new Label(std::string());
+        mMapLabel = new Label(std::string());
+        mMinimapLabel = new Label(std::string());
+        mTileMouseLabel = new Label(std::string());
+        mParticleCountLabel = new Label(std::string());
 
         LayoutHelper h(this);
         ContainerPlacer place = h.getPlacer(0, 0);

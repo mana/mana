@@ -532,7 +532,7 @@ void Theme::loadColors(std::string file)
     if (file == defaultThemePath)
         return; // No need to reload
 
-    if (file == "")
+    if (file.empty())
         file = defaultThemePath;
 
     file += "/colors.xml";

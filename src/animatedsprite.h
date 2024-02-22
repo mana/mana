@@ -24,7 +24,6 @@
 
 #include "sprite.h"
 
-#include <map>
 #include <string>
 
 class Animation;
@@ -60,7 +59,7 @@ class AnimatedSprite : public Sprite
 
         bool update(int time) override;
 
-        bool draw(Graphics* graphics, int posX, int posY) const override;
+        bool draw(Graphics *graphics, int posX, int posY) const override;
 
         int getWidth() const override;
 
@@ -74,9 +73,6 @@ class AnimatedSprite : public Sprite
 
         bool setDirection(SpriteDirection direction) override;
 
-        int getNumberOfLayers()
-        { return 1; }
-
         virtual bool drawnWhenBehind() const
         { return true; }
 
@@ -85,16 +81,16 @@ class AnimatedSprite : public Sprite
     private:
         bool updateCurrentAnimation(unsigned int dt);
 
-        SpriteDirection mDirection;    /**< The sprite direction. */
-        int mLastTime;                 /**< The last time update was called. */
+        SpriteDirection mDirection = DIRECTION_DOWN;    /**< The sprite direction. */
+        int mLastTime = 0;                  /**< The last time update was called. */
 
-        int mFrameIndex;               /**< The index of the current frame. */
-        int mFrameTime;                /**< The time since start of frame. */
+        int mFrameIndex = 0;                /**< The index of the current frame. */
+        int mFrameTime = 0;                 /**< The time since start of frame. */
 
-        SpriteDef *mSprite;            /**< The sprite definition. */
-        Action *mAction;               /**< The currently active action. */
-        Animation *mAnimation;         /**< The currently active animation. */
-        Frame *mFrame;                 /**< The currently active frame. */
+        SpriteDef *mSprite;                 /**< The sprite definition. */
+        Action *mAction = nullptr;          /**< The currently active action. */
+        Animation *mAnimation = nullptr;    /**< The currently active animation. */
+        Frame *mFrame = nullptr;            /**< The currently active frame. */
 };
 
 #endif

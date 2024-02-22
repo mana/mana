@@ -118,7 +118,7 @@ void OutfitWindow::save()
         }
         config.setValue("Outfit" + toString(o), outfitStr);
         config.setValue("OutfitUnequip" + toString(o), mItemsUnequip[o]);
-        outfitStr = "";
+        outfitStr.clear();
     }
 }
 

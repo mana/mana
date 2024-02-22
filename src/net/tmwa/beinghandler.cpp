@@ -410,18 +410,6 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
         case SMSG_BEING_CHANGE_LOOKS2:
         {
-            /*
-             * SMSG_BEING_CHANGE_LOOKS (0x00c3) and
-             * SMSG_BEING_CHANGE_LOOKS2 (0x01d7) do basically the same
-             * thing.  The difference is that ...LOOKS carries a single
-             * 8 bit value, where ...LOOKS2 carries two 16 bit values.
-             *
-             * If type = 2, then the first 16 bit value is the weapon ID,
-             * and the second 16 bit value is the shield ID.  If no
-             * shield is equipped, or type is not 2, then the second
-             * 16 bit value will be 0.
-             */
-
             if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
@@ -472,7 +460,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     dstBeing->setSprite(SPRITE_MISC2, id);
                     break;
                 default:
-                    logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
+                    logger->log("SMSG_BEING_CHANGE_LOOKS2: unsupported type: "
                             "%d, id: %d", type, id);
                     break;
             }
@@ -530,12 +518,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     break;
             }
 
-            if (Party *party = local_player->getParty()){
+            if (Party *party = local_player->getParty())
                 if (party->isMember(id))
-                {
                     dstBeing->setParty(party);
-                }
-            }
 
             // The original speed is ticks per tile * 10
             if (speed)

@@ -75,10 +75,8 @@ namespace utils
         {
             return path1 + path2;
         }
-        else
-        {
-            return path1 + "/" + path2;
-        }
+
+        return path1 + "/" + path2;
     }
 
     /**
@@ -86,14 +84,14 @@ namespace utils
      */
     std::string cleanPath(const std::string &path)
     {
-        size_t prev, cur;
-        std::string part, result;
+        std::string part;
+        std::string result;
         std::vector<std::string> pathStack;
 
-        prev = 0;
+        size_t prev = 0;
         while (true)
         {
-            cur = path.find_first_of("/\\", prev);
+            size_t cur = path.find_first_of("/\\", prev);
             if (cur == std::string::npos)
             {
                 // FIXME add everything from prev to the end
@@ -114,12 +112,12 @@ namespace utils
             {
                 // do nothing
             }
-            else if (part == "")
+            else if (part.empty())
             {
                 if (pathStack.empty() && cur == 0)
                 {
                     // handle first empty match before the root slash
-                    pathStack.push_back(std::string());
+                    pathStack.emplace_back();
                 }
                 else
                 {

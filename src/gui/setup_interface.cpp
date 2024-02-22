@@ -113,7 +113,7 @@ Setup_Interface::Setup_Interface():
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
                                          mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),
-    mSpeechLabel(new Label("")),
+    mSpeechLabel(new Label(std::string())),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFontSize(config.getIntValue("fontSize"))
 {

@@ -165,7 +165,7 @@ void TradeWindow::reset()
     mOkMe = false;
     setMoney(0);
     mMoneyField->setEnabled(true);
-    mMoneyField->setText("");
+    mMoneyField->setText(std::string());
     mAddButton->setEnabled(true);
     mMoneyChangeButton->setEnabled(true);
     setStatus(PREPARING);
@@ -219,7 +219,7 @@ void TradeWindow::setStatus(Status s)
             break;
         case PROPOSING:
             mOkButton->setCaption(CAPTION_CONFIRMED);
-            mOkButton->setActionEventId("");
+            mOkButton->setActionEventId(std::string());
             break;
         case ACCEPTING:
             mOkButton->setCaption(CAPTION_ACCEPT);
@@ -227,7 +227,7 @@ void TradeWindow::setStatus(Status s)
             break;
         case ACCEPTED:
             mOkButton->setCaption(CAPTION_ACCEPTED);
-            mOkButton->setActionEventId("");
+            mOkButton->setActionEventId(std::string());
             break;
         default:
             break;

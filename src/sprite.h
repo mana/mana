@@ -32,7 +32,7 @@ const int DEFAULT_FRAME_DELAY = 75;
 class Sprite
 {
     public:
-        virtual ~Sprite() {}
+        virtual ~Sprite() = default;
 
         /**
          * Resets the sprite.
@@ -114,7 +114,7 @@ class Sprite
         virtual int getDuration() const = 0;
 
     protected:
-        float mAlpha;                  /**< The alpha opacity used to draw */
+        float mAlpha = 1.0f;        /**< The alpha opacity used to draw */
 };
 
 #endif // SPRITE_H

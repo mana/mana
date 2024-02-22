@@ -22,7 +22,6 @@
 #ifndef GUI_SETUP_VIDEO_H
 #define GUI_SETUP_VIDEO_H
 
-#include "being.h"
 #include "guichanfwd.h"
 
 #include "gui/widgets/setuptab.h"

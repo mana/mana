@@ -360,7 +360,7 @@ SocialWindow::~SocialWindow()
         mPartyAcceptDialog->scheduleDelete();
         mPartyAcceptDialog = nullptr;
 
-        mPartyInviter = "";
+        mPartyInviter.clear();
     }
     delete mCreatePopup;
 }
@@ -445,7 +445,7 @@ void SocialWindow::action(const gcn::ActionEvent &event)
             Net::getPartyHandler()->inviteResponse(mPartyInviter, false);
         }
 
-        mPartyInviter = "";
+        mPartyInviter.clear();
         mPartyAcceptDialog = nullptr;
     }
     else if (event.getSource() == mGuildAcceptDialog)

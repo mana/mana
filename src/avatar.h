@@ -27,12 +27,12 @@
 class Avatar
 {
 public:
-    Avatar(const std::string &name = "");
+    Avatar(const std::string &name = std::string());
 
     /**
      * Returns the avatar's name.
      */
-    std::string getName() const { return mName; }
+    const std::string &getName() const { return mName; }
 
     /**
      * Set the avatar's name.

@@ -162,7 +162,6 @@ namespace Attributes {
             Attribute a;
             a.id = 16;
             a.name = _("Strength");
-            a.description = "";
             a.modifiable = true;
             a.scope = "character";
             a.playerInfoId = -1;
@@ -175,7 +174,6 @@ namespace Attributes {
             Attribute a;
             a.id = 17;
             a.name = _("Agility");
-            a.description = "";
             a.modifiable = true;
             a.scope = "character";
             a.playerInfoId = -1;
@@ -188,7 +186,6 @@ namespace Attributes {
             Attribute a;
             a.id = 18;
             a.name = _("Dexterity");
-            a.description = "";
             a.modifiable = true;
             a.scope = "character";
             a.playerInfoId = -1;
@@ -201,7 +198,6 @@ namespace Attributes {
             Attribute a;
             a.id = 19;
             a.name = _("Vitality");
-            a.description = "";
             a.modifiable = true;
             a.scope = "character";
             a.playerInfoId = -1;
@@ -214,7 +210,6 @@ namespace Attributes {
             Attribute a;
             a.id = 20;
             a.name = _("Intelligence");
-            a.description = "";
             a.modifiable = true;
             a.scope = "character";
             a.playerInfoId = -1;
@@ -227,7 +222,6 @@ namespace Attributes {
             Attribute a;
             a.id = 21;
             a.name = _("Willpower");
-            a.description = "";
             a.modifiable = true;
             a.scope = "character";
             a.playerInfoId = -1;

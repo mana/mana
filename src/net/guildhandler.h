@@ -47,7 +47,7 @@ class GuildHandler
 
         virtual void leave(int guildId) = 0;
 
-        virtual void kick(GuildMember *member, std::string reason = "") = 0;
+        virtual void kick(GuildMember *member, std::string reason = std::string()) = 0;
 
         virtual void chat(int guildId, const std::string &text) = 0;
 

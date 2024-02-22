@@ -195,7 +195,7 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         while (msg.getUnreadLength())
         {
             user = msg.readString();
-            if (user == "")
+            if (user.empty())
                 return;
             userModes = msg.readString();
             if (userModes.find('o') != std::string::npos)
@@ -218,7 +218,7 @@ void ChatHandler::handleListChannelsResponse(MessageIn &msg)
     while (msg.getUnreadLength())
     {
         std::string channelName = msg.readString();
-        if (channelName == "")
+        if (channelName.empty())
             return;
         std::ostringstream numUsers;
         numUsers << msg.readInt16();
@@ -286,7 +286,7 @@ void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
     while (msg.getUnreadLength())
     {
         userNick = msg.readString();
-        if (userNick == "")
+        if (userNick.empty())
         {
             break;
         }
@@ -360,7 +360,7 @@ void ChatHandler::handleWhoResponse(MessageIn &msg)
     while (msg.getUnreadLength())
     {
         userNick = msg.readString();
-        if (userNick == "")
+        if (userNick.empty())
         {
             break;
         }

@@ -402,21 +402,21 @@ void Network::dispatchMessages()
         if (mInSize < len)
             break;
 
-#ifdef DEBUG
-        logger->log("Received %s (0x%x) of length %d", packetInfo->name, msgId, len);
-#endif
-
         MessageIn message(mInBuffer, len);
 
         // Dispatch the message to the appropriate handler
         auto iter = mMessageHandlers.find(msgId);
         if (iter != mMessageHandlers.end())
         {
+#ifdef DEBUG
+            logger->log("Handling %s (0x%x) of length %d", packetInfo->name, msgId, len);
+#endif
+
             iter->second->handleMessage(message);
         }
         else
         {
-            logger->log("Unhandled packet %s (0x%x)", packetInfo->name, msgId);
+            logger->log("Unhandled %s (0x%x) of length %d", packetInfo->name, msgId, len);
         }
 
         skip(len);

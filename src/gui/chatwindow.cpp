@@ -22,18 +22,14 @@
 #include "chatwindow.h"
 
 #include "actorspritemanager.h"
-#include "channel.h"
 #include "channelmanager.h"
 #include "configuration.h"
 #include "localplayer.h"
-#include "party.h"
 #include "playerrelations.h"
 
 #include "gui/recorder.h"
 #include "gui/setup.h"
-#include "gui/sdlinput.h"
 
-#include "gui/widgets/channeltab.h"
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/itemlinkhandler.h"
 #include "gui/widgets/layout.h"
@@ -45,7 +41,6 @@
 #include "net/chathandler.h"
 #include "net/net.h"
 
-#include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -199,7 +194,7 @@ void ChatWindow::action(const gcn::ActionEvent &event)
             chatInput(message);
 
             // Clear the text from the chat input
-            mChatInput->setText("");
+            mChatInput->setText(std::string());
         }
 
         if (message.empty() || !mReturnToggles)
@@ -294,7 +289,7 @@ void ChatWindow::chatInput(const std::string &msg)
 
 void ChatWindow::doPresent()
 {
-    std::string response = "";
+    std::string response;
     int playercount = 0;
 
     for (auto actor : actorSpriteManager->getAll())

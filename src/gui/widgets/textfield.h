@@ -65,7 +65,7 @@ struct TextHistory
 
 class AutoCompleteLister {
 public:
-    virtual ~AutoCompleteLister() {}
+    virtual ~AutoCompleteLister() = default;
     virtual void getAutoCompleteList(std::vector<std::string>&) const {}
 };
 
@@ -80,7 +80,8 @@ class TextField : public gcn::TextField
         /**
          * Constructor, initializes the text field with the given string.
          */
-        TextField(const std::string &text = "", bool loseFocusOnTab = true);
+        TextField(const std::string &text = std::string(),
+                  bool loseFocusOnTab = true);
         ~TextField() override;
 
         /**

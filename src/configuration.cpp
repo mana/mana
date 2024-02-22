@@ -164,7 +164,7 @@ int Configuration::getIntValue(const std::string &key) const
 
 std::string Configuration::getStringValue(const std::string &key) const
 {
-    std::string defaultValue = "";
+    std::string defaultValue;
     auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {

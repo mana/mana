@@ -23,12 +23,8 @@
 
 #include "client.h"
 
-#include "gui/changeemaildialog.h"
-#include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
-#include "gui/register.h"
 #include "gui/skilldialog.h"
-#include "gui/specialswindow.h"
 
 #include "net/manaserv/adminhandler.h"
 #include "net/manaserv/beinghandler.h"
@@ -51,10 +47,6 @@
 
 #include "resources/attributes.h"
 
-#include "utils/gettext.h"
-
-#include <list>
-
 extern Net::GeneralHandler *generalHandler;
 
 extern ManaServ::LoginHandler *loginHandler;
@@ -64,7 +56,7 @@ namespace ManaServ {
 Connection *accountServerConnection = nullptr;
 Connection *chatServerConnection = nullptr;
 Connection *gameServerConnection = nullptr;
-std::string netToken = "";
+std::string netToken;
 ServerInfo gameServer;
 ServerInfo chatServer;
 

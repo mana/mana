@@ -30,7 +30,7 @@ namespace Net {
 class PlayerHandler
 {
     public:
-        virtual ~PlayerHandler() {}
+        virtual ~PlayerHandler() = default;
 
         virtual void attack(int id) = 0;
 

@@ -38,9 +38,9 @@ namespace Net {
 class PartyHandler
 {
     public:
-        virtual ~PartyHandler() {}
+        virtual ~PartyHandler() = default;
 
-        virtual void create(const std::string &name = "") = 0;
+        virtual void create(const std::string &name = std::string()) = 0;
 
         virtual void join(int partyId) = 0;
 

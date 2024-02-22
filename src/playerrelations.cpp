@@ -309,7 +309,7 @@ void PlayerRelationsManager::setDefault(unsigned int permissions)
     mDefaultPermissions = permissions;
 
     store();
-    signalUpdate("");
+    signalUpdate(std::string());
 }
 
 

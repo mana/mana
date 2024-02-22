@@ -264,7 +264,8 @@ class Being : public ActorSprite, public EventListener
 
         void setSpriteID(unsigned int slot, int id);
 
-        void setSpriteColor(unsigned int slot, const std::string &color = "");
+        void setSpriteColor(unsigned int slot,
+                            const std::string &color = std::string());
 
         /**
          * Get the number of layers used to draw the being

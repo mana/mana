@@ -95,13 +95,13 @@ private:
 
     void redraw() const;
 
-    mutable Image *mImage;
-    mutable Image *mAlphaImage;
+    mutable Image *mImage = nullptr;
+    mutable Image *mAlphaImage = nullptr;
 
-    mutable int mWidth, mHeight;
-    mutable int mOffsetX, mOffsetY;
+    mutable int mWidth = 0, mHeight = 0;
+    mutable int mOffsetX = 0, mOffsetY = 0;
 
-    mutable bool mNeedsRedraw;
+    mutable bool mNeedsRedraw = false;
 
     std::vector<Sprite*> mSprites;
 };

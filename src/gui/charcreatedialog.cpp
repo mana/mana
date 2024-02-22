@@ -71,7 +71,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
 
     updateHair();
 
-    mNameField = new TextField("");
+    mNameField = new TextField(std::string());
     mNameLabel = new Label(_("Name:"));
 
     mNextHairColorButton = new Button("", "nextcolor", this);

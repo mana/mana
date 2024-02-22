@@ -55,7 +55,7 @@ class Popup : public Container, public gcn::MouseListener
          *                debugging purposes.
          * @param skin    The location where the Popup's skin XML can be found.
          */
-        Popup(const std::string &name = "",
+        Popup(const std::string &name = std::string(),
               const std::string &skin = "window.xml");
 
         /**

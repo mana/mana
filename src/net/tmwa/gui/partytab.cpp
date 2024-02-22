@@ -29,11 +29,8 @@
 #include "net/net.h"
 #include "net/partyhandler.h"
 
-#include "resources/iteminfo.h"
-#include "resources/itemdb.h"
 #include "resources/theme.h"
 
-#include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 

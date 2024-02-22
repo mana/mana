@@ -29,7 +29,7 @@
 class FindBeingFunctor
 {
     public:
-        bool operator() (ActorSprite *actor)
+        bool operator() (ActorSprite *actor) const
         {
             if (actor->getType() == ActorSprite::FLOOR_ITEM)
                 return false;
@@ -37,7 +37,7 @@ class FindBeingFunctor
             if (!game)
                 return false;
 
-            auto* b = static_cast<Being*>(actor);
+            auto *b = static_cast<Being*>(actor);
 
             uint16_t other_y = y + ((b->getType() == ActorSprite::NPC) ? 1 : 0);
             const Vector &pos = b->getPosition();
@@ -50,7 +50,7 @@ class FindBeingFunctor
 
         uint16_t x, y;
         ActorSprite::Type type;
-} beingFinder;
+};
 
 class PlayerNamesLister : public AutoCompleteLister
 {
@@ -63,7 +63,7 @@ class PlayerNamesLister : public AutoCompleteLister
                 continue;
 
             auto *being = static_cast<Being *>(actor);
-            if (being->getType() == Being::PLAYER && being->getName() != "")
+            if (being->getType() == Being::PLAYER && !being->getName().empty())
                 names.push_back(being->getName());
         }
     }
@@ -82,8 +82,7 @@ class PlayerNPCNamesLister : public AutoCompleteLister
 
             auto *being = static_cast<Being *>(actor);
             if ((being->getType() == Being::PLAYER ||
-                 being->getType() == Being::NPC) &&
-                    being->getName() != "")
+                 being->getType() == Being::NPC) && !being->getName().empty())
                 names.push_back(being->getName());
         }
     }
@@ -157,12 +156,12 @@ Being *ActorSpriteManager::findBeing(int id) const
 
 Being *ActorSpriteManager::findBeing(int x, int y, ActorSprite::Type type) const
 {
+    FindBeingFunctor beingFinder;
     beingFinder.x = x;
     beingFinder.y = y;
     beingFinder.type = type;
 
-    auto it = find_if(mActors.begin(), mActors.end(),
-                                           beingFinder);
+    auto it = find_if(mActors.begin(), mActors.end(), beingFinder);
 
     return (it == mActors.end()) ? nullptr : static_cast<Being*>(*it);
 }
@@ -355,7 +354,7 @@ void ActorSpriteManager::updatePlayerNames()
             continue;
 
         auto *being = static_cast<Being *>(actor);
-        if (being->getType() == ActorSprite::PLAYER && being->getName() != "")
+        if (being->getType() == ActorSprite::PLAYER && !being->getName().empty())
             being->updateName();
     }
 }

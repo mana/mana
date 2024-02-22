@@ -25,6 +25,7 @@
 #include "event.h"
 #include "localplayer.h"
 #include "log.h"
+#include "party.h"
 
 #include "gui/socialwindow.h"
 

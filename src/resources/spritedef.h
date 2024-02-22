@@ -35,7 +35,7 @@ class ImageSet;
 
 struct SpriteReference
 {
-    SpriteReference() {}
+    SpriteReference() = default;
 
     SpriteReference(std::string sprite, int variant):
         sprite(sprite),
@@ -77,7 +77,7 @@ namespace SpriteAction
     static const std::string USE_SPECIAL = "special";
     static const std::string CAST_MAGIC = "magic";
     static const std::string USE_ITEM = "item";
-    static const std::string INVALID = "";
+    static const std::string INVALID;
 }
 
 enum SpriteDirection
@@ -121,7 +121,7 @@ class SpriteDef : public Resource
          * Loads a sprite element.
          */
         void loadSprite(xmlNodePtr spriteNode, int variant,
-                        const std::string &palettes = "");
+                        const std::string &palettes = std::string());
 
         /**
          * Loads an imageset element.

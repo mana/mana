@@ -187,8 +187,8 @@ bool getBoolFromString(const std::string &text, bool def)
         return true;
     if (a == "false" || a == "0" || a == "off" || a == "no" || a == "n")
         return false;
-    else
-        return def;
+
+    return def;
 }
 
 std::string autocomplete(const std::vector<std::string> &candidates,
@@ -196,7 +196,7 @@ std::string autocomplete(const std::vector<std::string> &candidates,
 {
     auto i = candidates.begin();
     toLower(base);
-    std::string newName("");
+    std::string newName;
 
     while (i != candidates.end())
     {
@@ -208,7 +208,7 @@ std::string autocomplete(const std::vector<std::string> &candidates,
             std::string::size_type pos = name.find(base, 0);
             if (pos == 0)
             {
-                if (newName != "")
+                if (!newName.empty())
                 {
                     toLower(newName);
                     newName = findSameSubstring(name, newName);

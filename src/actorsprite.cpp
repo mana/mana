@@ -321,13 +321,10 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
 {
     clear();
 
-    SpriteRefs it, it_end;
-
-    for (it = display.sprites.begin(), it_end = display.sprites.end();
-         it != it_end; it++)
+    for (const auto &sprite : display.sprites)
     {
-        std::string file = paths.getStringValue("sprites") + it->sprite;
-        int variant = it->variant;
+        std::string file = paths.getStringValue("sprites") + sprite.sprite;
+        int variant = sprite.variant;
         addSprite(AnimatedSprite::load(file, variant));
     }
 
@@ -359,11 +356,9 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     //setup particle effects
     if (Particle::enabled)
     {
-        std::list<std::string>::const_iterator it, it_end;
-        for (it = display.particles.begin(), it_end = display.particles.end();
-             it != it_end; it++)
+        for (const auto &particle : display.particles)
         {
-            Particle *p = particleEngine->addEffect(*it, 0, 0);
+            Particle *p = particleEngine->addEffect(particle, 0, 0);
             controlParticle(p);
         }
     }

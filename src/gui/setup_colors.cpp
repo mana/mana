@@ -169,7 +169,7 @@ Setup_Colors::Setup_Colors() :
     place(3, 11, mGradDelaySlider);
     place(5, 11, mGradDelayText).setPadding(1);
 
-    mGradTypeText->setCaption("");
+    mGradTypeText->setCaption(std::string());
 }
 
 Setup_Colors::~Setup_Colors()

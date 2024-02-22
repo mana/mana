@@ -42,7 +42,7 @@ class Skin
     public:
         Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
              const std::string &filePath,
-             const std::string &name = "");
+             const std::string &name = std::string());
 
         ~Skin();
 
@@ -209,7 +209,7 @@ class Theme : public Palette, public EventListener
         /**
          * Get the minimum opacity allowed to skins.
          */
-        float getMinimumOpacity()
+        float getMinimumOpacity() const
         { return mMinimumOpacity; }
 
         /**
@@ -237,7 +237,7 @@ class Theme : public Palette, public EventListener
 
         static bool tryThemePath(std::string themePath);
 
-        void loadColors(std::string file = "");
+        void loadColors(std::string file = std::string());
 
         /**
          * Tells if the current skins opacity

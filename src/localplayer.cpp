@@ -920,7 +920,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
         if (mMap && config.getBoolValue("showpickupparticle"))
         {
             // Show pickup notification
-            std::string msg = "";
+            std::string msg;
             if (amount > 1)
                 msg = strprintf("%i ", amount);
             msg += itemInfo.getName();

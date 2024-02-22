@@ -32,7 +32,7 @@
 class Properties
 {
     public:
-        virtual ~Properties() {}
+        virtual ~Properties() = default;
 
         /**
          * Get a map property.
@@ -43,7 +43,7 @@ class Properties
          *         doesn't exist.
          */
         std::string getProperty(const std::string &name,
-                                const std::string &def = "") const
+                                const std::string &def = std::string()) const
         {
             auto i = mProperties.find(name);
             return (i != mProperties.end()) ? i->second : def;

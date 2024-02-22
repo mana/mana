@@ -31,18 +31,9 @@
 #include <cassert>
 
 AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
-    mDirection(DIRECTION_DOWN),
-    mLastTime(0),
-    mFrameIndex(0),
-    mFrameTime(0),
-    mSprite(sprite),
-    mAction(nullptr),
-    mAnimation(nullptr),
-    mFrame(nullptr)
+    mSprite(sprite)
 {
     assert(mSprite);
-
-    mAlpha = 1.0f;
 
     // Take possession of the sprite
     mSprite->incRef();
@@ -203,18 +194,16 @@ int AnimatedSprite::getDuration() const
 
 int AnimatedSprite::getWidth() const
 {
-    if (mFrame)
-        return mFrame->image ? mFrame->image->getWidth() : 0;
-    else
-        return 0;
+    if (mFrame && mFrame->image)
+        return mFrame->image->getWidth();
+    return 0;
 }
 
 int AnimatedSprite::getHeight() const
 {
-    if (mFrame)
-        return mFrame->image ? mFrame->image->getHeight() : 0;
-    else
-        return 0;
+    if (mFrame && mFrame->image)
+        return mFrame->image->getHeight();
+    return 0;
 }
 
 int AnimatedSprite::getOffsetX() const

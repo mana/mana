@@ -207,14 +207,14 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
                 }
                 else
                 {
-                    setText("");
+                    setText(std::string());
                     mHistory->current = prevHist;
                 }
             }
             else if (!getText().empty())
             {
                 // Always clear (easy access to useful function)
-                setText("");
+                setText(std::string());
             }
         } break;
 

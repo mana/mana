@@ -120,7 +120,6 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
 
     CHATLOG tmp;
     tmp.own = own;
-    tmp.nick = "";
     tmp.text = line;
 
     std::string::size_type pos = line.find(" : ");
@@ -181,7 +180,7 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
             lineColor = "##S";
             break;
         case BY_CHANNEL:
-            tmp.nick = "";
+            tmp.nick.clear();
             // TODO: Use a predefined color
             lineColor = "##2"; // Equiv. to BrowserBox::GREEN
             break;
@@ -193,7 +192,7 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
             lineColor = "##I";
             break;
         case BY_LOGGER:
-            tmp.nick = "";
+            tmp.nick.clear();
             tmp.text = line;
             lineColor = "##L";
             break;
@@ -201,7 +200,7 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
 
     if (tmp.nick == ": ")
     {
-        tmp.nick = "";
+        tmp.nick.clear();
         lineColor = "##S";
     }
 

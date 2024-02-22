@@ -47,7 +47,7 @@ public:
 
     void leave(int guildId) override;
 
-    void kick(GuildMember *member, std::string reason = "") override;
+    void kick(GuildMember *member, std::string reason = std::string()) override;
 
     void chat(int guildId, const std::string &text) override;
 

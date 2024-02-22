@@ -333,8 +333,8 @@ void CommandHandler::handleWho(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
 {
-    std::string recvnick = "";
-    std::string msg = "";
+    std::string recvnick;
+    std::string msg;
 
     if (args.substr(0, 1) == "\"")
     {
@@ -358,7 +358,7 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
         else
         {
             recvnick = std::string(args);
-            msg = "";
+            msg.clear();
         }
     }
 
@@ -412,7 +412,7 @@ void CommandHandler::handleJoin(const std::string &args, ChatTab *tab)
 {
     std::string::size_type pos = args.find(' ');
     std::string name(args, 0, pos);
-    std::string password(args, pos+1);
+    std::string password(args, pos + 1);
     tab->chatLog(strprintf(_("Requesting to join channel %s."), name.c_str()));
     Net::getChatHandler()->enterChannel(name, password);
 }
@@ -425,21 +425,17 @@ void CommandHandler::handleListChannels(const std::string &args, ChatTab *tab)
 void CommandHandler::handleCreateParty(const std::string &args, ChatTab *tab)
 {
     if (args.empty())
-    {
         tab->chatLog(_("Party name is missing."), BY_SERVER);
-    }
     else
-    {
         Net::getPartyHandler()->create(args);
-    }
 }
 
 void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
 {
-    if (args != "")
-        Net::getPartyHandler()->invite(args);
-    else
+    if (args.empty())
         tab->chatLog(_("Please specify a name."), BY_SERVER);
+    else
+        Net::getPartyHandler()->invite(args);
 }
 
 void CommandHandler::handleMe(const std::string &args, ChatTab *tab)

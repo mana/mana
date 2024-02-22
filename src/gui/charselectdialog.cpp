@@ -345,9 +345,9 @@ CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
     mPlayerBox(new PlayerBox)
 {
     mButton = new Button("", "go", charSelectDialog);
-    mName = new Label("");
-    mLevel = new Label("");
-    mMoney = new Label("");
+    mName = new Label(std::string());
+    mLevel = new Label(std::string());
+    mMoney = new Label(std::string());
 
     mDelete = new Button(_("Delete"), "delete", charSelectDialog);
 

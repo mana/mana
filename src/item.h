@@ -120,13 +120,13 @@ class Item
         const ItemInfo &getInfo() const { return itemDb->get(mId); }
 
     protected:
-        int mId;              /**< Item type id. */
-        Image *mImage;        /**< Item image. */
-        Image *mDrawImage;    /**< Draw image. */
-        int mQuantity;        /**< Number of items. */
-        bool mEquipped;       /**< Item is equipped. */
-        bool mInEquipment;    /**< Item is in equipment */
-        int mInvIndex;        /**< Inventory index. */
+        int mId;                        /**< Item type id. */
+        Image *mImage = nullptr;        /**< Item image. */
+        Image *mDrawImage = nullptr;    /**< Draw image. */
+        int mQuantity;                  /**< Number of items. */
+        bool mEquipped;                 /**< Item is equipped. */
+        bool mInEquipment = false;      /**< Item is in equipment */
+        int mInvIndex;                  /**< Inventory index. */
 };
 
 #endif // ITEM_H

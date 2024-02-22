@@ -55,9 +55,7 @@ class WindowContainer : public Container
         /**
          * List of widgets that are scheduled to be deleted.
          */
-        using Widgets = std::list<gcn::Widget *>;
-        using WidgetIterator = Widgets::iterator;
-        Widgets mDeathList;
+        std::list<gcn::Widget *> mDeathList;
 };
 
 extern WindowContainer *windowContainer;

@@ -115,5 +115,5 @@ void Recorder::setRecordingFile(const std::string &msg)
 
 void Recorder::action(const gcn::ActionEvent &event)
 {
-    setRecordingFile("");
+    setRecordingFile(std::string());
 }

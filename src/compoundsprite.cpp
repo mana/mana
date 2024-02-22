@@ -29,16 +29,8 @@
 
 #include <SDL.h>
 
-CompoundSprite::CompoundSprite():
-        mImage(nullptr),
-        mAlphaImage(nullptr),
-        mWidth(0),
-        mHeight(0),
-        mOffsetX(0),
-        mOffsetY(0),
-        mNeedsRedraw(false)
+CompoundSprite::CompoundSprite()
 {
-    mAlpha = 1.0f;
 }
 
 CompoundSprite::~CompoundSprite()
@@ -54,10 +46,9 @@ bool CompoundSprite::reset()
 {
     bool ret = false;
 
-    SpriteIterator it, it_end;
-    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
-        if (*it)
-            ret |= (*it)->reset();
+    for (auto sprite : mSprites)
+        if (sprite)
+            ret |= sprite->reset();
 
     mNeedsRedraw |= ret;
     return ret;
@@ -67,10 +58,9 @@ bool CompoundSprite::play(std::string action)
 {
     bool ret = false;
 
-    SpriteIterator it, it_end;
-    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
-        if (*it)
-            ret |= (*it)->play(action);
+    for (auto sprite : mSprites)
+        if (sprite)
+            ret |= sprite->play(action);
 
     mNeedsRedraw |= ret;
     return ret;
@@ -80,10 +70,9 @@ bool CompoundSprite::update(int time)
 {
     bool ret = false;
 
-    SpriteIterator it, it_end;
-    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
-        if (*it)
-            ret |= (*it)->update(time);
+    for (auto sprite : mSprites)
+        if (sprite)
+            ret |= sprite->update(time);
 
     mNeedsRedraw |= ret;
     return ret;
@@ -104,7 +93,8 @@ bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
     {
         return graphics->drawImage(mImage, posX, posY);
     }
-    else if (mAlpha && mAlphaImage)
+
+    if (mAlpha && mAlphaImage)
     {
         if (mAlphaImage->getAlpha() != mAlpha)
             mAlphaImage->setAlpha(mAlpha);
@@ -112,18 +102,14 @@ bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
         return graphics->drawImage(mAlphaImage,
                                    posX, posY);
     }
-    else
+
+    for (auto sprite : mSprites)
     {
-        SpriteConstIterator it, it_end;
-        for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
+        if (sprite)
         {
-            Sprite *s = *it;
-            if (s)
-            {
-                if (s->getAlpha() != mAlpha)
-                    s->setAlpha(mAlpha);
-                s->draw(graphics, posX - s->getWidth() / 2, posY - s->getHeight());
-            }
+            if (sprite->getAlpha() != mAlpha)
+                sprite->setAlpha(mAlpha);
+            sprite->draw(graphics, posX - sprite->getWidth() / 2, posY - sprite->getHeight());
         }
     }
 
@@ -139,10 +125,9 @@ bool CompoundSprite::setDirection(SpriteDirection direction)
 {
     bool ret = false;
 
-    SpriteIterator it, it_end;
-    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
-        if (*it)
-            ret |= (*it)->setDirection(direction);
+    for (auto sprite : mSprites)
+        if (sprite)
+            ret |= sprite->setDirection(direction);
 
     mNeedsRedraw |= ret;
     return ret;
@@ -152,14 +137,14 @@ int CompoundSprite::getNumberOfLayers() const
 {
     if (mImage || mAlphaImage)
         return 1;
-    else
-        return size();
+
+    return size();
 }
 
 bool CompoundSprite::drawnWhenBehind() const
 {
     // For now, just draw actors with only one layer when obscured
-    return (getNumberOfLayers() == 1);
+    return getNumberOfLayers() == 1;
 }
 
 void CompoundSprite::addSprite(Sprite *sprite)
@@ -174,8 +159,7 @@ void CompoundSprite::setSprite(int layer, Sprite *sprite)
     if (mSprites.at(layer) == sprite)
         return;
 
-    if (mSprites.at(layer))
-        delete mSprites.at(layer);
+    delete mSprites.at(layer);
     mSprites[layer] = sprite;
     mNeedsRedraw = true;
 }
@@ -214,10 +198,9 @@ void CompoundSprite::ensureSize(size_t layerCount)
 int CompoundSprite::getDuration() const
 {
     int duration = 0;
-    SpriteConstIterator it, it_end;
-    for (it = mSprites.begin(), it_end = mSprites.end(); it != it_end; it++)
-        if ((*it) && (*it)->getDuration() > duration)
-            duration = (*it)->getDuration();
+    for (auto sprite : mSprites)
+        if (sprite && sprite->getDuration() > duration)
+            duration = sprite->getDuration();
 
     return duration;
 }

@@ -27,8 +27,6 @@
 
 #include "net/tmwa/messagehandler.h"
 
-#include "party.h"
-
 namespace TmwAthena {
 
 class PartyHandler : public MessageHandler, public Net::PartyHandler
@@ -40,7 +38,7 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
 
         void handleMessage(MessageIn &msg) override;
 
-        void create(const std::string &name = "") override;
+        void create(const std::string &name = std::string()) override;
 
         void join(int partyId) override;
 

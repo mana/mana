@@ -190,7 +190,7 @@ bool KeyboardConfig::hasConflicts()
             }
         }
     }
-    mBindError = "";
+    mBindError.clear();
     return false;
 }
 

@@ -333,7 +333,7 @@ void SkillDialog::loadSkills()
             auto *skill = new SkillInfo;
             skill->id = 1;
             skill->name = "basic";
-            skill->setIcon("");
+            skill->setIcon(std::string());
             skill->modifiable = true;
             skill->visible = true;
             skill->model = model;

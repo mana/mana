@@ -132,7 +132,7 @@ void CharHandler::handleCharacterCreateResponse(MessageIn &msg)
     if (errMsg != ERRMSG_OK)
     {
         // Character creation failed
-        std::string errorMessage = "";
+        std::string errorMessage;
         switch (errMsg)
         {
             case ERRMSG_NO_LOGIN:
@@ -213,7 +213,7 @@ void CharHandler::handleCharacterDeleteResponse(MessageIn &msg)
     else
     {
         // Character deletion failed
-        std::string errorMessage = "";
+        std::string errorMessage;
         switch (errMsg)
         {
             case ERRMSG_NO_LOGIN:

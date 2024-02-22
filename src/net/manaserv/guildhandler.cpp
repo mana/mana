@@ -42,8 +42,6 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <iostream>
-
 extern Net::GuildHandler *guildHandler;
 
 namespace ManaServ {
@@ -143,7 +141,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 {
                     name = msg.readString();
                     online = msg.readInt8();
-                    if (name != "")
+                    if (!name.empty())
                     {
                         member = guild->addMember(name);
                         member->setOnline(online);

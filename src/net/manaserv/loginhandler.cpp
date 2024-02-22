@@ -414,7 +414,7 @@ void LoginHandler::loginAccountContinue()
     msg.writeString(sha256(sha256(sha256(mLoginData->username + mTmpPassword)) + mLoginData->randomSeed));
 
     accountServerConnection->send(msg);
-    mTmpPassword = "";
+    mTmpPassword.clear();
 }
 
 void LoginHandler::logout()

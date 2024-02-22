@@ -112,7 +112,7 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
                 {
                     mMinWidth = minWidth;
                     wrappedStream.clear();
-                    wrappedStream.str("");
+                    wrappedStream.str(std::string());
                     spacePos = 0;
                     lastNewlinePos = 0;
                     newlinePos = text.find("\n", lastNewlinePos);

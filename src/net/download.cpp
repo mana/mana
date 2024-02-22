@@ -63,13 +63,7 @@ Download::Download(void *ptr, const std::string &url,
                    DownloadUpdate updateFunction):
         mPtr(ptr),
         mUrl(url),
-        mFileName(""),
-        mWriteFunction(nullptr),
-        mUpdateFunction(updateFunction),
-        mThread(nullptr),
-        mCurl(nullptr),
-        mHeaders(nullptr)
-
+        mUpdateFunction(updateFunction)
 {
     mError = (char*) malloc(CURL_ERROR_SIZE);
     mError[0] = 0;

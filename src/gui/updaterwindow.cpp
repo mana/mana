@@ -101,7 +101,7 @@ std::vector<UpdateFile> loadTxtFile(const std::string &fileName)
             thisFile.hash = hash;
             thisFile.type = "data";
             thisFile.required = true;
-            thisFile.desc = "";
+            thisFile.desc.clear();
 
             if (!thisFile.name.empty())
                 files.push_back(thisFile);
@@ -402,7 +402,7 @@ void UpdaterWindow::logic()
     {
         case UPDATE_ERROR:
             // TODO: Only send complete sentences to gettext
-            mBrowserBox->addRow("");
+            mBrowserBox->addRow(std::string());
             mBrowserBox->addRow(_("##1  The update process is incomplete."));
             // TRANSLATORS: Continues "you try again later.".
             mBrowserBox->addRow(_("##1  It is strongly recommended that"));

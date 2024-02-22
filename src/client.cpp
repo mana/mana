@@ -880,7 +880,7 @@ int Client::exec()
                 case STATE_REGISTER_ATTEMPT:
                     logger->log("Username is %s", loginData.username.c_str());
                     Net::getLoginHandler()->registerAccount(&loginData);
-                    loginData.password = "";
+                    loginData.password.clear();
                     break;
 
                 case STATE_CHANGEPASSWORD:
@@ -900,8 +900,8 @@ int Client::exec()
                     showOkDialog(_("Password Change"),
                                  _("Password changed successfully!"),
                                  STATE_CHAR_SELECT);
-                    loginData.password = "";
-                    loginData.newPassword = "";
+                    loginData.password.clear();
+                    loginData.newPassword.clear();
                     break;
 
                 case STATE_CHANGEEMAIL:
@@ -1317,7 +1317,7 @@ void Client::accountLogin(LoginData *loginData)
         Net::getLoginHandler()->loginAccount(loginData);
 
     // Clear the password, avoids auto login when returning to login
-    loginData->password = "";
+    loginData->password.clear();
 
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
