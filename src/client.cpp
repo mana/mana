@@ -294,32 +294,18 @@ Client::Client(const Options &options):
     if (!useOpenGL && (config.getValue("disableTransparency", 0) == 1))
         Image::SDLdisableTransparency();
 
-#ifdef USE_OPENGL
-    // Setup image loading for the right image format
-    Image::setLoadAsOpenGL(useOpenGL);
+    VideoSettings videoSettings;
+    videoSettings.windowMode = static_cast<WindowMode>(config.getIntValue("windowmode"));
+    videoSettings.width = config.getIntValue("screenwidth");
+    videoSettings.height = config.getIntValue("screenheight");
+    videoSettings.vsync = config.getBoolValue("vsync");
+    videoSettings.openGL = useOpenGL;
 
-    // Create the graphics context
-    graphics = useOpenGL ? new OpenGLGraphics : new Graphics;
-#else
-    // Create the graphics context
-    graphics = new Graphics;
-#endif
+    // Try to set the desired video mode and create the graphics context
+    graphics = mVideo.initialize(videoSettings);
 
-    const int width = config.getIntValue("screenwidth");
-    const int height = config.getIntValue("screenheight");
-    const bool fullscreen = config.getBoolValue("screen");
-
-    // Try to set the desired video mode
-    if (!graphics->setVideoMode(width, height, fullscreen))
-    {
-        logger->error(strprintf("Couldn't set %dx%d video mode: %s",
-            width, height, SDL_GetError()));
-    }
-
-    SDL_SetWindowTitle(graphics->getTarget(),
+    SDL_SetWindowTitle(mVideo.window(),
                        branding.getValue("appName", "Mana").c_str());
-
-    Image::setRenderer(graphics->getRenderer());
 
     std::string iconFile = branding.getValue("appIcon", "icons/mana");
 #ifdef _WIN32
@@ -346,7 +332,7 @@ Client::Client(const Options &options):
     mIcon = IMG_Load(iconFile.c_str());
     if (mIcon)
     {
-        SDL_SetWindowIcon(graphics->getTarget(), mIcon);
+        SDL_SetWindowIcon(mVideo.window(), mIcon);
     }
 #endif
 
@@ -398,11 +384,11 @@ Client::Client(const Options &options):
     loginData.registerLogin = false;
 
     if (mCurrentServer.hostname.empty())
-        mCurrentServer.hostname = branding.getValue("defaultServer","").c_str();
+        mCurrentServer.hostname = branding.getValue("defaultServer", std::string());
 
     if (mCurrentServer.port == 0)
     {
-        mCurrentServer.port = (short) branding.getValue("defaultPort",
+        mCurrentServer.port = (unsigned short) branding.getValue("defaultPort",
                                                                   DEFAULT_PORT);
         mCurrentServer.type = ServerInfo::parseType(
                            branding.getValue("defaultServerType", "tmwathena"));
@@ -451,7 +437,6 @@ Client::~Client()
     delete emoteShortcut;
 
     delete gui;
-    delete graphics;
 
     // Shutdown libxml
     xmlCleanupParser();
@@ -493,20 +478,20 @@ int Client::exec()
             {
                 switch (event.type)
                 {
-                    case SDL_QUIT:
-                        mState = STATE_EXIT;
-                        break;
+                case SDL_QUIT:
+                    mState = STATE_EXIT;
+                    break;
 
-                    case SDL_KEYDOWN:
-                        break;
+                case SDL_KEYDOWN:
+                    break;
 
-                    case SDL_WINDOWEVENT:
-                        switch (event.window.event) {
-                            case SDL_WINDOWEVENT_RESIZED:
-                                handleVideoResize(event.window.data1, event.window.data2);
-                                break;
-                        }
+                case SDL_WINDOWEVENT:
+                    switch (event.window.event) {
+                    case SDL_WINDOWEVENT_SIZE_CHANGED:
+                        videoResized(event.window.data1, event.window.data2);
                         break;
+                    }
+                    break;
                 }
 
                 guiInput->pushInput(event);
@@ -1031,7 +1016,6 @@ void Client::event(Event::Channel channel, const Event &event)
         if (mLimitFps)
             SDL_setFramerate(&mFpsManager, fpsLimit);
     }
-
 }
 
 void Client::action(const gcn::ActionEvent &event)
@@ -1326,24 +1310,19 @@ void Client::accountLogin(LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
-void Client::handleVideoResize(int width, int height)
+void Client::videoResized(int width, int height)
 {
-    if (graphics->getWidth() == width && graphics->getHeight() == height)
-        return;
+    // Store the new size in the configuration.
+    config.setValue("screenwidth", width);
+    config.setValue("screenheight", height);
 
     graphics->videoResized(width, height);
 
-    videoResized(width, height);
+    // Logical size might be different from physical
+    width = graphics->getWidth();
+    height = graphics->getHeight();
 
-    // Since everything appears to have worked out, remember to store the
-    // new size in the configuration.
-    config.setValue("screenwidth", width);
-    config.setValue("screenheight", height);
-}
-
-void Client::videoResized(int width, int height)
-{
-    gui->videoResized();
+    gui->videoResized(width, height);
 
     if (mDesktop)
         mDesktop->setSize(width, height);
@@ -1357,15 +1336,15 @@ void Client::videoResized(int width, int height)
 
 bool Client::isActive()
 {
-    return !(SDL_GetWindowFlags(graphics->getTarget()) & SDL_WINDOW_MINIMIZED);
+    return !(SDL_GetWindowFlags(getVideo().window()) & SDL_WINDOW_MINIMIZED);
 }
 
 bool Client::hasInputFocus()
 {
-    return SDL_GetWindowFlags(graphics->getTarget()) & SDL_WINDOW_INPUT_FOCUS;
+    return SDL_GetWindowFlags(getVideo().window()) & SDL_WINDOW_INPUT_FOCUS;
 }
 
 bool Client::hasMouseFocus()
 {
-    return SDL_GetWindowFlags(graphics->getTarget()) & SDL_WINDOW_MOUSE_FOCUS;
+    return SDL_GetWindowFlags(getVideo().window()) & SDL_WINDOW_MOUSE_FOCUS;
 }

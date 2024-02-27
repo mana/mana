@@ -23,6 +23,7 @@
 #define CLIENT_H
 
 #include "eventlistener.h"
+#include "video.h"
 
 #include "net/serverinfo.h"
 
@@ -191,17 +192,15 @@ public:
     static const std::string &getScreenshotDirectory()
     { return instance()->mScreenshotDir; }
 
+    static Video &getVideo()
+    { return instance()->mVideo; }
+
     void event(Event::Channel channel, const Event &event) override;
     void action(const gcn::ActionEvent &event) override;
 
     /**
-     * Should be called after the window has been resized by the user.
-     */
-    void handleVideoResize(int width, int height);
-
-    /**
-     * Should be called after a succesful resize or change of resolution, makes
-     * sure the GUI and game adapt to the new size.
+     * Should be called after the window has been resized. Makes sure the GUI
+     * and game adapt to the new size.
      */
     void videoResized(int width, int height);
 
@@ -231,6 +230,7 @@ private:
     std::string mRootDir;
 
     ServerInfo mCurrentServer;
+    Video mVideo;
 
     Game *mGame;
     Window *mCurrentDialog;

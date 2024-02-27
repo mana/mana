@@ -28,10 +28,6 @@
 #include <guichan/graphics.hpp>
 
 class Image;
-class ImageRect;
-
-static const int defaultScreenWidth = 800;
-static const int defaultScreenHeight = 600;
 
 /**
  * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
@@ -79,31 +75,14 @@ class Graphics : public gcn::Graphics
     public:
         Graphics() = default;
 
-        ~Graphics() override;
-
         /**
-         * Sets the target SDL_Window to draw to. This funtion also pushes a
-         * clip areas corresponding to the dimension of the target.
-         *
-         * @param target the target to draw to.
+         * Sets whether vertical refresh syncing is enabled.
          */
-        virtual void setTarget(SDL_Window *target);
-
-        SDL_Window *getTarget() const { return mTarget; }
-        SDL_Renderer *getRenderer() const { return mRenderer; }
-
-        /**
-         * Try to create a window with the given settings.
-         */
-        virtual bool setVideoMode(int w, int h, bool fs);
-
-        /**
-         * Change the video mode. Can be used for switching to full screen,
-         * changing resolution or adapting after window resize.
-         */
-        bool changeVideoMode(int w, int h, bool fs);
+        virtual void setVSync(bool sync) = 0;
 
         virtual void videoResized(int w, int h);
+
+        using gcn::Graphics::drawImage;
 
         /**
          * Blits an image onto the screen.
@@ -114,26 +93,13 @@ class Graphics : public gcn::Graphics
         bool drawImage(Image *image, int x, int y);
 
         /**
-         * Draws a resclaled version of the image
-         */
-        bool drawRescaledImage(Image *image, int srcX, int srcY,
-                               int dstX, int dstY,
-                               int width, int height,
-                               int desiredWidth, int desiredHeight)
-        { return drawRescaledImage(image, srcX, srcY,
-                                   dstX, dstY,
-                                   width, height,
-                                   desiredWidth, desiredHeight,
-                                   false); }
-
-        /**
-         * Draws a resclaled version of the image
+         * Draws a rescaled version of the image.
          */
         virtual bool drawRescaledImage(Image *image, int srcX, int srcY,
-                               int dstX, int dstY,
-                               int width, int height,
-                               int desiredWidth, int desiredHeight,
-                               bool useColor = false);
+                                       int dstX, int dstY,
+                                       int width, int height,
+                                       int desiredWidth, int desiredHeight,
+                                       bool useColor = false) = 0;
 
         /**
          * Blits an image onto the screen.
@@ -155,28 +121,28 @@ class Graphics : public gcn::Graphics
          * Draw a pattern based on a rescaled version of the given image...
          */
         virtual void drawRescaledImagePattern(Image *image,
-                               int x, int y, int w, int h,
-                               int scaledWidth, int scaledHeight);
+                                              int x, int y,
+                                              int w, int h,
+                                              int scaledWidth,
+                                              int scaledHeight) = 0;
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1
          * image for the inside.
          */
-        void drawImageRect(
-                int x, int y, int w, int h,
-                Image *topLeft, Image *topRight,
-                Image *bottomLeft, Image *bottomRight,
-                Image *top, Image *right,
-                Image *bottom, Image *left,
-                Image *center);
+        void drawImageRect(int x, int y, int w, int h,
+                           Image *topLeft, Image *topRight,
+                           Image *bottomLeft, Image *bottomRight,
+                           Image *top, Image *right,
+                           Image *bottom, Image *left,
+                           Image *center);
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1
          * image for the inside.
          */
-        void drawImageRect(
-                int x, int y, int w, int h,
-                const ImageRect &imgRect);
+        void drawImageRect(int x, int y, int w, int h,
+                           const ImageRect &imgRect);
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1
@@ -192,7 +158,7 @@ class Graphics : public gcn::Graphics
          * Updates the screen. This is done by either copying the buffer to the
          * screen or swapping pages.
          */
-        virtual void updateScreen();
+        virtual void updateScreen() = 0;
 
         /**
          * Returns the width of the screen.
@@ -205,57 +171,31 @@ class Graphics : public gcn::Graphics
         int getHeight() const;
 
         /**
-         * Returns whether we're in a full screen mode.
-         */
-        bool getFullscreen() const { return mFullscreen; }
-
-        /**
          * Takes a screenshot and returns it as SDL surface.
          */
-        virtual SDL_Surface *getScreenshot();
+        virtual SDL_Surface *getScreenshot() = 0;
 
         gcn::Font *getFont() const { return mFont; }
 
-        bool pushClipArea(gcn::Rectangle area) override;
-
-        void popClipArea() override;
-
         void drawImage(const gcn::Image *image,
-                               int srcX,
-                               int srcY,
-                               int dstX,
-                               int dstY,
-                               int width,
-                               int height) override {}   // not used
-
-        void drawPoint(int x, int y) override;
-
-        void drawLine(int x1, int y1, int x2, int y2) override;
-
-        void drawRectangle(const gcn::Rectangle &rectangle) override;
-
-        void fillRectangle(const gcn::Rectangle &rectangle) override;
+                       int srcX, int srcY,
+                       int dstX, int dstY,
+                       int width, int height) override {}   // not used
 
         void setColor(const gcn::Color &color) override
         {
             mColor = color;
         }
 
-        const gcn::Color &getColor() const override
+        const gcn::Color &getColor() const final
         {
             return mColor;
         }
 
     protected:
-        void updateSDLClipRect();
-
         int mWidth = 0;
         int mHeight = 0;
-        bool mFullscreen = false;
         gcn::Color mColor;
-
-        SDL_Window *mTarget = nullptr;
-        SDL_Renderer *mRenderer = nullptr;
 };
 
 extern Graphics *graphics;

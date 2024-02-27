@@ -67,7 +67,7 @@ class Gui : public gcn::Gui
         /**
          * Called when the application window has been resized.
          */
-        void videoResized();
+        void videoResized(int width, int height);
 
         gcn::FocusHandler *getFocusHandler() const
         { return mFocusHandler; }

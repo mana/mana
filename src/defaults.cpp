@@ -79,9 +79,10 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "particleeffects", true);
     AddDEF(configData, "logToStandardOut", false);
     AddDEF(configData, "opengl", false);
+    AddDEF(configData, "windowmode", static_cast<int>(WindowMode::Windowed));
     AddDEF(configData, "screenwidth", defaultScreenWidth);
     AddDEF(configData, "screenheight", defaultScreenHeight);
-    AddDEF(configData, "screen", false);
+    AddDEF(configData, "vsync", true);
     AddDEF(configData, "sound", false);
     AddDEF(configData, "sfxVolume", 100);
     AddDEF(configData, "notificationsVolume", 100);
@@ -89,7 +90,7 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "remember", false);
     AddDEF(configData, "username", "");
     AddDEF(configData, "lastCharacter", "");
-    AddDEF(configData, "fpslimit", 60);
+    AddDEF(configData, "fpslimit", 0);
     AddDEF(configData, "updatehost", "");
     AddDEF(configData, "screenshotDirectory", "");
     AddDEF(configData, "useScreenshotDirectorySuffix", true);

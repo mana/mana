@@ -25,11 +25,12 @@
 #include "guichanfwd.h"
 
 #include "gui/widgets/setuptab.h"
+#include "video.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
-class ModeListModel;
+class ResolutionListModel;
 
 class Setup_Video : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener
@@ -43,27 +44,24 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         void action(const gcn::ActionEvent &event) override;
 
-        static const char *overlayDetailToString(int detail = -1);
-
-        static const char *particleDetailToString(int detail = -1);
-
     private:
-        bool mFullScreenEnabled;
-        bool mOpenGLEnabled;
+        VideoSettings mVideoSettings;
         bool mCustomCursorEnabled;
         bool mParticleEffectsEnabled;
         int mFps;
         bool mSDLTransparencyDisabled;
 
-        ModeListModel *mModeListModel;
+        std::unique_ptr<gcn::ListModel> mWindowModeListModel;
+        std::unique_ptr<ResolutionListModel> mResolutionListModel;
 
         //gcn::Label *scrollRadiusLabel;
         //gcn::Label *scrollLazinessLabel;
         gcn::Label *overlayDetailLabel;
         gcn::Label *particleDetailLabel;
 
-        gcn::ListBox *mModeList;
-        gcn::CheckBox *mFsCheckBox;
+        gcn::DropDown *mWindowModeDropDown;
+        gcn::DropDown *mResolutionDropDown;
+        gcn::CheckBox *mVSyncCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
         gcn::CheckBox *mParticleEffectsCheckBox;

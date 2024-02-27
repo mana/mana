@@ -419,14 +419,14 @@ SET(SRCS
     avatar.h
     being.cpp
     being.h
-    chatlogger.cpp
-    chatlogger.h
-    client.cpp
-    client.h
     channel.cpp
     channel.h
     channelmanager.cpp
     channelmanager.h
+    chatlogger.cpp
+    chatlogger.h
+    client.cpp
+    client.h
     commandhandler.cpp
     commandhandler.h
     compoundsprite.cpp
@@ -495,6 +495,8 @@ SET(SRCS
     properties.h
     rotationalparticle.cpp
     rotationalparticle.h
+    sdlgraphics.cpp
+    sdlgraphics.h
     shopitem.cpp
     shopitem.h
     simpleanimation.cpp
@@ -517,6 +519,8 @@ SET(SRCS
     variabledata.h
     vector.cpp
     vector.h
+    video.cpp
+    video.h
     )
 
 SET(SRCS_TMWA

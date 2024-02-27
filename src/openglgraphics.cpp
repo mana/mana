@@ -42,98 +42,21 @@ const unsigned int vertexBufSize = 500;
 
 GLuint OpenGLGraphics::mLastImage = 0;
 
-OpenGLGraphics::OpenGLGraphics():
-    mAlpha(false), mTexture(false), mColorAlpha(false),
-    mSync(false),
-    mReduceInputLag(true)
+OpenGLGraphics::OpenGLGraphics(SDL_Window *window, SDL_GLContext glContext)
+    : mWindow(window)
+    , mContext(glContext)
 {
+    Image::setLoadAsOpenGL(true);
+
     mFloatTexArray = new GLfloat[vertexBufSize * 4];
     mIntTexArray = new GLint[vertexBufSize * 4];
     mIntVertArray = new GLint[vertexBufSize * 4];
-}
 
-OpenGLGraphics::~OpenGLGraphics()
-{
-    delete[] mFloatTexArray;
-    delete[] mIntTexArray;
-    delete[] mIntVertArray;
-}
-
-void OpenGLGraphics::setSync(bool sync)
-{
-    if (mSync == sync)
-        return;
-
-    mSync = sync;
-
-    if (mContext)
-        SDL_GL_SetSwapInterval(sync ? 1 : 0);
-}
-
-void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
-{
-    mReduceInputLag = reduceInputLag;
-}
-
-bool OpenGLGraphics::setVideoMode(int w, int h, bool fs)
-{
-    logger->log("Setting video mode %dx%d %s",
-            w, h, fs ? "fullscreen" : "windowed");
-
-    // TODO_SDL2: Support SDL_WINDOW_ALLOW_HIGHDPI, but check handling of clip area
-
-    int windowFlags = SDL_WINDOW_OPENGL;
-
-    if (fs)
-    {
-        windowFlags |= SDL_WINDOW_FULLSCREEN;
-    }
-    else
-    {
-        // Resizing currently not supported on Windows, where it would require
-        // reuploading all textures.
-#if !defined(_WIN32)
-        windowFlags |= SDL_WINDOW_RESIZABLE;
-#endif
-    }
-
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-    SDL_Window *window = SDL_CreateWindow("Mana",
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          w, h, windowFlags);
-    if (!window) {
-        logger->log("Failed to create window: %s", SDL_GetError());
-        return false;
-    }
-
-    SDL_SetWindowMinimumSize(window, 640, 480);
-
-    SDL_GLContext glContext = SDL_GL_CreateContext(window);
-    if (!glContext) {
-        logger->log("Failed to create OpenGL context: %s", SDL_GetError());
-        return false;
-    }
-
-    mTarget = window;
-    mContext = glContext;
-    mWidth = w;
-    mHeight = h;
-    mFullscreen = fs;
-
-    if (mSync)
-    {
-        SDL_GL_SetSwapInterval(1);
-    }
+    SDL_GL_GetDrawableSize(mWindow, &mWidth, &mHeight);
 
     // Setup OpenGL
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, mWidth, mHeight);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-    int gotDoubleBuffer;
-    SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
-    logger->log("Using OpenGL %s double buffering.",
-                (gotDoubleBuffer ? "with" : "without"));
 
     char const *glExtensions = (char const *)glGetString(GL_EXTENSIONS);
     GLint texSize;
@@ -154,18 +77,34 @@ bool OpenGLGraphics::setVideoMode(int w, int h, bool fs)
     Image::mTextureSize = texSize;
     logger->log("OpenGL texture size: %d pixels%s", Image::mTextureSize,
                 rectTex ? " (rectangle textures)" : "");
-
-    return true;
 }
 
-void OpenGLGraphics::videoResized(int w, int h)
+OpenGLGraphics::~OpenGLGraphics()
+{
+    SDL_GL_DeleteContext(mContext);
+
+    delete[] mFloatTexArray;
+    delete[] mIntTexArray;
+    delete[] mIntVertArray;
+}
+
+void OpenGLGraphics::setVSync(bool sync)
+{
+    SDL_GL_SetSwapInterval(sync ? 1 : 0);
+}
+
+void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
+{
+    mReduceInputLag = reduceInputLag;
+}
+
+void OpenGLGraphics::videoResized(int width, int height)
 {
     _endDraw();
 
-    mWidth = w;
-    mHeight = h;
+    SDL_GL_GetDrawableSize(mWindow, &mWidth, &mHeight);
 
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, mWidth, mHeight);
 
     _beginDraw();
 }
@@ -174,7 +113,7 @@ static inline void drawQuad(Image *image,
                             int srcX, int srcY, int dstX, int dstY,
                             int width, int height)
 {
-    if (image->getTextureType() == GL_TEXTURE_2D)
+    if (Image::getTextureType() == GL_TEXTURE_2D)
     {
         // Find OpenGL normalized texture coordinates.
         const float texX1 = static_cast<float>(srcX) /
@@ -236,7 +175,7 @@ static inline void drawRescaledQuad(Image *image,
                                     int width, int height,
                                     int desiredWidth, int desiredHeight)
 {
-    if (image->getTextureType() == GL_TEXTURE_2D)
+    if (Image::getTextureType() == GL_TEXTURE_2D)
     {
         // Find OpenGL normalized texture coordinates.
         const float texX1 = static_cast<float>(srcX) /
@@ -391,7 +330,7 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     unsigned int vp = 0;
     const unsigned int vLimit = vertexBufSize * 4;
     // Draw a set of textured rectangles
-    if (image->getTextureType() == GL_TEXTURE_2D)
+    if (Image::getTextureType() == GL_TEXTURE_2D)
     {
         float texX1 = static_cast<float>(srcX) / tw;
         float texY1 = static_cast<float>(srcY) / th;
@@ -526,7 +465,7 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image,
     const unsigned int vLimit = vertexBufSize * 4;
 
     // Draw a set of textured rectangles
-    if (image->getTextureType() == GL_TEXTURE_2D)
+    if (Image::getTextureType() == GL_TEXTURE_2D)
     {
         const auto tw = static_cast<float>(image->getTextureWidth());
         const auto th = static_cast<float>(image->getTextureHeight());
@@ -641,7 +580,7 @@ void OpenGLGraphics::drawRescaledImagePattern(Image *image,
 
 void OpenGLGraphics::updateScreen()
 {
-    SDL_GL_SwapWindow(mTarget);
+    SDL_GL_SwapWindow(mWindow);
 
     /*
      * glFinish flushes all OpenGL commands and makes sure they have been
@@ -685,10 +624,10 @@ void OpenGLGraphics::_endDraw()
     popClipArea();
 }
 
-SDL_Surface* OpenGLGraphics::getScreenshot()
+SDL_Surface *OpenGLGraphics::getScreenshot()
 {
     int w, h;
-    SDL_GL_GetDrawableSize(mTarget, &w, &h);
+    SDL_GL_GetDrawableSize(mWindow, &w, &h);
     GLint pack = 1;
 
     SDL_Surface *screenshot = SDL_CreateRGBSurface(
@@ -772,7 +711,7 @@ void OpenGLGraphics::popClipArea()
 
 void OpenGLGraphics::setColor(const gcn::Color& color)
 {
-    mColor = color;
+    Graphics::setColor(color);
     glColor4ub(color.r, color.g, color.b, color.a);
 
     mColorAlpha = (color.a != 255);

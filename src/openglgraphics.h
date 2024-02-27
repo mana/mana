@@ -29,19 +29,14 @@
 
 #include <SDL_opengl.h>
 
-class OpenGLGraphics : public Graphics
+class OpenGLGraphics final : public Graphics
 {
     public:
-        OpenGLGraphics();
+        OpenGLGraphics(SDL_Window *window, SDL_GLContext glContext);
 
         ~OpenGLGraphics() override;
 
-        /**
-         * Sets whether vertical refresh syncing is enabled. Takes effect
-         * immediately.
-         */
-        void setSync(bool sync);
-        bool getSync() const { return mSync; }
+        void setVSync(bool sync) override;
 
         /**
          * Sets whether input lag should be reduced.
@@ -52,8 +47,6 @@ class OpenGLGraphics : public Graphics
          */
         void setReduceInputLag(bool reduceInputLag);
         bool getReduceInputLag() const { return mReduceInputLag; }
-
-        bool setVideoMode(int w, int h, bool fs) override;
 
         void videoResized(int w, int h) override;
 
@@ -120,14 +113,15 @@ class OpenGLGraphics : public Graphics
 
         void drawQuadArrayii(int size);
 
+        SDL_Window *mWindow = nullptr;
         SDL_GLContext mContext = nullptr;
         GLfloat *mFloatTexArray;
         GLint *mIntTexArray;
         GLint *mIntVertArray;
-        bool mAlpha, mTexture;
-        bool mColorAlpha;
-        bool mSync;
-        bool mReduceInputLag;
+        bool mAlpha = false;
+        bool mTexture = false;
+        bool mColorAlpha = false;
+        bool mReduceInputLag = true;
 };
 #endif //USE_OPENGL
 

@@ -396,10 +396,10 @@ void Game::handleInput()
     {
         bool used = false;
 
-        if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED)
+        if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
         {
             // Let the client deal with this one (it'll pass down from there)
-            Client::instance()->handleVideoResize(event.window.data1, event.window.data2);
+            Client::instance()->videoResized(event.window.data1, event.window.data2);
         }
         // Keyboard events (for discontinuous keys)
         else if (event.type == SDL_KEYDOWN)

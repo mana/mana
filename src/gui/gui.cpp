@@ -220,14 +220,14 @@ void Gui::draw()
     mGraphics->popClipArea();
 }
 
-void Gui::videoResized()
+void Gui::videoResized(int width, int height)
 {
     auto *top = static_cast<WindowContainer*>(getTop());
 
     int oldWidth = top->getWidth();
     int oldHeight = top->getHeight();
 
-    top->setSize(graphics->getWidth(), graphics->getHeight());
+    top->setSize(width, height);
     top->adjustAfterResize(oldWidth, oldHeight);
 }
 

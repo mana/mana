@@ -1,0 +1,263 @@
+/*
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2012  The Mana Developers
+ *
+ *  This file is part of The Mana Client.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "video.h"
+
+#include "log.h"
+#include "sdlgraphics.h"
+#include "utils/stringutils.h"
+
+#ifdef USE_OPENGL
+#include "openglgraphics.h"
+#endif
+
+#include <algorithm>
+
+Video::~Video()
+{
+    mGraphics.reset();  // reset graphics first
+
+    if (mWindow)
+        SDL_DestroyWindow(mWindow);
+}
+
+Graphics *Video::initialize(const VideoSettings &settings)
+{
+    mSettings = settings;
+
+    if (!initDisplayModes())
+    {
+        logger->log("Failed to initialize display modes: %s", SDL_GetError());
+    }
+
+    SDL_DisplayMode displayMode;
+
+    if (mSettings.windowMode == WindowMode::Fullscreen)
+    {
+        SDL_DisplayMode requestedMode;
+        requestedMode.format = 0;
+        requestedMode.w = mSettings.width;
+        requestedMode.h = mSettings.height;
+        requestedMode.refresh_rate = 0;
+        requestedMode.driverdata = nullptr;
+
+        if (SDL_GetClosestDisplayMode(mSettings.display, &requestedMode, &displayMode) == nullptr)
+        {
+            logger->log("SDL_GetClosestDisplayMode failed: %s, falling back to borderless mode", SDL_GetError());
+            mSettings.windowMode = WindowMode::WindowedFullscreen;
+        }
+    }
+
+    int windowFlags = SDL_WINDOW_RESIZABLE;
+    const char *videoMode = "windowed";
+
+    switch (mSettings.windowMode)
+    {
+    case WindowMode::Windowed:
+        break;
+    case WindowMode::Fullscreen:
+        windowFlags |= SDL_WINDOW_FULLSCREEN;
+        videoMode = "fullscreen";
+        break;
+    case WindowMode::WindowedFullscreen:
+        windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        videoMode = "windowed fullscreen";
+        break;
+    }
+
+    if (mSettings.openGL)
+        windowFlags |= SDL_WINDOW_OPENGL;
+
+    logger->log("Setting video mode %dx%d %s",
+                mSettings.width,
+                mSettings.height,
+                videoMode);
+
+    mWindow = SDL_CreateWindow("Mana",
+                               SDL_WINDOWPOS_UNDEFINED,
+                               SDL_WINDOWPOS_UNDEFINED,
+                               mSettings.width,
+                               mSettings.height,
+                               windowFlags);
+
+    if (!mWindow)
+    {
+        logger->error(strprintf("Failed to create window: %s",
+                                SDL_GetError()));
+        return nullptr;
+    }
+
+    SDL_SetWindowMinimumSize(mWindow, 640, 480);
+
+    if (mSettings.windowMode == WindowMode::Fullscreen)
+    {
+        if (SDL_SetWindowDisplayMode(mWindow, &displayMode) != 0)
+        {
+            logger->log("SDL_SetWindowDisplayMode failed: %s", SDL_GetError());
+        }
+    }
+
+#ifdef USE_OPENGL
+    if (mSettings.openGL)
+    {
+        SDL_GLContext glContext = SDL_GL_CreateContext(mWindow);
+        if (!glContext)
+        {
+            logger->log("Failed to create OpenGL context, falling back to SDL renderer: %s",
+                        SDL_GetError());
+            mSettings.openGL = false;
+        }
+        else
+        {
+            if (mSettings.vsync)
+                SDL_GL_SetSwapInterval(1);
+
+            mGraphics = std::make_unique<OpenGLGraphics>(mWindow, glContext);
+            return mGraphics.get();
+        }
+    }
+#endif
+
+    int rendererFlags = 0;
+    if (settings.vsync)
+        rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
+
+    SDL_Renderer *renderer = SDL_CreateRenderer(mWindow, -1, rendererFlags);
+    if (!renderer)
+    {
+        logger->error(strprintf("Failed to create renderer: %s",
+                                SDL_GetError()));
+        return nullptr;
+    }
+
+    mGraphics = std::make_unique<SDLGraphics>(mWindow, renderer);
+    return mGraphics.get();
+}
+
+bool Video::apply(const VideoSettings &settings)
+{
+    if (mSettings == settings)
+        return true;
+
+    // When changing to fullscreen mode, we set the display mode first
+    if (settings.windowMode == WindowMode::Fullscreen)
+    {
+        SDL_DisplayMode displayMode;
+        if (SDL_GetWindowDisplayMode(mWindow, &displayMode) != 0)
+        {
+            logger->error(strprintf("SDL_GetCurrentDisplayMode failed: %s", SDL_GetError()));
+            return false;
+        }
+
+        if (displayMode.w != settings.width || displayMode.h != settings.height)
+        {
+#ifdef __APPLE__
+            // Workaround SDL2 issue when switching display modes while already
+            // fullscreen on macOS (tested as of SDL 2.30.0).
+            if (SDL_GetWindowFlags(mWindow) & SDL_WINDOW_FULLSCREEN)
+                SDL_SetWindowFullscreen(mWindow, 0);
+#endif
+
+            displayMode.w = settings.width;
+            displayMode.h = settings.height;
+
+            if (SDL_SetWindowDisplayMode(mWindow, &displayMode) != 0)
+            {
+                logger->error(strprintf("SDL_SetWindowDisplayMode failed: %s", SDL_GetError()));
+                return false;
+            }
+        }
+    }
+
+    int windowFlags = 0;
+    switch (settings.windowMode)
+    {
+    case WindowMode::Windowed:
+        break;
+    case WindowMode::WindowedFullscreen:
+        windowFlags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+        break;
+    case WindowMode::Fullscreen:
+        windowFlags = SDL_WINDOW_FULLSCREEN;
+        break;
+    }
+
+    if (SDL_SetWindowFullscreen(mWindow, windowFlags) != 0)
+    {
+        logger->error(strprintf("SDL_SetWindowFullscreen failed: %s", SDL_GetError()));
+        return false;
+    }
+
+    if (settings.windowMode == WindowMode::Windowed) {
+#ifdef __APPLE__
+        // Workaround SDL2 issue when setting the window size on a window
+        // which the user has put in fullscreen. Unfortunately, this mode can't
+        // be distinguished from a maximized window (tested as of SDL 2.30.0).
+        if (!(SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MAXIMIZED))
+#endif
+            SDL_SetWindowSize(mWindow, settings.width, settings.height);
+    }
+
+    mGraphics->setVSync(settings.vsync);
+
+    mSettings = settings;
+
+    // Make sure the resolution is reflected in current settings
+    SDL_GetWindowSize(mWindow, &mSettings.width, &mSettings.height);
+
+    return true;
+}
+
+bool Video::initDisplayModes()
+{
+    const int displayIndex = mSettings.display;
+    SDL_DisplayMode mode;
+    if (SDL_GetDesktopDisplayMode(displayIndex, &mode) != 0)
+        return false;
+
+    mDesktopDisplayMode.width = mode.w;
+    mDesktopDisplayMode.height = mode.h;
+
+    // Get available fullscreen/hardware modes
+    const int numModes = SDL_GetNumDisplayModes(displayIndex);
+    for (int i = 0; i < numModes; i++)
+    {
+        if (SDL_GetDisplayMode(displayIndex, i, &mode) != 0)
+            return false;
+
+        // Skip the unreasonably small modes
+        if (mode.w < 640 || mode.h < 480)
+            continue;
+
+        // Only list each resolution once
+        // (we currently don't support selecting the refresh rate)
+        if (std::find_if(mDisplayModes.cbegin(),
+                         mDisplayModes.cend(),
+                         [&mode](const DisplayMode &other) {
+                             return mode.w == other.width && mode.h == other.height;
+                         }) != mDisplayModes.cend())
+            continue;
+
+        mDisplayModes.push_back(DisplayMode { mode.w, mode.h });
+    }
+
+    return true;
+}

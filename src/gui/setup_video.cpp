@@ -25,6 +25,7 @@
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"
+#include "gui/widgets/dropdown.h"
 #include "localplayer.h"
 #include "particle.h"
 
@@ -33,8 +34,6 @@
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
-#include "gui/widgets/listbox.h"
-#include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
 #include "gui/widgets/spacer.h"
 
@@ -46,75 +45,111 @@
 
 #include <SDL.h>
 
+#include <numeric>
 #include <string>
 #include <vector>
 
-extern Graphics *graphics;
+/**
+ * A list model for a given list of strings.
+ *
+ * \ingroup Interface
+ */
+class StringListModel : public gcn::ListModel
+{
+public:
+    StringListModel(std::vector<std::string> strings)
+        : mStrings(std::move(strings))
+    {}
+
+    int getNumberOfElements() override
+    {
+        return mStrings.size();
+    }
+
+    std::string getElementAt(int i) override
+    {
+        return mStrings[i];
+    }
+
+private:
+    const std::vector<std::string> mStrings;
+};
 
 /**
  * The list model for mode list.
  *
  * \ingroup Interface
  */
-class ModeListModel : public gcn::ListModel
+class ResolutionListModel : public gcn::ListModel
 {
-    public:
-        ModeListModel();
+public:
+    ResolutionListModel()
+    {
+        mDisplayModes = Client::getVideo().displayModes();
 
-        ~ModeListModel() override { }
+        // Add a dummy mode for "current window size"
+        mDisplayModes.insert(mDisplayModes.begin(), DisplayMode());
+    }
 
-        /**
-         * Returns the number of elements in container.
-         */
-        int getNumberOfElements() override { return mVideoModes.size(); }
+    int getNumberOfElements() override
+    {
+        return mDisplayModes.size();
+    }
 
-        /**
-         * Returns element from container.
-         */
-        std::string getElementAt(int i) override { return mVideoModes[i]; }
+    std::string getElementAt(int i) override
+    {
+        if (i == 0)
+            return _("Custom");
 
-        /**
-         * Returns the index corresponding to the given video mode.
-         * E.g.: "800x600".
-         * or -1 if not found.
-         */
-        int getIndexOf(const std::string &widthXHeightMode);
+        const auto &mode = getModeAt(i);
+        auto result = toString(mode.width) + "x" + toString(mode.height);
 
-    private:
-        std::vector<std::string> mVideoModes;
+        // Append the aspect ratio
+        const int gcd = std::gcd(mode.width, mode.height);
+        int aspectWidth = mode.width / gcd;
+        int aspectHeight = mode.height / gcd;
+        if (aspectWidth == 8 && aspectHeight == 5)
+        {
+            aspectWidth = 16;
+            aspectHeight = 10;
+        }
+        if (aspectWidth == 7 && aspectHeight == 3)
+        {
+            aspectWidth = 21;
+            aspectHeight = 9;
+        }
+        if (aspectWidth <= 32)
+            result += "  (" + toString(aspectWidth) + ":" + toString(aspectHeight) + ")";
+
+        return result;
+    }
+
+    const DisplayMode &getModeAt(int i) const
+    {
+        return mDisplayModes.at(i);
+    }
+
+    /**
+     * Returns the index corresponding to the given video resolution
+     * or -1 if not found.
+     */
+    int getIndexOf(int width, int height) const
+    {
+        for (unsigned i = 1; i < mDisplayModes.size(); i++) {
+            const auto &mode = mDisplayModes[i];
+            if (mode.width == width && mode.height == height)
+                return i;
+        }
+
+        return 0;
+    }
+
+private:
+    std::vector<DisplayMode> mDisplayModes;
 };
 
-ModeListModel::ModeListModel()
-{
-    /* Get available fullscreen/hardware modes */
-    const int numModes = SDL_GetNumDisplayModes(0);
-    for (int i = 0; i < numModes; i++)
-    {
-        SDL_DisplayMode mode;
-        if (SDL_GetDisplayMode(0, i, &mode) != 0)
-            continue;
 
-        // Skip the unreasonably small modes
-        if (mode.w < 640 || mode.h < 480)
-            continue;
-
-        // TODO_SDL2: Modes now dinstinguish between pixel format and refresh rate as well
-        // TODO_SDL2: Fullscreen mode needs display selection
-
-        mVideoModes.push_back(toString(mode.w) + "x" + toString(mode.h));
-    }
-}
-
-int ModeListModel::getIndexOf(const std::string &widthXHeightMode)
-{
-    for (unsigned i = 0; i < mVideoModes.size(); i++)
-        if (mVideoModes.at(i) == widthXHeightMode)
-            return i;
-
-    return -1;
-}
-
-const char *Setup_Video::overlayDetailToString(int detail)
+static const char *overlayDetailToString(int detail)
 {
     if (detail == -1)
         detail = config.getIntValue("OverlayDetail");
@@ -128,7 +163,7 @@ const char *Setup_Video::overlayDetailToString(int detail)
     return "";
 }
 
-const char *Setup_Video::particleDetailToString(int detail)
+static const char *particleDetailToString(int detail)
 {
     if (detail == -1)
         detail = 3 - config.getIntValue("particleEmitterSkip");
@@ -144,20 +179,19 @@ const char *Setup_Video::particleDetailToString(int detail)
 }
 
 Setup_Video::Setup_Video():
-    mFullScreenEnabled(config.getBoolValue("screen")),
-    mOpenGLEnabled(config.getBoolValue("opengl")),
+    mVideoSettings(Client::getVideo().settings()),
     mCustomCursorEnabled(config.getBoolValue("customcursor")),
     mParticleEffectsEnabled(config.getBoolValue("particleeffects")),
     mFps(config.getIntValue("fpslimit")),
     mSDLTransparencyDisabled(config.getBoolValue("disableTransparency")),
-    mModeListModel(new ModeListModel),
-    mModeList(new ListBox(mModeListModel)),
-    mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
-    mOpenGLCheckBox(new CheckBox(_("OpenGL"), mOpenGLEnabled)),
-    mCustomCursorCheckBox(new CheckBox(_("Custom cursor"),
-                                       mCustomCursorEnabled)),
-    mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
-                                          mParticleEffectsEnabled)),
+    mWindowModeListModel(new StringListModel({ _("Windowed"), _("Windowed Fullscreen"), _("Fullscreen") })),
+    mResolutionListModel(new ResolutionListModel),
+    mWindowModeDropDown(new DropDown(mWindowModeListModel.get())),
+    mResolutionDropDown(new DropDown(mResolutionListModel.get())),
+    mVSyncCheckBox(new CheckBox(_("VSync"), mVideoSettings.vsync)),
+    mOpenGLCheckBox(new CheckBox(_("OpenGL (Legacy)"), mVideoSettings.openGL)),
+    mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
+    mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
     mFpsCheckBox(new CheckBox(_("FPS limit:"))),
     mFpsSlider(new Slider(10, 120)),
     mFpsLabel(new Label),
@@ -173,16 +207,8 @@ Setup_Video::Setup_Video():
 {
     setName(_("Video"));
 
-    auto *space = new Spacer(0,10);
-
-    auto *scrollArea = new ScrollArea(mModeList);
-    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    scrollArea->setSize(100, 200);
-
     overlayDetailLabel = new Label(_("Ambient FX:"));
     particleDetailLabel = new Label(_("Particle detail:"));
-
-    mModeList->setEnabled(true);
 
 #ifndef USE_OPENGL
     mOpenGLCheckBox->setEnabled(false);
@@ -199,15 +225,16 @@ Setup_Video::Setup_Video():
 
     // If the openGL Mode is enabled, disabling the transaprency
     // is irrelevant.
-    mDisableSDLTransparencyCheckBox->setEnabled(!mOpenGLEnabled);
+    mDisableSDLTransparencyCheckBox->setEnabled(!mVideoSettings.openGL);
 
     // Pre-select the current video mode.
-    std::string videoMode = toString(graphics->getWidth()) + "x"
-                            + toString(graphics->getHeight());
-    mModeList->setSelected(mModeListModel->getIndexOf(videoMode));
+    mWindowModeDropDown->setSelected(static_cast<int>(mVideoSettings.windowMode));
+    mResolutionDropDown->setSelected(mResolutionListModel->getIndexOf(mVideoSettings.width,
+                                                                      mVideoSettings.height));
+    mResolutionDropDown->setEnabled(mVideoSettings.windowMode != WindowMode::WindowedFullscreen);
 
     // Set actions
-    mModeList->setActionEventId("videomode");
+    mWindowModeDropDown->setActionEventId("windowmode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
     mDisableSDLTransparencyCheckBox->setActionEventId("disableTransparency");
@@ -220,7 +247,7 @@ Setup_Video::Setup_Video():
     mParticleDetailField->setActionEventId("particledetailfield");
 
     // Set listeners
-    mModeList->addActionListener(this);
+    mWindowModeDropDown->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
     mOpenGLCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
@@ -242,104 +269,67 @@ Setup_Video::Setup_Video():
     ContainerPlacer place = getPlacer(0, 0);
     place.getCell().setHAlign(LayoutCell::FILL);
 
-    place(0, 0, scrollArea, 1, 4).setPadding(2).setHAlign(LayoutCell::FILL);
-    place(1, 0, space, 1, 4);
-    place(2, 0, mFsCheckBox);
-    place(2, 1, mOpenGLCheckBox);
-    place(2, 2, mCustomCursorCheckBox);
+    place(0, 0, new Label(_("Window mode:")));
+    place(1, 0, mWindowModeDropDown, 2);
+    place(0, 1, new Label(_("Resolution:")));
+    place(1, 1, mResolutionDropDown, 2);
+    place(0, 2, mVSyncCheckBox, 4);
+    place(0, 3, mOpenGLCheckBox, 4);
 
     place = getPlacer(0, 1);
     place.getCell().setHAlign(LayoutCell::FILL);
 
-    place(0, 0, space, 3);
-    place(0, 1, mDisableSDLTransparencyCheckBox, 4);
+    place(0, 0, new Spacer(), 4);
+    place(0, 1, mCustomCursorCheckBox, 4);
+    place(0, 2, mDisableSDLTransparencyCheckBox, 4);
 
-    place(0, 2, mFpsCheckBox);
-    place(1, 2, mFpsSlider, 2);
-    place(3, 2, mFpsLabel);
+    place(0, 3, mFpsCheckBox);
+    place(1, 3, mFpsSlider, 2);
+    place(3, 3, mFpsLabel);
 
-    place(0, 3, mParticleEffectsCheckBox, 4);
+    place(0, 4, mParticleEffectsCheckBox, 4);
 
-    place(0, 4, particleDetailLabel);
-    place(1, 4, mParticleDetailSlider, 2);
-    place(3, 4, mParticleDetailField);
+    place(0, 5, particleDetailLabel);
+    place(1, 5, mParticleDetailSlider, 2);
+    place(3, 5, mParticleDetailField);
 
-    place(0, 5, overlayDetailLabel);
-    place(1, 5, mOverlayDetailSlider, 2);
-    place(3, 5, mOverlayDetailField);
+    place(0, 6, overlayDetailLabel);
+    place(1, 6, mOverlayDetailSlider, 2);
+    place(3, 6, mOverlayDetailField);
 }
 
-Setup_Video::~Setup_Video()
-{
-    delete mModeListModel;
-    delete mModeList;
-}
+Setup_Video::~Setup_Video() = default;
 
 void Setup_Video::apply()
 {
     // Video mode changes
-    int screenWidth = graphics->getWidth();
-    int screenHeight = graphics->getHeight();
+    auto &video = Client::getVideo();
+    auto videoSettings = video.settings();
 
-    if (mModeList->getSelected() > -1)
+    if (mResolutionDropDown->getSelected() > 0)
     {
-        std::string mode = mModeListModel->getElementAt(mModeList->getSelected());
-        screenWidth = atoi(mode.substr(0, mode.find("x")).c_str());
-        screenHeight = atoi(mode.substr(mode.find("x") + 1).c_str());
+        const auto &mode = mResolutionListModel->getModeAt(mResolutionDropDown->getSelected());
+        videoSettings.width = mode.width;
+        videoSettings.height = mode.height;
     }
 
-    bool fullscreen = mFsCheckBox->isSelected();
+    videoSettings.windowMode = static_cast<WindowMode>(mWindowModeDropDown->getSelected());
+    videoSettings.vsync = mVSyncCheckBox->isSelected();
 
-    if (fullscreen != graphics->getFullscreen() ||
-            screenWidth != graphics->getWidth() ||
-            screenHeight != graphics->getHeight())
+    if (video.apply(videoSettings))
     {
-        /* The OpenGL test is only necessary on Windows, since switching
-         * to/from full screen works fine on Linux. On Windows we'd have to
-         * reinitialize the OpenGL state and reload all textures.
-         *
-         * See http://libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode
-         */
-
-#if defined(_WIN32) || defined(__APPLE__)
-        // checks for opengl usage
-        if (config.getBoolValue("opengl"))
-        {
-            new OkDialog(_("Changing Video Mode"),
-                         _("Restart needed for changes to take effect."));
-
-            config.setValue("screen", fullscreen);
-            config.setValue("screenwidth", screenWidth);
-            config.setValue("screenheight", screenHeight);
-        }
-        else
-#endif
-        {
-            if (!graphics->changeVideoMode(screenWidth,
-                                           screenHeight,
-                                           fullscreen))
-            {
-                std::stringstream errorMessage;
-                if (fullscreen)
-                    errorMessage << _("Failed to switch to fullscreen mode.");
-                else
-                    errorMessage << _("Failed to switch to windowed mode.");
-
-                new OkDialog(_("Error"), errorMessage.str());
-            }
-            else
-            {
-                Client::instance()->videoResized(screenWidth, screenHeight);
-
-                config.setValue("screen", fullscreen);
-                config.setValue("screenwidth", screenWidth);
-                config.setValue("screenheight", screenHeight);
-            }
-        }
+        config.setValue("windowmode", static_cast<int>(videoSettings.windowMode));
+        config.setValue("vsync", videoSettings.vsync);
+        config.setValue("screenwidth", videoSettings.width);
+        config.setValue("screenheight", videoSettings.height);
+    }
+    else
+    {
+        new OkDialog(_("Error"), _("Failed to change video mode."));
     }
 
     // OpenGL change
-    if (mOpenGLCheckBox->isSelected() != mOpenGLEnabled)
+    if (mOpenGLCheckBox->isSelected() != mVideoSettings.openGL)
     {
         config.setValue("opengl", mOpenGLCheckBox->isSelected());
 
@@ -385,21 +375,26 @@ void Setup_Video::apply()
     config.setValue("fpslimit", mFps);
 
     // We sync old and new values at apply time
-    mFullScreenEnabled = config.getBoolValue("screen");
+    mVideoSettings.windowMode = static_cast<WindowMode>(config.getIntValue("windowmode"));
+    mVideoSettings.vsync = config.getBoolValue("vsync");
+    mVideoSettings.openGL = config.getBoolValue("opengl");
     mCustomCursorEnabled = config.getBoolValue("customcursor");
     mParticleEffectsEnabled = config.getBoolValue("particleeffects");
     mOverlayDetail = config.getIntValue("OverlayDetail");
-    mOpenGLEnabled = config.getBoolValue("opengl");
     mSDLTransparencyDisabled = config.getBoolValue("disableTransparency");
 }
 
 void Setup_Video::cancel()
 {
-    mFpsCheckBox->setSelected(mFps > 0);
-    mFsCheckBox->setSelected(mFullScreenEnabled);
-    mOpenGLCheckBox->setSelected(mOpenGLEnabled);
+    // Set back to the current video mode.
+    mResolutionDropDown->setSelected(mResolutionListModel->getIndexOf(mVideoSettings.width,
+                                                                      mVideoSettings.height));
+
+    mVSyncCheckBox->setSelected(mVideoSettings.vsync);
+    mOpenGLCheckBox->setSelected(mVideoSettings.openGL);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
     mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
+    mFpsCheckBox->setSelected(mFps > 0);
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
     mOverlayDetailSlider->setValue(mOverlayDetail);
@@ -407,18 +402,13 @@ void Setup_Video::cancel()
     std::string text = mFpsCheckBox->isSelected() ? toString(mFps) : _("None");
     mFpsLabel->setCaption(text);
     mDisableSDLTransparencyCheckBox->setSelected(mSDLTransparencyDisabled);
-    mDisableSDLTransparencyCheckBox->setEnabled(!mOpenGLEnabled);
+    mDisableSDLTransparencyCheckBox->setEnabled(!mVideoSettings.openGL);
 
-    config.setValue("screen", mFullScreenEnabled);
-
-    // Set back to the current video mode.
-    std::string videoMode = toString(graphics->getWidth()) + "x"
-                            + toString(graphics->getHeight());
-    mModeList->setSelected(mModeListModel->getIndexOf(videoMode));
+    config.setValue("windowmode", static_cast<int>(mVideoSettings.windowMode));
 
     config.setValue("customcursor", mCustomCursorEnabled);
     config.setValue("particleeffects", mParticleEffectsEnabled);
-    config.setValue("opengl", mOpenGLEnabled);
+    config.setValue("opengl", mVideoSettings.openGL);
     config.setValue("disableTransparency", mSDLTransparencyDisabled);
 }
 
@@ -426,7 +416,25 @@ void Setup_Video::action(const gcn::ActionEvent &event)
 {
     const std::string &id = event.getId();
 
-    if (id == "customcursor")
+    if (id == "windowmode")
+    {
+        auto windowMode = static_cast<WindowMode>(mWindowModeDropDown->getSelected());
+
+        // When the window mode is "windowed fullscreen" we should select the
+        // desktop resolution and disable the option to change it
+        if (windowMode == WindowMode::WindowedFullscreen)
+        {
+            const auto &desktop = Client::getVideo().desktopDisplayMode();
+            mResolutionDropDown->setSelected(
+                        mResolutionListModel->getIndexOf(desktop.width, desktop.height));
+            mResolutionDropDown->setEnabled(false);
+        }
+        else
+        {
+            mResolutionDropDown->setEnabled(true);
+        }
+    }
+    else if (id == "customcursor")
     {
         config.setValue("customcursor", mCustomCursorCheckBox->isSelected());
     }

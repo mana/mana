@@ -21,6 +21,7 @@
 #include "resources/ambientlayer.h"
 
 #include "graphics.h"
+#include "video.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
