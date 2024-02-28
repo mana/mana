@@ -21,12 +21,9 @@
 
 #include "gui/setup_colors.h"
 
-#include "configuration.h"
-
 #include "gui/gui.h"
 
 #include "gui/widgets/browserbox.h"
-#include "gui/widgets/itemlinkhandler.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
@@ -35,7 +32,6 @@
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/textpreview.h"
 
-#include "resources/theme.h"
 #include "resources/userpalette.h"
 
 #include "utils/gettext.h"
@@ -272,7 +268,7 @@ void Setup_Colors::setEntry(gcn::Slider *s, TextField *t, int value)
 {
     s->setValue(value);
     char buffer[100];
-    sprintf(buffer, "%d", value);
+    snprintf(buffer, 100, "%d", value);
     t->setText(buffer);
 }
 
