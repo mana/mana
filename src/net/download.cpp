@@ -33,32 +33,33 @@
 
 const char *DOWNLOAD_ERROR_MESSAGE_THREAD = "Could not create download thread!";
 
+namespace Net {
+
 /**
  * Calculates the Alder-32 checksum for the given file.
  */
-static unsigned long fadler32(FILE *file)
+unsigned long Download::fadler32(FILE *file)
 {
-    // Obtain file size
-    fseek(file, 0, SEEK_END);
-    long fileSize = ftell(file);
+    if (!file || fseek(file, 0, SEEK_END) != 0)
+        return 0;
+
+    const long fileSize = ftell(file);
+    if (fileSize < 0)
+        return 0;
+
     rewind(file);
 
     // Calculate Adler-32 checksum
-    char *buffer = (char*) malloc(fileSize);
+    void *buffer = malloc(fileSize);
     const size_t read = fread(buffer, 1, fileSize, file);
-    unsigned long adler = adler32(0L, Z_NULL, 0);
-    adler = adler32(adler, (Bytef*) buffer, read);
+    unsigned long adler = adler32_z(0L, Z_NULL, 0);
+    adler = adler32_z(adler, (Bytef*) buffer, read);
     free(buffer);
 
     return adler;
 }
 
-enum {
-    OPTIONS_NONE = 0,
-    OPTIONS_MEMORY = 1
-};
 
-namespace Net{
 Download::Download(void *ptr, const std::string &url,
                    DownloadUpdate updateFunction):
         mPtr(ptr),
@@ -92,18 +93,12 @@ void Download::noCache()
     addHeader("Cache-Control: no-cache");
 }
 
-void Download::setFile(const std::string &filename, int64_t adler32)
+void Download::setFile(const std::string &filename,
+                       std::optional<unsigned long> adler32)
 {
     mOptions.memoryWrite = false;
     mFileName = filename;
-
-    if (adler32 > -1)
-    {
-        mAdler = (unsigned long) adler32;
-        mOptions.checkAdler = true;
-    }
-    else
-        mOptions.checkAdler =  false;
+    mAdler = adler32;
 }
 
 void Download::setWriteFunction(WriteFunction write)
@@ -142,7 +137,7 @@ void Download::cancel()
     }
 }
 
-char *Download::getError()
+const char *Download::getError() const
 {
     return mError;
 }
@@ -223,7 +218,7 @@ int Download::downloadThread(void *ptr)
             curl_easy_setopt(d->mCurl, CURLOPT_URL, d->mUrl.c_str());
             curl_easy_setopt(d->mCurl, CURLOPT_NOPROGRESS, 0);
             curl_easy_setopt(d->mCurl, CURLOPT_XFERINFOFUNCTION, downloadProgress);
-            curl_easy_setopt(d->mCurl, CURLOPT_PROGRESSDATA, ptr);
+            curl_easy_setopt(d->mCurl, CURLOPT_XFERINFODATA, ptr);
             curl_easy_setopt(d->mCurl, CURLOPT_NOSIGNAL, 1);
             curl_easy_setopt(d->mCurl, CURLOPT_CONNECTTIMEOUT, 15);
 
@@ -262,7 +257,7 @@ int Download::downloadThread(void *ptr)
             if (!d->mOptions.memoryWrite)
             {
                 // Don't check resources.xml checksum
-                if (d->mOptions.checkAdler)
+                if (d->mAdler)
                 {
                     unsigned long adler = fadler32(file);
 
@@ -274,7 +269,7 @@ int Download::downloadThread(void *ptr)
                         ::remove(d->mFileName.c_str());
                         logger->log("Checksum for file %s failed: (%lx/%lx)",
                             d->mFileName.c_str(),
-                            adler, d->mAdler);
+                            adler, *d->mAdler);
                         attempts++;
                         continue; // Bail out here to avoid the renaming
                     }

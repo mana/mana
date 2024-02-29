@@ -58,7 +58,7 @@ namespace XML
         if (useResman)
         {
             ResourceManager *resman = ResourceManager::getInstance();
-            data = (char*) resman->loadFile(filename.c_str(), size);
+            data = (char*) resman->loadFile(filename, size);
         }
         else
         {

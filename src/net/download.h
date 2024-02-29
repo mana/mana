@@ -21,6 +21,7 @@
 #include <cstdlib> // pulls in int64_t
 #include <cstdio>
 #include <string>
+#include <optional>
 
 #include <curl/curl.h>
 
@@ -61,7 +62,8 @@ class Download
          */
         void noCache();
 
-        void setFile(const std::string &filename, int64_t adler32 = -1);
+        void setFile(const std::string &filename,
+                     std::optional<unsigned long> adler32 = {});
 
         void setWriteFunction(WriteFunction write);
 
@@ -79,7 +81,9 @@ class Download
          */
         void cancel();
 
-        char *getError();
+        const char *getError() const;
+
+        static unsigned long fadler32(FILE *file);
 
     private:
         static int downloadThread(void *ptr);
@@ -91,11 +95,10 @@ class Download
         struct {
             unsigned cancel : 1;
             unsigned memoryWrite: 1;
-            unsigned checkAdler: 1;
         } mOptions;
         std::string mFileName;
         WriteFunction mWriteFunction = nullptr;
-        unsigned long mAdler;
+        std::optional<unsigned long> mAdler;
         DownloadUpdate mUpdateFunction;
         SDL_Thread *mThread = nullptr;
         CURL *mCurl = nullptr;

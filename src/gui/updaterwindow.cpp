@@ -70,10 +70,10 @@ std::vector<UpdateFile> loadXMLFile(const std::string &fileName)
             continue;
 
         UpdateFile file;
-        file.name = XML::getProperty(fileNode, "file", "");
-        file.hash = XML::getProperty(fileNode, "hash", "");
+        file.name = XML::getProperty(fileNode, "file", std::string());
+        file.hash = XML::getProperty(fileNode, "hash", std::string());
         file.type = XML::getProperty(fileNode, "type", "data");
-        file.desc = XML::getProperty(fileNode, "description", "");
+        file.desc = XML::getProperty(fileNode, "description", std::string());
         file.required = XML::getProperty(fileNode, "required", "yes") == "yes";
 
         files.push_back(file);
@@ -86,13 +86,14 @@ std::vector<UpdateFile> loadTxtFile(const std::string &fileName)
 {
     std::vector<UpdateFile> files;
     std::ifstream fileHandler;
-    fileHandler.open(fileName.c_str(), std::ios::in);
+    fileHandler.open(fileName, std::ios::in);
 
     if (fileHandler.is_open())
     {
         while (fileHandler.good())
         {
-            char name[256], hash[50];
+            char name[256];
+            char hash[50];
             fileHandler.getline(name, 256, ' ');
             fileHandler.getline(hash, 50);
 
@@ -101,7 +102,6 @@ std::vector<UpdateFile> loadTxtFile(const std::string &fileName)
             thisFile.hash = hash;
             thisFile.type = "data";
             thisFile.required = true;
-            thisFile.desc.clear();
 
             if (!thisFile.name.empty())
                 files.push_back(thisFile);
@@ -459,35 +459,31 @@ void UpdaterWindow::logic()
             {
                 if (mUpdateIndex < mUpdateFiles.size())
                 {
-                    UpdateFile thisFile = mUpdateFiles[mUpdateIndex];
+                    const UpdateFile &thisFile = mUpdateFiles[mUpdateIndex];
                     if (!thisFile.required)
                     {
-                        // This statement checks to see if the file type is music, and if download-music is true
-                        // If it fails, this statement returns true, and results in not downloading the file
-                        // Else it will ignore the break, and download the file.
-                        if ( !(thisFile.type == "music" && config.getBoolValue("download-music")) )
+                        if (!(thisFile.type == "music" && config.getBoolValue("download-music")))
                         {
                             mUpdateIndex++;
                             break;
                         }
                     }
                     mCurrentFile = thisFile.name;
-                    std::string checksum;
-                    checksum = thisFile.hash;
-                    std::stringstream ss(checksum);
+                    std::stringstream ss(thisFile.hash);
                     ss >> std::hex >> mCurrentChecksum;
 
-                    std::ifstream temp(
-                            (mUpdatesDir + "/" + mCurrentFile).c_str());
+                    std::string filename = mUpdatesDir + "/" + mCurrentFile;
+                    FILE *file = fopen(filename.c_str(), "r+b");
 
-                    if (!temp.is_open())
+                    if (!file || Net::Download::fadler32(file) != mCurrentChecksum)
                     {
-                        temp.close();
+                        if (file)
+                            fclose(file);
                         download();
                     }
                     else
                     {
-                        temp.close();
+                        fclose(file);
                         logger->log("%s already here", mCurrentFile.c_str());
                     }
                     mUpdateIndex++;
