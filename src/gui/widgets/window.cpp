@@ -67,7 +67,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
 
     if (mModal)
     {
-        gui->setCursorType(Gui::CURSOR_POINTER);
+        gui->setCursorType(Cursor::POINTER);
         requestModalFocus();
     }
 
@@ -274,7 +274,7 @@ void Window::widgetHidden(const gcn::Event &event)
 {
     if (gui)
     {
-        gui->setCursorType(Gui::CURSOR_POINTER);
+        gui->setCursorType(Cursor::POINTER);
     }
 
     WidgetListIterator it;
@@ -384,7 +384,7 @@ void Window::mouseReleased(gcn::MouseEvent &event)
     if (mGrip && mouseResize)
     {
         mouseResize = 0;
-        gui->setCursorType(Gui::CURSOR_POINTER);
+        gui->setCursorType(Cursor::POINTER);
     }
 
     // This should be the responsibility of Guichan (and is from 0.8.0 on)
@@ -394,7 +394,7 @@ void Window::mouseReleased(gcn::MouseEvent &event)
 void Window::mouseExited(gcn::MouseEvent &event)
 {
     if (mGrip && !mouseResize)
-        gui->setCursorType(Gui::CURSOR_POINTER);
+        gui->setCursorType(Cursor::POINTER);
 }
 
 void Window::mouseMoved(gcn::MouseEvent &event)
@@ -405,20 +405,20 @@ void Window::mouseMoved(gcn::MouseEvent &event)
     switch (resizeHandles)
     {
         case BOTTOM | RIGHT:
-            gui->setCursorType(Gui::CURSOR_RESIZE_DOWN_RIGHT);
+            gui->setCursorType(Cursor::RESIZE_DOWN_RIGHT);
             break;
         case BOTTOM | LEFT:
-            gui->setCursorType(Gui::CURSOR_RESIZE_DOWN_LEFT);
+            gui->setCursorType(Cursor::RESIZE_DOWN_LEFT);
             break;
         case BOTTOM:
-            gui->setCursorType(Gui::CURSOR_RESIZE_DOWN);
+            gui->setCursorType(Cursor::RESIZE_DOWN);
             break;
         case RIGHT:
         case LEFT:
-            gui->setCursorType(Gui::CURSOR_RESIZE_ACROSS);
+            gui->setCursorType(Cursor::RESIZE_ACROSS);
             break;
         default:
-            gui->setCursorType(Gui::CURSOR_POINTER);
+            gui->setCursorType(Cursor::POINTER);
     }
 
     if (viewport)

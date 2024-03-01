@@ -51,10 +51,9 @@ class ImageSet : public Resource
          */
         int getHeight() const { return mHeight; }
 
-        using size_type = std::vector<Image *>::size_type;
-        Image *get(size_type i) const;
+        Image *get(size_t i) const;
 
-        size_type size() const { return mImages.size(); }
+        size_t size() const { return mImages.size(); }
 
         int getOffsetX() const
         { return mOffsetX; }

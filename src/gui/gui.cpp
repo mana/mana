@@ -77,12 +77,7 @@ class GuiConfigListener : public EventListener
         Gui *mGui;
 };
 
-Gui::Gui(Graphics *graphics):
-    mCustomCursor(false),
-    mMouseCursors(nullptr),
-    mMouseCursorAlpha(1.0f),
-    mMouseInactivityTimer(0),
-    mCursorType(CURSOR_POINTER)
+Gui::Gui(Graphics *graphics)
 {
     logger->log("Initializing GUI...");
     // Set graphics
@@ -208,7 +203,7 @@ void Gui::draw()
             && mCustomCursor
             && mMouseCursorAlpha > 0.0f)
     {
-        Image *mouseCursor = mMouseCursors->get(mCursorType);
+        Image *mouseCursor = mMouseCursors->get(static_cast<size_t>(mCursorType));
         mouseCursor->setAlpha(mMouseCursorAlpha);
 
         static_cast<Graphics*>(mGraphics)->drawImage(
@@ -233,32 +228,32 @@ void Gui::videoResized(int width, int height)
 
 void Gui::setUseCustomCursor(bool customCursor)
 {
-    if (customCursor != mCustomCursor)
+    if (mCustomCursor == customCursor)
+        return;
+
+    mCustomCursor = customCursor;
+
+    if (mCustomCursor)
     {
-        mCustomCursor = customCursor;
+        // Hide the SDL mouse cursor
+        SDL_ShowCursor(SDL_DISABLE);
 
-        if (mCustomCursor)
+        // Load the mouse cursor
+        mMouseCursors = Theme::getImageSetFromTheme("mouse.png", 40, 40);
+
+        if (!mMouseCursors)
+            logger->error("Unable to load mouse cursors.");
+    }
+    else
+    {
+        // Show the SDL mouse cursor
+        SDL_ShowCursor(SDL_ENABLE);
+
+        // Unload the mouse cursor
+        if (mMouseCursors)
         {
-            // Hide the SDL mouse cursor
-            SDL_ShowCursor(SDL_DISABLE);
-
-            // Load the mouse cursor
-            mMouseCursors = Theme::getImageSetFromTheme("mouse.png", 40, 40);
-
-            if (!mMouseCursors)
-                logger->error("Unable to load mouse cursors.");
-        }
-        else
-        {
-            // Show the SDL mouse cursor
-            SDL_ShowCursor(SDL_ENABLE);
-
-            // Unload the mouse cursor
-            if (mMouseCursors)
-            {
-                mMouseCursors->decRef();
-                mMouseCursors = nullptr;
-            }
+            mMouseCursors->decRef();
+            mMouseCursors = nullptr;
         }
     }
 }

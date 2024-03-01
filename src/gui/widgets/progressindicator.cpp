@@ -36,7 +36,7 @@ ProgressIndicator::ProgressIndicator()
                                                    32, 32);
 
     auto *anim = new Animation;
-    for (ImageSet::size_type i = 0; i < images->size(); ++i)
+    for (size_t i = 0; i < images->size(); ++i)
         anim->addFrame(images->get(i), 100, 0, 0);
 
     mIndicator = new SimpleAnimation(anim);

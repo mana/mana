@@ -589,26 +589,26 @@ void Viewport::updateCursorType()
         {
             // NPCs
             case ActorSprite::NPC:
-                gui->setCursorType(Gui::CURSOR_TALK);
+                gui->setCursorType(Cursor::TALK);
                 break;
 
             // Monsters
             case ActorSprite::MONSTER:
-                gui->setCursorType(Gui::CURSOR_FIGHT);
+                gui->setCursorType(Cursor::FIGHT);
                 break;
             default:
-                gui->setCursorType(Gui::CURSOR_POINTER);
+            gui->setCursorType(Cursor::POINTER);
                 break;
          }
     // Item mouseover
     }
     else if (mHoverItem)
     {
-        gui->setCursorType(Gui::CURSOR_PICKUP);
+        gui->setCursorType(Cursor::PICKUP);
     }
     else
     {
-        gui->setCursorType(Gui::CURSOR_POINTER);
+        gui->setCursorType(Cursor::POINTER);
     }
 }
 

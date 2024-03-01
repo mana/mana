@@ -41,6 +41,26 @@ class SDLInput;
  */
 
 /**
+ * Cursors are in graphic order from left to right.
+ * CURSOR_POINTER should be left untouched.
+ */
+enum class Cursor {
+    POINTER = 0,
+    RESIZE_ACROSS,
+    RESIZE_DOWN,
+    RESIZE_DOWN_LEFT,
+    RESIZE_DOWN_RIGHT,
+    FIGHT,
+    PICKUP,
+    TALK,
+    ACTION,
+    LEFT,
+    UP,
+    RIGHT,
+    DOWN,
+};
+
+/**
  * Main GUI class.
  *
  * \ingroup GUI
@@ -93,25 +113,8 @@ class Gui : public gcn::Gui
         /**
          * Sets which cursor should be used.
          */
-        void setCursorType(int index)
+        void setCursorType(Cursor index)
         { mCursorType = index; }
-
-        /**
-         * Cursors are in graphic order from left to right.
-         * CURSOR_POINTER should be left untouched.
-         * CURSOR_TOTAL should always be last.
-         */
-        enum {
-            CURSOR_POINTER = 0,
-            CURSOR_RESIZE_ACROSS,
-            CURSOR_RESIZE_DOWN,
-            CURSOR_RESIZE_DOWN_LEFT,
-            CURSOR_RESIZE_DOWN_RIGHT,
-            CURSOR_FIGHT,
-            CURSOR_PICKUP,
-            CURSOR_TALK,
-            CURSOR_TOTAL
-        };
 
     protected:
         void handleMouseMoved(const gcn::MouseInput &mouseInput) override;
@@ -121,11 +124,11 @@ class Gui : public gcn::Gui
         GuiConfigListener *mConfigListener;
         gcn::Font *mGuiFont;                  /**< The global GUI font */
         gcn::Font *mInfoParticleFont;         /**< Font for Info Particles*/
-        bool mCustomCursor;                   /**< Show custom cursor */
-        ImageSet *mMouseCursors;              /**< Mouse cursor images */
-        float mMouseCursorAlpha;
-        int mMouseInactivityTimer;
-        int mCursorType;
+        bool mCustomCursor = false;           /**< Show custom cursor */
+        ImageSet *mMouseCursors = nullptr;    /**< Mouse cursor images */
+        float mMouseCursorAlpha = 1.0f;
+        int mMouseInactivityTimer = 0;
+        Cursor mCursorType = Cursor::POINTER;
 };
 
 extern Gui *gui;                              /**< The GUI system */
