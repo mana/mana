@@ -327,7 +327,7 @@ void SkillDialog::loadSkills()
     {
         logger->log("Error loading skills file: %s", SKILLS_FILE);
 
-        if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+        if (Net::getNetworkType() == ServerType::TMWATHENA)
         {
             auto *model = new SkillModel();
             auto *skill = new SkillInfo;

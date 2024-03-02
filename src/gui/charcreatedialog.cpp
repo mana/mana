@@ -167,7 +167,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "create")
     {
-        if (Net::getNetworkType() == ServerInfo::MANASERV
+        if (Net::getNetworkType() == ServerType::MANASERV
             || getName().length() >= 4)
         {
             // Attempt to create the character
@@ -175,7 +175,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
 
             int characterSlot = mSlot;
             // On Manaserv, the slots start at 1, so we offset them.
-            if (Net::getNetworkType() == ServerInfo::MANASERV)
+            if (Net::getNetworkType() == ServerType::MANASERV)
                 ++characterSlot;
 
             // Should avoid the most common crash case

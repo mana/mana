@@ -28,18 +28,19 @@
 #include <deque>
 #include <string>
 
+enum class ServerType
+{
+    UNKNOWN,
+    MANASERV,
+    TMWATHENA
+};
+
 class ServerInfo
 {
 public:
-    enum Type {
-        UNKNOWN,
-        MANASERV,
-        TMWATHENA
-    };
-
     using VersionString = std::pair<int, std::string>;
 
-    Type type = UNKNOWN;
+    ServerType type = ServerType::UNKNOWN;
     std::string name;
     std::string hostname;
     uint16_t port = 0;
@@ -52,7 +53,7 @@ public:
 
     bool isValid() const
     {
-        return !hostname.empty() && port != 0 && type != UNKNOWN;
+        return !hostname.empty() && port != 0 && type != ServerType::UNKNOWN;
     }
 
     void clear()
@@ -72,39 +73,39 @@ public:
                 port != other.port);
     }
 
-    static Type parseType(const std::string &type)
+    static ServerType parseType(const std::string &type)
     {
         if (compareStrI(type, "tmwathena") == 0)
-            return TMWATHENA;
+            return ServerType::TMWATHENA;
         // Used for backward compatibility
         if (compareStrI(type, "eathena") == 0)
-            return TMWATHENA;
+            return ServerType::TMWATHENA;
         if (compareStrI(type, "manaserv") == 0)
-            return MANASERV;
-        return UNKNOWN;
+            return ServerType::MANASERV;
+        return ServerType::UNKNOWN;
     }
 
-    static uint16_t defaultPortForServerType(Type type)
+    static uint16_t defaultPortForServerType(ServerType type)
     {
         switch (type)
         {
-            default:
-            case ServerInfo::UNKNOWN:
-                return 0;
-            case ServerInfo::TMWATHENA:
-                return 6901;
-            case ServerInfo::MANASERV:
-                return 9601;
+        default:
+        case ServerType::UNKNOWN:
+            return 0;
+        case ServerType::TMWATHENA:
+            return 6901;
+        case ServerType::MANASERV:
+            return 9601;
         }
     }
 
-    static Type defaultServerTypeForPort(uint16_t port)
+    static ServerType defaultServerTypeForPort(uint16_t port)
     {
         if (port == 6901)
-            return TMWATHENA;
+            return ServerType::TMWATHENA;
         if (port == 9601)
-            return MANASERV;
-        return UNKNOWN;
+            return ServerType::MANASERV;
+        return ServerType::UNKNOWN;
     }
 };
 

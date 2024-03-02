@@ -62,7 +62,7 @@ PlayerHandler *getPlayerHandler();
 SpecialHandler *getSpecialHandler();
 TradeHandler *getTradeHandler();
 
-ServerInfo::Type getNetworkType();
+ServerType getNetworkType();
 
 /**
  * Handles server detection and connection

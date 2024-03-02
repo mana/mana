@@ -936,7 +936,7 @@ void LocalPlayer::setAttackRange(int range)
     {
         mAttackRange = range;
     }
-    else if (Net::getNetworkType() == ServerInfo::TMWATHENA)
+    else if (Net::getNetworkType() == ServerType::TMWATHENA)
     {
         // TODO: Fix this to be more generic
         Item *weapon = PlayerInfo::getEquipment(TmwAthena::EQUIP_FIGHT1_SLOT);

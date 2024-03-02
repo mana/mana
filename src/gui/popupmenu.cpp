@@ -127,7 +127,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                                 strprintf(_("Invite %s to join your guild"),
                                                     name.c_str()).c_str()));
                 if (local_player->isInParty() ||
-                    Net::getNetworkType() == ServerInfo::MANASERV)
+                    Net::getNetworkType() == ServerType::MANASERV)
                 {
                     mBrowserBox->addRow(strprintf("@@party|%s@@",
                                 strprintf(_("Invite %s to join your party"),

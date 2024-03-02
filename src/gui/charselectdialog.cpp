@@ -277,7 +277,7 @@ void CharSelectDialog::setCharacters(const Net::Characters &characters)
 
         // Slots Number start at 1 for Manaserv, so we offset them by one.
         int characterSlot = character->slot;
-        if (Net::getNetworkType() == ServerInfo::MANASERV
+        if (Net::getNetworkType() == ServerType::MANASERV
             && characterSlot > 0)
             --characterSlot;
 

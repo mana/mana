@@ -949,7 +949,7 @@ void Being::showName()
         }
 
         // Display the IP when under tmw-Athena (GM only).
-        if (Net::getNetworkType() == ServerInfo::TMWATHENA && local_player
+        if (Net::getNetworkType() == ServerType::TMWATHENA && local_player
         && local_player->getShowIp() && player->getIp())
         {
             mDisplayName += strprintf(" %s", ipToString(player->getIp()));

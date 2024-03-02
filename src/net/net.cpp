@@ -125,18 +125,18 @@ Net::TradeHandler *Net::getTradeHandler()
 
 namespace Net
 {
-ServerInfo::Type networkType = ServerInfo::UNKNOWN;
+ServerType networkType = ServerType::UNKNOWN;
 
 void connectToServer(ServerInfo &server)
 {
-    if (server.type == ServerInfo::UNKNOWN)
+    if (server.type == ServerType::UNKNOWN)
     {
         // TODO: Query the server about itself and choose the netcode based on
         // that
         if (server.port == 6901)
-            server.type = ServerInfo::TMWATHENA;
+            server.type = ServerType::TMWATHENA;
         else if (server.port == 9601)
-            server.type = ServerInfo::MANASERV;
+            server.type = ServerType::MANASERV;
         else
             logger->error(_("Unknown Server Type! Exiting."));
     }
@@ -147,7 +147,7 @@ void connectToServer(ServerInfo &server)
     }
     else
     {
-        if (networkType != ServerInfo::UNKNOWN && getGeneralHandler() != nullptr)
+        if (networkType != ServerType::UNKNOWN && getGeneralHandler() != nullptr)
         {
             getGeneralHandler()->unload();
         }
@@ -155,11 +155,11 @@ void connectToServer(ServerInfo &server)
         switch (server.type)
         {
 #ifdef MANASERV_SUPPORT
-            case ServerInfo::MANASERV:
+            case ServerType::MANASERV:
                 new ManaServ::GeneralHandler;
                 break;
 #endif
-            case ServerInfo::TMWATHENA:
+            case ServerType::TMWATHENA:
                 new TmwAthena::GeneralHandler;
                 break;
             default:
@@ -186,7 +186,7 @@ void unload()
     }
 }
 
-ServerInfo::Type getNetworkType()
+ServerType getNetworkType()
 {
     return networkType;
 }

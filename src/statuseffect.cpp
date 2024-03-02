@@ -22,7 +22,6 @@
 #include "statuseffect.h"
 
 #include "event.h"
-#include "log.h"
 #include "sound.h"
 
 #include "configuration.h"
@@ -33,12 +32,8 @@
 
 bool StatusEffect::mLoaded = false;
 
-StatusEffect::StatusEffect() :
-    mPersistentParticleEffect(false)
-{}
-
-StatusEffect::~StatusEffect()
-{}
+StatusEffect::StatusEffect() = default;
+StatusEffect::~StatusEffect() = default;
 
 void StatusEffect::playSFX()
 {
@@ -56,33 +51,29 @@ Particle *StatusEffect::getParticle()
 {
     if (mParticleEffect.empty())
         return nullptr;
-    else
-        return particleEngine->addEffect(mParticleEffect, 0, 0);
+    return particleEngine->addEffect(mParticleEffect, 0, 0);
 }
 
 AnimatedSprite *StatusEffect::getIcon()
 {
     if (mIcon.empty())
         return nullptr;
-    else
+
+    AnimatedSprite *sprite = AnimatedSprite::load(
+                paths.getStringValue("sprites") + mIcon);
+    if (false && sprite)
     {
-        AnimatedSprite *sprite = AnimatedSprite::load(
-                                       paths.getStringValue("sprites") + mIcon);
-        if (false && sprite)
-        {
-            sprite->play(SpriteAction::DEFAULT);
-            sprite->reset();
-        }
-        return sprite;
+        sprite->play(SpriteAction::DEFAULT);
+        sprite->reset();
     }
+    return sprite;
 }
 
-std::string StatusEffect::getAction()
+std::string StatusEffect::getAction() const
 {
     if (mAction.empty())
         return SpriteAction::INVALID;
-    else
-        return mAction;
+    return mAction;
 }
 
 
@@ -162,10 +153,8 @@ void StatusEffect::checkStatus()
 
 void unloadMap(std::map<int, StatusEffect *> map)
 {
-    std::map<int, StatusEffect *>::iterator it;
-
-    for (it = map.begin(); it != map.end(); it++)
-        delete (*it).second;
+    for (auto &[_, effect] : map)
+        delete effect;
 
     map.clear();
 }

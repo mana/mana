@@ -45,7 +45,7 @@ Party::~Party()
 PartyMember *Party::addMember(int id, const std::string &name)
 {
     PartyMember *m;
-    if (Net::getNetworkType() == ServerInfo::TMWATHENA && (m = getMember(id)))
+    if (Net::getNetworkType() == ServerType::TMWATHENA && (m = getMember(id)))
     {
         return m;
     }

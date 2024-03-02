@@ -25,7 +25,6 @@
 #include "particle.h"
 #include "animatedsprite.h"
 
-#include "resources/animation.h"
 #include "utils/xml.h"
 
 class StatusEffect
@@ -59,7 +58,7 @@ public:
     /**
      * Retrieves an action to perform, or SpriteAction::INVALID
      */
-    std::string getAction();
+    std::string getAction() const;
 
     /**
      * Determines whether the particle effect should be restarted when the
@@ -110,7 +109,7 @@ private:
     std::string mParticleEffect;
     std::string mIcon;
     std::string mAction;
-    bool mPersistentParticleEffect;
+    bool mPersistentParticleEffect = false;
 };
 
 #endif // !defined(STATUS_EFFECT_H)

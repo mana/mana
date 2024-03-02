@@ -54,7 +54,7 @@ void MonsterDB::init()
         unload();
 
     // This can be overridden by an 'offset' attribute on a 'monsters' root tag.
-    mMonsterIdOffset = Net::getNetworkType() == ServerInfo::TMWATHENA ? OLD_TMWATHENA_OFFSET : 0;
+    mMonsterIdOffset = Net::getNetworkType() == ServerType::TMWATHENA ? OLD_TMWATHENA_OFFSET : 0;
 }
 
 void MonsterDB::setMonsterIdOffset(int offset)

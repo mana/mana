@@ -323,11 +323,11 @@ void Viewport::_drawDebugPath(Graphics *graphics)
         unsigned char walkMask;
         switch (Net::getNetworkType())
         {
-          case ServerInfo::TMWATHENA:
+        case ServerType::TMWATHENA:
             walkMask = Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER;
             break;
-          case ServerInfo::MANASERV:
-          default:
+        case ServerType::MANASERV:
+        default:
             walkMask = Map::BLOCKMASK_WALL;
             break;
         }

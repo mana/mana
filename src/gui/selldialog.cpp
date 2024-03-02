@@ -205,7 +205,7 @@ void SellDialog::action(const gcn::ActionEvent &event)
             sellCount = item->sellCurrentDuplicate(mAmountItems);
 
             // For Manaserv, the Item id is to be given as index.
-            if ((Net::getNetworkType() == ServerInfo::MANASERV))
+            if ((Net::getNetworkType() == ServerType::MANASERV))
                 itemIndex = item->getId();
 
             Net::getNpcHandler()->sellItem(mNpcId, itemIndex, sellCount);

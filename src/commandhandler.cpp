@@ -115,7 +115,7 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handlePresent(args, tab);
     }
-    else if (type == "showip" && Net::getNetworkType() == ServerInfo::TMWATHENA)
+    else if (type == "showip" && Net::getNetworkType() == ServerType::TMWATHENA)
     {
         handleShowIp(args, tab);
     }

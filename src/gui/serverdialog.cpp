@@ -55,13 +55,13 @@
 
 static const int MAX_SERVERLIST = 6;
 
-static std::string serverTypeToString(ServerInfo::Type type)
+static std::string serverTypeToString(ServerType type)
 {
     switch (type)
     {
-    case ServerInfo::TMWATHENA:
+    case ServerType::TMWATHENA:
         return "TmwAthena";
-    case ServerInfo::MANASERV:
+    case ServerType::MANASERV:
         return "ManaServ";
     default:
         return std::string();
@@ -267,7 +267,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
         // Check login
         if (index < 0
 #ifndef MANASERV_SUPPORT
-            || mServersListModel->getServer(index).type == ServerInfo::MANASERV
+            || mServersListModel->getServer(index).type == ServerType::MANASERV
 #endif
         )
         {
@@ -458,9 +458,9 @@ void ServerDialog::loadServers()
         server.type = ServerInfo::parseType(type);
 
         // Ignore unknown server types
-        if (server.type == ServerInfo::UNKNOWN
+        if (server.type == ServerType::UNKNOWN
 #ifndef MANASERV_SUPPORT
-            || server.type == ServerInfo::MANASERV
+            || server.type == ServerType::MANASERV
 #endif
         )
         {

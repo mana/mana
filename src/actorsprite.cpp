@@ -30,8 +30,7 @@
 #include "sound.h"
 #include "statuseffect.h"
 
-#include "net/net.h"
-
+#include "resources/animation.h"
 #include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"

@@ -128,7 +128,7 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
         mServerAddressField->setText(serverInfo.hostname);
         mPortField->setText(toString(serverInfo.port));
 #ifdef MANASERV_SUPPORT
-        mTypeField->setSelected(serverInfo.type == ServerInfo::TMWATHENA ?
+        mTypeField->setSelected(serverInfo.type == ServerType::TMWATHENA ?
                                 0 : 1);
 #endif
     }
@@ -180,16 +180,16 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
             switch (mTypeField->getSelected())
             {
                 case 0:
-                    serverInfo.type = ServerInfo::TMWATHENA;
+                    serverInfo.type = ServerType::TMWATHENA;
                     break;
                 case 1:
-                    serverInfo.type = ServerInfo::MANASERV;
+                    serverInfo.type = ServerType::MANASERV;
                     break;
                 default:
-                    serverInfo.type = ServerInfo::UNKNOWN;
+                    serverInfo.type = ServerType::UNKNOWN;
             }
 #else
-            serverInfo.type = ServerInfo::TMWATHENA;
+            serverInfo.type = ServerType::TMWATHENA;
 #endif
             if (mPortField->getText().empty())
                 serverInfo.port = ServerInfo::defaultPortForServerType(serverInfo.type);
