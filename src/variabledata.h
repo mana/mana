@@ -28,7 +28,7 @@ class Item;
 
 class VariableData
 {
-    public:
+public:
     enum DataType
     {
         DATA_NONE,
@@ -40,7 +40,7 @@ class VariableData
         DATA_ACTOR
     };
 
-    virtual ~VariableData() {}
+    virtual ~VariableData() = default;
 
     virtual int getType() const = 0;
 };

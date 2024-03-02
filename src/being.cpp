@@ -378,12 +378,12 @@ void Being::takeDamage(Being *attacker, int amount,
         }
         else if (attacker && attacker->getType() == MONSTER)
         {
-            const Attack *attack = attacker->getInfo()->getAttack(attackId);
+            const Attack &attack = attacker->getInfo()->getAttack(attackId);
 
             if (type != CRITICAL)
-                hitEffectId = attack->mHitEffectId;
+                hitEffectId = attack.mHitEffectId;
             else
-                hitEffectId = attack->mCriticalHitEffectId;
+                hitEffectId = attack.mCriticalHitEffectId;
         }
         else
         {
@@ -414,7 +414,7 @@ void Being::handleAttack(Being *victim, int damage, int attackId)
         fireMissile(victim, mEquippedWeapon->getMissileParticleFile());
     else
         fireMissile(victim,
-                    mInfo->getAttack(attackId)->mMissileParticleFilename);
+                    mInfo->getAttack(attackId).mMissileParticleFilename);
 
     sound.playSfx(mInfo->getSound((damage > 0) ?
                   SOUND_EVENT_HIT : SOUND_EVENT_MISS),
@@ -593,13 +593,13 @@ void Being::setAction(Action action, int attackId)
             }
             else
             {
-                currentAction = mInfo->getAttack(attackId)->mAction;
+                currentAction = mInfo->getAttack(attackId).mAction;
                 reset();
 
                 // Attack particle effect
                 if (Particle::enabled)
                 {
-                    int effectId = mInfo->getAttack(attackId)->mEffectId;
+                    int effectId = mInfo->getAttack(attackId).mEffectId;
                     int rotation = 0;
                     switch (mSpriteDirection)
                     {

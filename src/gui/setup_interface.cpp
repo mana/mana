@@ -22,27 +22,16 @@
 #include "gui/setup_interface.h"
 
 #include "configuration.h"
-#include "game.h"
-#include "graphics.h"
 #include "localplayer.h"
-#include "log.h"
-#include "main.h"
-//#include "particle.h"
-
-#include "gui/okdialog.h"
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
-#include "gui/widgets/listbox.h"
-#include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
 #include "gui/widgets/spacer.h"
-#include "gui/widgets/textfield.h"
 #include "gui/widgets/dropdown.h"
 
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
@@ -50,9 +39,6 @@
 #include <SDL.h>
 
 #include <string>
-#include <vector>
-
-extern Graphics *graphics;
 
 const char *SIZE_NAME[4] =
 {
@@ -65,8 +51,6 @@ const char *SIZE_NAME[4] =
 class FontSizeChoiceListModel : public gcn::ListModel
 {
 public:
-    ~FontSizeChoiceListModel() override { }
-
     int getNumberOfElements() override
     {
         return 4;
@@ -277,6 +261,4 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
     {
         config.setValue("logNpcInGui", mNPCLogCheckBox->isSelected());
     }
-
 }
-

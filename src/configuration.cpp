@@ -128,19 +128,19 @@ VariableData* Configuration::getDefault(const std::string &key,
 {
     if (mDefaultsData)
     {
-        DefaultsData::const_iterator itdef = mDefaultsData->find(key);
+        auto itdef = mDefaultsData->find(key);
 
         if (itdef != mDefaultsData->end() && itdef->second
             && itdef->second->getType() == type)
         {
             return itdef->second;
         }
-        else
-        {
-            logger->log("%s: No value in registry for key %s",
-                        mConfigPath.c_str(), key.c_str());
-        }
+
+        logger->log("%s: No value in registry for key %s",
+                    mConfigPath.c_str(),
+                    key.c_str());
     }
+
     return nullptr;
 }
 
@@ -158,6 +158,7 @@ int Configuration::getIntValue(const std::string &key) const
     {
         defaultValue = atoi(iter->second.c_str());
     }
+
     return defaultValue;
 }
 
@@ -167,16 +168,14 @@ std::string Configuration::getStringValue(const std::string &key) const
     auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
-        VariableData* vd = getDefault(key,
-                                            VariableData::DATA_STRING);
-
-        if (vd)
+        if (VariableData *vd = getDefault(key, VariableData::DATA_STRING))
             defaultValue = ((StringData*)vd)->getData();
     }
     else
     {
         defaultValue = iter->second;
     }
+
     return defaultValue;
 }
 
@@ -187,16 +186,14 @@ float Configuration::getFloatValue(const std::string &key) const
     auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
-        VariableData* vd = getDefault(key,
-            VariableData::DATA_FLOAT);
-
-        if (vd)
+        if (VariableData *vd = getDefault(key, VariableData::DATA_FLOAT))
             defaultValue = ((FloatData*)vd)->getData();
     }
     else
     {
         defaultValue = atof(iter->second.c_str());
     }
+
     return defaultValue;
 }
 
@@ -206,10 +203,7 @@ bool Configuration::getBoolValue(const std::string &key) const
     auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
-        VariableData* vd = getDefault(key,
-            VariableData::DATA_BOOL);
-
-        if (vd)
+        if (VariableData *vd = getDefault(key, VariableData::DATA_BOOL))
             defaultValue = ((BoolData*)vd)->getData();
     }
     else

@@ -162,11 +162,10 @@ class ConfigurationObject
         template<class T, class CONT>
         CONT getList(const std::string &name, CONT empty, ConfigurationListManager<T, CONT> *manager)
         {
-            ConfigurationList *list = &(mContainerOptions[name]);
             CONT container = empty;
 
-            for (ConfigurationList::const_iterator it = list->begin(); it != list->end(); it++)
-                container = manager->readConfigItem(*it, container);
+            for (auto obj : mContainerOptions[name])
+                container = manager->readConfigItem(obj, container);
 
             return container;
         }

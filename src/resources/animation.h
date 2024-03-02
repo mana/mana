@@ -46,7 +46,7 @@ struct Frame
 class Animation
 {
     public:
-        Animation();
+        Animation() = default;
 
         /**
          * Appends a new animation at the end of the sequence.
@@ -81,7 +81,7 @@ class Animation
 
     protected:
         std::vector<Frame> mFrames;
-        int mDuration;
+        int mDuration = 0;
 };
 
 #endif

@@ -26,28 +26,18 @@
 
 #include "resources/spritedef.h"
 
-#include <list>
 #include <map>
 #include <string>
 #include <vector>
 
-struct Attack {
-    std::string mAction;
-    int mEffectId, mHitEffectId, mCriticalHitEffectId;
-    std::string mMissileParticleFilename;
-
-    Attack(std::string action, int effectId, int hitEffectId,
-           int criticalHitEffectId, std::string missileParticleFilename)
-    {
-        mAction = action;
-        mEffectId = effectId;
-        mHitEffectId = hitEffectId;
-        mCriticalHitEffectId = criticalHitEffectId;
-        mMissileParticleFilename = missileParticleFilename;
-    }
+struct Attack
+{
+    std::string mAction = SpriteAction::ATTACK;
+    int mEffectId = 0;
+    int mHitEffectId = 0;
+    int mCriticalHitEffectId = 0;
+    std::string mMissileParticleFilename = std::string();
 };
-
-using Attacks = std::map<int, Attack *>;
 
 enum SoundEvent
 {
@@ -56,8 +46,6 @@ enum SoundEvent
     SOUND_EVENT_HURT,
     SOUND_EVENT_DIE
 };
-
-using SoundEvents = std::map<SoundEvent, std::vector<std::string> *>;
 
 /**
  * Holds information about a certain type of monster. This includes the name
@@ -97,11 +85,9 @@ class BeingInfo
 
         const std::string &getSound(SoundEvent event) const;
 
-        void addAttack(int id, std::string action, int effectId,
-                       int hitEffectId, int criticalHitEffectId,
-                       const std::string &missileParticleFilename);
+        void addAttack(int id, Attack attack);
 
-        const Attack *getAttack(int id) const;
+        const Attack &getAttack(int id) const;
 
         void setWalkMask(unsigned char mask)
         { mWalkMask = mask; }
@@ -121,14 +107,13 @@ class BeingInfo
     private:
         SpriteDisplay mDisplay;
         std::string mName;
-        ActorSprite::TargetCursorSize mTargetCursorSize;
-        SoundEvents mSounds;
-        Attacks mAttacks;
+        ActorSprite::TargetCursorSize mTargetCursorSize = ActorSprite::TC_MEDIUM;
+        std::map<SoundEvent, std::vector<std::string>> mSounds;
+        std::map<int, Attack> mAttacks;
         unsigned char mWalkMask;
-        Map::BlockType mBlockType;
+        Map::BlockType mBlockType = Map::BLOCKTYPE_CHARACTER;
 };
 
 using BeingInfos = std::map<int, BeingInfo *>;
-using BeingInfoIterator = BeingInfos::iterator;
 
 #endif // BEINGINFO_H

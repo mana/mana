@@ -21,13 +21,6 @@
 
 #include "resources/animation.h"
 
-#include "utils/dtor.h"
-
-Animation::Animation():
-    mDuration(0)
-{
-}
-
 void Animation::addFrame(Image *image, int delay, int offsetX, int offsetY)
 {
     Frame frame = { image, delay, offsetX, offsetY };
@@ -42,5 +35,5 @@ void Animation::addTerminator()
 
 bool Animation::isTerminator(const Frame &candidate)
 {
-    return (candidate.image == nullptr);
+    return candidate.image == nullptr;
 }

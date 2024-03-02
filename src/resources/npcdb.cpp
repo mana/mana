@@ -27,7 +27,6 @@
 
 #include "utils/dtor.h"
 #include "utils/xml.h"
-#include "configuration.h"
 
 namespace
 {
@@ -40,7 +39,6 @@ void NPCDB::init()
 {
     if (mLoaded)
         unload();
-
 }
 
 void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
@@ -101,8 +99,6 @@ BeingInfo *NPCDB::get(int id)
         logger->log("NPCDB: Warning, unknown NPC ID %d requested", id);
         return BeingInfo::Unknown;
     }
-    else
-    {
-        return i->second;
-    }
+
+    return i->second;
 }

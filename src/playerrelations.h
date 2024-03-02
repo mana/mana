@@ -71,7 +71,7 @@ public:
     std::string mDescription;
     std::string mShortName;
 
-    virtual ~PlayerIgnoreStrategy() {}
+    virtual ~PlayerIgnoreStrategy() = default;
 
     /**
      * Handle the ignoring of the indicated action by the indicated player.
@@ -82,8 +82,8 @@ public:
 class PlayerRelationsListener
 {
 public:
-    PlayerRelationsListener() { }
-    virtual ~PlayerRelationsListener() { }
+    PlayerRelationsListener() = default;
+    virtual ~PlayerRelationsListener() = default;
 
     virtual void updatedPlayer(const std::string &name) = 0;
 };

@@ -30,7 +30,6 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
-#include "net/logindata.h"
 #include "net/loginhandler.h"
 #include "net/net.h"
 #include "net/worldinfo.h"

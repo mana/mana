@@ -25,9 +25,7 @@
 
 #include "utils/dtor.h"
 
-Action::Action()
-{
-}
+Action::Action() = default;
 
 Action::~Action()
 {

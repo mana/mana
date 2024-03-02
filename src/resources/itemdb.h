@@ -89,7 +89,7 @@ class ItemDB
         bool isLoaded() const
         { return mLoaded; }
 
-        bool exists(int id);
+        bool exists(int id) const;
 
         const ItemInfo &get(int id);
         const ItemInfo &get(const std::string &name);

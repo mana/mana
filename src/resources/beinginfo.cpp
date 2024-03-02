@@ -24,17 +24,14 @@
 #include "log.h"
 #include "configuration.h"
 
-#include "utils/dtor.h"
 #include "utils/gettext.h"
 
 BeingInfo *BeingInfo::Unknown = new BeingInfo;
 
 BeingInfo::BeingInfo():
-        mName(_("unnamed")),
-        mTargetCursorSize(ActorSprite::TC_MEDIUM),
-        mWalkMask(Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER
-                  | Map::BLOCKMASK_MONSTER),
-        mBlockType(Map::BLOCKTYPE_CHARACTER)
+    mName(_("unnamed")),
+    mWalkMask(Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER
+              | Map::BLOCKMASK_MONSTER)
 {
     SpriteDisplay display;
 
@@ -44,12 +41,7 @@ BeingInfo::BeingInfo():
     setDisplay(display);
 }
 
-BeingInfo::~BeingInfo()
-{
-    delete_all(mSounds);
-    delete_all(mAttacks);
-    mSounds.clear();
-}
+BeingInfo::~BeingInfo() = default;
 
 void BeingInfo::setDisplay(SpriteDisplay display)
 {
@@ -74,12 +66,7 @@ void BeingInfo::setTargetCursorSize(const std::string &size)
 
 void BeingInfo::addSound(SoundEvent event, const std::string &filename)
 {
-    if (mSounds.find(event) == mSounds.end())
-    {
-        mSounds[event] = new std::vector<std::string>;
-    }
-
-    mSounds[event]->push_back("sfx/" + filename);
+    mSounds[event].push_back("sfx/" + filename);
 }
 
 const std::string &BeingInfo::getSound(SoundEvent event) const
@@ -87,30 +74,25 @@ const std::string &BeingInfo::getSound(SoundEvent event) const
     static const std::string empty;
 
     auto i = mSounds.find(event);
-    return (i == mSounds.end()) ? empty :
-                                  i->second->at(rand() % i->second->size());
+    return i == mSounds.end() ? empty :
+                                i->second.at(rand() % i->second.size());
 }
 
-const Attack *BeingInfo::getAttack(int id) const
+const Attack &BeingInfo::getAttack(int id) const
 {
-    static auto *empty = new Attack(SpriteAction::ATTACK,
-                                      -1, // Default strike effect on monster
-                                      paths.getIntValue("hitEffectId"),
-                                      paths.getIntValue("criticalHitEffectId"),
-                                      std::string());
+    static const Attack empty {
+        SpriteAction::ATTACK,
+        -1, // Default strike effect on monster
+        paths.getIntValue("hitEffectId"),
+        paths.getIntValue("criticalHitEffectId"),
+        std::string()
+    };
 
     auto it = mAttacks.find(id);
-    return (it == mAttacks.end()) ? empty : it->second;
+    return it == mAttacks.end() ? empty : it->second;
 }
 
-void BeingInfo::addAttack(int id, std::string action, int effectId,
-                          int hitEffectId, int criticalHitEffectId,
-                          const std::string &missileParticleFilename)
+void BeingInfo::addAttack(int id, Attack attack)
 {
-    auto it = mAttacks.find(id);
-    if (it != mAttacks.end())
-        delete it->second;
-
-    mAttacks[id] = new Attack(action, effectId, hitEffectId,
-                              criticalHitEffectId, missileParticleFilename);
+    mAttacks[id] = std::move(attack);
 }

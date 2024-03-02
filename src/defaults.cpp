@@ -21,45 +21,43 @@
 #include "defaults.h"
 
 #include "being.h"
-#include "graphics.h"
 #include "client.h"
 
-#include <cstdlib>
-
-VariableData* createData(int defData)
+VariableData *createData(int defData)
 {
     return new IntData(defData);
 }
 
-VariableData* createData(double defData)
+VariableData *createData(double defData)
 {
     return new FloatData(defData);
 }
 
-VariableData* createData(float defData)
+VariableData *createData(float defData)
 {
     return new FloatData(defData);
 }
 
-VariableData* createData(const std::string &defData)
+VariableData *createData(const std::string &defData)
 {
     return new StringData(defData);
 }
 
-VariableData* createData(const char* defData)
+VariableData *createData(const char* defData)
 {
     return new StringData(defData);
 }
 
-VariableData* createData(bool defData)
+VariableData *createData(bool defData)
 {
     return new BoolData(defData);
 }
 
-#define AddDEF(defaultsData, key, value)  \
- defaultsData->insert(std::pair<std::string, VariableData*> \
-                     (key, createData(value)));
-
+template<typename T>
+void AddDEF(DefaultsData *defaultsData, const char *key, T value)
+{
+    defaultsData->insert(std::make_pair(key, createData(value)));
+}
 
 DefaultsData* getConfigDefaults()
 {
@@ -126,7 +124,7 @@ DefaultsData* getConfigDefaults()
 
 DefaultsData* getBrandingDefaults()
 {
-    auto* brandingData = new DefaultsData;
+    auto *brandingData = new DefaultsData;
     // Init config defaults
     AddDEF(brandingData, "wallpapersPath", "");
     AddDEF(brandingData, "wallpaperFile", "");

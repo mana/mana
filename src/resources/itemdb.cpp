@@ -42,23 +42,23 @@ void setStatsList(const std::list<ItemStat> &stats)
 
 static ItemType itemTypeFromString(const std::string &name, int id = 0)
 {
-    if      (name=="generic")           return ITEM_UNUSABLE;
-    else if (name=="usable")            return ITEM_USABLE;
-    else if (name=="equip-1hand")       return ITEM_EQUIPMENT_ONE_HAND_WEAPON;
-    else if (name=="equip-2hand")       return ITEM_EQUIPMENT_TWO_HANDS_WEAPON;
-    else if (name=="equip-torso")       return ITEM_EQUIPMENT_TORSO;
-    else if (name=="equip-arms")        return ITEM_EQUIPMENT_ARMS;
-    else if (name=="equip-head")        return ITEM_EQUIPMENT_HEAD;
-    else if (name=="equip-legs")        return ITEM_EQUIPMENT_LEGS;
-    else if (name=="equip-shield")      return ITEM_EQUIPMENT_SHIELD;
-    else if (name=="equip-ring")        return ITEM_EQUIPMENT_RING;
-    else if (name=="equip-charm")       return ITEM_EQUIPMENT_CHARM;
-    else if (name=="equip-necklace")    return ITEM_EQUIPMENT_NECKLACE;
-    else if (name=="equip-feet")        return ITEM_EQUIPMENT_FEET;
-    else if (name=="equip-ammo")        return ITEM_EQUIPMENT_AMMO;
-    else if (name=="racesprite")        return ITEM_SPRITE_RACE;
-    else if (name=="hairsprite")        return ITEM_SPRITE_HAIR;
-    else return ITEM_UNUSABLE;
+    if (name == "generic")          return ITEM_UNUSABLE;
+    if (name == "usable")           return ITEM_USABLE;
+    if (name == "equip-1hand")      return ITEM_EQUIPMENT_ONE_HAND_WEAPON;
+    if (name == "equip-2hand")      return ITEM_EQUIPMENT_TWO_HANDS_WEAPON;
+    if (name == "equip-torso")      return ITEM_EQUIPMENT_TORSO;
+    if (name == "equip-arms")       return ITEM_EQUIPMENT_ARMS;
+    if (name == "equip-head")       return ITEM_EQUIPMENT_HEAD;
+    if (name == "equip-legs")       return ITEM_EQUIPMENT_LEGS;
+    if (name == "equip-shield")     return ITEM_EQUIPMENT_SHIELD;
+    if (name == "equip-ring")       return ITEM_EQUIPMENT_RING;
+    if (name == "equip-charm")      return ITEM_EQUIPMENT_CHARM;
+    if (name == "equip-necklace")   return ITEM_EQUIPMENT_NECKLACE;
+    if (name == "equip-feet")       return ITEM_EQUIPMENT_FEET;
+    if (name == "equip-ammo")       return ITEM_EQUIPMENT_AMMO;
+    if (name == "racesprite")       return ITEM_SPRITE_RACE;
+    if (name == "hairsprite")       return ITEM_SPRITE_HAIR;
+    return ITEM_UNUSABLE;
 }
 
 void ItemDB::loadEmptyItemDefinition()
@@ -76,13 +76,11 @@ void ItemDB::loadEmptyItemDefinition()
  * Common itemDB functions
  */
 
-bool ItemDB::exists(int id)
+bool ItemDB::exists(int id) const
 {
     assert(mLoaded);
 
-    ItemInfos::const_iterator i = mItemInfos.find(id);
-
-    return i != mItemInfos.end();
+    return mItemInfos.find(id) != mItemInfos.end();
 }
 
 const ItemInfo &ItemDB::get(int id)

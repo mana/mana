@@ -33,8 +33,10 @@ namespace
 
 SpecialInfo::TargetMode SpecialDB::targetModeFromString(const std::string& str)
 {
-    if (str=="being")  return SpecialInfo::TARGET_BEING;
-    else if (str=="point")  return SpecialInfo::TARGET_POINT;
+    if (str == "being")
+        return SpecialInfo::TARGET_BEING;
+    if (str == "point")
+        return SpecialInfo::TARGET_POINT;
 
     logger->log("SpecialDB: Warning, unknown target mode \"%s\"", str.c_str() );
     return SpecialInfo::TARGET_BEING;

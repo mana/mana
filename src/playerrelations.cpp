@@ -24,7 +24,6 @@
 #include "actorspritemanager.h"
 #include "being.h"
 #include "configuration.h"
-#include "graphics.h"
 #include "playerrelations.h"
 
 #include "utils/dtor.h"
@@ -97,12 +96,8 @@ PlayerRelationsManager::~PlayerRelationsManager()
 {
     delete_all(mIgnoreStrategies);
 
-    for (std::map<std::string,
-         PlayerRelation *>::const_iterator it = mRelations.begin();
-         it != mRelations.end(); it++)
-    {
-        delete it->second;
-    }
+    for (auto &[_, relation] : mRelations)
+        delete relation;
 }
 
 void PlayerRelationsManager::clear()
@@ -175,11 +170,8 @@ void PlayerRelationsManager::signalUpdate(const std::string &name)
 {
     store();
 
-    for (std::list<PlayerRelationsListener *>::const_iterator it = mListeners.begin();
-         it != mListeners.end(); it++)
-    {
-        (*it)->updatedPlayer(name);
-    }
+    for (auto listener : mListeners)
+        listener->updatedPlayer(name);
 }
 
 unsigned int PlayerRelationsManager::checkPermissionSilently(
@@ -188,8 +180,7 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(
 {
     PlayerRelation *r = nullptr;
 
-    std::map<std::string, PlayerRelation *>::const_iterator it =
-        mRelations.find(playerName);
+    auto it = mRelations.find(playerName);
     if (it != mRelations.end())
         r = it->second;
     if (!r)
@@ -341,9 +332,9 @@ public:
     }
 
     void ignore(Being *being, unsigned int flags) override
-     {
-         being->setSpeech("...", 500);
-     }
+    {
+        being->setSpeech("...", 500);
+    }
 };
 
 
@@ -365,7 +356,7 @@ public:
 std::vector<PlayerIgnoreStrategy *> *
 PlayerRelationsManager::getPlayerIgnoreStrategies()
 {
-    if (mIgnoreStrategies.size() == 0)
+    if (mIgnoreStrategies.empty())
     {
         mIgnoreStrategies.push_back(new PIS_nothing());
         mIgnoreStrategies.push_back(new PIS_dotdotdot());

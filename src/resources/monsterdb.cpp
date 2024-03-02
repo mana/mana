@@ -124,36 +124,32 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
         }
         else if (xmlStrEqual(spriteNode->name, BAD_CAST "attack"))
         {
+            Attack attack;
             const int id = XML::getProperty(spriteNode, "id", 0);
-            int effectId = XML::getProperty(spriteNode, "effect-id", -1);
-            int hitEffectId =
+
+            attack.mEffectId = XML::getProperty(spriteNode, "effect-id", -1);
+            attack.mHitEffectId =
                 XML::getProperty(spriteNode, "hit-effect-id",
                                  paths.getIntValue("hitEffectId"));
-            int criticalHitEffectId =
+            attack.mCriticalHitEffectId =
                 XML::getProperty(spriteNode, "critical-hit-effect-id",
                                  paths.getIntValue("criticalHitEffectId"));
-            const std::string missileParticleFilename =
+            attack.mMissileParticleFilename =
                 XML::getProperty(spriteNode, "missile-particle", "");
 
-            const std::string spriteAction = XML::getProperty(spriteNode,
-                                                              "action",
-                                                              "attack");
+            attack.mAction = XML::getProperty(spriteNode, "action", "attack");
 
-            currentInfo->addAttack(id, spriteAction, effectId,
-                                   hitEffectId, criticalHitEffectId,
-                                   missileParticleFilename);
+            currentInfo->addAttack(id, std::move(attack));
         }
         else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
         {
-            display.particles.push_back(
+            display.particles.emplace_back(
                 (const char*) spriteNode->xmlChildrenNode->content);
         }
     }
     currentInfo->setDisplay(display);
 
     mMonsterInfos[XML::getProperty(node, "id", 0) + mMonsterIdOffset] = currentInfo;
-
-
 }
 
 /**

@@ -678,8 +678,7 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
         transY = -mClipStack.top().yOffset;
     }
 
-    // Skip Graphics::popClipArea since we don't need to interact with SDL2
-    bool result = gcn::Graphics::pushClipArea(area);
+    bool result = Graphics::pushClipArea(area);
 
     transX += mClipStack.top().xOffset;
     transY += mClipStack.top().yOffset;
@@ -696,8 +695,7 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 
 void OpenGLGraphics::popClipArea()
 {
-    // Skip Graphics::popClipArea since we don't need to interact with SDL2
-    gcn::Graphics::popClipArea();
+    Graphics::popClipArea();
 
     if (mClipStack.empty())
         return;

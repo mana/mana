@@ -387,7 +387,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     {
         // We draw beings with a lower opacity to make them visible
         // even when covered by a wall or some other elements...
-        Actors::const_iterator ai = mActors.begin();
+        auto ai = mActors.begin();
         while (ai != mActors.end())
         {
             if (Actor *actor = *ai)
@@ -505,7 +505,7 @@ void Map::updateAmbientLayers(float scrollX, float scrollY)
 }
 
 void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
-                      float scrollX, float scrollY, int detail)
+                            float scrollX, float scrollY, int detail)
 {
     // Detail 0 = no ambient effects except background image
     if (detail <= 0 && type != BACKGROUND_LAYERS) return;
@@ -524,7 +524,7 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
             // New type of ambient layers added here without adding it
             // to Map::drawAmbientLayers.
             assert(false);
-            break;
+            return;
     }
 
     // Draw overlays
