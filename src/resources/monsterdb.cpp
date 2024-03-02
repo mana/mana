@@ -79,6 +79,8 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
     currentInfo->setTargetCursorSize(XML::getProperty(node,
                                      "targetCursor", "medium"));
 
+    currentInfo->setHoverCursor(XML::getProperty(node, "hoverCursor", "attack"));
+
     SpriteDisplay display;
 
     //iterate <sprite>s and <sound>s
@@ -147,7 +149,7 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
                 (const char*) spriteNode->xmlChildrenNode->content);
         }
     }
-    currentInfo->setDisplay(display);
+    currentInfo->setDisplay(std::move(display));
 
     mMonsterInfos[XML::getProperty(node, "id", 0) + mMonsterIdOffset] = currentInfo;
 }

@@ -29,18 +29,8 @@
 #include <cstdarg>
 #include <cstdio>
 
-Logger::Logger():
-    mLogToStandardOut(true)
-{
-}
-
-Logger::~Logger()
-{
-    if (mLogFile.is_open())
-    {
-        mLogFile.close();
-    }
-}
+Logger::Logger() = default;
+Logger::~Logger() = default;
 
 void Logger::setLogFile(const std::string &logFilename)
 {
@@ -102,6 +92,6 @@ void Logger::error(const std::string &error_text)
 {
     log("Error: %s", error_text.c_str());
     std::cerr << "Error: " << error_text << std::endl;
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", error_text.c_str(), NULL);
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", error_text.c_str(), nullptr);
     exit(1);
 }

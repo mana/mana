@@ -24,6 +24,7 @@
 
 #include "actorsprite.h"
 #include "eventlistener.h"
+#include "gui/gui.h"
 #include "map.h"
 #include "position.h"
 #include "vector.h"
@@ -296,6 +297,8 @@ class Being : public ActorSprite, public EventListener
         { return mInfo; }
 
         TargetCursorSize getTargetCursorSize() const override;
+
+        Cursor getHoverCursor() const;
 
         /**
          * Gets the way the object is blocked by other objects.

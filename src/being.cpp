@@ -49,7 +49,6 @@
 #include "net/npchandler.h"
 
 #include "resources/beinginfo.h"
-#include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/monsterdb.h"
@@ -127,6 +126,11 @@ void Being::setSubtype(Uint16 subtype)
 ActorSprite::TargetCursorSize Being::getTargetCursorSize() const
 {
     return mInfo->getTargetCursorSize();
+}
+
+Cursor Being::getHoverCursor() const
+{
+    return mInfo->getHoverCursor();
 }
 
 unsigned char Being::getWalkMask() const
@@ -345,17 +349,14 @@ void Being::takeDamage(Being *attacker, int amount,
 
     if (amount > 0)
     {
-        if (mInfo)
+        if (attacker)
         {
-            if (attacker)
-            {
-                sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT),
-                              attacker->getPixelX(), attacker->getPixelY());
-            }
-            else
-            {
-                sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT));
-            }
+            sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT),
+                          attacker->getPixelX(), attacker->getPixelY());
+        }
+        else
+        {
+            sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT));
         }
 
         if (getType() == MONSTER)

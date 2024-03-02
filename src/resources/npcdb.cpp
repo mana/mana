@@ -55,6 +55,8 @@ void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
     currentInfo->setTargetCursorSize(XML::getProperty(node,
                                      "targetCursor", "medium"));
 
+    currentInfo->setHoverCursor(XML::getProperty(node, "hoverCursor", "talk"));
+
     SpriteDisplay display;
     for_each_xml_child_node(spriteNode, node)
     {
@@ -72,7 +74,7 @@ void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
         }
     }
 
-    currentInfo->setDisplay(display);
+    currentInfo->setDisplay(std::move(display));
 
     mNPCInfos[id] = currentInfo;
 }

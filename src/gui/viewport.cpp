@@ -587,17 +587,12 @@ void Viewport::updateCursorType()
     {
         switch (mHoverBeing->getType())
         {
-            // NPCs
             case ActorSprite::NPC:
-                gui->setCursorType(Cursor::TALK);
-                break;
-
-            // Monsters
             case ActorSprite::MONSTER:
-                gui->setCursorType(Cursor::FIGHT);
+                gui->setCursorType(mHoverBeing->getHoverCursor());
                 break;
             default:
-            gui->setCursorType(Cursor::POINTER);
+                gui->setCursorType(Cursor::POINTER);
                 break;
          }
     // Item mouseover

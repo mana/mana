@@ -24,6 +24,7 @@
 
 #include "actorsprite.h"
 
+#include "gui/gui.h"
 #include "resources/spritedef.h"
 
 #include <map>
@@ -81,6 +82,14 @@ class BeingInfo
         ActorSprite::TargetCursorSize getTargetCursorSize() const
         { return mTargetCursorSize; }
 
+        void setHoverCursor(const std::string &cursorName);
+
+        void setHoverCursor(Cursor cursor)
+        { mHoverCursor = cursor; }
+
+        Cursor getHoverCursor() const
+        { return mHoverCursor; }
+
         void addSound(SoundEvent event, const std::string &filename);
 
         const std::string &getSound(SoundEvent event) const;
@@ -108,6 +117,7 @@ class BeingInfo
         SpriteDisplay mDisplay;
         std::string mName;
         ActorSprite::TargetCursorSize mTargetCursorSize = ActorSprite::TC_MEDIUM;
+        Cursor mHoverCursor = Cursor::POINTER;
         std::map<SoundEvent, std::vector<std::string>> mSounds;
         std::map<int, Attack> mAttacks;
         unsigned char mWalkMask;

@@ -65,7 +65,7 @@ class Logger
 
     private:
         std::ofstream mLogFile;
-        bool mLogToStandardOut;
+        bool mLogToStandardOut = true;
 };
 
 extern Logger *logger;

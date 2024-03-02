@@ -26,42 +26,73 @@
 
 #include "utils/gettext.h"
 
+#include <optional>
+
 BeingInfo *BeingInfo::Unknown = new BeingInfo;
+
+static std::optional<ActorSprite::TargetCursorSize> targetCursorSizeFromString(const std::string &cursor)
+{
+    if (cursor == "small")      return ActorSprite::TC_SMALL;
+    if (cursor == "medium")     return ActorSprite::TC_MEDIUM;
+    if (cursor == "large")      return ActorSprite::TC_LARGE;
+
+    return {};
+}
+
+static std::optional<Cursor> cursorFromString(const std::string &cursor)
+{
+    if (cursor == "pointer")    return Cursor::POINTER;
+    if (cursor == "attack")     return Cursor::FIGHT;
+    if (cursor == "pickup")     return Cursor::PICKUP;
+    if (cursor == "talk")       return Cursor::TALK;
+    if (cursor == "action")     return Cursor::ACTION;
+    if (cursor == "left")       return Cursor::LEFT;
+    if (cursor == "up")         return Cursor::UP;
+    if (cursor == "right")      return Cursor::RIGHT;
+    if (cursor == "down")       return Cursor::DOWN;
+
+    return {};
+}
 
 BeingInfo::BeingInfo():
     mName(_("unnamed")),
-    mWalkMask(Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER
-              | Map::BLOCKMASK_MONSTER)
+    mWalkMask(Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER | Map::BLOCKMASK_MONSTER)
 {
     SpriteDisplay display;
 
     SpriteReference errorSprite(paths.getStringValue("spriteErrorFile"), 0);
     display.sprites.push_back(errorSprite);
 
-    setDisplay(display);
+    setDisplay(std::move(display));
 }
 
 BeingInfo::~BeingInfo() = default;
 
 void BeingInfo::setDisplay(SpriteDisplay display)
 {
-    mDisplay = display;
+    mDisplay = std::move(display);
 }
 
 void BeingInfo::setTargetCursorSize(const std::string &size)
 {
-    if (size == "small")
-        setTargetCursorSize(ActorSprite::TC_SMALL);
-    else if (size == "medium")
-        setTargetCursorSize(ActorSprite::TC_MEDIUM);
-    else if (size == "large")
-        setTargetCursorSize(ActorSprite::TC_LARGE);
-    else
+    const auto targetCursorSize = targetCursorSizeFromString(size);
+    if (!targetCursorSize)
     {
-        logger->log("Unknown target cursor type \"%s\" for %s - using medium "
-                    "sized one", size.c_str(), getName().c_str());
-        setTargetCursorSize(ActorSprite::TC_MEDIUM);
+        logger->log("Unknown targetCursor value \"%s\" for %s",
+                    size.c_str(), getName().c_str());
     }
+    setTargetCursorSize(targetCursorSize.value_or(ActorSprite::TC_MEDIUM));
+}
+
+void BeingInfo::setHoverCursor(const std::string &cursorName)
+{
+    const auto cursor = cursorFromString(cursorName);
+    if (!cursor)
+    {
+        logger->log("Unknown hoverCursor value \"%s\" for %s",
+                    cursorName.c_str(), getName().c_str());
+    }
+    setHoverCursor(cursor.value_or(Cursor::POINTER));
 }
 
 void BeingInfo::addSound(SoundEvent event, const std::string &filename)
