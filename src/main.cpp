@@ -118,6 +118,8 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 break;
             case '?': // Unknown option
             case ':': // Missing argument
+                options.exitWithError = true;
+                [[fallthrough]];
             case 'h':
                 options.printHelp = true;
                 break;
@@ -158,7 +160,12 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 options.screenshotDir = optarg;
                 break;
             case 'y':
-                options.serverType = optarg;
+                options.serverType = ServerInfo::parseType(optarg);
+                if (options.serverType == ServerType::UNKNOWN)
+                {
+                    std::cerr << _("Invalid server type, expected one of: tmwathena, manaserv") << std::endl;
+                    options.exitWithError = true;
+                }
                 break;
         }
     }
@@ -203,16 +210,14 @@ int main(int argc, char *argv[])
     Client::Options options;
     parseOptions(argc, argv, options);
 
-    if (options.printHelp)
-    {
-        printHelp();
-        return 0;
-    }
-    else if (options.printVersion)
-    {
+    if (options.printVersion)
         printVersion();
-        return 0;
-    }
+
+    if (options.printHelp)
+        printHelp();
+
+    if (options.printHelp || options.printVersion || options.exitWithError)
+        return options.exitWithError ? 1 : 0;
 
     initInternationalization();
 

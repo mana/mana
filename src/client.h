@@ -135,6 +135,7 @@ public:
         bool skipUpdate = false;
         bool chooseDefault = false;
         bool noOpenGL = false;
+        bool exitWithError = false;
         std::string username;
         std::string password;
         std::string character;
@@ -145,7 +146,7 @@ public:
         std::string configDir;
         std::string localDataDir;
         std::string screenshotDir;
-        std::string serverType;
+        ServerType serverType = ServerType::UNKNOWN;
 
         std::string serverName;
         uint16_t serverPort = 0;

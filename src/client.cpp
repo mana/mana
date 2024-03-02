@@ -378,7 +378,7 @@ Client::Client(const Options &options):
     // Initialize default server
     mCurrentServer.hostname = options.serverName;
     mCurrentServer.port = options.serverPort;
-    mCurrentServer.type = ServerInfo::parseType(options.serverType);
+    mCurrentServer.type = options.serverType;
     loginData.username = options.username;
     loginData.password = options.password;
     loginData.remember = config.getBoolValue("remember");
