@@ -63,8 +63,10 @@ public:
     {
         Announcement,
         Being,
+        ClearDialog,
         Close,
         CloseAll,
+        CloseDialog,
         CloseSent,
         ConfigOptionChanged,
         Constructed,

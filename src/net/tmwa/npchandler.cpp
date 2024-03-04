@@ -36,7 +36,7 @@
 
 extern Net::NpcHandler *npcHandler;
 
-static void parseMenu(Event *event, const std::string &options)
+static void parseMenu(Event &event, const std::string &options)
 {
     std::istringstream iss(options);
 
@@ -45,10 +45,10 @@ static void parseMenu(Event *event, const std::string &options)
     while (getline(iss, tmp, ':'))
     {
         count++;
-        event->setString("choice" + toString(count), tmp);
+        event.setString("choice" + toString(count), tmp);
     }
 
-    event->setInt("choiceCount", count);
+    event.setInt("choiceCount", count);
 }
 
 namespace TmwAthena {
@@ -60,6 +60,7 @@ NpcHandler::NpcHandler()
         SMSG_NPC_MESSAGE,
         SMSG_NPC_NEXT,
         SMSG_NPC_CLOSE,
+        SMSG_NPC_COMMAND,
         SMSG_NPC_INT_INPUT,
         SMSG_NPC_STR_INPUT,
         0
@@ -76,54 +77,92 @@ void NpcHandler::handleMessage(MessageIn &msg)
     }
 
     int npcId = msg.readInt32();
-    Event *event = nullptr;
 
     switch (msg.getId())
     {
     case SMSG_NPC_CHOICE:
-        event = new Event(Event::Menu);
-        event->setInt("id", npcId);
+    {
+        Event event { Event::Menu };
+        event.setInt("id", npcId);
         parseMenu(event, msg.readString(msg.getLength() - 8));
-        event->trigger(Event::NpcChannel);
-        break;
-
-    case SMSG_NPC_MESSAGE:
-        event = new Event(Event::Message);
-        event->setInt("id", npcId);
-        event->setString("text", msg.readString(msg.getLength() - 8));
-        event->trigger(Event::NpcChannel);
-        break;
-
-     case SMSG_NPC_CLOSE:
-        // Show the close button
-        event = new Event(Event::Close);
-        event->setInt("id", npcId);
-        event->trigger(Event::NpcChannel);
-        break;
-
-    case SMSG_NPC_NEXT:
-        // Show the next button
-        event = new Event(Event::Next);
-        event->setInt("id", npcId);
-        event->trigger(Event::NpcChannel);
-        break;
-
-    case SMSG_NPC_INT_INPUT:
-        // Request for an integer
-        event = new Event(Event::IntegerInput);
-        event->setInt("id", npcId);
-        event->trigger(Event::NpcChannel);
-        break;
-
-    case SMSG_NPC_STR_INPUT:
-        // Request for a string
-        event = new Event(Event::StringInput);
-        event->setInt("id", npcId);
-        event->trigger(Event::NpcChannel);
+        event.trigger(Event::NpcChannel);
         break;
     }
 
-    delete event;
+    case SMSG_NPC_MESSAGE:
+    {
+        Event event { Event::Message };
+        event.setInt("id", npcId);
+        event.setString("text", msg.readString(msg.getLength() - 8));
+        event.trigger(Event::NpcChannel);
+        break;
+    }
+
+    case SMSG_NPC_CLOSE:
+    {
+        // Show the close button
+        Event event { Event::Close };
+        event.setInt("id", npcId);
+        event.trigger(Event::NpcChannel);
+        break;
+    }
+
+    case SMSG_NPC_COMMAND:
+    {
+        auto command = msg.readInt16();
+        msg.readInt32(); // id
+        msg.readInt16(); // x
+        msg.readInt16(); // y
+
+        switch (command)
+        {
+        case NPC_CLOSE_DIALOG:
+        {
+            Event event { Event::CloseDialog };
+            event.setInt("id", npcId);
+            event.trigger(Event::NpcChannel);
+            break;
+        }
+
+        case NPC_CLEAR_DIALOG:
+        {
+            Event event { Event::ClearDialog };
+            event.setInt("id", npcId);
+            event.trigger(Event::NpcChannel);
+            break;
+        }
+        }
+
+        break;
+    }
+
+    case SMSG_NPC_NEXT:
+    {
+        // Show the next button
+        Event event { Event::Next };
+        event.setInt("id", npcId);
+        event.trigger(Event::NpcChannel);
+        break;
+    }
+
+    case SMSG_NPC_INT_INPUT:
+    {
+        // Request for an integer
+        Event event { Event::IntegerInput };
+        event.setInt("id", npcId);
+        event.trigger(Event::NpcChannel);
+        break;
+    }
+
+    case SMSG_NPC_STR_INPUT:
+    {
+        // Request for a string
+        Event event { Event::StringInput };
+        event.setInt("id", npcId);
+        event.trigger(Event::NpcChannel);
+        break;
+    }
+    }
 
     if (local_player->getCurrentAction() != Being::SIT)
         local_player->setAction(Being::STAND);

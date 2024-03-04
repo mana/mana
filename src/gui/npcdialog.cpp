@@ -586,6 +586,11 @@ void NpcEventListener::event(Event::Channel channel,
 
         dialog->showNextButton();
     }
+    else if (event.getType() == Event::ClearDialog)
+    {
+        if (NpcDialog *dialog = getDialog(event.getInt("id"), false))
+            dialog->setText(std::string());
+    }
     else if (event.getType() == Event::Close)
     {
         int id = event.getInt("id");
@@ -599,6 +604,11 @@ void NpcEventListener::event(Event::Channel channel,
         }
 
         dialog->showCloseButton();
+    }
+    else if (event.getType() == Event::CloseDialog)
+    {
+        if (NpcDialog *dialog = getDialog(event.getInt("id"), false))
+            dialog->setVisible(false);
     }
     else if (event.getType() == Event::CloseAll)
     {
