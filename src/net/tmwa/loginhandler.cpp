@@ -41,9 +41,12 @@ namespace TmwAthena {
 
 extern ServerInfo charServer;
 
-LoginHandler::LoginHandler():
-        mVersionResponse(false),
-        mRegistrationEnabled(true)
+enum ServerFlags
+{
+    FLAG_REGISTRATION = 1
+};
+
+LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_UPDATE_HOST,
@@ -196,16 +199,25 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
         case SMSG_SERVER_VERSION_RESPONSE:
             {
-                // TODO: verify these!
-
-                msg.readInt8(); // -1
-                msg.readInt8(); // T
-                msg.readInt8(); // M
+                const uint8_t b1 = msg.readInt8(); // -1
+                const uint8_t b2 = msg.readInt8(); // T
+                const uint8_t b3 = msg.readInt8(); // M
                 msg.readInt8(); // W
+                const uint32_t options = msg.readInt32();
 
-                unsigned int options = msg.readInt32();
+                if (b1 == 255)              // old TMWA
+                    mServerVersion = 0;
+                else if (b1 >= 0x0d)        // new TMWA
+                    mServerVersion = (b1 << 16) | (b2 << 8) | b3;
+                else                        // eAthena
+                    mServerVersion = 0;
 
-                mRegistrationEnabled = (options & 1);
+                if (mServerVersion > 0)
+                    logger->log("TMW server version: x%06x", mServerVersion);
+                else
+                    logger->log("Server without version");
+
+                mRegistrationEnabled = (options & FLAG_REGISTRATION);
 
                 // Leave this last
                 mVersionResponse = true;

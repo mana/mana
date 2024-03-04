@@ -27,6 +27,7 @@
 #include "localplayer.h"
 #include "playerrelations.h"
 
+#include "net/tmwa/loginhandler.h"
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
@@ -241,14 +242,22 @@ void ChatHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void ChatHandler::talk(const std::string &text)
+static void sendChatMessage(const std::string &mes)
 {
-    std::string mes = local_player->getName() + " : " + text;
-
     MessageOut outMsg(CMSG_CHAT_MESSAGE);
     // Added + 1 in order to let eAthena parse admin commands correctly
     outMsg.writeInt16(mes.length() + 4 + 1);
     outMsg.writeString(mes, mes.length() + 1);
+}
+
+void ChatHandler::talk(const std::string &text)
+{
+    const auto loginHandler = static_cast<LoginHandler*>(Net::getLoginHandler());
+
+    if (loginHandler->getServerVersion() >= 0x100408)
+        sendChatMessage(text);
+    else
+        sendChatMessage(local_player->getName() + " : " + text);
 }
 
 void ChatHandler::me(const std::string &text)

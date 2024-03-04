@@ -79,12 +79,15 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
 
         const Token &getToken() const { return mToken; }
 
+        unsigned getServerVersion() const { return mServerVersion; }
+
     private:
         void sendLoginRegister(const std::string &username,
                                const std::string &password);
 
-        bool mVersionResponse;
-        bool mRegistrationEnabled;
+        unsigned mServerVersion = 0;
+        bool mVersionResponse = false;
+        bool mRegistrationEnabled = true;
         std::string mUpdateHost;
         Worlds mWorlds;
         Token mToken;
