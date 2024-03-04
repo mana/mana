@@ -23,5 +23,6 @@ ubuntu-build:
         libsdl2-net-dev
         libsdl2-ttf-dev
         libxml2-dev
-    - cmake .
-    - cmake --build .
+        ninja-build
+    - cmake -G Ninja -B build .
+    - cmake --build build

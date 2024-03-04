@@ -131,7 +131,7 @@ Installing the dependencies on Fedora:
 Once the dependencies are installed, use CMake:
 
     cmake -B build .
-    cmake --build build --parallel
+    cmake --build build
 
 This produces an executable in `build/src/mana`. If running it without
 installing, be sure to run it from the repository root so that it can find its
