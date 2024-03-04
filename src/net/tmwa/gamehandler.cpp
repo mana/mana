@@ -140,7 +140,7 @@ void GameHandler::connect()
     outMsg.writeInt32(mCharID);
     outMsg.writeInt32(token.session_ID1);
     outMsg.writeInt32(token.session_ID2);
-    outMsg.writeInt8((token.sex == GENDER_MALE) ? 1 : 0);
+    outMsg.writeInt8(token.sex == Gender::MALE ? 1 : 0);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

@@ -22,6 +22,8 @@
 #ifndef TA_PROTOCOL_H
 #define TA_PROTOCOL_H
 
+#include <cstdint>
+
 namespace TmwAthena {
 
 enum {
@@ -58,6 +60,24 @@ enum
     SPRITE_WEAPON,
     SPRITE_SHIELD,
     SPRITE_VECTOREND
+};
+
+enum class LOOK : uint8_t
+{
+    BASE            = 0,
+    HAIR            = 1,
+    WEAPON          = 2,
+    HEAD_BOTTOM     = 3,
+    HEAD_TOP        = 4,
+    HEAD_MID        = 5,
+    HAIR_COLOR      = 6,
+    CLOTHES_COLOR   = 7,
+    SHIELD          = 8,
+    SHOES           = 9,
+    GLOVES          = 10,
+    CAPE            = 11,
+    MISC1           = 12,
+    MISC2           = 13,
 };
 
 enum NpcCommand

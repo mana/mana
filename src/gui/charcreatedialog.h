@@ -61,7 +61,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
                            unsigned available,
                            unsigned min, unsigned max);
 
-        void setFixedGender(bool fixed, Gender gender = GENDER_FEMALE);
+        void setDefaultGender(Gender gender);
 
     private:
         void updateSliders();

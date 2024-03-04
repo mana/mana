@@ -229,7 +229,7 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     msg.readInt32();                       // option
     msg.readInt32();                       // karma
     msg.readInt32();                       // manner
-    msg.skip(2);                          // unknown
+    msg.readInt16();                       // character points left
 
     character->data.mAttributes[HP] = msg.readInt16();
     character->data.mAttributes[MAX_HP] = msg.readInt16();
@@ -237,8 +237,10 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     character->data.mAttributes[MAX_MP] = msg.readInt16();
 
     msg.readInt16();                       // speed
-    tempPlayer->setSubtype(msg.readInt16()); // class (used for race)
-    int hairStyle = msg.readInt16();
+    const uint16_t race = msg.readInt16(); // class (used for race)
+    int hairStyle = msg.readInt8();
+    msg.readInt8();                        // look
+    tempPlayer->setSubtype(race);
     Uint16 weapon = msg.readInt16();
     tempPlayer->setSprite(SPRITE_WEAPON, weapon, "", true);
 
@@ -260,7 +262,8 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
         character->data.mStats[i + STRENGTH].base = msg.readInt8();
 
     character->slot = msg.readInt8(); // character slot
-    msg.readInt8();                        // unknown
+    const uint8_t sex = msg.readInt8();
+    tempPlayer->setGender(sex ? Gender::MALE : Gender::FEMALE);
 }
 
 void CharServerHandler::setCharSelectDialog(CharSelectDialog *window)
@@ -298,7 +301,7 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
         sumStat = Attributes::getCreationPoints();
 
     mCharCreateDialog->setAttributes(attributes, sumStat, minStat, maxStat);
-    mCharCreateDialog->setFixedGender(true, token.sex);
+    mCharCreateDialog->setDefaultGender(token.sex);
 }
 
 void CharServerHandler::requestCharacters()
@@ -361,6 +364,11 @@ unsigned int CharServerHandler::maxSprite() const
     return SPRITE_VECTOREND;
 }
 
+int CharServerHandler::getCharCreateMinHairColorId() const
+{
+    return CharDB::getMinHairColor();
+}
+
 int CharServerHandler::getCharCreateMaxHairColorId() const
 {
     const int max = CharDB::getMaxHairColor();
@@ -387,7 +395,7 @@ void CharServerHandler::connect()
     // [Fate] The next word is unused by the old char server, so we squeeze in
     //        mana client version information
     outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
-    outMsg.writeInt8((token.sex == GENDER_MALE) ? 1 : 0);
+    outMsg.writeInt8(token.sex == Gender::MALE ? 1 : 0);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

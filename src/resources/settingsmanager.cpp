@@ -68,7 +68,7 @@ namespace SettingsManager
             loadFile("npcs.xml");
             loadFile("emotes.xml");
             loadFile("status-effects.xml");
-            loadFile("hair.xml");
+            loadFile("itemcolors.xml");
             loadFile("units.xml");
         }
 
@@ -193,6 +193,20 @@ namespace SettingsManager
             else if (xmlStrEqual(childNode->name, BAD_CAST "color"))
             {
                 hairDB.readHairColorNode(childNode, filename);
+            }
+            else if (xmlStrEqual(childNode->name, BAD_CAST "list"))
+            {
+                // todo: consider if we need a "color DB", but in tmwa clientdata
+                // I only see hair colors in the itemcolors.xml file.
+                const std::string name = XML::getProperty(childNode, "name", std::string());
+                if (name == "hair")
+                {
+                    for_each_xml_child_node(hairColorNode, childNode)
+                    {
+                        if (xmlStrEqual(hairColorNode->name, BAD_CAST "color"))
+                            hairDB.readHairColorNode(hairColorNode, filename);
+                    }
+                }
             }
             else if (xmlStrEqual(childNode->name, BAD_CAST "item"))
             {

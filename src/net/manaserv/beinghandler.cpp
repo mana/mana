@@ -115,12 +115,12 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
     auto direction = (BeingDirection)msg.readInt8();
     Gender gender;
     int genderAsInt = msg.readInt8();
-    if (genderAsInt == ::GENDER_FEMALE)
-        gender = ::GENDER_FEMALE;
-    else if (genderAsInt == ::GENDER_MALE)
-        gender = ::GENDER_MALE;
+    if (genderAsInt == GENDER_FEMALE)
+        gender = Gender::FEMALE;
+    else if (genderAsInt == GENDER_MALE)
+        gender = Gender::MALE;
     else
-        gender = ::GENDER_UNSPECIFIED;
+        gender = Gender::UNSPECIFIED;
     Being *being;
 
     switch (type)

@@ -21,18 +21,13 @@
 
 #include "gui/charcreatedialog.h"
 
-#include "game.h"
 #include "localplayer.h"
-#include "main.h"
-#include "units.h"
 
 #include "gui/charselectdialog.h"
-#include "gui/confirmdialog.h"
 #include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
-#include "gui/widgets/layout.h"
 #include "gui/widgets/playerbox.h"
 #include "gui/widgets/radiobutton.h"
 #include "gui/widgets/slider.h"
@@ -55,7 +50,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mSlot(slot)
 {
     mPlayer = new Being(0, ActorSprite::PLAYER, 0, nullptr);
-    mPlayer->setGender(GENDER_MALE);
+    mPlayer->setGender(Gender::MALE);
 
     const std::vector<int> &items = CharDB::getDefaultItems();
     for (size_t i = 0; i < items.size(); ++i)
@@ -66,6 +61,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mHairStyleId = rand() * mHairStylesIds.size() / RAND_MAX;
 
     mHairColorsIds = hairDB.getHairColorIds(
+        Net::getCharHandler()->getCharCreateMinHairColorId(),
         Net::getCharHandler()->getCharCreateMaxHairColorId());
     mHairColorId = rand() * mHairColorsIds.size() / RAND_MAX;
 
@@ -137,12 +133,21 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     add(mPlayerBox);
     add(mNameField);
     add(mNameLabel);
-    add(mNextHairColorButton);
-    add(mPrevHairColorButton);
-    add(mHairColorLabel);
-    add(mNextHairStyleButton);
-    add(mPrevHairStyleButton);
-    add(mHairStyleLabel);
+
+    if (mHairColorsIds.size() > 1)
+    {
+        add(mNextHairColorButton);
+        add(mPrevHairColorButton);
+        add(mHairColorLabel);
+    }
+
+    if (mHairStylesIds.size() > 1)
+    {
+        add(mNextHairStyleButton);
+        add(mPrevHairStyleButton);
+        add(mHairStyleLabel);
+    }
+
     add(mAttributesLeft);
     add(mCreateButton);
     add(mCancelButton);
@@ -226,9 +231,9 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "gender")
     {
         if (mMale->isSelected())
-            mPlayer->setGender(GENDER_MALE);
+            mPlayer->setGender(Gender::MALE);
         else
-            mPlayer->setGender(GENDER_FEMALE);
+            mPlayer->setGender(Gender::FEMALE);
     }
 }
 
@@ -366,9 +371,9 @@ void CharCreateDialog::setAttributes(const std::vector<std::string> &labels,
     center();
 }
 
-void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
+void CharCreateDialog::setDefaultGender(Gender gender)
 {
-    if (gender == GENDER_FEMALE)
+    if (gender == Gender::FEMALE)
     {
         mFemale->setSelected(true);
         mMale->setSelected(false);
@@ -380,12 +385,6 @@ void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
     }
 
     mPlayer->setGender(gender);
-
-    if (fixed)
-    {
-        mMale->setEnabled(false);
-        mFemale->setEnabled(false);
-    }
 }
 
 void CharCreateDialog::updateHair()

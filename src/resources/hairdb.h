@@ -64,7 +64,7 @@ public:
      * @param maxId the max permited id. If not 0, the hairDb won't
      * return ids > to the parameter.
      */
-    std::vector<int> getHairColorIds(int maxId = 0) const;
+    std::vector<int> getHairColorIds(int minId, int maxId) const;
 
     /**
      * Add a hair style to the database.

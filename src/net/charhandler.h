@@ -78,6 +78,12 @@ class CharHandler
         virtual unsigned int maxSprite() const = 0;
 
         /**
+         * Returns the min permitted hair color Id at character creation time,
+         * or 0 if there is no minimum.
+         */
+        virtual int getCharCreateMinHairColorId() const { return 0; }
+
+        /**
          * Returns the max permitted hair color Id at character creation time,
          * or 0 if no limit should be applied.
          */

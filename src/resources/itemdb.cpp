@@ -66,8 +66,9 @@ void ItemDB::loadEmptyItemDefinition()
     mUnknown->mName = _("Unknown item");
     mUnknown->mDisplay = SpriteDisplay();
     std::string errFile = paths.getStringValue("spriteErrorFile");
-    mUnknown->setSprite(errFile, GENDER_MALE);
-    mUnknown->setSprite(errFile, GENDER_FEMALE);
+    mUnknown->setSprite(errFile, Gender::MALE, 0);
+    mUnknown->setSprite(errFile, Gender::FEMALE, 0);
+    mUnknown->setSprite(errFile, Gender::HIDDEN, 0);
     mUnknown->setHitEffectId(paths.getIntValue("hitEffectId"));
     mUnknown->setCriticalHitEffectId(paths.getIntValue("criticalHitEffectId"));
 }
@@ -122,14 +123,13 @@ void ItemDB::loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
     std::string gender = XML::getProperty(node, "gender", "unisex");
     std::string filename = (const char*) node->xmlChildrenNode->content;
 
+    const int race = XML::getProperty(node, "race", 0);
     if (gender == "male" || gender == "unisex")
-    {
-        itemInfo->setSprite(filename, GENDER_MALE);
-    }
+        itemInfo->setSprite(filename, Gender::MALE, race);
     if (gender == "female" || gender == "unisex")
-    {
-        itemInfo->setSprite(filename, GENDER_FEMALE);
-    }
+        itemInfo->setSprite(filename, Gender::FEMALE, race);
+    if (gender == "hidden" || gender == "other" || gender == "unisex")
+        itemInfo->setSprite(filename, Gender::HIDDEN, race);
 }
 
 void ItemDB::loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)

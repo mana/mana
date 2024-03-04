@@ -242,8 +242,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             if (dstBeing->getType() == ActorSprite::PLAYER)
             {
-                dstBeing->setGender((gender == 0)
-                                    ? GENDER_FEMALE : GENDER_MALE);
+                dstBeing->setGender(gender == 0 ? Gender::FEMALE
+                                                : Gender::MALE);
                 // Set these after the gender, as the sprites may be gender-specific
                 dstBeing->setSprite(SPRITE_HAIR, hairStyle * -1,
                                     hairDB.getHairColor(hairColor));
@@ -415,53 +415,60 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 break;
             }
 
-            int type = msg.readInt8();
-            int id = msg.readInt16();
-            int id2 = msg.readInt16();
+            const LOOK type = static_cast<LOOK>(msg.readInt8());
+            const int id = msg.readInt16();
+            const int id2 = msg.readInt16();
 
             switch (type)
             {
-                case 1:     // eAthena LOOK_HAIR
-                    dstBeing->setSpriteID(SPRITE_HAIR, id *-1);
+                case LOOK::HAIR:
+                {
+                    // const int look = id / 256;
+                    const int hair = id % 256;
+                    dstBeing->setSpriteID(SPRITE_HAIR, hair * -1);
                     break;
-                case 2:     // Weapon ID in id, Shield ID in id2
-                    dstBeing->setSprite(SPRITE_WEAPON, id, "", true);
+                }
+                case LOOK::WEAPON:      // Weapon ID in id, Shield ID in id2
+                    dstBeing->setSprite(SPRITE_WEAPON, id, std::string(), true);
                     dstBeing->setSprite(SPRITE_SHIELD, id2);
                     break;
-                case 3:     // Change lower headgear for eAthena, pants for us
+                case LOOK::HEAD_BOTTOM: // Change lower headgear for eAthena, pants for us
                     dstBeing->setSprite(SPRITE_BOTTOMCLOTHES, id);
                     break;
-                case 4:     // Change upper headgear for eAthena, hat for us
+                case LOOK::HEAD_TOP:    // Change upper headgear for eAthena, hat for us
                     dstBeing->setSprite(SPRITE_HAT, id);
                     break;
-                case 5:     // Change middle headgear for eathena, armor for us
+                case LOOK::HEAD_MID:    // Change middle headgear for eathena, armor for us
                     dstBeing->setSprite(SPRITE_TOPCLOTHES, id);
                     break;
-                case 6:     // eAthena LOOK_HAIR_COLOR
+                case LOOK::HAIR_COLOR:
                     dstBeing->setSpriteColor(SPRITE_HAIR,
                                              hairDB.getHairColor(id));
                     break;
-                case 8:     // eAthena LOOK_SHIELD
+                case LOOK::CLOTHES_COLOR:
+                    // ignoring it
+                    break;
+                case LOOK::SHIELD:
                     dstBeing->setSprite(SPRITE_SHIELD, id);
                     break;
-                case 9:     // eAthena LOOK_SHOES
+                case LOOK::SHOES:
                     dstBeing->setSprite(SPRITE_SHOE, id);
                     break;
-                case 10:   // LOOK_GLOVES
+                case LOOK::GLOVES:
                     dstBeing->setSprite(SPRITE_GLOVES, id);
                     break;
-                case 11:  // LOOK_CAPE
+                case LOOK::CAPE:
                     dstBeing->setSprite(SPRITE_CAPE, id);
                     break;
-                case 12:
+                case LOOK::MISC1:
                     dstBeing->setSprite(SPRITE_MISC1, id);
                     break;
-                case 13:
+                case LOOK::MISC2:
                     dstBeing->setSprite(SPRITE_MISC2, id);
                     break;
                 default:
                     logger->log("SMSG_BEING_CHANGE_LOOKS2: unsupported type: "
-                            "%d, id: %d", type, id);
+                                "%d, id: %d", static_cast<int>(type), id);
                     break;
             }
         }
@@ -549,9 +556,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readInt16();  // manner
             dstBeing->setStatusEffectBlock(32, msg.readInt16());  // opt3
             msg.readInt8();   // karma
-            dstBeing->setGender((msg.readInt8() == 0)
-                              ? GENDER_FEMALE : GENDER_MALE);
-
+            dstBeing->setGender(msg.readInt8() == 0 ? Gender::FEMALE
+                                                    : Gender::MALE);
             // Set these after the gender, as the sprites may be gender-specific
             dstBeing->setSprite(SPRITE_WEAPON, weapon, "", true);
             dstBeing->setSprite(SPRITE_SHIELD, shield);
@@ -629,9 +635,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 dstBeing = actorSpriteManager->findBeing(id);
                 if (dstBeing)
                 {
-                    Uint16 x, y;
-                    x = msg.readInt16();
-                    y = msg.readInt16();
+                    Uint16 x = msg.readInt16();
+                    Uint16 y = msg.readInt16();
                     handlePosMessage(map, dstBeing, x, y);
                 }
             }

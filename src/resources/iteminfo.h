@@ -106,7 +106,7 @@ class ItemInfo
         int getWeight() const
         { return mWeight; }
 
-        const std::string &getSprite(Gender gender) const;
+        const std::string &getSprite(Gender gender, int race) const;
 
         // Handlers for seting and getting the string used for particles when attacking
         void setMissileParticleFile(const std::string &s)
@@ -145,9 +145,8 @@ class ItemInfo
         { return mType; }
 
     private:
-
-        void setSprite(const std::string &animationFile, Gender gender)
-        { mAnimationFiles[gender] = animationFile; }
+        void setSprite(const std::string &animationFile,
+                       Gender gender, int race);
 
         void addSound(EquipmentSoundEvent event, const std::string &filename);
 

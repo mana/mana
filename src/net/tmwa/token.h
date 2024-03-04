@@ -36,7 +36,7 @@ struct Token
         account_ID = 0;
         session_ID1 = 0;
         session_ID2 = 0;
-        sex = GENDER_UNSPECIFIED;
+        sex = Gender::UNSPECIFIED;
     }
 };
 

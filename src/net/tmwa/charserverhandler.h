@@ -68,6 +68,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
 
         unsigned int maxSprite() const override;
 
+        int getCharCreateMinHairColorId() const override;
         int getCharCreateMaxHairColorId() const override;
         int getCharCreateMaxHairStyleId() const override;
 

@@ -942,9 +942,9 @@ void Being::showName()
     {
         if (config.getBoolValue("showgender"))
         {
-            if (getGender() == GENDER_FEMALE)
+            if (getGender() == Gender::FEMALE)
                 mDisplayName += " \u2640";
-            else if (getGender() == GENDER_MALE)
+            else if (getGender() == Gender::MALE)
                 mDisplayName += " \u2642";
         }
 
@@ -1041,7 +1041,7 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
     }
     else
     {
-        std::string filename = itemDb->get(id).getSprite(mGender);
+        std::string filename = itemDb->get(id).getSprite(mGender, mSubType);
         AnimatedSprite *equipmentSprite = nullptr;
 
         if (!filename.empty())

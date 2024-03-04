@@ -104,15 +104,15 @@ std::vector<int> HairDB::getHairStyleIds(int maxId) const
     return hairStylesIds;
 }
 
-std::vector<int> HairDB::getHairColorIds(int maxId) const
+std::vector<int> HairDB::getHairColorIds(int minId, int maxId) const
 {
     std::vector<int> hairColorsIds;
-    for (const auto &hairColor : mHairColors)
+    for (const auto &[id, _] : mHairColors)
     {
         // Don't give ids higher than the requested maximum.
-        if (maxId > 0 && hairColor.first > maxId)
+        if ((maxId > 0 && id > maxId) || id < minId)
             continue;
-        hairColorsIds.push_back(hairColor.first);
+        hairColorsIds.push_back(id);
     }
     return hairColorsIds;
 }

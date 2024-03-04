@@ -227,7 +227,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
             mLoginData->password = mPasswordField->getText();
             if (mFemaleButton)
                 mLoginData->gender = mFemaleButton->isSelected() ?
-                                     GENDER_FEMALE : GENDER_MALE;
+                                     Gender::FEMALE : Gender::MALE;
             if (mEmailField)
                 mLoginData->email = mEmailField->getText();
             mLoginData->registerLogin = true;

@@ -51,11 +51,12 @@ struct Position;
 class SpeechBubble;
 class Text;
 
-enum Gender
+enum class Gender
 {
-    GENDER_MALE = 0,
-    GENDER_FEMALE = 1,
-    GENDER_UNSPECIFIED = 2
+    MALE = 0,
+    FEMALE = 1,
+    UNSPECIFIED = 2,
+    HIDDEN = 3
 };
 
 class Being : public ActorSprite, public EventListener
@@ -505,7 +506,7 @@ class Being : public ActorSprite, public EventListener
 
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
-        Gender mGender = GENDER_UNSPECIFIED;
+        Gender mGender = Gender::UNSPECIFIED;
 
         // Character guild information
         std::map<int, Guild*> mGuilds;
