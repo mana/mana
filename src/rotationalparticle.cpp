@@ -20,7 +20,6 @@
  */
 
 #include "rotationalparticle.h"
-#include "graphics.h"
 #include "simpleanimation.h"
 
 #define PI 3.14159265

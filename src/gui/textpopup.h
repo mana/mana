@@ -38,8 +38,6 @@ class TextPopup : public Popup
     public:
         TextPopup();
 
-        ~TextPopup() override;
-
         /**
          * Sets the text to be displayed.
          */

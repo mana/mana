@@ -58,7 +58,7 @@ enum
 /**
  * The local player character.
  */
-class LocalPlayer : public Being
+class LocalPlayer final : public Being
 {
     public:
         LocalPlayer(int id= 65535, int subtype = 0);

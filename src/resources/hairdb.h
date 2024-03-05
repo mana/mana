@@ -57,7 +57,7 @@ public:
      * @param maxId the max permited id. If not 0, the hairDb won't
      * return ids > to the parameter.
      */
-    std::vector<int> getHairStyleIds(int maxId = 0) const;
+    std::vector<int> getHairStyleIds(int maxId) const;
 
     /**
      * Returns the available hair color ids
@@ -86,11 +86,8 @@ private:
     void loadHairStylesNode(xmlNodePtr stylesNode);
 
     // Hair colors Db
-    using Colors = std::map<int, std::string>;
-    Colors mHairColors;
-
-    using HairStyles = std::set<int>;
-    HairStyles mHairStyles;
+    std::map<int, std::string> mHairColors;
+    std::set<int> mHairStyles;
 
     bool mLoaded = false;
 };

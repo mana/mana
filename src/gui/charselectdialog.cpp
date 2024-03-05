@@ -111,10 +111,6 @@ class CharacterDisplay : public Container
 
 CharSelectDialog::CharSelectDialog(LoginData *loginData):
     Window(_("Account and Character Management")),
-    mLocked(false),
-    mUnregisterButton(nullptr),
-    mChangeEmailButton(nullptr),
-    mCharacterEntries(0),
     mLoginData(loginData),
     mCharHandler(Net::getCharHandler())
 {
@@ -168,9 +164,7 @@ CharSelectDialog::CharSelectDialog(LoginData *loginData):
     mCharacterEntries[0]->requestFocus();
 }
 
-CharSelectDialog::~CharSelectDialog()
-{
-}
+CharSelectDialog::~CharSelectDialog() = default;
 
 void CharSelectDialog::action(const gcn::ActionEvent &event)
 {
@@ -265,20 +259,14 @@ void CharSelectDialog::attemptCharacterSelect(int index)
 void CharSelectDialog::setCharacters(const Net::Characters &characters)
 {
     // Reset previous characters
-    std::vector<CharacterDisplay*>::iterator iter, iter_end;
-    for (iter = mCharacterEntries.begin(), iter_end = mCharacterEntries.end();
-         iter != iter_end; ++iter)
-        (*iter)->setCharacter(nullptr);
+    for (auto *characterEntry : mCharacterEntries)
+        characterEntry->setCharacter(nullptr);
 
-    Net::Characters::const_iterator i, i_end = characters.end();
-    for (i = characters.begin(); i != i_end; ++i)
+    for (auto character : characters)
     {
-        Net::Character *character = *i;
-
         // Slots Number start at 1 for Manaserv, so we offset them by one.
         int characterSlot = character->slot;
-        if (Net::getNetworkType() == ServerType::MANASERV
-            && characterSlot > 0)
+        if (Net::getNetworkType() == ServerType::MANASERV && characterSlot > 0)
             --characterSlot;
 
         if (characterSlot >= (int)mCharacterEntries.size())

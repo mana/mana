@@ -26,14 +26,13 @@
 
 #include "net/gamehandler.h"
 #include "net/net.h"
-#include "net/serverinfo.h"
 
 #include "net/tmwa/messagehandler.h"
 #include "net/tmwa/token.h"
 
 namespace TmwAthena {
 
-class GameHandler : public MessageHandler, public Net::GameHandler,
+class GameHandler final : public MessageHandler, public Net::GameHandler,
         public EventListener
 {
     public:
@@ -55,7 +54,7 @@ class GameHandler : public MessageHandler, public Net::GameHandler,
 
         void clear();
 
-        void setMap(const std::string map);
+        void setMap(const std::string &map);
 
         /** The tmwAthena protocol is making use of the MP status bar. */
         bool canUseMagicBar() const override { return true; }

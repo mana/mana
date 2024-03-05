@@ -43,7 +43,7 @@
 
 namespace TmwAthena {
 
-class EquipBackend : public Equipment::Backend
+class EquipBackend final : public Equipment::Backend
 {
     public:
         EquipBackend()
@@ -160,9 +160,7 @@ class InventoryItem
         }
 };
 
-using InventoryItems = std::list<InventoryItem>;
-
-class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
+class InventoryHandler final : public MessageHandler, public Net::InventoryHandler,
         public EventListener
 {
     public:
@@ -197,7 +195,7 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
 
     private:
         EquipBackend mEquips;
-        InventoryItems mInventoryItems;
+        std::list<InventoryItem> mInventoryItems;
         Inventory *mStorage;
         InventoryWindow *mStorageWindow;
 };

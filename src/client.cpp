@@ -179,18 +179,7 @@ Client *Client::mInstance = nullptr;
 
 Client::Client(const Options &options):
     mOptions(options),
-    mGame(nullptr),
-    mCurrentDialog(nullptr),
-    mQuitDialog(nullptr),
-    mDesktop(nullptr),
-    mSetupButton(nullptr),
-    mState(STATE_CHOOSE_SERVER),
-    mOldState(STATE_START),
-    mStateAfterOkDialog(mState),
-    mIcon(nullptr),
-    mLogicCounterId(0),
-    mSecondsCounterId(0),
-    mLimitFps(false)
+    mStateAfterOkDialog(mState)
 {
     assert(!mInstance);
     mInstance = this;
@@ -682,7 +671,7 @@ int Client::exec()
                     {
                         Worlds worlds = Net::getLoginHandler()->getWorlds();
 
-                        if (worlds.size() == 0)
+                        if (worlds.empty())
                         {
                             // Trust that the netcode knows what it's doing
                             mState = STATE_UPDATE;

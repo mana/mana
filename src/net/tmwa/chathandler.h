@@ -31,7 +31,7 @@
 
 namespace TmwAthena {
 
-class ChatHandler : public MessageHandler, public Net::ChatHandler
+class ChatHandler final : public MessageHandler, public Net::ChatHandler
 {
     public:
         ChatHandler();
@@ -67,8 +67,7 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
         bool whoSupported() const override { return false; }
 
     private:
-        using WhisperQueue = std::queue<std::string>;
-        WhisperQueue mSentWhispers;
+        std::queue<std::string> mSentWhispers;
 };
 
 } // namespace TmwAthena

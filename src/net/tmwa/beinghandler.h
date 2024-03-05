@@ -26,7 +26,7 @@
 
 namespace TmwAthena {
 
-class BeingHandler : public MessageHandler
+class BeingHandler final : public MessageHandler
 {
     public:
         BeingHandler(bool enableSync);

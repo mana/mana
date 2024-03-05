@@ -100,19 +100,18 @@ void Being::setSubtype(Uint16 subtype)
 
     mSubType = subtype;
 
-    if (getType() == MONSTER)
+    switch (getType())
     {
+    case MONSTER:
         mInfo = MonsterDB::get(mSubType);
         setName(mInfo->getName());
         setupSpriteDisplay(mInfo->getDisplay());
-    }
-    else if (getType() == NPC)
-    {
+        break;
+    case NPC:
         mInfo = NPCDB::get(mSubType);
         setupSpriteDisplay(mInfo->getDisplay(), false);
-    }
-    else if (getType() == PLAYER)
-    {
+        break;
+    case PLAYER: {
         int id = -100 - subtype;
 
         // Prevent showing errors when sprite doesn't exist
@@ -120,6 +119,11 @@ void Being::setSubtype(Uint16 subtype)
             id = -100;
 
         setSprite(Net::getCharHandler()->baseSprite(), id);
+        break;
+    }
+    case FLOOR_ITEM:
+    case UNKNOWN:
+        break;
     }
 }
 

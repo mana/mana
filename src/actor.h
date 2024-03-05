@@ -131,7 +131,7 @@ public:
     { return mMap; }
 
 protected:
-    Map *mMap;
+    Map *mMap = nullptr;
     Vector mPos;                /**< Position in pixels relative to map. */
 
 private:

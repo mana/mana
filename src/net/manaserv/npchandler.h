@@ -22,17 +22,13 @@
 #ifndef NET_MANASERV_NPCHANDLER_H
 #define NET_MANASERV_NPCHANDLER_H
 
-#include "eventlistener.h"
-
 #include "net/npchandler.h"
 
 #include "net/manaserv/messagehandler.h"
 
-#include <map>
-
 namespace ManaServ {
 
-class NpcHandler : public MessageHandler, public Net::NpcHandler
+class NpcHandler final : public MessageHandler, public Net::NpcHandler
 {
     public:
         NpcHandler();

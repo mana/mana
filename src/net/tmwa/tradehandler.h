@@ -29,7 +29,7 @@
 
 namespace TmwAthena {
 
-class TradeHandler : public MessageHandler, public Net::TradeHandler
+class TradeHandler final : public MessageHandler, public Net::TradeHandler
 {
     public:
         TradeHandler();

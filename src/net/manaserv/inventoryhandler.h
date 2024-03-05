@@ -33,7 +33,7 @@
 
 namespace ManaServ {
 
-class EquipBackend : public Equipment::Backend, public EventListener
+class EquipBackend final : public Equipment::Backend, public EventListener
 {
     public:
         EquipBackend();
@@ -110,7 +110,7 @@ class EquipBackend : public Equipment::Backend, public EventListener
         std::vector<std::string> mBoxesBackgroundFile;
 };
 
-class InventoryHandler : public MessageHandler, Net::InventoryHandler,
+class InventoryHandler final : public MessageHandler, Net::InventoryHandler,
         public EventListener
 {
     public:

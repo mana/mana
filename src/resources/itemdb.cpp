@@ -84,12 +84,11 @@ bool ItemDB::exists(int id) const
     return mItemInfos.find(id) != mItemInfos.end();
 }
 
-const ItemInfo &ItemDB::get(int id)
+const ItemInfo &ItemDB::get(int id) const
 {
     assert(mLoaded);
 
-    ItemInfos::const_iterator i = mItemInfos.find(id);
-
+    auto i = mItemInfos.find(id);
     if (i == mItemInfos.end())
     {
         logger->log("ItemDB: Warning, unknown item ID# %d", id);
@@ -99,12 +98,11 @@ const ItemInfo &ItemDB::get(int id)
     return *(i->second);
 }
 
-const ItemInfo &ItemDB::get(const std::string &name)
+const ItemInfo &ItemDB::get(const std::string &name) const
 {
     assert(mLoaded);
 
-    NamedItemInfos::const_iterator i = mNamedItemInfos.find(normalize(name));
-
+    auto i = mNamedItemInfos.find(normalize(name));
     if (i == mNamedItemInfos.end())
     {
         if (!name.empty())
@@ -268,7 +266,7 @@ void ItemDB::addItem(ItemInfo *itemInfo)
     {
         std::string temp = normalize(itemName);
 
-        NamedItemInfos::const_iterator itr = mNamedItemInfos.find(temp);
+        auto itr = mNamedItemInfos.find(temp);
         if (itr == mNamedItemInfos.end())
             mNamedItemInfos[temp] = itemInfo;
         else
@@ -448,8 +446,7 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
             if (trigger == "activation")
                 itemInfo->mActivatable = true;
 
-            std::map<std::string, const char* >::const_iterator triggerLabel =
-                    triggerTable.find(trigger);
+            auto triggerLabel = triggerTable.find(trigger);
             if (triggerLabel == triggerTable.end())
             {
                 logger->log("Warning: unknown trigger %s in item %d!",
@@ -472,9 +469,8 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
                         logger->log("Warning: incomplete modifier definition in %s, skipping.", filename.c_str());
                         continue;
                     }
-                    std::list<ItemStat>::const_iterator
-                            it = extraStats.begin(),
-                            it_end = extraStats.end();
+                    auto it = extraStats.cbegin();
+                    auto it_end = extraStats.cend();
                     while (it != it_end && !(*it == attribute))
                         ++it;
                     if (it == extraStats.end())
@@ -495,7 +491,7 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
                     effect.push_back(strprintf("This will be consumed%s.",
                                                triggerLabel->second));
                 else if (xmlStrEqual(effectChild->name, BAD_CAST "label"))
-                    effect.push_back(
+                    effect.emplace_back(
                             (const char*)effectChild->xmlChildrenNode->content);
             }
         }

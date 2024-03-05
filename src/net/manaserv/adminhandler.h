@@ -28,7 +28,7 @@
 
 namespace ManaServ {
 
-class AdminHandler : public Net::AdminHandler, public MessageHandler
+class AdminHandler final : public Net::AdminHandler, public MessageHandler
 {
     public:
         AdminHandler();

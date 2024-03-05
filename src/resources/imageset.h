@@ -39,6 +39,9 @@ class ImageSet : public Resource
          */
         ImageSet(Image *img, int w, int h, int margin = 0, int spacing = 0);
 
+        ImageSet(const ImageSet&) = delete;
+        ImageSet& operator=(const ImageSet&) = delete;
+
         ~ImageSet() override;
 
         /**

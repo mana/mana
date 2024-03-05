@@ -22,11 +22,7 @@
 
 #include "map.h"
 
-#include "resources/image.h"
-
-Actor::Actor():
-        mMap(nullptr)
-{}
+Actor::Actor() = default;
 
 Actor::~Actor()
 {

@@ -121,7 +121,7 @@ enum State {
  * The core part of the client. This class initializes all subsystems, runs
  * the event loop, and shuts everything down again.
  */
-class Client : public EventListener, public gcn::ActionListener
+class Client final : public EventListener, public gcn::ActionListener
 {
 public:
     /**
@@ -234,22 +234,22 @@ private:
     ServerInfo mCurrentServer;
     Video mVideo;
 
-    Game *mGame;
-    Window *mCurrentDialog;
-    QuitDialog *mQuitDialog;
-    Desktop *mDesktop;
-    Button *mSetupButton;
+    Game *mGame = nullptr;
+    Window *mCurrentDialog = nullptr;
+    QuitDialog *mQuitDialog = nullptr;
+    Desktop *mDesktop = nullptr;
+    Button *mSetupButton = nullptr;
 
-    State mState;
-    State mOldState;
+    State mState = STATE_CHOOSE_SERVER;
+    State mOldState = STATE_START;
     State mStateAfterOkDialog;
 
-    SDL_Surface *mIcon;
+    SDL_Surface *mIcon = nullptr;
 
-    SDL_TimerID mLogicCounterId;
-    SDL_TimerID mSecondsCounterId;
+    SDL_TimerID mLogicCounterId = 0;
+    SDL_TimerID mSecondsCounterId = 0;
 
-    bool mLimitFps;
+    bool mLimitFps = false;
     FPSmanager mFpsManager;
 };
 

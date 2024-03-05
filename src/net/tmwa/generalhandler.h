@@ -31,7 +31,7 @@
 
 namespace TmwAthena {
 
-class GeneralHandler : public MessageHandler, public Net::GeneralHandler,
+class GeneralHandler final : public MessageHandler, public Net::GeneralHandler,
         public EventListener
 {
     public:

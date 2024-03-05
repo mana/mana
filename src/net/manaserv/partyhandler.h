@@ -28,11 +28,9 @@
 
 #include "party.h"
 
-#include <string>
-
 namespace ManaServ {
 
-class PartyHandler : public MessageHandler, public Net::PartyHandler
+class PartyHandler final : public MessageHandler, public Net::PartyHandler
 {
 public:
     PartyHandler();
@@ -66,6 +64,7 @@ public:
     PartyShare getShareItems() override { return PARTY_SHARE_NO; }
 
     void setShareItems(PartyShare share) override {}
+
 private:
     Party *mParty;
 };

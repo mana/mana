@@ -26,7 +26,6 @@
 #include "configuration.h"
 #include "gui.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/customserverdialog.h"
 #include "gui/okdialog.h"
@@ -39,8 +38,6 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textfield.h"
-
-#include "net/net.h"
 
 #include "resources/theme.h"
 
@@ -474,8 +471,7 @@ void ServerDialog::loadServers()
         std::string version = XML::getProperty(serverNode, "minimumVersion",
                                                std::string());
 
-        bool meetsMinimumVersion = (compareStrI(version, PACKAGE_VERSION)
-                                      <= 0);
+        bool meetsMinimumVersion = compareStrI(version, PACKAGE_VERSION) <= 0;
 
         // For display in the list
         if (meetsMinimumVersion)

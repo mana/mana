@@ -23,7 +23,6 @@
 #define NET_MANASERV_MAPHANDLER_H
 
 #include "net/gamehandler.h"
-#include "net/serverinfo.h"
 
 #include "net/manaserv/messagehandler.h"
 
@@ -31,7 +30,7 @@
 
 namespace ManaServ {
 
-class GameHandler : public MessageHandler, public Net::GameHandler
+class GameHandler final : public MessageHandler, public Net::GameHandler
 {
     public:
         GameHandler();

@@ -75,10 +75,8 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
         {
             return load(errorFile, 0);
         }
-        else
-        {
-            return nullptr;
-        }
+
+        return nullptr;
     }
 
     auto *def = new SpriteDef;
@@ -162,7 +160,7 @@ void SpriteDef::loadImageSet(xmlNodePtr node, const std::string &palettes)
     if (!imageSet)
     {
         logger->error(strprintf("Couldn't load imageset (%s)!",
-                                imageSrc.c_str()).c_str());
+                                imageSrc.c_str()));
     }
 
     imageSet->setOffsetX(XML::getProperty(node, "offsetX", 0));
@@ -341,14 +339,14 @@ SpriteDirection SpriteDef::makeSpriteDirection(const std::string &direction)
 {
     if (direction.empty() || direction == "default")
         return DIRECTION_DEFAULT;
-    else if (direction == "up")
+    if (direction == "up")
         return DIRECTION_UP;
-    else if (direction == "left")
+    if (direction == "left")
         return DIRECTION_LEFT;
-    else if (direction == "right")
+    if (direction == "right")
         return DIRECTION_RIGHT;
-    else if (direction == "down")
+    if (direction == "down")
         return DIRECTION_DOWN;
-    else
-        return DIRECTION_INVALID;
+
+    return DIRECTION_INVALID;
 }

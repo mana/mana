@@ -237,12 +237,8 @@ bool Particle::update()
             p = mChildParticles.erase(p);
         }
     }
-    if (mAlive != ALIVE && mChildParticles.empty() && mAutoDelete)
-    {
-        return false;
-    }
 
-    return true;
+    return !(mAlive != ALIVE && mChildParticles.empty() && mAutoDelete);
 }
 
 void Particle::moveBy(const Vector &change)

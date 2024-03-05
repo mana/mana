@@ -37,7 +37,7 @@ namespace ManaServ {
 /**
  * Deals with incoming messages related to character selection.
  */
-class CharHandler : public MessageHandler, public Net::CharHandler
+class CharHandler final : public MessageHandler, public Net::CharHandler
 {
     public:
         CharHandler();

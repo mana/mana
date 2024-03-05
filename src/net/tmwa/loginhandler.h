@@ -33,7 +33,7 @@ class LoginData;
 
 namespace TmwAthena {
 
-class LoginHandler : public MessageHandler, public Net::LoginHandler
+class LoginHandler final : public MessageHandler, public Net::LoginHandler
 {
     public:
         LoginHandler();

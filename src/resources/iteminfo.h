@@ -229,8 +229,7 @@ class TaItemInfo: public ItemInfo
     friend class TaItemDB;
 
     public:
-        TaItemInfo()
-        {}
+        TaItemInfo() = default;
 
         // Declare TmwAthena Specific item info here
 };
@@ -246,8 +245,7 @@ namespace ManaServ {
 class ManaServItemInfo: public ItemInfo
 {
     public:
-        ManaServItemInfo()
-        {}
+        ManaServItemInfo() = default;
 
         // Declare Manaserv Specific item info here
 };

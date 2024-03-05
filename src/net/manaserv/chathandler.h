@@ -28,7 +28,7 @@
 
 namespace ManaServ {
 
-class ChatHandler : public MessageHandler, public Net::ChatHandler
+class ChatHandler final : public MessageHandler, public Net::ChatHandler
 {
     public:
         ChatHandler();

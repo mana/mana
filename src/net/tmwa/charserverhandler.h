@@ -34,7 +34,7 @@ namespace TmwAthena {
 /**
  * Deals with incoming messages from the character server.
  */
-class CharServerHandler : public MessageHandler, public Net::CharHandler
+class CharServerHandler final : public MessageHandler, public Net::CharHandler
 {
     public:
         CharServerHandler();

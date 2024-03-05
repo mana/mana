@@ -161,7 +161,7 @@ void GameHandler::quit()
     MessageOut outMsg(CMSG_CLIENT_QUIT);
 }
 
-void GameHandler::setMap(const std::string map)
+void GameHandler::setMap(const std::string &map)
 {
     mMap = map.substr(0, map.rfind("."));
 }

@@ -22,17 +22,13 @@
 #ifndef NET_TA_NPCHANDLER_H
 #define NET_TA_NPCHANDLER_H
 
-#include "eventlistener.h"
-
 #include "net/npchandler.h"
 
 #include "net/tmwa/messagehandler.h"
 
-#include <map>
-
 namespace TmwAthena {
 
-class NpcHandler : public MessageHandler, public Net::NpcHandler
+class NpcHandler final : public MessageHandler, public Net::NpcHandler
 {
     public:
         NpcHandler();

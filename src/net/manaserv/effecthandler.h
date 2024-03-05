@@ -26,7 +26,7 @@
 
 namespace ManaServ {
 
-class EffectHandler : public MessageHandler
+class EffectHandler final : public MessageHandler
 {
     public:
         EffectHandler();

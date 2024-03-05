@@ -31,14 +31,11 @@
 #include "playerinfo.h"
 #include "configuration.h"
 
-#include "gui/gui.h"
-#include "gui/okdialog.h"
 #include "gui/viewport.h"
 
 #include "net/net.h"
 
 #include "net/manaserv/connection.h"
-#include "net/manaserv/defines.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"

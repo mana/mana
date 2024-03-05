@@ -156,13 +156,8 @@ class SpriteDef : public Resource
          */
         void substituteAction(std::string complete, std::string with);
 
-        using ImageSets = std::map<std::string, ImageSet *>;
-        using ImageSetIterator = ImageSets::iterator;
-
-        using Actions = std::map<std::string, Action *>;
-
-        ImageSets mImageSets;
-        Actions mActions;
+        std::map<std::string, ImageSet *> mImageSets;
+        std::map<std::string, Action *> mActions;
 };
 
 #endif // SPRITEDEF_H

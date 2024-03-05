@@ -26,7 +26,7 @@
 
 namespace TmwAthena {
 
-class ItemHandler : public MessageHandler
+class ItemHandler final : public MessageHandler
 {
     public:
         ItemHandler();

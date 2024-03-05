@@ -34,9 +34,7 @@ class Particle;
 class ParticleEmitter;
 
 using Particles = std::list<Particle *>;
-using ParticleIterator = Particles::iterator;
 using Emitters = std::list<ParticleEmitter *>;
-using EmitterIterator = Emitters::iterator;
 
 /**
  * A particle spawned by a ParticleEmitter.
@@ -201,7 +199,7 @@ class Particle : public Actor
         /**
          * Gets the flag if the particle is supposed to be moved by its parent
          */
-        bool doesFollow()
+        bool doesFollow() const
         { return mFollow; }
 
         /**

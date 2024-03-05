@@ -116,7 +116,7 @@ class Being : public ActorSprite, public EventListener
 
         ~Being() override;
 
-        Type getType() const override
+        Type getType() const final
         { return mType; }
 
         /**
@@ -369,7 +369,7 @@ class Being : public ActorSprite, public EventListener
         SpriteDirection getSpriteDirection() const
         { return SpriteDirection(mSpriteDirection); }
 
-        void setPosition(const Vector &pos) override;
+        void setPosition(const Vector &pos) final;
 
         /**
          * Overloaded method provided for convenience.
@@ -441,7 +441,7 @@ class Being : public ActorSprite, public EventListener
 
         void event(Event::Channel channel, const Event &event) override;
 
-        void setMap(Map *map) override;
+        void setMap(Map *map) final;
 
         /**
          * Make the being look at a given pixel position.

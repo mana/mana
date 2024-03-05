@@ -21,7 +21,6 @@
 
 #include "animationparticle.h"
 
-#include "graphics.h"
 #include "simpleanimation.h"
 
 AnimationParticle::AnimationParticle(Map *map, Animation *animation):

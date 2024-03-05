@@ -28,7 +28,7 @@ class BuyDialog;
 
 namespace TmwAthena {
 
-class BuySellHandler : public MessageHandler
+class BuySellHandler final : public MessageHandler
 {
     public:
         BuySellHandler();

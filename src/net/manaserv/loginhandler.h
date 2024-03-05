@@ -23,7 +23,6 @@
 #define NET_MANASERV_LOGINHANDLER_H
 
 #include "net/loginhandler.h"
-#include "net/serverinfo.h"
 
 #include "net/manaserv/messagehandler.h"
 
@@ -31,7 +30,7 @@ class LoginData;
 
 namespace ManaServ {
 
-class LoginHandler : public MessageHandler, public Net::LoginHandler
+class LoginHandler final : public MessageHandler, public Net::LoginHandler
 {
     public:
         LoginHandler();

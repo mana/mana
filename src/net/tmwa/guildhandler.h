@@ -27,7 +27,7 @@
 
 namespace TmwAthena {
 
-class GuildHandler : public Net::GuildHandler, public MessageHandler
+class GuildHandler final : public Net::GuildHandler, public MessageHandler
 {
     public:
         GuildHandler();

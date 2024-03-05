@@ -29,7 +29,7 @@
 
 namespace TmwAthena {
 
-class AdminHandler : public MessageHandler, public Net::AdminHandler
+class AdminHandler final : public MessageHandler, public Net::AdminHandler
 {
     public:
         AdminHandler();

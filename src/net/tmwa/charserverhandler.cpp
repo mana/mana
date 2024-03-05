@@ -74,7 +74,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
-            case SMSG_CHAR_LOGIN:
+        case SMSG_CHAR_LOGIN:
             {
                 msg.skip(2);  // Length word
                 msg.skip(20); // Unused
@@ -280,12 +280,12 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
         return;
 
     std::vector<std::string> attributes;
-    attributes.push_back(_("Strength:"));
-    attributes.push_back(_("Agility:"));
-    attributes.push_back(_("Vitality:"));
-    attributes.push_back(_("Intelligence:"));
-    attributes.push_back(_("Dexterity:"));
-    attributes.push_back(_("Luck:"));
+    attributes.emplace_back(_("Strength:"));
+    attributes.emplace_back(_("Agility:"));
+    attributes.emplace_back(_("Vitality:"));
+    attributes.emplace_back(_("Intelligence:"));
+    attributes.emplace_back(_("Dexterity:"));
+    attributes.emplace_back(_("Luck:"));
 
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();

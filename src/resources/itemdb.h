@@ -75,8 +75,7 @@ class ItemDB
     public:
         ItemDB() = default;
 
-        virtual ~ItemDB()
-        {}
+        virtual ~ItemDB() = default;
 
         /**
          * Frees item data.
@@ -91,8 +90,8 @@ class ItemDB
 
         bool exists(int id) const;
 
-        const ItemInfo &get(int id);
-        const ItemInfo &get(const std::string &name);
+        const ItemInfo &get(int id) const;
+        const ItemInfo &get(const std::string &name) const;
 
         virtual void init() = 0;
 
@@ -144,11 +143,8 @@ class ItemDB
         void loadFloorSprite(SpriteDisplay *display, xmlNodePtr node);
 
         // Items database
-        using ItemInfos = std::map<int, ItemInfo *>;
-        using NamedItemInfos = std::map<std::string, ItemInfo *>;
-
-        ItemInfos mItemInfos;
-        NamedItemInfos mNamedItemInfos;
+        std::map<int, ItemInfo *> mItemInfos;
+        std::map<std::string, ItemInfo *> mNamedItemInfos;
 };
 
 namespace TmwAthena {
@@ -161,8 +157,7 @@ class TaItemInfo;
 class TaItemDB: public ItemDB
 {
     public:
-        TaItemDB()
-        { }
+        TaItemDB() = default;
 
         ~TaItemDB() override
         { unload(); }
@@ -196,8 +191,7 @@ class ManaServItemInfo;
 class ManaServItemDB: public ItemDB
 {
     public:
-        ManaServItemDB()
-        { }
+        ManaServItemDB() = default;
 
         ~ManaServItemDB() override
         { unload(); }

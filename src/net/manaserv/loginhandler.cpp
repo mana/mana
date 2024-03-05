@@ -345,7 +345,7 @@ void LoginHandler::readServerInfo(MessageIn &msg)
         logger->log("Warning: server does not have an update host set!");
 
     // Read the client data folder for dynamic data loading.
-    // This is only used by the QT client.
+    // This is only used by the Qt client.
     msg.readString();
 
     // Read the number of character slots

@@ -25,7 +25,6 @@
 #include "localplayer.h"
 #include "playerinfo.h"
 
-#include <iosfwd>
 #include <vector>
 
 class CharCreateDialog;
@@ -53,7 +52,7 @@ using Characters = std::list<Character *>;
 class CharHandler
 {
     public:
-        virtual ~CharHandler() {}
+        virtual ~CharHandler() = default;
 
         virtual void setCharSelectDialog(CharSelectDialog *window) = 0;
 

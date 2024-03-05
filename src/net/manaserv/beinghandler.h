@@ -23,8 +23,6 @@
 #define NET_MANASERV_BEINGHANDLER_H
 
 #include "net/manaserv/messagehandler.h"
-#include "vector.h"
-#include "map.h"
 
 namespace ManaServ {
 
@@ -38,7 +36,7 @@ enum SpriteLayer
     FIXED_SPRITE_LAYER_SIZE
 };
 
-class BeingHandler : public MessageHandler
+class BeingHandler final : public MessageHandler
 {
     public:
         BeingHandler();

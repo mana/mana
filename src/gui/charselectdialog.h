@@ -84,14 +84,14 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
         void unlock();
         void setLocked(bool locked);
 
-        bool mLocked;
+        bool mLocked = false;
 
         gcn::Label *mAccountNameLabel;
 
         gcn::Button *mSwitchLoginButton;
         gcn::Button *mChangePasswordButton;
-        gcn::Button *mUnregisterButton;
-        gcn::Button *mChangeEmailButton;
+        gcn::Button *mUnregisterButton = nullptr;
+        gcn::Button *mChangeEmailButton = nullptr;
 
         /** The player boxes */
         std::vector<CharacterDisplay*> mCharacterEntries;

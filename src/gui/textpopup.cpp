@@ -24,15 +24,10 @@
 #include "gui/textpopup.h"
 
 #include "gui/gui.h"
-#include "gui/palette.h"
 
 #include "gui/widgets/label.h"
 
 #include "graphics.h"
-#include "units.h"
-
-#include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
 #include <guichan/widgets/label.hpp>
@@ -51,10 +46,6 @@ TextPopup::TextPopup():
     add(mText1);
     add(mText2);
     addMouseListener(this);
-}
-
-TextPopup::~TextPopup()
-{
 }
 
 void TextPopup::show(int x, int y, const std::string &str1, const std::string &str2)

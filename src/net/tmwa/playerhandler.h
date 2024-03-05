@@ -29,7 +29,7 @@
 
 namespace TmwAthena {
 
-class PlayerHandler : public MessageHandler, public Net::PlayerHandler
+class PlayerHandler final : public MessageHandler, public Net::PlayerHandler
 {
     public:
         PlayerHandler();

@@ -30,13 +30,13 @@
 
 namespace ManaServ {
 
-struct RespawnRequestListener : public gcn::ActionListener
+struct RespawnRequestListener final : public gcn::ActionListener
 {
     void action(const gcn::ActionEvent &event) override;
 };
 static RespawnRequestListener respawnListener;
 
-class PlayerHandler : public MessageHandler, public Net::PlayerHandler
+class PlayerHandler final : public MessageHandler, public Net::PlayerHandler
 {
     public:
         PlayerHandler();

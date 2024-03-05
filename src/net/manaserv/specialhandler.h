@@ -28,7 +28,7 @@
 
 namespace ManaServ {
 
-class SpecialHandler : public MessageHandler, public Net::SpecialHandler
+class SpecialHandler final : public MessageHandler, public Net::SpecialHandler
 {
     public:
         SpecialHandler();

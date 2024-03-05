@@ -69,7 +69,7 @@ class TileAnimation
         ~TileAnimation();
         void update(int ticks = 1);
         void addAffectedTile(MapLayer *layer, int index)
-        { mAffected.push_back(std::make_pair(layer, index)); }
+        { mAffected.emplace_back(layer, index); }
     private:
         std::list<std::pair<MapLayer*, int> > mAffected;
         SimpleAnimation *mAnimation;

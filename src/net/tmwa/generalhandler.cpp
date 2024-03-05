@@ -25,9 +25,7 @@
 #include "configuration.h"
 #include "log.h"
 
-#include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
-#include "gui/register.h"
 #include "gui/skilldialog.h"
 #include "gui/socialwindow.h"
 #include "gui/statuswindow.h"
@@ -57,7 +55,6 @@
 #include "net/tmwa/gui/guildtab.h"
 #include "net/tmwa/gui/partytab.h"
 
-#include "resources/attributes.h"
 #include "resources/itemdb.h"
 
 #include "utils/gettext.h"
@@ -99,12 +96,12 @@ GeneralHandler::GeneralHandler():
     generalHandler = this;
 
     std::list<ItemStat> stats;
-    stats.push_back(ItemStat("str", _("Strength %+d")));
-    stats.push_back(ItemStat("agi", _("Agility %+d")));
-    stats.push_back(ItemStat("vit", _("Vitality %+d")));
-    stats.push_back(ItemStat("int", _("Intelligence %+d")));
-    stats.push_back(ItemStat("dex", _("Dexterity %+d")));
-    stats.push_back(ItemStat("luck", _("Luck %+d")));
+    stats.emplace_back("str", _("Strength %+d"));
+    stats.emplace_back("agi", _("Agility %+d"));
+    stats.emplace_back("vit", _("Vitality %+d"));
+    stats.emplace_back("int", _("Intelligence %+d"));
+    stats.emplace_back("dex", _("Dexterity %+d"));
+    stats.emplace_back("luck", _("Luck %+d"));
 
     setStatsList(stats);
 

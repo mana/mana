@@ -26,9 +26,6 @@
 #include "net/serverinfo.h"
 #include "net/worldinfo.h"
 
-#include <iosfwd>
-#include <vector>
-
 namespace Net {
 
 class LoginHandler
@@ -94,7 +91,7 @@ class LoginHandler
 
         virtual Worlds getWorlds() const = 0;
 
-        virtual ~LoginHandler () {}
+        virtual ~LoginHandler () = default;
 
     protected:
         ServerInfo mServer;
