@@ -148,6 +148,40 @@ private:
     std::vector<DisplayMode> mDisplayModes;
 };
 
+/**
+ * The list model for choosing the scale.
+ *
+ * \ingroup Interface
+ */
+class ScaleListModel : public gcn::ListModel
+{
+public:
+    ScaleListModel(const VideoSettings &videoSettings)
+        : mVideoSettings(videoSettings)
+    {}
+
+    void setVideoSettings(const VideoSettings &videoSettings)
+    {
+        mVideoSettings = videoSettings;
+    }
+
+    int getNumberOfElements() override
+    {
+        return mVideoSettings.maxScale() + 1;
+    }
+
+    std::string getElementAt(int i) override
+    {
+        if (i == 0)
+            return strprintf(_("Auto (%dx)"), mVideoSettings.autoScale());
+
+        return strprintf(_("%dx"), i);
+    }
+
+private:
+    VideoSettings mVideoSettings;
+};
+
 
 static const char *overlayDetailToString(int detail)
 {
@@ -186,8 +220,10 @@ Setup_Video::Setup_Video():
     mSDLTransparencyDisabled(config.getBoolValue("disableTransparency")),
     mWindowModeListModel(new StringListModel({ _("Windowed"), _("Windowed Fullscreen"), _("Fullscreen") })),
     mResolutionListModel(new ResolutionListModel),
+    mScaleListModel(new ScaleListModel(mVideoSettings)),
     mWindowModeDropDown(new DropDown(mWindowModeListModel.get())),
     mResolutionDropDown(new DropDown(mResolutionListModel.get())),
+    mScaleDropDown(new DropDown(mScaleListModel.get())),
     mVSyncCheckBox(new CheckBox(_("VSync"), mVideoSettings.vsync)),
     mOpenGLCheckBox(new CheckBox(_("OpenGL (Legacy)"), mVideoSettings.openGL)),
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
@@ -232,9 +268,11 @@ Setup_Video::Setup_Video():
     mResolutionDropDown->setSelected(mResolutionListModel->getIndexOf(mVideoSettings.width,
                                                                       mVideoSettings.height));
     mResolutionDropDown->setEnabled(mVideoSettings.windowMode != WindowMode::WindowedFullscreen);
+    mScaleDropDown->setSelected(mVideoSettings.userScale);
 
     // Set actions
     mWindowModeDropDown->setActionEventId("windowmode");
+    mResolutionDropDown->setActionEventId("resolution");
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
     mDisableSDLTransparencyCheckBox->setActionEventId("disableTransparency");
@@ -248,6 +286,7 @@ Setup_Video::Setup_Video():
 
     // Set listeners
     mWindowModeDropDown->addActionListener(this);
+    mResolutionDropDown->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
     mOpenGLCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
@@ -270,11 +309,13 @@ Setup_Video::Setup_Video():
     place.getCell().setHAlign(LayoutCell::FILL);
 
     place(0, 0, new Label(_("Window mode:")));
-    place(1, 0, mWindowModeDropDown, 2);
+    place(1, 0, mWindowModeDropDown, 2).setPadding(2);
     place(0, 1, new Label(_("Resolution:")));
-    place(1, 1, mResolutionDropDown, 2);
-    place(0, 2, mVSyncCheckBox, 4);
-    place(0, 3, mOpenGLCheckBox, 4);
+    place(1, 1, mResolutionDropDown, 2).setPadding(2);
+    place(0, 2, new Label(_("Scale:")));
+    place(1, 2, mScaleDropDown, 2).setPadding(2);
+    place(0, 3, mVSyncCheckBox, 4);
+    place(0, 4, mOpenGLCheckBox, 4);
 
     place = getPlacer(0, 1);
     place.getCell().setHAlign(LayoutCell::FILL);
@@ -304,24 +345,29 @@ void Setup_Video::apply()
 {
     // Video mode changes
     auto &video = Client::getVideo();
-    auto videoSettings = video.settings();
+    mVideoSettings = video.settings();
+
+    mVideoSettings.windowMode = static_cast<WindowMode>(mWindowModeDropDown->getSelected());
 
     if (mResolutionDropDown->getSelected() > 0)
     {
         const auto &mode = mResolutionListModel->getModeAt(mResolutionDropDown->getSelected());
-        videoSettings.width = mode.width;
-        videoSettings.height = mode.height;
+        mVideoSettings.width = mode.width;
+        mVideoSettings.height = mode.height;
     }
 
-    videoSettings.windowMode = static_cast<WindowMode>(mWindowModeDropDown->getSelected());
-    videoSettings.vsync = mVSyncCheckBox->isSelected();
+    mVideoSettings.userScale = std::max(0, mScaleDropDown->getSelected());
+    mVideoSettings.vsync = mVSyncCheckBox->isSelected();
 
-    if (video.apply(videoSettings))
+    if (video.apply(mVideoSettings))
     {
-        config.setValue("windowmode", static_cast<int>(videoSettings.windowMode));
-        config.setValue("vsync", videoSettings.vsync);
-        config.setValue("screenwidth", videoSettings.width);
-        config.setValue("screenheight", videoSettings.height);
+        config.setValue("windowmode", static_cast<int>(mVideoSettings.windowMode));
+        config.setValue("scale", mVideoSettings.userScale);
+        config.setValue("vsync", mVideoSettings.vsync);
+        config.setValue("screenwidth", mVideoSettings.width);
+        config.setValue("screenheight", mVideoSettings.height);
+
+        Client::instance()->checkGraphicsSize();
     }
     else
     {
@@ -387,9 +433,11 @@ void Setup_Video::apply()
 void Setup_Video::cancel()
 {
     // Set back to the current video mode.
+    mVideoSettings = Client::getVideo().settings();
+    mWindowModeDropDown->setSelected(static_cast<int>(mVideoSettings.windowMode));
     mResolutionDropDown->setSelected(mResolutionListModel->getIndexOf(mVideoSettings.width,
                                                                       mVideoSettings.height));
-
+    mScaleDropDown->setSelected(mVideoSettings.userScale);
     mVSyncCheckBox->setSelected(mVideoSettings.vsync);
     mOpenGLCheckBox->setSelected(mVideoSettings.openGL);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
@@ -416,7 +464,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
 {
     const std::string &id = event.getId();
 
-    if (id == "windowmode")
+    if (id == "windowmode" || id == "resolution")
     {
         auto windowMode = static_cast<WindowMode>(mWindowModeDropDown->getSelected());
 
@@ -433,6 +481,12 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         {
             mResolutionDropDown->setEnabled(true);
         }
+
+        refreshScaleList();
+    }
+    else if (id == "resolution")
+    {
+        refreshScaleList();
     }
     else if (id == "customcursor")
     {
@@ -487,4 +541,24 @@ void Setup_Video::action(const gcn::ActionEvent &event)
             mDisableSDLTransparencyCheckBox->setEnabled(true);
         }
     }
+}
+
+void Setup_Video::refreshScaleList()
+{
+    if (mResolutionDropDown->getSelected() > 0)
+    {
+        const auto &mode = mResolutionListModel->getModeAt(mResolutionDropDown->getSelected());
+        mVideoSettings.width = mode.width;
+        mVideoSettings.height = mode.height;
+    }
+    else
+    {
+        auto &videoSettings = Client::getVideo().settings();
+        mVideoSettings.width = videoSettings.width;
+        mVideoSettings.height = videoSettings.height;
+    }
+
+    mScaleListModel->setVideoSettings(mVideoSettings);
+    mScaleDropDown->setListModel(mScaleListModel.get());
+    mScaleDropDown->setSelected(mVideoSettings.userScale);
 }

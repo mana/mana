@@ -39,13 +39,9 @@
 #include "net/net.h"
 #include "net/playerhandler.h"
 
-#include "resources/resourcemanager.h"
-
 #include "utils/stringutils.h"
 
 #include <cmath>
-
-extern volatile int tick_time;
 
 Viewport::Viewport()
 {
@@ -80,8 +76,6 @@ void Viewport::setMap(Map *map)
     }
     mMap = map;
 }
-
-extern MiniStatusWindow *miniStatusWindow;
 
 void Viewport::draw(gcn::Graphics *gcnGraphics)
 {
@@ -291,7 +285,13 @@ void Viewport::logic()
 
 void Viewport::_followMouse()
 {
-    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
+    const Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
+    float logicalX;
+    float logicalY;
+    graphics->windowToLogical(mMouseX, mMouseY, logicalX, logicalY);
+    mMouseX = static_cast<int>(logicalX);
+    mMouseY = static_cast<int>(logicalY);
+
     // If the left button is dragged
     if (mPlayerFollowMouse && button & SDL_BUTTON(1))
     {
@@ -459,7 +459,8 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
             mPopupMenu->showPopup(event.getX(), event.getY(), mHoverBeing);
             return;
         }
-        else if (mHoverItem)
+
+        if (mHoverItem)
         {
             mPopupMenu->showPopup(event.getX(), event.getY(), mHoverItem);
             return;
@@ -541,7 +542,7 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
         {
             mLocalWalkTime = tick_time;
             local_player->setDestination(event.getX() + (int) mPixelViewX,
-                                        event.getY() + (int) mPixelViewY);
+                                         event.getY() + (int) mPixelViewY);
             local_player->pathSetByMouse();
         }
     }

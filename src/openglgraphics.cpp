@@ -19,13 +19,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef USE_OPENGL
+
 #include "openglgraphics.h"
 
 #include "log.h"
+#include "video.h"
 
 #include "resources/image.h"
-
-#ifdef USE_OPENGL
 
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>
@@ -41,6 +42,19 @@
 const unsigned int vertexBufSize = 500;
 
 GLuint OpenGLGraphics::mLastImage = 0;
+
+std::unique_ptr<OpenGLGraphics> OpenGLGraphics::create(SDL_Window *window,
+                                                       const VideoSettings &settings)
+{
+    SDL_GLContext glContext = SDL_GL_CreateContext(window);
+    if (!glContext)
+        return {};
+
+    if (settings.vsync)
+        SDL_GL_SetSwapInterval(1);
+
+    return std::make_unique<OpenGLGraphics>(window, glContext);
+}
 
 OpenGLGraphics::OpenGLGraphics(SDL_Window *window, SDL_GLContext glContext)
     : mWindow(window)
@@ -77,6 +91,23 @@ OpenGLGraphics::OpenGLGraphics(SDL_Window *window, SDL_GLContext glContext)
     Image::mTextureSize = texSize;
     logger->log("OpenGL texture size: %d pixels%s", Image::mTextureSize,
                 rectTex ? " (rectangle textures)" : "");
+
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, (double)mWidth, (double)mHeight, 0.0, -1.0, 1.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glEnable(GL_SCISSOR_TEST);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 OpenGLGraphics::~OpenGLGraphics()
@@ -98,15 +129,28 @@ void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
     mReduceInputLag = reduceInputLag;
 }
 
-void OpenGLGraphics::videoResized(int width, int height)
+void OpenGLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
 {
-    _endDraw();
+    mScale = scale;
 
-    SDL_GL_GetDrawableSize(mWindow, &mWidth, &mHeight);
+    int drawableWidth;
+    int drawableHeight;
+    SDL_GL_GetDrawableSize(mWindow, &drawableWidth, &drawableHeight);
 
-    glViewport(0, 0, mWidth, mHeight);
+    glViewport(0, 0, drawableWidth, drawableHeight);
 
-    _beginDraw();
+    float displayScaleX = windowWidth > 0 ? static_cast<float>(drawableWidth) / windowWidth : 1.0f;
+    float displayScaleY = windowHeight > 0 ? static_cast<float>(drawableHeight) / windowHeight : 1.0f;
+
+    mScaleX = mScale * displayScaleX;
+    mScaleY = mScale * displayScaleY;
+
+    mWidth = std::ceil(drawableWidth / mScaleX);
+    mHeight = std::ceil(drawableHeight / mScaleY);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, (double)mWidth, (double)mHeight, 0.0, -1.0, 1.0);
 }
 
 static inline void drawQuad(Image *image,
@@ -596,32 +640,11 @@ void OpenGLGraphics::updateScreen()
         glFinish();
 }
 
-void OpenGLGraphics::_beginDraw()
+void OpenGLGraphics::windowToLogical(int windowX, int windowY,
+                                     float &logicalX, float &logicalY) const
 {
-    glMatrixMode(GL_TEXTURE);
-    glLoadIdentity();
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    glOrtho(0.0, (double)mWidth, (double)mHeight, 0.0, -1.0, 1.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glEnable(GL_SCISSOR_TEST);
-
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-    pushClipArea(gcn::Rectangle(0, 0, mWidth, mHeight));
-}
-
-void OpenGLGraphics::_endDraw()
-{
-    popClipArea();
+    logicalX = windowX / mScale;
+    logicalY = windowY / mScale;
 }
 
 SDL_Surface *OpenGLGraphics::getScreenshot()
@@ -685,10 +708,14 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 
     glPushMatrix();
     glTranslatef(transX, transY, 0);
-    glScissor(mClipStack.top().x,
-              mHeight - mClipStack.top().y - mClipStack.top().height,
-              mClipStack.top().width,
-              mClipStack.top().height);
+
+    int x = (int) (mClipStack.top().x * mScaleX);
+    int y = (int) ((mHeight - mClipStack.top().y -
+                    mClipStack.top().height) * mScaleY);
+    int width = (int) (mClipStack.top().width * mScaleX);
+    int height = (int) (mClipStack.top().height * mScaleY);
+
+    glScissor(x, y, width, height);
 
     return result;
 }
@@ -697,14 +724,18 @@ void OpenGLGraphics::popClipArea()
 {
     Graphics::popClipArea();
 
+    glPopMatrix();
+
     if (mClipStack.empty())
         return;
 
-    glPopMatrix();
-    glScissor(mClipStack.top().x,
-              mHeight - mClipStack.top().y - mClipStack.top().height,
-              mClipStack.top().width,
-              mClipStack.top().height);
+    int x = (int) (mClipStack.top().x * mScaleX);
+    int y = (int) ((mHeight - mClipStack.top().y -
+                    mClipStack.top().height) * mScaleY);
+    int width = (int) (mClipStack.top().width * mScaleX);
+    int height = (int) (mClipStack.top().height * mScaleY);
+
+    glScissor(x, y, width, height);
 }
 
 void OpenGLGraphics::setColor(const gcn::Color& color)

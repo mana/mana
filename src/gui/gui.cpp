@@ -193,11 +193,18 @@ void Gui::logic()
 
 void Gui::draw()
 {
-    mGraphics->pushClipArea(getTop()->getDimension());
-    getTop()->draw(mGraphics);
+    mGraphics->_beginDraw();
 
-    int mouseX, mouseY;
+    mGraphics->pushClipArea(mTop->getDimension());
+    mTop->draw(mGraphics);
+    mGraphics->popClipArea();
+
+    int mouseX;
+    int mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
+    float logicalX;
+    float logicalY;
+    graphics->windowToLogical(mouseX, mouseY, logicalX, logicalY);
 
     if ((Client::hasMouseFocus() || button & SDL_BUTTON(1))
             && mCustomCursor
@@ -208,11 +215,11 @@ void Gui::draw()
 
         static_cast<Graphics*>(mGraphics)->drawImage(
                 mouseCursor,
-                mouseX - 15,
-                mouseY - 17);
+                logicalX - 15,
+                logicalY - 17);
     }
 
-    mGraphics->popClipArea();
+    mGraphics->_endDraw();
 }
 
 void Gui::videoResized(int width, int height)
@@ -221,6 +228,8 @@ void Gui::videoResized(int width, int height)
 
     int oldWidth = top->getWidth();
     int oldHeight = top->getHeight();
+    if (oldWidth == width && oldHeight == height)
+        return;
 
     top->setSize(width, height);
     top->adjustAfterResize(oldWidth, oldHeight);

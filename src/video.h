@@ -49,8 +49,13 @@ struct VideoSettings
     int width = defaultScreenWidth;
     int height = defaultScreenHeight;
     int display = 0;
+    int userScale = 0;
     bool vsync = true;
     bool openGL = false;
+
+    int scale() const;
+    int autoScale() const;
+    int maxScale() const;
 
     bool operator==(const VideoSettings &other) const
     {
@@ -58,6 +63,7 @@ struct VideoSettings
                 height == other.height &&
                 windowMode == other.windowMode &&
                 display == other.display &&
+                userScale == other.userScale &&
                 vsync == other.vsync &&
                 openGL == other.openGL;
     }
@@ -82,6 +88,11 @@ public:
      * Try to apply the given video settings.
      */
     bool apply(const VideoSettings &settings);
+
+    /**
+     * Handle a change in window size, possibly adjusting the scale.
+     */
+    void windowSizeChanged(int width, int height);
 
     const DisplayMode &desktopDisplayMode() const
     {

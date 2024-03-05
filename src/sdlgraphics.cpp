@@ -23,12 +23,30 @@
 
 #include "log.h"
 #include "resources/image.h"
+#include "utils/stringutils.h"
+#include "video.h"
 
 #include <guichan/exception.hpp>
 
-SDLGraphics::SDLGraphics(SDL_Window *window, SDL_Renderer *renderer)
-    : mWindow(window)
-    , mRenderer(renderer)
+std::unique_ptr<Graphics> SDLGraphics::create(SDL_Window *window, const VideoSettings &settings)
+{
+    int rendererFlags = 0;
+    if (settings.vsync)
+        rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
+
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, rendererFlags);
+    if (!renderer)
+    {
+        logger->error(strprintf("Failed to create renderer: %s",
+                                SDL_GetError()));
+        return {};
+    }
+
+    return std::make_unique<SDLGraphics>(renderer);
+}
+
+SDLGraphics::SDLGraphics(SDL_Renderer *renderer)
+    : mRenderer(renderer)
 {
     Image::setRenderer(mRenderer);
 
@@ -71,9 +89,20 @@ void SDLGraphics::setVSync(bool sync)
 #endif
 }
 
-void SDLGraphics::videoResized(int w, int h)
+void SDLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
 {
     SDL_GetRendererOutputSize(mRenderer, &mWidth, &mHeight);
+
+    float displayScaleX = windowWidth > 0 ? static_cast<float>(mWidth) / windowWidth : 1.0f;
+    float displayScaleY = windowHeight > 0 ? static_cast<float>(mHeight) / windowHeight : 1.0f;
+
+    float scaleX = scale * displayScaleX;
+    float scaleY = scale * displayScaleY;
+
+    mWidth = std::ceil(mWidth / scaleX);
+    mHeight = std::ceil(mHeight / scaleY);
+
+    SDL_RenderSetScale(mRenderer, scaleX, scaleY);
 }
 
 bool SDLGraphics::drawRescaledImage(Image *image,
@@ -146,6 +175,20 @@ void SDLGraphics::drawRescaledImagePattern(Image *image,
 void SDLGraphics::updateScreen()
 {
     SDL_RenderPresent(mRenderer);
+}
+
+void SDLGraphics::windowToLogical(int windowX, int windowY,
+                                  float &logicalX, float &logicalY) const
+{
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+    SDL_RenderWindowToLogical(mRenderer, windowX, windowY, &logicalX, &logicalY);
+#else
+    float scaleX;
+    float scaleY;
+    SDL_RenderGetScale(mRenderer, &scaleX, &scaleY);
+    logicalX = windowX / scaleX;
+    logicalY = windowY / scaleY;
+#endif
 }
 
 SDL_Surface *SDLGraphics::getScreenshot()

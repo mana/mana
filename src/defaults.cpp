@@ -80,6 +80,7 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "windowmode", static_cast<int>(WindowMode::Windowed));
     AddDEF(configData, "screenwidth", defaultScreenWidth);
     AddDEF(configData, "screenheight", defaultScreenHeight);
+    AddDEF(configData, "scale", 0);
     AddDEF(configData, "vsync", true);
     AddDEF(configData, "sound", false);
     AddDEF(configData, "sfxVolume", 100);

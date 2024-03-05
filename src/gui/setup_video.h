@@ -31,6 +31,7 @@
 #include <guichan/keylistener.hpp>
 
 class ResolutionListModel;
+class ScaleListModel;
 
 class Setup_Video : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener
@@ -45,6 +46,8 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         void action(const gcn::ActionEvent &event) override;
 
     private:
+        void refreshScaleList();
+
         VideoSettings mVideoSettings;
         bool mCustomCursorEnabled;
         bool mParticleEffectsEnabled;
@@ -53,6 +56,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         std::unique_ptr<gcn::ListModel> mWindowModeListModel;
         std::unique_ptr<ResolutionListModel> mResolutionListModel;
+        std::unique_ptr<ScaleListModel> mScaleListModel;
 
         //gcn::Label *scrollRadiusLabel;
         //gcn::Label *scrollLazinessLabel;
@@ -61,6 +65,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         gcn::DropDown *mWindowModeDropDown;
         gcn::DropDown *mResolutionDropDown;
+        gcn::DropDown *mScaleDropDown;
         gcn::CheckBox *mVSyncCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;

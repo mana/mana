@@ -80,7 +80,10 @@ class Graphics : public gcn::Graphics
          */
         virtual void setVSync(bool sync) = 0;
 
-        virtual void videoResized(int w, int h);
+        /**
+         * Called when the window size or scale has changed.
+         */
+        virtual void updateSize(int width, int height, float scale);
 
         using gcn::Graphics::drawImage;
 
@@ -161,14 +164,24 @@ class Graphics : public gcn::Graphics
         virtual void updateScreen() = 0;
 
         /**
-         * Returns the width of the screen.
+         * Returns the logical width of the screen.
          */
-        int getWidth() const;
+        int getWidth() const { return mWidth; }
 
         /**
-         * Returns the height of the screen.
+         * Returns the logical height of the screen.
          */
-        int getHeight() const;
+        int getHeight() const { return mHeight; }
+
+        /**
+         * Converts a window coordinate to a logical coordinate. Used for
+         * converting mouse coordinates.
+         */
+        virtual void windowToLogical(int windowX, int windowY,
+                                     float &logicalX, float &logicalY) const = 0;
+
+        void _beginDraw() override;
+        void _endDraw() override;
 
         /**
          * Takes a screenshot and returns it as SDL surface.

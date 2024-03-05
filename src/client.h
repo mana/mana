@@ -213,7 +213,8 @@ public:
      * Should be called after the window has been resized. Makes sure the GUI
      * and game adapt to the new size.
      */
-    void videoResized(int width, int height);
+    void handleWindowSizeChanged(int width, int height);
+    void checkGraphicsSize();
 
     static bool isActive();
     static bool hasInputFocus();

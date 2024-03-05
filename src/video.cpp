@@ -31,6 +31,26 @@
 
 #include <algorithm>
 
+int VideoSettings::scale() const
+{
+    if (userScale == 0)
+        return autoScale();
+
+    return std::clamp(userScale, 1, maxScale());
+}
+
+int VideoSettings::autoScale() const
+{
+    // Automatic scaling factor based on at least 800x600 logical resolution
+    return std::max(1, std::min(width / 800, height / 600));
+}
+
+int VideoSettings::maxScale() const
+{
+    // Logical resolution needs to stay at least 640x480
+    return std::max(1, std::min(width / 640, height / 480));
+}
+
 Video::~Video()
 {
     mGraphics.reset();  // reset graphics first
@@ -66,7 +86,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
         }
     }
 
-    int windowFlags = SDL_WINDOW_RESIZABLE;
+    int windowFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
     const char *videoMode = "windowed";
 
     switch (mSettings.windowMode)
@@ -115,40 +135,27 @@ Graphics *Video::initialize(const VideoSettings &settings)
         }
     }
 
+    // Make sure the resolution is reflected in current settings
+    SDL_GetWindowSize(mWindow, &mSettings.width, &mSettings.height);
+
 #ifdef USE_OPENGL
     if (mSettings.openGL)
     {
-        SDL_GLContext glContext = SDL_GL_CreateContext(mWindow);
-        if (!glContext)
+        mGraphics = OpenGLGraphics::create(mWindow, mSettings);
+        if (!mGraphics)
         {
             logger->log("Failed to create OpenGL context, falling back to SDL renderer: %s",
                         SDL_GetError());
             mSettings.openGL = false;
         }
-        else
-        {
-            if (mSettings.vsync)
-                SDL_GL_SetSwapInterval(1);
-
-            mGraphics = std::make_unique<OpenGLGraphics>(mWindow, glContext);
-            return mGraphics.get();
-        }
     }
 #endif
 
-    int rendererFlags = 0;
-    if (settings.vsync)
-        rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
+    if (!mGraphics)
+        mGraphics = SDLGraphics::create(mWindow, mSettings);
 
-    SDL_Renderer *renderer = SDL_CreateRenderer(mWindow, -1, rendererFlags);
-    if (!renderer)
-    {
-        logger->error(strprintf("Failed to create renderer: %s",
-                                SDL_GetError()));
-        return nullptr;
-    }
+    mGraphics->updateSize(mSettings.width, mSettings.height, mSettings.scale());
 
-    mGraphics = std::make_unique<SDLGraphics>(mWindow, renderer);
     return mGraphics.get();
 }
 
@@ -206,7 +213,9 @@ bool Video::apply(const VideoSettings &settings)
         return false;
     }
 
-    if (settings.windowMode == WindowMode::Windowed) {
+    if (settings.windowMode == WindowMode::Windowed &&
+            (settings.width != mSettings.width ||
+             settings.height != mSettings.height)) {
 #ifdef __APPLE__
         // Workaround SDL2 issue when setting the window size on a window
         // which the user has put in fullscreen. Unfortunately, this mode can't
@@ -216,14 +225,22 @@ bool Video::apply(const VideoSettings &settings)
             SDL_SetWindowSize(mWindow, settings.width, settings.height);
     }
 
-    mGraphics->setVSync(settings.vsync);
-
     mSettings = settings;
 
-    // Make sure the resolution is reflected in current settings
     SDL_GetWindowSize(mWindow, &mSettings.width, &mSettings.height);
 
+    mGraphics->setVSync(mSettings.vsync);
+    mGraphics->updateSize(mSettings.width, mSettings.height, mSettings.scale());
+
     return true;
+}
+
+void Video::windowSizeChanged(int width, int height)
+{
+    mSettings.width = width;
+    mSettings.height = height;
+
+    mGraphics->updateSize(width, height, mSettings.scale());
 }
 
 bool Video::initDisplayModes()

@@ -310,6 +310,7 @@ Client::Client(const Options &options):
     videoSettings.windowMode = static_cast<WindowMode>(config.getIntValue("windowmode"));
     videoSettings.width = config.getIntValue("screenwidth");
     videoSettings.height = config.getIntValue("screenheight");
+    videoSettings.userScale = config.getIntValue("scale");
     videoSettings.vsync = config.getBoolValue("vsync");
     videoSettings.openGL = useOpenGL;
 
@@ -347,9 +348,6 @@ Client::Client(const Options &options):
         SDL_SetWindowIcon(mVideo.window(), mIcon);
     }
 #endif
-
-    // Initialize for drawing
-    graphics->_beginDraw();
 
     Theme::prepareThemePath();
 
@@ -508,7 +506,8 @@ int Client::exec()
                 case SDL_WINDOWEVENT:
                     switch (event.window.event) {
                     case SDL_WINDOWEVENT_SIZE_CHANGED:
-                        videoResized(event.window.data1, event.window.data2);
+                        handleWindowSizeChanged(event.window.data1,
+                                                event.window.data2);
                         break;
                     }
                     break;
@@ -1322,17 +1321,25 @@ void Client::accountLogin(LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
-void Client::videoResized(int width, int height)
+void Client::handleWindowSizeChanged(int width, int height)
 {
     // Store the new size in the configuration.
     config.setValue("screenwidth", width);
     config.setValue("screenheight", height);
 
-    graphics->videoResized(width, height);
+    mVideo.windowSizeChanged(width, height);
 
-    // Logical size might be different from physical
-    width = graphics->getWidth();
-    height = graphics->getHeight();
+    checkGraphicsSize();
+}
+
+void Client::checkGraphicsSize()
+{
+    const int width = graphics->getWidth();
+    const int height = graphics->getHeight();
+
+    const auto guiTop = gui->getTop();
+    if (guiTop->getWidth() == width && guiTop->getHeight() == height)
+        return;
 
     gui->videoResized(width, height);
 

@@ -22,16 +22,23 @@
 #ifndef OPENGLGRAPHICS_H
 #define OPENGLGRAPHICS_H
 
+#ifdef USE_OPENGL
 #include "graphics.h"
 
-#ifdef USE_OPENGL
 #define NO_SDL_GLEXT
 
 #include <SDL_opengl.h>
 
+#include <memory>
+
+class VideoSettings;
+
 class OpenGLGraphics final : public Graphics
 {
     public:
+        static std::unique_ptr<OpenGLGraphics> create(SDL_Window *window,
+                                                      const VideoSettings &settings);
+
         OpenGLGraphics(SDL_Window *window, SDL_GLContext glContext);
 
         ~OpenGLGraphics() override;
@@ -48,7 +55,7 @@ class OpenGLGraphics final : public Graphics
         void setReduceInputLag(bool reduceInputLag);
         bool getReduceInputLag() const { return mReduceInputLag; }
 
-        void videoResized(int w, int h) override;
+        void updateSize(int windowWidth, int windowHeight, float scale) override;
 
         bool drawImage(Image *image,
                        int srcX, int srcY,
@@ -78,8 +85,8 @@ class OpenGLGraphics final : public Graphics
 
         void updateScreen() override;
 
-        void _beginDraw() override;
-        void _endDraw() override;
+        void windowToLogical(int windowX, int windowY,
+                             float &logicalX, float &logicalY) const override;
 
         bool pushClipArea(gcn::Rectangle area) override;
         void popClipArea() override;
@@ -118,6 +125,9 @@ class OpenGLGraphics final : public Graphics
         GLfloat *mFloatTexArray;
         GLint *mIntTexArray;
         GLint *mIntVertArray;
+        float mScale = 1.0f;
+        float mScaleX = 1.0f;
+        float mScaleY = 1.0f;
         bool mAlpha = false;
         bool mTexture = false;
         bool mColorAlpha = false;

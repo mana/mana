@@ -33,20 +33,10 @@ void ImageRect::setAlpha(float alpha)
     }
 }
 
-void Graphics::videoResized(int w, int h)
+void Graphics::updateSize(int width, int height, float /*scale*/)
 {
-    mWidth = w;
-    mHeight = h;
-}
-
-int Graphics::getWidth() const
-{
-    return mWidth;
-}
-
-int Graphics::getHeight() const
-{
-    return mHeight;
+    mWidth = width;
+    mHeight = height;
 }
 
 bool Graphics::drawImage(Image *image, int x, int y)
@@ -63,9 +53,6 @@ bool Graphics::drawImage(Image *image,
                          int width, int height,
                          bool useColor)
 {
-    if (!image)
-        return false;
-
     return drawRescaledImage(image,
                              srcX, srcY,
                              dstX, dstY,
@@ -132,4 +119,14 @@ void Graphics::drawImageRect(int x, int y, int w, int h,
             imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],
             imgRect.grid[1], imgRect.grid[5], imgRect.grid[7], imgRect.grid[3],
             imgRect.grid[4]);
+}
+
+void Graphics::_beginDraw()
+{
+    pushClipArea(gcn::Rectangle(0, 0, mWidth, mHeight));
+}
+
+void Graphics::_endDraw()
+{
+    popClipArea();
 }

@@ -57,6 +57,7 @@
  */
 
 #include "sdlinput.h"
+#include "graphics.h"
 
 #include <guichan/exception.hpp>
 
@@ -119,6 +120,15 @@ TextInput SDLInput::dequeueTextInput()
     return textInput;
 }
 
+static void setMouseCoordinates(gcn::MouseInput &mouseInput, int x, int y)
+{
+    float logicalX;
+    float logicalY;
+    graphics->windowToLogical(x, y, logicalX, logicalY);
+    mouseInput.setX(static_cast<int>(logicalX));
+    mouseInput.setY(static_cast<int>(logicalY));
+}
+
 void SDLInput::pushInput(SDL_Event event)
 {
     gcn::KeyInput keyInput;
@@ -154,8 +164,7 @@ void SDLInput::pushInput(SDL_Event event)
 
       case SDL_MOUSEBUTTONDOWN:
           mMouseDown = true;
-          mouseInput.setX(event.button.x);
-          mouseInput.setY(event.button.y);
+          setMouseCoordinates(mouseInput, event.button.x, event.button.y);
           mouseInput.setButton(convertMouseButton(event.button.button));
           mouseInput.setType(gcn::MouseInput::PRESSED);
           mouseInput.setTimeStamp(SDL_GetTicks());
@@ -164,8 +173,7 @@ void SDLInput::pushInput(SDL_Event event)
 
       case SDL_MOUSEBUTTONUP:
           mMouseDown = false;
-          mouseInput.setX(event.button.x);
-          mouseInput.setY(event.button.y);
+          setMouseCoordinates(mouseInput, event.button.x, event.button.y);
           mouseInput.setButton(convertMouseButton(event.button.button));
           mouseInput.setType(gcn::MouseInput::RELEASED);
           mouseInput.setTimeStamp(SDL_GetTicks());
@@ -173,8 +181,7 @@ void SDLInput::pushInput(SDL_Event event)
           break;
 
       case SDL_MOUSEMOTION:
-          mouseInput.setX(event.button.x);
-          mouseInput.setY(event.button.y);
+          setMouseCoordinates(mouseInput, event.button.x, event.button.y);
           mouseInput.setButton(gcn::MouseInput::EMPTY);
           mouseInput.setType(gcn::MouseInput::MOVED);
           mouseInput.setTimeStamp(SDL_GetTicks());
@@ -184,13 +191,11 @@ void SDLInput::pushInput(SDL_Event event)
       case SDL_MOUSEWHEEL:
           if (event.wheel.y) {
 #if SDL_VERSION_ATLEAST(2, 26, 0)
-              mouseInput.setX(event.wheel.mouseX);
-              mouseInput.setY(event.wheel.mouseY);
+              setMouseCoordinates(mouseInput, event.wheel.mouseX, event.wheel.mouseY);
 #else
               int x, y;
               SDL_GetMouseState(&x, &y);
-              mouseInput.setX(x);
-              mouseInput.setY(y);
+              setMouseCoordinates(mouseInput, x, y);
 #endif
               mouseInput.setButton(gcn::MouseInput::EMPTY);
               mouseInput.setType(event.wheel.y > 0 ? gcn::MouseInput::WHEEL_MOVED_UP
