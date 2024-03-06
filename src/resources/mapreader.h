@@ -27,46 +27,23 @@
 #include <string>
 
 class Map;
-class Properties;
-class Tileset;
 
 /**
  * Reader for XML map files (*.tmx)
  */
 class MapReader
 {
-    public:
-        /**
-         * Read an XML map from a file.
-         */
-        static Map *readMap(const std::string &filename);
+public:
+    /**
+     * Read an XML map from a file.
+     */
+    static Map *readMap(const std::string &filename);
 
-        /**
-         * Read an XML map from a parsed XML tree. The path is used to find the
-         * location of referenced tileset images.
-         */
-        static Map *readMap(xmlNodePtr node, const std::string &path);
-
-    private:
-        /**
-         * Reads the properties element.
-         *
-         * @param node  The <code>properties</code> element.
-         * @param props The Properties instance to which the properties will
-         *              be assigned.
-         */
-        static void readProperties(xmlNodePtr node, Properties* props);
-
-        /**
-         * Reads a map layer and adds it to the given map.
-         */
-        static void readLayer(xmlNodePtr node, Map *map);
-
-        /**
-         * Reads a tile set.
-         */
-        static Tileset *readTileset(xmlNodePtr node, const std::string &path,
-                                    Map *map);
+    /**
+     * Read an XML map from a parsed XML tree. The path is used to find the
+     * location of referenced tileset images.
+     */
+    static Map *readMap(xmlNodePtr node, const std::string &path);
 };
 
-#endif
+#endif // MAPREADER_H

@@ -24,22 +24,20 @@
 
 #define PI 3.14159265
 
-RotationalParticle::RotationalParticle(Map *map, Animation *animation):
+RotationalParticle::RotationalParticle(Map *map, Animation animation):
     ImageParticle(map, nullptr),
-    mAnimation(new SimpleAnimation(animation))
-{
-}
+    mAnimation(std::move(animation))
+{}
 
 RotationalParticle::RotationalParticle(Map *map, xmlNodePtr animationNode,
-                                       const std::string& dyePalettes):
+                                       const std::string &dyePalettes):
     ImageParticle(map, nullptr),
-    mAnimation(new SimpleAnimation(animationNode, dyePalettes))
-{
-}
+    mAnimation(animationNode, dyePalettes)
+{}
 
 RotationalParticle::~RotationalParticle()
 {
-    delete mAnimation;
+    // Prevent ImageParticle from decreasing the reference count of the image
     mImage = nullptr;
 }
 
@@ -50,13 +48,13 @@ bool RotationalParticle::update()
     float rad = atan2(mVelocity.x, mVelocity.y);
     if (rad < 0)
         rad = PI + (PI + rad);
-    int size = mAnimation->getLength();
+    int size = mAnimation.getLength();
     float range = PI / size;
 
     // Determines which frame the particle should play
     if (rad < range || rad > ((PI*2) - range))
     {
-        mAnimation->setFrame(0);
+        mAnimation.setFrame(0);
     }
     else
     {
@@ -64,13 +62,13 @@ bool RotationalParticle::update()
         {
             if (((c * (2 * range)) - range) < rad && rad < ((c * (2 * range)) + range))
             {
-                mAnimation->setFrame(c);
+                mAnimation.setFrame(c);
                 break;
             }
         }
     }
 
-    mImage = mAnimation->getCurrentImage();
+    mImage = mAnimation.getCurrentImage();
 
     return Particle::update();
 }

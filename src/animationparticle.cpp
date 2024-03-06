@@ -23,29 +23,29 @@
 
 #include "simpleanimation.h"
 
-AnimationParticle::AnimationParticle(Map *map, Animation *animation):
+AnimationParticle::AnimationParticle(Map *map, Animation animation):
     ImageParticle(map, nullptr),
-    mAnimation(new SimpleAnimation(animation))
+    mAnimation(std::move(animation))
 {
 }
 
 AnimationParticle::AnimationParticle(Map *map, xmlNodePtr animationNode,
-                                     const std::string& dyePalettes):
+                                     const std::string &dyePalettes):
     ImageParticle(map, nullptr),
-    mAnimation(new SimpleAnimation(animationNode, dyePalettes))
+    mAnimation(animationNode, dyePalettes)
 {
 }
 
 AnimationParticle::~AnimationParticle()
 {
-    delete mAnimation;
+    // Prevent ImageParticle from decreasing the reference count of the image
     mImage = nullptr;
 }
 
 bool AnimationParticle::update()
 {
-    mAnimation->update(10); // particle engine is updated every 10ms
-    mImage = mAnimation->getCurrentImage();
+    mAnimation.update(10); // particle engine is updated every 10ms
+    mImage = mAnimation.getCurrentImage();
 
     return Particle::update();
 }

@@ -23,8 +23,12 @@
 
 void Animation::addFrame(Image *image, int delay, int offsetX, int offsetY)
 {
-    Frame frame = { image, delay, offsetX, offsetY };
-    mFrames.push_back(frame);
+    auto &frame = mFrames.emplace_back();
+    frame.image = image;
+    frame.delay = delay;
+    frame.offsetX = offsetX;
+    frame.offsetY = offsetY;
+
     mDuration += delay;
 }
 

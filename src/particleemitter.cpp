@@ -464,13 +464,11 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
         }
         else if (mParticleRotation.getLength() > 0)
         {
-            auto *newAnimation = new Animation(mParticleRotation);
-            newParticle = new RotationalParticle(mMap, newAnimation);
+            newParticle = new RotationalParticle(mMap, mParticleRotation);
         }
         else if (mParticleAnimation.getLength() > 0)
         {
-            auto *newAnimation = new Animation(mParticleAnimation);
-            newParticle = new AnimationParticle(mMap, newAnimation);
+            newParticle = new AnimationParticle(mMap, mParticleAnimation);
         }
         else
         {

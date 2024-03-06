@@ -25,6 +25,7 @@
 #include "client.h"
 #include "configuration.h"
 #include "graphics.h"
+#include "log.h"
 #include "particle.h"
 #include "simpleanimation.h"
 #include "tileset.h"
@@ -62,32 +63,22 @@ struct Location
     MetaTile *tile;
 };
 
-TileAnimation::TileAnimation(Animation *ani):
-    mLastImage(nullptr)
+TileAnimation::TileAnimation(Animation animation)
+    : mAnimation(std::move(animation))
 {
-    mAnimation = new SimpleAnimation(ani);
-}
-
-TileAnimation::~TileAnimation()
-{
-    delete mAnimation;
 }
 
 void TileAnimation::update(int ticks)
 {
-    if (!mAnimation)
-        return;
-
-    // update animation
-    mAnimation->update(ticks);
+    mAnimation.update(ticks);
 
     // exchange images
-    Image *img = mAnimation->getCurrentImage();
+    Image *img = mAnimation.getCurrentImage();
     if (img != mLastImage)
     {
-        for (auto &affected : mAffected)
+        for (auto &[layer, index] : mAffected)
         {
-            affected.first->setTile(affected.second, img);
+            layer->setTile(index, img);
         }
         mLastImage = img;
     }
@@ -187,10 +178,9 @@ void MapLayer::draw(Graphics *graphics,
     // Draw any remaining actors
     if (mIsFringeLayer)
     {
-        while (ai != actors.end())
+        for (; ai != actors.end(); ++ai)
         {
             (*ai)->draw(graphics, -scrollX, -scrollY);
-            ai++;
         }
     }
 }
@@ -247,7 +237,6 @@ Map::~Map()
     delete_all(mTilesets);
     delete_all(mForegrounds);
     delete_all(mBackgrounds);
-    delete_all(mTileAnimations);
 }
 
 void Map::initializeAmbientLayers()
@@ -320,9 +309,9 @@ bool actorCompare(const Actor *a, const Actor *b)
 void Map::update(int ticks)
 {
     // Update animated tiles
-    for (auto &tileAnimation : mTileAnimations)
+    for (auto &[_, tileAnimation] : mTileAnimations)
     {
-        tileAnimation.second->update(ticks);
+        tileAnimation.update(ticks);
     }
 }
 
@@ -348,38 +337,22 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
                       config.getIntValue("OverlayDetail"));
 
     // draw the game world
-    Layers::const_iterator layeri = mLayers.begin();
-
-    bool overFringe = false;
-
-    if (mDebugFlags & DEBUG_SPECIAL3)
+    for (auto &layer : mLayers)
     {
-        for (; layeri != mLayers.end(); ++layeri)
-        {
-            if ((*layeri)->isFringeLayer())
-            {
-                (*layeri)->draw(graphics,
-                                startX, startY, endX, endY,
-                                scrollX, scrollY,
-                                mActors, mDebugFlags);
-            }
-        }
-    }
-    else
-    {
-        for (; layeri != mLayers.end() && !overFringe; ++layeri)
-        {
-            if (((*layeri)->getMask() & mMask) == 0)
-                continue;
+        if ((layer->getMask() & mMask) == 0)
+            continue;
 
-            if ((*layeri)->isFringeLayer() && (mDebugFlags & DEBUG_SPECIAL2))
-                overFringe = true;
+        if (!layer->isFringeLayer() && (mDebugFlags & DEBUG_SPECIAL3))
+            continue;
 
-            (*layeri)->draw(graphics,
-                            startX, startY, endX, endY,
-                            scrollX, scrollY,
-                            mActors, mDebugFlags);
-        }
+        layer->draw(graphics,
+                    startX, startY, endX, endY,
+                    scrollX, scrollY,
+                    mActors, mDebugFlags);
+
+        if (layer->isFringeLayer() && (mDebugFlags & (DEBUG_SPECIAL2 |
+                                                      DEBUG_SPECIAL3)))
+            break;
     }
 
     // If the transparency hasn't been disabled,
@@ -387,20 +360,15 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     {
         // We draw beings with a lower opacity to make them visible
         // even when covered by a wall or some other elements...
-        auto ai = mActors.begin();
-        while (ai != mActors.end())
+        for (auto actor : mActors)
         {
-            if (Actor *actor = *ai)
+            // For now, just draw actors with only one layer.
+            if (actor->drawnWhenBehind())
             {
-                // For now, just draw actors with only one layer.
-                if (actor->drawnWhenBehind())
-                {
-                    actor->setAlpha(0.3f);
-                    actor->draw(graphics, -scrollX, -scrollY);
-                    actor->setAlpha(1.0f);
-                }
+                actor->setAlpha(0.3f);
+                actor->draw(graphics, -scrollX, -scrollY);
+                actor->setAlpha(1.0f);
             }
-            ai++;
         }
     }
 
@@ -409,7 +377,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 }
 
 void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
-                        int debugFlags)
+                        int debugFlags) const
 {
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
     int startX = scrollX / mTileWidth;
@@ -602,7 +570,7 @@ bool Map::occupied(int x, int y) const
     return false;
 }
 
-Vector Map::getTileCenter(int x, int y)
+Vector Map::getTileCenter(int x, int y) const
 {
     Vector tileCenterPos;
 
@@ -810,7 +778,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
     startTile->Gcost = 0;
 
     // Add the start point to the open list
-    openList.push(Location(startX, startY, startTile));
+    openList.emplace(startX, startY, startTile);
 
     bool foundPath = false;
 
@@ -907,7 +875,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                        work reliably if the heuristic cost is higher than the
                        real cost. In particular, using Manhattan distance is
                        forbidden here. */
-                    int dx = std::abs(x - destX), dy = std::abs(y - destY);
+                    int dx = std::abs(x - destX);
+                    int dy = std::abs(y - destY);
                     newTile->Hcost = std::abs(dx - dy) * basicCost +
                         std::min(dx, dy) * (basicCost * 362 / 256);
 
@@ -923,7 +892,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                     {
                         // Add this tile to the open list
                         newTile->whichList = mOnOpenList;
-                        openList.push(Location(x, y, newTile));
+                        openList.emplace(x, y, newTile);
                     }
                     else
                     {
@@ -944,7 +913,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
 
                     // Add this tile to the open list (it's already
                     // there, but this instance has a lower F score)
-                    openList.push(Location(x, y, newTile));
+                    openList.emplace(x, y, newTile);
                 }
             }
         }
@@ -979,7 +948,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
         while (pathX != startX || pathY != startY)
         {
             // Add the new path node to the start of the path list
-            path.push_front(Position(pathX, pathY));
+            path.emplace_front(pathX, pathY);
 
             // Find out the next parent
             MetaTile *tile = getMetaTile(pathX, pathY);
@@ -994,25 +963,24 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
 void Map::addParticleEffect(const std::string &effectFile, int x, int y, int w,
                             int h)
 {
-    ParticleEffectData newEffect;
+    ParticleEffectData &newEffect = particleEffects.emplace_back();
     newEffect.file = effectFile;
     newEffect.x = x;
     newEffect.y = y;
     newEffect.w = w;
     newEffect.h = h;
-    particleEffects.push_back(newEffect);
-
 }
 
 void Map::initializeParticleEffects(Particle *particleEngine)
 {
-    Particle *p;
-
     if (config.getBoolValue("particleeffects"))
     {
         for (auto &particleEffect : particleEffects)
         {
-            p = particleEngine->addEffect(particleEffect.file, particleEffect.x, particleEffect.y);
+            Particle *p = particleEngine->addEffect(particleEffect.file,
+                                                    particleEffect.x,
+                                                    particleEffect.y);
+
             if (p && particleEffect.w > 0 && particleEffect.h > 0)
             {
                 p->adjustEmitterSize(particleEffect.w, particleEffect.h);
@@ -1021,10 +989,19 @@ void Map::initializeParticleEffects(Particle *particleEngine)
     }
 }
 
-TileAnimation *Map::getAnimationForGid(int gid) const
+void Map::addAnimation(int gid, TileAnimation animation)
+{
+    auto const [_, inserted] = mTileAnimations.try_emplace(gid, std::move(animation));
+    if (!inserted)
+    {
+        logger->error(strprintf("Duplicate tile animation for gid %d", gid));
+    }
+}
+
+TileAnimation *Map::getAnimationForGid(int gid)
 {
     auto i = mTileAnimations.find(gid);
-    return (i == mTileAnimations.end()) ? NULL : i->second;
+    return i == mTileAnimations.end() ? nullptr : &i->second;
 }
 
 void Map::setMask(int mask)

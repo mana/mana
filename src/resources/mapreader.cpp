@@ -37,8 +37,19 @@
 
 #include <iostream>
 
-// DO NOT CHANGE THESE STRINGS TO BE PASSED BY REFERENCE, AS THIS METHOD ALTERS
-// (THAT IS, DESTROYS) THEM.
+static void readProperties(xmlNodePtr node, Properties* props);
+
+static void readLayer(xmlNodePtr node, Map *map);
+
+static Tileset *readTileset(xmlNodePtr node,
+                            const std::string &path,
+                            Map *map);
+
+static void readTileAnimation(xmlNodePtr tileNode,
+                              Tileset *set,
+                              unsigned tileGID,
+                              Map *map);
+
 static std::string resolveRelativePath(std::string base, std::string relative)
 {
     // Remove trailing "/", if present
@@ -91,7 +102,8 @@ Map *MapReader::readMap(const std::string &filename)
         logger->log("Error while parsing map file (%s)!", filename.c_str());
     }
 
-    if (map) map->setProperty("_filename", filename);
+    if (map)
+        map->setProperty("_filename", filename);
 
     return map;
 }
@@ -204,7 +216,14 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
     return map;
 }
 
-void MapReader::readProperties(xmlNodePtr node, Properties *props)
+/**
+ * Reads the properties element.
+ *
+ * @param node  The <code>properties</code> element.
+ * @param props The Properties instance to which the properties will
+ *              be assigned.
+ */
+static void readProperties(xmlNodePtr node, Properties *props)
 {
     for_each_xml_child_node(childNode, node)
     {
@@ -251,7 +270,10 @@ static void setTile(Map *map, MapLayer *layer, int x, int y, unsigned gid)
     }
 }
 
-void MapReader::readLayer(xmlNodePtr node, Map *map)
+/**
+ * Reads a map layer and adds it to the given map.
+ */
+static void readLayer(xmlNodePtr node, Map *map)
 {
     // Layers are not necessarily the same size as the map
     const int w = XML::getProperty(node, "width", map->getWidth());
@@ -319,17 +341,17 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
             // Read base64 encoded map file
             xmlNodePtr dataChild = childNode->xmlChildrenNode;
-            if (!dataChild)
+            if (!dataChild || !dataChild->content)
                 continue;
 
-            int len = strlen((const char*)dataChild->content) + 1;
-            auto *charData = new unsigned char[len + 1];
-            const char *charStart = (const char*) xmlNodeGetContent(dataChild);
+            auto *charStart = reinterpret_cast<const char*>(dataChild->content);
+            auto *charData = new unsigned char[strlen(charStart) + 1];
             unsigned char *charIndex = charData;
 
             while (*charStart)
             {
-                if (*charStart != ' ' && *charStart != '\t' &&
+                if (*charStart != ' ' &&
+                    *charStart != '\t' &&
                     *charStart != '\n')
                 {
                     *charIndex = *charStart;
@@ -341,7 +363,9 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
             int binLen;
             unsigned char *binData =
-                php3_base64_decode(charData, strlen((char*)charData), &binLen);
+                php3_base64_decode(charData,
+                                   strlen(reinterpret_cast<const char*>(charData)),
+                                   &binLen);
 
             delete[] charData;
 
@@ -389,21 +413,29 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
         }
         else if (encoding == "csv")
         {
-            xmlNodePtr dataChild = childNode->xmlChildrenNode;
-            if (!dataChild)
-                continue;
-
-            const char *data = (const char*) xmlNodeGetContent(dataChild);
-            std::string csv(data);
-
-            size_t pos = 0;
-            size_t oldPos = 0;
-
-            while (oldPos != csv.npos)
+            if (!childNode->children || !childNode->children->content)
             {
-                pos = csv.find_first_of(",", oldPos);
+                logger->log("Error: CSV layer data is empty!");
+                continue;
+            }
 
-                unsigned gid = atol(csv.substr(oldPos, pos - oldPos).c_str());
+            xmlChar *data = childNode->children->content;
+            auto *pos = reinterpret_cast<const char*>(data);
+
+            for (;;)
+            {
+                // Try to parse the next number at 'pos'
+                errno = 0;
+                char *end;
+                unsigned gid = strtol(pos, &end, 10);
+                if (pos == end) // No number found
+                    break;
+
+                if (errno == ERANGE)
+                {
+                    logger->log("Error: Range error in tile layer data!");
+                    break;
+                }
 
                 setTile(map, layer, x, y, gid);
 
@@ -417,7 +449,14 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                         break;
                 }
 
-                oldPos = pos + 1;
+                // Skip the comma, or break if we're done
+                pos = strchr(end, ',');
+                if (!pos)
+                {
+                    logger->log("Error: CSV layer data too short!");
+                    break;
+                }
+                ++pos;
             }
         }
         else
@@ -451,13 +490,16 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
     }
 }
 
-Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
-                                Map *map)
+/**
+ * Reads a tile set.
+ */
+static Tileset *readTileset(xmlNodePtr node, const std::string &path,
+                            Map *map)
 {
     unsigned firstGid = XML::getProperty(node, "firstgid", 0);
     int margin = XML::getProperty(node, "margin", 0);
     int spacing = XML::getProperty(node, "spacing", 0);
-    XML::Document* doc = nullptr;
+    XML::Document *doc = nullptr;
     Tileset *set = nullptr;
     std::string pathDir(path);
 
@@ -487,7 +529,7 @@ Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
                 std::string sourceStr = resolveRelativePath(pathDir, source);
 
                 ResourceManager *resman = ResourceManager::getInstance();
-                Image* tilebmp = resman->getImage(sourceStr);
+                Image *tilebmp = resman->getImage(sourceStr);
 
                 if (tilebmp)
                 {
@@ -502,49 +544,14 @@ Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
                 }
             }
         }
-        else if (xmlStrEqual(childNode->name, BAD_CAST "tile"))
+        else if (set && xmlStrEqual(childNode->name, BAD_CAST "tile"))
         {
+            const int tileGID = firstGid + XML::getProperty(childNode, "id", 0);
+
             for_each_xml_child_node(tileNode, childNode)
             {
-                if (!xmlStrEqual(tileNode->name, BAD_CAST "properties")) continue;
-
-                int tileGID = firstGid + XML::getProperty(childNode, "id", 0);
-
-                // read tile properties to a map for simpler handling
-                std::map<std::string, int> tileProperties;
-                for_each_xml_child_node(propertyNode, tileNode)
-                {
-                    if (!xmlStrEqual(propertyNode->name, BAD_CAST "property")) continue;
-                    std::string name = XML::getProperty(propertyNode, "name", "");
-                    int value = XML::getProperty(propertyNode, "value", 0);
-                    tileProperties[name] = value;
-                    logger->log("Tile Prop of %d \"%s\" = \"%d\"", tileGID, name.c_str(), value);
-                }
-
-                // create animation
-                if (!set) continue;
-
-                auto *ani = new Animation;
-                for (int i = 0; ;i++)
-                {
-                    std::map<std::string, int>::iterator iFrame, iDelay;
-                    iFrame = tileProperties.find("animation-frame" + toString(i));
-                    iDelay = tileProperties.find("animation-delay" + toString(i));
-                    if (iFrame != tileProperties.end() && iDelay != tileProperties.end())
-                        ani->addFrame(set->get(iFrame->second), iDelay->second, 0, 0);
-                    else
-                        break;
-                }
-
-                if (ani->getLength() > 0)
-                {
-                    map->addAnimation(tileGID, new TileAnimation(ani));
-                    logger->log("Animation length: %d", ani->getLength());
-                }
-                else
-                {
-                    delete ani;
-                }
+                if (xmlStrEqual(tileNode->name, BAD_CAST "animation"))
+                    readTileAnimation(tileNode, set, tileGID, map);
             }
         }
     }
@@ -552,4 +559,24 @@ Tileset *MapReader::readTileset(xmlNodePtr node, const std::string &path,
     delete doc;
 
     return set;
+}
+
+static void readTileAnimation(xmlNodePtr tileNode,
+                              Tileset *set,
+                              unsigned tileGID,
+                              Map *map)
+{
+    Animation ani;
+    for_each_xml_child_node(frameNode, tileNode)
+    {
+        if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
+        {
+            const int tileId = XML::getProperty(frameNode, "tileid", 0);
+            const int duration = XML::getProperty(frameNode, "duration", 0) / 10;
+            ani.addFrame(set->get(tileId), duration, 0, 0);
+        }
+    }
+
+    if (ani.getLength() > 0)
+        map->addAnimation(tileGID, TileAnimation(std::move(ani)));
 }

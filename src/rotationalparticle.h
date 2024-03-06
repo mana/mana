@@ -23,6 +23,7 @@
 #define ROTATIONAL_PARTICLE_H
 
 #include "imageparticle.h"
+#include "simpleanimation.h"
 
 #include <libxml/tree.h>
 
@@ -33,17 +34,17 @@ class SimpleAnimation;
 class RotationalParticle : public ImageParticle
 {
     public:
-        RotationalParticle(Map *map, Animation *animation);
+        RotationalParticle(Map *map, Animation animation);
 
         RotationalParticle(Map *map, xmlNodePtr animationNode,
-                           const std::string& dyePalettes = std::string());
+                           const std::string &dyePalettes = std::string());
 
         ~RotationalParticle() override;
 
         bool update() override;
 
     private:
-        SimpleAnimation *mAnimation; /**< Used animation for this particle */
+        SimpleAnimation mAnimation; /**< Used animation for this particle */
 };
 
 #endif

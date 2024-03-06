@@ -26,7 +26,7 @@ Actor::Actor() = default;
 
 Actor::~Actor()
 {
-    setMap(nullptr);
+    Actor::setMap(nullptr);
 }
 
 void Actor::setMap(Map *map)

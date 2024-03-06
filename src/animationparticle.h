@@ -23,27 +23,28 @@
 #define ANIMATION_PARTICLE_H
 
 #include "imageparticle.h"
+#include "simpleanimation.h"
 
 #include <libxml/tree.h>
 
-class Animation;
+#include <memory>
+
 class Map;
-class SimpleAnimation;
 
 class AnimationParticle : public ImageParticle
 {
     public:
-        AnimationParticle(Map *map, Animation *animation);
+        AnimationParticle(Map *map, Animation animation);
 
         AnimationParticle(Map *map, xmlNodePtr animationNode,
-                          const std::string& dyePalettes = std::string());
+                          const std::string &dyePalettes = std::string());
 
         ~AnimationParticle() override;
 
         bool update() override;
 
     private:
-        SimpleAnimation *mAnimation; /**< Used animation for this particle */
+        SimpleAnimation mAnimation; /**< Used animation for this particle */
 };
 
 #endif

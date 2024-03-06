@@ -23,6 +23,8 @@
 
 #include <guichan/widget.hpp>
 
+#include <memory>
+
 class SimpleAnimation;
 
 /**
@@ -39,7 +41,7 @@ public:
     void draw(gcn::Graphics *graphics) override;
 
 private:
-    SimpleAnimation *mIndicator;
+    std::unique_ptr<SimpleAnimation> mIndicator;
 };
 
 #endif // PROGRESSINDICATOR_H

@@ -22,33 +22,30 @@
 #ifndef SIMPLEANIMAION_H
 #define SIMPLEANIMAION_H
 
+#include "resources/animation.h"
+
 #include "utils/xml.h"
 
-class Animation;
-class Frame;
 class Graphics;
-class Image;
 
 /**
  * This class is a leightweight alternative to the AnimatedSprite class.
  * It hosts a looping animation without actions and directions.
  */
-class SimpleAnimation
+class SimpleAnimation final
 {
     public:
         /**
          * Creates a simple animation with an already created \a animation.
          * Takes ownership over the given animation.
          */
-        SimpleAnimation(Animation *animation);
+        SimpleAnimation(Animation animation);
 
         /**
          * Creates a simple animation that creates its animation from XML Data.
          */
         SimpleAnimation(xmlNodePtr animationNode,
-                        const std::string& dyePalettes = std::string());
-
-        ~SimpleAnimation();
+                        const std::string &dyePalettes = std::string());
 
         void setFrame(int frame);
 
@@ -70,19 +67,19 @@ class SimpleAnimation
                                 const std::string& dyePalettes = std::string());
 
         /** The hosted animation. */
-        Animation *mAnimation;
+        Animation mAnimation;
 
         /** Time in game ticks the current frame is shown. */
-        int mAnimationTime;
+        int mAnimationTime = 0;
 
         /** Index of current animation phase. */
-        int mAnimationPhase;
+        int mAnimationPhase = 0;
 
         /** Current animation phase. */
-        Frame *mCurrentFrame;
+        Frame *mCurrentFrame = nullptr;
 
         /**  Tell whether the animation is ready */
-        bool mInitialized;
+        bool mInitialized = false;
 };
 
 #endif

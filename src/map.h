@@ -25,20 +25,16 @@
 #include "actor.h"
 #include "position.h"
 #include "properties.h"
+#include "simpleanimation.h"
 
 #include <list>
 #include <vector>
 
-class Animation;
 class AmbientLayer;
 class Graphics;
 class MapLayer;
 class Particle;
-class SimpleAnimation;
 class Tileset;
-
-using Tilesets = std::vector<Tileset *>;
-using Layers = std::vector<MapLayer *>;
 
 const int DEFAULT_TILE_LENGTH = 32;
 
@@ -65,15 +61,17 @@ struct MetaTile
 class TileAnimation
 {
     public:
-        TileAnimation(Animation *ani);
-        ~TileAnimation();
+        TileAnimation(Animation animation);
+
         void update(int ticks = 1);
+
         void addAffectedTile(MapLayer *layer, int index)
         { mAffected.emplace_back(layer, index); }
+
     private:
-        std::list<std::pair<MapLayer*, int> > mAffected;
-        SimpleAnimation *mAnimation;
-        Image *mLastImage;
+        std::vector<std::pair<MapLayer*, int> > mAffected;
+        SimpleAnimation mAnimation;
+        Image *mLastImage = nullptr;
 };
 
 /**
@@ -212,7 +210,7 @@ class Map : public Properties
          * Visualizes collision layer for debugging
          */
         void drawCollision(Graphics *graphics, int scrollX, int scrollY,
-                           int debugFlags);
+                           int debugFlags) const;
 
         /**
          * Adds a layer to this map. The map takes ownership of the layer.
@@ -279,7 +277,7 @@ class Map : public Properties
          * @param x the horizontal tile position
          * @param y the vertical tile position
          */
-        Vector getTileCenter(int x, int y);
+        Vector getTileCenter(int x, int y) const;
 
         std::string getMusicFile() const;
         std::string getName() const;
@@ -327,8 +325,7 @@ class Map : public Properties
         /**
          * Adds a tile animation to the map
          */
-        void addAnimation(int gid, TileAnimation *animation)
-        { mTileAnimations[gid] = animation; }
+        void addAnimation(int gid, TileAnimation animation);
 
         void setDebugFlags(int flags) { mDebugFlags = flags; }
 
@@ -337,7 +334,7 @@ class Map : public Properties
         /**
          * Gets the tile animation for a specific gid
          */
-        TileAnimation *getAnimationForGid(int gid) const;
+        TileAnimation *getAnimationForGid(int gid);
 
         void setMask(int mask);
 
@@ -392,8 +389,8 @@ class Map : public Properties
         int mTileWidth, mTileHeight;
         int mMaxTileHeight, mMaxTileWidth;
         MetaTile *mMetaTiles;
-        Layers mLayers;
-        Tilesets mTilesets;
+        std::vector<MapLayer *> mLayers;
+        std::vector<Tileset *> mTilesets;
         Actors mActors;
 
         // debug flags
@@ -419,7 +416,7 @@ class Map : public Properties
         };
         std::list<ParticleEffectData> particleEffects;
 
-        std::map<int, TileAnimation*> mTileAnimations;
+        std::map<int, TileAnimation> mTileAnimations;
 
         int mMask = 1;
 };

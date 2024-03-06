@@ -31,29 +31,18 @@
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
-SimpleAnimation::SimpleAnimation(Animation *animation):
-    mAnimation(animation),
-    mAnimationTime(0),
-    mAnimationPhase(0),
-    mCurrentFrame(mAnimation->getFrame(0)),
+SimpleAnimation::SimpleAnimation(Animation animation):
+    mAnimation(std::move(animation)),
+    mCurrentFrame(mAnimation.getFrame(0)),
     mInitialized(true)
 {
 }
 
 SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode,
-                                 const std::string& dyePalettes):
-    mAnimation(new Animation),
-    mAnimationTime(0),
-    mAnimationPhase(0),
-    mInitialized(false)
+                                 const std::string &dyePalettes)
 {
     initializeAnimation(animationNode, dyePalettes);
-    mCurrentFrame = mAnimation->getFrame(0);
-}
-
-SimpleAnimation::~SimpleAnimation()
-{
-    delete mAnimation;
+    mCurrentFrame = mAnimation.getFrame(0);
 }
 
 bool SimpleAnimation::draw(Graphics *graphics, int posX, int posY) const
@@ -76,10 +65,10 @@ void SimpleAnimation::setFrame(int frame)
 {
     if (frame < 0)
         frame = 0;
-    if (frame >= mAnimation->getLength())
-        frame = mAnimation->getLength() - 1;
+    if (frame >= mAnimation.getLength())
+        frame = mAnimation.getLength() - 1;
     mAnimationPhase = frame;
-    mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
+    mCurrentFrame = mAnimation.getFrame(mAnimationPhase);
 }
 
 void SimpleAnimation::update(int timePassed)
@@ -93,35 +82,29 @@ void SimpleAnimation::update(int timePassed)
             mAnimationTime -= mCurrentFrame->delay;
             mAnimationPhase++;
 
-            if (mAnimationPhase >= mAnimation->getLength())
+            if (mAnimationPhase >= mAnimation.getLength())
                 mAnimationPhase = 0;
 
-            mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
+            mCurrentFrame = mAnimation.getFrame(mAnimationPhase);
         }
     }
 }
 
 int SimpleAnimation::getLength() const
 {
-    if (mAnimation)
-        return mAnimation->getLength();
-    else
-        return 0;
+    return mAnimation.getLength();
 }
 
 Image *SimpleAnimation::getCurrentImage() const
 {
     if (mCurrentFrame)
         return mCurrentFrame->image;
-    else
-        return nullptr;
+    return nullptr;
 }
 
 void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode,
                                           const std::string& dyePalettes)
 {
-    mInitialized = false;
-
     if (!animationNode)
         return;
 
@@ -174,7 +157,7 @@ void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode,
                 continue;
             }
 
-            mAnimation->addFrame(img, delay, offsetX, offsetY);
+            mAnimation.addFrame(img, delay, offsetX, offsetY);
         }
         else if (xmlStrEqual(frameNode->name, BAD_CAST "sequence"))
         {
@@ -197,13 +180,13 @@ void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode,
                     continue;
                 }
 
-                mAnimation->addFrame(img, delay, offsetX, offsetY);
+                mAnimation.addFrame(img, delay, offsetX, offsetY);
                 start++;
             }
         }
         else if (xmlStrEqual(frameNode->name, BAD_CAST "end"))
         {
-            mAnimation->addTerminator();
+            mAnimation.addTerminator();
         }
     }
 

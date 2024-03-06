@@ -35,19 +35,16 @@ ProgressIndicator::ProgressIndicator()
     ImageSet *images = Theme::getImageSetFromTheme("progress-indicator.png",
                                                    32, 32);
 
-    auto *anim = new Animation;
+    Animation anim;
     for (size_t i = 0; i < images->size(); ++i)
-        anim->addFrame(images->get(i), 100, 0, 0);
+        anim.addFrame(images->get(i), 100, 0, 0);
 
-    mIndicator = new SimpleAnimation(anim);
+    mIndicator = std::make_unique<SimpleAnimation>(std::move(anim));
 
     setSize(32, 32);
 }
 
-ProgressIndicator::~ProgressIndicator()
-{
-    delete mIndicator;
-}
+ProgressIndicator::~ProgressIndicator() = default;
 
 void ProgressIndicator::logic()
 {
