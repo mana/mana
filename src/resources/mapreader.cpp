@@ -239,6 +239,9 @@ static void setTile(Map *map, MapLayer *layer, int x, int y, unsigned gid)
         // Set regular tile on a layer
         Image * const img = set ? set->get(gid - set->getFirstGid()) : nullptr;
         layer->setTile(x, y, img);
+
+        if (TileAnimation *ani = map->getAnimationForGid(gid))
+            ani->addAffectedTile(layer, x + y * layer->getWidth());
     }
     else
     {
@@ -370,12 +373,6 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                         binData[i + 3] << 24;
 
                     setTile(map, layer, x, y, gid);
-
-                    TileAnimation* ani = map->getAnimationForGid(gid);
-                    if (ani)
-                    {
-                        ani->addAffectedTile(layer, x + y * w);
-                    }
 
                     x++;
                     if (x == w)

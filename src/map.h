@@ -93,6 +93,8 @@ class MapLayer
 
         ~MapLayer();
 
+        int getWidth() const { return mWidth; }
+
         /**
          * Set tile image, with x and y in layer coordinates.
          */
