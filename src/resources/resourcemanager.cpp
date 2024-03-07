@@ -465,31 +465,24 @@ void *ResourceManager::loadFile(const std::string &filename, int &filesize,
     // Close the file and let the user deallocate the memory
     PHYSFS_close(file);
 
-    unsigned char *inflated;
-    unsigned int inflatedSize;
-
     if (inflate && filename.find(".gz", filename.length() - 3)
             != std::string::npos)
     {
+        unsigned char *inflated;
+
         // Inflate the gzipped map data
-        inflatedSize =
-            inflateMemory((unsigned char*) buffer, filesize, inflated);
+        filesize = inflateMemory((unsigned char*) buffer, filesize, inflated);
         free(buffer);
 
-        if (inflated == nullptr)
-        {
-            logger->log("Could not decompress file: %s",
-                        filename.c_str());
-            return nullptr;
-        }
+        buffer = inflated;
 
-        filesize = inflatedSize;
-        return inflated;
+        if (!buffer)
+        {
+            logger->log("Could not decompress file: %s", filename.c_str());
+        }
     }
-    else
-    {
-        return buffer;
-    }
+
+    return buffer;
 }
 
 bool ResourceManager::copyFile(const std::string &src, const std::string &dst)
