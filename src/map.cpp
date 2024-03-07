@@ -252,6 +252,7 @@ void Map::initializeAmbientLayers()
             ambientLayer->mSpeedX = getFloatProperty(name + "scrollX");
             ambientLayer->mSpeedY = getFloatProperty(name + "scrollY");
             ambientLayer->mMask = getIntProperty(name + "mask", 1);
+            ambientLayer->mKeepRatio = getBoolProperty(name + "keepratio");
 
             list.push_back(ambientLayer);
 
@@ -501,7 +502,7 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
         if ((layer->mMask & mMask) == 0)
             continue;
 
-        layer->draw(graphics, graphics->getWidth(), graphics->getHeight());
+        layer->draw(graphics);
 
         // Detail 1: only one overlay, higher: all overlays
         if (detail == 1)

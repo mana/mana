@@ -118,23 +118,23 @@ void SDLGraphics::drawRescaledImagePattern(Image *image,
     if (scaledHeight <= 0 || scaledWidth <= 0)
         return;
 
+    SDL_Rect srcRect;
+    srcRect.x = image->mBounds.x;
+    srcRect.y = image->mBounds.y;
+
     for (int py = 0; py < h; py += scaledHeight)    // Y position on pattern plane
     {
         int dh = (py + scaledHeight >= h) ? h - py : scaledHeight;
-        int srcY = image->mBounds.y;
         int dstY = y + py + mClipStack.top().yOffset;
 
         for (int px = 0; px < w; px += scaledWidth) // X position on pattern plane
         {
             int dw = (px + scaledWidth >= w) ? w - px : scaledWidth;
-            int srcX = image->mBounds.x;
             int dstX = x + px + mClipStack.top().xOffset;
 
             SDL_Rect dstRect;
-            SDL_Rect srcRect;
             dstRect.x = dstX; dstRect.y = dstY;
             dstRect.w = dw;   dstRect.h = dh;
-            srcRect.x = srcX; srcRect.y = srcY;
             srcRect.w = dw;   srcRect.h = dh;
 
             if (SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect))

@@ -21,7 +21,6 @@
 #include "resources/ambientlayer.h"
 
 #include "graphics.h"
-#include "video.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -30,8 +29,7 @@ AmbientLayer::AmbientLayer(Image *img)
     : mImage(img)
 {}
 
-AmbientLayer::~AmbientLayer()
-{}
+AmbientLayer::~AmbientLayer() = default;
 
 void AmbientLayer::update(int timePassed, float dx, float dy)
 {
@@ -58,14 +56,27 @@ void AmbientLayer::update(int timePassed, float dx, float dy)
         mPosY += imgH;
 }
 
-void AmbientLayer::draw(Graphics *graphics, int x, int y)
+void AmbientLayer::draw(Graphics *graphics)
 {
+    const auto screenWidth = graphics->getWidth();
+    const auto screenHeight = graphics->getHeight();
+    const auto x = static_cast<int>(mPosX);
+    const auto y = static_cast<int>(mPosY);
+
     if (!mKeepRatio)
+    {
         graphics->drawImagePattern(mImage,
-            (int) -mPosX, (int) -mPosY, x + (int) mPosX, y + (int) mPosY);
+                                   -x, -y,
+                                   screenWidth + x,
+                                   screenHeight + y);
+    }
     else
+    {
         graphics->drawRescaledImagePattern(mImage,
-              (int) -mPosX, (int) -mPosY, x + (int) mPosX, y + (int) mPosY,
-         (int) mImage->getWidth() / defaultScreenWidth * graphics->getWidth(),
-     (int) mImage->getHeight() / defaultScreenHeight * graphics->getHeight());
+                                           -x, -y,
+                                           screenWidth + x,
+                                           screenHeight + y,
+                                           mImage->getWidth() * screenWidth / 800,
+                                           mImage->getHeight() * screenHeight / 600);
+    }
 }

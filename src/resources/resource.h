@@ -59,7 +59,7 @@ class Resource
         { return mIdPath; }
 
     protected:
-        virtual ~Resource() {}
+        virtual ~Resource() = default;
 
     private:
         std::string mIdPath;    /**< Path identifying this resource. */

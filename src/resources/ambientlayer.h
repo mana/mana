@@ -39,7 +39,7 @@ class AmbientLayer
 
         void update(int timePassed, float dx, float dy);
 
-        void draw(Graphics *graphics, int x, int y);
+        void draw(Graphics *graphics);
 
         float mParallax = 0;      /**< Scroll factor based on camera position. */
         float mSpeedX = 0;        /**< Scrolling speed in X direction. */
