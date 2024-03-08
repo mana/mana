@@ -29,12 +29,8 @@
 #include "game.h"
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
-#ifdef USE_OPENGL
-#include "openglgraphics.h"
-#endif
 #include "playerrelations.h"
 #include "sound.h"
-#include "units.h"
 
 #include "gui/changeemaildialog.h"
 #include "gui/changepassworddialog.h"
@@ -86,8 +82,6 @@
 #ifdef _WIN32
 #include <SDL_syswm.h>
 #include "utils/specialfolder.h"
-#else
-#include <cerrno>
 #endif
 
 #include <sys/stat.h>
@@ -152,9 +146,8 @@ int get_elapsed_time(int startTime)
 {
     if (startTime <= tick_time)
         return (tick_time - startTime) * MILLISECONDS_IN_A_TICK;
-    else
-        return (tick_time + (MAX_TICK_VALUE - startTime))
-                * MILLISECONDS_IN_A_TICK;
+
+    return (tick_time + (MAX_TICK_VALUE - startTime)) * MILLISECONDS_IN_A_TICK;
 }
 
 bool isDoubleClick(int selected)
@@ -172,6 +165,36 @@ bool isDoubleClick(int selected)
     lastTime = SDL_GetTicks();
     lastSelected = selected;
     return false;
+}
+
+/**
+ * A simple but effective frame rate limiter.
+ * Based on FPSmanager in SDL2_gfx.
+ */
+void FpsManager::limitFps(int fpsLimit)
+{
+    if (fpsLimit <= 0)
+        return;
+
+    const auto ticks = SDL_GetTicks();
+
+    // Need to reset if the FPS limit changes
+    if (mBaseTicks > 0 && mFpsLimit == fpsLimit)
+    {
+        ++mFrameCount;
+        const auto targetTicks = mBaseTicks + mFrameCount * 1000 / mFpsLimit;
+
+        // Make sure ticks hasn't wrapped
+        if (ticks > mBaseTicks && targetTicks > ticks)
+        {
+            SDL_Delay(targetTicks - ticks);
+            return;
+        }
+    }
+
+    mFpsLimit = fpsLimit;
+    mFrameCount = 0;
+    mBaseTicks = ticks;
 }
 
 
@@ -411,9 +434,6 @@ Client::Client(const Options &options):
     mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, nullptr);
     mSecondsCounterId = SDL_AddTimer(1000, nextSecond, nullptr);
 
-    // Initialize frame limiting
-    SDL_initFramerate(&mFpsManager);
-
     listen(Event::ConfigChannel);
 
     //TODO: fix having to fake a option changed event
@@ -524,14 +544,12 @@ int Client::exec()
             frame_count++;
             gui->draw();
             graphics->updateScreen();
+            mFpsManager.limitFps(mFpsLimit);
         }
         else
         {
-            SDL_Delay(10);
+            mFpsManager.limitFps(10);
         }
-
-        if (mLimitFps)
-            SDL_framerateDelay(&mFpsManager);
 
         // TODO: Add connect timeouts
         if (mState == STATE_CONNECT_GAME &&
@@ -1012,10 +1030,7 @@ void Client::event(Event::Channel channel, const Event &event)
         event.getType() == Event::ConfigOptionChanged &&
         event.getString("option") == "fpslimit")
     {
-        const int fpsLimit = config.getIntValue("fpslimit");
-        mLimitFps = fpsLimit > 0;
-        if (mLimitFps)
-            SDL_setFramerate(&mFpsManager, fpsLimit);
+        mFpsLimit = config.getIntValue("fpslimit");
     }
 }
 

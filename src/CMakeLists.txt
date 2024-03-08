@@ -1,5 +1,5 @@
 include(FindPkgConfig)
-pkg_check_modules(SDL2 REQUIRED sdl2>=2.0.1 SDL2_image SDL2_mixer SDL2_net SDL2_ttf SDL2_gfx)
+pkg_check_modules(SDL2 REQUIRED sdl2>=2.0.1 SDL2_image SDL2_mixer SDL2_net SDL2_ttf)
 FIND_PACKAGE(PhysFS REQUIRED)
 FIND_PACKAGE(CURL REQUIRED)
 FIND_PACKAGE(LibXml2 REQUIRED)

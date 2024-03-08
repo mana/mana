@@ -7,7 +7,7 @@ either tmwAthena or manaserv.
 
 The Mana client is written in C++ and builds upon:
 
-- SDL2, SDL2\_gfx, SDL2\_image, SDL2\_mixer, SDL2\_ttf, SDL2\_net (Media framework)
+- SDL2, SDL2\_image, SDL2\_mixer, SDL2\_ttf, SDL2\_net (Media framework)
 - Guichan (GUI framework)
 - libxml2 (XML parsing and writing)
 - PhysicsFS (Data files)
@@ -113,20 +113,20 @@ Installing the dependencies on Ubuntu:
 
     sudo apt install build-essential cmake \
                      libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
-                     libsdl2-net-dev libsdl2-ttf-dev libsdl2-gfx-dev \
+                     libsdl2-net-dev libsdl2-ttf-dev \
                      libcurl4-openssl-dev libphysfs-dev libxml2-dev \
                      libguichan-dev libpng-dev gettext
 
 Installing the dependencies on macOS (with Homebrew):
 
-    brew install sdl2 sdl2_gfx sdl2_image sdl2_mixer sdl2_net sdl2_ttf \
+    brew install sdl2 sdl2_image sdl2_mixer sdl2_net sdl2_ttf \
                  physfs curl
 
 Installing the dependencies on Fedora:
 
     sudo dnf install gcc-c++ cmake physfs-devel libcurl-devel guichan-devel \
                      SDL2_image-devel SDL2_mixer-devel SDL2_net-devel \
-                     SDL2_ttf-devel SDL2_gfx-devel
+                     SDL2_ttf-devel
 
 Once the dependencies are installed, use CMake:
 

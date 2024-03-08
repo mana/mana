@@ -30,7 +30,6 @@
 #include <guichan/actionlistener.hpp>
 
 #include <SDL.h>
-#include <SDL2_framerate.h>
 
 #include <string>
 
@@ -115,6 +114,16 @@ enum State {
     STATE_WAIT,
     STATE_EXIT,
     STATE_FORCE_QUIT
+};
+
+class FpsManager
+{
+    int mFpsLimit = 0;
+    uint32_t mFrameCount = 0;
+    uint32_t mBaseTicks = 0;
+
+public:
+    void limitFps(int fpsLimit);
 };
 
 /**
@@ -249,8 +258,8 @@ private:
     SDL_TimerID mLogicCounterId = 0;
     SDL_TimerID mSecondsCounterId = 0;
 
-    bool mLimitFps = false;
-    FPSmanager mFpsManager;
+    int mFpsLimit = 0;
+    FpsManager mFpsManager;
 };
 
 #endif // CLIENT_H
