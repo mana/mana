@@ -498,6 +498,7 @@ void UpdaterWindow::logic()
         case UPDATE_COMPLETE:
             enable();
             setLabel(_("Completed"));
+            mDownloadStatus = UPDATE_IDLE;
             break;
         case UPDATE_IDLE:
             break;
