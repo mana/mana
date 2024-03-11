@@ -31,9 +31,11 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
+#include <memory>
 #include <string>
 #include <vector>
 
+class LinkHandler;
 class BrowserBox;
 class Button;
 class ProgressBar;
@@ -98,8 +100,6 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
     void keyPressed(gcn::KeyEvent &keyEvent) override;
 
     void logic() override;
-
-    int updateState;
 
 private:
     void download();
@@ -189,6 +189,7 @@ private:
     ProgressBar *mProgressBar;    /**< Update progress bar. */
     BrowserBox *mBrowserBox;      /**< Box to display news. */
     ScrollArea *mScrollArea;      /**< Used to scroll news box. */
+    std::unique_ptr<LinkHandler> mLinkHandler;
 };
 
 #endif

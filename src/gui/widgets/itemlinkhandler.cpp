@@ -22,6 +22,7 @@
 #include <sstream>
 #include <string>
 
+#include "gui/confirmdialog.h"
 #include "gui/itempopup.h"
 #include "gui/viewport.h"
 
@@ -29,22 +30,37 @@
 
 #include "resources/iteminfo.h"
 #include "resources/itemdb.h"
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
 
-ItemLinkHandler::ItemLinkHandler()
+ItemLinkHandler::ItemLinkHandler(Window *parent)
+    : mParent(parent)
 {
-    mItemPopup = new ItemPopup;
+    mItemPopup = std::make_unique<ItemPopup>();
 }
 
-ItemLinkHandler::~ItemLinkHandler()
+ItemLinkHandler::~ItemLinkHandler() = default;
+
+static bool isUrl(const std::string &link)
 {
-    delete mItemPopup;
+    return startsWith(link, "https://") ||
+            startsWith(link, "http://") ||
+            startsWith(link, "ftp://");
 }
 
 void ItemLinkHandler::handleLink(const std::string &link)
 {
+    if (isUrl(link))
+    {
+        mLink = link;
+
+        mConfirmDialog = new ConfirmDialog(_("Open URL?"), link, mParent);
+        mConfirmDialog->addActionListener(this);
+        return;
+    }
+
     int id = 0;
-    std::stringstream stream;
-    stream << link;
+    std::istringstream stream(link);
     stream >> id;
 
     if (id > 0)
@@ -57,4 +73,10 @@ void ItemLinkHandler::handleLink(const std::string &link)
         else
             mItemPopup->position(viewport->getMouseX(), viewport->getMouseY());
     }
+}
+
+void ItemLinkHandler::action(const gcn::ActionEvent &actionEvent)
+{
+    if (actionEvent.getId() == "yes")
+        SDL_OpenURL(mLink.c_str());
 }

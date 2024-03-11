@@ -33,6 +33,7 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"
+#include "gui/widgets/itemlinkhandler.h"
 
 #include "net/download.h"
 
@@ -123,7 +124,8 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mUpdateHost(updateHost),
     mUpdatesDir(updatesDir),
     mCurrentFile("news.txt"),
-    mLoadUpdates(applyUpdates)
+    mLoadUpdates(applyUpdates),
+    mLinkHandler(std::make_unique<ItemLinkHandler>(this))
 {
     setWindowName("UpdaterWindow");
     setResizable(true);
@@ -138,6 +140,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayButton = new Button(_("Play"), "play", this);
 
+    mBrowserBox->setLinkHandler(mLinkHandler.get());
     mProgressBar->setSmoothProgress(false);
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mPlayButton->setEnabled(false);

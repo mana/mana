@@ -765,7 +765,10 @@ void Window::redraw()
 
 void Window::center()
 {
-    setLocationRelativeTo(getParent());
+    if (auto window = getParentWindow())
+        setLocationRelativeTo(window);
+    else
+        setLocationRelativeTo(getParent());
 }
 
 void Window::ensureOnScreen()

@@ -121,6 +121,14 @@ std::string removeColors(std::string msg);
 int compareStrI(const std::string &a, const std::string &b);
 
 /**
+ * Returns whether a string starts with a given prefix.
+ */
+inline bool startsWith(const std::string &str, const char *prefix)
+{
+    return str.rfind(prefix, 0) == 0;
+}
+
+/**
  * Tells wether the character is a word separator.
  */
 bool isWordSeparator(char chr);

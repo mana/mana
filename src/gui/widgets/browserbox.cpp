@@ -70,9 +70,7 @@ BrowserBox::BrowserBox(unsigned int mode):
     addMouseListener(this);
 }
 
-BrowserBox::~BrowserBox()
-{
-}
+BrowserBox::~BrowserBox() = default;
 
 void BrowserBox::addRow(const std::string &row)
 {
@@ -175,6 +173,11 @@ void BrowserBox::mousePressed(gcn::MouseEvent &event)
 void BrowserBox::mouseMoved(gcn::MouseEvent &event)
 {
     updateHoveredLink(event.getX(), event.getY());
+}
+
+void BrowserBox::mouseExited(gcn::MouseEvent &event)
+{
+    mHoveredLink.reset();
 }
 
 void BrowserBox::draw(gcn::Graphics *graphics)
@@ -285,7 +288,7 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
     int x = 0;
 
     // Check for separator lines
-    if (row.text.find("---", 0) == 0)
+    if (startsWith(row.text, "---"))
     {
         for (x = 0; x < getWidth(); x += context.minusWidth - 1)
         {

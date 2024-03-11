@@ -24,18 +24,32 @@
 
 #include "gui/widgets/linkhandler.h"
 
-class ItemPopup;
+#include <guichan/actionlistener.hpp>
 
-class ItemLinkHandler : public LinkHandler
+#include <memory>
+
+class ConfirmDialog;
+class ItemPopup;
+class Window;
+
+class ItemLinkHandler : public LinkHandler, gcn::ActionListener
 {
     public:
-        ItemLinkHandler();
+        ItemLinkHandler(Window *parent = nullptr);
         ~ItemLinkHandler() override;
 
+        // LinkHandler interface
         void handleLink(const std::string &link) override;
 
+        // ActionListener interface
+        void action(const gcn::ActionEvent &actionEvent) override;
+
     private:
-        ItemPopup *mItemPopup;
+        std::unique_ptr<ItemPopup> mItemPopup;
+        ConfirmDialog *mConfirmDialog = nullptr;
+
+        Window *mParent = nullptr;
+        std::string mLink;
 };
 
 #endif

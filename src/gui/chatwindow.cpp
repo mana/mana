@@ -106,7 +106,7 @@ ChatWindow::ChatWindow():
     setMinWidth(150);
     setMinHeight(90);
 
-    mItemLinkHandler = new ItemLinkHandler;
+    mItemLinkHandler = new ItemLinkHandler(this);
 
     mChatInput = new ChatInput;
     mChatInput->setActionEventId("chatinput");
