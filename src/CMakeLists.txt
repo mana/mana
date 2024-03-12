@@ -17,30 +17,32 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
     ENDIF()
 ENDIF()
 
-IF (ENABLE_MANASERV)
-    INCLUDE_DIRECTORIES("../libs/enet/include")
-    LINK_DIRECTORIES("../libs/enet")
-    SET(INTERNAL_LIBRARIES enet)
-ENDIF()
-
-IF (APPLE)
-    INCLUDE_DIRECTORIES("../libs/guichan/include")
-    LINK_DIRECTORIES("../libs/guichan")
-    SET(INTERNAL_LIBRARIES ${INTERNAL_LIBRARIES} guichan)
-ENDIF()
-
 SET(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
 SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${PKG_DATADIR}/\\\"")
 SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${LOCALEDIR}/\\\"")
 
+IF (ENABLE_MANASERV)
+    INCLUDE_DIRECTORIES("../libs/enet/include")
+    LINK_DIRECTORIES("../libs/enet")
+    SET(INTERNAL_LIBRARIES enet)
+
+    SET(FLAGS "${FLAGS} -DMANASERV_SUPPORT=1")
+    MESSAGE(STATUS "Manaserv support enabled")
+ENDIF()
+
+IF (APPLE OR NOT USE_SYSTEM_GUICHAN)
+    MESSAGE(STATUS "Using Guichan submodule")
+    SET(GUICHAN_INCLUDE_DIR "../libs/guichan/include")
+    SET(GUICHAN_LIBRARIES guichan)
+    LINK_DIRECTORIES("../libs/guichan")
+ELSE()
+    MESSAGE(STATUS "Using system Guichan")
+    FIND_PACKAGE(Guichan REQUIRED)
+ENDIF()
+
 IF (ENABLE_NLS)
     SET(FLAGS "${FLAGS} -DENABLE_NLS=1")
     MESSAGE(STATUS "i18n support enabled")
-ENDIF()
-
-IF (ENABLE_MANASERV)
-    SET(FLAGS "${FLAGS} -DMANASERV_SUPPORT=1")
-    MESSAGE(STATUS "Manaserv support enabled")
 ENDIF()
 
 IF (CMAKE_BUILD_TYPE)
@@ -60,10 +62,6 @@ ELSEIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR BEOS)
 ELSEIF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
     # explicit linking to libintl is required on Solaris
     SET(EXTRA_LIBRARIES intl)
-ENDIF()
-
-IF(NOT APPLE)
-    FIND_PACKAGE(Guichan REQUIRED)
 ENDIF()
 
 IF (WITH_OPENGL)

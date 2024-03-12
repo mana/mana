@@ -32,6 +32,7 @@ FIND_PACKAGE(Gettext)
 OPTION(WITH_OPENGL "Enable OpenGL support" ON)
 OPTION(ENABLE_NLS "Enable building of tranlations" ON)
 OPTION(ENABLE_MANASERV "Enable Manaserv support" ON)
+OPTION(USE_SYSTEM_GUICHAN "Use system Guichan" ON)
 
 IF (WIN32)
     SET(PKG_DATADIR ".")
@@ -52,7 +53,7 @@ ENDIF()
 
 # On macOS we need to build Guichan ourselves since it is disabled in Homebrew
 # This might also be a good idea for the Windows build
-if(APPLE)
+if(APPLE OR NOT USE_SYSTEM_GUICHAN)
     # This policy makes sure that the below options are not ignored by the
     # added Guichan CMakeLists.txt
     SET(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
