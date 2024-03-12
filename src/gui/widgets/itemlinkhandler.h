@@ -28,7 +28,6 @@
 
 #include <memory>
 
-class ConfirmDialog;
 class ItemPopup;
 class Window;
 
@@ -46,7 +45,6 @@ class ItemLinkHandler : public LinkHandler, gcn::ActionListener
 
     private:
         std::unique_ptr<ItemPopup> mItemPopup;
-        ConfirmDialog *mConfirmDialog = nullptr;
 
         Window *mParent = nullptr;
         std::string mLink;

@@ -22,8 +22,13 @@
 #include <sstream>
 #include <string>
 
+#include <SDL.h>
+
+#if SDL_VERSION_ATLEAST(2, 0, 14)
 #include "gui/confirmdialog.h"
+#endif
 #include "gui/itempopup.h"
+#include "gui/okdialog.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/itemlinkhandler.h"
@@ -54,8 +59,13 @@ void ItemLinkHandler::handleLink(const std::string &link)
     {
         mLink = link;
 
-        mConfirmDialog = new ConfirmDialog(_("Open URL?"), link, mParent);
-        mConfirmDialog->addActionListener(this);
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+        auto confirmDialog = new ConfirmDialog(_("Open URL?"), link, mParent);
+        confirmDialog->addActionListener(this);
+#else
+        new OkDialog(_("Open URL Failed"),
+                     _("Opening of URLs requires SDL 2.0.14."), true, mParent);
+#endif
         return;
     }
 
@@ -78,5 +88,12 @@ void ItemLinkHandler::handleLink(const std::string &link)
 void ItemLinkHandler::action(const gcn::ActionEvent &actionEvent)
 {
     if (actionEvent.getId() == "yes")
-        SDL_OpenURL(mLink.c_str());
+    {
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+        if (SDL_OpenURL(mLink.c_str()) == -1)
+        {
+            new OkDialog(_("Open URL Failed"), SDL_GetError(), true, mParent);
+        }
+#endif
+    }
 }
