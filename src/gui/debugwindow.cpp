@@ -25,6 +25,7 @@
 #include "game.h"
 #include "particle.h"
 #include "map.h"
+#include "gui.h"
 
 #include "gui/setup.h"
 #include "gui/viewport.h"
@@ -138,6 +139,7 @@ public:
         mBeingPath = new CheckBox(_("Being path"));
         mMousePath = new CheckBox(_("Mouse path"));
         mBeingIds = new CheckBox(_("Being Ids"));
+        mGuiDebug = new CheckBox(_("GUI debug"));
 
         auto *specialsLabel = new Label(_("Specials:"));
         mSpecialNormal = new RadioButton(_("Normal"), "mapdebug");
@@ -156,6 +158,7 @@ public:
         place(0, 5, mBeingPath, 1);
         place(0, 6, mMousePath, 1);
         place(0, 7, mBeingIds, 1);
+        place(0, 8, mGuiDebug, 1);
         place(1, 0, specialsLabel, 1);
         place(1, 1, mSpecialNormal, 1);
         place(1, 2, mSpecial1, 1);
@@ -173,6 +176,7 @@ public:
         mBeingPath->addActionListener(this);
         mMousePath->addActionListener(this);
         mBeingIds->addActionListener(this);
+        mGuiDebug->addActionListener(this);
         mSpecialNormal->addActionListener(this);
         mSpecial1->addActionListener(this);
         mSpecial2->addActionListener(this);
@@ -204,7 +208,9 @@ public:
         if (mSpecial3->isSelected())
             flags |= Map::DEBUG_SPECIAL3;
 
-        viewport->setShowDebugPath(flags);
+        viewport->setDebugFlags(flags);
+
+        Gui::debugDraw = mGuiDebug->isSelected();
     }
 
 private:
@@ -215,6 +221,7 @@ private:
     CheckBox *mBeingPath;
     CheckBox *mMousePath;
     CheckBox *mBeingIds;
+    CheckBox *mGuiDebug;
     RadioButton *mSpecialNormal;
     RadioButton *mSpecial1;
     RadioButton *mSpecial2;

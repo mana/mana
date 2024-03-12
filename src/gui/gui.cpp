@@ -53,6 +53,8 @@ gcn::Font *boldFont = nullptr;
 // Mono font
 gcn::Font *monoFont = nullptr;
 
+bool Gui::debugDraw;
+
 Gui::Gui(Graphics *graphics)
     : mCustomCursorScale(graphics->getScale())
 {

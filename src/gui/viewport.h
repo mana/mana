@@ -77,9 +77,9 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void logic() override;
 
         /**
-         * Sets whether the path debug graphics are shown
+         * Sets which debug flags (see Map::DebugFlags) should be enabled.
          */
-        void setShowDebugPath(int debugFlags);
+        void setDebugFlags(int debugFlags);
 
         /**
          * Handles mouse press on map.

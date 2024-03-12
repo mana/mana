@@ -40,6 +40,11 @@ class WindowContainer : public Container
         void logic() override;
 
         /**
+         * Adds debug drawing.
+         */
+        void draw(gcn::Graphics *graphics) override;
+
+        /**
          * Schedule a widget for deletion. It will be deleted at the start of
          * the next logic update.
          */
@@ -52,6 +57,13 @@ class WindowContainer : public Container
         void adjustAfterResize(int oldScreenWidth, int oldScreenHeight);
 
     private:
+        /**
+         * Draws the outlines of the container and all its children.
+         */
+        void debugDraw(gcn::Graphics *graphics);
+
+        bool widgetIsVisible(gcn::Widget *widget);
+
         /**
          * List of widgets that are scheduled to be deleted.
          */

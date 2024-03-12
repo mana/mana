@@ -116,6 +116,8 @@ class Gui final : public gcn::Gui, public EventListener
          */
         void setCursorType(Cursor cursor);
 
+        static bool debugDraw;
+
     protected:
         void handleMouseMoved(const gcn::MouseInput &mouseInput) override;
         void handleTextInput(const TextInput &textInput);

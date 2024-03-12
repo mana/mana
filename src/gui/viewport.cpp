@@ -607,7 +607,7 @@ void Viewport::updateCursorType()
     }
 }
 
-void Viewport::setShowDebugPath(int debugFlags)
+void Viewport::setDebugFlags(int debugFlags)
 {
     mDebugFlags = debugFlags;
     if (mMap)
