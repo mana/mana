@@ -28,8 +28,6 @@
 #include <cstdarg>
 #include <cstdio>
 
-static int UTF8_MAX_SIZE = 10;
-
 std::string &trim(std::string &str)
 {
     std::string::size_type pos = str.find_last_not_of(' ');
@@ -168,14 +166,6 @@ std::string findSameSubstring(const std::string &str1,
         }
     }
     return str1.substr(0, minLength);
-}
-
-const char *getSafeUtf8String(const std::string &text)
-{
-    char *buf = new char[text.size() + UTF8_MAX_SIZE];
-    memcpy(buf, text.c_str(), text.size());
-    memset(buf + text.size(), 0, UTF8_MAX_SIZE);
-    return buf;
 }
 
 bool getBoolFromString(const std::string &text, bool def)

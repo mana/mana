@@ -26,12 +26,21 @@
 
 #include "resources/image.h"
 
-#include "utils/stringutils.h"
-
 #include <guichan/color.hpp>
 #include <guichan/exception.hpp>
 
 const unsigned int CACHE_SIZE = 256;
+
+static const char *getSafeUtf8String(const std::string &text)
+{
+    static int UTF8_MAX_SIZE = 10;
+
+    static char buf[4096];
+    const int len = std::min(text.size(), sizeof(buf) - UTF8_MAX_SIZE);
+    memcpy(buf, text.c_str(), len);
+    memset(buf + len, 0, UTF8_MAX_SIZE);
+    return buf;
+}
 
 class TextChunk
 {
@@ -62,7 +71,6 @@ class TextChunk
             const char *str = getSafeUtf8String(text);
             SDL_Surface *surface = TTF_RenderUTF8_Blended(
                     font, str, sdlCol);
-            delete[] str;
 
             if (!surface)
             {
@@ -180,7 +188,6 @@ int TrueTypeFont::getWidth(const std::string &text) const
     int w, h;
     const char *str = getSafeUtf8String(text);
     TTF_SizeUTF8(mFont, str, &w, &h);
-    delete[] str;
     return w;
 }
 

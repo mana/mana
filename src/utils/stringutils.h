@@ -136,8 +136,6 @@ bool isWordSeparator(char chr);
 std::string findSameSubstring(const std::string &str1,
                               const std::string &str2);
 
-const char *getSafeUtf8String(const std::string &text);
-
 /**
  * Returns a bool value depending on the given string value.
  *
