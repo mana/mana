@@ -16,29 +16,27 @@ You are expected to have either checked out Mana from Git or you have downloaded
 a source release. To get Mana to compile, you need a compiler (GCC)
 and some libraries. The required libraries are:
 
-* SDL               http://www.libsdl.org/
-* SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/
-* SDL_image         http://www.libsdl.org/projects/SDL_image/
-* SDL_net           http://www.libsdl.org/projects/SDL_net/
-* SDL_ttf           http://www.libsdl.org/projects/SDL_ttf/
-* SDL_gfx           http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx
-* ENet 1.2          http://enet.bespin.org/
-* Guichan 0.8.x     http://guichan.sourceforge.net/
-* libxml2           http://www.xmlsoft.org/
-* physfs 1.x        http://icculus.org/physfs/
-* zlib 1.2.x        http://www.gzip.org/zlib/
-* libcurl           http://curl.haxx.se/libcurl/
+* SDL2              https://www.libsdl.org/
+* SDL2_mixer        https://github.com/libsdl-org/SDL_mixer
+* SDL2_image        https://github.com/libsdl-org/SDL_image
+* SDL2_net          https://github.com/libsdl-org/SDL_net
+* SDL2_ttf          https://github.com/libsdl-org/SDL_ttf
+* ENet 1.3          http://sauerbraten.org/enet/ (included in repository)
+* Guichan 0.8.x     https://github.com/darkbitsorg/guichan
+* libxml2           https://gitlab.gnome.org/GNOME/libxml2/-/wikis/home
+* physfs 2.x        https://icculus.org/physfs/
+* zlib 1.2.x        https://zlib.net/
+* libcurl           https://curl.se/libcurl/
 
 If you've cloned the Git repository, you will also need these tools to compile:
 
-* CMake >= 2.6      http://www.cmake.org/
-* GNU gettext       http://www.gnu.org/software/gettext/
-* CVS               http://www.nongnu.org/cvs/ (needed to run autopoint)
+* CMake >= 3.8      https://cmake.org/
+* GNU gettext       https://www.gnu.org/software/gettext/
 
 On some machines, it's been reported that this package is also needed. However,
 you might not need it:
 
-* GNU libtool       http://www.gnu.org/software/libtool/
+* GNU libtool       https://www.gnu.org/software/libtool/
 
 Installing these dependencies is distributions-specific, and we'll leave it to
 you to figure this out.
