@@ -94,13 +94,12 @@ std::string strprintf(char const *format, ...)
         return buf;
     }
     // The static size was not big enough, try again with a dynamic allocation.
-    ++nb;
-    char *buf2 = new char[nb];
+    ++nb;   // Add 1 for the null terminator.
+
+    std::string res(nb, char());
     va_start(args, format);
-    vsnprintf(buf2, nb, format, args);
+    vsnprintf(res.data(), nb, format, args);
     va_end(args);
-    std::string res(buf2);
-    delete [] buf2;
     return res;
 }
 
