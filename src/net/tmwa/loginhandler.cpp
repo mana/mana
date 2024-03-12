@@ -125,7 +125,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             mToken.session_ID1 = msg.readInt32();
             mToken.account_ID = msg.readInt32();
             mToken.session_ID2 = msg.readInt32();
-            msg.skip(30);                           // unknown
+            msg.skip(30);                           // unused
             mToken.sex = msg.readInt8() ? Gender::MALE : Gender::FEMALE;
 
             for (int i = 0; i < worldCount; i++)
@@ -135,9 +135,10 @@ void LoginHandler::handleMessage(MessageIn &msg)
                 world->address = msg.readInt32();
                 world->port = msg.readInt16();
                 world->name = msg.readString(20);
-                world->online_users = msg.readInt32();
+                world->online_users = msg.readInt16();
                 world->updateHost = mUpdateHost;
-                msg.skip(2);                        // unknown
+                msg.readInt16();                    // maintenance
+                msg.readInt16();                    // is_new
 
                 logger->log("Network: Server: %s (%s:%d)",
                         world->name.c_str(),
