@@ -159,10 +159,8 @@ void Inventory::removeInventoryListener(InventoryListener* listener)
 
 void Inventory::distributeSlotsChangedEvent()
 {
-    InventoryListenerList::const_iterator i = mInventoryListeners.begin();
-    InventoryListenerList::const_iterator i_end = mInventoryListeners.end();
-    for (; i != i_end; i++)
+    for (auto inventoryListener : mInventoryListeners)
     {
-        (*i)->slotsChanged(this);
+        inventoryListener->slotsChanged(this);
     }
 }

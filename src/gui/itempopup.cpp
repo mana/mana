@@ -45,7 +45,7 @@
 
 #define ITEMPOPUP_WRAP_WIDTH 196
 
-static gcn::Color getColorFromItemType(ItemType type)
+static const gcn::Color &getColorFromItemType(ItemType type)
 {
     switch (type)
     {

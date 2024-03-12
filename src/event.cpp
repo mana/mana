@@ -57,13 +57,6 @@ int Event::getInt(const std::string &key) const
     return static_cast<IntData *>(it->second)->getData();
 }
 
-bool Event::hasInt(const std::string &key) const
-{
-    auto it = mData.find(key);
-    return !(it == mData.end()
-             || it->second->getType() != VariableData::DATA_INT);
-}
-
 // Strings
 
 void Event::setString(const std::string &key, const std::string &value)
@@ -87,13 +80,6 @@ const std::string &Event::getString(const std::string &key) const
 }
 
 
-bool Event::hasString(const std::string &key) const
-{
-    auto it = mData.find(key);
-    return !(it == mData.end()
-             || it->second->getType() != VariableData::DATA_STRING);
-}
-
 // Floats
 
 void Event::setFloat(const std::string &key, double value)
@@ -114,13 +100,6 @@ double Event::getFloat(const std::string &key) const
         throw BAD_VALUE;
 
     return static_cast<FloatData *>(it->second)->getData();
-}
-
-bool Event::hasFloat(const std::string &key) const
-{
-    auto it = mData.find(key);
-    return !(it == mData.end()
-             || it->second->getType() != VariableData::DATA_FLOAT);
 }
 
 // Booleans
@@ -145,13 +124,6 @@ bool Event::getBool(const std::string &key) const
     return static_cast<BoolData *>(it->second)->getData();
 }
 
-bool Event::hasBool(const std::string &key) const
-{
-    auto it = mData.find(key);
-    return !(it == mData.end()
-             || it->second->getType() != VariableData::DATA_BOOL);
-}
-
 // Items
 
 void Event::setItem(const std::string &key, Item *value)
@@ -174,13 +146,6 @@ Item *Event::getItem(const std::string &key) const
     return static_cast<ItemData *>(it->second)->getData();
 }
 
-bool Event::hasItem(const std::string &key) const
-{
-    auto it = mData.find(key);
-    return !(it == mData.end()
-             || it->second->getType() != VariableData::DATA_ITEM);
-}
-
 // Actors
 
 void Event::setActor(const std::string &key, ActorSprite *value)
@@ -201,13 +166,6 @@ ActorSprite *Event::getActor(const std::string &key) const
         throw BAD_VALUE;
 
     return static_cast<ActorData *>(it->second)->getData();
-}
-
-bool Event::hasActor(const std::string &key) const
-{
-    auto it = mData.find(key);
-    return !(it == mData.end()
-             || it->second->getType() != VariableData::DATA_ACTOR);
 }
 
 // Triggers

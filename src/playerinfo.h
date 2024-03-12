@@ -49,16 +49,13 @@ struct Stat
     int expNeed;
 };
 
-using IntMap = std::map<int, int>;
-using StatMap = std::map<int, Stat>;
-
 /**
  * Backend for core player information.
  */
 struct PlayerInfoBackend
 {
-    IntMap mAttributes;
-    StatMap mStats;
+    std::map<int, int> mAttributes;
+    std::map<int, Stat> mStats;
 };
 
 class Equipment;

@@ -99,8 +99,6 @@ struct SkillInfo
     void draw(Graphics *graphics, int y, int width);
 };
 
-using SkillList = std::vector<SkillInfo *>;
-
 class SkillModel : public gcn::ListModel
 {
 public:
@@ -119,8 +117,8 @@ public:
     { mSkills.push_back(info); }
 
 private:
-    SkillList mSkills;
-    SkillList mVisibleSkills;
+    std::vector<SkillInfo *> mSkills;
+    std::vector<SkillInfo *> mVisibleSkills;
 };
 
 class SkillListBox : public ListBox

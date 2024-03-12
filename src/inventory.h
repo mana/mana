@@ -30,7 +30,7 @@ class Item;
 class InventoryListener
 {
 public:
-    virtual ~InventoryListener() {}
+    virtual ~InventoryListener() = default;
 
     virtual void slotsChanged(Inventory* inventory) = 0;
 
@@ -135,8 +135,7 @@ class Inventory
         { return mType == INVENTORY; }
 
     protected:
-        using InventoryListenerList = std::list<InventoryListener *>;
-        InventoryListenerList mInventoryListeners;
+        std::list<InventoryListener *> mInventoryListeners;
 
         void distributeSlotsChangedEvent();
 

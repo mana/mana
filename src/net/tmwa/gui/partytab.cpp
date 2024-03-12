@@ -42,10 +42,6 @@ PartyTab::PartyTab() :
     setTabColor(&Theme::getThemeColor(Theme::PARTY_CHAT_TAB));
 }
 
-PartyTab::~PartyTab()
-{
-}
-
 void PartyTab::handleInput(const std::string &msg)
 {
     Net::getPartyHandler()->chat(msg);
@@ -197,9 +193,7 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
 
 void PartyTab::getAutoCompleteList(std::vector<std::string> &names) const
 {
-    Party *p = local_player->getParty();
-
-    if (p)
+    if (Party *p = local_player->getParty())
         p->getNames(names);
 }
 

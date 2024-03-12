@@ -53,8 +53,6 @@ struct SpriteDisplay
     std::list<std::string> particles;
 };
 
-using SpriteRefs = std::list<SpriteReference>::const_iterator;
-
 /*
  * Remember those are the main action.
  * Action subtypes, e.g.: "attack_bow" are to be passed by items.xml after

@@ -50,11 +50,6 @@ HelpWindow::HelpWindow():
     mScrollArea = new ScrollArea(mBrowserBox);
     auto *okButton = new Button(_("Close"), "close", this);
 
-    mScrollArea->setDimension(gcn::Rectangle(5, 5, 445,
-                                             335 - okButton->getHeight()));
-    okButton->setPosition(450 - okButton->getWidth(),
-                          345 - okButton->getHeight());
-
     mBrowserBox->setLinkHandler(this);
     mBrowserBox->setFont(monoFont);
 

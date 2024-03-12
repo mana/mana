@@ -33,22 +33,12 @@
 class Vector
 {
     public:
-        Vector():
-            x(0.0f),
-            y(0.0f),
-            z(0.0f)
-        {}
+        Vector() = default;
 
         Vector(float x, float y, float z = 0.0f):
             x(x),
             y(y),
             z(z)
-        {}
-
-        Vector(const Vector &v):
-            x(v.x),
-            y(v.y),
-            z(v.z)
         {}
 
         /**
@@ -58,14 +48,6 @@ class Vector
         bool isNull() const
         {
             return x == 0.0f && y == 0.0f && z == 0.0f;
-        }
-
-        Vector &operator=(const Vector &v)
-        {
-            x = v.x;
-            y = v.y;
-            z = v.z;
-            return *this;
         }
 
         /**
@@ -187,7 +169,9 @@ class Vector
             return Vector(x / l, y / l, z / l);
         }
 
-        float x, y, z;
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
 };
 
 inline bool operator == (const Vector &a, const Vector &b)

@@ -265,20 +265,14 @@ void ChatWindow::removeWhisper(const std::string &nick)
 
 void ChatWindow::removeAllWhispers()
 {
-    TabMap::iterator iter;
-    std::list<ChatTab*> tabs;
+    // Swap with empty container before deleting, because each tab will try to
+    // remove itself from mWhispers when it gets deleted, possibly invalidating
+    // our iterator.
+    std::map<const std::string, ChatTab *> whispers;
+    mWhispers.swap(whispers);
 
-    for (iter = mWhispers.begin(); iter != mWhispers.end(); ++iter)
-    {
-        tabs.push_back(iter->second);
-    }
-
-    for (auto &tab : tabs)
-    {
+    for (auto &[_, tab] : whispers)
         delete tab;
-    }
-
-    mWhispers.clear();
 }
 
 void ChatWindow::chatInput(const std::string &msg)
@@ -460,11 +454,11 @@ void ChatWindow::whisper(const std::string &nick,
     toLower(playerName);
     toLower(tempNick);
 
-    if (tempNick.compare(playerName) == 0)
+    if (tempNick == playerName)
         return;
 
     ChatTab *tab = nullptr;
-    TabMap::const_iterator i = mWhispers.find(tempNick);
+    auto i = mWhispers.find(tempNick);
 
     if (i != mWhispers.end())
         tab = i->second;
@@ -511,8 +505,7 @@ ChatTab *ChatWindow::addWhisperTab(const std::string &nick, bool switchTo)
     toLower(playerName);
     toLower(tempNick);
 
-    if (mWhispers.find(tempNick) != mWhispers.end()
-        || tempNick.compare(playerName) == 0)
+    if (mWhispers.find(tempNick) != mWhispers.end() || tempNick == playerName)
         return nullptr;
 
     ChatTab *ret = new WhisperTab(nick);

@@ -52,24 +52,7 @@ int Particle::emitterSkip = 1;
 bool Particle::enabled = true;
 const float Particle::PARTICLE_SKY = 800.0f;
 
-Particle::Particle(Map *map):
-    mAlpha(1.0f),
-    mLifetimeLeft(-1),
-    mLifetimePast(0),
-    mFadeOut(0),
-    mFadeIn(0),
-    mAlive(ALIVE),
-    mAutoDelete(true),
-    mAllowSizeAdjust(false),
-    mDeathEffectConditions(0x00),
-    mGravity(0.0f),
-    mRandomness(0),
-    mBounce(0.0f),
-    mFollow(false),
-    mTarget(nullptr),
-    mAcceleration(0.0f),
-    mInvDieDistance(-1.0f),
-    mMomentum(1.0f)
+Particle::Particle(Map *map)
 {
     setMap(map);
     Particle::particleCount++;
@@ -238,7 +221,7 @@ bool Particle::update()
         }
     }
 
-    return !(mAlive != ALIVE && mChildParticles.empty() && mAutoDelete);
+    return mAlive == ALIVE || !mChildParticles.empty() || !mAutoDelete;
 }
 
 void Particle::moveBy(const Vector &change)

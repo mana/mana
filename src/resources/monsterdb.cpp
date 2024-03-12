@@ -37,7 +37,7 @@
 
 namespace
 {
-    BeingInfos mMonsterInfos;
+    std::map<int, BeingInfo *> mMonsterInfos;
     bool mLoaded = false;
     int mMonsterIdOffset;
 }

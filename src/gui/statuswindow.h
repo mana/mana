@@ -81,8 +81,7 @@ class StatusWindow : public Window, public EventListener
         gcn::Label *mCharacterPointsLabel;
         gcn::Label *mCorrectionPointsLabel;
 
-        using Attrs = std::map<int, AttrDisplay *>;
-        Attrs mAttrs;
+        std::map<int, AttrDisplay *> mAttrs;
 };
 
 extern StatusWindow *statusWindow;

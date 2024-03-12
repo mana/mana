@@ -112,9 +112,8 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
         // Inherited from MouseListener
 
         void mousePressed(gcn::MouseEvent &mouseEvent) override;
-    private:
-        using TabContainer = std::vector<std::pair<gcn::Tab *, gcn::Widget *>>;
 
+    private:
         /** The tab arrows */
         Button *mArrowButton[2];
 

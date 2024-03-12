@@ -61,8 +61,7 @@ static ButtonData const data[BUTTON_COUNT] = {
     { "button_disabled.png", 25, 23 }
 };
 
-Button::Button():
-    mButtonIcon(nullptr)
+Button::Button()
 {
     init();
     adjustSize();

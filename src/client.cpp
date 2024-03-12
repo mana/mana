@@ -252,7 +252,7 @@ Client::Client(const Options &options):
 
     if (!resman->setWriteDir(mLocalDataDir))
     {
-        logger->error(strprintf("%s couldn't be set as home directory! "
+        logger->error(strprintf("%s couldn't be set as write directory! "
                                 "Exiting.", mLocalDataDir.c_str()));
     }
 
@@ -505,9 +505,6 @@ int Client::exec()
                     mState = STATE_EXIT;
                     break;
 
-                case SDL_KEYDOWN:
-                    break;
-
                 case SDL_WINDOWEVENT:
                     switch (event.window.event) {
                     case SDL_WINDOWEVENT_SIZE_CHANGED:
@@ -663,8 +660,7 @@ int Client::exec()
                     // lower than the default value
                     Theme::instance()->setMinimumOpacity(0.8f);
 
-                    if (mOptions.username.empty()
-                            || mOptions.password.empty())
+                    if (mOptions.username.empty() || mOptions.password.empty())
                     {
                         mCurrentDialog = new LoginDialog(&loginData);
                     }
@@ -701,7 +697,7 @@ int Client::exec()
                         }
                         else
                         {
-                            mCurrentDialog = new WorldSelectDialog(worlds);
+                            mCurrentDialog = new WorldSelectDialog(std::move(worlds));
                             if (mOptions.chooseDefault)
                             {
                                 ((WorldSelectDialog*) mCurrentDialog)->action(

@@ -21,17 +21,12 @@
 
 #include "resources/wallpaper.h"
 
-#include "resources/resourcemanager.h"
-#include "log.h"
-
-#include "utils/stringutils.h"
 #include "configuration.h"
 
 #include <physfs.h>
 
 #include <algorithm>
 #include <cstring>
-#include <ctime>
 #include <vector>
 
 struct WallpaperData
@@ -144,16 +139,12 @@ std::string Wallpaper::getWallpaper(int width, int height)
     WallpaperData wallpaper;
 
     // Search for the smallest wallpaper at least as large as the screen
-    std::vector<WallpaperData>::iterator iter;
-    for (iter = wallpaperData.begin(); iter != wallpaperData.end(); iter++)
+    for (auto &wp : wallpaperData)
     {
-        const WallpaperData &wp = *iter;
-
         if (wp.width >= width && wp.height >= height)
         {
-            if (wallpaper.filename.empty() ||
-                    (wallpaper.width < wp.width &&
-                     wallpaper.height < wp.height))
+            if (wallpaper.filename.empty() || (wallpaper.width < wp.width &&
+                                               wallpaper.height < wp.height))
             {
                 wallpaper = wp;
             }

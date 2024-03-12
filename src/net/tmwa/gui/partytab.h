@@ -33,7 +33,6 @@ class PartyTab : public ChatTab
 {
     public:
         PartyTab();
-        ~PartyTab() override;
 
         void showHelp() override;
 

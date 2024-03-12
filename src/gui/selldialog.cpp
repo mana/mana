@@ -212,8 +212,6 @@ void SellDialog::action(const gcn::ActionEvent &event)
             mAmountItems -= sellCount;
         }
 
-        mPlayerMoney +=
-            mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mAmountItems = 1;
         mSlider->setValue(0);
 

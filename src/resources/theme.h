@@ -107,7 +107,7 @@ class Theme : public Palette, public EventListener
         static void deleteInstance();
 
         static void prepareThemePath();
-        static std::string getThemePath() { return mThemePath; }
+        static const std::string &getThemePath() { return mThemePath; }
 
         /**
          * Returns the patch to the given gui resource relative to the theme
@@ -227,10 +227,7 @@ class Theme : public Palette, public EventListener
         Skin *readSkin(const std::string &filename);
 
         // Map containing all window skins
-        using Skins = std::map<std::string, Skin *>;
-        using SkinIterator = Skins::iterator;
-
-        Skins mSkins;
+        std::map<std::string, Skin *> mSkins;
 
         static std::string mThemePath;
         static Theme *mInstance;
@@ -245,8 +242,7 @@ class Theme : public Palette, public EventListener
          */
         float mMinimumOpacity;
 
-        using ProgressColors = std::vector<DyePalette *>;
-        ProgressColors mProgressColors;
+        std::vector<DyePalette *> mProgressColors;
 };
 
 #endif

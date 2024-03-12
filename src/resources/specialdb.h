@@ -22,7 +22,6 @@
 #define SPECIAL_DB_H
 
 #include <string>
-#include <map>
 #include "utils/xml.h"
 
 struct SpecialInfo
@@ -64,7 +63,5 @@ namespace SpecialDB
 
     SpecialInfo::TargetMode targetModeFromString(const std::string& str);
 }
-
-using SpecialInfos = std::map<int, SpecialInfo *>;
 
 #endif

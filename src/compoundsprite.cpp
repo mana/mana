@@ -247,21 +247,24 @@ void CompoundSprite::redraw() const
 #endif
 
     mWidth = mHeight = mOffsetX = mOffsetY = 0;
-    Sprite *s = nullptr;
-    SpriteConstIterator it, it_end = mSprites.end();
 
     int posX = 0;
     int posY = 0;
 
-    for (it = mSprites.begin(); it != it_end; ++it)
+    for (auto sprite : mSprites)
     {
-        s = *it;
+        if (!sprite)
+            continue;
 
-        if (s)
-        {
-            updateValues(mWidth, posX, s->getWidth() / 2, s->getWidth() / 2, s->getOffsetX());
-            updateValues(mHeight, posY, s->getHeight(), 0, s->getOffsetY());
-        }
+        updateValues(mWidth, posX,
+                     sprite->getWidth() / 2,
+                     sprite->getWidth() / 2,
+                     sprite->getOffsetX());
+
+        updateValues(mHeight, posY,
+                     sprite->getHeight(),
+                     0,
+                     sprite->getOffsetY());
     }
 
     if (mWidth == 0 && mHeight == 0)
@@ -296,12 +299,14 @@ void CompoundSprite::redraw() const
     graphics->setTarget(surface);
     graphics->_beginDraw();
 
-    for (it = mSprites.begin(); it != it_end; ++it)
+    for (auto sprite : mSprites)
     {
-        s = *it;
+        if (!sprite)
+            continue;
 
-        if (s)
-            s->draw(graphics, posX - s->getWidth() / 2, posY - s->getHeight());
+        sprite->draw(graphics,
+                     posX - sprite->getWidth() / 2,
+                     posY - sprite->getHeight());
     }
 
     // Uncomment to see buffer sizes
@@ -316,7 +321,7 @@ void CompoundSprite::redraw() const
                                             32, rmask, gmask, bmask, amask);
 
     SDL_SetAlpha(surface, 0, SDL_ALPHA_OPAQUE);
-    SDL_BlitSurface(surface, NULL, surfaceA, NULL);
+    SDL_BlitSurface(surface, nullptr, surfaceA, nullptr);
 
     delete mImage;
     delete mAlphaImage;

@@ -73,10 +73,8 @@ class ServersListModel : public gcn::ListModel
         void setVersionString(int index, const std::string &version);
 
     private:
-        using VersionStrings = std::vector<VersionString>;
-
         ServerInfos *mServers;
-        VersionStrings mVersionStrings;
+        std::vector<VersionString> mVersionStrings;
         ServerDialog *mParent;
 };
 

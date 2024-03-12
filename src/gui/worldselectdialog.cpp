@@ -46,11 +46,9 @@ class WorldListModel : public gcn::ListModel
 {
     public:
         WorldListModel(Worlds worlds):
-                mWorlds(worlds)
+            mWorlds(std::move(worlds))
         {
         }
-
-        ~WorldListModel() override {}
 
         int getNumberOfElements() override
         {
@@ -69,8 +67,8 @@ class WorldListModel : public gcn::ListModel
 WorldSelectDialog::WorldSelectDialog(Worlds worlds):
     Window(_("Select World"))
 {
-    mWorldListModel = new WorldListModel(worlds);
-    mWorldList = new ListBox(mWorldListModel);
+    mWorldListModel = std::make_unique<WorldListModel>(worlds);
+    mWorldList = new ListBox(mWorldListModel.get());
     auto *worldsScroll = new ScrollArea(mWorldList);
     mChangeLoginButton = new Button(_("Change Login"), "login", this);
     mChooseWorld = new Button(_("Choose World"), "world", this);
@@ -86,7 +84,7 @@ WorldSelectDialog::WorldSelectDialog(Worlds worlds):
 
     reflowLayout(0, 0);
 
-    if (worlds.size() == 0)
+    if (worlds.empty())
         // Disable Ok button
         mChooseWorld->setEnabled(false);
     else
@@ -100,10 +98,7 @@ WorldSelectDialog::WorldSelectDialog(Worlds worlds):
     mChooseWorld->requestFocus();
 }
 
-WorldSelectDialog::~WorldSelectDialog()
-{
-    delete mWorldListModel;
-}
+WorldSelectDialog::~WorldSelectDialog() = default;
 
 void WorldSelectDialog::action(const gcn::ActionEvent &event)
 {

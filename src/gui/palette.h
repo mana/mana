@@ -72,9 +72,9 @@ class Palette
          */
         const gcn::Color &getColor(int type, int alpha = 255)
         {
-            gcn::Color *col = &mColors[type].color;
-            col->a = alpha;
-            return *col;
+            gcn::Color &col = mColors[type].color;
+            col.a = alpha;
+            return col;
         }
 
         /**
@@ -163,9 +163,8 @@ class Palette
                         committedColor.b;
             }
         };
-        using Colors = std::vector<ColorElem>;
         /** Vector containing the colors. */
-        Colors mColors;
+        std::vector<ColorElem> mColors;
         std::vector<ColorElem*> mGradVector;
 };
 

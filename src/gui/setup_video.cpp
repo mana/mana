@@ -131,7 +131,7 @@ public:
 
     /**
      * Returns the index corresponding to the given video resolution
-     * or -1 if not found.
+     * or 0 ("Custom") if not found.
      */
     int getIndexOf(int width, int height) const
     {

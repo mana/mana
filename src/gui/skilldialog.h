@@ -75,8 +75,7 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
         bool hasSkills() { return !mSkills.empty(); }
 
     private:
-        using SkillMap = std::map<int, SkillInfo *>;
-        SkillMap mSkills;
+        std::map<int, SkillInfo *> mSkills;
         TabbedArea *mTabs;
         Label *mPointsLabel;
         Button *mIncreaseButton;

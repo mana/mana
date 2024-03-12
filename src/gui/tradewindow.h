@@ -117,9 +117,8 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void setStatus(Status s);
 
-        using InventoryPtr = const std::unique_ptr<Inventory>;
-        InventoryPtr mMyInventory;
-        InventoryPtr mPartnerInventory;
+        const std::unique_ptr<Inventory> mMyInventory;
+        const std::unique_ptr<Inventory> mPartnerInventory;
 
         ItemContainer *mMyItemContainer;
         ItemContainer *mPartnerItemContainer;

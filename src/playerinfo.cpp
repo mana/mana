@@ -31,17 +31,17 @@ namespace PlayerInfo {
 
 class PlayerLogic;
 
-static PlayerLogic *mListener = nullptr;
+static PlayerLogic *mListener;
 
 static PlayerInfoBackend mData;
 
-static Inventory *mInventory = nullptr;
-static Equipment *mEquipment = nullptr;
+static Inventory *mInventory;
+static Equipment *mEquipment;
 
-static bool mStorageCount = 0;
+static bool mStorageCount = false;
 
-static bool mNPCCount = 0;
-static bool mNPCPostCount = 0;
+static bool mNPCCount = false;
+static bool mNPCPostCount = false;
 
 static BuySellState mBuySellState = BUYSELL_NONE;
 
@@ -78,7 +78,7 @@ void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
 
 int getAttribute(int id)
 {
-    IntMap::const_iterator it = mData.mAttributes.find(id);
+    auto it = mData.mAttributes.find(id);
     if (it != mData.mAttributes.end())
         return it->second;
 
@@ -97,7 +97,7 @@ void setAttribute(int id, int value, bool notify)
 
 int getStatBase(int id)
 {
-    StatMap::const_iterator it = mData.mStats.find(id);
+    auto it = mData.mStats.find(id);
     if (it != mData.mStats.end())
         return it->second.base;
 
@@ -114,7 +114,7 @@ void setStatBase(int id, int value, bool notify)
 
 int getStatMod(int id)
 {
-    StatMap::const_iterator it = mData.mStats.find(id);
+    auto it = mData.mStats.find(id);
     if (it != mData.mStats.end())
         return it->second.mod;
 
@@ -131,7 +131,7 @@ void setStatMod(int id, int value, bool notify)
 
 int getStatEffective(int id)
 {
-    StatMap::const_iterator it = mData.mStats.find(id);
+    auto it = mData.mStats.find(id);
     if (it != mData.mStats.end())
         return it->second.base + it->second.mod;
 
@@ -140,7 +140,7 @@ int getStatEffective(int id)
 
 std::pair<int, int> getStatExperience(int id)
 {
-    StatMap::const_iterator it = mData.mStats.find(id);
+    auto it = mData.mStats.find(id);
     int a, b;
     if (it != mData.mStats.end())
     {
@@ -152,7 +152,7 @@ std::pair<int, int> getStatExperience(int id)
         a = 0;
         b = 0;
     }
-    return std::pair<int, int>(a, b);
+    return { a, b };
 }
 
 void setStatExperience(int id, int have, int need, bool notify)

@@ -37,13 +37,15 @@ LayoutCell &ContainerPlacer::operator()
 
 LayoutCell::~LayoutCell()
 {
-    if (mType == ARRAY) delete mArray;
+    if (mType == ARRAY)
+        delete mArray;
 }
 
 LayoutArray &LayoutCell::getArray()
 {
     assert(mType != WIDGET);
-    if (mType == ARRAY) return *mArray;
+    if (mType == ARRAY)
+        return *mArray;
     mArray = new LayoutArray;
     mType = ARRAY;
     mExtent[0] = 1;
@@ -114,7 +116,8 @@ void LayoutArray::resizeGrid(int w, int h)
 {
     bool extW = w && w > (int)mSizes[0].size(),
          extH = h && h > (int)mSizes[1].size();
-    if (!extW && !extH) return;
+    if (!extW && !extH)
+        return;
 
     if (extH)
     {
@@ -177,8 +180,10 @@ LayoutCell &LayoutArray::place(gcn::Widget *widget, int x, int y, int w, int h)
     cell.mAlign[1] = LayoutCell::FILL;
     short &cs = mSizes[0][x];
     short &rs = mSizes[1][y];
-    if (cs == Layout::AUTO_DEF && w == 1) cs = 0;
-    if (rs == Layout::AUTO_DEF && h == 1) rs = 0;
+    if (cs == Layout::AUTO_DEF && w == 1)
+        cs = 0;
+    if (rs == Layout::AUTO_DEF && h == 1)
+        rs = 0;
     return cell;
 }
 
@@ -218,7 +223,8 @@ std::vector< short > LayoutArray::getSizes(int dim, int upp) const
         for (int gridX = 0; gridX < gridW; ++gridX)
         {
             LayoutCell const *cell = mCells[gridY][gridX];
-            if (!cell || cell->mType == LayoutCell::NONE) continue;
+            if (!cell || cell->mType == LayoutCell::NONE)
+                continue;
 
             if (cell->mExtent[dim] == 1)
             {
@@ -249,7 +255,8 @@ std::vector< short > LayoutArray::getSizes(int dim, int upp) const
     }
     upp = upp + mSpacing;
 
-    if (nbFill == 0) return sizes;
+    if (nbFill == 0)
+        return sizes;
 
     for (int i = 0; i < nb; ++i)
     {

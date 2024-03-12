@@ -24,10 +24,11 @@
 
 #include "utils/dtor.h"
 
+#include <map>
 
 namespace
 {
-    SpecialInfos mSpecialInfos;
+    std::map<int, SpecialInfo *> mSpecialInfos;
     bool mLoaded = false;
 }
 

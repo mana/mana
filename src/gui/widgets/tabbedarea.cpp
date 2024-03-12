@@ -48,10 +48,10 @@ int TabbedArea::getNumberOfTabs() const
 
 Tab *TabbedArea::getTab(const std::string &name) const
 {
-    for (auto itr = mTabs.begin(); itr != mTabs.end(); ++itr)
+    for (const auto &[tab, _] : mTabs)
     {
-        if ((*itr).first->getCaption() == name)
-            return static_cast<Tab*>((*itr).first);
+        if (tab->getCaption() == name)
+            return static_cast<Tab*>(tab);
     }
     return nullptr;
 }
@@ -113,8 +113,7 @@ void TabbedArea::removeTab(Tab *tab)
             mSelectedTab = nullptr;
     }
 
-    TabContainer::iterator iter;
-    for (iter = mTabs.begin(); iter != mTabs.end(); iter++)
+    for (auto iter = mTabs.begin(); iter != mTabs.end(); iter++)
     {
         if (iter->first == tab)
         {
@@ -124,12 +123,11 @@ void TabbedArea::removeTab(Tab *tab)
         }
     }
 
-    std::vector<gcn::Tab*>::iterator iter2;
-    for (iter2 = mTabsToDelete.begin(); iter2 != mTabsToDelete.end(); iter2++)
+    for (auto iter = mTabsToDelete.begin(); iter != mTabsToDelete.end(); iter++)
     {
-        if (*iter2 == tab)
+        if (*iter == tab)
         {
-            mTabsToDelete.erase(iter2);
+            mTabsToDelete.erase(iter);
             delete tab;
             break;
         }
@@ -154,9 +152,8 @@ void TabbedArea::mousePressed(gcn::MouseEvent &mouseEvent)
     {
         gcn::Widget *widget = mTabContainer->getWidgetAt(mouseEvent.getX(),
                                                          mouseEvent.getY());
-        auto *tab = dynamic_cast<gcn::Tab*>(widget);
 
-        if (tab)
+        if (auto *tab = dynamic_cast<gcn::Tab*>(widget))
         {
             setSelectedTab(tab);
             requestFocus();
@@ -205,9 +202,9 @@ void TabbedArea::widgetResized(const gcn::Event &event)
 void TabbedArea::updateTabsWidth()
 {
     mTabsWidth = 0;
-    for (const auto &tab : mTabs)
+    for (const auto &[tab, _] : mTabs)
     {
-        mTabsWidth += tab.first->getWidth();
+        mTabsWidth += tab->getWidth();
     }
     updateVisibleTabsWidth();
 }
@@ -255,10 +252,9 @@ void TabbedArea::adjustTabPositions()
 
 void TabbedArea::action(const gcn::ActionEvent& actionEvent)
 {
-    Widget* source = actionEvent.getSource();
-    Tab* tab = dynamic_cast<Tab*>(source);
+    Widget *source = actionEvent.getSource();
 
-    if (tab)
+    if (Tab *tab = dynamic_cast<Tab*>(source))
     {
         setSelectedTab(tab);
     }

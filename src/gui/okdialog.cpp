@@ -21,8 +21,6 @@
 
 #include "gui/okdialog.h"
 
-#include "gui/gui.h"
-
 #include "gui/widgets/button.h"
 #include "gui/widgets/textbox.h"
 

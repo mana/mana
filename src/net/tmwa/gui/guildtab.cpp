@@ -43,10 +43,6 @@ GuildTab::GuildTab() :
     setTabColor(&Theme::getThemeColor(Theme::GUILD));
 }
 
-GuildTab::~GuildTab()
-{
-}
-
 void GuildTab::handleInput(const std::string &msg)
 {
     Net::getGuildHandler()->chat(taGuild->getId(), msg);

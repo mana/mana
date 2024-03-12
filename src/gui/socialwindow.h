@@ -64,7 +64,7 @@ public:
      */
     void action(const gcn::ActionEvent &event) override;
 
-    void showGuildInvite(const std::string &guildName, const int guildId,
+    void showGuildInvite(const std::string &guildName, int guildId,
                          const std::string &inviterName);
 
     void showGuildCreate();
@@ -79,19 +79,16 @@ protected:
 
     void updateButtons();
 
-    int mGuildInvited;
-    ConfirmDialog *mGuildAcceptDialog;
-    TextDialog *mGuildCreateDialog;
+    int mGuildInvited = 0;
+    ConfirmDialog *mGuildAcceptDialog = nullptr;
+    TextDialog *mGuildCreateDialog = nullptr;
 
     std::string mPartyInviter;
-    ConfirmDialog *mPartyAcceptDialog;
-    TextDialog *mPartyCreateDialog;
+    ConfirmDialog *mPartyAcceptDialog = nullptr;
+    TextDialog *mPartyCreateDialog = nullptr;
 
-    using GuildMap = std::map<Guild *, SocialTab *>;
-    GuildMap mGuilds;
-
-    using PartyMap = std::map<Party *, SocialTab *>;
-    PartyMap mParties;
+    std::map<Guild *, SocialTab *> mGuilds;
+    std::map<Party *, SocialTab *> mParties;
 
     CreatePopup *mCreatePopup;
 

@@ -60,9 +60,7 @@
 
 #include <guichan/exception.hpp>
 
-SDLInput::SDLInput()
-{
-}
+SDLInput::SDLInput() = default;
 
 bool SDLInput::isKeyQueueEmpty()
 {
@@ -220,8 +218,6 @@ void SDLInput::pushInput(SDL_Event event)
           if ((event.active.state & SDL_APPMOUSEFOCUS)
               && !event.active.gain)
           {
-              mMouseInWindow = false;
-
               if (!mMouseDown)
               {
                   mouseInput.setX(-1);
@@ -230,12 +226,6 @@ void SDLInput::pushInput(SDL_Event event)
                   mouseInput.setType(gcn::MouseInput::MOVED);
                   mMouseInputQueue.push(mouseInput);
               }
-          }
-
-          if ((event.active.state & SDL_APPMOUSEFOCUS)
-              && event.active.gain)
-          {
-              mMouseInWindow = true;
           }
           break;
 #endif

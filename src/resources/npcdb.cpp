@@ -30,7 +30,7 @@
 
 namespace
 {
-    BeingInfos mNPCInfos;
+    std::map<int, BeingInfo *> mNPCInfos;
     bool mLoaded = false;
 }
 

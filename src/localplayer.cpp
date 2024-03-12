@@ -86,13 +86,13 @@ void LocalPlayer::logic()
     {
         if (mMessageTime == 0)
         {
-            MessagePair info = mMessages.front();
+            const auto &[message, color] = mMessages.front();
 
             particleEngine->addTextRiseFadeOutEffect(
-                    info.first,
+                    message,
                     getPixelX(),
                     getPixelY() - 32 - 16,
-                    &userPalette->getColor(info.second),
+                    &userPalette->getColor(color),
                     gui->getInfoParticleFont(), true);
 
             mMessages.pop_front();
@@ -978,7 +978,7 @@ void LocalPlayer::setGotoTarget(Being *target)
 
 void LocalPlayer::addMessageToQueue(const std::string &message, int color)
 {
-    mMessages.push_back(MessagePair(message, color));
+    mMessages.emplace_back(message, color);
 }
 
 void LocalPlayer::event(Event::Channel channel, const Event &event)

@@ -31,7 +31,7 @@
 class LinkHandler
 {
     public:
-        virtual ~LinkHandler() { }
+        virtual ~LinkHandler() = default;
 
         virtual void handleLink(const std::string &link) = 0;
 };

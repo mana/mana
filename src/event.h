@@ -36,10 +36,7 @@ enum BadEvent {
 };
 
 class EventListener;
-
-using ListenerSet = std::set<EventListener *>;
 class VariableData;
-using VariableMap = std::map<std::string, VariableData *>;
 
 class Event
 {
@@ -148,11 +145,6 @@ public:
     int getInt(const std::string &key, int defaultValue) const
     { try { return getInt(key); } catch (BadEvent) { return defaultValue; }}
 
-    /**
-     * Returns true if the given variable exists and is an integer.
-     */
-    bool hasInt(const std::string &key) const;
-
 // Strings
 
     /**
@@ -172,11 +164,6 @@ public:
     std::string getString(const std::string &key,
                           const std::string &defaultValue) const
     { try { return getString(key); } catch (BadEvent) { return defaultValue; }}
-
-    /**
-     * Returns true if the given variable exists and is a string.
-     */
-    bool hasString(const std::string &key) const;
 
 // Floats
 
@@ -198,11 +185,6 @@ public:
     double getFloat(const std::string &key, float defaultValue) const
     { try { return getFloat(key); } catch (BadEvent) { return defaultValue; }}
 
-    /**
-     * Returns true if the given variable exists and is a floating-point.
-     */
-    bool hasFloat(const std::string &key) const;
-
 // Booleans
 
     /**
@@ -221,11 +203,6 @@ public:
      */
     bool getBool(const std::string &key, bool defaultValue) const
     { try { return getBool(key); } catch (BadEvent) { return defaultValue; }}
-
-    /**
-     * Returns true if the given variable exists and is a boolean.
-     */
-    bool hasBool(const std::string &key) const;
 
 // Items
 
@@ -246,11 +223,6 @@ public:
     Item *getItem(const std::string &key, Item *defaultValue) const
     { try { return getItem(key); } catch (BadEvent) { return defaultValue; }}
 
-    /**
-     * Returns true if the given variable exists and is an Item.
-     */
-    bool hasItem(const std::string &key) const;
-
 // ActorSprites
 
     /**
@@ -270,11 +242,6 @@ public:
     ActorSprite *getActor(const std::string &key,
                           ActorSprite *defaultValue) const
     { try { return getActor(key); } catch (BadEvent) { return defaultValue; }}
-
-    /**
-     * Returns true if the given variable exists and is an actor.
-     */
-    bool hasActor(const std::string &key) const;
 
 // Triggers
 
@@ -317,11 +284,11 @@ protected:
     static void remove(EventListener *listener);
 
 private:
-    using ListenMap = std::map<Channel, ListenerSet>;
+    using ListenMap = std::map<Channel, std::set<EventListener *>>;
     static ListenMap mBindings;
 
     Type mType;
-    VariableMap mData;
+    std::map<std::string, VariableData *> mData;
 };
 
 #define SERVER_NOTICE(message) { \

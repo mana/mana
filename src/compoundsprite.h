@@ -90,9 +90,6 @@ public:
     { mNeedsRedraw = true; }
 
 private:
-    using SpriteIterator = std::vector<Sprite *>::iterator;
-    using SpriteConstIterator = std::vector<Sprite *>::const_iterator;
-
     void redraw() const;
 
     mutable Image *mImage = nullptr;

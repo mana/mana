@@ -80,8 +80,6 @@ class TextChunk
         gcn::Color color;
 };
 
-using CacheIterator = std::list<TextChunk>::iterator;
-
 static int fontCounter;
 
 TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
@@ -175,8 +173,7 @@ int TrueTypeFont::getWidth(const std::string &text) const
             mCache.splice(mCache.begin(), mCache, i);
             if (i->img)
                 return i->img->getWidth();
-            else
-                return 0;
+            return 0;
         }
     }
 

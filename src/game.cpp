@@ -88,11 +88,11 @@
 #include <sstream>
 #include <string>
 
-Joystick *joystick = nullptr;
+Joystick *joystick;
 
-OkDialog *weightNotice = nullptr;
-OkDialog *deathNotice = nullptr;
-QuitDialog *quitDialog = nullptr;
+OkDialog *weightNotice;
+OkDialog *deathNotice;
+QuitDialog *quitDialog;
 
 ChatWindow *chatWindow;
 StatusWindow *statusWindow;
@@ -110,14 +110,14 @@ OutfitWindow *outfitWindow;
 SpecialsWindow *specialsWindow;
 SocialWindow *socialWindow;
 
-ActorSpriteManager *actorSpriteManager = nullptr;
-ChannelManager *channelManager = nullptr;
-CommandHandler *commandHandler = nullptr;
-Particle *particleEngine = nullptr;
-EffectManager *effectManager = nullptr;
-Viewport *viewport = nullptr;                    /**< Viewport on the map. */
+ActorSpriteManager *actorSpriteManager;
+ChannelManager *channelManager;
+CommandHandler *commandHandler;
+Particle *particleEngine;
+EffectManager *effectManager;
+Viewport *viewport;                     /**< Viewport on the map. */
 
-ChatTab *localChatTab = nullptr;
+ChatTab *localChatTab;
 
 /**
  * Initialize every game sub-engines in the right order
@@ -338,8 +338,6 @@ static bool saveScreenshot()
 
 void Game::logic()
 {
-    handleInput();
-
     // Handle all necessary game logic
     ActorSprite::actorLogic();
     actorSpriteManager->logic();

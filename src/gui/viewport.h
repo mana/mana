@@ -209,8 +209,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
             float decay;
             unsigned duration;
         };
-        using ShakeEffects = std::list<ShakeEffect>;
-        ShakeEffects mShakeEffects;
+        std::list<ShakeEffect> mShakeEffects;
 
         bool mPlayerFollowMouse = false;
 

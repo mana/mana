@@ -31,10 +31,8 @@ Icon::Icon(const std::string &file)
 {}
 
 Icon::Icon(Image *image)
-    : mImage(image)
 {
-    if (mImage)
-        setSize(mImage->getWidth(), mImage->getHeight());
+    setImage(image);
 }
 
 void Icon::setImage(Image *image)

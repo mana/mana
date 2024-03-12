@@ -262,38 +262,38 @@ class Particle : public Actor
 
     protected:
         /** Opacity of the graphical representation of the particle */
-        float mAlpha;
+        float mAlpha = 1.0f;
 
         /** Calculates the current alpha transparency taking current fade status into account*/
         float getCurrentAlpha() const;
 
-        int mLifetimeLeft;          /**< Lifetime left in game ticks*/
-        int mLifetimePast;          /**< Age of the particle in game ticks*/
-        int mFadeOut;               /**< Lifetime in game ticks left where fading out begins*/
-        int mFadeIn;                /**< Age in game ticks where fading in is finished*/
-        Vector mVelocity;           /**< Speed in pixels per game-tick. */
+        int mLifetimeLeft = -1;         /**< Lifetime left in game ticks*/
+        int mLifetimePast = 0;          /**< Age of the particle in game ticks*/
+        int mFadeOut = 0;               /**< Lifetime in game ticks left where fading out begins*/
+        int mFadeIn = 0;                /**< Age in game ticks where fading in is finished*/
+        Vector mVelocity;               /**< Speed in pixels per game-tick. */
 
     private:
-        AliveStatus mAlive;                 /**< Is the particle supposed to be drawn and updated?*/
+        AliveStatus mAlive = ALIVE;     /**< Is the particle supposed to be drawn and updated?*/
         // generic properties
-        bool mAutoDelete;           /**< May the particle request its deletion by the parent particle? */
-        Emitters mChildEmitters;    /**< List of child emitters. */
-        Particles mChildParticles;  /**< List of particles controlled by this particle */
-        bool mAllowSizeAdjust;      /**< Can the effect size be adjusted by the object props in the map file? */
-        std::string mDeathEffect;   /**< Particle effect file to be spawned when the particle dies */
-        char mDeathEffectConditions;/**< Bitfield of death conditions which trigger spawning of the death particle */
+        bool mAutoDelete = true;        /**< May the particle request its deletion by the parent particle? */
+        Emitters mChildEmitters;        /**< List of child emitters. */
+        Particles mChildParticles;      /**< List of particles controlled by this particle */
+        bool mAllowSizeAdjust = false;  /**< Can the effect size be adjusted by the object props in the map file? */
+        std::string mDeathEffect;       /**< Particle effect file to be spawned when the particle dies */
+        char mDeathEffectConditions = 0;/**< Bitfield of death conditions which trigger spawning of the death particle */
 
         // dynamic particle
-        float mGravity;             /**< Downward acceleration in pixels per game-tick. */
-        int mRandomness;            /**< Ammount of random vector change */
-        float mBounce;              /**< How much the particle bounces off when hitting the ground */
-        bool mFollow;               /**< is this particle moved when its parent particle moves? */
+        float mGravity = 0.0f;          /**< Downward acceleration in pixels per game-tick. */
+        int mRandomness = 0;            /**< Ammount of random vector change */
+        float mBounce = 0.0f;           /**< How much the particle bounces off when hitting the ground */
+        bool mFollow = false;           /**< is this particle moved when its parent particle moves? */
 
         // follow-point particles
-        Particle *mTarget;          /**< The particle that attracts this particle*/
-        float mAcceleration;        /**< Acceleration towards the target particle in pixels per game-tick*/
-        float mInvDieDistance;      /**< Distance in pixels from the target particle that causes the destruction of the particle*/
-        float mMomentum;            /**< How much speed the particle retains after each game tick*/
+        Particle *mTarget = nullptr;    /**< The particle that attracts this particle*/
+        float mAcceleration = 0.0f;     /**< Acceleration towards the target particle in pixels per game-tick*/
+        float mInvDieDistance = -1.0f;  /**< Distance in pixels from the target particle that causes the destruction of the particle*/
+        float mMomentum = 1.0f;         /**< How much speed the particle retains after each game tick*/
 };
 
 extern Particle *particleEngine;

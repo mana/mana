@@ -60,7 +60,7 @@ void ShopItems::addItem(int inventoryIndex, int id, int quantity, int price)
 
     if (item)
     {
-        item->addDuplicate (inventoryIndex, quantity);
+        item->addDuplicate(inventoryIndex, quantity);
     }
     else
     {
@@ -87,15 +87,11 @@ void ShopItems::clear()
 
 ShopItem *ShopItems::findItem(int id)
 {
-    ShopItem *item;
-
-    std::vector<ShopItem*>::iterator it;
-    for (it = mShopItems.begin(); it != mShopItems.end(); it++)
+    for (auto shopItem : mShopItems)
     {
-        item = *(it);
-        if (item->getId() == id)
+        if (shopItem->getId() == id)
         {
-            return item;
+            return shopItem;
         }
     }
 

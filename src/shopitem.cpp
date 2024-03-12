@@ -31,56 +31,28 @@ ShopItem::ShopItem(int inventoryIndex, int id,
     mPrice(price)
 {
     mDisplayName = getInfo().getName() +
-                        " (" + Units::formatCurrency(mPrice).c_str() + ")";
+                        " (" + Units::formatCurrency(mPrice) + ")";
     setInvIndex(inventoryIndex);
     addDuplicate(inventoryIndex, quantity);
 }
 
-ShopItem::ShopItem (int id, int price) : Item (id, 0), mPrice(price)
-{
-    mDisplayName = getInfo().getName() +
-                        " (" + Units::formatCurrency(mPrice).c_str() + ")";
-    setInvIndex(-1);
-    addDuplicate(-1, 0);
-}
-
-ShopItem::~ShopItem()
-{
-    /** Clear all remaining duplicates on Object destruction. */
-    while (!mDuplicates.empty())
-    {
-        delete mDuplicates.top();
-        mDuplicates.pop();
-    }
-}
+ShopItem::~ShopItem() = default;
 
 void ShopItem::addDuplicate(int inventoryIndex, int quantity)
 {
-    auto* di = new DuplicateItem;
-    di->inventoryIndex = inventoryIndex;
-    di->quantity = quantity;
-    mDuplicates.push(di);
+    DuplicateItem &di = mDuplicates.emplace();
+    di.inventoryIndex = inventoryIndex;
+    di.quantity = quantity;
     mQuantity += quantity;
-}
-
-void ShopItem::addDuplicate()
-{
-    auto* di = new DuplicateItem;
-    di->inventoryIndex = -1;
-    di->quantity = 0;
-    mDuplicates.push(di);
 }
 
 int ShopItem::sellCurrentDuplicate(int quantity)
 {
-    DuplicateItem* dupl = mDuplicates.top();
-    int sellCount = quantity <= dupl->quantity ? quantity : dupl->quantity;
-    dupl->quantity -= sellCount;
+    DuplicateItem &dupl = mDuplicates.top();
+    int sellCount = quantity <= dupl.quantity ? quantity : dupl.quantity;
+    dupl.quantity -= sellCount;
     mQuantity -= sellCount;
-    if (dupl->quantity == 0)
-    {
-        delete dupl;
+    if (dupl.quantity == 0)
         mDuplicates.pop();
-    }
     return sellCount;
 }

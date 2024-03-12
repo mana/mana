@@ -33,7 +33,6 @@ class GuildTab : public ChatTab
 {
     public:
         GuildTab();
-        ~GuildTab() override;
 
         void showHelp() override;
 

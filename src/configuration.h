@@ -65,7 +65,7 @@ class ConfigurationListManager
         virtual CONT readConfigItem(ConfigurationObject *obj,
                                     CONT container) = 0;
 
-        virtual ~ConfigurationListManager() {}
+        virtual ~ConfigurationListManager() = default;
 };
 
 /**
@@ -127,8 +127,8 @@ class ConfigurationObject
                      ConfigurationListManager<T, CONT> *manager)
         {
             auto *nextobj = new ConfigurationObject;
-            deleteList(name);
-            ConfigurationList *list = &(mContainerOptions[name]);
+            std::list<ConfigurationObject *> &list = mContainerOptions[name];
+            deleteList(list);
 
             for (IT it = begin; it != end; it++)
             {
@@ -137,7 +137,7 @@ class ConfigurationObject
                 { // wrote something
                     assert (wrobj == nextobj);
                     nextobj = new ConfigurationObject;
-                    list->push_back(wrobj);
+                    list.push_back(wrobj);
                 }
                 else
                 {
@@ -174,13 +174,10 @@ class ConfigurationObject
         virtual void initFromXML(xmlNodePtr node);
         virtual void writeToXML(xmlTextWriterPtr writer);
 
-        void deleteList(const std::string &name);
+        void deleteList(std::list<ConfigurationObject *> &list);
 
-        using Options = std::map<std::string, std::string>;
-        Options mOptions;
-
-        using ConfigurationList = std::list<ConfigurationObject *>;
-        std::map<std::string, ConfigurationList> mContainerOptions;
+        std::map<std::string, std::string> mOptions;
+        std::map<std::string, std::list<ConfigurationObject *>> mContainerOptions;
 };
 
 /**

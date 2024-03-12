@@ -26,21 +26,14 @@
 #include "graphics.h"
 #include "inventory.h"
 #include "item.h"
-#include "log.h"
 #include "playerinfo.h"
-
-#include "gui/chatwindow.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 
-#include "net/inventoryhandler.h"
-#include "net/net.h"
-
 #include "resources/image.h"
-#include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

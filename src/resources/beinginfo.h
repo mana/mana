@@ -124,6 +124,4 @@ class BeingInfo
         Map::BlockType mBlockType = Map::BLOCKTYPE_CHARACTER;
 };
 
-using BeingInfos = std::map<int, BeingInfo *>;
-
 #endif // BEINGINFO_H

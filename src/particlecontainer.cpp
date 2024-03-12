@@ -56,8 +56,7 @@ ParticleList::ParticleList(ParticleContainer *parent, bool delParent):
     ParticleContainer(parent, delParent)
 {}
 
-ParticleList::~ParticleList()
-{}
+ParticleList::~ParticleList() = default;
 
 void ParticleList::addLocally(Particle *particle)
 {
@@ -117,8 +116,7 @@ ParticleVector::ParticleVector(ParticleContainer *parent, bool delParent):
     ParticleContainer(parent, delParent)
 {}
 
-ParticleVector::~ParticleVector()
-{}
+ParticleVector::~ParticleVector() = default;
 
 void ParticleVector::setLocally(int index, Particle *particle)
 {

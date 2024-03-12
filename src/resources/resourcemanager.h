@@ -237,10 +237,8 @@ class ResourceManager
         void cleanOrphans();
 
         static ResourceManager *instance;
-        using Resources = std::map<std::string, Resource *>;
-        using ResourceIterator = Resources::iterator;
-        Resources mResources;
-        Resources mOrphanedResources;
+        std::map<std::string, Resource *> mResources;
+        std::map<std::string, Resource *> mOrphanedResources;
         time_t mOldestOrphan;
 };
 

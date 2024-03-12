@@ -30,7 +30,7 @@
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
 
-#include <vector>
+#include <memory>
 
 class LoginData;
 class WorldListModel;
@@ -57,7 +57,7 @@ class WorldSelectDialog : public Window, public gcn::ActionListener,
         void mouseClicked(gcn::MouseEvent &mouseEvent) override;
 
     private:
-        WorldListModel *mWorldListModel;
+        std::unique_ptr<WorldListModel> mWorldListModel;
         gcn::ListBox *mWorldList;
         gcn::Button *mChangeLoginButton;
         gcn::Button *mChooseWorld;

@@ -214,9 +214,8 @@ class ChatWindow : public Window,
         /** Tabbed area for holding each channel. */
         TabbedArea *mChatTabs;
 
-        using TabMap = std::map<const std::string, ChatTab *>;
         /** Manage whisper tabs */
-        TabMap mWhispers;
+        std::map<const std::string, ChatTab *> mWhispers;
 
         bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
                                 or not */

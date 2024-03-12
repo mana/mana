@@ -62,7 +62,7 @@ class Icon : public gcn::Widget
         void draw(gcn::Graphics *g) override;
 
     private:
-        Image *mImage;
+        Image *mImage = nullptr;
 };
 
 #endif // ICON_H

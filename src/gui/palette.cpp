@@ -50,7 +50,7 @@ const int Palette::RAINBOW_COLOR_COUNT = 7;
 
 Palette::Palette(int size) :
     mRainbowTime(tick_time),
-    mColors(Colors(size))
+    mColors(size)
 {
     mInstances.insert(this);
 }

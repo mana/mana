@@ -105,7 +105,7 @@ int Skin::getMinHeight() const
 Theme::Theme():
     Palette(THEME_COLORS_END),
     mMinimumOpacity(-1.0f),
-    mProgressColors(ProgressColors(THEME_PROG_END))
+    mProgressColors(THEME_PROG_END)
 {
     initDefaultThemePath();
 

@@ -47,48 +47,41 @@ std::string ConfigurationObject::getValue(const std::string &key,
                                           const std::string &deflt) const
 {
     auto iter = mOptions.find(key);
-    return ((iter != mOptions.end()) ? iter->second : deflt);
+    return iter != mOptions.end() ? iter->second : deflt;
 }
 
 int ConfigurationObject::getValue(const std::string &key, int deflt) const
 {
     auto iter = mOptions.find(key);
-    return (iter != mOptions.end()) ? atoi(iter->second.c_str()) : deflt;
+    return iter != mOptions.end() ? atoi(iter->second.c_str()) : deflt;
 }
 
 unsigned ConfigurationObject::getValue(const std::string &key,
                                        unsigned deflt) const
 {
     auto iter = mOptions.find(key);
-    return (iter != mOptions.end()) ? atol(iter->second.c_str()) : deflt;
+    return iter != mOptions.end() ? atol(iter->second.c_str()) : deflt;
 }
 
 double ConfigurationObject::getValue(const std::string &key,
                                      double deflt) const
 {
     auto iter = mOptions.find(key);
-    return (iter != mOptions.end()) ? atof(iter->second.c_str()) : deflt;
+    return iter != mOptions.end() ? atof(iter->second.c_str()) : deflt;
 }
 
-void ConfigurationObject::deleteList(const std::string &name)
+void ConfigurationObject::deleteList(std::list<ConfigurationObject*> &list)
 {
-    for (ConfigurationList::const_iterator
-         it = mContainerOptions[name].begin();
-         it != mContainerOptions[name].end(); it++)
-    {
-        delete *it;
-    }
+    for (auto element : list)
+        delete element;
 
-    mContainerOptions[name].clear();
+    list.clear();
 }
 
 void ConfigurationObject::clear()
 {
-    for (std::map<std::string, ConfigurationList>::const_iterator
-         it = mContainerOptions.begin(); it != mContainerOptions.end(); it++)
-    {
-        deleteList(it->first);
-    }
+    for (auto &[_, list] : mContainerOptions)
+        deleteList(list);
 
     mOptions.clear();
 }
@@ -150,7 +143,7 @@ int Configuration::getIntValue(const std::string &key) const
     auto iter = mOptions.find(key);
     if (iter == mOptions.end())
     {
-        VariableData* vd = getDefault(key, VariableData::DATA_INT);
+        VariableData *vd = getDefault(key, VariableData::DATA_INT);
         if (vd)
             defaultValue = ((IntData*)vd)->getData();
     }
@@ -289,18 +282,15 @@ void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
         xmlTextWriterEndElement(writer);
     }
 
-    for (std::map<std::string, ConfigurationList>::const_iterator
-        it = mContainerOptions.begin(); it != mContainerOptions.end(); it++)
+    for (auto &[name, list] : mContainerOptions)
     {
-        const char *name = it->first.c_str();
-
         xmlTextWriterStartElement(writer, BAD_CAST "list");
-        xmlTextWriterWriteAttribute(writer, BAD_CAST "name", BAD_CAST name);
+        xmlTextWriterWriteAttribute(writer, BAD_CAST "name", BAD_CAST name.c_str());
 
         // Recurse on all elements
-        for (auto element : it->second)
+        for (auto element : list)
         {
-            xmlTextWriterStartElement(writer, BAD_CAST name);
+            xmlTextWriterStartElement(writer, BAD_CAST name.c_str());
             element->writeToXML(writer);
             xmlTextWriterEndElement(writer);
         }
@@ -319,10 +309,9 @@ void Configuration::write()
                     mConfigPath.c_str());
         return;
     }
-    else
-    {
-        fclose(testFile);
-    }
+
+    fclose(testFile);
+
 
     xmlTextWriterPtr writer = xmlNewTextWriterFilename(mConfigPath.c_str(), 0);
 

@@ -51,8 +51,6 @@
 #define CAPTION_CLOSE _("Close")
 #define CAPTION_SUBMIT _("Submit")
 
-using NpcDialogs = std::map<int, NpcDialog *>;
-
 class NpcEventListener : public EventListener
 {
 public:
@@ -63,7 +61,7 @@ public:
     void removeDialog(int id);
 
 private:
-    NpcDialogs mNpcDialogs;
+    std::map<int, NpcDialog *> mNpcDialogs;
 };
 
 static NpcEventListener *npcListener = nullptr;

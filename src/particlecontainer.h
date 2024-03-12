@@ -67,7 +67,7 @@ protected:
 /**
  * Linked list of particle effects.
  */
-class ParticleList : public ParticleContainer
+class ParticleList final : public ParticleContainer
 {
 public:
     ParticleList(ParticleContainer *parent = nullptr, bool delParent = true);
@@ -94,7 +94,7 @@ protected:
 /**
  * Particle container with indexing facilities
  */
-class ParticleVector : public ParticleContainer
+class ParticleVector final : public ParticleContainer
 {
 public:
     ParticleVector(ParticleContainer *parent = nullptr, bool delParent = true);
@@ -104,12 +104,12 @@ public:
      * Sets a particle at a specified index.  Kills the previous particle
      * there, if needed.
      */
-    virtual void setLocally(int index, Particle *particle);
+    void setLocally(int index, Particle *particle);
 
     /**
      * Removes a particle at a specified index
      */
-    virtual void delLocally(int index);
+    void delLocally(int index);
 
     void clearLocally() override;
     void moveTo(float x, float y) override;

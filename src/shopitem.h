@@ -43,15 +43,6 @@ class ShopItem : public Item
          */
         ShopItem(int inventoryIndex, int id, int quantity, int price);
 
-        /**
-         * Constructor. Creates a new ShopItem. Inventory index will be set to
-         * -1 and quantity to 0.
-         *
-         * @param id the id of the item
-         * @param price price of the item
-         */
-        ShopItem(int id, int price);
-
         ~ShopItem() override;
 
         /**
@@ -63,20 +54,13 @@ class ShopItem : public Item
         void addDuplicate(int inventoryIndex, int quantity);
 
         /**
-         * Add a duplicate. Id and price will be taken from this item.
-         * Needed for compatibility with ShopDuplicateItems (see) class
-         * documentation).
-         */
-        void addDuplicate();
-
-        /**
          * Gets the quantity of the currently topmost duplicate.
          *
          * @return the quantity of the currently topmost duplicate
          */
         int getCurrentQuantity() const
         {
-            return mDuplicates.empty() ? 0 : mDuplicates.top()->quantity;
+            return mDuplicates.empty() ? 0 : mDuplicates.top().quantity;
         }
 
         /**
@@ -87,7 +71,7 @@ class ShopItem : public Item
         int getCurrentInvIndex() const
         {
             return mDuplicates.empty() ? mInvIndex :
-                   mDuplicates.top()->inventoryIndex;
+                   mDuplicates.top().inventoryIndex;
         }
 
         /**
@@ -126,11 +110,12 @@ class ShopItem : public Item
         /**
          * Struct to keep track of duplicates.
          */
-        using DuplicateItem = struct {
+        struct DuplicateItem
+        {
             int inventoryIndex;
             int quantity;
         };
-        std::stack<DuplicateItem*> mDuplicates; /** <-- Stores duplicates */
+        std::stack<DuplicateItem> mDuplicates; /** <-- Stores duplicates */
 };
 
 #endif

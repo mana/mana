@@ -48,6 +48,8 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+#include <memory>
+
 class SocialTab : public Tab
 {
 protected:
@@ -79,8 +81,8 @@ protected:
 
     TextDialog *mInviteDialog = nullptr;
     ConfirmDialog *mConfirmDialog = nullptr;
-    ScrollArea *mScroll;
-    AvatarListBox *mList;
+    std::unique_ptr<ScrollArea> mScroll;
+    std::unique_ptr<AvatarListBox> mList;
 };
 
 class GuildTab : public SocialTab, public gcn::ActionListener
@@ -93,19 +95,11 @@ public:
 
         setTabColor(&Theme::getThemeColor(Theme::GUILD));
 
-        mList = new AvatarListBox(guild);
-        mScroll = new ScrollArea(mList);
+        mList = std::make_unique<AvatarListBox>(guild);
+        mScroll = std::make_unique<ScrollArea>(mList.get());
 
         mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
-    }
-
-    ~GuildTab() override
-    {
-        delete mList;
-        mList = nullptr;
-        delete mScroll;
-        mScroll = nullptr;
     }
 
     void action(const gcn::ActionEvent &event) override
@@ -176,19 +170,11 @@ public:
 
         setTabColor(&Theme::getThemeColor(Theme::PARTY_SOCIAL_TAB));
 
-        mList = new AvatarListBox(party);
-        mScroll = new ScrollArea(mList);
+        mList = std::make_unique<AvatarListBox>(party);
+        mScroll = std::make_unique<ScrollArea>(mList.get());
 
         mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
-    }
-
-    ~PartyTab() override
-    {
-        delete mList;
-        mList = nullptr;
-        delete mScroll;
-        mScroll = nullptr;
     }
 
     void action(const gcn::ActionEvent &event) override
@@ -302,10 +288,7 @@ private:
 };
 
 SocialWindow::SocialWindow() :
-    Window(_("Social")),
-    mGuildInvited(0),
-    mGuildAcceptDialog(nullptr),
-    mPartyAcceptDialog(nullptr)
+    Window(_("Social"))
 {
     setWindowName("Social");
     setVisible(false);
@@ -373,7 +356,7 @@ bool SocialWindow::addTab(Guild *guild)
     auto *tab = new GuildTab(guild);
     mGuilds[guild] = tab;
 
-    mTabs->addTab(tab, tab->mScroll);
+    mTabs->addTab(tab, tab->mScroll.get());
 
     updateButtons();
 
@@ -403,7 +386,7 @@ bool SocialWindow::addTab(Party *party)
     auto *tab = new PartyTab(party);
     mParties[party] = tab;
 
-    mTabs->addTab(tab, tab->mScroll);
+    mTabs->addTab(tab, tab->mScroll.get());
 
     updateButtons();
 
@@ -490,7 +473,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
                             "shorter name."));
             return;
         }
-        else if (!name.empty())
+
+        if (!name.empty())
         {
             Net::getGuildHandler()->create(name);
             SERVER_NOTICE(strprintf(_("Creating guild called %s."),
@@ -513,7 +497,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
                             "shorter name."));
             return;
         }
-        else if (!name.empty())
+
+        if (!name.empty())
         {
             Net::getPartyHandler()->create(name);
             SERVER_NOTICE(strprintf(_("Creating party called %s."),

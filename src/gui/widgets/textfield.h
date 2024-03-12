@@ -30,13 +30,10 @@ class TextInput;
 class ImageRect;
 class TextField;
 
-using TextHistoryList = std::list<std::string>;
-using TextHistoryIterator = TextHistoryList::iterator;
-
 struct TextHistory
 {
-    TextHistoryList history;     /**< Command history. */
-    TextHistoryIterator current; /**< History iterator. */
+    std::list<std::string> history;             /**< Command history. */
+    std::list<std::string>::iterator current;   /**< History iterator. */
 
     TextHistory()
     { current = history.end(); }

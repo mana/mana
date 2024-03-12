@@ -57,13 +57,11 @@ void TextManager::removeText(const Text *text)
     }
 }
 
-TextManager::~TextManager()
-{
-}
+TextManager::~TextManager() = default;
 
 void TextManager::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
-    for (auto &text : mTextList)
+    for (auto text : mTextList)
     {
         text->draw(graphics, xOff, yOff);
     }
