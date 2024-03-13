@@ -28,3 +28,13 @@ ubuntu-build:
         ninja-build
     - cmake -G Ninja -B build .
     - cmake --build build
+
+macos-build:
+  stage: build
+  tags:
+    - macos
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
+  script:
+    - cmake -G Ninja -B build .
+    - cmake --build build
