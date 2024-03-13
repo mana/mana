@@ -27,4 +27,9 @@
 std::string getSpecialFolderLocation(const KNOWNFOLDERID &folderId);
 #endif
 
+#ifdef __APPLE__
+#include <string>
+std::string getResourcesLocation();
+#endif
+
 #endif

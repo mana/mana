@@ -18,8 +18,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef _WIN32
 #include "specialfolder.h"
+
+#ifdef _WIN32
 #include <windows.h>
 #include <stdlib.h>
 
@@ -74,4 +75,22 @@ int main()
               << std::endl;
 }
 #endif
-#endif
+#endif // _WIN32
+
+#ifdef __APPLE__
+#include <CoreFoundation/CFBundle.h>
+
+std::string getResourcesLocation()
+{
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
+    char path[PATH_MAX];
+    if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path,
+                                          PATH_MAX))
+    {
+        fprintf(stderr, "Can't find Resources directory\n");
+    }
+    CFRelease(resourcesURL);
+    return path;
+}
+#endif // __APPLE__

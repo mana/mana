@@ -20,10 +20,10 @@ ENDIF()
 SET(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
 
 IF (WIN32)
-    SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${PKG_DATADIR}/\\\"")
+    SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_DATADIR}/\\\"")
     SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${CMAKE_INSTALL_LOCALEDIR}/\\\"")
-ELSE()
-    SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_FULL_DATAROOTDIR}/mana/\\\"")
+ELSEIF(NOT APPLE)
+    SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_FULL_DATADIR}/\\\"")
     SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${CMAKE_INSTALL_FULL_LOCALEDIR}/\\\"")
 ENDIF()
 
@@ -384,6 +384,8 @@ SET(SRCS
     utils/physfsrwops.h
     utils/sha256.cpp
     utils/sha256.h
+    utils/specialfolder.cpp
+    utils/specialfolder.h
     utils/stringutils.cpp
     utils/stringutils.h
     utils/mutex.h
@@ -613,20 +615,20 @@ SET(SRCS_MANA
 
 IF (WIN32)
     CONFIGURE_FILE(mana.rc.in mana.rc)
-    SET(SRCS
-        ${SRCS}
-        utils/specialfolder.cpp
-        utils/specialfolder.h
-        ${CMAKE_CURRENT_BINARY_DIR}/mana.rc
-    )
+    SET(SRCS ${SRCS} ${CMAKE_CURRENT_BINARY_DIR}/mana.rc)
 ENDIF (WIN32)
 
 SET (PROGRAMS mana)
 
+set(APP_ICON_NAME "mana.icns")
+set(APP_ICON_FILE "${CMAKE_SOURCE_DIR}/data/icons/${APP_ICON_NAME}")
+set_source_files_properties(${APP_ICON_FILE} PROPERTIES
+    MACOSX_PACKAGE_LOCATION "Resources")
+
 IF (ENABLE_MANASERV)
-    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA})
+    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA} ${APP_ICON_FILE})
 ELSE(ENABLE_MANASERV)
-    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_TMWA})
+    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_TMWA} ${APP_ICON_FILE})
 ENDIF(ENABLE_MANASERV)
 
 TARGET_LINK_LIBRARIES(mana PRIVATE
@@ -641,16 +643,34 @@ TARGET_LINK_LIBRARIES(mana PRIVATE
     ${LIBINTL_LIBRARIES}
     ${EXTRA_LIBRARIES})
 
+SET_TARGET_PROPERTIES(mana PROPERTIES
+    COMPILE_FLAGS "${FLAGS}"
+    MACOSX_BUNDLE TRUE
+    MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
+    MACOSX_BUNDLE_GUI_IDENTIFIER org.manasource.Mana
+    MACOSX_BUNDLE_ICON_FILE ${APP_ICON_NAME}
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_COPYRIGHT "(C) 2004-2024 ${CPACK_PACKAGE_VENDOR}"
+    MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+
+INSTALL(TARGETS mana
+    BUNDLE DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
 if(APPLE)
   target_link_libraries(mana PRIVATE "-framework Foundation")
-endif()
+  SET_TARGET_PROPERTIES(mana PROPERTIES
+      OUTPUT_NAME Mana)
 
-INSTALL(TARGETS mana RUNTIME DESTINATION ${PKG_BINDIR})
+  set(CPACK_GENERATOR "DRAGNDROP")
+
+  install(CODE "include(BundleUtilities)
+      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"\" \"/usr/local/lib\")")
+endif()
 
 IF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
     # we expect the SMCgtxt package to be present on Solaris;
     # the Solaris gettext is not API-compatible to GNU gettext
     SET_TARGET_PROPERTIES(mana PROPERTIES LINK_FLAGS "-L/usr/local/lib")
 ENDIF()
-
-SET_TARGET_PROPERTIES(mana PROPERTIES COMPILE_FLAGS "${FLAGS}")

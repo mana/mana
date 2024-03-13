@@ -70,17 +70,13 @@
 
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
+#include "utils/specialfolder.h"
 #include "utils/stringutils.h"
-
-#ifdef __APPLE__
-#include <CoreFoundation/CFBundle.h>
-#endif
 
 #include <physfs.h>
 #include <SDL_image.h>
 
 #ifdef _WIN32
-#include "utils/specialfolder.h"
 #include <SDL_syswm.h>
 #include <winuser.h>
 #endif
@@ -264,17 +260,7 @@ Client::Client(const Options &options):
     }
 
 #if defined __APPLE__
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
-    char path[PATH_MAX];
-    if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path,
-                                          PATH_MAX))
-    {
-        fprintf(stderr, "Can't find Resources directory\n");
-    }
-    CFRelease(resourcesURL);
-    strncat(path, "/data", PATH_MAX - 1);
-    mPackageDir = path;
+    mPackageDir = getResourcesLocation() + "/data";
 #else
     mPackageDir = PKG_DATADIR "data";
 #endif

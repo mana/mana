@@ -49,3 +49,10 @@ macos-build:
   script:
     - cmake -G Ninja -B build .
     - cmake --build build
+    - cd build
+    - cpack -G DragNDrop
+    - mv Mana-*.dmg ..
+  artifacts:
+    name: "macos-dmg-$CI_COMMIT_REF_SLUG"
+    paths:
+      - Mana-*.dmg

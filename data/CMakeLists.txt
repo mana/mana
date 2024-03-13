@@ -5,5 +5,5 @@ INSTALL(DIRECTORY
     icons
     music
     sfx
-    DESTINATION ${PKG_DATADIR}/data
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/data
 )

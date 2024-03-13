@@ -37,6 +37,10 @@
 #include <winnls.h>
 #endif
 
+#ifdef __APPLE__
+#include "utils/specialfolder.h"
+#endif
+
 static void printHelp()
 {
     using std::endl;
@@ -213,7 +217,14 @@ static void initInternationalization()
 #endif // _WIN32
 
     setlocale(LC_MESSAGES, "");
+
+#ifdef __APPLE__
+    const auto translationsDir = getResourcesLocation() + "/Translations";
+    bindtextdomain("mana", translationsDir.c_str());
+#else
     bindtextdomain("mana", LOCALEDIR);
+#endif
+
     bind_textdomain_codeset("mana", "UTF-8");
     textdomain("mana");
 #endif // ENABLE_NLS
