@@ -73,11 +73,11 @@ const char *ipToString(int address)
 {
     static char asciiIP[16];
 
-    sprintf(asciiIP, "%i.%i.%i.%i",
-            (unsigned char)(address),
-            (unsigned char)(address >> 8),
-            (unsigned char)(address >> 16),
-            (unsigned char)(address >> 24));
+    snprintf(asciiIP, 16, "%i.%i.%i.%i",
+             (unsigned char)(address),
+             (unsigned char)(address >> 8),
+             (unsigned char)(address >> 16),
+             (unsigned char)(address >> 24));
 
     return asciiIP;
 }

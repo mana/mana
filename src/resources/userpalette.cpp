@@ -121,7 +121,7 @@ UserPalette::~UserPalette()
         if (color.grad == STATIC || color.grad == PULSE)
         {
             char buffer[20];
-            sprintf(buffer, "0x%06x", color.getRGB());
+            snprintf(buffer, 20, "0x%06x", color.getRGB());
             config.setValue(configName, std::string(buffer));
         }
     }
@@ -220,7 +220,7 @@ void UserPalette::addColor(int type, int rgb, Palette::GradientType grad,
 {
     const std::string &configName = ColorTypeNames[type];
     char buffer[20];
-    sprintf(buffer, "0x%06x", rgb);
+    snprintf(buffer, 20, "0x%06x", rgb);
     const std::string rgbString = config.getValue(configName,
                                                   std::string(buffer));
     unsigned int rgbValue = 0;
