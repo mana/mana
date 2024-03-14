@@ -196,7 +196,8 @@ void DropDown::keyPressed(gcn::KeyEvent& keyEvent)
     if (keyEvent.isConsumed())
         return;
 
-    gcn::Key key = keyEvent.getKey();
+    const gcn::Key key = keyEvent.getKey();
+    const int selectedIndex = getSelected();
 
     if (key.getValue() == Key::ENTER || key.getValue() == Key::SPACE)
         dropDown();
@@ -212,6 +213,9 @@ void DropDown::keyPressed(gcn::KeyEvent& keyEvent)
         return;
 
     keyEvent.consume();
+
+    if (getSelected() != selectedIndex)
+        distributeActionEvent();
 }
 
 void DropDown::focusLost(const gcn::Event& event)
@@ -240,10 +244,12 @@ void DropDown::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
     setSelected(getSelected() - 1);
     mouseEvent.consume();
+    distributeActionEvent();
 }
 
 void DropDown::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
 {
     setSelected(getSelected() + 1);
     mouseEvent.consume();
+    distributeActionEvent();
 }
