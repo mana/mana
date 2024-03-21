@@ -23,6 +23,7 @@
 #define RESOURCE_MANAGER_H
 
 #include <ctime>
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
@@ -46,7 +47,6 @@ class ResourceManager
     public:
 
         using loader = Resource *(*)(SDL_RWops *);
-        using generator = Resource *(*)(void *);
 
         ResourceManager();
 
@@ -123,7 +123,8 @@ class ResourceManager
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be generated.
          */
-        Resource *get(const std::string &idPath, generator fun, void *data);
+        Resource *get(const std::string &idPath,
+                      const std::function<Resource *()> &generator);
 
         /**
          * Loads a resource from a file and adds it to the resource map.

@@ -226,7 +226,7 @@ class SubImage : public Image
         ~SubImage() override;
 
     private:
-        Image *mParent;
+        ResourceRef<Image> mParent;
 };
 
 #endif

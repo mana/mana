@@ -372,11 +372,6 @@ SubImage::SubImage(Image *parent, SDL_Texture *texture,
     Image(texture, width, height),
     mParent(parent)
 {
-    if (mParent)
-    {
-        mParent->incRef();
-    }
-
     // Set up the rectangle.
     mBounds.x = x;
     mBounds.y = y;
@@ -391,8 +386,6 @@ SubImage::SubImage(Image *parent, GLuint image,
     Image(image, width, height, texWidth, texHeight),
     mParent(parent)
 {
-    mParent->incRef();
-
     // Set up the rectangle.
     mBounds.x = x;
     mBounds.y = y;
@@ -408,5 +401,4 @@ SubImage::~SubImage()
 #ifdef USE_OPENGL
     mGLImage = 0;
 #endif
-    mParent->decRef();
 }

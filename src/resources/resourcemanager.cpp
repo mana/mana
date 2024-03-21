@@ -40,6 +40,7 @@
 
 #include <cassert>
 #include <sstream>
+#include <memory>
 
 #include <sys/time.h>
 
@@ -230,7 +231,7 @@ std::string ResourceManager::getPath(const std::string &file)
 }
 
 bool ResourceManager::addResource(const std::string &idPath,
-                                  Resource* resource)
+                                  Resource *resource)
 {
     if (resource)
     {
@@ -253,8 +254,8 @@ Resource *ResourceManager::get(const std::string &idPath)
     return nullptr;
 }
 
-Resource *ResourceManager::get(const std::string &idPath, generator fun,
-                               void *data)
+Resource *ResourceManager::get(const std::string &idPath,
+                               const std::function<Resource *()> &generator)
 {
     // Check if the id exists, and return the value if it does.
     auto resIter = mResources.find(idPath);
@@ -274,7 +275,7 @@ Resource *ResourceManager::get(const std::string &idPath, generator fun,
         return res;
     }
 
-    Resource *resource = fun(data);
+    Resource *resource = generator();
 
     if (resource)
     {
@@ -288,27 +289,13 @@ Resource *ResourceManager::get(const std::string &idPath, generator fun,
     return resource;
 }
 
-struct ResourceLoader
-{
-    ResourceManager *manager;
-    std::string path;
-    ResourceManager::loader fun;
-
-    static Resource *load(void *v)
-    {
-        auto *l = static_cast< ResourceLoader * >(v);
-        SDL_RWops *rw = PHYSFSRWOPS_openRead(l->path.c_str());
-        if (!rw)
-            return nullptr;
-        Resource *res = l->fun(rw);
-        return res;
-    }
-};
-
 Resource *ResourceManager::load(const std::string &path, loader fun)
 {
-    ResourceLoader l = { this, path, fun };
-    return get(path, ResourceLoader::load, &l);
+    return get(path, [&] () -> Resource * {
+        if (SDL_RWops *rw = PHYSFSRWOPS_openRead(path.c_str()))
+            return fun(rw);
+        return nullptr;
+    });
 }
 
 Music *ResourceManager::getMusic(const std::string &idPath)
@@ -321,82 +308,52 @@ SoundEffect *ResourceManager::getSoundEffect(const std::string &idPath)
     return static_cast<SoundEffect*>(load(idPath, SoundEffect::load));
 }
 
-struct DyedImageLoader
+Image *ResourceManager::getImage(const std::string &idPath)
 {
-    ResourceManager *manager;
-    std::string path;
-    static Resource *load(void *v)
-    {
-        auto *l = static_cast< DyedImageLoader * >(v);
-        std::string path = l->path;
+    return static_cast<Image*>(get(idPath, [&] () -> Resource * {
+        std::string path = idPath;
         std::string::size_type p = path.find('|');
-        Dye *d = nullptr;
+        std::unique_ptr<Dye> d;
         if (p != std::string::npos)
         {
-            d = new Dye(path.substr(p + 1));
+            d = std::make_unique<Dye>(path.substr(p + 1));
             path = path.substr(0, p);
         }
         SDL_RWops *rw = PHYSFSRWOPS_openRead(path.c_str());
         if (!rw)
-        {
-            delete d;
             return nullptr;
-        }
+
         Resource *res = d ? Image::load(rw, *d)
                           : Image::load(rw);
-        delete d;
         return res;
-    }
-};
-
-Image *ResourceManager::getImage(const std::string &idPath)
-{
-    DyedImageLoader l = { this, idPath };
-    return static_cast<Image*>(get(idPath, DyedImageLoader::load, &l));
+    }));
 }
-
-struct ImageSetLoader
-{
-    ResourceManager *manager;
-    std::string path;
-    int w, h;
-    static Resource *load(void *v)
-    {
-        auto *l = static_cast< ImageSetLoader * >(v);
-        Image *img = l->manager->getImage(l->path);
-        if (!img) return nullptr;
-        auto *res = new ImageSet(img, l->w, l->h);
-        img->decRef();
-        return res;
-    }
-};
 
 ImageSet *ResourceManager::getImageSet(const std::string &imagePath,
                                        int w, int h)
 {
-    ImageSetLoader l = { this, imagePath, w, h };
     std::stringstream ss;
     ss << imagePath << "[" << w << "x" << h << "]";
-    return static_cast<ImageSet*>(get(ss.str(), ImageSetLoader::load, &l));
-}
 
-struct SpriteDefLoader
-{
-    std::string path;
-    int variant;
-    static Resource *load(void *v)
-    {
-        auto *l = static_cast< SpriteDefLoader * >(v);
-        return SpriteDef::load(l->path, l->variant);
-    }
-};
+    return static_cast<ImageSet*>(get(ss.str(), [&] () -> Resource * {
+        Image *img = getImage(imagePath);
+        if (!img)
+            return nullptr;
+
+        auto *res = new ImageSet(img, w, h);
+        img->decRef();
+        return res;
+    }));
+}
 
 SpriteDef *ResourceManager::getSprite(const std::string &path, int variant)
 {
-    SpriteDefLoader l = { path, variant };
     std::stringstream ss;
     ss << path << "[" << variant << "]";
-    return static_cast<SpriteDef*>(get(ss.str(), SpriteDefLoader::load, &l));
+
+    return static_cast<SpriteDef*>(get(ss.str(), [&] () -> Resource * {
+        return SpriteDef::load(path, variant);
+    }));
 }
 
 void ResourceManager::release(Resource *res)
