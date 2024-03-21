@@ -105,16 +105,6 @@ class ResourceManager
         std::string getPath(const std::string &file);
 
         /**
-         * Returns the resource with the specified idPath, or 0 when no such
-         * resource is available. Increments the reference count.
-         *
-         * @param idPath The resource identifier path.
-         * @return A valid resource or <code>NULL</code> if the resource could
-         *         not be found.
-         */
-        Resource *get(const std::string &idPath);
-
-        /**
          * Creates a resource and adds it to the resource map.
          *
          * @param idPath The resource identifier path.
@@ -135,15 +125,6 @@ class ResourceManager
          *         not be loaded.
          */
         Resource *load(const std::string &path, loader fun);
-
-        /**
-         * Adds a preformatted resource to the resource map.
-         *
-         * @param idPath   The resource identifier path.
-         * @param resource The Resource to add.
-         * @return true if successful, false otherwise.
-         */
-        bool addResource(const std::string &idPath, Resource *resource);
 
         /**
         * Copies a file from one place to another (useful for extracting

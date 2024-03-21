@@ -230,30 +230,6 @@ std::string ResourceManager::getPath(const std::string &file)
     return path;
 }
 
-bool ResourceManager::addResource(const std::string &idPath,
-                                  Resource *resource)
-{
-    if (resource)
-    {
-        resource->incRef();
-        resource->mIdPath = idPath;
-        mResources[idPath] = resource;
-        return true;
-    }
-    return false;
-}
-
-Resource *ResourceManager::get(const std::string &idPath)
-{
-    auto resIter = mResources.find(idPath);
-    if (resIter != mResources.end())
-    {
-        resIter->second->incRef();
-        return resIter->second;
-    }
-    return nullptr;
-}
-
 Resource *ResourceManager::get(const std::string &idPath,
                                const std::function<Resource *()> &generator)
 {
