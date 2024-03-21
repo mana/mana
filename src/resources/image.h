@@ -79,17 +79,6 @@ class Image : public Resource
         static Image *load(SDL_Surface *);
 
         /**
-         * Frees the resources created by SDL.
-         */
-        void unload();
-
-        /**
-         * Tells is the image is loaded
-         */
-        bool isLoaded() const
-        { return mLoaded; }
-
-        /**
          * Returns the width of the image.
          */
         int getWidth() const
@@ -163,7 +152,6 @@ class Image : public Resource
         // -----------------------
 
         SDL_Rect mBounds;
-        bool mLoaded = false;
         float mAlpha = 1.0f;
 
         // -----------------------

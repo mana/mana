@@ -45,7 +45,6 @@ bool Image::mDisableTransparency = false;
 SDL_Renderer *Image::mRenderer;
 
 Image::Image(SDL_Texture *texture, int width, int height):
-    mLoaded(texture != nullptr),
     mTexture(texture)
 {
     mBounds.x = 0;
@@ -53,16 +52,15 @@ Image::Image(SDL_Texture *texture, int width, int height):
     mBounds.w = width;
     mBounds.h = height;
 
-    if (!mLoaded)
+    if (!texture)
     {
         logger->log(
-          "Image::Image(SDL_Surface*): Couldn't load invalid Surface!");
+          "Image::Image(SDL_Texture*, ...): Couldn't load invalid Surface!");
     }
 }
 
 #ifdef USE_OPENGL
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
-    mLoaded(glimage != 0),
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight)
@@ -72,7 +70,7 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
     mBounds.w = width;
     mBounds.h = height;
 
-    if (!mLoaded)
+    if (glimage == 0)
     {
         logger->log(
           "Image::Image(GLuint, ...): Couldn't load invalid Surface!");
@@ -82,7 +80,19 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
 
 Image::~Image()
 {
-    unload();
+    if (mTexture)
+    {
+        SDL_DestroyTexture(mTexture);
+        mTexture = nullptr;
+    }
+
+#ifdef USE_OPENGL
+    if (mGLImage)
+    {
+        glDeleteTextures(1, &mGLImage);
+        mGLImage = 0;
+    }
+#endif
 }
 
 Resource *Image::load(SDL_RWops *rw)
@@ -148,25 +158,6 @@ Image *Image::load(SDL_Surface *tmpImage)
         return _GLload(tmpImage);
 #endif
     return _SDLload(tmpImage);
-}
-
-void Image::unload()
-{
-    mLoaded = false;
-
-    if (mTexture)
-    {
-        SDL_DestroyTexture(mTexture);
-        mTexture = nullptr;
-    }
-
-#ifdef USE_OPENGL
-    if (mGLImage)
-    {
-        glDeleteTextures(1, &mGLImage);
-        mGLImage = 0;
-    }
-#endif
 }
 
 bool Image::useOpenGL()
@@ -289,10 +280,9 @@ Image *Image::_GLload(SDL_Surface *image)
     if (needsConversion)
         SDL_FreeSurface(image);
 
-    GLenum error = glGetError();
-    if (error)
+    if (GLenum error = glGetError())
     {
-        std::string errmsg = "Unknown error";
+        const char *errmsg = "Unknown error";
         switch (error)
         {
             case GL_INVALID_ENUM:
@@ -314,7 +304,7 @@ Image *Image::_GLload(SDL_Surface *image)
                 errmsg = "GL_OUT_OF_MEMORY";
                 break;
         }
-        logger->log("Error: Image GL import failed: %s", errmsg.c_str());
+        logger->log("Error: Image GL import failed: %s", errmsg);
         return nullptr;
     }
 
