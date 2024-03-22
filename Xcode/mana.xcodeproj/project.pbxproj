@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2BF0300515D9BD1900979C9D /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF02FFA15D9BAB800979C9D /* SDL.framework */; };
+		2BF0300615D9BD1900979C9D /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF02FFE15D9BAEE00979C9D /* SDL_ttf.framework */; };
+		2BF0300715D9BD1900979C9D /* SDL_net.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF02FFC15D9BAD700979C9D /* SDL_net.framework */; };
+		2BF0300815D9BD1900979C9D /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D26151E882500C5E9E7 /* SDL_image.framework */; };
+		2BF0300915D9BD1900979C9D /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D20151E874600C5E9E7 /* SDL_mixer.framework */; };
 		FC0479CB151E4DB700C5E9E7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC0479CA151E4DB700C5E9E7 /* Cocoa.framework */; };
 		FC0479D5151E4DB700C5E9E7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC0479D3151E4DB700C5E9E7 /* InfoPlist.strings */; };
 		FC0479E1151E4DB800C5E9E7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0479DF151E4DB800C5E9E7 /* MainMenu.xib */; };
@@ -192,8 +197,6 @@
 		FC047C5B151E500100C5E9E7 /* playerhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C00151E500100C5E9E7 /* playerhandler.cpp */; };
 		FC047C5C151E500100C5E9E7 /* specialhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C02151E500100C5E9E7 /* specialhandler.cpp */; };
 		FC047C5D151E500100C5E9E7 /* tradehandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C04151E500100C5E9E7 /* tradehandler.cpp */; };
-		FC047C5E151E500100C5E9E7 /* messagein.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C07151E500100C5E9E7 /* messagein.cpp */; };
-		FC047C5F151E500100C5E9E7 /* messageout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C09151E500100C5E9E7 /* messageout.cpp */; };
 		FC047C60151E500100C5E9E7 /* net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C0B151E500100C5E9E7 /* net.cpp */; };
 		FC047C61151E500100C5E9E7 /* adminhandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C13151E500100C5E9E7 /* adminhandler.cpp */; };
 		FC047C62151E500100C5E9E7 /* beinghandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047C15151E500100C5E9E7 /* beinghandler.cpp */; };
@@ -250,7 +253,6 @@
 		FC047CE0151E501400C5E9E7 /* stringutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047CD4151E501400C5E9E7 /* stringutils.cpp */; };
 		FC047CE1151E501400C5E9E7 /* xml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047CD6151E501400C5E9E7 /* xml.cpp */; };
 		FC047CE2151E501400C5E9E7 /* zlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC047CD8151E501400C5E9E7 /* zlib.cpp */; };
-		FC047CE4151E50A000C5E9E7 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047CE3151E50A000C5E9E7 /* SDL.framework */; };
 		FC047CE6151E747B00C5E9E7 /* log.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC047CE5151E747B00C5E9E7 /* log.mm */; };
 		FC047CE9151E7C8500C5E9E7 /* cstdint in Resources */ = {isa = PBXBuildFile; fileRef = FC047CE8151E7C8500C5E9E7 /* cstdint */; };
 		FC047D04151E820000C5E9E7 /* callbacks.c in Sources */ = {isa = PBXBuildFile; fileRef = FC047CEB151E820000C5E9E7 /* callbacks.c */; };
@@ -265,10 +267,6 @@
 		FC047D1B151E853300C5E9E7 /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D16151E853300C5E9E7 /* libxml2.a */; };
 		FC047D1D151E856400C5E9E7 /* libphysfs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D1C151E856400C5E9E7 /* libphysfs.a */; };
 		FC047D1F151E860600C5E9E7 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D1E151E860600C5E9E7 /* libpng.a */; };
-		FC047D21151E874600C5E9E7 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D20151E874600C5E9E7 /* SDL_mixer.framework */; };
-		FC047D24151E878A00C5E9E7 /* libSDL_net.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D22151E878A00C5E9E7 /* libSDL_net.a */; };
-		FC047D25151E878A00C5E9E7 /* libSDL_ttf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D23151E878A00C5E9E7 /* libSDL_ttf.a */; };
-		FC047D27151E882500C5E9E7 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D26151E882500C5E9E7 /* SDL_image.framework */; };
 		FC047D29151E88A500C5E9E7 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D28151E88A500C5E9E7 /* libfreetype.a */; };
 		FC047D2B151E898300C5E9E7 /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D2A151E898300C5E9E7 /* libiconv.a */; };
 		FC047D2D151E89D300C5E9E7 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D2C151E89D200C5E9E7 /* IOKit.framework */; };
@@ -279,8 +277,6 @@
 		FC047D3D151E94B500C5E9E7 /* libguichan_opengl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D3A151E94B500C5E9E7 /* libguichan_opengl.a */; };
 		FC047D3E151E94B500C5E9E7 /* libguichan_sdl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D3B151E94B500C5E9E7 /* libguichan_sdl.a */; };
 		FC047D3F151E94B500C5E9E7 /* libguichan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC047D3C151E94B500C5E9E7 /* libguichan.a */; };
-		FC047D40151E94C600C5E9E7 /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC047CE3151E50A000C5E9E7 /* SDL.framework */; };
-		FC047D44151FD85A00C5E9E7 /* mana.icns in Resources */ = {isa = PBXBuildFile; fileRef = FC047D43151FD85900C5E9E7 /* mana.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -290,7 +286,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FC047D40151E94C600C5E9E7 /* SDL.framework in CopyFiles */,
 				FC047D38151E945B00C5E9E7 /* SDL_image.framework in CopyFiles */,
 				FC047D39151E945E00C5E9E7 /* SDL_mixer.framework in CopyFiles */,
 			);
@@ -299,6 +294,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2BF02FFA15D9BAB800979C9D /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
+		2BF02FFC15D9BAD700979C9D /* SDL_net.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_net.framework; path = /Library/Frameworks/SDL_net.framework; sourceTree = "<absolute>"; };
+		2BF02FFE15D9BAEE00979C9D /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = /Library/Frameworks/SDL_ttf.framework; sourceTree = "<absolute>"; };
 		FC0479C6151E4DB700C5E9E7 /* mana.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mana.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC0479CA151E4DB700C5E9E7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		FC0479CD151E4DB700C5E9E7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -691,10 +689,6 @@
 		FC047C04151E500100C5E9E7 /* tradehandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tradehandler.cpp; sourceTree = "<group>"; };
 		FC047C05151E500100C5E9E7 /* tradehandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tradehandler.h; sourceTree = "<group>"; };
 		FC047C06151E500100C5E9E7 /* messagehandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagehandler.h; sourceTree = "<group>"; };
-		FC047C07151E500100C5E9E7 /* messagein.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagein.cpp; sourceTree = "<group>"; };
-		FC047C08151E500100C5E9E7 /* messagein.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagein.h; sourceTree = "<group>"; };
-		FC047C09151E500100C5E9E7 /* messageout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messageout.cpp; sourceTree = "<group>"; };
-		FC047C0A151E500100C5E9E7 /* messageout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messageout.h; sourceTree = "<group>"; };
 		FC047C0B151E500100C5E9E7 /* net.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = net.cpp; sourceTree = "<group>"; };
 		FC047C0C151E500100C5E9E7 /* net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
 		FC047C0D151E500100C5E9E7 /* npchandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = npchandler.h; sourceTree = "<group>"; };
@@ -820,7 +814,6 @@
 		FC047CD7151E501400C5E9E7 /* xml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xml.h; sourceTree = "<group>"; };
 		FC047CD8151E501400C5E9E7 /* zlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zlib.cpp; sourceTree = "<group>"; };
 		FC047CD9151E501400C5E9E7 /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zlib.h; sourceTree = "<group>"; };
-		FC047CE3151E50A000C5E9E7 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		FC047CE5151E747B00C5E9E7 /* log.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = log.mm; path = ../../src/log.mm; sourceTree = "<group>"; };
 		FC047CE8151E7C8500C5E9E7 /* cstdint */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cstdint; sourceTree = "<group>"; };
 		FC047CEB151E820000C5E9E7 /* callbacks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = callbacks.c; sourceTree = "<group>"; };
@@ -845,8 +838,6 @@
 		FC047D1C151E856400C5E9E7 /* libphysfs.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libphysfs.a; path = ../libs/libphysfs.a; sourceTree = "<group>"; };
 		FC047D1E151E860600C5E9E7 /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = ../libs/libpng.a; sourceTree = "<group>"; };
 		FC047D20151E874600C5E9E7 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Library/Frameworks/SDL_mixer.framework; sourceTree = "<absolute>"; };
-		FC047D22151E878A00C5E9E7 /* libSDL_net.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL_net.a; path = ../libs/libSDL_net.a; sourceTree = "<group>"; };
-		FC047D23151E878A00C5E9E7 /* libSDL_ttf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL_ttf.a; path = ../libs/libSDL_ttf.a; sourceTree = "<group>"; };
 		FC047D26151E882500C5E9E7 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
 		FC047D28151E88A500C5E9E7 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../libs/libfreetype.a; sourceTree = "<group>"; };
 		FC047D2A151E898300C5E9E7 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../libs/libiconv.a; sourceTree = "<group>"; };
@@ -856,7 +847,6 @@
 		FC047D3A151E94B500C5E9E7 /* libguichan_opengl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libguichan_opengl.a; path = ../libs/libguichan_opengl.a; sourceTree = "<group>"; };
 		FC047D3B151E94B500C5E9E7 /* libguichan_sdl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libguichan_sdl.a; path = ../libs/libguichan_sdl.a; sourceTree = "<group>"; };
 		FC047D3C151E94B500C5E9E7 /* libguichan.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libguichan.a; path = ../libs/libguichan.a; sourceTree = "<group>"; };
-		FC047D43151FD85900C5E9E7 /* mana.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = mana.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -865,16 +855,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC047D2D151E89D300C5E9E7 /* IOKit.framework in Frameworks */,
-				FC047D27151E882500C5E9E7 /* SDL_image.framework in Frameworks */,
-				FC047D21151E874600C5E9E7 /* SDL_mixer.framework in Frameworks */,
-				FC047CE4151E50A000C5E9E7 /* SDL.framework in Frameworks */,
 				FC0479CB151E4DB700C5E9E7 /* Cocoa.framework in Frameworks */,
+				2BF0300515D9BD1900979C9D /* SDL.framework in Frameworks */,
+				2BF0300615D9BD1900979C9D /* SDL_ttf.framework in Frameworks */,
+				2BF0300715D9BD1900979C9D /* SDL_net.framework in Frameworks */,
+				2BF0300815D9BD1900979C9D /* SDL_image.framework in Frameworks */,
+				2BF0300915D9BD1900979C9D /* SDL_mixer.framework in Frameworks */,
 				FC047D1A151E853300C5E9E7 /* libSDL_gfx.a in Frameworks */,
 				FC047D1B151E853300C5E9E7 /* libxml2.a in Frameworks */,
 				FC047D1D151E856400C5E9E7 /* libphysfs.a in Frameworks */,
 				FC047D1F151E860600C5E9E7 /* libpng.a in Frameworks */,
-				FC047D24151E878A00C5E9E7 /* libSDL_net.a in Frameworks */,
-				FC047D25151E878A00C5E9E7 /* libSDL_ttf.a in Frameworks */,
 				FC047D29151E88A500C5E9E7 /* libfreetype.a in Frameworks */,
 				FC047D2B151E898300C5E9E7 /* libiconv.a in Frameworks */,
 				FC047D2F151E8E9400C5E9E7 /* libintl.a in Frameworks */,
@@ -890,7 +880,6 @@
 		FC0479BB151E4DB700C5E9E7 = {
 			isa = PBXGroup;
 			children = (
-				FC047D43151FD85900C5E9E7 /* mana.icns */,
 				FC0479D0151E4DB700C5E9E7 /* mana */,
 				FC0479C9151E4DB700C5E9E7 /* Frameworks */,
 				FC0479C7151E4DB700C5E9E7 /* Products */,
@@ -917,13 +906,13 @@
 				FC047D1C151E856400C5E9E7 /* libphysfs.a */,
 				FC047D1E151E860600C5E9E7 /* libpng.a */,
 				FC047D15151E853200C5E9E7 /* libSDL_gfx.a */,
-				FC047D22151E878A00C5E9E7 /* libSDL_net.a */,
-				FC047D23151E878A00C5E9E7 /* libSDL_ttf.a */,
 				FC047D16151E853300C5E9E7 /* libxml2.a */,
-				FC047D2C151E89D200C5E9E7 /* IOKit.framework */,
-				FC047CE3151E50A000C5E9E7 /* SDL.framework */,
+				2BF02FFA15D9BAB800979C9D /* SDL.framework */,
+				2BF02FFE15D9BAEE00979C9D /* SDL_ttf.framework */,
+				2BF02FFC15D9BAD700979C9D /* SDL_net.framework */,
 				FC047D26151E882500C5E9E7 /* SDL_image.framework */,
 				FC047D20151E874600C5E9E7 /* SDL_mixer.framework */,
+				FC047D2C151E89D200C5E9E7 /* IOKit.framework */,
 				FC0479CA151E4DB700C5E9E7 /* Cocoa.framework */,
 				FC0479CC151E4DB700C5E9E7 /* Other Frameworks */,
 			);
@@ -1320,10 +1309,6 @@
 				FC047BD2151E500100C5E9E7 /* loginhandler.h */,
 				FC047BD3151E500100C5E9E7 /* manaserv */,
 				FC047C06151E500100C5E9E7 /* messagehandler.h */,
-				FC047C07151E500100C5E9E7 /* messagein.cpp */,
-				FC047C08151E500100C5E9E7 /* messagein.h */,
-				FC047C09151E500100C5E9E7 /* messageout.cpp */,
-				FC047C0A151E500100C5E9E7 /* messageout.h */,
 				FC047C0B151E500100C5E9E7 /* net.cpp */,
 				FC047C0C151E500100C5E9E7 /* net.h */,
 				FC047C0D151E500100C5E9E7 /* npchandler.h */,
@@ -1648,7 +1633,6 @@
 				FC0479E1151E4DB800C5E9E7 /* MainMenu.xib in Resources */,
 				FC047CE9151E7C8500C5E9E7 /* cstdint in Resources */,
 				FC047D31151E8F8200C5E9E7 /* data in Resources */,
-				FC047D44151FD85A00C5E9E7 /* mana.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1841,8 +1825,6 @@
 				FC047C5B151E500100C5E9E7 /* playerhandler.cpp in Sources */,
 				FC047C5C151E500100C5E9E7 /* specialhandler.cpp in Sources */,
 				FC047C5D151E500100C5E9E7 /* tradehandler.cpp in Sources */,
-				FC047C5E151E500100C5E9E7 /* messagein.cpp in Sources */,
-				FC047C5F151E500100C5E9E7 /* messageout.cpp in Sources */,
 				FC047C60151E500100C5E9E7 /* net.cpp in Sources */,
 				FC047C61151E500100C5E9E7 /* adminhandler.cpp in Sources */,
 				FC047C62151E500100C5E9E7 /* beinghandler.cpp in Sources */,
@@ -1972,7 +1954,7 @@
 					"-DENABLE_MANASERV",
 					"-DHAS_SOCKLEN_T",
 				);
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -2011,28 +1993,45 @@
 					"-DENABLE_MANASERV",
 					"-DHAS_SOCKLEN_T",
 				);
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 			};
 			name = Release;
 		};
 		FC0479E5151E4DB800C5E9E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/cpp0x_compat,
+					../libs/enet/include,
+					/Library/Frameworks/SDL.framework/Headers,
+					/opt/local/include/libxml2,
+					/opt/local/include/SDL,
+					/opt/local/include,
+					/Library/Frameworks/SDL_image.framework/Headers,
+					/Library/Frameworks/SDL_net.framework/Headers,
+					/Library/Frameworks/SDL_ttf.framework/Headers,
+					/Library/Frameworks/SDL_mixer.framework/Headers,
+				);
 				INFOPLIST_FILE = "mana/mana-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../libs\"",
+					/opt/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-DHAS_SOCKLEN_T";
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
 					"-lcurl",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2040,23 +2039,40 @@
 		FC0479E6151E4DB800C5E9E7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				"GCC_SYMBOLS_PRIVATE_EXTERN[arch=i386]" = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../src/cpp0x_compat,
+					../libs/enet/include,
+					/Library/Frameworks/SDL.framework/Headers,
+					/opt/local/include/libxml2,
+					/opt/local/include/SDL,
+					/opt/local/include,
+					/Library/Frameworks/SDL_image.framework/Headers,
+					/Library/Frameworks/SDL_net.framework/Headers,
+					/Library/Frameworks/SDL_ttf.framework/Headers,
+					/Library/Frameworks/SDL_mixer.framework/Headers,
+				);
 				INFOPLIST_FILE = "mana/mana-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../libs\"",
+					/opt/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-DHAS_SOCKLEN_T";
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lbz2",
 					"-lcurl",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
