@@ -48,6 +48,15 @@ public:
                            int desiredWidth, int desiredHeight,
                            bool useColor) override;
 
+#if SDL_VERSION_ATLEAST(2, 0, 10)
+    bool drawRescaledImageF(Image *image,
+                            int srcX, int srcY,
+                            float dstX, float dstY,
+                            int width, int height,
+                            float desiredWidth, float desiredHeight,
+                            bool useColor) override;
+#endif
+
     void drawRescaledImagePattern(Image *image,
                                   int x, int y,
                                   int w, int h,

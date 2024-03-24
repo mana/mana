@@ -134,6 +134,37 @@ bool SDLGraphics::drawRescaledImage(Image *image,
     return !(SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect) < 0);
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 10)
+bool SDLGraphics::drawRescaledImageF(Image *image,
+                                     int srcX, int srcY,
+                                     float dstX, float dstY,
+                                     int width, int height,
+                                     float desiredWidth, float desiredHeight,
+                                     bool useColor)
+{
+    // Check that preconditions for blitting are met.
+    if (!image || !image->mTexture)
+        return false;
+
+    dstX += mClipStack.top().xOffset;
+    dstY += mClipStack.top().yOffset;
+
+    srcX += image->mBounds.x;
+    srcY += image->mBounds.y;
+
+    SDL_FRect dstRect;
+    SDL_Rect srcRect;
+    dstRect.x = dstX; dstRect.y = dstY;
+    srcRect.x = srcX; srcRect.y = srcY;
+    srcRect.w = width;
+    srcRect.h = height;
+    dstRect.w = desiredWidth;
+    dstRect.h = desiredHeight;
+
+    return !(SDL_RenderCopyF(mRenderer, image->mTexture, &srcRect, &dstRect) < 0);
+}
+#endif
+
 void SDLGraphics::drawRescaledImagePattern(Image *image,
                                            int x, int y,
                                            int w, int h,

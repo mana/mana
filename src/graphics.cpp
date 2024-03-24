@@ -47,6 +47,26 @@ bool Graphics::drawImage(Image *image, int x, int y)
     return drawImage(image, 0, 0, x, y, image->getWidth(), image->getHeight());
 }
 
+bool Graphics::drawImageF(Image *image, float x, float y)
+{
+    if (!image)
+        return false;
+
+    return drawImageF(image, 0, 0, x, y, image->getWidth(), image->getHeight());
+}
+
+bool Graphics::drawRescaledImageF(Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, float desiredWidth, float desiredHeight, bool useColor)
+{
+    return drawRescaledImage(image,
+                             srcX, srcY,
+                             static_cast<int>(dstX),
+                             static_cast<int>(dstY),
+                             width, height,
+                             static_cast<int>(desiredWidth),
+                             static_cast<int>(desiredHeight),
+                             useColor);
+}
+
 bool Graphics::drawImage(Image *image,
                          int srcX, int srcY,
                          int dstX, int dstY,
@@ -58,6 +78,15 @@ bool Graphics::drawImage(Image *image,
                              dstX, dstY,
                              width, height,
                              width, height, useColor);
+}
+
+bool Graphics::drawImageF(Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, bool useColor)
+{
+    return drawRescaledImageF(image,
+                              srcX, srcY,
+                              dstX, dstY,
+                              width, height,
+                              width, height, useColor);
 }
 
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)

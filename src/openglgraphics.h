@@ -57,12 +57,6 @@ class OpenGLGraphics final : public Graphics
 
         void updateSize(int windowWidth, int windowHeight, float scale) override;
 
-        bool drawImage(Image *image,
-                       int srcX, int srcY,
-                       int dstX, int dstY,
-                       int width, int height,
-                       bool useColor) override;
-
         /**
          * Draws a rescaled version of the image
          */
@@ -71,6 +65,13 @@ class OpenGLGraphics final : public Graphics
                                int width, int height,
                                int desiredWidth, int desiredHeight,
                                bool useColor) override;
+
+        bool drawRescaledImageF(Image *image,
+                                int srcX, int srcY,
+                                float dstX, float dstY,
+                                int width, int height,
+                                float desiredWidth, float desiredHeight,
+                                bool useColor) override;
 
         void drawImagePattern(Image *image,
                               int x, int y,

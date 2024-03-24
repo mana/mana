@@ -96,6 +96,14 @@ class Graphics : public gcn::Graphics
         bool drawImage(Image *image, int x, int y);
 
         /**
+         * Blits an image onto the screen.
+         *
+         * @return <code>true</code> if the image was blitted properly
+         *         <code>false</code> otherwise.
+         */
+        bool drawImageF(Image *image, float x, float y);
+
+        /**
          * Draws a rescaled version of the image.
          */
         virtual bool drawRescaledImage(Image *image, int srcX, int srcY,
@@ -103,6 +111,15 @@ class Graphics : public gcn::Graphics
                                        int width, int height,
                                        int desiredWidth, int desiredHeight,
                                        bool useColor = false) = 0;
+
+        /**
+         * Draws a rescaled version of the image.
+         */
+        virtual bool drawRescaledImageF(Image *image, int srcX, int srcY,
+                                        float dstX, float dstY,
+                                        int width, int height,
+                                        float desiredWidth, float desiredHeight,
+                                        bool useColor = false);
 
         /**
          * Blits an image onto the screen.
@@ -115,6 +132,18 @@ class Graphics : public gcn::Graphics
                                int dstX, int dstY,
                                int width, int height,
                                bool useColor = false);
+
+        /**
+         * Blits an image onto the screen.
+         *
+         * @return <code>true</code> if the image was blitted properly
+         *         <code>false</code> otherwise.
+         */
+        virtual bool drawImageF(Image *image,
+                                int srcX, int srcY,
+                                float dstX, float dstY,
+                                int width, int height,
+                                bool useColor = false);
 
         virtual void drawImagePattern(Image *image,
                                       int x, int y,

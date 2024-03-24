@@ -213,7 +213,7 @@ void Gui::draw()
         Image *mouseCursor = mMouseCursors->get(static_cast<size_t>(mCursorType));
         mouseCursor->setAlpha(mMouseCursorAlpha);
 
-        static_cast<Graphics*>(mGraphics)->drawImage(
+        static_cast<Graphics*>(mGraphics)->drawImageF(
                 mouseCursor,
                 logicalX - 15,
                 logicalY - 17);

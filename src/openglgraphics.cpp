@@ -153,71 +153,11 @@ void OpenGLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
     glOrtho(0.0, (double)mWidth, (double)mHeight, 0.0, -1.0, 1.0);
 }
 
-static inline void drawQuad(Image *image,
-                            int srcX, int srcY, int dstX, int dstY,
-                            int width, int height)
-{
-    if (Image::getTextureType() == GL_TEXTURE_2D)
-    {
-        // Find OpenGL normalized texture coordinates.
-        const float texX1 = static_cast<float>(srcX) /
-                            static_cast<float>(image->getTextureWidth());
-        const float texY1 = static_cast<float>(srcY) /
-                            static_cast<float>(image->getTextureHeight());
-        const float texX2 = static_cast<float>(srcX + width) /
-                            static_cast<float>(image->getTextureWidth());
-        const float texY2 = static_cast<float>(srcY + height) /
-                            static_cast<float>(image->getTextureHeight());
-
-        GLfloat tex[] =
-        {
-            texX1, texY1,
-            texX2, texY1,
-            texX2, texY2,
-            texX1, texY2
-        };
-
-        GLint vert[] =
-        {
-            dstX, dstY,
-            dstX + width, dstY,
-            dstX + width, dstY + height,
-            dstX, dstY + height
-        };
-
-        glVertexPointer(2, GL_INT, 0, &vert);
-        glTexCoordPointer(2, GL_FLOAT, 0, &tex);
-
-        glDrawArrays(GL_QUADS, 0, 4);
-    }
-    else
-    {
-        GLint tex[] =
-        {
-            srcX, srcY,
-            srcX + width, srcY,
-            srcX + width, srcY + height,
-            srcX, srcY + height
-        };
-        GLint vert[] =
-        {
-            dstX, dstY,
-            dstX + width, dstY,
-            dstX + width, dstY + height,
-            dstX, dstY + height
-        };
-
-        glVertexPointer(2, GL_INT, 0, &vert);
-        glTexCoordPointer(2, GL_INT, 0, &tex);
-
-        glDrawArrays(GL_QUADS, 0, 4);
-    }
-}
-
 static inline void drawRescaledQuad(Image *image,
-                                    int srcX, int srcY, int dstX, int dstY,
+                                    int srcX, int srcY,
+                                    float dstX, float dstY,
                                     int width, int height,
-                                    int desiredWidth, int desiredHeight)
+                                    float desiredWidth, float desiredHeight)
 {
     if (Image::getTextureType() == GL_TEXTURE_2D)
     {
@@ -231,7 +171,7 @@ static inline void drawRescaledQuad(Image *image,
         const float texY2 = static_cast<float>(srcY + height) /
                             static_cast<float>(image->getTextureHeight());
 
-        GLfloat tex[] =
+        const GLfloat tex[] =
         {
             texX1, texY1,
             texX2, texY1,
@@ -239,7 +179,7 @@ static inline void drawRescaledQuad(Image *image,
             texX1, texY2
         };
 
-        GLint vert[] =
+        const GLfloat vert[] =
         {
             dstX, dstY,
             dstX + desiredWidth, dstY,
@@ -247,21 +187,21 @@ static inline void drawRescaledQuad(Image *image,
             dstX, dstY + desiredHeight
         };
 
-        glVertexPointer(2, GL_INT, 0, &vert);
+        glVertexPointer(2, GL_FLOAT, 0, &vert);
         glTexCoordPointer(2, GL_FLOAT, 0, &tex);
 
         glDrawArrays(GL_QUADS, 0, 4);
     }
     else
     {
-        GLint tex[] =
+        const GLint tex[] =
         {
             srcX, srcY,
             srcX + width, srcY,
             srcX + width, srcY + height,
             srcX, srcY + height
         };
-        GLint vert[] =
+        const GLfloat vert[] =
         {
             dstX, dstY,
             dstX + desiredWidth, dstY,
@@ -269,43 +209,13 @@ static inline void drawRescaledQuad(Image *image,
             dstX, dstY + desiredHeight
         };
 
-        glVertexPointer(2, GL_INT, 0, &vert);
+        glVertexPointer(2, GL_FLOAT, 0, &vert);
         glTexCoordPointer(2, GL_INT, 0, &tex);
 
         glDrawArrays(GL_QUADS, 0, 4);
     }
 }
 
-
-bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
-                               int dstX, int dstY,
-                               int width, int height, bool useColor)
-{
-    if (!image)
-        return false;
-
-    srcX += image->mBounds.x;
-    srcY += image->mBounds.y;
-
-    if (!useColor)
-        glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
-
-    bindTexture(Image::mTextureType, image->mGLImage);
-
-    setTexturingAndBlending(true);
-
-    drawQuad(image, srcX, srcY, dstX, dstY, width, height);
-
-    if (!useColor)
-    {
-        glColor4ub(static_cast<GLubyte>(mColor.r),
-                   static_cast<GLubyte>(mColor.g),
-                   static_cast<GLubyte>(mColor.b),
-                   static_cast<GLubyte>(mColor.a));
-    }
-
-    return true;
-}
 
 bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
                                        int dstX, int dstY,
@@ -313,15 +223,19 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
                                        int desiredWidth, int desiredHeight,
                                        bool useColor)
 {
+    return drawRescaledImageF(image, srcX, srcY, dstX, dstY,
+                              width, height, desiredWidth, desiredHeight,
+                              useColor);
+}
+
+bool OpenGLGraphics::drawRescaledImageF(Image *image, int srcX, int srcY,
+                                        float dstX, float dstY,
+                                        int width, int height,
+                                        float desiredWidth, float desiredHeight,
+                                        bool useColor)
+{
     if (!image)
         return false;
-
-    // Just draw the image normally when no resizing is necessary,
-    if (width == desiredWidth && height == desiredHeight)
-    {
-        return drawImage(image, srcX, srcY, dstX, dstY,
-                         width, height, useColor);
-    }
 
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
