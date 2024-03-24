@@ -84,11 +84,11 @@ class Game
 
     private:
         int mLastTarget;
-        bool mDisconnected;
+        bool mDisconnected = false;
 
         WindowMenu *mWindowMenu;
 
-        Map *mCurrentMap;
+        Map *mCurrentMap = nullptr;
         std::string mMapName;
 
         static Game *mInstance;

@@ -26,32 +26,6 @@
 
 #include <algorithm>
 
-class FindBeingFunctor
-{
-    public:
-        bool operator() (ActorSprite *actor) const
-        {
-            if (actor->getType() == ActorSprite::FLOOR_ITEM)
-                return false;
-            Game *game = Game::instance();
-            if (!game)
-                return false;
-
-            auto *b = static_cast<Being*>(actor);
-
-            uint16_t other_y = y + ((b->getType() == ActorSprite::NPC) ? 1 : 0);
-            const Vector &pos = b->getPosition();
-            return ((int) pos.x / game->getCurrentTileWidth() == x &&
-                    ((int) pos.y / game->getCurrentTileHeight() == y
-                    || (int) pos.y / game->getCurrentTileHeight() == other_y) &&
-                    b->isAlive() &&
-                    (type == ActorSprite::UNKNOWN || b->getType() == type));
-        }
-
-        uint16_t x, y;
-        ActorSprite::Type type;
-};
-
 class PlayerNamesLister : public AutoCompleteLister
 {
     void getAutoCompleteList(std::vector<std::string>& names) const override
@@ -59,11 +33,11 @@ class PlayerNamesLister : public AutoCompleteLister
         names.clear();
 
         for (auto actor : actorSpriteManager->getAll()) {
-            if (actor->getType() == ActorSprite::FLOOR_ITEM)
+            if (actor->getType() != ActorSprite::PLAYER)
                 continue;
 
             auto *being = static_cast<Being *>(actor);
-            if (being->getType() == Being::PLAYER && !being->getName().empty())
+            if (!being->getName().empty())
                 names.push_back(being->getName());
         }
     }
@@ -156,14 +130,30 @@ Being *ActorSpriteManager::findBeing(int id) const
 
 Being *ActorSpriteManager::findBeing(int x, int y, ActorSprite::Type type) const
 {
-    FindBeingFunctor beingFinder;
-    beingFinder.x = x;
-    beingFinder.y = y;
-    beingFinder.type = type;
+    const Game *game = Game::instance();
+    if (!game)
+        return nullptr;
 
-    auto it = find_if(mActors.begin(), mActors.end(), beingFinder);
+    const int tileWidth = game->getCurrentTileWidth();
+    const int tileHeight = game->getCurrentTileHeight();
 
-    return (it == mActors.end()) ? nullptr : static_cast<Being*>(*it);
+    auto it = find_if(mActors.begin(), mActors.end(), [=] (ActorSprite *actor) {
+        const auto actorType = actor->getType();
+        if (actorType == ActorSprite::FLOOR_ITEM)
+            return false;
+        if (type != ActorSprite::UNKNOWN && actorType != type)
+            return false;
+
+        auto *b = static_cast<Being*>(actor);
+        uint16_t other_y = y + (actorType == ActorSprite::NPC ? 1 : 0);
+        const Vector &pos = b->getPosition();
+        return ((int) pos.x / tileWidth == x &&
+                ((int) pos.y / tileHeight == y
+                 || (int) pos.y / tileHeight == other_y) &&
+                b->isAlive());
+    });
+
+    return it == mActors.end() ? nullptr : static_cast<Being*>(*it);
 }
 
 Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
@@ -336,12 +326,12 @@ bool ActorSpriteManager::hasActorSprite(ActorSprite *someActor) const
     return mActors.find(someActor) != mActors.end();
 }
 
-AutoCompleteLister *ActorSpriteManager::getPlayerNameLister()
+AutoCompleteLister *ActorSpriteManager::getPlayerNameLister() const
 {
     return mPlayerNames;
 }
 
-AutoCompleteLister *ActorSpriteManager::getPlayerNPCNameLister()
+AutoCompleteLister *ActorSpriteManager::getPlayerNPCNameLister() const
 {
     return mPlayerNPCNames;
 }
@@ -350,11 +340,11 @@ void ActorSpriteManager::updatePlayerNames()
 {
     for (auto actor : mActors)
     {
-        if (actor->getType() == ActorSprite::FLOOR_ITEM)
+        if (actor->getType() != ActorSprite::PLAYER)
             continue;
 
         auto *being = static_cast<Being *>(actor);
-        if (being->getType() == ActorSprite::PLAYER && !being->getName().empty())
+        if (!being->getName().empty())
             being->updateName();
     }
 }

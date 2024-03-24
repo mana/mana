@@ -51,11 +51,10 @@ EffectManager::EffectManager()
     {
         if (xmlStrEqual(node->name, BAD_CAST "effect"))
         {
-            EffectDescription ed;
+            EffectDescription &ed = mEffects.emplace_back();
             ed.id = XML::getProperty(node, "id", -1);
             ed.GFX = XML::getProperty(node, "particle", "");
             ed.SFX = XML::getProperty(node, "audio", "");
-            mEffects.push_back(ed);
         }
     }
 }

@@ -32,7 +32,7 @@ struct Frame;
 /**
  * Animates a sprite by adding playback state.
  */
-class AnimatedSprite : public Sprite
+class AnimatedSprite final : public Sprite
 {
     public:
         /**
@@ -55,7 +55,7 @@ class AnimatedSprite : public Sprite
 
         bool reset() override;
 
-        bool play(std::string action) override;
+        bool play(const std::string &action) override;
 
         bool update(int time) override;
 
@@ -69,7 +69,7 @@ class AnimatedSprite : public Sprite
 
         int getOffsetY() const override;
 
-        const Image* getImage() const override;
+        const Image *getImage() const override;
 
         bool setDirection(SpriteDirection direction) override;
 

@@ -111,7 +111,7 @@ Resource *Image::load(SDL_RWops *rw)
     return image;
 }
 
-Resource *Image::load(SDL_RWops *rw, Dye const &dye)
+Resource *Image::load(SDL_RWops *rw, const Dye &dye)
 {
     SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
 

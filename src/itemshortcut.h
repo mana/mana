@@ -24,8 +24,6 @@
 
 #define SHORTCUT_ITEMS 12
 
-class Item;
-
 /**
  * The class which keeps track of the item shortcuts.
  */

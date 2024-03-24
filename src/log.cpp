@@ -34,7 +34,7 @@ Logger::~Logger() = default;
 
 void Logger::setLogFile(const std::string &logFilename)
 {
-    mLogFile.open(logFilename.c_str(), std::ios_base::trunc);
+    mLogFile.open(logFilename, std::ios_base::trunc);
 
     if (!mLogFile.is_open())
     {

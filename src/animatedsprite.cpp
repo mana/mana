@@ -69,7 +69,7 @@ bool AnimatedSprite::reset()
     return ret;
 }
 
-bool AnimatedSprite::play(std::string spriteAction)
+bool AnimatedSprite::play(const std::string &spriteAction)
 {
     Action *action = mSprite->getAction(spriteAction);
     if (!action)
@@ -216,7 +216,7 @@ int AnimatedSprite::getOffsetY() const
     return mFrame ? mFrame->offsetY : 0;
 }
 
-const Image* AnimatedSprite::getImage() const
+const Image *AnimatedSprite::getImage() const
 {
     return mFrame ? mFrame->image : nullptr;
 }

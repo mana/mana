@@ -477,20 +477,21 @@ void Being::addGuild(Guild *guild)
     guild->addMember(mId, mName);
 
     if (this == local_player && socialWindow)
-    {
         socialWindow->addTab(guild);
-    }
 }
 
 void Being::removeGuild(int id)
 {
-    if (this == local_player && socialWindow)
-    {
-        socialWindow->removeTab(mGuilds[id]);
-    }
+    const auto it = mGuilds.find(id);
+    assert(it != mGuilds.end());
 
-    mGuilds[id]->removeMember(mId);
-    mGuilds.erase(id);
+    auto [_, guild] = *it;
+
+    if (this == local_player && socialWindow)
+        socialWindow->removeTab(guild);
+
+    guild->removeMember(mId);
+    mGuilds.erase(it);
 }
 
 Guild *Being::getGuild(const std::string &guildName) const
@@ -504,12 +505,9 @@ Guild *Being::getGuild(const std::string &guildName) const
 
 Guild *Being::getGuild(int id) const
 {
-    std::map<int, Guild*>::const_iterator itr;
-    itr = mGuilds.find(id);
+    auto itr = mGuilds.find(id);
     if (itr != mGuilds.end())
-    {
         return itr->second;
-    }
 
     return nullptr;
 }
@@ -941,8 +939,7 @@ void Being::showName()
     mDispName = nullptr;
     std::string mDisplayName(mName);
 
-    auto* player =  static_cast<Being*>(this);
-    if (player)
+    if (getType() == PLAYER)
     {
         if (config.getBoolValue("showgender"))
         {
@@ -954,9 +951,9 @@ void Being::showName()
 
         // Display the IP when under tmw-Athena (GM only).
         if (Net::getNetworkType() == ServerType::TMWATHENA && local_player
-        && local_player->getShowIp() && player->getIp())
+                && local_player->getShowIp() && getIp())
         {
-            mDisplayName += strprintf(" %s", ipToString(player->getIp()));
+            mDisplayName += strprintf(" %s", ipToString(getIp()));
         }
     }
 

@@ -68,7 +68,7 @@ enum class Cursor {
  *
  * \ingroup GUI
  */
-class Gui : public gcn::Gui, public EventListener
+class Gui final : public gcn::Gui, public EventListener
 {
     public:
         Gui(Graphics *screen);

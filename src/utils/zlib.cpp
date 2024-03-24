@@ -135,7 +135,7 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
 void *loadCompressedFile(const std::string &filename, int &filesize)
 {
     std::ifstream file;
-    file.open(filename.c_str(), std::ios::in);
+    file.open(filename, std::ios::in);
 
     if (file.is_open())
     {

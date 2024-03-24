@@ -95,7 +95,7 @@ class FlashText : public Text
         /**
          * Flash the text for so many refreshes.
          */
-        void flash(int time) {mTime = time; }
+        void flash(int time) { mTime = time; }
 
         /**
          * Draws the text.

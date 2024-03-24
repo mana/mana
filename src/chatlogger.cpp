@@ -54,7 +54,7 @@ void ChatLogger::setLogFile(const std::string &logFilename)
     if (mLogFile.is_open())
         mLogFile.close();
 
-    mLogFile.open(logFilename.c_str(), std::ios_base::app);
+    mLogFile.open(logFilename, std::ios_base::app);
 
     if (!mLogFile.is_open())
     {

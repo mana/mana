@@ -54,7 +54,7 @@ bool CompoundSprite::reset()
     return ret;
 }
 
-bool CompoundSprite::play(std::string action)
+bool CompoundSprite::play(const std::string &action)
 {
     bool ret = false;
 

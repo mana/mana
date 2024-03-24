@@ -79,7 +79,7 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
 
 ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
                                    int maxRange):
-    Window("", true, parent),
+    Window(std::string(), true, parent),
     mItem(item),
     mMax(maxRange),
     mUsage(usage)
@@ -103,9 +103,8 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     mItemAmountSlide->setActionEventId("slide");
     mItemAmountSlide->addActionListener(this);
 
-    //Item icon
-    Image *image = item->getImage();
-    mItemIcon = new Icon(image);
+    // Item icon
+    mItemIcon = new Icon(item->getImage());
 
     // Buttons
     auto *minusButton = new Button(_("-"), "dec", this);

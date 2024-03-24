@@ -38,18 +38,6 @@ class ListBox : public gcn::ListBox
     public:
         ListBox(gcn::ListModel *listModel);
 
-        ~ListBox() override;
-
-        /**
-         * Sets the font to render the text in.
-         *
-         * @param font the font to use.
-         */
-        void setFont(gcn::Font *font)
-        {
-            mFont = font;
-        }
-
         /**
          * Draws the list box.
          */
@@ -73,9 +61,6 @@ class ListBox : public gcn::ListBox
         void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent) override;
 
         void mouseDragged(gcn::MouseEvent &event) override;
-
-    private:
-        gcn::Font *mFont;
 
     protected:
         static float mAlpha;

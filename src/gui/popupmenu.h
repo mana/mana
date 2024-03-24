@@ -63,7 +63,7 @@ class PopupMenu : public Popup, public LinkHandler
         void handleLink(const std::string &link) override;
 
     private:
-        BrowserBox* mBrowserBox;
+        BrowserBox *mBrowserBox;
 
         int mBeingId = 0;
         FloorItem *mFloorItem = nullptr;

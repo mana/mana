@@ -91,7 +91,7 @@ class ItemInfo
         const std::string &getName() const
         { return mName; }
 
-        std::string getParticleEffect() const
+        const std::string &getParticleEffect() const
         { return mParticle; }
 
         const SpriteDisplay &getDisplay() const

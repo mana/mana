@@ -400,8 +400,8 @@ class Map : public Properties
         unsigned mOnClosedList, mOnOpenList;
 
         // Overlay data
-        std::list<AmbientLayer*> mBackgrounds;
-        std::list<AmbientLayer*> mForegrounds;
+        std::vector<AmbientLayer> mBackgrounds;
+        std::vector<AmbientLayer> mForegrounds;
         float mLastScrollX;
         float mLastScrollY;
 

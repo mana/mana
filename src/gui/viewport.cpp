@@ -266,12 +266,11 @@ void Viewport::shakeScreen(int intensity)
 
 void Viewport::shakeScreen(float x, float y, float decay, unsigned duration)
 {
-    ShakeEffect effect;
+    ShakeEffect &effect = mShakeEffects.emplace_back();
     effect.x = x;
     effect.y = y;
     effect.decay = decay;
     effect.duration = duration;
-    mShakeEffects.push_back(effect);
 }
 
 void Viewport::logic()

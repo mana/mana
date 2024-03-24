@@ -35,7 +35,7 @@ ImageSprite::~ImageSprite()
     mImage->decRef();
 }
 
-bool ImageSprite::draw(Graphics* graphics, int posX, int posY) const
+bool ImageSprite::draw(Graphics *graphics, int posX, int posY) const
 {
     if (mImage->getAlpha() != mAlpha)
         mImage->setAlpha(mAlpha);

@@ -185,7 +185,6 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     mIcon->setPosition(1, 0);
     add(mIcon);
 
-
     mNameLabel = new Label(info->name);
     mNameLabel->setPosition(35, 0);
     add(mNameLabel);

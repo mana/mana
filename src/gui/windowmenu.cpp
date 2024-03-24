@@ -162,21 +162,21 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
     }
 }
 
-static std::string createShortcutCaption(const std::string& text,
-                                       KeyboardConfig::KeyAction key)
+static std::string createShortcutCaption(const std::string &text,
+                                         KeyboardConfig::KeyAction key)
 {
     std::string caption = gettext(text.c_str());
     if (key != KeyboardConfig::KEY_NO_VALUE)
     {
         caption += " (";
-        caption += SDL_GetKeyName((SDL_Scancode) keyboard.getKeyValue(key));
+        caption += SDL_GetKeyName(keyboard.getKeyValue(key));
         caption += ")";
     }
     return caption;
 }
 
-void WindowMenu::addButton(const std::string& text, int &x, int &h,
-                           const std::string& iconPath,
+void WindowMenu::addButton(const std::string &text, int &x, int &h,
+                           const std::string &iconPath,
                            KeyboardConfig::KeyAction key)
 {
     auto *btn = new Button("", text, this);

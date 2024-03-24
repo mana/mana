@@ -71,7 +71,7 @@ class Image : public Resource
          * @return <code>NULL</code> if an error occurred, a valid pointer
          *         otherwise.
          */
-        static Resource *load(SDL_RWops *rw, Dye const &dye);
+        static Resource *load(SDL_RWops *rw, const Dye &dye);
 
         /**
          * Loads an image from an SDL surface.

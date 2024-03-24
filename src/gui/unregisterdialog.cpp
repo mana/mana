@@ -28,10 +28,8 @@
 #include "gui/register.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/passwordfield.h"
-#include "gui/widgets/textfield.h"
 
 #include "net/logindata.h"
 #include "net/loginhandler.h"
@@ -99,10 +97,9 @@ void UnRegisterDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "unregister")
     {
-        const std::string username = mLoginData->username.c_str();
-        const std::string password = mPasswordField->getText();
+        const std::string &password = mPasswordField->getText();
         logger->log("UnregisterDialog::unregistered, Username is %s",
-                     username.c_str());
+                     mLoginData->username.c_str());
 
         std::stringstream errorMessage;
         bool error = false;

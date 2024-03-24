@@ -206,9 +206,7 @@ static void destroyGuiWindows()
 Game *Game::mInstance = nullptr;
 
 Game::Game():
-    mLastTarget(ActorSprite::UNKNOWN),
-    mDisconnected(false),
-    mCurrentMap(nullptr)
+    mLastTarget(ActorSprite::UNKNOWN)
 {
     assert(!mInstance);
     mInstance = this;
@@ -946,8 +944,8 @@ void Game::changeMap(const std::string &mapPath)
         newMap->initializeParticleEffects(particleEngine);
 
     // Start playing new music file when necessary
-    std::string oldMusic = mCurrentMap ? mCurrentMap->getMusicFile() : "";
-    std::string newMusic = newMap ? newMap->getMusicFile() : "";
+    std::string oldMusic = mCurrentMap ? mCurrentMap->getMusicFile() : std::string();
+    std::string newMusic = newMap ? newMap->getMusicFile() : std::string();
     if (newMusic != oldMusic)
     {
         if (newMusic.empty())

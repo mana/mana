@@ -44,7 +44,6 @@ class BeingInfo;
 class FlashText;
 class Guild;
 class ItemInfo;
-class Item;
 class Particle;
 class Party;
 struct Position;

@@ -31,7 +31,6 @@
 class ChatTab;
 class FloorItem;
 class ImageSet;
-class Item;
 class Map;
 class OkDialog;
 

@@ -36,8 +36,7 @@ static bool slotUsed(const Item *item)
 
 Inventory::Inventory(Type type, int size):
     mType(type),
-    mSize(size == -1 ? Net::getInventoryHandler()->getSize(type) : size),
-    mUsed(0)
+    mSize(size == -1 ? Net::getInventoryHandler()->getSize(type) : size)
 {
     mItems = new Item*[mSize];
     std::fill_n(mItems, mSize, (Item*) nullptr);

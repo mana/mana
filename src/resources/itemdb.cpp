@@ -236,9 +236,8 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node, const std::strin
         {
             if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
             {
-                std::string attackParticle = XML::getProperty(
-                    itemChild, "particle-effect", "");
-                itemInfo->mParticle = attackParticle;
+                itemInfo->mParticle = XML::getProperty(
+                            itemChild, "particle-effect", std::string());
 
                 loadSpriteRef(itemInfo, itemChild);
             }
@@ -272,7 +271,6 @@ void ItemDB::addItem(ItemInfo *itemInfo)
         else
             logger->log("ItemDB: Duplicate name (%s) for item id %d found.",
                         temp.c_str(), itemInfo->mId);
-
     }
 }
 

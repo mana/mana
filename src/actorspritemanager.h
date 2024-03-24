@@ -156,9 +156,9 @@ class ActorSpriteManager
          */
         void clear();
 
-        AutoCompleteLister *getPlayerNameLister();
+        AutoCompleteLister *getPlayerNameLister() const;
 
-        AutoCompleteLister *getPlayerNPCNameLister();
+        AutoCompleteLister *getPlayerNPCNameLister() const;
 
         void updatePlayerNames();
 

@@ -399,8 +399,6 @@ void UpdaterWindow::logic()
         mProgressBar->setProgress(mDownloadProgress);
     }
 
-    std::string filename = mUpdatesDir + "/" + mCurrentFile;
-
     switch (mDownloadStatus)
     {
         case UPDATE_ERROR:

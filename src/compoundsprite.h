@@ -34,11 +34,11 @@ public:
 
     ~CompoundSprite() override;
 
-    bool reset() override;
+    bool reset() final;
 
-    bool play(std::string action) override;
+    bool play(const std::string &action) final;
 
-    bool update(int time) override;
+    bool update(int time) final;
 
     bool draw(Graphics *graphics, int posX, int posY) const override;
 
@@ -54,21 +54,21 @@ public:
     int getHeight() const override
     { return mHeight; }
 
-    int getOffsetX() const override
+    int getOffsetX() const final
     { return mOffsetX; }
 
-    int getOffsetY() const override
+    int getOffsetY() const final
     { return mOffsetY; }
 
-    const Image *getImage() const override;
+    const Image *getImage() const final;
 
-    bool setDirection(SpriteDirection direction) override;
+    bool setDirection(SpriteDirection direction) final;
 
     int getNumberOfLayers() const;
 
     virtual bool drawnWhenBehind() const;
 
-    int getDuration() const override;
+    int getDuration() const final;
 
     size_t size() const
     { return mSprites.size(); }

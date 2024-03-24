@@ -39,10 +39,6 @@ ListBox::ListBox(gcn::ListModel *listModel):
 {
 }
 
-ListBox::~ListBox()
-{
-}
-
 void ListBox::updateAlpha()
 {
     float alpha = std::max(config.getFloatValue("guialpha"),
@@ -81,7 +77,7 @@ void ListBox::draw(gcn::Graphics *graphics)
 
 void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
 {
-    gcn::Key key = keyEvent.getKey();
+    const gcn::Key key = keyEvent.getKey();
 
     if (key.getValue() == Key::ENTER || key.getValue() == Key::SPACE)
     {

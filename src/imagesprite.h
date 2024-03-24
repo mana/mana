@@ -27,7 +27,7 @@
 
 class Graphics;
 
-class ImageSprite : public Sprite
+class ImageSprite final : public Sprite
 {
 public:
     ImageSprite(Image *image);
@@ -37,7 +37,7 @@ public:
     bool reset() override
     { return false; }
 
-    bool play(std::string action) override
+    bool play(const std::string &action) override
     { return false; }
 
     bool update(int time) override

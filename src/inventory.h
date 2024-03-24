@@ -142,7 +142,7 @@ class Inventory
         Type mType;
         Item **mItems;  /**< The holder of items */
         int mSize;      /**< The max number of inventory items */
-        int mUsed;      /**< THe number of slots in use */
+        int mUsed = 0;  /**< THe number of slots in use */
 };
 
 #endif // INVENTORY_H

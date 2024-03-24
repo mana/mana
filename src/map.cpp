@@ -235,26 +235,22 @@ Map::~Map()
     }
     delete_all(mLayers);
     delete_all(mTilesets);
-    delete_all(mForegrounds);
-    delete_all(mBackgrounds);
 }
 
 void Map::initializeAmbientLayers()
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
-    auto addAmbientLayer = [=](const std::string &name, std::list<AmbientLayer*> &list)
+    auto addAmbientLayer = [=](const std::string &name, std::vector<AmbientLayer> &list)
     {
         if (Image *img = resman->getImage(getProperty(name + "image")))
         {
-            auto ambientLayer = new AmbientLayer(img);
-            ambientLayer->mParallax = getFloatProperty(name + "parallax");
-            ambientLayer->mSpeedX = getFloatProperty(name + "scrollX");
-            ambientLayer->mSpeedY = getFloatProperty(name + "scrollY");
-            ambientLayer->mMask = getIntProperty(name + "mask", 1);
-            ambientLayer->mKeepRatio = getBoolProperty(name + "keepratio");
-
-            list.push_back(ambientLayer);
+            auto &ambientLayer = list.emplace_back(img);
+            ambientLayer.mParallax = getFloatProperty(name + "parallax");
+            ambientLayer.mSpeedX = getFloatProperty(name + "scrollX");
+            ambientLayer.mSpeedY = getFloatProperty(name + "scrollY");
+            ambientLayer.mMask = getIntProperty(name + "mask", 1);
+            ambientLayer.mKeepRatio = getBoolProperty(name + "keepratio");
 
             // The AmbientLayer takes control over the image.
             img->decRef();
@@ -456,17 +452,17 @@ void Map::updateAmbientLayers(float scrollX, float scrollY)
 
     for (auto &background : mBackgrounds)
     {
-        if ((background->mMask & mMask) == 0)
+        if ((background.mMask & mMask) == 0)
             continue;
 
-        background->update(timePassed, dx, dy);
+        background.update(timePassed, dx, dy);
     }
     for (auto &foreground : mForegrounds)
     {
-        if ((foreground->mMask & mMask) == 0)
+        if ((foreground.mMask & mMask) == 0)
             continue;
 
-        foreground->update(timePassed, dx, dy);
+        foreground.update(timePassed, dx, dy);
     }
     mLastScrollX = scrollX;
     mLastScrollY = scrollY;
@@ -480,7 +476,7 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
     if (detail <= 0 && type != BACKGROUND_LAYERS) return;
 
     // find out which layer list to draw
-    std::list<AmbientLayer*> *layers;
+    std::vector<AmbientLayer> *layers;
     switch (type)
     {
         case FOREGROUND_LAYERS:
@@ -499,10 +495,10 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
     // Draw overlays
     for (auto &layer : *layers)
     {
-        if ((layer->mMask & mMask) == 0)
+        if ((layer.mMask & mMask) == 0)
             continue;
 
-        layer->draw(graphics);
+        layer.draw(graphics);
 
         // Detail 1: only one overlay, higher: all overlays
         if (detail == 1)

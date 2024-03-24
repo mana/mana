@@ -226,12 +226,12 @@ Client::Client(const Options &options):
 
     chatLogger = new ChatLogger;
     if (options.chatLogDir.empty())
-        chatLogger->setLogDir(mLocalDataDir + std::string("/logs/"));
+        chatLogger->setLogDir(mLocalDataDir + "/logs/");
     else
         chatLogger->setLogDir(options.chatLogDir);
 
     // Configure logger
-    logger->setLogFile(mLocalDataDir + std::string("/mana.log"));
+    logger->setLogFile(mLocalDataDir + "/mana.log");
     logger->setLogToStandardOut(config.getBoolValue("logToStandardOut"));
 
     // Log the mana version

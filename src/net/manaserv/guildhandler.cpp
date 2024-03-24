@@ -237,8 +237,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 // Must remove tab first, as it wont find the guild
                 // name after its removed from the player
                 int guildId = msg.readInt16();
-                Guild *guild = local_player->getGuild(guildId);
-                if (guild)
+                if (Guild *guild = local_player->getGuild(guildId))
                 {
                     Channel *channel = channelManager->findByName(guild->getName());
                     channelManager->removeChannel(channel);
@@ -252,8 +251,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
             const int guildId = msg.readInt16();
             std::string player = msg.readString();
-            Guild *guild = local_player->getGuild(guildId);
-            if (guild)
+            if (Guild *guild = local_player->getGuild(guildId))
             {
                 Channel *channel = channelManager->findByName(guild->getName());
                 channelManager->removeChannel(channel);

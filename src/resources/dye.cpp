@@ -134,7 +134,7 @@ void DyePalette::getColor(int intensity, int color[3]) const
 void DyePalette::getColor(double intensity, int color[3]) const
 {
     // Nothing to do here
-    if (mColors.size() == 0)
+    if (mColors.empty())
         return;
 
     // Force range
