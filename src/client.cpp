@@ -248,6 +248,8 @@ Client::Client(const Options &options):
     }
     atexit(SDL_Quit);
 
+    SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
+
     ResourceManager *resman = ResourceManager::getInstance();
 
     if (!resman->setWriteDir(mLocalDataDir))
