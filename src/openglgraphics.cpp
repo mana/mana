@@ -131,7 +131,7 @@ void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
 
 void OpenGLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
 {
-    mScale = scale;
+    mUserScale = scale;
 
     int drawableWidth;
     int drawableHeight;
@@ -142,11 +142,12 @@ void OpenGLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
     float displayScaleX = windowWidth > 0 ? static_cast<float>(drawableWidth) / windowWidth : 1.0f;
     float displayScaleY = windowHeight > 0 ? static_cast<float>(drawableHeight) / windowHeight : 1.0f;
 
-    mScaleX = mScale * displayScaleX;
-    mScaleY = mScale * displayScaleY;
+    mScaleX = mUserScale * displayScaleX;
+    mScaleY = mUserScale * displayScaleY;
 
     mWidth = std::ceil(drawableWidth / mScaleX);
     mHeight = std::ceil(drawableHeight / mScaleY);
+    mScale = mScaleX;
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -557,8 +558,8 @@ void OpenGLGraphics::updateScreen()
 void OpenGLGraphics::windowToLogical(int windowX, int windowY,
                                      float &logicalX, float &logicalY) const
 {
-    logicalX = windowX / mScale;
-    logicalY = windowY / mScale;
+    logicalX = windowX / mUserScale;
+    logicalY = windowY / mUserScale;
 }
 
 SDL_Surface *OpenGLGraphics::getScreenshot()

@@ -1339,11 +1339,8 @@ void Client::checkGraphicsSize()
     const int width = graphics->getWidth();
     const int height = graphics->getHeight();
 
-    const auto guiTop = gui->getTop();
-    if (guiTop->getWidth() == width && guiTop->getHeight() == height)
+    if (!gui->videoResized(width, height))
         return;
-
-    gui->videoResized(width, height);
 
     if (mDesktop)
         mDesktop->setSize(width, height);

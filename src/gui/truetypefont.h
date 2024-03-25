@@ -72,11 +72,19 @@ class TrueTypeFont : public gcn::Font
                         const std::string &text,
                         int x, int y) override;
 
+        static void updateFontScale(float scale);
+
     private:
+        const std::string mFilename;
         TTF_Font *mFont;
+
+        const int mPointSize;
 
         // Word surfaces cache
         mutable std::list<TextChunk> mCache;
+
+        static std::list<TrueTypeFont*> mFonts;
+        static float mScale;
 };
 
 #endif

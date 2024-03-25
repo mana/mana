@@ -203,6 +203,11 @@ class Graphics : public gcn::Graphics
         int getHeight() const { return mHeight; }
 
         /**
+         * Returns the graphics scale.
+         */
+        float getScale() const { return mScale; }
+
+        /**
          * Converts a window coordinate to a logical coordinate. Used for
          * converting mouse coordinates.
          */
@@ -237,6 +242,7 @@ class Graphics : public gcn::Graphics
     protected:
         int mWidth = 0;
         int mHeight = 0;
+        float mScale = 1.0f;
         gcn::Color mColor;
 };
 

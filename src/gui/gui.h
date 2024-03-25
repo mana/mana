@@ -86,8 +86,10 @@ class Gui : public gcn::Gui
 
         /**
          * Called when the application window has been resized.
+         *
+         * Returns whether the top widget changed size.
          */
-        void videoResized(int width, int height);
+        bool videoResized(int width, int height);
 
         gcn::FocusHandler *getFocusHandler() const
         { return mFocusHandler; }

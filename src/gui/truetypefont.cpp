@@ -29,6 +29,9 @@
 #include <guichan/color.hpp>
 #include <guichan/exception.hpp>
 
+#include <cmath>
+#include <memory>
+
 const unsigned int CACHE_SIZE = 256;
 
 static const char *getSafeUtf8String(const std::string &text)
@@ -42,64 +45,55 @@ static const char *getSafeUtf8String(const std::string &text)
     return buf;
 }
 
+bool operator==(SDL_Color lhs, SDL_Color rhs)
+{
+    return (lhs.r == rhs.r &&
+            lhs.g == rhs.g &&
+            lhs.b == rhs.b &&
+            lhs.a == rhs.a);
+}
+
 class TextChunk
 {
-    public:
-        TextChunk(const std::string &text, const gcn::Color &color) :
-            text(text), color(color)
-        {
-        }
+public:
+    TextChunk(const std::string &text, SDL_Color color)
+        : text(text)
+        , color(color)
+    {}
 
-        ~TextChunk()
-        {
-            delete img;
-        }
+    void generate(TTF_Font *font)
+    {
+        SDL_Surface *surface = TTF_RenderUTF8_Blended(font,
+                                                      getSafeUtf8String(text),
+                                                      color);
 
-        bool operator==(const TextChunk &chunk) const
-        {
-            return (chunk.text == text && chunk.color == color);
-        }
+        if (!surface)
+            return;
 
-        void generate(TTF_Font *font)
-        {
-            SDL_Color sdlCol;
-            sdlCol.r = color.r;
-            sdlCol.g = color.g;
-            sdlCol.b = color.b;
-            sdlCol.a = color.a;
+        img.reset(Image::load(surface));
 
-            const char *str = getSafeUtf8String(text);
-            SDL_Surface *surface = TTF_RenderUTF8_Blended(
-                    font, str, sdlCol);
+        SDL_FreeSurface(surface);
+    }
 
-            if (!surface)
-            {
-                img = nullptr;
-                return;
-            }
-
-            img = Image::load(surface);
-
-            SDL_FreeSurface(surface);
-        }
-
-        Image *img = nullptr;
-        std::string text;
-        gcn::Color color;
+    std::unique_ptr<Image> img;
+    const std::string text;
+    const SDL_Color color;
 };
 
-static int fontCounter;
+std::list<TrueTypeFont*> TrueTypeFont::mFonts;
+float TrueTypeFont::mScale = 1.0f;
 
 TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
+    : mFilename(filename)
+    , mPointSize(size)
 {
-    if (fontCounter == 0 && TTF_Init() == -1)
+    if (TTF_Init() == -1)
     {
         throw GCN_EXCEPTION("Unable to initialize SDL_ttf: " +
             std::string(TTF_GetError()));
     }
 
-    ++fontCounter;
-    mFont = TTF_OpenFont(filename.c_str(), size);
+    mFont = TTF_OpenFont(filename.c_str(), size * mScale);
 
     if (!mFont)
     {
@@ -108,15 +102,18 @@ TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
     }
 
     TTF_SetFontStyle(mFont, style);
+
+    mFonts.push_back(this);
 }
 
 TrueTypeFont::~TrueTypeFont()
 {
-    TTF_CloseFont(mFont);
-    --fontCounter;
+    mFonts.remove(this);
 
-    if (fontCounter == 0)
-        TTF_Quit();
+    if (mFont)
+        TTF_CloseFont(mFont);
+
+    TTF_Quit();
 }
 
 void TrueTypeFont::drawString(gcn::Graphics *graphics,
@@ -126,26 +123,25 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
     if (text.empty())
         return;
 
-    auto *g = dynamic_cast<Graphics *>(graphics);
+    auto *g = static_cast<Graphics *>(graphics);
+    const gcn::Color col = g->getColor();
 
-    if (!g)
-        throw "Not a valid graphics object!";
-
-    gcn::Color col = g->getColor();
-    const float alpha = col.a / 255.0f;
-
-    /* The alpha value is ignored at string generation so avoid caching the
+    /* The alpha value is ignored at image generation to avoid caching the
      * same text with different alpha values.
      */
-    col.a = 255;
-
-    TextChunk chunk(text, col);
+    const SDL_Color color = {
+        static_cast<Uint8>(col.r),
+        static_cast<Uint8>(col.g),
+        static_cast<Uint8>(col.b),
+        255
+    };
 
     bool found = false;
 
     for (auto i = mCache.begin(); i != mCache.end(); ++i)
     {
-        if (chunk == (*i))
+        auto &chunk = *i;
+        if (chunk.text == text && chunk.color == color)
         {
             // Raise priority: move it to front
             mCache.splice(mCache.begin(), mCache, i);
@@ -154,19 +150,42 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
         }
     }
 
-    // Surface not found
     if (!found)
     {
         if (mCache.size() >= CACHE_SIZE)
             mCache.pop_back();
-        mCache.push_front(chunk);
+        mCache.emplace_front(text, color);
         mCache.front().generate(mFont);
     }
 
-    if (mCache.front().img)
+    if (auto img = mCache.front().img.get())
     {
-        mCache.front().img->setAlpha(alpha);
-        g->drawImage(mCache.front().img, x, y);
+        img->setAlpha(col.a / 255.0f);
+        g->drawRescaledImageF(img, 0, 0, x, y,
+                              img->getWidth(),
+                              img->getHeight(),
+                              img->getWidth() / mScale,
+                              img->getHeight() / mScale);
+    }
+}
+
+void TrueTypeFont::updateFontScale(float scale)
+{
+    if (mScale == scale)
+        return;
+
+    mScale = scale;
+
+    for (auto font : mFonts)
+    {
+#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
+        TTF_SetFontSize(font->mFont, font->mPointSize * mScale);
+#else
+        TTF_CloseFont(font->mFont);
+        font->mFont = TTF_OpenFont(font->mFilename.c_str(), font->mPointSize * mScale);
+#endif
+
+        font->mCache.clear();
     }
 }
 
@@ -180,23 +199,22 @@ int TrueTypeFont::getWidth(const std::string &text) const
             // Assumption is that TTF::draw will be called next
             mCache.splice(mCache.begin(), mCache, i);
             if (i->img)
-                return i->img->getWidth();
+                return std::ceil(i->img->getWidth() / mScale);
             return 0;
         }
     }
 
     int w, h;
-    const char *str = getSafeUtf8String(text);
-    TTF_SizeUTF8(mFont, str, &w, &h);
-    return w;
+    TTF_SizeUTF8(mFont, getSafeUtf8String(text), &w, &h);
+    return std::ceil(w / mScale);
 }
 
 int TrueTypeFont::getHeight() const
 {
-    return TTF_FontHeight(mFont);
+    return std::ceil(TTF_FontHeight(mFont) / mScale);
 }
 
 int TrueTypeFont::getLineHeight() const
 {
-    return TTF_FontLineSkip(mFont);
+    return std::ceil(TTF_FontLineSkip(mFont) / mScale);
 }

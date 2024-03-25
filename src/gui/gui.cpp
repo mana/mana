@@ -106,6 +106,9 @@ Gui::Gui(Graphics *graphics)
     std::string fontFile = branding.getValue("font", "fonts/dejavusans.ttf");
     std::string path = resman->getPath(fontFile);
 
+    // Initialize the font scale before creating the fonts
+    TrueTypeFont::updateFontScale(graphics->getScale());
+
     try
     {
         mGuiFont = new TrueTypeFont(path, fontSize);
@@ -222,17 +225,20 @@ void Gui::draw()
     mGraphics->_endDraw();
 }
 
-void Gui::videoResized(int width, int height)
+bool Gui::videoResized(int width, int height)
 {
+    TrueTypeFont::updateFontScale(static_cast<Graphics*>(mGraphics)->getScale());
+
     auto *top = static_cast<WindowContainer*>(getTop());
 
     int oldWidth = top->getWidth();
     int oldHeight = top->getHeight();
     if (oldWidth == width && oldHeight == height)
-        return;
+        return false;
 
     top->setSize(width, height);
     top->adjustAfterResize(oldWidth, oldHeight);
+    return true;
 }
 
 void Gui::setUseCustomCursor(bool customCursor)

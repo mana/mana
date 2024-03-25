@@ -101,6 +101,7 @@ void SDLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
 
     mWidth = std::ceil(mWidth / scaleX);
     mHeight = std::ceil(mHeight / scaleY);
+    mScale = scaleX;
 
     SDL_RenderSetScale(mRenderer, scaleX, scaleY);
 }

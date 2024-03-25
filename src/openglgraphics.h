@@ -126,7 +126,7 @@ class OpenGLGraphics final : public Graphics
         GLfloat *mFloatTexArray;
         GLint *mIntTexArray;
         GLint *mIntVertArray;
-        float mScale = 1.0f;
+        float mUserScale = 1.0f;
         float mScaleX = 1.0f;
         float mScaleY = 1.0f;
         bool mAlpha = false;
