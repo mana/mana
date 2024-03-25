@@ -51,7 +51,7 @@ class KeyListModel : public gcn::ListModel
         /**
          * Returns the number of elements in container.
          */
-        int getNumberOfElements() override { return keyboard.KEY_TOTAL; }
+        int getNumberOfElements() override { return KeyboardConfig::KEY_TOTAL; }
 
         /**
          * Returns element from container.
@@ -161,7 +161,7 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
         int i(mKeyList->getSelected());
         keyboard.setNewKeyIndex(i);
         refreshAssignedKey(mKeyList->getSelected());
-        keyboard.setNewKey(keyboard.KEY_NO_VALUE);
+        keyboard.setNewKey(KeyboardConfig::KEY_NO_VALUE);
         mAssignKeyButton->setEnabled(true);
     }
     else if (event.getId() == "makeDefault")
@@ -174,7 +174,7 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
 void Setup_Keyboard::refreshAssignedKey(int index)
 {
     std::string caption;
-    if (keyboard.getKeyValue(index) == keyboard.KEY_NO_VALUE)
+    if (keyboard.getKeyValue(index) == KeyboardConfig::KEY_NO_VALUE)
         caption = keyboard.getKeyCaption(index) + ": ";
     else
     {
@@ -198,7 +198,7 @@ void Setup_Keyboard::newKeyCallback(int index)
 
 void Setup_Keyboard::refreshKeys()
 {
-    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
+    for (int i = 0; i < KeyboardConfig::KEY_TOTAL; i++)
     {
         refreshAssignedKey(i);
     }
@@ -209,6 +209,6 @@ void Setup_Keyboard::keyUnresolved()
     if (mKeySetting)
     {
         newKeyCallback(keyboard.getNewKeyIndex());
-        keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
+        keyboard.setNewKeyIndex(KeyboardConfig::KEY_NO_VALUE);
     }
 }

@@ -415,11 +415,11 @@ void Game::handleInput()
             gcn::Window *requestedWindow = nullptr;
 
             if (setupWindow->isVisible() &&
-                keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
+                keyboard.getNewKeyIndex() > KeyboardConfig::KEY_NO_VALUE)
             {
                 keyboard.setNewKey((int) event.key.keysym.sym);
                 keyboard.callbackNewKey();
-                keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
+                keyboard.setNewKeyIndex(KeyboardConfig::KEY_NO_VALUE);
                 return;
             }
 
@@ -440,7 +440,7 @@ void Game::handleInput()
             }
 
             // Mode switch to emotes
-            if (keyboard.isKeyActive(keyboard.KEY_EMOTE))
+            if (keyboard.isKeyActive(KeyboardConfig::KEY_EMOTE))
             {
                 // Emotions
                 int emotion = keyboard.getKeyEmoteOffset(event.key.keysym.sym);
@@ -456,7 +456,7 @@ void Game::handleInput()
                 && !gui->getFocusHandler()->getModalFocused())
             {
                 NpcDialog *dialog = NpcDialog::getActive();
-                if (keyboard.isKeyActive(keyboard.KEY_OK)
+                if (keyboard.isKeyActive(KeyboardConfig::KEY_OK)
                     && (!dialog || !dialog->isTextInputFocused()))
                 {
                     // Close the Browser if opened
@@ -468,16 +468,16 @@ void Game::handleInput()
                     else if (dialog)
                         dialog->action(gcn::ActionEvent(nullptr, "ok"));
                 }
-                if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                if (keyboard.isKeyActive(KeyboardConfig::KEY_TOGGLE_CHAT))
                 {
                     if (chatWindow->requestChatFocus())
                         used = true;
                 }
                 if (dialog)
                 {
-                    if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP))
+                    if (keyboard.isKeyActive(KeyboardConfig::KEY_MOVE_UP))
                         dialog->move(1);
-                    else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN))
+                    else if (keyboard.isKeyActive(KeyboardConfig::KEY_MOVE_DOWN))
                         dialog->move(-1);
                 }
             }
@@ -486,12 +486,12 @@ void Game::handleInput()
             if (!chatWindow->isInputFocused() || (event.key.keysym.mod &
                                                   KMOD_ALT))
             {
-                if (keyboard.isKeyActive(keyboard.KEY_PREV_CHAT_TAB))
+                if (keyboard.isKeyActive(KeyboardConfig::KEY_PREV_CHAT_TAB))
                 {
                     chatWindow->prevTab();
                     return;
                 }
-                else if (keyboard.isKeyActive(keyboard.KEY_NEXT_CHAT_TAB))
+                else if (keyboard.isKeyActive(KeyboardConfig::KEY_NEXT_CHAT_TAB))
                 {
                     chatWindow->nextTab();
                     return;
@@ -503,10 +503,10 @@ void Game::handleInput()
                 bool wearOutfit = false;
                 bool copyOutfit = false;
 
-                if (keyboard.isKeyActive(keyboard.KEY_WEAR_OUTFIT))
+                if (keyboard.isKeyActive(KeyboardConfig::KEY_WEAR_OUTFIT))
                     wearOutfit = true;
 
-                if (keyboard.isKeyActive(keyboard.KEY_COPY_OUTFIT))
+                if (keyboard.isKeyActive(KeyboardConfig::KEY_COPY_OUTFIT))
                     copyOutfit = true;
 
                 if (wearOutfit || copyOutfit)
@@ -767,8 +767,8 @@ void Game::handleInput()
         // Ignore input if either "ignore" key is pressed
         // Stops the character moving about if the user's window manager
         // uses "ignore+arrow key" to switch virtual desktops.
-        if (keyboard.isKeyActive(keyboard.KEY_IGNORE_INPUT_1) ||
-            keyboard.isKeyActive(keyboard.KEY_IGNORE_INPUT_2))
+        if (keyboard.isKeyActive(KeyboardConfig::KEY_IGNORE_INPUT_1) ||
+            keyboard.isKeyActive(KeyboardConfig::KEY_IGNORE_INPUT_2))
         {
             return;
         }
@@ -776,29 +776,29 @@ void Game::handleInput()
         unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction
-        if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
+        if (keyboard.isKeyActive(KeyboardConfig::KEY_MOVE_UP) ||
             (joystick && joystick->isUp()))
         {
             direction |= Being::UP;
         }
-        else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
+        else if (keyboard.isKeyActive(KeyboardConfig::KEY_MOVE_DOWN) ||
                  (joystick && joystick->isDown()))
         {
             direction |= Being::DOWN;
         }
 
-        if (keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
+        if (keyboard.isKeyActive(KeyboardConfig::KEY_MOVE_LEFT) ||
             (joystick && joystick->isLeft()))
         {
             direction |= Being::LEFT;
         }
-        else if (keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
+        else if (keyboard.isKeyActive(KeyboardConfig::KEY_MOVE_RIGHT) ||
                  (joystick && joystick->isRight()))
         {
             direction |= Being::RIGHT;
         }
 
-        if (keyboard.isKeyActive(keyboard.KEY_EMOTE) && direction != 0)
+        if (keyboard.isKeyActive(KeyboardConfig::KEY_EMOTE) && direction != 0)
         {
             if (local_player->getDirection() != direction)
             {
@@ -813,18 +813,18 @@ void Game::handleInput()
         }
 
         // Attacking monsters
-        if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
+        if (keyboard.isKeyActive(KeyboardConfig::KEY_ATTACK) ||
            (joystick && joystick->buttonPressed(0)))
         {
             if (local_player->getTarget())
                 local_player->attack(local_player->getTarget(), true);
         }
 
-        if (keyboard.isKeyActive(keyboard.KEY_TARGET_ATTACK))
+        if (keyboard.isKeyActive(KeyboardConfig::KEY_TARGET_ATTACK))
         {
             Being *target = local_player->getTarget();
 
-            bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
+            bool newTarget = !keyboard.isKeyActive(KeyboardConfig::KEY_TARGET);
             // A set target has highest priority
             if (!target)
             {
@@ -836,19 +836,19 @@ void Game::handleInput()
         }
 
         // Target the nearest player/monster/npc
-        if ((keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) ||
-            keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
-            keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) ||
+        if ((keyboard.isKeyActive(KeyboardConfig::KEY_TARGET_PLAYER) ||
+            keyboard.isKeyActive(KeyboardConfig::KEY_TARGET_CLOSEST) ||
+            keyboard.isKeyActive(KeyboardConfig::KEY_TARGET_NPC) ||
                     (joystick && joystick->buttonPressed(3))) &&
-                !keyboard.isKeyActive(keyboard.KEY_TARGET))
+                !keyboard.isKeyActive(KeyboardConfig::KEY_TARGET))
         {
             ActorSprite::Type currentTarget = ActorSprite::UNKNOWN;
-            if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+            if (keyboard.isKeyActive(KeyboardConfig::KEY_TARGET_CLOSEST) ||
                     (joystick && joystick->buttonPressed(3)))
                 currentTarget = ActorSprite::MONSTER;
-            else if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
+            else if (keyboard.isKeyActive(KeyboardConfig::KEY_TARGET_PLAYER))
                 currentTarget = ActorSprite::PLAYER;
-            else if (keyboard.isKeyActive(keyboard.KEY_TARGET_NPC))
+            else if (keyboard.isKeyActive(KeyboardConfig::KEY_TARGET_NPC))
                 currentTarget = ActorSprite::NPC;
 
             Being *target = actorSpriteManager->findNearestLivingBeing(local_player,
@@ -880,8 +880,8 @@ void Game::handleInput()
         }
 
         // Stop attacking if the right key is pressed
-        if (!keyboard.isKeyActive(keyboard.KEY_ATTACK)
-            && keyboard.isKeyActive(keyboard.KEY_TARGET))
+        if (!keyboard.isKeyActive(KeyboardConfig::KEY_ATTACK)
+            && keyboard.isKeyActive(KeyboardConfig::KEY_TARGET))
         {
             local_player->stopAttack();
         }

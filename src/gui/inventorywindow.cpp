@@ -277,7 +277,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (instances.size() > 1 && keyboard.isKeyActive(keyboard.KEY_EMOTE))
+        if (instances.size() > 1 && keyboard.isKeyActive(KeyboardConfig::KEY_EMOTE))
         {
             Item *item = mItems->getSelectedItem();
 

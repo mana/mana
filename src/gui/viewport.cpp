@@ -480,10 +480,10 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                 {
                     if (local_player->withinRange(mHoverBeing,
                                                  local_player->getAttackRange())
-                        || keyboard.isKeyActive(keyboard.KEY_ATTACK))
+                        || keyboard.isKeyActive(KeyboardConfig::KEY_ATTACK))
                     {
                         local_player->attack(mHoverBeing,
-                            !keyboard.isKeyActive(keyboard.KEY_TARGET));
+                            !keyboard.isKeyActive(KeyboardConfig::KEY_TARGET));
                     }
                     else
                     {

@@ -242,7 +242,7 @@ std::string getHostNameFromURL(const std::string &url)
 
     // Parse out any "http://", "ftp://", ect...
     size_t pos = myHostName.find("://");
-    if (pos == myHostName.npos)
+    if (pos == std::string::npos)
     {
         logger->log("Warning: no protocol was specified for the url: %s",
                     url.c_str());
@@ -257,7 +257,7 @@ std::string getHostNameFromURL(const std::string &url)
 
     // Remove possible trailing port (i.e.: localhost:8000 -> localhost)
     pos = myHostName.find(":");
-    if (pos != myHostName.npos)
+    if (pos != std::string::npos)
         myHostName = myHostName.substr(0, pos);
 
     // remove possible other junk
