@@ -22,14 +22,17 @@
 #ifndef GUI_H
 #define GUI_H
 
+#include "eventlistener.h"
 #include "guichanfwd.h"
 
 #include <guichan/gui.hpp>
 
+#include <SDL.h>
+
+#include <vector>
+
 class TextInput;
 class Graphics;
-class GuiConfigListener;
-class ImageSet;
 class SDLInput;
 
 /**
@@ -65,7 +68,7 @@ enum class Cursor {
  *
  * \ingroup GUI
  */
-class Gui : public gcn::Gui
+class Gui : public gcn::Gui, public EventListener
 {
     public:
         Gui(Graphics *screen);
@@ -78,11 +81,7 @@ class Gui : public gcn::Gui
          */
         void logic() override;
 
-        /**
-         * Draws the whole Gui by calling draw functions down in the
-         * Gui hierarchy. It also draws the mouse pointer.
-         */
-        void draw() override;
+        void event(Event::Channel channel, const Event &event) override;
 
         /**
          * Called when the application window has been resized.
@@ -115,21 +114,25 @@ class Gui : public gcn::Gui
         /**
          * Sets which cursor should be used.
          */
-        void setCursorType(Cursor index)
-        { mCursorType = index; }
+        void setCursorType(Cursor cursor);
 
     protected:
         void handleMouseMoved(const gcn::MouseInput &mouseInput) override;
         void handleTextInput(const TextInput &textInput);
 
     private:
-        GuiConfigListener *mConfigListener;
+        void updateCursor();
+
+        void loadCustomCursors();
+        void loadSystemCursors();
+
         gcn::Font *mGuiFont;                  /**< The global GUI font */
         gcn::Font *mInfoParticleFont;         /**< Font for Info Particles*/
         bool mCustomCursor = false;           /**< Show custom cursor */
-        ImageSet *mMouseCursors = nullptr;    /**< Mouse cursor images */
-        float mMouseCursorAlpha = 1.0f;
-        int mMouseInactivityTimer = 0;
+        float mCustomCursorScale = 1.0f;
+        std::vector<SDL_Cursor *> mSystemMouseCursors;
+        std::vector<SDL_Cursor *> mCustomMouseCursors;
+        int mLastMouseActivityTime = 0;
         Cursor mCursorType = Cursor::POINTER;
 };
 

@@ -230,6 +230,11 @@ std::string ResourceManager::getPath(const std::string &file)
     return path;
 }
 
+SDL_RWops *ResourceManager::open(const std::string &path)
+{
+    return PHYSFSRWOPS_openRead(path.c_str());
+}
+
 Resource *ResourceManager::get(const std::string &idPath,
                                const std::function<Resource *()> &generator)
 {
@@ -265,10 +270,10 @@ Resource *ResourceManager::get(const std::string &idPath,
     return resource;
 }
 
-Resource *ResourceManager::load(const std::string &path, loader fun)
+Resource *ResourceManager::get(const std::string &path, loader fun)
 {
     return get(path, [&] () -> Resource * {
-        if (SDL_RWops *rw = PHYSFSRWOPS_openRead(path.c_str()))
+        if (SDL_RWops *rw = open(path))
             return fun(rw);
         return nullptr;
     });
@@ -276,12 +281,12 @@ Resource *ResourceManager::load(const std::string &path, loader fun)
 
 Music *ResourceManager::getMusic(const std::string &idPath)
 {
-    return static_cast<Music*>(load(idPath, Music::load));
+    return static_cast<Music*>(get(idPath, Music::load));
 }
 
 SoundEffect *ResourceManager::getSoundEffect(const std::string &idPath)
 {
-    return static_cast<SoundEffect*>(load(idPath, SoundEffect::load));
+    return static_cast<SoundEffect*>(get(idPath, SoundEffect::load));
 }
 
 Image *ResourceManager::getImage(const std::string &idPath)
@@ -295,7 +300,7 @@ Image *ResourceManager::getImage(const std::string &idPath)
             d = std::make_unique<Dye>(path.substr(p + 1));
             path = path.substr(0, p);
         }
-        SDL_RWops *rw = PHYSFSRWOPS_openRead(path.c_str());
+        SDL_RWops *rw = open(path);
         if (!rw)
             return nullptr;
 

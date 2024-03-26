@@ -105,6 +105,16 @@ class ResourceManager
         std::string getPath(const std::string &file);
 
         /**
+         * Opens a file for reading. The caller is responsible for closing the
+         * file.
+         *
+         * @param path The file name.
+         * @return A valid SDL_RWops pointer or <code>NULL</code> if the file
+         *         could not be opened.
+         */
+        SDL_RWops *open(const std::string &path);
+
+        /**
          * Creates a resource and adds it to the resource map.
          *
          * @param idPath The resource identifier path.
@@ -124,18 +134,7 @@ class ResourceManager
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be loaded.
          */
-        Resource *load(const std::string &path, loader fun);
-
-        /**
-        * Copies a file from one place to another (useful for extracting
-        * raw files from a zip archive, for example)
-        *
-        * @param src Source file name
-        * @param dst Destination file name
-        * @return true on success, false on failure. An error message should be
-        *         in the log file.
-        */
-        bool copyFile(const std::string &src, const std::string &dst);
+        Resource *get(const std::string &path, loader fun);
 
         /**
          * Convenience wrapper around ResourceManager::get for loading
@@ -181,6 +180,17 @@ class ResourceManager
          */
         void *loadFile(const std::string &filename, int &filesize,
                        bool inflate = true);
+
+        /**
+        * Copies a file from one place to another (useful for extracting
+        * raw files from a zip archive, for example)
+        *
+        * @param src Source file name
+        * @param dst Destination file name
+        * @return true on success, false on failure. An error message should be
+        *         in the log file.
+        */
+        bool copyFile(const std::string &src, const std::string &dst);
 
         /**
          * Retrieves the contents of a text file.

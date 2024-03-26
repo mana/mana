@@ -49,9 +49,7 @@ static void initDefaultThemePath()
     ResourceManager *resman = ResourceManager::getInstance();
     defaultThemePath = branding.getStringValue("guiThemePath");
 
-    if (!defaultThemePath.empty() && resman->isDirectory(defaultThemePath))
-        return;
-    else
+    if (defaultThemePath.empty() || !resman->isDirectory(defaultThemePath))
         defaultThemePath = "graphics/gui/";
 }
 

@@ -32,17 +32,16 @@
 
 #include "client.h"
 #include "configuration.h"
-#include "eventlistener.h"
 #include "graphics.h"
 #include "log.h"
 
-#include "resources/image.h"
-#include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
+
+#include <SDL_image.h>
 
 // Guichan stuff
 Gui *gui = nullptr;
@@ -54,30 +53,8 @@ gcn::Font *boldFont = nullptr;
 // Mono font
 gcn::Font *monoFont = nullptr;
 
-class GuiConfigListener : public EventListener
-{
-    public:
-        GuiConfigListener(Gui *g):
-            mGui(g)
-        {}
-
-        void event(Event::Channel channel, const Event &event) override
-        {
-            if (channel == Event::ConfigChannel)
-            {
-                if (event.getType() == Event::ConfigOptionChanged &&
-                    event.getString("option") == "customcursor")
-                {
-                    bool bCustomCursor = config.getBoolValue("customcursor");
-                    mGui->setUseCustomCursor(bCustomCursor);
-                }
-            }
-        }
-    private:
-        Gui *mGui;
-};
-
 Gui::Gui(Graphics *graphics)
+    : mCustomCursorScale(graphics->getScale())
 {
     logger->log("Initializing GUI...");
     // Set graphics
@@ -146,20 +123,24 @@ Gui::Gui(Graphics *graphics)
                       std::string("': ") + e.getMessage());
     }
 
+    loadCustomCursors();
+    loadSystemCursors();
+
     gcn::Widget::setGlobalFont(mGuiFont);
 
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getBoolValue("customcursor"));
-    mConfigListener = new GuiConfigListener(this);
-    mConfigListener->listen(Event::ConfigChannel);
+
+    listen(Event::ConfigChannel);
 }
 
 Gui::~Gui()
 {
-    delete mConfigListener;
+    for (auto cursor : mSystemMouseCursors)
+        SDL_FreeCursor(cursor);
 
-    if (mMouseCursors)
-        mMouseCursors->decRef();
+    for (auto cursor : mCustomMouseCursors)
+        SDL_FreeCursor(cursor);
 
     delete mGuiFont;
     delete boldFont;
@@ -174,14 +155,9 @@ Gui::~Gui()
 
 void Gui::logic()
 {
-    // Fade out mouse cursor after extended inactivity
-    if (mMouseInactivityTimer < 100 * 15)
-    {
-        ++mMouseInactivityTimer;
-        mMouseCursorAlpha = std::min(1.0f, mMouseCursorAlpha + 0.05f);
-    }
-    else
-        mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
+    // Hide mouse cursor after extended inactivity
+    if (get_elapsed_time(mLastMouseActivityTime) > 15000)
+        SDL_ShowCursor(SDL_DISABLE);
 
     Palette::advanceGradients();
 
@@ -194,40 +170,30 @@ void Gui::logic()
     }
 }
 
-void Gui::draw()
+void Gui::event(Event::Channel channel, const Event &event)
 {
-    mGraphics->_beginDraw();
-
-    mGraphics->pushClipArea(mTop->getDimension());
-    mTop->draw(mGraphics);
-    mGraphics->popClipArea();
-
-    int mouseX;
-    int mouseY;
-    Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
-    float logicalX;
-    float logicalY;
-    graphics->windowToLogical(mouseX, mouseY, logicalX, logicalY);
-
-    if ((Client::hasMouseFocus() || button & SDL_BUTTON(1))
-            && mCustomCursor
-            && mMouseCursorAlpha > 0.0f)
+    if (channel == Event::ConfigChannel)
     {
-        Image *mouseCursor = mMouseCursors->get(static_cast<size_t>(mCursorType));
-        mouseCursor->setAlpha(mMouseCursorAlpha);
-
-        static_cast<Graphics*>(mGraphics)->drawImageF(
-                mouseCursor,
-                logicalX - 15,
-                logicalY - 17);
+        if (event.getType() == Event::ConfigOptionChanged &&
+            event.getString("option") == "customcursor")
+        {
+            setUseCustomCursor(config.getBoolValue("customcursor"));
+        }
     }
-
-    mGraphics->_endDraw();
 }
 
 bool Gui::videoResized(int width, int height)
 {
-    TrueTypeFont::updateFontScale(static_cast<Graphics*>(mGraphics)->getScale());
+    const float scale = static_cast<Graphics*>(mGraphics)->getScale();
+
+    TrueTypeFont::updateFontScale(scale);
+
+    if (mCustomCursorScale != scale)
+    {
+        mCustomCursorScale = scale;
+        loadCustomCursors();
+        updateCursor();
+    }
 
     auto *top = static_cast<WindowContainer*>(getTop());
 
@@ -247,36 +213,33 @@ void Gui::setUseCustomCursor(bool customCursor)
         return;
 
     mCustomCursor = customCursor;
+    updateCursor();
+}
 
-    if (mCustomCursor)
-    {
-        // Hide the SDL mouse cursor
-        SDL_ShowCursor(SDL_DISABLE);
+void Gui::setCursorType(Cursor cursor)
+{
+    if (mCursorType == cursor)
+        return;
 
-        // Load the mouse cursor
-        mMouseCursors = Theme::getImageSetFromTheme("mouse.png", 40, 40);
+    mCursorType = cursor;
+    updateCursor();
+}
 
-        if (!mMouseCursors)
-            logger->error("Unable to load mouse cursors.");
-    }
+void Gui::updateCursor()
+{
+    if (mCustomCursor && !mCustomMouseCursors.empty())
+        SDL_SetCursor(mCustomMouseCursors[static_cast<int>(mCursorType)]);
     else
-    {
-        // Show the SDL mouse cursor
-        SDL_ShowCursor(SDL_ENABLE);
-
-        // Unload the mouse cursor
-        if (mMouseCursors)
-        {
-            mMouseCursors->decRef();
-            mMouseCursors = nullptr;
-        }
-    }
+        SDL_SetCursor(mSystemMouseCursors[static_cast<int>(mCursorType)]);
 }
 
 void Gui::handleMouseMoved(const gcn::MouseInput &mouseInput)
 {
     gcn::Gui::handleMouseMoved(mouseInput);
-    mMouseInactivityTimer = 0;
+    mLastMouseActivityTime = tick_time;
+
+    // Make sure the cursor is visible
+    SDL_ShowCursor(SDL_ENABLE);
 }
 
 void Gui::handleTextInput(const TextInput &textInput)
@@ -288,4 +251,98 @@ void Gui::handleTextInput(const TextInput &textInput)
             textField->textInput(textInput);
         }
     }
+}
+
+static SDL_Surface *loadSurface(const std::string &path)
+{
+    if (SDL_RWops *file = ResourceManager::getInstance()->open(path))
+        return IMG_Load_RW(file, 1);
+    return nullptr;
+}
+
+void Gui::loadCustomCursors()
+{
+    for (auto cursor : mCustomMouseCursors)
+        SDL_FreeCursor(cursor);
+
+    mCustomMouseCursors.clear();
+
+    const std::string cursorPath = Theme::resolveThemePath("mouse.png");
+    SDL_Surface *mouseSurface = loadSurface(cursorPath);
+    if (!mouseSurface)
+    {
+        logger->log("Warning: Unable to load mouse cursor file (%s): %s",
+                    cursorPath.c_str(), SDL_GetError());
+        return;
+    }
+
+    SDL_SetSurfaceBlendMode(mouseSurface, SDL_BLENDMODE_NONE);
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    const Uint32 rmask = 0xff000000;
+    const Uint32 gmask = 0x00ff0000;
+    const Uint32 bmask = 0x0000ff00;
+    const Uint32 amask = 0x000000ff;
+#else
+    const Uint32 rmask = 0x000000ff;
+    const Uint32 gmask = 0x0000ff00;
+    const Uint32 bmask = 0x00ff0000;
+    const Uint32 amask = 0xff000000;
+#endif
+
+    constexpr int cursorSize = 40;
+    const int targetCursorSize = cursorSize * mCustomCursorScale;
+    const int columns = mouseSurface->w / cursorSize;
+
+    SDL_Surface *cursorSurface = SDL_CreateRGBSurface(
+                0, targetCursorSize, targetCursorSize, 32,
+                rmask, gmask, bmask, amask);
+
+    for (int i = 0; i <= static_cast<int>(Cursor::DOWN); ++i)
+    {
+        int x = i % columns * cursorSize;
+        int y = i / columns * cursorSize;
+
+        SDL_Rect srcrect = { x, y, cursorSize, cursorSize };
+        SDL_Rect dstrect = { 0, 0, targetCursorSize, targetCursorSize };
+        SDL_BlitScaled(mouseSurface, &srcrect, cursorSurface, &dstrect);
+
+        SDL_Cursor *cursor = SDL_CreateColorCursor(cursorSurface,
+                                                   15 * mCustomCursorScale,
+                                                   17 * mCustomCursorScale);
+        if (!cursor)
+        {
+            logger->log("Warning: Unable to create cursor: %s", SDL_GetError());
+        }
+
+        mCustomMouseCursors.push_back(cursor);
+    }
+
+    SDL_FreeSurface(cursorSurface);
+    SDL_FreeSurface(mouseSurface);
+}
+
+void Gui::loadSystemCursors()
+{
+    constexpr struct {
+        Cursor cursor;
+        SDL_SystemCursor systemCursor;
+    } cursors[] = {
+        { Cursor::POINTER,           SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::RESIZE_ACROSS,     SDL_SYSTEM_CURSOR_SIZEWE },
+        { Cursor::RESIZE_DOWN,       SDL_SYSTEM_CURSOR_SIZENS },
+        { Cursor::RESIZE_DOWN_LEFT,  SDL_SYSTEM_CURSOR_SIZENESW },
+        { Cursor::RESIZE_DOWN_RIGHT, SDL_SYSTEM_CURSOR_SIZENWSE },
+        { Cursor::FIGHT,             SDL_SYSTEM_CURSOR_HAND },
+        { Cursor::PICKUP,            SDL_SYSTEM_CURSOR_HAND },
+        { Cursor::TALK,              SDL_SYSTEM_CURSOR_HAND },
+        { Cursor::ACTION,            SDL_SYSTEM_CURSOR_HAND },
+        { Cursor::LEFT,              SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::UP,                SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::RIGHT,             SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::DOWN,              SDL_SYSTEM_CURSOR_ARROW }
+    };
+
+    for (auto cursor : cursors)
+        mSystemMouseCursors.push_back(SDL_CreateSystemCursor(cursor.systemCursor));
 }
