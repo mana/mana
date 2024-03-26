@@ -128,6 +128,18 @@ Installing the dependencies on Fedora:
                      SDL2_image-devel SDL2_mixer-devel SDL2_net-devel \
                      SDL2_ttf-devel
 
+Installing the dependencies on Windows (using MSYS2 UCRT64):
+
+    pacman -S mingw-w64-ucrt-x86_64-gcc \
+              mingw-w64-ucrt-x86_64-cmake \
+              mingw-w64-ucrt-x86_64-physfs \
+              mingw-w64-ucrt-x86_64-curl \
+              mingw-w64-ucrt-x86_64-SDL2_image \
+              mingw-w64-ucrt-x86_64-SDL2_mixer \
+              mingw-w64-ucrt-x86_64-SDL2_net \
+              mingw-w64-ucrt-x86_64-SDL2_ttf \
+              mingw-w64-ucrt-x86_64-libxml2
+
 Once the dependencies are installed, use CMake:
 
     cmake -B build .

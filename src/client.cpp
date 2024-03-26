@@ -80,8 +80,9 @@
 #include <SDL_image.h>
 
 #ifdef _WIN32
-#include <SDL_syswm.h>
 #include "utils/specialfolder.h"
+#include <SDL_syswm.h>
+#include <winuser.h>
 #endif
 
 #include <sys/stat.h>
@@ -332,7 +333,7 @@ Client::Client(const Options &options):
     logger->log("Loading icon from file: %s", iconFile.c_str());
 #ifdef _WIN32
     static SDL_SysWMinfo pInfo;
-    SDL_GetWMInfo(&pInfo);
+    SDL_GetWindowWMInfo(mVideo.window(), &pInfo);
     // Attempt to load icon from .ico file
     HICON icon = (HICON) LoadImage(NULL,
                                    iconFile.c_str(),
@@ -342,7 +343,7 @@ Client::Client(const Options &options):
         icon = LoadIcon(GetModuleHandle(NULL), "A");
 
     if (icon)
-        SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
+        SetClassLongPtr(pInfo.info.win.window, GCLP_HICON, (LONG_PTR) icon);
 #else
     mIcon = IMG_Load(iconFile.c_str());
     if (mIcon)

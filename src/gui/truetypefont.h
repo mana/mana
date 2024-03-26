@@ -25,11 +25,7 @@
 
 #include <guichan/font.hpp>
 
-#ifdef __WIN32__
-#include <SDL/SDL_ttf.h>
-#else
 #include <SDL_ttf.h>
-#endif
 
 #include <list>
 #include <string>
