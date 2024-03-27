@@ -83,6 +83,8 @@ static const gcn::Color &getColorFromItemType(ItemType type)
 ItemPopup::ItemPopup():
     Popup("ItemPopup")
 {
+    setMinHeight(boldFont->getHeight());
+
     // Item Name
     mItemName = new Label;
     mItemName->setFont(boldFont);
@@ -141,12 +143,12 @@ void ItemPopup::setNoItem()
     mItemName->adjustSize();
 
     mItemName->setForegroundColor(Theme::getThemeColor(Theme::GENERIC));
-    mItemName->setPosition(getPadding(), getPadding());
+    mItemName->setPosition(0, 0);
 
     mItemDesc->setText(std::string());
     mItemEffect->setText(std::string());
 
-    setContentSize(mItemName->getWidth() + 2 * getPadding(), 0);
+    setContentSize(mItemName->getWidth(), mItemName->getHeight());
 }
 
 void ItemPopup::setItem(const ItemInfo &item, bool showImage)
@@ -170,9 +172,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
         mIcon->setImage(image);
         if (image)
         {
-            int x = getPadding();
-            int y = getPadding();
-            mIcon->setPosition(x, y);
+            mIcon->setPosition(0, 0);
             space = mIcon->getWidth();
         }
     }
@@ -190,7 +190,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     mItemName->setCaption(caption);
     mItemName->adjustSize();
     mItemName->setForegroundColor(getColorFromItemType(mItemType));
-    mItemName->setPosition(getPadding() + space, getPadding());
+    mItemName->setPosition(space, 0);
 
     mItemDesc->setTextWrapped(item.getDescription(), ITEMPOPUP_WRAP_WIDTH);
     mItemEffect->setTextWrapped(join(item.getEffect(), "\n"), ITEMPOPUP_WRAP_WIDTH);
@@ -207,40 +207,30 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     if (mItemWeight->getMinWidth() > minWidth)
         minWidth = mItemWeight->getMinWidth();
 
-    minWidth += 8;
-    setWidth(minWidth);
+    const int descHeight = mItemDesc->getHeight();
+    const int effectHeight = mItemEffect->getHeight();
+    const int weightHeight = mItemWeight->getHeight();
 
-    const int numRowsDesc = mItemDesc->getNumberOfRows();
-    const int numRowsEffect = mItemEffect->getNumberOfRows();
-    const int numRowsWeight = mItemWeight->getNumberOfRows();
-    const int fontHeight = getFont()->getHeight();
-
-    int nameHeight;
-    if (mIcon->getHeight() > 2 * fontHeight)
-        nameHeight = mIcon->getHeight();
-    else
-        nameHeight = 2 * fontHeight;
+    int nameHeight = std::max(mItemName->getHeight(), mIcon->getHeight());
+    nameHeight += getPadding();
 
     if (item.getEffect().empty())
     {
-        setContentSize(minWidth, nameHeight +
-                        (numRowsDesc + numRowsWeight + 1) * fontHeight);
+        setContentSize(minWidth, nameHeight + descHeight + weightHeight + getPadding());
 
-        mItemWeight->setPosition(getPadding(),
-                                nameHeight + (numRowsDesc + 1) * fontHeight);
+        mItemWeight->setPosition(0, nameHeight + descHeight + getPadding());
     }
     else
     {
-        setContentSize(minWidth, nameHeight + (numRowsDesc + numRowsEffect +
-                        numRowsWeight + 1) * fontHeight);
+        setContentSize(minWidth, nameHeight + descHeight + effectHeight +
+                       weightHeight + getPadding());
 
-        mItemWeight->setPosition(getPadding(), nameHeight + (numRowsDesc +
-                                    numRowsEffect + 1) * fontHeight);
+        mItemWeight->setPosition(0, nameHeight + descHeight + effectHeight +
+                                 getPadding());
     }
 
-    mItemDesc->setPosition(getPadding(), nameHeight);
-    mItemEffect->setPosition(getPadding(), nameHeight +
-                            (numRowsDesc + 1) * fontHeight);
+    mItemDesc->setPosition(0, nameHeight);
+    mItemEffect->setPosition(0, nameHeight + descHeight + getPadding());
 }
 
 void ItemPopup::mouseMoved(gcn::MouseEvent &event)
@@ -251,4 +241,3 @@ void ItemPopup::mouseMoved(gcn::MouseEvent &event)
     setVisible(false);
     mItemEquipSlot.clear();
 }
-

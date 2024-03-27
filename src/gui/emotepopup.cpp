@@ -69,8 +69,8 @@ void EmotePopup::draw(gcn::Graphics *graphics)
         int row = i / mColumnCount;
         int column = i % mColumnCount;
 
-        int emoteX = 4 + column * gridWidth;
-        int emoteY = 4 + row * gridHeight;
+        int emoteX = getPadding() + column * gridWidth;
+        int emoteY = getPadding() + row * gridHeight;
 
         // Center the last row when there are less emotes than columns
         if (row == mRowCount - 1)

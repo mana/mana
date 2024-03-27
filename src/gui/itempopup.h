@@ -72,7 +72,7 @@ class ItemPopup : public Popup
         TextBox *mItemWeight;
         std::string mItemEquipSlot;
         ItemType mItemType;
-        Icon *mIcon = nullptr;
+        Icon *mIcon;
 };
 
 #endif // ITEMPOPUP_H

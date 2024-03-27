@@ -240,10 +240,9 @@ class CreatePopup : public Popup, public LinkHandler
 {
 public:
     CreatePopup():
-            Popup("SocialCreatePopup")
+        Popup("SocialCreatePopup")
     {
         mBrowserBox = new BrowserBox;
-        mBrowserBox->setPosition(4, 4);
         mBrowserBox->setHighlightMode(BrowserBox::BACKGROUND);
         mBrowserBox->setLinkHandler(this);
 
@@ -255,8 +254,8 @@ public:
 
         add(mBrowserBox);
 
-        setContentSize(mBrowserBox->getWidth() + 8,
-                       mBrowserBox->getHeight() + 8);
+        setContentSize(mBrowserBox->getWidth(),
+                       mBrowserBox->getHeight());
     }
 
     void handleLink(const std::string &link) override

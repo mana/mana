@@ -22,8 +22,6 @@
 
 #include "gui/speechbubble.h"
 
-#include "graphics.h"
-
 #include "gui/gui.h"
 
 #include "gui/widgets/label.h"
@@ -36,11 +34,10 @@
 #include <guichan/widgets/label.hpp>
 
 SpeechBubble::SpeechBubble():
-        Popup("Speech", "speechbubble.xml")
+    Popup("Speech", "speechbubble.xml")
 {
-    setContentSize(140, 46);
-    setMinWidth(29);
-    setMinHeight(29);
+    setMinWidth(0);
+    setMinHeight(0);
 
     mCaption = new Label;
     mCaption->setFont(boldFont);
@@ -68,26 +65,21 @@ void SpeechBubble::setText(const std::string &text, bool showName)
 
     mSpeechBox->setTextColor(&Theme::getThemeColor(Theme::TEXT));
 
-    int width = mCaption->getWidth() + 2 * getPadding();
+    int width = mCaption->getWidth();
     mSpeechBox->setTextWrapped(text, 130 > width ? 130 : width);
-    const int speechWidth = mSpeechBox->getMinWidth() + 2 * getPadding();
+    const int speechWidth = mSpeechBox->getMinWidth();
 
     const int fontHeight = getFont()->getHeight();
     const int nameHeight = showName ? mCaption->getHeight() +
                            (getPadding() / 2) : 0;
     const int numRows = mSpeechBox->getNumberOfRows();
-    const int height = (numRows * fontHeight) + nameHeight + getPadding();
+    const int height = (numRows * fontHeight) + nameHeight;
 
     if (width < speechWidth)
         width = speechWidth;
 
-    width += 2 * getPadding();
-
     setContentSize(width, height);
 
-    const int xPos = ((getWidth() - width) / 2);
-    const int yPos = ((getHeight() - height) / 2) + nameHeight;
-
-    mCaption->setPosition(xPos, getPadding());
-    mSpeechBox->setPosition(xPos, yPos);
+    mCaption->setPosition(0, 0);
+    mSpeechBox->setPosition(0, nameHeight);
 }

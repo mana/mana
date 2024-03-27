@@ -58,7 +58,6 @@ PopupMenu::PopupMenu():
     Popup("PopupMenu")
 {
     mBrowserBox = new BrowserBox;
-    mBrowserBox->setPosition(4, 4);
     mBrowserBox->setHighlightMode(BrowserBox::BACKGROUND);
     mBrowserBox->setLinkHandler(this);
     add(mBrowserBox);
@@ -399,7 +398,7 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
 
 void PopupMenu::showPopup(int x, int y)
 {
-    setContentSize(mBrowserBox->getWidth() + 8, mBrowserBox->getHeight() + 8);
+    setContentSize(mBrowserBox->getWidth(), mBrowserBox->getHeight());
     if (graphics->getWidth() < (x + getWidth() + 5))
         x = graphics->getWidth() - getWidth();
     if (graphics->getHeight() < (y + getHeight() + 5))

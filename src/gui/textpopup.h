@@ -41,13 +41,9 @@ class TextPopup : public Popup
         /**
          * Sets the text to be displayed.
          */
-        void show(int x, int y, const std::string &str1)
-        { show(x, y, str1, (const char*)""); }
-
-        /**
-         * Sets the text to be displayed.
-         */
-        void show(int x, int y, const std::string &str1, const std::string &str2);
+        void show(int x, int y,
+                  const std::string &str1,
+                  const std::string &str2 = std::string());
 
         void mouseMoved(gcn::MouseEvent &mouseEvent) override;
 

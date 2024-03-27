@@ -35,37 +35,37 @@
 TextPopup::TextPopup():
     Popup("TextPopup")
 {
+    setMinWidth(0);
+    setMinHeight(0);
+
     const int fontHeight = getFont()->getHeight();
 
     mText1 = new Label;
-    mText1->setPosition(getPadding(), getPadding());
+    mText1->setPosition(0, 0);
 
     mText2 = new Label;
-    mText2->setPosition(getPadding(), fontHeight + getPadding());
+    mText2->setPosition(0, fontHeight);
 
     add(mText1);
     add(mText2);
     addMouseListener(this);
 }
 
-void TextPopup::show(int x, int y, const std::string &str1, const std::string &str2)
+void TextPopup::show(int x, int y,
+                     const std::string &str1,
+                     const std::string &str2)
 {
     mText1->setCaption(str1);
     mText1->adjustSize();
     mText2->setCaption(str2);
     mText2->adjustSize();
 
-    int minWidth = mText1->getWidth();
-    if (mText2->getWidth() > minWidth)
-        minWidth = mText2->getWidth();
-
-    minWidth += 4 * getPadding();
-    setWidth(minWidth);
-
+    int width = std::max(mText1->getWidth(), mText2->getWidth());
+    int height = mText1->getHeight();
     if (!str2.empty())
-        setHeight((getPadding() + mText1->getFont()->getHeight()) * 2);
-    else
-        setHeight(2 * getPadding() + mText1->getFont()->getHeight());
+        height += mText2->getHeight();
+
+    setContentSize(width, height);
 
     const int distance = 20;
 
