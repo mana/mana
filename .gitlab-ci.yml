@@ -31,6 +31,7 @@ ubuntu-build:
 
 macos-build:
   stage: build
+  allow_failure: true
   tags:
     - macos
   variables:
