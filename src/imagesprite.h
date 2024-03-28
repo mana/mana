@@ -60,8 +60,13 @@ public:
     int getDuration() const override
     { return 0; }
 
+    // Hack to allow the ImageSprite to be used with SubImage instances, which
+    // are not reference counted.
+    void releaseImageRef()
+    { mImage.release(); }
+
 private:
-    Image *mImage;
+    ResourceRef<Image> mImage;
 };
 
 #endif // IMAGESPRITE_H

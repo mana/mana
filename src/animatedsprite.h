@@ -87,7 +87,7 @@ class AnimatedSprite final : public Sprite
         int mFrameIndex = 0;                /**< The index of the current frame. */
         int mFrameTime = 0;                 /**< The time since start of frame. */
 
-        SpriteDef *mSprite;                 /**< The sprite definition. */
+        ResourceRef<SpriteDef> mSprite;     /**< The sprite definition. */
         Action *mAction = nullptr;          /**< The currently active action. */
         Animation *mAnimation = nullptr;    /**< The currently active animation. */
         Frame *mFrame = nullptr;            /**< The currently active frame. */

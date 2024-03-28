@@ -19,17 +19,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "particle.h"
+
 #include "animationparticle.h"
 #include "configuration.h"
-#include "resources/dye.h"
 #include "imageparticle.h"
 #include "log.h"
 #include "map.h"
-#include "particle.h"
 #include "particleemitter.h"
 #include "rotationalparticle.h"
 #include "textparticle.h"
 
+#include "resources/dye.h"
+#include "resources/image.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
@@ -295,8 +297,8 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
             std::string imageSrc = (const char*)node->xmlChildrenNode->content;
             if (!imageSrc.empty() && !dyePalettes.empty())
                 Dye::instantiate(imageSrc, dyePalettes);
-            Image *img= resman->getImage(imageSrc);
 
+            auto img = resman->getImageRef(imageSrc);
             newParticle = new ImageParticle(mMap, img);
         }
         // Other

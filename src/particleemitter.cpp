@@ -41,9 +41,7 @@
 
 ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                                  Map *map, int rotation,
-                                 const std::string& dyePalettes):
-    mOutputPauseLeft(0),
-    mParticleImage(nullptr)
+                                 const std::string &dyePalettes)
 {
     mMap = map;
     mParticleTarget = target;
@@ -104,7 +102,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                         Dye::instantiate(image, dyePalettes);
 
                     ResourceManager *resman = ResourceManager::getInstance();
-                    mParticleImage = resman->getImage(image);
+                    mParticleImage = resman->getImageRef(image);
                 }
             }
             else if (name == "horizontal-angle")
@@ -403,16 +401,11 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
 
     mOutputPauseLeft = 0;
 
-    if (mParticleImage) mParticleImage->incRef();
-
     return *this;
 }
 
 
-ParticleEmitter::~ParticleEmitter()
-{
-    if (mParticleImage) mParticleImage->decRef();
-}
+ParticleEmitter::~ParticleEmitter() = default;
 
 
 template <typename T> ParticleEmitterProp<T>

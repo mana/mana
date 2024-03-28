@@ -26,6 +26,8 @@
 
 #include "gui/widgets/container.h"
 
+#include "resources/resource.h"
+
 #include <guichan/widgetlistener.hpp>
 
 class Image;
@@ -61,7 +63,7 @@ class Desktop : public Container, gcn::WidgetListener
     private:
         void setBestFittingWallpaper();
 
-        Image *mWallpaper = nullptr;
+        ResourceRef<Image> mWallpaper;
         gcn::Label *mVersionLabel;
 };
 

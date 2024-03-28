@@ -65,16 +65,12 @@ Minimap::Minimap():
 Minimap::~Minimap()
 {
     config.setValue(getWindowName() + "Show", mShow);
-
-    if (mMapImage)
-        mMapImage->decRef();
 }
 
 void Minimap::setMap(Map *map)
 {
     // Set the title for the Minimap
     std::string caption;
-    std::string minimapName;
 
     if (map)
         caption = map->getName();
@@ -85,11 +81,7 @@ void Minimap::setMap(Map *map)
     minimap->setCaption(caption);
 
     // Adapt the image
-    if (mMapImage)
-    {
-        mMapImage->decRef();
-        mMapImage = nullptr;
-    }
+    mMapImage = nullptr;
 
     if (map)
     {
@@ -98,13 +90,13 @@ void Minimap::setMap(Map *map)
             "graphics/minimaps/" + map->getFilename() + ".png";
         ResourceManager *resman = ResourceManager::getInstance();
 
-        minimapName = map->getProperty("minimap");
+        std::string minimapName = map->getProperty("minimap");
 
         if (minimapName.empty() && resman->exists(tempname))
             minimapName = tempname;
 
         if (!minimapName.empty())
-            mMapImage = resman->getImage(minimapName);
+            mMapImage = resman->getImageRef(minimapName);
     }
 
     if (mMapImage)

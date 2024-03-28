@@ -22,10 +22,14 @@
 #ifndef EMOTE_DB_H
 #define EMOTE_DB_H
 
+#include <memory>
 #include <string>
+
+#include "resources/resource.h"
 
 #include "utils/xml.h"
 
+class ImageSet;
 class ImageSprite;
 
 struct Emote
@@ -33,7 +37,8 @@ struct Emote
     int id;
     int effectId;
     std::string name;
-    ImageSprite *sprite;
+    ResourceRef<ImageSet> is;
+    std::unique_ptr<ImageSprite> sprite;
 };
 
 /**

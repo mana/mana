@@ -22,6 +22,8 @@
 #ifndef ICON_H
 #define ICON_H
 
+#include "resources/resource.h"
+
 #include <guichan/widget.hpp>
 
 class Image;
@@ -39,12 +41,14 @@ class Icon : public gcn::Widget
          *
          * @param filename The file name of the image to display
          */
-        Icon(const std::string &filename);
+        explicit Icon(const std::string &filename);
 
         /**
          * Constructor, uses an existing Image.
          */
-        Icon(Image *image);
+        explicit Icon(Image *image = nullptr);
+
+        ~Icon() override;
 
         /**
          * Gets the current Image.
@@ -62,7 +66,7 @@ class Icon : public gcn::Widget
         void draw(gcn::Graphics *g) override;
 
     private:
-        Image *mImage = nullptr;
+        ResourceRef<Image> mImage;
 };
 
 #endif // ICON_H

@@ -25,6 +25,7 @@
 #include "particleemitterprop.h"
 
 #include "resources/animation.h"
+#include "resources/resource.h"
 
 #include "utils/xml.h"
 
@@ -120,12 +121,12 @@ class ParticleEmitter
 
         ParticleEmitterProp<int> mOutput;   /**< Number of particles spawned per update */
         ParticleEmitterProp<int> mOutputPause; /**< Pause in frames between two spawns */
-        int mOutputPauseLeft;
+        int mOutputPauseLeft = 0;
 
         /*
          * Graphical representation of the particles
          */
-        Image *mParticleImage; /**< Particle image, if used */
+        ResourceRef<Image> mParticleImage; /**< Particle image, if used */
         Animation mParticleAnimation; /**< Filename of particle animation file */
         Animation mParticleRotation; /**< Filename of particle rotation file */
         ParticleEmitterProp<float> mParticleAlpha; /**< Opacity of the graphical representation of the particles */

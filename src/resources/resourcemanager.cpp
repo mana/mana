@@ -310,6 +310,13 @@ Image *ResourceManager::getImage(const std::string &idPath)
     }));
 }
 
+ResourceRef<Image> ResourceManager::getImageRef(const std::string &idPath)
+{
+    ResourceRef<Image> img = getImage(idPath);
+    img->decRef();  // remove ref added by ResourceManager::get
+    return img;
+}
+
 ImageSet *ResourceManager::getImageSet(const std::string &imagePath,
                                        int w, int h)
 {
@@ -317,13 +324,11 @@ ImageSet *ResourceManager::getImageSet(const std::string &imagePath,
     ss << imagePath << "[" << w << "x" << h << "]";
 
     return static_cast<ImageSet*>(get(ss.str(), [&] () -> Resource * {
-        Image *img = getImage(imagePath);
+        auto img = getImageRef(imagePath);
         if (!img)
             return nullptr;
 
-        auto *res = new ImageSet(img, w, h);
-        img->decRef();
-        return res;
+        return new ImageSet(img, w, h);
     }));
 }
 

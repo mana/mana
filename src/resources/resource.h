@@ -120,6 +120,20 @@ public:
         return *this;
     }
 
+    // Move assignment operator
+    ResourceRef &operator=(ResourceRef &&other)
+    {
+        if (this != &other)
+        {
+            if (mResource)
+                mResource->decRef();
+
+            mResource = other.mResource;
+            other.mResource = nullptr;
+        }
+        return *this;
+    }
+
     // Allow dereferencing
     RESOURCE *operator->() const
     { return mResource; }
@@ -130,6 +144,15 @@ public:
     // Allow implicit conversion to RESOURCE *
     operator RESOURCE *() const
     { return mResource; }
+
+    /**
+     * Releases the resource without decrementing the reference count!
+     *
+     * This is currently necessary to avoid calls to decRef on instances of
+     * SubImage, which are not reference counted resources.
+     */
+    void release()
+    { mResource = nullptr; }
 
 private:
     RESOURCE *mResource;

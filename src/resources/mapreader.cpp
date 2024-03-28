@@ -529,13 +529,12 @@ static Tileset *readTileset(xmlNodePtr node, const std::string &path,
                 std::string sourceStr = resolveRelativePath(pathDir, source);
 
                 ResourceManager *resman = ResourceManager::getInstance();
-                Image *tilebmp = resman->getImage(sourceStr);
+                auto tilebmp = resman->getImageRef(sourceStr);
 
                 if (tilebmp)
                 {
                     set = new Tileset(tilebmp, tw, th, firstGid, margin,
                                       spacing);
-                    tilebmp->decRef();
                 }
                 else
                 {

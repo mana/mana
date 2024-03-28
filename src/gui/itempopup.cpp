@@ -102,7 +102,7 @@ ItemPopup::ItemPopup():
     mItemWeight = new TextBox;
     mItemWeight->setEditable(false);
 
-    mIcon = new Icon(nullptr);
+    mIcon = new Icon;
 
     add(mItemName);
     add(mItemDesc);
@@ -113,15 +113,7 @@ ItemPopup::ItemPopup():
     addMouseListener(this);
 }
 
-ItemPopup::~ItemPopup()
-{
-    if (mIcon)
-    {
-        Image *image = mIcon->getImage();
-        if (image)
-            image->decRef();
-    }
-}
+ItemPopup::~ItemPopup() = default;
 
 void ItemPopup::setEquipmentText(const std::string& text)
 {
@@ -158,16 +150,11 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
 
     int space = 0;
 
-    Image *oldImage = mIcon->getImage();
-    if (oldImage)
-        oldImage->decRef();
-
     if (showImage)
     {
         ResourceManager *resman = ResourceManager::getInstance();
-        Image *image = resman->getImage(
-                                  paths.getStringValue("itemIcons")
-                                  + item.getDisplay().image);
+        auto image = resman->getImageRef(paths.getStringValue("itemIcons") +
+                                         item.getDisplay().image);
 
         mIcon->setImage(image);
         if (image)

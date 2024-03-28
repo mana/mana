@@ -52,11 +52,7 @@ Desktop::Desktop()
     add(mVersionLabel, 25, 2);
 }
 
-Desktop::~Desktop()
-{
-    if (mWallpaper)
-        mWallpaper->decRef();
-}
+Desktop::~Desktop() = default;
 
 void Desktop::reloadWallpaper()
 {
@@ -109,14 +105,11 @@ void Desktop::setBestFittingWallpaper()
         return;
 
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *wallpaper = resman->getImage(wallpaperName);
+    auto wallpaper = resman->getImageRef(wallpaperName);
 
     if (wallpaper)
     {
-        if (mWallpaper)
-            mWallpaper->decRef(Resource::DeleteImmediately);
-
-        mWallpaper = wallpaper;
+        mWallpaper = std::move(wallpaper);
     }
     else
     {

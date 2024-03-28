@@ -36,38 +36,24 @@ Item::Item(int id, int quantity, bool equipped):
     setId(id);
 }
 
-Item::~Item()
-{
-    if (mImage)
-        mImage->decRef();
-}
+Item::~Item() = default;
 
 void Item::setId(int id)
 {
     mId = id;
 
     // Load the associated image
-    if (mImage)
-        mImage->decRef();
-
-    if (mDrawImage)
-        mDrawImage->decRef();
-
     ResourceManager *resman = ResourceManager::getInstance();
-    SpriteDisplay display = getInfo().getDisplay();
-    std::string imagePath = paths.getStringValue("itemIcons")
-                            + display.image;
-    mImage = resman->getImage(imagePath);
-    mDrawImage = resman->getImage(imagePath);
+    const SpriteDisplay &display = getInfo().getDisplay();
+    mImage = resman->getImage(paths.getStringValue("itemIcons") + display.image);
 
     if (!mImage)
         mImage = Theme::getImageFromTheme(paths.getValue("unknownItemFile",
                                                          "unknown-item.png"));
 
-    if (!mDrawImage)
-        mDrawImage = Theme::getImageFromTheme(
-                                            paths.getValue("unknownItemFile",
-                                                           "unknown-item.png"));
+    // Remove the automatic reference added by the ResourceManager
+    if (mImage)
+        mImage->decRef();
 }
 
 void Item::doEvent(Event::Type eventName)

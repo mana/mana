@@ -27,13 +27,16 @@
 #include "resources/resourcemanager.h"
 
 Icon::Icon(const std::string &file)
-    : Icon(ResourceManager::getInstance()->getImage(file))
-{}
+    : Icon(ResourceManager::getInstance()->getImageRef(file))
+{
+}
 
 Icon::Icon(Image *image)
 {
     setImage(image);
 }
+
+Icon::~Icon() = default;
 
 void Icon::setImage(Image *image)
 {

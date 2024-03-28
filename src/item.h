@@ -25,6 +25,7 @@
 #include "event.h"
 
 #include "resources/itemdb.h"
+#include "resources/resource.h"
 
 class Image;
 
@@ -54,11 +55,6 @@ class Item
          * Returns the item image.
          */
         Image *getImage() const { return mImage; }
-
-        /**
-         * Returns the item image.
-         */
-        Image *getDrawImage() const { return mDrawImage; }
 
         /**
          * Sets the number of items.
@@ -121,8 +117,7 @@ class Item
 
     protected:
         int mId;                        /**< Item type id. */
-        Image *mImage = nullptr;        /**< Item image. */
-        Image *mDrawImage = nullptr;    /**< Draw image. */
+        ResourceRef<Image> mImage;      /**< Item image. */
         int mQuantity;                  /**< Number of items. */
         bool mEquipped;                 /**< Item is equipped. */
         bool mInEquipment = false;      /**< Item is in equipment */

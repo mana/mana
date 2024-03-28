@@ -35,9 +35,6 @@ AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
 {
     assert(mSprite);
 
-    // Take possession of the sprite
-    mSprite->incRef();
-
     // Play the stand animation by default
     play(SpriteAction::STAND);
 }
@@ -53,10 +50,7 @@ AnimatedSprite *AnimatedSprite::load(const std::string &filename, int variant)
     return as;
 }
 
-AnimatedSprite::~AnimatedSprite()
-{
-    mSprite->decRef();
-}
+AnimatedSprite::~AnimatedSprite() = default;
 
 bool AnimatedSprite::reset()
 {

@@ -243,7 +243,7 @@ void Map::initializeAmbientLayers()
 
     auto addAmbientLayer = [=](const std::string &name, std::vector<AmbientLayer> &list)
     {
-        if (Image *img = resman->getImage(getProperty(name + "image")))
+        if (auto img = resman->getImageRef(getProperty(name + "image")))
         {
             auto &ambientLayer = list.emplace_back(img);
             ambientLayer.mParallax = getFloatProperty(name + "parallax");
@@ -251,9 +251,6 @@ void Map::initializeAmbientLayers()
             ambientLayer.mSpeedY = getFloatProperty(name + "scrollY");
             ambientLayer.mMask = getIntProperty(name + "mask", 1);
             ambientLayer.mKeepRatio = getBoolProperty(name + "keepratio");
-
-            // The AmbientLayer takes control over the image.
-            img->decRef();
         }
     };
 

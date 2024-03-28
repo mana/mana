@@ -27,8 +27,6 @@
 
 #include <libxml/tree.h>
 
-#include <memory>
-
 class Map;
 
 class AnimationParticle : public ImageParticle

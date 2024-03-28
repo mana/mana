@@ -24,6 +24,8 @@
 
 #include "gui/widgets/window.h"
 
+#include "resources/resource.h"
+
 class Image;
 class Map;
 
@@ -59,7 +61,7 @@ class Minimap : public Window
 
     private:
         Map *mMap = nullptr;
-        Image *mMapImage = nullptr;
+        ResourceRef<Image> mMapImage;
         float mWidthProportion = 0.5;
         float mHeightProportion = 0.5;
         static bool mShow;

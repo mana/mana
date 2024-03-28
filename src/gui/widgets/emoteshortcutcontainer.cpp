@@ -89,7 +89,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
     if (mEmoteMoved != -1)
     {
         // Draw the emote image being dragged by the cursor.
-        const ImageSprite *sprite = EmoteDB::get(mEmoteMoved).sprite;
+        const ImageSprite *sprite = EmoteDB::get(mEmoteMoved).sprite.get();
 
         const int tPosX = mCursorPosX - (sprite->getWidth() / 2);
         const int tPosY = mCursorPosY - (sprite->getHeight() / 2);

@@ -23,17 +23,12 @@
 #include "graphics.h"
 
 ImageSprite::ImageSprite(Image *image):
-        mImage(image)
+    mImage(image)
 {
     mAlpha = mImage->getAlpha();
-
-    mImage->incRef();
 }
 
-ImageSprite::~ImageSprite()
-{
-    mImage->decRef();
-}
+ImageSprite::~ImageSprite() = default;
 
 bool ImageSprite::draw(Graphics *graphics, int posX, int posY) const
 {

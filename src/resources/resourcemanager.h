@@ -22,6 +22,8 @@
 #ifndef RESOURCE_MANAGER_H
 #define RESOURCE_MANAGER_H
 
+#include "resources/resource.h"
+
 #include <ctime>
 #include <functional>
 #include <map>
@@ -31,7 +33,6 @@
 class Image;
 class ImageSet;
 class Music;
-class Resource;
 class SoundEffect;
 class SpriteDef;
 
@@ -141,6 +142,12 @@ class ResourceManager
          * images.
          */
         Image *getImage(const std::string &idPath);
+
+        /**
+         * Convenience wrapper around ResourceManager::get for loading
+         * images. Returns an automatically reference-counted resource.
+         */
+        ResourceRef<Image> getImageRef(const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::get for loading
