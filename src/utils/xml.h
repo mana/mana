@@ -22,6 +22,7 @@
 #ifndef XML_H
 #define XML_H
 
+#include <libxml/parser.h>
 #include <libxml/tree.h>
 
 #include <string>

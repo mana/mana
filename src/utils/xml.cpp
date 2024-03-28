@@ -21,10 +21,6 @@
 
 #include "utils/xml.h"
 
-#include <iostream>
-#include <fstream>
-#include <cstring>
-
 #include <libxml/parser.h>
 #include <libxml/xmlerror.h>
 
@@ -37,13 +33,32 @@
 
 namespace XML
 {
-    static void xmlLogger(void *ctx, xmlErrorPtr error);
-
     struct XMLContext
     {
         std::string file;
         bool resman;
     };
+
+#if LIBXML_VERSION >= 21200
+    static void xmlLogger(void *ctx, const xmlError *error)
+#else
+    static void xmlLogger(void *ctx, xmlErrorPtr error)
+#endif
+    {
+        auto *context = static_cast<XMLContext*>(ctx);
+
+        if (context)
+            logger->log("Error in XML file '%s' on line %d",
+                        context->file.c_str(), error->line);
+        else
+            logger->log("Error in unknown xml file on line %d",
+                        error->line);
+
+        logger->log("%s", error->message);
+
+        // No need to keep errors around
+        xmlCtxtResetLastError(error->ctxt);
+    }
 
     Document::Document(const std::string &filename, bool useResman):
         mDoc(nullptr)
@@ -158,23 +173,6 @@ namespace XML
                 return child;
 
         return nullptr;
-    }
-
-    static void xmlLogger(void *ctx, xmlErrorPtr error)
-    {
-        auto *context = static_cast<XMLContext*>(ctx);
-
-        if (context)
-            logger->log("Error in XML file '%s' on line %d",
-                        context->file.c_str(), error->line);
-        else
-            logger->log("Error in unknown xml file on line %d",
-                        error->line);
-
-        logger->log("%s", error->message);
-
-        // No need to keep errors around
-        xmlCtxtResetLastError(error->ctxt);
     }
 
     void init()
