@@ -133,7 +133,7 @@ Installing the dependencies on Windows (using MSYS2 UCRT64):
     pacman -S mingw-w64-ucrt-x86_64-gcc \
               mingw-w64-ucrt-x86_64-cmake \
               mingw-w64-ucrt-x86_64-physfs \
-              mingw-w64-ucrt-x86_64-curl \
+              mingw-w64-ucrt-x86_64-curl-winssl \
               mingw-w64-ucrt-x86_64-SDL2_image \
               mingw-w64-ucrt-x86_64-SDL2_mixer \
               mingw-w64-ucrt-x86_64-SDL2_net \

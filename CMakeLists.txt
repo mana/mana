@@ -1,28 +1,23 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.8...3.27)
-
-PROJECT(MANA)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.12...3.27)
 
 IF (NOT VERSION)
     SET(VERSION 0.6.1)
-ENDIF()
-
-set (CMAKE_CXX_STANDARD 17)
-
-STRING(REPLACE "." " " _VERSION ${VERSION})
-SEPARATE_ARGUMENTS(_VERSION)
-LIST(LENGTH _VERSION _LEN)
-IF(NOT _LEN EQUAL 4 AND NOT _LEN EQUAL 3)
-    MESSAGE(FATAL_ERROR "Version needs to be in the form MAJOR.MINOR.RELEASE[.BUILD]")
-ENDIF()
-
-LIST(GET _VERSION 0 VER_MAJOR)
-LIST(GET _VERSION 1 VER_MINOR)
-LIST(GET _VERSION 2 VER_RELEASE)
-IF(_LEN EQUAL 4)
-    LIST(GET _VERSION 3 VER_BUILD)
 ELSE()
-    SET(VER_BUILD 0)
+    STRING(REPLACE "." " " _VERSION ${VERSION})
+    SEPARATE_ARGUMENTS(_VERSION)
+    LIST(LENGTH _VERSION _LEN)
+    IF(NOT _LEN EQUAL 4 AND NOT _LEN EQUAL 3)
+        MESSAGE(FATAL_ERROR "Version needs to be in the form MAJOR.MINOR.RELEASE[.BUILD]")
+    ENDIF()
 ENDIF()
+
+PROJECT(Mana
+    VERSION ${VERSION}
+    DESCRIPTION "Mana MMORPG Client"
+    HOMEPAGE_URL "https://www.manasource.org")
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # where to look for cmake modules
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
@@ -78,19 +73,76 @@ If(UNIX)
     INSTALL(FILES data/icons/mana.svg DESTINATION share/icons/hicolor/scalable/apps RENAME org.manasource.Mana.svg)
 ENDIF()
 
-SET(CPACK_PACKAGE_NAME "mana")
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Mana")
 SET(CPACK_PACKAGE_VENDOR "Mana Development Team")
-SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
-SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
-SET(CPACK_PACKAGE_INSTALL_DIRECTORY "Mana")
-SET(CPACK_PACKAGE_VERSION_MAJOR ${VER_MAJOR})
-SET(CPACK_PACKAGE_VERSION_MINOR ${VER_MINOR})
-SET(CPACK_PACKAGE_VERSION_PATCH ${VER_RELEASE})
+SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
+SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
+SET(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}") # by default it includes the version
+SET(CPACK_PACKAGE_EXECUTABLES "mana;Mana")
+SET(CPACK_VERBATIM_VARIABLES TRUE)
 IF(WIN32)
-    SET(CPACK_NSIS_DISPLAY_NAME "Mana")
-    SET(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/mana.ico")
-    SET(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/packaging/windows/setup_welcome.bmp")
-    SET(CPACK_NSIS_URL_INFO_ABOUT "https://www.manasource.org")
+    SET(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/data/icons/mana.ico")
+    SET(CPACK_NSIS_INSTALLED_ICON_NAME "mana.exe")
+    SET(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP "${CMAKE_SOURCE_DIR}\\packaging\\windows\\setup_welcome.bmp")
+    SET(CPACK_NSIS_URL_INFO_ABOUT ${PROJECT_HOMEPAGE_URL})
+    SET(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+    SET(CPACK_NSIS_MUI_FINISHPAGE_RUN "mana.exe")
+    SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ${PKG_BINDIR})
+    SET(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
+
+    install(FILES
+      $ENV{MINGW_PREFIX}/bin/libgcc_s_seh-1.dll
+      $ENV{MINGW_PREFIX}/bin/libwinpthread-1.dll
+      $ENV{MINGW_PREFIX}/bin/libstdc++-6.dll
+      $ENV{MINGW_PREFIX}/bin/libcurl-4.dll
+      $ENV{MINGW_PREFIX}/bin/libintl-8.dll
+      $ENV{MINGW_PREFIX}/bin/libphysfs.dll
+      $ENV{MINGW_PREFIX}/bin/libpng16-16.dll
+      $ENV{MINGW_PREFIX}/bin/SDL2.dll
+      $ENV{MINGW_PREFIX}/bin/SDL2_image.dll
+      $ENV{MINGW_PREFIX}/bin/SDL2_mixer.dll
+      $ENV{MINGW_PREFIX}/bin/SDL2_net.dll
+      $ENV{MINGW_PREFIX}/bin/SDL2_ttf.dll
+      $ENV{MINGW_PREFIX}/bin/libxml2-2.dll
+      $ENV{MINGW_PREFIX}/bin/zlib1.dll
+      $ENV{MINGW_PREFIX}/bin/libiconv-2.dll
+      $ENV{MINGW_PREFIX}/bin/libbrotlidec.dll
+      $ENV{MINGW_PREFIX}/bin/libidn2-0.dll
+      $ENV{MINGW_PREFIX}/bin/libpsl-5.dll
+      $ENV{MINGW_PREFIX}/bin/libssh2-1.dll
+      $ENV{MINGW_PREFIX}/bin/libzstd.dll
+      $ENV{MINGW_PREFIX}/bin/libavif-16.dll
+      $ENV{MINGW_PREFIX}/bin/libjxl.dll
+      $ENV{MINGW_PREFIX}/bin/libjpeg-8.dll
+      $ENV{MINGW_PREFIX}/bin/libtiff-6.dll
+      $ENV{MINGW_PREFIX}/bin/libwebp-7.dll
+      $ENV{MINGW_PREFIX}/bin/libwebpdemux-2.dll
+      $ENV{MINGW_PREFIX}/bin/libmpg123-0.dll
+      $ENV{MINGW_PREFIX}/bin/libopusfile-0.dll
+      $ENV{MINGW_PREFIX}/bin/libfreetype-6.dll
+      $ENV{MINGW_PREFIX}/bin/libharfbuzz-0.dll
+      $ENV{MINGW_PREFIX}/bin/liblzma-5.dll
+      $ENV{MINGW_PREFIX}/bin/libbrotlicommon.dll
+      $ENV{MINGW_PREFIX}/bin/libunistring-5.dll
+      $ENV{MINGW_PREFIX}/bin/libaom.dll
+      $ENV{MINGW_PREFIX}/bin/libdav1d-7.dll
+      $ENV{MINGW_PREFIX}/bin/libsharpyuv-0.dll
+      $ENV{MINGW_PREFIX}/bin/libSvtAv1Enc-2.dll
+      $ENV{MINGW_PREFIX}/bin/libyuv.dll
+      $ENV{MINGW_PREFIX}/bin/libbrotlienc.dll
+      $ENV{MINGW_PREFIX}/bin/libhwy.dll
+      $ENV{MINGW_PREFIX}/bin/libjxl_cms.dll
+      $ENV{MINGW_PREFIX}/bin/libdeflate.dll
+      $ENV{MINGW_PREFIX}/bin/libjbig-0.dll
+      $ENV{MINGW_PREFIX}/bin/libLerc.dll
+      $ENV{MINGW_PREFIX}/bin/libopus-0.dll
+      $ENV{MINGW_PREFIX}/bin/rav1e.dll
+      $ENV{MINGW_PREFIX}/bin/libbz2-1.dll
+      $ENV{MINGW_PREFIX}/bin/libglib-2.0-0.dll
+      $ENV{MINGW_PREFIX}/bin/libogg-0.dll
+      $ENV{MINGW_PREFIX}/bin/libgraphite2.dll
+      $ENV{MINGW_PREFIX}/bin/liblcms2-2.dll
+      $ENV{MINGW_PREFIX}/bin/libpcre2-8-0.dll
+      DESTINATION ${PKG_BINDIR}
+    )
 ENDIF()
 INCLUDE(CPack)
