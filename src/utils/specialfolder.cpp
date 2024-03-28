@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2010-2012  The Mana Developers
+ *  Copyright (C) 2010-2024  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -21,6 +21,7 @@
 #ifdef _WIN32
 #include "specialfolder.h"
 #include <windows.h>
+#include <stdlib.h>
 
 #ifdef SPECIALFOLDERLOCATION_TEST
 // compile with -DSPECIALFOLDERLOCATION_TEST to get a standalone
@@ -29,49 +30,47 @@
 #endif
 
 /*
- * Retrieve the pathname of special folders on win32, or an empty string
- * on error / if the folder does not exist.
- * See http://msdn.microsoft.com/en-us/library/bb762494(VS.85).aspx for
- * a list of folder ids
+ * Retrieve the pathname of special folders on Windows, or an empty string
+ * on error.
+ *
+ * See https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid
+ * for a list of folder IDs.
  */
-std::string getSpecialFolderLocation(int folderId)
+std::string getSpecialFolderLocation(const KNOWNFOLDERID &folderId)
 {
     std::string ret;
-    LPITEMIDLIST pItemIdList;
-    LPMALLOC pMalloc;
-    char szPath[MAX_PATH];
+    PWSTR widePath = 0;
 
-    // get the item ID list for folderId
-    HRESULT hr = SHGetSpecialFolderLocation(NULL, folderId, &pItemIdList);
-    if (hr != S_OK)
-        return ret;
+    HRESULT hr = SHGetKnownFolderPath(folderId, 0, NULL, &widePath);
+    if (hr == S_OK)
+    {
+        // determine needed bytes
+        size_t len;
+        if (wcstombs_s(&len, nullptr, 0, widePath, 0) == 0)
+        {
+            ret.resize(len - 1);    // subtract null character
+            if (wcstombs_s(nullptr, ret.data(), len, widePath, len - 1) != 0)
+                ret.clear();
+        }
+    }
 
-    // convert the ID list into a file system path
-    if (SHGetPathFromIDList(pItemIdList, szPath) == FALSE)
-        return ret;
+    CoTaskMemFree(widePath);
 
-    // get the IMalloc pointer and free all resources we used
-    hr = SHGetMalloc(&pMalloc);
-    pMalloc->Free(pItemIdList);
-    pMalloc->Release();
-
-    ret = szPath;
     return ret;
 }
 
 #ifdef SPECIALFOLDERLOCATION_TEST
 int main()
 {
-    std::cout << "APPDATA " << getSpecialFolderLocation(CSIDL_APPDATA)
+    std::cout << "RoamingAppData " << getSpecialFolderLocation(FOLDERID_RoamingAppData)
               << std::endl;
-    std::cout << "DESKTOP " << getSpecialFolderLocation(CSIDL_DESKTOP)
+    std::cout << "Desktop " << getSpecialFolderLocation(FOLDERID_Desktop)
               << std::endl;
-    std::cout << "LOCAL_APPDATA "
-              << getSpecialFolderLocation(CSIDL_LOCAL_APPDATA)
+    std::cout << "LocalAppData " << getSpecialFolderLocation(FOLDERID_LocalAppData)
               << std::endl;
-    std::cout << "MYPICTURES " << getSpecialFolderLocation(CSIDL_MYPICTURES)
+    std::cout << "Pictures " << getSpecialFolderLocation(FOLDERID_Pictures)
               << std::endl;
-    std::cout << "PERSONAL " << getSpecialFolderLocation(CSIDL_PERSONAL)
+    std::cout << "Documents " << getSpecialFolderLocation(FOLDERID_Documents)
               << std::endl;
 }
 #endif

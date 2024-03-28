@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2010-2012  The Mana Developers
+ *  Copyright (C) 2010-2024  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -24,7 +24,7 @@
 #ifdef _WIN32
 #include <shlobj.h>
 #include <string>
-std::string getSpecialFolderLocation(int folderId);
+std::string getSpecialFolderLocation(const KNOWNFOLDERID &folderId);
 #endif
 
 #endif

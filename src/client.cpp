@@ -1116,7 +1116,7 @@ void Client::initHomeDir()
         mLocalDataDir = PHYSFS_getUserDir();
         mLocalDataDir += "/config/data/Mana";
 #elif defined _WIN32
-        mLocalDataDir = getSpecialFolderLocation(CSIDL_LOCAL_APPDATA);
+        mLocalDataDir = getSpecialFolderLocation(FOLDERID_LocalAppData);
         if (mLocalDataDir.empty())
             mLocalDataDir = PHYSFS_getUserDir();
         mLocalDataDir += "/Mana";
@@ -1281,9 +1281,9 @@ void Client::initScreenshotDir()
     else if (mScreenshotDir.empty())
     {
 #ifdef _WIN32
-        mScreenshotDir = getSpecialFolderLocation(CSIDL_MYPICTURES);
+        mScreenshotDir = getSpecialFolderLocation(FOLDERID_Pictures);
         if (mScreenshotDir.empty())
-            mScreenshotDir = getSpecialFolderLocation(CSIDL_DESKTOP);
+            mScreenshotDir = getSpecialFolderLocation(FOLDERID_Desktop);
 #else
         mScreenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
 #endif
