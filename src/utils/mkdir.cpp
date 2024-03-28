@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2010-2012  The Mana Developers
+ *  Copyright (C) 2010-2024  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -21,12 +21,8 @@
 #include <climits>
 #include <cstring>
 #include <cerrno>
-
-#if defined _WIN32
-#include <windows.h>
-#endif
-
-#include <sys/stat.h>
+#include <filesystem>
+#include <iostream>
 
 #ifdef MKDIR_TEST
 // compile with -DMKDIR_TEST to get a standalone binary
@@ -38,67 +34,12 @@
 
 /// Create a directory, making leading components first if necessary
 int mkdir_r(const char *pathname) {
-    size_t len = strlen(pathname);
-    char tmp[len+2];
-    char *p;
+    try {
+        std::filesystem::create_directories(pathname);
+        return 0;
+    } catch (const std::exception&) {}
 
-    strcpy(tmp, pathname);
-
-    // terminate the pathname with '/'
-    if (tmp[len-1] != '/') {
-        tmp[len] = '/';
-        tmp[len+1] = '\0';
-    }
-
-    for (p=tmp; *p; p++) {
-#if defined _WIN32
-        if (*p == '/' || *p == '\\')
-#else
-        if (*p == '/')
-#endif
-        {
-            *p = '\0';
-            // ignore a slash at the beginning of a path
-            if (strlen(tmp) == 0){
-                *p = '/';
-                continue;
-            }
-
-            // check if the name already exists, but not as directory
-            struct stat statbuf;
-            if (!stat(tmp, &statbuf))
-            {
-                if (S_ISDIR(statbuf.st_mode))
-                {
-                    *p = '/';
-                    continue;
-                }
-                else
-                    return -1;
-            }
-
-#if defined _WIN32
-            if (!CreateDirectory(tmp, 0))
-#else
-            if (mkdir(tmp, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH))
-#endif
-            {
-#if defined _WIN32
-                // hack, hack. just assume that x: might be a drive
-                // letter, and try again
-                if (!(strlen(tmp) == 2 &&
-                      !strcmp(tmp + 1, ":")))
-#endif
-                return -1;
-            }
-
-#ifdef MKDIR_TEST
-            printf("%s\n", tmp);
-#endif
-            *p = '/';
-        }
-    }
-    return 0;
+    return -1;
 }
 
 #ifdef MKDIR_TEST
