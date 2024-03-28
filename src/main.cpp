@@ -205,6 +205,9 @@ int main(int argc, char *argv[])
     // Load mingw crash handler. Won't fail if dll is not present.
     LoadLibrary("exchndl.dll");
 #endif
+#ifdef _WIN32
+    setlocale(LC_ALL, ".UTF8");
+#endif
 
     // Parse command line options
     Client::Options options;
