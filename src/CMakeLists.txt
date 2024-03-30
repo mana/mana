@@ -622,11 +622,12 @@ SET(SRCS_MANA
     )
 
 IF (WIN32)
+    CONFIGURE_FILE(mana.rc.in mana.rc)
     SET(SRCS
         ${SRCS}
         utils/specialfolder.cpp
         utils/specialfolder.h
-        mana.rc
+        ${CMAKE_CURRENT_BINARY_DIR}/mana.rc
     )
 ENDIF (WIN32)
 

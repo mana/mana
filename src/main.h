@@ -50,14 +50,6 @@
  * different interfaces, which have different implementations for each server.
  */
 
-#ifdef HAVE_CONFIG_H
-#include "../config.h"
-#elif defined _WIN32
-#include "winver.h"
-#elif defined __APPLE__
-#define PACKAGE_VERSION "0.6.1"
-#endif
-
 #ifdef PACKAGE_VERSION
 #define FULL_VERSION "v" PACKAGE_VERSION
 #else
