@@ -49,6 +49,8 @@ extern volatile int tick_time;
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
+    setPadding(3);
+
     listen(Event::AttributesChannel);
     listen(Event::ActorSpriteChannel);
 
