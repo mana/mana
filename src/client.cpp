@@ -240,6 +240,10 @@ Client::Client(const Options &options):
 
     initScreenshotDir();
 
+#if SDL_VERSION_ATLEAST(2, 24, 0)
+    SDL_SetHint(SDL_HINT_WINDOWS_DPI_AWARENESS, "permonitorv2");
+#endif
+
     // Initialize SDL
     logger->log("Initializing SDL...");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
