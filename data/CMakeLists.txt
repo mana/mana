@@ -1,7 +1,9 @@
-SET(DATA_DIR ${PKG_DATADIR}/data)
-
-ADD_SUBDIRECTORY(fonts)
-ADD_SUBDIRECTORY(graphics)
-ADD_SUBDIRECTORY(help)
-ADD_SUBDIRECTORY(icons)
-ADD_SUBDIRECTORY(sfx)
+INSTALL(DIRECTORY
+    fonts
+    graphics
+    help
+    icons
+    music
+    sfx
+    DESTINATION ${PKG_DATADIR}/data
+)

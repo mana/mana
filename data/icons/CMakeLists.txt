@@ -1,5 +1,0 @@
-SET(FILES
-    mana.png
-    )
-
-INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/icons)
