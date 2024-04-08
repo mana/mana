@@ -110,6 +110,10 @@ void EmoteDB::unload()
         emote.sprite->releaseImageRef();
 
     mEmotes.clear();
+
+    if (mUnknown.sprite)
+        mUnknown.sprite->releaseImageRef();
+
     mLoaded = false;
 }
 
