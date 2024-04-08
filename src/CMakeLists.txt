@@ -10,6 +10,7 @@ find_package(CURL REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(Gettext REQUIRED)
+find_package(Intl REQUIRED)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
   # Help getting compilation warnings
@@ -56,16 +57,6 @@ if(ENABLE_NLS)
   message(STATUS "i18n support enabled")
 endif()
 
-if(WIN32)
-  set(EXTRA_LIBRARIES ws2_32 winmm)
-  find_package(LibIntl REQUIRED)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR BEOS)
-  find_package(LibIntl REQUIRED)
-elseif(CMAKE_SYSTEM_NAME STREQUAL SunOS)
-  # explicit linking to libintl is required on Solaris
-  set(EXTRA_LIBRARIES intl)
-endif()
-
 if(WITH_OPENGL)
   find_package(OpenGL REQUIRED)
   include_directories(${OPENGL_INCLUDE_DIR})
@@ -80,7 +71,8 @@ include_directories(
   ${PHYSFS_INCLUDE_DIR}
   ${CURL_INCLUDE_DIR}
   ${LIBXML2_INCLUDE_DIR}
-  ${GUICHAN_INCLUDE_DIR})
+  ${GUICHAN_INCLUDE_DIR}
+  ${Intl_INCLUDE_DIRS})
 
 set(SRCS
     gui/widgets/avatarlistbox.cpp
@@ -631,8 +623,7 @@ target_link_libraries(
           ${LIBXML2_LIBRARIES}
           ${GUICHAN_LIBRARIES}
           ${OPENGL_LIBRARIES}
-          ${LIBINTL_LIBRARIES}
-          ${EXTRA_LIBRARIES})
+          ${Intl_LIBRARIES})
 
 set_target_properties(
   mana
@@ -651,6 +642,10 @@ install(
   BUNDLE DESTINATION .
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+if(WIN32)
+  target_link_libraries(mana PRIVATE ws2_32 winmm)
+endif()
+
 if(APPLE)
   target_link_libraries(mana PRIVATE "-framework Foundation")
   set_target_properties(mana PROPERTIES OUTPUT_NAME Mana)
@@ -661,10 +656,4 @@ if(APPLE)
     CODE "include(BundleUtilities)
       fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"\" \"/usr/local/lib\")"
   )
-endif()
-
-if(CMAKE_SYSTEM_NAME STREQUAL SunOS)
-  # we expect the SMCgtxt package to be present on Solaris; the Solaris gettext
-  # is not API-compatible to GNU gettext
-  set_target_properties(mana PROPERTIES LINK_FLAGS "-L/usr/local/lib")
 endif()
