@@ -33,6 +33,9 @@
 #ifdef __MINGW32__
 #include <windows.h>
 #endif
+#if ENABLE_NLS && defined(_WIN32)
+#include <winnls.h>
+#endif
 
 static void printHelp()
 {
@@ -178,24 +181,42 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
     }
 }
 
-#ifdef _WIN32
-//extern "C" char const *_nl_locale_name_default(void);
-#endif
-
 static void initInternationalization()
 {
 #if ENABLE_NLS
 #ifdef _WIN32
-//    SetEnvironmentVariable("LANG", _nl_locale_name_default());
-    // mingw doesn't like LOCALEDIR to be defined for some reason
-    bindtextdomain("mana", "translations/");
-#else
-    bindtextdomain("mana", LOCALEDIR);
-#endif
+    // On Windows we need to set the LANG environment variable to get the
+    // correct translation, because this isn't set by default.
+    ULONG numLanguages = 0;
+    ULONG bufferSize = 0;
+    if (!GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &numLanguages, nullptr, &bufferSize))
+        return;
+    if (numLanguages == 0 || bufferSize < 2)
+        return;
+
+    std::wstring localeNamesW(bufferSize, L'\0');
+    if (!GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &numLanguages, localeNamesW.data(), &bufferSize))
+        return;
+
+    // Replace the null characters used as separators with a colon, except for
+    // the last two. Also replace - with _, since gettext expects de_DE rather
+    // than de-DE.
+    for (size_t i = 0; i < localeNamesW.size() - 2; ++i) {
+        auto &c = localeNamesW[i];
+        if (c == L'\0')
+            c = L':';
+        else if (c == L'-')
+            c = L'_';
+    }
+
+    _wputenv_s(L"LANG", localeNamesW.c_str());
+#endif // _WIN32
+
     setlocale(LC_MESSAGES, "");
+    bindtextdomain("mana", LOCALEDIR);
     bind_textdomain_codeset("mana", "UTF-8");
     textdomain("mana");
-#endif
+#endif // ENABLE_NLS
 }
 
 
