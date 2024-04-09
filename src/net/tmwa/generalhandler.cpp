@@ -103,7 +103,7 @@ GeneralHandler::GeneralHandler():
     stats.emplace_back("dex", _("Dexterity %+d"));
     stats.emplace_back("luck", _("Luck %+d"));
 
-    setStatsList(stats);
+    setStatsList(std::move(stats));
 
     listen(Event::ClientChannel);
     listen(Event::GameChannel);

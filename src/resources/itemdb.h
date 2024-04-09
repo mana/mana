@@ -65,7 +65,7 @@ class ItemStat
 
 // Used to set nano-description
 static std::list<ItemStat> extraStats;
-void setStatsList(const std::list<ItemStat> &stats);
+void setStatsList(std::list<ItemStat> stats);
 
 /**
  * Item information database generic definition.

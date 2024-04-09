@@ -21,7 +21,6 @@
 
 #include "net/net.h"
 
-#include "main.h"
 #include "log.h"
 
 #include "net/adminhandler.h"
@@ -179,8 +178,7 @@ void connectToServer(ServerInfo &server)
 
 void unload()
 {
-    GeneralHandler *handler = getGeneralHandler();
-    if (handler)
+    if (GeneralHandler *handler = getGeneralHandler())
     {
         handler->unload();
     }

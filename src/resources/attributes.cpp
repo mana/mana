@@ -54,12 +54,10 @@ namespace Attributes {
     };
 
     /** Map for attributes. */
-    using AttributeMap = std::map<unsigned int, Attribute>;
-    static AttributeMap attributes;
+    static std::map<unsigned int, Attribute> attributes;
 
     /** tags = effects on attributes. */
-    using TagMap = std::map<std::string, std::string>;
-    static TagMap tags;
+    static std::map<std::string, std::string> tags;
 
     /** List of modifiable attribute names used at character's creation. */
     static std::vector<std::string> attributeLabels;
@@ -96,9 +94,7 @@ namespace Attributes {
     {
         // Fill up the modifiable attribute label list.
         attributeLabels.clear();
-        AttributeMap::const_iterator it, it_end;
-        for (it = attributes.begin(), it_end = attributes.end(); it != it_end;
-                                                                           it++)
+        for (auto it = attributes.cbegin(), it_end = attributes.cend(); it != it_end; it++)
         {
             if (it->second.modifiable &&
                (it->second.scope == "character" || it->second.scope == "being"))
@@ -146,8 +142,7 @@ namespace Attributes {
 
     int getPlayerInfoIdFromAttrId(int attrId)
     {
-        AttributeMap::const_iterator it = attributes.find(attrId);
-
+        auto it = attributes.find(attrId);
         if (it != attributes.end())
         {
             return it->second.playerInfoId;
@@ -372,18 +367,15 @@ namespace Attributes {
     {
         std::list<ItemStat> dbStats;
 
-        TagMap::const_iterator it, it_end;
-        for (it = tags.begin(), it_end = tags.end(); it != it_end; ++it)
-            dbStats.push_back(ItemStat(it->first, it->second));
+        for (auto it = tags.cbegin(), it_end = tags.cend(); it != it_end; ++it)
+            dbStats.emplace_back(it->first, it->second);
 
-        setStatsList(dbStats);
+        setStatsList(std::move(dbStats));
     }
 
     void informStatusWindow()
     {
-        AttributeMap::const_iterator it, it_end;
-        for (it = attributes.begin(), it_end = attributes.end(); it != it_end;
-                                                                           it++)
+        for (auto it = attributes.cbegin(), it_end = attributes.cend(); it != it_end; it++)
         {
             if (it->second.playerInfoId == -1 &&
                 (it->second.scope == "character" || it->second.scope == "being"))

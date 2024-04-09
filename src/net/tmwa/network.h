@@ -58,7 +58,7 @@ class Network
 
         void disconnect();
 
-        ServerInfo getServer() const
+        const ServerInfo &getServer() const
         { return mServer; }
 
         void registerHandler(MessageHandler *handler);

@@ -27,12 +27,8 @@ Event::ListenMap Event::mBindings;
 
 Event::~Event()
 {
-    auto it = mData.begin();
-    while (it != mData.end())
-    {
+    for (auto it = mData.begin(); it != mData.end(); ++it)
         delete it->second;
-        it++;
-    }
 }
 
 // Integers

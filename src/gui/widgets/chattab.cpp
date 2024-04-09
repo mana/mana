@@ -66,7 +66,7 @@ ChatTab::ChatTab(const std::string &name)
     listen(Event::ConfigChannel);
 
     // Initiate the text format
-    updateTextFormat(((Window*)getParent())->getGuiAlpha());
+    updateTextFormat(Window::getGuiAlpha());
 }
 
 ChatTab::~ChatTab()
@@ -104,8 +104,7 @@ void ChatTab::event(Event::Channel channel, const Event &event)
         event.getType() == Event::ConfigOptionChanged &&
         event.getString("option") == "guialpha")
     {
-        int alpha = ((Window*)getParent())->getGuiAlpha();
-        updateTextFormat(alpha);
+        updateTextFormat(Window::getGuiAlpha());
     }
 }
 

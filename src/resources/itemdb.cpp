@@ -35,9 +35,9 @@
 
 #include <cassert>
 
-void setStatsList(const std::list<ItemStat> &stats)
+void setStatsList(std::list<ItemStat> stats)
 {
-    extraStats = stats;
+    extraStats = std::move(stats);
 }
 
 static ItemType itemTypeFromString(const std::string &name, int id = 0)

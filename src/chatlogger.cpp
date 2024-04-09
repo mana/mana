@@ -22,7 +22,6 @@
 #include "chatlogger.h"
 
 #include <iostream>
-#include <sstream>
 #include <dirent.h>
 
 #include <sys/stat.h>
@@ -110,18 +109,15 @@ void ChatLogger::log(std::string name, std::string str)
 
 std::string ChatLogger::getDateString() const
 {
-    std::string date;
-
     time_t rawtime;
     struct tm *timeinfo;
-    char buffer [80];
+    char buffer[80];
 
     time (&rawtime);
     timeinfo = localtime(&rawtime);
 
     strftime(buffer, 79, "%y-%m-%d", timeinfo);
-    date = buffer;
-    return date;
+    return buffer;
 }
 
 std::string ChatLogger::secureName(std::string &name)
