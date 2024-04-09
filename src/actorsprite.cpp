@@ -27,7 +27,6 @@
 #include "localplayer.h"
 #include "log.h"
 #include "simpleanimation.h"
-#include "sound.h"
 #include "statuseffect.h"
 
 #include "resources/animation.h"
@@ -151,68 +150,6 @@ void ActorSprite::setTargetType(TargetCursorType type)
         mUsedTargetCursor = targetCursor[type][getTargetCursorSize()];
 }
 
-struct EffectDescription {
-    std::string mGFXEffect;
-    std::string mSFXEffect;
-};
-
-static EffectDescription *default_effect = nullptr;
-static std::map<int, EffectDescription *> effects;
-static bool effects_initialized = false;
-
-static EffectDescription *getEffectDescription(xmlNodePtr node, int *id)
-{
-    auto *ed = new EffectDescription;
-
-    *id = atoi(XML::getProperty(node, "id", "-1").c_str());
-    ed->mSFXEffect = XML::getProperty(node, "audio", "");
-    ed->mGFXEffect = XML::getProperty(node, "particle", "");
-
-    return ed;
-}
-
-static EffectDescription *getEffectDescription(int effectId)
-{
-    if (!effects_initialized)
-    {
-        XML::Document doc(EFFECTS_FILE);
-        xmlNodePtr root = doc.rootNode();
-
-        if (!root || !xmlStrEqual(root->name, BAD_CAST "effects"))
-        {
-            logger->log("Error loading being effects file: "
-                    EFFECTS_FILE);
-            return nullptr;
-        }
-
-        for_each_xml_child_node(node, root)
-        {
-            int id;
-
-            if (xmlStrEqual(node->name, BAD_CAST "effect"))
-            {
-                EffectDescription *EffectDescription =
-                    getEffectDescription(node, &id);
-                effects[id] = EffectDescription;
-            }
-            else if (xmlStrEqual(node->name, BAD_CAST "default"))
-            {
-                EffectDescription *effectDescription =
-                    getEffectDescription(node, &id);
-
-                delete default_effect;
-                default_effect = effectDescription;
-            }
-        }
-
-        effects_initialized = true;
-    } // done initializing
-
-    EffectDescription *ed = effects[effectId];
-
-    return ed ? ed : default_effect;
-}
-
 void ActorSprite::setStatusEffect(int index, bool active)
 {
     const bool wasActive = mStatusEffects.find(index) != mStatusEffects.end();
@@ -236,31 +173,6 @@ void ActorSprite::setStatusEffectBlock(int offset, uint16_t newEffects)
         if (index != -1)
             setStatusEffect(index, (newEffects & (1 << i)) > 0);
     }
-}
-
-void ActorSprite::internalTriggerEffect(int effectId, bool sfx, bool gfx)
-{
-    logger->log("Special effect #%d on %s", effectId,
-                getId() == local_player->getId() ? "self" : "other");
-
-    EffectDescription *ed = getEffectDescription(effectId);
-
-    if (!ed)
-    {
-        logger->log("Unknown special effect and no default recorded");
-        return;
-    }
-
-    if (gfx && !ed->mGFXEffect.empty())
-    {
-        Particle *selfFX;
-
-        selfFX = particleEngine->addEffect(ed->mGFXEffect, 0, 0);
-        controlParticle(selfFX);
-    }
-
-    if (sfx && !ed->mSFXEffect.empty())
-        sound.playSfx(ed->mSFXEffect);
 }
 
 void ActorSprite::updateStunMode(int oldMode, int newMode)
