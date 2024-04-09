@@ -106,7 +106,7 @@ void SDLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
     SDL_RenderSetScale(mRenderer, scaleX, scaleY);
 }
 
-bool SDLGraphics::drawRescaledImage(Image *image,
+bool SDLGraphics::drawRescaledImage(const Image *image,
                                     int srcX, int srcY,
                                     int dstX, int dstY,
                                     int width, int height,
@@ -136,7 +136,7 @@ bool SDLGraphics::drawRescaledImage(Image *image,
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 10)
-bool SDLGraphics::drawRescaledImageF(Image *image,
+bool SDLGraphics::drawRescaledImageF(const Image *image,
                                      int srcX, int srcY,
                                      float dstX, float dstY,
                                      int width, int height,
@@ -166,7 +166,7 @@ bool SDLGraphics::drawRescaledImageF(Image *image,
 }
 #endif
 
-void SDLGraphics::drawRescaledImagePattern(Image *image,
+void SDLGraphics::drawRescaledImagePattern(const Image *image,
                                            int x, int y,
                                            int w, int h,
                                            int scaledWidth,

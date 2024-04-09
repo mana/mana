@@ -60,27 +60,27 @@ class OpenGLGraphics final : public Graphics
         /**
          * Draws a rescaled version of the image
          */
-        bool drawRescaledImage(Image *image, int srcX, int srcY,
+        bool drawRescaledImage(const Image *image, int srcX, int srcY,
                                int dstX, int dstY,
                                int width, int height,
                                int desiredWidth, int desiredHeight,
                                bool useColor) override;
 
-        bool drawRescaledImageF(Image *image,
+        bool drawRescaledImageF(const Image *image,
                                 int srcX, int srcY,
                                 float dstX, float dstY,
                                 int width, int height,
                                 float desiredWidth, float desiredHeight,
                                 bool useColor) override;
 
-        void drawImagePattern(Image *image,
+        void drawImagePattern(const Image *image,
                               int x, int y,
                               int w, int h) override;
 
         /**
          * Draw a pattern based on a rescaled version of the given image...
          */
-        void drawRescaledImagePattern(Image *image,
+        void drawRescaledImagePattern(const Image *image,
                                       int x, int y, int w, int h,
                                       int scaledWidth, int scaledHeight) override;
 

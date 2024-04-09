@@ -39,7 +39,7 @@ void Graphics::updateSize(int width, int height, float /*scale*/)
     mHeight = height;
 }
 
-bool Graphics::drawImage(Image *image, int x, int y)
+bool Graphics::drawImage(const Image *image, int x, int y)
 {
     if (!image)
         return false;
@@ -47,7 +47,7 @@ bool Graphics::drawImage(Image *image, int x, int y)
     return drawImage(image, 0, 0, x, y, image->getWidth(), image->getHeight());
 }
 
-bool Graphics::drawImageF(Image *image, float x, float y)
+bool Graphics::drawImageF(const Image *image, float x, float y)
 {
     if (!image)
         return false;
@@ -55,7 +55,7 @@ bool Graphics::drawImageF(Image *image, float x, float y)
     return drawImageF(image, 0, 0, x, y, image->getWidth(), image->getHeight());
 }
 
-bool Graphics::drawRescaledImageF(Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, float desiredWidth, float desiredHeight, bool useColor)
+bool Graphics::drawRescaledImageF(const Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, float desiredWidth, float desiredHeight, bool useColor)
 {
     return drawRescaledImage(image,
                              srcX, srcY,
@@ -67,7 +67,7 @@ bool Graphics::drawRescaledImageF(Image *image, int srcX, int srcY, float dstX, 
                              useColor);
 }
 
-bool Graphics::drawImage(Image *image,
+bool Graphics::drawImage(const Image *image,
                          int srcX, int srcY,
                          int dstX, int dstY,
                          int width, int height,
@@ -80,7 +80,7 @@ bool Graphics::drawImage(Image *image,
                              width, height, useColor);
 }
 
-bool Graphics::drawImageF(Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, bool useColor)
+bool Graphics::drawImageF(const Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, bool useColor)
 {
     return drawRescaledImageF(image,
                               srcX, srcY,
@@ -89,7 +89,7 @@ bool Graphics::drawImageF(Image *image, int srcX, int srcY, float dstX, float ds
                               width, height, useColor);
 }
 
-void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
+void Graphics::drawImagePattern(const Image *image, int x, int y, int w, int h)
 {
     if (!image)
         return;
@@ -99,11 +99,11 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
 }
 
 void Graphics::drawImageRect(int x, int y, int w, int h,
-                             Image *topLeft, Image *topRight,
-                             Image *bottomLeft, Image *bottomRight,
-                             Image *top, Image *right,
-                             Image *bottom, Image *left,
-                             Image *center)
+                             const Image *topLeft, const Image *topRight,
+                             const Image *bottomLeft, const Image *bottomRight,
+                             const Image *top, const Image *right,
+                             const Image *bottom, const Image *left,
+                             const Image *center)
 {
     pushClipArea(gcn::Rectangle(x, y, w, h));
 

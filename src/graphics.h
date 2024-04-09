@@ -93,7 +93,7 @@ class Graphics : public gcn::Graphics
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        bool drawImage(Image *image, int x, int y);
+        bool drawImage(const Image *image, int x, int y);
 
         /**
          * Blits an image onto the screen.
@@ -101,12 +101,12 @@ class Graphics : public gcn::Graphics
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        bool drawImageF(Image *image, float x, float y);
+        bool drawImageF(const Image *image, float x, float y);
 
         /**
          * Draws a rescaled version of the image.
          */
-        virtual bool drawRescaledImage(Image *image, int srcX, int srcY,
+        virtual bool drawRescaledImage(const Image *image, int srcX, int srcY,
                                        int dstX, int dstY,
                                        int width, int height,
                                        int desiredWidth, int desiredHeight,
@@ -115,7 +115,7 @@ class Graphics : public gcn::Graphics
         /**
          * Draws a rescaled version of the image.
          */
-        virtual bool drawRescaledImageF(Image *image, int srcX, int srcY,
+        virtual bool drawRescaledImageF(const Image *image, int srcX, int srcY,
                                         float dstX, float dstY,
                                         int width, int height,
                                         float desiredWidth, float desiredHeight,
@@ -127,7 +127,7 @@ class Graphics : public gcn::Graphics
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        virtual bool drawImage(Image *image,
+        virtual bool drawImage(const Image *image,
                                int srcX, int srcY,
                                int dstX, int dstY,
                                int width, int height,
@@ -139,20 +139,20 @@ class Graphics : public gcn::Graphics
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        virtual bool drawImageF(Image *image,
+        virtual bool drawImageF(const Image *image,
                                 int srcX, int srcY,
                                 float dstX, float dstY,
                                 int width, int height,
                                 bool useColor = false);
 
-        virtual void drawImagePattern(Image *image,
+        virtual void drawImagePattern(const Image *image,
                                       int x, int y,
                                       int w, int h);
 
         /**
          * Draw a pattern based on a rescaled version of the given image...
          */
-        virtual void drawRescaledImagePattern(Image *image,
+        virtual void drawRescaledImagePattern(const Image *image,
                                               int x, int y,
                                               int w, int h,
                                               int scaledWidth,
@@ -163,11 +163,11 @@ class Graphics : public gcn::Graphics
          * image for the inside.
          */
         void drawImageRect(int x, int y, int w, int h,
-                           Image *topLeft, Image *topRight,
-                           Image *bottomLeft, Image *bottomRight,
-                           Image *top, Image *right,
-                           Image *bottom, Image *left,
-                           Image *center);
+                           const Image *topLeft, const Image *topRight,
+                           const Image *bottomLeft, const Image *bottomRight,
+                           const Image *top, const Image *right,
+                           const Image *bottom, const Image *left,
+                           const Image *center);
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1

@@ -41,7 +41,7 @@ public:
 
     void updateSize(int windowWidth, int windowHeight, float scale) override;
 
-    bool drawRescaledImage(Image *image,
+    bool drawRescaledImage(const Image *image,
                            int srcX, int srcY,
                            int dstX, int dstY,
                            int width, int height,
@@ -49,7 +49,7 @@ public:
                            bool useColor) override;
 
 #if SDL_VERSION_ATLEAST(2, 0, 10)
-    bool drawRescaledImageF(Image *image,
+    bool drawRescaledImageF(const Image *image,
                             int srcX, int srcY,
                             float dstX, float dstY,
                             int width, int height,
@@ -57,7 +57,7 @@ public:
                             bool useColor) override;
 #endif
 
-    void drawRescaledImagePattern(Image *image,
+    void drawRescaledImagePattern(const Image *image,
                                   int x, int y,
                                   int w, int h,
                                   int scaledWidth,

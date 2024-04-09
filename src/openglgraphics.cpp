@@ -154,7 +154,7 @@ void OpenGLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
     glOrtho(0.0, (double)mWidth, (double)mHeight, 0.0, -1.0, 1.0);
 }
 
-static inline void drawRescaledQuad(Image *image,
+static inline void drawRescaledQuad(const Image *image,
                                     int srcX, int srcY,
                                     float dstX, float dstY,
                                     int width, int height,
@@ -218,7 +218,7 @@ static inline void drawRescaledQuad(Image *image,
 }
 
 
-bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
+bool OpenGLGraphics::drawRescaledImage(const Image *image, int srcX, int srcY,
                                        int dstX, int dstY,
                                        int width, int height,
                                        int desiredWidth, int desiredHeight,
@@ -229,7 +229,7 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
                               useColor);
 }
 
-bool OpenGLGraphics::drawRescaledImageF(Image *image, int srcX, int srcY,
+bool OpenGLGraphics::drawRescaledImageF(const Image *image, int srcX, int srcY,
                                         float dstX, float dstY,
                                         int width, int height,
                                         float desiredWidth, float desiredHeight,
@@ -263,7 +263,7 @@ bool OpenGLGraphics::drawRescaledImageF(Image *image, int srcX, int srcY,
     return true;
 }
 
-void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
+void OpenGLGraphics::drawImagePattern(const Image *image, int x, int y, int w, int h)
 {
     if (!image)
         return;
@@ -394,7 +394,7 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
                static_cast<GLubyte>(mColor.a));
 }
 
-void OpenGLGraphics::drawRescaledImagePattern(Image *image,
+void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
                                               int x, int y,
                                               int w, int h,
                                               int scaledWidth,
@@ -653,7 +653,7 @@ void OpenGLGraphics::popClipArea()
     glScissor(x, y, width, height);
 }
 
-void OpenGLGraphics::setColor(const gcn::Color& color)
+void OpenGLGraphics::setColor(const gcn::Color &color)
 {
     Graphics::setColor(color);
     glColor4ub(color.r, color.g, color.b, color.a);
@@ -684,12 +684,12 @@ void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
     glEnd();
 }
 
-void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect)
+void OpenGLGraphics::drawRectangle(const gcn::Rectangle &rect)
 {
     drawRectangle(rect, false);
 }
 
-void OpenGLGraphics::fillRectangle(const gcn::Rectangle& rect)
+void OpenGLGraphics::fillRectangle(const gcn::Rectangle &rect)
 {
     drawRectangle(rect, true);
 }
@@ -732,7 +732,7 @@ void OpenGLGraphics::setTexturingAndBlending(bool enable)
     }
 }
 
-void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect, bool filled)
+void OpenGLGraphics::drawRectangle(const gcn::Rectangle &rect, bool filled)
 {
     const float offset = filled ? 0 : 0.5f;
 
