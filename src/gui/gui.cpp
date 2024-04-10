@@ -56,7 +56,7 @@ gcn::Font *monoFont = nullptr;
 bool Gui::debugDraw;
 
 Gui::Gui(Graphics *graphics)
-    : mCustomCursorScale(graphics->getScale())
+    : mCustomCursorScale(Client::getVideo().settings().scale())
 {
     logger->log("Initializing GUI...");
     // Set graphics
@@ -186,13 +186,14 @@ void Gui::event(Event::Channel channel, const Event &event)
 
 bool Gui::videoResized(int width, int height)
 {
-    const float scale = static_cast<Graphics*>(mGraphics)->getScale();
+    const float graphicsScale = static_cast<Graphics*>(mGraphics)->getScale();
+    const float userScale = Client::getVideo().settings().scale();
 
-    TrueTypeFont::updateFontScale(scale);
+    TrueTypeFont::updateFontScale(graphicsScale);
 
-    if (mCustomCursorScale != scale)
+    if (mCustomCursorScale != userScale)
     {
-        mCustomCursorScale = scale;
+        mCustomCursorScale = userScale;
         loadCustomCursors();
         updateCursor();
     }
