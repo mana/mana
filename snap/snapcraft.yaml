@@ -1,0 +1,59 @@
+name: mana
+version: git
+adopt-info: mana
+base: core22
+
+grade: stable
+confinement: strict
+
+assumes:
+  - command-chain
+
+apps:
+  mana:
+    command: usr/bin/mana
+    command-chain:
+      - snap/command-chain/desktop-launch
+    desktop: usr/share/applications/org.manasource.Mana.desktop
+    extensions: [gnome]
+    plugs:
+      - audio-playback
+      - home
+      - network
+      - opengl
+
+layout:
+  /usr/share/mana:
+    symlink: $SNAP/usr/share/mana
+
+parts:
+  mana:
+    plugin: cmake
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    parse-info:
+      - usr/share/metainfo/org.manasource.Mana.metainfo.xml
+    source: .
+    build-packages:
+      - build-essential
+      - gettext
+      - libcurl4-openssl-dev
+      - libguichan-dev
+      - libphysfs-dev
+      - libpng-dev
+      - libsdl2-dev
+      - libsdl2-image-dev
+      - libsdl2-mixer-dev
+      - libsdl2-net-dev
+      - libsdl2-ttf-dev
+      - libxml2-dev
+    stage-packages:
+      - libcurl4
+      - libguichan-0.8.1-1v5
+      - libphysfs1
+      - libsdl2-2.0-0
+      - libsdl2-image-2.0-0
+      - libsdl2-mixer-2.0-0
+      - libsdl2-net-2.0-0
+      - libsdl2-ttf-2.0-0
