@@ -274,12 +274,11 @@ Client::Client(const Options &options):
     }
     CFRelease(resourcesURL);
     strncat(path, "/data", PATH_MAX - 1);
-    resman->addToSearchPath(path, false);
     mPackageDir = path;
 #else
-    resman->addToSearchPath(PKG_DATADIR "data", false);
     mPackageDir = PKG_DATADIR "data";
 #endif
+    resman->addToSearchPath(mPackageDir, false);
 
     resman->addToSearchPath("data", false);
 

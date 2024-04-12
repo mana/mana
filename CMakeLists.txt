@@ -22,6 +22,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # where to look for cmake modules
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
+include(GNUInstallDirs)
+
 FIND_PACKAGE(Gettext)
 
 OPTION(WITH_OPENGL "Enable OpenGL support" ON)
@@ -31,12 +33,10 @@ OPTION(USE_SYSTEM_GUICHAN "Use system Guichan" ON)
 
 IF (WIN32)
     SET(PKG_DATADIR ".")
-    SET(LOCALEDIR "share/locale")
     SET(PKG_BINDIR ".")
 ELSE (WIN32)
-    SET(PKG_DATADIR ${CMAKE_INSTALL_PREFIX}/share/mana CACHE PATH "Mana datadir")
-    SET(LOCALEDIR ${CMAKE_INSTALL_PREFIX}/share/locale)
-    SET(PKG_BINDIR ${CMAKE_INSTALL_PREFIX}/bin CACHE PATH "Mana bindir")
+    SET(PKG_DATADIR ${CMAKE_INSTALL_DATAROOTDIR}/mana CACHE PATH "Mana datadir")
+    SET(PKG_BINDIR ${CMAKE_INSTALL_BINDIR})
 ENDIF (WIN32)
 
 ADD_SUBDIRECTORY(data)
@@ -66,10 +66,10 @@ IF (GETTEXT_FOUND AND ENABLE_NLS)
 ENDIF()
 
 If(UNIX)
-    INSTALL(FILES org.manasource.Mana.desktop DESTINATION share/applications)
-    INSTALL(FILES org.manasource.Mana.metainfo.xml DESTINATION share/metainfo)
-    INSTALL(FILES data/icons/mana.png DESTINATION share/icons/hicolor/128x128/apps RENAME org.manasource.Mana.png)
-    INSTALL(FILES data/icons/mana.svg DESTINATION share/icons/hicolor/scalable/apps RENAME org.manasource.Mana.svg)
+    INSTALL(FILES org.manasource.Mana.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
+    INSTALL(FILES org.manasource.Mana.metainfo.xml DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo)
+    INSTALL(FILES data/icons/mana.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/128x128/apps RENAME org.manasource.Mana.png)
+    INSTALL(FILES data/icons/mana.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps RENAME org.manasource.Mana.svg)
 ENDIF()
 
 SET(CPACK_PACKAGE_VENDOR "Mana Development Team")
