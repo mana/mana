@@ -8,11 +8,19 @@ ubuntu-build:
       - UBUNTU_VERSION: "20.04"
       - UBUNTU_VERSION: "22.04"
   image: ubuntu:$UBUNTU_VERSION
+  cache:
+    paths:
+      - ccache
+  before_script:
+    - export CCACHE_BASEDIR="$PWD"
+    - export CCACHE_DIR="$PWD/ccache"
+    - export CCACHE_COMPILERCHECK=content
   script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
     - apt-get install -y
         build-essential
+        ccache
         cmake
         gettext
         libcurl4-openssl-dev
@@ -26,8 +34,10 @@ ubuntu-build:
         libsdl2-ttf-dev
         libxml2-dev
         ninja-build
-    - cmake -G Ninja -B build .
+    - ccache --zero-stats || true
+    - cmake -G Ninja -B build . -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
     - cmake --build build
+    - ccache --show-stats
 
 macos-build:
   stage: build
