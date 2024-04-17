@@ -90,15 +90,13 @@ class Network
             NET_ERROR
         };
 
-    protected:
+    private:
         friend int networkThread(void *data);
         friend class MessageOut;
 
-        static Network *instance();
-
         void setError(const std::string &error);
 
-        Uint16 readWord(int pos);
+        uint16_t readWord(int pos);
 
         bool realConnect();
 

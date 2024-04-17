@@ -23,54 +23,40 @@
 
 #include "net/tmwa/network.h"
 
-#include <SDL.h>
 #include <SDL_endian.h>
 
 #include <cstring>
 
 namespace TmwAthena {
 
-MessageOut::MessageOut(uint16_t id):
-    mNetwork(TmwAthena::Network::instance()),
-    mData(mNetwork->mOutBuffer + mNetwork->mOutSize)
+MessageOut::MessageOut(uint16_t id)
 {
     writeInt16(id);
 }
 
-void MessageOut::expand(size_t bytes)
+char *MessageOut::expand(size_t bytes)
 {
-    mNetwork->mOutSize += bytes;
+    Network &net = *Network::mInstance;
+    char *data = net.mOutBuffer + net.mOutSize;
+    net.mOutSize += bytes;
+    return data;
 }
 
 void MessageOut::writeInt8(uint8_t value)
 {
-    expand(1);
-    mData[mPos] = value;
-    mPos += 1;
+    *expand(1) = value;
 }
 
 void MessageOut::writeInt16(uint16_t value)
 {
-    expand(2);
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    uint16_t swap = SDL_Swap16(value);
-    memcpy(mData + mPos, &swap, sizeof(uint16_t));
-#else
-    memcpy(mData + mPos, &value, sizeof(uint16_t));
-#endif
-    mPos += 2;
+    value = SDL_SwapLE16(value);
+    memcpy(expand(sizeof(uint16_t)), &value, sizeof(uint16_t));
 }
 
 void MessageOut::writeInt32(uint32_t value)
 {
-    expand(4);
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    uint32_t swap = SDL_Swap32(value);
-    memcpy(mData + mPos, &swap, sizeof(uint32_t));
-#else
-    memcpy(mData + mPos, &value, sizeof(uint32_t));
-#endif
-    mPos += 4;
+    value = SDL_SwapLE32(value);
+    memcpy(expand(sizeof(uint32_t)), &value, sizeof(uint32_t));
 }
 
 void MessageOut::writeString(const std::string &string, int length)
@@ -87,24 +73,22 @@ void MessageOut::writeString(const std::string &string, int length)
         // Make sure the length of the string is no longer than specified
         stringLength = length;
     }
-    expand(length);
+
+    char *data = expand(length);
 
     // Write the actual string
-    memcpy(mData + mPos, string.data(), stringLength);
+    memcpy(data, string.data(), stringLength);
 
     // Pad remaining space with zeros
     if (length > stringLength)
     {
-        memset(mData + mPos + stringLength, '\0', length - stringLength);
+        memset(data + stringLength, '\0', length - stringLength);
     }
-    mPos += length;
 }
 
 void MessageOut::writeCoordinates(uint16_t x, uint16_t y, uint8_t direction)
 {
-    char *data = mData + mPos;
-    expand(3);
-    mPos += 3;
+    char *data = expand(3);
 
     uint16_t temp = x;
     temp <<= 6;

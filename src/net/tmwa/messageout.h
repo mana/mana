@@ -27,8 +27,6 @@
 
 namespace TmwAthena {
 
-class Network;
-
 /**
  * Used for building an outgoing message to eAthena.
  *
@@ -66,31 +64,12 @@ class MessageOut
         void writeCoordinates(uint16_t x, uint16_t y,
                               uint8_t direction);
 
-        /**
-         * Returns the content of the message.
-         */
-        char *getData() const { return mData; }
-
-        /**
-         * Returns the length of the data.
-         */
-        unsigned int getDataSize() const { return mDataSize; }
-
     private:
         /**
-         * Expand the packet data to be able to hold more data.
-         *
-         * NOTE: For performance enhancements this method could allocate extra
-         * memory in advance instead of expanding size every time more data is
-         * added.
+         * Expand the packet data to be able to hold more data. Returns a
+         * pointer to the start of the new data.
          */
-        void expand(size_t size);
-
-        Network *mNetwork;
-
-        char *mData;                        /**< Data building up. */
-        unsigned int mDataSize = 0;         /**< Size of data. */
-        unsigned int mPos = 0;              /**< Position in the data. */
+        static char *expand(size_t size);
 };
 
 } // namespace TmwAthena

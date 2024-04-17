@@ -580,11 +580,6 @@ void Network::receive()
     SDLNet_FreeSocketSet(set);
 }
 
-Network *Network::instance()
-{
-    return mInstance;
-}
-
 void Network::setError(const std::string &error)
 {
     logger->log("Network error: %s", error.c_str());
@@ -592,13 +587,11 @@ void Network::setError(const std::string &error)
     mState = NET_ERROR;
 }
 
-Uint16 Network::readWord(int pos)
+uint16_t Network::readWord(int pos)
 {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return SDL_Swap16((*(Uint16*)(mInBuffer+(pos))));
-#else
-    return (*(Uint16*)(mInBuffer+(pos)));
-#endif
+    uint16_t value;
+    memcpy(&value, mInBuffer + pos, sizeof(uint16_t));
+    return SDL_SwapLE16(value);
 }
 
 } // namespace TmwAthena

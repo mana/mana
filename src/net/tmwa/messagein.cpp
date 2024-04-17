@@ -21,7 +21,6 @@
 
 #include "net/tmwa/messagein.h"
 
-#include <SDL.h>
 #include <SDL_endian.h>
 
 #define MAKEWORD(low,high) \
@@ -55,13 +54,8 @@ uint16_t MessageIn::readInt16()
     uint16_t value = 0;
     if (mPos + 2 <= mLength)
     {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        uint16_t swap;
-        memcpy(&swap, mData + mPos, sizeof(uint16_t));
-        value = SDL_Swap16(swap);
-#else
         memcpy(&value, mData + mPos, sizeof(uint16_t));
-#endif
+        value = SDL_SwapLE16(value);
     }
     mPos += 2;
     return value;
@@ -72,13 +66,8 @@ uint32_t MessageIn::readInt32()
     uint32_t value = 0;
     if (mPos + 4 <= mLength)
     {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        uint32_t swap;
-        memcpy(&swap, mData + mPos, sizeof(uint32_t));
-        value = SDL_Swap32(swap);
-#else
         memcpy(&value, mData + mPos, sizeof(uint32_t));
-#endif
+        value = SDL_SwapLE32(value);
     }
     mPos += 4;
     return value;
