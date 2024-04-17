@@ -1,19 +1,24 @@
-THE MANA CLIENT
+The Mana Client
 ===============
 
 With the Mana client you can play The Mana World and related games. The Mana
 World is a free 2D open source MMORPG. This client supports games hosted by
 either tmwAthena or manaserv.
 
-The Mana client is written in C++ and builds upon:
+The Mana client is written in C++17 and builds upon:
 
-- SDL2, SDL2\_image, SDL2\_mixer, SDL2\_ttf, SDL2\_net (Media framework)
-- Guichan (GUI framework)
-- libxml2 (XML parsing and writing)
-- PhysicsFS (Data files)
-- ENet (UDP networking library)
+- [SDL2](https://www.libsdl.org/),
+  [SDL2\_image](https://github.com/libsdl-org/SDL_image),
+  [SDL2\_mixer](https://github.com/libsdl-org/SDL_mixer),
+  [SDL2\_ttf](https://github.com/libsdl-org/SDL_ttf),
+  [SDL2\_net](https://github.com/libsdl-org/SDL_net) (media and networking)
+- [Guichan 0.8](https://github.com/darkbitsorg/guichan) (GUI framework)
+- [libxml2](https://gitlab.gnome.org/GNOME/libxml2/-/wikis/home) (XML parsing and writing)
+- [PhysicsFS 3](https://icculus.org/physfs/) (data files)
+- [ENet 1.3](http://sauerbraten.org/enet/) (UDP networking library)
+- [GNU gettext](https://www.gnu.org/software/gettext/) (translations)
 - libcurl (HTTP downloads)
-- zlib (Archives)
+- [zlib 1.2](https://zlib.net/) (compression)
 
 See the `AUTHORS` file for the list of developers.
 
@@ -109,6 +114,9 @@ to contact the developers of the game instead.
 Compiling the Client
 --------------------
 
+Apart from the dependencies listed above you will need a compiler and
+[CMake](https://cmake.org/) installed.
+
 Installing the dependencies on Ubuntu:
 
     sudo apt install build-essential cmake \
@@ -145,8 +153,28 @@ Once the dependencies are installed, use CMake:
     cmake -B build .
     cmake --build build
 
-This produces an executable in `build/src/mana`. If running it without
-installing, be sure to run it from the repository root so that it can find its
-data files.
+This produces an executable in `build/src/mana`. Be sure to run it from the
+repository root so that it can find its data files.
+
+Installing the Client
+---------------------
+
+On Linux you can run `cmake --install build`. By default all files are
+installed to `/usr/local`, but you can pass a different prefix to the first
+`cmake` invocation with `-DCMAKE_INSTALL_PREFIX=/path/to/prefix`.
+
+On Windows, you can install the same way as above to put the Mana client in
+your Program Files. However, you'll probably want to create an installer
+instead. For MSYS2 UCRT64 builds, an NSIS installer can be produced as follows:
+
+    cd build
+    cpack
+
+On macOS, you can create a stand-alone application bundle by installing,
+similar to the Linux command above. To make it easy for others to install your
+build, you can also build a DragNDrop DMG using:
+
+    cd build
+    cpack -G DragNDrop
 
 See `README.cmake` for additional information.

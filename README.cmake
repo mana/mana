@@ -27,12 +27,18 @@ The syntax for setting variables to control CMakes behaviour is
 
 - Use a custom install prefix (like --prefix on autoconf)?
   CMAKE_INSTALL_PREFIX=/path/to/prefix
+
 - Create a debug build?
   CMAKE_BUILD_TYPE=Debug .
+
 - Add additional package search directories?
   CMAKE_PREFIX_PATH=/prefix/path
+
 - Add additional include search directories?
   CMAKE_INCLUDE_PATH=/include/path
+
+- Compile without legacy OpenGL rendering?
+  WITH_OPENGL=OFF
 
 For example, to build mana to install in /opt/mana, with libraries in
 /build/mana/lib, and SDL-headers in /build/mana/include/SDL you'd use
@@ -85,6 +91,9 @@ $ cmake -DCMAKE_TOOLCHAIN_FILE=/build/toolchain.cmake .
 
 4. Creating an installer binary for Windows
 -------------------------------------------
+
+(NOTE: These instructions are outdated, an NSIS installer can now be produced
+in MSYS2 using cpack, which automates most of the below steps.)
 
 Call cmake with the following flags:
 
