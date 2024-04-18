@@ -1,93 +1,96 @@
 include(FindPkgConfig)
-pkg_check_modules(SDL2 REQUIRED sdl2>=2.0.5 SDL2_image SDL2_mixer SDL2_net SDL2_ttf)
-FIND_PACKAGE(PhysFS REQUIRED)
-FIND_PACKAGE(CURL REQUIRED)
-FIND_PACKAGE(LibXml2 REQUIRED)
-FIND_PACKAGE(PNG REQUIRED)
-FIND_PACKAGE(Gettext REQUIRED)
+pkg_check_modules(SDL2 REQUIRED
+  sdl2>=2.0.5
+  SDL2_image
+  SDL2_mixer
+  SDL2_net
+  SDL2_ttf)
+find_package(PhysFS REQUIRED)
+find_package(CURL REQUIRED)
+find_package(LibXml2 REQUIRED)
+find_package(PNG REQUIRED)
+find_package(Gettext REQUIRED)
 
-IF (CMAKE_COMPILER_IS_GNUCXX)
-    # Help getting compilation warnings
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-    IF (WIN32)
-        # This includes enough debug information to get something useful
-        # from Dr. Mingw while keeping binary size down. Almost useless
-        # with gdb, though.
-        SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -ggdb0 -gstabs2")
-    ENDIF()
-ENDIF()
+if(CMAKE_COMPILER_IS_GNUCXX)
+  # Help getting compilation warnings
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+  if(WIN32)
+    # This includes enough debug information to get something useful from Dr.
+    # Mingw while keeping binary size down. Almost useless with gdb, though.
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -ggdb0 -gstabs2")
+  endif()
+endif()
 
-SET(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
+set(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
 
-IF (WIN32)
-    SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_DATADIR}/\\\"")
-    SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${CMAKE_INSTALL_LOCALEDIR}/\\\"")
-ELSEIF(NOT APPLE)
-    SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_FULL_DATADIR}/\\\"")
-    SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${CMAKE_INSTALL_FULL_LOCALEDIR}/\\\"")
-ENDIF()
+if(WIN32)
+  set(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_DATADIR}/\\\"")
+  set(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${CMAKE_INSTALL_LOCALEDIR}/\\\"")
+elseif(NOT APPLE)
+  set(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_FULL_DATADIR}/\\\"")
+  set(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${CMAKE_INSTALL_FULL_LOCALEDIR}/\\\"")
+endif()
 
-IF (ENABLE_MANASERV)
-    INCLUDE_DIRECTORIES("../libs/enet/include")
-    LINK_DIRECTORIES("../libs/enet")
-    SET(INTERNAL_LIBRARIES enet)
+if(ENABLE_MANASERV)
+  include_directories("../libs/enet/include")
+  link_directories("../libs/enet")
+  set(INTERNAL_LIBRARIES enet)
 
-    SET(FLAGS "${FLAGS} -DMANASERV_SUPPORT=1")
-    MESSAGE(STATUS "Manaserv support enabled")
-ENDIF()
+  set(FLAGS "${FLAGS} -DMANASERV_SUPPORT=1")
+  message(STATUS "Manaserv support enabled")
+endif()
 
-IF (APPLE OR NOT USE_SYSTEM_GUICHAN)
-    MESSAGE(STATUS "Using Guichan submodule")
-    SET(GUICHAN_INCLUDE_DIR "../libs/guichan/include")
-    SET(GUICHAN_LIBRARIES guichan)
-    LINK_DIRECTORIES("../libs/guichan")
-ELSE()
-    MESSAGE(STATUS "Using system Guichan")
-    FIND_PACKAGE(Guichan REQUIRED)
-ENDIF()
+if(APPLE OR NOT USE_SYSTEM_GUICHAN)
+  message(STATUS "Using Guichan submodule")
+  set(GUICHAN_INCLUDE_DIR "../libs/guichan/include")
+  set(GUICHAN_LIBRARIES guichan)
+  link_directories("../libs/guichan")
+else()
+  message(STATUS "Using system Guichan")
+  find_package(Guichan REQUIRED)
+endif()
 
-IF (ENABLE_NLS)
-    SET(FLAGS "${FLAGS} -DENABLE_NLS=1")
-    MESSAGE(STATUS "i18n support enabled")
-ENDIF()
+if(ENABLE_NLS)
+  set(FLAGS "${FLAGS} -DENABLE_NLS=1")
+  message(STATUS "i18n support enabled")
+endif()
 
-IF (CMAKE_BUILD_TYPE)
-    STRING(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_TOLOWER)
-    IF(CMAKE_BUILD_TYPE_TOLOWER MATCHES debug OR
-       CMAKE_BUILD_TYPE_TOLOWER MATCHES relwithdebinfo)
-        SET(FLAGS "${FLAGS} -DDEBUG")
-        MESSAGE(STATUS "Set Debug build type")
-    ENDIF()
-ENDIF()
+if(CMAKE_BUILD_TYPE)
+  string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_TOLOWER)
+  if(CMAKE_BUILD_TYPE_TOLOWER MATCHES debug OR CMAKE_BUILD_TYPE_TOLOWER MATCHES
+                                               relwithdebinfo)
+    set(FLAGS "${FLAGS} -DDEBUG")
+    message(STATUS "Set Debug build type")
+  endif()
+endif()
 
-IF (WIN32)
-    SET(EXTRA_LIBRARIES ws2_32 winmm)
-    FIND_PACKAGE(LibIntl REQUIRED)
-ELSEIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR BEOS)
-    FIND_PACKAGE(LibIntl REQUIRED)
-ELSEIF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
-    # explicit linking to libintl is required on Solaris
-    SET(EXTRA_LIBRARIES intl)
-ENDIF()
+if(WIN32)
+  set(EXTRA_LIBRARIES ws2_32 winmm)
+  find_package(LibIntl REQUIRED)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR BEOS)
+  find_package(LibIntl REQUIRED)
+elseif(CMAKE_SYSTEM_NAME STREQUAL SunOS)
+  # explicit linking to libintl is required on Solaris
+  set(EXTRA_LIBRARIES intl)
+endif()
 
-IF (WITH_OPENGL)
-    FIND_PACKAGE(OpenGL REQUIRED)
-    INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
-    SET(FLAGS "${FLAGS} -DUSE_OPENGL")
-    MESSAGE(STATUS "OpenGL support enabled")
-ENDIF (WITH_OPENGL)
+if(WITH_OPENGL)
+  find_package(OpenGL REQUIRED)
+  include_directories(${OPENGL_INCLUDE_DIR})
+  set(FLAGS "${FLAGS} -DUSE_OPENGL")
+  message(STATUS "OpenGL support enabled")
+endif(WITH_OPENGL)
 
-INCLUDE_DIRECTORIES(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${SDL2_INCLUDE_DIRS}
-    ${PNG_INCLUDE_DIR}
-    ${PHYSFS_INCLUDE_DIR}
-    ${CURL_INCLUDE_DIR}
-    ${LIBXML2_INCLUDE_DIR}
-    ${GUICHAN_INCLUDE_DIR}
-    )
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${SDL2_INCLUDE_DIRS}
+  ${PNG_INCLUDE_DIR}
+  ${PHYSFS_INCLUDE_DIR}
+  ${CURL_INCLUDE_DIR}
+  ${LIBXML2_INCLUDE_DIR}
+  ${GUICHAN_INCLUDE_DIR})
 
-SET(SRCS
+set(SRCS
     gui/widgets/avatarlistbox.cpp
     gui/widgets/avatarlistbox.h
     gui/widgets/browserbox.cpp
@@ -510,10 +513,9 @@ SET(SRCS
     vector.cpp
     vector.h
     video.cpp
-    video.h
-    )
+    video.h)
 
-SET(SRCS_TMWA
+set(SRCS_TMWA
     net/tmwa/gui/guildtab.cpp
     net/tmwa/gui/guildtab.h
     net/tmwa/gui/partytab.cpp
@@ -559,10 +561,9 @@ SET(SRCS_TMWA
     net/tmwa/specialhandler.h
     net/tmwa/token.h
     net/tmwa/tradehandler.cpp
-    net/tmwa/tradehandler.h
-    )
+    net/tmwa/tradehandler.h)
 
-SET(SRCS_MANA
+set(SRCS_MANA
     net/manaserv/adminhandler.cpp
     net/manaserv/adminhandler.h
     net/manaserv/beinghandler.cpp
@@ -610,65 +611,69 @@ SET(SRCS_MANA
     net/manaserv/specialhandler.cpp
     net/manaserv/specialhandler.h
     net/manaserv/tradehandler.cpp
-    net/manaserv/tradehandler.h
-    )
+    net/manaserv/tradehandler.h)
 
-IF (WIN32)
-    CONFIGURE_FILE(mana.rc.in mana.rc)
-    SET(SRCS ${SRCS} ${CMAKE_CURRENT_BINARY_DIR}/mana.rc)
-ENDIF (WIN32)
+if(WIN32)
+  configure_file(mana.rc.in mana.rc)
+  set(SRCS ${SRCS} ${CMAKE_CURRENT_BINARY_DIR}/mana.rc)
+endif(WIN32)
 
 set(APP_ICON_NAME "mana.icns")
 set(APP_ICON_FILE "${CMAKE_SOURCE_DIR}/data/icons/${APP_ICON_NAME}")
-set_source_files_properties(${APP_ICON_FILE} PROPERTIES
-    MACOSX_PACKAGE_LOCATION "Resources")
+set_source_files_properties(${APP_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION
+                                                        "Resources")
 
-IF (ENABLE_MANASERV)
-    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA} ${APP_ICON_FILE})
-ELSE(ENABLE_MANASERV)
-    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_TMWA} ${APP_ICON_FILE})
-ENDIF(ENABLE_MANASERV)
+if(ENABLE_MANASERV)
+  add_executable(mana WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA} ${APP_ICON_FILE})
+else(ENABLE_MANASERV)
+  add_executable(mana WIN32 ${SRCS} ${SRCS_TMWA} ${APP_ICON_FILE})
+endif(ENABLE_MANASERV)
 
-TARGET_LINK_LIBRARIES(mana PRIVATE
-    ${INTERNAL_LIBRARIES}
-    ${SDL2_LINK_LIBRARIES}
-    ${PNG_LIBRARIES}
-    ${PHYSFS_LIBRARY}
-    ${CURL_LIBRARIES}
-    ${LIBXML2_LIBRARIES}
-    ${GUICHAN_LIBRARIES}
-    ${OPENGL_LIBRARIES}
-    ${LIBINTL_LIBRARIES}
-    ${EXTRA_LIBRARIES})
+target_link_libraries(
+  mana
+  PRIVATE ${INTERNAL_LIBRARIES}
+          ${SDL2_LINK_LIBRARIES}
+          ${PNG_LIBRARIES}
+          ${PHYSFS_LIBRARY}
+          ${CURL_LIBRARIES}
+          ${LIBXML2_LIBRARIES}
+          ${GUICHAN_LIBRARIES}
+          ${OPENGL_LIBRARIES}
+          ${LIBINTL_LIBRARIES}
+          ${EXTRA_LIBRARIES})
 
-SET_TARGET_PROPERTIES(mana PROPERTIES
-    COMPILE_FLAGS "${FLAGS}"
-    MACOSX_BUNDLE TRUE
-    MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
-    MACOSX_BUNDLE_GUI_IDENTIFIER org.manasource.Mana
-    MACOSX_BUNDLE_ICON_FILE ${APP_ICON_NAME}
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_COPYRIGHT "(C) 2004-2024 ${CPACK_PACKAGE_VENDOR}"
-    MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+set_target_properties(
+  mana
+  PROPERTIES COMPILE_FLAGS "${FLAGS}"
+             MACOSX_BUNDLE TRUE
+             MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
+             MACOSX_BUNDLE_GUI_IDENTIFIER org.manasource.Mana
+             MACOSX_BUNDLE_ICON_FILE ${APP_ICON_NAME}
+             MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+             MACOSX_BUNDLE_COPYRIGHT "(C) 2004-2024 ${CPACK_PACKAGE_VENDOR}"
+             MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
+             MACOSX_BUNDLE_SHORT_VERSION_STRING
+             ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
 
-INSTALL(TARGETS mana
-    BUNDLE DESTINATION .
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(
+  TARGETS mana
+  BUNDLE DESTINATION .
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 if(APPLE)
   target_link_libraries(mana PRIVATE "-framework Foundation")
-  SET_TARGET_PROPERTIES(mana PROPERTIES
-      OUTPUT_NAME Mana)
+  set_target_properties(mana PROPERTIES OUTPUT_NAME Mana)
 
   set(CPACK_GENERATOR "DRAGNDROP")
 
-  install(CODE "include(BundleUtilities)
-      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"\" \"/usr/local/lib\")")
+  install(
+    CODE "include(BundleUtilities)
+      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"\" \"/usr/local/lib\")"
+  )
 endif()
 
-IF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
-    # we expect the SMCgtxt package to be present on Solaris;
-    # the Solaris gettext is not API-compatible to GNU gettext
-    SET_TARGET_PROPERTIES(mana PROPERTIES LINK_FLAGS "-L/usr/local/lib")
-ENDIF()
+if(CMAKE_SYSTEM_NAME STREQUAL SunOS)
+  # we expect the SMCgtxt package to be present on Solaris; the Solaris gettext
+  # is not API-compatible to GNU gettext
+  set_target_properties(mana PROPERTIES LINK_FLAGS "-L/usr/local/lib")
+endif()
