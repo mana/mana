@@ -21,22 +21,23 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   endif()
 endif()
 
-set(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
+add_compile_definitions(PACKAGE_VERSION="${PROJECT_VERSION}"
+                        $<$<CONFIG:Debug>:DEBUG>)
 
 if(WIN32)
-  set(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_DATADIR}/\\\"")
-  set(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${CMAKE_INSTALL_LOCALEDIR}/\\\"")
+  add_compile_definitions(PKG_DATADIR="${CMAKE_INSTALL_DATADIR}/"
+                          LOCALEDIR="${CMAKE_INSTALL_LOCALEDIR}/")
 elseif(NOT APPLE)
-  set(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${CMAKE_INSTALL_FULL_DATADIR}/\\\"")
-  set(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${CMAKE_INSTALL_FULL_LOCALEDIR}/\\\"")
+  add_compile_definitions(PKG_DATADIR="${CMAKE_INSTALL_FULL_DATADIR}/"
+                          LOCALEDIR="${CMAKE_INSTALL_FULL_LOCALEDIR}/")
 endif()
 
 if(ENABLE_MANASERV)
   include_directories("../libs/enet/include")
   link_directories("../libs/enet")
-  set(INTERNAL_LIBRARIES enet)
+  set(ENET_LIBRARY enet)
 
-  set(FLAGS "${FLAGS} -DMANASERV_SUPPORT=1")
+  add_compile_definitions(MANASERV_SUPPORT=1)
   message(STATUS "Manaserv support enabled")
 endif()
 
@@ -51,17 +52,8 @@ else()
 endif()
 
 if(ENABLE_NLS)
-  set(FLAGS "${FLAGS} -DENABLE_NLS=1")
+  add_compile_definitions(ENABLE_NLS=1)
   message(STATUS "i18n support enabled")
-endif()
-
-if(CMAKE_BUILD_TYPE)
-  string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_TOLOWER)
-  if(CMAKE_BUILD_TYPE_TOLOWER MATCHES debug OR CMAKE_BUILD_TYPE_TOLOWER MATCHES
-                                               relwithdebinfo)
-    set(FLAGS "${FLAGS} -DDEBUG")
-    message(STATUS "Set Debug build type")
-  endif()
 endif()
 
 if(WIN32)
@@ -77,7 +69,7 @@ endif()
 if(WITH_OPENGL)
   find_package(OpenGL REQUIRED)
   include_directories(${OPENGL_INCLUDE_DIR})
-  set(FLAGS "${FLAGS} -DUSE_OPENGL")
+  add_compile_definitions(USE_OPENGL)
   message(STATUS "OpenGL support enabled")
 endif(WITH_OPENGL)
 
@@ -631,7 +623,7 @@ endif(ENABLE_MANASERV)
 
 target_link_libraries(
   mana
-  PRIVATE ${INTERNAL_LIBRARIES}
+  PRIVATE ${ENET_LIBRARY}
           ${SDL2_LINK_LIBRARIES}
           ${PNG_LIBRARIES}
           ${PHYSFS_LIBRARY}
@@ -644,8 +636,7 @@ target_link_libraries(
 
 set_target_properties(
   mana
-  PROPERTIES COMPILE_FLAGS "${FLAGS}"
-             MACOSX_BUNDLE TRUE
+  PROPERTIES MACOSX_BUNDLE TRUE
              MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
              MACOSX_BUNDLE_GUI_IDENTIFIER org.manasource.Mana
              MACOSX_BUNDLE_ICON_FILE ${APP_ICON_NAME}
