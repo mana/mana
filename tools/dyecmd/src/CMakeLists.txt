@@ -47,8 +47,6 @@ SET(SRCS
     imagewriter.h
     )
 
-SET (PROGRAMS dyecmd)
-
 ADD_EXECUTABLE(dyecmd WIN32 ${SRCS})
 
 TARGET_LINK_LIBRARIES(dyecmd

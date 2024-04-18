@@ -618,8 +618,6 @@ IF (WIN32)
     SET(SRCS ${SRCS} ${CMAKE_CURRENT_BINARY_DIR}/mana.rc)
 ENDIF (WIN32)
 
-SET (PROGRAMS mana)
-
 set(APP_ICON_NAME "mana.icns")
 set(APP_ICON_FILE "${CMAKE_SOURCE_DIR}/data/icons/${APP_ICON_NAME}")
 set_source_files_properties(${APP_ICON_FILE} PROPERTIES
