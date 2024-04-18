@@ -315,9 +315,6 @@ void Viewport::_drawDebugPath(Graphics *graphics)
 {
     if (mDebugFlags & Map::DEBUG_MOUSE_PATH)
     {
-        // Get the current mouse position
-        SDL_GetMouseState(&mMouseX, &mMouseY);
-
         // Prepare the walkmask corresponding to the protocol
         unsigned char walkMask;
         switch (Net::getNetworkType())
