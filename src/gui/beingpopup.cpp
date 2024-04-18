@@ -51,6 +51,8 @@ BeingPopup::BeingPopup():
 
     add(mBeingName);
     add(mBeingParty);
+
+    addMouseListener(this);
 }
 
 BeingPopup::~BeingPopup() = default;
