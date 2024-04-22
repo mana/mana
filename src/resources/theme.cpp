@@ -53,12 +53,7 @@ static void initDefaultThemePath()
         defaultThemePath = "graphics/gui/";
 }
 
-Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
-           const std::string &filePath,
-           const std::string &name):
-    instances(0),
-    mFilePath(filePath),
-    mName(name),
+Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown):
     mBorder(skin),
     mCloseImage(close),
     mStickyImageUp(stickyUp),
@@ -157,10 +152,11 @@ Skin *Theme::load(const std::string &filename, const std::string &defaultPath)
 {
     // Check if this skin was already loaded
     auto skinIterator = mSkins.find(filename);
-    if (mSkins.end() != skinIterator)
+    if (skinIterator != mSkins.end())
     {
-        skinIterator->second->instances++;
-        return skinIterator->second;
+        Skin *skin = skinIterator->second;
+        skin->instances++;
+        return skin;
     }
 
     Skin *skin = readSkin(filename);
@@ -316,8 +312,7 @@ Skin *Theme::readSkin(const std::string &filename)
     Image *stickyImageDown = sticky->getSubImage(15, 0, 15, 15);
     sticky->decRef();
 
-    Skin *skin = new Skin(border, closeImage, stickyImageUp, stickyImageDown,
-                          filename);
+    Skin *skin = new Skin(border, closeImage, stickyImageUp, stickyImageDown);
     skin->updateAlpha(mMinimumOpacity);
     return skin;
 }

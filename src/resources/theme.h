@@ -40,23 +40,9 @@ class ProgressBar;
 class Skin
 {
     public:
-        Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
-             const std::string &filePath,
-             const std::string &name = std::string());
+        Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown);
 
         ~Skin();
-
-        /**
-         * Returns the skin's name. Useful for giving a human friendly skin
-         * name if a dialog for skin selection for a specific window type is
-         * done.
-         */
-        const std::string &getName() const { return mName; }
-
-        /**
-         * Returns the skin's xml file path.
-         */
-        const std::string &getFilePath() const { return mFilePath; }
 
         /**
          * Returns the background skin.
@@ -89,11 +75,9 @@ class Skin
          */
         void updateAlpha(float minimumOpacityAllowed = 0.0f);
 
-        int instances;
+        int instances = 0;
 
     private:
-        std::string mFilePath;     /**< File name path for the skin */
-        std::string mName;         /**< Name of the skin to use */
         ImageRect mBorder;         /**< The window border and background */
         Image *mCloseImage;        /**< Close Button Image */
         Image *mStickyImageUp;     /**< Sticky Button Image */
