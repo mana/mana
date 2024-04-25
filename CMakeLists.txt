@@ -26,8 +26,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # where to look for cmake modules
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
-include(GNUInstallDirs)
-
 find_package(Gettext)
 
 option(WITH_OPENGL "Enable OpenGL support" ON)
@@ -44,8 +42,10 @@ elseif(APPLE)
   set(CMAKE_INSTALL_DATADIR "${CMAKE_INSTALL_DATAROOTDIR}/Resources")
   set(CMAKE_INSTALL_LOCALEDIR "${CMAKE_INSTALL_DATADIR}/Translations")
 else()
-  set(CMAKE_INSTALL_DATADIR ${CMAKE_INSTALL_DATAROOTDIR}/mana)
+  set(CMAKE_INSTALL_DATADIR "share/mana")
 endif()
+
+include(GNUInstallDirs)
 
 add_subdirectory(data)
 
