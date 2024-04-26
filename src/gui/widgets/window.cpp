@@ -383,14 +383,9 @@ void Window::close()
 
 void Window::mouseReleased(gcn::MouseEvent &event)
 {
-    if (mGrip && mouseResize)
-    {
-        mouseResize = 0;
-        gui->setCursorType(Cursor::POINTER);
-    }
+    mouseResize = 0;
 
-    // This should be the responsibility of Guichan (and is from 0.8.0 on)
-    mMoved = false;
+    gcn::Window::mouseReleased(event);
 }
 
 void Window::mouseExited(gcn::MouseEvent &event)
@@ -401,6 +396,15 @@ void Window::mouseExited(gcn::MouseEvent &event)
 
 void Window::mouseMoved(gcn::MouseEvent &event)
 {
+    // Make sure BeingPopup is hidden (Viewport does not receive mouseExited)
+    if (viewport)
+        viewport->hideBeingPopup();
+
+    // Don't change mouse cursor when event was consumed by child widget
+    // (in this case child widget is responsible for mouse cursor)
+    if (event.isConsumed())
+        return;
+
     int resizeHandles = getResizeHandles(event);
 
     // Changes the custom mouse cursor based on it's current position.
@@ -425,9 +429,6 @@ void Window::mouseMoved(gcn::MouseEvent &event)
         default:
             gui->setCursorType(Cursor::POINTER);
     }
-
-    if (viewport)
-        viewport->hideBeingPopup();
 }
 
 void Window::mouseDragged(gcn::MouseEvent &event)

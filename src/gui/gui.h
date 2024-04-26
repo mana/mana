@@ -61,6 +61,9 @@ enum class Cursor {
     UP,
     RIGHT,
     DOWN,
+    DRAG,
+    HAND,
+    LAST = HAND,
 };
 
 /**

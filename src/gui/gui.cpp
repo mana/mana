@@ -301,7 +301,7 @@ void Gui::loadCustomCursors()
                 0, targetCursorSize, targetCursorSize, 32,
                 rmask, gmask, bmask, amask);
 
-    for (int i = 0; i <= static_cast<int>(Cursor::DOWN); ++i)
+    for (int i = 0; i <= static_cast<int>(Cursor::LAST); ++i)
     {
         int x = i % columns * cursorSize;
         int y = i / columns * cursorSize;
@@ -330,7 +330,7 @@ void Gui::loadSystemCursors()
     constexpr struct {
         Cursor cursor;
         SDL_SystemCursor systemCursor;
-    } cursors[] = {
+    } cursors[static_cast<int>(Cursor::LAST) + 1] = {
         { Cursor::POINTER,           SDL_SYSTEM_CURSOR_ARROW },
         { Cursor::RESIZE_ACROSS,     SDL_SYSTEM_CURSOR_SIZEWE },
         { Cursor::RESIZE_DOWN,       SDL_SYSTEM_CURSOR_SIZENS },
@@ -343,7 +343,9 @@ void Gui::loadSystemCursors()
         { Cursor::LEFT,              SDL_SYSTEM_CURSOR_ARROW },
         { Cursor::UP,                SDL_SYSTEM_CURSOR_ARROW },
         { Cursor::RIGHT,             SDL_SYSTEM_CURSOR_ARROW },
-        { Cursor::DOWN,              SDL_SYSTEM_CURSOR_ARROW }
+        { Cursor::DOWN,              SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::DRAG,              SDL_SYSTEM_CURSOR_SIZEALL },
+        { Cursor::HAND,              SDL_SYSTEM_CURSOR_HAND },
     };
 
     for (auto cursor : cursors)
