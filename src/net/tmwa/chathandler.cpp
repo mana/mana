@@ -49,6 +49,7 @@ ChatHandler::ChatHandler()
         SMSG_WHISPER,
         SMSG_WHISPER_RESPONSE,
         SMSG_GM_CHAT,
+        SMSG_SCRIPT_MESSAGE,
         0
     };
     handledMessages = _messages;
@@ -237,6 +238,18 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 event.setString("message", chatMsg);
                 event.trigger(Event::ChatChannel);
             }
+            break;
+        }
+
+        case SMSG_SCRIPT_MESSAGE:
+        {
+            chatMsgLength = msg.readInt16() - 5;
+            if (chatMsgLength <= 0)
+                break;
+
+            msg.readInt8();     // message type
+
+            SERVER_NOTICE(msg.readString(chatMsgLength))
             break;
         }
     }
