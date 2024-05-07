@@ -34,9 +34,15 @@ elseif(NOT APPLE)
 endif()
 
 if(ENABLE_MANASERV)
-  include_directories("../libs/enet/include")
-  link_directories("../libs/enet")
-  set(ENET_LIBRARY enet)
+  if(NOT USE_SYSTEM_ENET)
+    message(STATUS "Using ENet submodule")
+    set(ENET_INCLUDE_DIR "../libs/enet/include")
+    set(ENET_LIBRARIES enet)
+    link_directories("../libs/enet")
+  else()
+    message(STATUS "Using system ENet")
+    find_package(ENet REQUIRED)
+  endif()
 
   add_compile_definitions(MANASERV_SUPPORT=1)
   message(STATUS "Manaserv support enabled")
@@ -71,6 +77,7 @@ include_directories(
   ${PHYSFS_INCLUDE_DIR}
   ${CURL_INCLUDE_DIR}
   ${LIBXML2_INCLUDE_DIR}
+  ${ENET_INCLUDE_DIR}
   ${GUICHAN_INCLUDE_DIR}
   ${Intl_INCLUDE_DIRS})
 
@@ -615,7 +622,7 @@ endif(ENABLE_MANASERV)
 
 target_link_libraries(
   mana
-  PRIVATE ${ENET_LIBRARY}
+  PRIVATE ${ENET_LIBRARIES}
           ${SDL2_LINK_LIBRARIES}
           ${PNG_LIBRARIES}
           ${PHYSFS_LIBRARY}
@@ -641,10 +648,6 @@ install(
   TARGETS mana
   BUNDLE DESTINATION .
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-
-if(WIN32)
-  target_link_libraries(mana PRIVATE ws2_32 winmm)
-endif()
 
 if(APPLE)
   target_link_libraries(mana PRIVATE "-framework Foundation")

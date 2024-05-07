@@ -11,6 +11,8 @@ ubuntu-build:
   cache:
     paths:
       - ccache
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
   before_script:
     - export CCACHE_BASEDIR="$PWD"
     - export CCACHE_DIR="$PWD/ccache"
