@@ -1,0 +1,63 @@
+name: Packages
+on: [push, pull_request]
+
+jobs:
+  msys2-ucrt64:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >
+            git
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-physfs
+            mingw-w64-ucrt-x86_64-curl-winssl
+            mingw-w64-ucrt-x86_64-SDL2_image
+            mingw-w64-ucrt-x86_64-SDL2_mixer
+            mingw-w64-ucrt-x86_64-SDL2_net
+            mingw-w64-ucrt-x86_64-SDL2_ttf
+            mingw-w64-ucrt-x86_64-libxml2
+            mingw-w64-ucrt-x86_64-nsis
+
+      - name: CI-Build
+        run: |
+          cmake -B build . -DUSE_SYSTEM_GUICHAN=OFF -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+          pushd build
+          cpack
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Mana installer for Windows (64-bit)
+          path: build/Mana-*-win64.exe
+
+  snap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: snapcore/action-build@v1
+        id: snapcraft
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
+        with:
+          name: snapcraft.log
+          path: '/home/runner/.local/state/snapcraft/log/*.log'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mana_amd64.snap
+          path: ${{ steps.snapcraft.outputs.snap }}
