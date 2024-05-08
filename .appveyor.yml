@@ -1,0 +1,15 @@
+version: 0.7.0.{build}
+image: Visual Studio 2022
+environment:
+  CHERE_INVOKING: yes  # Preserve the current working directory
+  MSYSTEM: UCRT64
+install:
+  - git submodule update --init
+build_script:
+- cmd: |
+    C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu"
+    C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu"
+    C:\msys64\usr\bin\bash -lc "./packaging/msys2-build.sh"
+artifacts:
+  - name: Installer
+    path: build/Mana-*-win64.exe
