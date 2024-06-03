@@ -437,13 +437,7 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 
     // Keep guichan window inside screen when it may be moved
     if (isMovable() && mMoved)
-    {
-        int newX = std::max(0, getX());
-        int newY = std::max(0, getY());
-        newX = std::min(graphics->getWidth() - getWidth(), newX);
-        newY = std::min(graphics->getHeight() - getHeight(), newY);
-        setPosition(newX, newY);
-    }
+        ensureOnScreen();
 
     if (mouseResize && !mMoved)
     {
@@ -785,19 +779,15 @@ void Window::ensureOnScreen()
     if (getWidth() == 0 && getHeight() == 0)
         return;
 
-    gcn::Rectangle dimension = getDimension();
+    gcn::Rectangle dim = getDimension();
 
     // Check the left and bottom screen boundaries
-    if (dimension.x + dimension.width > graphics->getWidth())
-        dimension.x = graphics->getWidth() - dimension.width;
-    if (dimension.y + dimension.height > graphics->getHeight())
-        dimension.y = graphics->getHeight() - dimension.height;
+    dim.x = std::min(graphics->getWidth() - dim.width, dim.x);
+    dim.y = std::min(graphics->getHeight() - dim.height, dim.y);
 
     // But never allow the windows to disappear in to the right and top
-    if (dimension.x < 0)
-        dimension.x = 0;
-    if (dimension.y < 0)
-        dimension.y = 0;
+    dim.x = std::max(0, dim.x);
+    dim.y = std::max(0, dim.y);
 
-    setDimension(dimension);
+    setPosition(dim.x, dim.y);
 }
