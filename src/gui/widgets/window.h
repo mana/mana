@@ -349,6 +349,9 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         static int getGuiAlpha();
 
+    protected:
+        static int mouseResize;       /**< Active resize handles */
+
     private:
         enum ResizeHandles
         {
@@ -394,7 +397,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultWidth;            /**< Default window width */
         int mDefaultHeight;           /**< Default window height */
 
-        static int mouseResize;       /**< Active resize handles */
         static int instances;         /**< Number of Window instances */
 
         Skin *mSkin;                  /**< Skin in use by this window */

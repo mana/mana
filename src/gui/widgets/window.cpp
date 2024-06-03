@@ -371,6 +371,8 @@ void Window::mousePressed(gcn::MouseEvent &event)
 
         // Handle window resizing
         mouseResize = getResizeHandles(event);
+        if (mouseResize)
+            mMoved = false;
     }
 }
 
@@ -405,12 +407,15 @@ void Window::mouseMoved(gcn::MouseEvent &event)
     switch (resizeHandles)
     {
         case BOTTOM | RIGHT:
+        case TOP | LEFT:
             gui->setCursorType(Cursor::RESIZE_DOWN_RIGHT);
             break;
         case BOTTOM | LEFT:
+        case TOP | RIGHT:
             gui->setCursorType(Cursor::RESIZE_DOWN_LEFT);
             break;
         case BOTTOM:
+        case TOP:
             gui->setCursorType(Cursor::RESIZE_DOWN);
             break;
         case RIGHT:
@@ -676,14 +681,17 @@ void Window::adjustPositionAfterResize(int oldScreenWidth, int oldScreenHeight)
 int Window::getResizeHandles(gcn::MouseEvent &event)
 {
     int resizeHandles = 0;
-    const int y = event.getY();
 
-    if (mGrip && y > (int) mTitleBarHeight)
+    if (mGrip)
     {
         const int x = event.getX();
+        const int y = event.getY();
+        const int p = getPadding();
 
-        if (!getChildrenArea().isPointInRect(x, y) &&
-                event.getSource() == this)
+        const bool inPadding = (x < p || x > getWidth() - p) ||
+                               (y < p || y > getHeight() - p);
+
+        if (inPadding && event.getSource() == this)
         {
             resizeHandles |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
                               (x < resizeBorderWidth) ? LEFT : 0;

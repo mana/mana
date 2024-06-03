@@ -343,10 +343,17 @@ void ChatWindow::mousePressed(gcn::MouseEvent &event)
     if (event.isConsumed())
         return;
 
-    mMoved = event.getY() <= getFocused()->getHeight();
-    mDragOffsetX = event.getX();
-    mDragOffsetY = event.getY();
+    // Enable dragging the chat window also in the tab area, since it doesn't
+    // have much of a title bar.
+    if (!mouseResize)
+    {
+        const int dragHeight = getFocused()->getHeight() +
+                               static_cast<int>(getTitleBarHeight());
 
+        mMoved = event.getY() < dragHeight;
+        mDragOffsetX = event.getX();
+        mDragOffsetY = event.getY();
+    }
 }
 
 void ChatWindow::mouseDragged(gcn::MouseEvent &event)
