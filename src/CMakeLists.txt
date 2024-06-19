@@ -75,7 +75,6 @@ include_directories(
   ${SDL2_INCLUDE_DIRS}
   ${PNG_INCLUDE_DIR}
   ${PHYSFS_INCLUDE_DIR}
-  ${CURL_INCLUDE_DIR}
   ${LIBXML2_INCLUDE_DIR}
   ${ENET_INCLUDE_DIR}
   ${GUICHAN_INCLUDE_DIR}
@@ -626,7 +625,7 @@ target_link_libraries(
           ${SDL2_LINK_LIBRARIES}
           ${PNG_LIBRARIES}
           ${PHYSFS_LIBRARY}
-          ${CURL_LIBRARIES}
+	  CURL::libcurl
           ${LIBXML2_LIBRARIES}
           ${GUICHAN_LIBRARIES}
           ${OPENGL_LIBRARIES}
