@@ -51,6 +51,7 @@ struct LinePart
     int y;
     gcn::Color color;
     std::string text;
+    gcn::Font *font;
 };
 
 struct TextRow

@@ -24,6 +24,7 @@
 
 #include "client.h"
 
+#include "gui/gui.h"
 #include "gui/truetypefont.h"
 #include "gui/widgets/linkhandler.h"
 
@@ -37,10 +38,10 @@
 
 struct LayoutContext
 {
-    LayoutContext(const gcn::Font *font);
+    LayoutContext(gcn::Font *font);
 
     int y = 0;
-    const gcn::Font *font;
+    gcn::Font *font;
     const int fontHeight;
     const int minusWidth;
     const int tildeWidth;
@@ -49,7 +50,7 @@ struct LayoutContext
     const gcn::Color textColor;
 };
 
-LayoutContext::LayoutContext(const gcn::Font *font)
+LayoutContext::LayoutContext(gcn::Font *font)
     : font(font)
     , fontHeight(font->getHeight())
     , minusWidth(font->getWidth("-"))
@@ -226,8 +227,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
             if (part.y > yEnd)
                 return;
 
-            // Use the correct font
-            graphics->setFont(getFont());
+            auto font = part.font;
 
             // Handle text shadows
             if (mShadows)
@@ -236,9 +236,9 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                                                         part.color.a / 2));
 
                 if (mOutline)
-                    graphics->drawText(part.text, part.x + 2, part.y + 2);
+                    font->drawString(graphics, part.text, part.x + 2, part.y + 2);
                 else
-                    graphics->drawText(part.text, part.x + 1, part.y + 1);
+                    font->drawString(graphics, part.text, part.x + 1, part.y + 1);
             }
 
             if (mOutline)
@@ -246,15 +246,15 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                 // Text outline
                 graphics->setColor(Theme::getThemeColor(Theme::OUTLINE,
                                                         part.color.a / 4));
-                graphics->drawText(part.text, part.x + 1, part.y);
-                graphics->drawText(part.text, part.x - 1, part.y);
-                graphics->drawText(part.text, part.x, part.y + 1);
-                graphics->drawText(part.text, part.x, part.y - 1);
+                font->drawString(graphics, part.text, part.x + 1, part.y);
+                font->drawString(graphics, part.text, part.x - 1, part.y);
+                font->drawString(graphics, part.text, part.x, part.y + 1);
+                font->drawString(graphics, part.text, part.x, part.y - 1);
             }
 
             // the main text
             graphics->setColor(part.color);
-            graphics->drawText(part.text, part.x, part.y);
+            font->drawString(graphics, part.text, part.x, part.y);
         }
     }
 }
@@ -280,6 +280,7 @@ void BrowserBox::relayoutText()
  */
 void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
 {
+    context.font = getFont();       // each line starts with normal font
     const int startY = context.y;
     row.parts.clear();
 
@@ -292,7 +293,13 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
     {
         for (x = 0; x < getWidth(); x += context.minusWidth - 1)
         {
-            row.parts.push_back(LinePart { x, context.y, context.selColor, "-" });
+            row.parts.push_back(LinePart {
+                                    x,
+                                    context.y,
+                                    context.selColor,
+                                    "-",
+                                    context.font
+                                });
         }
 
         context.y += row.height;
@@ -325,13 +332,13 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
         if (mUseLinksAndUserColors ||
             (!mUseLinksAndUserColors && (start == 0)))
         {
-            // Check for color change in format "##x", x = [L,P,0..9]
+            // Check for color or font change in format "##x", x = [<,>,B,p,0..9]
             if (row.text.find("##", start) == start && row.text.size() > start + 2)
             {
                 const char c = row.text.at(start + 2);
 
                 bool valid;
-                const gcn::Color col = Theme::getThemeColor(c, valid);
+                const gcn::Color &col = Theme::getThemeColor(c, valid);
 
                 if (c == '>')
                 {
@@ -342,27 +349,32 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
                     prevColor = context.selColor;
                     context.selColor = col;
                 }
+                else if (c == 'B')
+                {
+                    context.font = boldFont;
+                }
+                else if (c == 'b')
+                {
+                    context.font = getFont();
+                }
                 else if (valid)
                 {
                     context.selColor = col;
                 }
-                else
+                else switch (c)
                 {
-                    switch (c)
-                    {
-                        case '1': context.selColor = RED; break;
-                        case '2': context.selColor = GREEN; break;
-                        case '3': context.selColor = BLUE; break;
-                        case '4': context.selColor = ORANGE; break;
-                        case '5': context.selColor = YELLOW; break;
-                        case '6': context.selColor = PINK; break;
-                        case '7': context.selColor = PURPLE; break;
-                        case '8': context.selColor = GRAY; break;
-                        case '9': context.selColor = BROWN; break;
-                        case '0':
-                        default:
-                            context.selColor = context.textColor;
-                    }
+                    case '1': context.selColor = RED; break;
+                    case '2': context.selColor = GREEN; break;
+                    case '3': context.selColor = BLUE; break;
+                    case '4': context.selColor = ORANGE; break;
+                    case '5': context.selColor = YELLOW; break;
+                    case '6': context.selColor = PINK; break;
+                    case '7': context.selColor = PURPLE; break;
+                    case '8': context.selColor = GRAY; break;
+                    case '9': context.selColor = BROWN; break;
+                    case '0':
+                    default:
+                        context.selColor = context.textColor;
                 }
 
                 // Update the position of the links
@@ -392,11 +404,12 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
             end == std::string::npos ? end : end - start;
 
         std::string part = row.text.substr(start, len);
+        int partWidth = context.font->getWidth(part);
 
         // Auto wrap mode
         if (mMode == AUTO_WRAP && getWidth() > 0
-            && context.font->getWidth(part) > 0
-            && (x + context.font->getWidth(part) + 10) > getWidth())
+            && partWidth > 0
+            && (x + partWidth + 10) > getWidth())
         {
             bool forced = false;
 
@@ -424,15 +437,21 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
                 end--; // And then to the last byte of the previous one
 
                 part = row.text.substr(start, end - start + 1);
+                partWidth = context.font->getWidth(part);
             }
-            while (end > start && context.font->getWidth(part) > 0
-                   && (x + context.font->getWidth(part) + 10) > getWidth());
+            while (end > start && partWidth > 0
+                   && (x + partWidth + 10) > getWidth());
 
             if (forced)
             {
                 x -= context.tildeWidth; // Remove the wrap-notifier accounting
-                row.parts.push_back(LinePart { getWidth() - context.tildeWidth,
-                                               context.y, context.selColor, "~" });
+                row.parts.push_back(LinePart {
+                                        getWidth() - context.tildeWidth,
+                                        context.y,
+                                        context.selColor,
+                                        "~",
+                                        getFont()
+                                    });
                 end++; // Skip to the next character
             }
             else
@@ -443,9 +462,14 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
             wrapped = true;
         }
 
-        row.parts.push_back(LinePart { x, context.y, context.selColor, part });
+        row.parts.push_back(LinePart {
+                                x,
+                                context.y,
+                                context.selColor,
+                                std::move(part),
+                                context.font
+                            });
 
-        const int partWidth = context.font->getWidth(part);
         row.width = std::max(row.width, x + partWidth);
 
         if (mMode == AUTO_WRAP && partWidth == 0)
