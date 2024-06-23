@@ -30,13 +30,15 @@
 #include <guichan/listmodel.hpp>
 
 #include <list>
+#include <memory>
 #include <string>
 #include <vector>
 
-class TextBox;
+class BrowserBox;
 class ListBox;
 class TextField;
 class IntTextField;
+class ItemLinkHandler;
 class Button;
 
 /**
@@ -64,7 +66,7 @@ class NpcDialog : public Window,
         *
         * @param string The new text.
         */
-        void setText(const std::string &string);
+        void setText(const std::vector<std::string> &string);
 
         /**
          * Adds the text to the text shows in the dialog. Also adds a newline
@@ -139,13 +141,6 @@ class NpcDialog : public Window,
 
         void move(int amount);
 
-        /**
-         * Called when resizing the window.
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event) override;
-
         void setVisible(bool visible) override;
 
         void event(Event::Channel channel, const Event &event) override;
@@ -182,9 +177,10 @@ class NpcDialog : public Window,
 
         // Used for the main input area
         gcn::ScrollArea *mScrollArea;
-        TextBox *mTextBox;
-        std::string mText;
-        std::string mNewText;
+        BrowserBox *mTextBox;
+        std::vector<std::string> mNewText;
+
+        std::unique_ptr<ItemLinkHandler> mItemLinkHandler;
 
         // Used for choice input
         ListBox *mItemList;

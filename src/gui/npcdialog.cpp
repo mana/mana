@@ -28,14 +28,14 @@
 #include "playerinfo.h"
 
 #include "gui/npcpostdialog.h"
-#include "gui/setup.h"
 
+#include "gui/widgets/browserbox.h"
 #include "gui/widgets/button.h"
 #include "gui/widgets/inttextfield.h"
+#include "gui/widgets/itemlinkhandler.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
-#include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
 
 #include "net/net.h"
@@ -69,9 +69,10 @@ static NpcEventListener *npcListener = nullptr;
 NpcDialog::DialogList NpcDialog::instances;
 
 NpcDialog::NpcDialog(int npcId)
-    : Window(_("NPC")),
-      mNpcId(npcId),
-      mLogInteraction(config.getBoolValue("logNpcInGui"))
+    : Window(_("NPC"))
+    , mNpcId(npcId)
+    , mLogInteraction(config.getBoolValue("logNpcInGui"))
+    , mItemLinkHandler(std::make_unique<ItemLinkHandler>(this))
 {
     // Basic Window Setup
     setWindowName("NpcText");
@@ -85,9 +86,8 @@ NpcDialog::NpcDialog(int npcId)
     setDefaultSize(260, 200, ImageRect::CENTER);
 
     // Setup output text box
-    mTextBox = new TextBox;
-    mTextBox->setEditable(false);
-    mTextBox->setOpaque(false);
+    mTextBox = new BrowserBox(BrowserBox::AUTO_WRAP);
+    mTextBox->setLinkHandler(mItemLinkHandler.get());
 
     mScrollArea = new ScrollArea(mTextBox);
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -104,7 +104,7 @@ NpcDialog::NpcDialog(int npcId)
     mItemList->setVisible(true);
 
     // Setup string input box
-    mTextField = new TextField(std::string());
+    mTextField = new TextField;
     mTextField->setVisible(true);
 
     // Setup int input box
@@ -164,18 +164,19 @@ NpcDialog::~NpcDialog()
     npcListener->removeDialog(mNpcId);
 }
 
-void NpcDialog::setText(const std::string &text)
+void NpcDialog::setText(const std::vector<std::string> &text)
 {
-    mText = text;
-    mTextBox->setTextWrapped(mText, mScrollArea->getWidth() - 15);
+    mTextBox->clearRows();
+    for (const std::string &row : text)
+        mTextBox->addRow(row);
 }
 
 void NpcDialog::addText(const std::string &text, bool save)
 {
     if (save || mLogInteraction)
     {
-        mNewText += text + "\n";
-        setText(mText + text + "\n");
+        mNewText.push_back(text);
+        mTextBox->addRow(text);
     }
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
     mActionState = NPC_ACTION_WAIT;
@@ -235,13 +236,14 @@ void NpcDialog::action(const gcn::ActionEvent &event)
                 Net::getNpcHandler()->integerInput(mNpcId, mIntField->getValue());
             }
             // addText will auto remove the input layout
-            addText(strprintf("\n> \"%s\"\n", printText.c_str()), false);
+            addText(strprintf("> \"%s\"", printText.c_str()), false);
+            addText(std::string(), false);
 
             mNewText.clear();
         }
 
         if (!mLogInteraction)
-            setText(std::string());
+            setText({});
     }
     else if (event.getId() == "reset")
     {
@@ -369,13 +371,6 @@ void NpcDialog::move(int amount)
         case NPC_INPUT_STRING:
             break;
     }
-}
-
-void NpcDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    setText(mText);
 }
 
 void NpcDialog::setVisible(bool visible)
@@ -587,7 +582,7 @@ void NpcEventListener::event(Event::Channel channel,
     else if (event.getType() == Event::ClearDialog)
     {
         if (NpcDialog *dialog = getDialog(event.getInt("id"), false))
-            dialog->setText(std::string());
+            dialog->setText({});
     }
     else if (event.getType() == Event::Close)
     {
