@@ -168,10 +168,6 @@ void NpcHandler::talk(int npcId)
     MessageOut msg(PGMSG_NPC_TALK);
     msg.writeInt16(npcId);
     gameServerConnection->send(msg);
-
-    Event event(Event::TalkSent);
-    event.setInt("npcId", npcId);
-    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::nextDialog(int npcId)
@@ -179,10 +175,6 @@ void NpcHandler::nextDialog(int npcId)
     MessageOut msg(PGMSG_NPC_TALK_NEXT);
     msg.writeInt16(npcId);
     gameServerConnection->send(msg);
-
-    Event event(Event::NextSent);
-    event.setInt("npcId", npcId);
-    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::closeDialog(int npcId)
@@ -190,10 +182,6 @@ void NpcHandler::closeDialog(int npcId)
     MessageOut msg(PGMSG_NPC_TALK_NEXT);
     msg.writeInt16(npcId);
     gameServerConnection->send(msg);
-
-    Event event(Event::CloseSent);
-    event.setInt("npcId", npcId);
-    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::menuSelect(int npcId, int choice)
@@ -202,11 +190,6 @@ void NpcHandler::menuSelect(int npcId, int choice)
     msg.writeInt16(npcId);
     msg.writeInt8(choice);
     gameServerConnection->send(msg);
-
-    Event event(Event::MenuSent);
-    event.setInt("npcId", npcId);
-    event.setInt("choice", choice);
-    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::integerInput(int npcId, int value)
@@ -215,11 +198,6 @@ void NpcHandler::integerInput(int npcId, int value)
     msg.writeInt16(npcId);
     msg.writeInt32(value);
     gameServerConnection->send(msg);
-
-    Event event(Event::IntegerInputSent);
-    event.setInt("npcId", npcId);
-    event.setInt("value", value);
-    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::stringInput(int npcId, const std::string &value)
@@ -228,11 +206,6 @@ void NpcHandler::stringInput(int npcId, const std::string &value)
     msg.writeInt16(npcId);
     msg.writeString(value);
     gameServerConnection->send(msg);
-
-    Event event(Event::StringInputSent);
-    event.setInt("npcId", npcId);
-    event.setString("value", value);
-    event.trigger(Event::NpcChannel);
 }
 
 void NpcHandler::sendLetter(int npcId, const std::string &recipient,
@@ -242,12 +215,6 @@ void NpcHandler::sendLetter(int npcId, const std::string &recipient,
     msg.writeString(recipient);
     msg.writeString(text);
     gameServerConnection->send(msg);
-
-    Event event(Event::SendLetterSent);
-    event.setInt("npcId", npcId);
-    event.setString("recipient", recipient);
-    event.setString("text", text);
-    event.trigger(Event::NpcChannel);
 }
 
 } // namespace ManaServ

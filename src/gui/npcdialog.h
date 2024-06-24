@@ -46,10 +46,10 @@ class Button;
  *
  * \ingroup Interface
  */
-class NpcDialog : public Window,
-                  public gcn::ActionListener,
-                  public gcn::ListModel,
-                  public EventListener
+class NpcDialog final : public Window,
+                        public gcn::ActionListener,
+                        public gcn::ListModel,
+                        public EventListener
 {
     public:
         NpcDialog(int npcId);

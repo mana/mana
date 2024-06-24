@@ -179,12 +179,8 @@ void Event::trigger(Channel channel, const Event &event)
         return;
 
     // Loop though all listeners
-    auto lit = it->second.begin();
-    while (lit != it->second.end())
-    {
-        (*lit)->event(channel, event);
-        lit++;
-    }
+    for (auto *listener : it->second)
+        listener->event(channel, event);
 }
 
 void Event::bind(EventListener *listener, Channel channel)
