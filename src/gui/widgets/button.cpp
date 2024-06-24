@@ -140,27 +140,24 @@ void Button::init()
     if (mInstances == 0)
     {
         // Load the skin
-        Image *btn[BUTTON_COUNT];
         mButton = new ImageRect[BUTTON_COUNT];
 
-        int a, x, y, mode;
-
-        for (mode = 0; mode < BUTTON_COUNT; ++mode)
+        for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            btn[mode] = Theme::getImageFromTheme(data[mode].file);
-            a = 0;
-            for (y = 0; y < 3; y++)
+            Image *modeImage = Theme::getImageFromTheme(data[mode].file);
+            int a = 0;
+            for (int y = 0; y < 3; y++)
             {
-                for (x = 0; x < 3; x++)
+                for (int x = 0; x < 3; x++)
                 {
-                    mButton[mode].grid[a] = btn[mode]->getSubImage(
+                    mButton[mode].grid[a] = modeImage->getSubImage(
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,
                             data[y + 1].gridY - data[y].gridY + 1);
                     a++;
                 }
             }
-            btn[mode]->decRef();
+            modeImage->decRef();
         }
         updateAlpha();
 
