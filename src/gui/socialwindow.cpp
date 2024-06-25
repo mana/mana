@@ -20,6 +20,7 @@
 
 #include "gui/socialwindow.h"
 
+#include "client.h"
 #include "event.h"
 #include "guild.h"
 #include "localplayer.h"
@@ -40,6 +41,7 @@
 #include "gui/widgets/tabbedarea.h"
 
 #include "net/net.h"
+#include "net/chathandler.h"
 #include "net/guildhandler.h"
 #include "net/partyhandler.h"
 
@@ -98,8 +100,8 @@ public:
         mList = std::make_unique<AvatarListBox>(guild);
         mScroll = std::make_unique<ScrollArea>(mList.get());
 
-        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
-        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
     }
 
     void action(const gcn::ActionEvent &event) override
@@ -173,7 +175,7 @@ public:
         mList = std::make_unique<AvatarListBox>(party);
         mScroll = std::make_unique<ScrollArea>(mList.get());
 
-        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
+        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
     }
 
@@ -229,6 +231,64 @@ protected:
 
 private:
     Party *mParty;
+};
+
+class PlayerList : public AvatarListModel
+{
+public:
+    void setPlayers(const std::vector<Avatar*> &players)
+    {
+        delete_all(mPlayers);
+        mPlayers = players;
+    }
+
+    /**
+     * Returns the number of players in the list.
+     */
+    int getNumberOfElements() override
+    {
+        return mPlayers.size();
+    }
+
+    Avatar *getAvatarAt(int index) override
+    {
+        return mPlayers[index];
+    }
+
+private:
+    std::vector<Avatar*> mPlayers;
+};
+
+class PlayerListTab : public SocialTab
+{
+public:
+    PlayerListTab() 
+    {
+        mPlayerList = new PlayerList;
+
+        mList = std::make_unique<AvatarListBox>(mPlayerList);
+        mScroll = std::make_unique<ScrollArea>(mList.get());
+
+        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
+    }
+
+    ~PlayerListTab()
+    {
+        delete mPlayerList;
+    }
+
+    void setPlayers(const std::vector<Avatar*> &players)
+    {
+        mPlayerList->setPlayers(players);
+    }
+
+protected:
+    void invite() override {}
+    void leave() override {}
+
+private:
+    PlayerList *mPlayerList;
 };
 
 /*class BuddyTab : public SocialTab
@@ -314,7 +374,12 @@ SocialWindow::SocialWindow() :
 
     widgetResized(nullptr);
 
-    mCreatePopup = new CreatePopup();
+    mCreatePopup = new CreatePopup;
+
+    mPlayerListTab = new PlayerListTab;
+    mPlayerListTab->setCaption(strprintf(_("Online (%zu)"), 0ul));
+
+    mTabs->addTab(mPlayerListTab, mPlayerListTab->mScroll.get());
 
     if (local_player->getParty())
     {
@@ -345,6 +410,7 @@ SocialWindow::~SocialWindow()
         mPartyInviter.clear();
     }
     delete mCreatePopup;
+    delete mPlayerListTab;
 }
 
 bool SocialWindow::addTab(Guild *guild)
@@ -603,6 +669,23 @@ void SocialWindow::showPartyCreate()
                                         _("Choose your party's name."), this);
     mPartyCreateDialog->setActionEventId("create party");
     mPartyCreateDialog->addActionListener(this);
+}
+
+void SocialWindow::setPlayersOnline(const std::vector<Avatar*> &players)
+{
+    mPlayerListTab->setPlayers(players);
+    mPlayerListTab->setCaption(strprintf(_("Online (%zu)"), players.size()));
+}
+
+void SocialWindow::logic()
+{
+    if (mLastOnlineListUpdate == 0 || get_elapsed_time(mLastOnlineListUpdate) >= 18000)
+    {
+        Net::getChatHandler()->requestOnlineList();
+        mLastOnlineListUpdate = tick_time;
+    }
+
+    Window::logic();
 }
 
 void SocialWindow::updateButtons()

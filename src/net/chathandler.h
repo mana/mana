@@ -58,6 +58,8 @@ class ChatHandler
         virtual void who() = 0;
 
         virtual bool whoSupported() const = 0;
+
+        virtual void requestOnlineList() = 0;
 };
 }
 

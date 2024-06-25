@@ -83,9 +83,6 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
         graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
                                                getWidth(), fontHeight));
 
-    int newWidth = 0;
-    int width = 0;
-
     // Draw the list elements
     graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     for (int i = 0, y = 0;
@@ -116,27 +113,16 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
         // Draw Name
         graphics->drawText(text, 15, y);
 
-        width = graphics->getFont()->getWidth(text) + 17; // Extra right padding
-
-        if (width > newWidth)
-        {
-            newWidth = width;
-        }
-
         if (a->getDisplayBold())
             graphics->setFont(getFont());
     }
-
-    setWidth(newWidth);
 }
 
 void AvatarListBox::mousePressed(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        int y = event.getY();
-        setSelected(y / getFont()->getHeight());
-        distributeActionEvent();
+        ListBox::mousePressed(event);
     }
     // TODO: Add support for context menu
     else if (event.getButton() == gcn::MouseEvent::RIGHT)

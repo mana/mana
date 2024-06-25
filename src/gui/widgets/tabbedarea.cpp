@@ -87,8 +87,10 @@ void TabbedArea::addTab(gcn::Tab* tab, gcn::Widget* widget)
 {
     gcn::TabbedArea::addTab(tab, widget);
 
-    widget->setSize(mWidgetContainer->getWidth(),
-                    mWidgetContainer->getHeight());
+    int frameSize = widget->getFrameSize();
+    widget->setPosition(frameSize, frameSize);
+    widget->setSize(mWidgetContainer->getWidth() - frameSize * 2,
+                    mWidgetContainer->getHeight() - frameSize * 2);
 
     updateTabsWidth();
     updateArrowEnableState();
@@ -177,8 +179,9 @@ void TabbedArea::widgetResized(const gcn::Event &event)
 
     if (gcn::Widget *w = getCurrentWidget())
     {
-        w->setSize(mWidgetContainer->getWidth(),
-                   mWidgetContainer->getHeight());
+        int frameSize = w->getFrameSize();
+        w->setSize(mWidgetContainer->getWidth() - frameSize * 2,
+                   mWidgetContainer->getHeight() - frameSize * 2);
     }
 
     // Check whether there is room to show more tabs now.

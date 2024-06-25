@@ -28,12 +28,15 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
+class Avatar;
 class Button;
 class ConfirmDialog;
 class CreatePopup;
 class Guild;
 class Party;
+class PlayerListTab;
 class SocialTab;
 class Tab;
 class TabbedArea;
@@ -74,12 +77,17 @@ public:
 
     void showPartyCreate();
 
+    void setPlayersOnline(const std::vector<Avatar*> &players);
+
+    void logic() override;
+
 protected:
     friend class SocialTab;
 
     void updateButtons();
 
     int mGuildInvited = 0;
+    int mLastOnlineListUpdate = 0;
     ConfirmDialog *mGuildAcceptDialog = nullptr;
     TextDialog *mGuildCreateDialog = nullptr;
 
@@ -91,6 +99,8 @@ protected:
     std::map<Party *, SocialTab *> mParties;
 
     CreatePopup *mCreatePopup;
+
+    PlayerListTab *mPlayerListTab;
 
     Button *mCreateButton;
     Button *mInviteButton;

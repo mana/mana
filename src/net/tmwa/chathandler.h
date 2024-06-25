@@ -66,6 +66,8 @@ class ChatHandler final : public MessageHandler, public Net::ChatHandler
 
         bool whoSupported() const override { return false; }
 
+        void requestOnlineList() override;
+
     private:
         std::queue<std::string> mSentWhispers;
 };

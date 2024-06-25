@@ -22,10 +22,13 @@
 #include "net/tmwa/chathandler.h"
 
 #include "actorspritemanager.h"
+#include "avatar.h"
 #include "being.h"
 #include "event.h"
 #include "localplayer.h"
 #include "playerrelations.h"
+
+#include "gui/socialwindow.h"
 
 #include "net/tmwa/loginhandler.h"
 #include "net/tmwa/messagein.h"
@@ -50,6 +53,7 @@ ChatHandler::ChatHandler()
         SMSG_WHISPER_RESPONSE,
         SMSG_GM_CHAT,
         SMSG_SCRIPT_MESSAGE,
+        SMSG_ONLINE_LIST,
         0
     };
     handledMessages = _messages;
@@ -252,6 +256,31 @@ void ChatHandler::handleMessage(MessageIn &msg)
             SERVER_NOTICE(msg.readString(chatMsgLength))
             break;
         }
+
+        case SMSG_ONLINE_LIST:
+        {
+            int length = msg.readInt16();
+            int count = (length - 4) / 31;
+            std::vector<Avatar*> players;
+            
+            for (int i = 0; i < count; i++)
+            {
+                msg.readInt32();    // account id
+                std::string nick = msg.readString(24);
+                msg.readInt8();     // level
+                msg.readInt8();     // gm level
+                msg.readInt8();     // gender
+
+                Avatar *avatar = new Avatar(nick);
+                avatar->setOnline(true);
+                players.push_back(avatar);
+            }
+
+            socialWindow->setPlayersOnline(players);
+
+            break;
+        }
+        
     }
 }
 
@@ -330,6 +359,11 @@ void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
 void ChatHandler::kickUser(int channelId, const std::string &name)
 {
     SERVER_NOTICE(_("Channels are not supported!"))
+}
+
+void ChatHandler::requestOnlineList()
+{
+    MessageOut outMsg(CMSG_ONLINE_LIST);
 }
 
 } // namespace TmwAthena

@@ -72,6 +72,8 @@ class ChatHandler final : public MessageHandler, public Net::ChatHandler
 
         bool whoSupported() const override { return true; }
 
+        void requestOnlineList() override {}
+
     private:
         /**
          * Handle chat messages sent from the game server.
