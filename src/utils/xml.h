@@ -95,9 +95,35 @@ namespace XML
      * Initializes the XML engine.
      */
     void init();
-}
 
-#define for_each_xml_child_node(var, parent) \
-    for (xmlNodePtr var = parent->xmlChildrenNode; var; var = var->next)
+    /**
+     * Helper class to iterate over the children of a node. Enables range-based
+     * for loops.
+     */
+    class Children
+    {
+    public:
+        class Iterator
+        {
+        public:
+            explicit Iterator(xmlNodePtr node) : mNode(node) {}
+
+            bool operator!=(const Iterator &other) const { return mNode != other.mNode; }
+            void operator++() { mNode = mNode->next; }
+            xmlNodePtr operator*() const { return mNode; }
+
+        private:
+            xmlNodePtr mNode;
+        };
+
+        explicit Children(xmlNodePtr node) : mNode(node) {}
+
+        Iterator begin() const { return Iterator(mNode->children); }
+        Iterator end() const { return Iterator(nullptr); }
+
+    private:
+        xmlNodePtr mNode;
+    };
+}
 
 #endif // XML_H

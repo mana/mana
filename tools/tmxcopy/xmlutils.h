@@ -55,7 +55,4 @@ namespace XML
     xmlNodePtr findFirstChildByName(xmlNodePtr parent, const char *name);
 }
 
-#define for_each_xml_child_node(var, parent) \
-    for (xmlNodePtr var = parent->xmlChildrenNode; var; var = var->next)
-
 #endif

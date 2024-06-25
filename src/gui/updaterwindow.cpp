@@ -64,7 +64,7 @@ std::vector<UpdateFile> loadXMLFile(const std::string &fileName)
         return files;
     }
 
-    for_each_xml_child_node(fileNode, rootNode)
+    for (auto fileNode : XML::Children(rootNode))
     {
         // Ignore all tags except for the "update" tags
         if (!xmlStrEqual(fileNode->name, BAD_CAST "update"))

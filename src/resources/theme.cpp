@@ -240,7 +240,7 @@ Skin *Theme::readSkin(const std::string &filename)
     memset(&border, 0, sizeof(ImageRect));
 
     // iterate <widget>'s
-    for_each_xml_child_node(widgetNode, rootNode)
+    for (auto widgetNode : XML::Children(rootNode))
     {
         if (!xmlStrEqual(widgetNode->name, BAD_CAST "widget"))
             continue;
@@ -253,7 +253,7 @@ Skin *Theme::readSkin(const std::string &filename)
             // LEEOR / TODO:
             // We need to make provisions to load in a CloseButton image. For
             // now it can just be hard-coded.
-            for_each_xml_child_node(partNode, widgetNode)
+            for (auto partNode : XML::Children(widgetNode))
             {
                 if (!xmlStrEqual(partNode->name, BAD_CAST "part"))
                     continue;
@@ -544,7 +544,7 @@ void Theme::loadColors(std::string file)
     gcn::Color color;
     GradientType grad;
 
-    for_each_xml_child_node(node, root)
+    for (auto node : XML::Children(root))
     {
         if (xmlStrEqual(node->name, BAD_CAST "color"))
         {

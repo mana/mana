@@ -123,7 +123,7 @@ void SpriteDef::loadSprite(xmlNodePtr spriteNode, int variant,
             variant * XML::getProperty(spriteNode, "variant_offset", 0);
     }
 
-    for_each_xml_child_node(node, spriteNode)
+    for (auto node : XML::Children(spriteNode))
     {
         if (xmlStrEqual(node->name, BAD_CAST "imageset"))
         {
@@ -198,7 +198,7 @@ void SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
     }
 
     // Load animations
-    for_each_xml_child_node(animationNode, node)
+    for (auto animationNode : XML::Children(node))
     {
         if (xmlStrEqual(animationNode->name, BAD_CAST "animation"))
         {
@@ -226,7 +226,7 @@ void SpriteDef::loadAnimation(xmlNodePtr animationNode,
     action->setAnimation(directionType, animation);
 
     // Get animation frames
-    for_each_xml_child_node(frameNode, animationNode)
+    for (auto frameNode : XML::Children(animationNode))
     {
         const int delay = XML::getProperty(frameNode, "delay",
                                            DEFAULT_FRAME_DELAY);

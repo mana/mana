@@ -211,7 +211,7 @@ void EquipBackend::readEquipFile()
     unsigned int slotIndex = 0;
     mVisibleSlots = 0;
 
-    for_each_xml_child_node(slotNode, rootNode)
+    for (auto slotNode : XML::Children(rootNode))
     {
         if (!xmlStrEqual(slotNode->name, BAD_CAST "slot"))
             continue;
@@ -257,7 +257,7 @@ void EquipBackend::readEquipFile()
 
 void EquipBackend::readBoxNode(xmlNodePtr slotNode)
 {
-    for_each_xml_child_node(boxNode, slotNode)
+    for (auto boxNode : XML::Children(slotNode))
     {
         if (!xmlStrEqual(boxNode->name, BAD_CAST "box"))
             continue;

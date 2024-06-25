@@ -130,7 +130,7 @@ namespace SettingsManager
         }
 
         // go through every node
-        for_each_xml_child_node(childNode, node)
+        for (auto childNode : XML::Children(node))
         {
             if (childNode->type != XML_ELEMENT_NODE)
                 continue;
@@ -201,7 +201,7 @@ namespace SettingsManager
                 const std::string name = XML::getProperty(childNode, "name", std::string());
                 if (name == "hair")
                 {
-                    for_each_xml_child_node(hairColorNode, childNode)
+                    for (auto hairColorNode : XML::Children(childNode))
                     {
                         if (xmlStrEqual(hairColorNode->name, BAD_CAST "color"))
                             hairDB.readHairColorNode(hairColorNode, filename);

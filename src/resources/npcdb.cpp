@@ -61,7 +61,7 @@ void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
         node, "targetSelection", true));
 
     SpriteDisplay display;
-    for_each_xml_child_node(spriteNode, node)
+    for (auto spriteNode : XML::Children(node))
     {
         if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
         {

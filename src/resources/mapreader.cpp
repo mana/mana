@@ -128,7 +128,7 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
 
     Map *map = new Map(w, h, tilew, tileh);
 
-    for_each_xml_child_node(childNode, node)
+    for (auto childNode : XML::Children(node))
     {
         if (xmlStrEqual(childNode->name, BAD_CAST "tileset"))
         {
@@ -154,7 +154,7 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
             const int offsetX = tileOffsetX * tilew;
             const int offsetY = tileOffsetY * tileh;
 
-            for_each_xml_child_node(objectNode, childNode)
+            for (auto objectNode : XML::Children(childNode))
             {
                 if (xmlStrEqual(objectNode->name, BAD_CAST "object"))
                 {
@@ -225,7 +225,7 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
  */
 static void readProperties(xmlNodePtr node, Properties *props)
 {
-    for_each_xml_child_node(childNode, node)
+    for (auto childNode : XML::Children(node))
     {
         if (!xmlStrEqual(childNode->name, BAD_CAST "property"))
             continue;
@@ -299,11 +299,11 @@ static void readLayer(xmlNodePtr node, Map *map)
     int y = 0;
 
     // Load the tile data
-    for_each_xml_child_node(childNode, node)
+    for (auto childNode : XML::Children(node))
     {
         if (xmlStrEqual(childNode->name, BAD_CAST "properties"))
         {
-            for_each_xml_child_node(prop, childNode)
+            for (auto prop : XML::Children(childNode))
             {
                 if (!xmlStrEqual(prop->name, BAD_CAST "property"))
                     continue;
@@ -462,7 +462,7 @@ static void readLayer(xmlNodePtr node, Map *map)
         else
         {
             // Read plain XML map file
-            for_each_xml_child_node(childNode2, childNode)
+            for (auto childNode2 : XML::Children(childNode))
             {
                 if (!xmlStrEqual(childNode2->name, BAD_CAST "tile"))
                     continue;
@@ -518,7 +518,7 @@ static Tileset *readTileset(xmlNodePtr node, const std::string &path,
     const int tw = XML::getProperty(node, "tilewidth", map->getTileWidth());
     const int th = XML::getProperty(node, "tileheight", map->getTileHeight());
 
-    for_each_xml_child_node(childNode, node)
+    for (auto childNode : XML::Children(node))
     {
         if (xmlStrEqual(childNode->name, BAD_CAST "image"))
         {
@@ -547,7 +547,7 @@ static Tileset *readTileset(xmlNodePtr node, const std::string &path,
         {
             const int tileGID = firstGid + XML::getProperty(childNode, "id", 0);
 
-            for_each_xml_child_node(tileNode, childNode)
+            for (auto tileNode : XML::Children(childNode))
             {
                 if (xmlStrEqual(tileNode->name, BAD_CAST "animation"))
                     readTileAnimation(tileNode, set, tileGID, map);
@@ -566,7 +566,7 @@ static void readTileAnimation(xmlNodePtr tileNode,
                               Map *map)
 {
     Animation ani;
-    for_each_xml_child_node(frameNode, tileNode)
+    for (auto frameNode : XML::Children(tileNode))
     {
         if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
         {

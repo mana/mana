@@ -211,14 +211,14 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
 {
     clear();
 
-    for_each_xml_child_node(node, parent_node)
+    for (auto node : XML::Children(parent_node))
     {
         if (xmlStrEqual(node->name, BAD_CAST "list"))
         {
             // List option handling.
             std::string name = XML::getProperty(node, "name", std::string());
 
-            for_each_xml_child_node(subnode, node)
+            for (auto subnode : XML::Children(node))
             {
                 if (xmlStrEqual(subnode->name, BAD_CAST name.c_str())
                     && subnode->type == XML_ELEMENT_NODE)

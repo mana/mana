@@ -357,7 +357,7 @@ void SkillDialog::loadSkills()
         return;
     }
 
-    for_each_xml_child_node(set, root)
+    for (auto set : XML::Children(root))
     {
         if (xmlStrEqual(set->name, BAD_CAST "set") ||
             xmlStrEqual(set->name, BAD_CAST "skill-set"))
@@ -367,7 +367,7 @@ void SkillDialog::loadSkills()
 
             auto *model = new SkillModel();
 
-            for_each_xml_child_node(node, set)
+            for (auto node : XML::Children(set))
             {
                 if (xmlStrEqual(node->name, BAD_CAST "skill"))
                 {

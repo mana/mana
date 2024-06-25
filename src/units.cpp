@@ -107,7 +107,7 @@ void Units::readUnitNode(xmlNodePtr node, const std::string &filename)
 
     ud.levels.push_back(bu);
 
-    for_each_xml_child_node(uLevel, node)
+    for (auto uLevel : XML::Children(node))
     {
         if (xmlStrEqual(uLevel->name, BAD_CAST "level"))
         {

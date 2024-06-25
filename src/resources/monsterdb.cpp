@@ -87,7 +87,7 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
     SpriteDisplay display;
 
     //iterate <sprite>s and <sound>s
-    for_each_xml_child_node(spriteNode, node)
+    for (auto spriteNode : XML::Children(node))
     {
         if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
         {

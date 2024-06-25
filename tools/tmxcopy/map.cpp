@@ -56,7 +56,7 @@ Map::Map(std::string filename):
     mWidth = XML::getProperty(rootNode, "width", 0);
     mHeight = XML::getProperty(rootNode, "height", 0);
     int layerNum = 0;
-    for_each_xml_child_node(node, rootNode)
+    for (auto node : XML::Children(rootNode))
     {
         if (xmlStrEqual(node->name, BAD_CAST "tileset"))
         {
@@ -66,7 +66,7 @@ Map::Map(std::string filename):
             tileset->tilewidth = XML::getProperty(node, "tilewidth", 0);
             tileset->tileheight = XML::getProperty(node, "tileheight", 0);
             tileset->firstgid = XML::getProperty(node, "firstgid", 0);
-            for_each_xml_child_node(imageNode, node)
+            for (auto imageNode : XML::Children(node))
             {
                 if (xmlStrEqual(imageNode->name, BAD_CAST "image"))
                 tileset->imagefile = XML::getProperty(imageNode, "source", "");
@@ -77,7 +77,7 @@ Map::Map(std::string filename):
         }
     }
 
-    for_each_xml_child_node(node, rootNode)
+    for (auto node : XML::Children(rootNode))
     {
         if (xmlStrEqual(node->name, BAD_CAST "layer"))
         {
@@ -94,7 +94,7 @@ Map::Map(std::string filename):
                 throw 1;
             }
 
-            for_each_xml_child_node(dataNode, node)
+            for (auto dataNode : XML::Children(node))
             {
                 if (!xmlStrEqual(dataNode->name, BAD_CAST "data")) continue;
 
@@ -532,7 +532,7 @@ int Map::save(std::string filename)
     //remove old tileset and layer information in XML tree
     xmlNodePtr rootNode = xmlDocGetRootElement(mXmlDoc);
     std::list<xmlNodePtr> toRemove;
-    for_each_xml_child_node(node, rootNode)
+    for (auto node : XML::Children(rootNode))
     {
         if (    xmlStrEqual(node->name, BAD_CAST "tileset")
             ||  xmlStrEqual(node->name, BAD_CAST "layer"))

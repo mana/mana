@@ -67,7 +67,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
     mOutputPause.set(0);
     mParticleAlpha.set(1.0f);
 
-    for_each_xml_child_node(propertyNode, emitterNode)
+    for (auto propertyNode : XML::Children(emitterNode))
     {
         if (xmlStrEqual(propertyNode->name, BAD_CAST "property"))
         {
@@ -202,7 +202,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
             );
 
             // Get animation frames
-            for_each_xml_child_node(frameNode, propertyNode)
+            for (auto frameNode : XML::Children(propertyNode))
             {
                 int delay = XML::getProperty(frameNode, "delay", 0);
                 int offsetX = XML::getProperty(frameNode, "offsetX", 0);
@@ -280,7 +280,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                                         imagesetPath.c_str()));
 
             // Get animation frames
-            for_each_xml_child_node(frameNode, propertyNode)
+            for (auto frameNode : XML::Children(propertyNode))
             {
                 int delay = XML::getProperty(frameNode, "delay", 0);
                 int offsetX = XML::getProperty(frameNode, "offsetX", 0);

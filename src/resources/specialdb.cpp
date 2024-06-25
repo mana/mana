@@ -54,7 +54,7 @@ void SpecialDB::readSpecialSetNode(xmlNodePtr node, const std::string &filename)
 {
     std::string setName = XML::getProperty(node, "name", "Actions");
 
-    for_each_xml_child_node(special, node)
+    for (auto special : XML::Children(node))
     {
         if (xmlStrEqual(special->name, BAD_CAST "special"))
         {
@@ -113,4 +113,3 @@ SpecialInfo *SpecialDB::get(int id)
     }
     return nullptr;
 }
-

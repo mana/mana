@@ -443,7 +443,7 @@ void ServerDialog::loadServers()
         return;
     }
 
-    for_each_xml_child_node(serverNode, rootNode)
+    for (auto serverNode : XML::Children(rootNode))
     {
         if (!xmlStrEqual(serverNode->name, BAD_CAST "server"))
             continue;
@@ -481,7 +481,7 @@ void ServerDialog::loadServers()
         else
             version = strprintf(_("requires v%s"), version.c_str());
 
-        for_each_xml_child_node(subNode, serverNode)
+        for (auto subNode : XML::Children(serverNode))
         {
             if (xmlStrEqual(subNode->name, BAD_CAST "connection"))
             {

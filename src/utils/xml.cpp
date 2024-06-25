@@ -168,7 +168,7 @@ namespace XML
 
     xmlNodePtr findFirstChildByName(xmlNodePtr parent, const char *name)
     {
-        for_each_xml_child_node(child, parent)
+        for (auto child : XML::Children(parent))
             if (xmlStrEqual(child->name, BAD_CAST name))
                 return child;
 

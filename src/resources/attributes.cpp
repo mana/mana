@@ -277,7 +277,7 @@ namespace Attributes {
         attributes[id] = a;
 
         unsigned int count = 0;
-        for_each_xml_child_node(effectNode, node)
+        for (auto effectNode : XML::Children(node))
         {
             if (!xmlStrEqual(effectNode->name, BAD_CAST "modifier"))
                  continue;

@@ -272,7 +272,7 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Parse particles
-    for_each_xml_child_node(effectChildNode, rootNode)
+    for (auto effectChildNode : XML::Children(rootNode))
     {
         // We're only interested in particles
         if (!xmlStrEqual(effectChildNode->name, BAD_CAST "particle"))
@@ -322,7 +322,7 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
         newParticle->setAllowSizeAdjust(resizeable);
 
         // Look for additional emitters for this particle
-        for_each_xml_child_node(emitterNode, effectChildNode)
+        for (auto emitterNode : XML::Children(effectChildNode))
         {
             if (xmlStrEqual(emitterNode->name, BAD_CAST "emitter"))
             {

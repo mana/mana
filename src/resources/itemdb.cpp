@@ -152,7 +152,7 @@ void ItemDB::loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
 
 void ItemDB::loadFloorSprite(SpriteDisplay *display, xmlNodePtr floorNode)
 {
-    for_each_xml_child_node(spriteNode, floorNode)
+    for (auto spriteNode : XML::Children(floorNode))
     {
         if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
         {
@@ -232,7 +232,7 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node, const std::strin
         itemInfo->setCriticalHitEffectId(criticalEffectId);
 
         // Load <sprite>, <sound>, and <floor>
-        for_each_xml_child_node(itemChild, node)
+        for (auto itemChild : XML::Children(node))
         {
             if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
             {
@@ -423,7 +423,7 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
 
     // Load <equip>, and <effect> sub nodes.
     std::vector<std::string> effect;
-    for_each_xml_child_node(itemChild, node)
+    for (auto itemChild : XML::Children(node))
     {
         if (xmlStrEqual(itemChild->name, BAD_CAST "equip"))
         {
@@ -452,7 +452,7 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
                 continue;
             }
 
-            for_each_xml_child_node(effectChild, itemChild)
+            for (auto effectChild : XML::Children(itemChild))
             {
                 if (xmlStrEqual(effectChild->name, BAD_CAST "modifier"))
                 {
@@ -505,7 +505,7 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
             itemInfo->mType = ITEM_USABLE;
         else if (itemInfo->mEquippable)
             itemInfo->mType = ITEM_EQUIPMENT_TORSO;
-    } // end for_each_xml_child_node(itemChild, node)
+    } // end for (auto itemChild : XML::Children(node))
 
     itemInfo->mEffect = effect;
 
