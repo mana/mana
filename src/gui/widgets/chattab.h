@@ -129,8 +129,6 @@ class ChatTab : public Tab, public AutoCompleteLister, public EventListener
          */
         void updateTextFormat(int alpha);
 
-        void addRow(std::string &line);
-
         ScrollArea *mScrollArea;
         BrowserBox *mTextOutput;
         //Recorder *mRecorder;
