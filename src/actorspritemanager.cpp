@@ -144,13 +144,17 @@ Being *ActorSpriteManager::findBeing(int x, int y, ActorSprite::Type type) const
         if (type != ActorSprite::UNKNOWN && actorType != type)
             return false;
 
-        auto *b = static_cast<Being*>(actor);
+        auto *being = static_cast<Being*>(actor);
+
+        if (!being->isTargetSelection())
+            return false;
+
         uint16_t other_y = y + (actorType == ActorSprite::NPC ? 1 : 0);
-        const Vector &pos = b->getPosition();
+        const Vector &pos = being->getPosition();
         return ((int) pos.x / tileWidth == x &&
                 ((int) pos.y / tileHeight == y
                  || (int) pos.y / tileHeight == other_y) &&
-                b->isAlive());
+                being->isAlive());
     });
 
     return it == mActors.end() ? nullptr : static_cast<Being*>(*it);
@@ -173,6 +177,9 @@ Being *ActorSpriteManager::findBeingByPixel(int x, int y) const
             continue;
 
         auto *being = static_cast<Being *>(actor);
+
+        if (!being->isTargetSelection())
+            continue;
 
         const int halfWidth = std::max(16, being->getWidth() / 2);
         const int height = std::max(32, being->getHeight());
@@ -296,6 +303,10 @@ Being *ActorSpriteManager::findNearestLivingBeing(int x, int y,
             continue;
 
         auto *being = static_cast<Being *>(actor);
+
+        if (!being->isTargetSelection())
+            continue;
+
         const Vector &pos = being->getPosition();
         int d = abs(((int)pos.x) - x) + abs(((int)pos.y) - y);
 

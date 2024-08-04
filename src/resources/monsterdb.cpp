@@ -81,6 +81,9 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
 
     currentInfo->setHoverCursor(XML::getProperty(node, "hoverCursor", "attack"));
 
+    currentInfo->setTargetSelection(XML::getProperty(
+        node, "targetSelection", true));
+
     SpriteDisplay display;
 
     //iterate <sprite>s and <sound>s

@@ -127,6 +127,11 @@ void Being::setSubtype(Uint16 subtype)
     }
 }
 
+bool Being::isTargetSelection() const
+{
+    return mInfo->isTargetSelection();
+}
+
 ActorSprite::TargetCursorSize Being::getTargetCursorSize() const
 {
     return mInfo->getTargetCursorSize();
@@ -383,7 +388,7 @@ void Being::takeDamage(Being *attacker, int amount,
         }
         else if (attacker && attacker->getType() == MONSTER)
         {
-            const Attack &attack = attacker->getInfo()->getAttack(attackId);
+            const Attack &attack = attacker->getInfo().getAttack(attackId);
 
             if (type != CRITICAL)
                 hitEffectId = attack.mHitEffectId;

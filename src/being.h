@@ -293,8 +293,10 @@ class Being : public ActorSprite, public EventListener
           */
         void setSubtype(uint16_t subtype);
 
-        const BeingInfo *getInfo() const
-        { return mInfo; }
+        const BeingInfo &getInfo() const
+        { return *mInfo; }
+
+        bool isTargetSelection() const;
 
         TargetCursorSize getTargetCursorSize() const override;
 

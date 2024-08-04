@@ -113,6 +113,12 @@ class BeingInfo
         Map::BlockType getBlockType() const
         { return mBlockType; }
 
+        void setTargetSelection(bool n)
+        { mTargetSelection = n; }
+
+        bool isTargetSelection() const
+        { return mTargetSelection; }
+
     private:
         SpriteDisplay mDisplay;
         std::string mName;
@@ -122,6 +128,7 @@ class BeingInfo
         std::map<int, Attack> mAttacks;
         unsigned char mWalkMask;
         Map::BlockType mBlockType = Map::BLOCKTYPE_CHARACTER;
+        bool mTargetSelection = true;
 };
 
 #endif // BEINGINFO_H
