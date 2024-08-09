@@ -682,14 +682,14 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
         const int y = event.getY();
         const int p = getPadding();
 
-        const bool inPadding = (x < p || x > getWidth() - p) ||
-                               (y < p || y > getHeight() - p);
+        const bool inPadding = (x < p || x >= getWidth() - p) ||
+                               (y < p || y >= getHeight() - p);
 
         if (inPadding && event.getSource() == this)
         {
-            resizeHandles |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
+            resizeHandles |= (x >= getWidth() - resizeBorderWidth) ? RIGHT :
                               (x < resizeBorderWidth) ? LEFT : 0;
-            resizeHandles |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
+            resizeHandles |= (y >= getHeight() - resizeBorderWidth) ? BOTTOM :
                               (y < resizeBorderWidth) ? TOP : 0;
         }
 
