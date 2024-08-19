@@ -49,7 +49,7 @@ struct SpriteDisplay
  * Remember those are the main action.
  * Action subtypes, e.g.: "attack_bow" are to be passed by items.xml after
  * an ACTION_ATTACK call.
- * Which special to be use to to be passed with the USE_SPECIAL call.
+ * Which ability to be use to to be passed with the USE_ABILITY call.
  * Running, walking, ... is a sub-type of moving.
  * ...
  * Please don't add hard-coded subtypes here!
@@ -64,7 +64,7 @@ namespace SpriteAction
     static const std::string MOVE = "walk";
     static const std::string ATTACK = "attack";
     static const std::string HURT = "hurt";
-    static const std::string USE_SPECIAL = "special";
+    static const std::string USE_ABILITY = "ability";
     static const std::string CAST_MAGIC = "magic";
     static const std::string USE_ITEM = "item";
     static const std::string INVALID;

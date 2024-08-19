@@ -49,7 +49,7 @@
 #include "net/tmwa/playerhandler.h"
 #include "net/tmwa/protocol.h"
 #include "net/tmwa/tradehandler.h"
-#include "net/tmwa/specialhandler.h"
+#include "net/tmwa/abilityhandler.h"
 
 #include "net/tmwa/gui/guildtab.h"
 #include "net/tmwa/gui/partytab.h"
@@ -84,7 +84,7 @@ GeneralHandler::GeneralHandler():
     mNpcHandler(new NpcHandler),
     mPartyHandler(new PartyHandler),
     mPlayerHandler(new PlayerHandler),
-    mSpecialHandler(new SpecialHandler),
+    mAbilityHandler(new AbilityHandler),
     mTradeHandler(new TradeHandler)
 {
     static const Uint16 _messages[] = {
@@ -169,7 +169,7 @@ void GeneralHandler::load()
     mNetwork->registerHandler(mLoginHandler.get());
     mNetwork->registerHandler(mNpcHandler.get());
     mNetwork->registerHandler(mPlayerHandler.get());
-    mNetwork->registerHandler(mSpecialHandler.get());
+    mNetwork->registerHandler(mAbilityHandler.get());
     mNetwork->registerHandler(mTradeHandler.get());
     mNetwork->registerHandler(mPartyHandler.get());
 }

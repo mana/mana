@@ -19,55 +19,55 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "net/manaserv/specialhandler.h"
+#include "net/manaserv/abilityhandler.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
 
-extern Net::SpecialHandler *specialHandler;
+extern Net::AbilityHandler *abilityHandler;
 
 namespace ManaServ {
 
 extern Connection *gameServerConnection;
 
-SpecialHandler::SpecialHandler()
+AbilityHandler::AbilityHandler()
 {
-    specialHandler = this;
+    abilityHandler = this;
 }
 
-void SpecialHandler::handleMessage(MessageIn &msg)
+void AbilityHandler::handleMessage(MessageIn &msg)
 {
     // TODO
 }
 
-void SpecialHandler::use(int id)
+void AbilityHandler::use(int id)
 {
-    MessageOut msg(PGMSG_USE_SPECIAL_ON_BEING);
+    MessageOut msg(PGMSG_USE_ABILITY_ON_BEING);
     msg.writeInt8(id);
     msg.writeInt16(0);
     gameServerConnection->send(msg);
 }
 
-void SpecialHandler::use(int id, int level, int beingId)
+void AbilityHandler::use(int id, int level, int beingId)
 {
-    MessageOut msg(PGMSG_USE_SPECIAL_ON_BEING);
+    MessageOut msg(PGMSG_USE_ABILITY_ON_BEING);
     msg.writeInt8(id);
     msg.writeInt16(beingId);
     gameServerConnection->send(msg);
 }
 
-void SpecialHandler::use(int id, int level, int x, int y)
+void AbilityHandler::use(int id, int level, int x, int y)
 {
-    MessageOut msg(PGMSG_USE_SPECIAL_ON_POINT);
+    MessageOut msg(PGMSG_USE_ABILITY_ON_POINT);
     msg.writeInt8(id);
     msg.writeInt16(x);
     msg.writeInt16(y);
     gameServerConnection->send(msg);
 }
 
-void SpecialHandler::use(int id, const std::string &map)
+void AbilityHandler::use(int id, const std::string &map)
 {
     // TODO
 }

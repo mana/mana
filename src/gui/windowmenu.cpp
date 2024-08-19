@@ -25,7 +25,7 @@
 
 #include "gui/emotepopup.h"
 #include "gui/skilldialog.h"
-#include "gui/specialswindow.h"
+#include "gui/abilitieswindow.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/window.h"
@@ -61,8 +61,8 @@ WindowMenu::WindowMenu()
         addButton(N_("Skills"), x, h, "button-icon-skills.png",
                   KeyboardConfig::KEY_WINDOW_SKILL);
 
-    if (specialsWindow->hasSpecials())
-        addButton(N_("Specials"), x, h, "button-icon-specials.png");
+    if (abilitiesWindow->hasAbilities())
+        addButton(N_("Abilities"), x, h, "button-icon-abilities.png");
 
     addButton(N_("Social"), x, h, "button-icon-social.png",
         KeyboardConfig::KEY_WINDOW_SOCIAL);
@@ -122,9 +122,9 @@ void WindowMenu::action(const gcn::ActionEvent &event)
     {
         window = skillDialog;
     }
-    else if (event.getId() == "Specials")
+    else if (event.getId() == "Abilities")
     {
-        window = specialsWindow;
+        window = abilitiesWindow;
     }
     else if (event.getId() == "Social")
     {

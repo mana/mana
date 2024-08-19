@@ -57,7 +57,7 @@
 #include "gui/sdlinput.h"
 #include "gui/setup.h"
 #include "gui/socialwindow.h"
-#include "gui/specialswindow.h"
+#include "gui/abilitieswindow.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
 #include "gui/textdialog.h"
@@ -104,7 +104,7 @@ DebugWindow *debugWindow;
 ShortcutWindow *itemShortcutWindow;
 ShortcutWindow *emoteShortcutWindow;
 OutfitWindow *outfitWindow;
-SpecialsWindow *specialsWindow;
+AbilitiesWindow *abilitiesWindow;
 SocialWindow *socialWindow;
 
 ActorSpriteManager *actorSpriteManager;
@@ -159,7 +159,7 @@ static void createGuiWindows()
     emoteShortcutWindow = new ShortcutWindow("EmoteShortcut",
                                              new EmoteShortcutContainer);
     outfitWindow = new OutfitWindow();
-    specialsWindow = new SpecialsWindow();
+    abilitiesWindow = new AbilitiesWindow();
     socialWindow = new SocialWindow();
 
     localChatTab = new ChatTab(_("General"));
@@ -192,7 +192,7 @@ static void destroyGuiWindows()
     del_0(itemShortcutWindow)
     del_0(emoteShortcutWindow)
     del_0(outfitWindow)
-    del_0(specialsWindow)
+    del_0(abilitiesWindow)
     del_0(socialWindow)
 
     Event::trigger(Event::NpcChannel, Event::CloseAll); // Cleanup remaining NPC dialogs

@@ -1,6 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2004-2009  The Mana World Development Team
  *  Copyright (C) 2009-2012  The Mana Developers
  *
  *  This file is part of The Mana Client.
@@ -21,22 +21,27 @@
 
 #pragma once
 
-#include <iosfwd>
+#include "net/net.h"
+#include "net/abilityhandler.h"
 
-namespace Net {
+#include "net/tmwa/messagehandler.h"
 
-class SpecialHandler
+namespace TmwAthena {
+
+class AbilityHandler final : public MessageHandler, public Net::AbilityHandler
 {
     public:
-        virtual ~SpecialHandler () {}
+        AbilityHandler();
 
-        virtual void use(int id) = 0;
+        void handleMessage(MessageIn &msg) override;
 
-        virtual void use(int id, int level, int beingId) = 0;
+        void use(int id) override;
 
-        virtual void use(int id, int level, int x, int y) = 0;
+        void use(int id, int level, int beingId) override;
 
-        virtual void use(int id, const std::string &map) = 0;
+        void use(int id, int level, int x, int y) override;
+
+        void use(int id, const std::string &map) override;
 };
 
-} // namespace Net
+} // namespace TmwAthena

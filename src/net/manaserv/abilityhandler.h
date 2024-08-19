@@ -21,17 +21,16 @@
 
 #pragma once
 
-#include "net/net.h"
-#include "net/specialhandler.h"
+#include "net/abilityhandler.h"
 
-#include "net/tmwa/messagehandler.h"
+#include "net/manaserv/messagehandler.h"
 
-namespace TmwAthena {
+namespace ManaServ {
 
-class SpecialHandler final : public MessageHandler, public Net::SpecialHandler
+class AbilityHandler final : public MessageHandler, public Net::AbilityHandler
 {
     public:
-        SpecialHandler();
+        AbilityHandler();
 
         void handleMessage(MessageIn &msg) override;
 
@@ -44,4 +43,4 @@ class SpecialHandler final : public MessageHandler, public Net::SpecialHandler
         void use(int id, const std::string &map) override;
 };
 
-} // namespace TmwAthena
+} // namespace ManaServ

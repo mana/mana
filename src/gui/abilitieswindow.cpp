@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/specialswindow.h"
+#include "gui/abilitieswindow.h"
 
 #include "log.h"
 
@@ -32,9 +32,9 @@
 #include "gui/widgets/windowcontainer.h"
 
 #include "net/net.h"
-#include "net/specialhandler.h"
+#include "net/abilityhandler.h"
 
-#include "resources/specialdb.h"
+#include "resources/abilitydb.h"
 #include "resources/theme.h"
 
 #include "utils/dtor.h"
@@ -44,19 +44,19 @@
 
 #include <string>
 
-#define SPECIALS_WIDTH 200
-#define SPECIALS_HEIGHT 32
+#define ABILITIES_WIDTH 200
+#define ABILITIES_HEIGHT 32
 
-class SpecialEntry : public Container
+class AbilityEntry : public Container
 {
     public:
-        SpecialEntry(SpecialInfo *info);
+        AbilityEntry(AbilityInfo *info);
 
         void update(int current, int needed);
 
     protected:
-        friend class SpecialsWindow;
-        SpecialInfo *mInfo;
+        friend class AbilitiesWindow;
+        AbilityInfo *mInfo;
 
     private:
         Icon *mIcon = nullptr;          // icon to display
@@ -65,46 +65,46 @@ class SpecialEntry : public Container
         ProgressBar *mRechargeBar = nullptr; // recharge bar (only shown when applicable)
 };
 
-SpecialsWindow::SpecialsWindow():
-    Window(_("Specials"))
+AbilitiesWindow::AbilitiesWindow():
+    Window(_("Abilities"))
 {
-    setWindowName("Specials");
+    setWindowName("Abilities");
     setCloseButton(true);
     setResizable(true);
     setSaveVisible(true);
-    setDefaultSize(windowContainer->getWidth() - 280, 40, SPECIALS_WIDTH + 20, 225);
+    setDefaultSize(windowContainer->getWidth() - 280, 40, ABILITIES_WIDTH + 20, 225);
     setupWindow->registerWindowForReset(this);
 
     center();
     loadWindowState();
 }
 
-SpecialsWindow::~SpecialsWindow()
+AbilitiesWindow::~AbilitiesWindow()
 {
     // Clear gui
 }
 
-void SpecialsWindow::action(const gcn::ActionEvent &event)
+void AbilitiesWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "use")
     {
-        auto *disp = dynamic_cast<SpecialEntry*>(event.getSource()->getParent());
+        auto *disp = dynamic_cast<AbilityEntry*>(event.getSource()->getParent());
 
         if (disp)
         {
-            if (disp->mInfo->targetMode == SpecialInfo::TARGET_BEING)
+            if (disp->mInfo->targetMode == AbilityInfo::TARGET_BEING)
             {
                 Being *target = local_player->getTarget();
 
                 if (target)
-                    Net::getSpecialHandler()->use(disp->mInfo->id, 1, target->getId());
+                    Net::getAbilityHandler()->use(disp->mInfo->id, 1, target->getId());
                 else
-                    Net::getSpecialHandler()->use(disp->mInfo->id);
+                    Net::getAbilityHandler()->use(disp->mInfo->id);
             }
             else
             {
                 // TODO: Allow the player to aim at a position on the map and
-                //       Use special on the map position.
+                //       Use abilities on the map position.
             }
         }
     }
@@ -114,68 +114,68 @@ void SpecialsWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void SpecialsWindow::draw(gcn::Graphics *graphics)
+void AbilitiesWindow::draw(gcn::Graphics *graphics)
 {
     // update the progress bars
-    std::map<int, Special> specialData = PlayerInfo::getSpecialStatus();
+    const std::map<int, Ability> &abilityData = PlayerInfo::getAbilityStatus();
     bool foundNew = false;
-    unsigned int found = 0; // number of entries in specialData which match mEntries
+    unsigned int found = 0; // number of entries in abilityData which match mEntries
 
-    for (auto &special : specialData)
+    for (auto &[id, ability] : abilityData)
     {
-        auto e = mEntries.find(special.first);
+        auto e = mEntries.find(id);
         if (e == mEntries.end())
         {
-            // found a new special - abort update and rebuild from scratch
+            // found a new ability - abort update and rebuild from scratch
             foundNew = true;
             break;
         }
 
-        // update progress bar of special
-        e->second->update(special.second.currentMana, special.second.neededMana);
+        // update progress bar of ability
+        e->second->update(ability.currentMana, ability.neededMana);
         found++;
     }
-    // a rebuild is needed when a) the number of specials changed or b) an existing entry isn't found anymore
+    // a rebuild is needed when a) the number of abilities changed or b) an existing entry isn't found anymore
     if (foundNew || found != mEntries.size())
-        rebuild(specialData);
+        rebuild(abilityData);
 
     Window::draw(graphics);
 }
 
-void SpecialsWindow::rebuild(const std::map<int, Special> &specialData)
+void AbilitiesWindow::rebuild(const std::map<int, Ability> &abilityData)
 {
     delete_all(mEntries);
     
     mEntries.clear();
     int vPos = 0; //vertical position of next placed element
 
-    for (auto special : specialData)
+    for (auto &[id, ability] : abilityData)
     {
-        logger->log("Updating special GUI for %d", special.first);
+        logger->log("Updating ability GUI for %d", id);
 
-        SpecialInfo *info = SpecialDB::get(special.first);
+        AbilityInfo *info = AbilityDB::get(id);
         if (info)
         {
-            info->rechargeCurrent = special.second.currentMana;
-            info->rechargeNeeded = special.second.neededMana;
-            auto* entry = new SpecialEntry(info);
+            info->rechargeCurrent = ability.currentMana;
+            info->rechargeNeeded = ability.neededMana;
+            auto *entry = new AbilityEntry(info);
             entry->setPosition(0, vPos);
             vPos += entry->getHeight() + 3;
             add(entry);
-            mEntries[special.first] = entry;
+            mEntries[id] = entry;
         }
         else
         {
-            logger->log("Warning: No info available of special %d", special.first);
+            logger->log("Warning: No info available of ability %d", id);
         }
     }
 }
 
 
-SpecialEntry::SpecialEntry(SpecialInfo *info) :
+AbilityEntry::AbilityEntry(AbilityInfo *info) :
     mInfo(info)
 {
-    setSize(SPECIALS_WIDTH, SPECIALS_HEIGHT);
+    setSize(ABILITIES_WIDTH, ABILITIES_HEIGHT);
 
     if (!info->icon.empty())
         mIcon = new Icon(info->icon);
@@ -189,7 +189,7 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     mNameLabel->setPosition(35, 0);
     add(mNameLabel);
 
-    mUse = new Button("Use", "use", specialsWindow);
+    mUse = new Button("Use", "use", abilitiesWindow);
     mUse->setPosition(getWidth() - mUse->getWidth(), 5);
     add(mUse);
 
@@ -203,7 +203,7 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     }
 }
 
-void SpecialEntry::update(int current, int needed)
+void AbilityEntry::update(int current, int needed)
 {
     if (mRechargeBar)
     {

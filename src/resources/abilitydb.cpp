@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "resources/specialdb.h"
+#include "resources/abilitydb.h"
 
 #include "log.h"
 
@@ -28,82 +28,82 @@
 
 namespace
 {
-    std::map<int, SpecialInfo *> mSpecialInfos;
+    std::map<int, AbilityInfo *> mAbilityInfos;
     bool mLoaded = false;
 }
 
-SpecialInfo::TargetMode SpecialDB::targetModeFromString(const std::string& str)
+AbilityInfo::TargetMode AbilityDB::targetModeFromString(const std::string& str)
 {
     if (str == "being")
-        return SpecialInfo::TARGET_BEING;
+        return AbilityInfo::TARGET_BEING;
     if (str == "point")
-        return SpecialInfo::TARGET_POINT;
+        return AbilityInfo::TARGET_POINT;
 
-    logger->log("SpecialDB: Warning, unknown target mode \"%s\"", str.c_str() );
-    return SpecialInfo::TARGET_BEING;
+    logger->log("AbilityDB: Warning, unknown target mode \"%s\"", str.c_str() );
+    return AbilityInfo::TARGET_BEING;
 }
 
 
-void SpecialDB::init()
+void AbilityDB::init()
 {
     if (mLoaded)
         unload();
 }
 
-void SpecialDB::readSpecialSetNode(XML::Node node, const std::string &filename)
+void AbilityDB::readAbilitySetNode(XML::Node node, const std::string &filename)
 {
     std::string setName = node.getProperty("name", "Actions");
 
-    for (auto special : node.children())
+    for (auto ability : node.children())
     {
-        if (special.name() == "special")
+        if (ability.name() == "ability")
         {
-            auto *info = new SpecialInfo();
-            int id = special.getProperty("id", 0);
+            auto *info = new AbilityInfo();
+            int id = ability.getProperty("id", 0);
             info->id = id;
             info->set = setName;
-            info->name = special.getProperty("name", "");
-            info->icon = special.getProperty("icon", "");
+            info->name = ability.getProperty("name", "");
+            info->icon = ability.getProperty("icon", "");
 
-            info->targetMode = targetModeFromString(special.getProperty("target", "being"));
+            info->targetMode = targetModeFromString(ability.getProperty("target", "being"));
 
-            info->rechargeable = special.getBoolProperty("rechargeable", true);
+            info->rechargeable = ability.getBoolProperty("rechargeable", true);
             info->rechargeNeeded = 0;
             info->rechargeCurrent = 0;
 
-            if (mSpecialInfos.find(id) != mSpecialInfos.end())
+            if (mAbilityInfos.find(id) != mAbilityInfos.end())
             {
-                logger->log("SpecialDB: Duplicate special ID %d in %s, ignoring", id, filename.c_str());
+                logger->log("AbilityDB: Duplicate ability ID %d in %s, ignoring", id, filename.c_str());
             } else {
-                mSpecialInfos[id] = info;
+                mAbilityInfos[id] = info;
             }
         }
     }
 
 }
 
-void SpecialDB::checkStatus()
+void AbilityDB::checkStatus()
 {
     mLoaded = true;
 }
 
 
-void SpecialDB::unload()
+void AbilityDB::unload()
 {
 
-    delete_all(mSpecialInfos);
-    mSpecialInfos.clear();
+    delete_all(mAbilityInfos);
+    mAbilityInfos.clear();
 
     mLoaded = false;
 }
 
 
-SpecialInfo *SpecialDB::get(int id)
+AbilityInfo *AbilityDB::get(int id)
 {
 
-    auto i = mSpecialInfos.find(id);
+    auto i = mAbilityInfos.find(id);
 
-    if (i == mSpecialInfos.end())
+    if (i == mAbilityInfos.end())
     {
         return nullptr;
     }

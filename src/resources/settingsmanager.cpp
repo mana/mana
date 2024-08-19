@@ -26,7 +26,7 @@
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
 #include "resources/npcdb.h"
-#include "resources/specialdb.h"
+#include "resources/abilitydb.h"
 #include "resources/statuseffectdb.h"
 
 #include "net/net.h"
@@ -53,7 +53,7 @@ namespace SettingsManager
         hairDB.init();
         itemDb->init();
         MonsterDB::init();
-        SpecialDB::init();
+        AbilityDB::init();
         NPCDB::init();
         EmoteDB::init();
         StatusEffectDB::init();
@@ -77,7 +77,7 @@ namespace SettingsManager
         hairDB.checkStatus();
         itemDb->checkStatus();
         MonsterDB::checkStatus();
-        SpecialDB::checkStatus();
+        AbilityDB::checkStatus();
         NPCDB::checkStatus();
         EmoteDB::checkStatus();
         StatusEffectDB::checkStatus();
@@ -94,7 +94,7 @@ namespace SettingsManager
         StatusEffectDB::unload();
         EmoteDB::unload();
         NPCDB::unload();
-        SpecialDB::unload();
+        AbilityDB::unload();
         MonsterDB::unload();
         if (itemDb)
             itemDb->unload();
@@ -214,9 +214,9 @@ namespace SettingsManager
             {
                 MonsterDB::readMonsterNode(childNode, filename);
             }
-            else if (childNode.name() == "special-set")
+            else if (childNode.name() == "ability-set")
             {
-                SpecialDB::readSpecialSetNode(childNode, filename);
+                AbilityDB::readAbilitySetNode(childNode, filename);
             }
             else if (childNode.name() == "npc")
             {
@@ -233,15 +233,6 @@ namespace SettingsManager
             else if (childNode.name() == "unit")
             {
                 Units::readUnitNode(childNode, filename);
-            }
-            else
-            {
-                // compatibility stuff with older configs/games
-                if (node.name() == "specials" && childNode.name() == "set")
-                {
-                    // specials.xml:/specials/set
-                    SpecialDB::readSpecialSetNode(childNode, filename);
-                }
             }
         }
 

@@ -42,7 +42,7 @@
 #include "net/manaserv/npchandler.h"
 #include "net/manaserv/partyhandler.h"
 #include "net/manaserv/playerhandler.h"
-#include "net/manaserv/specialhandler.h"
+#include "net/manaserv/abilityhandler.h"
 #include "net/manaserv/tradehandler.h"
 
 #include "resources/attributes.h"
@@ -76,7 +76,7 @@ GeneralHandler::GeneralHandler():
         mPartyHandler(new PartyHandler),
         mPlayerHandler(new PlayerHandler),
         mTradeHandler(new TradeHandler),
-        mSpecialHandler(new SpecialHandler)
+        mAbilityHandler(new AbilityHandler)
 {
     initialize();
 

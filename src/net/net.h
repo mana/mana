@@ -44,7 +44,7 @@ class LoginHandler;
 class NpcHandler;
 class PartyHandler;
 class PlayerHandler;
-class SpecialHandler;
+class AbilityHandler;
 class TradeHandler;
 
 AdminHandler *getAdminHandler();
@@ -58,7 +58,7 @@ LoginHandler *getLoginHandler();
 NpcHandler *getNpcHandler();
 PartyHandler *getPartyHandler();
 PlayerHandler *getPlayerHandler();
-SpecialHandler *getSpecialHandler();
+AbilityHandler *getAbilityHandler();
 TradeHandler *getTradeHandler();
 
 ServerType getNetworkType();

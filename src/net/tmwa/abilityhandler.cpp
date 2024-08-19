@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "net/tmwa/specialhandler.h"
+#include "net/tmwa/abilityhandler.h"
 
 #include "event.h"
 #include "log.h"
@@ -64,11 +64,11 @@
 /** should always be zero if failed */
 #define SKILL_FAILED      0x00
 
-extern Net::SpecialHandler *specialHandler;
+extern Net::AbilityHandler *abilityHandler;
 
 namespace TmwAthena {
 
-SpecialHandler::SpecialHandler()
+AbilityHandler::AbilityHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_PLAYER_SKILLS,
@@ -77,10 +77,10 @@ SpecialHandler::SpecialHandler()
         0
     };
     handledMessages = _messages;
-    specialHandler = this;
+    abilityHandler = this;
 }
 
-void SpecialHandler::handleMessage(MessageIn &msg)
+void AbilityHandler::handleMessage(MessageIn &msg)
 {
     int skillCount;
     int skillId;
@@ -219,19 +219,19 @@ void SpecialHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void SpecialHandler::use(int id)
+void AbilityHandler::use(int id)
 {
 }
 
-void SpecialHandler::use(int id, int level, int beingId)
+void AbilityHandler::use(int id, int level, int beingId)
 {
 }
 
-void SpecialHandler::use(int id, int level, int x, int y)
+void AbilityHandler::use(int id, int level, int x, int y)
 {
 }
 
-void SpecialHandler::use(int id, const std::string &map)
+void AbilityHandler::use(int id, const std::string &map)
 {
 }
 

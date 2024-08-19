@@ -63,7 +63,7 @@ class GeneralHandler : public Net::GeneralHandler, public EventListener
         MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mPlayerHandler;
         MessageHandlerPtr mTradeHandler;
-        MessageHandlerPtr mSpecialHandler;
+        MessageHandlerPtr mAbilityHandler;
 };
 
 } // namespace ManaServ

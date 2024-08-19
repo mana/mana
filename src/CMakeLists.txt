@@ -266,8 +266,8 @@ set(SRCS
     gui/socialwindow.h
     gui/speechbubble.cpp
     gui/speechbubble.h
-    gui/specialswindow.cpp
-    gui/specialswindow.h
+    gui/abilitieswindow.cpp
+    gui/abilitieswindow.h
     gui/statuswindow.cpp
     gui/statuswindow.h
     gui/textdialog.cpp
@@ -307,7 +307,7 @@ set(SRCS
     net/partyhandler.h
     net/playerhandler.h
     net/serverinfo.h
-    net/specialhandler.h
+    net/abilityhandler.h
     net/tradehandler.h
     net/worldinfo.h
     resources/action.cpp
@@ -354,8 +354,8 @@ set(SRCS
     resources/settingsmanager.h
     resources/soundeffect.h
     resources/soundeffect.cpp
-    resources/specialdb.cpp
-    resources/specialdb.h
+    resources/abilitydb.cpp
+    resources/abilitydb.h
     resources/spritedef.h
     resources/spritedef.cpp
     resources/statuseffectdb.cpp
@@ -547,8 +547,8 @@ set(SRCS_TMWA
     net/tmwa/playerhandler.cpp
     net/tmwa/playerhandler.h
     net/tmwa/protocol.h
-    net/tmwa/specialhandler.cpp
-    net/tmwa/specialhandler.h
+    net/tmwa/abilityhandler.cpp
+    net/tmwa/abilityhandler.h
     net/tmwa/token.h
     net/tmwa/tradehandler.cpp
     net/tmwa/tradehandler.h)
@@ -598,8 +598,8 @@ set(SRCS_MANA
     net/manaserv/playerhandler.cpp
     net/manaserv/playerhandler.h
     net/manaserv/manaserv_protocol.h
-    net/manaserv/specialhandler.cpp
-    net/manaserv/specialhandler.h
+    net/manaserv/abilityhandler.cpp
+    net/manaserv/abilityhandler.h
     net/manaserv/tradehandler.cpp
     net/manaserv/tradehandler.h)
 

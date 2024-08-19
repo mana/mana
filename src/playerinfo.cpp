@@ -50,8 +50,8 @@ static bool mNPCPostCount = false;
 
 static BuySellState mBuySellState = BUYSELL_NONE;
 
-static std::map<int, Special> mSpecials;
-static Timer mSpecialRechargeUpdateTimer;
+static std::map<int, Ability> mAbilities;
+static Timer mAbilityRechargeUpdateTimer;
 
 // --- Triggers ---------------------------------------------------------------
 
@@ -278,25 +278,25 @@ void setBuySellState(BuySellState buySellState)
     }
 }
 
-// --- Specials ---------------------------------------------------------------
+// --- Abilities --------------------------------------------------------------
 
-void clearSpecialStatus()
+void clearAbilityStatus()
 {
-    mSpecials.clear();
+    mAbilities.clear();
 }
 
-void setSpecialStatus(int id, int current, int max, int recharge)
+void setAbilityStatus(int id, int current, int max, int recharge)
 {
-    logger->log("SpecialUpdate Skill #%d -- (%d/%d) -> %d", id, current, max,
+    logger->log("AbilityUpdate Skill #%d -- (%d/%d) -> %d", id, current, max,
                 recharge);
-    mSpecials[id].currentMana = current;
-    mSpecials[id].neededMana = max;
-    mSpecials[id].recharge = recharge;
+    mAbilities[id].currentMana = current;
+    mAbilities[id].neededMana = max;
+    mAbilities[id].recharge = recharge;
 }
 
-const SpecialsMap &getSpecialStatus()
+const std::map<int, Ability> &getAbilityStatus()
 {
-    return mSpecials;
+    return mAbilities;
 }
 
 // --- Misc -------------------------------------------------------------------
@@ -314,16 +314,16 @@ bool isTalking()
 
 void logic()
 {
-    if (mSpecialRechargeUpdateTimer.passed())
+    if (mAbilityRechargeUpdateTimer.passed())
     {
-        mSpecialRechargeUpdateTimer.set(100);
+        mAbilityRechargeUpdateTimer.set(100);
 
-        for (auto &special : mSpecials)
+        for (auto &[id, ability] : mAbilities)
         {
-            special.second.currentMana += special.second.recharge;
-            if (special.second.currentMana > special.second.neededMana)
+            ability.currentMana += ability.recharge;
+            if (ability.currentMana > ability.neededMana)
             {
-                special.second.currentMana = special.second.neededMana;
+                ability.currentMana = ability.neededMana;
             }
         }
     }

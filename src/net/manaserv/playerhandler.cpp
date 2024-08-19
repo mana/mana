@@ -75,7 +75,7 @@ PlayerHandler::PlayerHandler()
         GPMSG_LEVEL_PROGRESS,
         GPMSG_RAISE_ATTRIBUTE_RESPONSE,
         GPMSG_LOWER_ATTRIBUTE_RESPONSE,
-        GPMSG_SPECIAL_STATUS,
+        GPMSG_ABILITY_STATUS,
         0
     };
     handledMessages = _messages;
@@ -243,17 +243,17 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
         } break;
 
-        case GPMSG_SPECIAL_STATUS :
+        case GPMSG_ABILITY_STATUS:
         {
-            PlayerInfo::clearSpecialStatus();
+            PlayerInfo::clearAbilityStatus();
             while (msg.getUnreadLength())
             {
-                // { B specialID, L current, L max, L recharge }
+                // { B abilityID, L current, L max, L recharge }
                 int id = msg.readInt8();
                 int current = msg.readInt32();
                 int max = msg.readInt32();
                 int recharge = msg.readInt32();
-                PlayerInfo::setSpecialStatus(id, current, max, recharge);
+                PlayerInfo::setAbilityStatus(id, current, max, recharge);
             }
         } break;
         /*

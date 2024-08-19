@@ -70,16 +70,14 @@ enum BuySellState
 };
 
 /**
- * Special information storage structure.
+ * Ability information storage structure.
  */
-struct Special
+struct Ability
 {
     int currentMana;
     int neededMana;
     int recharge;
 };
-
-using SpecialsMap = std::map<int, Special>;
 
 /**
  * A database like namespace which holds global info about the localplayer
@@ -217,22 +215,22 @@ namespace PlayerInfo
      */
     void setBuySellState(BuySellState buySellState);
 
-// --- Specials ---------------------------------------------------------------
+// --- Abilities --------------------------------------------------------------
 
     /**
-     * Removes all specials.
+     * Removes all abilities.
      */
-    void clearSpecialStatus();
+    void clearAbilityStatus();
 
     /**
-     * Changes the status of the given special.
+     * Changes the status of the given ability.
      */
-    void setSpecialStatus(int id, int current, int max, int recharge);
+    void setAbilityStatus(int id, int current, int max, int recharge);
 
     /**
-     * Returns the status of the given special.
+     * Returns the status of the given ability.
      */
-    const SpecialsMap &getSpecialStatus();
+    const std::map<int, Ability> &getAbilityStatus();
 
 // --- Misc -------------------------------------------------------------------
 

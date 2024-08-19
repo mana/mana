@@ -23,7 +23,7 @@
 #include <string>
 #include "utils/xml.h"
 
-struct SpecialInfo
+struct AbilityInfo
 {
     enum TargetMode
     {
@@ -31,34 +31,34 @@ struct SpecialInfo
         TARGET_POINT    // target map location
     };
     int id;
-    std::string set; // tab on which the special is shown
-    std::string name; // displayed name of special
+    std::string set; // tab on which the ability is shown
+    std::string name; // displayed name of ability
     std::string icon; // filename of graphical icon
 
     TargetMode targetMode; // target mode
 
-    bool rechargeable; // true when the special has a recharge bar
+    bool rechargeable; // true when the ability has a recharge bar
     int rechargeNeeded; // maximum recharge when applicable
     int rechargeCurrent; // current recharge when applicable
 };
 
 /**
- * Special information database.
+ * Ability information database.
  */
-namespace SpecialDB
+namespace AbilityDB
 {
     void init();
 
-    void readSpecialSetNode(XML::Node node, const std::string &filename);
+    void readAbilitySetNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 
     void unload();
 
-    /** gets the special info for ID. Will return 0 when it is
-     *  a server-specific special.
+    /** gets the ability info for ID. Will return 0 when it is
+     *  a server-specific ability.
      */
-    SpecialInfo *get(int id);
+    AbilityInfo *get(int id);
 
-    SpecialInfo::TargetMode targetModeFromString(const std::string& str);
+    AbilityInfo::TargetMode targetModeFromString(const std::string& str);
 }

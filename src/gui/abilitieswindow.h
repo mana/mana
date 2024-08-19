@@ -28,14 +28,14 @@
 
 #include <map>
 
-class SpecialEntry;
+class AbilityEntry;
 
-class SpecialsWindow : public Window, public gcn::ActionListener
+class AbilitiesWindow : public Window, public gcn::ActionListener
 {
     public:
-        SpecialsWindow();
+        AbilitiesWindow();
 
-        ~SpecialsWindow() override;
+        ~AbilitiesWindow() override;
 
         /**
          * Called when receiving actions from widget.
@@ -44,14 +44,15 @@ class SpecialsWindow : public Window, public gcn::ActionListener
 
         void draw(gcn::Graphics *graphics) override;
 
-        bool hasSpecials() const
+        bool hasAbilities() const
         { return !mEntries.empty(); }
 
     private:
-        // (re)constructs the list of specials
-        void rebuild(const std::map<int, Special> &specialData);
+        // (re)constructs the list of abilities
+        void rebuild(const std::map<int, Ability> &abilityData);
 
-        std::map<int, SpecialEntry *> mEntries;
+        std::map<int, AbilityEntry *> mEntries;
 };
 
-extern SpecialsWindow *specialsWindow;
+extern AbilitiesWindow *abilitiesWindow;
+
