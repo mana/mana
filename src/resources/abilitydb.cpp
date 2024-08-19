@@ -50,9 +50,9 @@ void AbilityDB::init()
         unload();
 }
 
-void AbilityDB::readAbilitySetNode(XML::Node node, const std::string &filename)
+void AbilityDB::readAbilityCategoryNode(XML::Node node, const std::string &filename)
 {
-    std::string setName = node.getProperty("name", "Actions");
+    std::string categoryName = node.getProperty("name", "Actions");
 
     for (auto ability : node.children())
     {
@@ -61,7 +61,7 @@ void AbilityDB::readAbilitySetNode(XML::Node node, const std::string &filename)
             auto *info = new AbilityInfo();
             int id = ability.getProperty("id", 0);
             info->id = id;
-            info->set = setName;
+            info->category = categoryName;
             info->name = ability.getProperty("name", "");
             info->icon = ability.getProperty("icon", "");
 
@@ -72,21 +72,17 @@ void AbilityDB::readAbilitySetNode(XML::Node node, const std::string &filename)
             info->rechargeCurrent = 0;
 
             if (mAbilityInfos.find(id) != mAbilityInfos.end())
-            {
                 logger->log("AbilityDB: Duplicate ability ID %d in %s, ignoring", id, filename.c_str());
-            } else {
+            else
                 mAbilityInfos[id] = info;
-            }
         }
     }
-
 }
 
 void AbilityDB::checkStatus()
 {
     mLoaded = true;
 }
-
 
 void AbilityDB::unload()
 {
@@ -97,17 +93,10 @@ void AbilityDB::unload()
     mLoaded = false;
 }
 
-
 AbilityInfo *AbilityDB::get(int id)
 {
-
     auto i = mAbilityInfos.find(id);
-
-    if (i == mAbilityInfos.end())
-    {
-        return nullptr;
-    }
-    else
+    if (i != mAbilityInfos.end())
     {
         return i->second;
     }

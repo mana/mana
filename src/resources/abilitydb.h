@@ -31,7 +31,7 @@ struct AbilityInfo
         TARGET_POINT    // target map location
     };
     int id;
-    std::string set; // tab on which the ability is shown
+    std::string category; // tab on which the ability is shown
     std::string name; // displayed name of ability
     std::string icon; // filename of graphical icon
 
@@ -49,7 +49,7 @@ namespace AbilityDB
 {
     void init();
 
-    void readAbilitySetNode(XML::Node node, const std::string &filename);
+    void readAbilityCategoryNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 

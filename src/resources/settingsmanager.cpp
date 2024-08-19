@@ -214,9 +214,9 @@ namespace SettingsManager
             {
                 MonsterDB::readMonsterNode(childNode, filename);
             }
-            else if (childNode.name() == "ability-set")
+            else if (childNode.name() == "ability-category")
             {
-                AbilityDB::readAbilitySetNode(childNode, filename);
+                AbilityDB::readAbilityCategoryNode(childNode, filename);
             }
             else if (childNode.name() == "npc")
             {
