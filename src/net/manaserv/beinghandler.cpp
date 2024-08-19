@@ -36,6 +36,7 @@
 #include "net/manaserv/manaserv_protocol.h"
 
 #include "playerrelations.h"
+#include "resources/abilitydb.h"
 #include "resources/emotedb.h"
 #include "resources/hairdb.h"
 
@@ -281,7 +282,10 @@ void BeingHandler::handleBeingAbilityPointMessage(MessageIn &msg)
     const int x = msg.readInt16();
     const int y = msg.readInt16();
 
-    std::cout << "GPMSG_BEING_ABILITY_POINT(" << abilityId << ", " << x << ", " << y << ")" << std::endl;
+    being->lookAt(Vector(x, y));
+
+    if (auto ability = AbilityDB::get(abilityId))
+        being->setAction(ability->useAction);
 }
 
 void BeingHandler::handleBeingAbilityBeingMessage(MessageIn &msg)
@@ -293,7 +297,11 @@ void BeingHandler::handleBeingAbilityBeingMessage(MessageIn &msg)
     const int abilityId = msg.readInt8();
     const int targetId = msg.readInt16();
 
-    std::cout << "GPMSG_BEING_ABILITY_BEING(" << abilityId << ", " << targetId << ")" << std::endl;
+    if (Being *target = actorSpriteManager->findBeing(targetId))
+        being->lookAt(target->getPosition());
+
+    if (auto ability = AbilityDB::get(abilityId))
+        being->setAction(ability->useAction);
 }
 
 void BeingHandler::handleBeingAbilityDirectionMessage(MessageIn &msg)
@@ -305,7 +313,10 @@ void BeingHandler::handleBeingAbilityDirectionMessage(MessageIn &msg)
     const int abilityId = msg.readInt8();
     const int direction = msg.readInt8();
 
-    std::cout << "GPMSG_BEING_ABILITY_DIRECTION(" << abilityId << ", " << direction << ")" << std::endl;
+    being->setDirection(direction);
+
+    if (auto ability = AbilityDB::get(abilityId))
+        being->setAction(ability->useAction);
 }
 
 void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
@@ -315,9 +326,7 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
         Being *being = actorSpriteManager->findBeing(msg.readInt16());
         int damage = msg.readInt16();
         if (being)
-        {
             being->takeDamage(nullptr, damage, Being::HIT);
-        }
     }
 }
 

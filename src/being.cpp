@@ -666,7 +666,6 @@ void Being::setAction(Action action, int attackId)
                     }
                     effectManager->trigger(effectId, this, rotation);
                 }
-
             }
 
             break;
@@ -694,6 +693,14 @@ void Being::setAction(Action action, int attackId)
 
     if (currentAction != SpriteAction::MOVE)
         mActionTimer.set();
+}
+
+void Being::setAction(const std::string &action)
+{
+    // Actions are triggered by strings from abilities when using manaserv,
+    // it's not necessarily an attack, but it seems the most appropriate value.
+    mAction = ATTACK;
+    mSprites.play(action);
 }
 
 void Being::lookAt(const Vector &destPos)

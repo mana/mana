@@ -333,6 +333,11 @@ class Being : public ActorSprite, public EventListener
         virtual void setAction(Action action, int attackId = 1);
 
         /**
+         * Sets the current action by name.
+         */
+        void setAction(const std::string &action);
+
+        /**
          * Get the being's action currently performed.
          */
         Action getCurrentAction() const { return mAction; }

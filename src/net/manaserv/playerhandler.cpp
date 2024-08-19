@@ -29,17 +29,18 @@
 #include "log.h"
 #include "particle.h"
 #include "playerinfo.h"
-#include "configuration.h"
 
 #include "gui/viewport.h"
 
 #include "net/net.h"
 
+#include "net/abilityhandler.h"
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
 
+#include "resources/abilitydb.h"
 #include "resources/attributes.h"
 
 /**
@@ -50,6 +51,7 @@
 const int MAP_TELEPORT_SCROLL_DISTANCE = 256;
 
 extern Net::PlayerHandler *playerHandler;
+extern Net::AbilityHandler *abilityHandler;
 
 namespace ManaServ {
 
@@ -290,14 +292,31 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 
 void PlayerHandler::attack(int id)
 {
-    // MessageOut msg(PGMSG_ATTACK);
-    // msg.writeInt16(id);
-    // gameServerConnection->send(msg);
+    auto ability = AbilityDB::find("Strike");
+    if (!ability)
+    {
+        logger->log("PlayerHandler::attack: 'Strike' ability not found.");
+        return;
+    }
+
+    switch (ability->targetMode) {
+    case AbilityInfo::TARGET_BEING:
+        abilityHandler->useOn(ability->id, id);
+        break;
+    case AbilityInfo::TARGET_POINT:
+        logger->log("PlayerHandler::attack: Unsupported target mode 'point' for 'Strike' ability.");
+        break;
+    case AbilityInfo::TARGET_DIRECTION:
+        abilityHandler->useInDirection(ability->id, local_player->getDirection());
+        break;
+    }
 }
 
 void PlayerHandler::emote(int emoteId)
 {
-    // TODO
+    MessageOut msg(PGMSG_BEING_EMOTE);
+    msg.writeInt8(emoteId);
+    gameServerConnection->send(msg);
 }
 
 void PlayerHandler::increaseAttribute(int attr)

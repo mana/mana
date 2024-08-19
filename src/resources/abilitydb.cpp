@@ -32,12 +32,14 @@ namespace
     bool mLoaded = false;
 }
 
-AbilityInfo::TargetMode AbilityDB::targetModeFromString(const std::string& str)
+static AbilityInfo::TargetMode targetModeFromString(const std::string& str)
 {
     if (str == "being")
         return AbilityInfo::TARGET_BEING;
     if (str == "point")
         return AbilityInfo::TARGET_POINT;
+    if (str == "direction")
+        return AbilityInfo::TARGET_DIRECTION;
 
     logger->log("AbilityDB: Warning, unknown target mode \"%s\"", str.c_str() );
     return AbilityInfo::TARGET_BEING;
@@ -50,33 +52,25 @@ void AbilityDB::init()
         unload();
 }
 
-void AbilityDB::readAbilityCategoryNode(XML::Node node, const std::string &filename)
+void AbilityDB::readAbilityNode(XML::Node node, const std::string &filename)
 {
-    std::string categoryName = node.getProperty("name", "Actions");
+    auto *info = new AbilityInfo();
+    int id = node.getProperty("id", 0);
+    info->id = id;
+    info->name = node.getProperty("name", std::string());
+    info->icon = node.getProperty("icon", std::string());
+    info->useAction = node.getProperty("useaction", std::string());
 
-    for (auto ability : node.children())
-    {
-        if (ability.name() == "ability")
-        {
-            auto *info = new AbilityInfo();
-            int id = ability.getProperty("id", 0);
-            info->id = id;
-            info->category = categoryName;
-            info->name = ability.getProperty("name", "");
-            info->icon = ability.getProperty("icon", "");
+    info->targetMode = targetModeFromString(node.getProperty("target", "being"));
 
-            info->targetMode = targetModeFromString(ability.getProperty("target", "being"));
+    info->rechargeable = node.getBoolProperty("rechargeable", true);
+    info->rechargeNeeded = 0;
+    info->rechargeCurrent = 0;
 
-            info->rechargeable = ability.getBoolProperty("rechargeable", true);
-            info->rechargeNeeded = 0;
-            info->rechargeCurrent = 0;
-
-            if (mAbilityInfos.find(id) != mAbilityInfos.end())
-                logger->log("AbilityDB: Duplicate ability ID %d in %s, ignoring", id, filename.c_str());
-            else
-                mAbilityInfos[id] = info;
-        }
-    }
+    if (mAbilityInfos.find(id) != mAbilityInfos.end())
+        logger->log("AbilityDB: Duplicate ability ID %d in %s, ignoring", id, filename.c_str());
+    else
+        mAbilityInfos[id] = info;
 }
 
 void AbilityDB::checkStatus()
@@ -86,7 +80,6 @@ void AbilityDB::checkStatus()
 
 void AbilityDB::unload()
 {
-
     delete_all(mAbilityInfos);
     mAbilityInfos.clear();
 
@@ -97,8 +90,17 @@ AbilityInfo *AbilityDB::get(int id)
 {
     auto i = mAbilityInfos.find(id);
     if (i != mAbilityInfos.end())
-    {
         return i->second;
+
+    return nullptr;
+}
+
+AbilityInfo *AbilityDB::find(std::string_view name)
+{
+    for (auto &[_, abilityInfo] : mAbilityInfos)
+    {
+        if (abilityInfo->name == name)
+            return abilityInfo;
     }
     return nullptr;
 }

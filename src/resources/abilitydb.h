@@ -27,15 +27,16 @@ struct AbilityInfo
 {
     enum TargetMode
     {
-        TARGET_BEING,   // target any being
-        TARGET_POINT    // target map location
+        TARGET_BEING,       // target any being
+        TARGET_POINT,       // target map location
+        TARGET_DIRECTION    // target a direction
     };
     int id;
-    std::string category; // tab on which the ability is shown
     std::string name; // displayed name of ability
     std::string icon; // filename of graphical icon
+    std::string useAction; // action when using the ability
 
-    TargetMode targetMode; // target mode
+    TargetMode targetMode;
 
     bool rechargeable; // true when the ability has a recharge bar
     int rechargeNeeded; // maximum recharge when applicable
@@ -49,16 +50,20 @@ namespace AbilityDB
 {
     void init();
 
-    void readAbilityCategoryNode(XML::Node node, const std::string &filename);
+    void readAbilityNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 
     void unload();
 
-    /** gets the ability info for ID. Will return 0 when it is
+    /** Gets the ability info for ID. Will return nullptr when it is
      *  a server-specific ability.
      */
     AbilityInfo *get(int id);
 
-    AbilityInfo::TargetMode targetModeFromString(const std::string& str);
+    /**
+     * Finds an ability by name. Returns nullptr when the ability could not be
+     * found.
+     */
+    AbilityInfo *find(std::string_view name);
 }

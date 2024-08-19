@@ -181,7 +181,6 @@ namespace SettingsManager
             }
             else if (childNode.name() == "attribute")
             {
-                // map config
                 Attributes::readAttributeNode(childNode, filename);
             }
             else if (childNode.name() == "points")
@@ -214,9 +213,9 @@ namespace SettingsManager
             {
                 MonsterDB::readMonsterNode(childNode, filename);
             }
-            else if (childNode.name() == "ability-category")
+            else if (childNode.name() == "ability")
             {
-                AbilityDB::readAbilityCategoryNode(childNode, filename);
+                AbilityDB::readAbilityNode(childNode, filename);
             }
             else if (childNode.name() == "npc")
             {
