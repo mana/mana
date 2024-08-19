@@ -36,11 +36,11 @@ class AbilityHandler final : public MessageHandler, public Net::AbilityHandler
 
         void use(int id) override;
 
-        void use(int id, int level, int beingId) override;
+        void useOn(int id, int beingId) override;
 
-        void use(int id, int level, int x, int y) override;
+        void useAt(int id, int x, int y) override;
 
-        void use(int id, const std::string &map) override;
+        void useInDirection(int id, int direction) override;
 };
 
 } // namespace ManaServ

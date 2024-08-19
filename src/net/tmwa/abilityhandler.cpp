@@ -223,15 +223,15 @@ void AbilityHandler::use(int id)
 {
 }
 
-void AbilityHandler::use(int id, int level, int beingId)
+void AbilityHandler::useOn(int id, int beingId)
 {
 }
 
-void AbilityHandler::use(int id, int level, int x, int y)
+void AbilityHandler::useAt(int id, int x, int y)
 {
 }
 
-void AbilityHandler::use(int id, const std::string &map)
+void AbilityHandler::useInDirection(int id, int direction)
 {
 }
 

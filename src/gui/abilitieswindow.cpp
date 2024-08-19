@@ -97,7 +97,7 @@ void AbilitiesWindow::action(const gcn::ActionEvent &event)
                 Being *target = local_player->getTarget();
 
                 if (target)
-                    Net::getAbilityHandler()->use(disp->mInfo->id, 1, target->getId());
+                    Net::getAbilityHandler()->useOn(disp->mInfo->id, target->getId());
                 else
                     Net::getAbilityHandler()->use(disp->mInfo->id);
             }

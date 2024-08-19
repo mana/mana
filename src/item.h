@@ -81,16 +81,6 @@ class Item
         bool isEquipped() const { return mEquipped; }
 
         /**
-         * Sets whether this item is in equipment.
-         */
-        void setInEquipment(bool inEquipment) { mInEquipment = inEquipment; }
-
-        /**
-         * Returns whether this item is in equipment.
-         */
-        bool isInEquipment() const { return mInEquipment; }
-
-        /**
          * Returns whether this item is equippable.
          */
         bool isEquippable() const;
@@ -119,6 +109,5 @@ class Item
         ResourceRef<Image> mImage;      /**< Item image. */
         int mQuantity;                  /**< Number of items. */
         bool mEquipped;                 /**< Item is equipped. */
-        bool mInEquipment = false;      /**< Item is in equipment */
         int mInvIndex;                  /**< Inventory index. */
 };

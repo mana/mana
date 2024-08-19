@@ -50,7 +50,7 @@ void AbilityHandler::use(int id)
     gameServerConnection->send(msg);
 }
 
-void AbilityHandler::use(int id, int level, int beingId)
+void AbilityHandler::useOn(int id, int beingId)
 {
     MessageOut msg(PGMSG_USE_ABILITY_ON_BEING);
     msg.writeInt8(id);
@@ -58,7 +58,7 @@ void AbilityHandler::use(int id, int level, int beingId)
     gameServerConnection->send(msg);
 }
 
-void AbilityHandler::use(int id, int level, int x, int y)
+void AbilityHandler::useAt(int id, int x, int y)
 {
     MessageOut msg(PGMSG_USE_ABILITY_ON_POINT);
     msg.writeInt8(id);
@@ -67,9 +67,12 @@ void AbilityHandler::use(int id, int level, int x, int y)
     gameServerConnection->send(msg);
 }
 
-void AbilityHandler::use(int id, const std::string &map)
+void AbilityHandler::useInDirection(int id, int direction)
 {
-    // TODO
+    MessageOut msg(PGMSG_USE_ABILITY_ON_DIRECTION);
+    msg.writeInt8(id);
+    msg.writeInt8(direction);
+    gameServerConnection->send(msg);
 }
 
 } // namespace ManaServ

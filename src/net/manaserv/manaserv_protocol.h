@@ -24,8 +24,9 @@
 namespace ManaServ {
 
 enum {
-    PROTOCOL_VERSION = 3,
-    SUPPORTED_DB_VERSION = 22
+    PROTOCOL_VERSION = 9,
+    MIN_PROTOCOL_VERSION = 9,
+    SUPPORTED_DB_VERSION = 27
 };
 
 /**
@@ -68,19 +69,22 @@ enum {
     PAMSG_REQUEST_REGISTER_INFO    = 0x0005, //
     APMSG_REGISTER_INFO_RESPONSE   = 0x0006, // B byte registration Allowed, byte minNameLength, byte maxNameLength, string captchaURL, string captchaInstructions
     PAMSG_LOGIN                    = 0x0010, // D version, S username, S password
-    APMSG_LOGIN_RESPONSE           = 0x0012, // B error, S updatehost, S Client data URL, B Character slots
+    APMSG_LOGIN_RESPONSE           = 0x0012, // B error, S updatehost, S Client data URL, B Character slots, {content of APMSG_CHAR_CREATE_RESPONSE (without error code)}*
     PAMSG_LOGOUT                   = 0x0013, // -
     APMSG_LOGOUT_RESPONSE          = 0x0014, // B error
-    PAMSG_LOGIN_RNDTRGR            = 0x0015, // S username
+    PAMSG_LOGIN_RNDTRGR            = 0x0015, // -
     APMSG_LOGIN_RNDTRGR_RESPONSE   = 0x0016, // S random seed
+    PAMSG_STELLAR_LOGIN            = 0x0017, // D version
+    APMSG_STELLAR_LOGIN_RESPONSE   = 0x0018, // B error, S token, S url
     PAMSG_CHAR_CREATE              = 0x0020, // S name, B hair style, B hair color, B gender, B slot, {W stats}*
-    APMSG_CHAR_CREATE_RESPONSE     = 0x0021, // B error
+    APMSG_CHAR_CREATE_RESPONSE     = 0x0021, // B error, on success: B slot, S name, B gender, B hair style, B hair color,
+                                             // W character points, W correction points, B amount of items equipped,
+                                             // { W slot, W itemId }*
+                                             // B attributeCount,
+                                             // {D attr id, D base value (in 1/256ths) D mod value (in 256ths) }*
     PAMSG_CHAR_DELETE              = 0x0022, // B slot
     APMSG_CHAR_DELETE_RESPONSE     = 0x0023, // B error
-    // B slot, S name, B gender, B hair style, B hair color, W level,
-    // W character points, W correction points,
-    // {D attr id, D base value (in 1/256ths) D mod value (in 256ths) }*
-    APMSG_CHAR_INFO                = 0x0024, // ^
+    APMSG_CHAR_INFO                = 0x0024, // {content of APMSG_CHAR_CREATE_RESPONSE (without error code)}*
     PAMSG_CHAR_SELECT              = 0x0026, // B slot
     APMSG_CHAR_SELECT_RESPONSE     = 0x0027, // B error, B*32 token, S game address, W game port, S chat address, W chat port
     PAMSG_EMAIL_CHANGE             = 0x0030, // S email
@@ -108,26 +112,28 @@ enum {
     PGMSG_DROP                     = 0x0111, // W slot, W amount
     PGMSG_EQUIP                    = 0x0112, // W inventory slot
     PGMSG_UNEQUIP                  = 0x0113, // W item Instance id
-    PGMSG_MOVE_ITEM                = 0x0114, // W slot1, W slot2, W amount
     GPMSG_INVENTORY                = 0x0120, // { W slot, W item id [, W amount] (if item id is nonzero) }*
-    GPMSG_INVENTORY_FULL           = 0x0121, // W inventory slot count { W slot, W itemId, W amount }, { W equip slot, W item Id, W item Instance}*
-    GPMSG_EQUIP                    = 0x0122, // W item Id, W equip slot type count //{ W equip slot, W capacity used}*//<- When equipping, //{ W item instance, W 0}*//<- When unequipping
+    GPMSG_INVENTORY_FULL           = 0x0121, // W inventory slot count { W slot, W itemId, W amount, W equipmentSlot }
+    GPMSG_EQUIP                    = 0x0122, // W equipped inventory slot, W slot equipmentSlot
+    GPMSG_EQUIP_RESPONSE           = 0x0123, // B error, W slot
+    GPMSG_UNEQUIP                  = 0x0124, // W equipped inventory slot
+    GPMSG_UNEQUIP_RESPONSE         = 0x0125, // B error, W slot
     GPMSG_PLAYER_ATTRIBUTE_CHANGE  = 0x0130, // { W attribute, D base value (in 1/256ths), D modified value (in 1/256ths)}*
-    GPMSG_PLAYER_EXP_CHANGE        = 0x0140, // { W skill, D exp got, D exp needed, W skill level }*
-    GPMSG_LEVELUP                  = 0x0150, // W new level, W character points, W correction points
-    GPMSG_LEVEL_PROGRESS           = 0x0151, // B percent completed to next levelup
+    GPMSG_ATTRIBUTE_POINTS_STATUS  = 0x0140, // W character points, W correction points
     PGMSG_RAISE_ATTRIBUTE          = 0x0160, // W attribute
     GPMSG_RAISE_ATTRIBUTE_RESPONSE = 0x0161, // B error, W attribute
     PGMSG_LOWER_ATTRIBUTE          = 0x0170, // W attribute
     GPMSG_LOWER_ATTRIBUTE_RESPONSE = 0x0171, // B error, W attribute
     PGMSG_RESPAWN                  = 0x0180, // -
     GPMSG_BEING_ENTER              = 0x0200, // B type, W being id, B action, W*2 position, B direction, B gender
-                                             // character: S name, B hair style, B hair color, B sprite layers changed, { B slot type, W item id }*
+                                             // character: S name, B hair style, B hair color [, B sprite layers changed, { B slot type, W item id }*]
                                              // monster: W type id
                                              // npc: W type id
     GPMSG_BEING_LEAVE              = 0x0201, // W being id
     GPMSG_ITEM_APPEAR              = 0x0202, // W item id, W*2 position
-    GPMSG_BEING_LOOKS_CHANGE       = 0x0210, // B sprite layers changed, { B slot type, W item id }*
+    GPMSG_BEING_LOOKS_CHANGE       = 0x0210, // B hairstyle, B haircolor [, B sprite layers changed, { B slot type, W item id }*]
+    GPMSG_BEING_EMOTE              = 0x0211, // W being id, W emote id
+    PGMSG_BEING_EMOTE              = 0x0212, // W emoticon id
     PGMSG_WALK                     = 0x0260, // W*2 destination
     PGMSG_ACTION_CHANGE            = 0x0270, // B Action
     GPMSG_BEING_ACTION_CHANGE      = 0x0271, // W being id, B action
@@ -136,46 +142,50 @@ enum {
     GPMSG_BEING_HEALTH_CHANGE      = 0x0274, // W being id, W hp, W max hp
     GPMSG_BEINGS_MOVE              = 0x0280, // { W being id, B flags [, [W*2 position,] W*2 destination, B speed] }*
     GPMSG_ITEMS                    = 0x0281, // { W item id, W*2 position }*
-    PGMSG_ATTACK                   = 0x0290, // W being id
-    GPMSG_BEING_ATTACK             = 0x0291, // W being id, B direction, B attack Id
-    PGMSG_USE_ABILITY_ON_BEING     = 0x0292, // B abilityID, W being id
-    GPMSG_ABILITY_STATUS           = 0x0293, // { B abilityID, D current, D max, D recharge }
-    PGMSG_USE_ABILITY_ON_POINT     = 0x0294, // B abilityID, W*2 position
-    GPMSG_ABILITY_REMOVED          = 0x0295, // B abilityID
-    PGMSG_SAY                      = 0x02A0, // S text
-    GPMSG_SAY                      = 0x02A1, // W being id, S text
-    GPMSG_NPC_CHOICE               = 0x02B0, // W being id, { S text }*
-    GPMSG_NPC_MESSAGE              = 0x02B1, // W being id, B* text
-    PGMSG_NPC_TALK                 = 0x02B2, // W being id
-    PGMSG_NPC_TALK_NEXT            = 0x02B3, // W being id
-    PGMSG_NPC_SELECT               = 0x02B4, // W being id, B choice
-    GPMSG_NPC_BUY                  = 0x02B5, // W being id, { W item id, W amount, W cost }*
-    GPMSG_NPC_SELL                 = 0x02B6, // W being id, { W item id, W amount, W cost }*
-    PGMSG_NPC_BUYSELL              = 0x02B7, // W item id, W amount
-    GPMSG_NPC_ERROR                = 0x02B8, // B error
-    GPMSG_NPC_CLOSE                = 0x02B9, // W being id
+    GPMSG_BEING_ABILITY_POINT      = 0x0282, // W being id, B abilityId, W*2 point
+    GPMSG_BEING_ABILITY_BEING      = 0x0283, // W being id, B abilityId, W target being id
+    GPMSG_BEING_ABILITY_DIRECTION  = 0x0284, // W being id, B abilityId, B direction
+    PGMSG_USE_ABILITY_ON_BEING     = 0x0290, // B abilityID, W being id
+    PGMSG_USE_ABILITY_ON_POINT     = 0x0291, // B abilityID, W*2 position
+    PGMSG_USE_ABILITY_ON_DIRECTION = 0x0292, // B abilityID, B direction
+    GPMSG_ABILITY_STATUS           = 0x02A0, // { B abilityID, D remainingTicks }
+    GPMSG_ABILITY_REMOVED          = 0x02A1, // B abilityID
+    GPMSG_ABILITY_COOLDOWN         = 0x02A2, // W ticks to wait
+    PGMSG_SAY                      = 0x02B0, // S text
+    GPMSG_SAY                      = 0x02B1, // W being id, S text
+    GPMSG_NPC_CHOICE               = 0x02C0, // W being id, { S text }*
+    GPMSG_NPC_MESSAGE              = 0x02C1, // W being id, B* text
+    PGMSG_NPC_TALK                 = 0x02C2, // W being id
+    PGMSG_NPC_TALK_NEXT            = 0x02C3, // W being id
+    PGMSG_NPC_SELECT               = 0x02C4, // W being id, B choice
+    GPMSG_NPC_BUY                  = 0x02C5, // W being id, { W item id, W amount, W cost }*
+    GPMSG_NPC_SELL                 = 0x02C6, // W being id, { W item id, W amount, W cost }*
+    PGMSG_NPC_BUYSELL              = 0x02C7, // W item id, W amount
+    GPMSG_NPC_ERROR                = 0x02C8, // B error
+    GPMSG_NPC_CLOSE                = 0x02C9, // W being id
     GPMSG_NPC_POST                 = 0x02D0, // W being id
     PGMSG_NPC_POST_SEND            = 0x02D1, // W being id, { S name, S text, W item id }
     GPMSG_NPC_POST_GET             = 0x02D2, // W being id, { S name, S text, W item id }
     PGMSG_NPC_NUMBER               = 0x02D3, // W being id, D number
     PGMSG_NPC_STRING               = 0x02D4, // W being id, S string
-    GPMSG_NPC_NUMBER               = 0x02D5, // W being id, D max, D min, D default
+    GPMSG_NPC_NUMBER               = 0x02D5, // W being id, D min, D max, D default
     GPMSG_NPC_STRING               = 0x02D6, // W being id
-    PGMSG_TRADE_REQUEST            = 0x02C0, // W being id
-    GPMSG_TRADE_REQUEST            = 0x02C1, // W being id
-    GPMSG_TRADE_START              = 0x02C2, // -
-    GPMSG_TRADE_COMPLETE           = 0x02C3, // -
-    PGMSG_TRADE_CANCEL             = 0x02C4, // -
-    GPMSG_TRADE_CANCEL             = 0x02C5, // -
-    PGMSG_TRADE_AGREED             = 0x02C6, // -
-    GPMSG_TRADE_AGREED             = 0x02C7, // -
-    PGMSG_TRADE_CONFIRM            = 0x02C8, // -
-    GPMSG_TRADE_CONFIRM            = 0x02C9, // -
-    PGMSG_TRADE_ADD_ITEM           = 0x02CA, // B slot, B amount
-    GPMSG_TRADE_ADD_ITEM           = 0x02CB, // W item id, B amount
-    PGMSG_TRADE_SET_MONEY          = 0x02CC, // D amount
-    GPMSG_TRADE_SET_MONEY          = 0x02CD, // D amount
-    GPMSG_TRADE_BOTH_CONFIRM       = 0x02CE, // -
+    GPMSG_NPC_BUYSELL_RESPONSE     = 0x02D7, // B error, W item id, W amount
+    PGMSG_TRADE_REQUEST            = 0x02E0, // W being id
+    GPMSG_TRADE_REQUEST            = 0x02E1, // W being id
+    GPMSG_TRADE_START              = 0x02E2, // -
+    GPMSG_TRADE_COMPLETE           = 0x02E3, // -
+    PGMSG_TRADE_CANCEL             = 0x02E4, // -
+    GPMSG_TRADE_CANCEL             = 0x02E5, // -
+    PGMSG_TRADE_AGREED             = 0x02E6, // -
+    GPMSG_TRADE_AGREED             = 0x02E7, // -
+    PGMSG_TRADE_CONFIRM            = 0x02E8, // -
+    GPMSG_TRADE_CONFIRM            = 0x02E9, // -
+    PGMSG_TRADE_ADD_ITEM           = 0x02EA, // B slot, B amount
+    GPMSG_TRADE_ADD_ITEM           = 0x02EB, // W item id, B amount
+    PGMSG_TRADE_SET_MONEY          = 0x02EC, // D amount
+    GPMSG_TRADE_SET_MONEY          = 0x02ED, // D amount
+    GPMSG_TRADE_BOTH_CONFIRM       = 0x02EE, // -
     PGMSG_USE_ITEM                 = 0x0300, // B slot
     GPMSG_USE_RESPONSE             = 0x0301, // B error
     GPMSG_BEINGS_DAMAGE            = 0x0310, // { W being id, W amount }*
@@ -243,8 +253,11 @@ enum {
     PCMSG_USER_MODE                   = 0x0465, // W channel id, S name, B mode
     PCMSG_KICK_USER                   = 0x0466, // W channel id, S name
 
+    // -- Questlog
+    GPMSG_QUESTLOG_STATUS       = 0x0470, // {W quest id, B flags, [B status], [S questname], [S questdescription]}*
+
     // Inter-server
-    GAMSG_REGISTER              = 0x0500, // S address, W port, S password, D items db revision, { W map id }*
+    GAMSG_REGISTER              = 0x0500, // S address, W port, S password, D items db revision
     AGMSG_REGISTER_RESPONSE     = 0x0501, // W item version, W password response, { S globalvar_key, S globalvar_value }
     AGMSG_ACTIVE_MAP            = 0x0502, // W map id, W Number of mapvar_key mapvar_value sent, { S mapvar_key, S mapvar_value }, W Number of map items, { D item Id, W amount, W posX, W posY }
     AGMSG_PLAYER_ENTER          = 0x0510, // B*32 token, D id, S name, serialised character data
@@ -263,7 +276,6 @@ enum {
     GAMSG_SET_VAR_WORLD         = 0x0547, // S name, S value
     AGMSG_SET_VAR_WORLD         = 0x0548, // S name, S value
     GAMSG_BAN_PLAYER            = 0x0550, // D id, W duration
-    GAMSG_CHANGE_PLAYER_LEVEL   = 0x0555, // D id, W level
     GAMSG_CHANGE_ACCOUNT_LEVEL  = 0x0556, // D id, W level
     GAMSG_STATISTICS            = 0x0560, // { W map id, W entity nb, W monster nb, W player nb, { D character id }* }*
     CGMSG_CHANGED_PARTY         = 0x0590, // D character id, D party id
@@ -295,7 +307,8 @@ enum {
     ERRMSG_TIME_OUT,                    // data failed to arrive in due time
     ERRMSG_LIMIT_REACHED,               // limit reached
     ERRMSG_ADMINISTRATIVE_LOGOFF,       // kicked by server administrator
-    ERRMSG_ALREADY_MEMBER               // is already member of guild/party
+    ERRMSG_ALREADY_MEMBER,              // is already member of guild/party
+    ERRMSG_LOGIN_WAS_TAKEN_OVER         // a different connection took over
 };
 
 // used in AGMSG_REGISTER_RESPONSE to show state of item db
@@ -314,7 +327,6 @@ enum {
 enum {
     SYNC_CHARACTER_POINTS    = 0x01,       // D charId, D charPoints, D corrPoints
     SYNC_CHARACTER_ATTRIBUTE = 0x02,       // D charId, D attrId, DF base, DF mod
-    SYNC_CHARACTER_SKILL     = 0x03,       // D charId, B skillId, D skill value
     SYNC_ONLINE_STATUS       = 0x04        // D charId, B 0 = offline, 1 = online
 };
 
@@ -358,21 +370,18 @@ enum AttribmodResponseCode {
 enum EntityType
 {
     // A simple item.
-    OBJECT_ITEM = 0,
-    // An item that toggle map/quest actions (doors, switchs, ...)
-    // and can speak (map panels).
-    OBJECT_ACTOR,
+    OBJECT_ITEM         = 0,
     // Non-Playable-Character is an actor capable of movement and maybe actions.
-    OBJECT_NPC,
+    OBJECT_NPC          = 2,
     // A monster (moving actor with AI. Should be able to toggle map/quest
     // actions, too).
-    OBJECT_MONSTER,
+    OBJECT_MONSTER      = 3,
     // A normal being.
-    OBJECT_CHARACTER,
+    OBJECT_CHARACTER    = 4,
     // A effect to be shown.
-    OBJECT_EFFECT,
+    OBJECT_EFFECT       = 5,
     // Server-only object.
-    OBJECT_OTHER
+    OBJECT_OTHER        = 6
 };
 
 // Moving object flags
@@ -406,6 +415,13 @@ enum {
     GUILD_EVENT_OFFLINE_PLAYER
 };
 
+enum {
+    QUESTLOG_UPDATE_STATE = 1,
+    QUESTLOG_UPDATE_TITLE = 2,
+    QUESTLOG_UPDATE_DESCRIPTION = 4,
+    QUESTLOG_SHOW_NOTIFICATION = 8
+};
+
 /**
   * Moves enum for beings and actors for others players vision.
   * WARNING: Has to be in sync with the same enum in the Being class
@@ -415,24 +431,9 @@ enum BeingAction
 {
     STAND,
     WALK,
-    ATTACK,
     SIT,
     DEAD,
     HURT
-};
-
-/**
-  * Moves enum for beings and actors for others players attack types.
-  * WARNING: Has to be in sync with the same enum in the Being class
-  * of the client!
-  */
-enum AttackType
-{
-    HIT = 0x00,
-    CRITICAL = 0x0a,
-    MULTI = 0x08,
-    REFLECT = 0x04,
-    FLEE = 0x0b
 };
 
 /**
@@ -457,6 +458,55 @@ enum BeingGender
     GENDER_FEMALE,
     GENDER_UNSPECIFIED
 };
+
+// Helper functions for gender
+
+/**
+* Helper function for getting gender by int
+*/
+inline ManaServ::BeingGender getGender(int gender)
+{
+    switch (gender)
+    {
+        case 0:
+            return ManaServ::GENDER_MALE;
+        case 1:
+            return ManaServ::GENDER_FEMALE;
+        default:
+            return ManaServ::GENDER_UNSPECIFIED;
+    }
+}
+
+/**
+ * Quest states
+ */
+enum QuestStatus
+{
+    STATUS_OPEN = 0,
+    STATUS_STARTED,
+    STATUS_FINISHED,
+    STATUS_INVALID
+};
+
+/**
+ * Helper function for getting quest status by id
+ * @param status id of the status
+ * @return the status as enum value
+ */
+inline ManaServ::QuestStatus getQuestStatus(int status)
+{
+    switch (status)
+    {
+        case 0:
+            return ManaServ::STATUS_OPEN;
+        case 1:
+            return ManaServ::STATUS_STARTED;
+        case 2:
+            return ManaServ::STATUS_FINISHED;
+        default:
+            return ManaServ::STATUS_INVALID;
+    }
+}
 
 /** The permited range to pick up an item */
 const int PICKUP_RANGE = 32 + 16;

@@ -43,10 +43,13 @@ class BeingHandler final : public MessageHandler
         void handleMessage(MessageIn &msg) override;
 
     private:
-        void handleBeingAttackMessage(MessageIn &msg);
         void handleBeingEnterMessage(MessageIn &msg);
         void handleBeingLeaveMessage(MessageIn &msg);
+        void handleBeingEmoteMessage(MessageIn &msg);
         void handleBeingsMoveMessage(MessageIn &msg);
+        void handleBeingAbilityPointMessage(MessageIn &msg);
+        void handleBeingAbilityBeingMessage(MessageIn &msg);
+        void handleBeingAbilityDirectionMessage(MessageIn &msg);
         void handleBeingsDamageMessage(MessageIn &msg);
         void handleBeingActionChangeMessage(MessageIn &msg);
         void handleBeingLooksChangeMessage(MessageIn &msg);

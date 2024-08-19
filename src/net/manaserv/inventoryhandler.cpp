@@ -43,16 +43,6 @@ extern Net::InventoryHandler *inventoryHandler;
 
 namespace ManaServ {
 
-struct EquipItemInfo
-{
-
-    EquipItemInfo(int itemId, int slotTypeId, int amountUsed):
-        mItemId(itemId), mSlotTypeId(slotTypeId), mAmountUsed(amountUsed)
-    {}
-
-    int mItemId, mSlotTypeId, mAmountUsed;
-};
-
 extern Connection *gameServerConnection;
 
 EquipBackend::EquipBackend()
@@ -69,7 +59,10 @@ EquipBackend::~EquipBackend()
 Item *EquipBackend::getEquipment(int slotIndex) const
 {
     auto it = mSlots.find(slotIndex);
-    return it == mSlots.end() ? nullptr : it->second.item;
+    if (it == mSlots.end())
+        return nullptr;
+
+    return PlayerInfo::getInventory()->getItem(it->second.inventorySlot);
 }
 
 std::string EquipBackend::getSlotName(int slotIndex) const
@@ -80,111 +73,54 @@ std::string EquipBackend::getSlotName(int slotIndex) const
 
 void EquipBackend::triggerUnequip(int slotIndex) const
 {
-    // First get the itemInstance
-    auto it = mSlots.find(slotIndex);
-
-    if (it == mSlots.end() || it->second.itemInstance == 0 || !it->second.item)
+    auto item = getEquipment(slotIndex);
+    if (!item)
         return;
 
     Event event(Event::DoUnequip);
-    event.setItem("item", it->second.item);
-    event.setInt("itemInstance", it->second.itemInstance);
+    event.setItem("item", item);
     event.trigger(Event::ItemChannel);
 }
 
-
 void EquipBackend::clear()
 {
-    for (auto &slot : mSlots)
-    {
-        if (slot.second.item)
-        {
-            delete slot.second.item;
-            slot.second.item = nullptr;
-        }
-    }
     mSlots.clear();
 }
 
-void EquipBackend::equip(int itemId, int slotTypeId, int amountUsed,
-                         int itemInstance)
+void EquipBackend::equip(int inventorySlot, int equipmentSlot)
 {
-    if (itemInstance <= 0)
+    auto slotIt = mSlots.find(equipmentSlot);
+    if (slotIt == mSlots.end())
     {
         logger->log("ManaServ::EquipBackend: Equipment slot %i"
-                    " has an invalid item instance.", slotTypeId);
+                    " is not existing.",
+                    equipmentSlot);
         return;
     }
 
-    auto it = mSlots.begin();
-    auto it_end = mSlots.end();
-    bool slotTypeFound = false;
-    for (; it != it_end; ++it)
-        if (it->second.slotTypeId == (unsigned)slotTypeId)
-            slotTypeFound = true;
+    slotIt->second.inventorySlot = inventorySlot;
 
-    if (!slotTypeFound)
-    {
-        logger->log("ManaServ::EquipBackend: Equipment slot %i"
-                    " is not existing.", slotTypeId);
-        return;
-    }
-
-    if (!itemDb->exists(itemId))
-    {
-        logger->log("ManaServ::EquipBackend: No item with id %d",
-                    itemId);
-        return;
-    }
-
-    // Place the item in the slots with corresponding id until
-    // the capacity requested has been reached
-    for (it = mSlots.begin(); it != it_end && amountUsed > 0; ++it)
-    {
-        // If we're on the right slot type and that its unit
-        // isn't already equipped, we can equip there.
-        // The slots are already sorted by id, and subId anyway.
-        if (it->second.slotTypeId == (unsigned)slotTypeId
-            && (!it->second.itemInstance) && (!it->second.item))
-        {
-            it->second.itemInstance = itemInstance;
-            it->second.item = new Item(itemId, 1, true);
-            --amountUsed;
-        }
-    }
+    if (auto item = PlayerInfo::getInventory()->getItem(inventorySlot))
+        item->setEquipped(true);
 }
 
-void EquipBackend::unequip(int itemInstance)
+void EquipBackend::unequip(int inventorySlot)
 {
-    auto it = mSlots.begin();
-    auto it_end = mSlots.end();
-    bool itemInstanceFound = false;
-    for (; it != it_end; ++it)
-        if (it->second.itemInstance == (unsigned)itemInstance)
-            itemInstanceFound = true;
-
-    if (!itemInstanceFound)
+    for (auto &[_, slot] : mSlots)
     {
-        logger->log("ManaServ::EquipBackend: Equipment item instance %i"
-                    " is not existing. The item couldn't be unequipped!",
-                    itemInstance);
-        return;
-    }
-
-    for (it = mSlots.begin(); it != it_end; ++it)
-    {
-        if (it->second.itemInstance != (unsigned)itemInstance)
-        continue;
-
-        // We remove the item
-        it->second.itemInstance = 0;
-        // We also delete the item objects
-        if (it->second.item)
+        if (slot.inventorySlot == inventorySlot)
         {
-            delete it->second.item;
-            it->second.item = nullptr;
+            slot.inventorySlot = -1;
+
+            if (auto item = PlayerInfo::getInventory()->getItem(inventorySlot))
+                item->setEquipped(false);
+
+            return;
         }
     }
+
+    logger->log("ManaServ::EquipBackend: No equipped item found at inventory "
+                "slot %i!", inventorySlot);
 }
 
 void EquipBackend::event(Event::Channel, const Event &event)
@@ -245,7 +181,7 @@ void EquipBackend::readEquipFile()
                 }
 
                 slot.subId = i;
-                mSlots.insert(std::make_pair(slotIndex, slot));
+                mSlots.insert(std::make_pair(slotIndex, std::move(slot)));
                 ++slotIndex;
             }
         }
@@ -262,10 +198,10 @@ void EquipBackend::readBoxNode(XML::Node slotNode)
         if (boxNode.name() != "box")
             continue;
 
-        int x = boxNode.getProperty("x" , 0);
-        int y = boxNode.getProperty("y" , 0);
+        const int x = boxNode.getProperty("x" , 0);
+        const int y = boxNode.getProperty("y" , 0);
 
-        mBoxesPositions.push_back(Position(x, y));
+        mBoxesPositions.emplace_back(x, y);
 
         std::string backgroundFile =
             boxNode.getProperty("background" , std::string());
@@ -313,6 +249,7 @@ InventoryHandler::InventoryHandler()
         GPMSG_INVENTORY_FULL,
         GPMSG_INVENTORY,
         GPMSG_EQUIP,
+        GPMSG_UNEQUIP,
         0
     };
     handledMessages = _messages;
@@ -331,43 +268,16 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 int count = msg.readInt16();
                 while (count--)
                 {
-                    int slot = msg.readInt16();
-                    int id = msg.readInt16();
-                    int amount = msg.readInt16();
-                    PlayerInfo::setInventoryItem(slot, id, amount);
-                }
+                    const int slot = msg.readInt16();
+                    const int itemId = msg.readInt16();
+                    const int amount = msg.readInt16();
+                    const int equipmentSlot = msg.readInt16();
+                    PlayerInfo::setInventoryItem(slot, itemId, amount);
 
-                // A map of { item instance, {slot type id, item id, amount used}}
-                std::map<int, EquipItemInfo> equipItemsInfo;
-                std::map<int, EquipItemInfo>::iterator it;
-                while (msg.getUnreadLength())
-                {
-                    int slotTypeId = msg.readInt16();
-                    int itemId = msg.readInt16();
-                    int itemInstance = msg.readInt16();
-
-                    // Turn the data received into a usable format
-                    it = equipItemsInfo.find(itemInstance);
-                    if (it == equipItemsInfo.end())
-                    {
-                        // Add a new entry
-                        equipItemsInfo.insert(std::make_pair(itemInstance,
-                            EquipItemInfo(itemId, slotTypeId, 1)));
-                    }
+                    if (equipmentSlot > 0)
+                        mEquipBackend.equip(slot, equipmentSlot);
                     else
-                    {
-                        // Add amount to the existing entry
-                        it->second.mAmountUsed++;
-                    }
-                }
-
-                for (it = equipItemsInfo.begin(); it != equipItemsInfo.end();
-                     ++it)
-                {
-                    mEquipBackend.equip(it->second.mItemId,
-                                        it->second.mSlotTypeId,
-                                        it->second.mAmountUsed,
-                                        it->first);
+                        mEquipBackend.unequip(slot);
                 }
             }
             break;
@@ -375,43 +285,24 @@ void InventoryHandler::handleMessage(MessageIn &msg)
         case GPMSG_INVENTORY:
             while (msg.getUnreadLength())
             {
-                unsigned int slot = msg.readInt16();
-                int id = msg.readInt16();
-                unsigned int amount = id ? msg.readInt16() : 0;
+                const unsigned int slot = msg.readInt16();
+                const int id = msg.readInt16();
+                const unsigned int amount = id ? msg.readInt16() : 0;
                 PlayerInfo::setInventoryItem(slot, id, amount);
             }
             break;
 
         case GPMSG_EQUIP:
             {
-                int itemId = msg.readInt16();
-                int equipSlotCount = msg.readInt16();
+                const int inventorySlot = msg.readInt16();
+                const int equipmentSlot = msg.readInt16();
+                mEquipBackend.equip(inventorySlot, equipmentSlot);
+            }
 
-                if (equipSlotCount <= 0)
-                    break;
-
-                // Otherwise equip the item in the given slots
-                while (equipSlotCount--)
-                {
-                    unsigned int parameter = msg.readInt16();
-                    unsigned int amountUsed = msg.readInt16();
-
-                    if (amountUsed == 0)
-                    {
-                        // No amount means to unequip this item
-                        // Note that in that case, the parameter is
-                        // in fact the itemInstanceId
-                        mEquipBackend.unequip(parameter);
-                    }
-                    else
-                    {
-                        int itemInstance = msg.readInt16();
-                        // The parameter is in that case the slot type id.
-                        mEquipBackend.equip(itemId, parameter,
-                                            amountUsed, itemInstance);
-                    }
-                }
-
+        case GPMSG_UNEQUIP:
+            {
+                const int inventorySlot = msg.readInt16();
+                mEquipBackend.unequip(inventorySlot);
             }
             break;
     }
@@ -423,9 +314,7 @@ void InventoryHandler::event(Event::Channel channel,
     if (channel == Event::ItemChannel)
     {
         Item *item = event.getItem("item");
-        int itemInstance = event.getInt("itemInstance", 0);
-
-        if (!item && itemInstance == 0)
+        if (!item)
             return;
 
         int index = item->getInvIndex();
@@ -439,7 +328,7 @@ void InventoryHandler::event(Event::Channel channel,
         else if (event.getType() == Event::DoUnequip)
         {
             MessageOut msg(PGMSG_UNEQUIP);
-            msg.writeInt16(itemInstance);
+            msg.writeInt16(index);
             gameServerConnection->send(msg);
         }
         else if (event.getType() == Event::DoUse)
@@ -457,51 +346,12 @@ void InventoryHandler::event(Event::Channel channel,
             msg.writeInt16(amount);
             gameServerConnection->send(msg);
         }
-        else if (event.getType() == Event::DoSplit)
-        {
-            int amount = event.getInt("amount", 1);
-
-            int newIndex = PlayerInfo::getInventory()->getFreeSlot();
-            if (newIndex > Inventory::NO_SLOT_INDEX)
-            {
-                MessageOut msg(PGMSG_MOVE_ITEM);
-                msg.writeInt16(index);
-                msg.writeInt16(newIndex);
-                msg.writeInt16(amount);
-                gameServerConnection->send(msg);
-            }
-        }
-        else if (event.getType() == Event::DoMove)
-        {
-            int newIndex = event.getInt("newIndex", -1);
-
-            if (newIndex >= 0)
-            {
-                if (index == newIndex)
-                    return;
-
-                MessageOut msg(PGMSG_MOVE_ITEM);
-                msg.writeInt16(index);
-                msg.writeInt16(newIndex);
-                msg.writeInt16(item->getQuantity());
-                gameServerConnection->send(msg);
-            }
-            else
-            {
-                /*int source = event.getInt("source");
-                int destination = event.getInt("destination");
-                int amount = event.getInt("amount", 1);*/
-
-                // TODO Support drag'n'drop to the map ground, or with other
-                // windows.
-            }
-        }
     }
 }
 
 bool InventoryHandler::canSplit(const Item *item)
 {
-    return item && item->getQuantity() > 1;
+    return false;
 }
 
 size_t InventoryHandler::getSize(int type) const

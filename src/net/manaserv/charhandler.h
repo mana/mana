@@ -88,12 +88,15 @@ class CharHandler final : public MessageHandler, public Net::CharHandler
          * we have loaded the dynamic data, so we can't resolve load any
          * sprites yet.
          */
-        struct CachedAttrbiute {
+        struct CachedAttribute {
             double base;
             double mod;
         };
 
-        using CachedAttributes = std::map<int, CachedAttrbiute>;
+        struct EquipmentSlot {
+            int id;
+            int itemId;
+        };
 
         struct CachedCharacterInfo {
             int slot;
@@ -101,10 +104,10 @@ class CharHandler final : public MessageHandler, public Net::CharHandler
             Gender gender;
             int hairStyle;
             int hairColor;
-            int level;
             int characterPoints;
             int correctionPoints;
-            CachedAttributes attribute;
+            std::vector<EquipmentSlot> equipment;
+            std::map<int, CachedAttribute> attributes;
         };
 
         void handleCharacterInfo(MessageIn &msg);

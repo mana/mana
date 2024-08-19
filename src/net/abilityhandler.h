@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <iosfwd>
-
 namespace Net {
 
 class AbilityHandler
@@ -32,11 +30,11 @@ class AbilityHandler
 
         virtual void use(int id) = 0;
 
-        virtual void use(int id, int level, int beingId) = 0;
+        virtual void useOn(int id, int beingId) = 0;
 
-        virtual void use(int id, int level, int x, int y) = 0;
+        virtual void useAt(int id, int x, int y) = 0;
 
-        virtual void use(int id, const std::string &map) = 0;
+        virtual void useInDirection(int id, int direction) = 0;
 };
 
 } // namespace Net

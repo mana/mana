@@ -44,6 +44,7 @@ extern ServerInfo chatServer;
 GameHandler::GameHandler()
 {
     static const Uint16 _messages[] = {
+        GPMSG_CONNECT_RESPONSE,
         GPMSG_DISCONNECT_RESPONSE,
         0
     };
@@ -55,6 +56,9 @@ void GameHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
+        case GPMSG_CONNECT_RESPONSE:
+            break;
+
         case GPMSG_DISCONNECT_RESPONSE:
         {
             int errMsg = msg.readInt8();

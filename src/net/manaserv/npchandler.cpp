@@ -47,6 +47,7 @@ NpcHandler::NpcHandler()
         GPMSG_NPC_CLOSE,
         GPMSG_NPC_NUMBER,
         GPMSG_NPC_STRING,
+        GPMSG_NPC_BUYSELL_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -121,6 +122,9 @@ void NpcHandler::handleMessage(MessageIn &msg)
         event = new Event(Event::Close);
         event->setInt("id", npcId);
         event->trigger(Event::NpcChannel);
+        break;
+
+    case GPMSG_NPC_BUYSELL_RESPONSE:
         break;
     }
 

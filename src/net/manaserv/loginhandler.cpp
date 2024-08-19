@@ -399,8 +399,6 @@ void LoginHandler::loginAccount(LoginData *loginData)
     mTmpPassword = loginData->password;
 
     MessageOut msg(PAMSG_LOGIN_RNDTRGR);
-    msg.writeString(mLoginData->username);
-
     accountServerConnection->send(msg);
 }
 

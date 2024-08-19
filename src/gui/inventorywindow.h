@@ -112,7 +112,7 @@ class InventoryWindow : public Window,
 
         void slotsChanged(Inventory* inventory) override;
 
-        bool isMainInventory() { return mInventory->isMainInventory(); }
+        bool isMainInventory() const { return mInventory->isMainInventory(); }
 
         void event(Event::Channel channel, const Event &event) override;
 

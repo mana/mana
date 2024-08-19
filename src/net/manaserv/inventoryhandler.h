@@ -27,6 +27,7 @@
 
 #include "net/manaserv/messagehandler.h"
 
+#include <map>
 #include <vector>
 
 namespace ManaServ {
@@ -35,16 +36,14 @@ class EquipBackend final : public Equipment::Backend, public EventListener
 {
     public:
         EquipBackend();
-
         ~EquipBackend() override;
 
         Item *getEquipment(int slotIndex) const override;
         std::string getSlotName(int slotIndex) const override;
         void clear() override;
 
-        void equip(int itemId, int slotTypeId, int amountUsed = 1,
-                   int itemInstance = 0);
-        void unequip(int slotTypeId);
+        void equip(int inventorySlot, int equipmentSlot);
+        void unequip(int inventorySlot);
 
         void event(Event::Channel channel, const Event &event) override;
 
@@ -72,9 +71,7 @@ class EquipBackend final : public Equipment::Backend, public EventListener
             // Generic info
             std::string name;
 
-            // The Item reference, used for graphical representation
-            // and info.
-            Item *item = nullptr;
+            int inventorySlot = 0;
 
             // Manaserv specific info
 
@@ -88,10 +85,6 @@ class EquipBackend final : public Equipment::Backend, public EventListener
             // This is used to sort the multimap along with the slot id.
             unsigned int subId = 0;
 
-            // This is the (per character) unique item Id, used especially when
-            // equipping the same item multiple times on the same slot type.
-            unsigned int itemInstance = 0;
-
             // Tell whether the slot is a weapon slot
             bool weaponSlot = false;
 
@@ -102,8 +95,7 @@ class EquipBackend final : public Equipment::Backend, public EventListener
         unsigned int mVisibleSlots;
 
         // slot client index, slot info
-        using Slots = std::map<unsigned int, Slot>;
-        Slots mSlots;
+        std::map<unsigned int, Slot> mSlots;
         std::vector<Position> mBoxesPositions;
         std::vector<std::string> mBoxesBackgroundFile;
 };

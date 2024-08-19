@@ -70,9 +70,7 @@ PlayerHandler::PlayerHandler()
         GPMSG_PLAYER_MAP_CHANGE,
         GPMSG_PLAYER_SERVER_CHANGE,
         GPMSG_PLAYER_ATTRIBUTE_CHANGE,
-        GPMSG_PLAYER_EXP_CHANGE,
-        GPMSG_LEVELUP,
-        GPMSG_LEVEL_PROGRESS,
+        GPMSG_ATTRIBUTE_POINTS_STATUS,
         GPMSG_RAISE_ATTRIBUTE_RESPONSE,
         GPMSG_LOWER_ATTRIBUTE_RESPONSE,
         GPMSG_ABILITY_STATUS,
@@ -130,39 +128,10 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             }
         } break;
 
-        case GPMSG_PLAYER_EXP_CHANGE:
-        {
-            logger->log("EXP Update");
-            while (msg.getUnreadLength())
-            {
-                int skill = msg.readInt16();
-                int current = msg.readInt32();
-                int next = msg.readInt32();
-                int level = msg.readInt16();
-
-                PlayerInfo::setStatExperience(skill, current, next);
-                PlayerInfo::setStatBase(skill, level);
-            }
-        } break;
-
-        case GPMSG_LEVELUP:
-        {
-            PlayerInfo::setAttribute(LEVEL, msg.readInt16());
+        case GPMSG_ATTRIBUTE_POINTS_STATUS:
             PlayerInfo::setAttribute(CHAR_POINTS, msg.readInt16());
             PlayerInfo::setAttribute(CORR_POINTS, msg.readInt16());
-            Particle* effect = particleEngine->addEffect(
-                                               paths.getStringValue("particles")
-                                     + paths.getStringValue("levelUpEffectFile")
-                                                         ,0, 0);
-            local_player->controlParticle(effect);
-        } break;
-
-
-        case GPMSG_LEVEL_PROGRESS:
-        {
-            PlayerInfo::setAttribute(EXP, msg.readInt8());
-        } break;
-
+            break;
 
         case GPMSG_RAISE_ATTRIBUTE_RESPONSE:
         {
@@ -321,9 +290,9 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 
 void PlayerHandler::attack(int id)
 {
-    MessageOut msg(PGMSG_ATTACK);
-    msg.writeInt16(id);
-    gameServerConnection->send(msg);
+    // MessageOut msg(PGMSG_ATTACK);
+    // msg.writeInt16(id);
+    // gameServerConnection->send(msg);
 }
 
 void PlayerHandler::emote(int emoteId)

@@ -182,7 +182,7 @@ void GeneralHandler::event(Event::Channel channel,
     {
         if (event.getType() == Event::GuiWindowsLoaded)
         {
-            inventoryWindow->setSplitAllowed(true);
+            inventoryWindow->setSplitAllowed(false);
             skillDialog->loadSkills();
 
             PlayerInfo::setAttribute(EXP_NEEDED, 100);

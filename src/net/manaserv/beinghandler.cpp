@@ -23,6 +23,7 @@
 
 #include "actorspritemanager.h"
 #include "being.h"
+#include "effectmanager.h"
 #include "localplayer.h"
 
 #include "gui/okdialog.h"
@@ -34,6 +35,8 @@
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/manaserv_protocol.h"
 
+#include "playerrelations.h"
+#include "resources/emotedb.h"
 #include "resources/hairdb.h"
 
 #include "utils/gettext.h"
@@ -45,10 +48,13 @@ namespace ManaServ {
 BeingHandler::BeingHandler()
 {
     static const Uint16 _messages[] = {
-        GPMSG_BEING_ATTACK,
         GPMSG_BEING_ENTER,
         GPMSG_BEING_LEAVE,
+        GPMSG_BEING_EMOTE,
         GPMSG_BEINGS_MOVE,
+        GPMSG_BEING_ABILITY_POINT,
+        GPMSG_BEING_ABILITY_BEING,
+        GPMSG_BEING_ABILITY_DIRECTION,
         GPMSG_BEINGS_DAMAGE,
         GPMSG_BEING_ACTION_CHANGE,
         GPMSG_BEING_LOOKS_CHANGE,
@@ -68,11 +74,20 @@ void BeingHandler::handleMessage(MessageIn &msg)
         case GPMSG_BEING_LEAVE:
             handleBeingLeaveMessage(msg);
             break;
+        case GPMSG_BEING_EMOTE:
+            handleBeingEmoteMessage(msg);
+            break;
         case GPMSG_BEINGS_MOVE:
             handleBeingsMoveMessage(msg);
             break;
-        case GPMSG_BEING_ATTACK:
-            handleBeingAttackMessage(msg);
+        case GPMSG_BEING_ABILITY_POINT:
+            handleBeingAbilityPointMessage(msg);
+            break;
+        case GPMSG_BEING_ABILITY_BEING:
+            handleBeingAbilityBeingMessage(msg);
+            break;
+        case GPMSG_BEING_ABILITY_DIRECTION:
+            handleBeingAbilityDirectionMessage(msg);
             break;
         case GPMSG_BEINGS_DAMAGE:
             handleBeingsDamageMessage(msg);
@@ -91,11 +106,15 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
 static void handleLooks(Being *being, MessageIn &msg)
 {
-    int lookChanges = msg.readInt8();
+    const int hairStyle = msg.readInt8();
+    const int hairColor = msg.readInt8();
+    being->setSprite(SPRITE_LAYER_HAIR, hairStyle * -1,
+                     hairDB.getHairColor(hairColor));
 
-    if (lookChanges <= 0)
+    if (msg.getUnreadLength() < 1)
         return;
 
+    int lookChanges = msg.readInt8();
     while (lookChanges-- > 0)
     {
         unsigned int slotTypeId = msg.readInt8();
@@ -113,14 +132,19 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
     int px = msg.readInt16();
     int py = msg.readInt16();
     auto direction = (BeingDirection)msg.readInt8();
-    Gender gender;
-    int genderAsInt = msg.readInt8();
-    if (genderAsInt == GENDER_FEMALE)
-        gender = Gender::FEMALE;
-    else if (genderAsInt == GENDER_MALE)
+
+    Gender gender = Gender::UNSPECIFIED;
+    switch (getGender(msg.readInt8())) {
+    case GENDER_MALE:
         gender = Gender::MALE;
-    else
-        gender = Gender::UNSPECIFIED;
+        break;
+    case GENDER_FEMALE:
+        gender = Gender::FEMALE;
+        break;
+    case GENDER_UNSPECIFIED:
+        break;
+    }
+
     Being *being;
 
     switch (type)
@@ -139,9 +163,7 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
                                                     ActorSprite::PLAYER, 0);
                 being->setName(name);
             }
-            int hs = msg.readInt8(), hc = msg.readInt8();
-            being->setSprite(SPRITE_LAYER_HAIR, hs * -1,
-                             hairDB.getHairColor(hc));
+
             handleLooks(being, msg);
         } break;
 
@@ -152,7 +174,8 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
             being = actorSpriteManager->createBeing(id, type == OBJECT_MONSTER
                            ? ActorSprite::MONSTER : ActorSprite::NPC, subtype);
             std::string name = msg.readString();
-            if (name.length() > 0) being->setName(name);
+            if (!name.empty())
+                being->setName(name);
         } break;
 
         default:
@@ -173,6 +196,19 @@ void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
         return;
 
     actorSpriteManager->destroyActor(being);
+}
+
+void BeingHandler::handleBeingEmoteMessage(MessageIn &msg)
+{
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
+    if (!being)
+        return;
+
+    if (player_relations.hasPermission(being, PlayerPermissions::EMOTE))
+    {
+        const int fx = EmoteDB::get(msg.readInt8() - 1).effectId;
+        effectManager->trigger(fx, being);
+    }
 }
 
 void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
@@ -235,18 +271,41 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
     }
 }
 
-void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
+void BeingHandler::handleBeingAbilityPointMessage(MessageIn &msg)
 {
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
-    const auto direction = (BeingDirection) msg.readInt8();
-    const int attackId = msg.readInt8();
-
     if (!being)
         return;
 
-    being->setDirection(direction);
+    const int abilityId = msg.readInt8();
+    const int x = msg.readInt16();
+    const int y = msg.readInt16();
 
-    being->setAction(Being::ATTACK, attackId);
+    std::cout << "GPMSG_BEING_ABILITY_POINT(" << abilityId << ", " << x << ", " << y << ")" << std::endl;
+}
+
+void BeingHandler::handleBeingAbilityBeingMessage(MessageIn &msg)
+{
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
+    if (!being)
+        return;
+
+    const int abilityId = msg.readInt8();
+    const int targetId = msg.readInt16();
+
+    std::cout << "GPMSG_BEING_ABILITY_BEING(" << abilityId << ", " << targetId << ")" << std::endl;
+}
+
+void BeingHandler::handleBeingAbilityDirectionMessage(MessageIn &msg)
+{
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
+    if (!being)
+        return;
+
+    const int abilityId = msg.readInt8();
+    const int direction = msg.readInt8();
+
+    std::cout << "GPMSG_BEING_ABILITY_DIRECTION(" << abilityId << ", " << direction << ")" << std::endl;
 }
 
 void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
@@ -306,14 +365,8 @@ void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
     Being *being = actorSpriteManager->findBeing(msg.readInt16());
     if (!being || being->getType() != ActorSprite::PLAYER)
         return;
+
     handleLooks(being, msg);
-    if (msg.getUnreadLength())
-    {
-        int style = msg.readInt16();
-        int color = msg.readInt16();
-        being->setSprite(SPRITE_LAYER_HAIR, style * -1,
-                         hairDB.getHairColor(color));
-    }
 }
 
 void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)

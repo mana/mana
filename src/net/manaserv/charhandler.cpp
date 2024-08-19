@@ -99,28 +99,44 @@ void CharHandler::handleMessage(MessageIn &msg)
 
 void CharHandler::handleCharacterInfo(MessageIn &msg)
 {
-    CachedCharacterInfo info;
-    info.slot = msg.readInt8();
-    info.name = msg.readString();
-    info.gender = msg.readInt8() == ManaServ::GENDER_MALE ? Gender::MALE
-                                                          : Gender::FEMALE;
-    info.hairStyle = msg.readInt8();
-    info.hairColor = msg.readInt8();
-    info.level = msg.readInt16();
-    info.characterPoints = msg.readInt16();
-    info.correctionPoints = msg.readInt16();
-
     while (msg.getUnreadLength() > 0)
     {
-        int id = msg.readInt32();
-        CachedAttrbiute attr;
-        attr.base = msg.readInt32() / 256.0;
-        attr.mod = msg.readInt32() / 256.0;
+        CachedCharacterInfo &info = mCachedCharacterInfos.emplace_back();
 
-        info.attribute[id] = attr;
+        info.slot = msg.readInt8();
+        info.name = msg.readString();
+        switch (getGender(msg.readInt8())) {
+        case GENDER_MALE:
+            info.gender = Gender::MALE;
+            break;
+        case GENDER_FEMALE:
+            info.gender = Gender::FEMALE;
+            break;
+        case GENDER_UNSPECIFIED:
+            info.gender = Gender::UNSPECIFIED;
+            break;
+        }
+        info.hairStyle = msg.readInt8();
+        info.hairColor = msg.readInt8();
+        info.characterPoints = msg.readInt16();
+        info.correctionPoints = msg.readInt16();
+
+        int equipmentCount = msg.readInt8();
+        while (equipmentCount--)
+        {
+            auto &slot = info.equipment.emplace_back();
+            slot.id = msg.readInt16();
+            slot.itemId = msg.readInt16();
+        }
+
+        int attributeCount = msg.readInt8();
+        while (attributeCount--)
+        {
+            CachedAttribute &attr = info.attributes[msg.readInt32()];
+            attr.base = msg.readInt32() / 256.0;
+            attr.mod = msg.readInt32() / 256.0;
+        }
     }
-
-    mCachedCharacterInfos.push_back(info);
 
     updateCharacters();
 }
@@ -182,6 +198,8 @@ void CharHandler::handleCharacterCreateResponse(MessageIn &msg)
     }
     else
     {
+        handleCharacterInfo(msg);
+
         // Close the character create dialog
         if (mCharCreateDialog)
         {
@@ -380,10 +398,8 @@ void CharHandler::updateCharacters()
         return;
 
     // Create new characters and initialize them from the cached infos
-    for (unsigned i = 0; i < mCachedCharacterInfos.size(); ++i)
+    for (const auto &info : mCachedCharacterInfos)
     {
-        const CachedCharacterInfo &info = mCachedCharacterInfos.at(i);
-
         auto *character = new Net::Character;
         character->slot = info.slot;
         LocalPlayer *player = character->dummy = new LocalPlayer;
@@ -391,14 +407,30 @@ void CharHandler::updateCharacters()
         player->setGender(info.gender);
         player->setSprite(SPRITE_LAYER_HAIR, info.hairStyle * -1,
                           hairDB.getHairColor(info.hairColor));
-        character->data.mAttributes[LEVEL] = info.level;
+
+        for (auto &slot : info.equipment)
+        {
+            player->setSprite(slot.id + FIXED_SPRITE_LAYER_SIZE,
+                              slot.itemId,
+                              std::string(),
+                              Net::getInventoryHandler()->isWeaponSlot(slot.id));
+        }
+
         character->data.mAttributes[CHAR_POINTS] = info.characterPoints;
         character->data.mAttributes[CORR_POINTS] = info.correctionPoints;
 
-        for (const auto &it : info.attribute)
+        for (const auto &[id, attr] : info.attributes)
         {
-            character->data.mStats[i].base = it.second.base;
-            character->data.mStats[i].mod = it.second.mod;
+            int playerInfoId = Attributes::getPlayerInfoIdFromAttrId(id);
+            if (playerInfoId > -1)
+            {
+                character->data.mAttributes[playerInfoId] = attr.mod;
+            }
+            else
+            {
+                character->data.mStats[id].base = attr.base;
+                character->data.mStats[id].mod = attr.mod;
+            }
         }
 
         mCharacters.push_back(character);
