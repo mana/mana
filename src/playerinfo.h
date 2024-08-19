@@ -218,9 +218,9 @@ namespace PlayerInfo
 // --- Abilities --------------------------------------------------------------
 
     /**
-     * Removes all abilities.
+     * Removes the status for the given ability.
      */
-    void clearAbilityStatus();
+    void clearAbilityStatus(int id);
 
     /**
      * Changes the status of the given ability.
@@ -228,7 +228,7 @@ namespace PlayerInfo
     void setAbilityStatus(int id, int current, int max, int recharge);
 
     /**
-     * Returns the status of the given ability.
+     * Returns the status all abilities.
      */
     const std::map<int, Ability> &getAbilityStatus();
 

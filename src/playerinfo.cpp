@@ -280,9 +280,9 @@ void setBuySellState(BuySellState buySellState)
 
 // --- Abilities --------------------------------------------------------------
 
-void clearAbilityStatus()
+void clearAbilityStatus(int id)
 {
-    mAbilities.clear();
+    mAbilities.erase(id);
 }
 
 void setAbilityStatus(int id, int current, int max, int recharge)
