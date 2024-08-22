@@ -27,6 +27,9 @@
 #include "eventlistener.h"
 #include "log.h"
 
+#include "net/inventoryhandler.h"
+#include "net/net.h"
+
 namespace PlayerInfo {
 
 class PlayerLogic;
@@ -193,11 +196,6 @@ Item *getEquipment(unsigned int slot)
     return mEquipment->getEquipment(slot);
 }
 
-void setEquipmentBackend(Equipment::Backend *backend)
-{
-    mEquipment->setBackend(backend);
-}
-
 int getStorageCount()
 {
     return mStorageCount;
@@ -351,7 +349,7 @@ public:
                     if (mInventory == nullptr)
                     {
                         mInventory = new Inventory(Inventory::INVENTORY);
-                        mEquipment = new Equipment();
+                        mEquipment = new Equipment(Net::getInventoryHandler()->getEquipmentBackend());
                     }
                 }
             }

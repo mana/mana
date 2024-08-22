@@ -30,8 +30,6 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/equipmentwindow.h"
-
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
@@ -104,9 +102,6 @@ InventoryHandler::InventoryHandler()
     handledMessages = _messages;
     inventoryHandler = this;
 
-    mStorage = nullptr;
-    mStorageWindow = nullptr;
-
     listen(Event::ItemChannel);
 }
 
@@ -127,7 +122,6 @@ void InventoryHandler::handleMessage(MessageIn &msg)
     int index, amount, itemId, equipType;
     int identified, cards[4], itemType;
     Inventory *inventory = PlayerInfo::getInventory();
-    PlayerInfo::getEquipment()->setBackend(&mEquips);
 
     switch (msg.getId())
     {
@@ -172,8 +166,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 if (msg.getId() == SMSG_PLAYER_INVENTORY)
                     inventory->setItem(index, itemId, amount);
                 else
-                    mInventoryItems.push_back(InventoryItem(index, itemId,
-                                                            amount, false));
+                    mInventoryItems.push_back(
+                        InventoryItem { index, itemId, amount, false });
             }
             break;
 
@@ -203,8 +197,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                                 cards[0], cards[1], cards[2], cards[3]);
                 }
 
-                mInventoryItems.push_back(InventoryItem(index, itemId, amount,
-                                                        false));
+                mInventoryItems.push_back(
+                    InventoryItem { index, itemId, amount, false });
             }
             break;
 
@@ -309,10 +303,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 if (!mStorage)
                     mStorage = new Inventory(Inventory::STORAGE, size);
 
-                auto it = mInventoryItems.begin();
-                auto it_end = mInventoryItems.end();
-                for (; it != it_end; it++)
-                    mStorage->setItem((*it).slot, (*it).id, (*it).quantity);
+                for (auto &item : mInventoryItems)
+                    mStorage->setItem(item.slot, item.id, item.quantity);
                 mInventoryItems.clear();
 
                 if (!mStorageWindow)
@@ -385,10 +377,6 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 {
                     mEquips.setEquipment(getSlot(equipType), index);
                 }
-
-                // Load the equipment boxes
-                if (equipmentWindow)
-                    equipmentWindow->loadEquipBoxes();
             }
             break;
 

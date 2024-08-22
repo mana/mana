@@ -22,7 +22,6 @@
 #ifndef NET_TA_INVENTORYHANDLER_H
 #define NET_TA_INVENTORYHANDLER_H
 
-#include "equipment.h"
 #include "eventlistener.h"
 #include "inventory.h"
 #include "log.h"
@@ -128,8 +127,7 @@ class EquipBackend final : public Equipment::Backend
 
         void triggerUnequip(int slotIndex) const override
         {
-            Item *item = getEquipment(slotIndex);
-            if (item)
+            if (Item *item = getEquipment(slotIndex))
                 item->doEvent(Event::DoUnequip);
         }
 
@@ -143,21 +141,12 @@ class EquipBackend final : public Equipment::Backend
 /**
  * Used to cache storage data until we get size data for it.
  */
-class InventoryItem
+struct InventoryItem
 {
-    public:
-        int slot;
-        int id;
-        int quantity;
-        bool equip;
-
-        InventoryItem(int slot, int id, int quantity, bool equip)
-        {
-            this->slot = slot;
-            this->id = id;
-            this->quantity = quantity;
-            this->equip = equip;
-        }
+    int slot;
+    int id;
+    int quantity;
+    bool equip;
 };
 
 class InventoryHandler final : public MessageHandler, public Net::InventoryHandler,
@@ -184,20 +173,25 @@ class InventoryHandler final : public MessageHandler, public Net::InventoryHandl
         // Note the slot type id is equal to the slot Index for tA.
         bool isWeaponSlot(unsigned int slotTypeId) const override
         {
-            return (slotTypeId == EQUIP_FIGHT1_SLOT
-                    || slotTypeId == EQUIP_FIGHT1_SLOT);
+            return (slotTypeId == EQUIP_FIGHT1_SLOT ||
+                    slotTypeId == EQUIP_FIGHT1_SLOT);
         }
 
         bool isAmmoSlot(unsigned int slotTypeId) const override
         {
-            return (slotTypeId == EQUIP_PROJECTILE_SLOT);
+            return slotTypeId == EQUIP_PROJECTILE_SLOT;
+        }
+
+        Equipment::Backend *getEquipmentBackend() override
+        {
+            return &mEquips;
         }
 
     private:
         EquipBackend mEquips;
-        std::list<InventoryItem> mInventoryItems;
-        Inventory *mStorage;
-        InventoryWindow *mStorageWindow;
+        std::vector<InventoryItem> mInventoryItems;
+        Inventory *mStorage = nullptr;
+        InventoryWindow *mStorageWindow = nullptr;
 };
 
 } // namespace TmwAthena

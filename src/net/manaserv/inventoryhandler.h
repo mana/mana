@@ -22,7 +22,6 @@
 #ifndef NET_MANASERV_INVENTORYHANDLER_H
 #define NET_MANASERV_INVENTORYHANDLER_H
 
-#include "equipment.h"
 #include "eventlistener.h"
 
 #include "net/inventoryhandler.h"
@@ -63,7 +62,7 @@ class EquipBackend final : public Equipment::Backend, public EventListener
 
         Position getBoxPosition(unsigned int slotIndex) const;
 
-        const std::string& getBoxBackground(unsigned int slotIndex) const;
+        const std::string &getBoxBackground(unsigned int slotIndex) const;
 
     private:
         void readEquipFile() override;
@@ -132,6 +131,9 @@ class InventoryHandler final : public MessageHandler, Net::InventoryHandler,
 
         unsigned int getVisibleSlotsNumber() const override
         { return mEquipBackend.getVisibleSlotsNumber(); }
+
+        Equipment::Backend *getEquipmentBackend() override
+        { return &mEquipBackend; }
 
         Position getBoxPosition(unsigned int slotIndex) const override
         { return mEquipBackend.getBoxPosition(slotIndex); }

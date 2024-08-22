@@ -22,6 +22,7 @@
 #ifndef INVENTORYHANDLER_H
 #define INVENTORYHANDLER_H
 
+#include "equipment.h"
 #include "inventory.h"
 #include "item.h"
 #include "position.h"
@@ -77,6 +78,8 @@ class InventoryHandler
 
         virtual unsigned int getVisibleSlotsNumber() const
         { return 0; }
+
+        virtual Equipment::Backend *getEquipmentBackend() = 0;
 
         virtual Position getBoxPosition(unsigned int slotIndex) const
         {

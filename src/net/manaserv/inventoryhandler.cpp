@@ -24,8 +24,6 @@
 #include "equipment.h"
 #include "inventory.h"
 #include "item.h"
-#include "itemshortcut.h"
-#include "localplayer.h"
 #include "log.h"
 #include "playerinfo.h"
 
@@ -36,8 +34,6 @@
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
-
-#include "resources/iteminfo.h"
 
 #include "utils/stringutils.h"
 
@@ -279,20 +275,20 @@ void EquipBackend::readBoxNode(xmlNodePtr slotNode)
 
 bool EquipBackend::isWeaponSlot(int slotTypeId) const
 {
-    for (const auto &slot : mSlots)
+    for (const auto &[_, slot] : mSlots)
     {
-        if (slot.second.slotTypeId == (unsigned)slotTypeId)
-            return slot.second.weaponSlot;
+        if (slot.slotTypeId == (unsigned)slotTypeId)
+            return slot.weaponSlot;
     }
     return false;
 }
 
 bool EquipBackend::isAmmoSlot(int slotTypeId) const
 {
-    for (const auto &slot : mSlots)
+    for (const auto &[_, slot] : mSlots)
     {
-        if (slot.second.slotTypeId == (unsigned)slotTypeId)
-            return slot.second.ammoSlot;
+        if (slot.slotTypeId == (unsigned)slotTypeId)
+            return slot.ammoSlot;
     }
     return false;
 }
@@ -304,7 +300,7 @@ Position EquipBackend::getBoxPosition(unsigned int slotIndex) const
     return Position(0, 0);
 }
 
-const std::string& EquipBackend::getBoxBackground(unsigned int slotIndex) const
+const std::string &EquipBackend::getBoxBackground(unsigned int slotIndex) const
 {
     if (slotIndex < mBoxesBackgroundFile.size())
         return mBoxesBackgroundFile.at(slotIndex);
@@ -332,7 +328,6 @@ void InventoryHandler::handleMessage(MessageIn &msg)
         case GPMSG_INVENTORY_FULL:
             {
                 PlayerInfo::clearInventory();
-                PlayerInfo::getEquipment()->setBackend(&mEquipBackend);
                 int count = msg.readInt16();
                 while (count--)
                 {
@@ -374,9 +369,6 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                                         it->second.mAmountUsed,
                                         it->first);
                 }
-                // The backend is ready, we can setup the equipment window.
-                if (equipmentWindow)
-                    equipmentWindow->loadEquipBoxes();
             }
             break;
 

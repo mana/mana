@@ -76,28 +76,28 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
 
     add(playerBox);
     add(mUnequip);
+
+    loadEquipBoxes();
 }
 
 void EquipmentWindow::loadEquipBoxes()
 {
-    delete[] mEquipBox;
+    mBoxes.resize(mEquipment->getSlotNumber());
 
-    // Load equipment boxes.
-    mBoxesNumber = mEquipment->getSlotNumber();
-    mEquipBox = new EquipBox[mBoxesNumber];
-
-    for (int i = 0; i < mBoxesNumber; ++i)
+    for (size_t i = 0; i < mBoxes.size(); ++i)
     {
+        auto &box = mBoxes[i];
+
         Position boxPosition = Net::getInventoryHandler()->getBoxPosition(i);
-        mEquipBox[i].posX = boxPosition.x + getPadding();
-        mEquipBox[i].posY = boxPosition.y + getTitleBarHeight();
+        box.posX = boxPosition.x + getPadding();
+        box.posY = boxPosition.y + getTitleBarHeight();
 
         const std::string &backgroundFile =
             Net::getInventoryHandler()->getBoxBackground(i);
 
         if (!backgroundFile.empty())
         {
-            mEquipBox[i].backgroundImage =
+            box.backgroundImage =
                 Theme::instance()->getImageFromTheme(backgroundFile);
         }
     }
@@ -106,65 +106,63 @@ void EquipmentWindow::loadEquipBoxes()
 EquipmentWindow::~EquipmentWindow()
 {
     delete mItemPopup;
-    delete[] mEquipBox;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
 {
-    // Draw window graphics
     Window::draw(graphics);
-
     Window::drawChildren(graphics);
 
     // Draw equipment boxes
     auto *g = static_cast<Graphics*>(graphics);
 
-    for (int i = 0; i < mBoxesNumber; i++)
+    for (size_t i = 0; i < mBoxes.size(); i++)
     {
+        const auto &box = mBoxes[i];
+
         // When there is a background image, draw it centered in the box:
-        if (mEquipBox[i].backgroundImage)
+        if (box.backgroundImage)
         {
-            int posX = mEquipBox[i].posX
-                + (BOX_WIDTH - mEquipBox[i].backgroundImage->getWidth()) / 2;
-            int posY = mEquipBox[i].posY
-                + (BOX_HEIGHT - mEquipBox[i].backgroundImage->getHeight()) / 2;
-            g->drawImage(mEquipBox[i].backgroundImage, posX, posY);
+            int posX = box.posX
+                + (BOX_WIDTH - box.backgroundImage->getWidth()) / 2;
+            int posY = box.posY
+                + (BOX_HEIGHT - box.backgroundImage->getHeight()) / 2;
+            g->drawImage(box.backgroundImage, posX, posY);
         }
 
-        if (i == mSelected)
+        const gcn::Rectangle tRect(box.posX, box.posY,
+                                   BOX_WIDTH, BOX_HEIGHT);
+
+        if (static_cast<int>(i) == mSelected)
         {
             const gcn::Color color = Theme::getThemeColor(Theme::HIGHLIGHT);
 
             // Set color to the highlight color
             g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
-            g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX,
-                                            mEquipBox[i].posY,
-                                            BOX_WIDTH, BOX_HEIGHT));
+            g->fillRectangle(tRect);
         }
 
-        // Set color black
+        // Draw black box border
         g->setColor(gcn::Color(0, 0, 0));
-        // Draw box border
-        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
-                                        BOX_WIDTH, BOX_HEIGHT));
+        g->drawRectangle(tRect);
 
-        Item *item = mEquipment->getEquipment(i);
-        if (item)
+        if (Item *item = mEquipment->getEquipment(i))
         {
             // Draw Item.
             Image *image = item->getImage();
             // Ensure the image is drawn with maximum opacity
             image->setAlpha(1.0f);
             g->drawImage(image,
-                          mEquipBox[i].posX + 2,
-                          mEquipBox[i].posY + 2);
+                         box.posX + 2,
+                         box.posY + 2);
+
             if (i == TmwAthena::EQUIP_PROJECTILE_SLOT)
             {
                 g->setColor(Theme::getThemeColor(Theme::TEXT));
                 graphics->drawText(toString(item->getQuantity()),
-                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
-                                    mEquipBox[i].posY - getFont()->getHeight(),
-                                    gcn::Graphics::CENTER);
+                                   box.posX + (BOX_WIDTH / 2),
+                                   box.posY - getFont()->getHeight(),
+                                   gcn::Graphics::CENTER);
             }
         }
     }
@@ -179,30 +177,35 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-Item *EquipmentWindow::getItem(int x, int y) const
+/**
+ * Returns an index of an equipment box at the given position, or -1 if there
+ * is no box.
+ */
+int EquipmentWindow::getBoxIndex(int x, int y) const
 {
-    for (int i = 0; i < mBoxesNumber; ++i)
+    for (size_t i = 0; i < mBoxes.size(); ++i)
     {
-        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                BOX_WIDTH, BOX_HEIGHT);
+        const auto &box = mBoxes[i];
+        const gcn::Rectangle tRect(box.posX, box.posY,
+                                   BOX_WIDTH, BOX_HEIGHT);
 
         if (tRect.isPointInRect(x, y))
-            return mEquipment->getEquipment(i);
+            return i;
     }
-    return nullptr;
+
+    return -1;
+}
+
+Item *EquipmentWindow::getItem(int x, int y) const
+{
+    const int index = getBoxIndex(x, y);
+    return index != -1 ? mEquipment->getEquipment(index) : nullptr;
 }
 
 std::string EquipmentWindow::getSlotName(int x, int y) const
 {
-    for (int i = 0; i < mBoxesNumber; ++i)
-    {
-        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                             BOX_WIDTH, BOX_HEIGHT);
-
-        if (tRect.isPointInRect(x, y))
-            return mEquipment->getSlotName(i);
-    }
-    return std::string();
+    const int index = getBoxIndex(x, y);
+    return index != -1 ? mEquipment->getSlotName(index) : std::string();
 }
 
 void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
@@ -213,18 +216,12 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     const int y = mouseEvent.getY();
     Item *item = nullptr;
 
-    // Checks if any of the presses were in the equip boxes.
-    for (int i = 0; i < mBoxesNumber; ++i)
+    const int index = getBoxIndex(x, y);
+    if (index != -1)
     {
-        item = mEquipment->getEquipment(i);
-        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                BOX_WIDTH, BOX_HEIGHT);
-
-        if (tRect.isPointInRect(x, y) && item)
-        {
-            setSelected(i);
-            break;
-        }
+        item = mEquipment->getEquipment(index);
+        if (item)
+            setSelected(index);
     }
 
     if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
@@ -252,11 +249,8 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
     {
         mItemPopup->setEquipmentText(slotName);
 
-        Item *item = getItem(x, y);
-        if (item)
-        {
+        if (Item *item = getItem(x, y))
             mItemPopup->setItem(item->getInfo());
-        }
         else
             mItemPopup->setNoItem();
 

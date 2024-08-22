@@ -62,7 +62,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         /**
          * Returns the current selected slot or -1 if none.
          */
-        int getSelected()
+        int getSelected() const
         { return mSelected; }
 
   protected:
@@ -76,16 +76,16 @@ class EquipmentWindow : public Window, public gcn::ActionListener
             Image *backgroundImage = nullptr;
         };
 
-        EquipBox *mEquipBox = nullptr; /**< Equipment Boxes. */
+        std::vector<EquipBox> mBoxes;   /**< Equipment boxes. */
 
-        int mSelected = -1; /**< Index of selected item. */
+        int mSelected = -1;             /**< Index of selected item. */
         Equipment *mEquipment;
-        int mBoxesNumber = 0; /**< Number of equipment boxes to display */
 
     private:
         void mouseExited(gcn::MouseEvent &event) override;
         void mouseMoved(gcn::MouseEvent &event) override;
 
+        int getBoxIndex(int x, int y) const;
         Item *getItem(int x, int y) const;
         std::string getSlotName(int x, int y) const;
 

@@ -29,8 +29,6 @@ class Item;
 class Equipment
 {
     public:
-        Equipment() = default;
-
         class Backend {
             public:
                 virtual Item *getEquipment(int slotIndex) const = 0;
@@ -46,13 +44,17 @@ class Equipment
                 {}
         };
 
+        Equipment(Backend *backend)
+            : mBackend(backend)
+        {}
+
         /**
          * Get equipment at the given slot.
          */
         Item *getEquipment(int slotIndex) const
         { return mBackend ? mBackend->getEquipment(slotIndex) : nullptr; }
 
-        const std::string getSlotName(int slotIndex) const
+        std::string getSlotName(int slotIndex) const
         { return mBackend ? mBackend->getSlotName(slotIndex) : std::string(); }
 
         int getSlotNumber() const
@@ -67,16 +69,8 @@ class Equipment
         void clear()
         { if (mBackend) mBackend->clear(); }
 
-        /**
-         * Set equipment at the given slot.
-         */
-        void setEquipment(int index, int id, int quantity = 0);
-
-        void setBackend(Backend *backend)
-        { mBackend = backend; }
-
     private:
-        Backend *mBackend = nullptr;
+        Backend *mBackend;
 };
 
 #endif
