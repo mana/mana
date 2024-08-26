@@ -32,10 +32,9 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
+#include "utils/filesystem.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
-
-#include <physfs.h>
 
 #include <algorithm>
 
@@ -46,10 +45,9 @@ Theme *Theme::mInstance = nullptr;
 // Set the theme path...
 static void initDefaultThemePath()
 {
-    ResourceManager *resman = ResourceManager::getInstance();
     defaultThemePath = branding.getStringValue("guiThemePath");
 
-    if (defaultThemePath.empty() || !resman->isDirectory(defaultThemePath))
+    if (defaultThemePath.empty() || !FS::isDirectory(defaultThemePath))
         defaultThemePath = "graphics/gui/";
 }
 
@@ -323,7 +321,7 @@ bool Theme::tryThemePath(std::string themePath)
     {
         themePath = defaultThemePath + themePath;
 
-        if (PHYSFS_exists(themePath.c_str()))
+        if (FS::exists(themePath))
         {
             mThemePath = themePath;
             return true;
@@ -359,12 +357,12 @@ std::string Theme::resolveThemePath(const std::string &path)
         file = path;
 
     // Might be a valid path already
-    if (PHYSFS_exists(file.c_str()))
+    if (FS::exists(file))
         return path;
 
     // Try the theme
     file = getThemePath() + "/" + file;
-    if (PHYSFS_exists(file.c_str()))
+    if (FS::exists(file))
         return getThemePath() + "/" + path;
 
     // Backup

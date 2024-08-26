@@ -68,6 +68,7 @@
 #include "resources/userpalette.h"
 #include "resources/settingsmanager.h"
 
+#include "utils/filesystem.h"
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
 #if defined(_WIN32) || defined(__APPLE__)
@@ -76,7 +77,6 @@
 #include "utils/stringutils.h"
 #include "utils/time.h"
 
-#include <physfs.h>
 #include <SDL_image.h>
 
 #ifdef _WIN32
@@ -222,7 +222,7 @@ Client::Client(const Options &options):
 
     ResourceManager *resman = ResourceManager::getInstance();
 
-    if (!resman->setWriteDir(mLocalDataDir))
+    if (!FS::setWriteDir(mLocalDataDir))
     {
         logger->error(strprintf("%s couldn't be set as write directory! "
                                 "Exiting.", mLocalDataDir.c_str()));
@@ -1117,12 +1117,10 @@ bool Client::initUpdatesDir()
     logger->log("Update host: %s", mUpdateHost.c_str());
     logger->log("Updates dir: %s", mUpdatesDir.c_str());
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
     // Verify that the updates directory exists. Create if necessary.
-    if (!resman->isDirectory(mUpdatesDir))
+    if (!FS::isDirectory(mUpdatesDir))
     {
-        if (!resman->mkdir(mUpdatesDir))
+        if (!FS::mkdir(mUpdatesDir))
         {
 #if defined _WIN32
             std::string newDir = mLocalDataDir + "\\" + mUpdatesDir;

@@ -57,14 +57,6 @@ class ResourceManager
         ~ResourceManager();
 
         /**
-         * Sets the write directory.
-         *
-         * @param path The path of the directory to be added.
-         * @return <code>true</code> on success, <code>false</code> otherwise.
-         */
-        bool setWriteDir(const std::string &path);
-
-        /**
          * Adds a directory or archive to the search path. If append is true
          * then the directory is added to the end of the search path, otherwise
          * it is added at the front.
@@ -79,21 +71,6 @@ class ResourceManager
         void searchAndAddArchives(const std::string &path,
                                   const std::string &ext,
                                   bool append);
-
-        /**
-         * Creates a directory in the write path
-         */
-        bool mkdir(const std::string &path);
-
-        /**
-         * Checks whether the given file or directory exists in the search path
-         */
-        bool exists(const std::string &path);
-
-        /**
-         * Checks whether the given path is a directory.
-         */
-        bool isDirectory(const std::string &path);
 
         /**
          * Returns the real path to a file. Note that this method will always

@@ -31,10 +31,9 @@
 #include "resources/soundeffect.h"
 #include "resources/spritedef.h"
 
+#include "utils/filesystem.h"
 #include "utils/zlib.h"
 #include "utils/physfsrwops.h"
-
-#include <physfs.h>
 
 #include <SDL_image.h>
 
@@ -144,17 +143,12 @@ void ResourceManager::cleanOrphans()
     mOldestOrphan = oldest;
 }
 
-bool ResourceManager::setWriteDir(const std::string &path)
-{
-    return (bool) PHYSFS_setWriteDir(path.c_str());
-}
-
 bool ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
     logger->log("Adding to PhysicsFS: %s", path.c_str());
-    if (!PHYSFS_mount(path.c_str(), nullptr, append ? 1 : 0))
+    if (!FS::addToSearchPath(path, append))
     {
-        logger->log("Error: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        logger->log("Error: %s", FS::getLastError());
         return false;
     }
     return true;
@@ -165,57 +159,32 @@ void ResourceManager::searchAndAddArchives(const std::string &path,
                                            bool append)
 {
     const char *dirSep = PHYSFS_getDirSeparator();
-    char **list = PHYSFS_enumerateFiles(path.c_str());
 
-    for (char **i = list; *i; i++)
+    for (auto fileName : FS::enumerateFiles(path))
     {
-        size_t len = strlen(*i);
+        const size_t len = strlen(fileName);
 
-        if (len > ext.length() && !ext.compare((*i)+(len - ext.length())))
+        if (len > ext.length() && !ext.compare(fileName + (len - ext.length())))
         {
-            std::string file, realPath, archive;
-
-            file = path + (*i);
-            realPath = std::string(PHYSFS_getRealDir(file.c_str()));
-            archive = realPath + dirSep + file;
-
-            addToSearchPath(archive, append);
+            std::string file = path + fileName;
+            if (auto realDir = FS::getRealDir(file))
+            {
+                std::string archive = std::string(*realDir) + dirSep + file;
+                addToSearchPath(archive, append);
+            }
         }
     }
-
-    PHYSFS_freeList(list);
-}
-
-bool ResourceManager::mkdir(const std::string &path)
-{
-    return (bool) PHYSFS_mkdir(path.c_str());
-}
-
-bool ResourceManager::exists(const std::string &path)
-{
-    return PHYSFS_exists(path.c_str());
-}
-
-bool ResourceManager::isDirectory(const std::string &path)
-{
-    PHYSFS_Stat stat;
-    if (PHYSFS_stat(path.c_str(), &stat) != 0)
-    {
-        return stat.filetype == PHYSFS_FILETYPE_DIRECTORY;
-    }
-    return false;
 }
 
 std::string ResourceManager::getPath(const std::string &file)
 {
-    // get the real path to the file
-    const char* tmp = PHYSFS_getRealDir(file.c_str());
+    // Get the real directory of the file
+    auto realDir = FS::getRealDir(file);
     std::string path;
 
-    // if the file is not in the search path, then its NULL
-    if (tmp)
+    if (realDir)
     {
-        path = std::string(tmp) + "/" + file;
+        path = std::string(*realDir) + "/" + file;
     }
     else
     {
@@ -378,29 +347,40 @@ void *ResourceManager::loadFile(const std::string &filename, int &filesize,
                                 bool inflate)
 {
     // Attempt to open the specified file using PhysicsFS
-    PHYSFS_file *file = PHYSFS_openRead(filename.c_str());
-
-    // If the handler is an invalid pointer indicate failure
-    if (file == nullptr)
+    auto file = FS::openRead(filename);
+    if (!file)
     {
         logger->log("Warning: Failed to load %s: %s",
-                filename.c_str(), PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+                filename.c_str(), FS::getLastError());
         return nullptr;
     }
 
     // Log the real dir of the file
-    logger->log("Loaded %s/%s", PHYSFS_getRealDir(filename.c_str()),
+    logger->log("Loaded %s/%s", FS::getRealDir(filename).value_or("<null>"),
             filename.c_str());
 
     // Get the size of the file
-    filesize = PHYSFS_fileLength(file);
+    auto maybeFilesize = file.fileLength();
+    if (!maybeFilesize)
+    {
+        logger->log("Error getting file size: %s", FS::getLastError());
+        return nullptr;
+    }
+
+    filesize = *maybeFilesize;
 
     // Allocate memory and load the file
     void *buffer = malloc(filesize);
-    PHYSFS_readBytes(file, buffer, filesize);
+    auto readSize = file.read(buffer, filesize);
+    if (!readSize || *readSize != filesize)
+    {
+        logger->log("Error reading file: %s", FS::getLastError());
+        free(buffer);
+        return nullptr;
+    }
 
     // Close the file and let the user deallocate the memory
-    PHYSFS_close(file);
+    file.close();
 
     if (inflate && filename.find(".gz", filename.length() - 3)
             != std::string::npos)
@@ -424,28 +404,47 @@ void *ResourceManager::loadFile(const std::string &filename, int &filesize,
 
 bool ResourceManager::copyFile(const std::string &src, const std::string &dst)
 {
-    PHYSFS_file *srcFile = PHYSFS_openRead(src.c_str());
+    auto srcFile = FS::openRead(src);
     if (!srcFile)
     {
-        logger->log("Read error: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        logger->log("Read error: %s", FS::getLastError());
         return false;
     }
-    PHYSFS_file *dstFile = PHYSFS_openWrite(dst.c_str());
+    auto dstFile = FS::openWrite(dst);
     if (!dstFile)
     {
-        logger->log("Write error: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-        PHYSFS_close(srcFile);
+        logger->log("Write error: %s", FS::getLastError());
         return false;
     }
 
-    int fileSize = PHYSFS_fileLength(srcFile);
-    void *buf = malloc(fileSize);
-    PHYSFS_readBytes(srcFile, buf, fileSize);
-    PHYSFS_writeBytes(dstFile, buf, fileSize);
+    char buffer[1024];
 
-    PHYSFS_close(srcFile);
-    PHYSFS_close(dstFile);
-    free(buf);
+    while (true)
+    {
+        auto len = srcFile.read(buffer, sizeof(buffer));
+        if (!len)
+        {
+            logger->log("Read error: %s", FS::getLastError());
+            return false;
+        }
+
+        if (!dstFile.write(buffer, *len))
+        {
+            logger->log("Write error: %s", FS::getLastError());
+            return false;
+        }
+
+        if (srcFile.eof())
+            break;
+    }
+
+    // Explicit close to flush the file and check for errors
+    if (!dstFile.close())
+    {
+        logger->log("Write error: %s", FS::getLastError());
+        return false;
+    }
+
     return true;
 }
 

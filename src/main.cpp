@@ -23,12 +23,12 @@
 
 #include "client.h"
 
+#include "utils/filesystem.h"
 #include "utils/gettext.h"
 #include "utils/xml.h"
 
 #include <getopt.h>
 #include <iostream>
-#include <physfs.h>
 
 #ifdef __MINGW32__
 #include <windows.h>
@@ -257,12 +257,12 @@ int main(int argc, char *argv[])
     initInternationalization();
 
     // Initialize PhysicsFS
-    if (!PHYSFS_init(argv[0])) {
+    if (!FS::init(argv[0])) {
         std::cout << "Error while initializing PhysFS: "
-                << PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()) << std::endl;
+                << FS::getLastError() << std::endl;
         return 1;
     }
-    atexit((void(*)()) PHYSFS_deinit);
+    atexit((void(*)()) FS::deinit);
 
     XML::init();
 

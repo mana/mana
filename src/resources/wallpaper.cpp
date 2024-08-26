@@ -23,7 +23,7 @@
 
 #include "configuration.h"
 
-#include <physfs.h>
+#include "utils/filesystem.h"
 
 #include <algorithm>
 #include <cstring>
@@ -90,43 +90,30 @@ void Wallpaper::loadWallpapers()
 
     initWallpaperPaths();
 
-    char **fileNames = PHYSFS_enumerateFiles(wallpaperPath.c_str());
-
-    for (char **fileName = fileNames; *fileName; fileName++)
+    for (auto fileName : FS::enumerateFiles(wallpaperPath))
     {
-        int width;
-        int height;
-
         // If the backup file is found, we tell it.
-        if (strncmp(*fileName, wallpaperFile.c_str(), strlen(*fileName)) == 0)
+        if (wallpaperFile == fileName)
             haveBackup = true;
 
         // If the image format is terminated by: "_<width>x<height>.png"
         // It is taken as a potential wallpaper.
-
-        // First, get the base filename of the image:
-        std::string filename = *fileName;
-        filename = filename.substr(0, filename.rfind("_"));
-
-        // Check that the base filename doesn't have any '%' markers.
-        if (filename.find("%") == std::string::npos)
+        if (auto sizeSuffix = strrchr(fileName, '_'))
         {
-            // Then, append the width and height search mask.
-            filename.append("_%dx%d.png");
+            int width;
+            int height;
 
-            if (sscanf(*fileName, filename.c_str(), &width, &height) == 2)
+            if (sscanf(sizeSuffix, "_%dx%d.png", &width, &height) == 2)
             {
                 WallpaperData wp;
                 wp.filename = wallpaperPath;
-                wp.filename.append(*fileName);
+                wp.filename.append(fileName);
                 wp.width = width;
                 wp.height = height;
                 wallpaperData.push_back(wp);
             }
         }
     }
-
-    PHYSFS_freeList(fileNames);
 
     std::sort(wallpaperData.begin(), wallpaperData.end(), wallpaperCompare);
 }

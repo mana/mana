@@ -369,8 +369,12 @@ set(SRCS
     utils/copynpaste.cpp
     utils/copynpaste.h
     utils/dtor.h
+    utils/filesystem.h
     utils/gettext.h
     utils/mathutils.h
+    utils/mkdir.cpp
+    utils/mkdir.h
+    utils/mutex.h
     utils/path.cpp
     utils/path.h
     utils/physfsrwops.c
@@ -383,9 +387,6 @@ set(SRCS
     utils/stringutils.h
     utils/time.cpp
     utils/time.h
-    utils/mutex.h
-    utils/mkdir.cpp
-    utils/mkdir.h
     utils/xml.cpp
     utils/xml.h
     utils/zlib.cpp

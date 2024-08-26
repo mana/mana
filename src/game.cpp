@@ -74,15 +74,13 @@
 
 #include "resources/imagewriter.h"
 #include "resources/mapreader.h"
-#include "resources/resourcemanager.h"
 
+#include "utils/filesystem.h"
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>
-
-#include <physfs.h>
 
 #include <fstream>
 #include <sstream>
@@ -928,8 +926,8 @@ void Game::changeMap(const std::string &mapPath)
 
     std::string fullMap = paths.getValue("maps", "maps/")
                           + mMapName + ".tmx";
-    ResourceManager *resman = ResourceManager::getInstance();
-    if (!resman->exists(fullMap))
+
+    if (!FS::exists(fullMap))
         fullMap += ".gz";
 
     // Attempt to load the new map

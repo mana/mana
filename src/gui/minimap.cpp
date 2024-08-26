@@ -34,6 +34,7 @@
 #include "resources/resourcemanager.h"
 #include "resources/userpalette.h"
 
+#include "utils/filesystem.h"
 #include "utils/gettext.h"
 
 #include <guichan/font.hpp>
@@ -86,7 +87,7 @@ void Minimap::setMap(Map *map)
 
         std::string minimapName = map->getProperty("minimap");
 
-        if (minimapName.empty() && resman->exists(tempname))
+        if (minimapName.empty() && FS::exists(tempname))
             minimapName = tempname;
 
         if (!minimapName.empty())
