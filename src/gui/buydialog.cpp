@@ -239,7 +239,8 @@ void BuyDialog::updateButtonsAndLabels()
 
     if (selectedItem > -1)
     {
-        int itemPrice = mShopItems->at(selectedItem)->getPrice();
+        const ShopItem *shopItem = mShopItems->at(selectedItem);
+        const int itemPrice = shopItem->getPrice();
 
         // Calculate how many the player can afford
         if (itemPrice > 0)
@@ -251,6 +252,17 @@ void BuyDialog::updateButtonsAndLabels()
             // Let the player no more than 1 of them at a time, since it
             // shouldn't be a permitted case.
             mMaxItems = 1;
+        }
+
+        // Calculate how many the player can carry
+        const int itemWeight = shopItem->getInfo().getWeight();
+        if (itemWeight > 0)
+        {
+            const int myTotalWeight = PlayerInfo::getAttribute(TOTAL_WEIGHT);
+            const int myMaxWeight = PlayerInfo::getAttribute(MAX_WEIGHT);
+            const int myFreeWeight = myMaxWeight - myTotalWeight;
+            const int canCarry = myFreeWeight / itemWeight;
+            mMaxItems = std::min(mMaxItems, canCarry);
         }
 
         if (mAmountItems > mMaxItems)

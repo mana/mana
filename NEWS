@@ -28,6 +28,7 @@
 - Enabled whispers in tabs by default
 - Made pickup notifications to appear as particle instead of text by default
 - Custom mouse cursor is now rendered by the system
+- Limit shop's Max button to available carry weight
 - Fixed performance issue in BrowserBox (especially update/news window)
 - Fixed handling of non-consecutive emote IDs
 - Fixed securing of names in files created by chat logger
