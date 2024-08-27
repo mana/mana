@@ -24,16 +24,15 @@
 #include "gui/gui.h"
 #include "gui/widgets/window.h"
 
-#include "utils/dtor.h"
-
 #include <guichan/focushandler.hpp>
 
 WindowContainer *windowContainer = nullptr;
 
 void WindowContainer::logic()
 {
-    delete_all(mDeathList);
-    mDeathList.clear();
+    for (auto widget : mScheduledDeletions)
+        delete widget;
+    mScheduledDeletions.clear();
 
     gcn::Container::logic();
 }
@@ -48,7 +47,7 @@ void WindowContainer::draw(gcn::Graphics *graphics)
 
 void WindowContainer::scheduleDelete(gcn::Widget *widget)
 {
-    mDeathList.push_back(widget);
+    mScheduledDeletions.insert(widget);
 }
 
 void WindowContainer::adjustAfterResize(int oldScreenWidth,

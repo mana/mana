@@ -55,24 +55,18 @@ constexpr unsigned ACTION_TIMEOUT = 182;
 
 LocalPlayer *local_player = nullptr;
 
-LocalPlayer::LocalPlayer(int id, int subtype):
-    Being(id, PLAYER, subtype, nullptr)
+LocalPlayer::LocalPlayer(int id, int subtype)
+    : Being(id, PLAYER, subtype, nullptr)
+    , mAwayListener(std::make_unique<AwayListener>())
 {
-    listen(Event::AttributesChannel);
-
-    mAwayListener = new AwayListener();
-
     setShowName(config.showOwnName);
 
-    listen(Event::ConfigChannel);
     listen(Event::ActorSpriteChannel);
+    listen(Event::AttributesChannel);
+    listen(Event::ConfigChannel);
 }
 
-LocalPlayer::~LocalPlayer()
-{
-    delete mAwayDialog;
-    delete mAwayListener;
-}
+LocalPlayer::~LocalPlayer() = default;
 
 void LocalPlayer::logic()
 {
@@ -1028,27 +1022,28 @@ void LocalPlayer::updateStatusEffect(int id, bool newStatus)
     Being::updateStatusEffect(id, newStatus);
 }
 
-void LocalPlayer::changeAwayMode()
+static std::string afkMessage()
 {
-    mAwayMode = !mAwayMode;
-    mAfkTimer.reset();
+    return config.afkMessage.empty() ? _("I am away from keyboard")
+                                     : config.afkMessage;
+}
+
+void LocalPlayer::setAwayMode(bool away)
+{
+    if (mAwayMode == away)
+        return;
+
+    mAwayMode = away;
 
     if (mAwayMode)
     {
-        auto msg = config.afkMessage.empty() ? _("I am away from keyboard")
-                                             : config.afkMessage;
-        mAwayDialog = new OkDialog(_("Away"), msg);
-        mAwayDialog->addActionListener(mAwayListener);
+        mAwayListener->showDialog(afkMessage());
+        mAfkTimer.reset();
     }
-
-    mAwayDialog = nullptr;
-}
-
-void LocalPlayer::setAway(const std::string &message)
-{
-    if (!message.empty())
-        config.afkMessage = message;
-    changeAwayMode();
+    else
+    {
+        mAwayListener->closeDialog();
+    }
 }
 
 void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
@@ -1056,9 +1051,7 @@ void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
     if (!mAwayMode || !mAfkTimer.passed())
         return;
 
-    auto msg = config.afkMessage.empty() ? _("I am away from keyboard")
-                                         : config.afkMessage;
-    msg = strprintf(_("*AFK*: %s"), msg.c_str());
+    auto msg = strprintf(_("*AFK*: %s"), afkMessage().c_str());
 
     Net::getChatHandler()->privateMessage(nick, msg);
     if (!tab)
@@ -1074,10 +1067,40 @@ void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
     mAfkTimer.set(AWAY_MESSAGE_TIMEOUT);
 }
 
+AwayListener::~AwayListener()
+{
+    if (mAwayDialog)
+    {
+        mAwayDialog->removeActionListener(this);
+        mAwayDialog->removeDeathListener(this);
+        mAwayDialog->scheduleDelete();
+    }
+}
+
+void AwayListener::showDialog(const std::string &message)
+{
+    if (mAwayDialog)
+        return;
+
+    mAwayDialog = new OkDialog(_("Away"), message);
+    mAwayDialog->addActionListener(this);
+    mAwayDialog->addDeathListener(this);
+}
+
+void AwayListener::closeDialog()
+{
+    if (mAwayDialog)
+        mAwayDialog->scheduleDelete();
+}
+
 void AwayListener::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok" && local_player->getAwayMode())
-    {
-        local_player->changeAwayMode();
-    }
+    if (event.getId() == "ok")
+        local_player->setAwayMode(false);
+}
+
+void AwayListener::death(const gcn::Event &event)
+{
+    if (mAwayDialog == event.getSource())
+        mAwayDialog = nullptr;
 }

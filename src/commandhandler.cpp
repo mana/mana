@@ -561,5 +561,7 @@ void CommandHandler::handleUnignore(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleAway(const std::string &args, ChatTab *tab)
 {
-    local_player->setAway(args);
+    if (!args.empty())
+        config.afkMessage = args;
+    local_player->setAwayMode(!local_player->getAwayMode());
 }

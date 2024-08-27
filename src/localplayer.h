@@ -28,6 +28,9 @@
 #include "utils/time.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/deathlistener.hpp>
+
+#include <memory>
 
 class ChatTab;
 class FloorItem;
@@ -35,10 +38,20 @@ class ImageSet;
 class Map;
 class OkDialog;
 
-class AwayListener : public gcn::ActionListener
+class AwayListener : public gcn::ActionListener, public gcn::DeathListener
 {
     public:
+        AwayListener() = default;
+        ~AwayListener() override;
+
+        void showDialog(const std::string &message);
+        void closeDialog();
+
         void action(const gcn::ActionEvent &event) override;
+        void death(const gcn::Event &event) override;
+
+    private:
+        OkDialog *mAwayDialog = nullptr;
 };
 
 /**
@@ -169,12 +182,9 @@ class LocalPlayer final : public Being
         bool isPathSetByMouse() const
         { return mPathSetByMouse; }
 
-        void changeAwayMode();
-
+        void setAwayMode(bool away);
         bool getAwayMode() const
         { return mAwayMode; }
-
-        void setAway(const std::string &message);
 
         void afkRespond(ChatTab *tab, const std::string &nick);
 
@@ -229,8 +239,7 @@ class LocalPlayer final : public Being
 
         bool mShowIp = false;
 
-        AwayListener *mAwayListener;
-        OkDialog *mAwayDialog = nullptr;
+        std::unique_ptr<AwayListener> mAwayListener;
         Timer mAfkTimer;
         bool mAwayMode = false;
 };

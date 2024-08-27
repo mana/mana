@@ -23,6 +23,8 @@
 
 #include "gui/widgets/container.h"
 
+#include <set>
+
 /**
  * A window container. This container adds functionality for more convenient
  * widget (windows in particular) destruction.
@@ -64,9 +66,9 @@ class WindowContainer : public Container
         bool widgetIsVisible(gcn::Widget *widget);
 
         /**
-         * List of widgets that are scheduled to be deleted.
+         * Set of widgets that are scheduled to be deleted.
          */
-        std::list<gcn::Widget *> mDeathList;
+        std::set<gcn::Widget *> mScheduledDeletions;
 };
 
 extern WindowContainer *windowContainer;
