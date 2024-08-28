@@ -681,7 +681,7 @@ int Client::exec()
                             // Trust that the netcode knows what it's doing
                             mState = STATE_UPDATE;
                         }
-                        else if (worlds.size() == 1)
+                        else if (worlds.size() == 1 || mOptions.chooseDefault)
                         {
                             Net::getLoginHandler()->chooseServer(0);
                             mState = STATE_UPDATE;
@@ -689,11 +689,6 @@ int Client::exec()
                         else
                         {
                             mCurrentDialog = new WorldSelectDialog(std::move(worlds));
-                            if (mOptions.chooseDefault)
-                            {
-                                ((WorldSelectDialog*) mCurrentDialog)->action(
-                                    gcn::ActionEvent(nullptr, "ok"));
-                            }
                         }
                     }
                     break;

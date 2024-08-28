@@ -46,6 +46,7 @@
 - Fixed item links with empty item name to look up name from Item DB
 - Fixed spaces getting added to chat every 50 characters
 - Fixed empty Equipment window on freshly created character
+- Fixed choosing default world when using -D command-line parameter
 - Updated to tmwAthena protocol changes
 - Updated to Manaserv protocol changes (specials, guilds, debug mode, skills, text particles)
 - CMake: Use GNUInstallDirs and made PKG_DATADIR / PKG_BINDIR paths modifiable
