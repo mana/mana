@@ -45,6 +45,7 @@
 - Fixed being popup getting stuck under the mouse
 - Fixed item links with empty item name to look up name from Item DB
 - Fixed spaces getting added to chat every 50 characters
+- Fixed handling of consecutive text formatting markers
 - Fixed empty Equipment window on freshly created character
 - Fixed choosing default world when using -D command-line parameter
 - Updated to tmwAthena protocol changes

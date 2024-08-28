@@ -336,17 +336,13 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
             wrapped = false;
         }
 
-        // "Tokenize" the string at control sequences
-        if (mUseLinksAndUserColors)
-            end = row.text.find("##", start + 1);
-
-        if (mUseLinksAndUserColors ||
-            (!mUseLinksAndUserColors && (start == 0)))
+        if (mUseLinksAndUserColors || start == 0)
         {
             // Check for color or font change in format "##x", x = [<,>,B,p,0..9]
-            if (row.text.find("##", start) == start && row.text.size() > start + 2)
+            while (row.text.size() > start + 2 && row.text.find("##", start) == start)
             {
                 const char c = row.text.at(start + 2);
+                start += 3;
 
                 bool valid;
                 const gcn::Color &col = Theme::getThemeColor(c, valid);
@@ -401,15 +397,15 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
 
                     linkIndex++;
                 }
-                start += 3;
-
-                if (start == row.text.size())
-                    break;
             }
         }
 
         if (start >= row.text.length())
             break;
+
+        // "Tokenize" the string at control sequences
+        if (mUseLinksAndUserColors)
+            end = row.text.find("##", start + 1);
 
         std::string::size_type len =
             end == std::string::npos ? end : end - start;
