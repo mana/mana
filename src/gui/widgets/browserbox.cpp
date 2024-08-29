@@ -282,7 +282,10 @@ void BrowserBox::relayoutText()
  */
 void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
 {
-    context.font = getFont();       // each line starts with normal font
+    // each line starts with normal font in default color
+    context.font = getFont();
+    context.selColor = context.textColor;
+
     const int startY = context.y;
     row.parts.clear();
 
