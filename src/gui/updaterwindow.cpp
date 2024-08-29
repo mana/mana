@@ -141,6 +141,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mPlayButton = new Button(_("Play"), "play", this);
 
     mBrowserBox->setLinkHandler(mLinkHandler.get());
+    mBrowserBox->setFrameSize(4);
     mProgressBar->setSmoothProgress(false);
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mPlayButton->setEnabled(false);

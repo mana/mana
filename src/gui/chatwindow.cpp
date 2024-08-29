@@ -56,7 +56,7 @@ class ChatInput : public TextField, public gcn::FocusListener
 {
     public:
         ChatInput():
-            TextField("", false)
+            TextField(std::string(), false)
         {
             setVisible(false);
             addFocusListener(this);

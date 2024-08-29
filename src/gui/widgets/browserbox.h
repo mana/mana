@@ -35,13 +35,13 @@ struct LayoutContext;
 
 struct BrowserLink
 {
-    int x1 = 0, x2 = 0, y1 = 0, y2 = 0;     /**< Where link is placed */
+    gcn::Rectangle rect;    /**< Where link is placed */
     std::string link;
     std::string caption;
 
     bool contains(int x, int y) const
     {
-        return x >= x1 && x < x2 && y >= y1 && y < y2;
+        return rect.isPointInRect(x, y);
     }
 };
 
@@ -71,7 +71,13 @@ class BrowserBox : public gcn::Widget,
                    public gcn::MouseListener
 {
     public:
-        BrowserBox(unsigned int mode = AUTO_SIZE);
+        enum Mode
+        {
+            AUTO_SIZE,
+            AUTO_WRAP       /**< Maybe it needs a fix or to be redone. */
+        };
+
+        BrowserBox(Mode mode = AUTO_SIZE);
         ~BrowserBox() override;
 
         /**
@@ -83,6 +89,11 @@ class BrowserBox : public gcn::Widget,
          * Sets the Highlight mode for links.
          */
         void setHighlightMode(unsigned int mode) { mHighlightMode = mode; }
+
+        /**
+         * Sets the wrap indent for the browser box.
+         */
+        void setWrapIndent(int indent) { mWrapIndent = indent; }
 
         /**
          * Sets whether the font will use a shadow for text.
@@ -126,16 +137,10 @@ class BrowserBox : public gcn::Widget,
          */
         void draw(gcn::Graphics *graphics) override;
 
-        void maybeRelayoutText();
-
         /**
-         * BrowserBox modes.
+         * Overridden to avoid drawing the default frame.
          */
-        enum
-        {
-            AUTO_SIZE,
-            AUTO_WRAP       /**< Maybe it needs a fix or to be redone. */
-        };
+        void drawFrame(gcn::Graphics *) override {}
 
         /**
          * BrowserBox colors.
@@ -164,7 +169,7 @@ class BrowserBox : public gcn::Widget,
          * Highlight modes for links.
          * This can be used for a bitmask.
          */
-        enum
+        enum LinkHighlightMode
         {
             UNDERLINE  = 1,
             BACKGROUND = 2
@@ -174,12 +179,14 @@ class BrowserBox : public gcn::Widget,
         void relayoutText();
         void layoutTextRow(TextRow &row, LayoutContext &context);
         void updateHoveredLink(int x, int y);
+        void maybeRelayoutText();
 
         std::deque<TextRow> mTextRows;
 
         LinkHandler *mLinkHandler = nullptr;
-        unsigned int mMode;
+        Mode mMode;
         unsigned int mHighlightMode = UNDERLINE | BACKGROUND;
+        int mWrapIndent = 0;
         bool mShadows = false;
         bool mOutline = false;
         bool mUseLinksAndUserColors = true;

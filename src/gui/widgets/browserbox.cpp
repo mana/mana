@@ -66,7 +66,7 @@ LayoutContext::LayoutContext(gcn::Font *font)
 }
 
 
-BrowserBox::BrowserBox(unsigned int mode):
+BrowserBox::BrowserBox(Mode mode):
     mMode(mode)
 {
     setFocusable(true);
@@ -148,15 +148,10 @@ void BrowserBox::addRow(const std::string &row)
         for (auto &row : mTextRows)
         {
             for (auto &part : row.parts)
-            {
                 part.y -= removedHeight;
-            }
 
             for (auto &link : row.links)
-            {
-                link.y1 -= removedHeight;
-                link.y2 -= removedHeight;
-            }
+                link.rect.y -= removedHeight;
         }
     }
 
@@ -207,25 +202,21 @@ void BrowserBox::draw(gcn::Graphics *graphics)
     {
         auto &link = *mHoveredLink;
 
+        const gcn::Rectangle &rect = link.rect;
+
         if (mHighlightMode & BACKGROUND)
         {
             graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT));
-            graphics->fillRectangle(gcn::Rectangle(
-                        link.x1,
-                        link.y1,
-                        link.x2 - link.x1,
-                        link.y2 - link.y1
-                        ));
+            graphics->fillRectangle(rect);
         }
 
         if (mHighlightMode & UNDERLINE)
         {
             graphics->setColor(Theme::getThemeColor(Theme::HYPERLINK));
-            graphics->drawLine(
-                    link.x1,
-                    link.y2,
-                    link.x2,
-                    link.y2);
+            graphics->drawLine(rect.x,
+                               rect.y + rect.height,
+                               rect.x + rect.width,
+                               rect.y + rect.height);
         }
     }
 
@@ -332,7 +323,7 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
         if (wrapped)
         {
             context.y += context.lineHeight;
-            x = 15;
+            x = mWrapIndent;
             wrapped = false;
         }
 
@@ -388,12 +379,11 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
                 if (c == '<' && linkIndex < row.links.size())
                 {
                     auto &link = row.links[linkIndex];
-                    const int size = context.font->getWidth(link.caption) + 1;
 
-                    link.x1 = x;
-                    link.y1 = context.y;
-                    link.x2 = link.x1 + size;
-                    link.y2 = context.y + context.fontHeight - 1;
+                    link.rect.x = x;
+                    link.rect.y = context.y;
+                    link.rect.width = context.font->getWidth(link.caption) + 1;
+                    link.rect.height = context.fontHeight - 1;
 
                     linkIndex++;
                 }
@@ -416,7 +406,7 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
         // Auto wrap mode
         if (mMode == AUTO_WRAP && getWidth() > 0
             && partWidth > 0
-            && (x + partWidth + 10) > getWidth())
+            && (x + partWidth) > getWidth())
         {
             bool forced = false;
 
@@ -447,7 +437,7 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
                 partWidth = context.font->getWidth(part);
             }
             while (end > start && partWidth > 0
-                   && (x + partWidth + 10) > getWidth());
+                   && (x + partWidth) > getWidth());
 
             if (forced)
             {
