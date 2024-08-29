@@ -1,9 +1,9 @@
 ##3                             === INDEX ===
 
- -> @@about|About Mana@@
- -> @@changes|Recent Changes@@
+-> @@about|About Mana@@
+-> @@changes|Recent Changes@@
 
- -> @@commands|Commands@@
- -> @@windows|Windows@@
+-> @@commands|Commands@@
+-> @@windows|Windows@@
 
- -> @@support|Support@@
+-> @@support|Support@@

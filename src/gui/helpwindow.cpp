@@ -47,6 +47,7 @@ HelpWindow::HelpWindow():
     setDefaultSize(500, 400, ImageRect::CENTER);
 
     mBrowserBox = new BrowserBox;
+    mBrowserBox->setFrameSize(4);
     mScrollArea = new ScrollArea(mBrowserBox);
     auto *okButton = new Button(_("Close"), "close", this);
 
@@ -65,9 +66,7 @@ HelpWindow::HelpWindow():
 void HelpWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "close")
-    {
         setVisible(false);
-    }
 }
 
 void HelpWindow::handleLink(const std::string &link)
@@ -93,11 +92,8 @@ void HelpWindow::loadFile(const std::string &file)
     std::string helpPath = branding.getStringValue("helpPath");
     if (helpPath.empty())
         helpPath = paths.getStringValue("help");
-    std::vector<std::string> lines =
-        resman->loadTextFile(helpPath + file + ".txt");
 
-    for (const auto &line : lines)
-    {
+    const auto lines = resman->loadTextFile(helpPath + file + ".txt");
+    for (auto &line : lines)
         mBrowserBox->addRow(line);
-    }
 }

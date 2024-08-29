@@ -1,11 +1,11 @@
- <- @@index|Back to Index@@
+<- @@index|Back to Index@@
  
  
 ##3                            === COMMANDS ===
-##0
-KEYBOARD:
 
-##2 Use arrow keys to move around.
+##3KEYBOARD:
+
+Use arrow keys to move around.
 
 ##3Most useful keys:
  
@@ -55,60 +55,61 @@ KEYBOARD:
 
 
 ##3MOUSE:
-##0
- Left click to execute default action: walk, pick up an item, attack a monster
- and talk to NPCs.  Right click to show up a context menu.
+
+Left click to execute default action: walk, pick up an item, attack a monster
+and talk to NPCs.  Right click to show up a context menu.
 
 
 ##3COMMUNICATION:
-##0
- Communication is often essential to success in this game. You can communicate
- in several ways:  By chatting and showing emotions (see above), by trading
- (with the right-click context menu), and by whispering.
 
- To whisper, type
-##2
- /whisper <name> <message>
-##0
+Communication is often essential to success in this game. You can communicate
+in several ways:  By chatting and showing emotions (see above), by trading
+(with the right-click context menu), and by whispering.
+
+To whisper, type
+
+##2  /whisper <name> <message>
+
  This will send <message> to player <name>, if that player is logged in. If the
  name has a space in it, put double quotes around it like this:
-##2
- /whisper "<name>" <message>
-##0
- For further help type /help in the chat console.
+
+##2  /whisper "<name>" <message>
+
+For further help type /help in the chat console.
 
 
 ##3IGNORING COMMUNICATION
-##0
- You may find that not all communication is to your liking.  While most people
- are nice, some may offend you or try to make your life harder. Since this is
- an open game, there is nothing the developers can do to prevent this.
 
- However, you can protect yourself from such players by ignoring them.  Right-
- click on them to bring up the context menu, then select `Ignore´ or
- `Disregard´ (see below).  You can fine-tune your player relations in the
- `Setup´ menu, which lists all the players you have added to it.  To open this
- menu, select `Setup´ in the upper right corner of the screen, then `Players´.
+You may find that not all communication is to your liking.  While most people
+are nice, some may offend you or try to make your life harder. Since this is
+an open game, there is nothing the developers can do to prevent this.
 
- There you will find a list of all players you are acquainted with, as well as
- several configuration options:
+However, you can protect yourself from such players by ignoring them.  Right-
+click on them to bring up the context menu, then select `IgnoreÂ´ or
+`DisregardÂ´ (see below).  You can fine-tune your player relations in the
+`SetupÂ´ menu, which lists all the players you have added to it.  To open this
+menu, select `SetupÂ´ in the upper right corner of the screen, then `PlayersÂ´.
 
- - allow trading:  Do you wish to allow trade requests from arbitrary players?
- - allow whispers:  Do you wish to allow arbitrary players to send
-   private messages to you in-game?
+There you will find a list of all players you are acquainted with, as well as
+several configuration options:
+
+- allow trading:  Do you wish to allow trade requests from arbitrary players?
+- allow whispers:  Do you wish to allow arbitrary players to send
+  private messages to you in-game?
+
 
 ##3THE PLAYER LIST
-##0
- The player list lists all of your acquaintances.  They are categorised as one
- of the following:
 
- - ##2neutral##0:  As far as the game is concerned, this is the same as not
-   having the player listed:  the player may chat with you, but may only trade
-   or whisper if you have this option allowed for everyone.
- - ##2friend##0:  You consider this player a friend.  The player may chat,
-   message your in private, or trade with you at any point.
- - ##2disregarded##0:  You wish to disregard this player, meaning that his or
-   her trade requests and whispers are ignored.
- - ##2ignored##0:  You wish to completely ignore this player.  You will not
-   even see emotions for him or her anymore.
+The player list lists all of your acquaintances. They are categorised as one
+of the following:
+
+- ##2neutral##0:  As far as the game is concerned, this is the same as not
+  having the player listed:  the player may chat with you, but may only trade
+  or whisper if you have this option allowed for everyone.
+- ##2friend##0:  You consider this player a friend.  The player may chat,
+  message your in private, or trade with you at any point.
+- ##2disregarded##0:  You wish to disregard this player, meaning that his or
+  her trade requests and whispers are ignored.
+- ##2ignored##0:  You wish to completely ignore this player.  You will not
+  even see emotions for him or her anymore.
 
