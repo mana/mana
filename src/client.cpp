@@ -232,7 +232,7 @@ Client::Client(const Options &options):
     logger->setLogToStandardOut(config.getBoolValue("logToStandardOut"));
 
     // Log the mana version
-    logger->log("Mana %s", FULL_VERSION);
+    logger->log("%s", FULL_VERSION);
 
     initScreenshotDir();
 

@@ -51,9 +51,9 @@
  */
 
 #ifdef PACKAGE_VERSION
-#define FULL_VERSION "v" PACKAGE_VERSION
+#define FULL_VERSION "Mana " PACKAGE_VERSION
 #else
-#define FULL_VERSION "Unknown Version"
+#define FULL_VERSION "Mana (unknown version)"
 #endif
 
 #ifdef PACKAGE_OS

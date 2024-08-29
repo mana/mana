@@ -45,7 +45,7 @@ Desktop::Desktop()
     if (appName.empty())
         mVersionLabel = new Label(FULL_VERSION);
     else
-        mVersionLabel = new Label(strprintf("%s (Mana %s)", appName.c_str(),
+        mVersionLabel = new Label(strprintf("%s (%s)", appName.c_str(),
                                             FULL_VERSION));
 
     mVersionLabel->setBackgroundColor(gcn::Color(255, 255, 255, 128));
