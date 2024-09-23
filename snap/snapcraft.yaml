@@ -6,9 +6,6 @@ base: core22
 grade: stable
 confinement: strict
 
-assumes:
-  - command-chain
-
 apps:
   mana:
     command: usr/bin/mana
