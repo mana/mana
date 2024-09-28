@@ -66,13 +66,13 @@ void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
         if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
         {
             SpriteReference &currentSprite = display.sprites.emplace_back();
-            currentSprite.sprite = (const char*)spriteNode->xmlChildrenNode->content;
+            currentSprite.sprite = (const char*)spriteNode->children->content;
             currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
         }
         else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
         {
             display.particles.emplace_back(
-                        (const char*)spriteNode->xmlChildrenNode->content);
+                        (const char*)spriteNode->children->content);
         }
     }
 

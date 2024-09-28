@@ -125,8 +125,7 @@ void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode,
         return;
 
     // Get animation frames
-    for (xmlNodePtr frameNode = animationNode->xmlChildrenNode; frameNode;
-            frameNode = frameNode->next)
+    for (auto frameNode : XML::Children(animationNode))
     {
         int delay = XML::getProperty(frameNode, "delay", 0);
         int offsetX = XML::getProperty(frameNode, "offsetX", 0);

@@ -340,7 +340,7 @@ static void readLayer(xmlNodePtr node, Map *map)
             }
 
             // Read base64 encoded map file
-            xmlNodePtr dataChild = childNode->xmlChildrenNode;
+            xmlNodePtr dataChild = childNode->children;
             if (!dataChild || !dataChild->content)
                 continue;
 

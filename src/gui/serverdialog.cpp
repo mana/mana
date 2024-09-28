@@ -493,9 +493,9 @@ void ServerDialog::loadServers()
                     server.port = ServerInfo::defaultPortForServerType(server.type);
                 }
             }
-            else if (subNode->xmlChildrenNode && subNode->xmlChildrenNode->content)
+            else if (subNode->children && subNode->children->content)
             {
-                const char *text = (const char*) subNode->xmlChildrenNode->content;
+                const char *text = (const char*) subNode->children->content;
 
                 if (xmlStrEqual(subNode->name, BAD_CAST "description"))
                 {

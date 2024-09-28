@@ -294,7 +294,7 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
         // Image
         else if ((node = XML::findFirstChildByName(effectChildNode, "image")))
         {
-            std::string imageSrc = (const char*)node->xmlChildrenNode->content;
+            std::string imageSrc = (const char*)node->children->content;
             if (!imageSrc.empty() && !dyePalettes.empty())
                 Dye::instantiate(imageSrc, dyePalettes);
 
@@ -333,7 +333,7 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
             }
             else if (xmlStrEqual(emitterNode->name, BAD_CAST "deatheffect"))
             {
-                std::string deathEffect = (const char*)emitterNode->xmlChildrenNode->content;
+                std::string deathEffect = (const char*)emitterNode->children->content;
                 char deathEffectConditions = 0x00;
                 if (XML::getBoolProperty(emitterNode, "on-floor", true))
                 {

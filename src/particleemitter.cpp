@@ -340,7 +340,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
             } // for frameNode
         } else if (xmlStrEqual(propertyNode->name, BAD_CAST "deatheffect"))
         {
-            mDeathEffect = (const char*)propertyNode->xmlChildrenNode->content;
+            mDeathEffect = (const char*)propertyNode->children->content;
             mDeathEffectConditions = 0x00;
             if (XML::getBoolProperty(propertyNode, "on-floor", true))
             {

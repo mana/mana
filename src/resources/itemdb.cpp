@@ -119,7 +119,7 @@ const ItemInfo &ItemDB::get(const std::string &name) const
 void ItemDB::loadSpriteRef(ItemInfo &itemInfo, xmlNodePtr node)
 {
     std::string gender = XML::getProperty(node, "gender", "unisex");
-    std::string filename = (const char*) node->xmlChildrenNode->content;
+    std::string filename = (const char*) node->children->content;
 
     const int race = XML::getProperty(node, "race", 0);
     if (gender == "male" || gender == "unisex")
@@ -133,7 +133,7 @@ void ItemDB::loadSpriteRef(ItemInfo &itemInfo, xmlNodePtr node)
 void ItemDB::loadSoundRef(ItemInfo &itemInfo, xmlNodePtr node)
 {
     std::string event = XML::getProperty(node, "event", std::string());
-    std::string filename = (const char*) node->xmlChildrenNode->content;
+    std::string filename = (const char*) node->children->content;
 
     if (event == "hit")
     {
@@ -157,13 +157,13 @@ void ItemDB::loadFloorSprite(SpriteDisplay &display, xmlNodePtr floorNode)
         if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
         {
             SpriteReference &currentSprite = display.sprites.emplace_back();
-            currentSprite.sprite = (const char*)spriteNode->xmlChildrenNode->content;
+            currentSprite.sprite = (const char*)spriteNode->children->content;
             currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
         }
         else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
         {
             display.particles.emplace_back(
-                        (const char*)spriteNode->xmlChildrenNode->content);
+                        (const char*)spriteNode->children->content);
         }
     }
 }
@@ -457,7 +457,7 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
                                                triggerLabel->second));
                 else if (xmlStrEqual(effectChild->name, BAD_CAST "label"))
                     effect.emplace_back(
-                            (const char*)effectChild->xmlChildrenNode->content);
+                            (const char*)effectChild->children->content);
             }
         }
 
