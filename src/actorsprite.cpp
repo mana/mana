@@ -235,8 +235,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     for (const auto &sprite : display.sprites)
     {
         std::string file = paths.getStringValue("sprites") + sprite.sprite;
-        int variant = sprite.variant;
-        addSprite(AnimatedSprite::load(file, variant));
+        addSprite(AnimatedSprite::load(file, sprite.variant));
     }
 
     // Ensure that something is shown, if desired
@@ -268,10 +267,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     if (Particle::enabled)
     {
         for (const auto &particle : display.particles)
-        {
-            Particle *p = particleEngine->addEffect(particle, 0, 0);
-            controlParticle(p);
-        }
+            controlParticle(particleEngine->addEffect(particle, 0, 0));
     }
 
     mMustResetParticles = true;

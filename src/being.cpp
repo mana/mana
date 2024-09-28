@@ -91,6 +91,8 @@ Being::~Being()
     mSpeechBubble = nullptr;
     mDispName = nullptr;
     mText = nullptr;
+
+    removeAllSpriteParticles();
 }
 
 void Being::setSubtype(Uint16 subtype)
@@ -765,6 +767,12 @@ void Being::logic()
         mText = nullptr;
     }
 
+    if (mRestoreSpriteParticlesOnLogic)
+    {
+        mRestoreSpriteParticlesOnLogic = false;
+        restoreAllSpriteParticles();
+    }
+
     if ((mAction != DEAD) && !mSpeedPixelsPerTick.isNull())
     {
         const Vector dest = (mPath.empty()) ?
@@ -979,6 +987,45 @@ void Being::showName()
     updateCoords();
 }
 
+void Being::addSpriteParticles(SpriteState &spriteState, const SpriteDisplay &display)
+{
+    if (!spriteState.particles.empty())
+        return;
+
+    for (const auto &particle : display.particles)
+    {
+        Particle *p = particleEngine->addEffect(particle, 0, 0, 0);
+        controlParticle(p);
+        spriteState.particles.push_back(p);
+    }
+}
+
+void Being::removeSpriteParticles(SpriteState &spriteState)
+{
+    for (auto particle : spriteState.particles)
+        mChildParticleEffects.removeLocally(particle);
+
+    spriteState.particles.clear();
+}
+
+void Being::removeAllSpriteParticles()
+{
+    for (auto &spriteState : mSpriteStates)
+        removeSpriteParticles(spriteState);
+}
+
+void Being::restoreAllSpriteParticles()
+{
+    for (auto &spriteState : mSpriteStates)
+    {
+        if (spriteState.id)
+        {
+            auto &itemInfo = itemDb->get(spriteState.id);
+            addSpriteParticles(spriteState, itemInfo.display);
+        }
+    }
+}
+
 void Being::updateColors()
 {
     if (getType() == MONSTER)
@@ -1021,20 +1068,25 @@ void Being::updateColors()
     }
 }
 
-void Being::setSprite(unsigned int slot, int id, const std::string &color,
+void Being::setSprite(unsigned slot, int id, const std::string &color,
                       bool isWeapon)
 {
     if (slot >= size())
         ensureSize(slot + 1);
 
-    if (slot >= mSpriteIDs.size())
-        mSpriteIDs.resize(slot + 1);
+    if (slot >= mSpriteStates.size())
+        mSpriteStates.resize(slot + 1);
 
-    if (slot >= mSpriteColors.size())
-        mSpriteColors.resize(slot + 1);
+    auto &spriteState = mSpriteStates[slot];
 
-    // id = 0 means unequip
-    if (id == 0)
+    // Clear current particles when the ID changes
+    if (spriteState.id != id)
+        removeSpriteParticles(spriteState);
+
+    spriteState.id = id;
+    spriteState.color = color;
+
+    if (id == 0)        // id = 0 means unequip
     {
         removeSprite(slot);
 
@@ -1043,7 +1095,8 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
     }
     else
     {
-        std::string filename = itemDb->get(id).getSprite(mGender, mSubType);
+        auto &itemInfo = itemDb->get(id);
+        std::string filename = itemInfo.getSprite(mGender, mSubType);
         AnimatedSprite *equipmentSprite = nullptr;
 
         if (!filename.empty())
@@ -1060,24 +1113,25 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
 
         CompoundSprite::setSprite(slot, equipmentSprite);
 
+        addSpriteParticles(spriteState, itemInfo.display);
+
         if (isWeapon)
-            mEquippedWeapon = &itemDb->get(id);
+            mEquippedWeapon = &itemInfo;
 
         setAction(mAction);
     }
-
-    mSpriteIDs[slot] = id;
-    mSpriteColors[slot] = color;
 }
 
-void Being::setSpriteID(unsigned int slot, int id)
+void Being::setSpriteID(unsigned slot, int id)
 {
-    setSprite(slot, id, mSpriteColors[slot]);
+    assert(slot < mSpriteStates.size());
+    setSprite(slot, id, mSpriteStates[slot].color);
 }
 
-void Being::setSpriteColor(unsigned int slot, const std::string &color)
+void Being::setSpriteColor(unsigned slot, const std::string &color)
 {
-    setSprite(slot, mSpriteIDs[slot], color);
+    assert(slot < mSpriteStates.size());
+    setSprite(slot, mSpriteStates[slot].id, color);
 }
 
 int Being::getNumberOfLayers() const
@@ -1098,10 +1152,11 @@ void Being::setGender(Gender gender)
         mGender = gender;
 
         // Reload all subsprites
-        for (unsigned int i = 0; i < mSpriteIDs.size(); i++)
+        for (size_t i = 0; i < mSpriteStates.size(); i++)
         {
-            if (mSpriteIDs.at(i) != 0)
-                setSprite(i, mSpriteIDs.at(i), mSpriteColors.at(i));
+            auto &sprite = mSpriteStates[i];
+            if (sprite.id != 0)
+                setSprite(i, sprite.id, sprite.color);
         }
 
         updateName();
@@ -1155,6 +1210,10 @@ void Being::event(Event::Channel channel, const Event &event)
 
 void Being::setMap(Map *map)
 {
+    // Remove sprite particles because ActorSprite is going to kill them all
+    removeAllSpriteParticles();
+    mRestoreSpriteParticlesOnLogic = true;
+
     ActorSprite::setMap(map);
 
     // Recalculate pixel/tick speed

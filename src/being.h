@@ -259,13 +259,13 @@ class Being : public ActorSprite, public EventListener
         /**
          * Sets visible equipments for this being.
          */
-        void setSprite(unsigned int slot, int id,
+        void setSprite(unsigned slot, int id,
                        const std::string &color = std::string(),
                        bool isWeapon = false);
 
-        void setSpriteID(unsigned int slot, int id);
+        void setSpriteID(unsigned slot, int id);
 
-        void setSpriteColor(unsigned int slot,
+        void setSpriteColor(unsigned slot,
                             const std::string &color = std::string());
 
         /**
@@ -452,6 +452,12 @@ class Being : public ActorSprite, public EventListener
         { lookAt(Vector(destPos.x, destPos.y)); }
 
     protected:
+        struct SpriteState {
+            int id = 0;
+            std::string color;
+            std::vector<Particle*> particles;
+        };
+
         /**
          * Sets the new path for this being.
          */
@@ -463,6 +469,11 @@ class Being : public ActorSprite, public EventListener
         void updateCoords();
 
         void showName();
+
+        void addSpriteParticles(SpriteState &spriteState, const SpriteDisplay &display);
+        void removeSpriteParticles(SpriteState &spriteState);
+        void removeAllSpriteParticles();
+        void restoreAllSpriteParticles();
 
         void updateColors();
 
@@ -505,8 +516,9 @@ class Being : public ActorSprite, public EventListener
 
         Vector mDest;  /**< destination coordinates. */
 
-        std::vector<int> mSpriteIDs;
-        std::vector<std::string> mSpriteColors;
+        std::vector<SpriteState> mSpriteStates;
+        bool mRestoreSpriteParticlesOnLogic = false;
+
         Gender mGender = Gender::UNSPECIFIED;
 
         // Character guild information

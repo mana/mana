@@ -86,7 +86,6 @@ public:
 
     int id = 0;                         /**< Item ID */
     std::string name;
-    std::string particle;               /**< Particle effect used with this item */
     SpriteDisplay display;              /**< Display info (like icon) */
     std::string description;            /**< Short description. */
     std::vector<std::string> effect;    /**< Description of effects. */

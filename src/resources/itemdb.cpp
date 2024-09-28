@@ -216,10 +216,13 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, xmlNodePtr node, const std::strin
     {
         if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
         {
-            itemInfo.particle = XML::getProperty(
-                        itemChild, "particle-effect", std::string());
-
             loadSpriteRef(itemInfo, itemChild);
+        }
+        else if (xmlStrEqual(itemChild->name, BAD_CAST "particlefx"))
+        {
+            if (itemChild->children && itemChild->children->content)
+                itemInfo.display.particles.emplace_back(
+                            (const char*)itemChild->children->content);
         }
         else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
         {
