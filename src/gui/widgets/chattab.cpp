@@ -282,12 +282,12 @@ void ChatTab::chatInput(const std::string &message)
 
             std::string temp = msg.substr(start + 1, end - start - 1);
 
-            const ItemInfo itemInfo = itemDb->get(temp);
-            if (itemInfo.getId() != 0)
+            const ItemInfo &itemInfo = itemDb->get(temp);
+            if (itemInfo.id != 0)
             {
                 msg.insert(end, "@@");
                 msg.insert(start + 1, "|");
-                msg.insert(start + 1, toString(itemInfo.getId()));
+                msg.insert(start + 1, toString(itemInfo.id));
                 msg.insert(start + 1, "@@");
             }
         }

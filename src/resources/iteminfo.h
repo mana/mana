@@ -70,123 +70,65 @@ class ManaServItemDB;
 
 /**
  * Defines a class for storing generic item infos.
- * Specialized version for one or another protocol are defined below.
  */
 class ItemInfo
 {
     friend class ItemDB;
-    friend void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
     friend class TmwAthena::TaItemDB;
     friend class ManaServ::ManaServItemDB;
 
-    public:
-        ItemInfo():
-            mAttackAction(SpriteAction::INVALID)
-        {
-        }
+public:
+    ItemInfo() = default;
 
-        int getId() const
-        { return mId; }
+    // disable copying
+    ItemInfo(const ItemInfo &) = delete;
+    ItemInfo &operator=(const ItemInfo &) = delete;
 
-        const std::string &getName() const
-        { return mName; }
+    int id = 0;                         /**< Item ID */
+    std::string name;
+    std::string particle;               /**< Particle effect used with this item */
+    SpriteDisplay display;              /**< Display info (like icon) */
+    std::string description;            /**< Short description. */
+    std::vector<std::string> effect;    /**< Description of effects. */
+    int weight = 0;                     /**< Weight in grams. */
 
-        const std::string &getParticleEffect() const
-        { return mParticle; }
+    /** Effects to be shown when weapon attacks - see also effects.xml */
+    std::string missileParticleFile;
+    int hitEffectId = 0;
+    int criticalHitEffectId = 0;
 
-        const SpriteDisplay &getDisplay() const
-        { return mDisplay; }
+    /** Attack type, in case of weapon.
+     * See SpriteAction in spritedef.h for more info.
+     * Attack action sub-types (bow, sword, ...) are defined in items.xml.
+     */
+    std::string attackAction = SpriteAction::INVALID;
 
-        const std::string &getDescription() const
-        { return mDescription; }
+    /** Attack range, will be equal to ATTACK_RANGE_NOT_SET if no weapon. */
+    int attackRange = 0;
 
-        const std::vector<std::string> &getEffect() const
-        { return mEffect; }
+    bool equippable = false;            /**< Whether this item can be equipped. */
+    bool activatable = false;           /**< Whether this item can be activated. */
 
-        int getWeight() const
-        { return mWeight; }
+    ItemType type = ITEM_UNUSABLE;      /**< Item type. */
 
-        const std::string &getSprite(Gender gender, int race) const;
+    const std::string &getSprite(Gender gender, int race) const;
+    const std::string &getSound(EquipmentSoundEvent event) const;
 
-        // Handlers for seting and getting the string used for particles when attacking
-        void setMissileParticleFile(const std::string &s)
-        { mMissileParticleFile = s; }
+private:
+    void setSprite(const std::string &animationFile, Gender gender, int race);
+    void addSound(EquipmentSoundEvent event, const std::string &filename);
 
-        const std::string &getMissileParticleFile() const
-        { return mMissileParticleFile; }
+    int mView = 0;                       /**< Item ID of how this item looks. */
 
-        void setHitEffectId(int s)
-        { mHitEffectId = s; }
+    /** Maps gender to sprite filenames. */
+    std::map<int, std::string> mAnimationFiles;
 
-        int getHitEffectId() const
-        { return mHitEffectId; }
-
-        void setCriticalHitEffectId(int s)
-        { mCriticalHitEffectId = s; }
-
-        int getCriticalHitEffectId() const
-        { return mCriticalHitEffectId; }
-
-        const std::string &getAttackAction() const
-        { return mAttackAction; }
-
-        int getAttackRange() const
-        { return mAttackRange; }
-
-        const std::string &getSound(EquipmentSoundEvent event) const;
-
-        bool getEquippable() const
-        { return mEquippable; }
-
-        bool getActivatable() const
-        { return mActivatable; }
-
-        ItemType getItemType() const
-        { return mType; }
-
-    private:
-        void setSprite(const std::string &animationFile,
-                       Gender gender, int race);
-
-        void addSound(EquipmentSoundEvent event, const std::string &filename);
-
-        SpriteDisplay mDisplay;           /**< Display info (like icon) */
-        std::string mName;
-        std::string mDescription;         /**< Short description. */
-        std::vector<std::string> mEffect; /**< Description of effects. */
-        ItemType mType = ITEM_UNUSABLE;   /**< Item type. */
-        std::string mParticle;            /**< Particle effect used with this item */
-        int mWeight = 0;                  /**< Weight in grams. */
-        int mView = 0;                    /**< Item ID of how this item looks. */
-        int mId = 0;                      /**< Item ID */
-
-        bool mEquippable = false;         /**< Whether this item can be equipped. */
-        bool mActivatable = false;        /**< Whether this item can be activated. */
-
-        // Equipment related members.
-        /** Attack type, in case of weapon.
-         * See SpriteAction in spritedef.h for more info.
-         * Attack action sub-types (bow, sword, ...) are defined in items.xml.
-         */
-        std::string mAttackAction;
-
-        /** Attack range, will be equal to ATTACK_RANGE_NOT_SET if no weapon. */
-        int mAttackRange = 0;
-
-        /** Effects to be shown when weapon attacks - see also effects.xml */
-        std::string mMissileParticleFile;
-        int mHitEffectId = 0;
-        int mCriticalHitEffectId = 0;
-
-        /** Maps gender to sprite filenames. */
-        std::map<int, std::string> mAnimationFiles;
-
-        /** Stores the names of sounds to be played at certain event. */
-        std::map< EquipmentSoundEvent, std::vector<std::string> > mSounds;
+    /** Stores the names of sounds to be played at certain event. */
+    std::map<EquipmentSoundEvent, std::vector<std::string>> mSounds;
 };
 
 /*
- * TmwAthena specialization of the itemInfo for TmwAthena
+ * TmwAthena specialization of the ItemInfo for TmwAthena
  */
 namespace TmwAthena {
 
@@ -220,37 +162,6 @@ enum EquipmentSlot
     EQUIP_VECTOR_END = 11
 };
 
-/**
- * Defines a class for storing TmwAthena specific item infos.
- * Specialized version for one or another protocol are defined below.
- */
-class TaItemInfo: public ItemInfo
-{
-    friend class TaItemDB;
-
-    public:
-        TaItemInfo() = default;
-
-        // Declare TmwAthena Specific item info here
-};
-
 } // namespace TmwAthena
-
-namespace ManaServ {
-
-/**
- * Defines a class for storing Manaserv Specific item infos.
- * Specialized version for one or another protocol are defined below.
- */
-class ManaServItemInfo: public ItemInfo
-{
-    public:
-        ManaServItemInfo() = default;
-
-        // Declare Manaserv Specific item info here
-};
-
-
-} // namespace ManaServ
 
 #endif // ITEMINFO_H

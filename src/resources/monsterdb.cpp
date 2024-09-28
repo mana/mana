@@ -86,21 +86,18 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
 
     SpriteDisplay display;
 
-    //iterate <sprite>s and <sound>s
     for (auto spriteNode : XML::Children(node))
     {
         if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
         {
-            SpriteReference currentSprite;
+            SpriteReference &currentSprite = display.sprites.emplace_back();
             currentSprite.sprite = (const char*)spriteNode->xmlChildrenNode->content;
             currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
-            display.sprites.push_back(currentSprite);
         }
         else if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
         {
-            std::string event = XML::getProperty(spriteNode, "event", "");
-            const char *soundFile;
-            soundFile = (const char*) spriteNode->xmlChildrenNode->content;
+            std::string event = XML::getProperty(spriteNode, "event", std::string());
+            const char *soundFile = (const char*) spriteNode->children->content;
 
             if (event == "hit")
             {

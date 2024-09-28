@@ -250,12 +250,12 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
     if (event.getSource() == mItems && item && isDoubleClick(item->getInvIndex()))
     {
-        if (isMainInventory() && item->getInfo().getActivatable())
+        if (isMainInventory() && item->getInfo().activatable)
         {
             action(gcn::ActionEvent(mUseButton,
                                     mUseButton->getActionEventId()));
         }
-        else if (isMainInventory() && item->getInfo().getEquippable())
+        else if (isMainInventory() && item->isEquippable())
         {
             action(gcn::ActionEvent(mEquipButton,
                                     mEquipButton->getActionEventId()));
@@ -366,7 +366,7 @@ void InventoryWindow::updateButtons()
 
     mDropButton->setEnabled(true);
 
-    if (item->getInfo().getEquippable())
+    if (item->isEquippable())
     {
         if (item->isEquipped())
             mEquipButton->setCaption(_("Unequip"));
@@ -379,7 +379,7 @@ void InventoryWindow::updateButtons()
 
     mEquipButton->adjustSize();
 
-    mUseButton->setEnabled(item->getInfo().getActivatable());
+    mUseButton->setEnabled(item->getInfo().activatable);
 
     if (item->getQuantity() > 1)
         mDropButton->setCaption(_("Drop..."));

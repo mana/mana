@@ -914,7 +914,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
             // for different grammatical numbers (singular, plural, ...)
             SERVER_NOTICE(strprintf(ngettext("You picked up %d "
                     "[@@%d|%s@@].", "You picked up %d [@@%d|%s@@].", amount),
-                    amount, itemInfo.getId(), itemInfo.getName().c_str()))
+                    amount, itemInfo.id, itemInfo.name.c_str()))
         }
 
         if (mMap && config.getBoolValue("showpickupparticle"))
@@ -923,7 +923,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
             std::string msg;
             if (amount > 1)
                 msg = strprintf("%i ", amount);
-            msg += itemInfo.getName();
+            msg += itemInfo.name;
             addMessageToQueue(msg, UserPalette::PICKUP_INFO);
         }
     }
@@ -942,9 +942,9 @@ void LocalPlayer::setAttackRange(int range)
         Item *weapon = PlayerInfo::getEquipment(TmwAthena::EQUIP_FIGHT1_SLOT);
         if (weapon)
         {
-            const ItemInfo info = weapon->getInfo();
-            if (info.getAttackRange() > -1)
-                mAttackRange = info.getAttackRange();
+            const ItemInfo &info = weapon->getInfo();
+            if (info.attackRange > -1)
+                mAttackRange = info.attackRange;
         }
     }
 }

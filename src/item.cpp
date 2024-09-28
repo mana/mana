@@ -44,7 +44,7 @@ void Item::setId(int id)
 
     // Load the associated image
     ResourceManager *resman = ResourceManager::getInstance();
-    const SpriteDisplay &display = getInfo().getDisplay();
+    const SpriteDisplay &display = getInfo().display;
     mImage = resman->getImage(paths.getStringValue("itemIcons") + display.image);
 
     if (!mImage)
@@ -73,5 +73,5 @@ void Item::doEvent(Event::Type eventName, int amount)
 
 bool Item::isEquippable() const
 {
-    return getInfo().getEquippable();
+    return getInfo().equippable;
 }

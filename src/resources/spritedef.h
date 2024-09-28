@@ -26,31 +26,24 @@
 
 #include <libxml/tree.h>
 
-#include <list>
 #include <map>
 #include <string>
+#include <vector>
 
 class Action;
 class ImageSet;
 
 struct SpriteReference
 {
-    SpriteReference() = default;
-
-    SpriteReference(std::string sprite, int variant):
-        sprite(sprite),
-        variant(variant)
-    {}
-
     std::string sprite;
-    int variant;
+    int variant = 0;
 };
 
 struct SpriteDisplay
 {
     std::string image;
-    std::list<SpriteReference> sprites;
-    std::list<std::string> particles;
+    std::vector<SpriteReference> sprites;
+    std::vector<std::string> particles;
 };
 
 /*

@@ -30,7 +30,7 @@ ShopItem::ShopItem(int inventoryIndex, int id,
     Item(id, 0),
     mPrice(price)
 {
-    mDisplayName = getInfo().getName() +
+    mDisplayName = getInfo().name +
                         " (" + Units::formatCurrency(mPrice) + ")";
     setInvIndex(inventoryIndex);
     addDuplicate(inventoryIndex, quantity);

@@ -60,7 +60,7 @@ BeingInfo::BeingInfo():
 {
     SpriteDisplay display;
 
-    SpriteReference errorSprite(paths.getStringValue("spriteErrorFile"), 0);
+    SpriteReference errorSprite { paths.getStringValue("spriteErrorFile"), 0 };
     display.sprites.push_back(errorSprite);
 
     setDisplay(std::move(display));

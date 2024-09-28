@@ -63,14 +63,14 @@ static ItemType itemTypeFromString(const std::string &name, int id = 0)
 
 void ItemDB::loadEmptyItemDefinition()
 {
-    mUnknown->mName = _("Unknown item");
-    mUnknown->mDisplay = SpriteDisplay();
+    mUnknown->name = _("Unknown item");
+    mUnknown->display = SpriteDisplay();
     std::string errFile = paths.getStringValue("spriteErrorFile");
     mUnknown->setSprite(errFile, Gender::MALE, 0);
     mUnknown->setSprite(errFile, Gender::FEMALE, 0);
     mUnknown->setSprite(errFile, Gender::HIDDEN, 0);
-    mUnknown->setHitEffectId(paths.getIntValue("hitEffectId"));
-    mUnknown->setCriticalHitEffectId(paths.getIntValue("criticalHitEffectId"));
+    mUnknown->hitEffectId = paths.getIntValue("hitEffectId");
+    mUnknown->criticalHitEffectId = paths.getIntValue("criticalHitEffectId");
 }
 
 /*
@@ -116,32 +116,32 @@ const ItemInfo &ItemDB::get(const std::string &name) const
     return *(i->second);
 }
 
-void ItemDB::loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
+void ItemDB::loadSpriteRef(ItemInfo &itemInfo, xmlNodePtr node)
 {
     std::string gender = XML::getProperty(node, "gender", "unisex");
     std::string filename = (const char*) node->xmlChildrenNode->content;
 
     const int race = XML::getProperty(node, "race", 0);
     if (gender == "male" || gender == "unisex")
-        itemInfo->setSprite(filename, Gender::MALE, race);
+        itemInfo.setSprite(filename, Gender::MALE, race);
     if (gender == "female" || gender == "unisex")
-        itemInfo->setSprite(filename, Gender::FEMALE, race);
+        itemInfo.setSprite(filename, Gender::FEMALE, race);
     if (gender == "hidden" || gender == "other" || gender == "unisex")
-        itemInfo->setSprite(filename, Gender::HIDDEN, race);
+        itemInfo.setSprite(filename, Gender::HIDDEN, race);
 }
 
-void ItemDB::loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
+void ItemDB::loadSoundRef(ItemInfo &itemInfo, xmlNodePtr node)
 {
-    std::string event = XML::getProperty(node, "event", "");
+    std::string event = XML::getProperty(node, "event", std::string());
     std::string filename = (const char*) node->xmlChildrenNode->content;
 
     if (event == "hit")
     {
-        itemInfo->addSound(EQUIP_EVENT_HIT, filename);
+        itemInfo.addSound(EQUIP_EVENT_HIT, filename);
     }
     else if (event == "strike")
     {
-        itemInfo->addSound(EQUIP_EVENT_STRIKE, filename);
+        itemInfo.addSound(EQUIP_EVENT_STRIKE, filename);
     }
     else
     {
@@ -150,21 +150,20 @@ void ItemDB::loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
     }
 }
 
-void ItemDB::loadFloorSprite(SpriteDisplay *display, xmlNodePtr floorNode)
+void ItemDB::loadFloorSprite(SpriteDisplay &display, xmlNodePtr floorNode)
 {
     for (auto spriteNode : XML::Children(floorNode))
     {
         if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
         {
-            SpriteReference currentSprite;
+            SpriteReference &currentSprite = display.sprites.emplace_back();
             currentSprite.sprite = (const char*)spriteNode->xmlChildrenNode->content;
             currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
-            display->sprites.push_back(currentSprite);
         }
         else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
         {
-            std::string particlefx = (const char*)spriteNode->xmlChildrenNode->content;
-            display->particles.push_back(particlefx);
+            display.particles.emplace_back(
+                        (const char*)spriteNode->xmlChildrenNode->content);
         }
     }
 }
@@ -182,85 +181,62 @@ void ItemDB::unload()
     mLoaded = false;
 }
 
-void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node, const std::string &filename)
+void ItemDB::loadCommonRef(ItemInfo &itemInfo, xmlNodePtr node, const std::string &filename)
 {
-        int id = XML::getProperty(node, "id", 0);
+    itemInfo.id = XML::getProperty(node, "id", 0);
 
-        if (!id)
+    if (!itemInfo.id)
+    {
+        logger->log("ItemDB: Invalid or missing item Id in %s!", filename.c_str());
+        return;
+    }
+    else if (mItemInfos.find(itemInfo.id) != mItemInfos.end())
+    {
+        logger->log("ItemDB: Redefinition of item Id %d in %s", itemInfo.id, filename.c_str());
+    }
+
+    itemInfo.mView = XML::getProperty(node, "view", 0);
+    itemInfo.name = XML::getProperty(node, "name", std::string());
+    itemInfo.display.image = XML::getProperty(node, "image", std::string());
+    itemInfo.description = XML::getProperty(node, "description", std::string());
+    itemInfo.attackAction = XML::getProperty(node, "attack-action", SpriteAction::INVALID);
+    itemInfo.attackRange = XML::getProperty(node, "attack-range", 0);
+    itemInfo.missileParticleFile = XML::getProperty(node, "missile-particle", std::string());
+    itemInfo.hitEffectId = XML::getProperty(node, "hit-effect-id",
+                                            paths.getIntValue("hitEffectId"));
+    itemInfo.criticalHitEffectId = XML::getProperty(node, "critical-hit-effect-id",
+                                                    paths.getIntValue("criticalHitEffectId"));
+
+    // Load Ta Item Type
+    std::string typeStr = XML::getProperty(node, "type", "other");
+    itemInfo.type = itemTypeFromString(typeStr);
+    itemInfo.weight = XML::getProperty(node, "weight", 0);
+
+    for (auto itemChild : XML::Children(node))
+    {
+        if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
         {
-            logger->log("ItemDB: Invalid or missing item Id in %s!", filename.c_str());
-            return;
+            itemInfo.particle = XML::getProperty(
+                        itemChild, "particle-effect", std::string());
+
+            loadSpriteRef(itemInfo, itemChild);
         }
-        else if (mItemInfos.find(id) != mItemInfos.end())
-            logger->log("ItemDB: Redefinition of item Id %d in %s", id, filename.c_str());
-
-        int view = XML::getProperty(node, "view", 0);
-
-        std::string name = XML::getProperty(node, "name", "");
-        std::string image = XML::getProperty(node, "image", "");
-        std::string description = XML::getProperty(node, "description", "");
-        std::string attackAction = XML::getProperty(node, "attack-action",
-                                                    SpriteAction::INVALID);
-        int attackRange = XML::getProperty(node, "attack-range", 0);
-        std::string missileParticleFile = XML::getProperty(node,
-                                                           "missile-particle",
-                                                           "");
-        int hitEffectId = XML::getProperty(node, "hit-effect-id",
-                                           paths.getIntValue("hitEffectId"));
-        int criticalEffectId = XML::getProperty(node, "critical-hit-effect-id",
-                                      paths.getIntValue("criticalHitEffectId"));
-
-        // Load Ta Item Type
-        std::string typeStr = XML::getProperty(node, "type", "other");
-        itemInfo->mType = itemTypeFromString(typeStr);
-
-        int weight = XML::getProperty(node, "weight", 0);
-        itemInfo->mWeight = weight > 0 ? weight : 0;
-
-        SpriteDisplay display;
-        display.image = image;
-
-        itemInfo->mId = id;
-        itemInfo->mName = name;
-        itemInfo->mDescription = description;
-        itemInfo->mView = view;
-        itemInfo->mWeight = weight;
-        itemInfo->mAttackAction = attackAction;
-        itemInfo->mAttackRange = attackRange;
-        itemInfo->setMissileParticleFile(missileParticleFile);
-        itemInfo->setHitEffectId(hitEffectId);
-        itemInfo->setCriticalHitEffectId(criticalEffectId);
-
-        // Load <sprite>, <sound>, and <floor>
-        for (auto itemChild : XML::Children(node))
+        else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
         {
-            if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
-            {
-                itemInfo->mParticle = XML::getProperty(
-                            itemChild, "particle-effect", std::string());
-
-                loadSpriteRef(itemInfo, itemChild);
-            }
-            else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
-            {
-                loadSoundRef(itemInfo, itemChild);
-            }
-            else if (xmlStrEqual(itemChild->name, BAD_CAST "floor"))
-            {
-                loadFloorSprite(&display, itemChild);
-            }
-
+            loadSoundRef(itemInfo, itemChild);
         }
-
-        // If the item has got a floor image, we bind the good reference.
-        itemInfo->mDisplay = display;
+        else if (xmlStrEqual(itemChild->name, BAD_CAST "floor"))
+        {
+            loadFloorSprite(itemInfo.display, itemChild);
+        }
+    }
 }
 
 void ItemDB::addItem(ItemInfo *itemInfo)
 {
-    std::string itemName = itemInfo->mName;
-    itemInfo->mName = itemName.empty() ? _("unnamed") : itemName;
-    mItemInfos[itemInfo->mId] = itemInfo;
+    std::string itemName = itemInfo->name;
+    itemInfo->name = itemName.empty() ? _("unnamed") : itemName;
+    mItemInfos[itemInfo->id] = itemInfo;
     if (!itemName.empty())
     {
         std::string temp = normalize(itemName);
@@ -270,7 +246,7 @@ void ItemDB::addItem(ItemInfo *itemInfo)
             mNamedItemInfos[temp] = itemInfo;
         else
             logger->log("ItemDB: Duplicate name (%s) for item id %d found.",
-                        temp.c_str(), itemInfo->mId);
+                        temp.c_str(), itemInfo->id);
     }
 }
 
@@ -286,19 +262,19 @@ static void checkParameter(int id, const T param, const T errorValue)
     }
 }
 
-void ItemDB::checkItemInfo(ItemInfo* itemInfo)
+void ItemDB::checkItemInfo(ItemInfo &itemInfo)
 {
-    int id = itemInfo->mId;
-    if (!itemInfo->getAttackAction().empty())
-        if (itemInfo->mAttackRange == 0)
+    int id = itemInfo.id;
+    if (!itemInfo.attackAction.empty())
+        if (itemInfo.attackRange == 0)
             logger->log("ItemDB: Missing attack range from weapon %i!", id);
 
     if (id >= 0)
     {
-        checkParameter(id, itemInfo->mName, std::string());
-        checkParameter(id, itemInfo->mDescription, std::string());
-        checkParameter(id, itemInfo->mDisplay.image, std::string());
-        checkParameter(id, itemInfo->mWeight, 0);
+        checkParameter(id, itemInfo.name, std::string());
+        checkParameter(id, itemInfo.description, std::string());
+        checkParameter(id, itemInfo.display.image, std::string());
+        checkParameter(id, itemInfo.weight, 0);
     }
 }
 
@@ -322,14 +298,14 @@ void TaItemDB::init()
 
 void TaItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
 {
-    auto *itemInfo = new TaItemInfo;
+    auto *itemInfo = new ItemInfo;
 
-    loadCommonRef(itemInfo, node, filename);
+    loadCommonRef(*itemInfo, node, filename);
 
     // Everything not unusable or usable is equippable by the Ta type system.
-    itemInfo->mEquippable  = itemInfo->mType != ITEM_UNUSABLE
-                             && itemInfo->mType != ITEM_USABLE;
-    itemInfo->mActivatable = itemInfo->mType == ITEM_USABLE;
+    itemInfo->equippable  = itemInfo->type != ITEM_UNUSABLE
+                             && itemInfo->type != ITEM_USABLE;
+    itemInfo->activatable = itemInfo->type == ITEM_USABLE;
 
     // Load nano description
     std::vector<std::string> effect;
@@ -347,24 +323,24 @@ void TaItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
             continue;
         effect.push_back(strprintf(extraStat.mFormat.c_str(), value));
     }
-    std::string temp = XML::getProperty(node, "effect", "");
+    std::string temp = XML::getProperty(node, "effect", std::string());
     if (!temp.empty())
         effect.push_back(temp);
 
-    itemInfo->mEffect = effect;
+    itemInfo->effect = effect;
 
-    checkItemInfo(itemInfo);
+    checkItemInfo(*itemInfo);
 
     addItem(itemInfo);
 
     // Insert hairstyle id while letting the info as an item.
-    if (itemInfo->mType == ITEM_SPRITE_HAIR)
-        hairDB.addHairStyle(itemInfo->mId);
+    if (itemInfo->type == ITEM_SPRITE_HAIR)
+        hairDB.addHairStyle(itemInfo->id);
 }
 
 void TaItemDB::checkStatus()
 {
-    mUnknown = new TaItemInfo;
+    mUnknown = new ItemInfo;
     loadEmptyItemDefinition();
 
     checkHairWeaponsRacesSpecialIds();
@@ -372,7 +348,7 @@ void TaItemDB::checkStatus()
     mLoaded = true;
 }
 
-void TaItemDB::checkItemInfo(ItemInfo* itemInfo)
+void TaItemDB::checkItemInfo(ItemInfo &itemInfo)
 {
     ItemDB::checkItemInfo(itemInfo);
 
@@ -384,42 +360,33 @@ void TaItemDB::checkItemInfo(ItemInfo* itemInfo)
 
 namespace ManaServ {
 
-static std::map<std::string, const char* > triggerTable;
-
-static void initTriggerTable()
-{
-    if (triggerTable.empty())
-    {
-        // FIXME: This should ideally be softcoded via XML or similar.
-        logger->log("Initializing ManaServ trigger table...");
-        triggerTable["existence"]       = " when it is in the inventory";
-        triggerTable["activation"]      = " upon activation";
-        triggerTable["equip"]           = " upon successful equip";
-        triggerTable["leave-inventory"] = " when it leaves the inventory";
-        triggerTable["unequip"]         = " when it is unequipped";
-        triggerTable["equip-change"]    = " when it changes the way it is equipped";
-    }
-}
-
 void ManaServItemDB::init()
 {
     if (mLoaded)
         unload();
-
-    // Initialize the trigger table for effect descriptions
-    initTriggerTable();
 }
 
 void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
 {
-    auto *itemInfo = new ManaServItemInfo;
+    // Trigger table for effect descriptions
+    // FIXME: This should ideally be softcoded via XML or similar.
+    static const std::map<std::string, const char* > triggerTable = {
+        { "existence",       " when it is in the inventory" },
+        { "activation",      " upon activation" },
+        { "equip",           " upon successful equip" },
+        { "leave-inventory", " when it leaves the inventory" },
+        { "unequip",         " when it is unequipped" },
+        { "equip-change",    " when it changes the way it is equipped" },
+    };
 
-    loadCommonRef(itemInfo, node, filename);
+    auto *itemInfo = new ItemInfo;
+
+    loadCommonRef(*itemInfo, node, filename);
 
     // We default eqippable and activatable to false as their actual value will be set
     // within the <equip> and <effect> sub-nodes..
-    itemInfo->mActivatable = false;
-    itemInfo->mEquippable = false;
+    itemInfo->activatable = false;
+    itemInfo->equippable = false;
 
     // Load <equip>, and <effect> sub nodes.
     std::vector<std::string> effect;
@@ -429,12 +396,12 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
         {
             // The fact that there is a way to equip is enough.
             // Discard any details, but mark the item as equippable.
-            itemInfo->mEquippable = true;
+            itemInfo->equippable = true;
         }
         else if (xmlStrEqual(itemChild->name, BAD_CAST "effect"))
         {
             std::string trigger = XML::getProperty(
-                    itemChild, "trigger", "");
+                    itemChild, "trigger", std::string());
             if (trigger.empty())
             {
                 logger->log("Found empty trigger effect label in %s, skipping.", filename.c_str());
@@ -442,13 +409,13 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
             }
 
             if (trigger == "activation")
-                itemInfo->mActivatable = true;
+                itemInfo->activatable = true;
 
             auto triggerLabel = triggerTable.find(trigger);
             if (triggerLabel == triggerTable.end())
             {
                 logger->log("Warning: unknown trigger %s in item %d!",
-                            trigger.c_str(), itemInfo->mId);
+                            trigger.c_str(), itemInfo->id);
                 continue;
             }
 
@@ -457,7 +424,7 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
                 if (xmlStrEqual(effectChild->name, BAD_CAST "modifier"))
                 {
                     std::string attribute = XML::getProperty(
-                            effectChild, "attribute", "");
+                            effectChild, "attribute", std::string());
                     double value = XML::getFloatProperty(
                             effectChild, "value", 0.0);
                     int duration = XML::getProperty(
@@ -495,34 +462,34 @@ void ManaServItemDB::readItemNode(xmlNodePtr node, const std::string &filename)
         }
 
         // FIXME: Load hair styles through the races.xml file
-        if (itemInfo->mType == ITEM_SPRITE_HAIR)
-            hairDB.addHairStyle(itemInfo->mId);
+        if (itemInfo->type == ITEM_SPRITE_HAIR)
+            hairDB.addHairStyle(itemInfo->id);
 
         // Set Item Type based on subnodes info
         // TODO: Improve it once the itemTypes are loaded through xml
-        itemInfo->mType = ITEM_UNUSABLE;
-        if (itemInfo->mActivatable)
-            itemInfo->mType = ITEM_USABLE;
-        else if (itemInfo->mEquippable)
-            itemInfo->mType = ITEM_EQUIPMENT_TORSO;
+        itemInfo->type = ITEM_UNUSABLE;
+        if (itemInfo->activatable)
+            itemInfo->type = ITEM_USABLE;
+        else if (itemInfo->equippable)
+            itemInfo->type = ITEM_EQUIPMENT_TORSO;
     } // end for (auto itemChild : XML::Children(node))
 
-    itemInfo->mEffect = effect;
+    itemInfo->effect = effect;
 
-    checkItemInfo(itemInfo);
+    checkItemInfo(*itemInfo);
 
     addItem(itemInfo);
 }
 
 void ManaServItemDB::checkStatus()
 {
-    mUnknown = new ManaServItemInfo;
+    mUnknown = new ItemInfo;
     loadEmptyItemDefinition();
 
     mLoaded = true;
 }
 
-void ManaServItemDB::checkItemInfo(ItemInfo* itemInfo)
+void ManaServItemDB::checkItemInfo(ItemInfo &itemInfo)
 {
     ItemDB::checkItemInfo(itemInfo);
 

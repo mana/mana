@@ -101,7 +101,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
 
             if (!mFilter.empty())
             {
-                if (normalize(item->getInfo().getName()).find(mFilter) == std::string::npos)
+                if (normalize(item->getInfo().name).find(mFilter) == std::string::npos)
                     continue;
                 mFilteredMap[currentIndex] = item;
                 currentIndex++;
@@ -286,7 +286,7 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
         // put item name into chat window
         if (mDescItems)
         {
-            chatWindow->addItemText(item->getInfo().getName());
+            chatWindow->addItemText(item->getInfo().name);
         }
 
         if (mSelectedIndex == index)
@@ -298,7 +298,7 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
             mSelectionStatus = SEL_SELECTING;
             itemShortcut->setItemSelected(item->getId());
 
-            if (item->getInfo().getEquippable())
+            if (item->isEquippable())
                 outfitWindow->setItemSelected(item->getId());
         }
         else

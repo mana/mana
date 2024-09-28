@@ -145,7 +145,7 @@ void ItemPopup::setNoItem()
 
 void ItemPopup::setItem(const ItemInfo &item, bool showImage)
 {
-    if (item.getName() == mItemName->getCaption())
+    if (item.name == mItemName->getCaption())
         return;
 
     int space = 0;
@@ -154,7 +154,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     {
         ResourceManager *resman = ResourceManager::getInstance();
         auto image = resman->getImageRef(paths.getStringValue("itemIcons") +
-                                         item.getDisplay().image);
+                                         item.display.image);
 
         mIcon->setImage(image);
         if (image)
@@ -168,9 +168,9 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
         mIcon->setImage(nullptr);
     }
 
-    mItemType = item.getItemType();
+    mItemType = item.type;
 
-    std::string caption = item.getName();
+    std::string caption = item.name;
     if (!mItemEquipSlot.empty())
         caption += " (" + mItemEquipSlot + ")";
 
@@ -179,10 +179,10 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     mItemName->setForegroundColor(getColorFromItemType(mItemType));
     mItemName->setPosition(space, 0);
 
-    mItemDesc->setTextWrapped(item.getDescription(), ITEMPOPUP_WRAP_WIDTH);
-    mItemEffect->setTextWrapped(join(item.getEffect(), "\n"), ITEMPOPUP_WRAP_WIDTH);
+    mItemDesc->setTextWrapped(item.description, ITEMPOPUP_WRAP_WIDTH);
+    mItemEffect->setTextWrapped(join(item.effect, "\n"), ITEMPOPUP_WRAP_WIDTH);
     mItemWeight->setTextWrapped(strprintf(_("Weight: %s"),
-                                Units::formatWeight(item.getWeight()).c_str()),
+                                Units::formatWeight(item.weight).c_str()),
                                 ITEMPOPUP_WRAP_WIDTH);
 
     int minWidth = mItemName->getWidth() + space;
@@ -201,7 +201,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     int nameHeight = std::max(mItemName->getHeight(), mIcon->getHeight());
     nameHeight += getPadding();
 
-    if (item.getEffect().empty())
+    if (item.effect.empty())
     {
         setContentSize(minWidth, nameHeight + descHeight + weightHeight + getPadding());
 

@@ -21,9 +21,6 @@
 
 #include "flooritem.h"
 
-#include "net/net.h"
-#include "net/playerhandler.h"
-
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
@@ -42,7 +39,7 @@ FloorItem::FloorItem(int id,
     mX = (int)position.x / map->getTileWidth();
     mY = (int)position.y / map->getTileHeight();
 
-    setupSpriteDisplay(itemDb->get(itemId).getDisplay());
+    setupSpriteDisplay(itemDb->get(itemId).display);
 }
 
 const ItemInfo &FloorItem::getInfo() const

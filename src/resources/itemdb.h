@@ -74,7 +74,6 @@ class ItemDB
 {
     public:
         ItemDB() = default;
-
         virtual ~ItemDB() = default;
 
         /**
@@ -104,12 +103,12 @@ class ItemDB
          * Permits to load item definitions which are common
          * for each protocols to avoid code duplication.
          */
-        void loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node, const std::string &filename);
+        void loadCommonRef(ItemInfo &itemInfo, xmlNodePtr node, const std::string &filename);
 
         /**
          * Checks the items parameters consistency.
          */
-        virtual void checkItemInfo(ItemInfo* itemInfo);
+        virtual void checkItemInfo(ItemInfo &itemInfo);
 
         /**
          * Registers the item to mItemInfos and mNamedItemsInfos
@@ -130,17 +129,17 @@ class ItemDB
         /**
          * Loads the sprite references contained in a <sprite> tag.
          */
-        void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
+        void loadSpriteRef(ItemInfo &itemInfo, xmlNodePtr node);
 
         /**
          * Loads the sound references contained in a <sound> tag.
          */
-         void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
+         void loadSoundRef(ItemInfo &itemInfo, xmlNodePtr node);
 
         /**
          * Loads the floor item references contained in a <floor> tag.
          */
-        void loadFloorSprite(SpriteDisplay *display, xmlNodePtr node);
+        void loadFloorSprite(SpriteDisplay &display, xmlNodePtr node);
 
         // Items database
         std::map<int, ItemInfo *> mItemInfos;
@@ -149,12 +148,10 @@ class ItemDB
 
 namespace TmwAthena {
 
-class TaItemInfo;
-
 /**
  * Item information database TmwAthena specific class.
  */
-class TaItemDB: public ItemDB
+class TaItemDB : public ItemDB
 {
     public:
         TaItemDB() = default;
@@ -176,19 +173,17 @@ class TaItemDB: public ItemDB
         void checkHairWeaponsRacesSpecialIds()
         {}
 
-        void checkItemInfo(ItemInfo* itemInfo) override;
+        void checkItemInfo(ItemInfo &itemInfo) override;
 };
 
 } // namespace TmwAthena
 
 namespace ManaServ {
 
-class ManaServItemInfo;
-
 /**
  * Item information database TmwAthena specific class.
  */
-class ManaServItemDB: public ItemDB
+class ManaServItemDB : public ItemDB
 {
     public:
         ManaServItemDB() = default;
@@ -203,7 +198,7 @@ class ManaServItemDB: public ItemDB
         void checkStatus() override;
 
     private:
-        void checkItemInfo(ItemInfo* itemInfo) override;
+        void checkItemInfo(ItemInfo &itemInfo) override;
 };
 
 } // namespace ManaServ

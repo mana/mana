@@ -358,15 +358,11 @@ void Being::takeDamage(Being *attacker, int amount,
 
     if (amount > 0)
     {
+        auto &hurtSfx = mInfo->getSound(SOUND_EVENT_HURT);
         if (attacker)
-        {
-            sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT),
-                          attacker->getPixelX(), attacker->getPixelY());
-        }
+            sound.playSfx(hurtSfx, attacker->getPixelX(), attacker->getPixelY());
         else
-        {
-            sound.playSfx(mInfo->getSound(SOUND_EVENT_HURT));
-        }
+            sound.playSfx(hurtSfx);
 
         if (getType() == MONSTER)
         {
@@ -382,9 +378,9 @@ void Being::takeDamage(Being *attacker, int amount,
         if (attackerWeapon && attacker->getType() == PLAYER)
         {
             if (type != CRITICAL)
-                hitEffectId = attackerWeapon->getHitEffectId();
+                hitEffectId = attackerWeapon->hitEffectId;
             else
-                hitEffectId = attackerWeapon->getCriticalHitEffectId();
+                hitEffectId = attackerWeapon->criticalHitEffectId;
         }
         else if (attacker && attacker->getType() == MONSTER)
         {
@@ -421,7 +417,7 @@ void Being::handleAttack(Being *victim, int damage, int attackId)
         lookAt(victim->getPosition());
 
     if (getType() == PLAYER && victim && mEquippedWeapon)
-        fireMissile(victim, mEquippedWeapon->getMissileParticleFile());
+        fireMissile(victim, mEquippedWeapon->missileParticleFile);
     else
         fireMissile(victim,
                     mInfo->getAttack(attackId).mMissileParticleFilename);
@@ -596,7 +592,7 @@ void Being::setAction(Action action, int attackId)
         case ATTACK:
             if (mEquippedWeapon)
             {
-                currentAction = mEquippedWeapon->getAttackAction();
+                currentAction = mEquippedWeapon->attackAction;
                 reset();
             }
             else

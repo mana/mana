@@ -26,8 +26,6 @@
 #include "shopitem.h"
 #include "units.h"
 
-#include "gui/setup.h"
-
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
@@ -255,7 +253,7 @@ void BuyDialog::updateButtonsAndLabels()
         }
 
         // Calculate how many the player can carry
-        const int itemWeight = shopItem->getInfo().getWeight();
+        const int itemWeight = shopItem->getInfo().weight;
         if (itemWeight > 0)
         {
             const int myTotalWeight = PlayerInfo::getAttribute(TOTAL_WEIGHT);

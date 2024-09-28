@@ -102,7 +102,7 @@ void BrowserBox::addRow(const std::string &row)
             {
                 const int id = atoi(link.link.c_str());
                 if (id)
-                    link.caption = itemDb->get(id).getName();
+                    link.caption = itemDb->get(id).name;
                 else
                     link.caption = link.link;
             }

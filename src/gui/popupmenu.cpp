@@ -179,11 +179,10 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 {
     mFloorItem = floorItem;
-    ItemInfo info = floorItem->getInfo();
     mBrowserBox->clearRows();
 
     // Floor item can be picked up (single option, candidate for removal)
-    std::string name = info.getName();
+    const std::string &name = floorItem->getInfo().name;
     mBrowserBox->addRow(strprintf("@@pickup|%s@@", strprintf(_("Pick up %s"),
                                                     name.c_str()).c_str()));
     mBrowserBox->addRow(strprintf("@@chat|%s@@", _("Add to chat")));
@@ -285,9 +284,9 @@ void PopupMenu::handleLink(const std::string &link)
     else if (link == "chat")
     {
         if (mItem)
-            chatWindow->addItemText(mItem->getInfo().getName());
+            chatWindow->addItemText(mItem->getInfo().name);
         else if (mFloorItem)
-            chatWindow->addItemText(mFloorItem->getInfo().getName());
+            chatWindow->addItemText(mFloorItem->getInfo().name);
     }
 
     else if (link == "split")
@@ -360,14 +359,14 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
             mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }
 
-        if (item->getInfo().getEquippable())
+        if (item->isEquippable())
         {
             if (item->isEquipped())
                 mBrowserBox->addRow(strprintf("@@unequip|%s@@", _("Unequip")));
             else
                 mBrowserBox->addRow(strprintf("@@equip|%s@@", _("Equip")));
         }
-        if (item->getInfo().getActivatable())
+        if (item->getInfo().activatable)
             mBrowserBox->addRow(strprintf("@@activate|%s@@", _("Activate")));
 
         if (canDrop)
