@@ -106,12 +106,12 @@ void Being::setSubtype(Uint16 subtype)
     {
     case MONSTER:
         mInfo = MonsterDB::get(mSubType);
-        setName(mInfo->getName());
-        setupSpriteDisplay(mInfo->getDisplay());
+        setName(mInfo->name);
+        setupSpriteDisplay(mInfo->display);
         break;
     case NPC:
         mInfo = NPCDB::get(mSubType);
-        setupSpriteDisplay(mInfo->getDisplay(), false);
+        setupSpriteDisplay(mInfo->display, false);
         break;
     case PLAYER: {
         int id = -100 - subtype;
@@ -128,30 +128,29 @@ void Being::setSubtype(Uint16 subtype)
         break;
     }
 }
-
 bool Being::isTargetSelection() const
 {
-    return mInfo->isTargetSelection();
+    return mInfo->targetSelection;
 }
 
 ActorSprite::TargetCursorSize Being::getTargetCursorSize() const
 {
-    return mInfo->getTargetCursorSize();
+    return mInfo->targetCursorSize;
 }
 
 Cursor Being::getHoverCursor() const
 {
-    return mInfo->getHoverCursor();
+    return mInfo->hoverCursor;
 }
 
 unsigned char Being::getWalkMask() const
 {
-    return mInfo->getWalkMask();
+    return mInfo->walkMask;
 }
 
 Map::BlockType Being::getBlockType() const
 {
-    return mInfo->getBlockType();
+    return mInfo->blockType;
 }
 
 void Being::setMoveSpeed(const Vector &speed)
@@ -360,7 +359,7 @@ void Being::takeDamage(Being *attacker, int amount,
 
     if (amount > 0)
     {
-        auto &hurtSfx = mInfo->getSound(SOUND_EVENT_HURT);
+        auto &hurtSfx = mInfo->getSound(SoundEvent::HURT);
         if (attacker)
             sound.playSfx(hurtSfx, attacker->getPixelX(), attacker->getPixelY());
         else
@@ -389,9 +388,9 @@ void Being::takeDamage(Being *attacker, int amount,
             const Attack &attack = attacker->getInfo().getAttack(attackId);
 
             if (type != CRITICAL)
-                hitEffectId = attack.mHitEffectId;
+                hitEffectId = attack.hitEffectId;
             else
-                hitEffectId = attack.mCriticalHitEffectId;
+                hitEffectId = attack.criticalHitEffectId;
         }
         else
         {
@@ -422,10 +421,10 @@ void Being::handleAttack(Being *victim, int damage, int attackId)
         fireMissile(victim, mEquippedWeapon->missileParticleFile);
     else
         fireMissile(victim,
-                    mInfo->getAttack(attackId).mMissileParticleFilename);
+                    mInfo->getAttack(attackId).missileParticleFilename);
 
     sound.playSfx(mInfo->getSound((damage > 0) ?
-                  SOUND_EVENT_HIT : SOUND_EVENT_MISS),
+                  SoundEvent::HIT : SoundEvent::MISS),
                   getPixelX(), getPixelY());
 }
 
@@ -599,13 +598,13 @@ void Being::setAction(Action action, int attackId)
             }
             else
             {
-                currentAction = mInfo->getAttack(attackId).mAction;
+                currentAction = mInfo->getAttack(attackId).action;
                 reset();
 
                 // Attack particle effect
                 if (Particle::enabled)
                 {
-                    int effectId = mInfo->getAttack(attackId).mEffectId;
+                    int effectId = mInfo->getAttack(attackId).effectId;
                     int rotation = 0;
                     switch (mSpriteDirection)
                     {
@@ -629,7 +628,7 @@ void Being::setAction(Action action, int attackId)
             break;
         case DEAD:
             currentAction = SpriteAction::DEAD;
-            sound.playSfx(mInfo->getSound(SOUND_EVENT_DIE),
+            sound.playSfx(mInfo->getSound(SoundEvent::DIE),
                           getPixelX(), getPixelY());
             break;
         case STAND:

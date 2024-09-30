@@ -23,6 +23,7 @@
 #define BEINGINFO_H
 
 #include "actorsprite.h"
+#include "map.h"
 
 #include "gui/gui.h"
 #include "resources/spritedef.h"
@@ -33,19 +34,19 @@
 
 struct Attack
 {
-    std::string mAction = SpriteAction::ATTACK;
-    int mEffectId = 0;
-    int mHitEffectId = 0;
-    int mCriticalHitEffectId = 0;
-    std::string mMissileParticleFilename = std::string();
+    std::string action = SpriteAction::ATTACK;
+    int effectId = 0;
+    int hitEffectId = 0;
+    int criticalHitEffectId = 0;
+    std::string missileParticleFilename;
 };
 
-enum SoundEvent
+enum class SoundEvent
 {
-    SOUND_EVENT_HIT,
-    SOUND_EVENT_MISS,
-    SOUND_EVENT_HURT,
-    SOUND_EVENT_DIE
+    HIT,
+    MISS,
+    HURT,
+    DIE
 };
 
 /**
@@ -57,78 +58,32 @@ enum SoundEvent
  */
 class BeingInfo
 {
-    public:
-        static BeingInfo *Unknown;
+public:
+    static BeingInfo *Unknown;
 
-        BeingInfo();
+    BeingInfo();
+    ~BeingInfo();
 
-        ~BeingInfo();
+    std::string name;
+    SpriteDisplay display;
+    ActorSprite::TargetCursorSize targetCursorSize = ActorSprite::TC_MEDIUM;
+    Cursor hoverCursor = Cursor::POINTER;
+    unsigned char walkMask = Map::BLOCKMASK_ALL;
+    Map::BlockType blockType = Map::BLOCKTYPE_CHARACTER;
+    bool targetSelection = true;
 
-        void setName(const std::string &name) { mName = name; }
+    void setTargetCursorSize(const std::string &size);
+    void setHoverCursor(const std::string &cursorName);
 
-        const std::string &getName() const
-        { return mName; }
+    void addSound(SoundEvent event, const std::string &filename);
+    const std::string &getSound(SoundEvent event) const;
 
-        void setDisplay(SpriteDisplay display);
+    void addAttack(int id, Attack attack);
+    const Attack &getAttack(int id) const;
 
-        const SpriteDisplay &getDisplay() const
-        { return mDisplay; }
-
-        void setTargetCursorSize(const std::string &size);
-
-        void setTargetCursorSize(ActorSprite::TargetCursorSize targetSize)
-        { mTargetCursorSize = targetSize; }
-
-        ActorSprite::TargetCursorSize getTargetCursorSize() const
-        { return mTargetCursorSize; }
-
-        void setHoverCursor(const std::string &cursorName);
-
-        void setHoverCursor(Cursor cursor)
-        { mHoverCursor = cursor; }
-
-        Cursor getHoverCursor() const
-        { return mHoverCursor; }
-
-        void addSound(SoundEvent event, const std::string &filename);
-
-        const std::string &getSound(SoundEvent event) const;
-
-        void addAttack(int id, Attack attack);
-
-        const Attack &getAttack(int id) const;
-
-        void setWalkMask(unsigned char mask)
-        { mWalkMask = mask; }
-
-        /**
-         * Gets the way the being is blocked by other objects
-         */
-        unsigned char getWalkMask() const
-        { return mWalkMask; }
-
-        void setBlockType(Map::BlockType blockType)
-        { mBlockType = blockType; }
-
-        Map::BlockType getBlockType() const
-        { return mBlockType; }
-
-        void setTargetSelection(bool n)
-        { mTargetSelection = n; }
-
-        bool isTargetSelection() const
-        { return mTargetSelection; }
-
-    private:
-        SpriteDisplay mDisplay;
-        std::string mName;
-        ActorSprite::TargetCursorSize mTargetCursorSize = ActorSprite::TC_MEDIUM;
-        Cursor mHoverCursor = Cursor::POINTER;
-        std::map<SoundEvent, std::vector<std::string>> mSounds;
-        std::map<int, Attack> mAttacks;
-        unsigned char mWalkMask;
-        Map::BlockType mBlockType = Map::BLOCKTYPE_CHARACTER;
-        bool mTargetSelection = true;
+private:
+    std::map<SoundEvent, std::vector<std::string>> mSounds;
+    std::map<int, Attack> mAttacks;
 };
 
 #endif // BEINGINFO_H

@@ -28,7 +28,18 @@
 
 #include <optional>
 
-BeingInfo *BeingInfo::Unknown = new BeingInfo;
+static BeingInfo *createUnknownBeingInfo()
+{
+    auto info = new BeingInfo;
+    info->name = _("unnamed");
+
+    SpriteReference errorSprite { paths.getStringValue("spriteErrorFile"), 0 };
+    info->display.sprites.push_back(std::move(errorSprite));
+
+    return info;
+}
+
+BeingInfo *BeingInfo::Unknown = createUnknownBeingInfo();
 
 static std::optional<ActorSprite::TargetCursorSize> targetCursorSizeFromString(const std::string &cursor)
 {
@@ -54,34 +65,18 @@ static std::optional<Cursor> cursorFromString(const std::string &cursor)
     return {};
 }
 
-BeingInfo::BeingInfo():
-    mName(_("unnamed")),
-    mWalkMask(Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER | Map::BLOCKMASK_MONSTER)
-{
-    SpriteDisplay display;
-
-    SpriteReference errorSprite { paths.getStringValue("spriteErrorFile"), 0 };
-    display.sprites.push_back(errorSprite);
-
-    setDisplay(std::move(display));
-}
-
+BeingInfo::BeingInfo() = default;
 BeingInfo::~BeingInfo() = default;
-
-void BeingInfo::setDisplay(SpriteDisplay display)
-{
-    mDisplay = std::move(display);
-}
 
 void BeingInfo::setTargetCursorSize(const std::string &size)
 {
-    const auto targetCursorSize = targetCursorSizeFromString(size);
-    if (!targetCursorSize)
+    const auto cursorSize = targetCursorSizeFromString(size);
+    if (!cursorSize)
     {
         logger->log("Unknown targetCursor value \"%s\" for %s",
-                    size.c_str(), getName().c_str());
+                    size.c_str(), name.c_str());
     }
-    setTargetCursorSize(targetCursorSize.value_or(ActorSprite::TC_MEDIUM));
+    targetCursorSize = cursorSize.value_or(ActorSprite::TC_MEDIUM);
 }
 
 void BeingInfo::setHoverCursor(const std::string &cursorName)
@@ -90,9 +85,9 @@ void BeingInfo::setHoverCursor(const std::string &cursorName)
     if (!cursor)
     {
         logger->log("Unknown hoverCursor value \"%s\" for %s",
-                    cursorName.c_str(), getName().c_str());
+                    cursorName.c_str(), name.c_str());
     }
-    setHoverCursor(cursor.value_or(Cursor::POINTER));
+    hoverCursor = cursor.value_or(Cursor::POINTER);
 }
 
 void BeingInfo::addSound(SoundEvent event, const std::string &filename)

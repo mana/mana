@@ -69,22 +69,19 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
 {
     auto *currentInfo = new BeingInfo;
 
-    currentInfo->setWalkMask(Map::BLOCKMASK_WALL
-                             | Map::BLOCKMASK_CHARACTER
-                             | Map::BLOCKMASK_MONSTER);
-    currentInfo->setBlockType(Map::BLOCKTYPE_MONSTER);
+    currentInfo->blockType = Map::BLOCKTYPE_MONSTER;
 
-    currentInfo->setName(XML::getProperty(node, "name", _("unnamed")));
+    currentInfo->name = XML::getProperty(node, "name", _("unnamed"));
 
     currentInfo->setTargetCursorSize(XML::getProperty(node,
                                      "targetCursor", "medium"));
 
     currentInfo->setHoverCursor(XML::getProperty(node, "hoverCursor", "attack"));
 
-    currentInfo->setTargetSelection(XML::getProperty(
-        node, "targetSelection", true));
+    currentInfo->targetSelection = XML::getProperty(
+        node, "targetSelection", true);
 
-    SpriteDisplay display;
+    SpriteDisplay &display = currentInfo->display;
 
     for (auto spriteNode : XML::Children(node))
     {
@@ -101,26 +98,26 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
 
             if (event == "hit")
             {
-                currentInfo->addSound(SOUND_EVENT_HIT, soundFile);
+                currentInfo->addSound(SoundEvent::HIT, soundFile);
             }
             else if (event == "miss")
             {
-                currentInfo->addSound(SOUND_EVENT_MISS, soundFile);
+                currentInfo->addSound(SoundEvent::MISS, soundFile);
             }
             else if (event == "hurt")
             {
-                currentInfo->addSound(SOUND_EVENT_HURT, soundFile);
+                currentInfo->addSound(SoundEvent::HURT, soundFile);
             }
             else if (event == "die")
             {
-                currentInfo->addSound(SOUND_EVENT_DIE, soundFile);
+                currentInfo->addSound(SoundEvent::DIE, soundFile);
             }
             else
             {
                 logger->log("MonsterDB: Warning, sound effect %s for "
                             "unknown event %s of monster %s in %s",
                             soundFile, event.c_str(),
-                            currentInfo->getName().c_str(),
+                            currentInfo->name.c_str(),
                             filename.c_str());
             }
         }
@@ -129,17 +126,17 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
             Attack attack;
             const int id = XML::getProperty(spriteNode, "id", 0);
 
-            attack.mEffectId = XML::getProperty(spriteNode, "effect-id", -1);
-            attack.mHitEffectId =
+            attack.effectId = XML::getProperty(spriteNode, "effect-id", -1);
+            attack.hitEffectId =
                 XML::getProperty(spriteNode, "hit-effect-id",
                                  paths.getIntValue("hitEffectId"));
-            attack.mCriticalHitEffectId =
+            attack.criticalHitEffectId =
                 XML::getProperty(spriteNode, "critical-hit-effect-id",
                                  paths.getIntValue("criticalHitEffectId"));
-            attack.mMissileParticleFilename =
+            attack.missileParticleFilename =
                 XML::getProperty(spriteNode, "missile-particle", "");
 
-            attack.mAction = XML::getProperty(spriteNode, "action", "attack");
+            attack.action = XML::getProperty(spriteNode, "action", "attack");
 
             currentInfo->addAttack(id, std::move(attack));
         }
@@ -149,7 +146,6 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
                 (const char*) spriteNode->children->content);
         }
     }
-    currentInfo->setDisplay(std::move(display));
 
     mMonsterInfos[XML::getProperty(node, "id", 0) + mMonsterIdOffset] = currentInfo;
 }
@@ -169,7 +165,6 @@ void MonsterDB::unload()
 
     mLoaded = false;
 }
-
 
 BeingInfo *MonsterDB::get(int id)
 {

@@ -160,7 +160,8 @@ class Map : public Properties
         {
             BLOCKMASK_WALL      = 0x80, // = bin 1000 0000
             BLOCKMASK_CHARACTER = 0x01, // = bin 0000 0001
-            BLOCKMASK_MONSTER   = 0x02  // = bin 0000 0010
+            BLOCKMASK_MONSTER   = 0x02, // = bin 0000 0010
+            BLOCKMASK_ALL       = 0xFF  // = bin 1111 1111
         };
 
         enum DebugFlags
