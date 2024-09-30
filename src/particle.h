@@ -58,13 +58,7 @@ class Particle : public Actor
         static int emitterSkip;          /**< Duration of pause between two emitter updates in ticks */
         static bool enabled;   /**< true when non-crucial particle effects are disabled */
 
-        /**
-         * Constructor.
-         *
-         * @param map the map this particle will add itself to, may be NULL
-         */
-        Particle(Map *map);
-
+        Particle();
         ~Particle() override;
 
         /**
@@ -125,14 +119,14 @@ class Particle : public Actor
         /**
          * Adds an emitter to the particle.
          */
-        void addEmitter (ParticleEmitter* emitter)
+        void addEmitter(ParticleEmitter *emitter)
         { mChildEmitters.push_back(emitter); }
 
         /**
          * Sets the position in 3 dimensional space in pixels relative to map.
          */
         void moveTo(const Vector &pos)
-        { moveBy (pos - mPos);}
+        { moveBy(pos - mPos); }
 
         /**
          * Sets the position in 2 dimensional space in pixels relative to map.
@@ -142,7 +136,7 @@ class Particle : public Actor
         /**
          * Changes the particle position relative
          */
-        void moveBy (const Vector &change);
+        void moveBy(const Vector &change);
 
         /**
          * Sets the time in game ticks until the particle is destroyed.
@@ -252,7 +246,7 @@ class Particle : public Actor
 
         void setAlpha(float alpha) override {}
 
-        virtual void setDeathEffect(const std::string &effectFile, char conditions)
+        void setDeathEffect(const std::string &effectFile, char conditions)
         { mDeathEffect = effectFile; mDeathEffectConditions = conditions; }
 
     protected:

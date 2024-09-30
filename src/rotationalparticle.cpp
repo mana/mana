@@ -24,14 +24,14 @@
 
 #define PI 3.14159265
 
-RotationalParticle::RotationalParticle(Map *map, Animation animation):
-    ImageParticle(map, nullptr),
+RotationalParticle::RotationalParticle(Animation animation):
+    ImageParticle(nullptr),
     mAnimation(std::move(animation))
 {}
 
-RotationalParticle::RotationalParticle(Map *map, XML::Node animationNode,
+RotationalParticle::RotationalParticle(XML::Node animationNode,
                                        const std::string &dyePalettes):
-    ImageParticle(map, nullptr),
+    ImageParticle(nullptr),
     mAnimation(animationNode, dyePalettes)
 {}
 

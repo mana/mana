@@ -128,7 +128,7 @@ static void initEngines()
     channelManager = new ChannelManager;
     effectManager = new EffectManager;
 
-    particleEngine = new Particle(nullptr);
+    particleEngine = new Particle;
     Particle::setupEngine();
 
     Event::trigger(Event::GameChannel, Event::EnginesInitialized);

@@ -33,10 +33,9 @@ class SimpleAnimation;
 class RotationalParticle : public ImageParticle
 {
     public:
-        RotationalParticle(Map *map, Animation animation);
-
-        RotationalParticle(Map *map, XML::Node animationNode,
-                           const std::string &dyePalettes = std::string());
+        explicit RotationalParticle(Animation animation);
+        explicit RotationalParticle(XML::Node animationNode,
+                                    const std::string &dyePalettes = std::string());
 
         ~RotationalParticle() override;
 

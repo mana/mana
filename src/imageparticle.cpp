@@ -25,8 +25,7 @@
 
 #include "resources/image.h"
 
-ImageParticle::ImageParticle(Map *map, Image *image):
-    Particle(map),
+ImageParticle::ImageParticle(Image *image):
     mImageRef(image)
 {
     mImage = mImageRef;

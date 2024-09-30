@@ -312,20 +312,22 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
         Particle *newParticle;
         if (mParticleImage)
         {
-            newParticle = new ImageParticle(mMap, mParticleImage);
+            newParticle = new ImageParticle(mParticleImage);
         }
         else if (mParticleRotation.getLength() > 0)
         {
-            newParticle = new RotationalParticle(mMap, mParticleRotation);
+            newParticle = new RotationalParticle(mParticleRotation);
         }
         else if (mParticleAnimation.getLength() > 0)
         {
-            newParticle = new AnimationParticle(mMap, mParticleAnimation);
+            newParticle = new AnimationParticle(mParticleAnimation);
         }
         else
         {
-            newParticle = new Particle(mMap);
+            newParticle = new Particle;
         }
+
+        newParticle->setMap(mMap);
 
         Vector position(mParticlePosX.value(tick),
                         mParticlePosY.value(tick),

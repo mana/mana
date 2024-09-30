@@ -25,10 +25,9 @@
 
 #include <guichan/color.hpp>
 
-TextParticle::TextParticle(Map *map, const std::string &text,
+TextParticle::TextParticle(const std::string &text,
                            const gcn::Color *color,
                            gcn::Font *font, bool outline):
-    Particle(map),
     mText(text),
     mTextFont(font),
     mColor(color),

@@ -37,11 +37,9 @@ class ImageParticle : public Particle
         /**
          * Constructor. The image is reference counted by this particle.
          *
-         * @param map   the map this particle appears on
          * @param image an Image instance, may not be NULL
          */
-        ImageParticle(Map *map, Image *image);
-
+        explicit ImageParticle(Image *image);
         ~ImageParticle() override;
 
         /**

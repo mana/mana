@@ -25,15 +25,15 @@
 
 #include "utils/time.h"
 
-AnimationParticle::AnimationParticle(Map *map, Animation animation):
-    ImageParticle(map, nullptr),
+AnimationParticle::AnimationParticle(Animation animation):
+    ImageParticle(nullptr),
     mAnimation(std::move(animation))
 {
 }
 
-AnimationParticle::AnimationParticle(Map *map, XML::Node animationNode,
+AnimationParticle::AnimationParticle(XML::Node animationNode,
                                      const std::string &dyePalettes):
-    ImageParticle(map, nullptr),
+    ImageParticle(nullptr),
     mAnimation(animationNode, dyePalettes)
 {
 }

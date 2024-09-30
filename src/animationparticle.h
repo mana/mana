@@ -31,10 +31,9 @@ class Map;
 class AnimationParticle : public ImageParticle
 {
     public:
-        AnimationParticle(Map *map, Animation animation);
-
-        AnimationParticle(Map *map, XML::Node animationNode,
-                          const std::string &dyePalettes = std::string());
+        explicit AnimationParticle(Animation animation);
+        explicit AnimationParticle(XML::Node animationNode,
+                                   const std::string &dyePalettes = std::string());
 
         ~AnimationParticle() override;
 
