@@ -29,6 +29,8 @@
 #include "position.h"
 #include "vector.h"
 
+#include "utils/time.h"
+
 #include <guichan/color.hpp>
 
 #include <map>
@@ -484,7 +486,7 @@ class Being : public ActorSprite, public EventListener
 
         const BeingInfo *mInfo;
 
-        int mActionTime = 0;    /**< Time spent in current action. TODO: Remove use of it */
+        Timer mActionTimer;     /**< Time spent in current action. TODO: Remove use of it */
 
         /** Time until the last speech sentence disappears */
         int mSpeechTime = 0;

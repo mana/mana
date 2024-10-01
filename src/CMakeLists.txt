@@ -381,6 +381,8 @@ set(SRCS
     utils/specialfolder.h
     utils/stringutils.cpp
     utils/stringutils.h
+    utils/time.cpp
+    utils/time.h
     utils/mutex.h
     utils/mkdir.cpp
     utils/mkdir.h

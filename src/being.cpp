@@ -643,7 +643,7 @@ void Being::setAction(Action action, int attackId)
     }
 
     if (currentAction != SpriteAction::MOVE)
-        mActionTime = tick_time;
+        mActionTimer.set();
 }
 
 void Being::lookAt(const Vector &destPos)
@@ -865,13 +865,9 @@ void Being::logic()
 
     // Remove it after 1.5 secs if the dead animation isn't long enough,
     // or simply play it until it's finished.
-    if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
-        get_elapsed_time(mActionTime) > std::max(getDuration(), 1500))
-    {
-
-        if (getType() != PLAYER)
+    if (!isAlive() && Net::getGameHandler()->removeDeadBeings() && getType() != PLAYER)
+        if (mActionTimer.elapsed() > std::max(getDuration(), 1500))
             actorSpriteManager->scheduleDelete(this);
-    }
 }
 
 void Being::drawSpeech(int offsetX, int offsetY)

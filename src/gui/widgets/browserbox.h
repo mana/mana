@@ -23,6 +23,8 @@
 #ifndef BROWSERBOX_H
 #define BROWSERBOX_H
 
+#include "utils/time.h"
+
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 
@@ -193,7 +195,7 @@ class BrowserBox : public gcn::Widget,
         std::optional<BrowserLink> mHoveredLink;
         unsigned int mMaxRows = 0;
         int mLastLayoutWidth = 0;
-        int mLastLayoutTime = -1;
+        Timer mLayoutTimer;
 };
 
 #endif

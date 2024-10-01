@@ -21,6 +21,8 @@
 #ifndef SOCIALWINDOW_H
 #define SOCIALWINDOW_H
 
+#include "utils/time.h"
+
 #include "gui/widgets/window.h"
 
 #include <guichan/actionevent.hpp>
@@ -87,7 +89,7 @@ protected:
     void updateButtons();
 
     int mGuildInvited = 0;
-    int mLastOnlineListUpdate = 0;
+    Timer mOnlineListUpdateTimer;
     ConfirmDialog *mGuildAcceptDialog = nullptr;
     TextDialog *mGuildCreateDialog = nullptr;
 

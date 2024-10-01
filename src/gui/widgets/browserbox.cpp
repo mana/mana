@@ -22,8 +22,6 @@
 
 #include "gui/widgets/browserbox.h"
 
-#include "client.h"
-
 #include "gui/gui.h"
 #include "gui/truetypefont.h"
 #include "gui/widgets/linkhandler.h"
@@ -31,6 +29,8 @@
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/theme.h"
+
+#include "utils/stringutils.h"
 
 #include <guichan/graphics.hpp>
 #include <guichan/font.hpp>
@@ -276,7 +276,7 @@ void BrowserBox::relayoutText()
         layoutTextRow(row, context);
 
     mLastLayoutWidth = getWidth();
-    mLastLayoutTime = tick_time;
+    mLayoutTimer.set(100);
     setHeight(context.y);
 }
 
@@ -507,7 +507,7 @@ void BrowserBox::maybeRelayoutText()
 {
     // Reduce relayouting frequency when there is a lot of text
     if (mTextRows.size() > 100)
-        if (mLastLayoutTime && std::abs(mLastLayoutTime - tick_time) < 10)
+        if (!mLayoutTimer.passed())
             return;
 
     relayoutText();

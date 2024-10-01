@@ -26,6 +26,8 @@
 
 #include "resources/userpalette.h"
 
+#include "utils/time.h"
+
 #include <guichan/actionlistener.hpp>
 
 class ChatTab;
@@ -217,9 +219,7 @@ class LocalPlayer final : public Being
 
         int mAttackRange = -1;
 
-        int mTargetTime = -1;   /**< How long the being has been targeted **/
-        /** Time stamp of last targeting action, -1 if none. */
-        int mLastTargetTime = -1;
+        Timer mLastTargetTimer; /**< Timer for last targeting action. */
 
         int mGMLevel = 0;
 
@@ -229,7 +229,7 @@ class LocalPlayer final : public Being
 
         bool mGoingToTarget = false;
         bool mKeepAttacking = false;    /**< Whether or not to continue to attack */
-        int mLastActionTime = -1;       /**< Time stamp of the last action, -1 if none. */
+        Timer mLastActionTimer;         /**< Timeout for the last action. */
         int mWalkingDir = 0;            /**< The direction the player is walking in. */
         bool mPathSetByMouse = false;   /**< Tells if the path was set using mouse */
 
@@ -241,7 +241,7 @@ class LocalPlayer final : public Being
 
         AwayListener *mAwayListener;
         OkDialog *mAwayDialog = nullptr;
-        int mAfkTime = 0;
+        Timer mAfkTimer;
         bool mAwayMode = false;
 };
 

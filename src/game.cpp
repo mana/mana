@@ -343,8 +343,6 @@ void Game::logic()
     if (mCurrentMap)
         mCurrentMap->update();
 
-    cur_time = time(nullptr);
-
     // Handle network stuff
     if (!Net::getGameHandler()->isConnected() && !mDisconnected)
     {

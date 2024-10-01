@@ -22,18 +22,11 @@
 
 #include "palette.h"
 
-#include "configuration.h"
-#include "client.h"
-
-#include "gui/gui.h"
-
-#include "utils/gettext.h"
-#include "utils/stringutils.h"
-
 #include <cmath>
 
-static const double PI = 3.14159265;
+static constexpr double PI = 3.14159265;
 const gcn::Color Palette::BLACK = gcn::Color(0, 0, 0);
+Timer Palette::mRainbowTimer;
 Palette::Palettes Palette::mInstances;
 
 const gcn::Color Palette::RAINBOW_COLORS[7] = {
@@ -49,7 +42,6 @@ const gcn::Color Palette::RAINBOW_COLORS[7] = {
 const int Palette::RAINBOW_COLOR_COUNT = 7;
 
 Palette::Palette(int size) :
-    mRainbowTime(tick_time),
     mColors(size)
 {
     mInstances.insert(this);
@@ -76,97 +68,85 @@ const gcn::Color &Palette::getColor(char c, bool &valid)
 
 void Palette::advanceGradients()
 {
-    auto it = mInstances.begin();
-    auto it_end = mInstances.end();
+    const int advance = mRainbowTimer.elapsed() / 5;
+    if (advance <= 0)
+        return;
 
-    for (; it != it_end; it++)
-    {
-        (*it)->advanceGradient();
-    }
+    mRainbowTimer.extend(advance * 5);
+
+    for (auto palette : mInstances)
+        palette->advanceGradient(advance);
 }
 
-void Palette::advanceGradient()
+void Palette::advanceGradient(int advance)
 {
-    if (get_elapsed_time(mRainbowTime) > 5)
+    for (auto elem : mGradVector)
     {
-        int pos, colIndex, colVal, delay, numOfColors;
-        // For slower systems, advance can be greater than one (advance > 1
-        // skips advance-1 steps). Should make gradient look the same
-        // independent of the framerate.
-        int advance = get_elapsed_time(mRainbowTime) / 5;
-        double startColVal, destColVal;
+        int delay = elem->delay;
 
-        for (auto &elem : mGradVector)
+        if (elem->grad == PULSE)
+            delay = delay / 20;
+
+        const int numOfColors = (elem->grad == SPECTRUM ? 6 :
+                                 elem->grad == PULSE ? 127 :
+                                 RAINBOW_COLOR_COUNT);
+
+        elem->gradientIndex = (elem->gradientIndex + advance) %
+                              (delay * numOfColors);
+
+        const int pos = elem->gradientIndex % delay;
+        const int colIndex = elem->gradientIndex / delay;
+
+        if (elem->grad == PULSE)
         {
-            delay = elem->delay;
+            const int colVal = (int) (255.0 * sin(PI * colIndex / numOfColors));
+            const gcn::Color &col = elem->testColor;
 
-            if (elem->grad == PULSE)
-                delay = delay / 20;
-
-            numOfColors = (elem->grad == SPECTRUM ? 6 :
-                           elem->grad == PULSE ? 127 :
-                           RAINBOW_COLOR_COUNT);
-
-            elem->gradientIndex =
-                                    (elem->gradientIndex + advance) %
-                                    (delay * numOfColors);
-
-            pos = elem->gradientIndex % delay;
-            colIndex = elem->gradientIndex / delay;
-
-            if (elem->grad == PULSE)
-            {
-                colVal = (int) (255.0 * sin(PI * colIndex / numOfColors));
-
-                const gcn::Color &col = elem->testColor;
-
-                elem->color.r = ((colVal * col.r) / 255) % (col.r + 1);
-                elem->color.g = ((colVal * col.g) / 255) % (col.g + 1);
-                elem->color.b = ((colVal * col.b) / 255) % (col.b + 1);
-            }
-            if (elem->grad == SPECTRUM)
-            {
-                if (colIndex % 2)
-                { // falling curve
-                    colVal = (int)(255.0 * (cos(PI * pos / delay) + 1) / 2);
-                }
-                else
-                { // ascending curve
-                    colVal = (int)(255.0 * (cos(PI * (delay - pos) / delay) +
-                                   1) / 2);
-                }
-
-                elem->color.r =
-                        (colIndex == 0 || colIndex == 5) ? 255 :
-                        (colIndex == 1 || colIndex == 4) ? colVal : 0;
-                elem->color.g =
-                        (colIndex == 1 || colIndex == 2) ? 255 :
-                        (colIndex == 0 || colIndex == 3) ? colVal : 0;
-                elem->color.b =
-                        (colIndex == 3 || colIndex == 4) ? 255 :
-                        (colIndex == 2 || colIndex == 5) ? colVal : 0;
-            }
-            else if (elem->grad == RAINBOW)
-            {
-                const gcn::Color &startCol = RAINBOW_COLORS[colIndex];
-                const gcn::Color &destCol =
-                        RAINBOW_COLORS[(colIndex + 1) % numOfColors];
-
-                startColVal = (cos(PI * pos / delay) + 1) / 2;
-                destColVal = 1 - startColVal;
-
-                elem->color.r =(int)(startColVal * startCol.r +
-                                               destColVal * destCol.r);
-
-                elem->color.g =(int)(startColVal * startCol.g +
-                                               destColVal * destCol.g);
-
-                elem->color.b =(int)(startColVal * startCol.b +
-                                               destColVal * destCol.b);
-            }
+            elem->color.r = ((colVal * col.r) / 255) % (col.r + 1);
+            elem->color.g = ((colVal * col.g) / 255) % (col.g + 1);
+            elem->color.b = ((colVal * col.b) / 255) % (col.b + 1);
         }
+        if (elem->grad == SPECTRUM)
+        {
+            int colVal;
 
-        if (advance)
-            mRainbowTime = tick_time;
+            if (colIndex % 2)
+            { // falling curve
+                colVal = (int)(255.0 * (cos(PI * pos / delay) + 1) / 2);
+            }
+            else
+            { // ascending curve
+                colVal = (int)(255.0 * (cos(PI * (delay - pos) / delay) +
+                                1) / 2);
+            }
+
+            elem->color.r =
+                    (colIndex == 0 || colIndex == 5) ? 255 :
+                    (colIndex == 1 || colIndex == 4) ? colVal : 0;
+            elem->color.g =
+                    (colIndex == 1 || colIndex == 2) ? 255 :
+                    (colIndex == 0 || colIndex == 3) ? colVal : 0;
+            elem->color.b =
+                    (colIndex == 3 || colIndex == 4) ? 255 :
+                    (colIndex == 2 || colIndex == 5) ? colVal : 0;
+        }
+        else if (elem->grad == RAINBOW)
+        {
+            const gcn::Color &startCol = RAINBOW_COLORS[colIndex];
+            const gcn::Color &destCol =
+                    RAINBOW_COLORS[(colIndex + 1) % numOfColors];
+
+            const double startColVal = (cos(PI * pos / delay) + 1) / 2;
+            const double destColVal = 1 - startColVal;
+
+            elem->color.r =(int)(startColVal * startCol.r +
+                                            destColVal * destCol.r);
+
+            elem->color.g =(int)(startColVal * startCol.g +
+                                            destColVal * destCol.g);
+
+            elem->color.b =(int)(startColVal * startCol.b +
+                                            destColVal * destCol.b);
+        }
     }
 }

@@ -34,8 +34,8 @@ AmbientLayer::~AmbientLayer() = default;
 void AmbientLayer::update(int timePassed, float dx, float dy)
 {
     // Self scrolling of the overlay
-    mPosX -= mSpeedX * timePassed / 10;
-    mPosY -= mSpeedY * timePassed / 10;
+    mPosX -= mSpeedX * timePassed;
+    mPosY -= mSpeedY * timePassed;
 
     // Parallax scrolling
     mPosX += dx * mParallax;

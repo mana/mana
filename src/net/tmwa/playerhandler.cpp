@@ -40,8 +40,9 @@
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
-#include "utils/stringutils.h"
 #include "utils/gettext.h"
+#include "utils/stringutils.h"
+#include "utils/time.h"
 
 extern OkDialog *weightNotice;
 extern OkDialog *deathNotice;
@@ -563,17 +564,17 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
-    static Uint32 lastTime = 0;
+    static Timer lastPickupTimer;
 
     // Avoid spamming the server with pick-up requests to prevent the player
     // from being kicked.
-    if (!floorItem || SDL_GetTicks() < lastTime + 100)
+    if (!floorItem || !lastPickupTimer.passed())
         return;
 
     MessageOut outMsg(CMSG_ITEM_PICKUP);
     outMsg.writeInt32(floorItem->getId());
 
-    lastTime = SDL_GetTicks();
+    lastPickupTimer.set(100);
 }
 
 void PlayerHandler::setDirection(char direction)

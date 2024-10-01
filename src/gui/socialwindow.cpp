@@ -262,7 +262,7 @@ private:
 class PlayerListTab : public SocialTab
 {
 public:
-    PlayerListTab() 
+    PlayerListTab()
     {
         mPlayerList = new PlayerList;
 
@@ -679,10 +679,10 @@ void SocialWindow::setPlayersOnline(const std::vector<Avatar*> &players)
 
 void SocialWindow::logic()
 {
-    if (mLastOnlineListUpdate == 0 || get_elapsed_time(mLastOnlineListUpdate) >= 18000)
+    if (mOnlineListUpdateTimer.passed())
     {
         Net::getChatHandler()->requestOnlineList();
-        mLastOnlineListUpdate = tick_time;
+        mOnlineListUpdateTimer.set(18000);
     }
 
     Window::logic();

@@ -22,7 +22,6 @@
 #include "map.h"
 
 #include "actorspritemanager.h"
-#include "client.h"
 #include "configuration.h"
 #include "graphics.h"
 #include "log.h"
@@ -33,6 +32,8 @@
 #include "resources/ambientlayer.h"
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+
+#include "utils/time.h"
 
 #include "net/net.h"
 
@@ -247,8 +248,8 @@ void Map::initializeAmbientLayers()
         {
             auto &ambientLayer = list.emplace_back(img);
             ambientLayer.mParallax = getFloatProperty(name + "parallax");
-            ambientLayer.mSpeedX = getFloatProperty(name + "scrollX");
-            ambientLayer.mSpeedY = getFloatProperty(name + "scrollY");
+            ambientLayer.mSpeedX = getFloatProperty(name + "scrollX") / MILLISECONDS_IN_A_TICK;
+            ambientLayer.mSpeedY = getFloatProperty(name + "scrollY") / MILLISECONDS_IN_A_TICK;
             ambientLayer.mMask = getIntProperty(name + "mask", 1);
             ambientLayer.mKeepRatio = getBoolProperty(name + "keepratio");
         }
@@ -433,8 +434,6 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
 
 void Map::updateAmbientLayers(float scrollX, float scrollY)
 {
-    static int lastTick = tick_time; // static = only initialized at first call
-
     if (mLastScrollX == 0.0f && mLastScrollY == 0.0f)
     {
         // First call - initialisation
@@ -445,25 +444,23 @@ void Map::updateAmbientLayers(float scrollX, float scrollY)
     // Update Overlays
     float dx = scrollX - mLastScrollX;
     float dy = scrollY - mLastScrollY;
-    int timePassed = get_elapsed_time(lastTick);
 
     for (auto &background : mBackgrounds)
     {
         if ((background.mMask & mMask) == 0)
             continue;
 
-        background.update(timePassed, dx, dy);
+        background.update(Time::deltaTimeMs(), dx, dy);
     }
     for (auto &foreground : mForegrounds)
     {
         if ((foreground.mMask & mMask) == 0)
             continue;
 
-        foreground.update(timePassed, dx, dy);
+        foreground.update(Time::deltaTimeMs(), dx, dy);
     }
     mLastScrollX = scrollX;
     mLastScrollY = scrollY;
-    lastTick = tick_time;
 }
 
 void Map::drawAmbientLayers(Graphics *graphics, LayerType type,

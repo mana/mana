@@ -79,8 +79,6 @@ void Viewport::setMap(Map *map)
 
 void Viewport::draw(gcn::Graphics *gcnGraphics)
 {
-    static int lastTick = tick_time;
-
     // Check whether map was successfully loaded since
     // the rest of this function relies on it
     if (!mMap || !local_player)
@@ -95,12 +93,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
     auto *graphics = static_cast<Graphics*>(gcnGraphics);
 
-    // Avoid freaking out when tick_time overflows
-    if (tick_time < lastTick)
-    {
-        lastTick = tick_time;
-    }
-
     // Calculate viewpoint
     int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 2;
     int midTileY = (graphics->getHeight() + mScrollCenterOffsetX) / 2;
@@ -109,49 +101,57 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     const int player_x = (int) playerPos.x - midTileX;
     const int player_y = (int) playerPos.y - midTileY;
 
-    if (mScrollLaziness < 1)
-        mScrollLaziness = 1; // Avoids division by zero
+    const float ticks = Time::deltaTimeMs() / static_cast<float>(MILLISECONDS_IN_A_TICK);
+    float scrollFraction = 1.0f;
 
-    while (lastTick < tick_time)
+    if (mScrollLaziness > 1)
     {
-        // Apply lazy scrolling
-        if (player_x > mPixelViewX + mScrollRadius)
-        {
-            mPixelViewX += (player_x - mPixelViewX - mScrollRadius) /
-                            mScrollLaziness;
-        }
-        if (player_x < mPixelViewX - mScrollRadius)
-        {
-            mPixelViewX += (player_x - mPixelViewX + mScrollRadius) /
-                            mScrollLaziness;
-        }
-        if (player_y > mPixelViewY + mScrollRadius)
-        {
-            mPixelViewY += (player_y - mPixelViewY - mScrollRadius) /
-                            mScrollLaziness;
-        }
-        if (player_y < mPixelViewY - mScrollRadius)
-        {
-            mPixelViewY += (player_y - mPixelViewY + mScrollRadius) /
-                            mScrollLaziness;
-        }
+        // mScrollLaziness defines the fraction of the desired camera movement
+        // that is applied every 10ms. To make this work independently of the
+        // frame duration, we calculate the actual scroll fraction based on the
+        // time delta.
+        scrollFraction = 1.0f - std::pow(1.0f - 1.0f / mScrollLaziness, ticks);
+    }
 
-        // manage shake effect
-        for (auto i = mShakeEffects.begin();
-             i != mShakeEffects.end();
-             i++)
+    // Apply lazy scrolling
+    if (player_x > mPixelViewX + mScrollRadius)
+    {
+        mPixelViewX += (player_x - mPixelViewX - mScrollRadius) *
+                        scrollFraction;
+    }
+    if (player_x < mPixelViewX - mScrollRadius)
+    {
+        mPixelViewX += (player_x - mPixelViewX + mScrollRadius) *
+                        scrollFraction;
+    }
+    if (player_y > mPixelViewY + mScrollRadius)
+    {
+        mPixelViewY += (player_y - mPixelViewY - mScrollRadius) *
+                        scrollFraction;
+    }
+    if (player_y < mPixelViewY - mScrollRadius)
+    {
+        mPixelViewY += (player_y - mPixelViewY + mScrollRadius) *
+                        scrollFraction;
+    }
+
+    // manage shake effect
+    for (auto i = mShakeEffects.begin(); i != mShakeEffects.end(); i++)
+    {
+        // The decay defines the reduction in amplitude per 10ms. Here
+        // we calculate the reduction based on the ticks.
+        const float decay = std::pow(i->decay, ticks);
+
+        // apply the effect to viewport
+        mPixelViewX += i->x *= -decay;
+        mPixelViewY += i->y *= -decay;
+
+        // check death conditions
+        if (std::abs(i->x) + std::abs(i->y) < 1.0f ||
+            (i->timer.isSet() && i->timer.passed()))
         {
-            // apply the effect to viewport
-            mPixelViewX += i->x *= -i->decay;
-            mPixelViewY += i->y *= -i->decay;
-            // check death conditions
-            if (abs(i->x) + abs(i->y) < 1.0f ||
-                (i->duration > 0 && --i->duration == 0))
-            {
-                i = mShakeEffects.erase(i);
-            }
+            i = mShakeEffects.erase(i);
         }
-        lastTick++;
     }
 
     // Auto center when player is off screen
@@ -264,7 +264,9 @@ void Viewport::shakeScreen(float x, float y, float decay, unsigned duration)
     effect.x = x;
     effect.y = y;
     effect.decay = decay;
-    effect.duration = duration;
+
+    if (duration > 0)
+        effect.timer.set(duration * MILLISECONDS_IN_A_TICK);
 }
 
 void Viewport::logic()
@@ -528,9 +530,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
 
     if (mPlayerFollowMouse && !event.isShiftPressed())
     {
-        if (get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
+        if (mLocalWalkTimer.passed())
         {
-            mLocalWalkTime = tick_time;
+            mLocalWalkTimer.set(walkingMouseDelay);
             local_player->setDestination(event.getX() + (int) mPixelViewX,
                                          event.getY() + (int) mPixelViewY);
             local_player->pathSetByMouse();

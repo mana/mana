@@ -43,8 +43,7 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-
-extern volatile int tick_time;
+#include "utils/time.h"
 
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
@@ -227,7 +226,7 @@ void MiniStatusWindow::logic()
 
     for (auto &icon : mIcons)
         if (icon)
-            icon->update(tick_time * 10);
+            icon->update(Time::absoluteTimeMs());
 }
 
 void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)

@@ -21,7 +21,6 @@
 
 #include "localplayer.h"
 
-#include "client.h"
 #include "configuration.h"
 #include "event.h"
 #include "flooritem.h"
@@ -50,7 +49,10 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-const int AWAY_LIMIT_TIMER = 60;
+constexpr unsigned AWAY_MESSAGE_TIMEOUT = 60 * 1000;
+
+// Actions are allowed at 5.5 per second
+constexpr unsigned ACTION_TIMEOUT = 182;
 
 LocalPlayer *local_player = nullptr;
 
@@ -75,10 +77,6 @@ LocalPlayer::~LocalPlayer()
 
 void LocalPlayer::logic()
 {
-    // Actions are allowed at 5.5 per second
-    if (get_elapsed_time(mLastActionTime) >= 182)
-        mLastActionTime = -1;
-
     // Show XP messages
     if (!mMessages.empty())
     {
@@ -100,10 +98,6 @@ void LocalPlayer::logic()
     }
 
     PlayerInfo::logic();
-
-    // Targeting allowed 4 times a second
-    if (get_elapsed_time(mLastTargetTime) >= 250)
-        mLastTargetTime = -1;
 
     if (mTarget)
     {
@@ -173,7 +167,7 @@ void LocalPlayer::setAction(Action action, int attackId)
 {
     if (action == DEAD)
     {
-        mLastTargetTime = -1;
+        mLastTargetTimer.reset();
         setTarget(nullptr);
     }
 
@@ -625,24 +619,18 @@ Being *LocalPlayer::getTarget() const
 
 void LocalPlayer::setTarget(Being *target)
 {
-    if ((mLastTargetTime != -1 || target == this) && target)
+    if ((!mLastTargetTimer.passed() || target == this) && target)
         return;
 
+    // Targeting allowed 4 times a second
     if (target)
-        mLastTargetTime = tick_time;
+        mLastTargetTimer.set(250);
 
     if (target == mTarget)
         return;
 
-    if (target || mAction == ATTACK)
-    {
-        mTargetTime = tick_time;
-    }
-    else
-    {
+    if (!target && mAction != ATTACK)
         mKeepAttacking = false;
-        mTargetTime = -1;
-    }
 
     Being *oldTarget = nullptr;
     if (mTarget)
@@ -793,9 +781,9 @@ void LocalPlayer::stopWalking(bool sendToServer)
 
 void LocalPlayer::toggleSit()
 {
-    if (mLastActionTime != -1)
+    if (!mLastActionTimer.passed())
         return;
-    mLastActionTime = tick_time;
+    mLastActionTimer.set(ACTION_TIMEOUT);
 
     Being::Action newAction;
     switch (mAction)
@@ -810,16 +798,16 @@ void LocalPlayer::toggleSit()
 
 void LocalPlayer::emote(int emoteId)
 {
-    if (mLastActionTime != -1)
+    if (!mLastActionTimer.passed())
         return;
-    mLastActionTime = tick_time;
+    mLastActionTimer.set(ACTION_TIMEOUT);
 
     Net::getPlayerHandler()->emote(emoteId);
 }
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
-    if (mLastActionTime != -1)
+    if (!mLastActionTimer.passed())
         return;
 
     // Can only attack when standing still
@@ -830,23 +818,23 @@ void LocalPlayer::attack(Being *target, bool keep)
         return;
 
     // Can't attack more times than its attack speed
-    static int lastAttackTime = 0;
-    if (get_elapsed_time(lastAttackTime) < mAttackSpeed)
+    static Timer lastAttackTimer;
+    if (!lastAttackTimer.passed())
         return;
 
-    lastAttackTime = tick_time;
+    lastAttackTimer.set(mAttackSpeed);
 
     mKeepAttacking = keep;
 
     if (mTarget != target || !mTarget)
     {
-        mLastTargetTime = -1;
+        mLastTargetTimer.reset();
         setTarget(target);
     }
 
     lookAt(mTarget->getPosition());
 
-    mLastActionTime = tick_time;
+    mLastActionTimer.set(ACTION_TIMEOUT);
 
     setAction(ATTACK);
 
@@ -872,7 +860,7 @@ void LocalPlayer::stopAttack()
             setAction(STAND);
         setTarget(nullptr);
     }
-    mLastTargetTime = -1;
+    mLastTargetTimer.reset();
     cancelGoToTarget();
 }
 
@@ -964,7 +952,7 @@ void LocalPlayer::setGotoTarget(Being *target)
     if (!target)
         return;
 
-    mLastTargetTime = -1;
+    mLastTargetTimer.reset();
 
     setTarget(target);
     mGoingToTarget = true;
@@ -1039,7 +1027,8 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
 void LocalPlayer::changeAwayMode()
 {
     mAwayMode = !mAwayMode;
-    mAfkTime = 0;
+    mAfkTimer.reset();
+
     if (mAwayMode)
     {
         mAwayDialog = new OkDialog(_("Away"),
@@ -1061,9 +1050,7 @@ void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
 {
     if (mAwayMode)
     {
-        if (mAfkTime == 0
-            || cur_time < mAfkTime
-            || cur_time - mAfkTime > AWAY_LIMIT_TIMER)
+        if (mAfkTimer.passed())
         {
             std::string msg = "*AFK*: "
                     + config.getValue("afkMessage", "I am away from keyboard");
@@ -1078,7 +1065,8 @@ void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
             {
                 tab->chatLog(getName(), msg);
             }
-            mAfkTime = cur_time;
+
+            mAfkTimer.set(AWAY_MESSAGE_TIMEOUT);
         }
     }
 }

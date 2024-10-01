@@ -40,33 +40,14 @@ class LoginData;
 class Window;
 class QuitDialog;
 
-/**
- * Set the milliseconds value of a tick time.
- */
-static const int MILLISECONDS_IN_A_TICK = 10;
-
 //manaserv uses 9601
 //static const short DEFAULT_PORT = 9601;
 static const short DEFAULT_PORT = 6901;
 
 extern volatile int fps;
-extern volatile int tick_time;
-extern volatile int cur_time;
 
 extern std::string errorMessage;
 extern LoginData loginData;
-
-/**
- * @param startTime The value to check in client ticks.
- *
- * @return the elapsed time in milliseconds.
- * between startTime and the current client tick value.
- *
- * @warning This function can't handle delays > 100 seconds.
- * @see MILLISECONDS_IN_A_TICK
- * @see tick_time
- */
-int get_elapsed_time(int startTime);
 
 /**
  * Returns whether this call and the last call were done for the same
@@ -256,7 +237,6 @@ private:
 
     SDL_Surface *mIcon = nullptr;
 
-    SDL_TimerID mLogicCounterId = 0;
     SDL_TimerID mSecondsCounterId = 0;
 
     int mFpsLimit = 0;

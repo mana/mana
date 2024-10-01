@@ -158,7 +158,7 @@ Gui::~Gui()
 void Gui::logic()
 {
     // Hide mouse cursor after extended inactivity
-    if (get_elapsed_time(mLastMouseActivityTime) > 15000)
+    if (mMouseActivityTimer.passed())
         SDL_ShowCursor(SDL_DISABLE);
 
     Palette::advanceGradients();
@@ -239,7 +239,7 @@ void Gui::updateCursor()
 void Gui::handleMouseMoved(const gcn::MouseInput &mouseInput)
 {
     gcn::Gui::handleMouseMoved(mouseInput);
-    mLastMouseActivityTime = tick_time;
+    mMouseActivityTimer.set(15000);
 
     // Make sure the cursor is visible
     SDL_ShowCursor(SDL_ENABLE);

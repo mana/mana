@@ -70,8 +70,11 @@
 
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
+#if defined(_WIN32) || defined(__APPLE__)
 #include "utils/specialfolder.h"
+#endif
 #include "utils/stringutils.h"
+#include "utils/time.h"
 
 #include <physfs.h>
 #include <SDL_image.h>
@@ -83,12 +86,6 @@
 
 #include <sys/stat.h>
 #include <cassert>
-
-/**
- * Tells the max tick value,
- * setting it back to zero (and start again).
- */
-static const int MAX_TICK_VALUE = 10000;
 
 // TODO: Get rid fo these globals
 std::string errorMessage;
@@ -109,23 +106,8 @@ HairDB hairDB;                /**< Hair styles and colors info database */
 
 Sound sound;
 
-volatile int tick_time;       /**< Tick counter */
 volatile int fps = 0;         /**< Frames counted in the last second */
 volatile int frame_count = 0; /**< Counts the frames during one second */
-volatile int cur_time;
-
-/**
- * Advances game logic counter.
- * Called every 10 milliseconds by SDL_AddTimer()
- * @see MILLISECONDS_IN_A_TICK value
- */
-Uint32 nextTick(Uint32 interval, void *param)
-{
-    tick_time++;
-    if (tick_time == MAX_TICK_VALUE)
-        tick_time = 0;
-    return interval;
-}
 
 /**
  * Updates fps.
@@ -139,27 +121,15 @@ Uint32 nextSecond(Uint32 interval, void *param)
     return interval;
 }
 
-int get_elapsed_time(int startTime)
-{
-    if (startTime <= tick_time)
-        return (tick_time - startTime) * MILLISECONDS_IN_A_TICK;
-
-    return (tick_time + (MAX_TICK_VALUE - startTime)) * MILLISECONDS_IN_A_TICK;
-}
-
 bool isDoubleClick(int selected)
 {
-    const Uint32 maximumDelay = 500;
-    static Uint32 lastTime = 0;
+    static Timer timer;
     static int lastSelected = -1;
 
-    if (selected == lastSelected && lastTime + maximumDelay >= SDL_GetTicks())
-    {
-        lastTime = 0;
+    if (selected == lastSelected && !timer.passed())
         return true;
-    }
 
-    lastTime = SDL_GetTicks();
+    timer.set(500);
     lastSelected = selected;
     return false;
 }
@@ -419,9 +389,7 @@ Client::Client(const Options &options):
     if (mState != STATE_ERROR)
         mState = STATE_CHOOSE_SERVER;
 
-    // Initialize logic and seconds counters
-    tick_time = 0;
-    mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, nullptr);
+    // Initialize seconds counter
     mSecondsCounterId = SDL_AddTimer(1000, nextSecond, nullptr);
 
     listen(Event::ConfigChannel);
@@ -437,7 +405,6 @@ Client::Client(const Options &options):
 
 Client::~Client()
 {
-    SDL_RemoveTimer(mLogicCounterId);
     SDL_RemoveTimer(mSecondsCounterId);
 
     // Unload XML databases
@@ -473,12 +440,18 @@ Client::~Client()
 
 int Client::exec()
 {
-    int lastTickTime = tick_time;
+    Time::beginFrame();     // Prevent startup lag influencing the first frame
+
+    // Tick timer, used until logic has been updated to use Time::deltaTimeMs
+    Timer tickTimer;
+    tickTimer.set();
 
     SDL_Event event;
 
     while (mState != STATE_EXIT)
     {
+        Time::beginFrame();
+
         if (mGame)
         {
             // Let the game handle the events while it is active
@@ -512,19 +485,16 @@ int Client::exec()
         if (Net::getGeneralHandler())
             Net::getGeneralHandler()->flushNetwork();
 
-        while (get_elapsed_time(lastTickTime) > 0)
+        while (tickTimer.passed())
         {
             gui->logic();
             if (mGame)
                 mGame->logic();
 
-            sound.logic();
-
-            ++lastTickTime;
+            tickTimer.extend(MILLISECONDS_IN_A_TICK);
         }
 
-        // This is done because at some point tick_time will wrap.
-        lastTickTime = tick_time;
+        sound.logic();
 
         // Update the screen when application is active, delay otherwise.
         if (isActive())

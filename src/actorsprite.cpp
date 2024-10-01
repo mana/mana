@@ -20,7 +20,6 @@
 
 #include "actorsprite.h"
 
-#include "client.h"
 #include "configuration.h"
 #include "event.h"
 #include "imagesprite.h"
@@ -34,6 +33,8 @@
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
+
+#include "utils/time.h"
 
 #include <cassert>
 
@@ -80,7 +81,7 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
     if (mUsedTargetCursor)
     {
         mUsedTargetCursor->reset();
-        mUsedTargetCursor->update(tick_time * MILLISECONDS_IN_A_TICK);
+        mUsedTargetCursor->update(Time::absoluteTimeMs());
         mUsedTargetCursor->draw(graphics, px, py);
     }
 
@@ -101,7 +102,7 @@ bool ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
 void ActorSprite::logic()
 {
     // Update sprite animations
-    update(tick_time * MILLISECONDS_IN_A_TICK);
+    update(Time::absoluteTimeMs());
 
     // Restart status/particle effects, if needed
     if (mMustResetParticles)

@@ -25,6 +25,8 @@
 #include "eventlistener.h"
 #include "position.h"
 
+#include "utils/time.h"
+
 #include "gui/widgets/windowcontainer.h"
 
 #include <guichan/mouselistener.hpp>
@@ -207,15 +209,15 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
             float x;
             float y;
             float decay;
-            unsigned duration;
+            Timer timer;
         };
         std::list<ShakeEffect> mShakeEffects;
 
         bool mPlayerFollowMouse = false;
 
-        int mLocalWalkTime = -1; /**< Timestamp before the next walk can be sent. */
+        Timer mLocalWalkTimer;      /**< Timer for sending walk messages. */
 
-        PopupMenu *mPopupMenu;       /**< Popup menu. */
+        PopupMenu *mPopupMenu;              /**< Popup menu. */
         Being *mHoverBeing = nullptr;       /**< Being mouse is currently over. */
         FloorItem *mHoverItem = nullptr;    /**< FloorItem mouse is currently over. */
         BeingPopup *mBeingPopup;            /**< Being information popup. */

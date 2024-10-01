@@ -23,6 +23,8 @@
 #ifndef PALETTE_H
 #define PALETTE_H
 
+#include "utils/time.h"
+
 #include <guichan/color.hpp>
 
 #include <cstdlib>
@@ -121,8 +123,8 @@ class Palette
         static const gcn::Color RAINBOW_COLORS[];
         static const int RAINBOW_COLOR_COUNT;
 
-        /** Time tick, that gradient-type colors were updated the last time. */
-        int mRainbowTime;
+        /** Timer used when updating gradient-type colors. */
+        static Timer mRainbowTimer;
 
         using Palettes = std::set<Palette *>;
         static Palettes mInstances;
@@ -131,7 +133,7 @@ class Palette
 
         ~Palette();
 
-        void advanceGradient();
+        void advanceGradient(int advance);
 
         struct ColorElem
         {
@@ -147,7 +149,7 @@ class Palette
             int delay;
             int committedDelay;
 
-            void set(int type, gcn::Color &color, GradientType grad, int delay)
+            void set(int type, const gcn::Color &color, GradientType grad, int delay)
             {
                 ColorElem::type = type;
                 ColorElem::color = color;

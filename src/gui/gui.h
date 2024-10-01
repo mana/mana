@@ -25,6 +25,8 @@
 #include "eventlistener.h"
 #include "guichanfwd.h"
 
+#include "utils/time.h"
+
 #include <guichan/gui.hpp>
 
 #include <SDL.h>
@@ -137,7 +139,7 @@ class Gui final : public gcn::Gui, public EventListener
         float mCustomCursorScale = 1.0f;
         std::vector<SDL_Cursor *> mSystemMouseCursors;
         std::vector<SDL_Cursor *> mCustomMouseCursors;
-        int mLastMouseActivityTime = 0;
+        Timer mMouseActivityTimer;
         Cursor mCursorType = Cursor::POINTER;
 };
 
