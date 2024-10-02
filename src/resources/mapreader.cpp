@@ -571,7 +571,7 @@ static void readTileAnimation(xmlNodePtr tileNode,
         if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
         {
             const int tileId = XML::getProperty(frameNode, "tileid", 0);
-            const int duration = XML::getProperty(frameNode, "duration", 0) / 10;
+            const int duration = XML::getProperty(frameNode, "duration", 0);
             ani.addFrame(set->get(tileId), duration, 0, 0);
         }
     }

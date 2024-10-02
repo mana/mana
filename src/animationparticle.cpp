@@ -23,6 +23,8 @@
 
 #include "simpleanimation.h"
 
+#include "utils/time.h"
+
 AnimationParticle::AnimationParticle(Map *map, Animation animation):
     ImageParticle(map, nullptr),
     mAnimation(std::move(animation))
@@ -44,7 +46,7 @@ AnimationParticle::~AnimationParticle()
 
 bool AnimationParticle::update()
 {
-    mAnimation.update(10); // particle engine is updated every 10ms
+    mAnimation.update(MILLISECONDS_IN_A_TICK);
     mImage = mAnimation.getCurrentImage();
 
     return Particle::update();

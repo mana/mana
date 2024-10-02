@@ -442,12 +442,6 @@ int Client::exec()
 {
     Time::beginFrame();     // Prevent startup lag influencing the first frame
 
-    // Tick timer, used until logic has been updated to use Time::deltaTimeMs
-    Timer tickTimer;
-    tickTimer.set();
-
-    SDL_Event event;
-
     while (mState != STATE_EXIT)
     {
         Time::beginFrame();
@@ -460,6 +454,7 @@ int Client::exec()
         else
         {
             // Handle SDL events
+            SDL_Event event;
             while (SDL_PollEvent(&event))
             {
                 switch (event.type)
@@ -485,14 +480,9 @@ int Client::exec()
         if (Net::getGeneralHandler())
             Net::getGeneralHandler()->flushNetwork();
 
-        while (tickTimer.passed())
-        {
-            gui->logic();
-            if (mGame)
-                mGame->logic();
-
-            tickTimer.extend(MILLISECONDS_IN_A_TICK);
-        }
+        gui->logic();
+        if (mGame)
+            mGame->logic();
 
         sound.logic();
 

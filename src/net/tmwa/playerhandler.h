@@ -60,7 +60,7 @@ class PlayerHandler final : public MessageHandler, public Net::PlayerHandler
 
         Vector getDefaultMoveSpeed() const override;
 
-        Vector getPixelsPerTickMoveSpeed(const Vector &speed, Map *map = nullptr) override;
+        Vector getPixelsPerSecondMoveSpeed(const Vector &speed, Map *map = nullptr) override;
 
         bool usePixelPrecision() override
         { return false; }

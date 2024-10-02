@@ -82,8 +82,6 @@ public:
 
     virtual void logic();
 
-    static void actorLogic();
-
     void setMap(Map* map) override;
 
     /**

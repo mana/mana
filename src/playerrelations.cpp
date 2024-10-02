@@ -333,7 +333,7 @@ public:
 
     void ignore(Being *being, unsigned int flags) override
     {
-        being->setSpeech("...", 500);
+        being->setSpeech("...", 2000);
     }
 };
 

@@ -30,6 +30,8 @@
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 
+#include "utils/time.h"
+
 namespace PlayerInfo {
 
 class PlayerLogic;
@@ -49,7 +51,7 @@ static bool mNPCPostCount = false;
 static BuySellState mBuySellState = BUYSELL_NONE;
 
 static std::map<int, Special> mSpecials;
-static char mSpecialRechargeUpdateNeeded = 0;
+static Timer mSpecialRechargeUpdateTimer;
 
 // --- Triggers ---------------------------------------------------------------
 
@@ -312,9 +314,10 @@ bool isTalking()
 
 void logic()
 {
-    if ((mSpecialRechargeUpdateNeeded%11) == 0)
+    if (mSpecialRechargeUpdateTimer.passed())
     {
-        mSpecialRechargeUpdateNeeded = 0;
+        mSpecialRechargeUpdateTimer.set(100);
+
         for (auto &special : mSpecials)
         {
             special.second.currentMana += special.second.recharge;
@@ -324,7 +327,6 @@ void logic()
             }
         }
     }
-    mSpecialRechargeUpdateNeeded++;
 }
 
 class PlayerLogic : EventListener

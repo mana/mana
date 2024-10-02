@@ -79,11 +79,7 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
     int py = getPixelY() + offsetY;
 
     if (mUsedTargetCursor)
-    {
-        mUsedTargetCursor->reset();
-        mUsedTargetCursor->update(Time::absoluteTimeMs());
         mUsedTargetCursor->draw(graphics, px, py);
-    }
 
     // This is makes sure that actors positioned on the center of a tile have
     // their sprite aligned to the bottom of that tile, mainly to maintain
@@ -102,7 +98,10 @@ bool ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
 void ActorSprite::logic()
 {
     // Update sprite animations
-    update(Time::absoluteTimeMs());
+    update(Time::deltaTimeMs());
+
+    if (mUsedTargetCursor)
+        mUsedTargetCursor->update(Time::deltaTimeMs());
 
     // Restart status/particle effects, if needed
     if (mMustResetParticles)
@@ -123,10 +122,6 @@ void ActorSprite::logic()
 
     // Update particle effects
     mChildParticleEffects.moveTo(mPos.x, py);
-}
-
-void ActorSprite::actorLogic()
-{
 }
 
 void ActorSprite::setMap(Map* map)

@@ -211,6 +211,8 @@ Game::Game():
     assert(!mInstance);
     mInstance = this;
 
+    mParticleEngineTimer.set();
+
     // Create the viewport
     viewport = new Viewport;
     viewport->setSize(graphics->getWidth(), graphics->getHeight());
@@ -337,11 +339,17 @@ static bool saveScreenshot()
 void Game::logic()
 {
     // Handle all necessary game logic
-    ActorSprite::actorLogic();
     actorSpriteManager->logic();
-    particleEngine->update();
+
+    // todo: make Particle::update work with variable time steps
+    while (mParticleEngineTimer.passed())
+    {
+        particleEngine->update();
+        mParticleEngineTimer.extend(MILLISECONDS_IN_A_TICK);
+    }
+
     if (mCurrentMap)
-        mCurrentMap->update();
+        mCurrentMap->update(Time::deltaTimeMs());
 
     // Handle network stuff
     if (!Net::getGameHandler()->isConnected() && !mDisconnected)

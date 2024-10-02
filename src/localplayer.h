@@ -233,9 +233,9 @@ class LocalPlayer final : public Being
         int mWalkingDir = 0;            /**< The direction the player is walking in. */
         bool mPathSetByMouse = false;   /**< Tells if the path was set using mouse */
 
-        /** Queued messages*/
+        /** Queued messages */
         std::list<std::pair<std::string, int>> mMessages;
-        int mMessageTime = 0;
+        Timer mMessageTimer;
 
         bool mShowIp = false;
 

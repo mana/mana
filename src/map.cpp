@@ -69,9 +69,9 @@ TileAnimation::TileAnimation(Animation animation)
 {
 }
 
-void TileAnimation::update(int ticks)
+void TileAnimation::update(int dt)
 {
-    mAnimation.update(ticks);
+    mAnimation.update(dt);
 
     // exchange images
     Image *img = mAnimation.getCurrentImage();
@@ -301,12 +301,12 @@ bool actorCompare(const Actor *a, const Actor *b)
     return a->getDrawOrder() < b->getDrawOrder();
 }
 
-void Map::update(int ticks)
+void Map::update(int dt)
 {
     // Update animated tiles
     for (auto &[_, tileAnimation] : mTileAnimations)
     {
-        tileAnimation.update(ticks);
+        tileAnimation.update(dt);
     }
 }
 

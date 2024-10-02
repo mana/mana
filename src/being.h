@@ -40,7 +40,7 @@
 #define STATUS_EFFECTS 32
 
 #define SPEECH_TIME 500
-#define SPEECH_MAX_TIME 1000
+#define SPEECH_MAX_TIME 10000
 
 class BeingInfo;
 class FlashText;
@@ -155,7 +155,7 @@ class Being : public ActorSprite, public EventListener
          * @param text The text that should appear.
          * @param time The amount of time the text should stay in milliseconds.
          */
-        void setSpeech(const std::string &text, int time = 500);
+        void setSpeech(const std::string &text, int time = 5000);
 
         /**
          * Puts a damage bubble above this being.
@@ -489,7 +489,7 @@ class Being : public ActorSprite, public EventListener
         Timer mActionTimer;     /**< Time spent in current action. TODO: Remove use of it */
 
         /** Time until the last speech sentence disappears */
-        int mSpeechTime = 0;
+        Timer mSpeechTimer;
 
         int mAttackSpeed = 350; /**< Attack speed */
 
@@ -544,10 +544,9 @@ class Being : public ActorSprite, public EventListener
         Vector mMoveSpeed;
 
         /**
-         * Being speed in pixel per ticks. Used internally for the being logic.
-         * @see MILLISECONDS_IN_A_TICK
+         * Being speed in pixel per second. Used internally for the being logic.
          */
-        Vector mSpeedPixelsPerTick;
+        Vector mSpeedPixelsPerSecond;
 
         int mDamageTaken = 0;
 

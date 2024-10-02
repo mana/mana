@@ -48,7 +48,7 @@ ProgressIndicator::~ProgressIndicator() = default;
 
 void ProgressIndicator::logic()
 {
-    mIndicator->update(10);
+    mIndicator->update(Time::deltaTimeMs());
 }
 
 void ProgressIndicator::draw(gcn::Graphics *graphics)

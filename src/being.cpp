@@ -158,8 +158,8 @@ void Being::setMoveSpeed(const Vector &speed)
     mMoveSpeed = speed;
     // If we already can, recalculate the system speed right away.
     if (mMap)
-        mSpeedPixelsPerTick =
-                      Net::getPlayerHandler()->getPixelsPerTickMoveSpeed(speed);
+        mSpeedPixelsPerSecond =
+                Net::getPlayerHandler()->getPixelsPerSecondMoveSpeed(speed);
 }
 
 int Being::getSpeechTextYPosition() const
@@ -284,7 +284,7 @@ void Being::setSpeech(const std::string &text, int time)
     }
 
     if (!mSpeech.empty())
-        mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
+        mSpeechTimer.set(std::min(time, SPEECH_MAX_TIME));
 
     const int speech = config.getIntValue("speech");
     if (speech == TEXT_OVERHEAD)
@@ -755,12 +755,8 @@ int Being::getCollisionRadius() const
 
 void Being::logic()
 {
-    // Reduce the time that speech is still displayed
-    if (mSpeechTime > 0)
-        mSpeechTime--;
-
     // Remove text and speechbubbles if speech boxes aren't being used
-    if (mSpeechTime == 0 && mText)
+    if (mText && mSpeechTimer.passed())
     {
         delete mText;
         mText = nullptr;
@@ -772,7 +768,7 @@ void Being::logic()
         restoreAllSpriteParticles();
     }
 
-    if ((mAction != DEAD) && !mSpeedPixelsPerTick.isNull())
+    if ((mAction != DEAD) && !mSpeedPixelsPerSecond.isNull())
     {
         const Vector dest = (mPath.empty()) ?
             mDest : Vector(mPath.front().x,
@@ -803,13 +799,14 @@ void Being::logic()
             // â = a / ||a|| (||a|| is the a length.)
             // Then, diff = (dir/||dir||) * speed.
             const Vector normalizedDir = dir.normalized();
-            Vector diff(normalizedDir.x * mSpeedPixelsPerTick.x,
-                        normalizedDir.y * mSpeedPixelsPerTick.y);
+            const int ms = Time::deltaTimeMs();
+            Vector diff(normalizedDir.x * mSpeedPixelsPerSecond.x * ms / 1000.0f,
+                        normalizedDir.y * mSpeedPixelsPerSecond.y * ms / 1000.0f);
 
             // Test if we don't miss the destination by a move too far:
             if (diff.length() > distance)
             {
-                setPosition(mPos + dir);
+                setPosition(dest);
 
                 // Also, if the destination is reached, try to get the next
                 // path point, if existing.
@@ -876,13 +873,12 @@ void Being::drawSpeech(int offsetX, int offsetY)
     const int speech = config.getIntValue("speech");
 
     // Draw speech above this being
-    if (mSpeechTime == 0)
+    if (mSpeechTimer.passed())
     {
         if (mSpeechBubble->isVisible())
             mSpeechBubble->setVisible(false);
     }
-    else if (mSpeechTime > 0 && (speech == NAME_IN_BUBBLE ||
-             speech == NO_NAME_IN_BUBBLE))
+    else if (speech == NAME_IN_BUBBLE || speech == NO_NAME_IN_BUBBLE)
     {
         const bool showName = (speech == NAME_IN_BUBBLE);
 
@@ -897,11 +893,11 @@ void Being::drawSpeech(int offsetX, int offsetY)
                                    - mSpeechBubble->getHeight() - offsetY);
         mSpeechBubble->setVisible(true);
     }
-    else if (mSpeechTime > 0 && speech == TEXT_OVERHEAD)
+    else if (speech == TEXT_OVERHEAD)
     {
         mSpeechBubble->setVisible(false);
 
-        if (! mText)
+        if (!mText)
         {
             mText = new Text(mSpeech,
                              getPixelX(), getPixelY() - getHeight(),
@@ -1216,7 +1212,7 @@ void Being::setMap(Map *map)
     // Recalculate pixel/tick speed
     if (map && !mMoveSpeed.isNull())
     {
-        mSpeedPixelsPerTick =
-            Net::getPlayerHandler()->getPixelsPerTickMoveSpeed(mMoveSpeed, map);
+        mSpeedPixelsPerSecond =
+            Net::getPlayerHandler()->getPixelsPerSecondMoveSpeed(mMoveSpeed, map);
     }
 }

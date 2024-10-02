@@ -54,11 +54,10 @@ AnimatedSprite::~AnimatedSprite() = default;
 
 bool AnimatedSprite::reset()
 {
-    bool ret = mFrameIndex !=0 || mFrameTime != 0 || mLastTime != 0;
+    bool ret = mFrameIndex !=0 || mFrameTime != 0;
 
     mFrameIndex = 0;
     mFrameTime = 0;
-    mLastTime = 0;
 
     return ret;
 }
@@ -87,21 +86,13 @@ bool AnimatedSprite::play(const std::string &spriteAction)
 
 bool AnimatedSprite::update(int time)
 {
-    // Avoid freaking out at first frame or when tick_time overflows
-    if (time < mLastTime || mLastTime == 0)
-        mLastTime = time;
-
-    // If not enough time has passed yet, do nothing
-    if (time <= mLastTime || !mAnimation)
+    if (!mAnimation)
         return false;
-
-    unsigned int dt = time - mLastTime;
-    mLastTime = time;
 
     Animation *animation = mAnimation;
     Frame *frame = mFrame;
 
-    if (!updateCurrentAnimation(dt))
+    if (!updateCurrentAnimation(time))
     {
         // Animation finished, reset to default
         play(SpriteAction::STAND);
@@ -111,7 +102,7 @@ bool AnimatedSprite::update(int time)
     return animation != mAnimation || frame != mFrame;
 }
 
-bool AnimatedSprite::updateCurrentAnimation(unsigned int time)
+bool AnimatedSprite::updateCurrentAnimation(int time)
 {
     if (!mFrame || Animation::isTerminator(*mFrame))
         return false;

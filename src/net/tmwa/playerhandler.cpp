@@ -648,7 +648,7 @@ Vector PlayerHandler::getDefaultMoveSpeed() const
     return Vector(15.0f, 15.0f, 0.0f);
 }
 
-Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
+Vector PlayerHandler::getPixelsPerSecondMoveSpeed(const Vector &speed, Map *map)
 {
     Game *game = Game::instance();
 
@@ -662,13 +662,14 @@ Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
         return getDefaultMoveSpeed();
     }
 
-    Vector speedInTicks;
+    Vector pixelsPerSecond;
 
-    // speedInTicks.z = 0; // We don't use z for now.
-    speedInTicks.x = 1 / speed.x * (float)map->getTileWidth();
-    speedInTicks.y = 1 / speed.y * (float)map->getTileHeight();
+    constexpr float ticksPerSecond = 1000.0 / MILLISECONDS_IN_A_TICK;
 
-    return speedInTicks;
+    pixelsPerSecond.x = map->getTileWidth() / speed.x * ticksPerSecond;
+    pixelsPerSecond.y = map->getTileHeight() / speed.y * ticksPerSecond;
+
+    return pixelsPerSecond;
 }
 
 } // namespace TmwAthena

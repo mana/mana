@@ -39,7 +39,6 @@ struct Position
 };
 
 using Path = std::list<Position>;
-using PathIterator = Path::iterator;
 
 /**
  * Appends a string representation of a position to the output stream.

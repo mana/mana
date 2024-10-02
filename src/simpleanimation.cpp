@@ -71,11 +71,11 @@ void SimpleAnimation::setFrame(int frame)
     mCurrentFrame = mAnimation.getFrame(mAnimationPhase);
 }
 
-void SimpleAnimation::update(int timePassed)
+void SimpleAnimation::update(int dt)
 {
     if (mInitialized)
     {
-        mAnimationTime += timePassed;
+        mAnimationTime += dt;
 
         while (mAnimationTime > mCurrentFrame->delay && mCurrentFrame->delay > 0)
         {

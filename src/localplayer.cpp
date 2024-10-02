@@ -80,7 +80,7 @@ void LocalPlayer::logic()
     // Show XP messages
     if (!mMessages.empty())
     {
-        if (mMessageTime == 0)
+        if (mMessageTimer.passed())
         {
             const auto &[message, color] = mMessages.front();
 
@@ -92,9 +92,8 @@ void LocalPlayer::logic()
                     gui->getInfoParticleFont(), true);
 
             mMessages.pop_front();
-            mMessageTime = 30;
+            mMessageTimer.set(300);
         }
-        mMessageTime--;
     }
 
     PlayerInfo::logic();

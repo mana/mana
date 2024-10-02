@@ -63,7 +63,7 @@ class TileAnimation
     public:
         TileAnimation(Animation animation);
 
-        void update(int ticks = 1);
+        void update(int dt);
 
         void addAffectedTile(MapLayer *layer, int index)
         { mAffected.emplace_back(layer, index); }
@@ -195,7 +195,7 @@ class Map : public Properties
         /**
          * Updates animations. Called as needed.
          */
-        void update(int ticks = 1);
+        void update(int dt);
 
         /**
          * Draws the map to the given graphics output. This method draws all

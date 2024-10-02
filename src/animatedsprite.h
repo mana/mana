@@ -79,10 +79,9 @@ class AnimatedSprite final : public Sprite
         int getDuration() const override;
 
     private:
-        bool updateCurrentAnimation(unsigned int dt);
+        bool updateCurrentAnimation(int dt);
 
         SpriteDirection mDirection = DIRECTION_DOWN;    /**< The sprite direction. */
-        int mLastTime = 0;                  /**< The last time update was called. */
 
         int mFrameIndex = 0;                /**< The index of the current frame. */
         int mFrameTime = 0;                 /**< The time since start of frame. */

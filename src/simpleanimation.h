@@ -51,7 +51,7 @@ class SimpleAnimation final
 
         int getLength() const;
 
-        void update(int timePassed);
+        void update(int dt);
 
         bool draw(Graphics *graphics, int posX, int posY) const;
 
@@ -64,12 +64,12 @@ class SimpleAnimation final
 
     private:
         void initializeAnimation(xmlNodePtr animationNode,
-                                const std::string& dyePalettes = std::string());
+                                 const std::string& dyePalettes = std::string());
 
         /** The hosted animation. */
         Animation mAnimation;
 
-        /** Time in game ticks the current frame is shown. */
+        /** Time in milliseconds the current frame is shown. */
         int mAnimationTime = 0;
 
         /** Index of current animation phase. */

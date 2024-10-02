@@ -416,9 +416,9 @@ Vector PlayerHandler::getDefaultMoveSpeed() const
     return Vector(6.0f, 6.0f, 0.0f);
 }
 
-Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
+Vector PlayerHandler::getPixelsPerSecondMoveSpeed(const Vector &speed, Map *map)
 {
-    Vector speedInTicks;
+    Vector speedInPixels;
 
     Game *game = Game::instance();
     if (game && !map)
@@ -428,17 +428,13 @@ Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
     {
         logger->log("Manaserv::PlayerHandler: Speed wasn't given back"
                     " because Map not initialized.");
-        return speedInTicks;
+        return speedInPixels;
     }
 
-    speedInTicks.x = speed.x
-        * (float)map->getTileWidth()
-        / 1000 * (float) MILLISECONDS_IN_A_TICK;
-    speedInTicks.y = speed.y
-        * (float)map->getTileHeight()
-        / 1000 * (float) MILLISECONDS_IN_A_TICK;
+    speedInPixels.x = speed.x * map->getTileWidth();
+    speedInPixels.y = speed.y * map->getTileHeight();
 
-    return speedInTicks;
+    return speedInPixels;
 }
 
 } // namespace ManaServ

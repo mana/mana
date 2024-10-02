@@ -26,6 +26,8 @@
 
 #include "gui/windowmenu.h"
 
+#include "utils/time.h"
+
 class Map;
 
 /**
@@ -90,6 +92,8 @@ class Game
 
         Map *mCurrentMap = nullptr;
         std::string mMapName;
+
+        Timer mParticleEngineTimer;
 
         static Game *mInstance;
 };
