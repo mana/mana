@@ -988,6 +988,8 @@ void Being::showName()
 
 void Being::addSpriteParticles(SpriteState &spriteState, const SpriteDisplay &display)
 {
+    if (!particleEngine)    // happens in CharSelectDialog, for example
+        return;
     if (!spriteState.particles.empty())
         return;
 
