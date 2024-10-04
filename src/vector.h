@@ -140,7 +140,7 @@ class Vector
          */
         float length() const
         {
-            return sqrtf(x * x + y * y + z * z);
+            return std::sqrt(x * x + y * y + z * z);
         }
 
         /**
@@ -156,7 +156,7 @@ class Vector
          */
         float manhattanLength() const
         {
-            return fabsf(x) + fabsf(y) + fabsf(z);
+            return std::abs(x) + std::abs(y) + std::abs(z);
         }
 
         /**

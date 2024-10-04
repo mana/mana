@@ -41,6 +41,7 @@
 
 #include "utils/stringutils.h"
 
+#include <algorithm>
 #include <cmath>
 
 Viewport::Viewport()
@@ -166,24 +167,21 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     };
 
     // Don't move camera so that the end of the map is on screen
+    // Center camera on map if the map is smaller than the screen
     const int mapWidthPixels = mMap->getWidth() * mMap->getTileWidth();
     const int mapHeightPixels = mMap->getHeight() * mMap->getTileHeight();
     const int viewXmax = mapWidthPixels - graphics->getWidth();
     const int viewYmax = mapHeightPixels - graphics->getHeight();
-    if (mPixelViewX < 0)
-        mPixelViewX = 0;
-    if (mPixelViewY < 0)
-        mPixelViewY = 0;
-    if (mPixelViewX > viewXmax)
-        mPixelViewX = viewXmax;
-    if (mPixelViewY > viewYmax)
-        mPixelViewY = viewYmax;
 
-    // Center camera on map if the map is smaller than the screen
-    if (mapWidthPixels < graphics->getWidth())
-        mPixelViewX = (mapWidthPixels - graphics->getWidth()) / 2;
-    if (mapHeightPixels < graphics->getHeight())
-        mPixelViewY = (mapHeightPixels - graphics->getHeight()) / 2;
+    if (viewXmax > 0)
+        mPixelViewX = std::clamp<float>(mPixelViewX, 0, viewXmax);
+    else
+        mPixelViewX = viewXmax / 2;
+
+    if (viewYmax > 0)
+        mPixelViewY = std::clamp<float>(mPixelViewY, 0, viewYmax);
+    else
+        mPixelViewY = viewYmax / 2;
 
     // Draw black background if map is smaller than the screen
     if (        mapWidthPixels < graphics->getWidth()

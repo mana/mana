@@ -746,16 +746,6 @@ void LocalPlayer::startWalking(unsigned char dir)
         return;
     }
 
-    int dx = 0, dy = 0;
-    if (dir & UP)
-        dy--;
-    if (dir & DOWN)
-        dy++;
-    if (dir & LEFT)
-        dx--;
-    if (dir & RIGHT)
-        dx++;
-
     nextTile(dir);
 }
 

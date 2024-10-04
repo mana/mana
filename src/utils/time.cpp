@@ -41,6 +41,11 @@ unsigned deltaTimeMs()
     return s_deltaTimeMs;
 }
 
+float deltaTime()
+{
+    return s_deltaTimeMs / 1000.f;
+}
+
 static int32_t getElapsedTime(uint32_t timeMs)
 {
     return static_cast<int32_t>(s_absoluteTimeMs - timeMs);

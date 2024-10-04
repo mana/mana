@@ -39,9 +39,14 @@ namespace Time
 uint32_t absoluteTimeMs();
 
 /**
- * The time in milliseconds since the last frame, maximized to 1000ms.
+ * The time in milliseconds since the last frame, but never more than 1000.
  */
 unsigned deltaTimeMs();
+
+/**
+ * The time in seconds since the last frame, but never more than 1.
+ */
+float deltaTime();
 
 /**
  * Called at the start of each frame, updates the above variables.

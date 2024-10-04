@@ -128,6 +128,7 @@ void Being::setSubtype(Uint16 subtype)
         break;
     }
 }
+
 bool Being::isTargetSelection() const
 {
     return mInfo->targetSelection;
@@ -768,43 +769,59 @@ void Being::logic()
         restoreAllSpriteParticles();
     }
 
-    if ((mAction != DEAD) && !mSpeedPixelsPerSecond.isNull())
+    if (mAction != DEAD && !mSpeedPixelsPerSecond.isNull())
     {
-        const Vector dest = (mPath.empty()) ?
-            mDest : Vector(mPath.front().x,
-                           mPath.front().y);
+        updateMovement();
+    }
+
+    ActorSprite::logic();
+
+    // Remove it after 1.5 secs if the dead animation isn't long enough,
+    // or simply play it until it's finished.
+    if (!isAlive() && Net::getGameHandler()->removeDeadBeings() && getType() != PLAYER)
+        if (mActionTimer.elapsed() > std::max(getDuration(), 1500))
+            actorSpriteManager->scheduleDelete(this);
+}
+
+void Being::updateMovement()
+{
+    float dt = Time::deltaTime();
+
+    while (dt > 0.f)
+    {
+        const Vector dest = mPath.empty() ? mDest
+                                          : Vector(mPath.front().x,
+                                                   mPath.front().y);
 
         // Avoid going to flawed destinations
+        // We make the being stop move in that case.
         if (dest.x <= 0 || dest.y <= 0)
         {
-            // We make the being stop move in that case.
             mDest = mPos;
             mPath.clear();
-            // By returning now, we're losing one tick for the rest of the logic
-            // but as we have reset the destination, the next tick will be fine.
-            return;
+            break;
         }
 
         // The Vector representing the difference between current position
         // and the next destination path node.
-        Vector dir = dest - mPos;
-
-        float distance = dir.length();
+        const Vector dir = dest - mPos;
 
         // When we've not reached our destination, move to it.
-        if (distance > 0.0f)
+        if (!dir.isNull())
         {
+            const float distanceToDest = dir.length();
+
             // The deplacement of a point along a vector is calculated
             // using the Unit Vector (â) multiplied by the point speed.
             // â = a / ||a|| (||a|| is the a length.)
             // Then, diff = (dir/||dir||) * speed.
             const Vector normalizedDir = dir.normalized();
-            const int ms = Time::deltaTimeMs();
-            Vector diff(normalizedDir.x * mSpeedPixelsPerSecond.x * ms / 1000.0f,
-                        normalizedDir.y * mSpeedPixelsPerSecond.y * ms / 1000.0f);
+            Vector diff(normalizedDir.x * mSpeedPixelsPerSecond.x * dt,
+                        normalizedDir.y * mSpeedPixelsPerSecond.y * dt);
+            const float distanceToMove = diff.length();
 
             // Test if we don't miss the destination by a move too far:
-            if (diff.length() > distance)
+            if (distanceToMove > distanceToDest)
             {
                 setPosition(dest);
 
@@ -812,13 +829,16 @@ void Being::logic()
                 // path point, if existing.
                 if (!mPath.empty())
                     mPath.pop_front();
+
+                // Set dt to the time left after performing this move.
+                dt -= dt * (distanceToDest / distanceToMove);
             }
             else
             {
                 // Otherwise, go to it using the nominal speed.
                 setPosition(mPos + diff);
-                // And reset the nominalLength to the actual move length
-                distance = diff.length();
+                // And set the remaining time to 0.
+                dt = 0.f;
             }
 
             if (mAction != MOVE)
@@ -831,12 +851,11 @@ void Being::logic()
             // 1. It is not the local_player
             // 2. When it is the local_player but only by mouse
             // (because in that case, the path can have more than one tile.)
-            if ((local_player == this && local_player->isPathSetByMouse())
-                || local_player != this)
+            if (local_player != this || local_player->isPathSetByMouse())
             {
                 int direction = 0;
                 const float dx = std::abs(dir.x);
-                float dy = std::abs(dir.y);
+                const float dy = std::abs(dir.y);
 
                 if (dx > dy)
                     direction |= (dir.x > 0) ? RIGHT : LEFT;
@@ -852,19 +871,13 @@ void Being::logic()
             // remove it and go to the next one.
             mPath.pop_front();
         }
-        else if (mAction == MOVE)
+        else
         {
-            setAction(STAND);
+            if (mAction == MOVE)
+                setAction(STAND);
+            break;
         }
     }
-
-    ActorSprite::logic();
-
-    // Remove it after 1.5 secs if the dead animation isn't long enough,
-    // or simply play it until it's finished.
-    if (!isAlive() && Net::getGameHandler()->removeDeadBeings() && getType() != PLAYER)
-        if (mActionTimer.elapsed() > std::max(getDuration(), 1500))
-            actorSpriteManager->scheduleDelete(this);
 }
 
 void Being::drawSpeech(int offsetX, int offsetY)
@@ -1198,7 +1211,6 @@ void Being::event(Event::Channel channel, const Event &event)
             setShowName(config.getBoolValue("visiblenames"));
         }
     }
-
 }
 
 void Being::setMap(Map *map)

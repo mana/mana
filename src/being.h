@@ -319,14 +319,7 @@ class Being : public ActorSprite, public EventListener
          * in ticks per tile for eAthena,
          * in tiles per second for Manaserv (0.1 precision).
          */
-        virtual void setMoveSpeed(const Vector &speed);
-
-        /**
-         * Gets the original Move speed.
-         * in ticks per tile for eAthena,
-         * in tiles per second for Manaserv (0.1 precision).
-         */
-        Vector getMoveSpeed() const { return mMoveSpeed; }
+        void setMoveSpeed(const Vector &speed);
 
         /**
          * Sets the attack speed.
@@ -530,6 +523,7 @@ class Being : public ActorSprite, public EventListener
         bool mIsGM = false;
 
     private:
+        void updateMovement();
 
         const Type mType;
 
@@ -539,7 +533,7 @@ class Being : public ActorSprite, public EventListener
         /**
          * Walk speed for x and y movement values.
          * In ticks per tile for eAthena,
-         * In pixels per second for Manaserv.
+         * In tiles per second for Manaserv.
          */
         Vector mMoveSpeed;
 
