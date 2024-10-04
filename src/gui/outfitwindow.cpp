@@ -38,8 +38,6 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <vector>
-
 OutfitWindow::OutfitWindow():
     Window(_("Outfits"))
 {
@@ -86,15 +84,11 @@ void OutfitWindow::load()
         std::string buf;
         std::stringstream ss(outfit);
 
-        std::vector<int> tokens;
-
-        while (ss >> buf)
-            tokens.push_back(atoi(buf.c_str()));
-
-        for (int i = 0; i < (int)tokens.size(); i++)
+        for (size_t i = 0; (ss >> buf) && i < OUTFIT_ITEM_COUNT; i++)
         {
-            mItems[o][i] = tokens[i];
+            mItems[o][i] = atoi(buf.c_str());
         }
+
         mItemsUnequip[o] = config.getValue("OutfitUnequip" + toString(o), true);
     }
 }
@@ -199,8 +193,7 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
         if (item)
          {
             // Draw item icon.
-            Image* image = item->getImage();
-            if (image)
+            if (Image *image = item->getImage())
             {
                 g->drawImage(image, itemX, itemY);
             }
@@ -209,8 +202,7 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
     if (mItemMoved)
     {
         // Draw the item image being dragged by the cursor.
-        Image* image = mItemMoved->getImage();
-        if (image)
+        if (Image *image = mItemMoved->getImage())
         {
             const int tPosX = mCursorPosX - (image->getWidth() / 2);
             const int tPosY = mCursorPosY - (image->getHeight() / 2);
