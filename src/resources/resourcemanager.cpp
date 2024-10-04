@@ -115,10 +115,8 @@ void ResourceManager::cleanUp(Resource *res)
 
 void ResourceManager::cleanOrphans()
 {
-    timeval tv;
-    gettimeofday(&tv, nullptr);
     // Delete orphaned resources after 30 seconds.
-    time_t oldest = tv.tv_sec;
+    time_t oldest = time(nullptr);
     time_t threshold = oldest - 30;
 
     if (mOrphanedResources.empty() || mOldestOrphan >= threshold)
@@ -128,7 +126,7 @@ void ResourceManager::cleanOrphans()
     while (iter != mOrphanedResources.end())
     {
         Resource *res = iter->second;
-        time_t t = res->mTimeStamp;
+        const time_t t = res->mTimeStamp;
         if (t >= threshold)
         {
             if (t < oldest)
@@ -138,9 +136,7 @@ void ResourceManager::cleanOrphans()
         else
         {
             logger->log("ResourceManager::release(%s)", res->mIdPath.c_str());
-            auto toErase = iter;
-            ++iter;
-            mOrphanedResources.erase(toErase);
+            iter = mOrphanedResources.erase(iter);
             delete res; // delete only after removal from list, to avoid issues in recursion
         }
     }
@@ -349,9 +345,7 @@ void ResourceManager::release(Resource *res)
     // The resource has to exist
     assert(resIter != mResources.end() && resIter->second == res);
 
-    timeval tv;
-    gettimeofday(&tv, nullptr);
-    time_t timestamp = tv.tv_sec;
+    const time_t timestamp = time(nullptr);
 
     res->mTimeStamp = timestamp;
     if (mOrphanedResources.empty())
