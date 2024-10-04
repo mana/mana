@@ -100,18 +100,6 @@ class LocalPlayer final : public Being
         void stopAttack();
 
         /**
-         * Overridden to do nothing. The attacks of the local player are
-         * displayed as soon as the player attacks, not when the server says
-         * the player does.
-         *
-         * @param victim the victim being
-         * @param damage the amount of damage dealt (0 means miss)
-         * @param type the attack type
-         */
-        //virtual void handleAttack(Being *victim, int damage, AttackType type) {}
-        virtual void handleAttack() {}
-
-        /**
          * Returns the current target of the player. Returns 0 if no being is
          * currently targeted.
          */
@@ -209,13 +197,15 @@ class LocalPlayer final : public Being
         /**
          * set the next path tile when walking and using the keyboard.
          */
-        virtual void nextTile(unsigned char dir);
+        void nextTile(unsigned char dir);
 
         /**
          * Compute the next pathnode location when walking using keyboard.
          * used by nextTile().
          */
         Position getNextWalkPosition(unsigned char dir);
+
+        void pathFinished() override { nextTile(mWalkingDir); }
 
         int mAttackRange = -1;
 

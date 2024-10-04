@@ -175,7 +175,7 @@ class Being : public ActorSprite, public EventListener
          * @param damage the amount of damage dealt (0 means miss)
          * @param attackId the attack id
          */
-        virtual void handleAttack(Being *victim, int damage, int attackId = 1);
+        void handleAttack(Being *victim, int damage, int attackId = 1);
 
         const ItemInfo *getEquippedWeapon() const
         { return mEquippedWeapon; }
@@ -380,7 +380,7 @@ class Being : public ActorSprite, public EventListener
         /**
          * Returns the being's pixel radius used to detect collisions.
          */
-        virtual int getCollisionRadius() const;
+        int getCollisionRadius() const;
 
         /**
          * Shoots a missile particle from this being, to target being
@@ -403,7 +403,7 @@ class Being : public ActorSprite, public EventListener
         /**
          * Sets the gender of this being.
          */
-        virtual void setGender(Gender gender);
+        void setGender(Gender gender);
 
         Gender getGender() const
         { return mGender; }
@@ -476,6 +476,11 @@ class Being : public ActorSprite, public EventListener
          * Gets the advised Y chat text position.
          */
         int getSpeechTextYPosition() const;
+
+        /**
+         * Called when the being has reached the end of its path.
+         */
+        virtual void pathFinished() {}
 
         const BeingInfo *mInfo;
 

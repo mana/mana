@@ -700,23 +700,33 @@ void LocalPlayer::setWalkingDir(int dir)
 
     // Don't compute a new path before the last one set by keyboard is finished.
     // This permits to avoid movement glitches and server spamming.
-    const Vector &pos = getPosition();
-    const Vector &dest = getDestination();
-    if (!isPathSetByMouse() && (pos.x != dest.x || pos.y != dest.y))
-        return;
+    if (!isPathSetByMouse())
+    {
+        const Vector &pos = getPosition();
+        const Vector &dest = getDestination();
+
+        if (pos.x != dest.x || pos.y != dest.y)
+        {
+            mWalkingDir = dir;
+            return;
+        }
+    }
 
     // If the player is pressing a key, and its different from what he has
     // been pressing, stop (do not send this stop to the server) and
     // start in the new direction
-    if (dir && (dir != getWalkingDir()))
+    if (dir && dir != mWalkingDir)
+    {
         local_player->stopWalking(false);
-
-    // Else, he is not pressing a key,
-    // and the current path hasn't been sent by mouse,
-    // then let the path die (1/2 tile after that.)
-    // This permit to avoid desyncs with other clients.
+    }
+    // Else, he is not pressing a key, and the current path hasn't been sent by
+    // mouse, then let the path die (1/2 tile after that.) This permit to avoid
+    // desyncs with other clients.
     else if (!dir)
+    {
+        mWalkingDir = 0;
         return;
+    }
 
     cancelGoToTarget();
 

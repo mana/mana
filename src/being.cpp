@@ -828,7 +828,12 @@ void Being::updateMovement()
                 // Also, if the destination is reached, try to get the next
                 // path point, if existing.
                 if (!mPath.empty())
+                {
                     mPath.pop_front();
+
+                    if (mPath.empty())
+                        pathFinished();
+                }
 
                 // Set dt to the time left after performing this move.
                 dt -= dt * (distanceToDest / distanceToMove);
@@ -870,6 +875,9 @@ void Being::updateMovement()
             // If the current path node has been reached,
             // remove it and go to the next one.
             mPath.pop_front();
+
+            if (mPath.empty())
+                pathFinished();
         }
         else
         {
