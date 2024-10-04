@@ -243,8 +243,8 @@ Setup_Video::Setup_Video():
 {
     setName(_("Video"));
 
-    overlayDetailLabel = new Label(_("Ambient FX:"));
-    particleDetailLabel = new Label(_("Particle detail:"));
+    auto overlayDetailLabel = new Label(_("Ambient FX:"));
+    auto particleDetailLabel = new Label(_("Particle detail:"));
 
 #ifndef USE_OPENGL
     mOpenGLCheckBox->setEnabled(false);

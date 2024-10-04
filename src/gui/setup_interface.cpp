@@ -22,7 +22,6 @@
 #include "gui/setup_interface.h"
 
 #include "configuration.h"
-#include "localplayer.h"
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
@@ -209,8 +208,6 @@ void Setup_Interface::cancel()
     config.setValue("visiblenames", mVisibleNamesEnabled);
     config.setValue("speech", mSpeechMode);
     config.setValue("showownname", mNameEnabled);
-    if (local_player)
-        local_player->setCheckNameSetting(true);
     config.setValue("logNpcInGui", mNPCLogEnabled);
     config.setValue("guialpha", mOpacity);
     config.setValue("showpickupchat", mPickupChatEnabled);
@@ -251,10 +248,6 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
     }
     else if (id == "showownname")
     {
-        // Notify the local player that settings have changed for the name
-        // and requires an update
-        if (local_player)
-            local_player->setCheckNameSetting(true);
         config.setValue("showownname", mNameCheckBox->isSelected());
     }
     else if (id == "lognpc")

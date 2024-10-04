@@ -195,22 +195,7 @@ class LocalPlayer final : public Being
 
         void event(Event::Channel channel, const Event &event) override;
 
-        /**
-         * Tells the engine wether to check
-         * if the Player Name is to be displayed.
-         */
-        void setCheckNameSetting(bool checked) { mUpdateName = checked; }
-
-        /**
-         * Gets if the engine has to check
-         * if the Player Name is to be displayed.
-         */
-        bool getCheckNameSetting() const { return mUpdateName; }
-
     protected:
-        /** Whether or not the name settings have changed */
-        bool mUpdateName;
-
         /** Make the character starts to walk. */
         void startWalking(unsigned char dir);
 

@@ -209,12 +209,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         _drawDebugPath(graphics);
     }
 
-    if (local_player->getCheckNameSetting())
-    {
-        local_player->setCheckNameSetting(false);
-        local_player->setName(local_player->getName());
-    }
-
     // Draw text
     if (textManager)
     {
@@ -632,7 +626,7 @@ void Viewport::event(Event::Channel channel, const Event &event)
     else if (channel == Event::ConfigChannel &&
              event.getType() == Event::ConfigOptionChanged)
     {
-        const std::string option = event.getString("option");
+        const std::string &option = event.getString("option");
         if (option == "ScrollLaziness" || option == "ScrollRadius")
         {
             mScrollLaziness = config.getIntValue("ScrollLaziness");

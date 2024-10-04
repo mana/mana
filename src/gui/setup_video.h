@@ -58,11 +58,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         std::unique_ptr<ResolutionListModel> mResolutionListModel;
         std::unique_ptr<ScaleListModel> mScaleListModel;
 
-        //gcn::Label *scrollRadiusLabel;
-        //gcn::Label *scrollLazinessLabel;
-        gcn::Label *overlayDetailLabel;
-        gcn::Label *particleDetailLabel;
-
         gcn::DropDown *mWindowModeDropDown;
         gcn::DropDown *mResolutionDropDown;
         gcn::DropDown *mScaleDropDown;

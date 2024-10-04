@@ -61,8 +61,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
     mAwayListener = new AwayListener();
 
-    mUpdateName = true;
-
     setShowName(config.getValue("showownname", 1));
 
     listen(Event::ConfigChannel);
@@ -1033,7 +1031,6 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
         {
             setShowName(config.getValue("showownname", 1));
         }
-
     }
 
     Being::event(channel, event);
