@@ -7,6 +7,7 @@
 - Added support for reading most client-data settings from settings.xml
 - Added support for XML includes, both absolute and relative
 - Added support for map/layer mask
+- Added support for particle effects on equipment
 - Added online player list to Social window
 - Added notification sound on receiving whisper
 - Added default ports when connecting to a custom server
@@ -21,14 +22,17 @@
 - Added support for race-specific hair styles and per-character gender
 - Added support for the TMX tile animation format
 - Added support for bold font markup to BrowserBox
+- Added pointy hand mouse cursor, used when hovering links
 - Added error when trying to trade a non tradable item
 - Added --server-type / -y parameter
+- Use variable time logic update to better adjust to the framerate
 - Re-download updates when their checksum no longer matches
 - Enabled resizing windows from all sides
 - Enabled whispers in tabs by default
 - Made pickup notifications to appear as particle instead of text by default
 - Custom mouse cursor is now rendered by the system
 - Limit shop's Max button to available carry weight
+- Fixed slight stutter in being and player movement
 - Fixed performance issue in BrowserBox (especially update/news window)
 - Fixed handling of non-consecutive emote IDs
 - Fixed securing of names in files created by chat logger
