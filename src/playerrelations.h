@@ -56,7 +56,7 @@ struct PlayerRelation
         IGNORED     = 3
     };
 
-    PlayerRelation(Relation relation);
+    explicit PlayerRelation(Relation relation = NEUTRAL);
 
     Relation mRelation; // bitmask for all of the above
 };
@@ -158,11 +158,8 @@ public:
 
     /**
      * Retrieves all known player ignore strategies.
-     *
-     * The player ignore strategies are allocated statically and must not be
-     * deleted.
      */
-    std::vector<PlayerIgnoreStrategy *> *getPlayerIgnoreStrategies();
+    std::vector<PlayerIgnoreStrategy *> &getPlayerIgnoreStrategies();
 
     /**
      * Return the current player ignore strategy.
@@ -195,7 +192,7 @@ public:
      * Retrieves a sorted vector of all players for which we have any relations
      * recorded.
      */
-    std::vector<std::string> *getPlayers() const;
+    std::vector<std::string> getPlayers() const;
 
     /**
      * Removes all recorded player info.
@@ -231,7 +228,7 @@ private:
     unsigned int mDefaultPermissions;
 
     PlayerIgnoreStrategy *mIgnoreStrategy;
-    std::map<std::string, PlayerRelation *> mRelations;
+    std::map<std::string, PlayerRelation> mRelations;
     std::list<PlayerRelationsListener *> mListeners;
     std::vector<PlayerIgnoreStrategy *> mIgnoreStrategies;
 };

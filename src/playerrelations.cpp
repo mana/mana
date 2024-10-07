@@ -36,23 +36,21 @@
 #define RELATION "relation" // constant for xml serialisation
 
 // (De)serialisation class
-class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::string, PlayerRelation *>,
-                                                             std::map<std::string, PlayerRelation *> *>
+class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::string, PlayerRelation>,
+                                                             std::map<std::string, PlayerRelation> *>
 {
-    ConfigurationObject *writeConfigItem(std::pair<std::string, PlayerRelation *> value,
-                                                 ConfigurationObject *cobj) override
+    ConfigurationObject *writeConfigItem(std::pair<std::string, PlayerRelation> value,
+                                         ConfigurationObject *cobj) override
     {
-        if (!value.second)
-            return nullptr;
         cobj->setValue(NAME, value.first);
-        cobj->setValue(RELATION, toString(value.second->mRelation));
+        cobj->setValue(RELATION, toString(value.second.mRelation));
 
         return cobj;
     }
 
-    std::map<std::string, PlayerRelation *> *
+    std::map<std::string, PlayerRelation> *
     readConfigItem(ConfigurationObject *cobj,
-                   std::map<std::string, PlayerRelation *> *container) override
+                   std::map<std::string, PlayerRelation> *container) override
     {
         std::string name = cobj->getValue(NAME, "");
         if (name.empty())
@@ -62,7 +60,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
         if (it != (*container).end())
         {
             int v = (int)cobj->getValue(RELATION, PlayerRelation::NEUTRAL);
-            (*container)[name] = new PlayerRelation(static_cast<PlayerRelation::Relation>(v));
+            (*container)[name] = PlayerRelation(static_cast<PlayerRelation::Relation>(v));
         }
         // otherwise ignore the duplicate entry
 
@@ -94,19 +92,12 @@ PlayerRelationsManager::PlayerRelationsManager() :
 PlayerRelationsManager::~PlayerRelationsManager()
 {
     delete_all(mIgnoreStrategies);
-
-    for (auto &[_, relation] : mRelations)
-        delete relation;
 }
 
 void PlayerRelationsManager::clear()
 {
-    std::vector<std::string> *names = getPlayers();
-    for (const auto &name : *names)
-    {
+    for (const auto &name : getPlayers())
         removePlayer(name);
-    }
-    delete names;
 }
 
 #define PERSIST_IGNORE_LIST "persistent-player-list"
@@ -115,9 +106,9 @@ void PlayerRelationsManager::clear()
 
 int PlayerRelationsManager::getPlayerIgnoreStrategyIndex(const std::string &name)
 {
-    std::vector<PlayerIgnoreStrategy *> *strategies = getPlayerIgnoreStrategies();
-    for (unsigned int i = 0; i < strategies->size(); i++)
-        if ((*strategies)[i]->mShortName == name)
+    std::vector<PlayerIgnoreStrategy *> &strategies = getPlayerIgnoreStrategies();
+    for (unsigned int i = 0; i < strategies.size(); i++)
+        if (strategies[i]->mShortName == name)
             return i;
 
     return -1;
@@ -132,11 +123,11 @@ void PlayerRelationsManager::load()
     std::string ignore_strategy_name = config.getValue(PLAYER_IGNORE_STRATEGY, DEFAULT_IGNORE_STRATEGY);
     int ignore_strategy_index = getPlayerIgnoreStrategyIndex(ignore_strategy_name);
     if (ignore_strategy_index >= 0)
-        setPlayerIgnoreStrategy((*getPlayerIgnoreStrategies())[ignore_strategy_index]);
+        setPlayerIgnoreStrategy(getPlayerIgnoreStrategies()[ignore_strategy_index]);
 
-    config.getList<std::pair<std::string, PlayerRelation *>,
-                   std::map<std::string, PlayerRelation *> *>
-        ("player",  &(mRelations), &player_conf_serialiser);
+    config.getList<std::pair<std::string, PlayerRelation>,
+                   std::map<std::string, PlayerRelation> *>
+        ("player",  &mRelations, &player_conf_serialiser);
 }
 
 
@@ -150,9 +141,9 @@ void PlayerRelationsManager::init()
 
 void PlayerRelationsManager::store()
 {
-    config.setList<std::map<std::string, PlayerRelation *>::const_iterator,
-                   std::pair<std::string, PlayerRelation *>,
-                   std::map<std::string, PlayerRelation *> *>
+    config.setList<std::map<std::string, PlayerRelation>::const_iterator,
+                   std::pair<std::string, PlayerRelation>,
+                   std::map<std::string, PlayerRelation> *>
         ("player",
          mRelations.begin(), mRelations.end(),
          &player_conf_serialiser);
@@ -177,18 +168,16 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(
                                                   const std::string &playerName,
                                                   unsigned int flags)
 {
-    PlayerRelation *r = nullptr;
-
     auto it = mRelations.find(playerName);
-    if (it != mRelations.end())
-        r = it->second;
-    if (!r)
+    if (it == mRelations.end())
         return mDefaultPermissions & flags;
 
-    unsigned int permissions =
-        PlayerRelation::RELATION_PERMISSIONS[r->mRelation];
+    PlayerRelation &r = it->second;
 
-    switch (r->mRelation)
+    unsigned int permissions =
+        PlayerRelation::RELATION_PERMISSIONS[r.mRelation];
+
+    switch (r.mRelation)
     {
     case PlayerRelation::NEUTRAL:
         permissions = mDefaultPermissions;
@@ -236,29 +225,18 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
 void PlayerRelationsManager::setRelation(const std::string &playerName,
                                          PlayerRelation::Relation relation)
 {
-    PlayerRelation *r = nullptr;
-
-    auto it =
-        mRelations.find(playerName);
-    if (it != mRelations.end())
-        r = it->second;
-    if (!r)
-        mRelations[playerName] = new PlayerRelation(relation);
-    else
-        r->mRelation = relation;
-
+    mRelations[playerName] = PlayerRelation(relation);
     signalUpdate(playerName);
 }
 
-std::vector<std::string> *PlayerRelationsManager::getPlayers() const
+std::vector<std::string> PlayerRelationsManager::getPlayers() const
 {
-    auto *retval = new std::vector<std::string>();
+    std::vector<std::string> retval;
 
-    for (const auto &relation : mRelations)
-        if (relation.second)
-            retval->push_back(relation.first);
+    for (const auto &[name, _] : mRelations)
+        retval.push_back(name);
 
-    sort(retval->begin(), retval->end());
+    sort(retval.begin(), retval.end());
 
     return retval;
 }
@@ -268,10 +246,7 @@ void PlayerRelationsManager::removePlayer(const std::string &name)
     auto it = mRelations.find(name);
     if (it != mRelations.end())
     {
-        delete it->second;
-
         mRelations.erase(it);
-
         signalUpdate(name);
     }
 }
@@ -281,7 +256,7 @@ PlayerRelation::Relation PlayerRelationsManager::getRelation(const std::string &
 {
     auto it = mRelations.find(name);
     if (it != mRelations.end())
-        return it->second->mRelation;
+        return it->second.mRelation;
 
     return PlayerRelation::NEUTRAL;
 }
@@ -352,7 +327,7 @@ public:
     }
 };
 
-std::vector<PlayerIgnoreStrategy *> *
+std::vector<PlayerIgnoreStrategy *> &
 PlayerRelationsManager::getPlayerIgnoreStrategies()
 {
     if (mIgnoreStrategies.empty())
@@ -361,7 +336,7 @@ PlayerRelationsManager::getPlayerIgnoreStrategies()
         mIgnoreStrategies.push_back(new PIS_dotdotdot());
         mIgnoreStrategies.push_back(new PIS_blinkname());
     }
-    return &mIgnoreStrategies;
+    return mIgnoreStrategies;
 }
 
 

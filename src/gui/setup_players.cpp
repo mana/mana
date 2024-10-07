@@ -95,12 +95,11 @@ public:
     {
         freeWidgets();
         delete mListModel;
-        delete mPlayers;
     }
 
     int getRows() const override
     {
-        return mPlayers->size();
+        return mPlayers.size();
     }
 
     int getColumns() const override
@@ -127,11 +126,10 @@ public:
 
         freeWidgets();
 
-        delete mPlayers;
         mPlayers = player_relations.getPlayers();
 
         // set up widgets
-        for (const auto &name : *mPlayers)
+        for (const auto &name : mPlayers)
         {
             gcn::Widget *widget = new Label(name);
             mWidgets.push_back(widget);
@@ -161,20 +159,19 @@ public:
 
     virtual void freeWidgets()
     {
-        delete mPlayers;
-        mPlayers = nullptr;
+        mPlayers.clear();
 
         delete_all(mWidgets);
         mWidgets.clear();
     }
 
-    std::string getPlayerAt(int index) const
+    const std::string &getPlayerAt(int index) const
     {
-        return (*mPlayers)[index];
+        return mPlayers[index];
     }
 
 protected:
-    std::vector<std::string> *mPlayers = nullptr;
+    std::vector<std::string> mPlayers;
     std::vector<gcn::Widget *> mWidgets;
     PlayerRelationListModel *mListModel;
 };
@@ -189,7 +186,7 @@ public:
 
     int getNumberOfElements() override
     {
-        return player_relations.getPlayerIgnoreStrategies()->size();
+        return player_relations.getPlayerIgnoreStrategies().size();
     }
 
     std::string getElementAt(int i) override
@@ -197,7 +194,7 @@ public:
         if (i >= getNumberOfElements())
             return _("???");
 
-        return (*player_relations.getPlayerIgnoreStrategies())[i]->mDescription;
+        return player_relations.getPlayerIgnoreStrategies()[i]->mDescription;
     }
 };
 
@@ -308,9 +305,9 @@ void Setup_Players::reset()
     // options in player_relations instead of strategies to sidestep this.
     int selection = 0;
     for (unsigned int i = 0;
-                      i < player_relations.getPlayerIgnoreStrategies()->size();
+                      i < player_relations.getPlayerIgnoreStrategies().size();
                       ++i)
-        if ((*player_relations.getPlayerIgnoreStrategies())[i] ==
+        if (player_relations.getPlayerIgnoreStrategies()[i] ==
             player_relations.getPlayerIgnoreStrategy())
         {
 
@@ -375,19 +372,17 @@ void Setup_Players::action(const gcn::ActionEvent &event)
     else if (event.getId() == ACTION_DELETE)
     {
         int player_index = mPlayerTable->getSelectedRow();
-
         if (player_index < 0)
             return;
 
-        std::string name = mPlayerTableModel->getPlayerAt(player_index);
-
+        const std::string &name = mPlayerTableModel->getPlayerAt(player_index);
         player_relations.removePlayer(name);
 
     }
     else if (event.getId() == ACTION_STRATEGY)
     {
         PlayerIgnoreStrategy *s =
-            (*player_relations.getPlayerIgnoreStrategies())[
+            player_relations.getPlayerIgnoreStrategies()[
                 mIgnoreActionChoicesBox->getSelected()];
 
         player_relations.setPlayerIgnoreStrategy(s);
