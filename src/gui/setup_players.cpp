@@ -120,7 +120,7 @@ public:
             return RELATION_CHOICE_COLUMN_WIDTH;
     }
 
-    virtual void playerRelationsUpdated()
+    void playerRelationsUpdated()
     {
         signalBeforeUpdate();
 
@@ -303,18 +303,11 @@ void Setup_Players::reset()
     // We now have to search through the list of ignore choices to find the
     // current selection. We could use an index into the table of config
     // options in player_relations instead of strategies to sidestep this.
-    int selection = 0;
-    for (unsigned int i = 0;
-                      i < player_relations.getPlayerIgnoreStrategies().size();
-                      ++i)
-        if (player_relations.getPlayerIgnoreStrategies()[i] ==
-            player_relations.getPlayerIgnoreStrategy())
-        {
+    const auto &strategies = player_relations.getPlayerIgnoreStrategies();
+    auto i = std::find(strategies.begin(), strategies.end(),
+                       player_relations.getPlayerIgnoreStrategy());
 
-            selection = i;
-            break;
-        }
-
+    int selection = i == strategies.end() ? 0 : i - strategies.begin();
     mIgnoreActionChoicesBox->setSelected(selection);
 }
 
@@ -401,7 +394,7 @@ void Setup_Players::action(const gcn::ActionEvent &event)
     }
 }
 
-void Setup_Players::updatedPlayer(const std::string &name)
+void Setup_Players::playerRelationsUpdated()
 {
     mPlayerTableModel->playerRelationsUpdated();
     mDefaultTrading->setSelected(

@@ -53,7 +53,7 @@ class ConfigurationListManager
          * \return obj, or otherwise NULL to indicate that this option should
          *         be skipped
          */
-        virtual ConfigurationObject *writeConfigItem(T value,
+        virtual ConfigurationObject *writeConfigItem(const T &value,
                                                      ConfigurationObject *obj) = 0;
 
         /**
@@ -124,7 +124,7 @@ class ConfigurationObject
          */
         template <class IT, class T, class CONT>
         void setList(const std::string &name, IT begin, IT end,
-                     ConfigurationListManager<T, CONT> *manager)
+                     ConfigurationListManager<T, CONT> &manager)
         {
             auto *nextobj = new ConfigurationObject;
             std::list<ConfigurationObject *> &list = mContainerOptions[name];
@@ -132,7 +132,7 @@ class ConfigurationObject
 
             for (IT it = begin; it != end; it++)
             {
-                ConfigurationObject *wrobj = manager->writeConfigItem(*it, nextobj);
+                ConfigurationObject *wrobj = manager.writeConfigItem(*it, nextobj);
                 if (wrobj)
                 { // wrote something
                     assert (wrobj == nextobj);
@@ -160,12 +160,12 @@ class ConfigurationObject
         * \param manager An object capable of deserialising items into CONT
         */
         template<class T, class CONT>
-        CONT getList(const std::string &name, CONT empty, ConfigurationListManager<T, CONT> *manager)
+        CONT getList(const std::string &name, CONT empty, ConfigurationListManager<T, CONT> &manager)
         {
             CONT container = empty;
 
             for (auto obj : mContainerOptions[name])
-                container = manager->readConfigItem(obj, container);
+                container = manager.readConfigItem(obj, container);
 
             return container;
         }

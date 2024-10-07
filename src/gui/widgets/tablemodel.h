@@ -77,20 +77,19 @@ public:
      */
     virtual gcn::Widget *getElementAt(int row, int column) const = 0;
 
-    virtual void installListener(TableModelListener *listener);
-
-    virtual void removeListener(TableModelListener *listener);
+    void installListener(TableModelListener *listener);
+    void removeListener(TableModelListener *listener);
 
 protected:
     /**
      * Tells all listeners that the table is about to see an update
      */
-    virtual void signalBeforeUpdate();
+    void signalBeforeUpdate();
 
     /**
      * Tells all listeners that the table has seen an update
      */
-    virtual void signalAfterUpdate();
+    void signalAfterUpdate();
 
 private:
     std::set<TableModelListener *> listeners;

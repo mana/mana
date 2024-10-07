@@ -39,7 +39,7 @@
 class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::string, PlayerRelation>,
                                                              std::map<std::string, PlayerRelation> *>
 {
-    ConfigurationObject *writeConfigItem(std::pair<std::string, PlayerRelation> value,
+    ConfigurationObject *writeConfigItem(const std::pair<std::string, PlayerRelation> &value,
                                          ConfigurationObject *cobj) override
     {
         cobj->setValue(NAME, value.first);
@@ -68,8 +68,6 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
     }
 };
 
-static PlayerConfSerialiser player_conf_serialiser; // stateless singleton
-
 const unsigned int PlayerRelation::RELATION_PERMISSIONS[RELATIONS_NR] = {
     /* NEUTRAL */    0, // we always fall back to the defaults anyway
     /* FRIEND  */    EMOTE | SPEECH_FLOAT | SPEECH_LOG | WHISPER | TRADE,
@@ -82,13 +80,6 @@ PlayerRelation::PlayerRelation(Relation relation)
     mRelation = relation;
 }
 
-PlayerRelationsManager::PlayerRelationsManager() :
-    mPersistIgnores(false),
-    mDefaultPermissions(PlayerRelation::DEFAULT),
-    mIgnoreStrategy(nullptr)
-{
-}
-
 PlayerRelationsManager::~PlayerRelationsManager()
 {
     delete_all(mIgnoreStrategies);
@@ -96,8 +87,8 @@ PlayerRelationsManager::~PlayerRelationsManager()
 
 void PlayerRelationsManager::clear()
 {
-    for (const auto &name : getPlayers())
-        removePlayer(name);
+    mRelations.clear();
+    signalUpdate();
 }
 
 #define PERSIST_IGNORE_LIST "persistent-player-list"
@@ -125,9 +116,10 @@ void PlayerRelationsManager::load()
     if (ignore_strategy_index >= 0)
         setPlayerIgnoreStrategy(getPlayerIgnoreStrategies()[ignore_strategy_index]);
 
+    PlayerConfSerialiser player_conf_serialiser;
     config.getList<std::pair<std::string, PlayerRelation>,
                    std::map<std::string, PlayerRelation> *>
-        ("player",  &mRelations, &player_conf_serialiser);
+        ("player",  &mRelations, player_conf_serialiser);
 }
 
 
@@ -141,12 +133,13 @@ void PlayerRelationsManager::init()
 
 void PlayerRelationsManager::store()
 {
+    PlayerConfSerialiser player_conf_serialiser;
     config.setList<std::map<std::string, PlayerRelation>::const_iterator,
                    std::pair<std::string, PlayerRelation>,
                    std::map<std::string, PlayerRelation> *>
         ("player",
          mRelations.begin(), mRelations.end(),
-         &player_conf_serialiser);
+         player_conf_serialiser);
 
     config.setValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
     config.setValue(PERSIST_IGNORE_LIST, mPersistIgnores);
@@ -156,12 +149,12 @@ void PlayerRelationsManager::store()
     config.write();
 }
 
-void PlayerRelationsManager::signalUpdate(const std::string &name)
+void PlayerRelationsManager::signalUpdate()
 {
     store();
 
     for (auto listener : mListeners)
-        listener->updatedPlayer(name);
+        listener->playerRelationsUpdated();
 }
 
 unsigned int PlayerRelationsManager::checkPermissionSilently(
@@ -226,7 +219,7 @@ void PlayerRelationsManager::setRelation(const std::string &playerName,
                                          PlayerRelation::Relation relation)
 {
     mRelations[playerName] = PlayerRelation(relation);
-    signalUpdate(playerName);
+    signalUpdate();
 }
 
 std::vector<std::string> PlayerRelationsManager::getPlayers() const
@@ -247,7 +240,7 @@ void PlayerRelationsManager::removePlayer(const std::string &name)
     if (it != mRelations.end())
     {
         mRelations.erase(it);
-        signalUpdate(name);
+        signalUpdate();
     }
 }
 
@@ -272,9 +265,7 @@ unsigned int PlayerRelationsManager::getDefault() const
 void PlayerRelationsManager::setDefault(unsigned int permissions)
 {
     mDefaultPermissions = permissions;
-
-    store();
-    signalUpdate(std::string());
+    signalUpdate();
 }
 
 

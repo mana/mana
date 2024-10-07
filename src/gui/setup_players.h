@@ -48,7 +48,7 @@ public:
 
     void action(const gcn::ActionEvent &event) override;
 
-    void updatedPlayer(const std::string &name) override;
+    void playerRelationsUpdated() override;
 
 private:
     StaticTableModel *mPlayerTableTitleModel;

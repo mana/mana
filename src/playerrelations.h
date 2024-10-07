@@ -85,7 +85,7 @@ public:
     PlayerRelationsListener() = default;
     virtual ~PlayerRelationsListener() = default;
 
-    virtual void updatedPlayer(const std::string &name) = 0;
+    virtual void playerRelationsUpdated() = 0;
 };
 
 /**
@@ -96,7 +96,7 @@ public:
 class PlayerRelationsManager
 {
 public:
-    PlayerRelationsManager();
+    PlayerRelationsManager() = default;
     ~PlayerRelationsManager();
 
     /**
@@ -222,12 +222,12 @@ public:
     }
 
 private:
-    void signalUpdate(const std::string &name);
+    void signalUpdate();
 
-    bool mPersistIgnores; // If NOT set, we delete the ignored data upon reloading
-    unsigned int mDefaultPermissions;
+    bool mPersistIgnores = false; // If NOT set, we delete the ignored data upon reloading
+    unsigned int mDefaultPermissions = PlayerRelation::DEFAULT;
 
-    PlayerIgnoreStrategy *mIgnoreStrategy;
+    PlayerIgnoreStrategy *mIgnoreStrategy = nullptr;
     std::map<std::string, PlayerRelation> mRelations;
     std::list<PlayerRelationsListener *> mListeners;
     std::vector<PlayerIgnoreStrategy *> mIgnoreStrategies;
