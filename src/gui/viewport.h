@@ -209,6 +209,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
             float x;
             float y;
             float decay;
+            float age = 0.0f;
             Timer timer;
         };
         std::list<ShakeEffect> mShakeEffects;

@@ -136,25 +136,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
                         scrollFraction;
     }
 
-    // manage shake effect
-    for (auto i = mShakeEffects.begin(); i != mShakeEffects.end(); i++)
-    {
-        // The decay defines the reduction in amplitude per 10ms. Here
-        // we calculate the reduction based on the ticks.
-        const float decay = std::pow(i->decay, ticks);
-
-        // apply the effect to viewport
-        mPixelViewX += i->x *= -decay;
-        mPixelViewY += i->y *= -decay;
-
-        // check death conditions
-        if (std::abs(i->x) + std::abs(i->y) < 1.0f ||
-            (i->timer.isSet() && i->timer.passed()))
-        {
-            i = mShakeEffects.erase(i);
-        }
-    }
-
     // Auto center when player is off screen
     if (        player_x - mPixelViewX > graphics->getWidth() / 2
             ||  mPixelViewX - player_x > graphics->getWidth() / 2
@@ -193,25 +174,45 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
     }
 
+    int scrollX = static_cast<int>(mPixelViewX);
+    int scrollY = static_cast<int>(mPixelViewY);
+
+    // manage shake effect
+    for (auto i = mShakeEffects.begin(); i != mShakeEffects.end(); )
+    {
+        ShakeEffect &effect = *i;
+        effect.age += ticks;
+
+        // The decay defines the reduction in amplitude per 10ms. Here
+        // we calculate the strength left over based on the age in ticks.
+        const float strength = std::pow(effect.decay, effect.age);
+        const float phase = std::sin(effect.age);
+
+        // apply the effect to viewport
+        scrollX += strength * phase * effect.x;
+        scrollY += strength * phase * effect.y;
+
+        // check death conditions
+        if (strength < 0.01f || (effect.timer.isSet() && effect.timer.passed()))
+            i = mShakeEffects.erase(i);
+        else
+            ++i;
+    }
+
     // Draw tiles and sprites
-    mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
+    mMap->draw(graphics, scrollX, scrollY);
 
     if (mDebugFlags)
     {
         if (mDebugFlags & (Map::DEBUG_GRID | Map::DEBUG_COLLISION_TILES))
-        {
-            mMap->drawCollision(graphics, (int) mPixelViewX,
-                                (int) mPixelViewY, mDebugFlags);
-        }
+            mMap->drawCollision(graphics, scrollX, scrollY, mDebugFlags);
 
         _drawDebugPath(graphics);
     }
 
     // Draw text
     if (textManager)
-    {
-        textManager->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
-    }
+        textManager->draw(graphics, scrollX, scrollY);
 
     // Draw player names, speech, and emotion sprite as needed
     for (auto actor : actorSpriteManager->getAll())
@@ -220,7 +221,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             continue;
 
         auto *being = static_cast<Being*>(actor);
-        being->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
+        being->drawSpeech(scrollX, scrollY);
     }
 
     if (mDebugFlags & Map::DEBUG_BEING_IDS)
@@ -235,8 +236,8 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             const Vector &beingPos = being->getPosition();
             std::string idString = toString(being->getId());
             graphics->drawText(idString,
-                               beingPos.x - mPixelViewX,
-                               beingPos.y - mPixelViewY,
+                               beingPos.x - scrollX,
+                               beingPos.y - scrollY,
                                gcn::Graphics::CENTER);
         }
     }
