@@ -25,6 +25,8 @@
 
 #include "graphics.h"
 
+#include "utils/time.h"
+
 #include <guichan/color.hpp>
 
 class TextManager;
@@ -82,20 +84,12 @@ class Text
 class FlashText : public Text
 {
     public:
-        FlashText(const std::string &text, int x, int y,
-                  gcn::Graphics::Alignment alignment,
-                  const gcn::Color* color,
-                  gcn::Font *font = nullptr);
+        using Text::Text;
 
         /**
-         * Remove the text from the screen
+         * Flash the text for so many milliseconds.
          */
-        ~FlashText() override {}
-
-        /**
-         * Flash the text for so many refreshes.
-         */
-        void flash(int time) { mTime = time; }
+        void flash(int time) { mTimer.set(time); }
 
         /**
          * Draws the text.
@@ -103,7 +97,7 @@ class FlashText : public Text
         void draw(gcn::Graphics *graphics, int xOff, int yOff) override;
 
     private:
-        int mTime;             /**< Time left for flashing */
+        Timer mTimer;           /**< Time left for flashing */
 };
 
 #endif // TEXT_H

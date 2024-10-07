@@ -136,20 +136,21 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
             *mColor, mFont, !mIsSpeech, true);
 }
 
-FlashText::FlashText(const std::string &text, int x, int y,
-                     gcn::Graphics::Alignment alignment,
-                     const gcn::Color *color, gcn::Font *font) :
-    Text(text, x, y, alignment, color, false, font),
-    mTime(0)
-{
-}
 
 void FlashText::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
-    if (mTime)
+    if (mTimer.isSet())
     {
-        if ((--mTime & 4) == 0)
-            return;
+        if (!mTimer.passed())
+        {
+            if ((mTimer.elapsed() & 64) == 0)
+                return;
+        }
+        else
+        {
+            mTimer.reset();
+        }
     }
+
     Text::draw(graphics, xOff, yOff);
 }

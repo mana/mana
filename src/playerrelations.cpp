@@ -349,7 +349,7 @@ public:
 
     void ignore(Being *being, unsigned int flags) override
     {
-        being->flashName(200);
+        being->flashName(1500);
     }
 };
 
