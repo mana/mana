@@ -66,8 +66,6 @@ public:
 
     int getNumberOfLayers() const;
 
-    virtual bool drawnWhenBehind() const;
-
     int getDuration() const final;
 
     size_t size() const

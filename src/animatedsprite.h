@@ -73,9 +73,6 @@ class AnimatedSprite final : public Sprite
 
         bool setDirection(SpriteDirection direction) override;
 
-        virtual bool drawnWhenBehind() const
-        { return true; }
-
         int getDuration() const override;
 
     private:

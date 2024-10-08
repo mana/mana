@@ -270,13 +270,7 @@ class Being : public ActorSprite, public EventListener
         void setSpriteColor(unsigned slot,
                             const std::string &color = std::string());
 
-        /**
-         * Get the number of layers used to draw the being
-         */
-        int getNumberOfLayers() const override;
-
-        bool drawnWhenBehind() const override
-        { return CompoundSprite::drawnWhenBehind(); }
+        bool drawnWhenBehind() const override;
 
         /**
          * Performs being logic.

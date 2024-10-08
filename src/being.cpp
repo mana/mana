@@ -1148,9 +1148,10 @@ void Being::setSpriteColor(unsigned slot, const std::string &color)
     setSprite(slot, mSpriteStates[slot].id, color);
 }
 
-int Being::getNumberOfLayers() const
+bool Being::drawnWhenBehind() const
 {
-    return CompoundSprite::getNumberOfLayers();
+    // For now, just draw actors with only one layer when obscured
+    return CompoundSprite::getNumberOfLayers() == 1;
 }
 
 void Being::updateName()

@@ -296,11 +296,6 @@ void Map::addTileset(Tileset *tileset)
         mMaxTileWidth = tileset->getWidth();
 }
 
-bool actorCompare(const Actor *a, const Actor *b)
-{
-    return a->getDrawOrder() < b->getDrawOrder();
-}
-
 void Map::update(int dt)
 {
     // Update animated tiles
@@ -322,7 +317,9 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 
     // Make sure actors are sorted ascending by Y-coordinate
     // so that they overlap correctly
-    mActors.sort(actorCompare);
+    mActors.sort([] (const Actor *a, const Actor *b) {
+        return a->getDrawOrder() < b->getDrawOrder();
+    });
 
     // update scrolling of all ambient layers
     updateAmbientLayers(scrollX, scrollY);

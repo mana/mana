@@ -141,12 +141,6 @@ int CompoundSprite::getNumberOfLayers() const
     return size();
 }
 
-bool CompoundSprite::drawnWhenBehind() const
-{
-    // For now, just draw actors with only one layer when obscured
-    return getNumberOfLayers() == 1;
-}
-
 void CompoundSprite::addSprite(Sprite *sprite)
 {
     mSprites.push_back(sprite);

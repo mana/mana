@@ -91,7 +91,7 @@ class Particle : public Actor
         bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
         /**
-         * Do not draw particles when beind other objects
+         * Do not draw particles when behind other objects.
          */
         bool drawnWhenBehind() const override
         { return false; }
@@ -247,10 +247,6 @@ class Particle : public Actor
          */
         void disableAutoDelete()
         { mAutoDelete = false; }
-
-        /** We consider particles (at least for now) to be one layer-sprites */
-        int getNumberOfLayers() const override
-        { return 1; }
 
         float getAlpha() const override
         { return 1.0f; }

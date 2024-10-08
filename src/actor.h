@@ -110,12 +110,6 @@ public:
     virtual int getTileY() const;
 
     /**
-     * Returns the number of Image layers used to draw the actor.
-     */
-    virtual int getNumberOfLayers() const
-    { return 0; }
-
-    /**
      * Returns the current alpha value used to draw the actor.
      */
     virtual float getAlpha() const = 0;
