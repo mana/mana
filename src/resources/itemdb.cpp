@@ -137,11 +137,11 @@ void ItemDB::loadSoundRef(ItemInfo &itemInfo, xmlNodePtr node)
 
     if (event == "hit")
     {
-        itemInfo.addSound(EQUIP_EVENT_HIT, filename);
+        itemInfo.addSound(EquipmentSoundEvent::HIT, filename);
     }
-    else if (event == "strike")
+    else if (event == "strike" || event == "miss")
     {
-        itemInfo.addSound(EQUIP_EVENT_STRIKE, filename);
+        itemInfo.addSound(EquipmentSoundEvent::STRIKE, filename);
     }
     else
     {

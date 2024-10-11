@@ -30,10 +30,10 @@
 #include <string>
 #include <vector>
 
-enum EquipmentSoundEvent
+enum class EquipmentSoundEvent
 {
-    EQUIP_EVENT_STRIKE,
-    EQUIP_EVENT_HIT
+    STRIKE,
+    HIT
 };
 
 /**

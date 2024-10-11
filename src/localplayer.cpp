@@ -837,17 +837,6 @@ void LocalPlayer::attack(Being *target, bool keep)
 
     setAction(ATTACK);
 
-    if (mEquippedWeapon)
-    {
-        std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);
-        if (!soundFile.empty())
-            sound.playSfx(soundFile);
-    }
-    else
-    {
-        sound.playSfx(paths.getValue("attackSfxFile", "fist-swish.ogg"));
-    }
-
     Net::getPlayerHandler()->attack(target->getId());
 }
 

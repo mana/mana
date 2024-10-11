@@ -416,17 +416,34 @@ void Being::handleAttack(Being *victim, int damage, int attackId)
         setAction(Being::ATTACK, attackId);
 
     if (victim)
+    {
         lookAt(victim->getPosition());
 
-    if (getType() == PLAYER && victim && mEquippedWeapon)
-        fireMissile(victim, mEquippedWeapon->missileParticleFile);
-    else
-        fireMissile(victim,
-                    mInfo->getAttack(attackId).missileParticleFilename);
+        if (getType() == PLAYER && mEquippedWeapon)
+            fireMissile(victim, mEquippedWeapon->missileParticleFile);
+        else
+            fireMissile(victim, mInfo->getAttack(attackId).missileParticleFilename);
+    }
 
-    sound.playSfx(mInfo->getSound((damage > 0) ?
-                  SoundEvent::HIT : SoundEvent::MISS),
-                  getPixelX(), getPixelY());
+    if (getType() == PLAYER)
+    {
+        auto itemInfo = mEquippedWeapon;
+
+        // Fall back to racesprite item
+        if (!itemInfo)
+            itemInfo = &itemDb->get(-100 - mSubType);
+
+        const auto event = damage > 0 ? EquipmentSoundEvent::HIT
+                                      : EquipmentSoundEvent::STRIKE;
+        const auto &soundFile = itemInfo->getSound(event);
+        sound.playSfx(soundFile, getPixelX(), getPixelY());
+    }
+    else
+    {
+        const auto event = damage > 0 ? SoundEvent::HIT : SoundEvent::MISS;
+        const auto &soundFile = mInfo->getSound(event);
+        sound.playSfx(soundFile, getPixelX(), getPixelY());
+    }
 }
 
 void Being::setName(const std::string &name)

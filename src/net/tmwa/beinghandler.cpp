@@ -360,23 +360,19 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 case Being::FLEE: // Lucky Dodge
                     if (dstBeing)
                         dstBeing->takeDamage(srcBeing, param1,
-                                (Being::AttackType)type);
+                                static_cast<Being::AttackType>(type));
                     if (srcBeing)
                         srcBeing->handleAttack(dstBeing, param1);
                     break;
 
                 case 0x02: // Sit
                     if (srcBeing)
-                    {
                         srcBeing->setAction(Being::SIT);
-                    }
                     break;
 
                 case 0x03: // Stand up
                     if (srcBeing)
-                    {
                         srcBeing->setAction(Being::STAND);
-                    }
                     break;
             }
             break;
