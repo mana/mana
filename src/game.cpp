@@ -86,7 +86,6 @@
 
 #include <fstream>
 #include <sstream>
-#include <string>
 
 Joystick *joystick;
 
@@ -286,10 +285,17 @@ static bool saveScreenshot()
         actorSpriteManager->updatePlayerNames();
     }
 
+    if (!screenshot)
+    {
+        SERVER_NOTICE(_("Could not take screenshot!"))
+        logger->log("Error: could not take screenshot.");
+        return false;
+    }
+
     // Search for an unused screenshot name
-    std::stringstream filenameSuffix;
-    std::stringstream filename;
-    std::fstream testExists;
+    std::ostringstream filenameSuffix;
+    std::ostringstream filename;
+    std::ifstream testExists;
     std::string screenshotDirectory = Client::getScreenshotDirectory();
     bool found = false;
 
@@ -305,12 +311,11 @@ static bool saveScreenshot()
     {
         screenshotCount++;
         filenameSuffix.str(std::string());
-        filename.str(std::string());
-        filename << screenshotDirectory << "/";
         filenameSuffix << branding.getValue("appShort", "Mana")
                        << "_Screenshot_" << screenshotCount << ".png";
-        filename << filenameSuffix.str();
-        testExists.open(filename.str().c_str(), std::ios::in);
+        filename.str(std::string());
+        filename << screenshotDirectory << "/" << filenameSuffix.str();
+        testExists.open(filename.str());
         found = !testExists.is_open();
         testExists.close();
     }
@@ -320,7 +325,7 @@ static bool saveScreenshot()
 
     if (success)
     {
-        std::stringstream chatlogentry;
+        std::ostringstream chatlogentry;
         // TODO: Make it one complete gettext string below
         chatlogentry << _("Screenshot saved as ") << filenameSuffix.str();
         SERVER_NOTICE(chatlogentry.str())

@@ -236,13 +236,21 @@ SDL_Surface *SDLGraphics::getScreenshot()
 #endif
     int amask = 0x00000000;
 
-    SDL_Surface *screenshot = SDL_CreateRGBSurface(0, mWidth,
-            mHeight, 24, rmask, gmask, bmask, amask);
+    int width, height;
+    if (SDL_GetRendererOutputSize(mRenderer, &width, &height) != 0)
+        return nullptr;
 
-    SDL_RenderReadPixels(mRenderer, nullptr,
-                         screenshot->format->format,
-                         screenshot->pixels,
-                         screenshot->pitch);
+    SDL_Surface *screenshot = SDL_CreateRGBSurface(0, width, height, 24,
+                                                   rmask, gmask, bmask, amask);
+
+    if (SDL_RenderReadPixels(mRenderer, nullptr,
+                             screenshot->format->format,
+                             screenshot->pixels,
+                             screenshot->pitch) != 0)
+    {
+        SDL_FreeSurface(screenshot);
+        screenshot = nullptr;
+    }
 
     return screenshot;
 }
