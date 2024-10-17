@@ -27,51 +27,37 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/shortcutcontainer.h"
 
-static const int SCROLL_PADDING = 0;
-
-int ShortcutWindow::mBoxesWidth = 0;
+static constexpr int GRAB_MARGIN = 4;
 
 ShortcutWindow::ShortcutWindow(const std::string &title,
                                ShortcutContainer *content)
 {
     setWindowName(title);
-    // no title presented, title bar is padding so window can be moved.
-    gcn::Window::setTitleBarHeight(gcn::Window::getPadding());
+    // no title presented, title bar gets some extra space so window can be moved.
+    setTitleBarHeight(getPadding() + GRAB_MARGIN);
     setShowTitle(false);
     setResizable(true);
     setDefaultVisible(false);
     setSaveVisible(true);
     setupWindow->registerWindowForReset(this);
 
-    mItems = content;
+    const int border = getPadding() * 2;
+    setMinWidth(content->getBoxWidth() + border);
+    setMinHeight(content->getBoxHeight() + border + GRAB_MARGIN);
+    setMaxWidth(content->getBoxWidth() * content->getMaxItems() + border);
+    setMaxHeight(content->getBoxHeight() * content->getMaxItems() + border + GRAB_MARGIN);
 
-    const int border = SCROLL_PADDING * 2 + getPadding() * 2;
-    setMinWidth(mItems->getBoxWidth() + border);
-    setMinHeight(mItems->getBoxHeight() + border);
-    setMaxWidth(mItems->getBoxWidth() * mItems->getMaxItems() + border);
-    setMaxHeight(mItems->getBoxHeight() * mItems->getMaxItems() + border);
+    setDefaultSize(getMinWidth(), getMaxHeight(), ImageRect::LOWER_RIGHT);
 
-    setDefaultSize(mItems->getBoxWidth() + border, mItems->getBoxHeight() *
-                   mItems->getMaxItems() + border, ImageRect::LOWER_RIGHT,
-                   mBoxesWidth, 0);
+    auto scrollArea = new ScrollArea(content);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    scrollArea->setOpaque(false);
 
-    mBoxesWidth += mItems->getBoxWidth() + border;
-
-    mScrollArea = new ScrollArea(mItems);
-    mScrollArea->setPosition(SCROLL_PADDING, SCROLL_PADDING);
-    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mScrollArea->setOpaque(false);
-
-    place(0, 0, mScrollArea, 5, 5).setPadding(0);
+    place(0, 0, scrollArea, 5, 5).setPadding(0);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
     layout.setMargin(0);
 
     loadWindowState();
-}
-
-ShortcutWindow::~ShortcutWindow()
-{
-    delete mItems;
 }

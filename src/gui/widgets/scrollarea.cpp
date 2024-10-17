@@ -50,7 +50,6 @@ ScrollArea::ScrollArea(gcn::Widget *widget):
 
 ScrollArea::~ScrollArea()
 {
-    // Garbage collection
     delete getContent();
 
     instances--;

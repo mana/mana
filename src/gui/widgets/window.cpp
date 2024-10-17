@@ -604,44 +604,38 @@ void Window::setDefaultSize(int defaultWidth, int defaultHeight,
     int x = 0;
     int y = 0;
 
-    if (position == ImageRect::UPPER_LEFT)
+    switch (position)
     {
-    }
-    else if (position == ImageRect::UPPER_CENTER)
-    {
+    case ImageRect::UPPER_LEFT:
+        break;
+    case ImageRect::UPPER_CENTER:
         x = (graphics->getWidth() - defaultWidth) / 2;
-    }
-    else if (position == ImageRect::UPPER_RIGHT)
-    {
+        break;
+    case ImageRect::UPPER_RIGHT:
         x = graphics->getWidth() - defaultWidth;
-    }
-    else if (position == ImageRect::LEFT)
-    {
+        break;
+    case ImageRect::LEFT:
         y = (graphics->getHeight() - defaultHeight) / 2;
-    }
-    else if (position == ImageRect::CENTER)
-    {
+        break;
+    case ImageRect::CENTER:
         x = (graphics->getWidth() - defaultWidth) / 2;
         y = (graphics->getHeight() - defaultHeight) / 2;
-    }
-    else if (position == ImageRect::RIGHT)
-    {
+        break;
+    case ImageRect::RIGHT:
         x = graphics->getWidth() - defaultWidth;
         y = (graphics->getHeight() - defaultHeight) / 2;
-    }
-    else if (position == ImageRect::LOWER_LEFT)
-    {
+        break;
+    case ImageRect::LOWER_LEFT:
         y = graphics->getHeight() - defaultHeight;
-    }
-    else if (position == ImageRect::LOWER_CENTER)
-    {
+        break;
+    case ImageRect::LOWER_CENTER:
         x = (graphics->getWidth() - defaultWidth) / 2;
         y = graphics->getHeight() - defaultHeight;
-    }
-    else if (position == ImageRect::LOWER_RIGHT)
-    {
+        break;
+    case ImageRect::LOWER_RIGHT:
         x = graphics->getWidth() - defaultWidth;
         y = graphics->getHeight() - defaultHeight;
+        break;
     }
 
     mDefaultX = x - offsetX;

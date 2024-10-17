@@ -40,8 +40,6 @@ class ShortcutContainer : public gcn::Widget,
     public:
         ShortcutContainer();
 
-        ~ShortcutContainer() override {}
-
         /**
          * Draws the shortcuts
          */
@@ -52,21 +50,6 @@ class ShortcutContainer : public gcn::Widget,
          * the new height of the container.
          */
         void widgetResized(const gcn::Event &event) override;
-
-        /**
-         * Handles mouse when dragged.
-         */
-        void mouseDragged(gcn::MouseEvent &event) override = 0;
-
-        /**
-         * Handles mouse when pressed.
-         */
-        void mousePressed(gcn::MouseEvent &event) override = 0;
-
-        /**
-         * Handles mouse release.
-         */
-        void mouseReleased(gcn::MouseEvent &event) override = 0;
 
         int getMaxItems() const
         { return mMaxItems; }

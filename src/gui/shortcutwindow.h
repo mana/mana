@@ -24,7 +24,6 @@
 
 #include "gui/widgets/window.h"
 
-class ScrollArea;
 class ShortcutContainer;
 
 /**
@@ -36,16 +35,6 @@ class ShortcutWindow : public Window
 {
     public:
         ShortcutWindow(const std::string &title, ShortcutContainer *content);
-
-        ~ShortcutWindow() override;
-
-    private:
-        ShortcutWindow();
-        ShortcutContainer *mItems;
-
-        ScrollArea *mScrollArea;
-
-        static int mBoxesWidth;
 };
 
 extern ShortcutWindow *itemShortcutWindow;
