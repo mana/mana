@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-08 16:46+0100\n"
-"PO-Revision-Date: 2010-02-18 14:01+0000\n"
-"Last-Translator: Gabriel Rota <gabriel.rota@gmail.com>\n"
-"Language-Team: Italian\n"
-"Language: \n"
+"PO-Revision-Date: 2024-10-22 11:12+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/mana/mana/it/>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.8-rc\n"
 "X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../src/main.cpp:45
 msgid "              to the mana client."
@@ -1152,7 +1152,7 @@ msgstr "Connessione al server della mappa..."
 
 #: ../src/gui/updaterwindow.cpp:149
 msgid "Connecting..."
-msgstr "Connessione..."
+msgstr "Connessione…"
 
 #: ../src/net/tmwa/network.cpp:405
 #, fuzzy

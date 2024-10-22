@@ -8,16 +8,17 @@ msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-08 16:46+0100\n"
-"PO-Revision-Date: 2010-03-04 21:01+0000\n"
-"Last-Translator: issyl0 <isabell121@gmail.com>\n"
-"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2024-10-22 11:12+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Language-Team: English (United Kingdom) <https://hosted.weblate.org/projects/"
+"mana/mana/en_GB/>\n"
+"Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.8-rc\n"
 "X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../src/main.cpp:45
 msgid "              to the mana client."
@@ -1145,12 +1146,12 @@ msgstr "Connecting to map server..."
 
 #: ../src/gui/updaterwindow.cpp:149
 msgid "Connecting..."
-msgstr "Connecting..."
+msgstr "Connecting…"
 
 #: ../src/net/tmwa/network.cpp:405
 #, fuzzy
 msgid "Connection to server terminated. "
-msgstr "Connecting to map server..."
+msgstr "Connecting to map server…"
 
 #: ../src/keyboardconfig.cpp:84
 msgid "Copy Outfit"
