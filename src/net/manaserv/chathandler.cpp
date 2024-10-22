@@ -150,7 +150,7 @@ void ChatHandler::handleGameChatMessage(MessageIn &msg)
 
     if (id == 0)
     {
-        SERVER_NOTICE(chatMsg)
+        serverNotice(chatMsg);
         return;
     }
 
@@ -208,13 +208,13 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
     }
     else
     {
-        SERVER_NOTICE(_("Error joining channel."))
+        serverNotice(_("Error joining channel."));
     }
 }
 
 void ChatHandler::handleListChannelsResponse(MessageIn &msg)
 {
-    SERVER_NOTICE(_("Listing channels."))
+    serverNotice(_("Listing channels."));
     while (msg.getUnreadLength())
     {
         std::string channelName = msg.readString();
@@ -224,9 +224,9 @@ void ChatHandler::handleListChannelsResponse(MessageIn &msg)
         numUsers << msg.readInt16();
         channelName += " - ";
         channelName += numUsers.str();
-        SERVER_NOTICE(channelName)
+        serverNotice(channelName);
     }
-    SERVER_NOTICE(_("End of channel list."))
+    serverNotice(_("End of channel list."));
 }
 
 void ChatHandler::handlePrivateMessage(MessageIn &msg)
@@ -355,16 +355,13 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
 
 void ChatHandler::handleWhoResponse(MessageIn &msg)
 {
-    std::string userNick;
-
     while (msg.getUnreadLength())
     {
-        userNick = msg.readString();
+        std::string userNick = msg.readString();
         if (userNick.empty())
-        {
             break;
-        }
-        SERVER_NOTICE(userNick)
+
+        serverNotice(userNick);
     }
 }
 

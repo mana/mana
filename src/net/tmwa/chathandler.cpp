@@ -139,7 +139,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             }
             else
             {
-                SERVER_NOTICE(chatMsg)
+                serverNotice(chatMsg);
             }
 
             break;
@@ -253,7 +253,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
             msg.readInt8();     // message type
 
-            SERVER_NOTICE(msg.readString(chatMsgLength))
+            serverNotice(msg.readString(chatMsgLength));
             break;
         }
 
@@ -322,43 +322,43 @@ void ChatHandler::privateMessage(const std::string &recipient,
 
 void ChatHandler::channelList()
 {
-    SERVER_NOTICE(_("Channels are not supported!"))
+    serverNotice(_("Channels are not supported!"));
 }
 
 void ChatHandler::enterChannel(const std::string &channel,
                                const std::string &password)
 {
-    SERVER_NOTICE(_("Channels are not supported!"))
+    serverNotice(_("Channels are not supported!"));
 }
 
 void ChatHandler::quitChannel(int channelId)
 {
-    SERVER_NOTICE(_("Channels are not supported!"))
+    serverNotice(_("Channels are not supported!"));
 }
 
 void ChatHandler::sendToChannel(int channelId, const std::string &text)
 {
-    SERVER_NOTICE(_("Channels are not supported!"))
+    serverNotice(_("Channels are not supported!"));
 }
 
 void ChatHandler::userList(const std::string &channel)
 {
-    SERVER_NOTICE(_("Channels are not supported!"))
+    serverNotice(_("Channels are not supported!"));
 }
 
 void ChatHandler::setChannelTopic(int channelId, const std::string &text)
 {
-    SERVER_NOTICE(_("Channels are not supported!"))
+    serverNotice(_("Channels are not supported!"));
 }
 
 void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
 {
-    SERVER_NOTICE(_("Channels are not supported!"))
+    serverNotice(_("Channels are not supported!"));
 }
 
 void ChatHandler::kickUser(int channelId, const std::string &name)
 {
-    SERVER_NOTICE(_("Channels are not supported!"))
+    serverNotice(_("Channels are not supported!"));
 }
 
 void ChatHandler::requestOnlineList()

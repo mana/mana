@@ -274,7 +274,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
             if (msg.readInt8() == 0)
             {
-                SERVER_NOTICE(_("Failed to use item."))
+                serverNotice(_("Failed to use item."));
             }
             else
             {
@@ -386,7 +386,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             flag = msg.readInt8();
 
             if (!flag)
-                SERVER_NOTICE(_("Unable to equip."))
+                serverNotice(_("Unable to equip."));
             else
                 mEquips.setEquipment(getSlot(equipType), index);
             break;
@@ -398,7 +398,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
             if (!flag)
             {
-                SERVER_NOTICE(_("Unable to unequip."))
+                serverNotice(_("Unable to unequip."));
             }
             else
             {

@@ -123,35 +123,37 @@ void TradeHandler::handleMessage(MessageIn &msg)
             switch (msg.readInt8())
             {
                 case 0: // Too far away
-                    SERVER_NOTICE(_("Trading isn't possible. Trade "
-                            "partner is too far away."))
+                    serverNotice(_("Trading isn't possible. Trade "
+                                   "partner is too far away."));
                     break;
                 case 1: // Character doesn't exist
-                    SERVER_NOTICE(_("Trading isn't possible. Character "
-                            "doesn't exist."))
+                    serverNotice(_("Trading isn't possible. Character "
+                                   "doesn't exist."));
                     break;
                 case 2: // Invite request check failed...
-                    SERVER_NOTICE(_("Trade cancelled due to an unknown "
-                            "reason."))
+                    serverNotice(_("Trade cancelled due to an unknown "
+                                   "reason."));
                     break;
                 case 3: // Trade accepted
                     tradeWindow->reset();
                     tradeWindow->setCaption(strprintf(_("Trade: You and %s"),
-                            tradePartnerName.c_str()));
+                                                      tradePartnerName.c_str()));
                     tradeWindow->setVisible(true);
                     break;
                 case 4: // Trade cancelled
                     if (player_relations.hasPermission(tradePartnerName,
                                                        PlayerRelation::SPEECH_LOG))
-                        SERVER_NOTICE(strprintf(_("Trade with %s cancelled."),
-                                      tradePartnerName.c_str()))
+                    {
+                        serverNotice(strprintf(_("Trade with %s cancelled."),
+                                               tradePartnerName.c_str()));
+                    }
                     // otherwise ignore silently
 
                     tradeWindow->setVisible(false);
                     mTrading = false;
                     break;
                 default: // Shouldn't happen as well, but to be sure
-                    SERVER_NOTICE(_("Unhandled trade cancel packet."))
+                    serverNotice(_("Unhandled trade cancel packet."));
                     break;
             }
             break;
@@ -199,22 +201,22 @@ void TradeHandler::handleMessage(MessageIn &msg)
                         break;
                     case 1:
                         // Add item failed - player overweighted
-                        SERVER_NOTICE(_("Failed adding item. Trade "
-                                "partner is over weighted."))
+                        serverNotice(_("Failed adding item. "
+                                       "Trade partner is over weighted."));
                         break;
                     case 2:
-                         // Add item failed - player has no free slot
-                         SERVER_NOTICE(_("Failed adding item. Trade "
-                                 "partner has no free slot."))
-                         break;
+                        // Add item failed - player has no free slot
+                        serverNotice(_("Failed adding item. "
+                                       "Trade partner has no free slot."));
+                        break;
                     case 3:
-                         // Add item failed - non tradable item
-                         SERVER_NOTICE(_("Failed adding item. You "
-                                 "cant trade this item."))
-                         break;
+                        // Add item failed - non tradable item
+                        serverNotice(_("Failed adding item. "
+                                       "You can't trade this item."));
+                        break;
                     default:
-                        SERVER_NOTICE(_("Failed adding item for "
-                                "unknown reason."))
+                        serverNotice(_("Failed adding item for unknown "
+                                       "reason."));
                         break;
                 }
             }
@@ -226,14 +228,14 @@ void TradeHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_TRADE_CANCEL:
-            SERVER_NOTICE(_("Trade canceled."))
+            serverNotice(_("Trade canceled."));
             tradeWindow->setVisible(false);
             tradeWindow->reset();
             mTrading = false;
             break;
 
         case SMSG_TRADE_COMPLETE:
-            SERVER_NOTICE(_("Trade completed."))
+            serverNotice(_("Trade completed."));
             tradeWindow->setVisible(false);
             tradeWindow->reset();
             mTrading = false;

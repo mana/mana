@@ -202,19 +202,19 @@ void SpecialHandler::handleMessage(MessageIn &msg)
             {
                 switch (skillId)
                 {
-                    case SKILL_WARP :
+                    case SKILL_WARP:
                         msg = _("Warp failed...");
                         break;
-                    case SKILL_STEAL :
+                    case SKILL_STEAL:
                         msg = _("Could not steal anything...");
                         break;
-                    case SKILL_ENVENOM :
+                    case SKILL_ENVENOM:
                         msg = _("Poison had no effect...");
                         break;
                 }
             }
 
-            SERVER_NOTICE(msg)
+            serverNotice(msg);
             break;
     }
 }

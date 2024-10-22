@@ -287,7 +287,7 @@ static bool saveScreenshot()
 
     if (!screenshot)
     {
-        SERVER_NOTICE(_("Could not take screenshot!"))
+        serverNotice(_("Could not take screenshot!"));
         logger->log("Error: could not take screenshot.");
         return false;
     }
@@ -325,11 +325,12 @@ static bool saveScreenshot()
 
     if (success)
     {
-        SERVER_NOTICE(strprintf(_("Screenshot saved as %s"), filenameSuffix.str().c_str()))
+        serverNotice(strprintf(_("Screenshot saved as %s"),
+                               filenameSuffix.str().c_str()));
     }
     else
     {
-        SERVER_NOTICE(_("Saving screenshot failed!"))
+        serverNotice(_("Saving screenshot failed!"));
         logger->log("Error: could not save screenshot.");
     }
 
@@ -704,12 +705,12 @@ void Game::handleInput()
                         unsigned int deflt = player_relations.getDefault();
                         if (deflt & PlayerRelation::TRADE)
                         {
-                            SERVER_NOTICE(_("Ignoring incoming trade requests"))
+                            serverNotice(_("Ignoring incoming trade requests"));
                             deflt &= ~PlayerRelation::TRADE;
                         }
                         else
                         {
-                            SERVER_NOTICE(_("Accepting incoming trade requests"))
+                            serverNotice(_("Accepting incoming trade requests"));
                             deflt |= PlayerRelation::TRADE;
                         }
 

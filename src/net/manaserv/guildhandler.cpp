@@ -77,12 +77,12 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge guild was created
-                SERVER_NOTICE(_("Guild created."))
+                serverNotice(_("Guild created."));
                 joinedGuild(msg);
             }
             else
             {
-                SERVER_NOTICE(_("Error creating guild."))
+                serverNotice(_("Error creating guild."));
             }
         } break;
 
@@ -93,19 +93,19 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if (response == ERRMSG_OK)
             {
                 // TODO - Acknowledge invite was sent
-                SERVER_NOTICE(_("Invite sent."))
+                serverNotice(_("Invite sent."));
             }
             else if (response == ERRMSG_ALREADY_MEMBER)
             {
-                SERVER_NOTICE(_("Invited player is already in that guild."));
+                serverNotice(_("Invited player is already in that guild."));
             }
             else if (response == ERRMSG_LIMIT_REACHED)
             {
-                SERVER_NOTICE(_("Invited player can't join another guild."));
+                serverNotice(_("Invited player can't join another guild."));
             }
             else // any other failure
             {
-                SERVER_NOTICE(_("Invite failed."));
+                serverNotice(_("Invite failed."));
             }
         } break;
 
@@ -212,12 +212,12 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // promotion succeeded
-                SERVER_NOTICE(_("Member was promoted successfully."))
+                serverNotice(_("Member was promoted successfully."));
             }
             else
             {
                 // promotion failed
-                SERVER_NOTICE(_("Failed to promote member."))
+                serverNotice(_("Failed to promote member."));
             }
         }
 
@@ -256,9 +256,8 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 Channel *channel = channelManager->findByName(guild->getName());
                 channelManager->removeChannel(channel);
                 local_player->removeGuild(guildId);
-                SERVER_NOTICE(strprintf(
-                                  _("Player %s kicked you out of guild %s"),
-                                  player.c_str(), guild->getName().c_str()));
+                serverNotice(strprintf(_("Player %s kicked you out of guild %s."),
+                                       player.c_str(), guild->getName().c_str()));
             }
         } break;
     }

@@ -60,7 +60,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
 void GuildHandler::create(const std::string &name)
 {
-    SERVER_NOTICE(_("Guild creation isn't supported."))
+    serverNotice(_("Guild creation isn't supported."));
 }
 
 void GuildHandler::invite(int guildId, const std::string &name)

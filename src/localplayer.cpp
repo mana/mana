@@ -872,7 +872,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
         }
         if (config.getValue("showpickupchat", 1))
         {
-            SERVER_NOTICE(_(msg))
+            serverNotice(_(msg));
         }
         if (mMap && config.getBoolValue("showpickupparticle"))
         {
@@ -886,10 +886,10 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
         {
             // TRANSLATORS: This sentence may be translated differently
             // for different grammatical numbers (singular, plural, ...)
-            SERVER_NOTICE(strprintf(ngettext("You picked up %d [@@%d|%s@@].",
-                                             "You picked up %d [@@%d|%s@@].",
-                                             amount),
-                                    amount, itemInfo.id, itemInfo.name.c_str()))
+            serverNotice(strprintf(ngettext("You picked up %d [@@%d|%s@@].",
+                                            "You picked up %d [@@%d|%s@@].",
+                                            amount),
+                                   amount, itemInfo.id, itemInfo.name.c_str()));
         }
 
         if (mMap && config.getBoolValue("showpickupparticle"))

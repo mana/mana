@@ -96,7 +96,7 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
     {
         if (mSender->getText().empty() || mText->getText().empty())
         {
-            SERVER_NOTICE(_("Failed to send as sender or letter invalid."))
+            serverNotice(_("Failed to send as sender or letter invalid."));
         }
         else
         {

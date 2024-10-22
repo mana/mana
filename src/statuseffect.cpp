@@ -44,7 +44,7 @@ void StatusEffect::playSFX()
 void StatusEffect::deliverMessage()
 {
     if (!mMessage.empty())
-        SERVER_NOTICE(mMessage)
+        serverNotice(mMessage);
 }
 
 Particle *StatusEffect::getParticle()

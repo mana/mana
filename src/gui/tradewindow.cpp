@@ -259,8 +259,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
         if (mMyInventory->contains(item))
         {
-            SERVER_NOTICE(_("Failed adding item. You cannot "
-                            "overlap one kind of item on the window."))
+            serverNotice(_("Failed adding item. You cannot "
+                           "overlap one kind of item on the window."));
             return;
         }
 
@@ -300,7 +300,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         int curMoney = PlayerInfo::getAttribute(MONEY);
         if (v > curMoney)
         {
-            SERVER_NOTICE(_("You don't have enough money."))
+            serverNotice(_("You don't have enough money."));
             v = curMoney;
         }
         Net::getTradeHandler()->setMoney(v);

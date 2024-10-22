@@ -92,9 +92,9 @@ void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
 {
     mAcceptTradeRequests = acceptTradeRequests;
     if (mAcceptTradeRequests)
-        SERVER_NOTICE(_("Accepting incoming trade requests."))
+        serverNotice(_("Accepting incoming trade requests."));
     else
-        SERVER_NOTICE(_("Ignoring incoming trade requests."))
+        serverNotice(_("Ignoring incoming trade requests."));
 }
 
 void TradeHandler::handleMessage(MessageIn &msg)
@@ -145,14 +145,14 @@ void TradeHandler::handleMessage(MessageIn &msg)
             break;
 
         case GPMSG_TRADE_CANCEL:
-            SERVER_NOTICE(_("Trade canceled."))
+            serverNotice(_("Trade canceled."));
             tradeWindow->setVisible(false);
             tradeWindow->reset();
             mTrading = false;
             break;
 
         case GPMSG_TRADE_COMPLETE:
-            SERVER_NOTICE(_("Trade completed."))
+            serverNotice(_("Trade completed."));
             tradeWindow->setVisible(false);
             tradeWindow->reset();
             mTrading = false;

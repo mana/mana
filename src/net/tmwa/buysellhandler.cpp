@@ -105,7 +105,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             }
             else
             {
-                SERVER_NOTICE(_("Nothing to sell."))
+                serverNotice(_("Nothing to sell."));
             }
             break;
 
@@ -115,13 +115,13 @@ void BuySellHandler::handleMessage(MessageIn &msg)
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
                 mBuyDialog->setMoney(PlayerInfo::getAttribute(MONEY));
-                SERVER_NOTICE(_("Unable to buy."))
+                serverNotice(_("Unable to buy."));
             }
             break;
 
         case SMSG_NPC_SELL_RESPONSE:
             if (msg.readInt8() != 0)
-                SERVER_NOTICE(_("Unable to sell."))
+                serverNotice(_("Unable to sell."));
             break;
     }
 }

@@ -284,9 +284,11 @@ private:
     std::map<std::string, VariableData *> mData;
 };
 
-#define SERVER_NOTICE(message) { \
-Event event(Event::ServerNotice); \
-event.setString("message", message); \
-event.trigger(Event::NoticesChannel, event); }
+inline void serverNotice(const std::string &message)
+{
+    Event event(Event::ServerNotice);
+    event.setString("message", message);
+    event.trigger(Event::NoticesChannel);
+}
 
 #endif // EVENT_H

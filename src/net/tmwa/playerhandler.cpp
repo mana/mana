@@ -318,18 +318,14 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                     {
                         int oldMoney = PlayerInfo::getAttribute(MONEY);
                         int newMoney = msg.readInt32();
-                        std::string money = Units::formatCurrency(
-                                            newMoney - oldMoney);
                         PlayerInfo::setAttribute(MONEY, newMoney);
                         if (newMoney > oldMoney)
                         {
+                            std::string money = Units::formatCurrency(newMoney - oldMoney);
                             if (config.getBoolValue("showpickupchat"))
-                                SERVER_NOTICE(strprintf(_("You picked up %s."),
-                                            Units::formatCurrency(newMoney -
-                                            oldMoney).c_str()))
+                                serverNotice(strprintf(_("You picked up %s."), money.c_str()));
                             if (config.getBoolValue("showpickupparticle"))
-                                local_player->addMessageToQueue(money,
-                                                      UserPalette::PICKUP_INFO);
+                                local_player->addMessageToQueue(money, UserPalette::PICKUP_INFO);
                         }
                     }
                     break;
@@ -362,9 +358,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 int value = msg.readInt8();
 
                 if (ok != 1)
-                {
-                    SERVER_NOTICE(_("Cannot raise skill!"))
-                }
+                    serverNotice(_("Cannot raise skill!"));
 
                 PlayerInfo::setStatBase(type, value);
             }
@@ -502,9 +496,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 switch (type)
                 {
                     case 0:
-                        {
-                            SERVER_NOTICE(_("Equip arrows first."))
-                        }
+                        serverNotice(_("Equip arrows first."));
                         break;
                     default:
                         logger->log("0x013b: Unhandled message %i", type);

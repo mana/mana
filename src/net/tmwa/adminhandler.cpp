@@ -60,9 +60,9 @@ void AdminHandler::handleMessage(MessageIn &msg)
         case SMSG_ADMIN_KICK_ACK:
             id = msg.readInt32();
             if (id == 0)
-                SERVER_NOTICE(_("Kick failed!"))
+                serverNotice(_("Kick failed!"));
             else
-                SERVER_NOTICE(_("Kick succeeded!"))
+                serverNotice(_("Kick succeeded!"));
             break;
         case SMSG_BEING_IP_RESPONSE:
             id = msg.readInt32();

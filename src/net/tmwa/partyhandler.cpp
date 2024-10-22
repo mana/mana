@@ -79,9 +79,9 @@ void PartyHandler::handleMessage(MessageIn &msg)
     {
         case SMSG_PARTY_CREATE:
             if (msg.readInt8())
-                SERVER_NOTICE(_("Could not create party."))
+                serverNotice(_("Could not create party."));
             else
-                SERVER_NOTICE(_("Party successfully created."))
+                serverNotice(_("Party successfully created."));
             break;
         case SMSG_PARTY_INFO:
             {
@@ -221,7 +221,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 {
                     taParty->removeFromMembers();
                     taParty->clearMembers();
-                    SERVER_NOTICE(_("You have left the party."))
+                    serverNotice(_("You have left the party."));
                     if (partyTab)
                     {
                         delete partyTab;
@@ -325,7 +325,7 @@ void PartyHandler::invite(const std::string &name)
     }
     else
     {
-        SERVER_NOTICE(_("You can only invite when you are in a party!"))
+        serverNotice(_("You can only invite when you are in a party!"));
     }
 }
 

@@ -72,9 +72,9 @@ void PartyHandler::handleMessage(MessageIn &msg)
         case GPMSG_PARTY_INVITE_ERROR:
         {
             std::string name = msg.readString();
-            SERVER_NOTICE(strprintf(_("Party invite failed, because no player "
-                                      "called %s is within the visual range."),
-                                    name.c_str()));
+            serverNotice(strprintf(_("Party invite failed, because no player "
+                                     "called %s is within the visual range."),
+                                   name.c_str()));
         } break;
 
         case CPMSG_PARTY_INVITED:
@@ -95,12 +95,12 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     }
                     break;
                 case ERRMSG_TIME_OUT:
-                    SERVER_NOTICE(_("Joining party failed, because the "
-                                    "invitation has timed out on the server."));
+                    serverNotice(_("Joining party failed, because the "
+                                   "invitation has timed out on the server."));
                     break;
                 case ERRMSG_FAILURE:
-                    SERVER_NOTICE(_("Joining party failed, because the "
-                                    "inviter has left the game."));
+                    serverNotice(_("Joining party failed, because the "
+                                   "inviter has left the game."));
                     break;
                 default:
                     logger->log("Unknown CPMSG_PARTY_INVITE_ANSWER_RESPONSE.");
@@ -129,7 +129,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 notice = strprintf(_("%s joined the party on invitation from %s."),
                                    name.c_str(), inviter.c_str());
 
-            SERVER_NOTICE(notice);
+            serverNotice(notice);
 
             if (name == local_player->getName())
                 local_player->setParty(mParty);
@@ -148,17 +148,17 @@ void PartyHandler::handleMessage(MessageIn &msg)
             switch (msg.readInt8())
             {
                 case ERRMSG_OK:
-                    SERVER_NOTICE(strprintf(_("%s rejected your invite."),
-                                            name.c_str()));
+                    serverNotice(strprintf(_("%s rejected your invite."),
+                                           name.c_str()));
                     break;
                 case ERRMSG_LIMIT_REACHED:
-                    SERVER_NOTICE(_("Party invitation rejected by server, "
-                                    "because of too many invitations in a "
-                                    "short time."));
+                    serverNotice(_("Party invitation rejected by server, "
+                                   "because of too many invitations in a "
+                                   "short time."));
                     break;
                 case ERRMSG_FAILURE:
-                    SERVER_NOTICE(strprintf(_("%s is already in a party."),
-                                            name.c_str()));
+                    serverNotice(strprintf(_("%s is already in a party."),
+                                           name.c_str()));
                     break;
                 default:
                     logger->log("Unknown CPMSG_PARTY_REJECTED.");

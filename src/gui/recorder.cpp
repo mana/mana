@@ -84,16 +84,16 @@ void Recorder::setRecordingFile(const std::string &msg)
              * Message should go after mStream is closed so that it isn't
              * recorded.
              */
-            SERVER_NOTICE(_("Finishing recording."))
+            serverNotice(_("Finishing recording."));
         }
         else
         {
-            SERVER_NOTICE(_("Not currently recording."))
+            serverNotice(_("Not currently recording."));
         }
     }
     else if (mStream.is_open())
     {
-        SERVER_NOTICE(_("Already recording."))
+        serverNotice(_("Already recording."));
     }
     else
     {
@@ -101,7 +101,7 @@ void Recorder::setRecordingFile(const std::string &msg)
          * Message should go before mStream is opened so that it isn't
          * recorded.
          */
-        SERVER_NOTICE(_("Starting to record..."))
+        serverNotice(_("Starting to record..."));
         const std::string file = Client::getLocalDataDirectory() + "/" + msgCopy;
 
         mStream.open(file.c_str(), std::ios_base::trunc);
@@ -109,7 +109,7 @@ void Recorder::setRecordingFile(const std::string &msg)
         if (mStream.is_open())
             setVisible(true);
         else
-            SERVER_NOTICE(_("Failed to start recording."))
+            serverNotice(_("Failed to start recording."));
     }
 }
 
