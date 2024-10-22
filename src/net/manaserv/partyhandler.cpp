@@ -121,12 +121,15 @@ void PartyHandler::handleMessage(MessageIn &msg)
         {
             std::string name = msg.readString();
             std::string inviter = msg.readString();
-            std::string s;
-            if (!inviter.empty())
-                s = strprintf(_(" on invitation from %s"), inviter.c_str());
+            std::string notice;
 
-            SERVER_NOTICE(strprintf(_("%s joined the party %s."),
-                                    name.c_str(), s.c_str()));
+            if (inviter.empty())
+                notice = strprintf(_("%s joined the party."), name.c_str());
+            else
+                notice = strprintf(_("%s joined the party on invitation from %s."),
+                                   name.c_str(), inviter.c_str());
+
+            SERVER_NOTICE(notice);
 
             if (name == local_player->getName())
                 local_player->setParty(mParty);

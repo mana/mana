@@ -163,7 +163,7 @@ void CharHandler::handleCharacterCreateResponse(MessageIn &msg)
                 errorMessage = _("Character's stats are too low.");
                 break;
             case CREATE_ATTRIBUTES_OUT_OF_RANGE:
-                errorMessage = strprintf( _("At least one stat"
+                errorMessage = strprintf( _("At least one stat "
                                    "is out of the permitted range: (%u - %u)."),
                                    Attributes::getAttributeMinimum(),
                                    Attributes::getAttributeMaximum());

@@ -259,8 +259,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
         if (mMyInventory->contains(item))
         {
-           SERVER_NOTICE(_("Failed adding item. You can not "
-                                  "overlap one kind of item on the window."))
+            SERVER_NOTICE(_("Failed adding item. You cannot "
+                            "overlap one kind of item on the window."))
             return;
         }
 

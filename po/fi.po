@@ -94,7 +94,6 @@ msgstr "  -u --skip-update    : Ohita päivityslataukset"
 msgid "  -v --version        : Display the version"
 msgstr "  -v --version        : Näytä versionumero"
 
-# TODO: need translator comment; is it a player or something else? internationalization: don't make us translate "sentence fragments" that just get randomly glued to some other string with concatenation. If you have optional parts, use %s as a placeholder in the original string and leave a trans comment on where the fragment is used. E.g. "Error: %s" and "Bad keycode." or "Foo bar failed%s." " because things went wrong" and translator comment for the latter something like "inserted into "Foo bar failed%s."
 #: ../src/net/manaserv/partyhandler.cpp:126
 #, c-format
 msgid " on invitation from %s"
@@ -320,7 +319,6 @@ msgstr "/kick > Poista käyttäjä kanavalta"
 msgid "/kick > Kick some one from the guild you are in"
 msgstr "/kick > Poista käyttäjä killastasi"
 
-# TODO: Typo in msgid: some one - someone
 #: ../src/net/tmwa/gui/partytab.cpp:62
 msgid "/kick > Kick some one from the party you are in"
 msgstr "/kick > Potki pelaaja ryhmästäsi"
@@ -640,7 +638,6 @@ msgstr "Käsivarret"
 msgid "Assign"
 msgstr "Aseta"
 
-# TODO: typo in msgid: statis
 #: ../src/net/manaserv/charhandler.cpp:167
 #, c-format
 msgid "At least one statis out of the permitted range: (%u - %u)."
@@ -749,7 +746,6 @@ msgstr ""
 "Kuiskausvälilehden luonti nimelle \"%s\" epäonnistui! Se on joko jo auki tai "
 "käytit omaa nimeäsi."
 
-# TODO: typo in msgid? missing period intentional?
 #: ../src/gui/socialwindow.cpp:620
 msgid "Cannot create party. You are already in a party"
 msgstr "Ryhmän luominen epäonnistui, olet jo ryhmän jäsen."
@@ -1465,7 +1461,7 @@ msgid "Failed adding item. Trade partner is over weighted."
 msgstr ""
 "Esineen lisääminen epäonnistui; kauppakumppanilla on liian painava lasti."
 
-# TODO: need translator comment (overlap??) and typo in msgid (can not -> cannot)
+# TODO: need translator comment (overlap??)
 #: ../src/gui/tradewindow.cpp:262
 msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr ""
@@ -1863,7 +1859,6 @@ msgstr "Esineiden jakaminen ei ole mahdollista."
 msgid "Item sharing unknown."
 msgstr "Esineiden jaon tila on tuntematon."
 
-# TODO: internationalization: should be percent-s, really, because it allows reorganizing sentences; don't split words out of the translation scope or build sentence fragments with +.
 #: ../src/client.cpp:787
 msgid "ItemDB: Error while loading "
 msgstr "ItemDB: Virhe ladattaessa kohdetta "
@@ -2022,7 +2017,6 @@ msgstr "MP %+d"
 msgid "MP:"
 msgstr "MP:"
 
-# TODO: needs translator comment: WTF is MVP, "most valued player player"?<
 #: ../src/net/tmwa/chathandler.cpp:230
 msgid "MVP player."
 msgstr "MVP-pelaaja."
@@ -2683,7 +2677,6 @@ msgstr "Ikävä kyllä sinusta ei jäänyt lopulta jälkeäkään löydettäväk
 msgid "Saving screenshot failed!"
 msgstr "Ruutukaappauksen tallentaminen epäonnistui!"
 
-# TODO: internationalization: Screen resolution?? It's really used for window size, AFAIK.
 #: ../src/gui/setup_video.cpp:440
 msgid "Screen Resolution Changed"
 msgstr "Ikkunan koko vaihdettu"
@@ -3263,7 +3256,6 @@ msgid "This command tells you're away from keyboard with the given reason."
 msgstr ""
 "Tämä komento kertoo sinun olevan pois koneen äärestä (annetusta syystä)."
 
-# TODO: typo in msgid: betweenyou
 #: ../src/commandhandler.cpp:265
 msgid "This command tries to make a tab for whispers betweenyou and <nick>."
 msgstr ""
@@ -3398,7 +3390,6 @@ msgstr "Ostaminen epäonnistui."
 msgid "Unable to equip."
 msgstr "Käyttöönotto epäonnistui."
 
-# TODO: report as untranslateable, need percent-s
 #: ../src/net/tmwa/network.cpp:335
 msgid "Unable to resolve host \""
 msgstr "Osoitetta ei löydy: \""
@@ -3681,7 +3672,6 @@ msgstr "Olet lakannut olemasta."
 msgid "You are not that alive anymore."
 msgstr "Et ole enää erityisen elossa."
 
-# TODO: typo in msgid: inivte
 #: ../src/net/tmwa/partyhandler.cpp:341
 msgid "You can only inivte when you are in a party!"
 msgstr "Voit kutsua ryhmään vain kun olet siinä itse!"

@@ -325,10 +325,7 @@ static bool saveScreenshot()
 
     if (success)
     {
-        std::ostringstream chatlogentry;
-        // TODO: Make it one complete gettext string below
-        chatlogentry << _("Screenshot saved as ") << filenameSuffix.str();
-        SERVER_NOTICE(chatlogentry.str())
+        SERVER_NOTICE(strprintf(_("Screenshot saved as %s"), filenameSuffix.str().c_str()))
     }
     else
     {

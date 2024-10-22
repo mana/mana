@@ -109,7 +109,7 @@ Setup_Interface::Setup_Interface():
                                               mShowMonsterDamageEnabled);
 
     speechLabel = new Label(_("Overhead text:"));
-    alphaLabel = new Label(_("Gui opacity"));
+    alphaLabel = new Label(_("GUI opacity"));
     fontSizeLabel = new Label(_("Font size:"));
 
     mFontSizeListModel = new FontSizeChoiceListModel;

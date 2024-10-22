@@ -886,9 +886,10 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
         {
             // TRANSLATORS: This sentence may be translated differently
             // for different grammatical numbers (singular, plural, ...)
-            SERVER_NOTICE(strprintf(ngettext("You picked up %d "
-                    "[@@%d|%s@@].", "You picked up %d [@@%d|%s@@].", amount),
-                    amount, itemInfo.id, itemInfo.name.c_str()))
+            SERVER_NOTICE(strprintf(ngettext("You picked up %d [@@%d|%s@@].",
+                                             "You picked up %d [@@%d|%s@@].",
+                                             amount),
+                                    amount, itemInfo.id, itemInfo.name.c_str()))
         }
 
         if (mMap && config.getBoolValue("showpickupparticle"))

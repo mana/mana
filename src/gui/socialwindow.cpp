@@ -593,8 +593,7 @@ void SocialWindow::showGuildInvite(const std::string &guildName,
     // check there isnt already an invite showing
     if (mGuildInvited != 0)
     {
-        SERVER_NOTICE(_("Received guild request, but one already "
-                "exists."))
+        SERVER_NOTICE(_("Received guild request, but one already exists."))
         return;
     }
 
@@ -660,7 +659,7 @@ void SocialWindow::showPartyCreate()
     if (local_player->getParty())
     {
         new OkDialog(_("Create Party"),
-                     _("Cannot create party. You are already in a party"),
+                     _("Cannot create party. You are already in a party."),
                      true, this);
         return;
     }

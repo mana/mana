@@ -243,7 +243,7 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
     {
         tab->chatLog(_("Command: /query <nick>"));
         tab->chatLog(_("Command: /q <nick>"));
-        tab->chatLog(_("This command tries to make a tab for whispers between"
+        tab->chatLog(_("This command tries to make a tab for whispers between "
                        "you and <nick>."));
     }
     else if (args == "away")

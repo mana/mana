@@ -53,7 +53,7 @@ void GuildTab::showHelp()
     chatLog(_("/help > Display this help."));
     chatLog(_("/invite > Invite a player to your guild"));
     chatLog(_("/leave > Leave the guild you are in"));
-    chatLog(_("/kick > Kick some one from the guild you are in"));
+    chatLog(_("/kick > Kick someone from the guild you are in"));
 }
 
 bool GuildTab::handleCommand(const std::string &type, const std::string &args)

@@ -52,7 +52,7 @@ void PartyTab::showHelp()
     chatLog(_("/help > Display this help."));
     chatLog(_("/invite > Invite a player to your party"));
     chatLog(_("/leave > Leave the party you are in"));
-    chatLog(_("/kick > Kick some one from the party you are in"));
+    chatLog(_("/kick > Kick someone from the party you are in"));
     chatLog(_("/item > Show/change party item sharing options"));
     chatLog(_("/exp > Show/change party experience sharing options"));
 }

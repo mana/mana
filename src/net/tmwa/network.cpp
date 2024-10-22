@@ -467,8 +467,8 @@ bool Network::realConnect()
     if (SDLNet_ResolveHost(&ipAddress, mServer.hostname.c_str(),
                            mServer.port) == -1)
     {
-        std::string errorMessage = _("Unable to resolve host \"") +
-                                   mServer.hostname + "\"";
+        std::string errorMessage = strprintf(_("Unable to resolve host \"%s\""),
+                                             mServer.hostname.c_str());
         setError(errorMessage);
         logger->log("SDLNet_ResolveHost: %s", errorMessage.c_str());
         return false;

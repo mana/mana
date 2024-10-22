@@ -47,7 +47,7 @@ Setup_Audio::Setup_Audio():
 {
     setName(_("Audio"));
 
-    gcn::Label *sfxLabel = new Label(_("Sfx volume"));
+    gcn::Label *sfxLabel = new Label(_("SFX volume"));
     gcn::Label *notificationsLabel = new Label(_("Notifications volume"));
     gcn::Label *musicLabel = new Label(_("Music volume"));
 
