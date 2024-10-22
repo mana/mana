@@ -7,6 +7,9 @@ CPackSourceConfig.cmake
 cmake_install.cmake
 install_manifest.txt
 
+# clangd cache
+.cache/clangd
+
 # files created during build
 *.o
 *.gmo
