@@ -8,16 +8,17 @@ msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-08 16:46+0100\n"
-"PO-Revision-Date: 2009-09-02 17:55+0000\n"
-"Last-Translator: Øyvind Øritsland <Unknown>\n"
-"Language-Team: Norwegian Bokmal <nb@li.org>\n"
+"PO-Revision-Date: 2024-10-22 11:12+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mana/"
+"mana/nb_NO/>\n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.8-rc\n"
 "X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../src/main.cpp:45
 msgid "              to the mana client."
@@ -202,12 +203,12 @@ msgstr ""
 #: ../src/net/manaserv/chathandler.cpp:319
 #, c-format
 msgid "%s left the channel."
-msgstr ""
+msgstr "%s forlot kanalen."
 
 #: ../src/net/tmwa/partyhandler.cpp:124
 #, c-format
 msgid "%s refused your invitation."
-msgstr ""
+msgstr "%s avslo din invitasjon."
 
 #: ../src/net/manaserv/partyhandler.cpp:148
 #, fuzzy, c-format
@@ -227,7 +228,7 @@ msgstr ""
 
 #: ../src/gui/charselectdialog.cpp:418 ../src/gui/charselectdialog.cpp:419
 msgid "(empty)"
-msgstr ""
+msgstr "(tom)"
 
 #: ../src/commandhandler.cpp:221
 msgid "*** only available to a GM ***"
@@ -237,13 +238,13 @@ msgstr "*** kun tilgjengelig for GM ***"
 #: ../src/gui/npcdialog.cpp:125 ../src/gui/selldialog.cpp:75
 #: ../src/gui/statuswindow.cpp:474
 msgid "+"
-msgstr ""
+msgstr "+"
 
 #: ../src/gui/buydialog.cpp:78 ../src/gui/itemamountwindow.cpp:111
 #: ../src/gui/npcdialog.cpp:126 ../src/gui/selldialog.cpp:76
 #: ../src/gui/statuswindow.cpp:486
 msgid "-"
-msgstr ""
+msgstr "-"
 
 #: ../src/commandhandler.cpp:165
 msgid "-- Help --"
@@ -276,11 +277,11 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:166
 msgid "/help > Display this help"
-msgstr "/hjelp > Hvis denne hjelpen"
+msgstr "/hjelp > Vis denne hjelpen"
 
 #: ../src/net/tmwa/gui/guildtab.cpp:61 ../src/net/tmwa/gui/partytab.cpp:59
 msgid "/help > Display this help."
-msgstr ""
+msgstr "/help > Viser denne hjelpen."
 
 #: ../src/gui/widgets/whispertab.cpp:72
 msgid "/ignore > Ignore the other player"
@@ -353,12 +354,12 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:179
 msgid "/q > Alias of query"
-msgstr "/q > Alternativ for query"
+msgstr "/q > Alias for spørring"
 
 #: ../src/commandhandler.cpp:177
 msgid "/query > Makes a tab for private messages with another user"
 msgstr ""
-"/query > Åpner en fane for å sende private meldinger med en annen bruker"
+"/query > Åpner en fane for å utveksle private meldinger med en annen bruker"
 
 #: ../src/gui/widgets/channeltab.cpp:50
 msgid "/quit > Leave a channel"
@@ -366,7 +367,7 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:193
 msgid "/record > Start recording the chat to an external file"
-msgstr "/innspilling > Start innspilling av chat til en ekstern fil"
+msgstr "/innspilling > Start innspilling av sludring til ekstern fil"
 
 #: ../src/commandhandler.cpp:195
 msgid "/toggle > Determine whether <return> toggles the chat log"
@@ -390,7 +391,7 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:176
 msgid "/w > Alias of msg"
-msgstr "/w > Alternativ for msg"
+msgstr "/w > Alias for «msg»"
 
 #: ../src/commandhandler.cpp:168
 msgid "/where > Display map name"
@@ -398,7 +399,7 @@ msgstr "/where > Viser kartnavn"
 
 #: ../src/commandhandler.cpp:175
 msgid "/whisper > Alias of msg"
-msgstr "/whisper > Alternativ for msg"
+msgstr "/whisper > Alias for «msg»"
 
 #: ../src/commandhandler.cpp:169
 msgid "/who > Display number of online users"
@@ -441,7 +442,7 @@ msgstr "Godta Gruppeinvitasjon"
 
 #: ../src/gui/socialwindow.cpp:609
 msgid "Accept Party Invite"
-msgstr "Godta Gruppeinvitasjon"
+msgstr "Godta gruppeinvitasjon"
 
 #: ../src/gui/socialwindow.cpp:463
 #, fuzzy
@@ -467,7 +468,7 @@ msgstr ""
 
 #: ../src/gui/charselectdialog.cpp:120
 msgid "Account and Character Management"
-msgstr "Konto- og karakter"
+msgstr "Konto- og karakterhåndtering"
 
 #: ../src/net/manaserv/loginhandler.cpp:283
 #, fuzzy
@@ -594,7 +595,7 @@ msgstr "Bruk"
 
 #: ../src/gui/setup_video.cpp:358
 msgid "Applying change to OpenGL requires restart."
-msgstr "Endringer av OpenGL krever restart."
+msgstr "Endringer av OpenGL krever programomstart."
 
 #: ../src/gui/setup_video.cpp:350
 msgid ""
@@ -604,7 +605,7 @@ msgstr ""
 
 #: ../src/gui/charselectdialog.cpp:73
 msgid "Are you sure you want to delete this character?"
-msgstr "Er du sikker på at du vil slette denne karakteren?"
+msgstr "Slett denne karakteren?"
 
 #: ../src/gui/socialwindow.cpp:164
 #, fuzzy, c-format
@@ -649,7 +650,7 @@ msgstr ""
 
 #: ../src/gui/setup_audio.cpp:47
 msgid "Audio"
-msgstr "Audio"
+msgstr "Lyd"
 
 #: ../src/net/tmwa/generalhandler.cpp:132
 msgid "Authentication failed."
@@ -699,7 +700,7 @@ msgstr "Bobler med navn"
 
 #: ../src/gui/setup_interface.cpp:90
 msgid "Bubbles, no names"
-msgstr "Bobler, ingen navn"
+msgstr "Bobler, uten navn"
 
 #: ../src/gui/buydialog.cpp:50 ../src/gui/buydialog.cpp:79
 #: ../src/gui/buyselldialog.cpp:47
@@ -743,7 +744,7 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:400
 msgid "Cannot send empty whispers!"
-msgstr "Kan ikke sende tomme meldinger!"
+msgstr "Kan ikke sende tomme meldinger."
 
 #: ../src/net/tmwa/specialhandler.cpp:160
 msgid "Cannot shout!"
@@ -765,7 +766,7 @@ msgstr "Endre epost-adresse"
 
 #: ../src/gui/changeemaildialog.cpp:45 ../src/gui/changeemaildialog.cpp:54
 msgid "Change Email Address"
-msgstr "Endre epost-adresse"
+msgstr "Endre e-postadresse"
 
 #: ../src/gui/worldselectdialog.cpp:76
 msgid "Change Login"
@@ -1071,7 +1072,7 @@ msgstr ""
 
 #: ../src/gui/charselectdialog.cpp:72
 msgid "Confirm Character Delete"
-msgstr "Bekreft karakter-sletting"
+msgstr "Bekreft sletting av karakter"
 
 #: ../src/gui/register.cpp:69
 msgid "Confirm:"
@@ -1104,7 +1105,7 @@ msgstr ""
 
 #: ../src/gui/updaterwindow.cpp:149
 msgid "Connecting..."
-msgstr "Kobler til..."
+msgstr "Kobler til …"
 
 #: ../src/net/tmwa/network.cpp:405
 msgid "Connection to server terminated. "
@@ -1143,11 +1144,11 @@ msgstr ""
 #: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:416
 #: ../src/gui/socialwindow.cpp:330
 msgid "Create"
-msgstr "Lag"
+msgstr "Opprett"
 
 #: ../src/gui/charcreatedialog.cpp:53
 msgid "Create Character"
-msgstr "Lag karakter:"
+msgstr "Opprett karakter:"
 
 #: ../src/gui/socialwindow.cpp:272
 msgid "Create Guild"
@@ -1208,7 +1209,7 @@ msgstr ""
 
 #: ../src/gui/setup_keyboard.cpp:97
 msgid "Default"
-msgstr "Standard"
+msgstr "Forvalg"
 
 #: ../src/net/tmwa/generalhandler.cpp:239
 #, fuzzy
@@ -1414,13 +1415,14 @@ msgstr ""
 #: ../src/game.cpp:938
 #, c-format
 msgid "Error while loading %s"
-msgstr "Feil i lastingen av %s"
+msgstr "Kunne ikke laste inn %s"
 
 #: ../src/resources/userpalette.cpp:101
 msgid "Exp Notification"
 msgstr ""
 
 #: ../src/gui/statuswindow.cpp:126
+#, fuzzy
 msgid "Exp:"
 msgstr "Exp:"
 
@@ -1518,7 +1520,7 @@ msgstr "Skriftstørrelse"
 
 #: ../src/commandhandler.cpp:204
 msgid "For more information, type /help <command>."
-msgstr "For mer informasjon, skriv /help <kommando>"
+msgstr "For mer info, skriv /help <kommando>"
 
 #: ../src/gui/setup_players.cpp:65
 msgid "Friend"
@@ -1530,7 +1532,7 @@ msgstr "Fullskjerm"
 
 #: ../src/resources/userpalette.cpp:94
 msgid "GM Names"
-msgstr "GM Navn"
+msgstr "GM-navn"
 
 #: ../src/net/tmwa/gamehandler.cpp:96
 #, fuzzy
@@ -1609,6 +1611,7 @@ msgid "HP %+d"
 msgstr ""
 
 #: ../src/gui/statuswindow.cpp:121
+#, fuzzy
 msgid "HP:"
 msgstr "HP:"
 
@@ -2120,7 +2123,7 @@ msgstr ""
 
 #: ../src/gui/setup_audio.cpp:51
 msgid "Music volume"
-msgstr "Musikk-volum"
+msgstr "Musikk-lydstyrke"
 
 #: ../src/gui/debugwindow.cpp:100
 #, c-format
@@ -2132,8 +2135,9 @@ msgid "NPC"
 msgstr ""
 
 #: ../src/resources/userpalette.cpp:95
+#, fuzzy
 msgid "NPCs"
-msgstr "NPCer"
+msgstr "NPC-er"
 
 #: ../src/gui/setup_players.cpp:58
 msgid "Name"
@@ -2267,7 +2271,7 @@ msgstr "OK"
 
 #: ../src/gui/customserverdialog.cpp:69
 msgid "Ok"
-msgstr "Ok"
+msgstr "OK"
 
 #: ../src/net/manaserv/loginhandler.cpp:157
 msgid "Old email address incorrect."
@@ -2303,7 +2307,7 @@ msgstr "Andre Spilleres Navn"
 
 #: ../src/resources/userpalette.cpp:92
 msgid "Other Players' Names"
-msgstr "Andre Spilleres Navn"
+msgstr "Andre spilleres navn"
 
 #: ../src/gui/outfitwindow.cpp:68 ../src/gui/outfitwindow.cpp:141
 #: ../src/gui/outfitwindow.cpp:154
@@ -2410,7 +2414,7 @@ msgstr "Passord:"
 
 #: ../src/gui/register.cpp:197
 msgid "Passwords do not match."
-msgstr "Passordene stemmer ikke."
+msgstr "Passordene stemmer ikke overens."
 
 #: ../src/gui/popupmenu.cpp:192
 #, c-format
@@ -2474,12 +2478,12 @@ msgstr "Vennligst skriv inn både adresse og port til en server."
 #: ../src/gui/charcreatedialog.cpp:106 ../src/gui/charcreatedialog.cpp:264
 #, c-format
 msgid "Please distribute %d points"
-msgstr "Vennligst distribuer %d poeng"
+msgstr "Distribuer %d poeng"
 
 #: ../src/gui/charcreatedialog.cpp:269
 #, c-format
 msgid "Please remove %d points"
-msgstr "Vennligst fjern %d poeng"
+msgstr "Fjern %d poeng"
 
 #: ../src/gui/serverdialog.cpp:331
 msgid "Please select a custom server."
@@ -2517,7 +2521,7 @@ msgstr ""
 
 #: ../src/gui/setup_joystick.cpp:37 ../src/gui/setup_joystick.cpp:78
 msgid "Press the button to start calibration"
-msgstr "Trykk knappen for å starte kalibrasjon"
+msgstr "Trykk på knappen for å starte kalibrering"
 
 #: ../src/keyboardconfig.cpp:100
 msgid "Previous Chat Tab"
@@ -2679,7 +2683,7 @@ msgstr ""
 
 #: ../src/game.cpp:332
 msgid "Saving screenshot failed!"
-msgstr "Lagring av skjermbilde feilet!"
+msgstr "Kunne ikke lagre skjermavbildning"
 
 #: ../src/gui/setup_video.cpp:440
 #, fuzzy
@@ -2768,7 +2772,7 @@ msgstr "Server:"
 
 #: ../src/gui/widgets/chattab.cpp:179
 msgid "Server:"
-msgstr "Server:"
+msgstr "Tjener:"
 
 #: ../src/client.cpp:585 ../src/gui/setup.cpp:44 ../src/gui/windowmenu.cpp:72
 msgid "Setup"
@@ -2780,7 +2784,7 @@ msgstr ""
 
 #: ../src/gui/setup_audio.cpp:50
 msgid "Sfx volume"
-msgstr "Lydeffekt-volum"
+msgstr "Lydeffekt-lydstyrke"
 
 #: ../src/gui/buyselldialog.cpp:38
 msgid "Shop"
@@ -3129,7 +3133,7 @@ msgstr "Denne kommandoen klarer chatte-loggen."
 
 #: ../src/commandhandler.cpp:228
 msgid "This command clears the chat log of previous chat."
-msgstr "Denne kommandoen klarer chatte-loggen."
+msgstr "Denne kommandoen tømmer sludringsloggen."
 
 #: ../src/gui/widgets/whispertab.cpp:85
 msgid "This command closes the current whisper tab."
@@ -3142,7 +3146,7 @@ msgstr "Denne kommandoen åpner <kanal>"
 
 #: ../src/commandhandler.cpp:209
 msgid "This command displays a list of all commands available."
-msgstr "Denne kommandoen viser en liste med alle tilgjengelige kommandoer."
+msgstr "Denne kommandoen viser en liste over alle tilgjengelige kommandoer."
 
 #: ../src/commandhandler.cpp:212
 msgid "This command displays help on <command>."
@@ -3154,7 +3158,7 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:328
 msgid "This command displays the number of players currently online."
-msgstr "Denne kommandoen viser antall påloggede spillere -"
+msgstr "Denne kommandoen viser antall påloggede spillere."
 
 #: ../src/net/tmwa/gui/partytab.cpp:101
 msgid "This command displays the party's current experience sharing policy."
@@ -3211,7 +3215,7 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:239
 msgid "This command makes you enter <channel>."
-msgstr "Denne kommandoen åpner <kanal>"
+msgstr "Denne kommandoen åpner <kanal>."
 
 #: ../src/commandhandler.cpp:222
 msgid "This command sends the message <msg> to all players currently online."
@@ -3233,7 +3237,7 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:245
 msgid "This command shows a list of all channels."
-msgstr "Denne kommandoen viser en liste med alle kanaler."
+msgstr "Denne kommandoen viser en liste over alle kanaler."
 
 #: ../src/gui/widgets/channeltab.cpp:63
 msgid "This command shows the users in this channel."
@@ -3241,7 +3245,8 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:298
 msgid "This command starts recording the chat log to the file <filename>."
-msgstr "Denne kommandoen starter opptak av chatte-loggen til filen <filnavn>."
+msgstr ""
+"Denne kommandoen starter loggføring av sludringsloggen til filen <filnavn>."
 
 #: ../src/commandhandler.cpp:317
 msgid "This command stops ignoring the given player if they are being ignored"
@@ -3254,7 +3259,7 @@ msgstr "Denne kommandoen starter opptak av chatte-loggen til filen <filnavn>."
 
 #: ../src/commandhandler.cpp:250
 msgid "This command tell others you are (doing) <msg>."
-msgstr "Denne kommandoen forteller andre at du er (eller gjør) <melding>"
+msgstr "Denne kommandoen forteller andre at du er (eller gjør) <melding>."
 
 #: ../src/commandhandler.cpp:271
 msgid "This command tells you're away from keyboard with the given reason."
@@ -3451,7 +3456,7 @@ msgstr "Ukjent kommando"
 
 #: ../src/commandhandler.cpp:136 ../src/commandhandler.cpp:333
 msgid "Unknown command."
-msgstr "Ukjent kommando"
+msgstr "Ukjent kommando."
 
 #: ../src/net/tmwa/generalhandler.cpp:151
 msgid "Unknown connection error."
@@ -3562,7 +3567,7 @@ msgstr ""
 
 #: ../src/gui/npcdialog.cpp:49
 msgid "Waiting for server"
-msgstr "Venter på server"
+msgstr "Venter på tjener"
 
 #: ../src/gui/serverdialog.cpp:410
 #, fuzzy
@@ -3831,7 +3836,7 @@ msgstr ""
 
 #: ../src/gui/charcreatedialog.cpp:195
 msgid "Your name needs to be at least 4 characters."
-msgstr "Navnet ditt må minst være 4 bokstaver."
+msgstr "Navnet ditt må være minst fire bokstaver."
 
 #: ../src/net/manaserv/beinghandler.cpp:284
 #: ../src/net/tmwa/playerhandler.cpp:105
@@ -3869,6 +3874,7 @@ msgid "max"
 msgstr "maks"
 
 #: ../src/gui/setup_video.cpp:149
+#, fuzzy
 msgid "medium"
 msgstr "medium"
 
