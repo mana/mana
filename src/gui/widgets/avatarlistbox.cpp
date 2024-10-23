@@ -66,14 +66,12 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
     if (!mListModel)
         return;
 
-    auto* model = static_cast<AvatarListModel*>(mListModel);
+    auto *model = static_cast<AvatarListModel *>(mListModel);
+    auto *graphics = static_cast<Graphics *>(gcnGraphics);
 
-    updateAlpha();
+    const int alpha = gui->getTheme()->getGuiAlpha();
 
-    auto *graphics = static_cast<Graphics*>(gcnGraphics);
-
-    graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
-                                            (int) (mAlpha * 255.0f)));
+    graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, alpha));
     graphics->setFont(getFont());
 
     const int fontHeight = getFont()->getHeight();

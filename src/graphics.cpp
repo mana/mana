@@ -28,9 +28,7 @@
 void ImageRect::setAlpha(float alpha)
 {
     for (auto img : grid)
-    {
         img->setAlpha(alpha);
-    }
 }
 
 void Graphics::updateSize(int width, int height, float /*scale*/)

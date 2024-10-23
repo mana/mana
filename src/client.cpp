@@ -310,13 +310,11 @@ Client::Client(const Options &options):
     }
 #endif
 
-    Theme::prepareThemePath();
-
     // Initialize the item and emote shortcuts.
     itemShortcut = new ItemShortcut;
     emoteShortcut = new EmoteShortcut;
 
-    gui = new Gui(graphics);
+    gui = new Gui(graphics, Theme::prepareThemePath());
 
     // Initialize sound engine
     try
@@ -577,7 +575,7 @@ int Client::exec()
 
                     // Don't allow an alpha opacity
                     // lower than the default value
-                    Theme::instance()->setMinimumOpacity(0.8f);
+                    gui->getTheme()->setMinimumOpacity(0.8f);
 
                     mCurrentDialog = new ServerDialog(&mCurrentServer,
                                                       mConfigDir);
@@ -596,7 +594,7 @@ int Client::exec()
                     logger->log("State: LOGIN");
                     // Don't allow an alpha opacity
                     // lower than the default value
-                    Theme::instance()->setMinimumOpacity(0.8f);
+                    gui->getTheme()->setMinimumOpacity(0.8f);
 
                     if (mOptions.username.empty() || mOptions.password.empty())
                     {
@@ -720,7 +718,7 @@ int Client::exec()
                     logger->log("State: CHAR SELECT");
                     // Don't allow an alpha opacity
                     // lower than the default value
-                    Theme::instance()->setMinimumOpacity(0.8f);
+                    gui->getTheme()->setMinimumOpacity(0.8f);
 
                     mCurrentDialog = new CharSelectDialog(&loginData);
 
@@ -770,7 +768,7 @@ int Client::exec()
                     sound.fadeOutMusic(1000);
 
                     // Allow any alpha opacity
-                    Theme::instance()->setMinimumOpacity(-1.0f);
+                    gui->getTheme()->setMinimumOpacity(0.0f);
 
                     delete mSetupButton;
                     delete mDesktop;

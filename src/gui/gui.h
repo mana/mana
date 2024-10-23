@@ -30,8 +30,10 @@
 
 #include <SDL.h>
 
+#include <memory>
 #include <vector>
 
+class Theme;
 class TextInput;
 class Graphics;
 class SDLInput;
@@ -75,7 +77,7 @@ enum class Cursor {
 class Gui final : public gcn::Gui, public EventListener
 {
     public:
-        Gui(Graphics *screen);
+        Gui(Graphics *screen, const std::string &themePath);
 
         ~Gui() override;
 
@@ -120,6 +122,12 @@ class Gui final : public gcn::Gui, public EventListener
          */
         void setCursorType(Cursor cursor);
 
+        /**
+         * The global GUI theme.
+         */
+        Theme *getTheme() const
+        { return mTheme.get(); }
+
         static bool debugDraw;
 
     protected:
@@ -132,6 +140,7 @@ class Gui final : public gcn::Gui, public EventListener
         void loadCustomCursors();
         void loadSystemCursors();
 
+        std::unique_ptr<Theme> mTheme;        /**< The global GUI theme */
         gcn::Font *mGuiFont;                  /**< The global GUI font */
         gcn::Font *mInfoParticleFont;         /**< Font for Info Particles*/
         bool mCustomCursor = false;           /**< Show custom cursor */

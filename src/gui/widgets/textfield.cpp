@@ -21,84 +21,29 @@
 
 #include "gui/widgets/textfield.h"
 
-#include "configuration.h"
 #include "graphics.h"
 
+#include "gui/gui.h"
 #include "gui/sdlinput.h"
 
-#include "resources/image.h"
 #include "resources/theme.h"
 
 #include "utils/copynpaste.h"
-#include "utils/dtor.h"
 #include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
 
 #include <SDL.h>
 
-#undef DELETE //Win32 compatibility hack
-
-int TextField::instances = 0;
-float TextField::mAlpha = 1.0;
-ImageRect TextField::skin;
-
-TextField::TextField(const std::string &text, bool loseFocusOnTab):
-    gcn::TextField(text)
+TextField::TextField(const std::string &text, bool loseFocusOnTab)
+    : gcn::TextField(text)
+    , mLoseFocusOnTab(loseFocusOnTab)
 {
     setFrameSize(2);
-
-    mLoseFocusOnTab = loseFocusOnTab;
-
-    if (instances == 0)
-    {
-        // Load the skin
-        auto textbox = Theme::getImageFromTheme("deepbox.png");
-        int gridx[4] = {0, 3, 28, 31};
-        int gridy[4] = {0, 3, 28, 31};
-        int a = 0;
-
-        for (int y = 0; y < 3; y++)
-        {
-            for (int x = 0; x < 3; x++)
-            {
-                skin.grid[a] = textbox->getSubImage(
-                        gridx[x], gridy[y],
-                        gridx[x + 1] - gridx[x] + 1,
-                        gridy[y + 1] - gridy[y] + 1);
-                a++;
-            }
-        }
-        skin.setAlpha(config.guiAlpha);
-    }
-
-    instances++;
-}
-
-TextField::~TextField()
-{
-    instances--;
-
-    if (instances == 0)
-        std::for_each(skin.grid, skin.grid + 9, dtor<Image*>());
-}
-
-void TextField::updateAlpha()
-{
-    float alpha = std::max(config.guiAlpha,
-                           Theme::instance()->getMinimumOpacity());
-
-    if (alpha != mAlpha)
-    {
-        mAlpha = alpha;
-        skin.setAlpha(mAlpha);
-    }
 }
 
 void TextField::draw(gcn::Graphics *graphics)
 {
-    updateAlpha();
-
     if (isFocused())
     {
         drawCaret(graphics,
@@ -113,13 +58,13 @@ void TextField::draw(gcn::Graphics *graphics)
 
 void TextField::drawFrame(gcn::Graphics *graphics)
 {
-    //updateAlpha(); -> Not useful...
+    const int bs = getFrameSize();
 
-    int bs = getFrameSize();
-    int w = getWidth() + bs * 2;
-    int h = getHeight() + bs * 2;
+    Theme::WidgetState state;
+    state.width = getWidth() + bs * 2;
+    state.height = getHeight() + bs * 2;
 
-    static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
+    gui->getTheme()->drawTextFieldFrame(static_cast<Graphics*>(graphics), state);
 }
 
 void TextField::setNumeric(bool numeric)

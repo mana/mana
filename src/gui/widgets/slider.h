@@ -23,8 +23,6 @@
 
 #include <guichan/widgets/slider.hpp>
 
-class Image;
-
 /**
  * Slider widget. Same as the Guichan slider but with custom look.
  *
@@ -45,13 +43,6 @@ class Slider : public gcn::Slider
          * @param scaleEnd   The maximum value of the slider
          */
         Slider(double scaleStart, double scaleEnd);
-
-        ~Slider() override;
-
-        /**
-         * Update the alpha value to the graphic components.
-         */
-        static void updateAlpha();
 
         /**
          * Draws the slider.
@@ -79,11 +70,5 @@ class Slider : public gcn::Slider
          */
         void init();
 
-        static Image *hStart, *hMid, *hEnd, *hGrip;
-        static Image *vStart, *vMid, *vEnd, *vGrip;
-        static Image *hStartHi, *hMidHi, *hEndHi, *hGripHi;
-        static Image *vStartHi, *vMidHi, *vEndHi, *vGripHi;
         bool mHasMouse = false;
-        static float mAlpha;
-        static int mInstances;
 };

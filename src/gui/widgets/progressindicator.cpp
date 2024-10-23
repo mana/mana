@@ -21,6 +21,7 @@
 #include "progressindicator.h"
 
 #include "graphics.h"
+#include "gui/gui.h"
 #include "simpleanimation.h"
 
 #include "resources/animation.h"
@@ -31,7 +32,7 @@
 
 ProgressIndicator::ProgressIndicator()
 {
-    const std::string path = Theme::resolveThemePath("progress-indicator.png");
+    const std::string path = gui->getTheme()->resolvePath("progress-indicator.png");
     mImageSet = ResourceManager::getInstance()->getImageSet(path, 32, 32);
 
     Animation anim;

@@ -21,93 +21,24 @@
 
 #include "gui/widgets/radiobutton.h"
 
-#include "configuration.h"
-#include "graphics.h"
-
-#include "resources/image.h"
+#include "gui/gui.h"
 #include "resources/theme.h"
 
-int RadioButton::instances = 0;
-float RadioButton::mAlpha = 1.0;
-ResourceRef<Image> RadioButton::radioNormal;
-ResourceRef<Image> RadioButton::radioChecked;
-ResourceRef<Image> RadioButton::radioDisabled;
-ResourceRef<Image> RadioButton::radioDisabledChecked;
-ResourceRef<Image> RadioButton::radioNormalHi;
-ResourceRef<Image> RadioButton::radioCheckedHi;
-
-RadioButton::RadioButton(const std::string &caption, const std::string &group,
-        bool marked):
-    gcn::RadioButton(caption, group, marked)
+RadioButton::RadioButton(const std::string &caption,
+                         const std::string &group,
+                         bool marked)
+    : gcn::RadioButton(caption, group, marked)
 {
-    if (instances == 0)
-    {
-        radioNormal = Theme::getImageFromTheme("radioout.png");
-        radioChecked = Theme::getImageFromTheme("radioin.png");
-        radioDisabled = Theme::getImageFromTheme("radioout.png");
-        radioDisabledChecked = Theme::getImageFromTheme("radioin.png");
-        radioNormalHi = Theme::getImageFromTheme("radioout_highlight.png");
-        radioCheckedHi = Theme::getImageFromTheme("radioin_highlight.png");
-        radioNormal->setAlpha(mAlpha);
-        radioChecked->setAlpha(mAlpha);
-        radioDisabled->setAlpha(mAlpha);
-        radioDisabledChecked->setAlpha(mAlpha);
-        radioNormalHi->setAlpha(mAlpha);
-        radioCheckedHi->setAlpha(mAlpha);
-    }
-
-    instances++;
-}
-
-RadioButton::~RadioButton()
-{
-    instances--;
-
-    if (instances == 0)
-    {
-        radioNormal = nullptr;
-        radioChecked = nullptr;
-        radioDisabled = nullptr;
-        radioDisabledChecked = nullptr;
-        radioNormalHi = nullptr;
-        radioCheckedHi = nullptr;
-    }
 }
 
 void RadioButton::drawBox(gcn::Graphics* graphics)
 {
-    if (config.guiAlpha != mAlpha)
-    {
-        mAlpha = config.guiAlpha;
-        radioNormal->setAlpha(mAlpha);
-        radioChecked->setAlpha(mAlpha);
-        radioDisabled->setAlpha(mAlpha);
-        radioDisabledChecked->setAlpha(mAlpha);
-        radioNormalHi->setAlpha(mAlpha);
-        radioCheckedHi->setAlpha(mAlpha);
-    }
+    Theme::WidgetState state;
+    state.enabled = isEnabled();
+    state.hovered = mHasMouse;
+    state.selected = isSelected();
 
-    Image *box = nullptr;
-
-    if (isEnabled())
-        if (isSelected())
-            if (mHasMouse)
-                box = radioCheckedHi;
-            else
-                box = radioChecked;
-        else
-            if (mHasMouse)
-                box = radioNormalHi;
-            else
-                box = radioNormal;
-    else
-        if (isSelected())
-            box = radioDisabledChecked;
-        else
-            box = radioDisabled;
-
-    if (box)
-        static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
+    gui->getTheme()->drawRadioButton(graphics, state);
 }
 
 void RadioButton::draw(gcn::Graphics* graphics)

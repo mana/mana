@@ -21,25 +21,15 @@
 
 #include "gui/widgets/dropdown.h"
 
-#include "configuration.h"
 #include "graphics.h"
 
+#include "gui/gui.h"
 #include "gui/sdlinput.h"
 
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
-#include "resources/image.h"
 #include "resources/theme.h"
-
-#include "utils/dtor.h"
-
-#include <algorithm>
-
-int DropDown::instances = 0;
-ResourceRef<Image> DropDown::buttons[2][2];
-ImageRect DropDown::skin;
-float DropDown::mAlpha = 1.0;
 
 DropDown::DropDown(gcn::ListModel *listModel):
     gcn::DropDown::DropDown(listModel,
@@ -47,99 +37,21 @@ DropDown::DropDown(gcn::ListModel *listModel):
                             new ListBox(listModel))
 {
     setFrameSize(2);
-
-    // Initialize graphics
-    if (instances == 0)
-    {
-        // Load the background skin
-
-        // Get the button skin
-        buttons[1][0] = Theme::getImageFromTheme("vscroll_up_default.png");
-        buttons[0][0] = Theme::getImageFromTheme("vscroll_down_default.png");
-        buttons[1][1] = Theme::getImageFromTheme("vscroll_up_pressed.png");
-        buttons[0][1] = Theme::getImageFromTheme("vscroll_down_pressed.png");
-
-        buttons[0][0]->setAlpha(mAlpha);
-        buttons[0][1]->setAlpha(mAlpha);
-        buttons[1][0]->setAlpha(mAlpha);
-        buttons[1][1]->setAlpha(mAlpha);
-
-        // get the border skin
-        auto boxBorder = Theme::getImageFromTheme("deepbox.png");
-        int gridx[4] = {0, 3, 28, 31};
-        int gridy[4] = {0, 3, 28, 31};
-        int a = 0;
-
-        for (int y = 0; y < 3; y++)
-        {
-            for (int x = 0; x < 3; x++)
-            {
-                skin.grid[a] = boxBorder->getSubImage(gridx[x], gridy[y],
-                                                      gridx[x + 1] -
-                                                      gridx[x] + 1,
-                                                      gridy[y + 1] -
-                                                      gridy[y] + 1);
-                a++;
-            }
-        }
-
-        skin.setAlpha(mAlpha);
-    }
-
-    instances++;
 }
 
 DropDown::~DropDown()
 {
-    instances--;
-    // Free images memory
-    if (instances == 0)
-    {
-        buttons[0][0] = nullptr;
-        buttons[0][1] = nullptr;
-        buttons[1][0] = nullptr;
-        buttons[1][1] = nullptr;
-
-        std::for_each(skin.grid, skin.grid + 9, dtor<Image*>());
-    }
-
     delete mScrollArea;
-}
-
-void DropDown::updateAlpha()
-{
-    float alpha = std::max(config.guiAlpha,
-                           Theme::instance()->getMinimumOpacity());
-
-    if (mAlpha != alpha)
-    {
-        mAlpha = alpha;
-
-        buttons[0][0]->setAlpha(mAlpha);
-        buttons[0][1]->setAlpha(mAlpha);
-        buttons[1][0]->setAlpha(mAlpha);
-        buttons[1][1]->setAlpha(mAlpha);
-
-        skin.setAlpha(mAlpha);
-    }
 }
 
 void DropDown::draw(gcn::Graphics* graphics)
 {
-    int h;
+    const int h = mDroppedDown ? mFoldedUpHeight : getHeight();
 
-    if (mDroppedDown)
-        h = mFoldedUpHeight;
-    else
-        h = getHeight();
-
-    updateAlpha();
-
-    const int alpha = (int) (mAlpha * 255.0f);
+    const int alpha = gui->getTheme()->getGuiAlpha();
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
-    const gcn::Color *highlightColor = &Theme::getThemeColor(Theme::HIGHLIGHT,
-                                                             alpha);
+    const gcn::Color *highlightColor = &Theme::getThemeColor(Theme::HIGHLIGHT, alpha);
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;
 
@@ -174,18 +86,24 @@ void DropDown::draw(gcn::Graphics* graphics)
 void DropDown::drawFrame(gcn::Graphics *graphics)
 {
     const int bs = getFrameSize();
-    const int w = getWidth() + bs * 2;
-    const int h = getHeight() + bs * 2;
 
-    static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
+    Theme::WidgetState state;
+    state.width = getWidth() + bs * 2;
+    state.height = getHeight() + bs * 2;
+
+    gui->getTheme()->drawDropDownFrame(static_cast<Graphics*>(graphics), state);
 }
 
 void DropDown::drawButton(gcn::Graphics *graphics)
 {
-    int height = mDroppedDown ? mFoldedUpHeight : getHeight();
+    Theme::WidgetState state;
+    state.width = getWidth();
+    state.height = mDroppedDown ? mFoldedUpHeight : getHeight();
+    state.enabled = isEnabled();
+    state.selected = mDroppedDown;
+    state.hovered = mPushed;
 
-    static_cast<Graphics*>(graphics)->
-        drawImage(buttons[mDroppedDown][mPushed], getWidth() - height + 2, 1);
+    gui->getTheme()->drawDropDownButton(static_cast<Graphics*>(graphics), state);
 }
 
 // -- KeyListener notifications

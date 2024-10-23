@@ -32,7 +32,6 @@
 #include "gui/sdlinput.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
@@ -97,16 +96,15 @@ public:
 
         auto *model = static_cast<ServersListModel*>(mListModel);
 
-        updateAlpha();
+        const int alpha = gui->getTheme()->getGuiAlpha();
 
-        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
-                                                (int) (mAlpha * 255.0f)));
+        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, alpha));
         graphics->setFont(getFont());
 
         const int height = getRowHeight();
         const gcn::Color unsupported =
                 Theme::getThemeColor(Theme::SERVER_VERSION_NOT_SUPPORTED,
-                                     (int) (mAlpha * 255.0f));
+                                     alpha);
 
         // Draw filled rectangle around the selected list element
         if (mSelected >= 0)
@@ -117,7 +115,7 @@ public:
         for (int i = 0, y = 0; i < model->getNumberOfElements();
              ++i, y += height)
         {
-            ServerInfo info = model->getServer(i);
+            const ServerInfo &info = model->getServer(i);
 
             graphics->setColor(Theme::getThemeColor(Theme::TEXT));
 

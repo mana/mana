@@ -25,6 +25,7 @@
 
 #include "configuration.h"
 #include "log.h"
+#include "textrenderer.h"
 
 #include "resources/dye.h"
 #include "resources/image.h"
@@ -36,13 +37,18 @@
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
+#include <guichan/font.hpp>
+
 #include <algorithm>
+#include <optional>
 
+/**
+ * Initializes the directory in which the client looks for GUI themes, which at
+ * the same time functions as a fallback directory when looking up files
+ * relevant for the GUI theme.
+ */
 static std::string defaultThemePath;
-std::string Theme::mThemePath;
-Theme *Theme::mInstance = nullptr;
 
-// Set the theme path...
 static void initDefaultThemePath()
 {
     defaultThemePath = branding.getStringValue("guiThemePath");
@@ -50,6 +56,21 @@ static void initDefaultThemePath()
     if (defaultThemePath.empty() || !FS::isDirectory(defaultThemePath))
         defaultThemePath = "graphics/gui/";
 }
+
+static std::optional<std::string> findThemePath(const std::string &theme)
+{
+    if (theme.empty())
+        return {};
+
+    std::string themePath = defaultThemePath;
+    themePath += theme;
+
+    if (FS::isDirectory(themePath))
+        return themePath;
+
+    return {};
+}
+
 
 Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown):
     mBorder(skin),
@@ -63,16 +84,10 @@ Skin::~Skin()
     // Clean up static resources
     for (auto img : mBorder.grid)
         delete img;
-
-    delete mStickyImageUp;
-    delete mStickyImageDown;
 }
 
-void Skin::updateAlpha(float minimumOpacityAllowed)
+void Skin::updateAlpha(float alpha)
 {
-    const float alpha = std::max(minimumOpacityAllowed,
-                                 config.guiAlpha);
-
     mBorder.setAlpha(alpha);
 
     mCloseImage->setAlpha(alpha);
@@ -92,13 +107,28 @@ int Skin::getMinHeight() const
            mBorder.grid[ImageRect::LOWER_LEFT]->getHeight();
 }
 
-Theme::Theme():
-    Palette(THEME_COLORS_END),
-    mMinimumOpacity(-1.0f),
-    mProgressColors(THEME_PROG_END)
-{
-    initDefaultThemePath();
 
+enum {
+    BUTTON_MODE_STANDARD,       // 0
+    BUTTON_MODE_HIGHLIGHTED,    // 1
+    BUTTON_MODE_PRESSED,        // 2
+    BUTTON_MODE_DISABLED,       // 3
+    BUTTON_MODE_COUNT           // 4 - Must be last.
+};
+
+enum {
+    TAB_STANDARD,    // 0
+    TAB_HIGHLIGHTED, // 1
+    TAB_SELECTED,    // 2
+    TAB_UNUSED,      // 3
+    TAB_COUNT        // 4 - Must be last.
+};
+
+Theme::Theme(const std::string &path)
+    : Palette(THEME_COLORS_END)
+    , mThemePath(path)
+    , mProgressColors(THEME_PROG_END)
+{
     listen(Event::ConfigChannel);
     loadColors();
 
@@ -113,31 +143,214 @@ Theme::Theme():
     mColors[SERVER].ch = 'S';
     mColors[LOGGER].ch = 'L';
     mColors[HYPERLINK].ch = '<';
+
+    // Button skin
+    struct ButtonData
+    {
+        char const *file;
+        int gridX;
+        int gridY;
+    };
+
+    constexpr ButtonData data[BUTTON_MODE_COUNT] = {
+        { "button.png", 0, 0 },
+        { "buttonhi.png", 9, 4 },
+        { "buttonpress.png", 16, 19 },
+        { "button_disabled.png", 25, 23 }
+    };
+
+    mButton = new ImageRect[BUTTON_MODE_COUNT];
+
+    for (int mode = 0; mode < BUTTON_MODE_COUNT; ++mode)
+    {
+        auto modeImage = getImage(data[mode].file);
+        int a = 0;
+        for (int y = 0; y < 3; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                mButton[mode].grid[a] = modeImage->getSubImage(
+                    data[x].gridX, data[y].gridY,
+                    data[x + 1].gridX - data[x].gridX + 1,
+                    data[y + 1].gridY - data[y].gridY + 1);
+                a++;
+            }
+        }
+    }
+
+    // Tab skin
+    struct TabData
+    {
+        char const *file;
+        int gridX[4];
+        int gridY[4];
+    };
+
+    constexpr TabData tabData[TAB_COUNT] = {
+        { "tab.png", {0, 9, 16, 25}, {0, 13, 19, 20} },
+        { "tab_hilight.png", {0, 9, 16, 25}, {0, 13, 19, 20} },
+        { "tabselected.png", {0, 9, 16, 25}, {0, 4, 12, 20} },
+        { "tab.png", {0, 9, 16, 25}, {0, 13, 19, 20} }
+    };
+
+    for (int mode = 0; mode < TAB_COUNT; mode++)
+    {
+        auto tabImage = getImage(tabData[mode].file);
+        int a = 0;
+        for (int y = 0; y < 3; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                mTabImg[mode].grid[a] = tabImage->getSubImage(
+                    tabData[mode].gridX[x], tabData[mode].gridY[y],
+                    tabData[mode].gridX[x + 1] - tabData[mode].gridX[x] + 1,
+                    tabData[mode].gridY[y + 1] - tabData[mode].gridY[y] + 1);
+                a++;
+            }
+        }
+        mTabImg[mode].setAlpha(mAlpha);
+    }
+
+    // TextField images
+    auto deepBox = getImage("deepbox.png");
+    constexpr int gridx[4] = {0, 3, 28, 31};
+    constexpr int gridy[4] = {0, 3, 28, 31};
+    int a = 0;
+
+    for (int y = 0; y < 3; y++)
+    {
+        for (int x = 0; x < 3; x++)
+        {
+            mDeepBoxImageRect.grid[a] = deepBox->getSubImage(gridx[x],
+                                                             gridy[y],
+                                                             gridx[x + 1] - gridx[x] + 1,
+                                                             gridy[y + 1] - gridy[y] + 1);
+            a++;
+        }
+    }
+
+    // CheckBox images
+    auto checkBox = getImage("checkbox.png");
+    mCheckBoxNormal.reset(checkBox->getSubImage(0, 0, 9, 10));
+    mCheckBoxChecked.reset(checkBox->getSubImage(9, 0, 9, 10));
+    mCheckBoxDisabled.reset(checkBox->getSubImage(18, 0, 9, 10));
+    mCheckBoxDisabledChecked.reset(checkBox->getSubImage(27, 0, 9, 10));
+    mCheckBoxNormalHi.reset(checkBox->getSubImage(36, 0, 9, 10));
+    mCheckBoxCheckedHi.reset(checkBox->getSubImage(45, 0, 9, 10));
+
+    // RadioButton images
+    mRadioNormal = getImage("radioout.png");
+    mRadioChecked = getImage("radioin.png");
+    mRadioDisabled = getImage("radioout.png");
+    mRadioDisabledChecked = getImage("radioin.png");
+    mRadioNormalHi = getImage("radioout_highlight.png");
+    mRadioCheckedHi = getImage("radioin_highlight.png");
+
+    // Slider images
+    int x, y, w, h, o1, o2;
+    auto slider = getImage("slider.png");
+    auto sliderHi = getImage("slider_hilight.png");
+
+    x = 0; y = 0;
+    w = 15; h = 6;
+    o1 = 4; o2 = 11;
+    hStart.reset(slider->getSubImage(x, y, o1 - x, h));
+    hMid.reset(slider->getSubImage(o1, y, o2 - o1, h));
+    hEnd.reset(slider->getSubImage(o2, y, w - o2 + x, h));
+    hStartHi.reset(sliderHi->getSubImage(x, y, o1 - x, h));
+    hMidHi.reset(sliderHi->getSubImage(o1, y, o2 - o1, h));
+    hEndHi.reset(sliderHi->getSubImage(o2, y, w - o2 + x, h));
+
+    x = 6; y = 8;
+    w = 9; h = 10;
+    hGrip.reset(slider->getSubImage(x, y, w, h));
+    hGripHi.reset(sliderHi->getSubImage(x, y, w, h));
+
+    x = 0; y = 6;
+    w = 6; h = 21;
+    o1 = 10; o2 = 18;
+    vStart.reset(slider->getSubImage(x, y, w, o1 - y));
+    vMid.reset(slider->getSubImage(x, o1, w, o2 - o1));
+    vEnd.reset(slider->getSubImage(x, o2, w, h - o2 + y));
+    vStartHi.reset(sliderHi->getSubImage(x, y, w, o1 - y));
+    vMidHi.reset(sliderHi->getSubImage(x, o1, w, o2 - o1));
+    vEndHi.reset(sliderHi->getSubImage(x, o2, w, h - o2 + y));
+
+    x = 6; y = 8;
+    w = 9; h = 10;
+    vGrip.reset(slider->getSubImage(x, y, w, h));
+    vGripHi.reset(sliderHi->getSubImage(x, y, w, h));
+
+    // ProgressBar and ScrollArea images
+    auto vscroll = getImage("vscroll_grey.png");
+    auto vscrollHi = getImage("vscroll_highlight.png");
+
+    constexpr int vsgridx[4] = {0, 4, 7, 11};
+    constexpr int vsgridy[4] = {0, 4, 15, 19};
+    a = 0;
+
+    for (int y = 0; y < 3; y++)
+    {
+        for (int x = 0; x < 3; x++)
+        {
+            mScrollBarMarker.grid[a] = vscroll->getSubImage(
+                vsgridx[x], vsgridy[y],
+                vsgridx[x + 1] - vsgridx[x],
+                vsgridy[y + 1] - vsgridy[y]);
+            mScrollBarMarkerHi.grid[a] = vscrollHi->getSubImage(
+                vsgridx[x], vsgridy[y],
+                vsgridx[x + 1] - vsgridx[x],
+                vsgridy[y + 1] - vsgridy[y]);
+            a++;
+        }
+    }
+
+    mScrollBarMarker.setAlpha(config.guiAlpha);
+    mScrollBarMarkerHi.setAlpha(config.guiAlpha);
+
+    // DropDown and ScrollArea buttons
+    mArrowButtons[ARROW_UP][0] = getImage("vscroll_up_default.png");
+    mArrowButtons[ARROW_DOWN][0] = getImage("vscroll_down_default.png");
+    mArrowButtons[ARROW_LEFT][0] = getImage("hscroll_left_default.png");
+    mArrowButtons[ARROW_RIGHT][0] = getImage("hscroll_right_default.png");
+    mArrowButtons[ARROW_UP][1] = getImage("vscroll_up_pressed.png");
+    mArrowButtons[ARROW_DOWN][1] = getImage("vscroll_down_pressed.png");
+    mArrowButtons[ARROW_LEFT][1] = getImage("hscroll_left_pressed.png");
+    mArrowButtons[ARROW_RIGHT][1] = getImage("hscroll_right_pressed.png");
+
+    mResizeGripImage = getImage("resize.png");
 }
 
 Theme::~Theme()
 {
-    delete_all(mSkins);
-    delete_all(mProgressColors);
+    for (int mode = 0; mode < BUTTON_MODE_COUNT; ++mode)
+    {
+        std::for_each(mButton[mode].grid, mButton[mode].grid + 9,
+                      dtor<Image*>());
+    }
+    delete[] mButton;
+
+    for (auto &imgRect : mTabImg)
+        std::for_each(imgRect.grid, imgRect.grid + 9, dtor<Image*>());
+
+    std::for_each(mDeepBoxImageRect.grid, mDeepBoxImageRect.grid + 9, dtor<Image*>());
+    std::for_each(mScrollBarMarker.grid, mScrollBarMarker.grid + 9, dtor<Image*>());
+    std::for_each(mScrollBarMarkerHi.grid, mScrollBarMarkerHi.grid + 9, dtor<Image*>());
 }
 
-Theme *Theme::instance()
+const gcn::Color &Theme::getThemeColor(int type, int alpha)
 {
-    if (!mInstance)
-        mInstance = new Theme;
-
-    return mInstance;
+    return gui->getTheme()->getColor(type, alpha);
 }
 
-void Theme::deleteInstance()
+const gcn::Color &Theme::getThemeColor(char c, bool &valid)
 {
-    delete mInstance;
-    mInstance = nullptr;
+    return gui->getTheme()->getColor(c, valid);
 }
 
 gcn::Color Theme::getProgressColor(int type, float progress)
 {
-    DyePalette *dye = mInstance->mProgressColors[type];
+    const auto &dye = gui->getTheme()->mProgressColors[type];
 
     int color[3] = {0, 0, 0};
     dye->getColor(progress, color);
@@ -145,42 +358,226 @@ gcn::Color Theme::getProgressColor(int type, float progress)
     return gcn::Color(color[0], color[1], color[2]);
 }
 
-Skin *Theme::load(const std::string &filename, const std::string &defaultPath)
+Skin *Theme::load(const std::string &filename)
 {
     // Check if this skin was already loaded
     auto skinIterator = mSkins.find(filename);
     if (skinIterator != mSkins.end())
     {
-        Skin *skin = skinIterator->second;
+        auto &skin = skinIterator->second;
         skin->instances++;
-        return skin;
+        return skin.get();
     }
 
-    Skin *skin = readSkin(filename);
-
+    auto skin = readSkin(filename);
     if (!skin)
     {
-        // Try falling back on the defaultPath if this makes sense
-        if (filename != defaultPath)
-        {
-            logger->log("Error loading skin '%s', falling back on default.",
-                        filename.c_str());
-
-            skin = readSkin(defaultPath);
-        }
-
-        if (!skin)
-        {
-            logger->error(strprintf("Error: Loading default skin '%s' failed. "
-                                    "Make sure the skin file is valid.",
-                                    defaultPath.c_str()));
-        }
+        logger->error(strprintf("Error: Loading default skin '%s' failed. "
+                                "Make sure the skin file is valid.",
+                                mThemePath.c_str()));
     }
 
     // Add the skin to the loaded skins
-    mSkins[filename] = skin;
+    return (mSkins[filename] = std::move(skin)).get();
+}
 
-    return skin;
+void Theme::drawButton(Graphics *graphics, const WidgetState &state) const
+{
+    int mode;
+
+    if (!state.enabled)
+        mode = BUTTON_MODE_DISABLED;
+    else if (state.selected)
+        mode = BUTTON_MODE_PRESSED;
+    else if (state.hovered || state.focused)
+        mode = BUTTON_MODE_HIGHLIGHTED;
+    else
+        mode = BUTTON_MODE_STANDARD;
+
+    graphics->drawImageRect(0, 0, state.width, state.height, mButton[mode]);
+}
+
+void Theme::drawTextFieldFrame(Graphics *graphics, const WidgetState &state) const
+{
+    graphics->drawImageRect(0, 0, state.width, state.height, mDeepBoxImageRect);
+}
+
+void Theme::drawTab(Graphics *graphics, const WidgetState &state) const
+{
+    int mode = TAB_STANDARD;
+
+    if (state.selected)
+        mode = TAB_SELECTED;
+    else if (state.hovered)
+        mode = TAB_HIGHLIGHTED;
+
+    graphics->drawImageRect(0, 0, state.width, state.height, mTabImg[mode]);
+}
+
+void Theme::drawCheckBox(gcn::Graphics *graphics, const WidgetState &state) const
+{
+    Image *box;
+
+    if (state.enabled)
+    {
+        if (state.selected)
+        {
+            if (state.hovered)
+                box = mCheckBoxCheckedHi.get();
+            else
+                box = mCheckBoxChecked.get();
+        }
+        else
+        {
+            if (state.hovered)
+                box = mCheckBoxNormalHi.get();
+            else
+                box = mCheckBoxNormal.get();
+        }
+    }
+    else
+    {
+        if (state.selected)
+            box = mCheckBoxDisabledChecked.get();
+        else
+            box = mCheckBoxDisabled.get();
+    }
+
+    static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
+}
+
+void Theme::drawRadioButton(gcn::Graphics *graphics, const WidgetState &state) const
+{
+    Image *box = nullptr;
+
+    if (state.enabled)
+    {
+        if (state.selected)
+        {
+            if (state.hovered)
+                box = mRadioCheckedHi;
+            else
+                box = mRadioChecked;
+        }
+        else
+        {
+            if (state.hovered)
+                box = mRadioNormalHi;
+            else
+                box = mRadioNormal;
+        }
+    }
+    else
+    {
+        if (state.selected)
+            box = mRadioDisabledChecked;
+        else
+            box = mRadioDisabled;
+    }
+
+    static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
+}
+
+void Theme::drawSlider(Graphics *graphics, const WidgetState &state, int markerPosition) const
+{
+    auto start = state.hovered ? hStartHi.get() : hStart.get();
+    auto mid = state.hovered ? hMidHi.get() : hMid.get();
+    auto end = state.hovered ? hEndHi.get() : hEnd.get();
+    auto grip = state.hovered ? hGripHi.get() : hGrip.get();
+
+    int w = state.width;
+    int h = state.height;
+    int x = 0;
+    int y = (h - start->getHeight()) / 2;
+
+    graphics->drawImage(start, x, y);
+
+    w -= start->getWidth() + end->getWidth();
+    x += start->getWidth();
+
+    graphics->drawImagePattern(mid, x, y, w, mid->getHeight());
+
+    x += w;
+    graphics->drawImage(end, x, y);
+
+    graphics->drawImage(grip, markerPosition, (state.height - grip->getHeight()) / 2);
+}
+
+void Theme::drawDropDownFrame(Graphics *graphics, const WidgetState &state) const
+{
+    graphics->drawImageRect(0, 0, state.width, state.height, mDeepBoxImageRect);
+}
+
+void Theme::drawDropDownButton(Graphics *graphics, const WidgetState &state) const
+{
+    const auto buttonDir = state.selected ? ARROW_UP : ARROW_DOWN;
+    const Image *img = mArrowButtons[buttonDir][state.hovered];
+    graphics->drawImage(img, state.width - img->getHeight() - 2, 2);
+}
+
+void Theme::drawProgressBar(Graphics *graphics, const gcn::Rectangle &area,
+                            const gcn::Color &color, float progress,
+                            const std::string &text) const
+{
+    gcn::Font *oldFont = graphics->getFont();
+    gcn::Color oldColor = graphics->getColor();
+
+    graphics->drawImageRect(area, mScrollBarMarker);
+
+    // The bar
+    if (progress > 0)
+    {
+        graphics->setColor(color);
+        graphics->fillRectangle(gcn::Rectangle(area.x + 4,
+                                               area.y + 4,
+                                               (int) (progress * (area.width - 8)),
+                                               area.height - 8));
+    }
+
+    // The label
+    if (!text.empty())
+    {
+        const int textX = area.x + area.width / 2;
+        const int textY = area.y + (area.height - boldFont->getHeight()) / 2;
+
+        TextRenderer::renderText(graphics,
+                                 text,
+                                 textX,
+                                 textY,
+                                 gcn::Graphics::CENTER,
+                                 Theme::getThemeColor(Theme::PROGRESS_BAR),
+                                 gui->getFont(),
+                                 true,
+                                 false);
+    }
+
+    graphics->setFont(oldFont);
+    graphics->setColor(oldColor);
+}
+
+void Theme::drawScrollAreaFrame(Graphics *graphics, const WidgetState &state) const
+{
+    graphics->drawImageRect(0, 0, state.width, state.height, mDeepBoxImageRect);
+}
+
+void Theme::drawScrollAreaButton(Graphics *graphics,
+                                 ArrowButtonDirection dir,
+                                 bool pressed,
+                                 const gcn::Rectangle &dim) const
+{
+    const int state = pressed ? 1 : 0;
+    graphics->drawImage(mArrowButtons[dir][state], dim.x, dim.y);
+}
+
+void Theme::drawScrollAreaMarker(Graphics *graphics, bool hovered, const gcn::Rectangle &dim) const
+{
+    const auto &imageRect = hovered ? mScrollBarMarkerHi : mScrollBarMarker;
+    graphics->drawImageRect(dim.x, dim.y, dim.width, dim.height, imageRect);
+}
+
+int Theme::getSliderMarkerLength() const
+{
+    return hGrip->getWidth();
 }
 
 void Theme::setMinimumOpacity(float minimumOpacity)
@@ -194,8 +591,68 @@ void Theme::setMinimumOpacity(float minimumOpacity)
 
 void Theme::updateAlpha()
 {
+    const float alpha = std::max(config.guiAlpha, mMinimumOpacity);
+    if (mAlpha == alpha)
+        return;
+
+    mAlpha = alpha;
+
     for (auto &skin : mSkins)
-        skin.second->updateAlpha(mMinimumOpacity);
+        skin.second->updateAlpha(mAlpha);
+
+    for (int mode = 0; mode < BUTTON_MODE_COUNT; ++mode)
+        mButton[mode].setAlpha(mAlpha);
+
+    for (auto &t : mTabImg)
+        t.setAlpha(mAlpha);
+
+    mDeepBoxImageRect.setAlpha(mAlpha);
+
+    mCheckBoxNormal->setAlpha(mAlpha);
+    mCheckBoxChecked->setAlpha(mAlpha);
+    mCheckBoxDisabled->setAlpha(mAlpha);
+    mCheckBoxDisabledChecked->setAlpha(mAlpha);
+    mCheckBoxNormalHi->setAlpha(mAlpha);
+    mCheckBoxCheckedHi->setAlpha(mAlpha);
+
+    mRadioNormal->setAlpha(mAlpha);
+    mRadioChecked->setAlpha(mAlpha);
+    mRadioDisabled->setAlpha(mAlpha);
+    mRadioDisabledChecked->setAlpha(mAlpha);
+    mRadioNormalHi->setAlpha(mAlpha);
+    mRadioCheckedHi->setAlpha(mAlpha);
+
+    hStart->setAlpha(mAlpha);
+    hMid->setAlpha(mAlpha);
+    hEnd->setAlpha(mAlpha);
+    hGrip->setAlpha(mAlpha);
+    hStartHi->setAlpha(mAlpha);
+    hMidHi->setAlpha(mAlpha);
+    hEndHi->setAlpha(mAlpha);
+    hGripHi->setAlpha(mAlpha);
+
+    vStart->setAlpha(mAlpha);
+    vMid->setAlpha(mAlpha);
+    vEnd->setAlpha(mAlpha);
+    vGrip->setAlpha(mAlpha);
+    vStartHi->setAlpha(mAlpha);
+    vMidHi->setAlpha(mAlpha);
+    vEndHi->setAlpha(mAlpha);
+    vGripHi->setAlpha(mAlpha);
+
+    mScrollBarMarker.setAlpha(mAlpha);
+    mScrollBarMarkerHi.setAlpha(mAlpha);
+
+    mArrowButtons[ARROW_UP][0]->setAlpha(mAlpha);
+    mArrowButtons[ARROW_DOWN][0]->setAlpha(mAlpha);
+    mArrowButtons[ARROW_LEFT][0]->setAlpha(mAlpha);
+    mArrowButtons[ARROW_RIGHT][0]->setAlpha(mAlpha);
+    mArrowButtons[ARROW_UP][1]->setAlpha(mAlpha);
+    mArrowButtons[ARROW_DOWN][1]->setAlpha(mAlpha);
+    mArrowButtons[ARROW_LEFT][1]->setAlpha(mAlpha);
+    mArrowButtons[ARROW_RIGHT][1]->setAlpha(mAlpha);
+
+    mResizeGripImage->setAlpha(mAlpha);
 }
 
 void Theme::event(Event::Channel channel, const Event &event)
@@ -208,14 +665,14 @@ void Theme::event(Event::Channel channel, const Event &event)
     }
 }
 
-Skin *Theme::readSkin(const std::string &filename)
+std::unique_ptr<Skin> Theme::readSkin(const std::string &filename) const
 {
     if (filename.empty())
         return nullptr;
 
     logger->log("Loading skin '%s'.", filename.c_str());
 
-    XML::Document doc(resolveThemePath(filename));
+    XML::Document doc(resolvePath(filename));
     XML::Node rootNode = doc.rootNode();
 
     if (!rootNode || rootNode.name() != "skinset")
@@ -232,7 +689,7 @@ Skin *Theme::readSkin(const std::string &filename)
     logger->log("Theme::load(): <skinset> defines '%s' as a skin image.",
                 skinSetImage.c_str());
 
-    auto dBorders = Theme::getImageFromTheme(skinSetImage);
+    auto dBorders = getImage(skinSetImage);
     ImageRect border;
     memset(&border, 0, sizeof(ImageRect));
 
@@ -301,48 +758,31 @@ Skin *Theme::readSkin(const std::string &filename)
     logger->log("Finished loading skin.");
 
     // Hard-coded for now until we update the above code to look for window buttons
-    auto closeImage = Theme::getImageFromTheme("close_button.png");
-    auto sticky = Theme::getImageFromTheme("sticky_button.png");
+    auto closeImage = getImage("close_button.png");
+    auto sticky = getImage("sticky_button.png");
     Image *stickyImageUp = sticky->getSubImage(0, 0, 15, 15);
     Image *stickyImageDown = sticky->getSubImage(15, 0, 15, 15);
 
-    Skin *skin = new Skin(border, closeImage, stickyImageUp, stickyImageDown);
-    skin->updateAlpha(mMinimumOpacity);
+    auto skin = std::make_unique<Skin>(border, closeImage, stickyImageUp, stickyImageDown);
+    skin->updateAlpha(mAlpha);
     return skin;
 }
 
-bool Theme::tryThemePath(std::string themePath)
+std::string Theme::prepareThemePath()
 {
-    if (!themePath.empty())
-    {
-        themePath = defaultThemePath + themePath;
-
-        if (FS::exists(themePath))
-        {
-            mThemePath = themePath;
-            return true;
-        }
-    }
-
-    return false;
-}
-
-void Theme::prepareThemePath()
-{
-    // Ensure the Theme object has been created
-    instance();
+    initDefaultThemePath();
 
     // Try theme from settings
-    if (!tryThemePath(config.theme))
-        // Try theme from branding
-        if (!tryThemePath(branding.getStringValue("theme")))
-            // Use default
-            mThemePath = defaultThemePath;
+    auto themePath = findThemePath(config.theme);
 
-    instance()->loadColors(mThemePath);
+    // Try theme from branding
+    if (!themePath)
+        themePath = findThemePath(branding.getStringValue("theme"));
+
+    return themePath.value_or(defaultThemePath);
 }
 
-std::string Theme::resolveThemePath(const std::string &path)
+std::string Theme::resolvePath(const std::string &path) const
 {
     // Need to strip off any dye info for the existence tests
     int pos = path.find('|');
@@ -352,23 +792,23 @@ std::string Theme::resolveThemePath(const std::string &path)
     else
         file = path;
 
-    // Might be a valid path already
-    if (FS::exists(file))
-        return path;
-
     // Try the theme
-    file = getThemePath() + "/" + file;
+    file = mThemePath + "/" + file;
     if (FS::exists(file))
-        return getThemePath() + "/" + path;
+        return mThemePath + "/" + path;
 
     // Backup
-    return std::string(defaultThemePath) + "/" + path;
+    return defaultThemePath + "/" + path;
+}
+
+ResourceRef<Image> Theme::getImage(const std::string &path) const
+{
+    return ResourceManager::getInstance()->getImage(resolvePath(path));
 }
 
 ResourceRef<Image> Theme::getImageFromTheme(const std::string &path)
 {
-    ResourceManager *resman = ResourceManager::getInstance();
-    return resman->getImage(resolveThemePath(path));
+    return gui->getTheme()->getImage(path);
 }
 
 static int readColorType(const std::string &type)
@@ -499,15 +939,9 @@ static int readProgressType(const std::string &type)
     return -1;
 }
 
-void Theme::loadColors(std::string file)
+void Theme::loadColors()
 {
-    if (file == defaultThemePath)
-        return; // No need to reload
-
-    if (file.empty())
-        file = defaultThemePath;
-
-    file += "/colors.xml";
+    std::string file = resolvePath("colors.xml");
 
     XML::Document doc(file);
     XML::Node root = doc.rootNode();
@@ -518,35 +952,30 @@ void Theme::loadColors(std::string file)
         return;
     }
 
-    int type;
-    std::string temp;
-    gcn::Color color;
-    GradientType grad;
-
     for (auto node : root.children())
     {
         if (node.name() == "color")
         {
-            type = readColorType(node.getProperty("id", ""));
+            const int type = readColorType(node.getProperty("id", std::string()));
             if (type < 0) // invalid or no type given
                 continue;
 
-            temp = node.getProperty("color", "");
+            const std::string temp = node.getProperty("color", std::string());
             if (temp.empty()) // no color set, so move on
                 continue;
 
-            color = readColor(temp);
-            grad = readColorGradient(node.getProperty("effect", ""));
+            const gcn::Color color = readColor(temp);
+            const GradientType grad = readColorGradient(node.getProperty("effect", std::string()));
 
             mColors[type].set(type, color, grad, 10);
         }
         else if (node.name() == "progressbar")
         {
-            type = readProgressType(node.getProperty("id", ""));
+            const int type = readProgressType(node.getProperty("id", std::string()));
             if (type < 0) // invalid or no type given
                 continue;
 
-            mProgressColors[type] = new DyePalette(node.getProperty("color", ""));
+            mProgressColors[type] = std::make_unique<DyePalette>(node.getProperty("color", std::string()));
         }
     }
 }

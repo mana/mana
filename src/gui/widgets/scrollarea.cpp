@@ -21,20 +21,10 @@
 
 #include "gui/widgets/scrollarea.h"
 
-#include "configuration.h"
 #include "graphics.h"
 
-#include "resources/image.h"
+#include "gui/gui.h"
 #include "resources/theme.h"
-
-#include "utils/dtor.h"
-
-int ScrollArea::instances = 0;
-float ScrollArea::mAlpha = 1.0;
-ImageRect ScrollArea::background;
-ImageRect ScrollArea::vMarker;
-ImageRect ScrollArea::vMarkerHi;
-ResourceRef<Image> ScrollArea::buttons[4][2];
 
 ScrollArea::ScrollArea()
 {
@@ -51,24 +41,6 @@ ScrollArea::ScrollArea(gcn::Widget *widget):
 ScrollArea::~ScrollArea()
 {
     delete getContent();
-
-    instances--;
-
-    if (instances == 0)
-    {
-        std::for_each(background.grid, background.grid + 9, dtor<Image*>());
-        std::for_each(vMarker.grid, vMarker.grid + 9, dtor<Image*>());
-        std::for_each(vMarkerHi.grid, vMarkerHi.grid + 9, dtor<Image*>());
-
-        buttons[UP][0] = nullptr;
-        buttons[UP][1] = nullptr;
-        buttons[DOWN][0] = nullptr;
-        buttons[DOWN][1] = nullptr;
-        buttons[LEFT][0] = nullptr;
-        buttons[LEFT][1] = nullptr;
-        buttons[RIGHT][0] = nullptr;
-        buttons[RIGHT][1] = nullptr;
-    }
 }
 
 void ScrollArea::init()
@@ -80,74 +52,6 @@ void ScrollArea::init()
     setDownButtonScrollAmount(2);
     setLeftButtonScrollAmount(2);
     setRightButtonScrollAmount(2);
-
-    if (instances == 0)
-    {
-        // Load the background skin
-        auto textbox = Theme::getImageFromTheme("deepbox.png");
-        const int bggridx[4] = {0, 3, 28, 31};
-        const int bggridy[4] = {0, 3, 28, 31};
-        int a = 0;
-
-        for (int y = 0; y < 3; y++)
-        {
-            for (int x = 0; x < 3; x++)
-            {
-                background.grid[a] = textbox->getSubImage(
-                        bggridx[x], bggridy[y],
-                        bggridx[x + 1] - bggridx[x] + 1,
-                        bggridy[y + 1] - bggridy[y] + 1);
-                a++;
-            }
-        }
-        background.setAlpha(config.guiAlpha);
-
-        // Load vertical scrollbar skin
-        auto vscroll = Theme::getImageFromTheme("vscroll_grey.png");
-        auto vscrollHi = Theme::getImageFromTheme("vscroll_highlight.png");
-
-        int vsgridx[4] = {0, 4, 7, 11};
-        int vsgridy[4] = {0, 4, 15, 19};
-        a = 0;
-
-        for (int y = 0; y < 3; y++)
-        {
-            for (int x = 0; x < 3; x++)
-            {
-                vMarker.grid[a] = vscroll->getSubImage(
-                        vsgridx[x], vsgridy[y],
-                        vsgridx[x + 1] - vsgridx[x],
-                        vsgridy[y + 1] - vsgridy[y]);
-                vMarkerHi.grid[a] = vscrollHi->getSubImage(
-                        vsgridx[x], vsgridy[y],
-                        vsgridx[x + 1] - vsgridx[x],
-                        vsgridy[y + 1] - vsgridy[y]);
-                a++;
-            }
-        }
-
-        vMarker.setAlpha(config.guiAlpha);
-        vMarkerHi.setAlpha(config.guiAlpha);
-
-        buttons[UP][0] =
-            Theme::getImageFromTheme("vscroll_up_default.png");
-        buttons[DOWN][0] =
-            Theme::getImageFromTheme("vscroll_down_default.png");
-        buttons[LEFT][0] =
-            Theme::getImageFromTheme("hscroll_left_default.png");
-        buttons[RIGHT][0] =
-            Theme::getImageFromTheme("hscroll_right_default.png");
-        buttons[UP][1] =
-            Theme::getImageFromTheme("vscroll_up_pressed.png");
-        buttons[DOWN][1] =
-            Theme::getImageFromTheme("vscroll_down_pressed.png");
-        buttons[LEFT][1] =
-            Theme::getImageFromTheme("hscroll_left_pressed.png");
-        buttons[RIGHT][1] =
-            Theme::getImageFromTheme("hscroll_right_pressed.png");
-    }
-
-    instances++;
 }
 
 void ScrollArea::logic()
@@ -196,73 +100,24 @@ void ScrollArea::logic()
     }
 }
 
-void ScrollArea::updateAlpha()
-{
-    float alpha = std::max(config.guiAlpha,
-                           Theme::instance()->getMinimumOpacity());
-
-    if (alpha != mAlpha)
-    {
-        mAlpha = alpha;
-
-        background.setAlpha(mAlpha);
-        vMarker.setAlpha(mAlpha);
-        vMarkerHi.setAlpha(mAlpha);
-    }
-}
-
-void ScrollArea::draw(gcn::Graphics *graphics)
-{
-    updateAlpha();
-    gcn::ScrollArea::draw(graphics);
-}
-
 void ScrollArea::drawFrame(gcn::Graphics *graphics)
 {
-    if (mOpaque)
-    {
-        const int bs = getFrameSize();
-        const int w = getWidth() + bs * 2;
-        const int h = getHeight() + bs * 2;
+    if (!mOpaque)
+        return;
 
-        static_cast<Graphics*>(graphics)->
-                drawImageRect(0, 0, w, h, background);
-    }
+    const int bs = getFrameSize();
+
+    Theme::WidgetState state;
+    state.width = getWidth() + bs * 2;
+    state.height = getHeight() + bs * 2;
+
+    gui->getTheme()->drawScrollAreaFrame(static_cast<Graphics *>(graphics), state);
 }
 
 void ScrollArea::setOpaque(bool opaque)
 {
     mOpaque = opaque;
     setFrameSize(mOpaque ? 2 : 0);
-}
-
-void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)
-{
-    int state = 0;
-    gcn::Rectangle dim;
-
-    switch (dir)
-    {
-        case UP:
-            state = mUpButtonPressed ? 1 : 0;
-            dim = getUpButtonDimension();
-            break;
-        case DOWN:
-            state = mDownButtonPressed ? 1 : 0;
-            dim = getDownButtonDimension();
-            break;
-        case LEFT:
-            state = mLeftButtonPressed ? 1 : 0;
-            dim = getLeftButtonDimension();
-            break;
-        case RIGHT:
-            state = mRightButtonPressed ? 1 : 0;
-            dim = getRightButtonDimension();
-            break;
-    }
-
-    static_cast<Graphics*>(graphics)->
-        drawImage(buttons[dir][state], dim.x, dim.y);
 }
 
 void ScrollArea::drawBackground(gcn::Graphics *graphics)
@@ -272,62 +127,68 @@ void ScrollArea::drawBackground(gcn::Graphics *graphics)
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)
 {
-    drawButton(graphics, UP);
+    auto theme = gui->getTheme();
+    theme->drawScrollAreaButton(static_cast<Graphics *>(graphics),
+                                Theme::ARROW_UP,
+                                mUpButtonPressed,
+                                getUpButtonDimension());
 }
 
 void ScrollArea::drawDownButton(gcn::Graphics *graphics)
 {
-    drawButton(graphics, DOWN);
+    auto theme = gui->getTheme();
+    theme->drawScrollAreaButton(static_cast<Graphics *>(graphics),
+                                Theme::ARROW_DOWN,
+                                mDownButtonPressed,
+                                getDownButtonDimension());
 }
 
 void ScrollArea::drawLeftButton(gcn::Graphics *graphics)
 {
-    drawButton(graphics, LEFT);
+    auto theme = gui->getTheme();
+    theme->drawScrollAreaButton(static_cast<Graphics *>(graphics),
+                                Theme::ARROW_LEFT,
+                                mLeftButtonPressed,
+                                getLeftButtonDimension());
 }
 
 void ScrollArea::drawRightButton(gcn::Graphics *graphics)
 {
-    drawButton(graphics, RIGHT);
+    auto theme = gui->getTheme();
+    theme->drawScrollAreaButton(static_cast<Graphics *>(graphics),
+                                Theme::ARROW_RIGHT,
+                                mRightButtonPressed,
+                                getRightButtonDimension());
 }
 
 void ScrollArea::drawVBar(gcn::Graphics *graphics)
 {
-    const gcn::Rectangle dim = getVerticalBarDimension();
     graphics->setColor(gcn::Color(0, 0, 0, 32));
-    graphics->fillRectangle(dim);
+    graphics->fillRectangle(getVerticalBarDimension());
     graphics->setColor(gcn::Color(255, 255, 255));
 }
 
 void ScrollArea::drawHBar(gcn::Graphics *graphics)
 {
-    const gcn::Rectangle dim = getHorizontalBarDimension();
     graphics->setColor(gcn::Color(0, 0, 0, 32));
-    graphics->fillRectangle(dim);
+    graphics->fillRectangle(getHorizontalBarDimension());
     graphics->setColor(gcn::Color(255, 255, 255));
 }
 
 void ScrollArea::drawVMarker(gcn::Graphics *graphics)
 {
-    gcn::Rectangle dim = getVerticalMarkerDimension();
-
-    if ((mHasMouse) && (mX > (getWidth() - getScrollbarWidth())))
-        static_cast<Graphics*>(graphics)->
-            drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarkerHi);
-    else
-        static_cast<Graphics*>(graphics)->
-            drawImageRect(dim.x, dim.y, dim.width, dim.height,vMarker);
+    auto theme = gui->getTheme();
+    theme->drawScrollAreaMarker(static_cast<Graphics *>(graphics),
+                                mHasMouse && (mX > (getWidth() - getScrollbarWidth())),
+                                getVerticalMarkerDimension());
 }
 
 void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 {
-    gcn::Rectangle dim = getHorizontalMarkerDimension();
-
-    if ((mHasMouse) && (mY > (getHeight() - getScrollbarWidth())))
-        static_cast<Graphics*>(graphics)->
-            drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarkerHi);
-    else
-        static_cast<Graphics*>(graphics)->
-            drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarker);
+    auto theme = gui->getTheme();
+    theme->drawScrollAreaMarker(static_cast<Graphics *>(graphics),
+                                mHasMouse && (mY > (getHeight() - getScrollbarWidth())),
+                                getHorizontalMarkerDimension());
 }
 
 void ScrollArea::mouseMoved(gcn::MouseEvent& event)
@@ -348,6 +209,9 @@ void ScrollArea::mouseExited(gcn::MouseEvent& event)
 
 void ScrollArea::widgetResized(const gcn::Event &event)
 {
-    getContent()->setSize(getWidth() - 2 * getFrameSize(),
-                          getHeight() - 2 * getFrameSize());
+    if (auto content = getContent())
+    {
+        content->setSize(getWidth() - 2 * getFrameSize(),
+                         getHeight() - 2 * getFrameSize());
+    }
 }

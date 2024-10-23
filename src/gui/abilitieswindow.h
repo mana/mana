@@ -55,4 +55,3 @@ class AbilitiesWindow : public Window, public gcn::ActionListener
 };
 
 extern AbilitiesWindow *abilitiesWindow;
-

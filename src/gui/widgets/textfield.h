@@ -26,8 +26,6 @@
 #include <vector>
 
 class TextInput;
-class ImageRect;
-class TextField;
 
 struct TextHistory
 {
@@ -78,17 +76,11 @@ class TextField : public gcn::TextField
          */
         TextField(const std::string &text = std::string(),
                   bool loseFocusOnTab = true);
-        ~TextField() override;
 
         /**
          * Draws the text field.
          */
         void draw(gcn::Graphics *graphics) override;
-
-        /**
-         * Update the alpha value to the graphic components.
-         */
-        static void updateAlpha();
 
         /**
          * Draws the background and border.
@@ -163,9 +155,6 @@ class TextField : public gcn::TextField
         void autoComplete();
         void handlePaste();
 
-        static int instances;
-        static float mAlpha;
-        static ImageRect skin;
         bool mNumeric = false;
         int mMinimum;
         int mMaximum;

@@ -30,7 +30,6 @@
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/listbox.h"
-#include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tab.h"
 #include "gui/widgets/tabbedarea.h"
@@ -132,14 +131,12 @@ public:
         if (!mListModel)
             return;
 
-        auto* model = static_cast<SkillModel*>(mListModel);
+        auto *model = static_cast<SkillModel *>(mListModel);
+        auto *graphics = static_cast<Graphics *>(gcnGraphics);
 
-        updateAlpha();
+        const int alpha = gui->getTheme()->getGuiAlpha();
 
-        auto *graphics = static_cast<Graphics*>(gcnGraphics);
-
-        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
-                                                (int) (mAlpha * 255.0f)));
+        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, alpha));
         graphics->setFont(getFont());
 
         // Draw filled rectangle around the selected list element
@@ -155,12 +152,8 @@ public:
              i < model->getNumberOfElements();
              ++i, y += getRowHeight())
         {
-            SkillInfo *e = model->getSkillAt(i);
-
-            if (e)
-            {
+            if (SkillInfo *e = model->getSkillAt(i))
                 e->draw(graphics, y, getWidth());
-            }
         }
     }
 
@@ -482,8 +475,7 @@ void SkillInfo::draw(Graphics *graphics, int y, int width)
 
     if (!skillExp.empty())
     {
-        gcn::Rectangle rect(33, y + 15, width - 33, 17);
-
-        ProgressBar::render(graphics, rect, color, progress, skillExp);
+        const gcn::Rectangle rect(33, y + 15, width - 33, 17);
+        gui->getTheme()->drawProgressBar(graphics, rect, color, progress, skillExp);
     }
 }

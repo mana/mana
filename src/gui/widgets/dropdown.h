@@ -21,11 +21,7 @@
 
 #pragma once
 
-#include "resources/resource.h"
 #include <guichan/widgets/dropdown.hpp>
-
-class Image;
-class ImageRect;
 
 /**
  * A drop down box from which you can select different values.
@@ -46,11 +42,6 @@ class DropDown : public gcn::DropDown
         DropDown(gcn::ListModel *listModel = nullptr);
 
         ~DropDown() override;
-
-        /**
-         * Update the alpha value to the graphic components.
-         */
-        static void updateAlpha();
 
         void draw(gcn::Graphics *graphics) override;
 
@@ -79,10 +70,4 @@ class DropDown : public gcn::DropDown
          * @param graphics a Graphics object to draw with.
          */
         void drawButton(gcn::Graphics *graphics) override;
-
-        // Add own Images.
-        static int instances;
-        static ResourceRef<Image> buttons[2][2];
-        static ImageRect skin;
-        static float mAlpha;
 };

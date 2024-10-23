@@ -24,7 +24,6 @@
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
-#include "item.h"
 #include "keyboardconfig.h"
 
 #include "resources/emotedb.h"

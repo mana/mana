@@ -21,22 +21,13 @@
 
 #include "gui/widgets/progressbar.h"
 
-#include "configuration.h"
 #include "graphics.h"
-#include "textrenderer.h"
 
 #include "gui/gui.h"
 
-#include "resources/image.h"
 #include "resources/theme.h"
 
-#include "utils/dtor.h"
-
 #include <guichan/font.hpp>
-
-ImageRect ProgressBar::mBorder;
-int ProgressBar::mInstances = 0;
-float ProgressBar::mAlpha = 1.0;
 
 ProgressBar::ProgressBar(float progress,
                          int width, int height,
@@ -53,34 +44,6 @@ ProgressBar::ProgressBar(float progress,
                                                   mProgress);
 
     setSize(width, height);
-
-    if (mInstances == 0)
-    {
-        auto dBorders = Theme::getImageFromTheme("vscroll_grey.png");
-        mBorder.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
-        mBorder.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
-        mBorder.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
-        mBorder.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
-        mBorder.grid[4] = dBorders->getSubImage(4, 4, 3, 10);
-        mBorder.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
-        mBorder.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
-        mBorder.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
-        mBorder.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
-
-        mBorder.setAlpha(mAlpha);
-    }
-
-    mInstances++;
-}
-
-ProgressBar::~ProgressBar()
-{
-    mInstances--;
-
-    if (mInstances == 0)
-    {
-        std::for_each(mBorder.grid, mBorder.grid + 9, dtor<Image*>());
-    }
 }
 
 void ProgressBar::logic()
@@ -112,30 +75,19 @@ void ProgressBar::logic()
     }
 }
 
-void ProgressBar::updateAlpha()
-{
-    float alpha = std::max(config.guiAlpha,
-                           Theme::instance()->getMinimumOpacity());
-
-    if (mAlpha != alpha)
-    {
-        mAlpha = alpha;
-        mBorder.setAlpha(mAlpha);
-    }
-}
-
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
-    updateAlpha();
-
-    mColor.a = (int) (mAlpha * 255);
+    mColor.a = gui->getTheme()->getGuiAlpha();
 
     gcn::Rectangle rect = getDimension();
     rect.x = 0;
     rect.y = 0;
 
-    render(static_cast<Graphics*>(graphics), rect, mColor,
-           mProgress, mText);
+    gui->getTheme()->drawProgressBar(static_cast<Graphics *>(graphics),
+                                     rect,
+                                     mColor,
+                                     mProgress,
+                                     mText);
 }
 
 void ProgressBar::setProgress(float progress)
@@ -147,9 +99,7 @@ void ProgressBar::setProgress(float progress)
         mProgress = p;
 
     if (mProgressPalette >= 0)
-    {
         mColorToGo = Theme::getProgressColor(mProgressPalette, progress);
-    }
 }
 
 void ProgressBar::setProgressPalette(int progressPalette)
@@ -158,9 +108,7 @@ void ProgressBar::setProgressPalette(int progressPalette)
     mProgressPalette = progressPalette;
 
     if (mProgressPalette != oldPalette && mProgressPalette >= 0)
-    {
         mColorToGo = Theme::getProgressColor(mProgressPalette, mProgressToGo);
-    }
 }
 
 void ProgressBar::setColor(const gcn::Color &color)
@@ -169,38 +117,4 @@ void ProgressBar::setColor(const gcn::Color &color)
 
     if (!mSmoothColorChange)
         mColor = color;
-}
-
-void ProgressBar::render(Graphics *graphics, const gcn::Rectangle &area,
-                         const gcn::Color &color, float progress,
-                         const std::string &text)
-{
-    gcn::Font *oldFont = graphics->getFont();
-    gcn::Color oldColor = graphics->getColor();
-
-    graphics->drawImageRect(area, mBorder);
-
-    // The bar
-    if (progress > 0)
-    {
-        graphics->setColor(color);
-        graphics->fillRectangle(gcn::Rectangle(area.x + 4, area.y + 4,
-                               (int) (progress * (area.width - 8)),
-                                area.height - 8));
-    }
-
-    // The label
-    if (!text.empty())
-    {
-        const int textX = area.x + area.width / 2;
-        const int textY = area.y + (area.height - boldFont->getHeight()) / 2;
-
-        TextRenderer::renderText(graphics, text, textX, textY,
-                                 gcn::Graphics::CENTER,
-                                 Theme::getThemeColor(Theme::PROGRESS_BAR),
-                                 gui->getFont(), true, false);
-    }
-
-    graphics->setFont(oldFont);
-    graphics->setColor(oldColor);
 }

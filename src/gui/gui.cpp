@@ -56,8 +56,9 @@ gcn::Font *monoFont = nullptr;
 
 bool Gui::debugDraw;
 
-Gui::Gui(Graphics *graphics)
-    : mCustomCursorScale(Client::getVideo().settings().scale())
+Gui::Gui(Graphics *graphics, const std::string &themePath)
+    : mTheme(new Theme(themePath))
+    , mCustomCursorScale(Client::getVideo().settings().scale())
 {
     logger->log("Initializing GUI...");
     // Set graphics
@@ -152,8 +153,6 @@ Gui::~Gui()
     delete getTop();
 
     delete guiInput;
-
-    Theme::deleteInstance();
 }
 
 void Gui::logic()
@@ -271,7 +270,7 @@ void Gui::loadCustomCursors()
 
     mCustomMouseCursors.clear();
 
-    const std::string cursorPath = Theme::resolveThemePath("mouse.png");
+    const std::string cursorPath = mTheme->resolvePath("mouse.png");
     SDL_Surface *mouseSurface = loadSurface(cursorPath);
     if (!mouseSurface)
     {

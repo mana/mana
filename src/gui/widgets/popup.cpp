@@ -25,8 +25,8 @@
 #include "graphics.h"
 #include "log.h"
 
+#include "gui/gui.h"
 #include "gui/viewport.h"
-
 #include "gui/widgets/windowcontainer.h"
 
 #include "resources/theme.h"
@@ -46,7 +46,7 @@ Popup::Popup(const std::string &name, const std::string &skin):
     setPadding(6);
 
     // Loads the skin
-    mSkin = Theme::instance()->load(skin);
+    mSkin = gui->getTheme()->load(skin);
 
     // Add this window to the window container
     windowContainer->add(this);

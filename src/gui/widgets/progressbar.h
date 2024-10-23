@@ -25,9 +25,6 @@
 
 #include <string>
 
-class Graphics;
-class ImageRect;
-
 /**
  * A progress bar.
  *
@@ -43,17 +40,10 @@ class ProgressBar : public gcn::Widget
                     int width = 40, int height = 7,
                     int color = -1);
 
-        ~ProgressBar() override;
-
         /**
          * Performs progress bar logic (fading colors)
          */
         void logic() override;
-
-        /**
-         * Update the alpha value to the graphic components.
-         */
-        static void updateAlpha();
 
         /**
          * Draws the progress bar.
@@ -110,13 +100,6 @@ class ProgressBar : public gcn::Widget
         void setSmoothColorChange(bool smoothColorChange)
         { mSmoothColorChange = smoothColorChange; }
 
-        /**
-         * Renders a progressbar with the given properties.
-         */
-        static void render(Graphics *graphics, const gcn::Rectangle &area,
-                           const gcn::Color &color, float progress,
-                           const std::string &text = std::string());
-
     private:
         float mProgress, mProgressToGo;
         bool mSmoothProgress = true;
@@ -127,10 +110,4 @@ class ProgressBar : public gcn::Widget
         bool mSmoothColorChange = true;
 
         std::string mText;
-
-        static ImageRect mBorder;
-        static int mInstances;
-        static float mAlpha;
-
-        static const gcn::Color TEXT_COLOR;
 };

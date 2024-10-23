@@ -57,11 +57,6 @@ class Button : public gcn::Button
          */
         void draw(gcn::Graphics *graphics) override;
 
-        /**
-         * Update the alpha value to the button components.
-         */
-        void updateAlpha();
-
         void adjustSize();
 
         void setCaption(const std::string &caption);
@@ -92,9 +87,7 @@ class Button : public gcn::Button
 
         void removeButtonIcon();
 
-        static ImageRect* mButton;      /**< Button state graphics */
         static int mInstances;          /**< Number of button instances */
-        static float mAlpha;
 
         std::vector<std::unique_ptr<Image>> mButtonIcon;  /**< Button Icons graphics */
 
@@ -102,6 +95,6 @@ class Button : public gcn::Button
          * The buttons popup
          * @note: This is a global object. One for all the buttons.
          */
-        static TextPopup* mTextPopup;
+        static TextPopup *mTextPopup;
         std::string mPopupText;         /**< the current button text */
 };

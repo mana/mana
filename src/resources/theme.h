@@ -27,9 +27,10 @@
 #include "eventlistener.h"
 
 #include "gui/palette.h"
-#include "resources/resource.h"
+#include "resources/image.h"
 
 #include <map>
+#include <memory>
 #include <string>
 
 class DyePalette;
@@ -58,7 +59,7 @@ class Skin
          * Returns the image used by a sticky button for this skin.
          */
         Image *getStickyImage(bool state) const
-        { return state ? mStickyImageDown : mStickyImageUp; }
+        { return state ? mStickyImageDown.get() : mStickyImageUp.get(); }
 
         /**
          * Returns the minimum width which can be used with this skin.
@@ -73,33 +74,38 @@ class Skin
         /**
          * Updates the alpha value of the skin
          */
-        void updateAlpha(float minimumOpacityAllowed = 0.0f);
+        void updateAlpha(float alpha);
 
         int instances = 0;
 
     private:
         ImageRect mBorder;              /**< The window border and background */
         ResourceRef<Image> mCloseImage; /**< Close Button Image */
-        Image *mStickyImageUp;          /**< Sticky Button Image */
-        Image *mStickyImageDown;        /**< Sticky Button Image */
+        std::unique_ptr<Image> mStickyImageUp;          /**< Sticky Button Image */
+        std::unique_ptr<Image> mStickyImageDown;        /**< Sticky Button Image */
 };
 
 class Theme : public Palette, public EventListener
 {
     public:
-        static Theme *instance();
-        static void deleteInstance();
+        static std::string prepareThemePath();
 
-        static void prepareThemePath();
-        static const std::string &getThemePath() { return mThemePath; }
+        Theme(const std::string &path);
+        ~Theme() override;
 
         /**
-         * Returns the patch to the given gui resource relative to the theme
+         * Returns the patch to the given GUI resource relative to the theme
          * or, if it isn't in the theme, relative to 'graphics/gui'.
          */
-        static std::string resolveThemePath(const std::string &path);
-
+        std::string resolvePath(const std::string &path) const;
         static ResourceRef<Image> getImageFromTheme(const std::string &path);
+
+        enum ArrowButtonDirection {
+            ARROW_UP,
+            ARROW_DOWN,
+            ARROW_LEFT,
+            ARROW_RIGHT
+        };
 
         enum ThemePalette {
             TEXT,
@@ -165,34 +171,58 @@ class Theme : public Palette, public EventListener
          *
          * @return the requested color
          */
-        static const gcn::Color &getThemeColor(int type, int alpha = 255)
-        {
-            return mInstance->getColor(type, alpha);
-        }
-
-        static const gcn::Color &getThemeColor(char c, bool &valid)
-        {
-            return mInstance->getColor(c, valid);
-        }
+        static const gcn::Color &getThemeColor(int type, int alpha = 255);
+        static const gcn::Color &getThemeColor(char c, bool &valid);
 
         static gcn::Color getProgressColor(int type, float progress);
 
         /**
          * Loads a skin.
          */
-        Skin *load(const std::string &filename,
-                   const std::string &defaultPath = getThemePath());
+        Skin *load(const std::string &filename);
+
+        struct WidgetState
+        {
+            int width = 0;
+            int height = 0;
+            bool enabled = true;
+            bool hovered = false;
+            bool selected = false;
+            bool focused = false;
+        };
+
+        void drawButton(Graphics *graphics, const WidgetState &state) const;
+        void drawTextFieldFrame(Graphics *graphics, const WidgetState &state) const;
+        void drawTab(Graphics *graphics, const WidgetState &state) const;
+        void drawCheckBox(gcn::Graphics *graphics, const WidgetState &state) const;
+        void drawRadioButton(gcn::Graphics *graphics, const WidgetState &state) const;
+        void drawSlider(Graphics *graphics, const WidgetState &state, int markerPosition) const;
+        void drawDropDownFrame(Graphics *graphics, const WidgetState &state) const;
+        void drawDropDownButton(Graphics *graphics, const WidgetState &state) const;
+        void drawProgressBar(Graphics *graphics,
+                             const gcn::Rectangle &area,
+                             const gcn::Color &color,
+                             float progress,
+                             const std::string &text = std::string()) const;
+        void drawScrollAreaFrame(Graphics *graphics, const WidgetState &state) const;
+        void drawScrollAreaButton(Graphics *graphics,
+                                  ArrowButtonDirection dir,
+                                  bool pressed,
+                                  const gcn::Rectangle &dim) const;
+        void drawScrollAreaMarker(Graphics *graphics, bool hovered, const gcn::Rectangle &dim) const;
+
+        int getSliderMarkerLength() const;
+        const Image *getResizeGripImage() const { return mResizeGripImage; }
 
         /**
-         * Updates the alpha values of all of the skins.
+         * Get the current GUI alpha value.
          */
-        void updateAlpha();
+        int getGuiAlpha() const { return static_cast<int>(mAlpha * 255.0f); }
 
         /**
          * Get the minimum opacity allowed to skins.
          */
-        float getMinimumOpacity() const
-        { return mMinimumOpacity; }
+        float getMinimumOpacity() const { return mMinimumOpacity; }
 
         /**
          * Set the minimum opacity allowed to skins.
@@ -203,26 +233,57 @@ class Theme : public Palette, public EventListener
         void event(Event::Channel channel, const Event &event) override;
 
     private:
-        Theme();
-        ~Theme() override;
+        /**
+         * Updates the alpha values of all of the skins and images.
+         */
+        void updateAlpha();
 
-        Skin *readSkin(const std::string &filename);
+        std::unique_ptr<Skin> readSkin(const std::string &filename) const;
+
+        ResourceRef<Image> getImage(const std::string &path) const;
 
         // Map containing all window skins
-        std::map<std::string, Skin *> mSkins;
+        std::map<std::string, std::unique_ptr<Skin>> mSkins;
 
-        static std::string mThemePath;
-        static Theme *mInstance;
+        std::string mThemePath;
 
-        static bool tryThemePath(std::string themePath);
-
-        void loadColors(std::string file = std::string());
+        void loadColors();
 
         /**
          * Tells if the current skins opacity
          * should not get less than the given value
          */
-        float mMinimumOpacity;
+        float mMinimumOpacity = 0.0f;
+        float mAlpha = 1.0;
 
-        std::vector<DyePalette *> mProgressColors;
+        std::vector<std::unique_ptr<DyePalette>> mProgressColors;
+
+        ImageRect *mButton;     /**< Button state graphics */
+        ImageRect mTabImg[4];   /**< Tab state graphics */
+        ImageRect mDeepBoxImageRect;
+
+        std::unique_ptr<Image> mCheckBoxNormal;
+        std::unique_ptr<Image> mCheckBoxChecked;
+        std::unique_ptr<Image> mCheckBoxDisabled;
+        std::unique_ptr<Image> mCheckBoxDisabledChecked;
+        std::unique_ptr<Image> mCheckBoxNormalHi;
+        std::unique_ptr<Image> mCheckBoxCheckedHi;
+
+        ResourceRef<Image> mRadioNormal;
+        ResourceRef<Image> mRadioChecked;
+        ResourceRef<Image> mRadioDisabled;
+        ResourceRef<Image> mRadioDisabledChecked;
+        ResourceRef<Image> mRadioNormalHi;
+        ResourceRef<Image> mRadioCheckedHi;
+
+        std::unique_ptr<Image> hStart, hMid, hEnd, hGrip;
+        std::unique_ptr<Image> vStart, vMid, vEnd, vGrip;
+        std::unique_ptr<Image> hStartHi, hMidHi, hEndHi, hGripHi;
+        std::unique_ptr<Image> vStartHi, vMidHi, vEndHi, vGripHi;
+
+        ImageRect mScrollBarMarker;
+        ImageRect mScrollBarMarkerHi;
+        ResourceRef<Image> mArrowButtons[4][2];
+
+        ResourceRef<Image> mResizeGripImage;
 };

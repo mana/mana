@@ -23,8 +23,6 @@
 
 #include <guichan/widgets/checkbox.hpp>
 
-class Image;
-
 /**
  * Check box widget. Same as the Guichan check box but with custom look.
  *
@@ -35,41 +33,26 @@ class CheckBox : public gcn::CheckBox
     public:
         CheckBox(const std::string &caption, bool selected = false);
 
-        ~CheckBox() override;
-
         /**
          * Draws the caption, then calls drawBox to draw the check box.
          */
-        void draw(gcn::Graphics* graphics) override;
-
-        /**
-         * Update the alpha value to the checkbox components.
-         */
-        void updateAlpha();
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Draws the check box, not the caption.
          */
-        void drawBox(gcn::Graphics* graphics) override;
+        void drawBox(gcn::Graphics *graphics) override;
 
         /**
          * Called when the mouse enteres the widget area.
          */
-        void mouseEntered(gcn::MouseEvent& event) override;
+        void mouseEntered(gcn::MouseEvent &event) override;
 
         /**
          * Called when the mouse leaves the widget area.
          */
-        void mouseExited(gcn::MouseEvent& event) override;
+        void mouseExited(gcn::MouseEvent &event) override;
 
     private:
-        static int instances;
-        static float mAlpha;
         bool mHasMouse = false;
-        static Image *checkBoxNormal;
-        static Image *checkBoxChecked;
-        static Image *checkBoxDisabled;
-        static Image *checkBoxDisabledChecked;
-        static Image *checkBoxNormalHi;
-        static Image *checkBoxCheckedHi;
 };

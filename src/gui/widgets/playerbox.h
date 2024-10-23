@@ -21,17 +21,16 @@
 
 #pragma once
 
-#include <guichan/widgets/scrollarea.hpp>
+#include "scrollarea.h"
 
 class Being;
-class ImageRect;
 
 /**
  * A box showing a player character.
  *
  * \ingroup GUI
  */
-class PlayerBox : public gcn::ScrollArea
+class PlayerBox : public ScrollArea
 {
     public:
         /**
@@ -39,8 +38,6 @@ class PlayerBox : public gcn::ScrollArea
          * display, which defaults to <code>NULL</code>.
          */
         PlayerBox(const Being *being = nullptr);
-
-        ~PlayerBox() override;
 
         /**
          * Sets a new player character to be displayed by this box. Setting the
@@ -51,19 +48,10 @@ class PlayerBox : public gcn::ScrollArea
         { mBeing = being; }
 
         /**
-         * Draws the scroll area.
+         * Draws the scroll area and the player.
          */
         void draw(gcn::Graphics *graphics) override;
 
-        /**
-         * Draws the background and border of the scroll area.
-         */
-        void drawFrame(gcn::Graphics *graphics) override;
-
     private:
         const Being *mBeing; /**< The character used for display */
-
-        static float mAlpha;
-        static int instances;
-        static ImageRect background;
 };

@@ -21,8 +21,7 @@
 
 #include "gui/widgets/listbox.h"
 
-#include "configuration.h"
-
+#include "gui/gui.h"
 #include "gui/sdlinput.h"
 
 #include "resources/theme.h"
@@ -32,20 +31,9 @@
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
 
-float ListBox::mAlpha = 1.0;
-
 ListBox::ListBox(gcn::ListModel *listModel):
     gcn::ListBox(listModel)
 {
-}
-
-void ListBox::updateAlpha()
-{
-    float alpha = std::max(config.guiAlpha,
-                           Theme::instance()->getMinimumOpacity());
-
-    if (mAlpha != alpha)
-        mAlpha = alpha;
 }
 
 void ListBox::draw(gcn::Graphics *graphics)
@@ -53,10 +41,9 @@ void ListBox::draw(gcn::Graphics *graphics)
     if (!mListModel)
         return;
 
-    updateAlpha();
+    const int alpha = gui->getTheme()->getGuiAlpha();
 
-    graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
-                                            (int) (mAlpha * 255.0f)));
+    graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, alpha));
     graphics->setFont(getFont());
 
     const int height = getRowHeight();

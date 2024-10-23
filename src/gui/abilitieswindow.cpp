@@ -180,7 +180,7 @@ AbilityEntry::AbilityEntry(AbilityInfo *info) :
     if (!info->icon.empty())
         mIcon = new Icon(info->icon);
     else
-        mIcon = new Icon(Theme::resolveThemePath("unknown-item.png"));
+        mIcon = new Icon(Theme::getImageFromTheme("unknown-item.png"));
 
     mIcon->setPosition(1, 0);
     add(mIcon);

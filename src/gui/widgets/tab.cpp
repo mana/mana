@@ -21,44 +21,14 @@
 
 #include "gui/widgets/tab.h"
 
-#include "configuration.h"
 #include "graphics.h"
 
+#include "gui/gui.h"
 #include "gui/widgets/tabbedarea.h"
 
-#include "resources/image.h"
 #include "resources/theme.h"
 
-#include "utils/dtor.h"
-
 #include <guichan/widgets/label.hpp>
-
-int Tab::mInstances = 0;
-float Tab::mAlpha = 1.0;
-
-enum {
-    TAB_STANDARD,    // 0
-    TAB_HIGHLIGHTED, // 1
-    TAB_SELECTED,    // 2
-    TAB_UNUSED,      // 3
-    TAB_COUNT        // 4 - Must be last.
-};
-
-struct TabData
-{
-    char const *file;
-    int gridX[4];
-    int gridY[4];
-};
-
-static TabData const data[TAB_COUNT] = {
-    { "tab.png", {0, 9, 16, 25}, {0, 13, 19, 20} },
-    { "tab_hilight.png", {0, 9, 16, 25}, {0, 13, 19, 20} },
-    { "tabselected.png", {0, 9, 16, 25}, {0, 4, 12, 20} },
-    { "tab.png", {0, 9, 16, 25}, {0, 13, 19, 20} }
-};
-
-ImageRect Tab::tabImg[TAB_COUNT];
 
 Tab::Tab() :
     mTabColor(&Theme::getThemeColor(Theme::TAB))
@@ -66,96 +36,32 @@ Tab::Tab() :
     init();
 }
 
-Tab::~Tab()
-{
-    mInstances--;
-
-    if (mInstances == 0)
-    {
-        for (auto &imgRect : tabImg)
-        {
-            std::for_each(imgRect.grid, imgRect.grid + 9, dtor<Image*>());
-        }
-    }
-}
-
 void Tab::init()
 {
     setFocusable(false);
     setFrameSize(0);
-    mFlash = false;
-
-    if (mInstances == 0)
-    {
-        // Load the skin
-        for (int mode = 0; mode < TAB_COUNT; mode++)
-        {
-            auto tabImage = Theme::getImageFromTheme(data[mode].file);
-            int a = 0;
-            for (int y = 0; y < 3; y++)
-            {
-                for (int x = 0; x < 3; x++)
-                {
-                    tabImg[mode].grid[a] = tabImage->getSubImage(
-                            data[mode].gridX[x], data[mode].gridY[y],
-                            data[mode].gridX[x + 1] - data[mode].gridX[x] + 1,
-                            data[mode].gridY[y + 1] - data[mode].gridY[y] + 1);
-                    a++;
-                }
-            }
-            tabImg[mode].setAlpha(mAlpha);
-        }
-    }
-    mInstances++;
-}
-
-void Tab::updateAlpha()
-{
-    float alpha = std::max(config.guiAlpha,
-                           Theme::instance()->getMinimumOpacity());
-
-    // TODO We don't need to do this for every tab on every draw
-    // Maybe use a config listener to do it as the value changes.
-    if (alpha != mAlpha)
-    {
-        mAlpha = alpha;
-
-        for (auto &t : tabImg)
-        {
-            t.setAlpha(mAlpha);
-        }
-    }
 }
 
 void Tab::draw(gcn::Graphics *graphics)
 {
-    int mode = TAB_STANDARD;
+    Theme::WidgetState state;
+    state.width = getWidth();
+    state.height = getHeight();
+    state.enabled = isEnabled();
+    state.hovered = mHasMouse;
+    state.selected = mTabbedArea && mTabbedArea->isTabSelected(this);
+    state.focused = isFocused();
 
-    // check which type of tab to draw
-    if (mTabbedArea)
-    {
+    gui->getTheme()->drawTab(static_cast<Graphics*>(graphics), state);
+
+    // if tab is selected, it doesnt need to highlight activity
+    if (state.selected)
+        mFlash = false;
+
+    if (mFlash)
+        mLabel->setForegroundColor(Theme::getThemeColor(Theme::TAB_FLASH));
+    else
         mLabel->setForegroundColor(*mTabColor);
-        if (mTabbedArea->isTabSelected(this))
-        {
-            mode = TAB_SELECTED;
-            // if tab is selected, it doesnt need to highlight activity
-            mFlash = false;
-        }
-        else if (mHasMouse)
-        {
-            mode = TAB_HIGHLIGHTED;
-        }
-        if (mFlash)
-        {
-            mLabel->setForegroundColor(Theme::getThemeColor(Theme::TAB_FLASH));
-        }
-    }
-
-    updateAlpha();
-
-    // draw tab
-    static_cast<Graphics*>(graphics)->
-        drawImageRect(0, 0, getWidth(), getHeight(), tabImg[mode]);
 
     // draw label
     drawChildren(graphics);

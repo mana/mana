@@ -21,22 +21,18 @@
 
 #include "gui/widgets/button.h"
 
-#include "configuration.h"
 #include "graphics.h"
 
+#include "gui/gui.h"
 #include "gui/textpopup.h"
 
 #include "resources/image.h"
 #include "resources/theme.h"
 
-#include "utils/dtor.h"
-
 #include <guichan/exception.hpp>
 #include <guichan/font.hpp>
 
 int Button::mInstances = 0;
-float Button::mAlpha = 1.0;
-ImageRect *Button::mButton;
 TextPopup *Button::mTextPopup = nullptr;
 
 enum {
@@ -45,20 +41,6 @@ enum {
     BUTTON_PRESSED,     // 2
     BUTTON_DISABLED,    // 3
     BUTTON_COUNT        // 4 - Must be last.
-};
-
-struct ButtonData
-{
-    char const *file;
-    int gridX;
-    int gridY;
-};
-
-static ButtonData const data[BUTTON_COUNT] = {
-    { "button.png", 0, 0 },
-    { "buttonhi.png", 9, 4 },
-    { "buttonpress.png", 16, 19 },
-    { "button_disabled.png", 25, 23 }
 };
 
 Button::Button()
@@ -79,6 +61,8 @@ Button::Button(const std::string &caption, const std::string &actionEventId,
 
     adjustSize();
 }
+
+Button::~Button() = default;
 
 bool Button::setButtonIcon(const std::string &iconFile)
 {
@@ -129,27 +113,6 @@ void Button::init()
 
     if (mInstances == 0)
     {
-        // Load the skin
-        mButton = new ImageRect[BUTTON_COUNT];
-
-        for (int mode = 0; mode < BUTTON_COUNT; ++mode)
-        {
-            auto modeImage = Theme::getImageFromTheme(data[mode].file);
-            int a = 0;
-            for (int y = 0; y < 3; y++)
-            {
-                for (int x = 0; x < 3; x++)
-                {
-                    mButton[mode].grid[a] = modeImage->getSubImage(
-                            data[x].gridX, data[y].gridY,
-                            data[x + 1].gridX - data[x].gridX + 1,
-                            data[y + 1].gridY - data[y].gridY + 1);
-                    a++;
-                }
-            }
-        }
-        updateAlpha();
-
         // Create the tooltip popup. It is shared by all buttons and will get
         // deleted by the WindowContainer.
         if (!mTextPopup)
@@ -158,53 +121,28 @@ void Button::init()
     mInstances++;
 }
 
-Button::~Button()
-{
-    mInstances--;
-
-    if (mInstances == 0)
-    {
-        for (int mode = 0; mode < BUTTON_COUNT; ++mode)
-        {
-            std::for_each(mButton[mode].grid, mButton[mode].grid + 9,
-                dtor<Image*>());
-        }
-        delete[] mButton;
-    }
-}
-
-void Button::updateAlpha()
-{
-    float alpha = std::max(config.guiAlpha,
-                           Theme::instance()->getMinimumOpacity());
-
-    if (mAlpha != alpha)
-    {
-        mAlpha = alpha;
-        for (int mode = 0; mode < BUTTON_COUNT; ++mode)
-        {
-            mButton[mode].setAlpha(mAlpha);
-        }
-    }
-}
-
 void Button::draw(gcn::Graphics *graphics)
 {
+    Theme::WidgetState state;
+    state.width = getWidth();
+    state.height = getHeight();
+    state.enabled = isEnabled();
+    state.hovered = mHasMouse;
+    state.selected = isPressed();
+    state.focused = isFocused();
+
+    gui->getTheme()->drawButton(static_cast<Graphics*>(graphics), state);
+
     int mode;
 
-    if (!isEnabled())
+    if (!state.enabled)
         mode = BUTTON_DISABLED;
-    else if (isPressed())
+    else if (state.selected)
         mode = BUTTON_PRESSED;
-    else if (mHasMouse || isFocused())
+    else if (state.hovered || state.focused)
         mode = BUTTON_HIGHLIGHTED;
     else
         mode = BUTTON_STANDARD;
-
-    updateAlpha();
-
-    static_cast<Graphics*>(graphics)->
-        drawImageRect(0, 0, getWidth(), getHeight(), mButton[mode]);
 
     if (mode == BUTTON_DISABLED)
         graphics->setColor(Theme::getThemeColor(Theme::BUTTON_DISABLED));

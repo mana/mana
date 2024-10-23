@@ -21,11 +21,7 @@
 
 #pragma once
 
-#include "resources/resource.h"
-
 #include <guichan/widgets/radiobutton.hpp>
-
-class Image;
 
 /**
  * Guichan based RadioButton with custom look
@@ -33,10 +29,9 @@ class Image;
 class RadioButton : public gcn::RadioButton
 {
     public:
-        RadioButton(const std::string &caption,const std::string &group,
-                bool marked = false);
-
-        ~RadioButton() override;
+        RadioButton(const std::string &caption,
+                    const std::string &group,
+                    bool marked = false);
 
         /**
          * Draws the radiobutton, not the caption.
@@ -60,13 +55,5 @@ class RadioButton : public gcn::RadioButton
         void mouseExited(gcn::MouseEvent& event) override;
 
     private:
-        static int instances;
-        static float mAlpha;
         bool mHasMouse = false;
-        static ResourceRef<Image> radioNormal;
-        static ResourceRef<Image> radioChecked;
-        static ResourceRef<Image> radioDisabled;
-        static ResourceRef<Image> radioDisabledChecked;
-        static ResourceRef<Image> radioNormalHi;
-        static ResourceRef<Image> radioCheckedHi;
 };

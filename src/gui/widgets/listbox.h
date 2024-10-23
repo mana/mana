@@ -42,11 +42,6 @@ class ListBox : public gcn::ListBox
          */
         void draw(gcn::Graphics *graphics) override;
 
-        /**
-         * Update the alpha value to the graphic components.
-         */
-        static void updateAlpha();
-
         // Inherited from KeyListener
 
         void keyPressed(gcn::KeyEvent& keyEvent) override;
@@ -60,7 +55,4 @@ class ListBox : public gcn::ListBox
         void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent) override;
 
         void mouseDragged(gcn::MouseEvent &event) override;
-
-    protected:
-        static float mAlpha;
 };

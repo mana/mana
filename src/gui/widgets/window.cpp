@@ -63,7 +63,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     setTitleBarHeight(20);
 
     // Loads the skin
-    mSkin = Theme::instance()->load(skin);
+    mSkin = gui->getTheme()->load(skin);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -695,7 +695,7 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
 int Window::getGuiAlpha()
 {
     float alpha = std::max(config.guiAlpha,
-                           Theme::instance()->getMinimumOpacity());
+                           gui->getTheme()->getMinimumOpacity());
     return (int) (alpha * 255.0f);
 }
 

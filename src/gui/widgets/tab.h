@@ -23,7 +23,6 @@
 
 #include <guichan/widgets/tab.hpp>
 
-class ImageRect;
 class TabbedArea;
 
 /**
@@ -34,12 +33,6 @@ class Tab : public gcn::Tab
 {
     public:
         Tab();
-        ~Tab() override;
-
-        /**
-         * Update the alpha value to the graphic components.
-         */
-        static void updateAlpha();
 
         /**
          * Draw the tabbed area.
@@ -64,10 +57,6 @@ class Tab : public gcn::Tab
         /** Load images if no other instances exist yet */
         void init();
 
-        static ImageRect tabImg[4];    /**< Tab state graphics */
-        static int mInstances;         /**< Number of tab instances */
-        static float mAlpha;
-
         const gcn::Color *mTabColor;
-        bool mFlash;
+        bool mFlash = false;
 };

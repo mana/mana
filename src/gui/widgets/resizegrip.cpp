@@ -21,48 +21,23 @@
 
 #include "gui/widgets/resizegrip.h"
 
-#include "configuration.h"
 #include "graphics.h"
 
+#include "gui/gui.h"
 #include "resources/image.h"
 #include "resources/theme.h"
 
 #include <guichan/graphics.hpp>
 
-ResourceRef<Image> ResizeGrip::gripImage;
-int ResizeGrip::mInstances = 0;
-float ResizeGrip::mAlpha = 1.0;
-
-ResizeGrip::ResizeGrip(const std::string &image)
+ResizeGrip::ResizeGrip()
 {
-    if (mInstances == 0)
-    {
-        // Load the grip image
-        gripImage = Theme::getImageFromTheme(image);
-        gripImage->setAlpha(mAlpha);
-    }
-
-    mInstances++;
-
-    setWidth(gripImage->getWidth() + 2);
-    setHeight(gripImage->getHeight() + 2);
-}
-
-ResizeGrip::~ResizeGrip()
-{
-    mInstances--;
-
-    if (mInstances == 0)
-        gripImage = nullptr;
+    const auto gripImage = gui->getTheme()->getResizeGripImage();
+    setSize(gripImage->getWidth() + 2,
+            gripImage->getHeight() + 2);
 }
 
 void ResizeGrip::draw(gcn::Graphics *graphics)
 {
-    if (config.guiAlpha != mAlpha)
-    {
-        mAlpha = config.guiAlpha;
-        gripImage->setAlpha(mAlpha);
-    }
-
+    const auto gripImage = gui->getTheme()->getResizeGripImage();
     static_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
 }

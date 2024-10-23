@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include "resources/resource.h"
-
 #include <guichan/widgetlistener.hpp>
 #include <guichan/widgets/scrollarea.hpp>
 
@@ -66,16 +64,6 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         void logic() override;
 
         /**
-         * Update the alpha value to the graphic components.
-         */
-        static void updateAlpha();
-
-        /**
-         * Draws the scroll area.
-         */
-        void draw(gcn::Graphics *graphics) override;
-
-        /**
          * Draws the background and border of the scroll area.
          */
         void drawFrame(gcn::Graphics *graphics) override;
@@ -108,19 +96,11 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         void widgetResized(const gcn::Event &event) override;
 
     protected:
-        enum BUTTON_DIR {
-            UP,
-            DOWN,
-            LEFT,
-            RIGHT
-        };
-
         /**
          * Initializes the scroll area.
          */
         void init();
 
-        void drawButton(gcn::Graphics *graphics, BUTTON_DIR dir);
         void drawBackground(gcn::Graphics *graphics) override;
         void drawUpButton(gcn::Graphics *graphics) override;
         void drawDownButton(gcn::Graphics *graphics) override;
@@ -130,13 +110,6 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         void drawHBar(gcn::Graphics *graphics) override;
         void drawVMarker(gcn::Graphics *graphics) override;
         void drawHMarker(gcn::Graphics *graphics) override;
-
-        static int instances;
-        static float mAlpha;
-        static ImageRect background;
-        static ImageRect vMarker;
-        static ImageRect vMarkerHi;
-        static ResourceRef<Image> buttons[4][2];
 
         int mX = 0;
         int mY = 0;
