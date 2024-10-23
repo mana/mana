@@ -125,29 +125,6 @@ std::string removeColors(std::string msg)
     return msg;
 }
 
-int compareStrI(const std::string &a, const std::string &b)
-{
-    std::string::const_iterator itA = a.begin();
-    std::string::const_iterator endA = a.end();
-    std::string::const_iterator itB = b.begin();
-    std::string::const_iterator endB = b.end();
-
-    for (; itA < endA && itB < endB; ++itA, ++itB)
-    {
-        int comp = tolower(*itA) - tolower(*itB);
-        if (comp)
-            return comp;
-    }
-
-    // Check string lengths
-    if (itA == endA && itB == endB)
-        return 0;
-    else if (itA == endA)
-        return -1;
-    else
-        return 1;
-}
-
 bool isWordSeparator(char chr)
 {
     return (chr == ' ' || chr == ',' || chr == '.' || chr == '"');

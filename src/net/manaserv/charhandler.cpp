@@ -44,6 +44,7 @@
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 extern Net::CharHandler *charHandler;
 extern ManaServ::GameHandler *gameHandler;

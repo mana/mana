@@ -455,7 +455,7 @@ void ServerDialog::loadServer(XML::Node serverNode)
     std::string version = serverNode.getProperty("minimumVersion",
                                                  std::string());
 
-    bool meetsMinimumVersion = compareStrI(version, PACKAGE_VERSION) <= 0;
+    bool meetsMinimumVersion = strcmp(version.c_str(), PACKAGE_VERSION) <= 0;
 
     // For display in the list
     if (meetsMinimumVersion)

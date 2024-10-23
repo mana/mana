@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include "utils/stringutils.h"
-
 #include <cstdint>
 #include <deque>
 #include <string>
@@ -74,12 +72,12 @@ public:
 
     static ServerType parseType(const std::string &type)
     {
-        if (compareStrI(type, "tmwathena") == 0)
+        if (type == "tmwathena")
             return ServerType::TMWATHENA;
         // Used for backward compatibility
-        if (compareStrI(type, "eathena") == 0)
+        if (type == "eathena")
             return ServerType::TMWATHENA;
-        if (compareStrI(type, "manaserv") == 0)
+        if (type == "manaserv")
             return ServerType::MANASERV;
         return ServerType::UNKNOWN;
     }

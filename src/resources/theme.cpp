@@ -373,7 +373,7 @@ ResourceRef<Image> Theme::getImageFromTheme(const std::string &path)
 
 static int readColorType(const std::string &type)
 {
-    static std::string colors[] = {
+    static const char *colors[] = {
         "TEXT",
         "SHADOW",
         "OUTLINE",
@@ -419,12 +419,8 @@ static int readColorType(const std::string &type)
         return -1;
 
     for (int i = 0; i < Theme::THEME_COLORS_END; i++)
-    {
-        if (compareStrI(type, colors[i]) == 0)
-        {
+        if (type == colors[i])
             return i;
-        }
-    }
 
     return -1;
 }
@@ -463,7 +459,7 @@ static gcn::Color readColor(const std::string &description)
 
 static Palette::GradientType readColorGradient(const std::string &grad)
 {
-    static std::string grads[] = {
+    static const char *grads[] = {
         "STATIC",
         "PULSE",
         "SPECTRUM",
@@ -474,17 +470,15 @@ static Palette::GradientType readColorGradient(const std::string &grad)
         return Palette::STATIC;
 
     for (int i = 0; i < 4; i++)
-    {
-        if (compareStrI(grad, grads[i]))
-            return (Palette::GradientType) i;
-    }
+        if (grad == grads[i])
+            return static_cast<Palette::GradientType>(i);
 
     return Palette::STATIC;
 }
 
 static int readProgressType(const std::string &type)
 {
-    static std::string colors[] = {
+    static const char *colors[] = {
         "DEFAULT",
         "HP",
         "MP",
@@ -499,10 +493,8 @@ static int readProgressType(const std::string &type)
         return -1;
 
     for (int i = 0; i < Theme::THEME_PROG_END; i++)
-    {
-        if (compareStrI(type, colors[i]) == 0)
+        if (type == colors[i])
             return i;
-    }
 
     return -1;
 }

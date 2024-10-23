@@ -25,6 +25,7 @@
 
 #include "utils/filesystem.h"
 #include "utils/gettext.h"
+#include "utils/stringutils.h"
 #include "utils/xml.h"
 
 #include <getopt.h>
