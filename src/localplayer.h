@@ -213,7 +213,7 @@ class LocalPlayer final : public Being
          * Compute the next pathnode location when walking using keyboard.
          * used by nextTile().
          */
-        Position getNextWalkPosition(unsigned char dir);
+        Position getNextWalkPosition(unsigned char dir) const;
 
         void pathFinished() override { nextTile(mWalkingDir); }
 

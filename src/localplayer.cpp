@@ -175,7 +175,7 @@ void LocalPlayer::setGMLevel(int level)
 }
 
 
-Position LocalPlayer::getNextWalkPosition(unsigned char dir)
+Position LocalPlayer::getNextWalkPosition(unsigned char dir) const
 {
     // Compute where the next tile will be set.
     int dx = 0;
@@ -205,14 +205,15 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
     int offsetY = (int)pos.y % tileH;
 
     // Get the walkability of every surrounding tiles.
-    bool wTopLeft = mMap->getWalk(tileX - 1, tileY - 1, getWalkMask());
-    bool wTop = mMap->getWalk(tileX, tileY - 1, getWalkMask());
-    bool wTopRight = mMap->getWalk(tileX + 1, tileY - 1, getWalkMask());
-    bool wLeft = mMap->getWalk(tileX - 1, tileY, getWalkMask());
-    bool wRight = mMap->getWalk(tileX + 1, tileY, getWalkMask());
-    bool wBottomLeft = mMap->getWalk(tileX - 1, tileY + 1, getWalkMask());
-    bool wBottom = mMap->getWalk(tileX, tileY + 1, getWalkMask());
-    bool wBottomRight = mMap->getWalk(tileX + 1, tileY + 1, getWalkMask());
+    const unsigned char walkMask = getWalkMask();
+    bool wTopLeft = mMap->getWalk(tileX - 1, tileY - 1, walkMask);
+    bool wTop = mMap->getWalk(tileX, tileY - 1, walkMask);
+    bool wTopRight = mMap->getWalk(tileX + 1, tileY - 1, walkMask);
+    bool wLeft = mMap->getWalk(tileX - 1, tileY, walkMask);
+    bool wRight = mMap->getWalk(tileX + 1, tileY, walkMask);
+    bool wBottomLeft = mMap->getWalk(tileX - 1, tileY + 1, walkMask);
+    bool wBottom = mMap->getWalk(tileX, tileY + 1, walkMask);
+    bool wBottomRight = mMap->getWalk(tileX + 1, tileY + 1, walkMask);
 
     // Make diagonals unwalkable when both straight directions are blocking
     if (!wTop)
@@ -230,6 +231,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
             wBottomLeft = false;
     }
 
+    const int collisionRadius = getCollisionRadius();
+
     // We'll make tests for each desired direction
 
     // Handle diagonal cases by setting the way back to a straight direction
@@ -246,8 +249,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
                 dx = 0;
             else if (!wTop && !wRight)
                 return Position(tileX * tileW + tileW
-                                - getCollisionRadius(),
-                                tileY * tileH + getCollisionRadius());
+                                - collisionRadius,
+                                tileY * tileH + collisionRadius);
             else if (!wTopRight)
             {
                 // Both straight direction are walkable
@@ -260,10 +263,10 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
             }
             else // The top-right diagonal is walkable
             {
-                return mMap->checkNodeOffsets(getCollisionRadius(),
-                                                getWalkMask(),
-                                                Position((int)pos.x + tileW,
-                                                        (int)pos.y - tileH));
+                return mMap->checkNodeOffsets(collisionRadius,
+                                              walkMask,
+                                              Position((int)pos.x + tileW,
+                                                       (int)pos.y - tileH));
             }
         }
 
@@ -276,8 +279,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
             else if (wTop && !wLeft)
                 dx = 0;
             else if (!wTop && !wLeft)
-                return Position(tileX * tileW + getCollisionRadius(),
-                                tileY * tileH + getCollisionRadius());
+                return Position(tileX * tileW + collisionRadius,
+                                tileY * tileH + collisionRadius);
             else if (!wTopLeft)
             {
                 // Go left when below the corner
@@ -288,8 +291,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
                     dx = 0;
             }
             else // The diagonal is walkable
-                return mMap->checkNodeOffsets(getCollisionRadius(),
-                                              getWalkMask(),
+                return mMap->checkNodeOffsets(collisionRadius,
+                                              walkMask,
                                     Position((int)pos.x - tileW,
                                              (int)pos.y - tileH));
         }
@@ -303,8 +306,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
             else if (wBottom && !wLeft)
                 dx = 0;
             else if (!wBottom && !wLeft)
-                return Position(tileX * tileW + getCollisionRadius(),
-                                tileY * tileH + tileH - getCollisionRadius());
+                return Position(tileX * tileW + collisionRadius,
+                                tileY * tileH + tileH - collisionRadius);
             else if (!wBottomLeft)
             {
                 // Both straight direction are walkable
@@ -317,8 +320,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
                     dy = 0;
             }
             else // The diagonal is walkable
-                return mMap->checkNodeOffsets(getCollisionRadius(),
-                                              getWalkMask(),
+                return mMap->checkNodeOffsets(collisionRadius,
+                                              walkMask,
                                               Position((int)pos.x - tileW,
                                                        (int)pos.y + tileH));
         }
@@ -332,8 +335,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
             else if (wBottom && !wRight)
                 dx = 0;
             else if (!wBottom && !wRight)
-                return Position(tileX * tileW + tileW - getCollisionRadius(),
-                                tileY * tileH + tileH - getCollisionRadius());
+                return Position(tileX * tileW + tileW - collisionRadius,
+                                tileY * tileH + tileH - collisionRadius);
             else if (!wBottomRight)
             {
                 // Both straight direction are walkable
@@ -345,8 +348,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
                     dy = 0;
             }
             else // The diagonal is walkable
-                return mMap->checkNodeOffsets(getCollisionRadius(),
-                                              getWalkMask(),
+                return mMap->checkNodeOffsets(collisionRadius,
+                                              walkMask,
                                               Position((int)pos.x + tileW,
                                                        (int)pos.y + tileH));
         }
@@ -360,20 +363,20 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
         // If the straight destination is blocked,
         // Make the player go the closest possible.
         if (!wRight)
-            return Position(tileX * tileW + tileW - getCollisionRadius(),
+            return Position(tileX * tileW + tileW - collisionRadius,
                             (int)pos.y);
         else
         {
             if (!wTopRight)
             {
                 // If we're going to collide with the top-right corner
-                if (offsetY - getCollisionRadius() < 0)
+                if (offsetY - collisionRadius < 0)
                 {
                     // We make the player corrects its offset
                     // before going further
                     return Position(tileX * tileW
-                                    + tileW - getCollisionRadius(),
-                                    tileY * tileH + getCollisionRadius());
+                                    + tileW - collisionRadius,
+                                    tileY * tileH + collisionRadius);
 
                 }
             }
@@ -381,19 +384,19 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
             if (!wBottomRight)
             {
                 // If we're going to collide with the bottom-right corner
-                if (offsetY + getCollisionRadius() > tileH)
+                if (offsetY + collisionRadius > tileH)
                 {
                     // We make the player corrects its offset
                     // before going further
                     return Position(tileX * tileW
-                                    + tileW - getCollisionRadius(),
+                                    + tileW - collisionRadius,
                                     tileY * tileH
-                                    + tileH - getCollisionRadius());
+                                    + tileH - collisionRadius);
 
                 }
             }
             // If the way is clear, step up one checked tile ahead.
-            return mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+            return mMap->checkNodeOffsets(collisionRadius, walkMask,
                                        Position((int)pos.x + tileW,
                                                 (int)pos.y));
         }
@@ -405,18 +408,18 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
         // If the straight destination is blocked,
         // Make the player go the closest possible.
         if (!wLeft)
-            return Position(tileX * tileW + getCollisionRadius(), (int)pos.y);
+            return Position(tileX * tileW + collisionRadius, (int)pos.y);
         else
         {
             if (!wTopLeft)
             {
                 // If we're going to collide with the top-left corner
-                if (offsetY - getCollisionRadius() < 0)
+                if (offsetY - collisionRadius < 0)
                 {
                     // We make the player corrects its offset
                     // before going further
-                    return Position(tileX * tileW + getCollisionRadius(),
-                                    tileY * tileH + getCollisionRadius());
+                    return Position(tileX * tileW + collisionRadius,
+                                    tileY * tileH + collisionRadius);
 
                 }
             }
@@ -424,18 +427,18 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
             if (!wBottomLeft)
             {
                 // If we're going to collide with the bottom-left corner
-                if (offsetY + getCollisionRadius() > tileH)
+                if (offsetY + collisionRadius > tileH)
                 {
                     // We make the player corrects its offset
                     // before going further
-                    return Position(tileX * tileW + getCollisionRadius(),
+                    return Position(tileX * tileW + collisionRadius,
                                     tileY * tileH
-                                    + tileH - getCollisionRadius());
+                                    + tileH - collisionRadius);
 
                 }
             }
             // If the way is clear, step up one checked tile ahead.
-            return mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+            return mMap->checkNodeOffsets(collisionRadius, walkMask,
                                        Position((int)pos.x - tileW,
                                                 (int)pos.y));
         }
@@ -447,18 +450,18 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
         // If the straight destination is blocked,
         // Make the player go the closest possible.
         if (!wTop)
-            return Position((int)pos.x, tileY * tileH + getCollisionRadius());
+            return Position((int)pos.x, tileY * tileH + collisionRadius);
         else
         {
             if (!wTopLeft)
             {
                 // If we're going to collide with the top-left corner
-                if (offsetX - getCollisionRadius() < 0)
+                if (offsetX - collisionRadius < 0)
                 {
                     // We make the player corrects its offset
                     // before going further
-                    return Position(tileX * tileW + getCollisionRadius(),
-                                    tileY * tileH + getCollisionRadius());
+                    return Position(tileX * tileW + collisionRadius,
+                                    tileY * tileH + collisionRadius);
 
                 }
             }
@@ -466,18 +469,18 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
             if (!wTopRight)
             {
                 // If we're going to collide with the top-right corner
-                if (offsetX + getCollisionRadius() > tileW)
+                if (offsetX + collisionRadius > tileW)
                 {
                     // We make the player corrects its offset
                     // before going further
                     return Position(tileX * tileW
-                                    + tileW - getCollisionRadius(),
-                                    tileY * tileH + getCollisionRadius());
+                                    + tileW - collisionRadius,
+                                    tileY * tileH + collisionRadius);
 
                 }
             }
             // If the way is clear, step up one checked tile ahead.
-            return mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+            return mMap->checkNodeOffsets(collisionRadius, walkMask,
                                           Position((int)pos.x,
                                                    (int)pos.y - tileH));
         }
@@ -490,38 +493,38 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir)
         // Make the player go the closest possible.
         if (!wBottom)
             return Position((int)pos.x, tileY * tileH
-                            + tileH - getCollisionRadius());
+                            + tileH - collisionRadius);
         else
         {
             if (!wBottomLeft)
             {
                 // If we're going to collide with the bottom-left corner
-                if (offsetX - getCollisionRadius() < 0)
+                if (offsetX - collisionRadius < 0)
                 {
                     // We make the player corrects its offset
                     // before going further
-                    return Position(tileX * tileW + getCollisionRadius(),
+                    return Position(tileX * tileW + collisionRadius,
                                     tileY * tileH
-                                    + tileH - getCollisionRadius());
+                                    + tileH - collisionRadius);
                 }
             }
 
             if (!wBottomRight)
             {
                 // If we're going to collide with the bottom-right corner
-                if (offsetX + getCollisionRadius() > tileW)
+                if (offsetX + collisionRadius > tileW)
                 {
                     // We make the player corrects its offset
                     // before going further
                     return Position(tileX * tileW
-                                    + tileW - getCollisionRadius(),
+                                    + tileW - collisionRadius,
                                     tileY * tileH
-                                    + tileH - getCollisionRadius());
+                                    + tileH - collisionRadius);
 
                 }
             }
             // If the way is clear, step up one checked tile ahead.
-            return mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+            return mMap->checkNodeOffsets(collisionRadius, walkMask,
                                           Position((int)pos.x,
                                                    (int)pos.y + tileH));
         }
