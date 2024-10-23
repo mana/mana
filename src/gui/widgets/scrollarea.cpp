@@ -213,34 +213,8 @@ void ScrollArea::updateAlpha()
 
 void ScrollArea::draw(gcn::Graphics *graphics)
 {
-    if (mVBarVisible)
-    {
-        drawUpButton(graphics);
-        drawDownButton(graphics);
-        drawVBar(graphics);
-        drawVMarker(graphics);
-    }
-
-    if (mHBarVisible)
-    {
-        drawLeftButton(graphics);
-        drawRightButton(graphics);
-        drawHBar(graphics);
-        drawHMarker(graphics);
-    }
-
-    if (mHBarVisible && mVBarVisible)
-    {
-        graphics->setColor(getBaseColor());
-        graphics->fillRectangle(gcn::Rectangle(getWidth() - mScrollbarWidth,
-                    getHeight() - mScrollbarWidth,
-                    mScrollbarWidth,
-                    mScrollbarWidth));
-    }
-
     updateAlpha();
-
-    drawChildren(graphics);
+    gcn::ScrollArea::draw(graphics);
 }
 
 void ScrollArea::drawFrame(gcn::Graphics *graphics)
@@ -289,6 +263,11 @@ void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)
 
     static_cast<Graphics*>(graphics)->
         drawImage(buttons[dir][state], dim.x, dim.y);
+}
+
+void ScrollArea::drawBackground(gcn::Graphics *graphics)
+{
+    // background is drawn as part of the frame instead
 }
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)

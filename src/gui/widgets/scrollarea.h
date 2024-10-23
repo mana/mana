@@ -121,6 +121,7 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         void init();
 
         void drawButton(gcn::Graphics *graphics, BUTTON_DIR dir);
+        void drawBackground(gcn::Graphics *graphics) override;
         void drawUpButton(gcn::Graphics *graphics) override;
         void drawDownButton(gcn::Graphics *graphics) override;
         void drawLeftButton(gcn::Graphics *graphics) override;
