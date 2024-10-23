@@ -82,11 +82,11 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "screenheight", defaultScreenHeight);
     AddDEF(configData, "scale", 0);
     AddDEF(configData, "vsync", true);
-    AddDEF(configData, "sound", false);
+    AddDEF(configData, "sound", true);
     AddDEF(configData, "sfxVolume", 100);
     AddDEF(configData, "notificationsVolume", 100);
     AddDEF(configData, "musicVolume", 60);
-    AddDEF(configData, "remember", false);
+    AddDEF(configData, "remember", true);
     AddDEF(configData, "username", "");
     AddDEF(configData, "lastCharacter", "");
     AddDEF(configData, "fpslimit", 0);
@@ -103,7 +103,7 @@ DefaultsData* getConfigDefaults()
     AddDEF(configData, "logNpcInGui", true);
     AddDEF(configData, "download-music", false);
     AddDEF(configData, "guialpha", 0.8f);
-    AddDEF(configData, "ChatLogLength", 0);
+    AddDEF(configData, "ChatLogLength", 128);
     AddDEF(configData, "enableChatLog", false);
     AddDEF(configData, "whispertab", true);
     AddDEF(configData, "customcursor", true);

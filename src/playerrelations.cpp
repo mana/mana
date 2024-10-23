@@ -58,8 +58,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
         if (name.empty())
             return container;
 
-        auto it =
-            (*container).find(name);
+        auto it = (*container).find(name);
         if (it != (*container).end())
         {
             int v = (int)cobj->getValue(RELATION, PlayerRelation::NEUTRAL);

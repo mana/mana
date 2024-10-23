@@ -407,7 +407,7 @@ void Window::mouseMoved(gcn::MouseEvent &event)
 
     int resizeHandles = getResizeHandles(event);
 
-    // Changes the custom mouse cursor based on it's current position.
+    // Changes the custom mouse cursor based on its current position.
     switch (resizeHandles)
     {
         case BOTTOM | RIGHT:

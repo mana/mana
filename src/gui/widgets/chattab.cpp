@@ -52,7 +52,7 @@ ChatTab::ChatTab(const std::string &name)
 
     mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     mTextOutput->setWrapIndent(15);
-    mTextOutput->setMaxRows((int) config.getIntValue("ChatLogLength"));
+    mTextOutput->setMaxRows(config.getIntValue("ChatLogLength"));
     mTextOutput->setLinkHandler(chatWindow->mItemLinkHandler);
 
     mScrollArea = new ScrollArea(mTextOutput);

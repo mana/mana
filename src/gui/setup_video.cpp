@@ -397,22 +397,22 @@ void Setup_Video::apply()
     // If LowCPU is enabled from a disabled state we warn the user
     else if (mDisableSDLTransparencyCheckBox->isSelected())
     {
-        if (config.getValue("disableTransparency", true) == false)
+        if (!config.getBoolValue("disableTransparency"))
         {
             new OkDialog(_("Transparency disabled"),
-                 _("You must restart to apply changes."));
+                         _("You must restart to apply changes."));
         }
     }
     else
     {
-        if (config.getValue("disableTransparency", true) == true)
+        if (config.getBoolValue("disableTransparency"))
         {
             new OkDialog(_("Transparency enabled"),
-                 _("You must restart to apply changes."));
+                         _("You must restart to apply changes."));
         }
     }
     config.setValue("disableTransparency",
-                                 mDisableSDLTransparencyCheckBox->isSelected());
+                    mDisableSDLTransparencyCheckBox->isSelected());
 
     mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;
     mFpsSlider->setEnabled(mFps > 0);

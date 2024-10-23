@@ -115,9 +115,8 @@ void Configuration::setDefaultValues(DefaultsData *defaultsData)
     mDefaultsData = defaultsData;
 }
 
-VariableData* Configuration::getDefault(const std::string &key,
-                                              VariableData::DataType type
-                                             ) const
+VariableData *Configuration::getDefault(const std::string &key,
+                                        VariableData::DataType type) const
 {
     if (mDefaultsData)
     {

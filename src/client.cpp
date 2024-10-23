@@ -87,7 +87,7 @@
 #include <sys/stat.h>
 #include <cassert>
 
-// TODO: Get rid fo these globals
+// TODO: Get rid of these globals
 std::string errorMessage;
 LoginData loginData;
 
@@ -262,10 +262,10 @@ Client::Client(const Options &options):
     // Add the local data directory to PhysicsFS search path
     resman->addToSearchPath(mLocalDataDir, false);
 
-    bool useOpenGL = !mOptions.noOpenGL && (config.getValue("opengl", 0) == 1);
+    bool useOpenGL = !mOptions.noOpenGL && config.getBoolValue("opengl");
 
     // Set up the transparency option for low CPU when not using OpenGL.
-    if (!useOpenGL && (config.getValue("disableTransparency", 0) == 1))
+    if (!useOpenGL && config.getBoolValue("disableTransparency"))
         Image::SDLdisableTransparency();
 
     VideoSettings videoSettings;
@@ -394,10 +394,7 @@ Client::Client(const Options &options):
 
     listen(Event::ConfigChannel);
 
-    //TODO: fix having to fake a option changed event
-    Event fakeevent(Event::ConfigOptionChanged);
-    fakeevent.setString("option", "fpslimit");
-    event(Event::ConfigChannel, fakeevent);
+    mFpsLimit = config.getIntValue("fpslimit");
 
     // Initialize PlayerInfo
     PlayerInfo::init();
@@ -1105,20 +1102,8 @@ void Client::initHomeDir()
 void Client::initConfiguration()
 {
     // Fill configuration with defaults
-    config.setValue("opengl", false);
-    config.setValue("screen", false);
-    config.setValue("sound", true);
-    config.setValue("guialpha", 0.8f);
-    config.setValue("remember", true);
-    config.setValue("sfxVolume", 100);
-    config.setValue("musicVolume", 60);
-    config.setValue("fpslimit", 60);
-    std::string defaultUpdateHost = branding.getValue("defaultUpdateHost", "");
-    config.setValue("updatehost", defaultUpdateHost);
-    config.setValue("customcursor", true);
-    config.setValue("useScreenshotDirectorySuffix", true);
-    config.setValue("ChatLogLength", 128);
-    config.setValue("disableTransparency", false);
+    config.setValue("updatehost", branding.getValue("defaultUpdateHost",
+                                                    std::string()));
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
