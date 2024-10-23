@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
-"Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-12-13 20:04+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-23 09:58+0200\n"
 "PO-Revision-Date: 2024-10-22 11:12+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
@@ -24,3152 +24,416 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: src/client.cpp:598 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:66
-msgid "Setup"
-msgstr "设置"
-
-#: src/client.cpp:679
-#, fuzzy
-msgid "Connecting to server"
-msgstr "正在连接 地图 服务器..."
-
-#: src/client.cpp:706
-#, fuzzy
-msgid "Logging in"
-msgstr "登录"
-
-#: src/client.cpp:739
-msgid "Entering game world"
-msgstr ""
-
-#: src/client.cpp:804
-#, fuzzy
-msgid "Requesting characters"
-msgstr "选择角色"
-
-#: src/client.cpp:833
-#, fuzzy
-msgid "Connecting to the game server"
-msgstr "正在连接 地图 服务器..."
-
-#: src/client.cpp:843
-#, fuzzy
-msgid "Changing game servers"
-msgstr "服务器"
-
-#: src/client.cpp:872 src/client.cpp:879 src/client.cpp:1014
-#: src/gui/changeemaildialog.cpp:156 src/gui/changepassworddialog.cpp:149
-#: src/gui/charcreatedialog.cpp:177 src/gui/register.cpp:218
-#: src/gui/serverdialog.cpp:323 src/gui/unregisterdialog.cpp:133
-#: src/net/manaserv/charhandler.cpp:174 src/net/manaserv/charhandler.cpp:217
-#: src/net/tmwa/charserverhandler.cpp:134
-#: src/net/tmwa/charserverhandler.cpp:151
-msgid "Error"
-msgstr "错误"
-
-#: src/client.cpp:888
-msgid "Requesting registration details"
-msgstr ""
-
-#: src/client.cpp:915
-#, fuzzy
-msgid "Password Change"
-msgstr "密码："
-
-#: src/client.cpp:916
-msgid "Password changed successfully!"
-msgstr ""
-
-#: src/client.cpp:935
-#, fuzzy
-msgid "Email Change"
-msgstr "改变"
-
-#: src/client.cpp:936
-#, fuzzy
-msgid "Email changed successfully!"
-msgstr "会员晋升成功。"
-
-#: src/client.cpp:956
-#, fuzzy
-msgid "Unregister Successful"
-msgstr "注销"
-
-#: src/client.cpp:957
-msgid "Farewell, come back any time..."
-msgstr ""
-
-#: src/client.cpp:1138 src/client.cpp:1161
-#, c-format
-msgid "%s doesn't exist and can't be created! Exiting."
-msgstr ""
-
-#: src/client.cpp:1281
-#, fuzzy, c-format
-msgid "Invalid update host: %s"
-msgstr "无效的更新主机： "
-
-#: src/client.cpp:1315 src/client.cpp:1321
-msgid "Error creating updates directory!"
-msgstr "创建更新目录错误！"
-
-#: src/commandhandler.cpp:131 src/commandhandler.cpp:317
-msgid "Unknown command."
-msgstr "未知命令。"
-
-#: src/commandhandler.cpp:160
-msgid "-- Help --"
-msgstr "-- 帮助 --"
-
-#: src/commandhandler.cpp:161
-msgid "/help > Display this help"
-msgstr "/help > 显示此帮助"
-
-#: src/commandhandler.cpp:163
-msgid "/where > Display map name"
-msgstr "/where > 显示地图名"
-
-#: src/commandhandler.cpp:164
-msgid "/who > Display number of online users"
-msgstr "/who > 显示在线用户数"
-
-#: src/commandhandler.cpp:165
-msgid "/me > Tell something about yourself"
-msgstr "/me > 自我介绍"
-
-#: src/commandhandler.cpp:167
-msgid "/clear > Clears this window"
-msgstr "/clear > 清除此窗口"
-
-#: src/commandhandler.cpp:169
-msgid "/msg > Send a private message to a user"
-msgstr "/msg > 发送私人信息给用户"
-
-#: src/commandhandler.cpp:170
-msgid "/whisper > Alias of msg"
-msgstr "/whisper > msg的别名"
-
-#: src/commandhandler.cpp:171
-msgid "/w > Alias of msg"
-msgstr "/w > msg的别名"
-
-#: src/commandhandler.cpp:172
-msgid "/query > Makes a tab for private messages with another user"
-msgstr "/query > 为和其他用户之间的私密信息开启一个新的标签页"
-
-#: src/commandhandler.cpp:174
-msgid "/q > Alias of query"
-msgstr "/q > query的别名"
-
-#: src/commandhandler.cpp:176
-msgid "/ignore > ignore a player"
-msgstr ""
-
-#: src/commandhandler.cpp:177
-msgid "/unignore > stop ignoring a player"
-msgstr ""
-
-#: src/commandhandler.cpp:179
-msgid "/list > Display all public channels"
-msgstr "/list > 显示所有公共频道"
-
-#: src/commandhandler.cpp:180
-msgid "/join > Join or create a channel"
-msgstr "/join > 加入或者创建一个新的频道"
-
-#: src/commandhandler.cpp:182
-#, fuzzy
-msgid "/createparty > Create a new party"
-msgstr "/create > 创建一个新的帮会"
-
-#: src/commandhandler.cpp:183
-msgid "/party > Invite a user to party"
-msgstr "邀请一个用户加入队伍"
-
-#: src/commandhandler.cpp:185
-msgid "/record > Start recording the chat to an external file"
-msgstr "/record > 开始记录聊天至外部文件"
-
-#: src/commandhandler.cpp:187
-msgid "/toggle > Determine whether <return> toggles the chat log"
-msgstr "/toggle > 确定<回车>键是否切换聊天日志"
-
-#: src/commandhandler.cpp:189
-msgid "/present > Get list of players present (sent to chat log, if logging)"
-msgstr "/present > 获取列席的玩家列表（若开启logging，则发送到聊天日志）"
-
-#: src/commandhandler.cpp:192
-msgid "/announce > Global announcement (GM only)"
-msgstr "/announce > 全局通告（限GM使用）"
-
-#: src/commandhandler.cpp:196
-msgid "For more information, type /help <command>."
-msgstr "输入 /help <命令>，获取更多信息。"
-
-#: src/commandhandler.cpp:200
-msgid "Command: /help"
-msgstr "命令： /help"
-
-#: src/commandhandler.cpp:201
-msgid "This command displays a list of all commands available."
-msgstr "该命令可显示所有可用命令。"
-
-#: src/commandhandler.cpp:203
-msgid "Command: /help <command>"
-msgstr "命令： /help <命令>"
-
-#: src/commandhandler.cpp:204
-msgid "This command displays help on <command>."
-msgstr "该命令显现<命令>的帮助信息"
-
-#: src/commandhandler.cpp:212
-msgid "Command: /announce <msg>"
-msgstr "命令： /announce <信息>"
-
-#: src/commandhandler.cpp:213
-msgid "*** only available to a GM ***"
-msgstr "*** 只有GM可用 ***"
-
-#: src/commandhandler.cpp:214
-msgid "This command sends the message <msg> to all players currently online."
-msgstr "该命令会发送<信息>给所有在线用户。"
-
-#: src/commandhandler.cpp:219
-msgid "Command: /clear"
-msgstr "命令： /clear"
-
-#: src/commandhandler.cpp:220
-msgid "This command clears the chat log of previous chat."
-msgstr "该命令可清除历史聊天记录。"
-
-#: src/commandhandler.cpp:224
-#, fuzzy
-msgid "Command: /ignore <player>"
-msgstr "命令：/item <策略>"
-
-#: src/commandhandler.cpp:225
-#, fuzzy
-msgid "This command ignores the given player regardless of current relations."
-msgstr "该条命令可显现当前在线用户总数。"
-
-#: src/commandhandler.cpp:230
-msgid "Command: /join <channel>"
-msgstr "命令：/join <频道>"
-
-#: src/commandhandler.cpp:231
-msgid "This command makes you enter <channel>."
-msgstr "该命令让您进入<频道>。"
-
-#: src/commandhandler.cpp:232
-msgid "If <channel> doesn't exist, it's created."
-msgstr "如果<频道>不存在，自动创建。"
-
-#: src/commandhandler.cpp:236
-msgid "Command: /list"
-msgstr "命令：/list"
-
-#: src/commandhandler.cpp:237
-msgid "This command shows a list of all channels."
-msgstr "改命令列出所有频道列表。"
-
-#: src/commandhandler.cpp:241
-msgid "Command: /me <message>"
-msgstr "命令：/me <信息>"
-
-#: src/commandhandler.cpp:242
-msgid "This command tell others you are (doing) <msg>."
-msgstr "该命令告诉别人你正在（做）<信息>。"
-
-#: src/commandhandler.cpp:246
-msgid "Command: /msg <nick> <message>"
-msgstr "命令：/msg <昵称><信息>"
-
-#: src/commandhandler.cpp:247
-msgid "Command: /whisper <nick> <message>"
-msgstr "命令：/whisper <昵称><信息>"
-
-#: src/commandhandler.cpp:248
-msgid "Command: /w <nick> <message>"
-msgstr "命令：/w <昵称><信息>"
-
-#: src/commandhandler.cpp:249
-msgid "This command sends the text <message> to <nick>."
-msgstr "该命令发送文本<信息>给<昵称>。"
-
-#: src/commandhandler.cpp:250 src/commandhandler.cpp:269
-#: src/gui/widgets/channeltab.cpp:82 src/gui/widgets/channeltab.cpp:91
-#: src/net/tmwa/gui/guildtab.cpp:75 src/net/tmwa/gui/partytab.cpp:75
-msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
-msgstr "如果<昵称>之间有空格，用双引号(\")括起来。"
-
-#: src/commandhandler.cpp:255
-msgid "Command: /query <nick>"
-msgstr "命令：/query <昵称>"
-
-#: src/commandhandler.cpp:256
-msgid "Command: /q <nick>"
-msgstr "命令：/q <昵称>"
-
-#: src/commandhandler.cpp:257
-msgid "This command tries to make a tab for whispers betweenyou and <nick>."
-msgstr "该命令尝试为您和<昵称>之间的密语开启一个新的标签。"
-
-#: src/commandhandler.cpp:262
-#, fuzzy
-msgid "Command: /createparty <name>"
-msgstr "命令：/create <帮会名>"
-
-#: src/commandhandler.cpp:263
-#, fuzzy
-msgid "This command creates a new party called <name>."
-msgstr "这些命令创建一个被称为<帮会名>的新帮会。"
-
-#: src/commandhandler.cpp:267
-msgid "Command: /party <nick>"
-msgstr "命令：/party <昵称>"
-
-#: src/commandhandler.cpp:268 src/net/tmwa/gui/partytab.cpp:74
-msgid "This command invites <nick> to party with you."
-msgstr "该命令邀请<昵称>和你聚会。"
-
-#: src/commandhandler.cpp:274
-msgid "Command: /present"
-msgstr "命令： /present"
-
-#: src/commandhandler.cpp:275
-msgid ""
-"This command gets a list of players within hearing and sends it to either "
-"the record log if recording, or the chat log otherwise."
-msgstr "该命令得到列席的玩家名单并传送到记录日志如果记录，否则聊天记录。"
-
-#: src/commandhandler.cpp:281
-msgid "Command: /record <filename>"
-msgstr "命令： /record <文件名>"
-
-#: src/commandhandler.cpp:282
-msgid "This command starts recording the chat log to the file <filename>."
-msgstr "该命令开始记录聊天日志至文件<文件名>。"
-
-#: src/commandhandler.cpp:284
-msgid "Command: /record"
-msgstr "命令: /record"
-
-#: src/commandhandler.cpp:285
-msgid "This command finishes a recording session."
-msgstr "此命令结束将此会话记录"
-
-#: src/commandhandler.cpp:289
-msgid "Command: /toggle <state>"
-msgstr "命令: /toggle <状态>"
-
-#: src/commandhandler.cpp:290
-msgid ""
-"This command sets whether the return key should toggle the chat log, or "
-"whether the chat log turns off automatically."
-msgstr "该命令设置回车键是否切换聊天日志，或者聊天日志功能是否自动关闭。"
-
-#: src/commandhandler.cpp:292
-msgid ""
-"<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or "
-"\"0\", \"no\", \"false\" to turn the toggle off."
-msgstr "<状态> 可用“1”、“yes”、“true”来开启，或以“0”、“no”、“false”关闭。"
-
-#: src/commandhandler.cpp:295
-msgid "Command: /toggle"
-msgstr "命令: /toggle"
-
-#: src/commandhandler.cpp:296
-msgid "This command displays the return toggle status."
-msgstr "该命令显示<回车>键切换状态"
-
-#: src/commandhandler.cpp:300 src/gui/widgets/whispertab.cpp:95
-#, fuzzy
-msgid "Command: /unignore <player>"
-msgstr "命令：/item <策略>"
-
-#: src/commandhandler.cpp:301
-msgid "This command stops ignoring the given player if they are being ignored"
-msgstr ""
-
-#: src/commandhandler.cpp:306
-msgid "Command: /where"
-msgstr "命令: /where"
-
-#: src/commandhandler.cpp:307
-msgid "This command displays the name of the current map."
-msgstr "该条命令显示当前地图名。"
-
-#: src/commandhandler.cpp:311
-msgid "Command: /who"
-msgstr "命令： /who"
-
-#: src/commandhandler.cpp:312
-msgid "This command displays the number of players currently online."
-msgstr "该条命令可显现当前在线用户总数。"
-
-#: src/commandhandler.cpp:318
-msgid "Type /help for a list of commands."
-msgstr "输入 /help 获取命令列表。"
-
-#: src/commandhandler.cpp:384
-msgid "Cannot send empty whispers!"
-msgstr "无法发送空白密语！"
-
-#: src/commandhandler.cpp:392
-#, c-format
-msgid ""
-"Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
-"you."
-msgstr "无法同 \"%s\" 建立一个私人谈话标签页！或者已经存在，或者那就是自己。"
-
-#: src/commandhandler.cpp:406
-#, c-format
-msgid "Requesting to join channel %s."
-msgstr "请求加入频道%s。"
-
-#: src/commandhandler.cpp:419 src/net/tmwa/gui/partytab.cpp:109
-msgid "Party name is missing."
-msgstr "帮会名称缺失。"
-
-#: src/commandhandler.cpp:432 src/commandhandler.cpp:509
-#: src/commandhandler.cpp:531
-msgid "Please specify a name."
-msgstr ""
-
-#: src/commandhandler.cpp:450
-msgid "Return toggles chat."
-msgstr ""
-
-#: src/commandhandler.cpp:450
-msgid "Message closes chat."
-msgstr "讯息关闭聊天。"
-
-#: src/commandhandler.cpp:459
-msgid "Return now toggles chat."
-msgstr "<回车>键现在切换聊天。"
-
-#: src/commandhandler.cpp:463
-msgid "Message now closes chat."
-msgstr "讯息现在关闭聊天。"
-
-#: src/commandhandler.cpp:476 src/commandhandler.cpp:489
-msgid "Show IP: On"
-msgstr ""
-
-#: src/commandhandler.cpp:476 src/commandhandler.cpp:485
-msgid "Show IP: Off"
-msgstr ""
-
-#: src/commandhandler.cpp:515
-msgid "Player already ignored!"
-msgstr ""
-
-#: src/commandhandler.cpp:522
-#, fuzzy
-msgid "Player successfully ignored!"
-msgstr "帮会创建成功。"
-
-#: src/commandhandler.cpp:524
-#, fuzzy
-msgid "Player could not be ignored!"
-msgstr "密语无法发送，你已被用户忽略。"
-
-#: src/commandhandler.cpp:539
-msgid "Player wasn't ignored!"
-msgstr ""
-
-#: src/commandhandler.cpp:544
-msgid "Player no longer ignored!"
-msgstr ""
-
-#: src/commandhandler.cpp:546
-#, fuzzy
-msgid "Player could not be unignored!"
-msgstr "密语无法发送，你已被用户忽略。"
-
-#: src/commandhandler.h:31
-#, c-format
-msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
-msgstr "/%s的选项是\"yes\"，\"no\"，\"true\"，\"false\"，\"1\"，\"0\"。"
-
-#: src/game.cpp:172
-msgid "General"
-msgstr "常规"
-
-#: src/game.cpp:342
-#, fuzzy
-msgid "Screenshot saved as "
-msgstr "屏幕快照保存至 ~/"
-
-#: src/game.cpp:347
-msgid "Saving screenshot failed!"
-msgstr "保存屏幕快照失败！"
-
-#: src/game.cpp:378
-#, fuzzy
-msgid "The connection to the server was lost."
-msgstr "与服务器连接丢失,程序将会退出."
-
-#: src/game.cpp:382
-msgid "Network Error"
-msgstr "网络错误"
-
-#: src/game.cpp:721
-msgid "Ignoring incoming trade requests"
-msgstr "忽略新进的交易请求"
-
-#: src/game.cpp:726
-msgid "Accepting incoming trade requests"
-msgstr "接受传入的交易请求"
-
-#: src/game.cpp:954
-#, fuzzy
-msgid "Could Not Load Map"
-msgstr "无法加载地图"
-
-#: src/game.cpp:955
-#, c-format
-msgid "Error while loading %s"
-msgstr "加载%s时出现错误"
-
-#: src/gui/beingpopup.cpp:76
-#, fuzzy, c-format
-msgid "Party: %s"
-msgstr "帮会（%s）"
-
-#: src/gui/buy.cpp:49 src/gui/buy.cpp:78 src/gui/buysell.cpp:47
-msgid "Buy"
-msgstr "购买"
-
-#: src/gui/buy.cpp:69 src/gui/buy.cpp:261 src/gui/sell.cpp:71
-#: src/gui/sell.cpp:288
-#, c-format
-msgid "Price: %s / Total: %s"
-msgstr "价格：%s / 总价：%s"
-
-#. TRANSLATORS: This is a narrow symbol used to denote 'increasing'.
-#. You may change this symbol if your language uses another.
-#: src/gui/buy.cpp:74 src/gui/itemamount.cpp:112 src/gui/npcdialog.cpp:124
-#: src/gui/sell.cpp:74 src/gui/statuswindow.cpp:463
-msgid "+"
-msgstr ""
-
-#. TRANSLATORS: This is a narrow symbol used to denote 'decreasing'.
-#. You may change this symbol if your language uses another.
-#: src/gui/buy.cpp:77 src/gui/itemamount.cpp:111 src/gui/npcdialog.cpp:125
-#: src/gui/sell.cpp:75 src/gui/statuswindow.cpp:475
-msgid "-"
-msgstr ""
-
-#: src/gui/buy.cpp:79 src/gui/quitdialog.cpp:40 src/gui/quitdialog.cpp:42
-#: src/gui/quitdialog.cpp:43 src/gui/sell.cpp:77 src/gui/serverdialog.cpp:228
-#: src/keyboardconfig.cpp:102
-msgid "Quit"
-msgstr "退出"
-
-#: src/gui/buy.cpp:80 src/gui/sell.cpp:78 src/gui/statuswindow.cpp:384
-#: src/gui/statuswindow.cpp:462 src/gui/statuswindow.cpp:496
-msgid "Max"
-msgstr "最大"
-
-#: src/gui/buysell.cpp:38
-msgid "Shop"
-msgstr "商店"
-
-#: src/gui/buysell.cpp:47 src/gui/sell.cpp:49 src/gui/sell.cpp:76
-msgid "Sell"
-msgstr "出售"
-
-#: src/gui/buysell.cpp:47 src/gui/changeemaildialog.cpp:55
-#: src/gui/changepassworddialog.cpp:58 src/gui/charcreatedialog.cpp:79
-#: src/gui/connectiondialog.cpp:44 src/gui/itemamount.cpp:114
-#: src/gui/npcpostdialog.cpp:57 src/gui/popupmenu.cpp:175
-#: src/gui/popupmenu.cpp:194 src/gui/popupmenu.cpp:389
-#: src/gui/quitdialog.cpp:47 src/gui/register.cpp:74 src/gui/setup.cpp:51
-#: src/gui/socialwindow.cpp:275 src/gui/textdialog.cpp:40
-#: src/gui/unregisterdialog.cpp:56 src/gui/updatewindow.cpp:144
-msgid "Cancel"
-msgstr "取消"
-
-#: src/gui/changeemaildialog.cpp:45 src/gui/changeemaildialog.cpp:54
-msgid "Change Email Address"
-msgstr "更换Email地址"
-
-#: src/gui/changeemaildialog.cpp:49 src/gui/changepassworddialog.cpp:52
-#, c-format
-msgid "Account: %s"
-msgstr "帐号：%s"
-
-#: src/gui/changeemaildialog.cpp:51
-#, fuzzy
-msgid "Type new email address twice:"
-msgstr "输入新Email地址两次:"
-
-#: src/gui/changeemaildialog.cpp:127
-#, fuzzy, c-format
-msgid "The new email address needs to be at least %d characters long."
-msgstr "用户名至少需要%d个字符。"
-
-#: src/gui/changeemaildialog.cpp:134
-#, fuzzy, c-format
-msgid "The new email address needs to be less than %d characters long."
-msgstr "用户名不能少于%d个字符"
-
-#: src/gui/changeemaildialog.cpp:141
-#, fuzzy
-msgid "The email address entries mismatch."
-msgstr "新电子邮件地址已经存在。"
-
-#: src/gui/changepassworddialog.cpp:47 src/gui/changepassworddialog.cpp:56
-#: src/gui/charselectdialog.cpp:128
-msgid "Change Password"
-msgstr "更换密码"
-
-#: src/gui/changepassworddialog.cpp:61 src/gui/login.cpp:55
-#: src/gui/register.cpp:68 src/gui/unregisterdialog.cpp:53
-msgid "Password:"
-msgstr "密码："
-
-#: src/gui/changepassworddialog.cpp:63
-#, fuzzy
-msgid "Type new password twice:"
-msgstr "输入新密码两次:"
-
-#: src/gui/changepassworddialog.cpp:110
-msgid "Enter the old password first."
-msgstr ""
-
-#: src/gui/changepassworddialog.cpp:116
-#, fuzzy, c-format
-msgid "The new password needs to be at least %d characters long."
-msgstr "密码需要至少%d个字符"
-
-#: src/gui/changepassworddialog.cpp:123
-#, fuzzy, c-format
-msgid "The new password needs to be less than %d characters long."
-msgstr "密码不能少于%d个字符。"
-
-#: src/gui/changepassworddialog.cpp:130
-msgid "The new password entries mismatch."
-msgstr ""
-
-#: src/gui/charcreatedialog.cpp:53
-msgid "Create Character"
-msgstr "创建角色"
-
-#: src/gui/charcreatedialog.cpp:67 src/gui/login.cpp:54
-#: src/gui/register.cpp:67
-msgid "Name:"
-msgstr "姓名"
-
-#. TRANSLATORS: This is an arrow symbol used to denote 'next'.
-#. You may change this symbol if your language uses another.
-#: src/gui/charcreatedialog.cpp:70 src/gui/charcreatedialog.cpp:75
-#: src/gui/outfitwindow.cpp:67
-msgid ">"
-msgstr ""
-
-#. TRANSLATORS: This is an arrow symbol used to denote 'previous'.
-#. You may change this symbol if your language uses another.
-#: src/gui/charcreatedialog.cpp:73 src/gui/charcreatedialog.cpp:76
-#: src/gui/outfitwindow.cpp:66
-msgid "<"
-msgstr ""
-
-#: src/gui/charcreatedialog.cpp:74
-#, fuzzy
-msgid "Hair color:"
-msgstr "发色："
-
-#: src/gui/charcreatedialog.cpp:77
-#, fuzzy
-msgid "Hair style:"
-msgstr "发型："
-
-#: src/gui/charcreatedialog.cpp:78 src/gui/charselectdialog.cpp:392
-#: src/gui/socialwindow.cpp:329
-msgid "Create"
-msgstr "建立"
-
-#: src/gui/charcreatedialog.cpp:80 src/gui/register.cpp:90
-msgid "Male"
-msgstr "帅哥"
-
-#: src/gui/charcreatedialog.cpp:81 src/gui/register.cpp:91
-msgid "Female"
-msgstr "美女"
-
-#: src/gui/charcreatedialog.cpp:99 src/gui/charcreatedialog.cpp:251
-#, c-format
-msgid "Please distribute %d points"
-msgstr "请分发%d点数"
-
-#: src/gui/charcreatedialog.cpp:178
-msgid "Your name needs to be at least 4 characters."
-msgstr "你的名字需要至少4个字符"
-
-#: src/gui/charcreatedialog.cpp:242
-msgid "Character stats OK"
-msgstr "角色状态可以"
-
-#: src/gui/charcreatedialog.cpp:256
-#, c-format
-msgid "Please remove %d points"
-msgstr "请删除%d点数"
-
-#: src/gui/charselectdialog.cpp:69
-msgid "Confirm Character Delete"
-msgstr "确认删除角色"
-
-#: src/gui/charselectdialog.cpp:70
-msgid "Are you sure you want to delete this character?"
-msgstr "你确定想删除这个角色？"
-
-#: src/gui/charselectdialog.cpp:117
-msgid "Account and Character Management"
-msgstr "帐号和角色管理"
-
-#: src/gui/charselectdialog.cpp:127
-msgid "Switch Login"
-msgstr ""
-
-#: src/gui/charselectdialog.cpp:141 src/gui/unregisterdialog.cpp:47
-#: src/gui/unregisterdialog.cpp:55
-msgid "Unregister"
-msgstr "注销"
-
-#: src/gui/charselectdialog.cpp:150
-#, fuzzy
-msgid "Change Email"
-msgstr "更换Email地址"
-
-#: src/gui/charselectdialog.cpp:336 src/gui/serverdialog.cpp:231
-#: src/gui/setup_players.cpp:229
-msgid "Delete"
-msgstr "删除"
-
-#: src/gui/charselectdialog.cpp:380
-#, fuzzy
-msgid "Choose"
-msgstr "关闭"
-
-#: src/gui/charselectdialog.cpp:394 src/gui/charselectdialog.cpp:395
-msgid "(empty)"
-msgstr ""
-
-#: src/gui/chat.cpp:88
-msgid "Chat"
-msgstr "聊天"
-
-#: src/gui/chat.cpp:311
-#, fuzzy, c-format
-msgid "Present: %s; %d players are present."
-msgstr "%d 玩家出席。"
-
-#: src/gui/chat.cpp:329
-msgid "Attendance written to record log."
-msgstr ""
-
-#: src/gui/chat.cpp:493
-#, c-format
-msgid "Whispering to %s: %s"
-msgstr "对%s密语到：%s"
-
-#: src/gui/confirmdialog.cpp:42
-msgid "Yes"
-msgstr "是"
-
-#: src/gui/confirmdialog.cpp:43
-msgid "No"
-msgstr "否"
-
-#: src/gui/debugwindow.cpp:43
-msgid "Debug"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:56
-#, c-format
-msgid "%d FPS (OpenGL)"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:61 src/gui/debugwindow.cpp:64
-#, c-format
-msgid "%d FPS"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:65 src/gui/debugwindow.cpp:104
-#, fuzzy, c-format
-msgid "Music: %s"
-msgstr "主题：%s"
-
-#: src/gui/debugwindow.cpp:66 src/gui/debugwindow.cpp:108
-#, fuzzy, c-format
-msgid "Map: %s"
-msgstr "姓名：%s"
-
-#: src/gui/debugwindow.cpp:67 src/gui/debugwindow.cpp:106
-#, fuzzy, c-format
-msgid "Minimap: %s"
-msgstr "小地图"
-
-#: src/gui/debugwindow.cpp:68 src/gui/debugwindow.cpp:99
-#, c-format
-msgid "Cursor: (%d, %d)"
-msgstr ""
-
-#: src/gui/debugwindow.cpp:69 src/gui/debugwindow.cpp:111
-#, fuzzy, c-format
-msgid "Particle count: %d"
-msgstr "粒子效果"
-
-#: src/gui/debugwindow.cpp:116
-#, fuzzy, c-format
-msgid "Particle detail: %s"
-msgstr "纹理细节"
-
-#: src/gui/debugwindow.cpp:121
-#, fuzzy, c-format
-msgid "Ambient FX: %s"
-msgstr "环境音效"
-
-#: src/gui/equipmentwindow.cpp:69 src/gui/windowmenu.cpp:55
-msgid "Equipment"
-msgstr "装备"
-
-#: src/gui/equipmentwindow.cpp:87 src/gui/inventorywindow.cpp:89
-#: src/gui/inventorywindow.cpp:337 src/gui/popupmenu.cpp:359
-msgid "Unequip"
-msgstr "卸下装备"
-
-#: src/gui/help.cpp:37
-msgid "Help"
-msgstr "帮助"
-
-#: src/gui/help.cpp:51 src/gui/npcdialog.cpp:50
-msgid "Close"
-msgstr "关闭"
-
-#: src/gui/inventorywindow.cpp:59 src/gui/windowmenu.cpp:56
-msgid "Inventory"
-msgstr "物品栏"
-
-#: src/gui/inventorywindow.cpp:59
-msgid "Storage"
-msgstr "仓库"
-
-#: src/gui/inventorywindow.cpp:82
-msgid "Slots:"
-msgstr "槽："
-
-#: src/gui/inventorywindow.cpp:87 src/gui/inventorywindow.cpp:100
-#: src/gui/inventorywindow.cpp:339 src/gui/popupmenu.cpp:361
-msgid "Equip"
-msgstr "装备"
-
-#: src/gui/inventorywindow.cpp:88
-msgid "Use"
-msgstr "使用"
-
-#: src/gui/inventorywindow.cpp:101 src/gui/popupmenu.cpp:364
-msgid "Activate"
-msgstr ""
-
-#: src/gui/inventorywindow.cpp:102 src/gui/inventorywindow.cpp:348
-#: src/gui/popupmenu.cpp:367
-#, fuzzy
-msgid "Drop..."
-msgstr "丢弃"
-
-#: src/gui/inventorywindow.cpp:103 src/gui/popupmenu.cpp:373
-msgid "Split"
-msgstr "分离"
-
-#: src/gui/inventorywindow.cpp:104 src/gui/outfitwindow.cpp:51
-msgid "Outfits"
-msgstr ""
-
-#: src/gui/inventorywindow.cpp:106
-msgid "Weight:"
-msgstr "重量："
-
-#: src/gui/inventorywindow.cpp:124 src/gui/popupmenu.cpp:378
-msgid "Store"
-msgstr "存储"
-
-#: src/gui/inventorywindow.cpp:125 src/gui/popupmenu.cpp:385
-msgid "Retrieve"
-msgstr "取回"
-
-#: src/gui/inventorywindow.cpp:350 src/gui/popupmenu.cpp:369
-msgid "Drop"
-msgstr "丢弃"
-
-#: src/gui/itemamount.cpp:113 src/gui/okdialog.cpp:42
-#: src/gui/quitdialog.cpp:46 src/gui/textdialog.cpp:39 src/gui/trade.cpp:72
-#: src/gui/trade.cpp:74
-msgid "OK"
-msgstr "确定"
-
-#: src/gui/itemamount.cpp:115
-msgid "All"
-msgstr "全部"
-
-#: src/gui/itemamount.cpp:141
-msgid "Select amount of items to trade."
-msgstr "请选择交易的物品数量。"
-
-#: src/gui/itemamount.cpp:144
-msgid "Select amount of items to drop."
-msgstr "请选择丢弃的物品数量。"
-
-#: src/gui/itemamount.cpp:147
-msgid "Select amount of items to store."
-msgstr "请选择存储的物品数量。"
-
-#: src/gui/itemamount.cpp:150
-msgid "Select amount of items to retrieve."
-msgstr "请选择取回的物品数量。"
-
-#: src/gui/itemamount.cpp:153
-msgid "Select amount of items to split."
-msgstr "请选择你分离的物品的数量"
-
-#: src/gui/itempopup.cpp:137
-#, fuzzy, c-format
-msgid "Weight: %s"
-msgstr "重量： "
-
-#: src/gui/login.cpp:51 src/gui/login.cpp:63
-msgid "Login"
-msgstr "登录"
-
-#: src/gui/login.cpp:60
-#, fuzzy
-msgid "Remember username"
-msgstr "保存用户名"
-
-#: src/gui/login.cpp:61 src/gui/register.cpp:58 src/gui/register.cpp:73
-msgid "Register"
-msgstr "注册"
-
-#: src/gui/login.cpp:62
-#, fuzzy
-msgid "Change Server"
-msgstr "服务器"
-
-#: src/gui/login.cpp:129
-#, fuzzy
-msgid "Registration disabled"
-msgstr "物品共享关闭。"
-
-#: src/gui/login.cpp:129
-msgid "You need to use the website to register an account for this server."
-msgstr ""
-
-#: src/gui/minimap.cpp:45 src/gui/minimap.cpp:86
-msgid "Map"
-msgstr "地图"
-
-#: src/gui/ministatus.cpp:235
-msgid "Need"
-msgstr ""
-
-#: src/gui/npcdialog.cpp:48
-msgid "Waiting for server"
-msgstr "等待服务器中"
-
-#: src/gui/npcdialog.cpp:49
-msgid "Next"
-msgstr "下一个"
-
-#: src/gui/npcdialog.cpp:51
-msgid "Submit"
-msgstr "提交"
-
-#: src/gui/npcdialog.cpp:73 src/gui/npcpostdialog.cpp:41
-msgid "NPC"
-msgstr "NPC"
-
-#: src/gui/npcdialog.cpp:118
-msgid "Clear log"
-msgstr ""
-
-#: src/gui/npcdialog.cpp:134
-msgid "Reset"
-msgstr "重置"
-
-#. TRANSLATORS: Please leave the \n sequences intact.
-#: src/gui/npcdialog.cpp:208
-#, fuzzy
-msgid ""
-"\n"
-"> Next\n"
-msgstr "下一个"
-
-#: src/gui/npcpostdialog.cpp:47
-msgid "To:"
-msgstr "至："
-
-#: src/gui/npcpostdialog.cpp:54
-msgid "Send"
-msgstr "发送"
-
-#: src/gui/npcpostdialog.cpp:99
-msgid "Failed to send as sender or letter invalid."
-msgstr "发送信件失败或者信件无效。"
-
-#: src/gui/outfitwindow.cpp:68 src/gui/outfitwindow.cpp:141
-#: src/gui/outfitwindow.cpp:154
-#, c-format
-msgid "Outfit: %d"
-msgstr ""
-
-#: src/gui/outfitwindow.cpp:70
-#, fuzzy
-msgid "Unequip first"
-msgstr "卸下装备"
-
-#: src/gui/popupmenu.cpp:83
-#, fuzzy, c-format
-msgid "Trade with %s..."
-msgstr "与%s交易中"
-
-#: src/gui/popupmenu.cpp:87 src/gui/popupmenu.cpp:158
-#, fuzzy, c-format
-msgid "Attack %s"
-msgstr "攻击 %+d"
-
-#: src/gui/popupmenu.cpp:91
-#, fuzzy, c-format
-msgid "Whisper %s"
-msgstr "密语"
-
-#: src/gui/popupmenu.cpp:100
-#, fuzzy, c-format
-msgid "Befriend %s"
-msgstr "@@friend|和%s成为朋友@@"
-
-#: src/gui/popupmenu.cpp:105
-#, fuzzy, c-format
-msgid "Disregard %s"
-msgstr "被忽视的"
-
-#: src/gui/popupmenu.cpp:108
-#, fuzzy, c-format
-msgid "Ignore %s"
-msgstr "忽略"
-
-#: src/gui/popupmenu.cpp:114 src/gui/popupmenu.cpp:123
-#, c-format
-msgid "Unignore %s"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:117
-#, fuzzy, c-format
-msgid "Completely ignore %s"
-msgstr "@@ignore|完全忽略%s@@"
-
-#: src/gui/popupmenu.cpp:130
-#, fuzzy, c-format
-msgid "Invite %s to join your guild"
-msgstr "@@guild|邀请%s加入你的工会@@"
-
-#: src/gui/popupmenu.cpp:134
-#, fuzzy, c-format
-msgid "Invite %s to join your party"
-msgstr "@@party|邀请%s加入你的帮会@@"
-
-#: src/gui/popupmenu.cpp:141
-#, fuzzy
-msgid "Kick player"
-msgstr "踢出失败！"
-
-#: src/gui/popupmenu.cpp:150
-#, fuzzy, c-format
-msgid "Talk to %s"
-msgstr "@@talk|和%s交谈@@"
-
-#: src/gui/popupmenu.cpp:163
-#, fuzzy
-msgid "Kick monster"
-msgstr "@@admin-kick|踢掉怪物@@"
-
-#: src/gui/popupmenu.cpp:171
-#, fuzzy
-msgid "Add name to chat"
-msgstr "@@name|添加姓名至聊天@@"
-
-#: src/gui/popupmenu.cpp:188
-#, fuzzy, c-format
-msgid "Pick up %s"
-msgstr "捡起"
-
-#: src/gui/popupmenu.cpp:190 src/gui/popupmenu.cpp:387
-#, fuzzy
-msgid "Add to chat"
-msgstr "@@chat|添加到聊天@@"
-
-#: src/gui/quitdialog.cpp:44
-msgid "Switch server"
-msgstr "交换服务器"
-
-#: src/gui/quitdialog.cpp:45
-msgid "Switch character"
-msgstr "交换角色"
-
-#: src/gui/recorder.cpp:87
-msgid "Finishing recording."
-msgstr "结束录制。"
-
-#: src/gui/recorder.cpp:91
-msgid "Not currently recording."
-msgstr "不在当前录制中。"
-
-#: src/gui/recorder.cpp:96
-msgid "Already recording."
-msgstr "已经录制中。"
-
-#: src/gui/recorder.cpp:104
-msgid "Starting to record..."
-msgstr "开始录制……"
-
-#: src/gui/recorder.cpp:112
-msgid "Failed to start recording."
-msgstr "开始录制失败。"
-
-#: src/gui/recorder.h:38
-msgid "Recording..."
-msgstr "录制中……"
-
-#: src/gui/recorder.h:39
-msgid "Stop recording"
-msgstr "停止录制"
-
-#: src/gui/register.cpp:69
-msgid "Confirm:"
-msgstr "确认："
-
-#: src/gui/register.cpp:100
-msgid "Email:"
-msgstr "电子邮件"
-
-#: src/gui/register.cpp:166
-#, c-format
-msgid "The username needs to be at least %d characters long."
-msgstr "用户名至少需要%d个字符。"
-
-#: src/gui/register.cpp:174
-#, c-format
-msgid "The username needs to be less than %d characters long."
-msgstr "用户名不能少于%d个字符"
-
-#: src/gui/register.cpp:182 src/gui/unregisterdialog.cpp:117
-#, c-format
-msgid "The password needs to be at least %d characters long."
-msgstr "密码需要至少%d个字符"
-
-#: src/gui/register.cpp:190 src/gui/unregisterdialog.cpp:124
-#, c-format
-msgid "The password needs to be less than %d characters long."
-msgstr "密码不能少于%d个字符。"
-
-#: src/gui/register.cpp:197
-msgid "Passwords do not match."
-msgstr "密码不一致."
-
-#: src/gui/serverdialog.cpp:197
-#, fuzzy
-msgid "Choose Your Server"
-msgstr "选择你的服务器"
-
-#: src/gui/serverdialog.cpp:206 src/gui/widgets/chattab.cpp:142
-msgid "Server:"
-msgstr "服务器："
-
-#: src/gui/serverdialog.cpp:207
-msgid "Port:"
-msgstr "端口："
-
-#: src/gui/serverdialog.cpp:208
-#, fuzzy
-msgid "Server type:"
-msgstr "服务器："
-
-#: src/gui/serverdialog.cpp:229
-#, fuzzy
-msgid "Connect"
-msgstr "连接中..."
-
-#: src/gui/serverdialog.cpp:230
-#, fuzzy
-msgid "Custom Server"
-msgstr "自定义鼠标"
-
-#: src/gui/serverdialog.cpp:324
-msgid "Please type both the address and the port of a server."
-msgstr "请输入服务器的IP地址和端口"
-
-#: src/gui/serverdialog.cpp:441
-#, c-format
-msgid "Downloading server list...%2.2f%%"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:447
-#, fuzzy
-msgid "Waiting for server..."
-msgstr "等待服务器中"
-
-#: src/gui/serverdialog.cpp:451
-msgid "Preparing download"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:455
-msgid "Error retreiving server list!"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:550
-msgid "requires a newer version"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:552
-#, c-format
-msgid "requires v%s"
-msgstr ""
-
-#: src/gui/setup_audio.cpp:42
-msgid "Sound"
-msgstr "声音"
-
-#: src/gui/setup_audio.cpp:43
-msgid "Download music"
-msgstr ""
-
-#: src/gui/setup_audio.cpp:47
-msgid "Audio"
-msgstr "音频"
-
-#: src/gui/setup_audio.cpp:50
-msgid "Sfx volume"
-msgstr "音效声量"
-
-#: src/gui/setup_audio.cpp:51
-msgid "Music volume"
-msgstr "音乐声量"
-
-#: src/gui/setup_audio.cpp:94
-#, fuzzy
-msgid "Notice"
-msgstr "无文本"
-
-#: src/gui/setup_audio.cpp:94
-msgid "You may have to restart your client if you want to download new music"
-msgstr ""
-
-#: src/gui/setup_audio.cpp:106
-msgid "Sound Engine"
-msgstr ""
-
-#: src/gui/setup_colors.cpp:46
-msgid "This is what the color looks like"
-msgstr "这就是该色彩看起来的样子"
-
-#: src/gui/setup_colors.cpp:51
-msgid "Colors"
-msgstr "颜色"
-
-#: src/gui/setup_colors.cpp:72
-#, fuzzy
-msgid "Type:"
-msgstr "类型： "
-
-#: src/gui/setup_colors.cpp:83 src/gui/setup_colors.cpp:331
-msgid "Static"
-msgstr "静止的"
-
-#: src/gui/setup_colors.cpp:85 src/gui/setup_colors.cpp:86
-#: src/gui/setup_colors.cpp:332
-msgid "Pulse"
-msgstr "脉冲"
-
-#: src/gui/setup_colors.cpp:87 src/gui/setup_colors.cpp:88
-#: src/gui/setup_colors.cpp:333
-msgid "Rainbow"
-msgstr "彩虹"
-
-#: src/gui/setup_colors.cpp:89 src/gui/setup_colors.cpp:90
-#: src/gui/setup_colors.cpp:333
-msgid "Spectrum"
-msgstr "色谱"
-
-#: src/gui/setup_colors.cpp:94
-#, fuzzy
-msgid "Delay:"
-msgstr "显示： "
-
-#: src/gui/setup_colors.cpp:109
-#, fuzzy
-msgid "Red:"
-msgstr "红： "
-
-#: src/gui/setup_colors.cpp:124
-#, fuzzy
-msgid "Green:"
-msgstr "绿： "
-
-#: src/gui/setup_colors.cpp:139
-#, fuzzy
-msgid "Blue:"
-msgstr "蓝： "
-
-#: src/gui/setup.cpp:51
-msgid "Apply"
-msgstr "应用"
-
-#: src/gui/setup.cpp:51
-msgid "Reset Windows"
-msgstr "重置窗口"
-
-#: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:78
-msgid "Press the button to start calibration"
-msgstr "按下开始校准按钮"
-
-#: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:76
-msgid "Calibrate"
-msgstr "校准"
-
-#: src/gui/setup_joystick.cpp:39
-msgid "Enable joystick"
-msgstr "启用游戏杆"
-
-#: src/gui/setup_joystick.cpp:41
-msgid "Joystick"
-msgstr "游戏杆"
-
-#: src/gui/setup_joystick.cpp:83
-msgid "Stop"
-msgstr "停止"
-
-#: src/gui/setup_joystick.cpp:84
-msgid "Rotate the stick"
-msgstr "旋转手柄"
-
-#: src/gui/setup_keyboard.cpp:77
-msgid "Keyboard"
-msgstr "键盘"
-
-#: src/gui/setup_keyboard.cpp:86
-msgid "Assign"
-msgstr "分配"
-
-#: src/gui/setup_keyboard.cpp:90
-#, fuzzy
-msgid "Unassign"
-msgstr "分配"
-
-#: src/gui/setup_keyboard.cpp:94
-msgid "Default"
-msgstr "预设"
-
-#: src/gui/setup_keyboard.cpp:125
-msgid "Key Conflict(s) Detected."
-msgstr "检测到按键冲突。"
-
-#: src/gui/setup_players.cpp:58
-msgid "Name"
-msgstr "姓名"
-
-#: src/gui/setup_players.cpp:59
-msgid "Relation"
-msgstr "关系"
-
-#: src/gui/setup_players.cpp:64
-msgid "Neutral"
-msgstr "中立"
-
-#: src/gui/setup_players.cpp:65
-msgid "Friend"
-msgstr "好友"
-
-#: src/gui/setup_players.cpp:66
-msgid "Disregarded"
-msgstr "被忽视的"
-
-#: src/gui/setup_players.cpp:67
-msgid "Ignored"
-msgstr "忽略"
-
-#: src/gui/setup_players.cpp:206 src/gui/setup_video.cpp:153
-msgid "???"
-msgstr "？？？"
-
-#: src/gui/setup_players.cpp:225
-msgid "Allow trading"
-msgstr "允许交易"
-
-#: src/gui/setup_players.cpp:227
-msgid "Allow whispers"
-msgstr "允许密语"
-
-#: src/gui/setup_players.cpp:231
-msgid "Put all whispers in tabs"
-msgstr "将所有密语放于标签夜"
-
-#: src/gui/setup_players.cpp:233
-#, fuzzy
-msgid "Show gender"
-msgstr "显示姓名"
-
-#: src/gui/setup_players.cpp:235
-#, fuzzy
-msgid "Enable Chat log"
-msgstr "无法出售."
-
-#: src/gui/setup_players.cpp:237
-msgid "Players"
-msgstr "玩家"
-
-#: src/gui/setup_players.cpp:262
-msgid "When ignoring:"
-msgstr "当忽略时："
-
-#: src/gui/setup_video.cpp:134
-msgid "Tiny"
-msgstr "微小"
-
-#: src/gui/setup_video.cpp:135
-msgid "Small"
-msgstr "小"
-
-#: src/gui/setup_video.cpp:136
-msgid "Medium"
-msgstr "中等"
-
-#: src/gui/setup_video.cpp:137
-msgid "Large"
-msgstr "大"
-
-#: src/gui/setup_video.cpp:163
-msgid "No text"
-msgstr "无文本"
-
-#: src/gui/setup_video.cpp:164
-msgid "Text"
-msgstr "文本"
-
-#: src/gui/setup_video.cpp:165
-msgid "Bubbles, no names"
-msgstr "气泡，无名"
-
-#: src/gui/setup_video.cpp:166
-msgid "Bubbles with names"
-msgstr "有名气泡"
-
-#: src/gui/setup_video.cpp:178
-msgid "off"
-msgstr "关闭"
-
-#: src/gui/setup_video.cpp:179 src/gui/setup_video.cpp:192
-msgid "low"
-msgstr "低"
-
-#: src/gui/setup_video.cpp:180 src/gui/setup_video.cpp:194
-msgid "high"
-msgstr "高"
-
-#: src/gui/setup_video.cpp:193
-msgid "medium"
-msgstr "中"
-
-#: src/gui/setup_video.cpp:195
-msgid "max"
-msgstr "最大"
-
-#: src/gui/setup_video.cpp:217
-msgid "Full screen"
-msgstr "全屏"
-
-#: src/gui/setup_video.cpp:218
-msgid "OpenGL"
-msgstr "OpenGL"
-
-#: src/gui/setup_video.cpp:219
-msgid "Custom cursor"
-msgstr "自定义鼠标"
-
-#: src/gui/setup_video.cpp:221
-msgid "Visible names"
-msgstr "可见姓名"
-
-#: src/gui/setup_video.cpp:223
-msgid "Particle effects"
-msgstr "粒子效果"
-
-#: src/gui/setup_video.cpp:225
-#, fuzzy
-msgid "Show own name"
-msgstr "显示姓名"
-
-#: src/gui/setup_video.cpp:226
-msgid "Log NPC dialogue"
-msgstr ""
-
-#: src/gui/setup_video.cpp:227
-msgid "Show pickup notification"
-msgstr "显示拾起通知"
-
-#. TRANSLATORS: Refers to "Show pickup notification"
-#: src/gui/setup_video.cpp:229
-msgid "in chat"
-msgstr "聊天中"
-
-#. TRANSLATORS: Refers to "Show pickup notification"
-#: src/gui/setup_video.cpp:231
-msgid "as particle"
-msgstr "作为发射武器"
-
-#: src/gui/setup_video.cpp:236
-#, fuzzy
-msgid "FPS limit:"
-msgstr "FPS限制："
-
-#: src/gui/setup_video.cpp:247
-msgid "Disable transparency (Low CPU mode)"
-msgstr ""
-
-#: src/gui/setup_video.cpp:250
-msgid "Video"
-msgstr "视频"
-
-#: src/gui/setup_video.cpp:252
-#, fuzzy
-msgid "Show damage"
-msgstr "显示姓名"
-
-#: src/gui/setup_video.cpp:258
-msgid "Overhead text"
-msgstr "头顶文字"
-
-#: src/gui/setup_video.cpp:259
-msgid "Gui opacity"
-msgstr "Gui 透明度"
-
-#: src/gui/setup_video.cpp:260
-msgid "Ambient FX"
-msgstr "环境音效"
-
-#: src/gui/setup_video.cpp:261
-#, fuzzy
-msgid "Particle detail"
-msgstr "纹理细节"
-
-#: src/gui/setup_video.cpp:262
-msgid "Font size"
-msgstr "字体大小"
-
-#: src/gui/setup_video.cpp:277 src/gui/setup_video.cpp:532
-#: src/gui/setup_video.cpp:662
-#, fuzzy
-msgid "None"
-msgstr "否"
-
-#: src/gui/setup_video.cpp:426
-msgid ""
-"Failed to switch to windowed mode and restoration of old mode also failed!"
-msgstr ""
-
-#: src/gui/setup_video.cpp:432
-msgid ""
-"Failed to switch to fullscreen mode and restoration of old mode also failed!"
-msgstr ""
-
-#: src/gui/setup_video.cpp:443
-#, fuzzy
-msgid "Switching to Full Screen"
-msgstr "切换到全屏"
-
-#: src/gui/setup_video.cpp:444
-msgid "Restart needed for changes to take effect."
-msgstr "重启生效"
-
-#: src/gui/setup_video.cpp:458
-#, fuzzy
-msgid "Changing to OpenGL"
-msgstr "改变成OpenGL"
-
-#: src/gui/setup_video.cpp:459
-msgid ""
-"Applying change to OpenGL requires restart. In case OpenGL messes up your "
-"game graphics, restart the game with the command line option \"--no-opengl\"."
-msgstr ""
-
-#: src/gui/setup_video.cpp:466
-msgid "Deactivating OpenGL"
-msgstr ""
-
-#: src/gui/setup_video.cpp:467
-msgid "Applying change to OpenGL requires restart."
-msgstr "运用改变为OpenGL需要重新开始"
-
-#: src/gui/setup_video.cpp:475
-#, fuzzy
-msgid "Transparency disabled"
-msgstr "经验共享关闭。"
-
-#: src/gui/setup_video.cpp:476 src/gui/setup_video.cpp:484
-msgid "You must restart to apply changes."
-msgstr ""
-
-#: src/gui/setup_video.cpp:483
-msgid "Transparency enabled"
-msgstr ""
-
-#: src/gui/setup_video.cpp:576 src/gui/setup_video.cpp:581
-#, fuzzy
-msgid "Screen Resolution Changed"
-msgstr "分辨率已变更"
-
-#: src/gui/setup_video.cpp:577 src/gui/setup_video.cpp:582
-msgid "Restart your client for the change to take effect."
-msgstr "重启您的游戏客户端以使变更生效。"
-
-#: src/gui/setup_video.cpp:579
-msgid "Some windows may be moved to fit the lowered resolution."
-msgstr ""
-
-#: src/gui/setup_video.cpp:612
-#, fuzzy
-msgid "Particle Effect Settings Changed."
-msgstr "粒子效果设置已变更。"
-
-#: src/gui/setup_video.cpp:613
-msgid "Changes will take effect on map change."
-msgstr "变更会在地图更换时生效。"
-
-#: src/gui/skilldialog.cpp:212 src/gui/windowmenu.cpp:59
-msgid "Skills"
-msgstr "技能"
-
-#: src/gui/skilldialog.cpp:223
-msgid "Up"
-msgstr "升级"
-
-#: src/gui/skilldialog.cpp:269
-#, fuzzy, c-format
-msgid "Skill points available: %d"
-msgstr "技能点数：%d"
-
-#: src/gui/skilldialog.cpp:351
-#, fuzzy, c-format
-msgid "Skill Set %d"
-msgstr "技能点数：%d"
-
-#: src/gui/skilldialog.cpp:360
-#, fuzzy, c-format
-msgid "Skill %d"
-msgstr "技能"
-
-#: src/gui/skilldialog.cpp:442
-#, fuzzy, c-format
-msgid "Lvl: %d (%+d)"
-msgstr "等级：%d"
-
-#: src/gui/skilldialog.cpp:453
-#, fuzzy, c-format
-msgid "Lvl: %d"
-msgstr "等级：%d"
-
-#: src/gui/socialwindow.cpp:126
-#, c-format
-msgid "Invited user %s to guild %s."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:139
-#, fuzzy, c-format
-msgid "Guild %s quit requested."
-msgstr "帮会已创建"
-
-#: src/gui/socialwindow.cpp:153
-msgid "Member Invite to Guild"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:154
-#, c-format
-msgid "Who would you like to invite to guild %s?"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:163
-#, fuzzy
-msgid "Leave Guild?"
-msgstr "创建帮会"
-
-#: src/gui/socialwindow.cpp:164
-#, fuzzy, c-format
-msgid "Are you sure you want to leave guild %s?"
-msgstr "确定退出游戏？"
-
-#: src/gui/socialwindow.cpp:207 src/net/tmwa/partyhandler.cpp:330
-#, fuzzy, c-format
-msgid "Invited user %s to party."
-msgstr "邀请一个用户加入队伍"
-
-#: src/gui/socialwindow.cpp:218
-#, c-format
-msgid "Party %s quit requested."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:232
-#, fuzzy
-msgid "Member Invite to Party"
-msgstr "邀请一个用户加入队伍"
-
-#: src/gui/socialwindow.cpp:233
-#, c-format
-msgid "Who would you like to invite to party %s?"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:242
-msgid "Leave Party?"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:243
-#, fuzzy, c-format
-msgid "Are you sure you want to leave party %s?"
-msgstr "确定退出游戏？"
-
-#: src/gui/socialwindow.cpp:272
-msgid "Create Guild"
-msgstr "创建帮会"
-
-#: src/gui/socialwindow.cpp:273 src/gui/socialwindow.cpp:620
-#, fuzzy
-msgid "Create Party"
-msgstr "创建角色"
-
-#: src/gui/socialwindow.cpp:312 src/gui/windowmenu.cpp:64
-msgid "Social"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:330
-#, fuzzy
-msgid "Invite"
-msgstr "邀请用户"
-
-#: src/gui/socialwindow.cpp:331
-#, fuzzy
-msgid "Leave"
-msgstr "大"
-
-#: src/gui/socialwindow.cpp:443
-#, fuzzy, c-format
-msgid "Accepted party invite from %s."
-msgstr "接受%s的邀请。"
-
-#: src/gui/socialwindow.cpp:449
-#, fuzzy, c-format
-msgid "Rejected party invite from %s."
-msgstr "拒绝%s的邀请。"
-
-#: src/gui/socialwindow.cpp:462
-#, fuzzy, c-format
-msgid "Accepted guild invite from %s."
-msgstr "接受%s的邀请。"
-
-#: src/gui/socialwindow.cpp:468
-#, fuzzy, c-format
-msgid "Rejected guild invite from %s."
-msgstr "拒绝%s的邀请。"
-
-#: src/gui/socialwindow.cpp:497
-msgid "Creating guild failed, please choose a shorter name."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:504
-#, c-format
-msgid "Creating guild called %s."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:520
-msgid "Creating party failed, please choose a shorter name."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:527
-#, c-format
-msgid "Creating party called %s."
-msgstr ""
-
-#: src/gui/socialwindow.cpp:541
-#, fuzzy
-msgid "Guild Name"
-msgstr "帮会"
-
-#: src/gui/socialwindow.cpp:542
-#, fuzzy
-msgid "Choose your guild's name."
-msgstr "选择你的服务器"
-
-#: src/gui/socialwindow.cpp:554
-#, fuzzy
-msgid "Received guild request, but one already exists."
-msgstr "接受到一个已经存在的帮会邀请。"
-
-#: src/gui/socialwindow.cpp:559
-#, fuzzy, c-format
-msgid "%s has invited you to join the guild %s."
-msgstr "%s已经邀请你加入帮会%s。"
-
-#: src/gui/socialwindow.cpp:564
-#, fuzzy
-msgid "Accept Guild Invite"
-msgstr "接受帮会邀请"
-
-#: src/gui/socialwindow.cpp:576
-msgid "Received party request, but one already exists."
-msgstr "接受到一个已经存在的帮会邀请。"
-
-#: src/gui/socialwindow.cpp:585
-#, fuzzy
-msgid "You have been invited you to join a party."
-msgstr "%s已经邀请你加入他们的帮会。"
-
-#: src/gui/socialwindow.cpp:589
-#, fuzzy, c-format
-msgid "You have been invited to join the %s party."
-msgstr "%s已经邀请你加入帮会%s。"
-
-#: src/gui/socialwindow.cpp:597
-#, c-format
-msgid "%s has invited you to join their party."
-msgstr "%s已经邀请你加入他们的帮会。"
-
-#: src/gui/socialwindow.cpp:602
-#, c-format
-msgid "%s has invited you to join the %s party."
-msgstr "%s已经邀请你加入帮会%s。"
-
-#: src/gui/socialwindow.cpp:610
-msgid "Accept Party Invite"
-msgstr "接受帮会邀请"
-
-#: src/gui/socialwindow.cpp:621
-msgid "Cannot create party. You are already in a party"
-msgstr ""
-
-#: src/gui/socialwindow.cpp:626
-#, fuzzy
-msgid "Party Name"
-msgstr "帮会"
-
-#: src/gui/socialwindow.cpp:627
-#, fuzzy
-msgid "Choose your party's name."
-msgstr "选择你的服务器"
-
-#: src/gui/specialswindow.cpp:79 src/gui/windowmenu.cpp:62
-msgid "Specials"
-msgstr ""
-
-#: src/gui/statuswindow.cpp:113 src/gui/statuswindow.cpp:215
-#: src/gui/statuswindow.cpp:262
-#, c-format
-msgid "Level: %d"
-msgstr "等级：%d"
-
-#: src/gui/statuswindow.cpp:114 src/gui/statuswindow.cpp:208
-#: src/gui/statuswindow.cpp:239
-#, c-format
-msgid "Money: %s"
-msgstr "金币: %s"
-
-#: src/gui/statuswindow.cpp:117
-msgid "HP:"
-msgstr "HP："
-
-#: src/gui/statuswindow.cpp:122
-msgid "Exp:"
-msgstr "经验："
-
-#: src/gui/statuswindow.cpp:130
-msgid "MP:"
-msgstr "MP："
-
-#: src/gui/statuswindow.cpp:158 src/gui/statuswindow.cpp:275
-#, c-format
-msgid "Job: %d"
-msgstr "职业：%d"
-
-#: src/gui/statuswindow.cpp:159
-msgid "Job:"
-msgstr "职业："
-
-#: src/gui/statuswindow.cpp:211 src/gui/statuswindow.cpp:247
-#, fuzzy, c-format
-msgid "Character points: %d"
-msgstr "角色状态可以"
-
-#: src/gui/statuswindow.cpp:255
-#, fuzzy, c-format
-msgid "Correction points: %d"
-msgstr "技能点数：%d"
-
-#: src/gui/trade.cpp:53
-msgid "Propose trade"
-msgstr "打算交易"
-
-#: src/gui/trade.cpp:54
-msgid "Confirmed. Waiting..."
-msgstr "已确认。等待中……"
-
-#: src/gui/trade.cpp:55
-msgid "Agree trade"
-msgstr "同意交易"
-
-#: src/gui/trade.cpp:56
-msgid "Agreed. Waiting..."
-msgstr "已同意。等待中……"
-
-#: src/gui/trade.cpp:59
-msgid "Trade: You"
-msgstr "交易：你"
-
-#: src/gui/trade.cpp:73 src/gui/trade.cpp:74
-msgid "Trade"
-msgstr "交易"
-
-#: src/gui/trade.cpp:76
-msgid "Add"
-msgstr "添加"
-
-#: src/gui/trade.cpp:98 src/gui/trade.cpp:134
-#, fuzzy, c-format
-msgid "You get %s"
-msgstr "你得到%s。"
-
-#: src/gui/trade.cpp:99
-msgid "You give:"
-msgstr "你给予："
-
-#: src/gui/trade.cpp:103
-msgid "Change"
-msgstr "改变"
-
-#: src/gui/trade.cpp:262
-msgid "Failed adding item. You can not overlap one kind of item on the window."
-msgstr "添加物品失败。你不能覆盖窗口中的该类物品。"
-
-#: src/gui/trade.cpp:304
-msgid "You don't have enough money."
-msgstr "你没有足够的钱币."
-
-#: src/gui/unregisterdialog.cpp:51
-#, c-format
-msgid "Name: %s"
-msgstr "姓名：%s"
-
-#: src/gui/updatewindow.cpp:124
-msgid "Updating..."
-msgstr "更新..."
-
-#: src/gui/updatewindow.cpp:142
-msgid "Connecting..."
-msgstr "连接中…"
-
-#: src/gui/updatewindow.cpp:145
-msgid "Play"
-msgstr "开始"
-
-#: src/gui/updatewindow.cpp:417
-msgid "##1  The update process is incomplete."
-msgstr "##1 更新过程不完整。"
-
-#. TRANSLATORS: Continues "you try again later.".
-#: src/gui/updatewindow.cpp:419
-msgid "##1  It is strongly recommended that"
-msgstr "##1 强烈建议"
-
-#. TRANSLATORS: Begins "It is strongly recommended that".
-#: src/gui/updatewindow.cpp:421
-#, fuzzy
-msgid "##1  you try again later."
-msgstr "##1 您稍候再次尝试"
-
-#: src/gui/updatewindow.cpp:515
-msgid "Completed"
-msgstr "已完成"
-
-#: src/gui/widgets/channeltab.cpp:49
-msgid "/users > Lists the users in the current channel"
-msgstr "/usr > 列出当前频道的用户"
-
-#: src/gui/widgets/channeltab.cpp:50
-msgid "/topic > Set the topic of the current channel"
-msgstr "/topic > 设置当前聊天频道的主题"
-
-#: src/gui/widgets/channeltab.cpp:51
-msgid "/quit > Leave a channel"
-msgstr "/quit > 离开频道"
-
-#: src/gui/widgets/channeltab.cpp:52
-msgid "/op > Make a user a channel operator"
-msgstr "/op > 使用户称为频道管理员"
-
-#: src/gui/widgets/channeltab.cpp:53
-msgid "/kick > Kick a user from the channel"
-msgstr "/kick > 把用户踢出频道"
-
-#: src/gui/widgets/channeltab.cpp:63
-msgid "Command: /users"
-msgstr "命令：/users"
-
-#: src/gui/widgets/channeltab.cpp:64
-msgid "This command shows the users in this channel."
-msgstr "该命令显示当前频道的用户"
-
-#: src/gui/widgets/channeltab.cpp:68
-msgid "Command: /topic <message>"
-msgstr "命令：/topic <讯息>"
-
-#: src/gui/widgets/channeltab.cpp:69
-msgid "This command sets the topic to <message>."
-msgstr "该命令设置主题为<讯息>"
-
-#: src/gui/widgets/channeltab.cpp:73
-msgid "Command: /quit"
-msgstr "命令：/quit"
-
-#: src/gui/widgets/channeltab.cpp:74
-msgid "This command leaves the current channel."
-msgstr "该命令离开当前频道"
-
-#: src/gui/widgets/channeltab.cpp:75
-msgid "If you're the last person in the channel, it will be deleted."
-msgstr "如果你是该频道的最后成员，离开后该频道将被删除。"
-
-#: src/gui/widgets/channeltab.cpp:80
-msgid "Command: /op <nick>"
-msgstr "命令：/op <昵称>"
-
-#: src/gui/widgets/channeltab.cpp:81
-msgid "This command makes <nick> a channel operator."
-msgstr "该命令使<昵称>成为频道管理员。"
-
-#: src/gui/widgets/channeltab.cpp:84
-msgid "Channel operators can kick and op other users from the channel."
-msgstr "频道管理员可以踢出或者op频道内的其他用户"
-
-#: src/gui/widgets/channeltab.cpp:89
-msgid "Command: /kick <nick>"
-msgstr "命令：/kick <昵称>"
-
-#: src/gui/widgets/channeltab.cpp:90
-msgid "This command makes <nick> leave the channel."
-msgstr "该命令致使<昵称>离开频道。"
-
-#: src/gui/widgets/channeltab.cpp:119
-msgid "Need a user to op!"
-msgstr "需要一个用户来操作"
-
-#: src/gui/widgets/channeltab.cpp:126
-msgid "Need a user to kick!"
-msgstr "踢人时需要指定用户！"
-
-#: src/gui/widgets/chattab.cpp:121
-msgid "Global announcement:"
-msgstr "全局公告："
-
-#: src/gui/widgets/chattab.cpp:127
-#, c-format
-msgid "Global announcement from %s:"
-msgstr "%s 全局公告："
-
-#: src/gui/widgets/chattab.cpp:153
-#, fuzzy, c-format
-msgid "%s whispers: %s"
-msgstr "%s悄悄的对您说： "
-
-#: src/gui/widgets/whispertab.cpp:53
-msgid "Cannot send empty chat!"
-msgstr "无法发送空白信息！"
-
-#: src/gui/widgets/whispertab.cpp:72
-msgid "/ignore > Ignore the other player"
-msgstr ""
-
-#: src/gui/widgets/whispertab.cpp:73
-msgid "/unignore > Stop ignoring the other player"
-msgstr ""
-
-#: src/gui/widgets/whispertab.cpp:74
-msgid "/close > Close the whisper tab"
-msgstr "/close > 关闭密语标签页"
-
-#: src/gui/widgets/whispertab.cpp:84
-msgid "Command: /close"
-msgstr "命令: /close"
-
-#: src/gui/widgets/whispertab.cpp:85
-msgid "This command closes the current whisper tab."
-msgstr "该命令关闭当前密语标签页。"
-
-#: src/gui/widgets/whispertab.cpp:89
-#, fuzzy
-msgid "Command: /ignore"
-msgstr "命令：/item"
-
-#: src/gui/widgets/whispertab.cpp:90
-#, fuzzy
-msgid "This command ignores the other player regardless of current relations."
-msgstr "该条命令可显现当前在线用户总数。"
-
-#: src/gui/widgets/whispertab.cpp:96
-#, fuzzy
-msgid "This command stops ignoring the other player if they are being ignored."
-msgstr "该命令开始记录聊天日志至文件<文件名>。"
-
-#: src/gui/windowmenu.cpp:54
-msgid "Status"
-msgstr "状态"
-
-#: src/gui/windowmenu.cpp:65
-msgid "Shortcut"
-msgstr "快捷键"
-
-#: src/gui/worldselectdialog.cpp:71
-#, fuzzy
-msgid "Select World"
-msgstr "选择OK"
-
-#: src/gui/worldselectdialog.cpp:76
-#, fuzzy
-msgid "Change Login"
-msgstr "改变"
-
-#: src/gui/worldselectdialog.cpp:77
-#, fuzzy
-msgid "Choose World"
-msgstr "选择你的服务器"
-
-#: src/keyboardconfig.cpp:39
-msgid "Move Up"
-msgstr "向上移动"
-
-#: src/keyboardconfig.cpp:40
-msgid "Move Down"
-msgstr "向下移动"
-
-#: src/keyboardconfig.cpp:41
-msgid "Move Left"
-msgstr "向左移动"
-
-#: src/keyboardconfig.cpp:42
-msgid "Move Right"
-msgstr "向右移动"
-
-#: src/keyboardconfig.cpp:43 src/net/tmwa/generalhandler.cpp:237
-msgid "Attack"
-msgstr "攻击"
-
-#: src/keyboardconfig.cpp:44
-msgid "Target & Attack"
-msgstr "对准并攻击"
-
-#: src/keyboardconfig.cpp:45
-msgid "Smilie"
-msgstr "笑脸"
-
-#: src/keyboardconfig.cpp:46
-msgid "Talk"
-msgstr "说话"
-
-#: src/keyboardconfig.cpp:47
-msgid "Stop Attack"
-msgstr "停止攻击"
-
-#: src/keyboardconfig.cpp:48
-#, fuzzy
-msgid "Target Monster"
-msgstr "对准最近目标"
-
-#: src/keyboardconfig.cpp:49
-msgid "Target NPC"
-msgstr "目标NPC"
-
-#: src/keyboardconfig.cpp:50
-msgid "Target Player"
-msgstr "目标玩家"
-
-#: src/keyboardconfig.cpp:51
-msgid "Pickup"
-msgstr "捡起"
-
-#: src/keyboardconfig.cpp:52
-msgid "Hide Windows"
-msgstr "隐藏窗口"
-
-#: src/keyboardconfig.cpp:53
-msgid "Sit"
-msgstr "坐下"
-
-#: src/keyboardconfig.cpp:54
-msgid "Screenshot"
-msgstr "屏幕快照"
-
-#: src/keyboardconfig.cpp:55
-msgid "Enable/Disable Trading"
-msgstr "开启/关闭交易"
-
-#: src/keyboardconfig.cpp:56
-msgid "Find Path to Mouse"
-msgstr ""
-
-#: src/keyboardconfig.cpp:57 src/keyboardconfig.cpp:58
-#: src/keyboardconfig.cpp:59 src/keyboardconfig.cpp:60
-#: src/keyboardconfig.cpp:61 src/keyboardconfig.cpp:62
-#: src/keyboardconfig.cpp:63 src/keyboardconfig.cpp:64
-#: src/keyboardconfig.cpp:65 src/keyboardconfig.cpp:66
-#: src/keyboardconfig.cpp:67 src/keyboardconfig.cpp:68
-#, c-format
-msgid "Item Shortcut %d"
-msgstr "物品快捷 %d"
-
-#: src/keyboardconfig.cpp:69
-msgid "Help Window"
-msgstr "帮助窗口"
-
-#: src/keyboardconfig.cpp:70
-msgid "Status Window"
-msgstr "状态窗口"
-
-#: src/keyboardconfig.cpp:71
-msgid "Inventory Window"
-msgstr "物品栏窗口"
-
-#: src/keyboardconfig.cpp:72
-msgid "Equipment Window"
-msgstr "装备窗口"
-
-#: src/keyboardconfig.cpp:73
-msgid "Skill Window"
-msgstr "技能窗口"
-
-#: src/keyboardconfig.cpp:74
-msgid "Minimap Window"
-msgstr "小地图窗口"
-
-#: src/keyboardconfig.cpp:75
-msgid "Chat Window"
-msgstr "聊天窗口"
-
-#: src/keyboardconfig.cpp:76
-msgid "Item Shortcut Window"
-msgstr "物品快捷窗口"
-
-#: src/keyboardconfig.cpp:77
-msgid "Setup Window"
-msgstr "设置窗口"
-
-#: src/keyboardconfig.cpp:78
-msgid "Debug Window"
-msgstr "Debug窗口"
-
-#: src/keyboardconfig.cpp:79
-#, fuzzy
-msgid "Social Window"
-msgstr "技能窗口"
-
-#: src/keyboardconfig.cpp:80
-msgid "Emote Shortcut Window"
-msgstr "表情快捷窗口"
-
-#: src/keyboardconfig.cpp:81
-#, fuzzy
-msgid "Outfits Window"
-msgstr "状态窗口"
-
-#: src/keyboardconfig.cpp:82
-msgid "Wear Outfit"
-msgstr ""
-
-#: src/keyboardconfig.cpp:83
-msgid "Copy Outfit"
-msgstr ""
-
-#: src/keyboardconfig.cpp:84 src/keyboardconfig.cpp:85
-#: src/keyboardconfig.cpp:86 src/keyboardconfig.cpp:87
-#: src/keyboardconfig.cpp:88 src/keyboardconfig.cpp:89
-#: src/keyboardconfig.cpp:90 src/keyboardconfig.cpp:91
-#: src/keyboardconfig.cpp:92 src/keyboardconfig.cpp:93
-#: src/keyboardconfig.cpp:94 src/keyboardconfig.cpp:95
-#, c-format
-msgid "Emote Shortcut %d"
-msgstr "表情快捷键为 %d"
-
-#: src/keyboardconfig.cpp:96
-msgid "Toggle Chat"
-msgstr "切换聊天"
-
-#: src/keyboardconfig.cpp:97
-msgid "Scroll Chat Up"
-msgstr "向上滚动聊天记录"
-
-#: src/keyboardconfig.cpp:98
-msgid "Scroll Chat Down"
-msgstr "向下滚动聊天记录"
-
-#: src/keyboardconfig.cpp:99
-msgid "Previous Chat Tab"
-msgstr "上一个聊天窗口标签页"
-
-#: src/keyboardconfig.cpp:100
-msgid "Next Chat Tab"
-msgstr "下一个聊天窗口标签页"
-
-#: src/keyboardconfig.cpp:101
-msgid "Select OK"
-msgstr "选择OK"
-
-#: src/keyboardconfig.cpp:103
-msgid "Ignore input 1"
-msgstr "忽略输入1"
-
-#: src/keyboardconfig.cpp:104
-msgid "Ignore input 2"
-msgstr "忽略输入2"
-
-#: src/keyboardconfig.cpp:183
-#, fuzzy, c-format
-msgid ""
-"Conflict \"%s\" and \"%s\" keys. Resolve them, or gameplay may result in "
-"strange behaviour."
-msgstr "解决按键冲突，否者游戏过程中可能发生奇怪行为。"
-
-#: src/localplayer.cpp:985
-msgid "Unable to pick up item."
-msgstr "无法拾取物品。"
-
-#. TRANSLATORS: This sentence may be translated differently
-#. for different grammatical numbers (singular, plural, ...)
-#: src/localplayer.cpp:994
-#, fuzzy, c-format
-msgid "You picked up %d [@@%d|%s@@]."
-msgid_plural "You picked up %d [@@%d|%s@@]."
-msgstr[0] "你捡起%s [@@%d|%s@@]。"
-msgstr[1] "你捡起%s [@@%d|%s@@]。"
-
-#: src/main.cpp:42
-msgid "mana [options] [mana-file]"
-msgstr ""
-
-#: src/main.cpp:43
-msgid "[mana-file] : The mana file is an XML file (.mana)"
-msgstr ""
-
-#: src/main.cpp:44
-msgid "              used to set custom parameters"
-msgstr ""
-
-#: src/main.cpp:45
+#: ../src/main.cpp:52
 msgid "              to the mana client."
 msgstr ""
 
-#: src/main.cpp:47
-msgid "Options:"
-msgstr "选项："
+#: ../src/main.cpp:51
+msgid "              used to set custom parameters"
+msgstr ""
 
-#: src/main.cpp:48
-#, fuzzy
-msgid "  -v --version        : Display the version"
-msgstr "  -v --version\t:显示版本号"
-
-#: src/main.cpp:49
-#, fuzzy
-msgid "  -h --help           : Display this help"
-msgstr "  -h --help\t: 显示该帮助"
-
-#: src/main.cpp:50
-#, fuzzy
-msgid "  -C --config-dir     : Configuration directory to use"
-msgstr "  -C --config-file\t: 使用的配置文件"
-
-#: src/main.cpp:51
-#, fuzzy
-msgid "  -U --username       : Login with this username"
-msgstr "  -U --username\t:以该用户名登录游戏"
-
-#: src/main.cpp:52
-#, fuzzy
-msgid "  -P --password       : Login with this password"
-msgstr "  -P --password\t: 以该密码登录"
-
-#: src/main.cpp:53
-#, fuzzy
-msgid "  -c --character      : Login with this character"
-msgstr "  -c --character\t: 以该角色登录"
-
-#: src/main.cpp:54
-#, fuzzy
-msgid "  -s --server         : Login server name or IP"
-msgstr "  -s --server\t: 登录服务器名或IP"
-
-#: src/main.cpp:55
-#, fuzzy
-msgid "  -p --port           : Login server port"
-msgstr "  -p --port\t: 登录服务器端口"
-
-#: src/main.cpp:56
-#, fuzzy
-msgid "     --update-host    : Use this update host"
-msgstr "  -H --update-host\t: 使用该更新主机"
-
-#: src/main.cpp:57
-#, fuzzy
-msgid "  -D --default        : Choose default character server and character"
-msgstr "  -D --default\t: 选择某人角色服务器和角色"
-
-#: src/main.cpp:59
-#, fuzzy
-msgid "  -u --skip-update    : Skip the update downloads"
-msgstr "  -u --skip-update\t:跳过下载更新"
-
-#: src/main.cpp:60
-#, fuzzy
-msgid "  -d --data           : Directory to load game data from"
-msgstr "  -d --data\t: 从此目录加载游戏数据"
-
-#: src/main.cpp:61
-#, fuzzy
-msgid "     --localdata-dir  : Directory to use as local data directory"
-msgstr "  -S --home-dir\t: 用该目录作为家目录"
-
-#: src/main.cpp:62
+#: ../src/main.cpp:70
 #, fuzzy
 msgid "     --chat-log-dir   : Chat log dir to use"
 msgstr "  -C --config-file\t: 使用的配置文件"
 
-#: src/main.cpp:63
+#: ../src/main.cpp:69
 #, fuzzy
-msgid "     --screenshot-dir : Directory to store screenshots"
+msgid "     --localdata-dir  : Directory to use as local data directory"
 msgstr "  -S --home-dir\t: 用该目录作为家目录"
 
-#: src/main.cpp:65
+#: ../src/main.cpp:73
 #, fuzzy
 msgid "     --no-opengl      : Disable OpenGL for this session"
 msgstr "  -O --no-opengl\t:为该次会话关闭OpenGL"
 
-#: src/net/manaserv/beinghandler.cpp:303 src/net/tmwa/playerhandler.cpp:94
-msgid "You are dead."
-msgstr "你已玩完了。"
-
-#: src/net/manaserv/beinghandler.cpp:304 src/net/tmwa/playerhandler.cpp:95
-msgid "We regret to inform you that your character was killed in battle."
-msgstr "很遗憾的告诉您，您的角色在战斗中死亡了"
-
-#: src/net/manaserv/beinghandler.cpp:306 src/net/tmwa/playerhandler.cpp:97
-msgid "You are not that alive anymore."
-msgstr "你再也不是那样的生机勃勃了。"
-
-#: src/net/manaserv/beinghandler.cpp:307 src/net/tmwa/playerhandler.cpp:98
-msgid "The cold hands of the grim reaper are grabbing for your soul."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:308 src/net/tmwa/playerhandler.cpp:99
-msgid "Game Over!"
-msgstr "游戏结束！"
-
-#: src/net/manaserv/beinghandler.cpp:309 src/net/tmwa/playerhandler.cpp:101
-msgid ""
-"No, kids. Your character did not really die. It... err... went to a better "
-"place."
-msgstr "不，孩子。你的角色没有真正死亡。他……呃……不过是去了一个更好的地方而已。"
-
-#: src/net/manaserv/beinghandler.cpp:311 src/net/tmwa/playerhandler.cpp:103
-msgid ""
-"Your plan of breaking your enemies weapon by bashing it with your throat "
-"failed."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:313 src/net/tmwa/playerhandler.cpp:105
-msgid "I guess this did not run too well."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:314 src/net/tmwa/playerhandler.cpp:107
-msgid "Do you want your possessions identified?"
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:315 src/net/tmwa/playerhandler.cpp:109
-msgid "Sadly, no trace of you was ever found..."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:316 src/net/tmwa/playerhandler.cpp:111
-msgid "Annihilated."
-msgstr "被消灭了。"
-
-#: src/net/manaserv/beinghandler.cpp:317 src/net/tmwa/playerhandler.cpp:113
-msgid "Looks like you got your head handed to you."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:318 src/net/tmwa/playerhandler.cpp:115
-msgid ""
-"You screwed up again, dump your body down the tubes and get you another one."
-msgstr ""
-
-#: src/net/manaserv/beinghandler.cpp:323
+#: ../src/main.cpp:71
 #, fuzzy
-msgid "Press OK to respawn."
-msgstr " 按OK重新开始"
+msgid "     --screenshot-dir : Directory to store screenshots"
+msgstr "  -S --home-dir\t: 用该目录作为家目录"
 
-#: src/net/manaserv/beinghandler.cpp:324
+#: ../src/main.cpp:64
 #, fuzzy
-msgid "You Died"
-msgstr "你完蛋了"
+msgid "     --update-host    : Use this update host"
+msgstr "  -H --update-host\t: 使用该更新主机"
 
-#: src/net/manaserv/charhandler.cpp:138 src/net/manaserv/charhandler.cpp:209
+#: ../src/main.cpp:57
 #, fuzzy
-msgid "Not logged in."
-msgstr "已经登录"
+msgid "  -C --config-dir     : Configuration directory to use"
+msgstr "  -C --config-file\t: 使用的配置文件"
 
-#: src/net/manaserv/charhandler.cpp:141
-msgid "No empty slot."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:144
-msgid "Invalid name."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:147
+#: ../src/main.cpp:65
 #, fuzzy
-msgid "Character's name already exists."
-msgstr "用户名已存在"
+msgid "  -D --default        : Choose default character server and character"
+msgstr "  -D --default\t: 选择某人角色服务器和角色"
 
-#: src/net/manaserv/charhandler.cpp:150
-msgid "Invalid hairstyle."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:153
-msgid "Invalid hair color."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:156
-msgid "Invalid gender."
-msgstr ""
-
-#: src/net/manaserv/charhandler.cpp:159
+#: ../src/main.cpp:59
 #, fuzzy
-msgid "Character's stats are too high."
-msgstr "角色状态可以"
+msgid "  -P --password       : Login with this password"
+msgstr "  -P --password\t: 以该密码登录"
 
-#: src/net/manaserv/charhandler.cpp:162
+#: ../src/main.cpp:58
 #, fuzzy
-msgid "Character's stats are too low."
-msgstr "角色状态可以"
+msgid "  -U --username       : Login with this username"
+msgstr "  -U --username\t:以该用户名登录游戏"
 
-#: src/net/manaserv/charhandler.cpp:165
+#: ../src/main.cpp:60
+#, fuzzy
+msgid "  -c --character      : Login with this character"
+msgstr "  -c --character\t: 以该角色登录"
+
+#: ../src/main.cpp:68
+#, fuzzy
+msgid "  -d --data           : Directory to load game data from"
+msgstr "  -d --data\t: 从此目录加载游戏数据"
+
+#: ../src/main.cpp:56
+#, fuzzy
+msgid "  -h --help           : Display this help"
+msgstr "  -h --help\t: 显示该帮助"
+
+#: ../src/main.cpp:62
+#, fuzzy
+msgid "  -p --port           : Login server port"
+msgstr "  -p --port\t: 登录服务器端口"
+
+#: ../src/main.cpp:61
+#, fuzzy
+msgid "  -s --server         : Login server name or IP"
+msgstr "  -s --server\t: 登录服务器名或IP"
+
+#: ../src/main.cpp:67
+#, fuzzy
+msgid "  -u --skip-update    : Skip the update downloads"
+msgstr "  -u --skip-update\t:跳过下载更新"
+
+#: ../src/main.cpp:55
+#, fuzzy
+msgid "  -v --version        : Display the version"
+msgstr "  -v --version\t:显示版本号"
+
+#: ../src/main.cpp:63
+#, fuzzy
+msgid "  -y --server-type    : Login server type"
+msgstr "  -s --server\t: 登录服务器名或IP"
+
+#: ../src/gui/updaterwindow.cpp:410
+msgid "##1  It is strongly recommended that"
+msgstr "##1 强烈建议"
+
+#: ../src/gui/updaterwindow.cpp:408
+msgid "##1  The update process is incomplete."
+msgstr "##1 更新过程不完整。"
+
+#: ../src/gui/updaterwindow.cpp:412
+#, fuzzy
+msgid "##1  you try again later."
+msgstr "##1 您稍候再次尝试"
+
+#: ../src/net/tmwa/generalhandler.cpp:243
+#, fuzzy, no-c-format
+msgid "% Accuracy"
+msgstr "% Ac精确度："
+
+#: ../src/net/tmwa/generalhandler.cpp:247
+#, fuzzy, no-c-format
+msgid "% Critical"
+msgstr "会心一击"
+
+#: ../src/net/tmwa/generalhandler.cpp:245
+#, fuzzy, no-c-format
+msgid "% Evade"
+msgstr "% E回避率："
+
+#: ../src/gui/debugwindow.cpp:60
 #, c-format
-msgid "At least one statis out of the permitted range: (%u - %u)."
+msgid "%d FPS"
 msgstr ""
 
-#: src/net/manaserv/charhandler.cpp:171 src/net/manaserv/loginhandler.cpp:96
-#: src/net/manaserv/loginhandler.cpp:127 src/net/manaserv/loginhandler.cpp:161
-#: src/net/manaserv/loginhandler.cpp:279 src/net/manaserv/loginhandler.cpp:316
-#: src/net/tmwa/loginhandler.cpp:95 src/net/tmwa/loginhandler.cpp:182
-#, fuzzy
-msgid "Unknown error."
-msgstr "未明错误"
-
-#: src/net/manaserv/charhandler.cpp:200 src/net/tmwa/charserverhandler.cpp:146
-msgid "Info"
-msgstr "信息"
-
-#: src/net/manaserv/charhandler.cpp:200
-#, fuzzy
-msgid "Player deleted."
-msgstr "角色已删除。"
-
-#: src/net/manaserv/charhandler.cpp:212
-#, fuzzy
-msgid "Selection out of range."
-msgstr "请选择交易的物品数量。"
-
-#: src/net/manaserv/charhandler.cpp:215
-#, fuzzy, c-format
-msgid "Unknown error (%d)."
-msgstr "未明错误"
-
-#: src/net/manaserv/charhandler.cpp:250
-msgid "No gameservers are available."
-msgstr "无 游戏服务器 可用。"
-
-#: src/net/manaserv/chathandler.cpp:187 src/net/manaserv/chathandler.cpp:313
-#: src/net/manaserv/guildhandler.cpp:260
+#: ../src/gui/debugwindow.cpp:55
 #, c-format
-msgid "Topic: %s"
-msgstr "主题：%s"
-
-#: src/net/manaserv/chathandler.cpp:191 src/net/manaserv/chathandler.cpp:274
-#, fuzzy
-msgid "Players in this channel:"
-msgstr "玩家攻击怪兽"
-
-#: src/net/manaserv/chathandler.cpp:208
-#, fuzzy
-msgid "Error joining channel."
-msgstr "命令：/join <频道>"
-
-#: src/net/manaserv/chathandler.cpp:214
-#, fuzzy
-msgid "Listing channels."
-msgstr "请求加入频道%s。"
-
-#: src/net/manaserv/chathandler.cpp:226
-msgid "End of channel list."
+msgid "%d FPS (OpenGL)"
 msgstr ""
 
-#: src/net/manaserv/chathandler.cpp:303
+#: ../src/gui/setup_video.cpp:178
+#, c-format
+msgid "%dx"
+msgstr ""
+
+#: ../src/client.cpp:1074 ../src/client.cpp:1097
+#, c-format
+msgid "%s doesn't exist and can't be created! Exiting."
+msgstr ""
+
+#: ../src/net/manaserv/chathandler.cpp:314
 #, fuzzy, c-format
 msgid "%s entered the channel."
 msgstr "%s加入了帮会。"
 
-#: src/net/manaserv/chathandler.cpp:308
+#: ../src/gui/socialwindow.cpp:643
 #, c-format
-msgid "%s left the channel."
-msgstr ""
+msgid "%s has invited you to join the %s party."
+msgstr "%s已经邀请你加入帮会%s。"
 
-#: src/net/manaserv/chathandler.cpp:324
+#: ../src/gui/socialwindow.cpp:600
+#, fuzzy, c-format
+msgid "%s has invited you to join the guild %s."
+msgstr "%s已经邀请你加入帮会%s。"
+
+#: ../src/gui/socialwindow.cpp:638
 #, c-format
-msgid "%s has set mode %s on user %s."
-msgstr ""
+msgid "%s has invited you to join their party."
+msgstr "%s已经邀请你加入他们的帮会。"
 
-#: src/net/manaserv/chathandler.cpp:334
+#: ../src/net/manaserv/chathandler.cpp:345
 #, c-format
 msgid "%s has kicked %s."
 msgstr ""
 
-#: src/net/manaserv/chathandler.cpp:339
-#, fuzzy
-msgid "Unknown channel event."
-msgstr "未知命令。"
+#: ../src/net/tmwa/partyhandler.cpp:234
+#, c-format
+msgid "%s has left your party."
+msgstr "%s已经离开你的帮会。"
 
-#: src/net/manaserv/guildhandler.cpp:82
-msgid "Guild created."
-msgstr "帮会已创建"
-
-#: src/net/manaserv/guildhandler.cpp:87
-msgid "Error creating guild."
+#: ../src/net/manaserv/chathandler.cpp:335
+#, c-format
+msgid "%s has set mode %s on user %s."
 msgstr ""
 
-#: src/net/manaserv/guildhandler.cpp:97
-msgid "Invite sent."
-msgstr "邀请已发送。"
+#: ../src/net/tmwa/partyhandler.cpp:119
+#, c-format
+msgid "%s is already a member of a party."
+msgstr "%s已经是你的帮会成员了。"
 
-#: src/net/manaserv/guildhandler.cpp:204
-msgid "Member was promoted successfully."
-msgstr "会员晋升成功。"
+#: ../src/net/manaserv/partyhandler.cpp:160
+#, fuzzy, c-format
+msgid "%s is already in a party."
+msgstr "%s已经是你的帮会成员了。"
 
-#: src/net/manaserv/guildhandler.cpp:209
-msgid "Failed to promote member."
-msgstr "晋升会员失败。"
+#: ../src/net/tmwa/partyhandler.cpp:356
+#, c-format
+msgid "%s is not in your party!"
+msgstr "%s不在你的帮会中！"
 
-#: src/net/manaserv/loginhandler.cpp:87
-#, fuzzy
-msgid "Wrong magic_token."
-msgstr "错误的 magic_token"
+#: ../src/net/tmwa/partyhandler.cpp:127
+#, c-format
+msgid "%s is now a member of your party."
+msgstr "%s现在是你帮会中的成员了。"
 
-#: src/net/manaserv/loginhandler.cpp:90 src/net/manaserv/loginhandler.cpp:269
-#, fuzzy
-msgid "Already logged in."
-msgstr "已经登录"
+#: ../src/net/manaserv/partyhandler.cpp:129
+#, fuzzy, c-format
+msgid "%s joined the party on invitation from %s."
+msgstr "拒绝%s的邀请。"
 
-#: src/net/manaserv/loginhandler.cpp:93
-#, fuzzy
-msgid "Account banned."
-msgstr "帐号期满"
-
-#: src/net/manaserv/loginhandler.cpp:118
-#, fuzzy
-msgid "New password incorrect."
-msgstr "新密码错误"
-
-#: src/net/manaserv/loginhandler.cpp:121 src/net/tmwa/loginhandler.cpp:89
-#, fuzzy
-msgid "Old password incorrect."
-msgstr "原密码错误"
-
-#: src/net/manaserv/loginhandler.cpp:124 src/net/manaserv/loginhandler.cpp:155
-msgid "Account not connected. Please login first."
-msgstr "账户未连接。请先登录。"
-
-#: src/net/manaserv/loginhandler.cpp:149
-#, fuzzy
-msgid "New email address incorrect."
-msgstr "新电子邮件地址不正确"
-
-#: src/net/manaserv/loginhandler.cpp:152
-#, fuzzy
-msgid "Old email address incorrect."
-msgstr "原电子邮件地址不正确"
-
-#: src/net/manaserv/loginhandler.cpp:158
-#, fuzzy
-msgid "The new email address already exists."
-msgstr "新电子邮件地址已经存在。"
-
-#: src/net/manaserv/loginhandler.cpp:239
-msgid ""
-"Client registration is not allowed. Please contact server administration."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:263 src/net/manaserv/loginhandler.cpp:300
-#, fuzzy
-msgid "Client version is too old."
-msgstr "客户端版本太旧"
-
-#: src/net/manaserv/loginhandler.cpp:266
-#, fuzzy
-msgid "Wrong username or password."
-msgstr "错误的用户名或密码"
-
-#: src/net/manaserv/loginhandler.cpp:272
-#, fuzzy
-msgid "Account banned"
-msgstr "帐号期满"
-
-#: src/net/manaserv/loginhandler.cpp:275
-msgid "Login attempt too soon after previous attempt."
-msgstr ""
-
-#: src/net/manaserv/loginhandler.cpp:303
-#, fuzzy
-msgid "Wrong username, password or email address."
-msgstr "错误的用户名，密码或者电子邮件地址"
-
-#: src/net/manaserv/loginhandler.cpp:306
-#, fuzzy
-msgid "Username already exists."
-msgstr "用户名已存在"
-
-#: src/net/manaserv/loginhandler.cpp:309
-#, fuzzy
-msgid "Email address already exists."
-msgstr "电子邮件地址已存在"
-
-#: src/net/manaserv/loginhandler.cpp:312
-msgid "You took too long with the captcha or your response was incorrect."
-msgstr ""
-
-#: src/net/manaserv/partyhandler.cpp:87
-msgid "Joined party."
-msgstr "加入了帮会。"
-
-#: src/net/manaserv/partyhandler.cpp:105
+#: ../src/net/manaserv/partyhandler.cpp:127
 #, c-format
 msgid "%s joined the party."
 msgstr "%s加入了帮会。"
 
-#: src/net/manaserv/partyhandler.cpp:123
+#: ../src/net/manaserv/chathandler.cpp:319
+#, c-format
+msgid "%s left the channel."
+msgstr ""
+
+#: ../src/net/tmwa/partyhandler.cpp:123
+#, c-format
+msgid "%s refused your invitation."
+msgstr "%s拒绝了您的邀请。"
+
+#: ../src/net/manaserv/partyhandler.cpp:151
 #, fuzzy, c-format
 msgid "%s rejected your invite."
 msgstr "%s拒绝了您的邀请。"
 
-#: src/net/manaserv/tradehandler.cpp:95
-msgid "Accepting incoming trade requests."
-msgstr "正在接受交易请求"
-
-#: src/net/manaserv/tradehandler.cpp:97
-msgid "Ignoring incoming trade requests."
-msgstr "忽略交易请求"
-
-#: src/net/manaserv/tradehandler.cpp:115 src/net/tmwa/tradehandler.cpp:109
-msgid "Request for Trade"
-msgstr "请求交易"
-
-#: src/net/manaserv/tradehandler.cpp:116 src/net/tmwa/tradehandler.cpp:110
+#: ../src/net/manaserv/tradehandler.cpp:116
+#: ../src/net/tmwa/tradehandler.cpp:110
 #, c-format
 msgid "%s wants to trade with you, do you accept?"
 msgstr "%s想和您进行交易，是否接受？"
 
-#: src/net/manaserv/tradehandler.cpp:134
-#, c-format
-msgid "Trading with %s"
-msgstr "与%s交易中"
+#: ../src/gui/widgets/chattab.cpp:186
+#, fuzzy, c-format
+msgid "%s whispers: %s"
+msgstr "%s悄悄的对您说： "
 
-#: src/net/manaserv/tradehandler.cpp:148 src/net/tmwa/tradehandler.cpp:224
-msgid "Trade canceled."
-msgstr "交易取消。"
-
-#: src/net/manaserv/tradehandler.cpp:155 src/net/tmwa/tradehandler.cpp:231
-msgid "Trade completed."
-msgstr "交易完成。"
-
-#: src/net/tmwa/adminhandler.cpp:64
-msgid "Kick failed!"
-msgstr "踢出失败！"
-
-#: src/net/tmwa/adminhandler.cpp:66
-msgid "Kick succeeded!"
-msgstr "成功踢出！"
-
-#: src/net/tmwa/buysellhandler.cpp:109
-msgid "Nothing to sell."
-msgstr "无物可供出售。"
-
-#: src/net/tmwa/buysellhandler.cpp:116
-msgid "Thanks for buying."
-msgstr "谢谢你的购买。"
-
-#: src/net/tmwa/buysellhandler.cpp:123
-msgid "Unable to buy."
-msgstr "无法购买。"
-
-#: src/net/tmwa/buysellhandler.cpp:129
-msgid "Thanks for selling."
-msgstr "感谢您的出售。"
-
-#: src/net/tmwa/buysellhandler.cpp:131
-msgid "Unable to sell."
-msgstr "无法出售."
-
-#: src/net/tmwa/charserverhandler.cpp:103
-msgid "Access denied. Most likely, there are too many players on this server."
+#: ../src/gui/charselectdialog.cpp:395 ../src/gui/charselectdialog.cpp:396
+msgid "(empty)"
 msgstr ""
 
-#: src/net/tmwa/charserverhandler.cpp:107
-#, fuzzy
-msgid "Cannot use this ID."
-msgstr "不能使用该ID"
-
-#: src/net/tmwa/charserverhandler.cpp:110
-#, fuzzy
-msgid "Unknown char-server failure."
-msgstr "未明错误"
-
-#: src/net/tmwa/charserverhandler.cpp:134
-msgid "Failed to create character. Most likely the name is already taken."
-msgstr "创建角色失败。很可能名称已被占用。"
-
-#: src/net/tmwa/charserverhandler.cpp:146
-msgid "Character deleted."
-msgstr "角色已删除。"
-
-#: src/net/tmwa/charserverhandler.cpp:151
-msgid "Failed to delete character."
-msgstr "删除角色失败。"
-
-#: src/net/tmwa/charserverhandler.cpp:266
-msgid "Strength:"
-msgstr "力量："
-
-#: src/net/tmwa/charserverhandler.cpp:267
-msgid "Agility:"
-msgstr "敏捷："
-
-#: src/net/tmwa/charserverhandler.cpp:268
-msgid "Vitality:"
-msgstr "生命："
-
-#: src/net/tmwa/charserverhandler.cpp:269
-msgid "Intelligence:"
-msgstr "智力："
-
-#: src/net/tmwa/charserverhandler.cpp:270
-msgid "Dexterity:"
-msgstr "灵巧："
-
-#: src/net/tmwa/charserverhandler.cpp:271
-msgid "Luck:"
-msgstr "幸运："
-
-#: src/net/tmwa/chathandler.cpp:87
-#, fuzzy, c-format
-msgid "Whisper could not be sent, %s is offline."
-msgstr "密语无法发送，用户已离线。"
-
-#: src/net/tmwa/chathandler.cpp:96
-#, fuzzy, c-format
-msgid "Whisper could not be sent, ignored by %s."
-msgstr "密语无法发送，你已被用户忽略。"
-
-#: src/net/tmwa/chathandler.cpp:230
-#, fuzzy
-msgid "MVP player."
-msgstr "玩家"
-
-#: src/net/tmwa/chathandler.cpp:265 src/net/tmwa/chathandler.cpp:271
-#: src/net/tmwa/chathandler.cpp:276 src/net/tmwa/chathandler.cpp:281
-#: src/net/tmwa/chathandler.cpp:286 src/net/tmwa/chathandler.cpp:291
-#: src/net/tmwa/chathandler.cpp:296 src/net/tmwa/chathandler.cpp:301
-msgid "Channels are not supported!"
-msgstr "聊天频道不被支持！"
-
-#: src/net/tmwa/gamehandler.cpp:88
-#, c-format
-msgid "Online users: %d"
+#: ../src/gui/buydialog.cpp:73 ../src/gui/itemamountwindow.cpp:111
+#: ../src/gui/npcdialog.cpp:122 ../src/gui/selldialog.cpp:75
+#: ../src/gui/statuswindow.cpp:467
+msgid "+"
 msgstr ""
 
-#: src/net/tmwa/gamehandler.cpp:101
+#: ../src/gui/buydialog.cpp:76 ../src/gui/itemamountwindow.cpp:110
+#: ../src/gui/npcdialog.cpp:123 ../src/gui/selldialog.cpp:76
+#: ../src/gui/statuswindow.cpp:477
+msgid "-"
+msgstr ""
+
+#: ../src/commandhandler.cpp:152
+msgid "-- Help --"
+msgstr "-- 帮助 --"
+
+#: ../src/commandhandler.cpp:171
+msgid "/away > Tell the other whispering players you're away from keyboard."
+msgstr ""
+
+#: ../src/commandhandler.cpp:162
+msgid "/clear > Clears this window"
+msgstr "/clear > 清除此窗口"
+
+#: ../src/gui/widgets/whispertab.cpp:73
+msgid "/close > Close the whisper tab"
+msgstr "/close > 关闭密语标签页"
+
+#: ../src/commandhandler.cpp:180
 #, fuzzy
-msgid "Game"
-msgstr "姓名"
+msgid "/createparty > Create a new party"
+msgstr "/create > 创建一个新的帮会"
 
-#: src/net/tmwa/gamehandler.cpp:101
-#, fuzzy
-msgid "Request to quit denied!"
-msgstr "请求交易"
+#: ../src/net/tmwa/gui/partytab.cpp:57
+msgid "/exp > Show/change party experience sharing options"
+msgstr "/exp > 显示/改变帮会经验共享选项"
 
-#: src/net/tmwa/generalhandler.cpp:102
-#, c-format
-msgid "Strength %+d"
-msgstr "力量 %+d"
+#: ../src/commandhandler.cpp:153
+msgid "/help > Display this help"
+msgstr "/help > 显示此帮助"
 
-#: src/net/tmwa/generalhandler.cpp:103
-#, c-format
-msgid "Agility %+d"
-msgstr "敏捷 %+d"
-
-#: src/net/tmwa/generalhandler.cpp:104
-#, c-format
-msgid "Vitality %+d"
-msgstr "生命 %+d"
-
-#: src/net/tmwa/generalhandler.cpp:105
-#, c-format
-msgid "Intelligence %+d"
-msgstr "智慧 %+d"
-
-#: src/net/tmwa/generalhandler.cpp:106
-#, c-format
-msgid "Dexterity %+d"
-msgstr "敏捷 %+d"
-
-#: src/net/tmwa/generalhandler.cpp:107
-#, c-format
-msgid "Luck %+d"
-msgstr "幸运 %+d"
-
-#: src/net/tmwa/generalhandler.cpp:132
-#, fuzzy
-msgid "Authentication failed."
-msgstr "验证失败"
-
-#: src/net/tmwa/generalhandler.cpp:135
-#, fuzzy
-msgid "No servers available."
-msgstr "无可用服务器"
-
-#: src/net/tmwa/generalhandler.cpp:139
-#, fuzzy
-msgid "Someone else is trying to use this account."
-msgstr "某人正在尝试使用该帐号"
-
-#: src/net/tmwa/generalhandler.cpp:142
-#, fuzzy
-msgid "This account is already logged in."
-msgstr "该帐号已经登录"
-
-#: src/net/tmwa/generalhandler.cpp:145
-#, fuzzy
-msgid "Speed hack detected."
-msgstr "检测到调速作弊"
-
-#: src/net/tmwa/generalhandler.cpp:148
-#, fuzzy
-msgid "Duplicated login."
-msgstr "重复登录"
-
-#: src/net/tmwa/generalhandler.cpp:151
-#, fuzzy
-msgid "Unknown connection error."
-msgstr "未知连接错误"
-
-#: src/net/tmwa/generalhandler.cpp:209
-msgid "Got disconnected from server!"
-msgstr "和服务器失去连接"
-
-#: src/net/tmwa/generalhandler.cpp:230
-msgid "Strength"
-msgstr "力量"
-
-#: src/net/tmwa/generalhandler.cpp:231
-msgid "Agility"
-msgstr "敏捷"
-
-#: src/net/tmwa/generalhandler.cpp:232
-msgid "Vitality"
-msgstr "生命"
-
-#: src/net/tmwa/generalhandler.cpp:233
-msgid "Intelligence"
-msgstr "智慧"
-
-#: src/net/tmwa/generalhandler.cpp:234
-msgid "Dexterity"
-msgstr "敏捷"
-
-#: src/net/tmwa/generalhandler.cpp:235
-msgid "Luck"
-msgstr "幸运"
-
-#: src/net/tmwa/generalhandler.cpp:238
-#, fuzzy
-msgid "Defense"
-msgstr "防御："
-
-#: src/net/tmwa/generalhandler.cpp:239
-#, fuzzy
-msgid "M.Attack"
-msgstr "魔攻："
-
-#: src/net/tmwa/generalhandler.cpp:240
-#, fuzzy
-msgid "M.Defense"
-msgstr "魔防："
-
-#: src/net/tmwa/generalhandler.cpp:241
-#, fuzzy, c-format
-msgid "% Accuracy"
-msgstr "% Ac精确度："
-
-#: src/net/tmwa/generalhandler.cpp:242
-#, fuzzy, c-format
-msgid "% Evade"
-msgstr "% E回避率："
-
-#: src/net/tmwa/generalhandler.cpp:243
-#, fuzzy, c-format
-msgid "% Critical"
-msgstr "会心一击"
-
-#: src/net/tmwa/gui/guildtab.cpp:45
-msgid "Guild"
-msgstr "帮会"
-
-#: src/net/tmwa/gui/guildtab.cpp:61 src/net/tmwa/gui/partytab.cpp:59
+#: ../src/net/tmwa/gui/guildtab.cpp:53 ../src/net/tmwa/gui/partytab.cpp:52
 msgid "/help > Display this help."
 msgstr "/help > 显示该帮助信息。"
 
-#: src/net/tmwa/gui/guildtab.cpp:62
+#: ../src/gui/widgets/whispertab.cpp:71
+msgid "/ignore > Ignore the other player"
+msgstr ""
+
+#: ../src/commandhandler.cpp:174
+msgid "/ignore > ignore a player"
+msgstr ""
+
+#: ../src/net/tmwa/gui/guildtab.cpp:54
 #, fuzzy
 msgid "/invite > Invite a player to your guild"
 msgstr "/invite > 邀请某一玩家加入您的帮会"
 
-#: src/net/tmwa/gui/guildtab.cpp:63
+#: ../src/net/tmwa/gui/partytab.cpp:53
+msgid "/invite > Invite a player to your party"
+msgstr "/invite > 邀请某一玩家加入您的帮会"
+
+#: ../src/net/tmwa/gui/partytab.cpp:56
+msgid "/item > Show/change party item sharing options"
+msgstr "/item > 显示/改变帮会项目共享选项"
+
+#: ../src/commandhandler.cpp:178
+msgid "/join > Join or create a channel"
+msgstr "/join > 加入或者创建一个新的频道"
+
+#: ../src/gui/widgets/channeltab.cpp:52
+msgid "/kick > Kick a user from the channel"
+msgstr "/kick > 把用户踢出频道"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:56
+#, fuzzy
+msgid "/kick > Kick someone from the guild you are in"
+msgstr "/kick > 把某人踢出你所在的帮会"
+
+#: ../src/net/tmwa/gui/partytab.cpp:55
+#, fuzzy
+msgid "/kick > Kick someone from the party you are in"
+msgstr "/kick > 把某人踢出你所在的帮会"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:55
 #, fuzzy
 msgid "/leave > Leave the guild you are in"
 msgstr "/leave > 离开你所在的帮会"
 
-#: src/net/tmwa/gui/guildtab.cpp:64
-#, fuzzy
-msgid "/kick > Kick some one from the guild you are in"
-msgstr "/kick > 把某人踢出你所在的帮会"
-
-#: src/net/tmwa/gui/guildtab.cpp:73 src/net/tmwa/gui/partytab.cpp:73
-msgid "Command: /invite <nick>"
-msgstr "命令：/invite <昵称>"
-
-#: src/net/tmwa/gui/guildtab.cpp:74
-#, fuzzy
-msgid "This command invites <nick> to the guild you're in."
-msgstr "该命令邀请<昵称>和你聚会。"
-
-#: src/net/tmwa/gui/guildtab.cpp:80 src/net/tmwa/gui/partytab.cpp:80
-msgid "Command: /leave"
-msgstr "命令：/leave"
-
-#: src/net/tmwa/gui/guildtab.cpp:81
-#, fuzzy
-msgid "This command causes the player to leave the guild."
-msgstr "该命令致使玩家离开帮会"
-
-#: src/net/tmwa/gui/guildtab.cpp:89
-#, fuzzy
-msgid "Guild name is missing."
-msgstr "帮会名称缺失。"
-
-#: src/net/tmwa/guildhandler.cpp:296
-msgid "Could not inivte user to guild."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:301
-msgid "User rejected guild invite."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:306
-#, fuzzy
-msgid "User is now part of your guild."
-msgstr "%s现在是你帮会中的成员了。"
-
-#: src/net/tmwa/guildhandler.cpp:311
-msgid "Your guild is full."
-msgstr ""
-
-#: src/net/tmwa/guildhandler.cpp:316
-#, fuzzy
-msgid "Unknown guild invite response."
-msgstr "未知邀请应答%s。"
-
-#: src/net/tmwa/guildhandler.cpp:393
-msgid "Guild creation isn't supported yet."
-msgstr ""
-
-#: src/net/tmwa/gui/partytab.cpp:43
-msgid "Party"
-msgstr "帮会"
-
-#: src/net/tmwa/gui/partytab.cpp:60
-msgid "/invite > Invite a player to your party"
-msgstr "/invite > 邀请某一玩家加入您的帮会"
-
-#: src/net/tmwa/gui/partytab.cpp:61
+#: ../src/net/tmwa/gui/partytab.cpp:54
 msgid "/leave > Leave the party you are in"
 msgstr "/leave > 离开你所在的帮会"
 
-#: src/net/tmwa/gui/partytab.cpp:62
-msgid "/kick > Kick some one from the party you are in"
-msgstr "/kick > 把某人踢出你所在的帮会"
+#: ../src/commandhandler.cpp:177
+msgid "/list > Display all public channels"
+msgstr "/list > 显示所有公共频道"
 
-#: src/net/tmwa/gui/partytab.cpp:63
-msgid "/item > Show/change party item sharing options"
-msgstr "/item > 显示/改变帮会项目共享选项"
+#: ../src/commandhandler.cpp:160
+msgid "/me > Tell something about yourself"
+msgstr "/me > 自我介绍"
 
-#: src/net/tmwa/gui/partytab.cpp:64
-msgid "/exp > Show/change party experience sharing options"
-msgstr "/exp > 显示/改变帮会经验共享选项"
+#: ../src/commandhandler.cpp:164
+msgid "/msg > Send a private message to a user"
+msgstr "/msg > 发送私人信息给用户"
 
-#: src/net/tmwa/gui/partytab.cpp:81
-msgid "This command causes the player to leave the party."
-msgstr "该命令致使玩家离开帮会"
+#: ../src/gui/widgets/channeltab.cpp:51
+msgid "/op > Make a user a channel operator"
+msgstr "/op > 使用户称为频道管理员"
 
-#: src/net/tmwa/gui/partytab.cpp:85
-msgid "Command: /item <policy>"
-msgstr "命令：/item <策略>"
+#: ../src/commandhandler.cpp:181
+msgid "/party > Invite a user to party"
+msgstr "邀请一个用户加入队伍"
 
-#: src/net/tmwa/gui/partytab.cpp:86
-msgid "This command changes the party's item sharing policy."
-msgstr "改命令改变帮会的物品共享策略。"
+#: ../src/commandhandler.cpp:187
+msgid "/present > Get list of players present (sent to chat log, if logging)"
+msgstr "/present > 获取列席的玩家列表（若开启logging，则发送到聊天日志）"
 
-#: src/net/tmwa/gui/partytab.cpp:87
-msgid ""
-"<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
-"\"0\", \"no\", \"false\" to disable item sharing."
+#: ../src/commandhandler.cpp:169
+msgid "/q > Alias of query"
+msgstr "/q > query的别名"
+
+#: ../src/commandhandler.cpp:167
+msgid "/query > Makes a tab for private messages with another user"
+msgstr "/query > 为和其他用户之间的私密信息开启一个新的标签页"
+
+#: ../src/gui/widgets/channeltab.cpp:50
+msgid "/quit > Leave a channel"
+msgstr "/quit > 离开频道"
+
+#: ../src/commandhandler.cpp:183
+msgid "/record > Start recording the chat to an external file"
+msgstr "/record > 开始记录聊天至外部文件"
+
+#: ../src/commandhandler.cpp:185
+msgid "/toggle > Determine whether <return> toggles the chat log"
+msgstr "/toggle > 确定<回车>键是否切换聊天日志"
+
+#: ../src/gui/widgets/channeltab.cpp:49
+msgid "/topic > Set the topic of the current channel"
+msgstr "/topic > 设置当前聊天频道的主题"
+
+#: ../src/gui/widgets/whispertab.cpp:72
+msgid "/unignore > Stop ignoring the other player"
 msgstr ""
-"<策略>可以为“1”，“yes”，“true”其中之一以开启物品共享，或者 是\"0\",\"no\","
-"\"false\"用来禁止物品共享。"
 
-#: src/net/tmwa/gui/partytab.cpp:90
-msgid "Command: /item"
-msgstr "命令：/item"
+#: ../src/commandhandler.cpp:175
+msgid "/unignore > stop ignoring a player"
+msgstr ""
 
-#: src/net/tmwa/gui/partytab.cpp:91
-msgid "This command displays the party's current item sharing policy."
-msgstr "该命令显示帮会现有的物品共享策略。"
+#: ../src/gui/widgets/channeltab.cpp:48
+msgid "/users > Lists the users in the current channel"
+msgstr "/usr > 列出当前频道的用户"
 
-#: src/net/tmwa/gui/partytab.cpp:95
-msgid "Command: /exp <policy>"
-msgstr "命令：/exp <策略>"
+#: ../src/commandhandler.cpp:166
+msgid "/w > Alias of msg"
+msgstr "/w > msg的别名"
 
-#: src/net/tmwa/gui/partytab.cpp:96
-msgid "This command changes the party's experience sharing policy."
-msgstr "该命令改变帮会的经验共享策略。"
+#: ../src/commandhandler.cpp:155
+msgid "/where > Display map name"
+msgstr "/where > 显示地图名"
 
-#: src/net/tmwa/gui/partytab.cpp:97
+#: ../src/commandhandler.cpp:165
+msgid "/whisper > Alias of msg"
+msgstr "/whisper > msg的别名"
+
+#: ../src/commandhandler.cpp:158
+msgid "/who > Display number of online users"
+msgstr "/who > 显示在线用户数"
+
+#: ../src/gui/outfitwindow.cpp:49
+msgid "<"
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:90
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable experience "
 "sharing, or \"0\", \"no\", \"false\" to disable experience sharing."
@@ -3177,96 +441,3431 @@ msgstr ""
 "<策略>可以为“1”，“yes”，“true”其中之一以开启经验共享，或者 是\"0\",\"no\","
 "\"false\"用来关闭经验共享。"
 
-#: src/net/tmwa/gui/partytab.cpp:100
-msgid "Command: /exp"
-msgstr "命令：/exp"
+#: ../src/net/tmwa/gui/partytab.cpp:80
+msgid ""
+"<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
+"\"0\", \"no\", \"false\" to disable item sharing."
+msgstr ""
+"<策略>可以为“1”，“yes”，“true”其中之一以开启物品共享，或者 是\"0\",\"no\","
+"\"false\"用来禁止物品共享。"
 
-#: src/net/tmwa/gui/partytab.cpp:101
-msgid "This command displays the party's current experience sharing policy."
-msgstr "该命令显示帮会现有的经验共享策略。"
+#: ../src/commandhandler.cpp:289
+msgid ""
+"<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or "
+"\"0\", \"no\", \"false\" to turn the toggle off."
+msgstr "<状态> 可用“1”、“yes”、“true”来开启，或以“0”、“no”、“false”关闭。"
 
-#: src/net/tmwa/gui/partytab.cpp:132 src/net/tmwa/partyhandler.cpp:196
-msgid "Item sharing enabled."
-msgstr "物品共享开启。"
+#: ../src/gui/outfitwindow.cpp:50
+msgid ">"
+msgstr ""
 
-#: src/net/tmwa/gui/partytab.cpp:135 src/net/tmwa/partyhandler.cpp:202
-msgid "Item sharing disabled."
-msgstr "物品共享关闭。"
+#: ../src/gui/setup_interface.cpp:61 ../src/gui/setup_players.cpp:198
+msgid "???"
+msgstr "？？？"
 
-#: src/net/tmwa/gui/partytab.cpp:138 src/net/tmwa/partyhandler.cpp:208
-msgid "Item sharing not possible."
-msgstr "物品共享不可能。"
-
-#: src/net/tmwa/gui/partytab.cpp:141
+#: ../src/gui/socialwindow.cpp:605
 #, fuzzy
-msgid "Item sharing unknown."
-msgstr "物品共享开启。"
+msgid "Accept Guild Invite"
+msgstr "接受帮会邀请"
 
-#: src/net/tmwa/gui/partytab.cpp:167 src/net/tmwa/partyhandler.cpp:172
-msgid "Experience sharing enabled."
-msgstr "经验共享开启。"
+#: ../src/gui/socialwindow.cpp:651
+msgid "Accept Party Invite"
+msgstr "接受帮会邀请"
 
-#: src/net/tmwa/gui/partytab.cpp:170 src/net/tmwa/partyhandler.cpp:178
-msgid "Experience sharing disabled."
-msgstr "经验共享关闭。"
-
-#: src/net/tmwa/gui/partytab.cpp:173 src/net/tmwa/partyhandler.cpp:184
-msgid "Experience sharing not possible."
-msgstr "经验共享不可能。"
-
-#: src/net/tmwa/gui/partytab.cpp:176
+#: ../src/gui/socialwindow.cpp:504
 #, fuzzy
-msgid "Experience sharing unknown."
-msgstr "经验共享开启。"
+msgid "Accepted guild invite"
+msgstr "接受帮会邀请"
 
-#: src/net/tmwa/inventoryhandler.cpp:285
-msgid "Failed to use item."
-msgstr "使用物品失败。"
+#: ../src/gui/socialwindow.cpp:485
+#, fuzzy, c-format
+msgid "Accepted party invite from %s."
+msgstr "接受%s的邀请。"
 
-#: src/net/tmwa/inventoryhandler.cpp:399
-msgid "Unable to equip."
-msgstr "无法装备。"
+#: ../src/game.cpp:713
+msgid "Accepting incoming trade requests"
+msgstr "接受传入的交易请求"
 
-#: src/net/tmwa/inventoryhandler.cpp:410
-msgid "Unable to unequip."
-msgstr "无法卸载装备。"
+#: ../src/net/manaserv/tradehandler.cpp:95
+msgid "Accepting incoming trade requests."
+msgstr "正在接受交易请求"
 
-#: src/net/tmwa/loginhandler.cpp:86
-msgid "Account was not found. Please re-login."
-msgstr "帐号不存在。请重新登录。"
+#: ../src/net/tmwa/charserverhandler.cpp:105
+msgid "Access denied. Most likely, there are too many players on this server."
+msgstr ""
 
-#: src/net/tmwa/loginhandler.cpp:92
+#: ../src/gui/charselectdialog.cpp:113
+msgid "Account and Character Management"
+msgstr "帐号和角色管理"
+
+#: ../src/net/manaserv/loginhandler.cpp:283
 #, fuzzy
-msgid "New password too short."
-msgstr "新密码太短"
+msgid "Account banned"
+msgstr "帐号期满"
 
-#: src/net/tmwa/loginhandler.cpp:156
+#: ../src/net/manaserv/loginhandler.cpp:98
 #, fuzzy
-msgid "Unregistered ID."
-msgstr "未注册ID"
+msgid "Account banned."
+msgstr "帐号期满"
 
-#: src/net/tmwa/loginhandler.cpp:159
-#, fuzzy
-msgid "Wrong password."
-msgstr "错误的密码"
-
-#: src/net/tmwa/loginhandler.cpp:162
+#: ../src/net/tmwa/loginhandler.cpp:166
 #, fuzzy
 msgid "Account expired."
 msgstr "帐号期满"
 
-#: src/net/tmwa/loginhandler.cpp:165
+#: ../src/net/manaserv/loginhandler.cpp:129
+#: ../src/net/manaserv/loginhandler.cpp:160
+msgid "Account not connected. Please login first."
+msgstr "账户未连接。请先登录。"
+
+#: ../src/net/tmwa/loginhandler.cpp:89
+msgid "Account was not found. Please re-login."
+msgstr "帐号不存在。请重新登录。"
+
+#: ../src/gui/changeemaildialog.cpp:49 ../src/gui/changepassworddialog.cpp:52
+#, c-format
+msgid "Account: %s"
+msgstr "帐号：%s"
+
+#: ../src/gui/inventorywindow.cpp:106 ../src/gui/popupmenu.cpp:370
+msgid "Activate"
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:76
+msgid "Add"
+msgstr "添加"
+
+#: ../src/gui/serverdialog.cpp:192
+#, fuzzy
+msgid "Add custom Server..."
+msgstr "自定义鼠标"
+
+#: ../src/gui/popupmenu.cpp:170
+#, fuzzy
+msgid "Add name to chat"
+msgstr "@@name|添加姓名至聊天@@"
+
+#: ../src/gui/popupmenu.cpp:188 ../src/gui/popupmenu.cpp:391
+#, fuzzy
+msgid "Add to chat"
+msgstr "@@chat|添加到聊天@@"
+
+#: ../src/gui/customserverdialog.cpp:57
+msgid "Address:"
+msgstr ""
+
+#: ../src/net/tmwa/generalhandler.cpp:229 ../src/resources/attributes.cpp:171
+msgid "Agility"
+msgstr "敏捷"
+
+#: ../src/resources/attributes.cpp:177
+#, fuzzy, c-format
+msgid "Agility %+.1f"
+msgstr "敏捷 %+d"
+
+#: ../src/net/tmwa/generalhandler.cpp:100
+#, c-format
+msgid "Agility %+d"
+msgstr "敏捷 %+d"
+
+#: ../src/net/tmwa/charserverhandler.cpp:284
+msgid "Agility:"
+msgstr "敏捷："
+
+#: ../src/gui/tradewindow.cpp:55
+msgid "Agree trade"
+msgstr "同意交易"
+
+#: ../src/gui/tradewindow.cpp:56
+msgid "Agreed. Waiting..."
+msgstr "已同意。等待中……"
+
+#: ../src/gui/itemamountwindow.cpp:114
+msgid "All"
+msgstr "全部"
+
+#: ../src/gui/setup_players.cpp:217
+msgid "Allow trading"
+msgstr "允许交易"
+
+#: ../src/gui/setup_players.cpp:219
+msgid "Allow whispers"
+msgstr "允许密语"
+
+#: ../src/net/manaserv/loginhandler.cpp:95
+#: ../src/net/manaserv/loginhandler.cpp:280
+#, fuzzy
+msgid "Already logged in."
+msgstr "已经登录"
+
+#: ../src/gui/recorder.cpp:96
+msgid "Already recording."
+msgstr "已经录制中。"
+
+#: ../src/gui/setup_video.cpp:246
+#, fuzzy
+msgid "Ambient FX:"
+msgstr "环境音效"
+
+#: ../src/net/tmwa/inventoryhandler.h:84
+msgid "Ammo"
+msgstr "弹药"
+
+#: ../src/net/tmwa/partyhandler.cpp:287
+#, c-format
+msgid "An unknown member tried to say: %s"
+msgstr "一未知成员尝试说：%s"
+
+#: ../src/net/manaserv/beinghandler.cpp:291
+#: ../src/net/tmwa/playerhandler.cpp:111
+msgid "Annihilated."
+msgstr "被消灭了。"
+
+#: ../src/gui/setup.cpp:54
+msgid "Apply"
+msgstr "应用"
+
+#: ../src/gui/setup_video.cpp:394
+msgid "Applying change to OpenGL requires restart."
+msgstr "运用改变为OpenGL需要重新开始"
+
+#: ../src/gui/setup_video.cpp:386
+msgid ""
+"Applying change to OpenGL requires restart.\n"
+"\n"
+"In case OpenGL messes up your game graphics, restart the game with the "
+"command line option \"--no-opengl\"."
+msgstr ""
+
+#: ../src/gui/charselectdialog.cpp:66
+msgid "Are you sure you want to delete this character?"
+msgstr "你确定想删除这个角色？"
+
+#: ../src/gui/socialwindow.cpp:154
+#, fuzzy, c-format
+msgid "Are you sure you want to leave guild %s?"
+msgstr "确定退出游戏？"
+
+#: ../src/gui/socialwindow.cpp:225
+#, fuzzy, c-format
+msgid "Are you sure you want to leave party %s?"
+msgstr "确定退出游戏？"
+
+#: ../src/net/tmwa/inventoryhandler.h:66
+msgid "Arms"
+msgstr "武器"
+
+#: ../src/gui/setup_keyboard.cpp:89
+msgid "Assign"
+msgstr "分配"
+
+#: ../src/net/manaserv/charhandler.cpp:166
+#, c-format
+msgid "At least one stat is out of the permitted range: (%u - %u)."
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:46 ../src/net/tmwa/generalhandler.cpp:236
+msgid "Attack"
+msgstr "攻击"
+
+#: ../src/resources/itemdb.cpp:290
+#, c-format
+msgid "Attack %+d"
+msgstr "攻击 %+d"
+
+#: ../src/gui/popupmenu.cpp:83 ../src/gui/popupmenu.cpp:157
+#, fuzzy, c-format
+msgid "Attack %s"
+msgstr "攻击 %+d"
+
+#: ../src/gui/chatwindow.cpp:320
+msgid "Attendance written to record log."
+msgstr ""
+
+#: ../src/gui/setup_audio.cpp:48
+msgid "Audio"
+msgstr "音频"
+
+#: ../src/net/tmwa/generalhandler.cpp:130
+#, fuzzy
+msgid "Authentication failed."
+msgstr "验证失败"
+
+#: ../src/gui/setup_video.cpp:176
+#, c-format
+msgid "Auto (%dx)"
+msgstr ""
+
+#: ../src/localplayer.cpp:1023
+msgid "Away"
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:96
+#, fuzzy, c-format
+msgid "Befriend %s"
+msgstr "@@friend|和%s成为朋友@@"
+
+# need more contents!!!
+#: ../src/resources/userpalette.cpp:86
+msgid "Being"
+msgstr "存在"
+
+# need more contents!!!
+#: ../src/gui/debugwindow.cpp:141
+#, fuzzy
+msgid "Being Ids"
+msgstr "存在"
+
+#: ../src/gui/debugwindow.cpp:137
+#, fuzzy
+msgid "Being collision radius"
+msgstr "滑动半径"
+
+# need more contents!!!
+#: ../src/gui/debugwindow.cpp:139
+#, fuzzy
+msgid "Being path"
+msgstr "存在"
+
+#: ../src/gui/debugwindow.cpp:138
+msgid "Being positions"
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:123
+msgid "Bereft of life, you rest in peace."
+msgstr ""
+
+#: ../src/playerrelations.cpp:346
+msgid "Blink name"
+msgstr ""
+
+#: ../src/gui/setup_colors.cpp:132
+#, fuzzy
+msgid "Blue:"
+msgstr "蓝： "
+
+#: ../src/gui/setup_interface.cpp:74
+msgid "Bubbles with names"
+msgstr "有名气泡"
+
+#: ../src/gui/setup_interface.cpp:73
+msgid "Bubbles, no names"
+msgstr "气泡，无名"
+
+#: ../src/gui/buydialog.cpp:48 ../src/gui/buydialog.cpp:77
+#: ../src/gui/buyselldialog.cpp:47
+msgid "Buy"
+msgstr "购买"
+
+#: ../src/gui/setup_joystick.cpp:37 ../src/gui/setup_joystick.cpp:68
+msgid "Calibrate"
+msgstr "校准"
+
+#: ../src/gui/buyselldialog.cpp:47 ../src/gui/changeemaildialog.cpp:55
+#: ../src/gui/changepassworddialog.cpp:58 ../src/gui/charcreatedialog.cpp:86
+#: ../src/gui/connectiondialog.cpp:44 ../src/gui/customserverdialog.cpp:76
+#: ../src/gui/itemamountwindow.cpp:113 ../src/gui/npcpostdialog.cpp:57
+#: ../src/gui/popupmenu.cpp:174 ../src/gui/popupmenu.cpp:192
+#: ../src/gui/popupmenu.cpp:393 ../src/gui/quitdialog.cpp:48
+#: ../src/gui/register.cpp:74 ../src/gui/setup.cpp:54
+#: ../src/gui/socialwindow.cpp:313 ../src/gui/textdialog.cpp:40
+#: ../src/gui/unregisterdialog.cpp:54 ../src/gui/updaterwindow.cpp:140
+msgid "Cancel"
+msgstr "取消"
+
+#: ../src/commandhandler.cpp:402
+#, c-format
+msgid ""
+"Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
+"you."
+msgstr "无法同 \"%s\" 建立一个私人谈话标签页！或者已经存在，或者那就是自己。"
+
+#: ../src/gui/socialwindow.cpp:662
+#, fuzzy
+msgid "Cannot create party. You are already in a party."
+msgstr "/create > 创建一个新的帮会"
+
+#: ../src/net/tmwa/playerhandler.cpp:361
+msgid "Cannot raise skill!"
+msgstr ""
+
+#: ../src/gui/widgets/whispertab.cpp:52
+msgid "Cannot send empty chat!"
+msgstr "无法发送空白信息！"
+
+#: ../src/commandhandler.cpp:381
+msgid "Cannot send empty whispers!"
+msgstr "无法发送空白密语！"
+
+#: ../src/net/tmwa/specialhandler.cpp:158
+msgid "Cannot shout!"
+msgstr "无法呼喊！"
+
+#: ../src/net/tmwa/charserverhandler.cpp:109
+#, fuzzy
+msgid "Cannot use this ID."
+msgstr "不能使用该ID"
+
+#: ../src/gui/tradewindow.cpp:103
+msgid "Change"
+msgstr "改变"
+
+#: ../src/gui/charselectdialog.cpp:143
+#, fuzzy
+msgid "Change Email"
+msgstr "更换Email地址"
+
+#: ../src/gui/changeemaildialog.cpp:45 ../src/gui/changeemaildialog.cpp:54
+msgid "Change Email Address"
+msgstr "更换Email地址"
+
+#: ../src/gui/worldselectdialog.cpp:73
+#, fuzzy
+msgid "Change Login"
+msgstr "改变"
+
+#: ../src/gui/changepassworddialog.cpp:47
+#: ../src/gui/changepassworddialog.cpp:56 ../src/gui/charselectdialog.cpp:121
+msgid "Change Password"
+msgstr "更换密码"
+
+#: ../src/gui/logindialog.cpp:54
+#, fuzzy
+msgid "Change Server"
+msgstr "服务器"
+
+#: ../src/gui/setup_video.cpp:504
+msgid "Changes will take effect on map change."
+msgstr "变更会在地图更换时生效。"
+
+#: ../src/client.cpp:776
+#, fuzzy
+msgid "Changing game servers"
+msgstr "服务器"
+
+#: ../src/gui/setup_video.cpp:385
+#, fuzzy
+msgid "Changing to OpenGL"
+msgstr "改变成OpenGL"
+
+#: ../src/gui/widgets/channeltab.cpp:83
+msgid "Channel operators can kick and op other users from the channel."
+msgstr "频道管理员可以踢出或者op频道内的其他用户"
+
+#: ../src/net/tmwa/chathandler.cpp:325 ../src/net/tmwa/chathandler.cpp:331
+#: ../src/net/tmwa/chathandler.cpp:336 ../src/net/tmwa/chathandler.cpp:341
+#: ../src/net/tmwa/chathandler.cpp:346 ../src/net/tmwa/chathandler.cpp:351
+#: ../src/net/tmwa/chathandler.cpp:356 ../src/net/tmwa/chathandler.cpp:361
+msgid "Channels are not supported!"
+msgstr "聊天频道不被支持！"
+
+#: ../src/net/tmwa/charserverhandler.cpp:148
+msgid "Character deleted."
+msgstr "角色已删除。"
+
+#: ../src/gui/statuswindow.cpp:214 ../src/gui/statuswindow.cpp:251
+#, fuzzy, c-format
+msgid "Character points: %d"
+msgstr "角色状态可以"
+
+#: ../src/gui/charcreatedialog.cpp:269
+msgid "Character stats OK"
+msgstr "角色状态可以"
+
+#: ../src/net/manaserv/charhandler.cpp:148
+#, fuzzy
+msgid "Character's name already exists."
+msgstr "用户名已存在"
+
+#: ../src/net/manaserv/charhandler.cpp:160
+#, fuzzy
+msgid "Character's stats are too high."
+msgstr "角色状态可以"
+
+#: ../src/net/manaserv/charhandler.cpp:163
+#, fuzzy
+msgid "Character's stats are too low."
+msgstr "角色状态可以"
+
+#: ../src/gui/chatwindow.cpp:87
+msgid "Chat"
+msgstr "聊天"
+
+#: ../src/keyboardconfig.cpp:77
+msgid "Chat Window"
+msgstr "聊天窗口"
+
+#: ../src/net/tmwa/specialhandler.cpp:152
+msgid "Chat creating failed!"
+msgstr "聊天创建失败！"
+
+#: ../src/gui/charselectdialog.cpp:381
+#, fuzzy
+msgid "Choose"
+msgstr "关闭"
+
+#: ../src/gui/worldselectdialog.cpp:74
+#, fuzzy
+msgid "Choose World"
+msgstr "选择你的服务器"
+
+#: ../src/gui/serverdialog.cpp:172
+#, fuzzy
+msgid "Choose Your Server"
+msgstr "选择你的服务器"
+
+#: ../src/gui/socialwindow.cpp:584
+#, fuzzy
+msgid "Choose your guild's name."
+msgstr "选择你的服务器"
+
+#: ../src/gui/socialwindow.cpp:668
+#, fuzzy
+msgid "Choose your party's name."
+msgstr "选择你的服务器"
+
+#: ../src/gui/npcdialog.cpp:116
+msgid "Clear log"
+msgstr ""
+
+#: ../src/net/manaserv/loginhandler.cpp:244
+msgid ""
+"Client registration is not allowed. Please contact server administration."
+msgstr ""
+
+#: ../src/net/tmwa/loginhandler.cpp:176
+#, fuzzy
+msgid "Client too old."
+msgstr "客户端版本太旧"
+
+#: ../src/net/manaserv/loginhandler.cpp:274
+#: ../src/net/manaserv/loginhandler.cpp:311
+#, fuzzy
+msgid "Client version is too old."
+msgstr "客户端版本太旧"
+
+#: ../src/gui/helpwindow.cpp:52 ../src/gui/npcdialog.cpp:51
+msgid "Close"
+msgstr "关闭"
+
+#: ../src/gui/debugwindow.cpp:136
+msgid "Collision tiles"
+msgstr ""
+
+#: ../src/gui/setup_colors.cpp:48
+msgid "Colors"
+msgstr "颜色"
+
+#: ../src/commandhandler.cpp:254
+#, fuzzy
+msgid "Command: /away"
+msgstr "命令： /who"
+
+#: ../src/commandhandler.cpp:251
+#, fuzzy
+msgid "Command: /away <afk reason>"
+msgstr "命令：/w <昵称><信息>"
+
+#: ../src/commandhandler.cpp:208
+msgid "Command: /clear"
+msgstr "命令： /clear"
+
+#: ../src/gui/widgets/whispertab.cpp:83
+msgid "Command: /close"
+msgstr "命令: /close"
+
+#: ../src/commandhandler.cpp:259
+#, fuzzy
+msgid "Command: /createparty <name>"
+msgstr "命令：/create <帮会名>"
+
+#: ../src/net/tmwa/gui/partytab.cpp:93
+msgid "Command: /exp"
+msgstr "命令：/exp"
+
+#: ../src/net/tmwa/gui/partytab.cpp:88
+msgid "Command: /exp <policy>"
+msgstr "命令：/exp <策略>"
+
+#: ../src/commandhandler.cpp:196
+msgid "Command: /help"
+msgstr "命令： /help"
+
+#: ../src/commandhandler.cpp:199
+msgid "Command: /help <command>"
+msgstr "命令： /help <命令>"
+
+#: ../src/gui/widgets/whispertab.cpp:88
+#, fuzzy
+msgid "Command: /ignore"
+msgstr "命令：/item"
+
+#: ../src/commandhandler.cpp:213
+#, fuzzy
+msgid "Command: /ignore <player>"
+msgstr "命令：/item <策略>"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:65 ../src/net/tmwa/gui/partytab.cpp:66
+msgid "Command: /invite <nick>"
+msgstr "命令：/invite <昵称>"
+
+#: ../src/net/tmwa/gui/partytab.cpp:83
+msgid "Command: /item"
+msgstr "命令：/item"
+
+#: ../src/net/tmwa/gui/partytab.cpp:78
+msgid "Command: /item <policy>"
+msgstr "命令：/item <策略>"
+
+#: ../src/commandhandler.cpp:219
+msgid "Command: /join <channel>"
+msgstr "命令：/join <频道>"
+
+#: ../src/gui/widgets/channeltab.cpp:88
+msgid "Command: /kick <nick>"
+msgstr "命令：/kick <昵称>"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:72 ../src/net/tmwa/gui/partytab.cpp:73
+msgid "Command: /leave"
+msgstr "命令：/leave"
+
+#: ../src/commandhandler.cpp:225
+msgid "Command: /list"
+msgstr "命令：/list"
+
+#: ../src/commandhandler.cpp:230
+msgid "Command: /me <message>"
+msgstr "命令：/me <信息>"
+
+#: ../src/commandhandler.cpp:235
+msgid "Command: /msg <nick> <message>"
+msgstr "命令：/msg <昵称><信息>"
+
+#: ../src/gui/widgets/channeltab.cpp:79
+msgid "Command: /op <nick>"
+msgstr "命令：/op <昵称>"
+
+#: ../src/commandhandler.cpp:264
+msgid "Command: /party <nick>"
+msgstr "命令：/party <昵称>"
+
+#: ../src/commandhandler.cpp:271
+msgid "Command: /present"
+msgstr "命令： /present"
+
+#: ../src/commandhandler.cpp:245
+msgid "Command: /q <nick>"
+msgstr "命令：/q <昵称>"
+
+#: ../src/commandhandler.cpp:244
+msgid "Command: /query <nick>"
+msgstr "命令：/query <昵称>"
+
+#: ../src/gui/widgets/channeltab.cpp:72
+msgid "Command: /quit"
+msgstr "命令：/quit"
+
+#: ../src/commandhandler.cpp:281
+msgid "Command: /record"
+msgstr "命令: /record"
+
+#: ../src/commandhandler.cpp:278
+msgid "Command: /record <filename>"
+msgstr "命令： /record <文件名>"
+
+#: ../src/commandhandler.cpp:292
+msgid "Command: /toggle"
+msgstr "命令: /toggle"
+
+#: ../src/commandhandler.cpp:286
+msgid "Command: /toggle <state>"
+msgstr "命令: /toggle <状态>"
+
+#: ../src/gui/widgets/channeltab.cpp:67
+msgid "Command: /topic <message>"
+msgstr "命令：/topic <讯息>"
+
+#: ../src/commandhandler.cpp:297 ../src/gui/widgets/whispertab.cpp:94
+#, fuzzy
+msgid "Command: /unignore <player>"
+msgstr "命令：/item <策略>"
+
+#: ../src/gui/widgets/channeltab.cpp:62
+msgid "Command: /users"
+msgstr "命令：/users"
+
+#: ../src/commandhandler.cpp:237
+msgid "Command: /w <nick> <message>"
+msgstr "命令：/w <昵称><信息>"
+
+#: ../src/commandhandler.cpp:303
+msgid "Command: /where"
+msgstr "命令: /where"
+
+#: ../src/commandhandler.cpp:236
+msgid "Command: /whisper <nick> <message>"
+msgstr "命令：/whisper <昵称><信息>"
+
+#: ../src/commandhandler.cpp:308
+msgid "Command: /who"
+msgstr "命令： /who"
+
+#: ../src/gui/updaterwindow.cpp:502
+msgid "Completed"
+msgstr "已完成"
+
+#: ../src/playerrelations.cpp:316
+#, fuzzy
+msgid "Completely ignore"
+msgstr "@@ignore|完全忽略%s@@"
+
+#: ../src/gui/popupmenu.cpp:113
+#, fuzzy, c-format
+msgid "Completely ignore %s"
+msgstr "@@ignore|完全忽略%s@@"
+
+#: ../src/gui/charselectdialog.cpp:65
+msgid "Confirm Character Delete"
+msgstr "确认删除角色"
+
+#: ../src/gui/register.cpp:69
+msgid "Confirm:"
+msgstr "确认："
+
+#: ../src/gui/tradewindow.cpp:54
+msgid "Confirmed. Waiting..."
+msgstr "已确认。等待中……"
+
+#: ../src/keyboardconfig.cpp:185
+#, fuzzy, c-format
+msgid ""
+"Conflict \"%s\" and \"%s\" keys. Resolve them, or gameplay may result in "
+"strange behaviour."
+msgstr "解决按键冲突，否者游戏过程中可能发生奇怪行为。"
+
+#: ../src/gui/serverdialog.cpp:191
+#, fuzzy
+msgid "Connect"
+msgstr "连接中..."
+
+#: ../src/client.cpp:605
+#, fuzzy
+msgid "Connecting to server"
+msgstr "正在连接 地图 服务器..."
+
+#: ../src/client.cpp:766
+#, fuzzy
+msgid "Connecting to the game server"
+msgstr "正在连接 地图 服务器..."
+
+#: ../src/gui/updaterwindow.cpp:138
+msgid "Connecting..."
+msgstr "连接中…"
+
+#: ../src/net/tmwa/network.cpp:540
+#, fuzzy
+msgid "Connection to server terminated. "
+msgstr "正在连接 地图 服务器..."
+
+#: ../src/keyboardconfig.cpp:85
+msgid "Copy Outfit"
+msgstr ""
+
+#: ../src/gui/statuswindow.cpp:259
+#, fuzzy, c-format
+msgid "Correction points: %d"
+msgstr "技能点数：%d"
+
+#: ../src/game.cpp:941
+#, fuzzy
+msgid "Could Not Load Map"
+msgstr "无法加载地图"
+
+#: ../src/net/tmwa/partyhandler.cpp:82
+msgid "Could not create party."
+msgstr "无法创建帮会。"
+
+#: ../src/net/tmwa/specialhandler.cpp:155
+msgid "Could not join party!"
+msgstr "不能加入工会！"
+
+#: ../src/net/tmwa/specialhandler.cpp:209
+msgid "Could not steal anything..."
+msgstr "无法偷取任何物品..."
+
+#: ../src/game.cpp:290
+#, fuzzy
+msgid "Could not take screenshot!"
+msgstr "无法创建帮会。"
+
+#: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:393
+#: ../src/gui/socialwindow.cpp:365
+msgid "Create"
+msgstr "建立"
+
+#: ../src/gui/charcreatedialog.cpp:48
+msgid "Create Character"
+msgstr "创建角色"
+
+#: ../src/gui/socialwindow.cpp:310
+msgid "Create Guild"
+msgstr "创建帮会"
+
+#: ../src/gui/socialwindow.cpp:311 ../src/gui/socialwindow.cpp:661
+#, fuzzy
+msgid "Create Party"
+msgstr "创建角色"
+
+#: ../src/gui/socialwindow.cpp:545
+#, c-format
+msgid "Creating guild called %s."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:537
+msgid "Creating guild failed, please choose a shorter name."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:569
+#, c-format
+msgid "Creating party called %s."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:561
+msgid "Creating party failed, please choose a shorter name."
+msgstr ""
+
+#: ../src/resources/userpalette.cpp:100
+msgid "Critical Hit"
+msgstr "会心一击"
+
+#: ../src/gui/debugwindow.cpp:97
+#, c-format
+msgid "Cursor: (%d, %d)"
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:102
+#, fuzzy
+msgid "Custom"
+msgstr "自定义鼠标"
+
+#: ../src/gui/customserverdialog.cpp:50
+#, fuzzy
+msgid "Custom Server"
+msgstr "自定义鼠标"
+
+#: ../src/gui/setup_video.cpp:229
+msgid "Custom cursor"
+msgstr "自定义鼠标"
+
+#: ../src/gui/setup_video.cpp:393
+msgid "Deactivating OpenGL"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:232
+msgid "Debug"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:80
+msgid "Debug Window"
+msgstr "Debug窗口"
+
+#: ../src/gui/setup_keyboard.cpp:97
+msgid "Default"
+msgstr "预设"
+
+#: ../src/net/tmwa/generalhandler.cpp:237
+#, fuzzy
+msgid "Defense"
+msgstr "防御："
+
+#: ../src/resources/itemdb.cpp:291
+#, c-format
+msgid "Defense %+d"
+msgstr "防护 %+d"
+
+#: ../src/gui/setup_colors.cpp:87
+#, fuzzy
+msgid "Delay:"
+msgstr "显示： "
+
+#: ../src/gui/charselectdialog.cpp:340 ../src/gui/serverdialog.cpp:194
+#: ../src/gui/setup_players.cpp:221
+msgid "Delete"
+msgstr "删除"
+
+#: ../src/gui/customserverdialog.cpp:62
+#, fuzzy
+msgid "Description:"
+msgstr "描述：%s"
+
+#: ../src/net/tmwa/generalhandler.cpp:233 ../src/resources/attributes.cpp:183
+msgid "Dexterity"
+msgstr "敏捷"
+
+#: ../src/resources/attributes.cpp:189
+#, fuzzy, c-format
+msgid "Dexterity %+.1f"
+msgstr "敏捷 %+d"
+
+#: ../src/net/tmwa/generalhandler.cpp:103
+#, c-format
+msgid "Dexterity %+d"
+msgstr "敏捷 %+d"
+
+#: ../src/net/tmwa/charserverhandler.cpp:287
+msgid "Dexterity:"
+msgstr "灵巧："
+
+#: ../src/gui/setup_video.cpp:241
+msgid "Disable transparency (Low CPU mode)"
+msgstr ""
+
+#: ../src/gui/popupmenu.cpp:101
+#, fuzzy, c-format
+msgid "Disregard %s"
+msgstr "被忽视的"
+
+#: ../src/gui/setup_players.cpp:63
+msgid "Disregarded"
+msgstr "被忽视的"
+
+#: ../src/net/manaserv/beinghandler.cpp:289
+#: ../src/net/tmwa/playerhandler.cpp:107
+msgid "Do you want your possessions identified?"
+msgstr ""
+
+#: ../src/gui/setup_audio.cpp:43
+msgid "Download music"
+msgstr ""
+
+#: ../src/gui/serverdialog.cpp:389
+#, c-format
+msgid "Downloading server list...%2.2f%%"
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:387 ../src/gui/popupmenu.cpp:377
+msgid "Drop"
+msgstr "丢弃"
+
+#: ../src/gui/inventorywindow.cpp:107 ../src/gui/inventorywindow.cpp:385
+#: ../src/gui/popupmenu.cpp:375
+#, fuzzy
+msgid "Drop..."
+msgstr "丢弃"
+
+#: ../src/net/tmwa/generalhandler.cpp:146
+#, fuzzy
+msgid "Duplicated login."
+msgstr "重复登录"
+
+#: ../src/client.cpp:864
+#, fuzzy
+msgid "Email Change"
+msgstr "改变"
+
+#: ../src/net/manaserv/loginhandler.cpp:320
+#, fuzzy
+msgid "Email address already exists."
+msgstr "电子邮件地址已存在"
+
+#: ../src/client.cpp:865
+#, fuzzy
+msgid "Email changed successfully!"
+msgstr "会员晋升成功。"
+
+#: ../src/gui/register.cpp:100
+msgid "Email:"
+msgstr "电子邮件"
+
+#: ../src/keyboardconfig.cpp:86 ../src/keyboardconfig.cpp:87
+#: ../src/keyboardconfig.cpp:88 ../src/keyboardconfig.cpp:89
+#: ../src/keyboardconfig.cpp:90 ../src/keyboardconfig.cpp:91
+#: ../src/keyboardconfig.cpp:92 ../src/keyboardconfig.cpp:93
+#: ../src/keyboardconfig.cpp:94 ../src/keyboardconfig.cpp:95
+#: ../src/keyboardconfig.cpp:96 ../src/keyboardconfig.cpp:97
+#, c-format
+msgid "Emote Shortcut %d"
+msgstr "表情快捷键为 %d"
+
+#: ../src/keyboardconfig.cpp:82
+msgid "Emote Shortcut Window"
+msgstr "表情快捷窗口"
+
+#: ../src/net/tmwa/specialhandler.cpp:146
+msgid "Emote failed!"
+msgstr "发送表情失败！"
+
+#: ../src/net/tmwa/network.cpp:289
+msgid "Empty address given to Network::connect()!"
+msgstr ""
+
+#: ../src/gui/setup_players.cpp:227
+#, fuzzy
+msgid "Enable Chat log"
+msgstr "无法出售."
+
+#: ../src/gui/setup_joystick.cpp:38
+msgid "Enable joystick"
+msgstr "启用游戏杆"
+
+#: ../src/keyboardconfig.cpp:58
+msgid "Enable/Disable Trading"
+msgstr "开启/关闭交易"
+
+#: ../src/net/manaserv/chathandler.cpp:229
+msgid "End of channel list."
+msgstr ""
+
+#: ../src/gui/changepassworddialog.cpp:110
+msgid "Enter the old password first."
+msgstr ""
+
+#: ../src/client.cpp:659
+msgid "Entering game world"
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:92 ../src/gui/inventorywindow.cpp:105
+#: ../src/gui/inventorywindow.cpp:374 ../src/gui/popupmenu.cpp:367
+msgid "Equip"
+msgstr "装备"
+
+#: ../src/net/tmwa/playerhandler.cpp:499
+msgid "Equip arrows first."
+msgstr "请先装备弓箭。"
+
+#: ../src/gui/equipmentwindow.cpp:54 ../src/gui/windowmenu.cpp:57
+msgid "Equipment"
+msgstr "装备"
+
+#: ../src/keyboardconfig.cpp:74
+msgid "Equipment Window"
+msgstr "装备窗口"
+
+#: ../src/client.cpp:966 ../src/gui/changeemaildialog.cpp:156
+#: ../src/gui/changepassworddialog.cpp:149 ../src/gui/charcreatedialog.cpp:198
+#: ../src/gui/customserverdialog.cpp:166 ../src/gui/register.cpp:218
+#: ../src/gui/serverdialog.cpp:271 ../src/gui/serverdialog.cpp:315
+#: ../src/gui/setup_video.cpp:374 ../src/gui/unregisterdialog.cpp:130
+#: ../src/net/manaserv/charhandler.cpp:178
+#: ../src/net/manaserv/charhandler.cpp:228
+#: ../src/net/tmwa/charserverhandler.cpp:136
+#: ../src/net/tmwa/charserverhandler.cpp:153
+msgid "Error"
+msgstr "错误"
+
+#: ../src/net/manaserv/guildhandler.cpp:85
+msgid "Error creating guild."
+msgstr ""
+
+#: ../src/client.cpp:1203
+#, fuzzy, c-format
+msgid ""
+"Error creating updates directory!\n"
+"(%s)"
+msgstr "创建更新目录错误！"
+
+#: ../src/client.cpp:1211
+#, fuzzy, c-format
+msgid ""
+"Error creating updates directory!\n"
+"(%s/%s)"
+msgstr "创建更新目录错误！"
+
+#: ../src/net/manaserv/chathandler.cpp:211
+#, fuzzy
+msgid "Error joining channel."
+msgstr "命令：/join <频道>"
+
+#: ../src/gui/serverdialog.cpp:403
+msgid "Error retreiving server list!"
+msgstr ""
+
+#: ../src/game.cpp:942
+#, c-format
+msgid "Error while loading %s"
+msgstr "加载%s时出现错误"
+
+#: ../src/resources/userpalette.cpp:96
+msgid "Exp Notification"
+msgstr "到期通知"
+
+#: ../src/gui/statuswindow.cpp:125
+msgid "Exp:"
+msgstr "经验："
+
+#: ../src/net/tmwa/gui/partytab.cpp:163 ../src/net/tmwa/partyhandler.cpp:178
+msgid "Experience sharing disabled."
+msgstr "经验共享关闭。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:160 ../src/net/tmwa/partyhandler.cpp:172
+msgid "Experience sharing enabled."
+msgstr "经验共享开启。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:166 ../src/net/tmwa/partyhandler.cpp:184
+msgid "Experience sharing not possible."
+msgstr "经验共享不可能。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:169
+#, fuzzy
+msgid "Experience sharing unknown."
+msgstr "经验共享开启。"
+
+#: ../src/gui/setup_video.cpp:231
+#, fuzzy
+msgid "FPS limit:"
+msgstr "FPS限制："
+
+#: ../src/net/tmwa/tradehandler.cpp:218
+msgid "Failed adding item for unknown reason."
+msgstr "添加项目失败，原因未知。"
+
+#: ../src/net/tmwa/tradehandler.cpp:209
+msgid "Failed adding item. Trade partner has no free slot."
+msgstr "添加项目失败。交易伙伴无空闲槽存放物品。"
+
+#: ../src/net/tmwa/tradehandler.cpp:204
+msgid "Failed adding item. Trade partner is over weighted."
+msgstr "添加项目失败。交易伙伴已经负重太多。"
+
+#: ../src/net/tmwa/tradehandler.cpp:214
+#, fuzzy
+msgid "Failed adding item. You can't trade this item."
+msgstr "添加物品失败。你不能覆盖窗口中的该类物品。"
+
+#: ../src/gui/tradewindow.cpp:262
+#, fuzzy
+msgid "Failed adding item. You cannot overlap one kind of item on the window."
+msgstr "添加物品失败。你不能覆盖窗口中的该类物品。"
+
+#: ../src/gui/setup_video.cpp:374
+#, fuzzy
+msgid "Failed to change video mode."
+msgstr "使用物品失败。"
+
+#: ../src/net/tmwa/charserverhandler.cpp:136
+msgid "Failed to create character. Most likely the name is already taken."
+msgstr "创建角色失败。很可能名称已被占用。"
+
+#: ../src/net/tmwa/charserverhandler.cpp:153
+msgid "Failed to delete character."
+msgstr "删除角色失败。"
+
+#: ../src/net/manaserv/guildhandler.cpp:220
+msgid "Failed to promote member."
+msgstr "晋升会员失败。"
+
+#: ../src/gui/npcpostdialog.cpp:99
+msgid "Failed to send as sender or letter invalid."
+msgstr "发送信件失败或者信件无效。"
+
+#: ../src/gui/recorder.cpp:112
+msgid "Failed to start recording."
+msgstr "开始录制失败。"
+
+#: ../src/net/tmwa/inventoryhandler.cpp:277
+msgid "Failed to use item."
+msgstr "使用物品失败。"
+
+#: ../src/client.cpp:885
+msgid "Farewell, come back any time..."
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:72
+msgid "Feet"
+msgstr ""
+
+#: ../src/gui/charcreatedialog.cpp:88 ../src/gui/register.cpp:91
+msgid "Female"
+msgstr "美女"
+
+#: ../src/gui/recorder.cpp:87
+msgid "Finishing recording."
+msgstr "结束录制。"
+
+#: ../src/gui/setup_interface.cpp:113
+#, fuzzy
+msgid "Font size:"
+msgstr "字体大小"
+
+#: ../src/commandhandler.cpp:192
+msgid "For more information, type /help <command>."
+msgstr "输入 /help <命令>，获取更多信息。"
+
+#: ../src/gui/setup_players.cpp:62
+msgid "Friend"
+msgstr "好友"
+
+#: ../src/gui/setup_video.cpp:221
+#, fuzzy
+msgid "Fullscreen"
+msgstr "全屏"
+
+#: ../src/resources/userpalette.cpp:89
+msgid "GM Names"
+msgstr "GM名"
+
+#: ../src/gui/debugwindow.cpp:142
+msgid "GUI debug"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:112
+#, fuzzy
+msgid "GUI opacity"
+msgstr "Gui 透明度"
+
+#: ../src/net/tmwa/gamehandler.cpp:89
+#, fuzzy
+msgid "Game"
+msgstr "姓名"
+
+#: ../src/net/manaserv/beinghandler.cpp:283
+#: ../src/net/tmwa/playerhandler.cpp:99
+msgid "Game Over!"
+msgstr "游戏结束！"
+
+#: ../src/game.cpp:167
+msgid "General"
+msgstr "常规"
+
+#: ../src/gui/widgets/chattab.cpp:160
+#, c-format
+msgid "Global announcement from %s:"
+msgstr "%s 全局公告："
+
+#: ../src/gui/widgets/chattab.cpp:154
+msgid "Global announcement:"
+msgstr "全局公告："
+
+#: ../src/net/tmwa/generalhandler.cpp:207
+msgid "Got disconnected from server!"
+msgstr "和服务器失去连接"
+
+#: ../src/gui/setup_colors.cpp:117
+#, fuzzy
+msgid "Green:"
+msgstr "绿： "
+
+#: ../src/gui/debugwindow.cpp:135
+msgid "Grid"
+msgstr ""
+
+#: ../src/net/tmwa/gui/guildtab.cpp:41
+msgid "Guild"
+msgstr "帮会"
+
+#: ../src/gui/socialwindow.cpp:129
+#, fuzzy, c-format
+msgid "Guild %s quit requested."
+msgstr "帮会已创建"
+
+#: ../src/resources/userpalette.cpp:93
+#, fuzzy
+msgid "Guild Members"
+msgstr "帮会"
+
+#: ../src/gui/socialwindow.cpp:583
+#, fuzzy
+msgid "Guild Name"
+msgstr "帮会"
+
+#: ../src/net/manaserv/guildhandler.cpp:80
+msgid "Guild created."
+msgstr "帮会已创建"
+
+#: ../src/net/tmwa/guildhandler.cpp:63
+#, fuzzy
+msgid "Guild creation isn't supported."
+msgstr "帮会已创建"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:81
+#, fuzzy
+msgid "Guild name is missing."
+msgstr "帮会名称缺失。"
+
+#: ../src/resources/itemdb.cpp:292
+#, c-format
+msgid "HP %+d"
+msgstr "HP %+d"
+
+#: ../src/gui/statuswindow.cpp:120
+msgid "HP:"
+msgstr "HP："
+
+#: ../src/gui/charcreatedialog.cpp:78
+#, fuzzy
+msgid "Hair color:"
+msgstr "发色："
+
+#: ../src/gui/charcreatedialog.cpp:84
+#, fuzzy
+msgid "Hair style:"
+msgstr "发型："
+
+#: ../src/net/tmwa/inventoryhandler.h:80
+msgid "Hand 1/2"
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:82
+msgid "Hand 2/2"
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:68
+msgid "Head"
+msgstr ""
+
+#: ../src/gui/helpwindow.cpp:38
+msgid "Help"
+msgstr "帮助"
+
+#: ../src/keyboardconfig.cpp:71
+msgid "Help Window"
+msgstr "帮助窗口"
+
+#: ../src/keyboardconfig.cpp:55
+msgid "Hide Windows"
+msgstr "隐藏窗口"
+
+#: ../src/net/tmwa/specialhandler.cpp:197
+msgid "Huh? What's that?"
+msgstr "啊？那是什么？"
+
+#: ../src/net/manaserv/beinghandler.cpp:288
+#: ../src/net/tmwa/playerhandler.cpp:105
+msgid "I guess this did not run too well."
+msgstr ""
+
+#: ../src/commandhandler.cpp:221
+msgid "If <channel> doesn't exist, it's created."
+msgstr "如果<频道>不存在，自动创建。"
+
+#: ../src/commandhandler.cpp:239 ../src/commandhandler.cpp:266
+#: ../src/gui/widgets/channeltab.cpp:81 ../src/gui/widgets/channeltab.cpp:90
+#: ../src/net/tmwa/gui/guildtab.cpp:67 ../src/net/tmwa/gui/partytab.cpp:68
+msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
+msgstr "如果<昵称>之间有空格，用双引号(\")括起来。"
+
+#: ../src/net/tmwa/playerhandler.cpp:124
+msgid "If you weren't so animated, you'd be pushing up the daisies."
+msgstr ""
+
+#: ../src/gui/widgets/channeltab.cpp:74
+msgid "If you're the last person in the channel, it will be deleted."
+msgstr "如果你是该频道的最后成员，离开后该频道将被删除。"
+
+#: ../src/gui/popupmenu.cpp:104
+#, fuzzy, c-format
+msgid "Ignore %s"
+msgstr "忽略"
+
+#: ../src/keyboardconfig.cpp:105
+msgid "Ignore input 1"
+msgstr "忽略输入1"
+
+#: ../src/keyboardconfig.cpp:106
+msgid "Ignore input 2"
+msgstr "忽略输入2"
+
+#: ../src/gui/setup_players.cpp:64
+msgid "Ignored"
+msgstr "忽略"
+
+#: ../src/game.cpp:708
+msgid "Ignoring incoming trade requests"
+msgstr "忽略新进的交易请求"
+
+#: ../src/net/manaserv/tradehandler.cpp:97
+msgid "Ignoring incoming trade requests."
+msgstr "忽略交易请求"
+
+#: ../src/gui/debugwindow.cpp:248 ../src/net/manaserv/charhandler.cpp:211
+#: ../src/net/tmwa/charserverhandler.cpp:148
+msgid "Info"
+msgstr "信息"
+
+#: ../src/net/tmwa/playerhandler.cpp:100
+msgid "Insert coin to continue."
+msgstr "投入游戏币继续。"
+
+#: ../src/net/tmwa/specialhandler.cpp:170
+msgid "Insufficient HP!"
+msgstr "HP不足！"
+
+#: ../src/net/tmwa/specialhandler.cpp:173
+msgid "Insufficient SP!"
+msgstr "SP不足！"
+
+#: ../src/net/tmwa/generalhandler.cpp:231 ../src/resources/attributes.cpp:207
+msgid "Intelligence"
+msgstr "智慧"
+
+#: ../src/resources/attributes.cpp:213
+#, fuzzy, c-format
+msgid "Intelligence %+.1f"
+msgstr "智慧 %+d"
+
+#: ../src/net/tmwa/generalhandler.cpp:102
+#, c-format
+msgid "Intelligence %+d"
+msgstr "智慧 %+d"
+
+#: ../src/net/tmwa/charserverhandler.cpp:286
+msgid "Intelligence:"
+msgstr "智力："
+
+#: ../src/gui/setup_interface.cpp:103
+msgid "Interface"
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:268
+#, fuzzy
+msgid "Invalid character slot selected."
+msgstr "角色已删除。"
+
+#: ../src/net/manaserv/charhandler.cpp:157
+msgid "Invalid gender."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:154
+msgid "Invalid hair color."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:151
+msgid "Invalid hairstyle."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:145
+msgid "Invalid name."
+msgstr ""
+
+#: ../src/main.cpp:173
+msgid "Invalid server type, expected one of: tmwathena, manaserv"
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:172
+msgid "Invalid slot number."
+msgstr ""
+
+#: ../src/client.cpp:1171
+#, fuzzy, c-format
+msgid "Invalid update host: %s"
+msgstr "无效的更新主机： "
+
+#: ../src/gui/inventorywindow.cpp:60 ../src/gui/windowmenu.cpp:55
+msgid "Inventory"
+msgstr "物品栏"
+
+#: ../src/keyboardconfig.cpp:73
+msgid "Inventory Window"
+msgstr "物品栏窗口"
+
+#: ../src/localplayer.cpp:867
+#, fuzzy
+msgid "Inventory is full."
+msgstr "服务器满载"
+
+#: ../src/gui/socialwindow.cpp:366
+#, fuzzy
+msgid "Invite"
+msgstr "邀请用户"
+
+#: ../src/gui/popupmenu.cpp:126
+#, fuzzy, c-format
+msgid "Invite %s to join your guild"
+msgstr "@@guild|邀请%s加入你的工会@@"
+
+#: ../src/gui/popupmenu.cpp:132
+#, fuzzy, c-format
+msgid "Invite %s to join your party"
+msgstr "@@party|邀请%s加入你的帮会@@"
+
+#: ../src/net/manaserv/guildhandler.cpp:108
+#, fuzzy
+msgid "Invite failed."
+msgstr "原地休息失败！"
+
+#: ../src/net/manaserv/guildhandler.cpp:96
+msgid "Invite sent."
+msgstr "邀请已发送。"
+
+#: ../src/net/manaserv/guildhandler.cpp:104
+#, fuzzy
+msgid "Invited player can't join another guild."
+msgstr "@@guild|邀请%s加入你的工会@@"
+
+#: ../src/net/manaserv/guildhandler.cpp:100
+msgid "Invited player is already in that guild."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:116
+#, c-format
+msgid "Invited user %s to guild %s."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:189 ../src/net/tmwa/partyhandler.cpp:318
+#, fuzzy, c-format
+msgid "Invited user %s to party."
+msgstr "邀请一个用户加入队伍"
+
+#: ../src/net/tmwa/partyhandler.cpp:323
+#, c-format
+msgid "Inviting failed, because you can't see a player called %s."
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:59 ../src/keyboardconfig.cpp:60
+#: ../src/keyboardconfig.cpp:61 ../src/keyboardconfig.cpp:62
+#: ../src/keyboardconfig.cpp:63 ../src/keyboardconfig.cpp:64
+#: ../src/keyboardconfig.cpp:65 ../src/keyboardconfig.cpp:66
+#: ../src/keyboardconfig.cpp:67 ../src/keyboardconfig.cpp:68
+#: ../src/keyboardconfig.cpp:69 ../src/keyboardconfig.cpp:70
+#, c-format
+msgid "Item Shortcut %d"
+msgstr "物品快捷 %d"
+
+#: ../src/keyboardconfig.cpp:78
+msgid "Item Shortcut Window"
+msgstr "物品快捷窗口"
+
+#: ../src/localplayer.cpp:870
+msgid "Item belongs to someone else."
+msgstr ""
+
+#: ../src/localplayer.cpp:866
+msgid "Item is too far away"
+msgstr ""
+
+#: ../src/localplayer.cpp:865
+msgid "Item is too heavy."
+msgstr ""
+
+#: ../src/net/tmwa/gui/partytab.cpp:128 ../src/net/tmwa/partyhandler.cpp:202
+msgid "Item sharing disabled."
+msgstr "物品共享关闭。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:125 ../src/net/tmwa/partyhandler.cpp:196
+msgid "Item sharing enabled."
+msgstr "物品共享开启。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:131 ../src/net/tmwa/partyhandler.cpp:208
+msgid "Item sharing not possible."
+msgstr "物品共享不可能。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:134
+#, fuzzy
+msgid "Item sharing unknown."
+msgstr "物品共享开启。"
+
+#: ../src/gui/statuswindow.cpp:162
+msgid "Job:"
+msgstr "职业："
+
+#: ../src/gui/statuswindow.cpp:161 ../src/gui/statuswindow.cpp:279
+#, c-format
+msgid "Job: %d"
+msgstr "职业：%d"
+
+#: ../src/net/manaserv/partyhandler.cpp:98
+msgid ""
+"Joining party failed, because the invitation has timed out on the server."
+msgstr ""
+
+#: ../src/net/manaserv/partyhandler.cpp:102
+msgid "Joining party failed, because the inviter has left the game."
+msgstr ""
+
+#: ../src/gui/setup_joystick.cpp:40
+msgid "Joystick"
+msgstr "游戏杆"
+
+#: ../src/gui/setup_keyboard.cpp:123
+msgid "Key Conflict(s) Detected."
+msgstr "检测到按键冲突。"
+
+#: ../src/gui/setup_keyboard.cpp:79
+msgid "Keyboard"
+msgstr "键盘"
+
+#: ../src/net/tmwa/adminhandler.cpp:63
+msgid "Kick failed!"
+msgstr "踢出失败！"
+
+#: ../src/gui/popupmenu.cpp:162
+#, fuzzy
+msgid "Kick monster"
+msgstr "@@admin-kick|踢掉怪物@@"
+
+#: ../src/gui/popupmenu.cpp:140
+#, fuzzy
+msgid "Kick player"
+msgstr "踢出失败！"
+
+#: ../src/net/tmwa/adminhandler.cpp:65
+msgid "Kick succeeded!"
+msgstr "成功踢出！"
+
+#: ../src/gui/setup_interface.cpp:47
+msgid "Large"
+msgstr "大"
+
+#: ../src/gui/socialwindow.cpp:367
+#, fuzzy
+msgid "Leave"
+msgstr "大"
+
+#: ../src/gui/socialwindow.cpp:153
+#, fuzzy
+msgid "Leave Guild?"
+msgstr "创建帮会"
+
+#: ../src/gui/socialwindow.cpp:224
+msgid "Leave Party?"
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:70
+msgid "Legs"
+msgstr ""
+
+#: ../src/gui/statuswindow.cpp:116 ../src/gui/statuswindow.cpp:218
+#: ../src/gui/statuswindow.cpp:266
+#, c-format
+msgid "Level: %d"
+msgstr "等级：%d"
+
+#: ../src/net/manaserv/chathandler.cpp:217
+#, fuzzy
+msgid "Listing channels."
+msgstr "请求加入频道%s。"
+
+#: ../src/resources/userpalette.cpp:104
+#, fuzzy
+msgid "Local Player Critical Hit"
+msgstr "会心一击"
+
+#: ../src/resources/userpalette.cpp:102
+#, fuzzy
+msgid "Local Player Hits Monster"
+msgstr "玩家攻击怪兽"
+
+#: ../src/resources/userpalette.cpp:106
+#, fuzzy
+msgid "Local Player Miss"
+msgstr "保存玩家列表"
+
+#: ../src/gui/setup_interface.cpp:91
+msgid "Log NPC dialogue"
+msgstr ""
+
+#: ../src/client.cpp:631
+#, fuzzy
+msgid "Logging in"
+msgstr "登录"
+
+#: ../src/gui/logindialog.cpp:43 ../src/gui/logindialog.cpp:55
+msgid "Login"
+msgstr "登录"
+
+#: ../src/net/manaserv/loginhandler.cpp:286
+msgid "Login attempt too soon after previous attempt."
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:292
+#: ../src/net/tmwa/playerhandler.cpp:113
+msgid "Looks like you got your head handed to you."
+msgstr ""
+
+#: ../src/net/tmwa/generalhandler.cpp:234
+msgid "Luck"
+msgstr "幸运"
+
+#: ../src/net/tmwa/generalhandler.cpp:104
+#, c-format
+msgid "Luck %+d"
+msgstr "幸运 %+d"
+
+#: ../src/net/tmwa/charserverhandler.cpp:288
+msgid "Luck:"
+msgstr "幸运："
+
+#: ../src/gui/skilldialog.cpp:468
+#, fuzzy, c-format
+msgid "Lvl: %d"
+msgstr "等级：%d"
+
+#: ../src/gui/skilldialog.cpp:457
+#, fuzzy, c-format
+msgid "Lvl: %d (%+d)"
+msgstr "等级：%d"
+
+#: ../src/net/tmwa/generalhandler.cpp:238
+#, fuzzy
+msgid "M.Attack"
+msgstr "魔攻："
+
+#: ../src/net/tmwa/generalhandler.cpp:239
+#, fuzzy
+msgid "M.Defense"
+msgstr "魔防："
+
+#: ../src/resources/itemdb.cpp:293
+#, c-format
+msgid "MP %+d"
+msgstr "MP %+d"
+
+#: ../src/gui/statuswindow.cpp:133
+msgid "MP:"
+msgstr "MP："
+
+#: ../src/gui/charcreatedialog.cpp:87 ../src/gui/register.cpp:90
+msgid "Male"
+msgstr "帅哥"
+
+#: ../src/gui/minimap.cpp:45 ../src/gui/minimap.cpp:79
+msgid "Map"
+msgstr "地图"
+
+#: ../src/gui/debugwindow.cpp:104
+#, fuzzy, c-format
+msgid "Map: %s"
+msgstr "姓名：%s"
+
+#: ../src/gui/buydialog.cpp:79 ../src/gui/selldialog.cpp:79
+#: ../src/gui/statuswindow.cpp:394 ../src/gui/statuswindow.cpp:466
+#: ../src/gui/statuswindow.cpp:498
+msgid "Max"
+msgstr "最大"
+
+#: ../src/gui/setup_interface.cpp:46
+msgid "Medium"
+msgstr "中等"
+
+#: ../src/gui/socialwindow.cpp:143
+msgid "Member Invite to Guild"
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:214
+#, fuzzy
+msgid "Member Invite to Party"
+msgstr "邀请一个用户加入队伍"
+
+#: ../src/net/manaserv/guildhandler.cpp:215
+msgid "Member was promoted successfully."
+msgstr "会员晋升成功。"
+
+#: ../src/net/tmwa/playerhandler.cpp:253 ../src/net/tmwa/playerhandler.cpp:293
+msgid "Message"
+msgstr "讯息"
+
+#: ../src/commandhandler.cpp:456
+msgid "Message closes chat."
+msgstr "讯息关闭聊天。"
+
+#: ../src/commandhandler.cpp:469
+msgid "Message now closes chat."
+msgstr "讯息现在关闭聊天。"
+
+#: ../src/keyboardconfig.cpp:76
+msgid "Minimap Window"
+msgstr "小地图窗口"
+
+#: ../src/gui/debugwindow.cpp:102
+#, fuzzy, c-format
+msgid "Minimap: %s"
+msgstr "小地图"
+
+#: ../src/resources/userpalette.cpp:107
+msgid "Misses"
+msgstr "失误"
+
+#: ../src/gui/serverdialog.cpp:193
+msgid "Modify..."
+msgstr ""
+
+#: ../src/gui/statuswindow.cpp:117 ../src/gui/statuswindow.cpp:211
+#: ../src/gui/statuswindow.cpp:243
+#, c-format
+msgid "Money: %s"
+msgstr "金币: %s"
+
+#: ../src/resources/userpalette.cpp:99
+#, fuzzy
+msgid "Monster Hits Player"
+msgstr "怪兽击打玩家"
+
+#: ../src/resources/userpalette.cpp:91
+msgid "Monsters"
+msgstr "怪物"
+
+#: ../src/gui/debugwindow.cpp:140
+msgid "Mouse path"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:43
+msgid "Move Down"
+msgstr "向下移动"
+
+#: ../src/keyboardconfig.cpp:44
+msgid "Move Left"
+msgstr "向左移动"
+
+#: ../src/keyboardconfig.cpp:45
+msgid "Move Right"
+msgstr "向右移动"
+
+#: ../src/keyboardconfig.cpp:42
+msgid "Move Up"
+msgstr "向上移动"
+
+#: ../src/gui/setup_audio.cpp:52
+msgid "Music volume"
+msgstr "音乐声量"
+
+#: ../src/gui/debugwindow.cpp:101
+#, fuzzy, c-format
+msgid "Music: %s"
+msgstr "主题：%s"
+
+#: ../src/gui/npcdialog.cpp:72 ../src/gui/npcpostdialog.cpp:41
+msgid "NPC"
+msgstr "NPC"
+
+#: ../src/resources/userpalette.cpp:90
+msgid "NPCs"
+msgstr "NPCs"
+
+#: ../src/gui/setup_players.cpp:55
+msgid "Name"
+msgstr "姓名"
+
+#: ../src/gui/charcreatedialog.cpp:71 ../src/gui/customserverdialog.cpp:56
+#: ../src/gui/logindialog.cpp:46 ../src/gui/register.cpp:67
+msgid "Name:"
+msgstr "姓名"
+
+#: ../src/gui/unregisterdialog.cpp:49
+#, c-format
+msgid "Name: %s"
+msgstr "姓名：%s"
+
+#: ../src/net/tmwa/inventoryhandler.h:78
+#, fuzzy
+msgid "Necklace"
+msgstr "项链"
+
+#: ../src/gui/ministatuswindow.cpp:244
+msgid "Need"
+msgstr ""
+
+#: ../src/gui/widgets/channeltab.cpp:121
+msgid "Need a user to kick!"
+msgstr "踢人时需要指定用户！"
+
+#: ../src/gui/widgets/channeltab.cpp:114
+msgid "Need a user to op!"
+msgstr "需要一个用户来操作"
+
+#: ../src/game.cpp:367
+msgid "Network Error"
+msgstr "网络错误"
+
+#: ../src/gui/setup_players.cpp:61
+msgid "Neutral"
+msgstr "中立"
+
+#: ../src/net/manaserv/loginhandler.cpp:154
+#, fuzzy
+msgid "New email address incorrect."
+msgstr "新电子邮件地址不正确"
+
+#: ../src/net/manaserv/loginhandler.cpp:123
+#, fuzzy
+msgid "New password incorrect."
+msgstr "新密码错误"
+
+#: ../src/net/tmwa/loginhandler.cpp:95
+#, fuzzy
+msgid "New password too short."
+msgstr "新密码太短"
+
+#: ../src/gui/npcdialog.cpp:50
+msgid "Next"
+msgstr "下一个"
+
+#: ../src/keyboardconfig.cpp:102
+msgid "Next Chat Tab"
+msgstr "下一个聊天窗口标签页"
+
+#: ../src/gui/confirmdialog.cpp:41
+msgid "No"
+msgstr "否"
+
+#: ../src/commandhandler.cpp:388
+msgid "No <nick> was given."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:142
+msgid "No empty slot."
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:265
+msgid "No gameservers are available."
+msgstr "无 游戏服务器 可用。"
+
+#: ../src/gui/itempopup.cpp:127
+#, fuzzy
+msgid "No item"
+msgstr "未知物品"
+
+#: ../src/net/tmwa/generalhandler.cpp:133
+#, fuzzy
+msgid "No servers available."
+msgstr "无可用服务器"
+
+#: ../src/gui/setup_interface.cpp:71
+msgid "No text"
+msgstr "无文本"
+
+#: ../src/net/manaserv/beinghandler.cpp:284
+#: ../src/net/tmwa/playerhandler.cpp:101
+msgid ""
+"No, kids. Your character did not really die. It... err... went to a better "
+"place."
+msgstr "不，孩子。你的角色没有真正死亡。他……呃……不过是去了一个更好的地方而已。"
+
+#: ../src/gui/setup_video.cpp:253 ../src/gui/setup_video.cpp:450
+#: ../src/gui/setup_video.cpp:525
+#, fuzzy
+msgid "None"
+msgstr "否"
+
+#: ../src/gui/debugwindow.cpp:145
+msgid "Normal"
+msgstr ""
+
+#: ../src/gui/recorder.cpp:91
+msgid "Not currently recording."
+msgstr "不在当前录制中。"
+
+#: ../src/net/manaserv/charhandler.cpp:139
+#: ../src/net/manaserv/charhandler.cpp:220
+#, fuzzy
+msgid "Not logged in."
+msgstr "已经登录"
+
+#: ../src/net/tmwa/buysellhandler.cpp:108
+msgid "Nothing to sell."
+msgstr "无物可供出售。"
+
+#: ../src/gui/setup_audio.cpp:97
+#, fuzzy
+msgid "Notice"
+msgstr "无文本"
+
+#: ../src/gui/setup_audio.cpp:51
+#, fuzzy
+msgid "Notifications volume"
+msgstr "到期通知"
+
+#: ../src/gui/itemamountwindow.cpp:112 ../src/gui/okdialog.cpp:40
+#: ../src/gui/quitdialog.cpp:46 ../src/gui/textdialog.cpp:39
+#: ../src/gui/tradewindow.cpp:72 ../src/gui/tradewindow.cpp:74
+msgid "OK"
+msgstr "确定"
+
+#: ../src/gui/customserverdialog.cpp:75
+msgid "Ok"
+msgstr "确定"
+
+#: ../src/net/manaserv/loginhandler.cpp:157
+#, fuzzy
+msgid "Old email address incorrect."
+msgstr "原电子邮件地址不正确"
+
+#: ../src/net/manaserv/loginhandler.cpp:126 ../src/net/tmwa/loginhandler.cpp:92
+#, fuzzy
+msgid "Old password incorrect."
+msgstr "原密码错误"
+
+#: ../src/gui/socialwindow.cpp:380 ../src/gui/socialwindow.cpp:676
+#, c-format
+msgid "Online (%zu)"
+msgstr ""
+
+#: ../src/gui/widgets/itemlinkhandler.cpp:66
+#: ../src/gui/widgets/itemlinkhandler.cpp:95
+msgid "Open URL Failed"
+msgstr ""
+
+#: ../src/gui/widgets/itemlinkhandler.cpp:63
+#, fuzzy
+msgid "Open URL?"
+msgstr "OpenGL"
+
+#: ../src/gui/setup_video.cpp:228
+msgid "OpenGL (Legacy)"
+msgstr ""
+
+#: ../src/gui/widgets/itemlinkhandler.cpp:67
+msgid "Opening of URLs requires SDL 2.0.14."
+msgstr ""
+
+#: ../src/commandhandler.h:31
+#, c-format
+msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
+msgstr "/%s的选项是\"yes\"，\"no\"，\"true\"，\"false\"，\"1\"，\"0\"。"
+
+#: ../src/main.cpp:54
+msgid "Options:"
+msgstr "选项："
+
+#: ../src/resources/userpalette.cpp:98
+#, fuzzy
+msgid "Other Player Hits Monster"
+msgstr "玩家攻击怪兽"
+
+#: ../src/resources/userpalette.cpp:87
+msgid "Other Players' Names"
+msgstr "其他玩家名"
+
+#: ../src/gui/outfitwindow.cpp:51 ../src/gui/outfitwindow.cpp:120
+#: ../src/gui/outfitwindow.cpp:133
+#, c-format
+msgid "Outfit: %d"
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:109 ../src/gui/outfitwindow.cpp:42
+msgid "Outfits"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:83
+#, fuzzy
+msgid "Outfits Window"
+msgstr "状态窗口"
+
+#: ../src/gui/setup_interface.cpp:111
+#, fuzzy
+msgid "Overhead text:"
+msgstr "头顶文字"
+
+#: ../src/resources/userpalette.cpp:88
+msgid "Own Name"
+msgstr "自己的名字"
+
+#: ../src/gui/setup_video.cpp:503
+#, fuzzy
+msgid "Particle Effect Settings Changed."
+msgstr "粒子效果设置已变更。"
+
+#: ../src/resources/userpalette.cpp:94
+msgid "Particle Effects"
+msgstr "粒子效果"
+
+#: ../src/gui/debugwindow.cpp:108
+#, fuzzy, c-format
+msgid "Particle count: %d"
+msgstr "粒子效果"
+
+#: ../src/gui/setup_video.cpp:247
+#, fuzzy
+msgid "Particle detail:"
+msgstr "纹理细节"
+
+#: ../src/gui/setup_video.cpp:230
+msgid "Particle effects"
+msgstr "粒子效果"
+
+#: ../src/net/tmwa/gui/partytab.cpp:40
+msgid "Party"
+msgstr "帮会"
+
+#: ../src/gui/socialwindow.cpp:200
+#, c-format
+msgid "Party %s quit requested."
+msgstr ""
+
+#: ../src/resources/userpalette.cpp:92
+#, fuzzy
+msgid "Party Members"
+msgstr "帮会"
+
+#: ../src/gui/socialwindow.cpp:667
+#, fuzzy
+msgid "Party Name"
+msgstr "帮会"
+
+#: ../src/net/manaserv/partyhandler.cpp:155
+msgid ""
+"Party invitation rejected by server, because of too many invitations in a "
+"short time."
+msgstr ""
+
+#: ../src/net/manaserv/partyhandler.cpp:75
+#, c-format
+msgid ""
+"Party invite failed, because no player called %s is within the visual range."
+msgstr ""
+
+#: ../src/commandhandler.cpp:428 ../src/net/tmwa/gui/partytab.cpp:102
+msgid "Party name is missing."
+msgstr "帮会名称缺失。"
+
+#: ../src/net/tmwa/partyhandler.cpp:84
+msgid "Party successfully created."
+msgstr "帮会创建成功。"
+
+#: ../src/gui/beingpopup.cpp:76
+#, fuzzy, c-format
+msgid "Party: %s"
+msgstr "帮会（%s）"
+
+#: ../src/client.cpp:845
+#, fuzzy
+msgid "Password Change"
+msgstr "密码："
+
+#: ../src/client.cpp:846
+msgid "Password changed successfully!"
+msgstr ""
+
+#: ../src/gui/changepassworddialog.cpp:61 ../src/gui/logindialog.cpp:47
+#: ../src/gui/register.cpp:68 ../src/gui/unregisterdialog.cpp:51
+msgid "Password:"
+msgstr "密码："
+
+#: ../src/gui/register.cpp:197
+msgid "Passwords do not match."
+msgstr "密码不一致."
+
+#: ../src/gui/popupmenu.cpp:186
+#, fuzzy, c-format
+msgid "Pick up %s"
+msgstr "捡起"
+
+#: ../src/keyboardconfig.cpp:54
+msgid "Pickup"
+msgstr "捡起"
+
+#: ../src/resources/userpalette.cpp:95
+msgid "Pickup Notification"
+msgstr "拾起通知"
+
+#: ../src/gui/updaterwindow.cpp:141
+msgid "Play"
+msgstr "开始"
+
+#: ../src/net/manaserv/guildhandler.cpp:259
+#, fuzzy, c-format
+msgid "Player %s kicked you out of guild %s."
+msgstr "%s已经邀请你加入帮会%s。"
+
+#: ../src/commandhandler.cpp:521
+msgid "Player already ignored!"
+msgstr ""
+
+#: ../src/commandhandler.cpp:530
+#, fuzzy
+msgid "Player could not be ignored!"
+msgstr "密语无法发送，你已被用户忽略。"
+
+#: ../src/commandhandler.cpp:552
+#, fuzzy
+msgid "Player could not be unignored!"
+msgstr "密语无法发送，你已被用户忽略。"
+
+#: ../src/net/manaserv/charhandler.cpp:211
+#, fuzzy
+msgid "Player deleted."
+msgstr "角色已删除。"
+
+#: ../src/commandhandler.cpp:550
+msgid "Player no longer ignored!"
+msgstr ""
+
+#: ../src/commandhandler.cpp:528
+#, fuzzy
+msgid "Player successfully ignored!"
+msgstr "帮会创建成功。"
+
+#: ../src/commandhandler.cpp:545
+msgid "Player wasn't ignored!"
+msgstr ""
+
+#: ../src/gui/setup_players.cpp:229
+msgid "Players"
+msgstr "玩家"
+
+#: ../src/net/manaserv/chathandler.cpp:194
+#: ../src/net/manaserv/chathandler.cpp:285
+#, fuzzy
+msgid "Players in this channel:"
+msgstr "玩家攻击怪兽"
+
+#: ../src/gui/charcreatedialog.cpp:106 ../src/gui/charcreatedialog.cpp:278
+#, c-format
+msgid "Please distribute %d points"
+msgstr "请分发%d点数"
+
+#: ../src/gui/charcreatedialog.cpp:283
+#, c-format
+msgid "Please remove %d points"
+msgstr "请删除%d点数"
+
+#: ../src/gui/serverdialog.cpp:316
+msgid "Please select a custom server."
+msgstr ""
+
+#: ../src/gui/serverdialog.cpp:272
+msgid "Please select a valid server."
+msgstr ""
+
+#: ../src/commandhandler.cpp:436 ../src/commandhandler.cpp:515
+#: ../src/commandhandler.cpp:537
+msgid "Please specify a name."
+msgstr ""
+
+#: ../src/gui/customserverdialog.cpp:167
+#, fuzzy
+msgid "Please type in at least the address of the server."
+msgstr "请输入服务器的IP地址和端口"
+
+#: ../src/net/tmwa/specialhandler.cpp:212
+msgid "Poison had no effect..."
+msgstr "毒药无效..."
+
+#: ../src/gui/customserverdialog.cpp:58
+msgid "Port:"
+msgstr "端口："
+
+#: ../src/gui/serverdialog.cpp:399
+msgid "Preparing download"
+msgstr ""
+
+#: ../src/gui/chatwindow.cpp:302
+#, fuzzy, c-format
+msgid "Present: %s; %d players are present."
+msgstr "%d 玩家出席。"
+
+#: ../src/net/manaserv/beinghandler.cpp:298
+#, fuzzy
+msgid "Press OK to respawn."
+msgstr " 按OK重新开始"
+
+#: ../src/gui/setup_joystick.cpp:36 ../src/gui/setup_joystick.cpp:70
+msgid "Press the button to start calibration"
+msgstr "按下开始校准按钮"
+
+#: ../src/keyboardconfig.cpp:101
+msgid "Previous Chat Tab"
+msgstr "上一个聊天窗口标签页"
+
+#: ../src/gui/buydialog.cpp:68 ../src/gui/buydialog.cpp:287
+#: ../src/gui/selldialog.cpp:72 ../src/gui/selldialog.cpp:296
+#, c-format
+msgid "Price: %s / Total: %s"
+msgstr "价格：%s / 总价：%s"
+
+#: ../src/playerrelations.cpp:330
+msgid "Print '...'"
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:53
+msgid "Propose trade"
+msgstr "打算交易"
+
+#: ../src/gui/setup_colors.cpp:78 ../src/gui/setup_colors.cpp:79
+#: ../src/gui/setup_colors.cpp:320
+msgid "Pulse"
+msgstr "脉冲"
+
+#: ../src/gui/setup_players.cpp:223
+msgid "Put all whispers in tabs"
+msgstr "将所有密语放于标签夜"
+
+#: ../src/gui/buydialog.cpp:78 ../src/gui/quitdialog.cpp:40
+#: ../src/gui/quitdialog.cpp:42 ../src/gui/quitdialog.cpp:43
+#: ../src/gui/selldialog.cpp:78 ../src/gui/serverdialog.cpp:190
+#: ../src/keyboardconfig.cpp:104
+msgid "Quit"
+msgstr "退出"
+
+#: ../src/gui/setup_colors.cpp:80 ../src/gui/setup_colors.cpp:81
+#: ../src/gui/setup_colors.cpp:321
+msgid "Rainbow"
+msgstr "彩虹"
+
+#: ../src/gui/socialwindow.cpp:596
+#, fuzzy
+msgid "Received guild request, but one already exists."
+msgstr "接受到一个已经存在的帮会邀请。"
+
+#: ../src/gui/socialwindow.cpp:617
+msgid "Received party request, but one already exists."
+msgstr "接受到一个已经存在的帮会邀请。"
+
+#: ../src/gui/recorder.h:39
+msgid "Recording..."
+msgstr "录制中……"
+
+#: ../src/gui/setup_colors.cpp:102
+#, fuzzy
+msgid "Red:"
+msgstr "红： "
+
+#: ../src/gui/logindialog.cpp:53 ../src/gui/register.cpp:58
+#: ../src/gui/register.cpp:73
+msgid "Register"
+msgstr "注册"
+
+#: ../src/gui/logindialog.cpp:119
+#, fuzzy
+msgid "Registration disabled"
+msgstr "物品共享关闭。"
+
+#: ../src/net/tmwa/loginhandler.cpp:169
 #, fuzzy
 msgid "Rejected from server."
 msgstr "登录请求被拒绝"
 
-#: src/net/tmwa/loginhandler.cpp:168
+#: ../src/gui/socialwindow.cpp:509
+#, fuzzy
+msgid "Rejected guild invite."
+msgstr "拒绝%s的邀请。"
+
+#: ../src/gui/socialwindow.cpp:491
+#, fuzzy, c-format
+msgid "Rejected party invite from %s."
+msgstr "拒绝%s的邀请。"
+
+#: ../src/gui/setup_players.cpp:56
+msgid "Relation"
+msgstr "关系"
+
+#: ../src/gui/logindialog.cpp:52
+#, fuzzy
+msgid "Remember username"
+msgstr "保存用户名"
+
+#: ../src/net/manaserv/tradehandler.cpp:115
+#: ../src/net/tmwa/tradehandler.cpp:109
+msgid "Request for Trade"
+msgstr "请求交易"
+
+#: ../src/net/tmwa/gamehandler.cpp:89
+#, fuzzy
+msgid "Request to quit denied!"
+msgstr "请求交易"
+
+#: ../src/client.cpp:733
+#, fuzzy
+msgid "Requesting characters"
+msgstr "选择角色"
+
+#: ../src/client.cpp:817
+msgid "Requesting registration details"
+msgstr ""
+
+#: ../src/commandhandler.cpp:416
+#, c-format
+msgid "Requesting to join channel %s."
+msgstr "请求加入频道%s。"
+
+#: ../src/gui/npcdialog.cpp:132
+msgid "Reset"
+msgstr "重置"
+
+#: ../src/gui/setup.cpp:54
+msgid "Reset Windows"
+msgstr "重置窗口"
+
+#: ../src/gui/setup_video.cpp:313
+#, fuzzy
+msgid "Resolution:"
+msgstr "关系"
+
+#: ../src/gui/inventorywindow.cpp:132 ../src/gui/popupmenu.cpp:389
+msgid "Retrieve"
+msgstr "取回"
+
+#: ../src/commandhandler.cpp:465
+msgid "Return now toggles chat."
+msgstr "<回车>键现在切换聊天。"
+
+#: ../src/commandhandler.cpp:456
+msgid "Return toggles chat."
+msgstr ""
+
+#: ../src/net/tmwa/inventoryhandler.h:74
+#, fuzzy
+msgid "Ring 1/2"
+msgstr "指环"
+
+#: ../src/net/tmwa/inventoryhandler.h:76
+#, fuzzy
+msgid "Ring 2/2"
+msgstr "指环"
+
+#: ../src/gui/setup_joystick.cpp:76
+msgid "Rotate the stick"
+msgstr "旋转手柄"
+
+#: ../src/gui/setup_audio.cpp:50
+#, fuzzy
+msgid "SFX volume"
+msgstr "音效声量"
+
+#: ../src/net/manaserv/beinghandler.cpp:290
+#: ../src/net/tmwa/playerhandler.cpp:109
+msgid "Sadly, no trace of you was ever found..."
+msgstr ""
+
+#: ../src/game.cpp:333
+msgid "Saving screenshot failed!"
+msgstr "保存屏幕快照失败！"
+
+#: ../src/gui/setup_video.cpp:315
+msgid "Scale:"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:57
+msgid "Screenshot"
+msgstr "屏幕快照"
+
+#: ../src/game.cpp:328
+#, fuzzy, c-format
+msgid "Screenshot saved as %s"
+msgstr "屏幕快照保存至 ~/"
+
+#: ../src/keyboardconfig.cpp:100
+msgid "Scroll Chat Down"
+msgstr "向下滚动聊天记录"
+
+#: ../src/keyboardconfig.cpp:99
+msgid "Scroll Chat Up"
+msgstr "向上滚动聊天记录"
+
+#: ../src/gui/inventorywindow.cpp:87
+msgid "Search:"
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:182
+msgid "Seems you need more money... ;-)"
+msgstr "看起来需要更多金币…… ;-)"
+
+#: ../src/keyboardconfig.cpp:103
+msgid "Select OK"
+msgstr "选择OK"
+
+#: ../src/gui/worldselectdialog.cpp:68
+#, fuzzy
+msgid "Select World"
+msgstr "选择OK"
+
+#: ../src/gui/itemamountwindow.cpp:143
+msgid "Select amount of items to drop."
+msgstr "请选择丢弃的物品数量。"
+
+#: ../src/gui/itemamountwindow.cpp:149
+msgid "Select amount of items to retrieve."
+msgstr "请选择取回的物品数量。"
+
+#: ../src/gui/itemamountwindow.cpp:152
+msgid "Select amount of items to split."
+msgstr "请选择你分离的物品的数量"
+
+#: ../src/gui/itemamountwindow.cpp:146
+msgid "Select amount of items to store."
+msgstr "请选择存储的物品数量。"
+
+#: ../src/gui/itemamountwindow.cpp:140
+msgid "Select amount of items to trade."
+msgstr "请选择交易的物品数量。"
+
+#: ../src/net/manaserv/charhandler.cpp:223
+#, fuzzy
+msgid "Selection out of range."
+msgstr "请选择交易的物品数量。"
+
+#: ../src/gui/buyselldialog.cpp:47 ../src/gui/selldialog.cpp:50
+#: ../src/gui/selldialog.cpp:77
+msgid "Sell"
+msgstr "出售"
+
+#: ../src/gui/npcpostdialog.cpp:54
+msgid "Send"
+msgstr "发送"
+
+#: ../src/net/tmwa/loginhandler.cpp:186
+msgid "Server overpopulated."
+msgstr ""
+
+#: ../src/net/net.cpp:165
+msgid "Server protocol unsupported"
+msgstr ""
+
+#: ../src/gui/customserverdialog.cpp:60
+#, fuzzy
+msgid "Server type:"
+msgstr "服务器："
+
+#: ../src/gui/widgets/chattab.cpp:175
+msgid "Server:"
+msgstr "服务器："
+
+#: ../src/client.cpp:529 ../src/gui/setup.cpp:46 ../src/gui/windowmenu.cpp:71
+msgid "Setup"
+msgstr "设置"
+
+#: ../src/keyboardconfig.cpp:79
+msgid "Setup Window"
+msgstr "设置窗口"
+
+#: ../src/gui/buyselldialog.cpp:38
+msgid "Shop"
+msgstr "商店"
+
+#: ../src/gui/windowmenu.cpp:69
+#, fuzzy
+msgid "Shortcuts"
+msgstr "快捷键"
+
+#: ../src/commandhandler.cpp:482 ../src/commandhandler.cpp:491
+msgid "Show IP: Off"
+msgstr ""
+
+#: ../src/commandhandler.cpp:482 ../src/commandhandler.cpp:495
+msgid "Show IP: On"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:108
+#, fuzzy
+msgid "Show damage"
+msgstr "显示姓名"
+
+#: ../src/gui/setup_players.cpp:225
+#, fuzzy
+msgid "Show gender"
+msgstr "显示姓名"
+
+#: ../src/gui/setup_interface.cpp:90
+#, fuzzy
+msgid "Show own name"
+msgstr "显示姓名"
+
+#: ../src/gui/setup_interface.cpp:92
+#, fuzzy
+msgid "Show pickup notification:"
+msgstr "显示拾起通知"
+
+#: ../src/gui/debugwindow.cpp:134
+msgid "Show:"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:56
+msgid "Sit"
+msgstr "坐下"
+
+#: ../src/net/tmwa/specialhandler.cpp:149
+msgid "Sit failed!"
+msgstr "原地休息失败！"
+
+#: ../src/gui/skilldialog.cpp:375
+#, fuzzy, c-format
+msgid "Skill %d"
+msgstr "技能"
+
+#: ../src/gui/skilldialog.cpp:366
+#, fuzzy, c-format
+msgid "Skill Set %d"
+msgstr "技能点数：%d"
+
+#: ../src/keyboardconfig.cpp:75
+msgid "Skill Window"
+msgstr "技能窗口"
+
+#: ../src/gui/skilldialog.cpp:265
+#, fuzzy, c-format
+msgid "Skill points available: %d"
+msgstr "技能点数：%d"
+
+#: ../src/gui/skilldialog.cpp:205 ../src/gui/windowmenu.cpp:61
+msgid "Skills"
+msgstr "技能"
+
+#: ../src/gui/inventorywindow.cpp:86
+msgid "Slots:"
+msgstr "槽："
+
+#: ../src/gui/setup_interface.cpp:45
+msgid "Small"
+msgstr "小"
+
+#: ../src/keyboardconfig.cpp:48
+msgid "Smilie"
+msgstr "笑脸"
+
+#: ../src/gui/socialwindow.cpp:350 ../src/gui/windowmenu.cpp:67
+msgid "Social"
+msgstr ""
+
+#: ../src/keyboardconfig.cpp:81
+#, fuzzy
+msgid "Social Window"
+msgstr "技能窗口"
+
+#: ../src/net/tmwa/generalhandler.cpp:137
+#, fuzzy
+msgid "Someone else is trying to use this account."
+msgstr "某人正在尝试使用该帐号"
+
+#: ../src/gui/setup_audio.cpp:42
+msgid "Sound"
+msgstr "声音"
+
+#: ../src/gui/setup_audio.cpp:109
+msgid "Sound Engine"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:146
+msgid "Special 1"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:147
+msgid "Special 2"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:148
+msgid "Special 3"
+msgstr ""
+
+#: ../src/gui/specialswindow.cpp:69 ../src/gui/windowmenu.cpp:65
+msgid "Specials"
+msgstr ""
+
+#: ../src/gui/debugwindow.cpp:144
+msgid "Specials:"
+msgstr ""
+
+#: ../src/gui/setup_colors.cpp:82 ../src/gui/setup_colors.cpp:83
+#: ../src/gui/setup_colors.cpp:321
+msgid "Spectrum"
+msgstr "色谱"
+
+#: ../src/net/tmwa/generalhandler.cpp:143
+#, fuzzy
+msgid "Speed hack detected."
+msgstr "检测到调速作弊"
+
+#: ../src/gui/inventorywindow.cpp:108 ../src/gui/popupmenu.cpp:382
+msgid "Split"
+msgstr "分离"
+
+#: ../src/localplayer.cpp:868
+msgid "Stack is too big."
+msgstr ""
+
+#: ../src/gui/recorder.cpp:104
+msgid "Starting to record..."
+msgstr "开始录制……"
+
+#: ../src/gui/setup_colors.cpp:76 ../src/gui/setup_colors.cpp:319
+msgid "Static"
+msgstr "静止的"
+
+#: ../src/gui/windowmenu.cpp:53
+msgid "Status"
+msgstr "状态"
+
+#: ../src/keyboardconfig.cpp:72
+msgid "Status Window"
+msgstr "状态窗口"
+
+#: ../src/gui/setup_joystick.cpp:75
+msgid "Stop"
+msgstr "停止"
+
+#: ../src/keyboardconfig.cpp:50
+msgid "Stop Attack"
+msgstr "停止攻击"
+
+#: ../src/gui/recorder.h:40
+msgid "Stop recording"
+msgstr "停止录制"
+
+#: ../src/gui/inventorywindow.cpp:60
+msgid "Storage"
+msgstr "仓库"
+
+#: ../src/gui/inventorywindow.cpp:131 ../src/gui/popupmenu.cpp:359
+msgid "Store"
+msgstr "存储"
+
+#: ../src/net/tmwa/generalhandler.cpp:228 ../src/resources/attributes.cpp:159
+msgid "Strength"
+msgstr "力量"
+
+#: ../src/resources/attributes.cpp:165
+#, fuzzy, c-format
+msgid "Strength %+.1f"
+msgstr "力量 %+d"
+
+#: ../src/net/tmwa/generalhandler.cpp:99
+#, c-format
+msgid "Strength %+d"
+msgstr "力量 %+d"
+
+#: ../src/net/tmwa/charserverhandler.cpp:283
+msgid "Strength:"
+msgstr "力量："
+
+#: ../src/gui/npcdialog.cpp:52
+msgid "Submit"
+msgstr "提交"
+
+#: ../src/gui/charselectdialog.cpp:120
+msgid "Switch Login"
+msgstr ""
+
+#: ../src/gui/quitdialog.cpp:45
+msgid "Switch character"
+msgstr "交换角色"
+
+#: ../src/gui/quitdialog.cpp:44
+msgid "Switch server"
+msgstr "交换服务器"
+
+#: ../src/gui/debugwindow.cpp:252
+#, fuzzy
+msgid "Switches"
+msgstr "交换服务器"
+
+#: ../src/keyboardconfig.cpp:49
+msgid "Talk"
+msgstr "说话"
+
+#: ../src/gui/popupmenu.cpp:149
+#, fuzzy, c-format
+msgid "Talk to %s"
+msgstr "@@talk|和%s交谈@@"
+
+#: ../src/keyboardconfig.cpp:47
+msgid "Target & Attack"
+msgstr "对准并攻击"
+
+#: ../src/keyboardconfig.cpp:51
+#, fuzzy
+msgid "Target Monster"
+msgstr "对准最近目标"
+
+#: ../src/keyboardconfig.cpp:52
+msgid "Target NPC"
+msgstr "目标NPC"
+
+#: ../src/keyboardconfig.cpp:53
+msgid "Target Player"
+msgstr "目标玩家"
+
+#: ../src/gui/setup_interface.cpp:72
+msgid "Text"
+msgstr "文本"
+
+#: ../src/net/manaserv/beinghandler.cpp:282
+#: ../src/net/tmwa/playerhandler.cpp:98
+msgid "The cold hands of the grim reaper are grabbing for your soul."
+msgstr ""
+
+#: ../src/game.cpp:366
+#, fuzzy
+msgid "The connection to the server was lost."
+msgstr "与服务器连接丢失,程序将会退出."
+
+#: ../src/gui/changeemaildialog.cpp:141
+#, fuzzy
+msgid "The email address entries mismatch."
+msgstr "新电子邮件地址已经存在。"
+
+#: ../src/net/manaserv/loginhandler.cpp:163
+#, fuzzy
+msgid "The new email address already exists."
+msgstr "新电子邮件地址已经存在。"
+
+#: ../src/gui/changeemaildialog.cpp:127
+#, fuzzy, c-format
+msgid "The new email address needs to be at least %d characters long."
+msgstr "用户名至少需要%d个字符。"
+
+#: ../src/gui/changeemaildialog.cpp:134
+#, fuzzy, c-format
+msgid "The new email address needs to be less than %d characters long."
+msgstr "用户名不能少于%d个字符"
+
+#: ../src/gui/changepassworddialog.cpp:130
+msgid "The new password entries mismatch."
+msgstr ""
+
+#: ../src/gui/changepassworddialog.cpp:116
+#, fuzzy, c-format
+msgid "The new password needs to be at least %d characters long."
+msgstr "密码需要至少%d个字符"
+
+#: ../src/gui/changepassworddialog.cpp:123
+#, fuzzy, c-format
+msgid "The new password needs to be less than %d characters long."
+msgstr "密码不能少于%d个字符。"
+
+#: ../src/gui/register.cpp:182 ../src/gui/unregisterdialog.cpp:114
+#, c-format
+msgid "The password needs to be at least %d characters long."
+msgstr "密码需要至少%d个字符"
+
+#: ../src/gui/register.cpp:190 ../src/gui/unregisterdialog.cpp:121
+#, c-format
+msgid "The password needs to be less than %d characters long."
+msgstr "密码不能少于%d个字符。"
+
+#: ../src/gui/register.cpp:166
+#, c-format
+msgid "The username needs to be at least %d characters long."
+msgstr "用户名至少需要%d个字符。"
+
+#: ../src/gui/register.cpp:174
+#, c-format
+msgid "The username needs to be less than %d characters long."
+msgstr "用户名不能少于%d个字符"
+
+#: ../src/net/tmwa/generalhandler.cpp:140
+#, fuzzy
+msgid "This account is already logged in."
+msgstr "该帐号已经登录"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:73
+#, fuzzy
+msgid "This command causes the player to leave the guild."
+msgstr "该命令致使玩家离开帮会"
+
+#: ../src/net/tmwa/gui/partytab.cpp:74
+msgid "This command causes the player to leave the party."
+msgstr "该命令致使玩家离开帮会"
+
+#: ../src/net/tmwa/gui/partytab.cpp:89
+msgid "This command changes the party's experience sharing policy."
+msgstr "该命令改变帮会的经验共享策略。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:79
+msgid "This command changes the party's item sharing policy."
+msgstr "改命令改变帮会的物品共享策略。"
+
+#: ../src/commandhandler.cpp:255
+#, fuzzy
+msgid "This command clears the away status and message."
+msgstr "该命令设置主题为<讯息>"
+
+#: ../src/commandhandler.cpp:209
+msgid "This command clears the chat log of previous chat."
+msgstr "该命令可清除历史聊天记录。"
+
+#: ../src/gui/widgets/whispertab.cpp:84
+msgid "This command closes the current whisper tab."
+msgstr "该命令关闭当前密语标签页。"
+
+#: ../src/commandhandler.cpp:260
+#, fuzzy
+msgid "This command creates a new party called <name>."
+msgstr "这些命令创建一个被称为<帮会名>的新帮会。"
+
+#: ../src/commandhandler.cpp:197
+msgid "This command displays a list of all commands available."
+msgstr "该命令可显示所有可用命令。"
+
+#: ../src/commandhandler.cpp:200
+msgid "This command displays help on <command>."
+msgstr "该命令显现<命令>的帮助信息"
+
+#: ../src/commandhandler.cpp:304
+msgid "This command displays the name of the current map."
+msgstr "该条命令显示当前地图名。"
+
+#: ../src/commandhandler.cpp:309
+msgid "This command displays the number of players currently online."
+msgstr "该条命令可显现当前在线用户总数。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:94
+msgid "This command displays the party's current experience sharing policy."
+msgstr "该命令显示帮会现有的经验共享策略。"
+
+#: ../src/net/tmwa/gui/partytab.cpp:84
+msgid "This command displays the party's current item sharing policy."
+msgstr "该命令显示帮会现有的物品共享策略。"
+
+#: ../src/commandhandler.cpp:293
+msgid "This command displays the return toggle status."
+msgstr "该命令显示<回车>键切换状态"
+
+#: ../src/commandhandler.cpp:282
+msgid "This command finishes a recording session."
+msgstr "此命令结束将此会话记录"
+
+#: ../src/commandhandler.cpp:272
+msgid ""
+"This command gets a list of players within hearing and sends it to either "
+"the record log if recording, or the chat log otherwise."
+msgstr "该命令得到列席的玩家名单并传送到记录日志如果记录，否则聊天记录。"
+
+#: ../src/commandhandler.cpp:214
+#, fuzzy
+msgid "This command ignores the given player regardless of current relations."
+msgstr "该条命令可显现当前在线用户总数。"
+
+#: ../src/gui/widgets/whispertab.cpp:89
+#, fuzzy
+msgid "This command ignores the other player regardless of current relations."
+msgstr "该条命令可显现当前在线用户总数。"
+
+#: ../src/commandhandler.cpp:265 ../src/net/tmwa/gui/partytab.cpp:67
+msgid "This command invites <nick> to party with you."
+msgstr "该命令邀请<昵称>和你聚会。"
+
+#: ../src/net/tmwa/gui/guildtab.cpp:66
+#, fuzzy
+msgid "This command invites <nick> to the guild you're in."
+msgstr "该命令邀请<昵称>和你聚会。"
+
+#: ../src/gui/widgets/channeltab.cpp:73
+msgid "This command leaves the current channel."
+msgstr "该命令离开当前频道"
+
+#: ../src/gui/widgets/channeltab.cpp:80
+msgid "This command makes <nick> a channel operator."
+msgstr "该命令使<昵称>成为频道管理员。"
+
+#: ../src/gui/widgets/channeltab.cpp:89
+msgid "This command makes <nick> leave the channel."
+msgstr "该命令致使<昵称>离开频道。"
+
+#: ../src/commandhandler.cpp:220
+msgid "This command makes you enter <channel>."
+msgstr "该命令让您进入<频道>。"
+
+#: ../src/commandhandler.cpp:238
+msgid "This command sends the text <message> to <nick>."
+msgstr "该命令发送文本<信息>给<昵称>。"
+
+#: ../src/gui/widgets/channeltab.cpp:68
+msgid "This command sets the topic to <message>."
+msgstr "该命令设置主题为<讯息>"
+
+#: ../src/commandhandler.cpp:287
+msgid ""
+"This command sets whether the return key should toggle the chat log, or "
+"whether the chat log turns off automatically."
+msgstr "该命令设置回车键是否切换聊天日志，或者聊天日志功能是否自动关闭。"
+
+#: ../src/commandhandler.cpp:226
+msgid "This command shows a list of all channels."
+msgstr "改命令列出所有频道列表。"
+
+#: ../src/gui/widgets/channeltab.cpp:63
+msgid "This command shows the users in this channel."
+msgstr "该命令显示当前频道的用户"
+
+#: ../src/commandhandler.cpp:279
+msgid "This command starts recording the chat log to the file <filename>."
+msgstr "该命令开始记录聊天日志至文件<文件名>。"
+
+#: ../src/commandhandler.cpp:298
+msgid "This command stops ignoring the given player if they are being ignored"
+msgstr ""
+
+#: ../src/gui/widgets/whispertab.cpp:95
+#, fuzzy
+msgid "This command stops ignoring the other player if they are being ignored."
+msgstr "该命令开始记录聊天日志至文件<文件名>。"
+
+#: ../src/commandhandler.cpp:231
+msgid "This command tell others you are (doing) <msg>."
+msgstr "该命令告诉别人你正在（做）<信息>。"
+
+#: ../src/commandhandler.cpp:252
+msgid "This command tells you're away from keyboard with the given reason."
+msgstr ""
+
+#: ../src/commandhandler.cpp:246
+#, fuzzy
+msgid "This command tries to make a tab for whispers between you and <nick>."
+msgstr "该命令尝试为您和<昵称>之间的密语开启一个新的标签。"
+
+#: ../src/gui/setup_colors.cpp:43
+msgid "This is what the color looks like"
+msgstr "这就是该色彩看起来的样子"
+
+#: ../src/net/tmwa/loginhandler.cpp:189
+#, fuzzy
+msgid "This user name is already taken."
+msgstr "该用户名已被使用"
+
+#: ../src/gui/setup_interface.cpp:44
+msgid "Tiny"
+msgstr "微小"
+
+#: ../src/gui/npcpostdialog.cpp:47
+msgid "To:"
+msgstr "至："
+
+#: ../src/keyboardconfig.cpp:98
+msgid "Toggle Chat"
+msgstr "切换聊天"
+
+#: ../src/net/manaserv/chathandler.cpp:190
+#: ../src/net/manaserv/chathandler.cpp:324
+#: ../src/net/manaserv/guildhandler.cpp:285
+#, c-format
+msgid "Topic: %s"
+msgstr "主题：%s"
+
+#: ../src/net/tmwa/inventoryhandler.h:64
+msgid "Torso"
+msgstr ""
+
+#: ../src/gui/tradewindow.cpp:73 ../src/gui/tradewindow.cpp:74
+msgid "Trade"
+msgstr "交易"
+
+#: ../src/net/manaserv/tradehandler.cpp:148
+#: ../src/net/tmwa/tradehandler.cpp:231
+msgid "Trade canceled."
+msgstr "交易取消。"
+
+#: ../src/net/tmwa/tradehandler.cpp:134
+msgid "Trade cancelled due to an unknown reason."
+msgstr "交易取消因不明原因。"
+
+#: ../src/net/manaserv/tradehandler.cpp:155
+#: ../src/net/tmwa/tradehandler.cpp:238
+msgid "Trade completed."
+msgstr "交易完成。"
+
+#: ../src/net/tmwa/specialhandler.cpp:143
+msgid "Trade failed!"
+msgstr "交易失败！"
+
+#: ../src/net/tmwa/tradehandler.cpp:147
+#, c-format
+msgid "Trade with %s cancelled."
+msgstr "与%s的交易被取消。"
+
+#: ../src/gui/popupmenu.cpp:79
+#, fuzzy, c-format
+msgid "Trade with %s..."
+msgstr "与%s交易中"
+
+#: ../src/gui/tradewindow.cpp:59
+msgid "Trade: You"
+msgstr "交易：你"
+
+#: ../src/net/tmwa/tradehandler.cpp:139
+#, c-format
+msgid "Trade: You and %s"
+msgstr "交易：您和%s"
+
+#: ../src/net/tmwa/tradehandler.cpp:130
+msgid "Trading isn't possible. Character doesn't exist."
+msgstr "交易不可能进行。角色不存在。"
+
+#: ../src/net/tmwa/tradehandler.cpp:126
+msgid "Trading isn't possible. Trade partner is too far away."
+msgstr "交易不可能进行。与交易伙伴太过太过遥远"
+
+#: ../src/net/manaserv/tradehandler.cpp:134
+#, c-format
+msgid "Trading with %s"
+msgstr "与%s交易中"
+
+#: ../src/gui/setup_video.cpp:402
+#, fuzzy
+msgid "Transparency disabled"
+msgstr "经验共享关闭。"
+
+#: ../src/gui/setup_video.cpp:410
+msgid "Transparency enabled"
+msgstr ""
+
+#: ../src/localplayer.cpp:864
+#, fuzzy
+msgid "Tried to pick up nonexistent item."
+msgstr "无法拾取物品。"
+
+#: ../src/commandhandler.cpp:315
+msgid "Type /help for a list of commands."
+msgstr "输入 /help 获取命令列表。"
+
+#: ../src/gui/changeemaildialog.cpp:51
+#, fuzzy
+msgid "Type new email address twice:"
+msgstr "输入新Email地址两次:"
+
+#: ../src/gui/changepassworddialog.cpp:63
+#, fuzzy
+msgid "Type new password twice:"
+msgstr "输入新密码两次:"
+
+#: ../src/gui/setup_colors.cpp:65
+#, fuzzy
+msgid "Type:"
+msgstr "类型： "
+
+#: ../src/net/tmwa/buysellhandler.cpp:118
+msgid "Unable to buy."
+msgstr "无法购买。"
+
+#: ../src/net/tmwa/inventoryhandler.cpp:389
+msgid "Unable to equip."
+msgstr "无法装备。"
+
+#: ../src/net/tmwa/network.cpp:470
+#, fuzzy, c-format
+msgid "Unable to resolve host \"%s\""
+msgstr "无法出售."
+
+#: ../src/net/tmwa/buysellhandler.cpp:124
+msgid "Unable to sell."
+msgstr "无法出售."
+
+#: ../src/net/tmwa/inventoryhandler.cpp:401
+msgid "Unable to unequip."
+msgstr "无法卸载装备。"
+
+#: ../src/gui/setup_keyboard.cpp:93
+#, fuzzy
+msgid "Unassign"
+msgstr "分配"
+
+#: ../src/gui/equipmentwindow.cpp:71 ../src/gui/inventorywindow.cpp:94
+#: ../src/gui/inventorywindow.cpp:372 ../src/gui/popupmenu.cpp:365
+msgid "Unequip"
+msgstr "卸下装备"
+
+#: ../src/gui/outfitwindow.cpp:53
+#, fuzzy
+msgid "Unequip first"
+msgstr "卸下装备"
+
+#: ../src/net/manaserv/charhandler.cpp:271
+#, c-format
+msgid "Unhandled character select error message %i."
+msgstr ""
+
+#: ../src/net/tmwa/tradehandler.cpp:156
+msgid "Unhandled trade cancel packet."
+msgstr "未处理的交易取消分组。"
+
+#: ../src/gui/popupmenu.cpp:110 ../src/gui/popupmenu.cpp:119
+#, c-format
+msgid "Unignore %s"
+msgstr ""
+
+#: ../src/net/net.cpp:140
+#, fuzzy
+msgid "Unknown Server Type! Exiting."
+msgstr "未知物品类型"
+
+#: ../src/net/manaserv/chathandler.cpp:350
+#, fuzzy
+msgid "Unknown channel event."
+msgstr "未知命令。"
+
+#: ../src/net/tmwa/charserverhandler.cpp:112
+#, fuzzy
+msgid "Unknown char-server failure."
+msgstr "未明错误"
+
+#: ../src/commandhandler.cpp:128 ../src/commandhandler.cpp:314
+msgid "Unknown command."
+msgstr "未知命令。"
+
+#: ../src/net/tmwa/generalhandler.cpp:149
+#, fuzzy
+msgid "Unknown connection error."
+msgstr "未知连接错误"
+
+#: ../src/net/manaserv/charhandler.cpp:226
+#, fuzzy, c-format
+msgid "Unknown error (%d)."
+msgstr "未明错误"
+
+#: ../src/net/manaserv/charhandler.cpp:175
+#: ../src/net/manaserv/loginhandler.cpp:101
+#: ../src/net/manaserv/loginhandler.cpp:132
+#: ../src/net/manaserv/loginhandler.cpp:166
+#: ../src/net/manaserv/loginhandler.cpp:290
+#: ../src/net/manaserv/loginhandler.cpp:327 ../src/net/tmwa/loginhandler.cpp:98
+#: ../src/net/tmwa/loginhandler.cpp:195
+#, fuzzy
+msgid "Unknown error."
+msgstr "未明错误"
+
+#: ../src/net/tmwa/partyhandler.cpp:131
+#, c-format
+msgid "Unknown invite response for %s."
+msgstr "未知邀请应答%s。"
+
+#: ../src/resources/itemdb.cpp:66
+msgid "Unknown item"
+msgstr "未知物品"
+
+#: ../src/localplayer.cpp:871
+#, fuzzy
+msgid "Unknown problem picking up item."
+msgstr "无法拾取物品。"
+
+#: ../src/gui/charselectdialog.cpp:134 ../src/gui/unregisterdialog.cpp:45
+#: ../src/gui/unregisterdialog.cpp:53
+msgid "Unregister"
+msgstr "注销"
+
+#: ../src/client.cpp:884
+#, fuzzy
+msgid "Unregister Successful"
+msgstr "注销"
+
+#: ../src/net/tmwa/loginhandler.cpp:160
+#, fuzzy
+msgid "Unregistered ID."
+msgstr "未注册ID"
+
+#: ../src/gui/skilldialog.cpp:220
+msgid "Up"
+msgstr "升级"
+
+#: ../src/gui/updaterwindow.cpp:123
+msgid "Updating..."
+msgstr "更新..."
+
+#: ../src/gui/inventorywindow.cpp:93
+msgid "Use"
+msgstr "使用"
+
+#: ../src/net/manaserv/loginhandler.cpp:317
+#, fuzzy
+msgid "Username already exists."
+msgstr "用户名已存在"
+
+#: ../src/net/tmwa/loginhandler.cpp:192
+#, fuzzy
+msgid "Username permanently erased."
+msgstr "用户名已存在"
+
+#: ../src/gui/setup_video.cpp:227
+msgid "VSync"
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:244
+msgid "Video"
+msgstr "视频"
+
+#: ../src/gui/setup_interface.cpp:88
+msgid "Visible names"
+msgstr "可见姓名"
+
+#: ../src/net/tmwa/generalhandler.cpp:230 ../src/resources/attributes.cpp:195
+msgid "Vitality"
+msgstr "生命"
+
+#: ../src/resources/attributes.cpp:201
+#, fuzzy, c-format
+msgid "Vitality %+.1f"
+msgstr "生命 %+d"
+
+#: ../src/net/tmwa/generalhandler.cpp:101
+#, c-format
+msgid "Vitality %+d"
+msgstr "生命 %+d"
+
+#: ../src/net/tmwa/charserverhandler.cpp:285
+msgid "Vitality:"
+msgstr "生命："
+
+#: ../src/gui/npcdialog.cpp:49
+msgid "Waiting for server"
+msgstr "等待服务器中"
+
+#: ../src/gui/serverdialog.cpp:395
+#, fuzzy
+msgid "Waiting for server..."
+msgstr "等待服务器中"
+
+#: ../src/net/tmwa/specialhandler.cpp:206
+msgid "Warp failed..."
+msgstr "传送失败..."
+
+#: ../src/net/manaserv/beinghandler.cpp:279
+#: ../src/net/tmwa/playerhandler.cpp:95
+msgid "We regret to inform you that your character was killed in battle."
+msgstr "很遗憾的告诉您，您的角色在战斗中死亡了"
+
+#: ../src/keyboardconfig.cpp:84
+msgid "Wear Outfit"
+msgstr ""
+
+#: ../src/gui/inventorywindow.cpp:111
+msgid "Weight:"
+msgstr "重量："
+
+#: ../src/gui/itempopup.cpp:184
+#, fuzzy, c-format
+msgid "Weight: %s"
+msgstr "重量： "
+
+#: ../src/gui/setup_players.cpp:254
+msgid "When ignoring:"
+msgstr "当忽略时："
+
+#: ../src/gui/popupmenu.cpp:87
+#, fuzzy, c-format
+msgid "Whisper %s"
+msgstr "密语"
+
+#: ../src/net/tmwa/chathandler.cpp:90
+#, fuzzy, c-format
+msgid "Whisper could not be sent, %s is offline."
+msgstr "密语无法发送，用户已离线。"
+
+#: ../src/net/tmwa/chathandler.cpp:99
+#, fuzzy, c-format
+msgid "Whisper could not be sent, ignored by %s."
+msgstr "密语无法发送，你已被用户忽略。"
+
+#: ../src/gui/chatwindow.cpp:497
+#, c-format
+msgid "Whispering to %s: %s"
+msgstr "对%s密语到：%s"
+
+#: ../src/gui/socialwindow.cpp:144
+#, c-format
+msgid "Who would you like to invite to guild %s?"
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:215
+#, c-format
+msgid "Who would you like to invite to party %s?"
+msgstr ""
+
+#: ../src/resources/attributes.cpp:219
+#, fuzzy
+msgid "Willpower"
+msgstr "意志力："
+
+#: ../src/resources/attributes.cpp:225
+#, fuzzy, c-format
+msgid "Willpower %+.1f"
+msgstr "意志力 %+d"
+
+#: ../src/gui/setup_video.cpp:311
+#, fuzzy
+msgid "Window mode:"
+msgstr " 视频模式： "
+
+#: ../src/gui/setup_video.cpp:221
+#, fuzzy
+msgid "Windowed"
+msgstr "窗口化"
+
+#: ../src/gui/setup_video.cpp:221
+#, fuzzy
+msgid "Windowed Fullscreen"
+msgstr "全屏"
+
+#: ../src/net/manaserv/loginhandler.cpp:92
+#, fuzzy
+msgid "Wrong magic_token."
+msgstr "错误的 magic_token"
+
+#: ../src/net/tmwa/loginhandler.cpp:163
+#, fuzzy
+msgid "Wrong password."
+msgstr "错误的密码"
+
+#: ../src/net/manaserv/loginhandler.cpp:277
+#, fuzzy
+msgid "Wrong username or password."
+msgstr "错误的用户名或密码"
+
+#: ../src/net/manaserv/loginhandler.cpp:314
+#, fuzzy
+msgid "Wrong username, password or email address."
+msgstr "错误的用户名，密码或者电子邮件地址"
+
+#: ../src/gui/confirmdialog.cpp:40
+msgid "Yes"
+msgstr "是"
+
+#: ../src/net/manaserv/beinghandler.cpp:299
+#, fuzzy
+msgid "You Died"
+msgstr "你完蛋了"
+
+#: ../src/net/tmwa/playerhandler.cpp:130
+msgid "You are an ex-player."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:254
+msgid ""
+"You are carrying more than half your weight. You are unable to regain health."
+msgstr "你已携带超过半数负重。无法回复健康（体力）"
+
+#: ../src/net/manaserv/beinghandler.cpp:278
+#: ../src/net/tmwa/playerhandler.cpp:94
+msgid "You are dead."
+msgstr "你已玩完了。"
+
+#: ../src/net/tmwa/playerhandler.cpp:119
+msgid "You are no more."
+msgstr ""
+
+#: ../src/net/manaserv/beinghandler.cpp:281
+#: ../src/net/tmwa/playerhandler.cpp:97
+msgid "You are not that alive anymore."
+msgstr "你再也不是那样的生机勃勃了。"
+
+#: ../src/net/tmwa/partyhandler.cpp:328
+#, fuzzy
+msgid "You can only invite when you are in a party!"
+msgstr "%s已经邀请你加入他们的帮会。"
+
+#: ../src/net/tmwa/specialhandler.cpp:179
+msgid "You cannot do that right now!"
+msgstr "你无法办到！"
+
+#: ../src/net/tmwa/specialhandler.cpp:185
+msgid "You cannot use this skill with that kind of weapon!"
+msgstr "此武器无法用来使用此项技能！"
+
+#: ../src/gui/tradewindow.cpp:303
+msgid "You don't have enough money."
+msgstr "你没有足够的钱币."
+
+#: ../src/gui/tradewindow.cpp:98 ../src/gui/tradewindow.cpp:134
+#, fuzzy, c-format
+msgid "You get %s"
+msgstr "你得到%s。"
+
+#: ../src/gui/tradewindow.cpp:99
+msgid "You give:"
+msgstr "你给予："
+
+#: ../src/gui/socialwindow.cpp:630
+#, fuzzy, c-format
+msgid "You have been invited to join the %s party."
+msgstr "%s已经邀请你加入帮会%s。"
+
+#: ../src/gui/socialwindow.cpp:626
+#, fuzzy
+msgid "You have been invited you to join a party."
+msgstr "%s已经邀请你加入他们的帮会。"
+
+#: ../src/net/tmwa/loginhandler.cpp:172
 #, fuzzy
 msgid ""
 "You have been permanently banned from the game. Please contact the GM team."
 msgstr "你已被永久性禁止游戏。请联系GM团队。"
 
-#: src/net/tmwa/loginhandler.cpp:172
+#: ../src/net/tmwa/loginhandler.cpp:179
 #, c-format
 msgid ""
 "You have been temporarily banned from the game until %s.\n"
@@ -3275,460 +3874,188 @@ msgstr ""
 "你被暂时禁止进入游戏直到%s.\n"
 "请通过论坛联系GM组"
 
-#: src/net/tmwa/loginhandler.cpp:179
-#, fuzzy
-msgid "This user name is already taken."
-msgstr "该用户名已被使用"
-
-#: src/net/tmwa/network.cpp:145
-msgid "Empty address given to Network::connect()!"
-msgstr ""
-
-#: src/net/tmwa/network.cpp:345
-#, fuzzy
-msgid "Unable to resolve host \""
-msgstr "无法出售."
-
-#: src/net/tmwa/network.cpp:414
-#, fuzzy
-msgid "Connection to server terminated. "
-msgstr "正在连接 地图 服务器..."
-
-#: src/net/tmwa/partyhandler.cpp:82
-msgid "Could not create party."
-msgstr "无法创建帮会。"
-
-#: src/net/tmwa/partyhandler.cpp:84
-msgid "Party successfully created."
-msgstr "帮会创建成功。"
-
-#: src/net/tmwa/partyhandler.cpp:119
-#, c-format
-msgid "%s is already a member of a party."
-msgstr "%s已经是你的帮会成员了。"
-
-#: src/net/tmwa/partyhandler.cpp:123
-#, c-format
-msgid "%s refused your invitation."
-msgstr "%s拒绝了您的邀请。"
-
-#: src/net/tmwa/partyhandler.cpp:127
-#, c-format
-msgid "%s is now a member of your party."
-msgstr "%s现在是你帮会中的成员了。"
-
-#: src/net/tmwa/partyhandler.cpp:131
-#, c-format
-msgid "Unknown invite response for %s."
-msgstr "未知邀请应答%s。"
-
-#: src/net/tmwa/partyhandler.cpp:236
-msgid "You have left the party."
-msgstr "你以退出帮会"
-
-#: src/net/tmwa/partyhandler.cpp:246
-#, c-format
-msgid "%s has left your party."
-msgstr "%s已经离开你的帮会。"
-
-#: src/net/tmwa/partyhandler.cpp:299
-#, c-format
-msgid "An unknown member tried to say: %s"
-msgstr "一未知成员尝试说：%s"
-
-#: src/net/tmwa/partyhandler.cpp:335
-#, c-format
-msgid "Inviting failed, because you can't see a player called %s."
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:340
-msgid "You can only inivte when you are in a party!"
-msgstr ""
-
-#: src/net/tmwa/partyhandler.cpp:368
-#, c-format
-msgid "%s is not in your party!"
-msgstr "%s不在你的帮会中！"
-
-#: src/net/tmwa/playerhandler.cpp:100
-msgid "Insert coin to continue."
-msgstr "投入游戏币继续。"
-
-#: src/net/tmwa/playerhandler.cpp:118
-msgid "You're not dead yet. You're just resting."
-msgstr "你还没死，你只是在休息"
-
-#: src/net/tmwa/playerhandler.cpp:119
-msgid "You are no more."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:120
+#: ../src/net/tmwa/playerhandler.cpp:120
 msgid "You have ceased to be."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:121
-msgid "You've expired and gone to meet your maker."
+#: ../src/net/tmwa/partyhandler.cpp:224
+msgid "You have left the party."
+msgstr "你以退出帮会"
+
+#: ../src/net/tmwa/specialhandler.cpp:176
+msgid "You have no memos!"
+msgstr "没有备忘录"
+
+#: ../src/net/tmwa/specialhandler.cpp:167
+msgid "You have not yet reached a high enough lvl!"
+msgstr "你还没有达到足够的等级！"
+
+#: ../src/gui/setup_audio.cpp:97
+msgid "You may have to restart your client if you want to download new music"
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:122
+#: ../src/gui/setup_video.cpp:403 ../src/gui/setup_video.cpp:411
+msgid "You must restart to apply changes."
+msgstr ""
+
+#: ../src/net/tmwa/specialhandler.cpp:191
+msgid "You need another blue gem!"
+msgstr "你需要另一颗蓝宝石！"
+
+#: ../src/net/tmwa/specialhandler.cpp:188
+msgid "You need another red gem!"
+msgstr "你需要另一颗红宝石！"
+
+#: ../src/gui/logindialog.cpp:119
+msgid "You need to use the website to register an account for this server."
+msgstr ""
+
+#: ../src/localplayer.cpp:889
+#, fuzzy, c-format
+msgid "You picked up %d [@@%d|%s@@]."
+msgid_plural "You picked up %d [@@%d|%s@@]."
+msgstr[0] "你捡起%s [@@%d|%s@@]。"
+msgstr[1] "你捡起%s [@@%d|%s@@]。"
+
+#: ../src/net/tmwa/playerhandler.cpp:326
+#, fuzzy, c-format
+msgid "You picked up %s."
+msgstr "你捡起 "
+
+#: ../src/net/manaserv/beinghandler.cpp:293
+#: ../src/net/tmwa/playerhandler.cpp:115
+msgid ""
+"You screwed up again, dump your body down the tubes and get you another one."
+msgstr ""
+
+#: ../src/net/manaserv/loginhandler.cpp:323
+msgid "You took too long with the captcha or your response was incorrect."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:122
 msgid "You're a stiff."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:123
-msgid "Bereft of life, you rest in peace."
-msgstr ""
+#: ../src/net/tmwa/specialhandler.cpp:194
+msgid "You're carrying to much to do this!"
+msgstr "你已负重太多，无法办到！"
 
-#: src/net/tmwa/playerhandler.cpp:124
-msgid "If you weren't so animated, you'd be pushing up the daisies."
-msgstr ""
+#: ../src/net/tmwa/playerhandler.cpp:118
+msgid "You're not dead yet. You're just resting."
+msgstr "你还没死，你只是在休息"
 
-#: src/net/tmwa/playerhandler.cpp:125
-msgid "Your metabolic processes are now history."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:126
+#: ../src/net/tmwa/playerhandler.cpp:126
 msgid "You're off the twig."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:127
-msgid "You've kicked the bucket."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:128
-msgid ""
-"You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:130
-msgid "You are an ex-player."
-msgstr ""
-
-#: src/net/tmwa/playerhandler.cpp:131
+#: ../src/net/tmwa/playerhandler.cpp:131
 msgid "You're pining for the fjords."
 msgstr ""
 "<策略>可以为“1”，“yes”，“true”其中之一以开启物品共享，或者 是\"0\",\"no\","
 "\"false\"用来禁止物品共享。"
 
-#: src/net/tmwa/playerhandler.cpp:246 src/net/tmwa/playerhandler.cpp:285
-msgid "Message"
-msgstr "讯息"
+#: ../src/net/tmwa/playerhandler.cpp:121
+msgid "You've expired and gone to meet your maker."
+msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:247
+#: ../src/net/tmwa/playerhandler.cpp:127
+msgid "You've kicked the bucket."
+msgstr ""
+
+#: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
-"You are carrying more than half your weight. You are unable to regain health."
-msgstr "你已携带超过半数负重。无法回复健康（体力）"
-
-#: src/net/tmwa/playerhandler.cpp:313
-#, fuzzy, c-format
-msgid "You picked up %s."
-msgstr "你捡起 "
-
-#: src/net/tmwa/playerhandler.cpp:348
-msgid "Cannot raise skill!"
+"You've shuffled off your mortal coil, run down the curtain and joined the "
+"bleedin' choir invisibile."
 msgstr ""
 
-#: src/net/tmwa/playerhandler.cpp:488
-msgid "Equip arrows first."
-msgstr "请先装备弓箭。"
-
-#: src/net/tmwa/specialhandler.cpp:144
-msgid "Trade failed!"
-msgstr "交易失败！"
-
-#: src/net/tmwa/specialhandler.cpp:147
-msgid "Emote failed!"
-msgstr "发送表情失败！"
-
-#: src/net/tmwa/specialhandler.cpp:150
-msgid "Sit failed!"
-msgstr "原地休息失败！"
-
-#: src/net/tmwa/specialhandler.cpp:153
-msgid "Chat creating failed!"
-msgstr "聊天创建失败！"
-
-#: src/net/tmwa/specialhandler.cpp:156
-msgid "Could not join party!"
-msgstr "不能加入工会！"
-
-#: src/net/tmwa/specialhandler.cpp:159
-msgid "Cannot shout!"
-msgstr "无法呼喊！"
-
-#: src/net/tmwa/specialhandler.cpp:168
-msgid "You have not yet reached a high enough lvl!"
-msgstr "你还没有达到足够的等级！"
-
-#: src/net/tmwa/specialhandler.cpp:171
-msgid "Insufficient HP!"
-msgstr "HP不足！"
-
-#: src/net/tmwa/specialhandler.cpp:174
-msgid "Insufficient SP!"
-msgstr "SP不足！"
-
-#: src/net/tmwa/specialhandler.cpp:177
-msgid "You have no memos!"
-msgstr "没有备忘录"
-
-#: src/net/tmwa/specialhandler.cpp:180
-msgid "You cannot do that right now!"
-msgstr "你无法办到！"
-
-#: src/net/tmwa/specialhandler.cpp:183
-msgid "Seems you need more money... ;-)"
-msgstr "看起来需要更多金币…… ;-)"
-
-#: src/net/tmwa/specialhandler.cpp:186
-msgid "You cannot use this skill with that kind of weapon!"
-msgstr "此武器无法用来使用此项技能！"
-
-#: src/net/tmwa/specialhandler.cpp:189
-msgid "You need another red gem!"
-msgstr "你需要另一颗红宝石！"
-
-#: src/net/tmwa/specialhandler.cpp:192
-msgid "You need another blue gem!"
-msgstr "你需要另一颗蓝宝石！"
-
-#: src/net/tmwa/specialhandler.cpp:195
-msgid "You're carrying to much to do this!"
-msgstr "你已负重太多，无法办到！"
-
-#: src/net/tmwa/specialhandler.cpp:198
-msgid "Huh? What's that?"
-msgstr "啊？那是什么？"
-
-#: src/net/tmwa/specialhandler.cpp:207
-msgid "Warp failed..."
-msgstr "传送失败..."
-
-#: src/net/tmwa/specialhandler.cpp:210
-msgid "Could not steal anything..."
-msgstr "无法偷取任何物品..."
-
-#: src/net/tmwa/specialhandler.cpp:213
-msgid "Poison had no effect..."
-msgstr "毒药无效..."
-
-#: src/net/tmwa/tradehandler.cpp:126
-msgid "Trading isn't possible. Trade partner is too far away."
-msgstr "交易不可能进行。与交易伙伴太过太过遥远"
-
-#: src/net/tmwa/tradehandler.cpp:130
-msgid "Trading isn't possible. Character doesn't exist."
-msgstr "交易不可能进行。角色不存在。"
-
-#: src/net/tmwa/tradehandler.cpp:134
-msgid "Trade cancelled due to an unknown reason."
-msgstr "交易取消因不明原因。"
-
-#: src/net/tmwa/tradehandler.cpp:139
-#, c-format
-msgid "Trade: You and %s"
-msgstr "交易：您和%s"
-
-#: src/net/tmwa/tradehandler.cpp:146
-#, c-format
-msgid "Trade with %s cancelled."
-msgstr "与%s的交易被取消。"
-
-#: src/net/tmwa/tradehandler.cpp:154
-msgid "Unhandled trade cancel packet."
-msgstr "未处理的交易取消分组。"
-
-#: src/net/tmwa/tradehandler.cpp:202
-msgid "Failed adding item. Trade partner is over weighted."
-msgstr "添加项目失败。交易伙伴已经负重太多。"
-
-#: src/net/tmwa/tradehandler.cpp:207
-msgid "Failed adding item. Trade partner has no free slot."
-msgstr "添加项目失败。交易伙伴无空闲槽存放物品。"
-
-#: src/net/tmwa/tradehandler.cpp:211
-msgid "Failed adding item for unknown reason."
-msgstr "添加项目失败，原因未知。"
-
-#: src/playerrelations.cpp:310
-#, fuzzy
-msgid "Completely ignore"
-msgstr "@@ignore|完全忽略%s@@"
-
-#: src/playerrelations.cpp:324
-msgid "Print '...'"
+#: ../src/net/tmwa/playerhandler.cpp:125
+msgid "Your metabolic processes are now history."
 msgstr ""
 
-#: src/playerrelations.cpp:340
-msgid "Blink name"
+#: ../src/gui/charcreatedialog.cpp:199
+msgid "Your name needs to be at least 4 characters."
+msgstr "你的名字需要至少4个字符"
+
+#: ../src/net/manaserv/beinghandler.cpp:286
+#: ../src/net/tmwa/playerhandler.cpp:103
+msgid ""
+"Your plan of breaking your enemies weapon by bashing it with your throat "
+"failed."
 msgstr ""
 
-#: src/resources/itemdb.cpp:44
+#: ../src/main.cpp:50
+msgid "[mana-file] : The mana file is an XML file (.mana)"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:96
+msgid "as particle"
+msgstr "作为发射武器"
+
+#: ../src/gui/setup_video.cpp:195 ../src/gui/setup_video.cpp:209
+msgid "high"
+msgstr "高"
+
+#: ../src/gui/setup_interface.cpp:94
+msgid "in chat"
+msgstr "聊天中"
+
+#: ../src/gui/setup_video.cpp:194 ../src/gui/setup_video.cpp:207
+msgid "low"
+msgstr "低"
+
+#: ../src/main.cpp:49
+msgid "mana [options] [mana-file]"
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:210
+msgid "max"
+msgstr "最大"
+
+#: ../src/gui/setup_video.cpp:208
+msgid "medium"
+msgstr "中"
+
+#: ../src/gui/setup_video.cpp:193
+msgid "off"
+msgstr "关闭"
+
+#: ../src/gui/serverdialog.cpp:480
+msgid "requires a newer version"
+msgstr ""
+
+#: ../src/gui/serverdialog.cpp:482
 #, c-format
-msgid "Attack %+d"
-msgstr "攻击 %+d"
+msgid "requires v%s"
+msgstr ""
 
-#: src/resources/itemdb.cpp:45
-#, c-format
-msgid "Defense %+d"
-msgstr "防护 %+d"
-
-#: src/resources/itemdb.cpp:46
-#, c-format
-msgid "HP %+d"
-msgstr "HP %+d"
-
-#: src/resources/itemdb.cpp:47
-#, c-format
-msgid "MP %+d"
-msgstr "MP %+d"
-
-#: src/resources/itemdb.cpp:92
-msgid "Unknown item"
-msgstr "未知物品"
-
-#: src/resources/itemdb.cpp:135 src/resources/monsterdb.cpp:77
+#: ../src/resources/beinginfo.cpp:34 ../src/resources/itemdb.cpp:241
+#: ../src/resources/monsterdb.cpp:74
 msgid "unnamed"
 msgstr "未知怪兽"
 
-#~ msgid "Text Shadow"
-#~ msgstr "文本阴影"
-
-#~ msgid "Text Outline"
-#~ msgstr "文本轮廓"
-
-#~ msgid "Progress Bar Labels"
-#~ msgstr "进度条标签"
-
-#~ msgid "Background"
-#~ msgstr "背景"
-
-#~ msgid "Highlight"
-#~ msgstr "突出显示"
-
-#~ msgid "Tab Highlight"
-#~ msgstr "标签加亮"
-
 #, fuzzy
-#~ msgid "Item Too Expensive"
-#~ msgstr "物品太昂贵"
+#~ msgid ""
+#~ "\n"
+#~ "> Next\n"
+#~ msgstr "下一个"
 
-#, fuzzy
-#~ msgid "Item Is Equipped"
-#~ msgstr "物品已装备"
+#~ msgid " can't be created, but it doesn't exist! Exiting."
+#~ msgstr " 不能被创建，不存在！退出中。"
 
-#~ msgid "GM"
-#~ msgstr "GM"
+#~ msgid " host: "
+#~ msgstr " 主机： "
 
-#~ msgid "Player"
-#~ msgstr "玩家"
+#~ msgid "% Reflex:"
+#~ msgstr "% 伤害反射："
 
-#~ msgid "Whisper"
-#~ msgstr "密语"
+#~ msgid "*** only available to a GM ***"
+#~ msgstr "*** 只有GM可用 ***"
 
-#~ msgid "Is"
-#~ msgstr "是"
+#~ msgid "/announce > Global announcement (GM only)"
+#~ msgstr "/announce > 全局通告（限GM使用）"
 
-#~ msgid "Server"
-#~ msgstr "服务器"
-
-#~ msgid "Logger"
-#~ msgstr "记录器"
-
-#~ msgid "Hyperlink"
-#~ msgstr "超链接"
-
-# need more contents!!!
-#~ msgid "Being"
-#~ msgstr "存在"
-
-#~ msgid "Other Players' Names"
-#~ msgstr "其他玩家名"
-
-#~ msgid "Own Name"
-#~ msgstr "自己的名字"
-
-#~ msgid "GM Names"
-#~ msgstr "GM名"
-
-#~ msgid "NPCs"
-#~ msgstr "NPCs"
-
-#~ msgid "Monsters"
-#~ msgstr "怪物"
-
-#~ msgid "Unknown Item Type"
-#~ msgstr "未知物品类型"
-
-#~ msgid "Generics"
-#~ msgstr "一般的"
-
-#~ msgid "Hats"
-#~ msgstr "帽子"
-
-#~ msgid "Usables"
-#~ msgstr "可用的"
-
-#~ msgid "Shirts"
-#~ msgstr "衬衫"
-
-#, fuzzy
-#~ msgid "One Handed Weapons"
-#~ msgstr "单手武器"
-
-#~ msgid "Pants"
-#~ msgstr "裤子"
-
-#~ msgid "Shoes"
-#~ msgstr "鞋子"
-
-#, fuzzy
-#~ msgid "Two Handed Weapons"
-#~ msgstr "单手武器"
-
-#~ msgid "Shields"
-#~ msgstr "盾"
-
-#~ msgid "Rings"
-#~ msgstr "指环"
-
-#~ msgid "Necklaces"
-#~ msgstr "项链"
-
-#~ msgid "Arms"
-#~ msgstr "武器"
-
-#~ msgid "Ammo"
-#~ msgstr "弹药"
-
-#~ msgid "Particle Effects"
-#~ msgstr "粒子效果"
-
-#~ msgid "Pickup Notification"
-#~ msgstr "拾起通知"
-
-#~ msgid "Exp Notification"
-#~ msgstr "到期通知"
-
-#, fuzzy
-#~ msgid "Player Hits Monster"
-#~ msgstr "玩家攻击怪兽"
-
-#, fuzzy
-#~ msgid "Monster Hits Player"
-#~ msgstr "怪兽击打玩家"
-
-#~ msgid "Critical Hit"
-#~ msgstr "会心一击"
-
-#~ msgid "Misses"
-#~ msgstr "失误"
-
-#~ msgid "HP Bar"
-#~ msgstr "HP条"
-
-#~ msgid "3/4 HP Bar"
-#~ msgstr "3/4 HP条"
+#~ msgid "/new > Alias of create"
+#~ msgstr "/new > create之别名"
 
 #~ msgid "1/2 HP Bar"
 #~ msgstr "1/2 HP条"
@@ -3736,57 +4063,77 @@ msgstr "未知怪兽"
 #~ msgid "1/4 HP Bar"
 #~ msgstr "1/4 HP条"
 
-#, fuzzy
-#~ msgid "HP"
-#~ msgstr "HP："
+#~ msgid "2 Handed Weapons"
+#~ msgstr "双手武器"
 
-#, fuzzy
-#~ msgid "MP"
-#~ msgstr "MP："
+#~ msgid "3/4 HP Bar"
+#~ msgstr "3/4 HP条"
 
-#, fuzzy
-#~ msgid "Exp"
-#~ msgstr "经验："
+#~ msgid "@@attack|Attack %s@@"
+#~ msgstr "@@attack|攻击%s@@"
 
-#, fuzzy
-#~ msgid "Money"
-#~ msgstr "金钱：%d"
+#~ msgid "@@cancel|Cancel@@"
+#~ msgstr "@@cancel|取消@@"
 
-#, fuzzy
-#~ msgid "Job"
-#~ msgstr "职业："
+#~ msgid "@@disregard|Disregard %s@@"
+#~ msgstr "@@disregard|忽视%s@@"
 
-#, fuzzy
-#~ msgid "Level"
-#~ msgstr "等级：%d"
+#~ msgid "@@drop|Drop@@"
+#~ msgstr "@@drop|丢弃@@"
+
+#~ msgid "@@ignore|Ignore %s@@"
+#~ msgstr "@@ignore|忽略%s@@"
+
+#~ msgid "@@pickup|Pick Up %s@@"
+#~ msgstr "@@捡起|捡起%s@@"
+
+#~ msgid "@@pickup|Pick up %s@@"
+#~ msgstr "@@pickup|捡起%s@@"
+
+#~ msgid "@@split|Split@@"
+#~ msgstr "@@split|分离@@"
+
+#~ msgid "@@store|Store@@"
+#~ msgstr "@@store|存贮@@"
+
+#~ msgid "@@trade|Trade With %s@@"
+#~ msgstr "@@trade|与%s交易@@"
+
+#~ msgid "@@unignore|Un-Ignore %s@@"
+#~ msgstr "@@unignore|Un-Ignore %s@@"
+
+#~ msgid "@@use|Equip@@"
+#~ msgstr "@@use|装备@@"
+
+#~ msgid "@@use|Unequip@@"
+#~ msgstr "@@use|卸载@@"
+
+#~ msgid "@@use|Use@@"
+#~ msgstr "@@use|使用@@"
+
+#, fuzzy, c-format
+#~ msgid "Accepted guild invite from %s."
+#~ msgstr "接受%s的邀请。"
 
 #, fuzzy
 #~ msgid "Access denied."
 #~ msgstr "访问被拒绝"
 
-#, fuzzy
-#~ msgid "Unknown failure to select character."
-#~ msgstr "选择人物时遇到未知错误"
+#, fuzzy, c-format
+#~ msgid "Ambient FX: %s"
+#~ msgstr "环境音效"
 
-#~ msgid "Inviting like this isn't supported at the moment."
-#~ msgstr "这种方式的邀请暂时不支持。"
+#~ msgid "Attack:"
+#~ msgstr "攻击:"
 
-#~ msgid "Willpower:"
-#~ msgstr "意志力："
+#~ msgid "Axe"
+#~ msgstr "斧头"
 
-#~ msgid "Willpower %+d"
-#~ msgstr "意志力 %+d"
+#~ msgid "Background"
+#~ msgstr "背景"
 
-#, fuzzy
-#~ msgid "Willpower"
-#~ msgstr "意志力："
-
-#, fuzzy
-#~ msgid "Server is full."
-#~ msgstr "服务器满载"
-
-#~ msgid "no"
-#~ msgstr "不"
+#~ msgid "Bow"
+#~ msgstr "弓"
 
 #~ msgid "Buddy"
 #~ msgstr "好友"
@@ -3794,35 +4141,8 @@ msgstr "未知怪兽"
 #~ msgid "Buddy List"
 #~ msgstr "好友列表"
 
-#~ msgid "Description: %s"
-#~ msgstr "描述：%s"
-
-#~ msgid "Effect: %s"
-#~ msgstr "效果：%s"
-
-#~ msgid "Previous"
-#~ msgstr "上一个"
-
-#~ msgid "New"
-#~ msgstr "新建"
-
-#~ msgid "Job Level: %d"
-#~ msgstr "职业等级：%d"
-
-#~ msgid "Present: "
-#~ msgstr "出席： "
-
-#~ msgid "Quit Guild"
-#~ msgstr "退出帮会"
-
-#~ msgid "Ok"
-#~ msgstr "确定"
-
-#~ msgid "Recent:"
-#~ msgstr "最近的"
-
-#~ msgid "Magic"
-#~ msgstr "魔法"
+#~ msgid "Buddys"
+#~ msgstr "好友"
 
 #~ msgid "Cast Test Spell 1"
 #~ msgstr "释放测试符咒1"
@@ -3833,180 +4153,282 @@ msgstr "未知怪兽"
 #~ msgid "Cast Test Spell 3"
 #~ msgstr "释放测试符咒3"
 
-#~ msgid "2 Handed Weapons"
-#~ msgstr "双手武器"
+#~ msgid "Command: /announce <msg>"
+#~ msgstr "命令： /announce <信息>"
 
-#~ msgid "@@trade|Trade With %s@@"
-#~ msgstr "@@trade|与%s交易@@"
+#~ msgid "Command: /new <party-name>"
+#~ msgstr "命令： /new <帮会名>"
 
-#~ msgid "@@attack|Attack %s@@"
-#~ msgstr "@@attack|攻击%s@@"
+#~ msgid "Connecting to account server..."
+#~ msgstr "正在连接 帐号 服务器..."
 
-#~ msgid "@@disregard|Disregard %s@@"
-#~ msgstr "@@disregard|忽视%s@@"
-
-#~ msgid "@@ignore|Ignore %s@@"
-#~ msgstr "@@ignore|忽略%s@@"
-
-#~ msgid "@@unignore|Un-Ignore %s@@"
-#~ msgstr "@@unignore|Un-Ignore %s@@"
-
-#~ msgid "@@cancel|Cancel@@"
-#~ msgstr "@@cancel|取消@@"
-
-#~ msgid "@@pickup|Pick up %s@@"
-#~ msgstr "@@pickup|捡起%s@@"
-
-#~ msgid "@@use|Unequip@@"
-#~ msgstr "@@use|卸载@@"
-
-#~ msgid "@@use|Equip@@"
-#~ msgstr "@@use|装备@@"
-
-#~ msgid "@@use|Use@@"
-#~ msgstr "@@use|使用@@"
-
-#~ msgid "@@drop|Drop@@"
-#~ msgstr "@@drop|丢弃@@"
-
-#~ msgid "@@split|Split@@"
-#~ msgstr "@@split|分离@@"
-
-#~ msgid "@@store|Store@@"
-#~ msgstr "@@store|存贮@@"
-
-#~ msgid "Select Server"
-#~ msgstr "选择服务器"
-
-#~ msgid "Failed to switch to "
-#~ msgstr "切换到此时失败： "
-
-#~ msgid "windowed"
-#~ msgstr "窗口化"
-
-#~ msgid "fullscreen"
-#~ msgstr "全屏"
-
-#~ msgid "Mystery Skill"
-#~ msgstr "神秘技能"
-
-#~ msgid "Weapons"
-#~ msgstr "武器"
-
-#~ msgid "Crafts"
-#~ msgstr "技艺"
-
-#~ msgid "Stats"
-#~ msgstr "状态"
-
-#~ msgid "Total"
-#~ msgstr "总计"
+#~ msgid "Connecting to character server..."
+#~ msgstr "正在连接 角色 服务器..."
 
 #~ msgid "Cost"
 #~ msgstr "花费"
 
-#~ msgid "Attack:"
-#~ msgstr "攻击:"
+#~ msgid "Couldn't set "
+#~ msgstr "无法设置 "
 
-#~ msgid "% Reflex:"
-#~ msgstr "% 伤害反射："
+#~ msgid "Crafts"
+#~ msgstr "技艺"
 
-#~ msgid "Remaining Status Points: %d"
-#~ msgstr "剩余状态点数：%d"
+#~ msgid "Effect: %s"
+#~ msgstr "效果：%s"
 
-#~ msgid "Max level"
-#~ msgstr "最大等级"
+#, fuzzy
+#~ msgid "Exp"
+#~ msgstr "经验："
 
-#~ msgid "curl error "
-#~ msgstr "curl错误 "
+#~ msgid "Failed to switch to "
+#~ msgstr "切换到此时失败： "
 
-#~ msgid " host: "
-#~ msgstr " 主机： "
+#~ msgid "GM"
+#~ msgstr "GM"
+
+#~ msgid "Generics"
+#~ msgstr "一般的"
 
 #~ msgid "Guilds"
 #~ msgstr "工会"
 
-#~ msgid "Buddys"
-#~ msgstr "好友"
+#, fuzzy
+#~ msgid "HP"
+#~ msgstr "HP："
 
-#~ msgid "Party Window"
-#~ msgstr "帮会窗口"
+#~ msgid "HP Bar"
+#~ msgstr "HP条"
 
-#~ msgid "Unarmed"
-#~ msgstr "徒手的"
+#~ msgid "Hats"
+#~ msgstr "帽子"
+
+#~ msgid "Highlight"
+#~ msgstr "突出显示"
+
+#~ msgid "Hyperlink"
+#~ msgstr "超链接"
+
+#~ msgid "Inviting like this isn't supported at the moment."
+#~ msgstr "这种方式的邀请暂时不支持。"
+
+#~ msgid "Is"
+#~ msgstr "是"
+
+#, fuzzy
+#~ msgid "Item Is Equipped"
+#~ msgstr "物品已装备"
+
+#, fuzzy
+#~ msgid "Item Too Expensive"
+#~ msgstr "物品太昂贵"
+
+#, fuzzy
+#~ msgid "Job"
+#~ msgstr "职业："
+
+#~ msgid "Job Level: %d"
+#~ msgstr "职业等级：%d"
+
+#~ msgid "Joined party."
+#~ msgstr "加入了帮会。"
 
 #~ msgid "Knife"
 #~ msgstr "匕首"
 
-#~ msgid "Sword"
-#~ msgstr "剑"
+#, fuzzy
+#~ msgid "Level"
+#~ msgstr "等级：%d"
+
+#~ msgid "Logger"
+#~ msgstr "记录器"
+
+#, fuzzy
+#~ msgid "MP"
+#~ msgstr "MP："
+
+#, fuzzy
+#~ msgid "MVP player."
+#~ msgstr "玩家"
+
+#~ msgid "Mace"
+#~ msgstr "狼牙棒"
+
+#~ msgid "Magic"
+#~ msgstr "魔法"
+
+#~ msgid "Max level"
+#~ msgstr "最大等级"
+
+#, fuzzy
+#~ msgid "Money"
+#~ msgstr "金钱：%d"
+
+#~ msgid "Mystery Skill"
+#~ msgstr "神秘技能"
+
+#~ msgid "New"
+#~ msgstr "新建"
+
+#, fuzzy
+#~ msgid "One Handed Weapons"
+#~ msgstr "单手武器"
+
+#~ msgid "Pants"
+#~ msgstr "裤子"
+
+#, fuzzy, c-format
+#~ msgid "Particle detail: %s"
+#~ msgstr "纹理细节"
+
+#~ msgid "Party Window"
+#~ msgstr "帮会窗口"
+
+#~ msgid "Player"
+#~ msgstr "玩家"
 
 # 长斧？
 #~ msgid "Polearm"
 #~ msgstr "戟"
 
-#~ msgid "Staff"
-#~ msgstr "工作人员"
+#~ msgid "Present: "
+#~ msgstr "出席： "
 
-#~ msgid "Whip"
-#~ msgstr "抖动"
+#~ msgid "Previous"
+#~ msgstr "上一个"
 
-#~ msgid "Bow"
-#~ msgstr "弓"
+#~ msgid "Progress Bar Labels"
+#~ msgstr "进度条标签"
 
-#~ msgid "Shooting"
-#~ msgstr "射击"
+#~ msgid "Quit Guild"
+#~ msgstr "退出帮会"
 
-#~ msgid "Mace"
-#~ msgstr "狼牙棒"
+#~ msgid "Recent:"
+#~ msgstr "最近的"
 
-#~ msgid "Axe"
-#~ msgstr "斧头"
+#~ msgid "Remaining Status Points: %d"
+#~ msgstr "剩余状态点数：%d"
 
-#~ msgid "Thrown"
-#~ msgstr "投掷"
+#~ msgid "Restart needed for changes to take effect."
+#~ msgstr "重启生效"
 
-#~ msgid "Unknown Skill"
-#~ msgstr "未知技能"
+#~ msgid "Restart your client for the change to take effect."
+#~ msgstr "重启您的游戏客户端以使变更生效。"
 
-#~ msgid " can't be created, but it doesn't exist! Exiting."
-#~ msgstr " 不能被创建，不存在！退出中。"
-
-#~ msgid "Couldn't set "
-#~ msgstr "无法设置 "
-
-#~ msgid " video mode: "
-#~ msgstr " 视频模式： "
-
-#~ msgid "mana"
-#~ msgstr "mana"
-
-#~ msgid "Connecting to character server..."
-#~ msgstr "正在连接 角色 服务器..."
-
-#~ msgid "Connecting to account server..."
-#~ msgstr "正在连接 帐号 服务器..."
-
-#~ msgid "/new > Alias of create"
-#~ msgstr "/new > create之别名"
-
-#~ msgid "Command: /new <party-name>"
-#~ msgstr "命令： /new <帮会名>"
-
-#~ msgid "a"
-#~ msgstr "一个"
-
-#~ msgid "Unnamed"
-#~ msgstr "未知物品"
-
-#~ msgid "@@pickup|Pick Up %s@@"
-#~ msgstr "@@捡起|捡起%s@@"
-
-#~ msgid "Save player list"
-#~ msgstr "保存玩家列表"
+#, fuzzy
+#~ msgid "Screen Resolution Changed"
+#~ msgstr "分辨率已变更"
 
 #~ msgid "Scroll laziness"
 #~ msgstr "Scroll laziness"
 
-#~ msgid "Scroll radius"
-#~ msgstr "滑动半径"
+#~ msgid "Select Server"
+#~ msgstr "选择服务器"
+
+#~ msgid "Server"
+#~ msgstr "服务器"
+
+#~ msgid "Shields"
+#~ msgstr "盾"
+
+#~ msgid "Shirts"
+#~ msgstr "衬衫"
+
+#~ msgid "Shoes"
+#~ msgstr "鞋子"
+
+#~ msgid "Shooting"
+#~ msgstr "射击"
+
+#~ msgid "Staff"
+#~ msgstr "工作人员"
+
+#~ msgid "Stats"
+#~ msgstr "状态"
+
+#, fuzzy
+#~ msgid "Switching to Full Screen"
+#~ msgstr "切换到全屏"
+
+#~ msgid "Sword"
+#~ msgstr "剑"
+
+#~ msgid "Tab Highlight"
+#~ msgstr "标签加亮"
+
+#~ msgid "Text Outline"
+#~ msgstr "文本轮廓"
+
+#~ msgid "Text Shadow"
+#~ msgstr "文本阴影"
+
+#~ msgid "Thanks for buying."
+#~ msgstr "谢谢你的购买。"
+
+#~ msgid "Thanks for selling."
+#~ msgstr "感谢您的出售。"
+
+#~ msgid ""
+#~ "This command sends the message <msg> to all players currently online."
+#~ msgstr "该命令会发送<信息>给所有在线用户。"
+
+#~ msgid "Thrown"
+#~ msgstr "投掷"
+
+#~ msgid "Total"
+#~ msgstr "总计"
+
+#, fuzzy
+#~ msgid "Two Handed Weapons"
+#~ msgstr "单手武器"
+
+#~ msgid "Unarmed"
+#~ msgstr "徒手的"
+
+#~ msgid "Unknown Skill"
+#~ msgstr "未知技能"
+
+#, fuzzy
+#~ msgid "Unknown failure to select character."
+#~ msgstr "选择人物时遇到未知错误"
+
+#, fuzzy
+#~ msgid "Unknown guild invite response."
+#~ msgstr "未知邀请应答%s。"
+
+#~ msgid "Unnamed"
+#~ msgstr "未知物品"
+
+#~ msgid "Usables"
+#~ msgstr "可用的"
+
+#, fuzzy
+#~ msgid "User is now part of your guild."
+#~ msgstr "%s现在是你帮会中的成员了。"
+
+#~ msgid "Weapons"
+#~ msgstr "武器"
+
+#~ msgid "Whip"
+#~ msgstr "抖动"
+
+#~ msgid "Whisper"
+#~ msgstr "密语"
+
+#~ msgid "Willpower:"
+#~ msgstr "意志力："
+
+#~ msgid "a"
+#~ msgstr "一个"
+
+#~ msgid "curl error "
+#~ msgstr "curl错误 "
+
+#~ msgid "fullscreen"
+#~ msgstr "全屏"
+
+#~ msgid "mana"
+#~ msgstr "mana"
+
+#~ msgid "no"
+#~ msgstr "不"

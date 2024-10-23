@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-08 16:46+0100\n"
+"POT-Creation-Date: 2024-10-23 09:58+0200\n"
 "PO-Revision-Date: 2009-07-07 19:52+0000\n"
 "Last-Translator: Tatsukichi <artit91@gmail.com>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -19,138 +19,143 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: ../src/main.cpp:45
+#: ../src/main.cpp:52
 msgid "              to the mana client."
 msgstr ""
 
-#: ../src/main.cpp:44
+#: ../src/main.cpp:51
 msgid "              used to set custom parameters"
 msgstr ""
 
-#: ../src/main.cpp:62
+#: ../src/main.cpp:70
 #, fuzzy
 msgid "     --chat-log-dir   : Chat log dir to use"
 msgstr "  -C --config-file : Konfigurációs fájl használata"
 
-#: ../src/main.cpp:61
+#: ../src/main.cpp:69
 #, fuzzy
 msgid "     --localdata-dir  : Directory to use as local data directory"
 msgstr "  -S --home-dir : Könyvtár használata gyökérkönyvtárként"
 
-#: ../src/main.cpp:65
+#: ../src/main.cpp:73
 #, fuzzy
 msgid "     --no-opengl      : Disable OpenGL for this session"
 msgstr "  -O --no-opengl : OpenGL kikapcsolása erre az időszakra"
 
-#: ../src/main.cpp:63
+#: ../src/main.cpp:71
 #, fuzzy
 msgid "     --screenshot-dir : Directory to store screenshots"
 msgstr "  -S --home-dir : Könyvtár használata gyökérkönyvtárként"
 
-#: ../src/main.cpp:56
+#: ../src/main.cpp:64
 #, fuzzy
 msgid "     --update-host    : Use this update host"
 msgstr "  -H --update-host : A frissítési szerver kijelölésére használjuk"
 
-#: ../src/main.cpp:50
+#: ../src/main.cpp:57
 #, fuzzy
 msgid "  -C --config-dir     : Configuration directory to use"
 msgstr "  -C --config-file : Konfigurációs fájl használata"
 
-#: ../src/main.cpp:57
+#: ../src/main.cpp:65
 #, fuzzy
 msgid "  -D --default        : Choose default character server and character"
 msgstr "  -D --default : Válaszd ki az alapértelmezett szervert és karaktert"
 
-#: ../src/main.cpp:52
+#: ../src/main.cpp:59
 #, fuzzy
 msgid "  -P --password       : Login with this password"
 msgstr "  -P --password : Bejelentkezés ezzel a jelszóval"
 
-#: ../src/main.cpp:51
+#: ../src/main.cpp:58
 #, fuzzy
 msgid "  -U --username       : Login with this username"
 msgstr "  -U --username : Bejelentkezés ezzel a felhasználónévvel"
 
-#: ../src/main.cpp:53
+#: ../src/main.cpp:60
 #, fuzzy
 msgid "  -c --character      : Login with this character"
 msgstr "  -c --character : Bejelentkezés ezzel a karakterrel"
 
-#: ../src/main.cpp:60
+#: ../src/main.cpp:68
 #, fuzzy
 msgid "  -d --data           : Directory to load game data from"
 msgstr "  -d --data : Könyvtár ahonnan betöltöd a játékot"
 
-#: ../src/main.cpp:49
+#: ../src/main.cpp:56
 #, fuzzy
 msgid "  -h --help           : Display this help"
 msgstr "  -h --help : Megmutatja ezt a súgót"
 
-#: ../src/main.cpp:55
+#: ../src/main.cpp:62
 #, fuzzy
 msgid "  -p --port           : Login server port"
 msgstr "  -p --port : Bejelentkezési port"
 
-#: ../src/main.cpp:54
+#: ../src/main.cpp:61
 #, fuzzy
 msgid "  -s --server         : Login server name or IP"
 msgstr "  -s --server : Szerver neve vagy IP címe"
 
-#: ../src/main.cpp:59
+#: ../src/main.cpp:67
 #, fuzzy
 msgid "  -u --skip-update    : Skip the update downloads"
 msgstr "  -u --skip-update :  Frissítés átugrása"
 
-#: ../src/main.cpp:48
+#: ../src/main.cpp:55
 #, fuzzy
 msgid "  -v --version        : Display the version"
 msgstr "  -v --version : Megmutatja a verziót"
 
-#: ../src/net/manaserv/partyhandler.cpp:126
-#, fuzzy, c-format
-msgid " on invitation from %s"
-msgstr "%s részéről ismeretlen válasz a meghívásra."
+#: ../src/main.cpp:63
+#, fuzzy
+msgid "  -y --server-type    : Login server type"
+msgstr "  -s --server : Szerver neve vagy IP címe"
 
-#: ../src/gui/updaterwindow.cpp:421
+#: ../src/gui/updaterwindow.cpp:410
 msgid "##1  It is strongly recommended that"
 msgstr "##1 Erősen ajánljuk, hogy"
 
-#: ../src/gui/updaterwindow.cpp:419
+#: ../src/gui/updaterwindow.cpp:408
 msgid "##1  The update process is incomplete."
 msgstr "##1 A frissítési folyamat befejezetlen"
 
-#: ../src/gui/updaterwindow.cpp:423
+#: ../src/gui/updaterwindow.cpp:412
 #, fuzzy
 msgid "##1  you try again later."
 msgstr "##1 próbáld meg később"
 
-#: ../src/net/tmwa/generalhandler.cpp:245
+#: ../src/net/tmwa/generalhandler.cpp:243
 #, fuzzy, no-c-format
 msgid "% Accuracy"
 msgstr "Találati esély (%):"
 
-#: ../src/net/tmwa/generalhandler.cpp:249
+#: ../src/net/tmwa/generalhandler.cpp:247
 #, fuzzy, no-c-format
 msgid "% Critical"
 msgstr "Kritikális ütéskor"
 
-#: ../src/net/tmwa/generalhandler.cpp:247
+#: ../src/net/tmwa/generalhandler.cpp:245
 #, fuzzy, no-c-format
 msgid "% Evade"
 msgstr "Kitérés (%):"
 
-#: ../src/gui/debugwindow.cpp:59
+#: ../src/gui/debugwindow.cpp:60
 #, c-format
 msgid "%d FPS"
 msgstr ""
 
-#: ../src/gui/debugwindow.cpp:54
+#: ../src/gui/debugwindow.cpp:55
 #, c-format
 msgid "%d FPS (OpenGL)"
 msgstr ""
 
-#: ../src/client.cpp:1160 ../src/client.cpp:1188
+#: ../src/gui/setup_video.cpp:178
+#, c-format
+msgid "%dx"
+msgstr ""
+
+#: ../src/client.cpp:1074 ../src/client.cpp:1097
 #, c-format
 msgid "%s doesn't exist and can't be created! Exiting."
 msgstr ""
@@ -160,17 +165,17 @@ msgstr ""
 msgid "%s entered the channel."
 msgstr "%s csatlakozott a csapathoz."
 
-#: ../src/gui/socialwindow.cpp:601
+#: ../src/gui/socialwindow.cpp:643
 #, c-format
 msgid "%s has invited you to join the %s party."
 msgstr "%s behívott %s csapatába."
 
-#: ../src/gui/socialwindow.cpp:558
+#: ../src/gui/socialwindow.cpp:600
 #, fuzzy, c-format
 msgid "%s has invited you to join the guild %s."
 msgstr "%s behívott %s csapatába."
 
-#: ../src/gui/socialwindow.cpp:596
+#: ../src/gui/socialwindow.cpp:638
 #, c-format
 msgid "%s has invited you to join their party."
 msgstr "%s a csapatába hívott."
@@ -180,7 +185,7 @@ msgstr "%s a csapatába hívott."
 msgid "%s has kicked %s."
 msgstr ""
 
-#: ../src/net/tmwa/partyhandler.cpp:247
+#: ../src/net/tmwa/partyhandler.cpp:234
 #, c-format
 msgid "%s has left your party."
 msgstr "%s elhagyta a csapatot."
@@ -190,29 +195,34 @@ msgstr "%s elhagyta a csapatot."
 msgid "%s has set mode %s on user %s."
 msgstr ""
 
-#: ../src/net/tmwa/partyhandler.cpp:120
+#: ../src/net/tmwa/partyhandler.cpp:119
 #, c-format
 msgid "%s is already a member of a party."
 msgstr "%s eleve tagja a csapatnak."
 
-#: ../src/net/manaserv/partyhandler.cpp:157
+#: ../src/net/manaserv/partyhandler.cpp:160
 #, fuzzy, c-format
 msgid "%s is already in a party."
 msgstr "%s eleve tagja a csapatnak."
 
-#: ../src/net/tmwa/partyhandler.cpp:369
+#: ../src/net/tmwa/partyhandler.cpp:356
 #, c-format
 msgid "%s is not in your party!"
 msgstr "%s nincs a csapatodban!"
 
-#: ../src/net/tmwa/partyhandler.cpp:128
+#: ../src/net/tmwa/partyhandler.cpp:127
 #, c-format
 msgid "%s is now a member of your party."
 msgstr "%s mostantól a csapatod tagja."
 
-#: ../src/net/manaserv/partyhandler.cpp:128
+#: ../src/net/manaserv/partyhandler.cpp:129
 #, fuzzy, c-format
-msgid "%s joined the party%s."
+msgid "%s joined the party on invitation from %s."
+msgstr "Csapatba hívást elutasította %s."
+
+#: ../src/net/manaserv/partyhandler.cpp:127
+#, fuzzy, c-format
+msgid "%s joined the party."
 msgstr "%s csatlakozott a csapathoz."
 
 #: ../src/net/manaserv/chathandler.cpp:319
@@ -220,12 +230,12 @@ msgstr "%s csatlakozott a csapathoz."
 msgid "%s left the channel."
 msgstr ""
 
-#: ../src/net/tmwa/partyhandler.cpp:124
+#: ../src/net/tmwa/partyhandler.cpp:123
 #, c-format
 msgid "%s refused your invitation."
 msgstr "%s visszautasította a csapatba hívást."
 
-#: ../src/net/manaserv/partyhandler.cpp:148
+#: ../src/net/manaserv/partyhandler.cpp:151
 #, fuzzy, c-format
 msgid "%s rejected your invite."
 msgstr "%s visszautasította a csapatba hívást."
@@ -236,90 +246,82 @@ msgstr "%s visszautasította a csapatba hívást."
 msgid "%s wants to trade with you, do you accept?"
 msgstr "%s üzletelni akar veled. Te akarsz vele?"
 
-#: ../src/gui/widgets/chattab.cpp:190
+#: ../src/gui/widgets/chattab.cpp:186
 #, fuzzy, c-format
 msgid "%s whispers: %s"
 msgstr "%s mondja: "
 
-#: ../src/gui/charselectdialog.cpp:418 ../src/gui/charselectdialog.cpp:419
+#: ../src/gui/charselectdialog.cpp:395 ../src/gui/charselectdialog.cpp:396
 msgid "(empty)"
 msgstr ""
 
-#: ../src/commandhandler.cpp:221
-msgid "*** only available to a GM ***"
-msgstr "*** csak GM-nek elérhető ***"
-
-#: ../src/gui/buydialog.cpp:75 ../src/gui/itemamountwindow.cpp:112
-#: ../src/gui/npcdialog.cpp:125 ../src/gui/selldialog.cpp:75
-#: ../src/gui/statuswindow.cpp:474
+#: ../src/gui/buydialog.cpp:73 ../src/gui/itemamountwindow.cpp:111
+#: ../src/gui/npcdialog.cpp:122 ../src/gui/selldialog.cpp:75
+#: ../src/gui/statuswindow.cpp:467
 msgid "+"
 msgstr ""
 
-#: ../src/gui/buydialog.cpp:78 ../src/gui/itemamountwindow.cpp:111
-#: ../src/gui/npcdialog.cpp:126 ../src/gui/selldialog.cpp:76
-#: ../src/gui/statuswindow.cpp:486
+#: ../src/gui/buydialog.cpp:76 ../src/gui/itemamountwindow.cpp:110
+#: ../src/gui/npcdialog.cpp:123 ../src/gui/selldialog.cpp:76
+#: ../src/gui/statuswindow.cpp:477
 msgid "-"
 msgstr ""
 
-#: ../src/commandhandler.cpp:165
+#: ../src/commandhandler.cpp:152
 msgid "-- Help --"
 msgstr "-- Segítség --"
 
-#: ../src/commandhandler.cpp:200
-msgid "/announce > Global announcement (GM only)"
-msgstr "/announce > Globális üzenet (csak GM)"
-
-#: ../src/commandhandler.cpp:181
+#: ../src/commandhandler.cpp:171
 msgid "/away > Tell the other whispering players you're away from keyboard."
 msgstr ""
 
-#: ../src/commandhandler.cpp:172
+#: ../src/commandhandler.cpp:162
 msgid "/clear > Clears this window"
 msgstr "/clear > Letörli ezt az ablakot"
 
-#: ../src/gui/widgets/whispertab.cpp:74
+#: ../src/gui/widgets/whispertab.cpp:73
 msgid "/close > Close the whisper tab"
 msgstr "/close > Bezárja a privát fület."
 
-#: ../src/commandhandler.cpp:190
+#: ../src/commandhandler.cpp:180
 #, fuzzy
 msgid "/createparty > Create a new party"
 msgstr "/create > Új csapat létrehozása"
 
-#: ../src/net/tmwa/gui/partytab.cpp:64
+#: ../src/net/tmwa/gui/partytab.cpp:57
 msgid "/exp > Show/change party experience sharing options"
 msgstr "/exp > Tapasztalat elosztását nézhetjük/átállíthatjuk vele"
 
-#: ../src/commandhandler.cpp:166
+#: ../src/commandhandler.cpp:153
 msgid "/help > Display this help"
 msgstr "/help > Megmutatja ezt a segítséget"
 
-#: ../src/net/tmwa/gui/guildtab.cpp:61 ../src/net/tmwa/gui/partytab.cpp:59
+#: ../src/net/tmwa/gui/guildtab.cpp:53 ../src/net/tmwa/gui/partytab.cpp:52
 msgid "/help > Display this help."
 msgstr "/help > Megmutatja ezt a súgót."
 
-#: ../src/gui/widgets/whispertab.cpp:72
+#: ../src/gui/widgets/whispertab.cpp:71
 msgid "/ignore > Ignore the other player"
 msgstr ""
 
-#: ../src/commandhandler.cpp:184
+#: ../src/commandhandler.cpp:174
 msgid "/ignore > ignore a player"
 msgstr ""
 
-#: ../src/net/tmwa/gui/guildtab.cpp:62
+#: ../src/net/tmwa/gui/guildtab.cpp:54
 #, fuzzy
 msgid "/invite > Invite a player to your guild"
 msgstr "/invite > Játékos meghívása a csapatba"
 
-#: ../src/net/tmwa/gui/partytab.cpp:60
+#: ../src/net/tmwa/gui/partytab.cpp:53
 msgid "/invite > Invite a player to your party"
 msgstr "/invite > Játékos meghívása a csapatba"
 
-#: ../src/net/tmwa/gui/partytab.cpp:63
+#: ../src/net/tmwa/gui/partytab.cpp:56
 msgid "/item > Show/change party item sharing options"
 msgstr "/item > Tárgyak elosztását nézhetjük/átállíthatjuk vele"
 
-#: ../src/commandhandler.cpp:188
+#: ../src/commandhandler.cpp:178
 msgid "/join > Join or create a channel"
 msgstr "/join > Csatornához kapcsolódás/csatornát létrehoz"
 
@@ -327,33 +329,34 @@ msgstr "/join > Csatornához kapcsolódás/csatornát létrehoz"
 msgid "/kick > Kick a user from the channel"
 msgstr "/kick > Felhasználó kirúgása a csatornából"
 
-#: ../src/net/tmwa/gui/guildtab.cpp:64
+#: ../src/net/tmwa/gui/guildtab.cpp:56
 #, fuzzy
-msgid "/kick > Kick some one from the guild you are in"
+msgid "/kick > Kick someone from the guild you are in"
 msgstr "/kick > Valaki kirúgása a csapatból"
 
-#: ../src/net/tmwa/gui/partytab.cpp:62
-msgid "/kick > Kick some one from the party you are in"
+#: ../src/net/tmwa/gui/partytab.cpp:55
+#, fuzzy
+msgid "/kick > Kick someone from the party you are in"
 msgstr "/kick > Valaki kirúgása a csapatból"
 
-#: ../src/net/tmwa/gui/guildtab.cpp:63
+#: ../src/net/tmwa/gui/guildtab.cpp:55
 #, fuzzy
 msgid "/leave > Leave the guild you are in"
 msgstr "/leave > Jelenlegi csapat elhagyása"
 
-#: ../src/net/tmwa/gui/partytab.cpp:61
+#: ../src/net/tmwa/gui/partytab.cpp:54
 msgid "/leave > Leave the party you are in"
 msgstr "/leave > Jelenlegi csapat elhagyása"
 
-#: ../src/commandhandler.cpp:187
+#: ../src/commandhandler.cpp:177
 msgid "/list > Display all public channels"
 msgstr "/list > Publikus csatornák listázása"
 
-#: ../src/commandhandler.cpp:170
+#: ../src/commandhandler.cpp:160
 msgid "/me > Tell something about yourself"
 msgstr "/me > Mondasz valamit magadról"
 
-#: ../src/commandhandler.cpp:174
+#: ../src/commandhandler.cpp:164
 msgid "/msg > Send a private message to a user"
 msgstr "/msg > Privát üzenetet küld egy felhasználónak"
 
@@ -361,19 +364,19 @@ msgstr "/msg > Privát üzenetet küld egy felhasználónak"
 msgid "/op > Make a user a channel operator"
 msgstr "/op > Felhasználóból csatorna operátort képez."
 
-#: ../src/commandhandler.cpp:191
+#: ../src/commandhandler.cpp:181
 msgid "/party > Invite a user to party"
 msgstr "/party > Felhasználó csapatba hívása"
 
-#: ../src/commandhandler.cpp:197
+#: ../src/commandhandler.cpp:187
 msgid "/present > Get list of players present (sent to chat log, if logging)"
 msgstr "/present > \"Hallható\" játékosok kilistázása"
 
-#: ../src/commandhandler.cpp:179
+#: ../src/commandhandler.cpp:169
 msgid "/q > Alias of query"
 msgstr "/q > query megfelelője"
 
-#: ../src/commandhandler.cpp:177
+#: ../src/commandhandler.cpp:167
 msgid "/query > Makes a tab for private messages with another user"
 msgstr "/query > Fület hoz létre privát beszélgetéshez"
 
@@ -381,11 +384,11 @@ msgstr "/query > Fület hoz létre privát beszélgetéshez"
 msgid "/quit > Leave a channel"
 msgstr "/quit > Csatorna elhagyása"
 
-#: ../src/commandhandler.cpp:193
+#: ../src/commandhandler.cpp:183
 msgid "/record > Start recording the chat to an external file"
 msgstr "/record > Beszélgetés rögzítése külső fájlba"
 
-#: ../src/commandhandler.cpp:195
+#: ../src/commandhandler.cpp:185
 msgid "/toggle > Determine whether <return> toggles the chat log"
 msgstr ""
 "/toggle > Választható, hogy üres <enter> kell e az input panel bezárásához"
@@ -394,11 +397,11 @@ msgstr ""
 msgid "/topic > Set the topic of the current channel"
 msgstr "/topic > Beállítja egy csatorna témáját."
 
-#: ../src/gui/widgets/whispertab.cpp:73
+#: ../src/gui/widgets/whispertab.cpp:72
 msgid "/unignore > Stop ignoring the other player"
 msgstr ""
 
-#: ../src/commandhandler.cpp:185
+#: ../src/commandhandler.cpp:175
 msgid "/unignore > stop ignoring a player"
 msgstr ""
 
@@ -406,27 +409,27 @@ msgstr ""
 msgid "/users > Lists the users in the current channel"
 msgstr "/users > Kilistázza az aktuális csatorna felhasználóit"
 
-#: ../src/commandhandler.cpp:176
+#: ../src/commandhandler.cpp:166
 msgid "/w > Alias of msg"
 msgstr "/w > msg megfelelője"
 
-#: ../src/commandhandler.cpp:168
+#: ../src/commandhandler.cpp:155
 msgid "/where > Display map name"
 msgstr "/where > Megmutatja a térkép nevét"
 
-#: ../src/commandhandler.cpp:175
+#: ../src/commandhandler.cpp:165
 msgid "/whisper > Alias of msg"
 msgstr "/whisper > msg megfelelője"
 
-#: ../src/commandhandler.cpp:169
+#: ../src/commandhandler.cpp:158
 msgid "/who > Display number of online users"
 msgstr "/who > Megmutatja az online felhasználókat"
 
-#: ../src/gui/outfitwindow.cpp:66
+#: ../src/gui/outfitwindow.cpp:49
 msgid "<"
 msgstr ""
 
-#: ../src/net/tmwa/gui/partytab.cpp:97
+#: ../src/net/tmwa/gui/partytab.cpp:90
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable experience "
 "sharing, or \"0\", \"no\", \"false\" to disable experience sharing."
@@ -434,7 +437,7 @@ msgstr ""
 "<szabály> lehet \"1\", \"yes\", \"true\" a tapasztalat megosztásához, vagy "
 "\"0\", \"no\", \"false\" a tapasztalat megosztásának kikapcsolásához."
 
-#: ../src/net/tmwa/gui/partytab.cpp:87
+#: ../src/net/tmwa/gui/partytab.cpp:80
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
 "\"0\", \"no\", \"false\" to disable item sharing."
@@ -442,7 +445,7 @@ msgstr ""
 "<szabály> lehet \"1\", \"yes\", \"true\" a tárgyak megosztásához, vagy "
 "\"0\", \"no\", \"false\" a tárgyak megosztásának kikapcsolásához."
 
-#: ../src/commandhandler.cpp:308
+#: ../src/commandhandler.cpp:289
 msgid ""
 "<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or "
 "\"0\", \"no\", \"false\" to turn the toggle off."
@@ -450,34 +453,34 @@ msgstr ""
 "<állás> lehet \"1\", \"yes\", \"true\" ha ki akarod kapcsolni a chat input "
 "automatikus eltűnését, \"0\", \"no\", \"false\"  ha nem."
 
-#: ../src/gui/outfitwindow.cpp:67
+#: ../src/gui/outfitwindow.cpp:50
 msgid ">"
 msgstr ""
 
-#: ../src/gui/setup_interface.cpp:78 ../src/gui/setup_players.cpp:205
+#: ../src/gui/setup_interface.cpp:61 ../src/gui/setup_players.cpp:198
 msgid "???"
 msgstr "???"
 
-#: ../src/gui/socialwindow.cpp:563
+#: ../src/gui/socialwindow.cpp:605
 #, fuzzy
 msgid "Accept Guild Invite"
 msgstr "Ajánlat elfogadása"
 
-#: ../src/gui/socialwindow.cpp:609
+#: ../src/gui/socialwindow.cpp:651
 msgid "Accept Party Invite"
 msgstr "Ajánlat elfogadása"
 
-#: ../src/gui/socialwindow.cpp:463
+#: ../src/gui/socialwindow.cpp:504
 #, fuzzy
 msgid "Accepted guild invite"
 msgstr "Ajánlat elfogadása"
 
-#: ../src/gui/socialwindow.cpp:444
+#: ../src/gui/socialwindow.cpp:485
 #, fuzzy, c-format
 msgid "Accepted party invite from %s."
 msgstr "Csapatba hívást elfogadta %s."
 
-#: ../src/game.cpp:709
+#: ../src/game.cpp:713
 msgid "Accepting incoming trade requests"
 msgstr "Kereskedési kérelmek elfogadása"
 
@@ -485,11 +488,11 @@ msgstr "Kereskedési kérelmek elfogadása"
 msgid "Accepting incoming trade requests."
 msgstr "Elfogadod a bejövő üzleti ajánlatokat."
 
-#: ../src/net/tmwa/charserverhandler.cpp:103
+#: ../src/net/tmwa/charserverhandler.cpp:105
 msgid "Access denied. Most likely, there are too many players on this server."
 msgstr ""
 
-#: ../src/gui/charselectdialog.cpp:120
+#: ../src/gui/charselectdialog.cpp:113
 msgid "Account and Character Management"
 msgstr "Fiók és Karakter Menedzsment"
 
@@ -503,7 +506,7 @@ msgstr "A fiók lejárt"
 msgid "Account banned."
 msgstr "A fiók lejárt"
 
-#: ../src/net/tmwa/loginhandler.cpp:162
+#: ../src/net/tmwa/loginhandler.cpp:166
 #, fuzzy
 msgid "Account expired."
 msgstr "A fiók lejárt"
@@ -513,7 +516,7 @@ msgstr "A fiók lejárt"
 msgid "Account not connected. Please login first."
 msgstr "A fiók nem kapcsolódott. Kérlek jelentkezz be előbb."
 
-#: ../src/net/tmwa/loginhandler.cpp:86
+#: ../src/net/tmwa/loginhandler.cpp:89
 msgid "Account was not found. Please re-login."
 msgstr "Fiók nem található. Kérem jelentkezzen be újra."
 
@@ -522,7 +525,7 @@ msgstr "Fiók nem található. Kérem jelentkezzen be újra."
 msgid "Account: %s"
 msgstr "Fiók: %s"
 
-#: ../src/gui/inventorywindow.cpp:107 ../src/gui/popupmenu.cpp:378
+#: ../src/gui/inventorywindow.cpp:106 ../src/gui/popupmenu.cpp:370
 msgid "Activate"
 msgstr ""
 
@@ -530,41 +533,40 @@ msgstr ""
 msgid "Add"
 msgstr "Hozzáad"
 
-#: ../src/gui/serverdialog.cpp:211
+#: ../src/gui/serverdialog.cpp:192
 #, fuzzy
 msgid "Add custom Server..."
 msgstr "Egyéni kurzor"
 
-#: ../src/gui/popupmenu.cpp:175
+#: ../src/gui/popupmenu.cpp:170
 #, fuzzy
 msgid "Add name to chat"
 msgstr "@@name|Neve hozzáadása a csevegéshez@@"
 
-#: ../src/gui/popupmenu.cpp:194 ../src/gui/popupmenu.cpp:399
+#: ../src/gui/popupmenu.cpp:188 ../src/gui/popupmenu.cpp:391
 #, fuzzy
 msgid "Add to chat"
 msgstr "@@chat|Hozzáadás a chat-hez@@"
 
-#: ../src/gui/customserverdialog.cpp:55
+#: ../src/gui/customserverdialog.cpp:57
 msgid "Address:"
 msgstr ""
 
-#: ../src/net/manaserv/attributes.cpp:179
-#: ../src/net/tmwa/generalhandler.cpp:231
+#: ../src/net/tmwa/generalhandler.cpp:229 ../src/resources/attributes.cpp:171
 msgid "Agility"
 msgstr "Mozgékonyság"
 
-#: ../src/net/manaserv/attributes.cpp:186
+#: ../src/resources/attributes.cpp:177
 #, fuzzy, c-format
 msgid "Agility %+.1f"
 msgstr "Mozgékonyság %+d"
 
-#: ../src/net/tmwa/generalhandler.cpp:103
+#: ../src/net/tmwa/generalhandler.cpp:100
 #, c-format
 msgid "Agility %+d"
 msgstr "Mozgékonyság %+d"
 
-#: ../src/net/tmwa/charserverhandler.cpp:272
+#: ../src/net/tmwa/charserverhandler.cpp:284
 msgid "Agility:"
 msgstr "Mozgékonyság:"
 
@@ -576,15 +578,15 @@ msgstr "Üzlet elfogadása"
 msgid "Agreed. Waiting..."
 msgstr "Elfogadva. Vár..."
 
-#: ../src/gui/itemamountwindow.cpp:115
+#: ../src/gui/itemamountwindow.cpp:114
 msgid "All"
 msgstr "Mind"
 
-#: ../src/gui/setup_players.cpp:224
+#: ../src/gui/setup_players.cpp:217
 msgid "Allow trading"
 msgstr "Üzletelés engedélyezése"
 
-#: ../src/gui/setup_players.cpp:226
+#: ../src/gui/setup_players.cpp:219
 msgid "Allow whispers"
 msgstr "Privát engedélyezése"
 
@@ -594,11 +596,11 @@ msgstr "Privát engedélyezése"
 msgid "Already logged in."
 msgstr "Már be van jelentkezve"
 
-#: ../src/gui/recorder.cpp:97
+#: ../src/gui/recorder.cpp:96
 msgid "Already recording."
 msgstr "Már rögzítesz."
 
-#: ../src/gui/setup_video.cpp:191
+#: ../src/gui/setup_video.cpp:246
 #, fuzzy
 msgid "Ambient FX:"
 msgstr "Környezeti effektek"
@@ -607,40 +609,42 @@ msgstr "Környezeti effektek"
 msgid "Ammo"
 msgstr "Töltény"
 
-#: ../src/net/tmwa/partyhandler.cpp:300
+#: ../src/net/tmwa/partyhandler.cpp:287
 #, c-format
 msgid "An unknown member tried to say: %s"
 msgstr "Egy ismeretlen csapattárs mondja: %s"
 
-#: ../src/net/manaserv/beinghandler.cpp:289
-#: ../src/net/tmwa/playerhandler.cpp:113
+#: ../src/net/manaserv/beinghandler.cpp:291
+#: ../src/net/tmwa/playerhandler.cpp:111
 msgid "Annihilated."
 msgstr "Megöltek."
 
-#: ../src/gui/setup.cpp:52
+#: ../src/gui/setup.cpp:54
 msgid "Apply"
 msgstr "Alkalmaz"
 
-#: ../src/gui/setup_video.cpp:358
+#: ../src/gui/setup_video.cpp:394
 msgid "Applying change to OpenGL requires restart."
 msgstr "A változások érvénybe lépéséhez a program újraindítása szükséges."
 
-#: ../src/gui/setup_video.cpp:350
+#: ../src/gui/setup_video.cpp:386
 msgid ""
-"Applying change to OpenGL requires restart. In case OpenGL messes up your "
-"game graphics, restart the game with the command line option \"--no-opengl\"."
+"Applying change to OpenGL requires restart.\n"
+"\n"
+"In case OpenGL messes up your game graphics, restart the game with the "
+"command line option \"--no-opengl\"."
 msgstr ""
 
-#: ../src/gui/charselectdialog.cpp:73
+#: ../src/gui/charselectdialog.cpp:66
 msgid "Are you sure you want to delete this character?"
 msgstr "Biztos hogy ki akarod törölni ezt a karaktert?"
 
-#: ../src/gui/socialwindow.cpp:164
+#: ../src/gui/socialwindow.cpp:154
 #, fuzzy, c-format
 msgid "Are you sure you want to leave guild %s?"
 msgstr "Biztos, hogy ki szeretne lépni?"
 
-#: ../src/gui/socialwindow.cpp:243
+#: ../src/gui/socialwindow.cpp:225
 #, fuzzy, c-format
 msgid "Are you sure you want to leave party %s?"
 msgstr "Biztos, hogy ki szeretne lépni?"
@@ -653,107 +657,117 @@ msgstr "Kezek"
 msgid "Assign"
 msgstr "Hozzárendel"
 
-#: ../src/net/manaserv/charhandler.cpp:167
+#: ../src/net/manaserv/charhandler.cpp:166
 #, c-format
-msgid "At least one statis out of the permitted range: (%u - %u)."
+msgid "At least one stat is out of the permitted range: (%u - %u)."
 msgstr ""
 
-#: ../src/keyboardconfig.cpp:45 ../src/net/tmwa/generalhandler.cpp:238
+#: ../src/keyboardconfig.cpp:46 ../src/net/tmwa/generalhandler.cpp:236
 msgid "Attack"
 msgstr "Támadás"
 
-#: ../src/resources/itemdb.cpp:321
+#: ../src/resources/itemdb.cpp:290
 #, c-format
 msgid "Attack %+d"
 msgstr "Támadás %+d"
 
-#: ../src/gui/popupmenu.cpp:88 ../src/gui/popupmenu.cpp:162
+#: ../src/gui/popupmenu.cpp:83 ../src/gui/popupmenu.cpp:157
 #, fuzzy, c-format
 msgid "Attack %s"
 msgstr "Támadás %+d"
 
-#: ../src/gui/chatwindow.cpp:334
+#: ../src/gui/chatwindow.cpp:320
 msgid "Attendance written to record log."
 msgstr "A látogatottság rögzíve lessz."
 
-#: ../src/gui/setup_audio.cpp:47
+#: ../src/gui/setup_audio.cpp:48
 msgid "Audio"
 msgstr "Audió"
 
-#: ../src/net/tmwa/generalhandler.cpp:132
+#: ../src/net/tmwa/generalhandler.cpp:130
 #, fuzzy
 msgid "Authentication failed."
 msgstr "Azonosítás sikertelen"
 
-#: ../src/localplayer.cpp:1071
+#: ../src/gui/setup_video.cpp:176
+#, c-format
+msgid "Auto (%dx)"
+msgstr ""
+
+#: ../src/localplayer.cpp:1023
 msgid "Away"
 msgstr ""
 
-#: ../src/gui/popupmenu.cpp:101
+#: ../src/gui/popupmenu.cpp:96
 #, fuzzy, c-format
 msgid "Befriend %s"
 msgstr "@@friend|Felvenni %s-t a barátok közé@@"
 
-#: ../src/resources/userpalette.cpp:91
+#: ../src/resources/userpalette.cpp:86
 msgid "Being"
 msgstr "Nevek"
 
-#: ../src/gui/debugwindow.cpp:136
+#: ../src/gui/debugwindow.cpp:141
+#, fuzzy
+msgid "Being Ids"
+msgstr "Nevek"
+
+#: ../src/gui/debugwindow.cpp:137
 msgid "Being collision radius"
 msgstr ""
 
-#: ../src/gui/debugwindow.cpp:138
+#: ../src/gui/debugwindow.cpp:139
 #, fuzzy
 msgid "Being path"
 msgstr "Nevek"
 
-#: ../src/gui/debugwindow.cpp:137
+#: ../src/gui/debugwindow.cpp:138
 msgid "Being positions"
 msgstr ""
 
-#: ../src/net/tmwa/playerhandler.cpp:125
+#: ../src/net/tmwa/playerhandler.cpp:123
 msgid "Bereft of life, you rest in peace."
 msgstr "Megfosztottak az életedtől. Nyugodj békében."
 
-#: ../src/playerrelations.cpp:358 ../src/playerrelations.cpp.orig:344
+#: ../src/playerrelations.cpp:346
 msgid "Blink name"
 msgstr ""
 
-#: ../src/gui/setup_colors.cpp:140
+#: ../src/gui/setup_colors.cpp:132
 #, fuzzy
 msgid "Blue:"
 msgstr "Kék: "
 
-#: ../src/gui/setup_interface.cpp:91
+#: ../src/gui/setup_interface.cpp:74
 msgid "Bubbles with names"
 msgstr "Buborékok nevekkel"
 
-#: ../src/gui/setup_interface.cpp:90
+#: ../src/gui/setup_interface.cpp:73
 msgid "Bubbles, no names"
 msgstr "Buborékok, nincs név."
 
-#: ../src/gui/buydialog.cpp:50 ../src/gui/buydialog.cpp:79
+#: ../src/gui/buydialog.cpp:48 ../src/gui/buydialog.cpp:77
 #: ../src/gui/buyselldialog.cpp:47
 msgid "Buy"
 msgstr "Vétel"
 
-#: ../src/gui/setup_joystick.cpp:38 ../src/gui/setup_joystick.cpp:76
+#: ../src/gui/setup_joystick.cpp:37 ../src/gui/setup_joystick.cpp:68
 msgid "Calibrate"
 msgstr "Kalibrálás"
 
 #: ../src/gui/buyselldialog.cpp:47 ../src/gui/changeemaildialog.cpp:55
 #: ../src/gui/changepassworddialog.cpp:58 ../src/gui/charcreatedialog.cpp:86
-#: ../src/gui/connectiondialog.cpp:44 ../src/gui/customserverdialog.cpp:70
-#: ../src/gui/itemamountwindow.cpp:114 ../src/gui/npcpostdialog.cpp:57
-#: ../src/gui/popupmenu.cpp:179 ../src/gui/popupmenu.cpp:198
-#: ../src/gui/popupmenu.cpp:401 ../src/gui/quitdialog.cpp:48
-#: ../src/gui/register.cpp:74 ../src/gui/setup.cpp:52
-#: ../src/gui/socialwindow.cpp:275 ../src/gui/textdialog.cpp:40
-#: ../src/gui/unregisterdialog.cpp:56 ../src/gui/updaterwindow.cpp:151
+#: ../src/gui/connectiondialog.cpp:44 ../src/gui/customserverdialog.cpp:76
+#: ../src/gui/itemamountwindow.cpp:113 ../src/gui/npcpostdialog.cpp:57
+#: ../src/gui/popupmenu.cpp:174 ../src/gui/popupmenu.cpp:192
+#: ../src/gui/popupmenu.cpp:393 ../src/gui/quitdialog.cpp:48
+#: ../src/gui/register.cpp:74 ../src/gui/setup.cpp:54
+#: ../src/gui/socialwindow.cpp:313 ../src/gui/textdialog.cpp:40
+#: ../src/gui/unregisterdialog.cpp:54 ../src/gui/updaterwindow.cpp:140
 msgid "Cancel"
 msgstr "Mégse"
 
-#: ../src/commandhandler.cpp:421
+#: ../src/commandhandler.cpp:402
 #, c-format
 msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
@@ -761,27 +775,28 @@ msgid ""
 msgstr ""
 "Nem tudsz fület létrehozni \"%s\" számára! Létre van hozva, vagy te vagy az."
 
-#: ../src/gui/socialwindow.cpp:620
-msgid "Cannot create party. You are already in a party"
-msgstr ""
+#: ../src/gui/socialwindow.cpp:662
+#, fuzzy
+msgid "Cannot create party. You are already in a party."
+msgstr "/create > Új csapat létrehozása"
 
-#: ../src/net/tmwa/playerhandler.cpp:367
+#: ../src/net/tmwa/playerhandler.cpp:361
 msgid "Cannot raise skill!"
 msgstr ""
 
-#: ../src/gui/widgets/whispertab.cpp:53
+#: ../src/gui/widgets/whispertab.cpp:52
 msgid "Cannot send empty chat!"
 msgstr "Nem tudsz üres üzenetet küldeni!"
 
-#: ../src/commandhandler.cpp:400
+#: ../src/commandhandler.cpp:381
 msgid "Cannot send empty whispers!"
 msgstr "Nem küldhetsz üres üzenetet!"
 
-#: ../src/net/tmwa/specialhandler.cpp:160
+#: ../src/net/tmwa/specialhandler.cpp:158
 msgid "Cannot shout!"
 msgstr "Nem tudsz ordítani!"
 
-#: ../src/net/tmwa/charserverhandler.cpp:107
+#: ../src/net/tmwa/charserverhandler.cpp:109
 #, fuzzy
 msgid "Cannot use this ID."
 msgstr "Nem használhatod ez a nevet."
@@ -790,7 +805,7 @@ msgstr "Nem használhatod ez a nevet."
 msgid "Change"
 msgstr "Változtatás"
 
-#: ../src/gui/charselectdialog.cpp:154
+#: ../src/gui/charselectdialog.cpp:143
 #, fuzzy
 msgid "Change Email"
 msgstr "Email cím módosírása"
@@ -799,31 +814,31 @@ msgstr "Email cím módosírása"
 msgid "Change Email Address"
 msgstr "Email cím módosírása"
 
-#: ../src/gui/worldselectdialog.cpp:76
+#: ../src/gui/worldselectdialog.cpp:73
 #, fuzzy
 msgid "Change Login"
 msgstr "Változtatás"
 
 #: ../src/gui/changepassworddialog.cpp:47
-#: ../src/gui/changepassworddialog.cpp:56 ../src/gui/charselectdialog.cpp:132
+#: ../src/gui/changepassworddialog.cpp:56 ../src/gui/charselectdialog.cpp:121
 msgid "Change Password"
 msgstr "Jelszó módosítása"
 
-#: ../src/gui/logindialog.cpp:62
+#: ../src/gui/logindialog.cpp:54
 #, fuzzy
 msgid "Change Server"
 msgstr "Szerver"
 
-#: ../src/gui/setup_video.cpp:460
+#: ../src/gui/setup_video.cpp:504
 msgid "Changes will take effect on map change."
 msgstr "A változások érvénybe lépéséhez töltsön be egy új térképet."
 
-#: ../src/client.cpp:853
+#: ../src/client.cpp:776
 #, fuzzy
 msgid "Changing game servers"
 msgstr "Szerver"
 
-#: ../src/gui/setup_video.cpp:349
+#: ../src/gui/setup_video.cpp:385
 #, fuzzy
 msgid "Changing to OpenGL"
 msgstr "OpenGL átállítása"
@@ -832,79 +847,79 @@ msgstr "OpenGL átállítása"
 msgid "Channel operators can kick and op other users from the channel."
 msgstr "A csatorna operátor parancsai: /kick /op"
 
-#: ../src/net/tmwa/chathandler.cpp:265 ../src/net/tmwa/chathandler.cpp:271
-#: ../src/net/tmwa/chathandler.cpp:276 ../src/net/tmwa/chathandler.cpp:281
-#: ../src/net/tmwa/chathandler.cpp:286 ../src/net/tmwa/chathandler.cpp:291
-#: ../src/net/tmwa/chathandler.cpp:296 ../src/net/tmwa/chathandler.cpp:301
+#: ../src/net/tmwa/chathandler.cpp:325 ../src/net/tmwa/chathandler.cpp:331
+#: ../src/net/tmwa/chathandler.cpp:336 ../src/net/tmwa/chathandler.cpp:341
+#: ../src/net/tmwa/chathandler.cpp:346 ../src/net/tmwa/chathandler.cpp:351
+#: ../src/net/tmwa/chathandler.cpp:356 ../src/net/tmwa/chathandler.cpp:361
 msgid "Channels are not supported!"
 msgstr "A csatornák le vannak tiltva!"
 
-#: ../src/net/tmwa/charserverhandler.cpp:146
+#: ../src/net/tmwa/charserverhandler.cpp:148
 msgid "Character deleted."
 msgstr "Karakter törölve."
 
-#: ../src/gui/statuswindow.cpp:215 ../src/gui/statuswindow.cpp:252
+#: ../src/gui/statuswindow.cpp:214 ../src/gui/statuswindow.cpp:251
 #, fuzzy, c-format
 msgid "Character points: %d"
 msgstr "Karakter statok rendben"
 
-#: ../src/gui/charcreatedialog.cpp:255
+#: ../src/gui/charcreatedialog.cpp:269
 msgid "Character stats OK"
 msgstr "Karakter statok rendben"
 
-#: ../src/net/manaserv/charhandler.cpp:149
+#: ../src/net/manaserv/charhandler.cpp:148
 #, fuzzy
 msgid "Character's name already exists."
 msgstr "A felhasználónév foglalt"
 
-#: ../src/net/manaserv/charhandler.cpp:161
+#: ../src/net/manaserv/charhandler.cpp:160
 #, fuzzy
 msgid "Character's stats are too high."
 msgstr "Karakter statok rendben"
 
-#: ../src/net/manaserv/charhandler.cpp:164
+#: ../src/net/manaserv/charhandler.cpp:163
 #, fuzzy
 msgid "Character's stats are too low."
 msgstr "Karakter statok rendben"
 
-#: ../src/gui/chatwindow.cpp:92
+#: ../src/gui/chatwindow.cpp:87
 msgid "Chat"
 msgstr "Chat"
 
-#: ../src/keyboardconfig.cpp:76
+#: ../src/keyboardconfig.cpp:77
 msgid "Chat Window"
 msgstr "Chat Ablak"
 
-#: ../src/net/tmwa/specialhandler.cpp:154
+#: ../src/net/tmwa/specialhandler.cpp:152
 msgid "Chat creating failed!"
 msgstr "Beszélgetés létrehozása sikertelen."
 
-#: ../src/gui/charselectdialog.cpp:404
+#: ../src/gui/charselectdialog.cpp:381
 #, fuzzy
 msgid "Choose"
 msgstr "Bezár"
 
-#: ../src/gui/worldselectdialog.cpp:77
+#: ../src/gui/worldselectdialog.cpp:74
 #, fuzzy
 msgid "Choose World"
 msgstr "Válassz szervert"
 
-#: ../src/gui/serverdialog.cpp:188
+#: ../src/gui/serverdialog.cpp:172
 #, fuzzy
 msgid "Choose Your Server"
 msgstr "Válassz szervert"
 
-#: ../src/gui/socialwindow.cpp:541
+#: ../src/gui/socialwindow.cpp:584
 #, fuzzy
 msgid "Choose your guild's name."
 msgstr "Válassz szervert"
 
-#: ../src/gui/socialwindow.cpp:626
+#: ../src/gui/socialwindow.cpp:668
 #, fuzzy
 msgid "Choose your party's name."
 msgstr "Válassz szervert"
 
-#: ../src/gui/npcdialog.cpp:119
+#: ../src/gui/npcdialog.cpp:116
 msgid "Clear log"
 msgstr ""
 
@@ -913,7 +928,7 @@ msgid ""
 "Client registration is not allowed. Please contact server administration."
 msgstr ""
 
-#: ../src/net/tmwa/loginhandler.cpp:172
+#: ../src/net/tmwa/loginhandler.cpp:176
 #, fuzzy
 msgid "Client too old."
 msgstr "A kliens verziója túl régi"
@@ -924,84 +939,80 @@ msgstr "A kliens verziója túl régi"
 msgid "Client version is too old."
 msgstr "A kliens verziója túl régi"
 
-#: ../src/gui/helpwindow.cpp:51 ../src/gui/npcdialog.cpp:51
+#: ../src/gui/helpwindow.cpp:52 ../src/gui/npcdialog.cpp:51
 msgid "Close"
 msgstr "Bezár"
 
-#: ../src/gui/debugwindow.cpp:135
+#: ../src/gui/debugwindow.cpp:136
 msgid "Collision tiles"
 msgstr ""
 
-#: ../src/gui/setup_colors.cpp:52
+#: ../src/gui/setup_colors.cpp:48
 msgid "Colors"
 msgstr "Színek"
 
-#: ../src/commandhandler.cpp:220
-msgid "Command: /announce <msg>"
-msgstr "Parancs: /announce <üzenet>"
-
-#: ../src/commandhandler.cpp:273
+#: ../src/commandhandler.cpp:254
 #, fuzzy
 msgid "Command: /away"
 msgstr "Parancs: /who"
 
-#: ../src/commandhandler.cpp:270
+#: ../src/commandhandler.cpp:251
 #, fuzzy
 msgid "Command: /away <afk reason>"
 msgstr "Parancs: /w <név> <üzenet>"
 
-#: ../src/commandhandler.cpp:227
+#: ../src/commandhandler.cpp:208
 msgid "Command: /clear"
 msgstr "Parancs: /clear"
 
-#: ../src/gui/widgets/whispertab.cpp:84
+#: ../src/gui/widgets/whispertab.cpp:83
 msgid "Command: /close"
 msgstr "Parancs: /close"
 
-#: ../src/commandhandler.cpp:278
+#: ../src/commandhandler.cpp:259
 #, fuzzy
 msgid "Command: /createparty <name>"
 msgstr "Parancs: /create <csapatnév>"
 
-#: ../src/net/tmwa/gui/partytab.cpp:100
+#: ../src/net/tmwa/gui/partytab.cpp:93
 msgid "Command: /exp"
 msgstr "Parancs: /exp"
 
-#: ../src/net/tmwa/gui/partytab.cpp:95
+#: ../src/net/tmwa/gui/partytab.cpp:88
 msgid "Command: /exp <policy>"
 msgstr "Parancs: /exp <szabály>"
 
-#: ../src/commandhandler.cpp:208
+#: ../src/commandhandler.cpp:196
 msgid "Command: /help"
 msgstr "Parancs: /help"
 
-#: ../src/commandhandler.cpp:211
+#: ../src/commandhandler.cpp:199
 msgid "Command: /help <command>"
 msgstr "Parancs: /help <parancsnév>"
 
-#: ../src/gui/widgets/whispertab.cpp:89
+#: ../src/gui/widgets/whispertab.cpp:88
 #, fuzzy
 msgid "Command: /ignore"
 msgstr "Parancs: /item"
 
-#: ../src/commandhandler.cpp:232
+#: ../src/commandhandler.cpp:213
 #, fuzzy
 msgid "Command: /ignore <player>"
 msgstr "Parancs: /item <szabály>"
 
-#: ../src/net/tmwa/gui/guildtab.cpp:73 ../src/net/tmwa/gui/partytab.cpp:73
+#: ../src/net/tmwa/gui/guildtab.cpp:65 ../src/net/tmwa/gui/partytab.cpp:66
 msgid "Command: /invite <nick>"
 msgstr "Parancs: /invite <név>"
 
-#: ../src/net/tmwa/gui/partytab.cpp:90
+#: ../src/net/tmwa/gui/partytab.cpp:83
 msgid "Command: /item"
 msgstr "Parancs: /item"
 
-#: ../src/net/tmwa/gui/partytab.cpp:85
+#: ../src/net/tmwa/gui/partytab.cpp:78
 msgid "Command: /item <policy>"
 msgstr "Parancs: /item <szabály>"
 
-#: ../src/commandhandler.cpp:238
+#: ../src/commandhandler.cpp:219
 msgid "Command: /join <channel>"
 msgstr "Parancs: /join <csatorna>"
 
@@ -1009,19 +1020,19 @@ msgstr "Parancs: /join <csatorna>"
 msgid "Command: /kick <nick>"
 msgstr "Parancs: /kick <név>"
 
-#: ../src/net/tmwa/gui/guildtab.cpp:80 ../src/net/tmwa/gui/partytab.cpp:80
+#: ../src/net/tmwa/gui/guildtab.cpp:72 ../src/net/tmwa/gui/partytab.cpp:73
 msgid "Command: /leave"
 msgstr "Parancs: /leave"
 
-#: ../src/commandhandler.cpp:244
+#: ../src/commandhandler.cpp:225
 msgid "Command: /list"
 msgstr "Parancs: /list"
 
-#: ../src/commandhandler.cpp:249
+#: ../src/commandhandler.cpp:230
 msgid "Command: /me <message>"
 msgstr "Parancs: /me <üzenet>"
 
-#: ../src/commandhandler.cpp:254
+#: ../src/commandhandler.cpp:235
 msgid "Command: /msg <nick> <message>"
 msgstr "Parancs: /msg <név> <üzenet>"
 
@@ -1029,19 +1040,19 @@ msgstr "Parancs: /msg <név> <üzenet>"
 msgid "Command: /op <nick>"
 msgstr "Parancs: /op <név>"
 
-#: ../src/commandhandler.cpp:283
+#: ../src/commandhandler.cpp:264
 msgid "Command: /party <nick>"
 msgstr "Parancs: /party <név>"
 
-#: ../src/commandhandler.cpp:290
+#: ../src/commandhandler.cpp:271
 msgid "Command: /present"
 msgstr "Parancs: /present"
 
-#: ../src/commandhandler.cpp:264
+#: ../src/commandhandler.cpp:245
 msgid "Command: /q <nick>"
 msgstr "Parancs: /q <név>"
 
-#: ../src/commandhandler.cpp:263
+#: ../src/commandhandler.cpp:244
 msgid "Command: /query <nick>"
 msgstr "Parancs: /query <név>"
 
@@ -1049,19 +1060,19 @@ msgstr "Parancs: /query <név>"
 msgid "Command: /quit"
 msgstr "Parancs: /quit"
 
-#: ../src/commandhandler.cpp:300
+#: ../src/commandhandler.cpp:281
 msgid "Command: /record"
 msgstr "Parancs: /record"
 
-#: ../src/commandhandler.cpp:297
+#: ../src/commandhandler.cpp:278
 msgid "Command: /record <filename>"
 msgstr "parancs: /record <fájlnév>"
 
-#: ../src/commandhandler.cpp:311
+#: ../src/commandhandler.cpp:292
 msgid "Command: /toggle"
 msgstr "Parancs: /toggle"
 
-#: ../src/commandhandler.cpp:305
+#: ../src/commandhandler.cpp:286
 msgid "Command: /toggle <state>"
 msgstr "Parancs: /toggle <állás>"
 
@@ -1069,7 +1080,7 @@ msgstr "Parancs: /toggle <állás>"
 msgid "Command: /topic <message>"
 msgstr "Parancs: /topic <téma>"
 
-#: ../src/commandhandler.cpp:316 ../src/gui/widgets/whispertab.cpp:95
+#: ../src/commandhandler.cpp:297 ../src/gui/widgets/whispertab.cpp:94
 #, fuzzy
 msgid "Command: /unignore <player>"
 msgstr "Parancs: /item <szabály>"
@@ -1078,37 +1089,37 @@ msgstr "Parancs: /item <szabály>"
 msgid "Command: /users"
 msgstr "Parancs: /users"
 
-#: ../src/commandhandler.cpp:256
+#: ../src/commandhandler.cpp:237
 msgid "Command: /w <nick> <message>"
 msgstr "Parancs: /w <név> <üzenet>"
 
-#: ../src/commandhandler.cpp:322
+#: ../src/commandhandler.cpp:303
 msgid "Command: /where"
 msgstr "Parancs: /where"
 
-#: ../src/commandhandler.cpp:255
+#: ../src/commandhandler.cpp:236
 msgid "Command: /whisper <nick> <message>"
 msgstr "Parancs: /whisper <név> <üzenet>"
 
-#: ../src/commandhandler.cpp:327
+#: ../src/commandhandler.cpp:308
 msgid "Command: /who"
 msgstr "Parancs: /who"
 
-#: ../src/gui/updaterwindow.cpp:517
+#: ../src/gui/updaterwindow.cpp:502
 msgid "Completed"
 msgstr "Kész"
 
-#: ../src/playerrelations.cpp:328 ../src/playerrelations.cpp.orig:314
+#: ../src/playerrelations.cpp:316
 #, fuzzy
 msgid "Completely ignore"
 msgstr "@@ignore|Teljesen letiltod %s-t@@"
 
-#: ../src/gui/popupmenu.cpp:118
+#: ../src/gui/popupmenu.cpp:113
 #, fuzzy, c-format
 msgid "Completely ignore %s"
 msgstr "@@ignore|Teljesen letiltod %s-t@@"
 
-#: ../src/gui/charselectdialog.cpp:72
+#: ../src/gui/charselectdialog.cpp:65
 msgid "Confirm Character Delete"
 msgstr "Karakter törlésének megerősítése"
 
@@ -1127,123 +1138,129 @@ msgid ""
 "strange behaviour."
 msgstr "Állítsd át, vagy a játék érdekesen fog viselkedni."
 
-#: ../src/gui/serverdialog.cpp:210
+#: ../src/gui/serverdialog.cpp:191
 #, fuzzy
 msgid "Connect"
 msgstr "Csatlakozás…"
 
-#: ../src/client.cpp:664
+#: ../src/client.cpp:605
 #, fuzzy
 msgid "Connecting to server"
 msgstr "Csatlakozás a térkép szerverhez...."
 
-#: ../src/client.cpp:843
+#: ../src/client.cpp:766
 #, fuzzy
 msgid "Connecting to the game server"
 msgstr "Csatlakozás a térkép szerverhez...."
 
-#: ../src/gui/updaterwindow.cpp:149
+#: ../src/gui/updaterwindow.cpp:138
 msgid "Connecting..."
 msgstr "Csatlakozás…"
 
-#: ../src/net/tmwa/network.cpp:405
+#: ../src/net/tmwa/network.cpp:540
 #, fuzzy
 msgid "Connection to server terminated. "
 msgstr "Csatlakozás a térkép szerverhez...."
 
-#: ../src/keyboardconfig.cpp:84
+#: ../src/keyboardconfig.cpp:85
 msgid "Copy Outfit"
 msgstr ""
 
-#: ../src/gui/statuswindow.cpp:260
+#: ../src/gui/statuswindow.cpp:259
 #, fuzzy, c-format
 msgid "Correction points: %d"
 msgstr "Képesség pontok: %d"
 
-#: ../src/game.cpp:937
+#: ../src/game.cpp:941
 #, fuzzy
 msgid "Could Not Load Map"
 msgstr "Nem lehet betölteni a térképet"
 
-#: ../src/net/tmwa/partyhandler.cpp:83
+#: ../src/net/tmwa/partyhandler.cpp:82
 msgid "Could not create party."
 msgstr "Nem tudtad a csapatot létrehozni."
 
-#: ../src/net/tmwa/guildhandler.cpp:296
-msgid "Could not invite user to guild."
-msgstr ""
-
-#: ../src/net/tmwa/specialhandler.cpp:157
+#: ../src/net/tmwa/specialhandler.cpp:155
 msgid "Could not join party!"
 msgstr "Nem tudsz csatlakozni a csapatba."
 
-#: ../src/net/tmwa/specialhandler.cpp:211
+#: ../src/net/tmwa/specialhandler.cpp:209
 msgid "Could not steal anything..."
 msgstr "Nem tudsz semmit ellopni..."
 
-#: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:416
-#: ../src/gui/socialwindow.cpp:330
+#: ../src/game.cpp:290
+#, fuzzy
+msgid "Could not take screenshot!"
+msgstr "Nem tudtad a csapatot létrehozni."
+
+#: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:393
+#: ../src/gui/socialwindow.cpp:365
 msgid "Create"
 msgstr "Létrehozás"
 
-#: ../src/gui/charcreatedialog.cpp:53
+#: ../src/gui/charcreatedialog.cpp:48
 msgid "Create Character"
 msgstr "Karakter létrehozása"
 
-#: ../src/gui/socialwindow.cpp:272
+#: ../src/gui/socialwindow.cpp:310
 msgid "Create Guild"
 msgstr "Klán létrehozása"
 
-#: ../src/gui/socialwindow.cpp:273 ../src/gui/socialwindow.cpp:619
+#: ../src/gui/socialwindow.cpp:311 ../src/gui/socialwindow.cpp:661
 #, fuzzy
 msgid "Create Party"
 msgstr "Karakter létrehozása"
 
-#: ../src/gui/socialwindow.cpp:503
+#: ../src/gui/socialwindow.cpp:545
 #, fuzzy, c-format
 msgid "Creating guild called %s."
 msgstr "Hiba a klán létrehozása közben."
 
-#: ../src/gui/socialwindow.cpp:496
+#: ../src/gui/socialwindow.cpp:537
 msgid "Creating guild failed, please choose a shorter name."
 msgstr ""
 
-#: ../src/gui/socialwindow.cpp:526
+#: ../src/gui/socialwindow.cpp:569
 #, c-format
 msgid "Creating party called %s."
 msgstr ""
 
-#: ../src/gui/socialwindow.cpp:519
+#: ../src/gui/socialwindow.cpp:561
 msgid "Creating party failed, please choose a shorter name."
 msgstr ""
 
-#: ../src/resources/userpalette.cpp:105
+#: ../src/resources/userpalette.cpp:100
 msgid "Critical Hit"
 msgstr "Kritikális ütéskor"
 
-#: ../src/gui/debugwindow.cpp:96
+#: ../src/gui/debugwindow.cpp:97
 #, c-format
 msgid "Cursor: (%d, %d)"
 msgstr ""
 
-#: ../src/gui/customserverdialog.cpp:48
+#: ../src/gui/setup_video.cpp:102
+#, fuzzy
+msgid "Custom"
+msgstr "Egyéni kurzor"
+
+#: ../src/gui/customserverdialog.cpp:50
 #, fuzzy
 msgid "Custom Server"
 msgstr "Egyéni kurzor"
 
-#: ../src/gui/setup_video.cpp:167
+#: ../src/gui/setup_video.cpp:229
 msgid "Custom cursor"
 msgstr "Egyéni kurzor"
 
-#: ../src/gui/setup_video.cpp:357
+#: ../src/gui/setup_video.cpp:393
 msgid "Deactivating OpenGL"
 msgstr ""
 
-#: ../src/gui/debugwindow.cpp:219
+#: ../src/gui/debugwindow.cpp:232
 msgid "Debug"
 msgstr ""
 
-#: ../src/keyboardconfig.cpp:79
+#: ../src/keyboardconfig.cpp:80
 msgid "Debug Window"
 msgstr "Hibakereső Ablak"
 
@@ -1251,65 +1268,64 @@ msgstr "Hibakereső Ablak"
 msgid "Default"
 msgstr "Alapértelmezett"
 
-#: ../src/net/tmwa/generalhandler.cpp:239
+#: ../src/net/tmwa/generalhandler.cpp:237
 #, fuzzy
 msgid "Defense"
 msgstr "Fizikális védelem:"
 
-#: ../src/resources/itemdb.cpp:322
+#: ../src/resources/itemdb.cpp:291
 #, c-format
 msgid "Defense %+d"
 msgstr "Védelem %+d"
 
-#: ../src/gui/setup_colors.cpp:95
+#: ../src/gui/setup_colors.cpp:87
 #, fuzzy
 msgid "Delay:"
 msgstr "Várakozás "
 
-#: ../src/gui/charselectdialog.cpp:360 ../src/gui/serverdialog.cpp:213
-#: ../src/gui/setup_players.cpp:228
+#: ../src/gui/charselectdialog.cpp:340 ../src/gui/serverdialog.cpp:194
+#: ../src/gui/setup_players.cpp:221
 msgid "Delete"
 msgstr "Törlés"
 
-#: ../src/gui/customserverdialog.cpp:58
+#: ../src/gui/customserverdialog.cpp:62
 #, fuzzy
 msgid "Description:"
 msgstr "Leírás: %s"
 
-#: ../src/net/manaserv/attributes.cpp:192
-#: ../src/net/tmwa/generalhandler.cpp:235
+#: ../src/net/tmwa/generalhandler.cpp:233 ../src/resources/attributes.cpp:183
 msgid "Dexterity"
 msgstr "Ügyesség"
 
-#: ../src/net/manaserv/attributes.cpp:199
+#: ../src/resources/attributes.cpp:189
 #, fuzzy, c-format
 msgid "Dexterity %+.1f"
 msgstr "Ügyesség %+d"
 
-#: ../src/net/tmwa/generalhandler.cpp:106
+#: ../src/net/tmwa/generalhandler.cpp:103
 #, c-format
 msgid "Dexterity %+d"
 msgstr "Ügyesség %+d"
 
-#: ../src/net/tmwa/charserverhandler.cpp:275
+#: ../src/net/tmwa/charserverhandler.cpp:287
 msgid "Dexterity:"
 msgstr "Ügyesség:"
 
-#: ../src/gui/setup_video.cpp:181
+#: ../src/gui/setup_video.cpp:241
 msgid "Disable transparency (Low CPU mode)"
 msgstr ""
 
-#: ../src/gui/popupmenu.cpp:106
+#: ../src/gui/popupmenu.cpp:101
 #, fuzzy, c-format
 msgid "Disregard %s"
 msgstr "Semmibevett"
 
-#: ../src/gui/setup_players.cpp:66
+#: ../src/gui/setup_players.cpp:63
 msgid "Disregarded"
 msgstr "Semmibevett"
 
-#: ../src/net/manaserv/beinghandler.cpp:287
-#: ../src/net/tmwa/playerhandler.cpp:109
+#: ../src/net/manaserv/beinghandler.cpp:289
+#: ../src/net/tmwa/playerhandler.cpp:107
 msgid "Do you want your possessions identified?"
 msgstr "Meg akarod bánni a bűneid?"
 
@@ -1317,27 +1333,27 @@ msgstr "Meg akarod bánni a bűneid?"
 msgid "Download music"
 msgstr ""
 
-#: ../src/gui/serverdialog.cpp:404
+#: ../src/gui/serverdialog.cpp:389
 #, c-format
 msgid "Downloading server list...%2.2f%%"
 msgstr ""
 
-#: ../src/gui/inventorywindow.cpp:381 ../src/gui/popupmenu.cpp:385
+#: ../src/gui/inventorywindow.cpp:387 ../src/gui/popupmenu.cpp:377
 msgid "Drop"
 msgstr "Eldob"
 
-#: ../src/gui/inventorywindow.cpp:108 ../src/gui/inventorywindow.cpp:379
-#: ../src/gui/popupmenu.cpp:383
+#: ../src/gui/inventorywindow.cpp:107 ../src/gui/inventorywindow.cpp:385
+#: ../src/gui/popupmenu.cpp:375
 #, fuzzy
 msgid "Drop..."
 msgstr "Eldob"
 
-#: ../src/net/tmwa/generalhandler.cpp:148
+#: ../src/net/tmwa/generalhandler.cpp:146
 #, fuzzy
 msgid "Duplicated login."
 msgstr "Duplikált bejelentkezés"
 
-#: ../src/client.cpp:941
+#: ../src/client.cpp:864
 #, fuzzy
 msgid "Email Change"
 msgstr "Változtatás"
@@ -1347,7 +1363,7 @@ msgstr "Változtatás"
 msgid "Email address already exists."
 msgstr "Az email cím foglalt"
 
-#: ../src/client.cpp:942
+#: ../src/client.cpp:865
 #, fuzzy
 msgid "Email changed successfully!"
 msgstr "A tag előléptetése sikeres."
@@ -1356,38 +1372,38 @@ msgstr "A tag előléptetése sikeres."
 msgid "Email:"
 msgstr "Email:"
 
-#: ../src/keyboardconfig.cpp:85 ../src/keyboardconfig.cpp:86
-#: ../src/keyboardconfig.cpp:87 ../src/keyboardconfig.cpp:88
-#: ../src/keyboardconfig.cpp:89 ../src/keyboardconfig.cpp:90
-#: ../src/keyboardconfig.cpp:91 ../src/keyboardconfig.cpp:92
-#: ../src/keyboardconfig.cpp:93 ../src/keyboardconfig.cpp:94
-#: ../src/keyboardconfig.cpp:95 ../src/keyboardconfig.cpp:96
+#: ../src/keyboardconfig.cpp:86 ../src/keyboardconfig.cpp:87
+#: ../src/keyboardconfig.cpp:88 ../src/keyboardconfig.cpp:89
+#: ../src/keyboardconfig.cpp:90 ../src/keyboardconfig.cpp:91
+#: ../src/keyboardconfig.cpp:92 ../src/keyboardconfig.cpp:93
+#: ../src/keyboardconfig.cpp:94 ../src/keyboardconfig.cpp:95
+#: ../src/keyboardconfig.cpp:96 ../src/keyboardconfig.cpp:97
 #, c-format
 msgid "Emote Shortcut %d"
 msgstr "Hangulatjel Gyorsmenü %d"
 
-#: ../src/keyboardconfig.cpp:81
+#: ../src/keyboardconfig.cpp:82
 msgid "Emote Shortcut Window"
 msgstr "Hangulatjel Gyorsmenü Ablak"
 
-#: ../src/net/tmwa/specialhandler.cpp:148
+#: ../src/net/tmwa/specialhandler.cpp:146
 msgid "Emote failed!"
 msgstr "Hangulatjel küldése sikertelen!"
 
-#: ../src/net/tmwa/network.cpp:146
+#: ../src/net/tmwa/network.cpp:289
 msgid "Empty address given to Network::connect()!"
 msgstr ""
 
-#: ../src/gui/setup_players.cpp:234
+#: ../src/gui/setup_players.cpp:227
 #, fuzzy
 msgid "Enable Chat log"
 msgstr "Nem tudod eladni."
 
-#: ../src/gui/setup_joystick.cpp:39
+#: ../src/gui/setup_joystick.cpp:38
 msgid "Enable joystick"
 msgstr "Joystick engedélyezése"
 
-#: ../src/keyboardconfig.cpp:57
+#: ../src/keyboardconfig.cpp:58
 msgid "Enable/Disable Trading"
 msgstr "Üzletelés Engedélyezése/Tiltása"
 
@@ -1399,50 +1415,51 @@ msgstr ""
 msgid "Enter the old password first."
 msgstr ""
 
-#: ../src/client.cpp:724
+#: ../src/client.cpp:659
 msgid "Entering game world"
 msgstr ""
 
-#: ../src/gui/inventorywindow.cpp:93 ../src/gui/inventorywindow.cpp:106
-#: ../src/gui/inventorywindow.cpp:368 ../src/gui/popupmenu.cpp:375
+#: ../src/gui/inventorywindow.cpp:92 ../src/gui/inventorywindow.cpp:105
+#: ../src/gui/inventorywindow.cpp:374 ../src/gui/popupmenu.cpp:367
 msgid "Equip"
 msgstr "Használ"
 
-#: ../src/net/tmwa/playerhandler.cpp:507
+#: ../src/net/tmwa/playerhandler.cpp:499
 msgid "Equip arrows first."
 msgstr "Előbb tegyél be nyílvesszőt."
 
-#: ../src/gui/equipmentwindow.cpp:54 ../src/gui/windowmenu.cpp:58
+#: ../src/gui/equipmentwindow.cpp:54 ../src/gui/windowmenu.cpp:57
 msgid "Equipment"
 msgstr "Felszerelés"
 
-#: ../src/keyboardconfig.cpp:73
+#: ../src/keyboardconfig.cpp:74
 msgid "Equipment Window"
 msgstr "Felszerelés Ablak"
 
-#: ../src/client.cpp:1042 ../src/gui/changeemaildialog.cpp:156
-#: ../src/gui/changepassworddialog.cpp:149 ../src/gui/charcreatedialog.cpp:194
-#: ../src/gui/customserverdialog.cpp:155 ../src/gui/register.cpp:218
-#: ../src/gui/serverdialog.cpp:286 ../src/gui/serverdialog.cpp:330
-#: ../src/gui/unregisterdialog.cpp:133 ../src/net/manaserv/charhandler.cpp:179
-#: ../src/net/manaserv/charhandler.cpp:229
-#: ../src/net/tmwa/charserverhandler.cpp:134
-#: ../src/net/tmwa/charserverhandler.cpp:151
+#: ../src/client.cpp:966 ../src/gui/changeemaildialog.cpp:156
+#: ../src/gui/changepassworddialog.cpp:149 ../src/gui/charcreatedialog.cpp:198
+#: ../src/gui/customserverdialog.cpp:166 ../src/gui/register.cpp:218
+#: ../src/gui/serverdialog.cpp:271 ../src/gui/serverdialog.cpp:315
+#: ../src/gui/setup_video.cpp:374 ../src/gui/unregisterdialog.cpp:130
+#: ../src/net/manaserv/charhandler.cpp:178
+#: ../src/net/manaserv/charhandler.cpp:228
+#: ../src/net/tmwa/charserverhandler.cpp:136
+#: ../src/net/tmwa/charserverhandler.cpp:153
 msgid "Error"
 msgstr "Hiba"
 
-#: ../src/net/manaserv/guildhandler.cpp:87
+#: ../src/net/manaserv/guildhandler.cpp:85
 msgid "Error creating guild."
 msgstr "Hiba a klán létrehozása közben."
 
-#: ../src/client.cpp:1326
+#: ../src/client.cpp:1203
 #, fuzzy, c-format
 msgid ""
 "Error creating updates directory!\n"
 "(%s)"
 msgstr "Hiba a frissítési könyvtár létrehozása közben!"
 
-#: ../src/client.cpp:1334
+#: ../src/client.cpp:1211
 #, fuzzy, c-format
 msgid ""
 "Error creating updates directory!\n"
@@ -1454,71 +1471,83 @@ msgstr "Hiba a frissítési könyvtár létrehozása közben!"
 msgid "Error joining channel."
 msgstr "Parancs: /join <csatorna>"
 
-#: ../src/gui/serverdialog.cpp:418
+#: ../src/gui/serverdialog.cpp:403
 msgid "Error retreiving server list!"
 msgstr ""
 
-#: ../src/game.cpp:938
+#: ../src/game.cpp:942
 #, c-format
 msgid "Error while loading %s"
 msgstr "Hiba %s betöltése közben"
 
-#: ../src/resources/userpalette.cpp:101
+#: ../src/resources/userpalette.cpp:96
 msgid "Exp Notification"
 msgstr "Tapasztalat szerzésekor"
 
-#: ../src/gui/statuswindow.cpp:126
+#: ../src/gui/statuswindow.cpp:125
 msgid "Exp:"
 msgstr "TP:"
 
-#: ../src/net/tmwa/gui/partytab.cpp:170 ../src/net/tmwa/partyhandler.cpp:179
+#: ../src/net/tmwa/gui/partytab.cpp:163 ../src/net/tmwa/partyhandler.cpp:178
 msgid "Experience sharing disabled."
 msgstr "Tapasztalat megosztás tiltva."
 
-#: ../src/net/tmwa/gui/partytab.cpp:167 ../src/net/tmwa/partyhandler.cpp:173
+#: ../src/net/tmwa/gui/partytab.cpp:160 ../src/net/tmwa/partyhandler.cpp:172
 msgid "Experience sharing enabled."
 msgstr "Tapasztalat megosztás engedélyezve."
 
-#: ../src/net/tmwa/gui/partytab.cpp:173 ../src/net/tmwa/partyhandler.cpp:185
+#: ../src/net/tmwa/gui/partytab.cpp:166 ../src/net/tmwa/partyhandler.cpp:184
 msgid "Experience sharing not possible."
 msgstr "A tapasztalat megosztás nem lehetséges."
 
-#: ../src/net/tmwa/gui/partytab.cpp:176
+#: ../src/net/tmwa/gui/partytab.cpp:169
 #, fuzzy
 msgid "Experience sharing unknown."
 msgstr "Tapasztalat megosztás engedélyezve."
 
-#: ../src/gui/setup_video.cpp:171
+#: ../src/gui/setup_video.cpp:231
 #, fuzzy
 msgid "FPS limit:"
 msgstr "FPS Limit:"
 
-#: ../src/net/tmwa/tradehandler.cpp:211
+#: ../src/net/tmwa/tradehandler.cpp:218
 msgid "Failed adding item for unknown reason."
 msgstr "Ismeretlen okból a tárgy hozzáadása sikertelen."
 
-#: ../src/net/tmwa/tradehandler.cpp:207
+#: ../src/net/tmwa/tradehandler.cpp:209
 msgid "Failed adding item. Trade partner has no free slot."
 msgstr "Tárgy hozzáadása sikertelen. Az üzleti partnernek nincs elég helye."
 
-#: ../src/net/tmwa/tradehandler.cpp:202
+#: ../src/net/tmwa/tradehandler.cpp:204
 msgid "Failed adding item. Trade partner is over weighted."
 msgstr "Tárgy hozzáadása sikertelen. Az üzleti partner túl van terhelve."
 
-#: ../src/gui/tradewindow.cpp:262
-msgid "Failed adding item. You can not overlap one kind of item on the window."
+#: ../src/net/tmwa/tradehandler.cpp:214
+#, fuzzy
+msgid "Failed adding item. You can't trade this item."
 msgstr ""
 "Hiba a tárgy hozzáadásakor. Nem tudod rárakni az egyik tárgyat a másikra."
 
-#: ../src/net/tmwa/charserverhandler.cpp:134
+#: ../src/gui/tradewindow.cpp:262
+#, fuzzy
+msgid "Failed adding item. You cannot overlap one kind of item on the window."
+msgstr ""
+"Hiba a tárgy hozzáadásakor. Nem tudod rárakni az egyik tárgyat a másikra."
+
+#: ../src/gui/setup_video.cpp:374
+#, fuzzy
+msgid "Failed to change video mode."
+msgstr "Nem tudod bevetni a tárgyat."
+
+#: ../src/net/tmwa/charserverhandler.cpp:136
 msgid "Failed to create character. Most likely the name is already taken."
 msgstr "Nem tudod létrehozni a karaktert. Valószínű a neve használatban van."
 
-#: ../src/net/tmwa/charserverhandler.cpp:151
+#: ../src/net/tmwa/charserverhandler.cpp:153
 msgid "Failed to delete character."
 msgstr "Karakter törlése sikertelen."
 
-#: ../src/net/manaserv/guildhandler.cpp:209
+#: ../src/net/manaserv/guildhandler.cpp:220
 msgid "Failed to promote member."
 msgstr "A tag előléptetése sikertelen."
 
@@ -1526,27 +1555,15 @@ msgstr "A tag előléptetése sikertelen."
 msgid "Failed to send as sender or letter invalid."
 msgstr "A levél elküldése sikertelen. A feladó, vagy a címzett nem található."
 
-#: ../src/gui/recorder.cpp:113
+#: ../src/gui/recorder.cpp:112
 msgid "Failed to start recording."
 msgstr "Sikertelen rögzítés."
 
-#: ../src/gui/setup_video.cpp:323
-#, fuzzy
-msgid ""
-"Failed to switch to fullscreen mode and restoration of old mode also failed!"
-msgstr "Ez a mód és az előző mód visszaállítása sikertelen."
-
-#: ../src/gui/setup_video.cpp:317
-#, fuzzy
-msgid ""
-"Failed to switch to windowed mode and restoration of old mode also failed!"
-msgstr "Ez a mód és az előző mód visszaállítása sikertelen."
-
-#: ../src/net/tmwa/inventoryhandler.cpp:287
+#: ../src/net/tmwa/inventoryhandler.cpp:277
 msgid "Failed to use item."
 msgstr "Nem tudod bevetni a tárgyat."
 
-#: ../src/client.cpp:962
+#: ../src/client.cpp:885
 msgid "Farewell, come back any time..."
 msgstr ""
 
@@ -1558,109 +1575,116 @@ msgstr ""
 msgid "Female"
 msgstr "Nő"
 
-#: ../src/gui/recorder.cpp:88
+#: ../src/gui/recorder.cpp:87
 msgid "Finishing recording."
 msgstr "Rögzítés befejezése."
 
-#: ../src/gui/setup_interface.cpp:130
+#: ../src/gui/setup_interface.cpp:113
 #, fuzzy
 msgid "Font size:"
 msgstr "Betűméret"
 
-#: ../src/commandhandler.cpp:204
+#: ../src/commandhandler.cpp:192
 msgid "For more information, type /help <command>."
 msgstr "További információhoz gépeld be a /help <parancsnév> parancsot."
 
-#: ../src/gui/setup_players.cpp:65
+#: ../src/gui/setup_players.cpp:62
 msgid "Friend"
 msgstr "Barát"
 
-#: ../src/gui/setup_video.cpp:165
-msgid "Full screen"
+#: ../src/gui/setup_video.cpp:221
+#, fuzzy
+msgid "Fullscreen"
 msgstr "Teljes képernyő"
 
-#: ../src/resources/userpalette.cpp:94
+#: ../src/resources/userpalette.cpp:89
 msgid "GM Names"
 msgstr "GM név"
 
-#: ../src/net/tmwa/gamehandler.cpp:96
+#: ../src/gui/debugwindow.cpp:142
+msgid "GUI debug"
+msgstr ""
+
+#: ../src/gui/setup_interface.cpp:112
+#, fuzzy
+msgid "GUI opacity"
+msgstr "Menük áttetszősége"
+
+#: ../src/net/tmwa/gamehandler.cpp:89
 #, fuzzy
 msgid "Game"
 msgstr "Név"
 
-#: ../src/net/manaserv/beinghandler.cpp:281
-#: ../src/net/tmwa/playerhandler.cpp:101
+#: ../src/net/manaserv/beinghandler.cpp:283
+#: ../src/net/tmwa/playerhandler.cpp:99
 msgid "Game Over!"
 msgstr "Vége a játéknak!"
 
-#: ../src/game.cpp:170
+#: ../src/game.cpp:167
 msgid "General"
 msgstr "Általános"
 
-#: ../src/gui/widgets/chattab.cpp:164
+#: ../src/gui/widgets/chattab.cpp:160
 #, c-format
 msgid "Global announcement from %s:"
 msgstr "Globális bejelentés (%s) :"
 
-#: ../src/gui/widgets/chattab.cpp:158
+#: ../src/gui/widgets/chattab.cpp:154
 msgid "Global announcement:"
 msgstr "Globális bejelentés:"
 
-#: ../src/net/tmwa/generalhandler.cpp:209
+#: ../src/net/tmwa/generalhandler.cpp:207
 msgid "Got disconnected from server!"
 msgstr "Lekapcsolódtál a szerverről!"
 
-#: ../src/gui/setup_colors.cpp:125
+#: ../src/gui/setup_colors.cpp:117
 #, fuzzy
 msgid "Green:"
 msgstr "Zöld: "
 
-#: ../src/gui/debugwindow.cpp:134
+#: ../src/gui/debugwindow.cpp:135
 msgid "Grid"
 msgstr ""
 
-#: ../src/gui/setup_interface.cpp:129
-msgid "Gui opacity"
-msgstr "Menük áttetszősége"
-
-#: ../src/net/tmwa/gui/guildtab.cpp:45
+#: ../src/net/tmwa/gui/guildtab.cpp:41
 msgid "Guild"
 msgstr "Klán"
 
-#: ../src/gui/socialwindow.cpp:139
+#: ../src/gui/socialwindow.cpp:129
 #, fuzzy, c-format
 msgid "Guild %s quit requested."
 msgstr "Klán létrehozva."
 
-#: ../src/resources/userpalette.cpp:98
+#: ../src/resources/userpalette.cpp:93
 #, fuzzy
 msgid "Guild Members"
 msgstr "Klán"
 
-#: ../src/gui/socialwindow.cpp:540
+#: ../src/gui/socialwindow.cpp:583
 #, fuzzy
 msgid "Guild Name"
 msgstr "Klán"
 
-#: ../src/net/manaserv/guildhandler.cpp:82
+#: ../src/net/manaserv/guildhandler.cpp:80
 msgid "Guild created."
 msgstr "Klán létrehozva."
 
-#: ../src/net/tmwa/guildhandler.cpp:393
-msgid "Guild creation isn't supported yet."
-msgstr ""
+#: ../src/net/tmwa/guildhandler.cpp:63
+#, fuzzy
+msgid "Guild creation isn't supported."
+msgstr "Klán létrehozva."
 
-#: ../src/net/tmwa/gui/guildtab.cpp:89
+#: ../src/net/tmwa/gui/guildtab.cpp:81
 #, fuzzy
 msgid "Guild name is missing."
 msgstr "A csapatnév hiányzik."
 
-#: ../src/resources/itemdb.cpp:323
+#: ../src/resources/itemdb.cpp:292
 #, c-format
 msgid "HP %+d"
 msgstr "Élet: %+d"
 
-#: ../src/gui/statuswindow.cpp:121
+#: ../src/gui/statuswindow.cpp:120
 msgid "HP:"
 msgstr "Élet:"
 
@@ -1686,39 +1710,39 @@ msgstr ""
 msgid "Head"
 msgstr ""
 
-#: ../src/gui/helpwindow.cpp:37
+#: ../src/gui/helpwindow.cpp:38
 msgid "Help"
 msgstr "Súgó"
 
-#: ../src/keyboardconfig.cpp:70
+#: ../src/keyboardconfig.cpp:71
 msgid "Help Window"
 msgstr "Súgó Ablak"
 
-#: ../src/keyboardconfig.cpp:54
+#: ../src/keyboardconfig.cpp:55
 msgid "Hide Windows"
 msgstr "Ablakok Elrejtése"
 
-#: ../src/net/tmwa/specialhandler.cpp:199
+#: ../src/net/tmwa/specialhandler.cpp:197
 msgid "Huh? What's that?"
 msgstr "Huh? Mi volt ez?"
 
-#: ../src/net/manaserv/beinghandler.cpp:286
-#: ../src/net/tmwa/playerhandler.cpp:107
+#: ../src/net/manaserv/beinghandler.cpp:288
+#: ../src/net/tmwa/playerhandler.cpp:105
 msgid "I guess this did not run too well."
 msgstr "Úgy látszik nem futottál túl gyorsan."
 
-#: ../src/commandhandler.cpp:240
+#: ../src/commandhandler.cpp:221
 msgid "If <channel> doesn't exist, it's created."
 msgstr "Ha a <csatorna> helyen megadott csatorna nem létezik, létrehozod."
 
-#: ../src/commandhandler.cpp:258 ../src/commandhandler.cpp:285
+#: ../src/commandhandler.cpp:239 ../src/commandhandler.cpp:266
 #: ../src/gui/widgets/channeltab.cpp:81 ../src/gui/widgets/channeltab.cpp:90
-#: ../src/net/tmwa/gui/guildtab.cpp:75 ../src/net/tmwa/gui/partytab.cpp:75
+#: ../src/net/tmwa/gui/guildtab.cpp:67 ../src/net/tmwa/gui/partytab.cpp:68
 msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
 msgstr ""
 "Ha a <név> alatt megadott név szóközt tartalmaz idézőjelbe kell tenni. (\")."
 
-#: ../src/net/tmwa/playerhandler.cpp:126
+#: ../src/net/tmwa/playerhandler.cpp:124
 msgid "If you weren't so animated, you'd be pushing up the daisies."
 msgstr "Szép vagy mikor alszol..."
 
@@ -1726,24 +1750,24 @@ msgstr "Szép vagy mikor alszol..."
 msgid "If you're the last person in the channel, it will be deleted."
 msgstr "Ha te vagy az utolsó személy a csatornán, akkor kitörli."
 
-#: ../src/gui/popupmenu.cpp:109
+#: ../src/gui/popupmenu.cpp:104
 #, fuzzy, c-format
 msgid "Ignore %s"
 msgstr "Tiltott"
 
-#: ../src/keyboardconfig.cpp:104
+#: ../src/keyboardconfig.cpp:105
 msgid "Ignore input 1"
 msgstr "Ignore input 1"
 
-#: ../src/keyboardconfig.cpp:105
+#: ../src/keyboardconfig.cpp:106
 msgid "Ignore input 2"
 msgstr "Ignore input 2"
 
-#: ../src/gui/setup_players.cpp:67
+#: ../src/gui/setup_players.cpp:64
 msgid "Ignored"
 msgstr "Tiltott"
 
-#: ../src/game.cpp:704
+#: ../src/game.cpp:708
 msgid "Ignoring incoming trade requests"
 msgstr "Kereskedési kérelmek elutasítása"
 
@@ -1751,176 +1775,188 @@ msgstr "Kereskedési kérelmek elutasítása"
 msgid "Ignoring incoming trade requests."
 msgstr "Elutasítod a bejövő üzleti ajánlatokat."
 
-#: ../src/gui/debugwindow.cpp:235 ../src/net/manaserv/charhandler.cpp:212
-#: ../src/net/tmwa/charserverhandler.cpp:146
+#: ../src/gui/debugwindow.cpp:248 ../src/net/manaserv/charhandler.cpp:211
+#: ../src/net/tmwa/charserverhandler.cpp:148
 msgid "Info"
 msgstr "Infó"
 
-#: ../src/net/tmwa/playerhandler.cpp:102
+#: ../src/net/tmwa/playerhandler.cpp:100
 msgid "Insert coin to continue."
 msgstr "Dobj be egy érmét a folytatáshoz."
 
-#: ../src/net/tmwa/specialhandler.cpp:172
+#: ../src/net/tmwa/specialhandler.cpp:170
 msgid "Insufficient HP!"
 msgstr "Kevés az életed!"
 
-#: ../src/net/tmwa/specialhandler.cpp:175
+#: ../src/net/tmwa/specialhandler.cpp:173
 msgid "Insufficient SP!"
 msgstr "Kimerültél."
 
-#: ../src/net/manaserv/attributes.cpp:218
-#: ../src/net/tmwa/generalhandler.cpp:233
+#: ../src/net/tmwa/generalhandler.cpp:231 ../src/resources/attributes.cpp:207
 msgid "Intelligence"
 msgstr "Intelligencia"
 
-#: ../src/net/manaserv/attributes.cpp:225
+#: ../src/resources/attributes.cpp:213
 #, fuzzy, c-format
 msgid "Intelligence %+.1f"
 msgstr "Intelligencia %+d"
 
-#: ../src/net/tmwa/generalhandler.cpp:105
+#: ../src/net/tmwa/generalhandler.cpp:102
 #, c-format
 msgid "Intelligence %+d"
 msgstr "Intelligencia %+d"
 
-#: ../src/net/tmwa/charserverhandler.cpp:274
+#: ../src/net/tmwa/charserverhandler.cpp:286
 msgid "Intelligence:"
 msgstr "Intelligencia:"
 
-#: ../src/gui/setup_interface.cpp:120
+#: ../src/gui/setup_interface.cpp:103
 msgid "Interface"
 msgstr ""
 
-#: ../src/net/manaserv/charhandler.cpp:269
+#: ../src/net/manaserv/charhandler.cpp:268
 #, fuzzy
 msgid "Invalid character slot selected."
 msgstr "Karakter törölve."
 
-#: ../src/net/manaserv/charhandler.cpp:158
+#: ../src/net/manaserv/charhandler.cpp:157
 msgid "Invalid gender."
 msgstr ""
 
-#: ../src/net/manaserv/charhandler.cpp:155
+#: ../src/net/manaserv/charhandler.cpp:154
 msgid "Invalid hair color."
 msgstr ""
 
-#: ../src/net/manaserv/charhandler.cpp:152
+#: ../src/net/manaserv/charhandler.cpp:151
 msgid "Invalid hairstyle."
 msgstr ""
 
-#: ../src/net/manaserv/charhandler.cpp:146
+#: ../src/net/manaserv/charhandler.cpp:145
 msgid "Invalid name."
 msgstr ""
 
-#: ../src/net/manaserv/charhandler.cpp:173
+#: ../src/main.cpp:173
+msgid "Invalid server type, expected one of: tmwathena, manaserv"
+msgstr ""
+
+#: ../src/net/manaserv/charhandler.cpp:172
 msgid "Invalid slot number."
 msgstr ""
 
-#: ../src/client.cpp:1294
+#: ../src/client.cpp:1171
 #, fuzzy, c-format
 msgid "Invalid update host: %s"
 msgstr "Helytelen frissítési kiszolgáló: "
 
-#: ../src/gui/inventorywindow.cpp:60 ../src/gui/windowmenu.cpp:56
+#: ../src/gui/inventorywindow.cpp:60 ../src/gui/windowmenu.cpp:55
 msgid "Inventory"
 msgstr "Táska"
 
-#: ../src/keyboardconfig.cpp:72
+#: ../src/keyboardconfig.cpp:73
 msgid "Inventory Window"
 msgstr "Táska Ablak"
 
-#: ../src/localplayer.cpp:916
+#: ../src/localplayer.cpp:867
 #, fuzzy
 msgid "Inventory is full."
 msgstr "A szerver tele van"
 
-#: ../src/gui/socialwindow.cpp:331
+#: ../src/gui/socialwindow.cpp:366
 #, fuzzy
 msgid "Invite"
 msgstr "Felhasználó meghívása"
 
-#: ../src/gui/popupmenu.cpp:131
+#: ../src/gui/popupmenu.cpp:126
 #, fuzzy, c-format
 msgid "Invite %s to join your guild"
 msgstr "@@guild|%s meghívása a klánodba@@"
 
-#: ../src/gui/popupmenu.cpp:137
+#: ../src/gui/popupmenu.cpp:132
 #, fuzzy, c-format
 msgid "Invite %s to join your party"
 msgstr "@@party|%s meghívása a csapatodba@@"
 
-#: ../src/net/manaserv/guildhandler.cpp:97
+#: ../src/net/manaserv/guildhandler.cpp:108
+#, fuzzy
+msgid "Invite failed."
+msgstr "Ülés sikertelen!"
+
+#: ../src/net/manaserv/guildhandler.cpp:96
 msgid "Invite sent."
 msgstr "Meghívás elküldve."
 
-#: ../src/gui/socialwindow.cpp:126
+#: ../src/net/manaserv/guildhandler.cpp:104
+#, fuzzy
+msgid "Invited player can't join another guild."
+msgstr "@@guild|%s meghívása a klánodba@@"
+
+#: ../src/net/manaserv/guildhandler.cpp:100
+msgid "Invited player is already in that guild."
+msgstr ""
+
+#: ../src/gui/socialwindow.cpp:116
 #, c-format
 msgid "Invited user %s to guild %s."
 msgstr ""
 
-#: ../src/gui/socialwindow.cpp:207 ../src/net/tmwa/partyhandler.cpp:331
+#: ../src/gui/socialwindow.cpp:189 ../src/net/tmwa/partyhandler.cpp:318
 #, fuzzy, c-format
 msgid "Invited user %s to party."
 msgstr "/party > Felhasználó csapatba hívása"
 
-#: ../src/net/tmwa/partyhandler.cpp:336
+#: ../src/net/tmwa/partyhandler.cpp:323
 #, c-format
 msgid "Inviting failed, because you can't see a player called %s."
 msgstr ""
 
-#: ../src/keyboardconfig.cpp:58 ../src/keyboardconfig.cpp:59
-#: ../src/keyboardconfig.cpp:60 ../src/keyboardconfig.cpp:61
-#: ../src/keyboardconfig.cpp:62 ../src/keyboardconfig.cpp:63
-#: ../src/keyboardconfig.cpp:64 ../src/keyboardconfig.cpp:65
-#: ../src/keyboardconfig.cpp:66 ../src/keyboardconfig.cpp:67
-#: ../src/keyboardconfig.cpp:68 ../src/keyboardconfig.cpp:69
+#: ../src/keyboardconfig.cpp:59 ../src/keyboardconfig.cpp:60
+#: ../src/keyboardconfig.cpp:61 ../src/keyboardconfig.cpp:62
+#: ../src/keyboardconfig.cpp:63 ../src/keyboardconfig.cpp:64
+#: ../src/keyboardconfig.cpp:65 ../src/keyboardconfig.cpp:66
+#: ../src/keyboardconfig.cpp:67 ../src/keyboardconfig.cpp:68
+#: ../src/keyboardconfig.cpp:69 ../src/keyboardconfig.cpp:70
 #, c-format
 msgid "Item Shortcut %d"
 msgstr "Gyorsmenü %d"
 
-#: ../src/keyboardconfig.cpp:77
+#: ../src/keyboardconfig.cpp:78
 msgid "Item Shortcut Window"
 msgstr "Gyorsmenü Ablak"
 
-#: ../src/localplayer.cpp:919
+#: ../src/localplayer.cpp:870
 msgid "Item belongs to someone else."
 msgstr ""
 
-#: ../src/localplayer.cpp:915
+#: ../src/localplayer.cpp:866
 msgid "Item is too far away"
 msgstr ""
 
-#: ../src/localplayer.cpp:914
+#: ../src/localplayer.cpp:865
 msgid "Item is too heavy."
 msgstr ""
 
-#: ../src/net/tmwa/gui/partytab.cpp:135 ../src/net/tmwa/partyhandler.cpp:203
+#: ../src/net/tmwa/gui/partytab.cpp:128 ../src/net/tmwa/partyhandler.cpp:202
 msgid "Item sharing disabled."
 msgstr "Tárgy megosztás tiltva."
 
-#: ../src/net/tmwa/gui/partytab.cpp:132 ../src/net/tmwa/partyhandler.cpp:197
+#: ../src/net/tmwa/gui/partytab.cpp:125 ../src/net/tmwa/partyhandler.cpp:196
 msgid "Item sharing enabled."
 msgstr "Tárgy megosztás engedélyezve."
 
-#: ../src/net/tmwa/gui/partytab.cpp:138 ../src/net/tmwa/partyhandler.cpp:209
+#: ../src/net/tmwa/gui/partytab.cpp:131 ../src/net/tmwa/partyhandler.cpp:208
 msgid "Item sharing not possible."
 msgstr "A tárgy megosztás nem lehetséges."
 
-#: ../src/net/tmwa/gui/partytab.cpp:141
+#: ../src/net/tmwa/gui/partytab.cpp:134
 #, fuzzy
 msgid "Item sharing unknown."
 msgstr "Tárgy megosztás engedélyezve."
 
-#: ../src/client.cpp:787
-#, fuzzy
-msgid "ItemDB: Error while loading "
-msgstr "Hiba %s betöltése közben"
-
-#: ../src/gui/statuswindow.cpp:163
+#: ../src/gui/statuswindow.cpp:162
 msgid "Job:"
 msgstr "Munka:"
 
-#: ../src/gui/statuswindow.cpp:162 ../src/gui/statuswindow.cpp:280
+#: ../src/gui/statuswindow.cpp:161 ../src/gui/statuswindow.cpp:279
 #, c-format
 msgid "Job: %d"
 msgstr "Munka: %d"
@@ -1934,11 +1970,11 @@ msgstr ""
 msgid "Joining party failed, because the inviter has left the game."
 msgstr ""
 
-#: ../src/gui/setup_joystick.cpp:41
+#: ../src/gui/setup_joystick.cpp:40
 msgid "Joystick"
 msgstr "Joystick"
 
-#: ../src/gui/setup_keyboard.cpp:128
+#: ../src/gui/setup_keyboard.cpp:123
 msgid "Key Conflict(s) Detected."
 msgstr "Billentyű ütközés van."
 
@@ -1946,39 +1982,39 @@ msgstr "Billentyű ütközés van."
 msgid "Keyboard"
 msgstr "Billentyűzet"
 
-#: ../src/net/tmwa/adminhandler.cpp:64
+#: ../src/net/tmwa/adminhandler.cpp:63
 msgid "Kick failed!"
 msgstr "Kirúgás sikertelen!"
 
-#: ../src/gui/popupmenu.cpp:167
+#: ../src/gui/popupmenu.cpp:162
 #, fuzzy
 msgid "Kick monster"
 msgstr "@@admin-kick|Szörny kirúgása@@"
 
-#: ../src/gui/popupmenu.cpp:145
+#: ../src/gui/popupmenu.cpp:140
 #, fuzzy
 msgid "Kick player"
 msgstr "Kirúgás sikertelen!"
 
-#: ../src/net/tmwa/adminhandler.cpp:66
+#: ../src/net/tmwa/adminhandler.cpp:65
 msgid "Kick succeeded!"
 msgstr "Kirúgás sikeres!"
 
-#: ../src/gui/setup_interface.cpp:62
+#: ../src/gui/setup_interface.cpp:47
 msgid "Large"
 msgstr "Nagy"
 
-#: ../src/gui/socialwindow.cpp:332
+#: ../src/gui/socialwindow.cpp:367
 #, fuzzy
 msgid "Leave"
 msgstr "Nagy"
 
-#: ../src/gui/socialwindow.cpp:163
+#: ../src/gui/socialwindow.cpp:153
 #, fuzzy
 msgid "Leave Guild?"
 msgstr "Klán létrehozása"
 
-#: ../src/gui/socialwindow.cpp:242
+#: ../src/gui/socialwindow.cpp:224
 msgid "Leave Party?"
 msgstr ""
 
@@ -1986,8 +2022,8 @@ msgstr ""
 msgid "Legs"
 msgstr ""
 
-#: ../src/gui/statuswindow.cpp:117 ../src/gui/statuswindow.cpp:219
-#: ../src/gui/statuswindow.cpp:267
+#: ../src/gui/statuswindow.cpp:116 ../src/gui/statuswindow.cpp:218
+#: ../src/gui/statuswindow.cpp:266
 #, c-format
 msgid "Level: %d"
 msgstr "Szint: %d"
@@ -1997,30 +2033,30 @@ msgstr "Szint: %d"
 msgid "Listing channels."
 msgstr "Kapcsolódási kérelem a %s nevű csatornába."
 
-#: ../src/resources/userpalette.cpp:109
+#: ../src/resources/userpalette.cpp:104
 #, fuzzy
 msgid "Local Player Critical Hit"
 msgstr "Kritikális ütéskor"
 
-#: ../src/resources/userpalette.cpp:107
+#: ../src/resources/userpalette.cpp:102
 #, fuzzy
 msgid "Local Player Hits Monster"
 msgstr "Sebzéskor"
 
-#: ../src/resources/userpalette.cpp:111
+#: ../src/resources/userpalette.cpp:106
 msgid "Local Player Miss"
 msgstr ""
 
-#: ../src/gui/setup_interface.cpp:108
+#: ../src/gui/setup_interface.cpp:91
 msgid "Log NPC dialogue"
 msgstr ""
 
-#: ../src/client.cpp:691
+#: ../src/client.cpp:631
 #, fuzzy
 msgid "Logging in"
 msgstr "Belépés"
 
-#: ../src/gui/logindialog.cpp:51 ../src/gui/logindialog.cpp:63
+#: ../src/gui/logindialog.cpp:43 ../src/gui/logindialog.cpp:55
 msgid "Login"
 msgstr "Belépés"
 
@@ -2028,185 +2064,180 @@ msgstr "Belépés"
 msgid "Login attempt too soon after previous attempt."
 msgstr ""
 
-#: ../src/net/manaserv/beinghandler.cpp:290
-#: ../src/net/tmwa/playerhandler.cpp:115
+#: ../src/net/manaserv/beinghandler.cpp:292
+#: ../src/net/tmwa/playerhandler.cpp:113
 msgid "Looks like you got your head handed to you."
 msgstr "Kezedbe adták a fejed."
 
-#: ../src/net/tmwa/generalhandler.cpp:236
+#: ../src/net/tmwa/generalhandler.cpp:234
 msgid "Luck"
 msgstr "Szerencse"
 
-#: ../src/net/tmwa/generalhandler.cpp:107
+#: ../src/net/tmwa/generalhandler.cpp:104
 #, c-format
 msgid "Luck %+d"
 msgstr "Szerencse %+d"
 
-#: ../src/net/tmwa/charserverhandler.cpp:276
+#: ../src/net/tmwa/charserverhandler.cpp:288
 msgid "Luck:"
 msgstr "Szerencse:"
 
-#: ../src/gui/skilldialog.cpp:472
+#: ../src/gui/skilldialog.cpp:468
 #, fuzzy, c-format
 msgid "Lvl: %d"
 msgstr "Szint: %d"
 
-#: ../src/gui/skilldialog.cpp:461
+#: ../src/gui/skilldialog.cpp:457
 #, fuzzy, c-format
 msgid "Lvl: %d (%+d)"
 msgstr "Szint: %d"
 
-#: ../src/net/tmwa/generalhandler.cpp:240
+#: ../src/net/tmwa/generalhandler.cpp:238
 #, fuzzy
 msgid "M.Attack"
 msgstr "Mágikus támadás:"
 
-#: ../src/net/tmwa/generalhandler.cpp:241
+#: ../src/net/tmwa/generalhandler.cpp:239
 #, fuzzy
 msgid "M.Defense"
 msgstr "Mágikus védelem:"
 
-#: ../src/resources/itemdb.cpp:324
+#: ../src/resources/itemdb.cpp:293
 #, c-format
 msgid "MP %+d"
 msgstr "Varázserő %+d"
 
-#: ../src/gui/statuswindow.cpp:134
+#: ../src/gui/statuswindow.cpp:133
 msgid "MP:"
 msgstr "Varázserő:"
-
-#: ../src/net/tmwa/chathandler.cpp:230
-#, fuzzy
-msgid "MVP player."
-msgstr "Játékos"
 
 #: ../src/gui/charcreatedialog.cpp:87 ../src/gui/register.cpp:90
 msgid "Male"
 msgstr "Férfi"
 
-#: ../src/gui/minimap.cpp:45 ../src/gui/minimap.cpp:87
+#: ../src/gui/minimap.cpp:45 ../src/gui/minimap.cpp:79
 msgid "Map"
 msgstr "Térkép"
 
-#: ../src/gui/debugwindow.cpp:103
+#: ../src/gui/debugwindow.cpp:104
 #, fuzzy, c-format
 msgid "Map: %s"
 msgstr "Név: %s"
 
-#: ../src/gui/buydialog.cpp:81 ../src/gui/selldialog.cpp:79
-#: ../src/gui/statuswindow.cpp:395 ../src/gui/statuswindow.cpp:473
-#: ../src/gui/statuswindow.cpp:507
+#: ../src/gui/buydialog.cpp:79 ../src/gui/selldialog.cpp:79
+#: ../src/gui/statuswindow.cpp:394 ../src/gui/statuswindow.cpp:466
+#: ../src/gui/statuswindow.cpp:498
 msgid "Max"
 msgstr "Max."
 
-#: ../src/gui/setup_interface.cpp:61
+#: ../src/gui/setup_interface.cpp:46
 msgid "Medium"
 msgstr "Közepes"
 
-#: ../src/gui/socialwindow.cpp:153
+#: ../src/gui/socialwindow.cpp:143
 msgid "Member Invite to Guild"
 msgstr ""
 
-#: ../src/gui/socialwindow.cpp:232
+#: ../src/gui/socialwindow.cpp:214
 #, fuzzy
 msgid "Member Invite to Party"
 msgstr "/party > Felhasználó csapatba hívása"
 
-#: ../src/net/manaserv/guildhandler.cpp:204
+#: ../src/net/manaserv/guildhandler.cpp:215
 msgid "Member was promoted successfully."
 msgstr "A tag előléptetése sikeres."
 
-#: ../src/net/tmwa/playerhandler.cpp:254 ../src/net/tmwa/playerhandler.cpp:294
+#: ../src/net/tmwa/playerhandler.cpp:253 ../src/net/tmwa/playerhandler.cpp:293
 msgid "Message"
 msgstr "Üzenet"
 
-#: ../src/commandhandler.cpp:479
+#: ../src/commandhandler.cpp:456
 msgid "Message closes chat."
 msgstr "Az üzenet bezárja a bevitelt."
 
-#: ../src/commandhandler.cpp:492
+#: ../src/commandhandler.cpp:469
 msgid "Message now closes chat."
 msgstr "Az üzenet mostantól bezárja a bevitelt."
 
-#: ../src/keyboardconfig.cpp:75
+#: ../src/keyboardconfig.cpp:76
 msgid "Minimap Window"
 msgstr "Minitérkép Ablak"
 
-#: ../src/gui/debugwindow.cpp:101
+#: ../src/gui/debugwindow.cpp:102
 #, fuzzy, c-format
 msgid "Minimap: %s"
 msgstr "Minitérkép Ablak"
 
-#: ../src/resources/userpalette.cpp:112
+#: ../src/resources/userpalette.cpp:107
 msgid "Misses"
 msgstr "Ha nincs találat."
 
-#: ../src/gui/serverdialog.cpp:212
+#: ../src/gui/serverdialog.cpp:193
 msgid "Modify..."
 msgstr ""
 
-#: ../src/gui/statuswindow.cpp:118 ../src/gui/statuswindow.cpp:212
-#: ../src/gui/statuswindow.cpp:244
+#: ../src/gui/statuswindow.cpp:117 ../src/gui/statuswindow.cpp:211
+#: ../src/gui/statuswindow.cpp:243
 #, c-format
 msgid "Money: %s"
 msgstr "Pénz: %s"
 
-#: ../src/resources/userpalette.cpp:104
+#: ../src/resources/userpalette.cpp:99
 #, fuzzy
 msgid "Monster Hits Player"
 msgstr "Sérüléskor"
 
-#: ../src/resources/userpalette.cpp:96
+#: ../src/resources/userpalette.cpp:91
 msgid "Monsters"
 msgstr "Szörny neve"
 
-#: ../src/gui/debugwindow.cpp:139
+#: ../src/gui/debugwindow.cpp:140
 msgid "Mouse path"
 msgstr ""
 
-#: ../src/keyboardconfig.cpp:42
+#: ../src/keyboardconfig.cpp:43
 msgid "Move Down"
 msgstr "Mozgás lefelé"
 
-#: ../src/keyboardconfig.cpp:43
+#: ../src/keyboardconfig.cpp:44
 msgid "Move Left"
 msgstr "Mozgás balra"
 
-#: ../src/keyboardconfig.cpp:44
+#: ../src/keyboardconfig.cpp:45
 msgid "Move Right"
 msgstr "Mozgás jobbra"
 
-#: ../src/keyboardconfig.cpp:41
+#: ../src/keyboardconfig.cpp:42
 msgid "Move Up"
 msgstr "Mozgás felfelé"
 
-#: ../src/gui/setup_audio.cpp:51
+#: ../src/gui/setup_audio.cpp:52
 msgid "Music volume"
 msgstr "Zene hangereje"
 
-#: ../src/gui/debugwindow.cpp:100
+#: ../src/gui/debugwindow.cpp:101
 #, fuzzy, c-format
 msgid "Music: %s"
 msgstr "Téma: %s"
 
-#: ../src/gui/npcdialog.cpp:74 ../src/gui/npcpostdialog.cpp:41
+#: ../src/gui/npcdialog.cpp:72 ../src/gui/npcpostdialog.cpp:41
 msgid "NPC"
 msgstr "Gépjátékos"
 
-#: ../src/resources/userpalette.cpp:95
+#: ../src/resources/userpalette.cpp:90
 msgid "NPCs"
 msgstr "Gépjátékos neve"
 
-#: ../src/gui/setup_players.cpp:58
+#: ../src/gui/setup_players.cpp:55
 msgid "Name"
 msgstr "Név"
 
-#: ../src/gui/charcreatedialog.cpp:71 ../src/gui/customserverdialog.cpp:54
-#: ../src/gui/logindialog.cpp:54 ../src/gui/register.cpp:67
+#: ../src/gui/charcreatedialog.cpp:71 ../src/gui/customserverdialog.cpp:56
+#: ../src/gui/logindialog.cpp:46 ../src/gui/register.cpp:67
 msgid "Name:"
 msgstr "Név:"
 
-#: ../src/gui/unregisterdialog.cpp:51
+#: ../src/gui/unregisterdialog.cpp:49
 #, c-format
 msgid "Name: %s"
 msgstr "Név: %s"
@@ -2228,11 +2259,11 @@ msgstr "Kell egy játékos a kick parancshoz."
 msgid "Need a user to op!"
 msgstr "Kell egy játékos az op parancshoz."
 
-#: ../src/game.cpp:364
+#: ../src/game.cpp:367
 msgid "Network Error"
 msgstr "Hálózati hiba"
 
-#: ../src/gui/setup_players.cpp:64
+#: ../src/gui/setup_players.cpp:61
 msgid "Neutral"
 msgstr "Semleges"
 
@@ -2246,7 +2277,7 @@ msgstr "Az új email cím hibás."
 msgid "New password incorrect."
 msgstr "Az új jelszó hibás"
 
-#: ../src/net/tmwa/loginhandler.cpp:92
+#: ../src/net/tmwa/loginhandler.cpp:95
 #, fuzzy
 msgid "New password too short."
 msgstr "Az új jelszó túl rövid"
@@ -2255,42 +2286,42 @@ msgstr "Az új jelszó túl rövid"
 msgid "Next"
 msgstr "Következő"
 
-#: ../src/keyboardconfig.cpp:101
+#: ../src/keyboardconfig.cpp:102
 msgid "Next Chat Tab"
 msgstr "Következő Chat Fül"
 
-#: ../src/gui/confirmdialog.cpp:43
+#: ../src/gui/confirmdialog.cpp:41
 msgid "No"
 msgstr "Nem"
 
-#: ../src/commandhandler.cpp:407
+#: ../src/commandhandler.cpp:388
 msgid "No <nick> was given."
 msgstr ""
 
-#: ../src/net/manaserv/charhandler.cpp:143
+#: ../src/net/manaserv/charhandler.cpp:142
 msgid "No empty slot."
 msgstr ""
 
-#: ../src/net/manaserv/charhandler.cpp:266
+#: ../src/net/manaserv/charhandler.cpp:265
 msgid "No gameservers are available."
 msgstr "Nincs elérhető játékszerver."
 
-#: ../src/gui/itempopup.cpp:135
+#: ../src/gui/itempopup.cpp:127
 #, fuzzy
 msgid "No item"
 msgstr "Ismeretlen tárgy"
 
-#: ../src/net/tmwa/generalhandler.cpp:135
+#: ../src/net/tmwa/generalhandler.cpp:133
 #, fuzzy
 msgid "No servers available."
 msgstr "Nincs elérhető szerver"
 
-#: ../src/gui/setup_interface.cpp:88
+#: ../src/gui/setup_interface.cpp:71
 msgid "No text"
 msgstr "Nincs szöveg"
 
-#: ../src/net/manaserv/beinghandler.cpp:282
-#: ../src/net/tmwa/playerhandler.cpp:103
+#: ../src/net/manaserv/beinghandler.cpp:284
+#: ../src/net/tmwa/playerhandler.cpp:101
 msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
@@ -2298,42 +2329,47 @@ msgstr ""
 "Nem, gyerekek. A karakter nem meghalt, ..ööö... hanem egy szebb világba "
 "került."
 
-#: ../src/gui/setup_video.cpp:200 ../src/gui/setup_video.cpp:407
-#: ../src/gui/setup_video.cpp:481
+#: ../src/gui/setup_video.cpp:253 ../src/gui/setup_video.cpp:450
+#: ../src/gui/setup_video.cpp:525
 #, fuzzy
 msgid "None"
 msgstr "Nem"
 
-#: ../src/gui/debugwindow.cpp:142
+#: ../src/gui/debugwindow.cpp:145
 msgid "Normal"
 msgstr ""
 
-#: ../src/gui/recorder.cpp:92
+#: ../src/gui/recorder.cpp:91
 msgid "Not currently recording."
 msgstr "Jelenleg nem rögzítesz."
 
-#: ../src/net/manaserv/charhandler.cpp:140
-#: ../src/net/manaserv/charhandler.cpp:221
+#: ../src/net/manaserv/charhandler.cpp:139
+#: ../src/net/manaserv/charhandler.cpp:220
 #, fuzzy
 msgid "Not logged in."
 msgstr "Már be van jelentkezve"
 
-#: ../src/net/tmwa/buysellhandler.cpp:109
+#: ../src/net/tmwa/buysellhandler.cpp:108
 msgid "Nothing to sell."
 msgstr "Nincs mit eladni."
 
-#: ../src/gui/setup_audio.cpp:94
+#: ../src/gui/setup_audio.cpp:97
 #, fuzzy
 msgid "Notice"
 msgstr "Nincs szöveg"
 
-#: ../src/gui/itemamountwindow.cpp:113 ../src/gui/okdialog.cpp:42
+#: ../src/gui/setup_audio.cpp:51
+#, fuzzy
+msgid "Notifications volume"
+msgstr "Tapasztalat szerzésekor"
+
+#: ../src/gui/itemamountwindow.cpp:112 ../src/gui/okdialog.cpp:40
 #: ../src/gui/quitdialog.cpp:46 ../src/gui/textdialog.cpp:39
 #: ../src/gui/tradewindow.cpp:72 ../src/gui/tradewindow.cpp:74
 msgid "OK"
 msgstr "Ok"
 
-#: ../src/gui/customserverdialog.cpp:69
+#: ../src/gui/customserverdialog.cpp:75
 msgid "Ok"
 msgstr "Ok"
 
@@ -2342,20 +2378,33 @@ msgstr "Ok"
 msgid "Old email address incorrect."
 msgstr "A régi email cím hibás."
 
-#: ../src/net/manaserv/loginhandler.cpp:126
-#: ../src/net/tmwa/loginhandler.cpp:89
+#: ../src/net/manaserv/loginhandler.cpp:126 ../src/net/tmwa/loginhandler.cpp:92
 #, fuzzy
 msgid "Old password incorrect."
 msgstr "A régi jelszó hibás"
 
-#: ../src/net/tmwa/gamehandler.cpp:83
+#: ../src/gui/socialwindow.cpp:380 ../src/gui/socialwindow.cpp:676
 #, c-format
-msgid "Online users: %d"
+msgid "Online (%zu)"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:166
-msgid "OpenGL"
+#: ../src/gui/widgets/itemlinkhandler.cpp:66
+#: ../src/gui/widgets/itemlinkhandler.cpp:95
+msgid "Open URL Failed"
+msgstr ""
+
+#: ../src/gui/widgets/itemlinkhandler.cpp:63
+#, fuzzy
+msgid "Open URL?"
 msgstr "OpenGL"
+
+#: ../src/gui/setup_video.cpp:228
+msgid "OpenGL (Legacy)"
+msgstr ""
+
+#: ../src/gui/widgets/itemlinkhandler.cpp:67
+msgid "Opening of URLs requires SDL 2.0.14."
+msgstr ""
 
 #: ../src/commandhandler.h:31
 #, c-format
@@ -2364,86 +2413,86 @@ msgstr ""
 "Lehetőségek a /%s parancshoz: \"yes\", \"no\", \"true\", \"false\", \"1\", "
 "\"0\"."
 
-#: ../src/main.cpp:47
+#: ../src/main.cpp:54
 msgid "Options:"
 msgstr "Opciók:"
 
-#: ../src/resources/userpalette.cpp:103
+#: ../src/resources/userpalette.cpp:98
 #, fuzzy
 msgid "Other Player Hits Monster"
 msgstr "Sebzéskor"
 
-#: ../src/resources/userpalette.cpp:92
+#: ../src/resources/userpalette.cpp:87
 msgid "Other Players' Names"
 msgstr "Ismeretlen játékos neve"
 
-#: ../src/gui/outfitwindow.cpp:68 ../src/gui/outfitwindow.cpp:141
-#: ../src/gui/outfitwindow.cpp:154
+#: ../src/gui/outfitwindow.cpp:51 ../src/gui/outfitwindow.cpp:120
+#: ../src/gui/outfitwindow.cpp:133
 #, c-format
 msgid "Outfit: %d"
 msgstr ""
 
-#: ../src/gui/inventorywindow.cpp:110 ../src/gui/outfitwindow.cpp:51
+#: ../src/gui/inventorywindow.cpp:109 ../src/gui/outfitwindow.cpp:42
 msgid "Outfits"
 msgstr ""
 
-#: ../src/keyboardconfig.cpp:82
+#: ../src/keyboardconfig.cpp:83
 #, fuzzy
 msgid "Outfits Window"
 msgstr "Sztátusz Ablak"
 
-#: ../src/gui/setup_interface.cpp:128
+#: ../src/gui/setup_interface.cpp:111
 #, fuzzy
 msgid "Overhead text:"
 msgstr "Fej feletti szöveg"
 
-#: ../src/resources/userpalette.cpp:93
+#: ../src/resources/userpalette.cpp:88
 msgid "Own Name"
 msgstr "Saját név"
 
-#: ../src/gui/setup_video.cpp:459
+#: ../src/gui/setup_video.cpp:503
 #, fuzzy
 msgid "Particle Effect Settings Changed."
 msgstr "Effektek beállítása megváltozott."
 
-#: ../src/resources/userpalette.cpp:99
+#: ../src/resources/userpalette.cpp:94
 msgid "Particle Effects"
 msgstr "Effektek"
 
-#: ../src/gui/debugwindow.cpp:107
+#: ../src/gui/debugwindow.cpp:108
 #, fuzzy, c-format
 msgid "Particle count: %d"
 msgstr "Effektek"
 
-#: ../src/gui/setup_video.cpp:192
+#: ../src/gui/setup_video.cpp:247
 #, fuzzy
 msgid "Particle detail:"
 msgstr "Effektek részletessége"
 
-#: ../src/gui/setup_video.cpp:169
+#: ../src/gui/setup_video.cpp:230
 msgid "Particle effects"
 msgstr "Játékbéli effektek"
 
-#: ../src/net/tmwa/gui/partytab.cpp:43
+#: ../src/net/tmwa/gui/partytab.cpp:40
 msgid "Party"
 msgstr "Csapat"
 
-#: ../src/gui/socialwindow.cpp:218
+#: ../src/gui/socialwindow.cpp:200
 #, c-format
 msgid "Party %s quit requested."
 msgstr ""
 
-#: ../src/resources/userpalette.cpp:97
+#: ../src/resources/userpalette.cpp:92
 #, fuzzy
 msgid "Party Members"
 msgstr "Csapat"
 
-#: ../src/gui/socialwindow.cpp:625
+#: ../src/gui/socialwindow.cpp:667
 #, fuzzy
 msgid "Party Name"
 msgstr "Csapat"
 
-#: ../src/net/manaserv/partyhandler.cpp:152
+#: ../src/net/manaserv/partyhandler.cpp:155
 msgid ""
 "Party invitation rejected by server, because of too many invitations in a "
 "short time."
@@ -2455,11 +2504,11 @@ msgid ""
 "Party invite failed, because no player called %s is within the visual range."
 msgstr ""
 
-#: ../src/commandhandler.cpp:448 ../src/net/tmwa/gui/partytab.cpp:109
+#: ../src/commandhandler.cpp:428 ../src/net/tmwa/gui/partytab.cpp:102
 msgid "Party name is missing."
 msgstr "A csapatnév hiányzik."
 
-#: ../src/net/tmwa/partyhandler.cpp:85
+#: ../src/net/tmwa/partyhandler.cpp:84
 msgid "Party successfully created."
 msgstr "Csapat létrehozása sikeres."
 
@@ -2468,17 +2517,17 @@ msgstr "Csapat létrehozása sikeres."
 msgid "Party: %s"
 msgstr "Csapat (%s)"
 
-#: ../src/client.cpp:922
+#: ../src/client.cpp:845
 #, fuzzy
 msgid "Password Change"
 msgstr "Jelszó:"
 
-#: ../src/client.cpp:923
+#: ../src/client.cpp:846
 msgid "Password changed successfully!"
 msgstr ""
 
-#: ../src/gui/changepassworddialog.cpp:61 ../src/gui/logindialog.cpp:55
-#: ../src/gui/register.cpp:68 ../src/gui/unregisterdialog.cpp:53
+#: ../src/gui/changepassworddialog.cpp:61 ../src/gui/logindialog.cpp:47
+#: ../src/gui/register.cpp:68 ../src/gui/unregisterdialog.cpp:51
 msgid "Password:"
 msgstr "Jelszó:"
 
@@ -2486,56 +2535,61 @@ msgstr "Jelszó:"
 msgid "Passwords do not match."
 msgstr "A jelszavak nem egyeznek."
 
-#: ../src/gui/popupmenu.cpp:192
+#: ../src/gui/popupmenu.cpp:186
 #, fuzzy, c-format
 msgid "Pick up %s"
 msgstr "Felvesz"
 
-#: ../src/keyboardconfig.cpp:53
+#: ../src/keyboardconfig.cpp:54
 msgid "Pickup"
 msgstr "Felvesz"
 
-#: ../src/resources/userpalette.cpp:100
+#: ../src/resources/userpalette.cpp:95
 msgid "Pickup Notification"
 msgstr "Tárgy felvételekor"
 
-#: ../src/gui/updaterwindow.cpp:152
+#: ../src/gui/updaterwindow.cpp:141
 msgid "Play"
 msgstr "Játék"
 
-#: ../src/commandhandler.cpp:544
+#: ../src/net/manaserv/guildhandler.cpp:259
+#, fuzzy, c-format
+msgid "Player %s kicked you out of guild %s."
+msgstr "%s behívott %s csapatába."
+
+#: ../src/commandhandler.cpp:521
 msgid "Player already ignored!"
 msgstr ""
 
-#: ../src/commandhandler.cpp:553
+#: ../src/commandhandler.cpp:530
 #, fuzzy
 msgid "Player could not be ignored!"
 msgstr "A privát üzenet nem lett elküldve, mert le lettél tiltva."
 
-#: ../src/commandhandler.cpp:575
+#: ../src/commandhandler.cpp:552
 #, fuzzy
 msgid "Player could not be unignored!"
 msgstr "A privát üzenet nem lett elküldve, mert le lettél tiltva."
 
-#: ../src/net/manaserv/charhandler.cpp:212
+#: ../src/net/manaserv/charhandler.cpp:211
 #, fuzzy
 msgid "Player deleted."
 msgstr "Karakter törölve."
 
-#: ../src/commandhandler.cpp:573
+#: ../src/commandhandler.cpp:550
 msgid "Player no longer ignored!"
 msgstr ""
 
-#: ../src/commandhandler.cpp:551
+#: ../src/commandhandler.cpp:528
 #, fuzzy
 msgid "Player successfully ignored!"
 msgstr "Csapat létrehozása sikeres."
 
-#: ../src/commandhandler.cpp:568
+#: ../src/commandhandler.cpp:545
 msgid "Player wasn't ignored!"
 msgstr ""
 
-#: ../src/gui/setup_players.cpp:236
+#: ../src/gui/setup_players.cpp:229
 msgid "Players"
 msgstr "Játékosok"
 
@@ -2545,72 +2599,72 @@ msgstr "Játékosok"
 msgid "Players in this channel:"
 msgstr "Sebzéskor"
 
-#: ../src/gui/customserverdialog.cpp:156
-#, fuzzy
-msgid "Please at least type both the address and the port of the server."
-msgstr "Kérlek írd be a szerver címét és portját egyaránt."
-
-#: ../src/gui/charcreatedialog.cpp:106 ../src/gui/charcreatedialog.cpp:264
+#: ../src/gui/charcreatedialog.cpp:106 ../src/gui/charcreatedialog.cpp:278
 #, c-format
 msgid "Please distribute %d points"
 msgstr "Kérlek oszd el a pontjaidat (%d van még)"
 
-#: ../src/gui/charcreatedialog.cpp:269
+#: ../src/gui/charcreatedialog.cpp:283
 #, c-format
 msgid "Please remove %d points"
 msgstr "Kérlek távolíts el %d pontot"
 
-#: ../src/gui/serverdialog.cpp:331
+#: ../src/gui/serverdialog.cpp:316
 msgid "Please select a custom server."
 msgstr ""
 
-#: ../src/gui/serverdialog.cpp:287
+#: ../src/gui/serverdialog.cpp:272
 #, fuzzy
-msgid "Please select a server."
+msgid "Please select a valid server."
 msgstr "Válassza ki a szervert"
 
-#: ../src/commandhandler.cpp:461 ../src/commandhandler.cpp:538
-#: ../src/commandhandler.cpp:560
+#: ../src/commandhandler.cpp:436 ../src/commandhandler.cpp:515
+#: ../src/commandhandler.cpp:537
 msgid "Please specify a name."
 msgstr ""
 
-#: ../src/net/tmwa/specialhandler.cpp:214
+#: ../src/gui/customserverdialog.cpp:167
+#, fuzzy
+msgid "Please type in at least the address of the server."
+msgstr "Kérlek írd be a szerver címét és portját egyaránt."
+
+#: ../src/net/tmwa/specialhandler.cpp:212
 msgid "Poison had no effect..."
 msgstr "A méregnek nem volt hatása..."
 
-#: ../src/gui/customserverdialog.cpp:56
+#: ../src/gui/customserverdialog.cpp:58
 msgid "Port:"
 msgstr "Port:"
 
-#: ../src/gui/serverdialog.cpp:414
+#: ../src/gui/serverdialog.cpp:399
 msgid "Preparing download"
 msgstr ""
 
-#: ../src/gui/chatwindow.cpp:316
+#: ../src/gui/chatwindow.cpp:302
 #, fuzzy, c-format
 msgid "Present: %s; %d players are present."
 msgstr "%d játékos van a közeledben."
 
-#: ../src/net/manaserv/beinghandler.cpp:296
+#: ../src/net/manaserv/beinghandler.cpp:298
 #, fuzzy
 msgid "Press OK to respawn."
 msgstr " Nyomj Ok-t a feléledéshez"
 
-#: ../src/gui/setup_joystick.cpp:37 ../src/gui/setup_joystick.cpp:78
+#: ../src/gui/setup_joystick.cpp:36 ../src/gui/setup_joystick.cpp:70
 msgid "Press the button to start calibration"
 msgstr "Nyomd meg a gombot a kalibrálás megkezdéséhez"
 
-#: ../src/keyboardconfig.cpp:100
+#: ../src/keyboardconfig.cpp:101
 msgid "Previous Chat Tab"
 msgstr "Előző Chat Fül"
 
-#: ../src/gui/buydialog.cpp:70 ../src/gui/buydialog.cpp:277
-#: ../src/gui/selldialog.cpp:72 ../src/gui/selldialog.cpp:298
+#: ../src/gui/buydialog.cpp:68 ../src/gui/buydialog.cpp:287
+#: ../src/gui/selldialog.cpp:72 ../src/gui/selldialog.cpp:296
 #, c-format
 msgid "Price: %s / Total: %s"
 msgstr "Ár: %s / Teljes: %s"
 
-#: ../src/playerrelations.cpp:342 ../src/playerrelations.cpp.orig:328
+#: ../src/playerrelations.cpp:330
 msgid "Print '...'"
 msgstr ""
 
@@ -2618,33 +2672,33 @@ msgstr ""
 msgid "Propose trade"
 msgstr "Üzletet javasol"
 
-#: ../src/gui/setup_colors.cpp:86 ../src/gui/setup_colors.cpp:87
-#: ../src/gui/setup_colors.cpp:333
+#: ../src/gui/setup_colors.cpp:78 ../src/gui/setup_colors.cpp:79
+#: ../src/gui/setup_colors.cpp:320
 msgid "Pulse"
 msgstr "Pulzáló"
 
-#: ../src/gui/setup_players.cpp:230
+#: ../src/gui/setup_players.cpp:223
 msgid "Put all whispers in tabs"
 msgstr "Privátok fülekbe tétele"
 
-#: ../src/gui/buydialog.cpp:80 ../src/gui/quitdialog.cpp:40
+#: ../src/gui/buydialog.cpp:78 ../src/gui/quitdialog.cpp:40
 #: ../src/gui/quitdialog.cpp:42 ../src/gui/quitdialog.cpp:43
-#: ../src/gui/selldialog.cpp:78 ../src/gui/serverdialog.cpp:209
-#: ../src/keyboardconfig.cpp:103
+#: ../src/gui/selldialog.cpp:78 ../src/gui/serverdialog.cpp:190
+#: ../src/keyboardconfig.cpp:104
 msgid "Quit"
 msgstr "Kilépés"
 
-#: ../src/gui/setup_colors.cpp:88 ../src/gui/setup_colors.cpp:89
-#: ../src/gui/setup_colors.cpp:334
+#: ../src/gui/setup_colors.cpp:80 ../src/gui/setup_colors.cpp:81
+#: ../src/gui/setup_colors.cpp:321
 msgid "Rainbow"
 msgstr "Szivárvány"
 
-#: ../src/gui/socialwindow.cpp:553
+#: ../src/gui/socialwindow.cpp:596
 #, fuzzy
 msgid "Received guild request, but one already exists."
 msgstr "Csapatba hívtak, de neked van csapatod."
 
-#: ../src/gui/socialwindow.cpp:575
+#: ../src/gui/socialwindow.cpp:617
 msgid "Received party request, but one already exists."
 msgstr "Csapatba hívtak, de neked van csapatod."
 
@@ -2652,41 +2706,41 @@ msgstr "Csapatba hívtak, de neked van csapatod."
 msgid "Recording..."
 msgstr "Rögzítés..."
 
-#: ../src/gui/setup_colors.cpp:110
+#: ../src/gui/setup_colors.cpp:102
 #, fuzzy
 msgid "Red:"
 msgstr "Vörös: "
 
-#: ../src/gui/logindialog.cpp:61 ../src/gui/register.cpp:58
+#: ../src/gui/logindialog.cpp:53 ../src/gui/register.cpp:58
 #: ../src/gui/register.cpp:73
 msgid "Register"
 msgstr "Regisztráció"
 
-#: ../src/gui/logindialog.cpp:129
+#: ../src/gui/logindialog.cpp:119
 #, fuzzy
 msgid "Registration disabled"
 msgstr "Tárgy megosztás tiltva."
 
-#: ../src/net/tmwa/loginhandler.cpp:165
+#: ../src/net/tmwa/loginhandler.cpp:169
 #, fuzzy
 msgid "Rejected from server."
 msgstr "Visszautasított a szerver"
 
-#: ../src/gui/socialwindow.cpp:468
+#: ../src/gui/socialwindow.cpp:509
 #, fuzzy
 msgid "Rejected guild invite."
 msgstr "Csapatba hívást elutasította %s."
 
-#: ../src/gui/socialwindow.cpp:450
+#: ../src/gui/socialwindow.cpp:491
 #, fuzzy, c-format
 msgid "Rejected party invite from %s."
 msgstr "Csapatba hívást elutasította %s."
 
-#: ../src/gui/setup_players.cpp:59
+#: ../src/gui/setup_players.cpp:56
 msgid "Relation"
 msgstr "Kapcsolat"
 
-#: ../src/gui/logindialog.cpp:60
+#: ../src/gui/logindialog.cpp:52
 #, fuzzy
 msgid "Remember username"
 msgstr "Felhasználónév megjegyzése"
@@ -2696,50 +2750,47 @@ msgstr "Felhasználónév megjegyzése"
 msgid "Request for Trade"
 msgstr "Üzleti ajánlat"
 
-#: ../src/net/tmwa/gamehandler.cpp:96
+#: ../src/net/tmwa/gamehandler.cpp:89
 #, fuzzy
 msgid "Request to quit denied!"
 msgstr "Üzleti ajánlat"
 
-#: ../src/client.cpp:810
+#: ../src/client.cpp:733
 #, fuzzy
 msgid "Requesting characters"
 msgstr "Kapcsolódási kérelem a %s nevű csatornába."
 
-#: ../src/client.cpp:894
+#: ../src/client.cpp:817
 msgid "Requesting registration details"
 msgstr ""
 
-#: ../src/commandhandler.cpp:435
+#: ../src/commandhandler.cpp:416
 #, c-format
 msgid "Requesting to join channel %s."
 msgstr "Kapcsolódási kérelem a %s nevű csatornába."
 
-#: ../src/gui/npcdialog.cpp:135
+#: ../src/gui/npcdialog.cpp:132
 msgid "Reset"
 msgstr "Alaphelyzet"
 
-#: ../src/gui/setup.cpp:52
+#: ../src/gui/setup.cpp:54
 msgid "Reset Windows"
 msgstr "Ablakok alaphelyzetbe"
 
-#: ../src/gui/setup_video.cpp:335
-msgid "Restart needed for changes to take effect."
-msgstr "A változások érvénybe lépéséhez a program újraindítása szükséges."
+#: ../src/gui/setup_video.cpp:313
+#, fuzzy
+msgid "Resolution:"
+msgstr "Kapcsolat"
 
-#: ../src/gui/setup_video.cpp:441
-msgid "Restart your client for the change to take effect."
-msgstr "A változások érvénybe lépéséhez a program újraindítása szükséges."
-
-#: ../src/gui/inventorywindow.cpp:133 ../src/gui/popupmenu.cpp:397
+#: ../src/gui/inventorywindow.cpp:132 ../src/gui/popupmenu.cpp:389
 msgid "Retrieve"
 msgstr "Magához vesz"
 
-#: ../src/commandhandler.cpp:488
+#: ../src/commandhandler.cpp:465
 msgid "Return now toggles chat."
 msgstr "Az enter mostantól megnyitja a bevitelt."
 
-#: ../src/commandhandler.cpp:479
+#: ../src/commandhandler.cpp:456
 msgid "Return toggles chat."
 msgstr "Az enter megnyitja a bevitelt."
 
@@ -2753,79 +2804,83 @@ msgstr "Gyűrűk"
 msgid "Ring 2/2"
 msgstr "Gyűrűk"
 
-#: ../src/gui/setup_joystick.cpp:84
+#: ../src/gui/setup_joystick.cpp:76
 msgid "Rotate the stick"
 msgstr "Mozgasd körbe"
 
-#: ../src/net/manaserv/beinghandler.cpp:288
-#: ../src/net/tmwa/playerhandler.cpp:111
+#: ../src/gui/setup_audio.cpp:50
+#, fuzzy
+msgid "SFX volume"
+msgstr "Effektek hangereje"
+
+#: ../src/net/manaserv/beinghandler.cpp:290
+#: ../src/net/tmwa/playerhandler.cpp:109
 msgid "Sadly, no trace of you was ever found..."
 msgstr "Kövesd a fényt az alagút végén."
 
-#: ../src/game.cpp:332
+#: ../src/game.cpp:333
 msgid "Saving screenshot failed!"
 msgstr "Hiba a képernyő mentése során!"
 
-#: ../src/gui/setup_video.cpp:440
-#, fuzzy
-msgid "Screen Resolution Changed"
-msgstr "A képernyő felbontása megváltozott"
+#: ../src/gui/setup_video.cpp:315
+msgid "Scale:"
+msgstr ""
 
-#: ../src/keyboardconfig.cpp:56
+#: ../src/keyboardconfig.cpp:57
 msgid "Screenshot"
 msgstr "Képernyőkép"
 
-#: ../src/game.cpp:327
-#, fuzzy
-msgid "Screenshot saved as "
+#: ../src/game.cpp:328
+#, fuzzy, c-format
+msgid "Screenshot saved as %s"
 msgstr "Képernyőt mentettük a ~/ helyre"
 
-#: ../src/keyboardconfig.cpp:99
+#: ../src/keyboardconfig.cpp:100
 msgid "Scroll Chat Down"
 msgstr "Csevej Lefele Görgetése"
 
-#: ../src/keyboardconfig.cpp:98
+#: ../src/keyboardconfig.cpp:99
 msgid "Scroll Chat Up"
 msgstr "Csevej Felfele Görgetése"
 
-#: ../src/gui/inventorywindow.cpp:88
+#: ../src/gui/inventorywindow.cpp:87
 msgid "Search:"
 msgstr ""
 
-#: ../src/net/tmwa/specialhandler.cpp:184
+#: ../src/net/tmwa/specialhandler.cpp:182
 msgid "Seems you need more money... ;-)"
 msgstr "Úgy néz ki több pénzre van szükséged... ;)"
 
-#: ../src/keyboardconfig.cpp:102
+#: ../src/keyboardconfig.cpp:103
 msgid "Select OK"
 msgstr "Ok Kiválasztása"
 
-#: ../src/gui/worldselectdialog.cpp:71
+#: ../src/gui/worldselectdialog.cpp:68
 #, fuzzy
 msgid "Select World"
 msgstr "Ok Kiválasztása"
 
-#: ../src/gui/itemamountwindow.cpp:144
+#: ../src/gui/itemamountwindow.cpp:143
 msgid "Select amount of items to drop."
 msgstr "Válaszd ki mennyit akarsz eldobni."
 
-#: ../src/gui/itemamountwindow.cpp:150
+#: ../src/gui/itemamountwindow.cpp:149
 msgid "Select amount of items to retrieve."
 msgstr "Válaszd ki mennyit veszel magadhoz."
 
-#: ../src/gui/itemamountwindow.cpp:153
+#: ../src/gui/itemamountwindow.cpp:152
 msgid "Select amount of items to split."
 msgstr "Válaszd ki az elosztandó mennyiséget."
 
-#: ../src/gui/itemamountwindow.cpp:147
+#: ../src/gui/itemamountwindow.cpp:146
 msgid "Select amount of items to store."
 msgstr "Válaszd ki a raktározandó mennyiséget."
 
-#: ../src/gui/itemamountwindow.cpp:141
+#: ../src/gui/itemamountwindow.cpp:140
 msgid "Select amount of items to trade."
 msgstr "Válaszd ki mennyi tárggyal akarsz üzletelni."
 
-#: ../src/net/manaserv/charhandler.cpp:224
+#: ../src/net/manaserv/charhandler.cpp:223
 #, fuzzy
 msgid "Selection out of range."
 msgstr "Válaszd ki mennyi tárggyal akarsz üzletelni."
@@ -2839,129 +2894,125 @@ msgstr "Eladás"
 msgid "Send"
 msgstr "Küldés"
 
-#: ../src/net/tmwa/loginhandler.cpp:182
+#: ../src/net/tmwa/loginhandler.cpp:186
 msgid "Server overpopulated."
 msgstr ""
 
-#: ../src/net/net.cpp:164
+#: ../src/net/net.cpp:165
 msgid "Server protocol unsupported"
 msgstr ""
 
-#: ../src/gui/customserverdialog.cpp:57
+#: ../src/gui/customserverdialog.cpp:60
 #, fuzzy
 msgid "Server type:"
 msgstr "Szerver:"
 
-#: ../src/gui/widgets/chattab.cpp:179
+#: ../src/gui/widgets/chattab.cpp:175
 msgid "Server:"
 msgstr "Szerver:"
 
-#: ../src/client.cpp:585 ../src/gui/setup.cpp:44 ../src/gui/windowmenu.cpp:72
+#: ../src/client.cpp:529 ../src/gui/setup.cpp:46 ../src/gui/windowmenu.cpp:71
 msgid "Setup"
 msgstr "Beállítások"
 
-#: ../src/keyboardconfig.cpp:78
+#: ../src/keyboardconfig.cpp:79
 msgid "Setup Window"
 msgstr "Beállítások Ablak"
-
-#: ../src/gui/setup_audio.cpp:50
-msgid "Sfx volume"
-msgstr "Effektek hangereje"
 
 #: ../src/gui/buyselldialog.cpp:38
 msgid "Shop"
 msgstr "Üzlet"
 
-#: ../src/gui/windowmenu.cpp:70
+#: ../src/gui/windowmenu.cpp:69
 #, fuzzy
 msgid "Shortcuts"
 msgstr "Gyorsmenü"
 
-#: ../src/commandhandler.cpp:505 ../src/commandhandler.cpp:514
+#: ../src/commandhandler.cpp:482 ../src/commandhandler.cpp:491
 msgid "Show IP: Off"
 msgstr ""
 
-#: ../src/commandhandler.cpp:505 ../src/commandhandler.cpp:518
+#: ../src/commandhandler.cpp:482 ../src/commandhandler.cpp:495
 msgid "Show IP: On"
 msgstr ""
 
-#: ../src/gui/setup_interface.cpp:125
+#: ../src/gui/setup_interface.cpp:108
 #, fuzzy
 msgid "Show damage"
 msgstr "A név mutatása"
 
-#: ../src/gui/setup_players.cpp:232
+#: ../src/gui/setup_players.cpp:225
 #, fuzzy
 msgid "Show gender"
 msgstr "A név mutatása"
 
-#: ../src/gui/setup_interface.cpp:107
+#: ../src/gui/setup_interface.cpp:90
 #, fuzzy
 msgid "Show own name"
 msgstr "A név mutatása"
 
-#: ../src/gui/setup_interface.cpp:109
+#: ../src/gui/setup_interface.cpp:92
 #, fuzzy
 msgid "Show pickup notification:"
 msgstr "Értesítés tárgy felvételkor"
 
-#: ../src/gui/debugwindow.cpp:133
+#: ../src/gui/debugwindow.cpp:134
 msgid "Show:"
 msgstr ""
 
-#: ../src/keyboardconfig.cpp:55
+#: ../src/keyboardconfig.cpp:56
 msgid "Sit"
 msgstr "Ülés"
 
-#: ../src/net/tmwa/specialhandler.cpp:151
+#: ../src/net/tmwa/specialhandler.cpp:149
 msgid "Sit failed!"
 msgstr "Ülés sikertelen!"
 
-#: ../src/gui/skilldialog.cpp:379
+#: ../src/gui/skilldialog.cpp:375
 #, fuzzy, c-format
 msgid "Skill %d"
 msgstr "Képességek"
 
-#: ../src/gui/skilldialog.cpp:370
+#: ../src/gui/skilldialog.cpp:366
 #, fuzzy, c-format
 msgid "Skill Set %d"
 msgstr "Képesség pontok: %d"
 
-#: ../src/keyboardconfig.cpp:74
+#: ../src/keyboardconfig.cpp:75
 msgid "Skill Window"
 msgstr "Képességek Ablak"
 
-#: ../src/gui/skilldialog.cpp:275
+#: ../src/gui/skilldialog.cpp:265
 #, fuzzy, c-format
 msgid "Skill points available: %d"
 msgstr "Képesség pontok: %d"
 
-#: ../src/gui/skilldialog.cpp:215 ../src/gui/windowmenu.cpp:62
+#: ../src/gui/skilldialog.cpp:205 ../src/gui/windowmenu.cpp:61
 msgid "Skills"
 msgstr "Képességek"
 
-#: ../src/gui/inventorywindow.cpp:87
+#: ../src/gui/inventorywindow.cpp:86
 msgid "Slots:"
 msgstr "Hely:"
 
-#: ../src/gui/setup_interface.cpp:60
+#: ../src/gui/setup_interface.cpp:45
 msgid "Small"
 msgstr "Kicsi"
 
-#: ../src/keyboardconfig.cpp:47
+#: ../src/keyboardconfig.cpp:48
 msgid "Smilie"
 msgstr "Hangulatjel"
 
-#: ../src/gui/socialwindow.cpp:312 ../src/gui/windowmenu.cpp:68
+#: ../src/gui/socialwindow.cpp:350 ../src/gui/windowmenu.cpp:67
 msgid "Social"
 msgstr ""
 
-#: ../src/keyboardconfig.cpp:80
+#: ../src/keyboardconfig.cpp:81
 #, fuzzy
 msgid "Social Window"
 msgstr "Képességek Ablak"
 
-#: ../src/net/tmwa/generalhandler.cpp:139
+#: ../src/net/tmwa/generalhandler.cpp:137
 #, fuzzy
 msgid "Someone else is trying to use this account."
 msgstr "Valaki más megprobál belépni erre a fiókra"
@@ -2970,69 +3021,69 @@ msgstr "Valaki más megprobál belépni erre a fiókra"
 msgid "Sound"
 msgstr "Hang"
 
-#: ../src/gui/setup_audio.cpp:106
+#: ../src/gui/setup_audio.cpp:109
 msgid "Sound Engine"
 msgstr ""
 
-#: ../src/gui/debugwindow.cpp:143
+#: ../src/gui/debugwindow.cpp:146
 msgid "Special 1"
 msgstr ""
 
-#: ../src/gui/debugwindow.cpp:144
+#: ../src/gui/debugwindow.cpp:147
 msgid "Special 2"
 msgstr ""
 
-#: ../src/gui/debugwindow.cpp:145
+#: ../src/gui/debugwindow.cpp:148
 msgid "Special 3"
 msgstr ""
 
-#: ../src/gui/specialswindow.cpp:79 ../src/gui/windowmenu.cpp:66
+#: ../src/gui/specialswindow.cpp:69 ../src/gui/windowmenu.cpp:65
 msgid "Specials"
 msgstr ""
 
-#: ../src/gui/debugwindow.cpp:141
+#: ../src/gui/debugwindow.cpp:144
 msgid "Specials:"
 msgstr ""
 
-#: ../src/gui/setup_colors.cpp:90 ../src/gui/setup_colors.cpp:91
-#: ../src/gui/setup_colors.cpp:334
+#: ../src/gui/setup_colors.cpp:82 ../src/gui/setup_colors.cpp:83
+#: ../src/gui/setup_colors.cpp:321
 msgid "Spectrum"
 msgstr "Színkép"
 
-#: ../src/net/tmwa/generalhandler.cpp:145
+#: ../src/net/tmwa/generalhandler.cpp:143
 #, fuzzy
 msgid "Speed hack detected."
 msgstr "Speed hack észlelve"
 
-#: ../src/gui/inventorywindow.cpp:109 ../src/gui/popupmenu.cpp:390
+#: ../src/gui/inventorywindow.cpp:108 ../src/gui/popupmenu.cpp:382
 msgid "Split"
 msgstr "Felosztás"
 
-#: ../src/localplayer.cpp:917
+#: ../src/localplayer.cpp:868
 msgid "Stack is too big."
 msgstr ""
 
-#: ../src/gui/recorder.cpp:105
+#: ../src/gui/recorder.cpp:104
 msgid "Starting to record..."
 msgstr "Rögzítés megkezdése..."
 
-#: ../src/gui/setup_colors.cpp:84 ../src/gui/setup_colors.cpp:332
+#: ../src/gui/setup_colors.cpp:76 ../src/gui/setup_colors.cpp:319
 msgid "Static"
 msgstr "Statikus"
 
-#: ../src/gui/windowmenu.cpp:54
+#: ../src/gui/windowmenu.cpp:53
 msgid "Status"
 msgstr "Státusz"
 
-#: ../src/keyboardconfig.cpp:71
+#: ../src/keyboardconfig.cpp:72
 msgid "Status Window"
 msgstr "Sztátusz Ablak"
 
-#: ../src/gui/setup_joystick.cpp:83
+#: ../src/gui/setup_joystick.cpp:75
 msgid "Stop"
 msgstr "Leállít"
 
-#: ../src/keyboardconfig.cpp:49
+#: ../src/keyboardconfig.cpp:50
 msgid "Stop Attack"
 msgstr "Támadás Megszüntetése"
 
@@ -3044,26 +3095,25 @@ msgstr "Rögzítés leállítása"
 msgid "Storage"
 msgstr "Raktár"
 
-#: ../src/gui/inventorywindow.cpp:132 ../src/gui/popupmenu.cpp:367
+#: ../src/gui/inventorywindow.cpp:131 ../src/gui/popupmenu.cpp:359
 msgid "Store"
 msgstr "Raktároz"
 
-#: ../src/net/manaserv/attributes.cpp:166
-#: ../src/net/tmwa/generalhandler.cpp:230
+#: ../src/net/tmwa/generalhandler.cpp:228 ../src/resources/attributes.cpp:159
 msgid "Strength"
 msgstr "Erő"
 
-#: ../src/net/manaserv/attributes.cpp:173
+#: ../src/resources/attributes.cpp:165
 #, fuzzy, c-format
 msgid "Strength %+.1f"
 msgstr "Erő %+d"
 
-#: ../src/net/tmwa/generalhandler.cpp:102
+#: ../src/net/tmwa/generalhandler.cpp:99
 #, c-format
 msgid "Strength %+d"
 msgstr "Erő %+d"
 
-#: ../src/net/tmwa/charserverhandler.cpp:271
+#: ../src/net/tmwa/charserverhandler.cpp:283
 msgid "Strength:"
 msgstr "Erő:"
 
@@ -3071,7 +3121,7 @@ msgstr "Erő:"
 msgid "Submit"
 msgstr "Küldés"
 
-#: ../src/gui/charselectdialog.cpp:131
+#: ../src/gui/charselectdialog.cpp:120
 msgid "Switch Login"
 msgstr ""
 
@@ -3083,60 +3133,47 @@ msgstr "Karakter változtatása"
 msgid "Switch server"
 msgstr "Szerver változtatása"
 
-#: ../src/gui/debugwindow.cpp:239
+#: ../src/gui/debugwindow.cpp:252
 #, fuzzy
 msgid "Switches"
 msgstr "Szerver változtatása"
 
-#: ../src/gui/setup_video.cpp:334
-#, fuzzy
-msgid "Switching to Full Screen"
-msgstr "Átállás teljes képernyőre"
-
-#: ../src/keyboardconfig.cpp:48
+#: ../src/keyboardconfig.cpp:49
 msgid "Talk"
 msgstr "Csevegés"
 
-#: ../src/gui/popupmenu.cpp:154
+#: ../src/gui/popupmenu.cpp:149
 #, fuzzy, c-format
 msgid "Talk to %s"
 msgstr "@@talk|Privát Te és %s között@@"
 
-#: ../src/keyboardconfig.cpp:46
+#: ../src/keyboardconfig.cpp:47
 msgid "Target & Attack"
 msgstr "Kijelöl és Támad"
 
-#: ../src/keyboardconfig.cpp:50
+#: ../src/keyboardconfig.cpp:51
 #, fuzzy
 msgid "Target Monster"
 msgstr "Legközelebbit Kijelöl"
 
-#: ../src/keyboardconfig.cpp:51
+#: ../src/keyboardconfig.cpp:52
 msgid "Target NPC"
 msgstr "Gépjátékost Kijelöl"
 
-#: ../src/keyboardconfig.cpp:52
+#: ../src/keyboardconfig.cpp:53
 msgid "Target Player"
 msgstr "Játékost Kijelöl"
 
-#: ../src/gui/setup_interface.cpp:89
+#: ../src/gui/setup_interface.cpp:72
 msgid "Text"
 msgstr "Szöveg"
 
-#: ../src/net/tmwa/buysellhandler.cpp:116
-msgid "Thanks for buying."
-msgstr "Öröm volt veled üzletet kötni!"
-
-#: ../src/net/tmwa/buysellhandler.cpp:129
-msgid "Thanks for selling."
-msgstr "Öröm volt veled üzletet kötni!"
-
-#: ../src/net/manaserv/beinghandler.cpp:280
-#: ../src/net/tmwa/playerhandler.cpp:100
+#: ../src/net/manaserv/beinghandler.cpp:282
+#: ../src/net/tmwa/playerhandler.cpp:98
 msgid "The cold hands of the grim reaper are grabbing for your soul."
 msgstr "A kaszás eljött érted, hogy elvigye a lelked."
 
-#: ../src/game.cpp:363
+#: ../src/game.cpp:366
 #, fuzzy
 msgid "The connection to the server was lost."
 msgstr "A kapcsolat megszakadt a szerverrel, a program most kilép."
@@ -3175,12 +3212,12 @@ msgstr "A jelszónak legalább %d karakter hosszúnak kell lennie."
 msgid "The new password needs to be less than %d characters long."
 msgstr "A jelszónak legfeljebb %d karakter hosszúnak kell lennie."
 
-#: ../src/gui/register.cpp:182 ../src/gui/unregisterdialog.cpp:117
+#: ../src/gui/register.cpp:182 ../src/gui/unregisterdialog.cpp:114
 #, c-format
 msgid "The password needs to be at least %d characters long."
 msgstr "A jelszónak legalább %d karakter hosszúnak kell lennie."
 
-#: ../src/gui/register.cpp:190 ../src/gui/unregisterdialog.cpp:124
+#: ../src/gui/register.cpp:190 ../src/gui/unregisterdialog.cpp:121
 #, c-format
 msgid "The password needs to be less than %d characters long."
 msgstr "A jelszónak legfeljebb %d karakter hosszúnak kell lennie."
@@ -3195,82 +3232,82 @@ msgstr "A felhasználónévnek legalább %d karakternek kell lennie."
 msgid "The username needs to be less than %d characters long."
 msgstr "A felhasználónévnek legfeljebb %d karakternek kell lennie."
 
-#: ../src/net/tmwa/generalhandler.cpp:142
+#: ../src/net/tmwa/generalhandler.cpp:140
 #, fuzzy
 msgid "This account is already logged in."
 msgstr "Ez a fiók már be van lépve"
 
-#: ../src/net/tmwa/gui/guildtab.cpp:81
+#: ../src/net/tmwa/gui/guildtab.cpp:73
 #, fuzzy
 msgid "This command causes the player to leave the guild."
 msgstr "Ezzel a paranccsal a játékos elhagyja a csapatát."
 
-#: ../src/net/tmwa/gui/partytab.cpp:81
+#: ../src/net/tmwa/gui/partytab.cpp:74
 msgid "This command causes the player to leave the party."
 msgstr "Ezzel a paranccsal a játékos elhagyja a csapatát."
 
-#: ../src/net/tmwa/gui/partytab.cpp:96
+#: ../src/net/tmwa/gui/partytab.cpp:89
 msgid "This command changes the party's experience sharing policy."
 msgstr "Ez a parancs a tapasztalat megosztását szabályozza a csapaton belül."
 
-#: ../src/net/tmwa/gui/partytab.cpp:86
+#: ../src/net/tmwa/gui/partytab.cpp:79
 msgid "This command changes the party's item sharing policy."
 msgstr "Ez a parancs a tárgyak megosztását szabályozza a csapaton belül."
 
-#: ../src/commandhandler.cpp:274
+#: ../src/commandhandler.cpp:255
 #, fuzzy
 msgid "This command clears the away status and message."
 msgstr "Ez a parancs beállítja a témát a <téma> alatt megadott szövegre."
 
-#: ../src/commandhandler.cpp:228
+#: ../src/commandhandler.cpp:209
 msgid "This command clears the chat log of previous chat."
 msgstr "Törli a beszélgetés panel tartalmát."
 
-#: ../src/gui/widgets/whispertab.cpp:85
+#: ../src/gui/widgets/whispertab.cpp:84
 msgid "This command closes the current whisper tab."
 msgstr "Ez a parancs bezárja az aktuális privát fület."
 
-#: ../src/commandhandler.cpp:279
+#: ../src/commandhandler.cpp:260
 #, fuzzy
 msgid "This command creates a new party called <name>."
 msgstr ""
 "Ezek a parancsok új csapatot hoznak létre a <csapatnév> alatt megadott néven."
 
-#: ../src/commandhandler.cpp:209
+#: ../src/commandhandler.cpp:197
 msgid "This command displays a list of all commands available."
 msgstr "Ez a parancs az elérhető parancsokat listázza."
 
-#: ../src/commandhandler.cpp:212
+#: ../src/commandhandler.cpp:200
 msgid "This command displays help on <command>."
 msgstr ""
 "Ez a parancs segítséget nyújt a <parancsnév> alatt megadott parancshoz."
 
-#: ../src/commandhandler.cpp:323
+#: ../src/commandhandler.cpp:304
 msgid "This command displays the name of the current map."
 msgstr "Ez a parancs megmutatja az aktuális térkép nevét."
 
-#: ../src/commandhandler.cpp:328
+#: ../src/commandhandler.cpp:309
 msgid "This command displays the number of players currently online."
 msgstr "Ez a parancs megmutatja az online játékosok számát."
 
-#: ../src/net/tmwa/gui/partytab.cpp:101
+#: ../src/net/tmwa/gui/partytab.cpp:94
 msgid "This command displays the party's current experience sharing policy."
 msgstr ""
 "Ez a parancs megmutatja a csapat jelenlegi tapasztalatmegosztási-szabályát."
 
-#: ../src/net/tmwa/gui/partytab.cpp:91
+#: ../src/net/tmwa/gui/partytab.cpp:84
 msgid "This command displays the party's current item sharing policy."
 msgstr "Ez a parancs megmutatja a csapat jelenlegi tárgymegosztási-szabályát."
 
-#: ../src/commandhandler.cpp:312
+#: ../src/commandhandler.cpp:293
 msgid "This command displays the return toggle status."
 msgstr "A /toggle jelenlegi állását mutatja meg."
 
-#: ../src/commandhandler.cpp:301
+#: ../src/commandhandler.cpp:282
 msgid "This command finishes a recording session."
 msgstr "Befejezi a beszélgetés rögzítését."
 
-#: ../src/commandhandler.cpp:291
+#: ../src/commandhandler.cpp:272
 msgid ""
 "This command gets a list of players within hearing and sends it to either "
 "the record log if recording, or the chat log otherwise."
@@ -3278,21 +3315,21 @@ msgstr ""
 "Ez a parancs megmutatja a \"hallható\" játékosok nevét és fájlba is rögzíti, "
 "ha éppen rögzítjük a beszélgetést."
 
-#: ../src/commandhandler.cpp:233
+#: ../src/commandhandler.cpp:214
 #, fuzzy
 msgid "This command ignores the given player regardless of current relations."
 msgstr "Ez a parancs megmutatja az online játékosok számát."
 
-#: ../src/gui/widgets/whispertab.cpp:90
+#: ../src/gui/widgets/whispertab.cpp:89
 #, fuzzy
 msgid "This command ignores the other player regardless of current relations."
 msgstr "Ez a parancs megmutatja az online játékosok számát."
 
-#: ../src/commandhandler.cpp:284 ../src/net/tmwa/gui/partytab.cpp:74
+#: ../src/commandhandler.cpp:265 ../src/net/tmwa/gui/partytab.cpp:67
 msgid "This command invites <nick> to party with you."
 msgstr "Ez a parancs csapatba hívja a <név> alatt megadott nevű játékost."
 
-#: ../src/net/tmwa/gui/guildtab.cpp:74
+#: ../src/net/tmwa/gui/guildtab.cpp:66
 #, fuzzy
 msgid "This command invites <nick> to the guild you're in."
 msgstr "Ez a parancs csapatba hívja a <név> alatt megadott nevű játékost."
@@ -3310,17 +3347,11 @@ msgstr ""
 msgid "This command makes <nick> leave the channel."
 msgstr "Ez a parancs kirúgja a <név> alatt megadott személyt a csatornából."
 
-#: ../src/commandhandler.cpp:239
+#: ../src/commandhandler.cpp:220
 msgid "This command makes you enter <channel>."
 msgstr "Belépsz a <csatorna> helyen megadott beszélgetési csatornába."
 
-#: ../src/commandhandler.cpp:222
-msgid "This command sends the message <msg> to all players currently online."
-msgstr ""
-"Ez a parancs az <üzenet>-en belül megadott szöveget elküldi az összes "
-"elérhető játékosnak."
-
-#: ../src/commandhandler.cpp:257
+#: ../src/commandhandler.cpp:238
 msgid "This command sends the text <message> to <nick>."
 msgstr ""
 "Ez a parancs elküldi az <üzenet> szövegét a <név> alatt megadott nevű "
@@ -3330,13 +3361,13 @@ msgstr ""
 msgid "This command sets the topic to <message>."
 msgstr "Ez a parancs beállítja a témát a <téma> alatt megadott szövegre."
 
-#: ../src/commandhandler.cpp:306
+#: ../src/commandhandler.cpp:287
 msgid ""
 "This command sets whether the return key should toggle the chat log, or "
 "whether the chat log turns off automatically."
 msgstr "Ez a parancs beállítja az enter billentyű használatát a játékban."
 
-#: ../src/commandhandler.cpp:245
+#: ../src/commandhandler.cpp:226
 msgid "This command shows a list of all channels."
 msgstr "Kilistázza az összes csatornát."
 
@@ -3344,53 +3375,48 @@ msgstr "Kilistázza az összes csatornát."
 msgid "This command shows the users in this channel."
 msgstr "Ez a parancs megmutatja ennek a csatornának a felhasználóit."
 
-#: ../src/commandhandler.cpp:298
+#: ../src/commandhandler.cpp:279
 msgid "This command starts recording the chat log to the file <filename>."
 msgstr ""
 "Ez a parancs elkezdi felvenni a beszélgetést a <fájlnév> alatt megadott "
 "fájlba."
 
-#: ../src/commandhandler.cpp:317
+#: ../src/commandhandler.cpp:298
 msgid "This command stops ignoring the given player if they are being ignored"
 msgstr ""
 
-#: ../src/gui/widgets/whispertab.cpp:96
+#: ../src/gui/widgets/whispertab.cpp:95
 #, fuzzy
 msgid "This command stops ignoring the other player if they are being ignored."
 msgstr ""
 "Ez a parancs elkezdi felvenni a beszélgetést a <fájlnév> alatt megadott "
 "fájlba."
 
-#: ../src/commandhandler.cpp:250
+#: ../src/commandhandler.cpp:231
 msgid "This command tell others you are (doing) <msg>."
 msgstr "Ezzel a paranccsal az állapotodat jelzed. Megjelenés: Név <üzenet>"
 
-#: ../src/commandhandler.cpp:271
+#: ../src/commandhandler.cpp:252
 msgid "This command tells you're away from keyboard with the given reason."
 msgstr ""
 
-#: ../src/commandhandler.cpp:265
-msgid "This command tries to make a tab for whispers betweenyou and <nick>."
+#: ../src/commandhandler.cpp:246
+#, fuzzy
+msgid "This command tries to make a tab for whispers between you and <nick>."
 msgstr ""
 "Ez a parancs egy új fület nyit beszélgetéseidhez a <név> alatt megadott nevű "
 "játékossal."
 
-#: ../src/gui/setup_colors.cpp:47
+#: ../src/gui/setup_colors.cpp:43
 msgid "This is what the color looks like"
 msgstr "Így fog kinézni a felirat."
 
-#: ../src/client.cpp:785
-msgid ""
-"This server is missing needed world data. Please contact the administrator"
-"(s)."
-msgstr ""
-
-#: ../src/net/tmwa/loginhandler.cpp:185
+#: ../src/net/tmwa/loginhandler.cpp:189
 #, fuzzy
 msgid "This user name is already taken."
 msgstr "Ez a felhasználónév már foglalt."
 
-#: ../src/gui/setup_interface.cpp:59
+#: ../src/gui/setup_interface.cpp:44
 msgid "Tiny"
 msgstr "Apró"
 
@@ -3398,13 +3424,13 @@ msgstr "Apró"
 msgid "To:"
 msgstr "Cél:"
 
-#: ../src/keyboardconfig.cpp:97
+#: ../src/keyboardconfig.cpp:98
 msgid "Toggle Chat"
 msgstr "Chat Ki/Be Kapcsolása"
 
 #: ../src/net/manaserv/chathandler.cpp:190
 #: ../src/net/manaserv/chathandler.cpp:324
-#: ../src/net/manaserv/guildhandler.cpp:260
+#: ../src/net/manaserv/guildhandler.cpp:285
 #, c-format
 msgid "Topic: %s"
 msgstr "Téma: %s"
@@ -3418,7 +3444,7 @@ msgid "Trade"
 msgstr "Üzlet"
 
 #: ../src/net/manaserv/tradehandler.cpp:148
-#: ../src/net/tmwa/tradehandler.cpp:224
+#: ../src/net/tmwa/tradehandler.cpp:231
 msgid "Trade canceled."
 msgstr "Az üzlet megszakadt."
 
@@ -3427,20 +3453,20 @@ msgid "Trade cancelled due to an unknown reason."
 msgstr "Az üzlet ismeretlen okból megszakadt."
 
 #: ../src/net/manaserv/tradehandler.cpp:155
-#: ../src/net/tmwa/tradehandler.cpp:231
+#: ../src/net/tmwa/tradehandler.cpp:238
 msgid "Trade completed."
 msgstr "Sikeres üzlet."
 
-#: ../src/net/tmwa/specialhandler.cpp:145
+#: ../src/net/tmwa/specialhandler.cpp:143
 msgid "Trade failed!"
 msgstr "Üzlet sikertelen!"
 
-#: ../src/net/tmwa/tradehandler.cpp:146
+#: ../src/net/tmwa/tradehandler.cpp:147
 #, c-format
 msgid "Trade with %s cancelled."
 msgstr "Te és %s üzlete megszakadt."
 
-#: ../src/gui/popupmenu.cpp:84
+#: ../src/gui/popupmenu.cpp:79
 #, fuzzy, c-format
 msgid "Trade with %s..."
 msgstr "Üzlet Te és %s között"
@@ -3467,21 +3493,21 @@ msgstr "Az üzlet nem lehetséges. A partner túl messze van."
 msgid "Trading with %s"
 msgstr "Üzlet Te és %s között"
 
-#: ../src/gui/setup_video.cpp:366
+#: ../src/gui/setup_video.cpp:402
 #, fuzzy
 msgid "Transparency disabled"
 msgstr "Tapasztalat megosztás tiltva."
 
-#: ../src/gui/setup_video.cpp:374
+#: ../src/gui/setup_video.cpp:410
 msgid "Transparency enabled"
 msgstr ""
 
-#: ../src/localplayer.cpp:913
+#: ../src/localplayer.cpp:864
 #, fuzzy
 msgid "Tried to pick up nonexistent item."
 msgstr "Nem tudod felvenni a tárgyat."
 
-#: ../src/commandhandler.cpp:334
+#: ../src/commandhandler.cpp:315
 msgid "Type /help for a list of commands."
 msgstr "Parancsok listája: /help"
 
@@ -3495,29 +3521,29 @@ msgstr "Írd be az új Email címet kétszer:"
 msgid "Type new password twice:"
 msgstr "Írd be az új jelszót kétszer:"
 
-#: ../src/gui/setup_colors.cpp:73
+#: ../src/gui/setup_colors.cpp:65
 #, fuzzy
 msgid "Type:"
 msgstr "Típus: "
 
-#: ../src/net/tmwa/buysellhandler.cpp:123
+#: ../src/net/tmwa/buysellhandler.cpp:118
 msgid "Unable to buy."
 msgstr "Nem tudod megvenni."
 
-#: ../src/net/tmwa/inventoryhandler.cpp:405
+#: ../src/net/tmwa/inventoryhandler.cpp:389
 msgid "Unable to equip."
 msgstr "Nem tudod használni."
 
-#: ../src/net/tmwa/network.cpp:335
-#, fuzzy
-msgid "Unable to resolve host \""
+#: ../src/net/tmwa/network.cpp:470
+#, fuzzy, c-format
+msgid "Unable to resolve host \"%s\""
 msgstr "Nem tudod eladni."
 
-#: ../src/net/tmwa/buysellhandler.cpp:131
+#: ../src/net/tmwa/buysellhandler.cpp:124
 msgid "Unable to sell."
 msgstr "Nem tudod eladni."
 
-#: ../src/net/tmwa/inventoryhandler.cpp:417
+#: ../src/net/tmwa/inventoryhandler.cpp:401
 msgid "Unable to unequip."
 msgstr "Nem tudod eltenni."
 
@@ -3526,31 +3552,31 @@ msgstr "Nem tudod eltenni."
 msgid "Unassign"
 msgstr "Hozzárendel"
 
-#: ../src/gui/equipmentwindow.cpp:74 ../src/gui/inventorywindow.cpp:95
-#: ../src/gui/inventorywindow.cpp:366 ../src/gui/popupmenu.cpp:373
+#: ../src/gui/equipmentwindow.cpp:71 ../src/gui/inventorywindow.cpp:94
+#: ../src/gui/inventorywindow.cpp:372 ../src/gui/popupmenu.cpp:365
 msgid "Unequip"
 msgstr "Nem használ"
 
-#: ../src/gui/outfitwindow.cpp:70
+#: ../src/gui/outfitwindow.cpp:53
 #, fuzzy
 msgid "Unequip first"
 msgstr "Nem használ"
 
-#: ../src/net/manaserv/charhandler.cpp:272
+#: ../src/net/manaserv/charhandler.cpp:271
 #, c-format
 msgid "Unhandled character select error message %i."
 msgstr ""
 
-#: ../src/net/tmwa/tradehandler.cpp:154
+#: ../src/net/tmwa/tradehandler.cpp:156
 msgid "Unhandled trade cancel packet."
 msgstr "Lekezeletlen üzlet elutasító csomag."
 
-#: ../src/gui/popupmenu.cpp:115 ../src/gui/popupmenu.cpp:124
+#: ../src/gui/popupmenu.cpp:110 ../src/gui/popupmenu.cpp:119
 #, c-format
 msgid "Unignore %s"
 msgstr ""
 
-#: ../src/net/net.cpp:141
+#: ../src/net/net.cpp:140
 #, fuzzy
 msgid "Unknown Server Type! Exiting."
 msgstr "Ismeretlen tárgy típus"
@@ -3560,125 +3586,114 @@ msgstr "Ismeretlen tárgy típus"
 msgid "Unknown channel event."
 msgstr "Ismeretlen parancs."
 
-#: ../src/net/tmwa/charserverhandler.cpp:110
+#: ../src/net/tmwa/charserverhandler.cpp:112
 #, fuzzy
 msgid "Unknown char-server failure."
 msgstr "Ismeretlen hiba"
 
-#: ../src/commandhandler.cpp:136 ../src/commandhandler.cpp:333
+#: ../src/commandhandler.cpp:128 ../src/commandhandler.cpp:314
 msgid "Unknown command."
 msgstr "Ismeretlen parancs."
 
-#: ../src/net/tmwa/generalhandler.cpp:151
+#: ../src/net/tmwa/generalhandler.cpp:149
 #, fuzzy
 msgid "Unknown connection error."
 msgstr "Ismeretlen kapcsolati hiba"
 
-#: ../src/net/manaserv/charhandler.cpp:227
+#: ../src/net/manaserv/charhandler.cpp:226
 #, fuzzy, c-format
 msgid "Unknown error (%d)."
 msgstr "Ismeretlen hiba"
 
-#: ../src/net/manaserv/charhandler.cpp:176
+#: ../src/net/manaserv/charhandler.cpp:175
 #: ../src/net/manaserv/loginhandler.cpp:101
 #: ../src/net/manaserv/loginhandler.cpp:132
 #: ../src/net/manaserv/loginhandler.cpp:166
 #: ../src/net/manaserv/loginhandler.cpp:290
-#: ../src/net/manaserv/loginhandler.cpp:327
-#: ../src/net/tmwa/loginhandler.cpp:95 ../src/net/tmwa/loginhandler.cpp:191
+#: ../src/net/manaserv/loginhandler.cpp:327 ../src/net/tmwa/loginhandler.cpp:98
+#: ../src/net/tmwa/loginhandler.cpp:195
 #, fuzzy
 msgid "Unknown error."
 msgstr "Ismeretlen hiba"
 
-#: ../src/net/tmwa/guildhandler.cpp:316
-#, fuzzy
-msgid "Unknown guild invite response."
-msgstr "%s részéről ismeretlen válasz a meghívásra."
-
-#: ../src/net/tmwa/partyhandler.cpp:132
+#: ../src/net/tmwa/partyhandler.cpp:131
 #, c-format
 msgid "Unknown invite response for %s."
 msgstr "%s részéről ismeretlen válasz a meghívásra."
 
-#: ../src/resources/itemdb.cpp:69
+#: ../src/resources/itemdb.cpp:66
 msgid "Unknown item"
 msgstr "Ismeretlen tárgy"
 
-#: ../src/localplayer.cpp:920
+#: ../src/localplayer.cpp:871
 #, fuzzy
 msgid "Unknown problem picking up item."
 msgstr "Nem tudod felvenni a tárgyat."
 
-#: ../src/gui/charselectdialog.cpp:145 ../src/gui/unregisterdialog.cpp:47
-#: ../src/gui/unregisterdialog.cpp:55
+#: ../src/gui/charselectdialog.cpp:134 ../src/gui/unregisterdialog.cpp:45
+#: ../src/gui/unregisterdialog.cpp:53
 msgid "Unregister"
 msgstr "Regisztráció megszüntetése"
 
-#: ../src/client.cpp:961
+#: ../src/client.cpp:884
 #, fuzzy
 msgid "Unregister Successful"
 msgstr "Regisztráció megszüntetése"
 
-#: ../src/net/tmwa/loginhandler.cpp:156
+#: ../src/net/tmwa/loginhandler.cpp:160
 #, fuzzy
 msgid "Unregistered ID."
 msgstr "Az ID nincs regisztrálva"
 
-#: ../src/gui/skilldialog.cpp:230
+#: ../src/gui/skilldialog.cpp:220
 msgid "Up"
 msgstr "Fejleszt"
 
-#: ../src/gui/updaterwindow.cpp:125
+#: ../src/gui/updaterwindow.cpp:123
 msgid "Updating..."
 msgstr "Frissítés…"
 
-#: ../src/gui/inventorywindow.cpp:94
+#: ../src/gui/inventorywindow.cpp:93
 msgid "Use"
 msgstr "Bevet"
-
-#: ../src/net/tmwa/guildhandler.cpp:306
-#, fuzzy
-msgid "User is now part of your guild."
-msgstr "%s mostantól a csapatod tagja."
-
-#: ../src/net/tmwa/guildhandler.cpp:301
-msgid "User rejected guild invite."
-msgstr ""
 
 #: ../src/net/manaserv/loginhandler.cpp:317
 #, fuzzy
 msgid "Username already exists."
 msgstr "A felhasználónév foglalt"
 
-#: ../src/net/tmwa/loginhandler.cpp:188
+#: ../src/net/tmwa/loginhandler.cpp:192
 #, fuzzy
 msgid "Username permanently erased."
 msgstr "A felhasználónév foglalt"
 
-#: ../src/gui/setup_video.cpp:184
+#: ../src/gui/setup_video.cpp:227
+msgid "VSync"
+msgstr ""
+
+#: ../src/gui/setup_video.cpp:244
 msgid "Video"
 msgstr "Videó"
 
-#: ../src/gui/setup_interface.cpp:105
+#: ../src/gui/setup_interface.cpp:88
 msgid "Visible names"
 msgstr "Látható nevek"
 
-#: ../src/net/manaserv/attributes.cpp:205
-#: ../src/net/tmwa/generalhandler.cpp:232
+#: ../src/net/tmwa/generalhandler.cpp:230 ../src/resources/attributes.cpp:195
 msgid "Vitality"
 msgstr "Egészség"
 
-#: ../src/net/manaserv/attributes.cpp:212
+#: ../src/resources/attributes.cpp:201
 #, fuzzy, c-format
 msgid "Vitality %+.1f"
 msgstr "Egészség %+d"
 
-#: ../src/net/tmwa/generalhandler.cpp:104
+#: ../src/net/tmwa/generalhandler.cpp:101
 #, c-format
 msgid "Vitality %+d"
 msgstr "Egészség %+d"
 
-#: ../src/net/tmwa/charserverhandler.cpp:273
+#: ../src/net/tmwa/charserverhandler.cpp:285
 msgid "Vitality:"
 msgstr "Egészség:"
 
@@ -3686,83 +3701,98 @@ msgstr "Egészség:"
 msgid "Waiting for server"
 msgstr "Várakozás a szerverre"
 
-#: ../src/gui/serverdialog.cpp:410
+#: ../src/gui/serverdialog.cpp:395
 #, fuzzy
 msgid "Waiting for server..."
 msgstr "Várakozás a szerverre"
 
-#: ../src/net/tmwa/specialhandler.cpp:208
+#: ../src/net/tmwa/specialhandler.cpp:206
 msgid "Warp failed..."
 msgstr "Teleport sikertelen..."
 
-#: ../src/net/manaserv/beinghandler.cpp:277
-#: ../src/net/tmwa/playerhandler.cpp:97
+#: ../src/net/manaserv/beinghandler.cpp:279
+#: ../src/net/tmwa/playerhandler.cpp:95
 msgid "We regret to inform you that your character was killed in battle."
 msgstr "A karaktered elvérzett a csatában."
 
-#: ../src/keyboardconfig.cpp:83
+#: ../src/keyboardconfig.cpp:84
 msgid "Wear Outfit"
 msgstr ""
 
-#: ../src/gui/inventorywindow.cpp:112
+#: ../src/gui/inventorywindow.cpp:111
 msgid "Weight:"
 msgstr "Súly:"
 
-#: ../src/gui/itempopup.cpp:206
+#: ../src/gui/itempopup.cpp:184
 #, fuzzy, c-format
 msgid "Weight: %s"
 msgstr "Súly: "
 
-#: ../src/gui/setup_players.cpp:261
+#: ../src/gui/setup_players.cpp:254
 msgid "When ignoring:"
 msgstr "Ha ignorolva van:"
 
-#: ../src/gui/popupmenu.cpp:92
+#: ../src/gui/popupmenu.cpp:87
 #, fuzzy, c-format
 msgid "Whisper %s"
 msgstr "Privát üzenet"
 
-#: ../src/net/tmwa/chathandler.cpp:87
+#: ../src/net/tmwa/chathandler.cpp:90
 #, fuzzy, c-format
 msgid "Whisper could not be sent, %s is offline."
 msgstr "A privát üzenet nem lett elküldve, mert a játékos nem elérhető."
 
-#: ../src/net/tmwa/chathandler.cpp:96
+#: ../src/net/tmwa/chathandler.cpp:99
 #, fuzzy, c-format
 msgid "Whisper could not be sent, ignored by %s."
 msgstr "A privát üzenet nem lett elküldve, mert le lettél tiltva."
 
-#: ../src/gui/chatwindow.cpp:504
+#: ../src/gui/chatwindow.cpp:497
 #, c-format
 msgid "Whispering to %s: %s"
 msgstr "Üzenet %s számára: %s"
 
-#: ../src/gui/socialwindow.cpp:154
+#: ../src/gui/socialwindow.cpp:144
 #, c-format
 msgid "Who would you like to invite to guild %s?"
 msgstr ""
 
-#: ../src/gui/socialwindow.cpp:233
+#: ../src/gui/socialwindow.cpp:215
 #, c-format
 msgid "Who would you like to invite to party %s?"
 msgstr ""
 
-#: ../src/net/manaserv/attributes.cpp:231
+#: ../src/resources/attributes.cpp:219
 #, fuzzy
 msgid "Willpower"
 msgstr "Akaraterő:"
 
-#: ../src/net/manaserv/attributes.cpp:238
+#: ../src/resources/attributes.cpp:225
 #, fuzzy, c-format
 msgid "Willpower %+.1f"
 msgstr "Akaraterő: %+d"
+
+#: ../src/gui/setup_video.cpp:311
+#, fuzzy
+msgid "Window mode:"
+msgstr " videó mód: "
+
+#: ../src/gui/setup_video.cpp:221
+#, fuzzy
+msgid "Windowed"
+msgstr "ablakban"
+
+#: ../src/gui/setup_video.cpp:221
+#, fuzzy
+msgid "Windowed Fullscreen"
+msgstr "Teljes képernyő"
 
 #: ../src/net/manaserv/loginhandler.cpp:92
 #, fuzzy
 msgid "Wrong magic_token."
 msgstr "Helytelen magic_token"
 
-#: ../src/net/tmwa/loginhandler.cpp:159
+#: ../src/net/tmwa/loginhandler.cpp:163
 #, fuzzy
 msgid "Wrong password."
 msgstr "Hibás jelszó"
@@ -3777,47 +3807,48 @@ msgstr "Hibás felhasználónév vagy jelszó"
 msgid "Wrong username, password or email address."
 msgstr "Hibás felhasználónév, jelszó, vagy email cím"
 
-#: ../src/gui/confirmdialog.cpp:42
+#: ../src/gui/confirmdialog.cpp:40
 msgid "Yes"
 msgstr "Igen"
 
-#: ../src/net/manaserv/beinghandler.cpp:297
+#: ../src/net/manaserv/beinghandler.cpp:299
 #, fuzzy
 msgid "You Died"
 msgstr "Meghaltál."
 
-#: ../src/net/tmwa/playerhandler.cpp:132
+#: ../src/net/tmwa/playerhandler.cpp:130
 msgid "You are an ex-player."
 msgstr "Ex-játékos lettél."
 
-#: ../src/net/tmwa/playerhandler.cpp:255
+#: ../src/net/tmwa/playerhandler.cpp:254
 msgid ""
 "You are carrying more than half your weight. You are unable to regain health."
 msgstr "Több tárgy van nálad mint a súlyod fele. Nem töltődik az életed."
 
-#: ../src/net/manaserv/beinghandler.cpp:276
-#: ../src/net/tmwa/playerhandler.cpp:96
+#: ../src/net/manaserv/beinghandler.cpp:278
+#: ../src/net/tmwa/playerhandler.cpp:94
 msgid "You are dead."
 msgstr "Meghaltál."
 
-#: ../src/net/tmwa/playerhandler.cpp:121
+#: ../src/net/tmwa/playerhandler.cpp:119
 msgid "You are no more."
 msgstr "Nem létezel többé."
 
-#: ../src/net/manaserv/beinghandler.cpp:279
-#: ../src/net/tmwa/playerhandler.cpp:99
+#: ../src/net/manaserv/beinghandler.cpp:281
+#: ../src/net/tmwa/playerhandler.cpp:97
 msgid "You are not that alive anymore."
 msgstr "Nem vagy már az élők sorában."
 
-#: ../src/net/tmwa/partyhandler.cpp:341
-msgid "You can only inivte when you are in a party!"
-msgstr ""
+#: ../src/net/tmwa/partyhandler.cpp:328
+#, fuzzy
+msgid "You can only invite when you are in a party!"
+msgstr "%s a csapatába hívott."
 
-#: ../src/net/tmwa/specialhandler.cpp:181
+#: ../src/net/tmwa/specialhandler.cpp:179
 msgid "You cannot do that right now!"
 msgstr "Most nem csinálhatod!"
 
-#: ../src/net/tmwa/specialhandler.cpp:187
+#: ../src/net/tmwa/specialhandler.cpp:185
 msgid "You cannot use this skill with that kind of weapon!"
 msgstr "Ezzel a fegyverrel nem tudod ezt a képességet használni!"
 
@@ -3834,17 +3865,17 @@ msgstr "Kapott tárgy: %s."
 msgid "You give:"
 msgstr "Adott tárgyak:"
 
-#: ../src/gui/socialwindow.cpp:588
+#: ../src/gui/socialwindow.cpp:630
 #, fuzzy, c-format
 msgid "You have been invited to join the %s party."
 msgstr "%s behívott %s csapatába."
 
-#: ../src/gui/socialwindow.cpp:584
+#: ../src/gui/socialwindow.cpp:626
 #, fuzzy
 msgid "You have been invited you to join a party."
 msgstr "%s a csapatába hívott."
 
-#: ../src/net/tmwa/loginhandler.cpp:168
+#: ../src/net/tmwa/loginhandler.cpp:172
 #, fuzzy
 msgid ""
 "You have been permanently banned from the game. Please contact the GM team."
@@ -3852,7 +3883,7 @@ msgstr ""
 "Véglegesen kitiltottak a szerverről. Kérlek vedd fel a kapcsolatot a GM "
 "csapattal."
 
-#: ../src/net/tmwa/loginhandler.cpp:175
+#: ../src/net/tmwa/loginhandler.cpp:179
 #, c-format
 msgid ""
 "You have been temporarily banned from the game until %s.\n"
@@ -3861,56 +3892,56 @@ msgstr ""
 "Ki vagy tiltva a szerverről hátralévő idő a feloldásig %s\n"
 "Kérlek vedd fel a kapcsolatot a GM csapattal."
 
-#: ../src/net/tmwa/playerhandler.cpp:122
+#: ../src/net/tmwa/playerhandler.cpp:120
 msgid "You have ceased to be."
 msgstr "Megszüntél létezni."
 
-#: ../src/net/tmwa/partyhandler.cpp:237
+#: ../src/net/tmwa/partyhandler.cpp:224
 msgid "You have left the party."
 msgstr "Kiléptél a csapatból."
 
-#: ../src/net/tmwa/specialhandler.cpp:178
+#: ../src/net/tmwa/specialhandler.cpp:176
 msgid "You have no memos!"
 msgstr "Nincs feljegyzésed."
 
-#: ../src/net/tmwa/specialhandler.cpp:169
+#: ../src/net/tmwa/specialhandler.cpp:167
 msgid "You have not yet reached a high enough lvl!"
 msgstr "Nem érted még el a megfelelő szintet!"
 
-#: ../src/gui/setup_audio.cpp:94
+#: ../src/gui/setup_audio.cpp:97
 msgid "You may have to restart your client if you want to download new music"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:367 ../src/gui/setup_video.cpp:375
+#: ../src/gui/setup_video.cpp:403 ../src/gui/setup_video.cpp:411
 msgid "You must restart to apply changes."
 msgstr ""
 
-#: ../src/net/tmwa/specialhandler.cpp:193
+#: ../src/net/tmwa/specialhandler.cpp:191
 msgid "You need another blue gem!"
 msgstr "Egy másik kék kőre van szükséged!"
 
-#: ../src/net/tmwa/specialhandler.cpp:190
+#: ../src/net/tmwa/specialhandler.cpp:188
 msgid "You need another red gem!"
 msgstr "Egy másik piros kőre van szükséged!"
 
-#: ../src/gui/logindialog.cpp:129
+#: ../src/gui/logindialog.cpp:119
 msgid "You need to use the website to register an account for this server."
 msgstr ""
 
-#: ../src/localplayer.cpp:938
+#: ../src/localplayer.cpp:889
 #, fuzzy, c-format
 msgid "You picked up %d [@@%d|%s@@]."
 msgid_plural "You picked up %d [@@%d|%s@@]."
 msgstr[0] "Zsákmányod%s [@@%d|%s@@]."
 msgstr[1] "Zsákmányod%s [@@%d|%s@@]."
 
-#: ../src/net/tmwa/playerhandler.cpp:328
+#: ../src/net/tmwa/playerhandler.cpp:326
 #, fuzzy, c-format
 msgid "You picked up %s."
 msgstr "Zsákmányod "
 
-#: ../src/net/manaserv/beinghandler.cpp:291
-#: ../src/net/tmwa/playerhandler.cpp:117
+#: ../src/net/manaserv/beinghandler.cpp:293
+#: ../src/net/tmwa/playerhandler.cpp:115
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
 msgstr "Sikolyok közepette kerültél a másvilágra."
@@ -3919,54 +3950,50 @@ msgstr "Sikolyok közepette kerültél a másvilágra."
 msgid "You took too long with the captcha or your response was incorrect."
 msgstr ""
 
-#: ../src/net/tmwa/playerhandler.cpp:124
+#: ../src/net/tmwa/playerhandler.cpp:122
 msgid "You're a stiff."
 msgstr "Hulla vagy."
 
-#: ../src/net/tmwa/specialhandler.cpp:196
+#: ../src/net/tmwa/specialhandler.cpp:194
 msgid "You're carrying to much to do this!"
 msgstr "Túl sok dolgot cipelsz, hogy ezt csináld!"
 
-#: ../src/net/tmwa/playerhandler.cpp:120
+#: ../src/net/tmwa/playerhandler.cpp:118
 msgid "You're not dead yet. You're just resting."
 msgstr "Nem haltál meg...csak alszol..."
 
-#: ../src/net/tmwa/playerhandler.cpp:128
+#: ../src/net/tmwa/playerhandler.cpp:126
 msgid "You're off the twig."
 msgstr "Elég gallyul nézel ki."
 
-#: ../src/net/tmwa/playerhandler.cpp:133
+#: ../src/net/tmwa/playerhandler.cpp:131
 msgid "You're pining for the fjords."
 msgstr "Az örök búzamezőkön kaszálgatsz."
 
-#: ../src/net/tmwa/playerhandler.cpp:123
+#: ../src/net/tmwa/playerhandler.cpp:121
 msgid "You've expired and gone to meet your maker."
 msgstr "Véged és elindultál találkozni a készítőddel."
 
-#: ../src/net/tmwa/playerhandler.cpp:129
+#: ../src/net/tmwa/playerhandler.cpp:127
 msgid "You've kicked the bucket."
 msgstr "Feldobtad a talpad."
 
-#: ../src/net/tmwa/playerhandler.cpp:130
+#: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
 "bleedin' choir invisibile."
 msgstr "Megfulladtál a saját véredben."
 
-#: ../src/net/tmwa/guildhandler.cpp:311
-msgid "Your guild is full."
-msgstr ""
-
-#: ../src/net/tmwa/playerhandler.cpp:127
+#: ../src/net/tmwa/playerhandler.cpp:125
 msgid "Your metabolic processes are now history."
 msgstr "Történelem vagy."
 
-#: ../src/gui/charcreatedialog.cpp:195
+#: ../src/gui/charcreatedialog.cpp:199
 msgid "Your name needs to be at least 4 characters."
 msgstr "A nevednek minimum 4 karakternek kell lennie."
 
-#: ../src/net/manaserv/beinghandler.cpp:284
-#: ../src/net/tmwa/playerhandler.cpp:105
+#: ../src/net/manaserv/beinghandler.cpp:286
+#: ../src/net/tmwa/playerhandler.cpp:103
 msgid ""
 "Your plan of breaking your enemies weapon by bashing it with your throat "
 "failed."
@@ -3974,53 +4001,53 @@ msgstr ""
 "A tervet, amiben a torkoddal támadsz az ellenség kardjába sikertelennek "
 "bizonyult."
 
-#: ../src/main.cpp:43
+#: ../src/main.cpp:50
 msgid "[mana-file] : The mana file is an XML file (.mana)"
 msgstr ""
 
-#: ../src/gui/setup_interface.cpp:113
+#: ../src/gui/setup_interface.cpp:96
 msgid "as particle"
 msgstr "Karakter felett"
 
-#: ../src/gui/setup_video.cpp:136 ../src/gui/setup_video.cpp:150
+#: ../src/gui/setup_video.cpp:195 ../src/gui/setup_video.cpp:209
 msgid "high"
 msgstr "magas"
 
-#: ../src/gui/setup_interface.cpp:111
+#: ../src/gui/setup_interface.cpp:94
 msgid "in chat"
 msgstr "Chat-en belül"
 
-#: ../src/gui/setup_video.cpp:135 ../src/gui/setup_video.cpp:148
+#: ../src/gui/setup_video.cpp:194 ../src/gui/setup_video.cpp:207
 msgid "low"
 msgstr "alacsony"
 
-#: ../src/main.cpp:42
+#: ../src/main.cpp:49
 msgid "mana [options] [mana-file]"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:151
+#: ../src/gui/setup_video.cpp:210
 msgid "max"
 msgstr "max."
 
-#: ../src/gui/setup_video.cpp:149
+#: ../src/gui/setup_video.cpp:208
 msgid "medium"
 msgstr "közepes"
 
-#: ../src/gui/setup_video.cpp:134
+#: ../src/gui/setup_video.cpp:193
 msgid "off"
 msgstr "ki"
 
-#: ../src/gui/serverdialog.cpp:492
+#: ../src/gui/serverdialog.cpp:480
 msgid "requires a newer version"
 msgstr ""
 
-#: ../src/gui/serverdialog.cpp:494
+#: ../src/gui/serverdialog.cpp:482
 #, c-format
 msgid "requires v%s"
 msgstr ""
 
-#: ../src/resources/beinginfo.cpp:33 ../src/resources/itemdb.cpp:271
-#: ../src/resources/monsterdb.cpp:77
+#: ../src/resources/beinginfo.cpp:34 ../src/resources/itemdb.cpp:241
+#: ../src/resources/monsterdb.cpp:74
 msgid "unnamed"
 msgstr "Névtelen"
 
@@ -4036,11 +4063,18 @@ msgstr "Névtelen"
 #~ msgid " host: "
 #~ msgstr " kiszolgáló: "
 
-#~ msgid " video mode: "
-#~ msgstr " videó mód: "
+#, fuzzy, c-format
+#~ msgid " on invitation from %s"
+#~ msgstr "%s részéről ismeretlen válasz a meghívásra."
 
 #~ msgid "% Reflex:"
 #~ msgstr "Reflex (%):"
+
+#~ msgid "*** only available to a GM ***"
+#~ msgstr "*** csak GM-nek elérhető ***"
+
+#~ msgid "/announce > Global announcement (GM only)"
+#~ msgstr "/announce > Globális üzenet (csak GM)"
 
 #~ msgid "/new > Alias of create"
 #~ msgstr "/new > Ugyanaz, mint a /create"
@@ -4144,6 +4178,9 @@ msgstr "Névtelen"
 #~ msgid "Cast Test Spell 3"
 #~ msgstr "Teszt Varázs 3 Bevetése"
 
+#~ msgid "Command: /announce <msg>"
+#~ msgstr "Parancs: /announce <üzenet>"
+
 #~ msgid "Command: /new <party-name>"
 #~ msgstr "Parancs: /new <csapatnév>"
 
@@ -4174,6 +4211,17 @@ msgstr "Névtelen"
 
 #~ msgid "Failed to switch to "
 #~ msgstr "Nem lehet erre váltani: "
+
+#, fuzzy
+#~ msgid ""
+#~ "Failed to switch to fullscreen mode and restoration of old mode also "
+#~ "failed!"
+#~ msgstr "Ez a mód és az előző mód visszaállítása sikertelen."
+
+#, fuzzy
+#~ msgid ""
+#~ "Failed to switch to windowed mode and restoration of old mode also failed!"
+#~ msgstr "Ez a mód és az előző mód visszaállítása sikertelen."
 
 #~ msgid "Find Path to Mouse"
 #~ msgstr "Útvonal Keresése a Kurzorig"
@@ -4218,6 +4266,10 @@ msgstr "Névtelen"
 #~ msgstr "A tárgy túl drága"
 
 #, fuzzy
+#~ msgid "ItemDB: Error while loading "
+#~ msgstr "Hiba %s betöltése közben"
+
+#, fuzzy
 #~ msgid "Job"
 #~ msgstr "Munka:"
 
@@ -4240,6 +4292,10 @@ msgstr "Névtelen"
 #, fuzzy
 #~ msgid "MP"
 #~ msgstr "Varázserő:"
+
+#, fuzzy
+#~ msgid "MVP player."
+#~ msgstr "Játékos"
 
 #~ msgid "Mace"
 #~ msgstr "Buzogány"
@@ -4298,6 +4354,16 @@ msgstr "Névtelen"
 #~ msgid "Remaining Status Points: %d"
 #~ msgstr "Elosztható pontok: %d"
 
+#~ msgid "Restart needed for changes to take effect."
+#~ msgstr "A változások érvénybe lépéséhez a program újraindítása szükséges."
+
+#~ msgid "Restart your client for the change to take effect."
+#~ msgstr "A változások érvénybe lépéséhez a program újraindítása szükséges."
+
+#, fuzzy
+#~ msgid "Screen Resolution Changed"
+#~ msgstr "A képernyő felbontása megváltozott"
+
 #~ msgid "Server"
 #~ msgstr "Szerver"
 
@@ -4319,6 +4385,10 @@ msgstr "Névtelen"
 #~ msgid "Stats"
 #~ msgstr "Statok"
 
+#, fuzzy
+#~ msgid "Switching to Full Screen"
+#~ msgstr "Átállás teljes képernyőre"
+
 #~ msgid "Sword"
 #~ msgstr "Kard"
 
@@ -4330,6 +4400,18 @@ msgstr "Névtelen"
 
 #~ msgid "Text Shadow"
 #~ msgstr "Szövegárnyék"
+
+#~ msgid "Thanks for buying."
+#~ msgstr "Öröm volt veled üzletet kötni!"
+
+#~ msgid "Thanks for selling."
+#~ msgstr "Öröm volt veled üzletet kötni!"
+
+#~ msgid ""
+#~ "This command sends the message <msg> to all players currently online."
+#~ msgstr ""
+#~ "Ez a parancs az <üzenet>-en belül megadott szöveget elküldi az összes "
+#~ "elérhető játékosnak."
 
 #~ msgid "Thrown"
 #~ msgstr "Dobófegyver"
@@ -4351,11 +4433,19 @@ msgstr "Névtelen"
 #~ msgid "Unknown failure to select character."
 #~ msgstr "Ismeretlen hiba a karakter választásnál."
 
+#, fuzzy
+#~ msgid "Unknown guild invite response."
+#~ msgstr "%s részéről ismeretlen válasz a meghívásra."
+
 #~ msgid "Unnamed"
 #~ msgstr "Névtelen"
 
 #~ msgid "Usables"
 #~ msgstr "Bevethető"
+
+#, fuzzy
+#~ msgid "User is now part of your guild."
+#~ msgstr "%s mostantól a csapatod tagja."
 
 #~ msgid "Weapons"
 #~ msgstr "Fegyverek"
@@ -4383,6 +4473,3 @@ msgstr "Névtelen"
 
 #~ msgid "no"
 #~ msgstr "Nem"
-
-#~ msgid "windowed"
-#~ msgstr "ablakban"
