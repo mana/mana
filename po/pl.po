@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2024-10-22 11:12+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2024-10-24 09:16+0000\n"
+"Last-Translator: Eryk Michalak <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/mana/mana/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.8-rc\n"
+"X-Generator: Weblate 5.8.2-dev\n"
 
 #: ../src/main.cpp:52
 msgid "              to the mana client."
@@ -137,7 +137,7 @@ msgstr "%d FPS (OpenGL)"
 #: ../src/gui/setup_video.cpp:178
 #, c-format
 msgid "%dx"
-msgstr ""
+msgstr "%dx"
 
 #: ../src/client.cpp:1074 ../src/client.cpp:1097
 #, c-format
@@ -205,9 +205,9 @@ msgid "%s joined the party on invitation from %s."
 msgstr "Odrzucono zaproszenie do grupy od %s."
 
 #: ../src/net/manaserv/partyhandler.cpp:127
-#, fuzzy, c-format
+#, c-format
 msgid "%s joined the party."
-msgstr "%s przyłączył/a się do grupy %s."
+msgstr "%s dołączył/a do imprezy."
 
 #: ../src/net/manaserv/chathandler.cpp:319
 #, c-format
@@ -670,7 +670,7 @@ msgstr "Błąd uwierzytelniania."
 #: ../src/gui/setup_video.cpp:176
 #, c-format
 msgid "Auto (%dx)"
-msgstr ""
+msgstr "Automatyczne (%dx)"
 
 #: ../src/localplayer.cpp:1023
 msgid "Away"
@@ -1141,9 +1141,8 @@ msgid "Could not steal anything..."
 msgstr "Nie udało się niczego ukraść..."
 
 #: ../src/game.cpp:290
-#, fuzzy
 msgid "Could not take screenshot!"
-msgstr "Nie udało się utworzyć grupy."
+msgstr "Nie udało się wykonać zrzutu ekranu!"
 
 #: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:393
 #: ../src/gui/socialwindow.cpp:365
@@ -1190,9 +1189,8 @@ msgid "Cursor: (%d, %d)"
 msgstr "Kursor: (%d, %d)"
 
 #: ../src/gui/setup_video.cpp:102
-#, fuzzy
 msgid "Custom"
-msgstr "Ręcznie dodany serwer"
+msgstr "Niestandardowe"
 
 #: ../src/gui/customserverdialog.cpp:50
 msgid "Custom Server"
@@ -1483,9 +1481,8 @@ msgstr ""
 "rodzaj przedmiotu w okienku."
 
 #: ../src/gui/setup_video.cpp:374
-#, fuzzy
 msgid "Failed to change video mode."
-msgstr "Nie można użyć przedmiotu."
+msgstr "Nie udało się zmienić trybu obrazu."
 
 #: ../src/net/tmwa/charserverhandler.cpp:136
 msgid "Failed to create character. Most likely the name is already taken."
@@ -1540,7 +1537,6 @@ msgid "Friend"
 msgstr "Przyjaciel"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Fullscreen"
 msgstr "Pełny ekran"
 
@@ -1553,9 +1549,8 @@ msgid "GUI debug"
 msgstr ""
 
 #: ../src/gui/setup_interface.cpp:112
-#, fuzzy
 msgid "GUI opacity"
-msgstr "Przezroczystość GUI"
+msgstr "Przezroczystość interfejsu"
 
 #: ../src/net/tmwa/gamehandler.cpp:89
 msgid "Game"
@@ -1613,9 +1608,8 @@ msgid "Guild created."
 msgstr "Gildia została utworzona."
 
 #: ../src/net/tmwa/guildhandler.cpp:63
-#, fuzzy
 msgid "Guild creation isn't supported."
-msgstr "Tworzenie gildii nie jest jeszcze wspierane przez ten serwer."
+msgstr "Tworzenie gildii nie jest jeszcze wspierane."
 
 #: ../src/net/tmwa/gui/guildtab.cpp:81
 msgid "Guild name is missing."
@@ -2278,9 +2272,8 @@ msgid "Notice"
 msgstr "Powiadomienie"
 
 #: ../src/gui/setup_audio.cpp:51
-#, fuzzy
 msgid "Notifications volume"
-msgstr "Powiadomienie o Exp"
+msgstr "Głośność powiadomień"
 
 #: ../src/gui/itemamountwindow.cpp:112 ../src/gui/okdialog.cpp:40
 #: ../src/gui/quitdialog.cpp:46 ../src/gui/textdialog.cpp:39
@@ -2303,21 +2296,20 @@ msgstr "Stare hasło nieprawidłowe."
 #: ../src/gui/socialwindow.cpp:380 ../src/gui/socialwindow.cpp:676
 #, c-format
 msgid "Online (%zu)"
-msgstr ""
+msgstr "Online (%zu)"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:66
 #: ../src/gui/widgets/itemlinkhandler.cpp:95
 msgid "Open URL Failed"
-msgstr ""
+msgstr "Nie udało się otworzyć adresu URL"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:63
-#, fuzzy
 msgid "Open URL?"
-msgstr "OpenGL"
+msgstr "Otworzyć ten adres URL?"
 
 #: ../src/gui/setup_video.cpp:228
 msgid "OpenGL (Legacy)"
-msgstr ""
+msgstr "OpenGL (przestarzałe)"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:67
 msgid "Opening of URLs requires SDL 2.0.14."
@@ -2520,9 +2512,8 @@ msgid "Please select a custom server."
 msgstr "Proszę wybrać ręcznie dodany serwer."
 
 #: ../src/gui/serverdialog.cpp:272
-#, fuzzy
 msgid "Please select a valid server."
-msgstr "Proszę wybrać serwer."
+msgstr "Proszę wybrać prawidłowy serwer."
 
 #: ../src/commandhandler.cpp:436 ../src/commandhandler.cpp:515
 #: ../src/commandhandler.cpp:537
@@ -2675,9 +2666,8 @@ msgid "Reset Windows"
 msgstr "Zresetuj okna"
 
 #: ../src/gui/setup_video.cpp:313
-#, fuzzy
 msgid "Resolution:"
-msgstr "Relacja"
+msgstr "Rozdzielczość:"
 
 #: ../src/gui/inventorywindow.cpp:132 ../src/gui/popupmenu.cpp:389
 msgid "Retrieve"
@@ -2704,7 +2694,6 @@ msgid "Rotate the stick"
 msgstr "Obróć drążek"
 
 #: ../src/gui/setup_audio.cpp:50
-#, fuzzy
 msgid "SFX volume"
 msgstr "Głośność efektów dźwiękowych"
 
@@ -2719,16 +2708,16 @@ msgstr "Zapisywanie zrzutu ekranu nie powiodło się!"
 
 #: ../src/gui/setup_video.cpp:315
 msgid "Scale:"
-msgstr ""
+msgstr "Skala:"
 
 #: ../src/keyboardconfig.cpp:57
 msgid "Screenshot"
 msgstr "Zrzut ekranu"
 
 #: ../src/game.cpp:328
-#, fuzzy, c-format
+#, c-format
 msgid "Screenshot saved as %s"
-msgstr "Zrzut ekranu zapisany jako"
+msgstr "Zapisano zrzut ekranu jako %s"
 
 #: ../src/keyboardconfig.cpp:100
 msgid "Scroll Chat Down"
@@ -3401,9 +3390,9 @@ msgid "Unable to equip."
 msgstr "Nie można założyć."
 
 #: ../src/net/tmwa/network.cpp:470
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to resolve host \"%s\""
-msgstr "Nie można było odnaleźć serwera."
+msgstr "Nie można odnaleźć hosta \"%s\" ."
 
 #: ../src/net/tmwa/buysellhandler.cpp:124
 msgid "Unable to sell."
@@ -3523,7 +3512,7 @@ msgstr "Login pernamentnie usunięty."
 
 #: ../src/gui/setup_video.cpp:227
 msgid "VSync"
-msgstr ""
+msgstr "Synchronizacja pionowa"
 
 #: ../src/gui/setup_video.cpp:244
 msgid "Video"
@@ -3626,17 +3615,15 @@ msgstr "Siła woli %+.1f"
 
 #: ../src/gui/setup_video.cpp:311
 msgid "Window mode:"
-msgstr ""
+msgstr "Tryb okna:"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Windowed"
-msgstr "Okno Pomocy"
+msgstr "W oknie"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Windowed Fullscreen"
-msgstr "Pełny ekran"
+msgstr "Pełny ekran w oknie"
 
 #: ../src/net/manaserv/loginhandler.cpp:92
 msgid "Wrong magic_token."
