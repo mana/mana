@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2024-10-23 07:12+0000\n"
+"PO-Revision-Date: 2024-10-24 09:16+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mana/mana/es/>\n"
 "Language: es\n"
@@ -200,35 +200,35 @@ msgid "%s is now a member of your party."
 msgstr "%s ahora es un miembro de tu grupo."
 
 #: ../src/net/manaserv/partyhandler.cpp:129
-#, fuzzy, c-format
+#, c-format
 msgid "%s joined the party on invitation from %s."
-msgstr "Cancelada la invitación de  %s."
+msgstr "%s se unio a la fiesta por invitación de %s."
 
 #: ../src/net/manaserv/partyhandler.cpp:127
-#, fuzzy, c-format
+#, c-format
 msgid "%s joined the party."
-msgstr "%s se unio al grupo party%s"
+msgstr "%s se unió a la fiesta."
 
 #: ../src/net/manaserv/chathandler.cpp:319
 #, c-format
 msgid "%s left the channel."
-msgstr "%s dejó el canal."
+msgstr "%s abandonó el canal."
 
 #: ../src/net/tmwa/partyhandler.cpp:123
 #, c-format
 msgid "%s refused your invitation."
-msgstr "%s cancelo tu invitación."
+msgstr "%s rechazó tu invitación."
 
 #: ../src/net/manaserv/partyhandler.cpp:151
 #, c-format
 msgid "%s rejected your invite."
-msgstr "%s canceló tu invitación."
+msgstr "%s rechazó tu invitación."
 
 #: ../src/net/manaserv/tradehandler.cpp:116
 #: ../src/net/tmwa/tradehandler.cpp:110
 #, c-format
 msgid "%s wants to trade with you, do you accept?"
-msgstr "%s quiere comerciar contigo, aceptas?"
+msgstr "%s quiere comerciar contigo, ¿aceptas?"
 
 #: ../src/gui/widgets/chattab.cpp:186
 #, c-format
@@ -666,7 +666,7 @@ msgstr "Fallo en la autentificación."
 #: ../src/gui/setup_video.cpp:176
 #, c-format
 msgid "Auto (%dx)"
-msgstr ""
+msgstr "Automático (%dx)"
 
 #: ../src/localplayer.cpp:1023
 msgid "Away"
@@ -1140,9 +1140,8 @@ msgid "Could not steal anything..."
 msgstr "No puedes robar nada..."
 
 #: ../src/game.cpp:290
-#, fuzzy
 msgid "Could not take screenshot!"
-msgstr "No es posible crear un grupo."
+msgstr "¡No se pudo hacer la captura de pantalla!"
 
 #: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:393
 #: ../src/gui/socialwindow.cpp:365
@@ -1189,17 +1188,16 @@ msgid "Cursor: (%d, %d)"
 msgstr "Cursor: (%d, %d)"
 
 #: ../src/gui/setup_video.cpp:102
-#, fuzzy
 msgid "Custom"
-msgstr "Servidor propio"
+msgstr "Personalizado"
 
 #: ../src/gui/customserverdialog.cpp:50
 msgid "Custom Server"
-msgstr "Servidor propio"
+msgstr "Servidor personalizado"
 
 #: ../src/gui/setup_video.cpp:229
 msgid "Custom cursor"
-msgstr "Cursor propio"
+msgstr "Cursor personalizado"
 
 #: ../src/gui/setup_video.cpp:393
 msgid "Deactivating OpenGL"
@@ -1478,9 +1476,8 @@ msgstr ""
 "la ventana."
 
 #: ../src/gui/setup_video.cpp:374
-#, fuzzy
 msgid "Failed to change video mode."
-msgstr "Fallo al usar el objeto."
+msgstr "No se pudo cambiar el modo de vídeo."
 
 #: ../src/net/tmwa/charserverhandler.cpp:136
 msgid "Failed to create character. Most likely the name is already taken."
@@ -1548,9 +1545,8 @@ msgid "GUI debug"
 msgstr ""
 
 #: ../src/gui/setup_interface.cpp:112
-#, fuzzy
 msgid "GUI opacity"
-msgstr "Opacidad"
+msgstr "Opacidad de la GUI"
 
 #: ../src/net/tmwa/gamehandler.cpp:89
 msgid "Game"
@@ -1770,7 +1766,7 @@ msgstr "Nombre no válido."
 
 #: ../src/main.cpp:173
 msgid "Invalid server type, expected one of: tmwathena, manaserv"
-msgstr ""
+msgstr "Tipo de servidor no válido, esperado uno de: tmwathena, manaserv"
 
 #: ../src/net/manaserv/charhandler.cpp:172
 msgid "Invalid slot number."
@@ -1808,9 +1804,8 @@ msgid "Invite %s to join your party"
 msgstr "Invitar a %s para su grupo"
 
 #: ../src/net/manaserv/guildhandler.cpp:108
-#, fuzzy
 msgid "Invite failed."
-msgstr "Fallo al sentarse!"
+msgstr "La invitación ha fallado."
 
 #: ../src/net/manaserv/guildhandler.cpp:96
 msgid "Invite sent."
@@ -2269,15 +2264,14 @@ msgid "Notice"
 msgstr "Anuncio"
 
 #: ../src/gui/setup_audio.cpp:51
-#, fuzzy
 msgid "Notifications volume"
-msgstr "Aviso de experiencia"
+msgstr "Volumen delas notificaciones"
 
 #: ../src/gui/itemamountwindow.cpp:112 ../src/gui/okdialog.cpp:40
 #: ../src/gui/quitdialog.cpp:46 ../src/gui/textdialog.cpp:39
 #: ../src/gui/tradewindow.cpp:72 ../src/gui/tradewindow.cpp:74
 msgid "OK"
-msgstr "OK"
+msgstr "De acuerdo"
 
 #: ../src/gui/customserverdialog.cpp:75
 msgid "Ok"
@@ -2294,17 +2288,16 @@ msgstr "Contrasena antigua incorrecta."
 #: ../src/gui/socialwindow.cpp:380 ../src/gui/socialwindow.cpp:676
 #, c-format
 msgid "Online (%zu)"
-msgstr ""
+msgstr "Conectad@ (%zu)"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:66
 #: ../src/gui/widgets/itemlinkhandler.cpp:95
 msgid "Open URL Failed"
-msgstr ""
+msgstr "Error al abrir la URL"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:63
-#, fuzzy
 msgid "Open URL?"
-msgstr "OpenGL"
+msgstr "¿Abrir URL?"
 
 #: ../src/gui/setup_video.cpp:228
 msgid "OpenGL (Legacy)"
@@ -2312,7 +2305,7 @@ msgstr ""
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:67
 msgid "Opening of URLs requires SDL 2.0.14."
-msgstr ""
+msgstr "Para abrir URL se requiere SDL 2.0.14."
 
 #: ../src/commandhandler.h:31
 #, c-format
@@ -2718,17 +2711,17 @@ msgid "Screenshot"
 msgstr "Imprimir pantalla"
 
 #: ../src/game.cpp:328
-#, fuzzy, c-format
+#, c-format
 msgid "Screenshot saved as %s"
-msgstr "Screenshot guardada como"
+msgstr "Captura de pantalla guardada como %s"
 
 #: ../src/keyboardconfig.cpp:100
 msgid "Scroll Chat Down"
-msgstr "Tirar el chat para abajo"
+msgstr "Desplazarse hacia abajo en el chat"
 
 #: ../src/keyboardconfig.cpp:99
 msgid "Scroll Chat Up"
-msgstr "Tirar el chat para arriba"
+msgstr "Desplazarse hacia arriba en el chat"
 
 #: ../src/gui/inventorywindow.cpp:87
 msgid "Search:"
