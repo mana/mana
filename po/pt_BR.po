@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2024-10-22 11:12+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2024-10-29 01:00+0000\n"
+"Last-Translator: Antônio Neto <alasmirt@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/mana/"
 "mana/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8-rc\n"
+"X-Generator: Weblate 5.8.2-dev\n"
 "X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 
 #: ../src/main.cpp:52
@@ -97,9 +97,8 @@ msgid "  -v --version        : Display the version"
 msgstr "  -v --version        :  Exibe a versão"
 
 #: ../src/main.cpp:63
-#, fuzzy
 msgid "  -y --server-type    : Login server type"
-msgstr "  -s --server         :  Nome ou IP do servidor de login"
+msgstr "  -y --server-type    : Tipo de servidor de login"
 
 #: ../src/gui/updaterwindow.cpp:410
 msgid "##1  It is strongly recommended that"
@@ -141,7 +140,7 @@ msgstr "%d FPS (OpenGL)"
 #: ../src/gui/setup_video.cpp:178
 #, c-format
 msgid "%dx"
-msgstr ""
+msgstr "%dx"
 
 #: ../src/client.cpp:1074 ../src/client.cpp:1097
 #, c-format
@@ -191,7 +190,7 @@ msgstr "%s já é membro de um grupo."
 #: ../src/net/manaserv/partyhandler.cpp:160
 #, c-format
 msgid "%s is already in a party."
-msgstr "%s já é membro de um grupo."
+msgstr "%s já está em um grupo."
 
 #: ../src/net/tmwa/partyhandler.cpp:356
 #, c-format
@@ -204,14 +203,14 @@ msgid "%s is now a member of your party."
 msgstr "%s agora é um membro do seu grupo."
 
 #: ../src/net/manaserv/partyhandler.cpp:129
-#, fuzzy, c-format
+#, c-format
 msgid "%s joined the party on invitation from %s."
-msgstr "Rejeitou convite para o grupo de  %s."
+msgstr "%s entrou no grupo a convite de %s."
 
 #: ../src/net/manaserv/partyhandler.cpp:127
-#, fuzzy, c-format
+#, c-format
 msgid "%s joined the party."
-msgstr "%s entrou no grupo%s."
+msgstr "%s entrou no grupo."
 
 #: ../src/net/manaserv/chathandler.cpp:319
 #, c-format
@@ -319,12 +318,10 @@ msgid "/kick > Kick a user from the channel"
 msgstr "/kick > Expulsa um usuário do canal"
 
 #: ../src/net/tmwa/gui/guildtab.cpp:56
-#, fuzzy
 msgid "/kick > Kick someone from the guild you are in"
 msgstr "/kick > Expulsa alguém da guilda em que você está"
 
 #: ../src/net/tmwa/gui/partytab.cpp:55
-#, fuzzy
 msgid "/kick > Kick someone from the party you are in"
 msgstr "/kick > Expulsa alguém do grupo em que você está"
 
@@ -465,7 +462,7 @@ msgstr "Convite para a guilda aceito"
 #: ../src/gui/socialwindow.cpp:485
 #, c-format
 msgid "Accepted party invite from %s."
-msgstr "Aceitou convite para o grupo de  %s."
+msgstr "Aceitou convite para o grupo de %s."
 
 #: ../src/game.cpp:713
 msgid "Accepting incoming trade requests"
@@ -607,16 +604,16 @@ msgid "Applying change to OpenGL requires restart."
 msgstr "Aplicando mudança a OpenGL requer reiniciar o jogo."
 
 #: ../src/gui/setup_video.cpp:386
-#, fuzzy
 msgid ""
 "Applying change to OpenGL requires restart.\n"
 "\n"
 "In case OpenGL messes up your game graphics, restart the game with the "
 "command line option \"--no-opengl\"."
 msgstr ""
-"Mudanças no OpenGL requerem o reinício do cliente. Caso o OpenGL atrapalhe o "
-"seu gráfico, abra o jogo através da linha de comando com a seguinte opção: "
-"\"--no-opengl\"."
+"Mudanças no OpenGL requerem o reinício do cliente.\n"
+"\n"
+"Caso o OpenGL atrapalhe o seu gráfico, abra o jogo através da linha de "
+"comando com a seguinte opção: \"--no-opengl\"."
 
 #: ../src/gui/charselectdialog.cpp:66
 msgid "Are you sure you want to delete this character?"
@@ -641,9 +638,9 @@ msgid "Assign"
 msgstr "Atribuir"
 
 #: ../src/net/manaserv/charhandler.cpp:166
-#, fuzzy, c-format
+#, c-format
 msgid "At least one stat is out of the permitted range: (%u - %u)."
-msgstr "Pelo menos um status fora do limite permitido: (%u - %u)."
+msgstr "Pelo menos um atributo está fora da faixa permitida: (%u - %u)."
 
 #: ../src/keyboardconfig.cpp:46 ../src/net/tmwa/generalhandler.cpp:236
 msgid "Attack"
@@ -674,7 +671,7 @@ msgstr "Falha de autenticação."
 #: ../src/gui/setup_video.cpp:176
 #, c-format
 msgid "Auto (%dx)"
-msgstr ""
+msgstr "Auto (%dx)"
 
 #: ../src/localplayer.cpp:1023
 msgid "Away"
@@ -690,9 +687,8 @@ msgid "Being"
 msgstr "Personagem"
 
 #: ../src/gui/debugwindow.cpp:141
-#, fuzzy
 msgid "Being Ids"
-msgstr "Personagem"
+msgstr "Ids de Personagem"
 
 #: ../src/gui/debugwindow.cpp:137
 msgid "Being collision radius"
@@ -753,11 +749,10 @@ msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
 "you."
 msgstr ""
-"Não é possível  criar uma aba de mensagem privada para o nick \"%s\"! Ou ela "
+"Não é possível criar uma aba de mensagem privada para o nick \"%s\"! Ou ela "
 "já existe ou é você mesmo."
 
 #: ../src/gui/socialwindow.cpp:662
-#, fuzzy
 msgid "Cannot create party. You are already in a party."
 msgstr "Não foi possível criar o grupo. Você já faz parte de um."
 
@@ -1119,7 +1114,7 @@ msgstr "Conectando…"
 
 #: ../src/net/tmwa/network.cpp:540
 msgid "Connection to server terminated. "
-msgstr "Conexão com o servidor interrompida."
+msgstr "Conexão com o servidor interrompida. "
 
 #: ../src/keyboardconfig.cpp:85
 msgid "Copy Outfit"
@@ -1147,9 +1142,8 @@ msgid "Could not steal anything..."
 msgstr "Não foi possível roubar nada..."
 
 #: ../src/game.cpp:290
-#, fuzzy
 msgid "Could not take screenshot!"
-msgstr "Não foi possível criar o grupo."
+msgstr "Não foi possível criar a screenshot!"
 
 #: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:393
 #: ../src/gui/socialwindow.cpp:365
@@ -1196,9 +1190,8 @@ msgid "Cursor: (%d, %d)"
 msgstr "Cursor: (%d, %d)"
 
 #: ../src/gui/setup_video.cpp:102
-#, fuzzy
 msgid "Custom"
-msgstr "Servidor customizado"
+msgstr "Customizado"
 
 #: ../src/gui/customserverdialog.cpp:50
 msgid "Custom Server"
@@ -1471,21 +1464,17 @@ msgid "Failed adding item. Trade partner is over weighted."
 msgstr "Erro ao adicionar item. Parceiro de negócios carregando muito peso."
 
 #: ../src/net/tmwa/tradehandler.cpp:214
-#, fuzzy
 msgid "Failed adding item. You can't trade this item."
-msgstr ""
-"Falha ao adicionar item. Você não pode duplicar este tipo de item na janela."
+msgstr "Falha ao adicionar item. Você não pode negociar este item."
 
 #: ../src/gui/tradewindow.cpp:262
-#, fuzzy
 msgid "Failed adding item. You cannot overlap one kind of item on the window."
 msgstr ""
 "Falha ao adicionar item. Você não pode duplicar este tipo de item na janela."
 
 #: ../src/gui/setup_video.cpp:374
-#, fuzzy
 msgid "Failed to change video mode."
-msgstr "Falha ao usar item."
+msgstr "Falha ao alterar o modo de vídeo."
 
 #: ../src/net/tmwa/charserverhandler.cpp:136
 msgid "Failed to create character. Most likely the name is already taken."
@@ -1540,7 +1529,6 @@ msgid "Friend"
 msgstr "Amigo"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Fullscreen"
 msgstr "Tela cheia"
 
@@ -1550,12 +1538,11 @@ msgstr "Nomes dos GMs"
 
 #: ../src/gui/debugwindow.cpp:142
 msgid "GUI debug"
-msgstr ""
+msgstr "Depuração da interface gráfica"
 
 #: ../src/gui/setup_interface.cpp:112
-#, fuzzy
 msgid "GUI opacity"
-msgstr "Opacidade"
+msgstr "Opacidade da interface gráfica"
 
 #: ../src/net/tmwa/gamehandler.cpp:89
 msgid "Game"
@@ -1613,9 +1600,8 @@ msgid "Guild created."
 msgstr "Guilda criada."
 
 #: ../src/net/tmwa/guildhandler.cpp:63
-#, fuzzy
 msgid "Guild creation isn't supported."
-msgstr "A criação de guildas ainda não é suportada."
+msgstr "A criação de guildas não é suportada."
 
 #: ../src/net/tmwa/gui/guildtab.cpp:81
 msgid "Guild name is missing."
@@ -1776,6 +1762,7 @@ msgstr "Nome inválido."
 #: ../src/main.cpp:173
 msgid "Invalid server type, expected one of: tmwathena, manaserv"
 msgstr ""
+"Tipo de servidor inválido, esperado um dos seguintes: tmwathena, manaserv"
 
 #: ../src/net/manaserv/charhandler.cpp:172
 msgid "Invalid slot number."
@@ -1813,23 +1800,20 @@ msgid "Invite %s to join your party"
 msgstr "Convidar %s para o seu grupo"
 
 #: ../src/net/manaserv/guildhandler.cpp:108
-#, fuzzy
 msgid "Invite failed."
-msgstr "Falha ao sentar!"
+msgstr "Convite falhou."
 
 #: ../src/net/manaserv/guildhandler.cpp:96
 msgid "Invite sent."
 msgstr "Convite enviado."
 
 #: ../src/net/manaserv/guildhandler.cpp:104
-#, fuzzy
 msgid "Invited player can't join another guild."
-msgstr "Convidar %s para a sua guilda"
+msgstr "O jogador convidado não pode se juntar a outra guilda."
 
 #: ../src/net/manaserv/guildhandler.cpp:100
-#, fuzzy
 msgid "Invited player is already in that guild."
-msgstr "Convidou o jogador %s para a guilda %s."
+msgstr "O jogador convidado já está nessa guilda."
 
 #: ../src/gui/socialwindow.cpp:116
 #, c-format
@@ -1867,7 +1851,7 @@ msgstr "Este item pertence a outra pessoa."
 
 #: ../src/localplayer.cpp:866
 msgid "Item is too far away"
-msgstr "Este item está muito longe."
+msgstr "Este item está muito longe"
 
 #: ../src/localplayer.cpp:865
 msgid "Item is too heavy."
@@ -2063,7 +2047,7 @@ msgstr "Média"
 
 #: ../src/gui/socialwindow.cpp:143
 msgid "Member Invite to Guild"
-msgstr "Convite de membros para a Guilda."
+msgstr "Convite de membros para a Guilda"
 
 #: ../src/gui/socialwindow.cpp:214
 msgid "Member Invite to Party"
@@ -2221,7 +2205,7 @@ msgstr "<nick> não foi informado."
 
 #: ../src/net/manaserv/charhandler.cpp:142
 msgid "No empty slot."
-msgstr "Sem espaço"
+msgstr "Sem espaço vazio."
 
 #: ../src/net/manaserv/charhandler.cpp:265
 msgid "No gameservers are available."
@@ -2275,9 +2259,8 @@ msgid "Notice"
 msgstr "Anúncio"
 
 #: ../src/gui/setup_audio.cpp:51
-#, fuzzy
 msgid "Notifications volume"
-msgstr "Aviso de experiência"
+msgstr "Notificações de volume"
 
 #: ../src/gui/itemamountwindow.cpp:112 ../src/gui/okdialog.cpp:40
 #: ../src/gui/quitdialog.cpp:46 ../src/gui/textdialog.cpp:39
@@ -2300,25 +2283,24 @@ msgstr "Senha antiga incorreta."
 #: ../src/gui/socialwindow.cpp:380 ../src/gui/socialwindow.cpp:676
 #, c-format
 msgid "Online (%zu)"
-msgstr ""
+msgstr "Online (%zu)"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:66
 #: ../src/gui/widgets/itemlinkhandler.cpp:95
 msgid "Open URL Failed"
-msgstr ""
+msgstr "Falha ao abrir a URL"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:63
-#, fuzzy
 msgid "Open URL?"
-msgstr "OpenGL"
+msgstr "Abrir URL?"
 
 #: ../src/gui/setup_video.cpp:228
 msgid "OpenGL (Legacy)"
-msgstr ""
+msgstr "OpenGL (Legado)"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:67
 msgid "Opening of URLs requires SDL 2.0.14."
-msgstr ""
+msgstr "A abertura de URLs requer SDL 2.0.14."
 
 #: ../src/commandhandler.h:31
 #, c-format
@@ -2462,9 +2444,9 @@ msgid "Play"
 msgstr "Jogar"
 
 #: ../src/net/manaserv/guildhandler.cpp:259
-#, fuzzy, c-format
+#, c-format
 msgid "Player %s kicked you out of guild %s."
-msgstr "%s te convidou para entrar na guilda %s."
+msgstr "O jogador %s te expulsou da guilda %s."
 
 #: ../src/commandhandler.cpp:521
 msgid "Player already ignored!"
@@ -2518,9 +2500,8 @@ msgid "Please select a custom server."
 msgstr "Por favor, selecione um servidor customizado."
 
 #: ../src/gui/serverdialog.cpp:272
-#, fuzzy
 msgid "Please select a valid server."
-msgstr "Por favor, selecione um servidor."
+msgstr "Por favor, selecione um servidor válido."
 
 #: ../src/commandhandler.cpp:436 ../src/commandhandler.cpp:515
 #: ../src/commandhandler.cpp:537
@@ -2528,9 +2509,8 @@ msgid "Please specify a name."
 msgstr "Por favor, especifique um nome."
 
 #: ../src/gui/customserverdialog.cpp:167
-#, fuzzy
 msgid "Please type in at least the address of the server."
-msgstr "Por favor especifique pelo menos o endereço e a porta do servidor."
+msgstr "Por favor, digite pelo menos o endereço do servidor."
 
 #: ../src/net/tmwa/specialhandler.cpp:212
 msgid "Poison had no effect..."
@@ -2619,7 +2599,7 @@ msgstr "Registrar"
 
 #: ../src/gui/logindialog.cpp:119
 msgid "Registration disabled"
-msgstr "Registro desabilitado."
+msgstr "Registro desabilitado"
 
 #: ../src/net/tmwa/loginhandler.cpp:169
 msgid "Rejected from server."
@@ -2632,7 +2612,7 @@ msgstr "Convite para guilda rejeitado."
 #: ../src/gui/socialwindow.cpp:491
 #, c-format
 msgid "Rejected party invite from %s."
-msgstr "Rejeitou convite para o grupo de  %s."
+msgstr "Rejeitou convite para o grupo de %s."
 
 #: ../src/gui/setup_players.cpp:56
 msgid "Relation"
@@ -2673,9 +2653,8 @@ msgid "Reset Windows"
 msgstr "Restaurar janelas"
 
 #: ../src/gui/setup_video.cpp:313
-#, fuzzy
 msgid "Resolution:"
-msgstr "Relação"
+msgstr "Resolução:"
 
 #: ../src/gui/inventorywindow.cpp:132 ../src/gui/popupmenu.cpp:389
 msgid "Retrieve"
@@ -2702,9 +2681,8 @@ msgid "Rotate the stick"
 msgstr "Gire o bastão"
 
 #: ../src/gui/setup_audio.cpp:50
-#, fuzzy
 msgid "SFX volume"
-msgstr "Volume Sfx"
+msgstr "Volume dos efeitos sonoros"
 
 #: ../src/net/manaserv/beinghandler.cpp:290
 #: ../src/net/tmwa/playerhandler.cpp:109
@@ -2717,16 +2695,16 @@ msgstr "Falha ao salvar screenshot!"
 
 #: ../src/gui/setup_video.cpp:315
 msgid "Scale:"
-msgstr ""
+msgstr "Escala:"
 
 #: ../src/keyboardconfig.cpp:57
 msgid "Screenshot"
 msgstr "Screenshot"
 
 #: ../src/game.cpp:328
-#, fuzzy, c-format
+#, c-format
 msgid "Screenshot saved as %s"
-msgstr "Screenshot salva como "
+msgstr "Screenshot salva como %s"
 
 #: ../src/keyboardconfig.cpp:100
 msgid "Scroll Chat Down"
@@ -3082,7 +3060,7 @@ msgstr "As novas senhas não são iguais."
 #: ../src/gui/changepassworddialog.cpp:116
 #, c-format
 msgid "The new password needs to be at least %d characters long."
-msgstr "A  nova senha deve ter pelo menos %d caracteres."
+msgstr "A nova senha deve ter pelo menos %d caracteres."
 
 #: ../src/gui/changepassworddialog.cpp:123
 #, c-format
@@ -3139,7 +3117,7 @@ msgstr "Este comando limpa a janela de chat."
 
 #: ../src/gui/widgets/whispertab.cpp:84
 msgid "This command closes the current whisper tab."
-msgstr "Este comando fecha a atual aba de mensagem privada"
+msgstr "Este comando fecha a atual aba de mensagem privada."
 
 #: ../src/commandhandler.cpp:260
 msgid "This command creates a new party called <name>."
@@ -3151,7 +3129,7 @@ msgstr "Exibe uma lista de todos os comandos disponíveis."
 
 #: ../src/commandhandler.cpp:200
 msgid "This command displays help on <command>."
-msgstr "Exibe o conteúdo de ajuda de <comando>"
+msgstr "Exibe o conteúdo de ajuda de <comando>."
 
 #: ../src/commandhandler.cpp:304
 msgid "This command displays the name of the current map."
@@ -3272,7 +3250,6 @@ msgstr ""
 "Este comando mostra que você está longe do teclado, indicando a razão dada."
 
 #: ../src/commandhandler.cpp:246
-#, fuzzy
 msgid "This command tries to make a tab for whispers between you and <nick>."
 msgstr "Este comando cria uma aba para mensagens privadas entre você e <nick>."
 
@@ -3367,7 +3344,7 @@ msgstr "Transparência desabilitada"
 
 #: ../src/gui/setup_video.cpp:410
 msgid "Transparency enabled"
-msgstr "Transparência habilitada."
+msgstr "Transparência habilitada"
 
 #: ../src/localplayer.cpp:864
 msgid "Tried to pick up nonexistent item."
@@ -3398,9 +3375,9 @@ msgid "Unable to equip."
 msgstr "Impossível equipar."
 
 #: ../src/net/tmwa/network.cpp:470
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to resolve host \"%s\""
-msgstr "Não foi possível determinar o host \""
+msgstr "Não foi possível determinar o host \"%s\""
 
 #: ../src/net/tmwa/buysellhandler.cpp:124
 msgid "Unable to sell."
@@ -3500,7 +3477,7 @@ msgstr "ID não registrado."
 
 #: ../src/gui/skilldialog.cpp:220
 msgid "Up"
-msgstr "+"
+msgstr "Acima"
 
 #: ../src/gui/updaterwindow.cpp:123
 msgid "Updating..."
@@ -3520,7 +3497,7 @@ msgstr "Usuário excluído permamentemente."
 
 #: ../src/gui/setup_video.cpp:227
 msgid "VSync"
-msgstr ""
+msgstr "VSync"
 
 #: ../src/gui/setup_video.cpp:244
 msgid "Video"
@@ -3622,19 +3599,16 @@ msgid "Willpower %+.1f"
 msgstr "Força de vontade %+.1f"
 
 #: ../src/gui/setup_video.cpp:311
-#, fuzzy
 msgid "Window mode:"
-msgstr " modo de video: "
+msgstr "Modo de video:"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Windowed"
-msgstr "em janela"
+msgstr "Modo janela"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Windowed Fullscreen"
-msgstr "Tela cheia"
+msgstr "Modo janela em tela cheia"
 
 #: ../src/net/manaserv/loginhandler.cpp:92
 msgid "Wrong magic_token."
@@ -3662,7 +3636,7 @@ msgstr "Você morreu"
 
 #: ../src/net/tmwa/playerhandler.cpp:130
 msgid "You are an ex-player."
-msgstr "Você é um ex-jogador"
+msgstr "Você é um ex-jogador."
 
 #: ../src/net/tmwa/playerhandler.cpp:254
 msgid ""
@@ -3686,7 +3660,6 @@ msgid "You are not that alive anymore."
 msgstr "Você não me parece assim tão vivo."
 
 #: ../src/net/tmwa/partyhandler.cpp:328
-#, fuzzy
 msgid "You can only invite when you are in a party!"
 msgstr "Você só pode fazer convites se estiver em um grupo!"
 
@@ -3870,7 +3843,7 @@ msgstr "baixo"
 
 #: ../src/main.cpp:49
 msgid "mana [options] [mana-file]"
-msgstr "mana  [opções] [arquivo-mana]"
+msgstr "mana [opções] [arquivo-mana]"
 
 #: ../src/gui/setup_video.cpp:210
 msgid "max"
