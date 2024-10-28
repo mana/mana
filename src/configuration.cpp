@@ -269,32 +269,30 @@ void Configuration::init(const std::string &filename, bool useResManager)
     initFromXML(rootNode);
 }
 
-void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
+void ConfigurationObject::writeToXML(XML::Writer &writer) const
 {
-    for (const auto &option : mOptions)
+    for (auto &[name, value] : mOptions)
     {
-        xmlTextWriterStartElement(writer, BAD_CAST "option");
-        xmlTextWriterWriteAttribute(writer,
-                BAD_CAST "name", BAD_CAST option.first.c_str());
-        xmlTextWriterWriteAttribute(writer,
-                BAD_CAST "value", BAD_CAST option.second.c_str());
-        xmlTextWriterEndElement(writer);
+        writer.startElement("option");
+        writer.addAttribute("name", name);
+        writer.addAttribute("value", value);
+        writer.endElement();
     }
 
     for (auto &[name, list] : mContainerOptions)
     {
-        xmlTextWriterStartElement(writer, BAD_CAST "list");
-        xmlTextWriterWriteAttribute(writer, BAD_CAST "name", BAD_CAST name.c_str());
+        writer.startElement("list");
+        writer.addAttribute("name", name);
 
         // Recurse on all elements
         for (auto element : list)
         {
-            xmlTextWriterStartElement(writer, BAD_CAST name.c_str());
+            writer.startElement(name.c_str());
             element->writeToXML(writer);
-            xmlTextWriterEndElement(writer);
+            writer.endElement();
         }
 
-        xmlTextWriterEndElement(writer);
+        writer.endElement();
     }
 }
 
@@ -312,9 +310,9 @@ void Configuration::write()
     fclose(testFile);
 
 
-    xmlTextWriterPtr writer = xmlNewTextWriterFilename(mConfigPath.c_str(), 0);
+    XML::Writer writer(mConfigPath);
 
-    if (!writer)
+    if (!writer.isValid())
     {
         logger->log("Configuration::write() error while creating writer");
         return;
@@ -322,12 +320,6 @@ void Configuration::write()
 
     logger->log("Configuration::write() writing configuration...");
 
-    xmlTextWriterSetIndent(writer, 1);
-    xmlTextWriterStartDocument(writer, nullptr, nullptr, nullptr);
-    xmlTextWriterStartElement(writer, BAD_CAST "configuration");
-
+    writer.startElement("configuration");
     writeToXML(writer);
-
-    xmlTextWriterEndDocument(writer);
-    xmlFreeTextWriter(writer);
 }

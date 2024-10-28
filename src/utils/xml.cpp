@@ -116,8 +116,7 @@ namespace XML
     {
         int &ret = def;
 
-        xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-        if (prop)
+        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
         {
             ret = atol((char*)prop);
             xmlFree(prop);
@@ -130,8 +129,7 @@ namespace XML
     {
         double &ret = def;
 
-        xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-        if (prop)
+        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
         {
             ret = atof((char*)prop);
             xmlFree(prop);
@@ -143,8 +141,7 @@ namespace XML
     std::string getProperty(xmlNodePtr node, const char *name,
                             const std::string &def)
     {
-        xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-        if (prop)
+        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
         {
             std::string val = (char*)prop;
             xmlFree(prop);
@@ -157,8 +154,8 @@ namespace XML
     bool getBoolProperty(xmlNodePtr node, const char* name, bool def)
     {
         bool ret = def;
-        xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-        if (prop)
+
+        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
         {
             ret = getBoolFromString((char*) prop, def);
             xmlFree(prop);
@@ -184,6 +181,29 @@ namespace XML
 
         // Handle libxml2 error messages
         xmlSetStructuredErrorFunc(nullptr, xmlLogger);
+    }
+
+
+    Writer::Writer(const std::string &fileName)
+    {
+        mWriter = xmlNewTextWriterFilename(fileName.c_str(), 0);
+        if (!mWriter)
+        {
+            logger->log("Error creating XML writer for file %s", fileName.c_str());
+            return;
+        }
+
+        xmlTextWriterSetIndent(mWriter, 1);
+        xmlTextWriterStartDocument(mWriter, nullptr, nullptr, nullptr);
+    }
+
+    Writer::~Writer()
+    {
+        if (!mWriter)
+            return;
+
+        xmlTextWriterEndDocument(mWriter);
+        xmlFreeTextWriter(mWriter);
     }
 
 } // namespace XML

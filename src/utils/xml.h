@@ -22,8 +22,11 @@
 #ifndef XML_H
 #define XML_H
 
+#include "utils/stringutils.h"
+
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <libxml/xmlwriter.h>
 
 #include <string>
 
@@ -124,6 +127,90 @@ namespace XML
     private:
         xmlNodePtr mNode;
     };
+
+    /**
+     * Helper class for writing out XML data.
+     *
+     * Based on libxml2's text writing API for XML.
+     */
+    class Writer
+    {
+    public:
+        Writer(const std::string &fileName);
+        ~Writer();
+
+        bool isValid() const { return mWriter != nullptr; }
+
+        void startElement(const char *name);
+        void endElement();
+
+        void addAttribute(const char *name, const std::string &value);
+        void addAttribute(const char *name, const char *value);
+        void addAttribute(const char *name, int value);
+        void addAttribute(const char *name, unsigned value);
+        void addAttribute(const char *name, float value);
+        void addAttribute(const char *name, bool value);
+
+        template<typename Enum, std::enable_if_t<std::is_enum_v<Enum>, bool> = true>
+        void addAttribute(const char *name, Enum &value);
+
+        void writeText(const std::string &text);
+
+    private:
+        xmlTextWriterPtr mWriter;
+    };
+
+    template<typename Enum, std::enable_if_t<std::is_enum_v<Enum>, bool>>
+    inline void Writer::addAttribute(const char *name, Enum &value)
+    {
+        return addAttribute(name, static_cast<int>(value));
+    }
+
+    inline void Writer::startElement(const char *name)
+    {
+        xmlTextWriterStartElement(mWriter, BAD_CAST name);
+    }
+
+    inline void Writer::endElement()
+    {
+        xmlTextWriterEndElement(mWriter);
+    }
+
+    inline void Writer::addAttribute(const char *name, const std::string &value)
+    {
+        addAttribute(name, value.c_str());
+    }
+
+    inline void Writer::addAttribute(const char *name, const char *value)
+    {
+        xmlTextWriterWriteAttribute(mWriter, BAD_CAST name, BAD_CAST value);
+    }
+
+    inline void Writer::addAttribute(const char *name, int value)
+    {
+        xmlTextWriterWriteAttribute(mWriter, BAD_CAST name, BAD_CAST toString(value).c_str());
+    }
+
+    inline void Writer::addAttribute(const char *name, unsigned value)
+    {
+        xmlTextWriterWriteAttribute(mWriter, BAD_CAST name, BAD_CAST toString(value).c_str());
+    }
+
+    inline void Writer::addAttribute(const char *name, float value)
+    {
+        xmlTextWriterWriteAttribute(mWriter, BAD_CAST name, BAD_CAST toString(value).c_str());
+    }
+
+    inline void Writer::addAttribute(const char *name, bool value)
+    {
+        xmlTextWriterWriteAttribute(mWriter, BAD_CAST name, BAD_CAST (value ? "1" : "0"));
+    }
+
+    inline void Writer::writeText(const std::string &text)
+    {
+        xmlTextWriterWriteString(mWriter, BAD_CAST text.c_str());
+    }
+
 }
 
 #endif // XML_H

@@ -22,10 +22,10 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#include "utils/stringutils.h"
 #include "defaults.h"
 
-#include <libxml/xmlwriter.h>
+#include "utils/stringutils.h"
+#include "utils/xml.h"
 
 #include <cassert>
 #include <list>
@@ -108,7 +108,7 @@ class ConfigurationObject
         /**
          * Re-sets all data in the configuration
          */
-        virtual void clear();
+        void clear();
 
         /**
          * Serialises a container into a list of configuration options
@@ -171,8 +171,8 @@ class ConfigurationObject
         }
 
     protected:
-        virtual void initFromXML(xmlNodePtr node);
-        virtual void writeToXML(xmlTextWriterPtr writer);
+        void initFromXML(xmlNodePtr node);
+        void writeToXML(XML::Writer &writer) const;
 
         void deleteList(std::list<ConfigurationObject *> &list);
 

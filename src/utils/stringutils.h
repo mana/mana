@@ -67,7 +67,7 @@ unsigned int atox(const std::string &str);
  */
 template<typename T> std::string toString(const T &arg)
 {
-    std::stringstream ss;
+    std::ostringstream ss;
     ss << arg;
     return ss.str();
 }
@@ -142,7 +142,7 @@ std::string findSameSubstring(const std::string &str1,
  * @param text the string used to get the bool value
  * @return a boolean value..
  */
-bool getBoolFromString(const std::string &text, bool def = false);
+bool getBoolFromString(std::string text, bool def = false);
 
 /**
  * Returns the most approaching string of base from candidates.

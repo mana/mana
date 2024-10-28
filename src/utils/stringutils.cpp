@@ -168,13 +168,12 @@ std::string findSameSubstring(const std::string &str1,
     return str1.substr(0, minLength);
 }
 
-bool getBoolFromString(const std::string &text, bool def)
+bool getBoolFromString(std::string text, bool def)
 {
-    std::string a = text;
-    toLower(trim(a));
-    if (a == "true" || a == "1" || a == "on" || a == "yes" || a == "y")
+    toLower(trim(text));
+    if (text == "true" || text == "1" || text == "on" || text == "yes" || text == "y")
         return true;
-    if (a == "false" || a == "0" || a == "off" || a == "no" || a == "n")
+    if (text == "false" || text == "0" || text == "off" || text == "no" || text == "n")
         return false;
 
     return def;
