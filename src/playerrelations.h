@@ -95,11 +95,6 @@ public:
     void init();
 
     /**
-     * Load configuration from our config file, or substitute defaults.
-     */
-    void load();
-
-    /**
      * Save configuration to our config file.
      */
     void store();

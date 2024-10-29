@@ -56,13 +56,8 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
         if (name.empty())
             return container;
 
-        auto it = (*container).find(name);
-        if (it != (*container).end())
-        {
-            int v = cobj->getValue(RELATION, static_cast<int>(PlayerRelation::NEUTRAL));
-            (*container)[name] = static_cast<PlayerRelation>(v);
-        }
-        // otherwise ignore the duplicate entry
+        int v = cobj->getValue(RELATION, static_cast<int>(PlayerRelation::NEUTRAL));
+        (*container)[name] = static_cast<PlayerRelation>(v);
 
         return container;
     }
@@ -95,30 +90,27 @@ int PlayerRelationsManager::getPlayerIgnoreStrategyIndex(const std::string &name
     return -1;
 }
 
-void PlayerRelationsManager::load()
+void PlayerRelationsManager::init()
 {
-    clear();
-
     mPersistIgnores = config.getValue(PERSIST_IGNORE_LIST, 1);
-    mDefaultPermissions = (int) config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
+    mDefaultPermissions = config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
     std::string ignore_strategy_name = config.getValue(PLAYER_IGNORE_STRATEGY, DEFAULT_IGNORE_STRATEGY);
     int ignore_strategy_index = getPlayerIgnoreStrategyIndex(ignore_strategy_name);
     if (ignore_strategy_index >= 0)
         setPlayerIgnoreStrategy(getPlayerIgnoreStrategies()[ignore_strategy_index]);
 
-    PlayerConfSerialiser player_conf_serialiser;
-    config.getList<std::pair<std::string, PlayerRelation>,
-                   std::map<std::string, PlayerRelation> *>
-        ("player",  &mRelations, player_conf_serialiser);
-}
+    mRelations.clear();
 
+    // Ignores are always saved to the config file, but might not be loaded
+    if (mPersistIgnores)
+    {
+        PlayerConfSerialiser player_conf_serialiser;
+        config.getList<std::pair<std::string, PlayerRelation>,
+                       std::map<std::string, PlayerRelation> *>
+                ("player", &mRelations, player_conf_serialiser);
+    }
 
-void PlayerRelationsManager::init()
-{
-    load();
-
-    if (!mPersistIgnores)
-        clear(); // Yes, we still keep them around in the config file until the next update.
+    signalUpdate();
 }
 
 void PlayerRelationsManager::store()
