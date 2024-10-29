@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2024  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -43,7 +43,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
                                          ConfigurationObject *cobj) override
     {
         cobj->setValue(NAME, value.first);
-        cobj->setValue(RELATION, toString(value.second.mRelation));
+        cobj->setValue(RELATION, toString(static_cast<int>(value.second)));
 
         return cobj;
     }
@@ -52,15 +52,15 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
     readConfigItem(ConfigurationObject *cobj,
                    std::map<std::string, PlayerRelation> *container) override
     {
-        std::string name = cobj->getValue(NAME, "");
+        std::string name = cobj->getValue(NAME, std::string());
         if (name.empty())
             return container;
 
         auto it = (*container).find(name);
         if (it != (*container).end())
         {
-            int v = (int)cobj->getValue(RELATION, PlayerRelation::NEUTRAL);
-            (*container)[name] = PlayerRelation(static_cast<PlayerRelation::Relation>(v));
+            int v = cobj->getValue(RELATION, static_cast<int>(PlayerRelation::NEUTRAL));
+            (*container)[name] = static_cast<PlayerRelation>(v);
         }
         // otherwise ignore the duplicate entry
 
@@ -68,17 +68,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
     }
 };
 
-const unsigned int PlayerRelation::RELATION_PERMISSIONS[RELATIONS_NR] = {
-    /* NEUTRAL */    0, // we always fall back to the defaults anyway
-    /* FRIEND  */    EMOTE | SPEECH_FLOAT | SPEECH_LOG | WHISPER | TRADE,
-    /* DISREGARDED*/ EMOTE | SPEECH_FLOAT,
-    /* IGNORED */    0
-};
 
-PlayerRelation::PlayerRelation(Relation relation)
-{
-    mRelation = relation;
-}
 
 PlayerRelationsManager::~PlayerRelationsManager()
 {
@@ -161,27 +151,32 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(
                                                   const std::string &playerName,
                                                   unsigned int flags)
 {
-    auto it = mRelations.find(playerName);
-    if (it == mRelations.end())
-        return mDefaultPermissions & flags;
+    unsigned int permissions = mDefaultPermissions;
 
-    PlayerRelation &r = it->second;
-
-    unsigned int permissions =
-        PlayerRelation::RELATION_PERMISSIONS[r.mRelation];
-
-    switch (r.mRelation)
+    switch (getRelation(playerName))
     {
     case PlayerRelation::NEUTRAL:
-        permissions = mDefaultPermissions;
         break;
 
+        // widen permissions for friends
     case PlayerRelation::FRIEND:
-        permissions |= mDefaultPermissions; // widen
+        permissions |=
+                PlayerPermissions::EMOTE |
+                PlayerPermissions::SPEECH_FLOAT |
+                PlayerPermissions::SPEECH_LOG |
+                PlayerPermissions::WHISPER |
+                PlayerPermissions::TRADE;
         break;
 
-    default:
-        permissions &= mDefaultPermissions; // narrow
+        // narrow permissions for disregarded and ignored players
+    case PlayerRelation::DISREGARDED:
+        permissions &=
+                PlayerPermissions::EMOTE |
+                PlayerPermissions::SPEECH_FLOAT;
+        break;
+    case PlayerRelation::IGNORED:
+        permissions &= 0;
+        break;
     }
 
     return permissions & flags;
@@ -200,25 +195,20 @@ bool PlayerRelationsManager::hasPermission(const std::string &name,
     unsigned int rejections = flags & ~checkPermissionSilently(name, flags);
     bool permitted = rejections == 0;
 
-    if (!permitted)
+    // execute `ignore' strategy, if possible
+    if (!permitted && mIgnoreStrategy)
     {
-        // execute `ignore' strategy, if possible
-        if (mIgnoreStrategy)
-        {
-            Being *b = actorSpriteManager->findBeingByName(name,
-                                                        ActorSprite::PLAYER);
-            if (b && b->getType() == ActorSprite::PLAYER)
-                mIgnoreStrategy->ignore(b, rejections);
-        }
+        if (Being *b = actorSpriteManager->findBeingByName(name, ActorSprite::PLAYER))
+            mIgnoreStrategy->ignore(b, rejections);
     }
 
     return permitted;
 }
 
 void PlayerRelationsManager::setRelation(const std::string &playerName,
-                                         PlayerRelation::Relation relation)
+                                         PlayerRelation relation)
 {
-    mRelations[playerName] = PlayerRelation(relation);
+    mRelations[playerName] = relation;
     signalUpdate();
 }
 
@@ -245,13 +235,10 @@ void PlayerRelationsManager::removePlayer(const std::string &name)
 }
 
 
-PlayerRelation::Relation PlayerRelationsManager::getRelation(const std::string &name) const
+PlayerRelation PlayerRelationsManager::getRelation(const std::string &name) const
 {
     auto it = mRelations.find(name);
-    if (it != mRelations.end())
-        return it->second.mRelation;
-
-    return PlayerRelation::NEUTRAL;
+    return it != mRelations.end() ? it->second : PlayerRelation::NEUTRAL;
 }
 
 ////////////////////////////////////////

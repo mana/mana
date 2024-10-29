@@ -406,7 +406,7 @@ void ChatWindow::event(Event::Channel channel, const Event &event)
         }
         else if (event.getType() == Event::Being)
         {
-            if (event.getInt("permissions") & PlayerRelation::SPEECH_LOG)
+            if (event.getInt("permissions") & PlayerPermissions::SPEECH_LOG)
                 localChatTab->chatLog(event.getString("message"), BY_OTHER);
         }
     }

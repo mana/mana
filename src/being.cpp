@@ -1217,7 +1217,7 @@ void Being::event(Event::Channel channel, const Event &event)
     if (channel == Event::ChatChannel &&
             (event.getType() == Event::Being
              || event.getType() == Event::Player) &&
-            event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
+            event.getInt("permissions") & PlayerPermissions::SPEECH_FLOAT)
     {
         try
         {

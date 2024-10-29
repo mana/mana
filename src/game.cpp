@@ -703,15 +703,15 @@ void Game::handleInput()
                     case KeyboardConfig::KEY_TRADE:
                         // Toggle accepting of incoming trade requests
                         unsigned int deflt = player_relations.getDefault();
-                        if (deflt & PlayerRelation::TRADE)
+                        if (deflt & PlayerPermissions::TRADE)
                         {
                             serverNotice(_("Ignoring incoming trade requests"));
-                            deflt &= ~PlayerRelation::TRADE;
+                            deflt &= ~PlayerPermissions::TRADE;
                         }
                         else
                         {
                             serverNotice(_("Accepting incoming trade requests"));
-                            deflt |= PlayerRelation::TRADE;
+                            deflt |= PlayerPermissions::TRADE;
                         }
 
                         player_relations.setDefault(deflt);

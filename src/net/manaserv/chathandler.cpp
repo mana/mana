@@ -173,7 +173,7 @@ void ChatHandler::handleGameChatMessage(MessageIn &msg)
     event.setInt("beingId", id);
     event.setInt("permissions", player_relations
                  .checkPermissionSilently(being->getName(),
-                 PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT));
+                 PlayerPermissions::SPEECH_LOG | PlayerPermissions::SPEECH_FLOAT));
     event.trigger(Event::ChatChannel);
 }
 

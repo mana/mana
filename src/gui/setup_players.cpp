@@ -56,7 +56,7 @@ static const char *table_titles[COLUMNS_NR] =
     N_("Relation")
 };
 
-static const char *RELATION_NAMES[PlayerRelation::RELATIONS_NR] =
+static const char *RELATION_NAMES[RELATIONS_NR] =
 {
     N_("Neutral"),
     N_("Friend"),
@@ -71,7 +71,7 @@ public:
 
     int getNumberOfElements() override
     {
-        return PlayerRelation::RELATIONS_NR;
+        return RELATIONS_NR;
     }
 
     std::string getElementAt(int i) override
@@ -135,7 +135,7 @@ public:
             mWidgets.push_back(widget);
 
             gcn::DropDown *choicebox = new DropDown(mListModel);
-            choicebox->setSelected(player_relations.getRelation(name));
+            choicebox->setSelected(static_cast<int>(player_relations.getRelation(name)));
             mWidgets.push_back(choicebox);
         }
 
@@ -147,8 +147,8 @@ public:
         auto *choicebox = static_cast<gcn::DropDown *>(
                                    getElementAt(row, RELATION_CHOICE_COLUMN));
         player_relations.setRelation(getPlayerAt(row),
-                                   static_cast<PlayerRelation::Relation>(
-                                   choicebox->getSelected()));
+                                     static_cast<PlayerRelation>(
+                                         choicebox->getSelected()));
     }
 
 
@@ -212,9 +212,9 @@ Setup_Players::Setup_Players():
     mPlayerTitleTable(new GuiTable(mPlayerTableTitleModel)),
     mPlayerScrollArea(new ScrollArea(mPlayerTable)),
     mDefaultTrading(new CheckBox(_("Allow trading"),
-                player_relations.getDefault() & PlayerRelation::TRADE)),
+                player_relations.getDefault() & PlayerPermissions::TRADE)),
     mDefaultWhisper(new CheckBox(_("Allow whispers"),
-                player_relations.getDefault() & PlayerRelation::WHISPER)),
+                player_relations.getDefault() & PlayerPermissions::WHISPER)),
     mDeleteButton(new Button(_("Delete"), ACTION_DELETE, this)),
     mWhisperTab(config.getBoolValue("whispertab")),
     mWhisperTabCheckBox(new CheckBox(_("Put all whispers in tabs"), mWhisperTab)),
@@ -316,13 +316,13 @@ void Setup_Players::apply()
     player_relations.store();
 
     unsigned int old_default_relations = player_relations.getDefault() &
-                                         ~(PlayerRelation::TRADE |
-                                           PlayerRelation::WHISPER);
+                                         ~(PlayerPermissions::TRADE |
+                                           PlayerPermissions::WHISPER);
     player_relations.setDefault(old_default_relations
                                 | (mDefaultTrading->isSelected() ?
-                                       PlayerRelation::TRADE : 0)
+                                       PlayerPermissions::TRADE : 0)
                                 | (mDefaultWhisper->isSelected() ?
-                                       PlayerRelation::WHISPER : 0));
+                                       PlayerPermissions::WHISPER : 0));
     config.setValue("whispertab", mWhisperTab);
 
     bool showGender = config.getBoolValue("showgender");
@@ -398,7 +398,7 @@ void Setup_Players::playerRelationsUpdated()
 {
     mPlayerTableModel->playerRelationsUpdated();
     mDefaultTrading->setSelected(
-            player_relations.getDefault() & PlayerRelation::TRADE);
+            player_relations.getDefault() & PlayerPermissions::TRADE);
     mDefaultWhisper->setSelected(
-            player_relations.getDefault() & PlayerRelation::WHISPER);
+            player_relations.getDefault() & PlayerPermissions::WHISPER);
 }

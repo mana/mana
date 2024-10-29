@@ -129,7 +129,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
                         chatMsg.find("!sellitem ") == 0)
                     return;
 
-                if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
+                if (player_relations.hasPermission(nick, PlayerPermissions::WHISPER))
                 {
                     Event event(Event::Whisper);
                     event.setString("nick", nick);
@@ -176,13 +176,13 @@ void ChatHandler::handleMessage(MessageIn &msg)
             if (being->getType() == Being::PLAYER)
             {
                 perms = player_relations.checkPermissionSilently(sender_name,
-                    PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT);
+                    PlayerPermissions::SPEECH_LOG | PlayerPermissions::SPEECH_FLOAT);
             }
             else
             {
                 perms = player_relations.getDefault()
-                        & (PlayerRelation::SPEECH_LOG
-                           | PlayerRelation::SPEECH_FLOAT);
+                        & (PlayerPermissions::SPEECH_LOG
+                           | PlayerPermissions::SPEECH_FLOAT);
             }
 
             // This is a sure sign of some special command of manaplus,
@@ -232,8 +232,8 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 event.setString("nick", local_player->getName());
                 event.setInt("beingId", local_player->getId());
                 event.setInt("permissions", player_relations.getDefault()
-                             & (PlayerRelation::SPEECH_LOG
-                                | PlayerRelation::SPEECH_FLOAT));
+                             & (PlayerPermissions::SPEECH_LOG
+                                | PlayerPermissions::SPEECH_FLOAT));
                 event.trigger(Event::ChatChannel);
             }
             else

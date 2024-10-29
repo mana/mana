@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2008-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2024  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -29,38 +29,28 @@
 
 class Being;
 
-struct PlayerRelation
+enum class PlayerRelation
 {
-    static const unsigned int EMOTE        = (1 << 0);
-    static const unsigned int SPEECH_FLOAT = (1 << 1);
-    static const unsigned int SPEECH_LOG   = (1 << 2);
-    static const unsigned int WHISPER      = (1 << 3);
-    static const unsigned int TRADE        = (1 << 4);
-
-    /**
-     * There are four types of relations:
-     * NEUTRAL, FRIEND, DISREGARDED, and IGNORED.
-     */
-    static const unsigned int RELATIONS_NR = 4;
-    static const unsigned int RELATION_PERMISSIONS[RELATIONS_NR];
-
-    static const unsigned int DEFAULT = EMOTE
-                                      | SPEECH_FLOAT
-                                      | SPEECH_LOG
-                                      | WHISPER
-                                      | TRADE;
-    enum Relation {
-        NEUTRAL     = 0,
-        FRIEND      = 1,
-        DISREGARDED = 2,
-        IGNORED     = 3
-    };
-
-    explicit PlayerRelation(Relation relation = NEUTRAL);
-
-    Relation mRelation; // bitmask for all of the above
+    NEUTRAL     = 0,
+    FRIEND      = 1,
+    DISREGARDED = 2,
+    IGNORED     = 3
 };
+constexpr unsigned int RELATIONS_NR = 4;
 
+struct PlayerPermissions
+{
+    // Used as flags
+    enum {
+        EMOTE           = 1 << 0,
+        SPEECH_FLOAT    = 1 << 1,
+        SPEECH_LOG      = 1 << 2,
+        WHISPER         = 1 << 3,
+        TRADE           = 1 << 4,
+
+        DEFAULT         = EMOTE | SPEECH_FLOAT | SPEECH_LOG | WHISPER | TRADE
+    };
+};
 
 /**
  * Ignore strategy: describes how we should handle ignores.
@@ -133,13 +123,12 @@ public:
     /**
      * Updates the relationship with this player.
      */
-    void setRelation(const std::string &name,
-                     PlayerRelation::Relation relation);
+    void setRelation(const std::string &name, PlayerRelation relation);
 
     /**
      * Updates the relationship with this player.
      */
-    PlayerRelation::Relation getRelation(const std::string &name) const;
+    PlayerRelation getRelation(const std::string &name) const;
 
     /**
      * Deletes the information recorded for a player.
@@ -225,7 +214,7 @@ private:
     void signalUpdate();
 
     bool mPersistIgnores = false; // If NOT set, we delete the ignored data upon reloading
-    unsigned int mDefaultPermissions = PlayerRelation::DEFAULT;
+    unsigned int mDefaultPermissions = PlayerPermissions::DEFAULT;
 
     PlayerIgnoreStrategy *mIgnoreStrategy = nullptr;
     std::map<std::string, PlayerRelation> mRelations;

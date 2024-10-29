@@ -396,7 +396,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 break;
             }
 
-            if (player_relations.hasPermission(dstBeing, PlayerRelation::EMOTE))
+            if (player_relations.hasPermission(dstBeing, PlayerPermissions::EMOTE))
             {
                 const int fx = EmoteDB::get(msg.readInt8() - 1).effectId;
                 effectManager->trigger(fx, dstBeing);

@@ -96,7 +96,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
                 std::string tradePartnerNameTemp = msg.readString(24);
 
                 if (player_relations.hasPermission(tradePartnerName,
-                                                   PlayerRelation::TRADE))
+                                                   PlayerPermissions::TRADE))
                 {
                     if (mTrading || confirmDlg)
                     {
@@ -142,7 +142,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
                     break;
                 case 4: // Trade cancelled
                     if (player_relations.hasPermission(tradePartnerName,
-                                                       PlayerRelation::SPEECH_LOG))
+                                                       PlayerPermissions::SPEECH_LOG))
                     {
                         serverNotice(strprintf(_("Trade with %s cancelled."),
                                                tradePartnerName.c_str()));
