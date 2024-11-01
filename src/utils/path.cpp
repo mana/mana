@@ -23,30 +23,24 @@
 
 namespace utils
 {
-
     /**
-     * Returns the filePath sub-part corresponding to the filename only.
-     * @return splittedPath: the file path ending with '/' or '\'
-     *                       and the file name alone.
+     * Returns the path without the file name. The path separator is kept.
      */
-    splittedPath splitFileNameAndPath(const std::string &fullFilePath)
+    std::string_view path(std::string_view fullFilePath)
     {
-        // We'll reversed-search for '/' or'\' and extract the substrings
-        // corresponding to the filename and the path separately.
-        size_t slashPos = fullFilePath.find_last_of("/\\");
-
-        splittedPath splittedFilePath;
-        // Note the last slash is kept in the path name.
-        splittedFilePath.path = fullFilePath.substr(0, slashPos + 1);
-        splittedFilePath.file = fullFilePath.substr(slashPos + 1);
-
-        return splittedFilePath;
+        // We'll reverse-search for '/' or'\' and extract the substring
+        // corresponding to path.
+        const auto slashPos = fullFilePath.find_last_of("/\\");
+        if (slashPos != std::string::npos)
+            return fullFilePath.substr(0, slashPos + 1);
+        else
+            return std::string_view();
     }
 
     /**
      * Join two path elements into one.
      *
-     * This function helps build relative paths.
+     * This function helps handling relative paths.
      *
      * Examples:
      *
@@ -58,25 +52,32 @@ namespace utils
      *
      * @return Joined paths or path2 if path2 was an absolute path.
      */
-    std::string joinPaths(const std::string &path1, const std::string &path2)
+    std::string joinPaths(std::string_view path1, std::string_view path2)
     {
+        std::string joined;
+
         if (path2.empty())
-            return path1;
-
-        if (path1.empty())
-            return path2;
-
-        // check if path2 is an absolute path that cannot be joined
-        if (path2[0] == '/' || path2[0] == '\\')
-            return path2;
-
-        char p1end = path1[path1.size()-1];
-        if (p1end == '/' || p1end == '\\')
         {
-            return path1 + path2;
+            joined.append(path1);
+        }
+        else if (path1.empty())
+        {
+            joined.append(path2);
+        }
+        else if (path2[0] == '/' || path2[0] == '\\')
+        {
+            // return only path2 if it is an absolute path
+            joined.append(path2);
+        }
+        else
+        {
+            joined.append(path1);
+            if (joined.back() != '/' && joined.back() != '\\')
+                joined.append("/");
+            joined.append(path2);
         }
 
-        return path1 + "/" + path2;
+        return joined;
     }
 
     /**
@@ -146,6 +147,4 @@ namespace utils
 
         return result;
     }
-
-
 }

@@ -139,9 +139,9 @@ namespace SettingsManager
 
                 if (!includeFile.empty())
                 {
-                    // build absolute path path
-                    const utils::splittedPath splittedPath = utils::splitFileNameAndPath(filename);
-                    includeFile = utils::cleanPath(utils::joinPaths(splittedPath.path, includeFile));
+                    // build absolute path
+                    const auto path = utils::path(filename);
+                    includeFile = utils::cleanPath(utils::joinPaths(path, includeFile));
                 }
                 else
                 {

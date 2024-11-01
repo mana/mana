@@ -25,18 +25,9 @@
 
 namespace utils
 {
-
-    struct splittedPath
-    {
-        std::string path;
-        std::string file;
-    };
-
-    splittedPath splitFileNameAndPath(const std::string &fullFilePath);
-
-    std::string joinPaths(const std::string &path1, const std::string &path2);
-
+    std::string_view path(std::string_view fullFilePath);
+    std::string joinPaths(std::string_view path1, std::string_view path2);
     std::string cleanPath(const std::string &path);
-
 }
+
 #endif // UTILS_PATH_H
