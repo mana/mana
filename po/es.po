@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2024-10-24 09:16+0000\n"
+"PO-Revision-Date: 2024-11-15 12:00+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mana/mana/es/>\n"
 "Language: es\n"
@@ -18,23 +18,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.2-dev\n"
+"X-Generator: Weblate 5.9-dev\n"
 
 #: ../src/main.cpp:52
 msgid "              to the mana client."
-msgstr ""
+msgstr "              al cliente de maná."
 
 #: ../src/main.cpp:51
 msgid "              used to set custom parameters"
-msgstr ""
+msgstr "              Se utiliza para establecer parámetros personalizados"
 
 #: ../src/main.cpp:70
 msgid "     --chat-log-dir   : Chat log dir to use"
-msgstr ""
+msgstr "     --chat-log-dir   : Directorio de registro de chat para usar"
 
 #: ../src/main.cpp:69
 msgid "     --localdata-dir  : Directory to use as local data directory"
 msgstr ""
+"     --localdata-dir : Directorio que se utilizará como directorio de datos "
+"local"
 
 #: ../src/main.cpp:73
 msgid "     --no-opengl      : Disable OpenGL for this session"
@@ -93,9 +95,8 @@ msgid "  -v --version        : Display the version"
 msgstr "  -v --version        :  Muestra la versión"
 
 #: ../src/main.cpp:63
-#, fuzzy
 msgid "  -y --server-type    : Login server type"
-msgstr "  -s --server         :  Login server o IP"
+msgstr "  -y --server-type    : Tipo de servidor de inicio de sesión"
 
 #: ../src/gui/updaterwindow.cpp:410
 msgid "##1  It is strongly recommended that"
@@ -137,7 +138,7 @@ msgstr "%d FPS (OpenGL)"
 #: ../src/gui/setup_video.cpp:178
 #, c-format
 msgid "%dx"
-msgstr ""
+msgstr "%dx"
 
 #: ../src/client.cpp:1074 ../src/client.cpp:1097
 #, c-format
@@ -312,14 +313,12 @@ msgid "/kick > Kick a user from the channel"
 msgstr "/kick > Expulsar un usuario del canal"
 
 #: ../src/net/tmwa/gui/guildtab.cpp:56
-#, fuzzy
 msgid "/kick > Kick someone from the guild you are in"
-msgstr "/kick > Expulsa a alguien del clan en el que estás."
+msgstr "/kick > Expulsar a alguien del gremio en el que estás"
 
 #: ../src/net/tmwa/gui/partytab.cpp:55
-#, fuzzy
 msgid "/kick > Kick someone from the party you are in"
-msgstr "/kick > Expulsa a alguien del grupo en el que estás"
+msgstr "/kick > Expulsar a alguien del grupo en el que estás"
 
 #: ../src/net/tmwa/gui/guildtab.cpp:55
 msgid "/leave > Leave the guild you are in"
@@ -574,7 +573,7 @@ msgstr "Ya se está llevando a cabo la grabación."
 
 #: ../src/gui/setup_video.cpp:246
 msgid "Ambient FX:"
-msgstr ""
+msgstr "Ambient FX:"
 
 #: ../src/net/tmwa/inventoryhandler.h:84
 msgid "Ammo"
@@ -599,16 +598,16 @@ msgid "Applying change to OpenGL requires restart."
 msgstr "Aplicar el intercambio a OpenGL requiere reiniciar el juego."
 
 #: ../src/gui/setup_video.cpp:386
-#, fuzzy
 msgid ""
 "Applying change to OpenGL requires restart.\n"
 "\n"
 "In case OpenGL messes up your game graphics, restart the game with the "
 "command line option \"--no-opengl\"."
 msgstr ""
-"Cambiar a OpenGL necesita reiniciar el cliente. En caso de OpenGL atrape tus "
-"graficos, abra el juego atraves de linea de comando con la seguinte opcion: "
-"\"--no-opengl\"."
+"Aplicar cambios a OpenGL requiere reiniciar el juego.\n"
+"\n"
+"En caso de que OpenGL estropee los gráficos de tu juego, reinicia el juego "
+"con la opción de línea de comandos «--no-opengl»."
 
 #: ../src/gui/charselectdialog.cpp:66
 msgid "Are you sure you want to delete this character?"
@@ -635,7 +634,7 @@ msgstr "Atribuir"
 #: ../src/net/manaserv/charhandler.cpp:166
 #, c-format
 msgid "At least one stat is out of the permitted range: (%u - %u)."
-msgstr ""
+msgstr "Al menos una estadística está fuera del rango permitido: (%u - %u)."
 
 #: ../src/keyboardconfig.cpp:46 ../src/net/tmwa/generalhandler.cpp:236
 msgid "Attack"
@@ -688,15 +687,15 @@ msgstr "Personaje"
 
 #: ../src/gui/debugwindow.cpp:137
 msgid "Being collision radius"
-msgstr ""
+msgstr "Siendo el radio de colisión"
 
 #: ../src/gui/debugwindow.cpp:139
 msgid "Being path"
-msgstr ""
+msgstr "Ser trayectoria"
 
 #: ../src/gui/debugwindow.cpp:138
 msgid "Being positions"
-msgstr ""
+msgstr "Siendo posiciones"
 
 #: ../src/net/tmwa/playerhandler.cpp:123
 msgid "Bereft of life, you rest in peace."
@@ -749,9 +748,8 @@ msgstr ""
 "existe, o eres tú."
 
 #: ../src/gui/socialwindow.cpp:662
-#, fuzzy
 msgid "Cannot create party. You are already in a party."
-msgstr "No se pudo crear un grupo. Ya estás en uno."
+msgstr "No se puede crear un grupo. Ya estás en uno."
 
 #: ../src/net/tmwa/playerhandler.cpp:361
 msgid "Cannot raise skill!"
@@ -906,7 +904,7 @@ msgstr "Cerrar"
 
 #: ../src/gui/debugwindow.cpp:136
 msgid "Collision tiles"
-msgstr ""
+msgstr "Mosaicos de colisión"
 
 #: ../src/gui/setup_colors.cpp:48
 msgid "Colors"
