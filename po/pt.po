@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2024-11-22 15:35+0000\n"
+"PO-Revision-Date: 2024-11-26 02:03+0000\n"
 "Last-Translator: Antônio Silva Neto <ntsneto@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/mana/mana/pt/>"
 "\n"
@@ -2989,9 +2989,8 @@ msgid "Switch server"
 msgstr "Mudar de servidor"
 
 #: ../src/gui/debugwindow.cpp:252
-#, fuzzy
 msgid "Switches"
-msgstr "Mudar de servidor"
+msgstr "Troca"
 
 #: ../src/keyboardconfig.cpp:49
 msgid "Talk"
