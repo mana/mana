@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2024-11-15 12:00+0000\n"
+"PO-Revision-Date: 2024-12-01 15:00+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mana/mana/es/>\n"
 "Language: es\n"
@@ -681,9 +681,8 @@ msgid "Being"
 msgstr "Personaje"
 
 #: ../src/gui/debugwindow.cpp:141
-#, fuzzy
 msgid "Being Ids"
-msgstr "Personaje"
+msgstr "ID de personajes"
 
 #: ../src/gui/debugwindow.cpp:137
 msgid "Being collision radius"
@@ -1460,17 +1459,13 @@ msgid "Failed adding item. Trade partner is over weighted."
 msgstr "Error al añadir objeto. El otro jugador lleva mucho peso."
 
 #: ../src/net/tmwa/tradehandler.cpp:214
-#, fuzzy
 msgid "Failed adding item. You can't trade this item."
-msgstr ""
-"Fallo al añadir objeto. No puedes añadir más de un mismo tipo de objeto en "
-"la ventana."
+msgstr "Error al agregar el artículo. No puedes intercambiar este artículo."
 
 #: ../src/gui/tradewindow.cpp:262
-#, fuzzy
 msgid "Failed adding item. You cannot overlap one kind of item on the window."
 msgstr ""
-"Fallo al añadir objeto. No puedes añadir más de un mismo tipo de objeto en "
+"Error al agregar un elemento. No se puede superponer un tipo de elemento en "
 "la ventana."
 
 #: ../src/gui/setup_video.cpp:374
@@ -1530,7 +1525,6 @@ msgid "Friend"
 msgstr "Amigo"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
@@ -1540,7 +1534,7 @@ msgstr "Nombres De Los GMs"
 
 #: ../src/gui/debugwindow.cpp:142
 msgid "GUI debug"
-msgstr ""
+msgstr "Depuración de GUI"
 
 #: ../src/gui/setup_interface.cpp:112
 msgid "GUI opacity"
@@ -1602,9 +1596,8 @@ msgid "Guild created."
 msgstr "Clan creado."
 
 #: ../src/net/tmwa/guildhandler.cpp:63
-#, fuzzy
 msgid "Guild creation isn't supported."
-msgstr "La creación de guilds no esta soportada."
+msgstr "No se admite la creación de gremios."
 
 #: ../src/net/tmwa/gui/guildtab.cpp:81
 msgid "Guild name is missing."
@@ -1810,14 +1803,12 @@ msgid "Invite sent."
 msgstr "Invitación enviada."
 
 #: ../src/net/manaserv/guildhandler.cpp:104
-#, fuzzy
 msgid "Invited player can't join another guild."
-msgstr "Invitar a %s para unirse a tu clan"
+msgstr "El jugador invitado no puede unirse a otro gremio."
 
 #: ../src/net/manaserv/guildhandler.cpp:100
-#, fuzzy
 msgid "Invited player is already in that guild."
-msgstr "Invita al jugador %s para su clan %s."
+msgstr "El jugador invitado ya está en ese gremio."
 
 #: ../src/gui/socialwindow.cpp:116
 #, c-format
@@ -1888,11 +1879,11 @@ msgstr "Trabajo: %d"
 #: ../src/net/manaserv/partyhandler.cpp:98
 msgid ""
 "Joining party failed, because the invitation has timed out on the server."
-msgstr ""
+msgstr "No se pudo unir al grupo porque la invitación expiró en el servidor."
 
 #: ../src/net/manaserv/partyhandler.cpp:102
 msgid "Joining party failed, because the inviter has left the game."
-msgstr ""
+msgstr "No se pudo unir al grupo porque el invitador abandonó el juego."
 
 #: ../src/gui/setup_joystick.cpp:40
 msgid "Joystick"
@@ -2299,7 +2290,7 @@ msgstr "¿Abrir URL?"
 
 #: ../src/gui/setup_video.cpp:228
 msgid "OpenGL (Legacy)"
-msgstr ""
+msgstr "OpenGL (heredado)"
 
 #: ../src/gui/widgets/itemlinkhandler.cpp:67
 msgid "Opening of URLs requires SDL 2.0.14."
@@ -2447,9 +2438,9 @@ msgid "Play"
 msgstr "Jugar"
 
 #: ../src/net/manaserv/guildhandler.cpp:259
-#, fuzzy, c-format
+#, c-format
 msgid "Player %s kicked you out of guild %s."
-msgstr "%s te ha invitado al clan %s."
+msgstr "El jugador %s te expulsó del gremio %s ."
 
 #: ../src/commandhandler.cpp:521
 msgid "Player already ignored!"
@@ -2503,9 +2494,8 @@ msgid "Please select a custom server."
 msgstr "Por favor selecione un servidor personalizado."
 
 #: ../src/gui/serverdialog.cpp:272
-#, fuzzy
 msgid "Please select a valid server."
-msgstr "Por favor seleccione un servidor."
+msgstr "Por favor seleccione un servidor válido."
 
 #: ../src/commandhandler.cpp:436 ../src/commandhandler.cpp:515
 #: ../src/commandhandler.cpp:537
@@ -2513,9 +2503,8 @@ msgid "Please specify a name."
 msgstr "Por favor, especifique un nombre."
 
 #: ../src/gui/customserverdialog.cpp:167
-#, fuzzy
 msgid "Please type in at least the address of the server."
-msgstr "Por favor tipee al menos ambos, la dirección y el puerto del servidor."
+msgstr "Por favor, escriba al menos la dirección del servidor."
 
 #: ../src/net/tmwa/specialhandler.cpp:212
 msgid "Poison had no effect..."
@@ -2658,9 +2647,8 @@ msgid "Reset Windows"
 msgstr "Restaurar Ventanas"
 
 #: ../src/gui/setup_video.cpp:313
-#, fuzzy
 msgid "Resolution:"
-msgstr "Relación"
+msgstr "Resolución:"
 
 #: ../src/gui/inventorywindow.cpp:132 ../src/gui/popupmenu.cpp:389
 msgid "Retrieve"
@@ -2687,7 +2675,6 @@ msgid "Rotate the stick"
 msgstr "Gira el stick"
 
 #: ../src/gui/setup_audio.cpp:50
-#, fuzzy
 msgid "SFX volume"
 msgstr "Volumen Sfx"
 
@@ -2702,7 +2689,7 @@ msgstr "Fallo al guardar screenshot!"
 
 #: ../src/gui/setup_video.cpp:315
 msgid "Scale:"
-msgstr ""
+msgstr "Escala:"
 
 #: ../src/keyboardconfig.cpp:57
 msgid "Screenshot"
@@ -3254,10 +3241,9 @@ msgid "This command tells you're away from keyboard with the given reason."
 msgstr "Este comando muestra que no estas en el PC por una razon dada."
 
 #: ../src/commandhandler.cpp:246
-#, fuzzy
 msgid "This command tries to make a tab for whispers between you and <nick>."
 msgstr ""
-"Este comando crea una pestaña para mensajes privados con el jugador <nick>."
+"Este comando intenta crear una pestaña para susurros entre usted y <nick>."
 
 #: ../src/gui/setup_colors.cpp:43
 msgid "This is what the color looks like"
@@ -3381,9 +3367,9 @@ msgid "Unable to equip."
 msgstr "Imposible equipar."
 
 #: ../src/net/tmwa/network.cpp:470
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to resolve host \"%s\""
-msgstr "No es posible determinar el host \""
+msgstr "No se puede resolver el host \" %s \""
 
 #: ../src/net/tmwa/buysellhandler.cpp:124
 msgid "Unable to sell."
@@ -3410,6 +3396,8 @@ msgstr "Quitárselo antes"
 #, c-format
 msgid "Unhandled character select error message %i."
 msgstr ""
+"Recibí un mensaje de error de carácter %i , que no es compatible con el "
+"programa."
 
 #: ../src/net/tmwa/tradehandler.cpp:156
 msgid "Unhandled trade cancel packet."
@@ -3503,7 +3491,7 @@ msgstr "Usuario borrado permanentemente."
 
 #: ../src/gui/setup_video.cpp:227
 msgid "VSync"
-msgstr ""
+msgstr "VSync"
 
 #: ../src/gui/setup_video.cpp:244
 msgid "Video"
@@ -3606,17 +3594,15 @@ msgstr "Suerte %+.1f"
 
 #: ../src/gui/setup_video.cpp:311
 msgid "Window mode:"
-msgstr ""
+msgstr "Modo de la ventana:"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Windowed"
-msgstr "Ventana de ayuda"
+msgstr "con ventanas"
 
 #: ../src/gui/setup_video.cpp:221
-#, fuzzy
 msgid "Windowed Fullscreen"
-msgstr "Pantalla completa"
+msgstr "Pantalla completa con ventana"
 
 #: ../src/net/manaserv/loginhandler.cpp:92
 msgid "Wrong magic_token."
@@ -3666,9 +3652,8 @@ msgid "You are not that alive anymore."
 msgstr "Ya no estás tan vivo..."
 
 #: ../src/net/tmwa/partyhandler.cpp:328
-#, fuzzy
 msgid "You can only invite when you are in a party!"
-msgstr "Sólo puedes invitar cuando estés en un grupo!"
+msgstr "¡Solo puedes invitar cuando estés en una fiesta!"
 
 #: ../src/net/tmwa/specialhandler.cpp:179
 msgid "You cannot do that right now!"
@@ -3828,7 +3813,7 @@ msgstr ""
 
 #: ../src/main.cpp:50
 msgid "[mana-file] : The mana file is an XML file (.mana)"
-msgstr ""
+msgstr "[mana-file] : El archivo mana es un archivo XML (.mana)"
 
 #: ../src/gui/setup_interface.cpp:96
 msgid "as particle"
