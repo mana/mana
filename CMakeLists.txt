@@ -163,6 +163,7 @@ if(WIN32)
           $ENV{MINGW_PREFIX}/bin/libgraphite2.dll
           $ENV{MINGW_PREFIX}/bin/liblcms2-2.dll
           $ENV{MINGW_PREFIX}/bin/libpcre2-8-0.dll
+          $ENV{MINGW_PREFIX}/bin/libmodplug-1.dll
     DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 include(CPack)
