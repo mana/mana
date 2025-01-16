@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2025-01-15 04:00+0000\n"
+"PO-Revision-Date: 2025-01-17 12:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/mana/mana/fi/>\n"
 "Language: fi\n"
@@ -1156,9 +1156,8 @@ msgid "Could not steal anything..."
 msgstr "Varastaminen ei onnistunut..."
 
 #: ../src/game.cpp:290
-#, fuzzy
 msgid "Could not take screenshot!"
-msgstr "Ryhmän luonti epäonnistui."
+msgstr "Kuvakaappausta ei voitu ottaa!"
 
 #: ../src/gui/charcreatedialog.cpp:85 ../src/gui/charselectdialog.cpp:393
 #: ../src/gui/socialwindow.cpp:365
@@ -1833,9 +1832,8 @@ msgid "Invite %s to join your party"
 msgstr "Kutsu %s ryhmääsi"
 
 #: ../src/net/manaserv/guildhandler.cpp:108
-#, fuzzy
 msgid "Invite failed."
-msgstr "Istuminen epäonnistui!"
+msgstr "Kutsu epäonnistui."
 
 #: ../src/net/manaserv/guildhandler.cpp:96
 msgid "Invite sent."
@@ -1987,7 +1985,7 @@ msgstr "Taso: %d"
 # TODO: need translator comment. Optimistic translation: is this followed by channel listing?
 #: ../src/net/manaserv/chathandler.cpp:217
 msgid "Listing channels."
-msgstr "Kanavalistaus:"
+msgstr "Kanavalistaus."
 
 #: ../src/resources/userpalette.cpp:104
 msgid "Local Player Critical Hit"
@@ -2507,7 +2505,7 @@ msgstr "Pelaajan huomiotta jättäminen epäonnistui!"
 # TODO: <swearing>
 #: ../src/commandhandler.cpp:552
 msgid "Player could not be unignored!"
-msgstr "Pelaajan uudelleenhuomiointi epäonnistui."
+msgstr "Pelaajaa ei voitu jättää vailla huomiotta!"
 
 #: ../src/net/manaserv/charhandler.cpp:211
 msgid "Player deleted."
@@ -2515,11 +2513,11 @@ msgstr "Hahmo poistettu."
 
 #: ../src/commandhandler.cpp:550
 msgid "Player no longer ignored!"
-msgstr "Pelaaja huomioidaan taas."
+msgstr "Pelaajaa ei enää jätetty huomiotta!"
 
 #: ../src/commandhandler.cpp:528
 msgid "Player successfully ignored!"
-msgstr "Pelaaja jää nyt huomiotta."
+msgstr "Pelaaja onnistuneesti! jätetty huomioimatta!"
 
 # TODO: come up with a less kludgey translation for "ignore". Like sulkulista.
 #: ../src/commandhandler.cpp:545
@@ -2708,9 +2706,8 @@ msgid "Reset Windows"
 msgstr "Palauta ikkunoiden oletusasetukset"
 
 #: ../src/gui/setup_video.cpp:313
-#, fuzzy
 msgid "Resolution:"
-msgstr "Relaatio"
+msgstr "Resoluutio:"
 
 #: ../src/gui/inventorywindow.cpp:132 ../src/gui/popupmenu.cpp:389
 msgid "Retrieve"
@@ -3733,11 +3730,11 @@ msgstr "Voit kutsua ryhmään vain kun olet siinä itse!"
 
 #: ../src/net/tmwa/specialhandler.cpp:179
 msgid "You cannot do that right now!"
-msgstr "Et voi tehdä tätä juuri nyt."
+msgstr "Et voi tehdä tätä juuri nyt!"
 
 #: ../src/net/tmwa/specialhandler.cpp:185
 msgid "You cannot use this skill with that kind of weapon!"
-msgstr "Et voi käyttää tätä taitoa tuollaisen aseen kanssa."
+msgstr "Et voi käyttää tätä taitoa tuollaisen aseen kanssa!"
 
 #: ../src/gui/tradewindow.cpp:303
 msgid "You don't have enough money."
@@ -3787,7 +3784,7 @@ msgstr "Erosit ryhmästä."
 
 #: ../src/net/tmwa/specialhandler.cpp:176
 msgid "You have no memos!"
-msgstr "Sinulla ei ole muistioita (memo)."
+msgstr "Sinulla ei ole muistioita (memo)!"
 
 #: ../src/net/tmwa/specialhandler.cpp:167
 msgid "You have not yet reached a high enough lvl!"
@@ -3805,11 +3802,11 @@ msgstr "Käynnistä ohjelma uudelleen, jotta muutos astuu voimaan."
 
 #: ../src/net/tmwa/specialhandler.cpp:191
 msgid "You need another blue gem!"
-msgstr "Tarvitset toisen sinisen helmen."
+msgstr "Tarvitset toisen sinisen helmen!"
 
 #: ../src/net/tmwa/specialhandler.cpp:188
 msgid "You need another red gem!"
-msgstr "Tarvitset toisen punaisen helmen."
+msgstr "Tarvitset toisen punaisen helmen!"
 
 #: ../src/gui/logindialog.cpp:119
 msgid "You need to use the website to register an account for this server."
