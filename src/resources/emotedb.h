@@ -48,7 +48,7 @@ namespace EmoteDB
 {
     void init();
 
-    void readEmoteNode(xmlNodePtr node, const std::string &filename);
+    void readEmoteNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 

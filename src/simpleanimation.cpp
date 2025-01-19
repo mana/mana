@@ -38,7 +38,7 @@ SimpleAnimation::SimpleAnimation(Animation animation):
 {
 }
 
-SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode,
+SimpleAnimation::SimpleAnimation(XML::Node animationNode,
                                  const std::string &dyePalettes)
 {
     initializeAnimation(animationNode, dyePalettes);
@@ -102,34 +102,33 @@ Image *SimpleAnimation::getCurrentImage() const
     return nullptr;
 }
 
-void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode,
+void SimpleAnimation::initializeAnimation(XML::Node animationNode,
                                           const std::string& dyePalettes)
 {
     if (!animationNode)
         return;
 
-    std::string imagePath = XML::getProperty(animationNode,
-                                                   "imageset", "");
+    std::string imagePath = animationNode.getProperty(                                                   "imageset", "");
 
     // Instanciate the dye coloration.
     if (!imagePath.empty() && !dyePalettes.empty())
         Dye::instantiate(imagePath, dyePalettes);
 
     ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
-        XML::getProperty(animationNode, "imageset", ""),
-        XML::getProperty(animationNode, "width", 0),
-        XML::getProperty(animationNode, "height", 0)
+        animationNode.getProperty("imageset", ""),
+        animationNode.getProperty("width", 0),
+        animationNode.getProperty("height", 0)
     );
 
     if (!imageset)
         return;
 
     // Get animation frames
-    for (auto frameNode : XML::Children(animationNode))
+    for (auto frameNode : animationNode.children())
     {
-        int delay = XML::getProperty(frameNode, "delay", 0);
-        int offsetX = XML::getProperty(frameNode, "offsetX", 0);
-        int offsetY = XML::getProperty(frameNode, "offsetY", 0);
+        int delay = frameNode.getProperty("delay", 0);
+        int offsetX = frameNode.getProperty("offsetX", 0);
+        int offsetY = frameNode.getProperty("offsetY", 0);
         Game *game = Game::instance();
         if (game)
         {
@@ -138,9 +137,9 @@ void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode,
             offsetY -= imageset->getHeight() - game->getCurrentTileHeight();
         }
 
-        if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
+        if (frameNode.name() == "frame")
         {
-            int index = XML::getProperty(frameNode, "index", -1);
+            int index = frameNode.getProperty("index", -1);
 
             if (index < 0)
             {
@@ -158,10 +157,10 @@ void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode,
 
             mAnimation.addFrame(img, delay, offsetX, offsetY);
         }
-        else if (xmlStrEqual(frameNode->name, BAD_CAST "sequence"))
+        else if (frameNode.name() == "sequence")
         {
-            int start = XML::getProperty(frameNode, "start", -1);
-            int end = XML::getProperty(frameNode, "end", -1);
+            int start = frameNode.getProperty("start", -1);
+            int end = frameNode.getProperty("end", -1);
 
             if (start < 0 || end < 0)
             {
@@ -183,7 +182,7 @@ void SimpleAnimation::initializeAnimation(xmlNodePtr animationNode,
                 start++;
             }
         }
-        else if (xmlStrEqual(frameNode->name, BAD_CAST "end"))
+        else if (frameNode.name() == "end")
         {
             mAnimation.addTerminator();
         }

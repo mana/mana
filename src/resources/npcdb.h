@@ -34,7 +34,7 @@ namespace NPCDB
 {
     void init();
 
-    void readNPCNode(xmlNodePtr node, const std::string &filename);
+    void readNPCNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 

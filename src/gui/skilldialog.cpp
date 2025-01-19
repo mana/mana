@@ -313,7 +313,7 @@ void SkillDialog::loadSkills()
     clearSkills();
 
     XML::Document doc(SKILLS_FILE);
-    xmlNodePtr root = doc.rootNode();
+    XML::Node root = doc.rootNode();
 
     int setCount = 0;
     std::string setName;
@@ -321,7 +321,7 @@ void SkillDialog::loadSkills()
     SkillListBox *listbox;
     SkillTab *tab;
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
+    if (!root || root.name() != "skills")
     {
         logger->log("Error loading skills file: %s", SKILLS_FILE);
 
@@ -357,23 +357,23 @@ void SkillDialog::loadSkills()
         return;
     }
 
-    for (auto set : XML::Children(root))
+    for (auto set : root.children())
     {
-        if (xmlStrEqual(set->name, BAD_CAST "set") ||
-            xmlStrEqual(set->name, BAD_CAST "skill-set"))
+        if (set.name() == "set" ||
+            set.name() == "skill-set")
         {
             setCount++;
-            setName = XML::getProperty(set, "name", strprintf(_("Skill Set %d"), setCount));
+            setName = set.getProperty("name", strprintf(_("Skill Set %d"), setCount));
 
             auto *model = new SkillModel();
 
-            for (auto node : XML::Children(set))
+            for (auto node : set.children())
             {
-                if (xmlStrEqual(node->name, BAD_CAST "skill"))
+                if (node.name() == "skill")
                 {
-                    int id = atoi(XML::getProperty(node, "id", "-1").c_str());
-                    std::string name = XML::getProperty(node, "name", strprintf(_("Skill %d"), id));
-                    std::string icon = XML::getProperty(node, "icon", "");
+                    int id = atoi(node.getProperty("id", "-1").c_str());
+                    std::string name = node.getProperty("name", strprintf(_("Skill %d"), id));
+                    std::string icon = node.getProperty("icon", "");
 
                     auto *skill = new SkillInfo;
                     skill->id = id;

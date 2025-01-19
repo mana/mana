@@ -29,7 +29,7 @@ RotationalParticle::RotationalParticle(Map *map, Animation animation):
     mAnimation(std::move(animation))
 {}
 
-RotationalParticle::RotationalParticle(Map *map, xmlNodePtr animationNode,
+RotationalParticle::RotationalParticle(Map *map, XML::Node animationNode,
                                        const std::string &dyePalettes):
     ImageParticle(map, nullptr),
     mAnimation(animationNode, dyePalettes)

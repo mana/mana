@@ -171,7 +171,7 @@ class ConfigurationObject
         }
 
     protected:
-        void initFromXML(xmlNodePtr node);
+        void initFromXML(XML::Node node);
         void writeToXML(XML::Writer &writer) const;
 
         void deleteList(std::list<ConfigurationObject *> &list);

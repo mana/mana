@@ -28,105 +28,177 @@
 #include <libxml/tree.h>
 #include <libxml/xmlwriter.h>
 
-#include <string>
+#include <string_view>
 
 /**
  * XML helper functions.
  */
 namespace XML
 {
+    class Node
+    {
+    public:
+        Node(xmlNodePtr node = nullptr)
+            : node(node)
+        {}
+
+        operator bool() const { return node != nullptr; }
+
+        std::string_view name() const { return (const char *) node->name; }
+        std::string_view textContent() const;
+
+        bool hasProperty(const char *name) const;
+        int getProperty(const char *name, int def) const;
+        double getFloatProperty(const char *name, double def) const;
+        std::string getProperty(const char *name, const std::string &def) const;
+        bool getBoolProperty(const char *name, bool def) const;
+        Node findFirstChildByName(const char *name) const;
+
+        /**
+         * Helper class to iterate over the children of a node. Enables
+         * range-based for loops.
+         */
+        class Children
+        {
+        public:
+            class Iterator
+            {
+            public:
+                explicit Iterator(xmlNodePtr node) : mNode(node) {}
+
+                bool operator!=(const Iterator &other) const { return mNode != other.mNode; }
+                void operator++() { mNode = mNode->next; }
+                Node operator*() const { return mNode; }
+
+            private:
+                xmlNodePtr mNode;
+            };
+
+            explicit Children(xmlNodePtr node) : mNode(node) {}
+
+            Iterator begin() const { return Iterator(mNode->children); }
+            Iterator end() const { return Iterator(nullptr); }
+
+        private:
+            xmlNodePtr mNode;
+        };
+
+        Children children() const { return Children(node); }
+
+    private:
+        const char *attribute(const char *name) const;
+
+        xmlNodePtr node;
+    };
+
+    inline std::string_view Node::textContent() const
+    {
+        if (node->children && node->children->type == XML_TEXT_NODE)
+            return (const char *) node->children->content;
+        return {};
+    }
+
+    inline bool Node::hasProperty(const char *name) const
+    {
+        return xmlHasProp(node, BAD_CAST name) != nullptr;
+    }
+
+    inline int Node::getProperty(const char *name, int def) const
+    {
+        int ret = def;
+
+        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
+        {
+            ret = atol((char*)prop);
+            xmlFree(prop);
+        }
+
+        return ret;
+    }
+
+    inline double Node::getFloatProperty(const char *name, double def) const
+    {
+        double ret = def;
+
+        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
+        {
+            ret = atof((char*)prop);
+            xmlFree(prop);
+        }
+
+        return ret;
+    }
+
+    inline std::string Node::getProperty(const char *name, const std::string &def) const
+    {
+        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
+        {
+            std::string val = (char*)prop;
+            xmlFree(prop);
+            return val;
+        }
+
+        return def;
+    }
+
+    inline bool Node::getBoolProperty(const char *name, bool def) const
+    {
+        bool ret = def;
+
+        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
+        {
+            ret = getBoolFromString((char*) prop, def);
+            xmlFree(prop);
+        }
+        return ret;
+    }
+
+    inline Node Node::findFirstChildByName(const char *name) const
+    {
+        for (auto child : children())
+            if (child.name() == name)
+                return child;
+
+        return nullptr;
+    }
+
     /**
      * A helper class for parsing an XML document, which also cleans it up
      * again (RAII).
      */
     class Document
     {
-        public:
-            /**
-             * Constructor that attempts to load the given file through the
-             * resource manager. Logs errors.
-             */
-            Document(const std::string &filename, bool useResman = true);
+    public:
+        /**
+         * Constructor that attempts to load the given file through the
+         * resource manager. Logs errors.
+         */
+        Document(const std::string &filename, bool useResman = true);
 
-            /**
-             * Destructor. Frees the loaded XML file.
-             */
-            ~Document();
+        /**
+         * Destructor. Frees the loaded XML file.
+         */
+        ~Document();
 
-            /**
-             * Returns the root node of the document (or NULL if there was a
-             * load error).
-             */
-            xmlNodePtr rootNode();
+        /**
+         * Returns the root node of the document (or NULL if there was a
+         * load error).
+         */
+        Node rootNode();
 
-        private:
-            xmlDocPtr mDoc;
+    private:
+        xmlDocPtr mDoc;
     };
 
-    /**
-     * Returns whether a certain property is present.
-     */
-    bool hasProperty(xmlNodePtr node, const char *name);
-
-    /**
-     * Gets an integer property from an xmlNodePtr.
-     */
-    int getProperty(xmlNodePtr node, const char *name, int def);
-
-    /**
-     * Gets an floating point property from an xmlNodePtr.
-     */
-    double getFloatProperty(xmlNodePtr node, const char *name, double def);
-
-    /**
-     * Gets a string property from an xmlNodePtr.
-     */
-    std::string getProperty(xmlNodePtr node, const char *name,
-                            const std::string &def);
-
-    /**
-     * Gets a boolean property from an xmlNodePtr.
-     */
-    bool getBoolProperty(xmlNodePtr node, const char *name, bool def);
-
-    /**
-     * Finds the first child node with the given name
-     */
-    xmlNodePtr findFirstChildByName(xmlNodePtr parent, const char *name);
+    inline Node Document::rootNode()
+    {
+        return mDoc ? xmlDocGetRootElement(mDoc) : nullptr;
+    }
 
     /**
      * Initializes the XML engine.
      */
     void init();
-
-    /**
-     * Helper class to iterate over the children of a node. Enables range-based
-     * for loops.
-     */
-    class Children
-    {
-    public:
-        class Iterator
-        {
-        public:
-            explicit Iterator(xmlNodePtr node) : mNode(node) {}
-
-            bool operator!=(const Iterator &other) const { return mNode != other.mNode; }
-            void operator++() { mNode = mNode->next; }
-            xmlNodePtr operator*() const { return mNode; }
-
-        private:
-            xmlNodePtr mNode;
-        };
-
-        explicit Children(xmlNodePtr node) : mNode(node) {}
-
-        Iterator begin() const { return Iterator(mNode->children); }
-        Iterator end() const { return Iterator(nullptr); }
-
-    private:
-        xmlNodePtr mNode;
-    };
 
     /**
      * Helper class for writing out XML data.
@@ -210,7 +282,6 @@ namespace XML
     {
         xmlTextWriterWriteString(mWriter, BAD_CAST text.c_str());
     }
-
 }
 
 #endif // XML_H

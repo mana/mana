@@ -219,12 +219,12 @@ Skin *Theme::readSkin(const std::string &filename)
     logger->log("Loading skin '%s'.", filename.c_str());
 
     XML::Document doc(resolveThemePath(filename));
-    xmlNodePtr rootNode = doc.rootNode();
+    XML::Node rootNode = doc.rootNode();
 
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
+    if (!rootNode || rootNode.name() != "skinset")
         return nullptr;
 
-    const std::string skinSetImage = XML::getProperty(rootNode, "image", "");
+    const std::string skinSetImage = rootNode.getProperty("image", "");
 
     if (skinSetImage.empty())
     {
@@ -240,31 +240,31 @@ Skin *Theme::readSkin(const std::string &filename)
     memset(&border, 0, sizeof(ImageRect));
 
     // iterate <widget>'s
-    for (auto widgetNode : XML::Children(rootNode))
+    for (auto widgetNode : rootNode.children())
     {
-        if (!xmlStrEqual(widgetNode->name, BAD_CAST "widget"))
+        if (widgetNode.name() != "widget")
             continue;
 
         const std::string widgetType =
-                XML::getProperty(widgetNode, "type", "unknown");
+                widgetNode.getProperty("type", "unknown");
         if (widgetType == "Window")
         {
             // Iterate through <part>'s
             // LEEOR / TODO:
             // We need to make provisions to load in a CloseButton image. For
             // now it can just be hard-coded.
-            for (auto partNode : XML::Children(widgetNode))
+            for (auto partNode : widgetNode.children())
             {
-                if (!xmlStrEqual(partNode->name, BAD_CAST "part"))
+                if (partNode.name() != "part")
                     continue;
 
                 const std::string partType =
-                        XML::getProperty(partNode, "type", "unknown");
+                        partNode.getProperty("type", "unknown");
                 // TOP ROW
-                const int xPos = XML::getProperty(partNode, "xpos", 0);
-                const int yPos = XML::getProperty(partNode, "ypos", 0);
-                const int width = XML::getProperty(partNode, "width", 1);
-                const int height = XML::getProperty(partNode, "height", 1);
+                const int xPos = partNode.getProperty("xpos", 0);
+                const int yPos = partNode.getProperty("ypos", 0);
+                const int width = partNode.getProperty("width", 1);
+                const int height = partNode.getProperty("height", 1);
 
                 if (partType == "top-left-corner")
                     border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
@@ -531,9 +531,9 @@ void Theme::loadColors(std::string file)
     file += "/colors.xml";
 
     XML::Document doc(file);
-    xmlNodePtr root = doc.rootNode();
+    XML::Node root = doc.rootNode();
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
+    if (!root || root.name() != "colors")
     {
         logger->log("Error loading colors file: %s", file.c_str());
         return;
@@ -544,31 +544,30 @@ void Theme::loadColors(std::string file)
     gcn::Color color;
     GradientType grad;
 
-    for (auto node : XML::Children(root))
+    for (auto node : root.children())
     {
-        if (xmlStrEqual(node->name, BAD_CAST "color"))
+        if (node.name() == "color")
         {
-            type = readColorType(XML::getProperty(node, "id", ""));
+            type = readColorType(node.getProperty("id", ""));
             if (type < 0) // invalid or no type given
                 continue;
 
-            temp = XML::getProperty(node, "color", "");
+            temp = node.getProperty("color", "");
             if (temp.empty()) // no color set, so move on
                 continue;
 
             color = readColor(temp);
-            grad = readColorGradient(XML::getProperty(node, "effect", ""));
+            grad = readColorGradient(node.getProperty("effect", ""));
 
             mColors[type].set(type, color, grad, 10);
         }
-        else if (xmlStrEqual(node->name, BAD_CAST "progressbar"))
+        else if (node.name() == "progressbar")
         {
-            type = readProgressType(XML::getProperty(node, "id", ""));
+            type = readProgressType(node.getProperty("id", ""));
             if (type < 0) // invalid or no type given
                 continue;
 
-            mProgressColors[type] = new DyePalette(XML::getProperty(node,
-                                                           "color", ""));
+            mProgressColors[type] = new DyePalette(node.getProperty(                                                           "color", ""));
         }
     }
 }

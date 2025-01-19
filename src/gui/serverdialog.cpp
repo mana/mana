@@ -427,15 +427,15 @@ void ServerDialog::downloadServerList()
 void ServerDialog::loadServers()
 {
     XML::Document doc(mDir + "/serverlist.xml", false);
-    xmlNodePtr rootNode = doc.rootNode();
+    XML::Node rootNode = doc.rootNode();
 
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "serverlist"))
+    if (!rootNode || rootNode.name() != "serverlist")
     {
         logger->log("Error loading server list!");
         return;
     }
 
-    int version = XML::getProperty(rootNode, "version", 0);
+    int version = rootNode.getProperty("version", 0);
     if (version != 1)
     {
         logger->log("Error: unsupported online server list version: %d",
@@ -443,14 +443,14 @@ void ServerDialog::loadServers()
         return;
     }
 
-    for (auto serverNode : XML::Children(rootNode))
+    for (auto serverNode : rootNode.children())
     {
-        if (!xmlStrEqual(serverNode->name, BAD_CAST "server"))
+        if (serverNode.name() != "server")
             continue;
 
         ServerInfo server;
 
-        std::string type = XML::getProperty(serverNode, "type", "unknown");
+        std::string type = serverNode.getProperty("type", "unknown");
 
         server.type = ServerInfo::parseType(type);
 
@@ -466,9 +466,9 @@ void ServerDialog::loadServers()
             continue;
         }
 
-        server.name = XML::getProperty(serverNode, "name", std::string());
+        server.name = serverNode.getProperty("name", std::string());
 
-        std::string version = XML::getProperty(serverNode, "minimumVersion",
+        std::string version = serverNode.getProperty("minimumVersion",
                                                std::string());
 
         bool meetsMinimumVersion = compareStrI(version, PACKAGE_VERSION) <= 0;
@@ -481,30 +481,26 @@ void ServerDialog::loadServers()
         else
             version = strprintf(_("requires v%s"), version.c_str());
 
-        for (auto subNode : XML::Children(serverNode))
+        for (auto subNode : serverNode.children())
         {
-            if (xmlStrEqual(subNode->name, BAD_CAST "connection"))
+            if (subNode.name() == "connection")
             {
-                server.hostname = XML::getProperty(subNode, "hostname", std::string());
-                server.port = XML::getProperty(subNode, "port", 0);
+                server.hostname = subNode.getProperty("hostname", std::string());
+                server.port = subNode.getProperty("port", 0);
                 if (server.port == 0)
                 {
                     // If no port is given, use the default for the given type
                     server.port = ServerInfo::defaultPortForServerType(server.type);
                 }
             }
-            else if (subNode->children && subNode->children->content)
+            else if (subNode.name() == "description")
             {
-                const char *text = (const char*) subNode->children->content;
-
-                if (xmlStrEqual(subNode->name, BAD_CAST "description"))
-                {
-                    server.description = text;
-                }
-                else if (xmlStrEqual(subNode->name, BAD_CAST "persistentIp"))
-                {
-                    server.persistentIp = strcmp(text, "1") == 0 || strcmp(text, "true") == 0;
-                }
+                server.description = subNode.textContent();
+            }
+            else if (subNode.name() == "persistentIp")
+            {
+                const auto text = subNode.textContent();
+                server.persistentIp = text == "1" || text == "true";
             }
         }
 

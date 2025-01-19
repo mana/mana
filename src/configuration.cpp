@@ -206,21 +206,20 @@ bool Configuration::getBoolValue(const std::string &key) const
     return defaultValue;
 }
 
-void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
+void ConfigurationObject::initFromXML(XML::Node parent_node)
 {
     clear();
 
-    for (auto node : XML::Children(parent_node))
+    for (auto node : parent_node.children())
     {
-        if (xmlStrEqual(node->name, BAD_CAST "list"))
+        if (node.name() == "list")
         {
             // List option handling.
-            std::string name = XML::getProperty(node, "name", std::string());
+            std::string name = node.getProperty("name", std::string());
 
-            for (auto subnode : XML::Children(node))
+            for (auto subnode : node.children())
             {
-                if (xmlStrEqual(subnode->name, BAD_CAST name.c_str())
-                    && subnode->type == XML_ELEMENT_NODE)
+                if (subnode.name() == name)
                 {
                     auto *cobj = new ConfigurationObject;
 
@@ -231,11 +230,11 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
             }
 
         }
-        else if (xmlStrEqual(node->name, BAD_CAST "option"))
+        else if (node.name() == "option")
         {
             // Single option handling.
-            std::string name = XML::getProperty(node, "name", std::string());
-            std::string value = XML::getProperty(node, "value", std::string());
+            std::string name = node.getProperty("name", std::string());
+            std::string value = node.getProperty("value", std::string());
 
             if (!name.empty())
                 mOptions[name] = value;
@@ -258,9 +257,9 @@ void Configuration::init(const std::string &filename, bool useResManager)
         return;
     }
 
-    xmlNodePtr rootNode = doc.rootNode();
+    XML::Node rootNode = doc.rootNode();
 
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "configuration"))
+    if (!rootNode || rootNode.name() != "configuration")
     {
         logger->log("Warning: No configuration file (%s)", filename.c_str());
         return;

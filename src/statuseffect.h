@@ -96,7 +96,7 @@ public:
 
     static void init();
 
-    static void readStatusEffectNode(xmlNodePtr node, const std::string &filename);
+    static void readStatusEffectNode(XML::Node node, const std::string &filename);
 
     static void checkStatus();
 

@@ -30,7 +30,7 @@ class Units
     public:
         static void init();
 
-        static void readUnitNode(xmlNodePtr node, const std::string &filename);
+        static void readUnitNode(XML::Node node, const std::string &filename);
 
         static void checkStatus();
 

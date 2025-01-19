@@ -22,8 +22,6 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#include <libxml/tree.h>
-
 #include <vector>
 
 class Image;

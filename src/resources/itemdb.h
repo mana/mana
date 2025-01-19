@@ -94,7 +94,7 @@ class ItemDB
 
         virtual void init() = 0;
 
-        virtual void readItemNode(xmlNodePtr node, const std::string &filename) = 0;
+        virtual void readItemNode(XML::Node node, const std::string &filename) = 0;
 
         virtual void checkStatus() = 0;
 
@@ -103,7 +103,7 @@ class ItemDB
          * Permits to load item definitions which are common
          * for each protocols to avoid code duplication.
          */
-        void loadCommonRef(ItemInfo &itemInfo, xmlNodePtr node, const std::string &filename);
+        void loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string &filename);
 
         /**
          * Checks the items parameters consistency.
@@ -129,17 +129,17 @@ class ItemDB
         /**
          * Loads the sprite references contained in a <sprite> tag.
          */
-        void loadSpriteRef(ItemInfo &itemInfo, xmlNodePtr node);
+        void loadSpriteRef(ItemInfo &itemInfo, XML::Node node);
 
         /**
          * Loads the sound references contained in a <sound> tag.
          */
-         void loadSoundRef(ItemInfo &itemInfo, xmlNodePtr node);
+         void loadSoundRef(ItemInfo &itemInfo, XML::Node node);
 
         /**
          * Loads the floor item references contained in a <floor> tag.
          */
-        void loadFloorSprite(SpriteDisplay &display, xmlNodePtr node);
+        void loadFloorSprite(SpriteDisplay &display, XML::Node node);
 
         // Items database
         std::map<int, ItemInfo *> mItemInfos;
@@ -161,7 +161,7 @@ class TaItemDB : public ItemDB
 
         void init() override;
 
-        void readItemNode(xmlNodePtr node, const std::string &filename) override;
+        void readItemNode(XML::Node node, const std::string &filename) override;
 
         void checkStatus() override;
 
@@ -193,7 +193,7 @@ class ManaServItemDB : public ItemDB
 
         void init() override;
 
-        void readItemNode(xmlNodePtr node, const std::string &filename) override;
+        void readItemNode(XML::Node node, const std::string &filename) override;
 
         void checkStatus() override;
 

@@ -24,7 +24,7 @@
 
 #include "resources/resource.h"
 
-#include <libxml/tree.h>
+#include "utils/xml.h"
 
 #include <map>
 #include <string>
@@ -111,30 +111,30 @@ class SpriteDef : public Resource
         /**
          * Loads a sprite element.
          */
-        void loadSprite(xmlNodePtr spriteNode, int variant,
+        void loadSprite(XML::Node spriteNode, int variant,
                         const std::string &palettes = std::string());
 
         /**
          * Loads an imageset element.
          */
-        void loadImageSet(xmlNodePtr node, const std::string &palettes);
+        void loadImageSet(XML::Node node, const std::string &palettes);
 
         /**
          * Loads an action element.
          */
-        void loadAction(xmlNodePtr node, int variant_offset);
+        void loadAction(XML::Node node, int variant_offset);
 
         /**
          * Loads an animation element.
          */
-        void loadAnimation(xmlNodePtr animationNode,
+        void loadAnimation(XML::Node animationNode,
                            Action *action, ImageSet *imageSet,
                            int variant_offset);
 
         /**
          * Include another sprite into this one.
          */
-        void includeSprite(xmlNodePtr includeNode);
+        void includeSprite(XML::Node includeNode);
 
         /**
          * Complete missing actions by copying existing ones.

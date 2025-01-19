@@ -31,7 +31,7 @@ AnimationParticle::AnimationParticle(Map *map, Animation animation):
 {
 }
 
-AnimationParticle::AnimationParticle(Map *map, xmlNodePtr animationNode,
+AnimationParticle::AnimationParticle(Map *map, XML::Node animationNode,
                                      const std::string &dyePalettes):
     ImageParticle(map, nullptr),
     mAnimation(animationNode, dyePalettes)

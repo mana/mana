@@ -35,14 +35,14 @@ void HairDB::init()
     mHairColors[0] = COLOR_WHITE;
 }
 
-void HairDB::readHairColorNode(xmlNodePtr node, const std::string &filename)
+void HairDB::readHairColorNode(XML::Node node, const std::string &filename)
 {
-    int id = XML::getProperty(node, "id", 0);
+    int id = node.getProperty("id", 0);
 
     if (mHairColors.find(id) != mHairColors.end())
         logger->log("HairDb: Redefinition of color Id %d in %s", id, filename.c_str());
 
-    mHairColors[id] = XML::getProperty(node, "value", COLOR_WHITE);
+    mHairColors[id] = node.getProperty("value", COLOR_WHITE);
 }
 
 void HairDB::checkStatus()

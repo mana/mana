@@ -48,9 +48,9 @@ void EmoteDB::init()
         ResourceManager::getInstance()->getImageRef("graphics/sprites/error.png"));
 }
 
-void EmoteDB::readEmoteNode(xmlNodePtr node, const std::string &filename)
+void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
 {
-    const int id = XML::getProperty(node, "id", -1);
+    const int id = node.getProperty("id", -1);
     if (id == -1)
     {
         logger->log("Emote Database: Emote with missing ID in %s!", filename.c_str());
@@ -60,8 +60,8 @@ void EmoteDB::readEmoteNode(xmlNodePtr node, const std::string &filename)
     Emote emote;
 
     emote.id = id;
-    emote.name = XML::getProperty(node, "name", "unknown");
-    emote.effectId = XML::getProperty(node, "effectid", -1);
+    emote.name = node.getProperty("name", "unknown");
+    emote.effectId = node.getProperty("effectid", -1);
 
     if (emote.effectId == -1)
     {
@@ -70,9 +70,9 @@ void EmoteDB::readEmoteNode(xmlNodePtr node, const std::string &filename)
         return;
     }
 
-    const std::string imageName = XML::getProperty(node, "image", "");
-    const int width = XML::getProperty(node, "width", 0);
-    const int height = XML::getProperty(node, "height", 0);
+    const std::string imageName = node.getProperty("image", "");
+    const int width = node.getProperty("width", 0);
+    const int height = node.getProperty("height", 0);
 
     if (imageName.empty() || width <= 0 || height <= 0)
     {

@@ -92,30 +92,30 @@ void Units::init()
     }
 }
 
-void Units::readUnitNode(xmlNodePtr node, const std::string &filename)
+void Units::readUnitNode(XML::Node node, const std::string &filename)
 {
     UnitDescription ud;
     int level = 1;
-    const std::string type = XML::getProperty(node, "type", "");
-    ud.conversion = XML::getProperty(node, "conversion", 1);
-    ud.mix = XML::getProperty(node, "mix", "no") == "yes";
+    const std::string type = node.getProperty("type", "");
+    ud.conversion = node.getProperty("conversion", 1);
+    ud.mix = node.getProperty("mix", "no") == "yes";
 
     UnitLevel bu;
-    bu.symbol = XML::getProperty(node, "base", "¤");
+    bu.symbol = node.getProperty("base", "¤");
     bu.count = 1;
-    bu.round = XML::getProperty(node, "round", 2);
+    bu.round = node.getProperty("round", 2);
 
     ud.levels.push_back(bu);
 
-    for (auto uLevel : XML::Children(node))
+    for (auto uLevel : node.children())
     {
-        if (xmlStrEqual(uLevel->name, BAD_CAST "level"))
+        if (uLevel.name() == "level")
         {
             UnitLevel ul;
-            ul.symbol = XML::getProperty(uLevel, "symbol",
+            ul.symbol = uLevel.getProperty("symbol",
                                             strprintf("¤%d",level));
-            ul.count = XML::getProperty(uLevel, "count", -1);
-            ul.round = XML::getProperty(uLevel, "round", bu.round);
+            ul.count = uLevel.getProperty("count", -1);
+            ul.round = uLevel.getProperty("round", bu.round);
 
             if (ul.count > 0)
             {

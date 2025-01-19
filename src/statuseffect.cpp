@@ -109,19 +109,19 @@ void StatusEffect::init()
         unload();
 }
 
-void StatusEffect::readStatusEffectNode(xmlNodePtr node, const std::string &filename)
+void StatusEffect::readStatusEffectNode(XML::Node node, const std::string &filename)
 {
     status_effect_map *the_map = nullptr;
-    int index = atoi(XML::getProperty(node, "id", "-1").c_str());
-    if (xmlStrEqual(node->name, BAD_CAST "status-effect"))
+    int index = atoi(node.getProperty("id", "-1").c_str());
+    if (node.name() == "status-effect")
     {
         the_map = &statusEffects;
-        int block_index = atoi(XML::getProperty(node, "block-id", "-1").c_str());
+        int block_index = atoi(node.getProperty("block-id", "-1").c_str());
 
         if (index >= 0 && block_index >= 0)
             blockEffectIndexMap[block_index] = index;
     }
-    else if (xmlStrEqual(node->name, BAD_CAST "stun-effect"))
+    else if (node.name() == "stun-effect")
         the_map = &stunEffects;
 
     if (the_map)
@@ -129,16 +129,16 @@ void StatusEffect::readStatusEffectNode(xmlNodePtr node, const std::string &file
         auto *startEffect = new StatusEffect;
         auto *endEffect = new StatusEffect;
 
-        startEffect->mMessage = XML::getProperty(node, "start-message", "");
-        startEffect->mSFXEffect = XML::getProperty(node, "start-audio", "");
-        startEffect->mParticleEffect = XML::getProperty(node, "start-particle", "");
-        startEffect->mIcon = XML::getProperty(node, "icon", "");
-        startEffect->mAction = XML::getProperty(node, "action", "");
-        startEffect->mPersistentParticleEffect = (XML::getProperty(node, "persistent-particle-effect", "no")) != "no";
+        startEffect->mMessage = node.getProperty("start-message", "");
+        startEffect->mSFXEffect = node.getProperty("start-audio", "");
+        startEffect->mParticleEffect = node.getProperty("start-particle", "");
+        startEffect->mIcon = node.getProperty("icon", "");
+        startEffect->mAction = node.getProperty("action", "");
+        startEffect->mPersistentParticleEffect = (node.getProperty("persistent-particle-effect", "no")) != "no";
 
-        endEffect->mMessage = XML::getProperty(node, "end-message", "");
-        endEffect->mSFXEffect = XML::getProperty(node, "end-audio", "");
-        endEffect->mParticleEffect = XML::getProperty(node, "end-particle", "");
+        endEffect->mMessage = node.getProperty("end-message", "");
+        endEffect->mSFXEffect = node.getProperty("end-audio", "");
+        endEffect->mParticleEffect = node.getProperty("end-particle", "");
 
         (*the_map)[1][index] = startEffect;
         (*the_map)[0][index] = endEffect;

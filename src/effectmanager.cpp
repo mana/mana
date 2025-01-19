@@ -31,12 +31,12 @@
 EffectManager::EffectManager()
 {
     XML::Document doc("effects.xml");
-    xmlNodePtr root = doc.rootNode();
+    XML::Node root = doc.rootNode();
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "effects"))
+    if (!root || root.name() != "effects")
     {
         // Handle old naming until the 0.5.x versions are obsolete.
-        if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
+        if (!root || root.name() != "being-effects")
         {
             logger->log("Error loading being effects file: effects.xml");
             return;
@@ -47,14 +47,14 @@ EffectManager::EffectManager()
         logger->log("Effects are now loading");
     }
 
-    for (auto node : XML::Children(root))
+    for (auto node : root.children())
     {
-        if (xmlStrEqual(node->name, BAD_CAST "effect"))
+        if (node.name() == "effect")
         {
             EffectDescription &ed = mEffects.emplace_back();
-            ed.id = XML::getProperty(node, "id", -1);
-            ed.GFX = XML::getProperty(node, "particle", "");
-            ed.SFX = XML::getProperty(node, "audio", "");
+            ed.id = node.getProperty("id", -1);
+            ed.GFX = node.getProperty("particle", "");
+            ed.SFX = node.getProperty("audio", "");
         }
     }
 }

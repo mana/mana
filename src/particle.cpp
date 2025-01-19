@@ -262,9 +262,9 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
         dyePalettes = particleEffectFile.substr(pos + 1);
 
     XML::Document doc(particleEffectFile.substr(0, pos));
-    xmlNodePtr rootNode = doc.rootNode();
+    XML::Node rootNode = doc.rootNode();
 
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "effect"))
+    if (!rootNode || rootNode.name() != "effect")
     {
         logger->log("Error loading particle: %s", particleEffectFile.c_str());
         return nullptr;
@@ -273,29 +273,29 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Parse particles
-    for (auto effectChildNode : XML::Children(rootNode))
+    for (auto effectChildNode : rootNode.children())
     {
         // We're only interested in particles
-        if (!xmlStrEqual(effectChildNode->name, BAD_CAST "particle"))
+        if (effectChildNode.name() != "particle")
             continue;
 
         // Determine the exact particle type
-        xmlNodePtr node;
+        XML::Node node;
 
         // Animation
-        if ((node = XML::findFirstChildByName(effectChildNode, "animation")))
+        if ((node = effectChildNode.findFirstChildByName("animation")))
         {
             newParticle = new AnimationParticle(mMap, node, dyePalettes);
         }
         // Rotational
-        else if ((node = XML::findFirstChildByName(effectChildNode, "rotation")))
+        else if ((node = effectChildNode.findFirstChildByName("rotation")))
         {
             newParticle = new RotationalParticle(mMap, node, dyePalettes);
         }
         // Image
-        else if ((node = XML::findFirstChildByName(effectChildNode, "image")))
+        else if ((node = effectChildNode.findFirstChildByName("image")))
         {
-            std::string imageSrc = (const char*)node->children->content;
+            std::string imageSrc { node.textContent() };
             if (!imageSrc.empty() && !dyePalettes.empty())
                 Dye::instantiate(imageSrc, dyePalettes);
 
@@ -309,50 +309,50 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
         }
 
         // Read and set the basic properties of the particle
-        float offsetX = XML::getFloatProperty(effectChildNode, "position-x", 0);
-        float offsetY = XML::getFloatProperty(effectChildNode, "position-y", 0);
-        float offsetZ = XML::getFloatProperty(effectChildNode, "position-z", 0);
-        Vector position (mPos.x + (float)pixelX + offsetX,
-                         mPos.y + (float)pixelY + offsetY,
-                         mPos.z + offsetZ);
+        float offsetX = effectChildNode.getFloatProperty("position-x", 0);
+        float offsetY = effectChildNode.getFloatProperty("position-y", 0);
+        float offsetZ = effectChildNode.getFloatProperty("position-z", 0);
+        Vector position(mPos.x + (float)pixelX + offsetX,
+                        mPos.y + (float)pixelY + offsetY,
+                        mPos.z + offsetZ);
         newParticle->moveTo(position);
 
-        int lifetime = XML::getProperty(effectChildNode, "lifetime", -1);
+        int lifetime = effectChildNode.getProperty("lifetime", -1);
         newParticle->setLifetime(lifetime);
-        bool resizeable = "false" != XML::getProperty(effectChildNode, "size-adjustable", "false");
+        bool resizeable = "false" != effectChildNode.getProperty("size-adjustable", "false");
         newParticle->setAllowSizeAdjust(resizeable);
 
         // Look for additional emitters for this particle
-        for (auto emitterNode : XML::Children(effectChildNode))
+        for (auto emitterNode : effectChildNode.children())
         {
-            if (xmlStrEqual(emitterNode->name, BAD_CAST "emitter"))
+            if (emitterNode.name() == "emitter")
             {
                 ParticleEmitter *newEmitter;
                 newEmitter = new ParticleEmitter(emitterNode, newParticle, mMap,
                                                  rotation, dyePalettes);
                 newParticle->addEmitter(newEmitter);
             }
-            else if (xmlStrEqual(emitterNode->name, BAD_CAST "deatheffect"))
+            else if (emitterNode.name() == "deatheffect")
             {
-                std::string deathEffect = (const char*)emitterNode->children->content;
+                std::string deathEffect { emitterNode.textContent() };
                 char deathEffectConditions = 0x00;
-                if (XML::getBoolProperty(emitterNode, "on-floor", true))
+                if (emitterNode.getBoolProperty("on-floor", true))
                 {
                     deathEffectConditions += Particle::DEAD_FLOOR;
                 }
-                if (XML::getBoolProperty(emitterNode, "on-sky", true))
+                if (emitterNode.getBoolProperty("on-sky", true))
                 {
                     deathEffectConditions += Particle::DEAD_SKY;
                 }
-                if (XML::getBoolProperty(emitterNode, "on-other", false))
+                if (emitterNode.getBoolProperty("on-other", false))
                 {
                     deathEffectConditions += Particle::DEAD_OTHER;
                 }
-                if (XML::getBoolProperty(emitterNode, "on-impact", true))
+                if (emitterNode.getBoolProperty("on-impact", true))
                 {
                     deathEffectConditions += Particle::DEAD_IMPACT;
                 }
-                if (XML::getBoolProperty(emitterNode, "on-timeout", true))
+                if (emitterNode.getBoolProperty("on-timeout", true))
                 {
                     deathEffectConditions += Particle::DEAD_TIMEOUT;
                 }

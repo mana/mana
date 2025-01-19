@@ -38,10 +38,10 @@ namespace
     std::vector<int> mDefaultItems;
 }
 
-static void loadMinMax(xmlNodePtr node, unsigned *min, unsigned *max)
+static void loadMinMax(XML::Node node, unsigned *min, unsigned *max)
 {
-    *min = XML::getProperty(node, "min", 1);
-    *max = XML::getProperty(node, "max", 10);
+    *min = node.getProperty("min", 1);
+    *max = node.getProperty("max", 10);
 }
 
 void CharDB::load()
@@ -50,32 +50,32 @@ void CharDB::load()
         unload();
 
     XML::Document doc("charcreation.xml");
-    xmlNodePtr root = doc.rootNode();
+    XML::Node root = doc.rootNode();
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "chars"))
+    if (!root || root.name() != "chars")
     {
         logger->log("CharDB: Failed to parse charcreation.xml.");
         return;
     }
 
-    for (auto node : XML::Children(root))
+    for (auto node : root.children())
     {
-        if (xmlStrEqual(node->name, BAD_CAST "haircolor"))
+        if (node.name() == "haircolor")
         {
             loadMinMax(node, &mMinHairColor, &mMaxHairColor);
         }
-        else if (xmlStrEqual(node->name, BAD_CAST "hairstyle"))
+        else if (node.name() == "hairstyle")
         {
             loadMinMax(node, &mMinHairStyle, &mMaxHairStyle);
         }
-        else if (xmlStrEqual(node->name, BAD_CAST "stat"))
+        else if (node.name() == "stat")
         {
             loadMinMax(node, &mMinStat, &mMaxStat);
-            mSumStat = XML::getProperty(node, "sum", 0);
+            mSumStat = node.getProperty("sum", 0);
         }
-        else if (xmlStrEqual(node->name, BAD_CAST "item"))
+        else if (node.name() == "item")
         {
-            const int id = XML::getProperty(node, "id", 0);
+            const int id = node.getProperty("id", 0);
             if (id > 0)
                 mDefaultItems.push_back(id);
         }

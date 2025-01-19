@@ -198,9 +198,9 @@ void EquipBackend::readEquipFile()
     clear();
 
     XML::Document doc(EQUIP_FILE);
-    xmlNodePtr rootNode = doc.rootNode();
+    XML::Node rootNode = doc.rootNode();
 
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "equip-slots"))
+    if (!rootNode || rootNode.name() != "equip-slots")
     {
         logger->log("ManaServ::EquipBackend: Error while reading "
                     EQUIP_FILE "!");
@@ -211,19 +211,19 @@ void EquipBackend::readEquipFile()
     unsigned int slotIndex = 0;
     mVisibleSlots = 0;
 
-    for (auto slotNode : XML::Children(rootNode))
+    for (auto slotNode : rootNode.children())
     {
-        if (!xmlStrEqual(slotNode->name, BAD_CAST "slot"))
+        if (slotNode.name() != "slot")
             continue;
 
         Slot slot;
-        slot.slotTypeId = XML::getProperty(slotNode, "id", 0);
-        std::string name = XML::getProperty(slotNode, "name", std::string());
-        const int capacity = XML::getProperty(slotNode, "capacity", 1);
-        slot.weaponSlot =  XML::getBoolProperty(slotNode, "weapon", false);
-        slot.ammoSlot =  XML::getBoolProperty(slotNode, "ammo", false);
+        slot.slotTypeId = slotNode.getProperty("id", 0);
+        std::string name = slotNode.getProperty("name", std::string());
+        const int capacity = slotNode.getProperty("capacity", 1);
+        slot.weaponSlot =  slotNode.getBoolProperty("weapon", false);
+        slot.ammoSlot =  slotNode.getBoolProperty("ammo", false);
 
-        if (XML::getBoolProperty(slotNode, "visible", false))
+        if (slotNode.getBoolProperty("visible", false))
             ++mVisibleSlots;
 
         if (slot.slotTypeId > 0 && capacity > 0)
@@ -255,20 +255,20 @@ void EquipBackend::readEquipFile()
     }
 }
 
-void EquipBackend::readBoxNode(xmlNodePtr slotNode)
+void EquipBackend::readBoxNode(XML::Node slotNode)
 {
-    for (auto boxNode : XML::Children(slotNode))
+    for (auto boxNode : slotNode.children())
     {
-        if (!xmlStrEqual(boxNode->name, BAD_CAST "box"))
+        if (boxNode.name() != "box")
             continue;
 
-        int x = XML::getProperty(boxNode, "x" , 0);
-        int y = XML::getProperty(boxNode, "y" , 0);
+        int x = boxNode.getProperty("x" , 0);
+        int y = boxNode.getProperty("y" , 0);
 
         mBoxesPositions.push_back(Position(x, y));
 
         std::string backgroundFile =
-            XML::getProperty(boxNode, "background" , std::string());
+            boxNode.getProperty("background" , std::string());
         mBoxesBackgroundFile.push_back(backgroundFile);
     }
 }

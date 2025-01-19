@@ -42,7 +42,7 @@ class Particle;
 class ParticleEmitter
 {
     public:
-        ParticleEmitter(xmlNodePtr emitterNode,  Particle *target, Map *map,
+        ParticleEmitter(XML::Node emitterNode,  Particle *target, Map *map,
                         int rotation = 0,
                         const std::string& dyePalettes = std::string());
 
@@ -77,7 +77,7 @@ class ParticleEmitter
         void adjustSize(int w, int h);
 
     private:
-        template <typename T> ParticleEmitterProp<T> readParticleEmitterProp(xmlNodePtr propertyNode, T def);
+        template <typename T> ParticleEmitterProp<T> readParticleEmitterProp(XML::Node propertyNode, T def);
 
         /**
          * initial position of particles:

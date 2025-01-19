@@ -56,26 +56,26 @@ std::vector<UpdateFile> loadXMLFile(const std::string &fileName)
 {
     std::vector<UpdateFile> files;
     XML::Document doc(fileName, false);
-    xmlNodePtr rootNode = doc.rootNode();
+    XML::Node rootNode = doc.rootNode();
 
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "updates"))
+    if (!rootNode || rootNode.name() != "updates")
     {
         logger->log("Error loading update file: %s", fileName.c_str());
         return files;
     }
 
-    for (auto fileNode : XML::Children(rootNode))
+    for (auto fileNode : rootNode.children())
     {
         // Ignore all tags except for the "update" tags
-        if (!xmlStrEqual(fileNode->name, BAD_CAST "update"))
+        if (fileNode.name() != "update")
             continue;
 
         UpdateFile file;
-        file.name = XML::getProperty(fileNode, "file", std::string());
-        file.hash = XML::getProperty(fileNode, "hash", std::string());
-        file.type = XML::getProperty(fileNode, "type", "data");
-        file.desc = XML::getProperty(fileNode, "description", std::string());
-        file.required = XML::getProperty(fileNode, "required", "yes") == "yes";
+        file.name = fileNode.getProperty("file", std::string());
+        file.hash = fileNode.getProperty("hash", std::string());
+        file.type = fileNode.getProperty("type", "data");
+        file.desc = fileNode.getProperty("description", std::string());
+        file.required = fileNode.getProperty("required", "yes") == "yes";
 
         files.push_back(file);
     }

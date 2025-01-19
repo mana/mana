@@ -235,9 +235,9 @@ namespace Attributes {
     /**
      * Read attribute node
      */
-    void readAttributeNode(xmlNodePtr node, const std::string &filename)
+    void readAttributeNode(XML::Node node, const std::string &filename)
     {
-        int id = XML::getProperty(node, "id", 0);
+        int id = node.getProperty("id", 0);
 
         if (!id)
         {
@@ -250,7 +250,7 @@ namespace Attributes {
             logger->log("Attributes: Redefinition of stat ID %d", id);
         }
 
-        std::string name = XML::getProperty(node, "name", "");
+        std::string name = node.getProperty("name", "");
 
         if (name.empty())
         {
@@ -260,24 +260,22 @@ namespace Attributes {
         }
 
         // Create the attribute.
-        Attribute a;
+        Attribute &a = attributes[id];
         a.id = id;
         a.name = name;
-        a.description = XML::getProperty(node, "desc", "");
-        a.modifiable = XML::getBoolProperty(node, "modifiable", false);
-        a.scope = XML::getProperty(node, "scope", "none");
+        a.description = node.getProperty("desc", std::string());
+        a.modifiable = node.getBoolProperty("modifiable", false);
+        a.scope = node.getProperty("scope", "none");
         a.playerInfoId = getPlayerInfoIdFromAttrType(
-                         XML::getProperty(node, "player-info", ""));
-
-        attributes[id] = a;
+                         node.getProperty("player-info", ""));
 
         unsigned int count = 0;
-        for (auto effectNode : XML::Children(node))
+        for (auto effectNode : node.children())
         {
-            if (!xmlStrEqual(effectNode->name, BAD_CAST "modifier"))
+            if (effectNode.name() != "modifier")
                  continue;
             ++count;
-            std::string tag = XML::getProperty(effectNode, "tag", "");
+            std::string tag = effectNode.getProperty("tag", "");
             if (tag.empty())
             {
                 if (name.empty())
@@ -293,7 +291,7 @@ namespace Attributes {
                 tag = toLower(tag) + toString(count);
              }
 
-            std::string effect = XML::getProperty(effectNode, "effect", "");
+            std::string effect = effectNode.getProperty("effect", "");
             if (effect.empty())
              {
                 if (name.empty())
@@ -311,18 +309,17 @@ namespace Attributes {
             tags.insert(std::make_pair(tag, effect));
          }
         logger->log("Found %d tags for attribute %d.", count, id);
-
     }
 
     /**
      * Read points node
      */
-    void readPointsNode(xmlNodePtr node, const std::string &filename)
+    void readPointsNode(XML::Node node, const std::string &filename)
     {
-        creationPoints = XML::getProperty(node, "start",DEFAULT_POINTS);
-        attributeMinimum = XML::getProperty(node, "minimum",
+        creationPoints = node.getProperty("start",DEFAULT_POINTS);
+        attributeMinimum = node.getProperty("minimum",
                                                        DEFAULT_MIN_PTS);
-        attributeMaximum = XML::getProperty(node, "maximum",
+        attributeMaximum = node.getProperty("maximum",
                                                        DEFAULT_MAX_PTS);
         logger->log("Loaded points: start: %i, min: %i, max: %i.",
                     creationPoints, attributeMinimum, attributeMaximum);

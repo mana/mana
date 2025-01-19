@@ -41,9 +41,9 @@ void NPCDB::init()
         unload();
 }
 
-void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
+void NPCDB::readNPCNode(XML::Node node, const std::string &filename)
 {
-    int id = XML::getProperty(node, "id", 0);
+    int id = node.getProperty("id", 0);
     if (id == 0)
     {
         logger->log("NPC Database: NPC with missing ID in %s", filename.c_str());
@@ -52,27 +52,23 @@ void NPCDB::readNPCNode(xmlNodePtr node, const std::string &filename)
 
     auto *currentInfo = new BeingInfo;
 
-    currentInfo->setTargetCursorSize(XML::getProperty(node,
-                                     "targetCursor", "medium"));
+    currentInfo->setTargetCursorSize(node.getProperty("targetCursor", "medium"));
+    currentInfo->setHoverCursor(node.getProperty("hoverCursor", "talk"));
 
-    currentInfo->setHoverCursor(XML::getProperty(node, "hoverCursor", "talk"));
-
-    currentInfo->targetSelection = XML::getProperty(
-        node, "targetSelection", true);
+    currentInfo->targetSelection = node.getProperty("targetSelection", true);
 
     SpriteDisplay &display = currentInfo->display;
-    for (auto spriteNode : XML::Children(node))
+    for (auto spriteNode : node.children())
     {
-        if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
+        if (spriteNode.name() == "sprite")
         {
             SpriteReference &currentSprite = display.sprites.emplace_back();
-            currentSprite.sprite = (const char*)spriteNode->children->content;
-            currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
+            currentSprite.sprite = spriteNode.textContent();
+            currentSprite.variant = spriteNode.getProperty("variant", 0);
         }
-        else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
+        else if (spriteNode.name() == "particlefx")
         {
-            display.particles.emplace_back(
-                        (const char*)spriteNode->children->content);
+            display.particles.emplace_back(spriteNode.textContent());
         }
     }
 

@@ -39,7 +39,7 @@
 #define SIN45 0.707106781f
 #define DEG_RAD_FACTOR 0.017453293f
 
-ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
+ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
                                  Map *map, int rotation,
                                  const std::string &dyePalettes)
 {
@@ -67,11 +67,11 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
     mOutputPause.set(0);
     mParticleAlpha.set(1.0f);
 
-    for (auto propertyNode : XML::Children(emitterNode))
+    for (auto propertyNode : emitterNode.children())
     {
-        if (xmlStrEqual(propertyNode->name, BAD_CAST "property"))
+        if (propertyNode.name() == "property")
         {
-            std::string name = XML::getProperty(propertyNode, "name", "");
+            std::string name = propertyNode.getProperty("name", "");
 
             if (name == "position-x")
             {
@@ -94,7 +94,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
             }
             else if (name == "image")
             {
-                std::string image = XML::getProperty(propertyNode, "value", "");
+                std::string image = propertyNode.getProperty("value", "");
                 // Don't leak when multiple images are defined
                 if (!image.empty() && !mParticleImage)
                 {
@@ -187,26 +187,26 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                            );
             }
         }
-        else if (xmlStrEqual(propertyNode->name, BAD_CAST "emitter"))
+        else if (propertyNode.name() == "emitter")
         {
             ParticleEmitter newEmitter(propertyNode, mParticleTarget, map,
                                        rotation, dyePalettes);
             mParticleChildEmitters.push_back(newEmitter);
         }
-        else if (xmlStrEqual(propertyNode->name, BAD_CAST "rotation"))
+        else if (propertyNode.name() == "rotation")
         {
             ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
-                XML::getProperty(propertyNode, "imageset", ""),
-                XML::getProperty(propertyNode, "width", 0),
-                XML::getProperty(propertyNode, "height", 0)
+                propertyNode.getProperty("imageset", ""),
+                propertyNode.getProperty("width", 0),
+                propertyNode.getProperty("height", 0)
             );
 
             // Get animation frames
-            for (auto frameNode : XML::Children(propertyNode))
+            for (auto frameNode : propertyNode.children())
             {
-                int delay = XML::getProperty(frameNode, "delay", 0);
-                int offsetX = XML::getProperty(frameNode, "offsetX", 0);
-                int offsetY = XML::getProperty(frameNode, "offsetY", 0);
+                int delay = frameNode.getProperty("delay", 0);
+                int offsetX = frameNode.getProperty("offsetX", 0);
+                int offsetY = frameNode.getProperty("offsetY", 0);
                 if (mMap)
                 {
                     offsetX -= imageset->getWidth() / 2
@@ -214,9 +214,9 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                     offsetY -= imageset->getHeight() - mMap->getTileHeight();
                 }
 
-                if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
+                if (frameNode.name() == "frame")
                 {
-                    int index = XML::getProperty(frameNode, "index", -1);
+                    int index = frameNode.getProperty("index", -1);
 
                     if (index < 0)
                     {
@@ -234,10 +234,10 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
 
                     mParticleRotation.addFrame(img, delay, offsetX, offsetY);
                 }
-                else if (xmlStrEqual(frameNode->name, BAD_CAST "sequence"))
+                else if (frameNode.name() == "sequence")
                 {
-                    int start = XML::getProperty(frameNode, "start", -1);
-                    int end = XML::getProperty(frameNode, "end", -1);
+                    int start = frameNode.getProperty("start", -1);
+                    int end = frameNode.getProperty("end", -1);
 
                     if (start < 0 || end < 0)
                     {
@@ -259,20 +259,20 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                         start++;
                     }
                 }
-                else if (xmlStrEqual(frameNode->name, BAD_CAST "end"))
+                else if (frameNode.name() == "end")
                 {
                     mParticleRotation.addTerminator();
                 }
             } // for frameNode
         }
-        else if (xmlStrEqual(propertyNode->name, BAD_CAST "animation"))
+        else if (propertyNode.name() == "animation")
         {
             std::string imagesetPath =
-                    XML::getProperty(propertyNode, "imageset", "");
+                    propertyNode.getProperty("imageset", "");
             ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
                 imagesetPath,
-                XML::getProperty(propertyNode, "width", 0),
-                XML::getProperty(propertyNode, "height", 0)
+                propertyNode.getProperty("width", 0),
+                propertyNode.getProperty("height", 0)
             );
 
             if (!imageset)
@@ -280,17 +280,17 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                                         imagesetPath.c_str()));
 
             // Get animation frames
-            for (auto frameNode : XML::Children(propertyNode))
+            for (auto frameNode : propertyNode.children())
             {
-                int delay = XML::getProperty(frameNode, "delay", 0);
-                int offsetX = XML::getProperty(frameNode, "offsetX", 0);
-                int offsetY = XML::getProperty(frameNode, "offsetY", 0);
+                int delay = frameNode.getProperty("delay", 0);
+                int offsetX = frameNode.getProperty("offsetX", 0);
+                int offsetY = frameNode.getProperty("offsetY", 0);
                 offsetY -= imageset->getHeight() - 32;
                 offsetX -= imageset->getWidth() / 2 - 16;
 
-                if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
+                if (frameNode.name() == "frame")
                 {
-                    int index = XML::getProperty(frameNode, "index", -1);
+                    int index = frameNode.getProperty("index", -1);
 
                     if (index < 0)
                     {
@@ -308,10 +308,10 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
 
                     mParticleAnimation.addFrame(img, delay, offsetX, offsetY);
                 }
-                else if (xmlStrEqual(frameNode->name, BAD_CAST "sequence"))
+                else if (frameNode.name() == "sequence")
                 {
-                    int start = XML::getProperty(frameNode, "start", -1);
-                    int end = XML::getProperty(frameNode, "end", -1);
+                    int start = frameNode.getProperty("start", -1);
+                    int end = frameNode.getProperty("end", -1);
 
                     if (start < 0 || end < 0)
                     {
@@ -333,32 +333,32 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target,
                         start++;
                     }
                 }
-                else if (xmlStrEqual(frameNode->name, BAD_CAST "end"))
+                else if (frameNode.name() == "end")
                 {
                     mParticleAnimation.addTerminator();
                 }
             } // for frameNode
-        } else if (xmlStrEqual(propertyNode->name, BAD_CAST "deatheffect"))
+        } else if (propertyNode.name() == "deatheffect")
         {
-            mDeathEffect = (const char*)propertyNode->children->content;
+            mDeathEffect = propertyNode.textContent();
             mDeathEffectConditions = 0x00;
-            if (XML::getBoolProperty(propertyNode, "on-floor", true))
+            if (propertyNode.getBoolProperty("on-floor", true))
             {
                 mDeathEffectConditions += Particle::DEAD_FLOOR;
             }
-            if (XML::getBoolProperty(propertyNode, "on-sky", true))
+            if (propertyNode.getBoolProperty("on-sky", true))
             {
                 mDeathEffectConditions += Particle::DEAD_SKY;
             }
-            if (XML::getBoolProperty(propertyNode, "on-other", false))
+            if (propertyNode.getBoolProperty("on-other", false))
             {
                 mDeathEffectConditions += Particle::DEAD_OTHER;
             }
-            if (XML::getBoolProperty(propertyNode, "on-impact", true))
+            if (propertyNode.getBoolProperty("on-impact", true))
             {
                 mDeathEffectConditions += Particle::DEAD_IMPACT;
             }
-            if (XML::getBoolProperty(propertyNode, "on-timeout", true))
+            if (propertyNode.getBoolProperty("on-timeout", true))
             {
                 mDeathEffectConditions += Particle::DEAD_TIMEOUT;
             }
@@ -409,18 +409,18 @@ ParticleEmitter::~ParticleEmitter() = default;
 
 
 template <typename T> ParticleEmitterProp<T>
-ParticleEmitter::readParticleEmitterProp(xmlNodePtr propertyNode, T def)
+ParticleEmitter::readParticleEmitterProp(XML::Node propertyNode, T def)
 {
     ParticleEmitterProp<T> retval;
 
-    def = (T) XML::getFloatProperty(propertyNode, "value", (double) def);
-    retval.set((T) XML::getFloatProperty(propertyNode, "min", (double) def),
-               (T) XML::getFloatProperty(propertyNode, "max", (double) def));
+    def = (T) propertyNode.getFloatProperty("value", (double) def);
+    retval.set((T) propertyNode.getFloatProperty("min", (double) def),
+        (T) propertyNode.getFloatProperty("max", (double) def));
 
-    std::string change = XML::getProperty(propertyNode, "change-func", "none");
-    T amplitude = (T) XML::getFloatProperty(propertyNode, "change-amplitude", 0.0);
-    int period = XML::getProperty(propertyNode, "change-period", 0);
-    int phase = XML::getProperty(propertyNode, "change-phase", 0);
+    std::string change = propertyNode.getProperty("change-func", "none");
+    T amplitude = (T) propertyNode.getFloatProperty("change-amplitude", 0.0);
+    int period = propertyNode.getProperty("change-period", 0);
+    int phase = propertyNode.getProperty("change-phase", 0);
     if (change == "saw" || change == "sawtooth")
         retval.setFunction(FUNC_SAW, amplitude, period, phase);
     else if (change == "sine" || change == "sinewave")

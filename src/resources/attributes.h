@@ -31,9 +31,9 @@ namespace Attributes
 
     void init();
 
-    void readAttributeNode(xmlNodePtr node, const std::string &filename);
+    void readAttributeNode(XML::Node node, const std::string &filename);
 
-    void readPointsNode(xmlNodePtr node, const std::string &filename);
+    void readPointsNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 

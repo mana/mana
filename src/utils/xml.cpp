@@ -21,14 +21,12 @@
 
 #include "utils/xml.h"
 
-#include <libxml/parser.h>
 #include <libxml/xmlerror.h>
 
 #include "log.h"
 
 #include "resources/resourcemanager.h"
 
-#include "utils/stringutils.h"
 #include "utils/zlib.h"
 
 namespace XML
@@ -100,76 +98,6 @@ namespace XML
     {
         if (mDoc)
             xmlFreeDoc(mDoc);
-    }
-
-    xmlNodePtr Document::rootNode()
-    {
-        return mDoc ? xmlDocGetRootElement(mDoc) : nullptr;
-    }
-
-    bool hasProperty(xmlNodePtr node, const char *name)
-    {
-        return xmlHasProp(node, BAD_CAST name) != nullptr;
-    }
-
-    int getProperty(xmlNodePtr node, const char* name, int def)
-    {
-        int &ret = def;
-
-        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
-        {
-            ret = atol((char*)prop);
-            xmlFree(prop);
-        }
-
-        return ret;
-    }
-
-    double getFloatProperty(xmlNodePtr node, const char* name, double def)
-    {
-        double &ret = def;
-
-        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
-        {
-            ret = atof((char*)prop);
-            xmlFree(prop);
-        }
-
-        return ret;
-    }
-
-    std::string getProperty(xmlNodePtr node, const char *name,
-                            const std::string &def)
-    {
-        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
-        {
-            std::string val = (char*)prop;
-            xmlFree(prop);
-            return val;
-        }
-
-        return def;
-    }
-
-    bool getBoolProperty(xmlNodePtr node, const char* name, bool def)
-    {
-        bool ret = def;
-
-        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
-        {
-            ret = getBoolFromString((char*) prop, def);
-            xmlFree(prop);
-        }
-        return ret;
-    }
-
-    xmlNodePtr findFirstChildByName(xmlNodePtr parent, const char *name)
-    {
-        for (auto child : XML::Children(parent))
-            if (xmlStrEqual(child->name, BAD_CAST name))
-                return child;
-
-        return nullptr;
     }
 
     void init()

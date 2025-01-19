@@ -67,7 +67,7 @@ class EquipBackend final : public Equipment::Backend, public EventListener
     private:
         void readEquipFile() override;
 
-        void readBoxNode(xmlNodePtr slotNode);
+        void readBoxNode(XML::Node slotNode);
 
         struct Slot {
             // Generic info

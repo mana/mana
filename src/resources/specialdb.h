@@ -50,7 +50,7 @@ namespace SpecialDB
 {
     void init();
 
-    void readSpecialSetNode(xmlNodePtr node, const std::string &filename);
+    void readSpecialSetNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 

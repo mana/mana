@@ -109,36 +109,33 @@ namespace SettingsManager
         logger->log("Loading game settings from %s", filename.c_str());
 
         XML::Document doc(filename);
-        xmlNodePtr node = doc.rootNode();
+        XML::Node node = doc.rootNode();
 
         // add file to include set
         mIncludedFiles.insert(filename);
 
         // FIXME: check root node's name when bjorn decides it's time
-        if (!node /*|| !xmlStrEqual(node->name, BAD_CAST "settings") */)
+        if (!node /*|| node.name() != "settings" */)
         {
             logger->log("Settings Manager: %s is not a valid settings file!", filename.c_str());
             return false;
         }
 
-        if (xmlStrEqual(node->name, BAD_CAST "monsters"))
+        if (node.name() == "monsters")
         {
-            if (XML::hasProperty(node, "offset"))
+            if (node.hasProperty("offset"))
             {
-                MonsterDB::setMonsterIdOffset(XML::getProperty(node, "offset", 0));
+                MonsterDB::setMonsterIdOffset(node.getProperty("offset", 0));
             }
         }
 
         // go through every node
-        for (auto childNode : XML::Children(node))
+        for (auto childNode : node.children())
         {
-            if (childNode->type != XML_ELEMENT_NODE)
-                continue;
-
-            if (xmlStrEqual(childNode->name, BAD_CAST "include"))
+            if (childNode.name() == "include")
             {
                 // include an other file
-                std::string includeFile = XML::getProperty(childNode, "file", std::string());
+                std::string includeFile = childNode.getProperty("file", std::string());
 
                 if (!includeFile.empty())
                 {
@@ -149,7 +146,7 @@ namespace SettingsManager
                 else
                 {
                     // try to get name property, which has an absolute value
-                    includeFile = XML::getProperty(childNode, "name", std::string());
+                    includeFile = childNode.getProperty("name", std::string());
                 }
 
                 // check if file property was given
@@ -170,76 +167,76 @@ namespace SettingsManager
                     logger->log("Warning: <include> element without 'file' or 'name' attribute in %s", filename.c_str());
                 }
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "option"))
+            else if (childNode.name() == "option")
             {
                 // options from paths.xml
-                std::string name = XML::getProperty(childNode, "name", std::string());
-                std::string value = XML::getProperty(childNode, "value", std::string());
+                std::string name = childNode.getProperty("name", std::string());
+                std::string value = childNode.getProperty("value", std::string());
 
                 if (!name.empty())
                     paths.setValue(name, value);
                 else
                     logger->log("Warning: option without a name found in %s", filename.c_str());
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "attribute"))
+            else if (childNode.name() == "attribute")
             {
                 // map config
                 Attributes::readAttributeNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "points"))
+            else if (childNode.name() == "points")
             {
                 Attributes::readPointsNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "color"))
+            else if (childNode.name() == "color")
             {
                 hairDB.readHairColorNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "list"))
+            else if (childNode.name() == "list")
             {
                 // todo: consider if we need a "color DB", but in tmwa clientdata
                 // I only see hair colors in the itemcolors.xml file.
-                const std::string name = XML::getProperty(childNode, "name", std::string());
+                const std::string name = childNode.getProperty("name", std::string());
                 if (name == "hair")
                 {
-                    for (auto hairColorNode : XML::Children(childNode))
+                    for (auto hairColorNode : childNode.children())
                     {
-                        if (xmlStrEqual(hairColorNode->name, BAD_CAST "color"))
+                        if (hairColorNode.name() == "color")
                             hairDB.readHairColorNode(hairColorNode, filename);
                     }
                 }
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "item"))
+            else if (childNode.name() == "item")
             {
                 itemDb->readItemNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "monster"))
+            else if (childNode.name() == "monster")
             {
                 MonsterDB::readMonsterNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "special-set"))
+            else if (childNode.name() == "special-set")
             {
                 SpecialDB::readSpecialSetNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "npc"))
+            else if (childNode.name() == "npc")
             {
                 NPCDB::readNPCNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "emote"))
+            else if (childNode.name() == "emote")
             {
                 EmoteDB::readEmoteNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "status-effect") || xmlStrEqual(childNode->name, BAD_CAST "stun-effect"))
+            else if (childNode.name() == "status-effect" || childNode.name() == "stun-effect")
             {
                 StatusEffect::readStatusEffectNode(childNode, filename);
             }
-            else if (xmlStrEqual(childNode->name, BAD_CAST "unit"))
+            else if (childNode.name() == "unit")
             {
                 Units::readUnitNode(childNode, filename);
             }
             else
             {
                 // compatibility stuff with older configs/games
-                if (xmlStrEqual(node->name, BAD_CAST "specials") && xmlStrEqual(childNode->name, BAD_CAST "set"))
+                if (node.name() == "specials" && childNode.name() == "set")
                 {
                     // specials.xml:/specials/set
                     SpecialDB::readSpecialSetNode(childNode, filename);

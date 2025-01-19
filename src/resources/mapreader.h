@@ -22,7 +22,7 @@
 #ifndef MAPREADER_H
 #define MAPREADER_H
 
-#include <libxml/tree.h>
+#include "utils/xml.h"
 
 #include <string>
 
@@ -43,7 +43,7 @@ public:
      * Read an XML map from a parsed XML tree. The path is used to find the
      * location of referenced tileset images.
      */
-    static Map *readMap(xmlNodePtr node, const std::string &path);
+    static Map *readMap(XML::Node node, const std::string &path);
 };
 
 #endif // MAPREADER_H

@@ -50,24 +50,24 @@ void SpecialDB::init()
         unload();
 }
 
-void SpecialDB::readSpecialSetNode(xmlNodePtr node, const std::string &filename)
+void SpecialDB::readSpecialSetNode(XML::Node node, const std::string &filename)
 {
-    std::string setName = XML::getProperty(node, "name", "Actions");
+    std::string setName = node.getProperty("name", "Actions");
 
-    for (auto special : XML::Children(node))
+    for (auto special : node.children())
     {
-        if (xmlStrEqual(special->name, BAD_CAST "special"))
+        if (special.name() == "special")
         {
             auto *info = new SpecialInfo();
-            int id = XML::getProperty(special, "id", 0);
+            int id = special.getProperty("id", 0);
             info->id = id;
             info->set = setName;
-            info->name = XML::getProperty(special, "name", "");
-            info->icon = XML::getProperty(special, "icon", "");
+            info->name = special.getProperty("name", "");
+            info->icon = special.getProperty("icon", "");
 
-            info->targetMode = targetModeFromString(XML::getProperty(special, "target", "being"));
+            info->targetMode = targetModeFromString(special.getProperty("target", "being"));
 
-            info->rechargeable = XML::getBoolProperty(special, "rechargeable", true);
+            info->rechargeable = special.getBoolProperty("rechargeable", true);
             info->rechargeNeeded = 0;
             info->rechargeCurrent = 0;
 

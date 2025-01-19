@@ -65,36 +65,33 @@ void MonsterDB::setMonsterIdOffset(int offset)
 /**
  * Read <monster> node from settings.
  */
-void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
+void MonsterDB::readMonsterNode(XML::Node node, const std::string &filename)
 {
     auto *currentInfo = new BeingInfo;
 
     currentInfo->blockType = Map::BLOCKTYPE_MONSTER;
 
-    currentInfo->name = XML::getProperty(node, "name", _("unnamed"));
+    currentInfo->name = node.getProperty("name", _("unnamed"));
 
-    currentInfo->setTargetCursorSize(XML::getProperty(node,
-                                     "targetCursor", "medium"));
+    currentInfo->setTargetCursorSize(node.getProperty("targetCursor", "medium"));
+    currentInfo->setHoverCursor(node.getProperty("hoverCursor", "attack"));
 
-    currentInfo->setHoverCursor(XML::getProperty(node, "hoverCursor", "attack"));
-
-    currentInfo->targetSelection = XML::getProperty(
-        node, "targetSelection", true);
+    currentInfo->targetSelection = node.getProperty("targetSelection", true);
 
     SpriteDisplay &display = currentInfo->display;
 
-    for (auto spriteNode : XML::Children(node))
+    for (auto spriteNode : node.children())
     {
-        if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
+        if (spriteNode.name() == "sprite")
         {
             SpriteReference &currentSprite = display.sprites.emplace_back();
-            currentSprite.sprite = (const char*)spriteNode->children->content;
-            currentSprite.variant = XML::getProperty(spriteNode, "variant", 0);
+            currentSprite.sprite = spriteNode.textContent();
+            currentSprite.variant = spriteNode.getProperty("variant", 0);
         }
-        else if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
+        else if (spriteNode.name() == "sound")
         {
-            std::string event = XML::getProperty(spriteNode, "event", std::string());
-            const char *soundFile = (const char*) spriteNode->children->content;
+            std::string event = spriteNode.getProperty("event", std::string());
+            const std::string soundFile { spriteNode.textContent() };
 
             if (event == "hit")
             {
@@ -116,38 +113,37 @@ void MonsterDB::readMonsterNode(xmlNodePtr node, const std::string &filename)
             {
                 logger->log("MonsterDB: Warning, sound effect %s for "
                             "unknown event %s of monster %s in %s",
-                            soundFile, event.c_str(),
+                            soundFile.c_str(), event.c_str(),
                             currentInfo->name.c_str(),
                             filename.c_str());
             }
         }
-        else if (xmlStrEqual(spriteNode->name, BAD_CAST "attack"))
+        else if (spriteNode.name() == "attack")
         {
             Attack attack;
-            const int id = XML::getProperty(spriteNode, "id", 0);
+            const int id = spriteNode.getProperty("id", 0);
 
-            attack.effectId = XML::getProperty(spriteNode, "effect-id", -1);
+            attack.effectId = spriteNode.getProperty("effect-id", -1);
             attack.hitEffectId =
-                XML::getProperty(spriteNode, "hit-effect-id",
+                spriteNode.getProperty("hit-effect-id",
                                  paths.getIntValue("hitEffectId"));
             attack.criticalHitEffectId =
-                XML::getProperty(spriteNode, "critical-hit-effect-id",
+                spriteNode.getProperty("critical-hit-effect-id",
                                  paths.getIntValue("criticalHitEffectId"));
             attack.missileParticleFilename =
-                XML::getProperty(spriteNode, "missile-particle", "");
+                spriteNode.getProperty("missile-particle", "");
 
-            attack.action = XML::getProperty(spriteNode, "action", "attack");
+            attack.action = spriteNode.getProperty("action", "attack");
 
             currentInfo->addAttack(id, std::move(attack));
         }
-        else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
+        else if (spriteNode.name() == "particlefx")
         {
-            display.particles.emplace_back(
-                (const char*) spriteNode->children->content);
+            display.particles.emplace_back(spriteNode.textContent());
         }
     }
 
-    mMonsterInfos[XML::getProperty(node, "id", 0) + mMonsterIdOffset] = currentInfo;
+    mMonsterInfos[node.getProperty("id", 0) + mMonsterIdOffset] = currentInfo;
 }
 
 /**

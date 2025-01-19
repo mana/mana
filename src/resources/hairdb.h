@@ -41,7 +41,7 @@ public:
 
     void init();
 
-    void readHairColorNode(xmlNodePtr node, const std::string &filename);
+    void readHairColorNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 
@@ -76,14 +76,14 @@ private:
     /**
      * Load the hair colors, contained in a <colors> node.
      */
-    void loadHairColorsNode(xmlNodePtr colorsNode);
+    void loadHairColorsNode(XML::Node colorsNode);
 
     /**
      * Load the hair styles, contained in a <styles> node.
      * Used only by Manaserv. TMW-Athena is considering hairstyles as items.
      * @see ItemDB
      */
-    void loadHairStylesNode(xmlNodePtr stylesNode);
+    void loadHairStylesNode(XML::Node stylesNode);
 
     // Hair colors Db
     std::map<int, std::string> mHairColors;

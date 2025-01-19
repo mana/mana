@@ -25,7 +25,7 @@
 #include "imageparticle.h"
 #include "simpleanimation.h"
 
-#include <libxml/tree.h>
+#include "utils/xml.h"
 
 class Map;
 
@@ -34,7 +34,7 @@ class AnimationParticle : public ImageParticle
     public:
         AnimationParticle(Map *map, Animation animation);
 
-        AnimationParticle(Map *map, xmlNodePtr animationNode,
+        AnimationParticle(Map *map, XML::Node animationNode,
                           const std::string &dyePalettes = std::string());
 
         ~AnimationParticle() override;

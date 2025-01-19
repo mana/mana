@@ -35,7 +35,7 @@ namespace MonsterDB
 
     void setMonsterIdOffset(int offset);
 
-    void readMonsterNode(xmlNodePtr node, const std::string &filename);
+    void readMonsterNode(XML::Node node, const std::string &filename);
 
     void checkStatus();
 
