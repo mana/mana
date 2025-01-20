@@ -64,7 +64,6 @@ class Minimap : public Window
         ResourceRef<Image> mMapImage;
         float mWidthProportion = 0.5;
         float mHeightProportion = 0.5;
-        static bool mShow;
 };
 
 extern Minimap *minimap;

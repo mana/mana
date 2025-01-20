@@ -41,8 +41,8 @@ TextPreview::TextPreview(const std::string &text):
 
 void TextPreview::draw(gcn::Graphics* graphics)
 {
-    if (config.getFloatValue("guialpha") != mAlpha)
-        mAlpha = config.getFloatValue("guialpha");
+    if (config.guiAlpha != mAlpha)
+        mAlpha = config.guiAlpha;
 
     int alpha = (int) (mAlpha * 255.0f);
 

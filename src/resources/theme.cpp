@@ -74,7 +74,7 @@ Skin::~Skin()
 void Skin::updateAlpha(float minimumOpacityAllowed)
 {
     const float alpha = std::max(minimumOpacityAllowed,
-                                              config.getFloatValue("guialpha"));
+                                 config.guiAlpha);
 
     mBorder.setAlpha(alpha);
 
@@ -339,7 +339,7 @@ void Theme::prepareThemePath()
     instance();
 
     // Try theme from settings
-    if (!tryThemePath(config.getStringValue("theme")))
+    if (!tryThemePath(config.theme))
         // Try theme from branding
         if (!tryThemePath(branding.getStringValue("theme")))
             // Use default

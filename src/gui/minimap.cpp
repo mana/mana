@@ -26,7 +26,6 @@
 #include "configuration.h"
 #include "graphics.h"
 #include "localplayer.h"
-#include "log.h"
 #include "map.h"
 
 #include "gui/setup.h"
@@ -39,13 +38,10 @@
 
 #include <guichan/font.hpp>
 
-bool Minimap::mShow = true;
-
 Minimap::Minimap():
     Window(_("Map"))
 {
     setWindowName("Minimap");
-    mShow = config.getValue(getWindowName() + "Show", true);
     setDefaultSize(5, 25, 100, 100);
     // set this to false as the minimap window size is changed
     //depending on the map size
@@ -59,13 +55,11 @@ Minimap::Minimap():
     setSticky(false);
 
     loadWindowState();
-    setVisible(mShow, isSticky());
+    setVisible(config.showMinimap, isSticky());
 }
 
 Minimap::~Minimap()
-{
-    config.setValue(getWindowName() + "Show", mShow);
-}
+{}
 
 void Minimap::setMap(Map *map)
 {
@@ -122,7 +116,7 @@ void Minimap::setMap(Map *map)
         setDefaultSize(getX(), getY(), getWidth(), getHeight());
         resetToDefaultSize();
 
-        if (mShow)
+        if (config.showMinimap)
             setVisible(true);
     }
     else
@@ -135,7 +129,7 @@ void Minimap::setMap(Map *map)
 void Minimap::toggle()
 {
     setVisible(!isVisible(), isSticky());
-    mShow = isVisible();
+    config.showMinimap = isVisible();
 }
 
 void Minimap::draw(gcn::Graphics *graphics)

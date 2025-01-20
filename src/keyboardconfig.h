@@ -26,6 +26,8 @@
 #include <cstdint>
 #include <string>
 
+#include <SDL.h>
+
 /**
  * Each key represents a key function. Such as 'Move up', 'Attack' etc.
  */
@@ -33,8 +35,7 @@ struct KeyFunction
 {
     const char* configField;    /** Field index that is in the config file. */
     int defaultValue;           /** The default key value used. */
-    std::string caption;        /** The caption value for the key function. */
-    int value;                  /** The actual value that is used. */
+    SDL_Keycode value;          /** The actual value that is used. */
 };
 
 class Setup_Keyboard;
@@ -93,18 +94,17 @@ class KeyboardConfig
         /**
          * Get the key caption, providing more meaning to the user.
          */
-        const std::string &getKeyCaption(int index) const
-        { return mKey[index].caption; }
+        const std::string &getKeyCaption(int index) const;
 
         /**
          * Get the key function index by providing the keys value.
          */
-        int getKeyIndex(int keyValue) const;
+        int getKeyIndex(SDL_Keycode keyValue) const;
 
         /**
          * Get the key function index for an emote by providing the offset value.
          */
-        int getKeyEmoteOffset(int keyValue) const;
+        int getKeyEmoteOffset(SDL_Keycode keyValue) const;
 
         /**
          * Set the enable flag, which will stop the user from doing actions.
@@ -121,7 +121,7 @@ class KeyboardConfig
         /**
          * Set the value of the new key.
          */
-        void setNewKey(int value)
+        void setNewKey(SDL_Keycode value)
         { mKey[mNewKeyIndex].value = value; }
 
         /**

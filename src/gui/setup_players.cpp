@@ -201,9 +201,6 @@ public:
 #define ACTION_DELETE "delete"
 #define ACTION_TABLE "table"
 #define ACTION_STRATEGY "strategy"
-#define ACTION_WHISPER_TAB "whisper tab"
-#define ACTION_SHOW_GENDER "show gender"
-#define ACTION_ENABLE_CHAT_LOG "enable log"
 
 Setup_Players::Setup_Players():
     mPlayerTableTitleModel(new StaticTableModel(1, COLUMNS_NR)),
@@ -216,12 +213,9 @@ Setup_Players::Setup_Players():
     mDefaultWhisper(new CheckBox(_("Allow whispers"),
                 player_relations.getDefault() & PlayerPermissions::WHISPER)),
     mDeleteButton(new Button(_("Delete"), ACTION_DELETE, this)),
-    mWhisperTab(config.getBoolValue("whispertab")),
-    mWhisperTabCheckBox(new CheckBox(_("Put all whispers in tabs"), mWhisperTab)),
-    mShowGender(config.getBoolValue("showgender")),
-    mShowGenderCheckBox(new CheckBox(_("Show gender"), mShowGender)),
-    mEnableChatLog(config.getBoolValue("enableChatLog")),
-    mEnableChatLogCheckBox(new CheckBox(_("Enable Chat log"), mEnableChatLog))
+    mWhisperTabCheckBox(new CheckBox(_("Put all whispers in tabs"), config.whisperTab)),
+    mShowGenderCheckBox(new CheckBox(_("Show gender"), config.showGender)),
+    mEnableChatLogCheckBox(new CheckBox(_("Enable Chat log"), config.enableChatLog))
 {
     setName(_("Players"));
 
@@ -253,26 +247,17 @@ Setup_Players::Setup_Players():
     mIgnoreActionChoicesBox->setActionEventId(ACTION_STRATEGY);
     mIgnoreActionChoicesBox->addActionListener(this);
 
-    int ignore_strategy_index = 0; // safe default
+    int ignoreStrategyIndex = 0; // safe default
 
-    if (player_relations.getPlayerIgnoreStrategy())
+    if (auto ignoreStrategy = player_relations.getPlayerIgnoreStrategy())
     {
-        ignore_strategy_index = player_relations.getPlayerIgnoreStrategyIndex(
-            player_relations.getPlayerIgnoreStrategy()->mShortName);
-        if (ignore_strategy_index < 0)
-            ignore_strategy_index = 0;
+        ignoreStrategyIndex = player_relations.getPlayerIgnoreStrategyIndex(
+            ignoreStrategy->mShortName);
+        if (ignoreStrategyIndex < 0)
+            ignoreStrategyIndex = 0;
     }
-    mIgnoreActionChoicesBox->setSelected(ignore_strategy_index);
+    mIgnoreActionChoicesBox->setSelected(ignoreStrategyIndex);
     mIgnoreActionChoicesBox->adjustHeight();
-
-    mWhisperTabCheckBox->setActionEventId(ACTION_WHISPER_TAB);
-    mWhisperTabCheckBox->addActionListener(this);
-
-    mShowGenderCheckBox->setActionEventId(ACTION_SHOW_GENDER);
-    mShowGenderCheckBox->addActionListener(this);
-
-    mEnableChatLogCheckBox->setActionEventId(ACTION_ENABLE_CHAT_LOG);
-    mEnableChatLogCheckBox->addActionListener(this);
 
     reset();
 
@@ -323,26 +308,22 @@ void Setup_Players::apply()
                                        PlayerPermissions::TRADE : 0)
                                 | (mDefaultWhisper->isSelected() ?
                                        PlayerPermissions::WHISPER : 0));
-    config.setValue("whispertab", mWhisperTab);
 
-    bool showGender = config.getBoolValue("showgender");
+    const bool showGenderChanged = config.showGender != mShowGenderCheckBox->isSelected();
 
-    config.setValue("showgender", mShowGender);
+    config.whisperTab = mWhisperTabCheckBox->isSelected();
+    config.showGender = mShowGenderCheckBox->isSelected();
+    config.enableChatLog = mEnableChatLogCheckBox->isSelected();
 
-    if (actorSpriteManager && mShowGender != showGender)
+    if (actorSpriteManager && showGenderChanged)
         actorSpriteManager->updatePlayerNames();
-
-    config.setValue("enableChatLog", mEnableChatLog);
 }
 
 void Setup_Players::cancel()
 {
-    mWhisperTab = config.getBoolValue("whispertab");
-    mWhisperTabCheckBox->setSelected(mWhisperTab);
-    mShowGender = config.getBoolValue("showgender");
-    mShowGenderCheckBox->setSelected(mShowGender);
-    mEnableChatLog = config.getBoolValue("enableChatLog");
-    mEnableChatLogCheckBox->setSelected(mEnableChatLog);
+    mWhisperTabCheckBox->setSelected(config.whisperTab);
+    mShowGenderCheckBox->setSelected(config.showGender);
+    mEnableChatLogCheckBox->setSelected(config.enableChatLog);
 }
 
 void Setup_Players::action(const gcn::ActionEvent &event)
@@ -379,18 +360,6 @@ void Setup_Players::action(const gcn::ActionEvent &event)
                 mIgnoreActionChoicesBox->getSelected()];
 
         player_relations.setPlayerIgnoreStrategy(s);
-    }
-    else if (event.getId() == ACTION_WHISPER_TAB)
-    {
-        mWhisperTab = mWhisperTabCheckBox->isSelected();
-    }
-    else if (event.getId() == ACTION_SHOW_GENDER)
-    {
-        mShowGender = mShowGenderCheckBox->isSelected();
-    }
-    else if (event.getId() == ACTION_ENABLE_CHAT_LOG)
-    {
-        mEnableChatLog = mEnableChatLogCheckBox->isSelected();
     }
 }
 

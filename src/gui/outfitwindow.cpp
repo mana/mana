@@ -50,8 +50,7 @@ OutfitWindow::OutfitWindow():
     mNextButton = new Button(_(">"), "next", this);
     mCurrentLabel = new Label(strprintf(_("Outfit: %d"), 1));
     mCurrentLabel->setAlignment(gcn::Graphics::CENTER);
-    mUnequipCheck = new CheckBox(_("Unequip first"),
-                                 config.getValue("OutfitUnequip0", true));
+    mUnequipCheck = new CheckBox(_("Unequip first"));
 
     mUnequipCheck->setActionEventId("unequip");
     mUnequipCheck->addActionListener(this);
@@ -68,6 +67,8 @@ OutfitWindow::OutfitWindow():
     loadWindowState();
 
     load();
+
+    mUnequipCheck->setSelected(mOutfits[mCurrentOutfit].unequip);
 }
 
 OutfitWindow::~OutfitWindow()
@@ -77,34 +78,48 @@ OutfitWindow::~OutfitWindow()
 
 void OutfitWindow::load()
 {
-    memset(mItems, -1, sizeof(mItems));
     for (int o = 0; o < OUTFITS_COUNT; o++)
+        memset(mOutfits[o].items, -1, sizeof(mOutfits[o].items));
+
+    for (auto &outfit : config.outfits)
     {
-        std::string outfit = config.getValue("Outfit" + toString(o), "-1");
+        if (outfit.index < 0 || outfit.index >= OUTFITS_COUNT)
+            continue;
+
         std::string buf;
-        std::stringstream ss(outfit);
+        std::stringstream ss(outfit.items);
 
         for (size_t i = 0; (ss >> buf) && i < OUTFIT_ITEM_COUNT; i++)
         {
-            mItems[o][i] = atoi(buf.c_str());
+            mOutfits[outfit.index].items[i] = atoi(buf.c_str());
         }
 
-        mItemsUnequip[o] = config.getValue("OutfitUnequip" + toString(o), true);
+        mOutfits[outfit.index].unequip = outfit.unequip;
     }
 }
 
 void OutfitWindow::save()
 {
+    config.outfits.clear();
+
     std::string outfitStr;
     for (int o = 0; o < OUTFITS_COUNT; o++)
     {
+        auto &items = mOutfits[o].items;
+        bool emptyOutfit = true;
+
         for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
         {
-            outfitStr += mItems[o][i] ? toString(mItems[o][i]) : toString(-1);
-            if (i <8) outfitStr += " ";
+            if (!outfitStr.empty())
+                outfitStr += " ";
+
+            outfitStr += items[i] ? toString(items[i]) : toString(-1);
+            emptyOutfit &= items[i] <= 0;
         }
-        config.setValue("Outfit" + toString(o), outfitStr);
-        config.setValue("OutfitUnequip" + toString(o), mItemsUnequip[o]);
+
+        if (!emptyOutfit)
+            config.outfits.push_back({ o, outfitStr, mOutfits[o].unequip });
+
         outfitStr.clear();
     }
 }
@@ -118,7 +133,7 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
         else
             mCurrentOutfit = 0;
         mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
-        mUnequipCheck->setSelected(mItemsUnequip[mCurrentOutfit]);
+        mUnequipCheck->setSelected(mOutfits[mCurrentOutfit].unequip);
     }
     else if (event.getId() == "previous")
     {
@@ -131,23 +146,23 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
             mCurrentOutfit = OUTFITS_COUNT - 1;
         }
         mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
-        mUnequipCheck->setSelected(mItemsUnequip[mCurrentOutfit]);
+        mUnequipCheck->setSelected(mOutfits[mCurrentOutfit].unequip);
     }
     else if (event.getId() == "unequip")
     {
-        mItemsUnequip[mCurrentOutfit] = mUnequipCheck->isSelected();
+        mOutfits[mCurrentOutfit].unequip = mUnequipCheck->isSelected();
     }
 }
 
 void OutfitWindow::wearOutfit(int outfit)
 {
-    if (mItemsUnequip[outfit])
+    if (mOutfits[outfit].unequip)
         unequipNotInOutfit(outfit);
 
     Item *item;
     for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
-        item = PlayerInfo::getInventory()->findItem(mItems[outfit][i]);
+        item = PlayerInfo::getInventory()->findItem(mOutfits[outfit].items[i]);
         if (item && !item->isEquipped() && item->getQuantity())
         {
             if (item->isEquippable())
@@ -160,7 +175,7 @@ void OutfitWindow::copyOutfit(int outfit)
 {
     for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
-        mItems[mCurrentOutfit][i] = mItems[outfit][i];
+        mOutfits[mCurrentOutfit].items[i] = mOutfits[outfit].items[i];
     }
 }
 
@@ -183,15 +198,15 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
                                                ITEM_ICON_SIZE,
                                                ITEM_ICON_SIZE));
 
-        if (mItems[mCurrentOutfit][i] < 0)
+        if (mOutfits[mCurrentOutfit].items[i] < 0)
         {
             continue;
         }
 
         Item *item =
-               PlayerInfo::getInventory()->findItem(mItems[mCurrentOutfit][i]);
+               PlayerInfo::getInventory()->findItem(mOutfits[mCurrentOutfit].items[i]);
         if (item)
-         {
+        {
             // Draw item icon.
             if (Image *image = item->getImage())
             {
@@ -199,6 +214,7 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
             }
         }
     }
+
     if (mItemMoved)
     {
         // Draw the item image being dragged by the cursor.
@@ -216,6 +232,7 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
 void OutfitWindow::mouseDragged(gcn::MouseEvent &event)
 {
     Window::mouseDragged(event);
+
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
         if (!mItemMoved && mItemClicked)
@@ -223,16 +240,18 @@ void OutfitWindow::mouseDragged(gcn::MouseEvent &event)
             const int index = getIndexFromGrid(event.getX(), event.getY());
             if (index == -1)
                 return;
-            const int itemId = mItems[mCurrentOutfit][index];
+
+            const int itemId = mOutfits[mCurrentOutfit].items[index];
             if (itemId < 0)
                 return;
-            Item *item = PlayerInfo::getInventory()->findItem(itemId);
-            if (item)
+
+            if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
             {
                 mItemMoved = item;
-                mItems[mCurrentOutfit][index] = -1;
+                mOutfits[mCurrentOutfit].items[index] = -1;
             }
         }
+
         if (mItemMoved)
         {
             mCursorPosX = event.getX();
@@ -251,10 +270,10 @@ void OutfitWindow::mousePressed(gcn::MouseEvent &event)
     // Stores the selected item if there is one.
     if (isItemSelected())
     {
-        mItems[mCurrentOutfit][index] = mItemSelected;
+        mOutfits[mCurrentOutfit].items[index] = mItemSelected;
         mItemSelected = -1;
     }
-    else if (mItems[mCurrentOutfit][index])
+    else if (mOutfits[mCurrentOutfit].items[index])
     {
         mItemClicked = true;
     }
@@ -277,7 +296,7 @@ void OutfitWindow::mouseReleased(gcn::MouseEvent &event)
         }
         if (mItemMoved)
         {
-            mItems[mCurrentOutfit][index] = mItemMoved->getId();
+            mOutfits[mCurrentOutfit].items[index] = mItemMoved->getId();
             mItemMoved = nullptr;
         }
         if (mItemClicked)
@@ -311,7 +330,7 @@ void OutfitWindow::unequipNotInOutfit(int outfit)
             bool found = false;
             for (int f = 0; f < OUTFIT_ITEM_COUNT; f++)
             {
-                if (inventory->getItem(i)->getId() == mItems[outfit][f])
+                if (inventory->getItem(i)->getId() == mOutfits[outfit].items[f])
                 {
                     found = true;
                     break;
@@ -319,9 +338,7 @@ void OutfitWindow::unequipNotInOutfit(int outfit)
             }
             if (!found)
             {
-                Item *item = inventory->getItem(i);
-
-                if (item)
+                if (Item *item = inventory->getItem(i))
                     item->doEvent(Event::DoUnequip);
             }
         }

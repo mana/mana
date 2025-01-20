@@ -59,7 +59,7 @@ PlayerBox::PlayerBox(const Being *being):
             }
         }
 
-        background.setAlpha(config.getFloatValue("guialpha"));
+        background.setAlpha(config.guiAlpha);
 
         textbox->decRef();
     }
@@ -90,9 +90,10 @@ void PlayerBox::draw(gcn::Graphics *graphics)
         mBeing->drawSpriteAt(static_cast<Graphics*>(graphics), x, y);
     }
 
-    if (config.getFloatValue("guialpha") != mAlpha)
+    if (config.guiAlpha != mAlpha)
     {
-        background.setAlpha(config.getFloatValue("guialpha"));
+        mAlpha = config.guiAlpha;
+        background.setAlpha(config.guiAlpha);
     }
 }
 

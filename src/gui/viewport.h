@@ -194,10 +194,6 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
 
         Map *mMap = nullptr;        /**< The current map. */
 
-        int mScrollRadius;
-        int mScrollLaziness;
-        int mScrollCenterOffsetX;
-        int mScrollCenterOffsetY;
         int mMouseX = 0;            /**< Current mouse position in pixels. */
         int mMouseY = 0;            /**< Current mouse position in pixels. */
         float mPixelViewX = 0.0f;   /**< Current viewpoint in pixels. */

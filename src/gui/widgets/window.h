@@ -264,7 +264,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Saves the window state so that when the window is reloaded, it'll
          * maintain its previous state and location.
          */
-        void saveWindowState();
+        void saveWindowState() const;
 
         /**
          * Set the default win pos and size.
@@ -380,7 +380,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         ResizeGrip *mGrip = nullptr;  /**< Resize grip */
         Window *mParent;              /**< The parent window */
         Layout *mLayout = nullptr;    /**< Layout handler */
-        std::string mWindowName = "window"; /**< Name of the window */
+        std::string mWindowName;      /**< Name of the window */
         bool mShowTitle = true;       /**< Window has a title bar */
         bool mModal;                  /**< Window is modal */
         bool mCloseButton = false;    /**< Window has a close button */

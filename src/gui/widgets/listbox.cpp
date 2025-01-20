@@ -41,7 +41,7 @@ ListBox::ListBox(gcn::ListModel *listModel):
 
 void ListBox::updateAlpha()
 {
-    float alpha = std::max(config.getFloatValue("guialpha"),
+    float alpha = std::max(config.guiAlpha,
                            Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)

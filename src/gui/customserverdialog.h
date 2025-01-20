@@ -30,8 +30,6 @@ class TypeListModel;
 
 #include "gui/widgets/window.h"
 
-#include "net/serverinfo.h"
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>

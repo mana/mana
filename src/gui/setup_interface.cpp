@@ -77,14 +77,14 @@ static const char *speechModeToString(Being::Speech mode)
 }
 
 Setup_Interface::Setup_Interface():
-    mShowMonsterDamageEnabled(config.getBoolValue("showMonstersTakedDamage")),
-    mVisibleNamesEnabled(config.getBoolValue("visiblenames")),
-    mNameEnabled(config.getBoolValue("showownname")),
-    mNPCLogEnabled(config.getBoolValue("logNpcInGui")),
-    mPickupChatEnabled(config.getBoolValue("showpickupchat")),
-    mPickupParticleEnabled(config.getBoolValue("showpickupparticle")),
-    mOpacity(config.getFloatValue("guialpha")),
-    mSpeechMode(static_cast<Being::Speech>(config.getIntValue("speech"))),
+    mShowMonsterDamageEnabled(config.showMonstersTakedDamage),
+    mVisibleNamesEnabled(config.visibleNames),
+    mNameEnabled(config.showOwnName),
+    mNPCLogEnabled(config.logNpcInGui),
+    mPickupChatEnabled(config.showPickupChat),
+    mPickupParticleEnabled(config.showPickupParticle),
+    mOpacity(config.guiAlpha),
+    mSpeechMode(config.speech),
     mVisibleNamesCheckBox(new CheckBox(_("Visible names"),
                                        mVisibleNamesEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
@@ -98,7 +98,7 @@ Setup_Interface::Setup_Interface():
     mSpeechSlider(new Slider(0, 3)),
     mSpeechLabel(new Label(std::string())),
     mAlphaSlider(new Slider(0.2, 1.0)),
-    mFontSize(config.getIntValue("fontSize"))
+    mFontSize(config.fontSize)
 {
     setName(_("Interface"));
 
@@ -117,7 +117,7 @@ Setup_Interface::Setup_Interface():
 
     mAlphaSlider->setValue(mOpacity);
     mAlphaSlider->setWidth(90);
-    mAlphaSlider->setEnabled(!config.getBoolValue("disableTransparency"));
+    mAlphaSlider->setEnabled(!config.disableTransparency);
 
 
     // Set actions
@@ -182,16 +182,16 @@ Setup_Interface::~Setup_Interface()
 
 void Setup_Interface::apply()
 {
-    config.setValue("fontSize", mFontSizeDropDown->getSelected() + 10);
+    config.fontSize = mFontSizeDropDown->getSelected() + 10;
 
-    mShowMonsterDamageEnabled = config.getBoolValue("showMonstersTakedDamage");
-    mVisibleNamesEnabled = config.getBoolValue("visiblenames");
-    mNameEnabled = config.getBoolValue("showownname");
-    mNPCLogEnabled = config.getBoolValue("logNpcInGui");
-    mSpeechMode = static_cast<Being::Speech>(config.getIntValue("speech"));
-    mOpacity = config.getFloatValue("guialpha");
-    mPickupChatEnabled = config.getBoolValue("showpickupchat");
-    mPickupParticleEnabled = config.getBoolValue("showpickupparticle");
+    mShowMonsterDamageEnabled = config.showMonstersTakedDamage;
+    mVisibleNamesEnabled = config.visibleNames;
+    mNameEnabled = config.showOwnName;
+    mNPCLogEnabled = config.logNpcInGui;
+    mSpeechMode = config.speech;
+    mOpacity = config.guiAlpha;
+    mPickupChatEnabled = config.showPickupChat;
+    mPickupParticleEnabled = config.showPickupParticle;
 }
 
 void Setup_Interface::cancel()
@@ -204,14 +204,14 @@ void Setup_Interface::cancel()
     mAlphaSlider->setValue(mOpacity);
     //mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
 
-    config.setValue("showMonstersTakedDamage", mShowMonsterDamageEnabled);
-    config.setValue("visiblenames", mVisibleNamesEnabled);
-    config.setValue("speech", mSpeechMode);
-    config.setValue("showownname", mNameEnabled);
-    config.setValue("logNpcInGui", mNPCLogEnabled);
-    config.setValue("guialpha", mOpacity);
-    config.setValue("showpickupchat", mPickupChatEnabled);
-    config.setValue("showpickupparticle", mPickupParticleEnabled);
+    config.showMonstersTakedDamage = mShowMonsterDamageEnabled;
+    config.visibleNames = mVisibleNamesEnabled;
+    config.speech = mSpeechMode;
+    config.showOwnName = mNameEnabled;
+    config.logNpcInGui = mNPCLogEnabled;
+    config.guiAlpha = mOpacity;
+    config.showPickupChat = mPickupChatEnabled;
+    config.showPickupParticle = mPickupParticleEnabled;
 }
 
 void Setup_Interface::action(const gcn::ActionEvent &event)
@@ -220,38 +220,37 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
 
     if (id == "guialpha")
     {
-        config.setValue("guialpha", mAlphaSlider->getValue());
+        config.guiAlpha = mAlphaSlider->getValue();
     }
     else if (id == "monsterdamage")
     {
-        config.setValue("showMonstersTakedDamage", mShowMonsterDamageCheckBox->isSelected());
+        config.showMonstersTakedDamage = mShowMonsterDamageCheckBox->isSelected();
     }
     else if (id == "visiblenames")
     {
-        config.setValue("visiblenames", mVisibleNamesCheckBox->isSelected());
+        config.visibleNames = mVisibleNamesCheckBox->isSelected();
     }
     else if (id == "pickupchat")
     {
-        config.setValue("showpickupchat", mPickupChatCheckBox->isSelected());
+        config.showPickupChat = mPickupChatCheckBox->isSelected();
     }
     else if (id == "pickupparticle")
     {
-        config.setValue("showpickupparticle",
-                        mPickupParticleCheckBox->isSelected());
+        config.showPickupParticle = mPickupParticleCheckBox->isSelected();
     }
     else if (id == "speech")
     {
         auto val = (Being::Speech)mSpeechSlider->getValue();
         mSpeechLabel->setCaption(speechModeToString(val));
         mSpeechSlider->setValue(val);
-        config.setValue("speech", val);
+        config.speech = val;
     }
     else if (id == "showownname")
     {
-        config.setValue("showownname", mNameCheckBox->isSelected());
+        config.showOwnName = mNameCheckBox->isSelected();
     }
     else if (id == "lognpc")
     {
-        config.setValue("logNpcInGui", mNPCLogCheckBox->isSelected());
+        config.logNpcInGui = mNPCLogCheckBox->isSelected();
     }
 }

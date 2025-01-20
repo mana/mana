@@ -81,7 +81,7 @@ Gui::Gui(Graphics *graphics)
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Set global font
-    const int fontSize = config.getValue("fontSize", 11);
+    const int fontSize = config.fontSize;
     std::string fontFile = branding.getValue("font", "fonts/dejavusans.ttf");
     std::string path = resman->getPath(fontFile);
 
@@ -131,7 +131,7 @@ Gui::Gui(Graphics *graphics)
     gcn::Widget::setGlobalFont(mGuiFont);
 
     // Initialize mouse cursor and listen for changes to the option
-    setUseCustomCursor(config.getBoolValue("customcursor"));
+    setUseCustomCursor(config.customCursor);
 
     listen(Event::ConfigChannel);
 }
@@ -179,7 +179,7 @@ void Gui::event(Event::Channel channel, const Event &event)
         if (event.getType() == Event::ConfigOptionChanged &&
             event.getString("option") == "customcursor")
         {
-            setUseCustomCursor(config.getBoolValue("customcursor"));
+            setUseCustomCursor(config.customCursor);
         }
     }
 }

@@ -36,8 +36,6 @@
 #include <guichan/font.hpp>
 #include <guichan/listmodel.hpp>
 
-float ShopListBox::mAlpha = 1.0;
-
 ShopListBox::ShopListBox(gcn::ListModel *listModel):
     ListBox(listModel)
 {
@@ -72,10 +70,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     if (!mListModel)
         return;
 
-    if (config.getFloatValue("guialpha") != mAlpha)
-        mAlpha = config.getFloatValue("guialpha");
-
-    const int alpha = (int)(mAlpha * 255.0f);
+    const int alpha = (int)(config.guiAlpha * 255.0f);
     const gcn::Color &highlightColor =
             Theme::getThemeColor(Theme::HIGHLIGHT, alpha);
     const gcn::Color &backgroundColor =

@@ -64,7 +64,7 @@ public:
         Close,
         CloseAll,
         CloseDialog,
-        ConfigOptionChanged,
+        ConfigOptionChanged,    // todo: replace with more specific events
         Constructed,
         LoadingDatabases,
         Destroyed,

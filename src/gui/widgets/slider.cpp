@@ -123,7 +123,7 @@ void Slider::init()
 
 void Slider::updateAlpha()
 {
-    float alpha = std::max(config.getFloatValue("guialpha"),
+    float alpha = std::max(config.guiAlpha,
                            Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)

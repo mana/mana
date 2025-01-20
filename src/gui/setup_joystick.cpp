@@ -39,7 +39,7 @@ Setup_Joystick::Setup_Joystick():
 {
     setName(_("Joystick"));
 
-    mJoystickEnabled = config.getBoolValue("joystickEnabled");
+    mJoystickEnabled = config.joystickEnabled;
     mJoystickCheckBox->setSelected(mJoystickEnabled);
 
     mJoystickCheckBox->addActionListener(this);
@@ -90,7 +90,5 @@ void Setup_Joystick::cancel()
 
 void Setup_Joystick::apply()
 {
-    config.setValue("joystickEnabled",
-                    joystick ? joystick->isEnabled() : false);
+    config.joystickEnabled = joystick && joystick->isEnabled();
 }
-

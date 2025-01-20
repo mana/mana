@@ -28,82 +28,80 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <SDL.h>
-
 struct KeyData
 {
     const char *configField;
-    int defaultValue;
+    SDL_Keycode defaultValue;
     std::string caption;
 };
 
 // keyData must be in same order as enum keyAction.
 static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
-    {"keyMoveUp", SDLK_UP, _("Move Up")},
-    {"keyMoveDown", SDLK_DOWN, _("Move Down")},
-    {"keyMoveLeft", SDLK_LEFT, _("Move Left")},
-    {"keyMoveRight", SDLK_RIGHT, _("Move Right")},
-    {"keyAttack", SDLK_LCTRL, _("Attack")},
-    {"keyTargetAttack", SDLK_x, _("Target & Attack")},
-    {"keySmilie", SDLK_LALT, _("Smilie")},
-    {"keyTalk", SDLK_t, _("Talk")},
-    {"keyTarget", SDLK_LSHIFT, _("Stop Attack")},
-    {"keyTargetClosest", SDLK_a, _("Target Monster")},
-    {"keyTargetNPC", SDLK_n, _("Target NPC")},
-    {"keyTargetPlayer", SDLK_q, _("Target Player")},
-    {"keyPickup", SDLK_z, _("Pickup")},
-    {"keyHideWindows", SDLK_h, _("Hide Windows")},
-    {"keyBeingSit", SDLK_s, _("Sit")},
-    {"keyScreenshot", SDLK_p, _("Screenshot")},
-    {"keyTrade", SDLK_r, _("Enable/Disable Trading")},
-    {"keyShortcut1", SDLK_1, strprintf(_("Item Shortcut %d"), 1)},
-    {"keyShortcut2", SDLK_2, strprintf(_("Item Shortcut %d"), 2)},
-    {"keyShortcut3", SDLK_3, strprintf(_("Item Shortcut %d"), 3)},
-    {"keyShortcut4", SDLK_4, strprintf(_("Item Shortcut %d"), 4)},
-    {"keyShortcut5", SDLK_5, strprintf(_("Item Shortcut %d"), 5)},
-    {"keyShortcut6", SDLK_6, strprintf(_("Item Shortcut %d"), 6)},
-    {"keyShortcut7", SDLK_7, strprintf(_("Item Shortcut %d"), 7)},
-    {"keyShortcut8", SDLK_8, strprintf(_("Item Shortcut %d"), 8)},
-    {"keyShortcut9", SDLK_9, strprintf(_("Item Shortcut %d"), 9)},
-    {"keyShortcut10", SDLK_0, strprintf(_("Item Shortcut %d"), 10)},
-    {"keyShortcut11", SDLK_MINUS, strprintf(_("Item Shortcut %d"), 11)},
-    {"keyShortcut12", SDLK_EQUALS, strprintf(_("Item Shortcut %d"), 12)},
-    {"keyWindowHelp", SDLK_F1, _("Help Window")},
-    {"keyWindowStatus", SDLK_F2, _("Status Window")},
-    {"keyWindowInventory", SDLK_F3, _("Inventory Window")},
-    {"keyWindowEquipment", SDLK_F4, _("Equipment Window")},
-    {"keyWindowSkill", SDLK_F5, _("Skill Window")},
-    {"keyWindowMinimap", SDLK_F6, _("Minimap Window")},
-    {"keyWindowChat", SDLK_F7, _("Chat Window")},
-    {"keyWindowShortcut", SDLK_F8, _("Item Shortcut Window")},
-    {"keyWindowSetup", SDLK_F9, _("Setup Window")},
-    {"keyWindowDebug", SDLK_F10, _("Debug Window")},
-    {"keyWindowSocial", SDLK_F11, _("Social Window")},
-    {"keyWindowEmoteBar", SDLK_F12, _("Emote Shortcut Window")},
-    {"keyWindowOutfit", SDLK_o, _("Outfits Window")},
-    {"keyWearOutfit", SDLK_RCTRL, _("Wear Outfit")},
-    {"keyCopyOutfit", SDLK_RALT, _("Copy Outfit")},
-    {"keyEmoteShortcut1", SDLK_1, strprintf(_("Emote Shortcut %d"), 1)},
-    {"keyEmoteShortcut2", SDLK_2, strprintf(_("Emote Shortcut %d"), 2)},
-    {"keyEmoteShortcut3", SDLK_3, strprintf(_("Emote Shortcut %d"), 3)},
-    {"keyEmoteShortcut4", SDLK_4, strprintf(_("Emote Shortcut %d"), 4)},
-    {"keyEmoteShortcut5", SDLK_5, strprintf(_("Emote Shortcut %d"), 5)},
-    {"keyEmoteShortcut6", SDLK_6, strprintf(_("Emote Shortcut %d"), 6)},
-    {"keyEmoteShortcut7", SDLK_7, strprintf(_("Emote Shortcut %d"), 7)},
-    {"keyEmoteShortcut8", SDLK_8, strprintf(_("Emote Shortcut %d"), 8)},
-    {"keyEmoteShortcut9", SDLK_9, strprintf(_("Emote Shortcut %d"), 9)},
-    {"keyEmoteShortcut10", SDLK_0, strprintf(_("Emote Shortcut %d"), 10)},
-    {"keyEmoteShortcut11", SDLK_MINUS, strprintf(_("Emote Shortcut %d"), 11)},
-    {"keyEmoteShortcut12", SDLK_EQUALS, strprintf(_("Emote Shortcut %d"), 12)},
-    {"keyChat", SDLK_RETURN, _("Toggle Chat")},
-    {"keyChatScrollUp", SDLK_PAGEUP, _("Scroll Chat Up")},
-    {"keyChatScrollDown", SDLK_PAGEDOWN, _("Scroll Chat Down")},
-    {"keyChatPrevTab", SDLK_LEFTBRACKET, _("Previous Chat Tab")},
-    {"keyChatNextTab", SDLK_RIGHTBRACKET, _("Next Chat Tab")},
-    {"keyOK", SDLK_SPACE, _("Select OK")},
-    {"keyQuit", SDLK_ESCAPE, _("Quit")},
-    {"keyIgnoreInput1", SDLK_LGUI, _("Ignore input 1")},
-    {"keyIgnoreInput2", SDLK_RGUI, _("Ignore input 2")}
+    { "MoveUp",             SDLK_UP,            _("Move Up") },
+    { "MoveDown",           SDLK_DOWN,          _("Move Down") },
+    { "MoveLeft",           SDLK_LEFT,          _("Move Left") },
+    { "MoveRight",          SDLK_RIGHT,         _("Move Right") },
+    { "Attack",             SDLK_LCTRL,         _("Attack") },
+    { "TargetAttack",       SDLK_x,             _("Target & Attack") },
+    { "Smilie",             SDLK_LALT,          _("Smilie") },
+    { "Talk",               SDLK_t,             _("Talk") },
+    { "Target",             SDLK_LSHIFT,        _("Stop Attack") },
+    { "TargetClosest",      SDLK_a,             _("Target Monster") },
+    { "TargetNPC",          SDLK_n,             _("Target NPC") },
+    { "TargetPlayer",       SDLK_q,             _("Target Player") },
+    { "Pickup",             SDLK_z,             _("Pickup") },
+    { "HideWindows",        SDLK_h,             _("Hide Windows") },
+    { "BeingSit",           SDLK_s,             _("Sit") },
+    { "Screenshot",         SDLK_p,             _("Screenshot") },
+    { "Trade",              SDLK_r,             _("Enable/Disable Trading") },
+    { "Shortcut1",          SDLK_1,             strprintf(_("Item Shortcut %d"), 1) },
+    { "Shortcut2",          SDLK_2,             strprintf(_("Item Shortcut %d"), 2) },
+    { "Shortcut3",          SDLK_3,             strprintf(_("Item Shortcut %d"), 3) },
+    { "Shortcut4",          SDLK_4,             strprintf(_("Item Shortcut %d"), 4) },
+    { "Shortcut5",          SDLK_5,             strprintf(_("Item Shortcut %d"), 5) },
+    { "Shortcut6",          SDLK_6,             strprintf(_("Item Shortcut %d"), 6) },
+    { "Shortcut7",          SDLK_7,             strprintf(_("Item Shortcut %d"), 7) },
+    { "Shortcut8",          SDLK_8,             strprintf(_("Item Shortcut %d"), 8) },
+    { "Shortcut9",          SDLK_9,             strprintf(_("Item Shortcut %d"), 9) },
+    { "Shortcut10",         SDLK_0,             strprintf(_("Item Shortcut %d"), 10) },
+    { "Shortcut11",         SDLK_MINUS,         strprintf(_("Item Shortcut %d"), 11) },
+    { "Shortcut12",         SDLK_EQUALS,        strprintf(_("Item Shortcut %d"), 12) },
+    { "WindowHelp",         SDLK_F1,            _("Help Window") },
+    { "WindowStatus",       SDLK_F2,            _("Status Window") },
+    { "WindowInventory",    SDLK_F3,            _("Inventory Window") },
+    { "WindowEquipment",    SDLK_F4,            _("Equipment Window") },
+    { "WindowSkill",        SDLK_F5,            _("Skill Window") },
+    { "WindowMinimap",      SDLK_F6,            _("Minimap Window") },
+    { "WindowChat",         SDLK_F7,            _("Chat Window") },
+    { "WindowShortcut",     SDLK_F8,            _("Item Shortcut Window") },
+    { "WindowSetup",        SDLK_F9,            _("Setup Window") },
+    { "WindowDebug",        SDLK_F10,           _("Debug Window") },
+    { "WindowSocial",       SDLK_F11,           _("Social Window") },
+    { "WindowEmoteBar",     SDLK_F12,           _("Emote Shortcut Window") },
+    { "WindowOutfit",       SDLK_o,             _("Outfits Window") },
+    { "WearOutfit",         SDLK_RCTRL,         _("Wear Outfit") },
+    { "CopyOutfit",         SDLK_RALT,          _("Copy Outfit") },
+    { "EmoteShortcut1",     SDLK_1,             strprintf(_("Emote Shortcut %d"), 1) },
+    { "EmoteShortcut2",     SDLK_2,             strprintf(_("Emote Shortcut %d"), 2) },
+    { "EmoteShortcut3",     SDLK_3,             strprintf(_("Emote Shortcut %d"), 3) },
+    { "EmoteShortcut4",     SDLK_4,             strprintf(_("Emote Shortcut %d"), 4) },
+    { "EmoteShortcut5",     SDLK_5,             strprintf(_("Emote Shortcut %d"), 5) },
+    { "EmoteShortcut6",     SDLK_6,             strprintf(_("Emote Shortcut %d"), 6) },
+    { "EmoteShortcut7",     SDLK_7,             strprintf(_("Emote Shortcut %d"), 7) },
+    { "EmoteShortcut8",     SDLK_8,             strprintf(_("Emote Shortcut %d"), 8) },
+    { "EmoteShortcut9",     SDLK_9,             strprintf(_("Emote Shortcut %d"), 9) },
+    { "EmoteShortcut10",    SDLK_0,             strprintf(_("Emote Shortcut %d"), 10) },
+    { "EmoteShortcut11",    SDLK_MINUS,         strprintf(_("Emote Shortcut %d"), 11) },
+    { "EmoteShortcut12",    SDLK_EQUALS,        strprintf(_("Emote Shortcut %d"), 12) },
+    { "Chat",               SDLK_RETURN,        _("Toggle Chat") },
+    { "ChatScrollUp",       SDLK_PAGEUP,        _("Scroll Chat Up") },
+    { "ChatScrollDown",     SDLK_PAGEDOWN,      _("Scroll Chat Down") },
+    { "ChatPrevTab",        SDLK_LEFTBRACKET,   _("Previous Chat Tab") },
+    { "ChatNextTab",        SDLK_RIGHTBRACKET,  _("Next Chat Tab") },
+    { "OK",                 SDLK_SPACE,         _("Select OK") },
+    { "Quit",               SDLK_ESCAPE,        _("Quit") },
+    { "IgnoreInput1",       SDLK_LGUI,          _("Ignore input 1") },
+    { "IgnoreInput2",       SDLK_RGUI,          _("Ignore input 2") }
 };
 
 void KeyboardConfig::init()
@@ -112,7 +110,6 @@ void KeyboardConfig::init()
     {
         mKey[i].configField = keyData[i].configField;
         mKey[i].defaultValue = keyData[i].defaultValue;
-        mKey[i].caption = keyData[i].caption;
         mKey[i].value = KEY_NO_VALUE;
     }
     mNewKeyIndex = KEY_NO_VALUE;
@@ -125,15 +122,31 @@ void KeyboardConfig::retrieve()
 {
     for (auto &key : mKey)
     {
-        key.value = (int) config.getValue(key.configField, key.defaultValue);
+        const auto keyIt = config.keys.find(key.configField);
+        if (keyIt != config.keys.end())
+        {
+            key.value = SDL_GetKeyFromName(keyIt->second.c_str());
+
+            if (key.value == SDLK_UNKNOWN)
+                key.value = KEY_NO_VALUE;
+        }
+        else
+        {
+            key.value = key.defaultValue;
+        }
     }
 }
 
 void KeyboardConfig::store()
 {
+    config.keys.clear();
+
     for (auto &key : mKey)
     {
-        config.setValue(key.configField, key.value);
+        if (key.value == key.defaultValue)
+            continue;
+
+        config.keys[key.configField] = SDL_GetKeyName(key.value);
     }
 }
 
@@ -185,7 +198,7 @@ bool KeyboardConfig::hasConflicts()
                 mBindError = strprintf(_("Conflict \"%s\" and \"%s\" keys. "
                     "Resolve them, or gameplay may result"
                     " in strange behaviour."),
-                    mKey[i].caption.c_str(), mKey[j].caption.c_str());
+                    keyData[i].caption.c_str(), keyData[j].caption.c_str());
                 return true;
             }
         }
@@ -199,7 +212,12 @@ void KeyboardConfig::callbackNewKey()
     mSetupKey->newKeyCallback(mNewKeyIndex);
 }
 
-int KeyboardConfig::getKeyIndex(int keyValue) const
+const std::string &KeyboardConfig::getKeyCaption(int index) const
+{
+    return keyData[index].caption;
+}
+
+int KeyboardConfig::getKeyIndex(SDL_Keycode keyValue) const
 {
     for (int i = 0; i < KEY_TOTAL; i++)
     {
@@ -212,7 +230,7 @@ int KeyboardConfig::getKeyIndex(int keyValue) const
 }
 
 
-int KeyboardConfig::getKeyEmoteOffset(int keyValue) const
+int KeyboardConfig::getKeyEmoteOffset(SDL_Keycode keyValue) const
 {
     for (int i = KEY_EMOTE_1; i <= KEY_EMOTE_12; i++)
     {

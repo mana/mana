@@ -193,7 +193,7 @@ Map *MapReader::readMap(XML::Node node, const std::string &path)
                     }
                     else if (objType == "WARP")
                     {
-                        if (config.getValue("showWarps", 1))
+                        if (config.showWarps)
                         {
                             map->addParticleEffect(
                                      paths.getStringValue("particles")
@@ -502,7 +502,7 @@ static Tileset *readTileset(XML::Node node, const std::string &path,
     Tileset *set = nullptr;
     std::string pathDir(path);
 
-    if (node.hasProperty("source"))
+    if (node.hasAttribute("source"))
     {
         std::string filename = node.getProperty("source", std::string());
         filename = resolveRelativePath(path, filename);

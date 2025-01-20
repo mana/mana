@@ -33,7 +33,7 @@
 #include <vector>
 
 // Default Gradient Delay
-#define GRADIENT_DELAY 40
+constexpr int GRADIENT_DELAY = 40;
 
 /**
  * Class controlling the game's color palette.

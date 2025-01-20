@@ -100,7 +100,7 @@ void ScrollArea::init()
                 a++;
             }
         }
-        background.setAlpha(config.getFloatValue("guialpha"));
+        background.setAlpha(config.guiAlpha);
 
         textbox->decRef();
 
@@ -128,8 +128,8 @@ void ScrollArea::init()
             }
         }
 
-        vMarker.setAlpha(config.getFloatValue("guialpha"));
-        vMarkerHi.setAlpha(config.getFloatValue("guialpha"));
+        vMarker.setAlpha(config.guiAlpha);
+        vMarkerHi.setAlpha(config.guiAlpha);
 
         vscroll->decRef();
         vscrollHi->decRef();
@@ -203,8 +203,8 @@ void ScrollArea::logic()
 
 void ScrollArea::updateAlpha()
 {
-    float alpha = std::max(config.getFloatValue("guialpha"),
-                               Theme::instance()->getMinimumOpacity());
+    float alpha = std::max(config.guiAlpha,
+                           Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)
     {

@@ -69,7 +69,7 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
                 a++;
             }
         }
-        skin.setAlpha(config.getFloatValue("guialpha"));
+        skin.setAlpha(config.guiAlpha);
 
         textbox->decRef();
     }
@@ -87,7 +87,7 @@ TextField::~TextField()
 
 void TextField::updateAlpha()
 {
-    float alpha = std::max(config.getFloatValue("guialpha"),
+    float alpha = std::max(config.guiAlpha,
                            Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)

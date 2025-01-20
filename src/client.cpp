@@ -91,7 +91,7 @@
 std::string errorMessage;
 LoginData loginData;
 
-Configuration config;         /**< XML file configuration reader */
+Config config;                /**< Global settings (config.xml) */
 Configuration branding;       /**< XML branding information reader */
 Configuration paths;          /**< XML default paths information reader */
 Logger *logger;               /**< Log object */
@@ -179,7 +179,6 @@ Client::Client(const Options &options):
     // Set default values for configuration files
     branding.setDefaultValues(getBrandingDefaults());
     paths.setDefaultValues(getPathsDefaults());
-    config.setDefaultValues(getConfigDefaults());
 
     // Load branding information
     if (!options.brandingPath.empty())
@@ -199,7 +198,7 @@ Client::Client(const Options &options):
 
     // Configure logger
     logger->setLogFile(mLocalDataDir + "/mana.log");
-    logger->setLogToStandardOut(config.getBoolValue("logToStandardOut"));
+    logger->setLogToStandardOut(config.logToStandardOut);
 
     // Log the mana version
     logger->log("%s", FULL_VERSION);
@@ -262,18 +261,18 @@ Client::Client(const Options &options):
     // Add the local data directory to PhysicsFS search path
     resman->addToSearchPath(mLocalDataDir, false);
 
-    bool useOpenGL = !mOptions.noOpenGL && config.getBoolValue("opengl");
+    bool useOpenGL = !mOptions.noOpenGL && config.opengl;
 
     // Set up the transparency option for low CPU when not using OpenGL.
-    if (!useOpenGL && config.getBoolValue("disableTransparency"))
+    if (!useOpenGL && config.disableTransparency)
         Image::SDLdisableTransparency();
 
     VideoSettings videoSettings;
-    videoSettings.windowMode = static_cast<WindowMode>(config.getIntValue("windowmode"));
-    videoSettings.width = config.getIntValue("screenwidth");
-    videoSettings.height = config.getIntValue("screenheight");
-    videoSettings.userScale = config.getIntValue("scale");
-    videoSettings.vsync = config.getBoolValue("vsync");
+    videoSettings.windowMode = config.windowMode;
+    videoSettings.width = config.screenWidth;
+    videoSettings.height = config.screenHeight;
+    videoSettings.userScale = config.scale;
+    videoSettings.vsync = config.vsync;
     videoSettings.openGL = useOpenGL;
 
     // Try to set the desired video mode and create the graphics context
@@ -322,12 +321,12 @@ Client::Client(const Options &options):
     // Initialize sound engine
     try
     {
-        if (config.getBoolValue("sound"))
+        if (config.sound)
             sound.init();
 
-        sound.setSfxVolume(config.getIntValue("sfxVolume"));
-        sound.setNotificationsVolume(config.getIntValue("notificationsVolume"));
-        sound.setMusicVolume(config.getIntValue("musicVolume"));
+        sound.setSfxVolume(config.sfxVolume);
+        sound.setNotificationsVolume(config.notificationsVolume);
+        sound.setMusicVolume(config.musicVolume);
     }
     catch (const char *err)
     {
@@ -353,7 +352,7 @@ Client::Client(const Options &options):
     mCurrentServer.type = options.serverType;
     loginData.username = options.username;
     loginData.password = options.password;
-    loginData.remember = config.getBoolValue("remember");
+    loginData.remember = config.remember;
     loginData.registerLogin = false;
 
     if (mCurrentServer.type == ServerType::UNKNOWN && mCurrentServer.port != 0)
@@ -384,17 +383,13 @@ Client::Client(const Options &options):
         chatLogger->setServerName(mCurrentServer.hostname);
 
     if (loginData.username.empty() && loginData.remember)
-        loginData.username = config.getStringValue("username");
+        loginData.username = config.username;
 
     if (mState != STATE_ERROR)
         mState = STATE_CHOOSE_SERVER;
 
     // Initialize seconds counter
     mSecondsCounterId = SDL_AddTimer(1000, nextSecond, nullptr);
-
-    listen(Event::ConfigChannel);
-
-    mFpsLimit = config.getIntValue("fpslimit");
 
     // Initialize PlayerInfo
     PlayerInfo::init();
@@ -428,7 +423,9 @@ Client::~Client()
     logger->log("Quitting");
     delete userPalette;
 
-    config.write();
+    XML::Writer writer(mConfigDir + "/config.xml");
+    if (writer.isValid())
+        serialize(writer, config);
 
     delete logger;
 
@@ -489,7 +486,7 @@ int Client::exec()
             frame_count++;
             gui->draw();
             graphics->updateScreen();
-            mFpsManager.limitFps(mFpsLimit);
+            mFpsManager.limitFps(config.fpsLimit);
         }
         else
         {
@@ -743,7 +740,7 @@ int Client::exec()
                             mOptions.character, CharSelectDialog::Choose))
                     {
                         ((CharSelectDialog*) mCurrentDialog)->selectByName(
-                                config.getStringValue("lastCharacter"),
+                                config.lastCharacter,
                                 mOptions.chooseDefault ?
                                     CharSelectDialog::Choose :
                                     CharSelectDialog::Focus);
@@ -777,7 +774,7 @@ int Client::exec()
                 case STATE_GAME:
                     logger->log("Memorizing selected character %s",
                             local_player->getName().c_str());
-                    config.setValue("lastCharacter", local_player->getName());
+                    config.lastCharacter = local_player->getName();
 
                     // Fade out logon-music here too to give the desired effect
                     // of "flowing" into the game.
@@ -963,16 +960,6 @@ void Client::showErrorDialog(const std::string &message, State state)
     showOkDialog(_("Error"), message, state);
 }
 
-void Client::event(Event::Channel channel, const Event &event)
-{
-    if (channel == Event::ConfigChannel &&
-        event.getType() == Event::ConfigOptionChanged &&
-        event.getString("option") == "fpslimit")
-    {
-        mFpsLimit = config.getIntValue("fpslimit");
-    }
-}
-
 void Client::action(const gcn::ActionEvent &event)
 {
     Window *window = nullptr;
@@ -1102,33 +1089,15 @@ void Client::initHomeDir()
 void Client::initConfiguration()
 {
     // Fill configuration with defaults
-    config.setValue("updatehost", branding.getValue("defaultUpdateHost",
-                                                    std::string()));
+    config.updatehost = branding.getValue("defaultUpdateHost", std::string());
 
-    // Checking if the configuration file exists... otherwise create it with
-    // default options.
-    FILE *configFile = nullptr;
-    std::string configPath;
+    const std::string configPath = mConfigDir + "/config.xml";
+    XML::Document doc(configPath, false);
 
-    configPath = mConfigDir + "/config.xml";
-
-    configFile = fopen(configPath.c_str(), "r");
-
-    // If we can't read it, it doesn't exist !
-    if (!configFile)
-    {
-        // We reopen the file in write mode and we create it
-        configFile = fopen(configPath.c_str(), "wt");
-    }
-    if (!configFile)
-    {
-       logger->log("Can't create %s. Using defaults.", configPath.c_str());
-    }
+    if (doc.rootNode() && doc.rootNode().name() == "configuration")
+        deserialize(doc.rootNode(), config);
     else
-    {
-        fclose(configFile);
-        config.init(configPath);
-    }
+        logger->log("Couldn't read configuration file: %s", configPath.c_str());
 }
 
 /**
@@ -1139,7 +1108,7 @@ void Client::initUpdatesDir()
 {
     // If updatesHost is currently empty, fill it from config file
     if (mUpdateHost.empty())
-        mUpdateHost = config.getStringValue("updatehost");
+        mUpdateHost = config.updatehost;
 
     // Exit on empty update host.
     if (mUpdateHost.empty())
@@ -1217,17 +1186,16 @@ void Client::initScreenshotDir()
         mScreenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
 #endif
 
-        if (config.getBoolValue("useScreenshotDirectorySuffix"))
+        if (config.useScreenshotDirectorySuffix)
         {
-            std::string configScreenshotSuffix =
-                config.getValue("screenshotDirectorySuffix",
-                                branding.getValue("appShort", "Mana"));
+            std::string screenshotSuffix = config.screenshotDirectorySuffix;
+            if (screenshotSuffix.empty())
+                screenshotSuffix = branding.getValue("appShort", "Mana");
 
-            if (!configScreenshotSuffix.empty())
+            if (!screenshotSuffix.empty())
             {
-                mScreenshotDir += "/" + configScreenshotSuffix;
-                config.setValue("screenshotDirectorySuffix",
-                                configScreenshotSuffix);
+                mScreenshotDir += "/" + screenshotSuffix;
+                config.screenshotDirectorySuffix = screenshotSuffix;
             }
         }
     }
@@ -1249,15 +1217,15 @@ void Client::accountLogin(LoginData *loginData)
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
     if (loginData->remember)
-        config.setValue("username", loginData->username);
-    config.setValue("remember", loginData->remember);
+        config.username = loginData->username;
+    config.remember = loginData->remember;
 }
 
 void Client::handleWindowSizeChanged(int width, int height)
 {
     // Store the new size in the configuration.
-    config.setValue("screenwidth", width);
-    config.setValue("screenheight", height);
+    config.screenWidth = width;
+    config.screenHeight = height;
 
     mVideo.windowSizeChanged(width, height);
 

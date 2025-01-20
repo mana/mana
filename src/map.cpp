@@ -40,6 +40,7 @@
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
 
+#include <cassert>
 #include <queue>
 #include <climits>
 
@@ -326,7 +327,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 
     // Draw backgrounds
     drawAmbientLayers(graphics, BACKGROUND_LAYERS, scrollX, scrollY,
-                      config.getIntValue("OverlayDetail"));
+                      config.overlayDetail);
 
     // draw the game world
     for (auto &layer : mLayers)
@@ -365,7 +366,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     }
 
     drawAmbientLayers(graphics, FOREGROUND_LAYERS, scrollX, scrollY,
-                      config.getIntValue("OverlayDetail"));
+                      config.overlayDetail);
 }
 
 void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
@@ -961,7 +962,7 @@ void Map::addParticleEffect(const std::string &effectFile, int x, int y, int w,
 
 void Map::initializeParticleEffects(Particle *particleEngine)
 {
-    if (config.getBoolValue("particleeffects"))
+    if (config.particleEffects)
     {
         for (auto &particleEffect : particleEffects)
         {

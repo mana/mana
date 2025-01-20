@@ -78,8 +78,13 @@ class OutfitWindow : public Window, gcn::ActionListener
 
         void save();
 
-        int mItems[OUTFITS_COUNT][OUTFIT_ITEM_COUNT];
-        bool mItemsUnequip[OUTFITS_COUNT];
+        struct Outfit
+        {
+            int items[OUTFIT_ITEM_COUNT];
+            bool unequip = true;
+        };
+
+        Outfit mOutfits[OUTFITS_COUNT];
         int mItemSelected = -1;
 
         int mCurrentOutfit = 0;

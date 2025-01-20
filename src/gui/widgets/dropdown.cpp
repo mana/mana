@@ -110,7 +110,7 @@ DropDown::~DropDown()
 
 void DropDown::updateAlpha()
 {
-    float alpha = std::max(config.getFloatValue("guialpha"),
+    float alpha = std::max(config.guiAlpha,
                            Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)

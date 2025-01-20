@@ -29,56 +29,10 @@
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 
-#define PLAYER_IGNORE_STRATEGY_NOP "nop"
-#define DEFAULT_IGNORE_STRATEGY PLAYER_IGNORE_STRATEGY_NOP
-
-#define NAME "name" // constant for xml serialisation
-#define RELATION "relation" // constant for xml serialisation
-
-// (De)serialisation class
-class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::string, PlayerRelation>,
-                                                             std::map<std::string, PlayerRelation> *>
-{
-    ConfigurationObject *writeConfigItem(const std::pair<std::string, PlayerRelation> &value,
-                                         ConfigurationObject *cobj) override
-    {
-        cobj->setValue(NAME, value.first);
-        cobj->setValue(RELATION, toString(static_cast<int>(value.second)));
-
-        return cobj;
-    }
-
-    std::map<std::string, PlayerRelation> *
-    readConfigItem(ConfigurationObject *cobj,
-                   std::map<std::string, PlayerRelation> *container) override
-    {
-        std::string name = cobj->getValue(NAME, std::string());
-        if (name.empty())
-            return container;
-
-        int v = cobj->getValue(RELATION, static_cast<int>(PlayerRelation::NEUTRAL));
-        (*container)[name] = static_cast<PlayerRelation>(v);
-
-        return container;
-    }
-};
-
-
-
 PlayerRelationsManager::~PlayerRelationsManager()
 {
     delete_all(mIgnoreStrategies);
 }
-
-void PlayerRelationsManager::clear()
-{
-    mRelations.clear();
-    signalUpdate();
-}
-
-#define PERSIST_IGNORE_LIST "persistent-player-list"
-#define PLAYER_IGNORE_STRATEGY "player-ignore-strategy"
-#define DEFAULT_PERMISSIONS "default-player-permissions"
 
 int PlayerRelationsManager::getPlayerIgnoreStrategyIndex(const std::string &name)
 {
@@ -92,43 +46,22 @@ int PlayerRelationsManager::getPlayerIgnoreStrategyIndex(const std::string &name
 
 void PlayerRelationsManager::init()
 {
-    mPersistIgnores = config.getValue(PERSIST_IGNORE_LIST, 1);
-    mDefaultPermissions = config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
-    std::string ignore_strategy_name = config.getValue(PLAYER_IGNORE_STRATEGY, DEFAULT_IGNORE_STRATEGY);
-    int ignore_strategy_index = getPlayerIgnoreStrategyIndex(ignore_strategy_name);
-    if (ignore_strategy_index >= 0)
-        setPlayerIgnoreStrategy(getPlayerIgnoreStrategies()[ignore_strategy_index]);
-
-    mRelations.clear();
+    int index = getPlayerIgnoreStrategyIndex(config.playerIgnoreStrategy);
+    if (index >= 0)
+        setPlayerIgnoreStrategy(getPlayerIgnoreStrategies()[index]);
 
     // Ignores are always saved to the config file, but might not be loaded
-    if (mPersistIgnores)
-    {
-        PlayerConfSerialiser player_conf_serialiser;
-        config.getList<std::pair<std::string, PlayerRelation>,
-                       std::map<std::string, PlayerRelation> *>
-                ("player", &mRelations, player_conf_serialiser);
-    }
+    if (config.persistentPlayerList)
+        mRelations = config.players;
 
     signalUpdate();
 }
 
 void PlayerRelationsManager::store()
 {
-    PlayerConfSerialiser player_conf_serialiser;
-    config.setList<std::map<std::string, PlayerRelation>::const_iterator,
-                   std::pair<std::string, PlayerRelation>,
-                   std::map<std::string, PlayerRelation> *>
-        ("player",
-         mRelations.begin(), mRelations.end(),
-         player_conf_serialiser);
-
-    config.setValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
-    config.setValue(PERSIST_IGNORE_LIST, mPersistIgnores);
-    config.setValue(PLAYER_IGNORE_STRATEGY,
-                    (mIgnoreStrategy)? mIgnoreStrategy->mShortName : DEFAULT_IGNORE_STRATEGY);
-
-    config.write();
+    config.playerIgnoreStrategy = mIgnoreStrategy ? mIgnoreStrategy->mShortName
+                                                  : DEFAULT_IGNORE_STRATEGY;
+    config.players = mRelations;
 }
 
 void PlayerRelationsManager::signalUpdate()
@@ -143,7 +76,7 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(
                                                   const std::string &playerName,
                                                   unsigned int flags)
 {
-    unsigned int permissions = mDefaultPermissions;
+    unsigned int permissions = config.defaultPlayerPermissions;
 
     switch (getRelation(playerName))
     {
@@ -238,12 +171,12 @@ PlayerRelation PlayerRelationsManager::getRelation(const std::string &name) cons
 
 unsigned int PlayerRelationsManager::getDefault() const
 {
-    return mDefaultPermissions;
+    return config.defaultPlayerPermissions;
 }
 
 void PlayerRelationsManager::setDefault(unsigned int permissions)
 {
-    mDefaultPermissions = permissions;
+    config.defaultPlayerPermissions = permissions;
     signalUpdate();
 }
 
@@ -258,7 +191,7 @@ public:
     PIS_nothing()
     {
         mDescription = _("Completely ignore");
-        mShortName = PLAYER_IGNORE_STRATEGY_NOP;
+        mShortName = "nop";
     }
 
     void ignore(Being *being, unsigned int flags) override

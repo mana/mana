@@ -73,7 +73,7 @@ Being::Being(int id, Type type, int subtype, Map *map):
     mMoveSpeed = Net::getPlayerHandler()->getDefaultMoveSpeed();
 
     if (getType() == PLAYER)
-        mShowName = config.getBoolValue("visiblenames");
+        mShowName = config.visibleNames;
 
     if (getType() == PLAYER || getType() == NPC)
         setShowName(true);
@@ -287,7 +287,7 @@ void Being::setSpeech(const std::string &text, int time)
     if (!mSpeech.empty())
         mSpeechTimer.set(std::min(time, SPEECH_MAX_TIME));
 
-    const int speech = config.getIntValue("speech");
+    const int speech = config.speech;
     if (speech == TEXT_OVERHEAD)
     {
         delete mText;
@@ -908,7 +908,7 @@ void Being::updateMovement()
 void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = getPixelX() - offsetX;
-    const int speech = config.getIntValue("speech");
+    const int speech = config.speech;
 
     // Draw speech above this being
     if (mSpeechTimer.passed())
@@ -979,7 +979,7 @@ void Being::showName()
 
     if (getType() == PLAYER)
     {
-        if (config.getBoolValue("showgender"))
+        if (config.showGender)
         {
             if (getGender() == Gender::FEMALE)
                 mDisplayName += " \u2640";
@@ -997,7 +997,7 @@ void Being::showName()
 
     if (getType() == MONSTER)
     {
-        if (config.getBoolValue("showMonstersTakedDamage"))
+        if (config.showMonstersTakedDamage)
         {
             mDisplayName += ", " + toString(getDamageTaken());
         }
@@ -1234,7 +1234,7 @@ void Being::event(Event::Channel channel, const Event &event)
     {
         if (getType() == PLAYER && event.getString("option") == "visiblenames")
         {
-            setShowName(config.getBoolValue("visiblenames"));
+            setShowName(config.visibleNames);
         }
     }
 }

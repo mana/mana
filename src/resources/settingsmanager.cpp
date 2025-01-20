@@ -123,7 +123,7 @@ namespace SettingsManager
 
         if (node.name() == "monsters")
         {
-            if (node.hasProperty("offset"))
+            if (node.hasAttribute("offset"))
             {
                 MonsterDB::setMonsterIdOffset(node.getProperty("offset", 0));
             }

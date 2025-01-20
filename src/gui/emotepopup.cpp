@@ -22,10 +22,10 @@
 
 #include "gui/emotepopup.h"
 
-#include "imagesprite.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
+#include "imagesprite.h"
 #include "log.h"
 
 #include "resources/emotedb.h"
@@ -46,7 +46,7 @@ EmotePopup::EmotePopup()
     if (!mSelectionImage)
         logger->error("Unable to load selection.png");
 
-    mSelectionImage->setAlpha(config.getFloatValue("guialpha"));
+    mSelectionImage->setAlpha(config.guiAlpha);
 
     addMouseListener(this);
     recalculateSize();

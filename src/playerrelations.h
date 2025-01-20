@@ -52,6 +52,8 @@ struct PlayerPermissions
     };
 };
 
+static constexpr const char *DEFAULT_IGNORE_STRATEGY = "nop";
+
 /**
  * Ignore strategy: describes how we should handle ignores.
  */
@@ -178,23 +180,6 @@ public:
      */
     std::vector<std::string> getPlayers() const;
 
-    /**
-     * Removes all recorded player info.
-     */
-    void clear();
-
-    /**
-     * Do we persist our `ignore' setup?
-     */
-    bool getPersistIgnores() const { return mPersistIgnores; }
-
-    /**
-     * Change the `ignore persist' flag.
-     *
-     * @param value Whether to persist ignores
-     */
-    void setPersistIgnores(bool value) { mPersistIgnores = value; }
-
     void addListener(PlayerRelationsListener *listener)
     {
         mListeners.push_back(listener);
@@ -207,9 +192,6 @@ public:
 
 private:
     void signalUpdate();
-
-    bool mPersistIgnores = false; // If NOT set, we delete the ignored data upon reloading
-    unsigned int mDefaultPermissions = PlayerPermissions::DEFAULT;
 
     PlayerIgnoreStrategy *mIgnoreStrategy = nullptr;
     std::map<std::string, PlayerRelation> mRelations;

@@ -22,7 +22,6 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "eventlistener.h"
 #include "video.h"
 
 #include "net/serverinfo.h"
@@ -111,7 +110,7 @@ public:
  * The core part of the client. This class initializes all subsystems, runs
  * the event loop, and shuts everything down again.
  */
-class Client final : public EventListener, public gcn::ActionListener
+class Client final : public gcn::ActionListener
 {
 public:
     /**
@@ -187,7 +186,6 @@ public:
     static Video &getVideo()
     { return instance()->mVideo; }
 
-    void event(Event::Channel channel, const Event &event) override;
     void action(const gcn::ActionEvent &event) override;
 
     /**
@@ -239,7 +237,6 @@ private:
 
     SDL_TimerID mSecondsCounterId = 0;
 
-    int mFpsLimit = 0;
     FpsManager mFpsManager;
 };
 

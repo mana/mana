@@ -186,7 +186,7 @@ private:
 static const char *overlayDetailToString(int detail)
 {
     if (detail == -1)
-        detail = config.getIntValue("OverlayDetail");
+        detail = config.overlayDetail;
 
     switch (detail)
     {
@@ -200,7 +200,7 @@ static const char *overlayDetailToString(int detail)
 static const char *particleDetailToString(int detail)
 {
     if (detail == -1)
-        detail = 3 - config.getIntValue("particleEmitterSkip");
+        detail = 3 - config.particleEmitterSkip;
 
     switch (detail)
     {
@@ -214,10 +214,10 @@ static const char *particleDetailToString(int detail)
 
 Setup_Video::Setup_Video():
     mVideoSettings(Client::getVideo().settings()),
-    mCustomCursorEnabled(config.getBoolValue("customcursor")),
-    mParticleEffectsEnabled(config.getBoolValue("particleeffects")),
-    mFps(config.getIntValue("fpslimit")),
-    mSDLTransparencyDisabled(config.getBoolValue("disableTransparency")),
+    mCustomCursorEnabled(config.customCursor),
+    mParticleEffectsEnabled(config.particleEffects),
+    mFps(config.fpsLimit),
+    mSDLTransparencyDisabled(config.disableTransparency),
     mWindowModeListModel(new StringListModel({ _("Windowed"), _("Windowed Fullscreen"), _("Fullscreen") })),
     mResolutionListModel(new ResolutionListModel),
     mScaleListModel(new ScaleListModel(mVideoSettings)),
@@ -231,10 +231,10 @@ Setup_Video::Setup_Video():
     mFpsCheckBox(new CheckBox(_("FPS limit:"))),
     mFpsSlider(new Slider(10, 120)),
     mFpsLabel(new Label),
-    mOverlayDetail(config.getIntValue("OverlayDetail")),
+    mOverlayDetail(config.overlayDetail),
     mOverlayDetailSlider(new Slider(0, 2)),
     mOverlayDetailField(new Label),
-    mParticleDetail(3 - config.getIntValue("particleEmitterSkip")),
+    mParticleDetail(3 - config.particleEmitterSkip),
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new Label),
     mDisableSDLTransparencyCheckBox(
@@ -361,11 +361,11 @@ void Setup_Video::apply()
 
     if (video.apply(mVideoSettings))
     {
-        config.setValue("windowmode", static_cast<int>(mVideoSettings.windowMode));
-        config.setValue("scale", mVideoSettings.userScale);
-        config.setValue("vsync", mVideoSettings.vsync);
-        config.setValue("screenwidth", mVideoSettings.width);
-        config.setValue("screenheight", mVideoSettings.height);
+        config.windowMode = mVideoSettings.windowMode;
+        config.scale = mVideoSettings.userScale;
+        config.vsync = mVideoSettings.vsync;
+        config.screenWidth = mVideoSettings.width;
+        config.screenHeight = mVideoSettings.height;
 
         Client::instance()->checkGraphicsSize();
     }
@@ -377,7 +377,7 @@ void Setup_Video::apply()
     // OpenGL change
     if (mOpenGLCheckBox->isSelected() != mVideoSettings.openGL)
     {
-        config.setValue("opengl", mOpenGLCheckBox->isSelected());
+        config.opengl = mOpenGLCheckBox->isSelected();
 
         // OpenGL can currently only be changed by restarting, notify user.
         if (mOpenGLCheckBox->isSelected())
@@ -397,7 +397,7 @@ void Setup_Video::apply()
     // If LowCPU is enabled from a disabled state we warn the user
     else if (mDisableSDLTransparencyCheckBox->isSelected())
     {
-        if (!config.getBoolValue("disableTransparency"))
+        if (!config.disableTransparency)
         {
             new OkDialog(_("Transparency disabled"),
                          _("You must restart to apply changes."));
@@ -405,29 +405,28 @@ void Setup_Video::apply()
     }
     else
     {
-        if (config.getBoolValue("disableTransparency"))
+        if (config.disableTransparency)
         {
             new OkDialog(_("Transparency enabled"),
                          _("You must restart to apply changes."));
         }
     }
-    config.setValue("disableTransparency",
-                    mDisableSDLTransparencyCheckBox->isSelected());
+    config.disableTransparency = mDisableSDLTransparencyCheckBox->isSelected();
 
     mFps = mFpsCheckBox->isSelected() ? (int) mFpsSlider->getValue() : 0;
     mFpsSlider->setEnabled(mFps > 0);
 
     // FPS change
-    config.setValue("fpslimit", mFps);
+    config.fpsLimit = mFps;
 
     // We sync old and new values at apply time
-    mVideoSettings.windowMode = static_cast<WindowMode>(config.getIntValue("windowmode"));
-    mVideoSettings.vsync = config.getBoolValue("vsync");
-    mVideoSettings.openGL = config.getBoolValue("opengl");
-    mCustomCursorEnabled = config.getBoolValue("customcursor");
-    mParticleEffectsEnabled = config.getBoolValue("particleeffects");
-    mOverlayDetail = config.getIntValue("OverlayDetail");
-    mSDLTransparencyDisabled = config.getBoolValue("disableTransparency");
+    mVideoSettings.windowMode = config.windowMode;
+    mVideoSettings.vsync = config.vsync;
+    mVideoSettings.openGL = config.opengl;
+    mCustomCursorEnabled = config.customCursor;
+    mParticleEffectsEnabled = config.particleEffects;
+    mOverlayDetail = config.overlayDetail;
+    mSDLTransparencyDisabled = config.disableTransparency;
 }
 
 void Setup_Video::cancel()
@@ -452,12 +451,12 @@ void Setup_Video::cancel()
     mDisableSDLTransparencyCheckBox->setSelected(mSDLTransparencyDisabled);
     mDisableSDLTransparencyCheckBox->setEnabled(!mVideoSettings.openGL);
 
-    config.setValue("windowmode", static_cast<int>(mVideoSettings.windowMode));
+    config.windowMode = mVideoSettings.windowMode;
 
-    config.setValue("customcursor", mCustomCursorEnabled);
-    config.setValue("particleeffects", mParticleEffectsEnabled);
-    config.setValue("opengl", mVideoSettings.openGL);
-    config.setValue("disableTransparency", mSDLTransparencyDisabled);
+    config.customCursor = mCustomCursorEnabled;
+    config.particleEffects = mParticleEffectsEnabled;
+    config.opengl = mVideoSettings.openGL;
+    config.disableTransparency = mSDLTransparencyDisabled;
 }
 
 void Setup_Video::action(const gcn::ActionEvent &event)
@@ -490,12 +489,11 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
     else if (id == "customcursor")
     {
-        config.setValue("customcursor", mCustomCursorCheckBox->isSelected());
+        config.customCursor = mCustomCursorCheckBox->isSelected();
     }
     else if (id == "particleeffects")
     {
-        config.setValue("particleeffects",
-                        mParticleEffectsCheckBox->isSelected());
+        config.particleEffects = mParticleEffectsCheckBox->isSelected();
         Particle::enabled = mParticleEffectsCheckBox->isSelected();
 
         if (Game::instance())
@@ -508,13 +506,13 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         int val = (int) mOverlayDetailSlider->getValue();
         mOverlayDetailField->setCaption(overlayDetailToString(val));
-        config.setValue("OverlayDetail", val);
+        config.overlayDetail = val;
     }
     else if (id == "particledetailslider")
     {
         int val = (int) mParticleDetailSlider->getValue();
         mParticleDetailField->setCaption(particleDetailToString(val));
-        config.setValue("particleEmitterSkip", 3 - val);
+        config.particleEmitterSkip = 3 - val;
         Particle::emitterSkip = 4 - val;
     }
     else if (id == "fpslimitcheckbox" || id == "fpslimitslider")

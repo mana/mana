@@ -27,51 +27,26 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-static const std::string ColorTypeNames[] = {
-    "ColorBeing",
-    "ColorPlayer",
-    "ColorSelf",
-    "ColorGM",
-    "ColorNPC",
-    "ColorMonster",
-    "ColorParty",
-    "ColorGuild",
-    "ColorParticle",
-    "ColorExperience",
-    "ColorPickup",
-    "ColorHitPlayerMonster",
-    "ColorHitMonsterPlayer",
-    "ColorHitCritical",
-    "ColorHitLocalPlayerMonster",
-    "ColorHitLocalPlayerCritical",
-    "ColorHitLocalPlayerMiss",
-    "ColorMiss"
+static constexpr const char *ColorTypeNames[] = {
+    "Being",
+    "Player",
+    "Self",
+    "GM",
+    "NPC",
+    "Monster",
+    "Party",
+    "Guild",
+    "Particle",
+    "Experience",
+    "Pickup",
+    "HitPlayerMonster",
+    "HitMonsterPlayer",
+    "HitCritical",
+    "HitLocalPlayerMonster",
+    "HitLocalPlayerCritical",
+    "HitLocalPlayerMiss",
+    "Miss"
 };
-
-std::string UserPalette::getConfigName(const std::string &typeName)
-{
-    std::string res = "Color" + typeName;
-
-    int pos = 5;
-    for (size_t i = 0; i < typeName.length(); i++)
-    {
-        if (i == 0 || typeName[i] == '_')
-        {
-            if (i > 0)
-                i++;
-
-            res[pos] = typeName[i];
-        }
-        else
-        {
-           res[pos] = tolower(typeName[i]);
-        }
-        pos++;
-    }
-    res.erase(pos, res.length() - pos);
-
-    return res;
-}
 
 UserPalette::UserPalette():
         Palette(USER_COLOR_LAST)
@@ -110,20 +85,20 @@ UserPalette::UserPalette():
 
 UserPalette::~UserPalette()
 {
+    config.colors.clear();
+
+    // TODO: Don't write out colors when they have the default value
     for (auto &color : mColors)
     {
-        const std::string &configName = ColorTypeNames[color.type];
-        config.setValue(configName + "Gradient", color.committedGrad);
+        auto &configColor = config.colors[ColorTypeNames[color.type]];
 
-        if (color.grad != STATIC)
-            config.setValue(configName + "Delay", color.delay);
+        configColor.gradient = color.committedGrad;
+
+        if (color.grad != STATIC && color.delay != GRADIENT_DELAY)
+            configColor.delay = color.delay;
 
         if (color.grad == STATIC || color.grad == PULSE)
-        {
-            char buffer[20];
-            snprintf(buffer, 20, "0x%06x", color.getRGB());
-            config.setValue(configName, std::string(buffer));
-        }
+            configColor.color = strprintf("0x%06x", color.getRGB());
     }
 }
 
@@ -215,23 +190,19 @@ int UserPalette::getColorTypeAt(int i)
     return mColors[i].type;
 }
 
-void UserPalette::addColor(int type, int rgb, Palette::GradientType grad,
+void UserPalette::addColor(int type, unsigned rgb, GradientType grad,
                            const std::string &text, int delay)
 {
-    const std::string &configName = ColorTypeNames[type];
-    char buffer[20];
-    snprintf(buffer, 20, "0x%06x", rgb);
-    const std::string rgbString = config.getValue(configName,
-                                                  std::string(buffer));
-    unsigned int rgbValue = 0;
-    if (rgbString.length() == 8 && rgbString[0] == '0' && rgbString[1] == 'x')
-        rgbValue = atox(rgbString);
-    else
-        rgbValue = atoi(rgbString.c_str());
-    gcn::Color trueCol = rgbValue;
-    grad = (GradientType) config.getValue(configName + "Gradient", grad);
-    delay = (int) config.getValue(configName + "Delay", delay);
-    mColors[type].set(type, trueCol, grad, delay);
+    auto colorIt = config.colors.find(ColorTypeNames[type]);
+    if (colorIt != config.colors.end())
+    {
+        const UserColor &userColor = colorIt->second;
+        rgb = atox(userColor.color);
+        grad = static_cast<GradientType>(userColor.gradient);
+        delay = userColor.delay.value_or(GRADIENT_DELAY);
+    }
+
+    mColors[type].set(type, gcn::Color(rgb), grad, delay);
     mColors[type].text = text;
 
     if (grad != STATIC)

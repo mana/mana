@@ -269,8 +269,8 @@ void GuiTable::draw(gcn::Graphics* graphics)
     if (!mModel)
         return;
 
-    if (config.getFloatValue("guialpha") != mAlpha)
-        mAlpha = config.getFloatValue("guialpha");
+    if (config.guiAlpha != mAlpha)
+        mAlpha = config.guiAlpha;
 
     if (mOpaque)
     {

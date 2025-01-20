@@ -43,7 +43,6 @@
 #include "net/tmwa/itemhandler.h"
 #include "net/tmwa/loginhandler.h"
 #include "net/tmwa/messagein.h"
-#include "net/tmwa/messageout.h"
 #include "net/tmwa/network.h"
 #include "net/tmwa/npchandler.h"
 #include "net/tmwa/partyhandler.h"
@@ -73,7 +72,7 @@ extern Party *taParty;
 
 GeneralHandler::GeneralHandler():
     mAdminHandler(new AdminHandler),
-    mBeingHandler(new BeingHandler(config.getBoolValue("EnableSync"))),
+    mBeingHandler(new BeingHandler(config.enableSync)),
     mBuySellHandler(new BuySellHandler),
     mCharHandler(new CharServerHandler),
     mChatHandler(new ChatHandler),

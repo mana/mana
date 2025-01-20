@@ -20,8 +20,6 @@
 
 #include "gui/customserverdialog.h"
 
-#include "configuration.h"
-
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
 #include "gui/serverdialog.h"

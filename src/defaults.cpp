@@ -20,7 +20,6 @@
 
 #include "defaults.h"
 
-#include "being.h"
 #include "client.h"
 
 VariableData *createData(int defData)
@@ -57,70 +56,6 @@ template<typename T>
 void AddDEF(DefaultsData *defaultsData, const char *key, T value)
 {
     defaultsData->insert(std::make_pair(key, createData(value)));
-}
-
-DefaultsData* getConfigDefaults()
-{
-    auto* configData = new DefaultsData;
-    // Init main config defaults
-    AddDEF(configData, "OverlayDetail", 2);
-    AddDEF(configData, "speechBubblecolor", "000000");
-    AddDEF(configData, "speechBubbleAlpha", 1.0f);
-    AddDEF(configData, "MostUsedServerName0", "server.themanaworld.org");
-    AddDEF(configData, "visiblenames", true);
-    AddDEF(configData, "speech", Being::TEXT_OVERHEAD);
-    AddDEF(configData, "showgender", false);
-    AddDEF(configData, "showMonstersTakedDamage", false);
-    AddDEF(configData, "particleMaxCount", 3000);
-    AddDEF(configData, "particleFastPhysics", 0);
-    AddDEF(configData, "particleEmitterSkip", 1);
-    AddDEF(configData, "particleeffects", true);
-    AddDEF(configData, "logToStandardOut", false);
-    AddDEF(configData, "opengl", false);
-    AddDEF(configData, "windowmode", static_cast<int>(WindowMode::Windowed));
-    AddDEF(configData, "screenwidth", defaultScreenWidth);
-    AddDEF(configData, "screenheight", defaultScreenHeight);
-    AddDEF(configData, "scale", 0);
-    AddDEF(configData, "vsync", true);
-    AddDEF(configData, "sound", true);
-    AddDEF(configData, "sfxVolume", 100);
-    AddDEF(configData, "notificationsVolume", 100);
-    AddDEF(configData, "musicVolume", 60);
-    AddDEF(configData, "remember", true);
-    AddDEF(configData, "username", "");
-    AddDEF(configData, "lastCharacter", "");
-    AddDEF(configData, "fpslimit", 0);
-    AddDEF(configData, "updatehost", "");
-    AddDEF(configData, "screenshotDirectory", "");
-    AddDEF(configData, "useScreenshotDirectorySuffix", true);
-    AddDEF(configData, "screenshotDirectorySuffix", "");
-    AddDEF(configData, "EnableSync", false);
-    AddDEF(configData, "joystickEnabled", false);
-    AddDEF(configData, "upTolerance", 100);
-    AddDEF(configData, "downTolerance", 100);
-    AddDEF(configData, "leftTolerance", 100);
-    AddDEF(configData, "rightTolerance", 100);
-    AddDEF(configData, "logNpcInGui", true);
-    AddDEF(configData, "download-music", false);
-    AddDEF(configData, "guialpha", 0.8f);
-    AddDEF(configData, "ChatLogLength", 128);
-    AddDEF(configData, "enableChatLog", false);
-    AddDEF(configData, "whispertab", true);
-    AddDEF(configData, "customcursor", true);
-    AddDEF(configData, "showownname", false);
-    AddDEF(configData, "showpickupparticle", true);
-    AddDEF(configData, "showpickupchat", false);
-    AddDEF(configData, "fontSize", 12);
-    AddDEF(configData, "ReturnToggles", false);
-    AddDEF(configData, "ScrollLaziness", 16);
-    AddDEF(configData, "ScrollRadius", 0);
-    AddDEF(configData, "ScrollCenterOffsetX", 0);
-    AddDEF(configData, "ScrollCenterOffsetY", 0);
-    AddDEF(configData, "onlineServerList", "");
-    AddDEF(configData, "theme", "");
-    AddDEF(configData, "disableTransparency", false);
-
-    return configData;
 }
 
 DefaultsData* getBrandingDefaults()

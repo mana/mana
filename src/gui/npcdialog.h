@@ -22,8 +22,6 @@
 #ifndef NPCDIALOG_H
 #define NPCDIALOG_H
 
-#include "eventlistener.h"
-
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
@@ -48,8 +46,7 @@ class Button;
  */
 class NpcDialog final : public Window,
                         public gcn::ActionListener,
-                        public gcn::ListModel,
-                        public EventListener
+                        public gcn::ListModel
 {
     public:
         NpcDialog(int npcId);
@@ -143,8 +140,6 @@ class NpcDialog final : public Window,
 
         void setVisible(bool visible) override;
 
-        void event(Event::Channel channel, const Event &event) override;
-
         void mouseClicked(gcn::MouseEvent &mouseEvent) override;
 
         /**
@@ -170,7 +165,6 @@ class NpcDialog final : public Window,
         void buildLayout();
 
         int mNpcId;
-        bool mLogInteraction;
 
         int mDefaultInt = 0;
         std::string mDefaultString;

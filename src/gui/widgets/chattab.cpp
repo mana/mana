@@ -52,7 +52,7 @@ ChatTab::ChatTab(const std::string &name)
 
     mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     mTextOutput->setWrapIndent(15);
-    mTextOutput->setMaxRows(config.getIntValue("ChatLogLength"));
+    mTextOutput->setMaxRows(config.chatLogLength);
     mTextOutput->setLinkHandler(chatWindow->mItemLinkHandler);
 
     mScrollArea = new ScrollArea(mTextOutput);
@@ -216,7 +216,7 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
 
     line = lineColor + timeStr.str() + tmp.nick + tmp.text;
 
-    if (config.getBoolValue("enableChatLog") && !ignoreRecord)
+    if (config.enableChatLog && !ignoreRecord)
         saveToLogFile(line);
 
     // We look if the Vertical Scroll Bar is set at the max before

@@ -19,8 +19,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration.h"
 #include "joystick.h"
+
+#include "configuration.h"
 #include "log.h"
 
 #include <cassert>
@@ -40,10 +41,14 @@ void Joystick::init()
         logger->log("- %s", SDL_JoystickNameForIndex(i));
 }
 
-Joystick::Joystick(int no):
-    mDirection(0),
-    mCalibrating(false),
-    mEnabled(false)
+Joystick::Joystick(int no)
+    : mDirection(0)
+    , mUpTolerance(config.upTolerance)
+    , mDownTolerance(config.downTolerance)
+    , mLeftTolerance(config.leftTolerance)
+    , mRightTolerance(config.rightTolerance)
+    , mCalibrating(false)
+    , mEnabled(config.joystickEnabled)
 {
     assert(no < joystickCount);
 
@@ -60,12 +65,6 @@ Joystick::Joystick(int no):
     logger->log("Balls: %i", SDL_JoystickNumBalls(mJoystick));
     logger->log("Hats: %i", SDL_JoystickNumHats(mJoystick));
     logger->log("Buttons: %i", SDL_JoystickNumButtons(mJoystick));
-
-    mEnabled = config.getBoolValue("joystickEnabled");
-    mUpTolerance = config.getIntValue("upTolerance");
-    mDownTolerance = config.getIntValue("downTolerance");
-    mLeftTolerance = config.getIntValue("leftTolerance");
-    mRightTolerance = config.getIntValue("rightTolerance");
 }
 
 Joystick::~Joystick()
@@ -134,10 +133,10 @@ void Joystick::doCalibration()
 
 void Joystick::finishCalibration()
 {
-    config.setValue("leftTolerance", mLeftTolerance);
-    config.setValue("rightTolerance", mRightTolerance);
-    config.setValue("upTolerance", mUpTolerance);
-    config.setValue("downTolerance", mDownTolerance);
+    config.leftTolerance = mLeftTolerance;
+    config.rightTolerance = mRightTolerance;
+    config.upTolerance = mUpTolerance;
+    config.downTolerance = mDownTolerance;
     mCalibrating = false;
 }
 

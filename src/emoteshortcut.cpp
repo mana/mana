@@ -24,8 +24,6 @@
 #include "configuration.h"
 #include "localplayer.h"
 
-#include "utils/stringutils.h"
-
 EmoteShortcut *emoteShortcut;
 
 EmoteShortcut::EmoteShortcut()
@@ -41,16 +39,23 @@ EmoteShortcut::~EmoteShortcut()
 void EmoteShortcut::load()
 {
     for (int i = 0; i < SHORTCUT_EMOTES; i++)
+        mEmotes[i] = i + 1;
+
+    for (auto &shortcut : config.emoteShortcuts)
     {
-        mEmotes[i] = (int) config.getValue("emoteshortcut" + toString(i), i + 1);
+        if (shortcut.index >= 0 && shortcut.index < SHORTCUT_EMOTES)
+            mEmotes[shortcut.index] = shortcut.emoteId;
     }
 }
 
 void EmoteShortcut::save()
 {
+    config.emoteShortcuts.clear();
+
     for (int i = 0; i < SHORTCUT_EMOTES; i++)
     {
-        config.setValue("emoteshortcut" + toString(i), mEmotes[i]);
+        if (mEmotes[i] != i + 1)
+            config.emoteShortcuts.push_back({ i, mEmotes[i] });
     }
 }
 

@@ -58,9 +58,9 @@ ResizeGrip::~ResizeGrip()
 
 void ResizeGrip::draw(gcn::Graphics *graphics)
 {
-    if (config.getFloatValue("guialpha") != mAlpha)
+    if (config.guiAlpha != mAlpha)
     {
-        mAlpha = config.getFloatValue("guialpha");
+        mAlpha = config.guiAlpha;
         gripImage->setAlpha(mAlpha);
     }
 

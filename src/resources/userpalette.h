@@ -175,24 +175,12 @@ class UserPalette : public Palette, public gcn::ListModel
         void commit(bool commitNonStatic);
 
         /**
-         * Prefixes the given string with "Color", lowercases all letters but
-         * the first and all following a '_'. All '_'s will be removed.
-         *
-         * E.g.: HIT_PLAYER_MONSTER -> HitPlayerMonster
-         *
-         * @param typeName string to transform
-         *
-         * @return the transformed string
-         */
-        static std::string getConfigName(const std::string &typeName);
-
-        /**
          * Initialise color
          *
          * @param rgb default color if not found in config
          * @param text identifier of color
          */
-        void addColor(int type, int rgb, GradientType grad,
+        void addColor(int type, unsigned int rgb, GradientType grad,
                       const std::string &text, int delay = GRADIENT_DELAY);
 };
 

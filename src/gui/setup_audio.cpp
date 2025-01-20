@@ -34,11 +34,11 @@
 #include "utils/gettext.h"
 
 Setup_Audio::Setup_Audio():
-    mMusicVolume(config.getIntValue("musicVolume")),
-    mSfxVolume(config.getIntValue("sfxVolume")),
-    mNotificationsVolume(config.getIntValue("notificationsVolume")),
-    mSoundEnabled(config.getBoolValue("sound")),
-    mDownloadEnabled(config.getBoolValue("download-music")),
+    mMusicVolume(config.musicVolume),
+    mSfxVolume(config.sfxVolume),
+    mNotificationsVolume(config.notificationsVolume),
+    mSoundEnabled(config.sound),
+    mDownloadEnabled(config.downloadMusic),
     mSoundCheckBox(new CheckBox(_("Sound"), mSoundEnabled)),
     mDownloadMusicCheckBox(new CheckBox(_("Download music"), mDownloadEnabled)),
     mSfxSlider(new Slider(0, sound.getMaxVolume())),
@@ -84,19 +84,19 @@ void Setup_Audio::apply()
 {
     mSoundEnabled = mSoundCheckBox->isSelected();
     mDownloadEnabled = mDownloadMusicCheckBox->isSelected();
-    mSfxVolume = config.getIntValue("sfxVolume");
-    mNotificationsVolume = config.getIntValue("sfxVolume");
-    mMusicVolume = config.getIntValue("musicVolume");
+    mSfxVolume = config.sfxVolume;
+    mNotificationsVolume = config.sfxVolume;
+    mMusicVolume = config.musicVolume;
 
-    config.setValue("sound", mSoundEnabled);
+    config.sound = mSoundEnabled;
 
     // Display a message if user has selected to download music,
     // And if downloadmusic is not already enabled
-    if (mDownloadEnabled && !config.getBoolValue("download-music"))
+    if (mDownloadEnabled && !config.downloadMusic)
     {
         new OkDialog(_("Notice"),_("You may have to restart your client if you want to download new music"));
     }
-    config.setValue("download-music", mDownloadEnabled);
+    config.downloadMusic = mDownloadEnabled;
 
     if (mSoundEnabled)
     {
@@ -127,10 +127,10 @@ void Setup_Audio::cancel()
     sound.setMusicVolume(mMusicVolume);
     mMusicSlider->setValue(mMusicVolume);
 
-    config.setValue("sound", mSoundEnabled);
-    config.setValue("download-music", mDownloadEnabled);
-    config.setValue("sfxVolume", mSfxVolume);
-    config.setValue("musicVolume", mMusicVolume);
+    config.sound = mSoundEnabled;
+    config.downloadMusic = mDownloadEnabled;
+    config.sfxVolume = mSfxVolume;
+    config.musicVolume = mMusicVolume;
 }
 
 void Setup_Audio::action(const gcn::ActionEvent &event)
@@ -138,19 +138,19 @@ void Setup_Audio::action(const gcn::ActionEvent &event)
     if (event.getId() == "sfx")
     {
         int volume = (int) mSfxSlider->getValue();
-        config.setValue("sfxVolume", volume);
+        config.sfxVolume = volume;
         sound.setSfxVolume(volume);
     }
     else if (event.getId() == "notifications")
     {
         int volume = (int) mNotificationsSlider->getValue();
-        config.setValue("notificationsVolume", volume);
+        config.notificationsVolume = volume;
         sound.setNotificationsVolume(volume);
     }
     else if (event.getId() == "music")
     {
         int volume = (int) mMusicSlider->getValue();
-        config.setValue("musicVolume", volume);
+        config.musicVolume = volume;
         sound.setMusicVolume(volume);
     }
 }

@@ -152,10 +152,10 @@ class ChatWindow : public Window,
         /** Override to reset mTmpVisible */
         void setVisible(bool visible) override;
 
-	void mousePressed(gcn::MouseEvent &event) override;
-	void mouseDragged(gcn::MouseEvent &event) override;
+        void mousePressed(gcn::MouseEvent &event) override;
+        void mouseDragged(gcn::MouseEvent &event) override;
 
-	void event(Event::Channel channel, const Event &event) override;
+        void event(Event::Channel channel, const Event &event) override;
 
         /**
          * Scrolls the chat window
@@ -172,9 +172,6 @@ class ChatWindow : public Window,
          * @param msg The file to write out to. If null, then stop recording.
          */
         void setRecordingFile(const std::string &msg);
-
-        bool getReturnTogglesChat() const { return mReturnToggles; }
-        void setReturnTogglesChat(bool toggles) { mReturnToggles = toggles; }
 
         void doPresent();
 
@@ -216,9 +213,6 @@ class ChatWindow : public Window,
 
         /** Manage whisper tabs */
         std::map<const std::string, ChatTab *> mWhispers;
-
-        bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
-                                or not */
 };
 
 extern ChatWindow *chatWindow;

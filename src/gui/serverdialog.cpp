@@ -52,19 +52,6 @@
 
 static const int MAX_SERVERLIST = 6;
 
-static std::string serverTypeToString(ServerType type)
-{
-    switch (type)
-    {
-    case ServerType::TMWATHENA:
-        return "TmwAthena";
-    case ServerType::MANASERV:
-        return "ManaServ";
-    default:
-        return std::string();
-    }
-}
-
 ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
         mServers(servers),
         mVersionStrings(servers->size(), VersionString(0, std::string())),
@@ -413,7 +400,7 @@ void ServerDialog::downloadServerList()
     std::string listFile = branding.getStringValue("onlineServerList");
 
     if (listFile.empty())
-        listFile = config.getStringValue("onlineServerList");
+        listFile = config.onlineServerList;
 
     // Fall back to manasource.org when neither branding nor config set it
     if (listFile.empty())
@@ -533,38 +520,18 @@ void ServerDialog::loadServers()
 
 void ServerDialog::loadCustomServers()
 {
-    for (int i = 0; i < MAX_SERVERLIST; ++i)
+    for (auto &server : config.servers)
     {
-        const std::string index = toString(i);
-        const std::string nameKey = "MostUsedServerDescName" + index;
-        const std::string hostNameKey = "MostUsedServerName" + index;
-        const std::string typeKey = "MostUsedServerType" + index;
-        const std::string portKey = "MostUsedServerPort" + index;
-        const std::string descriptionKey = "MostUsedServerDescription" + index;
-
-        ServerInfo server;
-        server.name = config.getValue(nameKey, std::string());
-        server.hostname = config.getValue(hostNameKey, std::string());
-        server.type = ServerInfo::parseType(config.getValue(typeKey, std::string()));
-
-        const uint16_t defaultPort = ServerInfo::defaultPortForServerType(server.type);
-        server.port = static_cast<uint16_t>(config.getValue(portKey, defaultPort));
-        server.description = config.getValue(descriptionKey, std::string());
-
-        // Stop on the first invalid server
-        if (!server.isValid())
-            break;
-
-        server.save = true;
-
-        mServers.push_back(server);
+        if (server.isValid())
+        {
+            server.save = true;
+            mServers.push_back(server);
+        }
     }
 }
 
 void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
 {
-    ServerInfos::iterator it, it_end = mServers.end();
-
     // Make sure the current server is mentioned first
     if (currentServer.isValid())
     {
@@ -574,7 +541,7 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
         }
         else
         {
-            for (it = mServers.begin(); it != it_end; ++it)
+            for (auto it = mServers.begin(), it_end = mServers.end(); it != it_end; ++it)
             {
                 if (*it == currentServer)
                 {
@@ -586,35 +553,7 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
         }
     }
 
-    int savedServerCount = 0;
-
-    for (it = mServers.begin(), it_end = mServers.end();
-         it != it_end && savedServerCount < MAX_SERVERLIST; ++it)
-    {
-        const ServerInfo &server = *it;
-
-        // Only save servers that were loaded from settings
-        if (!(server.save && server.isValid()))
-            continue;
-
-        const std::string index = toString(savedServerCount);
-        const std::string nameKey = "MostUsedServerDescName" + index;
-        const std::string hostNameKey = "MostUsedServerName" + index;
-        const std::string typeKey = "MostUsedServerType" + index;
-        const std::string portKey = "MostUsedServerPort" + index;
-        const std::string descriptionKey = "MostUsedServerDescription" + index;
-
-        config.setValue(hostNameKey, toString(server.hostname));
-        config.setValue(typeKey, serverTypeToString(server.type));
-        config.setValue(portKey, toString(server.port));
-        config.setValue(nameKey, server.name);
-        config.setValue(descriptionKey, server.description);
-        ++savedServerCount;
-    }
-
-    // Insert an invalid entry at the end to make the loading stop there
-    if (savedServerCount < MAX_SERVERLIST)
-        config.setValue("MostUsedServerName" + toString(savedServerCount), std::string());
+    config.servers = mServers;
 
     // Restore the correct description
     if (index < 0)

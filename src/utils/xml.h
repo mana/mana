@@ -47,7 +47,10 @@ namespace XML
         std::string_view name() const { return (const char *) node->name; }
         std::string_view textContent() const;
 
-        bool hasProperty(const char *name) const;
+        template<typename T>
+        bool attribute(const char *name, T &value);
+
+        bool hasAttribute(const char *name) const;
         int getProperty(const char *name, int def) const;
         double getFloatProperty(const char *name, double def) const;
         std::string getProperty(const char *name, const std::string &def) const;
@@ -98,45 +101,58 @@ namespace XML
         return {};
     }
 
-    inline bool Node::hasProperty(const char *name) const
+    inline const char *Node::attribute(const char *name) const
     {
-        return xmlHasProp(node, BAD_CAST name) != nullptr;
+        if (node->type != XML_ELEMENT_NODE)
+            return nullptr;
+
+        for (xmlAttrPtr prop = node->properties; prop; prop = prop->next) {
+            if (xmlStrEqual(prop->name, BAD_CAST name)) {
+                if (prop->children)
+                    return reinterpret_cast<const char*>(prop->children->content);
+                else
+                    return nullptr;
+            }
+        }
+        return nullptr;
+    }
+
+    template<typename T>
+    inline bool Node::attribute(const char *name, T &value)
+    {
+        if (const char *str = attribute(name))
+        {
+            fromString(str, value);
+            return true;
+        }
+        return false;
+    }
+
+    inline bool Node::hasAttribute(const char *name) const
+    {
+        return attribute(name) != nullptr;
     }
 
     inline int Node::getProperty(const char *name, int def) const
     {
         int ret = def;
-
-        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
-        {
-            ret = atol((char*)prop);
-            xmlFree(prop);
-        }
-
+        if (const char *str = attribute(name))
+            fromString(str, ret);
         return ret;
     }
 
     inline double Node::getFloatProperty(const char *name, double def) const
     {
         double ret = def;
-
-        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
-        {
-            ret = atof((char*)prop);
-            xmlFree(prop);
-        }
-
+        if (const char *str = attribute(name))
+            fromString(str, ret);
         return ret;
     }
 
     inline std::string Node::getProperty(const char *name, const std::string &def) const
     {
-        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
-        {
-            std::string val = (char*)prop;
-            xmlFree(prop);
-            return val;
-        }
+        if (const char *str = attribute(name))
+            return str;
 
         return def;
     }
@@ -144,12 +160,8 @@ namespace XML
     inline bool Node::getBoolProperty(const char *name, bool def) const
     {
         bool ret = def;
-
-        if (xmlChar *prop = xmlGetProp(node, BAD_CAST name))
-        {
-            ret = getBoolFromString((char*) prop, def);
-            xmlFree(prop);
-        }
+        if (const char *str = attribute(name))
+            ret = getBoolFromString(str, def);
         return ret;
     }
 

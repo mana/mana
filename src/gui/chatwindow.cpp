@@ -123,14 +123,11 @@ ChatWindow::ChatWindow():
     mChatInput->setHistory(mHistory);
     mChatInput->setAutoComplete(mAutoComplete);
 
-    mReturnToggles = config.getBoolValue("ReturnToggles");
-
     mRecorder = new Recorder(this);
 }
 
 ChatWindow::~ChatWindow()
 {
-    config.setValue("ReturnToggles", mReturnToggles);
     delete mRecorder;
     removeAllWhispers();
     delete mItemLinkHandler;
@@ -197,7 +194,7 @@ void ChatWindow::action(const gcn::ActionEvent &event)
             mChatInput->setText(std::string());
         }
 
-        if (message.empty() || !mReturnToggles)
+        if (message.empty() || !config.returnTogglesChat)
         {
             // Remove focus and hide input
             mFocusHandler->focusNone();
@@ -469,7 +466,7 @@ void ChatWindow::whisper(const std::string &nick,
 
     if (i != mWhispers.end())
         tab = i->second;
-    else if (config.getBoolValue("whispertab"))
+    else if (config.whisperTab)
         tab = addWhisperTab(nick);
 
     if (tab)

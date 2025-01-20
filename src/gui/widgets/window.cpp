@@ -37,6 +37,9 @@
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>
 
+#include <algorithm>
+#include <cassert>
+
 int Window::instances = 0;
 int Window::mouseResize = 0;
 
@@ -503,33 +506,29 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 
 void Window::loadWindowState()
 {
-    const std::string &name = mWindowName;
-    assert(!name.empty());
+    assert(!mWindowName.empty());
 
-    setPosition((int) config.getValue(name + "WinX", mDefaultX),
-                (int) config.getValue(name + "WinY", mDefaultY));
+    constexpr WindowState defaultState;
+    auto s = config.windows.find(mWindowName);
+    const WindowState state = s == config.windows.end() ? defaultState
+                                                        : s->second;
+
+    setPosition(state.x.value_or(mDefaultX),
+                state.y.value_or(mDefaultY));
 
     if (mSaveVisible)
-        setVisible((bool) config.getValue(name + "Visible", mDefaultVisible));
+        setVisible(state.visible.value_or(mDefaultVisible));
 
     if (mStickyButton)
-        setSticky((bool) config.getValue(name + "Sticky", isSticky()));
+        setSticky(state.sticky.value_or(isSticky()));
 
     if (mGrip)
     {
-        int width = (int) config.getValue(name + "WinWidth", mDefaultWidth);
-        int height = (int) config.getValue(name + "WinHeight", mDefaultHeight);
+        const int width = state.width.value_or(mDefaultWidth);
+        const int height = state.height.value_or(mDefaultHeight);
 
-        if (getMinWidth() > width)
-            width = getMinWidth();
-        else if (getMaxWidth() < width)
-            width = getMaxWidth();
-        if (getMinHeight() > height)
-            height = getMinHeight();
-        else if (getMaxHeight() < height)
-            height = getMaxHeight();
-
-        setSize(width, height);
+        setSize(std::clamp(width, getMinWidth(), getMaxWidth()),
+                std::clamp(height, getMinHeight(), getMaxHeight()));
     }
     else
     {
@@ -540,35 +539,29 @@ void Window::loadWindowState()
     ensureOnScreen();
 }
 
-void Window::saveWindowState()
+void Window::saveWindowState() const
 {
     // Saving X, Y and Width and Height for resizables in the config
-    if (!mWindowName.empty() && mWindowName != "window")
+    if (mWindowName.empty())
+        return;
+
+    WindowState state;
+    state.x = getX();
+    state.y = getY();
+
+    if (mSaveVisible)
+        state.visible = isVisible();
+
+    if (mStickyButton)
+        state.sticky = isSticky();
+
+    if (mGrip)
     {
-        config.setValue(mWindowName + "WinX", getX());
-        config.setValue(mWindowName + "WinY", getY());
-
-        if (mSaveVisible)
-            config.setValue(mWindowName + "Visible", isVisible());
-
-        if (mStickyButton)
-            config.setValue(mWindowName + "Sticky", isSticky());
-
-        if (mGrip)
-        {
-            if (getMinWidth() > getWidth())
-                setWidth(getMinWidth());
-            else if (getMaxWidth() < getWidth())
-                setWidth(getMaxWidth());
-            if (getMinHeight() > getHeight())
-                setHeight(getMinHeight());
-            else if (getMaxHeight() < getHeight())
-                setHeight(getMaxHeight());
-
-            config.setValue(mWindowName + "WinWidth", getWidth());
-            config.setValue(mWindowName + "WinHeight", getHeight());
-        }
+        state.width = getWidth();
+        state.height = getHeight();
     }
+
+    config.windows[mWindowName] = state;
 }
 
 void Window::setDefaultSize(int defaultX, int defaultY,
@@ -701,7 +694,7 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
 
 int Window::getGuiAlpha()
 {
-    float alpha = std::max(config.getFloatValue("guialpha"),
+    float alpha = std::max(config.guiAlpha,
                            Theme::instance()->getMinimumOpacity());
     return (int) (alpha * 255.0f);
 }

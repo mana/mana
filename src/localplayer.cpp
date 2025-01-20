@@ -29,7 +29,6 @@
 #include "map.h"
 #include "particle.h"
 #include "playerinfo.h"
-#include "sound.h"
 
 #include "gui/gui.h"
 #include "gui/okdialog.h"
@@ -63,7 +62,7 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
     mAwayListener = new AwayListener();
 
-    setShowName(config.getValue("showownname", 1));
+    setShowName(config.showOwnName);
 
     listen(Event::ConfigChannel);
     listen(Event::ActorSpriteChannel);
@@ -870,11 +869,11 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
                 msg = N_("Item belongs to someone else."); break;
             default: msg = N_("Unknown problem picking up item."); break;
         }
-        if (config.getValue("showpickupchat", 1))
+        if (config.showPickupChat)
         {
             serverNotice(_(msg));
         }
-        if (mMap && config.getBoolValue("showpickupparticle"))
+        if (mMap && config.showPickupParticle)
         {
             // Show pickup notification
             addMessageToQueue(_(msg), UserPalette::PICKUP_INFO);
@@ -882,7 +881,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
     }
     else
     {
-        if (config.getBoolValue("showpickupchat"))
+        if (config.showPickupChat)
         {
             // TRANSLATORS: This sentence may be translated differently
             // for different grammatical numbers (singular, plural, ...)
@@ -892,7 +891,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
                                    amount, itemInfo.id, itemInfo.name.c_str()));
         }
 
-        if (mMap && config.getBoolValue("showpickupparticle"))
+        if (mMap && config.showPickupParticle)
         {
             // Show pickup notification
             std::string msg;
@@ -1006,7 +1005,7 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
         if (event.getType() == Event::ConfigOptionChanged &&
             event.getString("option") == "showownname")
         {
-            setShowName(config.getValue("showownname", 1));
+            setShowName(config.showOwnName);
         }
     }
 
@@ -1020,8 +1019,9 @@ void LocalPlayer::changeAwayMode()
 
     if (mAwayMode)
     {
-        mAwayDialog = new OkDialog(_("Away"),
-                config.getValue("afkMessage", "I am away from keyboard"));
+        auto msg = config.afkMessage.empty() ? _("I am away from keyboard")
+                                             : config.afkMessage;
+        mAwayDialog = new OkDialog(_("Away"), msg);
         mAwayDialog->addActionListener(mAwayListener);
     }
 
@@ -1031,33 +1031,31 @@ void LocalPlayer::changeAwayMode()
 void LocalPlayer::setAway(const std::string &message)
 {
     if (!message.empty())
-        config.setValue("afkMessage", message);
+        config.afkMessage = message;
     changeAwayMode();
 }
 
 void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
 {
-    if (mAwayMode)
+    if (!mAwayMode || !mAfkTimer.passed())
+        return;
+
+    auto msg = config.afkMessage.empty() ? _("I am away from keyboard")
+                                         : config.afkMessage;
+    msg = strprintf(_("*AFK*: %s"), msg.c_str());
+
+    Net::getChatHandler()->privateMessage(nick, msg);
+    if (!tab)
     {
-        if (mAfkTimer.passed())
-        {
-            std::string msg = "*AFK*: "
-                    + config.getValue("afkMessage", "I am away from keyboard");
-
-            Net::getChatHandler()->privateMessage(nick, msg);
-            if (!tab)
-            {
-                localChatTab->chatLog(getName() + " : " + msg,
-                                      ACT_WHISPER, false);
-            }
-            else
-            {
-                tab->chatLog(getName(), msg);
-            }
-
-            mAfkTimer.set(AWAY_MESSAGE_TIMEOUT);
-        }
+        localChatTab->chatLog(getName() + " : " + msg,
+                              ACT_WHISPER, false);
     }
+    else
+    {
+        tab->chatLog(getName(), msg);
+    }
+
+    mAfkTimer.set(AWAY_MESSAGE_TIMEOUT);
 }
 
 void AwayListener::action(const gcn::ActionEvent &event)

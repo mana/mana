@@ -322,9 +322,9 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         if (newMoney > oldMoney)
                         {
                             std::string money = Units::formatCurrency(newMoney - oldMoney);
-                            if (config.getBoolValue("showpickupchat"))
+                            if (config.showPickupChat)
                                 serverNotice(strprintf(_("You picked up %s."), money.c_str()));
-                            if (config.getBoolValue("showpickupparticle"))
+                            if (config.showPickupParticle)
                                 local_player->addMessageToQueue(money, UserPalette::PICKUP_INFO);
                         }
                     }

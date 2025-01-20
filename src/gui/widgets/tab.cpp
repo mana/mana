@@ -114,7 +114,7 @@ void Tab::init()
 
 void Tab::updateAlpha()
 {
-    float alpha = std::max(config.getFloatValue("guialpha"),
+    float alpha = std::max(config.guiAlpha,
                            Theme::instance()->getMinimumOpacity());
 
     // TODO We don't need to do this for every tab on every draw

@@ -76,9 +76,9 @@ RadioButton::~RadioButton()
 
 void RadioButton::drawBox(gcn::Graphics* graphics)
 {
-    if (config.getFloatValue("guialpha") != mAlpha)
+    if (config.guiAlpha != mAlpha)
     {
-        mAlpha = config.getFloatValue("guialpha");
+        mAlpha = config.guiAlpha;
         radioNormal->setAlpha(mAlpha);
         radioChecked->setAlpha(mAlpha);
         radioDisabled->setAlpha(mAlpha);

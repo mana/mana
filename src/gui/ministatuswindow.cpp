@@ -86,7 +86,9 @@ MiniStatusWindow::MiniStatusWindow():
     setContentSize(mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
 
-    setVisible((bool) config.getValue(getPopupName() + "Visible", true));
+    auto stateIt = config.windows.find(getPopupName());
+    setVisible(stateIt != config.windows.end() ? stateIt->second.visible.value_or(true)
+                                               : true);
 
     mTextPopup = new TextPopup();
 

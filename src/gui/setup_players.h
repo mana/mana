@@ -65,13 +65,8 @@ private:
     gcn::ListModel *mIgnoreActionChoicesModel;
     gcn::DropDown *mIgnoreActionChoicesBox;
 
-    bool mWhisperTab;
     gcn::CheckBox *mWhisperTabCheckBox;
-
-    bool mShowGender;
     gcn::CheckBox *mShowGenderCheckBox;
-
-    bool mEnableChatLog;
     gcn::CheckBox *mEnableChatLogCheckBox;
 };
 

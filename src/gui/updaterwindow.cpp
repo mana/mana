@@ -464,7 +464,7 @@ void UpdaterWindow::logic()
                     const UpdateFile &thisFile = mUpdateFiles[mUpdateIndex];
                     if (!thisFile.required)
                     {
-                        if (!(thisFile.type == "music" && config.getBoolValue("download-music")))
+                        if (!(thisFile.type == "music" && config.downloadMusic))
                         {
                             mUpdateIndex++;
                             break;

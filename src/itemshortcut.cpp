@@ -19,14 +19,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "itemshortcut.h"
+
 #include "configuration.h"
 #include "event.h"
 #include "inventory.h"
 #include "item.h"
-#include "itemshortcut.h"
 #include "playerinfo.h"
-
-#include "utils/stringutils.h"
 
 ItemShortcut *itemShortcut;
 
@@ -44,40 +43,44 @@ ItemShortcut::~ItemShortcut()
 void ItemShortcut::load()
 {
     for (int i = 0; i < SHORTCUT_ITEMS; i++)
-    {
-        int itemId = (int) config.getValue("shortcut" + toString(i), -1);
+        mItems[i] = -1;
 
-        mItems[i] = itemId;
+    for (auto &shortcut : config.itemShortcuts)
+    {
+        if (shortcut.index >= 0 && shortcut.index < SHORTCUT_ITEMS)
+            mItems[shortcut.index] = shortcut.itemId;
     }
 }
 
 void ItemShortcut::save()
 {
+    config.itemShortcuts.clear();
+
     for (int i = 0; i < SHORTCUT_ITEMS; i++)
     {
-        const int itemId = mItems[i] ? mItems[i] : -1;
-        config.setValue("shortcut" + toString(i), itemId);
+        if (mItems[i] >= 0)
+            config.itemShortcuts.push_back({ i, mItems[i] });
     }
 }
 
 void ItemShortcut::useItem(int index)
 {
-    if (mItems[index])
+    if (!mItems[index])
+        return;
+
+    Item *item = PlayerInfo::getInventory()->findItem(mItems[index]);
+    if (item && item->getQuantity())
     {
-        Item *item = PlayerInfo::getInventory()->findItem(mItems[index]);
-        if (item && item->getQuantity())
+        if (item->isEquippable())
         {
-            if (item->isEquippable())
-            {
-                if (item->isEquipped())
-                    item->doEvent(Event::DoUnequip);
-                else
-                    item->doEvent(Event::DoEquip);
-            }
+            if (item->isEquipped())
+                item->doEvent(Event::DoUnequip);
             else
-            {
-                item->doEvent(Event::DoUse);
-            }
+                item->doEvent(Event::DoEquip);
+        }
+        else
+        {
+            item->doEvent(Event::DoUse);
         }
     }
 }

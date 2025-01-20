@@ -29,8 +29,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <string>
-
 class Setup_Keyboard : public SetupTab, public gcn::ActionListener
 {
     public:

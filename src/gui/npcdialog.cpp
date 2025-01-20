@@ -71,7 +71,6 @@ NpcDialog::DialogList NpcDialog::instances;
 NpcDialog::NpcDialog(int npcId)
     : Window(_("NPC"))
     , mNpcId(npcId)
-    , mLogInteraction(config.getBoolValue("logNpcInGui"))
     , mItemLinkHandler(std::make_unique<ItemLinkHandler>(this))
 {
     // Basic Window Setup
@@ -141,7 +140,6 @@ NpcDialog::NpcDialog(int npcId)
     setVisible(true);
     requestFocus();
 
-    listen(Event::ConfigChannel);
     PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
                                        + 1);
 }
@@ -175,7 +173,7 @@ void NpcDialog::setText(const std::vector<std::string> &text)
 
 void NpcDialog::addText(const std::string &text, bool save)
 {
-    if (save || mLogInteraction)
+    if (save || config.logNpcInGui)
     {
         mNewText.push_back(text);
         mTextBox->addRow(text);
@@ -244,7 +242,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             mNewText.clear();
         }
 
-        if (!mLogInteraction)
+        if (!config.logNpcInGui)
             setText({});
     }
     else if (event.getId() == "reset")
@@ -378,18 +376,6 @@ void NpcDialog::setVisible(bool visible)
     }
 }
 
-void NpcDialog::event(Event::Channel channel, const Event &event)
-{
-    if (channel != Event::ConfigChannel)
-        return;
-
-    if (event.getType() == Event::ConfigOptionChanged &&
-        event.getString("option") == "logNpcInGui")
-    {
-        mLogInteraction = config.getBoolValue("logNpcInGui");
-    }
-}
-
 void NpcDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
 {
     if (mouseEvent.getSource() == mItemList &&
@@ -457,7 +443,7 @@ void NpcDialog::buildLayout()
     }
     else if (mInputState != NPC_INPUT_NONE)
     {
-        if (!mLogInteraction)
+        if (!config.logNpcInGui)
             setText(mNewText);
 
         mNextButton->setCaption(CAPTION_SUBMIT);

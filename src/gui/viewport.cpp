@@ -49,11 +49,6 @@ Viewport::Viewport()
     setOpaque(false);
     addMouseListener(this);
 
-    mScrollLaziness = config.getIntValue("ScrollLaziness");
-    mScrollRadius = config.getIntValue("ScrollRadius");
-    mScrollCenterOffsetX = config.getIntValue("ScrollCenterOffsetX");
-    mScrollCenterOffsetY = config.getIntValue("ScrollCenterOffsetY");
-
     mPopupMenu = new PopupMenu;
     mBeingPopup = new BeingPopup;
 
@@ -95,8 +90,8 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     auto *graphics = static_cast<Graphics*>(gcnGraphics);
 
     // Calculate viewpoint
-    int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 2;
-    int midTileY = (graphics->getHeight() + mScrollCenterOffsetX) / 2;
+    int midTileX = (graphics->getWidth() + config.scrollCenterOffsetX) / 2;
+    int midTileY = (graphics->getHeight() + config.scrollCenterOffsetY) / 2;
 
     const Vector &playerPos = local_player->getPosition();
     const int player_x = (int) playerPos.x - midTileX;
@@ -105,34 +100,34 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     const float ticks = Time::deltaTimeMs() / static_cast<float>(MILLISECONDS_IN_A_TICK);
     float scrollFraction = 1.0f;
 
-    if (mScrollLaziness > 1)
+    if (config.scrollLaziness > 1)
     {
-        // mScrollLaziness defines the fraction of the desired camera movement
+        // settings.ScrollLaziness defines the fraction of the desired camera movement
         // that is applied every 10ms. To make this work independently of the
         // frame duration, we calculate the actual scroll fraction based on the
         // time delta.
-        scrollFraction = 1.0f - std::pow(1.0f - 1.0f / mScrollLaziness, ticks);
+        scrollFraction = 1.0f - std::pow(1.0f - 1.0f / config.scrollLaziness, ticks);
     }
 
     // Apply lazy scrolling
-    if (player_x > mPixelViewX + mScrollRadius)
+    if (player_x > mPixelViewX + config.scrollRadius)
     {
-        mPixelViewX += (player_x - mPixelViewX - mScrollRadius) *
+        mPixelViewX += (player_x - mPixelViewX - config.scrollRadius) *
                         scrollFraction;
     }
-    if (player_x < mPixelViewX - mScrollRadius)
+    if (player_x < mPixelViewX - config.scrollRadius)
     {
-        mPixelViewX += (player_x - mPixelViewX + mScrollRadius) *
+        mPixelViewX += (player_x - mPixelViewX + config.scrollRadius) *
                         scrollFraction;
     }
-    if (player_y > mPixelViewY + mScrollRadius)
+    if (player_y > mPixelViewY + config.scrollRadius)
     {
-        mPixelViewY += (player_y - mPixelViewY - mScrollRadius) *
+        mPixelViewY += (player_y - mPixelViewY - config.scrollRadius) *
                         scrollFraction;
     }
-    if (player_y < mPixelViewY - mScrollRadius)
+    if (player_y < mPixelViewY - config.scrollRadius)
     {
-        mPixelViewY += (player_y - mPixelViewY + mScrollRadius) *
+        mPixelViewY += (player_y - mPixelViewY + config.scrollRadius) *
                         scrollFraction;
     }
 
@@ -623,15 +618,5 @@ void Viewport::event(Event::Channel channel, const Event &event)
 
         if (mHoverItem == actor)
             mHoverItem = nullptr;
-    }
-    else if (channel == Event::ConfigChannel &&
-             event.getType() == Event::ConfigOptionChanged)
-    {
-        const std::string &option = event.getString("option");
-        if (option == "ScrollLaziness" || option == "ScrollRadius")
-        {
-            mScrollLaziness = config.getIntValue("ScrollLaziness");
-            mScrollRadius = config.getIntValue("ScrollRadius");
-        }
     }
 }

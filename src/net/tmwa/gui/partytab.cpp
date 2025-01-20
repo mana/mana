@@ -147,7 +147,7 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
                 Net::getPartyHandler()->setShareItems(PARTY_SHARE_NO);
                 break;
             case -1:
-                chatLog(strprintf(BOOLEAN_OPTIONS, "item"));
+                chatLog(booleanOptionInstructions("item"));
         }
     }
     else if (type == "exp")
@@ -182,7 +182,7 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
                 Net::getPartyHandler()->setShareExperience(PARTY_SHARE_NO);
                 break;
             case -1:
-                chatLog(strprintf(BOOLEAN_OPTIONS, "exp"));
+                chatLog(booleanOptionInstructions("exp"));
         }
     }
     else

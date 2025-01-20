@@ -22,8 +22,9 @@
 #ifndef UTILS_STRINGUTILS_H
 #define UTILS_STRINGUTILS_H
 
-#include <string>
+#include <optional>
 #include <sstream>
+#include <string>
 #include <vector>
 
 /**
@@ -143,6 +144,55 @@ std::string findSameSubstring(const std::string &str1,
  * @return a boolean value..
  */
 bool getBoolFromString(std::string text, bool def = false);
+
+inline void fromString(const char *str, std::string &value)
+{
+    value = str;
+}
+
+inline void fromString(const char *str, int &value)
+{
+    value = atoi(str);
+}
+
+inline void fromString(const char *str, unsigned &value)
+{
+    value = strtoul(str, nullptr, 10);
+}
+
+inline void fromString(const char *str, unsigned short &value)
+{
+    value = static_cast<unsigned short>(strtoul(str, nullptr, 10));
+}
+
+inline void fromString(const char *str, float &value)
+{
+    value = strtof(str, nullptr);
+}
+
+inline void fromString(const char *str, double &value)
+{
+    value = atof(str);
+}
+
+inline void fromString(const char *str, bool &value)
+{
+    value = getBoolFromString(str);
+}
+
+template<typename Enum, std::enable_if_t<std::is_enum_v<Enum>, bool> = true>
+inline void fromString(const char *str, Enum &value)
+{
+    value = static_cast<Enum>(atoi(str));
+}
+
+template<typename T>
+inline void fromString(const char *str, std::optional<T> &value)
+{
+    T v;
+    fromString(str, v);
+    value = v;
+}
 
 /**
  * Returns the most approaching string of base from candidates.

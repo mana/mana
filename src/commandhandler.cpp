@@ -23,6 +23,7 @@
 
 #include "actorspritemanager.h"
 #include "channelmanager.h"
+#include "configuration.h"
 #include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
@@ -35,6 +36,12 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+
+std::string booleanOptionInstructions(const char *command)
+{
+    return strprintf(_("Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."),
+                     command);
+}
 
 CommandHandler::CommandHandler()
 {}
@@ -452,8 +459,8 @@ void CommandHandler::handleToggle(const std::string &args, ChatTab *tab)
 {
     if (args.empty())
     {
-        tab->chatLog(chatWindow->getReturnTogglesChat() ?
-                _("Return toggles chat.") : _("Message closes chat."));
+        tab->chatLog(config.returnTogglesChat ? _("Return toggles chat.")
+                                              : _("Message closes chat."));
         return;
     }
 
@@ -463,14 +470,14 @@ void CommandHandler::handleToggle(const std::string &args, ChatTab *tab)
     {
         case 1:
             tab->chatLog(_("Return now toggles chat."));
-            chatWindow->setReturnTogglesChat(true);
+            config.returnTogglesChat = true;
             return;
         case 0:
             tab->chatLog(_("Message now closes chat."));
-            chatWindow->setReturnTogglesChat(false);
+            config.returnTogglesChat = false;
             return;
         case -1:
-            tab->chatLog(strprintf(BOOLEAN_OPTIONS, "toggle"));
+            tab->chatLog(booleanOptionInstructions("toggle"));
     }
 }
 
@@ -496,7 +503,7 @@ void CommandHandler::handleShowIp(const std::string &args, ChatTab *tab)
             local_player->setShowIp(true);
             break;
         case -1:
-            tab->chatLog(strprintf(BOOLEAN_OPTIONS, "showip"));
+            tab->chatLog(booleanOptionInstructions("showip"));
             return;
     }
 
