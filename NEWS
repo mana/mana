@@ -8,6 +8,7 @@
 - Added support for XML includes, both absolute and relative
 - Added support for map/layer mask
 - Added support for particle effects on equipment
+- Added support for hit/miss sounds on equipment for all players
 - Added online player list to Social window
 - Added notification sound on receiving whisper
 - Added default ports when connecting to a custom server
@@ -30,6 +31,8 @@
 - Enabled resizing windows from all sides
 - Enabled whispers in tabs by default
 - Made pickup notifications to appear as particle instead of text by default
+- Made names update immediately when changing "Show gender" option
+- Made client config statically typed and save as more structured XML
 - Custom mouse cursor is now rendered by the system
 - Limit shop's Max button to available carry weight
 - Fixed slight stutter in being and player movement
