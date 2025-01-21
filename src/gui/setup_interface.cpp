@@ -205,11 +205,11 @@ void Setup_Interface::cancel()
     //mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
 
     config.showMonstersTakedDamage = mShowMonsterDamageEnabled;
-    config.visibleNames = mVisibleNamesEnabled;
+    setConfigValue(&Config::visibleNames, mVisibleNamesEnabled);
     config.speech = mSpeechMode;
-    config.showOwnName = mNameEnabled;
+    setConfigValue(&Config::showOwnName, mNameEnabled);
     config.logNpcInGui = mNPCLogEnabled;
-    config.guiAlpha = mOpacity;
+    setConfigValue<float>(&Config::guiAlpha, mOpacity);
     config.showPickupChat = mPickupChatEnabled;
     config.showPickupParticle = mPickupParticleEnabled;
 }
@@ -220,7 +220,7 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
 
     if (id == "guialpha")
     {
-        config.guiAlpha = mAlphaSlider->getValue();
+        setConfigValue<float>(&Config::guiAlpha, mAlphaSlider->getValue());
     }
     else if (id == "monsterdamage")
     {
@@ -228,7 +228,7 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
     }
     else if (id == "visiblenames")
     {
-        config.visibleNames = mVisibleNamesCheckBox->isSelected();
+        setConfigValue(&Config::visibleNames, mVisibleNamesCheckBox->isSelected());
     }
     else if (id == "pickupchat")
     {
@@ -247,7 +247,7 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
     }
     else if (id == "showownname")
     {
-        config.showOwnName = mNameCheckBox->isSelected();
+        setConfigValue(&Config::showOwnName, mNameCheckBox->isSelected());
     }
     else if (id == "lognpc")
     {

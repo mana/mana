@@ -21,6 +21,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include <any>
 #include <map>
 #include <set>
 #include <string>
@@ -64,7 +65,7 @@ public:
         Close,
         CloseAll,
         CloseDialog,
-        ConfigOptionChanged,    // todo: replace with more specific events
+        ConfigOptionChanged,
         Constructed,
         LoadingDatabases,
         Destroyed,
@@ -109,7 +110,17 @@ public:
      * Makes an event with the given name.
      */
     Event(Type type)
-    { mType = type; }
+        : mType(type)
+    {}
+
+    /**
+     * Makes an event with the given name and value.
+     */
+    template<typename T>
+    Event(Type type, const T &value)
+        : mType(type)
+        , mValue(value)
+    {}
 
     ~Event();
 
@@ -118,6 +129,28 @@ public:
      */
     Type getType() const
     { return mType; }
+
+    /**
+     * Sets the value of the event.
+     */
+    template<typename T>
+    void setValue(const T &value)
+    { mValue = value; }
+
+    /**
+     * Returns the value of the event. Throws an exception if the event has no
+     * value of the given type.
+     */
+    template<typename T>
+    const T &value() const
+    { return std::any_cast<const T &>(mValue); }
+
+    /**
+     * Returns whether the event has the given the value.
+     */
+    template<typename T>
+    bool hasValue(const T &value) const
+    { return mValue.type() == typeid(T) && Event::value<T>() == value; }
 
 // Integers
 
@@ -280,8 +313,9 @@ private:
     using ListenMap = std::map<Channel, std::set<EventListener *>>;
     static ListenMap mBindings;
 
-    Type mType;
+    const Type mType;
     std::map<std::string, VariableData *> mData;
+    std::any mValue;
 };
 
 inline void serverNotice(const std::string &message)

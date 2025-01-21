@@ -453,7 +453,7 @@ void Setup_Video::cancel()
 
     config.windowMode = mVideoSettings.windowMode;
 
-    config.customCursor = mCustomCursorEnabled;
+    setConfigValue(&Config::customCursor, mCustomCursorEnabled);
     config.particleEffects = mParticleEffectsEnabled;
     config.opengl = mVideoSettings.openGL;
     config.disableTransparency = mSDLTransparencyDisabled;
@@ -489,7 +489,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
     else if (id == "customcursor")
     {
-        config.customCursor = mCustomCursorCheckBox->isSelected();
+        setConfigValue(&Config::customCursor, mCustomCursorCheckBox->isSelected());
     }
     else if (id == "particleeffects")
     {

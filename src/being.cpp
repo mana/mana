@@ -1232,7 +1232,7 @@ void Being::event(Event::Channel channel, const Event &event)
     else if (channel == Event::ConfigChannel &&
              event.getType() == Event::ConfigOptionChanged)
     {
-        if (getType() == PLAYER && event.getString("option") == "visiblenames")
+        if (getType() == PLAYER && event.hasValue(&Config::visibleNames))
         {
             setShowName(config.visibleNames);
         }

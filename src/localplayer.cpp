@@ -1002,10 +1002,16 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
     }
     else if (channel == Event::ConfigChannel)
     {
-        if (event.getType() == Event::ConfigOptionChanged &&
-            event.getString("option") == "showownname")
+        if (event.getType() == Event::ConfigOptionChanged)
         {
-            setShowName(config.showOwnName);
+            if (event.hasValue(&Config::showOwnName))
+            {
+                setShowName(config.showOwnName);
+            }
+            else if (event.hasValue(&Config::visibleNames))
+            {
+                return;
+            }
         }
     }
 

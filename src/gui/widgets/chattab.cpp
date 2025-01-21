@@ -102,7 +102,7 @@ void ChatTab::event(Event::Channel channel, const Event &event)
     // Update the text outline and shadow according to the gui opacity.
     if (channel == Event::ConfigChannel &&
         event.getType() == Event::ConfigOptionChanged &&
-        event.getString("option") == "guialpha")
+        event.hasValue(&Config::guiAlpha))
     {
         updateTextFormat(Window::getGuiAlpha());
     }

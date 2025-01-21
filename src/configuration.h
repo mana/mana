@@ -261,4 +261,17 @@ extern Config config;
 extern Configuration branding;
 extern Configuration paths;
 
+/**
+ * Sets the given Config member and sends a change event.
+ */
+template<typename T>
+void setConfigValue(T Config::*member, const T &value)
+{
+    if (config.*member == value)
+        return;
+
+    config.*member = value;
+    Event(Event::ConfigOptionChanged, member).trigger(Event::ConfigChannel);
+}
+
 #endif

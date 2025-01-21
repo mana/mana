@@ -205,7 +205,7 @@ void Theme::event(Event::Channel channel, const Event &event)
 {
     if (channel == Event::ConfigChannel &&
         event.getType() == Event::ConfigOptionChanged &&
-        event.getString("option") == "guialpha")
+        event.hasValue(&Config::guiAlpha))
     {
         updateAlpha();
     }

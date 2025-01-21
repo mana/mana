@@ -177,7 +177,7 @@ void Gui::event(Event::Channel channel, const Event &event)
     if (channel == Event::ConfigChannel)
     {
         if (event.getType() == Event::ConfigOptionChanged &&
-            event.getString("option") == "customcursor")
+            event.hasValue(&Config::customCursor))
         {
             setUseCustomCursor(config.customCursor);
         }

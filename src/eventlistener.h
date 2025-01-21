@@ -23,8 +23,6 @@
 
 #include "event.h"
 
-#include <string>
-
 class EventListener
 {
 public:
