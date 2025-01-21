@@ -51,6 +51,7 @@ public:
     void playerRelationsUpdated() override;
 
 private:
+    bool mShowGender;
     StaticTableModel *mPlayerTableTitleModel;
     PlayerTableModel *mPlayerTableModel;
     GuiTable *mPlayerTable;

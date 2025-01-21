@@ -21,6 +21,7 @@
 
 #include "actorspritemanager.h"
 
+#include "configuration.h"
 #include "game.h"
 #include "localplayer.h"
 
@@ -66,6 +67,8 @@ ActorSpriteManager::ActorSpriteManager()
 {
     mPlayerNames = new PlayerNamesLister;
     mPlayerNPCNames = new PlayerNPCNamesLister;
+
+    listen(Event::ConfigChannel);
 }
 
 ActorSpriteManager::~ActorSpriteManager()
@@ -357,5 +360,17 @@ void ActorSpriteManager::updatePlayerNames()
         auto *being = static_cast<Being *>(actor);
         if (!being->getName().empty())
             being->updateName();
+    }
+}
+
+void ActorSpriteManager::event(Event::Channel channel, const Event &event)
+{
+    if (channel == Event::ConfigChannel)
+    {
+        if (event.getType() == Event::ConfigOptionChanged &&
+            event.hasValue(&Config::showGender))
+        {
+            updatePlayerNames();
+        }
     }
 }

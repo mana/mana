@@ -24,6 +24,7 @@
 
 #include "actorsprite.h"
 #include "being.h"
+#include "eventlistener.h"
 #include "flooritem.h"
 
 #include "gui/widgets/textfield.h"
@@ -33,7 +34,7 @@ class Map;
 
 using ActorSprites = std::set<ActorSprite *>;
 
-class ActorSpriteManager
+class ActorSpriteManager : public EventListener
 {
     public:
         ActorSpriteManager();
@@ -161,6 +162,8 @@ class ActorSpriteManager
         AutoCompleteLister *getPlayerNPCNameLister() const;
 
         void updatePlayerNames();
+
+        void event(Event::Channel channel, const Event &event) override;
 
     protected:
         friend class PlayerNamesLister;

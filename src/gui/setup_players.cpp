@@ -21,7 +21,6 @@
 
 #include "gui/setup_players.h"
 
-#include "actorspritemanager.h"
 #include "configuration.h"
 
 #include "gui/widgets/button.h"
@@ -203,6 +202,7 @@ public:
 #define ACTION_STRATEGY "strategy"
 
 Setup_Players::Setup_Players():
+    mShowGender(config.showGender),
     mPlayerTableTitleModel(new StaticTableModel(1, COLUMNS_NR)),
     mPlayerTableModel(new PlayerTableModel),
     mPlayerTable(new GuiTable(mPlayerTableModel)),
@@ -244,6 +244,8 @@ Setup_Players::Setup_Players():
 
     gcn::Label *ignore_action_label = new Label(_("When ignoring:"));
 
+    mShowGenderCheckBox->setActionEventId("showgender");
+    mShowGenderCheckBox->addActionListener(this);
     mIgnoreActionChoicesBox->setActionEventId(ACTION_STRATEGY);
     mIgnoreActionChoicesBox->addActionListener(this);
 
@@ -309,21 +311,19 @@ void Setup_Players::apply()
                                 | (mDefaultWhisper->isSelected() ?
                                        PlayerPermissions::WHISPER : 0));
 
-    const bool showGenderChanged = config.showGender != mShowGenderCheckBox->isSelected();
-
     config.whisperTab = mWhisperTabCheckBox->isSelected();
-    config.showGender = mShowGenderCheckBox->isSelected();
     config.enableChatLog = mEnableChatLogCheckBox->isSelected();
 
-    if (actorSpriteManager && showGenderChanged)
-        actorSpriteManager->updatePlayerNames();
+    mShowGender = config.showGender;
 }
 
 void Setup_Players::cancel()
 {
     mWhisperTabCheckBox->setSelected(config.whisperTab);
-    mShowGenderCheckBox->setSelected(config.showGender);
+    mShowGenderCheckBox->setSelected(mShowGender);
     mEnableChatLogCheckBox->setSelected(config.enableChatLog);
+
+    setConfigValue(&Config::showGender, mShowGender);
 }
 
 void Setup_Players::action(const gcn::ActionEvent &event)
@@ -341,7 +341,6 @@ void Setup_Players::action(const gcn::ActionEvent &event)
             mPlayerTableModel->updateModelInRow(row);
 
         player_relations.addListener(this);
-
     }
     else if (event.getId() == ACTION_DELETE)
     {
@@ -351,7 +350,6 @@ void Setup_Players::action(const gcn::ActionEvent &event)
 
         const std::string &name = mPlayerTableModel->getPlayerAt(player_index);
         player_relations.removePlayer(name);
-
     }
     else if (event.getId() == ACTION_STRATEGY)
     {
@@ -360,6 +358,10 @@ void Setup_Players::action(const gcn::ActionEvent &event)
                 mIgnoreActionChoicesBox->getSelected()];
 
         player_relations.setPlayerIgnoreStrategy(s);
+    }
+    else if (event.getId() == "showgender")
+    {
+        setConfigValue(&Config::showGender, mShowGenderCheckBox->isSelected());
     }
 }
 
