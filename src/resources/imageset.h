@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGESET_H
-#define IMAGESET_H
+#pragma once
 
 #include "resources/resource.h"
 
@@ -78,5 +77,3 @@ class ImageSet : public Resource
         int mOffsetX = 0;
         int mOffsetY = 0;
 };
-
-#endif

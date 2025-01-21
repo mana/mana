@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOWCONTAINER_H
-#define WINDOWCONTAINER_H
+#pragma once
 
 #include "gui/widgets/container.h"
 
@@ -71,5 +70,3 @@ class WindowContainer : public Container
 };
 
 extern WindowContainer *windowContainer;
-
-#endif

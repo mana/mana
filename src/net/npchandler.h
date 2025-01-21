@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NPCHANDLER_H
-#define NPCHANDLER_H
+#pragma once
 
 #include <iosfwd>
 
@@ -61,5 +60,3 @@ class NpcHandler
 };
 
 } // namespace Net
-
-#endif // NPCHANDLER_H

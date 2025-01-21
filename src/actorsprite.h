@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACTORSPRITE_H
-#define ACTORSPRITE_H
+#pragma once
 
 #include "actor.h"
 #include "compoundsprite.h"
@@ -207,5 +206,3 @@ private:
     /** Target cursor being used */
     SimpleAnimation *mUsedTargetCursor = nullptr;
 };
-
-#endif // ACTORSPRITE_H

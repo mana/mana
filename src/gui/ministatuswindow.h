@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MINISTATUS_H
-#define MINISTATUS_H
+#pragma once
 
 #include "eventlistener.h"
 
@@ -78,5 +77,3 @@ class MiniStatusWindow : public Popup, public EventListener
 };
 
 extern MiniStatusWindow *miniStatusWindow;
-
-#endif

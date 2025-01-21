@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTEPOPUP_H
-#define EMOTEPOPUP_H
+#pragma once
 
 #include "gui/widgets/popup.h"
 
@@ -116,5 +115,3 @@ class EmotePopup : public Popup
         static const int gridWidth;
         static const int gridHeight;
 };
-
-#endif

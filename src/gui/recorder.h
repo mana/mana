@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RECORD_H
-#define RECORD_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -72,5 +71,3 @@ class Recorder : public Window, public gcn::ActionListener
 
         std::ofstream mStream;
 };
-
-#endif

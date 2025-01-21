@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUYSELL_H
-#define BUYSELL_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -63,5 +62,3 @@ class BuySellDialog : public Window, public gcn::ActionListener
         int mNpcId;
         gcn::Button *mBuyButton;
 };
-
-#endif

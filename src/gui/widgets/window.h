@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include "graphics.h"
 #include "guichanfwd.h"
@@ -408,5 +407,3 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         static const int resizeBorderWidth = 10;
 };
-
-#endif

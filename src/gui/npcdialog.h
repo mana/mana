@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NPCDIALOG_H
-#define NPCDIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -214,5 +213,3 @@ class NpcDialog final : public Window,
         NpcInputState mInputState = NPC_INPUT_NONE;
         NpcActionState mActionState = NPC_ACTION_WAIT;
 };
-
-#endif // NPCDIALOG_H

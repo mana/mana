@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EQUIPMENTWINDOW_H
-#define EQUIPMENTWINDOW_H
+#pragma once
 
 #include "equipment.h"
 #include "resources/image.h"
@@ -96,5 +95,3 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 };
 
 extern EquipmentWindow *equipmentWindow;
-
-#endif // EQUIPMENTWINDOW_H

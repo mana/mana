@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RESOURCES_CHARDB_H
-#define RESOURCES_CHARDB_H
+#pragma once
 
 #include <vector>
 
@@ -44,5 +43,3 @@ namespace CharDB
 
     const std::vector<int> &getDefaultItems();
 }
-
-#endif // RESOURCES_CHARDB_H

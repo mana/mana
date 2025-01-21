@@ -19,12 +19,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_INTERNAL_H
-#define NET_MANASERV_INTERNAL_H
+#pragma once
 
 namespace ManaServ
 {
     extern int connections;
 }
-
-#endif

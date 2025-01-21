@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAP_H
-#define MAP_H
+#pragma once
 
 #include "actor.h"
 #include "position.h"
@@ -421,5 +420,3 @@ class Map : public Properties
 
         int mMask = 1;
 };
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAIN_H
-#define MAIN_H
+#pragma once
 
 /**
  * \mainpage
@@ -87,6 +86,4 @@
 
 #ifndef PKG_DATADIR
 #define PKG_DATADIR ""
-#endif
-
 #endif

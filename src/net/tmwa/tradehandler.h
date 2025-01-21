@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_TA_TRADEHANDLER_H
-#define NET_TA_TRADEHANDLER_H
+#pragma once
 
 #include "net/net.h"
 #include "net/tradehandler.h"
@@ -57,5 +56,3 @@ class TradeHandler final : public MessageHandler, public Net::TradeHandler
 };
 
 } // namespace TmwAthena
-
-#endif // NET_TA_TRADEHANDLER_H

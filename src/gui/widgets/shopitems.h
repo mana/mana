@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHOP_H
-#define SHOP_H
+#pragma once
 
 #include <guichan/listmodel.hpp>
 
@@ -111,5 +110,3 @@ class ShopItems : public gcn::ListModel
         /** Look for duplicate entries on addition. */
         bool mMergeDuplicates;
 };
-
-#endif // SHOP_H

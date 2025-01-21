@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CUSTOMSERVERDIALOG_H
-#define CUSTOMSERVERDIALOG_H
+#pragma once
 
 class Button;
 class Label;
@@ -92,5 +91,3 @@ class CustomServerDialog : public Window,
         // The index of the entry to modify, -1 when only adding a new entry.
         int mIndex;
 };
-
-#endif // CUSTOMSERVERDIALOG_H

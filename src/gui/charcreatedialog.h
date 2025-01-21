@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAR_CREATE_DIALOG_H
-#define CHAR_CREATE_DIALOG_H
+#pragma once
 
 #include "being.h"
 #include "guichanfwd.h"
@@ -114,5 +113,3 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 
         int mSlot;
 };
-
-#endif // CHAR_CREATE_DIALOG_H

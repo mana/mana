@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XML_H
-#define XML_H
+#pragma once
 
 #include "utils/stringutils.h"
 
@@ -295,5 +294,3 @@ namespace XML
         xmlTextWriterWriteString(mWriter, BAD_CAST text.c_str());
     }
 }
-
-#endif // XML_H

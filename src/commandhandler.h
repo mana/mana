@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COMMANDHANDLER_H
-#define COMMANDHANDLER_H
+#pragma once
 
 #include <string>
 
@@ -143,5 +142,3 @@ class CommandHandler
 };
 
 extern CommandHandler *commandHandler;
-
-#endif // COMMANDHANDLER_H

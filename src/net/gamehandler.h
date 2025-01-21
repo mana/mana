@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAPHANDLER_H
-#define MAPHANDLER_H
+#pragma once
 
 #include <iosfwd>
 
@@ -58,5 +57,3 @@ class GameHandler
 };
 
 } // namespace Net
-
-#endif // MAPHANDLER_H

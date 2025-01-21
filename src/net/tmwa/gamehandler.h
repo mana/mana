@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_TA_MAPHANDLER_H
-#define NET_TA_MAPHANDLER_H
+#pragma once
 
 #include "eventlistener.h"
 
@@ -74,5 +73,3 @@ class GameHandler final : public MessageHandler, public Net::GameHandler,
 };
 
 } // namespace TmwAthena
-
-#endif // NET_TA_MAPHANDLER_H

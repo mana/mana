@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_CONNECTION_H
-#define NET_MANASERV_CONNECTION_H
+#pragma once
 
 #include <enet/enet.h>
 #include "net/manaserv/network.h"
@@ -76,5 +75,3 @@ namespace ManaServ
             State mState = OK;
     };
 }
-
-#endif // NET_MANASERV_CONNECTION_H

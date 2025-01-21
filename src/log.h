@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOG_H
-#define LOG_H
+#pragma once
 
 #include <fstream>
 
@@ -69,5 +68,3 @@ class Logger
 };
 
 extern Logger *logger;
-
-#endif

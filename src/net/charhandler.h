@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHARHANDLER_H
-#define CHARHANDLER_H
+#pragma once
 
 #include "localplayer.h"
 #include "playerinfo.h"
@@ -111,5 +110,3 @@ class CharHandler
 };
 
 } // namespace Net
-
-#endif // CHARHANDLER_H

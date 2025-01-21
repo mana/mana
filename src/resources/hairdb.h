@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HAIR_MANAGER_H
-#define HAIR_MANAGER_H
+#pragma once
 
 #include <map>
 #include <set>
@@ -93,5 +92,3 @@ private:
 };
 
 extern HairDB hairDB;
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MINIMAP_H
-#define MINIMAP_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -67,5 +66,3 @@ class Minimap : public Window
 };
 
 extern Minimap *minimap;
-
-#endif

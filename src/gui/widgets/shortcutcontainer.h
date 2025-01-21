@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHORTCUTCONTAINER_H
-#define SHORTCUTCONTAINER_H
+#pragma once
 
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
@@ -82,5 +81,3 @@ class ShortcutContainer : public gcn::Widget,
         int mGridWidth = 1;
         int mGridHeight = 1;
 };
-
-#endif

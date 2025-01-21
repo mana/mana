@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXT_H
-#define TEXT_H
+#pragma once
 
 #include "graphics.h"
 
@@ -99,5 +98,3 @@ class FlashText : public Text
     private:
         Timer mTimer;           /**< Time left for flashing */
 };
-
-#endif // TEXT_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef POSITION_H
-#define POSITION_H
+#pragma once
 
 #include <iostream>
 #include <list>
@@ -50,5 +49,3 @@ std::ostream& operator <<(std::ostream &os, const Position &p);
  * output stream.
  */
 std::ostream& operator <<(std::ostream &os, const Path &path);
-
-#endif // POSITION_H

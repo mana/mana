@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEM_LINK_HANDLER_H
-#define ITEM_LINK_HANDLER_H
+#pragma once
 
 #include "gui/widgets/linkhandler.h"
 
@@ -49,5 +48,3 @@ class ItemLinkHandler : public LinkHandler, gcn::ActionListener
         Window *mParent = nullptr;
         std::string mLink;
 };
-
-#endif

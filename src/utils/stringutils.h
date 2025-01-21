@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_STRINGUTILS_H
-#define UTILS_STRINGUTILS_H
+#pragma once
 
 #include <optional>
 #include <sstream>
@@ -221,5 +220,3 @@ std::string getHostNameFromURL(const std::string &url);
  * separator.
  */
 std::string join(const std::vector<std::string> &strings, const char *separator);
-
-#endif // UTILS_STRINGUTILS_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABLE_MODEL_H
-#define TABLE_MODEL_H
+#pragma once
 
 #include <guichanfwd.h>
 
@@ -143,5 +142,3 @@ protected:
     std::vector<gcn::Widget *> mTableModel;
     std::vector<int> mWidths;
 };
-
-#endif // TABLE_MODEL_H

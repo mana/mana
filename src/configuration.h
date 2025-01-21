@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
+#pragma once
 
 #include "being.h"
 #include "defaults.h"
@@ -273,5 +272,3 @@ void setConfigValue(T Config::*member, const T &value)
     config.*member = value;
     Event(Event::ConfigOptionChanged, member).trigger(Event::ConfigChannel);
 }
-
-#endif

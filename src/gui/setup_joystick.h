@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_SETUP_JOYSTICK_H
-#define GUI_SETUP_JOYSTICK_H
+#pragma once
 
 #include "guichanfwd.h"
 
@@ -44,5 +43,3 @@ class Setup_Joystick : public SetupTab, public gcn::ActionListener
         bool mJoystickEnabled;
         gcn::CheckBox *mJoystickCheckBox;
 };
-
-#endif

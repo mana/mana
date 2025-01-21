@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_GETTEXT_H
-#define UTILS_GETTEXT_H
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -40,5 +39,3 @@
 #define N_(s) ((char const *)s)
 
 #endif
-
-#endif // UTILS_GETTEXT_H

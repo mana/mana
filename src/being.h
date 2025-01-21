@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BEING_H
-#define BEING_H
+#pragma once
 
 #include "actorsprite.h"
 #include "eventlistener.h"
@@ -542,8 +541,5 @@ class Being : public ActorSprite, public EventListener
         Vector mSpeedPixelsPerSecond;
 
         int mDamageTaken = 0;
-
         int mIp = 0;
 };
-
-#endif

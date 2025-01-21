@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROGRESSINDICATOR_H
-#define PROGRESSINDICATOR_H
+#pragma once
 
 #include <guichan/widget.hpp>
 
@@ -43,5 +42,3 @@ public:
 private:
     std::unique_ptr<SimpleAnimation> mIndicator;
 };
-
-#endif // PROGRESSINDICATOR_H

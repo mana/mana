@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_TA_SKILLHANDLER_H
-#define NET_TA_SKILLHANDLER_H
+#pragma once
 
 #include "net/net.h"
 #include "net/specialhandler.h"
@@ -46,5 +45,3 @@ class SpecialHandler final : public MessageHandler, public Net::SpecialHandler
 };
 
 } // namespace TmwAthena
-
-#endif // NET_TA_SKILLHANDLER_H

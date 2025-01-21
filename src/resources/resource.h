@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RESOURCE_H
-#define RESOURCE_H
+#pragma once
 
 #include <ctime>
 #include <string>
@@ -157,5 +156,3 @@ public:
 private:
     RESOURCE *mResource;
 };
-
-#endif

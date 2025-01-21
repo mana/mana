@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEMPOPUP_H
-#define ITEMPOPUP_H
+#pragma once
 
 #include "gui/widgets/popup.h"
 
@@ -74,5 +73,3 @@ class ItemPopup : public Popup
         ItemType mItemType;
         Icon *mIcon;
 };
-
-#endif // ITEMPOPUP_H

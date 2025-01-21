@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYER_RELATIONS_H
-#define PLAYER_RELATIONS_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -201,6 +200,3 @@ private:
 
 
 extern PlayerRelationsManager player_relations; // singleton representation of player relations
-
-
-#endif // PLAYER_RELATIONS_H

@@ -19,8 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef CHATLOG_H
-#define CHATLOG_H
+#pragma once
 
 #include <fstream>
 
@@ -66,5 +65,3 @@ class ChatLogger
 };
 
 extern ChatLogger *chatLogger;
-
-#endif

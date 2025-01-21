@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYERINFO_H
-#define PLAYERINFO_H
+#pragma once
 
 #include <map>
 
@@ -259,5 +258,3 @@ namespace PlayerInfo
     void init();
 
 } // namespace PlayerInfo
-
-#endif

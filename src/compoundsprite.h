@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COMPOUNDSPRITE_H
-#define COMPOUNDSPRITE_H
+#pragma once
 
 #include "sprite.h"
 
@@ -100,5 +99,3 @@ private:
 
     std::vector<Sprite*> mSprites;
 };
-
-#endif // COMPOUNDSPRITE_H

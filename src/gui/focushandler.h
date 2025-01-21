@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FOCUSHANDLER_H
-#define FOCUSHANDLER_H
+#pragma once
 
 #include <guichan/focushandler.hpp>
 
@@ -73,5 +72,3 @@ class FocusHandler : public gcn::FocusHandler
          */
         std::list<gcn::Widget*> mModalStack;
 };
-
-#endif

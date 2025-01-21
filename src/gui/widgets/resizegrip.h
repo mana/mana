@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RESIZEGRIP_H
-#define RESIZEGRIP_H
+#pragma once
 
 #include <guichan/widget.hpp>
 
@@ -50,5 +49,3 @@ class ResizeGrip : public gcn::Widget
         static int mInstances;     /**< Number of resize grip instances */
         static float mAlpha;
 };
-
-#endif

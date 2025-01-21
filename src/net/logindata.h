@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGINDATA_H
-#define LOGINDATA_H
+#pragma once
 
 #include "being.h"
 
@@ -68,5 +67,3 @@ public:
         resetCharacterSlots();
     }
 };
-
-#endif // LOGINDATA_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCROLLAREA_H
-#define SCROLLAREA_H
+#pragma once
 
 #include <guichan/widgets/scrollarea.hpp>
 #include <guichan/widgetlistener.hpp>
@@ -141,5 +140,3 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         bool mHasMouse = false;
         bool mOpaque = true;
 };
-
-#endif

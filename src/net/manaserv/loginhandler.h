@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_LOGINHANDLER_H
-#define NET_MANASERV_LOGINHANDLER_H
+#pragma once
 
 #include "net/loginhandler.h"
 
@@ -91,5 +90,3 @@ class LoginHandler final : public MessageHandler, public Net::LoginHandler
 };
 
 } // namespace ManaServ
-
-#endif // NET_MANASERV_LOGINHANDLER_H

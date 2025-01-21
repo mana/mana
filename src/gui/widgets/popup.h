@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef POPUP_H
-#define POPUP_H
+#pragma once
 
 #include "guichanfwd.h"
 
@@ -161,5 +160,3 @@ class Popup : public Container, public gcn::MouseListener
 
         Skin *mSkin;                  /**< Skin in use by this popup */
 };
-
-#endif

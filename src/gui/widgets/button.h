@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUTTON_H
-#define BUTTON_H
+#pragma once
 
 #include <guichan/widgets/button.hpp>
 
@@ -104,5 +103,3 @@ class Button : public gcn::Button
         static TextPopup* mTextPopup;
         std::string mPopupText;         /**< the current button text */
 };
-
-#endif

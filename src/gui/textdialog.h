@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_GUILD_DIALOG_H
-#define GUI_GUILD_DIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -59,5 +58,3 @@ private:
     TextField *mTextField;
     gcn::Button *mOkButton;
 };
-
-#endif

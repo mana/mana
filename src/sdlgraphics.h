@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SDLGRAPHICS_H
-#define SDLGRAPHICS_H
+#pragma once
 
 #include "graphics.h"
 
@@ -87,5 +86,3 @@ private:
 
     SDL_Renderer *mRenderer = nullptr;
 };
-
-#endif // SDLGRAPHICS_H

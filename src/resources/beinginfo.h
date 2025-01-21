@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BEINGINFO_H
-#define BEINGINFO_H
+#pragma once
 
 #include "actorsprite.h"
 #include "map.h"
@@ -85,5 +84,3 @@ private:
     std::map<SoundEvent, std::vector<std::string>> mSounds;
     std::map<int, Attack> mAttacks;
 };
-
-#endif // BEINGINFO_H

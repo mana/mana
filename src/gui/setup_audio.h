@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_SETUP_AUDIO_H
-#define GUI_SETUP_AUDIO_H
+#pragma once
 
 #include "guichanfwd.h"
 
@@ -51,5 +50,3 @@ class Setup_Audio : public SetupTab, public gcn::ActionListener
         gcn::Slider *mNotificationsSlider;
         gcn::Slider *mMusicSlider;
 };
-
-#endif // GUI_SETUP_AUDIO_H

@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RESOURCES_AMBIENTOVERLAY_H
-#define RESOURCES_AMBIENTOVERLAY_H
+#pragma once
 
 #include "resource.h"
 
@@ -52,5 +51,3 @@ class AmbientLayer
         float mPosX = 0;          /**< Current layer X position. */
         float mPosY = 0;          /**< Current layer Y position. */
 };
-
-#endif

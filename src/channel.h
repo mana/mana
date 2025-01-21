@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHANNEL_H
-#define CHANNEL_H
+#pragma once
 
 #include <string>
 
@@ -79,5 +78,3 @@ class Channel
         std::string mAnnouncement;
         ChannelTab *mTab;
 };
-
-#endif // CHANNEL_H

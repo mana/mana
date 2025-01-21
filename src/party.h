@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARTY_H
-#define PARTY_H
+#pragma once
 
 #include "avatar.h"
 
@@ -171,5 +170,3 @@ private:
     short mId;
     bool mCanInviteUsers = false;
 };
-
-#endif // PARTY_H

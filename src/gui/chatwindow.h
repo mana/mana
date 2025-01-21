@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_H
-#define CHAT_H
+#pragma once
 
 #include "eventlistener.h"
 
@@ -216,5 +215,3 @@ class ChatWindow : public Window,
 };
 
 extern ChatWindow *chatWindow;
-
-#endif

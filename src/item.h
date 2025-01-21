@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEM_H
-#define ITEM_H
+#pragma once
 
 #include "event.h"
 
@@ -123,5 +122,3 @@ class Item
         bool mInEquipment = false;      /**< Item is in equipment */
         int mInvIndex;                  /**< Inventory index. */
 };
-
-#endif // ITEM_H

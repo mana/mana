@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHECKBOX_H
-#define CHECKBOX_H
+#pragma once
 
 #include <guichan/widgets/checkbox.hpp>
 
@@ -74,5 +73,3 @@ class CheckBox : public gcn::CheckBox
         static Image *checkBoxNormalHi;
         static Image *checkBoxCheckedHi;
 };
-
-#endif

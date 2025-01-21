@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOWMENU_H
-#define WINDOWMENU_H
+#pragma once
 
 #include "keyboardconfig.h"
 
@@ -62,5 +61,3 @@ class WindowMenu : public Container,
 
         EmotePopup *mEmotePopup = nullptr;
 };
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INVENTORY_H
-#define INVENTORY_H
+#pragma once
 
 #include <list>
 
@@ -144,5 +143,3 @@ class Inventory
         int mSize;      /**< The max number of inventory items */
         int mUsed = 0;  /**< THe number of slots in use */
 };
-
-#endif // INVENTORY_H

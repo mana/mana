@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTEX_H
-#define MUTEX_H
+#pragma once
 
 #include "log.h"
 
@@ -103,5 +102,3 @@ inline MutexLocker::~MutexLocker()
     if (mMutex)
         mMutex->unlock();
 }
-
-#endif // MUTEX_H

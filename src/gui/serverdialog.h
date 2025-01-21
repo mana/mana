@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SERVERDIALOG_H
-#define SERVERDIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -168,5 +167,3 @@ class ServerDialog : public Window,
         ServerInfos mServers;
         ServerInfo *mServerInfo;
 };
-
-#endif

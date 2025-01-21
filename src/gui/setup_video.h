@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_SETUP_VIDEO_H
-#define GUI_SETUP_VIDEO_H
+#pragma once
 
 #include "guichanfwd.h"
 
@@ -80,5 +79,3 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         gcn::CheckBox *mDisableSDLTransparencyCheckBox;
 };
-
-#endif

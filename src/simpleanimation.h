@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIMPLEANIMAION_H
-#define SIMPLEANIMAION_H
+#pragma once
 
 #include "resources/animation.h"
 
@@ -81,5 +80,3 @@ class SimpleAnimation final
         /**  Tell whether the animation is ready */
         bool mInitialized = false;
 };
-
-#endif

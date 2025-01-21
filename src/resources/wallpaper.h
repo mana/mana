@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WALLPAPER_H
-#define WALLPAPER_H
+#pragma once
 
 #include <string>
 
@@ -46,5 +45,3 @@ class Wallpaper
          */
         static std::string getWallpaper(int width, int height);
 };
-
-#endif // WALLPAPER_H

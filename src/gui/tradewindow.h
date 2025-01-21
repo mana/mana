@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRADE_H
-#define TRADE_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -134,5 +133,3 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
 };
 
 extern TradeWindow *tradeWindow;
-
-#endif

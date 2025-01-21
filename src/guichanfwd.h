@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUICHANFWD_H
-#define GUICHANFWD_H
+#pragma once
 
 namespace gcn
 {
@@ -97,5 +96,3 @@ namespace gcn
     class WidgetListener;
     class Window;
 }
-
-#endif

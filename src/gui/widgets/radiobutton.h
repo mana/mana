@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RADIOBUTTON_H
-#define RADIOBUTTON_H
+#pragma once
 
 #include <guichan/widgets/radiobutton.hpp>
 
@@ -69,5 +68,3 @@ class RadioButton : public gcn::RadioButton
         static Image *radioNormalHi;
         static Image *radioCheckedHi;
 };
-
-#endif // RADIOBUTTON_H

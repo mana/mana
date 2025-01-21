@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPECIALFOLDER_H
-#define SPECIALFOLDER_H
+#pragma once
 
 #ifdef _WIN32
 #include <shlobj.h>
@@ -30,6 +29,4 @@ std::string getSpecialFolderLocation(const KNOWNFOLDERID &folderId);
 #ifdef __APPLE__
 #include <string>
 std::string getResourcesLocation();
-#endif
-
 #endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QUITDIALOG_H
-#define QUITDIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -69,5 +68,3 @@ class QuitDialog : public Window, public gcn::ActionListener,
 
         QuitDialog **mMyPointer;
 };
-
-#endif

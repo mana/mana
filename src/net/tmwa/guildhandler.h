@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_TA_GUILDHANDLER_H
-#define NET_TA_GUILDHANDLER_H
+#pragma once
 
 #include "net/guildhandler.h"
 
@@ -67,5 +66,3 @@ class GuildHandler final : public Net::GuildHandler, public MessageHandler
 };
 
 }
-
-#endif // NET_TA_GUILDHANDLER_H

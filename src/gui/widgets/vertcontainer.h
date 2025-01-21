@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_VERTCONTAINER_H
-#define GUI_VERTCONTAINER_H
+#pragma once
 
 #include "gui/widgets/container.h"
 
@@ -42,5 +41,3 @@ class VertContainer : public Container, public gcn::WidgetListener
         int mSpacing;
         int mCount = 0;
 };
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TA_GUILDTAB_H
-#define TA_GUILDTAB_H
+#pragma once
 
 #include "gui/widgets/chattab.h"
 
@@ -49,5 +48,3 @@ class GuildTab : public ChatTab
 extern GuildTab *guildTab;
 
 } // namespace TmwAthena
-
-#endif // TA_GUILDTAB_H

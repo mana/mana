@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef POPUP_MENU_H
-#define POPUP_MENU_H
+#pragma once
 
 #include "gui/widgets/linkhandler.h"
 #include "gui/widgets/popup.h"
@@ -76,5 +75,3 @@ class PopupMenu : public Popup, public LinkHandler
          */
         void showPopup(int x, int y);
 };
-
-#endif

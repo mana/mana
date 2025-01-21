@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_GENERALHANDLER_H
-#define NET_MANASERV_GENERALHANDLER_H
+#pragma once
 
 #include "eventlistener.h"
 
@@ -68,5 +67,3 @@ class GeneralHandler : public Net::GeneralHandler, public EventListener
 };
 
 } // namespace ManaServ
-
-#endif // NET_MANASERV_GENERALHANDLER_H

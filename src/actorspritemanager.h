@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACTORSPRITEMANAGER_H
-#define ACTORSPRITEMANAGER_H
+#pragma once
 
 #include "actorsprite.h"
 #include "being.h"
@@ -177,5 +176,3 @@ class ActorSpriteManager : public EventListener
 };
 
 extern ActorSpriteManager *actorSpriteManager;
-
-#endif // ACTORSPRITEMANAGER_H

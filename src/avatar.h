@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVATAR_H
-#define AVATAR_H
+#pragma once
 
 #include <string>
 
@@ -68,5 +67,3 @@ private:
     bool mOnline;
     bool mDisplayBold;
 };
-
-#endif // AVATAR_H

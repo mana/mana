@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KEYBOARDCONFIG_H
-#define KEYBOARDCONFIG_H
+#pragma once
 
 #include <cstdint>
 #include <string>
@@ -235,5 +234,3 @@ class KeyboardConfig
 };
 
 extern KeyboardConfig keyboard;
-
-#endif

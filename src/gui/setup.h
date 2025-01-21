@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SETUP_H
-#define SETUP_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -72,5 +71,3 @@ class Setup : public Window, public gcn::ActionListener
 };
 
 extern Setup* setupWindow;
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEMSHORTCUTCONTAINER_H
-#define ITEMSHORTCUTCONTAINER_H
+#pragma once
 
 #include "gui/widgets/shortcutcontainer.h"
 
@@ -71,5 +70,3 @@ class ItemShortcutContainer : public ShortcutContainer
 
         ItemPopup *mItemPopup;
 };
-
-#endif

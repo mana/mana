@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MANASERV_PROTOCOL_H
-#define MANASERV_PROTOCOL_H
+#pragma once
 
 namespace ManaServ {
 
@@ -465,5 +464,3 @@ const int PICKUP_RANGE = 32 + 16;
 const int NPC_TALK_RANGE = 32 * 7;
 
 } // namespace ManaServ
-
-#endif // MANASERV_PROTOCOL_H

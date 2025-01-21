@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_SETUP_INTERFACE_H
-#define GUI_SETUP_INTERFACE_H
+#pragma once
 
 #include "being.h"
 #include "guichanfwd.h"
@@ -77,5 +76,3 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         gcn::DropDown *mFontSizeDropDown;
 
 };
-
-#endif

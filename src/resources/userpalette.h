@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef USER_PALETTE_H
-#define USER_PALETTE_H
+#pragma once
 
 #include "gui/palette.h"
 
@@ -185,5 +184,3 @@ class UserPalette : public Palette, public gcn::ListModel
 };
 
 extern UserPalette *userPalette;
-
-#endif // USER_PALETTE_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TAB_H
-#define TAB_H
+#pragma once
 
 #include <guichan/widgets/tab.hpp>
 
@@ -72,5 +71,3 @@ class Tab : public gcn::Tab
         const gcn::Color *mTabColor;
         bool mFlash;
 };
-
-#endif

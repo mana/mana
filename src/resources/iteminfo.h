@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEMINFO_H
-#define ITEMINFO_H
+#pragma once
 
 #include "being.h"
 
@@ -162,5 +161,3 @@ enum EquipmentSlot
 };
 
 } // namespace TmwAthena
-
-#endif // ITEMINFO_H

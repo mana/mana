@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OUTFITWINDOW_H
-#define OUTFITWINDOW_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -91,5 +90,3 @@ class OutfitWindow : public Window, gcn::ActionListener
 };
 
 extern OutfitWindow *outfitWindow;
-
-#endif

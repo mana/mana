@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DEBUGWINDOW_H
-#define DEBUGWINDOW_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -36,5 +35,3 @@ class DebugWindow : public Window
 };
 
 extern DebugWindow *debugWindow;
-
-#endif

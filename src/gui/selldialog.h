@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELL_H
-#define SELL_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -113,5 +112,3 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         int mMaxItems = 0;
         int mAmountItems = 0;
 };
-
-#endif

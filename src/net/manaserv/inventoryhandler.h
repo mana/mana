@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_INVENTORYHANDLER_H
-#define NET_MANASERV_INVENTORYHANDLER_H
+#pragma once
 
 #include "eventlistener.h"
 
@@ -146,5 +145,3 @@ class InventoryHandler final : public MessageHandler, Net::InventoryHandler,
 };
 
 } // namespace ManaServ
-
-#endif // NET_MANASERV_INVENTORYHANDLER_H

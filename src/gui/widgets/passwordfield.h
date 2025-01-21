@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PASSWORDFIELD_H
-#define PASSWORDFIELD_H
+#pragma once
 
 #include "textfield.h"
 
@@ -42,5 +41,3 @@ class PasswordField : public TextField
          */
         void draw(gcn::Graphics *graphics) override;
 };
-
-#endif

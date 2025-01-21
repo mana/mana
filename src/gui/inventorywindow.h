@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INVENTORYWINDOW_H
-#define INVENTORYWINDOW_H
+#pragma once
 
 #include "inventory.h"
 #include "eventlistener.h"
@@ -145,5 +144,3 @@ class InventoryWindow : public Window,
 };
 
 extern InventoryWindow *inventoryWindow;
-
-#endif

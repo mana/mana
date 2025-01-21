@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DESKTOP_H
-#define DESKTOP_H
+#pragma once
 
 #include "guichanfwd.h"
 
@@ -66,5 +65,3 @@ class Desktop : public Container, gcn::WidgetListener
         ResourceRef<Image> mWallpaper;
         gcn::Label *mVersionLabel;
 };
-
-#endif // DESKTOP_H

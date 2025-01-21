@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BEINGPOPUP_H
-#define BEINGPOPUP_H
+#pragma once
 
 #include "gui/widgets/popup.h"
 
@@ -47,5 +46,3 @@ class BeingPopup : public Popup
         Label *mBeingName;
         Label *mBeingParty;
 };
-
-#endif // BEINGPOPUP_H

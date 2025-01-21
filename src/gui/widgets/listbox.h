@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LISTBOX_H
-#define LISTBOX_H
+#pragma once
 
 #include <guichan/widgets/listbox.hpp>
 
@@ -65,5 +64,3 @@ class ListBox : public gcn::ListBox
     protected:
         static float mAlpha;
 };
-
-#endif

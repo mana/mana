@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INTTEXTFIELD_H
-#define INTTEXTFIELD_H
+#pragma once
 
 #include "textfield.h"
 
@@ -71,5 +70,3 @@ class IntTextField : public TextField
         int mDefault;        /**< Default value */
         int mValue;          /**< Current value */
 };
-
-#endif

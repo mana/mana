@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEM_AMOUNT_WINDOW_H
-#define ITEM_AMOUNT_WINDOW_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -100,5 +99,3 @@ class ItemAmountWindow : public Window,
 
         bool mEnabledKeyboard;
 };
-
-#endif // ITEM_AMOUNT_WINDOW_H

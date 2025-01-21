@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLOORITEM_H
-#define FLOORITEM_H
+#pragma once
 
 #include "actorsprite.h"
 
@@ -69,5 +68,3 @@ class FloorItem : public ActorSprite
         int mItemId;
         int mX, mY;
 };
-
-#endif // FLOORITEM_H

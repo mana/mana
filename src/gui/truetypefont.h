@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRUETYPEFONT_H
-#define TRUETYPEFONT_H
+#pragma once
 
 #include <guichan/font.hpp>
 
@@ -82,5 +81,3 @@ class TrueTypeFont : public gcn::Font
         static std::list<TrueTypeFont*> mFonts;
         static float mScale;
 };
-
-#endif

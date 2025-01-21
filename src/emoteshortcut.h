@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTESHORTCUT_H
-#define EMOTESHORTCUT_H
+#pragma once
 
 #define SHORTCUT_EMOTES 12
 
@@ -115,5 +114,3 @@ class EmoteShortcut
 };
 
 extern EmoteShortcut *emoteShortcut;
-
-#endif

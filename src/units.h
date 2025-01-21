@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UNITS_H
-#define UNITS_H
+#pragma once
 
 #include <string>
 #include "utils/xml.h"
@@ -44,5 +43,3 @@ class Units
         */
         static std::string formatWeight(int value);
 };
-
-#endif // UNITS_H

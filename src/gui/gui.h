@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_H
-#define GUI_H
+#pragma once
 
 #include "eventlistener.h"
 #include "guichanfwd.h"
@@ -155,5 +154,3 @@ extern gcn::Font *boldFont;
  * Monospaced text font
  */
 extern gcn::Font *monoFont;
-
-#endif // GUI_H

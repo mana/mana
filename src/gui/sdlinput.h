@@ -56,8 +56,7 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SDLINPUT_H
-#define SDLINPUT_H
+#pragma once
 
 #include <queue>
 
@@ -204,5 +203,3 @@ protected:
 
     bool mMouseDown = false;
 };
-
-#endif

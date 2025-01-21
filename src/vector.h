@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef VECTOR_H
-#define VECTOR_H
+#pragma once
 
 #include <cmath>
 
@@ -183,5 +182,3 @@ inline bool operator == (const Vector &a, const Vector &b)
  * Appends a string representation of a vector to the output stream.
  */
 std::ostream& operator <<(std::ostream &os, const Vector &v);
-
-#endif // VECTOR_H

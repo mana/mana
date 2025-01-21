@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARTICLEEMITTER_H
-#define PARTICLEEMITTER_H
+#pragma once
 
 #include "particleemitterprop.h"
 
@@ -140,4 +139,3 @@ class ParticleEmitter
         /** List of emitters the spawned particles are equipped with */
         std::list<ParticleEmitter> mParticleChildEmitters;
 };
-#endif

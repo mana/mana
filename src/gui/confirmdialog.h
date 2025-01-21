@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OPTION_DIALOG_H
-#define OPTION_DIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -47,5 +46,3 @@ class ConfirmDialog : public Window, public gcn::ActionListener
     private:
         TextBox *mTextBox;
 };
-
-#endif

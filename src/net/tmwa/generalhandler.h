@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_TMWA_GENERALHANDLER_H
-#define NET_TMWA_GENERALHANDLER_H
+#pragma once
 
 #include "eventlistener.h"
 
@@ -72,5 +71,3 @@ class GeneralHandler final : public MessageHandler, public Net::GeneralHandler,
 };
 
 } // namespace TmwAthena
-
-#endif // NET_TMWA_GENERALHANDLER_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHATTAB_H
-#define CHATTAB_H
+#pragma once
 
 #include "gui/chatwindow.h"
 
@@ -135,5 +134,3 @@ class ChatTab : public Tab, public AutoCompleteLister, public EventListener
 };
 
 extern ChatTab *localChatTab;
-
-#endif // CHATTAB_H

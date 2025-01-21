@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SETTINGSMANAGER_HPP
-#define SETTINGSMANAGER_HPP
+#pragma once
 
 #include <string>
 #include <list>
@@ -30,6 +29,3 @@ namespace SettingsManager
     void load();
     void unload();
 }
-
-
-#endif // SETTINGSMANAGER_HPP

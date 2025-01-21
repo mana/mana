@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEMSHORTCUT_H
-#define ITEMSHORTCUT_H
+#pragma once
 
 #define SHORTCUT_ITEMS 12
 
@@ -115,5 +114,3 @@ class ItemShortcut
 };
 
 extern ItemShortcut *itemShortcut;
-
-#endif

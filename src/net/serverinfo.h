@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SERVERINFO_H
-#define SERVERINFO_H
+#pragma once
 
 #include "utils/stringutils.h"
 
@@ -110,5 +109,3 @@ public:
 };
 
 using ServerInfos = std::deque<ServerInfo>;
-
-#endif // SERVERINFO_H

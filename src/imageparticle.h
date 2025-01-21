@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGEPARTICLE_H
-#define IMAGEPARTICLE_H
+#pragma once
 
 #include "particle.h"
 
@@ -51,5 +50,3 @@ class ImageParticle : public Particle
     protected:
         Image *mImage;   /**< The image used for this particle. */
 };
-
-#endif

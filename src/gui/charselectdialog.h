@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAR_SELECT_H
-#define CHAR_SELECT_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -100,5 +99,3 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
 
         Net::CharHandler *mCharHandler;
 };
-
-#endif

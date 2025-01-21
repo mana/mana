@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WORLD_INFO_H
-#define WORLD_INFO_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -34,5 +33,3 @@ struct WorldInfo {
 };
 
 using Worlds = std::vector<WorldInfo *>;
-
-#endif // WORLD_INFO_H

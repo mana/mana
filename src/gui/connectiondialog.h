@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#pragma once
 
 #include "client.h"
 
@@ -58,5 +57,3 @@ class ConnectionDialog : public Window, gcn::ActionListener
         gcn::Label *mLabel;
         State mCancelState;
 };
-
-#endif

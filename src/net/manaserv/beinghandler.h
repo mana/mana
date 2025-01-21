@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_BEINGHANDLER_H
-#define NET_MANASERV_BEINGHANDLER_H
+#pragma once
 
 #include "net/manaserv/messagehandler.h"
 
@@ -55,5 +54,3 @@ class BeingHandler final : public MessageHandler
 };
 
 } // namespace ManaServ
-
-#endif

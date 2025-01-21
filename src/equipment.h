@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EQUIPMENT_H
-#define EQUIPMENT_H
+#pragma once
 
 #include <string>
 
@@ -72,5 +71,3 @@ class Equipment
     private:
         Backend *mBackend;
 };
-
-#endif

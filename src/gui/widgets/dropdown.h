@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DROPDOWN_H
-#define DROPDOWN_H
+#pragma once
 
 #include <guichan/widgets/dropdown.hpp>
 
@@ -86,6 +85,3 @@ class DropDown : public gcn::DropDown
         static ImageRect skin;
         static float mAlpha;
 };
-
-#endif // end DROPDOWN_H
-

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROPERTIES_H
-#define PROPERTIES_H
+#pragma once
 
 #include <map>
 #include <sstream>
@@ -140,5 +139,3 @@ class Properties
         using PropertyMap = std::map<std::string, std::string>;
         PropertyMap mProperties;
 };
-
-#endif

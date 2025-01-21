@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ICON_H
-#define ICON_H
+#pragma once
 
 #include "resources/resource.h"
 
@@ -68,5 +67,3 @@ class Icon : public gcn::Widget
     private:
         ResourceRef<Image> mImage;
 };
-
-#endif // ICON_H

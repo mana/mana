@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHORTCUTWINDOW_H
-#define SHORTCUTWINDOW_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -39,5 +38,3 @@ class ShortcutWindow : public Window
 
 extern ShortcutWindow *itemShortcutWindow;
 extern ShortcutWindow *emoteShortcutWindow;
-
-#endif

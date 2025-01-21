@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPEECHBUBBLE_H
-#define SPEECHBUBBLE_H
+#pragma once
 
 #include "gui/widgets/popup.h"
 
@@ -51,5 +50,3 @@ class SpeechBubble : public Popup
         gcn::Label *mCaption;
         TextBox *mSpeechBox;
 };
-
-#endif

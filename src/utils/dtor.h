@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_DTOR_H
-#define UTILS_DTOR_H
+#pragma once
 
 #include <algorithm>
 #include <utility>
@@ -48,5 +47,3 @@ inline void delete_all(Container &c)
 {
     std::for_each(c.begin(), c.end(), make_dtor(c));
 }
-
-#endif

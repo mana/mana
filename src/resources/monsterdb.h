@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MONSTER_DB_H
-#define MONSTER_DB_H
+#pragma once
 
 #include "utils/xml.h"
 
@@ -43,5 +42,3 @@ namespace MonsterDB
 
     BeingInfo *get(int id);
 }
-
-#endif

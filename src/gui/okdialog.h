@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OK_DIALOG_H
-#define OK_DIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -47,5 +46,3 @@ class OkDialog : public Window, public gcn::ActionListener
     private:
         TextBox *mTextBox;
 };
-
-#endif // OK_DIALOG_H

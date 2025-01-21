@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_TA_BUYSELLHANDLER_H
-#define NET_TA_BUYSELLHANDLER_H
+#pragma once
 
 #include "net/tmwa/messagehandler.h"
 
@@ -41,5 +40,3 @@ class BuySellHandler final : public MessageHandler
 };
 
 } // namespace TmwAthena
-
-#endif // NET_TA_BUYSELLHANDLER_H

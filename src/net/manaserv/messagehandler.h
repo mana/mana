@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_MESSAGEHANDLER_H
-#define NET_MANASERV_MESSAGEHANDLER_H
+#pragma once
 
 #include "net/messagehandler.h"
 
@@ -44,5 +43,3 @@ class MessageHandler : public Net::MessageHandler
 using MessageHandlerPtr = const std::unique_ptr<MessageHandler>;
 
 } // namespace ManaServ
-
-#endif // NET_MANASERV_MESSAGEHANDLER_H

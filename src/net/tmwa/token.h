@@ -21,8 +21,7 @@
 
 #include "being.h"
 
-#ifndef NET_TA_TOKEN_H
-#define NET_TA_TOKEN_H
+#pragma once
 
 struct Token
 {
@@ -39,5 +38,3 @@ struct Token
         sex = Gender::UNSPECIFIED;
     }
 };
-
-#endif // NET_TA_TOKEN_H

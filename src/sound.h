@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_H
-#define SOUND_H
+#pragma once
 
 #include <SDL_mixer.h>
 
@@ -137,5 +136,3 @@ class Sound
 };
 
 extern Sound sound;
-
-#endif

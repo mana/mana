@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRADEHANDLER_H
-#define TRADEHANDLER_H
+#pragma once
 
 #include "being.h"
 
@@ -49,5 +48,3 @@ class TradeHandler
         virtual void cancel() {}
 };
 }
-
-#endif // TRADEHANDLER_H

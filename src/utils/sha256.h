@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_SHA256_H
-#define UTILS_SHA256_H
+#pragma once
 
 #include <string>
 
@@ -31,5 +30,3 @@
  * @return the SHA-256 hash for the given string.
  */
 std::string sha256(const std::string &string);
-
-#endif // UTILS_SHA256_H

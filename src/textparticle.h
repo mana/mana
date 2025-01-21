@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXTPARTICLE_H
-#define TEXTPARTICLE_H
+#pragma once
 
 #include "particle.h"
 
@@ -53,5 +52,3 @@ class TextParticle : public Particle
         const gcn::Color *mColor;      /**< Color used for drawing the text. */
         bool mOutline;                 /**< Make the text better readable */
 };
-
-#endif

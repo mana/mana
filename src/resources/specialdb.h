@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPECIAL_DB_H
-#define SPECIAL_DB_H
+#pragma once
 
 #include <string>
 #include "utils/xml.h"
@@ -63,5 +62,3 @@ namespace SpecialDB
 
     SpecialInfo::TargetMode targetModeFromString(const std::string& str);
 }
-
-#endif

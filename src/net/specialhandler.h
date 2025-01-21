@@ -19,12 +19,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPECIALHANDLER_H
-#define SPECIALHANDLER_H
+#pragma once
 
 #include <iosfwd>
 
 namespace Net {
+
 class SpecialHandler
 {
     public:
@@ -38,6 +38,5 @@ class SpecialHandler
 
         virtual void use(int id, const std::string &map) = 0;
 };
-}
 
-#endif // SPECIALHANDLER_H
+} // namespace Net

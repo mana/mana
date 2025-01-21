@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RESOURCES_ATTRIBUTES_H
-#define RESOURCES_ATTRIBUTES_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -73,5 +72,3 @@ namespace Attributes
     unsigned int getAttributeMaximum();
 
 } // namespace Attributes
-
-#endif // RESOURCES_ATTRIBUTES_H

@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FLOWCONTAINER_H
-#define FLOWCONTAINER_H
+#pragma once
 
 #include "container.h"
 
@@ -56,5 +55,3 @@ class FlowContainer : public Container,
         int mGridWidth = 1;
         int mGridHeight = 1;
 };
-
-#endif

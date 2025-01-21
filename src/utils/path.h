@@ -18,8 +18,7 @@
  *  along with The Mana Server.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_PATH_H
-#define UTILS_PATH_H
+#pragma once
 
 #include <string>
 
@@ -29,5 +28,3 @@ namespace utils
     std::string joinPaths(std::string_view path1, std::string_view path2);
     std::string cleanPath(const std::string &path);
 }
-
-#endif // UTILS_PATH_H

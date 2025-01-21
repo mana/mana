@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARTICLE_CONTAINER_H
-#define PARTICLE_CONTAINER_H
+#pragma once
 
 #include <list>
 #include <vector>
@@ -117,5 +116,3 @@ public:
 protected:
     std::vector<Particle *> mIndexedElements;
 };
-
-#endif

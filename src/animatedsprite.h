@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANIMATEDSPRITE_H
-#define ANIMATEDSPRITE_H
+#pragma once
 
 #include "sprite.h"
 
@@ -88,5 +87,3 @@ class AnimatedSprite final : public Sprite
         Animation *mAnimation = nullptr;    /**< The currently active animation. */
         Frame *mFrame = nullptr;            /**< The currently active frame. */
 };
-
-#endif

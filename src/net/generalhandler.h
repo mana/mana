@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GENERALHANDLER_H
-#define GENERALHANDLER_H
+#pragma once
 
 namespace Net {
 
@@ -41,5 +40,3 @@ class GeneralHandler
 };
 
 } // namespace Net
-
-#endif // GENERALHANDLER_H

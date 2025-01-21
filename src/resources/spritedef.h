@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPRITEDEF_H
-#define SPRITEDEF_H
+#pragma once
 
 #include "resources/resource.h"
 
@@ -150,5 +149,3 @@ class SpriteDef : public Resource
         std::map<std::string, ImageSet *> mImageSets;
         std::map<std::string, Action *> mActions;
 };
-
-#endif // SPRITEDEF_H

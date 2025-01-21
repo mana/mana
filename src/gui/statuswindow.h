@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_H
-#define STATUS_H
+#pragma once
 
 #include "eventlistener.h"
 
@@ -85,5 +84,3 @@ class StatusWindow : public Window, public EventListener
 };
 
 extern StatusWindow *statusWindow;
-
-#endif

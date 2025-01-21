@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HELP_H
-#define HELP_H
+#pragma once
 
 #include "gui/widgets/linkhandler.h"
 #include "gui/widgets/window.h"
@@ -62,5 +61,3 @@ class HelpWindow : public Window, public LinkHandler,
 };
 
 extern HelpWindow *helpWindow;
-
-#endif

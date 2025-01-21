@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WIDGET_LAYOUT_H
-#define WIDGET_LAYOUT_H
+#pragma once
 
 #include <guichan/widgets/container.hpp>
 
@@ -310,5 +309,3 @@ class Layout : public LayoutCell
     private:
         bool mComputed;
 };
-
-#endif // WIDGET_LAYOUT_H

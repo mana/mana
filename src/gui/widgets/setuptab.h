@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_SETUPTAB_H
-#define GUI_SETUPTAB_H
+#pragma once
 
 #include "gui/widgets/container.h"
 
@@ -58,5 +57,3 @@ protected:
 private:
     std::string mName;
 };
-
-#endif

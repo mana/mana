@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXTBOX_H
-#define TEXTBOX_H
+#pragma once
 
 #include <guichan/widgets/textbox.hpp>
 
@@ -62,5 +61,3 @@ class TextBox : public gcn::TextBox
         int mMinWidth;
         const gcn::Color *mTextColor;
 };
-
-#endif

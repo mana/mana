@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_ZLIB_H
-#define UTILS_ZLIB_H
+#pragma once
 
 #include <string>
 
@@ -44,5 +43,3 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
  *         uncompressed, or <code>NULL</code> on fail.
  */
 void *loadCompressedFile(const std::string &filename, int &filesize);
-
-#endif // UTILS_ZLIB_H

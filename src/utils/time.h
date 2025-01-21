@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- #ifndef UTILS_TIME_H
- #define UTILS_TIME_H
+#pragma once
 
 #include <cstdint>
 
@@ -107,5 +106,3 @@ public:
 private:
     uint32_t mTimeout = 0;
 };
-
-#endif // UTILS_TIME_H

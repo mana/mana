@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LINK_HANDLER_H
-#define LINK_HANDLER_H
+#pragma once
 
 #include <string>
 
@@ -35,5 +34,3 @@ class LinkHandler
 
         virtual void handleLink(const std::string &link) = 0;
 };
-
-#endif

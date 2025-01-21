@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SLIDER_H
-#define SLIDER_H
+#pragma once
 
 #include <guichan/widgets/slider.hpp>
 
@@ -88,5 +87,3 @@ class Slider : public gcn::Slider
         static float mAlpha;
         static int mInstances;
 };
-
-#endif

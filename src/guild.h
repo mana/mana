@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUILD_H
-#define GUILD_H
+#pragma once
 
 #include "avatar.h"
 
@@ -170,5 +169,3 @@ private:
     short mId;
     bool mCanInviteUsers = false;
 };
-
-#endif // GUILD_H

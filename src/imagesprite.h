@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGESPRITE_H
-#define IMAGESPRITE_H
+#pragma once
 
 #include "sprite.h"
 
@@ -68,5 +67,3 @@ public:
 private:
     ResourceRef<Image> mImage;
 };
-
-#endif // IMAGESPRITE_H

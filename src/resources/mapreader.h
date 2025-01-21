@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAPREADER_H
-#define MAPREADER_H
+#pragma once
 
 #include "utils/xml.h"
 
@@ -45,5 +44,3 @@ public:
      */
     static Map *readMap(XML::Node node, const std::string &path);
 };
-
-#endif // MAPREADER_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROGRESSBAR_H
-#define PROGRESSBAR_H
+#pragma once
 
 #include <guichan/widget.hpp>
 
@@ -135,5 +134,3 @@ class ProgressBar : public gcn::Widget
 
         static const gcn::Color TEXT_COLOR;
 };
-
-#endif

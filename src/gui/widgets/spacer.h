@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPACER_H
-#define SPACER_H
+#pragma once
 
 #include "guichan/graphics.hpp"
 #include "guichan/widget.hpp"
@@ -48,5 +47,3 @@ class Spacer : public gcn::Widget
          */
         void draw(gcn::Graphics *g) override {}
 };
-
-#endif // SPACER_H

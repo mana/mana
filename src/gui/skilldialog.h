@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SKILLDIALOG_H
-#define SKILLDIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 #include "eventlistener.h"
@@ -82,5 +81,3 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
 };
 
 extern SkillDialog *skillDialog;
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#pragma once
 
 #include "video.h"
 
@@ -236,8 +235,5 @@ private:
     SDL_Surface *mIcon = nullptr;
 
     SDL_TimerID mSecondsCounterId = 0;
-
     FpsManager mFpsManager;
 };
-
-#endif // CLIENT_H

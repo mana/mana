@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LABEL_H
-#define LABEL_H
+#pragma once
 
 #include <guichan/widgets/label.hpp>
 
@@ -46,5 +45,3 @@ class Label : public gcn::Label
          */
         void draw(gcn::Graphics *graphics) override;
 };
-
-#endif

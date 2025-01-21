@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EVENT_H
-#define EVENT_H
+#pragma once
 
 #include <any>
 #include <map>
@@ -324,5 +323,3 @@ inline void serverNotice(const std::string &message)
     event.setString("message", message);
     event.trigger(Event::NoticesChannel);
 }
-
-#endif // EVENT_H

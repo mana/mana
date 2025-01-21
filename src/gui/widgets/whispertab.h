@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WHISPERTAB_H
-#define WHISPERTAB_H
+#pragma once
 
 #include "chattab.h"
 
@@ -63,5 +62,3 @@ class WhisperTab : public ChatTab
     private:
         std::string mNick;
 };
-
-#endif // CHANNELTAB_H

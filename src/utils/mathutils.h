@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTILS_MATHUTILS_H
-#define UTILS_MATHUTILS_H
+#pragma once
 
 /* A very fast function to calculate the approximate inverse square root of a
  * floating point value and a helper function that uses it for getting the
@@ -57,5 +56,3 @@ inline float weightedAverage(float n1, float n2, float w)
 
     return w * n2 + (1.0f - w) * n1;
 }
-
-#endif // UTILS_MATHUTILS_H

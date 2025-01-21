@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TA_PARTYTAB_H
-#define TA_PARTYTAB_H
+#pragma once
 
 #include "gui/widgets/chattab.h"
 
@@ -49,5 +48,3 @@ class PartyTab : public ChatTab
 extern PartyTab *partyTab;
 
 } // namespace TmwAthena
-
-#endif // TA_PARTYTAB_H

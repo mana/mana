@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGE_H
-#define IMAGE_H
+#pragma once
 
 #include "resources/resource.h"
 
@@ -216,5 +215,3 @@ class SubImage : public Image
     private:
         ResourceRef<Image> mParent;
 };
-
-#endif

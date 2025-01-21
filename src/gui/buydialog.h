@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUY_H
-#define BUY_H
+#pragma once
 
 #include "guichanfwd.h"
 
@@ -124,5 +123,3 @@ class BuyDialog : public Window, public gcn::ActionListener,
         int mAmountItems;
         int mMaxItems;
 };
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUILDHANDLER_H
-#define GUILDHANDLER_H
+#pragma once
 
 #include "guild.h"
 
@@ -64,5 +63,3 @@ class GuildHandler
 };
 
 }
-
-#endif // GUILDHANDLER_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UNREGISTERDIALOG_H
-#define UNREGISTERDIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -57,5 +56,3 @@ class UnRegisterDialog : public Window, public gcn::ActionListener
 
         LoginData *mLoginData;
 };
-
-#endif

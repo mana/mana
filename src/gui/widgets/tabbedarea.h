@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABBEDAREA_H
-#define TABBEDAREA_H
+#pragma once
 
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
@@ -151,5 +150,3 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
          */
         unsigned mTabScrollIndex = 0;
 };
-
-#endif

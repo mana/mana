@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHOPITEM_H
-#define SHOPITEM_H
+#pragma once
 
 #include "item.h"
 
@@ -117,5 +116,3 @@ class ShopItem : public Item
         };
         std::stack<DuplicateItem> mDuplicates; /** <-- Stores duplicates */
 };
-
-#endif

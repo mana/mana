@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOCALPLAYER_H
-#define LOCALPLAYER_H
+#pragma once
 
 #include "being.h"
 
@@ -236,5 +235,3 @@ class LocalPlayer final : public Being
 };
 
 extern LocalPlayer *local_player;
-
-#endif // LOCALPLAYER_H

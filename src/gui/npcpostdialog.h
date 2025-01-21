@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_NPCPOSTDIALOG_H
-#define GUI_NPCPOSTDIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -57,5 +56,3 @@ private:
     TextBox *mText;
     TextField *mSender;
 };
-
-#endif

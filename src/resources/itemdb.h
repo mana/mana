@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEM_MANAGER_H
-#define ITEM_MANAGER_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -204,5 +203,3 @@ class ManaServItemDB : public ItemDB
 } // namespace ManaServ
 
 extern ItemDB *itemDb;
-
-#endif

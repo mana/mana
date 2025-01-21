@@ -21,8 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SKIN_H
-#define SKIN_H
+#pragma once
 
 #include "graphics.h"
 #include "eventlistener.h"
@@ -228,5 +227,3 @@ class Theme : public Palette, public EventListener
 
         std::vector<DyePalette *> mProgressColors;
 };
-
-#endif

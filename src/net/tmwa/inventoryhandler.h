@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_TA_INVENTORYHANDLER_H
-#define NET_TA_INVENTORYHANDLER_H
+#pragma once
 
 #include "eventlistener.h"
 #include "inventory.h"
@@ -195,5 +194,3 @@ class InventoryHandler final : public MessageHandler, public Net::InventoryHandl
 };
 
 } // namespace TmwAthena
-
-#endif // NET_TA_INVENTORYHANDLER_H

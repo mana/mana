@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OPENGLGRAPHICS_H
-#define OPENGLGRAPHICS_H
+#pragma once
 
 #ifdef USE_OPENGL
 #include "graphics.h"
@@ -135,5 +134,3 @@ class OpenGLGraphics final : public Graphics
         bool mReduceInputLag = true;
 };
 #endif //USE_OPENGL
-
-#endif

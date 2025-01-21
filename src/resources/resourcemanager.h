@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
+#pragma once
 
 #include "resources/resource.h"
 
@@ -240,5 +239,3 @@ class ResourceManager
         std::map<std::string, Resource *> mOrphanedResources;
         time_t mOldestOrphan;
 };
-
-#endif

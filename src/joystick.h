@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JOYSTICK_H
-#define JOYSTICK_H
+#pragma once
 
 #include <SDL.h>
 
@@ -99,5 +98,3 @@ class Joystick
 
         void doCalibration();
 };
-
-#endif // JOYSTICK_H

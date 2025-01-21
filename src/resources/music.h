@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUSIC_H
-#define MUSIC_H
+#pragma once
 
 #include "resources/resource.h"
 
@@ -61,5 +60,3 @@ class Music : public Resource
 
         Mix_Music *mMusic;
 };
-
-#endif

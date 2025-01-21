@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABLE_H
-#define TABLE_H
+#pragma once
 
 #include "tablemodel.h"
 
@@ -180,6 +179,3 @@ private:
     /** Vector for compactness; used as a list in practice. */
     std::vector<GuiTableActionListener *> mActionListeners;
 };
-
-
-#endif // TABLE_H

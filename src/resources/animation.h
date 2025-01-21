@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANIMATION_H
-#define ANIMATION_H
+#pragma once
 
 #include <vector>
 
@@ -81,5 +80,3 @@ class Animation final
         std::vector<Frame> mFrames;
         int mDuration = 0;
 };
-
-#endif

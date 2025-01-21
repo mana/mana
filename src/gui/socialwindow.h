@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOCIALWINDOW_H
-#define SOCIALWINDOW_H
+#pragma once
 
 #include "utils/time.h"
 
@@ -111,5 +110,3 @@ protected:
 };
 
 extern SocialWindow *socialWindow;
-
-#endif // SOCIALWINDOW_H

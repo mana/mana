@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_CONTAINER_H
-#define GUI_CONTAINER_H
+#pragma once
 
 #include <guichan/widgets/container.hpp>
 
@@ -63,5 +62,3 @@ class Container : public gcn::Container
     private:
         LayoutHelper *mLayoutHelper = nullptr;
 };
-
-#endif

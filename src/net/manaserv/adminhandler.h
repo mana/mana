@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NET_MANASERV_ADMINHANDLER_H
-#define NET_MANASERV_ADMINHANDLER_H
+#pragma once
 
 #include "net/adminhandler.h"
 
@@ -43,5 +42,3 @@ class AdminHandler final : public Net::AdminHandler, public MessageHandler
 };
 
 } // namespace ManaServ
-
-#endif

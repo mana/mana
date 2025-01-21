@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTE_DB_H
-#define EMOTE_DB_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -59,5 +58,3 @@ namespace EmoteDB
 
     int getEmoteCount();
 }
-
-#endif // EMOTE_DB_H

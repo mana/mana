@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXTFIELD_H
-#define TEXTFIELD_H
+#pragma once
 
 #include <guichan/widgets/textfield.hpp>
 
@@ -176,5 +175,3 @@ class TextField : public gcn::TextField
 
         TextHistory *mHistory = nullptr; /**< Text history. */
 };
-
-#endif

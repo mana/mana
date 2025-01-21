@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYERBOX_H
-#define PLAYERBOX_H
+#pragma once
 
 #include <guichan/widgets/scrollarea.hpp>
 
@@ -68,5 +67,3 @@ class PlayerBox : public gcn::ScrollArea
         static int instances;
         static ImageRect background;
 };
-
-#endif

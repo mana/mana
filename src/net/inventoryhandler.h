@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INVENTORYHANDLER_H
-#define INVENTORYHANDLER_H
+#pragma once
 
 #include "equipment.h"
 #include "inventory.h"
@@ -99,5 +98,3 @@ class InventoryHandler
 };
 
 } // namespace Net
-
-#endif // INVENTORYHANDLER_H

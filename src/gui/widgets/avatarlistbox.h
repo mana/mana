@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_GUILDLISTBOX_H
-#define GUI_GUILDLISTBOX_H
+#pragma once
 
 #include "avatar.h"
 
@@ -57,5 +56,3 @@ private:
     static Image *onlineIcon;
     static Image *offlineIcon;
 };
-
-#endif

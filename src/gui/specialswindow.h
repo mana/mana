@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPECIALSWINDOW_H
-#define SPECIALSWINDOW_H
+#pragma once
 
 #include "playerinfo.h"
 
@@ -56,5 +55,3 @@ class SpecialsWindow : public Window, public gcn::ActionListener
 };
 
 extern SpecialsWindow *specialsWindow;
-
-#endif // SPECIALSWINDOW_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHOPLISTBOX_H
-#define SHOPLISTBOX_H
+#pragma once
 
 #include "gui/widgets/listbox.h"
 
@@ -97,5 +96,3 @@ class ShopListBox : public ListBox
 
         bool mPriceCheck;
 };
-
-#endif // SHOPLISTBOX_H

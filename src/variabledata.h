@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef VARIABLEDATA_H
-#define VARIABLEDATA_H
+#pragma once
 
 #include <string>
 
@@ -122,5 +121,3 @@ public:
 private:
     ActorSprite *mData;
 };
-
-#endif

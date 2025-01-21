@@ -21,8 +21,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef TEXTPOPUP_H
-#define TEXTPOPUP_H
+#pragma once
 
 #include "gui/widgets/popup.h"
 
@@ -51,5 +50,3 @@ class TextPopup : public Popup
         gcn::Label *mText1;
         gcn::Label *mText2;
 };
-
-#endif // TEXTPOPUP_H

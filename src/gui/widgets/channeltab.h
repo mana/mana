@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHANNELTAB_H
-#define CHANNELTAB_H
+#pragma once
 
 #include "chattab.h"
 
@@ -51,5 +50,3 @@ class ChannelTab : public ChatTab
     private:
         Channel *mChannel;
 };
-
-#endif // CHANNELTAB_H

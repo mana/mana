@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXTMANAGER_H
-#define TEXTMANAGER_H
+#pragma once
 
 #include <list>
 
@@ -69,5 +68,3 @@ class TextManager
 };
 
 extern TextManager *textManager;
-
-#endif // TEXTMANAGER_H

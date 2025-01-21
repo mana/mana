@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GRAPHICS_H
-#define GRAPHICS_H
+#pragma once
 
 #include <SDL.h>
 
@@ -247,5 +246,3 @@ class Graphics : public gcn::Graphics
 };
 
 extern Graphics *graphics;
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARTICLE_H
-#define PARTICLE_H
+#pragma once
 
 #include "actor.h"
 #include "guichanfwd.h"
@@ -293,5 +292,3 @@ class Particle : public Actor
 };
 
 extern Particle *particleEngine;
-
-#endif

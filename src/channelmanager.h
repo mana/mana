@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHANNELMANAGER_H
-#define CHANNELMANAGER_H
+#pragma once
 
 #include <list>
 #include <string>
@@ -46,5 +45,3 @@ private:
 };
 
 extern ChannelManager *channelManager;
-
-#endif

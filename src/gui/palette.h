@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PALETTE_H
-#define PALETTE_H
+#pragma once
 
 #include "utils/time.h"
 
@@ -169,5 +168,3 @@ class Palette
         std::vector<ColorElem> mColors;
         std::vector<ColorElem*> mGradVector;
 };
-
-#endif

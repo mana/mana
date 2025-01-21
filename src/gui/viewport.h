@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef VIEWPORT_H
-#define VIEWPORT_H
+#pragma once
 
 #include "eventlistener.h"
 #include "position.h"
@@ -221,5 +220,3 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
 };
 
 extern Viewport *viewport;           /**< The viewport. */
-
-#endif

@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DEFAULTS_H
-#define DEFAULTS_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -29,5 +28,3 @@ using DefaultsData = std::map<std::string, VariableData *>;
 
 DefaultsData* getBrandingDefaults();
 DefaultsData* getPathsDefaults();
-
-#endif

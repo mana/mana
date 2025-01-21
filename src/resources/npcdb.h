@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NPC_DB_H
-#define NPC_DB_H
+#pragma once
 
 #include <string>
 #include "utils/xml.h"
@@ -42,5 +41,3 @@ namespace NPCDB
 
     BeingInfo *get(int id);
 }
-
-#endif

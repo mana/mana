@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXTPREVIEW_H
-#define TEXTPREVIEW_H
+#pragma once
 
 #include <guichan/color.hpp>
 #include <guichan/font.hpp>
@@ -138,5 +137,3 @@ class TextPreview : public gcn::Widget
         bool mShadow = false;
         bool mOutline = false;
 };
-
-#endif

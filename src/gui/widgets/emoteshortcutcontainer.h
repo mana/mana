@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTESHORTCUTCONTAINER_H
-#define EMOTESHORTCUTCONTAINER_H
+#pragma once
 
 #include "gui/widgets/shortcutcontainer.h"
 
@@ -60,5 +59,3 @@ class EmoteShortcutContainer : public ShortcutContainer
         bool mEmoteClicked = false;
         int mEmoteMoved = -1;
 };
-
-#endif

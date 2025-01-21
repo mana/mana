@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TILESET_H
-#define TILESET_H
+#pragma once
 
 #include "resources/imageset.h"
 
@@ -48,5 +47,3 @@ class Tileset : public ImageSet
     private:
         unsigned mFirstGid;
 };
-
-#endif // TILESET_H

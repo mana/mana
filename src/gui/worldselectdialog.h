@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WORLD_SELECT_DIALOG_H
-#define WORLD_SELECT_DIALOG_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -62,5 +61,3 @@ class WorldSelectDialog : public Window, public gcn::ActionListener,
         gcn::Button *mChangeLoginButton;
         gcn::Button *mChooseWorld;
 };
-
-#endif // WORLD_SELECT_DIALOG_H

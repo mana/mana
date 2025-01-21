@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SETUP_COLORS_H
-#define SETUP_COLORS_H
+#pragma once
 
 #include "guichanfwd.h"
 
@@ -87,5 +86,3 @@ class Setup_Colors : public SetupTab,
         void updateColor();
         void updateGradType();
 };
-
-#endif // SETUP_COLORS_H

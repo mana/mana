@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPRITE_H
-#define SPRITE_H
+#pragma once
 
 #include "resources/spritedef.h"
 
@@ -116,5 +115,3 @@ class Sprite
     protected:
         float mAlpha = 1.0f;        /**< The alpha opacity used to draw */
 };
-
-#endif // SPRITE_H

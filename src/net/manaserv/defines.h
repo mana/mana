@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MANASERV_DEFINES_H
-#define MANASERV_DEFINES_H
+#pragma once
 
 /**
  * Attributes used during combat. Available to all the beings.
@@ -72,5 +71,3 @@ enum
 
     NB_CHARACTER_ATTRIBUTES = CHAR_ATTR_END
 };
-
-#endif // MANASERV_DEFINES_H

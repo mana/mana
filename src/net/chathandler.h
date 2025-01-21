@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHATHANDLER_H
-#define CHATHANDLER_H
+#pragma once
 
 #include <string>
 
@@ -62,5 +61,3 @@ class ChatHandler
         virtual void requestOnlineList() = 0;
 };
 }
-
-#endif // CHATHANDLER_H

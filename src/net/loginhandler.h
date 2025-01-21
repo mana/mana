@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGINHANDLER_H
-#define LOGINHANDLER_H
+#pragma once
 
 #include "net/logindata.h"
 #include "net/serverinfo.h"
@@ -98,5 +97,3 @@ class LoginHandler
 };
 
 } // namespace Net
-
-#endif // LOGINHANDLER_H

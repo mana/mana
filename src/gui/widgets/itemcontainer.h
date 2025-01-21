@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEMCONTAINER_H
-#define ITEMCONTAINER_H
+#pragma once
 
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
@@ -196,5 +195,3 @@ class ItemContainer : public gcn::Widget,
 
         std::list<gcn::SelectionListener *> mSelectionListeners;
 };
-
-#endif // ITEMCONTAINER_H

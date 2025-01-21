@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUI_SETUP_KEYBOARD_H
-#define GUI_SETUP_KEYBOARD_H
+#pragma once
 
 #include "guichanfwd.h"
 
@@ -71,5 +70,3 @@ class Setup_Keyboard : public SetupTab, public gcn::ActionListener
 
         bool mKeySetting; /**< flag to check if key being set. */
 };
-
-#endif

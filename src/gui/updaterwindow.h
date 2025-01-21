@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UPDATERWINDOW_H
-#define UPDATERWINDOW_H
+#pragma once
 
 #include "gui/widgets/window.h"
 
@@ -191,5 +190,3 @@ private:
     ScrollArea *mScrollArea;      /**< Used to scroll news box. */
     std::unique_ptr<LinkHandler> mLinkHandler;
 };
-
-#endif

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TA_PROTOCOL_H
-#define TA_PROTOCOL_H
+#pragma once
 
 #include <cstdint>
 
@@ -283,5 +282,3 @@ enum {
 };
 
 }
-
-#endif

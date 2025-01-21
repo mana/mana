@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXT_RENDERER_H
-#define TEXT_RENDERER_H
+#pragma once
 
 #include "graphics.h"
 
@@ -82,5 +81,3 @@ public:
         graphics->drawText(text, x, y, align);
     }
 };
-
-#endif

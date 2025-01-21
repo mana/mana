@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef VIDEO_H
-#define VIDEO_H
+#pragma once
 
 #include "graphics.h"
 
@@ -113,5 +112,3 @@ private:
     std::unique_ptr<Graphics> mGraphics;
     SDL_Window *mWindow = nullptr;
 };
-
-#endif // VIDEO_H

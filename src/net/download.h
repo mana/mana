@@ -25,8 +25,7 @@
 
 #include <curl/curl.h>
 
-#ifndef NET_DOWNLOAD_H
-#define NET_DOWNLOAD_H
+#pragma once
 
 enum DownloadStatus
 {
@@ -107,5 +106,3 @@ class Download
 };
 
 } // namespace Net
-
-#endif // NET_DOWNLOAD_H

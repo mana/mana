@@ -18,8 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EVENTLISTENER_H
-#define EVENTLISTENER_H
+#pragma once
 
 #include "event.h"
 
@@ -34,5 +33,3 @@ public:
 
     virtual void event(Event::Channel channel, const Event &event) = 0;
 };
-
-#endif // EVENTLISTENER_H

@@ -19,8 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_EFFECT_H
-#define STATUS_EFFECT_H
+#pragma once
 
 #include "particle.h"
 #include "animatedsprite.h"
@@ -111,5 +110,3 @@ private:
     std::string mAction;
     bool mPersistentParticleEffect = false;
 };
-
-#endif // !defined(STATUS_EFFECT_H)

@@ -20,8 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BROWSERBOX_H
-#define BROWSERBOX_H
+#pragma once
 
 #include "utils/time.h"
 
@@ -197,5 +196,3 @@ class BrowserBox : public gcn::Widget,
         int mLastLayoutWidth = 0;
         Timer mLayoutTimer;
 };
-
-#endif
