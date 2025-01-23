@@ -1,7 +1,6 @@
 name: mana
-version: git
 adopt-info: mana
-base: core22
+base: core24
 
 grade: stable
 confinement: strict
@@ -32,9 +31,13 @@ parts:
     parse-info:
       - usr/share/metainfo/org.manasource.Mana.metainfo.xml
     source: .
+    override-pull: |
+      craftctl default
+      craftctl set version=$(git describe --tags | sed 's/v//')
     build-packages:
       - build-essential
       - gettext
+      - git
       - libcurl4-openssl-dev
       - libguichan-dev
       - libphysfs-dev

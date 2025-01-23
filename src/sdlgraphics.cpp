@@ -28,6 +28,8 @@
 
 #include <guichan/exception.hpp>
 
+#include <cmath>
+
 std::unique_ptr<Graphics> SDLGraphics::create(SDL_Window *window, const VideoSettings &settings)
 {
     int rendererFlags = 0;

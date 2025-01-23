@@ -46,6 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0 # required to generate the version from git tags
           submodules: true
 
       - uses: snapcore/action-build@v1
