@@ -34,6 +34,8 @@
 
 #include <SDL.h>
 
+#include <cmath>
+
 #ifndef GL_TEXTURE_RECTANGLE_ARB
 #define GL_TEXTURE_RECTANGLE_ARB 0x84F5
 #define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB 0x84F8
