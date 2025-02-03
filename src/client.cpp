@@ -735,6 +735,7 @@ int Client::exec()
                     // Choosing character on the command line should work only
                     // once, clear it so that 'switch character' works.
                     mOptions.character.clear();
+                    mOptions.chooseDefault = false;
 
                     break;
 
