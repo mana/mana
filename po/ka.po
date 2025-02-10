@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2009-07-23 22:14+0000\n"
-"Last-Translator: Mpa4Hu <ymen9@pisem.net>\n"
-"Language-Team: Georgian <ka@li.org>\n"
+"PO-Revision-Date: 2025-02-11 05:01+0000\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <https://hosted.weblate.org/projects/mana/mana/ka/>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10-dev\n"
 "X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../src/main.cpp:52
 msgid "              to the mana client."
@@ -72,9 +72,8 @@ msgid "  -d --data           : Directory to load game data from"
 msgstr ""
 
 #: ../src/main.cpp:56
-#, fuzzy
 msgid "  -h --help           : Display this help"
-msgstr "/help > დახმარების გამოტანა"
+msgstr "  -h --help           : ამ დახმარების გამოტანა"
 
 #: ../src/main.cpp:62
 msgid "  -p --port           : Login server port"
@@ -3052,9 +3051,8 @@ msgid "This account is already logged in."
 msgstr ""
 
 #: ../src/net/tmwa/gui/guildtab.cpp:73
-#, fuzzy
 msgid "This command causes the player to leave the guild."
-msgstr "ამ კომანდას გამოაქ კონკრეტული რუქის სახელი"
+msgstr "ეს ბრძანება აიძულებს მომთამაშეს, გილდიიდან გავიდეს."
 
 #: ../src/net/tmwa/gui/partytab.cpp:74
 msgid "This command causes the player to leave the party."
@@ -3069,9 +3067,8 @@ msgid "This command changes the party's item sharing policy."
 msgstr ""
 
 #: ../src/commandhandler.cpp:255
-#, fuzzy
 msgid "This command clears the away status and message."
-msgstr "ამ კომანდას გამოაქ კონკრეტული რუქის სახელი"
+msgstr "ეს ბრძანება გაასუფთავებს გასულობის სტატუსს და შეტყობინებას."
 
 #: ../src/commandhandler.cpp:209
 msgid "This command clears the chat log of previous chat."
@@ -3095,7 +3092,7 @@ msgstr ""
 
 #: ../src/commandhandler.cpp:304
 msgid "This command displays the name of the current map."
-msgstr "ამ კომანდას გამოაქ კონკრეტული რუქის სახელი"
+msgstr "ეს ბრძანება მიმდინარე რუკის სახელს აჩვენებს."
 
 #: ../src/commandhandler.cpp:309
 msgid "This command displays the number of players currently online."
@@ -3124,14 +3121,16 @@ msgid ""
 msgstr ""
 
 #: ../src/commandhandler.cpp:214
-#, fuzzy
 msgid "This command ignores the given player regardless of current relations."
-msgstr "ამ კომანდას გამოაქ კონკრეტული რუქის სახელი"
+msgstr ""
+"ეს ბრძანება გამოტოვებს მითითებულ მოთამაშეს მიმდინარე ურთიერთობების "
+"გაუთვალისწინებლად."
 
 #: ../src/gui/widgets/whispertab.cpp:89
-#, fuzzy
 msgid "This command ignores the other player regardless of current relations."
-msgstr "ამ კომანდას გამოაქ კონკრეტული რუქის სახელი"
+msgstr ""
+"ეს ბრძანება გამოტოვებს სხვა მოთამაშეს მიმდინარე ურთიერთობების "
+"გაუთვალისწინებად."
 
 #: ../src/commandhandler.cpp:265 ../src/net/tmwa/gui/partytab.cpp:67
 msgid "This command invites <nick> to party with you."
@@ -3387,9 +3386,9 @@ msgid "Unknown connection error."
 msgstr ""
 
 #: ../src/net/manaserv/charhandler.cpp:226
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error (%d)."
-msgstr "უცნობი კომანდა."
+msgstr "უცნობი შეცდომა (%d)."
 
 #: ../src/net/manaserv/charhandler.cpp:175
 #: ../src/net/manaserv/loginhandler.cpp:101
