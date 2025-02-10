@@ -149,6 +149,11 @@ inline void fromString(const char *str, std::string &value)
     value = str;
 }
 
+inline void fromString(const char *str, std::string_view &value)
+{
+    value = str;
+}
+
 inline void fromString(const char *str, int &value)
 {
     value = atoi(str);

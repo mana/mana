@@ -442,6 +442,7 @@ class Being : public ActorSprite, public EventListener
     protected:
         struct SpriteState {
             int id = 0;
+            int visibleId = 0;
             std::string color;
             std::vector<Particle*> particles;
         };
@@ -464,6 +465,7 @@ class Being : public ActorSprite, public EventListener
         void restoreAllSpriteParticles();
 
         void updateColors();
+        void updateSprites();
 
         /**
          * Gets the advised Y chat text position.

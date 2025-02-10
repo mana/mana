@@ -762,6 +762,7 @@ void Being::setDirection(Uint8 direction)
         dir = DIRECTION_LEFT;
     mSpriteDirection = dir;
 
+    updateSprites();
     CompoundSprite::setDirection(dir);
 }
 
@@ -1099,6 +1100,110 @@ void Being::updateColors()
     }
 }
 
+/**
+ * Updates the visible sprite IDs of the being, taking into account the item
+ * replacements.
+ */
+void Being::updateSprites()
+{
+    // hack for allow different logic in dead player
+    const int direction = mAction == DEAD ? DIRECTION_DEAD : mSpriteDirection;
+
+    // Get the current item IDs
+    std::vector<int> itemIDs(mSpriteStates.size());
+    for (size_t i = 0; i < mSpriteStates.size(); i++)
+        itemIDs[i] = mSpriteStates[i].id;
+
+    // Apply the replacements
+    for (auto &spriteState : mSpriteStates)
+    {
+        if (!spriteState.id)
+            continue;
+
+        auto &itemInfo = itemDb->get(spriteState.id);
+        for (const auto &replacement : itemInfo.replacements)
+        {
+            if (replacement.direction != DIRECTION_ALL && replacement.direction != direction)
+                continue;
+
+            if (replacement.sprite == SPRITE_ALL)
+            {
+                if (replacement.items.empty())
+                {
+                    itemIDs.assign(itemIDs.size(), 0);
+                }
+                else
+                {
+                    for (int &id : itemIDs)
+                    {
+                        for (auto &item : replacement.items)
+                            if (!item.from || id == item.from)
+                                id = item.to;
+                    }
+                }
+            }
+            else if (replacement.sprite < itemIDs.size())
+            {
+                int &id = itemIDs[replacement.sprite];
+
+                if (replacement.items.empty())
+                {
+                    id = 0;
+                }
+                else
+                {
+                    for (auto &item : replacement.items)
+                        if (!item.from || id == item.from)
+                            id = item.to;
+                }
+            }
+        }
+    }
+
+    // Set the new sprites
+    bool newSpriteSet = false;
+
+    for (size_t i = 0; i < mSpriteStates.size(); i++)
+    {
+        auto &spriteState = mSpriteStates[i];
+        if (spriteState.visibleId == itemIDs[i])
+            continue;
+
+        spriteState.visibleId = itemIDs[i];
+
+        if (spriteState.visibleId == 0)
+        {
+            CompoundSprite::setSprite(i, nullptr);
+        }
+        else
+        {
+            newSpriteSet = true;
+
+            auto &itemInfo = itemDb->get(spriteState.visibleId);
+            std::string filename = itemInfo.getSprite(mGender, mSubType);
+            AnimatedSprite *equipmentSprite = nullptr;
+
+            if (!filename.empty())
+            {
+                if (!spriteState.color.empty())
+                    filename += "|" + spriteState.color;
+
+                equipmentSprite = AnimatedSprite::load(
+                    paths.getStringValue("sprites") + filename);
+
+                if (equipmentSprite)
+                    equipmentSprite->setDirection(getSpriteDirection());
+            }
+
+            CompoundSprite::setSprite(i, equipmentSprite);
+        }
+    }
+
+    // Make sure any new sprites are set to the correct action
+    if (newSpriteSet)
+        setAction(mAction);
+}
+
 void Being::setSprite(unsigned slot, int id, const std::string &color,
                       bool isWeapon)
 {
@@ -1114,43 +1219,32 @@ void Being::setSprite(unsigned slot, int id, const std::string &color,
     if (spriteState.id != id)
         removeSpriteParticles(spriteState);
 
+    // Clear the current sprite when the color changes
+    if (spriteState.color != color)
+    {
+        spriteState.visibleId = 0;
+        CompoundSprite::setSprite(slot, nullptr);
+    }
+
     spriteState.id = id;
     spriteState.color = color;
 
     if (id == 0)        // id = 0 means unequip
     {
-        removeSprite(slot);
-
         if (isWeapon)
             mEquippedWeapon = nullptr;
     }
     else
     {
         auto &itemInfo = itemDb->get(id);
-        std::string filename = itemInfo.getSprite(mGender, mSubType);
-        AnimatedSprite *equipmentSprite = nullptr;
-
-        if (!filename.empty())
-        {
-            if (!color.empty())
-                filename += "|" + color;
-
-            equipmentSprite = AnimatedSprite::load(
-                                    paths.getStringValue("sprites") + filename);
-        }
-
-        if (equipmentSprite)
-            equipmentSprite->setDirection(getSpriteDirection());
-
-        CompoundSprite::setSprite(slot, equipmentSprite);
 
         addSpriteParticles(spriteState, itemInfo.display);
 
         if (isWeapon)
             mEquippedWeapon = &itemInfo;
-
-        setAction(mAction);
     }
+
+    updateSprites();
 }
 
 void Being::setSpriteID(unsigned slot, int id)
@@ -1183,14 +1277,18 @@ void Being::setGender(Gender gender)
     {
         mGender = gender;
 
-        // Reload all subsprites
+        // Reset all sprites to force reload with the correct gender
         for (size_t i = 0; i < mSpriteStates.size(); i++)
         {
-            auto &sprite = mSpriteStates[i];
-            if (sprite.id != 0)
-                setSprite(i, sprite.id, sprite.color);
+            auto &spriteState = mSpriteStates[i];
+            if (spriteState.visibleId)
+            {
+                CompoundSprite::setSprite(i, nullptr);
+                spriteState.visibleId = 0;
+            }
         }
 
+        updateSprites();
         updateName();
     }
 }

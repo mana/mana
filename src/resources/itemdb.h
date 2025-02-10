@@ -133,12 +133,17 @@ class ItemDB
         /**
          * Loads the sound references contained in a <sound> tag.
          */
-         void loadSoundRef(ItemInfo &itemInfo, XML::Node node);
+        void loadSoundRef(ItemInfo &itemInfo, XML::Node node);
 
         /**
          * Loads the floor item references contained in a <floor> tag.
          */
         void loadFloorSprite(SpriteDisplay &display, XML::Node node);
+
+        /**
+         * Loads the <replace> tag.
+         */
+        void loadReplacement(ItemInfo &info, XML::Node replaceNode);
 
         // Items database
         std::map<int, ItemInfo *> mItemInfos;

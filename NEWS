@@ -7,6 +7,7 @@
 - Added support for reading most client-data settings from settings.xml
 - Added support for XML includes, both absolute and relative
 - Added support for map/layer mask
+- Added support for sprite replacements
 - Added support for particle effects on equipment
 - Added support for hit/miss sounds on equipment for all players
 - Added online player list to Social window

@@ -77,8 +77,6 @@ public:
     Sprite *getSprite(int layer) const
     { return mSprites.at(layer); }
 
-    void removeSprite(int layer);
-
     void clear();
 
     void ensureSize(size_t layerCount);

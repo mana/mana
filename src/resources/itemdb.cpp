@@ -21,6 +21,7 @@
 
 #include "resources/itemdb.h"
 
+#include "configuration.h"
 #include "log.h"
 
 #include "resources/hairdb.h"
@@ -29,10 +30,11 @@
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-#include "configuration.h"
 
+#include "net/tmwa/protocol.h"
 
 #include <cassert>
+#include <string_view>
 
 void setStatsList(std::list<ItemStat> stats)
 {
@@ -58,6 +60,62 @@ static ItemType itemTypeFromString(const std::string &name, int id = 0)
     if (name == "racesprite")       return ITEM_SPRITE_RACE;
     if (name == "hairsprite")       return ITEM_SPRITE_HAIR;
     return ITEM_UNUSABLE;
+}
+
+static uint8_t spriteFromString(std::string_view name)
+{
+    if (name.empty())
+        return SPRITE_ALL;
+    if (name == "race" || name == "type")
+        return TmwAthena::SPRITE_BASE;
+    if (name == "shoes" || name == "boot" || name == "boots")
+        return TmwAthena::SPRITE_SHOE;
+    if (name == "bottomclothes" || name == "bottom" || name == "pants")
+        return TmwAthena::SPRITE_BOTTOMCLOTHES;
+    if (name == "topclothes" || name == "top" || name == "torso" || name == "body")
+        return TmwAthena::SPRITE_TOPCLOTHES;
+    if (name == "misc1")
+        return TmwAthena::SPRITE_MISC1;
+    if (name == "misc2" || name == "scarf" || name == "scarfs")
+        return TmwAthena::SPRITE_MISC2;
+    if (name == "hair")
+        return TmwAthena::SPRITE_HAIR;
+    if (name == "hat" || name == "hats")
+        return TmwAthena::SPRITE_HAT;
+    if (name == "wings")
+        return TmwAthena::SPRITE_CAPE;
+    if (name == "glove" || name == "gloves")
+        return TmwAthena::SPRITE_GLOVES;
+    if (name == "weapon" || name == "weapons")
+        return TmwAthena::SPRITE_WEAPON;
+    if (name == "shield" || name == "shields")
+        return TmwAthena::SPRITE_SHIELD;
+    if (name == "amulet" || name == "amulets")
+        return 12;
+    if (name == "ring" || name == "rings")
+        return 13;
+
+    return SPRITE_UNKNOWN;
+}
+
+static uint8_t directionFromString(std::string_view name)
+{
+    if (name.empty())
+        return DIRECTION_ALL;
+    if (name == "down" || name == "downall")
+        return DIRECTION_DOWN;
+    if (name == "left")
+        return DIRECTION_LEFT;
+    if (name == "up" || name == "upall")
+        return DIRECTION_UP;
+    if (name == "right")
+        return DIRECTION_RIGHT;
+
+    // hack for died action.
+    if (name == "died")
+        return DIRECTION_DEAD;
+
+    return DIRECTION_UNKNOWN;
 }
 
 void ItemDB::loadEmptyItemDefinition()
@@ -166,6 +224,46 @@ void ItemDB::loadFloorSprite(SpriteDisplay &display, XML::Node floorNode)
     }
 }
 
+void ItemDB::loadReplacement(ItemInfo &info, XML::Node replaceNode)
+{
+    std::string_view spriteString;
+    std::string_view directionString;
+
+    replaceNode.attribute("sprite", spriteString);
+    replaceNode.attribute("direction", directionString);
+
+    const uint8_t sprite = spriteFromString(spriteString);
+    const uint8_t direction = directionFromString(directionString);
+
+    if (sprite == SPRITE_UNKNOWN)
+    {
+        logger->log("ItemDB: Invalid sprite name '%s' in replace tag",
+                    spriteString.data());
+        return;
+    }
+
+    if (direction == DIRECTION_UNKNOWN)
+    {
+        logger->log("ItemDB: Invalid direction name '%s' in replace tag",
+                    directionString.data());
+        return;
+    }
+
+    Replacement &replace = info.replacements.emplace_back();
+    replace.sprite = sprite;
+    replace.direction = direction;
+
+    for (auto child : replaceNode.children())
+    {
+        if (child.name() == "item")
+        {
+            Replacement::Item &item = replace.items.emplace_back();
+            child.attribute("from", item.from);
+            child.attribute("to", item.to);
+        }
+    }
+}
+
 void ItemDB::unload()
 {
     logger->log("Unloading item database...");
@@ -227,6 +325,10 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string
         else if (itemChild.name() == "floor")
         {
             loadFloorSprite(itemInfo.display, itemChild);
+        }
+        else if (itemChild.name() == "replace")
+        {
+            loadReplacement(itemInfo, itemChild);
         }
     }
 }

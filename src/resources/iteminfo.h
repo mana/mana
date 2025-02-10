@@ -67,6 +67,32 @@ namespace ManaServ {
 class ManaServItemDB;
 }
 
+enum ReplacementDirection : uint8_t
+{
+    DIRECTION_ALL = DIRECTION_DEFAULT,
+    DIRECTION_DEAD = DIRECTION_INVALID,
+    DIRECTION_UNKNOWN,
+};
+
+enum ReplacementSprite : uint8_t
+{
+    SPRITE_UNKNOWN = 254,
+    SPRITE_ALL = 255,
+};
+
+struct Replacement
+{
+    struct Item
+    {
+        int from = 0;                   // ID to replace (0: any)
+        int to = 0;                     // Replace with this ID (0: remove)
+    };
+
+    uint8_t sprite = SPRITE_ALL;        // sprite slot to replace
+    uint8_t direction = DIRECTION_ALL;  // direction in which to replace
+    std::vector<Item> items;            // specific items to replace (empty: remove)
+};
+
 /**
  * Defines a class for storing generic item infos.
  */
@@ -108,6 +134,8 @@ public:
     bool activatable = false;           /**< Whether this item can be activated. */
 
     ItemType type = ITEM_UNUSABLE;      /**< Item type. */
+
+    std::vector<Replacement> replacements;
 
     const std::string &getSprite(Gender gender, int race) const;
     const std::string &getSound(EquipmentSoundEvent event) const;

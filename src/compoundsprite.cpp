@@ -158,17 +158,6 @@ void CompoundSprite::setSprite(int layer, Sprite *sprite)
     mNeedsRedraw = true;
 }
 
-void CompoundSprite::removeSprite(int layer)
-{
-    // Skip if it won't change anything
-    if (!mSprites.at(layer))
-        return;
-
-    delete mSprites.at(layer);
-    mSprites.at(layer) = nullptr;
-    mNeedsRedraw = true;
-}
-
 void CompoundSprite::clear()
 {
     // Skip if it won't change anything
