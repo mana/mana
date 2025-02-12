@@ -40,7 +40,8 @@ public:
         PLAYER,
         NPC,
         MONSTER,
-        FLOOR_ITEM
+        FLOOR_ITEM,
+        PORTAL
     };
 
     enum TargetCursorSize

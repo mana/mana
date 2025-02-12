@@ -61,8 +61,7 @@ enum
 class LocalPlayer final : public Being
 {
     public:
-        LocalPlayer(int id= 65535, int subtype = 0);
-
+        LocalPlayer(int id = 65535, int subtype = 0);
         ~LocalPlayer() override;
 
         void logic() override;

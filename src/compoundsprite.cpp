@@ -29,9 +29,7 @@
 
 #include <SDL.h>
 
-CompoundSprite::CompoundSprite()
-{
-}
+CompoundSprite::CompoundSprite() = default;
 
 CompoundSprite::~CompoundSprite()
 {
@@ -178,6 +176,12 @@ void CompoundSprite::ensureSize(size_t layerCount)
     mSprites.resize(layerCount);
 }
 
+void CompoundSprite::doRedraw()
+{
+    if (mNeedsRedraw)
+        redraw();
+}
+
 int CompoundSprite::getDuration() const
 {
     int duration = 0;
@@ -209,8 +213,9 @@ static void updateValues(int &dimension, int &pos, int imgDimUL, int imgDimRD, i
 void CompoundSprite::redraw() const
 {
 #if 1   // TODO_SDL2: Does it make sense to implement CompoundSprite?
-    mWidth = mSprites.at(0)->getWidth();
-    mHeight = mSprites.at(0)->getHeight();
+    auto baseSprite = mSprites.empty() ? nullptr : mSprites.at(0);
+    mWidth = baseSprite ? baseSprite->getWidth() : 0;
+    mHeight = baseSprite ? baseSprite->getHeight() : 0;
     mOffsetX = 0;
     mOffsetY = 0;
     mNeedsRedraw = false;

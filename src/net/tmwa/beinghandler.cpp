@@ -78,27 +78,49 @@ BeingHandler::BeingHandler(bool enableSync):
     handledMessages = _messages;
 }
 
+static ActorSprite::Type typeFromJob(short job)
+{
+    if (job <= 25 || (job >= 4001 && job <= 4049))
+        return ActorSprite::PLAYER;
+    if (job >= 46 && job <= 1000)
+        return ActorSprite::NPC;
+    if (job > 1000 && job <= 2000)
+        return ActorSprite::MONSTER;
+    if (job == 45)
+        return ActorSprite::PORTAL;
+
+    return ActorSprite::UNKNOWN;
+}
+
 static Being *createBeing(int id, short job)
 {
-    ActorSprite::Type type = ActorSprite::UNKNOWN;
-    if (job <= 25 || (job >= 4001 && job <= 4049))
-        type = ActorSprite::PLAYER;
-    else if (job >= 46 && job <= 1000)
-        type = ActorSprite::NPC;
-    else if (job > 1000 && job <= 2000)
-        type = ActorSprite::MONSTER;
-    else if (job == 45)
+    const auto type = typeFromJob(job);
+    if (type == ActorSprite::PORTAL)
         return nullptr; // Skip portals
 
     Being *being = actorSpriteManager->createBeing(id, type, job);
 
     if (type == ActorSprite::PLAYER || type == ActorSprite::NPC)
     {
-        MessageOut outMsg(0x0094);
-        outMsg.writeInt32(id);//readLong(2));
+        MessageOut outMsg(CMSG_NAME_REQUEST);
+        outMsg.writeInt32(id);
     }
 
     return being;
+}
+
+static void updateBeingType(Being *being, short job)
+{
+    const auto type = typeFromJob(job);
+    const bool typeChanged = being->getType() != type;
+
+    being->setType(type, job);
+
+    if (typeChanged && type == ActorSprite::PLAYER)
+    {
+        MessageOut outMsg(CMSG_NAME_REQUEST);
+        outMsg.writeInt32(being->getId());
+    }
 }
 
 static void handleMoveMessage(Map *map, Being *dstBeing,
@@ -209,7 +231,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 speed = 150.0f; // In ticks per tile * 10
 
             dstBeing->setMoveSpeed(Vector(speed / 10, speed / 10));
-            dstBeing->setSubtype(job);
+            updateBeingType(dstBeing, job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
             headBottom = msg.readInt16();
@@ -417,6 +439,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             switch (type)
             {
+                case LOOK::BASE:
+                    updateBeingType(dstBeing, id);
+                    break;
                 case LOOK::HAIR:
                 {
                     // const int look = id / 256;
@@ -531,7 +556,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             else
                 dstBeing->setMoveSpeed(Net::getPlayerHandler()->getDefaultMoveSpeed());
 
-            dstBeing->setSubtype(job);
+            updateBeingType(dstBeing, job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
             shield = msg.readInt16();
@@ -545,8 +570,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             headTop = msg.readInt16();
             headMid = msg.readInt16();
             hairColor = msg.readInt16();
-            shoes = msg.readInt16();
-            gloves = msg.readInt16();
+            msg.readInt16();  // clothes_color
+            msg.readInt8();   // head_dir
+            msg.readInt8();   // unused2
             msg.readInt32();  // guild
             msg.readInt16();  // emblem
             msg.readInt16();  // manner
@@ -601,11 +627,11 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
             else if (msg.getId() == SMSG_PLAYER_MOVE)
             {
-                msg.readInt8(); // unknown
+                msg.readInt8(); // five
             }
 
             msg.readInt8();   // Lv
-            msg.readInt8();   // unknown
+            msg.readInt8();   // unused
 
             dstBeing->setStunMode(stunMode);
             dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);

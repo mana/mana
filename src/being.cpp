@@ -62,23 +62,15 @@
 
 Being::Being(int id, Type type, int subtype, Map *map):
     ActorSprite(id),
-    mInfo(BeingInfo::Unknown),
-    mType(type)
+    mInfo(BeingInfo::Unknown)
 {
     setMap(map);
-    setSubtype(subtype);
+    setType(type, subtype);
 
     mSpeechBubble = new SpeechBubble;
 
     mMoveSpeed = Net::getPlayerHandler()->getDefaultMoveSpeed();
 
-    if (getType() == PLAYER)
-        mShowName = config.visibleNames;
-
-    if (getType() == PLAYER || getType() == NPC)
-        setShowName(true);
-
-    updateColors();
     listen(Event::ConfigChannel);
     listen(Event::ChatChannel);
 }
@@ -91,16 +83,26 @@ Being::~Being()
     mSpeechBubble = nullptr;
     mDispName = nullptr;
     mText = nullptr;
-
-    removeAllSpriteParticles();
 }
 
-void Being::setSubtype(Uint16 subtype)
+/**
+ * Can be used to change the type of the being.
+ *
+ * Practical use: players (usually GMs) can change into monsters and back.
+ */
+void Being::setType(Type type, int subtype)
 {
-    if (subtype == mSubType)
+    if (mType == type && mSubType == subtype)
         return;
 
+    mType = type;
     mSubType = subtype;
+
+    for (auto &spriteState : mSpriteStates)
+    {
+        spriteState.visibleId = 0;
+        spriteState.particles.clear();
+    }
 
     switch (getType())
     {
@@ -112,8 +114,12 @@ void Being::setSubtype(Uint16 subtype)
     case NPC:
         mInfo = NPCDB::get(mSubType);
         setupSpriteDisplay(mInfo->display, false);
+        mShowName = true;
         break;
     case PLAYER: {
+        clear();
+        mChildParticleEffects.clear();
+
         int id = -100 - subtype;
 
         // Prevent showing errors when sprite doesn't exist
@@ -121,12 +127,22 @@ void Being::setSubtype(Uint16 subtype)
             id = -100;
 
         setSprite(Net::getCharHandler()->baseSprite(), id);
+        restoreAllSpriteParticles();
+        mShowName = this == local_player ? config.showOwnName
+                                         : config.visibleNames;
         break;
     }
     case FLOOR_ITEM:
+    case PORTAL:
     case UNKNOWN:
         break;
     }
+
+    doRedraw();
+
+    updateName();
+    updateNamePosition();
+    updateColors();
 }
 
 bool Being::isTargetSelection() const
@@ -172,7 +188,7 @@ void Being::setPosition(const Vector &pos)
 {
     Actor::setPosition(pos);
 
-    updateCoords();
+    updateNamePosition();
 
     if (mText)
         mText->adviseXY(getPixelX(), getSpeechTextYPosition());
@@ -303,8 +319,8 @@ void Being::takeDamage(Being *attacker, int amount,
                        AttackType type, int attackId)
 {
     gcn::Font *font;
-    std::string damage = amount ? toString(amount) : type == FLEE ?
-            "dodge" : "miss";
+    std::string damage = amount ? toString(amount)
+                                : (type == FLEE ? "dodge" : "miss");
     const gcn::Color *color;
 
     font = gui->getInfoParticleFont();
@@ -449,17 +465,11 @@ void Being::handleAttack(Being *victim, int damage, int attackId)
 void Being::setName(const std::string &name)
 {
     if (getType() == NPC)
-    {
         mName = name.substr(0, name.find('#', 0));
-        showName();
-    }
     else
-    {
         mName = name;
 
-        if (getType() == PLAYER && getShowName())
-            showName();
-    }
+    updateName();
 }
 
 void Being::setShowName(bool doShowName)
@@ -468,14 +478,7 @@ void Being::setShowName(bool doShowName)
         return;
 
     mShowName = doShowName;
-
-    if (doShowName)
-        showName();
-    else
-    {
-        delete mDispName;
-        mDispName = nullptr;
-    }
+    updateName();
 }
 
 void Being::setGuildName(const std::string &name)
@@ -744,14 +747,14 @@ void Being::lookAt(const Vector &destPos)
     }
 }
 
-void Being::setDirection(Uint8 direction)
+void Being::setDirection(uint8_t direction)
 {
     if (!direction || mDirection == direction)
         return;
 
     mDirection = direction;
 
-    SpriteDirection dir;
+    SpriteDirection dir = DIRECTION_DEFAULT;
     if (mDirection & UP)
         dir = DIRECTION_UP;
     else if (mDirection & DOWN)
@@ -762,7 +765,7 @@ void Being::setDirection(Uint8 direction)
         dir = DIRECTION_LEFT;
     mSpriteDirection = dir;
 
-    updateSprites();
+    updatePlayerSprites();
     CompoundSprite::setDirection(dir);
 }
 
@@ -954,7 +957,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
     }
 }
 
-void Being::updateCoords()
+void Being::updateNamePosition()
 {
     if (!mDispName)
         return;
@@ -972,10 +975,14 @@ void Being::flashName(int time)
         mDispName->flash(time);
 }
 
-void Being::showName()
+void Being::updateName()
 {
     delete mDispName;
     mDispName = nullptr;
+
+    if (!mShowName)
+        return;
+
     std::string mDisplayName(mName);
 
     if (getType() == PLAYER)
@@ -1014,7 +1021,7 @@ void Being::showName()
     mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
                               gcn::Graphics::CENTER, mNameColor, font);
 
-    updateCoords();
+    updateNamePosition();
 }
 
 void Being::addSpriteParticles(SpriteState &spriteState, const SpriteDisplay &display)
@@ -1048,6 +1055,9 @@ void Being::removeAllSpriteParticles()
 
 void Being::restoreAllSpriteParticles()
 {
+    if (mType != PLAYER)
+        return;
+
     for (auto &spriteState : mSpriteStates)
     {
         if (spriteState.id)
@@ -1095,17 +1105,18 @@ void Being::updateColors()
     }
 
     if (mDispName)
-    {
         mDispName->setColor(mNameColor);
-    }
 }
 
 /**
- * Updates the visible sprite IDs of the being, taking into account the item
+ * Updates the visible sprite IDs of the player, taking into account the item
  * replacements.
  */
-void Being::updateSprites()
+void Being::updatePlayerSprites()
 {
+    if (mType != PLAYER)
+        return;
+
     // hack for allow different logic in dead player
     const int direction = mAction == DEAD ? DIRECTION_DEAD : mSpriteDirection;
 
@@ -1163,6 +1174,8 @@ void Being::updateSprites()
     // Set the new sprites
     bool newSpriteSet = false;
 
+    ensureSize(mSpriteStates.size());
+
     for (size_t i = 0; i < mSpriteStates.size(); i++)
     {
         auto &spriteState = mSpriteStates[i];
@@ -1207,9 +1220,6 @@ void Being::updateSprites()
 void Being::setSprite(unsigned slot, int id, const std::string &color,
                       bool isWeapon)
 {
-    if (slot >= size())
-        ensureSize(slot + 1);
-
     if (slot >= mSpriteStates.size())
         mSpriteStates.resize(slot + 1);
 
@@ -1220,7 +1230,7 @@ void Being::setSprite(unsigned slot, int id, const std::string &color,
         removeSpriteParticles(spriteState);
 
     // Clear the current sprite when the color changes
-    if (spriteState.color != color)
+    if (spriteState.color != color && spriteState.visibleId)
     {
         spriteState.visibleId = 0;
         CompoundSprite::setSprite(slot, nullptr);
@@ -1238,13 +1248,14 @@ void Being::setSprite(unsigned slot, int id, const std::string &color,
     {
         auto &itemInfo = itemDb->get(id);
 
-        addSpriteParticles(spriteState, itemInfo.display);
+        if (mType == PLAYER)
+            addSpriteParticles(spriteState, itemInfo.display);
 
         if (isWeapon)
             mEquippedWeapon = &itemInfo;
     }
 
-    updateSprites();
+    updatePlayerSprites();
 }
 
 void Being::setSpriteID(unsigned slot, int id)
@@ -1265,12 +1276,6 @@ bool Being::drawnWhenBehind() const
     return CompoundSprite::getNumberOfLayers() == 1;
 }
 
-void Being::updateName()
-{
-    if (mShowName)
-        showName();
-}
-
 void Being::setGender(Gender gender)
 {
     if (gender != mGender)
@@ -1288,8 +1293,10 @@ void Being::setGender(Gender gender)
             }
         }
 
-        updateSprites();
-        updateName();
+        updatePlayerSprites();
+
+        if (config.showGender)
+            updateName();
     }
 }
 
@@ -1298,6 +1305,17 @@ void Being::setGM(bool gm)
     mIsGM = gm;
 
     updateColors();
+}
+
+void Being::setIp(int ip)
+{
+    if (mIp == ip)
+        return;
+
+    mIp = ip;
+
+    if (local_player && local_player->getShowIp())
+        updateName();
 }
 
 bool Being::canTalk()
@@ -1340,7 +1358,9 @@ void Being::event(Event::Channel channel, const Event &event)
 void Being::setMap(Map *map)
 {
     // Remove sprite particles because ActorSprite is going to kill them all
-    removeAllSpriteParticles();
+    for (auto &spriteState : mSpriteStates)
+        spriteState.particles.clear();
+
     mRestoreSpriteParticlesOnLogic = true;
 
     ActorSprite::setMap(map);

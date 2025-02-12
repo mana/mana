@@ -28,7 +28,6 @@
 #include "gui/charcreatedialog.h"
 #include "gui/okdialog.h"
 
-#include "net/logindata.h"
 #include "net/net.h"
 
 #include "net/tmwa/gamehandler.h"
@@ -210,21 +209,20 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     const Token &token =
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
 
-    auto *tempPlayer = new LocalPlayer(msg.readInt32(), 0);
-    tempPlayer->setGender(token.sex);
+    const int id = msg.readInt32();
 
     character->data.mAttributes[EXP] = msg.readInt32();
     character->data.mAttributes[MONEY] = msg.readInt32();
     character->data.mStats[JOB].exp = msg.readInt32();
 
-    int temp = msg.readInt32();
+    const int temp = msg.readInt32();
     character->data.mStats[JOB].base = temp;
     character->data.mStats[JOB].mod = temp;
 
-    tempPlayer->setSprite(SPRITE_SHOE, msg.readInt16());
-    tempPlayer->setSprite(SPRITE_GLOVES, msg.readInt16());
-    tempPlayer->setSprite(SPRITE_CAPE, msg.readInt16());
-    tempPlayer->setSprite(SPRITE_MISC1, msg.readInt16());
+    const int shoe = msg.readInt16();
+    const int gloves = msg.readInt16();
+    const int cape = msg.readInt16();
+    const int misc1 = msg.readInt16();
 
     msg.readInt32();                       // option
     msg.readInt32();                       // karma
@@ -240,8 +238,15 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     const uint16_t race = msg.readInt16(); // class (used for race)
     int hairStyle = msg.readInt8();
     msg.readInt8();                        // look
-    tempPlayer->setSubtype(race);
-    Uint16 weapon = msg.readInt16();
+    const uint16_t weapon = msg.readInt16();
+
+    auto *tempPlayer = new LocalPlayer(id, race);
+    tempPlayer->setGender(token.sex);
+
+    tempPlayer->setSprite(SPRITE_SHOE, shoe);
+    tempPlayer->setSprite(SPRITE_GLOVES, gloves);
+    tempPlayer->setSprite(SPRITE_CAPE, cape);
+    tempPlayer->setSprite(SPRITE_MISC1, misc1);
     tempPlayer->setSprite(SPRITE_WEAPON, weapon, "", true);
 
     character->data.mAttributes[LEVEL] = msg.readInt16();

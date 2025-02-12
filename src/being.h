@@ -109,7 +109,8 @@ class Being : public ActorSprite, public EventListener
          * Constructor.
          *
          * @param id      a unique being id
-         * @param subtype partly determines the type of the being
+         * @param type    type of being
+         * @param subtype refers to a specific npc, monster, species, etc.
          * @param map     the map the being is on
          */
         Being(int id, Type type, int subtype, Map *map);
@@ -118,6 +119,8 @@ class Being : public ActorSprite, public EventListener
 
         Type getType() const final
         { return mType; }
+
+        void setType(Type type, int subtype);
 
         /**
          * Removes all path nodes from this being.
@@ -283,11 +286,6 @@ class Being : public ActorSprite, public EventListener
 
         uint16_t getSubType() const { return mSubType; }
 
-         /**
-          * Set Being's subtype (mostly for view for monsters and NPCs)
-          */
-        void setSubtype(uint16_t subtype);
-
         const BeingInfo &getInfo() const
         { return *mInfo; }
 
@@ -416,7 +414,7 @@ class Being : public ActorSprite, public EventListener
          * Sets the IP or an IP hash.
          * The TMW-Athena server sends this information only to GMs.
          */
-        void setIp(int ip) { mIp = ip; }
+        void setIp(int ip);
 
         /**
          * Returns the player's IP or an IP hash.
@@ -455,9 +453,7 @@ class Being : public ActorSprite, public EventListener
         /**
          * Updates name's location.
          */
-        void updateCoords();
-
-        void showName();
+        void updateNamePosition();
 
         void addSpriteParticles(SpriteState &spriteState, const SpriteDisplay &display);
         void removeSpriteParticles(SpriteState &spriteState);
@@ -465,7 +461,7 @@ class Being : public ActorSprite, public EventListener
         void restoreAllSpriteParticles();
 
         void updateColors();
-        void updateSprites();
+        void updatePlayerSprites();
 
         /**
          * Gets the advised Y chat text position.
@@ -487,7 +483,7 @@ class Being : public ActorSprite, public EventListener
         int mAttackSpeed = 350; /**< Attack speed */
 
         Action mAction = STAND;     /**< Action the being is performing */
-        uint16_t mSubType = 0xFFFF; /**< Subtype (graphical view, basically) */
+        int mSubType = 0xFFFF;      /**< Subtype (graphical view, basically) */
 
         uint8_t mDirection = DOWN;                  /**< Facing direction */
         uint8_t mSpriteDirection = DIRECTION_DOWN;  /**< Facing direction */
@@ -525,7 +521,7 @@ class Being : public ActorSprite, public EventListener
     private:
         void updateMovement();
 
-        const Type mType;
+        Type mType = UNKNOWN;
 
         /** Speech Bubble components */
         SpeechBubble *mSpeechBubble;

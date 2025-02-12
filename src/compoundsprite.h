@@ -81,8 +81,7 @@ public:
 
     void ensureSize(size_t layerCount);
 
-    void doRedraw()
-    { mNeedsRedraw = true; }
+    void doRedraw();
 
 private:
     void redraw() const;

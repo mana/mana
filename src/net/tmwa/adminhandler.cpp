@@ -68,10 +68,7 @@ void AdminHandler::handleMessage(MessageIn &msg)
             id = msg.readInt32();
             int ip = msg.readInt32();
             if (Being *player = actorSpriteManager->findBeing(id))
-            {
                 player->setIp(ip);
-                player->updateName();
-            }
             break;
     }
 }
