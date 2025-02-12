@@ -21,6 +21,9 @@
 
 #include "net/tmwa/messagein.h"
 
+#include "being.h"
+#include "net/tmwa/protocol.h"
+
 #include <SDL_endian.h>
 
 #define MAKEWORD(low,high) \
@@ -88,38 +91,20 @@ void MessageIn::readCoordinates(uint16_t &x, uint16_t &y, uint8_t &direction)
         direction = data[2] & 0x000f;
 
         // Translate from tmwAthena format
-        switch (direction)
+        switch (static_cast<DIR>(direction))
         {
-            case 0:
-                direction = 1;
-                break;
-            case 1:
-                direction = 3;
-                break;
-            case 2:
-                direction = 2;
-                break;
-            case 3:
-                direction = 6;
-                break;
-            case 4:
-                direction = 4;
-                break;
-            case 5:
-                direction = 12;
-                break;
-            case 6:
-                direction = 8;
-                break;
-            case 7:
-                direction = 9;
-                break;
-            case 8:
-                direction = 8;
-                break;
+            case DIR::S:    direction = Being::DOWN;                break;
+            case DIR::SW:   direction = Being::DOWN | Being::LEFT;  break;
+            case DIR::W:    direction = Being::LEFT;                break;
+            case DIR::NW:   direction = Being::UP | Being::LEFT;    break;
+            case DIR::N:    direction = Being::UP;                  break;
+            case DIR::NE:   direction = Being::UP | Being::RIGHT;   break;
+            case DIR::E:    direction = Being::RIGHT;               break;
+            case DIR::SE:   direction = Being::DOWN | Being::RIGHT; break;
             default:
                 // OOPSIE! Impossible or unknown
                 direction = 0;
+                break;
         }
     }
     mPos += 3;
@@ -162,7 +147,7 @@ std::string MessageIn::readString(int length)
     if (length < 0 || mPos + length > mLength)
     {
         mPos = mLength + 1;
-        return "";
+        return std::string();
     }
 
     // Read the string

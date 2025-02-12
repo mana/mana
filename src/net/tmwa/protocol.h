@@ -79,6 +79,20 @@ enum class LOOK : uint8_t
     MISC2           = 13,
 };
 
+enum class DIR : uint8_t
+{
+    S   = 0,
+    SW  = 1,
+    W   = 2,
+    NW  = 3,
+    N   = 4,
+    NE  = 5,
+    E   = 6,
+    SE  = 7,
+
+    COUNT,
+};
+
 enum NpcCommand
 {
     NPC_REQUEST_LANG = 0,
