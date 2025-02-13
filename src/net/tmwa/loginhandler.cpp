@@ -103,17 +103,15 @@ void LoginHandler::handleMessage(MessageIn &msg)
         }
             break;
 
-        case SMSG_UPDATE_HOST:
-             int len;
-
-             len = msg.readInt16() - 4;
+        case SMSG_UPDATE_HOST: {
+             int len = msg.readInt16() - 4;
              mUpdateHost = msg.readString(len);
              loginData.updateHost = mUpdateHost;
 
              logger->log("Received update host \"%s\" from login server.",
                      mUpdateHost.c_str());
              break;
-
+        }
         case SMSG_LOGIN_DATA:
             // Skip the length word
             msg.skip(2);

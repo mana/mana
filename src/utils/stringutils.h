@@ -95,12 +95,16 @@ std::string strprintf(char const *, ...)
 ;
 
 /**
- * Removes bad characters from a string
+ * Replaces a set of characters with another character.
  *
  * @param str the string to remove the bad chars from
+ * @param chars the bad characters to remove
+ * @param replacement the character to replace the bad chars with
  * @return a reference to the string without bad chars
  */
-std::string &removeBadChars(std::string &str);
+std::string &replaceCharacters(std::string &str,
+                               std::string_view chars,
+                               char replacement = '_');
 
 /**
  * Removes colors from a string
@@ -210,15 +214,12 @@ std::string autocomplete(const std::vector<std::string> &candidates,
 std::string normalize(const std::string &name);
 
 /**
- * Remove a potential trailing symbol from a string.
+ * Derives a directory from the given URL, stripping the schema and replacing
+ * certain invalid characters.
+ *
+ * i.e.: http://www.manasource.org:9601/updates/ -> www.manasource.org_9601/updates/
  */
-std::string removeTrailingSymbol(const std::string &s, const char c);
-
-/**
- * Gets the hostname out of the given URL.
- * i.e.: http://www.manasource.org:9601 -> www.manasource.org
- */
-std::string getHostNameFromURL(const std::string &url);
+std::string getDirectoryFromURL(const std::string &url);
 
 /**
  * Joins a vector of strings into one string, separated by the given

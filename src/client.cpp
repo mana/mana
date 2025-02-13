@@ -654,22 +654,17 @@ int Client::exec()
                     break;
 
                 case STATE_UPDATE:
-                    // Determine which source to use for the update host
-                    if (!mOptions.updateHost.empty())
-                        mUpdateHost = mOptions.updateHost;
-                    else
-                        mUpdateHost = loginData.updateHost;
-                    initUpdatesDir();
+                    logger->log("State: UPDATE");
 
                     if (mOptions.skipUpdate)
                     {
                         mState = STATE_LOAD_DATA;
                     }
-                    else
+                    else if (initUpdatesDir())
                     {
-                        logger->log("State: UPDATE");
                         mCurrentDialog = new UpdaterWindow(mUpdateHost,
-                                mLocalDataDir + "/" + mUpdatesDir,mOptions.dataPath.empty());
+                                                           mLocalDataDir + "/" + mUpdatesDir,
+                                                           mOptions.dataPath.empty());
                     }
                     break;
 
@@ -1104,39 +1099,39 @@ void Client::initConfiguration()
  * Parse the update host and determine the updates directory
  * Then verify that the directory exists (creating if needed).
  */
-void Client::initUpdatesDir()
+bool Client::initUpdatesDir()
 {
-    // If updatesHost is currently empty, fill it from config file
-    if (mUpdateHost.empty())
+    // Determine which source to use for the update host
+    if (!mOptions.updateHost.empty())
+        mUpdateHost = mOptions.updateHost;
+    else if (!loginData.updateHost.empty())
+        mUpdateHost = loginData.updateHost;
+    else
         mUpdateHost = config.updatehost;
 
-    // Exit on empty update host.
+    // Remove any trailing slashes at the end of the URL
+    while (!mUpdateHost.empty() && mUpdateHost.back() == '/')
+        mUpdateHost.pop_back();
+
     if (mUpdateHost.empty())
-        return;
-
-    logger->log("Setting update host: %s", mUpdateHost.c_str());
-
-    std::string updateHost = getHostNameFromURL(mUpdateHost);
-
-    // Exit on a wrong update host.
-    if (updateHost.length() < 2)
     {
-        // Show the original updateHostname in the error message.
-        errorMessage = strprintf(_("Invalid update host: %s"),
-                                 mUpdateHost.c_str());
-        mState = STATE_ERROR;
-        return;
+        logger->log("No update host provided");
+        mUpdatesDir.clear();
+        mState = STATE_LOAD_DATA;
+        return false;
     }
 
-    mUpdateHost = updateHost;
-    mUpdatesDir = "updates/" + mUpdateHost;
+    mUpdatesDir = "updates/" + getDirectoryFromURL(mUpdateHost);
+
+    logger->log("Update host: %s", mUpdateHost.c_str());
+    logger->log("Updates dir: %s", mUpdatesDir.c_str());
 
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Verify that the updates directory exists. Create if necessary.
-    if (!resman->isDirectory("/" + mUpdatesDir))
+    if (!resman->isDirectory(mUpdatesDir))
     {
-        if (!resman->mkdir("/" + mUpdatesDir))
+        if (!resman->mkdir(mUpdatesDir))
         {
 #if defined _WIN32
             std::string newDir = mLocalDataDir + "\\" + mUpdatesDir;
@@ -1165,9 +1160,12 @@ void Client::initUpdatesDir()
                 strprintf(_("Error creating updates directory!\n(%s/%s)"),
                             mLocalDataDir.c_str(), mUpdatesDir.c_str());
             mState = STATE_ERROR;
+            return false;
 #endif
         }
     }
+
+    return true;
 }
 
 void Client::initScreenshotDir()

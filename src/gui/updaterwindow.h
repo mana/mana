@@ -64,7 +64,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
      * @param updateHost Host where to get the updated files.
      * @param updatesDir Directory where to store updates (should be absolute
      *                   and already created).
-     * @param applyUpdates If true, the update window will pass the updates to teh
+     * @param applyUpdates If true, the update window will pass the updates to the
      *                     resource manager
      */
     UpdaterWindow(const std::string &updateHost,

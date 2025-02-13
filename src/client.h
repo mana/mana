@@ -202,7 +202,7 @@ private:
     void initRootDir();
     void initHomeDir();
     void initConfiguration();
-    void initUpdatesDir();
+    bool initUpdatesDir();
     void initScreenshotDir();
 
     void accountLogin(LoginData *loginData);

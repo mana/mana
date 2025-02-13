@@ -101,16 +101,15 @@ std::string strprintf(char const *format, ...)
     return res;
 }
 
-std::string &removeBadChars(std::string &str)
+std::string &replaceCharacters(std::string &str,
+                               std::string_view chars,
+                               char replacement)
 {
-    std::string::size_type pos;
-    do
+    for (auto &c : str)
     {
-        pos = str.find_first_of("@#[]");
-        if (pos != std::string::npos)
-            str.erase(pos, 1);
-    } while (pos != std::string::npos);
-
+        if (chars.find(c) != std::string::npos)
+            c = replacement;
+    }
     return str;
 }
 
@@ -220,49 +219,27 @@ std::string normalize(const std::string &name)
     return toLower(trim(normalized));
 }
 
-std::string removeTrailingSymbol(const std::string &s, const char c)
+std::string getDirectoryFromURL(const std::string &url)
 {
-    // Remove the trailing symblol at the end of the string
-    if (!s.empty() && s.at(s.size() - 1) == c)
-        return s.substr(0, s.size() - 1);
-    return std::string(s);
-}
+    std::string directory = url;
 
-std::string getHostNameFromURL(const std::string &url)
-{
-    std::string myHostName;
-
-    // Don't go out of range in the next check
-    if (url.length() < 2)
-        return myHostName;
-
-    // Remove any trailing slash at the end of the update host
-    myHostName = removeTrailingSymbol(url, '/');
-
-    // Parse out any "http://", "ftp://", ect...
-    size_t pos = myHostName.find("://");
-    if (pos == std::string::npos)
-    {
-        logger->log("Warning: no protocol was specified for the url: %s",
-                    url.c_str());
-    }
-
-    if (myHostName.empty() || pos + 3 >= myHostName.length())
-    {
-        logger->log("Error: Invalid url: %s", url.c_str());
-        return myHostName;
-    }
-    myHostName = myHostName.substr(pos + 3);
-
-    // Remove possible trailing port (i.e.: localhost:8000 -> localhost)
-    pos = myHostName.find(":");
+    // Parse out any "http://", "ftp://", etc...
+    size_t pos = directory.find("://");
     if (pos != std::string::npos)
-        myHostName = myHostName.substr(0, pos);
+        directory.erase(0, pos + 3);
 
-    // remove possible other junk
-    removeBadChars(myHostName);
+    // Replace characters which are not valid or difficult in file system paths
+    replaceCharacters(directory, ":*?\"<>| ", '_');
 
-    return myHostName;
+    // Replace ".." (double dots) with "_" to avoid directory traversal.
+    pos = directory.find("..");
+    while (pos != std::string::npos)
+    {
+        directory.replace(pos, 2, "_");
+        pos = directory.find("..");
+    }
+
+    return directory;
 }
 
 std::string join(const std::vector<std::string> &strings, const char *separator)
