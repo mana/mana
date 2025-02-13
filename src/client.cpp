@@ -386,7 +386,13 @@ Client::Client(const Options &options):
         loginData.username = config.username;
 
     if (mState != STATE_ERROR)
-        mState = STATE_CHOOSE_SERVER;
+    {
+        // If a server was passed on the command line, or branding
+        // provides a server and a blank server list, we skip the
+        // server selection dialog.
+        mState = mCurrentServer.isValid() ? STATE_CONNECT_SERVER
+                                          : STATE_CHOOSE_SERVER;
+    }
 
     // Initialize seconds counter
     mSecondsCounterId = SDL_AddTimer(1000, nextSecond, nullptr);
@@ -567,27 +573,12 @@ int Client::exec()
                 case STATE_CHOOSE_SERVER:
                     logger->log("State: CHOOSE SERVER");
 
-                    // If a server was passed on the command line, or branding
-                    // provides a server and a blank server list, we skip the
-                    // server selection dialog.
-                    if (!mCurrentServer.hostname.empty() && mCurrentServer.port)
-                    {
-                        mState = STATE_CONNECT_SERVER;
+                    // Don't allow an alpha opacity
+                    // lower than the default value
+                    Theme::instance()->setMinimumOpacity(0.8f);
 
-                        // Reset options so that cancelling or connect
-                        // timeout will show the server dialog.
-                        mOptions.serverName.clear();
-                        mOptions.serverPort = 0;
-                    }
-                    else
-                    {
-                        // Don't allow an alpha opacity
-                        // lower than the default value
-                        Theme::instance()->setMinimumOpacity(0.8f);
-
-                        mCurrentDialog = new ServerDialog(&mCurrentServer,
-                                                          mConfigDir);
-                    }
+                    mCurrentDialog = new ServerDialog(&mCurrentServer,
+                                                      mConfigDir);
                     break;
 
                 case STATE_CONNECT_SERVER:
