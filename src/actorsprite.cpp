@@ -52,10 +52,6 @@ ActorSprite::ActorSprite(int id):
 
 ActorSprite::~ActorSprite()
 {
-    setMap(nullptr);
-
-    mUsedTargetCursor = nullptr;
-
     // Notify listeners of the destruction.
     Event event(Event::Destroyed);
     event.setActor("source", this);

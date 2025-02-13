@@ -32,7 +32,6 @@ ParticleContainer::ParticleContainer(ParticleContainer *parent,
 
 ParticleContainer::~ParticleContainer()
 {
-    clearLocally();
     if (mDelParent)
         delete mNext;
 }
@@ -56,7 +55,10 @@ ParticleList::ParticleList(ParticleContainer *parent, bool delParent):
     ParticleContainer(parent, delParent)
 {}
 
-ParticleList::~ParticleList() = default;
+ParticleList::~ParticleList()
+{
+    clearLocally();
+}
 
 void ParticleList::addLocally(Particle *particle)
 {
@@ -114,7 +116,10 @@ ParticleVector::ParticleVector(ParticleContainer *parent, bool delParent):
     ParticleContainer(parent, delParent)
 {}
 
-ParticleVector::~ParticleVector() = default;
+ParticleVector::~ParticleVector()
+{
+    clearLocally();
+}
 
 void ParticleVector::setLocally(int index, Particle *particle)
 {
