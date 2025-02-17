@@ -443,8 +443,6 @@ set(SRCS
     guild.h
     imageparticle.cpp
     imageparticle.h
-    imagesprite.cpp
-    imagesprite.h
     inventory.cpp
     inventory.h
     item.cpp

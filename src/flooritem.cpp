@@ -21,8 +21,13 @@
 
 #include "flooritem.h"
 
+#include "configuration.h"
+
+#include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
+#include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 FloorItem::FloorItem(int id,
                      int itemId,
@@ -39,7 +44,36 @@ FloorItem::FloorItem(int id,
     mX = (int)position.x / map->getTileWidth();
     mY = (int)position.y / map->getTileHeight();
 
-    setupSpriteDisplay(itemDb->get(itemId).display);
+    // Set up sprites and particle effects
+    auto &info = getInfo();
+    setupSpriteDisplay(info.display, false);
+
+    // If no sprites are defined, fall back to the item icon
+    if (info.display.sprites.empty())
+    {
+        ResourceManager *resman = ResourceManager::getInstance();
+        std::string imagePath = paths.getStringValue("itemIcons") + info.display.image;
+
+        mImage = resman->getImageRef(imagePath);
+        if (!mImage)
+        {
+            imagePath = Theme::resolveThemePath(paths.getStringValue("unknownItemFile"));
+            mImage = resman->getImageRef(imagePath);
+        }
+    }
+}
+
+bool FloorItem::draw(Graphics *graphics, int offsetX, int offsetY) const
+{
+    if (mImage)
+    {
+        mImage->setAlpha(getAlpha());
+        return graphics->drawImage(mImage,
+                                   getPixelX() + offsetX - mImage->getWidth() / 2,
+                                   getPixelY() + offsetY - mImage->getHeight() / 2);
+    }
+
+    return ActorSprite::draw(graphics, offsetX, offsetY);
 }
 
 const ItemInfo &FloorItem::getInfo() const

@@ -24,7 +24,6 @@
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
-#include "imagesprite.h"
 #include "item.h"
 #include "keyboardconfig.h"
 
@@ -177,4 +176,3 @@ void EmoteShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         mEmoteClicked = false;
     }
 }
-

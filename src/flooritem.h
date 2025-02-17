@@ -28,7 +28,7 @@ class ItemInfo;
 /**
  * An item lying on the floor.
  */
-class FloorItem : public ActorSprite
+class FloorItem final : public ActorSprite
 {
     public:
         /**
@@ -46,11 +46,12 @@ class FloorItem : public ActorSprite
 
         Type getType() const override { return FLOOR_ITEM; }
 
+        bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
+
         /**
          * Returns the item ID.
          */
-        int getItemId() const
-        { return mItemId; }
+        int getItemId() const { return mItemId; }
 
         /**
          * Returns the item info for this floor item. Useful for adding an item
@@ -58,13 +59,11 @@ class FloorItem : public ActorSprite
          */
         const ItemInfo &getInfo() const;
 
-        int getTileX() const override
-        { return mX; }
-
-        int getTileY() const override
-        { return mY; }
+        int getTileX() const override { return mX; }
+        int getTileY() const override { return mY; }
 
     private:
         int mItemId;
         int mX, mY;
+        ResourceRef<Image> mImage;
 };

@@ -23,14 +23,12 @@
 #include "animatedsprite.h"
 #include "configuration.h"
 #include "event.h"
-#include "imagesprite.h"
 #include "localplayer.h"
 #include "log.h"
 #include "particle.h"
 #include "simpleanimation.h"
 
 #include "resources/animation.h"
-#include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
@@ -142,24 +140,8 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     // Ensure that something is shown, if desired
     if (mSprites.size() == 0 && forceDisplay)
     {
-        if (display.image.empty())
-        {
-            mSprites.add(AnimatedSprite::load(paths.getStringValue("sprites")
-                + paths.getStringValue("spriteErrorFile")));
-        }
-        else
-        {
-            ResourceManager *resman = ResourceManager::getInstance();
-            std::string imagePath = paths.getStringValue("itemIcons")
-                                    + display.image;
-            Image *img = resman->getImage(imagePath);
-
-            if (!img)
-                img = Theme::getImageFromTheme(
-                    paths.getStringValue("unknownItemFile"));
-
-            mSprites.add(new ImageSprite(img));
-        }
+        mSprites.add(AnimatedSprite::load(paths.getStringValue("sprites")
+            + paths.getStringValue("spriteErrorFile")));
     }
 
     mChildParticleEffects.clear();
