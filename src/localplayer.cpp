@@ -932,7 +932,7 @@ bool LocalPlayer::withinRange(Actor *target, int range) const
     const Vector &pos = getPosition();
     const int dx = abs(targetPos.x - pos.x);
     const int dy = abs(targetPos.y - pos.y);
-    return !(dx > range || dy > range);
+    return dx <= range && dy <= range;
 }
 
 void LocalPlayer::setGotoTarget(Being *target)
@@ -1016,6 +1016,26 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
     }
 
     Being::event(channel, event);
+}
+
+void LocalPlayer::updateStunMode(int oldMode, int newMode)
+{
+    Event event(Event::Stun);
+    event.setInt("oldMode", oldMode);
+    event.setInt("newMode", newMode);
+    event.trigger(Event::ActorSpriteChannel);
+
+    Being::updateStunMode(oldMode, newMode);
+}
+
+void LocalPlayer::updateStatusEffect(int index, bool newStatus)
+{
+    Event event(Event::UpdateStatusEffect);
+    event.setInt("index", index);
+    event.setBool("newStatus", newStatus);
+    event.trigger(Event::ActorSpriteChannel);
+
+    Being::updateStatusEffect(index, newStatus);
 }
 
 void LocalPlayer::changeAwayMode()

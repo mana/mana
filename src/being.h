@@ -32,7 +32,9 @@
 
 #include <guichan/color.hpp>
 
+#include <cstdint>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -379,6 +381,27 @@ class Being : public ActorSprite, public EventListener
         void fireMissile(Being *target, const std::string &particle);
 
         /**
+         * Sets the being's stun mode. If zero, the being is `normal',
+         * otherwise it is `stunned' in some fashion.
+         */
+        void setStunMode(int stunMode)
+        {
+            if (mStunMode != stunMode)
+                updateStunMode(mStunMode, stunMode);
+            mStunMode = stunMode;
+        }
+
+        void setStatusEffect(int index, bool active);
+
+        /**
+         * A status effect block is a 16 bit mask of status effects. We assign
+         * each such flag a block ID of offset + bitnr.
+         *
+         * These are NOT the same as the status effect indices.
+         */
+        void setStatusEffectBlock(int offset, uint16_t flags);
+
+        /**
          * Returns the path this being is following. An empty path is returned
          * when this being isn't following any path currently.
          */
@@ -473,6 +496,18 @@ class Being : public ActorSprite, public EventListener
          */
         virtual void pathFinished() {}
 
+        /**
+         * Notify self that the stun mode has been updated. Invoked by
+         * setStunMode if something changed.
+         */
+        virtual void updateStunMode(int oldMode, int newMode);
+
+        /**
+         * Notify self that a status effect has flipped.
+         * The new flag is passed.
+         */
+        virtual void updateStatusEffect(int index, bool newStatus);
+
         const BeingInfo *mInfo;
 
         Timer mActionTimer;     /**< Time spent in current action. TODO: Remove use of it */
@@ -508,7 +543,7 @@ class Being : public ActorSprite, public EventListener
         Vector mDest;  /**< destination coordinates. */
 
         std::vector<SpriteState> mSpriteStates;
-        bool mRestoreSpriteParticlesOnLogic = false;
+        bool mRestoreParticlesOnLogic = false;
 
         Gender mGender = Gender::UNSPECIFIED;
 
@@ -519,9 +554,22 @@ class Being : public ActorSprite, public EventListener
         bool mIsGM = false;
 
     private:
+        /**
+         * Handle an update to a status or stun effect
+         *
+         * \param effect   The StatusEffect to effect
+         * \param effectId -1 for stun, otherwise the effect index
+         */
+        void handleStatusEffect(StatusEffect *effect, int effectId);
+
         void updateMovement();
 
         Type mType = UNKNOWN;
+
+        uint16_t mStunMode = 0;         /**< Stun mode; zero if not stunned */
+        std::set<int> mStatusEffects;   /**< set of active status effects */
+        ParticleList mStunParticleEffects;
+        ParticleVector mStatusParticleEffects;
 
         /** Speech Bubble components */
         SpeechBubble *mSpeechBubble;

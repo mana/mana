@@ -184,6 +184,9 @@ class LocalPlayer final : public Being
         void event(Event::Channel channel, const Event &event) override;
 
     protected:
+        void updateStunMode(int oldMode, int newMode) override;
+        void updateStatusEffect(int index, bool newStatus) override;
+
         /** Make the character starts to walk. */
         void startWalking(unsigned char dir);
 

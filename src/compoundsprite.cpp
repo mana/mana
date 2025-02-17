@@ -94,19 +94,15 @@ bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
 
     if (mAlpha && mAlphaImage)
     {
-        if (mAlphaImage->getAlpha() != mAlpha)
-            mAlphaImage->setAlpha(mAlpha);
-
-        return graphics->drawImage(mAlphaImage,
-                                   posX, posY);
+        mAlphaImage->setAlpha(mAlpha);
+        return graphics->drawImage(mAlphaImage, posX, posY);
     }
 
     for (auto sprite : mSprites)
     {
         if (sprite)
         {
-            if (sprite->getAlpha() != mAlpha)
-                sprite->setAlpha(mAlpha);
+            sprite->setAlpha(mAlpha);
             sprite->draw(graphics, posX - sprite->getWidth() / 2, posY - sprite->getHeight());
         }
     }

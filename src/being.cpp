@@ -36,6 +36,7 @@
 #include "party.h"
 #include "playerrelations.h"
 #include "sound.h"
+#include "statuseffect.h"
 #include "text.h"
 
 #include "gui/gui.h"
@@ -60,9 +61,9 @@
 
 #include <cmath>
 
-Being::Being(int id, Type type, int subtype, Map *map):
-    ActorSprite(id),
-    mInfo(BeingInfo::Unknown)
+Being::Being(int id, Type type, int subtype, Map *map)
+    : ActorSprite(id)
+    , mInfo(BeingInfo::Unknown)
 {
     setMap(map);
     setType(type, subtype);
@@ -593,7 +594,67 @@ void Being::fireMissile(Being *victim, const std::string &particle)
         missile->setDieDistance(8);
         missile->setLifetime(900);
     }
+}
 
+void Being::setStatusEffect(int index, bool active)
+{
+    const bool wasActive = mStatusEffects.find(index) != mStatusEffects.end();
+
+    if (active != wasActive)
+    {
+        updateStatusEffect(index, active);
+        if (active)
+            mStatusEffects.insert(index);
+        else
+            mStatusEffects.erase(index);
+    }
+}
+
+void Being::setStatusEffectBlock(int offset, uint16_t newEffects)
+{
+    for (int i = 0; i < STATUS_EFFECTS; i++)
+    {
+        int index = StatusEffect::blockEffectIndexToEffectIndex(offset + i);
+
+        if (index != -1)
+            setStatusEffect(index, (newEffects & (1 << i)) > 0);
+    }
+}
+
+void Being::updateStunMode(int oldMode, int newMode)
+{
+    handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
+    handleStatusEffect(StatusEffect::getStatusEffect(newMode, true), -1);
+}
+
+void Being::updateStatusEffect(int index, bool newStatus)
+{
+    handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);
+}
+
+void Being::handleStatusEffect(StatusEffect *effect, int effectId)
+{
+    if (!effect)
+        return;
+
+    // TODO: Find out how this is meant to be used
+    // (SpriteAction != Being::Action)
+    //SpriteAction action = effect->getAction();
+    //if (action != ACTION_INVALID)
+    //    setAction(action);
+
+    Particle *particle = effect->getParticle();
+
+    if (effectId >= 0)
+    {
+        mStatusParticleEffects.setLocally(effectId, particle);
+    }
+    else
+    {
+        mStunParticleEffects.clearLocally();
+        if (particle)
+            mStunParticleEffects.addLocally(particle);
+    }
 }
 
 void Being::setAction(Action action, int attackId)
@@ -784,10 +845,19 @@ void Being::logic()
         mText = nullptr;
     }
 
-    if (mRestoreSpriteParticlesOnLogic)
+    if (mRestoreParticlesOnLogic)
     {
-        mRestoreSpriteParticlesOnLogic = false;
+        mRestoreParticlesOnLogic = false;
+
         restoreAllSpriteParticles();
+
+        // Restart status/particle effects, if needed
+        for (int statusEffect : mStatusEffects)
+        {
+            const StatusEffect *effect = StatusEffect::getStatusEffect(statusEffect, true);
+            if (effect && effect->particleEffectIsPersistent())
+                updateStatusEffect(statusEffect, true);
+        }
     }
 
     if (mAction != DEAD && !mSpeedPixelsPerSecond.isNull())
@@ -1361,7 +1431,10 @@ void Being::setMap(Map *map)
     for (auto &spriteState : mSpriteStates)
         spriteState.particles.clear();
 
-    mRestoreSpriteParticlesOnLogic = true;
+    mStunParticleEffects.clearLocally();
+    mStatusParticleEffects.clearLocally();
+
+    mRestoreParticlesOnLogic = true;
 
     ActorSprite::setMap(map);
 

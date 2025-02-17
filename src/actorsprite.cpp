@@ -20,13 +20,14 @@
 
 #include "actorsprite.h"
 
+#include "animatedsprite.h"
 #include "configuration.h"
 #include "event.h"
 #include "imagesprite.h"
 #include "localplayer.h"
 #include "log.h"
+#include "particle.h"
 #include "simpleanimation.h"
-#include "statuseffect.h"
 
 #include "resources/animation.h"
 #include "resources/image.h"
@@ -44,10 +45,8 @@ ImageSet *ActorSprite::targetCursorImages[2][NUM_TC];
 SimpleAnimation *ActorSprite::targetCursor[2][NUM_TC];
 bool ActorSprite::loaded = false;
 
-ActorSprite::ActorSprite(int id):
-    mId(id),
-    mStatusParticleEffects(&mStunParticleEffects, false),
-    mChildParticleEffects(&mStatusParticleEffects, false)
+ActorSprite::ActorSprite(int id)
+    : mId(id)
 {}
 
 ActorSprite::~ActorSprite()
@@ -99,18 +98,6 @@ void ActorSprite::logic()
     if (mUsedTargetCursor)
         mUsedTargetCursor->update(Time::deltaTimeMs());
 
-    // Restart status/particle effects, if needed
-    if (mMustResetParticles)
-    {
-        mMustResetParticles = false;
-        for (int statusEffect : mStatusEffects)
-        {
-            const StatusEffect *effect = StatusEffect::getStatusEffect(statusEffect, true);
-            if (effect && effect->particleEffectIsPersistent())
-                updateStatusEffect(statusEffect, true);
-        }
-    }
-
     // See note at ActorSprite::draw
     float py = mPos.y;
     if (mMap)
@@ -126,7 +113,6 @@ void ActorSprite::setMap(Map* map)
 
     // Clear particle effect list because child particles became invalid
     mChildParticleEffects.clear();
-    mMustResetParticles = true; // Reset status particles on next redraw
 }
 
 void ActorSprite::controlParticle(Particle *particle)
@@ -140,83 +126,6 @@ void ActorSprite::setTargetType(TargetCursorType type)
         untarget();
     else
         mUsedTargetCursor = targetCursor[type][getTargetCursorSize()];
-}
-
-void ActorSprite::setStatusEffect(int index, bool active)
-{
-    const bool wasActive = mStatusEffects.find(index) != mStatusEffects.end();
-
-    if (active != wasActive)
-    {
-        updateStatusEffect(index, active);
-        if (active)
-            mStatusEffects.insert(index);
-        else
-            mStatusEffects.erase(index);
-    }
-}
-
-void ActorSprite::setStatusEffectBlock(int offset, uint16_t newEffects)
-{
-    for (int i = 0; i < STATUS_EFFECTS; i++)
-    {
-        int index = StatusEffect::blockEffectIndexToEffectIndex(offset + i);
-
-        if (index != -1)
-            setStatusEffect(index, (newEffects & (1 << i)) > 0);
-    }
-}
-
-void ActorSprite::updateStunMode(int oldMode, int newMode)
-{
-    if (this == local_player)
-    {
-        Event event(Event::Stun);
-        event.setInt("oldMode", oldMode);
-        event.setInt("newMode", newMode);
-        event.trigger(Event::ActorSpriteChannel);
-    }
-
-    handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
-    handleStatusEffect(StatusEffect::getStatusEffect(newMode, true), -1);
-}
-
-void ActorSprite::updateStatusEffect(int index, bool newStatus)
-{
-    if (this == local_player)
-    {
-        Event event(Event::UpdateStatusEffect);
-        event.setInt("index", index);
-        event.setBool("newStatus", newStatus);
-        event.trigger(Event::ActorSpriteChannel);
-    }
-
-    handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);
-}
-
-void ActorSprite::handleStatusEffect(StatusEffect *effect, int effectId)
-{
-    if (!effect)
-        return;
-
-    // TODO: Find out how this is meant to be used
-    // (SpriteAction != Being::Action)
-    //SpriteAction action = effect->getAction();
-    //if (action != ACTION_INVALID)
-    //    setAction(action);
-
-    Particle *particle = effect->getParticle();
-
-    if (effectId >= 0)
-    {
-        mStatusParticleEffects.setLocally(effectId, particle);
-    }
-    else
-    {
-        mStunParticleEffects.clearLocally();
-        if (particle)
-            mStunParticleEffects.addLocally(particle);
-    }
 }
 
 void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
@@ -261,8 +170,6 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
         for (const auto &particle : display.particles)
             controlParticle(particleEngine->addEffect(particle, 0, 0));
     }
-
-    mMustResetParticles = true;
 }
 
 void ActorSprite::load()

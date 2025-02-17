@@ -48,20 +48,6 @@ public:
     virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const = 0;
 
     /**
-     * Returns the horizontal size of the actors graphical representation
-     * in pixels or 0 when it is undefined.
-     */
-    virtual int getWidth() const
-    { return 0; }
-
-    /**
-     * Returns the vertical size of the actors graphical representation
-     * in pixels or 0 when it is undefined.
-     */
-    virtual int getHeight() const
-    { return 0; }
-
-    /**
      * Returns the pixel position of this actor.
      */
     const Vector &getPosition() const

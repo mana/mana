@@ -25,9 +25,6 @@
 #include "map.h"
 #include "particlecontainer.h"
 
-#include <cstdint>
-#include <set>
-
 class SimpleAnimation;
 class StatusEffect;
 
@@ -78,7 +75,7 @@ public:
 
     bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
-    virtual bool drawSpriteAt(Graphics *graphics, int x, int y) const;
+    bool drawSpriteAt(Graphics *graphics, int x, int y) const;
 
     virtual void logic();
 
@@ -111,79 +108,23 @@ public:
      */
     void untarget() { mUsedTargetCursor = nullptr; }
 
-    /**
-     * Sets the actor's stun mode. If zero, the being is `normal', otherwise it
-     * is `stunned' in some fashion.
-     */
-    void setStunMode(int stunMode)
-    {
-        if (mStunMode != stunMode)
-            updateStunMode(mStunMode, stunMode);
-        mStunMode = stunMode;
-    }
-
-    void setStatusEffect(int index, bool active);
-
-    /**
-     * A status effect block is a 16 bit mask of status effects. We assign each
-     * such flag a block ID of offset + bitnr.
-     *
-     * These are NOT the same as the status effect indices.
-     */
-    void setStatusEffectBlock(int offset, uint16_t flags);
-
     void setAlpha(float alpha) override
     { CompoundSprite::setAlpha(alpha); }
 
     float getAlpha() const override
     { return CompoundSprite::getAlpha(); }
 
-    int getWidth() const override
-    { return CompoundSprite::getWidth(); }
-
-    int getHeight() const override
-    { return CompoundSprite::getHeight(); }
-
     static void load();
-
     static void unload();
 
 protected:
-    /**
-     * Notify self that the stun mode has been updated. Invoked by
-     * setStunMode if something changed.
-     */
-    virtual void updateStunMode(int oldMode, int newMode);
-
-    /**
-     * Notify self that a status effect has flipped.
-     * The new flag is passed.
-     */
-    virtual void updateStatusEffect(int index, bool newStatus);
-
-    /**
-     * Handle an update to a status or stun effect
-     *
-     * \param effect   The StatusEffect to effect
-     * \param effectId -1 for stun, otherwise the effect index
-     */
-    virtual void handleStatusEffect(StatusEffect *effect, int effectId);
-
     void setupSpriteDisplay(const SpriteDisplay &display,
                             bool forceDisplay = true);
 
     int mId;
-    uint16_t mStunMode = 0;         /**< Stun mode; zero if not stunned */
-    std::set<int> mStatusEffects;   /**< set of active status effects */
-
-    ParticleList mStunParticleEffects;
-    ParticleVector mStatusParticleEffects;
     ParticleList mChildParticleEffects;
 
 private:
-    /** Reset particle status effects on next redraw? */
-    bool mMustResetParticles = false;
-
     /** Load the target cursors into memory */
     static void initTargetCursor();
 
