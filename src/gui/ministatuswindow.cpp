@@ -21,10 +21,10 @@
 
 #include "gui/ministatuswindow.h"
 
-#include "animatedsprite.h"
 #include "configuration.h"
 #include "graphics.h"
 #include "playerinfo.h"
+#include "sprite.h"
 #include "statuseffect.h"
 
 #include "gui/gui.h"
@@ -95,7 +95,7 @@ MiniStatusWindow::MiniStatusWindow():
     addMouseListener(this);
 }
 
-void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
+void MiniStatusWindow::setIcon(int index, Sprite *sprite)
 {
     if (index >= (int) mIcons.size())
         mIcons.resize(index + 1);
@@ -168,7 +168,7 @@ void MiniStatusWindow::event(Event::Channel channel,
                 effect->deliverMessage();
                 effect->playSFX();
 
-                AnimatedSprite *sprite = effect->getIcon();
+                Sprite *sprite = effect->getIcon();
 
                 if (!sprite)
                 {

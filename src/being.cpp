@@ -22,7 +22,6 @@
 #include "being.h"
 
 #include "actorspritemanager.h"
-#include "animatedsprite.h"
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
@@ -36,6 +35,7 @@
 #include "party.h"
 #include "playerrelations.h"
 #include "sound.h"
+#include "sprite.h"
 #include "statuseffect.h"
 #include "text.h"
 
@@ -1264,14 +1264,14 @@ void Being::updatePlayerSprites()
 
             auto &itemInfo = itemDb->get(spriteState.visibleId);
             std::string filename = itemInfo.getSprite(mGender, mSubType);
-            AnimatedSprite *equipmentSprite = nullptr;
+            Sprite *equipmentSprite = nullptr;
 
             if (!filename.empty())
             {
                 if (!spriteState.color.empty())
                     filename += "|" + spriteState.color;
 
-                equipmentSprite = AnimatedSprite::load(
+                equipmentSprite = Sprite::load(
                     paths.getStringValue("sprites") + filename);
 
                 if (equipmentSprite)

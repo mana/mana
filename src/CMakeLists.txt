@@ -399,8 +399,6 @@ set(SRCS
     actorsprite.h
     actorspritemanager.cpp
     actorspritemanager.h
-    animatedsprite.cpp
-    animatedsprite.h
     animationparticle.cpp
     animationparticle.h
     avatar.cpp
@@ -489,6 +487,7 @@ set(SRCS
     simpleanimation.h
     sound.cpp
     sound.h
+    sprite.cpp
     sprite.h
     statuseffect.cpp
     statuseffect.h

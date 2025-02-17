@@ -28,7 +28,7 @@
 class Graphics;
 
 /**
- * This class is a leightweight alternative to the AnimatedSprite class.
+ * This class is a leightweight alternative to the Sprite class.
  * It hosts a looping animation without actions and directions.
  */
 class SimpleAnimation final

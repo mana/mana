@@ -54,12 +54,12 @@ Particle *StatusEffect::getParticle()
     return particleEngine->addEffect(mParticleEffect, 0, 0);
 }
 
-AnimatedSprite *StatusEffect::getIcon()
+Sprite *StatusEffect::getIcon()
 {
     if (mIcon.empty())
         return nullptr;
 
-    AnimatedSprite *sprite = AnimatedSprite::load(
+    Sprite *sprite = Sprite::load(
                 paths.getStringValue("sprites") + mIcon);
     if (false && sprite)
     {

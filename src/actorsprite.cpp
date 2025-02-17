@@ -20,13 +20,13 @@
 
 #include "actorsprite.h"
 
-#include "animatedsprite.h"
 #include "configuration.h"
 #include "event.h"
 #include "localplayer.h"
 #include "log.h"
 #include "particle.h"
 #include "simpleanimation.h"
+#include "sprite.h"
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
@@ -134,13 +134,13 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     for (const auto &sprite : display.sprites)
     {
         std::string file = paths.getStringValue("sprites") + sprite.sprite;
-        mSprites.add(AnimatedSprite::load(file, sprite.variant));
+        mSprites.add(Sprite::load(file, sprite.variant));
     }
 
     // Ensure that something is shown, if desired
     if (mSprites.size() == 0 && forceDisplay)
     {
-        mSprites.add(AnimatedSprite::load(paths.getStringValue("sprites")
+        mSprites.add(Sprite::load(paths.getStringValue("sprites")
             + paths.getStringValue("spriteErrorFile")));
     }
 

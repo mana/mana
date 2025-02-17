@@ -27,7 +27,7 @@
 
 #include <vector>
 
-class AnimatedSprite;
+class Sprite;
 class Graphics;
 class ProgressBar;
 class TextPopup;
@@ -60,7 +60,7 @@ class MiniStatusWindow : public Popup, public EventListener
         /**
          * Sets one of the icons.
          */
-        void setIcon(int index, AnimatedSprite *sprite);
+        void setIcon(int index, Sprite *sprite);
 
         void eraseIcon(int index);
 
@@ -73,7 +73,7 @@ class MiniStatusWindow : public Popup, public EventListener
         TextPopup *mTextPopup;
 
         std::vector<int> mStatusEffectIcons;
-        std::vector<AnimatedSprite *> mIcons;
+        std::vector<Sprite *> mIcons;
 };
 
 extern MiniStatusWindow *miniStatusWindow;

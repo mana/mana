@@ -19,7 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "animatedsprite.h"
+#include "sprite.h"
 
 #include "graphics.h"
 
@@ -30,7 +30,7 @@
 
 #include <cassert>
 
-AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
+Sprite::Sprite(SpriteDef *sprite):
     mSprite(sprite)
 {
     assert(mSprite);
@@ -39,20 +39,20 @@ AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
     play(SpriteAction::STAND);
 }
 
-AnimatedSprite *AnimatedSprite::load(const std::string &filename, int variant)
+Sprite *Sprite::load(const std::string &filename, int variant)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     SpriteDef *s = resman->getSprite(filename, variant);
     if (!s)
         return nullptr;
-    auto *as = new AnimatedSprite(s);
+    auto *as = new Sprite(s);
     s->decRef();
     return as;
 }
 
-AnimatedSprite::~AnimatedSprite() = default;
+Sprite::~Sprite() = default;
 
-bool AnimatedSprite::reset()
+bool Sprite::reset()
 {
     bool ret = mFrameIndex !=0 || mFrameTime != 0;
 
@@ -62,7 +62,7 @@ bool AnimatedSprite::reset()
     return ret;
 }
 
-bool AnimatedSprite::play(const std::string &spriteAction)
+bool Sprite::play(const std::string &spriteAction)
 {
     Action *action = mSprite->getAction(spriteAction);
     if (!action)
@@ -84,7 +84,7 @@ bool AnimatedSprite::play(const std::string &spriteAction)
     return false;
 }
 
-bool AnimatedSprite::update(int dt)
+bool Sprite::update(int dt)
 {
     if (!mAnimation)
         return false;
@@ -102,7 +102,7 @@ bool AnimatedSprite::update(int dt)
     return animation != mAnimation || frame != mFrame;
 }
 
-bool AnimatedSprite::updateCurrentAnimation(int dt)
+bool Sprite::updateCurrentAnimation(int dt)
 {
     if (!mFrame || Animation::isTerminator(*mFrame))
         return false;
@@ -130,7 +130,7 @@ bool AnimatedSprite::updateCurrentAnimation(int dt)
     return true;
 }
 
-bool AnimatedSprite::draw(Graphics *graphics, int posX, int posY) const
+bool Sprite::draw(Graphics *graphics, int posX, int posY) const
 {
     if (!mFrame)
         return false;
@@ -146,7 +146,7 @@ bool AnimatedSprite::draw(Graphics *graphics, int posX, int posY) const
                                posY + mFrame->offsetY);
 }
 
-bool AnimatedSprite::setDirection(SpriteDirection direction)
+bool Sprite::setDirection(SpriteDirection direction)
 {
     if (mDirection != direction)
     {
@@ -170,38 +170,38 @@ bool AnimatedSprite::setDirection(SpriteDirection direction)
     return false;
 }
 
-int AnimatedSprite::getDuration() const
+int Sprite::getDuration() const
 {
     if (mAnimation)
         return mAnimation->getDuration();
     return 0;
 }
 
-int AnimatedSprite::getWidth() const
+int Sprite::getWidth() const
 {
     if (mFrame && mFrame->image)
         return mFrame->image->getWidth();
     return 0;
 }
 
-int AnimatedSprite::getHeight() const
+int Sprite::getHeight() const
 {
     if (mFrame && mFrame->image)
         return mFrame->image->getHeight();
     return 0;
 }
 
-int AnimatedSprite::getOffsetX() const
+int Sprite::getOffsetX() const
 {
     return mFrame ? mFrame->offsetX : 0;
 }
 
-int AnimatedSprite::getOffsetY() const
+int Sprite::getOffsetY() const
 {
     return mFrame ? mFrame->offsetY : 0;
 }
 
-const Image *AnimatedSprite::getImage() const
+const Image *Sprite::getImage() const
 {
     return mFrame ? mFrame->image : nullptr;
 }

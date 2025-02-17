@@ -22,7 +22,7 @@
 #pragma once
 
 #include "particle.h"
-#include "animatedsprite.h"
+#include "sprite.h"
 
 #include "utils/xml.h"
 
@@ -52,7 +52,7 @@ public:
     /**
      * Retrieves the status icon for this effect, if applicable
      */
-    AnimatedSprite *getIcon();
+    Sprite *getIcon();
 
     /**
      * Retrieves an action to perform, or SpriteAction::INVALID
