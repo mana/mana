@@ -87,13 +87,13 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
 
 bool ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
 {
-    return CompoundSprite::draw(graphics, x, y);
+    return mSprites.draw(graphics, x, y);
 }
 
 void ActorSprite::logic()
 {
     // Update sprite animations
-    update(Time::deltaTimeMs());
+    mSprites.update(Time::deltaTimeMs());
 
     if (mUsedTargetCursor)
         mUsedTargetCursor->update(Time::deltaTimeMs());
@@ -131,20 +131,20 @@ void ActorSprite::setTargetType(TargetCursorType type)
 void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
                                      bool forceDisplay)
 {
-    clear();
+    mSprites.clear();
 
     for (const auto &sprite : display.sprites)
     {
         std::string file = paths.getStringValue("sprites") + sprite.sprite;
-        addSprite(AnimatedSprite::load(file, sprite.variant));
+        mSprites.add(AnimatedSprite::load(file, sprite.variant));
     }
 
     // Ensure that something is shown, if desired
-    if (size() == 0 && forceDisplay)
+    if (mSprites.size() == 0 && forceDisplay)
     {
         if (display.image.empty())
         {
-            addSprite(AnimatedSprite::load(paths.getStringValue("sprites")
+            mSprites.add(AnimatedSprite::load(paths.getStringValue("sprites")
                 + paths.getStringValue("spriteErrorFile")));
         }
         else
@@ -158,7 +158,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
                 img = Theme::getImageFromTheme(
                     paths.getStringValue("unknownItemFile"));
 
-            addSprite(new ImageSprite(img));
+            mSprites.add(new ImageSprite(img));
         }
     }
 

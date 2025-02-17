@@ -28,7 +28,7 @@
 class SimpleAnimation;
 class StatusEffect;
 
-class ActorSprite : public CompoundSprite, public Actor
+class ActorSprite : public Actor
 {
 public:
     enum Type
@@ -108,11 +108,11 @@ public:
      */
     void untarget() { mUsedTargetCursor = nullptr; }
 
-    void setAlpha(float alpha) override
-    { CompoundSprite::setAlpha(alpha); }
+    void setAlpha(float alpha) override { mSprites.setAlpha(alpha); }
+    float getAlpha() const override { return mSprites.getAlpha(); }
 
-    float getAlpha() const override
-    { return CompoundSprite::getAlpha(); }
+    int getWidth() const { return mSprites.getWidth(); }
+    int getHeight() const { return mSprites.getHeight(); }
 
     static void load();
     static void unload();
@@ -123,6 +123,8 @@ protected:
 
     int mId;
     ParticleList mChildParticleEffects;
+
+    CompoundSprite mSprites;
 
 private:
     /** Load the target cursors into memory */

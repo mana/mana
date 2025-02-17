@@ -24,61 +24,44 @@
 
 #include <vector>
 
-class Image;
-
-class CompoundSprite : public Sprite
+class CompoundSprite
 {
 public:
-    CompoundSprite();
+    CompoundSprite() = default;
+    ~CompoundSprite();
 
-    ~CompoundSprite() override;
-
-    bool reset() final;
-
-    bool play(const std::string &action) final;
-
-    bool update(int time) final;
-
-    bool draw(Graphics *graphics, int posX, int posY) const override;
+    bool reset();
+    bool play(const std::string &action);
+    bool update(int time);
+    bool draw(Graphics *graphics, int posX, int posY) const;
 
     /**
      * Gets the width in pixels of the first sprite in the list.
      */
-    int getWidth() const override
-    { return mWidth; }
+    int getWidth() const { return mWidth; }
 
     /**
      * Gets the height in pixels of the first sprite in the list.
      */
-    int getHeight() const override
-    { return mHeight; }
+    int getHeight() const { return mHeight; }
 
-    int getOffsetX() const final
-    { return mOffsetX; }
+    int getOffsetX() const { return mOffsetX; }
+    int getOffsetY() const { return mOffsetY; }
 
-    int getOffsetY() const final
-    { return mOffsetY; }
+    float getAlpha() const { return mAlpha; }
+    void setAlpha(float alpha) { mAlpha = alpha; }
 
-    const Image *getImage() const final;
-
-    bool setDirection(SpriteDirection direction) final;
+    bool setDirection(SpriteDirection direction);
 
     int getNumberOfLayers() const;
 
-    int getDuration() const final;
+    int getMaxDuration() const;
 
-    size_t size() const
-    { return mSprites.size(); }
+    size_t size() const { return mSprites.size(); }
 
-    void addSprite(Sprite *sprite);
-
-    void setSprite(int layer, Sprite *sprite);
-
-    Sprite *getSprite(int layer) const
-    { return mSprites.at(layer); }
-
+    void add(Sprite *sprite);
+    void set(int layer, Sprite *sprite);
     void clear();
-
     void ensureSize(size_t layerCount);
 
     void doRedraw();
@@ -94,5 +77,6 @@ private:
 
     mutable bool mNeedsRedraw = false;
 
+    float mAlpha = 1.0f;
     std::vector<Sprite*> mSprites;
 };

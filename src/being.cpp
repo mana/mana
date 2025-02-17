@@ -118,7 +118,7 @@ void Being::setType(Type type, int subtype)
         mShowName = true;
         break;
     case PLAYER: {
-        clear();
+        mSprites.clear();
         mChildParticleEffects.clear();
 
         int id = -100 - subtype;
@@ -139,7 +139,7 @@ void Being::setType(Type type, int subtype)
         break;
     }
 
-    doRedraw();
+    mSprites.doRedraw();
 
     updateName();
     updateNamePosition();
@@ -676,12 +676,12 @@ void Being::setAction(Action action, int attackId)
             if (mEquippedWeapon)
             {
                 currentAction = mEquippedWeapon->attackAction;
-                reset();
+                mSprites.reset();
             }
             else
             {
                 currentAction = mInfo->getAttack(attackId).action;
-                reset();
+                mSprites.reset();
 
                 // Attack particle effect
                 if (Particle::enabled)
@@ -720,7 +720,7 @@ void Being::setAction(Action action, int attackId)
 
     if (currentAction != SpriteAction::INVALID)
     {
-        play(currentAction);
+        mSprites.play(currentAction);
         mAction = action;
     }
 
@@ -827,7 +827,7 @@ void Being::setDirection(uint8_t direction)
     mSpriteDirection = dir;
 
     updatePlayerSprites();
-    CompoundSprite::setDirection(dir);
+    mSprites.setDirection(dir);
 }
 
 int Being::getCollisionRadius() const
@@ -870,7 +870,7 @@ void Being::logic()
     // Remove it after 1.5 secs if the dead animation isn't long enough,
     // or simply play it until it's finished.
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() && getType() != PLAYER)
-        if (mActionTimer.elapsed() > std::max(getDuration(), 1500))
+        if (mActionTimer.elapsed() > std::max(mSprites.getMaxDuration(), 1500))
             actorSpriteManager->scheduleDelete(this);
 }
 
@@ -1244,7 +1244,7 @@ void Being::updatePlayerSprites()
     // Set the new sprites
     bool newSpriteSet = false;
 
-    ensureSize(mSpriteStates.size());
+    mSprites.ensureSize(mSpriteStates.size());
 
     for (size_t i = 0; i < mSpriteStates.size(); i++)
     {
@@ -1256,7 +1256,7 @@ void Being::updatePlayerSprites()
 
         if (spriteState.visibleId == 0)
         {
-            CompoundSprite::setSprite(i, nullptr);
+            mSprites.set(i, nullptr);
         }
         else
         {
@@ -1278,7 +1278,7 @@ void Being::updatePlayerSprites()
                     equipmentSprite->setDirection(getSpriteDirection());
             }
 
-            CompoundSprite::setSprite(i, equipmentSprite);
+            mSprites.set(i, equipmentSprite);
         }
     }
 
@@ -1303,7 +1303,7 @@ void Being::setSprite(unsigned slot, int id, const std::string &color,
     if (spriteState.color != color && spriteState.visibleId)
     {
         spriteState.visibleId = 0;
-        CompoundSprite::setSprite(slot, nullptr);
+        mSprites.set(slot, nullptr);
     }
 
     spriteState.id = id;
@@ -1343,7 +1343,7 @@ void Being::setSpriteColor(unsigned slot, const std::string &color)
 bool Being::drawnWhenBehind() const
 {
     // For now, just draw actors with only one layer when obscured
-    return CompoundSprite::getNumberOfLayers() == 1;
+    return mSprites.getNumberOfLayers() == 1;
 }
 
 void Being::setGender(Gender gender)
@@ -1358,7 +1358,7 @@ void Being::setGender(Gender gender)
             auto &spriteState = mSpriteStates[i];
             if (spriteState.visibleId)
             {
-                CompoundSprite::setSprite(i, nullptr);
+                mSprites.set(i, nullptr);
                 spriteState.visibleId = 0;
             }
         }

@@ -29,13 +29,9 @@
 
 #include <SDL.h>
 
-CompoundSprite::CompoundSprite() = default;
-
 CompoundSprite::~CompoundSprite()
 {
     delete_all(mSprites);
-    mSprites.clear();
-
     delete mImage;
     delete mAlphaImage;
 }
@@ -110,11 +106,6 @@ bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
     return false;
 }
 
-const Image *CompoundSprite::getImage() const
-{
-    return mImage;
-}
-
 bool CompoundSprite::setDirection(SpriteDirection direction)
 {
     bool ret = false;
@@ -135,13 +126,13 @@ int CompoundSprite::getNumberOfLayers() const
     return size();
 }
 
-void CompoundSprite::addSprite(Sprite *sprite)
+void CompoundSprite::add(Sprite *sprite)
 {
     mSprites.push_back(sprite);
     mNeedsRedraw = true;
 }
 
-void CompoundSprite::setSprite(int layer, Sprite *sprite)
+void CompoundSprite::set(int layer, Sprite *sprite)
 {
     // Skip if it won't change anything
     if (mSprites.at(layer) == sprite)
@@ -178,7 +169,7 @@ void CompoundSprite::doRedraw()
         redraw();
 }
 
-int CompoundSprite::getDuration() const
+int CompoundSprite::getMaxDuration() const
 {
     int duration = 0;
     for (auto sprite : mSprites)
