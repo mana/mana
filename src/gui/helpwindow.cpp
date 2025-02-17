@@ -29,9 +29,10 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
 
-#include "resources/resourcemanager.h"
 #include "configuration.h"
 
+#include "log.h"
+#include "utils/filesystem.h"
 #include "utils/gettext.h"
 
 HelpWindow::HelpWindow():
@@ -88,12 +89,20 @@ void HelpWindow::loadHelp(const std::string &helpFile)
 
 void HelpWindow::loadFile(const std::string &file)
 {
-    ResourceManager *resman = ResourceManager::getInstance();
     std::string helpPath = branding.getStringValue("helpPath");
     if (helpPath.empty())
         helpPath = paths.getStringValue("help");
 
-    const auto lines = resman->loadTextFile(helpPath + file + ".txt");
-    for (auto &line : lines)
-        mBrowserBox->addRow(line);
+    const std::string fileName = helpPath + file + ".txt";
+
+    size_t contentsLength;
+    char *fileContents = (char *) FS::loadFile(fileName, contentsLength);
+    if (!fileContents)
+    {
+        logger->log("Couldn't load text file: %s", fileName.c_str());
+        return;
+    }
+
+    mBrowserBox->addRows(std::string_view(fileContents, contentsLength));
+    SDL_free(fileContents);
 }

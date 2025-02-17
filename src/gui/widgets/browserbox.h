@@ -117,9 +117,14 @@ class BrowserBox : public gcn::Widget,
         void disableLinksAndUserColors() { mUseLinksAndUserColors = false; }
 
         /**
+         * Adds one or more text rows to the browser, separated by '\n'.
+         */
+        void addRows(std::string_view rows);
+
+        /**
          * Adds a text row to the browser.
          */
-        void addRow(const std::string &row);
+        void addRow(std::string_view row);
 
         /**
          * Remove all rows.

@@ -27,7 +27,6 @@
 #include <functional>
 #include <map>
 #include <string>
-#include <vector>
 
 class Image;
 class ImageSet;
@@ -63,14 +62,14 @@ class ResourceManager
          *
          * @return <code>true</code> on success, <code>false</code> otherwise.
          */
-        bool addToSearchPath(const std::string &path, bool append);
+        static bool addToSearchPath(const std::string &path, bool append);
 
         /**
         * Searches for zip files and adds them to the search path.
         */
-        void searchAndAddArchives(const std::string &path,
-                                  const std::string &ext,
-                                  bool append);
+        static void searchAndAddArchives(const std::string &path,
+                                         const std::string &ext,
+                                         bool append);
 
         /**
          * Returns the real path to a file. Note that this method will always
@@ -79,17 +78,7 @@ class ResourceManager
          * @param file The file to get the real path to.
          * @return The real path.
          */
-        std::string getPath(const std::string &file);
-
-        /**
-         * Opens a file for reading. The caller is responsible for closing the
-         * file.
-         *
-         * @param path The file name.
-         * @return A valid SDL_RWops pointer or <code>NULL</code> if the file
-         *         could not be opened.
-         */
-        SDL_RWops *open(const std::string &path);
+        static std::string getPath(const std::string &file);
 
         /**
          * Creates a resource and adds it to the resource map.
@@ -148,37 +137,6 @@ class ResourceManager
          * variant.
          */
         SpriteDef *getSprite(const std::string &path, int variant = 0);
-
-        /**
-         * Allocates data into a buffer pointer for raw data loading. The
-         * returned data is expected to be freed using <code>free()</code>.
-         *
-         * @param filename The name of the file to be loaded.
-         * @param filesize The size of the file that was loaded.
-         * @param inflate  True to uncompress the file if the filename ends in
-         *                 ".gz", false to ignore that.
-         *
-         * @return An allocated byte array containing the data that was loaded,
-         *         or <code>NULL</code> on fail.
-         */
-        void *loadFile(const std::string &filename, int &filesize,
-                       bool inflate = true);
-
-        /**
-        * Copies a file from one place to another (useful for extracting
-        * raw files from a zip archive, for example)
-        *
-        * @param src Source file name
-        * @param dst Destination file name
-        * @return true on success, false on failure. An error message should be
-        *         in the log file.
-        */
-        bool copyFile(const std::string &src, const std::string &dst);
-
-        /**
-         * Retrieves the contents of a text file.
-         */
-        std::vector<std::string> loadTextFile(const std::string &fileName);
 
         /**
          * Returns an instance of the class, creating one if it does not

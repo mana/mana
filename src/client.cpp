@@ -967,7 +967,7 @@ void Client::action(const gcn::ActionEvent &event)
 
 void Client::initRootDir()
 {
-    mRootDir = PHYSFS_getBaseDir();
+    mRootDir = FS::getBaseDir();
 #ifdef _WIN32
     std::string portableName = mRootDir + "portable.xml";
     struct stat statbuf;
@@ -1027,15 +1027,15 @@ void Client::initHomeDir()
     if (mLocalDataDir.empty())
     {
 #if defined __HAIKU__
-        mLocalDataDir = PHYSFS_getUserDir();
+        mLocalDataDir = FS::getUserDir();
         mLocalDataDir += "/config/data/Mana";
 #elif defined _WIN32
         mLocalDataDir = getSpecialFolderLocation(FOLDERID_LocalAppData);
         if (mLocalDataDir.empty())
-            mLocalDataDir = PHYSFS_getUserDir();
+            mLocalDataDir = FS::getUserDir();
         mLocalDataDir += "/Mana";
 #else
-        mLocalDataDir = PHYSFS_getPrefDir("manasource.org", "mana");
+        mLocalDataDir = FS::getPrefDir("manasource.org", "mana");
 #endif
     }
 
@@ -1053,12 +1053,12 @@ void Client::initHomeDir()
 #ifdef __APPLE__
         mConfigDir = mLocalDataDir + "/" + app;
 #elif defined __HAIKU__
-        mConfigDir = PHYSFS_getPrefDir("manasource.org", "Mana");
+        mConfigDir = FS::getPrefDir("manasource.org", "Mana");
         mConfigDir += app;
 #elif defined _WIN32
-        mConfigDir = PHYSFS_getPrefDir("Mana", app.c_str());
+        mConfigDir = FS::getPrefDir("Mana", app.c_str());
 #else
-        mConfigDir = std::string(PHYSFS_getUserDir()) + ".config/mana/" + app;
+        mConfigDir = std::string(FS::getUserDir()) + ".config/mana/" + app;
 #endif
     }
 
@@ -1170,7 +1170,7 @@ void Client::initScreenshotDir()
         if (mScreenshotDir.empty())
             mScreenshotDir = getSpecialFolderLocation(FOLDERID_Desktop);
 #else
-        mScreenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
+        mScreenshotDir = std::string(FS::getUserDir()) + "Desktop";
 #endif
 
         if (config.useScreenshotDirectorySuffix)

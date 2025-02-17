@@ -75,28 +75,38 @@ BrowserBox::BrowserBox(Mode mode):
 
 BrowserBox::~BrowserBox() = default;
 
-void BrowserBox::addRow(const std::string &row)
+void BrowserBox::addRows(std::string_view rows)
+{
+    std::string_view::size_type start = 0;
+    std::string_view::size_type end = 0;
+    while (end != std::string::npos)
+    {
+        end = rows.find('\n', start);
+        addRow(rows.substr(start, end - start));
+        start = end + 1;
+    }
+}
+
+void BrowserBox::addRow(std::string_view row)
 {
     TextRow &newRow = mTextRows.emplace_back();
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
     {
-        std::string tmp = row;
-
         // Check for links in format "@@link|Caption@@"
-        auto idx1 = tmp.find("@@");
-        while (idx1 != std::string::npos)
+        auto linkStart = row.find("@@");
+        while (linkStart != std::string::npos)
         {
-            const auto idx2 = tmp.find("|", idx1);
-            const auto idx3 = tmp.find("@@", idx2);
+            const auto linkSep = row.find("|", linkStart);
+            const auto linkEnd = row.find("@@", linkSep);
 
-            if (idx2 == std::string::npos || idx3 == std::string::npos)
+            if (linkSep == std::string::npos || linkEnd == std::string::npos)
                 break;
 
             BrowserLink &link = newRow.links.emplace_back();
-            link.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
-            link.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
+            link.link = row.substr(linkStart + 2, linkSep - (linkStart + 2));
+            link.caption = row.substr(linkSep + 1, linkEnd - (linkSep + 1));
 
             if (link.caption.empty())
             {
@@ -107,18 +117,18 @@ void BrowserBox::addRow(const std::string &row)
                     link.caption = link.link;
             }
 
-            newRow.text += tmp.substr(0, idx1);
+            newRow.text += row.substr(0, linkStart);
             newRow.text += "##<" + link.caption;
 
-            tmp.erase(0, idx3 + 2);
-            if (!tmp.empty())
+            row = row.substr(linkEnd + 2);
+            if (!row.empty())
             {
                 newRow.text += "##>";
             }
-            idx1 = tmp.find("@@");
+            linkStart = row.find("@@");
         }
 
-        newRow.text += tmp;
+        newRow.text += row;
     }
     // Don't use links and user defined colors
     else

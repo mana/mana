@@ -32,8 +32,6 @@
 #include "resources/spritedef.h"
 
 #include "utils/filesystem.h"
-#include "utils/zlib.h"
-#include "utils/physfsrwops.h"
 
 #include <SDL_image.h>
 
@@ -158,7 +156,7 @@ void ResourceManager::searchAndAddArchives(const std::string &path,
                                            const std::string &ext,
                                            bool append)
 {
-    const char *dirSep = PHYSFS_getDirSeparator();
+    const char *dirSep = FS::getDirSeparator();
 
     for (auto fileName : FS::enumerateFiles(path))
     {
@@ -193,11 +191,6 @@ std::string ResourceManager::getPath(const std::string &file)
     }
 
     return path;
-}
-
-SDL_RWops *ResourceManager::open(const std::string &path)
-{
-    return PHYSFSRWOPS_openRead(path.c_str());
 }
 
 Resource *ResourceManager::get(const std::string &idPath,
@@ -238,7 +231,7 @@ Resource *ResourceManager::get(const std::string &idPath,
 Resource *ResourceManager::get(const std::string &path, loader fun)
 {
     return get(path, [&] () -> Resource * {
-        if (SDL_RWops *rw = open(path))
+        if (SDL_RWops *rw = FS::openRWops(path))
             return fun(rw);
         return nullptr;
     });
@@ -265,7 +258,7 @@ Image *ResourceManager::getImage(const std::string &idPath)
             d = std::make_unique<Dye>(path.substr(p + 1));
             path = path.substr(0, p);
         }
-        SDL_RWops *rw = open(path);
+        SDL_RWops *rw = FS::openRWops(path);
         if (!rw)
             return nullptr;
 
@@ -341,132 +334,4 @@ void ResourceManager::deleteInstance()
 {
     delete instance;
     instance = nullptr;
-}
-
-void *ResourceManager::loadFile(const std::string &filename, int &filesize,
-                                bool inflate)
-{
-    // Attempt to open the specified file using PhysicsFS
-    auto file = FS::openRead(filename);
-    if (!file)
-    {
-        logger->log("Warning: Failed to load %s: %s",
-                filename.c_str(), FS::getLastError());
-        return nullptr;
-    }
-
-    // Log the real dir of the file
-    logger->log("Loaded %s/%s", FS::getRealDir(filename).value_or("<null>"),
-            filename.c_str());
-
-    // Get the size of the file
-    auto maybeFilesize = file.fileLength();
-    if (!maybeFilesize)
-    {
-        logger->log("Error getting file size: %s", FS::getLastError());
-        return nullptr;
-    }
-
-    filesize = *maybeFilesize;
-
-    // Allocate memory and load the file
-    void *buffer = malloc(filesize);
-    auto readSize = file.read(buffer, filesize);
-    if (!readSize || *readSize != filesize)
-    {
-        logger->log("Error reading file: %s", FS::getLastError());
-        free(buffer);
-        return nullptr;
-    }
-
-    // Close the file and let the user deallocate the memory
-    file.close();
-
-    if (inflate && filename.find(".gz", filename.length() - 3)
-            != std::string::npos)
-    {
-        unsigned char *inflated;
-
-        // Inflate the gzipped map data
-        filesize = inflateMemory((unsigned char*) buffer, filesize, inflated);
-        free(buffer);
-
-        buffer = inflated;
-
-        if (!buffer)
-        {
-            logger->log("Could not decompress file: %s", filename.c_str());
-        }
-    }
-
-    return buffer;
-}
-
-bool ResourceManager::copyFile(const std::string &src, const std::string &dst)
-{
-    auto srcFile = FS::openRead(src);
-    if (!srcFile)
-    {
-        logger->log("Read error: %s", FS::getLastError());
-        return false;
-    }
-    auto dstFile = FS::openWrite(dst);
-    if (!dstFile)
-    {
-        logger->log("Write error: %s", FS::getLastError());
-        return false;
-    }
-
-    char buffer[1024];
-
-    while (true)
-    {
-        auto len = srcFile.read(buffer, sizeof(buffer));
-        if (!len)
-        {
-            logger->log("Read error: %s", FS::getLastError());
-            return false;
-        }
-
-        if (!dstFile.write(buffer, *len))
-        {
-            logger->log("Write error: %s", FS::getLastError());
-            return false;
-        }
-
-        if (srcFile.eof())
-            break;
-    }
-
-    // Explicit close to flush the file and check for errors
-    if (!dstFile.close())
-    {
-        logger->log("Write error: %s", FS::getLastError());
-        return false;
-    }
-
-    return true;
-}
-
-std::vector<std::string> ResourceManager::loadTextFile(
-        const std::string &fileName)
-{
-    int contentsLength;
-    char *fileContents = (char*)loadFile(fileName, contentsLength);
-    std::vector<std::string> lines;
-
-    if (!fileContents)
-    {
-        logger->log("Couldn't load text file: %s", fileName.c_str());
-        return lines;
-    }
-
-    std::istringstream iss(std::string(fileContents, contentsLength));
-    std::string line;
-
-    while (getline(iss, line))
-        lines.push_back(line);
-
-    free(fileContents);
-    return lines;
 }

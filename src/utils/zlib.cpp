@@ -25,8 +25,6 @@
 
 #include <cassert>
 #include <cstdlib>
-#include <fstream>
-#include <iostream>
 #include <zlib.h>
 
 /**
@@ -130,54 +128,4 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
     }
 
     return outLength;
-}
-
-void *loadCompressedFile(const std::string &filename, int &filesize)
-{
-    std::ifstream file;
-    file.open(filename, std::ios::in);
-
-    if (file.is_open())
-    {
-        // Get length of file
-        file.seekg (0, std::ios::end);
-        filesize = file.tellg();
-        file.seekg(0, std::ios::beg);
-
-        char *buffer = (char *) malloc(filesize);
-
-        file.read(buffer, filesize);
-        file.close();
-
-        unsigned char *inflated;
-        unsigned int inflatedSize;
-
-        if (filename.find(".gz", filename.length() - 3) != std::string::npos)
-        {
-            // Inflate the gzipped map data
-            inflatedSize =
-                inflateMemory((unsigned char*) buffer, filesize, inflated);
-            free(buffer);
-
-            if (!inflated)
-            {
-                logger->log("Could not decompress file: %s",
-                            filename.c_str());
-                return nullptr;
-            }
-
-            filesize = inflatedSize;
-            return inflated;
-        }
-        else
-        {
-            return buffer;
-        }
-    }
-    else
-    {
-        logger->log("Error loading file from drive: %s", filename.c_str());
-    }
-
-    return nullptr;
 }

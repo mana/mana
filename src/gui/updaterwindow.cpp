@@ -358,8 +358,6 @@ void UpdaterWindow::download()
 
 void UpdaterWindow::loadUpdates()
 {
-    ResourceManager *resman = ResourceManager::getInstance();
-
     if (mUpdateFiles.empty())
     {
         // updates not downloaded
@@ -374,9 +372,7 @@ void UpdaterWindow::loadUpdates()
     }
 
     for (const UpdateFile &file : mUpdateFiles)
-    {
-        resman->addToSearchPath(mUpdatesDir + "/" + file.name, false);
-    }
+        ResourceManager::addToSearchPath(mUpdatesDir + "/" + file.name, false);
 }
 
 void UpdaterWindow::logic()

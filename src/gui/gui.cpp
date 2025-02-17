@@ -37,6 +37,7 @@
 
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
+#include "utils/filesystem.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
@@ -258,7 +259,7 @@ void Gui::handleTextInput(const TextInput &textInput)
 
 static SDL_Surface *loadSurface(const std::string &path)
 {
-    if (SDL_RWops *file = ResourceManager::getInstance()->open(path))
+    if (SDL_RWops *file = FS::openRWops(path))
         return IMG_Load_RW(file, 1);
     return nullptr;
 }

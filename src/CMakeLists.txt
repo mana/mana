@@ -1,6 +1,6 @@
 include(FindPkgConfig)
 pkg_check_modules(SDL2 REQUIRED
-  sdl2>=2.0.5
+  sdl2>=2.0.10
   SDL2_image
   SDL2_mixer
   SDL2_net

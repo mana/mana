@@ -25,16 +25,13 @@
 
 #include "log.h"
 
-#include "resources/resourcemanager.h"
-
-#include "utils/zlib.h"
+#include "utils/filesystem.h"
 
 namespace XML
 {
     struct XMLContext
     {
         std::string file;
-        bool resman;
     };
 
 #if LIBXML_VERSION >= 21200
@@ -49,7 +46,7 @@ namespace XML
             logger->log("Error in XML file '%s' on line %d",
                         context->file.c_str(), error->line);
         else
-            logger->log("Error in unknown xml file on line %d",
+            logger->log("Error in unknown XML file on line %d",
                         error->line);
 
         logger->log("%s", error->message);
@@ -63,32 +60,27 @@ namespace XML
     {
         XMLContext ctx;
         ctx.file = filename;
-        ctx.resman = useResman;
         xmlSetStructuredErrorFunc(&ctx, xmlLogger);
 
-        int size;
+        size_t size;
         char *data = nullptr;
+
         if (useResman)
-        {
-            ResourceManager *resman = ResourceManager::getInstance();
-            data = (char*) resman->loadFile(filename, size);
-        }
+            data = (char *) FS::loadFile(filename, size);
         else
-        {
-            data = (char *) loadCompressedFile(filename, size);
-        }
+            data = (char *) SDL_LoadFile(filename.c_str(), &size);
 
         if (data)
         {
             mDoc = xmlParseMemory(data, size);
-            free(data);
+            SDL_free(data);
 
             if (!mDoc)
                 logger->log("Error parsing XML file %s", filename.c_str());
         }
         else
         {
-            logger->log("Error loading %s", filename.c_str());
+            logger->log("Error loading %s: %s", filename.c_str(), SDL_GetError());
         }
 
         xmlSetStructuredErrorFunc(nullptr, xmlLogger);

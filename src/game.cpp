@@ -302,7 +302,7 @@ static bool saveScreenshot()
         logger->log("Directory %s doesn't exist and can't be created! "
                     "Setting screenshot directory to home.",
                     screenshotDirectory.c_str());
-        screenshotDirectory = PHYSFS_getUserDir();
+        screenshotDirectory = FS::getUserDir();
     }
 
     do
@@ -926,9 +926,6 @@ void Game::changeMap(const std::string &mapPath)
 
     std::string fullMap = paths.getValue("maps", "maps/")
                           + mMapName + ".tmx";
-
-    if (!FS::exists(fullMap))
-        fullMap += ".gz";
 
     // Attempt to load the new map
     Map *newMap = MapReader::readMap(fullMap);

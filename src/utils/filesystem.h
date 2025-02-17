@@ -20,7 +20,10 @@
 
 #pragma once
 
-#include <physfs.h>
+// Suppress deprecation warnings for PHYSFS_getUserDir
+#define PHYSFS_DEPRECATED
+
+#include "utils/physfsrwops.h"
 
 #include <optional>
 #include <string>
@@ -39,6 +42,26 @@ inline bool init(const char *argv0)
 inline void deinit()
 {
     PHYSFS_deinit();
+}
+
+inline const char *getDirSeparator()
+{
+    return PHYSFS_getDirSeparator();
+}
+
+inline const char *getBaseDir()
+{
+    return PHYSFS_getBaseDir();
+}
+
+inline const char *getUserDir()
+{
+    return PHYSFS_getUserDir();
+}
+
+inline const char *getPrefDir(const char *org, const char *app)
+{
+    return PHYSFS_getPrefDir(org, app);
 }
 
 /**
@@ -229,6 +252,24 @@ inline File openRead(const std::string &path)
 inline const char *getLastError()
 {
     return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
+}
+
+//
+// Helper functions for loading files through SDL_RWops
+//
+
+inline SDL_RWops *openRWops(const std::string &path)
+{
+    return PHYSFSRWOPS_openRead(path.c_str());
+}
+
+inline void *loadFile(const std::string &path, size_t &datasize)
+{
+    auto file = openRWops(path);
+    if (!file)
+        return nullptr;
+
+    return SDL_LoadFile_RW(file, &datasize, 1);
 }
 
 } // namespace FS

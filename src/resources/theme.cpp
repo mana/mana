@@ -565,7 +565,7 @@ void Theme::loadColors(std::string file)
             if (type < 0) // invalid or no type given
                 continue;
 
-            mProgressColors[type] = new DyePalette(node.getProperty(                                                           "color", ""));
+            mProgressColors[type] = new DyePalette(node.getProperty("color", ""));
         }
     }
 }
