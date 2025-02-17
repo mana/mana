@@ -25,7 +25,6 @@
 #include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
-#include "imagesprite.h"
 #include "log.h"
 
 #include "resources/emotedb.h"
@@ -60,6 +59,8 @@ EmotePopup::~EmotePopup()
 
 void EmotePopup::draw(gcn::Graphics *graphics)
 {
+    auto *g = static_cast<Graphics*>(graphics);
+
     Popup::draw(graphics);
 
     const int emoteCount = EmoteDB::getEmoteCount();
@@ -81,13 +82,14 @@ void EmotePopup::draw(gcn::Graphics *graphics)
 
         // Draw selection image below hovered item
         if (i == mHoveredEmoteIndex)
-        {
-            static_cast<Graphics*>(graphics)->drawImage(
-                    mSelectionImage, emoteX, emoteY + 4);
-        }
+            g->drawImage(mSelectionImage, emoteX, emoteY + 4);
 
         // Draw emote icon
-        EmoteDB::getByIndex(i).sprite->draw(static_cast<Graphics*>(graphics), emoteX, emoteY);
+        if (auto image = EmoteDB::getByIndex(i).image)
+        {
+            image->setAlpha(1.0f);
+            g->drawImage(image, emoteX, emoteY);
+        }
     }
 }
 

@@ -22,10 +22,9 @@
 #include "resources/emotedb.h"
 
 #include "log.h"
-#include "imagesprite.h"
 
-#include "resources/resourcemanager.h"
 #include "resources/imageset.h"
+#include "resources/resourcemanager.h"
 
 #include <algorithm>
 #include <vector>
@@ -44,8 +43,7 @@ void EmoteDB::init()
 
     mUnknown.name = "unknown";
     mUnknown.effectId = -1;
-    mUnknown.sprite = std::make_unique<ImageSprite>(
-        ResourceManager::getInstance()->getImageRef("graphics/sprites/error.png"));
+    mUnknown.image = ResourceManager::getInstance()->getImageRef("graphics/sprites/error.png");
 }
 
 void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
@@ -94,7 +92,7 @@ void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
     }
 
     // For now we just use the first image in the animation
-    emote.sprite = std::make_unique<ImageSprite>(emote.is->get(0));
+    emote.image = emote.is->get(0);
 
     mEmotes.push_back(std::move(emote));
 }
@@ -106,14 +104,12 @@ void EmoteDB::checkStatus()
 
 void EmoteDB::unload()
 {
+    // These images are owned by the ImageSet
     for (auto &emote : mEmotes)
-        emote.sprite->releaseImageRef();
+        emote.image.release();
 
     mEmotes.clear();
-
-    if (mUnknown.sprite)
-        mUnknown.sprite->releaseImageRef();
-
+    mUnknown.image = nullptr;
     mLoaded = false;
 }
 

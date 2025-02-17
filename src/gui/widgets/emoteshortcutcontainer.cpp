@@ -82,19 +82,26 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
         int emoteId = emoteShortcut->getEmote(i);
         if (emoteId != -1)
         {
-            EmoteDB::get(emoteId).sprite->draw(g, emoteX + 2, emoteY + 10);
+            if (auto image = EmoteDB::get(emoteId).image)
+            {
+                image->setAlpha(1.0f);
+                g->drawImage(image, emoteX + 2, emoteY + 10);
+            }
         }
     }
 
     if (mEmoteMoved != -1)
     {
         // Draw the emote image being dragged by the cursor.
-        const ImageSprite *sprite = EmoteDB::get(mEmoteMoved).sprite.get();
+        if (auto image = EmoteDB::get(mEmoteMoved).image)
+        {
+            image->setAlpha(1.0f);
 
-        const int tPosX = mCursorPosX - (sprite->getWidth() / 2);
-        const int tPosY = mCursorPosY - (sprite->getHeight() / 2);
+            const int tPosX = mCursorPosX - (image->getWidth() / 2);
+            const int tPosY = mCursorPosY - (image->getHeight() / 2);
 
-        sprite->draw(g, tPosX, tPosY);
+            g->drawImage(image, tPosX, tPosY);
+        }
     }
 }
 

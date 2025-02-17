@@ -21,15 +21,12 @@
 
 #pragma once
 
-#include <memory>
 #include <string>
 
-#include "resources/resource.h"
+#include "resources/image.h"
+#include "resources/imageset.h"
 
 #include "utils/xml.h"
-
-class ImageSet;
-class ImageSprite;
 
 struct Emote
 {
@@ -37,7 +34,7 @@ struct Emote
     int effectId;
     std::string name;
     ResourceRef<ImageSet> is;
-    std::unique_ptr<ImageSprite> sprite;
+    ResourceRef<Image> image;
 };
 
 /**
