@@ -31,27 +31,6 @@ typedef struct BufferedRWops {
     Uint8 buffer[BUFFER_SIZE];  // Our read-ahead buffer
 } BufferedRWops;
 
-static void fillBuffer(BufferedRWops* br) {
-    // If there's still data in the buffer, move it to the start
-    if (br->bufferPos < br->bufferFill) {
-        size_t remaining = br->bufferFill - br->bufferPos;
-        memmove(br->buffer, br->buffer + br->bufferPos, remaining);
-        br->bufferFill = remaining;
-    } else {
-        br->bufferFill = 0;
-    }
-    br->bufferPos = 0;
-
-    // Fill the rest of the buffer
-    size_t space = BUFFER_SIZE - br->bufferFill;
-    if (space > 0) {
-        size_t read = SDL_RWread(br->source,
-                                 br->buffer + br->bufferFill,
-                                 1, space);
-        br->bufferFill += read;
-    }
-}
-
 static Sint64 SDLCALL buffered_size(SDL_RWops* context) {
     BufferedRWops* br = (BufferedRWops*)context->hidden.unknown.data1;
     return SDL_RWsize(br->source);
@@ -132,8 +111,11 @@ static size_t SDLCALL buffered_read(SDL_RWops* context, void* dst, size_t size, 
                 break;  // Nothing more to read
             }
 
-            fillBuffer(br);
-            if (br->bufferFill == 0) break; // EOF or error
+            br->bufferPos = 0;
+            br->bufferFill = SDL_RWread(br->source, br->buffer, 1, BUFFER_SIZE);
+
+            if (br->bufferFill == 0)
+                break; // EOF or error
         }
 
         // Copy what we can from the buffer
