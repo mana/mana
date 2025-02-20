@@ -231,8 +231,17 @@ Resource *ResourceManager::get(const std::string &idPath,
 Resource *ResourceManager::get(const std::string &path, loader fun)
 {
     return get(path, [&] () -> Resource * {
-        if (SDL_RWops *rw = FS::openRWops(path))
+        //
+        // We use a buffered SDL_RWops to workaround a performance issue when
+        // SDL_mixer is using stb_vorbis. The overhead of calling
+        // PHYSFS_readBytes each time is too high because stb_vorbis requests
+        // the file one byte at a time.
+        //
+        // See https://github.com/libsdl-org/SDL_mixer/issues/670
+        //
+        if (SDL_RWops *rw = FS::openBufferedRWops(path))
             return fun(rw);
+
         return nullptr;
     });
 }

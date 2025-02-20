@@ -23,6 +23,7 @@
 // Suppress deprecation warnings for PHYSFS_getUserDir
 #define PHYSFS_DEPRECATED
 
+#include "utils/bufferedrwops.h"
 #include "utils/physfsrwops.h"
 
 #include <optional>
@@ -261,6 +262,14 @@ inline const char *getLastError()
 inline SDL_RWops *openRWops(const std::string &path)
 {
     return PHYSFSRWOPS_openRead(path.c_str());
+}
+
+inline SDL_RWops *openBufferedRWops(const std::string &path)
+{
+    auto rw = PHYSFSRWOPS_openRead(path.c_str());
+    if (auto buffered = createBufferedRWops(rw))
+        return buffered;
+    return rw;
 }
 
 inline void *loadFile(const std::string &path, size_t &datasize)
