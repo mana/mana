@@ -228,7 +228,7 @@ void MiniStatusWindow::logic()
 
     for (auto &icon : mIcons)
         if (icon)
-            icon->update(Time::absoluteTimeMs());
+            icon->update(Time::deltaTimeMs());
 }
 
 void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)

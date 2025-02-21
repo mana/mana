@@ -56,7 +56,7 @@ class AnimatedSprite final : public Sprite
 
         bool play(const std::string &action) override;
 
-        bool update(int time) override;
+        bool update(int dt) override;
 
         bool draw(Graphics *graphics, int posX, int posY) const override;
 

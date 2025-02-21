@@ -84,7 +84,7 @@ bool AnimatedSprite::play(const std::string &spriteAction)
     return false;
 }
 
-bool AnimatedSprite::update(int time)
+bool AnimatedSprite::update(int dt)
 {
     if (!mAnimation)
         return false;
@@ -92,7 +92,7 @@ bool AnimatedSprite::update(int time)
     Animation *animation = mAnimation;
     Frame *frame = mFrame;
 
-    if (!updateCurrentAnimation(time))
+    if (!updateCurrentAnimation(dt))
     {
         // Animation finished, reset to default
         play(SpriteAction::STAND);
@@ -102,12 +102,12 @@ bool AnimatedSprite::update(int time)
     return animation != mAnimation || frame != mFrame;
 }
 
-bool AnimatedSprite::updateCurrentAnimation(int time)
+bool AnimatedSprite::updateCurrentAnimation(int dt)
 {
     if (!mFrame || Animation::isTerminator(*mFrame))
         return false;
 
-    mFrameTime += time;
+    mFrameTime += dt;
 
     while (mFrameTime > mFrame->delay && mFrame->delay > 0)
     {
