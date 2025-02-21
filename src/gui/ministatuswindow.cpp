@@ -95,13 +95,14 @@ MiniStatusWindow::MiniStatusWindow():
     addMouseListener(this);
 }
 
+MiniStatusWindow::~MiniStatusWindow() = default;
+
 void MiniStatusWindow::setIcon(int index, Sprite *sprite)
 {
     if (index >= (int) mIcons.size())
         mIcons.resize(index + 1);
 
-    delete mIcons[index];
-    mIcons[index] = sprite;
+    mIcons[index].reset(sprite);
 }
 
 void MiniStatusWindow::eraseIcon(int index)
@@ -115,16 +116,12 @@ void MiniStatusWindow::drawIcons(Graphics *graphics)
     int icon_x = mXpBar->getX() + mXpBar->getWidth() + 14;
     for (auto &icon : mIcons)
     {
-        if (icon)
-        {
-            icon->draw(graphics, icon_x, 3);
-            icon_x += 2 + icon->getWidth();
-        }
+        icon->draw(graphics, icon_x, 3);
+        icon_x += 2 + icon->getWidth();
     }
 }
 
-void MiniStatusWindow::event(Event::Channel channel,
-                             const Event &event)
+void MiniStatusWindow::event(Event::Channel channel, const Event &event)
 {
     if (channel == Event::AttributesChannel)
     {
@@ -160,10 +157,7 @@ void MiniStatusWindow::event(Event::Channel channel,
             int index = event.getInt("index");
             bool newStatus = event.getBool("newStatus");
 
-            StatusEffect *effect = StatusEffect::getStatusEffect(index,
-                                                                 newStatus);
-
-            if (effect)
+            if (auto effect = StatusEffect::getStatusEffect(index, newStatus))
             {
                 effect->deliverMessage();
                 effect->playSFX();
@@ -178,7 +172,7 @@ void MiniStatusWindow::event(Event::Channel channel,
                         {
                             mStatusEffectIcons.erase(mStatusEffectIcons.begin()
                                                      + i);
-                            miniStatusWindow->eraseIcon(i);
+                            eraseIcon(i);
                         }
                         else
                             i++;
@@ -192,7 +186,7 @@ void MiniStatusWindow::event(Event::Channel channel,
                          i++)
                         if (mStatusEffectIcons[i] == index)
                         {
-                            miniStatusWindow->setIcon(i, sprite);
+                            setIcon(i, sprite);
                             found = true;
                             break;
                         }
@@ -200,7 +194,7 @@ void MiniStatusWindow::event(Event::Channel channel,
                     if (!found)
                     { // add new
                         int offset = mStatusEffectIcons.size();
-                        miniStatusWindow->setIcon(offset, sprite);
+                        setIcon(offset, sprite);
                         mStatusEffectIcons.push_back(index);
                     }
                 }
@@ -227,8 +221,7 @@ void MiniStatusWindow::logic()
     */
 
     for (auto &icon : mIcons)
-        if (icon)
-            icon->update(Time::deltaTimeMs());
+        icon->update(Time::deltaTimeMs());
 }
 
 void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)

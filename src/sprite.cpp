@@ -138,7 +138,7 @@ bool Sprite::draw(Graphics *graphics, int posX, int posY) const
         return false;
 
     if (!mFrame->image)
-      return false;
+        return false;
 
     if (mFrame->image->getAlpha() != mAlpha)
         mFrame->image->setAlpha(mAlpha);

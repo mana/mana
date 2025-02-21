@@ -25,6 +25,7 @@
 
 #include "gui/widgets/popup.h"
 
+#include <memory>
 #include <vector>
 
 class Sprite;
@@ -41,6 +42,7 @@ class MiniStatusWindow : public Popup, public EventListener
 {
     public:
         MiniStatusWindow();
+        ~MiniStatusWindow() override;
 
         void drawIcons(Graphics *graphics);
 
@@ -73,7 +75,7 @@ class MiniStatusWindow : public Popup, public EventListener
         TextPopup *mTextPopup;
 
         std::vector<int> mStatusEffectIcons;
-        std::vector<Sprite *> mIcons;
+        std::vector<std::unique_ptr<Sprite>> mIcons;
 };
 
 extern MiniStatusWindow *miniStatusWindow;

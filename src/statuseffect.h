@@ -47,12 +47,12 @@ public:
      * Creates the particle effect associated with this status effect, if
      * possible.
      */
-    Particle *getParticle();
+    Particle *getParticle() const;
 
     /**
      * Retrieves the status icon for this effect, if applicable
      */
-    Sprite *getIcon();
+    Sprite *getIcon() const;
 
     /**
      * Retrieves an action to perform, or SpriteAction::INVALID
@@ -100,6 +100,7 @@ public:
     static void checkStatus();
 
     static void unload();
+
 private:
     static bool mLoaded;
 

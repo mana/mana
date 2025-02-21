@@ -237,6 +237,8 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         }
     }
 
+    // The icons for the MiniStatusWindow are drawn here, otherwise they would
+    // be clipped by the window.
     if (miniStatusWindow)
         miniStatusWindow->drawIcons(graphics);
 

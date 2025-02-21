@@ -47,26 +47,18 @@ void StatusEffect::deliverMessage()
         serverNotice(mMessage);
 }
 
-Particle *StatusEffect::getParticle()
+Particle *StatusEffect::getParticle() const
 {
     if (mParticleEffect.empty())
         return nullptr;
     return particleEngine->addEffect(mParticleEffect, 0, 0);
 }
 
-Sprite *StatusEffect::getIcon()
+Sprite *StatusEffect::getIcon() const
 {
     if (mIcon.empty())
         return nullptr;
-
-    Sprite *sprite = Sprite::load(
-                paths.getStringValue("sprites") + mIcon);
-    if (false && sprite)
-    {
-        sprite->play(SpriteAction::DEFAULT);
-        sprite->reset();
-    }
-    return sprite;
+    return Sprite::load(paths.getStringValue("sprites") + mIcon);
 }
 
 std::string StatusEffect::getAction() const
