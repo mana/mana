@@ -178,7 +178,7 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
             }
             else if (name == "follow-parent")
             {
-                mParticleFollow = true;
+                mParticleFollow = propertyNode.getBoolProperty("value", true);
             }
             else
             {
