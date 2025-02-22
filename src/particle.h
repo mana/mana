@@ -76,7 +76,7 @@ class Particle : public Actor
          * Gives a particle the properties of an engine root particle and loads
          * the particle-related config settings.
          */
-        void setupEngine();
+        static void setupEngine();
 
         /**
          * Updates particle position, returns false when the particle should
@@ -289,6 +289,55 @@ class Particle : public Actor
         float mAcceleration = 0.0f;     /**< Acceleration towards the target particle in pixels per game-tick*/
         float mInvDieDistance = -1.0f;  /**< Distance in pixels from the target particle that causes the destruction of the particle*/
         float mMomentum = 1.0f;         /**< How much speed the particle retains after each game tick*/
+};
+
+/**
+ * A handle on a particle. The handle prevents automatic deletion of the
+ * particle by its parent and kills the particle when the handle is destroyed.
+ */
+class ParticleHandle
+{
+    public:
+        explicit ParticleHandle(Particle *particle = nullptr):
+            mParticle(particle)
+        {
+            if (mParticle)
+                mParticle->disableAutoDelete();
+        }
+
+        ParticleHandle(const ParticleHandle &) = delete;
+
+        ParticleHandle(ParticleHandle &&other):
+            mParticle(other.mParticle)
+        {
+            other.mParticle = nullptr;
+        }
+
+        ~ParticleHandle()
+        {
+            if (mParticle)
+                mParticle->kill();
+        }
+
+        ParticleHandle &operator=(const ParticleHandle &) = delete;
+
+        ParticleHandle &operator=(ParticleHandle &&other)
+        {
+            if (this != &other)
+            {
+                if (mParticle)
+                    mParticle->kill();
+                mParticle = other.mParticle;
+                other.mParticle = nullptr;
+            }
+            return *this;
+        }
+
+        Particle *operator->() const { return mParticle; }
+        operator Particle *() const { return mParticle; }
+
+    private:
+        Particle *mParticle;
 };
 
 extern Particle *particleEngine;

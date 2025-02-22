@@ -23,7 +23,7 @@
 #include "actor.h"
 #include "compoundsprite.h"
 #include "map.h"
-#include "particlecontainer.h"
+#include "particle.h"
 
 class SimpleAnimation;
 class StatusEffect;
@@ -122,7 +122,7 @@ protected:
                             bool forceDisplay = true);
 
     int mId;
-    ParticleList mChildParticleEffects;
+    std::vector<ParticleHandle> mChildParticleEffects;
 
     CompoundSprite mSprites;
 

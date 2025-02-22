@@ -79,7 +79,6 @@ Being::Being(int id, Type type, int subtype, Map *map)
 
 Being::~Being()
 {
-    mStatusParticleEffects.clearLocally();
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
@@ -620,12 +619,10 @@ void Being::updateStatusEffect(int id, bool newStatus)
     if (!effect)
         return;
 
-    Particle *particle = effect->getParticle(newStatus);
-
-    if (id >= 0)
-    {
-        mStatusParticleEffects.setLocally(id, particle);
-    }
+    if (Particle *particle = effect->getParticle(newStatus))
+        mStatusParticleEffects[id] = ParticleHandle(particle);
+    else
+        mStatusParticleEffects.erase(id);
 }
 
 void Being::setAction(Action action, int attackId)
@@ -823,11 +820,11 @@ void Being::logic()
         restoreAllSpriteParticles();
 
         // Restart status/particle effects, if needed
-        for (int statusEffect : mStatusEffects)
+        for (int id : mStatusEffects)
         {
-            const StatusEffect *effect = StatusEffectDB::getStatusEffect(statusEffect);
+            const StatusEffect *effect = StatusEffectDB::getStatusEffect(id);
             if (effect && effect->persistentParticleEffect)
-                updateStatusEffect(statusEffect, true);
+                updateStatusEffect(id, true);
         }
     }
 
@@ -841,7 +838,12 @@ void Being::logic()
             py += mMap->getTileHeight() / 2;
 
         // Update particle effects
-        mStatusParticleEffects.moveTo(mPos.x, py);
+        for (auto &spriteState : mSpriteStates)
+            for (auto &particle : spriteState.particles)
+                particle->moveTo(mPos.x, py);
+
+        for (auto &[_, p] : mStatusParticleEffects)
+            p->moveTo(mPos.x, py);
     }
 
     ActorSprite::logic();
@@ -1083,23 +1085,8 @@ void Being::addSpriteParticles(SpriteState &spriteState, const SpriteDisplay &di
     for (const auto &particle : display.particles)
     {
         Particle *p = particleEngine->addEffect(particle, 0, 0, 0);
-        controlParticle(p);
-        spriteState.particles.push_back(p);
+        spriteState.particles.emplace_back(p);
     }
-}
-
-void Being::removeSpriteParticles(SpriteState &spriteState)
-{
-    for (auto particle : spriteState.particles)
-        mChildParticleEffects.removeLocally(particle);
-
-    spriteState.particles.clear();
-}
-
-void Being::removeAllSpriteParticles()
-{
-    for (auto &spriteState : mSpriteStates)
-        removeSpriteParticles(spriteState);
 }
 
 void Being::restoreAllSpriteParticles()
@@ -1276,7 +1263,7 @@ void Being::setSprite(unsigned slot, int id, const std::string &color,
 
     // Clear current particles when the ID changes
     if (spriteState.id != id)
-        removeSpriteParticles(spriteState);
+        spriteState.particles.clear();
 
     // Clear the current sprite when the color changes
     if (spriteState.color != color && spriteState.visibleId)
@@ -1406,11 +1393,10 @@ void Being::event(Event::Channel channel, const Event &event)
 
 void Being::setMap(Map *map)
 {
-    // Remove sprite particles because ActorSprite is going to kill them all
     for (auto &spriteState : mSpriteStates)
         spriteState.particles.clear();
 
-    mStatusParticleEffects.clearLocally();
+    mStatusParticleEffects.clear();
 
     mRestoreParticlesOnLogic = true;
 

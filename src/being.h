@@ -446,7 +446,7 @@ class Being : public ActorSprite, public EventListener
             int id = 0;
             int visibleId = 0;
             std::string color;
-            std::vector<Particle*> particles;
+            std::vector<ParticleHandle> particles;
         };
 
         /**
@@ -460,8 +460,6 @@ class Being : public ActorSprite, public EventListener
         void updateNamePosition();
 
         void addSpriteParticles(SpriteState &spriteState, const SpriteDisplay &display);
-        void removeSpriteParticles(SpriteState &spriteState);
-        void removeAllSpriteParticles();
         void restoreAllSpriteParticles();
 
         void updateColors();
@@ -534,7 +532,7 @@ class Being : public ActorSprite, public EventListener
         Type mType = UNKNOWN;
 
         std::set<int> mStatusEffects;   /**< set of active status effects */
-        ParticleVector mStatusParticleEffects;
+        std::map<int, ParticleHandle> mStatusParticleEffects;
 
         /** Speech Bubble components */
         SpeechBubble *mSpeechBubble;

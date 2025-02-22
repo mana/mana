@@ -74,7 +74,6 @@ void Particle::setupEngine()
     Particle::fastPhysics = config.particleFastPhysics;
     Particle::emitterSkip = config.particleEmitterSkip + 1;
     Particle::enabled = config.particleEffects;
-    disableAutoDelete();
     logger->log("Particle engine set up");
 }
 
@@ -204,39 +203,35 @@ bool Particle::update()
 
     // Update child particles
 
-    for (auto p = mChildParticles.begin();
-         p != mChildParticles.end();)
+    for (auto p = mChildParticles.begin(); p != mChildParticles.end(); )
     {
+        auto particle = *p;
         //move particle with its parent if desired
-        if ((*p)->doesFollow())
+        if (particle->doesFollow())
         {
-            (*p)->moveBy(change);
+            particle->moveBy(change);
         }
-        //update particle
-        if ((*p)->update())
+        if (particle->update())
         {
             p++;
         }
         else
         {
-            delete (*p);
+            delete particle;
             p = mChildParticles.erase(p);
         }
     }
 
-    return mAlive == ALIVE || !mChildParticles.empty() || !mAutoDelete;
+    return isAlive() || !mChildParticles.empty() || !mAutoDelete;
 }
 
 void Particle::moveBy(const Vector &change)
 {
     mPos += change;
+
     for (auto &childParticle : mChildParticles)
-    {
         if (childParticle->doesFollow())
-        {
             childParticle->moveBy(change);
-        }
-    }
 }
 
 void Particle::moveTo(float x, float y)
@@ -405,13 +400,11 @@ Particle *Particle::addTextRiseFadeOutEffect(const std::string &text,
 
 void Particle::adjustEmitterSize(int w, int h)
 {
-    if (mAllowSizeAdjust)
-    {
-        for (auto &childEmitter : mChildEmitters)
-        {
-            childEmitter->adjustSize(w, h);
-        }
-    }
+    if (!mAllowSizeAdjust)
+        return;
+
+    for (auto &childEmitter : mChildEmitters)
+        childEmitter->adjustSize(w, h);
 }
 
 float Particle::getCurrentAlpha() const

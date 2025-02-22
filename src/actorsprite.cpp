@@ -35,6 +35,7 @@
 
 #include "utils/time.h"
 
+#include <algorithm>
 #include <cassert>
 
 #define EFFECTS_FILE "effects.xml"
@@ -96,13 +97,19 @@ void ActorSprite::logic()
     if (mUsedTargetCursor)
         mUsedTargetCursor->update(Time::deltaTimeMs());
 
-    // See note at ActorSprite::draw
+    // Erase all extinct particle effects
+    mChildParticleEffects.erase(std::remove_if(mChildParticleEffects.begin(),
+                                               mChildParticleEffects.end(),
+                                               [](const Particle *p) { return p->isExtinct(); }),
+                                mChildParticleEffects.end());
+
+    // Move the remaining
     float py = mPos.y;
     if (mMap)
-        py += mMap->getTileHeight() / 2;
+        py += mMap->getTileHeight() / 2;    // See note at ActorSprite::draw
 
-    // Update particle effects
-    mChildParticleEffects.moveTo(mPos.x, py);
+    for (Particle *p : mChildParticleEffects)
+        p->moveTo(mPos.x, py);
 }
 
 void ActorSprite::setMap(Map* map)
@@ -115,7 +122,7 @@ void ActorSprite::setMap(Map* map)
 
 void ActorSprite::controlParticle(Particle *particle)
 {
-    mChildParticleEffects.addLocally(particle);
+    mChildParticleEffects.emplace_back(particle);
 }
 
 void ActorSprite::setTargetType(TargetCursorType type)

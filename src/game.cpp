@@ -129,7 +129,7 @@ static void initEngines()
     effectManager = new EffectManager;
 
     particleEngine = new Particle(nullptr);
-    particleEngine->setupEngine();
+    Particle::setupEngine();
 
     Event::trigger(Event::GameChannel, Event::EnginesInitialized);
 }

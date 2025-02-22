@@ -465,8 +465,6 @@ set(SRCS
     openglgraphics.h
     particle.cpp
     particle.h
-    particlecontainer.cpp
-    particlecontainer.h
     particleemitter.cpp
     particleemitter.h
     particleemitterprop.h
