@@ -20,22 +20,24 @@
 
 #include "resources/settingsmanager.h"
 
-#include "configuration.h"
 #include "resources/attributes.h"
+#include "resources/emotedb.h"
 #include "resources/hairdb.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
-#include "resources/specialdb.h"
 #include "resources/npcdb.h"
-#include "resources/emotedb.h"
-#include "statuseffect.h"
-#include "units.h"
+#include "resources/specialdb.h"
+#include "resources/statuseffectdb.h"
 
 #include "net/net.h"
 
 #include "utils/xml.h"
 #include "utils/path.h"
+
+#include "configuration.h"
 #include "log.h"
+#include "statuseffect.h"
+#include "units.h"
 
 namespace SettingsManager
 {
@@ -55,7 +57,7 @@ namespace SettingsManager
         SpecialDB::init();
         NPCDB::init();
         EmoteDB::init();
-        StatusEffect::init();
+        StatusEffectDB::init();
         Units::init();
 
         // load stuff from settings
@@ -79,7 +81,7 @@ namespace SettingsManager
         SpecialDB::checkStatus();
         NPCDB::checkStatus();
         EmoteDB::checkStatus();
-        StatusEffect::checkStatus();
+        StatusEffectDB::checkStatus();
         Units::checkStatus();
 
         if (Net::getNetworkType() == ServerType::MANASERV)
@@ -90,7 +92,7 @@ namespace SettingsManager
 
     void unload()
     {
-        StatusEffect::unload();
+        StatusEffectDB::unload();
         EmoteDB::unload();
         NPCDB::unload();
         SpecialDB::unload();
@@ -225,9 +227,9 @@ namespace SettingsManager
             {
                 EmoteDB::readEmoteNode(childNode, filename);
             }
-            else if (childNode.name() == "status-effect" || childNode.name() == "stun-effect")
+            else if (childNode.name() == "status-effect")
             {
-                StatusEffect::readStatusEffectNode(childNode, filename);
+                StatusEffectDB::readStatusEffectNode(childNode, filename);
             }
             else if (childNode.name() == "unit")
             {

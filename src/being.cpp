@@ -54,6 +54,7 @@
 #include "resources/iteminfo.h"
 #include "resources/monsterdb.h"
 #include "resources/npcdb.h"
+#include "resources/statuseffectdb.h"
 #include "resources/theme.h"
 #include "resources/userpalette.h"
 
@@ -78,6 +79,7 @@ Being::Being(int id, Type type, int subtype, Map *map)
 
 Being::~Being()
 {
+    mStatusParticleEffects.clearLocally();
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
@@ -596,64 +598,33 @@ void Being::fireMissile(Being *victim, const std::string &particle)
     }
 }
 
-void Being::setStatusEffect(int index, bool active)
+void Being::setStatusEffect(int id, bool active)
 {
-    const bool wasActive = mStatusEffects.find(index) != mStatusEffects.end();
+    const auto it = mStatusEffects.find(id);
+    const bool wasActive = it != mStatusEffects.end();
 
     if (active != wasActive)
     {
-        updateStatusEffect(index, active);
         if (active)
-            mStatusEffects.insert(index);
+            mStatusEffects.insert(id);
         else
-            mStatusEffects.erase(index);
+            mStatusEffects.erase(it);
+
+        updateStatusEffect(id, active);
     }
 }
 
-void Being::setStatusEffectBlock(int offset, uint16_t newEffects)
+void Being::updateStatusEffect(int id, bool newStatus)
 {
-    for (int i = 0; i < STATUS_EFFECTS; i++)
-    {
-        int index = StatusEffect::blockEffectIndexToEffectIndex(offset + i);
-
-        if (index != -1)
-            setStatusEffect(index, (newEffects & (1 << i)) > 0);
-    }
-}
-
-void Being::updateStunMode(int oldMode, int newMode)
-{
-    handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
-    handleStatusEffect(StatusEffect::getStatusEffect(newMode, true), -1);
-}
-
-void Being::updateStatusEffect(int index, bool newStatus)
-{
-    handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);
-}
-
-void Being::handleStatusEffect(StatusEffect *effect, int effectId)
-{
+    auto effect = StatusEffectDB::getStatusEffect(id);
     if (!effect)
         return;
 
-    // TODO: Find out how this is meant to be used
-    // (SpriteAction != Being::Action)
-    //SpriteAction action = effect->getAction();
-    //if (action != ACTION_INVALID)
-    //    setAction(action);
+    Particle *particle = effect->getParticle(newStatus);
 
-    Particle *particle = effect->getParticle();
-
-    if (effectId >= 0)
+    if (id >= 0)
     {
-        mStatusParticleEffects.setLocally(effectId, particle);
-    }
-    else
-    {
-        mStunParticleEffects.clearLocally();
-        if (particle)
-            mStunParticleEffects.addLocally(particle);
+        mStatusParticleEffects.setLocally(id, particle);
     }
 }
 
@@ -854,8 +825,8 @@ void Being::logic()
         // Restart status/particle effects, if needed
         for (int statusEffect : mStatusEffects)
         {
-            const StatusEffect *effect = StatusEffect::getStatusEffect(statusEffect, true);
-            if (effect && effect->particleEffectIsPersistent())
+            const StatusEffect *effect = StatusEffectDB::getStatusEffect(statusEffect);
+            if (effect && effect->persistentParticleEffect)
                 updateStatusEffect(statusEffect, true);
         }
     }
@@ -863,6 +834,14 @@ void Being::logic()
     if (mAction != DEAD && !mSpeedPixelsPerSecond.isNull())
     {
         updateMovement();
+
+        // See note at ActorSprite::draw
+        float py = mPos.y;
+        if (mMap)
+            py += mMap->getTileHeight() / 2;
+
+        // Update particle effects
+        mStatusParticleEffects.moveTo(mPos.x, py);
     }
 
     ActorSprite::logic();
@@ -1431,7 +1410,6 @@ void Being::setMap(Map *map)
     for (auto &spriteState : mSpriteStates)
         spriteState.particles.clear();
 
-    mStunParticleEffects.clearLocally();
     mStatusParticleEffects.clearLocally();
 
     mRestoreParticlesOnLogic = true;

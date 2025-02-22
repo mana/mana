@@ -39,6 +39,7 @@
 
 #include "net/tmwa/protocol.h"
 
+#include "resources/statuseffectdb.h"
 #include "resources/theme.h"
 
 #include "utils/gettext.h"
@@ -154,21 +155,21 @@ void MiniStatusWindow::event(Event::Channel channel, const Event &event)
     {
         if (event.getType() == Event::UpdateStatusEffect)
         {
-            int index = event.getInt("index");
-            bool newStatus = event.getBool("newStatus");
+            const int id = event.getInt("index");
+            const bool newStatus = event.getBool("newStatus");
 
-            if (auto effect = StatusEffect::getStatusEffect(index, newStatus))
+            if (auto effect = StatusEffectDB::getStatusEffect(id))
             {
-                effect->deliverMessage();
-                effect->playSFX();
+                effect->deliverMessage(newStatus);
+                effect->playSfx(newStatus);
 
-                Sprite *sprite = effect->getIcon();
+                Sprite *sprite = newStatus ? effect->getIconSprite() : nullptr;
 
                 if (!sprite)
                 {
                     // delete sprite, if necessary
                     for (unsigned int i = 0; i < mStatusEffectIcons.size();)
-                        if (mStatusEffectIcons[i] == index)
+                        if (mStatusEffectIcons[i] == id)
                         {
                             mStatusEffectIcons.erase(mStatusEffectIcons.begin()
                                                      + i);
@@ -184,7 +185,7 @@ void MiniStatusWindow::event(Event::Channel channel, const Event &event)
 
                     for (unsigned int i = 0; i < mStatusEffectIcons.size();
                          i++)
-                        if (mStatusEffectIcons[i] == index)
+                        if (mStatusEffectIcons[i] == id)
                         {
                             setIcon(i, sprite);
                             found = true;
@@ -195,7 +196,7 @@ void MiniStatusWindow::event(Event::Channel channel, const Event &event)
                     { // add new
                         int offset = mStatusEffectIcons.size();
                         setIcon(offset, sprite);
-                        mStatusEffectIcons.push_back(index);
+                        mStatusEffectIcons.push_back(id);
                     }
                 }
             }

@@ -380,26 +380,7 @@ class Being : public ActorSprite, public EventListener
          */
         void fireMissile(Being *target, const std::string &particle);
 
-        /**
-         * Sets the being's stun mode. If zero, the being is `normal',
-         * otherwise it is `stunned' in some fashion.
-         */
-        void setStunMode(int stunMode)
-        {
-            if (mStunMode != stunMode)
-                updateStunMode(mStunMode, stunMode);
-            mStunMode = stunMode;
-        }
-
-        void setStatusEffect(int index, bool active);
-
-        /**
-         * A status effect block is a 16 bit mask of status effects. We assign
-         * each such flag a block ID of offset + bitnr.
-         *
-         * These are NOT the same as the status effect indices.
-         */
-        void setStatusEffectBlock(int offset, uint16_t flags);
+        void setStatusEffect(int id, bool active);
 
         /**
          * Returns the path this being is following. An empty path is returned
@@ -497,12 +478,6 @@ class Being : public ActorSprite, public EventListener
         virtual void pathFinished() {}
 
         /**
-         * Notify self that the stun mode has been updated. Invoked by
-         * setStunMode if something changed.
-         */
-        virtual void updateStunMode(int oldMode, int newMode);
-
-        /**
          * Notify self that a status effect has flipped.
          * The new flag is passed.
          */
@@ -554,21 +529,11 @@ class Being : public ActorSprite, public EventListener
         bool mIsGM = false;
 
     private:
-        /**
-         * Handle an update to a status or stun effect
-         *
-         * \param effect   The StatusEffect to effect
-         * \param effectId -1 for stun, otherwise the effect index
-         */
-        void handleStatusEffect(StatusEffect *effect, int effectId);
-
         void updateMovement();
 
         Type mType = UNKNOWN;
 
-        uint16_t mStunMode = 0;         /**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
-        ParticleList mStunParticleEffects;
         ParticleVector mStatusParticleEffects;
 
         /** Speech Bubble components */

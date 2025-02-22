@@ -358,6 +358,8 @@ set(SRCS
     resources/specialdb.h
     resources/spritedef.h
     resources/spritedef.cpp
+    resources/statuseffectdb.cpp
+    resources/statuseffectdb.h
     resources/theme.cpp
     resources/theme.h
     resources/userpalette.cpp

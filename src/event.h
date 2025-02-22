@@ -97,7 +97,6 @@ public:
         StateChange,
         StorageCount,
         StringInput,
-        Stun,
         UpdateAttribute,
         UpdateStat,
         UpdateStatusEffect,

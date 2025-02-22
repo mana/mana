@@ -1018,24 +1018,14 @@ void LocalPlayer::event(Event::Channel channel, const Event &event)
     Being::event(channel, event);
 }
 
-void LocalPlayer::updateStunMode(int oldMode, int newMode)
-{
-    Event event(Event::Stun);
-    event.setInt("oldMode", oldMode);
-    event.setInt("newMode", newMode);
-    event.trigger(Event::ActorSpriteChannel);
-
-    Being::updateStunMode(oldMode, newMode);
-}
-
-void LocalPlayer::updateStatusEffect(int index, bool newStatus)
+void LocalPlayer::updateStatusEffect(int id, bool newStatus)
 {
     Event event(Event::UpdateStatusEffect);
-    event.setInt("index", index);
+    event.setInt("index", id);
     event.setBool("newStatus", newStatus);
     event.trigger(Event::ActorSpriteChannel);
 
-    Being::updateStatusEffect(index, newStatus);
+    Being::updateStatusEffect(id, newStatus);
 }
 
 void LocalPlayer::changeAwayMode()

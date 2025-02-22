@@ -40,6 +40,7 @@
 
 #include "resources/emotedb.h"
 #include "resources/hairdb.h"
+#include "resources/statuseffectdb.h"
 
 #include <cmath>
 
@@ -168,6 +169,42 @@ static void handlePosMessage(Map *map, Being *dstBeing, Uint16 x, Uint16 y,
     }
 }
 
+static void applyStatusEffectsByOption1(Being *being,
+                                        const StatusEffectDB::OptionsMap &map,
+                                        uint16_t option)
+{
+    for (auto &[opt, id] : map)
+        being->setStatusEffect(id, option == opt);
+}
+
+static void applyStatusEffectsByOption(Being *being,
+                                       const StatusEffectDB::OptionsMap &map,
+                                       uint16_t option)
+{
+    for (auto &[opt, id] : map)
+    {
+        const bool enabled = (option & opt) != 0;
+        being->setStatusEffect(id, enabled);
+    }
+}
+
+/**
+ * Maps flags or indexes to their corresponding status effect index and
+ * updates the state of the given being. This is tmwAthena-specific.
+ */
+static void applyStatusEffects(Being *being,
+                               uint16_t opt0,
+                               uint16_t opt1,
+                               uint16_t opt2,
+                               std::optional<uint16_t> opt3 = {})
+{
+    applyStatusEffectsByOption(being, StatusEffectDB::opt0ToIdMap(), opt0);
+    applyStatusEffectsByOption1(being, StatusEffectDB::opt1ToIdMap(), opt1);
+    applyStatusEffectsByOption(being, StatusEffectDB::opt2ToIdMap(), opt2);
+    if (opt3)
+        applyStatusEffectsByOption(being, StatusEffectDB::opt3ToIdMap(), *opt3);
+}
+
 void BeingHandler::handleMessage(MessageIn &msg)
 {
     if (!actorSpriteManager)
@@ -181,8 +218,10 @@ void BeingHandler::handleMessage(MessageIn &msg)
     Uint16 weapon, shield;
     Uint16 gmstatus;
     int param1;
-    int stunMode;
-    Uint32 statusEffects;
+    uint16_t opt0;
+    uint16_t opt1;
+    uint16_t opt2;
+    uint16_t opt3;
     int type, guild;
     Uint16 status;
     Being *srcBeing, *dstBeing;
@@ -198,9 +237,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             // Information about a being in range
             id = msg.readInt32();
             speed = (float)msg.readInt16();
-            stunMode = msg.readInt16();  // opt1
-            statusEffects = msg.readInt16();  // opt2
-            statusEffects |= ((Uint32)msg.readInt16()) << 16;  // option
+            opt1 = msg.readInt16();
+            opt2 = msg.readInt16();
+            opt0 = msg.readInt16();
             job = msg.readInt16();  // class
 
             dstBeing = actorSpriteManager->findBeing(id);
@@ -258,7 +297,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
             msg.readInt16();  // guild emblem
             msg.readInt16();  // manner
-            dstBeing->setStatusEffectBlock(32, msg.readInt16());  // opt3
+            opt3 = msg.readInt16();
             msg.readInt8();   // karma
             gender = msg.readInt8();
 
@@ -296,9 +335,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readInt8();   // unknown
             msg.readInt8();   // unknown / sit
 
-            dstBeing->setStunMode(stunMode);
-            dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
-            dstBeing->setStatusEffectBlock(16, statusEffects & 0xffff);
+            applyStatusEffects(dstBeing, opt0, opt1, opt2, opt3);
             break;
 
         case SMSG_BEING_SPAWN:
@@ -530,10 +567,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             // An update about a player, potentially including movement.
             id = msg.readInt32();
             speed = msg.readInt16();
-            stunMode = msg.readInt16();  // opt1; Aethyra use this as cape
-            statusEffects = msg.readInt16();  // opt2; Aethyra use this as misc1
-            statusEffects |= ((Uint32) msg.readInt16())
-                << 16; // status.options; Aethyra uses this as misc2
+            opt1 = msg.readInt16();
+            opt2 = msg.readInt16();
+            opt0 = msg.readInt16();
             job = msg.readInt16();
 
             dstBeing = actorSpriteManager->findBeing(id);
@@ -576,7 +612,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readInt32();  // guild
             msg.readInt16();  // emblem
             msg.readInt16();  // manner
-            dstBeing->setStatusEffectBlock(32, msg.readInt16());  // opt3
+            opt3 = msg.readInt16();
             msg.readInt8();   // karma
             dstBeing->setGender(msg.readInt8() == 0 ? Gender::FEMALE
                                                     : Gender::MALE);
@@ -633,9 +669,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readInt8();   // Lv
             msg.readInt8();   // unused
 
-            dstBeing->setStunMode(stunMode);
-            dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
-            dstBeing->setStatusEffectBlock(16, statusEffects & 0xffff);
+            applyStatusEffects(dstBeing, opt0, opt1, opt2, opt3);
             break;
 
         case SMSG_PLAYER_STOP:
@@ -680,14 +714,12 @@ void BeingHandler::handleMessage(MessageIn &msg)
             if (!dstBeing)
                 break;
 
-            stunMode = msg.readInt16();
-            statusEffects = msg.readInt16();
-            statusEffects |= ((Uint32) msg.readInt16()) << 16;
-            msg.readInt8(); // Unused?
+            opt1 = msg.readInt16();
+            opt2 = msg.readInt16();
+            opt0 = msg.readInt16();
+            msg.readInt8(); // zero
 
-            dstBeing->setStunMode(stunMode);
-            dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
-            dstBeing->setStatusEffectBlock(16, statusEffects & 0xffff);
+            applyStatusEffects(dstBeing, opt0, opt1, opt2);
             break;
 
         case SMSG_BEING_STATUS_CHANGE:
