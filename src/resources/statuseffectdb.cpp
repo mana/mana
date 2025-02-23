@@ -62,6 +62,8 @@ void StatusEffectDB::readStatusEffectNode(XML::Node node, const std::string &/* 
 
     auto &effect = mStatusEffects[id];
 
+    node.attribute("name", effect.name);
+
     node.attribute("start-message", effect.start.message);
     node.attribute("start-audio", effect.start.sfx);
     node.attribute("start-particle", effect.start.particleEffect);

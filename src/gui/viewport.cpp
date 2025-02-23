@@ -32,7 +32,6 @@
 #include "textmanager.h"
 
 #include "gui/gui.h"
-#include "gui/ministatuswindow.h"
 #include "gui/popupmenu.h"
 #include "gui/beingpopup.h"
 
@@ -236,11 +235,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
                                gcn::Graphics::CENTER);
         }
     }
-
-    // The icons for the MiniStatusWindow are drawn here, otherwise they would
-    // be clipped by the window.
-    if (miniStatusWindow)
-        miniStatusWindow->drawIcons(graphics);
 
     // Draw contained widgets
     WindowContainer::draw(gcnGraphics);

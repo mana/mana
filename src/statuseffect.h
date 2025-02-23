@@ -36,6 +36,7 @@ public:
         std::string particleEffect;
     };
 
+    std::string name;
     Event start;
     Event end;
     std::string icon;

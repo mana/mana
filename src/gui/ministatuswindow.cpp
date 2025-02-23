@@ -47,12 +47,15 @@
 #include "utils/stringutils.h"
 #include "utils/time.h"
 
-static constexpr int ICON_SPACING = 4;
+#include <algorithm>
+
+static constexpr int ICON_SPACING = 3;
 
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
     setPadding(3);
+    setMinHeight(0);
 
     listen(Event::AttributesChannel);
     listen(Event::ActorSpriteChannel);
@@ -87,8 +90,7 @@ MiniStatusWindow::MiniStatusWindow():
         add(mMpBar);
     add(mXpBar);
 
-    setContentSize(mXpBar->getX() + mXpBar->getWidth(),
-                   mXpBar->getY() + mXpBar->getHeight());
+    updateSize();
 
     auto stateIt = config.windows.find(getPopupName());
     setVisible(stateIt != config.windows.end() ? stateIt->second.visible.value_or(true)
@@ -101,34 +103,21 @@ MiniStatusWindow::MiniStatusWindow():
 
 MiniStatusWindow::~MiniStatusWindow() = default;
 
-void MiniStatusWindow::setIcon(int index, Sprite *sprite)
-{
-    if (index >= (int) mIcons.size())
-        mIcons.resize(index + 1);
-
-    mIcons[index].reset(sprite);
-}
-
-void MiniStatusWindow::eraseIcon(int index)
-{
-    mIcons.erase(mIcons.begin() + index);
-}
-
 void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
     const auto game = Game::instance();
     const int tileWidth = game->getCurrentTileWidth();
     const int tileHeight = game->getCurrentTileHeight();
 
-    int iconX = mXpBar->getX() + mXpBar->getWidth() + 3 + tileWidth / 2;
-    int iconY = 3 + tileHeight;
+    int iconX = mXpBar->getX() + mXpBar->getWidth() + ICON_SPACING + tileWidth / 2;
+    int iconY = ICON_SPACING + tileHeight;
 
-    for (auto &icon : mIcons)
+    for (auto &icon : mStatusIcons)
     {
-        icon->draw(graphics,
-                   iconX - icon->getWidth() / 2,
-                   iconY - icon->getHeight());
-        iconX += ICON_SPACING + icon->getWidth();
+        icon.sprite->draw(graphics,
+                          iconX - icon.sprite->getWidth() / 2,
+                          iconY - icon.sprite->getHeight());
+        iconX += ICON_SPACING + icon.sprite->getWidth();
     }
 }
 
@@ -168,48 +157,25 @@ void MiniStatusWindow::event(Event::Channel channel, const Event &event)
             const int id = event.getInt("index");
             const bool newStatus = event.getBool("newStatus");
 
-            if (auto effect = StatusEffectDB::getStatusEffect(id))
-            {
-                effect->deliverMessage(newStatus);
-                effect->playSfx(newStatus);
+            auto effect = StatusEffectDB::getStatusEffect(id);
+            if (!effect)
+                return;
 
-                Sprite *sprite = newStatus ? effect->getIconSprite() : nullptr;
+            effect->deliverMessage(newStatus);
+            effect->playSfx(newStatus);
 
-                if (!sprite)
-                {
-                    // delete sprite, if necessary
-                    for (unsigned int i = 0; i < mStatusEffectIcons.size();)
-                        if (mStatusEffectIcons[i] == id)
-                        {
-                            mStatusEffectIcons.erase(mStatusEffectIcons.begin()
-                                                     + i);
-                            eraseIcon(i);
-                        }
-                        else
-                            i++;
-                }
-                else
-                {
-                    // replace sprite or append
-                    bool found = false;
+            Sprite *sprite = newStatus ? effect->getIconSprite() : nullptr;
+            auto it = std::find_if(mStatusIcons.begin(), mStatusIcons.end(),
+                                   [id](const StatusIcon &icon) {
+                                       return icon.effectId == id;
+                                   });
 
-                    for (unsigned int i = 0; i < mStatusEffectIcons.size();
-                         i++)
-                        if (mStatusEffectIcons[i] == id)
-                        {
-                            setIcon(i, sprite);
-                            found = true;
-                            break;
-                        }
+            if (!sprite && it != mStatusIcons.end())
+                mStatusIcons.erase(it);
+            else if (sprite && it == mStatusIcons.end())
+                mStatusIcons.push_back(StatusIcon{id, std::unique_ptr<Sprite>(sprite)});
 
-                    if (!found)
-                    { // add new
-                        int offset = mStatusEffectIcons.size();
-                        setIcon(offset, sprite);
-                        mStatusEffectIcons.push_back(id);
-                    }
-                }
-            }
+            updateSize();
         }
     }
 }
@@ -231,41 +197,83 @@ void MiniStatusWindow::logic()
     }
     */
 
-    for (auto &icon : mIcons)
-        icon->update(Time::deltaTimeMs());
+    for (auto &icon : mStatusIcons)
+        icon.sprite->update(Time::deltaTimeMs());
+}
+
+void MiniStatusWindow::draw(gcn::Graphics *graphics)
+{
+    drawChildren(graphics);
+
+    drawIcons(static_cast<Graphics*>(graphics));
 }
 
 void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
 {
     Popup::mouseMoved(event);
 
-    const int x = event.getX();
-    const int y = event.getY();
+    std::string tooltip1;
+    std::string tooltip2;
 
     if (event.getSource() == mXpBar)
     {
-        mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", PlayerInfo::getAttribute(EXP),
-                                   PlayerInfo::getAttribute(EXP_NEEDED)),
-                         strprintf("%s: %u", _("Need"),
-                                   PlayerInfo::getAttribute(EXP_NEEDED)
-                                   - PlayerInfo::getAttribute(EXP)));
+        const int xp = PlayerInfo::getAttribute(EXP);
+        const int xpNeeded = PlayerInfo::getAttribute(EXP_NEEDED);
+        tooltip1 = strprintf("%u/%u", xp, xpNeeded);
+        tooltip2 = strprintf("%s: %u", _("Need"), xpNeeded - xp);
     }
     else if (event.getSource() == mHpBar)
     {
-        mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", PlayerInfo::getAttribute(HP),
-                                   PlayerInfo::getAttribute(MAX_HP)));
+        const int hp = PlayerInfo::getAttribute(HP);
+        const int maxHp = PlayerInfo::getAttribute(MAX_HP);
+        tooltip1 = strprintf("%u/%u", hp, maxHp);
     }
     else if (event.getSource() == mMpBar)
     {
-        mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", PlayerInfo::getAttribute(MP),
-                                   PlayerInfo::getAttribute(MAX_MP)));
+        const int mp = PlayerInfo::getAttribute(MP);
+        const int maxMp = PlayerInfo::getAttribute(MAX_MP);
+        tooltip1 = strprintf("%u/%u", mp, maxMp);
     }
     else
     {
+        // Check if the mouse is over one of the status icons
+        const auto game = Game::instance();
+        const int tileWidth = game->getCurrentTileWidth();
+        const int tileHeight = game->getCurrentTileHeight();
+
+        int iconX = mXpBar->getX() + mXpBar->getWidth() + ICON_SPACING + tileWidth / 2;
+        int iconY = ICON_SPACING + tileHeight;
+
+        for (const auto &icon : mStatusIcons)
+        {
+            int spriteX = iconX + icon.sprite->getOffsetX() - icon.sprite->getWidth() / 2;
+            int spriteY = iconY + icon.sprite->getOffsetY() - icon.sprite->getHeight();
+
+            if (event.getX() >= spriteX &&
+                event.getX() < spriteX + icon.sprite->getWidth() &&
+                event.getY() >= spriteY &&
+                event.getY() < spriteY + icon.sprite->getHeight())
+            {
+                auto effect = StatusEffectDB::getStatusEffect(icon.effectId);
+                if (effect)
+                    tooltip1 = effect->name;
+                break;
+            }
+
+            iconX += ICON_SPACING + icon.sprite->getWidth();
+        }
+    }
+
+    if (tooltip1.empty())
+    {
         mTextPopup->setVisible(false);
+    }
+    else
+    {
+        mTextPopup->show(event.getX() + getX(),
+                         event.getY() + getY(),
+                         tooltip1,
+                         tooltip2);
     }
 }
 
@@ -274,4 +282,20 @@ void MiniStatusWindow::mouseExited(gcn::MouseEvent &event)
     Popup::mouseExited(event);
 
     mTextPopup->setVisible(false);
+}
+
+void MiniStatusWindow::updateSize()
+{
+    int width = mXpBar->getX() + mXpBar->getWidth();
+    int height = mXpBar->getY() + mXpBar->getHeight();
+
+    // Increase width based on the size of the status icons
+    if (!mStatusIcons.empty())
+    {
+        width += ICON_SPACING;
+        for (const auto &icon : mStatusIcons)
+            width += ICON_SPACING + icon.sprite->getWidth();
+    }
+
+    setContentSize(width, height);
 }

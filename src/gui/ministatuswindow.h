@@ -44,27 +44,18 @@ class MiniStatusWindow : public Popup, public EventListener
         MiniStatusWindow();
         ~MiniStatusWindow() override;
 
-        void drawIcons(Graphics *graphics);
-
         void event(Event::Channel channel, const Event &event) override;
 
         void logic() override; // Updates icons
 
-        void draw(gcn::Graphics *graphics) override
-        { drawChildren(graphics); }
+        void draw(gcn::Graphics *graphics) override;
 
         void mouseMoved(gcn::MouseEvent &mouseEvent) override;
         void mouseExited(gcn::MouseEvent &event) override;
 
     private:
-        bool isInBar(ProgressBar *bar, int x, int y) const;
-
-        /**
-         * Sets one of the icons.
-         */
-        void setIcon(int index, Sprite *sprite);
-
-        void eraseIcon(int index);
+        void drawIcons(Graphics *graphics);
+        void updateSize();
 
         /*
          * Mini Status Bars
@@ -74,8 +65,13 @@ class MiniStatusWindow : public Popup, public EventListener
         ProgressBar *mXpBar;
         TextPopup *mTextPopup;
 
-        std::vector<int> mStatusEffectIcons;
-        std::vector<std::unique_ptr<Sprite>> mIcons;
+        struct StatusIcon
+        {
+            int effectId;
+            std::unique_ptr<Sprite> sprite;
+        };
+
+        std::vector<StatusIcon> mStatusIcons;
 };
 
 extern MiniStatusWindow *miniStatusWindow;
