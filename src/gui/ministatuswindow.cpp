@@ -22,6 +22,7 @@
 #include "gui/ministatuswindow.h"
 
 #include "configuration.h"
+#include "game.h"
 #include "graphics.h"
 #include "playerinfo.h"
 #include "sprite.h"
@@ -45,6 +46,8 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/time.h"
+
+static constexpr int ICON_SPACING = 4;
 
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
@@ -113,12 +116,19 @@ void MiniStatusWindow::eraseIcon(int index)
 
 void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
-    // Draw icons
-    int icon_x = mXpBar->getX() + mXpBar->getWidth() + 14;
+    const auto game = Game::instance();
+    const int tileWidth = game->getCurrentTileWidth();
+    const int tileHeight = game->getCurrentTileHeight();
+
+    int iconX = mXpBar->getX() + mXpBar->getWidth() + 3 + tileWidth / 2;
+    int iconY = 3 + tileHeight;
+
     for (auto &icon : mIcons)
     {
-        icon->draw(graphics, icon_x, 3);
-        icon_x += 2 + icon->getWidth();
+        icon->draw(graphics,
+                   iconX - icon->getWidth() / 2,
+                   iconY - icon->getHeight());
+        iconX += ICON_SPACING + icon->getWidth();
     }
 }
 
