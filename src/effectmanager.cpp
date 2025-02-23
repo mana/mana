@@ -49,56 +49,57 @@ EffectManager::EffectManager()
 
     for (auto node : root.children())
     {
-        if (node.name() == "effect")
+        int effectId;
+
+        if (node.name() == "effect" && node.attribute("id", effectId))
         {
-            EffectDescription &ed = mEffects.emplace_back();
-            ed.id = node.getProperty("id", -1);
-            ed.GFX = node.getProperty("particle", "");
-            ed.SFX = node.getProperty("audio", "");
+            EffectDescription &ed = mEffects[effectId];
+            node.attribute("particle", ed.particle);
+            node.attribute("audio", ed.sfx);
         }
     }
 }
 
-EffectManager::~EffectManager()
-{
-}
+EffectManager::~EffectManager() = default;
 
-bool EffectManager::trigger(int id, Being* being, int rotation)
+bool EffectManager::trigger(int id, Being *being, int rotation)
 {
-    bool rValue = false;
-    for (auto &effect : mEffects)
+    auto it = mEffects.find(id);
+    if (it == mEffects.end())
     {
-        if (effect.id == id)
-        {
-            rValue = true;
-            if (!effect.GFX.empty())
-            {
-                Particle *selfFX;
-                selfFX = particleEngine->addEffect(effect.GFX, 0, 0, rotation);
-                being->controlParticle(selfFX);
-            }
-            if (!effect.SFX.empty())
-                sound.playSfx(effect.SFX);
-            break;
-        }
+        logger->log("EffectManager::trigger: effect %d not found", id);
+        return false;
     }
-    return rValue;
+
+    EffectDescription &effect = it->second;
+
+    if (!effect.particle.empty())
+    {
+        if (Particle *selfFX = particleEngine->addEffect(effect.particle, 0, 0, rotation))
+            being->controlParticle(selfFX);
+    }
+
+    if (!effect.sfx.empty())
+        sound.playSfx(effect.sfx);
+
+    return true;
 }
 
 bool EffectManager::trigger(int id, int x, int y, int rotation)
 {
-    bool rValue = false;
-    for (auto &effect : mEffects)
+    auto it = mEffects.find(id);
+    if (it == mEffects.end())
     {
-        if (effect.id == id)
-        {
-            rValue = true;
-            if (!effect.GFX.empty())
-                particleEngine->addEffect(effect.GFX, x, y, rotation);
-            if (!effect.SFX.empty())
-                sound.playSfx(effect.SFX);
-            break;
-        }
+        logger->log("EffectManager::trigger: effect %d not found", id);
+        return false;
     }
-    return rValue;
+
+    EffectDescription &effect = it->second;
+
+    if (!effect.particle.empty())
+        particleEngine->addEffect(effect.particle, x, y, rotation);
+    if (!effect.sfx.empty())
+        sound.playSfx(effect.sfx);
+
+    return true;
 }

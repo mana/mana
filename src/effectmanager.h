@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <list>
+#include <map>
 #include <string>
 
 class Being;
@@ -32,9 +32,8 @@ class EffectManager
     public:
         struct EffectDescription
         {
-             int id;
-             std::string GFX;
-             std::string SFX;
+             std::string particle;
+             std::string sfx;
         };
 
         EffectManager();
@@ -46,7 +45,7 @@ class EffectManager
          * and with the given rotation in degree:
          * 0° = Down, 90° = left, ...
          */
-        bool trigger(int id, Being* being, int rotation = 0);
+        bool trigger(int id, Being *being, int rotation = 0);
 
         /**
          * Triggers a effect with the id, at
@@ -57,7 +56,7 @@ class EffectManager
         bool trigger(int id, int x, int y, int rotation = 0);
 
    private:
-        std::list<EffectDescription> mEffects;
+        std::map<int, EffectDescription> mEffects;
 };
 
 extern EffectManager *effectManager;
