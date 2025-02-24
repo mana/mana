@@ -53,7 +53,7 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
     if (instances == 0)
     {
         // Load the skin
-        Image *textbox = Theme::getImageFromTheme("deepbox.png");
+        auto textbox = Theme::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
         int a = 0;
@@ -70,8 +70,6 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
             }
         }
         skin.setAlpha(config.guiAlpha);
-
-        textbox->decRef();
     }
 
     instances++;

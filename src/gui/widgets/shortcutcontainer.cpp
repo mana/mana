@@ -21,11 +21,7 @@
 
 #include "gui/widgets/shortcutcontainer.h"
 
-float ShortcutContainer::mAlpha = 1.0;
-
-ShortcutContainer::ShortcutContainer()
-{
-}
+ShortcutContainer::~ShortcutContainer() = default;
 
 void ShortcutContainer::widgetResized(const gcn::Event &event)
 {

@@ -29,12 +29,12 @@
 
 int RadioButton::instances = 0;
 float RadioButton::mAlpha = 1.0;
-Image *RadioButton::radioNormal;
-Image *RadioButton::radioChecked;
-Image *RadioButton::radioDisabled;
-Image *RadioButton::radioDisabledChecked;
-Image *RadioButton::radioNormalHi;
-Image *RadioButton::radioCheckedHi;
+ResourceRef<Image> RadioButton::radioNormal;
+ResourceRef<Image> RadioButton::radioChecked;
+ResourceRef<Image> RadioButton::radioDisabled;
+ResourceRef<Image> RadioButton::radioDisabledChecked;
+ResourceRef<Image> RadioButton::radioNormalHi;
+ResourceRef<Image> RadioButton::radioCheckedHi;
 
 RadioButton::RadioButton(const std::string &caption, const std::string &group,
         bool marked):
@@ -65,12 +65,12 @@ RadioButton::~RadioButton()
 
     if (instances == 0)
     {
-        radioNormal->decRef();
-        radioChecked->decRef();
-        radioDisabled->decRef();
-        radioDisabledChecked->decRef();
-        radioNormalHi->decRef();
-        radioCheckedHi->decRef();
+        radioNormal = nullptr;
+        radioChecked = nullptr;
+        radioDisabled = nullptr;
+        radioDisabledChecked = nullptr;
+        radioNormalHi = nullptr;
+        radioCheckedHi = nullptr;
     }
 }
 

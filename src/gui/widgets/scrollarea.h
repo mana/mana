@@ -21,8 +21,10 @@
 
 #pragma once
 
-#include <guichan/widgets/scrollarea.hpp>
+#include "resources/resource.h"
+
 #include <guichan/widgetlistener.hpp>
+#include <guichan/widgets/scrollarea.hpp>
 
 class Image;
 class ImageRect;
@@ -133,7 +135,7 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         static ImageRect background;
         static ImageRect vMarker;
         static ImageRect vMarkerHi;
-        static Image *buttons[4][2];
+        static ResourceRef<Image> buttons[4][2];
 
         int mX = 0;
         int mY = 0;

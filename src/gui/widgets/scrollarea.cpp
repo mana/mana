@@ -34,7 +34,7 @@ float ScrollArea::mAlpha = 1.0;
 ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
 ImageRect ScrollArea::vMarkerHi;
-Image *ScrollArea::buttons[4][2];
+ResourceRef<Image> ScrollArea::buttons[4][2];
 
 ScrollArea::ScrollArea()
 {
@@ -60,14 +60,14 @@ ScrollArea::~ScrollArea()
         std::for_each(vMarker.grid, vMarker.grid + 9, dtor<Image*>());
         std::for_each(vMarkerHi.grid, vMarkerHi.grid + 9, dtor<Image*>());
 
-        buttons[UP][0]->decRef();
-        buttons[UP][1]->decRef();
-        buttons[DOWN][0]->decRef();
-        buttons[DOWN][1]->decRef();
-        buttons[LEFT][0]->decRef();
-        buttons[LEFT][1]->decRef();
-        buttons[RIGHT][0]->decRef();
-        buttons[RIGHT][1]->decRef();
+        buttons[UP][0] = nullptr;
+        buttons[UP][1] = nullptr;
+        buttons[DOWN][0] = nullptr;
+        buttons[DOWN][1] = nullptr;
+        buttons[LEFT][0] = nullptr;
+        buttons[LEFT][1] = nullptr;
+        buttons[RIGHT][0] = nullptr;
+        buttons[RIGHT][1] = nullptr;
     }
 }
 
@@ -84,7 +84,7 @@ void ScrollArea::init()
     if (instances == 0)
     {
         // Load the background skin
-        Image *textbox = Theme::getImageFromTheme("deepbox.png");
+        auto textbox = Theme::getImageFromTheme("deepbox.png");
         const int bggridx[4] = {0, 3, 28, 31};
         const int bggridy[4] = {0, 3, 28, 31};
         int a = 0;
@@ -102,11 +102,9 @@ void ScrollArea::init()
         }
         background.setAlpha(config.guiAlpha);
 
-        textbox->decRef();
-
         // Load vertical scrollbar skin
-        Image *vscroll = Theme::getImageFromTheme("vscroll_grey.png");
-        Image *vscrollHi = Theme::getImageFromTheme("vscroll_highlight.png");
+        auto vscroll = Theme::getImageFromTheme("vscroll_grey.png");
+        auto vscrollHi = Theme::getImageFromTheme("vscroll_highlight.png");
 
         int vsgridx[4] = {0, 4, 7, 11};
         int vsgridy[4] = {0, 4, 15, 19};
@@ -130,9 +128,6 @@ void ScrollArea::init()
 
         vMarker.setAlpha(config.guiAlpha);
         vMarkerHi.setAlpha(config.guiAlpha);
-
-        vscroll->decRef();
-        vscrollHi->decRef();
 
         buttons[UP][0] =
             Theme::getImageFromTheme("vscroll_up_default.png");

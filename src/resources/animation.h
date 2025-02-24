@@ -21,6 +21,9 @@
 
 #pragma once
 
+#include "resources/imageset.h"
+#include "utils/xml.h"
+
 #include <vector>
 
 class Image;
@@ -76,7 +79,14 @@ class Animation final
          */
         static bool isTerminator(const Frame &phase);
 
+        /**
+         * Loads an animation from XML.
+         */
+        static Animation fromXML(XML::Node node,
+                                 const std::string &dyePalettes = {});
+
     protected:
+        ResourceRef<ImageSet> mImageSet;
         std::vector<Frame> mFrames;
         int mDuration = 0;
 };

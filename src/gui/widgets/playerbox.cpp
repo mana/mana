@@ -42,7 +42,7 @@ PlayerBox::PlayerBox(const Being *being):
     if (instances == 0)
     {
         // Load the background skin
-        Image *textbox = Theme::getImageFromTheme("deepbox.png");
+        auto textbox = Theme::getImageFromTheme("deepbox.png");
         int bggridx[4] = {0, 3, 28, 31};
         int bggridy[4] = {0, 3, 28, 31};
         int a = 0;
@@ -60,8 +60,6 @@ PlayerBox::PlayerBox(const Being *being):
         }
 
         background.setAlpha(config.guiAlpha);
-
-        textbox->decRef();
     }
 
     instances++;

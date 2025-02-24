@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "resources/resource.h"
 #include <guichan/widgets/dropdown.hpp>
 
 class Image;
@@ -81,7 +82,7 @@ class DropDown : public gcn::DropDown
 
         // Add own Images.
         static int instances;
-        static Image *buttons[2][2];
+        static ResourceRef<Image> buttons[2][2];
         static ImageRect skin;
         static float mAlpha;
 };

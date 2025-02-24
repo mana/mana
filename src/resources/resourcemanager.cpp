@@ -44,56 +44,40 @@
 ResourceManager *ResourceManager::instance = nullptr;
 
 ResourceManager::ResourceManager()
-  : mOldestOrphan(0)
 {
     logger->log("Initializing resource manager...");
 }
 
 ResourceManager::~ResourceManager()
 {
+    // Put the orphaned resources into the main list for cleanup
     mResources.insert(mOrphanedResources.begin(), mOrphanedResources.end());
 
-    // Release any remaining spritedefs first because they depend on image sets
-    auto iter = mResources.begin();
-    while (iter != mResources.end())
+    auto cleanupResources = [&](auto match)
     {
-        if (dynamic_cast<SpriteDef*>(iter->second) != nullptr)
+        for (auto iter = mResources.begin(); iter != mResources.end(); )
         {
-            cleanUp(iter->second);
-            auto toErase = iter;
-            ++iter;
-            mResources.erase(toErase);
+            if (match(iter->second))
+            {
+                cleanUp(iter->second);
+                iter = mResources.erase(iter);
+            }
+            else
+            {
+                ++iter;
+            }
         }
-        else
-        {
-            ++iter;
-        }
-    }
+    };
 
-    // Release any remaining image sets first because they depend on images
-    iter = mResources.begin();
-    while (iter != mResources.end())
-    {
-        if (dynamic_cast<ImageSet*>(iter->second) != nullptr)
-        {
-            cleanUp(iter->second);
-            auto toErase = iter;
-            ++iter;
-            mResources.erase(toErase);
-        }
-        else
-        {
-            ++iter;
-        }
-    }
+    // SpriteDef references ImageSet
+    cleanupResources([](Resource *res) { return dynamic_cast<SpriteDef *>(res); });
 
-    // Release remaining resources, logging the number of dangling references.
-    iter = mResources.begin();
-    while (iter != mResources.end())
-    {
-        cleanUp(iter->second);
-        ++iter;
-    }
+    // ImageSet references Image
+    cleanupResources([](Resource *res) { return dynamic_cast<ImageSet *>(res); });
+
+    // Release remaining resources
+    for (const auto &resource : mResources)
+        cleanUp(resource.second);
 }
 
 void ResourceManager::cleanUp(Resource *res)
@@ -162,7 +146,7 @@ void ResourceManager::searchAndAddArchives(const std::string &path,
     {
         const size_t len = strlen(fileName);
 
-        if (len > ext.length() && !ext.compare(fileName + (len - ext.length())))
+        if (len > ext.length() && ext != (fileName + (len - ext.length())))
         {
             std::string file = path + fileName;
             if (auto realDir = FS::getRealDir(file))
@@ -200,7 +184,6 @@ Resource *ResourceManager::get(const std::string &idPath,
     auto resIter = mResources.find(idPath);
     if (resIter != mResources.end())
     {
-        resIter->second->incRef();
         return resIter->second;
     }
 
@@ -210,53 +193,41 @@ Resource *ResourceManager::get(const std::string &idPath,
         Resource *res = resIter->second;
         mResources.insert(*resIter);
         mOrphanedResources.erase(resIter);
-        res->incRef();
         return res;
     }
 
     Resource *resource = generator();
-
     if (resource)
     {
-        resource->incRef();
         resource->mIdPath = idPath;
         mResources[idPath] = resource;
         cleanOrphans();
     }
 
-    // Returns NULL if the object could not be created.
     return resource;
 }
 
-Resource *ResourceManager::get(const std::string &path, loader fun)
+ResourceRef<Music> ResourceManager::getMusic(const std::string &path)
 {
-    return get(path, [&] () -> Resource * {
-        //
-        // We use a buffered SDL_RWops to workaround a performance issue when
-        // SDL_mixer is using stb_vorbis. The overhead of calling
-        // PHYSFS_readBytes each time is too high because stb_vorbis requests
-        // the file one byte at a time.
-        //
-        // See https://github.com/libsdl-org/SDL_mixer/issues/670
-        //
+    return static_cast<Music*>(get(path, [&] () -> Resource * {
         if (SDL_RWops *rw = FS::openBufferedRWops(path))
-            return fun(rw);
+            return Music::load(rw);
 
         return nullptr;
-    });
+    }));
 }
 
-Music *ResourceManager::getMusic(const std::string &idPath)
+ResourceRef<SoundEffect> ResourceManager::getSoundEffect(const std::string &path)
 {
-    return static_cast<Music*>(get(idPath, Music::load));
+    return static_cast<SoundEffect*>(get(path, [&] () -> Resource * {
+        if (SDL_RWops *rw = FS::openBufferedRWops(path))
+            return SoundEffect::load(rw);
+
+        return nullptr;
+    }));
 }
 
-SoundEffect *ResourceManager::getSoundEffect(const std::string &idPath)
-{
-    return static_cast<SoundEffect*>(get(idPath, SoundEffect::load));
-}
-
-Image *ResourceManager::getImage(const std::string &idPath)
+ResourceRef<Image> ResourceManager::getImage(const std::string &idPath)
 {
     return static_cast<Image*>(get(idPath, [&] () -> Resource * {
         std::string path = idPath;
@@ -277,21 +248,14 @@ Image *ResourceManager::getImage(const std::string &idPath)
     }));
 }
 
-ResourceRef<Image> ResourceManager::getImageRef(const std::string &idPath)
-{
-    ResourceRef<Image> img = getImage(idPath);
-    img->decRef();  // remove ref added by ResourceManager::get
-    return img;
-}
-
-ImageSet *ResourceManager::getImageSet(const std::string &imagePath,
-                                       int w, int h)
+ResourceRef<ImageSet> ResourceManager::getImageSet(const std::string &imagePath,
+                                                   int w, int h)
 {
     std::stringstream ss;
     ss << imagePath << "[" << w << "x" << h << "]";
 
     return static_cast<ImageSet*>(get(ss.str(), [&] () -> Resource * {
-        auto img = getImageRef(imagePath);
+        auto img = getImage(imagePath);
         if (!img)
             return nullptr;
 
@@ -299,7 +263,7 @@ ImageSet *ResourceManager::getImageSet(const std::string &imagePath,
     }));
 }
 
-SpriteDef *ResourceManager::getSprite(const std::string &path, int variant)
+ResourceRef<SpriteDef> ResourceManager::getSprite(const std::string &path, int variant)
 {
     std::stringstream ss;
     ss << path << "[" << variant << "]";

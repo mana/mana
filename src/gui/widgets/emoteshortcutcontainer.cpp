@@ -40,26 +40,18 @@ EmoteShortcutContainer::EmoteShortcutContainer()
 
     mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
 
-    mBackgroundImg->setAlpha(config.guiAlpha);
-
     mMaxItems = std::min(EmoteDB::getEmoteCount(), MAX_ITEMS);
 
-    mBoxHeight = mBackgroundImg->getHeight();
-    mBoxWidth = mBackgroundImg->getWidth();
-}
-
-EmoteShortcutContainer::~EmoteShortcutContainer()
-{
-    mBackgroundImg->decRef();
+    if (mBackgroundImg)
+    {
+        mBoxHeight = mBackgroundImg->getHeight();
+        mBoxWidth = mBackgroundImg->getWidth();
+    }
 }
 
 void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 {
-    if (config.guiAlpha != mAlpha)
-    {
-        mAlpha = config.guiAlpha;
-        mBackgroundImg->setAlpha(mAlpha);
-    }
+    mBackgroundImg->setAlpha(config.guiAlpha);
 
     auto *g = static_cast<Graphics*>(graphics);
 

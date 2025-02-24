@@ -28,7 +28,6 @@
 #include "resources/animation.h"
 #include "resources/dye.h"
 #include "resources/image.h"
-#include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
 #include "configuration.h"
@@ -155,8 +154,7 @@ void SpriteDef::loadImageSet(XML::Node node, const std::string &palettes)
     Dye::instantiate(imageSrc, palettes);
 
     ResourceManager *resman = ResourceManager::getInstance();
-    ImageSet *imageSet = resman->getImageSet(imageSrc, width, height);
-
+    auto imageSet = resman->getImageSet(imageSrc, width, height);
     if (!imageSet)
     {
         logger->error(strprintf("Couldn't load imageset (%s)!",
@@ -327,11 +325,6 @@ SpriteDef::~SpriteDef()
     for (auto action : actions)
     {
         delete action;
-    }
-
-    for (auto &imageSet : mImageSets)
-    {
-        imageSet.second->decRef();
     }
 }
 

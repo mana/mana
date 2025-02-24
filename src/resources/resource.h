@@ -150,8 +150,12 @@ public:
      * This is currently necessary to avoid calls to decRef on instances of
      * SubImage, which are not reference counted resources.
      */
-    void release()
-    { mResource = nullptr; }
+    RESOURCE *release()
+    {
+        RESOURCE *resource = mResource;
+        mResource = nullptr;
+        return resource;
+    }
 
 private:
     RESOURCE *mResource;

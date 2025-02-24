@@ -61,7 +61,7 @@ struct SkillInfo
 {
     unsigned short id;
     std::string name;
-    Image *icon = nullptr;
+    ResourceRef<Image> icon;
     bool modifiable;
     bool visible;
     SkillModel *model = nullptr;
@@ -73,25 +73,16 @@ struct SkillInfo
     float progress;
     gcn::Color color;
 
-    ~SkillInfo()
-    {
-        if (icon)
-            icon->decRef();
-    }
+    ~SkillInfo() = default;
 
     void setIcon(const std::string &iconPath)
     {
         ResourceManager *res = ResourceManager::getInstance();
         if (!iconPath.empty())
-        {
             icon = res->getImage(iconPath);
-        }
 
         if (!icon)
-        {
-            icon = Theme::getImageFromTheme(
-                                       paths.getStringValue("unknownItemFile"));
-        }
+            icon = Theme::getImageFromTheme(paths.getStringValue("unknownItemFile"));
     }
 
     void update();

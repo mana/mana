@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "resources/imageset.h"
+
 #include <guichan/widget.hpp>
 
 #include <memory>
@@ -41,4 +43,5 @@ public:
 
 private:
     std::unique_ptr<SimpleAnimation> mIndicator;
+    ResourceRef<ImageSet> mImageSet;
 };

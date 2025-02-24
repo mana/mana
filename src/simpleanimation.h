@@ -48,7 +48,7 @@ class SimpleAnimation final
 
         void setFrame(int frame);
 
-        int getLength() const;
+        int getLength() const { return mAnimation.getLength(); }
 
         void update(int dt);
 
@@ -62,9 +62,6 @@ class SimpleAnimation final
         Image *getCurrentImage() const;
 
     private:
-        void initializeAnimation(XML::Node animationNode,
-                                 const std::string& dyePalettes = std::string());
-
         /** The hosted animation. */
         Animation mAnimation;
 

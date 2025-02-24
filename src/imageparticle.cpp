@@ -27,17 +27,12 @@
 
 ImageParticle::ImageParticle(Map *map, Image *image):
     Particle(map),
-    mImage(image)
+    mImageRef(image)
 {
-    if (mImage)
-        mImage->incRef();
+    mImage = mImageRef;
 }
 
-ImageParticle::~ImageParticle()
-{
-    if (mImage)
-        mImage->decRef();
-}
+ImageParticle::~ImageParticle() = default;
 
 bool ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
 {

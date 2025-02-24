@@ -294,7 +294,7 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
             if (!imageSrc.empty() && !dyePalettes.empty())
                 Dye::instantiate(imageSrc, dyePalettes);
 
-            auto img = resman->getImageRef(imageSrc);
+            auto img = resman->getImage(imageSrc);
             newParticle = new ImageParticle(mMap, img);
         }
         // Other

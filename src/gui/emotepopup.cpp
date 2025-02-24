@@ -52,10 +52,7 @@ EmotePopup::EmotePopup()
     setVisible(true);
 }
 
-EmotePopup::~EmotePopup()
-{
-    mSelectionImage->decRef();
-}
+EmotePopup::~EmotePopup() = default;
 
 void EmotePopup::draw(gcn::Graphics *graphics)
 {

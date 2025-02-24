@@ -64,7 +64,6 @@ ItemContainer::ItemContainer(Inventory *inventory):
 
 ItemContainer::~ItemContainer()
 {
-    mSelImg->decRef();
     delete mItemPopup;
 }
 

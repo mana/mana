@@ -41,7 +41,7 @@ CheckBox::CheckBox(const std::string &caption, bool selected):
 {
     if (instances == 0)
     {
-        Image *checkBox = Theme::getImageFromTheme("checkbox.png");
+        auto checkBox = Theme::getImageFromTheme("checkbox.png");
         checkBoxNormal = checkBox->getSubImage(0, 0, 9, 10);
         checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
         checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);
@@ -54,7 +54,6 @@ CheckBox::CheckBox(const std::string &caption, bool selected):
         checkBoxDisabledChecked->setAlpha(mAlpha);
         checkBoxNormalHi->setAlpha(mAlpha);
         checkBoxCheckedHi->setAlpha(mAlpha);
-        checkBox->decRef();
     }
 
     instances++;

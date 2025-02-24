@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "resources/resource.h"
+
 #include <guichan/widgets/radiobutton.hpp>
 
 class Image;
@@ -61,10 +63,10 @@ class RadioButton : public gcn::RadioButton
         static int instances;
         static float mAlpha;
         bool mHasMouse = false;
-        static Image *radioNormal;
-        static Image *radioChecked;
-        static Image *radioDisabled;
-        static Image *radioDisabledChecked;
-        static Image *radioNormalHi;
-        static Image *radioCheckedHi;
+        static ResourceRef<Image> radioNormal;
+        static ResourceRef<Image> radioChecked;
+        static ResourceRef<Image> radioDisabled;
+        static ResourceRef<Image> radioDisabledChecked;
+        static ResourceRef<Image> radioNormalHi;
+        static ResourceRef<Image> radioCheckedHi;
 };

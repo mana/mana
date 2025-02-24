@@ -33,7 +33,7 @@ Music::~Music()
     Mix_FreeMusic(mMusic);
 }
 
-Resource *Music::load(SDL_RWops *rw)
+Music *Music::load(SDL_RWops *rw)
 {
     if (Mix_Music *music = Mix_LoadMUS_RW(rw, 1))
     {

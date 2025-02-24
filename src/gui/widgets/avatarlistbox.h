@@ -23,6 +23,7 @@
 #include "avatar.h"
 
 #include "gui/widgets/listbox.h"
+#include "resources/resource.h"
 
 #include <string>
 
@@ -53,6 +54,6 @@ public:
 
 private:
     static int instances;
-    static Image *onlineIcon;
-    static Image *offlineIcon;
+    static ResourceRef<Image> onlineIcon;
+    static ResourceRef<Image> offlineIcon;
 };

@@ -88,17 +88,15 @@ void Tab::init()
     if (mInstances == 0)
     {
         // Load the skin
-        Image *tab[TAB_COUNT];
-
         for (int mode = 0; mode < TAB_COUNT; mode++)
         {
-            tab[mode] = Theme::getImageFromTheme(data[mode].file);
+            auto tabImage = Theme::getImageFromTheme(data[mode].file);
             int a = 0;
             for (int y = 0; y < 3; y++)
             {
                 for (int x = 0; x < 3; x++)
                 {
-                    tabImg[mode].grid[a] = tab[mode]->getSubImage(
+                    tabImg[mode].grid[a] = tabImage->getSubImage(
                             data[mode].gridX[x], data[mode].gridY[y],
                             data[mode].gridX[x + 1] - data[mode].gridX[x] + 1,
                             data[mode].gridY[y + 1] - data[mode].gridY[y] + 1);
@@ -106,7 +104,6 @@ void Tab::init()
                 }
             }
             tabImg[mode].setAlpha(mAlpha);
-            tab[mode]->decRef();
         }
     }
     mInstances++;

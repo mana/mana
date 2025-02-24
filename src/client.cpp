@@ -410,6 +410,8 @@ Client::~Client()
     CharDB::unload();
     delete itemDb;
 
+    ActorSprite::unload();
+
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
     delete emoteShortcut;

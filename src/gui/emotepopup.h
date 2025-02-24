@@ -23,6 +23,7 @@
 #pragma once
 
 #include "gui/widgets/popup.h"
+#include "resources/resource.h"
 
 #include <guichan/mouselistener.hpp>
 
@@ -103,7 +104,7 @@ class EmotePopup : public Popup
          */
         void distributeValueChangedEvent();
 
-        Image *mSelectionImage;
+        ResourceRef<Image> mSelectionImage;
         int mSelectedEmoteId = -1;
         int mHoveredEmoteIndex = -1;
 

@@ -28,23 +28,20 @@ SoundEffect::~SoundEffect()
     Mix_FreeChunk(mChunk);
 }
 
-Resource *SoundEffect::load(SDL_RWops *rw)
+SoundEffect *SoundEffect::load(SDL_RWops *rw)
 {
     // Load the music data and free the RWops structure
-    Mix_Chunk *tmpSoundEffect = Mix_LoadWAV_RW(rw, 1);
-
-    if (tmpSoundEffect)
+    if (Mix_Chunk *soundEffect = Mix_LoadWAV_RW(rw, 1))
     {
-        return new SoundEffect(tmpSoundEffect);
+        return new SoundEffect(soundEffect);
     }
 
     logger->log("Error, failed to load sound effect: %s", Mix_GetError());
     return nullptr;
 }
 
-bool SoundEffect::play(int loops, int volume, int channel)
+int SoundEffect::play(int loops, int volume, int channel)
 {
     Mix_VolumeChunk(mChunk, volume);
-
-    return Mix_PlayChannel(channel, mChunk, loops) != -1;
+    return Mix_PlayChannel(channel, mChunk, loops);
 }

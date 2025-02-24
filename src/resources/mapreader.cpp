@@ -527,7 +527,7 @@ static Tileset *readTileset(XML::Node node, const std::string &path,
                 std::string sourceStr = resolveRelativePath(pathDir, source);
 
                 ResourceManager *resman = ResourceManager::getInstance();
-                auto tilebmp = resman->getImageRef(sourceStr);
+                auto tilebmp = resman->getImage(sourceStr);
 
                 if (tilebmp)
                 {

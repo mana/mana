@@ -36,12 +36,12 @@ class SoundEffect : public Resource
         /**
          * Loads a sample from a buffer in memory.
          *
-         * @param rw         The SDL_RWops to load the sample data from.
+         * @param rw        The SDL_RWops to load the sample data from.
          *
-         * @return <code>NULL</code> if the an error occurred, a valid pointer
+         * @return <code>nullptr</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static Resource *load(SDL_RWops *rw);
+        static SoundEffect *load(SDL_RWops *rw);
 
         /**
          * Plays the sample.
@@ -50,10 +50,10 @@ class SoundEffect : public Resource
          * @param volume    Sample playback volume.
          * @param channel   Sample playback channel.
          *
-         * @return <code>true</code> if the playback started properly
-         *         <code>false</code> otherwise.
+         * @return which channel was used to play the sound, or -1 if sound could not
+         *         be played.
          */
-        bool play(int loops, int volume, int channel = -1);
+        int play(int loops, int volume, int channel = -1);
 
     protected:
         SoundEffect(Mix_Chunk *soundEffect): mChunk(soundEffect) {}

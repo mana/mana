@@ -48,12 +48,10 @@ void Item::setId(int id)
     mImage = resman->getImage(paths.getStringValue("itemIcons") + display.image);
 
     if (!mImage)
+    {
         mImage = Theme::getImageFromTheme(paths.getValue("unknownItemFile",
                                                          "unknown-item.png"));
-
-    // Remove the automatic reference added by the ResourceManager
-    if (mImage)
-        mImage->decRef();
+    }
 }
 
 void Item::doEvent(Event::Type eventName)

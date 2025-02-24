@@ -23,6 +23,9 @@
 
 #include <guichan/widgets/button.hpp>
 
+#include <memory>
+#include <vector>
+
 class ImageRect;
 class Image;
 class TextPopup;
@@ -88,13 +91,13 @@ class Button : public gcn::Button
     private:
         void init();
 
-        void removeButtonIcon(bool adjustButtonSize = true);
+        void removeButtonIcon();
 
         static ImageRect* mButton;      /**< Button state graphics */
         static int mInstances;          /**< Number of button instances */
         static float mAlpha;
 
-        Image** mButtonIcon = nullptr;  /**< Button Icons graphics */
+        std::vector<std::unique_ptr<Image>> mButtonIcon;  /**< Button Icons graphics */
 
         /**
          * The buttons popup

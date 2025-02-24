@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "resources/resource.h"
+
 #include <guichan/widget.hpp>
 
 class Image;
@@ -36,7 +38,6 @@ class ResizeGrip : public gcn::Widget
 {
     public:
         ResizeGrip(const std::string &image = "resize.png");
-
         ~ResizeGrip() override;
 
         /**
@@ -45,7 +46,7 @@ class ResizeGrip : public gcn::Widget
         void draw(gcn::Graphics *graphics) override;
 
     private:
-        static Image *gripImage;   /**< Resize grip image */
+        static ResourceRef<Image> gripImage;   /**< Resize grip image */
         static int mInstances;     /**< Number of resize grip instances */
         static float mAlpha;
 };

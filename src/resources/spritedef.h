@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "resources/resource.h"
+#include "resources/imageset.h"
 
 #include "utils/xml.h"
 
@@ -146,6 +146,6 @@ class SpriteDef : public Resource
          */
         void substituteAction(std::string complete, std::string with);
 
-        std::map<std::string, ImageSet *> mImageSets;
+        std::map<std::string, ResourceRef<ImageSet>> mImageSets;
         std::map<std::string, Action *> mActions;
 };

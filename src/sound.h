@@ -21,11 +21,14 @@
 
 #pragma once
 
+#include "resources/resource.h"
+
 #include <SDL_mixer.h>
 
 #include <string>
 
 class Music;
+class SoundEffect;
 
 /** Sound engine
  *
@@ -107,10 +110,18 @@ class Sound
 
         /**
          * The sound logic.
-         * Currently used to check whether the music file can be freed after
-         * a fade out, and whether new music has to be played.
+         *
+         * Checks whether the music and sound effects can be freed after they
+         * finished playing, and whether new music has to be played.
          */
         void logic();
+
+        enum Channel {
+            CHANNEL_NOTIFICATIONS = 0,
+            CHANNEL_RESERVED_COUNT,
+
+            CHANNEL_COUNT = 16,
+        };
 
     private:
         /** Logs various info about sound device. */
@@ -125,14 +136,15 @@ class Sound
          */
         std::string mNextMusicFile;
 
-        bool mInstalled;
+        bool mInstalled = false;
 
-        int mSfxVolume;
-        int mNotificationsVolume;
-        int mMusicVolume;
+        int mSfxVolume = 100;
+        int mNotificationsVolume = 100;
+        int mMusicVolume = 60;
 
         std::string mCurrentMusicFile;
-        Music *mMusic;
+        ResourceRef<Music> mMusic;
+        ResourceRef<SoundEffect> mSounds[CHANNEL_COUNT];
 };
 
 extern Sound sound;

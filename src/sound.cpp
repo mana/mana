@@ -30,42 +30,32 @@
 #include "resources/resourcemanager.h"
 #include "resources/soundeffect.h"
 
-enum {
-    CHANNEL_NOTIFICATIONS = 0
-};
-
 /**
- * This will be set to true, when a music can be freed after a fade out
- * Currently used by fadeOutCallBack()
+ * This will be set to true when the music that was playing can be freed.
  */
-static bool sFadingOutEnded = false;
+static bool sMusicFinished;
+static bool sChannelFinished[Sound::CHANNEL_COUNT];
 
-/**
- * Callback used at end of fadeout.
- * It is called by Mix_MusicFadeFinished().
- */
-static void fadeOutCallBack()
+static void musicFinishedCallBack()
 {
-    sFadingOutEnded = true;
+    sMusicFinished = true;
 }
 
-Sound::Sound():
-    mInstalled(false),
-    mSfxVolume(100),
-    mNotificationsVolume(100),
-    mMusicVolume(60),
-    mMusic(nullptr)
+static void channelFinishedCallBack(int channel)
 {
-    // This set up our callback function used to
-    // handle fade outs endings.
-    sFadingOutEnded = false;
-    Mix_HookMusicFinished(fadeOutCallBack);
+    sChannelFinished[channel] = true;
+}
+
+Sound::Sound()
+{
+    Mix_HookMusicFinished(musicFinishedCallBack);
+    Mix_ChannelFinished(channelFinishedCallBack);
 }
 
 Sound::~Sound()
 {
-    // Unlink the callback function.
     Mix_HookMusicFinished(nullptr);
+    Mix_ChannelFinished(nullptr);
 }
 
 void Sound::init()
@@ -93,8 +83,8 @@ void Sound::init()
         return;
     }
 
-    Mix_AllocateChannels(16);
-    Mix_ReserveChannels(1); // reserve one channel for notification sounds
+    Mix_AllocateChannels(CHANNEL_COUNT);
+    Mix_ReserveChannels(CHANNEL_RESERVED_COUNT);
     Mix_VolumeMusic(mMusicVolume);
     Mix_Volume(-1, mSfxVolume);
     Mix_Volume(CHANNEL_NOTIFICATIONS, mNotificationsVolume);
@@ -173,25 +163,9 @@ void Sound::setNotificationsVolume(int volume)
         Mix_Volume(CHANNEL_NOTIFICATIONS, mNotificationsVolume);
 }
 
-static Music *loadMusic(const std::string &fileName)
-{
-    ResourceManager *resman = ResourceManager::getInstance();
-    return resman->getMusic(paths.getStringValue("music") + fileName);
-}
-
-
 void Sound::playMusic(const std::string &fileName)
 {
-    mCurrentMusicFile = fileName;
-
-    if (!mInstalled)
-        return;
-
-    haltMusic();
-
-    mMusic = loadMusic(fileName);
-    if (mMusic)
-        mMusic->play();
+    fadeInMusic(fileName, 0);
 }
 
 void Sound::stopMusic()
@@ -213,7 +187,9 @@ void Sound::fadeInMusic(const std::string &fileName, int ms)
 
     haltMusic();
 
-    mMusic = loadMusic(fileName);
+    ResourceManager *resman = ResourceManager::getInstance();
+    mMusic = resman->getMusic(paths.getStringValue("music") + fileName);
+
     if (mMusic)
         mMusic->play(-1, ms);
 }
@@ -230,12 +206,12 @@ void Sound::fadeOutMusic(int ms)
     if (mMusic)
     {
         Mix_FadeOutMusic(ms);
-        // Note: The fadeOutCallBack handler will take care about freeing
+        // Note: The musicFinishedCallBack will take care about freeing
         // the music file at fade out ending.
     }
     else
     {
-        sFadingOutEnded = true;
+        sMusicFinished = true;
     }
 }
 
@@ -247,19 +223,24 @@ void Sound::fadeOutAndPlayMusic(const std::string &fileName, int ms)
 
 void Sound::logic()
 {
-    if (sFadingOutEnded)
+    if (sMusicFinished)
     {
-        if (mMusic)
-        {
-            mMusic->decRef();
-            mMusic = nullptr;
-        }
-        sFadingOutEnded = false;
+        sMusicFinished = false;
+        mMusic = nullptr;
 
         if (!mNextMusicFile.empty())
         {
             playMusic(mNextMusicFile);
             mNextMusicFile.clear();
+        }
+    }
+
+    for (int i = 0; i < CHANNEL_COUNT; i++)
+    {
+        if (sChannelFinished[i])
+        {
+            sChannelFinished[i] = false;
+            mSounds[i] = nullptr;
         }
     }
 }
@@ -277,7 +258,7 @@ void Sound::playSfx(const std::string &path, int x, int y)
 
     ResourceManager *resman = ResourceManager::getInstance();
 
-    if (SoundEffect *sample = resman->getSoundEffect(tmpPath))
+    if (ResourceRef<SoundEffect> sound = resman->getSoundEffect(tmpPath))
     {
         logger->log("Sound::playSfx() Playing: %s", path.c_str());
         int vol = 120;
@@ -293,7 +274,9 @@ void Sound::playSfx(const std::string &path, int x, int y)
             vol -= std::min(120, dist / 4);
         }
 
-        sample->play(0, vol);
+        int channel = sound->play(0, vol);
+        if (channel != -1)
+            mSounds[channel] = sound;
     }
 }
 
@@ -302,9 +285,11 @@ void Sound::playNotification(const std::string &path)
     const std::string fullPath = paths.getValue("sfx", "sfx/") + path;
 
     ResourceManager *resman = ResourceManager::getInstance();
-    if (SoundEffect *sample = resman->getSoundEffect(fullPath))
+    if (ResourceRef<SoundEffect> sound = resman->getSoundEffect(fullPath))
     {
-        sample->play(0, 128, CHANNEL_NOTIFICATIONS);
+        int channel = sound->play(0, MIX_MAX_VOLUME, CHANNEL_NOTIFICATIONS);
+        if (channel != -1)
+            mSounds[channel] = sound;
     }
 }
 
@@ -326,6 +311,5 @@ void Sound::haltMusic()
         return;
 
     Mix_HaltMusic();
-    mMusic->decRef();
     mMusic = nullptr;
 }

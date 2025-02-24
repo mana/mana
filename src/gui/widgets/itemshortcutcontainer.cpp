@@ -48,25 +48,21 @@ ItemShortcutContainer::ItemShortcutContainer()
     mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
     mMaxItems = itemShortcut->getItemCount();
 
-    mBackgroundImg->setAlpha(config.guiAlpha);
-
-    mBoxHeight = mBackgroundImg->getHeight();
-    mBoxWidth = mBackgroundImg->getWidth();
+    if (mBackgroundImg)
+    {
+        mBoxHeight = mBackgroundImg->getHeight();
+        mBoxWidth = mBackgroundImg->getWidth();
+    }
 }
 
 ItemShortcutContainer::~ItemShortcutContainer()
 {
-    mBackgroundImg->decRef();
     delete mItemPopup;
 }
 
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
-    if (config.guiAlpha != mAlpha)
-    {
-        mAlpha = config.guiAlpha;
-        mBackgroundImg->setAlpha(mAlpha);
-    }
+    mBackgroundImg->setAlpha(config.guiAlpha);
 
     auto *g = static_cast<Graphics*>(graphics);
 

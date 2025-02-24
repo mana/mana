@@ -64,7 +64,6 @@ Skin::~Skin()
     for (auto img : mBorder.grid)
         delete img;
 
-    mCloseImage->decRef();
     delete mStickyImageUp;
     delete mStickyImageDown;
 }
@@ -233,7 +232,7 @@ Skin *Theme::readSkin(const std::string &filename)
     logger->log("Theme::load(): <skinset> defines '%s' as a skin image.",
                 skinSetImage.c_str());
 
-    Image *dBorders = Theme::getImageFromTheme(skinSetImage);
+    auto dBorders = Theme::getImageFromTheme(skinSetImage);
     ImageRect border;
     memset(&border, 0, sizeof(ImageRect));
 
@@ -299,16 +298,13 @@ Skin *Theme::readSkin(const std::string &filename)
         }
     }
 
-    dBorders->decRef();
-
     logger->log("Finished loading skin.");
 
     // Hard-coded for now until we update the above code to look for window buttons
-    Image *closeImage = Theme::getImageFromTheme("close_button.png");
-    Image *sticky = Theme::getImageFromTheme("sticky_button.png");
+    auto closeImage = Theme::getImageFromTheme("close_button.png");
+    auto sticky = Theme::getImageFromTheme("sticky_button.png");
     Image *stickyImageUp = sticky->getSubImage(0, 0, 15, 15);
     Image *stickyImageDown = sticky->getSubImage(15, 0, 15, 15);
-    sticky->decRef();
 
     Skin *skin = new Skin(border, closeImage, stickyImageUp, stickyImageDown);
     skin->updateAlpha(mMinimumOpacity);
@@ -369,17 +365,10 @@ std::string Theme::resolveThemePath(const std::string &path)
     return std::string(defaultThemePath) + "/" + path;
 }
 
-Image *Theme::getImageFromTheme(const std::string &path)
+ResourceRef<Image> Theme::getImageFromTheme(const std::string &path)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     return resman->getImage(resolveThemePath(path));
-}
-
-ImageSet *Theme::getImageSetFromTheme(const std::string &path,
-                                        int w, int h)
-{
-    ResourceManager *resman = ResourceManager::getInstance();
-    return resman->getImageSet(resolveThemePath(path), w, h);
 }
 
 static int readColorType(const std::string &type)

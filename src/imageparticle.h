@@ -23,6 +23,8 @@
 
 #include "particle.h"
 
+#include "resources/resource.h"
+
 class Image;
 class Map;
 
@@ -49,4 +51,5 @@ class ImageParticle : public Particle
 
     protected:
         Image *mImage;   /**< The image used for this particle. */
+        ResourceRef<Image> mImageRef;
 };

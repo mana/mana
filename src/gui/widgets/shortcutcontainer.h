@@ -21,11 +21,11 @@
 
 #pragma once
 
+#include "resources/image.h"
+
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
-
-class Image;
 
 /**
  * A generic shortcut container.
@@ -37,7 +37,8 @@ class ShortcutContainer : public gcn::Widget,
                           public gcn::MouseListener
 {
     public:
-        ShortcutContainer();
+        ShortcutContainer() = default;
+        ~ShortcutContainer();
 
         /**
          * Draws the shortcuts
@@ -69,9 +70,7 @@ class ShortcutContainer : public gcn::Widget,
          */
         int getIndexFromGrid(int pointX, int pointY) const;
 
-        Image *mBackgroundImg;
-
-        static float mAlpha;
+        ResourceRef<Image> mBackgroundImg;
 
         int mMaxItems = 0;
         int mBoxWidth = 0;

@@ -29,10 +29,7 @@
 
 #include "resources/dye.h"
 #include "resources/image.h"
-#include "resources/imageset.h"
 #include "resources/resourcemanager.h"
-
-#include "utils/stringutils.h"
 
 #include <cmath>
 
@@ -102,7 +99,7 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
                         Dye::instantiate(image, dyePalettes);
 
                     ResourceManager *resman = ResourceManager::getInstance();
-                    mParticleImage = resman->getImageRef(image);
+                    mParticleImage = resman->getImage(image);
                 }
             }
             else if (name == "horizontal-angle")
@@ -195,150 +192,13 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
         }
         else if (propertyNode.name() == "rotation")
         {
-            ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
-                propertyNode.getProperty("imageset", ""),
-                propertyNode.getProperty("width", 0),
-                propertyNode.getProperty("height", 0)
-            );
-
-            // Get animation frames
-            for (auto frameNode : propertyNode.children())
-            {
-                int delay = frameNode.getProperty("delay", 0);
-                int offsetX = frameNode.getProperty("offsetX", 0);
-                int offsetY = frameNode.getProperty("offsetY", 0);
-                if (mMap)
-                {
-                    offsetX -= imageset->getWidth() / 2
-                               - mMap->getTileWidth() / 2;
-                    offsetY -= imageset->getHeight() - mMap->getTileHeight();
-                }
-
-                if (frameNode.name() == "frame")
-                {
-                    int index = frameNode.getProperty("index", -1);
-
-                    if (index < 0)
-                    {
-                        logger->log("No valid value for 'index'");
-                        continue;
-                    }
-
-                    Image *img = imageset->get(index);
-
-                    if (!img)
-                    {
-                        logger->log("No image at index %d", index);
-                        continue;
-                    }
-
-                    mParticleRotation.addFrame(img, delay, offsetX, offsetY);
-                }
-                else if (frameNode.name() == "sequence")
-                {
-                    int start = frameNode.getProperty("start", -1);
-                    int end = frameNode.getProperty("end", -1);
-
-                    if (start < 0 || end < 0)
-                    {
-                        logger->log("No valid value for 'start' or 'end'");
-                        continue;
-                    }
-
-                    while (end >= start)
-                    {
-                        Image *img = imageset->get(start);
-
-                        if (!img)
-                        {
-                            logger->log("No image at index %d", start);
-                            continue;
-                        }
-
-                        mParticleRotation.addFrame(img, delay, offsetX, offsetY);
-                        start++;
-                    }
-                }
-                else if (frameNode.name() == "end")
-                {
-                    mParticleRotation.addTerminator();
-                }
-            } // for frameNode
+            mParticleRotation = Animation::fromXML(propertyNode);
         }
         else if (propertyNode.name() == "animation")
         {
-            std::string imagesetPath =
-                    propertyNode.getProperty("imageset", "");
-            ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
-                imagesetPath,
-                propertyNode.getProperty("width", 0),
-                propertyNode.getProperty("height", 0)
-            );
-
-            if (!imageset)
-                logger->error(strprintf("Failed to load \"%s\"",
-                                        imagesetPath.c_str()));
-
-            // Get animation frames
-            for (auto frameNode : propertyNode.children())
-            {
-                int delay = frameNode.getProperty("delay", 0);
-                int offsetX = frameNode.getProperty("offsetX", 0);
-                int offsetY = frameNode.getProperty("offsetY", 0);
-                offsetY -= imageset->getHeight() - 32;
-                offsetX -= imageset->getWidth() / 2 - 16;
-
-                if (frameNode.name() == "frame")
-                {
-                    int index = frameNode.getProperty("index", -1);
-
-                    if (index < 0)
-                    {
-                        logger->log("No valid value for 'index'");
-                        continue;
-                    }
-
-                    Image *img = imageset->get(index);
-
-                    if (!img)
-                    {
-                        logger->log("No image at index %d", index);
-                        continue;
-                    }
-
-                    mParticleAnimation.addFrame(img, delay, offsetX, offsetY);
-                }
-                else if (frameNode.name() == "sequence")
-                {
-                    int start = frameNode.getProperty("start", -1);
-                    int end = frameNode.getProperty("end", -1);
-
-                    if (start < 0 || end < 0)
-                    {
-                        logger->log("No valid value for 'start' or 'end'");
-                        continue;
-                    }
-
-                    while (end >= start)
-                    {
-                        Image *img = imageset->get(start);
-
-                        if (!img)
-                        {
-                            logger->log("No image at index %d", start);
-                            continue;
-                        }
-
-                        mParticleAnimation.addFrame(img, delay, offsetX, offsetY);
-                        start++;
-                    }
-                }
-                else if (frameNode.name() == "end")
-                {
-                    mParticleAnimation.addTerminator();
-                }
-            } // for frameNode
-        } else if (propertyNode.name() == "deatheffect")
+            mParticleAnimation = Animation::fromXML(propertyNode);
+        }
+        else if (propertyNode.name() == "deatheffect")
         {
             mDeathEffect = propertyNode.textContent();
             mDeathEffectConditions = 0x00;

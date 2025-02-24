@@ -53,7 +53,7 @@ Text::Text(const std::string &text, int x, int y,
     if (textManager == nullptr)
     {
         textManager = new TextManager;
-        Image *sbImage = Theme::getImageFromTheme("bubble.png|W:#"
+        auto sbImage = Theme::getImageFromTheme("bubble.png|W:#"
             + config.speechBubblecolor);
         mBubble.grid[0] = sbImage->getSubImage(0, 0, 5, 5);
         mBubble.grid[1] = sbImage->getSubImage(5, 0, 5, 5);
@@ -67,7 +67,6 @@ Text::Text(const std::string &text, int x, int y,
         mBubbleArrow = sbImage->getSubImage(0, 15, 15, 10);
         mBubble.setAlpha(config.speechBubbleAlpha);
         mBubbleArrow->setAlpha(config.speechBubbleAlpha);
-        sbImage->decRef();
     }
     ++mInstances;
     mHeight = mFont->getHeight();

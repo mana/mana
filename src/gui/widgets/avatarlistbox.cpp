@@ -33,8 +33,8 @@
 #include <guichan/font.hpp>
 
 int AvatarListBox::instances = 0;
-Image *AvatarListBox::onlineIcon = nullptr;
-Image *AvatarListBox::offlineIcon = nullptr;
+ResourceRef<Image> AvatarListBox::onlineIcon;
+ResourceRef<Image> AvatarListBox::offlineIcon;
 
 AvatarListBox::AvatarListBox(AvatarListModel *model):
     ListBox(model)
@@ -56,8 +56,8 @@ AvatarListBox::~AvatarListBox()
 
     if (instances == 0)
     {
-        onlineIcon->decRef();
-        offlineIcon->decRef();
+        onlineIcon = nullptr;
+        offlineIcon = nullptr;
     }
 }
 

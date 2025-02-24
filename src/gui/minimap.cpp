@@ -91,7 +91,7 @@ void Minimap::setMap(Map *map)
             minimapName = tempname;
 
         if (!minimapName.empty())
-            mMapImage = resman->getImageRef(minimapName);
+            mMapImage = resman->getImage(minimapName);
     }
 
     if (mMapImage)

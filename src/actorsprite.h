@@ -26,7 +26,6 @@
 #include "particle.h"
 
 class SimpleAnimation;
-class StatusEffect;
 
 class ActorSprite : public Actor
 {
@@ -140,7 +139,7 @@ private:
                                  int width, int height, int type, int size);
 
     /** Images of the target cursor. */
-    static ImageSet *targetCursorImages[NUM_TCT][NUM_TC];
+    static ResourceRef<ImageSet> targetCursorImages[NUM_TCT][NUM_TC];
 
     /** Animated target cursors. */
     static SimpleAnimation *targetCursor[NUM_TCT][NUM_TC];

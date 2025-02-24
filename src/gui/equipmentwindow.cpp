@@ -96,10 +96,7 @@ void EquipmentWindow::loadEquipBoxes()
             Net::getInventoryHandler()->getBoxBackground(i);
 
         if (!backgroundFile.empty())
-        {
-            box.backgroundImage =
-                Theme::instance()->getImageFromTheme(backgroundFile);
-        }
+            box.backgroundImage = Theme::getImageFromTheme(backgroundFile);
     }
 }
 

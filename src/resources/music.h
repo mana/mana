@@ -38,10 +38,10 @@ class Music : public Resource
          *
          * @param rw         The SDL_RWops to load the music data from.
          *
-         * @return <code>NULL</code> if the an error occurred, a valid pointer
-         *         otherwise.
+         * @return <code>nullptr</code> if the an error occurred, a valid
+         *         pointer otherwise.
          */
-        static Resource *load(SDL_RWops *rw);
+        static Music *load(SDL_RWops *rw);
 
         /**
          * Plays the music.

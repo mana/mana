@@ -35,11 +35,7 @@ RotationalParticle::RotationalParticle(Map *map, XML::Node animationNode,
     mAnimation(animationNode, dyePalettes)
 {}
 
-RotationalParticle::~RotationalParticle()
-{
-    // Prevent ImageParticle from decreasing the reference count of the image
-    mImage = nullptr;
-}
+RotationalParticle::~RotationalParticle() = default;
 
 bool RotationalParticle::update()
 {

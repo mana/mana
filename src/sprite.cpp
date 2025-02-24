@@ -42,12 +42,10 @@ Sprite::Sprite(SpriteDef *sprite):
 Sprite *Sprite::load(const std::string &filename, int variant)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    SpriteDef *s = resman->getSprite(filename, variant);
-    if (!s)
+    auto spriteDef = resman->getSprite(filename, variant);
+    if (!spriteDef)
         return nullptr;
-    auto *as = new Sprite(s);
-    s->decRef();
-    return as;
+    return new Sprite(spriteDef);
 }
 
 Sprite::~Sprite() = default;

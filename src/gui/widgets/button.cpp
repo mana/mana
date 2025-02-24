@@ -39,7 +39,7 @@ float Button::mAlpha = 1.0;
 ImageRect *Button::mButton;
 TextPopup *Button::mTextPopup = nullptr;
 
-enum{
+enum {
     BUTTON_STANDARD,    // 0
     BUTTON_HIGHLIGHTED, // 1
     BUTTON_PRESSED,     // 2
@@ -80,18 +80,17 @@ Button::Button(const std::string &caption, const std::string &actionEventId,
     adjustSize();
 }
 
-bool Button::setButtonIcon(const std::string& iconFile)
+bool Button::setButtonIcon(const std::string &iconFile)
 {
     // We clean up possible older references.
-    if (mButtonIcon)
-        removeButtonIcon();
+    removeButtonIcon();
 
     // If nothing relevant was set, we can quit now.
     if (iconFile.empty())
         return false;
 
     // Load the icon frames.
-    Image *btnIcons = Theme::getImageFromTheme(iconFile);
+    auto btnIcons = Theme::getImageFromTheme(iconFile);
     if (!btnIcons)
         return false;
 
@@ -101,36 +100,27 @@ bool Button::setButtonIcon(const std::string& iconFile)
 
     if (frameWidth > 0 && frameHeight > 0)
     {
-        mButtonIcon = new Image*[BUTTON_COUNT];
+        mButtonIcon.resize(BUTTON_COUNT);
+
         for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            mButtonIcon[mode] = btnIcons->getSubImage(mode * frameWidth, 0,
-                                                      frameWidth, frameHeight);
+            mButtonIcon[mode].reset(
+                btnIcons->getSubImage(mode * frameWidth, 0, frameWidth, frameHeight));
         }
 
         adjustSize();
     }
 
-    btnIcons->decRef();
-    return (mButtonIcon);
+    return !mButtonIcon.empty();
 }
 
-void Button::removeButtonIcon(bool adjustButtonSize)
+void Button::removeButtonIcon()
 {
-    if (!mButtonIcon)
+    if (mButtonIcon.empty())
         return;
 
-    // Delete potential button icons
-    for (int mode = 0; mode < BUTTON_COUNT; ++mode)
-    {
-        delete mButtonIcon[mode];
-        mButtonIcon[mode] = nullptr;
-    }
-    delete[] mButtonIcon;
-    mButtonIcon = nullptr;
-
-    if (adjustButtonSize)
-        adjustSize();
+    mButtonIcon.clear();
+    adjustSize();
 }
 
 void Button::init()
@@ -144,7 +134,7 @@ void Button::init()
 
         for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            Image *modeImage = Theme::getImageFromTheme(data[mode].file);
+            auto modeImage = Theme::getImageFromTheme(data[mode].file);
             int a = 0;
             for (int y = 0; y < 3; y++)
             {
@@ -157,7 +147,6 @@ void Button::init()
                     a++;
                 }
             }
-            modeImage->decRef();
         }
         updateAlpha();
 
@@ -185,8 +174,6 @@ Button::~Button()
         delete mTextPopup;
         mTextPopup = nullptr;
     }
-    // Don' try to readjust the size when it's about to be deleted.
-    removeButtonIcon(false);
 }
 
 void Button::updateAlpha()
@@ -227,15 +214,12 @@ void Button::draw(gcn::Graphics *graphics)
     else
         graphics->setColor(Theme::getThemeColor(Theme::BUTTON));
 
+    Image *icon = mButtonIcon.empty() ? nullptr : mButtonIcon[mode].get();
     int textX = 0;
     int textY = getHeight() / 2 - getFont()->getHeight() / 2;
     int btnIconX = 0;
-    int btnIconY = getHeight() / 2
-                   - ((mButtonIcon && mButtonIcon[mode]) ?
-                      mButtonIcon[mode]->getHeight() / 2 : 0);
-
-    int btnIconWidth = (mButtonIcon && mButtonIcon[mode]) ?
-                           mButtonIcon[mode]->getWidth() : 0;
+    int btnIconY = getHeight() / 2 - (icon ? icon->getHeight() / 2 : 0);
+    int btnIconWidth = icon ? icon->getWidth() : 0;
 
     switch (getAlignment())
     {
@@ -243,7 +227,7 @@ void Button::draw(gcn::Graphics *graphics)
             if (btnIconWidth)
             {
                 btnIconX = 4;
-                textX = btnIconX + mButtonIcon[mode]->getWidth() + 2;
+                textX = btnIconX + icon->getWidth() + 2;
             }
             else
             {
@@ -254,8 +238,8 @@ void Button::draw(gcn::Graphics *graphics)
             if (btnIconWidth)
             {
                 btnIconX = getWidth() / 2 - (getFont()->getWidth(mCaption)
-                    + mButtonIcon[mode]->getWidth() + 2) / 2;
-                textX = getWidth() / 2 + mButtonIcon[mode]->getWidth() / 2 + 2;
+                    + icon->getWidth() + 2) / 2;
+                textX = getWidth() / 2 + icon->getWidth() / 2 + 2;
             }
             else
             {
@@ -280,8 +264,7 @@ void Button::draw(gcn::Graphics *graphics)
     }
 
     if (btnIconWidth)
-        static_cast<Graphics*>(graphics)->drawImage(mButtonIcon[mode],
-                                                    btnIconX, btnIconY);
+        static_cast<Graphics *>(graphics)->drawImage(icon, btnIconX, btnIconY);
     graphics->drawText(getCaption(), textX, textY, getAlignment());
 }
 
@@ -289,14 +272,13 @@ void Button::adjustSize()
 {
     // Size of the image button.
     int iconWidth = 0, iconHeight = 0;
-    if (mButtonIcon)
+    if (!mButtonIcon.empty())
     {
         for (int mode = 0; mode < BUTTON_COUNT; ++mode)
         {
-            iconWidth = std::max(iconWidth, mButtonIcon[mode] ?
-                            mButtonIcon[mode]->getWidth() + 2 : 0);
-            iconHeight = std::max(iconHeight, mButtonIcon[mode] ?
-                             mButtonIcon[mode]->getHeight() : 0);
+            const Image *icon = mButtonIcon[mode].get();
+            iconWidth = std::max(iconWidth, icon->getWidth() + 2);
+            iconHeight = std::max(iconHeight, icon->getHeight());
         }
     }
 

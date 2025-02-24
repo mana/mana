@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "resources/resource.h"
+
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
@@ -177,7 +179,7 @@ class ItemContainer : public gcn::Widget,
         Inventory *mInventory;
         int mGridColumns = 1;
         int mGridRows = 1;
-        Image *mSelImg;
+        ResourceRef<Image> mSelImg;
         int mSelectedIndex = -1;
         int mHighlightedIndex = -1;
         int mLastUsedSlot = -1;

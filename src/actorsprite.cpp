@@ -40,7 +40,7 @@
 
 #define EFFECTS_FILE "effects.xml"
 
-ImageSet *ActorSprite::targetCursorImages[2][NUM_TC];
+ResourceRef<ImageSet> ActorSprite::targetCursorImages[2][NUM_TC];
 SimpleAnimation *ActorSprite::targetCursor[2][NUM_TC];
 bool ActorSprite::loaded = false;
 
@@ -212,8 +212,7 @@ void ActorSprite::cleanupTargetCursors()
         for (int type = 0; type < NUM_TCT; type++)
         {
             delete targetCursor[type][size];
-            if (targetCursorImages[type][size])
-                targetCursorImages[type][size]->decRef();
+            targetCursorImages[type][size] = nullptr;
         }
     }
 }
@@ -225,8 +224,7 @@ void ActorSprite::loadTargetCursor(const std::string &filename,
     assert(size < 3);
 
     ResourceManager *resman = ResourceManager::getInstance();
-    ImageSet *currentImageSet = resman->getImageSet(filename, width, height);
-
+    auto currentImageSet = resman->getImageSet(filename, width, height);
     if (!currentImageSet)
     {
         logger->log("Error loading target cursor: %s", filename.c_str());

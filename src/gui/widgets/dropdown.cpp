@@ -37,7 +37,7 @@
 #include <algorithm>
 
 int DropDown::instances = 0;
-Image *DropDown::buttons[2][2];
+ResourceRef<Image> DropDown::buttons[2][2];
 ImageRect DropDown::skin;
 float DropDown::mAlpha = 1.0;
 
@@ -65,7 +65,7 @@ DropDown::DropDown(gcn::ListModel *listModel):
         buttons[1][1]->setAlpha(mAlpha);
 
         // get the border skin
-        Image *boxBorder = Theme::getImageFromTheme("deepbox.png");
+        auto boxBorder = Theme::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
         int a = 0;
@@ -84,8 +84,6 @@ DropDown::DropDown(gcn::ListModel *listModel):
         }
 
         skin.setAlpha(mAlpha);
-
-        boxBorder->decRef();
     }
 
     instances++;
@@ -97,10 +95,10 @@ DropDown::~DropDown()
     // Free images memory
     if (instances == 0)
     {
-        buttons[0][0]->decRef();
-        buttons[0][1]->decRef();
-        buttons[1][0]->decRef();
-        buttons[1][1]->decRef();
+        buttons[0][0] = nullptr;
+        buttons[0][1] = nullptr;
+        buttons[1][0] = nullptr;
+        buttons[1][1] = nullptr;
 
         std::for_each(skin.grid, skin.grid + 9, dtor<Image*>());
     }

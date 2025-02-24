@@ -33,8 +33,6 @@ class EmoteShortcutContainer : public ShortcutContainer
     public:
         EmoteShortcutContainer();
 
-        ~EmoteShortcutContainer() override;
-
         /**
          * Draws the items.
          */

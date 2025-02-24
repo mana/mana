@@ -34,8 +34,6 @@ class Music;
 class SoundEffect;
 class SpriteDef;
 
-struct SDL_RWops;
-
 /**
  * A class for loading and managing resources.
  */
@@ -44,9 +42,6 @@ class ResourceManager
     friend class Resource;
 
     public:
-
-        using loader = Resource *(*)(SDL_RWops *);
-
         ResourceManager();
 
         /**
@@ -81,62 +76,31 @@ class ResourceManager
         static std::string getPath(const std::string &file);
 
         /**
-         * Creates a resource and adds it to the resource map.
-         *
-         * @param idPath The resource identifier path.
-         * @param fun    A function for generating the resource.
-         * @param data   Extra parameters for the generator.
-         * @return A valid resource or <code>NULL</code> if the resource could
-         *         not be generated.
+         * Loads the Image resource found at the given identifier path. The
+         * path can include a dye specification after a '|' character.
          */
-        Resource *get(const std::string &idPath,
-                      const std::function<Resource *()> &generator);
+        ResourceRef<Image> getImage(const std::string &idPath);
 
         /**
-         * Loads a resource from a file and adds it to the resource map.
-         *
-         * @param path The file name.
-         * @param fun  A function for parsing the file.
-         * @return A valid resource or <code>NULL</code> if the resource could
-         *         not be loaded.
+         * Loads the Music resource found at the given path.
          */
-        Resource *get(const std::string &path, loader fun);
+        ResourceRef<Music> getMusic(const std::string &path);
 
         /**
-         * Convenience wrapper around ResourceManager::get for loading
-         * images.
+         * Loads the SoundEffect resource found at the given path.
          */
-        Image *getImage(const std::string &idPath);
+        ResourceRef<SoundEffect> getSoundEffect(const std::string &path);
 
         /**
-         * Convenience wrapper around ResourceManager::get for loading
-         * images. Returns an automatically reference-counted resource.
+         * Loads a image set based on the image referenced by the given path
+         * and the supplied sprite sizes.
          */
-        ResourceRef<Image> getImageRef(const std::string &idPath);
+        ResourceRef<ImageSet> getImageSet(const std::string &imagePath, int w, int h);
 
         /**
-         * Convenience wrapper around ResourceManager::get for loading
-         * songs.
+         * Loads a SpriteDef based on a given path and the supplied variant.
          */
-        Music *getMusic(const std::string &idPath);
-
-        /**
-         * Convenience wrapper around ResourceManager::get for loading
-         * samples.
-         */
-        SoundEffect *getSoundEffect(const std::string &idPath);
-
-        /**
-         * Creates a image set based on the image referenced by the given
-         * path and the supplied sprite sizes
-         */
-        ImageSet *getImageSet(const std::string &imagePath, int w, int h);
-
-        /**
-         * Creates a sprite definition based on a given path and the supplied
-         * variant.
-         */
-        SpriteDef *getSprite(const std::string &path, int variant = 0);
+        ResourceRef<SpriteDef> getSprite(const std::string &path, int variant = 0);
 
         /**
          * Returns an instance of the class, creating one if it does not
@@ -150,6 +114,19 @@ class ResourceManager
         static void deleteInstance();
 
     private:
+        /**
+         * Looks up a resource, creating it with the generator function if it
+         * does not exist. Does not increment the reference count of the
+         * resource.
+         *
+         * @param idPath    The resource identifier path.
+         * @param generator A function for generating the resource.
+         * @return A valid resource or <code>nullptr</code> if the resource could
+         *         not be generated.
+         */
+        Resource *get(const std::string &idPath,
+                      const std::function<Resource *()> &generator);
+
         /**
          * Releases a resource, placing it in the set of orphaned resources.
          * Only called from Resource::decRef,
@@ -172,5 +149,5 @@ class ResourceManager
         static ResourceManager *instance;
         std::map<std::string, Resource *> mResources;
         std::map<std::string, Resource *> mOrphanedResources;
-        time_t mOldestOrphan;
+        time_t mOldestOrphan = 0;
 };

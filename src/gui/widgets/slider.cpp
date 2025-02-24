@@ -79,8 +79,8 @@ void Slider::init()
     // Load resources
     if (mInstances == 0)
     {
-        Image *slider = Theme::getImageFromTheme("slider.png");
-        Image *sliderHi = Theme::getImageFromTheme("slider_hilight.png");
+        auto slider = Theme::getImageFromTheme("slider.png");
+        auto sliderHi = Theme::getImageFromTheme("slider_hilight.png");
 
         x = 0; y = 0;
         w = 15; h = 6;
@@ -111,9 +111,6 @@ void Slider::init()
         w = 9; h = 10;
         vGrip = slider->getSubImage(x, y, w, h);
         vGripHi = sliderHi->getSubImage(x, y, w, h);
-
-        slider->decRef();
-        sliderHi->decRef();
     }
 
     mInstances++;
@@ -205,4 +202,3 @@ void Slider::mouseExited(gcn::MouseEvent& event)
 {
     mHasMouse = false;
 }
-

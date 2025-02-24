@@ -43,7 +43,7 @@ void EmoteDB::init()
 
     mUnknown.name = "unknown";
     mUnknown.effectId = -1;
-    mUnknown.image = ResourceManager::getInstance()->getImageRef("graphics/sprites/error.png");
+    mUnknown.image = ResourceManager::getInstance()->getImage("graphics/sprites/error.png");
 }
 
 void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
@@ -82,7 +82,6 @@ void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
     emote.is = ResourceManager::getInstance()->getImageSet(imageName,
                                                            width,
                                                            height);
-    emote.is->decRef(); // clear automatic reference
 
     if (!emote.is || emote.is->size() == 0)
     {

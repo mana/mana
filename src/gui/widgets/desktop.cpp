@@ -105,7 +105,7 @@ void Desktop::setBestFittingWallpaper()
         return;
 
     ResourceManager *resman = ResourceManager::getInstance();
-    auto wallpaper = resman->getImageRef(wallpaperName);
+    auto wallpaper = resman->getImage(wallpaperName);
 
     if (wallpaper)
     {

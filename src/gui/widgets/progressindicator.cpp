@@ -24,7 +24,6 @@
 #include "simpleanimation.h"
 
 #include "resources/animation.h"
-#include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 
@@ -32,12 +31,12 @@
 
 ProgressIndicator::ProgressIndicator()
 {
-    ImageSet *images = Theme::getImageSetFromTheme("progress-indicator.png",
-                                                   32, 32);
+    const std::string path = Theme::resolveThemePath("progress-indicator.png");
+    mImageSet = ResourceManager::getInstance()->getImageSet(path, 32, 32);
 
     Animation anim;
-    for (size_t i = 0; i < images->size(); ++i)
-        anim.addFrame(images->get(i), 100, 0, 0);
+    for (size_t i = 0; i < mImageSet->size(); ++i)
+        anim.addFrame(mImageSet->get(i), 100, 0, 0);
 
     mIndicator = std::make_unique<SimpleAnimation>(std::move(anim));
 

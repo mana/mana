@@ -245,7 +245,7 @@ void Map::initializeAmbientLayers()
 
     auto addAmbientLayer = [=](const std::string &name, std::vector<AmbientLayer> &list)
     {
-        if (auto img = resman->getImageRef(getProperty(name + "image")))
+        if (auto img = resman->getImage(getProperty(name + "image")))
         {
             auto &ambientLayer = list.emplace_back(img);
             ambientLayer.mParallax = getFloatProperty(name + "parallax");

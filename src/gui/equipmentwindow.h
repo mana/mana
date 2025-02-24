@@ -28,6 +28,8 @@
 
 #include <guichan/actionlistener.hpp>
 
+#include <vector>
+
 class Inventory;
 class Item;
 class ItemPopup;
@@ -72,7 +74,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         {
             int posX = 0;
             int posY = 0;
-            Image *backgroundImage = nullptr;
+            ResourceRef<Image> backgroundImage;
         };
 
         std::vector<EquipBox> mBoxes;   /**< Equipment boxes. */

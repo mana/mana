@@ -27,6 +27,7 @@
 #include "eventlistener.h"
 
 #include "gui/palette.h"
+#include "resources/resource.h"
 
 #include <map>
 #include <string>
@@ -77,10 +78,10 @@ class Skin
         int instances = 0;
 
     private:
-        ImageRect mBorder;         /**< The window border and background */
-        Image *mCloseImage;        /**< Close Button Image */
-        Image *mStickyImageUp;     /**< Sticky Button Image */
-        Image *mStickyImageDown;   /**< Sticky Button Image */
+        ImageRect mBorder;              /**< The window border and background */
+        ResourceRef<Image> mCloseImage; /**< Close Button Image */
+        Image *mStickyImageUp;          /**< Sticky Button Image */
+        Image *mStickyImageDown;        /**< Sticky Button Image */
 };
 
 class Theme : public Palette, public EventListener
@@ -98,9 +99,7 @@ class Theme : public Palette, public EventListener
          */
         static std::string resolveThemePath(const std::string &path);
 
-        static Image *getImageFromTheme(const std::string &path);
-        static ImageSet *getImageSetFromTheme(const std::string &path,
-                                           int w, int h);
+        static ResourceRef<Image> getImageFromTheme(const std::string &path);
 
         enum ThemePalette {
             TEXT,
