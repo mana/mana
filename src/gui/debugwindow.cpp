@@ -244,11 +244,15 @@ DebugWindow::DebugWindow()
     place(0, 0, tabs, 2, 2);
     loadWindowState();
 
-    Tab *tabInfo = new Tab;
-    tabInfo->setCaption(_("Info"));
-    tabs->addTab(tabInfo, new DebugInfo);
+    mInfoTab = std::make_unique<Tab>();
+    mInfoTab->setCaption(_("Info"));
+    mInfoWidget = std::make_unique<DebugInfo>();
+    tabs->addTab(mInfoTab.get(), mInfoWidget.get());
 
-    Tab *tabSwitches = new Tab;
-    tabSwitches->setCaption(_("Switches"));
-    tabs->addTab(tabSwitches, new DebugSwitches);
+    mSwitchesTab = std::make_unique<Tab>();
+    mSwitchesTab->setCaption(_("Switches"));
+    mSwitchesWidget = std::make_unique<DebugSwitches>();
+    tabs->addTab(mSwitchesTab.get(), mSwitchesWidget.get());
 }
+
+DebugWindow::~DebugWindow() = default;

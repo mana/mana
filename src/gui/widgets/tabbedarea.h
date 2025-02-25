@@ -28,6 +28,7 @@
 
 #include "gui/widgets/button.h"
 
+#include <memory>
 #include <string>
 
 class Tab;
@@ -114,7 +115,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
 
     private:
         /** The tab arrows */
-        Button *mArrowButton[2];
+        std::unique_ptr<Button> mArrowButton[2];
 
         /** Check whether the arrow should be clickable */
         void updateArrowEnableState();

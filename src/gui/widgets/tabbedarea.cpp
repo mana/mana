@@ -30,13 +30,13 @@ TabbedArea::TabbedArea()
     mWidgetContainer->setOpaque(false);
     addWidgetListener(this);
 
-    mArrowButton[0] = new Button(std::string(), "shift_left", this);
-    mArrowButton[1] = new Button(std::string(), "shift_right", this);
+    mArrowButton[0] = std::make_unique<Button>(std::string(), "shift_left", this);
+    mArrowButton[1] = std::make_unique<Button>(std::string(), "shift_right", this);
     mArrowButton[0]->setButtonIcon("tab_arrows_left.png");
     mArrowButton[1]->setButtonIcon("tab_arrows_right.png");
 
-    add(mArrowButton[0]);
-    add(mArrowButton[1]);
+    add(mArrowButton[0].get());
+    add(mArrowButton[1].get());
 
     widgetResized(nullptr);
 }

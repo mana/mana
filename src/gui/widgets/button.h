@@ -84,7 +84,6 @@ class Button : public gcn::Button
         void setButtonPopupText(const std::string &text)
         { mPopupText = text; }
 
-        void logic() override;
         void mouseMoved(gcn::MouseEvent &event) override;
         void mouseExited(gcn::MouseEvent &event) override;
 

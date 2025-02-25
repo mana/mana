@@ -150,9 +150,10 @@ void Button::init()
         }
         updateAlpha();
 
-        // Load the popup
+        // Create the tooltip popup. It is shared by all buttons and will get
+        // deleted by the WindowContainer.
         if (!mTextPopup)
-            mTextPopup = new TextPopup();
+            mTextPopup = new TextPopup;
     }
     mInstances++;
 }
@@ -169,10 +170,6 @@ Button::~Button()
                 dtor<Image*>());
         }
         delete[] mButton;
-
-        // Remove the popup
-        delete mTextPopup;
-        mTextPopup = nullptr;
     }
 }
 
@@ -293,16 +290,9 @@ void Button::setCaption(const std::string& caption)
     adjustSize();
 }
 
-void Button::logic()
-{
-    gcn::Button::logic();
-    mTextPopup->logic();
-}
-
 void Button::mouseMoved(gcn::MouseEvent &event)
 {
     gcn::Button::mouseMoved(event);
-    mTextPopup->mouseMoved(event);
 
     int x = event.getX();
     int y = event.getY();
@@ -326,7 +316,6 @@ void Button::mouseMoved(gcn::MouseEvent &event)
 void Button::mouseExited(gcn::MouseEvent &event)
 {
     gcn::Button::mouseExited(event);
-    mTextPopup->mouseExited(event);
 
     mTextPopup->setVisible(false);
 }

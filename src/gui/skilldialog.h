@@ -77,8 +77,10 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
 
     private:
         std::vector<std::unique_ptr<SkillModel>> mSkillModels;
+        std::vector<std::unique_ptr<Tab>> mTabs;
+        std::vector<std::unique_ptr<gcn::Widget>> mTabWidgets;
         std::map<int, SkillInfo*> mSkills;
-        TabbedArea *mTabs;
+        TabbedArea *mTabbedArea;
         Label *mPointsLabel;
         Button *mIncreaseButton;
 };

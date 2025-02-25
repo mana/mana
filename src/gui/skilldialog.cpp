@@ -204,11 +204,11 @@ SkillDialog::SkillDialog():
     setMinWidth(240);
     setupWindow->registerWindowForReset(this);
 
-    mTabs = new TabbedArea();
+    mTabbedArea = new TabbedArea;
     mPointsLabel = new Label("0");
     mIncreaseButton = new Button(_("Up"), "inc", this);
 
-    place(0, 0, mTabs, 5, 5);
+    place(0, 0, mTabbedArea, 5, 5);
     place(0, 5, mPointsLabel, 4);
     place(4, 5, mIncreaseButton);
 
@@ -225,7 +225,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "inc")
     {
-        auto *tab = static_cast<SkillTab*>(mTabs->getSelectedTab());
+        auto *tab = static_cast<SkillTab*>(mTabbedArea->getSelectedTab());
         if (SkillInfo *info = tab->getSelectedInfo())
             Net::getPlayerHandler()->increaseSkill(info->id);
     }
@@ -277,19 +277,10 @@ void SkillDialog::event(Event::Channel channel, const Event &event)
 
 void SkillDialog::clearSkills()
 {
-    // Fixes issues with removing tabs
-    if (mTabs->getSelectedTabIndex() != -1)
-    {
-        mTabs->setSelectedTab((unsigned int) 0);
+    for (auto &tab : mTabs)
+        mTabbedArea->removeTab(tab.get());
 
-        while (mTabs->getSelectedTabIndex() != -1)
-        {
-            gcn::Tab *tab = mTabs->getSelectedTab();
-            mTabs->removeTabWithIndex(mTabs->getSelectedTabIndex());
-            delete tab;
-        }
-    }
-
+    mTabs.clear();
     mSkillModels.clear();
     mSkills.clear();
 }
@@ -326,15 +317,16 @@ void SkillDialog::loadSkills()
             model->updateVisibilities();
 
             auto listbox = new SkillListBox(model.get());
-            auto scroll = new ScrollArea(listbox);
+            auto scroll = std::make_unique<ScrollArea>(listbox);
             scroll->setOpaque(false);
             scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
             scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
 
-            auto *tab = new SkillTab("Skills", listbox);
+            auto tab = std::make_unique<SkillTab>("Skills", listbox);
+            mTabbedArea->addTab(tab.get(), scroll.get());
 
-            mTabs->addTab(tab, scroll);
-
+            mTabs.push_back(std::move(tab));
+            mTabWidgets.push_back(std::move(scroll));
             mSkillModels.push_back(std::move(model));
 
             update();
@@ -378,15 +370,17 @@ void SkillDialog::loadSkills()
             model->updateVisibilities();
 
             auto listbox = new SkillListBox(model.get());
-            auto scroll = new ScrollArea(listbox);
+            auto scroll = std::make_unique<ScrollArea>(listbox);
             scroll->setOpaque(false);
             scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
             scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
 
-            auto tab = new SkillTab(setName, listbox);
+            auto tab = std::make_unique<SkillTab>(setName, listbox);
 
-            mTabs->addTab(tab, scroll);
+            mTabbedArea->addTab(tab.get(), scroll.get());
 
+            mTabs.push_back(std::move(tab));
+            mTabWidgets.push_back(std::move(scroll));
             mSkillModels.push_back(std::move(model));
         }
     }

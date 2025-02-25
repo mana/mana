@@ -23,6 +23,10 @@
 
 #include "gui/widgets/window.h"
 
+#include <memory>
+
+class Tab;
+
 /**
  * The debug window.
  *
@@ -32,6 +36,13 @@ class DebugWindow : public Window
 {
     public:
         DebugWindow();
+        ~DebugWindow() override;
+
+    private:
+        std::unique_ptr<Tab> mInfoTab;
+        std::unique_ptr<Tab> mSwitchesTab;
+        std::unique_ptr<gcn::Widget> mInfoWidget;
+        std::unique_ptr<gcn::Widget> mSwitchesWidget;
 };
 
 extern DebugWindow *debugWindow;
