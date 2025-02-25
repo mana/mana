@@ -33,6 +33,7 @@
 #include <guichan/listmodel.hpp>
 #include <guichan/selectionlistener.hpp>
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -131,7 +132,7 @@ class ServerDialog : public Window,
         void loadCustomServers();
 
         static int downloadUpdate(void *ptr, DownloadStatus status,
-                                  size_t total, size_t remaining);
+                                  size_t dltotal, size_t dlnow);
 
         Label  *mDescription;
         Button *mQuitButton;
@@ -158,11 +159,11 @@ class ServerDialog : public Window,
         /** Status of the current download. */
         ServerDialogDownloadStatus mDownloadStatus = DOWNLOADING_PREPARING;
 
-        Net::Download *mDownload = nullptr;
+        std::unique_ptr<Net::Download> mDownload;
         Label *mDownloadText;
 
         Mutex mMutex;
-        float mDownloadProgress = -1.0f;
+        float mDownloadProgress = 0.0f;
 
         ServerInfos mServers;
         ServerInfo *mServerInfo;

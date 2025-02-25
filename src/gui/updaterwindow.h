@@ -113,12 +113,12 @@ private:
      * A download callback for progress updates.
      */
     static int updateProgress(void *ptr, DownloadStatus status,
-                              size_t dt, size_t dn);
+                              size_t dltotal, size_t dlnow);
 
     /**
      * A libcurl callback for writing to memory.
      */
-    static size_t memoryWrite(void *ptr, size_t size, size_t nmemb,
+    static size_t memoryWrite(char *ptr, size_t size, size_t nmemb,
                               void *stream);
 
     enum UpdateDownloadStatus
@@ -165,13 +165,13 @@ private:
     bool mUserCancel = false;
 
     /** Byte count currently downloaded in mMemoryBuffer. */
-    int mDownloadedBytes = 0;
+    size_t mDownloadedBytes = 0;
 
     /** Buffer for files downloaded to memory. */
     char *mMemoryBuffer = nullptr;
 
     /** Download handle. */
-    Net::Download *mDownload = nullptr;
+    std::unique_ptr<Net::Download> mDownload;
 
     /** List of files to download. */
     std::vector<UpdateFile> mUpdateFiles;

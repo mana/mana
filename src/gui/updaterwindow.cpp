@@ -46,8 +46,8 @@
 #include <iostream>
 #include <fstream>
 
-const std::string xmlUpdateFile = "resources.xml";
-const std::string txtUpdateFile = "resources2.txt";
+constexpr char xmlUpdateFile[] = "resources.xml";
+constexpr char txtUpdateFile[] = "resources2.txt";
 
 /**
  * Load the given file into a vector of updateFiles.
@@ -174,9 +174,10 @@ UpdaterWindow::~UpdaterWindow()
     {
         mDownload->cancel();
 
-        delete mDownload;
-        mDownload = nullptr;
+        // Make sure thread is gone before freeing the memory buffer
+        mDownload.reset();
     }
+
     free(mMemoryBuffer);
 }
 
@@ -251,19 +252,8 @@ void UpdaterWindow::loadNews()
         return;
     }
 
-    // Reallocate and include terminating 0 character
-    mMemoryBuffer = (char*)realloc(mMemoryBuffer, mDownloadedBytes + 1);
-    mMemoryBuffer[mDownloadedBytes] = '\0';
-
     mBrowserBox->clearRows();
-
-    // Tokenize and add each line separately
-    char *line = strtok(mMemoryBuffer, "\n");
-    while (line)
-    {
-        mBrowserBox->addRow(line);
-        line = strtok(nullptr, "\n");
-    }
+    mBrowserBox->addRows(std::string_view(mMemoryBuffer, mDownloadedBytes));
 
     // Free the memory buffer now that we don't need it anymore
     free(mMemoryBuffer);
@@ -273,7 +263,7 @@ void UpdaterWindow::loadNews()
 }
 
 int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
-                                  size_t dt, size_t dn)
+                                  size_t dltotal, size_t dlnow)
 {
     auto *uw = reinterpret_cast<UpdaterWindow *>(ptr);
 
@@ -287,20 +277,15 @@ int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
         uw->mDownloadStatus = UPDATE_ERROR;
     }
 
-    float progress = (float) dn / dt;
-
-    if (progress != progress)
-        progress = 0.0f; // check for NaN
-    if (progress < 0.0f)
-        progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
-    if (progress > 1.0f)
-        progress = 1.0f;
+    float progress = 0.0f;
+    if (dltotal > 0)
+        progress = static_cast<float>(dlnow) / dltotal;
 
     uw->setLabel(
             uw->mCurrentFile + " (" + toString((int) (progress * 100)) + "%)");
     uw->setProgress(progress);
 
-    if (Client::getState() != STATE_UPDATE || uw->mDownloadStatus == UPDATE_ERROR)
+    if (Client::getState() != STATE_UPDATE)
     {
         // If the action was canceled return an error code to stop the mThread
         return -1;
@@ -309,15 +294,15 @@ int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
     return 0;
 }
 
-size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, void *stream)
+size_t UpdaterWindow::memoryWrite(char *ptr, size_t size, size_t nmemb, void *stream)
 {
     auto *uw = reinterpret_cast<UpdaterWindow *>(stream);
-    size_t totalMem = size * nmemb;
+    const size_t totalMem = size * nmemb;
     uw->mMemoryBuffer = (char*) realloc(uw->mMemoryBuffer,
                                         uw->mDownloadedBytes + totalMem);
     if (uw->mMemoryBuffer)
     {
-        memcpy(&(uw->mMemoryBuffer[uw->mDownloadedBytes]), ptr, totalMem);
+        memcpy(uw->mMemoryBuffer + uw->mDownloadedBytes, ptr, totalMem);
         uw->mDownloadedBytes += totalMem;
     }
 
@@ -326,8 +311,9 @@ size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, void *st
 
 void UpdaterWindow::download()
 {
-    mDownload = new Net::Download(this, mUpdateHost + "/" + mCurrentFile,
-                                  updateProgress);
+    mDownload = std::make_unique<Net::Download>(this,
+                                                mUpdateHost + "/" + mCurrentFile,
+                                                &UpdaterWindow::updateProgress);
 
     if (mStoreInMemory)
     {
@@ -335,15 +321,11 @@ void UpdaterWindow::download()
     }
     else
     {
+        std::optional<unsigned long> adler32;
         if (mDownloadStatus == UPDATE_RESOURCES)
-        {
-            mDownload->setFile(mUpdatesDir + "/" + mCurrentFile,
-                               mCurrentChecksum);
-        }
-        else
-        {
-            mDownload->setFile(mUpdatesDir + "/" + mCurrentFile);
-        }
+            adler32 = mCurrentChecksum;
+
+        mDownload->setFile(mUpdatesDir + "/" + mCurrentFile, adler32);
     }
 
     if (mDownloadStatus != UPDATE_RESOURCES)
@@ -365,8 +347,8 @@ void UpdaterWindow::loadUpdates()
         if (mUpdateFiles.empty())
         {
             logger->log("Warning this server does not have a"
-                        " %s file falling back to %s", xmlUpdateFile.c_str(),
-                        txtUpdateFile.c_str());
+                        " %s file falling back to %s", xmlUpdateFile,
+                        txtUpdateFile);
             mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
         }
     }
@@ -398,20 +380,19 @@ void UpdaterWindow::logic()
 
     switch (mDownloadStatus)
     {
-        case UPDATE_ERROR:
-            // TODO: Only send complete sentences to gettext
-            mBrowserBox->addRow(std::string());
-            mBrowserBox->addRow(_("##1  The update process is incomplete."));
-            // TRANSLATORS: Continues "you try again later.".
-            mBrowserBox->addRow(_("##1  It is strongly recommended that"));
-            // TRANSLATORS: Begins "It is strongly recommended that".
-            mBrowserBox->addRow(_("##1  you try again later."));
+        case UPDATE_ERROR: {
+            std::string error = "##1";
+            error += mDownload->getError();
+            error += "\n\n";
+            error += _("The update process is incomplete. "
+                       "It is strongly recommended that you try again later.");
+            mBrowserBox->addRows(error);
 
-            mBrowserBox->addRow(mDownload->getError());
             mScrollArea->setVerticalScrollAmount(
                     mScrollArea->getVerticalMaxScroll());
             mDownloadStatus = UPDATE_COMPLETE;
             break;
+        }
         case UPDATE_NEWS:
             if (mDownloadComplete)
             {

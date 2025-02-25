@@ -18,7 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib> // pulls in int64_t
 #include <cstdio>
 #include <string>
 #include <optional>
@@ -33,28 +32,31 @@ enum DownloadStatus
     DOWNLOAD_STATUS_THREAD_ERROR = -2,
     DOWNLOAD_STATUS_ERROR = -1,
     DOWNLOAD_STATUS_STARTING = 0,
-    DOWNLOAD_STATUS_IDLE,
+    DOWNLOAD_STATUS_IN_PROGRESS,
     DOWNLOAD_STATUS_COMPLETE
 };
 
-using DownloadUpdate = int (*)(void *, DownloadStatus, size_t, size_t);
-
-// Matches what CURL expects
-using WriteFunction = size_t (*)(void *, size_t, size_t, void *);
-
 struct SDL_Thread;
-using CURL = void;
-struct curl_slist;
 
 namespace Net {
+
 class Download
 {
     public:
-        Download(void *ptr, const std::string &url, DownloadUpdate updateFunction);
+        /**
+         * Callback function for download updates.
+         *
+         * @param ptr       Pointer passed to Download constructor
+         * @param status    Current download status
+         * @param dltotal   Total number of bytes to download
+         * @param dlnow     Number of bytes downloaded so far
+         */
+        using DownloadUpdate = int (*)(void *, DownloadStatus, size_t, size_t);
 
+        Download(void *ptr, const std::string &url, DownloadUpdate updateFunction);
         ~Download();
 
-        void addHeader(const std::string &header);
+        void addHeader(const char *header);
 
         /**
          * Convience method for adding no-cache headers.
@@ -64,7 +66,7 @@ class Download
         void setFile(const std::string &filename,
                      std::optional<unsigned long> adler32 = {});
 
-        void setWriteFunction(WriteFunction write);
+        void setWriteFunction(curl_write_callback write);
 
         /**
          * Starts the download thread.
@@ -76,7 +78,7 @@ class Download
 
         /**
          * Cancels the download. Returns immediately, the cancelled status will
-         * be noted in the next avialable update call.
+         * be noted in the next available update call.
          */
         void cancel();
 
@@ -96,11 +98,10 @@ class Download
             unsigned memoryWrite: 1;
         } mOptions;
         std::string mFileName;
-        WriteFunction mWriteFunction = nullptr;
+        curl_write_callback mWriteFunction = nullptr;
         std::optional<unsigned long> mAdler;
         DownloadUpdate mUpdateFunction;
         SDL_Thread *mThread = nullptr;
-        CURL *mCurl = nullptr;
         curl_slist *mHeaders = nullptr;
         char *mError;
 };

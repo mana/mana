@@ -50,8 +50,6 @@
 #include <cstdlib>
 #include <string>
 
-static const int MAX_SERVERLIST = 6;
-
 ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
         mServers(servers),
         mVersionStrings(servers->size(), VersionString(0, std::string())),
@@ -141,7 +139,6 @@ public:
             if (info.version.first > 0)
             {
                 graphics->setColor(unsupported);
-
                 graphics->drawText(info.version.second,
                                    getWidth() - info.version.first - 2, top);
             }
@@ -231,9 +228,11 @@ ServerDialog::~ServerDialog()
     if (mDownload)
     {
         mDownload->cancel();
-        delete mDownload;
-        mDownload = nullptr;
+
+        // Make sure thread is gone before deleting the ServersListModel
+        mDownload.reset();
     }
+
     delete mServersListModel;
 }
 
@@ -262,6 +261,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
         else
         {
             mDownload->cancel();
+
             mQuitButton->setEnabled(false);
             mConnectButton->setEnabled(false);
             mDeleteButton->setEnabled(false);
@@ -374,7 +374,7 @@ void ServerDialog::logic()
         else if (mDownloadStatus == DOWNLOADING_IN_PROGRESS)
         {
             mDownloadText->setCaption(strprintf(_("Downloading server list..."
-                                                 "%2.2f%%"),
+                                                 "%2.0f%%"),
                                       mDownloadProgress * 100));
         }
         else if (mDownloadStatus == DOWNLOADING_IDLE)
@@ -406,7 +406,8 @@ void ServerDialog::downloadServerList()
     if (listFile.empty())
         listFile = "https://www.manasource.org/serverlist.xml";
 
-    mDownload = new Net::Download(this, listFile, &downloadUpdate);
+    mDownload = std::make_unique<Net::Download>(this, listFile,
+                                                &ServerDialog::downloadUpdate);
     mDownload->setFile(mDir + "/serverlist.xml");
     mDownload->start();
 }
@@ -494,7 +495,6 @@ void ServerDialog::loadServers()
         server.version.first = gui->getFont()->getWidth(version);
         server.version.second = version;
 
-        MutexLocker lock(&mMutex);
         // Add the server to the local list if it's not already present
         bool found = false;
         int i = 0;
@@ -562,17 +562,18 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
 }
 
 int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,
-                                 size_t total, size_t remaining)
+                                 size_t dltotal, size_t dlnow)
 {
     if (status == DOWNLOAD_STATUS_CANCELLED)
         return -1;
 
     auto *sd = reinterpret_cast<ServerDialog*>(ptr);
-    bool finished = false;
+    MutexLocker lock(&sd->mMutex);
 
     if (status == DOWNLOAD_STATUS_COMPLETE)
     {
-        finished = true;
+        sd->loadServers();
+        sd->mDownloadStatus = DOWNLOADING_COMPLETE;
     }
     else if (status < 0)
     {
@@ -582,26 +583,12 @@ int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,
     }
     else
     {
-        float progress = (float) remaining / total;
+        float progress = 0.0f;
+        if (dltotal > 0)
+            progress = static_cast<float>(dlnow) / dltotal;
 
-        if (progress != progress)
-            progress = 0.0f; // check for NaN
-        else if (progress < 0.0f)
-            progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
-        else if (progress > 1.0f)
-            progress = 1.0f;
-
-        MutexLocker lock(&sd->mMutex);
         sd->mDownloadStatus = DOWNLOADING_IN_PROGRESS;
         sd->mDownloadProgress = progress;
-    }
-
-    if (finished)
-    {
-        sd->loadServers();
-
-        MutexLocker lock(&sd->mMutex);
-        sd->mDownloadStatus = DOWNLOADING_COMPLETE;
     }
 
     return 0;
