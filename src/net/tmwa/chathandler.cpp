@@ -271,7 +271,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 msg.readInt8();     // gm level
                 msg.readInt8();     // gender
 
-                Avatar *avatar = new Avatar(nick);
+                auto *avatar = new Avatar(nick);
                 avatar->setOnline(true);
                 players.push_back(avatar);
             }

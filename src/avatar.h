@@ -26,7 +26,7 @@
 class Avatar
 {
 public:
-    Avatar(const std::string &name = std::string());
+    explicit Avatar(const std::string &name = {});
 
     /**
      * Returns the avatar's name.

@@ -28,6 +28,8 @@
 
 #include "gui/widgets/textfield.h"
 
+#include <memory>
+
 class LocalPlayer;
 class Map;
 
@@ -168,8 +170,8 @@ class ActorSpriteManager : public EventListener
         friend class PlayerNamesLister;
         friend class PlayerNPCNamesLister;
 
-        AutoCompleteLister *mPlayerNames;
-        AutoCompleteLister *mPlayerNPCNames;
+        std::unique_ptr<AutoCompleteLister> mPlayerNames;
+        std::unique_ptr<AutoCompleteLister> mPlayerNPCNames;
         ActorSprites mActors;
         ActorSprites mDeleteActors;
         Map *mMap;

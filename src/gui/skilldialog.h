@@ -27,10 +27,13 @@
 #include <guichan/actionlistener.hpp>
 
 #include <map>
+#include <memory>
+#include <vector>
 
 class Button;
 class Label;
 class ScrollArea;
+class SkillModel;
 class Tab;
 class TabbedArea;
 
@@ -45,7 +48,6 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
 {
     public:
         SkillDialog();
-
         ~SkillDialog() override;
 
         void event(Event::Channel channel, const Event &event) override;
@@ -74,7 +76,8 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
         bool hasSkills() { return !mSkills.empty(); }
 
     private:
-        std::map<int, SkillInfo *> mSkills;
+        std::vector<std::unique_ptr<SkillModel>> mSkillModels;
+        std::map<int, SkillInfo*> mSkills;
         TabbedArea *mTabs;
         Label *mPointsLabel;
         Button *mIncreaseButton;

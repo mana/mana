@@ -70,18 +70,6 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mNameField = new TextField(std::string());
     mNameLabel = new Label(_("Name:"));
 
-    mNextHairColorButton = new Button("", "nextcolor", this);
-    mPrevHairColorButton = new Button("", "prevcolor", this);
-    mPrevHairColorButton->setButtonIcon("tab_arrows_left.png");
-    mNextHairColorButton->setButtonIcon("tab_arrows_right.png");
-
-    mHairColorLabel = new Label(_("Hair color:"));
-    mNextHairStyleButton = new Button("", "nextstyle", this);
-    mPrevHairStyleButton = new Button("", "prevstyle", this);
-    mPrevHairStyleButton->setButtonIcon("tab_arrows_left.png");
-    mNextHairStyleButton->setButtonIcon("tab_arrows_right.png");
-
-    mHairStyleLabel = new Label(_("Hair style:"));
     mCreateButton = new Button(_("Create"), "create", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mMale = new RadioButton(_("Male"), "gender");
@@ -112,12 +100,6 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mNameLabel->setPosition(5, 5);
     mNameField->setDimension(
             gcn::Rectangle(45, 5, w - 45 - 7, mNameField->getHeight()));
-    mPrevHairColorButton->setPosition(90, 35);
-    mNextHairColorButton->setPosition(165, 35);
-    mHairColorLabel->setPosition(5, 40);
-    mPrevHairStyleButton->setPosition(90, 64);
-    mNextHairStyleButton->setPosition(165, 64);
-    mHairStyleLabel->setPosition(5, 70);
     mAttributesLeft->setPosition(15, 280);
     updateSliders();
     mCancelButton->setPosition(
@@ -136,16 +118,36 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
 
     if (mHairColorsIds.size() > 1)
     {
-        add(mNextHairColorButton);
-        add(mPrevHairColorButton);
-        add(mHairColorLabel);
+        auto hairColorLabel = new Label(_("Hair color:"));
+        auto nextHairColorButton = new Button("", "nextcolor", this);
+        auto prevHairColorButton = new Button("", "prevcolor", this);
+        prevHairColorButton->setButtonIcon("tab_arrows_left.png");
+        nextHairColorButton->setButtonIcon("tab_arrows_right.png");
+
+        hairColorLabel->setPosition(5, 40);
+        prevHairColorButton->setPosition(90, 35);
+        nextHairColorButton->setPosition(165, 35);
+
+        add(nextHairColorButton);
+        add(prevHairColorButton);
+        add(hairColorLabel);
     }
 
     if (mHairStylesIds.size() > 1)
     {
-        add(mNextHairStyleButton);
-        add(mPrevHairStyleButton);
-        add(mHairStyleLabel);
+        auto hairStyleLabel = new Label(_("Hair style:"));
+        auto nextHairStyleButton = new Button("", "nextstyle", this);
+        auto prevHairStyleButton = new Button("", "prevstyle", this);
+        prevHairStyleButton->setButtonIcon("tab_arrows_left.png");
+        nextHairStyleButton->setButtonIcon("tab_arrows_right.png");
+
+        hairStyleLabel->setPosition(5, 70);
+        prevHairStyleButton->setPosition(90, 64);
+        nextHairStyleButton->setPosition(165, 64);
+
+        add(nextHairStyleButton);
+        add(prevHairStyleButton);
+        add(hairStyleLabel);
     }
 
     add(mAttributesLeft);

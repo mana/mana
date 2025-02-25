@@ -65,8 +65,8 @@ class PlayerNPCNamesLister : public AutoCompleteLister
 
 ActorSpriteManager::ActorSpriteManager()
 {
-    mPlayerNames = new PlayerNamesLister;
-    mPlayerNPCNames = new PlayerNPCNamesLister;
+    mPlayerNames = std::make_unique<PlayerNamesLister>();
+    mPlayerNPCNames = std::make_unique<PlayerNPCNamesLister>();
 
     listen(Event::ConfigChannel);
 }
@@ -342,12 +342,12 @@ bool ActorSpriteManager::hasActorSprite(ActorSprite *someActor) const
 
 AutoCompleteLister *ActorSpriteManager::getPlayerNameLister() const
 {
-    return mPlayerNames;
+    return mPlayerNames.get();
 }
 
 AutoCompleteLister *ActorSpriteManager::getPlayerNPCNameLister() const
 {
-    return mPlayerNPCNames;
+    return mPlayerNPCNames.get();
 }
 
 void ActorSpriteManager::updatePlayerNames()

@@ -112,8 +112,7 @@ void Units::readUnitNode(XML::Node node, const std::string &filename)
         if (uLevel.name() == "level")
         {
             UnitLevel ul;
-            ul.symbol = uLevel.getProperty("symbol",
-                                            strprintf("¤%d",level));
+            ul.symbol = uLevel.getProperty("symbol", strprintf("¤%d", level));
             ul.count = uLevel.getProperty("count", -1);
             ul.round = uLevel.getProperty("round", bu.round);
 

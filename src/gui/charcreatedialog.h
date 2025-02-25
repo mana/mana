@@ -81,12 +81,6 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;
-        Button *mNextHairColorButton;
-        Button *mPrevHairColorButton;
-        gcn::Label *mHairColorLabel;
-        Button *mNextHairStyleButton;
-        Button *mPrevHairStyleButton;
-        gcn::Label *mHairStyleLabel;
 
         gcn::RadioButton *mMale;
         gcn::RadioButton *mFemale;

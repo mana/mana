@@ -43,7 +43,6 @@
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 
-#include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
@@ -104,19 +103,19 @@ public:
 
     void updateVisibilities();
 
-    void addSkill(SkillInfo *info)
-    { mSkills.push_back(info); }
+    void addSkill(std::unique_ptr<SkillInfo> info)
+    { mSkills.push_back(std::move(info)); }
 
 private:
-    std::vector<SkillInfo *> mSkills;
+    std::vector<std::unique_ptr<SkillInfo>> mSkills;
     std::vector<SkillInfo *> mVisibleSkills;
 };
 
 class SkillListBox : public ListBox
 {
 public:
-    SkillListBox(SkillModel *model):
-            ListBox(model)
+    SkillListBox(SkillModel *model)
+        : ListBox(model)
     {}
 
     SkillInfo *getSelectedInfo()
@@ -171,8 +170,8 @@ public:
 class SkillTab : public Tab
 {
 public:
-    SkillTab(const std::string &name, SkillListBox *listBox):
-            mListBox(listBox)
+    SkillTab(const std::string &name, SkillListBox *listBox)
+        : mListBox(listBox)
     {
         setCaption(name);
     }
@@ -180,7 +179,6 @@ public:
     ~SkillTab() override
     {
         delete mListBox;
-        mListBox = nullptr;
     }
 
     SkillInfo *getSelectedInfo()
@@ -240,12 +238,11 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 std::string SkillDialog::update(int id)
 {
     auto i = mSkills.find(id);
-
     if (i != mSkills.end())
     {
-        SkillInfo *info = i->second;
-        info->update();
-        return info->name;
+        SkillInfo &info = *i->second;
+        info.update();
+        return info.name;
     }
 
     return std::string();
@@ -258,9 +255,7 @@ void SkillDialog::update()
     mPointsLabel->adjustSize();
 
     for (auto &skill : mSkills)
-    {
         skill.second->update();
-    }
 }
 
 void SkillDialog::event(Event::Channel channel, const Event &event)
@@ -295,7 +290,7 @@ void SkillDialog::clearSkills()
         }
     }
 
-    delete_all(mSkills);
+    mSkillModels.clear();
     mSkills.clear();
 }
 
@@ -308,9 +303,6 @@ void SkillDialog::loadSkills()
 
     int setCount = 0;
     std::string setName;
-    ScrollArea *scroll;
-    SkillListBox *listbox;
-    SkillTab *tab;
 
     if (!root || root.name() != "skills")
     {
@@ -318,30 +310,32 @@ void SkillDialog::loadSkills()
 
         if (Net::getNetworkType() == ServerType::TMWATHENA)
         {
-            auto *model = new SkillModel();
-            auto *skill = new SkillInfo;
+            auto model = std::make_unique<SkillModel>();
+            auto skill = std::make_unique<SkillInfo>();
             skill->id = 1;
             skill->name = "basic";
             skill->setIcon(std::string());
             skill->modifiable = true;
             skill->visible = true;
-            skill->model = model;
+            skill->model = model.get();
             skill->update();
 
-            model->addSkill(skill);
-            mSkills[1] = skill;
+            mSkills[1] = skill.get();
 
+            model->addSkill(std::move(skill));
             model->updateVisibilities();
 
-            listbox = new SkillListBox(model);
-            scroll = new ScrollArea(listbox);
+            auto listbox = new SkillListBox(model.get());
+            auto scroll = new ScrollArea(listbox);
             scroll->setOpaque(false);
             scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
             scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
 
-            tab = new SkillTab("Skills", listbox);
+            auto *tab = new SkillTab("Skills", listbox);
 
             mTabs->addTab(tab, scroll);
+
+            mSkillModels.push_back(std::move(model));
 
             update();
         }
@@ -356,7 +350,7 @@ void SkillDialog::loadSkills()
             setCount++;
             setName = set.getProperty("name", strprintf(_("Skill Set %d"), setCount));
 
-            auto *model = new SkillModel();
+            auto model = std::make_unique<SkillModel>();
 
             for (auto node : set.children())
             {
@@ -366,34 +360,37 @@ void SkillDialog::loadSkills()
                     std::string name = node.getProperty("name", strprintf(_("Skill %d"), id));
                     std::string icon = node.getProperty("icon", "");
 
-                    auto *skill = new SkillInfo;
+                    auto skill = std::make_unique<SkillInfo>();
                     skill->id = id;
                     skill->name = name;
                     skill->setIcon(icon);
                     skill->modifiable = false;
                     skill->visible = false;
-                    skill->model = model;
+                    skill->model = model.get();
                     skill->update();
 
-                    model->addSkill(skill);
+                    mSkills[id] = skill.get();
 
-                    mSkills[id] = skill;
+                    model->addSkill(std::move(skill));
                 }
             }
 
             model->updateVisibilities();
 
-            listbox = new SkillListBox(model);
-            scroll = new ScrollArea(listbox);
+            auto listbox = new SkillListBox(model.get());
+            auto scroll = new ScrollArea(listbox);
             scroll->setOpaque(false);
             scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
             scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
 
-            tab = new SkillTab(setName, listbox);
+            auto tab = new SkillTab(setName, listbox);
 
             mTabs->addTab(tab, scroll);
+
+            mSkillModels.push_back(std::move(model));
         }
     }
+
     update();
 }
 
@@ -403,9 +400,9 @@ void SkillDialog::setModifiable(int id, bool modifiable)
 
     if (it != mSkills.end())
     {
-        SkillInfo *info = it->second;
-        info->modifiable = modifiable;
-        info->update();
+        SkillInfo &info = *it->second;
+        info.modifiable = modifiable;
+        info.update();
     }
 }
 
@@ -414,12 +411,8 @@ void SkillModel::updateVisibilities()
     mVisibleSkills.clear();
 
     for (auto &skill : mSkills)
-    {
         if (skill->visible)
-        {
-            mVisibleSkills.push_back(skill);
-        }
-    }
+            mVisibleSkills.push_back(skill.get());
 }
 
 void SkillInfo::update()

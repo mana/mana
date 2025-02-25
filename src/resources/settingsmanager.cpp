@@ -36,7 +36,6 @@
 
 #include "configuration.h"
 #include "log.h"
-#include "statuseffect.h"
 #include "units.h"
 
 namespace SettingsManager

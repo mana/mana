@@ -236,6 +236,11 @@ private:
 class PlayerList : public AvatarListModel
 {
 public:
+    ~PlayerList() override
+    {
+        delete_all(mPlayers);
+    }
+
     void setPlayers(const std::vector<Avatar*> &players)
     {
         delete_all(mPlayers);
@@ -273,7 +278,7 @@ public:
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
     }
 
-    ~PlayerListTab()
+    ~PlayerListTab() override
     {
         delete mPlayerList;
     }
