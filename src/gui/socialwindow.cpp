@@ -377,7 +377,7 @@ SocialWindow::SocialWindow() :
     mCreatePopup = new CreatePopup;
 
     mPlayerListTab = new PlayerListTab;
-    mPlayerListTab->setCaption(strprintf(_("Online (%zu)"), 0ul));
+    mPlayerListTab->setCaption(strprintf(_("Online (%u)"), 0u));
 
     mTabs->addTab(mPlayerListTab, mPlayerListTab->mScroll.get());
 
@@ -673,7 +673,9 @@ void SocialWindow::showPartyCreate()
 void SocialWindow::setPlayersOnline(const std::vector<Avatar*> &players)
 {
     mPlayerListTab->setPlayers(players);
-    mPlayerListTab->setCaption(strprintf(_("Online (%zu)"), players.size()));
+
+    unsigned playerCount = static_cast<unsigned>(players.size());
+    mPlayerListTab->setCaption(strprintf(_("Online (%u)"), playerCount));
 }
 
 void SocialWindow::logic()
