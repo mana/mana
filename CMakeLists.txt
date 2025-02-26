@@ -156,7 +156,6 @@ if(WIN32)
           $ENV{MINGW_PREFIX}/bin/libjbig-0.dll
           $ENV{MINGW_PREFIX}/bin/libLerc.dll
           $ENV{MINGW_PREFIX}/bin/libopus-0.dll
-          $ENV{MINGW_PREFIX}/bin/rav1e.dll
           $ENV{MINGW_PREFIX}/bin/libbz2-1.dll
           $ENV{MINGW_PREFIX}/bin/libglib-2.0-0.dll
           $ENV{MINGW_PREFIX}/bin/libogg-0.dll
