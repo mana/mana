@@ -102,3 +102,42 @@ inline MutexLocker::~MutexLocker()
     if (mMutex)
         mMutex->unlock();
 }
+
+/**
+ * A template class for wrapping data that is accessed by multiple threads.
+ */
+template <typename T>
+class ThreadSafe
+{
+    class Locked : private MutexLocker
+    {
+    public:
+        Locked(T &data, Mutex &mutex)
+            : MutexLocker(&mutex)
+            , mData(data)
+        {}
+
+        Locked(Locked&& rhs) = delete;
+        Locked(const Locked&) = delete;
+        Locked& operator=(const Locked&) = delete;
+        Locked& operator=(Locked&&) = delete;
+
+        T &operator*() const { return mData; }
+        T *operator->() const { return &mData; }
+
+    private:
+        T &mData;
+    };
+
+public:
+    ThreadSafe() = default;
+    ThreadSafe(const T &data)
+        : mData(data)
+    {}
+
+    Locked lock() { return { mData, mMutex }; }
+
+private:
+    T mData;
+    Mutex mMutex;
+};

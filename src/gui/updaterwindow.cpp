@@ -123,7 +123,6 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     Window(_("Updating...")),
     mUpdateHost(updateHost),
     mUpdatesDir(updatesDir),
-    mCurrentFile("news.txt"),
     mLoadUpdates(applyUpdates),
     mLinkHandler(std::make_unique<ItemLinkHandler>(this))
 {
@@ -161,41 +160,22 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     setVisible(true);
     mCancelButton->requestFocus();
 
-    // Try to download the updates list
-    download();
+    startDownload("news.txt", true);
 }
 
 UpdaterWindow::~UpdaterWindow()
 {
     if (mLoadUpdates)
         loadUpdates();
-
-    if (mDownload)
-    {
-        mDownload->cancel();
-
-        // Make sure thread is gone before freeing the memory buffer
-        mDownload.reset();
-    }
-
-    free(mMemoryBuffer);
-}
-
-void UpdaterWindow::setProgress(float progress)
-{
-    // Do delayed progress bar update, since Guichan isn't thread-safe
-    MutexLocker lock(&mDownloadMutex);
-    mDownloadProgress = progress;
 }
 
 void UpdaterWindow::setLabel(const std::string &str)
 {
-    // Do delayed label text update, since Guichan isn't thread-safe
-    MutexLocker lock(&mDownloadMutex);
-    mNewLabelCaption = str;
+    mLabel->setCaption(str);
+    mLabel->adjustSize();
 }
 
-void UpdaterWindow::enable()
+void UpdaterWindow::enablePlay()
 {
     mCancelButton->setEnabled(false);
     mPlayButton->setEnabled(true);
@@ -205,20 +185,9 @@ void UpdaterWindow::enable()
 void UpdaterWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
-    {
-        // Register the user cancel
-        mUserCancel = true;
-        // Skip the updating process
-        if (mDownloadStatus != UPDATE_COMPLETE)
-        {
-            mDownload->cancel();
-            mDownloadStatus = UPDATE_ERROR;
-        }
-    }
+        cancel();
     else if (event.getId() == "play")
-    {
-        Client::setState(STATE_LOAD_DATA);
-    }
+        play();
 }
 
 void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
@@ -227,114 +196,58 @@ void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (key.getValue() == Key::ESCAPE)
     {
-        action(gcn::ActionEvent(nullptr, mCancelButton->getActionEventId()));
-        Client::setState(STATE_WORLD_SELECT);
+        if (!cancel())
+        {
+            mLoadUpdates = false;
+            Client::setState(STATE_WORLD_SELECT);
+        }
     }
     else if (key.getValue() == Key::ENTER)
     {
-        if (mDownloadStatus == UPDATE_COMPLETE ||
-                mDownloadStatus == UPDATE_ERROR)
-        {
-            action(gcn::ActionEvent(nullptr, mPlayButton->getActionEventId()));
-        }
-        else
-        {
-            action(gcn::ActionEvent(nullptr, mCancelButton->getActionEventId()));
-        }
+        play();
     }
+}
+
+bool UpdaterWindow::cancel()
+{
+    // Skip the updating process
+    if (mDialogState != DialogState::DONE)
+    {
+        mDownload->cancel();
+        return true;
+    }
+    return false;
+}
+
+void UpdaterWindow::play()
+{
+    if (mPlayButton->isEnabled())
+        Client::setState(STATE_LOAD_DATA);
 }
 
 void UpdaterWindow::loadNews()
 {
-    if (!mMemoryBuffer)
-    {
-        logger->log("Couldn't load news");
-        return;
-    }
-
     mBrowserBox->clearRows();
-    mBrowserBox->addRows(std::string_view(mMemoryBuffer, mDownloadedBytes));
-
-    // Free the memory buffer now that we don't need it anymore
-    free(mMemoryBuffer);
-    mMemoryBuffer = nullptr;
+    mBrowserBox->addRows(mDownload->getBuffer());
 
     mScrollArea->setVerticalScrollAmount(0);
 }
 
-int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
-                                  size_t dltotal, size_t dlnow)
+void UpdaterWindow::startDownload(const std::string &fileName,
+                                  bool storeInMemory,
+                                  std::optional<unsigned long> adler32)
 {
-    auto *uw = reinterpret_cast<UpdaterWindow *>(ptr);
+    mDownload = std::make_unique<Net::Download>(mUpdateHost + "/" + fileName);
+    mCurrentFile = fileName;
 
-    if (status == DOWNLOAD_STATUS_COMPLETE)
-    {
-        uw->mDownloadComplete = true;
-    }
-    else if (status == DOWNLOAD_STATUS_ERROR ||
-             status == DOWNLOAD_STATUS_CANCELLED)
-    {
-        uw->mDownloadStatus = UPDATE_ERROR;
-    }
-
-    float progress = 0.0f;
-    if (dltotal > 0)
-        progress = static_cast<float>(dlnow) / dltotal;
-
-    uw->setLabel(
-            uw->mCurrentFile + " (" + toString((int) (progress * 100)) + "%)");
-    uw->setProgress(progress);
-
-    if (Client::getState() != STATE_UPDATE)
-    {
-        // If the action was canceled return an error code to stop the mThread
-        return -1;
-    }
-
-    return 0;
-}
-
-size_t UpdaterWindow::memoryWrite(char *ptr, size_t size, size_t nmemb, void *stream)
-{
-    auto *uw = reinterpret_cast<UpdaterWindow *>(stream);
-    const size_t totalMem = size * nmemb;
-    uw->mMemoryBuffer = (char*) realloc(uw->mMemoryBuffer,
-                                        uw->mDownloadedBytes + totalMem);
-    if (uw->mMemoryBuffer)
-    {
-        memcpy(uw->mMemoryBuffer + uw->mDownloadedBytes, ptr, totalMem);
-        uw->mDownloadedBytes += totalMem;
-    }
-
-    return totalMem;
-}
-
-void UpdaterWindow::download()
-{
-    mDownload = std::make_unique<Net::Download>(this,
-                                                mUpdateHost + "/" + mCurrentFile,
-                                                &UpdaterWindow::updateProgress);
-
-    if (mStoreInMemory)
-    {
-        mDownload->setWriteFunction(UpdaterWindow::memoryWrite);
-    }
+    if (storeInMemory)
+        mDownload->setUseBuffer();
     else
-    {
-        std::optional<unsigned long> adler32;
-        if (mDownloadStatus == UPDATE_RESOURCES)
-            adler32 = mCurrentChecksum;
+        mDownload->setFile(mUpdatesDir + "/" + fileName, adler32);
 
-        mDownload->setFile(mUpdatesDir + "/" + mCurrentFile, adler32);
-    }
-
-    if (mDownloadStatus != UPDATE_RESOURCES)
+    if (mDialogState != DialogState::DOWNLOAD_RESOURCES)
         mDownload->noCache();
 
-    setLabel(mCurrentFile + " (0%)");
-    mDownloadComplete = false;
-
-    // TODO: check return
     mDownload->start();
 }
 
@@ -359,127 +272,132 @@ void UpdaterWindow::loadUpdates()
 
 void UpdaterWindow::logic()
 {
-    const std::string xmlUpdateFile = "resources.xml";
-    const std::string txtUpdateFile = "resources2.txt";
+    Window::logic();
 
-    // Update Scroll logic
-    mScrollArea->logic();
+    if (mDialogState == DialogState::DONE)
+        return;
 
-    // Synchronize label caption when necessary
-    {
-        MutexLocker lock(&mDownloadMutex);
+    const auto state = mDownload->getState();
+    float progress = 0.0f;
 
-        if (mLabel->getCaption() != mNewLabelCaption)
-        {
-            mLabel->setCaption(mNewLabelCaption);
-            mLabel->adjustSize();
-        }
-
-        mProgressBar->setProgress(mDownloadProgress);
+    switch (state.status) {
+    case DownloadStatus::IN_PROGRESS: {
+        setLabel(mCurrentFile + " (" + toString((int) (state.progress * 100)) + "%)");
+        progress = state.progress;
+        break;
     }
 
-    switch (mDownloadStatus)
+    case DownloadStatus::CANCELED:
+        mDialogState = DialogState::DONE;
+
+        enablePlay();
+        setLabel(_("Download canceled"));
+        break;
+
+    case DownloadStatus::ERROR: {
+        mDialogState = DialogState::DONE;
+
+        std::string error = "##1";
+        error += mDownload->getError();
+        error += "\n\n##1";
+        error += _("The update process is incomplete. "
+                   "It is strongly recommended that you try again later.");
+        mBrowserBox->addRows(error);
+
+        int maxScroll = mScrollArea->getVerticalMaxScroll();
+        mScrollArea->setVerticalScrollAmount(maxScroll);
+
+        enablePlay();
+        setLabel(_("Error while downloading"));
+        break;
+    }
+
+    case DownloadStatus::COMPLETE:
+        downloadCompleted();
+        break;
+    }
+
+    mProgressBar->setProgress(progress);
+}
+
+void UpdaterWindow::downloadCompleted()
+{
+    switch (mDialogState)
     {
-        case UPDATE_ERROR: {
-            std::string error = "##1";
-            error += mDownload->getError();
-            error += "\n\n";
-            error += _("The update process is incomplete. "
-                       "It is strongly recommended that you try again later.");
-            mBrowserBox->addRows(error);
+    case DialogState::DOWNLOAD_NEWS:
+        loadNews();
 
-            mScrollArea->setVerticalScrollAmount(
-                    mScrollArea->getVerticalMaxScroll());
-            mDownloadStatus = UPDATE_COMPLETE;
-            break;
+        mDialogState = DialogState::DOWNLOAD_LIST;
+        startDownload(xmlUpdateFile, false);
+        break;
+
+    case DialogState::DOWNLOAD_LIST:
+        if (mCurrentFile == xmlUpdateFile)
+        {
+            mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
+            if (mUpdateFiles.empty())
+            {
+                logger->log("Warning this server does not have a %s"
+                            " file falling back to %s",
+                            xmlUpdateFile, txtUpdateFile);
+
+                // If the resources.xml file fails, fall back onto a older version
+                mDialogState = DialogState::DOWNLOAD_LIST;
+                startDownload(txtUpdateFile, false);
+                break;
+            }
         }
-        case UPDATE_NEWS:
-            if (mDownloadComplete)
+        else if (mCurrentFile == txtUpdateFile)
+        {
+            mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
+        }
+
+        mDialogState = DialogState::DOWNLOAD_RESOURCES;
+        break;
+
+    case DialogState::DOWNLOAD_RESOURCES:
+        if (mUpdateIndex < mUpdateFiles.size())
+        {
+            const UpdateFile &thisFile = mUpdateFiles[mUpdateIndex];
+            if (!thisFile.required)
             {
-                // Parse current memory buffer as news and dispose of the data
-                loadNews();
-
-                mCurrentFile = xmlUpdateFile;
-                mStoreInMemory = false;
-                mDownloadStatus = UPDATE_LIST;
-                download(); // download() changes mDownloadComplete to false
-            }
-            break;
-        case UPDATE_LIST:
-            if (mDownloadComplete)
-            {
-                if (mCurrentFile == xmlUpdateFile)
+                if (!(thisFile.type == "music" && config.downloadMusic))
                 {
-                    mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
-                    if (mUpdateFiles.empty())
-                    {
-                        logger->log("Warning this server does not have a %s"
-                                    " file falling back to %s",
-                                    xmlUpdateFile.c_str(), txtUpdateFile.c_str());
-
-                        // If the resources.xml file fails, fall back onto a older version
-                        mCurrentFile = txtUpdateFile;
-                        mStoreInMemory = false;
-                        mDownloadStatus = UPDATE_LIST;
-                        download();
-                        break;
-                    }
-                }
-                else if (mCurrentFile == txtUpdateFile)
-                {
-                    mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
-                }
-                mStoreInMemory = false;
-                mDownloadStatus = UPDATE_RESOURCES;
-            }
-            break;
-        case UPDATE_RESOURCES:
-            if (mDownloadComplete)
-            {
-                if (mUpdateIndex < mUpdateFiles.size())
-                {
-                    const UpdateFile &thisFile = mUpdateFiles[mUpdateIndex];
-                    if (!thisFile.required)
-                    {
-                        if (!(thisFile.type == "music" && config.downloadMusic))
-                        {
-                            mUpdateIndex++;
-                            break;
-                        }
-                    }
-                    mCurrentFile = thisFile.name;
-                    std::stringstream ss(thisFile.hash);
-                    ss >> std::hex >> mCurrentChecksum;
-
-                    std::string filename = mUpdatesDir + "/" + mCurrentFile;
-                    FILE *file = fopen(filename.c_str(), "r+b");
-
-                    if (!file || Net::Download::fadler32(file) != mCurrentChecksum)
-                    {
-                        if (file)
-                            fclose(file);
-                        download();
-                    }
-                    else
-                    {
-                        fclose(file);
-                        logger->log("%s already here", mCurrentFile.c_str());
-                    }
                     mUpdateIndex++;
-                }
-                else
-                {
-                    // Download of updates completed
-                    mDownloadStatus = UPDATE_COMPLETE;
+                    break;
                 }
             }
-            break;
-        case UPDATE_COMPLETE:
-            enable();
+
+            unsigned long checksum;
+            std::stringstream ss(thisFile.hash);
+            ss >> std::hex >> checksum;
+
+            std::string filename = mUpdatesDir + "/" + thisFile.name;
+            FILE *file = fopen(filename.c_str(), "r+b");
+
+            if (!file || Net::Download::fadler32(file) != checksum)
+            {
+                if (file)
+                    fclose(file);
+                startDownload(thisFile.name, false, checksum);
+            }
+            else
+            {
+                fclose(file);
+                logger->log("%s already here", thisFile.name.c_str());
+            }
+            mUpdateIndex++;
+        }
+        else
+        {
+            // Download of updates completed
+            mDialogState = DialogState::DONE;
+            enablePlay();
             setLabel(_("Completed"));
-            mDownloadStatus = UPDATE_IDLE;
-            break;
-        case UPDATE_IDLE:
-            break;
+        }
+        break;
+
+    case DialogState::DONE:
+        break;
     }
 }

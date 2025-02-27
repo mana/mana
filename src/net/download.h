@@ -18,22 +18,22 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "utils/mutex.h"
+
 #include <cstdio>
-#include <string>
 #include <optional>
+#include <string>
 
 #include <curl/curl.h>
 
 #pragma once
 
-enum DownloadStatus
+enum class DownloadStatus
 {
-    DOWNLOAD_STATUS_CANCELLED = -3,
-    DOWNLOAD_STATUS_THREAD_ERROR = -2,
-    DOWNLOAD_STATUS_ERROR = -1,
-    DOWNLOAD_STATUS_STARTING = 0,
-    DOWNLOAD_STATUS_IN_PROGRESS,
-    DOWNLOAD_STATUS_COMPLETE
+    IN_PROGRESS,
+    CANCELED,
+    ERROR,
+    COMPLETE
 };
 
 struct SDL_Thread;
@@ -43,17 +43,13 @@ namespace Net {
 class Download
 {
     public:
-        /**
-         * Callback function for download updates.
-         *
-         * @param ptr       Pointer passed to Download constructor
-         * @param status    Current download status
-         * @param dltotal   Total number of bytes to download
-         * @param dlnow     Number of bytes downloaded so far
-         */
-        using DownloadUpdate = int (*)(void *, DownloadStatus, size_t, size_t);
+        struct State
+        {
+            DownloadStatus status = DownloadStatus::IN_PROGRESS;
+            float progress = 0.0f;
+        };
 
-        Download(void *ptr, const std::string &url, DownloadUpdate updateFunction);
+        Download(const std::string &url);
         ~Download();
 
         void addHeader(const char *header);
@@ -66,44 +62,66 @@ class Download
         void setFile(const std::string &filename,
                      std::optional<unsigned long> adler32 = {});
 
-        void setWriteFunction(curl_write_callback write);
+        void setUseBuffer();
 
         /**
          * Starts the download thread.
-         * @returns true  if thread was created
-         *          false if the thread could not be made or download wasn't
-         *                properly setup
+         * @returns whether the thread could be created
          */
         bool start();
 
         /**
-         * Cancels the download. Returns immediately, the cancelled status will
+         * Cancels the download. Returns immediately, the canceled status will
          * be noted in the next available update call.
          */
         void cancel();
+
+        /**
+         * Returns a view on the downloaded data.
+         */
+        std::string_view getBuffer() const;
+
+        State getState();
 
         const char *getError() const;
 
         static unsigned long fadler32(FILE *file);
 
     private:
-        static int downloadThread(void *ptr);
         static int downloadProgress(void *clientp,
                                     curl_off_t dltotal, curl_off_t dlnow,
                                     curl_off_t ultotal, curl_off_t ulnow);
-        void *mPtr;
+
+        static size_t writeBuffer(char *ptr, size_t size, size_t nmemb,
+                                  void *stream);
+
+        static int downloadThread(void *ptr);
+
+        ThreadSafe<State> mState;
         std::string mUrl;
-        struct {
-            unsigned cancel : 1;
-            unsigned memoryWrite: 1;
-        } mOptions;
+        bool mCancel = false;
+        bool mMemoryWrite = false;
         std::string mFileName;
-        curl_write_callback mWriteFunction = nullptr;
         std::optional<unsigned long> mAdler;
-        DownloadUpdate mUpdateFunction;
         SDL_Thread *mThread = nullptr;
         curl_slist *mHeaders = nullptr;
-        char *mError;
+        char mError[CURL_ERROR_SIZE];
+
+        /** Byte count currently downloaded in mMemoryBuffer. */
+        size_t mDownloadedBytes = 0;
+
+        /** Buffer for files downloaded to memory. */
+        char *mBuffer = nullptr;
 };
+
+inline Download::State Download::getState()
+{
+    return *mState.lock();
+}
+
+inline const char *Download::getError() const
+{
+    return mError;
+}
 
 } // namespace Net

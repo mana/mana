@@ -131,7 +131,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
                                    "doesn't exist."));
                     break;
                 case 2: // Invite request check failed...
-                    serverNotice(_("Trade cancelled due to an unknown "
+                    serverNotice(_("Trade canceled due to an unknown "
                                    "reason."));
                     break;
                 case 3: // Trade accepted
@@ -140,11 +140,11 @@ void TradeHandler::handleMessage(MessageIn &msg)
                                                       tradePartnerName.c_str()));
                     tradeWindow->setVisible(true);
                     break;
-                case 4: // Trade cancelled
+                case 4: // Trade canceled
                     if (player_relations.hasPermission(tradePartnerName,
                                                        PlayerPermissions::SPEECH_LOG))
                     {
-                        serverNotice(strprintf(_("Trade with %s cancelled."),
+                        serverNotice(strprintf(_("Trade with %s canceled."),
                                                tradePartnerName.c_str()));
                     }
                     // otherwise ignore silently

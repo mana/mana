@@ -25,8 +25,6 @@
 
 #include "net/download.h"
 
-#include "utils/mutex.h"
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
@@ -73,27 +71,6 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
 
     ~UpdaterWindow() override;
 
-    /**
-     * Set's progress bar status
-     */
-    void setProgress(float progress);
-
-    /**
-     * Set's label above progress
-     */
-    void setLabel(const std::string &);
-
-    /**
-     * Enables play button
-     */
-    void enable();
-
-    /**
-     * Loads and display news. Assumes the news file contents have been loaded
-     * into the memory buffer.
-     */
-    void loadNews();
-
     void action(const gcn::ActionEvent &event) override;
 
     void keyPressed(gcn::KeyEvent &keyEvent) override;
@@ -101,38 +78,38 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
     void logic() override;
 
 private:
-    void download();
+    bool cancel();
+    void play();
+
+    void setLabel(const std::string &);
+    void enablePlay();
+
+    void startDownload(const std::string &fileName,
+                       bool storeInMemory,
+                       std::optional<unsigned long> adler32 = {});
+    void downloadCompleted();
+
+    /**
+     * Loads and display news. Assumes the news file contents have been loaded
+     * into the memory buffer.
+     */
+    void loadNews();
 
     /**
      * Loads the updates this window has gotten into the resource manager
      */
     void loadUpdates();
 
-
-    /**
-     * A download callback for progress updates.
-     */
-    static int updateProgress(void *ptr, DownloadStatus status,
-                              size_t dltotal, size_t dlnow);
-
-    /**
-     * A libcurl callback for writing to memory.
-     */
-    static size_t memoryWrite(char *ptr, size_t size, size_t nmemb,
-                              void *stream);
-
-    enum UpdateDownloadStatus
+    enum class DialogState
     {
-        UPDATE_ERROR,
-        UPDATE_IDLE,
-        UPDATE_LIST,
-        UPDATE_COMPLETE,
-        UPDATE_NEWS,
-        UPDATE_RESOURCES
+        DOWNLOAD_NEWS,
+        DOWNLOAD_LIST,
+        DOWNLOAD_RESOURCES,
+        DONE,
     };
 
     /** Status of the current download. */
-    UpdateDownloadStatus mDownloadStatus = UPDATE_NEWS;
+    DialogState mDialogState = DialogState::DOWNLOAD_NEWS;
 
     /** Host where we get the updated files. */
     std::string mUpdateHost;
@@ -142,33 +119,6 @@ private:
 
     /** The file currently downloading. */
     std::string mCurrentFile;
-
-    /** The new label caption to be set in the logic method. */
-    std::string mNewLabelCaption;
-
-    /** The new progress value to be set in the logic method. */
-    float mDownloadProgress = 0.0f;
-
-    /** The mutex used to guard access to mNewLabelCaption and mDownloadProgress. */
-    Mutex mDownloadMutex;
-
-    /** The Adler32 checksum of the file currently downloading. */
-    unsigned long mCurrentChecksum = 0;
-
-    /** A flag to indicate whether to use a memory buffer or a regular file. */
-    bool mStoreInMemory = true;
-
-    /** Flag that show if current download is complete. */
-    bool mDownloadComplete = true;
-
-    /** Flag that show if the user has canceled the update. */
-    bool mUserCancel = false;
-
-    /** Byte count currently downloaded in mMemoryBuffer. */
-    size_t mDownloadedBytes = 0;
-
-    /** Buffer for files downloaded to memory. */
-    char *mMemoryBuffer = nullptr;
 
     /** Download handle. */
     std::unique_ptr<Net::Download> mDownload;

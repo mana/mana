@@ -25,8 +25,7 @@
 
 #include "net/download.h"
 #include "net/serverinfo.h"
-
-#include "utils/mutex.h"
+#include "utils/xml.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
@@ -90,7 +89,6 @@ class ServerDialog : public Window,
 {
     public:
         ServerDialog(ServerInfo *serverInfo, const std::string &dir);
-
         ~ServerDialog() override;
 
         /**
@@ -110,10 +108,8 @@ class ServerDialog : public Window,
         void logic() override;
 
     protected:
-        friend class ServersListModel;
-        Mutex *getMutex() { return &mMutex; }
-
         friend class CustomServerDialog;
+
         /**
          * Saves the new server entry in the custom server list.
          * Removes the given entry when the serverInfo is empty.
@@ -128,11 +124,9 @@ class ServerDialog : public Window,
          */
         void downloadServerList();
         void loadServers();
+        void loadServer(XML::Node serverNode);
 
         void loadCustomServers();
-
-        static int downloadUpdate(void *ptr, DownloadStatus status,
-                                  size_t dltotal, size_t dlnow);
 
         Label  *mDescription;
         Button *mQuitButton;
@@ -146,25 +140,9 @@ class ServerDialog : public Window,
 
         const std::string &mDir;
 
-        enum ServerDialogDownloadStatus
-        {
-            DOWNLOADING_ERROR,
-            DOWNLOADING_PREPARING,
-            DOWNLOADING_IDLE,
-            DOWNLOADING_IN_PROGRESS,
-            DOWNLOADING_COMPLETE,
-            DOWNLOADING_OVER
-        };
-
-        /** Status of the current download. */
-        ServerDialogDownloadStatus mDownloadStatus = DOWNLOADING_PREPARING;
-
         std::unique_ptr<Net::Download> mDownload;
+        bool mDownloadDone = false;
         Label *mDownloadText;
-
-        Mutex mMutex;
-        float mDownloadProgress = 0.0f;
-
         ServerInfos mServers;
         ServerInfo *mServerInfo;
 };

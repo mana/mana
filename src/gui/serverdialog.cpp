@@ -43,7 +43,6 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-#include "utils/xml.h"
 
 #include <guichan/font.hpp>
 
@@ -59,13 +58,11 @@ ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
 
 int ServersListModel::getNumberOfElements()
 {
-    MutexLocker lock(mParent->getMutex());
     return mServers->size();
 }
 
 std::string ServersListModel::getElementAt(int elementIndex)
 {
-    MutexLocker lock(mParent->getMutex());
     const ServerInfo &server = mServers->at(elementIndex);
     std::string myServer;
     myServer += server.hostname;
@@ -162,7 +159,6 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     loadCustomServers();
 
     mServersListModel = new ServersListModel(&mServers, this);
-
     mServersList = new ServersListBox(mServersListModel);
 
     auto *usedScroll = new ScrollArea(mServersList);
@@ -225,14 +221,6 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
 ServerDialog::~ServerDialog()
 {
-    if (mDownload)
-    {
-        mDownload->cancel();
-
-        // Make sure thread is gone before deleting the ServersListModel
-        mDownload.reset();
-    }
-
     delete mServersListModel;
 }
 
@@ -345,7 +333,6 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     // Update the server and post fields according to the new selection
     const ServerInfo &myServer = mServersListModel->getServer(index);
     mDescription->setCaption(myServer.description);
-
     mDeleteButton->setEnabled(myServer.save);
     mModifyButton->setEnabled(myServer.save);
 }
@@ -362,36 +349,42 @@ void ServerDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
 
 void ServerDialog::logic()
 {
-    {
-        MutexLocker lock(&mMutex);
-        if (mDownloadStatus == DOWNLOADING_COMPLETE)
-        {
-            mDownloadStatus = DOWNLOADING_OVER;
-
-            mDescription->setCaption(mServers[0].description);
-            mDownloadText->setCaption(std::string());
-        }
-        else if (mDownloadStatus == DOWNLOADING_IN_PROGRESS)
-        {
-            mDownloadText->setCaption(strprintf(_("Downloading server list..."
-                                                 "%2.0f%%"),
-                                      mDownloadProgress * 100));
-        }
-        else if (mDownloadStatus == DOWNLOADING_IDLE)
-        {
-            mDownloadText->setCaption(_("Waiting for server..."));
-        }
-        else if (mDownloadStatus == DOWNLOADING_PREPARING)
-        {
-            mDownloadText->setCaption(_("Preparing download"));
-        }
-        else if (mDownloadStatus == DOWNLOADING_ERROR)
-        {
-            mDownloadText->setCaption(_("Error retreiving server list!"));
-        }
-    }
-
     Window::logic();
+
+    if (mDownloadDone)
+        return;
+
+    auto state = mDownload->getState();
+
+    switch (state.status) {
+    case DownloadStatus::IN_PROGRESS:
+        mDownloadText->setCaption(strprintf(_("Downloading server list..."
+                                              "%2.0f%%"),
+                                            state.progress * 100));
+        break;
+
+    case DownloadStatus::CANCELED:
+    case DownloadStatus::ERROR:
+        mDownloadDone = true;
+        logger->log("Error retrieving server list: %s", mDownload->getError());
+        mDownloadText->setCaption(_("Error retrieving server list!"));
+        break;
+
+    case DownloadStatus::COMPLETE:
+        mDownloadDone = true;
+        loadServers();
+
+        if (mServers.empty())
+        {
+            mDownloadText->setCaption(_("No servers found!"));
+        }
+        else
+        {
+            mDownloadText->setCaption(std::string());
+            mDescription->setCaption(mServers[0].description);
+        }
+        break;
+    }
 }
 
 void ServerDialog::downloadServerList()
@@ -406,8 +399,7 @@ void ServerDialog::downloadServerList()
     if (listFile.empty())
         listFile = "https://www.manasource.org/serverlist.xml";
 
-    mDownload = std::make_unique<Net::Download>(this, listFile,
-                                                &ServerDialog::downloadUpdate);
+    mDownload = std::make_unique<Net::Download>(listFile);
     mDownload->setFile(mDir + "/serverlist.xml");
     mDownload->start();
 }
@@ -433,89 +425,92 @@ void ServerDialog::loadServers()
 
     for (auto serverNode : rootNode.children())
     {
-        if (serverNode.name() != "server")
-            continue;
+        if (serverNode.name() == "server")
+            loadServer(serverNode);
+    }
+}
 
-        ServerInfo server;
+void ServerDialog::loadServer(XML::Node serverNode)
+{
+    ServerInfo server;
 
-        std::string type = serverNode.getProperty("type", "unknown");
+    std::string type = serverNode.getProperty("type", "unknown");
 
-        server.type = ServerInfo::parseType(type);
+    server.type = ServerInfo::parseType(type);
 
-        // Ignore unknown server types
-        if (server.type == ServerType::UNKNOWN
+    // Ignore unknown server types
+    if (server.type == ServerType::UNKNOWN
 #ifndef MANASERV_SUPPORT
-            || server.type == ServerType::MANASERV
+        || server.type == ServerType::MANASERV
 #endif
         )
-        {
-            logger->log("Ignoring server entry with unknown type: %s",
-                        type.c_str());
-            continue;
-        }
-
-        server.name = serverNode.getProperty("name", std::string());
-
-        std::string version = serverNode.getProperty("minimumVersion",
-                                               std::string());
-
-        bool meetsMinimumVersion = compareStrI(version, PACKAGE_VERSION) <= 0;
-
-        // For display in the list
-        if (meetsMinimumVersion)
-            version.clear();
-        else if (version.empty())
-            version = _("requires a newer version");
-        else
-            version = strprintf(_("requires v%s"), version.c_str());
-
-        for (auto subNode : serverNode.children())
-        {
-            if (subNode.name() == "connection")
-            {
-                server.hostname = subNode.getProperty("hostname", std::string());
-                server.port = subNode.getProperty("port", 0);
-                if (server.port == 0)
-                {
-                    // If no port is given, use the default for the given type
-                    server.port = ServerInfo::defaultPortForServerType(server.type);
-                }
-            }
-            else if (subNode.name() == "description")
-            {
-                server.description = subNode.textContent();
-            }
-            else if (subNode.name() == "persistentIp")
-            {
-                const auto text = subNode.textContent();
-                server.persistentIp = text == "1" || text == "true";
-            }
-        }
-
-        server.version.first = gui->getFont()->getWidth(version);
-        server.version.second = version;
-
-        // Add the server to the local list if it's not already present
-        bool found = false;
-        int i = 0;
-        for (auto &s : mServers)
-        {
-            if (s == server)
-            {
-                // Use the name listed in the server list
-                s.name = server.name;
-                s.version = server.version;
-                s.description = server.description;
-                mServersListModel->setVersionString(i, version);
-                found = true;
-                break;
-            }
-            ++i;
-        }
-
-        if (!found)
-            mServers.push_back(server);
+    {
+        logger->log("Ignoring server entry with unknown type: %s",
+                    type.c_str());
+        return;
     }
+
+    server.name = serverNode.getProperty("name", std::string());
+
+    std::string version = serverNode.getProperty("minimumVersion",
+                                                 std::string());
+
+    bool meetsMinimumVersion = compareStrI(version, PACKAGE_VERSION) <= 0;
+
+    // For display in the list
+    if (meetsMinimumVersion)
+        version.clear();
+    else if (version.empty())
+        version = _("requires a newer version");
+    else
+        version = strprintf(_("requires v%s"), version.c_str());
+
+    for (auto subNode : serverNode.children())
+    {
+        if (subNode.name() == "connection")
+        {
+            server.hostname = subNode.getProperty("hostname", std::string());
+            server.port = subNode.getProperty("port", 0);
+            if (server.port == 0)
+            {
+                // If no port is given, use the default for the given type
+                server.port = ServerInfo::defaultPortForServerType(server.type);
+            }
+        }
+        else if (subNode.name() == "description")
+        {
+            server.description = subNode.textContent();
+        }
+        else if (subNode.name() == "persistentIp")
+        {
+            const auto text = subNode.textContent();
+            server.persistentIp = text == "1" || text == "true";
+        }
+    }
+
+    server.version.first = gui->getFont()->getWidth(version);
+    server.version.second = version;
+
+    // Add the server to the local list if it's not already present
+    bool found = false;
+    int i = 0;
+    for (auto &s : mServers)
+    {
+        if (s == server)
+        {
+            // Use the name listed in the server list
+            s.name = server.name;
+            s.version = server.version;
+            s.description = server.description;
+            mServersListModel->setVersionString(i, version);
+            found = true;
+            break;
+        }
+        ++i;
+    }
+
+    if (!found)
+        mServers.push_back(server);
 }
 
 void ServerDialog::loadCustomServers()
@@ -558,38 +553,6 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
     // Restore the correct description
     if (index < 0)
         index = 0;
-    mDescription->setCaption(mServers[index].description);
-}
-
-int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,
-                                 size_t dltotal, size_t dlnow)
-{
-    if (status == DOWNLOAD_STATUS_CANCELLED)
-        return -1;
-
-    auto *sd = reinterpret_cast<ServerDialog*>(ptr);
-    MutexLocker lock(&sd->mMutex);
-
-    if (status == DOWNLOAD_STATUS_COMPLETE)
-    {
-        sd->loadServers();
-        sd->mDownloadStatus = DOWNLOADING_COMPLETE;
-    }
-    else if (status < 0)
-    {
-        logger->log("Error retreiving server list: %s",
-                    sd->mDownload->getError());
-        sd->mDownloadStatus = DOWNLOADING_ERROR;
-    }
-    else
-    {
-        float progress = 0.0f;
-        if (dltotal > 0)
-            progress = static_cast<float>(dlnow) / dltotal;
-
-        sd->mDownloadStatus = DOWNLOADING_IN_PROGRESS;
-        sd->mDownloadProgress = progress;
-    }
-
-    return 0;
+    if (static_cast<size_t>(index) < mServers.size())
+        mDescription->setCaption(mServers[index].description);
 }

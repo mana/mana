@@ -59,29 +59,25 @@ unsigned long Download::fadler32(FILE *file)
     return adler;
 }
 
-Download::Download(void *ptr,
-                   const std::string &url,
-                   DownloadUpdate updateFunction)
-    : mPtr(ptr)
-    , mUrl(url)
-    , mUpdateFunction(updateFunction)
+Download::Download(const std::string &url)
+    : mUrl(url)
 {
-    mError = (char*) malloc(CURL_ERROR_SIZE);
     mError[0] = 0;
-
-    mOptions.cancel = false;
 }
 
 Download::~Download()
 {
+    mCancel = true;
     SDL_WaitThread(mThread, nullptr);
 
     curl_slist_free_all(mHeaders);
-    free(mError);
+    free(mBuffer);
 }
 
 void Download::addHeader(const char *header)
 {
+    assert(!mThread);   // Cannot add headers after starting download
+
     mHeaders = curl_slist_append(mHeaders, header);
 }
 
@@ -94,19 +90,24 @@ void Download::noCache()
 void Download::setFile(const std::string &filename,
                        std::optional<unsigned long> adler32)
 {
-    mOptions.memoryWrite = false;
+    assert(!mThread);   // Cannot set file after starting download
+
+    mMemoryWrite = false;
     mFileName = filename;
     mAdler = adler32;
 }
 
-void Download::setWriteFunction(curl_write_callback write)
+void Download::setUseBuffer()
 {
-    mOptions.memoryWrite = true;
-    mWriteFunction = write;
+    assert(!mThread);   // Cannot set write function after starting download
+
+    mMemoryWrite = true;
 }
 
 bool Download::start()
 {
+    assert(!mThread);   // Download already started
+
     logger->log("Starting download: %s", mUrl.c_str());
 
     mThread = SDL_CreateThread(downloadThread, "Download", this);
@@ -115,8 +116,7 @@ bool Download::start()
     {
         logger->log("%s", DOWNLOAD_ERROR_MESSAGE_THREAD);
         strncpy(mError, DOWNLOAD_ERROR_MESSAGE_THREAD, CURL_ERROR_SIZE - 1);
-        mUpdateFunction(mPtr, DOWNLOAD_STATUS_THREAD_ERROR, 0, 0);
-
+        mState.lock()->status = DownloadStatus::ERROR;
         return false;
     }
 
@@ -126,23 +126,49 @@ bool Download::start()
 void Download::cancel()
 {
     logger->log("Canceling download: %s", mUrl.c_str());
-    mOptions.cancel = true;
+    mCancel = true;
 }
 
-const char *Download::getError() const
+std::string_view Download::getBuffer() const
 {
-    return mError;
+    assert(mMemoryWrite);   // Buffer not used
+    return std::string_view(mBuffer, mDownloadedBytes);
 }
 
+/**
+ * A libcurl callback for reporting progress.
+ */
 int Download::downloadProgress(void *clientp,
                                curl_off_t dltotal, curl_off_t dlnow,
                                curl_off_t ultotal, curl_off_t ulnow)
 {
     auto *d = reinterpret_cast<Download*>(clientp);
-    DownloadStatus status = d->mOptions.cancel ? DOWNLOAD_STATUS_CANCELLED
-                                               : DOWNLOAD_STATUS_IN_PROGRESS;
 
-    return d->mUpdateFunction(d->mPtr, status, (size_t) dltotal, (size_t) dlnow);
+    auto state = d->mState.lock();
+    state->status = DownloadStatus::IN_PROGRESS;
+    state->progress = 0.0f;
+    if (dltotal > 0)
+        state->progress = static_cast<float>(dlnow) / dltotal;
+
+    return d->mCancel;
+}
+
+/**
+ * A libcurl callback for writing to memory.
+ */
+size_t Download::writeBuffer(char *ptr, size_t size, size_t nmemb, void *stream)
+{
+    auto *d = reinterpret_cast<Download *>(stream);
+
+    const size_t totalMem = size * nmemb;
+    d->mBuffer = (char *) realloc(d->mBuffer, d->mDownloadedBytes + totalMem);
+    if (d->mBuffer)
+    {
+        memcpy(d->mBuffer + d->mDownloadedBytes, ptr, totalMem);
+        d->mDownloadedBytes += totalMem;
+    }
+
+    return totalMem;
 }
 
 int Download::downloadThread(void *ptr)
@@ -151,13 +177,11 @@ int Download::downloadThread(void *ptr)
     bool complete = false;
     std::string outFilename;
 
-    if (!d->mOptions.memoryWrite)
+    if (!d->mMemoryWrite)
         outFilename = d->mFileName + ".part";
 
-    for (int attempts = 0; attempts < 3 && !complete && !d->mOptions.cancel; ++attempts)
+    for (int attempts = 0; attempts < 3 && !complete && !d->mCancel; ++attempts)
     {
-        d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_STARTING, 0, 0);
-
         CURL *curl = curl_easy_init();
         if (!curl)
             break;
@@ -169,11 +193,11 @@ int Download::downloadThread(void *ptr)
 
         FILE *file = nullptr;
 
-        if (d->mOptions.memoryWrite)
+        if (d->mMemoryWrite)
         {
             curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, d->mWriteFunction);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, d->mPtr);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &Download::writeBuffer);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, ptr);
         }
         else
         {
@@ -189,7 +213,7 @@ int Download::downloadThread(void *ptr)
         curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, d->mError);
         curl_easy_setopt(curl, CURLOPT_URL, d->mUrl.c_str());
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
-        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, downloadProgress);
+        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, &Download::downloadProgress);
         curl_easy_setopt(curl, CURLOPT_XFERINFODATA, ptr);
         curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15);
@@ -199,7 +223,7 @@ int Download::downloadThread(void *ptr)
 
         if (res == CURLE_ABORTED_BY_CALLBACK)
         {
-            d->mOptions.cancel = true;
+            d->mCancel = true;
 
             if (file)
             {
@@ -224,9 +248,9 @@ int Download::downloadThread(void *ptr)
             break;
         }
 
-        if (!d->mOptions.memoryWrite)
+        if (!d->mMemoryWrite)
         {
-            // Don't check resources.xml checksum
+            // Check the checksum if available
             if (d->mAdler)
             {
                 unsigned long adler = fadler32(file);
@@ -274,13 +298,13 @@ int Download::downloadThread(void *ptr)
             fclose(file);
     }
 
-    if (!d->mOptions.cancel)
-    {
-        if (complete)
-            d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_COMPLETE, 0, 0);
-        else
-            d->mUpdateFunction(d->mPtr, DOWNLOAD_STATUS_ERROR, 0, 0);
-    }
+    auto state = d->mState.lock();
+    if (d->mCancel)
+        state->status = DownloadStatus::CANCELED;
+    else if (complete)
+        state->status = DownloadStatus::COMPLETE;
+    else
+        state->status = DownloadStatus::ERROR;
 
     return 0;
 }
