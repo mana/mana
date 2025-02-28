@@ -50,11 +50,12 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-    // Put the orphaned resources into the main list for cleanup
-    mResources.insert(mOrphanedResources.begin(), mOrphanedResources.end());
-
     auto cleanupResources = [&](auto match)
     {
+        // Include any orphaned resources into the main list for cleanup
+        mResources.insert(mOrphanedResources.begin(), mOrphanedResources.end());
+        mOrphanedResources.clear();
+
         for (auto iter = mResources.begin(); iter != mResources.end(); )
         {
             if (match(iter->second))
@@ -76,8 +77,9 @@ ResourceManager::~ResourceManager()
     cleanupResources([](Resource *res) { return dynamic_cast<ImageSet *>(res); });
 
     // Release remaining resources
-    for (const auto &resource : mResources)
-        cleanUp(resource.second);
+    cleanupResources([](Resource *res) { return true; });
+
+    assert(mOrphanedResources.empty());
 }
 
 void ResourceManager::cleanUp(Resource *res)
@@ -98,7 +100,7 @@ void ResourceManager::cleanOrphans()
 {
     // Delete orphaned resources after 30 seconds.
     time_t oldest = time(nullptr);
-    time_t threshold = oldest - 30;
+    const time_t threshold = oldest - 30;
 
     if (mOrphanedResources.empty() || mOldestOrphan >= threshold)
         return;
