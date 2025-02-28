@@ -368,8 +368,6 @@ set(SRCS
     resources/wallpaper.h
     utils/base64.cpp
     utils/base64.h
-    utils/bufferedrwops.c
-    utils/bufferedrwops.h
     utils/copynpaste.cpp
     utils/copynpaste.h
     utils/dtor.h

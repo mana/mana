@@ -23,7 +23,6 @@
 // Suppress deprecation warnings for PHYSFS_getUserDir
 #define PHYSFS_DEPRECATED
 
-#include "utils/bufferedrwops.h"
 #include "utils/physfsrwops.h"
 
 #include <optional>
@@ -267,18 +266,23 @@ inline SDL_RWops *openRWops(const std::string &path)
 /**
  * Creates a buffered SDL_RWops.
  *
- * Used to workaround a performance issue when SDL_mixer is using stb_vorbis.
- * The overhead of calling PHYSFS_readBytes each time is too high because
- * stb_vorbis requests the file one byte at a time.
+ * Used to workaround a performance issue when SDL_mixer is using stb_vorbis,
+ * in which case the file is read one byte at a time.
  *
  * See https://github.com/libsdl-org/SDL_mixer/issues/670
  */
-inline SDL_RWops *openBufferedRWops(const std::string &path)
+inline SDL_RWops *openBufferedRWops(const std::string &path,
+                                    PHYSFS_uint64 bufferSize = 2048)
 {
-    auto rw = PHYSFSRWOPS_openRead(path.c_str());
-    if (auto buffered = createBufferedRWops(rw))
-        return buffered;
-    return rw;
+    if (auto file = PHYSFS_openRead(path.c_str()))
+    {
+        PHYSFS_setBuffer(file, bufferSize);
+        if (auto rw = PHYSFSRWOPS_makeRWops(file))
+            return rw;
+        else
+            PHYSFS_close(file);
+    }
+    return nullptr;
 }
 
 inline void *loadFile(const std::string &path, size_t &datasize)
