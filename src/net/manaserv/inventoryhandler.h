@@ -36,7 +36,6 @@ class EquipBackend final : public Equipment::Backend, public EventListener
 {
     public:
         EquipBackend();
-        ~EquipBackend() override;
 
         Item *getEquipment(int slotIndex) const override;
         std::string getSlotName(int slotIndex) const override;

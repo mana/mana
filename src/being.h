@@ -274,6 +274,9 @@ class Being : public ActorSprite, public EventListener
         void setSpriteColor(unsigned slot,
                             const std::string &color = std::string());
 
+        unsigned getSpriteCount() const
+        { return mSpriteStates.size(); }
+
         bool drawnWhenBehind() const override;
 
         /**

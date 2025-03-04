@@ -51,11 +51,6 @@ EquipBackend::EquipBackend()
     mVisibleSlots = 0;
 }
 
-EquipBackend::~EquipBackend()
-{
-    clear();
-}
-
 Item *EquipBackend::getEquipment(int slotIndex) const
 {
     auto it = mSlots.find(slotIndex);
@@ -84,7 +79,8 @@ void EquipBackend::triggerUnequip(int slotIndex) const
 
 void EquipBackend::clear()
 {
-    mSlots.clear();
+    for (auto &[_, slot] : mSlots)
+        slot.inventorySlot = -1;
 }
 
 void EquipBackend::equip(int inventorySlot, int equipmentSlot)
@@ -131,7 +127,7 @@ void EquipBackend::event(Event::Channel, const Event &event)
 
 void EquipBackend::readEquipFile()
 {
-    clear();
+    mSlots.clear();
 
     XML::Document doc(EQUIP_FILE);
     XML::Node rootNode = doc.rootNode();
@@ -276,9 +272,9 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
                     if (equipmentSlot > 0)
                         mEquipBackend.equip(slot, equipmentSlot);
-                    else
-                        mEquipBackend.unequip(slot);
                 }
+
+                inventoryWindow->updateButtons();
             }
             break;
 
@@ -297,12 +293,14 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 const int inventorySlot = msg.readInt16();
                 const int equipmentSlot = msg.readInt16();
                 mEquipBackend.equip(inventorySlot, equipmentSlot);
+                inventoryWindow->updateButtons();
             }
 
         case GPMSG_UNEQUIP:
             {
                 const int inventorySlot = msg.readInt16();
                 mEquipBackend.unequip(inventorySlot);
+                inventoryWindow->updateButtons();
             }
             break;
     }

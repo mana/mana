@@ -112,16 +112,35 @@ static void handleLooks(Being *being, MessageIn &msg)
     being->setSprite(SPRITE_LAYER_HAIR, hairStyle * -1,
                      hairDB.getHairColor(hairColor));
 
-    if (msg.getUnreadLength() < 1)
-        return;
+    std::map<unsigned, int> equippedSlots;
 
-    int lookChanges = msg.readInt8();
-    while (lookChanges-- > 0)
+    if (msg.getUnreadLength() > 1) {
+        int equippedSlotCount = msg.readInt8();
+        while (equippedSlotCount-- > 0) {
+            unsigned slot = msg.readInt8();
+            int itemId = msg.readInt16();
+            equippedSlots[slot] = itemId;
+        }
+    }
+
+    unsigned endSlot = equippedSlots.empty() ? 0 : equippedSlots.rbegin()->first + 1;
+    if (being->getSpriteCount() > endSlot + FIXED_SPRITE_LAYER_SIZE)
+        endSlot = being->getSpriteCount() - FIXED_SPRITE_LAYER_SIZE;
+
+    for (unsigned slot = 0; slot < endSlot; ++slot)
     {
-        unsigned int slotTypeId = msg.readInt8();
-        being->setSprite(slotTypeId + FIXED_SPRITE_LAYER_SIZE,
-                         msg.readInt16(), "",
-                         Net::getInventoryHandler()->isWeaponSlot(slotTypeId));
+        auto it = equippedSlots.find(slot);
+        if (it == equippedSlots.end())
+        {
+            being->setSprite(slot + FIXED_SPRITE_LAYER_SIZE, 0);
+        }
+        else
+        {
+            being->setSprite(slot + FIXED_SPRITE_LAYER_SIZE,
+                             it->second,
+                             std::string(),
+                             Net::getInventoryHandler()->isWeaponSlot(slot));
+        }
     }
 }
 
