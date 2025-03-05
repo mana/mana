@@ -74,8 +74,7 @@ bool CompoundSprite::update(int time)
 
 bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
 {
-    if (mNeedsRedraw)
-        redraw();
+    doRedraw();
 
     if (mSprites.empty()) // Nothing to draw
         return false;
@@ -161,12 +160,6 @@ void CompoundSprite::ensureSize(size_t layerCount)
         return;
 
     mSprites.resize(layerCount);
-}
-
-void CompoundSprite::doRedraw()
-{
-    if (mNeedsRedraw)
-        redraw();
 }
 
 int CompoundSprite::getMaxDuration() const

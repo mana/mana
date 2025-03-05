@@ -38,15 +38,12 @@ public:
     /**
      * Gets the width in pixels of the first sprite in the list.
      */
-    int getWidth() const { return mWidth; }
+    int getWidth() const { doRedraw(); return mWidth; }
 
     /**
      * Gets the height in pixels of the first sprite in the list.
      */
-    int getHeight() const { return mHeight; }
-
-    int getOffsetX() const { return mOffsetX; }
-    int getOffsetY() const { return mOffsetY; }
+    int getHeight() const { doRedraw(); return mHeight; }
 
     float getAlpha() const { return mAlpha; }
     void setAlpha(float alpha) { mAlpha = alpha; }
@@ -64,7 +61,7 @@ public:
     void clear();
     void ensureSize(size_t layerCount);
 
-    void doRedraw();
+    void doRedraw() const;
 
 private:
     void redraw() const;
@@ -80,3 +77,9 @@ private:
     float mAlpha = 1.0f;
     std::vector<Sprite*> mSprites;
 };
+
+inline void CompoundSprite::doRedraw() const
+{
+    if (mNeedsRedraw)
+        redraw();
+}
