@@ -908,13 +908,10 @@ int Client::exec()
 
                 case STATE_EXIT:
                     logger->log("State: EXIT");
-                    Net::unload();
                     break;
 
                 case STATE_FORCE_QUIT:
                     logger->log("State: FORCE QUIT");
-                    if (Net::getGeneralHandler())
-                        Net::getGeneralHandler()->unload();
                     mState = STATE_EXIT;
                   break;
 
@@ -931,6 +928,8 @@ int Client::exec()
             }
         }
     }
+
+    Net::unload();
 
     return 0;
 }

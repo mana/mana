@@ -40,11 +40,6 @@ Guild *taGuild;
 
 GuildHandler::GuildHandler()
 {
-    static const Uint16 _messages[] = {
-        0
-    };
-    handledMessages = _messages;
-
     guildHandler = this;
 }
 

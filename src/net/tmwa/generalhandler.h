@@ -48,8 +48,6 @@ class GeneralHandler final : public MessageHandler, public Net::GeneralHandler,
 
         void flushNetwork() override;
 
-        void clearHandlers() override;
-
         void event(Event::Channel channel, const Event &event) override;
 
     protected:

@@ -45,6 +45,8 @@ Connection::~Connection()
 bool Connection::connect(const std::string &address, enet_uint16 port)
 {
     logger->log("Net::Connection::connect(%s, %i)", address.c_str(), port);
+    if (mConnection)
+        disconnect();
 
     if (address.empty())
     {
@@ -87,8 +89,7 @@ void Connection::disconnect()
 
 bool Connection::isConnected()
 {
-    return (mConnection) ?
-                    (mConnection->state == ENET_PEER_STATE_CONNECTED) : false;
+    return mConnection && mConnection->state == ENET_PEER_STATE_CONNECTED;
 }
 
 void Connection::send(const ManaServ::MessageOut &msg)

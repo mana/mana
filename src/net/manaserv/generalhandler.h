@@ -43,8 +43,6 @@ class GeneralHandler : public Net::GeneralHandler, public EventListener
 
         void flushNetwork() override;
 
-        void clearHandlers() override;
-
         void event(Event::Channel channel, const Event &event) override;
 
     protected:

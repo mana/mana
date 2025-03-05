@@ -124,7 +124,8 @@ Net::TradeHandler *Net::getTradeHandler()
 
 namespace Net
 {
-ServerType networkType = ServerType::UNKNOWN;
+
+static ServerType networkType = ServerType::UNKNOWN;
 
 void connectToServer(ServerInfo &server)
 {
@@ -146,20 +147,17 @@ void connectToServer(ServerInfo &server)
     }
     else
     {
-        if (networkType != ServerType::UNKNOWN && getGeneralHandler() != nullptr)
-        {
-            getGeneralHandler()->unload();
-        }
+        unload();
 
         switch (server.type)
         {
 #ifdef MANASERV_SUPPORT
             case ServerType::MANASERV:
-                new ManaServ::GeneralHandler;
+                generalHandler = new ManaServ::GeneralHandler;
                 break;
 #endif
             case ServerType::TMWATHENA:
-                new TmwAthena::GeneralHandler;
+                generalHandler = new TmwAthena::GeneralHandler;
                 break;
             default:
                 logger->error(_("Server protocol unsupported"));
@@ -178,9 +176,10 @@ void connectToServer(ServerInfo &server)
 
 void unload()
 {
-    if (GeneralHandler *handler = getGeneralHandler())
+    if (generalHandler)
     {
-        handler->unload();
+        generalHandler->unload();
+        delete generalHandler;
     }
 }
 

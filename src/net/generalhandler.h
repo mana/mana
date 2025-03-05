@@ -35,8 +35,6 @@ class GeneralHandler
         virtual void unload() = 0;
 
         virtual void flushNetwork() = 0;
-
-        virtual void clearHandlers() = 0;
 };
 
 } // namespace Net

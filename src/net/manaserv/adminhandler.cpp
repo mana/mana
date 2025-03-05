@@ -31,17 +31,11 @@ extern Connection *chatServerConnection;
 
 AdminHandler::AdminHandler()
 {
-    static const uint16_t _messages[] =
-    {
-        0
-    };
-    handledMessages = _messages;
     adminHandler = this;
 }
 
 void AdminHandler::handleMessage(MessageIn &msg)
 {
-
 }
 
 void AdminHandler::kick(const std::string &name)

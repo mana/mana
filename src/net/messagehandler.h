@@ -31,9 +31,12 @@ namespace Net {
 class MessageHandler
 {
     public:
-        const uint16_t *handledMessages;
+        const uint16_t *handledMessages = _no_messages;
 
         virtual ~MessageHandler() {}
+
+    private:
+        static constexpr uint16_t _no_messages[] = { 0 };
 };
 
 } // namespace Net

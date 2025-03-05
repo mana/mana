@@ -47,8 +47,6 @@
 
 #include "resources/attributes.h"
 
-extern Net::GeneralHandler *generalHandler;
-
 extern ManaServ::LoginHandler *loginHandler;
 
 namespace ManaServ {
@@ -83,8 +81,6 @@ GeneralHandler::GeneralHandler():
     accountServerConnection = getConnection();
     gameServerConnection = getConnection();
     chatServerConnection = getConnection();
-
-    generalHandler = this;
 
     listen(Event::ClientChannel);
     listen(Event::GameChannel);
@@ -129,18 +125,28 @@ void GeneralHandler::reload()
 
 void GeneralHandler::unload()
 {
-    clearHandlers();
+    clearNetworkHandlers();
 
     if (accountServerConnection)
+    {
         accountServerConnection->disconnect();
-    if (gameServerConnection)
-        gameServerConnection->disconnect();
-    if (chatServerConnection)
-        chatServerConnection->disconnect();
+        delete accountServerConnection;
+        accountServerConnection = nullptr;
+    }
 
-    delete accountServerConnection;
-    delete gameServerConnection;
-    delete chatServerConnection;
+    if (gameServerConnection)
+    {
+        gameServerConnection->disconnect();
+        delete gameServerConnection;
+        gameServerConnection = nullptr;
+    }
+
+    if (chatServerConnection)
+    {
+        chatServerConnection->disconnect();
+        delete chatServerConnection;
+        chatServerConnection = nullptr;
+    }
 
     finalize();
 }
@@ -155,11 +161,6 @@ void GeneralHandler::flushNetwork()
         loginHandler->reconnect();
         Client::setState(STATE_GET_CHARACTERS);
     }
-}
-
-void GeneralHandler::clearHandlers()
-{
-    clearNetworkHandlers();
 }
 
 void GeneralHandler::event(Event::Channel channel,

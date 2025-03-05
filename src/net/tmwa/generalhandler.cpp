@@ -60,8 +60,6 @@
 
 #include <list>
 
-extern Net::GeneralHandler *generalHandler;
-
 namespace TmwAthena {
 
 ServerInfo charServer;
@@ -92,7 +90,6 @@ GeneralHandler::GeneralHandler():
         0
     };
     handledMessages = _messages;
-    generalHandler = this;
 
     std::list<ItemStat> stats;
     stats.emplace_back("str", _("Strength %+d"));
@@ -155,6 +152,7 @@ void GeneralHandler::handleMessage(MessageIn &msg)
 
 void GeneralHandler::load()
 {
+    // This sets mNetwork to the created Network instance
     (new Network)->registerHandler(this);
 
     mNetwork->registerHandler(mAdminHandler.get());
@@ -207,11 +205,6 @@ void GeneralHandler::flushNetwork()
 
         Client::setState(STATE_ERROR);
     }
-}
-
-void GeneralHandler::clearHandlers()
-{
-    mNetwork->clearHandlers();
 }
 
 void GeneralHandler::event(Event::Channel channel,
