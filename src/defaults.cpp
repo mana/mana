@@ -98,6 +98,11 @@ DefaultsData* getPathsDefaults()
     AddDEF(pathsData, "hitEffectId", 26);
     AddDEF(pathsData, "criticalHitEffectId", 28);
 
+    // This is makes sure that actors positioned on the center of a tile have
+    // their sprite aligned to the bottom of that tile. The default maintains
+    // compatibility with existing sprites.
+    AddDEF(pathsData, "spriteOffsetY", 16);
+
     AddDEF(pathsData, "minimaps", "graphics/minimaps/");
     AddDEF(pathsData, "maps", "maps/");
 

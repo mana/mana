@@ -839,12 +839,9 @@ void Being::logic()
     {
         updateMovement();
 
-        // See note at ActorSprite::draw
-        float py = mPos.y;
-        if (mMap)
-            py += mMap->getTileHeight() / 2;
-
         // Update particle effects
+        const float py = mPos.y + paths.getIntValue("spriteOffsetY");
+
         for (auto &spriteState : mSpriteStates)
             for (auto &particle : spriteState.particles)
                 particle->moveTo(mPos.x, py);

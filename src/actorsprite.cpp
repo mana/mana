@@ -58,13 +58,7 @@ ActorSprite::~ActorSprite()
 
 int ActorSprite::getDrawOrder() const
 {
-    int drawOrder = Actor::getDrawOrder();
-
-    // See note at ActorSprite::draw
-    if (mMap)
-        drawOrder += mMap->getTileHeight() / 2;
-
-    return drawOrder;
+    return Actor::getDrawOrder() + paths.getIntValue("spriteOffsetY");
 }
 
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
@@ -75,17 +69,12 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
     if (mUsedTargetCursor)
         mUsedTargetCursor->draw(graphics, px, py);
 
-    // This is makes sure that actors positioned on the center of a tile have
-    // their sprite aligned to the bottom of that tile, mainly to maintain
-    // compatibility with older clients.
-    if (mMap)
-        py += mMap->getTileHeight() / 2;
-
     return drawSpriteAt(graphics, px, py);
 }
 
 bool ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
 {
+    y += paths.getIntValue("spriteOffsetY");
     return mSprites.draw(graphics, x, y);
 }
 
@@ -104,10 +93,7 @@ void ActorSprite::logic()
                                 mChildParticleEffects.end());
 
     // Move the remaining
-    float py = mPos.y;
-    if (mMap)
-        py += mMap->getTileHeight() / 2;    // See note at ActorSprite::draw
-
+    const float py = mPos.y + paths.getIntValue("spriteOffsetY");
     for (Particle *p : mChildParticleEffects)
         p->moveTo(mPos.x, py);
 }
