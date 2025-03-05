@@ -24,7 +24,6 @@
 #include "configuration.h"
 #include "event.h"
 
-#include "resources/image.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
@@ -35,8 +34,6 @@ Item::Item(int id, int quantity, bool equipped):
 {
     setId(id);
 }
-
-Item::~Item() = default;
 
 void Item::setId(int id)
 {

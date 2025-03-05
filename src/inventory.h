@@ -124,7 +124,6 @@ class Inventory
         int getLastUsedSlot() const;
 
         void addInventoryListener(InventoryListener* listener);
-
         void removeInventoryListener(InventoryListener* listener);
 
         int getType() const

@@ -82,18 +82,15 @@ AbilityHandler::AbilityHandler()
 
 void AbilityHandler::handleMessage(MessageIn &msg)
 {
-    int skillCount;
-    int skillId;
-
     switch (msg.getId())
     {
-        case SMSG_PLAYER_SKILLS:
+        case SMSG_PLAYER_SKILLS: {
             msg.readInt16();  // length
-            skillCount = (msg.getLength() - 4) / 37;
+            const int skillCount = (msg.getLength() - 4) / 37;
 
             for (int k = 0; k < skillCount; k++)
             {
-                skillId = msg.readInt16();
+                int skillId = msg.readInt16();
                 msg.readInt16();  // target type
                 msg.skip(2);  // unused
                 int level = msg.readInt16();
@@ -107,10 +104,11 @@ void AbilityHandler::handleMessage(MessageIn &msg)
                     skillDialog->setModifiable(skillId, up);
             }
             break;
+        }
 
         case SMSG_PLAYER_SKILL_UP:
             {
-                skillId = msg.readInt16();
+                int skillId = msg.readInt16();
                 int level = msg.readInt16();
                 msg.readInt16(); // sp
                 msg.readInt16(); // range
@@ -124,20 +122,20 @@ void AbilityHandler::handleMessage(MessageIn &msg)
         case SMSG_SKILL_FAILED:
             // Action failed (ex. sit because you have not reached the
             // right level)
-            skillId   = msg.readInt16();
-            short bskill  = msg.readInt16();
-            msg.readInt16(); // unknown
-            char success = msg.readInt8();
-            char reason  = msg.readInt8();
-            if (success != SKILL_FAILED && bskill == BSKILL_EMOTE)
+            int skillId = msg.readInt16();
+            auto btype = msg.readInt16();
+            msg.readInt16();    // zero1
+            msg.readInt8();     // zero2
+            auto type  = msg.readInt8();
+            if (btype == BSKILL_EMOTE)
             {
-                logger->log("Action: %d/%d", bskill, success);
+                logger->log("Action: %d", btype);
             }
 
             std::string msg;
-            if (success == SKILL_FAILED && skillId == SKILL_BASIC)
+            if (skillId == SKILL_BASIC)
             {
-                switch (bskill)
+                switch (btype)
                 {
                     case BSKILL_TRADE:
                         msg = _("Trade failed!");
@@ -161,7 +159,7 @@ void AbilityHandler::handleMessage(MessageIn &msg)
 
                 msg += " ";
 
-                switch (reason)
+                switch (type)
                 {
                     case RFAIL_SKILLDEP:
                         msg += _("You have not yet reached a high enough lvl!");

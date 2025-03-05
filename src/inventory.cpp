@@ -159,7 +159,5 @@ void Inventory::removeInventoryListener(InventoryListener* listener)
 void Inventory::distributeSlotsChangedEvent()
 {
     for (auto inventoryListener : mInventoryListeners)
-    {
         inventoryListener->slotsChanged(this);
-    }
 }

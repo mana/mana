@@ -37,7 +37,7 @@
 
 #include "utils/gettext.h"
 
-#include <list>
+#include <vector>
 
 namespace TmwAthena {
 

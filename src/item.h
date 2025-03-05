@@ -23,10 +23,8 @@
 
 #include "event.h"
 
+#include "resources/image.h"
 #include "resources/itemdb.h"
-#include "resources/resource.h"
-
-class Image;
 
 const int ITEM_ICON_SIZE = 32;
 
@@ -38,7 +36,7 @@ class Item
     public:
         Item(int id = -1, int quantity = 0, bool equipped = false);
 
-        virtual ~Item();
+        virtual ~Item() = default;
 
         /**
          * Sets the item id, identifying the item type.

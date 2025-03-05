@@ -88,17 +88,13 @@ Connection *getConnection()
 void registerHandler(MessageHandler *handler)
 {
     for (const uint16_t *i = handler->handledMessages; *i; i++)
-    {
         mMessageHandlers[*i] = handler;
-    }
 }
 
 void unregisterHandler(MessageHandler *handler)
 {
     for (const uint16_t *i = handler->handledMessages; *i; i++)
-    {
         mMessageHandlers.erase(*i);
-    }
 }
 
 void clearNetworkHandlers()

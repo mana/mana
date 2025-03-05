@@ -40,7 +40,7 @@
 
 namespace Attributes {
 
-    using Attribute = struct
+    struct Attribute
     {
         unsigned int id;
         std::string name;
@@ -94,11 +94,11 @@ namespace Attributes {
     {
         // Fill up the modifiable attribute label list.
         attributeLabels.clear();
-        for (auto it = attributes.cbegin(), it_end = attributes.cend(); it != it_end; it++)
+        for (const auto &[_, attribute] : attributes)
         {
-            if (it->second.modifiable &&
-               (it->second.scope == "character" || it->second.scope == "being"))
-                attributeLabels.push_back(it->second.name + ":");
+            if (attribute.modifiable &&
+               (attribute.scope == "character" || attribute.scope == "being"))
+                attributeLabels.push_back(attribute.name + ":");
         }
     }
 
@@ -228,7 +228,7 @@ namespace Attributes {
 
     void init()
     {
-        if (attributes.size())
+        if (!attributes.empty())
             unload();
     }
 
@@ -238,14 +238,14 @@ namespace Attributes {
     void readAttributeNode(XML::Node node, const std::string &filename)
     {
         int id = node.getProperty("id", 0);
-
         if (!id)
         {
             logger->log("Attributes: Invalid or missing stat ID in "
                         DEFAULT_ATTRIBUTESDB_FILE "!");
             return;
         }
-        else if (attributes.find(id) != attributes.end())
+
+        if (attributes.find(id) != attributes.end())
         {
             logger->log("Attributes: Redefinition of stat ID %d", id);
         }
@@ -364,23 +364,23 @@ namespace Attributes {
     {
         std::list<ItemStat> dbStats;
 
-        for (auto it = tags.cbegin(), it_end = tags.cend(); it != it_end; ++it)
-            dbStats.emplace_back(it->first, it->second);
+        for (const auto &[tag, format] : tags)
+            dbStats.emplace_back(tag, format);
 
         setStatsList(std::move(dbStats));
     }
 
     void informStatusWindow()
     {
-        for (auto it = attributes.cbegin(), it_end = attributes.cend(); it != it_end; it++)
+        for (const auto &[_, attribute] : attributes)
         {
-            if (it->second.playerInfoId == -1 &&
-                (it->second.scope == "character" || it->second.scope == "being"))
+            if (attribute.playerInfoId == -1 &&
+                (attribute.scope == "character" || attribute.scope == "being"))
             {
-                statusWindow->addAttribute(it->second.id,
-                                           it->second.name,
-                                           it->second.modifiable,
-                                           it->second.description);
+                statusWindow->addAttribute(attribute.id,
+                                           attribute.name,
+                                           attribute.modifiable,
+                                           attribute.description);
             }
         }
     }

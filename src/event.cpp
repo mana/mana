@@ -27,8 +27,8 @@ Event::ListenMap Event::mBindings;
 
 Event::~Event()
 {
-    for (auto it = mData.begin(); it != mData.end(); ++it)
-        delete it->second;
+    for (auto &[_, data] : mData)
+        delete data;
 }
 
 // Integers
@@ -191,10 +191,6 @@ void Event::unbind(EventListener *listener, Channel channel)
 
 void Event::remove(EventListener *listener)
 {
-    auto it = mBindings.begin();
-    while (it != mBindings.end())
-    {
-        it->second.erase(listener);
-        it++;
-    }
+    for (auto &[_, listeners] : mBindings)
+        listeners.erase(listener);
 }

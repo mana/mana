@@ -249,18 +249,15 @@ void PopupMenu::handleLink(const std::string &link)
     {
         local_player->inviteToGuild(being);
     }
-
     // Pick Up Floor Item action
     else if ((link == "pickup") && mFloorItem)
     {
         local_player->pickUp(mFloorItem);
     }
-
     // Look To action
     else if (link == "look")
     {
     }
-
     else if (link == "activate" || link == "equip" || link == "unequip")
     {
         assert(mItem);
@@ -288,49 +285,41 @@ void PopupMenu::handleLink(const std::string &link)
         else if (mFloorItem)
             chatWindow->addItemText(mFloorItem->getInfo().name);
     }
-
     else if (link == "split")
     {
         ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit,
                              inventoryWindow, mItem);
     }
-
     else if (link == "drop")
     {
         ItemAmountWindow::showWindow(ItemAmountWindow::ItemDrop,
                              inventoryWindow, mItem);
     }
-
     else if (link == "store")
     {
         ItemAmountWindow::showWindow(ItemAmountWindow::StoreAdd,
                              inventoryWindow, mItem);
     }
-
     else if (link == "retrieve")
     {
         ItemAmountWindow::showWindow(ItemAmountWindow::StoreRemove, mWindow,
                                      mItem);
     }
-
     else if (link == "party" && being &&
              being->getType() == ActorSprite::PLAYER)
     {
         Net::getPartyHandler()->invite(being);
     }
-
     else if (link == "name" && being)
     {
         const std::string &name = being->getName();
         chatWindow->addInputText(name);
     }
-
     else if (link == "admin-kick" && being &&
              being->getType() == ActorSprite::PLAYER)
     {
         Net::getAdminHandler()->kick(being->getName());
     }
-
     // Unknown actions
     else if (link != "cancel")
     {
