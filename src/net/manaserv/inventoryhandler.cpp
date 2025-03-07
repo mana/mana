@@ -347,11 +347,6 @@ void InventoryHandler::event(Event::Channel channel,
     }
 }
 
-bool InventoryHandler::canSplit(const Item *item)
-{
-    return false;
-}
-
 size_t InventoryHandler::getSize(int type) const
 {
     switch (type)

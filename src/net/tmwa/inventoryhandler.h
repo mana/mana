@@ -165,8 +165,6 @@ class InventoryHandler final : public MessageHandler, public Net::InventoryHandl
 
         void event(Event::Channel channel, const Event &event) override;
 
-        bool canSplit(const Item *item) override;
-
         size_t getSize(int type) const override;
 
         // Note the slot type id is equal to the slot Index for tA.

@@ -285,11 +285,6 @@ void PopupMenu::handleLink(const std::string &link)
         else if (mFloorItem)
             chatWindow->addItemText(mFloorItem->getInfo().name);
     }
-    else if (link == "split")
-    {
-        ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit,
-                             inventoryWindow, mItem);
-    }
     else if (link == "drop")
     {
         ItemAmountWindow::showWindow(ItemAmountWindow::ItemDrop,
@@ -364,11 +359,6 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
                 mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop...")));
             else
                 mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop")));
-        }
-
-        if (Net::getInventoryHandler()->canSplit(item))
-        {
-            mBrowserBox->addRow(strprintf("@@split|%s@@", _("Split")));
         }
     }
     // Assume in storage for now

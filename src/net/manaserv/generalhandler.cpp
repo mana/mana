@@ -23,7 +23,6 @@
 
 #include "client.h"
 
-#include "gui/inventorywindow.h"
 #include "gui/skilldialog.h"
 
 #include "net/manaserv/adminhandler.h"
@@ -183,7 +182,6 @@ void GeneralHandler::event(Event::Channel channel,
     {
         if (event.getType() == Event::GuiWindowsLoaded)
         {
-            inventoryWindow->setSplitAllowed(false);
             skillDialog->loadSkills();
 
             PlayerInfo::setAttribute(EXP_NEEDED, 100);

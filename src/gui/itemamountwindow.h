@@ -32,7 +32,7 @@ class ItemPopup;
 class Icon;
 
 /**
- * Window used for selecting the amount of items to drop, trade or split.
+ * Window used for selecting the amount of items to drop, trade or store.
  *
  * \ingroup Interface
  */
@@ -46,7 +46,6 @@ class ItemAmountWindow : public Window,
             ItemDrop,
             StoreAdd,
             StoreRemove,
-            ItemSplit
         };
 
         /**

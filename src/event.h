@@ -74,7 +74,6 @@ public:
         DoDrop,
         DoEquip,
         DoMove,
-        DoSplit,
         DoUnequip,
         DoUse,
         End,

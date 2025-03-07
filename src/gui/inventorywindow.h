@@ -27,8 +27,6 @@
 #include "gui/widgets/window.h"
 #include "gui/widgets/textfield.h"
 
-#include "net/inventoryhandler.h"
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/selectionlistener.hpp>
@@ -43,12 +41,12 @@ class TextBox;
  *
  * \ingroup Interface
  */
-class InventoryWindow : public Window,
-                        public gcn::ActionListener,
-                        public gcn::KeyListener,
-                        public gcn::SelectionListener,
-                        public InventoryListener,
-                        public EventListener
+class InventoryWindow final : public Window,
+                              public gcn::ActionListener,
+                              public gcn::KeyListener,
+                              public gcn::SelectionListener,
+                              public InventoryListener,
+                              public EventListener
 {
     public:
         InventoryWindow(Inventory *inventory);
@@ -63,7 +61,7 @@ class InventoryWindow : public Window,
         /**
          * Returns the selected item.
          */
-        Item* getSelectedItem() const;
+        Item *getSelectedItem() const;
 
         /**
          * Handles closing of the window
@@ -76,11 +74,6 @@ class InventoryWindow : public Window,
         void mouseClicked(gcn::MouseEvent &event) override;
 
         /**
-         * Handles the key presses.
-         */
-        void keyPressed(gcn::KeyEvent &event) override;
-
-        /**
          * Handles the key releases.
          */
         void keyReleased(gcn::KeyEvent &event) override;
@@ -89,11 +82,6 @@ class InventoryWindow : public Window,
          * Updates labels to currently selected item.
          */
         void valueChanged(const gcn::SelectionEvent &event) override;
-
-        /**
-         * Sets whether the split button should be shown.
-         */
-        void setSplitAllowed(bool allowed);
 
         /**
          * Closes the Storage Window, as well as telling the server that the
@@ -110,7 +98,7 @@ class InventoryWindow : public Window,
 
         static bool isAnyInputFocused();
 
-        void slotsChanged(Inventory* inventory) override;
+        void slotsChanged(Inventory *inventory) override;
 
         bool isMainInventory() const { return mInventory->isMainInventory(); }
 
@@ -133,14 +121,12 @@ class InventoryWindow : public Window,
 
         std::string mWeight, mSlots;
 
-        gcn::Button *mUseButton, *mEquipButton, *mDropButton, *mSplitButton,
+        gcn::Button *mUseButton, *mEquipButton, *mDropButton,
                     *mOutfitButton, *mStoreButton, *mRetrieveButton;
 
         gcn::Label *mWeightLabel, *mSlotsLabel, *mFilterLabel;
 
         ProgressBar *mWeightBar, *mSlotsBar;
-
-        bool mSplit = false;
 };
 
 extern InventoryWindow *inventoryWindow;

@@ -66,8 +66,6 @@ class InventoryHandler
     public:
         virtual ~InventoryHandler() {}
 
-        virtual bool canSplit(const Item *item) = 0;
-
         // TODO: fix/remove me
         virtual size_t getSize(int type) const = 0;
 

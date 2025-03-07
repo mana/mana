@@ -25,7 +25,6 @@
 #include "configuration.h"
 #include "log.h"
 
-#include "gui/inventorywindow.h"
 #include "gui/skilldialog.h"
 #include "gui/socialwindow.h"
 #include "gui/statuswindow.h"
@@ -214,7 +213,6 @@ void GeneralHandler::event(Event::Channel channel,
     {
         if (event.getType() == Event::GuiWindowsLoaded)
         {
-            inventoryWindow->setSplitAllowed(false);
             skillDialog->loadSkills();
 
             statusWindow->addAttribute(STRENGTH, _("Strength"), true, "");

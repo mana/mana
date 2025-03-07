@@ -49,9 +49,6 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
         case ItemDrop:
             item->doEvent(Event::DoDrop, amount);
             break;
-        case ItemSplit:
-            item->doEvent(Event::DoSplit, amount);
-            break;
         case StoreAdd:
         {
             Event event(Event::DoMove);
@@ -147,9 +144,6 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
             break;
         case StoreRemove:
             setCaption(_("Select amount of items to retrieve."));
-            break;
-        case ItemSplit:
-            setCaption(_("Select amount of items to split."));
             break;
     }
 

@@ -109,8 +109,6 @@ class InventoryHandler final : public MessageHandler, Net::InventoryHandler,
 
         void event(Event::Channel channel, const Event &event) override;
 
-        bool canSplit(const Item *item) override;
-
         size_t getSize(int type) const override;
 
         bool isWeaponSlot(unsigned int slotTypeId) const override

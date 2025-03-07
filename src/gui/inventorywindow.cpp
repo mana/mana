@@ -30,7 +30,6 @@
 
 #include "gui/itemamountwindow.h"
 #include "gui/setup.h"
-#include "gui/sdlinput.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
@@ -39,9 +38,6 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"
-
-#include "net/inventoryhandler.h"
-#include "net/net.h"
 
 #include "resources/iteminfo.h"
 #include "resources/theme.h"
@@ -105,7 +101,6 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
         mEquipButton = new Button(_("Equip"), "equip", this);
         mUseButton = new Button(_("Activate"), "activate", this);
         mDropButton = new Button(_("Drop..."), "drop", this);
-        mSplitButton = new Button(_("Split"), "split", this);
         mOutfitButton = new Button(_("Outfits"), "outfit", this);
 
         mWeightLabel = new Label(_("Weight:"));
@@ -121,7 +116,6 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
         place(0, 3, mUseButton);
         place(1, 3, mEquipButton);
         place(3, 3, mDropButton);
-        place(4, 3, mSplitButton);
         place(7, 3, mOutfitButton);
 
         updateWeight();
@@ -182,7 +176,6 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         if (!inventoryWindow->isVisible()) return;
 
         Item *item = inventoryWindow->getSelectedItem();
-
         if (!item)
             return;
 
@@ -190,12 +183,13 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     }
 
     Item *item = mItems->getSelectedItem();
-
     if (!item)
         return;
 
     if (event.getId() == "activate")
+    {
         item->doEvent(Event::DoUse);
+    }
     else if (event.getId() == "equip")
     {
         if (item->isEquippable())
@@ -214,15 +208,9 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     {
         ItemAmountWindow::showWindow(ItemAmountWindow::ItemDrop, this, item);
     }
-    else if (event.getId() == "split")
-    {
-        ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
-                                 (item->getQuantity() - 1));
-    }
     else if (event.getId() == "retrieve")
     {
         Item *item = mItems->getSelectedItem();
-
         if (!item)
             return;
 
@@ -247,26 +235,27 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     Window::mouseClicked(event);
 
     Item *item = mItems->getSelectedItem();
+    if (!item)
+        return;
 
-    if (event.getSource() == mItems && item && isDoubleClick(item->getInvIndex()))
+    if (event.getSource() == mItems && isDoubleClick(item->getInvIndex())
+        && isMainInventory())
     {
-        if (isMainInventory() && item->getInfo().activatable)
+        if (item->getInfo().activatable)
         {
             action(gcn::ActionEvent(mUseButton,
                                     mUseButton->getActionEventId()));
         }
-        else if (isMainInventory() && item->isEquippable())
+        else if (item->isEquippable())
         {
             action(gcn::ActionEvent(mEquipButton,
                                     mEquipButton->getActionEventId()));
         }
+        return;
     }
 
     if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        if (!item)
-            return;
-
         /* Convert relative to the window coordinates to absolute screen
          * coordinates.
          */
@@ -279,10 +268,6 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     {
         if (instances.size() > 1 && keyboard.isKeyActive(KeyboardConfig::KEY_EMOTE))
         {
-            Item *item = mItems->getSelectedItem();
-
-            if(!item)
-                return;
             if (mInventory->isMainInventory())
             {
                 Event event(Event::DoMove);
@@ -305,47 +290,16 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
-void InventoryWindow::keyPressed(gcn::KeyEvent &event)
-{
-    switch (event.getKey().getValue())
-    {
-        case Key::LEFT_SHIFT:
-        case Key::RIGHT_SHIFT:
-            mSplit = true;
-            break;
-    }
-}
-
 void InventoryWindow::keyReleased(gcn::KeyEvent &event)
 {
     if (isInputFocused())
-    {
         mItems->setFilter(mFilterText->getText());
-        return;
-    }
-
-    switch (event.getKey().getValue())
-    {
-        case Key::LEFT_SHIFT:
-        case Key::RIGHT_SHIFT:
-            mSplit = false;
-            break;
-    }
 }
 
 void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
     if (!mInventory->isMainInventory())
         return;
-
-    Item *item = mItems->getSelectedItem();
-
-    if (mSplit && Net::getInventoryHandler()->
-        canSplit(mItems->getSelectedItem()) && item)
-    {
-        ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
-                                     (item->getQuantity() - 1));
-    }
 
     updateButtons();
 }
@@ -359,44 +313,19 @@ void InventoryWindow::updateButtons()
         mUseButton->setEnabled(false);
         mEquipButton->setEnabled(false);
         mDropButton->setEnabled(false);
-        mSplitButton->setEnabled(false);
-
         return;
     }
 
     mDropButton->setEnabled(true);
 
-    if (item->isEquippable())
-    {
-        if (item->isEquipped())
-            mEquipButton->setCaption(_("Unequip"));
-        else
-            mEquipButton->setCaption(_("Equip"));
-        mEquipButton->setEnabled(true);
-    }
-    else
-        mEquipButton->setEnabled(false);
-
+    mEquipButton->setCaption(item->isEquipped() ? _("Unequip") : _("Equip"));
+    mEquipButton->setEnabled(item->isEquippable());
     mEquipButton->adjustSize();
 
     mUseButton->setEnabled(item->getInfo().activatable);
 
-    if (item->getQuantity() > 1)
-        mDropButton->setCaption(_("Drop..."));
-    else
-        mDropButton->setCaption(_("Drop"));
-
-    if (Net::getInventoryHandler()->canSplit(item))
-        mSplitButton->setEnabled(true);
-    else
-        mSplitButton->setEnabled(false);
-
-    mSplitButton->adjustSize();
-}
-
-void InventoryWindow::setSplitAllowed(bool allowed)
-{
-    mSplitButton->setVisible(allowed);
+    mDropButton->setCaption(item->getQuantity() > 1 ? _("Drop...") : _("Drop"));
+    mDropButton->adjustSize();
 }
 
 void InventoryWindow::close()
@@ -418,12 +347,9 @@ void InventoryWindow::event(Event::Channel channel, const Event &event)
 {
     if (event.getType() == Event::UpdateAttribute)
     {
-        int id = event.getInt("id");
-        if (id == TOTAL_WEIGHT ||
-            id == MAX_WEIGHT)
-        {
+        const int id = event.getInt("id");
+        if (id == TOTAL_WEIGHT || id == MAX_WEIGHT)
             updateWeight();
-        }
     }
 }
 
@@ -432,8 +358,8 @@ void InventoryWindow::updateWeight()
     if (!isMainInventory())
         return;
 
-    int total = PlayerInfo::getAttribute(TOTAL_WEIGHT);
-    int max = PlayerInfo::getAttribute(MAX_WEIGHT);
+    const int total = PlayerInfo::getAttribute(TOTAL_WEIGHT);
+    const int max = PlayerInfo::getAttribute(MAX_WEIGHT);
 
     if (max <= 0)
         return;
@@ -451,21 +377,14 @@ bool InventoryWindow::isInputFocused() const
 
 bool InventoryWindow::isAnyInputFocused()
 {
-    auto it = instances.begin();
-    auto it_end = instances.end();
-
-    for (; it != it_end; it++)
-    {
-        if ((*it)->isInputFocused())
-        {
+    for (auto instance : instances)
+        if (instance->isInputFocused())
             return true;
-        }
-    }
 
     return false;
 }
 
-void InventoryWindow::slotsChanged(Inventory* inventory)
+void InventoryWindow::slotsChanged(Inventory *inventory)
 {
     if (inventory == mInventory)
     {
@@ -473,7 +392,6 @@ void InventoryWindow::slotsChanged(Inventory* inventory)
         const int maxSlots = mInventory->getSize();
 
         mSlotsBar->setProgress((float) usedSlots / maxSlots);
-
         mSlotsBar->setText(strprintf("%d/%d", usedSlots, maxSlots));
     }
 }
