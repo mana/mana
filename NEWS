@@ -3,6 +3,7 @@
 - Added VSync and windowed fullscreen options
 - Added support for scaling the graphics
 - Added ability to open external links in news, chat and NPC dialogs
+- Added ability to mention assigned keys in NPC dialogs
 - Added support for text formatting to NPC dialogs
 - Added support for reading most client-data settings from settings.xml
 - Added support for XML includes, both absolute and relative

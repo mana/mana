@@ -117,6 +117,11 @@ class BrowserBox : public gcn::Widget,
         void disableLinksAndUserColors() { mUseLinksAndUserColors = false; }
 
         /**
+         * Enable or disable the replacement of keys.
+         */
+        void setEnableKeys(bool enable) { mEnableKeys = enable; }
+
+        /**
          * Adds one or more text rows to the browser, separated by '\n'.
          */
         void addRows(std::string_view rows);
@@ -196,6 +201,7 @@ class BrowserBox : public gcn::Widget,
         bool mShadows = false;
         bool mOutline = false;
         bool mUseLinksAndUserColors = true;
+        bool mEnableKeys = false;
         std::optional<BrowserLink> mHoveredLink;
         unsigned int mMaxRows = 0;
         int mLastLayoutWidth = 0;

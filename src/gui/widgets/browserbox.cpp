@@ -26,6 +26,7 @@
 #include "gui/truetypefont.h"
 #include "gui/widgets/linkhandler.h"
 
+#include "keyboardconfig.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/theme.h"
@@ -37,6 +38,38 @@
 #include <guichan/cliprectangle.hpp>
 
 #include <algorithm>
+
+/**
+ * Check for key replacements in format "###key;"
+ */
+static void replaceKeys(std::string &text)
+{
+    auto keyStart = text.find("###");
+
+    while (keyStart != std::string::npos)
+    {
+        const auto keyEnd = text.find(";", keyStart + 3);
+        if (keyEnd == std::string::npos)
+            break;
+
+        std::string_view key(text.data() + keyStart + 3, keyEnd - keyStart - 3);
+
+        // Remove "key" prefix
+        if (key.size() > 3 && key.substr(0, 3) == "key")
+            key.remove_prefix(3);
+
+        const auto keyName = keyboard.getKeyName(key);
+        if (!keyName.empty())
+        {
+            text.replace(keyStart, keyEnd - keyStart + 1, keyName);
+            keyStart = text.find("###", keyStart + keyName.size());
+        }
+        else
+        {
+            keyStart = text.find("###", keyEnd + 1);
+        }
+    }
+}
 
 struct LayoutContext
 {
@@ -135,6 +168,9 @@ void BrowserBox::addRow(std::string_view row)
     {
         newRow.text = row;
     }
+
+    if (mEnableKeys)
+        replaceKeys(newRow.text);
 
     // Layout the newly added row
     LayoutContext context(getFont());

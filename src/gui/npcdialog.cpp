@@ -89,6 +89,7 @@ NpcDialog::NpcDialog(int npcId)
     mTextBox->setWrapIndent(15);
     mTextBox->setFrameSize(2);
     mTextBox->setLinkHandler(mItemLinkHandler.get());
+    mTextBox->setEnableKeys(true);
 
     mScrollArea = new ScrollArea(mTextBox);
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

@@ -153,24 +153,21 @@ void KeyboardConfig::store()
 void KeyboardConfig::makeDefault()
 {
     for (auto &key : mKey)
-    {
         key.value = key.defaultValue;
-    }
 }
 
 bool KeyboardConfig::hasConflicts()
 {
-    int i, j;
     /**
      * No need to parse the square matrix: only check one triangle
      * that's enough to detect conflicts
      */
-    for (i = 0; i < KEY_TOTAL; i++)
+    for (int i = 0; i < KEY_TOTAL; i++)
     {
         if (mKey[i].value == KEY_NO_VALUE)
             continue;
 
-        for (j = i, j++; j < KEY_TOTAL; j++)
+        for (int j = i + 1; j < KEY_TOTAL; j++)
         {
             if (mKey[j].value == KEY_NO_VALUE)
                 continue;
@@ -220,25 +217,33 @@ const std::string &KeyboardConfig::getKeyCaption(int index) const
 int KeyboardConfig::getKeyIndex(SDL_Keycode keyValue) const
 {
     for (int i = 0; i < KEY_TOTAL; i++)
-    {
         if (keyValue == mKey[i].value)
-        {
             return i;
-        }
-    }
+
     return KEY_NO_VALUE;
 }
 
+std::string_view KeyboardConfig::getKeyName(std::string_view configName) const
+{
+    for (auto key : mKey)
+    {
+        if (configName == key.configField)
+        {
+            if (key.value == KEY_NO_VALUE)
+                return {};
+            return SDL_GetKeyName(key.value);
+        }
+    }
+
+    return {};
+}
 
 int KeyboardConfig::getKeyEmoteOffset(SDL_Keycode keyValue) const
 {
     for (int i = KEY_EMOTE_1; i <= KEY_EMOTE_12; i++)
-    {
         if (keyValue == mKey[i].value)
-        {
             return i - KEY_EMOTE_1;
-        }
-    }
+
     return -1;
 }
 

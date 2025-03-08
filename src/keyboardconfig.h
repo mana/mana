@@ -101,6 +101,11 @@ class KeyboardConfig
         int getKeyIndex(SDL_Keycode keyValue) const;
 
         /**
+         * Get the key name by providing the keys config name.
+         */
+        std::string_view getKeyName(std::string_view configName) const;
+
+        /**
          * Get the key function index for an emote by providing the offset value.
          */
         int getKeyEmoteOffset(SDL_Keycode keyValue) const;
