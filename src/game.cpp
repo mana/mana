@@ -236,8 +236,6 @@ Game::Game():
     if (Joystick::getNumberOfJoysticks() > 0)
         joystick = new Joystick(0);
 
-    setupWindow->setInGame(true);
-
     Event::trigger(Event::GameChannel, Event::Constructed);
 }
 

@@ -25,7 +25,8 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <list>
+#include <memory>
+#include <vector>
 
 class SetupTab;
 
@@ -55,18 +56,14 @@ class Setup : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event) override;
 
         /**
-         * Enables the reset button when in game.
+         * Enables the Reset Windows button.
          */
-        void setInGame(bool inGame);
-
         void registerWindowForReset(Window *window);
-
-        void clearWindowsForReset()
-        { mWindowsToReset.clear(); }
+        void clearWindowsForReset();
 
     private:
-        std::list<SetupTab*> mTabs;
-        std::list<Window*> mWindowsToReset;
+        std::vector<std::unique_ptr<SetupTab>> mTabs;
+        std::vector<Window*> mWindowsToReset;
         gcn::Button *mResetWindows;
 };
 

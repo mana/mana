@@ -33,105 +33,88 @@
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/tabbedarea.h"
 
-#include "utils/dtor.h"
 #include "utils/gettext.h"
-
-#include <functional>
 
 extern Window *statusWindow;
 
 Setup::Setup():
     Window(_("Setup"))
 {
+    setWindowName("Setup");
     setCloseButton(true);
-    int width = 395;
-    int height = 360;
-    setContentSize(width, height);
+    setResizable(true);
 
-    static const char *buttonNames[] = {
-        N_("Apply"), N_("Cancel"), N_("Reset Windows"), nullptr
-    };
-    int x = width;
-    for (const char **curBtn = buttonNames; *curBtn; ++curBtn)
-    {
-        auto *btn = new Button(gettext(*curBtn), *curBtn, this);
-        x -= btn->getWidth() + 5;
-        btn->setPosition(x, height - btn->getHeight() - 5);
-        add(btn);
+    mResetWindows = new Button(_("Reset Windows"), "Reset Windows", this);
+    mResetWindows->setEnabled(false);
 
-        // Store this button, as it needs to be enabled/disabled
-        if (!strcmp(*curBtn, "Reset Windows"))
-            mResetWindows = btn;
-    }
+    place(2, 5, mResetWindows);
+    place(3, 5, new Button(_("Apply"), "Apply", this));
+    place(4, 5, new Button(_("Cancel"), "Cancel", this));
 
     auto *panel = new TabbedArea;
-    panel->setDimension(gcn::Rectangle(5, 5, width - 10, height - 40));
 
-    mTabs.push_back(new Setup_Video);
-    mTabs.push_back(new Setup_Audio);
-    mTabs.push_back(new Setup_Interface);
-    mTabs.push_back(new Setup_Joystick);
-    mTabs.push_back(new Setup_Keyboard);
-    mTabs.push_back(new Setup_Colors);
-    mTabs.push_back(new Setup_Players);
+    mTabs.emplace_back(new Setup_Video);
+    mTabs.emplace_back(new Setup_Audio);
+    mTabs.emplace_back(new Setup_Interface);
+    mTabs.emplace_back(new Setup_Joystick);
+    mTabs.emplace_back(new Setup_Keyboard);
+    mTabs.emplace_back(new Setup_Colors);
+    mTabs.emplace_back(new Setup_Players);
 
-    for (auto tab : mTabs)
-    {
-        panel->addTab(tab->getName(), tab);
-    }
+    for (auto &tab : mTabs)
+        panel->addTab(tab->getName(), tab.get());
 
-    add(panel);
+    place(0, 0, panel, 5, 5);
+    place(0, 5, new Label(FULL_VERSION));
 
-    auto *version = new Label(FULL_VERSION);
-    version->setPosition(9, height - version->getHeight() - 9);
-    add(version);
+    // Determine minimum width by layout
+    int width = 0, height = 350;
+    getLayout().reflow(width, height);
 
-    center();
-
-    setInGame(false);
+    setMinWidth(width + 2 * getPadding());
+    setMinHeight(height + getPadding() + getTitleBarHeight());
+    setDefaultSize(395, 360 + getPadding() + getTitleBarHeight(), WindowAlignment::Center);
+    loadWindowState();
 }
 
-Setup::~Setup()
-{
-    delete_all(mTabs);
-}
+Setup::~Setup() = default;
 
 void Setup::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "Apply")
     {
         setVisible(false);
-        for_each(mTabs.begin(), mTabs.end(), std::mem_fn(&SetupTab::apply));
+
+        for (auto &tab : mTabs)
+            tab->apply();
     }
     else if (event.getId() == "Cancel")
     {
         setVisible(false);
-        for_each(mTabs.begin(), mTabs.end(), std::mem_fn(&SetupTab::cancel));
+
+        for (auto &tab : mTabs)
+            tab->cancel();
     }
     else if (event.getId() == "Reset Windows")
     {
-        // Bail out if this action happens to be activated before the windows
-        // are created (though it should be disabled then)
-        if (!statusWindow)
-            return;
-
         for (auto &window : mWindowsToReset)
-        {
             window->resetToDefaultSize();
-        }
     }
-}
-
-void Setup::setInGame(bool inGame)
-{
-    mResetWindows->setEnabled(inGame);
 }
 
 void Setup::registerWindowForReset(Window *window)
 {
     mWindowsToReset.push_back(window);
+    mResetWindows->setEnabled(true);
+}
+
+void Setup::clearWindowsForReset()
+{
+    mWindowsToReset.clear();
+    mResetWindows->setEnabled(false);
 }
 
 Setup *setupWindow;
