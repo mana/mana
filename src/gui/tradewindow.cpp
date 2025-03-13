@@ -24,7 +24,6 @@
 #include "event.h"
 #include "inventory.h"
 #include "item.h"
-#include "localplayer.h"
 #include "playerinfo.h"
 #include "units.h"
 
@@ -39,7 +38,6 @@
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/layout.h"
 
-#include "net/inventoryhandler.h"
 #include "net/net.h"
 #include "net/tradehandler.h"
 
@@ -47,8 +45,6 @@
 #include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
-
-#include <sstream>
 
 #define CAPTION_PROPOSE _("Propose trade")
 #define CAPTION_CONFIRMED _("Confirmed. Waiting...")
@@ -125,9 +121,7 @@ TradeWindow::TradeWindow():
     reset();
 }
 
-TradeWindow::~TradeWindow()
-{
-}
+TradeWindow::~TradeWindow() = default;
 
 void TradeWindow::setMoney(int amount)
 {
@@ -138,7 +132,10 @@ void TradeWindow::setMoney(int amount)
 
 void TradeWindow::addItem(int id, bool own, int quantity)
 {
-    (own ? mMyInventory : mPartnerInventory)->addItem(id, quantity);
+    if (own)
+        mMyInventory->addItem(id, quantity);
+    else
+        mPartnerInventory->addItem(id, quantity);
 }
 
 void TradeWindow::changeQuantity(int index, bool own, int quantity)
@@ -186,22 +183,15 @@ void TradeWindow::receivedOk(bool own)
     }
 }
 
-void TradeWindow::tradeItem(Item *item, int quantity)
-{
-    Net::getTradeHandler()->addItem(item, quantity);
-}
-
 void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
 {
-    const Item *item;
-
     /* If an item is selected in one container, make sure no item is selected
      * in the other container.
      */
     if (event.getSource() == mMyItemContainer &&
-            (item = mMyItemContainer->getSelectedItem()))
+            mMyItemContainer->getSelectedItem())
         mPartnerItemContainer->selectNone();
-    else if ((item = mPartnerItemContainer->getSelectedItem()))
+    else if (mPartnerItemContainer->getSelectedItem())
         mMyItemContainer->selectNone();
 }
 

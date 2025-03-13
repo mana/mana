@@ -22,6 +22,8 @@
 #pragma once
 
 #include <list>
+#include <memory>
+#include <vector>
 
 class Inventory;
 class Item;
@@ -62,7 +64,7 @@ class Inventory
         /**
          * Returns the size that this instance is configured for.
          */
-        int getSize() const { return mSize; }
+        int getSize() const { return mItems.size(); }
 
         /**
          * Returns the item at the specified index.
@@ -86,11 +88,6 @@ class Inventory
          * Sets the item at the given position.
          */
         void setItem(int index, int id, int quantity);
-
-        /**
-         * Remove a item from the inventory.
-         */
-        void removeItem(int id);
 
         /**
          * Remove the item at the specified index from the inventory.
@@ -138,7 +135,6 @@ class Inventory
         void distributeSlotsChangedEvent();
 
         Type mType;
-        Item **mItems;  /**< The holder of items */
-        int mSize;      /**< The max number of inventory items */
-        int mUsed = 0;  /**< THe number of slots in use */
+        std::vector<std::unique_ptr<Item>> mItems;  /**< The holder of items */
+        int mUsed = 0;  /**< The number of slots in use */
 };

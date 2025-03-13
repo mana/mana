@@ -81,11 +81,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         void receivedOk(bool own);
 
         /**
-         * Send trade packet.
-         */
-        void tradeItem(Item *item, int quantity);
-
-        /**
          * Updates the labels and makes sure only one item is selected in
          * either my inventory or partner inventory.
          */

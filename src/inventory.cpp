@@ -27,42 +27,33 @@
 #include "net/net.h"
 
 #include <algorithm>
-#include <functional>
 
 static bool slotUsed(const Item *item)
 {
     return item && item->getId() >= 0 && item->getQuantity() > 0;
 }
 
-Inventory::Inventory(Type type, int size):
-    mType(type),
-    mSize(size == -1 ? Net::getInventoryHandler()->getSize(type) : size)
+Inventory::Inventory(Type type, int size)
+    : mType(type)
 {
-    mItems = new Item*[mSize];
-    std::fill_n(mItems, mSize, (Item*) nullptr);
+    mItems.resize(size == -1 ? Net::getInventoryHandler()->getSize(type) : size);
 }
 
-Inventory::~Inventory()
-{
-    for (int i = 0; i < mSize; i++)
-        delete mItems[i];
-
-    delete [] mItems;
-}
+Inventory::~Inventory() = default;
 
 Item *Inventory::getItem(int index) const
 {
-    if (index < 0 || index >= mSize || !mItems[index] || mItems[index]->getQuantity() <= 0)
+    if (index < 0 || index >= getSize() || !mItems[index] || mItems[index]->getQuantity() <= 0)
         return nullptr;
 
-    return mItems[index];
+    return mItems[index].get();
 }
 
 Item *Inventory::findItem(int itemId) const
 {
-    for (int i = 0; i < mSize; i++)
-        if (mItems[i] && mItems[i]->getId() == itemId)
-            return mItems[i];
+    for (auto &item : mItems)
+        if (item && item->getId() == itemId)
+            return item.get();
 
     return nullptr;
 }
@@ -74,24 +65,27 @@ void Inventory::addItem(int id, int quantity)
 
 void Inventory::setItem(int index, int id, int quantity)
 {
-    if (index < 0 || index >= mSize)
+    if (index < 0 || index >= getSize())
     {
         logger->log("Warning: invalid inventory index: %d", index);
         return;
     }
 
-    if (!mItems[index] && id > 0)
+    if (id > 0)
     {
-        Item *item = new Item(id, quantity);
-        item->setInvIndex(index);
-        mItems[index] = item;
-        mUsed++;
-        distributeSlotsChangedEvent();
-    }
-    else if (id > 0)
-    {
-        mItems[index]->setId(id);
-        mItems[index]->setQuantity(quantity);
+        if (!mItems[index])
+        {
+            auto item = std::make_unique<Item>(id, quantity);
+            item->setInvIndex(index);
+            mItems[index] = std::move(item);
+            mUsed++;
+            distributeSlotsChangedEvent();
+        }
+        else
+        {
+            mItems[index]->setId(id);
+            mItems[index]->setQuantity(quantity);
+        }
     }
     else if (mItems[index])
     {
@@ -101,20 +95,14 @@ void Inventory::setItem(int index, int id, int quantity)
 
 void Inventory::clear()
 {
-    for (int i = 0; i < mSize; i++)
-        removeItemAt(i);
-}
-
-void Inventory::removeItem(int id)
-{
-    for (int i = 0; i < mSize; i++)
-        if (mItems[i] && mItems[i]->getId() == id)
-            removeItemAt(i);
+    for (auto &item : mItems)
+        item = nullptr;
+    mUsed = 0;
+    distributeSlotsChangedEvent();
 }
 
 void Inventory::removeItemAt(int index)
 {
-    delete mItems[index];
     mItems[index] = nullptr;
     if (mUsed > 0) {
         mUsed--;
@@ -124,23 +112,26 @@ void Inventory::removeItemAt(int index)
 
 bool Inventory::contains(Item *item) const
 {
-    for (int i = 0; i < mSize; i++)
-        if (mItems[i] && mItems[i]->getId() == item->getId())
-            return true;
-
-    return false;
+    return std::any_of(mItems.begin(),
+                       mItems.end(),
+                       [id = item->getId()](auto &i) {
+        return i->getId() == id;
+    });
 }
 
 int Inventory::getFreeSlot() const
 {
-    Item **i = std::find_if(mItems, mItems + mSize, std::not_fn(slotUsed));
-    return (i == mItems + mSize) ? -1 : (i - mItems);
+    for (int i = 0; i < getSize(); i++)
+        if (!slotUsed(mItems[i].get()))
+            return i;
+
+    return -1;
 }
 
 int Inventory::getLastUsedSlot() const
 {
-    for (int i = mSize - 1; i >= 0; i--)
-        if (slotUsed(mItems[i]))
+    for (int i = getSize() - 1; i >= 0; i--)
+        if (slotUsed(mItems[i].get()))
             return i;
 
     return -1;

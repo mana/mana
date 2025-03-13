@@ -35,6 +35,9 @@
 #include "gui/widgets/slider.h"
 #include "gui/widgets/icon.h"
 
+#include "net/net.h"
+#include "net/tradehandler.h"
+
 #include "utils/gettext.h"
 
 void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
@@ -42,7 +45,7 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
     switch (usage)
     {
         case TradeAdd:
-            tradeWindow->tradeItem(item, amount);
+            Net::getTradeHandler()->addItem(item, amount);
             break;
         case ItemDrop:
             item->doEvent(Event::DoDrop, amount);
