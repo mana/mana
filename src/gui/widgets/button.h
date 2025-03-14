@@ -26,7 +26,6 @@
 #include <memory>
 #include <vector>
 
-class ImageRect;
 class Image;
 class TextPopup;
 

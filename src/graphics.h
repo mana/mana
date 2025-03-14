@@ -61,6 +61,14 @@ public:
         LOWER_RIGHT = 8
     };
 
+    ImageRect();
+    ImageRect(const ImageRect &) = delete;
+    ImageRect(ImageRect &&);
+    ~ImageRect();
+
+    ImageRect &operator=(const ImageRect &) = delete;
+    ImageRect &operator=(ImageRect &&r) = delete;
+
     Image *grid[9];
 
     void setAlpha(float alpha);

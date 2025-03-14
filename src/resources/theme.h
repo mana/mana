@@ -42,7 +42,6 @@ class Skin
 {
     public:
         Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown);
-
         ~Skin();
 
         /**
@@ -258,7 +257,7 @@ class Theme : public Palette, public EventListener
 
         std::vector<std::unique_ptr<DyePalette>> mProgressColors;
 
-        ImageRect *mButton;     /**< Button state graphics */
+        ImageRect mButton[4];   /**< Button state graphics */
         ImageRect mTabImg[4];   /**< Tab state graphics */
         ImageRect mDeepBoxImageRect;
 

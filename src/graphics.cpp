@@ -25,6 +25,23 @@
 
 #include <guichan/exception.hpp>
 
+ImageRect::ImageRect()
+{
+    memset(grid, 0, sizeof(grid));
+}
+
+ImageRect::ImageRect(ImageRect &&r)
+{
+    memcpy(grid, r.grid, sizeof(grid));
+    memset(r.grid, 0, sizeof(grid));
+}
+
+ImageRect::~ImageRect()
+{
+    for (auto img : grid)
+        delete img;
+}
+
 void ImageRect::setAlpha(float alpha)
 {
     for (auto img : grid)

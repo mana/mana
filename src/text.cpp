@@ -96,8 +96,11 @@ Text::~Text()
     {
         delete textManager;
         textManager = nullptr;
-        for (auto img : mBubble.grid)
+        for (auto &img : mBubble.grid)
+        {
             delete img;
+            img = nullptr;
+        }
         delete mBubbleArrow;
     }
 }

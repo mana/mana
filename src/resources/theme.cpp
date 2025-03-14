@@ -32,7 +32,6 @@
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
-#include "utils/dtor.h"
 #include "utils/filesystem.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
@@ -73,18 +72,13 @@ static std::optional<std::string> findThemePath(const std::string &theme)
 
 
 Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown):
-    mBorder(skin),
+    mBorder(std::move(skin)),
     mCloseImage(close),
     mStickyImageUp(stickyUp),
     mStickyImageDown(stickyDown)
 {}
 
-Skin::~Skin()
-{
-    // Clean up static resources
-    for (auto img : mBorder.grid)
-        delete img;
-}
+Skin::~Skin() = default;
 
 void Skin::updateAlpha(float alpha)
 {
@@ -158,8 +152,6 @@ Theme::Theme(const std::string &path)
         { "buttonpress.png", 16, 19 },
         { "button_disabled.png", 25, 23 }
     };
-
-    mButton = new ImageRect[BUTTON_MODE_COUNT];
 
     for (int mode = 0; mode < BUTTON_MODE_COUNT; ++mode)
     {
@@ -321,22 +313,7 @@ Theme::Theme(const std::string &path)
     mResizeGripImage = getImage("resize.png");
 }
 
-Theme::~Theme()
-{
-    for (int mode = 0; mode < BUTTON_MODE_COUNT; ++mode)
-    {
-        std::for_each(mButton[mode].grid, mButton[mode].grid + 9,
-                      dtor<Image*>());
-    }
-    delete[] mButton;
-
-    for (auto &imgRect : mTabImg)
-        std::for_each(imgRect.grid, imgRect.grid + 9, dtor<Image*>());
-
-    std::for_each(mDeepBoxImageRect.grid, mDeepBoxImageRect.grid + 9, dtor<Image*>());
-    std::for_each(mScrollBarMarker.grid, mScrollBarMarker.grid + 9, dtor<Image*>());
-    std::for_each(mScrollBarMarkerHi.grid, mScrollBarMarkerHi.grid + 9, dtor<Image*>());
-}
+Theme::~Theme() = default;
 
 const gcn::Color &Theme::getThemeColor(int type, int alpha)
 {
@@ -600,8 +577,8 @@ void Theme::updateAlpha()
     for (auto &skin : mSkins)
         skin.second->updateAlpha(mAlpha);
 
-    for (int mode = 0; mode < BUTTON_MODE_COUNT; ++mode)
-        mButton[mode].setAlpha(mAlpha);
+    for (auto &mode : mButton)
+        mode.setAlpha(mAlpha);
 
     for (auto &t : mTabImg)
         t.setAlpha(mAlpha);
@@ -691,7 +668,6 @@ std::unique_ptr<Skin> Theme::readSkin(const std::string &filename) const
 
     auto dBorders = getImage(skinSetImage);
     ImageRect border;
-    memset(&border, 0, sizeof(ImageRect));
 
     // iterate <widget>'s
     for (auto widgetNode : rootNode.children())
@@ -763,7 +739,7 @@ std::unique_ptr<Skin> Theme::readSkin(const std::string &filename) const
     Image *stickyImageUp = sticky->getSubImage(0, 0, 15, 15);
     Image *stickyImageDown = sticky->getSubImage(15, 0, 15, 15);
 
-    auto skin = std::make_unique<Skin>(border, closeImage, stickyImageUp, stickyImageDown);
+    auto skin = std::make_unique<Skin>(std::move(border), closeImage, stickyImageUp, stickyImageDown);
     skin->updateAlpha(mAlpha);
     return skin;
 }

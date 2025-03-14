@@ -24,9 +24,6 @@
 #include <guichan/widgetlistener.hpp>
 #include <guichan/widgets/scrollarea.hpp>
 
-class Image;
-class ImageRect;
-
 /**
  * A scroll area.
  *
