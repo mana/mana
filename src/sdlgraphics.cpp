@@ -198,7 +198,8 @@ void SDLGraphics::drawRescaledImagePattern(const Image *image,
             SDL_Rect dstRect;
             dstRect.x = dstX; dstRect.y = dstY;
             dstRect.w = dw;   dstRect.h = dh;
-            srcRect.w = dw;   srcRect.h = dh;
+            srcRect.w = image->mBounds.w * dw / scaledWidth;
+            srcRect.h = image->mBounds.h * dh / scaledHeight;
 
             if (SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect))
                 return;
