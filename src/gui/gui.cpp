@@ -80,12 +80,10 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
     // Set global font
     const int fontSize = config.fontSize;
     std::string fontFile = branding.getValue("font", "fonts/dejavusans.ttf");
-    std::string path = resman->getPath(fontFile);
+    std::string path = ResourceManager::getPath(fontFile);
 
     // Initialize the font scale before creating the fonts
     TrueTypeFont::updateFontScale(graphics->getScale());
@@ -103,7 +101,7 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
 
     // Set bold font
     fontFile = branding.getValue("boldFont", "fonts/dejavusans-bold.ttf");
-    path = resman->getPath(fontFile);
+    path = ResourceManager::getPath(fontFile);
     try
     {
         boldFont = new TrueTypeFont(path, fontSize);
@@ -116,7 +114,7 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
 
     // Set mono font
     fontFile = branding.getValue("monoFont", "fonts/dejavusans-mono.ttf");
-    path = resman->getPath(fontFile);
+    path = ResourceManager::getPath(fontFile);
     try
     {
         monoFont = new TrueTypeFont(path, fontSize);

@@ -220,8 +220,6 @@ Client::Client(const Options &options):
 
     SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
     if (!FS::setWriteDir(mLocalDataDir))
     {
         logger->error(strprintf("%s couldn't be set as write directory! "
@@ -233,9 +231,8 @@ Client::Client(const Options &options):
 #else
     mPackageDir = PKG_DATADIR "data";
 #endif
-    resman->addToSearchPath(mPackageDir, false);
-
-    resman->addToSearchPath("data", false);
+    ResourceManager::addToSearchPath(mPackageDir, false);
+    ResourceManager::addToSearchPath("data", false);
 
     // Add branding/data to PhysFS search path
     if (!options.brandingPath.empty())
@@ -251,15 +248,15 @@ Client::Client(const Options &options):
         int loc = path.find_last_of('/');
 #endif
         if (loc > 0)
-            resman->addToSearchPath(path.substr(0, loc + 1) + "data", false);
+            ResourceManager::addToSearchPath(path.substr(0, loc + 1) + "data", false);
     }
 
     // Add the main data directories to our PhysicsFS search path
     if (!options.dataPath.empty())
-        resman->addToSearchPath(options.dataPath, false);
+        ResourceManager::addToSearchPath(options.dataPath, false);
 
     // Add the local data directory to PhysicsFS search path
-    resman->addToSearchPath(mLocalDataDir, false);
+    ResourceManager::addToSearchPath(mLocalDataDir, false);
 
     bool useOpenGL = !mOptions.noOpenGL && config.opengl;
 
@@ -287,7 +284,7 @@ Client::Client(const Options &options):
 #else
     iconFile += ".png";
 #endif
-    iconFile = resman->getPath(iconFile);
+    iconFile = ResourceManager::getPath(iconFile);
     logger->log("Loading icon from file: %s", iconFile.c_str());
 #ifdef _WIN32
     static SDL_SysWMinfo pInfo;
@@ -667,7 +664,7 @@ int Client::exec()
                     if (mOptions.dataPath.empty())
                     {
                         // Add customdata directory
-                        ResourceManager::getInstance()->searchAndAddArchives(
+                        ResourceManager::searchAndAddArchives(
                             "customdata/",
                             "zip",
                             false);
