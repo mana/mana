@@ -87,23 +87,31 @@ void DropDown::drawFrame(gcn::Graphics *graphics)
 {
     const int bs = getFrameSize();
 
-    Theme::WidgetState state;
-    state.width = getWidth() + bs * 2;
-    state.height = getHeight() + bs * 2;
+    WidgetState state(this);
+    state.width += bs * 2;
+    state.height += bs * 2;
 
-    gui->getTheme()->drawDropDownFrame(static_cast<Graphics*>(graphics), state);
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::DropDownFrame, state);
 }
 
 void DropDown::drawButton(gcn::Graphics *graphics)
 {
-    Theme::WidgetState state;
-    state.width = getWidth();
-    state.height = mDroppedDown ? mFoldedUpHeight : getHeight();
-    state.enabled = isEnabled();
-    state.selected = mDroppedDown;
-    state.hovered = mPushed;
+    WidgetState state(this);
+    if (mDroppedDown)
+    {
+        state.height = mFoldedUpHeight;
+        state.flags |= STATE_SELECTED;
+    }
+    if (mPushed)
+        state.flags |= STATE_HOVERED;
 
-    gui->getTheme()->drawDropDownButton(static_cast<Graphics*>(graphics), state);
+    const auto theme = gui->getTheme();
+    const int buttonWidth = theme->getMinWidth(SkinType::DropDownButton);
+
+    // FIXME: Needs support for setting alignment in the theme.
+    state.x = state.width - buttonWidth;
+
+    theme->drawSkin(static_cast<Graphics *>(graphics), SkinType::DropDownButton, state);
 }
 
 // -- KeyListener notifications

@@ -59,8 +59,7 @@ Minimap::Minimap():
     setVisible(config.showMinimap, isSticky());
 }
 
-Minimap::~Minimap()
-{}
+Minimap::~Minimap() = default;
 
 void Minimap::setMap(Map *map)
 {

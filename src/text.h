@@ -22,11 +22,11 @@
 
 #pragma once
 
-#include "graphics.h"
-
 #include "utils/time.h"
 
 #include <guichan/color.hpp>
+#include <guichan/font.hpp>
+#include <guichan/graphics.hpp>
 
 class TextManager;
 
@@ -74,10 +74,6 @@ class Text
         const gcn::Color *mColor;     /**< The color of the text. */
         gcn::Font *mFont;      /**< The font of the text */
         bool mIsSpeech;        /**< Is this text a speech bubble? */
-
-    protected:
-        static ImageRect mBubble;   /**< Speech bubble graphic */
-        static Image *mBubbleArrow; /**< Speech bubble arrow graphic */
 };
 
 class FlashText : public Text

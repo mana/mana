@@ -72,6 +72,8 @@ public:
     Image *grid[9];
 
     void setAlpha(float alpha);
+    int minWidth() const;
+    int minHeight() const;
 };
 
 /**

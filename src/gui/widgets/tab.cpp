@@ -44,18 +44,16 @@ void Tab::init()
 
 void Tab::draw(gcn::Graphics *graphics)
 {
-    Theme::WidgetState state;
-    state.width = getWidth();
-    state.height = getHeight();
-    state.enabled = isEnabled();
-    state.hovered = mHasMouse;
-    state.selected = mTabbedArea && mTabbedArea->isTabSelected(this);
-    state.focused = isFocused();
+    WidgetState state(this);
+    if (mHasMouse)
+        state.flags |= STATE_HOVERED;
+    if (mTabbedArea && mTabbedArea->isTabSelected(this))
+        state.flags |= STATE_SELECTED;
 
-    gui->getTheme()->drawTab(static_cast<Graphics*>(graphics), state);
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::Tab, state);
 
     // if tab is selected, it doesnt need to highlight activity
-    if (state.selected)
+    if (state.flags & STATE_SELECTED)
         mFlash = false;
 
     if (mFlash)

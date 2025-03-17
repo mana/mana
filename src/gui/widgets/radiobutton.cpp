@@ -33,12 +33,13 @@ RadioButton::RadioButton(const std::string &caption,
 
 void RadioButton::drawBox(gcn::Graphics* graphics)
 {
-    Theme::WidgetState state;
-    state.enabled = isEnabled();
-    state.hovered = mHasMouse;
-    state.selected = isSelected();
+    WidgetState state(this);
+    if (mHasMouse)
+        state.flags |= STATE_HOVERED;
+    if (isSelected())
+        state.flags |= STATE_SELECTED;
 
-    gui->getTheme()->drawRadioButton(graphics, state);
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::RadioButton, state);
 }
 
 void RadioButton::draw(gcn::Graphics* graphics)

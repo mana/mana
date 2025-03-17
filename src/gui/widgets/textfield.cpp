@@ -60,11 +60,11 @@ void TextField::drawFrame(gcn::Graphics *graphics)
 {
     const int bs = getFrameSize();
 
-    Theme::WidgetState state;
-    state.width = getWidth() + bs * 2;
-    state.height = getHeight() + bs * 2;
+    WidgetState state(this);
+    state.width += bs * 2;
+    state.height += bs * 2;
 
-    gui->getTheme()->drawTextFieldFrame(static_cast<Graphics*>(graphics), state);
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::TextField, state);
 }
 
 void TextField::setNumeric(bool numeric)

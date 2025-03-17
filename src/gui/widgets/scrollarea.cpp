@@ -24,7 +24,6 @@
 #include "graphics.h"
 
 #include "gui/gui.h"
-#include "resources/theme.h"
 
 ScrollArea::ScrollArea()
 {
@@ -107,11 +106,11 @@ void ScrollArea::drawFrame(gcn::Graphics *graphics)
 
     const int bs = getFrameSize();
 
-    Theme::WidgetState state;
-    state.width = getWidth() + bs * 2;
-    state.height = getHeight() + bs * 2;
+    WidgetState state(this);
+    state.width += bs * 2;
+    state.height += + bs * 2;
 
-    gui->getTheme()->drawScrollAreaFrame(static_cast<Graphics *>(graphics), state);
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollArea, state);
 }
 
 void ScrollArea::setOpaque(bool opaque)
@@ -127,38 +126,22 @@ void ScrollArea::drawBackground(gcn::Graphics *graphics)
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)
 {
-    auto theme = gui->getTheme();
-    theme->drawScrollAreaButton(static_cast<Graphics *>(graphics),
-                                Theme::ARROW_UP,
-                                mUpButtonPressed,
-                                getUpButtonDimension());
+    drawButton(graphics, SkinType::ButtonUp, mUpButtonPressed, getUpButtonDimension());
 }
 
 void ScrollArea::drawDownButton(gcn::Graphics *graphics)
 {
-    auto theme = gui->getTheme();
-    theme->drawScrollAreaButton(static_cast<Graphics *>(graphics),
-                                Theme::ARROW_DOWN,
-                                mDownButtonPressed,
-                                getDownButtonDimension());
+    drawButton(graphics, SkinType::ButtonDown, mDownButtonPressed, getDownButtonDimension());
 }
 
 void ScrollArea::drawLeftButton(gcn::Graphics *graphics)
 {
-    auto theme = gui->getTheme();
-    theme->drawScrollAreaButton(static_cast<Graphics *>(graphics),
-                                Theme::ARROW_LEFT,
-                                mLeftButtonPressed,
-                                getLeftButtonDimension());
+    drawButton(graphics, SkinType::ButtonLeft, mLeftButtonPressed, getLeftButtonDimension());
 }
 
 void ScrollArea::drawRightButton(gcn::Graphics *graphics)
 {
-    auto theme = gui->getTheme();
-    theme->drawScrollAreaButton(static_cast<Graphics *>(graphics),
-                                Theme::ARROW_RIGHT,
-                                mRightButtonPressed,
-                                getRightButtonDimension());
+    drawButton(graphics, SkinType::ButtonRight, mRightButtonPressed, getRightButtonDimension());
 }
 
 void ScrollArea::drawVBar(gcn::Graphics *graphics)
@@ -177,18 +160,45 @@ void ScrollArea::drawHBar(gcn::Graphics *graphics)
 
 void ScrollArea::drawVMarker(gcn::Graphics *graphics)
 {
-    auto theme = gui->getTheme();
-    theme->drawScrollAreaMarker(static_cast<Graphics *>(graphics),
-                                mHasMouse && (mX > (getWidth() - getScrollbarWidth())),
-                                getVerticalMarkerDimension());
+    drawMarker(static_cast<Graphics *>(graphics),
+               mHasMouse && (mX > (getWidth() - getScrollbarWidth())),
+               getVerticalMarkerDimension());
 }
 
 void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 {
-    auto theme = gui->getTheme();
-    theme->drawScrollAreaMarker(static_cast<Graphics *>(graphics),
-                                mHasMouse && (mY > (getHeight() - getScrollbarWidth())),
-                                getHorizontalMarkerDimension());
+    drawMarker(static_cast<Graphics *>(graphics),
+               mHasMouse && (mY > (getHeight() - getScrollbarWidth())),
+               getHorizontalMarkerDimension());
+}
+
+void ScrollArea::drawButton(gcn::Graphics *graphics,
+                            SkinType skinType,
+                            bool pressed,
+                            const gcn::Rectangle &dim)
+{
+    WidgetState state;
+    state.x = dim.x;
+    state.y = dim.y;
+    state.width = dim.width;
+    state.height = dim.height;
+    if (pressed)
+        state.flags |= STATE_SELECTED;
+
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), skinType, state);
+}
+
+void ScrollArea::drawMarker(gcn::Graphics *graphics, bool hovered, const gcn::Rectangle &dim)
+{
+    WidgetState state;
+    state.x = dim.x;
+    state.y = dim.y;
+    state.width = dim.width;
+    state.height = dim.height;
+    if (hovered)
+        state.flags |= STATE_HOVERED;
+
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollBar, state);
 }
 
 void ScrollArea::mouseMoved(gcn::MouseEvent& event)

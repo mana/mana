@@ -22,53 +22,34 @@
 
 #include "text.h"
 
-#include "configuration.h"
 #include "textmanager.h"
 #include "textrenderer.h"
 
 #include "gui/gui.h"
 
-#include "resources/image.h"
 #include "resources/theme.h"
 
 #include <guichan/font.hpp>
 
 int Text::mInstances = 0;
-ImageRect Text::mBubble;
-Image *Text::mBubbleArrow;
 
-Text::Text(const std::string &text, int x, int y,
+Text::Text(const std::string &text,
+           int x,
+           int y,
            gcn::Graphics::Alignment alignment,
-           const gcn::Color* color, bool isSpeech,
-           gcn::Font *font) :
-    mText(text),
-    mColor(color),
-    mIsSpeech(isSpeech)
+           const gcn::Color *color,
+           bool isSpeech,
+           gcn::Font *font)
+    : mText(text)
+    , mColor(color)
+    , mFont(font ? font : gui->getFont())
+    , mIsSpeech(isSpeech)
 {
-    if (!font)
-        mFont = gui->getFont();
-    else
-        mFont = font;
-
     if (textManager == nullptr)
-    {
         textManager = new TextManager;
-        auto sbImage = Theme::getImageFromTheme("bubble.png|W:#"
-            + config.speechBubblecolor);
-        mBubble.grid[0] = sbImage->getSubImage(0, 0, 5, 5);
-        mBubble.grid[1] = sbImage->getSubImage(5, 0, 5, 5);
-        mBubble.grid[2] = sbImage->getSubImage(10, 0, 5, 5);
-        mBubble.grid[3] = sbImage->getSubImage(0, 5, 5, 5);
-        mBubble.grid[4] = sbImage->getSubImage(5, 5, 5, 5);
-        mBubble.grid[5] = sbImage->getSubImage(10, 5, 5, 5);
-        mBubble.grid[6] = sbImage->getSubImage(0, 10, 5, 5);
-        mBubble.grid[7] = sbImage->getSubImage(5, 10, 5, 5);
-        mBubble.grid[8] = sbImage->getSubImage(10, 10, 5, 5);
-        mBubbleArrow = sbImage->getSubImage(0, 15, 15, 10);
-        mBubble.setAlpha(config.speechBubbleAlpha);
-        mBubbleArrow->setAlpha(config.speechBubbleAlpha);
-    }
+
     ++mInstances;
+
     mHeight = mFont->getHeight();
     mWidth = mFont->getWidth(text);
 
@@ -84,8 +65,10 @@ Text::Text(const std::string &text, int x, int y,
             mXOffset = mWidth;
             break;
     }
+
     mX = x - mXOffset;
     mY = y;
+
     textManager->addText(this);
 }
 
@@ -96,12 +79,6 @@ Text::~Text()
     {
         delete textManager;
         textManager = nullptr;
-        for (auto &img : mBubble.grid)
-        {
-            delete img;
-            img = nullptr;
-        }
-        delete mBubbleArrow;
     }
 }
 
@@ -119,9 +96,15 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
     if (mIsSpeech)
     {
-        static_cast<Graphics*>(graphics)->drawImageRect(
-                mX - xOff - 5, mY - yOff - 5, mWidth + 10, mHeight + 10,
-                mBubble);
+        WidgetState state;
+        state.x = mX - xOff - 5;
+        state.y = mY - yOff - 5;
+        state.width = mWidth + 10;
+        state.height = mHeight + 10;
+
+        auto theme = gui->getTheme();
+        theme->drawSkin(static_cast<Graphics *>(graphics), SkinType::SpeechBubble, state);
+
         /*
         if (mWidth >= 15)
         {

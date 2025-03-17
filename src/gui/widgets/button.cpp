@@ -123,23 +123,21 @@ void Button::init()
 
 void Button::draw(gcn::Graphics *graphics)
 {
-    Theme::WidgetState state;
-    state.width = getWidth();
-    state.height = getHeight();
-    state.enabled = isEnabled();
-    state.hovered = mHasMouse;
-    state.selected = isPressed();
-    state.focused = isFocused();
+    WidgetState state(this);
+    if (mHasMouse)
+        state.flags |= STATE_HOVERED;
+    if (isPressed())
+        state.flags |= STATE_SELECTED;
 
-    gui->getTheme()->drawButton(static_cast<Graphics*>(graphics), state);
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::Button, state);
 
     int mode;
 
-    if (!state.enabled)
+    if (state.flags & STATE_DISABLED)
         mode = BUTTON_DISABLED;
-    else if (state.selected)
+    else if (state.flags & STATE_SELECTED)
         mode = BUTTON_PRESSED;
-    else if (state.hovered || state.focused)
+    else if (state.flags & (STATE_HOVERED | STATE_FOCUSED))
         mode = BUTTON_HIGHLIGHTED;
     else
         mode = BUTTON_STANDARD;

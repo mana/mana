@@ -43,12 +43,13 @@ void CheckBox::draw(gcn::Graphics* graphics)
 
 void CheckBox::drawBox(gcn::Graphics* graphics)
 {
-    Theme::WidgetState state;
-    state.enabled = isEnabled();
-    state.hovered = mHasMouse;
-    state.selected = isSelected();
+    WidgetState state(this);
+    if (mHasMouse)
+        state.flags |= STATE_HOVERED;
+    if (isSelected())
+        state.flags |= STATE_SELECTED;
 
-    gui->getTheme()->drawCheckBox(graphics, state);
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::CheckBox, state);
 }
 
 void CheckBox::mouseEntered(gcn::MouseEvent& event)

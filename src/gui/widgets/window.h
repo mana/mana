@@ -53,10 +53,9 @@ class Window : public gcn::Window, gcn::WidgetListener
          * @param parent  The parent window. This is the window standing above
          *                this one in the window hiearchy. When reordering,
          *                a window will never go below its parent window.
-         * @param skin    The location where the window's skin XML can be found.
          */
         Window(const std::string &caption = "Window", bool modal = false,
-               Window *parent = nullptr, const std::string &skin = "window.xml");
+               Window *parent = nullptr);
 
         /**
          * Destructor. Deletes all the added widgets.
@@ -397,8 +396,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultHeight;           /**< Default window height */
 
         static int instances;         /**< Number of Window instances */
-
-        Skin *mSkin;                  /**< Skin in use by this window */
 
         /**
          * The width of the resize border. Is independent of the actual window

@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "resources/theme.h"
+
 #include <guichan/widgetlistener.hpp>
 #include <guichan/widgets/scrollarea.hpp>
 
@@ -107,6 +109,12 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         void drawHBar(gcn::Graphics *graphics) override;
         void drawVMarker(gcn::Graphics *graphics) override;
         void drawHMarker(gcn::Graphics *graphics) override;
+
+        static void drawButton(gcn::Graphics *graphics,
+                               SkinType skinType,
+                               bool pressed,
+                               const gcn::Rectangle &dim);
+        static void drawMarker(gcn::Graphics *graphics, bool hovered, const gcn::Rectangle &dim);
 
         int mX = 0;
         int mY = 0;

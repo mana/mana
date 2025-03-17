@@ -25,6 +25,7 @@
 #include "guichanfwd.h"
 
 #include "gui/widgets/container.h"
+#include "resources/theme.h"
 
 #include <guichan/mouselistener.hpp>
 
@@ -52,10 +53,10 @@ class Popup : public Container, public gcn::MouseListener
          *
          * @param name    A human readable name for the popup. Only useful for
          *                debugging purposes.
-         * @param skin    The location where the Popup's skin XML can be found.
+         * @param skinType The skin type used when drawing the popup.
          */
-        Popup(const std::string &name = std::string(),
-              const std::string &skin = "window.xml");
+        explicit Popup(const std::string &name = std::string(),
+                       SkinType skinType = SkinType::Popup);
 
         /**
          * Destructor. Deletes all the added widgets.
@@ -151,12 +152,12 @@ class Popup : public Container, public gcn::MouseListener
         void position(int x, int y);
 
     private:
-        std::string mPopupName;       /**< Name of the popup */
-        int mMinWidth = 100;          /**< Minimum popup width */
-        int mMinHeight = 40;          /**< Minimum popup height */
-        int mMaxWidth;                /**< Maximum popup width */
-        int mMaxHeight;               /**< Maximum popup height */
-        int mPadding;                 /**< Holds the padding of the popup. */
+        std::string mPopupName;     /**< Name of the popup */
+        int mMinWidth = 100;        /**< Minimum popup width */
+        int mMinHeight = 40;        /**< Minimum popup height */
+        int mMaxWidth;              /**< Maximum popup width */
+        int mMaxHeight;             /**< Maximum popup height */
+        int mPadding;               /**< Holds the padding of the popup. */
 
-        Skin *mSkin;                  /**< Skin in use by this popup */
+        SkinType mSkinType;         /**< The skin type used when drawing the popup widget. */
 };

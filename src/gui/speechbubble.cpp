@@ -27,14 +27,11 @@
 #include "gui/widgets/label.h"
 #include "gui/widgets/textbox.h"
 
-#include "resources/theme.h"
-
 #include <guichan/font.hpp>
-
 #include <guichan/widgets/label.hpp>
 
-SpeechBubble::SpeechBubble():
-    Popup("Speech", "speechbubble.xml")
+SpeechBubble::SpeechBubble()
+    : Popup("Speech", SkinType::SpeechBubble)
 {
     setMinWidth(0);
     setMinHeight(0);
@@ -45,7 +42,7 @@ SpeechBubble::SpeechBubble():
     mSpeechBox = new TextBox;
     mSpeechBox->setEditable(false);
     mSpeechBox->setOpaque(false);
-    mSpeechBox->setTextColor(&Theme::getThemeColor(Theme::CHAT));
+    mSpeechBox->setTextColor(&Theme::getThemeColor(Theme::BUBBLE_TEXT));
 
     add(mCaption);
     add(mSpeechBox);
@@ -60,10 +57,8 @@ void SpeechBubble::setCaption(const std::string &name, const gcn::Color *color)
 
 void SpeechBubble::setText(const std::string &text, bool showName)
 {
-    if (text == mText && (mCaption->getWidth() <= mSpeechBox->getMinWidth()))
+    if (text == mText && mCaption->getWidth() <= mSpeechBox->getMinWidth())
         return;
-
-    mSpeechBox->setTextColor(&Theme::getThemeColor(Theme::TEXT));
 
     int width = mCaption->getWidth();
     mSpeechBox->setTextWrapped(text, 130 > width ? 130 : width);

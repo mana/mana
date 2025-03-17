@@ -48,6 +48,17 @@ void ImageRect::setAlpha(float alpha)
         img->setAlpha(alpha);
 }
 
+int ImageRect::minWidth() const
+{
+    return grid[ImageRect::UPPER_LEFT]->getWidth() + grid[ImageRect::UPPER_RIGHT]->getWidth();
+}
+
+int ImageRect::minHeight() const
+{
+    return grid[ImageRect::UPPER_LEFT]->getHeight() + grid[ImageRect::LOWER_LEFT]->getHeight();
+}
+
+
 void Graphics::updateSize(int width, int height, float /*scale*/)
 {
     mWidth = width;

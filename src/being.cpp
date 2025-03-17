@@ -312,7 +312,7 @@ void Being::setSpeech(const std::string &text, int time)
         mText = new Text(mSpeech,
                          getPixelX(), getSpeechTextYPosition(),
                          gcn::Graphics::CENTER,
-                         &userPalette->getColor(UserPalette::PARTICLE),
+                         &Theme::getThemeColor(Theme::BUBBLE_TEXT),
                          true);
     }
 }
@@ -999,7 +999,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
             mText = new Text(mSpeech,
                              getPixelX(), getPixelY() - getHeight(),
                              gcn::Graphics::CENTER,
-                             &userPalette->getColor(UserPalette::PARTICLE),
+                             &Theme::getThemeColor(Theme::BUBBLE_TEXT),
                              true);
         }
     }

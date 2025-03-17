@@ -31,7 +31,6 @@
 #include "gui/widgets/resizegrip.h"
 #include "gui/widgets/windowcontainer.h"
 
-#include "resources/image.h"
 #include "resources/theme.h"
 
 #include <guichan/exception.hpp>
@@ -43,13 +42,12 @@
 int Window::instances = 0;
 int Window::mouseResize = 0;
 
-Window::Window(const std::string &caption, bool modal, Window *parent,
-               const std::string &skin):
-    gcn::Window(caption),
-    mParent(parent),
-    mModal(modal),
-    mMaxWinWidth(graphics->getWidth()),
-    mMaxWinHeight(graphics->getHeight())
+Window::Window(const std::string &caption, bool modal, Window *parent)
+    : gcn::Window(caption)
+    , mParent(parent)
+    , mModal(modal)
+    , mMaxWinWidth(graphics->getWidth())
+    , mMaxWinHeight(graphics->getHeight())
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
@@ -61,9 +59,6 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     setFrameSize(0);
     setPadding(3);
     setTitleBarHeight(20);
-
-    // Loads the skin
-    mSkin = gui->getTheme()->load(skin);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -94,8 +89,6 @@ Window::~Window()
     removeWidgetListener(this);
 
     instances--;
-
-    mSkin->instances--;
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
@@ -105,9 +98,11 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics *graphics)
 {
-    auto *g = static_cast<Graphics*>(graphics);
+    auto g = static_cast<Graphics*>(graphics);
+    auto theme = gui->getTheme();
 
-    g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
+    WidgetState state(this);
+    theme->drawSkin(g, SkinType::Window, state);
 
     // Draw title
     if (mShowTitle)
@@ -117,23 +112,26 @@ void Window::draw(gcn::Graphics *graphics)
         g->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }
 
+    const int closeButtonWidth = theme->getMinWidth(SkinType::ButtonClose);
+    const int stickyButtonWidth = theme->getMinWidth(SkinType::ButtonSticky);
+
     // Draw Close Button
     if (mCloseButton)
     {
-        g->drawImage(mSkin->getCloseImage(),
-            getWidth() - mSkin->getCloseImage()->getWidth() - getPadding(),
-            getPadding());
+        state.x = state.width - closeButtonWidth - getPadding();
+        state.y = getPadding();
+        theme->drawSkin(g, SkinType::ButtonClose, state);
     }
 
     // Draw Sticky Button
     if (mStickyButton)
     {
-        Image *button = mSkin->getStickyImage(mSticky);
-        int x = getWidth() - button->getWidth() - getPadding();
+        state.flags = mSticky ? STATE_SELECTED : 0;
+        state.x = state.width - stickyButtonWidth - getPadding();
+        state.y = getPadding();
         if (mCloseButton)
-            x -= mSkin->getCloseImage()->getWidth();
-
-        g->drawImage(button, x, getPadding());
+            state.x -= closeButtonWidth;
+        theme->drawSkin(g, SkinType::ButtonSticky, state);
     }
 
     drawChildren(graphics);
@@ -218,13 +216,12 @@ void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
 
 void Window::setMinWidth(int width)
 {
-    mMinWinWidth = width > mSkin->getMinWidth() ? width : mSkin->getMinWidth();
+    mMinWinWidth = std::max(gui->getTheme()->getMinWidth(SkinType::Window), width);
 }
 
 void Window::setMinHeight(int height)
 {
-    mMinWinHeight = height > mSkin->getMinHeight() ?
-                        height : mSkin->getMinHeight();
+    mMinWinHeight = std::max(gui->getTheme()->getMinHeight(SkinType::Window), height);
 }
 
 void Window::setMaxWidth(int width)
@@ -338,38 +335,42 @@ void Window::mousePressed(gcn::MouseEvent &event)
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
+        auto theme = gui->getTheme();
+
         const int x = event.getX();
         const int y = event.getY();
+
+        const int closeButtonWidth = theme->getMinWidth(SkinType::ButtonClose);
+        const int closeButtonHeight = theme->getMinHeight(SkinType::ButtonClose);
+        const int stickyButtonWidth = theme->getMinWidth(SkinType::ButtonSticky);
+        const int stickyButtonHeight = theme->getMinHeight(SkinType::ButtonSticky);
 
         // Handle close button
         if (mCloseButton)
         {
-            gcn::Rectangle closeButtonRect(
-                getWidth() - mSkin->getCloseImage()->getWidth() - getPadding(),
-                getPadding(),
-                mSkin->getCloseImage()->getWidth(),
-                mSkin->getCloseImage()->getHeight());
+            gcn::Rectangle closeButtonRect(getWidth() - closeButtonWidth - getPadding(),
+                                           getPadding(),
+                                           closeButtonWidth,
+                                           closeButtonHeight);
 
             if (closeButtonRect.isPointInRect(x, y))
-            {
                 close();
-            }
         }
 
         // Handle sticky button
         if (mStickyButton)
         {
-            Image *button = mSkin->getStickyImage(mSticky);
-            int rx = getWidth() - button->getWidth() - getPadding();
+            int stickyButtonX = getWidth() - stickyButtonWidth - getPadding();
             if (mCloseButton)
-                rx -= mSkin->getCloseImage()->getWidth();
-            gcn::Rectangle stickyButtonRect(rx, getPadding(),
-                                    button->getWidth(), button->getHeight());
+                stickyButtonX -= closeButtonWidth;
+
+            gcn::Rectangle stickyButtonRect(stickyButtonX,
+                                            getPadding(),
+                                            stickyButtonWidth,
+                                            stickyButtonHeight);
 
             if (stickyButtonRect.isPointInRect(x, y))
-            {
                 setSticky(!isSticky());
-            }
         }
 
         // Handle window resizing

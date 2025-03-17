@@ -29,14 +29,13 @@
 #include "gui/viewport.h"
 #include "gui/widgets/windowcontainer.h"
 
-#include "resources/theme.h"
-
 #include <guichan/exception.hpp>
 
-Popup::Popup(const std::string &name, const std::string &skin):
-    mPopupName(name),
-    mMaxWidth(graphics->getWidth()),
-    mMaxHeight(graphics->getHeight())
+Popup::Popup(const std::string &name, SkinType skinType)
+    : mPopupName(name)
+    , mMaxWidth(graphics->getWidth())
+    , mMaxHeight(graphics->getHeight())
+    , mSkinType(skinType)
 {
     logger->log("Popup::Popup(\"%s\")", name.c_str());
 
@@ -44,9 +43,6 @@ Popup::Popup(const std::string &name, const std::string &skin):
         throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
 
     setPadding(6);
-
-    // Loads the skin
-    mSkin = gui->getTheme()->load(skin);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -58,8 +54,6 @@ Popup::Popup(const std::string &name, const std::string &skin):
 Popup::~Popup()
 {
     logger->log("Popup::~Popup(\"%s\")", mPopupName.c_str());
-
-    mSkin->instances--;
 }
 
 void Popup::setWindowContainer(WindowContainer *wc)
@@ -69,10 +63,7 @@ void Popup::setWindowContainer(WindowContainer *wc)
 
 void Popup::draw(gcn::Graphics *graphics)
 {
-    auto *g = static_cast<Graphics*>(graphics);
-
-    g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
-
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), mSkinType, WidgetState(this));
     drawChildren(graphics);
 }
 
@@ -116,12 +107,12 @@ void Popup::setLocationRelativeTo(gcn::Widget *widget)
 
 void Popup::setMinWidth(int width)
 {
-    mMinWidth = std::max(width, mSkin->getMinWidth());
+    mMinWidth = std::max(gui->getTheme()->getMinWidth(mSkinType), width);
 }
 
 void Popup::setMinHeight(int height)
 {
-    mMinHeight = std::max(height, mSkin->getMinHeight());
+    mMinHeight = std::max(gui->getTheme()->getMinHeight(mSkinType), height);
 }
 
 void Popup::setMaxWidth(int width)

@@ -41,19 +41,21 @@ Slider::Slider(double scaleStart, double scaleEnd):
 void Slider::init()
 {
     setFrameSize(0);
-    setMarkerLength(gui->getTheme()->getSliderMarkerLength());
+    setMarkerLength(gui->getTheme()->getMinWidth(SkinType::SliderHandle));
 }
 
 void Slider::draw(gcn::Graphics *graphics)
 {
-    Theme::WidgetState state;
-    state.width = getWidth();
-    state.height = getHeight();
-    state.enabled = isEnabled();
-    state.hovered = mHasMouse;
+    WidgetState state(this);
+    if (mHasMouse)
+        state.flags |= STATE_HOVERED;
 
     auto theme = gui->getTheme();
-    theme->drawSlider(static_cast<Graphics*>(graphics), state, getMarkerPosition());
+    theme->drawSkin(static_cast<Graphics*>(graphics), SkinType::Slider, state);
+
+    WidgetState handleState(state);
+    handleState.x += getMarkerPosition();
+    theme->drawSkin(static_cast<Graphics*>(graphics), SkinType::SliderHandle, handleState);
 }
 
 void Slider::drawMarker(gcn::Graphics *graphics)

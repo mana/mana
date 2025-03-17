@@ -24,20 +24,21 @@
 #include "graphics.h"
 
 #include "gui/gui.h"
-#include "resources/image.h"
 #include "resources/theme.h"
 
 #include <guichan/graphics.hpp>
 
 ResizeGrip::ResizeGrip()
 {
-    const auto gripImage = gui->getTheme()->getResizeGripImage();
-    setSize(gripImage->getWidth() + 2,
-            gripImage->getHeight() + 2);
+    const auto theme = gui->getTheme();
+    const auto minWidth = theme->getMinWidth(SkinType::ResizeGrip);
+    const auto minHeight = theme->getMinHeight(SkinType::ResizeGrip);
+    setSize(minWidth + 2, minHeight + 2);
 }
 
 void ResizeGrip::draw(gcn::Graphics *graphics)
 {
-    const auto gripImage = gui->getTheme()->getResizeGripImage();
-    static_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics),
+                              SkinType::ResizeGrip,
+                              WidgetState(this));
 }

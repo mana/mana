@@ -1,0 +1,234 @@
+<theme name="Mana">
+  <color id="TEXT" color="#000000" />
+  <color id="SHADOW" color="#000000" />
+  <color id="OUTLINE" color="#000000" />
+  <color id="PROGRESS_BAR" color="#ffffff" />
+  <color id="BUTTON" color="#000000" />
+  <color id="BUTTON_DISABLED" color="#333333" />
+  <color id="TAB" color="#000000" />
+  <color id="PARTY_CHAT_TAB" color="#f48055" />
+  <color id="PARTY_SOCIAL_TAB" color="#ff00d8" />
+  <color id="BACKGROUND" color="#ffffff" />
+  <color id="HIGHLIGHT" color="#c0c0c0" />
+  <color id="TAB_FLASH" color="#ff0000" effect="pulse" />
+  <color id="SHOP_WARNING" color="#910000" />
+  <color id="ITEM_EQUIPPED" color="#000091" />
+  <color id="CHAT" color="#000000" />
+  <color id="BUBBLE_TEXT" color="#ffffff" />
+  <color id="GM" color="#ff0000" />
+  <color id="PLAYER" color="#1fa052" />
+  <color id="WHISPER" color="#0000ff" />
+  <color id="IS" color="#a08527" />
+  <color id="PARTY" color="#ff00d8" />
+  <color id="GUILD" color="#ff00d8" />
+  <color id="SERVER" color="#8415e2" />
+  <color id="LOGGER" color="#919191" />
+  <color id="HYPERLINK" color="#e50d0d" />
+  <color id="UNKNOWN_ITEM" color="#000000" />
+  <color id="GENERIC" color="#21a5b1" />
+  <color id="HEAD" color="#527fa4" />
+  <color id="USABLE" color="#268d24" />
+  <color id="TORSO" color="#d12aa4" />
+  <color id="ONEHAND" color="#f42a2a" />
+  <color id="LEGS" color="#699900" />
+  <color id="FEET" color="#aa1d48" />
+  <color id="TWOHAND" color="#f46d0e" />
+  <color id="SHIELD" color="#9c2424" />
+  <color id="RING" color="#0000ff" />
+  <color id="NECKLACE" color="#ff00ff" />
+  <color id="ARMS" color="#9c24e8" />
+  <color id="AMMO" color="#8b6311" />
+  <color id="SERVER_VERSION_NOT_SUPPORTED" color="#DC0000" />
+
+  <progressbar id="DEFAULT" color="#969696" />
+  <progressbar id="HP" color="#ff0000,e28000,c38948,0f6a20" />
+  <progressbar id="MP" color="#1a66e6" />
+  <progressbar id="NO_MP" color="#646464" />
+  <progressbar id="EXP" color="#8fc0d3" />
+  <progressbar id="INVY_SLOTS" color="#e1c819" />
+  <progressbar id="WEIGHT" color="#0000ff,ffff00,ff0000" />
+  <progressbar id="JOB" color="#e187cb" />
+
+  <skin type="Window">
+    <state>
+      <img src="window.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+  </skin>
+  <skin type="ResizeGrip">
+    <state>
+      <img src="resize.png" />
+    </state>
+  </skin>
+  <skin type="Popup">
+    <state>
+      <img src="window.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+  </skin>
+  <skin type="SpeechBubble">
+    <state>
+      <img src="bubble.png|W:#000000" left="5" right="5" top="5" bottom="5" height="15" />
+    </state>
+  </skin>
+  <skin type="Button">
+    <state disabled="true">
+      <img src="button_disabled.png" left="10" right="10" top="5" bottom="5" />
+    </state>
+    <state selected="true">
+      <img src="buttonpress.png" left="10" right="10" top="5" bottom="5" />
+    </state>
+    <state hovered="true">
+      <img src="buttonhi.png" left="10" right="10" top="5" bottom="5" />
+    </state>
+    <state>
+      <img src="button.png" left="10" right="10" top="5" bottom="5" />
+    </state>
+  </skin>
+  <skin type="Tab">
+    <state selected="true">
+      <img src="tabselected.png" left="10" right="10" top="5" bottom="9" />
+    </state>
+    <state hovered="true">
+      <img src="tab_hilight.png" left="10" right="10" top="14" bottom="2" />
+    </state>
+    <state>
+      <img src="tab.png" left="10" right="10" top="14" bottom="2" />
+    </state>
+  </skin>
+  <skin type="CheckBox">
+    <state disabled="true" selected="true">
+      <img src="checkbox.png" x="27" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+    </state>
+    <state disabled="true">
+      <img src="checkbox.png" x="18" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+    </state>
+    <state selected="true" hovered="true">
+      <img src="checkbox.png" x="45" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+    </state>
+    <state hovered="true">
+      <img src="checkbox.png" x="36" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+    </state>
+    <state selected="true">
+      <img src="checkbox.png" x="9" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+    </state>
+    <state>
+      <img src="checkbox.png" x="0" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+    </state>
+  </skin>
+  <skin type="RadioButton">
+    <state hovered="true" selected="true">
+      <img src="radioin_highlight.png" offsetX="2" offsetY="2" />
+    </state>
+    <state hovered="true">
+      <img src="radioout_highlight.png" offsetX="2" offsetY="2" />
+    </state>
+    <state selected="true">
+      <img src="radioin.png" offsetX="2" offsetY="2" />
+    </state>
+    <state>
+      <img src="radioout.png" offsetX="2" offsetY="2" />
+    </state>
+  </skin>
+  <skin type="TextField">
+    <state>
+      <img src="deepbox.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+  </skin>
+  <skin type="ScrollArea">
+    <state>
+      <img src="deepbox.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+  </skin>
+  <skin type="DropDownFrame">
+    <state>
+      <img src="deepbox.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+  </skin>
+  <skin type="DropDownButton">
+    <state selected="true" hovered="true">
+      <img src="vscroll_up_pressed.png" offsetX="-2" offsetY="2" />
+    </state>
+    <state selected="true">
+      <img src="vscroll_up_default.png" offsetX="-2" offsetY="2" />
+    </state>
+    <state hovered="true">
+      <img src="vscroll_down_pressed.png" offsetX="-2" offsetY="2" />
+    </state>
+    <state>
+      <img src="vscroll_down_default.png" offsetX="-2" offsetY="2" />
+    </state>
+  </skin>
+  <skin type="ScrollBar">
+    <state hovered="true">
+      <img src="vscroll_highlight.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+    <state>
+      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+  </skin>
+  <skin type="ProgressBar">
+    <state>
+      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+  </skin>
+  <skin type="Slider">
+    <state hovered="true">
+      <img src="slider_hilight.png" height="6" left="4" right="4" top="6" offsetY="4" />
+    </state>
+    <state>
+      <img src="slider.png" height="6" left="4" right="4" top="6" offsetY="4" />
+    </state>
+  </skin>
+  <skin type="SliderHandle">
+    <state hovered="true">
+      <img src="slider_hilight.png" x="6" y="8" width="9" height="10" offsetY="2" />
+    </state>
+    <state>
+      <img src="slider.png" x="6" y="8" width="9" height="10" offsetY="2" />
+    </state>
+  </skin>
+  <skin type="ButtonUp">
+    <state selected="true">
+      <img src="vscroll_up_pressed.png" />
+    </state>
+    <state>
+      <img src="vscroll_up_default.png" />
+    </state>
+  </skin>
+  <skin type="ButtonDown">
+    <state selected="true">
+      <img src="vscroll_down_pressed.png" />
+    </state>
+    <state>
+      <img src="vscroll_down_default.png" />
+    </state>
+  </skin>
+  <skin type="ButtonLeft">
+    <state selected="true">
+      <img src="hscroll_left_pressed.png" />
+    </state>
+    <state>
+      <img src="hscroll_left_default.png" />
+    </state>
+  </skin>
+  <skin type="ButtonRight">
+    <state selected="true">
+      <img src="hscroll_right_pressed.png" />
+    </state>
+    <state>
+      <img src="hscroll_right_default.png" />
+    </state>
+  </skin>
+  <skin type="ButtonClose">
+    <state>
+      <img src="close_button.png" />
+    </state>
+  </skin>
+  <skin type="ButtonSticky">
+    <state selected="true">
+      <img src="sticky_button.png" x="15" width="15" height="15" />
+    </state>
+    <state>
+      <img src="sticky_button.png" width="15" height="15" />
+    </state>
+  </skin>
+</theme>
