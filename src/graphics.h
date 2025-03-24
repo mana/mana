@@ -28,6 +28,12 @@
 
 class Image;
 
+enum class FillMode
+{
+    Stretch,
+    Repeat,
+};
+
 /**
  * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
  * topology is as follows:
@@ -70,6 +76,7 @@ public:
     ImageRect &operator=(ImageRect &&r) = delete;
 
     Image *grid[9];
+    FillMode fillMode = FillMode::Stretch;
 
     void setAlpha(float alpha);
     int minWidth() const;
@@ -111,6 +118,11 @@ class Graphics : public gcn::Graphics
          *         <code>false</code> otherwise.
          */
         bool drawImageF(const Image *image, float x, float y);
+
+        /**
+         * Draws a rescaled version of the image.
+         */
+        bool drawRescaledImage(const Image *image, int x, int y, int width, int height);
 
         /**
          * Draws a rescaled version of the image.
@@ -176,7 +188,8 @@ class Graphics : public gcn::Graphics
                            const Image *bottomLeft, const Image *bottomRight,
                            const Image *top, const Image *right,
                            const Image *bottom, const Image *left,
-                           const Image *center);
+                           const Image *center,
+                           FillMode fillMode = FillMode::Stretch);
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1

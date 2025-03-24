@@ -51,7 +51,7 @@
 
   <skin type="Window" frameSize="0" padding="3" titleBarHeight="20">
     <state>
-      <img src="window.png" left="4" right="4" top="4" bottom="4" />
+      <img src="window.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
   </skin>
   <skin type="ResizeGrip" padding="2">
@@ -61,7 +61,7 @@
   </skin>
   <skin type="Popup" padding="6">
     <state>
-      <img src="window.png" left="4" right="4" top="4" bottom="4" />
+      <img src="window.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
   </skin>
   <skin type="SpeechBubble">
@@ -169,23 +169,23 @@
   </skin>
   <skin type="ScrollAreaHMarker">
     <state hovered="true">
-      <img src="vscroll_highlight.png" left="4" right="4" top="4" bottom="4" />
+      <img src="vscroll_highlight.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
     <state>
-      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" />
+      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
   </skin>
   <skin type="ScrollAreaVMarker">
     <state hovered="true">
-      <img src="vscroll_highlight.png" left="4" right="4" top="4" bottom="4" />
+      <img src="vscroll_highlight.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
     <state>
-      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" />
+      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
   </skin>
   <skin type="ProgressBar">
     <state>
-      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" />
+      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
   </skin>
   <skin type="Slider">

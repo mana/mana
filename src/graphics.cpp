@@ -81,6 +81,14 @@ bool Graphics::drawImageF(const Image *image, float x, float y)
     return drawImageF(image, 0, 0, x, y, image->getWidth(), image->getHeight());
 }
 
+bool Graphics::drawRescaledImage(const Image *image, int x, int y, int width, int height)
+{
+    if (!image)
+        return false;
+
+    return drawRescaledImage(image, 0, 0, x, y, image->getWidth(), image->getHeight(), width, height);
+}
+
 bool Graphics::drawRescaledImageF(const Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, float desiredWidth, float desiredHeight, bool useColor)
 {
     return drawRescaledImage(image,
@@ -129,51 +137,95 @@ void Graphics::drawImageRect(int x, int y, int w, int h,
                              const Image *bottomLeft, const Image *bottomRight,
                              const Image *top, const Image *right,
                              const Image *bottom, const Image *left,
-                             const Image *center)
+                             const Image *center,
+                             FillMode fillMode)
 {
-    pushClipArea(gcn::Rectangle(x, y, w, h));
+    switch (fillMode) {
+    case FillMode::Stretch:
+        // Draw the center area
+        drawRescaledImage(center,
+                          x + topLeft->getWidth(),
+                          y + topLeft->getHeight(),
+                          w - topLeft->getWidth() - topRight->getWidth(),
+                          h - topLeft->getHeight() - bottomLeft->getHeight());
 
-    // Draw the center area
-    drawImagePattern(center,
-            topLeft->getWidth(), topLeft->getHeight(),
-            w - topLeft->getWidth() - topRight->getWidth(),
-            h - topLeft->getHeight() - bottomLeft->getHeight());
+        // Draw the sides
+        drawRescaledImage(top,
+                          x + left->getWidth(),
+                          y,
+                          w - left->getWidth() - right->getWidth(),
+                          top->getHeight());
 
-    // Draw the sides
-    drawImagePattern(top,
-            left->getWidth(), 0,
-            w - left->getWidth() - right->getWidth(), top->getHeight());
-    drawImagePattern(bottom,
-            left->getWidth(), h - bottom->getHeight(),
-            w - left->getWidth() - right->getWidth(),
-            bottom->getHeight());
-    drawImagePattern(left,
-            0, top->getHeight(),
-            left->getWidth(),
-            h - top->getHeight() - bottom->getHeight());
-    drawImagePattern(right,
-            w - right->getWidth(), top->getHeight(),
-            right->getWidth(),
-            h - top->getHeight() - bottom->getHeight());
+        drawRescaledImage(bottom,
+                          x + left->getWidth(),
+                          y + h - bottom->getHeight(),
+                          w - left->getWidth() - right->getWidth(),
+                          bottom->getHeight());
+
+        drawRescaledImage(left,
+                          x,
+                          y + top->getHeight(),
+                          left->getWidth(),
+                          h - top->getHeight() - bottom->getHeight());
+
+        drawRescaledImage(right,
+                          x + w - right->getWidth(),
+                          y + top->getHeight(),
+                          right->getWidth(),
+                          h - top->getHeight() - bottom->getHeight());
+        break;
+    case FillMode::Repeat:
+        // Draw the center area
+        drawImagePattern(center,
+                         x + topLeft->getWidth(),
+                         y + topLeft->getHeight(),
+                         w - topLeft->getWidth() - topRight->getWidth(),
+                         h - topLeft->getHeight() - bottomLeft->getHeight());
+
+        // Draw the sides
+        drawImagePattern(top,
+                         x + left->getWidth(),
+                         y,
+                         w - left->getWidth() - right->getWidth(),
+                         top->getHeight());
+
+        drawImagePattern(bottom,
+                         x + left->getWidth(),
+                         y + h - bottom->getHeight(),
+                         w - left->getWidth() - right->getWidth(),
+                         bottom->getHeight());
+
+        drawImagePattern(left,
+                         x,
+                         y + top->getHeight(),
+                         left->getWidth(),
+                         h - top->getHeight() - bottom->getHeight());
+
+        drawImagePattern(right,
+                         x + w - right->getWidth(),
+                         y + top->getHeight(),
+                         right->getWidth(),
+                         h - top->getHeight() - bottom->getHeight());
+        break;
+    }
 
     // Draw the corners
-    drawImage(topLeft, 0, 0);
-    drawImage(topRight, w - topRight->getWidth(), 0);
-    drawImage(bottomLeft, 0, h - bottomLeft->getHeight());
+    drawImage(topLeft, x, y);
+    drawImage(topRight, x + w - topRight->getWidth(), y);
+    drawImage(bottomLeft, x, y + h - bottomLeft->getHeight());
     drawImage(bottomRight,
-            w - bottomRight->getWidth(),
-            h - bottomRight->getHeight());
-
-    popClipArea();
+              x + w - bottomRight->getWidth(),
+              y + h - bottomRight->getHeight());
 }
 
 void Graphics::drawImageRect(int x, int y, int w, int h,
                              const ImageRect &imgRect)
 {
     drawImageRect(x, y, w, h,
-            imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],
-            imgRect.grid[1], imgRect.grid[5], imgRect.grid[7], imgRect.grid[3],
-            imgRect.grid[4]);
+                  imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],
+                  imgRect.grid[1], imgRect.grid[5], imgRect.grid[7], imgRect.grid[3],
+                  imgRect.grid[4],
+                  imgRect.fillMode);
 }
 
 void Graphics::_beginDraw()

@@ -503,6 +503,15 @@ void Theme::readSkinStateNode(XML::Node node, Skin &skin) const
     skin.addState(std::move(state));
 }
 
+template<>
+inline void fromString(const char *str, FillMode &value)
+{
+    if (strcmp(str, "repeat") == 0)
+        value = FillMode::Repeat;
+    else if (strcmp(str, "stretch") == 0)
+        value = FillMode::Stretch;
+}
+
 void Theme::readSkinStateImgNode(XML::Node node, SkinState &state) const
 {
     const std::string src = node.getProperty("src", std::string());
@@ -548,6 +557,8 @@ void Theme::readSkinStateImgNode(XML::Node node, SkinState &state) const
     if (left + right + top + bottom > 0)
     {
         auto &border = part.data.emplace<ImageRect>();
+
+        node.attribute("fill", border.fillMode);
 
         const int gridx[4] = {x, x + left, x + width - right, x + width};
         const int gridy[4] = {y, y + top, y + height - bottom, y + height};
