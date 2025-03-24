@@ -65,13 +65,14 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     setWindowName("Equipment");
     setCloseButton(true);
     setSaveVisible(true);
-    setDefaultSize(180, 300, ImageRect::CENTER);
+    setContentSize(175, 290);
+    setDefaultSize(getWidth(), getHeight(), ImageRect::CENTER);
     loadWindowState();
 
     mUnequip = new Button(_("Unequip"), "unequip", this);
     const gcn::Rectangle &area = getChildrenArea();
-    mUnequip->setPosition(area.width  - mUnequip->getWidth() - 5,
-                          area.height - mUnequip->getHeight() - 5);
+    mUnequip->setPosition(area.width  - mUnequip->getWidth() - getPadding(),
+                          area.height - mUnequip->getHeight() - getPadding());
     mUnequip->setEnabled(false);
 
     add(playerBox);
@@ -108,7 +109,6 @@ EquipmentWindow::~EquipmentWindow()
 void EquipmentWindow::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
-    Window::drawChildren(graphics);
 
     // Draw equipment boxes
     auto *g = static_cast<Graphics*>(graphics);
@@ -237,6 +237,8 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
 
 void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
 {
+    Window::mouseMoved(event);
+
     const int x = event.getX();
     const int y = event.getY();
 
@@ -261,6 +263,8 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
 
 void EquipmentWindow::mouseExited(gcn::MouseEvent &event)
 {
+    Window::mouseExited(event);
+
     mItemPopup->setVisible(false);
 }
 

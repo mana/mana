@@ -47,6 +47,8 @@ class DropDown : public gcn::DropDown
 
         void drawFrame(gcn::Graphics *graphics) override;
 
+        void adjustHeight();
+
         // Inherited from FocusListener
 
         void focusLost(const gcn::Event& event) override;
@@ -70,4 +72,9 @@ class DropDown : public gcn::DropDown
          * @param graphics a Graphics object to draw with.
          */
         void drawButton(gcn::Graphics *graphics) override;
+
+        void dropDown() override;
+        void foldUp() override;
+
+        int mPadding = 1;
 };

@@ -43,6 +43,9 @@ class Container : public gcn::Container
         Container();
         ~Container() override;
 
+        // Overridden to disable drawing of the frame
+        void drawFrame(gcn::Graphics *graphics) override {}
+
     protected:
         /**
          * Gets the layout handler for this container.

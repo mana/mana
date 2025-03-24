@@ -56,9 +56,10 @@ Window::Window(const std::string &caption, bool modal, Window *parent)
 
     instances++;
 
-    setFrameSize(0);
-    setPadding(3);
-    setTitleBarHeight(20);
+    auto &skin = gui->getTheme()->getSkin(SkinType::Window);
+    setFrameSize(skin.frameSize);
+    setPadding(skin.padding);
+    setTitleBarHeight(skin.titleBarHeight);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -98,43 +99,42 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics *graphics)
 {
+    if (getFrameSize() == 0)
+        drawFrame(graphics);
+
+    auto g = static_cast<Graphics*>(graphics);
+
+    if (mCloseButton)
+    {
+        WidgetState state(getCloseButtonRect(), mCloseButtonHovered ? STATE_HOVERED : 0);
+        gui->getTheme()->drawSkin(g, SkinType::ButtonClose, state);
+    }
+
+    if (mStickyButton)
+    {
+        WidgetState state(getStickyButtonRect(), mSticky ? STATE_SELECTED : 0);
+        gui->getTheme()->drawSkin(g, SkinType::ButtonSticky, state);
+    }
+
+    drawChildren(graphics);
+}
+
+void Window::drawFrame(gcn::Graphics *graphics)
+{
     auto g = static_cast<Graphics*>(graphics);
     auto theme = gui->getTheme();
 
     WidgetState state(this);
+    state.width += getFrameSize() * 2;
+    state.height += getFrameSize() * 2;
     theme->drawSkin(g, SkinType::Window, state);
 
-    // Draw title
     if (mShowTitle)
     {
         g->setColor(Theme::getThemeColor(Theme::TEXT));
         g->setFont(getFont());
-        g->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
+        g->drawText(getCaption(), 7 + getFrameSize(), 5 + getFrameSize(), gcn::Graphics::LEFT);
     }
-
-    const int closeButtonWidth = theme->getMinWidth(SkinType::ButtonClose);
-    const int stickyButtonWidth = theme->getMinWidth(SkinType::ButtonSticky);
-
-    // Draw Close Button
-    if (mCloseButton)
-    {
-        state.x = state.width - closeButtonWidth - getPadding();
-        state.y = getPadding();
-        theme->drawSkin(g, SkinType::ButtonClose, state);
-    }
-
-    // Draw Sticky Button
-    if (mStickyButton)
-    {
-        state.flags = mSticky ? STATE_SELECTED : 0;
-        state.x = state.width - stickyButtonWidth - getPadding();
-        state.y = getPadding();
-        if (mCloseButton)
-            state.x -= closeButtonWidth;
-        theme->drawSkin(g, SkinType::ButtonSticky, state);
-    }
-
-    drawChildren(graphics);
 }
 
 void Window::setContentSize(int width, int height)
@@ -273,9 +273,7 @@ void Window::widgetResized(const gcn::Event &event)
 void Window::widgetHidden(const gcn::Event &event)
 {
     if (gui)
-    {
         gui->setCursorType(Cursor::POINTER);
-    }
 
     WidgetListIterator it;
 
@@ -335,45 +333,16 @@ void Window::mousePressed(gcn::MouseEvent &event)
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        auto theme = gui->getTheme();
-
         const int x = event.getX();
         const int y = event.getY();
 
-        const int closeButtonWidth = theme->getMinWidth(SkinType::ButtonClose);
-        const int closeButtonHeight = theme->getMinHeight(SkinType::ButtonClose);
-        const int stickyButtonWidth = theme->getMinWidth(SkinType::ButtonSticky);
-        const int stickyButtonHeight = theme->getMinHeight(SkinType::ButtonSticky);
+        if (mCloseButton && getCloseButtonRect().isPointInRect(x, y))
+            close();
 
-        // Handle close button
-        if (mCloseButton)
-        {
-            gcn::Rectangle closeButtonRect(getWidth() - closeButtonWidth - getPadding(),
-                                           getPadding(),
-                                           closeButtonWidth,
-                                           closeButtonHeight);
+        if (mStickyButton && getStickyButtonRect().isPointInRect(x, y))
+            setSticky(!isSticky());
 
-            if (closeButtonRect.isPointInRect(x, y))
-                close();
-        }
-
-        // Handle sticky button
-        if (mStickyButton)
-        {
-            int stickyButtonX = getWidth() - stickyButtonWidth - getPadding();
-            if (mCloseButton)
-                stickyButtonX -= closeButtonWidth;
-
-            gcn::Rectangle stickyButtonRect(stickyButtonX,
-                                            getPadding(),
-                                            stickyButtonWidth,
-                                            stickyButtonHeight);
-
-            if (stickyButtonRect.isPointInRect(x, y))
-                setSticky(!isSticky());
-        }
-
-        // Handle window resizing
+        // Update resizing state and disable moving if we're resizing the window
         mouseResize = getResizeHandles(event);
         if (mouseResize)
             mMoved = false;
@@ -396,10 +365,14 @@ void Window::mouseExited(gcn::MouseEvent &event)
 {
     if (mGrip && !mouseResize)
         gui->setCursorType(Cursor::POINTER);
+
+    mCloseButtonHovered = false;
 }
 
 void Window::mouseMoved(gcn::MouseEvent &event)
 {
+    mCloseButtonHovered = false;
+
     // Make sure BeingPopup is hidden (Viewport does not receive mouseExited)
     if (viewport)
         viewport->hideBeingPopup();
@@ -409,30 +382,36 @@ void Window::mouseMoved(gcn::MouseEvent &event)
     if (event.isConsumed())
         return;
 
-    int resizeHandles = getResizeHandles(event);
+    mCloseButtonHovered = getCloseButtonRect().isPointInRect(event.getX(), event.getY());
+    Cursor cursor = Cursor::POINTER;
 
     // Changes the custom mouse cursor based on its current position.
-    switch (resizeHandles)
+    if (!mCloseButtonHovered)
     {
+        switch (getResizeHandles(event))
+        {
         case BOTTOM | RIGHT:
         case TOP | LEFT:
-            gui->setCursorType(Cursor::RESIZE_DOWN_RIGHT);
+            cursor = Cursor::RESIZE_DOWN_RIGHT;
             break;
         case BOTTOM | LEFT:
         case TOP | RIGHT:
-            gui->setCursorType(Cursor::RESIZE_DOWN_LEFT);
+            cursor = Cursor::RESIZE_DOWN_LEFT;
             break;
         case BOTTOM:
         case TOP:
-            gui->setCursorType(Cursor::RESIZE_DOWN);
+            cursor = Cursor::RESIZE_DOWN;
             break;
         case RIGHT:
         case LEFT:
-            gui->setCursorType(Cursor::RESIZE_ACROSS);
+            cursor = Cursor::RESIZE_ACROSS;
             break;
         default:
-            gui->setCursorType(Cursor::POINTER);
+            break;
+        }
     }
+
+    gui->setCursorType(cursor);
 }
 
 void Window::mouseDragged(gcn::MouseEvent &event)
@@ -691,6 +670,45 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
     }
 
     return resizeHandles;
+}
+
+gcn::Rectangle Window::getCloseButtonRect() const
+{
+    auto theme = gui->getTheme();
+
+    auto &closeButtonSkin = theme->getSkin(SkinType::ButtonClose);
+    const int closeButtonWidth = closeButtonSkin.getMinWidth();
+    const int closeButtonHeight = closeButtonSkin.getMinHeight();
+
+    return {
+        getWidth() - closeButtonWidth - closeButtonSkin.padding,
+        closeButtonSkin.padding,
+        closeButtonWidth,
+        closeButtonHeight
+    };
+}
+
+gcn::Rectangle Window::getStickyButtonRect() const
+{
+    auto theme = gui->getTheme();
+
+    auto &closeButtonSkin = theme->getSkin(SkinType::ButtonClose);
+    const int closeButtonWidth = closeButtonSkin.getMinWidth();
+
+    auto &stickyButtonSkin = theme->getSkin(SkinType::ButtonSticky);
+    const int stickyButtonWidth = stickyButtonSkin.getMinWidth();
+    const int stickyButtonHeight = stickyButtonSkin.getMinHeight();
+
+    int stickyButtonX = getWidth() - stickyButtonWidth - stickyButtonSkin.padding;
+    if (mCloseButton)
+        stickyButtonX -= closeButtonWidth + closeButtonSkin.padding;
+
+    return {
+        stickyButtonX,
+        stickyButtonSkin.padding,
+        stickyButtonWidth,
+        stickyButtonHeight
+    };
 }
 
 int Window::getGuiAlpha()

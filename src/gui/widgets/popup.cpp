@@ -42,7 +42,9 @@ Popup::Popup(const std::string &name, SkinType skinType)
     if (!windowContainer)
         throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
 
-    setPadding(6);
+    auto &skin = gui->getTheme()->getSkin(skinType);
+    setFrameSize(skin.frameSize);
+    setPadding(skin.padding);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -63,8 +65,18 @@ void Popup::setWindowContainer(WindowContainer *wc)
 
 void Popup::draw(gcn::Graphics *graphics)
 {
-    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), mSkinType, WidgetState(this));
+    if (getFrameSize() == 0)
+        drawFrame(graphics);
+
     drawChildren(graphics);
+}
+
+void Popup::drawFrame(gcn::Graphics *graphics)
+{
+    WidgetState state(this);
+    state.width += getFrameSize() * 2;
+    state.height += getFrameSize() * 2;
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), mSkinType, state);
 }
 
 gcn::Rectangle Popup::getChildrenArea()

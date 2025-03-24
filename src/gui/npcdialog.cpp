@@ -87,7 +87,6 @@ NpcDialog::NpcDialog(int npcId)
     // Setup output text box
     mTextBox = new BrowserBox(BrowserBox::AUTO_WRAP);
     mTextBox->setWrapIndent(15);
-    mTextBox->setFrameSize(2);
     mTextBox->setLinkHandler(mItemLinkHandler.get());
     mTextBox->setEnableKeys(true);
 

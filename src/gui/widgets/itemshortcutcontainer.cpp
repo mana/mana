@@ -21,7 +21,6 @@
 
 #include "gui/widgets/itemshortcutcontainer.h"
 
-#include "configuration.h"
 #include "graphics.h"
 #include "inventory.h"
 #include "item.h"
@@ -39,47 +38,32 @@
 #include "utils/stringutils.h"
 
 ItemShortcutContainer::ItemShortcutContainer()
+    : mItemPopup(new ItemPopup)
 {
-    addMouseListener(this);
-    addWidgetListener(this);
-
-    mItemPopup = new ItemPopup;
-
-    mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
     mMaxItems = itemShortcut->getItemCount();
-
-    if (mBackgroundImg)
-    {
-        mBoxHeight = mBackgroundImg->getHeight();
-        mBoxWidth = mBackgroundImg->getWidth();
-    }
 }
 
-ItemShortcutContainer::~ItemShortcutContainer()
-{
-    delete mItemPopup;
-}
+ItemShortcutContainer::~ItemShortcutContainer() = default;
 
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
-    mBackgroundImg->setAlpha(config.guiAlpha);
-
     auto *g = static_cast<Graphics*>(graphics);
+    auto theme = gui->getTheme();
 
     graphics->setFont(getFont());
 
     for (int i = 0; i < mMaxItems; i++)
     {
-        const int itemX = (i % mGridWidth) * mBoxWidth;
-        const int itemY = (i / mGridWidth) * mBoxHeight;
-
-        g->drawImage(mBackgroundImg, itemX, itemY);
+        WidgetState state;
+        state.x = (i % mGridWidth) * mBoxWidth;
+        state.y = (i / mGridWidth) * mBoxHeight;
+        theme->drawSkin(g, SkinType::ShortcutBox, state);
 
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
                     keyboard.getKeyValue(KeyboardConfig::KEY_SHORTCUT_1 + i));
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
-        g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
+        g->drawText(key, state.x + 2, state.y + 2, gcn::Graphics::LEFT);
 
         if (itemShortcut->getItem(i) < 0)
             continue;
@@ -101,11 +85,11 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
                     caption = "Eq.";
 
                 image->setAlpha(1.0f);
-                g->drawImage(image, itemX, itemY);
+                g->drawImage(image, state.x, state.y);
                 if (item->isEquipped())
                     g->setColor(Theme::getThemeColor(Theme::ITEM_EQUIPPED));
-                g->drawText(caption, itemX + mBoxWidth / 2,
-                            itemY + mBoxHeight - 14, gcn::Graphics::CENTER);
+                g->drawText(caption, state.x + mBoxWidth / 2,
+                            state.y + mBoxHeight - 14, gcn::Graphics::CENTER);
             }
         }
     }
@@ -133,23 +117,20 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
         if (!mItemMoved && mItemClicked)
         {
             const int index = getIndexFromGrid(event.getX(), event.getY());
-
             if (index == -1)
                 return;
 
             const int itemId = itemShortcut->getItem(index);
-
             if (itemId < 0)
                 return;
 
-            Item *item = PlayerInfo::getInventory()->findItem(itemId);
-
-            if (item)
+            if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
             {
                 mItemMoved = item;
                 itemShortcut->removeItem(index);
             }
         }
+
         if (mItemMoved)
         {
             mCursorPosX = event.getX();
@@ -222,18 +203,14 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
 void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
 {
     const int index = getIndexFromGrid(event.getX(), event.getY());
-
     if (index == -1)
         return;
 
     const int itemId = itemShortcut->getItem(index);
-
     if (itemId < 0)
         return;
 
-    Item *item = PlayerInfo::getInventory()->findItem(itemId);
-
-    if (item)
+    if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
     {
         mItemPopup->setItem(item->getInfo());
         mItemPopup->position(viewport->getMouseX(), viewport->getMouseY());

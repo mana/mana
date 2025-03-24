@@ -83,6 +83,14 @@ WidgetState::WidgetState(const gcn::Widget *widget)
         flags |= STATE_FOCUSED;
 }
 
+WidgetState::WidgetState(const gcn::Rectangle &dim, uint8_t flags)
+    : x(dim.x)
+    , y(dim.y)
+    , width(dim.width)
+    , height(dim.height)
+    , flags(flags)
+{}
+
 
 Skin::~Skin()
 {
@@ -121,6 +129,15 @@ void Skin::draw(Graphics *graphics, const WidgetState &state) const
                 else if constexpr (std::is_same_v<T, Image*>)
                 {
                     graphics->drawImage(data, state.x + part.offsetX, state.y + part.offsetY);
+                }
+                else if constexpr (std::is_same_v<T, ColoredRectangle>)
+                {
+                    graphics->setColor(data.color);
+                    graphics->fillRectangle(gcn::Rectangle(state.x + part.offsetX,
+                                                           state.y + part.offsetY,
+                                                           state.width,
+                                                           state.height));
+                    graphics->setColor(gcn::Color(255, 255, 255));
                 }
             }, part.data);
         }
@@ -258,19 +275,17 @@ const gcn::Color &Theme::getThemeColor(char c, bool &valid)
 
 gcn::Color Theme::getProgressColor(int type, float progress)
 {
-    const auto &dye = gui->getTheme()->mProgressColors[type];
-
     int color[3] = {0, 0, 0};
-    dye->getColor(progress, color);
+
+    if (const auto &dye = gui->getTheme()->mProgressColors[type])
+        dye->getColor(progress, color);
 
     return gcn::Color(color[0], color[1], color[2]);
 }
 
 void Theme::drawSkin(Graphics *graphics, SkinType type, const WidgetState &state) const
 {
-    auto it = mSkins.find(type);
-    if (it != mSkins.end())
-        it->second.draw(graphics, state);
+    getSkin(type).draw(graphics, state);
 }
 
 void Theme::drawProgressBar(Graphics *graphics, const gcn::Rectangle &area,
@@ -319,20 +334,21 @@ void Theme::drawProgressBar(Graphics *graphics, const gcn::Rectangle &area,
     graphics->setColor(oldColor);
 }
 
+const Skin &Theme::getSkin(SkinType skinType) const
+{
+    static Skin emptySkin;
+    const auto it = mSkins.find(skinType);
+    return it != mSkins.end() ? it->second : emptySkin;
+}
+
 int Theme::getMinWidth(SkinType skinType) const
 {
-    auto it = mSkins.find(skinType);
-    if (it != mSkins.end())
-        return it->second.getMinWidth();
-    return 0;
+    return getSkin(skinType).getMinWidth();
 }
 
 int Theme::getMinHeight(SkinType skinType) const
 {
-    auto it = mSkins.find(skinType);
-    if (it != mSkins.end())
-        return it->second.getMinHeight();
-    return 0;
+    return getSkin(skinType).getMinHeight();
 }
 
 void Theme::setMinimumOpacity(float minimumOpacity)
@@ -408,51 +424,32 @@ bool Theme::readTheme(const std::string &filename)
 
 static std::optional<SkinType> readSkinType(std::string_view type)
 {
-    if (type == "Window")
-        return SkinType::Window;
-    if (type == "Popup")
-        return SkinType::Popup;
-    if (type == "SpeechBubble")
-        return SkinType::SpeechBubble;
-    if (type == "Button")
-        return SkinType::Button;
-    if (type == "ButtonUp")
-        return SkinType::ButtonUp;
-    if (type == "ButtonDown")
-        return SkinType::ButtonDown;
-    if (type == "ButtonLeft")
-        return SkinType::ButtonLeft;
-    if (type == "ButtonRight")
-        return SkinType::ButtonRight;
-    if (type == "ButtonClose")
-        return SkinType::ButtonClose;
-    if (type == "ButtonSticky")
-        return SkinType::ButtonSticky;
-    if (type == "CheckBox")
-        return SkinType::CheckBox;
-    if (type == "RadioButton")
-        return SkinType::RadioButton;
-    if (type == "TextField")
-        return SkinType::TextField;
-    if (type == "Tab")
-        return SkinType::Tab;
-    if (type == "ScrollArea")
-        return SkinType::ScrollArea;
-    if (type == "ScrollBar")
-        return SkinType::ScrollBar;
-    if (type == "DropDownFrame")
-        return SkinType::DropDownFrame;
-    if (type == "DropDownButton")
-        return SkinType::DropDownButton;
-    if (type == "ProgressBar")
-        return SkinType::ProgressBar;
-    if (type == "Slider")
-        return SkinType::Slider;
-    if (type == "SliderHandle")
-        return SkinType::SliderHandle;
-    if (type == "ResizeGrip")
-        return SkinType::ResizeGrip;
-
+    if (type == "Window")               return SkinType::Window;
+    if (type == "Popup")                return SkinType::Popup;
+    if (type == "SpeechBubble")         return SkinType::SpeechBubble;
+    if (type == "Button")               return SkinType::Button;
+    if (type == "ButtonUp")             return SkinType::ButtonUp;
+    if (type == "ButtonDown")           return SkinType::ButtonDown;
+    if (type == "ButtonLeft")           return SkinType::ButtonLeft;
+    if (type == "ButtonRight")          return SkinType::ButtonRight;
+    if (type == "ButtonClose")          return SkinType::ButtonClose;
+    if (type == "ButtonSticky")         return SkinType::ButtonSticky;
+    if (type == "CheckBox")             return SkinType::CheckBox;
+    if (type == "RadioButton")          return SkinType::RadioButton;
+    if (type == "TextField")            return SkinType::TextField;
+    if (type == "Tab")                  return SkinType::Tab;
+    if (type == "ScrollArea")           return SkinType::ScrollArea;
+    if (type == "ScrollAreaHBar")       return SkinType::ScrollAreaHBar;
+    if (type == "ScrollAreaHMarker")    return SkinType::ScrollAreaHMarker;
+    if (type == "ScrollAreaVBar")       return SkinType::ScrollAreaVBar;
+    if (type == "ScrollAreaVMarker")    return SkinType::ScrollAreaVMarker;
+    if (type == "DropDownFrame")        return SkinType::DropDownFrame;
+    if (type == "DropDownButton")       return SkinType::DropDownButton;
+    if (type == "ProgressBar")          return SkinType::ProgressBar;
+    if (type == "Slider")               return SkinType::Slider;
+    if (type == "SliderHandle")         return SkinType::SliderHandle;
+    if (type == "ResizeGrip")           return SkinType::ResizeGrip;
+    if (type == "ShortcutBox")          return SkinType::ShortcutBox;
     return {};
 }
 
@@ -464,6 +461,10 @@ void Theme::readSkinNode(XML::Node node)
         return;
 
     auto &skin = mSkins[*skinType];
+
+    node.attribute("frameSize", skin.frameSize);
+    node.attribute("padding", skin.padding);
+    node.attribute("titleBarHeight", skin.titleBarHeight);
 
     for (auto childNode : node.children())
         if (childNode.name() == "state")
@@ -492,8 +493,12 @@ void Theme::readSkinStateNode(XML::Node node, Skin &skin) const
     readFlag("focused", STATE_FOCUSED);
 
     for (auto childNode : node.children())
+    {
         if (childNode.name() == "img")
             readSkinStateImgNode(childNode, state);
+        else if (childNode.name() == "rect")
+            readSkinStateRectNode(childNode, state);
+    }
 
     skin.addState(std::move(state));
 }
@@ -566,9 +571,50 @@ void Theme::readSkinStateImgNode(XML::Node node, SkinState &state) const
     }
 }
 
+template<>
+inline void fromString(const char *str, gcn::Color &value)
+{
+    if (strlen(str) < 7 || str[0] != '#')
+    {
+    error:
+        logger->log("Error, invalid theme color palette: %s", str);
+        value = Palette::BLACK;
+        return;
+    }
+
+    int v = 0;
+    for (int i = 1; i < 7; ++i)
+    {
+        char c = str[i];
+        int n;
+
+        if ('0' <= c && c <= '9')
+            n = c - '0';
+        else if ('A' <= c && c <= 'F')
+            n = c - 'A' + 10;
+        else if ('a' <= c && c <= 'f')
+            n = c - 'a' + 10;
+        else
+            goto error;
+
+        v = (v << 4) | n;
+    }
+
+    value = gcn::Color(v);
+}
+
+void Theme::readSkinStateRectNode(XML::Node node, SkinState &state) const
+{
+    auto &part = state.parts.emplace_back();
+    auto &rect = part.data.emplace<ColoredRectangle>();
+
+    node.attribute("color", rect.color);
+    node.attribute("alpha", rect.color.a);
+}
+
 static int readColorType(const std::string &type)
 {
-    static const char *colors[] = {
+    static constexpr const char *colors[Theme::THEME_COLORS_END] = {
         "TEXT",
         "SHADOW",
         "OUTLINE",
@@ -621,41 +667,9 @@ static int readColorType(const std::string &type)
     return -1;
 }
 
-static gcn::Color readColor(const std::string &description)
-{
-    int size = description.length();
-    if (size < 7 || description[0] != '#')
-    {
-        error:
-        logger->log("Error, invalid theme color palette: %s",
-                    description.c_str());
-        return Palette::BLACK;
-    }
-
-    int v = 0;
-    for (int i = 1; i < 7; ++i)
-    {
-        char c = description[i];
-        int n;
-
-        if ('0' <= c && c <= '9')
-            n = c - '0';
-        else if ('A' <= c && c <= 'F')
-            n = c - 'A' + 10;
-        else if ('a' <= c && c <= 'f')
-            n = c - 'a' + 10;
-        else
-            goto error;
-
-        v = (v << 4) | n;
-    }
-
-    return gcn::Color(v);
-}
-
 static Palette::GradientType readColorGradient(const std::string &grad)
 {
-    static const char *grads[] = {
+    static constexpr const char *grads[] = {
         "STATIC",
         "PULSE",
         "SPECTRUM",
@@ -675,14 +689,13 @@ static Palette::GradientType readColorGradient(const std::string &grad)
 void Theme::readColorNode(XML::Node node)
 {
     const int type = readColorType(node.getProperty("id", std::string()));
-    if (type < 0) // invalid or no type given
+    if (check(type > 0, "Theme: 'color' element has invalid or no 'type' attribute!"))
         return;
 
-    const std::string temp = node.getProperty("color", std::string());
-    if (temp.empty()) // no color set, so move on
+    gcn::Color color;
+    if (check(node.attribute("color", color), "Theme: 'color' element missing 'color' attribute!"))
         return;
 
-    const gcn::Color color = readColor(temp);
     const GradientType grad = readColorGradient(node.getProperty("effect", std::string()));
 
     mColors[type].set(type, color, grad, 10);
@@ -690,7 +703,7 @@ void Theme::readColorNode(XML::Node node)
 
 static int readProgressType(const std::string &type)
 {
-    static const char *colors[] = {
+    static constexpr const char *colors[Theme::THEME_PROG_END] = {
         "DEFAULT",
         "HP",
         "MP",

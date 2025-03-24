@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include "resources/image.h"
-
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
@@ -37,13 +35,15 @@ class ShortcutContainer : public gcn::Widget,
                           public gcn::MouseListener
 {
     public:
-        ShortcutContainer() = default;
-        ~ShortcutContainer();
+        ShortcutContainer();
 
         /**
          * Draws the shortcuts
          */
         void draw(gcn::Graphics *graphics) override = 0;
+
+        // Overridden to disable drawing of the frame
+        void drawFrame(gcn::Graphics *graphics) override {}
 
         /**
          * Invoked when a widget changes its size. This is used to determine
@@ -51,14 +51,9 @@ class ShortcutContainer : public gcn::Widget,
          */
         void widgetResized(const gcn::Event &event) override;
 
-        int getMaxItems() const
-        { return mMaxItems; }
-
-        int getBoxWidth() const
-        { return mBoxWidth; }
-
-        int getBoxHeight() const
-        { return mBoxHeight; }
+        int getMaxItems() const { return mMaxItems; }
+        int getBoxWidth() const { return mBoxWidth; }
+        int getBoxHeight() const { return mBoxHeight; }
 
     protected:
         /**
@@ -69,8 +64,6 @@ class ShortcutContainer : public gcn::Widget,
          * @return index on success, -1 on failure.
          */
         int getIndexFromGrid(int pointX, int pointY) const;
-
-        ResourceRef<Image> mBackgroundImg;
 
         int mMaxItems = 0;
         int mBoxWidth = 0;

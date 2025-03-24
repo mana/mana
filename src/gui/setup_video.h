@@ -29,6 +29,7 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
+class DropDown;
 class ResolutionListModel;
 class ScaleListModel;
 
@@ -59,7 +60,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         gcn::DropDown *mWindowModeDropDown;
         gcn::DropDown *mResolutionDropDown;
-        gcn::DropDown *mScaleDropDown;
+        DropDown *mScaleDropDown;
         gcn::CheckBox *mVSyncCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;

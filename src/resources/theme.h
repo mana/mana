@@ -61,13 +61,17 @@ enum class SkinType
     TextField,
     Tab,
     ScrollArea,
-    ScrollBar,
+    ScrollAreaHBar,
+    ScrollAreaHMarker,
+    ScrollAreaVBar,
+    ScrollAreaVMarker,
     DropDownFrame,
     DropDownButton,
     ProgressBar,
     Slider,
     SliderHandle,
     ResizeGrip,
+    ShortcutBox,
 };
 
 enum StateFlags : uint8_t
@@ -79,11 +83,16 @@ enum StateFlags : uint8_t
     STATE_FOCUSED   = 0x10,
 };
 
+struct ColoredRectangle
+{
+    gcn::Color color;
+};
+
 struct SkinPart
 {
     int offsetX = 0;
     int offsetY = 0;
-    std::variant<ImageRect, Image *> data;
+    std::variant<ImageRect, Image *, ColoredRectangle> data;
 };
 
 struct SkinState
@@ -97,6 +106,7 @@ struct WidgetState
 {
     WidgetState() = default;
     explicit WidgetState(const gcn::Widget *widget);
+    explicit WidgetState(const gcn::Rectangle &dim, uint8_t flags = 0);
 
     int x = 0;
     int y = 0;
@@ -129,6 +139,10 @@ class Skin
          * Updates the alpha value of the skin
          */
         void updateAlpha(float alpha);
+
+        int frameSize = 0;
+        int padding = 0;
+        int titleBarHeight = 0;
 
     private:
         std::vector<SkinState> mStates;
@@ -226,6 +240,8 @@ class Theme : public Palette, public EventListener
                              float progress,
                              const std::string &text = std::string()) const;
 
+        const Skin &getSkin(SkinType skinType) const;
+
         int getMinWidth(SkinType skinType) const;
         int getMinHeight(SkinType skinType) const;
 
@@ -259,6 +275,7 @@ class Theme : public Palette, public EventListener
         void readSkinNode(XML::Node node);
         void readSkinStateNode(XML::Node node, Skin &skin) const;
         void readSkinStateImgNode(XML::Node node, SkinState &state) const;
+        void readSkinStateRectNode(XML::Node node, SkinState &state) const;
         void readColorNode(XML::Node node);
         void readProgressBarNode(XML::Node node);
 

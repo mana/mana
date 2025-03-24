@@ -39,21 +39,29 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab)
     : gcn::TextField(text)
     , mLoseFocusOnTab(loseFocusOnTab)
 {
-    setFrameSize(2);
+    auto &skin = gui->getTheme()->getSkin(SkinType::TextField);
+    setFrameSize(skin.frameSize);
+    mPadding = skin.padding;
+
+    setWidth(getFont()->getWidth(mText) + 2 * mPadding);
+    setHeight(getFont()->getHeight() + 2 * mPadding);
+    fixScroll();
 }
 
 void TextField::draw(gcn::Graphics *graphics)
 {
+    if (getFrameSize() == 0)
+        drawFrame(graphics);
+
     if (isFocused())
     {
         drawCaret(graphics,
-                  getFont()->getWidth(mText.substr(0, mCaretPosition)) -
-                  mXScroll);
+                  getFont()->getWidth(mText.substr(0, mCaretPosition)) - mXScroll);
     }
 
     graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     graphics->setFont(getFont());
-    graphics->drawText(mText, 1 - mXScroll, 1);
+    graphics->drawText(mText, mPadding - mXScroll, mPadding);
 }
 
 void TextField::drawFrame(gcn::Graphics *graphics)
@@ -97,6 +105,12 @@ int TextField::getValue() const
         return mMaximum;
 
     return value;
+}
+
+void TextField::drawCaret(gcn::Graphics *graphics, int x)
+{
+    graphics->setColor(getForegroundColor());
+    graphics->drawLine(mPadding + x, mPadding, mPadding + x, getHeight() - mPadding);
 }
 
 void TextField::keyPressed(gcn::KeyEvent &keyEvent)

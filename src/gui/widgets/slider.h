@@ -49,10 +49,11 @@ class Slider : public gcn::Slider
          */
         void draw(gcn::Graphics *graphics) override;
 
-        /**
-         * Draws the marker.
-         */
-        void drawMarker(gcn::Graphics *graphics) override;
+        // Overridden to disable drawing of the frame
+        void drawFrame(gcn::Graphics *graphics) override {}
+
+        // Marker is drawn in Slider::draw
+        void drawMarker(gcn::Graphics *graphics) override {}
 
         /**
          * Called when the mouse enteres the widget area.

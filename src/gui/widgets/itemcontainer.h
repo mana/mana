@@ -72,6 +72,9 @@ class ItemContainer : public gcn::Widget,
          */
         void draw(gcn::Graphics *graphics) override;
 
+        // Overridden to disable drawing of the frame
+        void drawFrame(gcn::Graphics *graphics) override {}
+
         // KeyListener
         void keyPressed(gcn::KeyEvent &event) override;
         void keyReleased(gcn::KeyEvent &event) override;

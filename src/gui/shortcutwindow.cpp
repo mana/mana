@@ -41,17 +41,17 @@ ShortcutWindow::ShortcutWindow(const std::string &title,
     setSaveVisible(true);
     setupWindow->registerWindowForReset(this);
 
-    const int border = getPadding() * 2;
+    auto scrollArea = new ScrollArea(content);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    scrollArea->setOpaque(false);
+
+    const int border = (getPadding() + content->getFrameSize()) * 2;
     setMinWidth(content->getBoxWidth() + border);
     setMinHeight(content->getBoxHeight() + border + GRAB_MARGIN);
     setMaxWidth(content->getBoxWidth() * content->getMaxItems() + border);
     setMaxHeight(content->getBoxHeight() * content->getMaxItems() + border + GRAB_MARGIN);
 
     setDefaultSize(getMinWidth(), getMaxHeight(), ImageRect::LOWER_RIGHT);
-
-    auto scrollArea = new ScrollArea(content);
-    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    scrollArea->setOpaque(false);
 
     place(0, 0, scrollArea, 5, 5).setPadding(0);
 

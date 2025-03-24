@@ -557,6 +557,6 @@ void Setup_Video::refreshScaleList()
     }
 
     mScaleListModel->setVideoSettings(mVideoSettings);
-    mScaleDropDown->setListModel(mScaleListModel.get());
+    mScaleDropDown->adjustHeight();
     mScaleDropDown->setSelected(mVideoSettings.userScale);
 }

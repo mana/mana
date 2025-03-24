@@ -27,7 +27,6 @@
 
 ScrollArea::ScrollArea()
 {
-    addWidgetListener(this);
     init();
 }
 
@@ -47,10 +46,24 @@ void ScrollArea::init()
     // Draw background by default
     setOpaque(true);
 
-    setUpButtonScrollAmount(2);
-    setDownButtonScrollAmount(2);
-    setLeftButtonScrollAmount(2);
-    setRightButtonScrollAmount(2);
+    auto theme = gui->getTheme();
+
+    int minWidth = theme->getSkin(SkinType::ScrollAreaVBar).getMinWidth();
+    if (minWidth > 0)
+        setScrollbarWidth(minWidth);
+
+    if (auto content = getContent())
+        content->setFrameSize(theme->getSkin(SkinType::ScrollArea).padding);
+
+    // The base color is only used when rendering a square in the corner where
+    // the scrollbars meet. We disable rendering of this square by setting the
+    // base color to transparent.
+    setBaseColor(gcn::Color(0, 0, 0, 0));
+
+    setUpButtonScrollAmount(5);
+    setDownButtonScrollAmount(5);
+    setLeftButtonScrollAmount(5);
+    setRightButtonScrollAmount(5);
 }
 
 void ScrollArea::logic()
@@ -99,6 +112,14 @@ void ScrollArea::logic()
     }
 }
 
+void ScrollArea::draw(gcn::Graphics *graphics)
+{
+    if (getFrameSize() == 0)
+        drawFrame(graphics);
+
+    gcn::ScrollArea::draw(graphics);
+}
+
 void ScrollArea::drawFrame(gcn::Graphics *graphics)
 {
     if (!mOpaque)
@@ -116,7 +137,9 @@ void ScrollArea::drawFrame(gcn::Graphics *graphics)
 void ScrollArea::setOpaque(bool opaque)
 {
     mOpaque = opaque;
-    setFrameSize(mOpaque ? 2 : 0);
+
+    auto &skin = gui->getTheme()->getSkin(SkinType::ScrollArea);
+    setFrameSize(mOpaque ? skin.frameSize : 0);
 }
 
 void ScrollArea::drawBackground(gcn::Graphics *graphics)
@@ -146,30 +169,38 @@ void ScrollArea::drawRightButton(gcn::Graphics *graphics)
 
 void ScrollArea::drawVBar(gcn::Graphics *graphics)
 {
-    graphics->setColor(gcn::Color(0, 0, 0, 32));
-    graphics->fillRectangle(getVerticalBarDimension());
-    graphics->setColor(gcn::Color(255, 255, 255));
+    WidgetState state(getVerticalBarDimension());
+    if (mHasMouse && (mX > (getWidth() - getScrollbarWidth())))
+        state.flags |= STATE_HOVERED;
+
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollAreaVBar, state);
 }
 
 void ScrollArea::drawHBar(gcn::Graphics *graphics)
 {
-    graphics->setColor(gcn::Color(0, 0, 0, 32));
-    graphics->fillRectangle(getHorizontalBarDimension());
-    graphics->setColor(gcn::Color(255, 255, 255));
+    WidgetState state(getHorizontalBarDimension());
+    if (mHasMouse && (mY > (getHeight() - getScrollbarWidth())))
+        state.flags |= STATE_HOVERED;
+
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollAreaHBar, state);
 }
 
 void ScrollArea::drawVMarker(gcn::Graphics *graphics)
 {
-    drawMarker(static_cast<Graphics *>(graphics),
-               mHasMouse && (mX > (getWidth() - getScrollbarWidth())),
-               getVerticalMarkerDimension());
+    WidgetState state(getVerticalMarkerDimension());
+    if (mHasMouse && (mX > (getWidth() - getScrollbarWidth())))
+        state.flags |= STATE_HOVERED;
+
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollAreaVMarker, state);
 }
 
 void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 {
-    drawMarker(static_cast<Graphics *>(graphics),
-               mHasMouse && (mY > (getHeight() - getScrollbarWidth())),
-               getHorizontalMarkerDimension());
+    WidgetState state(getHorizontalMarkerDimension());
+    if (mHasMouse && (mY > (getHeight() - getScrollbarWidth())))
+        state.flags |= STATE_HOVERED;
+
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollAreaHMarker, state);
 }
 
 void ScrollArea::drawButton(gcn::Graphics *graphics,
@@ -177,28 +208,11 @@ void ScrollArea::drawButton(gcn::Graphics *graphics,
                             bool pressed,
                             const gcn::Rectangle &dim)
 {
-    WidgetState state;
-    state.x = dim.x;
-    state.y = dim.y;
-    state.width = dim.width;
-    state.height = dim.height;
+    WidgetState state(dim);
     if (pressed)
         state.flags |= STATE_SELECTED;
 
     gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), skinType, state);
-}
-
-void ScrollArea::drawMarker(gcn::Graphics *graphics, bool hovered, const gcn::Rectangle &dim)
-{
-    WidgetState state;
-    state.x = dim.x;
-    state.y = dim.y;
-    state.width = dim.width;
-    state.height = dim.height;
-    if (hovered)
-        state.flags |= STATE_HOVERED;
-
-    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollBar, state);
 }
 
 void ScrollArea::mouseMoved(gcn::MouseEvent& event)
@@ -215,13 +229,4 @@ void ScrollArea::mouseEntered(gcn::MouseEvent& event)
 void ScrollArea::mouseExited(gcn::MouseEvent& event)
 {
     mHasMouse = false;
-}
-
-void ScrollArea::widgetResized(const gcn::Event &event)
-{
-    if (auto content = getContent())
-    {
-        content->setSize(getWidth() - 2 * getFrameSize(),
-                         getHeight() - 2 * getFrameSize());
-    }
 }

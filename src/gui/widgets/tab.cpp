@@ -33,27 +33,33 @@
 Tab::Tab() :
     mTabColor(&Theme::getThemeColor(Theme::TAB))
 {
-    init();
+    setFocusable(false);
+
+    auto &skin = gui->getTheme()->getSkin(SkinType::Tab);
+    setFrameSize(skin.frameSize);
+    mPadding = skin.padding;
+    mLabel->setPosition(mPadding, mPadding);
 }
 
-void Tab::init()
+void Tab::setCaption(const std::string &caption)
 {
-    setFocusable(false);
-    setFrameSize(0);
+    mLabel->setCaption(caption);
+    mLabel->adjustSize();
+
+    setSize(mLabel->getWidth() + mPadding * 2,
+            mLabel->getHeight() + mPadding * 2);
+
+    if (mTabbedArea)
+        static_cast<TabbedArea*>(mTabbedArea)->adjustTabPositions();
 }
 
 void Tab::draw(gcn::Graphics *graphics)
 {
-    WidgetState state(this);
-    if (mHasMouse)
-        state.flags |= STATE_HOVERED;
-    if (mTabbedArea && mTabbedArea->isTabSelected(this))
-        state.flags |= STATE_SELECTED;
-
-    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::Tab, state);
+    if (getFrameSize() == 0)
+        drawFrame(graphics);
 
     // if tab is selected, it doesnt need to highlight activity
-    if (state.flags & STATE_SELECTED)
+    if (mTabbedArea && mTabbedArea->isTabSelected(this))
         mFlash = false;
 
     if (mFlash)
@@ -63,6 +69,19 @@ void Tab::draw(gcn::Graphics *graphics)
 
     // draw label
     drawChildren(graphics);
+}
+
+void Tab::drawFrame(gcn::Graphics *graphics)
+{
+    WidgetState state(this);
+    state.width += getFrameSize() * 2;
+    state.height += getFrameSize() * 2;
+    if (mHasMouse)
+        state.flags |= STATE_HOVERED;
+    if (mTabbedArea && mTabbedArea->isTabSelected(this))
+        state.flags |= STATE_SELECTED;
+
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::Tab, state);
 }
 
 void Tab::setTabColor(const gcn::Color *color)

@@ -21,8 +21,6 @@
 
 #include "utils/stringutils.h"
 
-#include "log.h"
-
 #include <cstring>
 #include <algorithm>
 #include <cstdarg>

@@ -138,6 +138,21 @@ std::string findSameSubstring(const std::string &str1,
  */
 bool getBoolFromString(std::string text, bool def = false);
 
+/**
+ * This class can be partially specialized to provide custom string conversion.
+ *
+ * This is done instead of overloading the base function template to avoid
+ * ambiguity.
+ */
+template<typename T, typename Enable = void>
+struct FromString;
+
+template<typename T>
+void fromString(const char *str, T &value)
+{
+    FromString<T>()(str, value);
+}
+
 inline void fromString(const char *str, std::string &value)
 {
     value = str;
@@ -178,19 +193,23 @@ inline void fromString(const char *str, bool &value)
     value = getBoolFromString(str);
 }
 
-template<typename Enum, std::enable_if_t<std::is_enum_v<Enum>, bool> = true>
-inline void fromString(const char *str, Enum &value)
+template<typename T>
+struct FromString<T, std::enable_if_t<std::is_enum_v<T>>>
 {
-    value = static_cast<Enum>(atoi(str));
-}
+    void operator() (const char *str, T &value)
+    {
+        fromString(str, reinterpret_cast<std::underlying_type_t<T>&>(value));
+    }
+};
 
 template<typename T>
-inline void fromString(const char *str, std::optional<T> &value)
+struct FromString<std::optional<T>>
 {
-    T v;
-    fromString(str, v);
-    value = v;
-}
+    void operator() (const char *str, std::optional<T> &value)
+    {
+        fromString(str, value.emplace());
+    }
+};
 
 /**
  * Returns the most approaching string of base from candidates.

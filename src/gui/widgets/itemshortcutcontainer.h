@@ -25,6 +25,8 @@
 
 #include <guichan/mouselistener.hpp>
 
+#include <memory>
+
 class Image;
 class Item;
 class ItemPopup;
@@ -68,5 +70,5 @@ class ItemShortcutContainer : public ShortcutContainer
         bool mItemClicked = false;
         Item *mItemMoved = nullptr;
 
-        ItemPopup *mItemPopup;
+        std::unique_ptr<ItemPopup> mItemPopup;
 };

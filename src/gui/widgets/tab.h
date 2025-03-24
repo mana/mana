@@ -35,9 +35,21 @@ class Tab : public gcn::Tab
         Tab();
 
         /**
-         * Draw the tabbed area.
+         * Sets the caption of the tab. Shadowing gcn::Tab::setCaption, which
+         * shouldn't be used because it calls gcn::Tab::adjustSize, which does
+         * not take into account the padding.
+         */
+        void setCaption(const std::string& caption);
+
+        /**
+         * Draw the tab.
          */
         void draw(gcn::Graphics *graphics) override;
+
+        /**
+         * Draw the tab frame.
+         */
+        void drawFrame(gcn::Graphics *graphics) override;
 
         /**
          * Set the normal color fo the tab's text.
@@ -54,9 +66,7 @@ class Tab : public gcn::Tab
         virtual void setCurrent() {}
 
     private:
-        /** Load images if no other instances exist yet */
-        void init();
-
         const gcn::Color *mTabColor;
         bool mFlash = false;
+        int mPadding = 8;
 };

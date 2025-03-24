@@ -49,17 +49,17 @@
   <progressbar id="WEIGHT" color="#0000ff,ffff00,ff0000" />
   <progressbar id="JOB" color="#e187cb" />
 
-  <skin type="Window">
+  <skin type="Window" frameSize="0" padding="3" titleBarHeight="20">
     <state>
       <img src="window.png" left="4" right="4" top="4" bottom="4" />
     </state>
   </skin>
-  <skin type="ResizeGrip">
+  <skin type="ResizeGrip" padding="2">
     <state>
       <img src="resize.png" />
     </state>
   </skin>
-  <skin type="Popup">
+  <skin type="Popup" padding="6">
     <state>
       <img src="window.png" left="4" right="4" top="4" bottom="4" />
     </state>
@@ -69,7 +69,7 @@
       <img src="bubble.png|W:#000000" left="5" right="5" top="5" bottom="5" height="15" />
     </state>
   </skin>
-  <skin type="Button">
+  <skin type="Button" padding="4">
     <state disabled="true">
       <img src="button_disabled.png" left="10" right="10" top="5" bottom="5" />
     </state>
@@ -83,7 +83,7 @@
       <img src="button.png" left="10" right="10" top="5" bottom="5" />
     </state>
   </skin>
-  <skin type="Tab">
+  <skin type="Tab" padding="4">
     <state selected="true">
       <img src="tabselected.png" left="10" right="10" top="5" bottom="9" />
     </state>
@@ -128,17 +128,17 @@
       <img src="radioout.png" offsetX="2" offsetY="2" />
     </state>
   </skin>
-  <skin type="TextField">
+  <skin type="TextField" frameSize="2" padding="2">
     <state>
       <img src="deepbox.png" left="4" right="4" top="4" bottom="4" />
     </state>
   </skin>
-  <skin type="ScrollArea">
+  <skin type="ScrollArea" frameSize="2" padding="2">
     <state>
       <img src="deepbox.png" left="4" right="4" top="4" bottom="4" />
     </state>
   </skin>
-  <skin type="DropDownFrame">
+  <skin type="DropDownFrame" frameSize="2" padding="1">
     <state>
       <img src="deepbox.png" left="4" right="4" top="4" bottom="4" />
     </state>
@@ -157,7 +157,25 @@
       <img src="vscroll_down_default.png" offsetX="-2" offsetY="2" />
     </state>
   </skin>
-  <skin type="ScrollBar">
+  <skin type="ScrollAreaVBar">
+    <state>
+      <rect color="#000000" alpha="32" />
+    </state>
+  </skin>
+  <skin type="ScrollAreaHBar">
+    <state>
+      <rect color="#000000" alpha="32" />
+    </state>
+  </skin>
+  <skin type="ScrollAreaHMarker">
+    <state hovered="true">
+      <img src="vscroll_highlight.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+    <state>
+      <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" />
+    </state>
+  </skin>
+  <skin type="ScrollAreaVMarker">
     <state hovered="true">
       <img src="vscroll_highlight.png" left="4" right="4" top="4" bottom="4" />
     </state>
@@ -218,17 +236,22 @@
       <img src="hscroll_right_default.png" />
     </state>
   </skin>
-  <skin type="ButtonClose">
+  <skin type="ButtonClose" padding="3">
     <state>
       <img src="close_button.png" />
     </state>
   </skin>
-  <skin type="ButtonSticky">
+  <skin type="ButtonSticky" padding="3">
     <state selected="true">
       <img src="sticky_button.png" x="15" width="15" height="15" />
     </state>
     <state>
       <img src="sticky_button.png" width="15" height="15" />
+    </state>
+  </skin>
+  <skin type="ShortcutBox">
+    <state>
+      <img src="item_shortcut_bgr.png" />
     </state>
   </skin>
 </theme>

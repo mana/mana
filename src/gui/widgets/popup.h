@@ -74,6 +74,11 @@ class Popup : public Container, public gcn::MouseListener
         void draw(gcn::Graphics *graphics) override;
 
         /**
+         * Draws the popup frame.
+         */
+        void drawFrame(gcn::Graphics *graphics) override;
+
+        /**
          * Sets the size of this popup.
          */
         void setContentSize(int width, int height);

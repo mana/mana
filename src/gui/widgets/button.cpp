@@ -109,7 +109,9 @@ void Button::removeButtonIcon()
 
 void Button::init()
 {
-    setFrameSize(0);
+    auto &skin = gui->getTheme()->getSkin(SkinType::Button);
+    setFrameSize(skin.frameSize);
+    setSpacing(skin.padding);
 
     if (mInstances == 0)
     {

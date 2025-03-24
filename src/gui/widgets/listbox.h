@@ -42,6 +42,9 @@ class ListBox : public gcn::ListBox
          */
         void draw(gcn::Graphics *graphics) override;
 
+        // Overridden to disable drawing of the frame
+        void drawFrame(gcn::Graphics *graphics) override {}
+
         // Inherited from KeyListener
 
         void keyPressed(gcn::KeyEvent& keyEvent) override;

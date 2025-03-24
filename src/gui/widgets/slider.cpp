@@ -40,8 +40,9 @@ Slider::Slider(double scaleStart, double scaleEnd):
 
 void Slider::init()
 {
-    setFrameSize(0);
-    setMarkerLength(gui->getTheme()->getMinWidth(SkinType::SliderHandle));
+    auto theme = gui->getTheme();
+    setFrameSize(theme->getSkin(SkinType::Slider).frameSize);
+    setMarkerLength(theme->getMinWidth(SkinType::SliderHandle));
 }
 
 void Slider::draw(gcn::Graphics *graphics)
@@ -56,11 +57,6 @@ void Slider::draw(gcn::Graphics *graphics)
     WidgetState handleState(state);
     handleState.x += getMarkerPosition();
     theme->drawSkin(static_cast<Graphics*>(graphics), SkinType::SliderHandle, handleState);
-}
-
-void Slider::drawMarker(gcn::Graphics *graphics)
-{
-    // Marker is drawn in Slider::draw
 }
 
 void Slider::mouseEntered(gcn::MouseEvent& event)

@@ -21,8 +21,7 @@
 
 #include "gui/widgets/table.h"
 
-#include "configuration.h"
-
+#include "gui/gui.h"
 #include "gui/sdlinput.h"
 
 #include "resources/theme.h"
@@ -33,13 +32,10 @@
 #include <guichan/graphics.hpp>
 #include <guichan/key.hpp>
 
-float GuiTable::mAlpha = 1.0;
-
 class GuiTableActionListener : public gcn::ActionListener
 {
 public:
-    GuiTableActionListener(GuiTable *_table, gcn::Widget *_widget, int _row, int _column);
-
+    GuiTableActionListener(GuiTable *table, gcn::Widget *widget, int row, int column);
     ~GuiTableActionListener() override;
 
     void action(const gcn::ActionEvent& actionEvent) override;
@@ -269,13 +265,11 @@ void GuiTable::draw(gcn::Graphics* graphics)
     if (!mModel)
         return;
 
-    if (config.guiAlpha != mAlpha)
-        mAlpha = config.guiAlpha;
+    const auto guiAlpha = gui->getTheme()->getGuiAlpha();
 
     if (mOpaque)
     {
-        graphics->setColor(Theme::getThemeColor(Theme::BACKGROUND,
-                (int)(mAlpha * 255.0f)));
+        graphics->setColor(Theme::getThemeColor(Theme::BACKGROUND, guiAlpha));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
 
@@ -320,8 +314,7 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
                 widget->setDimension(bounds);
 
-                graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
-                                                      (int)(mAlpha * 255.0f)));
+                graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, guiAlpha));
 
                 if (mLinewiseMode && r == mSelectedRow && c == 0)
                 {
@@ -497,14 +490,12 @@ gcn::Widget *GuiTable::getWidgetAt(int x, int y) const
 
     if (row > -1 && column > -1)
     {
-        gcn::Widget *w = mModel->getElementAt(row, column);
-        if (w && w->isFocusable())
-            return w;
-        else
-            return nullptr; // Grab the event locally
+        if (gcn::Widget *w = mModel->getElementAt(row, column))
+            if (w->isFocusable())
+                return w;
     }
-    else
-        return nullptr;
+
+    return nullptr; // Grab the event locally
 }
 
 int GuiTable::getRowForY(int y) const
@@ -516,8 +507,8 @@ int GuiTable::getRowForY(int y) const
 
    if (row < 0 || row >= mModel->getRows())
        return -1;
-   else
-       return row;
+
+    return row;
 }
 
 int GuiTable::getColumnForX(int x) const
@@ -534,24 +525,23 @@ int GuiTable::getColumnForX(int x) const
 
     if (column < 0 || column >= mModel->getColumns())
         return -1;
-    else
-        return column;
+
+    return column;
 }
 
 void GuiTable::_setFocusHandler(gcn::FocusHandler* focusHandler)
 {
     gcn::Widget::_setFocusHandler(focusHandler);
 
-    if (mModel)
+    if (!mModel)
+        return;
+
+    for (int r = 0; r < mModel->getRows(); ++r)
     {
-        for (int r = 0; r < mModel->getRows(); ++r)
+        for (int c = 0; c < mModel->getColumns(); ++c)
         {
-            for (int c = 0; c < mModel->getColumns(); ++c)
-            {
-                gcn::Widget *w = mModel->getElementAt(r, c);
-                if (w)
-                    w->_setFocusHandler(focusHandler);
-            }
+            if (gcn::Widget *w = mModel->getElementAt(r, c))
+                w->_setFocusHandler(focusHandler);
         }
     }
 }

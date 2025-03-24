@@ -23,7 +23,6 @@
 
 #include "resources/theme.h"
 
-#include <guichan/widgetlistener.hpp>
 #include <guichan/widgets/scrollarea.hpp>
 
 /**
@@ -35,7 +34,7 @@
  *
  * \ingroup GUI
  */
-class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
+class ScrollArea : public gcn::ScrollArea
 {
     public:
         /**
@@ -61,6 +60,11 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
          * depends on the scrollbar settings.
          */
         void logic() override;
+
+        /**
+         * Overridden to draw the frame if its size is 0.
+         */
+        void draw(gcn::Graphics *graphics) override;
 
         /**
          * Draws the background and border of the scroll area.
@@ -92,8 +96,6 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
          */
         void mouseExited(gcn::MouseEvent& event) override;
 
-        void widgetResized(const gcn::Event &event) override;
-
     protected:
         /**
          * Initializes the scroll area.
@@ -114,7 +116,6 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
                                SkinType skinType,
                                bool pressed,
                                const gcn::Rectangle &dim);
-        static void drawMarker(gcn::Graphics *graphics, bool hovered, const gcn::Rectangle &dim);
 
         int mX = 0;
         int mY = 0;

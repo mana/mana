@@ -40,10 +40,10 @@ class GuiTableActionListener;
  *
  * \ingroup GUI
  */
-class GuiTable : public gcn::Widget,
-                 public gcn::MouseListener,
-                 public gcn::KeyListener,
-                 public TableModelListener
+class GuiTable final : public gcn::Widget,
+                       public gcn::MouseListener,
+                       public gcn::KeyListener,
+                       public TableModelListener
 {
     // so that the action listener can call distributeActionEvent
     friend class GuiTableActionListener;
@@ -102,6 +102,9 @@ public:
     // Inherited from Widget
     void draw(gcn::Graphics* graphics) override;
 
+    // Overridden to disable drawing of the frame
+    void drawFrame(gcn::Graphics* graphics) override {}
+
     virtual gcn::Widget *getWidgetAt(int x, int y) const;
 
     void moveToTop(gcn::Widget *child) override;
@@ -157,8 +160,6 @@ private:
     bool mLinewiseMode;
     bool mWrappingEnabled;
     bool mOpaque;
-
-    static float mAlpha;
 
     /**
      * Holds the background color of the table.

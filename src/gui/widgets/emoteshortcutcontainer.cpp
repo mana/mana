@@ -21,10 +21,11 @@
 
 #include "gui/widgets/emoteshortcutcontainer.h"
 
-#include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
 #include "keyboardconfig.h"
+
+#include "gui/gui.h"
 
 #include "resources/emotedb.h"
 #include "resources/image.h"
@@ -34,40 +35,28 @@ static const int MAX_ITEMS = 12;
 
 EmoteShortcutContainer::EmoteShortcutContainer()
 {
-    addMouseListener(this);
-    addWidgetListener(this);
-
-    mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
-
     mMaxItems = std::min(EmoteDB::getEmoteCount(), MAX_ITEMS);
-
-    if (mBackgroundImg)
-    {
-        mBoxHeight = mBackgroundImg->getHeight();
-        mBoxWidth = mBackgroundImg->getWidth();
-    }
 }
 
 void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 {
-    mBackgroundImg->setAlpha(config.guiAlpha);
-
     auto *g = static_cast<Graphics*>(graphics);
+    auto theme = gui->getTheme();
 
     graphics->setFont(getFont());
 
     for (int i = 0; i < mMaxItems; i++)
     {
-        const int emoteX = (i % mGridWidth) * mBoxWidth;
-        const int emoteY = (i / mGridWidth) * mBoxHeight;
-
-        g->drawImage(mBackgroundImg, emoteX, emoteY);
+        WidgetState state;
+        state.x = (i % mGridWidth) * mBoxWidth;
+        state.y = (i / mGridWidth) * mBoxHeight;
+        theme->drawSkin(g, SkinType::ShortcutBox, state);
 
         // Draw emote keyboard shortcut.
         const char *key = SDL_GetKeyName(
                     keyboard.getKeyValue(KeyboardConfig::KEY_EMOTE_1 + i));
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
-        g->drawText(key, emoteX + 2, emoteY + 2, gcn::Graphics::LEFT);
+        g->drawText(key, state.x + 2, state.y + 2, gcn::Graphics::LEFT);
 
         int emoteId = emoteShortcut->getEmote(i);
         if (emoteId != -1)
@@ -75,7 +64,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
             if (auto image = EmoteDB::get(emoteId).image)
             {
                 image->setAlpha(1.0f);
-                g->drawImage(image, emoteX + 2, emoteY + 10);
+                g->drawImage(image, state.x + 2, state.y + 10);
             }
         }
     }
@@ -112,6 +101,7 @@ void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
                 emoteShortcut->removeEmote(index);
             }
         }
+
         if (mEmoteMoved != -1)
         {
             mCursorPosX = event.getX();
@@ -123,7 +113,6 @@ void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 void EmoteShortcutContainer::mousePressed(gcn::MouseEvent &event)
 {
     const int index = getIndexFromGrid(event.getX(), event.getY());
-
     if (index == -1)
         return;
 

@@ -130,35 +130,39 @@ class TextField : public gcn::TextField
          * Sets the TextField's source of autocomplete. Passing null will
          * disable autocomplete.
          */
-         void setAutoComplete(AutoCompleteLister *lister)
-         { mAutoComplete = lister; }
+        void setAutoComplete(AutoCompleteLister *lister)
+        { mAutoComplete = lister; }
 
-         /**
+        /**
          * Returns the TextField's source of autocomplete.
          */
-         AutoCompleteLister *getAutoComplete() const
-         { return mAutoComplete; }
+        AutoCompleteLister *getAutoComplete() const
+        { return mAutoComplete; }
 
-         /**
+        /**
          * Sets the TextField's source of input history.
          */
-         void setHistory(TextHistory *history)
-         { mHistory = history; }
+        void setHistory(TextHistory *history)
+        { mHistory = history; }
 
-         /**
+        /**
          * Returns the TextField's source of input history.
          */
-         TextHistory *getHistory() const
-         { return mHistory; }
+        TextHistory *getHistory() const
+        { return mHistory; }
+
+    protected:
+        void drawCaret(gcn::Graphics *graphics, int x) override;
 
     private:
         void autoComplete();
         void handlePaste();
 
         bool mNumeric = false;
-        int mMinimum;
-        int mMaximum;
+        int mMinimum = 0;
+        int mMaximum = 0;
         bool mLoseFocusOnTab;
+        int mPadding = 1;
 
         AutoCompleteLister *mAutoComplete = nullptr;
 

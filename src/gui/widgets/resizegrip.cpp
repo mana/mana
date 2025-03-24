@@ -30,10 +30,8 @@
 
 ResizeGrip::ResizeGrip()
 {
-    const auto theme = gui->getTheme();
-    const auto minWidth = theme->getMinWidth(SkinType::ResizeGrip);
-    const auto minHeight = theme->getMinHeight(SkinType::ResizeGrip);
-    setSize(minWidth + 2, minHeight + 2);
+    auto &skin = gui->getTheme()->getSkin(SkinType::ResizeGrip);
+    setSize(skin.getMinWidth() + skin.padding, skin.getMinHeight() + skin.padding);
 }
 
 void ResizeGrip::draw(gcn::Graphics *graphics)

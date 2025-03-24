@@ -54,6 +54,8 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event) override;
 
         void mousePressed(gcn::MouseEvent& mouseEvent) override;
+        void mouseMoved(gcn::MouseEvent &event) override;
+        void mouseExited(gcn::MouseEvent &event) override;
 
         /**
          * Loads the correct amount of displayed equip boxes.
@@ -83,9 +85,6 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         Equipment *mEquipment;
 
     private:
-        void mouseExited(gcn::MouseEvent &event) override;
-        void mouseMoved(gcn::MouseEvent &event) override;
-
         int getBoxIndex(int x, int y) const;
         Item *getItem(int x, int y) const;
         std::string getSlotName(int x, int y) const;

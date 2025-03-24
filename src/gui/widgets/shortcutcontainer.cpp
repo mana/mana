@@ -21,7 +21,19 @@
 
 #include "gui/widgets/shortcutcontainer.h"
 
-ShortcutContainer::~ShortcutContainer() = default;
+#include "gui/gui.h"
+
+#include "resources/theme.h"
+
+ShortcutContainer::ShortcutContainer()
+{
+    addMouseListener(this);
+    addWidgetListener(this);
+
+    auto &skin = gui->getTheme()->getSkin(SkinType::ShortcutBox);
+    mBoxWidth = skin.getMinWidth();
+    mBoxHeight = skin.getMinHeight();
+}
 
 void ShortcutContainer::widgetResized(const gcn::Event &event)
 {

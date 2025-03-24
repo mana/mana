@@ -68,9 +68,14 @@ class Window : public gcn::Window, gcn::WidgetListener
         static void setWindowContainer(WindowContainer *windowContainer);
 
         /**
-         * Draws the window.
+         * Draws the window contents.
          */
         void draw(gcn::Graphics *graphics) override;
+
+        /**
+         * Draws the window frame.
+         */
+        void drawFrame(gcn::Graphics *graphics) override;
 
         /**
          * Sets the size of this window.
@@ -375,6 +380,9 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
+        gcn::Rectangle getCloseButtonRect() const;
+        gcn::Rectangle getStickyButtonRect() const;
+
         ResizeGrip *mGrip = nullptr;  /**< Resize grip */
         Window *mParent;              /**< The parent window */
         Layout *mLayout = nullptr;    /**< Layout handler */
@@ -382,6 +390,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         bool mShowTitle = true;       /**< Window has a title bar */
         bool mModal;                  /**< Window is modal */
         bool mCloseButton = false;    /**< Window has a close button */
+        bool mCloseButtonHovered = false;
         bool mDefaultVisible = false; /**< Window's default visibility */
         bool mSaveVisible = false;    /**< Window will save visibility */
         bool mStickyButton = false;   /**< Window has a sticky button */

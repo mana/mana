@@ -31,12 +31,18 @@
 
 #include "resources/theme.h"
 
+#include <guichan/font.hpp>
+
 DropDown::DropDown(gcn::ListModel *listModel):
     gcn::DropDown::DropDown(listModel,
                             new ScrollArea,
                             new ListBox(listModel))
 {
-    setFrameSize(2);
+    auto &skin = gui->getTheme()->getSkin(SkinType::DropDownFrame);
+    setFrameSize(skin.frameSize);
+    mPadding = skin.padding;
+
+    setHeight(getFont()->getHeight() + 2 * mPadding);
 }
 
 DropDown::~DropDown()
@@ -59,13 +65,16 @@ void DropDown::draw(gcn::Graphics* graphics)
     {
         graphics->setFont(getFont());
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
-        graphics->drawText(mListBox->getListModel()->getElementAt(mListBox->getSelected()), 1, 0);
+        graphics->drawText(mListBox->getListModel()->getElementAt(mListBox->getSelected()),
+                           mPadding,
+                           mPadding);
     }
 
     if (isFocused())
     {
         graphics->setColor(*highlightColor);
-        graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth() - h, h));
+        graphics->drawRectangle(
+            gcn::Rectangle(mPadding, mPadding, getWidth() - h - mPadding * 2, h - 2 * mPadding));
     }
 
     drawButton(graphics);
@@ -92,6 +101,39 @@ void DropDown::drawFrame(gcn::Graphics *graphics)
     state.height += bs * 2;
 
     gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::DropDownFrame, state);
+}
+
+// Overridden so that we can take mPadding into account
+void DropDown::adjustHeight()
+{
+    const int listBoxHeight = mListBox->getHeight();
+    int height = getFont()->getHeight() + 2 * mPadding;
+
+    // The addition/subtraction of 2 compensates for the seperation lines
+    // seperating the selected element view and the scroll area.
+
+    if (mDroppedDown && getParent())
+    {
+        int availableHeight = getParent()->getChildrenArea().height - getY();
+
+        if (listBoxHeight > availableHeight - height - 2)
+        {
+            mScrollArea->setHeight(availableHeight - height - 2);
+            height = availableHeight;
+        }
+        else
+        {
+            height += listBoxHeight + 2;
+            mScrollArea->setHeight(listBoxHeight);
+        }
+    }
+
+    setHeight(height);
+
+    mScrollArea->setWidth(getWidth());
+    // Resize the ListBox to exactly fit the ScrollArea.
+    mListBox->setWidth(mScrollArea->getChildrenArea().width);
+    mScrollArea->setPosition(0, 0);
 }
 
 void DropDown::drawButton(gcn::Graphics *graphics)
@@ -176,4 +218,33 @@ void DropDown::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
     setSelected(getSelected() + 1);
     mouseEvent.consume();
     distributeActionEvent();
+}
+
+// Overridden to call our version of adjustHeight
+void DropDown::dropDown()
+{
+    if (!mDroppedDown)
+    {
+        mDroppedDown = true;
+        mFoldedUpHeight = getHeight();
+        adjustHeight();
+
+        if (getParent())
+        {
+            getParent()->moveToTop(this);
+        }
+    }
+
+    mListBox->requestFocus();
+}
+
+// Overridden to call our version of adjustHeight
+void DropDown::foldUp()
+{
+    if (mDroppedDown)
+    {
+        mDroppedDown = false;
+        adjustHeight();
+        mInternalFocusHandler.focusNone();
+    }
 }
