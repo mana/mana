@@ -37,6 +37,7 @@
 #include "utils/filesystem.h"
 #include "utils/gettext.h"
 
+#include <algorithm>
 #include <guichan/font.hpp>
 
 Minimap::Minimap():
@@ -136,40 +137,38 @@ void Minimap::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
 
+    if (!mMap)
+        return;
+
+    auto g = static_cast<Graphics*>(graphics);
     const gcn::Rectangle a = getChildrenArea();
 
-    graphics->pushClipArea(a);
+    g->pushClipRect(a); // does actual clipping
+    g->pushClipArea(a); // only applies an offset
+
+    const int tileWidth = mMap->getTileWidth();
+    const int tileHeight = mMap->getTileHeight();
 
     int mapOriginX = 0;
     int mapOriginY = 0;
 
-    if (mMapImage && mMap)
+    if (mMapImage)
     {
         if (mMapImage->getWidth() > a.width ||
             mMapImage->getHeight() > a.height)
         {
             const Vector &p = local_player->getPosition();
-            mapOriginX = (int) (((a.width) / 2) - (int) (p.x * mWidthProportion)
-                         / mMap->getTileWidth());
-            mapOriginY = (int) (((a.height) / 2)
-                         - (int) (p.y * mHeightProportion)
-                         / mMap->getTileHeight());
+            mapOriginX = (a.width / 2) - (int) (p.x * mWidthProportion) / tileWidth;
+            mapOriginY = (a.height / 2) - (int) (p.y * mHeightProportion) / tileHeight;
 
             const int minOriginX = a.width - mMapImage->getWidth();
             const int minOriginY = a.height - mMapImage->getHeight();
 
-            if (mapOriginX < minOriginX)
-                mapOriginX = minOriginX;
-            if (mapOriginY < minOriginY)
-                mapOriginY = minOriginY;
-            if (mapOriginX > 0)
-                mapOriginX = 0;
-            if (mapOriginY > 0)
-                mapOriginY = 0;
+            mapOriginX = std::clamp(mapOriginX, minOriginX, 0);
+            mapOriginY = std::clamp(mapOriginY, minOriginY, 0);
         }
 
-        static_cast<Graphics*>(graphics)->
-            drawImage(mMapImage, mapOriginX, mapOriginY);
+        g->drawImage(mMapImage, mapOriginX, mapOriginY);
     }
 
     for (auto actor : actorSpriteManager->getAll())
@@ -218,16 +217,14 @@ void Minimap::draw(gcn::Graphics *graphics)
         const int offsetWidth = (int) ((dotSize - 1) * mWidthProportion);
         const Vector &pos = being->getPosition();
 
-        if (mMap)
-        {
-            graphics->fillRectangle(gcn::Rectangle(
-                (int) (pos.x * mWidthProportion) / mMap->getTileWidth()
-                + mapOriginX - offsetWidth,
-                (int) (pos.y * mHeightProportion) / mMap->getTileHeight()
-                + mapOriginY - offsetHeight,
-                dotSize, dotSize));
-        }
+        g->fillRectangle(
+            gcn::Rectangle((int) (pos.x * mWidthProportion) / tileWidth + mapOriginX - offsetWidth,
+                           (int) (pos.y * mHeightProportion) / tileHeight + mapOriginY
+                               - offsetHeight,
+                           dotSize,
+                           dotSize));
     }
 
-    graphics->popClipArea();
+    g->popClipArea();
+    g->popClipRect();
 }

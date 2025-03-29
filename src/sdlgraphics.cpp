@@ -258,33 +258,21 @@ SDL_Surface *SDLGraphics::getScreenshot()
     return screenshot;
 }
 
-bool SDLGraphics::pushClipArea(gcn::Rectangle area)
+void SDLGraphics::updateClipRect()
 {
-    bool result = Graphics::pushClipArea(area);
-    updateSDLClipRect();
-    return result;
-}
-
-void SDLGraphics::popClipArea()
-{
-    Graphics::popClipArea();
-    updateSDLClipRect();
-}
-
-void SDLGraphics::updateSDLClipRect()
-{
-    if (mClipStack.empty())
+    if (mClipRects.empty())
     {
         SDL_RenderSetClipRect(mRenderer, nullptr);
         return;
     }
 
-    const gcn::ClipRectangle &carea = mClipStack.top();
-    SDL_Rect rect;
-    rect.x = carea.x;
-    rect.y = carea.y;
-    rect.w = carea.width;
-    rect.h = carea.height;
+    const gcn::Rectangle &clipRect = mClipRects.top();
+    const SDL_Rect rect = {
+        clipRect.x,
+        clipRect.y,
+        clipRect.width,
+        clipRect.height
+    };
 
     SDL_RenderSetClipRect(mRenderer, &rect);
 }

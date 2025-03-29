@@ -23,7 +23,6 @@
 #include "gui/itempopup.h"
 
 #include "configuration.h"
-#include "graphics.h"
 #include "units.h"
 
 #include "gui/gui.h"
@@ -35,7 +34,6 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include "resources/image.h"
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 
@@ -139,6 +137,7 @@ void ItemPopup::setNoItem()
 
     mItemDesc->setText(std::string());
     mItemEffect->setText(std::string());
+    mItemWeight->setText(std::string());
 
     setContentSize(mItemName->getWidth(), mItemName->getHeight());
 }

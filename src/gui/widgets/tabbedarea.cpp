@@ -21,6 +21,8 @@
 
 #include "gui/widgets/tabbedarea.h"
 
+#include "graphics.h"
+
 #include "gui/widgets/tab.h"
 
 #include <guichan/widgets/container.hpp>
@@ -61,7 +63,12 @@ void TabbedArea::draw(gcn::Graphics *graphics)
     if (mTabs.empty())
         return;
 
+    auto g = static_cast<Graphics*>(graphics);
+    g->pushClipRect(getChildrenArea());
+
     drawChildren(graphics);
+
+    g->popClipRect();
 }
 
 gcn::Widget *TabbedArea::getWidget(const std::string &name) const
@@ -206,9 +213,8 @@ void TabbedArea::updateTabsWidth()
 {
     mTabsWidth = 0;
     for (const auto &[tab, _] : mTabs)
-    {
         mTabsWidth += tab->getWidth();
-    }
+
     updateVisibleTabsWidth();
 }
 
@@ -216,9 +222,7 @@ void TabbedArea::updateVisibleTabsWidth()
 {
     mVisibleTabsWidth = 0;
     for (unsigned int i = mTabScrollIndex; i < mTabs.size(); ++i)
-    {
         mVisibleTabsWidth += mTabs[i].first->getWidth();
-    }
 }
 
 void TabbedArea::adjustTabPositions()
@@ -265,7 +269,7 @@ void TabbedArea::action(const gcn::ActionEvent& actionEvent)
     {
         if (actionEvent.getId() == "shift_left")
         {
-            if (mTabScrollIndex)
+            if (mTabScrollIndex > 0)
                 --mTabScrollIndex;
         }
         else if (actionEvent.getId() == "shift_right")
@@ -282,33 +286,18 @@ void TabbedArea::action(const gcn::ActionEvent& actionEvent)
 void TabbedArea::updateArrowEnableState()
 {
     updateTabsWidth();
-    if (mTabsWidth > getWidth() - 2)
-    {
-        mArrowButton[0]->setVisible(true);
-        mArrowButton[1]->setVisible(true);
-    }
-    else
-    {
-        mArrowButton[0]->setVisible(false);
-        mArrowButton[1]->setVisible(false);
-        mTabScrollIndex = 0;
-    }
 
-    // Left arrow consistency check
-    if (!mTabScrollIndex)
-        mArrowButton[0]->setEnabled(false);
-    else
-        mArrowButton[0]->setEnabled(true);
+    const bool arrowButtonsVisible = mTabsWidth > getWidth() - 2;
+    mArrowButton[0]->setVisible(arrowButtonsVisible);
+    mArrowButton[1]->setVisible(arrowButtonsVisible);
+
+    if (!arrowButtonsVisible)
+        mTabScrollIndex = 0;
+
+    mArrowButton[0]->setEnabled(mTabScrollIndex > 0);
 
     // Right arrow consistency check
-    if (mVisibleTabsWidth < getWidth() - 2
-        - mArrowButton[0]->getWidth()
-        - mArrowButton[1]->getWidth())
-    {
-        mArrowButton[1]->setEnabled(false);
-    }
-    else
-    {
-        mArrowButton[1]->setEnabled(true);
-    }
+    const int availableWidth = getWidth() - 2 - mArrowButton[0]->getWidth()
+                               - mArrowButton[1]->getWidth();
+    mArrowButton[1]->setEnabled(mVisibleTabsWidth >= availableWidth);
 }

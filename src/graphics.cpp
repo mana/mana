@@ -237,3 +237,20 @@ void Graphics::_endDraw()
 {
     popClipArea();
 }
+
+void Graphics::pushClipRect(const gcn::Rectangle &rect)
+{
+    const gcn::ClipRectangle &carea = mClipStack.top();
+    mClipRects.emplace(rect.x + carea.xOffset,
+                       rect.y + carea.yOffset,
+                       rect.width,
+                       rect.height);
+
+    updateClipRect();
+}
+
+void Graphics::popClipRect()
+{
+    mClipRects.pop();
+    updateClipRect();
+}

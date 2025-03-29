@@ -53,6 +53,9 @@ void TextField::draw(gcn::Graphics *graphics)
     if (getFrameSize() == 0)
         drawFrame(graphics);
 
+    auto g = static_cast<Graphics *>(graphics);
+    g->pushClipRect(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+
     if (isFocused())
     {
         drawCaret(graphics,
@@ -62,6 +65,8 @@ void TextField::draw(gcn::Graphics *graphics)
     graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     graphics->setFont(getFont());
     graphics->drawText(mText, mPadding - mXScroll, mPadding);
+
+    g->popClipRect();
 }
 
 void TextField::drawFrame(gcn::Graphics *graphics)

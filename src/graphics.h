@@ -261,11 +261,19 @@ class Graphics : public gcn::Graphics
             return mColor;
         }
 
+        void pushClipRect(const gcn::Rectangle &rect);
+        void popClipRect();
+
     protected:
+        virtual void updateClipRect() = 0;
+
         int mWidth = 0;
         int mHeight = 0;
         float mScale = 1.0f;
         gcn::Color mColor;
+
+        // Actual clipping rects. Clipping by gcn::Graphics::mClipStack is disabled.
+        std::stack<gcn::Rectangle> mClipRects;
 };
 
 extern Graphics *graphics;

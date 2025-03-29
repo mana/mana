@@ -134,6 +134,16 @@ void ScrollArea::drawFrame(gcn::Graphics *graphics)
     gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollArea, state);
 }
 
+void ScrollArea::drawChildren(gcn::Graphics *graphics)
+{
+    auto g = static_cast<Graphics*>(graphics);
+    g->pushClipRect(getChildrenArea());
+
+    gcn::ScrollArea::drawChildren(graphics);
+
+    g->popClipRect();
+}
+
 void ScrollArea::setOpaque(bool opaque)
 {
     mOpaque = opaque;

@@ -626,14 +626,6 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
     glPushMatrix();
     glTranslatef(transX, transY, 0);
 
-    int x = (int) (mClipStack.top().x * mScaleX);
-    int y = (int) ((mHeight - mClipStack.top().y -
-                    mClipStack.top().height) * mScaleY);
-    int width = (int) (mClipStack.top().width * mScaleX);
-    int height = (int) (mClipStack.top().height * mScaleY);
-
-    glScissor(x, y, width, height);
-
     return result;
 }
 
@@ -642,17 +634,6 @@ void OpenGLGraphics::popClipArea()
     Graphics::popClipArea();
 
     glPopMatrix();
-
-    if (mClipStack.empty())
-        return;
-
-    int x = (int) (mClipStack.top().x * mScaleX);
-    int y = (int) ((mHeight - mClipStack.top().y -
-                    mClipStack.top().height) * mScaleY);
-    int width = (int) (mClipStack.top().width * mScaleX);
-    int height = (int) (mClipStack.top().height * mScaleY);
-
-    glScissor(x, y, width, height);
 }
 
 void OpenGLGraphics::setColor(const gcn::Color &color)
@@ -661,6 +642,25 @@ void OpenGLGraphics::setColor(const gcn::Color &color)
     glColor4ub(color.r, color.g, color.b, color.a);
 
     mColorAlpha = (color.a != 255);
+}
+
+void OpenGLGraphics::updateClipRect()
+{
+    if (mClipRects.empty())
+    {
+        glDisable(GL_SCISSOR_TEST);
+        return;
+    }
+
+    const gcn::Rectangle &clipRect = mClipRects.top();
+
+    const int x = (int) (clipRect.x * mScaleX);
+    const int y = (int) ((mHeight - clipRect.y - clipRect.height) * mScaleY);
+    const int width = (int) (clipRect.width * mScaleX);
+    const int height = (int) (clipRect.height * mScaleY);
+
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(x, y, width, height);
 }
 
 void OpenGLGraphics::drawPoint(int x, int y)

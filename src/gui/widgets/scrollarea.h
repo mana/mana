@@ -72,6 +72,11 @@ class ScrollArea : public gcn::ScrollArea
         void drawFrame(gcn::Graphics *graphics) override;
 
         /**
+         * Applies clipping to the contents.
+         */
+        void drawChildren(gcn::Graphics* graphics) override;
+
+        /**
          * Sets whether the widget should draw its background or not.
          */
         void setOpaque(bool opaque);

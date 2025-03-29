@@ -69,10 +69,6 @@ public:
 
     SDL_Surface *getScreenshot() override;
 
-    bool pushClipArea(gcn::Rectangle area) override;
-
-    void popClipArea() override;
-
     void drawPoint(int x, int y) override;
 
     void drawLine(int x1, int y1, int x2, int y2) override;
@@ -81,8 +77,9 @@ public:
 
     void fillRectangle(const gcn::Rectangle &rectangle) override;
 
-private:
-    void updateSDLClipRect();
+protected:
+    void updateClipRect() override;
 
+private:
     SDL_Renderer *mRenderer = nullptr;
 };

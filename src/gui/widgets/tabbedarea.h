@@ -36,7 +36,7 @@ class Tab;
 /**
  * A tabbed area, the same as the guichan tabbed area in 0.8, but extended
  */
-class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
+class TabbedArea final : public gcn::TabbedArea, public gcn::WidgetListener
 {
     public:
         TabbedArea();

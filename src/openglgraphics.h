@@ -115,6 +115,8 @@ class OpenGLGraphics final : public Graphics
     protected:
         void setTexturingAndBlending(bool enable);
 
+        void updateClipRect() override;
+
     private:
         void drawQuadArrayfi(int size);
 
