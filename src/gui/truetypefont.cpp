@@ -56,16 +56,16 @@ bool operator==(SDL_Color lhs, SDL_Color rhs)
 class TextChunk
 {
 public:
-    TextChunk(const std::string &text, SDL_Color color)
+    TextChunk(const std::string &text)
         : text(text)
-        , color(color)
     {}
 
     void generate(TTF_Font *font)
     {
+        // Always render in white, we'll use color modulation when rendering
         SDL_Surface *surface = TTF_RenderUTF8_Blended(font,
                                                       getSafeUtf8String(text),
-                                                      color);
+                                                      SDL_Color { 255, 255, 255, 255 });
 
         if (!surface)
             return;
@@ -77,7 +77,6 @@ public:
 
     std::unique_ptr<Image> img;
     const std::string text;
-    const SDL_Color color;
 };
 
 std::list<TrueTypeFont*> TrueTypeFont::mFonts;
@@ -124,24 +123,13 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
         return;
 
     auto *g = static_cast<Graphics *>(graphics);
-    const gcn::Color col = g->getColor();
-
-    /* The alpha value is ignored at image generation to avoid caching the
-     * same text with different alpha values.
-     */
-    const SDL_Color color = {
-        static_cast<Uint8>(col.r),
-        static_cast<Uint8>(col.g),
-        static_cast<Uint8>(col.b),
-        255
-    };
 
     bool found = false;
 
     for (auto i = mCache.begin(); i != mCache.end(); ++i)
     {
         auto &chunk = *i;
-        if (chunk.text == text && chunk.color == color)
+        if (chunk.text == text)
         {
             // Raise priority: move it to front
             mCache.splice(mCache.begin(), mCache, i);
@@ -154,18 +142,17 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
     {
         if (mCache.size() >= CACHE_SIZE)
             mCache.pop_back();
-        mCache.emplace_front(text, color);
+        mCache.emplace_front(text);
         mCache.front().generate(mFont);
     }
 
     if (auto img = mCache.front().img.get())
     {
-        img->setAlpha(col.a / 255.0f);
         g->drawRescaledImageF(img, 0, 0, x, y,
                               img->getWidth(),
                               img->getHeight(),
                               img->getWidth() / mScale,
-                              img->getHeight() / mScale);
+                              img->getHeight() / mScale, true);
     }
 }
 

@@ -30,6 +30,39 @@
 
 #include <cmath>
 
+class SetColorAlphaMod
+{
+public:
+    SetColorAlphaMod(SDL_Texture *texture, gcn::Color color, bool enabled)
+        : mTexture(texture)
+        , mEnabled(texture != nullptr && enabled)
+    {
+        if (mEnabled)
+        {
+            SDL_GetTextureColorMod(texture, &mOriginal.r, &mOriginal.g, &mOriginal.b);
+            SDL_GetTextureAlphaMod(texture, &mOriginal.a);
+
+            SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
+            SDL_SetTextureAlphaMod(texture, color.a * mOriginal.a / 255);
+        }
+    }
+
+    ~SetColorAlphaMod()
+    {
+        if (mEnabled)
+        {
+            SDL_SetTextureAlphaMod(mTexture, mOriginal.a);
+            SDL_SetTextureColorMod(mTexture, mOriginal.r, mOriginal.g, mOriginal.b);
+        }
+    }
+
+private:
+    SDL_Texture *mTexture = nullptr;
+    SDL_Color mOriginal;
+    const bool mEnabled;
+};
+
+
 std::unique_ptr<Graphics> SDLGraphics::create(SDL_Window *window, const VideoSettings &settings)
 {
     int rendererFlags = 0;
@@ -134,7 +167,8 @@ bool SDLGraphics::drawRescaledImage(const Image *image,
     dstRect.w = desiredWidth;
     dstRect.h = desiredHeight;
 
-    return !(SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect) < 0);
+    SetColorAlphaMod mod(image->mTexture, mColor, useColor);
+    return SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect) != 0;
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 10)
@@ -164,7 +198,8 @@ bool SDLGraphics::drawRescaledImageF(const Image *image,
     dstRect.w = desiredWidth;
     dstRect.h = desiredHeight;
 
-    return !(SDL_RenderCopyF(mRenderer, image->mTexture, &srcRect, &dstRect) < 0);
+    SetColorAlphaMod mod(image->mTexture, mColor, useColor);
+    return SDL_RenderCopyF(mRenderer, image->mTexture, &srcRect, &dstRect) == 0;
 }
 #endif
 
