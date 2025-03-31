@@ -108,42 +108,48 @@ void Skin::addState(SkinState state)
 
 void Skin::draw(Graphics *graphics, const WidgetState &state) const
 {
-    for (const auto &skinState : mStates)
+    // Only draw the first matching state
+    auto skinState = getState(state.flags);
+    if (!skinState)
+        return;
+
+    for (const auto &part : skinState->parts)
     {
-        if (skinState.stateFlags != (skinState.setFlags & state.flags))
-            continue;
+        std::visit([&](const auto &data) {
+            using T = std::decay_t<decltype(data)>;
 
-        for (const auto &part : skinState.parts)
-        {
-            std::visit([&](const auto &data) {
-                using T = std::decay_t<decltype(data)>;
-
-                if constexpr (std::is_same_v<T, ImageRect>)
-                {
-                    graphics->drawImageRect(state.x + part.offsetX,
-                                            state.y + part.offsetY,
-                                            state.width,
-                                            state.height,
-                                            data);
-                }
-                else if constexpr (std::is_same_v<T, Image*>)
-                {
-                    graphics->drawImage(data, state.x + part.offsetX, state.y + part.offsetY);
-                }
-                else if constexpr (std::is_same_v<T, ColoredRectangle>)
-                {
-                    graphics->setColor(data.color);
-                    graphics->fillRectangle(gcn::Rectangle(state.x + part.offsetX,
-                                                           state.y + part.offsetY,
-                                                           state.width,
-                                                           state.height));
-                    graphics->setColor(gcn::Color(255, 255, 255));
-                }
-            }, part.data);
-        }
-
-        break;  // Only draw the first matching state
+            if constexpr (std::is_same_v<T, ImageRect>)
+            {
+                graphics->drawImageRect(state.x + part.offsetX,
+                                        state.y + part.offsetY,
+                                        state.width,
+                                        state.height,
+                                        data);
+            }
+            else if constexpr (std::is_same_v<T, Image*>)
+            {
+                graphics->drawImage(data, state.x + part.offsetX, state.y + part.offsetY);
+            }
+            else if constexpr (std::is_same_v<T, ColoredRectangle>)
+            {
+                graphics->setColor(data.color);
+                graphics->fillRectangle(gcn::Rectangle(state.x + part.offsetX,
+                                                       state.y + part.offsetY,
+                                                       state.width,
+                                                       state.height));
+                graphics->setColor(gcn::Color(255, 255, 255));
+            }
+        }, part.data);
     }
+}
+
+const SkinState *Skin::getState(uint8_t flags) const
+{
+    for (const auto &skinState : mStates)
+        if (skinState.stateFlags == (skinState.setFlags & flags))
+            return &skinState;
+
+    return nullptr;
 }
 
 int Skin::getMinWidth() const
@@ -295,13 +301,14 @@ void Theme::drawProgressBar(Graphics *graphics, const gcn::Rectangle &area,
     gcn::Font *oldFont = graphics->getFont();
     gcn::Color oldColor = graphics->getColor();
 
-    WidgetState state;
-    state.x = area.x;
-    state.y = area.y;
-    state.width = area.width;
-    state.height = area.height;
+    WidgetState widgetState;
+    widgetState.x = area.x;
+    widgetState.y = area.y;
+    widgetState.width = area.width;
+    widgetState.height = area.height;
 
-    drawSkin(graphics, SkinType::ProgressBar, state);
+    auto &skin = getSkin(SkinType::ProgressBar);
+    skin.draw(graphics, widgetState);
 
     // The bar
     if (progress > 0)
@@ -316,18 +323,20 @@ void Theme::drawProgressBar(Graphics *graphics, const gcn::Rectangle &area,
     // The label
     if (!text.empty())
     {
-        const int textX = area.x + area.width / 2;
-        const int textY = area.y + (area.height - boldFont->getHeight()) / 2;
+        if (auto skinState = skin.getState(widgetState.flags))
+        {
+            auto font = skinState->textFormat.bold ? boldFont : gui->getFont();
+            const int textX = area.x + area.width / 2;
+            const int textY = area.y + (area.height - font->getHeight()) / 2;
 
-        TextRenderer::renderText(graphics,
-                                 text,
-                                 textX,
-                                 textY,
-                                 gcn::Graphics::CENTER,
-                                 Theme::getThemeColor(Theme::PROGRESS_BAR),
-                                 gui->getFont(),
-                                 true,
-                                 false);
+            TextRenderer::renderText(graphics,
+                                     text,
+                                     textX,
+                                     textY,
+                                     gcn::Graphics::CENTER,
+                                     font,
+                                     skinState->textFormat);
+        }
     }
 
     graphics->setFont(oldFont);
@@ -500,9 +509,20 @@ void Theme::readSkinStateNode(XML::Node node, Skin &skin) const
             readSkinStateImgNode(childNode, state);
         else if (childNode.name() == "rect")
             readSkinStateRectNode(childNode, state);
+        else if (childNode.name() == "text")
+            readSkinStateTextNode(childNode, state);
     }
 
     skin.addState(std::move(state));
+}
+
+void Theme::readSkinStateTextNode(XML::Node node, SkinState &state) const
+{
+    auto &textFormat = state.textFormat;
+    node.attribute("bold", textFormat.bold);
+    node.attribute("color", textFormat.color);
+    node.attribute("outlineColor", textFormat.outlineColor);
+    node.attribute("shadowColor", textFormat.shadowColor);
 }
 
 template<>
@@ -631,10 +651,6 @@ static int readColorType(const std::string &type)
         "TEXT",
         "SHADOW",
         "OUTLINE",
-        "PROGRESS_BAR",
-        "BUTTON",
-        "BUTTON_DISABLED",
-        "TAB",
         "PARTY_CHAT_TAB",
         "PARTY_SOCIAL_TAB",
         "BACKGROUND",

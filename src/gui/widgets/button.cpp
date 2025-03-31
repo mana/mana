@@ -28,6 +28,7 @@
 
 #include "resources/image.h"
 #include "resources/theme.h"
+#include "textrenderer.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/font.hpp>
@@ -125,33 +126,32 @@ void Button::init()
 
 void Button::draw(gcn::Graphics *graphics)
 {
-    WidgetState state(this);
+    WidgetState widgetState(this);
     if (mHasMouse)
-        state.flags |= STATE_HOVERED;
+        widgetState.flags |= STATE_HOVERED;
     if (isPressed())
-        state.flags |= STATE_SELECTED;
+        widgetState.flags |= STATE_SELECTED;
 
-    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::Button, state);
+    auto &skin = gui->getTheme()->getSkin(SkinType::Button);
+    skin.draw(static_cast<Graphics *>(graphics), widgetState);
+
+    auto skinState = skin.getState(widgetState.flags);
+    auto font = (skinState && skinState->textFormat.bold) ? boldFont : getFont();
 
     int mode;
 
-    if (state.flags & STATE_DISABLED)
+    if (widgetState.flags & STATE_DISABLED)
         mode = BUTTON_DISABLED;
-    else if (state.flags & STATE_SELECTED)
+    else if (widgetState.flags & STATE_SELECTED)
         mode = BUTTON_PRESSED;
-    else if (state.flags & (STATE_HOVERED | STATE_FOCUSED))
+    else if (widgetState.flags & (STATE_HOVERED | STATE_FOCUSED))
         mode = BUTTON_HIGHLIGHTED;
     else
         mode = BUTTON_STANDARD;
 
-    if (mode == BUTTON_DISABLED)
-        graphics->setColor(Theme::getThemeColor(Theme::BUTTON_DISABLED));
-    else
-        graphics->setColor(Theme::getThemeColor(Theme::BUTTON));
-
     Image *icon = mButtonIcon.empty() ? nullptr : mButtonIcon[mode].get();
     int textX = 0;
-    int textY = getHeight() / 2 - getFont()->getHeight() / 2;
+    int textY = getHeight() / 2 - font->getHeight() / 2;
     int btnIconX = 0;
     int btnIconY = getHeight() / 2 - (icon ? icon->getHeight() / 2 : 0);
     int btnIconWidth = icon ? icon->getWidth() : 0;
@@ -172,9 +172,8 @@ void Button::draw(gcn::Graphics *graphics)
         case gcn::Graphics::CENTER:
             if (btnIconWidth)
             {
-                btnIconX = getWidth() / 2 - (getFont()->getWidth(mCaption)
-                    + icon->getWidth() + 2) / 2;
-                textX = getWidth() / 2 + icon->getWidth() / 2 + 2;
+                btnIconX = (getWidth() - font->getWidth(mCaption) - icon->getWidth() - 2) / 2;
+                textX = (getWidth() + icon->getWidth()) / 2 + 2;
             }
             else
             {
@@ -183,14 +182,12 @@ void Button::draw(gcn::Graphics *graphics)
             break;
         case gcn::Graphics::RIGHT:
             if (btnIconWidth)
-                btnIconX = getWidth() - 4 - getFont()->getWidth(mCaption) - 2;
+                btnIconX = getWidth() - 4 - font->getWidth(mCaption) - 2;
             textX = getWidth() - 4;
             break;
         default:
             throw GCN_EXCEPTION("Button::draw(). Unknown alignment.");
     }
-
-    graphics->setFont(getFont());
 
     if (isPressed())
     {
@@ -200,7 +197,18 @@ void Button::draw(gcn::Graphics *graphics)
 
     if (btnIconWidth)
         static_cast<Graphics *>(graphics)->drawImage(icon, btnIconX, btnIconY);
-    graphics->drawText(getCaption(), textX, textY, getAlignment());
+
+    if (auto skinState = skin.getState(widgetState.flags))
+    {
+        auto &textFormat = skinState->textFormat;
+        TextRenderer::renderText(static_cast<Graphics *>(graphics),
+                                 getCaption(),
+                                 textX,
+                                 textY,
+                                 getAlignment(),
+                                 font,
+                                 textFormat);
+    }
 }
 
 void Button::adjustSize()

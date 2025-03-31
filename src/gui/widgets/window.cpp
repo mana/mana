@@ -23,6 +23,7 @@
 
 #include "configuration.h"
 #include "log.h"
+#include "textrenderer.h"
 
 #include "gui/gui.h"
 #include "gui/viewport.h"
@@ -124,21 +125,26 @@ void Window::drawFrame(gcn::Graphics *graphics)
     auto g = static_cast<Graphics*>(graphics);
     auto theme = gui->getTheme();
 
-    WidgetState state(this);
-    state.width += getFrameSize() * 2;
-    state.height += getFrameSize() * 2;
+    WidgetState widgetState(this);
+    widgetState.width += getFrameSize() * 2;
+    widgetState.height += getFrameSize() * 2;
 
     auto &skin = theme->getSkin(SkinType::Window);
-    skin.draw(g, state);
+    skin.draw(g, widgetState);
 
     if (mShowTitle)
     {
-        g->setColor(Theme::getThemeColor(Theme::TEXT));
-        g->setFont(getFont());
-        g->drawText(getCaption(),
-                    getFrameSize() + skin.titleOffsetX,
-                    getFrameSize() + skin.titleOffsetY,
-                    gcn::Graphics::LEFT);
+        if (auto skinState = skin.getState(widgetState.flags))
+        {
+            auto &textFormat = skinState->textFormat;
+            TextRenderer::renderText(g,
+                                     getCaption(),
+                                     getFrameSize() + skin.titleOffsetX,
+                                     getFrameSize() + skin.titleOffsetY,
+                                     gcn::Graphics::LEFT,
+                                     textFormat.bold ? boldFont : getFont(),
+                                     textFormat);
+        }
     }
 }
 
@@ -686,6 +692,9 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
 
 gcn::Rectangle Window::getCloseButtonRect() const
 {
+    if (!mCloseButton)
+        return {};
+
     auto theme = gui->getTheme();
 
     auto &closeButtonSkin = theme->getSkin(SkinType::ButtonClose);
@@ -702,6 +711,9 @@ gcn::Rectangle Window::getCloseButtonRect() const
 
 gcn::Rectangle Window::getStickyButtonRect() const
 {
+    if (!mStickyButton)
+        return {};
+
     auto theme = gui->getTheme();
 
     auto &closeButtonSkin = theme->getSkin(SkinType::ButtonClose);

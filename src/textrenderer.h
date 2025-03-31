@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include "graphics.h"
-
 #include "resources/theme.h"
 
+#include <guichan/exception.hpp>
+#include <guichan/font.hpp>
+
 /**
- * Class for text rendering. Used by the TextParticle, the Text and FlashText
- * objects and the Preview in the color dialog.
+ * Class for text rendering which can apply an outline and shadow.
  */
 class TextRenderer
 {
@@ -38,46 +38,90 @@ public:
     static void renderText(gcn::Graphics *graphics,
                            const std::string &text,
                            int x, int y,
-                           gcn::Graphics::Alignment align,
+                           gcn::Graphics::Alignment alignment,
                            const gcn::Color &color,
                            gcn::Font *font,
                            bool outline = false,
-                           bool shadow = false)
+                           bool shadow = false,
+                           const std::optional<gcn::Color> &outlineColor = {},
+                           const std::optional<gcn::Color> &shadowColor = {})
     {
-        graphics->setFont(font);
+        switch (alignment)
+        {
+        case gcn::Graphics::LEFT:
+            break;
+        case gcn::Graphics::CENTER:
+            x -= font->getWidth(text) / 2;
+            break;
+        case gcn::Graphics::RIGHT:
+            x -= font->getWidth(text);
+            break;
+        default:
+            throw GCN_EXCEPTION("Unknown alignment.");
+        }
 
         // Text shadow
         if (shadow)
         {
-            graphics->setColor(Theme::getThemeColor(Theme::SHADOW,
-                                                    color.a / 2));
-            if (outline)
-            {
-                graphics->drawText(text, x + 2, y + 2, align);
-            }
+            if (shadowColor)
+                graphics->setColor(*shadowColor);
             else
-            {
-                graphics->drawText(text, x + 1, y + 1, align);
-            }
+                graphics->setColor(Theme::getThemeColor(Theme::SHADOW, color.a / 2));
+
+            if (outline)
+                font->drawString(graphics, text, x + 2, y + 2);
+            else
+                font->drawString(graphics, text, x + 1, y + 1);
         }
 
-        if (outline) {
-/*            graphics->setColor(guiPalette->getColor(Palette::OUTLINE,
+        if (outline)
+        {
+            /*
+            graphics->setColor(guiPalette->getColor(Palette::OUTLINE,
                     alpha/4));
             // TODO: Reanable when we can draw it nicely in software mode
-            graphics->drawText(text, x + 2, y + 2, align);
-            graphics->drawText(text, x + 1, y + 2, align);
-            graphics->drawText(text, x + 2, y + 1, align);*/
+            font->drawString(graphics, text, x + 2, y + 2);
+            font->drawString(graphics, text, x + 1, y + 2);
+            font->drawString(graphics, text, x + 2, y + 1);
+            */
 
             // Text outline
-            graphics->setColor(Theme::getThemeColor(Theme::OUTLINE, color.a));
-            graphics->drawText(text, x + 1, y, align);
-            graphics->drawText(text, x - 1, y, align);
-            graphics->drawText(text, x, y + 1, align);
-            graphics->drawText(text, x, y - 1, align);
+            if (outlineColor)
+                graphics->setColor(*outlineColor);
+            else
+                graphics->setColor(Theme::getThemeColor(Theme::OUTLINE, color.a));
+
+            font->drawString(graphics, text, x + 1, y);
+            font->drawString(graphics, text, x - 1, y);
+            font->drawString(graphics, text, x, y + 1);
+            font->drawString(graphics, text, x, y - 1);
         }
 
         graphics->setColor(color);
-        graphics->drawText(text, x, y, align);
+        font->drawString(graphics, text, x, y);
+    }
+
+    /**
+     * Renders a specified text.
+     */
+    static void renderText(gcn::Graphics *graphics,
+                           const std::string &text,
+                           int x,
+                           int y,
+                           gcn::Graphics::Alignment align,
+                           gcn::Font *font,
+                           const TextFormat &format)
+    {
+        renderText(graphics,
+                   text,
+                   x,
+                   y,
+                   align,
+                   format.color,
+                   font,
+                   format.outlineColor.has_value(),
+                   format.shadowColor.has_value(),
+                   format.outlineColor,
+                   format.shadowColor);
     }
 };

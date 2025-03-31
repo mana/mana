@@ -22,10 +22,11 @@
 #pragma once
 
 #include <guichan/widgets/label.hpp>
+#include <optional>
 
 /**
  * Label widget. Same as the Guichan label but modified to use the palette
- * system.
+ * system and support outlines and shadows.
  *
  * \ingroup GUI
  */
@@ -41,7 +42,31 @@ class Label : public gcn::Label
         Label(const std::string &caption);
 
         /**
+         * Sets the color of the outline.
+         */
+        void setOutlineColor(std::optional<gcn::Color> color);
+
+        /**
+         * Sets the color of the shadow.
+         */
+        void setShadowColor(std::optional<gcn::Color> color);
+
+        /**
          * Draws the label.
          */
         void draw(gcn::Graphics *graphics) override;
+
+    private:
+        std::optional<gcn::Color> mOutlineColor;
+        std::optional<gcn::Color> mShadowColor;
 };
+
+inline void Label::setOutlineColor(std::optional<gcn::Color> color)
+{
+    mOutlineColor = color;
+}
+
+inline void Label::setShadowColor(std::optional<gcn::Color> color)
+{
+    mShadowColor = color;
+}

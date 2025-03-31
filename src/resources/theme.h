@@ -95,10 +95,19 @@ struct SkinPart
     std::variant<ImageRect, Image *, ColoredRectangle> data;
 };
 
+struct TextFormat
+{
+    bool bold = false;
+    gcn::Color color;
+    std::optional<gcn::Color> outlineColor;
+    std::optional<gcn::Color> shadowColor;
+};
+
 struct SkinState
 {
     uint8_t stateFlags  = 0;
     uint8_t setFlags = 0;
+    TextFormat textFormat;
     std::vector<SkinPart> parts;
 };
 
@@ -124,6 +133,8 @@ class Skin
         void addState(SkinState state);
 
         void draw(Graphics *graphics, const WidgetState &state) const;
+
+        const SkinState *getState(uint8_t flags) const;
 
         /**
          * Returns the minimum width which can be used with this skin.
@@ -169,10 +180,6 @@ class Theme : public Palette, public EventListener
             TEXT,
             SHADOW,
             OUTLINE,
-            PROGRESS_BAR,
-            BUTTON,
-            BUTTON_DISABLED,
-            TAB,
             PARTY_CHAT_TAB,
             PARTY_SOCIAL_TAB,
             BACKGROUND,
@@ -276,6 +283,7 @@ class Theme : public Palette, public EventListener
         bool readTheme(const std::string &filename);
         void readSkinNode(XML::Node node);
         void readSkinStateNode(XML::Node node, Skin &skin) const;
+        void readSkinStateTextNode(XML::Node node, SkinState &state) const;
         void readSkinStateImgNode(XML::Node node, SkinState &state) const;
         void readSkinStateRectNode(XML::Node node, SkinState &state) const;
         void readColorNode(XML::Node node);

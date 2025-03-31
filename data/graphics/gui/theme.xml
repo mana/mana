@@ -2,10 +2,6 @@
   <color id="TEXT" color="#000000" />
   <color id="SHADOW" color="#000000" />
   <color id="OUTLINE" color="#000000" />
-  <color id="PROGRESS_BAR" color="#ffffff" />
-  <color id="BUTTON" color="#000000" />
-  <color id="BUTTON_DISABLED" color="#333333" />
-  <color id="TAB" color="#000000" />
   <color id="PARTY_CHAT_TAB" color="#f48055" />
   <color id="PARTY_SOCIAL_TAB" color="#ff00d8" />
   <color id="BACKGROUND" color="#ffffff" />
@@ -71,6 +67,7 @@
   </skin>
   <skin type="Button" padding="4">
     <state disabled="true">
+      <text color="#333333" />
       <img src="button_disabled.png" left="10" right="10" top="5" bottom="5" />
     </state>
     <state selected="true">
@@ -185,6 +182,7 @@
   </skin>
   <skin type="ProgressBar">
     <state>
+      <text color="#ffffff" outlineColor="#000000"/>
       <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
   </skin>

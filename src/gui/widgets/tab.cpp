@@ -24,16 +24,21 @@
 #include "graphics.h"
 
 #include "gui/gui.h"
+#include "gui/widgets/label.h"
 #include "gui/widgets/tabbedarea.h"
 
 #include "resources/theme.h"
 
 #include <guichan/widgets/label.hpp>
 
-Tab::Tab() :
-    mTabColor(&Theme::getThemeColor(Theme::TAB))
+Tab::Tab()
 {
     setFocusable(false);
+
+    // Replace the label with customized version
+    delete mLabel;
+    mLabel = new Label();
+    add(mLabel);
 
     auto &skin = gui->getTheme()->getSkin(SkinType::Tab);
     setFrameSize(skin.frameSize);
@@ -62,10 +67,26 @@ void Tab::draw(gcn::Graphics *graphics)
     if (mTabbedArea && mTabbedArea->isTabSelected(this))
         mFlash = false;
 
-    if (mFlash)
-        mLabel->setForegroundColor(Theme::getThemeColor(Theme::TAB_FLASH));
-    else
-        mLabel->setForegroundColor(*mTabColor);
+    uint8_t flags = 0;
+    if (mHasMouse)
+        flags |= STATE_HOVERED;
+    if (mTabbedArea && mTabbedArea->isTabSelected(this))
+        flags |= STATE_SELECTED;
+
+    auto &skin = gui->getTheme()->getSkin(SkinType::Tab);
+    if (auto state = skin.getState(flags))
+    {
+        gcn::Color foregroundColor = state->textFormat.color;
+        if (mFlash)
+            foregroundColor = Theme::getThemeColor(Theme::TAB_FLASH);
+        else if (mTabColor)
+            foregroundColor = *mTabColor;
+
+        auto label = static_cast<Label*>(mLabel);
+        label->setForegroundColor(foregroundColor);
+        label->setOutlineColor(state->textFormat.outlineColor);
+        label->setShadowColor(state->textFormat.shadowColor);
+    }
 
     // draw label
     drawChildren(graphics);

@@ -21,7 +21,12 @@
 
 #include "gui/widgets/label.h"
 
+#include "textrenderer.h"
+
 #include "resources/theme.h"
+
+#include <guichan/exception.hpp>
+#include <guichan/font.hpp>
 
 Label::Label()
 {
@@ -36,5 +41,33 @@ Label::Label(const std::string &caption) :
 
 void Label::draw(gcn::Graphics *graphics)
 {
-    gcn::Label::draw(static_cast<gcn::Graphics*>(graphics));
+    int textX;
+    int textY = getHeight() / 2 - getFont()->getHeight() / 2;
+
+    switch (getAlignment())
+    {
+    case Graphics::LEFT:
+        textX = 0;
+        break;
+    case Graphics::CENTER:
+        textX = getWidth() / 2;
+        break;
+    case Graphics::RIGHT:
+        textX = getWidth();
+        break;
+    default:
+        throw GCN_EXCEPTION("Unknown alignment.");
+    }
+
+    TextRenderer::renderText(static_cast<Graphics *>(graphics),
+                             getCaption(),
+                             textX,
+                             textY,
+                             getAlignment(),
+                             getForegroundColor(),
+                             getFont(),
+                             mOutlineColor.has_value(),
+                             mShadowColor.has_value(),
+                             mOutlineColor,
+                             mShadowColor);
 }

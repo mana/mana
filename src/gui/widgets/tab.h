@@ -66,7 +66,7 @@ class Tab : public gcn::Tab
         virtual void setCurrent() {}
 
     private:
-        const gcn::Color *mTabColor;
+        const gcn::Color *mTabColor = nullptr;
         bool mFlash = false;
         int mPadding = 8;
 };
