@@ -465,6 +465,8 @@ void Theme::readSkinNode(XML::Node node)
     node.attribute("frameSize", skin.frameSize);
     node.attribute("padding", skin.padding);
     node.attribute("titleBarHeight", skin.titleBarHeight);
+    node.attribute("titleOffsetX", skin.titleOffsetX);
+    node.attribute("titleOffsetY", skin.titleOffsetY);
 
     for (auto childNode : node.children())
         if (childNode.name() == "state")

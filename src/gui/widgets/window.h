@@ -405,11 +405,4 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultHeight;           /**< Default window height */
 
         static int instances;         /**< Number of Window instances */
-
-        /**
-         * The width of the resize border. Is independent of the actual window
-         * border width, and determines mostly the size of the corner area
-         * where two borders are moved at the same time.
-         */
-        static const int resizeBorderWidth = 10;
 };

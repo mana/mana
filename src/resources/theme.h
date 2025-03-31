@@ -143,6 +143,8 @@ class Skin
         int frameSize = 0;
         int padding = 0;
         int titleBarHeight = 0;
+        int titleOffsetX = 0;
+        int titleOffsetY = 0;
 
     private:
         std::vector<SkinState> mStates;

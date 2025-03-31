@@ -127,13 +127,18 @@ void Window::drawFrame(gcn::Graphics *graphics)
     WidgetState state(this);
     state.width += getFrameSize() * 2;
     state.height += getFrameSize() * 2;
-    theme->drawSkin(g, SkinType::Window, state);
+
+    auto &skin = theme->getSkin(SkinType::Window);
+    skin.draw(g, state);
 
     if (mShowTitle)
     {
         g->setColor(Theme::getThemeColor(Theme::TEXT));
         g->setFont(getFont());
-        g->drawText(getCaption(), 7 + getFrameSize(), 5 + getFrameSize(), gcn::Graphics::LEFT);
+        g->drawText(getCaption(),
+                    getFrameSize() + skin.titleOffsetX,
+                    getFrameSize() + skin.titleOffsetY,
+                    gcn::Graphics::LEFT);
     }
 }
 
@@ -655,6 +660,13 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
 
         if (inPadding && event.getSource() == this)
         {
+            /**
+             * The width of the resize border. Is independent of the actual window
+             * border width, and determines mostly the size of the corner area
+             * where two borders are moved at the same time.
+             */
+            const int resizeBorderWidth = std::max(mGrip->getWidth(), 10);
+
             resizeHandles |= (x >= getWidth() - resizeBorderWidth) ? RIGHT :
                               (x < resizeBorderWidth) ? LEFT : 0;
             resizeHandles |= (y >= getHeight() - resizeBorderWidth) ? BOTTOM :

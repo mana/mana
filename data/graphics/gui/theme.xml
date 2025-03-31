@@ -49,7 +49,7 @@
   <progressbar id="WEIGHT" color="#0000ff,ffff00,ff0000" />
   <progressbar id="JOB" color="#e187cb" />
 
-  <skin type="Window" frameSize="0" padding="3" titleBarHeight="20">
+  <skin type="Window" frameSize="0" padding="3" titleBarHeight="20" titleOffsetX="7" titleOffsetY="5">
     <state>
       <img src="window.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
