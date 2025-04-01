@@ -70,6 +70,7 @@ Being::Being(int id, Type type, int subtype, Map *map)
     setType(type, subtype);
 
     mSpeechBubble = new SpeechBubble;
+    mSpeechBubble->addDeathListener(this);
 
     mMoveSpeed = Net::getPlayerHandler()->getDefaultMoveSpeed();
 
@@ -82,9 +83,6 @@ Being::~Being()
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
-    mSpeechBubble = nullptr;
-    mDispName = nullptr;
-    mText = nullptr;
 }
 
 /**
@@ -1393,6 +1391,12 @@ void Being::event(Event::Channel channel, const Event &event)
             setShowName(config.visibleNames);
         }
     }
+}
+
+void Being::death(const gcn::Event &event)
+{
+    if (event.getSource() == mSpeechBubble)
+        mSpeechBubble = nullptr;
 }
 
 void Being::setMap(Map *map)

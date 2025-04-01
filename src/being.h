@@ -31,6 +31,7 @@
 #include "utils/time.h"
 
 #include <guichan/color.hpp>
+#include <guichan/deathlistener.hpp>
 
 #include <cstdint>
 #include <map>
@@ -61,7 +62,7 @@ enum class Gender
     HIDDEN = 3
 };
 
-class Being : public ActorSprite, public EventListener
+class Being : public ActorSprite, public EventListener, public gcn::DeathListener
 {
     public:
         /**
@@ -438,7 +439,11 @@ class Being : public ActorSprite, public EventListener
 
         void talkTo();
 
+        // EventListener
         void event(Event::Channel channel, const Event &event) override;
+
+        // gcn::DeathListener
+        void death(const gcn::Event &event) override;
 
         void setMap(Map *map) final;
 

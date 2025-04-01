@@ -176,11 +176,25 @@ void connectToServer(ServerInfo &server)
 
 void unload()
 {
-    if (generalHandler)
-    {
-        generalHandler->unload();
-        delete generalHandler;
-    }
+    if (!generalHandler)
+        return;
+
+    generalHandler->unload();
+    delete generalHandler;
+
+    adminHandler = nullptr;
+    charHandler = nullptr;
+    chatHandler = nullptr;
+    generalHandler = nullptr;
+    inventoryHandler = nullptr;
+    loginHandler = nullptr;
+    gameHandler = nullptr;
+    guildHandler = nullptr;
+    npcHandler = nullptr;
+    partyHandler = nullptr;
+    playerHandler = nullptr;
+    abilityHandler = nullptr;
+    tradeHandler = nullptr;
 }
 
 ServerType getNetworkType()

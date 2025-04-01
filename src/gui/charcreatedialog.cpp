@@ -167,7 +167,8 @@ CharCreateDialog::~CharCreateDialog()
     delete mPlayer;
 
     // Make sure the char server handler knows that we're gone
-    Net::getCharHandler()->setCharCreateDialog(nullptr);
+    if (auto charHandler = Net::getCharHandler())
+        charHandler->setCharCreateDialog(nullptr);
 }
 
 void CharCreateDialog::action(const gcn::ActionEvent &event)
