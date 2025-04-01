@@ -50,7 +50,7 @@
       <img src="window.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
   </skin>
-  <skin type="ResizeGrip" padding="2">
+  <skin type="ResizeGrip" padding="3">
     <state>
       <img src="resize.png" />
     </state>
@@ -91,38 +91,38 @@
       <img src="tab.png" left="10" right="10" top="14" bottom="2" />
     </state>
   </skin>
-  <skin type="CheckBox">
+  <skin type="CheckBox" padding="3" spacing="4">
     <state disabled="true" selected="true">
-      <img src="checkbox.png" x="27" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+      <img src="checkbox.png" x="27" y="0" width="9" height="10" offsetX="2" offsetY="5" />
     </state>
     <state disabled="true">
-      <img src="checkbox.png" x="18" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+      <img src="checkbox.png" x="18" y="0" width="9" height="10" offsetX="2" offsetY="5" />
     </state>
     <state selected="true" hovered="true">
-      <img src="checkbox.png" x="45" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+      <img src="checkbox.png" x="45" y="0" width="9" height="10" offsetX="2" offsetY="5" />
     </state>
     <state hovered="true">
-      <img src="checkbox.png" x="36" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+      <img src="checkbox.png" x="36" y="0" width="9" height="10" offsetX="2" offsetY="5" />
     </state>
     <state selected="true">
-      <img src="checkbox.png" x="9" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+      <img src="checkbox.png" x="9" y="0" width="9" height="10" offsetX="2" offsetY="5" />
     </state>
     <state>
-      <img src="checkbox.png" x="0" y="0" width="9" height="10" offsetX="2" offsetY="2" />
+      <img src="checkbox.png" x="0" y="0" width="9" height="10" offsetX="2" offsetY="5" />
     </state>
   </skin>
-  <skin type="RadioButton">
+  <skin type="RadioButton" padding="3" spacing="4">
     <state hovered="true" selected="true">
-      <img src="radioin_highlight.png" offsetX="2" offsetY="2" />
+      <img src="radioin_highlight.png" offsetX="2" offsetY="5" />
     </state>
     <state hovered="true">
-      <img src="radioout_highlight.png" offsetX="2" offsetY="2" />
+      <img src="radioout_highlight.png" offsetX="2" offsetY="5" />
     </state>
     <state selected="true">
-      <img src="radioin.png" offsetX="2" offsetY="2" />
+      <img src="radioin.png" offsetX="2" offsetY="5" />
     </state>
     <state>
-      <img src="radioout.png" offsetX="2" offsetY="2" />
+      <img src="radioout.png" offsetX="2" offsetY="5" />
     </state>
   </skin>
   <skin type="TextField" frameSize="2" padding="2">
@@ -186,7 +186,7 @@
       <img src="vscroll_grey.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>
   </skin>
-  <skin type="Slider">
+  <skin type="Slider" padding="4">
     <state hovered="true">
       <img src="slider_hilight.png" height="6" left="4" right="4" top="6" offsetY="4" />
     </state>

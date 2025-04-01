@@ -343,7 +343,7 @@ void CharCreateDialog::setAttributes(const std::vector<std::string> &labels,
             add(attributeLabel);
 
             auto *attributeSlider = new Slider(min, max);
-            attributeSlider->setDimension(gcn::Rectangle(75, y, 100, 10));
+            attributeSlider->setDimension(gcn::Rectangle(75, y, 100, attributeSlider->getHeight()));
             attributeSlider->setActionEventId("statslider");
             attributeSlider->addActionListener(this);
             add(attributeSlider);

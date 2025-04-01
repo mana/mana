@@ -473,6 +473,7 @@ void Theme::readSkinNode(XML::Node node)
 
     node.attribute("frameSize", skin.frameSize);
     node.attribute("padding", skin.padding);
+    node.attribute("spacing", skin.spacing);
     node.attribute("titleBarHeight", skin.titleBarHeight);
     node.attribute("titleOffsetX", skin.titleOffsetX);
     node.attribute("titleOffsetY", skin.titleOffsetY);

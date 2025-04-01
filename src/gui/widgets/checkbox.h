@@ -39,9 +39,9 @@ class CheckBox : public gcn::CheckBox
         void draw(gcn::Graphics *graphics) override;
 
         /**
-         * Draws the check box, not the caption.
+         * Overridden because box is drawn in CheckBox::draw.
          */
-        void drawBox(gcn::Graphics *graphics) override;
+        void drawBox(gcn::Graphics *graphics) override {}
 
         /**
          * Called when the mouse enteres the widget area.

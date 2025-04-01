@@ -325,17 +325,17 @@ Setup_Video::Setup_Video():
     place(0, 2, mDisableSDLTransparencyCheckBox, 4);
 
     place(0, 3, mFpsCheckBox);
-    place(1, 3, mFpsSlider, 2);
+    place(1, 3, mFpsSlider, 2).setVAlign(LayoutCell::CENTER);
     place(3, 3, mFpsLabel);
 
     place(0, 4, mParticleEffectsCheckBox, 4);
 
     place(0, 5, particleDetailLabel);
-    place(1, 5, mParticleDetailSlider, 2);
+    place(1, 5, mParticleDetailSlider, 2).setVAlign(LayoutCell::CENTER);
     place(3, 5, mParticleDetailField);
 
     place(0, 6, overlayDetailLabel);
-    place(1, 6, mOverlayDetailSlider, 2);
+    place(1, 6, mOverlayDetailSlider, 2).setVAlign(LayoutCell::CENTER);
     place(3, 6, mOverlayDetailField);
 }
 

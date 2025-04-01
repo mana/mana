@@ -41,8 +41,13 @@ Slider::Slider(double scaleStart, double scaleEnd):
 void Slider::init()
 {
     auto theme = gui->getTheme();
-    setFrameSize(theme->getSkin(SkinType::Slider).frameSize);
-    setMarkerLength(theme->getMinWidth(SkinType::SliderHandle));
+    auto &sliderSkin = theme->getSkin(SkinType::Slider);
+    auto &sliderHandleSkin = theme->getSkin(SkinType::SliderHandle);
+    setFrameSize(sliderSkin.frameSize);
+    setMarkerLength(sliderHandleSkin.getMinWidth());
+
+    setWidth(100);
+    setHeight(sliderSkin.getMinHeight() + 2 * sliderSkin.padding);
 }
 
 void Slider::draw(gcn::Graphics *graphics)

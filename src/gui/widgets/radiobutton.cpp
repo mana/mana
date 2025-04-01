@@ -21,6 +21,8 @@
 
 #include "gui/widgets/radiobutton.h"
 
+#include "textrenderer.h"
+
 #include "gui/gui.h"
 #include "resources/theme.h"
 
@@ -29,33 +31,33 @@ RadioButton::RadioButton(const std::string &caption,
                          bool marked)
     : gcn::RadioButton(caption, group, marked)
 {
-}
-
-void RadioButton::drawBox(gcn::Graphics* graphics)
-{
-    WidgetState state(this);
-    if (mHasMouse)
-        state.flags |= STATE_HOVERED;
-    if (isSelected())
-        state.flags |= STATE_SELECTED;
-
-    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::RadioButton, state);
+    auto &skin = gui->getTheme()->getSkin(SkinType::RadioButton);
+    setWidth(skin.getMinWidth() + 2 * skin.padding + skin.spacing + getFont()->getWidth(caption));
+    setHeight(skin.getMinHeight() + 2 * skin.padding);
 }
 
 void RadioButton::draw(gcn::Graphics* graphics)
 {
-    graphics->pushClipArea(gcn::Rectangle(1, 1, getWidth() - 1,
-                                          getHeight() - 1));
+    WidgetState widgetState(this);
+    if (mHasMouse)
+        widgetState.flags |= STATE_HOVERED;
+    if (isSelected())
+        widgetState.flags |= STATE_SELECTED;
 
-    drawBox(graphics);
+    auto &skin = gui->getTheme()->getSkin(SkinType::RadioButton);
+    skin.draw(static_cast<Graphics *>(graphics), widgetState);
 
-    graphics->popClipArea();
-
-    graphics->setFont(getFont());
-    graphics->setColor(getForegroundColor());
-
-    int h = getHeight() + getHeight() / 2;
-    graphics->drawText(getCaption(), h - 2, 0);
+    if (auto skinState = skin.getState(widgetState.flags))
+    {
+        auto &textFormat = skinState->textFormat;
+        TextRenderer::renderText(static_cast<Graphics *>(graphics),
+                                 getCaption(),
+                                 skin.getMinWidth() + skin.padding + skin.spacing,
+                                 skin.padding,
+                                 Graphics::LEFT,
+                                 textFormat.bold ? boldFont : getFont(),
+                                 textFormat);
+    }
 }
 
 void RadioButton::mouseEntered(gcn::MouseEvent& event)

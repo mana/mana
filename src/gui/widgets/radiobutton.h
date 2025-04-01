@@ -34,25 +34,24 @@ class RadioButton : public gcn::RadioButton
                     bool marked = false);
 
         /**
-         * Draws the radiobutton, not the caption.
+         * Implementation of the draw method.
          */
-        void drawBox(gcn::Graphics* graphics) override;
+        void draw(gcn::Graphics *graphics) override;
 
         /**
-         * Implementation of the draw methods.
-         * Thus, avoiding the rhomb around the radio button.
+         * Overridden because box is drawn in RadioButton::draw.
          */
-        void draw(gcn::Graphics* graphics) override;
+        void drawBox(gcn::Graphics *graphics) override {}
 
         /**
          * Called when the mouse enteres the widget area.
          */
-        void mouseEntered(gcn::MouseEvent& event) override;
+        void mouseEntered(gcn::MouseEvent &event) override;
 
         /**
          * Called when the mouse leaves the widget area.
          */
-        void mouseExited(gcn::MouseEvent& event) override;
+        void mouseExited(gcn::MouseEvent &event) override;
 
     private:
         bool mHasMouse = false;

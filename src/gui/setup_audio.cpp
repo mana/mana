@@ -29,6 +29,7 @@
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/slider.h"
 
 #include "utils/gettext.h"
@@ -71,11 +72,11 @@ Setup_Audio::Setup_Audio():
 
     // Do the layout
     place(0, 0, mSoundCheckBox);
-    place(0, 1, mSfxSlider);
+    place(0, 1, mSfxSlider).setVAlign(LayoutCell::CENTER);
     place(1, 1, sfxLabel);
-    place(0, 2, mNotificationsSlider);
+    place(0, 2, mNotificationsSlider).setVAlign(LayoutCell::CENTER);
     place(1, 2, notificationsLabel);
-    place(0, 3, mMusicSlider);
+    place(0, 3, mMusicSlider).setVAlign(LayoutCell::CENTER);
     place(1, 3, musicLabel);
     place(0, 4, mDownloadMusicCheckBox);
 }

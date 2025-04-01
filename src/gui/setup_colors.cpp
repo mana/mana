@@ -150,19 +150,19 @@ Setup_Colors::Setup_Colors() :
     place(0, 0, mScroll, 6, 6).setPadding(2);
     place(0, 6, mPreviewBox, 6).setPadding(2);
     place(0, 7, mGradTypeLabel, 3);
-    place(3, 7, mGradTypeSlider);
+    place(3, 7, mGradTypeSlider).setVAlign(Layout::CENTER);
     place(4, 7, mGradTypeText, 2).setPadding(1);
     place(0, 8, mRedLabel, 3);
-    place(3, 8, mRedSlider);
+    place(3, 8, mRedSlider).setVAlign(Layout::CENTER);
     place(5, 8, mRedText).setPadding(1);
     place(0, 9, mGreenLabel, 3);
-    place(3, 9, mGreenSlider);
+    place(3, 9, mGreenSlider).setVAlign(Layout::CENTER);
     place(5, 9, mGreenText).setPadding(1);
     place(0, 10, mBlueLabel, 3);
-    place(3, 10, mBlueSlider);
+    place(3, 10, mBlueSlider).setVAlign(Layout::CENTER);
     place(5, 10, mBlueText).setPadding(1);
     place(0, 11, mGradDelayLabel, 3);
-    place(3, 11, mGradDelaySlider);
+    place(3, 11, mGradDelaySlider).setVAlign(Layout::CENTER);
     place(5, 11, mGradDelayText).setPadding(1);
 
     mGradTypeText->setCaption(std::string());

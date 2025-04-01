@@ -21,35 +21,43 @@
 
 #include "gui/widgets/checkbox.h"
 
+#include "textrenderer.h"
+
 #include "gui/gui.h"
 #include "resources/theme.h"
 
-CheckBox::CheckBox(const std::string &caption, bool selected):
-    gcn::CheckBox(caption, selected)
+#include <guichan/font.hpp>
+
+CheckBox::CheckBox(const std::string &caption, bool selected)
+    : gcn::CheckBox(caption, selected)
 {
+    auto &skin = gui->getTheme()->getSkin(SkinType::CheckBox);
+    setWidth(skin.getMinWidth() + 2 * skin.padding + skin.spacing + getFont()->getWidth(caption));
+    setHeight(skin.getMinHeight() + 2 * skin.padding);
 }
 
 void CheckBox::draw(gcn::Graphics* graphics)
 {
-    drawBox(graphics);
-
-    graphics->setFont(getFont());
-    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
-
-    const int h = getHeight() + getHeight() / 2;
-
-    graphics->drawText(getCaption(), h - 2, 0);
-}
-
-void CheckBox::drawBox(gcn::Graphics* graphics)
-{
-    WidgetState state(this);
+    WidgetState widgetState(this);
     if (mHasMouse)
-        state.flags |= STATE_HOVERED;
+        widgetState.flags |= STATE_HOVERED;
     if (isSelected())
-        state.flags |= STATE_SELECTED;
+        widgetState.flags |= STATE_SELECTED;
 
-    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::CheckBox, state);
+    auto &skin = gui->getTheme()->getSkin(SkinType::CheckBox);
+    skin.draw(static_cast<Graphics *>(graphics), widgetState);
+
+    if (auto skinState = skin.getState(widgetState.flags))
+    {
+        auto &textFormat = skinState->textFormat;
+        TextRenderer::renderText(static_cast<Graphics *>(graphics),
+                                 getCaption(),
+                                 skin.getMinWidth() + skin.padding + skin.spacing,
+                                 skin.padding,
+                                 Graphics::LEFT,
+                                 textFormat.bold ? boldFont : getFont(),
+                                 textFormat);
+    }
 }
 
 void CheckBox::mouseEntered(gcn::MouseEvent& event)

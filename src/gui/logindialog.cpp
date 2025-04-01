@@ -64,8 +64,8 @@ LoginDialog::LoginDialog(LoginData *loginData):
 
     place(0, 0, userLabel);
     place(0, 1, passLabel);
-    place(1, 0, mUserField, 3).setPadding(1);
-    place(1, 1, mPassField, 3).setPadding(1);
+    place(1, 0, mUserField, 3).setPadding(2);
+    place(1, 1, mPassField, 3).setPadding(2);
     place(0, 5, mKeepCheck, 4);
     place(0, 6, mRegisterButton).setHAlign(LayoutCell::LEFT);
     place(2, 6, mServerButton);
