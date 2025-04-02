@@ -1,0 +1,66 @@
+>>> JEWELRY THEME <<<
+Francesco Miglietta (Hal9000)
+
+
+Version 1.0.5 (01.04.2025)
+
+        - Ported to the Mana client (by Thorbjørn Lindeijer)
+
+
+Version 1.0.4 (29.04.2013)
+
+	- New character selection graphic implemented
+	- New scrollbar graphic implemented +100% usability on mobile
+	- New graphic for horizonal scrollbar background added
+	- Fix horizontal scrollbar issue
+	- Increase contrast with highlighted handle in new scrollbar graphic
+
+
+Version 1.0.3 (12.02.2013)
+
+	- Fix login window minor graphic artifacts
+	- Improved listboxes menu layout
+	- Fix language selection menus in setup window and npc dialogue
+	- Fix height in popuplist for language selection in setup window
+	- Fix bug in joypad area
+	- Bars and icons on top left corner and windows button in top right corner position tuning
+
+
+Version 1.0.2 (03.01.2012)
+
+	- Add outline to windows' headers
+	- Add outline to menu popup window, readability issue fixed
+	- Chat tab color scheme is now user friendly
+	- Chat tab color scheme for party and guild tabs implemented
+	- New resize grip graphic
+	- Fix position of resize grip in all windows
+	- Fix bug with status window lock button graphic
+	- New rounded border graphic for all windows
+
+
+Version 1.0.1 (22.12.2012)
+
+	- Fix bug in login, shop, world and itemcontainer windows
+	- Add transparency to onscreen buttons
+	- Improved skill window layout
+	- Fixed bug with item selection in inventory window
+	- New graphic for quest status icons in quest window
+
+
+Version 1.0.0 (11.12.2012)
+
+	JEWELRY THEME first release.
+	Changes are described comparing Jewelry Theme to standard The Mana World client themes.
+
+	- New graphics for all gui elements
+	- Title bars on most windows
+	- Specific tuning parameters for each window (padding, title style, etc)
+	- Mouseover effects for all interactive objects (like close button)
+	- Bigger graphic elements like sliders, radio/check button, etc for easier interaction
+	- New equipment slot graphics and selection effects
+	- Transparent background for specific windows
+	- Updated cursors
+	- New graphic for scrollbar background
+	- New cursors graphic: mechanism trigger, doors/warps
+	- New font color combinations and window-specific color scheme for better readability
+	- Android: graphic for on-screen keyboard, joypad area and on-screen buttons
