@@ -36,7 +36,6 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
-#include "gui/widgets/textfield.h"
 
 #include "resources/theme.h"
 
@@ -156,8 +155,8 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     loadCustomServers();
 
-    mServersListModel = new ServersListModel(&mServers, this);
-    mServersList = new ServersListBox(mServersListModel);
+    mServersListModel = std::make_unique<ServersListModel>(&mServers, this);
+    mServersList = new ServersListBox(mServersListModel.get());
 
     auto *usedScroll = new ScrollArea(mServersList);
     usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -176,8 +175,8 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     usedScroll->setVerticalScrollAmount(0);
 
     place(0, 0, usedScroll, 6, 5).setPadding(3);
-    place(0, 5, mDescription, 5);
-    place(0, 6, mDownloadText, 5);
+    place(0, 5, mDescription, 6);
+    place(0, 6, mDownloadText, 6);
     place(0, 7, mManualEntryButton);
     place(1, 7, mModifyButton);
     place(2, 7, mDeleteButton);
@@ -217,10 +216,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     downloadServerList();
 }
 
-ServerDialog::~ServerDialog()
-{
-    delete mServersListModel;
-}
+ServerDialog::~ServerDialog() = default;
 
 void ServerDialog::action(const gcn::ActionEvent &event)
 {

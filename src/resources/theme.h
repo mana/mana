@@ -76,11 +76,10 @@ enum class SkinType
 
 enum StateFlags : uint8_t
 {
-    STATE_NORMAL    = 0x01,
-    STATE_HOVERED   = 0x02,
-    STATE_SELECTED  = 0x04,
-    STATE_DISABLED  = 0x08,
-    STATE_FOCUSED   = 0x10,
+    STATE_HOVERED   = 0x01,
+    STATE_SELECTED  = 0x02,
+    STATE_DISABLED  = 0x04,
+    STATE_FOCUSED   = 0x08,
 };
 
 struct ColoredRectangle

@@ -76,18 +76,17 @@ class ChatAutoComplete : public AutoCompleteLister
 {
     void getAutoCompleteList(std::vector<std::string> &list) const override
     {
-        auto *tab = static_cast<ChatTab*>(chatWindow->mChatTabs
-                                             ->getSelectedTab());
-
-        return tab->getAutoCompleteList(list);
+        auto tab = static_cast<ChatTab *>(chatWindow->mChatTabs->getSelectedTab());
+        tab->getAutoCompleteList(list);
     }
 };
 
 ChatWindow::ChatWindow():
     Window(_("Chat")),
-    mHistory(new TextHistory()),
+    mItemLinkHandler(new ItemLinkHandler(this)),
+    mChatInput(new ChatInput),
     mAutoComplete(new ChatAutoComplete),
-    mTmpVisible(false)
+    mChatTabs(new TabbedArea)
 {
     listen(Event::ChatChannel);
     listen(Event::NoticesChannel);
@@ -106,13 +105,8 @@ ChatWindow::ChatWindow():
     setMinWidth(150);
     setMinHeight(90);
 
-    mItemLinkHandler = new ItemLinkHandler(this);
-
-    mChatInput = new ChatInput;
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
-
-    mChatTabs = new TabbedArea;
 
     getLayout().setPadding(3);
     place(0, 0, mChatTabs, 3, 3);
@@ -120,7 +114,7 @@ ChatWindow::ChatWindow():
 
     loadWindowState();
 
-    mChatInput->setHistory(mHistory);
+    mChatInput->setHistory(&mHistory);
     mChatInput->setAutoComplete(mAutoComplete);
 
     mRecorder = new Recorder(this);
@@ -131,7 +125,6 @@ ChatWindow::~ChatWindow()
     delete mRecorder;
     removeAllWhispers();
     delete mItemLinkHandler;
-    delete mHistory;
     delete mAutoComplete;
 }
 
@@ -146,15 +139,10 @@ ChatTab *ChatWindow::getFocused() const
     return static_cast<ChatTab*>(mChatTabs->getSelectedTab());
 }
 
-void ChatWindow::clearTab(ChatTab *tab)
-{
-    if (tab)
-        tab->clearText();
-}
-
 void ChatWindow::clearTab()
 {
-    clearTab(getFocused());
+    if (auto tab = getFocused())
+        tab->clearText();
 }
 
 void ChatWindow::prevTab()

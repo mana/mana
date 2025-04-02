@@ -71,7 +71,8 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
         placeOption(place, mSwitchAccountServer);
 
         // Only added if we are connected to a gameserver
-        if (state == STATE_GAME) placeOption(place, mSwitchCharacter);
+        if (state == STATE_GAME)
+            placeOption(place, mSwitchCharacter);
     }
 
     mOptions[0]->setSelected(true);
@@ -90,7 +91,9 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
 
 QuitDialog::~QuitDialog()
 {
-    if (mMyPointer) *mMyPointer = nullptr;
+    if (mMyPointer)
+        *mMyPointer = nullptr;
+
     // Optional widgets, so delete them by hand.
     delete mForceQuit;
     delete mLogoutQuit;
@@ -166,7 +169,8 @@ void QuitDialog::keyPressed(gcn::KeyEvent &keyEvent)
             mOptions[0]->setSelected(true);
             return;
         }
-        else if (it == mOptions.begin() && dir < 0)
+
+        if (it == mOptions.begin() && dir < 0)
             it = mOptions.end();
 
         it += dir;

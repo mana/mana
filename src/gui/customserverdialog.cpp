@@ -37,11 +37,10 @@ std::string TypeListModel::getElementAt(int elementIndex)
     if (elementIndex == 0)
         return "TmwAthena";
 #ifdef MANASERV_SUPPORT
-    else if (elementIndex == 1)
+    if (elementIndex == 1)
         return "ManaServ";
 #endif
-    else
-        return "Unknown";
+    return "Unknown";
 }
 
 CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
@@ -62,8 +61,8 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
     mPortField = new TextField(std::string());
 
 #ifdef MANASERV_SUPPORT
-    mTypeListModel = new TypeListModel();
-    mTypeField = new DropDown(mTypeListModel);
+    mTypeListModel = std::make_unique<TypeListModel>();
+    mTypeField = new DropDown(mTypeListModel.get());
     mTypeField->setSelected(0); // TmwAthena by default for now.
 #endif
 
@@ -91,31 +90,10 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
     place(4, 5, mOkButton);
     place(3, 5, mCancelButton);
 
-    // Do this manually instead of calling reflowLayout so we can enforce a
-    // minimum width.
-    int width = 0, height = 0;
-    getLayout().reflow(width, height);
-    if (width < 300)
-    {
-        width = 300;
-        getLayout().reflow(width, height);
-    }
-    if (height < 120)
-    {
-        height = 120;
-        getLayout().reflow(width, height);
-    }
+    reflowLayout();
+    setLocationRelativeTo(getParentWindow());
 
-    setContentSize(width, height);
-
-    setMinWidth(getWidth());
-    setMinHeight(getHeight());
-    setDefaultSize(getWidth(), getHeight(), ImageRect::CENTER);
-
-    setResizable(false);
     addKeyListener(this);
-
-    loadWindowState();
 
     // Add the entry's info when in modify mode.
     if (index > -1)
@@ -131,23 +109,12 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
 #endif
     }
 
-    setLocationRelativeTo(getParentWindow());
     setVisible(true);
 
     mNameField->requestFocus();
 }
 
-CustomServerDialog::~CustomServerDialog()
-{
-#ifdef MANASERV_SUPPORT
-    delete mTypeListModel;
-#endif
-}
-
-void CustomServerDialog::logic()
-{
-    Window::logic();
-}
+CustomServerDialog::~CustomServerDialog() = default;
 
 void CustomServerDialog::action(const gcn::ActionEvent &event)
 {

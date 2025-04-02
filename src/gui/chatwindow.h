@@ -31,21 +31,14 @@
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
-#include <list>
 #include <string>
 #include <map>
-#include <vector>
 
-class BrowserBox;
 class ChatTab;
-class Channel;
 class ChatInput;
 class Recorder;
-class ScrollArea;
 class TabbedArea;
 class ItemLinkHandler;
-class Tab;
-class WhisperTab;
 
 #define DEFAULT_CHAT_WINDOW_SCROLL 7 // 1 means `1/8th of the window size'.
 
@@ -96,11 +89,6 @@ class ChatWindow : public Window,
          * Gets the focused tab.
          */
         ChatTab *getFocused() const;
-
-        /**
-         * Clear the given tab.
-         */
-        void clearTab(ChatTab *tab);
 
         /**
          * Clear the current tab.
@@ -201,11 +189,11 @@ class ChatWindow : public Window,
         /** Input box for typing chat messages. */
         ChatInput *mChatInput;
 
-        TextHistory *mHistory;
+        TextHistory mHistory;
         AutoCompleteLister *mAutoComplete;
 
     private:
-        bool mTmpVisible;
+        bool mTmpVisible = false;
 
         /** Tabbed area for holding each channel. */
         TabbedArea *mChatTabs;

@@ -22,11 +22,13 @@
 
 #include "gui/widgets/browserbox.h"
 
+#include "keyboardconfig.h"
+#include "textrenderer.h"
+
 #include "gui/gui.h"
 #include "gui/truetypefont.h"
 #include "gui/widgets/linkhandler.h"
 
-#include "keyboardconfig.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/theme.h"
@@ -279,34 +281,15 @@ void BrowserBox::draw(gcn::Graphics *graphics)
             if (part.y > yEnd)
                 return;
 
-            auto font = part.font;
-
-            // Handle text shadows
-            if (mShadows)
-            {
-                graphics->setColor(Theme::getThemeColor(Theme::SHADOW,
-                                                        part.color.a / 2));
-
-                if (mOutline)
-                    font->drawString(graphics, part.text, part.x + 2, part.y + 2);
-                else
-                    font->drawString(graphics, part.text, part.x + 1, part.y + 1);
-            }
-
-            if (mOutline)
-            {
-                // Text outline
-                graphics->setColor(Theme::getThemeColor(Theme::OUTLINE,
-                                                        part.color.a / 4));
-                font->drawString(graphics, part.text, part.x + 1, part.y);
-                font->drawString(graphics, part.text, part.x - 1, part.y);
-                font->drawString(graphics, part.text, part.x, part.y + 1);
-                font->drawString(graphics, part.text, part.x, part.y - 1);
-            }
-
-            // the main text
-            graphics->setColor(part.color);
-            font->drawString(graphics, part.text, part.x, part.y);
+            TextRenderer::renderText(graphics,
+                                     part.text,
+                                     part.x,
+                                     part.y,
+                                     Graphics::LEFT,
+                                     part.color,
+                                     part.font,
+                                     mOutline,
+                                     mShadows);
         }
     }
 }
@@ -322,7 +305,7 @@ void BrowserBox::relayoutText()
         layoutTextRow(row, context);
 
     mLastLayoutWidth = getWidth();
-    mLayoutTimer.set(100);
+    mLayoutTimer.set(33);
     setHeight(context.y);
 }
 
@@ -552,7 +535,7 @@ void BrowserBox::updateHoveredLink(int x, int y)
 void BrowserBox::maybeRelayoutText()
 {
     // Reduce relayouting frequency when there is a lot of text
-    if (mTextRows.size() > 100)
+    if (mTextRows.size() > 1000)
         if (!mLayoutTimer.passed())
             return;
 

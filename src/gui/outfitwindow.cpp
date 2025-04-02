@@ -78,8 +78,8 @@ OutfitWindow::~OutfitWindow()
 
 void OutfitWindow::load()
 {
-    for (int o = 0; o < OUTFITS_COUNT; o++)
-        memset(mOutfits[o].items, -1, sizeof(mOutfits[o].items));
+    for (auto &mOutfit : mOutfits)
+        memset(mOutfit.items, -1, sizeof(mOutfit.items));
 
     for (auto &outfit : config.outfits)
     {
@@ -89,10 +89,8 @@ void OutfitWindow::load()
         std::string buf;
         std::stringstream ss(outfit.items);
 
-        for (size_t i = 0; (ss >> buf) && i < OUTFIT_ITEM_COUNT; i++)
-        {
+        for (int i = 0; (ss >> buf) && i < OUTFIT_ITEM_COUNT; i++)
             mOutfits[outfit.index].items[i] = atoi(buf.c_str());
-        }
 
         mOutfits[outfit.index].unequip = outfit.unequip;
     }
@@ -105,16 +103,15 @@ void OutfitWindow::save()
     std::string outfitStr;
     for (int o = 0; o < OUTFITS_COUNT; o++)
     {
-        auto &items = mOutfits[o].items;
         bool emptyOutfit = true;
 
-        for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
+        for (int item : mOutfits[o].items)
         {
             if (!outfitStr.empty())
                 outfitStr += " ";
 
-            outfitStr += items[i] ? toString(items[i]) : toString(-1);
-            emptyOutfit &= items[i] <= 0;
+            outfitStr += item ? toString(item) : toString(-1);
+            emptyOutfit &= item <= 0;
         }
 
         if (!emptyOutfit)
@@ -159,10 +156,9 @@ void OutfitWindow::wearOutfit(int outfit)
     if (mOutfits[outfit].unequip)
         unequipNotInOutfit(outfit);
 
-    Item *item;
-    for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
+    for (int i : mOutfits[outfit].items)
     {
-        item = PlayerInfo::getInventory()->findItem(mOutfits[outfit].items[i]);
+        Item *item = PlayerInfo::getInventory()->findItem(i);
         if (item && !item->isEquipped() && item->getQuantity())
         {
             if (item->isEquippable())
@@ -174,9 +170,7 @@ void OutfitWindow::wearOutfit(int outfit)
 void OutfitWindow::copyOutfit(int outfit)
 {
     for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
-    {
         mOutfits[mCurrentOutfit].items[i] = mOutfits[outfit].items[i];
-    }
 }
 
 void OutfitWindow::draw(gcn::Graphics *graphics)
@@ -328,9 +322,9 @@ void OutfitWindow::unequipNotInOutfit(int outfit)
         if (inventory->getItem(i) && inventory->getItem(i)->isEquipped())
         {
             bool found = false;
-            for (int f = 0; f < OUTFIT_ITEM_COUNT; f++)
+            for (int item : mOutfits[outfit].items)
             {
-                if (inventory->getItem(i)->getId() == mOutfits[outfit].items[f])
+                if (inventory->getItem(i)->getId() == item)
                 {
                     found = true;
                     break;

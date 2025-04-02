@@ -167,8 +167,11 @@ class LayoutCell
         };
 
         LayoutCell() = default;
-
         ~LayoutCell();
+
+        // Copy not allowed, as the cell may own an array.
+        LayoutCell(LayoutCell const &) = delete;
+        LayoutCell &operator=(LayoutCell const &) = delete;
 
         /**
          * Sets the padding around the cell content.
@@ -231,10 +234,6 @@ class LayoutCell
         void computeSizes();
 
     private:
-        // Copy not allowed, as the cell may own an array.
-        LayoutCell(LayoutCell const &);
-        LayoutCell &operator=(LayoutCell const &);
-
         union
         {
             gcn::Widget *mWidget;

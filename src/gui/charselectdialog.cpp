@@ -150,7 +150,7 @@ CharSelectDialog::CharSelectDialog(LoginData *loginData):
     for (int i = 0; i < (int)mLoginData->characterSlots; i++)
     {
         mCharacterEntries.push_back(new CharacterDisplay(this));
-        place(i % SLOTS_PER_ROW, (int)i / SLOTS_PER_ROW, mCharacterEntries[i]);
+        place(i % SLOTS_PER_ROW, i / SLOTS_PER_ROW, mCharacterEntries[i]);
     }
 
     reflowLayout();

@@ -136,7 +136,7 @@ class ServerDialog : public Window,
         Button *mDeleteButton;
 
         ListBox *mServersList;
-        ServersListModel *mServersListModel;
+        std::unique_ptr<ServersListModel> mServersListModel;
 
         const std::string &mDir;
 

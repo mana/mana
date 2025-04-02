@@ -20,19 +20,18 @@
 
 #pragma once
 
-class Button;
-class Label;
-class TextField;
-class DropDown;
-class ServerDialog;
-class TypeListModel;
-
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
 
+#include <memory>
+
+class Button;
+class DropDown;
+class ServerDialog;
+class TextField;
 
 /**
  * Server Type List Model
@@ -64,7 +63,6 @@ class CustomServerDialog : public Window,
 {
     public:
         CustomServerDialog(ServerDialog *parent, int index = -1);
-
         ~CustomServerDialog() override;
 
         /**
@@ -74,18 +72,16 @@ class CustomServerDialog : public Window,
 
         void keyPressed(gcn::KeyEvent &keyEvent) override;
 
-        void logic() override;
-
     private:
         TextField *mServerAddressField;
         TextField *mPortField;
-        TextField  *mNameField;
+        TextField *mNameField;
         TextField *mDescriptionField;
         Button *mOkButton;
         Button *mCancelButton;
 #ifdef MANASERV_SUPPORT
         DropDown *mTypeField;
-        TypeListModel *mTypeListModel;
+        std::unique_ptr<TypeListModel> mTypeListModel;
 #endif
         ServerDialog *mServerDialog;
         // The index of the entry to modify, -1 when only adding a new entry.

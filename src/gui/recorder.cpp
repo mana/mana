@@ -32,15 +32,16 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-Recorder::Recorder(ChatWindow *chat, const std::string &title,
-                   const std::string &buttonTxt) :
-    Window(title)
+Recorder::Recorder(ChatWindow *chat,
+                   const std::string &title,
+                   const std::string &buttonTxt)
+    : Window(title)
+    , mChat(chat)
 {
     setWindowName("Recorder");
     const int offsetX = 2 * getPadding() + 10;
     const int offsetY = getTitleBarHeight() + getPadding() + 10;
 
-    mChat = chat;
     auto *button = new Button(buttonTxt, "activate", this);
 
     // 123 is the default chat window height. If you change this in Chat, please
@@ -56,16 +57,12 @@ Recorder::Recorder(ChatWindow *chat, const std::string &title,
     loadWindowState();
 }
 
-Recorder::~Recorder()
-{
-}
+Recorder::~Recorder() = default;
 
 void Recorder::record(const std::string &msg)
 {
     if (mStream.is_open())
-    {
         mStream << msg << std::endl;
-    }
 }
 
 void Recorder::setRecordingFile(const std::string &msg)

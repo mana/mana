@@ -22,14 +22,12 @@
 #include "gui/register.h"
 
 #include "client.h"
-#include "configuration.h"
 #include "log.h"
 
 #include "gui/logindialog.h"
 #include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/passwordfield.h"

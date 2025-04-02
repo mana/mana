@@ -25,8 +25,8 @@
 
 #include <guichan/actionlistener.hpp>
 
-#define OUTFITS_COUNT 15
-#define OUTFIT_ITEM_COUNT 9
+constexpr int OUTFITS_COUNT = 15;
+constexpr int OUTFIT_ITEM_COUNT = 9;
 
 class Button;
 class CheckBox;
