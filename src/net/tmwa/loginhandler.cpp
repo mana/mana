@@ -124,7 +124,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             mToken.account_ID = msg.readInt32();
             mToken.session_ID2 = msg.readInt32();
             msg.skip(30);                           // unused
-            mToken.sex = msg.readInt8() ? Gender::MALE : Gender::FEMALE;
+            mToken.sex = msg.readInt8() ? Gender::Male : Gender::Female;
 
             for (int i = 0; i < worldCount; i++)
             {
@@ -304,7 +304,7 @@ void LoginHandler::chooseServer(unsigned int server)
 void LoginHandler::registerAccount(LoginData *loginData)
 {
     std::string username = loginData->username;
-    username.append(loginData->gender == Gender::FEMALE ? "_F" : "_M");
+    username.append(loginData->gender == Gender::Female ? "_F" : "_M");
 
     sendLoginRegister(username, loginData->password);
 }

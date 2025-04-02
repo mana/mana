@@ -67,7 +67,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent)
 
     if (mModal)
     {
-        gui->setCursorType(Cursor::POINTER);
+        gui->setCursorType(Cursor::Pointer);
         requestModalFocus();
     }
 
@@ -294,7 +294,7 @@ void Window::widgetResized(const gcn::Event &event)
 void Window::widgetHidden(const gcn::Event &event)
 {
     if (gui)
-        gui->setCursorType(Cursor::POINTER);
+        gui->setCursorType(Cursor::Pointer);
 
     WidgetListIterator it;
 
@@ -385,7 +385,7 @@ void Window::mouseReleased(gcn::MouseEvent &event)
 void Window::mouseExited(gcn::MouseEvent &event)
 {
     if (mGrip && !mouseResize)
-        gui->setCursorType(Cursor::POINTER);
+        gui->setCursorType(Cursor::Pointer);
 
     mCloseButtonHovered = false;
 }
@@ -404,7 +404,7 @@ void Window::mouseMoved(gcn::MouseEvent &event)
         return;
 
     mCloseButtonHovered = getCloseButtonRect().isPointInRect(event.getX(), event.getY());
-    Cursor cursor = Cursor::POINTER;
+    Cursor cursor = Cursor::Pointer;
 
     // Changes the custom mouse cursor based on its current position.
     if (!mCloseButtonHovered)
@@ -413,19 +413,19 @@ void Window::mouseMoved(gcn::MouseEvent &event)
         {
         case BOTTOM | RIGHT:
         case TOP | LEFT:
-            cursor = Cursor::RESIZE_DOWN_RIGHT;
+            cursor = Cursor::ResizeDownRight;
             break;
         case BOTTOM | LEFT:
         case TOP | RIGHT:
-            cursor = Cursor::RESIZE_DOWN_LEFT;
+            cursor = Cursor::ResizeDownLeft;
             break;
         case BOTTOM:
         case TOP:
-            cursor = Cursor::RESIZE_DOWN;
+            cursor = Cursor::ResizeDown;
             break;
         case RIGHT:
         case LEFT:
-            cursor = Cursor::RESIZE_ACROSS;
+            cursor = Cursor::ResizeAcross;
             break;
         default:
             break;

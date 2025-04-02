@@ -122,7 +122,7 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handlePresent(args, tab);
     }
-    else if (type == "showip" && Net::getNetworkType() == ServerType::TMWATHENA)
+    else if (type == "showip" && Net::getNetworkType() == ServerType::TmwAthena)
     {
         handleShowIp(args, tab);
     }
@@ -523,15 +523,15 @@ void CommandHandler::handleIgnore(const std::string &args, ChatTab *tab)
         return;
     }
 
-    if (player_relations.getRelation(args) == PlayerRelation::IGNORED)
+    if (player_relations.getRelation(args) == PlayerRelation::Ignored)
     {
         tab->chatLog(_("Player already ignored!"), BY_SERVER);
         return;
     }
     else
-        player_relations.setRelation(args, PlayerRelation::IGNORED);
+        player_relations.setRelation(args, PlayerRelation::Ignored);
 
-    if (player_relations.getRelation(args) == PlayerRelation::IGNORED)
+    if (player_relations.getRelation(args) == PlayerRelation::Ignored)
         tab->chatLog(_("Player successfully ignored!"), BY_SERVER);
     else
         tab->chatLog(_("Player could not be ignored!"), BY_SERVER);
@@ -545,7 +545,7 @@ void CommandHandler::handleUnignore(const std::string &args, ChatTab *tab)
         return;
     }
 
-    if (player_relations.getRelation(args) == PlayerRelation::IGNORED)
+    if (player_relations.getRelation(args) == PlayerRelation::Ignored)
         player_relations.removePlayer(args);
     else
     {
@@ -553,7 +553,7 @@ void CommandHandler::handleUnignore(const std::string &args, ChatTab *tab)
         return;
     }
 
-    if (player_relations.getRelation(args) != PlayerRelation::IGNORED)
+    if (player_relations.getRelation(args) != PlayerRelation::Ignored)
         tab->chatLog(_("Player no longer ignored!"), BY_SERVER);
     else
         tab->chatLog(_("Player could not be unignored!"), BY_SERVER);

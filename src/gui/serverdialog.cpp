@@ -351,20 +351,20 @@ void ServerDialog::logic()
     auto state = mDownload->getState();
 
     switch (state.status) {
-    case DownloadStatus::IN_PROGRESS:
+    case DownloadStatus::InProgress:
         mDownloadText->setCaption(strprintf(_("Downloading server list..."
                                               "%2.0f%%"),
                                             state.progress * 100));
         break;
 
-    case DownloadStatus::CANCELED:
-    case DownloadStatus::ERROR:
+    case DownloadStatus::Canceled:
+    case DownloadStatus::Error:
         mDownloadDone = true;
         logger->log("Error retrieving server list: %s", mDownload->getError());
         mDownloadText->setCaption(_("Error retrieving server list!"));
         break;
 
-    case DownloadStatus::COMPLETE:
+    case DownloadStatus::Complete:
         mDownloadDone = true;
         loadServers();
 
@@ -433,7 +433,7 @@ void ServerDialog::loadServer(XML::Node serverNode)
     server.type = ServerInfo::parseType(type);
 
     // Ignore unknown server types
-    if (server.type == ServerType::UNKNOWN
+    if (server.type == ServerType::Unknown
 #ifndef MANASERV_SUPPORT
         || server.type == ServerType::MANASERV
 #endif

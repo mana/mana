@@ -153,13 +153,13 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
     int py = msg.readInt16();
     auto direction = (BeingDirection)msg.readInt8();
 
-    Gender gender = Gender::UNSPECIFIED;
+    Gender gender = Gender::Unspecified;
     switch (getGender(msg.readInt8())) {
     case GENDER_MALE:
-        gender = Gender::MALE;
+        gender = Gender::Male;
         break;
     case GENDER_FEMALE:
-        gender = Gender::FEMALE;
+        gender = Gender::Female;
         break;
     case GENDER_UNSPECIFIED:
         break;

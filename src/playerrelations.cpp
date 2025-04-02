@@ -80,11 +80,11 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(
 
     switch (getRelation(playerName))
     {
-    case PlayerRelation::NEUTRAL:
+    case PlayerRelation::Neutral:
         break;
 
         // widen permissions for friends
-    case PlayerRelation::FRIEND:
+    case PlayerRelation::Friend:
         permissions |=
                 PlayerPermissions::EMOTE |
                 PlayerPermissions::SPEECH_FLOAT |
@@ -94,12 +94,12 @@ unsigned int PlayerRelationsManager::checkPermissionSilently(
         break;
 
         // narrow permissions for disregarded and ignored players
-    case PlayerRelation::DISREGARDED:
+    case PlayerRelation::Disregarded:
         permissions &=
                 PlayerPermissions::EMOTE |
                 PlayerPermissions::SPEECH_FLOAT;
         break;
-    case PlayerRelation::IGNORED:
+    case PlayerRelation::Ignored:
         permissions &= 0;
         break;
     }
@@ -163,7 +163,7 @@ void PlayerRelationsManager::removePlayer(const std::string &name)
 PlayerRelation PlayerRelationsManager::getRelation(const std::string &name) const
 {
     auto it = mRelations.find(name);
-    return it != mRelations.end() ? it->second : PlayerRelation::NEUTRAL;
+    return it != mRelations.end() ? it->second : PlayerRelation::Neutral;
 }
 
 ////////////////////////////////////////

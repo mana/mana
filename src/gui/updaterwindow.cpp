@@ -210,7 +210,7 @@ void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
 bool UpdaterWindow::cancel()
 {
     // Skip the updating process
-    if (mDialogState != DialogState::DONE)
+    if (mDialogState != DialogState::Done)
     {
         mDownload->cancel();
         return true;
@@ -244,7 +244,7 @@ void UpdaterWindow::startDownload(const std::string &fileName,
     else
         mDownload->setFile(mUpdatesDir + "/" + fileName, adler32);
 
-    if (mDialogState != DialogState::DOWNLOAD_RESOURCES)
+    if (mDialogState != DialogState::DownloadResources)
         mDownload->noCache();
 
     mDownload->start();
@@ -273,28 +273,28 @@ void UpdaterWindow::logic()
 {
     Window::logic();
 
-    if (mDialogState == DialogState::DONE)
+    if (mDialogState == DialogState::Done)
         return;
 
     const auto state = mDownload->getState();
     float progress = 0.0f;
 
     switch (state.status) {
-    case DownloadStatus::IN_PROGRESS: {
+    case DownloadStatus::InProgress: {
         setLabel(mCurrentFile + " (" + toString((int) (state.progress * 100)) + "%)");
         progress = state.progress;
         break;
     }
 
-    case DownloadStatus::CANCELED:
-        mDialogState = DialogState::DONE;
+    case DownloadStatus::Canceled:
+        mDialogState = DialogState::Done;
 
         enablePlay();
         setLabel(_("Download canceled"));
         break;
 
-    case DownloadStatus::ERROR: {
-        mDialogState = DialogState::DONE;
+    case DownloadStatus::Error: {
+        mDialogState = DialogState::Done;
 
         std::string error = "##1";
         error += mDownload->getError();
@@ -311,7 +311,7 @@ void UpdaterWindow::logic()
         break;
     }
 
-    case DownloadStatus::COMPLETE:
+    case DownloadStatus::Complete:
         downloadCompleted();
         break;
     }
@@ -323,14 +323,14 @@ void UpdaterWindow::downloadCompleted()
 {
     switch (mDialogState)
     {
-    case DialogState::DOWNLOAD_NEWS:
+    case DialogState::DownloadNews:
         loadNews();
 
-        mDialogState = DialogState::DOWNLOAD_LIST;
+        mDialogState = DialogState::DownloadList;
         startDownload(xmlUpdateFile, false);
         break;
 
-    case DialogState::DOWNLOAD_LIST:
+    case DialogState::DownloadList:
         if (mCurrentFile == xmlUpdateFile)
         {
             mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
@@ -341,7 +341,7 @@ void UpdaterWindow::downloadCompleted()
                             xmlUpdateFile, txtUpdateFile);
 
                 // If the resources.xml file fails, fall back onto a older version
-                mDialogState = DialogState::DOWNLOAD_LIST;
+                mDialogState = DialogState::DownloadList;
                 startDownload(txtUpdateFile, false);
                 break;
             }
@@ -351,10 +351,10 @@ void UpdaterWindow::downloadCompleted()
             mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
         }
 
-        mDialogState = DialogState::DOWNLOAD_RESOURCES;
+        mDialogState = DialogState::DownloadResources;
         break;
 
-    case DialogState::DOWNLOAD_RESOURCES:
+    case DialogState::DownloadResources:
         if (mUpdateIndex < mUpdateFiles.size())
         {
             const UpdateFile &thisFile = mUpdateFiles[mUpdateIndex];
@@ -390,13 +390,13 @@ void UpdaterWindow::downloadCompleted()
         else
         {
             // Download of updates completed
-            mDialogState = DialogState::DONE;
+            mDialogState = DialogState::Done;
             enablePlay();
             setLabel(_("Completed"));
         }
         break;
 
-    case DialogState::DONE:
+    case DialogState::Done:
         break;
     }
 }

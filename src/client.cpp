@@ -350,12 +350,12 @@ Client::Client(const Options &options):
     loginData.remember = config.remember;
     loginData.registerLogin = false;
 
-    if (mCurrentServer.type == ServerType::UNKNOWN && mCurrentServer.port != 0)
+    if (mCurrentServer.type == ServerType::Unknown && mCurrentServer.port != 0)
     {
         mCurrentServer.type = ServerInfo::defaultServerTypeForPort(mCurrentServer.port);
     }
 
-    if (mCurrentServer.type == ServerType::UNKNOWN)
+    if (mCurrentServer.type == ServerType::Unknown)
     {
         mCurrentServer.type = ServerInfo::parseType(
                     branding.getValue("defaultServerType", "tmwathena"));
@@ -680,10 +680,10 @@ int Client::exec()
 
                     switch (Net::getNetworkType())
                     {
-                      case ServerType::TMWATHENA:
+                      case ServerType::TmwAthena:
                         itemDb = new TmwAthena::TaItemDB;
                       break;
-                      case ServerType::MANASERV:
+                      case ServerType::ManaServ:
                         itemDb = new ManaServ::ManaServItemDB;
                       break;
                       default:
@@ -742,7 +742,7 @@ int Client::exec()
                     Net::getGameHandler()->connect();
                     mCurrentDialog = new ConnectionDialog(
                             _("Connecting to the game server"),
-                            Net::getNetworkType() == ServerType::TMWATHENA ?
+                            Net::getNetworkType() == ServerType::TmwAthena ?
                             STATE_CHOOSE_SERVER : STATE_SWITCH_CHARACTER);
                     break;
 

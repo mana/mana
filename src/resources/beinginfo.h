@@ -42,10 +42,10 @@ struct Attack
 
 enum class SoundEvent
 {
-    HIT,
-    MISS,
-    HURT,
-    DIE
+    Hit,
+    Miss,
+    Hurt,
+    Die
 };
 
 /**
@@ -66,7 +66,7 @@ public:
     std::string name;
     SpriteDisplay display;
     ActorSprite::TargetCursorSize targetCursorSize = ActorSprite::TC_MEDIUM;
-    Cursor hoverCursor = Cursor::POINTER;
+    Cursor hoverCursor = Cursor::Pointer;
     unsigned char walkMask = Map::BLOCKMASK_ALL;
     Map::BlockType blockType = Map::BLOCKTYPE_CHARACTER;
     bool targetSelection = true;

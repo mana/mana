@@ -290,7 +290,7 @@ void StatusWindow::event(Event::Channel channel,
                 it->second->update();
             }
 
-            if (Net::getNetworkType() == ServerType::TMWATHENA &&
+            if (Net::getNetworkType() == ServerType::TmwAthena &&
                     id == TmwAthena::MATK)
             {
                 updateMPBar(mMpBar, true);

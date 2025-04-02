@@ -83,7 +83,7 @@ namespace SettingsManager
         StatusEffectDB::checkStatus();
         Units::checkStatus();
 
-        if (Net::getNetworkType() == ServerType::MANASERV)
+        if (Net::getNetworkType() == ServerType::ManaServ)
         {
             Attributes::informItemDB();
         }

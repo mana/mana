@@ -292,7 +292,7 @@ void SkillDialog::loadSkills()
     {
         logger->log("Error loading skills file: %s", SKILLS_FILE);
 
-        if (Net::getNetworkType() == ServerType::TMWATHENA)
+        if (Net::getNetworkType() == ServerType::TmwAthena)
         {
             auto model = std::make_unique<SkillModel>();
             auto skill = std::make_unique<SkillInfo>();

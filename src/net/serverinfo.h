@@ -27,9 +27,9 @@
 
 enum class ServerType
 {
-    UNKNOWN,
-    MANASERV,
-    TMWATHENA
+    Unknown,
+    ManaServ,
+    TmwAthena
 };
 
 class ServerInfo
@@ -37,7 +37,7 @@ class ServerInfo
 public:
     using VersionString = std::pair<int, std::string>;
 
-    ServerType type = ServerType::UNKNOWN;
+    ServerType type = ServerType::Unknown;
     std::string name;
     std::string hostname;
     uint16_t port = 0;
@@ -50,7 +50,7 @@ public:
 
     bool isValid() const
     {
-        return !hostname.empty() && port != 0 && type != ServerType::UNKNOWN;
+        return !hostname.empty() && port != 0 && type != ServerType::Unknown;
     }
 
     void clear()
@@ -73,13 +73,13 @@ public:
     static ServerType parseType(const std::string &type)
     {
         if (type == "tmwathena")
-            return ServerType::TMWATHENA;
+            return ServerType::TmwAthena;
         // Used for backward compatibility
         if (type == "eathena")
-            return ServerType::TMWATHENA;
+            return ServerType::TmwAthena;
         if (type == "manaserv")
-            return ServerType::MANASERV;
-        return ServerType::UNKNOWN;
+            return ServerType::ManaServ;
+        return ServerType::Unknown;
     }
 
     static uint16_t defaultPortForServerType(ServerType type)
@@ -87,11 +87,11 @@ public:
         switch (type)
         {
         default:
-        case ServerType::UNKNOWN:
+        case ServerType::Unknown:
             return 0;
-        case ServerType::TMWATHENA:
+        case ServerType::TmwAthena:
             return 6901;
-        case ServerType::MANASERV:
+        case ServerType::ManaServ:
             return 9601;
         }
     }
@@ -99,10 +99,10 @@ public:
     static ServerType defaultServerTypeForPort(uint16_t port)
     {
         if (port == 6901)
-            return ServerType::TMWATHENA;
+            return ServerType::TmwAthena;
         if (port == 9601)
-            return ServerType::MANASERV;
-        return ServerType::UNKNOWN;
+            return ServerType::ManaServ;
+        return ServerType::Unknown;
     }
 };
 

@@ -143,7 +143,7 @@ void MiniStatusWindow::event(Event::Channel channel, const Event &event)
         }
         if (event.getType() == Event::UpdateStat)
         {
-            if (Net::getNetworkType() == ServerType::TMWATHENA &&
+            if (Net::getNetworkType() == ServerType::TmwAthena &&
                     event.getInt("id") == TmwAthena::MATK)
             {
                 StatusWindow::updateMPBar(mMpBar);

@@ -305,10 +305,10 @@ void Viewport::_drawDebugPath(Graphics *graphics)
         unsigned char walkMask;
         switch (Net::getNetworkType())
         {
-        case ServerType::TMWATHENA:
+        case ServerType::TmwAthena:
             walkMask = Map::BLOCKMASK_WALL | Map::BLOCKMASK_CHARACTER;
             break;
-        case ServerType::MANASERV:
+        case ServerType::ManaServ:
         default:
             walkMask = Map::BLOCKMASK_WALL;
             break;
@@ -575,18 +575,18 @@ void Viewport::updateCursorType()
                 gui->setCursorType(mHoverBeing->getHoverCursor());
                 break;
             default:
-                gui->setCursorType(Cursor::POINTER);
+                gui->setCursorType(Cursor::Pointer);
                 break;
          }
     // Item mouseover
     }
     else if (mHoverItem)
     {
-        gui->setCursorType(Cursor::PICKUP);
+        gui->setCursorType(Cursor::PickUp);
     }
     else
     {
-        gui->setCursorType(Cursor::POINTER);
+        gui->setCursorType(Cursor::Pointer);
     }
 }
 

@@ -52,15 +52,15 @@ static std::optional<ActorSprite::TargetCursorSize> targetCursorSizeFromString(c
 
 static std::optional<Cursor> cursorFromString(const std::string &cursor)
 {
-    if (cursor == "pointer")    return Cursor::POINTER;
-    if (cursor == "attack")     return Cursor::FIGHT;
-    if (cursor == "pickup")     return Cursor::PICKUP;
-    if (cursor == "talk")       return Cursor::TALK;
-    if (cursor == "action")     return Cursor::ACTION;
-    if (cursor == "left")       return Cursor::LEFT;
-    if (cursor == "up")         return Cursor::UP;
-    if (cursor == "right")      return Cursor::RIGHT;
-    if (cursor == "down")       return Cursor::DOWN;
+    if (cursor == "pointer")    return Cursor::Pointer;
+    if (cursor == "attack")     return Cursor::Fight;
+    if (cursor == "pickup")     return Cursor::PickUp;
+    if (cursor == "talk")       return Cursor::Talk;
+    if (cursor == "action")     return Cursor::Action;
+    if (cursor == "left")       return Cursor::Left;
+    if (cursor == "up")         return Cursor::Up;
+    if (cursor == "right")      return Cursor::Right;
+    if (cursor == "down")       return Cursor::Down;
 
     return {};
 }
@@ -87,7 +87,7 @@ void BeingInfo::setHoverCursor(const std::string &cursorName)
         logger->log("Unknown hoverCursor value \"%s\" for %s",
                     cursorName.c_str(), name.c_str());
     }
-    hoverCursor = cursor.value_or(Cursor::POINTER);
+    hoverCursor = cursor.value_or(Cursor::Pointer);
 }
 
 void BeingInfo::addSound(SoundEvent event, const std::string &filename)

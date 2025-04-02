@@ -843,7 +843,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                 // It costs extra to walk through a being (needs to be enough
                 // to make it more attractive to walk around).
                 // N.B.: Specific to TmwAthena for now.
-                if (Net::getNetworkType() == ServerType::TMWATHENA &&
+                if (Net::getNetworkType() == ServerType::TmwAthena &&
                     occupied(x, y))
                 {
                     Gcost += 3 * basicCost;

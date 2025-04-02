@@ -268,7 +268,7 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
 
     character->slot = msg.readInt8(); // character slot
     const uint8_t sex = msg.readInt8();
-    tempPlayer->setGender(sex ? Gender::MALE : Gender::FEMALE);
+    tempPlayer->setGender(sex ? Gender::Male : Gender::Female);
 }
 
 void CharServerHandler::setCharSelectDialog(CharSelectDialog *window)
@@ -400,7 +400,7 @@ void CharServerHandler::connect()
     // [Fate] The next word is unused by the old char server, so we squeeze in
     //        mana client version information
     outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
-    outMsg.writeInt8(token.sex == Gender::MALE ? 1 : 0);
+    outMsg.writeInt8(token.sex == Gender::Male ? 1 : 0);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

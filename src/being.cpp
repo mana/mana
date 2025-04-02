@@ -376,7 +376,7 @@ void Being::takeDamage(Being *attacker, int amount,
 
     if (amount > 0)
     {
-        auto &hurtSfx = mInfo->getSound(SoundEvent::HURT);
+        auto &hurtSfx = mInfo->getSound(SoundEvent::Hurt);
         if (attacker)
             sound.playSfx(hurtSfx, attacker->getPixelX(), attacker->getPixelY());
         else
@@ -449,14 +449,14 @@ void Being::handleAttack(Being *victim, int damage, int attackId)
         if (!itemInfo)
             itemInfo = &itemDb->get(-100 - mSubType);
 
-        const auto event = damage > 0 ? EquipmentSoundEvent::HIT
-                                      : EquipmentSoundEvent::STRIKE;
+        const auto event = damage > 0 ? EquipmentSoundEvent::Hit
+                                      : EquipmentSoundEvent::Strike;
         const auto &soundFile = itemInfo->getSound(event);
         sound.playSfx(soundFile, getPixelX(), getPixelY());
     }
     else
     {
-        const auto event = damage > 0 ? SoundEvent::HIT : SoundEvent::MISS;
+        const auto event = damage > 0 ? SoundEvent::Hit : SoundEvent::Miss;
         const auto &soundFile = mInfo->getSound(event);
         sound.playSfx(soundFile, getPixelX(), getPixelY());
     }
@@ -675,7 +675,7 @@ void Being::setAction(Action action, int attackId)
             break;
         case DEAD:
             currentAction = SpriteAction::DEAD;
-            sound.playSfx(mInfo->getSound(SoundEvent::DIE),
+            sound.playSfx(mInfo->getSound(SoundEvent::Die),
                           getPixelX(), getPixelY());
             break;
         case STAND:
@@ -1042,14 +1042,14 @@ void Being::updateName()
     {
         if (config.showGender)
         {
-            if (getGender() == Gender::FEMALE)
+            if (getGender() == Gender::Female)
                 mDisplayName += " \u2640";
-            else if (getGender() == Gender::MALE)
+            else if (getGender() == Gender::Male)
                 mDisplayName += " \u2642";
         }
 
         // Display the IP when under tmw-Athena (GM only).
-        if (Net::getNetworkType() == ServerType::TMWATHENA && local_player
+        if (Net::getNetworkType() == ServerType::TmwAthena && local_player
                 && local_player->getShowIp() && getIp())
         {
             mDisplayName += strprintf(" %s", ipToString(getIp()));

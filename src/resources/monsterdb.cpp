@@ -54,7 +54,7 @@ void MonsterDB::init()
         unload();
 
     // This can be overridden by an 'offset' attribute on a 'monsters' root tag.
-    mMonsterIdOffset = Net::getNetworkType() == ServerType::TMWATHENA ? OLD_TMWATHENA_OFFSET : 0;
+    mMonsterIdOffset = Net::getNetworkType() == ServerType::TmwAthena ? OLD_TMWATHENA_OFFSET : 0;
 }
 
 void MonsterDB::setMonsterIdOffset(int offset)
@@ -95,19 +95,19 @@ void MonsterDB::readMonsterNode(XML::Node node, const std::string &filename)
 
             if (event == "hit")
             {
-                currentInfo->addSound(SoundEvent::HIT, soundFile);
+                currentInfo->addSound(SoundEvent::Hit, soundFile);
             }
             else if (event == "miss")
             {
-                currentInfo->addSound(SoundEvent::MISS, soundFile);
+                currentInfo->addSound(SoundEvent::Miss, soundFile);
             }
             else if (event == "hurt")
             {
-                currentInfo->addSound(SoundEvent::HURT, soundFile);
+                currentInfo->addSound(SoundEvent::Hurt, soundFile);
             }
             else if (event == "die")
             {
-                currentInfo->addSound(SoundEvent::DIE, soundFile);
+                currentInfo->addSound(SoundEvent::Die, soundFile);
             }
             else
             {

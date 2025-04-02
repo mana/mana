@@ -91,12 +91,12 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
                 switch (player_relations.getRelation(name))
                 {
-                    case PlayerRelation::NEUTRAL:
+                    case PlayerRelation::Neutral:
                         mBrowserBox->addRow(strprintf("@@friend|%s@@",
                                                 strprintf(_("Befriend %s"),
                                                     name.c_str()).c_str()));
 
-                    case PlayerRelation::FRIEND:
+                    case PlayerRelation::Friend:
                         mBrowserBox->addRow(strprintf("@@disregard|%s@@",
                                                 strprintf(_("Disregard %s"),
                                                     name.c_str()).c_str()));
@@ -105,7 +105,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                                                     name.c_str()).c_str()));
                         break;
 
-                    case PlayerRelation::DISREGARDED:
+                    case PlayerRelation::Disregarded:
                         mBrowserBox->addRow(strprintf("@@unignore|%s@@",
                                                 strprintf(_("Unignore %s"),
                                                     name.c_str()).c_str()));
@@ -114,7 +114,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                                                     name.c_str()).c_str()));
                         break;
 
-                    case PlayerRelation::IGNORED:
+                    case PlayerRelation::Ignored:
                         mBrowserBox->addRow(strprintf("@@unignore|%s@@",
                                                 strprintf(_("Unignore %s"),
                                                     name.c_str()).c_str()));
@@ -126,7 +126,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                                 strprintf(_("Invite %s to join your guild"),
                                                     name.c_str()).c_str()));
                 if (local_player->isInParty() ||
-                    Net::getNetworkType() == ServerType::MANASERV)
+                    Net::getNetworkType() == ServerType::ManaServ)
                 {
                     mBrowserBox->addRow(strprintf("@@party|%s@@",
                                 strprintf(_("Invite %s to join your party"),
@@ -223,25 +223,25 @@ void PopupMenu::handleLink(const std::string &link)
     else if (link == "unignore" && being &&
              being->getType() == ActorSprite::PLAYER)
     {
-        player_relations.setRelation(being->getName(), PlayerRelation::NEUTRAL);
+        player_relations.setRelation(being->getName(), PlayerRelation::Neutral);
     }
 
     else if (link == "ignore" && being &&
              being->getType() == ActorSprite::PLAYER)
     {
-        player_relations.setRelation(being->getName(), PlayerRelation::IGNORED);
+        player_relations.setRelation(being->getName(), PlayerRelation::Ignored);
     }
 
     else if (link == "disregard" && being &&
              being->getType() == ActorSprite::PLAYER)
     {
-        player_relations.setRelation(being->getName(), PlayerRelation::DISREGARDED);
+        player_relations.setRelation(being->getName(), PlayerRelation::Disregarded);
     }
 
     else if (link == "friend" && being &&
              being->getType() == ActorSprite::PLAYER)
     {
-        player_relations.setRelation(being->getName(), PlayerRelation::FRIEND);
+        player_relations.setRelation(being->getName(), PlayerRelation::Friend);
     }
     // Guild action
     else if (link == "guild" && being &&

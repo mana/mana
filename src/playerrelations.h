@@ -30,10 +30,10 @@ class Being;
 
 enum class PlayerRelation
 {
-    NEUTRAL     = 0,
-    FRIEND      = 1,
-    DISREGARDED = 2,
-    IGNORED     = 3
+    Neutral     = 0,
+    Friend      = 1,
+    Disregarded = 2,
+    Ignored     = 3
 };
 constexpr unsigned int RELATIONS_NR = 4;
 

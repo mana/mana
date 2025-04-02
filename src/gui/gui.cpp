@@ -299,7 +299,7 @@ void Gui::loadCustomCursors()
                 0, targetCursorSize, targetCursorSize, 32,
                 rmask, gmask, bmask, amask);
 
-    for (int i = 0; i <= static_cast<int>(Cursor::LAST); ++i)
+    for (int i = 0; i < static_cast<int>(Cursor::Count); ++i)
     {
         int x = i % columns * cursorSize;
         int y = i / columns * cursorSize;
@@ -328,22 +328,22 @@ void Gui::loadSystemCursors()
     constexpr struct {
         Cursor cursor;
         SDL_SystemCursor systemCursor;
-    } cursors[static_cast<int>(Cursor::LAST) + 1] = {
-        { Cursor::POINTER,           SDL_SYSTEM_CURSOR_ARROW },
-        { Cursor::RESIZE_ACROSS,     SDL_SYSTEM_CURSOR_SIZEWE },
-        { Cursor::RESIZE_DOWN,       SDL_SYSTEM_CURSOR_SIZENS },
-        { Cursor::RESIZE_DOWN_LEFT,  SDL_SYSTEM_CURSOR_SIZENESW },
-        { Cursor::RESIZE_DOWN_RIGHT, SDL_SYSTEM_CURSOR_SIZENWSE },
-        { Cursor::FIGHT,             SDL_SYSTEM_CURSOR_HAND },
-        { Cursor::PICKUP,            SDL_SYSTEM_CURSOR_HAND },
-        { Cursor::TALK,              SDL_SYSTEM_CURSOR_HAND },
-        { Cursor::ACTION,            SDL_SYSTEM_CURSOR_HAND },
-        { Cursor::LEFT,              SDL_SYSTEM_CURSOR_ARROW },
-        { Cursor::UP,                SDL_SYSTEM_CURSOR_ARROW },
-        { Cursor::RIGHT,             SDL_SYSTEM_CURSOR_ARROW },
-        { Cursor::DOWN,              SDL_SYSTEM_CURSOR_ARROW },
-        { Cursor::DRAG,              SDL_SYSTEM_CURSOR_SIZEALL },
-        { Cursor::HAND,              SDL_SYSTEM_CURSOR_HAND },
+    } cursors[static_cast<int>(Cursor::Count)] = {
+        { Cursor::Pointer,           SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::ResizeAcross,      SDL_SYSTEM_CURSOR_SIZEWE },
+        { Cursor::ResizeDown,        SDL_SYSTEM_CURSOR_SIZENS },
+        { Cursor::ResizeDownLeft,    SDL_SYSTEM_CURSOR_SIZENESW },
+        { Cursor::ResizeDownRight,   SDL_SYSTEM_CURSOR_SIZENWSE },
+        { Cursor::Fight,             SDL_SYSTEM_CURSOR_HAND },
+        { Cursor::PickUp,            SDL_SYSTEM_CURSOR_HAND },
+        { Cursor::Talk,              SDL_SYSTEM_CURSOR_HAND },
+        { Cursor::Action,            SDL_SYSTEM_CURSOR_HAND },
+        { Cursor::Left,              SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::Up,                SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::Right,             SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::Down,              SDL_SYSTEM_CURSOR_ARROW },
+        { Cursor::Drag,              SDL_SYSTEM_CURSOR_SIZEALL },
+        { Cursor::Hand,              SDL_SYSTEM_CURSOR_HAND },
     };
 
     for (auto cursor : cursors)

@@ -116,7 +116,7 @@ bool Download::start()
     {
         logger->log("%s", DOWNLOAD_ERROR_MESSAGE_THREAD);
         strncpy(mError, DOWNLOAD_ERROR_MESSAGE_THREAD, CURL_ERROR_SIZE - 1);
-        mState.lock()->status = DownloadStatus::ERROR;
+        mState.lock()->status = DownloadStatus::Error;
         return false;
     }
 
@@ -145,7 +145,7 @@ int Download::downloadProgress(void *clientp,
     auto *d = reinterpret_cast<Download*>(clientp);
 
     auto state = d->mState.lock();
-    state->status = DownloadStatus::IN_PROGRESS;
+    state->status = DownloadStatus::InProgress;
     state->progress = 0.0f;
     if (dltotal > 0)
         state->progress = static_cast<float>(dlnow) / dltotal;
@@ -300,11 +300,11 @@ int Download::downloadThread(void *ptr)
 
     auto state = d->mState.lock();
     if (d->mCancel)
-        state->status = DownloadStatus::CANCELED;
+        state->status = DownloadStatus::Canceled;
     else if (complete)
-        state->status = DownloadStatus::COMPLETE;
+        state->status = DownloadStatus::Complete;
     else
-        state->status = DownloadStatus::ERROR;
+        state->status = DownloadStatus::Error;
 
     return 0;
 }

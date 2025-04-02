@@ -302,9 +302,9 @@ static const char *serverTypeToString(ServerType type)
 {
     switch (type)
     {
-    case ServerType::TMWATHENA:
+    case ServerType::TmwAthena:
         return "TmwAthena";
-    case ServerType::MANASERV:
+    case ServerType::ManaServ:
         return "ManaServ";
     default:
         return "";
@@ -550,7 +550,7 @@ void deserialize(XML::Node node, Config &config)
             for (auto node : node.children()) {
                 if (node.name() == "player") {
                     std::string playerName;
-                    PlayerRelation relation = PlayerRelation::NEUTRAL;
+                    PlayerRelation relation = PlayerRelation::Neutral;
 
                     for (auto node : node.children()) {
                         if (node.name() == "option") {

@@ -123,9 +123,9 @@ void ItemDB::loadEmptyItemDefinition()
     mUnknown->name = _("Unknown item");
     mUnknown->display = SpriteDisplay();
     std::string errFile = paths.getStringValue("spriteErrorFile");
-    mUnknown->setSprite(errFile, Gender::MALE, 0);
-    mUnknown->setSprite(errFile, Gender::FEMALE, 0);
-    mUnknown->setSprite(errFile, Gender::HIDDEN, 0);
+    mUnknown->setSprite(errFile, Gender::Male, 0);
+    mUnknown->setSprite(errFile, Gender::Female, 0);
+    mUnknown->setSprite(errFile, Gender::Hidden, 0);
     mUnknown->hitEffectId = paths.getIntValue("hitEffectId");
     mUnknown->criticalHitEffectId = paths.getIntValue("criticalHitEffectId");
 }
@@ -180,11 +180,11 @@ void ItemDB::loadSpriteRef(ItemInfo &itemInfo, XML::Node node)
 
     const int race = node.getProperty("race", 0);
     if (gender == "male" || gender == "unisex")
-        itemInfo.setSprite(filename, Gender::MALE, race);
+        itemInfo.setSprite(filename, Gender::Male, race);
     if (gender == "female" || gender == "unisex")
-        itemInfo.setSprite(filename, Gender::FEMALE, race);
+        itemInfo.setSprite(filename, Gender::Female, race);
     if (gender == "hidden" || gender == "other" || gender == "unisex")
-        itemInfo.setSprite(filename, Gender::HIDDEN, race);
+        itemInfo.setSprite(filename, Gender::Hidden, race);
 }
 
 void ItemDB::loadSoundRef(ItemInfo &itemInfo, XML::Node node)
@@ -194,11 +194,11 @@ void ItemDB::loadSoundRef(ItemInfo &itemInfo, XML::Node node)
 
     if (event == "hit")
     {
-        itemInfo.addSound(EquipmentSoundEvent::HIT, filename);
+        itemInfo.addSound(EquipmentSoundEvent::Hit, filename);
     }
     else if (event == "strike" || event == "miss")
     {
-        itemInfo.addSound(EquipmentSoundEvent::STRIKE, filename);
+        itemInfo.addSound(EquipmentSoundEvent::Strike, filename);
     }
     else
     {

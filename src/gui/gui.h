@@ -50,23 +50,24 @@ class SDLInput;
  * Cursors are in graphic order from left to right.
  * CURSOR_POINTER should be left untouched.
  */
-enum class Cursor {
-    POINTER = 0,
-    RESIZE_ACROSS,
-    RESIZE_DOWN,
-    RESIZE_DOWN_LEFT,
-    RESIZE_DOWN_RIGHT,
-    FIGHT,
-    PICKUP,
-    TALK,
-    ACTION,
-    LEFT,
-    UP,
-    RIGHT,
-    DOWN,
-    DRAG,
-    HAND,
-    LAST = HAND,
+enum class Cursor
+{
+    Pointer = 0,
+    ResizeAcross,
+    ResizeDown,
+    ResizeDownLeft,
+    ResizeDownRight,
+    Fight,
+    PickUp,
+    Talk,
+    Action,
+    Left,
+    Up,
+    Right,
+    Down,
+    Drag,
+    Hand,
+    Count,
 };
 
 /**
@@ -148,7 +149,7 @@ class Gui final : public gcn::Gui, public EventListener
         std::vector<SDL_Cursor *> mSystemMouseCursors;
         std::vector<SDL_Cursor *> mCustomMouseCursors;
         Timer mMouseActivityTimer;
-        Cursor mCursorType = Cursor::POINTER;
+        Cursor mCursorType = Cursor::Pointer;
 };
 
 extern Gui *gui;                              /**< The GUI system */

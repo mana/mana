@@ -108,13 +108,13 @@ void CharHandler::handleCharacterInfo(MessageIn &msg)
         info.name = msg.readString();
         switch (getGender(msg.readInt8())) {
         case GENDER_MALE:
-            info.gender = Gender::MALE;
+            info.gender = Gender::Male;
             break;
         case GENDER_FEMALE:
-            info.gender = Gender::FEMALE;
+            info.gender = Gender::Female;
             break;
         case GENDER_UNSPECIFIED:
-            info.gender = Gender::UNSPECIFIED;
+            info.gender = Gender::Unspecified;
             break;
         }
         info.hairStyle = msg.readInt8();

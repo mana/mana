@@ -169,7 +169,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 break;
             case 'y':
                 options.serverType = ServerInfo::parseType(optarg);
-                if (options.serverType == ServerType::UNKNOWN)
+                if (options.serverType == ServerType::Unknown)
                 {
                     std::cerr << _("Invalid server type, expected one of: tmwathena, manaserv") << std::endl;
                     options.exitWithError = true;

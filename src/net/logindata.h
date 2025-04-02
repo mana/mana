@@ -39,7 +39,7 @@ public:
     std::string email;
     std::string captchaResponse;
 
-    Gender gender = Gender::UNSPECIFIED;
+    Gender gender = Gender::Unspecified;
 
     bool remember;            /**< Whether to store the username. */
     bool registerLogin;       /**< Whether an account is being registered. */
@@ -63,7 +63,7 @@ public:
         updateHost.clear();
         email.clear();
         captchaResponse.clear();
-        gender = Gender::UNSPECIFIED;
+        gender = Gender::Unspecified;
         resetCharacterSlots();
     }
 };

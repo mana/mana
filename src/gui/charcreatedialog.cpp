@@ -50,7 +50,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mSlot(slot)
 {
     mPlayer = new Being(0, ActorSprite::PLAYER, 0, nullptr);
-    mPlayer->setGender(Gender::MALE);
+    mPlayer->setGender(Gender::Male);
 
     const std::vector<int> &items = CharDB::getDefaultItems();
     for (size_t i = 0; i < items.size(); ++i)
@@ -175,7 +175,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "create")
     {
-        if (Net::getNetworkType() == ServerType::MANASERV
+        if (Net::getNetworkType() == ServerType::ManaServ
             || getName().length() >= 4)
         {
             // Attempt to create the character
@@ -183,7 +183,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
 
             int characterSlot = mSlot;
             // On Manaserv, the slots start at 1, so we offset them.
-            if (Net::getNetworkType() == ServerType::MANASERV)
+            if (Net::getNetworkType() == ServerType::ManaServ)
                 ++characterSlot;
 
             // Should avoid the most common crash case
@@ -234,9 +234,9 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "gender")
     {
         if (mMale->isSelected())
-            mPlayer->setGender(Gender::MALE);
+            mPlayer->setGender(Gender::Male);
         else
-            mPlayer->setGender(Gender::FEMALE);
+            mPlayer->setGender(Gender::Female);
     }
 }
 
@@ -376,7 +376,7 @@ void CharCreateDialog::setAttributes(const std::vector<std::string> &labels,
 
 void CharCreateDialog::setDefaultGender(Gender gender)
 {
-    if (gender == Gender::FEMALE)
+    if (gender == Gender::Female)
     {
         mFemale->setSelected(true);
         mMale->setSelected(false);

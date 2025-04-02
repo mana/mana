@@ -31,8 +31,8 @@
 
 enum class EquipmentSoundEvent
 {
-    STRIKE,
-    HIT
+    Strike,
+    Hit
 };
 
 /**

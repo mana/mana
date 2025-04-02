@@ -30,10 +30,10 @@
 
 enum class DownloadStatus
 {
-    IN_PROGRESS,
-    CANCELED,
-    ERROR,
-    COMPLETE
+    InProgress,
+    Canceled,
+    Error,
+    Complete
 };
 
 struct SDL_Thread;
@@ -45,7 +45,7 @@ class Download
     public:
         struct State
         {
-            DownloadStatus status = DownloadStatus::IN_PROGRESS;
+            DownloadStatus status = DownloadStatus::InProgress;
             float progress = 0.0f;
         };
 

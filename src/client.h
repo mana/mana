@@ -134,7 +134,7 @@ public:
         std::string configDir;
         std::string localDataDir;
         std::string screenshotDir;
-        ServerType serverType = ServerType::UNKNOWN;
+        ServerType serverType = ServerType::Unknown;
 
         std::string serverName;
         uint16_t serverPort = 0;

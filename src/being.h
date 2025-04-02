@@ -56,10 +56,10 @@ class Text;
 
 enum class Gender
 {
-    MALE = 0,
-    FEMALE = 1,
-    UNSPECIFIED = 2,
-    HIDDEN = 3
+    Male = 0,
+    Female = 1,
+    Unspecified = 2,
+    Hidden = 3
 };
 
 class Being : public ActorSprite, public EventListener, public gcn::DeathListener
@@ -531,7 +531,7 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         std::vector<SpriteState> mSpriteStates;
         bool mRestoreParticlesOnLogic = false;
 
-        Gender mGender = Gender::UNSPECIFIED;
+        Gender mGender = Gender::Unspecified;
 
         // Character guild information
         std::map<int, Guild*> mGuilds;

@@ -102,14 +102,14 @@ private:
 
     enum class DialogState
     {
-        DOWNLOAD_NEWS,
-        DOWNLOAD_LIST,
-        DOWNLOAD_RESOURCES,
-        DONE,
+        DownloadNews,
+        DownloadList,
+        DownloadResources,
+        Done,
     };
 
     /** Status of the current download. */
-    DialogState mDialogState = DialogState::DOWNLOAD_NEWS;
+    DialogState mDialogState = DialogState::DownloadNews;
 
     /** Host where we get the updated files. */
     std::string mUpdateHost;

@@ -223,14 +223,14 @@ void BrowserBox::mousePressed(gcn::MouseEvent &event)
 
     if (mHoveredLink) {
         mLinkHandler->handleLink(mHoveredLink->link);
-        gui->setCursorType(Cursor::POINTER);
+        gui->setCursorType(Cursor::Pointer);
     }
 }
 
 void BrowserBox::mouseMoved(gcn::MouseEvent &event)
 {
     updateHoveredLink(event.getX(), event.getY());
-    gui->setCursorType(mHoveredLink ? Cursor::HAND : Cursor::POINTER);
+    gui->setCursorType(mHoveredLink ? Cursor::Hand : Cursor::Pointer);
     event.consume();        // Suppress mouse cursor change by parent
 }
 
