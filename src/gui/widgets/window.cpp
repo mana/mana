@@ -150,8 +150,8 @@ void Window::drawFrame(gcn::Graphics *graphics)
 
 void Window::setContentSize(int width, int height)
 {
-    width = width + 2 * getPadding();
-    height = height + getPadding() + getTitleBarHeight();
+    width += 2 * getPadding();
+    height += getPadding() + getTitleBarHeight();
 
     if (getMinWidth() > width)
         width = getMinWidth();
@@ -163,6 +163,16 @@ void Window::setContentSize(int width, int height)
         height = getMaxHeight();
 
     setSize(width, height);
+}
+
+void Window::setMinimumContentSize(int width, int height)
+{
+    const int padding = getPadding();
+    const int titleBarHeight = getTitleBarHeight();
+    auto &skin = gui->getTheme()->getSkin(SkinType::Window);
+
+    setMinWidth(std::max(skin.getMinWidth(), width + 2 * padding));
+    setMinHeight(std::max(skin.getMinHeight(), height + padding + titleBarHeight));
 }
 
 void Window::setLocationRelativeTo(gcn::Widget *widget)

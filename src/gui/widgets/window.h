@@ -83,6 +83,11 @@ class Window : public gcn::Window, gcn::WidgetListener
         void setContentSize(int width, int height);
 
         /**
+         * Sets the minimum size of the window content.
+         */
+        void setMinimumContentSize(int width, int height);
+
+        /**
          * Sets the location relative to the given widget.
          */
         void setLocationRelativeTo(gcn::Widget *widget);

@@ -34,6 +34,7 @@
 #include "gui/widgets/avatarlistbox.h"
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/button.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/linkhandler.h"
 #include "gui/widgets/popup.h"
 #include "gui/widgets/scrollarea.h"
@@ -360,12 +361,7 @@ SocialWindow::SocialWindow() :
     setResizable(true);
     setSaveVisible(true);
     setCloseButton(true);
-    setMinWidth(120);
-    setMinHeight(55);
-    setDefaultSize(590, 200, 150, 124);
     setupWindow->registerWindowForReset(this);
-
-    loadWindowState();
 
     mCreateButton = new Button(_("Create"), "create", this);
     mInviteButton = new Button(_("Invite"), "invite", this);
@@ -377,7 +373,13 @@ SocialWindow::SocialWindow() :
     place(2, 0, mLeaveButton);
     place(0, 1, mTabs, 4, 4);
 
-    widgetResized(nullptr);
+    // Determine minimum size
+    int width = 0, height = 0;
+    getLayout().reflow(width, height);
+    setMinimumContentSize(width, height);
+
+    setDefaultSize(590, 200, 150, 124);
+    loadWindowState();
 
     mCreatePopup = new CreatePopup;
 
@@ -387,9 +389,7 @@ SocialWindow::SocialWindow() :
     mTabs->addTab(mPlayerListTab, mPlayerListTab->mScroll.get());
 
     if (local_player->getParty())
-    {
         addTab(local_player->getParty());
-    }
     else
         updateButtons();
 }
