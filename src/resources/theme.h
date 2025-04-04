@@ -47,6 +47,7 @@ class ProgressBar;
 enum class SkinType
 {
     Window,
+    ToolWindow,
     Popup,
     SpeechBubble,
     Button,

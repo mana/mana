@@ -24,8 +24,9 @@
 #include "graphics.h"
 #include "guichanfwd.h"
 
-#include <guichan/widgetlistener.hpp>
+#include "resources/theme.h"
 
+#include <guichan/widgetlistener.hpp>
 #include <guichan/widgets/window.hpp>
 
 class ContainerPlacer;
@@ -54,7 +55,16 @@ class Window : public gcn::Window, gcn::WidgetListener
          *                this one in the window hiearchy. When reordering,
          *                a window will never go below its parent window.
          */
-        Window(const std::string &caption = "Window", bool modal = false,
+        Window(const std::string &caption = "Window",
+               bool modal = false,
+               Window *parent = nullptr);
+
+        /**
+         * Constructor that allows customizing the SkinType used by the window.
+         */
+        Window(SkinType skinType,
+               const std::string &caption = "Window",
+               bool modal = false,
                Window *parent = nullptr);
 
         /**
@@ -400,6 +410,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         bool mSaveVisible = false;    /**< Window will save visibility */
         bool mStickyButton = false;   /**< Window has a sticky button */
         bool mSticky = false;         /**< Window resists hiding*/
+        SkinType mSkinType;           /**< The skin type used when drawing the window. */
         int mMinWinWidth = 100;       /**< Minimum window width */
         int mMinWinHeight = 40;       /**< Minimum window height */
         int mMaxWinWidth;             /**< Maximum window width */

@@ -31,6 +31,7 @@ static constexpr int GRAB_MARGIN = 4;
 
 ShortcutWindow::ShortcutWindow(const std::string &title,
                                ShortcutContainer *content)
+    : Window(SkinType::ToolWindow, std::string())
 {
     setWindowName(title);
     // no title presented, title bar gets some extra space so window can be moved.

@@ -434,6 +434,7 @@ bool Theme::readTheme(const std::string &filename)
 static std::optional<SkinType> readSkinType(std::string_view type)
 {
     if (type == "Window")               return SkinType::Window;
+    if (type == "ToolWindow")           return SkinType::ToolWindow;
     if (type == "Popup")                return SkinType::Popup;
     if (type == "SpeechBubble")         return SkinType::SpeechBubble;
     if (type == "Button")               return SkinType::Button;

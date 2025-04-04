@@ -32,8 +32,6 @@
 #include "gui/widgets/resizegrip.h"
 #include "gui/widgets/windowcontainer.h"
 
-#include "resources/theme.h"
-
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>
 
@@ -44,9 +42,14 @@ int Window::instances = 0;
 int Window::mouseResize = 0;
 
 Window::Window(const std::string &caption, bool modal, Window *parent)
+    : Window(SkinType::Window, caption, modal, parent)
+{}
+
+Window::Window(SkinType skinType, const std::string &caption, bool modal, Window *parent)
     : gcn::Window(caption)
     , mParent(parent)
     , mModal(modal)
+    , mSkinType(skinType)
     , mMaxWinWidth(graphics->getWidth())
     , mMaxWinHeight(graphics->getHeight())
 {
@@ -57,7 +60,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent)
 
     instances++;
 
-    auto &skin = gui->getTheme()->getSkin(SkinType::Window);
+    auto &skin = gui->getTheme()->getSkin(mSkinType);
     setFrameSize(skin.frameSize);
     setPadding(skin.padding);
     setTitleBarHeight(skin.titleBarHeight);
@@ -129,7 +132,7 @@ void Window::drawFrame(gcn::Graphics *graphics)
     widgetState.width += getFrameSize() * 2;
     widgetState.height += getFrameSize() * 2;
 
-    auto &skin = theme->getSkin(SkinType::Window);
+    auto &skin = theme->getSkin(mSkinType);
     skin.draw(g, widgetState);
 
     if (mShowTitle)
@@ -169,7 +172,7 @@ void Window::setMinimumContentSize(int width, int height)
 {
     const int padding = getPadding();
     const int titleBarHeight = getTitleBarHeight();
-    auto &skin = gui->getTheme()->getSkin(SkinType::Window);
+    auto &skin = gui->getTheme()->getSkin(mSkinType);
 
     setMinWidth(std::max(skin.getMinWidth(), width + 2 * padding));
     setMinHeight(std::max(skin.getMinHeight(), height + padding + titleBarHeight));
@@ -237,12 +240,12 @@ void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
 
 void Window::setMinWidth(int width)
 {
-    mMinWinWidth = std::max(gui->getTheme()->getMinWidth(SkinType::Window), width);
+    mMinWinWidth = std::max(gui->getTheme()->getMinWidth(mSkinType), width);
 }
 
 void Window::setMinHeight(int height)
 {
-    mMinWinHeight = std::max(gui->getTheme()->getMinHeight(SkinType::Window), height);
+    mMinWinHeight = std::max(gui->getTheme()->getMinHeight(mSkinType), height);
 }
 
 void Window::setMaxWidth(int width)

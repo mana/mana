@@ -41,7 +41,7 @@
 #include <guichan/font.hpp>
 
 Minimap::Minimap():
-    Window(_("Map"))
+    Window(SkinType::Popup, _("Map"))
 {
     setWindowName("Minimap");
     setDefaultSize(5, 25, 100, 100);

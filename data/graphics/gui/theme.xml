@@ -51,13 +51,19 @@
     </state>
   </skin>
 
+  <skin type="ToolWindow" frameSize="0" padding="3" titleBarHeight="20" titleOffsetX="7"  titleOffsetY="5">
+    <state>
+      <img src="window.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
+    </state>
+  </skin>
+
   <skin type="ResizeGrip" padding="3">
     <state>
       <img src="resize.png" />
     </state>
   </skin>
 
-  <skin type="Popup" padding="6">
+  <skin type="Popup" padding="6" titleBarHeight="20" titleOffsetX="7" titleOffsetY="5">
     <state>
       <img src="window.png" left="4" right="4" top="4" bottom="4" fill="repeat" />
     </state>

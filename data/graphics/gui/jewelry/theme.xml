@@ -123,15 +123,22 @@
     </state>
   </skin>
 
+  <skin type="ToolWindow" padding="9" titleBarHeight="18">
+    <state>
+      <img src="window.png" x="220" y="148" width="107" height="42" left="9" right="9" top="9" bottom="9" />
+    </state>
+  </skin>
+
   <skin type="ResizeGrip" padding="2">
     <state>
       <img src="window.png" x="328" y="89" width="15" height="15" />
     </state>
   </skin>
 
-  <skin type="Popup" padding="9">
+  <skin type="Popup" padding="9" titleBarHeight="26" titleOffsetX="8" titleOffsetY="8">
     <state>
-      <img src="window.png" x="221" y="106" width="105" height="42" left="7" right="7" top="7" bottom="7" />
+      <text color="#f1d9a9" outlineColor="#000000"/>
+      <img src="window.png" x="220" y="106" width="107" height="42" left="9" right="9" top="9" bottom="9" />
     </state>
   </skin>
 
