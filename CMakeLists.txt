@@ -147,7 +147,8 @@ if(WIN32)
           $ENV{MINGW_PREFIX}/bin/libaom.dll
           $ENV{MINGW_PREFIX}/bin/libdav1d-7.dll
           $ENV{MINGW_PREFIX}/bin/libsharpyuv-0.dll
-          $ENV{MINGW_PREFIX}/bin/libSvtAv1Enc-2.dll
+          $ENV{MINGW_PREFIX}/bin/libSvtAv1Enc-3.dll
+          $ENV{MINGW_PREFIX}/bin/libFLAC.dll
           $ENV{MINGW_PREFIX}/bin/libyuv.dll
           $ENV{MINGW_PREFIX}/bin/libbrotlienc.dll
           $ENV{MINGW_PREFIX}/bin/libhwy.dll
@@ -156,13 +157,17 @@ if(WIN32)
           $ENV{MINGW_PREFIX}/bin/libjbig-0.dll
           $ENV{MINGW_PREFIX}/bin/libLerc.dll
           $ENV{MINGW_PREFIX}/bin/libopus-0.dll
+          $ENV{MINGW_PREFIX}/bin/librav1e.dll
           $ENV{MINGW_PREFIX}/bin/libbz2-1.dll
           $ENV{MINGW_PREFIX}/bin/libglib-2.0-0.dll
           $ENV{MINGW_PREFIX}/bin/libogg-0.dll
+          $ENV{MINGW_PREFIX}/bin/libvorbisfile-3.dll
+          $ENV{MINGW_PREFIX}/bin/libvorbis-0.dll
+          $ENV{MINGW_PREFIX}/bin/libwavpack-1.dll
           $ENV{MINGW_PREFIX}/bin/libgraphite2.dll
           $ENV{MINGW_PREFIX}/bin/liblcms2-2.dll
           $ENV{MINGW_PREFIX}/bin/libpcre2-8-0.dll
-          $ENV{MINGW_PREFIX}/bin/libmodplug-1.dll
+          $ENV{MINGW_PREFIX}/bin/libxmp.dll
     DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 include(CPack)
