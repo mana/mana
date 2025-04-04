@@ -113,37 +113,40 @@ Resource *Image::load(SDL_RWops *rw)
 
 Resource *Image::load(SDL_RWops *rw, const Dye &dye)
 {
-    SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
+    SDL_Surface *surf = IMG_Load_RW(rw, 1);
 
-    if (!tmpImage)
+    if (!surf)
     {
         logger->log("Error, image load failed: %s", IMG_GetError());
         return nullptr;
     }
 
-    SDL_PixelFormat rgba;
-    rgba.palette = nullptr;
-    rgba.BitsPerPixel = 32;
-    rgba.BytesPerPixel = 4;
-    rgba.Rmask = 0xFF000000; rgba.Rloss = 0; rgba.Rshift = 24;
-    rgba.Gmask = 0x00FF0000; rgba.Gloss = 0; rgba.Gshift = 16;
-    rgba.Bmask = 0x0000FF00; rgba.Bloss = 0; rgba.Bshift = 8;
-    rgba.Amask = 0x000000FF; rgba.Aloss = 0; rgba.Ashift = 0;
-
-    SDL_Surface *surf = SDL_ConvertSurface(tmpImage, &rgba, 0);
-    SDL_FreeSurface(tmpImage);
-
-    auto *pixels = static_cast< Uint32 * >(surf->pixels);
-    for (Uint32 *p_end = pixels + surf->w * surf->h; pixels != p_end; ++pixels)
+    if (surf->format->format != SDL_PIXELFORMAT_ABGR8888)
     {
-        int alpha = *pixels & 255;
+        logger->log("Warning: image format is %s, not SDL_PIXELFORMAT_ABGR8888. Converting...",
+                    SDL_GetPixelFormatName(surf->format->format));
+
+        SDL_Surface *convertedSurf = SDL_ConvertSurfaceFormat(surf, SDL_PIXELFORMAT_ABGR8888, 0);
+        SDL_FreeSurface(surf);
+        if (!convertedSurf)
+        {
+            logger->log("Error, image convert failed: %s", SDL_GetError());
+            return nullptr;
+        }
+        surf = convertedSurf;
+    }
+
+    auto *pixels = static_cast< uint32_t * >(surf->pixels);
+    for (uint32_t *p_end = pixels + surf->w * surf->h; pixels != p_end; ++pixels)
+    {
+        const uint32_t alpha = (*pixels >> 24) & 255;
         if (!alpha) continue;
         int v[3];
-        v[0] = (*pixels >> 24) & 255;
-        v[1] = (*pixels >> 16) & 255;
-        v[2] = (*pixels >> 8 ) & 255;
+        v[0] = (*pixels) & 255;
+        v[1] = (*pixels >> 8) & 255;
+        v[2] = (*pixels >> 16) & 255;
         dye.update(v);
-        *pixels = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | alpha;
+        *pixels = (alpha << 24) | (v[2] << 16) | (v[1] << 8) | v[0];
     }
 
     Image *image = load(surf);
