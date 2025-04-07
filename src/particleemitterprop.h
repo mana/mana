@@ -37,15 +37,18 @@ enum ChangeFunc
 
 template <typename T> struct ParticleEmitterProp
 {
+    explicit ParticleEmitterProp(T value = T())
+        : ParticleEmitterProp(value, value)
+    {}
+
+    ParticleEmitterProp(T min, T max)
+        : minVal(min), maxVal(max)
+    {}
+
     void set(T min, T max)
     {
         minVal = min;
         maxVal = max;
-    }
-
-    void set(T val)
-    {
-        set(val, val);
     }
 
     void setFunction(ChangeFunc func, T amplitude, int period, int phase)

@@ -43,27 +43,6 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
     mMap = map;
     mParticleTarget = target;
 
-    // Initializing default values
-    mParticlePosX.set(0.0f);
-    mParticlePosY.set(0.0f);
-    mParticlePosZ.set(0.0f);
-    mParticleAngleHorizontal.set(0.0f);
-    mParticleAngleVertical.set(0.0f);
-    mParticlePower.set(0.0f);
-    mParticleGravity.set(0.0f);
-    mParticleRandomness.set(0);
-    mParticleBounce.set(0.0f);
-    mParticleFollow = false;
-    mParticleAcceleration.set(0.0f);
-    mParticleDieDistance.set(-1.0f);
-    mParticleMomentum.set(1.0f);
-    mParticleLifetime.set(-1);
-    mParticleFadeOut.set(0);
-    mParticleFadeIn.set(0);
-    mOutput.set(1);
-    mOutputPause.set(0);
-    mParticleAlpha.set(1.0f);
-
     for (auto propertyNode : emitterNode.children())
     {
         if (propertyNode.name() == "property")
@@ -76,7 +55,6 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
             }
             else if (name == "position-y")
             {
-
                 mParticlePosY = readParticleEmitterProp(propertyNode, 0.0f);
                 mParticlePosY.minVal *= SIN45;
                 mParticlePosY.maxVal *= SIN45;
@@ -92,7 +70,6 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
             else if (name == "image")
             {
                 std::string image = propertyNode.getProperty("value", "");
-                // Don't leak when multiple images are defined
                 if (!image.empty() && !mParticleImage)
                 {
                     if (!dyePalettes.empty())
@@ -187,7 +164,7 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
         {
             ParticleEmitter newEmitter(propertyNode, mParticleTarget, map,
                                        rotation, dyePalettes);
-            mParticleChildEmitters.push_back(newEmitter);
+            mParticleChildEmitters.push_back(std::move(newEmitter));
         }
         else if (propertyNode.name() == "rotation")
         {
@@ -200,26 +177,26 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
         else if (propertyNode.name() == "deatheffect")
         {
             mDeathEffect = propertyNode.textContent();
-            mDeathEffectConditions = 0x00;
+
             if (propertyNode.getBoolProperty("on-floor", true))
             {
-                mDeathEffectConditions += Particle::DEAD_FLOOR;
+                mDeathEffectConditions |= Particle::DEAD_FLOOR;
             }
             if (propertyNode.getBoolProperty("on-sky", true))
             {
-                mDeathEffectConditions += Particle::DEAD_SKY;
+                mDeathEffectConditions |= Particle::DEAD_SKY;
             }
             if (propertyNode.getBoolProperty("on-other", false))
             {
-                mDeathEffectConditions += Particle::DEAD_OTHER;
+                mDeathEffectConditions |= Particle::DEAD_OTHER;
             }
             if (propertyNode.getBoolProperty("on-impact", true))
             {
-                mDeathEffectConditions += Particle::DEAD_IMPACT;
+                mDeathEffectConditions |= Particle::DEAD_IMPACT;
             }
             if (propertyNode.getBoolProperty("on-timeout", true))
             {
-                mDeathEffectConditions += Particle::DEAD_TIMEOUT;
+                mDeathEffectConditions |= Particle::DEAD_TIMEOUT;
             }
         }
     }
@@ -270,11 +247,11 @@ ParticleEmitter::~ParticleEmitter() = default;
 template <typename T> ParticleEmitterProp<T>
 ParticleEmitter::readParticleEmitterProp(XML::Node propertyNode, T def)
 {
-    ParticleEmitterProp<T> retval;
+    def = propertyNode.getFloatProperty("value", (double) def);
+    const T min = (T) propertyNode.getFloatProperty("min", (double) def);
+    const T max = (T) propertyNode.getFloatProperty("max", (double) def);
 
-    def = (T) propertyNode.getFloatProperty("value", (double) def);
-    retval.set((T) propertyNode.getFloatProperty("min", (double) def),
-        (T) propertyNode.getFloatProperty("max", (double) def));
+    ParticleEmitterProp<T> retval(min, max);
 
     std::string change = propertyNode.getProperty("change-func", "none");
     T amplitude = (T) propertyNode.getFloatProperty("change-amplitude", 0.0);
@@ -359,14 +336,10 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
         newParticle->setAlpha(mParticleAlpha.value(tick));
 
         for (auto &particleChildEmitter : mParticleChildEmitters)
-        {
-            newParticle->addEmitter(new ParticleEmitter(particleChildEmitter));
-        }
+            newParticle->addEmitter(particleChildEmitter);
 
         if (!mDeathEffect.empty())
-        {
             newParticle->setDeathEffect(mDeathEffect, mDeathEffectConditions);
-        }
 
         newParticles.push_back(newParticle);
     }
@@ -382,19 +355,17 @@ void ParticleEmitter::adjustSize(int w, int h)
     int oldWidth = mParticlePosX.maxVal - mParticlePosX.minVal;
     int oldHeight = mParticlePosX.maxVal - mParticlePosY.minVal;
     int oldArea = oldWidth * oldHeight;
+
+    // when the effect has no dimension it is not designed to be resizeable
     if (oldArea == 0)
-    {
-        //when the effect has no dimension it is
-        //not designed to be resizeable
         return;
-    }
 
     // set the new dimensions
     mParticlePosX.set(0, w);
     mParticlePosY.set(0, h);
     int newArea = w * h;
     // adjust the output so that the particle density stays the same
-    float outputFactor = (float)newArea / (float)oldArea;
+    float outputFactor = (float) newArea / oldArea;
     mOutput.minVal *= outputFactor;
     mOutput.maxVal *= outputFactor;
 }

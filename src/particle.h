@@ -23,6 +23,7 @@
 
 #include "actor.h"
 #include "guichanfwd.h"
+#include "particleemitter.h"
 #include "vector.h"
 
 #include <list>
@@ -33,7 +34,6 @@ class Particle;
 class ParticleEmitter;
 
 using Particles = std::list<Particle *>;
-using Emitters = std::list<ParticleEmitter *>;
 
 /**
  * A particle spawned by a ParticleEmitter.
@@ -41,7 +41,7 @@ using Emitters = std::list<ParticleEmitter *>;
 class Particle : public Actor
 {
     public:
-        enum AliveStatus
+        enum AliveStatus : unsigned char
         {
             ALIVE = 0,
             DEAD_TIMEOUT = 1,
@@ -119,8 +119,11 @@ class Particle : public Actor
         /**
          * Adds an emitter to the particle.
          */
-        void addEmitter(ParticleEmitter *emitter)
+        void addEmitter(const ParticleEmitter &emitter)
         { mChildEmitters.push_back(emitter); }
+
+        void addEmitter(ParticleEmitter &&emitter)
+        { mChildEmitters.push_back(std::move(emitter)); }
 
         /**
          * Sets the position in 3 dimensional space in pixels relative to map.
@@ -246,7 +249,7 @@ class Particle : public Actor
 
         void setAlpha(float alpha) override {}
 
-        void setDeathEffect(const std::string &effectFile, char conditions)
+        void setDeathEffect(const std::string &effectFile, unsigned char conditions)
         { mDeathEffect = effectFile; mDeathEffectConditions = conditions; }
 
     protected:
@@ -266,11 +269,11 @@ class Particle : public Actor
         AliveStatus mAlive = ALIVE;     /**< Is the particle supposed to be drawn and updated?*/
         // generic properties
         bool mAutoDelete = true;        /**< May the particle request its deletion by the parent particle? */
-        Emitters mChildEmitters;        /**< List of child emitters. */
+        std::list<ParticleEmitter> mChildEmitters;  /**< List of child emitters. */
         Particles mChildParticles;      /**< List of particles controlled by this particle */
         bool mAllowSizeAdjust = false;  /**< Can the effect size be adjusted by the object props in the map file? */
         std::string mDeathEffect;       /**< Particle effect file to be spawned when the particle dies */
-        char mDeathEffectConditions = 0;/**< Bitfield of death conditions which trigger spawning of the death particle */
+        unsigned char mDeathEffectConditions = 0;   /**< Bitfield of death conditions which trigger spawning of the death particle */
 
         // dynamic particle
         float mGravity = 0.0f;          /**< Downward acceleration in pixels per game-tick. */

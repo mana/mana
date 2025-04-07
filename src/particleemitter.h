@@ -41,9 +41,11 @@ class Particle;
 class ParticleEmitter
 {
     public:
-        ParticleEmitter(XML::Node emitterNode,  Particle *target, Map *map,
+        ParticleEmitter(XML::Node emitterNode,
+                        Particle *target,
+                        Map *map,
                         int rotation = 0,
-                        const std::string& dyePalettes = std::string());
+                        const std::string &dyePalettes = std::string());
 
         /**
          * Copy Constructor (necessary for reference counting of particle images)
@@ -99,27 +101,27 @@ class ParticleEmitter
         ParticleEmitterProp<float> mParticleGravity;
         ParticleEmitterProp<int> mParticleRandomness;
         ParticleEmitterProp<float> mParticleBounce;
-        bool mParticleFollow;
+        bool mParticleFollow = false;
 
         /*
          * Properties of targeting particles:
          */
         Particle *mParticleTarget;
         ParticleEmitterProp<float> mParticleAcceleration;
-        ParticleEmitterProp<float> mParticleDieDistance;
-        ParticleEmitterProp<float> mParticleMomentum;
+        ParticleEmitterProp<float> mParticleDieDistance { -1.0f };
+        ParticleEmitterProp<float> mParticleMomentum { 1.0f };
 
         /*
          * Behavior over time of the particles:
          */
-        ParticleEmitterProp<int> mParticleLifetime;
+        ParticleEmitterProp<int> mParticleLifetime { -1 };
         ParticleEmitterProp<int> mParticleFadeOut;
         ParticleEmitterProp<int> mParticleFadeIn;
 
         Map *mMap;             /**< Map the particles are spawned on */
 
-        ParticleEmitterProp<int> mOutput;   /**< Number of particles spawned per update */
-        ParticleEmitterProp<int> mOutputPause; /**< Pause in frames between two spawns */
+        ParticleEmitterProp<int> mOutput { 1 }; /**< Number of particles spawned per update */
+        ParticleEmitterProp<int> mOutputPause;  /**< Pause in frames between two spawns */
         int mOutputPauseLeft = 0;
 
         /*
@@ -128,13 +130,13 @@ class ParticleEmitter
         ResourceRef<Image> mParticleImage; /**< Particle image, if used */
         Animation mParticleAnimation; /**< Filename of particle animation file */
         Animation mParticleRotation; /**< Filename of particle rotation file */
-        ParticleEmitterProp<float> mParticleAlpha; /**< Opacity of the graphical representation of the particles */
+        ParticleEmitterProp<float> mParticleAlpha { 1.0f }; /**< Opacity of the graphical representation of the particles */
 
         /*
          * Death effect of the particles
          */
         std::string mDeathEffect;
-        char mDeathEffectConditions;
+        unsigned char mDeathEffectConditions = 0x00;
 
         /** List of emitters the spawned particles are equipped with */
         std::list<ParticleEmitter> mParticleChildEmitters;

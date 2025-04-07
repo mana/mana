@@ -177,7 +177,7 @@ bool Particle::update()
         {
             for (auto &childEmitter : mChildEmitters)
             {
-                Particles newParticles = childEmitter->createParticles(mLifetimePast);
+                Particles newParticles = childEmitter.createParticles(mLifetimePast);
                 for (auto &newParticle : newParticles)
                 {
                     newParticle->moveBy(mPos);
@@ -324,34 +324,32 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
         {
             if (emitterNode.name() == "emitter")
             {
-                ParticleEmitter *newEmitter;
-                newEmitter = new ParticleEmitter(emitterNode, newParticle, mMap,
-                                                 rotation, dyePalettes);
-                newParticle->addEmitter(newEmitter);
+                newParticle->addEmitter(ParticleEmitter(emitterNode, newParticle, mMap,
+                                                        rotation, dyePalettes));
             }
             else if (emitterNode.name() == "deatheffect")
             {
                 std::string deathEffect { emitterNode.textContent() };
-                char deathEffectConditions = 0x00;
+                unsigned char deathEffectConditions = 0x00;
                 if (emitterNode.getBoolProperty("on-floor", true))
                 {
-                    deathEffectConditions += Particle::DEAD_FLOOR;
+                    deathEffectConditions |= Particle::DEAD_FLOOR;
                 }
                 if (emitterNode.getBoolProperty("on-sky", true))
                 {
-                    deathEffectConditions += Particle::DEAD_SKY;
+                    deathEffectConditions |= Particle::DEAD_SKY;
                 }
                 if (emitterNode.getBoolProperty("on-other", false))
                 {
-                    deathEffectConditions += Particle::DEAD_OTHER;
+                    deathEffectConditions |= Particle::DEAD_OTHER;
                 }
                 if (emitterNode.getBoolProperty("on-impact", true))
                 {
-                    deathEffectConditions += Particle::DEAD_IMPACT;
+                    deathEffectConditions |= Particle::DEAD_IMPACT;
                 }
                 if (emitterNode.getBoolProperty("on-timeout", true))
                 {
-                    deathEffectConditions += Particle::DEAD_TIMEOUT;
+                    deathEffectConditions |= Particle::DEAD_TIMEOUT;
                 }
                 newParticle->setDeathEffect(deathEffect, deathEffectConditions);
             }
@@ -408,7 +406,7 @@ void Particle::adjustEmitterSize(int w, int h)
         return;
 
     for (auto &childEmitter : mChildEmitters)
-        childEmitter->adjustSize(w, h);
+        childEmitter.adjustSize(w, h);
 }
 
 float Particle::getCurrentAlpha() const
@@ -426,9 +424,6 @@ float Particle::getCurrentAlpha() const
 
 void Particle::clear()
 {
-    delete_all(mChildEmitters);
-    mChildEmitters.clear();
-
     delete_all(mChildParticles);
     mChildParticles.clear();
 }
