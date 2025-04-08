@@ -147,13 +147,12 @@ void DropDown::drawButton(gcn::Graphics *graphics)
     if (mPushed)
         state.flags |= STATE_HOVERED;
 
-    const auto theme = gui->getTheme();
-    const int buttonWidth = theme->getMinWidth(SkinType::DropDownButton);
+    auto &skin = gui->getTheme()->getSkin(SkinType::DropDownButton);
 
     // FIXME: Needs support for setting alignment in the theme.
-    state.x = state.width - buttonWidth;
+    state.x = state.width - skin.getMinWidth();
 
-    theme->drawSkin(static_cast<Graphics *>(graphics), SkinType::DropDownButton, state);
+    skin.draw(static_cast<Graphics *>(graphics), state);
 }
 
 // -- KeyListener notifications

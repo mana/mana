@@ -73,6 +73,8 @@ enum class SkinType
     SliderHandle,
     ResizeGrip,
     ShortcutBox,
+    EquipmentBox,
+    ItemSlot,
 };
 
 enum StateFlags : uint8_t
@@ -86,6 +88,7 @@ enum StateFlags : uint8_t
 struct ColoredRectangle
 {
     gcn::Color color;
+    bool filled = true;
 };
 
 struct SkinPart
@@ -151,6 +154,8 @@ class Skin
          */
         void updateAlpha(float alpha);
 
+        int width = 0;
+        int height = 0;
         int frameSize = 0;
         int padding = 0;
         int spacing = 0;
@@ -251,9 +256,6 @@ class Theme : public Palette, public EventListener
                              const std::string &text = std::string()) const;
 
         const Skin &getSkin(SkinType skinType) const;
-
-        int getMinWidth(SkinType skinType) const;
-        int getMinHeight(SkinType skinType) const;
 
         /**
          * Get the current GUI alpha value.

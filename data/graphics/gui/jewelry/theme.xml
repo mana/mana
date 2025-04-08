@@ -129,7 +129,7 @@
     </state>
   </skin>
 
-  <skin type="ResizeGrip" padding="2">
+  <skin type="ResizeGrip" width="17" height="17">
     <state>
       <img src="window.png" x="328" y="89" width="15" height="15" />
     </state>
@@ -363,9 +363,24 @@
     </state>
   </skin>
 
-  <skin type="ShortcutBox">
+  <skin type="ShortcutBox" width="36" height="42">
     <state>
       <img src="window.png" x="58" y="75" width="36" height="42" />
+    </state>
+  </skin>
+
+  <skin type="EquipmentBox" padding="3" width="38" height="38">
+    <state selected="true">
+      <img src="window.png" x="175" y="75" width="38" height="38" />
+    </state>
+    <state>
+      <img src="window.png" x="136" y="75" width="38" height="38" />
+    </state>
+  </skin>
+
+  <skin type="ItemSlot" padding="3" width="38" height="54">
+    <state selected="true">
+      <img src="window.png" x="175" y="114" width="38" height="38" />
     </state>
   </skin>
 </theme>

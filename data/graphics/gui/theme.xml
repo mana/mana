@@ -57,9 +57,9 @@
     </state>
   </skin>
 
-  <skin type="ResizeGrip" padding="3">
+  <skin type="ResizeGrip" width="15" height="13">
     <state>
-      <img src="resize.png" />
+      <img src="resize.png" offsetX="-2" offsetY="-1" />
     </state>
   </skin>
 
@@ -278,9 +278,25 @@
     </state>
   </skin>
 
-  <skin type="ShortcutBox">
+  <skin type="ShortcutBox" width="36" height="42">
     <state>
       <img src="item_shortcut_bgr.png" />
+    </state>
+  </skin>
+
+  <skin type="EquipmentBox" padding="2" width="36" height="36">
+    <state selected="true">
+      <rect color="#c0c0c0" />
+      <rect color="#000000" fill="false" />
+    </state>
+    <state>
+      <rect color="#000000" fill="false" />
+    </state>
+  </skin>
+
+  <skin type="ItemSlot" width="35" height="45">
+    <state selected="true">
+      <img src="selection.png" />
     </state>
   </skin>
 </theme>

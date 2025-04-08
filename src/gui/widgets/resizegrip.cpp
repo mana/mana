@@ -31,7 +31,7 @@
 ResizeGrip::ResizeGrip()
 {
     auto &skin = gui->getTheme()->getSkin(SkinType::ResizeGrip);
-    setSize(skin.getMinWidth() + skin.padding, skin.getMinHeight() + skin.padding);
+    setSize(skin.width, skin.height);
 }
 
 void ResizeGrip::draw(gcn::Graphics *graphics)

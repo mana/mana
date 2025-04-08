@@ -74,9 +74,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
         if (item)
         {
             // Draw item icon.
-            Image* image = item->getImage();
-
-            if (image)
+            if (Image *image = item->getImage())
             {
                 std::string caption;
                 if (item->getQuantity() > 1)
@@ -97,7 +95,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
     if (mItemMoved)
     {
         // Draw the item image being dragged by the cursor.
-        if (Image* image = mItemMoved->getImage())
+        if (Image *image = mItemMoved->getImage())
         {
             const int tPosX = mCursorPosX - (image->getWidth() / 2);
             const int tPosY = mCursorPosY - (image->getHeight() / 2);

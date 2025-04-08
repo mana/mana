@@ -25,7 +25,6 @@
 #include "inventory.h"
 #include "item.h"
 #include "itemshortcut.h"
-#include "log.h"
 
 #include "gui/chatwindow.h"
 #include "gui/itempopup.h"
@@ -44,18 +43,11 @@
 // TODO: Add support for adding items to the item shortcut window (global
 // itemShortcut).
 
-static const int BOX_WIDTH = 35;
-static const int BOX_HEIGHT = 43;
-
 ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
 {
     mItemPopup = new ItemPopup;
     setFocusable(true);
-
-    mSelImg = Theme::getImageFromTheme("selection.png");
-    if (!mSelImg)
-        logger->error("Unable to load selection.png");
 
     addKeyListener(this);
     addMouseListener(this);
@@ -112,39 +104,47 @@ void ItemContainer::draw(gcn::Graphics *graphics)
         }
     }
 
+    auto theme = gui->getTheme();
+    auto &slotSkin = theme->getSkin(SkinType::ItemSlot);
+    WidgetState slotState;
+
     for (int i = 0; i < mGridColumns; i++)
     {
         for (int j = 0; j < mGridRows; j++)
         {
-            int itemX = i * BOX_WIDTH;
-            int itemY = j * BOX_HEIGHT;
+            int itemX = i * slotSkin.width;
+            int itemY = j * slotSkin.height;
             int itemIndex = j * mGridColumns + i;
+
+            slotState.x = itemX;
+            slotState.y = itemY;
+            slotState.flags = 0;
+
+            if (itemIndex == mSelectedIndex)
+            {
+                slotState.flags |= STATE_SELECTED;
+
+                if (mSelectionStatus == SEL_DRAGGING)
+                {
+                    // Reposition the coords to that of the cursor.
+                    itemX = mDragPosX - (slotSkin.width / 2);
+                    itemY = mDragPosY - (slotSkin.height / 2);
+                }
+            }
+
+            slotSkin.draw(g, slotState);
 
             Item *item = getItemAt(itemIndex);
 
             if (!item || item->getId() == 0)
                 continue;
 
-            Image *image = item->getImage();
-            if (image)
+            if (Image *image = item->getImage())
             {
-                if (itemIndex == mSelectedIndex)
-                {
-                    if (mSelectionStatus == SEL_DRAGGING)
-                    {
-                        // Reposition the coords to that of the cursor.
-                        itemX = mDragPosX - (BOX_WIDTH / 2);
-                        itemY = mDragPosY - (BOX_HEIGHT / 2);
-                    }
-                    else
-                    {
-                        // Draw selection border image.
-                        g->drawImage(mSelImg, itemX, itemY);
-                    }
-                }
-                image->setAlpha(1.0f); // ensure the image if fully drawn...
-                g->drawImage(image, itemX, itemY);
+                image->setAlpha(1.0f);
+                g->drawImage(image, itemX + slotSkin.padding, itemY + slotSkin.padding);
             }
+
             // Draw item caption
             std::string caption;
             if (item->getQuantity() > 1)
@@ -153,22 +153,22 @@ void ItemContainer::draw(gcn::Graphics *graphics)
                 caption = "Eq.";
 
             if (item->isEquipped())
-                g->setColor(Theme::getThemeColor(Theme::ITEM_EQUIPPED));
+                g->setColor(theme->getColor(Theme::ITEM_EQUIPPED));
             else
                 g->setColor(gcn::Color(0, 0, 0));
 
-            g->drawText(caption, itemX + BOX_WIDTH / 2,
-                        itemY + BOX_HEIGHT - 14, gcn::Graphics::CENTER);
+            g->drawText(caption, itemX + slotSkin.width / 2,
+                        itemY + slotSkin.height - 14, gcn::Graphics::CENTER);
         }
     }
 
     // Draw an orange box around the selected item
     if (isFocused() && mHighlightedIndex != -1)
     {
-        const int itemX = (mHighlightedIndex % mGridColumns) * BOX_WIDTH;
-        const int itemY = (mHighlightedIndex / mGridColumns) * BOX_HEIGHT;
+        const int itemX = (mHighlightedIndex % mGridColumns) * slotSkin.width;
+        const int itemY = (mHighlightedIndex / mGridColumns) * slotSkin.height;
         g->setColor(gcn::Color(255, 128, 0));
-        g->drawRectangle(gcn::Rectangle(itemX, itemY, BOX_WIDTH, BOX_HEIGHT));
+        g->drawRectangle(gcn::Rectangle(itemX, itemY, slotSkin.width, slotSkin.height));
     }
 }
 
@@ -375,25 +375,30 @@ void ItemContainer::mouseExited(gcn::MouseEvent &event)
 
 void ItemContainer::widgetResized(const gcn::Event &event)
 {
-    mGridColumns = std::max(1, getWidth() / BOX_WIDTH);
+    auto &slotSkin = gui->getTheme()->getSkin(SkinType::ItemSlot);
+
+    mGridColumns = std::max(1, getWidth() / slotSkin.width);
     adjustHeight();
 }
 
 void ItemContainer::adjustHeight()
 {
+    auto &slotSkin = gui->getTheme()->getSkin(SkinType::ItemSlot);
+
     mGridRows = (mLastUsedSlot + 1) / mGridColumns;
     if (mGridRows == 0 || (mLastUsedSlot + 1) % mGridColumns > 0)
         ++mGridRows;
 
-    setHeight(mGridRows * BOX_HEIGHT);
+    setHeight(mGridRows * slotSkin.height);
 }
 
 int ItemContainer::getSlotIndex(int x, int y) const
 {
+    auto &slotSkin = gui->getTheme()->getSkin(SkinType::ItemSlot);
+
     if (x < getWidth() && y < getHeight())
-    {
-        return (y / BOX_HEIGHT) * mGridColumns + (x / BOX_WIDTH);
-    }
+        return (y / slotSkin.height) * mGridColumns + (x / slotSkin.width);
+
     return Inventory::NO_SLOT_INDEX;
 }
 

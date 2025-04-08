@@ -31,8 +31,8 @@ ShortcutContainer::ShortcutContainer()
     addWidgetListener(this);
 
     auto &skin = gui->getTheme()->getSkin(SkinType::ShortcutBox);
-    mBoxWidth = skin.getMinWidth();
-    mBoxHeight = skin.getMinHeight();
+    mBoxWidth = skin.width;
+    mBoxHeight = skin.height;
 }
 
 void ShortcutContainer::widgetResized(const gcn::Event &event)

@@ -132,12 +132,21 @@ void Skin::draw(Graphics *graphics, const WidgetState &state) const
             }
             else if constexpr (std::is_same_v<T, ColoredRectangle>)
             {
+                const auto color = graphics->getColor();
+                // TODO: Take GUI alpha into account
                 graphics->setColor(data.color);
-                graphics->fillRectangle(gcn::Rectangle(state.x + part.offsetX,
-                                                       state.y + part.offsetY,
-                                                       state.width,
-                                                       state.height));
-                graphics->setColor(gcn::Color(255, 255, 255));
+
+                const gcn::Rectangle rect(state.x + part.offsetX,
+                                          state.y + part.offsetY,
+                                          state.width,
+                                          state.height);
+
+                if (data.filled)
+                    graphics->fillRectangle(rect);
+                else
+                    graphics->drawRectangle(rect);
+
+                graphics->setColor(color);
             }
         }, part.data);
     }
@@ -350,16 +359,6 @@ const Skin &Theme::getSkin(SkinType skinType) const
     return it != mSkins.end() ? it->second : emptySkin;
 }
 
-int Theme::getMinWidth(SkinType skinType) const
-{
-    return getSkin(skinType).getMinWidth();
-}
-
-int Theme::getMinHeight(SkinType skinType) const
-{
-    return getSkin(skinType).getMinHeight();
-}
-
 void Theme::setMinimumOpacity(float minimumOpacity)
 {
     if (minimumOpacity > 1.0f)
@@ -460,6 +459,8 @@ static std::optional<SkinType> readSkinType(std::string_view type)
     if (type == "SliderHandle")         return SkinType::SliderHandle;
     if (type == "ResizeGrip")           return SkinType::ResizeGrip;
     if (type == "ShortcutBox")          return SkinType::ShortcutBox;
+    if (type == "EquipmentBox")         return SkinType::EquipmentBox;
+    if (type == "ItemSlot")             return SkinType::ItemSlot;
     return {};
 }
 
@@ -472,6 +473,8 @@ void Theme::readSkinNode(XML::Node node)
 
     auto &skin = mSkins[*skinType];
 
+    node.attribute("width", skin.width);
+    node.attribute("height", skin.height);
     node.attribute("frameSize", skin.frameSize);
     node.attribute("padding", skin.padding);
     node.attribute("spacing", skin.spacing);
@@ -645,6 +648,7 @@ void Theme::readSkinStateRectNode(XML::Node node, SkinState &state) const
 
     node.attribute("color", rect.color);
     node.attribute("alpha", rect.color.a);
+    node.attribute("fill", rect.filled);
 }
 
 static int readColorType(const std::string &type)

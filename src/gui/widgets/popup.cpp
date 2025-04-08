@@ -119,12 +119,14 @@ void Popup::setLocationRelativeTo(gcn::Widget *widget)
 
 void Popup::setMinWidth(int width)
 {
-    mMinWidth = std::max(gui->getTheme()->getMinWidth(mSkinType), width);
+    auto &skin = gui->getTheme()->getSkin(mSkinType);
+    mMinWidth = std::max(skin.getMinWidth(), width);
 }
 
 void Popup::setMinHeight(int height)
 {
-    mMinHeight = std::max(gui->getTheme()->getMinHeight(mSkinType), height);
+    auto &skin = gui->getTheme()->getSkin(mSkinType);
+    mMinHeight = std::max(skin.getMinHeight(), height);
 }
 
 void Popup::setMaxWidth(int width)

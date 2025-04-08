@@ -47,9 +47,6 @@
 
 #include <guichan/font.hpp>
 
-static const int BOX_WIDTH = 36;
-static const int BOX_HEIGHT = 36;
-
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window(_("Equipment")),
     mEquipment(equipment)
@@ -113,51 +110,43 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Draw equipment boxes
     auto *g = static_cast<Graphics*>(graphics);
 
+    auto &boxSkin = gui->getTheme()->getSkin(SkinType::EquipmentBox);
+
     for (size_t i = 0; i < mBoxes.size(); i++)
     {
         const auto &box = mBoxes[i];
+
+        WidgetState boxState(gcn::Rectangle(box.posX, box.posY, boxSkin.width, boxSkin.height));
+        if (static_cast<int>(i) == mSelected)
+            boxState.flags |= STATE_SELECTED;
+
+        boxSkin.draw(g, boxState);
 
         // When there is a background image, draw it centered in the box:
         if (box.backgroundImage)
         {
             int posX = box.posX
-                + (BOX_WIDTH - box.backgroundImage->getWidth()) / 2;
+                + (boxSkin.width - box.backgroundImage->getWidth()) / 2;
             int posY = box.posY
-                + (BOX_HEIGHT - box.backgroundImage->getHeight()) / 2;
+                + (boxSkin.height - box.backgroundImage->getHeight()) / 2;
             g->drawImage(box.backgroundImage, posX, posY);
         }
 
-        const gcn::Rectangle tRect(box.posX, box.posY,
-                                   BOX_WIDTH, BOX_HEIGHT);
-
-        if (static_cast<int>(i) == mSelected)
-        {
-            const gcn::Color color = Theme::getThemeColor(Theme::HIGHLIGHT);
-
-            // Set color to the highlight color
-            g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
-            g->fillRectangle(tRect);
-        }
-
-        // Draw black box border
-        g->setColor(gcn::Color(0, 0, 0));
-        g->drawRectangle(tRect);
-
         if (Item *item = mEquipment->getEquipment(i))
         {
-            // Draw Item.
-            Image *image = item->getImage();
-            // Ensure the image is drawn with maximum opacity
-            image->setAlpha(1.0f);
-            g->drawImage(image,
-                         box.posX + 2,
-                         box.posY + 2);
+            if (Image *image = item->getImage())
+            {
+                image->setAlpha(1.0f);
+                g->drawImage(image,
+                             box.posX + boxSkin.padding,
+                             box.posY + boxSkin.padding);
+            }
 
             if (i == TmwAthena::EQUIP_PROJECTILE_SLOT)
             {
                 g->setColor(Theme::getThemeColor(Theme::TEXT));
                 graphics->drawText(toString(item->getQuantity()),
-                                   box.posX + (BOX_WIDTH / 2),
+                                   box.posX + (boxSkin.width / 2),
                                    box.posY - getFont()->getHeight(),
                                    gcn::Graphics::CENTER);
             }
@@ -180,12 +169,12 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
  */
 int EquipmentWindow::getBoxIndex(int x, int y) const
 {
+    auto &boxSkin = gui->getTheme()->getSkin(SkinType::EquipmentBox);
+
     for (size_t i = 0; i < mBoxes.size(); ++i)
     {
         const auto &box = mBoxes[i];
-        const gcn::Rectangle tRect(box.posX, box.posY,
-                                   BOX_WIDTH, BOX_HEIGHT);
-
+        const gcn::Rectangle tRect(box.posX, box.posY, boxSkin.width, boxSkin.height);
         if (tRect.isPointInRect(x, y))
             return i;
     }

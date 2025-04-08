@@ -240,12 +240,14 @@ void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
 
 void Window::setMinWidth(int width)
 {
-    mMinWinWidth = std::max(gui->getTheme()->getMinWidth(mSkinType), width);
+    auto &skin = gui->getTheme()->getSkin(mSkinType);
+    mMinWinWidth = std::max(skin.getMinWidth(), width);
 }
 
 void Window::setMinHeight(int height)
 {
-    mMinWinHeight = std::max(gui->getTheme()->getMinHeight(mSkinType), height);
+    auto &skin = gui->getTheme()->getSkin(mSkinType);
+    mMinWinHeight = std::max(skin.getMinHeight(), height);
 }
 
 void Window::setMaxWidth(int width)
