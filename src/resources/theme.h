@@ -257,6 +257,8 @@ class Theme : public Palette, public EventListener
 
         const Skin &getSkin(SkinType skinType) const;
 
+        const Image *getIcon(const std::string &name) const;
+
         /**
          * Get the current GUI alpha value.
          */
@@ -289,11 +291,13 @@ class Theme : public Palette, public EventListener
         void readSkinStateTextNode(XML::Node node, SkinState &state) const;
         void readSkinStateImgNode(XML::Node node, SkinState &state) const;
         void readSkinStateRectNode(XML::Node node, SkinState &state) const;
+        void readIconNode(XML::Node node);
         void readColorNode(XML::Node node);
         void readProgressBarNode(XML::Node node);
 
         std::string mThemePath;
         std::map<SkinType, Skin> mSkins;
+        std::map<std::string, Image *> mIcons;
 
         /**
          * Tells if the current skins opacity

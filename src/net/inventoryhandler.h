@@ -22,16 +22,14 @@
 #pragma once
 
 #include "equipment.h"
-#include "inventory.h"
-#include "item.h"
 #include "position.h"
 
-#include <iosfwd>
+#include <string>
 
 namespace Net {
 
 // Default positions of the boxes, 2nd dimension is X and Y respectively.
-const int fallBackBoxesPosition[][2] = {
+constexpr Position fallBackBoxPositions[] = {
     { 90,  40 },    // EQUIP_TORSO_SLOT
     { 8,   78 },    // EQUIP_GLOVES_SLOT
     { 70,  0 },     // EQUIP_HEAD_SLOT
@@ -45,21 +43,21 @@ const int fallBackBoxesPosition[][2] = {
     { 129, 78 }     // EQUIP_PROJECTILE_SLOT
 };
 
-const std::string fallBackBoxesBackground[] = {
-    "equip-box-chest.png",
-    "equip-box-hands.png",
-    "equip-box-head.png",
-    "equip-box-legs.png",
-    "equip-box-feet.png",
-    "equip-box-ring.png",
-    "equip-box-ring.png",
-    "equip-box-neck.png",
-    "equip-box-weapon.png",
-    "equip-box-shield.png",
-    "equip-box-ammo.png"
+const std::string fallBackBoxIcons[] = {
+    "equip-box-chest",
+    "equip-box-hands",
+    "equip-box-head",
+    "equip-box-legs",
+    "equip-box-feet",
+    "equip-box-ring",
+    "equip-box-ring",
+    "equip-box-neck",
+    "equip-box-weapon",
+    "equip-box-shield",
+    "equip-box-ammo"
 };
 
-static const std::string empty = std::string();
+static const std::string empty;
 
 class InventoryHandler
 {
@@ -80,17 +78,15 @@ class InventoryHandler
 
         virtual Position getBoxPosition(unsigned int slotIndex) const
         {
-            if (slotIndex < (sizeof(fallBackBoxesPosition)
-                             / sizeof(fallBackBoxesPosition[0][0])))
-                return Position(fallBackBoxesPosition[slotIndex][0],
-                                fallBackBoxesPosition[slotIndex][1]);
+            if (slotIndex < sizeof(fallBackBoxPositions) / sizeof(fallBackBoxPositions[0]))
+                return fallBackBoxPositions[slotIndex];
             return Position(0,0);
         }
 
-        virtual const std::string& getBoxBackground(unsigned int slotIndex) const
+        virtual const std::string& getBoxIcon(unsigned int slotIndex) const
         {
-            if (slotIndex < sizeof(fallBackBoxesBackground))
-                return fallBackBoxesBackground[slotIndex];
+            if (slotIndex < sizeof(fallBackBoxIcons) / sizeof(fallBackBoxIcons[0]))
+                return fallBackBoxIcons[slotIndex];
             return empty; // The empty string
         }
 };

@@ -383,4 +383,15 @@
       <img src="window.png" x="175" y="114" width="38" height="38" />
     </state>
   </skin>
+
+  <icon name="equip-box-ammo" src="equipmentbox.png" x="128" y="32" width="32" height="32" />
+  <icon name="equip-box-chest" src="equipmentbox.png" x="0" y="0" width="32" height="32" />
+  <icon name="equip-box-feet" src="equipmentbox.png" x="128" y="0" width="32" height="32" />
+  <icon name="equip-box-hands" src="equipmentbox.png" x="32" y="0" width="32" height="32" />
+  <icon name="equip-box-head" src="equipmentbox.png" x="64" y="0" width="32" height="32" />
+  <icon name="equip-box-legs" src="equipmentbox.png" x="96" y="0" width="32" height="32" />
+  <icon name="equip-box-neck" src="equipmentbox.png" x="32" y="32" width="32" height="32" />
+  <icon name="equip-box-ring" src="equipmentbox.png" x="0" y="32" width="32" height="32" />
+  <icon name="equip-box-shield" src="equipmentbox.png" x="96" y="32" width="32" height="32" />
+  <icon name="equip-box-weapon" src="equipmentbox.png" x="64" y="32" width="32" height="32" />
 </theme>

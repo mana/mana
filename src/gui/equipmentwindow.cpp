@@ -74,28 +74,6 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
 
     add(playerBox);
     add(mUnequip);
-
-    loadEquipBoxes();
-}
-
-void EquipmentWindow::loadEquipBoxes()
-{
-    mBoxes.resize(mEquipment->getSlotNumber());
-
-    for (size_t i = 0; i < mBoxes.size(); ++i)
-    {
-        auto &box = mBoxes[i];
-
-        Position boxPosition = Net::getInventoryHandler()->getBoxPosition(i);
-        box.posX = boxPosition.x + getPadding();
-        box.posY = boxPosition.y + getTitleBarHeight();
-
-        const std::string &backgroundFile =
-            Net::getInventoryHandler()->getBoxBackground(i);
-
-        if (!backgroundFile.empty())
-            box.backgroundImage = Theme::getImageFromTheme(backgroundFile);
-    }
 }
 
 EquipmentWindow::~EquipmentWindow()
@@ -107,30 +85,24 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
 
-    // Draw equipment boxes
     auto *g = static_cast<Graphics*>(graphics);
 
-    auto &boxSkin = gui->getTheme()->getSkin(SkinType::EquipmentBox);
+    auto theme = gui->getTheme();
+    auto &boxSkin = theme->getSkin(SkinType::EquipmentBox);
 
-    for (size_t i = 0; i < mBoxes.size(); i++)
+    // Draw equipment boxes
+    const int boxCount = mEquipment->getSlotNumber();
+    for (int i = 0; i < boxCount; ++i)
     {
-        const auto &box = mBoxes[i];
+        Position boxPos = Net::getInventoryHandler()->getBoxPosition(i);
+        boxPos.x += getPadding();
+        boxPos.y += getTitleBarHeight();
 
-        WidgetState boxState(gcn::Rectangle(box.posX, box.posY, boxSkin.width, boxSkin.height));
-        if (static_cast<int>(i) == mSelected)
+        WidgetState boxState(gcn::Rectangle(boxPos.x, boxPos.y, boxSkin.width, boxSkin.height));
+        if (i == mSelected)
             boxState.flags |= STATE_SELECTED;
 
         boxSkin.draw(g, boxState);
-
-        // When there is a background image, draw it centered in the box:
-        if (box.backgroundImage)
-        {
-            int posX = box.posX
-                + (boxSkin.width - box.backgroundImage->getWidth()) / 2;
-            int posY = box.posY
-                + (boxSkin.height - box.backgroundImage->getHeight()) / 2;
-            g->drawImage(box.backgroundImage, posX, posY);
-        }
 
         if (Item *item = mEquipment->getEquipment(i))
         {
@@ -138,18 +110,25 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
             {
                 image->setAlpha(1.0f);
                 g->drawImage(image,
-                             box.posX + boxSkin.padding,
-                             box.posY + boxSkin.padding);
+                             boxPos.x + boxSkin.padding,
+                             boxPos.y + boxSkin.padding);
             }
 
             if (i == TmwAthena::EQUIP_PROJECTILE_SLOT)
             {
                 g->setColor(Theme::getThemeColor(Theme::TEXT));
                 graphics->drawText(toString(item->getQuantity()),
-                                   box.posX + (boxSkin.width / 2),
-                                   box.posY - getFont()->getHeight(),
+                                   boxPos.x + boxSkin.width / 2,
+                                   boxPos.y - getFont()->getHeight(),
                                    gcn::Graphics::CENTER);
             }
+        }
+        else
+        {
+            auto &icon = Net::getInventoryHandler()->getBoxIcon(i);
+            if (!icon.empty())
+                if (auto image = theme->getIcon(icon))
+                    g->drawImage(image, boxPos.x + boxSkin.padding, boxPos.y + boxSkin.padding);
         }
     }
 }
@@ -171,10 +150,16 @@ int EquipmentWindow::getBoxIndex(int x, int y) const
 {
     auto &boxSkin = gui->getTheme()->getSkin(SkinType::EquipmentBox);
 
-    for (size_t i = 0; i < mBoxes.size(); ++i)
+    // Translate coordinates to content area
+    const auto childrenArea = const_cast<EquipmentWindow*>(this)->getChildrenArea();
+    x -= childrenArea.x;
+    y -= childrenArea.y;
+
+    const int boxCount = mEquipment->getSlotNumber();
+    for (int i = 0; i < boxCount; ++i)
     {
-        const auto &box = mBoxes[i];
-        const gcn::Rectangle tRect(box.posX, box.posY, boxSkin.width, boxSkin.height);
+        const Position boxPos = Net::getInventoryHandler()->getBoxPosition(i);
+        const gcn::Rectangle tRect(boxPos.x, boxPos.y, boxSkin.width, boxSkin.height);
         if (tRect.isPointInRect(x, y))
             return i;
     }

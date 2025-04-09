@@ -197,11 +197,10 @@ void EquipBackend::readBoxNode(XML::Node slotNode)
         const int x = boxNode.getProperty("x" , 0);
         const int y = boxNode.getProperty("y" , 0);
 
-        mBoxesPositions.emplace_back(x, y);
+        mBoxPositions.emplace_back(x, y);
 
-        std::string backgroundFile =
-            boxNode.getProperty("background" , std::string());
-        mBoxesBackgroundFile.push_back(backgroundFile);
+        const auto icon = boxNode.getProperty("icon", std::string());
+        mBoxIcons.push_back(icon);
     }
 }
 
@@ -227,15 +226,15 @@ bool EquipBackend::isAmmoSlot(int slotTypeId) const
 
 Position EquipBackend::getBoxPosition(unsigned int slotIndex) const
 {
-    if (slotIndex < mBoxesPositions.size())
-        return mBoxesPositions.at(slotIndex);
+    if (slotIndex < mBoxPositions.size())
+        return mBoxPositions.at(slotIndex);
     return Position(0, 0);
 }
 
-const std::string &EquipBackend::getBoxBackground(unsigned int slotIndex) const
+const std::string &EquipBackend::getBoxIcon(unsigned int slotIndex) const
 {
-    if (slotIndex < mBoxesBackgroundFile.size())
-        return mBoxesBackgroundFile.at(slotIndex);
+    if (slotIndex < mBoxIcons.size())
+        return mBoxIcons.at(slotIndex);
     return Net::empty;
 }
 

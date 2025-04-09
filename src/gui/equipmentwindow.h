@@ -22,13 +22,10 @@
 #pragma once
 
 #include "equipment.h"
-#include "resources/image.h"
 
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
-
-#include <vector>
 
 class Inventory;
 class Item;
@@ -58,29 +55,12 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         void mouseExited(gcn::MouseEvent &event) override;
 
         /**
-         * Loads the correct amount of displayed equip boxes.
-         */
-        void loadEquipBoxes();
-
-        /**
          * Returns the current selected slot or -1 if none.
          */
         int getSelected() const
         { return mSelected; }
 
   protected:
-        /**
-         * Equipment box.
-         */
-        struct EquipBox
-        {
-            int posX = 0;
-            int posY = 0;
-            ResourceRef<Image> backgroundImage;
-        };
-
-        std::vector<EquipBox> mBoxes;   /**< Equipment boxes. */
-
         int mSelected = -1;             /**< Index of selected item. */
         Equipment *mEquipment;
 

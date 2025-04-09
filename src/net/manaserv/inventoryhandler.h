@@ -27,6 +27,8 @@
 
 #include "net/manaserv/messagehandler.h"
 
+#include "utils/xml.h"
+
 #include <map>
 #include <vector>
 
@@ -59,7 +61,7 @@ class EquipBackend final : public Equipment::Backend, public EventListener
 
         Position getBoxPosition(unsigned int slotIndex) const;
 
-        const std::string &getBoxBackground(unsigned int slotIndex) const;
+        const std::string &getBoxIcon(unsigned int slotIndex) const;
 
     private:
         void readEquipFile() override;
@@ -95,8 +97,8 @@ class EquipBackend final : public Equipment::Backend, public EventListener
 
         // slot client index, slot info
         std::map<unsigned int, Slot> mSlots;
-        std::vector<Position> mBoxesPositions;
-        std::vector<std::string> mBoxesBackgroundFile;
+        std::vector<Position> mBoxPositions;
+        std::vector<std::string> mBoxIcons;
 };
 
 class InventoryHandler final : public MessageHandler, Net::InventoryHandler,
@@ -126,8 +128,8 @@ class InventoryHandler final : public MessageHandler, Net::InventoryHandler,
         Position getBoxPosition(unsigned int slotIndex) const override
         { return mEquipBackend.getBoxPosition(slotIndex); }
 
-        const std::string& getBoxBackground(unsigned int slotIndex) const override
-        { return mEquipBackend.getBoxBackground(slotIndex); }
+        const std::string& getBoxIcon(unsigned int slotIndex) const override
+        { return mEquipBackend.getBoxIcon(slotIndex); }
 
     private:
         EquipBackend mEquipBackend;

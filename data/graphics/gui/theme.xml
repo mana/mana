@@ -299,4 +299,15 @@
       <img src="selection.png" />
     </state>
   </skin>
+
+  <icon name="equip-box-ammo" src="equip-box-ammo.png" />
+  <icon name="equip-box-chest" src="equip-box-chest.png" />
+  <icon name="equip-box-feet" src="equip-box-feet.png" />
+  <icon name="equip-box-hands" src="equip-box-hands.png" />
+  <icon name="equip-box-head" src="equip-box-head.png" />
+  <icon name="equip-box-legs" src="equip-box-legs.png" />
+  <icon name="equip-box-neck" src="equip-box-neck.png" />
+  <icon name="equip-box-ring" src="equip-box-ring.png" />
+  <icon name="equip-box-shield" src="equip-box-shield.png" />
+  <icon name="equip-box-weapon" src="equip-box-weapon.png" />
 </theme>

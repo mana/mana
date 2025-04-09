@@ -233,7 +233,11 @@ Theme::Theme(const std::string &path)
     mColors[HYPERLINK].ch = '<';
 }
 
-Theme::~Theme() = default;
+Theme::~Theme()
+{
+    for (auto &[_, image] : mIcons)
+        delete image;
+}
 
 std::string Theme::prepareThemePath()
 {
@@ -359,6 +363,15 @@ const Skin &Theme::getSkin(SkinType skinType) const
     return it != mSkins.end() ? it->second : emptySkin;
 }
 
+const Image *Theme::getIcon(const std::string &name) const
+{
+    auto it = mIcons.find(name);
+    if (it == mIcons.end())
+        return nullptr;
+
+    return it->second;
+}
+
 void Theme::setMinimumOpacity(float minimumOpacity)
 {
     if (minimumOpacity > 1.0f)
@@ -420,6 +433,10 @@ bool Theme::readTheme(const std::string &filename)
             readColorNode(childNode);
         else if (childNode.name() == "progressbar")
             readProgressBarNode(childNode);
+        else if (childNode.name() == "icon")
+            readIconNode(childNode);
+        else
+            logger->log("Theme: Unknown node '%s'!", childNode.name().data());
     }
 
     logger->log("Finished loading theme.");
@@ -649,6 +666,42 @@ void Theme::readSkinStateRectNode(XML::Node node, SkinState &state) const
     node.attribute("color", rect.color);
     node.attribute("alpha", rect.color.a);
     node.attribute("fill", rect.filled);
+}
+
+void Theme::readIconNode(XML::Node node)
+{
+    std::string name;
+    std::string src;
+    node.attribute("name", name);
+    node.attribute("src", src);
+
+    if (check(!name.empty(), "Theme: 'icon' element has empty 'name' attribute!"))
+        return;
+    if (check(!src.empty(), "Theme: 'icon' element has empty 'src' attribute!"))
+        return;
+
+    auto image = getImage(src);
+    if (check(image, "Theme: Failed to load image '%s'!", src.c_str()))
+        return;
+
+    int x = 0;
+    int y = 0;
+    int width = image->getWidth();
+    int height = image->getHeight();
+
+    node.attribute("x", x);
+    node.attribute("y", y);
+    node.attribute("width", width);
+    node.attribute("height", height);
+
+    if (check(x >= 0 || y >= 0, "Theme: Invalid position value!"))
+        return;
+    if (check(width >= 0 || height >= 0, "Theme: Invalid size value!"))
+        return;
+    if (check(x + width <= image->getWidth() || y + height <= image->getHeight(), "Theme: Image size out of bounds!"))
+        return;
+
+    mIcons[name] = image->getSubImage(x, y, width, height);
 }
 
 static int readColorType(const std::string &type)

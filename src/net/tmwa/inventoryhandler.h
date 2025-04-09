@@ -23,6 +23,7 @@
 
 #include "eventlistener.h"
 #include "inventory.h"
+#include "item.h"
 #include "log.h"
 #include "playerinfo.h"
 

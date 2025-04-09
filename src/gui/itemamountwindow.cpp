@@ -21,6 +21,7 @@
 
 #include "gui/itemamountwindow.h"
 
+#include "inventory.h"
 #include "item.h"
 #include "keyboardconfig.h"
 
@@ -33,9 +34,6 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/slider.h"
 #include "gui/widgets/icon.h"
-
-#include "net/inventoryhandler.h"
-#include "net/net.h"
 
 #include "utils/gettext.h"
 

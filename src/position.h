@@ -29,7 +29,7 @@
  */
 struct Position
 {
-    Position(int x, int y):
+    constexpr Position(int x, int y):
         x(x), y(y)
     { }
 
