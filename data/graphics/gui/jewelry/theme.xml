@@ -125,7 +125,7 @@
 
   <skin type="ToolWindow" padding="9" titleBarHeight="18">
     <state>
-      <img src="window.png" x="220" y="148" width="107" height="42" left="9" right="9" top="9" bottom="9" />
+      <img src="window.png" x="220" y="149" width="107" height="41" left="9" right="9" top="9" bottom="9" />
     </state>
   </skin>
 
@@ -138,7 +138,7 @@
   <skin type="Popup" padding="9" titleBarHeight="26" titleOffsetX="8" titleOffsetY="8">
     <state>
       <text color="#f1d9a9" outlineColor="#000000"/>
-      <img src="window.png" x="220" y="106" width="107" height="42" left="9" right="9" top="9" bottom="9" />
+      <img src="window.png" x="220" y="107" width="107" height="41" left="9" right="9" top="9" bottom="9" />
     </state>
   </skin>
 
@@ -354,7 +354,7 @@
     </state>
   </skin>
 
-  <skin type="ButtonSticky" padding="2">
+  <skin type="ButtonSticky" padding="2" spacing="4">
     <state selected="true">
       <img src="window.png" x="121" y="50" width="19" height="22" />
     </state>

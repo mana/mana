@@ -712,15 +712,15 @@ gcn::Rectangle Window::getCloseButtonRect() const
 
     auto theme = gui->getTheme();
 
-    auto &closeButtonSkin = theme->getSkin(SkinType::ButtonClose);
-    const int closeButtonWidth = closeButtonSkin.getMinWidth();
-    const int closeButtonHeight = closeButtonSkin.getMinHeight();
+    auto &closeSkin = theme->getSkin(SkinType::ButtonClose);
+    const int closeWidth = closeSkin.getMinWidth();
+    const int closeHeight = closeSkin.getMinHeight();
 
     return {
-        getWidth() - closeButtonWidth - closeButtonSkin.padding,
-        closeButtonSkin.padding,
-        closeButtonWidth,
-        closeButtonHeight
+        getWidth() - closeWidth - closeSkin.padding,
+        closeSkin.padding,
+        closeWidth,
+        closeHeight
     };
 }
 
@@ -731,22 +731,22 @@ gcn::Rectangle Window::getStickyButtonRect() const
 
     auto theme = gui->getTheme();
 
-    auto &closeButtonSkin = theme->getSkin(SkinType::ButtonClose);
-    const int closeButtonWidth = closeButtonSkin.getMinWidth();
+    auto &closeSkin = theme->getSkin(SkinType::ButtonClose);
+    const int closeWidth = closeSkin.getMinWidth();
 
-    auto &stickyButtonSkin = theme->getSkin(SkinType::ButtonSticky);
-    const int stickyButtonWidth = stickyButtonSkin.getMinWidth();
-    const int stickyButtonHeight = stickyButtonSkin.getMinHeight();
+    auto &stickySkin = theme->getSkin(SkinType::ButtonSticky);
+    const int stickyWidth = stickySkin.getMinWidth();
+    const int stickyHeight = stickySkin.getMinHeight();
 
-    int stickyButtonX = getWidth() - stickyButtonWidth - stickyButtonSkin.padding;
+    int stickyX = getWidth() - stickyWidth - stickySkin.padding - stickySkin.spacing;
     if (mCloseButton)
-        stickyButtonX -= closeButtonWidth + closeButtonSkin.padding;
+        stickyX -= closeWidth + closeSkin.padding;
 
     return {
-        stickyButtonX,
-        stickyButtonSkin.padding,
-        stickyButtonWidth,
-        stickyButtonHeight
+        stickyX,
+        stickySkin.padding,
+        stickyWidth,
+        stickyHeight
     };
 }
 
