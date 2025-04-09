@@ -120,11 +120,11 @@ void Skin::draw(Graphics *graphics, const WidgetState &state) const
 
             if constexpr (std::is_same_v<T, ImageRect>)
             {
-                graphics->drawImageRect(state.x + part.offsetX,
+                graphics->drawImageRect(data,
+                                        state.x + part.offsetX,
                                         state.y + part.offsetY,
                                         state.width,
-                                        state.height,
-                                        data);
+                                        state.height);
             }
             else if constexpr (std::is_same_v<T, Image*>)
             {
@@ -204,7 +204,7 @@ void Skin::updateAlpha(float alpha)
         for (auto &part : state.parts)
         {
             if (auto rect = std::get_if<ImageRect>(&part.data))
-                rect->setAlpha(alpha);
+                rect->image->setAlpha(alpha);
             else if (auto img = std::get_if<Image *>(&part.data))
                 (*img)->setAlpha(alpha);
         }
@@ -601,24 +601,13 @@ void Theme::readSkinStateImgNode(XML::Node node, SkinState &state) const
     if (left + right + top + bottom > 0)
     {
         auto &border = part.data.emplace<ImageRect>();
+        border.left = left;
+        border.right = right;
+        border.top = top;
+        border.bottom = bottom;
+        border.image = image->getSubImage(x, y, width, height);
 
         node.attribute("fill", border.fillMode);
-
-        const int gridx[4] = {x, x + left, x + width - right, x + width};
-        const int gridy[4] = {y, y + top, y + height - bottom, y + height};
-        unsigned a = 0;
-
-        for (unsigned y = 0; y < 3; y++)
-        {
-            for (unsigned x = 0; x < 3; x++)
-            {
-                border.grid[a] = image->getSubImage(gridx[x],
-                                                    gridy[y],
-                                                    gridx[x + 1] - gridx[x],
-                                                    gridy[y + 1] - gridy[y]);
-                a++;
-            }
-        }
     }
     else
     {

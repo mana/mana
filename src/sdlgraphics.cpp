@@ -204,8 +204,10 @@ bool SDLGraphics::drawRescaledImageF(const Image *image,
 #endif
 
 void SDLGraphics::drawRescaledImagePattern(const Image *image,
-                                           int x, int y,
-                                           int w, int h,
+                                           int srcX, int srcY,
+                                           int srcW, int srcH,
+                                           int dstX, int dstY,
+                                           int dstW, int dstH,
                                            int scaledWidth,
                                            int scaledHeight)
 {
@@ -217,24 +219,22 @@ void SDLGraphics::drawRescaledImagePattern(const Image *image,
         return;
 
     SDL_Rect srcRect;
-    srcRect.x = image->mBounds.x;
-    srcRect.y = image->mBounds.y;
+    srcRect.x = image->mBounds.x + srcX;
+    srcRect.y = image->mBounds.y + srcY;
 
-    for (int py = 0; py < h; py += scaledHeight)    // Y position on pattern plane
+    for (int py = 0; py < dstH; py += scaledHeight)    // Y position on pattern plane
     {
-        int dh = (py + scaledHeight >= h) ? h - py : scaledHeight;
-        int dstY = y + py + mClipStack.top().yOffset;
+        SDL_Rect dstRect;
+        dstRect.h = (py + scaledHeight >= dstH) ? dstH - py : scaledHeight;
+        dstRect.y = dstY + py + mClipStack.top().yOffset;
 
-        for (int px = 0; px < w; px += scaledWidth) // X position on pattern plane
+        for (int px = 0; px < dstW; px += scaledWidth) // X position on pattern plane
         {
-            int dw = (px + scaledWidth >= w) ? w - px : scaledWidth;
-            int dstX = x + px + mClipStack.top().xOffset;
+            dstRect.x = dstX + px + mClipStack.top().xOffset;
+            dstRect.w = (px + scaledWidth >= dstW) ? dstW - px : scaledWidth;
 
-            SDL_Rect dstRect;
-            dstRect.x = dstX; dstRect.y = dstY;
-            dstRect.w = dw;   dstRect.h = dh;
-            srcRect.w = image->mBounds.w * dw / scaledWidth;
-            srcRect.h = image->mBounds.h * dh / scaledHeight;
+            srcRect.w = srcW * dstRect.w / scaledWidth;
+            srcRect.h = srcH * dstRect.h / scaledHeight;
 
             if (SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect))
                 return;

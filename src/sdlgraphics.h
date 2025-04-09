@@ -57,8 +57,10 @@ public:
 #endif
 
     void drawRescaledImagePattern(const Image *image,
-                                  int x, int y,
-                                  int w, int h,
+                                  int srcX, int srcY,
+                                  int srcW, int srcH,
+                                  int dstX, int dstY,
+                                  int dstW, int dstH,
                                   int scaledWidth,
                                   int scaledHeight) override;
 

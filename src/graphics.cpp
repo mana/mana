@@ -25,37 +25,15 @@
 
 #include <guichan/exception.hpp>
 
-ImageRect::ImageRect()
-{
-    memset(grid, 0, sizeof(grid));
-}
-
 ImageRect::ImageRect(ImageRect &&r)
 {
-    memcpy(grid, r.grid, sizeof(grid));
-    memset(r.grid, 0, sizeof(grid));
+    image = r.image;
+    r.image = nullptr;
 }
 
 ImageRect::~ImageRect()
 {
-    for (auto img : grid)
-        delete img;
-}
-
-void ImageRect::setAlpha(float alpha)
-{
-    for (auto img : grid)
-        img->setAlpha(alpha);
-}
-
-int ImageRect::minWidth() const
-{
-    return grid[ImageRect::UPPER_LEFT]->getWidth() + grid[ImageRect::UPPER_RIGHT]->getWidth();
-}
-
-int ImageRect::minHeight() const
-{
-    return grid[ImageRect::UPPER_LEFT]->getHeight() + grid[ImageRect::LOWER_LEFT]->getHeight();
+    delete image;
 }
 
 
@@ -89,7 +67,12 @@ bool Graphics::drawRescaledImage(const Image *image, int x, int y, int width, in
     return drawRescaledImage(image, 0, 0, x, y, image->getWidth(), image->getHeight(), width, height);
 }
 
-bool Graphics::drawRescaledImageF(const Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, float desiredWidth, float desiredHeight, bool useColor)
+bool Graphics::drawRescaledImageF(const Image *image,
+                                  int srcX, int srcY,
+                                  float dstX, float dstY,
+                                  int width, int height,
+                                  float desiredWidth, float desiredHeight,
+                                  bool useColor)
 {
     return drawRescaledImage(image,
                              srcX, srcY,
@@ -132,100 +115,72 @@ void Graphics::drawImagePattern(const Image *image, int x, int y, int w, int h)
                              image->getWidth(), image->getHeight());
 }
 
-void Graphics::drawImageRect(int x, int y, int w, int h,
-                             const Image *topLeft, const Image *topRight,
-                             const Image *bottomLeft, const Image *bottomRight,
-                             const Image *top, const Image *right,
-                             const Image *bottom, const Image *left,
-                             const Image *center,
-                             FillMode fillMode)
+void Graphics::drawRescaledImagePattern(const Image *image,
+                                        int x, int y,
+                                        int w, int h,
+                                        int scaledWidth, int scaledHeight)
 {
-    switch (fillMode) {
-    case FillMode::Stretch:
-        // Draw the center area
-        drawRescaledImage(center,
-                          x + topLeft->getWidth(),
-                          y + topLeft->getHeight(),
-                          w - topLeft->getWidth() - topRight->getWidth(),
-                          h - topLeft->getHeight() - bottomLeft->getHeight());
-
-        // Draw the sides
-        drawRescaledImage(top,
-                          x + left->getWidth(),
-                          y,
-                          w - left->getWidth() - right->getWidth(),
-                          top->getHeight());
-
-        drawRescaledImage(bottom,
-                          x + left->getWidth(),
-                          y + h - bottom->getHeight(),
-                          w - left->getWidth() - right->getWidth(),
-                          bottom->getHeight());
-
-        drawRescaledImage(left,
-                          x,
-                          y + top->getHeight(),
-                          left->getWidth(),
-                          h - top->getHeight() - bottom->getHeight());
-
-        drawRescaledImage(right,
-                          x + w - right->getWidth(),
-                          y + top->getHeight(),
-                          right->getWidth(),
-                          h - top->getHeight() - bottom->getHeight());
-        break;
-    case FillMode::Repeat:
-        // Draw the center area
-        drawImagePattern(center,
-                         x + topLeft->getWidth(),
-                         y + topLeft->getHeight(),
-                         w - topLeft->getWidth() - topRight->getWidth(),
-                         h - topLeft->getHeight() - bottomLeft->getHeight());
-
-        // Draw the sides
-        drawImagePattern(top,
-                         x + left->getWidth(),
-                         y,
-                         w - left->getWidth() - right->getWidth(),
-                         top->getHeight());
-
-        drawImagePattern(bottom,
-                         x + left->getWidth(),
-                         y + h - bottom->getHeight(),
-                         w - left->getWidth() - right->getWidth(),
-                         bottom->getHeight());
-
-        drawImagePattern(left,
-                         x,
-                         y + top->getHeight(),
-                         left->getWidth(),
-                         h - top->getHeight() - bottom->getHeight());
-
-        drawImagePattern(right,
-                         x + w - right->getWidth(),
-                         y + top->getHeight(),
-                         right->getWidth(),
-                         h - top->getHeight() - bottom->getHeight());
-        break;
-    }
-
-    // Draw the corners
-    drawImage(topLeft, x, y);
-    drawImage(topRight, x + w - topRight->getWidth(), y);
-    drawImage(bottomLeft, x, y + h - bottomLeft->getHeight());
-    drawImage(bottomRight,
-              x + w - bottomRight->getWidth(),
-              y + h - bottomRight->getHeight());
+    drawRescaledImagePattern(image,
+                             0, 0,
+                             image->getWidth(),
+                             image->getHeight(),
+                             x, y,
+                             w, h,
+                             scaledWidth,
+                             scaledHeight);
 }
 
-void Graphics::drawImageRect(int x, int y, int w, int h,
-                             const ImageRect &imgRect)
+void Graphics::drawImageRect(const ImageRect &imgRect, int x, int y, int w, int h)
 {
-    drawImageRect(x, y, w, h,
-                  imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],
-                  imgRect.grid[1], imgRect.grid[5], imgRect.grid[7], imgRect.grid[3],
-                  imgRect.grid[4],
-                  imgRect.fillMode);
+    const int srcGridX[4] = {0,
+                             imgRect.left,
+                             imgRect.image->getWidth() - imgRect.right,
+                             imgRect.image->getWidth()};
+    const int srcGridY[4] = {0,
+                             imgRect.top,
+                             imgRect.image->getHeight() - imgRect.bottom,
+                             imgRect.image->getHeight()};
+
+    const int dstGridX[4] = {x, x + imgRect.left, x + w - imgRect.right, x + w};
+    const int dstGridY[4] = {y, y + imgRect.top, y + h - imgRect.bottom, y + h};
+
+    for (unsigned ix = 0; ix < 3; ix++)
+    {
+        for (unsigned iy = 0; iy < 3; iy++)
+        {
+            const int srcW = srcGridX[ix + 1] - srcGridX[ix];
+            const int srcH = srcGridY[iy + 1] - srcGridY[iy];
+
+            const int dstW = dstGridX[ix + 1] - dstGridX[ix];
+            const int dstH = dstGridY[iy + 1] - dstGridY[iy];
+
+            if (srcW <= 0 || srcH <= 0 || dstW <= 0 || dstH <= 0)
+                continue;
+
+            switch (imgRect.fillMode)
+            {
+            case FillMode::Stretch:
+                drawRescaledImage(imgRect.image,
+                                  srcGridX[ix],
+                                  srcGridY[iy],
+                                  dstGridX[ix],
+                                  dstGridY[iy],
+                                  srcW, srcH,
+                                  dstW, dstH);
+                break;
+            case FillMode::Repeat:
+                drawRescaledImagePattern(imgRect.image,
+                                         srcGridX[ix],
+                                         srcGridY[iy],
+                                         srcW, srcH,
+                                         dstGridX[ix],
+                                         dstGridY[iy],
+                                         dstW, dstH,
+                                         srcW, srcH);
+                break;
+            }
+        }
+    }
 }
 
 void Graphics::_beginDraw()

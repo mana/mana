@@ -397,8 +397,10 @@ void OpenGLGraphics::drawImagePattern(const Image *image, int x, int y, int w, i
 }
 
 void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
-                                              int x, int y,
-                                              int w, int h,
+                                              int srcX, int srcY,
+                                              int srcW, int srcH,
+                                              int dstX, int dstY,
+                                              int dstW, int dstH,
                                               int scaledWidth,
                                               int scaledHeight)
 {
@@ -408,12 +410,10 @@ void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
     if (scaledWidth == 0 || scaledHeight == 0)
         return;
 
-    const int srcX = image->mBounds.x;
-    const int srcY = image->mBounds.y;
+    srcX += image->mBounds.x;
+    srcY += image->mBounds.y;
 
-    const int iw = image->getWidth();
-    const int ih = image->getHeight();
-    if (iw == 0 || ih == 0)
+    if (srcW == 0 || srcH == 0)
         return;
 
     glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
@@ -434,17 +434,17 @@ void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
         const float texX1 = static_cast<float>(srcX) / tw;
         const float texY1 = static_cast<float>(srcY) / th;
 
-        const float tFractionW = iw / tw;
-        const float tFractionH = ih / th;
+        const float tFractionW = srcW / tw;
+        const float tFractionH = srcH / th;
 
-        for (int py = 0; py < h; py += scaledHeight)
+        for (int py = 0; py < dstH; py += scaledHeight)
         {
-            const int height = (py + scaledHeight >= h) ? h - py : scaledHeight;
-            const int dstY = y + py;
-            for (int px = 0; px < w; px += scaledWidth)
+            const int height = (py + scaledHeight >= dstH) ? dstH - py : scaledHeight;
+            const int destY = dstY + py;
+            for (int px = 0; px < dstW; px += scaledWidth)
             {
-                int width = (px + scaledWidth >= w) ? w - px : scaledWidth;
-                int dstX = x + px;
+                int width = (px + scaledWidth >= dstW) ? dstW - px : scaledWidth;
+                int destX = dstX + px;
                 const float visibleFractionW = (float) width / scaledWidth;
                 const float visibleFractionH = (float) height / scaledHeight;
 
@@ -463,17 +463,17 @@ void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
                 mFloatTexArray[vp + 6] = texX1;
                 mFloatTexArray[vp + 7] = texY2;
 
-                mIntVertArray[vp + 0] = dstX;
-                mIntVertArray[vp + 1] = dstY;
+                mIntVertArray[vp + 0] = destX;
+                mIntVertArray[vp + 1] = destY;
 
-                mIntVertArray[vp + 2] = dstX + width;
-                mIntVertArray[vp + 3] = dstY;
+                mIntVertArray[vp + 2] = destX + width;
+                mIntVertArray[vp + 3] = destY;
 
-                mIntVertArray[vp + 4] = dstX + width;
-                mIntVertArray[vp + 5] = dstY + height;
+                mIntVertArray[vp + 4] = destX + width;
+                mIntVertArray[vp + 5] = destY + height;
 
-                mIntVertArray[vp + 6] = dstX;
-                mIntVertArray[vp + 7] = dstY + height;
+                mIntVertArray[vp + 6] = destX;
+                mIntVertArray[vp + 7] = destY + height;
 
                 vp += 8;
                 if (vp >= vLimit)
@@ -488,17 +488,17 @@ void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
     }
     else
     {
-        const float scaleFactorW = (float) scaledWidth / iw;
-        const float scaleFactorH = (float) scaledHeight / ih;
+        const float scaleFactorW = (float) scaledWidth / srcW;
+        const float scaleFactorH = (float) scaledHeight / srcH;
 
-        for (int py = 0; py < h; py += scaledHeight)
+        for (int py = 0; py < dstH; py += scaledHeight)
         {
-            const int height = (py + scaledHeight >= h) ? h - py : scaledHeight;
-            const int dstY = y + py;
-            for (int px = 0; px < w; px += scaledWidth)
+            const int height = (py + scaledHeight >= dstH) ? dstH - py : scaledHeight;
+            const int destY = dstY + py;
+            for (int px = 0; px < dstW; px += scaledWidth)
             {
-                int width = (px + scaledWidth >= w) ? w - px : scaledWidth;
-                int dstX = x + px;
+                int width = (px + scaledWidth >= dstW) ? dstW - px : scaledWidth;
+                int destX = dstX + px;
 
                 mIntTexArray[vp + 0] = srcX;
                 mIntTexArray[vp + 1] = srcY;
@@ -512,17 +512,17 @@ void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
                 mIntTexArray[vp + 6] = srcX;
                 mIntTexArray[vp + 7] = srcY + height / scaleFactorH;
 
-                mIntVertArray[vp + 0] = dstX;
-                mIntVertArray[vp + 1] = dstY;
+                mIntVertArray[vp + 0] = destX;
+                mIntVertArray[vp + 1] = destY;
 
-                mIntVertArray[vp + 2] = dstX + width;
-                mIntVertArray[vp + 3] = dstY;
+                mIntVertArray[vp + 2] = destX + width;
+                mIntVertArray[vp + 3] = destY;
 
-                mIntVertArray[vp + 4] = dstX + width;
-                mIntVertArray[vp + 5] = dstY + height;
+                mIntVertArray[vp + 4] = destX + width;
+                mIntVertArray[vp + 5] = destY + height;
 
-                mIntVertArray[vp + 6] = dstX;
-                mIntVertArray[vp + 7] = dstY + height;
+                mIntVertArray[vp + 6] = destX;
+                mIntVertArray[vp + 7] = destY + height;
 
                 vp += 8;
                 if (vp >= vLimit)

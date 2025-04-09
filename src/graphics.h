@@ -67,7 +67,7 @@ public:
         LOWER_RIGHT = 8
     };
 
-    ImageRect();
+    ImageRect() = default;
     ImageRect(const ImageRect &) = delete;
     ImageRect(ImageRect &&);
     ~ImageRect();
@@ -75,12 +75,15 @@ public:
     ImageRect &operator=(const ImageRect &) = delete;
     ImageRect &operator=(ImageRect &&r) = delete;
 
-    Image *grid[9];
+    Image *image = nullptr;
+    int top = 0;
+    int left = 0;
+    int bottom = 0;
+    int right = 0;
     FillMode fillMode = FillMode::Stretch;
 
-    void setAlpha(float alpha);
-    int minWidth() const;
-    int minHeight() const;
+    int minWidth() const { return left + right; }
+    int minHeight() const { return top + bottom; }
 };
 
 /**
@@ -127,7 +130,8 @@ class Graphics : public gcn::Graphics
         /**
          * Draws a rescaled version of the image.
          */
-        virtual bool drawRescaledImage(const Image *image, int srcX, int srcY,
+        virtual bool drawRescaledImage(const Image *image,
+                                       int srcX, int srcY,
                                        int dstX, int dstY,
                                        int width, int height,
                                        int desiredWidth, int desiredHeight,
@@ -171,11 +175,22 @@ class Graphics : public gcn::Graphics
                                       int w, int h);
 
         /**
-         * Draw a pattern based on a rescaled version of the given image...
+         * Draw a pattern based on a rescaled version of the given image.
+         */
+        void drawRescaledImagePattern(const Image *image,
+                                      int x, int y,
+                                      int w, int h,
+                                      int scaledWidth,
+                                      int scaledHeight);
+
+        /**
+         * Draw a pattern based on a rescaled version of the given image.
          */
         virtual void drawRescaledImagePattern(const Image *image,
-                                              int x, int y,
-                                              int w, int h,
+                                              int srcX, int srcY,
+                                              int srcW, int srcH,
+                                              int dstX, int dstY,
+                                              int dstW, int dstH,
                                               int scaledWidth,
                                               int scaledHeight) = 0;
 
@@ -183,29 +198,11 @@ class Graphics : public gcn::Graphics
          * Draws a rectangle using images. 4 corner images, 4 side images and 1
          * image for the inside.
          */
-        void drawImageRect(int x, int y, int w, int h,
-                           const Image *topLeft, const Image *topRight,
-                           const Image *bottomLeft, const Image *bottomRight,
-                           const Image *top, const Image *right,
-                           const Image *bottom, const Image *left,
-                           const Image *center,
-                           FillMode fillMode = FillMode::Stretch);
+        void drawImageRect(const ImageRect &imgRect, int x, int y, int w, int h);
 
-        /**
-         * Draws a rectangle using images. 4 corner images, 4 side images and 1
-         * image for the inside.
-         */
-        void drawImageRect(int x, int y, int w, int h,
-                           const ImageRect &imgRect);
-
-        /**
-         * Draws a rectangle using images. 4 corner images, 4 side images and 1
-         * image for the inside.
-         */
-        void drawImageRect(const gcn::Rectangle &area,
-                           const ImageRect &imgRect)
+        void drawImageRect(const ImageRect &imgRect, const gcn::Rectangle &area)
         {
-            drawImageRect(area.x, area.y, area.width, area.height, imgRect);
+            drawImageRect(imgRect, area.x, area.y, area.width, area.height);
         }
 
         /**
