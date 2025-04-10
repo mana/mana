@@ -254,33 +254,33 @@
     </state>
   </skin>
 
-  <skin type="ScrollAreaVBar">
+  <skin type="ScrollAreaVBar" width="20">
     <state>
-      <img src="window.png" x="51" y="186" width="18" height="34" left="18" top="6" bottom="6" fill="repeat" />
+      <img src="window.png" x="51" y="186" width="18" height="34" left="18" top="6" bottom="6" fill="repeat" offsetX="1" />
     </state>
   </skin>
 
-  <skin type="ScrollAreaHBar">
+  <skin type="ScrollAreaHBar" height="20">
     <state>
-      <img src="window.png" x="69" y="181" width="34" height="18" left="6" top="18" right="6" fill="repeat" />
+      <img src="window.png" x="69" y="181" width="34" height="18" left="6" top="18" right="6" fill="repeat" offsetY="1" />
     </state>
   </skin>
 
-  <skin type="ScrollAreaHMarker">
+  <skin type="ScrollAreaHMarker" width="20" height="20">
     <state hovered="true">
-      <img src="window.png" x="26" y="165" width="18" height="18" left="8" right="9" top="18" />
+      <img src="window.png" x="26" y="165" width="18" height="18" offsetX="1" offsetY="1" />
     </state>
     <state>
-      <img src="window.png" x="3" y="165" width="18" height="18" left="8" right="9" top="18" />
+      <img src="window.png" x="3" y="165" width="18" height="18" offsetX="1" offsetY="1" />
     </state>
   </skin>
 
-  <skin type="ScrollAreaVMarker">
+  <skin type="ScrollAreaVMarker" width="20" height="20">
     <state hovered="true">
-      <img src="window.png" x="26" y="165" width="18" height="18" left="18" top="8" bottom="9" />
+      <img src="window.png" x="26" y="165" width="18" height="18" offsetX="1" offsetY="1" />
     </state>
     <state>
-      <img src="window.png" x="3" y="165" width="18" height="18" left="18" top="8" bottom="9" />
+      <img src="window.png" x="3" y="165" width="18" height="18" offsetX="1" offsetY="1" />
     </state>
   </skin>
 
@@ -311,28 +311,28 @@
 
   <skin type="ButtonUp">
     <state selected="true">
-      <img src="window.png" x="17" y="148" width="12" height="12" offsetX="3" offsetY="3" />
+      <img src="window.png" x="17" y="148" width="12" height="12" offsetX="4" offsetY="4" />
     </state>
     <state>
-      <img src="window.png" x="1" y="148" width="12" height="12" offsetX="3" offsetY="3" />
+      <img src="window.png" x="1" y="148" width="12" height="12" offsetX="4" offsetY="4" />
     </state>
   </skin>
 
   <skin type="ButtonDown">
     <state selected="true">
-      <img src="window.png" x="17" y="132" width="12" height="12" offsetX="3" offsetY="3" />
+      <img src="window.png" x="17" y="132" width="12" height="12" offsetX="4" offsetY="4" />
     </state>
     <state>
-      <img src="window.png" x="1" y="132" width="12" height="12" offsetX="3" offsetY="3" />
+      <img src="window.png" x="1" y="132" width="12" height="12" offsetX="4" offsetY="4" />
     </state>
   </skin>
 
   <skin type="ButtonLeft">
     <state selected="true">
-      <img src="window.png" x="17" y="100" width="12" height="12" offsetX="3" offsetY="3" />
+      <img src="window.png" x="17" y="100" width="12" height="12" offsetX="4" offsetY="4" />
     </state>
     <state>
-      <img src="window.png" x="1" y="100" width="12" height="12" offsetX="3" offsetY="3" />
+      <img src="window.png" x="1" y="100" width="12" height="12" offsetX="4" offsetY="4" />
     </state>
   </skin>
 

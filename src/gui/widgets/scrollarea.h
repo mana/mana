@@ -32,6 +32,8 @@
  * content. However, it won't delete a previously set content widget when
  * setContent is called!
  *
+ * Also overrides several functions to support fixed-size scroll bar markers.
+ *
  * \ingroup GUI
  */
 class ScrollArea : public gcn::ScrollArea
@@ -74,7 +76,7 @@ class ScrollArea : public gcn::ScrollArea
         /**
          * Applies clipping to the contents.
          */
-        void drawChildren(gcn::Graphics* graphics) override;
+        void drawChildren(gcn::Graphics *graphics) override;
 
         /**
          * Sets whether the widget should draw its background or not.
@@ -89,17 +91,20 @@ class ScrollArea : public gcn::ScrollArea
         /**
          * Called when the mouse moves in the widget area.
          */
-        void mouseMoved(gcn::MouseEvent& event) override;
+        void mouseMoved(gcn::MouseEvent &event) override;
 
         /**
          * Called when the mouse enteres the widget area.
          */
-        void mouseEntered(gcn::MouseEvent& event) override;
+        void mouseEntered(gcn::MouseEvent &event) override;
 
         /**
          * Called when the mouse leaves the widget area.
          */
-        void mouseExited(gcn::MouseEvent& event) override;
+        void mouseExited(gcn::MouseEvent &event) override;
+
+        void mousePressed(gcn::MouseEvent &mouseEvent) override;
+        void mouseDragged(gcn::MouseEvent &mouseEvent) override;
 
     protected:
         /**
@@ -121,6 +126,16 @@ class ScrollArea : public gcn::ScrollArea
                                SkinType skinType,
                                bool pressed,
                                const gcn::Rectangle &dim);
+
+        void checkPolicies() override;
+
+        /**
+         * Shadowing these functions from gcn::ScrollArea with versions that
+         * supports fixed-size scroll bar markers. We need to make sure we
+         * always use these versions.
+         */
+        gcn::Rectangle getVerticalMarkerDimension();
+        gcn::Rectangle getHorizontalMarkerDimension();
 
         int mX = 0;
         int mY = 0;

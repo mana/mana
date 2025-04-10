@@ -25,6 +25,8 @@
 
 #include "gui/gui.h"
 
+#include <guichan/exception.hpp>
+
 ScrollArea::ScrollArea()
 {
     init();
@@ -48,9 +50,9 @@ void ScrollArea::init()
 
     auto theme = gui->getTheme();
 
-    int minWidth = theme->getSkin(SkinType::ScrollAreaVBar).getMinWidth();
-    if (minWidth > 0)
-        setScrollbarWidth(minWidth);
+    int scrollBarWidth = theme->getSkin(SkinType::ScrollAreaVBar).width;
+    if (scrollBarWidth > 0)
+        setScrollbarWidth(scrollBarWidth);
 
     if (auto content = getContent())
         content->setFrameSize(theme->getSkin(SkinType::ScrollArea).padding);
@@ -198,6 +200,9 @@ void ScrollArea::drawHBar(gcn::Graphics *graphics)
 void ScrollArea::drawVMarker(gcn::Graphics *graphics)
 {
     WidgetState state(getVerticalMarkerDimension());
+    if (state.height == 0)
+        return;
+
     if (mHasMouse && (mX > (getWidth() - getScrollbarWidth())))
         state.flags |= STATE_HOVERED;
 
@@ -207,6 +212,9 @@ void ScrollArea::drawVMarker(gcn::Graphics *graphics)
 void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 {
     WidgetState state(getHorizontalMarkerDimension());
+    if (state.width == 0)
+        return;
+
     if (mHasMouse && (mY > (getHeight() - getScrollbarWidth())))
         state.flags |= STATE_HOVERED;
 
@@ -225,6 +233,108 @@ void ScrollArea::drawButton(gcn::Graphics *graphics,
     gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), skinType, state);
 }
 
+/**
+ * Code copied from gcn::ScrollArea::checkPolicies to make sure it takes the
+ * frame size of the content into account.
+ */
+void ScrollArea::checkPolicies()
+{
+    int w = getWidth();
+    int h = getHeight();
+
+    mHBarVisible = false;
+    mVBarVisible = false;
+
+    if (!getContent())
+    {
+        mHBarVisible = (mHPolicy == SHOW_ALWAYS);
+        mVBarVisible = (mVPolicy == SHOW_ALWAYS);
+        return;
+    }
+
+    const int contentFrameSize = getContent()->getFrameSize();
+    w -= 2 * contentFrameSize;
+    h -= 2 * contentFrameSize;
+
+    if (mHPolicy == SHOW_AUTO &&
+        mVPolicy == SHOW_AUTO)
+    {
+        if (getContent()->getWidth() <= w
+            && getContent()->getHeight() <= h)
+        {
+            mHBarVisible = false;
+            mVBarVisible = false;
+        }
+
+        if (getContent()->getWidth() > w)
+        {
+            mHBarVisible = true;
+        }
+
+        if ((getContent()->getHeight() > h)
+            || (mHBarVisible && getContent()->getHeight() > h - mScrollbarWidth))
+        {
+            mVBarVisible = true;
+        }
+
+        if (mVBarVisible && getContent()->getWidth() > w - mScrollbarWidth)
+        {
+            mHBarVisible = true;
+        }
+
+        return;
+    }
+
+    switch (mHPolicy)
+    {
+    case SHOW_NEVER:
+        mHBarVisible = false;
+        break;
+
+    case SHOW_ALWAYS:
+        mHBarVisible = true;
+        break;
+
+    case SHOW_AUTO:
+        if (mVPolicy == SHOW_NEVER)
+        {
+            mHBarVisible = getContent()->getWidth() > w;
+        }
+        else // (mVPolicy == SHOW_ALWAYS)
+        {
+            mHBarVisible = getContent()->getWidth() > w - mScrollbarWidth;
+        }
+        break;
+
+    default:
+        throw GCN_EXCEPTION("Horizontal scroll policy invalid.");
+    }
+
+    switch (mVPolicy)
+    {
+    case SHOW_NEVER:
+        mVBarVisible = false;
+        break;
+
+    case SHOW_ALWAYS:
+        mVBarVisible = true;
+        break;
+
+    case SHOW_AUTO:
+        if (mHPolicy == SHOW_NEVER)
+        {
+            mVBarVisible = getContent()->getHeight() > h;
+        }
+        else // (mHPolicy == SHOW_ALWAYS)
+        {
+            mVBarVisible = getContent()->getHeight() > h - mScrollbarWidth;
+        }
+        break;
+    default:
+        throw GCN_EXCEPTION("Vertical scroll policy invalid.");
+    }
+}
+
 void ScrollArea::mouseMoved(gcn::MouseEvent& event)
 {
     mX = event.getX();
@@ -239,4 +349,210 @@ void ScrollArea::mouseEntered(gcn::MouseEvent& event)
 void ScrollArea::mouseExited(gcn::MouseEvent& event)
 {
     mHasMouse = false;
+}
+
+/**
+ * Code copied from gcn::ScrollArea::mousePressed to make it call our custom
+ * getVerticalMarkerDimension and getHorizontalMarkerDimension functions.
+ */
+void ScrollArea::mousePressed(gcn::MouseEvent &mouseEvent)
+{
+    int x = mouseEvent.getX();
+    int y = mouseEvent.getY();
+
+    if (getUpButtonDimension().isPointInRect(x, y))
+    {
+        setVerticalScrollAmount(getVerticalScrollAmount()
+                                - mUpButtonScrollAmount);
+        mUpButtonPressed = true;
+    }
+    else if (getDownButtonDimension().isPointInRect(x, y))
+    {
+        setVerticalScrollAmount(getVerticalScrollAmount()
+                                + mDownButtonScrollAmount);
+        mDownButtonPressed = true;
+    }
+    else if (getLeftButtonDimension().isPointInRect(x, y))
+    {
+        setHorizontalScrollAmount(getHorizontalScrollAmount()
+                                  - mLeftButtonScrollAmount);
+        mLeftButtonPressed = true;
+    }
+    else if (getRightButtonDimension().isPointInRect(x, y))
+    {
+        setHorizontalScrollAmount(getHorizontalScrollAmount()
+                                  + mRightButtonScrollAmount);
+        mRightButtonPressed = true;
+    }
+    else if (getVerticalMarkerDimension().isPointInRect(x, y))
+    {
+        mIsHorizontalMarkerDragged = false;
+        mIsVerticalMarkerDragged = true;
+
+        mVerticalMarkerDragOffset = y - getVerticalMarkerDimension().y;
+    }
+    else if (getVerticalBarDimension().isPointInRect(x,y))
+    {
+        if (y < getVerticalMarkerDimension().y)
+        {
+            setVerticalScrollAmount(getVerticalScrollAmount()
+                                    - (int)(getChildrenArea().height * 0.95));
+        }
+        else
+        {
+            setVerticalScrollAmount(getVerticalScrollAmount()
+                                    + (int)(getChildrenArea().height * 0.95));
+        }
+    }
+    else if (getHorizontalMarkerDimension().isPointInRect(x, y))
+    {
+        mIsHorizontalMarkerDragged = true;
+        mIsVerticalMarkerDragged = false;
+
+        mHorizontalMarkerDragOffset = x - getHorizontalMarkerDimension().x;
+    }
+    else if (getHorizontalBarDimension().isPointInRect(x,y))
+    {
+        if (x < getHorizontalMarkerDimension().x)
+        {
+            setHorizontalScrollAmount(getHorizontalScrollAmount()
+                                      - (int)(getChildrenArea().width * 0.95));
+        }
+        else
+        {
+            setHorizontalScrollAmount(getHorizontalScrollAmount()
+                                      + (int)(getChildrenArea().width * 0.95));
+        }
+    }
+}
+
+/**
+ * Code copied from gcn::ScrollArea::mouseDragged to make it call our custom
+ * getVerticalMarkerDimension and getHorizontalMarkerDimension functions.
+ */
+void ScrollArea::mouseDragged(gcn::MouseEvent &mouseEvent)
+{
+    if (mIsVerticalMarkerDragged)
+    {
+        int pos = mouseEvent.getY() - getVerticalBarDimension().y  - mVerticalMarkerDragOffset;
+        int length = getVerticalMarkerDimension().height;
+
+        gcn::Rectangle barDim = getVerticalBarDimension();
+
+        if ((barDim.height - length) > 0)
+        {
+            setVerticalScrollAmount((getVerticalMaxScroll() * pos)
+                                    / (barDim.height - length));
+        }
+        else
+        {
+            setVerticalScrollAmount(0);
+        }
+    }
+
+    if (mIsHorizontalMarkerDragged)
+    {
+        int pos = mouseEvent.getX() - getHorizontalBarDimension().x  - mHorizontalMarkerDragOffset;
+        int length = getHorizontalMarkerDimension().width;
+
+        gcn::Rectangle barDim = getHorizontalBarDimension();
+
+        if ((barDim.width - length) > 0)
+        {
+            setHorizontalScrollAmount((getHorizontalMaxScroll() * pos)
+                                      / (barDim.width - length));
+        }
+        else
+        {
+            setHorizontalScrollAmount(0);
+        }
+    }
+
+    mouseEvent.consume();
+}
+
+static void getMarkerValues(int barSize,
+                            int maxScroll, int scrollAmount,
+                            int contentHeight, int viewHeight,
+                            int fixedMarkerSize, int minMarkerSize,
+                            int &markerSize, int &markerPos)
+{
+    markerSize = barSize;
+    markerPos = 0;
+
+    if (fixedMarkerSize == 0)
+    {
+        if (contentHeight != 0 && contentHeight > viewHeight)
+            markerSize = std::max((barSize * viewHeight) / contentHeight, minMarkerSize);
+    }
+    else
+    {
+        if (viewHeight > contentHeight)
+            markerSize = 0;
+        else
+            markerSize = fixedMarkerSize;
+    }
+
+    // Hide the marker when it doesn't fit
+    if (markerSize > barSize)
+        markerSize = 0;
+
+    if (maxScroll != 0)
+        markerPos = ((barSize - markerSize) * scrollAmount + maxScroll / 2) / maxScroll;
+}
+
+gcn::Rectangle ScrollArea::getVerticalMarkerDimension()
+{
+    if (!mVBarVisible)
+        return gcn::Rectangle(0, 0, 0, 0);
+
+    auto &markerSkin = gui->getTheme()->getSkin(SkinType::ScrollAreaVMarker);
+    const gcn::Rectangle barDim = getVerticalBarDimension();
+
+    int contentHeight = 0;
+    if (auto content = getContent())
+        contentHeight = content->getHeight() + content->getFrameSize() * 2;
+
+    int length;
+    int pos;
+
+    getMarkerValues(barDim.height,
+                    getVerticalMaxScroll(),
+                    getVerticalScrollAmount(),
+                    contentHeight,
+                    getChildrenArea().height,
+                    markerSkin.height,
+                    mScrollbarWidth,
+                    length,
+                    pos);
+
+    return gcn::Rectangle(barDim.x, barDim.y + pos, mScrollbarWidth, length);
+}
+
+gcn::Rectangle ScrollArea::getHorizontalMarkerDimension()
+{
+    if (!mHBarVisible)
+        return gcn::Rectangle(0, 0, 0, 0);
+
+    auto &markerSkin = gui->getTheme()->getSkin(SkinType::ScrollAreaHMarker);
+    const gcn::Rectangle barDim = getHorizontalBarDimension();
+
+    int contentWidth = 0;
+    if (auto content = getContent())
+        contentWidth = content->getWidth() + content->getFrameSize() * 2;
+
+    int length;
+    int pos;
+
+    getMarkerValues(barDim.width,
+                    getHorizontalMaxScroll(),
+                    getHorizontalScrollAmount(),
+                    contentWidth,
+                    getChildrenArea().width,
+                    markerSkin.width,
+                    mScrollbarWidth,
+                    length,
+                    pos);
+
+    return gcn::Rectangle(barDim.x + pos, barDim.y, length, mScrollbarWidth);
 }
