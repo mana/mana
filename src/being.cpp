@@ -263,10 +263,8 @@ void Being::setPath(const Path &path)
 
 void Being::setSpeech(const std::string &text, int time)
 {
-    // Remove colors
-    mSpeech = removeColors(text);
-
-    // Trim whitespace
+    mSpeech = text;
+    removeColors(mSpeech);
     trim(mSpeech);
 
     // Check for links

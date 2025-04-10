@@ -111,14 +111,13 @@ std::string &replaceCharacters(std::string &str,
     return str;
 }
 
-std::string removeColors(std::string msg)
+std::string &removeColors(std::string &msg)
 {
-    for (unsigned int f = 0; f < msg.length() - 2 && msg.length() > 2; f++)
+    auto pos = msg.find("##");
+    while (pos != std::string::npos && msg.length() - pos >= 3)
     {
-        while (msg.length() > f + 2 && msg.at(f) == '#' && msg.at(f + 1) == '#')
-        {
-            msg = msg.erase(f, 3);
-        }
+        msg.erase(pos, 3);
+        pos = msg.find("##", pos);
     }
     return msg;
 }

@@ -26,11 +26,7 @@
 class ChatLogger
 {
     public:
-        ChatLogger();
-
-        /**
-         * Destructor, closes log file.
-         */
+        ChatLogger() = default;
         ~ChatLogger();
 
         void setLogDir(const std::string &logDir);
@@ -42,7 +38,7 @@ class ChatLogger
 
         void log(std::string name, std::string str);
 
-        std::string getDateString() const;
+        static std::string getDateString();
 
         static std::string secureName(std::string &str);
 
@@ -54,9 +50,9 @@ class ChatLogger
          */
         void setLogFile(const std::string &logFilename);
 
-        void writeTo(std::ofstream &file, const std::string &str) const;
+        static void writeTo(std::ofstream &file, const std::string &str);
 
-        void makeDir(const std::string &dir);
+        static void makeDir(const std::string &dir);
 
         std::ofstream mLogFile;
         std::string mLogDir;

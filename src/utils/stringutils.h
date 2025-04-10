@@ -107,12 +107,12 @@ std::string &replaceCharacters(std::string &str,
                                char replacement = '_');
 
 /**
- * Removes colors from a string
+ * Removes colors from a string.
  *
  * @param msg the string to remove the colors from
- * @return string without colors
+ * @return reference to the modified string
  */
-std::string removeColors(std::string msg);
+std::string &removeColors(std::string &msg);
 
 /**
  * Returns whether a string starts with a given prefix.

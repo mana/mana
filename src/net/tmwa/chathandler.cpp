@@ -193,7 +193,10 @@ void ChatHandler::handleMessage(MessageIn &msg)
             trim(chatMsg);
 
             std::string reducedMessage = chatMsg;
-            chatMsg = removeColors(sender_name) + " : " + reducedMessage;
+            chatMsg = sender_name;
+            removeColors(chatMsg);
+            chatMsg += " : ";
+            chatMsg += reducedMessage;
 
             Event event(Event::Being);
             event.setString("message", chatMsg);
