@@ -498,6 +498,7 @@ void Theme::readSkinNode(XML::Node node)
     node.attribute("titleBarHeight", skin.titleBarHeight);
     node.attribute("titleOffsetX", skin.titleOffsetX);
     node.attribute("titleOffsetY", skin.titleOffsetY);
+    node.attribute("showButtons", skin.showButtons);
 
     for (auto childNode : node.children())
         if (childNode.name() == "state")

@@ -58,6 +58,11 @@ class ScrollArea : public gcn::ScrollArea
         ~ScrollArea() override;
 
         /**
+         * Sets whether the scroll bar buttons are shown.
+         */
+        void setShowButtons(bool showButtons);
+
+        /**
          * Logic function optionally adapts width or height of contents. This
          * depends on the scrollbar settings.
          */
@@ -131,6 +136,18 @@ class ScrollArea : public gcn::ScrollArea
 
         /**
          * Shadowing these functions from gcn::ScrollArea with versions that
+         * support hiding the buttons. We need to make sure we always use these
+         * versions.
+         */
+        gcn::Rectangle getUpButtonDimension();
+        gcn::Rectangle getDownButtonDimension();
+        gcn::Rectangle getLeftButtonDimension();
+        gcn::Rectangle getRightButtonDimension();
+        gcn::Rectangle getVerticalBarDimension();
+        gcn::Rectangle getHorizontalBarDimension();
+
+        /**
+         * Shadowing these functions from gcn::ScrollArea with versions that
          * supports fixed-size scroll bar markers. We need to make sure we
          * always use these versions.
          */
@@ -141,4 +158,5 @@ class ScrollArea : public gcn::ScrollArea
         int mY = 0;
         bool mHasMouse = false;
         bool mOpaque = true;
+        bool mShowButtons = true;
 };

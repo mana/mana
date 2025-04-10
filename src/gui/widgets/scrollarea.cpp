@@ -43,6 +43,11 @@ ScrollArea::~ScrollArea()
     delete getContent();
 }
 
+void ScrollArea::setShowButtons(bool showButtons)
+{
+    mShowButtons = showButtons;
+}
+
 void ScrollArea::init()
 {
     // Draw background by default
@@ -54,8 +59,11 @@ void ScrollArea::init()
     if (scrollBarWidth > 0)
         setScrollbarWidth(scrollBarWidth);
 
+    auto &scrollAreaSkin = theme->getSkin(SkinType::ScrollArea);
+    setShowButtons(scrollAreaSkin.showButtons);
+
     if (auto content = getContent())
-        content->setFrameSize(theme->getSkin(SkinType::ScrollArea).padding);
+        content->setFrameSize(scrollAreaSkin.padding);
 
     // The base color is only used when rendering a square in the corner where
     // the scrollbars meet. We disable rendering of this square by setting the
@@ -161,21 +169,33 @@ void ScrollArea::drawBackground(gcn::Graphics *graphics)
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)
 {
+    if (!mShowButtons)
+        return;
+
     drawButton(graphics, SkinType::ButtonUp, mUpButtonPressed, getUpButtonDimension());
 }
 
 void ScrollArea::drawDownButton(gcn::Graphics *graphics)
 {
+    if (!mShowButtons)
+        return;
+
     drawButton(graphics, SkinType::ButtonDown, mDownButtonPressed, getDownButtonDimension());
 }
 
 void ScrollArea::drawLeftButton(gcn::Graphics *graphics)
 {
+    if (!mShowButtons)
+        return;
+
     drawButton(graphics, SkinType::ButtonLeft, mLeftButtonPressed, getLeftButtonDimension());
 }
 
 void ScrollArea::drawRightButton(gcn::Graphics *graphics)
 {
+    if (!mShowButtons)
+        return;
+
     drawButton(graphics, SkinType::ButtonRight, mRightButtonPressed, getRightButtonDimension());
 }
 
@@ -471,26 +491,115 @@ void ScrollArea::mouseDragged(gcn::MouseEvent &mouseEvent)
     mouseEvent.consume();
 }
 
+gcn::Rectangle ScrollArea::getUpButtonDimension()
+{
+    if (!mVBarVisible || !mShowButtons)
+        return gcn::Rectangle();
+
+    return gcn::Rectangle(getWidth() - mScrollbarWidth, 0, mScrollbarWidth, mScrollbarWidth);
+}
+
+gcn::Rectangle ScrollArea::getDownButtonDimension()
+{
+    if (!mVBarVisible || !mShowButtons)
+        return gcn::Rectangle();
+
+    gcn::Rectangle dim(getWidth() - mScrollbarWidth,
+                       getHeight() - mScrollbarWidth,
+                       mScrollbarWidth,
+                       mScrollbarWidth);
+
+    if (mHBarVisible)
+        dim.y -= mScrollbarWidth;
+
+    return dim;
+}
+
+gcn::Rectangle ScrollArea::getLeftButtonDimension()
+{
+    if (!mHBarVisible || !mShowButtons)
+        return gcn::Rectangle();
+
+    return gcn::Rectangle(0, getHeight() - mScrollbarWidth, mScrollbarWidth, mScrollbarWidth);
+}
+
+gcn::Rectangle ScrollArea::getRightButtonDimension()
+{
+    if (!mHBarVisible || !mShowButtons)
+        return gcn::Rectangle();
+
+    gcn::Rectangle dim(getWidth() - mScrollbarWidth,
+                       getHeight() - mScrollbarWidth,
+                       mScrollbarWidth,
+                       mScrollbarWidth);
+
+    if (mVBarVisible)
+        dim.x -= mScrollbarWidth;
+
+    return dim;
+}
+
+gcn::Rectangle ScrollArea::getVerticalBarDimension()
+{
+    if (!mVBarVisible)
+        return gcn::Rectangle();
+
+    gcn::Rectangle dim(getWidth() - mScrollbarWidth,
+                       getUpButtonDimension().height,
+                       mScrollbarWidth,
+                       getHeight()
+                           - getUpButtonDimension().height
+                           - getDownButtonDimension().height);
+
+    if (mHBarVisible)
+        dim.height -= mScrollbarWidth;
+
+    if (dim.height < 0)
+        dim.height = 0;
+
+    return dim;
+}
+
+gcn::Rectangle ScrollArea::getHorizontalBarDimension()
+{
+    if (!mHBarVisible)
+        return gcn::Rectangle();
+
+    gcn::Rectangle dim(getLeftButtonDimension().width,
+                       getHeight() - mScrollbarWidth,
+                       getWidth()
+                           - getLeftButtonDimension().width
+                           - getRightButtonDimension().width,
+                       mScrollbarWidth);
+
+    if (mVBarVisible)
+        dim.width -= mScrollbarWidth;
+
+    if (dim.width < 0)
+        dim.width = 0;
+
+    return dim;
+}
+
 static void getMarkerValues(int barSize,
                             int maxScroll, int scrollAmount,
                             int contentHeight, int viewHeight,
                             int fixedMarkerSize, int minMarkerSize,
                             int &markerSize, int &markerPos)
 {
-    markerSize = barSize;
-    markerPos = 0;
-
     if (fixedMarkerSize == 0)
     {
         if (contentHeight != 0 && contentHeight > viewHeight)
             markerSize = std::max((barSize * viewHeight) / contentHeight, minMarkerSize);
+        else
+            markerSize = barSize;
     }
     else
     {
-        if (viewHeight > contentHeight)
-            markerSize = 0;
-        else
+        if (contentHeight > viewHeight)
             markerSize = fixedMarkerSize;
+        else
+            markerSize = 0;
     }
 
     // Hide the marker when it doesn't fit
@@ -499,12 +608,14 @@ static void getMarkerValues(int barSize,
 
     if (maxScroll != 0)
         markerPos = ((barSize - markerSize) * scrollAmount + maxScroll / 2) / maxScroll;
+    else
+        markerPos = 0;
 }
 
 gcn::Rectangle ScrollArea::getVerticalMarkerDimension()
 {
     if (!mVBarVisible)
-        return gcn::Rectangle(0, 0, 0, 0);
+        return gcn::Rectangle();
 
     auto &markerSkin = gui->getTheme()->getSkin(SkinType::ScrollAreaVMarker);
     const gcn::Rectangle barDim = getVerticalBarDimension();
@@ -532,7 +643,7 @@ gcn::Rectangle ScrollArea::getVerticalMarkerDimension()
 gcn::Rectangle ScrollArea::getHorizontalMarkerDimension()
 {
     if (!mHBarVisible)
-        return gcn::Rectangle(0, 0, 0, 0);
+        return gcn::Rectangle();
 
     auto &markerSkin = gui->getTheme()->getSkin(SkinType::ScrollAreaHMarker);
     const gcn::Rectangle barDim = getHorizontalBarDimension();

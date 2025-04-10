@@ -162,6 +162,7 @@ class Skin
         int titleBarHeight = 0;
         int titleOffsetX = 0;
         int titleOffsetY = 0;
+        bool showButtons = true;
 
     private:
         std::vector<SkinState> mStates;

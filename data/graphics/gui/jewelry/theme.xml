@@ -227,7 +227,7 @@
     </state>
   </skin>
 
-  <skin type="ScrollArea" frameSize="3" padding="4" baseColor="#f1d9a9">
+  <skin type="ScrollArea" frameSize="3" padding="4" baseColor="#f1d9a9" showButtons="false">
     <state>
       <img src="window.png" x="1" y="186" width="32" height="31" left="4" right="4" top="4" bottom="4" />
     </state>
