@@ -66,10 +66,19 @@ namespace XML
             class Iterator
             {
             public:
-                explicit Iterator(xmlNodePtr node) : mNode(node) {}
+                explicit Iterator(xmlNodePtr node) : mNode(node)
+                {
+                    while (mNode && mNode->type != XML_ELEMENT_NODE)
+                        mNode = mNode->next;
+                }
 
                 bool operator!=(const Iterator &other) const { return mNode != other.mNode; }
-                void operator++() { mNode = mNode->next; }
+                void operator++()
+                {
+                    do {
+                        mNode = mNode->next;
+                    } while (mNode && mNode->type != XML_ELEMENT_NODE);
+                }
                 Node operator*() const { return mNode; }
 
             private:

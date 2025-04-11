@@ -167,6 +167,18 @@ void ScrollArea::drawBackground(gcn::Graphics *graphics)
     // background is drawn as part of the frame instead
 }
 
+static void drawButton(gcn::Graphics *graphics,
+                       SkinType skinType,
+                       bool pressed,
+                       const gcn::Rectangle &dim)
+{
+    WidgetState state(dim);
+    if (pressed)
+        state.flags |= STATE_SELECTED;
+
+    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), skinType, state);
+}
+
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)
 {
     if (!mShowButtons)
@@ -239,18 +251,6 @@ void ScrollArea::drawHMarker(gcn::Graphics *graphics)
         state.flags |= STATE_HOVERED;
 
     gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), SkinType::ScrollAreaHMarker, state);
-}
-
-void ScrollArea::drawButton(gcn::Graphics *graphics,
-                            SkinType skinType,
-                            bool pressed,
-                            const gcn::Rectangle &dim)
-{
-    WidgetState state(dim);
-    if (pressed)
-        state.flags |= STATE_SELECTED;
-
-    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), skinType, state);
 }
 
 /**

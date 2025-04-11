@@ -23,12 +23,15 @@
 
 #include "configuration.h"
 
+#include "gui/okdialog.h"
 #include "gui/widgets/checkbox.h"
+#include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/slider.h"
 #include "gui/widgets/spacer.h"
-#include "gui/widgets/dropdown.h"
+
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 
@@ -37,7 +40,34 @@
 
 #include <SDL.h>
 
+#include <algorithm>
 #include <string>
+
+class ThemesListModel : public gcn::ListModel
+{
+public:
+    int getNumberOfElements() override
+    {
+        return gui->getAvailableThemes().size();
+    }
+
+    std::string getElementAt(int i) override
+    {
+        return gui->getAvailableThemes().at(i).getName();
+    }
+
+    static int getThemeIndex(const std::string &path)
+    {
+        auto &themes = gui->getAvailableThemes();
+        auto themeIt = std::find_if(themes.begin(),
+                                    themes.end(),
+                                    [&](const ThemeInfo &theme) {
+                                        return theme.getPath() == path;
+                                    });
+        return themeIt != themes.end() ? std::distance(themes.begin(), themeIt) : 0;
+    }
+};
+
 
 const char *SIZE_NAME[4] =
 {
@@ -97,8 +127,7 @@ Setup_Interface::Setup_Interface():
                                          mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),
     mSpeechLabel(new Label(std::string())),
-    mAlphaSlider(new Slider(0.2, 1.0)),
-    mFontSize(config.fontSize)
+    mAlphaSlider(new Slider(0.2, 1.0))
 {
     setName(_("Interface"));
 
@@ -108,17 +137,20 @@ Setup_Interface::Setup_Interface():
     mShowMonsterDamageCheckBox = new CheckBox(_("Show damage"),
                                               mShowMonsterDamageEnabled);
 
-    speechLabel = new Label(_("Overhead text:"));
-    alphaLabel = new Label(_("GUI opacity"));
-    fontSizeLabel = new Label(_("Font size:"));
+    gcn::Label *speechLabel = new Label(_("Overhead text:"));
+    gcn::Label *alphaLabel = new Label(_("GUI opacity"));
+    gcn::Label *themeLabel = new Label(_("Theme:"));
+    gcn::Label *fontSizeLabel = new Label(_("Font size:"));
 
-    mFontSizeListModel = new FontSizeChoiceListModel;
-    mFontSizeDropDown = new DropDown(mFontSizeListModel);
+    mThemesListModel = std::make_unique<ThemesListModel>();
+    mThemeDropDown = new DropDown(mThemesListModel.get());
+
+    mFontSizeListModel = std::make_unique<FontSizeChoiceListModel>();
+    mFontSizeDropDown = new DropDown(mFontSizeListModel.get());
 
     mAlphaSlider->setValue(mOpacity);
     mAlphaSlider->setWidth(90);
     mAlphaSlider->setEnabled(!config.disableTransparency);
-
 
     // Set actions
     mShowMonsterDamageCheckBox->setActionEventId("monsterdamage");
@@ -127,6 +159,7 @@ Setup_Interface::Setup_Interface():
     mPickupParticleCheckBox->setActionEventId("pickupparticle");
     mNameCheckBox->setActionEventId("showownname");
     mNPCLogCheckBox->setActionEventId("lognpc");
+    mThemeDropDown->setActionEventId("theme");
     mAlphaSlider->setActionEventId("guialpha");
     mSpeechSlider->setActionEventId("speech");
 
@@ -137,13 +170,16 @@ Setup_Interface::Setup_Interface():
     mPickupParticleCheckBox->addActionListener(this);
     mNameCheckBox->addActionListener(this);
     mNPCLogCheckBox->addActionListener(this);
+    mThemeDropDown->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mSpeechSlider->addActionListener(this);
 
     mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
     mSpeechSlider->setValue(mSpeechMode);
 
-    mFontSizeDropDown->setSelected(mFontSize - 10);
+    mThemeDropDown->setSelected(ThemesListModel::getThemeIndex(config.theme));
+
+    mFontSizeDropDown->setSelected(config.fontSize - 10);
     mFontSizeDropDown->adjustHeight();
 
     // Do the layout
@@ -162,27 +198,35 @@ Setup_Interface::Setup_Interface():
 
     place(0, 5, space, 1, 1);
 
-    place(0, 6, fontSizeLabel, 2);
-    place(2, 6, mFontSizeDropDown, 2);
+    place(0, 6, themeLabel, 2);
+    place(2, 6, mThemeDropDown, 2).setPadding(2);
 
-    place(0, 7, space, 1, 1);
+    place(0, 7, fontSizeLabel, 2);
+    place(2, 7, mFontSizeDropDown, 2).setPadding(2);
 
-    place(0, 8, mAlphaSlider, 2);
-    place(2, 8, alphaLabel, 2);
+    place(0, 8, space, 1, 1);
 
-    place(0, 9, mSpeechSlider, 2);
-    place(2, 9, speechLabel, 2);
-    place(4, 9, mSpeechLabel, 2).setPadding(2);
+    place(0, 9, mAlphaSlider, 2);
+    place(2, 9, alphaLabel, 2);
+
+    place(0, 10, mSpeechSlider, 2);
+    place(2, 10, speechLabel, 2);
+    place(4, 10, mSpeechLabel, 2).setPadding(2);
 }
 
-Setup_Interface::~Setup_Interface()
-{
-    delete mFontSizeListModel;
-}
+Setup_Interface::~Setup_Interface() = default;
 
 void Setup_Interface::apply()
 {
-    config.fontSize = mFontSizeDropDown->getSelected() + 10;
+    auto &theme = gui->getAvailableThemes().at(mThemeDropDown->getSelected());
+    auto fontSize = mFontSizeDropDown->getSelected() + 10;
+    if (config.theme != theme.getPath() || config.fontSize != fontSize)
+    {
+        new OkDialog(_("Changing Theme or Font Size"),
+                     _("Theme and font size changes will apply after restart."));
+    }
+    config.theme = theme.getPath();
+    config.fontSize = fontSize;
 
     mShowMonsterDamageEnabled = config.showMonstersTakedDamage;
     mVisibleNamesEnabled = config.visibleNames;
@@ -201,6 +245,8 @@ void Setup_Interface::cancel()
     mSpeechSlider->setValue(mSpeechMode);
     mNameCheckBox->setSelected(mNameEnabled);
     mNPCLogCheckBox->setSelected(mNPCLogEnabled);
+    mThemeDropDown->setSelected(ThemesListModel::getThemeIndex(config.theme));
+    mFontSizeDropDown->setSelected(config.fontSize - 10);
     mAlphaSlider->setValue(mOpacity);
     //mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
 

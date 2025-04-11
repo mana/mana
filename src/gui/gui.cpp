@@ -42,6 +42,8 @@
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
 
+#include <algorithm>
+
 #include <SDL_image.h>
 
 // Guichan stuff
@@ -57,9 +59,18 @@ gcn::Font *monoFont = nullptr;
 bool Gui::debugDraw;
 
 Gui::Gui(Graphics *graphics, const std::string &themePath)
-    : mTheme(new Theme(themePath))
+    : mAvailableThemes(Theme::getAvailableThemes())
     , mCustomCursorScale(Client::getVideo().settings().scale())
 {
+    // Try to find the requested theme, using the first one as fallback
+    auto themeIt = std::find_if(mAvailableThemes.begin(),
+                                mAvailableThemes.end(),
+                                [&themePath](const ThemeInfo &theme) {
+                                    return theme.getPath() == themePath;
+                                });
+
+    setTheme(themeIt != mAvailableThemes.end() ? *themeIt : mAvailableThemes.front());
+
     logger->log("Initializing GUI...");
     // Set graphics
     setGraphics(graphics);
@@ -68,7 +79,7 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     guiInput = new SDLInput;
     setInput(guiInput);
 
-    // Set focus handler
+    // Replace focus handler
     delete mFocusHandler;
     mFocusHandler = new FocusHandler;
 
@@ -224,6 +235,11 @@ void Gui::setCursorType(Cursor cursor)
 
     mCursorType = cursor;
     updateCursor();
+}
+
+void Gui::setTheme(const ThemeInfo &theme)
+{
+    mTheme = std::make_unique<Theme>(theme);
 }
 
 void Gui::updateCursor()

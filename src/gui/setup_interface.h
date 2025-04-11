@@ -29,8 +29,6 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
-class FontSizeChoiceListModel;
-
 class Setup_Interface : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener
 {
@@ -53,11 +51,8 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         double mOpacity;
         Being::Speech mSpeechMode;
 
-        FontSizeChoiceListModel *mFontSizeListModel;
-
-        gcn::Label *speechLabel;
-        gcn::Label *alphaLabel;
-        gcn::Label *fontSizeLabel;
+        std::unique_ptr<gcn::ListModel> mThemesListModel;
+        std::unique_ptr<gcn::ListModel> mFontSizeListModel;
 
         gcn::CheckBox *mShowMonsterDamageCheckBox;
         gcn::CheckBox *mVisibleNamesCheckBox;
@@ -72,7 +67,7 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         gcn::Label *mSpeechLabel;
         gcn::Slider *mAlphaSlider;
 
-        int mFontSize;
+        gcn::DropDown *mThemeDropDown;
         gcn::DropDown *mFontSizeDropDown;
 
 };

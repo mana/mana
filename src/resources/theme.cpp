@@ -55,18 +55,33 @@ static void initDefaultThemePath()
         defaultThemePath = "graphics/gui/";
 }
 
-static std::optional<std::string> findThemePath(const std::string &theme)
+static bool isThemePath(const std::string &theme)
 {
-    if (theme.empty())
-        return {};
+    return FS::exists(defaultThemePath + theme + "/theme.xml");
+}
 
-    std::string themePath = defaultThemePath;
-    themePath += theme;
 
-    if (FS::isDirectory(themePath))
-        return themePath;
+ThemeInfo::ThemeInfo(const std::string &path)
+    : path(path)
+{
+    auto themeFile = getFullPath() + "/theme.xml";
+    if (!FS::exists(themeFile))
+        return;
 
-    return {};
+    auto doc = std::make_unique<XML::Document>(themeFile);
+    XML::Node rootNode = doc->rootNode();
+    if (!rootNode || rootNode.name() != "theme")
+        return;
+
+    if (rootNode.attribute("name", name) && !name.empty())
+        this->doc = std::move(doc);
+    else
+        logger->log("Error: Theme '%s' has no name!", path.c_str());
+}
+
+std::string ThemeInfo::getFullPath() const
+{
+    return defaultThemePath + path;
 }
 
 
@@ -212,13 +227,13 @@ void Skin::updateAlpha(float alpha)
 }
 
 
-Theme::Theme(const std::string &path)
+Theme::Theme(const ThemeInfo &themeInfo)
     : Palette(THEME_COLORS_END)
-    , mThemePath(path)
+    , mThemePath(themeInfo.getFullPath())
     , mProgressColors(THEME_PROG_END)
 {
     listen(Event::ConfigChannel);
-    readTheme("theme.xml");
+    readTheme(themeInfo);
 
     mColors[HIGHLIGHT].ch = 'H';
     mColors[CHAT].ch = 'C';
@@ -244,13 +259,33 @@ std::string Theme::prepareThemePath()
     initDefaultThemePath();
 
     // Try theme from settings
-    auto themePath = findThemePath(config.theme);
+    if (isThemePath(config.theme))
+        return config.theme;
 
     // Try theme from branding
-    if (!themePath)
-        themePath = findThemePath(branding.getStringValue("theme"));
+    if (isThemePath(branding.getStringValue("theme")))
+        return branding.getStringValue("theme");
 
-    return themePath.value_or(defaultThemePath);
+    return std::string();
+}
+
+std::vector<ThemeInfo> Theme::getAvailableThemes()
+{
+    std::vector<ThemeInfo> themes;
+    themes.emplace_back(std::string());
+
+    for (const auto &entry : FS::enumerateFiles(defaultThemePath))
+    {
+        ThemeInfo theme{entry};
+        if (theme.isValid())
+            themes.push_back(std::move(theme));
+    }
+
+    std::sort(themes.begin(), themes.end(), [](const ThemeInfo &a, const ThemeInfo &b) {
+        return a.getName() < b.getName();
+    });
+
+    return themes;
 }
 
 std::string Theme::resolvePath(const std::string &path) const
@@ -407,20 +442,21 @@ static bool check(bool value, const char *msg, ...)
 {
     if (!value)
     {
-        va_list args;
-        va_start(args, msg);
-        logger->log(msg, args);
-        va_end(args);
+        va_list ap;
+        va_start(ap, msg);
+        logger->log(msg, ap);
+        va_end(ap);
     }
     return !value;
 }
 
-bool Theme::readTheme(const std::string &filename)
+bool Theme::readTheme(const ThemeInfo &themeInfo)
 {
-    logger->log("Loading theme '%s'.", filename.c_str());
+    logger->log("Loading %s theme from '%s'...",
+                themeInfo.getName().c_str(),
+                themeInfo.getPath().c_str());
 
-    XML::Document doc(resolvePath(filename));
-    XML::Node rootNode = doc.rootNode();
+    XML::Node rootNode = themeInfo.getDocument().rootNode();
 
     if (!rootNode || rootNode.name() != "theme")
         return false;
@@ -505,6 +541,25 @@ void Theme::readSkinNode(XML::Node node)
             readSkinStateNode(childNode, skin);
 }
 
+static void readSkinStateRectNode(XML::Node node, SkinState &state)
+{
+    auto &part = state.parts.emplace_back();
+    auto &rect = part.data.emplace<ColoredRectangle>();
+
+    node.attribute("color", rect.color);
+    node.attribute("alpha", rect.color.a);
+    node.attribute("fill", rect.filled);
+}
+
+static void readSkinStateTextNode(XML::Node node, SkinState &state)
+{
+    auto &textFormat = state.textFormat;
+    node.attribute("bold", textFormat.bold);
+    node.attribute("color", textFormat.color);
+    node.attribute("outlineColor", textFormat.outlineColor);
+    node.attribute("shadowColor", textFormat.shadowColor);
+}
+
 void Theme::readSkinStateNode(XML::Node node, Skin &skin) const
 {
     SkinState state;
@@ -537,15 +592,6 @@ void Theme::readSkinStateNode(XML::Node node, Skin &skin) const
     }
 
     skin.addState(std::move(state));
-}
-
-void Theme::readSkinStateTextNode(XML::Node node, SkinState &state) const
-{
-    auto &textFormat = state.textFormat;
-    node.attribute("bold", textFormat.bold);
-    node.attribute("color", textFormat.color);
-    node.attribute("outlineColor", textFormat.outlineColor);
-    node.attribute("shadowColor", textFormat.shadowColor);
 }
 
 template<>
@@ -648,16 +694,6 @@ inline void fromString(const char *str, gcn::Color &value)
     value = gcn::Color(v);
 }
 
-void Theme::readSkinStateRectNode(XML::Node node, SkinState &state) const
-{
-    auto &part = state.parts.emplace_back();
-    auto &rect = part.data.emplace<ColoredRectangle>();
-
-    node.attribute("color", rect.color);
-    node.attribute("alpha", rect.color.a);
-    node.attribute("fill", rect.filled);
-}
-
 void Theme::readIconNode(XML::Node node)
 {
     std::string name;
@@ -694,10 +730,11 @@ void Theme::readIconNode(XML::Node node)
     mIcons[name] = image->getSubImage(x, y, width, height);
 }
 
-static int readColorType(const std::string &type)
+static int readColorId(const std::string &id)
 {
     static constexpr const char *colors[Theme::THEME_COLORS_END] = {
         "TEXT",
+        "CARET",
         "SHADOW",
         "OUTLINE",
         "PARTY_CHAT_TAB",
@@ -735,17 +772,17 @@ static int readColorType(const std::string &type)
         "SERVER_VERSION_NOT_SUPPORTED"
     };
 
-    if (type.empty())
+    if (id.empty())
         return -1;
 
     for (int i = 0; i < Theme::THEME_COLORS_END; i++)
-        if (type == colors[i])
+        if (id == colors[i])
             return i;
 
     return -1;
 }
 
-static Palette::GradientType readColorGradient(const std::string &grad)
+static Palette::GradientType readGradientType(const std::string &grad)
 {
     static constexpr const char *grads[] = {
         "STATIC",
@@ -766,20 +803,21 @@ static Palette::GradientType readColorGradient(const std::string &grad)
 
 void Theme::readColorNode(XML::Node node)
 {
-    const int type = readColorType(node.getProperty("id", std::string()));
-    if (check(type > 0, "Theme: 'color' element has invalid or no 'type' attribute!"))
+    const auto idStr = node.getProperty("id", std::string());
+    const int id = readColorId(idStr);
+    if (check(id >= 0, "Theme: 'color' element has unknown 'id' attribute: '%s'!", idStr.c_str()))
         return;
 
     gcn::Color color;
     if (check(node.attribute("color", color), "Theme: 'color' element missing 'color' attribute!"))
         return;
 
-    const GradientType grad = readColorGradient(node.getProperty("effect", std::string()));
+    const GradientType grad = readGradientType(node.getProperty("effect", std::string()));
 
-    mColors[type].set(type, color, grad, 10);
+    mColors[id].set(id, color, grad, 10);
 }
 
-static int readProgressType(const std::string &type)
+static int readProgressId(const std::string &id)
 {
     static constexpr const char *colors[Theme::THEME_PROG_END] = {
         "DEFAULT",
@@ -792,11 +830,11 @@ static int readProgressType(const std::string &type)
         "JOB"
     };
 
-    if (type.empty())
+    if (id.empty())
         return -1;
 
     for (int i = 0; i < Theme::THEME_PROG_END; i++)
-        if (type == colors[i])
+        if (id == colors[i])
             return i;
 
     return -1;
@@ -804,9 +842,10 @@ static int readProgressType(const std::string &type)
 
 void Theme::readProgressBarNode(XML::Node node)
 {
-    const int type = readProgressType(node.getProperty("id", std::string()));
-    if (type < 0) // invalid or no type given
+    const auto idStr = node.getProperty("id", std::string());
+    const int id = readProgressId(idStr);
+    if (check(id >= 0, "Theme: 'progress' element has unknown 'id' attribute: '%s'!", idStr.c_str()))
         return;
 
-    mProgressColors[type] = std::make_unique<DyePalette>(node.getProperty("color", std::string()));
+    mProgressColors[id] = std::make_unique<DyePalette>(node.getProperty("color", std::string()));
 }

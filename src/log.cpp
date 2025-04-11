@@ -45,14 +45,19 @@ void Logger::setLogFile(const std::string &logFilename)
 
 void Logger::log(const char *log_text, ...)
 {
+    va_list ap;
+    va_start(ap, log_text);
+    log(log_text, ap);
+    va_end(ap);
+}
+
+void Logger::log(const char *log_text, va_list ap)
+{
     const size_t bufSize = 1024;
     char* buf = new char[bufSize];
-    va_list ap;
 
     // Use a temporary buffer to fill in the variables
-    va_start(ap, log_text);
     vsnprintf(buf, bufSize, log_text, ap);
-    va_end(ap);
 
     // Get the current system time
     timeval tv;

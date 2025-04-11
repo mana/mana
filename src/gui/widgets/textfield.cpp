@@ -114,7 +114,7 @@ int TextField::getValue() const
 
 void TextField::drawCaret(gcn::Graphics *graphics, int x)
 {
-    graphics->setColor(getForegroundColor());
+    graphics->setColor(Theme::getThemeColor(Theme::CARET));
     graphics->drawLine(mPadding + x, mPadding, mPadding + x, getHeight() - mPadding);
 }
 

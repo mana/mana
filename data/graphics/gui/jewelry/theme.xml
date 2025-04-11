@@ -9,7 +9,6 @@
   <color id="BORDER" color="#000000" />
   <color id="CHECKBOX" color="#000000" />
   <color id="DROPDOWN" color="#000000" />
-  <color id="LABEL" color="#000000" />
   <color id="LISTBOX" color="#000000" />
   <color id="LISTBOX_SELECTED" color="#000000" />
   <color id="RADIOBUTTON" color="#000000" />
@@ -26,11 +25,8 @@
   <color id="CHANNEL_CHAT_TAB_HIGHLIGHTED_OUTLINE" color="#63450a" />
   <color id="CHANNEL_CHAT_TAB_SELECTED" color="#f8eacf" />
   <color id="CHANNEL_CHAT_TAB_SELECTED_OUTLINE" color="#63450a" />
-  <color id="TEXTBOX" color="#000000" />
-  <color id="TEXTFIELD" color="#000000" />
   <color id="BACKGROUND" color="#ffffff" />
   <color id="BACKGROUND_GRAY" color="#404040" />
-  <color id="SCROLLBAR_GRAY" color="#000000" />
   <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
   <color id="HIGHLIGHT" color="#ebc873" />
   <color id="TAB_FLASH" color="#fec4ff" effect="pulse" />

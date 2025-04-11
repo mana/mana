@@ -233,7 +233,7 @@ struct Config
     int scrollCenterOffsetX = 0;
     int scrollCenterOffsetY = 0;
     std::string onlineServerList;
-    std::string theme;
+    std::string theme = "jewelry";
     bool disableTransparency = false;
 
     bool persistentPlayerList = true;

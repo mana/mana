@@ -24,6 +24,8 @@
 #include "eventlistener.h"
 #include "guichanfwd.h"
 
+#include "resources/theme.h"
+
 #include "utils/time.h"
 
 #include <guichan/gui.hpp>
@@ -33,7 +35,6 @@
 #include <memory>
 #include <vector>
 
-class Theme;
 class TextInput;
 class Graphics;
 class SDLInput;
@@ -123,6 +124,14 @@ class Gui final : public gcn::Gui, public EventListener
          */
         void setCursorType(Cursor cursor);
 
+        const std::vector<ThemeInfo> &getAvailableThemes() const
+        { return mAvailableThemes; }
+
+        /**
+         * Sets the global GUI theme.
+         */
+        void setTheme(const ThemeInfo &theme);
+
         /**
          * The global GUI theme.
          */
@@ -141,6 +150,7 @@ class Gui final : public gcn::Gui, public EventListener
         void loadCustomCursors();
         void loadSystemCursors();
 
+        std::vector<ThemeInfo> mAvailableThemes;
         std::unique_ptr<Theme> mTheme;        /**< The global GUI theme */
         gcn::Font *mGuiFont;                  /**< The global GUI font */
         gcn::Font *mInfoParticleFont;         /**< Font for Info Particles*/

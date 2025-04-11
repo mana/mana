@@ -1,5 +1,6 @@
 <theme name="Mana">
   <color id="TEXT" color="#000000" />
+  <color id="CARET" color="#000000" />
   <color id="SHADOW" color="#000000" />
   <color id="OUTLINE" color="#000000" />
   <color id="PARTY_CHAT_TAB" color="#f48055" />

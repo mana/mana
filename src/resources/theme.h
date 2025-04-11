@@ -44,6 +44,25 @@ class Image;
 class ImageSet;
 class ProgressBar;
 
+class ThemeInfo
+{
+public:
+    ThemeInfo() = default;
+    explicit ThemeInfo(const std::string &path);
+
+    bool isValid() const { return !name.empty(); }
+
+    const std::string &getName() const { return name; }
+    const std::string &getPath() const { return path; }
+    std::string getFullPath() const;
+    XML::Document &getDocument() const { return *doc; }
+
+private:
+    std::string name;
+    std::string path;
+    std::unique_ptr<XML::Document> doc;
+};
+
 enum class SkinType
 {
     Window,
@@ -172,9 +191,12 @@ class Theme : public Palette, public EventListener
 {
     public:
         static std::string prepareThemePath();
+        static std::vector<ThemeInfo> getAvailableThemes();
 
-        Theme(const std::string &path);
+        Theme(const ThemeInfo &themeInfo);
         ~Theme() override;
+
+        const std::string &getThemePath() const { return mThemePath; }
 
         /**
          * Returns the patch to the given GUI resource relative to the theme
@@ -185,6 +207,7 @@ class Theme : public Palette, public EventListener
 
         enum ThemePalette {
             TEXT,
+            CARET,
             SHADOW,
             OUTLINE,
             PARTY_CHAT_TAB,
@@ -286,12 +309,10 @@ class Theme : public Palette, public EventListener
 
         ResourceRef<Image> getImage(const std::string &path) const;
 
-        bool readTheme(const std::string &filename);
+        bool readTheme(const ThemeInfo &themeInfo);
         void readSkinNode(XML::Node node);
         void readSkinStateNode(XML::Node node, Skin &skin) const;
-        void readSkinStateTextNode(XML::Node node, SkinState &state) const;
         void readSkinStateImgNode(XML::Node node, SkinState &state) const;
-        void readSkinStateRectNode(XML::Node node, SkinState &state) const;
         void readIconNode(XML::Node node);
         void readColorNode(XML::Node node);
         void readProgressBarNode(XML::Node node);
