@@ -121,12 +121,12 @@ Resource *Image::load(SDL_RWops *rw, const Dye &dye)
         return nullptr;
     }
 
-    if (surf->format->format != SDL_PIXELFORMAT_ABGR8888)
+    if (surf->format->format != SDL_PIXELFORMAT_RGBA32)
     {
-        logger->log("Warning: image format is %s, not SDL_PIXELFORMAT_ABGR8888. Converting...",
+        logger->log("Warning: image format is %s, not SDL_PIXELFORMAT_RGBA32. Converting...",
                     SDL_GetPixelFormatName(surf->format->format));
 
-        SDL_Surface *convertedSurf = SDL_ConvertSurfaceFormat(surf, SDL_PIXELFORMAT_ABGR8888, 0);
+        SDL_Surface *convertedSurf = SDL_ConvertSurfaceFormat(surf, SDL_PIXELFORMAT_RGBA32, 0);
         SDL_FreeSurface(surf);
         if (!convertedSurf)
         {
@@ -136,17 +136,18 @@ Resource *Image::load(SDL_RWops *rw, const Dye &dye)
         surf = convertedSurf;
     }
 
-    auto *pixels = static_cast< uint32_t * >(surf->pixels);
-    for (uint32_t *p_end = pixels + surf->w * surf->h; pixels != p_end; ++pixels)
+    auto *pixels = static_cast<SDL_Color *>(surf->pixels);
+    for (SDL_Color *p_end = pixels + surf->w * surf->h; pixels != p_end; ++pixels)
     {
-        const uint32_t alpha = (*pixels >> 24) & 255;
-        if (!alpha) continue;
-        int v[3];
-        v[0] = (*pixels) & 255;
-        v[1] = (*pixels >> 8) & 255;
-        v[2] = (*pixels >> 16) & 255;
+        if (!pixels->a)
+            continue;
+
+        int v[3] = { pixels->r, pixels->g, pixels->b };
         dye.update(v);
-        *pixels = (alpha << 24) | (v[2] << 16) | (v[1] << 8) | v[0];
+
+        pixels->r = v[0];
+        pixels->g = v[1];
+        pixels->b = v[2];
     }
 
     Image *image = load(surf);

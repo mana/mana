@@ -70,7 +70,7 @@ DyePalette::DyePalette(const std::string &description)
 
             v = (v << 4) | n;
         }
-        Color c = { { (unsigned char) (v >> 16), (unsigned char) (v >> 8), (unsigned char) v } };
+        Color c = { (unsigned char) (v >> 16), (unsigned char) (v >> 8), (unsigned char) v };
         mColors.push_back(c);
         pos += 6;
 
@@ -103,9 +103,9 @@ void DyePalette::getColor(int intensity, int color[3]) const
 
     int j = t != 0 ? i : i - 1;
     // Get the exact color if any, the next color otherwise.
-    int r2 = mColors[j].value[0],
-        g2 = mColors[j].value[1],
-        b2 = mColors[j].value[2];
+    int r2 = mColors[j].r,
+        g2 = mColors[j].g,
+        b2 = mColors[j].b;
 
     if (t == 0)
     {
@@ -120,9 +120,9 @@ void DyePalette::getColor(int intensity, int color[3]) const
     int r1 = 0, g1 = 0, b1 = 0;
     if (i > 0)
     {
-        r1 = mColors[i - 1].value[0];
-        g1 = mColors[i - 1].value[1];
-        b1 = mColors[i - 1].value[2];
+        r1 = mColors[i - 1].r;
+        g1 = mColors[i - 1].g;
+        b1 = mColors[i - 1].b;
     }
 
     // Perform a linear interpolation.
@@ -153,9 +153,9 @@ void DyePalette::getColor(double intensity, int color[3]) const
     if (i == j)
     {
         // Exact color.
-        color[0] = mColors[i].value[0];
-        color[1] = mColors[i].value[1];
-        color[2] = mColors[i].value[2];
+        color[0] = mColors[i].r;
+        color[1] = mColors[i].g;
+        color[2] = mColors[i].b;
         return;
     }
 
@@ -163,12 +163,12 @@ void DyePalette::getColor(double intensity, int color[3]) const
     double rest = 1 - intensity;
 
     // Get the colors
-    int r1 = mColors[i].value[0],
-        g1 = mColors[i].value[1],
-        b1 = mColors[i].value[2],
-        r2 = mColors[j].value[0],
-        g2 = mColors[j].value[1],
-        b2 = mColors[j].value[2];
+    int r1 = mColors[i].r,
+        g1 = mColors[i].g,
+        b1 = mColors[i].b,
+        r2 = mColors[j].r,
+        g2 = mColors[j].g,
+        b2 = mColors[j].b;
 
     // Perform the interpolation.
     color[0] = (rest * r1 + intensity * r2);

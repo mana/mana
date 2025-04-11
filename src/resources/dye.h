@@ -30,7 +30,6 @@
 class DyePalette
 {
     public:
-
         /**
          * Creates a palette based on the given string.
          * The string is either a file name or a sequence of hexadecimal RGB
@@ -50,8 +49,12 @@ class DyePalette
         void getColor(double intensity, int color[3]) const;
 
     private:
-
-        struct Color { unsigned char value[3]; };
+        struct Color
+        {
+            unsigned char r;
+            unsigned char g;
+            unsigned char b;
+        };
 
         std::vector<Color> mColors;
 };
@@ -62,7 +65,6 @@ class DyePalette
 class Dye
 {
     public:
-
         /**
          * Creates a set of palettes based on the given string.
          *
