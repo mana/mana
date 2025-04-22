@@ -29,49 +29,19 @@
 
 #include <typeinfo>
 
-float TextPreview::mAlpha = 1.0;
-
-TextPreview::TextPreview(const std::string &text):
-    mText(text)
+TextPreview::TextPreview(const std::string &text)
+    : mText(text)
 {
     mFont = gui->getFont();
     mTextColor = &Theme::getThemeColor(Theme::TEXT);
-    mBGColor = &Theme::getThemeColor(Theme::BACKGROUND);
 }
 
 void TextPreview::draw(gcn::Graphics* graphics)
 {
-    if (config.guiAlpha != mAlpha)
-        mAlpha = config.guiAlpha;
-
-    int alpha = (int) (mAlpha * 255.0f);
-
-    if (!mTextAlpha)
-        alpha = 255;
-
-    if (mOpaque)
-    {
-        graphics->setColor(gcn::Color((int) mBGColor->r,
-                                      (int) mBGColor->g,
-                                      (int) mBGColor->b,
-                                      (int)(mAlpha * 255.0f)));
-        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
-    }
-
-    if (mTextBGColor && typeid(*mFont) == typeid(TrueTypeFont))
-    {
-        auto *font = static_cast<TrueTypeFont*>(mFont);
-        int x = font->getWidth(mText) + 1 + 2 * ((mOutline || mShadow) ? 1 :0);
-        int y = font->getHeight() + 1 + 2 * ((mOutline || mShadow) ? 1 : 0);
-        graphics->setColor(gcn::Color((int) mTextBGColor->r,
-                                      (int) mTextBGColor->g,
-                                      (int) mTextBGColor->b,
-                                      (int)(mAlpha * 255.0f)));
-        graphics->fillRectangle(gcn::Rectangle(1, 1, x, y));
-    }
-
     TextRenderer::renderText(graphics, mText, 2, 2,  gcn::Graphics::LEFT,
-                             gcn::Color(mTextColor->r, mTextColor->g,
-                                        mTextColor->b, alpha),
+                             gcn::Color(mTextColor->r,
+                                        mTextColor->g,
+                                        mTextColor->b,
+                                        255),
                              mFont, mOutline, mShadow);
 }

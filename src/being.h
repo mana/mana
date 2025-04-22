@@ -524,7 +524,6 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         Path mPath;
         std::string mSpeech;
         Text *mText = nullptr;
-        const gcn::Color *mTextColor;
 
         Vector mDest;  /**< destination coordinates. */
 

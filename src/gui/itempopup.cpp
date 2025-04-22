@@ -43,38 +43,38 @@
 
 #define ITEMPOPUP_WRAP_WIDTH 196
 
-static const gcn::Color &getColorFromItemType(ItemType type)
+static int getColorIdFromItemType(ItemType type)
 {
     switch (type)
     {
         case ITEM_UNUSABLE:
-            return Theme::getThemeColor(Theme::GENERIC);
+            return Theme::GENERIC;
         case ITEM_USABLE:
-            return Theme::getThemeColor(Theme::USABLE);
+            return Theme::USABLE;
         case ITEM_EQUIPMENT_ONE_HAND_WEAPON:
-            return Theme::getThemeColor(Theme::ONEHAND);
+            return Theme::ONEHAND;
         case ITEM_EQUIPMENT_TWO_HANDS_WEAPON:
-            return Theme::getThemeColor(Theme::TWOHAND);
+            return Theme::TWOHAND;
         case ITEM_EQUIPMENT_TORSO:
-            return Theme::getThemeColor(Theme::TORSO);
+            return Theme::TORSO;
         case ITEM_EQUIPMENT_ARMS:
-            return Theme::getThemeColor(Theme::ARMS);
+            return Theme::ARMS;
         case ITEM_EQUIPMENT_HEAD:
-            return Theme::getThemeColor(Theme::HEAD);
+            return Theme::HEAD;
         case ITEM_EQUIPMENT_LEGS:
-            return Theme::getThemeColor(Theme::LEGS);
+            return Theme::LEGS;
         case ITEM_EQUIPMENT_SHIELD:
-            return Theme::getThemeColor(Theme::SHIELD);
+            return Theme::SHIELD;
         case ITEM_EQUIPMENT_RING:
-            return Theme::getThemeColor(Theme::RING);
+            return Theme::RING;
         case ITEM_EQUIPMENT_NECKLACE:
-            return Theme::getThemeColor(Theme::NECKLACE);
+            return Theme::NECKLACE;
         case ITEM_EQUIPMENT_FEET:
-            return Theme::getThemeColor(Theme::FEET);
+            return Theme::FEET;
         case ITEM_EQUIPMENT_AMMO:
-            return Theme::getThemeColor(Theme::AMMO);
+            return Theme::AMMO;
         default:
-            return Theme::getThemeColor(Theme::UNKNOWN_ITEM);
+            return Theme::UNKNOWN_ITEM;
     }
 }
 
@@ -132,7 +132,10 @@ void ItemPopup::setNoItem()
     mItemName->setCaption(caption);
     mItemName->adjustSize();
 
-    mItemName->setForegroundColor(Theme::getThemeColor(Theme::GENERIC));
+    auto theme = gui->getTheme();
+    auto &palette = theme->getPalette(getSkin().palette);
+
+    mItemName->setForegroundColor(palette.getColor(Theme::GENERIC));
     mItemName->setPosition(0, 0);
 
     mItemDesc->setText(std::string());
@@ -173,9 +176,12 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     if (!mItemEquipSlot.empty())
         caption += " (" + mItemEquipSlot + ")";
 
+    auto theme = gui->getTheme();
+    auto &palette = theme->getPalette(getSkin().palette);
+
     mItemName->setCaption(caption);
     mItemName->adjustSize();
-    mItemName->setForegroundColor(getColorFromItemType(mItemType));
+    mItemName->setForegroundColor(palette.getColor(getColorIdFromItemType(mItemType)));
     mItemName->setPosition(space, 0);
 
     mItemDesc->setTextWrapped(item.description, ITEMPOPUP_WRAP_WIDTH);

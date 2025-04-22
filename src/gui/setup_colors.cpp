@@ -73,14 +73,21 @@ Setup_Colors::Setup_Colors() :
 
     mGradTypeText = new Label;
 
-    std::string longText = _("Static");
+    // Initialize with widest label for layout purposes
+    const char *longText = _("Static");
+    int longWidth = getFont()->getWidth(longText);
 
-    if (getFont()->getWidth(_("Pulse")) > getFont()->getWidth(longText))
-        longText = _("Pulse");
-    if (getFont()->getWidth(_("Rainbow")) > getFont()->getWidth(longText))
-        longText = _("Rainbow");
-    if (getFont()->getWidth(_("Spectrum")) > getFont()->getWidth(longText))
-        longText = _("Spectrum");
+    auto maybeLonger = [&] (const char *text) {
+        const int width = getFont()->getWidth(text);
+        if (width > longWidth)
+        {
+            longText = text;
+            longWidth = width;
+        }
+    };
+    maybeLonger(_("Pulse"));
+    maybeLonger(_("Rainbow"));
+    maybeLonger(_("Spectrum"));
 
     mGradTypeText->setCaption(longText);
 
@@ -214,10 +221,10 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
     }
 }
 
-void Setup_Colors::valueChanged(const gcn::SelectionEvent &event)
+void Setup_Colors::valueChanged(const gcn::SelectionEvent &)
 {
     mSelected = mColorBox->getSelected();
-    int type = userPalette->getColorTypeAt(mSelected);
+    const int type = userPalette->getColorTypeAt(mSelected);
     const gcn::Color *col = &userPalette->getColor(type);
     Palette::GradientType grad = userPalette->getGradientType(type);
     const int delay = userPalette->getGradientDelay(type);
@@ -226,11 +233,7 @@ void Setup_Colors::valueChanged(const gcn::SelectionEvent &event)
     mPreviewBox->setContent(mTextPreview);
     mTextPreview->setFont(boldFont);
     mTextPreview->setTextColor(col);
-    mTextPreview->setTextBGColor(nullptr);
-    mTextPreview->setOpaque(false);
-    mTextPreview->setShadow(true);
     mTextPreview->setOutline(true);
-    mTextPreview->useTextAlpha(false);
 
     switch (type)
     {
@@ -242,6 +245,10 @@ void Setup_Colors::valueChanged(const gcn::SelectionEvent &event)
         case UserPalette::HIT_CRITICAL:
         case UserPalette::MISS:
             mTextPreview->setShadow(false);
+            break;
+        default:
+            mTextPreview->setShadow(true);
+            break;
     }
 
     if (grad != Palette::STATIC && grad != Palette::PULSE)

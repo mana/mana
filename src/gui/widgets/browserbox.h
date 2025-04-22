@@ -86,6 +86,8 @@ class BrowserBox : public gcn::Widget,
          */
         void setLinkHandler(LinkHandler *handler) { mLinkHandler = handler; }
 
+        void setPalette(int palette) { mPalette = palette; }
+
         /**
          * Sets the Highlight mode for links.
          */
@@ -154,29 +156,6 @@ class BrowserBox : public gcn::Widget,
         void drawFrame(gcn::Graphics *) override {}
 
         /**
-         * BrowserBox colors.
-         *
-         * NOTES (by Javila):
-         *  - color values is "0x" prefix followed by HTML color style.
-         *  - we can add up to 10 different colors: [0..9].
-         *  - not all colors will be fine with all backgrounds due transparent
-         *    windows and widgets. So, I think it's better keep BrowserBox
-         *    opaque (white background) by default.
-         */
-        enum
-        {
-            RED = 0xff0000,         /**< Color 1 */
-            GREEN = 0x009000,       /**< Color 2 */
-            BLUE = 0x0000ff,        /**< Color 3 */
-            ORANGE = 0xe0980e,      /**< Color 4 */
-            YELLOW = 0xf1dc27,      /**< Color 5 */
-            PINK = 0xff00d8,        /**< Color 6 */
-            PURPLE = 0x8415e2,      /**< Color 7 */
-            GRAY = 0x919191,        /**< Color 8 */
-            BROWN = 0x8e4c17        /**< Color 9 */
-        };
-
-        /**
          * Highlight modes for links.
          * This can be used for a bitmask.
          */
@@ -195,6 +174,7 @@ class BrowserBox : public gcn::Widget,
         std::deque<TextRow> mTextRows;
 
         LinkHandler *mLinkHandler = nullptr;
+        int mPalette = 0;
         Mode mMode;
         unsigned int mHighlightMode = UNDERLINE | BACKGROUND;
         int mWrapIndent = 0;

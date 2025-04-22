@@ -25,10 +25,16 @@
 
 #include <guichan/exception.hpp>
 
+#include <utility>
+
 ImageRect::ImageRect(ImageRect &&r)
 {
-    image = r.image;
-    r.image = nullptr;
+    image = std::exchange(r.image, nullptr);
+    top = r.top;
+    left = r.left;
+    bottom = r.bottom;
+    right = r.right;
+    fillMode = r.fillMode;
 }
 
 ImageRect::~ImageRect()

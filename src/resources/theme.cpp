@@ -38,7 +38,6 @@
 #include <guichan/widget.hpp>
 
 #include <algorithm>
-#include <optional>
 
 /**
  * Initializes the directory in which the client looks for GUI themes, which at
@@ -228,24 +227,20 @@ void Skin::updateAlpha(float alpha)
 
 
 Theme::Theme(const ThemeInfo &themeInfo)
-    : Palette(THEME_COLORS_END)
-    , mThemePath(themeInfo.getFullPath())
+    : mThemePath(themeInfo.getFullPath())
     , mProgressColors(THEME_PROG_END)
 {
     listen(Event::ConfigChannel);
     readTheme(themeInfo);
 
-    mColors[HIGHLIGHT].ch = 'H';
-    mColors[CHAT].ch = 'C';
-    mColors[GM].ch = 'G';
-    mColors[PLAYER].ch = 'Y';
-    mColors[WHISPER].ch = 'W';
-    mColors[IS].ch = 'I';
-    mColors[PARTY].ch = 'P';
-    mColors[GUILD].ch = 'U';
-    mColors[SERVER].ch = 'S';
-    mColors[LOGGER].ch = 'L';
-    mColors[HYPERLINK].ch = '<';
+    if (mPalettes.empty())
+    {
+        logger->log("Error, theme did not define any palettes: %s",
+                    themeInfo.getPath().c_str());
+
+        // Avoid crashing
+        mPalettes.emplace_back(THEME_COLORS_END);
+    }
 }
 
 Theme::~Theme()
@@ -317,14 +312,9 @@ ResourceRef<Image> Theme::getImageFromTheme(const std::string &path)
     return gui->getTheme()->getImage(path);
 }
 
-const gcn::Color &Theme::getThemeColor(int type, int alpha)
+const gcn::Color &Theme::getThemeColor(int type)
 {
-    return gui->getTheme()->getColor(type, alpha);
-}
-
-const gcn::Color &Theme::getThemeColor(char c, bool &valid)
-{
-    return gui->getTheme()->getColor(c, valid);
+    return gui->getTheme()->getColor(type);
 }
 
 gcn::Color Theme::getProgressColor(int type, float progress)
@@ -335,6 +325,51 @@ gcn::Color Theme::getProgressColor(int type, float progress)
         dye->getColor(progress, color);
 
     return gcn::Color(color[0], color[1], color[2]);
+}
+
+const Palette &Theme::getPalette(size_t index) const
+{
+    return mPalettes.at(index < mPalettes.size() ? index : 0);
+}
+
+const gcn::Color &Theme::getColor(int type) const
+{
+    return getPalette(0).getColor(type);
+}
+
+std::optional<int> Theme::getColorIdForChar(char c)
+{
+    switch (c) {
+        case '0': return BLACK;
+        case '1': return RED;
+        case '2': return GREEN;
+        case '3': return BLUE;
+        case '4': return ORANGE;
+        case '5': return YELLOW;
+        case '6': return PINK;
+        case '7': return PURPLE;
+        case '8': return GRAY;
+        case '9': return BROWN;
+
+        case 'H': return HIGHLIGHT;
+        case 'C': return CHAT;
+        case 'G': return GM;
+        case 'g': return GLOBAL;
+        case 'Y': return PLAYER;
+        case 'W': return WHISPER;
+        // case 'w': return WHISPER_TAB_OFFLINE;
+        case 'I': return IS;
+        case 'P': return PARTY;
+        case 'U': return GUILD;
+        case 'S': return SERVER;
+        case 'L': return LOGGER;
+        case '<': return HYPERLINK;
+        // case 's': return SELFNICK;
+        case 'o': return OLDCHAT;
+        case 'a': return AWAYCHAT;
+    }
+
+    return {};
 }
 
 void Theme::drawSkin(Graphics *graphics, SkinType type, const WidgetState &state) const
@@ -424,8 +459,8 @@ void Theme::updateAlpha()
 
     mAlpha = alpha;
 
-    for (auto &skin : mSkins)
-        skin.second.updateAlpha(mAlpha);
+    for (auto &[_, skin] : mSkins)
+        skin.updateAlpha(mAlpha);
 }
 
 void Theme::event(Event::Channel channel, const Event &event)
@@ -465,8 +500,8 @@ bool Theme::readTheme(const ThemeInfo &themeInfo)
     {
         if (childNode.name() == "skin")
             readSkinNode(childNode);
-        else if (childNode.name() == "color")
-            readColorNode(childNode);
+        else if (childNode.name() == "palette")
+            readPaletteNode(childNode);
         else if (childNode.name() == "progressbar")
             readProgressBarNode(childNode);
         else if (childNode.name() == "icon")
@@ -534,6 +569,7 @@ void Theme::readSkinNode(XML::Node node)
     node.attribute("titleBarHeight", skin.titleBarHeight);
     node.attribute("titleOffsetX", skin.titleOffsetX);
     node.attribute("titleOffsetY", skin.titleOffsetY);
+    node.attribute("palette", skin.palette);
     node.attribute("showButtons", skin.showButtons);
 
     for (auto childNode : node.children())
@@ -669,7 +705,7 @@ inline void fromString(const char *str, gcn::Color &value)
     {
     error:
         logger->log("Error, invalid theme color palette: %s", str);
-        value = Palette::BLACK;
+        value = gcn::Color(0, 0, 0);
         return;
     }
 
@@ -730,10 +766,37 @@ void Theme::readIconNode(XML::Node node)
     mIcons[name] = image->getSubImage(x, y, width, height);
 }
 
+void Theme::readPaletteNode(XML::Node node)
+{
+    int paletteId;
+    if (node.attribute("id", paletteId) && static_cast<size_t>(paletteId) != mPalettes.size())
+        logger->log("Theme: Non-consecutive palette 'id' attribute with value %d!", paletteId);
+
+    Palette &palette = mPalettes.emplace_back(THEME_COLORS_END);
+
+    for (auto childNode : node.children())
+    {
+        if (childNode.name() == "color")
+            readColorNode(childNode, palette);
+        else
+            logger->log("Theme: Unknown node '%s'!", childNode.name().data());
+    }
+}
+
 static int readColorId(const std::string &id)
 {
     static constexpr const char *colors[Theme::THEME_COLORS_END] = {
         "TEXT",
+        "BLACK",
+        "RED",
+        "GREEN",
+        "BLUE",
+        "ORANGE",
+        "YELLOW",
+        "PINK",
+        "PURPLE",
+        "GRAY",
+        "BROWN",
         "CARET",
         "SHADOW",
         "OUTLINE",
@@ -745,8 +808,11 @@ static int readColorId(const std::string &id)
         "SHOP_WARNING",
         "ITEM_EQUIPPED",
         "CHAT",
+        "OLDCHAT",
+        "AWAYCHAT",
         "BUBBLE_TEXT",
         "GM",
+        "GLOBAL",
         "PLAYER",
         "WHISPER",
         "IS",
@@ -801,7 +867,7 @@ static Palette::GradientType readGradientType(const std::string &grad)
     return Palette::STATIC;
 }
 
-void Theme::readColorNode(XML::Node node)
+void Theme::readColorNode(XML::Node node, Palette &palette)
 {
     const auto idStr = node.getProperty("id", std::string());
     const int id = readColorId(idStr);
@@ -812,9 +878,8 @@ void Theme::readColorNode(XML::Node node)
     if (check(node.attribute("color", color), "Theme: 'color' element missing 'color' attribute!"))
         return;
 
-    const GradientType grad = readGradientType(node.getProperty("effect", std::string()));
-
-    mColors[id].set(id, color, grad, 10);
+    const auto grad = readGradientType(node.getProperty("effect", std::string()));
+    palette.setColor(id, color, grad, 10);
 }
 
 static int readProgressId(const std::string &id)

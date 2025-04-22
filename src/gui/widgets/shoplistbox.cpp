@@ -71,14 +71,13 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
         return;
 
     const int alpha = (int)(config.guiAlpha * 255.0f);
-    const gcn::Color &highlightColor =
-            Theme::getThemeColor(Theme::HIGHLIGHT, alpha);
-    const gcn::Color &backgroundColor =
-            Theme::getThemeColor(Theme::BACKGROUND, alpha);
-    const gcn::Color &warningColor =
-            Theme::getThemeColor(Theme::SHOP_WARNING, alpha);
-    const gcn::Color &textColor =
-            Theme::getThemeColor(Theme::TEXT);
+    auto highlightColor = Theme::getThemeColor(Theme::HIGHLIGHT);
+    auto backgroundColor = Theme::getThemeColor(Theme::BACKGROUND);
+    auto warningColor = Theme::getThemeColor(Theme::SHOP_WARNING);
+    auto textColor = Theme::getThemeColor(Theme::TEXT);
+    highlightColor.a = alpha;
+    backgroundColor.a = alpha;
+    warningColor.a = alpha;
 
     auto *graphics = static_cast<Graphics*>(gcnGraphics);
 
@@ -168,8 +167,7 @@ void ShopListBox::mouseMoved(gcn::MouseEvent &event)
     }
     else
     {
-        Item *item = mShopItems->at(index);
-        if (item)
+        if (Item *item = mShopItems->at(index))
         {
             mItemPopup->setItem(item->getInfo());
             mItemPopup->position(viewport->getMouseX(), viewport->getMouseY());

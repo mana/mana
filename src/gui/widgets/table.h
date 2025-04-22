@@ -49,7 +49,7 @@ class GuiTable final : public gcn::Widget,
     friend class GuiTableActionListener;
 
 public:
-    GuiTable(TableModel * initial_model = nullptr, gcn::Color background = 0xffffff,
+    GuiTable(TableModel *initialModel = nullptr, gcn::Color background = 0xffffff,
              bool opacity = true);
 
     ~GuiTable() override;
@@ -84,7 +84,7 @@ public:
     void setWrappingEnabled(bool wrappingEnabled)
     {mWrappingEnabled = wrappingEnabled;}
 
-    gcn::Rectangle getChildrenArea() const;
+    gcn::Rectangle getChildrenArea() override;
 
     /**
      * Toggle whether to use linewise selection mode, in which the table selects
@@ -105,7 +105,7 @@ public:
     // Overridden to disable drawing of the frame
     void drawFrame(gcn::Graphics* graphics) override {}
 
-    virtual gcn::Widget *getWidgetAt(int x, int y) const;
+    gcn::Widget *getWidgetAt(int x, int y) override;
 
     void moveToTop(gcn::Widget *child) override;
 
@@ -122,7 +122,7 @@ public:
      *
      * @param opaque True if the table should be opaque, false otherwise.
      */
-    virtual void setOpaque(bool opaque) {mOpaque = opaque;}
+    void setOpaque(bool opaque) {mOpaque = opaque;}
 
     /**
      * Checks if the table is opaque, that is if the table area displays its
@@ -130,7 +130,7 @@ public:
      *
      * @return True if the table is opaque, false otherwise.
      */
-    virtual bool isOpaque() const {return mOpaque;}
+    bool isOpaque() const {return mOpaque;}
 
     // Inherited from MouseListener
     void mousePressed(gcn::MouseEvent& mouseEvent) override;
@@ -146,19 +146,20 @@ public:
 
 protected:
     /** Frees all action listeners on inner widgets. */
-    virtual void uninstallActionListeners();
+    void uninstallActionListeners();
     /** Installs all action listeners on inner widgets. */
-    virtual void installActionListeners();
+    void installActionListeners();
 
-    virtual int getRowHeight() const;
-    virtual int getColumnWidth(int i) const;
+    int getRowHeight() const;
+    int getColumnWidth(int i) const;
 
 private:
     int getRowForY(int y) const; // -1 on error
     int getColumnForX(int x) const; // -1 on error
     void recomputeDimensions();
-    bool mLinewiseMode;
-    bool mWrappingEnabled;
+
+    bool mLinewiseMode = false;
+    bool mWrappingEnabled = false;
     bool mOpaque;
 
     /**
@@ -166,16 +167,13 @@ private:
      */
     gcn::Color mBackgroundColor;
 
-    TableModel *mModel;
+    TableModel *mModel = nullptr;
 
-    int mSelectedRow;
-    int mSelectedColumn;
-
-    /** Number of frames to skip upwards when drawing the selected widget. */
-    int mPopFramesNr;
+    int mSelectedRow = 0;
+    int mSelectedColumn = 0;
 
     /** If someone moves a fresh widget to the top, we must display it. */
-    gcn::Widget *mTopWidget;
+    gcn::Widget *mTopWidget = nullptr;
 
     /** Vector for compactness; used as a list in practice. */
     std::vector<GuiTableActionListener *> mActionListeners;

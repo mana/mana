@@ -77,18 +77,12 @@ void GuiTableActionListener::action(const gcn::ActionEvent& actionEvent)
 }
 
 
-GuiTable::GuiTable(TableModel *initial_model, gcn::Color background,
+GuiTable::GuiTable(TableModel *initialModel, gcn::Color background,
                    bool opacity) :
-    mLinewiseMode(false),
-    mWrappingEnabled(false),
     mOpaque(opacity),
-    mBackgroundColor(background),
-    mModel(nullptr),
-    mSelectedRow(0),
-    mSelectedColumn(0),
-    mTopWidget(nullptr)
+    mBackgroundColor(background)
 {
-    setModel(initial_model);
+    setModel(initialModel);
     setFocusable(true);
 
     addMouseListener(this);
@@ -269,9 +263,14 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
     if (mOpaque)
     {
-        graphics->setColor(Theme::getThemeColor(Theme::BACKGROUND, guiAlpha));
+        auto backgroundColor = Theme::getThemeColor(Theme::BACKGROUND);
+        backgroundColor.a = guiAlpha;
+        graphics->setColor(backgroundColor);
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
+
+    auto highlightColor = Theme::getThemeColor(Theme::HIGHLIGHT);
+    highlightColor.a = guiAlpha;
 
     // First, determine how many rows we need to draw, and where we should start.
     int first_row = -(getY() / getRowHeight());
@@ -314,7 +313,7 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
                 widget->setDimension(bounds);
 
-                graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, guiAlpha));
+                graphics->setColor(highlightColor);
 
                 if (mLinewiseMode && r == mSelectedRow && c == 0)
                 {
@@ -361,7 +360,7 @@ void GuiTable::moveToBottom(gcn::Widget *widget)
         mTopWidget = nullptr;
 }
 
-gcn::Rectangle GuiTable::getChildrenArea() const
+gcn::Rectangle GuiTable::getChildrenArea()
 {
     return gcn::Rectangle(0, 0, getWidth(), getHeight());
 }
@@ -480,7 +479,7 @@ void GuiTable::modelUpdated(bool completed)
     }
 }
 
-gcn::Widget *GuiTable::getWidgetAt(int x, int y) const
+gcn::Widget *GuiTable::getWidgetAt(int x, int y)
 {
     int row = getRowForY(y);
     int column = getColumnForX(x);

@@ -64,9 +64,15 @@ public:
         if (shadow)
         {
             if (shadowColor)
+            {
                 graphics->setColor(*shadowColor);
+            }
             else
-                graphics->setColor(Theme::getThemeColor(Theme::SHADOW, color.a / 2));
+            {
+                auto sc = Theme::getThemeColor(Theme::SHADOW);
+                sc.a = color.a / 2;
+                graphics->setColor(sc);
+            }
 
             if (outline)
                 font->drawString(graphics, text, x + 2, y + 2);
@@ -87,9 +93,15 @@ public:
 
             // Text outline
             if (outlineColor)
+            {
                 graphics->setColor(*outlineColor);
+            }
             else
-                graphics->setColor(Theme::getThemeColor(Theme::OUTLINE, color.a));
+            {
+                auto oc = Theme::getThemeColor(Theme::OUTLINE);
+                oc.a = color.a;
+                graphics->setColor(oc);
+            }
 
             font->drawString(graphics, text, x + 1, y);
             font->drawString(graphics, text, x - 1, y);

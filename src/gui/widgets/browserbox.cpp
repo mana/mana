@@ -75,7 +75,7 @@ static void replaceKeys(std::string &text)
 
 struct LayoutContext
 {
-    LayoutContext(gcn::Font *font);
+    LayoutContext(gcn::Font *font, const Palette &palette);
 
     int y = 0;
     gcn::Font *font;
@@ -83,18 +83,18 @@ struct LayoutContext
     const int minusWidth;
     const int tildeWidth;
     int lineHeight;
-    gcn::Color selColor;
     const gcn::Color textColor;
+    gcn::Color selColor;
 };
 
-LayoutContext::LayoutContext(gcn::Font *font)
+LayoutContext::LayoutContext(gcn::Font *font, const Palette &palette)
     : font(font)
     , fontHeight(font->getHeight())
     , minusWidth(font->getWidth("-"))
     , tildeWidth(font->getWidth("~"))
     , lineHeight(fontHeight)
-    , selColor(Theme::getThemeColor(Theme::TEXT))
-    , textColor(Theme::getThemeColor(Theme::TEXT))
+    , textColor(palette.getColor(Theme::TEXT))
+    , selColor(textColor)
 {
     if (auto *trueTypeFont = dynamic_cast<const TrueTypeFont*>(font))
         lineHeight = trueTypeFont->getLineHeight();
@@ -175,7 +175,7 @@ void BrowserBox::addRow(std::string_view row)
         replaceKeys(newRow.text);
 
     // Layout the newly added row
-    LayoutContext context(getFont());
+    LayoutContext context(getFont(), gui->getTheme()->getPalette(mPalette));
     context.y = getHeight();
     layoutTextRow(newRow, context);
 
@@ -252,19 +252,20 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
     if (mHoveredLink)
     {
+        auto &palette = gui->getTheme()->getPalette(mPalette);
         auto &link = *mHoveredLink;
 
         const gcn::Rectangle &rect = link.rect;
 
         if (mHighlightMode & BACKGROUND)
         {
-            graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT));
+            graphics->setColor(palette.getColor(Theme::HIGHLIGHT));
             graphics->fillRectangle(rect);
         }
 
         if (mHighlightMode & UNDERLINE)
         {
-            graphics->setColor(Theme::getThemeColor(Theme::HYPERLINK));
+            graphics->setColor(palette.getColor(Theme::HYPERLINK));
             graphics->drawLine(rect.x,
                                rect.y + rect.height,
                                rect.x + rect.width,
@@ -299,7 +300,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
  */
 void BrowserBox::relayoutText()
 {
-    LayoutContext context(getFont());
+    LayoutContext context(getFont(), gui->getTheme()->getPalette(mPalette));
 
     for (auto &row : mTextRows)
         layoutTextRow(row, context);
@@ -347,6 +348,8 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
         return;
     }
 
+    auto theme = gui->getTheme();
+    auto &palette = gui->getTheme()->getPalette(mPalette);
     gcn::Color prevColor = context.selColor;
 
     // TODO: Check if we must take texture size limits into account here
@@ -371,44 +374,27 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
                 const char c = row.text.at(start + 2);
                 start += 3;
 
-                bool valid;
-                const gcn::Color &col = Theme::getThemeColor(c, valid);
-
-                if (c == '>')
+                switch (c)
                 {
-                    context.selColor = prevColor;
-                }
-                else if (c == '<')
-                {
-                    prevColor = context.selColor;
-                    context.selColor = col;
-                }
-                else if (c == 'B')
-                {
-                    context.font = boldFont;
-                }
-                else if (c == 'b')
-                {
-                    context.font = getFont();
-                }
-                else if (valid)
-                {
-                    context.selColor = col;
-                }
-                else switch (c)
-                {
-                    case '1': context.selColor = RED; break;
-                    case '2': context.selColor = GREEN; break;
-                    case '3': context.selColor = BLUE; break;
-                    case '4': context.selColor = ORANGE; break;
-                    case '5': context.selColor = YELLOW; break;
-                    case '6': context.selColor = PINK; break;
-                    case '7': context.selColor = PURPLE; break;
-                    case '8': context.selColor = GRAY; break;
-                    case '9': context.selColor = BROWN; break;
-                    case '0':
-                    default:
-                        context.selColor = context.textColor;
+                    case '>':
+                        context.selColor = prevColor;
+                        break;
+                    case '<':
+                        prevColor = context.selColor;
+                        context.selColor = palette.getColor(Theme::HYPERLINK);
+                        break;
+                    case 'B':
+                        context.font = boldFont;
+                        break;
+                    case 'b':
+                        context.font = getFont();
+                        break;
+                    default: {
+                        const auto colorId = Theme::getColorIdForChar(c);
+                        context.selColor = colorId ? palette.getColor(*colorId)
+                                                   : context.textColor;
+                        break;
+                    }
                 }
 
                 // Update the position of the links

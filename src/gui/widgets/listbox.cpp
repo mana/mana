@@ -41,17 +41,19 @@ void ListBox::draw(gcn::Graphics *graphics)
     if (!mListModel)
         return;
 
-    const int alpha = gui->getTheme()->getGuiAlpha();
-
-    graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, alpha));
     graphics->setFont(getFont());
 
     const int height = getRowHeight();
 
     // Draw filled rectangle around the selected list element
     if (mSelected >= 0)
+    {
+        auto highlightColor = Theme::getThemeColor(Theme::HIGHLIGHT);
+        highlightColor.a = gui->getTheme()->getGuiAlpha();
+        graphics->setColor(highlightColor);
         graphics->fillRectangle(gcn::Rectangle(0, height * mSelected,
                                                getWidth(), height));
+    }
 
     // Draw the list elements
     graphics->setColor(Theme::getThemeColor(Theme::TEXT));

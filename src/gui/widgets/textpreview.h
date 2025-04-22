@@ -44,37 +44,6 @@ class TextPreview : public gcn::Widget
         }
 
         /**
-         * Sets the text to use the set alpha value.
-         *
-         * @param alpha whether to use alpha values for the text or not
-         */
-        void useTextAlpha(bool alpha)
-        {
-            mTextAlpha = alpha;
-        }
-
-        /**
-         * Sets the color the text background is drawn in. This is only the
-         * rectangle directly behind the text, not to full widget.
-         *
-         * @param color the color to set
-         */
-        void setTextBGColor(const gcn::Color *color)
-        {
-            mTextBGColor = color;
-        }
-
-        /**
-         * Sets the background color of the widget.
-         *
-         * @param color the color to set
-         */
-        void setBGColor(const gcn::Color *color)
-        {
-            mBGColor = color;
-        }
-
-        /**
          * Sets the font to render the text in.
          *
          * @param font the font to use.
@@ -111,29 +80,10 @@ class TextPreview : public gcn::Widget
          */
         void draw(gcn::Graphics *graphics) override;
 
-        /**
-         * Set opacity for this widget (whether or not to show the background
-         * color)
-         *
-         * @param opaque Whether the widget should be opaque or not
-         */
-        void setOpaque(bool opaque) { mOpaque = opaque; }
-
-        /**
-         * Gets opacity for this widget (whether or not the background color
-         * is shown below the widget)
-         */
-        bool isOpaque() const { return mOpaque; }
-
     private:
         gcn::Font *mFont;
         std::string mText;
         const gcn::Color *mTextColor;
-        const gcn::Color *mBGColor;
-        const gcn::Color *mTextBGColor = nullptr;
-        static float mAlpha;
-        bool mTextAlpha = false;
-        bool mOpaque = false;
         bool mShadow = false;
         bool mOutline = false;
 };

@@ -980,7 +980,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
         delete mText;
         mText = nullptr;
 
-        mSpeechBubble->setCaption(showName ? mName : "", mTextColor);
+        mSpeechBubble->setCaption(showName ? mName : std::string(), mNameColor);
 
         mSpeechBubble->setText(mSpeech, showName);
         mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() / 2),
@@ -1108,28 +1108,16 @@ void Being::restoreAllSpriteParticles()
 
 void Being::updateColors()
 {
-    if (getType() == MONSTER)
-    {
-        mNameColor = &userPalette->getColor(UserPalette::MONSTER);
-        mTextColor = &userPalette->getColor(UserPalette::MONSTER);
-    }
-    else if (getType() == NPC)
-    {
-        mNameColor = &userPalette->getColor(UserPalette::NPC);
-        mTextColor = &userPalette->getColor(UserPalette::NPC);
-    }
-    else if (this == local_player)
-    {
-        mNameColor = &userPalette->getColor(UserPalette::SELF);
-        mTextColor = &Theme::getThemeColor(Theme::PLAYER);
-    }
-    else
-    {
-        mTextColor = &userPalette->getColor(Theme::PLAYER);
-
-        if (mIsGM)
+    switch (getType()) {
+    case ActorSprite::UNKNOWN:
+        return;
+    case ActorSprite::PLAYER:
+        if (this == local_player)
         {
-            mTextColor = &userPalette->getColor(UserPalette::GM);
+            mNameColor = &userPalette->getColor(UserPalette::SELF);
+        }
+        else if (mIsGM)
+        {
             mNameColor = &userPalette->getColor(UserPalette::GM);
         }
         else if (mParty && mParty == local_player->getParty())
@@ -1140,6 +1128,16 @@ void Being::updateColors()
         {
             mNameColor = &userPalette->getColor(UserPalette::PC);
         }
+        break;
+    case ActorSprite::NPC:
+        mNameColor = &userPalette->getColor(UserPalette::NPC);
+        break;
+    case ActorSprite::MONSTER:
+        mNameColor = &userPalette->getColor(UserPalette::MONSTER);
+        break;
+    case ActorSprite::FLOOR_ITEM:
+    case ActorSprite::PORTAL:
+        return;
     }
 
     if (mDispName)

@@ -95,20 +95,19 @@ public:
 
         auto *model = static_cast<ServersListModel*>(mListModel);
 
-        const int alpha = gui->getTheme()->getGuiAlpha();
-
-        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, alpha));
         graphics->setFont(getFont());
 
         const int height = getRowHeight();
-        const gcn::Color unsupported =
-                Theme::getThemeColor(Theme::SERVER_VERSION_NOT_SUPPORTED,
-                                     alpha);
 
         // Draw filled rectangle around the selected list element
         if (mSelected >= 0)
+        {
+            auto highlightColor = Theme::getThemeColor(Theme::HIGHLIGHT);
+            highlightColor.a = gui->getTheme()->getGuiAlpha();
+            graphics->setColor(highlightColor);
             graphics->fillRectangle(gcn::Rectangle(0, height * mSelected,
                                                    getWidth(), height));
+        }
 
         // Draw the list elements
         for (int i = 0, y = 0; i < model->getNumberOfElements();
@@ -132,7 +131,9 @@ public:
 
             if (info.version.first > 0)
             {
-                graphics->setColor(unsupported);
+                auto unsupportedColor = Theme::getThemeColor(Theme::SERVER_VERSION_NOT_SUPPORTED);
+                unsupportedColor.a = gui->getTheme()->getGuiAlpha();
+                graphics->setColor(unsupportedColor);
                 graphics->drawText(info.version.second,
                                    getWidth() - info.version.first - 2, top);
             }

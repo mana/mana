@@ -160,7 +160,7 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
                 tmp.nick = strprintf(_("Global announcement from %s:"),
                                      tmp.nick.c_str());
                 tmp.nick += " ";
-                lineColor = "##1"; // Equiv. to BrowserBox::RED
+                lineColor = "##g";
             }
             break;
         case BY_PLAYER:

@@ -68,6 +68,10 @@ class Popup : public Container, public gcn::MouseListener
          */
         static void setWindowContainer(WindowContainer *windowContainer);
 
+        // Container interface
+        void add(gcn::Widget *widget) override;
+        void add(gcn::Widget *widget, int x, int y) override;
+
         /**
          * Draws the popup.
          */
@@ -156,7 +160,14 @@ class Popup : public Container, public gcn::MouseListener
          */
         void position(int x, int y);
 
+        /**
+         * Returns the Skin used by this popup.
+         */
+        const Skin &getSkin() const;
+
     private:
+        void widgetAdded(gcn::Widget *widget) const;
+
         std::string mPopupName;     /**< Name of the popup */
         int mMinWidth = 100;        /**< Minimum popup width */
         int mMinHeight = 40;        /**< Minimum popup height */

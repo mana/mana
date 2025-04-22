@@ -60,7 +60,7 @@ Window::Window(SkinType skinType, const std::string &caption, bool modal, Window
 
     instances++;
 
-    auto &skin = gui->getTheme()->getSkin(mSkinType);
+    auto &skin = getSkin();
     setFrameSize(skin.frameSize);
     setPadding(skin.padding);
     setTitleBarHeight(skin.titleBarHeight);
@@ -126,13 +126,12 @@ void Window::draw(gcn::Graphics *graphics)
 void Window::drawFrame(gcn::Graphics *graphics)
 {
     auto g = static_cast<Graphics*>(graphics);
-    auto theme = gui->getTheme();
 
     WidgetState widgetState(this);
     widgetState.width += getFrameSize() * 2;
     widgetState.height += getFrameSize() * 2;
 
-    auto &skin = theme->getSkin(mSkinType);
+    auto &skin = getSkin();
     skin.draw(g, widgetState);
 
     if (mShowTitle)
@@ -172,7 +171,7 @@ void Window::setMinimumContentSize(int width, int height)
 {
     const int padding = getPadding();
     const int titleBarHeight = getTitleBarHeight();
-    auto &skin = gui->getTheme()->getSkin(mSkinType);
+    auto &skin = getSkin();
 
     setMinWidth(std::max(skin.getMinWidth(), width + 2 * padding));
     setMinHeight(std::max(skin.getMinHeight(), height + padding + titleBarHeight));
@@ -240,14 +239,12 @@ void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
 
 void Window::setMinWidth(int width)
 {
-    auto &skin = gui->getTheme()->getSkin(mSkinType);
-    mMinWinWidth = std::max(skin.getMinWidth(), width);
+    mMinWinWidth = std::max(getSkin().getMinWidth(), width);
 }
 
 void Window::setMinHeight(int height)
 {
-    auto &skin = gui->getTheme()->getSkin(mSkinType);
-    mMinWinHeight = std::max(skin.getMinHeight(), height);
+    mMinWinHeight = std::max(getSkin().getMinHeight(), height);
 }
 
 void Window::setMaxWidth(int width)
@@ -378,6 +375,11 @@ void Window::mousePressed(gcn::MouseEvent &event)
 void Window::close()
 {
     setVisible(false);
+}
+
+const Skin &Window::getSkin() const
+{
+    return gui->getTheme()->getSkin(mSkinType);
 }
 
 void Window::mouseReleased(gcn::MouseEvent &event)

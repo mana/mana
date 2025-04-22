@@ -134,14 +134,14 @@ public:
         auto *model = static_cast<SkillModel *>(mListModel);
         auto *graphics = static_cast<Graphics *>(gcnGraphics);
 
-        const int alpha = gui->getTheme()->getGuiAlpha();
-
-        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT, alpha));
         graphics->setFont(getFont());
 
         // Draw filled rectangle around the selected list element
         if (mSelected >= 0)
         {
+            auto highlightColor = Theme::getThemeColor(Theme::HIGHLIGHT);
+            highlightColor.a = gui->getTheme()->getGuiAlpha();
+            graphics->setColor(highlightColor);
             graphics->fillRectangle(gcn::Rectangle(0, getRowHeight() * mSelected,
                                                    getWidth(), getRowHeight()));
         }

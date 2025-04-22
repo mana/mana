@@ -22,11 +22,14 @@
 
 #include "gui/widgets/popup.h"
 
+#include "browserbox.h"
 #include "graphics.h"
 #include "log.h"
+#include "textbox.h"
 
 #include "gui/gui.h"
 #include "gui/viewport.h"
+#include "gui/widgets/label.h"
 #include "gui/widgets/windowcontainer.h"
 
 #include <guichan/exception.hpp>
@@ -42,7 +45,7 @@ Popup::Popup(const std::string &name, SkinType skinType)
     if (!windowContainer)
         throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
 
-    auto &skin = gui->getTheme()->getSkin(skinType);
+    auto &skin = getSkin();
     setFrameSize(skin.frameSize);
     setPadding(skin.padding);
 
@@ -63,6 +66,31 @@ void Popup::setWindowContainer(WindowContainer *wc)
     windowContainer = wc;
 }
 
+void Popup::add(gcn::Widget *widget)
+{
+    Container::add(widget);
+    widgetAdded(widget);
+}
+
+void Popup::add(gcn::Widget *widget, int x, int y)
+{
+    Container::add(widget, x, y);
+    widgetAdded(widget);
+}
+
+void Popup::widgetAdded(gcn::Widget *widget) const
+{
+    if (const int paletteId = getSkin().palette)
+    {
+        if (auto browserBox = dynamic_cast<BrowserBox*>(widget))
+            browserBox->setPalette(paletteId);
+        else if (auto label = dynamic_cast<Label*>(widget))
+            label->setForegroundColor(gui->getTheme()->getPalette(paletteId).getColor(Theme::TEXT));
+        else if (auto textBox = dynamic_cast<TextBox*>(widget))
+            textBox->setTextColor(&gui->getTheme()->getPalette(paletteId).getColor(Theme::TEXT));
+    }
+}
+
 void Popup::draw(gcn::Graphics *graphics)
 {
     if (getFrameSize() == 0)
@@ -76,7 +104,7 @@ void Popup::drawFrame(gcn::Graphics *graphics)
     WidgetState state(this);
     state.width += getFrameSize() * 2;
     state.height += getFrameSize() * 2;
-    gui->getTheme()->drawSkin(static_cast<Graphics *>(graphics), mSkinType, state);
+    getSkin().draw(static_cast<Graphics *>(graphics), state);
 }
 
 gcn::Rectangle Popup::getChildrenArea()
@@ -119,14 +147,12 @@ void Popup::setLocationRelativeTo(gcn::Widget *widget)
 
 void Popup::setMinWidth(int width)
 {
-    auto &skin = gui->getTheme()->getSkin(mSkinType);
-    mMinWidth = std::max(skin.getMinWidth(), width);
+    mMinWidth = std::max(getSkin().getMinWidth(), width);
 }
 
 void Popup::setMinHeight(int height)
 {
-    auto &skin = gui->getTheme()->getSkin(mSkinType);
-    mMinHeight = std::max(skin.getMinHeight(), height);
+    mMinHeight = std::max(getSkin().getMinHeight(), height);
 }
 
 void Popup::setMaxWidth(int width)
@@ -159,6 +185,11 @@ void Popup::position(int x, int y)
     setPosition(posX, posY);
     setVisible(true);
     requestMoveToTop();
+}
+
+const Skin &Popup::getSkin() const
+{
+    return gui->getTheme()->getSkin(mSkinType);
 }
 
 void Popup::mouseMoved(gcn::MouseEvent &event)

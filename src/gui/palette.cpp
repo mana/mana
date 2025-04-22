@@ -25,7 +25,6 @@
 #include <cmath>
 
 static constexpr double PI = 3.14159265;
-const gcn::Color Palette::BLACK = gcn::Color(0, 0, 0);
 Timer Palette::mRainbowTimer;
 Palette::Palettes Palette::mInstances;
 
@@ -47,23 +46,34 @@ Palette::Palette(int size) :
     mInstances.insert(this);
 }
 
+Palette::Palette(Palette &&pal)
+    : mColors(std::move(pal.mColors))
+    , mGradVector(std::move(pal.mGradVector))
+{
+    mInstances.insert(this);
+}
+
 Palette::~Palette()
 {
     mInstances.erase(this);
 }
 
-const gcn::Color &Palette::getColor(char c, bool &valid)
- {
-    for (const auto &color : mColors)
+Palette &Palette::operator=(Palette &&pal)
+{
+    if (this != &pal)
     {
-        if (color.ch == c)
-        {
-            valid = true;
-            return color.color;
-        }
+        mColors = std::move(pal.mColors);
+        mGradVector = std::move(pal.mGradVector);
     }
-    valid = false;
-    return BLACK;
+    return *this;
+}
+
+void Palette::setColor(int type,
+                       const gcn::Color &color,
+                       GradientType grad,
+                       int delay)
+{
+    mColors[type].set(type, color, grad, delay);
 }
 
 void Palette::advanceGradients()

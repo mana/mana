@@ -363,6 +363,11 @@ class Window : public gcn::Window, gcn::WidgetListener
         virtual void close();
 
         /**
+         * Returns the Skin used by this window.
+         */
+        const Skin &getSkin() const;
+
+        /**
          * Gets the alpha value used by the window, in a Guichan usable format.
          */
         static int getGuiAlpha();

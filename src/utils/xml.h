@@ -47,7 +47,7 @@ namespace XML
         std::string_view textContent() const;
 
         template<typename T>
-        bool attribute(const char *name, T &value);
+        bool attribute(const char *name, T &value) const;
 
         bool hasAttribute(const char *name) const;
         int getProperty(const char *name, int def) const;
@@ -126,7 +126,7 @@ namespace XML
     }
 
     template<typename T>
-    inline bool Node::attribute(const char *name, T &value)
+    inline bool Node::attribute(const char *name, T &value) const
     {
         if (const char *str = attribute(name))
         {
@@ -204,13 +204,13 @@ namespace XML
          * Returns the root node of the document (or NULL if there was a
          * load error).
          */
-        Node rootNode();
+        Node rootNode() const;
 
     private:
         xmlDocPtr mDoc;
     };
 
-    inline Node Document::rootNode()
+    inline Node Document::rootNode() const
     {
         return mDoc ? xmlDocGetRootElement(mDoc) : nullptr;
     }

@@ -112,7 +112,7 @@ void TabbedArea::addTab(const std::string &caption, gcn::Widget *widget)
     addTab(tab, widget);
 }
 
-void TabbedArea::removeTab(Tab *tab)
+void TabbedArea::removeTab(gcn::Tab *tab)
 {
     if (tab == mSelectedTab)
     {

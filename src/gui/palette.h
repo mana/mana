@@ -40,8 +40,13 @@ constexpr int GRADIENT_DELAY = 40;
 class Palette
 {
     public:
-        /** Black Color Constant */
-        static const gcn::Color BLACK;
+        Palette(int size);
+        Palette(const Palette &) = delete;
+        Palette(Palette &&);
+        ~Palette();
+
+        Palette &operator=(const Palette &) = delete;
+        Palette &operator=(Palette &&);
 
         /** Colors can be static or can alter over time. */
         enum GradientType {
@@ -51,31 +56,21 @@ class Palette
             RAINBOW
         };
 
-        /**
-         * Returns the color associated with a character, if it exists. Returns
-         * Palette::BLACK if the character is not found.
-         *
-         * @param c character requested
-         * @param valid indicate whether character is known
-         *
-         * @return the requested color or Palette::BLACK
-         */
-        const gcn::Color &getColor(char c, bool &valid);
+        void setColor(int type,
+                      const gcn::Color &color,
+                      GradientType grad,
+                      int delay);
 
         /**
-         * Gets the color associated with the type. Sets the alpha channel
-         * before returning.
+         * Gets the color associated with the type.
          *
          * @param type the color type requested
-         * @param alpha alpha channel to use
          *
          * @return the requested color
          */
-        const gcn::Color &getColor(int type, int alpha = 255)
+        const gcn::Color &getColor(int type) const
         {
-            gcn::Color &col = mColors[type].color;
-            col.a = alpha;
-            return col;
+            return mColors[type].color;
         }
 
         /**
@@ -88,18 +83,6 @@ class Palette
         GradientType getGradientType(int type) const
         {
             return mColors[type].grad;
-        }
-
-        /**
-         * Get the character used by the specified color.
-         *
-         * @param type the color type of the color
-         *
-         * @return the color char of the color with the given index
-         */
-        char getColorChar(int type) const
-        {
-            return mColors[type].ch;
         }
 
         /**
@@ -128,10 +111,6 @@ class Palette
         using Palettes = std::set<Palette *>;
         static Palettes mInstances;
 
-        Palette(int size);
-
-        ~Palette();
-
         void advanceGradient(int advance);
 
         struct ColorElem
@@ -141,7 +120,6 @@ class Palette
             gcn::Color testColor;
             gcn::Color committedColor;
             std::string text;
-            char ch;
             GradientType grad;
             GradientType committedGrad;
             int gradientIndex;

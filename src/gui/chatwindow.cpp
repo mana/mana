@@ -30,6 +30,7 @@
 #include "gui/recorder.h"
 #include "gui/setup.h"
 
+#include "gui/widgets/browserbox.h"
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/itemlinkhandler.h"
 #include "gui/widgets/layout.h"
@@ -239,6 +240,7 @@ void ChatWindow::addTab(ChatTab *tab)
     // Make sure we don't end up with duplicates in the gui
     // TODO
 
+    tab->mTextOutput->setPalette(getSkin().palette);
     mChatTabs->addTab(tab, tab->mScrollArea);
 
     // Update UI

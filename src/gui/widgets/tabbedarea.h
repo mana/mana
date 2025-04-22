@@ -86,12 +86,12 @@ class TabbedArea final : public gcn::TabbedArea, public gcn::WidgetListener
         void addTab(const std::string &caption, gcn::Widget *widget) override;
 
         /**
-         * Overload the remove tab function as it's broken in guichan 0.8.
+         * Override the remove tab function as it's broken in guichan 0.8.
          */
-        void removeTab(Tab *tab);
+        void removeTab(gcn::Tab *tab) override;
 
         /**
-         * Overload the logic function since it's broken in guichan 0.8.
+         * Override the logic function since it's broken in guichan 0.8.
          */
         void logic() override;
 

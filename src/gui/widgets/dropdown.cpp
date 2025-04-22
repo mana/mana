@@ -57,7 +57,8 @@ void DropDown::draw(gcn::Graphics* graphics)
     const int alpha = gui->getTheme()->getGuiAlpha();
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
-    const gcn::Color *highlightColor = &Theme::getThemeColor(Theme::HIGHLIGHT, alpha);
+    auto highlightColor = Theme::getThemeColor(Theme::HIGHLIGHT);
+    highlightColor.a = alpha;
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;
 
@@ -72,7 +73,7 @@ void DropDown::draw(gcn::Graphics* graphics)
 
     if (isFocused())
     {
-        graphics->setColor(*highlightColor);
+        graphics->setColor(highlightColor);
         graphics->drawRectangle(
             gcn::Rectangle(mPadding, mPadding, getWidth() - h - mPadding * 2, h - 2 * mPadding));
     }
@@ -85,7 +86,7 @@ void DropDown::draw(gcn::Graphics* graphics)
 
         // Draw two lines separating the ListBox with selected
         // element view.
-        graphics->setColor(*highlightColor);
+        graphics->setColor(highlightColor);
         graphics->drawLine(0, h, getWidth(), h);
         graphics->setColor(shadowColor);
         graphics->drawLine(0, h + 1, getWidth(), h + 1);

@@ -32,6 +32,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <variant>
 
@@ -55,7 +56,7 @@ public:
     const std::string &getName() const { return name; }
     const std::string &getPath() const { return path; }
     std::string getFullPath() const;
-    XML::Document &getDocument() const { return *doc; }
+    const XML::Document &getDocument() const { return *doc; }
 
 private:
     std::string name;
@@ -181,13 +182,14 @@ class Skin
         int titleBarHeight = 0;
         int titleOffsetX = 0;
         int titleOffsetY = 0;
+        int palette = 0;
         bool showButtons = true;
 
     private:
         std::vector<SkinState> mStates;
 };
 
-class Theme : public Palette, public EventListener
+class Theme : public EventListener
 {
     public:
         static std::string prepareThemePath();
@@ -207,6 +209,16 @@ class Theme : public Palette, public EventListener
 
         enum ThemePalette {
             TEXT,
+            BLACK,          // Color 0
+            RED,            // Color 1
+            GREEN,          // Color 2
+            BLUE,           // Color 3
+            ORANGE,         // Color 4
+            YELLOW,         // Color 5
+            PINK,           // Color 6
+            PURPLE,         // Color 7
+            GRAY,           // Color 8
+            BROWN,          // Color 9
             CARET,
             SHADOW,
             OUTLINE,
@@ -218,8 +230,11 @@ class Theme : public Palette, public EventListener
             SHOP_WARNING,
             ITEM_EQUIPPED,
             CHAT,
+            OLDCHAT,
+            AWAYCHAT,
             BUBBLE_TEXT,
             GM,
+            GLOBAL,
             PLAYER,
             WHISPER,
             IS,
@@ -259,18 +274,30 @@ class Theme : public Palette, public EventListener
         };
 
         /**
-         * Gets the color associated with the type. Sets the alpha channel
-         * before returning.
+         * Gets the color associated with the type in the default palette (0).
          *
          * @param type the color type requested
-         * @param alpha alpha channel to use
-         *
          * @return the requested color
          */
-        static const gcn::Color &getThemeColor(int type, int alpha = 255);
-        static const gcn::Color &getThemeColor(char c, bool &valid);
+        static const gcn::Color &getThemeColor(int type);
 
         static gcn::Color getProgressColor(int type, float progress);
+        
+        const Palette &getPalette(size_t index) const;
+
+        /**
+         * Returns a color from the default palette (0).
+         */
+        const gcn::Color &getColor(int type) const;
+
+        /**
+         * Returns the color ID associated with a character, if it exists.
+         * Returns no value if the character is not found.
+         *
+         * @param c character requested
+         * @return the requested color or none
+         */
+        static std::optional<int> getColorIdForChar(char c);
 
         void drawSkin(Graphics *graphics, SkinType type, const WidgetState &state) const;
         void drawProgressBar(Graphics *graphics,
@@ -314,7 +341,8 @@ class Theme : public Palette, public EventListener
         void readSkinStateNode(XML::Node node, Skin &skin) const;
         void readSkinStateImgNode(XML::Node node, SkinState &state) const;
         void readIconNode(XML::Node node);
-        void readColorNode(XML::Node node);
+        void readPaletteNode(XML::Node node);
+        void readColorNode(XML::Node node, Palette &palette);
         void readProgressBarNode(XML::Node node);
 
         std::string mThemePath;
@@ -328,5 +356,6 @@ class Theme : public Palette, public EventListener
         float mMinimumOpacity = 0.0f;
         float mAlpha = 1.0;
 
+        std::vector<Palette> mPalettes;
         std::vector<std::unique_ptr<DyePalette>> mProgressColors;
 };

@@ -42,7 +42,7 @@ Label::Label(const std::string &caption) :
 void Label::draw(gcn::Graphics *graphics)
 {
     int textX;
-    int textY = getHeight() / 2 - getFont()->getHeight() / 2;
+    int textY = (getHeight() - getFont()->getHeight()) / 2;
 
     switch (getAlignment())
     {
