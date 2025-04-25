@@ -83,11 +83,21 @@ void Popup::widgetAdded(gcn::Widget *widget) const
     if (const int paletteId = getSkin().palette)
     {
         if (auto browserBox = dynamic_cast<BrowserBox*>(widget))
+        {
             browserBox->setPalette(paletteId);
+        }
         else if (auto label = dynamic_cast<Label*>(widget))
-            label->setForegroundColor(gui->getTheme()->getPalette(paletteId).getColor(Theme::TEXT));
+        {
+            auto &palette = gui->getTheme()->getPalette(paletteId);
+            label->setForegroundColor(palette.getColor(Theme::TEXT));
+            label->setOutlineColor(palette.getOutlineColor(Theme::TEXT));
+        }
         else if (auto textBox = dynamic_cast<TextBox*>(widget))
-            textBox->setTextColor(&gui->getTheme()->getPalette(paletteId).getColor(Theme::TEXT));
+        {
+            auto &palette = gui->getTheme()->getPalette(paletteId);
+            textBox->setTextColor(&palette.getColor(Theme::TEXT));
+            textBox->setOutlineColor(palette.getOutlineColor(Theme::TEXT));
+        }
     }
 }
 

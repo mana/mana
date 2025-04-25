@@ -222,8 +222,8 @@ class Theme : public EventListener
             CARET,
             SHADOW,
             OUTLINE,
-            PARTY_CHAT_TAB,
-            PARTY_SOCIAL_TAB,
+            PARTY_TAB,
+            WHISPER_TAB,
             BACKGROUND,
             HIGHLIGHT,
             TAB_FLASH,
@@ -342,7 +342,6 @@ class Theme : public EventListener
         void readSkinStateImgNode(XML::Node node, SkinState &state) const;
         void readIconNode(XML::Node node);
         void readPaletteNode(XML::Node node);
-        void readColorNode(XML::Node node, Palette &palette);
         void readProgressBarNode(XML::Node node);
 
         std::string mThemePath;

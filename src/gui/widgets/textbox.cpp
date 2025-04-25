@@ -21,15 +21,20 @@
 
 #include "gui/widgets/textbox.h"
 
+#include "gui/gui.h"
 #include "resources/theme.h"
+#include "textrenderer.h"
 
 #include <guichan/font.hpp>
 
 #include <sstream>
 
-TextBox::TextBox() :
-    mTextColor(&Theme::getThemeColor(Theme::TEXT))
+TextBox::TextBox()
 {
+    auto &palette = gui->getTheme()->getPalette(0);
+    mTextColor = &palette.getColor(Theme::TEXT);
+    mOutlineColor = palette.getOutlineColor(Theme::TEXT);
+
     setOpaque(false);
     setFrameSize(0);
     mMinWidth = getWidth();
@@ -146,4 +151,43 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
     mMinWidth = minWidth;
 
     gcn::TextBox::setText(wrappedStream.str());
+}
+
+/**
+ * Overridden so we can customize the color and outline of the text.
+ */
+void TextBox::draw(gcn::Graphics *graphics)
+{
+    unsigned int i;
+
+    if (mOpaque)
+    {
+        graphics->setColor(getBackgroundColor());
+        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+    }
+
+    if (isFocused() && isEditable())
+    {
+        drawCaret(graphics,
+                  getFont()->getWidth(mTextRows[mCaretRow].substr(0, mCaretColumn)),
+                  mCaretRow * getFont()->getHeight());
+    }
+
+    graphics->setColor(*mTextColor);
+    graphics->setFont(getFont());
+
+    for (i = 0; i < mTextRows.size(); i++)
+    {
+        // Move the text one pixel so we can have a caret before a letter.
+        TextRenderer::renderText(graphics,
+                                 mTextRows[i],
+                                 1,
+                                 i * getFont()->getHeight(),
+                                 gcn::Graphics::LEFT,
+                                 *mTextColor,
+                                 getFont(),
+                                 mOutlineColor.has_value(),
+                                 false,
+                                 mOutlineColor);
+    }
 }

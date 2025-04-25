@@ -171,7 +171,7 @@ public:
     {
         setCaption(party->getName());
 
-        setTabColor(&Theme::getThemeColor(Theme::PARTY_SOCIAL_TAB));
+        setTabColor(&Theme::getThemeColor(Theme::PARTY_TAB));
 
         mList = std::make_unique<AvatarListBox>(party);
         mScroll = std::make_unique<ScrollArea>(mList.get());

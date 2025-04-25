@@ -51,6 +51,7 @@ struct LinePart
     int x;
     int y;
     gcn::Color color;
+    std::optional<gcn::Color> outlineColor;
     std::string text;
     gcn::Font *font;
 };

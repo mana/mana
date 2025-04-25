@@ -23,6 +23,8 @@
 
 #include <guichan/widgets/textbox.hpp>
 
+#include <optional>
+
 /**
  * A text box, meant to be used inside a scroll area. Same as the Guichan text
  * box except this one doesn't have a background or border, instead completely
@@ -38,6 +40,9 @@ class TextBox : public gcn::TextBox
         void setTextColor(const gcn::Color *color)
         { mTextColor = color; }
 
+        void setOutlineColor(const std::optional<gcn::Color> &color)
+        { mOutlineColor = color; }
+
         /**
          * Sets the text after wrapping it to the current width of the widget.
          */
@@ -51,13 +56,10 @@ class TextBox : public gcn::TextBox
         /**
          * Draws the text.
          */
-        void draw(gcn::Graphics *graphics) override
-        {
-            setForegroundColor(*mTextColor);
-            gcn::TextBox::draw(graphics);
-        }
+        void draw(gcn::Graphics *graphics) override;
 
     private:
         int mMinWidth;
         const gcn::Color *mTextColor;
+        std::optional<gcn::Color> mOutlineColor;
 };

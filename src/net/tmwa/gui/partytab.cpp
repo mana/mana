@@ -32,14 +32,13 @@
 #include "resources/theme.h"
 
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 namespace TmwAthena {
 
 PartyTab::PartyTab() :
     ChatTab(_("Party"))
 {
-    setTabColor(&Theme::getThemeColor(Theme::PARTY_CHAT_TAB));
+    setTabColor(&Theme::getThemeColor(Theme::PARTY_TAB));
 }
 
 void PartyTab::handleInput(const std::string &msg)

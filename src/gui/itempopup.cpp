@@ -136,6 +136,7 @@ void ItemPopup::setNoItem()
     auto &palette = theme->getPalette(getSkin().palette);
 
     mItemName->setForegroundColor(palette.getColor(Theme::GENERIC));
+    mItemName->setOutlineColor(palette.getOutlineColor(Theme::GENERIC));
     mItemName->setPosition(0, 0);
 
     mItemDesc->setText(std::string());
@@ -179,9 +180,12 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     auto theme = gui->getTheme();
     auto &palette = theme->getPalette(getSkin().palette);
 
+    const auto typeColorId = getColorIdFromItemType(mItemType);
+
     mItemName->setCaption(caption);
     mItemName->adjustSize();
-    mItemName->setForegroundColor(palette.getColor(getColorIdFromItemType(mItemType)));
+    mItemName->setForegroundColor(palette.getColor(typeColorId));
+    mItemName->setOutlineColor(palette.getOutlineColor(typeColorId));
     mItemName->setPosition(space, 0);
 
     mItemDesc->setTextWrapped(item.description, ITEMPOPUP_WRAP_WIDTH);

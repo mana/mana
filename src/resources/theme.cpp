@@ -766,23 +766,6 @@ void Theme::readIconNode(XML::Node node)
     mIcons[name] = image->getSubImage(x, y, width, height);
 }
 
-void Theme::readPaletteNode(XML::Node node)
-{
-    int paletteId;
-    if (node.attribute("id", paletteId) && static_cast<size_t>(paletteId) != mPalettes.size())
-        logger->log("Theme: Non-consecutive palette 'id' attribute with value %d!", paletteId);
-
-    Palette &palette = mPalettes.emplace_back(THEME_COLORS_END);
-
-    for (auto childNode : node.children())
-    {
-        if (childNode.name() == "color")
-            readColorNode(childNode, palette);
-        else
-            logger->log("Theme: Unknown node '%s'!", childNode.name().data());
-    }
-}
-
 static int readColorId(const std::string &id)
 {
     static constexpr const char *colors[Theme::THEME_COLORS_END] = {
@@ -800,8 +783,8 @@ static int readColorId(const std::string &id)
         "CARET",
         "SHADOW",
         "OUTLINE",
-        "PARTY_CHAT_TAB",
-        "PARTY_SOCIAL_TAB",
+        "PARTY_TAB",
+        "WHISPER_TAB",
         "BACKGROUND",
         "HIGHLIGHT",
         "TAB_FLASH",
@@ -867,7 +850,7 @@ static Palette::GradientType readGradientType(const std::string &grad)
     return Palette::STATIC;
 }
 
-void Theme::readColorNode(XML::Node node, Palette &palette)
+static void readColorNode(XML::Node node, Palette &palette)
 {
     const auto idStr = node.getProperty("id", std::string());
     const int id = readColorId(idStr);
@@ -878,8 +861,28 @@ void Theme::readColorNode(XML::Node node, Palette &palette)
     if (check(node.attribute("color", color), "Theme: 'color' element missing 'color' attribute!"))
         return;
 
+    std::optional<gcn::Color> outlineColor;
+    node.attribute("outlineColor", outlineColor);
+
     const auto grad = readGradientType(node.getProperty("effect", std::string()));
-    palette.setColor(id, color, grad, 10);
+    palette.setColor(id, color, outlineColor, grad, 10);
+}
+
+void Theme::readPaletteNode(XML::Node node)
+{
+    int paletteId;
+    if (node.attribute("id", paletteId) && static_cast<size_t>(paletteId) != mPalettes.size())
+        logger->log("Theme: Non-consecutive palette 'id' attribute with value %d!", paletteId);
+
+    Palette &palette = mPalettes.emplace_back(THEME_COLORS_END);
+
+    for (auto childNode : node.children())
+    {
+        if (childNode.name() == "color")
+            readColorNode(childNode, palette);
+        else
+            logger->log("Theme: Unknown node '%s'!", childNode.name().data());
+    }
 }
 
 static int readProgressId(const std::string &id)

@@ -27,8 +27,9 @@
 #include <guichan/color.hpp>
 
 #include <cstdlib>
-#include <string>
+#include <optional>
 #include <set>
+#include <string>
 #include <vector>
 
 // Default Gradient Delay
@@ -58,6 +59,7 @@ class Palette
 
         void setColor(int type,
                       const gcn::Color &color,
+                      const std::optional<gcn::Color> &outlineColor,
                       GradientType grad,
                       int delay);
 
@@ -65,7 +67,6 @@ class Palette
          * Gets the color associated with the type.
          *
          * @param type the color type requested
-         *
          * @return the requested color
          */
         const gcn::Color &getColor(int type) const
@@ -74,10 +75,20 @@ class Palette
         }
 
         /**
+         * Gets the optional outline color associated with the type.
+         *
+         * @param type the color type requested
+         * @return the requested outline color, if any
+         */
+        const std::optional<gcn::Color> &getOutlineColor(int type) const
+        {
+            return mColors[type].outlineColor;
+        }
+
+        /**
          * Gets the GradientType associated with the specified type.
          *
          * @param type the color type of the color
-         *
          * @return the gradient type of the color with the given index
          */
         GradientType getGradientType(int type) const
@@ -89,7 +100,6 @@ class Palette
          * Gets the gradient delay for the specified type.
          *
          * @param type the color type of the color
-         *
          * @return the gradient delay of the color with the given index
          */
         int getGradientDelay(int type) const
@@ -119,6 +129,7 @@ class Palette
             gcn::Color color;
             gcn::Color testColor;
             gcn::Color committedColor;
+            std::optional<gcn::Color> outlineColor;
             std::string text;
             GradientType grad;
             GradientType committedGrad;

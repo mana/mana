@@ -70,10 +70,13 @@ Palette &Palette::operator=(Palette &&pal)
 
 void Palette::setColor(int type,
                        const gcn::Color &color,
+                       const std::optional<gcn::Color> &outlineColor,
                        GradientType grad,
                        int delay)
 {
-    mColors[type].set(type, color, grad, delay);
+    auto &elem = mColors[type];
+    elem.set(type, color, grad, delay);
+    elem.outlineColor = outlineColor;
 }
 
 void Palette::advanceGradients()
@@ -107,17 +110,19 @@ void Palette::advanceGradient(int advance)
         const int pos = elem->gradientIndex % delay;
         const int colIndex = elem->gradientIndex / delay;
 
-        if (elem->grad == PULSE)
-        {
+        switch (elem->grad) {
+        case STATIC:
+            break;
+        case PULSE: {
             const int colVal = (int) (255.0 * sin(PI * colIndex / numOfColors));
             const gcn::Color &col = elem->testColor;
 
             elem->color.r = ((colVal * col.r) / 255) % (col.r + 1);
             elem->color.g = ((colVal * col.g) / 255) % (col.g + 1);
             elem->color.b = ((colVal * col.b) / 255) % (col.b + 1);
+            break;
         }
-        if (elem->grad == SPECTRUM)
-        {
+        case SPECTRUM: {
             int colVal;
 
             if (colIndex % 2)
@@ -139,9 +144,9 @@ void Palette::advanceGradient(int advance)
             elem->color.b =
                     (colIndex == 3 || colIndex == 4) ? 255 :
                     (colIndex == 2 || colIndex == 5) ? colVal : 0;
+            break;
         }
-        else if (elem->grad == RAINBOW)
-        {
+        case RAINBOW: {
             const gcn::Color &startCol = RAINBOW_COLORS[colIndex];
             const gcn::Color &destCol =
                     RAINBOW_COLORS[(colIndex + 1) % numOfColors];
@@ -157,6 +162,8 @@ void Palette::advanceGradient(int advance)
 
             elem->color.b =(int)(startColVal * startCol.b +
                                             destColVal * destCol.b);
+            break;
+        }
         }
     }
 }

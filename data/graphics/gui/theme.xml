@@ -13,8 +13,8 @@
     <color id="CARET" color="#000000" />
     <color id="SHADOW" color="#000000" />
     <color id="OUTLINE" color="#000000" />
-    <color id="PARTY_CHAT_TAB" color="#f48055" />
-    <color id="PARTY_SOCIAL_TAB" color="#ff00d8" />
+    <color id="PARTY_TAB" color="#a9583b" />
+    <color id="WHISPER_TAB" color="#3b58a9" />
     <color id="BACKGROUND" color="#ffffff" />
     <color id="HIGHLIGHT" color="#c0c0c0" />
     <color id="TAB_FLASH" color="#ff0000" effect="pulse" />

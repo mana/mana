@@ -73,9 +73,12 @@ static void replaceKeys(std::string &text)
     }
 }
 
+
 struct LayoutContext
 {
     LayoutContext(gcn::Font *font, const Palette &palette);
+
+    LinePart linePart(int x, std::string text);
 
     int y = 0;
     gcn::Font *font;
@@ -84,20 +87,36 @@ struct LayoutContext
     const int tildeWidth;
     int lineHeight;
     const gcn::Color textColor;
-    gcn::Color selColor;
+    const std::optional<gcn::Color> textOutlineColor;
+    gcn::Color color;
+    std::optional<gcn::Color> outlineColor;
 };
 
-LayoutContext::LayoutContext(gcn::Font *font, const Palette &palette)
+inline LayoutContext::LayoutContext(gcn::Font *font, const Palette &palette)
     : font(font)
     , fontHeight(font->getHeight())
     , minusWidth(font->getWidth("-"))
     , tildeWidth(font->getWidth("~"))
     , lineHeight(fontHeight)
     , textColor(palette.getColor(Theme::TEXT))
-    , selColor(textColor)
+    , textOutlineColor(palette.getOutlineColor(Theme::TEXT))
+    , color(textColor)
+    , outlineColor(textOutlineColor)
 {
     if (auto *trueTypeFont = dynamic_cast<const TrueTypeFont*>(font))
         lineHeight = trueTypeFont->getLineHeight();
+}
+
+inline LinePart LayoutContext::linePart(int x, std::string text)
+{
+    return {
+        x,
+        y,
+        color,
+        outlineColor,
+        std::move(text),
+        font
+    };
 }
 
 
@@ -289,8 +308,9 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                                      Graphics::LEFT,
                                      part.color,
                                      part.font,
-                                     mOutline,
-                                     mShadows);
+                                     part.outlineColor.has_value() || mOutline,
+                                     mShadows,
+                                     part.outlineColor);
         }
     }
 }
@@ -318,7 +338,8 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
 {
     // each line starts with normal font in default color
     context.font = getFont();
-    context.selColor = context.textColor;
+    context.color = context.textColor;
+    context.outlineColor = context.textOutlineColor;
 
     const int startY = context.y;
     row.parts.clear();
@@ -331,15 +352,7 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
     if (startsWith(row.text, "---"))
     {
         for (x = 0; x < getWidth(); x += context.minusWidth - 1)
-        {
-            row.parts.push_back(LinePart {
-                                    x,
-                                    context.y,
-                                    context.selColor,
-                                    "-",
-                                    context.font
-                                });
-        }
+            row.parts.push_back(context.linePart(x, "-"));
 
         context.y += row.height;
 
@@ -348,9 +361,9 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
         return;
     }
 
-    auto theme = gui->getTheme();
     auto &palette = gui->getTheme()->getPalette(mPalette);
-    gcn::Color prevColor = context.selColor;
+    auto prevColor = context.color;
+    auto prevOutlineColor = context.outlineColor;
 
     // TODO: Check if we must take texture size limits into account here
     // TODO: Check if some of the O(n) calls can be removed
@@ -377,11 +390,14 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
                 switch (c)
                 {
                     case '>':
-                        context.selColor = prevColor;
+                        context.color = prevColor;
+                        context.outlineColor = prevOutlineColor;
                         break;
                     case '<':
-                        prevColor = context.selColor;
-                        context.selColor = palette.getColor(Theme::HYPERLINK);
+                        prevColor = context.color;
+                        prevOutlineColor = context.outlineColor;
+                        context.color = palette.getColor(Theme::HYPERLINK);
+                        context.outlineColor = palette.getOutlineColor(Theme::HYPERLINK);
                         break;
                     case 'B':
                         context.font = boldFont;
@@ -391,8 +407,16 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
                         break;
                     default: {
                         const auto colorId = Theme::getColorIdForChar(c);
-                        context.selColor = colorId ? palette.getColor(*colorId)
-                                                   : context.textColor;
+                        if (colorId)
+                        {
+                            context.color = palette.getColor(*colorId);
+                            context.outlineColor = palette.getOutlineColor(*colorId);
+                        }
+                        else
+                        {
+                            context.color = context.textColor;
+                            context.outlineColor = context.textOutlineColor;
+                        }
                         break;
                     }
                 }
@@ -467,7 +491,8 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
                 row.parts.push_back(LinePart {
                                         getWidth() - context.tildeWidth,
                                         context.y,
-                                        context.selColor,
+                                        context.color,
+                                        context.outlineColor,
                                         "~",
                                         getFont()
                                     });
@@ -481,14 +506,7 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
             wrapped = true;
         }
 
-        row.parts.push_back(LinePart {
-                                x,
-                                context.y,
-                                context.selColor,
-                                std::move(part),
-                                context.font
-                            });
-
+        row.parts.push_back(context.linePart(x, std::move(part)));
         row.width = std::max(row.width, x + partWidth);
 
         if (mMode == AUTO_WRAP && partWidth == 0)
