@@ -23,7 +23,6 @@
 #include "avatar.h"
 
 #include "gui/widgets/listbox.h"
-#include "resources/resource.h"
 
 #include <string>
 
@@ -43,7 +42,7 @@ class AvatarListBox : public ListBox
 public:
     AvatarListBox(AvatarListModel *model);
 
-    ~AvatarListBox() override;
+    unsigned int getRowHeight() const override;
 
     /**
      * Draws the list box.
@@ -51,9 +50,4 @@ public:
     void draw(gcn::Graphics *gcnGraphics) override;
 
     void mousePressed(gcn::MouseEvent &event) override;
-
-private:
-    static int instances;
-    static ResourceRef<Image> onlineIcon;
-    static ResourceRef<Image> offlineIcon;
 };

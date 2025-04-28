@@ -325,4 +325,7 @@
   <icon name="equip-box-ring" src="equip-box-ring.png" />
   <icon name="equip-box-shield" src="equip-box-shield.png" />
   <icon name="equip-box-weapon" src="equip-box-weapon.png" />
+
+  <icon name="offline" src="circle-gray.png" />
+  <icon name="online" src="circle-green.png" />
 </theme>

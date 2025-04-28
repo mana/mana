@@ -32,33 +32,21 @@
 
 #include <guichan/font.hpp>
 
-int AvatarListBox::instances = 0;
-ResourceRef<Image> AvatarListBox::onlineIcon;
-ResourceRef<Image> AvatarListBox::offlineIcon;
-
 AvatarListBox::AvatarListBox(AvatarListModel *model):
     ListBox(model)
 {
-    instances++;
-
-    if (instances == 1)
-    {
-        onlineIcon = Theme::getImageFromTheme("circle-green.png");
-        offlineIcon = Theme::getImageFromTheme("circle-gray.png");
-    }
-
     setWidth(200);
 }
 
-AvatarListBox::~AvatarListBox()
+unsigned int AvatarListBox::getRowHeight() const
 {
-    instances--;
+    auto rowHeight = ListBox::getRowHeight();
 
-    if (instances == 0)
-    {
-        onlineIcon = nullptr;
-        offlineIcon = nullptr;
-    }
+    auto theme = gui->getTheme();
+    if (auto onlineIcon = theme->getIcon("online"))
+        rowHeight = std::max<unsigned>(rowHeight, onlineIcon->getHeight() + 2);
+
+    return rowHeight;
 }
 
 void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
@@ -71,7 +59,7 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
 
     graphics->setFont(getFont());
 
-    const int fontHeight = getFont()->getHeight();
+    const int rowHeight = getRowHeight();
 
     // Draw filled rectangle around the selected list element
     if (mSelected >= 0)
@@ -79,21 +67,29 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
         auto highlightColor = Theme::getThemeColor(Theme::HIGHLIGHT);
         highlightColor.a = gui->getTheme()->getGuiAlpha();
         graphics->setColor(highlightColor);
-        graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
-                                               getWidth(), fontHeight));
+        graphics->fillRectangle(gcn::Rectangle(0, rowHeight * mSelected,
+                                               getWidth(), rowHeight));
     }
+
+    auto theme = gui->getTheme();
+    auto onlineIcon = theme->getIcon("online");
+    auto offlineIcon = theme->getIcon("offline");
 
     // Draw the list elements
     graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     for (int i = 0, y = 0;
          i < model->getNumberOfElements();
-         ++i, y += fontHeight)
+         ++i, y += rowHeight)
     {
         Avatar *a = model->getAvatarAt(i);
+        int x = 1;
+
         // Draw online status
-        Image *icon = a->getOnline() ? onlineIcon : offlineIcon;
-        if (icon)
-            graphics->drawImage(icon, 2, y + 1);
+        if (const Image *icon = a->getOnline() ? onlineIcon : offlineIcon)
+        {
+            graphics->drawImage(icon, x, y + (rowHeight - icon->getHeight()) / 2);
+            x += icon->getWidth() + 4;
+        }
 
         if (a->getDisplayBold())
             graphics->setFont(boldFont);
@@ -111,7 +107,7 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
         }
 
         // Draw Name
-        graphics->drawText(text, 15, y);
+        graphics->drawText(text, x, y);
 
         if (a->getDisplayBold())
             graphics->setFont(getFont());

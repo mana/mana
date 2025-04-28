@@ -530,4 +530,7 @@
   <icon name="equip-box-ring" src="equipmentbox.png" x="0" y="32" width="32" height="32" />
   <icon name="equip-box-shield" src="equipmentbox.png" x="96" y="32" width="32" height="32" />
   <icon name="equip-box-weapon" src="equipmentbox.png" x="64" y="32" width="32" height="32" />
+
+  <icon name="offline" src="window.png" x="65" y="164" width="13" height="13" />
+  <icon name="online" src="window.png" x="49" y="164" width="13" height="13" />
 </theme>
