@@ -22,11 +22,10 @@
 
 #include "gui/emotepopup.h"
 
-#include "configuration.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
-#include "log.h"
 
+#include "gui/gui.h"
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/theme.h"
@@ -34,19 +33,10 @@
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
 
-const int EmotePopup::gridWidth = 34;  // emote icon width + 4
-const int EmotePopup::gridHeight = 36; // emote icon height + 4
-
 static const int MAX_COLUMNS = 6;
 
 EmotePopup::EmotePopup()
 {
-    mSelectionImage = Theme::getImageFromTheme("selection.png");
-    if (!mSelectionImage)
-        logger->error("Unable to load selection.png");
-
-    mSelectionImage->setAlpha(config.guiAlpha);
-
     addMouseListener(this);
     recalculateSize();
     setVisible(true);
@@ -62,30 +52,41 @@ void EmotePopup::draw(gcn::Graphics *graphics)
 
     const int emoteCount = EmoteDB::getEmoteCount();
 
+    auto &slotSkin = gui->getTheme()->getSkin(SkinType::EmoteSlot);
+    WidgetState slotState;
+    slotState.width = slotSkin.width;
+    slotState.height = slotSkin.height;
+
     for (int i = 0; i < emoteCount ; i++)
     {
         int row = i / mColumnCount;
         int column = i % mColumnCount;
 
-        int emoteX = getPadding() + column * gridWidth;
-        int emoteY = getPadding() + row * gridHeight;
+        slotState.x = getPadding() + column * slotSkin.width;
+        slotState.y = getPadding() + row * slotSkin.height;
 
         // Center the last row when there are less emotes than columns
         if (row == mRowCount - 1)
         {
             const int emotesLeft = emoteCount % mColumnCount;
-            emoteX += (mColumnCount - emotesLeft) * gridWidth / 2;
+            slotState.x += (mColumnCount - emotesLeft) * slotSkin.width / 2;
         }
+
+        slotState.flags = 0;
 
         // Draw selection image below hovered item
         if (i == mHoveredEmoteIndex)
-            g->drawImage(mSelectionImage, emoteX, emoteY + 4);
+            slotState.flags |= STATE_HOVERED;
+
+        slotSkin.draw(g, slotState);
 
         // Draw emote icon
         if (auto image = EmoteDB::getByIndex(i).image)
         {
             image->setAlpha(1.0f);
-            g->drawImage(image, emoteX, emoteY);
+            g->drawImage(image,
+                         slotState.x + (slotSkin.width - image->getWidth()) / 2,
+                         slotState.y + (slotSkin.height - image->getHeight()) / 2);
         }
     }
 }
@@ -139,22 +140,24 @@ int EmotePopup::getIndexAt(int x, int y) const
         return -1;
 
     // Take into account the border
-    x -= 2;
-    y -= 4;
+    x -= getPadding();
+    y -= getPadding();
 
-    const int row = y / gridHeight;
+    auto &slotSkin = gui->getTheme()->getSkin(SkinType::EmoteSlot);
+
+    const int row = y / slotSkin.height;
 
     // Take into account that the last row is centered
     if (row == mRowCount - 1)
     {
         const int emotesLeft = EmoteDB::getEmoteCount() % mColumnCount;
         const int emotesMissing = mColumnCount - emotesLeft;
-        x -= emotesMissing * gridWidth / 2;
+        x -= emotesMissing * slotSkin.width / 2;
         if (x < 0)
             return -1;
     }
 
-    const int column = std::min(x / gridWidth, mColumnCount - 1);
+    const int column = std::min(x / slotSkin.width, mColumnCount - 1);
     const int index = column + (row * mColumnCount);
 
     if (index >= 0 && index < EmoteDB::getEmoteCount())
@@ -178,7 +181,8 @@ void EmotePopup::recalculateSize()
         mColumnCount = 0;
     }
 
-    setContentSize(mColumnCount * gridWidth, mRowCount * gridHeight);
+    auto &slotSkin = gui->getTheme()->getSkin(SkinType::EmoteSlot);
+    setContentSize(mColumnCount * slotSkin.width, mRowCount * slotSkin.height);
 }
 
 void EmotePopup::distributeValueChangedEvent()
@@ -186,7 +190,5 @@ void EmotePopup::distributeValueChangedEvent()
     const gcn::SelectionEvent event(this);
 
     for (auto &listener : mListeners)
-    {
         listener->valueChanged(event);
-    }
 }

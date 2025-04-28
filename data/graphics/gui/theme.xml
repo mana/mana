@@ -315,6 +315,12 @@
     </state>
   </skin>
 
+  <skin type="EmoteSlot" width="34" height="34">
+    <state hovered="true">
+      <img src="selection.png" offsetX="1" offsetY="2" />
+    </state>
+  </skin>
+
   <icon name="equip-box-ammo" src="equip-box-ammo.png" />
   <icon name="equip-box-chest" src="equip-box-chest.png" />
   <icon name="equip-box-feet" src="equip-box-feet.png" />

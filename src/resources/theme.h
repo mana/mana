@@ -95,6 +95,7 @@ enum class SkinType
     ShortcutBox,
     EquipmentBox,
     ItemSlot,
+    EmoteSlot,
 };
 
 enum StateFlags : uint8_t

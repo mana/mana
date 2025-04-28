@@ -23,7 +23,6 @@
 #pragma once
 
 #include "gui/widgets/popup.h"
-#include "resources/resource.h"
 
 #include <guichan/mouselistener.hpp>
 
@@ -104,7 +103,6 @@ class EmotePopup : public Popup
          */
         void distributeValueChangedEvent();
 
-        ResourceRef<Image> mSelectionImage;
         int mSelectedEmoteId = -1;
         int mHoveredEmoteIndex = -1;
 
@@ -112,7 +110,4 @@ class EmotePopup : public Popup
         int mColumnCount = 1;
 
         std::list<gcn::SelectionListener *> mListeners;
-
-        static const int gridWidth;
-        static const int gridHeight;
 };

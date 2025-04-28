@@ -549,6 +549,7 @@ static std::optional<SkinType> readSkinType(std::string_view type)
     if (type == "ShortcutBox")          return SkinType::ShortcutBox;
     if (type == "EquipmentBox")         return SkinType::EquipmentBox;
     if (type == "ItemSlot")             return SkinType::ItemSlot;
+    if (type == "EmoteSlot")            return SkinType::EmoteSlot;
     return {};
 }
 
