@@ -125,7 +125,7 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     place(4, 2, cancelButton);
     place(5, 2, okButton);
 
-    reflowLayout(225, 0);
+    reflowLayout();
 
     resetAmount();
 
