@@ -154,7 +154,7 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
                     serverInfo.type = ServerType::Unknown;
             }
 #else
-            serverInfo.type = ServerType::TMWATHENA;
+            serverInfo.type = ServerType::TmwAthena;
 #endif
             if (mPortField->getText().empty())
                 serverInfo.port = ServerInfo::defaultPortForServerType(serverInfo.type);

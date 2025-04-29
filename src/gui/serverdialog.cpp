@@ -233,7 +233,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
         // Check login
         if (index < 0
 #ifndef MANASERV_SUPPORT
-            || mServersListModel->getServer(index).type == ServerType::MANASERV
+            || mServersListModel->getServer(index).type == ServerType::ManaServ
 #endif
         )
         {
@@ -436,7 +436,7 @@ void ServerDialog::loadServer(XML::Node serverNode)
     // Ignore unknown server types
     if (server.type == ServerType::Unknown
 #ifndef MANASERV_SUPPORT
-        || server.type == ServerType::MANASERV
+        || server.type == ServerType::ManaServ
 #endif
         )
     {
