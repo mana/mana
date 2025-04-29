@@ -468,6 +468,20 @@ int Client::exec()
                         break;
                     }
                     break;
+
+                case SDL_KEYDOWN:
+                    if (keyboard.isEnabled())
+                    {
+                        const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+                        if (tKey == KeyboardConfig::KEY_WINDOW_SETUP)
+                        {
+                            setupWindow->setVisible(!setupWindow->isVisible());
+                            if (setupWindow->isVisible())
+                                setupWindow->requestMoveToTop();
+                            continue;
+                        }
+                    }
+                    break;
                 }
 
                 guiInput->pushInput(event);

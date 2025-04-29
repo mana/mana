@@ -611,8 +611,6 @@ void Game::handleInput()
             if (keyboard.isEnabled() && !chatWindow->isInputFocused() &&
                 !NpcDialog::isAnyInputFocused() && !InventoryWindow::isAnyInputFocused())
             {
-                const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-
                 // Do not activate shortcuts if tradewindow is visible
                 if (!tradeWindow->isVisible() && !setupWindow->isVisible())
                 {
