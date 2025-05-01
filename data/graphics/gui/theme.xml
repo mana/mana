@@ -91,6 +91,12 @@
     </state>
   </skin>
 
+  <skin type="Desktop">
+    <state>
+      <img src="login_wallpaper.png" left="258" right="34" top="143" bottom="22" />
+    </state>
+  </skin>
+
   <skin type="Button" padding="4">
     <state disabled="true">
       <text color="#333333" />

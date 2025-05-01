@@ -281,6 +281,12 @@
     </state>
   </skin>
 
+  <skin type="Desktop">
+    <state>
+      <rect color="#5a5044" />
+    </state>
+  </skin>
+
   <skin type="Button" padding="7">
     <state disabled="true">
       <text color="#aaaaaa" outlineColor="#000000"/>

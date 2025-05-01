@@ -87,6 +87,7 @@ bool wallpaperCompare(const WallpaperData &a, const WallpaperData &b)
 void Wallpaper::loadWallpapers()
 {
     wallpaperData.clear();
+    haveBackup = false;
 
     initWallpaperPaths();
 

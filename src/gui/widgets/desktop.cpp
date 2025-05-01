@@ -69,24 +69,20 @@ void Desktop::draw(gcn::Graphics *graphics)
 {
     auto *g = static_cast<Graphics *>(graphics);
 
-    if (!mWallpaper || (getWidth() > mWallpaper->getWidth() ||
-                        getHeight() > mWallpaper->getHeight()))
-    {
-        // TODO: Color from palette
-        g->setColor(gcn::Color(64, 64, 64));
-        g->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
-    }
-
     if (mWallpaper)
     {
         g->drawRescaledImage(mWallpaper, 0, 0, 0, 0,
             mWallpaper->getWidth(), mWallpaper->getHeight(),
             getWidth(), getHeight(), false);
     }
+    else
+    {
+        gui->getTheme()->drawSkin(g, SkinType::Desktop, WidgetState(this));
+    }
 
-    // Draw a thin border under the application version...
+    // Draw a background beneath the application version for readability...
     g->setColor(gcn::Color(255, 255, 255, 128));
-    g->fillRectangle(gcn::Rectangle(mVersionLabel->getDimension()));
+    g->fillRectangle(mVersionLabel->getDimension());
 
     Container::draw(graphics);
 }

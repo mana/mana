@@ -529,6 +529,7 @@ static std::optional<SkinType> readSkinType(std::string_view type)
     if (type == "ToolWindow")           return SkinType::ToolWindow;
     if (type == "Popup")                return SkinType::Popup;
     if (type == "SpeechBubble")         return SkinType::SpeechBubble;
+    if (type == "Desktop")              return SkinType::Desktop;
     if (type == "Button")               return SkinType::Button;
     if (type == "ButtonUp")             return SkinType::ButtonUp;
     if (type == "ButtonDown")           return SkinType::ButtonDown;

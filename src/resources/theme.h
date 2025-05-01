@@ -71,6 +71,7 @@ enum class SkinType
     ToolWindow,
     Popup,
     SpeechBubble,
+    Desktop,
     Button,
     ButtonUp,
     ButtonDown,
