@@ -55,7 +55,7 @@ class Logger
 #endif
             ;
 
-        void log(const char *log_text, va_list ap);
+        void vlog(const char *log_text, va_list ap);
 
         /**
          * Log an error and quit. The error will be printed to standard error

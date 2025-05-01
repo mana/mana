@@ -479,7 +479,7 @@ static bool check(bool value, const char *msg, ...)
     {
         va_list ap;
         va_start(ap, msg);
-        logger->log(msg, ap);
+        logger->vlog(msg, ap);
         va_end(ap);
     }
     return !value;

@@ -47,11 +47,11 @@ void Logger::log(const char *log_text, ...)
 {
     va_list ap;
     va_start(ap, log_text);
-    log(log_text, ap);
+    vlog(log_text, ap);
     va_end(ap);
 }
 
-void Logger::log(const char *log_text, va_list ap)
+void Logger::vlog(const char *log_text, va_list ap)
 {
     const size_t bufSize = 1024;
     char* buf = new char[bufSize];
