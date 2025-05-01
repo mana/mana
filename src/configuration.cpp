@@ -303,9 +303,9 @@ static const char *serverTypeToString(ServerType type)
     switch (type)
     {
     case ServerType::TmwAthena:
-        return "TmwAthena";
+        return "tmwathena";
     case ServerType::ManaServ:
-        return "ManaServ";
+        return "manaserv";
     default:
         return "";
     }
@@ -521,6 +521,7 @@ void deserialize(XML::Node node, ServerInfo &server)
     std::string type;
     node.attribute("type", type);
     server.type = ServerInfo::parseType(type);
+    server.save = true;
 
     for (auto node : node.children()) {
         if (node.name() == "connection") {

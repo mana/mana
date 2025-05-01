@@ -511,13 +511,8 @@ void ServerDialog::loadServer(XML::Node serverNode)
 void ServerDialog::loadCustomServers()
 {
     for (auto &server : config.servers)
-    {
         if (server.isValid())
-        {
-            server.save = true;
             mServers.push_back(server);
-        }
-    }
 }
 
 void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
