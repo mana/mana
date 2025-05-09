@@ -278,7 +278,7 @@ void Viewport::_followMouse()
     mMouseY = static_cast<int>(logicalY);
 
     // If the left button is dragged
-    if (mPlayerFollowMouse && button & SDL_BUTTON(1))
+    if (mPlayerFollowMouse && button & SDL_BUTTON_LMASK)
     {
         // We create a mouse event and send it to mouseDragged.
         const Uint8 *keys = SDL_GetKeyboardState(nullptr);

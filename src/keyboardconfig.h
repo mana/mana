@@ -32,9 +32,9 @@
  */
 struct KeyFunction
 {
-    const char* configField;    /** Field index that is in the config file. */
-    int defaultValue;           /** The default key value used. */
-    SDL_Keycode value;          /** The actual value that is used. */
+    const char* configField;    /**< Field index that is in the config file. */
+    int defaultValue;           /**< The default key value used. */
+    SDL_Keycode value;          /**< The actual value that is used. */
 };
 
 class Setup_Keyboard;

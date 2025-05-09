@@ -24,7 +24,6 @@
 #include "gui/chatwindow.h"
 
 #include "gui/widgets/tab.h"
-#include "gui/widgets/textfield.h"
 
 class BrowserBox;
 class Recorder;
