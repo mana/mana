@@ -49,6 +49,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
     auto *g = static_cast<Graphics*>(graphics);
     auto theme = gui->getTheme();
+    auto &skin = theme->getSkin(SkinType::ShortcutBox);
 
     graphics->setFont(getFont());
 
@@ -57,21 +58,22 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
         WidgetState state;
         state.x = (i % mGridWidth) * mBoxWidth;
         state.y = (i / mGridWidth) * mBoxHeight;
-        theme->drawSkin(g, SkinType::ShortcutBox, state);
+        skin.draw(g, state);
 
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
                     keyboard.getKeyValue(KeyboardConfig::KEY_SHORTCUT_1 + i));
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
-        g->drawText(key, state.x + 2, state.y + 2, gcn::Graphics::LEFT);
+        g->drawText(key,
+                    state.x + skin.padding + 2,
+                    state.y + skin.padding + 2,
+                    gcn::Graphics::LEFT);
 
-        if (itemShortcut->getItem(i) < 0)
+        const int itemId = itemShortcut->getItem(i);
+        if (itemId < 0)
             continue;
 
-        Item *item =
-                PlayerInfo::getInventory()->findItem(itemShortcut->getItem(i));
-
-        if (item)
+        if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
         {
             // Draw item icon.
             if (Image *image = item->getImage())
@@ -83,11 +85,13 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
                     caption = "Eq.";
 
                 image->setAlpha(1.0f);
-                g->drawImage(image, state.x, state.y);
+                g->drawImage(image, state.x + skin.padding, state.y + skin.padding);
                 if (item->isEquipped())
                     g->setColor(Theme::getThemeColor(Theme::ITEM_EQUIPPED));
-                g->drawText(caption, state.x + mBoxWidth / 2,
-                            state.y + mBoxHeight - 14, gcn::Graphics::CENTER);
+                g->drawText(caption,
+                            state.x + mBoxWidth / 2,
+                            state.y + mBoxHeight - 14,
+                            gcn::Graphics::CENTER);
             }
         }
     }
@@ -200,15 +204,7 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
 // Show ItemTooltip
 void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
 {
-    const int index = getIndexFromGrid(event.getX(), event.getY());
-    if (index == -1)
-        return;
-
-    const int itemId = itemShortcut->getItem(index);
-    if (itemId < 0)
-        return;
-
-    if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
+    if (Item *item = getItemAt(event.getX(), event.getY()))
     {
         mItemPopup->setItem(item->getInfo());
         mItemPopup->position(viewport->getMouseX(), viewport->getMouseY());
@@ -217,6 +213,19 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
     {
         mItemPopup->setVisible(false);
     }
+}
+
+Item *ItemShortcutContainer::getItemAt(int x, int y) const
+{
+    const int index = getIndexFromGrid(x, y);
+    if (index == -1)
+        return nullptr;
+
+    const int itemId = itemShortcut->getItem(index);
+    if (itemId < 0)
+        return nullptr;
+
+    return PlayerInfo::getInventory()->findItem(itemId);
 }
 
 // Hide ItemTooltip

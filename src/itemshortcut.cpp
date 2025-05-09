@@ -29,8 +29,7 @@
 
 ItemShortcut *itemShortcut;
 
-ItemShortcut::ItemShortcut():
-    mItemSelected(-1)
+ItemShortcut::ItemShortcut()
 {
     load();
 }
@@ -42,8 +41,8 @@ ItemShortcut::~ItemShortcut()
 
 void ItemShortcut::load()
 {
-    for (int i = 0; i < SHORTCUT_ITEMS; i++)
-        mItems[i] = -1;
+    for (int &item : mItems)
+        item = -1;
 
     for (auto &shortcut : config.itemShortcuts)
     {

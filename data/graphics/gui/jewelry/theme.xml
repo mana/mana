@@ -499,7 +499,7 @@
     </state>
   </skin>
 
-  <skin type="ShortcutBox" width="36" height="42">
+  <skin type="ShortcutBox" padding="2" width="36" height="42">
     <state>
       <img src="window.png" x="58" y="75" width="36" height="42" />
     </state>

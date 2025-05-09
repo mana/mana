@@ -109,7 +109,7 @@ class ItemShortcut
         void save();
 
         int mItems[SHORTCUT_ITEMS];     /**< The items stored. */
-        int mItemSelected;              /**< The item held by cursor. */
+        int mItemSelected = -1;         /**< The item held by cursor. */
 
 };
 

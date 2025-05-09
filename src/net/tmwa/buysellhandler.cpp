@@ -99,7 +99,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
 
                     Item *item = PlayerInfo::getInventory()->getItem(index);
 
-                    if (item && !(item->isEquipped()))
+                    if (item && !item->isEquipped())
                         dialog->addItem(item, value);
                 }
             }

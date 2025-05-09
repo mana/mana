@@ -354,9 +354,7 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
 // Show ItemTooltip
 void ItemContainer::mouseMoved(gcn::MouseEvent &event)
 {
-    Item *item = getItemAt(getSlotIndex(event.getX(), event.getY()));
-
-    if (item)
+    if (Item *item = getItemAt(getSlotIndex(event.getX(), event.getY())))
     {
         mItemPopup->setItem(item->getInfo());
         mItemPopup->position(viewport->getMouseX(), viewport->getMouseY());
@@ -394,12 +392,17 @@ void ItemContainer::adjustHeight()
 
 int ItemContainer::getSlotIndex(int x, int y) const
 {
+    if (x >= getWidth() || y >= getHeight())
+        return Inventory::NO_SLOT_INDEX;
+
     auto &slotSkin = gui->getTheme()->getSkin(SkinType::ItemSlot);
+    const auto row = y / slotSkin.height;
+    const auto column = x / slotSkin.width;
 
-    if (x < getWidth() && y < getHeight())
-        return (y / slotSkin.height) * mGridColumns + (x / slotSkin.width);
+    if (row < 0 || row >= mGridRows || column < 0 || column >= mGridColumns)
+        return Inventory::NO_SLOT_INDEX;
 
-    return Inventory::NO_SLOT_INDEX;
+    return (row * mGridColumns) + column;
 }
 
 void ItemContainer::keyAction()
