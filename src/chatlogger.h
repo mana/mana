@@ -35,12 +35,7 @@ class ChatLogger
          * Enters a message in the log. The message will be timestamped.
          */
         void log(std::string str);
-
         void log(std::string name, std::string str);
-
-        static std::string getDateString();
-
-        static std::string secureName(std::string &str);
 
         void setServerName(const std::string &serverName);
 
@@ -49,10 +44,6 @@ class ChatLogger
          * Sets the file to log to and opens it
          */
         void setLogFile(const std::string &logFilename);
-
-        static void writeTo(std::ofstream &file, const std::string &str);
-
-        static void makeDir(const std::string &dir);
 
         std::ofstream mLogFile;
         std::string mLogDir;

@@ -38,6 +38,51 @@
 
 #include "utils/stringutils.h"
 
+static std::string getDateString()
+{
+    time_t t = time(nullptr);
+    struct tm *now = localtime(&t);
+    char buffer[11];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d", now);
+    return buffer;
+}
+
+static std::string &secureName(std::string &name)
+{
+    const size_t sz = name.length();
+    for (size_t f = 0; f < sz; f ++)
+    {
+        const unsigned char ch = name[f];
+        if ((ch < '0' || ch > '9') &&
+            (ch < 'a' || ch > 'z') &&
+            (ch < 'A' || ch > 'Z') &&
+            ch != '-' &&
+            ch != '+' &&
+            ch != '=' &&
+            ch != '.' &&
+            ch != ',' &&
+            ch != ')' &&
+            ch != '(' &&
+            ch != '[' &&
+            ch != ']' &&
+            ch != '#')
+        {
+            name[f] = '_';
+        }
+    }
+    return name;
+}
+
+static void makeDir(const std::string &dir)
+{
+#ifdef _WIN32
+    mkdir(dir.c_str());
+#else
+    mkdir(dir.c_str(), S_IRWXU | S_IRGRP | S_IXGRP);
+#endif
+}
+
+
 ChatLogger::~ChatLogger() = default;
 
 void ChatLogger::setLogFile(const std::string &logFilename)
@@ -74,69 +119,32 @@ void ChatLogger::log(std::string str)
     if (!mLogFile.is_open() || dateStr != mLogDate)
     {
         mLogDate = dateStr;
-        setLogFile(strprintf("%s/%s/#General_%s.log", mLogDir.c_str(),
-                             mServerName.c_str(), dateStr.c_str()));
+        setLogFile(strprintf("%s/%s/#General_%s.log",
+                             mLogDir.c_str(),
+                             mServerName.c_str(),
+                             dateStr.c_str()));
     }
 
     removeColors(str);
-    writeTo(mLogFile, str);
+    mLogFile << str << std::endl;
 }
 
 void ChatLogger::log(std::string name, std::string str)
 {
     std::ofstream logFile;
-    logFile.open(strprintf("%s/%s/%s_%s.log", mLogDir.c_str(), mServerName.c_str(),
-                          secureName(name).c_str(), getDateString().c_str()).c_str(),
+    logFile.open(strprintf("%s/%s/%s_%s.log",
+                           mLogDir.c_str(),
+                           mServerName.c_str(),
+                           secureName(name).c_str(),
+                           getDateString().c_str())
+                     .c_str(),
                  std::ios_base::app);
 
     if (!logFile.is_open())
         return;
 
     removeColors(str);
-    writeTo(logFile, str);
-
-    if (logFile.is_open())
-        logFile.close();
-}
-
-std::string ChatLogger::getDateString()
-{
-    time_t t = time(nullptr);
-    struct tm *now = localtime(&t);
-    char buffer[11];
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d", now);
-    return buffer;
-}
-
-std::string ChatLogger::secureName(std::string &name)
-{
-    const size_t sz = name.length();
-    for (size_t f = 0; f < sz; f ++)
-    {
-        const unsigned char ch = name[f];
-        if ((ch < '0' || ch > '9') &&
-            (ch < 'a' || ch > 'z') &&
-            (ch < 'A' || ch > 'Z') &&
-            ch != '-' &&
-            ch != '+' &&
-            ch != '=' &&
-            ch != '.' &&
-            ch != ',' &&
-            ch != ')' &&
-            ch != '(' &&
-            ch != '[' &&
-            ch != ']' &&
-            ch != '#')
-        {
-            name[f] = '_';
-        }
-    }
-    return name;
-}
-
-void ChatLogger::writeTo(std::ofstream &file, const std::string &str)
-{
-    file << str << std::endl;
+    logFile << str << std::endl;
 }
 
 void ChatLogger::setServerName(const std::string &serverName)
@@ -157,13 +165,4 @@ void ChatLogger::setServerName(const std::string &serverName)
         else
             closedir(dir);
     }
-}
-
-void ChatLogger::makeDir(const std::string &dir)
-{
-#ifdef _WIN32
-    mkdir(dir.c_str());
-#else
-    mkdir(dir.c_str(), S_IRWXU | S_IRGRP | S_IXGRP);
-#endif
 }
