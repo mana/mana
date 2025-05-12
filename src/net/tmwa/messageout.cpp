@@ -31,6 +31,9 @@ namespace TmwAthena {
 
 MessageOut::MessageOut(uint16_t id)
 {
+#ifdef DEBUG
+    logger->log("Sending %s (0x%x)", Network::mInstance->messageName(id), id);
+#endif
     writeInt16(id);
 }
 

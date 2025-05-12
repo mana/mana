@@ -66,6 +66,8 @@ class Network
 
         void clearHandlers();
 
+        const char *messageName(uint16_t id) const;
+
         int getState() const { return mState; }
 
         const std::string &getError() const { return mError; }

@@ -45,9 +45,9 @@ struct PacketInfo
 };
 
 // indicator for a variable-length packet
-const uint16_t VAR = 1;
+constexpr uint16_t VAR = 1;
 
-static const PacketInfo packet_infos[] = {
+static constexpr PacketInfo packet_infos[] = {
     // login server messages
     { SMSG_UPDATE_HOST,               VAR, "SMSG_UPDATE_HOST" },
     { CMSG_LOGIN_REGISTER,            55, "CMSG_LOGIN_REGISTER" },
@@ -351,6 +351,15 @@ void Network::clearHandlers()
         messageHandler->setNetwork(nullptr);
 
     mMessageHandlers.clear();
+}
+
+const char *Network::messageName(uint16_t id) const
+{
+    auto packetInfoIt = mPacketInfo.find(id);
+    if (packetInfoIt != mPacketInfo.end())
+        return packetInfoIt->second->name;
+
+    return "Unknown";
 }
 
 void Network::dispatchMessages()
