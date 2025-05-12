@@ -76,7 +76,6 @@ public:
         DoMove,
         DoUnequip,
         DoUse,
-        End,
         EnginesInitialized,
         EnginesInitializing,
         GuiWindowsLoaded,

@@ -537,16 +537,11 @@ void NpcEventListener::event(Event::Channel channel,
     else if (event.getType() == Event::Next)
     {
         int id = event.getInt("id");
-        NpcDialog *dialog = getDialog(id, false);
 
-        if (!dialog)
-        {
-            int mNpcId = id;
-            Net::getNpcHandler()->nextDialog(mNpcId);
-            return;
-        }
-
-        dialog->showNextButton();
+        if (NpcDialog *dialog = getDialog(id, false))
+            dialog->showNextButton();
+        else
+            Net::getNpcHandler()->nextDialog(id);
     }
     else if (event.getType() == Event::ClearDialog)
     {
@@ -556,32 +551,19 @@ void NpcEventListener::event(Event::Channel channel,
     else if (event.getType() == Event::Close)
     {
         int id = event.getInt("id");
-        NpcDialog *dialog = getDialog(id, false);
 
-        if (!dialog)
-        {
-            int mNpcId = id;
-            Net::getNpcHandler()->closeDialog(mNpcId);
-            return;
-        }
-
-        dialog->showCloseButton();
-    }
-    else if (event.getType() == Event::CloseDialog)
-    {
-        if (NpcDialog *dialog = getDialog(event.getInt("id"), false))
-            dialog->setVisible(false);
+        if (NpcDialog *dialog = getDialog(id, false))
+            dialog->showCloseButton();
+        else
+            Net::getNpcHandler()->closeDialog(id);
     }
     else if (event.getType() == Event::CloseAll)
     {
         NpcDialog::closeAll();
     }
-    else if (event.getType() == Event::End)
+    else if (event.getType() == Event::CloseDialog)
     {
-        int id = event.getInt("id");
-        NpcDialog *dialog = getDialog(id, false);
-
-        if (dialog)
+        if (NpcDialog *dialog = getDialog(event.getInt("id"), false))
             dialog->close();
     }
     else if (event.getType() == Event::Post)

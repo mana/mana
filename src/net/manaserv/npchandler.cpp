@@ -101,7 +101,7 @@ void NpcHandler::handleMessage(MessageIn &msg)
         break;
 
     case GPMSG_NPC_ERROR:
-        event = new Event(Event::End);
+        event = new Event(Event::CloseDialog);
         event->setInt("id", npcId);
         event->trigger(Event::NpcChannel);
         break;
