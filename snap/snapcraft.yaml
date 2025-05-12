@@ -49,7 +49,7 @@ parts:
       - libsdl2-ttf-dev
       - libxml2-dev
     stage-packages:
-      - libcurl4
+      - libcurl4t64
       - libguichan-0.8.1-1v5
       - libphysfs1
       - libsdl2-2.0-0
