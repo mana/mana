@@ -26,7 +26,6 @@
     <color id="WHISPER_TAB_OFFLINE_SELECTED" color="#444444" outlineColor="#000000" />
     <color id="SHOP_WARNING" color="#e07a7a" />
     <color id="ITEM_EQUIPPED" color="#000091" />
-    <color id="ITEM_NOT_EQUIPPED" color="#000000" />
     <color id="CHAT" color="#f1d9a9" />
     <color id="GM" color="#fec4ff" />
     <color id="GLOBAL" color="#fec4ff" />
@@ -103,7 +102,6 @@
     <color id="HIGHLIGHT" color="#ebc873" />
     <color id="SHOP_WARNING" color="#e07a7a" />
     <color id="ITEM_EQUIPPED" color="#000091" />
-    <color id="ITEM_NOT_EQUIPPED" color="#000000" />
     <color id="BUBBLE_NAME" color="#cccccc" />
     <color id="BUBBLE_TEXT" color="#ffffff" />
     <color id="LOGGER" color="#919191" />
@@ -181,7 +179,6 @@
     <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" />
     <color id="SHOP_WARNING" color="#e07a7a" />
     <color id="ITEM_EQUIPPED" color="#000091" />
-    <color id="ITEM_NOT_EQUIPPED" color="#000000" />
     <color id="CHAT" color="#f1d9a9" />
     <color id="GM" color="#fec4ff" />
     <color id="GLOBAL" color="#fec4ff" />
