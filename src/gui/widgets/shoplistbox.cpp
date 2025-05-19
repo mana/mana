@@ -75,6 +75,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     auto backgroundColor = Theme::getThemeColor(Theme::BACKGROUND);
     auto warningColor = Theme::getThemeColor(Theme::SHOP_WARNING);
     auto textColor = Theme::getThemeColor(Theme::TEXT);
+    auto highlightTextColor = Theme::getThemeColor(Theme::HIGHLIGHT_TEXT);
     highlightColor.a = alpha;
     backgroundColor.a = alpha;
     warningColor.a = alpha;
@@ -136,7 +137,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
             }
         }
 
-        graphics->setColor(textColor);
+        graphics->setColor(i == mSelected ? highlightTextColor : textColor);
         graphics->drawText(mListModel->getElementAt(i),
                            ITEM_ICON_SIZE + 5,
                            y + (ITEM_ICON_SIZE - fontHeight) / 2);

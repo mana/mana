@@ -10,12 +10,12 @@
     <color id="BORDER" color="#000000" />
     <color id="DROPDOWN" color="#000000" />
     <color id="LISTBOX" color="#000000" />
-    <color id="LISTBOX_SELECTED" color="#000000" />
     <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" />
     <color id="BACKGROUND" color="#ffffff" />
     <color id="BACKGROUND_GRAY" color="#404040" />
     <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
     <color id="HIGHLIGHT" color="#ebc873" />
+    <color id="HIGHLIGHT_TEXT" color="#000000" />
     <color id="TAB_FLASH" color="#a7ff2a" outlineColor="#142200" effect="pulse" />
     <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" />
     <color id="PARTY_TAB" color="#efd7a7" outlineColor="#473005" />
@@ -92,7 +92,6 @@
     <color id="BORDER" color="#000000" />
     <color id="DROPDOWN" color="#000000" />
     <color id="LISTBOX" color="#000000" />
-    <color id="LISTBOX_SELECTED" color="#000000" />
     <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" />
     <color id="TAB_FLASH" color="#a7ff2a" outlineColor="#142200" />
     <color id="TAB_PLAYER_FLASH" color="#ff96f6" />
@@ -100,6 +99,7 @@
     <color id="BACKGROUND_GRAY" color="#404040" />
     <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
     <color id="HIGHLIGHT" color="#ebc873" />
+    <color id="HIGHLIGHT_TEXT" color="#000000" />
     <color id="SHOP_WARNING" color="#e07a7a" />
     <color id="ITEM_EQUIPPED" color="#000091" />
     <color id="BUBBLE_NAME" color="#cccccc" />
@@ -169,12 +169,12 @@
     <color id="BORDER" color="#000000" />
     <color id="DROPDOWN" color="#000000" />
     <color id="LISTBOX" color="#000000" />
-    <color id="LISTBOX_SELECTED" color="#000000" />
     <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#000000" />
     <color id="BACKGROUND" color="#ffffff" />
     <color id="BACKGROUND_GRAY" color="#404040" />
     <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
     <color id="HIGHLIGHT" color="#ebc873" />
+    <color id="HIGHLIGHT_TEXT" color="#000000" />
     <color id="TAB_FLASH" color="#fec4ff" effect="pulse" />
     <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" />
     <color id="SHOP_WARNING" color="#e07a7a" />

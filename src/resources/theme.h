@@ -228,6 +228,7 @@ class Theme : public EventListener
             WHISPER_TAB,
             BACKGROUND,
             HIGHLIGHT,
+            HIGHLIGHT_TEXT,
             TAB_FLASH,
             SHOP_WARNING,
             ITEM_EQUIPPED,

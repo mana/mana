@@ -56,10 +56,14 @@ void ListBox::draw(gcn::Graphics *graphics)
     }
 
     // Draw the list elements
-    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     for (int i = 0, y = 0; i < mListModel->getNumberOfElements();
          ++i, y += height)
     {
+        if (mSelected == i)
+            graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT_TEXT));
+        else
+            graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+
         graphics->drawText(mListModel->getElementAt(i), 1, y);
     }
 }

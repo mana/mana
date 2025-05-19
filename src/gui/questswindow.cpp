@@ -113,9 +113,16 @@ void QuestsListBox::draw(gcn::Graphics *gcnGraphics)
     graphics->setColor(Theme::getThemeColor(Theme::TEXT));
 
     const int fontHeight = getFont()->getHeight();
-    int y = 0;
-    for (auto &quest : model->getQuests())
+
+    for (int i = 0, y = 0; i < model->getNumberOfElements();
+         ++i, y += rowHeight)
     {
+        if (mSelected == i)
+            graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT_TEXT));
+        else
+            graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+
+        auto &quest = model->getQuests()[i];
         int x = 1;
 
         if (const Image *icon = quest.completed ? completeIcon : incompleteIcon)
@@ -125,7 +132,6 @@ void QuestsListBox::draw(gcn::Graphics *gcnGraphics)
         }
 
         graphics->drawText(quest.name(), x, y + (rowHeight - fontHeight) / 2);
-        y += rowHeight;
     }
 }
 

@@ -17,6 +17,7 @@
     <color id="WHISPER_TAB" color="#3b58a9" />
     <color id="BACKGROUND" color="#ffffff" />
     <color id="HIGHLIGHT" color="#c0c0c0" />
+    <color id="HIGHLIGHT_TEXT" color="#000000" />
     <color id="TAB_FLASH" color="#ff0000" effect="pulse" />
     <color id="SHOP_WARNING" color="#910000" />
     <color id="ITEM_EQUIPPED" color="#000091" />

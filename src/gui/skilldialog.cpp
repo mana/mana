@@ -147,11 +147,15 @@ public:
         }
 
         // Draw the list elements
-        graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         for (int i = 0, y = 1;
              i < model->getNumberOfElements();
              ++i, y += getRowHeight())
         {
+            if (mSelected == i)
+                graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT_TEXT));
+            else
+                graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+
             if (SkillInfo *e = model->getSkillAt(i))
                 e->draw(graphics, y, getWidth());
         }

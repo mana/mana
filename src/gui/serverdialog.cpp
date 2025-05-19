@@ -115,7 +115,10 @@ public:
         {
             const ServerInfo &info = model->getServer(i);
 
-            graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+            if (mSelected == i)
+                graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT_TEXT));
+            else
+                graphics->setColor(Theme::getThemeColor(Theme::TEXT));
 
             if (!info.name.empty())
             {

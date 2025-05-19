@@ -76,11 +76,15 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
     auto offlineIcon = theme->getIcon("offline");
 
     // Draw the list elements
-    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     for (int i = 0, y = 0;
          i < model->getNumberOfElements();
          ++i, y += rowHeight)
     {
+        if (mSelected == i)
+            graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT_TEXT));
+        else
+            graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+
         Avatar *a = model->getAvatarAt(i);
         int x = 1;
 
