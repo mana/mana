@@ -29,10 +29,16 @@ jobs:
             mingw-w64-ucrt-x86_64-libxml2
             mingw-w64-ucrt-x86_64-nsis
 
-      - name: CI-Build
+      - name: Configure
         run: |
           cmake -B build . -DUSE_SYSTEM_GUICHAN=OFF -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: |
           cmake --build build
+
+      - name: Package
+        run: |
           pushd build
           cpack
 
@@ -56,9 +62,115 @@ jobs:
         if: ${{ failure() }}
         with:
           name: snapcraft.log
-          path: '/home/runner/.local/state/snapcraft/log/*.log'
+          path: "/home/runner/.local/state/snapcraft/log/*.log"
 
       - uses: actions/upload-artifact@v4
         with:
           name: mana_amd64.snap
           path: ${{ steps.snapcraft.outputs.snap }}
+
+  macos-build:
+    strategy:
+      matrix:
+        include:
+          - arch: arm64
+            runner: macos-latest
+          - arch: x86_64
+            runner: macos-13
+    runs-on: ${{ matrix.runner }}
+    env:
+      CMAKE_C_COMPILER_LAUNCHER: ccache
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          max-size: 250M
+
+      - name: Install dependencies (${{ matrix.arch }})
+        run: |
+          brew update
+          brew upgrade
+          brew install \
+            guichan \
+            physfs \
+            sdl2 \
+            sdl2_image \
+            sdl2_mixer \
+            sdl2_net \
+            sdl2_ttf
+
+      - name: Configure (${{ matrix.arch }})
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
+
+      - name: Build (${{ matrix.arch }})
+        run: cmake --build build
+
+      - name: Install (${{ matrix.arch }})
+        run: cmake --install build --prefix $PWD/install
+
+      - name: Archive bundle (${{ matrix.arch }})
+        run: tar -czf Mana-${{ matrix.arch }}.tar.gz -C install Mana.app
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Mana-app-${{ matrix.arch }}
+          path: Mana-${{ matrix.arch }}.tar.gz
+
+  macos-universal:
+    runs-on: macos-latest
+    needs: [macos-build]
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: Mana-app-arm64
+      - uses: actions/download-artifact@v5
+        with:
+          name: Mana-app-x86_64
+
+      - name: Extract bundles
+        run: |
+          mkdir arm64 x86_64
+            tar -xzf Mana-arm64.tar.gz -C arm64
+            tar -xzf Mana-x86_64.tar.gz -C x86_64
+
+      - name: Merge into universal app
+        run: |
+          set -euo pipefail
+          mkdir -p universal
+          cp -R arm64/Mana.app universal/
+          # Merge all Mach-O binaries
+          find arm64/Mana.app -type f | while read f; do
+            if file "$f" | grep -q "Mach-O"; then
+              rel="${f#arm64/Mana.app/}"
+              f2="x86_64/Mana.app/$rel"
+              if [ -f "$f2" ]; then
+                lipo -create "$f" "$f2" -output "universal/Mana.app/$rel"
+              fi
+            fi
+          done
+          # Show resulting architectures of main binary
+          file universal/Mana.app/Contents/MacOS/Mana
+
+      - name: Create universal DMG
+        run: |
+          set -e
+          brew install create-dmg
+          create-dmg \
+            --volname "Mana Client" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "Mana.app" 150 200 \
+            --app-drop-link 450 200 \
+            "Mana-universal.dmg" \
+            "universal/"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Mana DMG for macOS (universal)
+          path: Mana-universal.dmg

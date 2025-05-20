@@ -659,6 +659,6 @@ if(APPLE)
 
   install(
     CODE "include(BundleUtilities)
-      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"\" \"/usr/local/lib\")"
+      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"\" \"/usr/local/lib;/opt/homebrew/lib\")"
   )
 endif()
