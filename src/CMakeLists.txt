@@ -48,7 +48,7 @@ if(ENABLE_MANASERV)
   message(STATUS "Manaserv support enabled")
 endif()
 
-if(APPLE OR NOT USE_SYSTEM_GUICHAN)
+if(NOT USE_SYSTEM_GUICHAN)
   message(STATUS "Using Guichan submodule")
   set(GUICHAN_INCLUDE_DIR "../libs/guichan/include")
   set(GUICHAN_LIBRARIES guichan)

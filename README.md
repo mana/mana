@@ -128,7 +128,7 @@ Installing the dependencies on Ubuntu:
 Installing the dependencies on macOS (with Homebrew):
 
     brew install sdl2 sdl2_image sdl2_mixer sdl2_net sdl2_ttf \
-                 physfs curl
+                 physfs curl guichan
 
 Installing the dependencies on Fedora:
 
