@@ -29,10 +29,16 @@ jobs:
             mingw-w64-ucrt-x86_64-libxml2
             mingw-w64-ucrt-x86_64-nsis
 
-      - name: CI-Build
+      - name: Configure
         run: |
           cmake -B build . -DUSE_SYSTEM_GUICHAN=OFF -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: |
           cmake --build build
+
+      - name: Package
+        run: |
           pushd build
           cpack
 
@@ -62,3 +68,40 @@ jobs:
         with:
           name: mana_amd64.snap
           path: ${{ steps.snapcraft.outputs.snap }}
+
+  macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install dependencies
+      run: |
+        brew update
+        brew upgrade
+        brew install \
+          curl \
+          guichan \
+          physfs \
+          sdl2 \
+          sdl2_image \
+          sdl2_mixer \
+          sdl2_net \
+          sdl2_ttf
+
+    - name: Configure
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Package
+      run: |
+        pushd build
+        cpack -G DragNDrop
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: Mana DMG for macOS (64-bit)
+        path: build/Mana-*.dmg
