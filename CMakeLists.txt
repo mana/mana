@@ -54,9 +54,7 @@ if(ENABLE_MANASERV AND NOT USE_SYSTEM_ENET)
   add_subdirectory(libs/enet EXCLUDE_FROM_ALL)
 endif()
 
-# On macOS we need to build Guichan ourselves since it is disabled in Homebrew
-# This might also be a good idea for the Windows build
-if(APPLE OR NOT USE_SYSTEM_GUICHAN)
+if(NOT USE_SYSTEM_GUICHAN)
   # This policy makes sure that the below options are not ignored by the added
   # Guichan CMakeLists.txt
   set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
