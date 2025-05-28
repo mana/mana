@@ -58,6 +58,8 @@ class Game
          */
         void logic();
 
+        bool keyDownEvent(SDL_KeyboardEvent &event);
+
         void handleInput();
 
         void changeMap(const std::string &mapName);

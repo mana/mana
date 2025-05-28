@@ -61,6 +61,7 @@
 - Fixed storing of player relations
 - Fixed handling of custom port in update URL
 - Fixed stutter when new music starts playing
+- Fixed keyboard setup to allow assigning keys before starting the game
 - Updated to tmwAthena protocol changes
 - Updated to Manaserv protocol changes (specials, guilds, debug mode, skills, text particles)
 - CMake: Use GNUInstallDirs and made PKG_DATADIR / PKG_BINDIR paths modifiable

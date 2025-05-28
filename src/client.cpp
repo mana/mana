@@ -87,6 +87,8 @@
 #include <sys/stat.h>
 #include <cassert>
 
+#include <guichan/exception.hpp>
+
 // TODO: Get rid of these globals
 std::string errorMessage;
 LoginData loginData;
@@ -443,50 +445,69 @@ int Client::exec()
     {
         Time::beginFrame();
 
-        if (mGame)
+        // Handle SDL events
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
         {
-            // Let the game handle the events while it is active
-            mGame->handleInput();
-        }
-        else
-        {
-            // Handle SDL events
-            SDL_Event event;
-            while (SDL_PollEvent(&event))
+            switch (event.type)
             {
-                switch (event.type)
-                {
-                case SDL_QUIT:
-                    mState = STATE_EXIT;
-                    break;
+            case SDL_QUIT:
+                mState = STATE_EXIT;
+                break;
 
-                case SDL_WINDOWEVENT:
-                    switch (event.window.event) {
-                    case SDL_WINDOWEVENT_SIZE_CHANGED:
-                        handleWindowSizeChanged(event.window.data1,
-                                                event.window.data2);
-                        break;
-                    }
-                    break;
-
-                case SDL_KEYDOWN:
-                    if (keyboard.isEnabled())
-                    {
-                        const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-                        if (tKey == KeyboardConfig::KEY_WINDOW_SETUP)
-                        {
-                            setupWindow->setVisible(!setupWindow->isVisible());
-                            if (setupWindow->isVisible())
-                                setupWindow->requestMoveToTop();
-                            continue;
-                        }
-                    }
+            case SDL_WINDOWEVENT:
+                switch (event.window.event) {
+                case SDL_WINDOWEVENT_SIZE_CHANGED:
+                    handleWindowSizeChanged(event.window.data1,
+                                            event.window.data2);
                     break;
                 }
+                break;
 
+            case SDL_KEYDOWN:
+                if (keyboard.isEnabled())
+                {
+                    const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+                    if (tKey == KeyboardConfig::KEY_WINDOW_SETUP)
+                    {
+                        setupWindow->setVisible(!setupWindow->isVisible());
+                        if (setupWindow->isVisible())
+                            setupWindow->requestMoveToTop();
+                        continue;
+                    }
+                }
+
+                if (setupWindow->isVisible() &&
+                    keyboard.getNewKeyIndex() > KeyboardConfig::KEY_NO_VALUE)
+                {
+                    keyboard.setNewKey(event.key.keysym.sym);
+                    keyboard.callbackNewKey();
+                    keyboard.setNewKeyIndex(KeyboardConfig::KEY_NO_VALUE);
+                    continue;
+                }
+
+                // Check whether the game will handle the event
+                if (mGame && mGame->keyDownEvent(event.key))
+                    continue;
+
+                break;
+            }
+
+            // Push input to GUI when not used
+            try
+            {
                 guiInput->pushInput(event);
             }
+            catch (gcn::Exception e)
+            {
+                const char *err = e.getMessage().c_str();
+                logger->log("Warning: guichan input exception: %s", err);
+            }
         }
+
+        // Let the game handle continuous input while it is active
+        if (mGame)
+            mGame->handleInput();
 
         if (Net::getGeneralHandler())
             Net::getGeneralHandler()->flushNetwork();
