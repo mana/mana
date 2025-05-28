@@ -92,6 +92,10 @@ Graphics *Video::initialize(const VideoSettings &settings)
     switch (mSettings.windowMode)
     {
     case WindowMode::Windowed:
+        // In windowed mode, the window is initially created hidden, we'll show
+        // it once we have finished setting it up and done an initial paint to
+        // avoid startup flicker on X11 and Windows.
+        windowFlags |= SDL_WINDOW_HIDDEN;
         break;
     case WindowMode::Fullscreen:
         windowFlags |= SDL_WINDOW_FULLSCREEN;
@@ -99,6 +103,10 @@ Graphics *Video::initialize(const VideoSettings &settings)
         break;
     case WindowMode::WindowedFullscreen:
         windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        // On Windows, fullscreen desktop with OpenGL actually flickers worse
+        // when the window is initially hidden.
+        if (!mSettings.openGL)
+            windowFlags |= SDL_WINDOW_HIDDEN;
         videoMode = "windowed fullscreen";
         break;
     }

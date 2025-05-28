@@ -77,11 +77,12 @@ std::unique_ptr<Graphics> SDLGraphics::create(SDL_Window *window, const VideoSet
         return {};
     }
 
-    return std::make_unique<SDLGraphics>(renderer);
+    return std::make_unique<SDLGraphics>(window, renderer);
 }
 
-SDLGraphics::SDLGraphics(SDL_Renderer *renderer)
-    : mRenderer(renderer)
+SDLGraphics::SDLGraphics(SDL_Window *window, SDL_Renderer *renderer)
+    : mWindow(window)
+    , mRenderer(renderer)
 {
     Image::setRenderer(mRenderer);
 
@@ -245,6 +246,7 @@ void SDLGraphics::drawRescaledImagePattern(const Image *image,
 void SDLGraphics::updateScreen()
 {
     SDL_RenderPresent(mRenderer);
+    SDL_ShowWindow(mWindow);
 }
 
 void SDLGraphics::windowToLogical(int windowX, int windowY,
