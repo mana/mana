@@ -49,8 +49,11 @@ ShortcutWindow::ShortcutWindow(const std::string &title,
     const int border = (getPadding() + content->getFrameSize()) * 2;
     setMinWidth(content->getBoxWidth() + border);
     setMinHeight(content->getBoxHeight() + border + GRAB_MARGIN);
-    setMaxWidth(content->getBoxWidth() * content->getMaxItems() + border);
-    setMaxHeight(content->getBoxHeight() * content->getMaxItems() + border + GRAB_MARGIN);
+
+    const int maxContentWidth = content->getBoxWidth() * content->getMaxItems();
+    const int maxContentHeight = content->getBoxHeight() * content->getMaxItems();
+    setMaxWidth(std::max(getMinWidth(), maxContentWidth + border));
+    setMaxHeight(std::max(getMinHeight(), maxContentHeight + border + GRAB_MARGIN));
 
     setDefaultSize(getMinWidth(), getMaxHeight(), ImageRect::LOWER_RIGHT);
 
