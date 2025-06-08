@@ -21,26 +21,7 @@
 
 #include "graphics.h"
 
-#include "resources/image.h"
-
 #include <guichan/exception.hpp>
-
-#include <utility>
-
-ImageRect::ImageRect(ImageRect &&r)
-{
-    image = std::exchange(r.image, nullptr);
-    top = r.top;
-    left = r.left;
-    bottom = r.bottom;
-    right = r.right;
-    fillMode = r.fillMode;
-}
-
-ImageRect::~ImageRect()
-{
-    delete image;
-}
 
 
 void Graphics::updateSize(int width, int height, float /*scale*/)
@@ -166,7 +147,7 @@ void Graphics::drawImageRect(const ImageRect &imgRect, int x, int y, int w, int 
             switch (imgRect.fillMode)
             {
             case FillMode::Stretch:
-                drawRescaledImage(imgRect.image,
+                drawRescaledImage(imgRect.image.get(),
                                   srcGridX[ix],
                                   srcGridY[iy],
                                   dstGridX[ix],
@@ -175,7 +156,7 @@ void Graphics::drawImageRect(const ImageRect &imgRect, int x, int y, int w, int 
                                   dstW, dstH);
                 break;
             case FillMode::Repeat:
-                drawRescaledImagePattern(imgRect.image,
+                drawRescaledImagePattern(imgRect.image.get(),
                                          srcGridX[ix],
                                          srcGridY[iy],
                                          srcW, srcH,

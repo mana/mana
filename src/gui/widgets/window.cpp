@@ -191,52 +191,6 @@ void Window::setLocationRelativeTo(gcn::Widget *widget)
                 getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
 }
 
-void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
-                                   int offsetX, int offsetY)
-{
-    if (position == ImageRect::UPPER_LEFT)
-    {
-    }
-    else if (position == ImageRect::UPPER_CENTER)
-    {
-        offsetX += (graphics->getWidth() - getWidth()) / 2;
-    }
-    else if (position == ImageRect::UPPER_RIGHT)
-    {
-        offsetX += graphics->getWidth() - getWidth();
-    }
-    else if (position == ImageRect::LEFT)
-    {
-        offsetY += (graphics->getHeight() - getHeight()) / 2;
-    }
-    else if (position == ImageRect::CENTER)
-    {
-        offsetX += (graphics->getWidth() - getWidth()) / 2;
-        offsetY += (graphics->getHeight() - getHeight()) / 2;
-    }
-    else if (position == ImageRect::RIGHT)
-    {
-        offsetX += graphics->getWidth() - getWidth();
-        offsetY += (graphics->getHeight() - getHeight()) / 2;
-    }
-    else if (position == ImageRect::LOWER_LEFT)
-    {
-        offsetY += graphics->getHeight() - getHeight();
-    }
-    else if (position == ImageRect::LOWER_CENTER)
-    {
-        offsetX += (graphics->getWidth() - getWidth()) / 2;
-        offsetY += graphics->getHeight() - getHeight();
-    }
-    else if (position == ImageRect::LOWER_RIGHT)
-    {
-        offsetX += graphics->getWidth() - getWidth();
-        offsetY += graphics->getHeight() - getHeight();
-    }
-
-    setPosition(offsetX, offsetY);
-}
-
 void Window::setMinWidth(int width)
 {
     mMinWinWidth = std::max(getSkin().getMinWidth(), width);
@@ -599,41 +553,41 @@ void Window::setDefaultSize()
 }
 
 void Window::setDefaultSize(int defaultWidth, int defaultHeight,
-                            ImageRect::ImagePosition position,
+                            WindowAlignment alignment,
                             int offsetX, int offsetY)
 {
     int x = 0;
     int y = 0;
 
-    switch (position)
+    switch (alignment)
     {
-    case ImageRect::UPPER_LEFT:
+    case WindowAlignment::TopLeft:
         break;
-    case ImageRect::UPPER_CENTER:
+    case WindowAlignment::Top:
         x = (graphics->getWidth() - defaultWidth) / 2;
         break;
-    case ImageRect::UPPER_RIGHT:
+    case WindowAlignment::TopRight:
         x = graphics->getWidth() - defaultWidth;
         break;
-    case ImageRect::LEFT:
+    case WindowAlignment::Left:
         y = (graphics->getHeight() - defaultHeight) / 2;
         break;
-    case ImageRect::CENTER:
+    case WindowAlignment::Center:
         x = (graphics->getWidth() - defaultWidth) / 2;
         y = (graphics->getHeight() - defaultHeight) / 2;
         break;
-    case ImageRect::RIGHT:
+    case WindowAlignment::Right:
         x = graphics->getWidth() - defaultWidth;
         y = (graphics->getHeight() - defaultHeight) / 2;
         break;
-    case ImageRect::LOWER_LEFT:
+    case WindowAlignment::BottomLeft:
         y = graphics->getHeight() - defaultHeight;
         break;
-    case ImageRect::LOWER_CENTER:
+    case WindowAlignment::Bottom:
         x = (graphics->getWidth() - defaultWidth) / 2;
         y = graphics->getHeight() - defaultHeight;
         break;
-    case ImageRect::LOWER_RIGHT:
+    case WindowAlignment::BottomRight:
         x = graphics->getWidth() - defaultWidth;
         y = graphics->getHeight() - defaultHeight;
         break;

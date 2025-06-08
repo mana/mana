@@ -21,12 +21,14 @@
 
 #pragma once
 
+#include "resources/image.h"
+
 #include <SDL.h>
 
 #include <guichan/color.hpp>
 #include <guichan/graphics.hpp>
 
-class Image;
+#include <memory>
 
 enum class FillMode
 {
@@ -35,47 +37,27 @@ enum class FillMode
 };
 
 /**
- * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
- * topology is as follows:
+ * An image reference along with the margins specifying how to render this
+ * image at different sizes. The margins divide the image into 9 sections as
+ * follows:
  *
  * <pre>
- *  !-----!-----------------!-----!
- *  !  0  !        1        !  2  !
- *  !-----!-----------------!-----!
- *  !  3  !        4        !  5  !
- *  !-----!-----------------!-----!
- *  !  6  !        7        !  8  !
- *  !-----!-----------------!-----!
+ *  !------!--------------!-------!
+ *  !      !      top     !       !
+ *  !------!--------------!-------!
+ *  ! left !              ! right !
+ *  !------!--------------!-------!
+ *  !      !     bottom   !       !
+ *  !------!--------------!-------!
  * </pre>
  *
- * Sections 0, 2, 6 and 8 will remain as is. 1, 3, 4, 5 and 7 will be
- * repeated to fit the size of the widget.
+ * The corner sections will remain as is. The edges and the center sections
+ * will be repeated or stretched to fit the target size, depending on the fill
+ * mode.
  */
-class ImageRect
+struct ImageRect
 {
-public:
-    enum ImagePosition
-    {
-        UPPER_LEFT = 0,
-        UPPER_CENTER = 1,
-        UPPER_RIGHT = 2,
-        LEFT = 3,
-        CENTER = 4,
-        RIGHT = 5,
-        LOWER_LEFT = 6,
-        LOWER_CENTER = 7,
-        LOWER_RIGHT = 8
-    };
-
-    ImageRect() = default;
-    ImageRect(const ImageRect &) = delete;
-    ImageRect(ImageRect &&);
-    ~ImageRect();
-
-    ImageRect &operator=(const ImageRect &) = delete;
-    ImageRect &operator=(ImageRect &&r) = delete;
-
-    Image *image = nullptr;
+    std::unique_ptr<Image> image;
     int top = 0;
     int left = 0;
     int bottom = 0;

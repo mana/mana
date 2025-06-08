@@ -201,7 +201,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     setMinWidth(getWidth());
     setMinHeight(getHeight());
-    setDefaultSize(getWidth(), getHeight(), ImageRect::CENTER);
+    setDefaultSize(getWidth(), getHeight(), WindowAlignment::Center);
 
     setResizable(true);
     addKeyListener(this);

@@ -54,7 +54,7 @@ BuyDialog::BuyDialog(int npcId):
     setCloseButton(true);
     setMinWidth(260);
     setMinHeight(230);
-    setDefaultSize(260, 230, ImageRect::CENTER);
+    setDefaultSize(260, 230, WindowAlignment::Center);
 
     mShopItems = new ShopItems;
 

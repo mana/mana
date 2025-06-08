@@ -55,7 +55,7 @@ ShortcutWindow::ShortcutWindow(const std::string &title,
     setMaxWidth(std::max(getMinWidth(), maxContentWidth + border));
     setMaxHeight(std::max(getMinHeight(), maxContentHeight + border + GRAB_MARGIN));
 
-    setDefaultSize(getMinWidth(), getMaxHeight(), ImageRect::LOWER_RIGHT);
+    setDefaultSize(getMinWidth(), getMaxHeight(), WindowAlignment::BottomRight);
 
     place(0, 0, scrollArea, 5, 5).setPadding(0);
 

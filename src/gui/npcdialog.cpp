@@ -82,7 +82,7 @@ NpcDialog::NpcDialog(int npcId)
     setMinWidth(200);
     setMinHeight(150);
 
-    setDefaultSize(260, 200, ImageRect::CENTER);
+    setDefaultSize(260, 200, WindowAlignment::Center);
 
     // Setup output text box
     mTextBox = new BrowserBox(BrowserBox::AUTO_WRAP);

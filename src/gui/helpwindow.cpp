@@ -45,7 +45,7 @@ HelpWindow::HelpWindow():
     setResizable(true);
     setupWindow->registerWindowForReset(this);
 
-    setDefaultSize(500, 400, ImageRect::CENTER);
+    setDefaultSize(500, 400, WindowAlignment::Center);
 
     mBrowserBox = new BrowserBox;
     mScrollArea = new ScrollArea(mBrowserBox);

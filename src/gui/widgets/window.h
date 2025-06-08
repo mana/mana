@@ -36,6 +36,19 @@ class ResizeGrip;
 class Skin;
 class WindowContainer;
 
+enum class WindowAlignment
+{
+    TopLeft,
+    Top,
+    TopRight,
+    Left,
+    Center,
+    Right,
+    BottomLeft,
+    Bottom,
+    BottomRight
+};
+
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
  * invisible by default.
@@ -101,12 +114,6 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Sets the location relative to the given widget.
          */
         void setLocationRelativeTo(gcn::Widget *widget);
-
-        /**
-         * Sets the location relative to the given enumerated position.
-         */
-        void setLocationRelativeTo(ImageRect::ImagePosition position,
-                                   int offsetX = 0, int offsetY = 0);
 
         /**
          * Sets whether or not the window can be resized.
@@ -303,7 +310,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          * on a relative enumerated position, rather than a coordinate position.
          */
         void setDefaultSize(int defaultWidth, int defaultHeight,
-                            ImageRect::ImagePosition position,
+                            WindowAlignment alignment,
                             int offsetx = 0, int offsetY = 0);
 
         /**

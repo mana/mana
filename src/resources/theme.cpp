@@ -695,7 +695,7 @@ void Theme::readSkinStateImgNode(XML::Node node, SkinState &state) const
         border.right = right;
         border.top = top;
         border.bottom = bottom;
-        border.image = image->getSubImage(x, y, width, height);
+        border.image.reset(image->getSubImage(x, y, width, height));
 
         node.attribute("fill", border.fillMode);
     }

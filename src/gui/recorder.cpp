@@ -47,7 +47,7 @@ Recorder::Recorder(ChatWindow *chat,
     // 123 is the default chat window height. If you change this in Chat, please
     // change it here as well
     setDefaultSize(button->getWidth() + offsetX, button->getHeight() +
-                   offsetY, ImageRect::LOWER_LEFT, 0, 123);
+                   offsetY, WindowAlignment::BottomLeft, 0, 123);
 
     place(0, 0, button);
 

@@ -65,7 +65,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     setCloseButton(true);
     setSaveVisible(true);
 
-    setDefaultSize(387, 307, ImageRect::CENTER);
+    setDefaultSize(387, 307, WindowAlignment::Center);
     setMinWidth(316);
     setMinHeight(179);
     addKeyListener(this);

@@ -56,7 +56,7 @@ SellDialog::SellDialog(int npcId):
     setCloseButton(true);
     setMinWidth(260);
     setMinHeight(230);
-    setDefaultSize(260, 230, ImageRect::CENTER);
+    setDefaultSize(260, 230, WindowAlignment::Center);
 
     // Create a ShopItems instance, that is aware of duplicate entries.
     mShopItems = new ShopItems(true);
