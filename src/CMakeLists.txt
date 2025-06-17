@@ -346,6 +346,8 @@ set(SRCS
     resources/music.h
     resources/npcdb.cpp
     resources/npcdb.h
+    resources/questdb.cpp
+    resources/questdb.h
     resources/resource.cpp
     resources/resource.h
     resources/resourcemanager.cpp

@@ -27,6 +27,7 @@
 #include "resources/monsterdb.h"
 #include "resources/npcdb.h"
 #include "resources/abilitydb.h"
+#include "resources/questdb.h"
 #include "resources/statuseffectdb.h"
 
 #include "net/net.h"
@@ -96,6 +97,7 @@ namespace SettingsManager
         NPCDB::unload();
         AbilityDB::unload();
         MonsterDB::unload();
+        QuestDB::unload();
         if (itemDb)
             itemDb->unload();
         hairDB.unload();
@@ -220,6 +222,10 @@ namespace SettingsManager
             else if (childNode.name() == "npc")
             {
                 NPCDB::readNPCNode(childNode, filename);
+            }
+            else if (childNode.name() == "var")
+            {
+                QuestDB::readQuestVarNode(childNode, filename);
             }
             else if (childNode.name() == "emote")
             {

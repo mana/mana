@@ -152,6 +152,32 @@ bool getBoolFromString(std::string text, bool def)
     return def;
 }
 
+// Overload for std::vector<int> to parse comma-separated integers
+void fromString(const char *str, std::vector<int> &value)
+{
+    value.clear();
+
+    const char *p = str;
+    while (*p)
+    {
+        while (*p == ' ' || *p == ',')
+            ++p; // skip spaces and commas
+        if (!*p)
+            break;
+        char *end = nullptr;
+        int v = static_cast<int>(strtol(p, &end, 10));
+        if (end != p)
+        {
+            value.push_back(v);
+            p = end;
+        }
+        else
+        {
+            ++p; // skip invalid character to avoid infinite loop
+        }
+    }
+}
+
 std::string autocomplete(const std::vector<std::string> &candidates,
                          std::string base)
 {

@@ -193,6 +193,8 @@ inline void fromString(const char *str, bool &value)
     value = getBoolFromString(str);
 }
 
+void fromString(const char *str, std::vector<int> &value);
+
 template<typename T>
 struct FromString<T, std::enable_if_t<std::is_enum_v<T>>>
 {
