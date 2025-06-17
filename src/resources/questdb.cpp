@@ -21,7 +21,9 @@
 #include "resources/questdb.h"
 #include "log.h"
 
+#include <algorithm>
 #include <unordered_map>
+#include <utility>
 
 namespace QuestDB {
 
@@ -42,11 +44,11 @@ void readQuestVarNode(XML::Node node, const std::string &filename)
         {
             QuestEffect &effect = quest.effects.emplace_back();
             child.attribute("map", effect.map);
-            child.attribute("npc", effect.npc);
-            child.attribute("effect", effect.effect);
+            child.attribute("npc", effect.npcId);
+            child.attribute("effect", effect.statusEffectId);
             child.attribute("value", effect.values);
 
-            if (effect.map.empty() || effect.npc == 0 || effect.effect == 0 || effect.values.empty())
+            if (effect.map.empty() || effect.npcId == 0 || effect.statusEffectId == 0 || effect.values.empty())
             {
                 logger->log("Warning: effect node for var %d is missing required attributes", varId);
             }
@@ -106,6 +108,37 @@ const Quest &get(int var)
     static Quest emptyQuest;
     auto it = quests.find(var);
     return it == quests.end() ? emptyQuest : it->second;
+}
+
+// In quests, the map name may include the file extension. This is discouraged
+// but supported for compatibility.
+static std::string_view baseName(const std::string &fileName)
+{
+    auto pos = fileName.find_last_of('.');
+    return pos == std::string::npos ? fileName : std::string_view(fileName.data(), pos);
+}
+
+QuestEffectMap getActiveEffects(const QuestVars &questVars,
+                                const std::string &mapName)
+{
+    QuestEffectMap activeEffects;
+
+    for (auto &[var, quest] : quests)
+    {
+        auto value = questVars.get(var);
+
+        for (auto &effect : quest.effects)
+        {
+            if (baseName(effect.map) != mapName)
+                continue;
+            if (std::find(effect.values.begin(), effect.values.end(), value) == effect.values.end())
+                continue;
+
+            activeEffects.set(effect.npcId, effect.statusEffectId);
+        }
+    }
+
+    return activeEffects;
 }
 
 } // namespace QuestDB

@@ -21,6 +21,8 @@
 
 #include "net/tmwa/playerhandler.h"
 
+#include "actorspritemanager.h"
+#include "being.h"
 #include "client.h"
 #include "configuration.h"
 #include "game.h"
@@ -152,10 +154,14 @@ PlayerHandler::PlayerHandler()
         SMSG_PLAYER_STAT_UPDATE_6,
         SMSG_PLAYER_ARROW_MESSAGE,
         SMSG_MAP_MASK,
+        SMSG_QUEST_SET_VAR,
+        SMSG_QUEST_PLAYER_VARS,
         0
     };
     handledMessages = _messages;
     playerHandler = this;
+
+    listen(Event::GameChannel);
 }
 
 void PlayerHandler::handleMessage(MessageIn &msg)
@@ -514,6 +520,30 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         map->setMask(mask);
             }
             break;
+
+        case SMSG_QUEST_SET_VAR:
+        {
+            int variable = msg.readInt16();
+            int value = msg.readInt32();
+            mQuestVars.set(variable, value);
+            updateQuestStatusEffects();
+            break;
+        }
+
+        case SMSG_QUEST_PLAYER_VARS:
+        {
+            msg.readInt16();  // length
+            mQuestVars.clear();
+            unsigned int count = (msg.getLength() - 4) / 6;
+            for (unsigned int i = 0; i < count; ++i)
+            {
+                int variable = msg.readInt16();
+                int value = msg.readInt32();
+                mQuestVars.set(variable, value);
+            }
+            updateQuestStatusEffects();
+            break;
+        }
     }
 }
 
@@ -662,6 +692,56 @@ Vector PlayerHandler::getPixelsPerSecondMoveSpeed(const Vector &speed, Map *map)
     pixelsPerSecond.y = map->getTileHeight() / speed.y * ticksPerSecond;
 
     return pixelsPerSecond;
+}
+
+void PlayerHandler::event(Event::Channel channel, const Event &event)
+{
+    if (channel == Event::GameChannel)
+    {
+        if (event.getType() == Event::MapLoaded)
+        {
+            updateQuestStatusEffects();
+        }
+    }
+}
+
+void PlayerHandler::applyQuestStatusEffects(Being *npc)
+{
+    const auto npcId = npc->getSubType();
+    const auto effect = mActiveQuestEffects.get(npcId);
+    if (effect != 0)
+        npc->setStatusEffect(effect, true);
+}
+
+void PlayerHandler::updateQuestStatusEffects()
+{
+    auto game = Game::instance();
+    if (!game)
+        return;
+
+    const auto &currentMapName = game->getCurrentMapName();
+    auto updatedQuestEffects = QuestDB::getActiveEffects(mQuestVars, currentMapName);
+
+    // Loop over all NPCs, disabling no longer active effects and enabling new ones
+    for (auto actor : actorSpriteManager->getAll()) {
+        if (actor->getType() != ActorSprite::NPC)
+            continue;
+
+        auto *npc = static_cast<Being *>(actor);
+        const auto npcId = npc->getSubType();
+        const auto oldEffect = mActiveQuestEffects.get(npcId);
+        const auto newEffect = updatedQuestEffects.get(npcId);
+
+        if (oldEffect != newEffect)
+        {
+            if (oldEffect != 0)
+                npc->setStatusEffect(oldEffect, false);
+            if (newEffect != 0)
+                npc->setStatusEffect(newEffect, true);
+        }
+    }
+
+    std::swap(mActiveQuestEffects, updatedQuestEffects);
 }
 
 } // namespace TmwAthena

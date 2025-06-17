@@ -33,9 +33,9 @@
 #include "playerrelations.h"
 
 #include "net/net.h"
-#include "net/playerhandler.h"
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/messageout.h"
+#include "net/tmwa/playerhandler.h"
 #include "net/tmwa/protocol.h"
 
 #include "resources/emotedb.h"
@@ -105,6 +105,12 @@ static Being *createBeing(int id, short job)
     {
         MessageOut outMsg(CMSG_NAME_REQUEST);
         outMsg.writeInt32(id);
+    }
+
+    if (type == ActorSprite::NPC)
+    {
+        auto playerHandler = static_cast<TmwAthena::PlayerHandler*>(Net::getPlayerHandler());
+        playerHandler->applyQuestStatusEffects(being);
     }
 
     return being;

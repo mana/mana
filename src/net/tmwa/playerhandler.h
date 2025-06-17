@@ -26,9 +26,12 @@
 
 #include "net/tmwa/messagehandler.h"
 
+#include "resources/questdb.h"
+
 namespace TmwAthena {
 
-class PlayerHandler final : public MessageHandler, public Net::PlayerHandler
+class PlayerHandler final : public MessageHandler, public Net::PlayerHandler,
+                            public EventListener
 {
     public:
         PlayerHandler();
@@ -63,6 +66,17 @@ class PlayerHandler final : public MessageHandler, public Net::PlayerHandler
 
         bool usePixelPrecision() override
         { return false; }
+
+        // EventListener
+        void event(Event::Channel channel, const Event &event) override;
+
+        void applyQuestStatusEffects(Being *npc);
+
+    private:
+        void updateQuestStatusEffects();
+
+        QuestVars mQuestVars;
+        QuestEffectMap mActiveQuestEffects;
 };
 
 } // namespace TmwAthena

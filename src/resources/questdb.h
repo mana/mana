@@ -22,16 +22,50 @@
 
 #include "utils/xml.h"
 
+#include <map>
 #include <string>
 #include <vector>
+
+/**
+ * A map that returns a default value for non-existent keys.
+ */
+template<typename Key, typename Value, Value def = Value()>
+class MapWithDefault
+{
+public:
+    void set(Key key, Value value)
+    {
+        mVars[key] = value;
+    }
+
+    Value get(Key key) const
+    {
+        auto it = mVars.find(key);
+        return it != mVars.end() ? it->second : def;
+    }
+
+    void clear()
+    {
+        mVars.clear();
+    }
+
+private:
+    std::map<Key, Value> mVars;
+};
 
 struct QuestEffect
 {
     std::vector<int> values;        // Quest variable values to which the effect applies
     std::string map;                // Map name the NPC is located on
-    int npc = 0;                    // NPC ID
-    int effect = 0;                 // Effect ID
+    int npcId = 0;
+    int statusEffectId = 0;
 };
+
+// Map of quest variables, from variable ID to value
+using QuestVars = MapWithDefault<int, int>;
+
+// Map of quest effects, from NPC ID to status effect ID
+using QuestEffectMap = MapWithDefault<int, int>;
 
 enum class QuestRowType
 {
@@ -74,4 +108,7 @@ namespace QuestDB
     void unload();
 
     const Quest &get(int var);
+
+    QuestEffectMap getActiveEffects(const QuestVars &questVars,
+                                    const std::string &mapName);
 };
