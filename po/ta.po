@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2025-01-15 04:00+0000\n"
+"PO-Revision-Date: 2025-06-24 16:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/mana/mana/ta/>\n"
 "Language: ta\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #: ../src/client.cpp:529 ../src/gui/setup.cpp:46 ../src/gui/windowmenu.cpp:71
 msgid "Setup"
@@ -627,7 +627,7 @@ msgstr "மின்னஞ்சல் முகவரியை மாற்ற�
 #: ../src/gui/changeemaildialog.cpp:49 ../src/gui/changepassworddialog.cpp:52
 #, c-format
 msgid "Account: %s"
-msgstr "கணக்குகள்"
+msgstr "கணக்கு: %s"
 
 #: ../src/gui/changeemaildialog.cpp:51
 msgid "Type new email address twice:"
@@ -848,7 +848,7 @@ msgstr "மினிமாப்: %s"
 #: ../src/gui/debugwindow.cpp:104
 #, c-format
 msgid "Map: %s"
-msgstr "வரைபடங்கள்"
+msgstr "வரைபடம்: %s"
 
 #: ../src/gui/debugwindow.cpp:108
 #, c-format
@@ -1036,7 +1036,7 @@ msgstr "உருப்படி இல்லை"
 #: ../src/gui/itempopup.cpp:184
 #, c-format
 msgid "Weight: %s"
-msgstr "எடைகள்"
+msgstr "எடை: %s"
 
 #: ../src/gui/logindialog.cpp:43 ../src/gui/logindialog.cpp:55
 msgid "Login"
@@ -1762,7 +1762,7 @@ msgstr "திறன் %d"
 #: ../src/gui/skilldialog.cpp:457
 #, c-format
 msgid "Lvl: %d (%+d)"
-msgstr "எல்விஎல்: %d ( %+டி)"
+msgstr "எல்விஎல்: %d (%+d)"
 
 #: ../src/gui/skilldialog.cpp:468
 #, c-format
@@ -1795,7 +1795,7 @@ msgstr "கில்ட்டை விட்டு வெளியேறவா?
 #: ../src/gui/socialwindow.cpp:154
 #, c-format
 msgid "Are you sure you want to leave guild %s?"
-msgstr "கில்ட் %களை விட்டு வெளியேற விரும்புகிறீர்களா?"
+msgstr "கில்ட் %s விட்டு வெளியேற விரும்புகிறீர்களா?"
 
 #: ../src/gui/socialwindow.cpp:189 ../src/net/tmwa/partyhandler.cpp:318
 #, c-format
@@ -1823,7 +1823,7 @@ msgstr "விருந்து விடலாமா?"
 #: ../src/gui/socialwindow.cpp:225
 #, c-format
 msgid "Are you sure you want to leave party %s?"
-msgstr "கட்சி %களை விட்டுவிட விரும்புகிறீர்களா?"
+msgstr "கட்சி%s விட்டுவிட விரும்புகிறீர்களா?"
 
 #: ../src/gui/socialwindow.cpp:310
 msgid "Create Guild"
@@ -1848,7 +1848,7 @@ msgstr "விடுப்பு"
 #: ../src/gui/socialwindow.cpp:380 ../src/gui/socialwindow.cpp:676
 #, c-format
 msgid "Online (%zu)"
-msgstr "நிகழ்நிலை (%கூட)"
+msgstr "நிகழ்நிலை (%zu)"
 
 #: ../src/gui/socialwindow.cpp:485
 #, c-format
@@ -1920,7 +1920,7 @@ msgstr "ஒரு விருந்தில் சேர உங்களை �
 #: ../src/gui/socialwindow.cpp:630
 #, c-format
 msgid "You have been invited to join the %s party."
-msgstr "%கட்சியில் சேர நீங்கள் அழைக்கப்பட்டுள்ளீர்கள்."
+msgstr "%s கட்சியில் சேர நீங்கள் அழைக்கப்பட்டுள்ளீர்கள்."
 
 #: ../src/gui/socialwindow.cpp:638
 #, c-format
@@ -1930,7 +1930,7 @@ msgstr "%s தங்கள் கட்சியில் சேர உங்க
 #: ../src/gui/socialwindow.cpp:643
 #, c-format
 msgid "%s has invited you to join the %s party."
-msgstr "%s கட்சியில் சேர உங்களை அழைத்தது."
+msgstr "%s உங்களை %s கட்சியில் சேர அழைத்தார்."
 
 #: ../src/gui/socialwindow.cpp:651
 msgid "Accept Party Invite"
@@ -2737,7 +2737,7 @@ msgstr "தடையற்ற எழுத்து தேர்ந்தெட�
 #: ../src/net/manaserv/guildhandler.cpp:285
 #, c-format
 msgid "Topic: %s"
-msgstr "தலைப்புகள்"
+msgstr "தலைப்பு: %s"
 
 #: ../src/net/manaserv/chathandler.cpp:194
 #: ../src/net/manaserv/chathandler.cpp:285
@@ -2769,7 +2769,7 @@ msgstr "%s சேனலை விட்டு வெளியேறின."
 #: ../src/net/manaserv/chathandler.cpp:335
 #, c-format
 msgid "%s has set mode %s on user %s."
-msgstr "%s பயனர் %s மீது %set %s ஐ அமைத்துள்ளது."
+msgstr "%s பயன்முறை %s பயனர்மீது %s அமைத்துள்ளார்."
 
 #: ../src/net/manaserv/chathandler.cpp:345
 #, c-format
@@ -2815,7 +2815,7 @@ msgstr "உறுப்பினரை ஊக்குவிப்பதில�
 #: ../src/net/manaserv/guildhandler.cpp:259
 #, c-format
 msgid "Player %s kicked you out of guild %s."
-msgstr "வீரர்கள் உங்களை கில்ட் %s இலிருந்து உதைத்தனர்."
+msgstr "வீரர்கள் %s உங்களைக் கில்ட் %s இலிருந்து உதைத்தனர்."
 
 #: ../src/net/manaserv/loginhandler.cpp:92
 msgid "Wrong magic_token."
@@ -3082,32 +3082,32 @@ msgstr "விலகுவதற்கான கோரிக்கை மறு�
 #: ../src/net/tmwa/generalhandler.cpp:99
 #, c-format
 msgid "Strength %+d"
-msgstr "வலிமை %+டி"
+msgstr "வலிமை %+d"
 
 #: ../src/net/tmwa/generalhandler.cpp:100
 #, c-format
 msgid "Agility %+d"
-msgstr "சுறுசுறுப்பு %+டி"
+msgstr "சுறுசுறுப்பு %+d"
 
 #: ../src/net/tmwa/generalhandler.cpp:101
 #, c-format
 msgid "Vitality %+d"
-msgstr "உயிர்ச்சக்தி %+டி"
+msgstr "உயிர்ச்சக்தி %+d"
 
 #: ../src/net/tmwa/generalhandler.cpp:102
 #, c-format
 msgid "Intelligence %+d"
-msgstr "நுண்ணறிவு %+டி"
+msgstr "நுண்ணறிவு %+d"
 
 #: ../src/net/tmwa/generalhandler.cpp:103
 #, c-format
 msgid "Dexterity %+d"
-msgstr "திறமை %+டி"
+msgstr "திறமை %+d"
 
 #: ../src/net/tmwa/generalhandler.cpp:104
 #, c-format
 msgid "Luck %+d"
-msgstr "அதிர்ச்டம் %+டி"
+msgstr "அதிர்ச்டம் %+d"
 
 #: ../src/net/tmwa/generalhandler.cpp:130
 msgid "Authentication failed."
@@ -3749,27 +3749,27 @@ msgstr "ஒளிரும் பெயர்"
 #: ../src/resources/attributes.cpp:165
 #, c-format
 msgid "Strength %+.1f"
-msgstr "வலிமை %+. 1 எஃப்"
+msgstr "வலிமை %+.1f"
 
 #: ../src/resources/attributes.cpp:177
 #, c-format
 msgid "Agility %+.1f"
-msgstr "சுறுசுறுப்பு %+. 1f"
+msgstr "சுறுசுறுப்பு %+.1f"
 
 #: ../src/resources/attributes.cpp:189
 #, c-format
 msgid "Dexterity %+.1f"
-msgstr "திறமை %+. 1f"
+msgstr "திறமை %+.1f"
 
 #: ../src/resources/attributes.cpp:201
 #, c-format
 msgid "Vitality %+.1f"
-msgstr "உயிர்ச்சக்தி %+. 1 எஃப்"
+msgstr "உயிர்ச்சக்தி %+.1f"
 
 #: ../src/resources/attributes.cpp:213
 #, c-format
 msgid "Intelligence %+.1f"
-msgstr "நுண்ணறிவு %+. 1 எஃப்"
+msgstr "நுண்ணறிவு %+.1f"
 
 #: ../src/resources/attributes.cpp:219
 msgid "Willpower"
@@ -3778,7 +3778,7 @@ msgstr "மன உறுதி"
 #: ../src/resources/attributes.cpp:225
 #, c-format
 msgid "Willpower %+.1f"
-msgstr "மன உறுதியான %+. 1f"
+msgstr "மன உறுதியான %+.1f"
 
 #: ../src/resources/beinginfo.cpp:34 ../src/resources/itemdb.cpp:241
 #: ../src/resources/monsterdb.cpp:74
@@ -3792,17 +3792,17 @@ msgstr "தெரியாத உருப்படி"
 #: ../src/resources/itemdb.cpp:290
 #, c-format
 msgid "Attack %+d"
-msgstr "தாக்குதல் %+டி"
+msgstr "தாக்குதல் %+d"
 
 #: ../src/resources/itemdb.cpp:291
 #, c-format
 msgid "Defense %+d"
-msgstr "பாதுகாப்பு %+டி"
+msgstr "பாதுகாப்பு %+d"
 
 #: ../src/resources/itemdb.cpp:292
 #, c-format
 msgid "HP %+d"
-msgstr "எச்பி %+டி"
+msgstr "எச்பி %+d"
 
 #: ../src/resources/itemdb.cpp:293
 #, c-format
