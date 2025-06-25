@@ -21,15 +21,15 @@
 
 #include "game.h"
 
-#include "actorspritemanager.h"
 #include "actorsprite.h"
+#include "actorspritemanager.h"
 #include "channelmanager.h"
 #include "client.h"
 #include "commandhandler.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "event.h"
 #include "emoteshortcut.h"
+#include "event.h"
 #include "graphics.h"
 #include "itemshortcut.h"
 #include "joystick.h"
@@ -41,23 +41,24 @@
 #include "playerrelations.h"
 #include "sound.h"
 
+#include "gui/abilitieswindow.h"
 #include "gui/chatwindow.h"
 #include "gui/debugwindow.h"
 #include "gui/equipmentwindow.h"
 #include "gui/gui.h"
 #include "gui/helpwindow.h"
 #include "gui/inventorywindow.h"
-#include "gui/shortcutwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatuswindow.h"
 #include "gui/npcdialog.h"
 #include "gui/okdialog.h"
 #include "gui/outfitwindow.h"
+#include "gui/questswindow.h"
 #include "gui/quitdialog.h"
 #include "gui/setup.h"
-#include "gui/socialwindow.h"
-#include "gui/abilitieswindow.h"
+#include "gui/shortcutwindow.h"
 #include "gui/skilldialog.h"
+#include "gui/socialwindow.h"
 #include "gui/statuswindow.h"
 #include "gui/textdialog.h"
 #include "gui/tradewindow.h"
@@ -94,6 +95,7 @@ StatusWindow *statusWindow;
 MiniStatusWindow *miniStatusWindow;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
+QuestsWindow *questsWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 TradeWindow *tradeWindow;
@@ -150,6 +152,7 @@ static void createGuiWindows()
     statusWindow = new StatusWindow;
     inventoryWindow = new InventoryWindow(PlayerInfo::getInventory());
     skillDialog = new SkillDialog;
+    questsWindow = new QuestsWindow;
     helpWindow = new HelpWindow;
     debugWindow = new DebugWindow;
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",
@@ -602,6 +605,7 @@ bool Game::keyDownEvent(SDL_KeyboardEvent &event)
             statusWindow->setVisible(false);
             inventoryWindow->setVisible(false);
             skillDialog->setVisible(false);
+            questsWindow->setVisible(false);
             setupWindow->setVisible(false);
             equipmentWindow->setVisible(false);
             helpWindow->setVisible(false);
@@ -620,6 +624,9 @@ bool Game::keyDownEvent(SDL_KeyboardEvent &event)
             break;
         case KeyboardConfig::KEY_WINDOW_SKILL:
             requestedWindow = skillDialog;
+            break;
+        case KeyboardConfig::KEY_WINDOW_QUESTS:
+            requestedWindow = questsWindow;
             break;
         case KeyboardConfig::KEY_WINDOW_MINIMAP:
             minimap->toggle();

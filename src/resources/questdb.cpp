@@ -30,6 +30,13 @@ namespace QuestDB {
 // The quests are stored in a map using their variable ID as the key
 static std::unordered_map<int, Quest> quests;
 
+// Helper function to check if a container contains a value
+template<typename Container, typename Value>
+static bool contains(const Container &container, const Value &value)
+{
+    return std::find(container.begin(), container.end(), value) != container.end();
+}
+
 void readQuestVarNode(XML::Node node, const std::string &filename)
 {
     int varId = 0;
@@ -93,6 +100,12 @@ void readQuestVarNode(XML::Node node, const std::string &filename)
 
                 QuestRow &row = state.rows.emplace_back(rowType);
                 row.text = questChild.textContent();
+
+                if (rowType == QuestRowType::Coordinates)
+                {
+                    questChild.attribute("x", row.x);
+                    questChild.attribute("y", row.y);
+                }
             }
         }
     }
@@ -103,11 +116,9 @@ void unload()
     quests.clear();
 }
 
-const Quest &get(int var)
+bool hasQuests()
 {
-    static Quest emptyQuest;
-    auto it = quests.find(var);
-    return it == quests.end() ? emptyQuest : it->second;
+    return !quests.empty();
 }
 
 // In quests, the map name may include the file extension. This is discouraged
@@ -123,7 +134,7 @@ QuestEffectMap getActiveEffects(const QuestVars &questVars,
 {
     QuestEffectMap activeEffects;
 
-    for (auto &[var, quest] : quests)
+    for (auto &[var, quest] : std::as_const(quests))
     {
         auto value = questVars.get(var);
 
@@ -131,7 +142,7 @@ QuestEffectMap getActiveEffects(const QuestVars &questVars,
         {
             if (baseName(effect.map) != mapName)
                 continue;
-            if (std::find(effect.values.begin(), effect.values.end(), value) == effect.values.end())
+            if (!contains(effect.values, value))
                 continue;
 
             activeEffects.set(effect.npcId, effect.statusEffectId);
@@ -139,6 +150,36 @@ QuestEffectMap getActiveEffects(const QuestVars &questVars,
     }
 
     return activeEffects;
+}
+
+std::vector<QuestEntry> getQuestsEntries(const QuestVars &questVars,
+                                         bool skipCompleted)
+{
+    std::vector<QuestEntry> activeQuests;
+
+    for (auto &[varId, quest] : std::as_const(quests))
+    {
+        auto value = questVars.get(varId);
+
+        for (auto &state : quest.states)
+        {
+            bool matchesIncomplete = contains(state.incomplete, value);
+            bool matchesComplete = contains(state.complete, value);
+
+            if (skipCompleted && matchesComplete)
+                continue;
+
+            if (matchesIncomplete || matchesComplete)
+            {
+                QuestEntry &entry = activeQuests.emplace_back();
+                entry.varId = varId;
+                entry.completed = matchesComplete;
+                entry.state = &state;
+            }
+        }
+    }
+
+    return activeQuests;
 }
 
 } // namespace QuestDB

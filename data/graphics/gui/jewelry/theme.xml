@@ -539,4 +539,7 @@
 
   <icon name="offline" src="window.png" x="65" y="164" width="13" height="13" />
   <icon name="online" src="window.png" x="49" y="164" width="13" height="13" />
+
+  <icon name="complete" src="window.png" x="1" y="223" width="20" height="18" />
+  <icon name="incomplete" src="window.png" x="23" y="223" width="20" height="18" />
 </theme>

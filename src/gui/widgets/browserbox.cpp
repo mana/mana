@@ -228,7 +228,7 @@ void BrowserBox::addRow(std::string_view row)
 void BrowserBox::clearRows()
 {
     mTextRows.clear();
-    setSize(0, 0);
+    setSize(mMode == AUTO_SIZE ? 0 : getWidth(), 0);
     mHoveredLink.reset();
     maybeRelayoutText();
 }

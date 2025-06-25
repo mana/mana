@@ -191,6 +191,7 @@ class KeyboardConfig
             KEY_WINDOW_INVENTORY,
             KEY_WINDOW_EQUIPMENT,
             KEY_WINDOW_SKILL,
+            KEY_WINDOW_QUESTS,
             KEY_WINDOW_MINIMAP,
             KEY_WINDOW_CHAT,
             KEY_WINDOW_SHORTCUT,

@@ -527,6 +527,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             int value = msg.readInt32();
             mQuestVars.set(variable, value);
             updateQuestStatusEffects();
+            Event::trigger(Event::QuestsChannel, Event::QuestVarsChanged);
             break;
         }
 
@@ -542,6 +543,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 mQuestVars.set(variable, value);
             }
             updateQuestStatusEffects();
+            Event::trigger(Event::QuestsChannel, Event::QuestVarsChanged);
             break;
         }
     }

@@ -351,6 +351,7 @@ void serdeOptions(T option)
     option("showgender",                    &Config::showGender);
     option("showMonstersTakedDamage",       &Config::showMonstersTakedDamage);
     option("showWarps",                     &Config::showWarps);
+    option("hideCompletedQuests",           &Config::hideCompletedQuests);
     option("particleMaxCount",              &Config::particleMaxCount);
     option("particleFastPhysics",           &Config::particleFastPhysics);
     option("particleEmitterSkip",           &Config::particleEmitterSkip);

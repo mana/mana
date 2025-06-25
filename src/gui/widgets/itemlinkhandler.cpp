@@ -42,6 +42,7 @@ ItemLinkHandler::ItemLinkHandler(Window *parent)
     : mParent(parent)
 {
     mItemPopup = std::make_unique<ItemPopup>();
+    mItemPopup->addDeathListener(this);
 }
 
 ItemLinkHandler::~ItemLinkHandler() = default;
@@ -96,4 +97,11 @@ void ItemLinkHandler::action(const gcn::ActionEvent &actionEvent)
         }
 #endif
     }
+}
+
+void ItemLinkHandler::death(const gcn::Event &event)
+{
+    // If somebody else killed the PopupUp, make sure we don't also try to delete it
+    if (event.getSource() == mItemPopup.get())
+        mItemPopup.release();
 }

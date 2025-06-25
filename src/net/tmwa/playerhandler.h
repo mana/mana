@@ -26,8 +26,6 @@
 
 #include "net/tmwa/messagehandler.h"
 
-#include "resources/questdb.h"
-
 namespace TmwAthena {
 
 class PlayerHandler final : public MessageHandler, public Net::PlayerHandler,
@@ -75,7 +73,6 @@ class PlayerHandler final : public MessageHandler, public Net::PlayerHandler,
     private:
         void updateQuestStatusEffects();
 
-        QuestVars mQuestVars;
         QuestEffectMap mActiveQuestEffects;
 };
 

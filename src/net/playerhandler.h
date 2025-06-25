@@ -24,6 +24,8 @@
 #include "being.h"
 #include "flooritem.h"
 
+#include "resources/questdb.h"
+
 namespace Net {
 
 class PlayerHandler
@@ -80,6 +82,11 @@ class PlayerHandler
          * Return false when tiles-center positions only are to be used.
          */
         virtual bool usePixelPrecision() = 0;
+
+        const QuestVars &getQuestVars() const { return mQuestVars; }
+
+    protected:
+        QuestVars mQuestVars;
 };
 
 } // namespace Net

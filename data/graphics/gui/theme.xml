@@ -334,4 +334,7 @@
 
   <icon name="offline" src="circle-gray.png" />
   <icon name="online" src="circle-green.png" />
+
+  <icon name="complete" src="quest-icons.png" x="0" y="0" width="16" height="16" />
+  <icon name="incomplete" src="quest-icons.png" x="16" y="0" width="16" height="16" />
 </theme>

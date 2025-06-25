@@ -71,6 +71,7 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     { "WindowInventory",    SDLK_F3,            _("Inventory Window") },
     { "WindowEquipment",    SDLK_F4,            _("Equipment Window") },
     { "WindowSkill",        SDLK_F5,            _("Skill Window") },
+    { "WindowQuests",       KeyboardConfig::KEY_NO_VALUE, _("Quest Window") },
     { "WindowMinimap",      SDLK_F6,            _("Minimap Window") },
     { "WindowChat",         SDLK_F7,            _("Chat Window") },
     { "WindowShortcut",     SDLK_F8,            _("Item Shortcut Window") },

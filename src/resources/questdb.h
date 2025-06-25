@@ -85,6 +85,8 @@ struct QuestRow
 
     QuestRowType type;
     std::string text;
+    int x = 0;
+    int y = 0;
 };
 
 struct QuestState
@@ -102,13 +104,26 @@ struct Quest
     std::vector<QuestState> states;
 };
 
+struct QuestEntry
+{
+    int varId;
+    bool completed;
+    const QuestState *state;
+
+    const std::string &name() const { return state->name; }
+    const std::vector<QuestRow> &rows() const { return state->rows; }
+};
+
 namespace QuestDB
 {
     void readQuestVarNode(XML::Node node, const std::string &filename);
     void unload();
 
-    const Quest &get(int var);
+    bool hasQuests();
 
     QuestEffectMap getActiveEffects(const QuestVars &questVars,
                                     const std::string &mapName);
+
+    std::vector<QuestEntry> getQuestsEntries(const QuestVars &questVars,
+                                             bool skipCompleted = false);
 };

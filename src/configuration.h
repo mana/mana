@@ -181,6 +181,7 @@ struct Config
     bool showGender = false;
     bool showMonstersTakedDamage = false;
     bool showWarps = true;
+    bool hideCompletedQuests = false;
     int particleMaxCount = 3000;
     int particleFastPhysics = 0;
     int particleEmitterSkip = 1;

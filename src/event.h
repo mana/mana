@@ -53,7 +53,8 @@ public:
         ItemChannel,
         NoticesChannel,
         NpcChannel,
-        StorageChannel
+        StorageChannel,
+        QuestsChannel
     };
 
     enum Type
@@ -99,7 +100,8 @@ public:
         UpdateStat,
         UpdateStatusEffect,
         Whisper,
-        WhisperError
+        WhisperError,
+        QuestVarsChanged,
     };
 
     /**

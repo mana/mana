@@ -24,13 +24,14 @@
 #include "gui/widgets/linkhandler.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/deathlistener.hpp>
 
 #include <memory>
 
 class ItemPopup;
 class Window;
 
-class ItemLinkHandler : public LinkHandler, gcn::ActionListener
+class ItemLinkHandler : public LinkHandler, gcn::ActionListener, public gcn::DeathListener
 {
     public:
         ItemLinkHandler(Window *parent = nullptr);
@@ -41,6 +42,9 @@ class ItemLinkHandler : public LinkHandler, gcn::ActionListener
 
         // ActionListener interface
         void action(const gcn::ActionEvent &actionEvent) override;
+
+        // DeathListener interface
+        void death(const gcn::Event &event) override;
 
     private:
         std::unique_ptr<ItemPopup> mItemPopup;
