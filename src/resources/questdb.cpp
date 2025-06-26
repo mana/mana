@@ -182,4 +182,46 @@ std::vector<QuestEntry> getQuestsEntries(const QuestVars &questVars,
     return activeQuests;
 }
 
+static std::pair<int, int> countQuestEntries(const Quest &quest, int value)
+{
+    int totalEntries = 0;
+    int completedEntries = 0;
+
+    for (const auto &state : quest.states)
+    {
+        bool matchesIncomplete = contains(state.incomplete, value);
+        bool matchesComplete = contains(state.complete, value);
+
+        if (matchesIncomplete || matchesComplete)
+        {
+            totalEntries++;
+            if (matchesComplete)
+                completedEntries++;
+        }
+    }
+
+    return { totalEntries, completedEntries };
+}
+
+QuestChange questChange(int varId, int oldValue, int newValue)
+{
+    if (newValue == oldValue)
+        return QuestChange::None;
+
+    auto questIt = quests.find(varId);
+    if (questIt == quests.end())
+        return QuestChange::None;
+
+    const Quest &quest = questIt->second;
+
+    auto [oldQuestEntries, oldCompletedEntries] = countQuestEntries(quest, oldValue);
+    auto [newQuestEntries, newCompletedEntries] = countQuestEntries(quest, newValue);
+
+    if (newCompletedEntries > oldCompletedEntries)
+        return QuestChange::Completed;
+    if (newQuestEntries > oldQuestEntries)
+        return QuestChange::New;
+    return QuestChange::None;
+}
+
 } // namespace QuestDB

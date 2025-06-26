@@ -25,6 +25,7 @@
 #include "being.h"
 #include "client.h"
 #include "configuration.h"
+#include "effectmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -525,9 +526,26 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         {
             int variable = msg.readInt16();
             int value = msg.readInt32();
+            int oldValue = mQuestVars.get(variable);
+
             mQuestVars.set(variable, value);
             updateQuestStatusEffects();
             Event::trigger(Event::QuestsChannel, Event::QuestVarsChanged);
+
+            if (effectManager && local_player)
+            {
+                switch (QuestDB::questChange(variable, oldValue, value))
+                {
+                    case QuestChange::None:
+                        break;
+                    case QuestChange::New:
+                        effectManager->trigger(paths.getIntValue("newQuestEffectId"), local_player);
+                        break;
+                    case QuestChange::Completed:
+                        effectManager->trigger(paths.getIntValue("completeQuestEffectId"), local_player);
+                        break;
+                }
+            }
             break;
         }
 

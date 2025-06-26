@@ -114,6 +114,13 @@ struct QuestEntry
     const std::vector<QuestRow> &rows() const { return state->rows; }
 };
 
+enum class QuestChange
+{
+    None,
+    New,
+    Completed
+};
+
 namespace QuestDB
 {
     void readQuestVarNode(XML::Node node, const std::string &filename);
@@ -126,4 +133,6 @@ namespace QuestDB
 
     std::vector<QuestEntry> getQuestsEntries(const QuestVars &questVars,
                                              bool skipCompleted = false);
+
+    QuestChange questChange(int varId, int oldValue, int newValue);
 };
