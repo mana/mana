@@ -26,6 +26,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # where to look for cmake modules
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
+set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME ${PROJECT_NAME})
+
 find_package(Gettext)
 
 option(WITH_OPENGL "Enable OpenGL support" ON)
@@ -167,5 +169,23 @@ if(WIN32)
           $ENV{MINGW_PREFIX}/bin/libpcre2-8-0.dll
           $ENV{MINGW_PREFIX}/bin/libxmp.dll
     DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+  # Install portable.xml as part of an optional Portable component
+  set(CPACK_COMPONENT_PORTABLE_DISPLAY_NAME "Portable")
+  set(CPACK_COMPONENT_PORTABLE_DESCRIPTION "Portable mode. Settings and updates are stored in the installation folder.")
+  set(CPACK_COMPONENT_PORTABLE_DISABLED TRUE)
+  install(
+    FILES "${CMAKE_SOURCE_DIR}/packaging/windows/portable.xml"
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+    COMPONENT Portable
+  )
 endif()
+
+set(CPACK_COMPONENT_MANA_DISPLAY_NAME "${PROJECT_NAME}")
+set(CPACK_COMPONENT_MANA_DESCRIPTION "${PROJECT_DESCRIPTION}.")
+set(CPACK_COMPONENT_MANA_REQUIRED TRUE)
+
+set(CPACK_COMPONENT_TRANSLATIONS_DISPLAY_NAME "Translations")
+set(CPACK_COMPONENT_TRANSLATIONS_DESCRIPTION "Translations for the user interface. Without these only English will be available.")
+
 include(CPack)
