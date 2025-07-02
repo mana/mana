@@ -31,7 +31,8 @@ macro(MANA_GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFileArg)
     install(
       FILES ${_gmoFile}
       DESTINATION ${CMAKE_INSTALL_LOCALEDIR}/${_lang}/LC_MESSAGES
-      RENAME ${_potBasename}.mo)
+      RENAME ${_potBasename}.mo
+      COMPONENT Translations)
     set(_gmoFiles ${_gmoFiles} ${_gmoFile})
 
   endforeach(_currentPoFile)
