@@ -14,5 +14,4 @@ pacman --noconfirm -S \
 
 cmake -B build . -DUSE_SYSTEM_GUICHAN=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build build
-pushd build
-cpack
+cpack --config build/CPackConfig.cmake

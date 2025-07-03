@@ -12,4 +12,4 @@ build_script:
     C:\msys64\usr\bin\bash -lc "./packaging/msys2-build.sh"
 artifacts:
   - name: Installer
-    path: build/Mana-*-win64.exe
+    path: Mana-*-win64.exe
