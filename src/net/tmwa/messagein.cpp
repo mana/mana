@@ -26,9 +26,11 @@
 
 #include <SDL_endian.h>
 
+#ifndef MAKEWORD
 #define MAKEWORD(low,high) \
     ((unsigned short)(((unsigned char)(low)) | \
     ((unsigned short)((unsigned char)(high))) << 8))
+#endif
 
 namespace TmwAthena  {
 
