@@ -42,7 +42,7 @@ bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
     png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
     if (!png_ptr)
     {
-        logger->log("Had trouble creating png_structp");
+        Log::info("Had trouble creating png_structp");
         return false;
     }
 
@@ -50,21 +50,21 @@ bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
     if (!info_ptr)
     {
         png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
-        logger->log("Could not create png_info");
+        Log::info("Could not create png_info");
         return false;
     }
 
     if (setjmp(png_jmpbuf(png_ptr)))
     {
         png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
-        logger->log("problem writing to %s", filename.c_str());
+        Log::info("problem writing to %s", filename.c_str());
         return false;
     }
 
     FILE *fp = fopen(filename.c_str(), "wb");
     if (!fp)
     {
-        logger->log("could not open file %s for writing", filename.c_str());
+        Log::info("could not open file %s for writing", filename.c_str());
         return false;
     }
 
@@ -83,7 +83,7 @@ bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
     row_pointers = new png_bytep[surface->h];
     if (!row_pointers)
     {
-        logger->log("Had trouble converting surface to row pointers");
+        Log::info("Had trouble converting surface to row pointers");
         fclose(fp);
         return false;
     }

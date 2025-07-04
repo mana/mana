@@ -71,7 +71,7 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
 
     setTheme(themeIt != mAvailableThemes.end() ? *themeIt : mAvailableThemes.front());
 
-    logger->log("Initializing GUI...");
+    Log::info("Initializing GUI...");
     // Set graphics
     setGraphics(graphics);
 
@@ -106,8 +106,8 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     }
     catch (gcn::Exception e)
     {
-        logger->error(std::string("Unable to load '") + fontFile +
-                      std::string("': ") + e.getMessage());
+        Log::critical(std::string("Unable to load '") + fontFile +
+                      "': " + e.getMessage());
     }
 
     // Set bold font
@@ -119,8 +119,8 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     }
     catch (gcn::Exception e)
     {
-        logger->error(std::string("Unable to load '") + fontFile +
-                      std::string("': ") + e.getMessage());
+        Log::critical(std::string("Unable to load '") + fontFile +
+                      "': " + e.getMessage());
     }
 
     // Set mono font
@@ -132,8 +132,8 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     }
     catch (gcn::Exception e)
     {
-        logger->error(std::string("Unable to load '") + fontFile +
-                      std::string("': ") + e.getMessage());
+        Log::critical(std::string("Unable to load '") + fontFile +
+                      "': " + e.getMessage());
     }
 
     loadCustomCursors();
@@ -288,8 +288,8 @@ void Gui::loadCustomCursors()
     SDL_Surface *mouseSurface = loadSurface(cursorPath);
     if (!mouseSurface)
     {
-        logger->log("Warning: Unable to load mouse cursor file (%s): %s",
-                    cursorPath.c_str(), SDL_GetError());
+        Log::warn("Unable to load mouse cursor file (%s): %s",
+                  cursorPath.c_str(), SDL_GetError());
         return;
     }
 
@@ -329,7 +329,7 @@ void Gui::loadCustomCursors()
                                                    17 * mCustomCursorScale);
         if (!cursor)
         {
-            logger->log("Warning: Unable to create cursor: %s", SDL_GetError());
+            Log::warn("Unable to create cursor: %s", SDL_GetError());
         }
 
         mCustomMouseCursors.push_back(cursor);

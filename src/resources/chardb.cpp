@@ -54,7 +54,7 @@ void CharDB::load()
 
     if (!root || root.name() != "chars")
     {
-        logger->log("CharDB: Failed to parse charcreation.xml.");
+        Log::info("CharDB: Failed to parse charcreation.xml.");
         return;
     }
 
@@ -86,7 +86,7 @@ void CharDB::load()
 
 void CharDB::unload()
 {
-    logger->log("Unloading chars database...");
+    Log::info("Unloading chars database...");
 
     mLoaded = false;
 }

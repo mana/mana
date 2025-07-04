@@ -148,7 +148,7 @@ const ItemInfo &ItemDB::get(int id) const
     auto i = mItemInfos.find(id);
     if (i == mItemInfos.end())
     {
-        logger->log("ItemDB: Warning, unknown item ID# %d", id);
+        Log::info("ItemDB: Warning, unknown item ID# %d", id);
         return *mUnknown;
     }
 
@@ -164,8 +164,8 @@ const ItemInfo &ItemDB::get(const std::string &name) const
     {
         if (!name.empty())
         {
-            logger->log("ItemDB: Warning, unknown item name \"%s\"",
-                        name.c_str());
+            Log::info("ItemDB: Warning, unknown item name \"%s\"",
+                      name.c_str());
         }
         return *mUnknown;
     }
@@ -202,8 +202,8 @@ void ItemDB::loadSoundRef(ItemInfo &itemInfo, XML::Node node)
     }
     else
     {
-        logger->log("ItemDB: Ignoring unknown sound event '%s'",
-                event.c_str());
+        Log::info("ItemDB: Ignoring unknown sound event '%s'",
+                  event.c_str());
     }
 }
 
@@ -237,15 +237,15 @@ void ItemDB::loadReplacement(ItemInfo &info, XML::Node replaceNode)
 
     if (sprite == SPRITE_UNKNOWN)
     {
-        logger->log("ItemDB: Invalid sprite name '%s' in replace tag",
-                    spriteString.data());
+        Log::info("ItemDB: Invalid sprite name '%s' in replace tag",
+                  spriteString.data());
         return;
     }
 
     if (direction == DIRECTION_UNKNOWN)
     {
-        logger->log("ItemDB: Invalid direction name '%s' in replace tag",
-                    directionString.data());
+        Log::info("ItemDB: Invalid direction name '%s' in replace tag",
+                  directionString.data());
         return;
     }
 
@@ -266,7 +266,7 @@ void ItemDB::loadReplacement(ItemInfo &info, XML::Node replaceNode)
 
 void ItemDB::unload()
 {
-    logger->log("Unloading item database...");
+    Log::info("Unloading item database...");
 
     delete mUnknown;
     mUnknown = nullptr;
@@ -283,12 +283,12 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string
 
     if (!itemInfo.id)
     {
-        logger->log("ItemDB: Invalid or missing item Id in %s!", filename.c_str());
+        Log::info("ItemDB: Invalid or missing item Id in %s!", filename.c_str());
         return;
     }
     else if (mItemInfos.find(itemInfo.id) != mItemInfos.end())
     {
-        logger->log("ItemDB: Redefinition of item Id %d in %s", itemInfo.id, filename.c_str());
+        Log::info("ItemDB: Redefinition of item Id %d in %s", itemInfo.id, filename.c_str());
     }
 
     itemInfo.mView = node.getProperty("view", 0);
@@ -346,8 +346,8 @@ void ItemDB::addItem(ItemInfo *itemInfo)
         if (itr == mNamedItemInfos.end())
             mNamedItemInfos[temp] = itemInfo;
         else
-            logger->log("ItemDB: Duplicate name (%s) for item id %d found.",
-                        temp.c_str(), itemInfo->id);
+            Log::info("ItemDB: Duplicate name (%s) for item id %d found.",
+                      temp.c_str(), itemInfo->id);
     }
 }
 
@@ -359,7 +359,7 @@ static void checkParameter(int id, const T param, const T errorValue)
         std::stringstream errMsg;
         errMsg << "ItemDB: Missing " << param << " attribute for item id "
                << id << "!";
-        logger->log("%s", errMsg.str().c_str());
+        Log::info("%s", errMsg.str().c_str());
     }
 }
 
@@ -368,7 +368,7 @@ void ItemDB::checkItemInfo(ItemInfo &itemInfo)
     int id = itemInfo.id;
     if (!itemInfo.attackAction.empty())
         if (itemInfo.attackRange == 0)
-            logger->log("ItemDB: Missing attack range from weapon %i!", id);
+            Log::info("ItemDB: Missing attack range from weapon %i!", id);
 
     if (id >= 0)
     {
@@ -504,7 +504,7 @@ void ManaServItemDB::readItemNode(XML::Node node, const std::string &filename)
             std::string trigger = itemChild.getProperty("trigger", std::string());
             if (trigger.empty())
             {
-                logger->log("Found empty trigger effect label in %s, skipping.", filename.c_str());
+                Log::info("Found empty trigger effect label in %s, skipping.", filename.c_str());
                 continue;
             }
 
@@ -514,8 +514,8 @@ void ManaServItemDB::readItemNode(XML::Node node, const std::string &filename)
             auto triggerLabel = triggerTable.find(trigger);
             if (triggerLabel == triggerTable.end())
             {
-                logger->log("Warning: unknown trigger %s in item %d!",
-                            trigger.c_str(), itemInfo->id);
+                Log::warn("Unknown trigger %s in item %d!",
+                          trigger.c_str(), itemInfo->id);
                 continue;
             }
 
@@ -528,7 +528,7 @@ void ManaServItemDB::readItemNode(XML::Node node, const std::string &filename)
                     int duration = effectChild.getProperty("duration", 0);
                     if (attribute.empty() || !value)
                     {
-                        logger->log("Warning: incomplete modifier definition in %s, skipping.", filename.c_str());
+                        Log::warn("Incomplete modifier definition in %s, skipping.", filename.c_str());
                         continue;
                     }
                     auto it = extraStats.cbegin();
@@ -537,7 +537,7 @@ void ManaServItemDB::readItemNode(XML::Node node, const std::string &filename)
                         ++it;
                     if (it == extraStats.end())
                     {
-                        logger->log("Warning: unknown modifier tag %s in %s, skipping.", attribute.c_str(), filename.c_str());
+                        Log::warn("Unknown modifier tag %s in %s, skipping.", attribute.c_str(), filename.c_str());
                         continue;
                     }
                     effect.push_back(

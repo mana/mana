@@ -43,13 +43,13 @@ namespace XML
         auto *context = static_cast<XMLContext*>(ctx);
 
         if (context)
-            logger->log("Error in XML file '%s' on line %d",
-                        context->file.c_str(), error->line);
+            Log::info("Error in XML file '%s' on line %d",
+                      context->file.c_str(), error->line);
         else
-            logger->log("Error in unknown XML file on line %d",
-                        error->line);
+            Log::info("Error in unknown XML file on line %d",
+                      error->line);
 
-        logger->log("%s", error->message);
+        Log::info("%s", error->message);
 
         // No need to keep errors around
         xmlCtxtResetLastError(error->ctxt);
@@ -76,11 +76,11 @@ namespace XML
             SDL_free(data);
 
             if (!mDoc)
-                logger->log("Error parsing XML file %s", filename.c_str());
+                Log::info("Error parsing XML file %s", filename.c_str());
         }
         else
         {
-            logger->log("Error loading %s: %s", filename.c_str(), SDL_GetError());
+            Log::info("Error loading %s: %s", filename.c_str(), SDL_GetError());
         }
 
         xmlSetStructuredErrorFunc(nullptr, xmlLogger);
@@ -109,7 +109,7 @@ namespace XML
         mWriter = xmlNewTextWriterFilename(fileName.c_str(), 0);
         if (!mWriter)
         {
-            logger->log("Error creating XML writer for file %s", fileName.c_str());
+            Log::info("Error creating XML writer for file %s", fileName.c_str());
             return;
         }
 

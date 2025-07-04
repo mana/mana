@@ -240,22 +240,22 @@ namespace Attributes {
         int id = node.getProperty("id", 0);
         if (!id)
         {
-            logger->log("Attributes: Invalid or missing stat ID in "
-                        DEFAULT_ATTRIBUTESDB_FILE "!");
+            Log::info("Attributes: Invalid or missing stat ID in "
+                      DEFAULT_ATTRIBUTESDB_FILE "!");
             return;
         }
 
         if (attributes.find(id) != attributes.end())
         {
-            logger->log("Attributes: Redefinition of stat ID %d", id);
+            Log::info("Attributes: Redefinition of stat ID %d", id);
         }
 
         std::string name = node.getProperty("name", "");
 
         if (name.empty())
         {
-            logger->log("Attributes: Invalid or missing stat name in "
-                        DEFAULT_ATTRIBUTESDB_FILE "!");
+            Log::info("Attributes: Invalid or missing stat name in "
+                      DEFAULT_ATTRIBUTESDB_FILE "!");
             return;
         }
 
@@ -280,10 +280,10 @@ namespace Attributes {
             {
                 if (name.empty())
                 {
-                    logger->log("Attribute modifier in attribute %u:%s: "
-                                "Empty name definition "
-                                "on empty tag definition, skipping.",
-                                a.id, a.name.c_str());
+                    Log::info("Attribute modifier in attribute %u:%s: "
+                              "Empty name definition "
+                              "on empty tag definition, skipping.",
+                              a.id, a.name.c_str());
                     --count;
                     continue;
                 }
@@ -296,10 +296,10 @@ namespace Attributes {
              {
                 if (name.empty())
                 {
-                    logger->log("Attribute modifier in attribute %u:%s: "
-                                "Empty name definition "
-                                "on empty effect definition, skipping.",
-                                a.id, a.name.c_str());
+                    Log::info("Attribute modifier in attribute %u:%s: "
+                              "Empty name definition "
+                              "on empty effect definition, skipping.",
+                              a.id, a.name.c_str());
                     --count;
                     continue;
                 }
@@ -308,7 +308,7 @@ namespace Attributes {
              }
             tags.insert(std::make_pair(tag, effect));
          }
-        logger->log("Found %d tags for attribute %d.", count, id);
+        Log::info("Found %d tags for attribute %d.", count, id);
     }
 
     /**
@@ -321,8 +321,8 @@ namespace Attributes {
                                                        DEFAULT_MIN_PTS);
         attributeMaximum = node.getProperty("maximum",
                                                        DEFAULT_MAX_PTS);
-        logger->log("Loaded points: start: %i, min: %i, max: %i.",
-                    creationPoints, attributeMinimum, attributeMaximum);
+        Log::info("Loaded points: start: %i, min: %i, max: %i.",
+                  creationPoints, attributeMinimum, attributeMaximum);
     }
 
     /**
@@ -330,8 +330,8 @@ namespace Attributes {
      */
     void checkStatus()
     {
-        logger->log("Found %d tags for %d attributes.", int(tags.size()),
-                                                        int(attributes.size()));
+        Log::info("Found %d tags for %d attributes.", int(tags.size()),
+                                                      int(attributes.size()));
 
         if (attributes.size() == 0)
         {
@@ -346,9 +346,9 @@ namespace Attributes {
         if (averageValue > attributeMaximum || averageValue < attributeMinimum
             || creationPoints < 1)
         {
-            logger->log("Attributes: Character's point values make "
-                        "the character's creation impossible. "
-                        "Switch back to defaults.");
+            Log::info("Attributes: Character's point values make "
+                      "the character's creation impossible. "
+                      "Switch back to defaults.");
             creationPoints = DEFAULT_POINTS;
             attributeMinimum = DEFAULT_MIN_PTS;
             attributeMaximum = DEFAULT_MAX_PTS;

@@ -123,8 +123,8 @@ void Units::readUnitNode(XML::Node node, const std::string &filename)
             }
             else
             {
-                logger->log("Error bad unit count: %d for %s in %s",
-                                ul.count, ul.symbol.c_str(), bu.symbol.c_str());
+                Log::info("Error bad unit count: %d for %s in %s",
+                          ul.count, ul.symbol.c_str(), bu.symbol.c_str());
             }
         }
     }
@@ -139,7 +139,7 @@ void Units::readUnitNode(XML::Node node, const std::string &filename)
     else if (type == "currency")
         units[UNIT_CURRENCY] = ud;
     else
-        logger->log("Error unknown unit type: %s in %s", type.c_str(), filename.c_str());
+        Log::info("Error unknown unit type: %s in %s", type.c_str(), filename.c_str());
 
 }
 

@@ -60,7 +60,7 @@ std::vector<UpdateFile> loadXMLFile(const std::string &fileName)
 
     if (!rootNode || rootNode.name() != "updates")
     {
-        logger->log("Error loading update file: %s", fileName.c_str());
+        Log::info("Error loading update file: %s", fileName.c_str());
         return files;
     }
 
@@ -110,7 +110,7 @@ std::vector<UpdateFile> loadTxtFile(const std::string &fileName)
     }
     else
     {
-        logger->log("Error loading update file: %s", fileName.c_str());
+        Log::info("Error loading update file: %s", fileName.c_str());
     }
     fileHandler.close();
 
@@ -258,9 +258,9 @@ void UpdaterWindow::loadUpdates()
         mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
         if (mUpdateFiles.empty())
         {
-            logger->log("Warning this server does not have a"
-                        " %s file falling back to %s", xmlUpdateFile,
-                        txtUpdateFile);
+            Log::warn("This server does not have a"
+                      " %s file falling back to %s", xmlUpdateFile,
+                      txtUpdateFile);
             mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
         }
     }
@@ -336,9 +336,9 @@ void UpdaterWindow::downloadCompleted()
             mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
             if (mUpdateFiles.empty())
             {
-                logger->log("Warning this server does not have a %s"
-                            " file falling back to %s",
-                            xmlUpdateFile, txtUpdateFile);
+                Log::warn("This server does not have a %s"
+                          " file falling back to %s",
+                          xmlUpdateFile, txtUpdateFile);
 
                 // If the resources.xml file fails, fall back onto a older version
                 mDialogState = DialogState::DownloadList;
@@ -383,7 +383,7 @@ void UpdaterWindow::downloadCompleted()
             else
             {
                 fclose(file);
-                logger->log("%s already here", thisFile.name.c_str());
+                Log::info("%s already here", thisFile.name.c_str());
             }
             mUpdateIndex++;
         }

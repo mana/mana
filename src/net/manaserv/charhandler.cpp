@@ -264,10 +264,10 @@ void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
         chatServer.hostname.assign(msg.readString());
         chatServer.port = msg.readInt16();
 
-        logger->log("Game server: %s:%d", gameServer.hostname.c_str(),
-                    gameServer.port);
-        logger->log("Chat server: %s:%d", chatServer.hostname.c_str(),
-                    chatServer.port);
+        Log::info("Game server: %s:%d", gameServer.hostname.c_str(),
+                  gameServer.port);
+        Log::info("Chat server: %s:%d", chatServer.hostname.c_str(),
+                  chatServer.port);
 
         // Prevent the selected local player from being deleted
         local_player = mSelectedCharacter->dummy;

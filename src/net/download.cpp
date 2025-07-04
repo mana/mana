@@ -108,13 +108,13 @@ bool Download::start()
 {
     assert(!mThread);   // Download already started
 
-    logger->log("Starting download: %s", mUrl.c_str());
+    Log::info("Starting download: %s", mUrl.c_str());
 
     mThread = SDL_CreateThread(downloadThread, "Download", this);
 
     if (!mThread)
     {
-        logger->log("%s", DOWNLOAD_ERROR_MESSAGE_THREAD);
+        Log::info("%s", DOWNLOAD_ERROR_MESSAGE_THREAD);
         strncpy(mError, DOWNLOAD_ERROR_MESSAGE_THREAD, CURL_ERROR_SIZE - 1);
         mState.lock()->status = DownloadStatus::Error;
         return false;
@@ -125,7 +125,7 @@ bool Download::start()
 
 void Download::cancel()
 {
-    logger->log("Canceling download: %s", mUrl.c_str());
+    Log::info("Canceling download: %s", mUrl.c_str());
     mCancel = true;
 }
 
@@ -186,7 +186,7 @@ int Download::downloadThread(void *ptr)
         if (!curl)
             break;
 
-        logger->log("Downloading: %s", d->mUrl.c_str());
+        Log::info("Downloading: %s", d->mUrl.c_str());
 
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, d->mHeaders);
@@ -236,8 +236,8 @@ int Download::downloadThread(void *ptr)
 
         if (res != CURLE_OK)
         {
-            logger->log("curl error %d: %s host: %s",
-                        res, d->mError, d->mUrl.c_str());
+            Log::info("curl error %d: %s host: %s",
+                      res, d->mError, d->mUrl.c_str());
 
             if (file)
             {
@@ -262,9 +262,9 @@ int Download::downloadThread(void *ptr)
 
                     // Remove the corrupted file
                     ::remove(outFilename.c_str());
-                    logger->log("Checksum for file %s failed: (%lx/%lx)",
-                        d->mFileName.c_str(),
-                        adler, *d->mAdler);
+                    Log::info("Checksum for file %s failed: (%lx/%lx)",
+                              d->mFileName.c_str(),
+                              adler, *d->mAdler);
 
                     continue; // Bail out here to avoid the renaming
                 }

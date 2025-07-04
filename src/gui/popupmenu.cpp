@@ -318,7 +318,7 @@ void PopupMenu::handleLink(const std::string &link)
     // Unknown actions
     else if (link != "cancel")
     {
-        logger->log("PopupMenu: Warning, unknown action '%s'", link.c_str());
+        Log::info("PopupMenu: Warning, unknown action '%s'", link.c_str());
     }
 
     setVisible(false);

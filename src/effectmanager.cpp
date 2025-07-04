@@ -38,13 +38,13 @@ EffectManager::EffectManager()
         // Handle old naming until the 0.5.x versions are obsolete.
         if (!root || root.name() != "being-effects")
         {
-            logger->log("Error loading being effects file: effects.xml");
+            Log::info("Error loading being effects file: effects.xml");
             return;
         }
     }
     else
     {
-        logger->log("Effects are now loading");
+        Log::info("Effects are now loading");
     }
 
     for (auto node : root.children())
@@ -67,7 +67,7 @@ bool EffectManager::trigger(int id, Being *being, int rotation)
     auto it = mEffects.find(id);
     if (it == mEffects.end())
     {
-        logger->log("EffectManager::trigger: effect %d not found", id);
+        Log::warn("EffectManager::trigger: effect %d not found", id);
         return false;
     }
 
@@ -90,7 +90,7 @@ bool EffectManager::trigger(int id, int x, int y, int rotation)
     auto it = mEffects.find(id);
     if (it == mEffects.end())
     {
-        logger->log("EffectManager::trigger: effect %d not found", id);
+        Log::warn("EffectManager::trigger: effect %d not found", id);
         return false;
     }
 

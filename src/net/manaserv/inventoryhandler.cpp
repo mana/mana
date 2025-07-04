@@ -88,9 +88,8 @@ void EquipBackend::equip(int inventorySlot, int equipmentSlot)
     auto slotIt = mSlots.find(equipmentSlot);
     if (slotIt == mSlots.end())
     {
-        logger->log("ManaServ::EquipBackend: Equipment slot %i"
-                    " is not existing.",
-                    equipmentSlot);
+        Log::info("ManaServ::EquipBackend: Equipment slot %i"
+                  " is not existing.", equipmentSlot);
         return;
     }
 
@@ -115,8 +114,8 @@ void EquipBackend::unequip(int inventorySlot)
         }
     }
 
-    logger->log("ManaServ::EquipBackend: No equipped item found at inventory "
-                "slot %i!", inventorySlot);
+    Log::info("ManaServ::EquipBackend: No equipped item found at inventory "
+              "slot %i!", inventorySlot);
 }
 
 void EquipBackend::event(Event::Channel, const Event &event)
@@ -134,8 +133,8 @@ void EquipBackend::readEquipFile()
 
     if (!rootNode || rootNode.name() != "equip-slots")
     {
-        logger->log("ManaServ::EquipBackend: Error while reading "
-                    EQUIP_FILE "!");
+        Log::info("ManaServ::EquipBackend: Error while reading "
+                  EQUIP_FILE "!");
         return;
     }
 

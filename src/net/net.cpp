@@ -138,7 +138,7 @@ void connectToServer(ServerInfo &server)
         else if (server.port == 9601)
             server.type = ServerType::ManaServ;
         else
-            logger->error(_("Unknown Server Type! Exiting."));
+            Log::critical(_("Unknown Server Type! Exiting."));
     }
 
     if (networkType == server.type && getGeneralHandler() != nullptr)
@@ -160,7 +160,7 @@ void connectToServer(ServerInfo &server)
                 generalHandler = new TmwAthena::GeneralHandler;
                 break;
             default:
-                logger->error(_("Server protocol unsupported"));
+                Log::critical(_("Server protocol unsupported"));
                 break;
         }
 
@@ -203,4 +203,3 @@ ServerType getNetworkType()
 }
 
 } // namespace Net
-

@@ -73,7 +73,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
     {
         case CPMSG_GUILD_CREATE_RESPONSE:
         {
-            logger->log("Received CPMSG_GUILD_CREATE_RESPONSE");
+            Log::info("Received CPMSG_GUILD_CREATE_RESPONSE");
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge guild was created
@@ -88,7 +88,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_GUILD_INVITE_RESPONSE:
         {
-            logger->log("Received CPMSG_GUILD_INVITE_RESPONSE");
+            Log::info("Received CPMSG_GUILD_INVITE_RESPONSE");
             const unsigned char response = msg.readInt8();
             if (response == ERRMSG_OK)
             {
@@ -111,7 +111,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_GUILD_ACCEPT_RESPONSE:
         {
-            logger->log("Received CPMSG_GUILD_ACCEPT_RESPONSE");
+            Log::info("Received CPMSG_GUILD_ACCEPT_RESPONSE");
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge accepted into guild
@@ -121,7 +121,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_GUILD_GET_MEMBERS_RESPONSE:
         {
-            logger->log("Received CPMSG_GUILD_GET_MEMBERS_RESPONSE");
+            Log::info("Received CPMSG_GUILD_GET_MEMBERS_RESPONSE");
             if (msg.readInt8() == ERRMSG_OK)
             {
                 std::string name;
@@ -152,7 +152,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_GUILD_UPDATE_LIST:
         {
-            logger->log("Received CPMSG_GUILD_UPDATE_LIST");
+            Log::info("Received CPMSG_GUILD_UPDATE_LIST");
             short guildId = msg.readInt16();
             std::string name = msg.readString();
             char eventId = msg.readInt8();
@@ -189,14 +189,14 @@ void GuildHandler::handleMessage(MessageIn &msg)
                         break;
 
                     default:
-                        logger->log("Invalid guild event");
+                        Log::info("Invalid guild event");
                 }
             }
         } break;
 
         case CPMSG_GUILD_INVITED:
         {
-            logger->log("Received CPMSG_GUILD_INVITED");
+            Log::info("Received CPMSG_GUILD_INVITED");
             std::string inviterName = msg.readString();
             std::string guildName = msg.readString();
             int guildId = msg.readInt16();
@@ -207,7 +207,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE:
         {
-            logger->log("Received CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE");
+            Log::info("Received CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE");
 
             if (msg.readInt8() == ERRMSG_OK)
             {
@@ -223,14 +223,14 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_GUILD_REJOIN:
         {
-            logger->log("Received CPMSG_GUILD_REJOIN");
+            Log::info("Received CPMSG_GUILD_REJOIN");
 
             joinedGuild(msg);
         } break;
 
         case CPMSG_GUILD_QUIT_RESPONSE:
         {
-            logger->log("Received CPMSG_GUILD_QUIT_RESPONSE");
+            Log::info("Received CPMSG_GUILD_QUIT_RESPONSE");
 
             if (msg.readInt8() == ERRMSG_OK)
             {
@@ -247,7 +247,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
         } break;
         case CPMSG_GUILD_KICK_NOTIFICATION:
         {
-            logger->log("Received CPMSG_GUILD_KICK_NOTIFICATION");
+            Log::info("Received CPMSG_GUILD_KICK_NOTIFICATION");
 
             const int guildId = msg.readInt16();
             std::string player = msg.readString();

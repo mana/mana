@@ -40,7 +40,7 @@ Music *Music::load(SDL_RWops *rw)
         return new Music(music);
     }
 
-    logger->log("Error, failed to load music: %s", Mix_GetError());
+    Log::info("Error, failed to load music: %s", Mix_GetError());
     return nullptr;
 }
 

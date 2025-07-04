@@ -41,7 +41,7 @@ static AbilityInfo::TargetMode targetModeFromString(const std::string& str)
     if (str == "direction")
         return AbilityInfo::TARGET_DIRECTION;
 
-    logger->log("AbilityDB: Warning, unknown target mode \"%s\"", str.c_str() );
+    Log::info("AbilityDB: Warning, unknown target mode \"%s\"", str.c_str() );
     return AbilityInfo::TARGET_BEING;
 }
 
@@ -68,7 +68,7 @@ void AbilityDB::readAbilityNode(XML::Node node, const std::string &filename)
     info->rechargeCurrent = 0;
 
     if (mAbilityInfos.find(id) != mAbilityInfos.end())
-        logger->log("AbilityDB: Duplicate ability ID %d in %s, ignoring", id, filename.c_str());
+        Log::info("AbilityDB: Duplicate ability ID %d in %s, ignoring", id, filename.c_str());
     else
         mAbilityInfos[id] = info;
 }

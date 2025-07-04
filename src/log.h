@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2025  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -21,52 +21,51 @@
 
 #pragma once
 
-#include <fstream>
+#include <string>
+#include <cstdarg>
+
+#ifdef __GNUC__
+#  define LOG_PRINTF_ATTR __attribute__((__format__(__printf__, 1, 2)))
+#else
+#  define LOG_PRINTF_ATTR
+#endif
 
 /**
- * The Log Class : Useful to write debug or info messages
+ * The Log namespace: Useful to write debug or info messages to the log file
+ * and/or console. The messages will be timestamped.
  */
-class Logger
+namespace Log
 {
-    public:
-        Logger();
+    /**
+     * Initializes the log system.
+     */
+    void init();
 
-        /**
-         * Destructor, closes log file.
-         */
-        ~Logger();
+    /**
+     * Sets the file to log to and opens it.
+     */
+    void setLogFile(const std::string &logFilename);
 
-        /**
-         * Sets the file to log to and opens it
-         */
-        void setLogFile(const std::string &logFilename);
+    /**
+     * Sets whether the log should be written to standard output.
+     */
+    void setLogToStandardOut(bool value);
 
-        /**
-         * Sets whether the log should be written to standard output.
-         */
-        void setLogToStandardOut(bool value) { mLogToStandardOut = value; }
+    void verbose(const char *log_text, ...) LOG_PRINTF_ATTR;
+    void debug(const char *log_text, ...) LOG_PRINTF_ATTR;
+    void info(const char *log_text, ...) LOG_PRINTF_ATTR;
+    void warn(const char *log_text, ...) LOG_PRINTF_ATTR;
+    void error(const char *log_text, ...) LOG_PRINTF_ATTR;
 
-        /**
-         * Enters a message in the log. The message will be timestamped.
-         */
-        void log(const char *log_text, ...)
-#ifdef __GNUC__
-            __attribute__((__format__(__printf__, 2, 3)))
-#endif
-            ;
+    void vinfo(const char *log_text, va_list ap);
 
-        void vlog(const char *log_text, va_list ap);
+    /**
+     * Log an error and quit. The error will be printed to standard error
+     * and shown in a simple message box.
+     */
+    __attribute__((noreturn))
+    void critical(const std::string &error_text);
 
-        /**
-         * Log an error and quit. The error will be printed to standard error
-         * and showm in a simple message box.
-         */
-        __attribute__((noreturn))
-        void error(const std::string &error_text);
+} // namespace Log
 
-    private:
-        std::ofstream mLogFile;
-        bool mLogToStandardOut = true;
-};
-
-extern Logger *logger;
+#undef LOG_PRINTF_ATTR

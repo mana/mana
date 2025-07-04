@@ -98,8 +98,8 @@ void UnRegisterDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "unregister")
     {
         const std::string &password = mPasswordField->getText();
-        logger->log("UnregisterDialog::unregistered, Username is %s",
-                     mLoginData->username.c_str());
+        Log::info("UnregisterDialog::unregistered, Username is %s",
+                  mLoginData->username.c_str());
 
         std::stringstream errorMessage;
         bool error = false;

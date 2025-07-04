@@ -74,7 +74,7 @@ void Particle::setupEngine()
     Particle::fastPhysics = config.particleFastPhysics;
     Particle::emitterSkip = config.particleEmitterSkip + 1;
     Particle::enabled = config.particleEffects;
-    logger->log("Particle engine set up");
+    Log::info("Particle engine set up");
 }
 
 bool Particle::draw(Graphics *, int, int) const
@@ -261,7 +261,7 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
 
     if (!rootNode || rootNode.name() != "effect")
     {
-        logger->log("Error loading particle: %s", particleEffectFile.c_str());
+        Log::info("Error loading particle: %s", particleEffectFile.c_str());
         return nullptr;
     }
 

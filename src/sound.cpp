@@ -64,11 +64,11 @@ void Sound::init()
     if (mInstalled)
         return;
 
-    logger->log("Sound::init() Initializing sound...");
+    Log::info("Sound::init() Initializing sound...");
 
     if (SDL_InitSubSystem(SDL_INIT_AUDIO) == -1)
     {
-        logger->log("Sound::init() Failed to initialize audio subsystem");
+        Log::info("Sound::init() Failed to initialize audio subsystem");
         return;
     }
 
@@ -78,8 +78,8 @@ void Sound::init()
                                   MIX_DEFAULT_CHANNELS, audioBuffer);
     if (res < 0)
     {
-        logger->log("Sound::init Could not initialize audio: %s",
-                    Mix_GetError());
+        Log::info("Sound::init Could not initialize audio: %s",
+                  Mix_GetError());
         return;
     }
 
@@ -122,18 +122,18 @@ void Sound::info()
         case AUDIO_S16MSB: format = "S16MSB"; break;
     }
 
-    logger->log("Sound::info() SDL_mixer: %i.%i.%i (compiled)",
+    Log::info("Sound::info() SDL_mixer: %i.%i.%i (compiled)",
             compiledVersion.major,
             compiledVersion.minor,
             compiledVersion.patch);
-    logger->log("Sound::info() SDL_mixer: %i.%i.%i (linked)",
+    Log::info("Sound::info() SDL_mixer: %i.%i.%i (linked)",
             linkedVersion->major,
             linkedVersion->minor,
             linkedVersion->patch);
-    logger->log("Sound::info() Driver: %s", driver);
-    logger->log("Sound::info() Format: %s", format);
-    logger->log("Sound::info() Rate: %i", rate);
-    logger->log("Sound::info() Channels: %i", channels);
+    Log::info("Sound::info() Driver: %s", driver);
+    Log::info("Sound::info() Format: %s", format);
+    Log::info("Sound::info() Rate: %i", rate);
+    Log::info("Sound::info() Channels: %i", channels);
 }
 
 void Sound::setMusicVolume(int volume)
@@ -173,7 +173,7 @@ void Sound::stopMusic()
     if (!mInstalled)
         return;
 
-    logger->log("Sound::stopMusic()");
+    Log::info("Sound::stopMusic()");
 
     haltMusic();
 }
@@ -201,7 +201,7 @@ void Sound::fadeOutMusic(int ms)
     if (!mInstalled)
         return;
 
-    logger->log("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
+    Log::info("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
 
     if (mMusic)
     {
@@ -260,7 +260,7 @@ void Sound::playSfx(const std::string &path, int x, int y)
 
     if (ResourceRef<SoundEffect> sound = resman->getSoundEffect(tmpPath))
     {
-        logger->log("Sound::playSfx() Playing: %s", path.c_str());
+        Log::info("Sound::playSfx() Playing: %s", path.c_str());
         int vol = 120;
 
         if (local_player && (x > 0 || y > 0))
@@ -299,7 +299,7 @@ void Sound::close()
         return;
 
     haltMusic();
-    logger->log("Sound::close() Shutting down sound...");
+    Log::info("Sound::close() Shutting down sound...");
     Mix_CloseAudio();
 
     mInstalled = false;

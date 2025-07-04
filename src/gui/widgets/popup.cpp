@@ -40,7 +40,7 @@ Popup::Popup(const std::string &name, SkinType skinType)
     , mMaxHeight(graphics->getHeight())
     , mSkinType(skinType)
 {
-    logger->log("Popup::Popup(\"%s\")", name.c_str());
+    Log::debug("Popup::Popup(\"%s\")", name.c_str());
 
     if (!windowContainer)
         throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
@@ -58,7 +58,7 @@ Popup::Popup(const std::string &name, SkinType skinType)
 
 Popup::~Popup()
 {
-    logger->log("Popup::~Popup(\"%s\")", mPopupName.c_str());
+    Log::debug("Popup::~Popup(\"%s\")", mPopupName.c_str());
 }
 
 void Popup::setWindowContainer(WindowContainer *wc)

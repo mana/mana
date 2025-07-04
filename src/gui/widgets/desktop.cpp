@@ -113,6 +113,6 @@ void Desktop::setBestFittingWallpaper()
     }
     else
     {
-        logger->log("Couldn't load %s as wallpaper", wallpaperName.c_str());
+        Log::info("Couldn't load %s as wallpaper", wallpaperName.c_str());
     }
 }

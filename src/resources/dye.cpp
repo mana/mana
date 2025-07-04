@@ -63,8 +63,8 @@ DyePalette::DyePalette(const std::string &description)
             }
             else
             {
-                logger->log("Error, invalid embedded palette: %s",
-                            description.c_str());
+                Log::info("Error, invalid embedded palette: %s",
+                          description.c_str());
                 return;
             }
 
@@ -82,7 +82,7 @@ DyePalette::DyePalette(const std::string &description)
         ++pos;
     }
 
-    logger->log("Error, invalid embedded palette: %s", description.c_str());
+    Log::info("Error, invalid embedded palette: %s", description.c_str());
 }
 
 void DyePalette::getColor(int intensity, int color[3]) const
@@ -195,7 +195,7 @@ Dye::Dye(const std::string &description)
 
         if (next_pos <= pos + 3 || description[pos + 1] != ':')
         {
-            logger->log("Error, invalid dye: %s", description.c_str());
+            Log::info("Error, invalid dye: %s", description.c_str());
             return;
         }
 
@@ -211,7 +211,7 @@ Dye::Dye(const std::string &description)
             case 'C': i = 5; break;
             case 'W': i = 6; break;
             default:
-                logger->log("Error, invalid dye: %s", description.c_str());
+                Log::info("Error, invalid dye: %s", description.c_str());
                 return;
         }
         mDyePalettes[i] = new DyePalette(description.substr(pos + 2,
@@ -289,7 +289,7 @@ void Dye::instantiate(std::string &target, const std::string &palettes)
         }
         else
         {
-            logger->log("Error, invalid dye placeholder: %s", target.c_str());
+            Log::info("Error, invalid dye placeholder: %s", target.c_str());
             return;
         }
         s << target[next_pos];

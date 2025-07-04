@@ -117,7 +117,7 @@ void GeneralHandler::handleMessage(MessageIn &msg)
     {
         case SMSG_CONNECTION_PROBLEM:
             code = msg.readInt8();
-            logger->log("Connection problem: %i", code);
+            Log::info("Connection problem: %i", code);
 
             switch (code)
             {

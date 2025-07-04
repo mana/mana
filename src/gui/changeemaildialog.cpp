@@ -112,8 +112,8 @@ void ChangeEmailDialog::action(const gcn::ActionEvent &event)
         const std::string username = mLoginData->username.c_str();
         const std::string newFirstEmail = mFirstEmailField->getText();
         const std::string newSecondEmail = mSecondEmailField->getText();
-        logger->log("ChangeEmailDialog::Email change, Username is %s",
-                     username.c_str());
+        Log::info("ChangeEmailDialog::Email change, Username is %s",
+                  username.c_str());
 
         std::stringstream errorMessage;
         int error = 0;

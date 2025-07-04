@@ -54,8 +54,7 @@ Image::Image(SDL_Texture *texture, int width, int height):
 
     if (!texture)
     {
-        logger->log(
-          "Image::Image(SDL_Texture*, ...): Couldn't load invalid Surface!");
+        Log::info("Image::Image(SDL_Texture*, ...): Couldn't load invalid Surface!");
     }
 }
 
@@ -72,8 +71,7 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
 
     if (glimage == 0)
     {
-        logger->log(
-          "Image::Image(GLuint, ...): Couldn't load invalid Surface!");
+        Log::info("Image::Image(GLuint, ...): Couldn't load invalid Surface!");
     }
 }
 #endif
@@ -101,7 +99,7 @@ Resource *Image::load(SDL_RWops *rw)
 
     if (!tmpImage)
     {
-        logger->log("Error, image load failed: %s", IMG_GetError());
+        Log::info("Error, image load failed: %s", IMG_GetError());
         return nullptr;
     }
 
@@ -117,20 +115,20 @@ Resource *Image::load(SDL_RWops *rw, const Dye &dye)
 
     if (!surf)
     {
-        logger->log("Error, image load failed: %s", IMG_GetError());
+        Log::info("Error, image load failed: %s", IMG_GetError());
         return nullptr;
     }
 
     if (surf->format->format != SDL_PIXELFORMAT_RGBA32)
     {
-        logger->log("Warning: image format is %s, not SDL_PIXELFORMAT_RGBA32. Converting...",
-                    SDL_GetPixelFormatName(surf->format->format));
+        Log::warn("Image format is %s, not SDL_PIXELFORMAT_RGBA32. Converting...",
+                  SDL_GetPixelFormatName(surf->format->format));
 
         SDL_Surface *convertedSurf = SDL_ConvertSurfaceFormat(surf, SDL_PIXELFORMAT_RGBA32, 0);
         SDL_FreeSurface(surf);
         if (!convertedSurf)
         {
-            logger->log("Error, image convert failed: %s", SDL_GetError());
+            Log::info("Error, image convert failed: %s", SDL_GetError());
             return nullptr;
         }
         surf = convertedSurf;
@@ -219,8 +217,8 @@ Image *Image::_GLload(SDL_Surface *image)
 
     if (realWidth < width || realHeight < height)
     {
-        logger->log("Warning: image too large, cropping to %dx%d texture!",
-                    realWidth, realHeight);
+        Log::warn("Image too large, cropping to %dx%d texture!",
+                  realWidth, realHeight);
     }
 
     // Determine 32-bit masks based on byte order
@@ -253,7 +251,7 @@ Image *Image::_GLload(SDL_Surface *image)
 
         if (!image)
         {
-            logger->log("Error, image convert failed: out of memory");
+            Log::info("Error, image convert failed: out of memory");
             return nullptr;
         }
 
@@ -308,7 +306,7 @@ Image *Image::_GLload(SDL_Surface *image)
                 errmsg = "GL_OUT_OF_MEMORY";
                 break;
         }
-        logger->log("Error: Image GL import failed: %s", errmsg);
+        Log::error("Image GL import failed: %s", errmsg);
         return nullptr;
     }
 

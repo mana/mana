@@ -75,7 +75,7 @@ ThemeInfo::ThemeInfo(const std::string &path)
     if (rootNode.attribute("name", name) && !name.empty())
         this->doc = std::move(doc);
     else
-        logger->log("Error: Theme '%s' has no name!", path.c_str());
+        Log::error("Theme '%s' has no name!", path.c_str());
 }
 
 std::string ThemeInfo::getFullPath() const
@@ -235,8 +235,8 @@ Theme::Theme(const ThemeInfo &themeInfo)
 
     if (mPalettes.empty())
     {
-        logger->log("Error, theme did not define any palettes: %s",
-                    themeInfo.getPath().c_str());
+        Log::info("Error, theme did not define any palettes: %s",
+                  themeInfo.getPath().c_str());
 
         // Avoid crashing
         mPalettes.emplace_back(THEME_COLORS_END);
@@ -479,7 +479,7 @@ static bool check(bool value, const char *msg, ...)
     {
         va_list ap;
         va_start(ap, msg);
-        logger->vlog(msg, ap);
+        Log::vinfo(msg, ap);
         va_end(ap);
     }
     return !value;
@@ -487,9 +487,9 @@ static bool check(bool value, const char *msg, ...)
 
 bool Theme::readTheme(const ThemeInfo &themeInfo)
 {
-    logger->log("Loading %s theme from '%s'...",
-                themeInfo.getName().c_str(),
-                themeInfo.getPath().c_str());
+    Log::info("Loading %s theme from '%s'...",
+              themeInfo.getName().c_str(),
+              themeInfo.getPath().c_str());
 
     XML::Node rootNode = themeInfo.getDocument().rootNode();
 
@@ -507,10 +507,10 @@ bool Theme::readTheme(const ThemeInfo &themeInfo)
         else if (childNode.name() == "icon")
             readIconNode(childNode);
         else
-            logger->log("Theme: Unknown node '%s'!", childNode.name().data());
+            Log::info("Theme: Unknown node '%s'!", childNode.name().data());
     }
 
-    logger->log("Finished loading theme.");
+    Log::info("Finished loading theme.");
 
     for (auto &[_, skin] : mSkins)
         skin.updateAlpha(mAlpha);
@@ -705,7 +705,7 @@ inline void fromString(const char *str, gcn::Color &value)
     if (strlen(str) < 7 || str[0] != '#')
     {
     error:
-        logger->log("Error, invalid theme color palette: %s", str);
+        Log::info("Error, invalid theme color palette: %s", str);
         value = gcn::Color(0, 0, 0);
         return;
     }
@@ -873,7 +873,7 @@ void Theme::readPaletteNode(XML::Node node)
 {
     int paletteId;
     if (node.attribute("id", paletteId) && static_cast<size_t>(paletteId) != mPalettes.size())
-        logger->log("Theme: Non-consecutive palette 'id' attribute with value %d!", paletteId);
+        Log::info("Theme: Non-consecutive palette 'id' attribute with value %d!", paletteId);
 
     Palette &palette = mPalettes.emplace_back(THEME_COLORS_END);
 
@@ -882,7 +882,7 @@ void Theme::readPaletteNode(XML::Node node)
         if (childNode.name() == "color")
             readColorNode(childNode, palette);
         else
-            logger->log("Theme: Unknown node '%s'!", childNode.name().data());
+            Log::info("Theme: Unknown node '%s'!", childNode.name().data());
     }
 }
 

@@ -45,7 +45,7 @@ ResourceManager *ResourceManager::instance = nullptr;
 
 ResourceManager::ResourceManager()
 {
-    logger->log("Initializing resource manager...");
+    Log::info("Initializing resource manager...");
 }
 
 ResourceManager::~ResourceManager()
@@ -86,11 +86,11 @@ void ResourceManager::cleanUp(Resource *res)
 {
     if (res->mRefCount > 0)
     {
-        logger->log("ResourceManager::~ResourceManager() cleaning up %d "
-                "reference%s to %s",
-                res->mRefCount,
-                (res->mRefCount == 1) ? "" : "s",
-                res->mIdPath.c_str());
+        Log::info("ResourceManager::~ResourceManager() cleaning up %d "
+                  "reference%s to %s",
+                  res->mRefCount,
+                  (res->mRefCount == 1) ? "" : "s",
+                  res->mIdPath.c_str());
     }
 
     delete res;
@@ -118,7 +118,7 @@ void ResourceManager::cleanOrphans()
         }
         else
         {
-            logger->log("ResourceManager::release(%s)", res->mIdPath.c_str());
+            Log::info("ResourceManager::release(%s)", res->mIdPath.c_str());
             iter = mOrphanedResources.erase(iter);
             delete res; // delete only after removal from list, to avoid issues in recursion
         }
@@ -129,12 +129,12 @@ void ResourceManager::cleanOrphans()
 
 bool ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
-    logger->log("Adding to PhysicsFS: %s", path.c_str());
     if (!FS::addToSearchPath(path, append))
     {
-        logger->log("Error: %s", FS::getLastError());
+        Log::error("Couldn't add search path: %s (%s)", path.c_str(), FS::getLastError());
         return false;
     }
+    Log::info("Added search path: %s", path.c_str());
     return true;
 }
 

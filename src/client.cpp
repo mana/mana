@@ -29,6 +29,7 @@
 #include "game.h"
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
+#include "log.h"
 #include "playerrelations.h"
 #include "sound.h"
 
@@ -96,7 +97,6 @@ LoginData loginData;
 Config config;                /**< Global settings (config.xml) */
 Configuration branding;       /**< XML branding information reader */
 Configuration paths;          /**< XML default paths information reader */
-Logger *logger;               /**< Log object */
 ChatLogger *chatLogger;       /**< Chat log object */
 KeyboardConfig keyboard;
 
@@ -176,8 +176,6 @@ Client::Client(const Options &options):
     assert(!mInstance);
     mInstance = this;
 
-    logger = new Logger;
-
     // Set default values for configuration files
     branding.setDefaultValues(getBrandingDefaults());
     paths.setDefaultValues(getPathsDefaults());
@@ -192,18 +190,17 @@ Client::Client(const Options &options):
     initHomeDir();
     initConfiguration();
 
+    // Configure logger
+    Log::init();
+    Log::setLogFile(mLocalDataDir + "/mana.log");
+    Log::setLogToStandardOut(config.logToStandardOut);
+    Log::info("%s", FULL_VERSION);
+
     chatLogger = new ChatLogger;
     if (options.chatLogDir.empty())
         chatLogger->setLogDir(mLocalDataDir + "/logs/");
     else
         chatLogger->setLogDir(options.chatLogDir);
-
-    // Configure logger
-    logger->setLogFile(mLocalDataDir + "/mana.log");
-    logger->setLogToStandardOut(config.logToStandardOut);
-
-    // Log the mana version
-    logger->log("%s", FULL_VERSION);
 
     initScreenshotDir();
 
@@ -212,10 +209,10 @@ Client::Client(const Options &options):
 #endif
 
     // Initialize SDL
-    logger->log("Initializing SDL...");
+    Log::info("Initializing SDL...");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
     {
-        logger->error(strprintf("Could not initialize SDL: %s",
+        Log::critical(strprintf("Could not initialize SDL: %s",
                       SDL_GetError()));
     }
     atexit(SDL_Quit);
@@ -224,7 +221,7 @@ Client::Client(const Options &options):
 
     if (!FS::setWriteDir(mLocalDataDir))
     {
-        logger->error(strprintf("%s couldn't be set as write directory! "
+        Log::critical(strprintf("%s couldn't be set as write directory! "
                                 "Exiting.", mLocalDataDir.c_str()));
     }
 
@@ -287,7 +284,7 @@ Client::Client(const Options &options):
     iconFile += ".png";
 #endif
     iconFile = ResourceManager::getPath(iconFile);
-    logger->log("Loading icon from file: %s", iconFile.c_str());
+    Log::info("Loading icon from file: %s", iconFile.c_str());
 #ifdef _WIN32
     static SDL_SysWMinfo pInfo;
     SDL_GetWindowWMInfo(mVideo.window(), &pInfo);
@@ -329,7 +326,7 @@ Client::Client(const Options &options):
     {
         mState = STATE_ERROR;
         errorMessage = err;
-        logger->log("Warning: %s", err);
+        Log::warn("%s", err);
     }
 
     // Initialize keyboard
@@ -425,14 +422,12 @@ Client::~Client()
 
     SDL_FreeSurface(mIcon);
 
-    logger->log("Quitting");
+    Log::info("Quitting");
     delete userPalette;
 
     XML::Writer writer(mConfigDir + "/config.xml");
     if (writer.isValid())
         serialize(writer, config);
-
-    delete logger;
 
     mInstance = nullptr;
 }
@@ -499,7 +494,7 @@ int Client::exec()
             catch (gcn::Exception e)
             {
                 const char *err = e.getMessage().c_str();
-                logger->log("Warning: guichan input exception: %s", err);
+                Log::warn("Guichan input exception: %s", err);
             }
         }
 
@@ -616,7 +611,7 @@ void Client::update()
         switch (mState)
         {
             case STATE_CHOOSE_SERVER:
-                logger->log("State: CHOOSE SERVER");
+                Log::info("State: CHOOSE SERVER");
 
                 // Don't allow an alpha opacity
                 // lower than the default value
@@ -627,7 +622,7 @@ void Client::update()
                 break;
 
             case STATE_CONNECT_SERVER:
-                logger->log("State: CONNECT SERVER");
+                Log::info("State: CONNECT SERVER");
 
                 Net::connectToServer(mCurrentServer);
 
@@ -636,7 +631,7 @@ void Client::update()
                 break;
 
             case STATE_LOGIN:
-                logger->log("State: LOGIN");
+                Log::info("State: LOGIN");
                 // Don't allow an alpha opacity
                 // lower than the default value
                 gui->getTheme()->setMinimumOpacity(0.8f);
@@ -655,14 +650,14 @@ void Client::update()
                 break;
 
             case STATE_LOGIN_ATTEMPT:
-                logger->log("State: LOGIN ATTEMPT");
+                Log::info("State: LOGIN ATTEMPT");
                 accountLogin(&loginData);
                 mCurrentDialog = new ConnectionDialog(
                         _("Logging in"), STATE_SWITCH_SERVER);
                 break;
 
             case STATE_WORLD_SELECT:
-                logger->log("State: WORLD SELECT");
+                Log::info("State: WORLD SELECT");
                 {
                     Worlds worlds = Net::getLoginHandler()->getWorlds();
 
@@ -684,13 +679,13 @@ void Client::update()
                 break;
 
             case STATE_WORLD_SELECT_ATTEMPT:
-                logger->log("State: WORLD SELECT ATTEMPT");
+                Log::info("State: WORLD SELECT ATTEMPT");
                 mCurrentDialog = new ConnectionDialog(
                         _("Entering game world"), STATE_WORLD_SELECT);
                 break;
 
             case STATE_UPDATE:
-                logger->log("State: UPDATE");
+                Log::info("State: UPDATE");
 
                 if (mOptions.skipUpdate)
                 {
@@ -705,7 +700,7 @@ void Client::update()
                 break;
 
             case STATE_LOAD_DATA:
-                logger->log("State: LOAD DATA");
+                Log::info("State: LOAD DATA");
 
                 // If another data path has been set,
                 // we don't load any other files...
@@ -752,7 +747,7 @@ void Client::update()
                 break;
 
             case STATE_GET_CHARACTERS:
-                logger->log("State: GET CHARACTERS");
+                Log::info("State: GET CHARACTERS");
                 Net::getCharHandler()->requestCharacters();
                 mCurrentDialog = new ConnectionDialog(
                         _("Requesting characters"),
@@ -760,7 +755,7 @@ void Client::update()
                 break;
 
             case STATE_CHAR_SELECT:
-                logger->log("State: CHAR SELECT");
+                Log::info("State: CHAR SELECT");
                 // Don't allow an alpha opacity
                 // lower than the default value
                 gui->getTheme()->setMinimumOpacity(0.8f);
@@ -785,7 +780,7 @@ void Client::update()
                 break;
 
             case STATE_CONNECT_GAME:
-                logger->log("State: CONNECT GAME");
+                Log::info("State: CONNECT GAME");
 
                 Net::getGameHandler()->connect();
                 mCurrentDialog = new ConnectionDialog(
@@ -795,7 +790,7 @@ void Client::update()
                 break;
 
             case STATE_CHANGE_MAP:
-                logger->log("State: CHANGE_MAP");
+                Log::info("State: CHANGE_MAP");
 
                 Net::getGameHandler()->connect();
                 mCurrentDialog = new ConnectionDialog(
@@ -804,7 +799,7 @@ void Client::update()
                 break;
 
             case STATE_GAME:
-                logger->log("Memorizing selected character %s",
+                Log::info("Memorizing selected character %s",
                         local_player->getName().c_str());
                 config.lastCharacter = local_player->getName();
 
@@ -822,52 +817,52 @@ void Client::update()
 
                 mCurrentDialog = nullptr;
 
-                logger->log("State: GAME");
+                Log::info("State: GAME");
                 mGame = new Game;
                 break;
 
             case STATE_LOGIN_ERROR:
-                logger->log("State: LOGIN ERROR");
+                Log::info("State: LOGIN ERROR");
                 showErrorDialog(errorMessage, STATE_LOGIN);
                 break;
 
             case STATE_ACCOUNTCHANGE_ERROR:
-                logger->log("State: ACCOUNT CHANGE ERROR");
+                Log::info("State: ACCOUNT CHANGE ERROR");
                 showErrorDialog(errorMessage, STATE_CHAR_SELECT);
                 break;
 
             case STATE_REGISTER_PREP:
-                logger->log("State: REGISTER_PREP");
+                Log::info("State: REGISTER_PREP");
                 Net::getLoginHandler()->getRegistrationDetails();
                 mCurrentDialog = new ConnectionDialog(
                         _("Requesting registration details"), STATE_LOGIN);
                 break;
 
             case STATE_REGISTER:
-                logger->log("State: REGISTER");
+                Log::info("State: REGISTER");
                 mCurrentDialog = new RegisterDialog(&loginData);
                 break;
 
             case STATE_REGISTER_ATTEMPT:
-                logger->log("Username is %s", loginData.username.c_str());
+                Log::info("Username is %s", loginData.username.c_str());
                 Net::getLoginHandler()->registerAccount(&loginData);
                 loginData.password.clear();
                 break;
 
             case STATE_CHANGEPASSWORD:
-                logger->log("State: CHANGE PASSWORD");
+                Log::info("State: CHANGE PASSWORD");
                 mCurrentDialog = new ChangePasswordDialog(&loginData);
                 break;
 
             case STATE_CHANGEPASSWORD_ATTEMPT:
-                logger->log("State: CHANGE PASSWORD ATTEMPT");
+                Log::info("State: CHANGE PASSWORD ATTEMPT");
                 Net::getLoginHandler()->changePassword(loginData.username,
                                             loginData.password,
                                             loginData.newPassword);
                 break;
 
             case STATE_CHANGEPASSWORD_SUCCESS:
-                logger->log("State: CHANGE PASSWORD SUCCESS");
+                Log::info("State: CHANGE PASSWORD SUCCESS");
                 showOkDialog(_("Password Change"),
                              _("Password changed successfully!"),
                              STATE_CHAR_SELECT);
@@ -876,35 +871,35 @@ void Client::update()
                 break;
 
             case STATE_CHANGEEMAIL:
-                logger->log("State: CHANGE EMAIL");
+                Log::info("State: CHANGE EMAIL");
                 mCurrentDialog = new ChangeEmailDialog(&loginData);
                 break;
 
             case STATE_CHANGEEMAIL_ATTEMPT:
-                logger->log("State: CHANGE EMAIL ATTEMPT");
+                Log::info("State: CHANGE EMAIL ATTEMPT");
                 Net::getLoginHandler()->changeEmail(loginData.email);
                 break;
 
             case STATE_CHANGEEMAIL_SUCCESS:
-                logger->log("State: CHANGE EMAIL SUCCESS");
+                Log::info("State: CHANGE EMAIL SUCCESS");
                 showOkDialog(_("Email Change"),
                              _("Email changed successfully!"),
                              STATE_CHAR_SELECT);
                 break;
 
             case STATE_UNREGISTER:
-                logger->log("State: UNREGISTER");
+                Log::info("State: UNREGISTER");
                 mCurrentDialog = new UnRegisterDialog(&loginData);
                 break;
 
             case STATE_UNREGISTER_ATTEMPT:
-                logger->log("State: UNREGISTER ATTEMPT");
+                Log::info("State: UNREGISTER ATTEMPT");
                 Net::getLoginHandler()->unregisterAccount(
                         loginData.username, loginData.password);
                 break;
 
             case STATE_UNREGISTER_SUCCESS:
-                logger->log("State: UNREGISTER SUCCESS");
+                Log::info("State: UNREGISTER SUCCESS");
                 Net::getLoginHandler()->disconnect();
 
                 showOkDialog(_("Unregister Successful"),
@@ -914,7 +909,7 @@ void Client::update()
                 break;
 
             case STATE_SWITCH_SERVER:
-                logger->log("State: SWITCH SERVER");
+                Log::info("State: SWITCH SERVER");
 
                 Net::getLoginHandler()->disconnect();
                 Net::getGameHandler()->disconnect();
@@ -924,7 +919,7 @@ void Client::update()
                 break;
 
             case STATE_SWITCH_LOGIN:
-                logger->log("State: SWITCH LOGIN");
+                Log::info("State: SWITCH LOGIN");
 
                 Net::getLoginHandler()->disconnect();
 
@@ -932,7 +927,7 @@ void Client::update()
                 break;
 
             case STATE_SWITCH_CHARACTER:
-                logger->log("State: SWITCH CHARACTER");
+                Log::info("State: SWITCH CHARACTER");
 
                 // Done with game
                 Net::getGameHandler()->disconnect();
@@ -941,26 +936,26 @@ void Client::update()
                 break;
 
             case STATE_LOGOUT_ATTEMPT:
-                logger->log("State: LOGOUT ATTEMPT");
+                Log::info("State: LOGOUT ATTEMPT");
                 // TODO
                 break;
 
             case STATE_WAIT:
-                logger->log("State: WAIT");
+                Log::info("State: WAIT");
                 break;
 
             case STATE_EXIT:
-                logger->log("State: EXIT");
+                Log::info("State: EXIT");
                 break;
 
             case STATE_FORCE_QUIT:
-                logger->log("State: FORCE QUIT");
+                Log::info("State: FORCE QUIT");
                 mState = STATE_EXIT;
               break;
 
             case STATE_ERROR:
-                logger->log("State: ERROR");
-                logger->log("Error: %s", errorMessage.c_str());
+                Log::info("State: ERROR");
+                Log::error("%s", errorMessage.c_str());
                 showErrorDialog(errorMessage, STATE_CHOOSE_SERVER);
                 Net::getGameHandler()->disconnect();
                 break;
@@ -1018,7 +1013,7 @@ void Client::initRootDir()
         Configuration portable;
         portable.init(portableName);
 
-        logger->log("Portable file: %s", portableName.c_str());
+        Log::info("Portable file: %s", portableName.c_str());
 
         if (mOptions.localDataDir.empty())
         {
@@ -1026,8 +1021,8 @@ void Client::initRootDir()
             if (!dir.empty())
             {
                 mOptions.localDataDir = mRootDir + dir;
-                logger->log("Portable data dir: %s",
-                    mOptions.localDataDir.c_str());
+                Log::info("Portable data dir: %s",
+                          mOptions.localDataDir.c_str());
             }
         }
 
@@ -1037,8 +1032,8 @@ void Client::initRootDir()
             if (!dir.empty())
             {
                 mOptions.configDir = mRootDir + dir;
-                logger->log("Portable config dir: %s",
-                    mOptions.configDir.c_str());
+                Log::info("Portable config dir: %s",
+                          mOptions.configDir.c_str());
             }
         }
 
@@ -1048,8 +1043,8 @@ void Client::initRootDir()
             if (!dir.empty())
             {
                 mOptions.screenshotDir = mRootDir + dir;
-                logger->log("Portable screenshot dir: %s",
-                    mOptions.screenshotDir.c_str());
+                Log::info("Portable screenshot dir: %s",
+                          mOptions.screenshotDir.c_str());
             }
         }
     }
@@ -1081,7 +1076,7 @@ void Client::initHomeDir()
 
     if (mkdir_r(mLocalDataDir.c_str()))
     {
-        logger->error(strprintf(_("%s doesn't exist and can't be created! "
+        Log::critical(strprintf(_("%s doesn't exist and can't be created! "
                                   "Exiting."), mLocalDataDir.c_str()));
     }
 
@@ -1104,7 +1099,7 @@ void Client::initHomeDir()
 
     if (mkdir_r(mConfigDir.c_str()))
     {
-        logger->error(strprintf(_("%s doesn't exist and can't be created! "
+        Log::critical(strprintf(_("%s doesn't exist and can't be created! "
                                   "Exiting."), mConfigDir.c_str()));
     }
 }
@@ -1123,7 +1118,7 @@ void Client::initConfiguration()
     if (doc.rootNode() && doc.rootNode().name() == "configuration")
         deserialize(doc.rootNode(), config);
     else
-        logger->log("Couldn't read configuration file: %s", configPath.c_str());
+        Log::info("Couldn't read configuration file: %s", configPath.c_str());
 }
 
 /**
@@ -1146,7 +1141,7 @@ bool Client::initUpdatesDir()
 
     if (mUpdateHost.empty())
     {
-        logger->log("No update host provided");
+        Log::info("No update host provided");
         mUpdatesDir.clear();
         mState = STATE_LOAD_DATA;
         return false;
@@ -1154,8 +1149,8 @@ bool Client::initUpdatesDir()
 
     mUpdatesDir = "updates/" + getDirectoryFromURL(mUpdateHost);
 
-    logger->log("Update host: %s", mUpdateHost.c_str());
-    logger->log("Updates dir: %s", mUpdatesDir.c_str());
+    Log::info("Update host: %s", mUpdateHost.c_str());
+    Log::info("Updates dir: %s", mUpdatesDir.c_str());
 
     // Verify that the updates directory exists. Create if necessary.
     if (!FS::isDirectory(mUpdatesDir))
@@ -1175,16 +1170,16 @@ bool Client::initUpdatesDir()
             if (!CreateDirectory(newDir.c_str(), 0) &&
                 GetLastError() != ERROR_ALREADY_EXISTS)
             {
-                logger->log("Error: %s can't be made, but doesn't exist!",
-                            newDir.c_str());
+                Log::error("%s can't be made, but doesn't exist!",
+                           newDir.c_str());
                 errorMessage =
                     strprintf(_("Error creating updates directory!\n(%s)"),
                                 newDir.c_str());
                 mState = STATE_ERROR;
             }
 #else
-            logger->log("Error: %s/%s can't be made, but doesn't exist!",
-                        mLocalDataDir.c_str(), mUpdatesDir.c_str());
+            Log::error("%s/%s can't be made, but doesn't exist!",
+                       mLocalDataDir.c_str(), mUpdatesDir.c_str());
             errorMessage =
                 strprintf(_("Error creating updates directory!\n(%s/%s)"),
                             mLocalDataDir.c_str(), mUpdatesDir.c_str());
@@ -1230,7 +1225,7 @@ void Client::initScreenshotDir()
 
 void Client::accountLogin(LoginData *loginData)
 {
-    logger->log("Username is %s", loginData->username.c_str());
+    Log::info("Username is %s", loginData->username.c_str());
 
     // Send login infos
     if (loginData->registerLogin)

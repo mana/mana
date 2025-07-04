@@ -157,10 +157,10 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
                 if (debugInventory)
                 {
-                    logger->log("Index: %d, ID: %d, Type: %d, Identified: %d, "
-                                "Qty: %d, Cards: %d, %d, %d, %d",
-                                index, itemId, itemType, identified, amount,
-                                cards[0], cards[1], cards[2], cards[3]);
+                    Log::info("Index: %d, ID: %d, Type: %d, Identified: %d, "
+                              "Qty: %d, Cards: %d, %d, %d, %d",
+                              index, itemId, itemType, identified, amount,
+                              cards[0], cards[1], cards[2], cards[3]);
                 }
 
                 if (msg.getId() == SMSG_PLAYER_INVENTORY)
@@ -191,10 +191,10 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
                 if (debugInventory)
                 {
-                    logger->log("Index: %d, ID: %d, Type: %d, Identified: %d, "
-                                "Qty: %d, Cards: %d, %d, %d, %d",
-                                index, itemId, itemType, identified, amount,
-                                cards[0], cards[1], cards[2], cards[3]);
+                    Log::info("Index: %d, ID: %d, Type: %d, Identified: %d, "
+                              "Qty: %d, Cards: %d, %d, %d, %d",
+                              index, itemId, itemType, identified, amount,
+                              cards[0], cards[1], cards[2], cards[3]);
                 }
 
                 mInventoryItems.push_back(
@@ -419,8 +419,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             }
             else
             {
-                logger->log("Couldn't set attacke range due to the lack"
-                            "of an initialized map.");
+                Log::info("Couldn't set attacke range due to the lack"
+                          "of an initialized map.");
                 local_player->setAttackRange(-1);
             }
         }
@@ -434,7 +434,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
             index -= INVENTORY_OFFSET;
 
-            logger->log("Arrows equipped: %i", index);
+            Log::info("Arrows equipped: %i", index);
             mEquips.setEquipment(EQUIP_PROJECTILE_SLOT, index);
             break;
     }

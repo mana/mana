@@ -145,13 +145,13 @@ void AbilitiesWindow::draw(gcn::Graphics *graphics)
 void AbilitiesWindow::rebuild(const std::map<int, Ability> &abilityData)
 {
     delete_all(mEntries);
-    
+
     mEntries.clear();
     int vPos = 0; //vertical position of next placed element
 
     for (auto &[id, ability] : abilityData)
     {
-        logger->log("Updating ability GUI for %d", id);
+        Log::info("Updating ability GUI for %d", id);
 
         AbilityInfo *info = AbilityDB::get(id);
         if (info)
@@ -166,7 +166,7 @@ void AbilitiesWindow::rebuild(const std::map<int, Ability> &abilityData)
         }
         else
         {
-            logger->log("Warning: No info available of ability %d", id);
+            Log::warn("No info available of ability %d", id);
         }
     }
 }

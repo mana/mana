@@ -342,7 +342,7 @@ void LoginHandler::readServerInfo(MessageIn &msg)
     if (!updateHost.empty())
         mLoginData->updateHost = updateHost;
     else
-        logger->log("Warning: server does not have an update host set!");
+        Log::warn("Server does not have an update host set!");
 
     // Read the client data folder for dynamic data loading.
     // This is only used by the Qt client.

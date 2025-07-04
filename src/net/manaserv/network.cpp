@@ -48,14 +48,14 @@ void initialize()
 {
     if (enet_initialize())
     {
-        logger->error("Failed to initialize ENet.");
+        Log::critical("Failed to initialize ENet.");
     }
 
     client = enet_host_create(nullptr, 3, 0, 0, 0);
 
     if (!client)
     {
-        logger->error("Failed to create the local host.");
+        Log::critical("Failed to create the local host.");
     }
 }
 
@@ -66,7 +66,7 @@ void finalize()
 
     if (connections)
     {
-        logger->error("Tried to shutdown the network subsystem while there "
+        Log::critical("Tried to shutdown the network subsystem while there "
                       "are network connections left!");
     }
 
@@ -78,7 +78,7 @@ Connection *getConnection()
 {
     if (!client)
     {
-        logger->error("Tried to instantiate a network object before "
+        Log::critical("Tried to instantiate a network object before "
                       "initializing the network subsystem!");
     }
 
@@ -117,14 +117,14 @@ namespace
 
         if (iter != mMessageHandlers.end())
         {
-            //logger->log("Received packet %x (%i B)",
-            //        msg.getId(), msg.getLength());
+            //Log::info("Received packet %x (%i B)",
+            //          msg.getId(), msg.getLength());
             iter->second->handleMessage(msg);
         }
         else
         {
-            logger->log("Unhandled packet %x (%i B)",
-                    msg.getId(), msg.getLength());
+            Log::info("Unhandled packet %x (%i B)",
+                      msg.getId(), msg.getLength());
         }
 
         // Clean up the packet now that we're done using it.
@@ -142,7 +142,7 @@ void flush()
         switch (event.type)
         {
             case ENET_EVENT_TYPE_CONNECT:
-                logger->log("Connected to port %d.", event.peer->address.port);
+                Log::info("Connected to port %d.", event.peer->address.port);
                 // Store any relevant server information here.
                 event.peer->data = nullptr;
                 break;
@@ -152,7 +152,7 @@ void flush()
                 break;
 
             case ENET_EVENT_TYPE_DISCONNECT:
-                logger->log("Disconnected.");
+                Log::info("Disconnected.");
                 // Reset the server information.
                 event.peer->data = nullptr;
                 break;

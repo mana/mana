@@ -279,7 +279,7 @@ bool Network::connect(const ServerInfo &server)
 {
     if (mState != IDLE && mState != NET_ERROR)
     {
-        logger->log("Tried to connect an already connected socket!");
+        Log::info("Tried to connect an already connected socket!");
         assert(false);
         return false;
     }
@@ -290,8 +290,8 @@ bool Network::connect(const ServerInfo &server)
         return false;
     }
 
-    logger->log("Network::Connecting to %s:%i", server.hostname.c_str(),
-                                                server.port);
+    Log::info("Network::Connecting to %s:%i", server.hostname.c_str(),
+                                              server.port);
 
     mServer.hostname = server.hostname;
     mServer.port = server.port;
@@ -376,8 +376,7 @@ void Network::dispatchMessages()
         auto packetInfoIt = mPacketInfo.find(msgId);
         if (packetInfoIt == mPacketInfo.end())
         {
-            auto error = strprintf("Unknown packet 0x%x received.", msgId);
-            logger->error(error);
+            Log::critical(strprintf("Unknown packet 0x%x received.", msgId));
             break;
         }
 
@@ -395,9 +394,8 @@ void Network::dispatchMessages()
 
             if (len < 4)
             {
-                auto error = strprintf("Variable length packet 0x%x has invalid length %d.",
-                                       msgId, len);
-                logger->error(error);
+                Log::critical(strprintf("Variable length packet 0x%x has invalid length %d.",
+                                        msgId, len));
                 break;
             }
         }
@@ -413,14 +411,14 @@ void Network::dispatchMessages()
         if (iter != mMessageHandlers.end())
         {
 #ifdef DEBUG
-            logger->log("Handling %s (0x%x) of length %d", packetInfo->name, msgId, len);
+            Log::info("Handling %s (0x%x) of length %d", packetInfo->name, msgId, len);
 #endif
 
             iter->second->handleMessage(message);
         }
         else
         {
-            logger->log("Unhandled %s (0x%x) of length %d", packetInfo->name, msgId, len);
+            Log::info("Unhandled %s (0x%x) of length %d", packetInfo->name, msgId, len);
         }
 
         skip(len);
@@ -474,7 +472,7 @@ bool Network::realConnect()
         std::string errorMessage = strprintf(_("Unable to resolve host \"%s\""),
                                              mServer.hostname.c_str());
         setError(errorMessage);
-        logger->log("SDLNet_ResolveHost: %s", errorMessage.c_str());
+        Log::info("SDLNet_ResolveHost: %s", errorMessage.c_str());
         return false;
     }
 
@@ -483,13 +481,13 @@ bool Network::realConnect()
     mSocket = SDLNet_TCP_Open(&ipAddress);
     if (!mSocket)
     {
-        logger->log("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
+        Log::info("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
         setError(SDLNet_GetError());
         return false;
     }
 
-    logger->log("Network::Started session with %s:%i",
-                ipToString(ipAddress.host), ipAddress.port);
+    Log::info("Network::Started session with %s:%i",
+              ipToString(ipAddress.host), ipAddress.port);
 
     mState = CONNECTED;
 
@@ -522,7 +520,7 @@ void Network::receive()
         switch (numReady)
         {
             case -1:
-                logger->log("Error: SDLNet_CheckSockets");
+                Log::error("SDLNet_CheckSockets");
                 // FALLTHROUGH
             case 0:
                 break;
@@ -537,7 +535,7 @@ void Network::receive()
                 {
                     // We got disconnected
                     mState = IDLE;
-                    logger->log("Disconnected.");
+                    Log::info("Disconnected.");
                 }
                 else if (ret < 0)
                 {
@@ -578,7 +576,7 @@ void Network::receive()
 
     if (SDLNet_TCP_DelSocket(set, mSocket) == -1)
     {
-        logger->log("Error in SDLNet_DelSocket(): %s", SDLNet_GetError());
+        Log::info("Error in SDLNet_DelSocket(): %s", SDLNet_GetError());
     }
 
     SDLNet_FreeSocketSet(set);
@@ -586,7 +584,7 @@ void Network::receive()
 
 void Network::setError(const std::string &error)
 {
-    logger->log("Network error: %s", error.c_str());
+    Log::info("Network error: %s", error.c_str());
     mError = error;
     mState = NET_ERROR;
 }

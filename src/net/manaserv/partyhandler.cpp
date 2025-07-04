@@ -103,7 +103,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                                    "inviter has left the game."));
                     break;
                 default:
-                    logger->log("Unknown CPMSG_PARTY_INVITE_ANSWER_RESPONSE.");
+                    Log::info("Unknown CPMSG_PARTY_INVITE_ANSWER_RESPONSE.");
                     break;
             }
         } break;
@@ -161,7 +161,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                                            name.c_str()));
                     break;
                 default:
-                    logger->log("Unknown CPMSG_PARTY_REJECTED.");
+                    Log::info("Unknown CPMSG_PARTY_REJECTED.");
                     break;
             }
         } break;

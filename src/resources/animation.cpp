@@ -84,7 +84,7 @@ Animation Animation::fromXML(XML::Node node, const std::string &dyePalettes)
 
             if (index < 0)
             {
-                logger->log("No valid value for 'index'");
+                Log::info("No valid value for 'index'");
                 continue;
             }
 
@@ -92,7 +92,7 @@ Animation Animation::fromXML(XML::Node node, const std::string &dyePalettes)
 
             if (!img)
             {
-                logger->log("No image at index %d", index);
+                Log::info("No image at index %d", index);
                 continue;
             }
 
@@ -105,7 +105,7 @@ Animation Animation::fromXML(XML::Node node, const std::string &dyePalettes)
 
             if (start < 0 || end < 0)
             {
-                logger->log("No valid value for 'start' or 'end'");
+                Log::info("No valid value for 'start' or 'end'");
                 continue;
             }
 
@@ -115,7 +115,7 @@ Animation Animation::fromXML(XML::Node node, const std::string &dyePalettes)
 
                 if (!img)
                 {
-                    logger->log("No image at index %d", start);
+                    Log::info("No image at index %d", start);
                     continue;
                 }
 

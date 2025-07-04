@@ -186,7 +186,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 int x = msg.readInt16();
                 int y = msg.readInt16();
 
-                logger->log("Warping to %s (%d, %d)", mapPath.c_str(), x, y);
+                Log::info("Warping to %s (%d, %d)", mapPath.c_str(), x, y);
 
                 /*
                  * We must clear the local player's target *before* the call
@@ -224,8 +224,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 // Stop movement
                 local_player->setDestination(pos.x, pos.y);
 
-                logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
-                           (int) scrollOffsetY);
+                Log::info("Adjust scrolling by %d:%d", (int) scrollOffsetX,
+                          (int) scrollOffsetY);
 
                 viewport->scrollBy(scrollOffsetX, scrollOffsetY);
             }
@@ -506,7 +506,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         serverNotice(_("Equip arrows first."));
                         break;
                     default:
-                        logger->log("0x013b: Unhandled message %i", type);
+                        Log::info("0x013b: Unhandled message %i", type);
                         break;
                 }
             }
@@ -699,8 +699,8 @@ Vector PlayerHandler::getPixelsPerSecondMoveSpeed(const Vector &speed, Map *map)
 
     if (!map || speed.x == 0 || speed.y == 0)
     {
-        logger->log("TmwAthena::PlayerHandler: Speed set to default: "
-                    "Map not yet initialized or invalid speed.");
+        Log::info("TmwAthena::PlayerHandler: Speed set to default: "
+                  "Map not yet initialized or invalid speed.");
         return getDefaultMoveSpeed();
     }
 

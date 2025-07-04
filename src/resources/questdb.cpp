@@ -57,7 +57,7 @@ void readQuestVarNode(XML::Node node, const std::string &filename)
 
             if (effect.map.empty() || effect.npcId == 0 || effect.statusEffectId == 0 || effect.values.empty())
             {
-                logger->log("Warning: effect node for var %d is missing required attributes", varId);
+                Log::warn("effect node for var %d is missing required attributes", varId);
             }
         }
         else if (child.name() == "quest")
@@ -70,8 +70,8 @@ void readQuestVarNode(XML::Node node, const std::string &filename)
 
             if (state.incomplete.empty() && state.complete.empty())
             {
-                logger->log("Warning: quest node for var %d ('%s') has neither 'complete' nor 'incomplete' values",
-                            varId, state.name.c_str());
+                Log::warn("quest node for var %d ('%s') has neither 'complete' nor 'incomplete' values",
+                          varId, state.name.c_str());
                 continue;
             }
 
@@ -93,8 +93,8 @@ void readQuestVarNode(XML::Node node, const std::string &filename)
                     rowType = QuestRowType::NPC;
                 else
                 {
-                    logger->log("Warning: unknown quest row type '%s' for var %d ('%s')",
-                                tag.data(), varId, state.name.c_str());
+                    Log::warn("unknown quest row type '%s' for var %d ('%s')",
+                              tag.data(), varId, state.name.c_str());
                     continue;
                 }
 

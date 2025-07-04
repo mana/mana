@@ -531,8 +531,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     dstBeing->setSprite(SPRITE_MISC2, id);
                     break;
                 default:
-                    logger->log("SMSG_BEING_CHANGE_LOOKS2: unsupported type: "
-                                "%d, id: %d", static_cast<int>(type), id);
+                    Log::info("SMSG_BEING_CHANGE_LOOKS2: unsupported type: "
+                              "%d, id: %d", static_cast<int>(type), id);
                     break;
             }
         }

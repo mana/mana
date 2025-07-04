@@ -44,13 +44,13 @@ Connection::~Connection()
 
 bool Connection::connect(const std::string &address, enet_uint16 port)
 {
-    logger->log("Net::Connection::connect(%s, %i)", address.c_str(), port);
+    Log::info("Net::Connection::connect(%s, %i)", address.c_str(), port);
     if (mConnection)
         disconnect();
 
     if (address.empty())
     {
-        logger->log("Net::Connection::connect() got empty address!");
+        Log::info("Net::Connection::connect() got empty address!");
         mState = NET_ERROR;
         return false;
     }
@@ -65,7 +65,7 @@ bool Connection::connect(const std::string &address, enet_uint16 port)
 
     if (!mConnection)
     {
-        logger->log("Unable to initiate connection to the server.");
+        Log::info("Unable to initiate connection to the server.");
         mState = NET_ERROR;
         return false;
     }
@@ -96,7 +96,7 @@ void Connection::send(const ManaServ::MessageOut &msg)
 {
     if (!isConnected())
     {
-        logger->log("Warning: cannot send message to not connected server!");
+        Log::warn("Cannot send message to not connected server!");
         return;
     }
 

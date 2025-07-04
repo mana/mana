@@ -46,7 +46,7 @@ void NPCDB::readNPCNode(XML::Node node, const std::string &filename)
     int id = node.getProperty("id", 0);
     if (id == 0)
     {
-        logger->log("NPC Database: NPC with missing ID in %s", filename.c_str());
+        Log::info("NPC Database: NPC with missing ID in %s", filename.c_str());
         return;
     }
 
@@ -94,7 +94,7 @@ BeingInfo *NPCDB::get(int id)
 
     if (i == mNPCInfos.end())
     {
-        logger->log("NPCDB: Warning, unknown NPC ID %d requested", id);
+        Log::info("NPCDB: Warning, unknown NPC ID %d requested", id);
         return BeingInfo::Unknown;
     }
 

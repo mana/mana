@@ -213,7 +213,7 @@ void ActorSprite::loadTargetCursor(const std::string &filename,
     auto currentImageSet = resman->getImageSet(filename, width, height);
     if (!currentImageSet)
     {
-        logger->log("Error loading target cursor: %s", filename.c_str());
+        Log::info("Error loading target cursor: %s", filename.c_str());
         return;
     }
 

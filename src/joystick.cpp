@@ -36,9 +36,9 @@ void Joystick::init()
     SDL_JoystickEventState(SDL_ENABLE);
 
     joystickCount = SDL_NumJoysticks();
-    logger->log("%i joysticks/gamepads found", joystickCount);
+    Log::info("%i joysticks/gamepads found", joystickCount);
     for (int i = 0; i < joystickCount; i++)
-        logger->log("- %s", SDL_JoystickNameForIndex(i));
+        Log::info("- %s", SDL_JoystickNameForIndex(i));
 }
 
 Joystick::Joystick(int no)
@@ -57,14 +57,14 @@ Joystick::Joystick(int no)
     // TODO Bail out!
     if (!mJoystick)
     {
-        logger->log("Couldn't open joystick: %s", SDL_GetError());
+        Log::info("Couldn't open joystick: %s", SDL_GetError());
         return;
     }
 
-    logger->log("Axes: %i ", SDL_JoystickNumAxes(mJoystick));
-    logger->log("Balls: %i", SDL_JoystickNumBalls(mJoystick));
-    logger->log("Hats: %i", SDL_JoystickNumHats(mJoystick));
-    logger->log("Buttons: %i", SDL_JoystickNumButtons(mJoystick));
+    Log::info("Axes: %i ", SDL_JoystickNumAxes(mJoystick));
+    Log::info("Balls: %i", SDL_JoystickNumBalls(mJoystick));
+    Log::info("Hats: %i", SDL_JoystickNumHats(mJoystick));
+    Log::info("Buttons: %i", SDL_JoystickNumButtons(mJoystick));
 }
 
 Joystick::~Joystick()

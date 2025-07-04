@@ -54,7 +54,7 @@ ConnectionDialog::ConnectionDialog(const std::string &text,
 
 void ConnectionDialog::action(const gcn::ActionEvent &)
 {
-    logger->log("Cancel pressed");
+    Log::info("Cancel pressed");
     Client::setState(mCancelState);
 }
 

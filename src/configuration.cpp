@@ -107,9 +107,9 @@ VariableData *Configuration::getDefault(const std::string &key,
             return itdef->second;
         }
 
-        logger->log("%s: No value in registry for key %s",
-                    mConfigPath.c_str(),
-                    key.c_str());
+        Log::info("%s: No value in registry for key %s",
+                  mConfigPath.c_str(),
+                  key.c_str());
     }
 
     return nullptr;
@@ -214,13 +214,13 @@ void Configuration::init(const std::string &filename, bool useResManager)
 
     if (!rootNode)
     {
-        logger->log("Couldn't open configuration file: %s", filename.c_str());
+        Log::info("Couldn't open configuration file: %s", filename.c_str());
         return;
     }
 
     if (rootNode.name() != "configuration")
     {
-        logger->log("Warning: No configuration file (%s)", filename.c_str());
+        Log::warn("No configuration file (%s)", filename.c_str());
         return;
     }
 

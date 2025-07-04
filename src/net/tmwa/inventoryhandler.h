@@ -108,9 +108,9 @@ class EquipBackend final : public Equipment::Backend
 
             if (!newItem && inventoryIndex >= 0)
             {
-                logger->log("EquipBackend: Warning, trying to equip "
-                            "non-existing item from inventory index %i at "
-                            "equipment slot %i.", inventoryIndex, index);
+                Log::info("EquipBackend: Warning, trying to equip "
+                          "non-existing item from inventory index %i at "
+                          "equipment slot %i.", inventoryIndex, index);
                 return;
             }
 

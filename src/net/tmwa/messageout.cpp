@@ -23,6 +23,8 @@
 
 #include "net/tmwa/network.h"
 
+#include "log.h"
+
 #include <SDL_endian.h>
 
 #include <cstring>
@@ -32,7 +34,7 @@ namespace TmwAthena {
 MessageOut::MessageOut(uint16_t id)
 {
 #ifdef DEBUG
-    logger->log("Sending %s (0x%x)", Network::mInstance->messageName(id), id);
+    Log::info("Sending %s (0x%x)", Network::mInstance->messageName(id), id);
 #endif
     writeInt16(id);
 }

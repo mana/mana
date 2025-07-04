@@ -179,9 +179,8 @@ ParticleEmitter::ParticleEmitter(XML::Node emitterNode, Particle *target,
             }
             else
             {
-                logger->log("Particle Engine: Warning, unknown emitter property \"%s\"",
-                            name.c_str()
-                           );
+                Log::info("Particle Engine: Warning, unknown emitter property \"%s\"",
+                          name.c_str());
             }
         }
         else if (propertyNode.name() == "emitter")

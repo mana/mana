@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2025  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -23,47 +23,36 @@
 
 #include <SDL.h>
 
-#include <sys/time.h>
+#include <cstdarg>
+#include <fstream>
 #include <iostream>
 #include <sstream>
-#include <cstdarg>
-#include <cstdio>
+#include <sys/time.h>
 
-Logger::Logger() = default;
-Logger::~Logger() = default;
+static std::ofstream logFile;
+static bool logToStandardOut = true;
 
-void Logger::setLogFile(const std::string &logFilename)
+static const char *getLogPriorityPrefix(SDL_LogPriority priority)
 {
-    mLogFile.open(logFilename, std::ios_base::trunc);
-
-    if (!mLogFile.is_open())
-    {
-        std::cout << "Warning: error while opening " << logFilename <<
-            " for writing.\n";
+    switch (priority) {
+    case SDL_LOG_PRIORITY_WARN:
+        return "Warning: ";
+    case SDL_LOG_PRIORITY_ERROR:
+        return "Error: ";
+    case SDL_LOG_PRIORITY_CRITICAL:
+        return "Critical Error: ";
+    default:
+        return "";
     }
 }
 
-void Logger::log(const char *log_text, ...)
+static void logOutputFunction(void *userdata, int category, SDL_LogPriority priority, const char *message)
 {
-    va_list ap;
-    va_start(ap, log_text);
-    vlog(log_text, ap);
-    va_end(ap);
-}
-
-void Logger::vlog(const char *log_text, va_list ap)
-{
-    const size_t bufSize = 1024;
-    char* buf = new char[bufSize];
-
-    // Use a temporary buffer to fill in the variables
-    vsnprintf(buf, bufSize, log_text, ap);
-
     // Get the current system time
     timeval tv;
     gettimeofday(&tv, nullptr);
 
-    // Print the log entry
+    // Create timestamp string
     std::stringstream timeStr;
     timeStr << "["
         << ((((tv.tv_sec / 60) / 60) % 24 < 10) ? "0" : "")
@@ -79,24 +68,71 @@ void Logger::vlog(const char *log_text, va_list ap)
         << (int)((tv.tv_usec / 10000) % 100)
         << "] ";
 
-    if (mLogFile.is_open())
+    const char *prefix = getLogPriorityPrefix(priority);
+
+    if (logToStandardOut)
     {
-        mLogFile << timeStr.str() << buf << std::endl;
+        std::cout << timeStr.str() << prefix << message << std::endl;
     }
 
-    if (mLogToStandardOut)
+    if (logFile.is_open())
     {
-        std::cout << timeStr.str() << buf << std::endl;
+        logFile << timeStr.str() << prefix << message << std::endl;
     }
-
-    // Delete temporary buffer
-    delete[] buf;
 }
 
-void Logger::error(const std::string &error_text)
+void Log::init()
 {
-    log("Error: %s", error_text.c_str());
-    std::cerr << "Error: " << error_text << std::endl;
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", error_text.c_str(), nullptr);
+    SDL_LogSetOutputFunction(logOutputFunction, nullptr);
+}
+
+void Log::setLogFile(const std::string &logFilename)
+{
+    logFile.open(logFilename, std::ios_base::trunc);
+
+    if (!logFile.is_open())
+    {
+        std::cout << "Warning: error while opening " << logFilename
+                  << " for writing.\n";
+    }
+}
+
+void Log::setLogToStandardOut(bool value)
+{
+    logToStandardOut = value;
+}
+
+#define DEFINE_LOG_FUNCTION(name, priority) \
+    void Log::name(const char *fmt, ...) \
+    { \
+        va_list ap; \
+        va_start(ap, fmt); \
+        SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, priority, fmt, ap); \
+        va_end(ap); \
+    }
+
+DEFINE_LOG_FUNCTION(verbose, SDL_LOG_PRIORITY_VERBOSE)
+DEFINE_LOG_FUNCTION(debug, SDL_LOG_PRIORITY_DEBUG)
+DEFINE_LOG_FUNCTION(info, SDL_LOG_PRIORITY_INFO)
+DEFINE_LOG_FUNCTION(warn, SDL_LOG_PRIORITY_WARN)
+DEFINE_LOG_FUNCTION(error, SDL_LOG_PRIORITY_ERROR)
+
+#undef DEFINE_LOG_FUNCTION
+
+void Log::vinfo(const char *fmt, va_list ap)
+{
+    SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, fmt, ap);
+}
+
+void Log::critical(const std::string &message)
+{
+    SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "%s", message.c_str());
+
+    if (!logToStandardOut)
+    {
+        std::cerr << getLogPriorityPrefix(SDL_LOG_PRIORITY_CRITICAL) << message << std::endl;
+    }
+
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", message.c_str(), nullptr);
     exit(1);
 }

@@ -109,7 +109,7 @@ namespace SettingsManager
      */
     static bool loadFile(const std::string &filename)
     {
-        logger->log("Loading game settings from %s", filename.c_str());
+        Log::info("Loading game settings from %s", filename.c_str());
 
         XML::Document doc(filename);
         XML::Node node = doc.rootNode();
@@ -120,7 +120,7 @@ namespace SettingsManager
         // FIXME: check root node's name when bjorn decides it's time
         if (!node /*|| node.name() != "settings" */)
         {
-            logger->log("Settings Manager: %s is not a valid settings file!", filename.c_str());
+            Log::info("Settings Manager: %s is not a valid settings file!", filename.c_str());
             return false;
         }
 
@@ -158,7 +158,7 @@ namespace SettingsManager
                     // check if we're not entering a loop
                     if (mIncludedFiles.find(includeFile) != mIncludedFiles.end())
                     {
-                        logger->log("Warning: Circular include loop detecting while including %s from %s", includeFile.c_str(), filename.c_str());
+                        Log::warn("Circular include loop detecting while including %s from %s", includeFile.c_str(), filename.c_str());
                     }
                     else
                     {
@@ -167,7 +167,7 @@ namespace SettingsManager
                 }
                 else
                 {
-                    logger->log("Warning: <include> element without 'file' or 'name' attribute in %s", filename.c_str());
+                    Log::warn("<include> element without 'file' or 'name' attribute in %s", filename.c_str());
                 }
             }
             else if (childNode.name() == "option")
@@ -179,7 +179,7 @@ namespace SettingsManager
                 if (!name.empty())
                     paths.setValue(name, value);
                 else
-                    logger->log("Warning: option without a name found in %s", filename.c_str());
+                    Log::warn("option without a name found in %s", filename.c_str());
             }
             else if (childNode.name() == "attribute")
             {

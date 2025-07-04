@@ -290,7 +290,7 @@ void SkillDialog::loadSkills()
 
     if (!root || root.name() != "skills")
     {
-        logger->log("Error loading skills file: %s", SKILLS_FILE);
+        Log::info("Error loading skills file: %s", SKILLS_FILE);
 
         if (Net::getNetworkType() == ServerType::TmwAthena)
         {

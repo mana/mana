@@ -89,8 +89,8 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                     auto *character = new Net::Character;
                     readPlayerData(msg, character);
                     mCharacters.push_back(character);
-                    logger->log("CharServer: Player: %s (%d)",
-                                character->dummy->getName().c_str(), character->slot);
+                    Log::info("CharServer: Player: %s (%d)",
+                              character->dummy->getName().c_str(), character->slot);
                 }
 
                 Client::setState(STATE_CHAR_SELECT);

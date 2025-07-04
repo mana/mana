@@ -40,7 +40,7 @@ void HairDB::readHairColorNode(XML::Node node, const std::string &filename)
     int id = node.getProperty("id", 0);
 
     if (mHairColors.find(id) != mHairColors.end())
-        logger->log("HairDb: Redefinition of color Id %d in %s", id, filename.c_str());
+        Log::info("HairDb: Redefinition of color Id %d in %s", id, filename.c_str());
 
     mHairColors[id] = node.getProperty("value", COLOR_WHITE);
 }
@@ -55,7 +55,7 @@ void HairDB::unload()
     if (!mLoaded)
         return;
 
-    logger->log("Unloading hair style and color database...");
+    Log::info("Unloading hair style and color database...");
 
     mHairColors.clear();
     mHairStyles.clear();
@@ -71,7 +71,7 @@ void HairDB::addHairStyle(int id)
         id = -id;
 
     if (mHairStyles.find(id) != mHairStyles.end())
-        logger->log("Warning: Redefinition of hairstyle id %i:", id);
+        Log::warn("Redefinition of hairstyle id %i:", id);
 
     mHairStyles.insert(id);
 }
@@ -81,13 +81,13 @@ const std::string &HairDB::getHairColor(int id) const
     if (!mLoaded)
     {
         // no idea if this can happen, but that check existed before
-        logger->log("WARNING: HairDB::getHairColor() called before settings were loaded!");
+        Log::warn("HairDB::getHairColor() called before settings were loaded!");
     }
     auto it = mHairColors.find(id);
     if (it != mHairColors.end())
         return it->second;
 
-    logger->log("HairDb: Error, unknown color Id# %d", id);
+    Log::info("HairDb: Error, unknown color Id# %d", id);
     return mHairColors.at(0);
 }
 

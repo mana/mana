@@ -51,7 +51,7 @@ void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
     const int id = node.getProperty("id", -1);
     if (id == -1)
     {
-        logger->log("Emote Database: Emote with missing ID in %s!", filename.c_str());
+        Log::info("Emote Database: Emote with missing ID in %s!", filename.c_str());
         return;
     }
 
@@ -63,8 +63,8 @@ void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
 
     if (emote.effectId == -1)
     {
-        logger->log("Emote Database: Warning: Emote %s has no attached effect in %s!",
-                    emote.name.c_str(), filename.c_str());
+        Log::info("Emote Database: Warning: Emote %s has no attached effect in %s!",
+                  emote.name.c_str(), filename.c_str());
         return;
     }
 
@@ -74,8 +74,8 @@ void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
 
     if (imageName.empty() || width <= 0 || height <= 0)
     {
-        logger->log("Emote Database: Warning: Emote %s has bad imageset values in %s",
-                    emote.name.c_str(), filename.c_str());
+        Log::info("Emote Database: Warning: Emote %s has bad imageset values in %s",
+                  emote.name.c_str(), filename.c_str());
         return;
     }
 
@@ -85,8 +85,8 @@ void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
 
     if (!emote.is || emote.is->size() == 0)
     {
-        logger->log("Emote Database: Error loading imageset for emote %s in %s",
-                    emote.name.c_str(), filename.c_str());
+        Log::info("Emote Database: Error loading imageset for emote %s in %s",
+                  emote.name.c_str(), filename.c_str());
         return;
     }
 
@@ -119,7 +119,7 @@ const Emote &EmoteDB::get(int id)
 
     if (i == mEmotes.end())
     {
-        logger->log("EmoteDB: Warning, unknown emote ID %d requested", id);
+        Log::info("EmoteDB: Warning, unknown emote ID %d requested", id);
         return mUnknown;
     }
 

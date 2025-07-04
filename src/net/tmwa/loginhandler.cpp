@@ -108,7 +108,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
              mUpdateHost = msg.readString(len);
              loginData.updateHost = mUpdateHost;
 
-             logger->log("Received update host \"%s\" from login server.",
+             Log::info("Received update host \"%s\" from login server.",
                      mUpdateHost.c_str());
              break;
         }
@@ -138,10 +138,10 @@ void LoginHandler::handleMessage(MessageIn &msg)
                 msg.readInt16();                    // maintenance
                 msg.readInt16();                    // is_new
 
-                logger->log("Network: Server: %s (%s:%d)",
-                        world->name.c_str(),
-                        ipToString(world->address),
-                        world->port);
+                Log::info("Network: Server: %s (%s:%d)",
+                          world->name.c_str(),
+                          ipToString(world->address),
+                          world->port);
 
                 mWorlds.push_back(world);
             }
@@ -150,7 +150,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
         case SMSG_LOGIN_ERROR:
             code = msg.readInt8();
-            logger->log("Login::error code: %i", code);
+            Log::info("Login::error code: %i", code);
 
             switch (code)
             {
@@ -212,9 +212,9 @@ void LoginHandler::handleMessage(MessageIn &msg)
                     mServerVersion = 0;
 
                 if (mServerVersion > 0)
-                    logger->log("TMW server version: x%06x", mServerVersion);
+                    Log::info("TMW server version: x%06x", mServerVersion);
                 else
-                    logger->log("Server without version");
+                    Log::info("Server without version");
 
                 mRegistrationEnabled = (options & FLAG_REGISTRATION);
 

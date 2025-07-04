@@ -77,7 +77,7 @@ static std::string resolveRelativePath(std::string base, std::string relative)
 
 Map *MapReader::readMap(const std::string &filename)
 {
-    logger->log("Attempting to read map %s", filename.c_str());
+    Log::info("Attempting to read map %s", filename.c_str());
     Map *map = nullptr;
 
     XML::Document doc(filename);
@@ -89,7 +89,7 @@ Map *MapReader::readMap(const std::string &filename)
     {
         if (node.name() != "map")
         {
-            logger->log("Error: Not a map file (%s)!", filename.c_str());
+            Log::error("Not a map file (%s)!", filename.c_str());
         }
         else
         {
@@ -98,7 +98,7 @@ Map *MapReader::readMap(const std::string &filename)
     }
     else
     {
-        logger->log("Error while parsing map file (%s)!", filename.c_str());
+        Log::info("Error while parsing map file (%s)!", filename.c_str());
     }
 
     if (map)
@@ -119,9 +119,9 @@ Map *MapReader::readMap(XML::Node node, const std::string &path)
 
     if (tilew < 0 || tileh < 0)
     {
-        logger->log("MapReader: Warning: "
-                    "Unitialized tile width or height value for map: %s",
-                    path.c_str());
+        Log::info("MapReader: Warning: "
+                  "Unitialized tile width or height value for map: %s",
+                  path.c_str());
         return nullptr;
     }
 
@@ -174,15 +174,15 @@ Map *MapReader::readMap(XML::Node node, const std::string &path)
                     const int objW = objectNode.getProperty("width", 0);
                     const int objH = objectNode.getProperty("height", 0);
 
-                    logger->log("- Loading object name: %s type: %s at %d:%d",
-                                objName.c_str(), objType.c_str(),
-                                objX, objY);
+                    Log::info("- Loading object name: %s type: %s at %d:%d",
+                              objName.c_str(), objType.c_str(),
+                              objX, objY);
 
                     if (objType == "PARTICLE_EFFECT")
                     {
                         if (objName.empty())
                         {
-                            logger->log("   Warning: No particle file given");
+                            Log::info("   Warning: No particle file given");
                             continue;
                         }
 
@@ -203,7 +203,7 @@ Map *MapReader::readMap(XML::Node node, const std::string &path)
                     }
                     else
                     {
-                        logger->log("   Warning: Unknown object type");
+                        Log::info("   Warning: Unknown object type");
                     }
                 }
             }
@@ -293,7 +293,7 @@ static void readLayer(XML::Node node, Map *map)
         map->addLayer(layer);
     }
 
-    logger->log("- Loading layer \"%s\"", name.c_str());
+    Log::info("- Loading layer \"%s\"", name.c_str());
     int x = 0;
     int y = 0;
 
@@ -333,8 +333,8 @@ static void readLayer(XML::Node node, Map *map)
             if (!compression.empty() && compression != "gzip"
                 && compression != "zlib")
             {
-                logger->log("Warning: only gzip or zlib layer "
-                            "compression supported!");
+                Log::warn("Only gzip or zlib layer "
+                          "compression supported!");
                 return;
             }
 
@@ -383,7 +383,7 @@ static void readLayer(XML::Node node, Map *map)
 
                     if (!inflated)
                     {
-                        logger->log("Error: Could not decompress layer!");
+                        Log::error("Could not decompress layer!");
                         return;
                     }
                 }
@@ -415,7 +415,7 @@ static void readLayer(XML::Node node, Map *map)
             const auto data = childNode.textContent();
             if (data.empty())
             {
-                logger->log("Error: CSV layer data is empty!");
+                Log::error("CSV layer data is empty!");
                 continue;
             }
 
@@ -432,7 +432,7 @@ static void readLayer(XML::Node node, Map *map)
 
                 if (errno == ERANGE)
                 {
-                    logger->log("Error: Range error in tile layer data!");
+                    Log::error("Range error in tile layer data!");
                     break;
                 }
 
@@ -452,7 +452,7 @@ static void readLayer(XML::Node node, Map *map)
                 pos = strchr(end, ',');
                 if (!pos)
                 {
-                    logger->log("Error: CSV layer data too short!");
+                    Log::error("CSV layer data too short!");
                     break;
                 }
                 ++pos;
@@ -536,8 +536,7 @@ static Tileset *readTileset(XML::Node node, const std::string &path,
                 }
                 else
                 {
-                    logger->log("Warning: Failed to load tileset (%s)",
-                            source.c_str());
+                    Log::warn("Failed to load tileset (%s)", source.c_str());
                 }
             }
         }

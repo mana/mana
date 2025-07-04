@@ -73,8 +73,8 @@ void BeingInfo::setTargetCursorSize(const std::string &size)
     const auto cursorSize = targetCursorSizeFromString(size);
     if (!cursorSize)
     {
-        logger->log("Unknown targetCursor value \"%s\" for %s",
-                    size.c_str(), name.c_str());
+        Log::info("Unknown targetCursor value \"%s\" for %s",
+                  size.c_str(), name.c_str());
     }
     targetCursorSize = cursorSize.value_or(ActorSprite::TC_MEDIUM);
 }
@@ -84,8 +84,8 @@ void BeingInfo::setHoverCursor(const std::string &cursorName)
     const auto cursor = cursorFromString(cursorName);
     if (!cursor)
     {
-        logger->log("Unknown hoverCursor value \"%s\" for %s",
-                    cursorName.c_str(), name.c_str());
+        Log::info("Unknown hoverCursor value \"%s\" for %s",
+                  cursorName.c_str(), name.c_str());
     }
     hoverCursor = cursor.value_or(Cursor::Pointer);
 }

@@ -108,7 +108,7 @@ void Setup_Audio::apply()
         catch (const char *err)
         {
             new OkDialog(_("Sound Engine"), err);
-            logger->log("Warning: %s", err);
+            Log::warn("%s", err);
         }
     }
     else

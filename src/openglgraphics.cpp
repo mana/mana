@@ -91,8 +91,8 @@ OpenGLGraphics::OpenGLGraphics(SDL_Window *window, SDL_GLContext glContext)
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &texSize);
     }
     Image::mTextureSize = texSize;
-    logger->log("OpenGL texture size: %d pixels%s", Image::mTextureSize,
-                rectTex ? " (rectangle textures)" : "");
+    Log::info("OpenGL texture size: %d pixels%s", Image::mTextureSize,
+              rectTex ? " (rectangle textures)" : "");
 
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();

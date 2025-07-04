@@ -98,7 +98,7 @@ void HelpWindow::loadFile(const std::string &file)
     char *fileContents = (char *) FS::loadFile(fileName, contentsLength);
     if (!fileContents)
     {
-        logger->log("Couldn't load text file: %s", fileName.c_str());
+        Log::info("Couldn't load text file: %s", fileName.c_str());
         return;
     }
 

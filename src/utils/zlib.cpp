@@ -107,19 +107,19 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
     {
         if (ret == Z_MEM_ERROR)
         {
-            logger->log("Error: Out of memory while decompressing data!");
+            Log::error("Out of memory while decompressing data!");
         }
         else if (ret == Z_VERSION_ERROR)
         {
-            logger->log("Error: Incompatible zlib version!");
+            Log::error("Incompatible zlib version!");
         }
         else if (ret == Z_DATA_ERROR)
         {
-            logger->log("Error: Incorrect zlib compressed data!");
+            Log::error("Incorrect zlib compressed data!");
         }
         else
         {
-            logger->log("Error: Unknown error while decompressing data!");
+            Log::error("Unknown error while decompressing data!");
         }
 
         free(out);

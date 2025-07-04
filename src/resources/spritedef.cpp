@@ -44,7 +44,7 @@ Action *SpriteDef::getAction(const std::string &action) const
 
     if (i == mActions.end())
     {
-        logger->log("Warning: no action \"%s\" defined!", action.c_str());
+        Log::warn("No action \"%s\" defined!", action.c_str());
         return nullptr;
     }
 
@@ -66,7 +66,7 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
 
     if (!rootNode || rootNode.name() != "sprite")
     {
-        logger->log("Error, failed to parse %s", animationFile.c_str());
+        Log::info("Error, failed to parse %s", animationFile.c_str());
 
         std::string errorFile = paths.getStringValue("sprites")
                                 + paths.getStringValue("spriteErrorFile");
@@ -157,7 +157,7 @@ void SpriteDef::loadImageSet(XML::Node node, const std::string &palettes)
     auto imageSet = resman->getImageSet(imageSrc, width, height);
     if (!imageSet)
     {
-        logger->error(strprintf("Couldn't load imageset (%s)!",
+        Log::critical(strprintf("Couldn't load imageset (%s)!",
                                 imageSrc.c_str()));
     }
 
@@ -174,16 +174,16 @@ void SpriteDef::loadAction(XML::Node node, int variant_offset)
     auto si = mImageSets.find(imageSetName);
     if (si == mImageSets.end())
     {
-        logger->log("Warning: imageset \"%s\" not defined in %s",
-                imageSetName.c_str(), getIdPath().c_str());
+        Log::warn("imageset \"%s\" not defined in %s",
+                  imageSetName.c_str(), getIdPath().c_str());
         return;
     }
     ImageSet *imageSet = si->second;
 
     if (actionName == SpriteAction::INVALID)
     {
-        logger->log("Warning: Unknown action \"%s\" defined in %s",
-                actionName.c_str(), getIdPath().c_str());
+        Log::warn("Unknown action \"%s\" defined in %s",
+                  actionName.c_str(), getIdPath().c_str());
         return;
     }
     auto *action = new Action;
@@ -215,8 +215,8 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
 
     if (directionType == DIRECTION_INVALID)
     {
-        logger->log("Warning: Unknown direction \"%s\" used in %s",
-                directionName.c_str(), getIdPath().c_str());
+        Log::warn("Unknown direction \"%s\" used in %s",
+                  directionName.c_str(), getIdPath().c_str());
         return;
     }
 
@@ -239,7 +239,7 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
 
             if (index < 0)
             {
-                logger->log("No valid value for 'index'");
+                Log::info("No valid value for 'index'");
                 continue;
             }
 
@@ -247,7 +247,7 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
 
             if (!img)
             {
-                logger->log("No image at index %d", index + variant_offset);
+                Log::info("No image at index %d", index + variant_offset);
                 continue;
             }
 
@@ -260,7 +260,7 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
 
             if (start < 0 || end < 0)
             {
-                logger->log("No valid value for 'start' or 'end'");
+                Log::info("No valid value for 'start' or 'end'");
                 continue;
             }
 
@@ -270,7 +270,7 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
 
                 if (!img)
                 {
-                    logger->log("No image at index %d", start + variant_offset);
+                    Log::info("No image at index %d", start + variant_offset);
                     break;
                 }
 
@@ -295,8 +295,8 @@ void SpriteDef::includeSprite(XML::Node includeNode)
 
     if (processedFiles.find(filename) != processedFiles.end())
     {
-        logger->log("Error, Tried to include %s which already is included.",
-                    filename.c_str());
+        Log::info("Error, Tried to include %s which already is included.",
+                  filename.c_str());
         return;
     }
     processedFiles.insert(filename);
@@ -306,7 +306,7 @@ void SpriteDef::includeSprite(XML::Node includeNode)
 
     if (!rootNode || rootNode.name() != "sprite")
     {
-        logger->log("Error, no sprite root node in %s", filename.c_str());
+        Log::info("Error, no sprite root node in %s", filename.c_str());
         return;
     }
 

@@ -111,11 +111,11 @@ void MonsterDB::readMonsterNode(XML::Node node, const std::string &filename)
             }
             else
             {
-                logger->log("MonsterDB: Warning, sound effect %s for "
-                            "unknown event %s of monster %s in %s",
-                            soundFile.c_str(), event.c_str(),
-                            currentInfo->name.c_str(),
-                            filename.c_str());
+                Log::info("MonsterDB: Warning, sound effect %s for "
+                          "unknown event %s of monster %s in %s",
+                          soundFile.c_str(), event.c_str(),
+                          currentInfo->name.c_str(),
+                          filename.c_str());
             }
         }
         else if (spriteNode.name() == "attack")
@@ -168,7 +168,7 @@ BeingInfo *MonsterDB::get(int id)
 
     if (i == mMonsterInfos.end())
     {
-        logger->log("MonsterDB: Warning, unknown monster ID %d requested", id);
+        Log::info("MonsterDB: Warning, unknown monster ID %d requested", id);
         return BeingInfo::Unknown;
     }
 

@@ -67,7 +67,7 @@ void Inventory::setItem(int index, int id, int quantity)
 {
     if (index < 0 || index >= getSize())
     {
-        logger->log("Warning: invalid inventory index: %d", index);
+        Log::warn("Invalid inventory index: %d", index);
         return;
     }
 
