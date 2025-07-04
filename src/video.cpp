@@ -243,12 +243,12 @@ bool Video::apply(const VideoSettings &settings)
     return true;
 }
 
-void Video::windowSizeChanged(int width, int height)
+void Video::updateWindowSize()
 {
-    mSettings.width = width;
-    mSettings.height = height;
-
-    mGraphics->updateSize(width, height, mSettings.scale());
+    SDL_GetWindowSize(mWindow, &mSettings.width, &mSettings.height);
+    mGraphics->updateSize(mSettings.width,
+                          mSettings.height,
+                          mSettings.scale());
 }
 
 bool Video::initDisplayModes()

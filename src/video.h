@@ -89,9 +89,9 @@ public:
     bool apply(const VideoSettings &settings);
 
     /**
-     * Handle a change in window size, possibly adjusting the scale.
+     * Handles a change in window size, possibly adjusting the scale.
      */
-    void windowSizeChanged(int width, int height);
+    void updateWindowSize();
 
     const DisplayMode &desktopDisplayMode() const
     {

@@ -150,6 +150,8 @@ public:
 
     int exec();
 
+    void update();
+
     /**
      * Pops up an OkDialog with the given \a title and \a message, and
      * switches to the given \a state when Ok is pressed.
@@ -236,4 +238,27 @@ private:
 
     SDL_TimerID mSecondsCounterId = 0;
     FpsManager mFpsManager;
+
+#if defined(_WIN32) || defined(__APPLE__)
+    /**
+     * This class triggers an update on the window expose event, which allows
+     * the application to draw while Windows is in a modal move/resize loop
+     * as well as while resizing on macOS.
+     */
+    class ExposeEventWatcher
+    {
+    public:
+        ExposeEventWatcher() { SDL_AddEventWatch(&watch, nullptr); }
+        ~ExposeEventWatcher() { SDL_DelEventWatch(&watch, nullptr); }
+
+        static int watch(void *, SDL_Event *event)
+        {
+            if (event->type == SDL_WINDOWEVENT && event->window.event == SDL_WINDOWEVENT_EXPOSED)
+                Client::instance()->update();
+            return 0;
+        }
+    };
+
+    ExposeEventWatcher mExposeEventWatcher;
+#endif
 };

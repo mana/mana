@@ -115,7 +115,7 @@ volatile int frame_count = 0; /**< Counts the frames during one second */
  * Updates fps.
  * Called every seconds by SDL_AddTimer()
  */
-Uint32 nextSecond(Uint32 interval, void *param)
+static Uint32 nextSecond(Uint32 interval, void *param)
 {
     fps = frame_count;
     frame_count = 0;
@@ -443,8 +443,6 @@ int Client::exec()
 
     while (mState != STATE_EXIT)
     {
-        Time::beginFrame();
-
         // Handle SDL events
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -505,463 +503,473 @@ int Client::exec()
             }
         }
 
-        // Let the game handle continuous input while it is active
-        if (mGame)
-            mGame->handleInput();
-
-        if (Net::getGeneralHandler())
-            Net::getGeneralHandler()->flushNetwork();
-
-        gui->logic();
-        if (mGame)
-            mGame->logic();
-
-        sound.logic();
-
-        // Update the screen when application is active, delay otherwise.
-        if (isActive())
-        {
-            frame_count++;
-            gui->draw();
-            graphics->updateScreen();
-            mFpsManager.limitFps(config.fpsLimit);
-        }
-        else
-        {
-            mFpsManager.limitFps(10);
-        }
-
-        // TODO: Add connect timeouts
-        if (mState == STATE_CONNECT_GAME &&
-                 Net::getGameHandler()->isConnected())
-        {
-            Net::getLoginHandler()->disconnect();
-        }
-        else if (mState == STATE_CONNECT_SERVER &&
-                 mOldState == STATE_CONNECT_SERVER &&
-                 Net::getLoginHandler()->isConnected())
-        {
-            mState = STATE_LOGIN;
-        }
-        else if (mState == STATE_WORLD_SELECT && mOldState == STATE_UPDATE)
-        {
-            if (Net::getLoginHandler()->getWorlds().size() < 2)
-            {
-                mState = STATE_LOGIN;
-            }
-        }
-        else if (mOldState == STATE_START ||
-                 (mOldState == STATE_GAME && mState != STATE_GAME))
-        {
-            auto *top = static_cast<gcn::Container*>(gui->getTop());
-
-            mDesktop = new Desktop;
-            top->add(mDesktop);
-            mSetupButton = new Button("", "Setup", this);
-            mSetupButton->setButtonPopupText(_("Setup"));
-            mSetupButton->setButtonIcon("button-icon-setup.png");
-            mSetupButton->setPosition(top->getWidth() - mSetupButton->getWidth()
-                                     - 3, 3);
-            top->add(mSetupButton);
-
-            mDesktop->setSize(graphics->getWidth(), graphics->getHeight());
-        }
-
-        if (mState == STATE_SWITCH_LOGIN && mOldState == STATE_GAME)
-        {
-            Net::getGameHandler()->disconnect();
-        }
-
-        if (mState != mOldState)
-        {
-            {
-                Event event(Event::StateChange);
-                event.setInt("oldState", mOldState);
-                event.setInt("newState", mState);
-                event.trigger(Event::ClientChannel);
-            }
-
-            if (mOldState == STATE_GAME)
-            {
-                delete mGame;
-                mGame = nullptr;
-            }
-
-            mOldState = mState;
-
-            // Get rid of the dialog of the previous state
-            if (mCurrentDialog)
-            {
-                delete mCurrentDialog;
-                mCurrentDialog = nullptr;
-            }
-            // State has changed, while the quitDialog was active, it might
-            // not be correct anymore
-            if (mQuitDialog)
-                mQuitDialog->scheduleDelete();
-
-            switch (mState)
-            {
-                case STATE_CHOOSE_SERVER:
-                    logger->log("State: CHOOSE SERVER");
-
-                    // Don't allow an alpha opacity
-                    // lower than the default value
-                    gui->getTheme()->setMinimumOpacity(0.8f);
-
-                    mCurrentDialog = new ServerDialog(&mCurrentServer,
-                                                      mConfigDir);
-                    break;
-
-                case STATE_CONNECT_SERVER:
-                    logger->log("State: CONNECT SERVER");
-
-                    Net::connectToServer(mCurrentServer);
-
-                    mCurrentDialog = new ConnectionDialog(
-                            _("Connecting to server"), STATE_SWITCH_SERVER);
-                    break;
-
-                case STATE_LOGIN:
-                    logger->log("State: LOGIN");
-                    // Don't allow an alpha opacity
-                    // lower than the default value
-                    gui->getTheme()->setMinimumOpacity(0.8f);
-
-                    if (mOptions.username.empty() || mOptions.password.empty())
-                    {
-                        mCurrentDialog = new LoginDialog(&loginData);
-                    }
-                    else
-                    {
-                        mState = STATE_LOGIN_ATTEMPT;
-                        // Clear the password so that when login fails, the
-                        // dialog will show up next time.
-                        mOptions.password.clear();
-                    }
-                    break;
-
-                case STATE_LOGIN_ATTEMPT:
-                    logger->log("State: LOGIN ATTEMPT");
-                    accountLogin(&loginData);
-                    mCurrentDialog = new ConnectionDialog(
-                            _("Logging in"), STATE_SWITCH_SERVER);
-                    break;
-
-                case STATE_WORLD_SELECT:
-                    logger->log("State: WORLD SELECT");
-                    {
-                        Worlds worlds = Net::getLoginHandler()->getWorlds();
-
-                        if (worlds.empty())
-                        {
-                            // Trust that the netcode knows what it's doing
-                            mState = STATE_UPDATE;
-                        }
-                        else if (worlds.size() == 1 || mOptions.chooseDefault)
-                        {
-                            Net::getLoginHandler()->chooseServer(0);
-                            mState = STATE_UPDATE;
-                        }
-                        else
-                        {
-                            mCurrentDialog = new WorldSelectDialog(std::move(worlds));
-                        }
-                    }
-                    break;
-
-                case STATE_WORLD_SELECT_ATTEMPT:
-                    logger->log("State: WORLD SELECT ATTEMPT");
-                    mCurrentDialog = new ConnectionDialog(
-                            _("Entering game world"), STATE_WORLD_SELECT);
-                    break;
-
-                case STATE_UPDATE:
-                    logger->log("State: UPDATE");
-
-                    if (mOptions.skipUpdate)
-                    {
-                        mState = STATE_LOAD_DATA;
-                    }
-                    else if (initUpdatesDir())
-                    {
-                        mCurrentDialog = new UpdaterWindow(mUpdateHost,
-                                                           mLocalDataDir + "/" + mUpdatesDir,
-                                                           mOptions.dataPath.empty());
-                    }
-                    break;
-
-                case STATE_LOAD_DATA:
-                    logger->log("State: LOAD DATA");
-
-                    // If another data path has been set,
-                    // we don't load any other files...
-                    if (mOptions.dataPath.empty())
-                    {
-                        // Add customdata directory
-                        ResourceManager::searchAndAddArchives(
-                            "customdata/",
-                            "zip",
-                            false);
-                    }
-
-                    // TODO remove this as soon as inventoryhandler stops using this event
-                    Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
-
-                    // Load XML databases
-                    CharDB::load();
-
-                    delete itemDb;
-
-                    switch (Net::getNetworkType())
-                    {
-                      case ServerType::TmwAthena:
-                        itemDb = new TmwAthena::TaItemDB;
-                      break;
-                      case ServerType::ManaServ:
-                        itemDb = new ManaServ::ManaServItemDB;
-                      break;
-                      default:
-                        // Nothing
-                        itemDb = nullptr;
-                      break;
-                    }
-                    assert(itemDb);
-
-                    // load settings.xml
-                    SettingsManager::load();
-
-                    ActorSprite::load();
-
-                    mDesktop->reloadWallpaper();
-
-                    mState = STATE_GET_CHARACTERS;
-                    break;
-
-                case STATE_GET_CHARACTERS:
-                    logger->log("State: GET CHARACTERS");
-                    Net::getCharHandler()->requestCharacters();
-                    mCurrentDialog = new ConnectionDialog(
-                            _("Requesting characters"),
-                            STATE_SWITCH_SERVER);
-                    break;
-
-                case STATE_CHAR_SELECT:
-                    logger->log("State: CHAR SELECT");
-                    // Don't allow an alpha opacity
-                    // lower than the default value
-                    gui->getTheme()->setMinimumOpacity(0.8f);
-
-                    mCurrentDialog = new CharSelectDialog(&loginData);
-
-                    if (!((CharSelectDialog*) mCurrentDialog)->selectByName(
-                            mOptions.character, CharSelectDialog::Choose))
-                    {
-                        ((CharSelectDialog*) mCurrentDialog)->selectByName(
-                                config.lastCharacter,
-                                mOptions.chooseDefault ?
-                                    CharSelectDialog::Choose :
-                                    CharSelectDialog::Focus);
-                    }
-
-                    // Choosing character on the command line should work only
-                    // once, clear it so that 'switch character' works.
-                    mOptions.character.clear();
-                    mOptions.chooseDefault = false;
-
-                    break;
-
-                case STATE_CONNECT_GAME:
-                    logger->log("State: CONNECT GAME");
-
-                    Net::getGameHandler()->connect();
-                    mCurrentDialog = new ConnectionDialog(
-                            _("Connecting to the game server"),
-                            Net::getNetworkType() == ServerType::TmwAthena ?
-                            STATE_CHOOSE_SERVER : STATE_SWITCH_CHARACTER);
-                    break;
-
-                case STATE_CHANGE_MAP:
-                    logger->log("State: CHANGE_MAP");
-
-                    Net::getGameHandler()->connect();
-                    mCurrentDialog = new ConnectionDialog(
-                            _("Changing game servers"),
-                            STATE_SWITCH_CHARACTER);
-                    break;
-
-                case STATE_GAME:
-                    logger->log("Memorizing selected character %s",
-                            local_player->getName().c_str());
-                    config.lastCharacter = local_player->getName();
-
-                    // Fade out logon-music here too to give the desired effect
-                    // of "flowing" into the game.
-                    sound.fadeOutMusic(1000);
-
-                    // Allow any alpha opacity
-                    gui->getTheme()->setMinimumOpacity(0.0f);
-
-                    delete mSetupButton;
-                    delete mDesktop;
-                    mSetupButton = nullptr;
-                    mDesktop = nullptr;
-
-                    mCurrentDialog = nullptr;
-
-                    logger->log("State: GAME");
-                    mGame = new Game;
-                    break;
-
-                case STATE_LOGIN_ERROR:
-                    logger->log("State: LOGIN ERROR");
-                    showErrorDialog(errorMessage, STATE_LOGIN);
-                    break;
-
-                case STATE_ACCOUNTCHANGE_ERROR:
-                    logger->log("State: ACCOUNT CHANGE ERROR");
-                    showErrorDialog(errorMessage, STATE_CHAR_SELECT);
-                    break;
-
-                case STATE_REGISTER_PREP:
-                    logger->log("State: REGISTER_PREP");
-                    Net::getLoginHandler()->getRegistrationDetails();
-                    mCurrentDialog = new ConnectionDialog(
-                            _("Requesting registration details"), STATE_LOGIN);
-                    break;
-
-                case STATE_REGISTER:
-                    logger->log("State: REGISTER");
-                    mCurrentDialog = new RegisterDialog(&loginData);
-                    break;
-
-                case STATE_REGISTER_ATTEMPT:
-                    logger->log("Username is %s", loginData.username.c_str());
-                    Net::getLoginHandler()->registerAccount(&loginData);
-                    loginData.password.clear();
-                    break;
-
-                case STATE_CHANGEPASSWORD:
-                    logger->log("State: CHANGE PASSWORD");
-                    mCurrentDialog = new ChangePasswordDialog(&loginData);
-                    break;
-
-                case STATE_CHANGEPASSWORD_ATTEMPT:
-                    logger->log("State: CHANGE PASSWORD ATTEMPT");
-                    Net::getLoginHandler()->changePassword(loginData.username,
-                                                loginData.password,
-                                                loginData.newPassword);
-                    break;
-
-                case STATE_CHANGEPASSWORD_SUCCESS:
-                    logger->log("State: CHANGE PASSWORD SUCCESS");
-                    showOkDialog(_("Password Change"),
-                                 _("Password changed successfully!"),
-                                 STATE_CHAR_SELECT);
-                    loginData.password.clear();
-                    loginData.newPassword.clear();
-                    break;
-
-                case STATE_CHANGEEMAIL:
-                    logger->log("State: CHANGE EMAIL");
-                    mCurrentDialog = new ChangeEmailDialog(&loginData);
-                    break;
-
-                case STATE_CHANGEEMAIL_ATTEMPT:
-                    logger->log("State: CHANGE EMAIL ATTEMPT");
-                    Net::getLoginHandler()->changeEmail(loginData.email);
-                    break;
-
-                case STATE_CHANGEEMAIL_SUCCESS:
-                    logger->log("State: CHANGE EMAIL SUCCESS");
-                    showOkDialog(_("Email Change"),
-                                 _("Email changed successfully!"),
-                                 STATE_CHAR_SELECT);
-                    break;
-
-                case STATE_UNREGISTER:
-                    logger->log("State: UNREGISTER");
-                    mCurrentDialog = new UnRegisterDialog(&loginData);
-                    break;
-
-                case STATE_UNREGISTER_ATTEMPT:
-                    logger->log("State: UNREGISTER ATTEMPT");
-                    Net::getLoginHandler()->unregisterAccount(
-                            loginData.username, loginData.password);
-                    break;
-
-                case STATE_UNREGISTER_SUCCESS:
-                    logger->log("State: UNREGISTER SUCCESS");
-                    Net::getLoginHandler()->disconnect();
-
-                    showOkDialog(_("Unregister Successful"),
-                                 _("Farewell, come back any time..."),
-                                 STATE_CHOOSE_SERVER);
-                    loginData.clear();
-                    break;
-
-                case STATE_SWITCH_SERVER:
-                    logger->log("State: SWITCH SERVER");
-
-                    Net::getLoginHandler()->disconnect();
-                    Net::getGameHandler()->disconnect();
-
-                    mCurrentServer.hostname.clear();
-                    mState = STATE_CHOOSE_SERVER;
-                    break;
-
-                case STATE_SWITCH_LOGIN:
-                    logger->log("State: SWITCH LOGIN");
-
-                    Net::getLoginHandler()->disconnect();
-
-                    mState = STATE_CONNECT_SERVER;
-                    break;
-
-                case STATE_SWITCH_CHARACTER:
-                    logger->log("State: SWITCH CHARACTER");
-
-                    // Done with game
-                    Net::getGameHandler()->disconnect();
-
-                    mState = STATE_GET_CHARACTERS;
-                    break;
-
-                case STATE_LOGOUT_ATTEMPT:
-                    logger->log("State: LOGOUT ATTEMPT");
-                    // TODO
-                    break;
-
-                case STATE_WAIT:
-                    logger->log("State: WAIT");
-                    break;
-
-                case STATE_EXIT:
-                    logger->log("State: EXIT");
-                    break;
-
-                case STATE_FORCE_QUIT:
-                    logger->log("State: FORCE QUIT");
-                    mState = STATE_EXIT;
-                  break;
-
-                case STATE_ERROR:
-                    logger->log("State: ERROR");
-                    logger->log("Error: %s", errorMessage.c_str());
-                    showErrorDialog(errorMessage, STATE_CHOOSE_SERVER);
-                    Net::getGameHandler()->disconnect();
-                    break;
-
-                default:
-                    mState = STATE_FORCE_QUIT;
-                    break;
-            }
-        }
+        update();
     }
 
     Net::unload();
 
     return 0;
+}
+
+void Client::update()
+{
+    Time::beginFrame();
+
+    mVideo.updateWindowSize();
+    checkGraphicsSize();
+
+    // Let the game handle continuous input while it is active
+    if (mGame)
+        mGame->handleInput();
+
+    if (Net::getGeneralHandler())
+        Net::getGeneralHandler()->flushNetwork();
+
+    gui->logic();
+    if (mGame)
+        mGame->logic();
+
+    sound.logic();
+
+    // Update the screen when application is active, delay otherwise.
+    if (isActive())
+    {
+        frame_count++;
+        gui->draw();
+        graphics->updateScreen();
+        mFpsManager.limitFps(config.fpsLimit);
+    }
+    else
+    {
+        mFpsManager.limitFps(10);
+    }
+
+    // TODO: Add connect timeouts
+    if (mState == STATE_CONNECT_GAME &&
+             Net::getGameHandler()->isConnected())
+    {
+        Net::getLoginHandler()->disconnect();
+    }
+    else if (mState == STATE_CONNECT_SERVER &&
+             mOldState == STATE_CONNECT_SERVER &&
+             Net::getLoginHandler()->isConnected())
+    {
+        mState = STATE_LOGIN;
+    }
+    else if (mState == STATE_WORLD_SELECT && mOldState == STATE_UPDATE)
+    {
+        if (Net::getLoginHandler()->getWorlds().size() < 2)
+        {
+            mState = STATE_LOGIN;
+        }
+    }
+    else if (mOldState == STATE_START ||
+             (mOldState == STATE_GAME && mState != STATE_GAME))
+    {
+        auto *top = static_cast<gcn::Container*>(gui->getTop());
+
+        mDesktop = new Desktop;
+        top->add(mDesktop);
+        mSetupButton = new Button("", "Setup", this);
+        mSetupButton->setButtonPopupText(_("Setup"));
+        mSetupButton->setButtonIcon("button-icon-setup.png");
+        mSetupButton->setPosition(top->getWidth() - mSetupButton->getWidth()
+                                 - 3, 3);
+        top->add(mSetupButton);
+
+        mDesktop->setSize(graphics->getWidth(), graphics->getHeight());
+    }
+
+    if (mState == STATE_SWITCH_LOGIN && mOldState == STATE_GAME)
+    {
+        Net::getGameHandler()->disconnect();
+    }
+
+    if (mState != mOldState)
+    {
+        {
+            Event event(Event::StateChange);
+            event.setInt("oldState", mOldState);
+            event.setInt("newState", mState);
+            event.trigger(Event::ClientChannel);
+        }
+
+        if (mOldState == STATE_GAME)
+        {
+            delete mGame;
+            mGame = nullptr;
+        }
+
+        mOldState = mState;
+
+        // Get rid of the dialog of the previous state
+        if (mCurrentDialog)
+        {
+            delete mCurrentDialog;
+            mCurrentDialog = nullptr;
+        }
+        // State has changed, while the quitDialog was active, it might
+        // not be correct anymore
+        if (mQuitDialog)
+            mQuitDialog->scheduleDelete();
+
+        switch (mState)
+        {
+            case STATE_CHOOSE_SERVER:
+                logger->log("State: CHOOSE SERVER");
+
+                // Don't allow an alpha opacity
+                // lower than the default value
+                gui->getTheme()->setMinimumOpacity(0.8f);
+
+                mCurrentDialog = new ServerDialog(&mCurrentServer,
+                                                  mConfigDir);
+                break;
+
+            case STATE_CONNECT_SERVER:
+                logger->log("State: CONNECT SERVER");
+
+                Net::connectToServer(mCurrentServer);
+
+                mCurrentDialog = new ConnectionDialog(
+                        _("Connecting to server"), STATE_SWITCH_SERVER);
+                break;
+
+            case STATE_LOGIN:
+                logger->log("State: LOGIN");
+                // Don't allow an alpha opacity
+                // lower than the default value
+                gui->getTheme()->setMinimumOpacity(0.8f);
+
+                if (mOptions.username.empty() || mOptions.password.empty())
+                {
+                    mCurrentDialog = new LoginDialog(&loginData);
+                }
+                else
+                {
+                    mState = STATE_LOGIN_ATTEMPT;
+                    // Clear the password so that when login fails, the
+                    // dialog will show up next time.
+                    mOptions.password.clear();
+                }
+                break;
+
+            case STATE_LOGIN_ATTEMPT:
+                logger->log("State: LOGIN ATTEMPT");
+                accountLogin(&loginData);
+                mCurrentDialog = new ConnectionDialog(
+                        _("Logging in"), STATE_SWITCH_SERVER);
+                break;
+
+            case STATE_WORLD_SELECT:
+                logger->log("State: WORLD SELECT");
+                {
+                    Worlds worlds = Net::getLoginHandler()->getWorlds();
+
+                    if (worlds.empty())
+                    {
+                        // Trust that the netcode knows what it's doing
+                        mState = STATE_UPDATE;
+                    }
+                    else if (worlds.size() == 1 || mOptions.chooseDefault)
+                    {
+                        Net::getLoginHandler()->chooseServer(0);
+                        mState = STATE_UPDATE;
+                    }
+                    else
+                    {
+                        mCurrentDialog = new WorldSelectDialog(std::move(worlds));
+                    }
+                }
+                break;
+
+            case STATE_WORLD_SELECT_ATTEMPT:
+                logger->log("State: WORLD SELECT ATTEMPT");
+                mCurrentDialog = new ConnectionDialog(
+                        _("Entering game world"), STATE_WORLD_SELECT);
+                break;
+
+            case STATE_UPDATE:
+                logger->log("State: UPDATE");
+
+                if (mOptions.skipUpdate)
+                {
+                    mState = STATE_LOAD_DATA;
+                }
+                else if (initUpdatesDir())
+                {
+                    mCurrentDialog = new UpdaterWindow(mUpdateHost,
+                                                       mLocalDataDir + "/" + mUpdatesDir,
+                                                       mOptions.dataPath.empty());
+                }
+                break;
+
+            case STATE_LOAD_DATA:
+                logger->log("State: LOAD DATA");
+
+                // If another data path has been set,
+                // we don't load any other files...
+                if (mOptions.dataPath.empty())
+                {
+                    // Add customdata directory
+                    ResourceManager::searchAndAddArchives(
+                        "customdata/",
+                        "zip",
+                        false);
+                }
+
+                // TODO remove this as soon as inventoryhandler stops using this event
+                Event::trigger(Event::ClientChannel, Event::LoadingDatabases);
+
+                // Load XML databases
+                CharDB::load();
+
+                delete itemDb;
+
+                switch (Net::getNetworkType())
+                {
+                  case ServerType::TmwAthena:
+                    itemDb = new TmwAthena::TaItemDB;
+                  break;
+                  case ServerType::ManaServ:
+                    itemDb = new ManaServ::ManaServItemDB;
+                  break;
+                  default:
+                    // Nothing
+                    itemDb = nullptr;
+                  break;
+                }
+                assert(itemDb);
+
+                // load settings.xml
+                SettingsManager::load();
+
+                ActorSprite::load();
+
+                mDesktop->reloadWallpaper();
+
+                mState = STATE_GET_CHARACTERS;
+                break;
+
+            case STATE_GET_CHARACTERS:
+                logger->log("State: GET CHARACTERS");
+                Net::getCharHandler()->requestCharacters();
+                mCurrentDialog = new ConnectionDialog(
+                        _("Requesting characters"),
+                        STATE_SWITCH_SERVER);
+                break;
+
+            case STATE_CHAR_SELECT:
+                logger->log("State: CHAR SELECT");
+                // Don't allow an alpha opacity
+                // lower than the default value
+                gui->getTheme()->setMinimumOpacity(0.8f);
+
+                mCurrentDialog = new CharSelectDialog(&loginData);
+
+                if (!((CharSelectDialog*) mCurrentDialog)->selectByName(
+                        mOptions.character, CharSelectDialog::Choose))
+                {
+                    ((CharSelectDialog*) mCurrentDialog)->selectByName(
+                            config.lastCharacter,
+                            mOptions.chooseDefault ?
+                                CharSelectDialog::Choose :
+                                CharSelectDialog::Focus);
+                }
+
+                // Choosing character on the command line should work only
+                // once, clear it so that 'switch character' works.
+                mOptions.character.clear();
+                mOptions.chooseDefault = false;
+
+                break;
+
+            case STATE_CONNECT_GAME:
+                logger->log("State: CONNECT GAME");
+
+                Net::getGameHandler()->connect();
+                mCurrentDialog = new ConnectionDialog(
+                        _("Connecting to the game server"),
+                        Net::getNetworkType() == ServerType::TmwAthena ?
+                        STATE_CHOOSE_SERVER : STATE_SWITCH_CHARACTER);
+                break;
+
+            case STATE_CHANGE_MAP:
+                logger->log("State: CHANGE_MAP");
+
+                Net::getGameHandler()->connect();
+                mCurrentDialog = new ConnectionDialog(
+                        _("Changing game servers"),
+                        STATE_SWITCH_CHARACTER);
+                break;
+
+            case STATE_GAME:
+                logger->log("Memorizing selected character %s",
+                        local_player->getName().c_str());
+                config.lastCharacter = local_player->getName();
+
+                // Fade out logon-music here too to give the desired effect
+                // of "flowing" into the game.
+                sound.fadeOutMusic(1000);
+
+                // Allow any alpha opacity
+                gui->getTheme()->setMinimumOpacity(0.0f);
+
+                delete mSetupButton;
+                delete mDesktop;
+                mSetupButton = nullptr;
+                mDesktop = nullptr;
+
+                mCurrentDialog = nullptr;
+
+                logger->log("State: GAME");
+                mGame = new Game;
+                break;
+
+            case STATE_LOGIN_ERROR:
+                logger->log("State: LOGIN ERROR");
+                showErrorDialog(errorMessage, STATE_LOGIN);
+                break;
+
+            case STATE_ACCOUNTCHANGE_ERROR:
+                logger->log("State: ACCOUNT CHANGE ERROR");
+                showErrorDialog(errorMessage, STATE_CHAR_SELECT);
+                break;
+
+            case STATE_REGISTER_PREP:
+                logger->log("State: REGISTER_PREP");
+                Net::getLoginHandler()->getRegistrationDetails();
+                mCurrentDialog = new ConnectionDialog(
+                        _("Requesting registration details"), STATE_LOGIN);
+                break;
+
+            case STATE_REGISTER:
+                logger->log("State: REGISTER");
+                mCurrentDialog = new RegisterDialog(&loginData);
+                break;
+
+            case STATE_REGISTER_ATTEMPT:
+                logger->log("Username is %s", loginData.username.c_str());
+                Net::getLoginHandler()->registerAccount(&loginData);
+                loginData.password.clear();
+                break;
+
+            case STATE_CHANGEPASSWORD:
+                logger->log("State: CHANGE PASSWORD");
+                mCurrentDialog = new ChangePasswordDialog(&loginData);
+                break;
+
+            case STATE_CHANGEPASSWORD_ATTEMPT:
+                logger->log("State: CHANGE PASSWORD ATTEMPT");
+                Net::getLoginHandler()->changePassword(loginData.username,
+                                            loginData.password,
+                                            loginData.newPassword);
+                break;
+
+            case STATE_CHANGEPASSWORD_SUCCESS:
+                logger->log("State: CHANGE PASSWORD SUCCESS");
+                showOkDialog(_("Password Change"),
+                             _("Password changed successfully!"),
+                             STATE_CHAR_SELECT);
+                loginData.password.clear();
+                loginData.newPassword.clear();
+                break;
+
+            case STATE_CHANGEEMAIL:
+                logger->log("State: CHANGE EMAIL");
+                mCurrentDialog = new ChangeEmailDialog(&loginData);
+                break;
+
+            case STATE_CHANGEEMAIL_ATTEMPT:
+                logger->log("State: CHANGE EMAIL ATTEMPT");
+                Net::getLoginHandler()->changeEmail(loginData.email);
+                break;
+
+            case STATE_CHANGEEMAIL_SUCCESS:
+                logger->log("State: CHANGE EMAIL SUCCESS");
+                showOkDialog(_("Email Change"),
+                             _("Email changed successfully!"),
+                             STATE_CHAR_SELECT);
+                break;
+
+            case STATE_UNREGISTER:
+                logger->log("State: UNREGISTER");
+                mCurrentDialog = new UnRegisterDialog(&loginData);
+                break;
+
+            case STATE_UNREGISTER_ATTEMPT:
+                logger->log("State: UNREGISTER ATTEMPT");
+                Net::getLoginHandler()->unregisterAccount(
+                        loginData.username, loginData.password);
+                break;
+
+            case STATE_UNREGISTER_SUCCESS:
+                logger->log("State: UNREGISTER SUCCESS");
+                Net::getLoginHandler()->disconnect();
+
+                showOkDialog(_("Unregister Successful"),
+                             _("Farewell, come back any time..."),
+                             STATE_CHOOSE_SERVER);
+                loginData.clear();
+                break;
+
+            case STATE_SWITCH_SERVER:
+                logger->log("State: SWITCH SERVER");
+
+                Net::getLoginHandler()->disconnect();
+                Net::getGameHandler()->disconnect();
+
+                mCurrentServer.hostname.clear();
+                mState = STATE_CHOOSE_SERVER;
+                break;
+
+            case STATE_SWITCH_LOGIN:
+                logger->log("State: SWITCH LOGIN");
+
+                Net::getLoginHandler()->disconnect();
+
+                mState = STATE_CONNECT_SERVER;
+                break;
+
+            case STATE_SWITCH_CHARACTER:
+                logger->log("State: SWITCH CHARACTER");
+
+                // Done with game
+                Net::getGameHandler()->disconnect();
+
+                mState = STATE_GET_CHARACTERS;
+                break;
+
+            case STATE_LOGOUT_ATTEMPT:
+                logger->log("State: LOGOUT ATTEMPT");
+                // TODO
+                break;
+
+            case STATE_WAIT:
+                logger->log("State: WAIT");
+                break;
+
+            case STATE_EXIT:
+                logger->log("State: EXIT");
+                break;
+
+            case STATE_FORCE_QUIT:
+                logger->log("State: FORCE QUIT");
+                mState = STATE_EXIT;
+              break;
+
+            case STATE_ERROR:
+                logger->log("State: ERROR");
+                logger->log("Error: %s", errorMessage.c_str());
+                showErrorDialog(errorMessage, STATE_CHOOSE_SERVER);
+                Net::getGameHandler()->disconnect();
+                break;
+
+            default:
+                mState = STATE_FORCE_QUIT;
+                break;
+        }
+    }
 }
 
 void Client::showOkDialog(const std::string &title,
@@ -1245,10 +1253,6 @@ void Client::handleWindowSizeChanged(int width, int height)
     // Store the new size in the configuration.
     config.screenWidth = width;
     config.screenHeight = height;
-
-    mVideo.windowSizeChanged(width, height);
-
-    checkGraphicsSize();
 }
 
 void Client::checkGraphicsSize()
