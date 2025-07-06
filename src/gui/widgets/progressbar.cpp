@@ -83,11 +83,16 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     rect.x = 0;
     rect.y = 0;
 
+    Theme::ProgressPalette palette = Theme::THEME_PROG_END;
+    if (mProgressPalette >= 0)
+        palette = static_cast<Theme::ProgressPalette>(mProgressPalette);
+
     gui->getTheme()->drawProgressBar(static_cast<Graphics *>(graphics),
                                      rect,
                                      mColor,
                                      mProgress,
-                                     mText);
+                                     mText,
+                                     palette);
 }
 
 void ProgressBar::setProgress(float progress)

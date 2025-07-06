@@ -30,6 +30,7 @@
 #include "resources/image.h"
 #include "utils/xml.h"
 
+#include <array>
 #include <map>
 #include <memory>
 #include <optional>
@@ -283,7 +284,7 @@ class Theme : public EventListener
         static const gcn::Color &getThemeColor(int type);
 
         static gcn::Color getProgressColor(int type, float progress);
-        
+
         const Palette &getPalette(size_t index) const;
 
         /**
@@ -305,7 +306,8 @@ class Theme : public EventListener
                              const gcn::Rectangle &area,
                              const gcn::Color &color,
                              float progress,
-                             const std::string &text = std::string()) const;
+                             const std::string &text = std::string(),
+                             ProgressPalette progressType = ProgressPalette::THEME_PROG_END) const;
 
         const Skin &getSkin(SkinType skinType) const;
 
@@ -357,5 +359,6 @@ class Theme : public EventListener
         float mAlpha = 1.0;
 
         std::vector<Palette> mPalettes;
-        std::vector<std::unique_ptr<DyePalette>> mProgressColors;
+        std::array<std::unique_ptr<DyePalette>, THEME_PROG_END> mProgressColors;
+        std::array<std::optional<TextFormat>, THEME_PROG_END> mProgressTextFormats;
 };

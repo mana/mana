@@ -228,7 +228,6 @@ void Skin::updateAlpha(float alpha)
 
 Theme::Theme(const ThemeInfo &themeInfo)
     : mThemePath(themeInfo.getFullPath())
-    , mProgressColors(THEME_PROG_END)
 {
     listen(Event::ConfigChannel);
     readTheme(themeInfo);
@@ -377,9 +376,12 @@ void Theme::drawSkin(Graphics *graphics, SkinType type, const WidgetState &state
     getSkin(type).draw(graphics, state);
 }
 
-void Theme::drawProgressBar(Graphics *graphics, const gcn::Rectangle &area,
-                            const gcn::Color &color, float progress,
-                            const std::string &text) const
+void Theme::drawProgressBar(Graphics *graphics,
+                            const gcn::Rectangle &area,
+                            const gcn::Color &color,
+                            float progress,
+                            const std::string &text,
+                            ProgressPalette progressType) const
 {
     gcn::Font *oldFont = graphics->getFont();
     gcn::Color oldColor = graphics->getColor();
@@ -408,7 +410,12 @@ void Theme::drawProgressBar(Graphics *graphics, const gcn::Rectangle &area,
     {
         if (auto skinState = skin.getState(widgetState.flags))
         {
-            auto font = skinState->textFormat.bold ? boldFont : gui->getFont();
+            const TextFormat *textFormat = &skinState->textFormat;
+
+            if (progressType < THEME_PROG_END && mProgressTextFormats[progressType])
+                textFormat = &(*mProgressTextFormats[progressType]);
+
+            auto font = textFormat->bold ? boldFont : gui->getFont();
             const int textX = area.x + area.width / 2;
             const int textY = area.y + (area.height - font->getHeight()) / 2;
 
@@ -418,7 +425,7 @@ void Theme::drawProgressBar(Graphics *graphics, const gcn::Rectangle &area,
                                      textY,
                                      gcn::Graphics::CENTER,
                                      font,
-                                     skinState->textFormat);
+                                     *textFormat);
         }
     }
 
@@ -588,9 +595,8 @@ static void readSkinStateRectNode(XML::Node node, SkinState &state)
     node.attribute("fill", rect.filled);
 }
 
-static void readSkinStateTextNode(XML::Node node, SkinState &state)
+static void readTextNode(XML::Node node, TextFormat &textFormat)
 {
-    auto &textFormat = state.textFormat;
     node.attribute("bold", textFormat.bold);
     node.attribute("color", textFormat.color);
     node.attribute("outlineColor", textFormat.outlineColor);
@@ -625,7 +631,7 @@ void Theme::readSkinStateNode(XML::Node node, Skin &skin) const
         else if (childNode.name() == "rect")
             readSkinStateRectNode(childNode, state);
         else if (childNode.name() == "text")
-            readSkinStateTextNode(childNode, state);
+            readTextNode(childNode, state.textFormat);
     }
 
     skin.addState(std::move(state));
@@ -916,5 +922,15 @@ void Theme::readProgressBarNode(XML::Node node)
     if (check(id >= 0, "Theme: 'progress' element has unknown 'id' attribute: '%s'!", idStr.c_str()))
         return;
 
-    mProgressColors[id] = std::make_unique<DyePalette>(node.getProperty("color", std::string()));
+    std::string color;
+    if (node.attribute("color", color))
+        mProgressColors[id] = std::make_unique<DyePalette>(color);
+
+    for (auto childNode : node.children())
+    {
+        if (childNode.name() == "text")
+            readTextNode(childNode, mProgressTextFormats[id].emplace());
+        else
+            Log::info("Theme: Unknown node '%s' in progressbar!", childNode.name().data());
+    }
 }
