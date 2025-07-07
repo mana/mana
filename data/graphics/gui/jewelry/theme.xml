@@ -16,7 +16,7 @@
     <color id="BACKGROUND_GRAY" color="#404040" />
     <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
     <color id="HIGHLIGHT" color="#ebc873" />
-    <color id="TAB_FLASH" color="#fec4ff" effect="pulse" />
+    <color id="TAB_FLASH" color="#a7ff2a" outlineColor="#142200" effect="pulse" />
     <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" />
     <color id="PARTY_TAB" color="#efd7a7" outlineColor="#473005" />
     <color id="GUILD_TAB" color="#efd7a7" outlineColor="#473005" />

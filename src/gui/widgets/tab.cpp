@@ -73,18 +73,27 @@ void Tab::draw(gcn::Graphics *graphics)
     if (mTabbedArea && mTabbedArea->isTabSelected(this))
         flags |= STATE_SELECTED;
 
-    auto &skin = gui->getTheme()->getSkin(SkinType::Tab);
+    auto theme = gui->getTheme();
+    auto &palette = theme->getPalette(0);
+    auto &skin = theme->getSkin(SkinType::Tab);
+
     if (auto state = skin.getState(flags))
     {
         gcn::Color foregroundColor = state->textFormat.color;
+        auto outlineColor = state->textFormat.outlineColor;
         if (mFlash)
-            foregroundColor = Theme::getThemeColor(Theme::TAB_FLASH);
+        {
+            foregroundColor = palette.getColor(Theme::TAB_FLASH);
+            outlineColor = palette.getOutlineColor(Theme::TAB_FLASH);
+        }
         else if (mTabColor)
+        {
             foregroundColor = *mTabColor;
+        }
 
         auto label = static_cast<Label*>(mLabel);
         label->setForegroundColor(foregroundColor);
-        label->setOutlineColor(state->textFormat.outlineColor);
+        label->setOutlineColor(outlineColor);
         label->setShadowColor(state->textFormat.shadowColor);
     }
 
