@@ -295,25 +295,13 @@ void Gui::loadCustomCursors()
 
     SDL_SetSurfaceBlendMode(mouseSurface, SDL_BLENDMODE_NONE);
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    const Uint32 rmask = 0xff000000;
-    const Uint32 gmask = 0x00ff0000;
-    const Uint32 bmask = 0x0000ff00;
-    const Uint32 amask = 0x000000ff;
-#else
-    const Uint32 rmask = 0x000000ff;
-    const Uint32 gmask = 0x0000ff00;
-    const Uint32 bmask = 0x00ff0000;
-    const Uint32 amask = 0xff000000;
-#endif
-
     constexpr int cursorSize = 40;
     const int targetCursorSize = cursorSize * mCustomCursorScale;
     const int columns = mouseSurface->w / cursorSize;
 
-    SDL_Surface *cursorSurface = SDL_CreateRGBSurface(
+    SDL_Surface *cursorSurface = SDL_CreateRGBSurfaceWithFormat(
                 0, targetCursorSize, targetCursorSize, 32,
-                rmask, gmask, bmask, amask);
+                SDL_PIXELFORMAT_RGBA32);
 
     for (int i = 0; i < static_cast<int>(Cursor::Count); ++i)
     {
