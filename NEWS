@@ -36,6 +36,7 @@
 - Enabled whispers in tabs by default
 - Made pickup notifications to appear as particle instead of text by default
 - Made names update immediately when changing "Show gender" option
+- Made the screenshot file name a clickable link
 - Made client config statically typed and save as more structured XML
 - Custom mouse cursor is now rendered by the system
 - Limit shop's Max button to available carry weight

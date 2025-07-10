@@ -117,9 +117,18 @@ std::string &removeColors(std::string &msg);
 /**
  * Returns whether a string starts with a given prefix.
  */
-inline bool startsWith(const std::string &str, const char *prefix)
+inline bool startsWith(std::string_view str, std::string_view prefix)
 {
-    return str.rfind(prefix, 0) == 0;
+    return str.substr(0, prefix.size()) == prefix;
+}
+
+/**
+ * Returns whether a string ends with a given suffix.
+ */
+inline bool endsWith(std::string_view str, std::string_view suffix)
+{
+    return str.size() >= suffix.size() &&
+           str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
 /**

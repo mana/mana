@@ -325,8 +325,16 @@ static bool saveScreenshot()
 
     if (success)
     {
+        std::string screenshotLink;
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+        screenshotLink = strprintf("@@screenshot:%s|%s@@",
+                                   filenameSuffix.str().c_str(),
+                                   filenameSuffix.str().c_str());
+#else
+        screenshotLink = filenameSuffix.str();
+#endif
         serverNotice(strprintf(_("Screenshot saved as %s"),
-                               filenameSuffix.str().c_str()));
+                               screenshotLink.c_str()));
     }
     else
     {

@@ -33,6 +33,7 @@
 
 #include "gui/widgets/itemlinkhandler.h"
 
+#include "client.h"
 #include "resources/iteminfo.h"
 #include "resources/itemdb.h"
 #include "utils/gettext.h"
@@ -56,6 +57,24 @@ static bool isUrl(const std::string &link)
 
 void ItemLinkHandler::handleLink(const std::string &link)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 14)
+    // Handle screenshots by constructing full file path
+    if (startsWith(link, "screenshot:"))
+    {
+        std::string filename = link.substr(11); // Remove "screenshot:" prefix
+
+        // Prevent directory traversal attacks or opening malicious files
+        if (filename.find("..") == std::string::npos && endsWith(filename, ".png"))
+        {
+            std::string fileUrl = "file://" + Client::getScreenshotDirectory() + "/" + filename;
+            if (SDL_OpenURL(fileUrl.c_str()) == -1)
+                new OkDialog(_("Open URL Failed"), SDL_GetError(), true, mParent);
+        }
+
+        return;
+    }
+#endif
+
     if (isUrl(link))
     {
         mLink = link;
