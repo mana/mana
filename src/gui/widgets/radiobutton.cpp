@@ -21,10 +21,10 @@
 
 #include "gui/widgets/radiobutton.h"
 
-#include "textrenderer.h"
-
 #include "gui/gui.h"
 #include "resources/theme.h"
+
+#include <guichan/font.hpp>
 
 RadioButton::RadioButton(const std::string &caption,
                          const std::string &group,
@@ -44,19 +44,19 @@ void RadioButton::draw(gcn::Graphics* graphics)
     if (isSelected())
         widgetState.flags |= STATE_SELECTED;
 
+    auto g = static_cast<Graphics *>(graphics);
     auto &skin = gui->getTheme()->getSkin(SkinType::RadioButton);
-    skin.draw(static_cast<Graphics *>(graphics), widgetState);
+    skin.draw(g, widgetState);
 
     if (auto skinState = skin.getState(widgetState.flags))
     {
         auto &textFormat = skinState->textFormat;
-        TextRenderer::renderText(static_cast<Graphics *>(graphics),
-                                 getCaption(),
-                                 skin.getMinWidth() + skin.padding + skin.spacing,
-                                 skin.padding,
-                                 Graphics::LEFT,
-                                 textFormat.bold ? boldFont : getFont(),
-                                 textFormat);
+        g->drawText(getCaption(),
+                    skin.getMinWidth() + skin.padding + skin.spacing,
+                    skin.padding,
+                    Graphics::LEFT,
+                    textFormat.bold ? boldFont : getFont(),
+                    textFormat);
     }
 }
 

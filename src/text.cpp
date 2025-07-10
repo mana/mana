@@ -23,7 +23,6 @@
 #include "text.h"
 
 #include "textmanager.h"
-#include "textrenderer.h"
 
 #include "gui/gui.h"
 
@@ -94,6 +93,7 @@ void Text::adviseXY(int x, int y)
 
 void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
+    auto g = static_cast<Graphics *>(graphics);
     if (mIsSpeech)
     {
         WidgetState state;
@@ -103,7 +103,7 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
         state.height = mHeight + 10;
 
         auto theme = gui->getTheme();
-        theme->drawSkin(static_cast<Graphics *>(graphics), SkinType::SpeechBubble, state);
+        theme->drawSkin(g, SkinType::SpeechBubble, state);
 
         /*
         if (mWidth >= 15)
@@ -115,7 +115,7 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
         */
     }
 
-    TextRenderer::renderText(graphics, mText,
+    g->drawText(mText,
             mX - xOff, mY - yOff, gcn::Graphics::LEFT,
             *mColor, mFont, !mIsSpeech, true);
 }

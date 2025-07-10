@@ -23,7 +23,6 @@
 #include "gui/widgets/browserbox.h"
 
 #include "keyboardconfig.h"
-#include "textrenderer.h"
 
 #include "gui/gui.h"
 #include "gui/truetypefont.h"
@@ -292,6 +291,8 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         }
     }
 
+    auto g = static_cast<Graphics*>(graphics);
+
     for (const auto &row : mTextRows)
     {
         for (const auto &part : row.parts)
@@ -301,16 +302,15 @@ void BrowserBox::draw(gcn::Graphics *graphics)
             if (part.y > yEnd)
                 return;
 
-            TextRenderer::renderText(graphics,
-                                     part.text,
-                                     part.x,
-                                     part.y,
-                                     Graphics::LEFT,
-                                     part.color,
-                                     part.font,
-                                     part.outlineColor.has_value() || mOutline,
-                                     mShadows,
-                                     part.outlineColor);
+            g->drawText(part.text,
+                        part.x,
+                        part.y,
+                        Graphics::LEFT,
+                        part.color,
+                        part.font,
+                        part.outlineColor.has_value() || mOutline,
+                        mShadows,
+                        part.outlineColor);
         }
     }
 }

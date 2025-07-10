@@ -21,8 +21,6 @@
 
 #include "gui/widgets/label.h"
 
-#include "textrenderer.h"
-
 #include "resources/theme.h"
 
 #include <guichan/exception.hpp>
@@ -59,15 +57,15 @@ void Label::draw(gcn::Graphics *graphics)
         throw GCN_EXCEPTION("Unknown alignment.");
     }
 
-    TextRenderer::renderText(static_cast<Graphics *>(graphics),
-                             getCaption(),
-                             textX,
-                             textY,
-                             getAlignment(),
-                             getForegroundColor(),
-                             getFont(),
-                             mOutlineColor.has_value(),
-                             mShadowColor.has_value(),
-                             mOutlineColor,
-                             mShadowColor);
+    auto g = static_cast<Graphics *>(graphics);
+    g->drawText(getCaption(),
+                textX,
+                textY,
+                getAlignment(),
+                getForegroundColor(),
+                getFont(),
+                mOutlineColor.has_value(),
+                mShadowColor.has_value(),
+                mOutlineColor,
+                mShadowColor);
 }

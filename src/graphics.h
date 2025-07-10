@@ -29,6 +29,9 @@
 #include <guichan/graphics.hpp>
 
 #include <memory>
+#include <optional>
+
+struct TextFormat;
 
 enum class FillMode
 {
@@ -186,6 +189,25 @@ class Graphics : public gcn::Graphics
         {
             drawImageRect(imgRect, area.x, area.y, area.width, area.height);
         }
+
+        using gcn::Graphics::drawText;
+
+        void drawText(const std::string &text,
+                      int x, int y,
+                      gcn::Graphics::Alignment alignment,
+                      const gcn::Color &color,
+                      gcn::Font *font,
+                      bool outline = false,
+                      bool shadow = false,
+                      const std::optional<gcn::Color> &outlineColor = {},
+                      const std::optional<gcn::Color> &shadowColor = {});
+
+        void drawText(const std::string &text,
+                      int x,
+                      int y,
+                      gcn::Graphics::Alignment align,
+                      gcn::Font *font,
+                      const TextFormat &format);
 
         /**
          * Updates the screen. This is done by either copying the buffer to the

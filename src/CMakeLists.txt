@@ -4,7 +4,7 @@ pkg_check_modules(SDL2 REQUIRED
   SDL2_image
   SDL2_mixer
   SDL2_net
-  SDL2_ttf)
+  SDL2_ttf>=2.0.12)
 find_package(PhysFS REQUIRED)
 find_package(CURL REQUIRED)
 find_package(LibXml2 REQUIRED)
@@ -499,7 +499,6 @@ set(SRCS
     textmanager.h
     textparticle.cpp
     textparticle.h
-    textrenderer.h
     tileset.h
     units.cpp
     units.h

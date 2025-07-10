@@ -23,7 +23,6 @@
 
 #include "gui/gui.h"
 #include "resources/theme.h"
-#include "textrenderer.h"
 
 #include <guichan/font.hpp>
 
@@ -96,7 +95,7 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
                 xpos = width;
                 wrappedStream << word;
             }
-            else if (xpos != 0 && xpos + getFont()->getWidth(" ") + width <= 
+            else if (xpos != 0 && xpos + getFont()->getWidth(" ") + width <=
                      mMinWidth)
             {
                 xpos += getFont()->getWidth(" ") + width;
@@ -176,18 +175,19 @@ void TextBox::draw(gcn::Graphics *graphics)
     graphics->setColor(*mTextColor);
     graphics->setFont(getFont());
 
+    auto g = static_cast<Graphics*>(graphics);
+
     for (i = 0; i < mTextRows.size(); i++)
     {
         // Move the text one pixel so we can have a caret before a letter.
-        TextRenderer::renderText(graphics,
-                                 mTextRows[i],
-                                 1,
-                                 i * getFont()->getHeight(),
-                                 gcn::Graphics::LEFT,
-                                 *mTextColor,
-                                 getFont(),
-                                 mOutlineColor.has_value(),
-                                 false,
-                                 mOutlineColor);
+        g->drawText(mTextRows[i],
+                    1,
+                    i * getFont()->getHeight(),
+                    gcn::Graphics::LEFT,
+                    *mTextColor,
+                    getFont(),
+                    mOutlineColor.has_value(),
+                    false,
+                    mOutlineColor);
     }
 }

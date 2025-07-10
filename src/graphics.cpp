@@ -21,6 +21,9 @@
 
 #include "graphics.h"
 
+#include "gui/truetypefont.h"
+#include "resources/theme.h"
+
 #include <guichan/exception.hpp>
 
 
@@ -168,6 +171,72 @@ void Graphics::drawImageRect(const ImageRect &imgRect, int x, int y, int w, int 
             }
         }
     }
+}
+
+void Graphics::drawText(const std::string &text,
+                        int x, int y,
+                        gcn::Graphics::Alignment alignment,
+                        const gcn::Color &color,
+                        gcn::Font *font,
+                        bool outline,
+                        bool shadow,
+                        const std::optional<gcn::Color> &outlineColor,
+                        const std::optional<gcn::Color> &shadowColor)
+{
+    switch (alignment)
+    {
+    case gcn::Graphics::LEFT:
+        break;
+    case gcn::Graphics::CENTER:
+        x -= font->getWidth(text) / 2;
+        break;
+    case gcn::Graphics::RIGHT:
+        x -= font->getWidth(text);
+        break;
+    default:
+        throw GCN_EXCEPTION("Unknown alignment.");
+    }
+
+    auto realOutlineColor = outlineColor;
+    auto realShadowColor = shadowColor;
+
+    if (shadow && !realShadowColor)
+    {
+        auto sc = Theme::getThemeColor(Theme::SHADOW);
+        sc.a = color.a / 2;
+        realShadowColor = sc;
+    }
+
+    if (outline && !realOutlineColor)
+    {
+        auto oc = Theme::getThemeColor(Theme::OUTLINE);
+        oc.a = color.a;
+        realOutlineColor = oc;
+    }
+
+    setColor(color);
+    static_cast<TrueTypeFont*>(font)->drawString(graphics, text, x, y,
+                                                 realOutlineColor,
+                                                 realShadowColor);
+}
+
+void Graphics::drawText(const std::string &text,
+                        int x,
+                        int y,
+                        gcn::Graphics::Alignment align,
+                        gcn::Font *font,
+                        const TextFormat &format)
+{
+    drawText(text,
+             x,
+             y,
+             align,
+             format.color,
+             font,
+             format.outlineColor.has_value(),
+             format.shadowColor.has_value(),
+             format.outlineColor,
+             format.shadowColor);
 }
 
 void Graphics::_beginDraw()

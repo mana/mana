@@ -28,7 +28,6 @@
 
 #include "resources/image.h"
 #include "resources/theme.h"
-#include "textrenderer.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/font.hpp>
@@ -132,8 +131,9 @@ void Button::draw(gcn::Graphics *graphics)
     if (isPressed())
         widgetState.flags |= STATE_SELECTED;
 
+    auto g = static_cast<Graphics *>(graphics);
     auto &skin = gui->getTheme()->getSkin(SkinType::Button);
-    skin.draw(static_cast<Graphics *>(graphics), widgetState);
+    skin.draw(g, widgetState);
 
     auto skinState = skin.getState(widgetState.flags);
     auto font = (skinState && skinState->textFormat.bold) ? boldFont : getFont();
@@ -196,18 +196,16 @@ void Button::draw(gcn::Graphics *graphics)
     }
 
     if (btnIconWidth)
-        static_cast<Graphics *>(graphics)->drawImage(icon, btnIconX, btnIconY);
+        g->drawImage(icon, btnIconX, btnIconY);
 
     if (auto skinState = skin.getState(widgetState.flags))
     {
-        auto &textFormat = skinState->textFormat;
-        TextRenderer::renderText(static_cast<Graphics *>(graphics),
-                                 getCaption(),
-                                 textX,
-                                 textY,
-                                 getAlignment(),
-                                 font,
-                                 textFormat);
+        g->drawText(getCaption(),
+                    textX,
+                    textY,
+                    getAlignment(),
+                    font,
+                    skinState->textFormat);
     }
 }
 

@@ -22,13 +22,16 @@
 
 #pragma once
 
+#include <guichan/color.hpp>
 #include <guichan/font.hpp>
 
 #include <SDL_ttf.h>
 
 #include <list>
+#include <optional>
 #include <string>
 
+class Graphics;
 class TextChunk;
 
 /**
@@ -46,11 +49,13 @@ class TrueTypeFont : public gcn::Font
          * @param size      Font size.
          */
         TrueTypeFont(const std::string &filename, int size, int style = 0);
-
         ~TrueTypeFont() override;
 
-        int getWidth(const std::string &text) const override;
+        const std::string &filename() const { return mFilename; }
+        int pointSize() const { return mPointSize; }
+        int style() const { return mStyle; }
 
+        int getWidth(const std::string &text) const override;
         int getHeight() const override;
 
         /**
@@ -67,13 +72,27 @@ class TrueTypeFont : public gcn::Font
                         const std::string &text,
                         int x, int y) override;
 
+        /**
+         * Extended version of drawString that allows for rendering text with
+         * outline and/or shadow.
+         */
+        void drawString(Graphics *graphics,
+                        const std::string &text,
+                        int x, int y,
+                        const std::optional<gcn::Color> &outlineColor,
+                        const std::optional<gcn::Color> &shadowColor);
+
         static void updateFontScale(float scale);
 
     private:
+        TextChunk &getChunk(const std::string &text) const;
+
         const std::string mFilename;
-        TTF_Font *mFont;
+        TTF_Font *mFont = nullptr;
+        TTF_Font *mFontOutline = nullptr;
 
         const int mPointSize;
+        const int mStyle;
 
         // Word surfaces cache
         mutable std::list<TextChunk> mCache;

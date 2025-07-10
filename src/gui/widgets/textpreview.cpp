@@ -21,13 +21,7 @@
 
 #include "gui/widgets/textpreview.h"
 
-#include "configuration.h"
-#include "textrenderer.h"
-
 #include "gui/gui.h"
-#include "gui/truetypefont.h"
-
-#include <typeinfo>
 
 TextPreview::TextPreview(const std::string &text)
     : mText(text)
@@ -36,12 +30,13 @@ TextPreview::TextPreview(const std::string &text)
     mTextColor = &Theme::getThemeColor(Theme::TEXT);
 }
 
-void TextPreview::draw(gcn::Graphics* graphics)
+void TextPreview::draw(gcn::Graphics *graphics)
 {
-    TextRenderer::renderText(graphics, mText, 2, 2,  gcn::Graphics::LEFT,
-                             gcn::Color(mTextColor->r,
-                                        mTextColor->g,
-                                        mTextColor->b,
-                                        255),
-                             mFont, mOutline, mShadow);
+    auto g = static_cast<Graphics*>(graphics);
+    g->drawText(mText, 2, 2, gcn::Graphics::LEFT,
+                gcn::Color(mTextColor->r,
+                           mTextColor->g,
+                           mTextColor->b,
+                           255),
+                mFont, mOutline, mShadow);
 }

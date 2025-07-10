@@ -21,7 +21,7 @@
 
 #include "textparticle.h"
 
-#include "textrenderer.h"
+#include "graphics.h"
 
 #include <guichan/color.hpp>
 
@@ -47,7 +47,7 @@ bool TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     gcn::Color color = *mColor;
     color.a = getCurrentAlpha() * 255;
 
-    TextRenderer::renderText(graphics, mText,
+    graphics->drawText(mText,
             screenX, screenY, gcn::Graphics::CENTER,
             color, mTextFont, mOutline, false);
 

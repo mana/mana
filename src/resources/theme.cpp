@@ -25,7 +25,6 @@
 
 #include "configuration.h"
 #include "log.h"
-#include "textrenderer.h"
 
 #include "resources/dye.h"
 #include "resources/image.h"
@@ -419,13 +418,12 @@ void Theme::drawProgressBar(Graphics *graphics,
             const int textX = area.x + area.width / 2;
             const int textY = area.y + (area.height - font->getHeight()) / 2;
 
-            TextRenderer::renderText(graphics,
-                                     text,
-                                     textX,
-                                     textY,
-                                     gcn::Graphics::CENTER,
-                                     font,
-                                     *textFormat);
+            graphics->drawText(text,
+                               textX,
+                               textY,
+                               gcn::Graphics::CENTER,
+                               font,
+                               *textFormat);
         }
     }
 

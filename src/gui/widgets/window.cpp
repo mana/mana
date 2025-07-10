@@ -23,7 +23,6 @@
 
 #include "configuration.h"
 #include "log.h"
-#include "textrenderer.h"
 
 #include "gui/gui.h"
 #include "gui/viewport.h"
@@ -139,13 +138,12 @@ void Window::drawFrame(gcn::Graphics *graphics)
         if (auto skinState = skin.getState(widgetState.flags))
         {
             auto &textFormat = skinState->textFormat;
-            TextRenderer::renderText(g,
-                                     getCaption(),
-                                     getFrameSize() + skin.titleOffsetX,
-                                     getFrameSize() + skin.titleOffsetY,
-                                     gcn::Graphics::LEFT,
-                                     textFormat.bold ? boldFont : getFont(),
-                                     textFormat);
+            g->drawText(getCaption(),
+                        getFrameSize() + skin.titleOffsetX,
+                        getFrameSize() + skin.titleOffsetY,
+                        gcn::Graphics::LEFT,
+                        textFormat.bold ? boldFont : getFont(),
+                        textFormat);
         }
     }
 }
