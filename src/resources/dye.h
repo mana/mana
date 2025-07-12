@@ -35,7 +35,7 @@ class DyePalette
          * The string is either a file name or a sequence of hexadecimal RGB
          * values separated by ',' and starting with '#'.
          */
-        DyePalette(const std::string &pallete);
+        DyePalette(const std::string &description);
 
         /**
          * Gets a pixel color depending on its intensity. First color is

@@ -3987,7 +3987,7 @@ msgstr "人間界から追い出された。"
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr "最後の呼吸だった。死神に会った後、無と結合しちゃった。"
 
 #: ../src/net/tmwa/playerhandler.cpp:125

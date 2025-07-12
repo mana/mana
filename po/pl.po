@@ -3814,7 +3814,7 @@ msgstr "Kopnąłeś w kalendarz."
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr ""
 "Zrzuciłeś swą ziemską powłokę, wyniosłeś ducha poza doczesne wymiary i "
 "przyłączyłeś się do chórów anielskich."

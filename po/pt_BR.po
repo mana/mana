@@ -3800,7 +3800,7 @@ msgstr "Você chutou o balde."
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr ""
 "Você dispensou seu corpo mortal, abaixou as cortinas e juntou-se ao maldito "
 "coro invisível."

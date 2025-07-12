@@ -58,7 +58,7 @@ const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
 namespace {
 
     /**
-     * Listener used for handling the overweigth message.
+     * Listener used for handling the overweight message.
      */
     struct WeightListener : public gcn::ActionListener
     {
@@ -129,7 +129,7 @@ static const char *randomDeathMessage()
         N_("You're off the twig."),
         N_("You've kicked the bucket."),
         N_("You've shuffled off your mortal coil, run down the "
-           "curtain and joined the bleedin' choir invisibile."),
+           "curtain and joined the bleedin' choir invisible."),
         N_("You are an ex-player."),
         N_("You're pining for the fjords.")
     };

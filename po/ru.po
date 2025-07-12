@@ -3821,7 +3821,7 @@ msgstr "Вы приказали долго жить."
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr ""
 "Вы осознали суть экзистенции, не выдержали тленности бытия, её "
 "несправедливости и иррациональности и в порыве безысходности решили привести "

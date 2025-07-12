@@ -3962,7 +3962,7 @@ msgstr "你踢了水桶"
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr "死掉了...."
 
 #: ../src/net/tmwa/playerhandler.cpp:125

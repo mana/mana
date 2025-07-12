@@ -3827,7 +3827,7 @@ msgstr[1] "Poimit %d [@@%d|%s@@]."
 msgid "You picked up %s."
 msgstr "%s noukittu."
 
-# Leisure Suit Larry reference. 
+# Leisure Suit Larry reference.
 #: ../src/net/manaserv/beinghandler.cpp:293
 #: ../src/net/tmwa/playerhandler.cpp:115
 msgid ""
@@ -3872,7 +3872,7 @@ msgstr "Potkaisit tyhjää."
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr ""
 "Olet heittänyt henkesi, poistunut keskuudestamme ja loikannut Tuonelan "
 "jokeen."

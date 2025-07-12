@@ -166,7 +166,7 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
          * Puts a damage bubble above this being.
          *
          * @param attacker the attacking being
-         * @param damage the amount of damage recieved (0 means miss)
+         * @param damage the amount of damage received (0 means miss)
          * @param type the attack type
          * @param attackId the attack id (used for monsters)
          */

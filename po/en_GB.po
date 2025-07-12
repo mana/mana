@@ -3973,10 +3973,10 @@ msgstr "You've kicked the bucket."
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 
 #: ../src/net/tmwa/playerhandler.cpp:125
 msgid "Your metabolic processes are now history."

@@ -3832,7 +3832,7 @@ msgstr ""
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr ""
 
 #: ../src/net/tmwa/playerhandler.cpp:125

@@ -3864,7 +3864,7 @@ msgstr "Jetzt passt Du in 'nen Eimer."
 #: ../src/net/tmwa/playerhandler.cpp:128
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
-"bleedin' choir invisibile."
+"bleedin' choir invisible."
 msgstr ""
 "Du hast Deine sterbliche Hülle abgelegt, der Schleier legt sich über Dich "
 "und Du trittst dem Chor der blutenden Unsichtbaren bei."

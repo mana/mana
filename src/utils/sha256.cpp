@@ -3,7 +3,7 @@
  *  Copyright (C) 2008-2009  The Mana World Development Team
  *  Copyright (C) 2009-2012  The Mana Developers
  *
- *  This file has been slighly modified as part of The Mana Client.
+ *  This file has been slightly modified as part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2, as
