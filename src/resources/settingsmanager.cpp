@@ -39,6 +39,9 @@
 #include "log.h"
 #include "units.h"
 
+#include <string>
+#include <set>
+
 namespace SettingsManager
 {
     static std::string mSettingsFile;
@@ -54,6 +57,7 @@ namespace SettingsManager
         hairDB.init();
         itemDb->init();
         MonsterDB::init();
+        QuestDB::init();
         AbilityDB::init();
         NPCDB::init();
         EmoteDB::init();

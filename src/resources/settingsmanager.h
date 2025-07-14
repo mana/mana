@@ -20,10 +20,6 @@
 
 #pragma once
 
-#include <string>
-#include <list>
-#include <set>
-
 namespace SettingsManager
 {
     void load();

@@ -123,6 +123,7 @@ enum class QuestChange
 
 namespace QuestDB
 {
+    void init();
     void readQuestVarNode(XML::Node node, const std::string &filename);
     void unload();
 

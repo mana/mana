@@ -173,6 +173,8 @@ QuestsWindow::QuestsWindow()
     loadWindowState();
 }
 
+QuestsWindow::~QuestsWindow() = default;
+
 void QuestsWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "hideCompleted")

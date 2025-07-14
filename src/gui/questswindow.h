@@ -47,6 +47,7 @@ class QuestsWindow final : public Window,
 {
 public:
     QuestsWindow();
+    ~QuestsWindow();
 
     void action(const gcn::ActionEvent &event) override;
 

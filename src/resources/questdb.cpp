@@ -37,6 +37,11 @@ static bool contains(const Container &container, const Value &value)
     return std::find(container.begin(), container.end(), value) != container.end();
 }
 
+void init()
+{
+    unload();
+}
+
 void readQuestVarNode(XML::Node node, const std::string &filename)
 {
     int varId = 0;
