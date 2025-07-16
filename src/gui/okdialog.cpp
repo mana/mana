@@ -22,6 +22,7 @@
 #include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/textbox.h"
 
 #include "utils/gettext.h"
@@ -32,33 +33,16 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
                    bool modal, Window *parent):
     Window(title, modal, parent)
 {
-    mTextBox = new TextBox;
-    mTextBox->setEditable(false);
-    mTextBox->setOpaque(false);
-    mTextBox->setTextWrapped(msg, 260);
+    auto textBox = new TextBox;
+    textBox->setEditable(false);
+    textBox->setOpaque(false);
+    textBox->setTextWrapped(msg, 260);
 
     gcn::Button *okButton = new Button(_("OK"), "ok", this);
 
-    const int numRows = mTextBox->getNumberOfRows();
-    const int fontHeight = getFont()->getHeight();
-    const int height = numRows * fontHeight;
-    int width = getFont()->getWidth(title);
-
-    if (width < mTextBox->getMinWidth())
-        width = mTextBox->getMinWidth();
-    if (width < okButton->getWidth())
-        width = okButton->getWidth();
-
-    setContentSize(mTextBox->getMinWidth() + fontHeight, height +
-                   fontHeight + okButton->getHeight());
-    mTextBox->setPosition(getPadding(), getPadding());
-
-    // 8 is the padding that GUIChan adds to button widgets
-    // (top and bottom combined)
-    okButton->setPosition((width - okButton->getWidth()) / 2, height + 8);
-
-    add(mTextBox);
-    add(okButton);
+    place(0, 0, textBox);
+    place(0, 1, okButton).setHAlign(Layout::CENTER);
+    reflowLayout();
 
     center();
     setVisible(true);
@@ -69,8 +53,5 @@ void OkDialog::action(const gcn::ActionEvent &event)
 {
     setActionEventId(event.getId());
     distributeActionEvent();
-
-    // Can we receive anything else anyway?
-    if (event.getId() == "ok")
-        scheduleDelete();
+    scheduleDelete();
 }

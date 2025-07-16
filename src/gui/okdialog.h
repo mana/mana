@@ -25,8 +25,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-class TextBox;
-
 /**
  * An 'Ok' button dialog.
  *
@@ -42,7 +40,4 @@ class OkDialog : public Window, public gcn::ActionListener
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event) override;
-
-    private:
-        TextBox *mTextBox;
 };

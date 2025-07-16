@@ -22,49 +22,34 @@
 #include "gui/confirmdialog.h"
 
 #include "gui/widgets/button.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/textbox.h"
 
 #include "utils/gettext.h"
 
 #include <guichan/font.hpp>
 
-ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
-        Window *parent):
+ConfirmDialog::ConfirmDialog(const std::string &title,
+                             const std::string &msg,
+                             Window *parent):
     Window(title, true, parent)
 {
-    mTextBox = new TextBox;
-    mTextBox->setEditable(false);
-    mTextBox->setOpaque(false);
-    mTextBox->setTextWrapped(msg, 260);
+    auto textBox = new TextBox;
+    textBox->setEditable(false);
+    textBox->setOpaque(false);
+    textBox->setTextWrapped(msg, 260);
 
     gcn::Button *yesButton = new Button(_("Yes"), "yes", this);
     gcn::Button *noButton = new Button(_("No"), "no", this);
 
-    const int numRows = mTextBox->getNumberOfRows();
-    const int inWidth = yesButton->getWidth() + noButton->getWidth() + 
-                        (2 * getPadding());
-    const int fontHeight = getFont()->getHeight();
-    const int height = numRows * fontHeight;
-    int width = getFont()->getWidth(title);
+    auto place = getPlacer(0, 0);
+    place(0, 0, textBox);
 
-    if (width < mTextBox->getMinWidth())
-        width = mTextBox->getMinWidth();
-    if (width < inWidth)
-        width = inWidth;
-
-    setContentSize(mTextBox->getMinWidth() + fontHeight, height + fontHeight +
-                   noButton->getHeight());
-    mTextBox->setPosition(getPadding(), getPadding());
-
-    // 8 is the padding that GUIChan adds to button widgets
-    // (top and bottom combined)
-    yesButton->setPosition((width - inWidth) / 2, height + 8);
-    noButton->setPosition(yesButton->getX() + inWidth - noButton->getWidth(),
-                          height + 8);
-
-    add(mTextBox);
-    add(yesButton);
-    add(noButton);
+    place = getPlacer(0, 1);
+    place(0, 0, yesButton);
+    place(1, 0, noButton);
+    place.getCell().setHAlign(Layout::CENTER);
+    reflowLayout();
 
     if (getParent())
     {
@@ -79,8 +64,5 @@ void ConfirmDialog::action(const gcn::ActionEvent &event)
 {
     setActionEventId(event.getId());
     distributeActionEvent();
-
-    // Can we receive anything else anyway?
-    if (event.getId() == "yes" || event.getId() == "no")
-        scheduleDelete();
+    scheduleDelete();
 }
