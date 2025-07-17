@@ -24,7 +24,6 @@
 #include "net/charhandler.h"
 
 #include "net/tmwa/messagehandler.h"
-#include "net/tmwa/token.h"
 
 class LoginData;
 
@@ -53,7 +52,7 @@ class CharServerHandler final : public MessageHandler, public Net::CharHandler
 
         void chooseCharacter(Net::Character *character) override;
 
-        void newCharacter(const std::string &name, int slot, bool gender,
+        void newCharacter(const std::string &name, int slot, Gender gender,
                           int hairstyle, int hairColor,
                           const std::vector<int> &stats) override;
 

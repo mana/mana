@@ -19,22 +19,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "being.h"
+#include "net/tmwa/protocol.h"
 
 #pragma once
 
+namespace TmwAthena {
+
 struct Token
 {
-    int account_ID;
-    int session_ID1;
-    int session_ID2;
-    Gender sex;
-
-    void clear()
-    {
-        account_ID = 0;
-        session_ID1 = 0;
-        session_ID2 = 0;
-        sex = Gender::Unspecified;
-    }
+    int account_ID = 0;
+    int session_ID1 = 0;
+    int session_ID2 = 0;
+    SEX sex = SEX::UNSPECIFIED;
 };
+
+} // namespace TmwAthena

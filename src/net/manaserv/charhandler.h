@@ -59,7 +59,7 @@ class CharHandler final : public MessageHandler, public Net::CharHandler
         void chooseCharacter(Net::Character *character) override;
 
         void newCharacter(const std::string &name, int slot,
-                          bool gender, int hairstyle, int hairColor,
+                          Gender gender, int hairstyle, int hairColor,
                           const std::vector<int> &stats) override;
 
         void deleteCharacter(Net::Character *character) override;

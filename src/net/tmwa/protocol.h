@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "being.h"
+
 #include <cstdint>
 
 namespace TmwAthena {
@@ -92,6 +94,26 @@ enum class DIR : uint8_t
 
     COUNT,
 };
+
+enum class SEX : uint8_t
+{
+    FEMALE = 0,
+    MALE = 1,
+    UNSPECIFIED = 2,
+    NEUTRAL = 3,
+};
+
+inline Gender sexToGender(SEX sex)
+{
+    switch (sex)
+    {
+    case SEX::FEMALE:       return Gender::Female;
+    case SEX::MALE:         return Gender::Male;
+    case SEX::UNSPECIFIED:  return Gender::Unspecified;
+    case SEX::NEUTRAL:      return Gender::Hidden;
+    }
+    return Gender::Unspecified;
+}
 
 enum NpcCommand
 {

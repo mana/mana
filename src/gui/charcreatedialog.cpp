@@ -191,8 +191,10 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
                 0 : mHairStylesIds.at(mHairStyleId);
             int hairColor = mHairColorsIds.empty() ?
                 0 : mHairColorsIds.at(mHairColorId);
+
+            Gender gender = mFemale->isSelected() ? Gender::Female : Gender::Male;
             Net::getCharHandler()->newCharacter(getName(), characterSlot,
-                                                mFemale->isSelected(),
+                                                gender,
                                                 hairStyle, hairColor,
                                                 mAttributes);
         }

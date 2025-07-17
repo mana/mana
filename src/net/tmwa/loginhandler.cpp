@@ -124,7 +124,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             mToken.account_ID = msg.readInt32();
             mToken.session_ID2 = msg.readInt32();
             msg.skip(30);                           // unused
-            mToken.sex = msg.readInt8() ? Gender::Male : Gender::Female;
+            mToken.sex = static_cast<SEX>(msg.readInt8());
 
             for (int i = 0; i < worldCount; i++)
             {

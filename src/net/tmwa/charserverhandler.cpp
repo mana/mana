@@ -36,6 +36,7 @@
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/network.h"
 #include "net/tmwa/protocol.h"
+#include "net/tmwa/token.h"
 
 #include "resources/attributes.h"
 #include "resources/chardb.h"
@@ -241,7 +242,7 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     const uint16_t weapon = msg.readInt16();
 
     auto *tempPlayer = new LocalPlayer(id, race);
-    tempPlayer->setGender(token.sex);
+    tempPlayer->setGender(sexToGender(token.sex));
 
     tempPlayer->setSprite(SPRITE_SHOE, shoe);
     tempPlayer->setSprite(SPRITE_GLOVES, gloves);
@@ -267,8 +268,9 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
         character->data.mStats[i + STRENGTH].base = msg.readInt8();
 
     character->slot = msg.readInt8(); // character slot
-    const uint8_t sex = msg.readInt8();
-    tempPlayer->setGender(sex ? Gender::Male : Gender::Female);
+    const Gender gender = sexToGender(static_cast<SEX>(msg.readInt8()));
+    if (gender != Gender::Unspecified)
+        tempPlayer->setGender(gender);
 }
 
 void CharServerHandler::setCharSelectDialog(CharSelectDialog *window)
@@ -306,7 +308,10 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
         sumStat = Attributes::getCreationPoints();
 
     mCharCreateDialog->setAttributes(attributes, sumStat, minStat, maxStat);
-    mCharCreateDialog->setDefaultGender(token.sex);
+
+    const Gender gender = sexToGender(token.sex);
+    if (gender != Gender::Unspecified)
+        mCharCreateDialog->setDefaultGender(gender);
 }
 
 void CharServerHandler::requestCharacters()
@@ -324,7 +329,7 @@ void CharServerHandler::chooseCharacter(Net::Character *character)
 }
 
 void CharServerHandler::newCharacter(const std::string &name, int slot,
-                                     bool gender, int hairstyle, int hairColor,
+                                     Gender /*gender*/, int hairstyle, int hairColor,
                                      const std::vector<int> &stats)
 {
     MessageOut outMsg(CMSG_CHAR_CREATE);
@@ -400,7 +405,7 @@ void CharServerHandler::connect()
     // [Fate] The next word is unused by the old char server, so we squeeze in
     //        mana client version information
     outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
-    outMsg.writeInt8(token.sex == Gender::Male ? 1 : 0);
+    outMsg.writeInt8(static_cast<uint8_t>(token.sex));
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

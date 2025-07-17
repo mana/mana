@@ -217,7 +217,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
         return;
 
     int id;
-    short job, gender;
+    short job;
+    SEX sex;
     float speed;
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves;
@@ -305,12 +306,11 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readInt16();  // manner
             opt3 = msg.readInt16();
             msg.readInt8();   // karma
-            gender = msg.readInt8();
+            sex = static_cast<SEX>(msg.readInt8());
 
             if (dstBeing->getType() == ActorSprite::PLAYER)
             {
-                dstBeing->setGender(gender == 0 ? Gender::Female
-                                                : Gender::Male);
+                dstBeing->setGender(sexToGender(sex));
                 // Set these after the gender, as the sprites may be gender-specific
                 dstBeing->setSprite(SPRITE_HAIR, hairStyle * -1,
                                     hairDB.getHairColor(hairColor));

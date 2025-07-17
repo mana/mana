@@ -339,7 +339,7 @@ void CharHandler::chooseCharacter(Net::Character *character)
 
 void CharHandler::newCharacter(const std::string &name,
                                int slot,
-                               bool gender,
+                               Gender gender,
                                int hairstyle,
                                int hairColor,
                                const std::vector<int> &stats)
@@ -349,7 +349,7 @@ void CharHandler::newCharacter(const std::string &name,
     msg.writeString(name);
     msg.writeInt8(hairstyle);
     msg.writeInt8(hairColor);
-    msg.writeInt8(gender);
+    msg.writeInt8(gender == Gender::Female);
     msg.writeInt8(slot);
 
     for (int stat : stats)
