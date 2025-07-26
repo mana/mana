@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-23 09:58+0200\n"
-"PO-Revision-Date: 2025-06-24 16:01+0000\n"
+"PO-Revision-Date: 2025-07-27 18:08+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/mana/mana/ta/>\n"
 "Language: ta\n"
@@ -148,7 +148,7 @@ msgstr "/msg> ஒரு பயனருக்கு ஒரு தனிப்ப
 
 #: ../src/commandhandler.cpp:165
 msgid "/whisper > Alias of msg"
-msgstr "/விச்பர்> எம்.எச்.சி."
+msgstr "/whisper > செய்தியின் மாற்றுப்பெயர்"
 
 #: ../src/commandhandler.cpp:166
 msgid "/w > Alias of msg"
@@ -777,7 +777,7 @@ msgstr "தற்போது: %s; %d வீரர்கள் உள்ளன�
 
 #: ../src/gui/chatwindow.cpp:320
 msgid "Attendance written to record log."
-msgstr "பதிவு பதிவு செய்ய எழுதப்பட்டது."
+msgstr "வருகைப் பதிவேட்டில் பதிவு செய்ய எழுதப்பட்டது."
 
 #: ../src/gui/chatwindow.cpp:497
 #, c-format
