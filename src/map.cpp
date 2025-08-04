@@ -151,14 +151,13 @@ void MapLayer::draw(Graphics *graphics,
 
             for (int x = startX; x < endX; x++)
             {
-                Image *img = getTile(x, y);
-                if (img)
+                if (Image *img = getTile(x, y))
                 {
-                    const int px = (x * mMap->getTileWidth()) + dx;
-                    const int py = py0 - img->getHeight();
                     if (!(debugFlags & (Map::DEBUG_SPECIAL1 | Map::DEBUG_SPECIAL2))
                         || img->getHeight() <= mMap->getTileHeight())
                     {
+                        const int px = (x * mMap->getTileWidth()) + dx;
+                        const int py = py0 - img->getHeight();
                         int width = 0;
                         int c = getTileDrawWidth(x, y, endX, width);
                         if (!c)

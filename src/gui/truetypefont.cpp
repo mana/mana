@@ -45,14 +45,6 @@ static const char *getSafeUtf8String(const std::string &text)
     return buf;
 }
 
-bool operator==(SDL_Color lhs, SDL_Color rhs)
-{
-    return (lhs.r == rhs.r &&
-            lhs.g == rhs.g &&
-            lhs.b == rhs.b &&
-            lhs.a == rhs.a);
-}
-
 
 class TextChunk
 {

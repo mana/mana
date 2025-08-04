@@ -83,6 +83,8 @@ protected:
     void updateClipRect() override;
 
 private:
+    void setColorAlphaMod(const Image *image, bool useColor) const;
+
     SDL_Window *mWindow = nullptr;
     SDL_Renderer *mRenderer = nullptr;
 };

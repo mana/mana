@@ -32,6 +32,8 @@
 
 #include <SDL_image.h>
 
+#include <algorithm>
+
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
 bool Image::mPowerOfTwoTextures = true;
@@ -176,18 +178,7 @@ void Image::setAlpha(float alpha)
     if (!useOpenGL() && mDisableTransparency)
         return;
 
-    if (mAlpha == alpha)
-        return;
-
-    if (alpha < 0.0f || alpha > 1.0f)
-        return;
-
-    mAlpha = alpha;
-
-    if (mTexture)
-    {
-        SDL_SetTextureAlphaMod(mTexture, (Uint8) (255 * mAlpha));
-    }
+    mAlpha = std::clamp(alpha, 0.0f, 1.0f);
 }
 
 Image *Image::_SDLload(SDL_Surface *image)
