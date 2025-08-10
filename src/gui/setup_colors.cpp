@@ -187,8 +187,8 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "slider_grad")
     {
-        updateGradType();
         updateColor();
+        updateGradType();
         return;
     }
 
