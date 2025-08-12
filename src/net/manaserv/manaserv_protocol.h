@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "being.h"
+
 namespace ManaServ {
 
 enum {
@@ -464,16 +466,16 @@ enum BeingGender
 /**
 * Helper function for getting gender by int
 */
-inline ManaServ::BeingGender getGender(int gender)
+inline Gender getGender(int gender)
 {
     switch (gender)
     {
-        case 0:
-            return ManaServ::GENDER_MALE;
-        case 1:
-            return ManaServ::GENDER_FEMALE;
+        case GENDER_MALE:
+            return Gender::Male;
+        case GENDER_FEMALE:
+            return Gender::Female;
         default:
-            return ManaServ::GENDER_UNSPECIFIED;
+            return Gender::Neutral;
     }
 }
 

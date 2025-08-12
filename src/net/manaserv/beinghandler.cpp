@@ -146,24 +146,13 @@ static void handleLooks(Being *being, MessageIn &msg)
 
 void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
-    int type = msg.readInt8();
-    int id = msg.readInt16();
-    auto action = (Being::Action)msg.readInt8();
-    int px = msg.readInt16();
-    int py = msg.readInt16();
-    auto direction = (BeingDirection)msg.readInt8();
-
-    Gender gender = Gender::Unspecified;
-    switch (getGender(msg.readInt8())) {
-    case GENDER_MALE:
-        gender = Gender::Male;
-        break;
-    case GENDER_FEMALE:
-        gender = Gender::Female;
-        break;
-    case GENDER_UNSPECIFIED:
-        break;
-    }
+    const int type = msg.readInt8();
+    const int id = msg.readInt16();
+    const auto action = static_cast<Being::Action>(msg.readInt8());
+    const int px = msg.readInt16();
+    const int py = msg.readInt16();
+    const auto direction = static_cast<BeingDirection>(msg.readInt8());
+    const Gender gender = getGender(msg.readInt8());
 
     Being *being;
 

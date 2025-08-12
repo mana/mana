@@ -107,12 +107,10 @@ inline Gender sexToGender(SEX sex)
 {
     switch (sex)
     {
-    case SEX::FEMALE:       return Gender::Female;
-    case SEX::MALE:         return Gender::Male;
-    case SEX::UNSPECIFIED:  return Gender::Unspecified;
-    case SEX::NEUTRAL:      return Gender::Hidden;
+    case SEX::FEMALE:   return Gender::Female;
+    case SEX::MALE:     return Gender::Male;
+    default:            return Gender::Neutral;
     }
-    return Gender::Unspecified;
 }
 
 enum NpcCommand

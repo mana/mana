@@ -125,7 +125,7 @@ void ItemDB::loadEmptyItemDefinition()
     std::string errFile = paths.getStringValue("spriteErrorFile");
     mUnknown->setSprite(errFile, Gender::Male, 0);
     mUnknown->setSprite(errFile, Gender::Female, 0);
-    mUnknown->setSprite(errFile, Gender::Hidden, 0);
+    mUnknown->setSprite(errFile, Gender::Neutral, 0);
     mUnknown->hitEffectId = paths.getIntValue("hitEffectId");
     mUnknown->criticalHitEffectId = paths.getIntValue("criticalHitEffectId");
 }
@@ -184,7 +184,7 @@ void ItemDB::loadSpriteRef(ItemInfo &itemInfo, XML::Node node)
     if (gender == "female" || gender == "unisex")
         itemInfo.setSprite(filename, Gender::Female, race);
     if (gender == "hidden" || gender == "other" || gender == "unisex")
-        itemInfo.setSprite(filename, Gender::Hidden, race);
+        itemInfo.setSprite(filename, Gender::Neutral, race);
 }
 
 void ItemDB::loadSoundRef(ItemInfo &itemInfo, XML::Node node)

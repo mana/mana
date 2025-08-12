@@ -106,17 +106,7 @@ void CharHandler::handleCharacterInfo(MessageIn &msg)
 
         info.slot = msg.readInt8();
         info.name = msg.readString();
-        switch (getGender(msg.readInt8())) {
-        case GENDER_MALE:
-            info.gender = Gender::Male;
-            break;
-        case GENDER_FEMALE:
-            info.gender = Gender::Female;
-            break;
-        case GENDER_UNSPECIFIED:
-            info.gender = Gender::Unspecified;
-            break;
-        }
+        info.gender = getGender(msg.readInt8());
         info.hairStyle = msg.readInt8();
         info.hairColor = msg.readInt8();
         info.characterPoints = msg.readInt16();

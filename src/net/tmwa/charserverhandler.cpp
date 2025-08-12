@@ -268,9 +268,7 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
         character->data.mStats[i + STRENGTH].base = msg.readInt8();
 
     character->slot = msg.readInt8(); // character slot
-    const Gender gender = sexToGender(static_cast<SEX>(msg.readInt8()));
-    if (gender != Gender::Unspecified)
-        tempPlayer->setGender(gender);
+    tempPlayer->setGender(sexToGender(static_cast<SEX>(msg.readInt8())));
 }
 
 void CharServerHandler::setCharSelectDialog(CharSelectDialog *window)
@@ -309,9 +307,8 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
 
     mCharCreateDialog->setAttributes(attributes, sumStat, minStat, maxStat);
 
-    const Gender gender = sexToGender(token.sex);
-    if (gender != Gender::Unspecified)
-        mCharCreateDialog->setDefaultGender(gender);
+    if (token.sex != SEX::UNSPECIFIED)
+        mCharCreateDialog->setDefaultGender(sexToGender(token.sex));
 }
 
 void CharServerHandler::requestCharacters()
