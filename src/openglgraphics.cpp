@@ -104,8 +104,6 @@ OpenGLGraphics::OpenGLGraphics(SDL_Window *window, SDL_GLContext glContext)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glEnable(GL_SCISSOR_TEST);
-
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glEnableClientState(GL_VERTEX_ARRAY);
