@@ -93,6 +93,11 @@ public:
      */
     void updateWindowSize();
 
+    /**
+     * Present the next frame.
+     */
+    void present();
+
     const DisplayMode &desktopDisplayMode() const
     {
         return mDesktopDisplayMode;
@@ -111,4 +116,5 @@ private:
     std::vector<DisplayMode> mDisplayModes;
     std::unique_ptr<Graphics> mGraphics;
     SDL_Window *mWindow = nullptr;
+    bool mWindowShown = false;
 };

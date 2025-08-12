@@ -119,6 +119,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
               mSettings.height,
               videoMode);
 
+    mWindowShown = !(windowFlags & SDL_WINDOW_HIDDEN);
     mWindow = SDL_CreateWindow("Mana",
                                SDL_WINDOWPOS_UNDEFINED,
                                SDL_WINDOWPOS_UNDEFINED,
@@ -248,6 +249,17 @@ void Video::updateWindowSize()
     mGraphics->updateSize(mSettings.width,
                           mSettings.height,
                           mSettings.scale());
+}
+
+void Video::present()
+{
+    mGraphics->updateScreen();
+
+    if (!mWindowShown)
+    {
+        SDL_ShowWindow(mWindow);
+        mWindowShown = true;
+    }
 }
 
 bool Video::initDisplayModes()

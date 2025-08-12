@@ -542,7 +542,6 @@ void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
 void OpenGLGraphics::updateScreen()
 {
     SDL_GL_SwapWindow(mWindow);
-    SDL_ShowWindow(mWindow);
 
     /*
      * glFinish flushes all OpenGL commands and makes sure they have been

@@ -531,7 +531,7 @@ void Client::update()
     {
         frame_count++;
         gui->draw();
-        graphics->updateScreen();
+        mVideo.present();
         mFpsManager.limitFps(config.fpsLimit);
     }
     else

@@ -215,7 +215,6 @@ void SDLGraphics::drawRescaledImagePattern(const Image *image,
 void SDLGraphics::updateScreen()
 {
     SDL_RenderPresent(mRenderer);
-    SDL_ShowWindow(mWindow);
 }
 
 void SDLGraphics::windowToLogical(int windowX, int windowY,
