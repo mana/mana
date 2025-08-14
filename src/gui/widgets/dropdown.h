@@ -49,6 +49,10 @@ class DropDown : public gcn::DropDown
 
         void adjustHeight();
 
+        // Inherited from BasicContainer
+
+        gcn::Rectangle getChildrenArea() override;
+
         // Inherited from FocusListener
 
         void focusLost(const gcn::Event& event) override;

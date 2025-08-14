@@ -150,6 +150,5 @@ class ScrollArea : public gcn::ScrollArea
         int mX = 0;
         int mY = 0;
         bool mHasMouse = false;
-        bool mOpaque = true;
         bool mShowButtons = true;
 };

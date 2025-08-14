@@ -42,6 +42,9 @@ DropDown::DropDown(gcn::ListModel *listModel):
     setFrameSize(skin.frameSize);
     mPadding = skin.padding;
 
+    // Make sure to call the right setOpaque function
+    static_cast<ScrollArea*>(mScrollArea)->setOpaque(false);
+
     setHeight(getFont()->getHeight() + 2 * mPadding);
 }
 
@@ -87,9 +90,9 @@ void DropDown::draw(gcn::Graphics* graphics)
         // Draw two lines separating the ListBox with selected
         // element view.
         graphics->setColor(highlightColor);
-        graphics->drawLine(0, h, getWidth(), h);
+        graphics->drawLine(0, h, getWidth() - 1, h);
         graphics->setColor(shadowColor);
-        graphics->drawLine(0, h + 1, getWidth(), h + 1);
+        graphics->drawLine(0, h + 1, getWidth() - 1, h + 1);
     }
 }
 
@@ -110,21 +113,22 @@ void DropDown::adjustHeight()
     const int listBoxHeight = mListBox->getHeight();
     int height = getFont()->getHeight() + 2 * mPadding;
 
-    // The addition/subtraction of 2 compensates for the seperation lines
+    // The addition/subtraction of 4 compensates for the seperation lines
     // seperating the selected element view and the scroll area.
+    const int extraHeight = 4;
 
     if (mDroppedDown && getParent())
     {
-        int availableHeight = getParent()->getChildrenArea().height - getY();
+        int availableHeight = getParent()->getChildrenArea().height - getY() - getFrameSize();
 
-        if (listBoxHeight > availableHeight - height - 2)
+        if (listBoxHeight > availableHeight - height - extraHeight)
         {
-            mScrollArea->setHeight(availableHeight - height - 2);
+            mScrollArea->setHeight(availableHeight - height - extraHeight);
             height = availableHeight;
         }
         else
         {
-            height += listBoxHeight + 2;
+            height += listBoxHeight + extraHeight;
             mScrollArea->setHeight(listBoxHeight);
         }
     }
@@ -132,9 +136,24 @@ void DropDown::adjustHeight()
     setHeight(height);
 
     mScrollArea->setWidth(getWidth());
-    // Resize the ListBox to exactly fit the ScrollArea.
-    mListBox->setWidth(mScrollArea->getChildrenArea().width);
+    // Resize the ListBox to exactly fit the ScrollArea, minus the one pixel padding.
+    mListBox->setWidth(mScrollArea->getChildrenArea().width - 2);
     mScrollArea->setPosition(0, 0);
+}
+
+// Overridden to add more space for the separator
+gcn::Rectangle DropDown::getChildrenArea()
+{
+    if (mDroppedDown)
+    {
+        // Calculate the children area (with the two pixel border in mind)
+        return gcn::Rectangle(1,
+                              mFoldedUpHeight + 3,
+                              getWidth() - 2,
+                              getHeight() - mFoldedUpHeight - 4);
+    }
+
+    return gcn::Rectangle();
 }
 
 void DropDown::drawButton(gcn::Graphics *graphics)
