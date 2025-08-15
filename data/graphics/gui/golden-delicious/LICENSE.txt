@@ -1,0 +1,13 @@
+"Golden Delicious" theme port to Mana by Hello=)
+(c) 2025. Some rights reserved.
+
+This work is based on "Jewelry" theme by Francesco Miglietta (aka Hal9000)
+and therefore also comes under same CC-BY-SA license, version 3, or at
+your option, any later version of CC-BY-SA license, as allowed by
+CC-BY-SA licensing terms.
+
+window.png: almost completely redrawn by Hello=)
+equipmentbox.png: CC-BY-SA 3.0 Created by Francesco Miglietta (aka Hal9000)
+progress-indicator.png: created by Hello=)
+
+theme.xml: Loosely based on Thorbjorn's port of Jewelry. Many changes by Hello=)

@@ -1,15 +1,16 @@
-<theme name="Jewelry">
+<theme name="Golden Delicious">
   <palette id="0">
-    <color id="BROWSERBOX" color="#000000" />
-    <color id="SELFNICK" color="#402600" />
-    <color id="TEXT" color="#402600" />
-    <color id="TEXT_DISABLED" color="#402600" />
-    <color id="CARET" color="#80561f" />
+    <color id="BROWSERBOX" color="#8f8f8f" />
+    <color id="SELFNICK" color="#808600" />
+    <color id="TEXT" color="#e8d8aa" />
+    <color id="TEXT_DISABLED" color="#e8d8aa" />
+    <color id="CARET" color="#F8E8DC" />
     <color id="SHADOW" color="#000000" />
     <color id="OUTLINE" color="#000000" />
     <color id="BORDER" color="#000000" />
-    <color id="DROPDOWN" color="#000000" />
-    <color id="LISTBOX" color="#000000" />
+    <color id="DROPDOWN" color="#e8d8aa" />
+    <color id="LISTBOX" color="#e8d8aa" />
+    <!-- WIP: next colors may still need tweak -->
     <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" />
     <color id="BACKGROUND" color="#ffffff" />
     <color id="BACKGROUND_GRAY" color="#404040" />
@@ -25,73 +26,13 @@
     <color id="WHISPER_TAB_OFFLINE_HIGHLIGHTED" color="#fffbed" outlineColor="#000000" />
     <color id="WHISPER_TAB_OFFLINE_SELECTED" color="#444444" outlineColor="#000000" />
     <color id="SHOP_WARNING" color="#e07a7a" />
-    <color id="ITEM_EQUIPPED" color="#000091" />
+    <color id="ITEM_EQUIPPED" color="#f8e8cf" /> <!-- Fixed -->
     <color id="CHAT" color="#f1d9a9" />
     <color id="GM" color="#fec4ff" />
     <color id="GLOBAL" color="#fec4ff" />
     <color id="PLAYER" color="#eeeeee" />
     <color id="IS" color="#edbedb" />
     <color id="SERVER" color="#edbedb" />
-    <color id="LOGGER" color="#919191" />
-    <color id="HYPERLINK" color="#ab15bd" />
-    <color id="UNKNOWN_ITEM" color="#ffffff" />
-    <color id="CHARM" color="#ffffff" />
-    <color id="GENERIC" color="#eeeeee" />
-    <color id="CARD" color="#eeeeee" />
-    <color id="HEAD" color="#b4d7ec" />
-    <color id="USABLE" color="#ece9b4" />
-    <color id="TORSO" color="#b4d7ec" />
-    <color id="ONEHAND" color="#b4d7ec" />
-    <color id="LEGS" color="#b4d7ec" />
-    <color id="FEET" color="#b4d7ec" />
-    <color id="TWOHAND" color="#b4d7ec" />
-    <color id="SHIELD" color="#b4d7ec" />
-    <color id="RING" color="#b4d7ec" />
-    <color id="NECKLACE" color="#b4d7ec" />
-    <color id="ARMS" color="#b4d7ec" />
-    <color id="AMMO" color="#b4d7ec" />
-    <color id="SERVER_VERSION_NOT_SUPPORTED" color="#DC0000" />
-    <color id="WARNING" color="#FF0000" />
-    <color id="PLAYER_ADVANCED" color="#005000" />
-    <color id="BUBBLE_TEXT" color="#ffffff" />
-    <color id="BLACK" color="#000000" />
-    <color id="RED" color="#ff0000" />
-    <color id="GREEN" color="#009000" />
-    <color id="BLUE" color="#0000ff" />
-    <color id="ORANGE" color="#e0980e" />
-    <color id="YELLOW" color="#f1dc27" />
-    <color id="PINK" color="#ff00d8" />
-    <color id="PURPLE" color="#8415e2" />
-    <color id="GRAY" color="#919191" />
-    <color id="BROWN" color="#774217" />
-    <color id="OLDCHAT" color="#774217" />
-    <color id="STATUSBAR_ON" color="#646464" />
-    <color id="STATUSBAR_OFF" color="#ffff00" />
-    <color id="TABLE_BACKGROUND" color="#bfbfbf" />
-    <color id="SKILL_COOLDOWN" color="#5090ff" />
-  </palette>
-
-  <palette id="1">
-    <color id="SELFNICK" color="#402600" />
-    <color id="TEXT" color="#fbf4c4" outlineColor="#42403a" />
-    <color id="TEXT_DISABLED" color="#f9eabc" />
-    <color id="CARET" color="#80561f" />
-    <color id="SHADOW" color="#000000" />
-    <color id="OUTLINE" color="#000000" />
-    <color id="BORDER" color="#000000" />
-    <color id="DROPDOWN" color="#000000" />
-    <color id="LISTBOX" color="#000000" />
-    <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" />
-    <color id="TAB_FLASH" color="#a7ff2a" outlineColor="#142200" />
-    <color id="TAB_PLAYER_FLASH" color="#ff96f6" />
-    <color id="BACKGROUND" color="#ffffff" />
-    <color id="BACKGROUND_GRAY" color="#404040" />
-    <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
-    <color id="HIGHLIGHT" color="#ebc873" />
-    <color id="HIGHLIGHT_TEXT" color="#000000" />
-    <color id="SHOP_WARNING" color="#e07a7a" />
-    <color id="ITEM_EQUIPPED" color="#000091" />
-    <color id="BUBBLE_TEXT" color="#ffffff" />
     <color id="LOGGER" color="#919191" />
     <color id="HYPERLINK" color="#bcdff4" outlineColor="#052f47" />
     <color id="UNKNOWN_ITEM" color="#ffffff" />
@@ -111,7 +52,7 @@
     <color id="ARMS" color="#f8eb7c" outlineColor="#382a01" />
     <color id="AMMO" color="#f8eb7c" outlineColor="#382a01" />
     <color id="SERVER_VERSION_NOT_SUPPORTED" color="#DC0000" />
-    <color id="WARNING" color="#FF0000" />
+    <color id="WARNING" color="#ff0000" />
     <color id="CHAT" color="#ffffff" outlineColor="#3f3f3f" />
     <color id="GM" color="#ff45fd" outlineColor="#44033a" />
     <color id="GLOBAL" color="#ff45fd" outlineColor="#44033a" />
@@ -120,6 +61,7 @@
     <color id="IS" color="#77deff" outlineColor="#02232e" />
     <color id="SERVER" color="#a7ff2a" outlineColor="#142200" />
     <color id="BROWSERBOX" color="#999999" outlineColor="#000000" />
+    <color id="BUBBLE_TEXT" color="#ffffff" />
     <color id="BLACK" color="#999999" outlineColor="#000000" />
     <color id="RED" color="#ff6565" outlineColor="#470303" />
     <color id="GREEN" color="#57cb21" outlineColor="#0b3102" />
@@ -135,19 +77,22 @@
     <color id="STATUSBAR_ON" color="#646464" />
     <color id="STATUSBAR_OFF" color="#ffff00" />
     <color id="TABLE_BACKGROUND" color="#bfbfbf" />
+    <color id="SKILL_COOLDOWN" color="#5090ff" />
   </palette>
 
-  <palette id="2">
-    <color id="SELFNICK" color="#402600" />
-    <color id="TEXT" color="#402600" />
-    <color id="TEXT_DISABLED" color="#402600" />
-    <color id="CARET" color="#80561f" />
+  <palette id="1">
+    <color id="BROWSERBOX" color="#8f8f8f" />
+    <color id="SELFNICK" color="#808600" />
+    <color id="TEXT" color="#fbf4c4" outlineColor="#42403a" />
+    <color id="TEXT_DISABLED" color="#e8d8aa" />
+    <color id="CARET" color="#F8E8DC" />
     <color id="SHADOW" color="#000000" />
     <color id="OUTLINE" color="#000000" />
     <color id="BORDER" color="#000000" />
-    <color id="DROPDOWN" color="#000000" />
-    <color id="LISTBOX" color="#000000" />
-    <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#000000" />
+    <color id="DROPDOWN" color="#e8d8aa" />
+    <color id="LISTBOX" color="#e8d8aa" />
+    <!-- WIP: next colors may still need tweak -->
+    <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" />
     <color id="BACKGROUND" color="#ffffff" />
     <color id="BACKGROUND_GRAY" color="#404040" />
     <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
@@ -155,8 +100,14 @@
     <color id="HIGHLIGHT_TEXT" color="#000000" />
     <color id="TAB_FLASH" color="#fec4ff" effect="pulse" />
     <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" />
+    <color id="PARTY_TAB" color="#efd7a7" outlineColor="#473005" />
+    <color id="GUILD_TAB" color="#efd7a7" outlineColor="#473005" />
+    <color id="WHISPER_TAB" color="#efd7a7" outlineColor="#473005" />
+    <color id="WHISPER_TAB_OFFLINE" color="#444444" outlineColor="#000000" />
+    <color id="WHISPER_TAB_OFFLINE_HIGHLIGHTED" color="#fffbed" outlineColor="#000000" />
+    <color id="WHISPER_TAB_OFFLINE_SELECTED" color="#444444" outlineColor="#000000" />
     <color id="SHOP_WARNING" color="#e07a7a" />
-    <color id="ITEM_EQUIPPED" color="#000091" />
+    <color id="ITEM_EQUIPPED" color="#f8e8cf" /> <!-- Fixed -->
     <color id="CHAT" color="#f1d9a9" />
     <color id="GM" color="#fec4ff" />
     <color id="GLOBAL" color="#fec4ff" />
@@ -164,85 +115,112 @@
     <color id="IS" color="#edbedb" />
     <color id="SERVER" color="#edbedb" />
     <color id="LOGGER" color="#919191" />
-    <color id="HYPERLINK" color="#9e1904" />
+    <color id="HYPERLINK" color="#bcdff4" outlineColor="#052f47" />
     <color id="UNKNOWN_ITEM" color="#ffffff" />
     <color id="CHARM" color="#ffffff" />
-    <color id="GENERIC" color="#eeeeee" />
-    <color id="CARD" color="#eeeeee" />
-    <color id="HEAD" color="#b4d7ec" />
-    <color id="USABLE" color="#ece9b4" />
-    <color id="TORSO" color="#b4d7ec" />
-    <color id="ONEHAND" color="#b4d7ec" />
-    <color id="LEGS" color="#b4d7ec" />
-    <color id="FEET" color="#b4d7ec" />
-    <color id="TWOHAND" color="#b4d7ec" />
-    <color id="SHIELD" color="#b4d7ec" />
-    <color id="RING" color="#b4d7ec" />
-    <color id="NECKLACE" color="#b4d7ec" />
-    <color id="ARMS" color="#b4d7ec" />
-    <color id="AMMO" color="#b4d7ec" />
+    <color id="GENERIC" color="#dbdbdb" outlineColor="#333333" />
+    <color id="CARD" color="#dbdbdb" outlineColor="#333333" />
+    <color id="HEAD" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="USABLE" color="#b4d7ec" outlineColor="#052f47" />
+    <color id="TORSO" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="ONEHAND" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="LEGS" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="FEET" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="TWOHAND" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="SHIELD" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="RING" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="NECKLACE" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="ARMS" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="AMMO" color="#f8eb7c" outlineColor="#382a01" />
     <color id="SERVER_VERSION_NOT_SUPPORTED" color="#DC0000" />
-    <color id="WARNING" color="#FF0000" />
-    <color id="PLAYER_ADVANCED" color="#005000" />
+    <color id="WARNING" color="#ff0000" />
+    <color id="CHAT" color="#ffffff" outlineColor="#3f3f3f" />
+    <color id="GM" color="#ff45fd" outlineColor="#44033a" />
+    <color id="GLOBAL" color="#ff45fd" outlineColor="#44033a" />
+    <color id="PLAYER" color="#bcdff4" outlineColor="#052f47" />
+    <color id="PLAYER_ADVANCED" color="#f9eabc" outlineColor="#3b2b04" />
+    <color id="IS" color="#77deff" outlineColor="#02232e" />
+    <color id="SERVER" color="#a7ff2a" outlineColor="#142200" />
+    <color id="BROWSERBOX" color="#999999" outlineColor="#000000" />
     <color id="BUBBLE_TEXT" color="#ffffff" />
-    <color id="BROWSERBOX" color="#000000" />
-    <color id="BLACK" color="#000000" />
-    <color id="RED" color="#b71313" />
-    <color id="GREEN" color="#307200" />
-    <color id="BLUE" color="#174b96" />
-    <color id="ORANGE" color="#f1c777" />
-    <color id="YELLOW" color="#f8eb7c" />
-    <color id="PINK" color="#91105f" />
-    <color id="PURPLE" color="#5e1298" />
-    <color id="GRAY" color="#dbdbdb" />
-    <color id="BROWN" color="#8e4c17" />
-    <color id="OLDCHAT" color="#8e4c17" />
-    <color id="AWAYCHAT" color="#8e4c17" />
+    <color id="BLACK" color="#999999" outlineColor="#000000" />
+    <color id="RED" color="#ff6565" outlineColor="#470303" />
+    <color id="GREEN" color="#57cb21" outlineColor="#0b3102" />
+    <color id="BLUE" color="#8080ff" outlineColor="#060646" />
+    <color id="ORANGE" color="#f1c777" outlineColor="#3d2201" />
+    <color id="YELLOW" color="#f8eb7c" outlineColor="#382a01" />
+    <color id="PINK" color="#ff90ee" outlineColor="#44033a" />
+    <color id="PURPLE" color="#cd8cff" outlineColor="#260341" />
+    <color id="GRAY" color="#dbdbdb" outlineColor="#333333" />
+    <color id="BROWN" color="#cb884c" outlineColor="#271802" />
+    <color id="OLDCHAT" color="#cb884c" outlineColor="#271802" />
+    <color id="AWAYCHAT" color="#cb884c" outlineColor="#271802" />
     <color id="STATUSBAR_ON" color="#646464" />
     <color id="STATUSBAR_OFF" color="#ffff00" />
     <color id="TABLE_BACKGROUND" color="#bfbfbf" />
+    <color id="SKILL_COOLDOWN" color="#5090ff" />
   </palette>
 
   <progressbar id="DEFAULT" color="#969696" />
-  <progressbar id="HP" color="#b80000" />
+  <progressbar id="HP" color="#D00000,C09800,779000,008710">
+    <text color="#97ff9f" outlineColor="#112211" />
+  </progressbar>
   <progressbar id="HP_POISON" color="#ffff00,70ff00,50ff00,30ff00" />
-  <progressbar id="MP" color="#1a66e6" />
-  <progressbar id="NO_MP" color="#646464" />
-  <progressbar id="EXP" color="#8fc0d3" />
-  <progressbar id="INVY_SLOTS" color="#e1c819" />
-  <progressbar id="WEIGHT" color="#0000ff,ffff00,ff0000" />
-  <progressbar id="JOB" color="#e187cb" />
-  <progressbar id="MONEY" color="#e1c819" />
-  <progressbar id="ARROWS" color="#e1c819" />
-  <progressbar id="STATUS" color="#8fc0d3" />
+  <progressbar id="MP" color="#1250b0">
+    <text color="#9dcfff" outlineColor="#111122" />
+  </progressbar>
+  <progressbar id="NO_MP" color="#646464">
+    <text color="#b9b9b9" outlineColor="#111111" />
+  </progressbar>
+  <progressbar id="EXP" color="#6080a0">
+    <text color="#ccccef" outlineColor="#111122" />
+  </progressbar>
+  <progressbar id="INVY_SLOTS" color="#888805">
+    <text color="#f9eabc" outlineColor="#111111" />
+  </progressbar>
+  <progressbar id="WEIGHT" color="#0000c0,909000,a00000">
+    <text color="#f9eabc" outlineColor="#111111" />
+  </progressbar>
+  <progressbar id="JOB" color="#b86ea6">
+    <text color="#ffa0a0" outlineColor="#221111" />
+  </progressbar>
+  <progressbar id="MONEY" color="#606060">
+    <text color="#f9eabc" outlineColor="#111111" />
+  </progressbar>
+  <progressbar id="ARROWS" color="#e1c819">
+    <text color="#f9eabc" outlineColor="#111111" />
+  </progressbar>
+  <progressbar id="STATUS" color="#888808">
+    <text color="#f9eabc" outlineColor="#111111" />
+  </progressbar>
 
-  <skin type="Window" frameSize="0" padding="10" titleBarHeight="33" titleOffsetX="20" titleOffsetY="8">
+  <skin type="Window" frameSize="0" padding="7" titleBarHeight="31" titleOffsetX="14" titleOffsetY="6">
     <state>
       <text bold="true" color="#f1d9a9" outlineColor="#000000"/>
-      <img src="window.png" x="220" y="0" width="107" height="106" left="30" right="29" top="53" bottom="27" fill="repeat" />
+      <img src="window.png" x="220" y="2" width="107" height="102" left="30" right="29" top="53" bottom="27" fill="repeat" />
     </state>
   </skin>
 
-  <skin type="ToolWindow" padding="9" titleBarHeight="18">
+  <skin type="ToolWindow" padding="5" titleBarHeight="18">
     <state>
-      <img src="window.png" x="220" y="149" width="107" height="41" left="9" right="9" top="9" bottom="9" />
+      <img src="window.png" x="220" y="150" width="107" height="38" left="9" right="9" top="9" bottom="9" />
     </state>
   </skin>
 
   <skin type="ResizeGrip" width="17" height="17">
     <state>
-      <img src="window.png" x="328" y="89" width="15" height="15" />
+      <img src="window.png" x="331" y="90" width="14" height="14" offsetX="3" offsetY="3" />
     </state>
   </skin>
 
-  <skin type="Popup" padding="9" titleBarHeight="26" titleOffsetX="8" titleOffsetY="8" palette="1">
+  <skin type="Popup" padding="9" titleBarHeight="26" titleOffsetX="8" titleOffsetY="7" palette="1">
     <state>
       <text color="#f1d9a9" outlineColor="#000000"/>
-      <img src="window.png" x="220" y="107" width="107" height="41" left="9" right="9" top="9" bottom="9" />
+      <img src="window.png" x="220" y="108" width="107" height="38" left="9" right="9" top="9" bottom="9" />
     </state>
   </skin>
 
-  <skin type="SpeechBubble" padding="4" palette="1">
+  <skin type="SpeechBubble" padding="4">
     <state>
       <img src="bubble.png|W:#000000" left="5" right="5" top="5" bottom="5" height="15" />
     </state>
@@ -250,11 +228,11 @@
 
   <skin type="Desktop">
     <state>
-      <rect color="#5a5044" />
+      <rect color="#161514" />
     </state>
   </skin>
 
-  <skin type="Button" padding="7">
+  <skin type="Button" padding="5">
     <state disabled="true">
       <text color="#aaaaaa" outlineColor="#000000"/>
       <img src="window.png" x="1" y="66" width="24" height="20" left="9" right="9" top="9" bottom="9" />
@@ -293,55 +271,65 @@
 
   <skin type="CheckBox" padding="3" spacing="6">
     <state disabled="true" selected="true">
+      <text color="#e8d8aa" />
       <img src="window.png" x="176" y="13" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
     <state disabled="true">
+      <text color="#e8d8aa" />
       <img src="window.png" x="176" y="0" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
     <state selected="true" hovered="true">
+      <text color="#e8d8aa" />
       <img src="window.png" x="163" y="13" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
     <state hovered="true">
+      <text color="#e8d8aa" />
       <img src="window.png" x="163" y="0" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
     <state selected="true">
+      <text color="#e8d8aa" />
       <img src="window.png" x="150" y="13" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
     <state>
+      <text color="#e8d8aa" />
       <img src="window.png" x="150" y="0" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
   </skin>
 
   <skin type="RadioButton" padding="3" spacing="6">
     <state hovered="true" selected="true">
+      <text color="#e8d8aa" />
       <img src="window.png" x="163" y="39" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
     <state hovered="true">
+      <text color="#e8d8aa" />
       <img src="window.png" x="163" y="26" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
     <state selected="true">
+      <text color="#e8d8aa" />
       <img src="window.png" x="150" y="39" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
     <state>
+      <text color="#e8d8aa" />
       <img src="window.png" x="150" y="26" width="13" height="13" offsetX="3" offsetY="3" />
     </state>
   </skin>
 
   <skin type="TextField" frameSize="3" padding="2">
     <state>
-      <img src="window.png" x="1" y="186" width="32" height="31" left="4" right="4" top="4" bottom="4" />
+      <img src="window.png" x="1" y="186" width="32" height="32" left="4" right="4" top="4" bottom="4" />
     </state>
   </skin>
 
   <skin type="ScrollArea" frameSize="3" padding="4" baseColor="#f1d9a9" showButtons="false">
     <state>
-      <img src="window.png" x="1" y="186" width="32" height="31" left="4" right="4" top="4" bottom="4" />
+      <img src="window.png" x="1" y="186" width="32" height="32" left="4" right="4" top="4" bottom="4" />
     </state>
   </skin>
 
   <skin type="DropDownFrame" frameSize="3" padding="2">
     <state>
-      <img src="window.png" x="1" y="186" width="32" height="31" left="4" right="4" top="4" bottom="4" />
+      <img src="window.png" x="1" y="186" width="32" height="32" left="4" right="4" top="4" bottom="4" />
     </state>
   </skin>
 
@@ -453,10 +441,10 @@
 
   <skin type="ButtonClose" padding="2">
     <state hovered="true">
-      <img src="window.png" x="80" y="0" width="24" height="24" />
+      <img src="window.png" x="80" y="0" width="24" height="24" offsetX="-5" offsetY="-3" />
     </state>
     <state>
-      <img src="window.png" x="55" y="0" width="24" height="24" />
+      <img src="window.png" x="55" y="0" width="24" height="24" offsetX="-5" offsetY="-3" />
     </state>
   </skin>
 

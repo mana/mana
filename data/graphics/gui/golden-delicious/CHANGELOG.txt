@@ -1,0 +1,134 @@
+Legend:
+ [!] Bug fixed (usability issues/visual defects/etc).
+ [*] Some changes or misc. stuff.
+ [+] Something new.
+
+Version 3 Hello=) from 2025, GoldenDelicious revisited again.
+
+Changes:
+ [+] This is port of GoldenDelicious theme to Mana, with help from Thorbjorn.
+ [!] Few pixels were shuffled/fixed on window.png vs Version 2.
+ [*] zopflipng used on both theme images to reduce size.
+
+Version 2. Five years later I've revisited TMW and randomly crafted
+glossy button. So I've got curious how far I can get. The story continues.
+
+Changes:
+ [+] Far more complicated and glamourous window title. I like it.
+     NB: window title is kind of cheat. It uses slightly incorrect lighting.
+     Good luck to notice it though.
+ [+] Glass-like buttons FTW. Looks much better. Buttons also look a bit larger.
+ [+] Minor color tweaks in few places.
+ [+] Some elements size tweaked & some repixeled for better usability.
+ [+] Cursors were recolored a bit to better match overall theme.
+
+TODO:
+ [*] My hourglass isn't best pixel art ever. Still need something better.
+ [*] Progressbars could use bitmaps. This apparently allows superb
+     appearance of progressbars. Should give it a try!
+ [*] Target "ring" could be more stylish/themed.
+
+Version 0.3. Three years later I've finally spotted obvious bugs.
+Changes;
+ [!] Fixed items window theming: selected slot had odd appearance.
+ [+] Theme now uses different tab title color for channels, should
+     help to distinguish between whispers and channels.
+ [+] Redrawn checkboxes in hope to improve their appearance.
+ [+] Backported highlighted [X] button glow from XFWM4 theme. 
+     Took shitload of coordinates fixups and bug hunting.
+ [*] Windows had very large titlebars, chopped largest of 'em a bit.
+ [*] Misc fixes/improvements for buttons and tabs. Tabs use more
+     consistent bit patterns, highlight strengtened a bit. Buttons
+     are also using more consistent patterns, bevels are less bright
+     and pressing buttons are a bit more convincing since bit patterns
+     now also move accordingly.
+ [*] Buttons of drop-downs repix'd to look better (they were too small).
+
+
+Version 0.2. Reworked lot stuff and recolored a bit. 
+Load of "new" ManaPlus compatibility improvements.
+
+Note: this verion of theme tested only on latest ManaPlus.
+(Code from 12.12.2013 or later)
+
+Changes:
+ [!] Fixed black-on-black color issue in help window. Thanks to 4144!
+     Caveat: new manaplus haves another idea about this as it 
+     has been bug. Anyway, help should be readable on both "old" 
+     and "new" manaplus.
+ [!] Reduced artefacts caused by window bitmap texture due to tiling.
+ [!] Fixed color of item protection background in shop windows.
+ [!] Fixed keyboard icon coloring.
+ [!] Fixed joystick frame appearance.
+ [!] Fixed joystick arrows invisible on some maps (jewelry bug!).
+ [!] Fixed quest log icons to match theme.
+ [!] Fixed theming of on-screen touch buttons.
+ [!] Fixed black-on-black connection progress - own progress indicator
+     (fairly dumb attempt to draw hourglass, looks okay though).
+ [+] Now since new manaplus supports OLDCHAT color, my theme uses it. 
+ [+] Using *_BAR, *_BAR_OUTLINE text coloring on bars.
+ [+] Using "new" ManaPlus color for old chat text (loaded on startup).
+ [*] Tweaked window colors, using slightly different approach to do
+     texturing. Overall, windows are now looking better to my taste.
+ [*] Reworked window titlebar to have rounded corners.
+ [*] Same for chat tabs.
+ [*] Some small changes reducing overall theme contrast a bit.
+ [*] Tweaked padding of shortcuts bar, looks better as 1-column window.
+     Note: maybe only works well with recent manaplus.
+ [*] Some messing with padding of windows and buttons to make 
+     theme a bit more compact overall.
+ [*] Improved cursor selection in items dialog so it no longer overlaps
+     items most of time. 
+  
+TODO: Still some things to chew on.
+ [*] Some ironing out of colors probably required (HELP, bars, etc)
+ [*] More attention to antialiasing on tabs?
+
+Version 0.03 pre-alpha. Quick fix of dumb bug.
+Changes:
+ [!] Fixed chat color selection dropdown/listbox colors.
+     Everything else is untouched.
+
+Version 0.02 pre-alpha. First public version.
+Changes:
+ [*] Shortcuts bar tweaked. Smaller padding, item boxes re-centered,
+     borders reduced. Still not perfect.
+ [*] Recolored text on bars to match rest of theme.
+ [!] Fixed offline chat tabs coloring.
+ [!] Online list coloring is at least acceptable (fixed default color,
+     guild/party coloring, self). 
+ [*] Optipng applied for all PNGs after editing considered to be done :)
+
+Known issues:
+ [*] Shortcuts bar somewhat wide to my taste and wastes screen space.
+     Attempt to fix this has been only partial success.
+ [*] Same goes for other elements as well. So I would not recommend
+     this theme for phones and somesuch.
+ [*] Colors of MP/HP/... bars aren't perfect.
+ [*] Help browserbox colors are bad. Attempts to work it around isn't
+     huge success so far. [s]But who reads help, anyway?[/s] 
+ [*] In Setup window, player relations table header looks ugly due
+     to hardcoded color. It has been fixed by 4144. In new version
+     of ManaPlus this will be okay (tested!).
+ [*] Lock button of chat appears below scroll button in chat if there're
+     too many tabs. Yet this issue presents on other themes as well.
+     Not sure if theme could work it around or not.
+ [*] Appearance of disabled tabs and disabled checkboxes 
+     was not tested since I don't know
+
+TODO:
+ [*] Fix that damn shortcuts bar completely. For some reasons window 
+     would not resize smaller than certain size, this thwarts efforts
+     to reduce padding as there is huge border at right due to inability 
+     to resize window smaller than certain size. Maybe something 
+     hardcoded in client?
+ [*] Help browserbox text colors should be fixed. 
+     It's hard to read black-on-black!
+ [*] Try to reduce paddings/spacings for other widgets/windows/etc.
+ [*] Maybe rework F4 equipment window? Looks quite okay with some 
+     remaining things from Jewelry, but probably appearance could be
+     improved further? Already looks okay though.
+
+Version 0.01 pre-alpha. First try to make theme.
+ Based on Jewelry from Hal9000.  Load of bug and wasn't released. 
+ Some bugfixes were based on feedback from screenshots :P.
