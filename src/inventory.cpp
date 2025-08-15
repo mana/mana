@@ -115,7 +115,7 @@ bool Inventory::contains(Item *item) const
     return std::any_of(mItems.begin(),
                        mItems.end(),
                        [id = item->getId()](auto &i) {
-        return i->getId() == id;
+        return i && i->getId() == id;
     });
 }
 
