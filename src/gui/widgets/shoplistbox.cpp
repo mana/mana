@@ -103,7 +103,8 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
                 gcn::Color blend = warningColor;
                 blend.r = (blend.r + highlightColor.r) / 2;
                 blend.g = (blend.g + highlightColor.g) / 2;
-                blend.b = (blend.g + highlightColor.b) / 2;
+                blend.b = (blend.b + highlightColor.b) / 2;
+                blend.a = alpha;
                 graphics->setColor(blend);
             }
         }

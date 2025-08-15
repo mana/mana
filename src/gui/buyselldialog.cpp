@@ -23,8 +23,6 @@
 
 #include "playerinfo.h"
 
-#include "gui/setup.h"
-
 #include "gui/widgets/button.h"
 
 #include "net/net.h"
@@ -109,11 +107,6 @@ void BuySellDialog::action(const gcn::ActionEvent &event)
 
 void BuySellDialog::closeAll()
 {
-    auto it = instances.begin();
-    auto it_end = instances.end();
-
-    for (; it != it_end; it++)
-    {
-        (*it)->close();
-    }
+    for (auto &instance : instances)
+        instance->close();
 }

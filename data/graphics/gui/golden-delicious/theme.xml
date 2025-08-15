@@ -12,8 +12,8 @@
     <color id="LISTBOX" color="#e8d8aa" />
     <!-- WIP: next colors may still need tweak -->
     <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" />
-    <color id="BACKGROUND" color="#ffffff" />
-    <color id="BACKGROUND_GRAY" color="#404040" />
+    <color id="BACKGROUND" color="#5f5f5f" />
+    <color id="BACKGROUND_GRAY" color="#161514" />
     <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
     <color id="HIGHLIGHT" color="#ebc873" />
     <color id="HIGHLIGHT_TEXT" color="#000000" />
@@ -25,7 +25,7 @@
     <color id="WHISPER_TAB_OFFLINE" color="#444444" outlineColor="#000000" />
     <color id="WHISPER_TAB_OFFLINE_HIGHLIGHTED" color="#fffbed" outlineColor="#000000" />
     <color id="WHISPER_TAB_OFFLINE_SELECTED" color="#444444" outlineColor="#000000" />
-    <color id="SHOP_WARNING" color="#e07a7a" />
+    <color id="SHOP_WARNING" color="#701111" />
     <color id="ITEM_EQUIPPED" color="#f8e8cf" /> <!-- Fixed -->
     <color id="CHAT" color="#f1d9a9" />
     <color id="GM" color="#fec4ff" />
