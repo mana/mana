@@ -154,17 +154,18 @@ void Minimap::draw(gcn::Graphics *graphics)
 
     if (mMapImage)
     {
-        if (mMapImage->getWidth() > a.width ||
-            mMapImage->getHeight() > a.height)
+        const Vector &p = local_player->getPosition();
+        const int minOriginX = a.width - mMapImage->getWidth();
+        const int minOriginY = a.height - mMapImage->getHeight();
+
+        if (minOriginX < 0)
         {
-            const Vector &p = local_player->getPosition();
             mapOriginX = (a.width / 2) - (int) (p.x * mWidthProportion) / tileWidth;
-            mapOriginY = (a.height / 2) - (int) (p.y * mHeightProportion) / tileHeight;
-
-            const int minOriginX = a.width - mMapImage->getWidth();
-            const int minOriginY = a.height - mMapImage->getHeight();
-
             mapOriginX = std::clamp(mapOriginX, minOriginX, 0);
+        }
+        if (minOriginY < 0)
+        {
+            mapOriginY = (a.height / 2) - (int) (p.y * mHeightProportion) / tileHeight;
             mapOriginY = std::clamp(mapOriginY, minOriginY, 0);
         }
 
