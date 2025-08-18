@@ -22,6 +22,13 @@
   </description>
   <url type="homepage">https://manasource.org/</url>
   <releases>
+   <release version="0.7.0" type="stable" date="2025-08-21">
+     <description>
+       <p>Major update! This release brings back the Mana client as a viable client for playing both The Mana World and its spin-off Source of Tales. It has been ported to SDL 2, ships with two additional UI themes and packs a tremendous list of new features to support the current versions of tmwAthena and Manaserv.</p>
+       <p>Graphical updates have been made as well, featuring Windowed Fullscreen support, V-Sync and variable-time logic updates to play smooth on displays with high framerates. There is also automatic scaling to support HiDPI displays and improved quality of outlined text rendering.</p>
+       <p>As the first major release in 13 years, it is of course not perfect. Any feedback is welcome! Maybe you'd like to join the development of this open source classic?</p>
+     </description>
+   </release>
    <release version="0.6.1" type="stable" date="2012-04-08">
      <description>
        <p>This release fixes a few annoyances and other small bugs. It is now

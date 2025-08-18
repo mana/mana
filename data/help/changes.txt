@@ -4,6 +4,90 @@
 ##3                         === RECENT CHANGES ===
 
 
+##3Mana 0.7.0 (21 August 2025)
+
+- Ported to SDL 2
+- Added Jewelry theme by Hal9000 (new default theme)
+- Added Golden Delicious theme by Hello=)
+- Added VSync and windowed fullscreen options
+- Added support for scaling the graphics
+- Added NPC quest indicators and a Quests window
+- Added ability to open external links in news, chat and NPC dialogs
+- Added ability to mention assigned keys in NPC dialogs
+- Added support for text formatting to NPC dialogs
+- Added support for reading most client-data settings from settings.xml
+- Added support for XML includes, both absolute and relative
+- Added support for map/layer mask
+- Added support for item sprite replacements
+- Added support for particle effects on equipment
+- Added support for hit/miss sounds on equipment for all players
+- Added support for players changing into monsters or NPCs
+- Added online player list to Social window
+- Added notification sound on receiving whisper
+- Added default ports when connecting to a custom server
+- Added an option to show being IDs to the debug window
+- Added an option to render widget outlines to the debug window
+- Added support for the "persistentIp" server info setting
+- Added support for attributes.xml when connecting to tmwAthena
+- Added support for charcreation.xml settings
+- Added support for hair colors defined in itemcolors.xml
+- Added support for option, opt1, opt2, opt3 status effect fields
+- Added support for customizing NPC and Monster hover cursor
+- Added support for disabling selection for certain NPCs and Monsters
+- Added support for race-specific hair styles and per-character gender
+- Added support for the TMX tile animation format
+- Added support for bold font markup to BrowserBox
+- Added pointy hand mouse cursor, used when hovering links
+- Added tooltips to status effect icons
+- Added error when trying to trade a non tradable item
+- Added --server-type / -y parameter
+- Use variable time logic update to better adjust to the framerate
+- Re-download updates when their checksum no longer matches
+- Enabled resizing windows from all sides
+- Enabled whispers in tabs by default
+- Improved quality of outlined text rendering
+- Made pickup notifications to appear as particle by default
+- Made names update immediately when changing "Show gender" option
+- Made the screenshot file name a clickable link
+- Made client config statically typed and save as more structured XML
+- Custom mouse cursor is now rendered by the system
+- Limit shop's Max button to available carry weight
+- Fixed slight stutter in being and player movement
+- Fixed performance issue in BrowserBox (especially update/news window)
+- Fixed handling of non-consecutive emote IDs
+- Fixed securing of names in files created by chat logger
+- Fixed wrong offset values for tab widget drawing
+- Fixed positioning of window menu
+- Fixed some issues with OpenGL rendering
+- Fixed NPC disappearing when changing appearance on tmwAthena
+- Fixed drawing issues with tiles that don't match the grid width
+- Fixed --chat-log-dir also setting the screenshot directory
+- Fixed tile animations for CSV maps
+- Fixed settings window being unavailable when updating was done
+- Fixed text clipping in tooltips
+- Fixed handling of paths with special characters on Windows
+- Fixed being popup getting stuck under the mouse
+- Fixed item links with empty item name to look up name from Item DB
+- Fixed spaces getting added to chat every 50 characters
+- Fixed handling of consecutive text formatting markers
+- Fixed empty Equipment window on freshly created character
+- Fixed choosing default world when using -D command-line parameter
+- Fixed storing of player relations
+- Fixed handling of custom port in update URL
+- Fixed stutter when new music starts playing
+- Fixed keyboard setup to allow assigning keys before starting the game
+- Fixed window move/resize blocking logic and rendering on Windows and macOS
+- Fixed unresponsive UI when switching server/char with Away dialog open
+- Updated to tmwAthena protocol changes
+- Updated to Manaserv protocol changes (specials, guilds, debug mode, skills, text particles)
+- CMake: Use GNUInstallDirs and made PKG_DATADIR / PKG_BINDIR paths modifiable
+- CMake: Don't overwrite system/environment CXXFLAGS
+- CMake: Added option to use system ENet
+- CMake: Make using system Guichan optional (also available as submodule)
+- CMake: Allow using CPack to generate an NSIS installer and macOS App Bundle
+- Now requires C++17
+- Updated Finnish, German, Polish, Portuguese (Brazil), Portuguese, Russian, Spanish and Tamil translations
+
 ##3Mana 0.6.1 (2 April 2012)
 
 - Made it easier to click beings that are next to other beings
@@ -152,4 +236,3 @@
 - Fixed a problem with the player skipping corners, desyncing from the server
 - Small optimizations to OpenGL mode when drawing certain GUI widgets
 - Updated Spanish, Polish, Portugese, Swedish, French and German translations
-

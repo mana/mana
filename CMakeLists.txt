@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.12...3.27)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
 
 if(NOT VERSION)
-  set(VERSION 0.6.1)
+  set(VERSION 0.7.0)
 else()
   string(REPLACE "." " " _VERSION ${VERSION})
   separate_arguments(_VERSION)

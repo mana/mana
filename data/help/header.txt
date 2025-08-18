@@ -2,8 +2,6 @@
 ##1                      M  A  N  A      C L I E N T
 ##1               =========================================
 
-             ##2Version:##0 0.7.0          ##2Date:##0 .. August 2024
+             ##2Version:##0 0.7.0          ##2Date:##0 21 August 2025
 
 ##2                    Website:##0 https://manasource.org
-
-

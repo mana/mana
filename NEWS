@@ -1,5 +1,7 @@
-0.7.0 (...)
+0.7.0 (21 August 2025)
 - Ported to SDL 2
+- Added Jewelry theme by Hal9000 (new default theme)
+- Added Golden Delicious theme by Hello=)
 - Added VSync and windowed fullscreen options
 - Added support for scaling the graphics
 - Added NPC quest indicators and a Quests window
@@ -22,12 +24,14 @@
 - Added support for attributes.xml when connecting to tmwAthena
 - Added support for charcreation.xml settings
 - Added support for hair colors defined in itemcolors.xml
+- Added support for option, opt1, opt2, opt3 status effect fields
 - Added support for customizing NPC and Monster hover cursor
 - Added support for disabling selection for certain NPCs and Monsters
 - Added support for race-specific hair styles and per-character gender
 - Added support for the TMX tile animation format
 - Added support for bold font markup to BrowserBox
 - Added pointy hand mouse cursor, used when hovering links
+- Added tooltips to status effect icons
 - Added error when trying to trade a non tradable item
 - Added --server-type / -y parameter
 - Use variable time logic update to better adjust to the framerate
@@ -66,6 +70,7 @@
 - Fixed stutter when new music starts playing
 - Fixed keyboard setup to allow assigning keys before starting the game
 - Fixed window move/resize blocking logic and rendering on Windows and macOS
+- Fixed unresponsive UI when switching server/char with Away dialog open
 - Updated to tmwAthena protocol changes
 - Updated to Manaserv protocol changes (specials, guilds, debug mode, skills, text particles)
 - CMake: Use GNUInstallDirs and made PKG_DATADIR / PKG_BINDIR paths modifiable
@@ -74,7 +79,7 @@
 - CMake: Make using system Guichan optional (also available as submodule)
 - CMake: Allow using CPack to generate an NSIS installer and macOS App Bundle
 - Now requires C++17
-- Updated Russian translation
+- Updated Finnish, German, Polish, Portuguese (Brazil), Portuguese, Russian, Spanish and Tamil translations
 
 0.6.1 (2 April 2012)
 - Made it easier to click beings that are next to other beings
