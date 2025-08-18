@@ -500,10 +500,12 @@ void Map::drawAmbientLayers(Graphics *graphics, LayerType type,
 Tileset *Map::getTilesetWithGid(unsigned gid) const
 {
     Tileset *s = nullptr;
-    for (auto it = mTilesets.begin(),
-         it_end = mTilesets.end(); it < it_end && (*it)->getFirstGid() <= gid;
-         it++)
-        s = *it;
+    for (auto tileset : mTilesets)
+    {
+        if (tileset->getFirstGid() > gid)
+            break;
+        s = tileset;
+    }
 
     return s;
 }

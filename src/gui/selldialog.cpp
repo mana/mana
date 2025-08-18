@@ -314,11 +314,6 @@ void SellDialog::setVisible(bool visible)
 
 void SellDialog::closeAll()
 {
-    auto it = instances.begin();
-    auto it_end = instances.end();
-
-    for (; it != it_end; it++)
-    {
-        (*it)->close();
-    }
+    for (auto &instance : instances)
+        instance->close();
 }

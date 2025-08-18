@@ -33,6 +33,7 @@
 
 #include "net/tmwa/protocol.h"
 
+#include <algorithm>
 #include <cassert>
 #include <string_view>
 
@@ -531,10 +532,7 @@ void ManaServItemDB::readItemNode(XML::Node node, const std::string &filename)
                         Log::warn("Incomplete modifier definition in %s, skipping.", filename.c_str());
                         continue;
                     }
-                    auto it = extraStats.cbegin();
-                    auto it_end = extraStats.cend();
-                    while (it != it_end && !(*it == attribute))
-                        ++it;
+                    auto it = std::find(extraStats.cbegin(), extraStats.cend(), attribute);
                     if (it == extraStats.end())
                     {
                         Log::warn("Unknown modifier tag %s in %s, skipping.", attribute.c_str(), filename.c_str());

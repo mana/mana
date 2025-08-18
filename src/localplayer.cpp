@@ -571,13 +571,11 @@ void LocalPlayer::inviteToGuild(Being *being)
 
     // TODO: Allow user to choose which guild to invite being to
     // For now, just invite to the first guild you have permissions to invite with
-    auto itr = mGuilds.begin();
-    auto itr_end = mGuilds.end();
-    for (; itr != itr_end; ++itr)
+    for (auto &[_, guild] : mGuilds)
     {
-        if (checkInviteRights(itr->second->getName()))
+        if (checkInviteRights(guild->getName()))
         {
-            Net::getGuildHandler()->invite(itr->second->getId(), being);
+            Net::getGuildHandler()->invite(guild->getId(), being);
             return;
         }
     }

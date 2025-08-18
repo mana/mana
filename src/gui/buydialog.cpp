@@ -163,7 +163,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
 
     // The following actions require a valid selection
     if (selectedItem < 0 ||
-            selectedItem >= (int) mShopItems->getNumberOfElements())
+            selectedItem >= mShopItems->getNumberOfElements())
     {
         return;
     }
@@ -305,11 +305,6 @@ void BuyDialog::setVisible(bool visible)
 
 void BuyDialog::closeAll()
 {
-    auto it = instances.begin();
-    auto it_end = instances.end();
-
-    for (; it != it_end; it++)
-    {
-        (*it)->close();
-    }
+    for (auto &instance : instances)
+        instance->close();
 }
