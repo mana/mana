@@ -207,9 +207,6 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
 void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character)
 {
-    const Token &token =
-            static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
-
     const int id = msg.readInt32();
 
     character->data.mAttributes[EXP] = msg.readInt32();
@@ -242,7 +239,6 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     const uint16_t weapon = msg.readInt16();
 
     auto *tempPlayer = new LocalPlayer(id, race);
-    tempPlayer->setGender(sexToGender(token.sex));
 
     tempPlayer->setSprite(SPRITE_SHOE, shoe);
     tempPlayer->setSprite(SPRITE_GLOVES, gloves);
