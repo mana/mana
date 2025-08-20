@@ -31,6 +31,9 @@
 
 #include <algorithm>
 
+static constexpr int WINDOW_MIN_WIDTH = 640;
+static constexpr int WINDOW_MIN_HEIGHT = 400;
+
 int VideoSettings::scale() const
 {
     if (userScale == 0)
@@ -47,8 +50,9 @@ int VideoSettings::autoScale() const
 
 int VideoSettings::maxScale() const
 {
-    // Logical resolution needs to stay at least 640x480
-    return std::max(1, std::min(width / 640, height / 480));
+    // Logical resolution needs to stay at least the minimum size
+    return std::max(1, std::min(width / WINDOW_MIN_WIDTH,
+                                height / WINDOW_MIN_HEIGHT));
 }
 
 Video::~Video()
@@ -133,7 +137,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
         return nullptr;
     }
 
-    SDL_SetWindowMinimumSize(mWindow, 640, 480);
+    SDL_SetWindowMinimumSize(mWindow, WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT);
 
     if (mSettings.windowMode == WindowMode::Fullscreen)
     {
@@ -280,7 +284,7 @@ bool Video::initDisplayModes()
             return false;
 
         // Skip the unreasonably small modes
-        if (mode.w < 640 || mode.h < 480)
+        if (mode.w < WINDOW_MIN_WIDTH || mode.h < WINDOW_MIN_HEIGHT)
             continue;
 
         // Only list each resolution once
