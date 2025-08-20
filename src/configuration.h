@@ -218,14 +218,14 @@ struct Config
 
     bool logNpcInGui = true;
     bool downloadMusic = false;
-    float guiAlpha = 0.8f;
-    int chatLogLength = 128;
+    float guiAlpha = 0.9f;
+    int chatLogLength = 256;
     bool enableChatLog = false;
     bool whisperTab = true;
     bool customCursor = true;
     bool showOwnName = false;
     bool showPickupParticle = true;
-    bool showPickupChat = false;
+    bool showPickupChat = true;
     bool showMinimap = true;
     int fontSize = 12;
     bool returnTogglesChat = false;

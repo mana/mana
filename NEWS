@@ -35,7 +35,7 @@
 - Enabled resizing windows from all sides
 - Enabled whispers in tabs by default
 - Improved quality of outlined text rendering
-- Made pickup notifications to appear as particle instead of text by default
+- Made pickup notifications to appear as particle by default
 - Made names update immediately when changing "Show gender" option
 - Made the screenshot file name a clickable link
 - Made client config statically typed and save as more structured XML
