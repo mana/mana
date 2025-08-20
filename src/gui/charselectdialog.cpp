@@ -23,8 +23,9 @@
 
 #include "client.h"
 #include "localplayer.h"
-#include "units.h"
 #include "log.h"
+#include "textpopup.h"
+#include "units.h"
 
 #include "gui/changeemaildialog.h"
 #include "gui/changepassworddialog.h"
@@ -38,6 +39,7 @@
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/playerbox.h"
+#include "gui/widgets/spacer.h"
 
 #include "net/charhandler.h"
 #include "net/logindata.h"
@@ -82,7 +84,7 @@ class CharDeleteConfirm : public ConfirmDialog
         int mIndex;
 };
 
-class CharacterDisplay : public Container
+class CharacterDisplay : public Container, public gcn::MouseListener
 {
     public:
         CharacterDisplay(CharSelectDialog *charSelectDialog);
@@ -94,6 +96,9 @@ class CharacterDisplay : public Container
 
         void requestFocus() override;
 
+        void mouseMoved(gcn::MouseEvent &event) override;
+        void mouseExited(gcn::MouseEvent &event) override;
+
         void setActive(bool active);
 
     private:
@@ -103,10 +108,14 @@ class CharacterDisplay : public Container
 
         PlayerBox *mPlayerBox;
         Label *mName;
-        Label *mLevel;
-        Label *mMoney;
         Button *mButton;
         Button *mDelete;
+
+        /**
+         * The character info popup
+         * @note: This is a global object. One for all the characters.
+         */
+        static TextPopup *mTextPopup;
 };
 
 CharSelectDialog::CharSelectDialog(LoginData *loginData):
@@ -117,7 +126,7 @@ CharSelectDialog::CharSelectDialog(LoginData *loginData):
     setCloseButton(false);
 
     mAccountNameLabel = new Label(loginData->username);
-    mSwitchLoginButton = new Button(_("Switch Login"), "switch", this);
+    mSwitchLoginButton = new Button(_("Logout"), "switch", this);
     mChangePasswordButton = new Button(_("Change Password"), "change_password",
                                        this);
 
@@ -128,24 +137,26 @@ CharSelectDialog::CharSelectDialog(LoginData *loginData):
 
     place(0, 0, mAccountNameLabel, 2);
     place(0, 1, mSwitchLoginButton);
-
-    if (optionalActions & Net::LoginHandler::Unregister)
-    {
-        mUnregisterButton = new Button(_("Unregister"),
-                                       "unregister", this);
-        place(3, 1, mUnregisterButton);
-    }
-
-    place(0, 2, mChangePasswordButton);
+    place(0, 2, new Spacer);
+    place(0, 3, mChangePasswordButton);
 
     if (optionalActions & Net::LoginHandler::ChangeEmail)
     {
         mChangeEmailButton = new Button(_("Change Email"),
                                         "change_email", this);
-        place(3, 2, mChangeEmailButton);
+        place(0, 4, mChangeEmailButton);
     }
 
-    place = getPlacer(0, 1);
+    place(0, 5, new Spacer);
+
+    if (optionalActions & Net::LoginHandler::Unregister)
+    {
+        mUnregisterButton = new Button(_("Unregister"),
+                                       "unregister", this);
+        place(0, 6, mUnregisterButton);
+    }
+
+    place = getPlacer(1, 0);
 
     for (int i = 0; i < (int)mLoginData->characterSlots; i++)
     {
@@ -329,27 +340,33 @@ bool CharSelectDialog::selectByName(const std::string &name,
 }
 
 
+TextPopup *CharacterDisplay::mTextPopup = nullptr;
+
 CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
     mPlayerBox(new PlayerBox)
 {
-    mButton = new Button("", "go", charSelectDialog);
-    mName = new Label(std::string());
-    mLevel = new Label(std::string());
-    mMoney = new Label(std::string());
+    mPlayerBox->addMouseListener(this);
 
+    mName = new Label(std::string());
+    mName->setAlignment(Graphics::CENTER);
+    mButton = new Button("", "go", charSelectDialog);
     mDelete = new Button(_("Delete"), "delete", charSelectDialog);
 
     place(0, 0, mPlayerBox, 3, 5);
     place(0, 5, mName, 3);
-    place(0, 6, mLevel, 3);
-    place(0, 7, mMoney, 3);
-    place(0, 8, mButton, 3);
-    place(0, 9, mDelete, 3);
+    place(0, 6, mButton, 3);
+    place(0, 7, mDelete, 3);
 
     update();
 
-    setSize(80, 112 + mName->getHeight() + mLevel->getHeight() +
-            mMoney->getHeight() + mButton->getHeight() + mDelete->getHeight());
+    setSize(80, 112 + mName->getHeight()
+                    + mButton->getHeight()
+                    + mDelete->getHeight());
+
+    // Create the tooltip popup. It is shared by all instances and will get
+    // deleted by the WindowContainer.
+    if (!mTextPopup)
+        mTextPopup = new TextPopup;
 }
 
 void CharacterDisplay::setCharacter(Net::Character *character)
@@ -381,11 +398,6 @@ void CharacterDisplay::update()
         mButton->setCaption(_("Choose"));
         mButton->setActionEventId("use");
         mName->setCaption(strprintf("%s", character->getName().c_str()));
-        mLevel->setCaption(strprintf("Level %d",
-                           mCharacter->data.mAttributes[LEVEL]));
-        mMoney->setCaption(Units::formatCurrency(
-                           mCharacter->data.mAttributes[MONEY]));
-
         mDelete->setVisible(true);
     }
     else
@@ -393,12 +405,35 @@ void CharacterDisplay::update()
         mButton->setCaption(_("Create"));
         mButton->setActionEventId("new");
         mName->setCaption(_("(empty)"));
-        mLevel->setCaption(_("(empty)"));
-        mMoney->setCaption(Units::formatCurrency(0));
-
         mDelete->setVisible(false);
     }
 
     // Recompute layout
     distributeResizedEvent();
+}
+
+void CharacterDisplay::mouseMoved(gcn::MouseEvent &event)
+{
+    int x = event.getX();
+    int y = event.getY();
+
+    if (event.getSource() == mPlayerBox && mCharacter)
+    {
+        int absX, absY;
+        mPlayerBox->getAbsolutePosition(absX, absY);
+
+        const auto level = strprintf(_("Level %d"), mCharacter->data.mAttributes[LEVEL]);
+        const auto money = Units::formatCurrency(mCharacter->data.mAttributes[MONEY]);
+
+        mTextPopup->show(x + absX, y + absY, level, money);
+    }
+    else
+    {
+        mTextPopup->setVisible(false);
+    }
+}
+
+void CharacterDisplay::mouseExited(gcn::MouseEvent &event)
+{
+    mTextPopup->setVisible(false);
 }

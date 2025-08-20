@@ -86,8 +86,6 @@ class Button : public gcn::Button
 
         void removeButtonIcon();
 
-        static int mInstances;          /**< Number of button instances */
-
         std::vector<std::unique_ptr<Image>> mButtonIcon;  /**< Button Icons graphics */
 
         /**

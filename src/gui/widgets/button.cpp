@@ -32,7 +32,6 @@
 #include <guichan/exception.hpp>
 #include <guichan/font.hpp>
 
-int Button::mInstances = 0;
 TextPopup *Button::mTextPopup = nullptr;
 
 enum {
@@ -113,14 +112,10 @@ void Button::init()
     setFrameSize(skin.frameSize);
     setSpacing(skin.padding);
 
-    if (mInstances == 0)
-    {
-        // Create the tooltip popup. It is shared by all buttons and will get
-        // deleted by the WindowContainer.
-        if (!mTextPopup)
-            mTextPopup = new TextPopup;
-    }
-    mInstances++;
+    // Create the tooltip popup. It is shared by all buttons and will get
+    // deleted by the WindowContainer.
+    if (!mTextPopup)
+        mTextPopup = new TextPopup;
 }
 
 void Button::draw(gcn::Graphics *graphics)
