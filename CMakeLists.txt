@@ -123,7 +123,7 @@ if(WIN32)
           $ENV{MINGW_PREFIX}/bin/SDL2_mixer.dll
           $ENV{MINGW_PREFIX}/bin/SDL2_net.dll
           $ENV{MINGW_PREFIX}/bin/SDL2_ttf.dll
-          $ENV{MINGW_PREFIX}/bin/libxml2-2.dll
+          $ENV{MINGW_PREFIX}/bin/libxml2-16.dll
           $ENV{MINGW_PREFIX}/bin/zlib1.dll
           $ENV{MINGW_PREFIX}/bin/libiconv-2.dll
           $ENV{MINGW_PREFIX}/bin/libbrotlidec.dll
