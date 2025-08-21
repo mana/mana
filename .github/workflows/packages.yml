@@ -124,6 +124,14 @@ jobs:
   macos-universal:
     runs-on: macos-latest
     needs: [macos-build]
+    env:
+      MACOS_IDENTITY: ${{ secrets.MACOS_IDENTITY }}
+      NOTARIZATION_USERNAME: ${{ secrets.NOTARIZATION_USERNAME }}
+      NOTARIZATION_PASSWORD: ${{ secrets.NOTARIZATION_PASSWORD }}
+      NOTARIZATION_TEAM: ${{ secrets.NOTARIZATION_TEAM }}
+      MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+      MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+      KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
     steps:
       - uses: actions/download-artifact@v5
         with:
@@ -155,6 +163,49 @@ jobs:
           done
           # Show resulting architectures of main binary
           file universal/Mana.app/Contents/MacOS/Mana
+
+      - name: Create Certificate File
+        if: ${{ env.MACOS_CERTIFICATE != '' }}
+        id: certificateFile
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: 'certificate.p12'
+          encodedString: ${{ env.MACOS_CERTIFICATE }}
+
+      - name: Import Certificate
+        if: ${{ env.MACOS_CERTIFICATE != '' && env.MACOS_IDENTITY != '' }}
+        run: |
+          set -euo pipefail
+          security create-keychain -p "$KEYCHAIN_PWD" mana-ci.keychain
+          security default-keychain -s mana-ci.keychain
+          security unlock-keychain -p "$KEYCHAIN_PWD" mana-ci.keychain
+          security -q import "${{ steps.certificateFile.outputs.filePath }}" -f pkcs12 -k mana-ci.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign -x
+          security set-key-partition-list -S 'apple-tool:,apple:' -s -k "$KEYCHAIN_PWD" mana-ci.keychain
+
+      - name: Codesign universal app
+        if: ${{ env.MACOS_IDENTITY != '' }}
+        run: |
+          set -euo pipefail
+          echo "Signing with identity: $MACOS_IDENTITY"
+          codesign --deep --force --verify --verbose --options runtime --sign "$MACOS_IDENTITY" universal/Mana.app
+          codesign --verify --deep --strict --verbose=4 universal/Mana.app
+
+      - name: Notarize & Staple
+        if: ${{ env.MACOS_IDENTITY != '' && env.NOTARIZATION_USERNAME != '' && env.NOTARIZATION_PASSWORD != '' && env.NOTARIZATION_TEAM != '' }}
+        run: |
+          set -euo pipefail
+          echo "Zipping for notarization..."
+          ditto -c -k --sequesterRsrc --keepParent universal/Mana.app Mana_for_notarization.zip
+          echo "Submitting to Apple notarization service..."
+          xcrun notarytool submit Mana_for_notarization.zip \
+            --apple-id "$NOTARIZATION_USERNAME" \
+            --password "$NOTARIZATION_PASSWORD" \
+            --team-id "$NOTARIZATION_TEAM" \
+            --wait
+          echo "Stapling ticket..."
+          xcrun stapler staple universal/Mana.app
+          echo "Verifying staple..."
+          xcrun stapler validate universal/Mana.app || true
 
       - name: Create universal DMG
         run: |
