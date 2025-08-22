@@ -72,12 +72,10 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 
     const int alpha = (int)(config.guiAlpha * 255.0f);
     auto highlightColor = Theme::getThemeColor(Theme::HIGHLIGHT);
-    auto backgroundColor = Theme::getThemeColor(Theme::BACKGROUND);
     auto warningColor = Theme::getThemeColor(Theme::SHOP_WARNING);
     auto textColor = Theme::getThemeColor(Theme::TEXT);
     auto highlightTextColor = Theme::getThemeColor(Theme::HIGHLIGHT_TEXT);
     highlightColor.a = alpha;
-    backgroundColor.a = alpha;
     warningColor.a = alpha;
 
     auto *graphics = static_cast<Graphics*>(gcnGraphics);
@@ -107,17 +105,13 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
                 blend.a = alpha;
                 graphics->setColor(blend);
             }
+            graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
         }
         else if (i == mSelected)
         {
             graphics->setColor(highlightColor);
+            graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
         }
-        else
-        {
-            graphics->setColor(backgroundColor);
-        }
-
-        graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
 
         if (shopItem)
         {

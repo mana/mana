@@ -1,3 +1,6 @@
+Unreleased
+- Removed background color from shop list entries
+
 0.7.0 (21 August 2025)
 - Ported to SDL 2
 - Added Jewelry theme by Hal9000 (new default theme)
