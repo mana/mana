@@ -191,8 +191,8 @@ Position LocalPlayer::getNextWalkPosition(unsigned char dir) const
 
     Vector pos = getPosition();
 
-    // If no map or no direction is given, give back the current player position
-    if (!mMap || (!dx && !dy))
+    // If no map, no direction or talking to NPC, give back the current player position
+    if (!mMap || (!dx && !dy) || PlayerInfo::isTalking())
         return Position((int)pos.x, (int)pos.y);
 
     const int tileW = mMap->getTileWidth();
@@ -711,7 +711,7 @@ void LocalPlayer::setWalkingDir(int dir)
     // start in the new direction
     if (dir && dir != mWalkingDir)
     {
-        local_player->stopWalking(false);
+        stopWalking(false);
     }
     // Else, he is not pressing a key, and the current path hasn't been sent by
     // mouse, then let the path die (1/2 tile after that.) This permit to avoid

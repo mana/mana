@@ -1,5 +1,6 @@
 Unreleased
 - Removed background color from shop list entries
+- Fixed keyboard movement not stopping on NPC dialog opening
 
 0.7.0 (21 August 2025)
 - Ported to SDL 2
