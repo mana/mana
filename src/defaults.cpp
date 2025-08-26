@@ -58,31 +58,6 @@ void AddDEF(DefaultsData *defaultsData, const char *key, T value)
     defaultsData->insert(std::make_pair(key, createData(value)));
 }
 
-DefaultsData* getBrandingDefaults()
-{
-    auto *brandingData = new DefaultsData;
-    // Init config defaults
-    AddDEF(brandingData, "wallpapersPath", "");
-    AddDEF(brandingData, "wallpaperFile", "");
-    AddDEF(brandingData, "appName", "Mana");
-    AddDEF(brandingData, "appIcon", "icons/mana");
-    AddDEF(brandingData, "loginMusic", "system/Magick - Real.ogg");
-    AddDEF(brandingData, "defaultServer", "");
-    AddDEF(brandingData, "defaultPort", DEFAULT_PORT);
-    AddDEF(brandingData, "defaultServerType", "tmwathena");
-    AddDEF(brandingData, "appShort", "mana");
-    AddDEF(brandingData, "defaultUpdateHost", "");
-    AddDEF(brandingData, "helpPath", "");
-    AddDEF(brandingData, "onlineServerList", "");
-    AddDEF(brandingData, "guiThemePath", "");
-    AddDEF(brandingData, "theme", "");
-    AddDEF(brandingData, "font", "fonts/dejavusans.ttf");
-    AddDEF(brandingData, "boldFont", "fonts/dejavusans-bold.ttf");
-    AddDEF(brandingData, "monoFont", "fonts/dejavusans-mono.ttf");
-
-    return brandingData;
-}
-
 DefaultsData* getPathsDefaults()
 {
     auto *pathsData = new DefaultsData;

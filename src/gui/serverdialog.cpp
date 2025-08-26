@@ -387,7 +387,7 @@ void ServerDialog::logic()
 void ServerDialog::downloadServerList()
 {
     // Try to load the configuration value for the onlineServerList
-    std::string listFile = branding.getStringValue("onlineServerList");
+    std::string listFile = branding.onlineServerList;
 
     if (listFile.empty())
         listFile = config.onlineServerList;

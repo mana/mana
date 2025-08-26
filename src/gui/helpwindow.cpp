@@ -88,7 +88,7 @@ void HelpWindow::loadHelp(const std::string &helpFile)
 
 void HelpWindow::loadFile(const std::string &file)
 {
-    std::string helpPath = branding.getStringValue("helpPath");
+    std::string helpPath = branding.helpPath;
     if (helpPath.empty())
         helpPath = paths.getStringValue("help");
 

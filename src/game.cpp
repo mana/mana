@@ -311,7 +311,7 @@ static bool saveScreenshot()
     {
         screenshotCount++;
         filenameSuffix.str(std::string());
-        filenameSuffix << branding.getValue("appShort", "Mana")
+        filenameSuffix << branding.name()
                        << "_Screenshot_" << screenshotCount << ".png";
         filename.str(std::string());
         filename << screenshotDirectory << "/" << filenameSuffix.str();

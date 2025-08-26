@@ -614,3 +614,54 @@ void deserialize(XML::Node node, Config &config)
 
     config.unknownOptions = std::move(options);
 }
+
+std::map<std::string, std::string> readOptions(XML::Node node)
+{
+    std::map<std::string, std::string> options;
+
+    if (!node)
+        return options;
+
+    for (auto child : node.children()) {
+        if (child.name() != "option")
+            continue;
+
+        std::string name;
+        if (child.attribute("name", name))
+            child.attribute("value", options[name]);
+    }
+
+    return options;
+}
+
+void deserialize(XML::Node node, Branding &branding)
+{
+    auto options = readOptions(node);
+
+    auto deserializeOption = [&](const char *name, auto member) {
+        auto it = options.find(name);
+        if (it == options.end())
+            return;
+
+        fromString(it->second.data(), branding.*member);
+        options.erase(it);
+    };
+
+    deserializeOption("wallpapersPath", &Branding::wallpapersPath);
+    deserializeOption("wallpaperFile", &Branding::wallpaperFile);
+    deserializeOption("appName", &Branding::appName);
+    deserializeOption("appIcon", &Branding::appIcon);
+    deserializeOption("loginMusic", &Branding::loginMusic);
+    deserializeOption("defaultServer", &Branding::defaultServer);
+    deserializeOption("defaultPort", &Branding::defaultPort);
+    deserializeOption("defaultServerType", &Branding::defaultServerType);
+    deserializeOption("appShort", &Branding::appShort);
+    deserializeOption("defaultUpdateHost", &Branding::defaultUpdateHost);
+    deserializeOption("helpPath", &Branding::helpPath);
+    deserializeOption("onlineServerList", &Branding::onlineServerList);
+    deserializeOption("guiThemePath", &Branding::guiThemePath);
+    deserializeOption("theme", &Branding::theme);
+    deserializeOption("font", &Branding::font);
+    deserializeOption("boldFont", &Branding::boldFont);
+    deserializeOption("monoFont", &Branding::monoFont);
+}

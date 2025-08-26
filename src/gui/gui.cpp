@@ -90,47 +90,44 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     setTop(guiTop);
 
     // Set global font
-    const int fontSize = config.fontSize;
-    std::string fontFile = branding.getValue("font", "fonts/dejavusans.ttf");
-    std::string path = ResourceManager::getPath(fontFile);
+    std::string path = ResourceManager::getPath(branding.font);
 
     // Initialize the font scale before creating the fonts
     TrueTypeFont::updateFontScale(graphics->getScale());
 
     try
     {
-        mGuiFont = new TrueTypeFont(path, fontSize);
-        mInfoParticleFont = new TrueTypeFont(path, fontSize, TTF_STYLE_BOLD);
+        mGuiFont = new TrueTypeFont(path, config.fontSize);
+        mInfoParticleFont = new TrueTypeFont(path, config.fontSize,
+                                             TTF_STYLE_BOLD);
     }
     catch (gcn::Exception e)
     {
-        Log::critical(std::string("Unable to load '") + fontFile +
+        Log::critical(std::string("Unable to load '") + branding.font +
                       "': " + e.getMessage());
     }
 
     // Set bold font
-    fontFile = branding.getValue("boldFont", "fonts/dejavusans-bold.ttf");
-    path = ResourceManager::getPath(fontFile);
+    path = ResourceManager::getPath(branding.boldFont);
     try
     {
-        boldFont = new TrueTypeFont(path, fontSize);
+        boldFont = new TrueTypeFont(path, config.fontSize);
     }
     catch (gcn::Exception e)
     {
-        Log::critical(std::string("Unable to load '") + fontFile +
+        Log::critical(std::string("Unable to load '") + branding.boldFont +
                       "': " + e.getMessage());
     }
 
     // Set mono font
-    fontFile = branding.getValue("monoFont", "fonts/dejavusans-mono.ttf");
-    path = ResourceManager::getPath(fontFile);
+    path = ResourceManager::getPath(branding.monoFont);
     try
     {
-        monoFont = new TrueTypeFont(path, fontSize);
+        monoFont = new TrueTypeFont(path, config.fontSize);
     }
     catch (gcn::Exception e)
     {
-        Log::critical(std::string("Unable to load '") + fontFile +
+        Log::critical(std::string("Unable to load '") + branding.monoFont +
                       "': " + e.getMessage());
     }
 

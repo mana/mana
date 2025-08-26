@@ -255,11 +255,49 @@ struct Config
     std::map<std::string, std::string> unknownOptions;
 };
 
+struct Branding
+{
+    std::string wallpapersPath;
+    std::string wallpaperFile;
+    std::string appName;
+    std::string appIcon = "icons/mana";
+    std::string loginMusic = "system/Magick - Real.ogg";
+    std::string defaultServer;
+    std::optional<uint16_t> defaultPort;
+    std::string defaultServerType = "tmwathena";
+    std::string appShort;
+    std::string defaultUpdateHost;
+    std::string helpPath;
+    std::string onlineServerList;
+    std::string guiThemePath;
+    std::string theme;
+    std::string font = "fonts/dejavusans.ttf";
+    std::string boldFont = "fonts/dejavusans-bold.ttf";
+    std::string monoFont = "fonts/dejavusans-mono.ttf";
+
+    /**
+     * The application name. A branding file that leaves it empty is treated
+     * the same as one that does not set it at all.
+     */
+    std::string name() const { return appName.empty() ? "Mana" : appName; }
+
+    /**
+     * The short application name, which determines the settings directory.
+     */
+    std::string shortName() const { return appShort.empty() ? "mana" : appShort; }
+};
+
+/**
+ * Reads the "option" elements below the given node into a map.
+ */
+std::map<std::string, std::string> readOptions(XML::Node node);
+
 void serialize(XML::Writer &writer, const Config &config);
 void deserialize(XML::Node node, Config &config);
+void deserialize(XML::Node node, Branding &branding);
 
 extern Config config;
-extern Configuration branding;
+extern Branding branding;
 extern Configuration paths;
 
 /**

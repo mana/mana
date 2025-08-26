@@ -97,7 +97,7 @@ std::string errorMessage;
 LoginData loginData;
 
 Config config;                /**< Global settings (config.xml) */
-Configuration branding;       /**< XML branding information reader */
+Branding branding;            /**< Branding settings (*.mana file) */
 Configuration paths;          /**< XML default paths information reader */
 ChatLogger *chatLogger;       /**< Chat log object */
 KeyboardConfig keyboard;
@@ -179,13 +179,17 @@ Client::Client(const Options &options):
     mInstance = this;
 
     // Set default values for configuration files
-    branding.setDefaultValues(getBrandingDefaults());
     paths.setDefaultValues(getPathsDefaults());
 
     // Load branding information
     if (!options.brandingPath.empty())
     {
-        branding.init(options.brandingPath);
+        XML::Document doc(options.brandingPath, false);
+
+        if (doc.rootNode() && doc.rootNode().name() == "configuration")
+            deserialize(doc.rootNode(), branding);
+        else
+            Log::info("Couldn't read branding file: %s", options.brandingPath.c_str());
     }
 
     initRootDir();
@@ -288,10 +292,9 @@ Client::Client(const Options &options):
     // Try to set the desired video mode and create the graphics context
     graphics = mVideo.initialize(videoSettings);
 
-    SDL_SetWindowTitle(mVideo.window(),
-                       branding.getValue("appName", "Mana").c_str());
+    SDL_SetWindowTitle(mVideo.window(), branding.name().c_str());
 
-    std::string iconFile = branding.getValue("appIcon", "icons/mana");
+    std::string iconFile = branding.appIcon;
 #ifdef _WIN32
     iconFile += ".ico";
 #else
@@ -352,7 +355,7 @@ Client::Client(const Options &options):
     userPalette = new UserPalette;
     setupWindow = new Setup;
 
-    sound.playMusic(branding.getStringValue("loginMusic"));
+    sound.playMusic(branding.loginMusic);
 
     // Initialize default server
     mCurrentServer.hostname = options.serverName;
@@ -362,28 +365,20 @@ Client::Client(const Options &options):
     loginData.password = options.password;
 
     if (mCurrentServer.type == ServerType::Unknown && mCurrentServer.port != 0)
-    {
         mCurrentServer.type = ServerInfo::defaultServerTypeForPort(mCurrentServer.port);
-    }
 
     if (mCurrentServer.type == ServerType::Unknown)
-    {
-        mCurrentServer.type = ServerInfo::parseType(
-                    branding.getValue("defaultServerType", "tmwathena"));
-    }
+        mCurrentServer.type = ServerInfo::parseType(branding.defaultServerType);
 
     if (mCurrentServer.port == 0)
     {
         const uint16_t defaultPort = ServerInfo::defaultPortForServerType(mCurrentServer.type);
-        mCurrentServer.port = static_cast<uint16_t>(
-                    branding.getValue("defaultPort", defaultPort));
+        mCurrentServer.port = branding.defaultPort.value_or(defaultPort);
     }
 
-    const bool noServerList = branding.getValue("onlineServerList", std::string()).empty();
+    const bool noServerList = branding.onlineServerList.empty();
     if (mCurrentServer.hostname.empty() && noServerList)
-    {
-        mCurrentServer.hostname = branding.getValue("defaultServer", std::string());
-    }
+        mCurrentServer.hostname = branding.defaultServer;
 
     if (chatLogger)
         chatLogger->setServerName(mCurrentServer.hostname);
@@ -1129,12 +1124,11 @@ void Client::initHomeDir()
 
     if (mConfigDir.empty())
     {
-        const std::string app = branding.getValue("appShort", "manasource");
+        const std::string &app = branding.appShort;
 #ifdef __APPLE__
         mConfigDir = mLocalDataDir + "/" + app;
 #elif defined __HAIKU__
-        mConfigDir = FS::getPrefDir("manasource.org", "Mana");
-        mConfigDir += app;
+        mConfigDir = FS::getPrefDir("manasource.org", app.c_str());
 #elif defined _WIN32
         mConfigDir = FS::getPrefDir("Mana", app.c_str());
 #else
@@ -1155,7 +1149,7 @@ void Client::initHomeDir()
 void Client::initConfiguration()
 {
     // Fill configuration with defaults
-    config.updatehost = branding.getValue("defaultUpdateHost", std::string());
+    config.updatehost = branding.defaultUpdateHost;
 
     const std::string configPath = mConfigDir + "/config.xml";
     XML::Document doc(configPath, false);
@@ -1257,7 +1251,7 @@ void Client::initScreenshotDir()
         {
             std::string screenshotSuffix = config.screenshotDirectorySuffix;
             if (screenshotSuffix.empty())
-                screenshotSuffix = branding.getValue("appShort", "Mana");
+                screenshotSuffix = branding.name();
 
             if (!screenshotSuffix.empty())
             {

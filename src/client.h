@@ -39,10 +39,6 @@ class LoginData;
 class Window;
 class QuitDialog;
 
-//manaserv uses 9601
-//static const short DEFAULT_PORT = 9601;
-static const short DEFAULT_PORT = 6901;
-
 extern volatile int fps;
 
 extern std::string errorMessage;

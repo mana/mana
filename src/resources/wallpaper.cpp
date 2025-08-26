@@ -55,7 +55,7 @@ static void initWallpaperPaths()
 
     if (wallpaperPath.empty())
     {
-        wallpaperPath = branding.getStringValue("wallpapersPath");
+        wallpaperPath = branding.wallpapersPath;
 
         if (wallpaperPath.empty())
             wallpaperPath = "graphics/images/";
@@ -66,7 +66,7 @@ static void initWallpaperPaths()
 
     if (wallpaperFile.empty())
     {
-        wallpaperFile = branding.getStringValue("wallpaperFile");
+        wallpaperFile = branding.wallpaperFile;
 
         if (wallpaperFile.empty())
             wallpaperFile = "login_wallpaper.png";

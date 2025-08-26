@@ -47,7 +47,7 @@ static std::string defaultThemePath;
 
 static void initDefaultThemePath()
 {
-    defaultThemePath = branding.getStringValue("guiThemePath");
+    defaultThemePath = branding.guiThemePath;
 
     if (defaultThemePath.empty() || !FS::isDirectory(defaultThemePath))
         defaultThemePath = "graphics/gui/";
@@ -257,8 +257,8 @@ std::string Theme::prepareThemePath()
         return config.theme;
 
     // Try theme from branding
-    if (isThemePath(branding.getStringValue("theme")))
-        return branding.getStringValue("theme");
+    if (isThemePath(branding.theme))
+        return branding.theme;
 
     return std::string();
 }

@@ -40,12 +40,11 @@ Desktop::Desktop()
 
     Wallpaper::loadWallpapers();
 
-    std::string appName = branding.getValue("appName", "");
-
-    if (appName.empty())
+    if (branding.appName.empty())
         mVersionLabel = new Label(FULL_VERSION);
     else
-        mVersionLabel = new Label(strprintf("%s (%s)", appName.c_str(),
+        mVersionLabel = new Label(strprintf("%s (%s)",
+                                            branding.appName.c_str(),
                                             FULL_VERSION));
 
     mVersionLabel->setBackgroundColor(gcn::Color(255, 255, 255, 128));

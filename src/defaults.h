@@ -26,5 +26,4 @@
 
 using DefaultsData = std::map<std::string, VariableData *>;
 
-DefaultsData* getBrandingDefaults();
 DefaultsData* getPathsDefaults();

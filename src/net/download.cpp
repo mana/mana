@@ -205,7 +205,7 @@ int Download::downloadThread(void *ptr)
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);
         }
 
-        const std::string appShort = branding.getStringValue("appShort");
+        const std::string appShort = branding.shortName();
         const std::string userAgent =
                 strprintf(PACKAGE_EXTENDED_VERSION, appShort.c_str());
 
