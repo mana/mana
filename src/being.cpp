@@ -60,11 +60,12 @@
 
 #include "utils/stringutils.h"
 
+#include <cassert>
 #include <cmath>
 
 Being::Being(int id, Type type, int subtype, Map *map)
     : ActorSprite(id)
-    , mInfo(BeingInfo::Unknown)
+    , mInfo(BeingInfo::unknown())
 {
     setMap(map);
     setType(type, subtype);
@@ -410,9 +411,9 @@ void Being::takeDamage(Being *attacker, int amount,
         else
         {
             if (type != CRITICAL)
-                hitEffectId = paths.getIntValue("hitEffectId");
+                hitEffectId = paths.hitEffectId;
             else
-                hitEffectId = paths.getIntValue("criticalHitEffectId");
+                hitEffectId = paths.criticalHitEffectId;
         }
         effectManager->trigger(hitEffectId, this);
     }
@@ -836,7 +837,7 @@ void Being::logic()
         updateMovement();
 
         // Update particle effects
-        const float py = mPos.y + paths.getIntValue("spriteOffsetY");
+        const float py = mPos.y + paths.spriteOffsetY;
 
         for (auto &spriteState : mSpriteStates)
             for (auto &particle : spriteState.particles)
@@ -1270,8 +1271,7 @@ void Being::updatePlayerSprites()
                 if (!spriteState.color.empty())
                     filename += "|" + spriteState.color;
 
-                equipmentSprite = Sprite::load(
-                    paths.getStringValue("sprites") + filename);
+                equipmentSprite = Sprite::load(paths.sprites + filename);
 
                 if (equipmentSprite)
                     equipmentSprite->setDirection(getSpriteDirection());

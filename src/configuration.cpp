@@ -21,212 +21,7 @@
 
 #include "configuration.h"
 
-#include "event.h"
-#include "log.h"
-
 #include "utils/stringutils.h"
-#include "utils/xml.h"
-
-void ConfigurationObject::setValue(const std::string &key,
-                                   const std::string &value)
-{
-    mOptions[key] = value;
-}
-
-std::string ConfigurationObject::getValue(const std::string &key,
-                                          const std::string &deflt) const
-{
-    auto iter = mOptions.find(key);
-    return iter != mOptions.end() ? iter->second : deflt;
-}
-
-int ConfigurationObject::getValue(const std::string &key, int deflt) const
-{
-    auto iter = mOptions.find(key);
-    return iter != mOptions.end() ? atoi(iter->second.c_str()) : deflt;
-}
-
-unsigned ConfigurationObject::getValue(const std::string &key,
-                                       unsigned deflt) const
-{
-    auto iter = mOptions.find(key);
-    return iter != mOptions.end() ? atol(iter->second.c_str()) : deflt;
-}
-
-double ConfigurationObject::getValue(const std::string &key,
-                                     double deflt) const
-{
-    auto iter = mOptions.find(key);
-    return iter != mOptions.end() ? atof(iter->second.c_str()) : deflt;
-}
-
-void ConfigurationObject::clear()
-{
-    mOptions.clear();
-}
-
-ConfigurationObject::~ConfigurationObject()
-{
-    clear();
-}
-
-void Configuration::cleanDefaults()
-{
-    if (mDefaultsData)
-    {
-        for (auto &[_, variableData] : *mDefaultsData)
-        {
-            delete variableData;
-        }
-        delete mDefaultsData;
-        mDefaultsData = nullptr;
-    }
-}
-
-Configuration::~Configuration()
-{
-    cleanDefaults();
-}
-
-void Configuration::setDefaultValues(DefaultsData *defaultsData)
-{
-    cleanDefaults();
-    mDefaultsData = defaultsData;
-}
-
-VariableData *Configuration::getDefault(const std::string &key,
-                                        VariableData::DataType type) const
-{
-    if (mDefaultsData)
-    {
-        auto itdef = mDefaultsData->find(key);
-
-        if (itdef != mDefaultsData->end() && itdef->second
-            && itdef->second->getType() == type)
-        {
-            return itdef->second;
-        }
-
-        Log::info("%s: No value in registry for key %s",
-                  mConfigPath.c_str(),
-                  key.c_str());
-    }
-
-    return nullptr;
-}
-
-int Configuration::getIntValue(const std::string &key) const
-{
-    int defaultValue = 0;
-    auto iter = mOptions.find(key);
-    if (iter == mOptions.end())
-    {
-        VariableData *vd = getDefault(key, VariableData::DATA_INT);
-        if (vd)
-            defaultValue = ((IntData*)vd)->getData();
-    }
-    else
-    {
-        defaultValue = atoi(iter->second.c_str());
-    }
-
-    return defaultValue;
-}
-
-std::string Configuration::getStringValue(const std::string &key) const
-{
-    std::string defaultValue;
-    auto iter = mOptions.find(key);
-    if (iter == mOptions.end())
-    {
-        if (VariableData *vd = getDefault(key, VariableData::DATA_STRING))
-            defaultValue = ((StringData*)vd)->getData();
-    }
-    else
-    {
-        defaultValue = iter->second;
-    }
-
-    return defaultValue;
-}
-
-
-float Configuration::getFloatValue(const std::string &key) const
-{
-    float defaultValue = 0.0f;
-    auto iter = mOptions.find(key);
-    if (iter == mOptions.end())
-    {
-        if (VariableData *vd = getDefault(key, VariableData::DATA_FLOAT))
-            defaultValue = ((FloatData*)vd)->getData();
-    }
-    else
-    {
-        defaultValue = atof(iter->second.c_str());
-    }
-
-    return defaultValue;
-}
-
-bool Configuration::getBoolValue(const std::string &key) const
-{
-    bool defaultValue = false;
-    auto iter = mOptions.find(key);
-    if (iter == mOptions.end())
-    {
-        if (VariableData *vd = getDefault(key, VariableData::DATA_BOOL))
-            defaultValue = ((BoolData*)vd)->getData();
-    }
-    else
-    {
-        return getBoolFromString(iter->second, defaultValue);
-    }
-
-    return defaultValue;
-}
-
-void ConfigurationObject::initFromXML(XML::Node parent_node)
-{
-    clear();
-
-    for (auto node : parent_node.children())
-    {
-        if (node.name() == "option")
-        {
-            std::string name = node.getProperty("name", std::string());
-
-            if (!name.empty())
-                mOptions[name] = node.getProperty("value", std::string());
-        }
-    }
-}
-
-void Configuration::init(const std::string &filename, bool useResManager)
-{
-    XML::Document doc(filename, useResManager);
-
-    if (useResManager)
-        mConfigPath = "PhysFS://" + filename;
-    else
-        mConfigPath = filename;
-
-    XML::Node rootNode = doc.rootNode();
-
-    if (!rootNode)
-    {
-        Log::info("Couldn't open configuration file: %s", filename.c_str());
-        return;
-    }
-
-    if (rootNode.name() != "configuration")
-    {
-        Log::warn("No configuration file (%s)", filename.c_str());
-        return;
-    }
-
-    initFromXML(rootNode);
-}
-
 
 template<typename T>
 struct Option
@@ -644,7 +439,6 @@ void deserialize(XML::Node node, Branding &branding)
             return;
 
         fromString(it->second.data(), branding.*member);
-        options.erase(it);
     };
 
     deserializeOption("wallpapersPath", &Branding::wallpapersPath);
@@ -664,4 +458,45 @@ void deserialize(XML::Node node, Branding &branding)
     deserializeOption("font", &Branding::font);
     deserializeOption("boldFont", &Branding::boldFont);
     deserializeOption("monoFont", &Branding::monoFont);
+}
+
+void deserialize(const std::map<std::string, std::string> &options, Paths &paths)
+{
+    auto deserializeOption = [&](const char *name, auto member) {
+        auto it = options.find(name);
+        if (it == options.end())
+            return;
+
+        fromString(it->second.data(), paths.*member);
+    };
+
+    deserializeOption("itemIcons", &Paths::itemIcons);
+    deserializeOption("unknownItemFile", &Paths::unknownItemFile);
+    deserializeOption("sprites", &Paths::sprites);
+    deserializeOption("spriteErrorFile", &Paths::spriteErrorFile);
+
+    deserializeOption("particles", &Paths::particles);
+    deserializeOption("levelUpEffectFile", &Paths::levelUpEffectFile);
+    deserializeOption("portalEffectFile", &Paths::portalEffectFile);
+    deserializeOption("hitEffectId", &Paths::hitEffectId);
+    deserializeOption("criticalHitEffectId", &Paths::criticalHitEffectId);
+    deserializeOption("newQuestEffectId", &Paths::newQuestEffectId);
+    deserializeOption("completeQuestEffectId", &Paths::completeQuestEffectId);
+
+    // This makes sure that actors positioned on the center of a tile have
+    // their sprite aligned to the bottom of that tile. The default maintains
+    // compatibility with existing sprites.
+    deserializeOption("spriteOffsetY", &Paths::spriteOffsetY);
+
+    deserializeOption("minimaps", &Paths::minimaps);
+    deserializeOption("maps", &Paths::maps);
+
+    deserializeOption("sfx", &Paths::sfx);
+    deserializeOption("attackSfxFile", &Paths::attackSfxFile);
+    deserializeOption("music", &Paths::music);
+
+    deserializeOption("wallpapers", &Paths::wallpapers);
+    deserializeOption("wallpaperFile", &Paths::wallpaperFile);
+
+    deserializeOption("help", &Paths::help);
 }

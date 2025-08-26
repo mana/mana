@@ -90,7 +90,7 @@ void HelpWindow::loadFile(const std::string &file)
 {
     std::string helpPath = branding.helpPath;
     if (helpPath.empty())
-        helpPath = paths.getStringValue("help");
+        helpPath = paths.help;
 
     const std::string fileName = helpPath + file + ".txt";
 

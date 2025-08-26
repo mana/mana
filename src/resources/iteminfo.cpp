@@ -44,7 +44,7 @@ const std::string &ItemInfo::getSprite(Gender gender, int race) const
 
 void ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
 {
-    mSounds[event].push_back(paths.getStringValue("sfx") + filename);
+    mSounds[event].push_back(paths.sfx + filename);
 }
 
 const std::string &ItemInfo::getSound(EquipmentSoundEvent event) const

@@ -415,8 +415,6 @@ set(SRCS
     compoundsprite.h
     configuration.cpp
     configuration.h
-    defaults.cpp
-    defaults.h
     effectmanager.cpp
     effectmanager.h
     emoteshortcut.cpp

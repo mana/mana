@@ -28,19 +28,6 @@
 
 #include <optional>
 
-static BeingInfo *createUnknownBeingInfo()
-{
-    auto info = new BeingInfo;
-    info->name = _("unnamed");
-
-    SpriteReference errorSprite { paths.getStringValue("spriteErrorFile"), 0 };
-    info->display.sprites.push_back(std::move(errorSprite));
-
-    return info;
-}
-
-BeingInfo *BeingInfo::Unknown = createUnknownBeingInfo();
-
 static std::optional<ActorSprite::TargetCursorSize> targetCursorSizeFromString(const std::string &cursor)
 {
     if (cursor == "small")      return ActorSprite::TC_SMALL;
@@ -65,7 +52,22 @@ static std::optional<Cursor> cursorFromString(const std::string &cursor)
     return {};
 }
 
-BeingInfo::BeingInfo() = default;
+BeingInfo *BeingInfo::mUnknown;
+
+BeingInfo *BeingInfo::unknown()
+{
+    if (!mUnknown)
+    {
+        mUnknown = new BeingInfo;
+        mUnknown->name = _("unnamed");
+
+        SpriteReference &errorSprite = mUnknown->display.sprites.emplace_back();
+        errorSprite.sprite = paths.spriteErrorFile;
+    }
+
+    return mUnknown;
+}
+
 BeingInfo::~BeingInfo() = default;
 
 void BeingInfo::setTargetCursorSize(const std::string &size)
@@ -109,8 +111,8 @@ const Attack &BeingInfo::getAttack(int id) const
     static const Attack empty {
         SpriteAction::ATTACK,
         -1, // Default strike effect on monster
-        paths.getIntValue("hitEffectId"),
-        paths.getIntValue("criticalHitEffectId"),
+        paths.hitEffectId,
+        paths.criticalHitEffectId,
         std::string()
     };
 

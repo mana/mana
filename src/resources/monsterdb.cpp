@@ -126,10 +126,10 @@ void MonsterDB::readMonsterNode(XML::Node node, const std::string &filename)
             attack.effectId = spriteNode.getProperty("effect-id", -1);
             attack.hitEffectId =
                 spriteNode.getProperty("hit-effect-id",
-                                 paths.getIntValue("hitEffectId"));
+                                       paths.hitEffectId);
             attack.criticalHitEffectId =
                 spriteNode.getProperty("critical-hit-effect-id",
-                                 paths.getIntValue("criticalHitEffectId"));
+                                       paths.criticalHitEffectId);
             attack.missileParticleFilename =
                 spriteNode.getProperty("missile-particle", "");
 
@@ -169,7 +169,7 @@ BeingInfo *MonsterDB::get(int id)
     if (i == mMonsterInfos.end())
     {
         Log::info("MonsterDB: Warning, unknown monster ID %d requested", id);
-        return BeingInfo::Unknown;
+        return BeingInfo::unknown();
     }
 
     return i->second;

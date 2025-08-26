@@ -42,13 +42,10 @@ void Item::setId(int id)
     // Load the associated image
     ResourceManager *resman = ResourceManager::getInstance();
     const SpriteDisplay &display = getInfo().display;
-    mImage = resman->getImage(paths.getStringValue("itemIcons") + display.image);
+    mImage = resman->getImage(paths.itemIcons + display.image);
 
     if (!mImage)
-    {
-        mImage = Theme::getImageFromTheme(paths.getValue("unknownItemFile",
-                                                         "unknown-item.png"));
-    }
+        mImage = Theme::getImageFromTheme(paths.unknownItemFile);
 }
 
 void Item::doEvent(Event::Type eventName)

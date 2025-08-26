@@ -123,12 +123,11 @@ void ItemDB::loadEmptyItemDefinition()
 {
     mUnknown->name = _("Unknown item");
     mUnknown->display = SpriteDisplay();
-    std::string errFile = paths.getStringValue("spriteErrorFile");
-    mUnknown->setSprite(errFile, Gender::Male, 0);
-    mUnknown->setSprite(errFile, Gender::Female, 0);
-    mUnknown->setSprite(errFile, Gender::Neutral, 0);
-    mUnknown->hitEffectId = paths.getIntValue("hitEffectId");
-    mUnknown->criticalHitEffectId = paths.getIntValue("criticalHitEffectId");
+    mUnknown->setSprite(paths.spriteErrorFile, Gender::Male, 0);
+    mUnknown->setSprite(paths.spriteErrorFile, Gender::Female, 0);
+    mUnknown->setSprite(paths.spriteErrorFile, Gender::Neutral, 0);
+    mUnknown->hitEffectId = paths.hitEffectId;
+    mUnknown->criticalHitEffectId = paths.criticalHitEffectId;
 }
 
 /*
@@ -303,9 +302,9 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string
     node.attribute("attack-range", itemInfo.attackRange);
     node.attribute("missile-particle", itemInfo.missileParticleFile);
     itemInfo.hitEffectId = node.getProperty("hit-effect-id",
-                                            paths.getIntValue("hitEffectId"));
+                                            paths.hitEffectId);
     itemInfo.criticalHitEffectId = node.getProperty("critical-hit-effect-id",
-                                                    paths.getIntValue("criticalHitEffectId"));
+                                                    paths.criticalHitEffectId);
 
     // Load Ta Item Type
     std::string typeStr = node.getProperty("type", "other");

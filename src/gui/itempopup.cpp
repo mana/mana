@@ -156,7 +156,7 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     if (showImage)
     {
         ResourceManager *resman = ResourceManager::getInstance();
-        auto image = resman->getImage(paths.getStringValue("itemIcons") +
+        auto image = resman->getImage(paths.itemIcons +
                                       item.display.image);
 
         mIcon->setImage(image);

@@ -67,5 +67,5 @@ Sprite *StatusEffect::getIconSprite() const
 {
     if (icon.empty())
         return nullptr;
-    return Sprite::load(paths.getStringValue("sprites") + icon);
+    return Sprite::load(paths.sprites + icon);
 }

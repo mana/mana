@@ -90,7 +90,7 @@ struct SkillInfo
             icon = res->getImage(iconPath);
 
         if (!icon)
-            icon = Theme::getImageFromTheme(paths.getStringValue("unknownItemFile"));
+            icon = Theme::getImageFromTheme(paths.unknownItemFile);
     }
 
     void update();

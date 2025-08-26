@@ -31,6 +31,8 @@
 
 #include <zlib.h>
 
+#include <cassert>
+
 constexpr char DOWNLOAD_ERROR_MESSAGE_THREAD[] = "Could not create download thread!";
 
 namespace Net {

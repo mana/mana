@@ -52,11 +52,11 @@ FloorItem::FloorItem(int id,
     if (info.display.sprites.empty())
     {
         ResourceManager *resman = ResourceManager::getInstance();
-        std::string imagePath = paths.getStringValue("itemIcons") + info.display.image;
+        std::string imagePath = paths.itemIcons + info.display.image;
 
         mImage = resman->getImage(imagePath);
         if (!mImage)
-            mImage = Theme::getImageFromTheme(paths.getStringValue("unknownItemFile"));
+            mImage = Theme::getImageFromTheme(paths.unknownItemFile);
     }
 }
 

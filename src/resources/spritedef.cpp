@@ -108,8 +108,7 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
     {
         Log::info("Error, failed to parse %s", animationFile.c_str());
 
-        std::string errorFile = paths.getStringValue("sprites")
-                                + paths.getStringValue("spriteErrorFile");
+        std::string errorFile = paths.sprites + paths.spriteErrorFile;
         if (animationFile != errorFile)
         {
             return load(errorFile, 0);
@@ -358,7 +357,7 @@ void SpriteDef::includeSprite(XML::Node includeNode)
 
     if (filename.empty())
         return;
-    filename = paths.getStringValue("sprites") + filename;
+    filename = paths.sprites + filename;
 
     if (processedFiles.find(filename) != processedFiles.end())
     {

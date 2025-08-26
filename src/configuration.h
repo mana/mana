@@ -22,7 +22,6 @@
 #pragma once
 
 #include "being.h"
-#include "defaults.h"
 #include "playerrelations.h"
 #include "video.h"
 
@@ -30,110 +29,10 @@
 
 #include "net/serverinfo.h"
 
-#include <cassert>
 #include <map>
 #include <optional>
 #include <string>
 #include <vector>
-
-/**
- * Configuration object, mapping values to names and possibly containing
- * lists of further configuration objects
- *
- * \ingroup CORE
- */
-class ConfigurationObject
-{
-    friend class Configuration;
-
-    public:
-        virtual ~ConfigurationObject();
-
-        /**
-         * Sets an option using a string value.
-         *
-         * \param key Option identifier.
-         * \param value Value.
-         */
-        void setValue(const std::string &key, const std::string &value);
-
-        /**
-         * Gets a value as string.
-         *
-         * \param key Option identifier.
-         * \param deflt Default option if not there or error.
-         */
-        std::string getValue(const std::string &key,
-                             const std::string &deflt) const;
-
-        int getValue(const std::string &key, int deflt) const;
-
-        unsigned getValue(const std::string &key, unsigned deflt) const;
-
-        double getValue(const std::string &key, double deflt) const;
-
-        /**
-         * Re-sets all data in the configuration
-         */
-        void clear();
-
-    protected:
-        void initFromXML(XML::Node node);
-
-        std::map<std::string, std::string> mOptions;
-};
-
-/**
- * Configuration handler for reading (and writing).
- *
- * \ingroup CORE
- */
-class Configuration : public ConfigurationObject
-{
-    public:
-        Configuration() = default;
-
-        ~Configuration() override;
-
-        /**
-         * Reads config file and parse all options into memory.
-         *
-         * @param filename path to config file
-         * @param useResManager Make use of the resource manager.
-         */
-        void init(const std::string &filename, bool useResManager = false);
-
-        /**
-         * Set the default values for each keys.
-         *
-         * @param defaultsData data used as defaults.
-         */
-        void setDefaultValues(DefaultsData *defaultsData);
-
-        /**
-         * returns a value corresponding to the given key.
-         * The default value returned in based on fallbacks registry.
-         * @see defaults.h
-         */
-        int getIntValue(const std::string &key) const;
-
-        float getFloatValue(const std::string &key) const;
-
-        std::string getStringValue(const std::string &key) const;
-
-        bool getBoolValue(const std::string &key) const;
-
-        VariableData *getDefault(const std::string &key,
-                                 VariableData::DataType type) const;
-    private:
-        /**
-         * Clean up the default values member.
-         */
-        void cleanDefaults();
-
-        std::string mConfigPath;       /**< Location of config file */
-        DefaultsData *mDefaultsData = nullptr;   /**< Defaults of value for a given key */
-};
 
 struct ItemShortcutEntry
 {
@@ -171,6 +70,9 @@ struct WindowState
     std::optional<bool> sticky;
 };
 
+/**
+ * Client configuration.
+ */
 struct Config
 {
     int overlayDetail = 2;
@@ -255,6 +157,9 @@ struct Config
     std::map<std::string, std::string> unknownOptions;
 };
 
+/**
+ * Branding configuration.
+ */
 struct Branding
 {
     std::string wallpapersPath;
@@ -288,6 +193,42 @@ struct Branding
 };
 
 /**
+ * General game data configuration.
+ */
+struct Paths
+{
+    std::string itemIcons = "graphics/items/";
+    std::string unknownItemFile = "unknown-item.png";
+    std::string sprites = "graphics/sprites/";
+    std::string spriteErrorFile = "error.xml";
+
+    std::string particles = "graphics/particles/";
+    std::string levelUpEffectFile = "levelup.particle.xml";
+    std::string portalEffectFile = "warparea.particle.xml";
+    int hitEffectId = 26;
+    int criticalHitEffectId = 28;
+    int newQuestEffectId = -1;
+    int completeQuestEffectId = -1;
+
+    // This is makes sure that actors positioned on the center of a tile have
+    // their sprite aligned to the bottom of that tile. The default maintains
+    // compatibility with existing sprites.
+    int spriteOffsetY = 16;
+
+    std::string minimaps = "graphics/minimaps/";
+    std::string maps = "maps/";
+
+    std::string sfx = "sfx/";
+    std::string attackSfxFile = "fist-swish.ogg";
+    std::string music = "music/";
+
+    std::string wallpapers = "graphics/images/";
+    std::string wallpaperFile = "login_wallpaper.png";
+
+    std::string help = "help/";
+};
+
+/**
  * Reads the "option" elements below the given node into a map.
  */
 std::map<std::string, std::string> readOptions(XML::Node node);
@@ -295,10 +236,11 @@ std::map<std::string, std::string> readOptions(XML::Node node);
 void serialize(XML::Writer &writer, const Config &config);
 void deserialize(XML::Node node, Config &config);
 void deserialize(XML::Node node, Branding &branding);
+void deserialize(const std::map<std::string, std::string> &options, Paths &paths);
 
 extern Config config;
 extern Branding branding;
-extern Configuration paths;
+extern Paths paths;
 
 /**
  * Sets the given Config member and sends a change event.

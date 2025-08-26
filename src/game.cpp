@@ -82,6 +82,7 @@
 
 #include <SDL_image.h>
 
+#include <cassert>
 #include <fstream>
 #include <sstream>
 
@@ -885,8 +886,7 @@ void Game::changeMap(const std::string &mapPath)
 
     mMapName = mapPath;
 
-    std::string fullMap = paths.getValue("maps", "maps/")
-                          + mMapName + ".tmx";
+    std::string fullMap = paths.maps + mMapName + ".tmx";
 
     // Attempt to load the new map
     Map *newMap = MapReader::readMap(fullMap);

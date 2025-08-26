@@ -188,7 +188,7 @@ void Sound::fadeInMusic(const std::string &fileName, int ms)
     haltMusic();
 
     ResourceManager *resman = ResourceManager::getInstance();
-    mMusic = resman->getMusic(paths.getStringValue("music") + fileName);
+    mMusic = resman->getMusic(paths.music + fileName);
 
     if (mMusic)
         mMusic->play(-1, ms);
@@ -254,7 +254,7 @@ void Sound::playSfx(const std::string &path, int x, int y)
     if (!path.compare(0, 4, "sfx/"))
         tmpPath = path;
     else
-        tmpPath = paths.getValue("sfx", "sfx/") + path;
+        tmpPath = paths.sfx + path;
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -282,7 +282,7 @@ void Sound::playSfx(const std::string &path, int x, int y)
 
 void Sound::playNotification(const std::string &path)
 {
-    const std::string fullPath = paths.getValue("sfx", "sfx/") + path;
+    const std::string fullPath = paths.sfx + path;
 
     ResourceManager *resman = ResourceManager::getInstance();
     if (ResourceRef<SoundEffect> sound = resman->getSoundEffect(fullPath))

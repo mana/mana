@@ -51,7 +51,7 @@ static std::string wallpaperFile;
 static void initWallpaperPaths()
 {
     // Init the path
-    wallpaperPath = paths.getStringValue("wallpapers");
+    wallpaperPath = paths.wallpapers;
 
     if (wallpaperPath.empty())
     {
@@ -62,7 +62,7 @@ static void initWallpaperPaths()
     }
 
     // Init the default file
-    wallpaperFile = paths.getStringValue("wallpaperFile");
+    wallpaperFile = paths.wallpaperFile;
 
     if (wallpaperFile.empty())
     {

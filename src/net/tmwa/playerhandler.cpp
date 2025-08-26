@@ -540,10 +540,12 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                     case QuestChange::None:
                         break;
                     case QuestChange::New:
-                        effectManager->trigger(paths.getIntValue("newQuestEffectId"), local_player);
+                        if (paths.newQuestEffectId >= 0)
+                            effectManager->trigger(paths.newQuestEffectId, local_player);
                         break;
                     case QuestChange::Completed:
-                        effectManager->trigger(paths.getIntValue("completeQuestEffectId"), local_player);
+                        if (paths.completeQuestEffectId >= 0)
+                            effectManager->trigger(paths.completeQuestEffectId, local_player);
                         break;
                 }
             }

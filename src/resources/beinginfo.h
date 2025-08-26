@@ -58,9 +58,7 @@ enum class SoundEvent
 class BeingInfo
 {
 public:
-    static BeingInfo *Unknown;
-
-    BeingInfo();
+    BeingInfo() = default;
     ~BeingInfo();
 
     std::string name;
@@ -80,7 +78,11 @@ public:
     void addAttack(int id, Attack attack);
     const Attack &getAttack(int id) const;
 
+    static BeingInfo *unknown();
+
 private:
     std::map<SoundEvent, std::vector<std::string>> mSounds;
     std::map<int, Attack> mAttacks;
+
+    static BeingInfo *mUnknown;
 };

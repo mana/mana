@@ -98,7 +98,7 @@ LoginData loginData;
 
 Config config;                /**< Global settings (config.xml) */
 Branding branding;            /**< Branding settings (*.mana file) */
-Configuration paths;          /**< XML default paths information reader */
+Paths paths;                  /**< Default paths */
 ChatLogger *chatLogger;       /**< Chat log object */
 KeyboardConfig keyboard;
 
@@ -177,9 +177,6 @@ Client::Client(const Options &options):
 {
     assert(!mInstance);
     mInstance = this;
-
-    // Set default values for configuration files
-    paths.setDefaultValues(getPathsDefaults());
 
     // Load branding information
     if (!options.brandingPath.empty())
@@ -1049,15 +1046,19 @@ void Client::initRootDir()
 
     if (!stat(portableName.c_str(), &statbuf) && S_ISREG(statbuf.st_mode))
     {
-        std::string dir;
-        Configuration portable;
-        portable.init(portableName);
-
         Log::info("Portable file: %s", portableName.c_str());
+
+        XML::Document doc(portableName, false);
+        const auto options = readOptions(doc.rootNode());
+
+        auto option = [&](const char *name) {
+            auto it = options.find(name);
+            return it != options.end() ? it->second : std::string();
+        };
 
         if (mOptions.localDataDir.empty())
         {
-            dir = portable.getValue("dataDir", "");
+            const std::string dir = option("dataDir");
             if (!dir.empty())
             {
                 mOptions.localDataDir = mRootDir + dir;
@@ -1068,7 +1069,7 @@ void Client::initRootDir()
 
         if (mOptions.configDir.empty())
         {
-            dir = portable.getValue("configDir", "");
+            const std::string dir = option("configDir");
             if (!dir.empty())
             {
                 mOptions.configDir = mRootDir + dir;
@@ -1079,7 +1080,7 @@ void Client::initRootDir()
 
         if (mOptions.screenshotDir.empty())
         {
-            dir = portable.getValue("screenshotDir", "");
+            const std::string dir = option("screenshotDir");
             if (!dir.empty())
             {
                 mOptions.screenshotDir = mRootDir + dir;

@@ -56,7 +56,7 @@ ActorSprite::~ActorSprite()
 
 int ActorSprite::getDrawOrder() const
 {
-    return Actor::getDrawOrder() + paths.getIntValue("spriteOffsetY");
+    return Actor::getDrawOrder() + paths.spriteOffsetY;
 }
 
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
@@ -72,7 +72,7 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
 
 bool ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
 {
-    y += paths.getIntValue("spriteOffsetY");
+    y += paths.spriteOffsetY;
     return mSprites.draw(graphics, x, y);
 }
 
@@ -91,7 +91,7 @@ void ActorSprite::logic()
                                 mChildParticleEffects.end());
 
     // Move the remaining
-    const float py = mPos.y + paths.getIntValue("spriteOffsetY");
+    const float py = mPos.y + paths.spriteOffsetY;
     for (Particle *p : mChildParticleEffects)
         p->moveTo(mPos.x, py);
 }
@@ -124,16 +124,13 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
 
     for (const auto &sprite : display.sprites)
     {
-        std::string file = paths.getStringValue("sprites") + sprite.sprite;
+        std::string file = paths.sprites + sprite.sprite;
         mSprites.add(Sprite::load(file, sprite.variant));
     }
 
     // Ensure that something is shown, if desired
     if (mSprites.size() == 0 && forceDisplay)
-    {
-        mSprites.add(Sprite::load(paths.getStringValue("sprites")
-            + paths.getStringValue("spriteErrorFile")));
-    }
+        mSprites.add(Sprite::load(paths.sprites + paths.spriteErrorFile));
 
     mChildParticleEffects.clear();
 

@@ -41,18 +41,19 @@
 
 #include <string>
 #include <set>
+#include <map>
 
 namespace SettingsManager
 {
-    static std::string mSettingsFile;
     static std::set<std::string> mIncludedFiles;
+    static std::map<std::string, std::string> mOptions;
 
     static bool loadFile(const std::string &filename);
 
     void load()
     {
         // initialize managers
-        paths.clear();
+        paths = {};
         Attributes::init();
         hairDB.init();
         itemDb->init();
@@ -77,6 +78,9 @@ namespace SettingsManager
             loadFile("itemcolors.xml");
             loadFile("units.xml");
         }
+
+        deserialize(mOptions, paths);
+        mOptions.clear();
 
         Attributes::checkStatus();
         hairDB.checkStatus();
@@ -181,7 +185,7 @@ namespace SettingsManager
                 std::string value = childNode.getProperty("value", std::string());
 
                 if (!name.empty())
-                    paths.setValue(name, value);
+                    mOptions[name] = value;
                 else
                     Log::warn("option without a name found in %s", filename.c_str());
             }

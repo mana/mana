@@ -73,7 +73,7 @@ void MonsterPopup::loadSpriteDisplay(const SpriteDisplay &display)
     // Build the compound sprite from all layers and compute top overshoot
     for (const auto &ref : display.sprites)
     {
-        const std::string file = paths.getStringValue("sprites") + ref.sprite;
+        const std::string file = paths.sprites + ref.sprite;
         if (Sprite *s = Sprite::load(file, ref.variant))
         {
             // Ensure we are using idle-looking-down to query offsets

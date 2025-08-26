@@ -195,10 +195,10 @@ Map *MapReader::readMap(XML::Node node, const std::string &path)
                     {
                         if (config.showWarps)
                         {
-                            map->addParticleEffect(
-                                     paths.getStringValue("particles")
-                                     + paths.getStringValue("portalEffectFile"),
-                                                   objX, objY, objW, objH);
+                            map->addParticleEffect(paths.particles + paths.portalEffectFile,
+                                                   objX + offsetX,
+                                                   objY + offsetY,
+                                                   objW, objH);
                         }
                     }
                     else
