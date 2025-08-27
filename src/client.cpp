@@ -192,8 +192,13 @@ Client::Client(const Options &options):
 
     // Configure logger
     Log::init();
-    Log::setLogFile(mLocalDataDir + "/mana.log");
     Log::setLogToStandardOut(config.logToStandardOut);
+    if (options.logFile == "-")
+        Log::setLogToStandardOut(true);
+    else if (!options.logFile.empty())
+        Log::setLogFile(options.logFile);
+    else
+        Log::setLogFile(mLocalDataDir + "/mana.log");
     Log::info("%s", FULL_VERSION);
 
     chatLogger = new ChatLogger;

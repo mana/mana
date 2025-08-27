@@ -70,6 +70,7 @@ static void printHelp()
         << _("     --localdata-dir  : Directory to use as local data directory") << endl
         << _("     --chat-log-dir   : Chat log dir to use") << endl
         << _("     --screenshot-dir : Directory to store screenshots") << endl
+        << _("  -l --log-file       : Log file path, or '-' for stdout") << endl
 #ifdef USE_OPENGL
         << _("     --no-opengl      : Disable OpenGL for this session") << endl
 #endif
@@ -83,7 +84,7 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Client::Options &options)
 {
-    const char *optstring = "hvud:U:P:Dc:s:p:C:y:";
+    const char *optstring = "hvud:U:P:Dc:s:p:C:y:l:";
 
     const struct option long_options[] = {
         { "config-dir",     required_argument, nullptr, 'C' },
@@ -103,6 +104,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
         { "version",        no_argument,       nullptr, 'v' },
         { "screenshot-dir", required_argument, nullptr, 'i' },
         { "server-type",    required_argument, nullptr, 'y' },
+        { "log-file",       required_argument, nullptr, 'l' },
         { nullptr }
     };
 
@@ -166,6 +168,9 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 break;
             case 'i':
                 options.screenshotDir = optarg;
+                break;
+            case 'l':
+                options.logFile = optarg;
                 break;
             case 'y':
                 options.serverType = ServerInfo::parseType(optarg);
