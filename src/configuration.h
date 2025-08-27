@@ -217,7 +217,7 @@ struct Config
     int rightTolerance = 100;
 
     bool logNpcInGui = true;
-    bool downloadMusic = false;
+    bool downloadMusic = true;
     float guiAlpha = 0.9f;
     int chatLogLength = 256;
     bool enableChatLog = false;
