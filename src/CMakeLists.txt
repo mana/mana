@@ -28,9 +28,8 @@ endif()
 if(ENABLE_MANASERV)
   if(NOT USE_SYSTEM_ENET)
     message(STATUS "Using ENet submodule")
-    set(ENET_INCLUDE_DIR "../libs/enet/include")
+    set(ENET_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/libs/enet/include")
     set(ENET_LIBRARIES enet)
-    link_directories("../libs/enet")
   else()
     message(STATUS "Using system ENet")
     find_package(ENet REQUIRED)
@@ -42,34 +41,11 @@ endif()
 
 if(NOT USE_SYSTEM_GUICHAN)
   message(STATUS "Using Guichan submodule")
-  set(GUICHAN_INCLUDE_DIR "../libs/guichan/include")
   set(GUICHAN_LIBRARIES guichan)
-  link_directories("../libs/guichan")
 else()
   message(STATUS "Using system Guichan")
   find_package(Guichan REQUIRED)
 endif()
-
-if(ENABLE_NLS)
-  add_compile_definitions(ENABLE_NLS=1)
-  message(STATUS "i18n support enabled")
-endif()
-
-if(WITH_OPENGL)
-  find_package(OpenGL REQUIRED)
-  include_directories(${OPENGL_INCLUDE_DIR})
-  add_compile_definitions(USE_OPENGL)
-  message(STATUS "OpenGL support enabled")
-endif(WITH_OPENGL)
-
-include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${SDL2_INCLUDE_DIRS}
-  ${PHYSFS_INCLUDE_DIR}
-  ${LIBXML2_INCLUDE_DIR}
-  ${ENET_INCLUDE_DIR}
-  ${GUICHAN_INCLUDE_DIR}
-  ${Intl_INCLUDE_DIRS})
 
 set(SRCS
     gui/widgets/avatarlistbox.cpp
@@ -628,21 +604,42 @@ else(ENABLE_MANASERV)
   add_executable(mana WIN32 ${SRCS} ${SRCS_TMWA} ${APP_ICON_FILE})
 endif(ENABLE_MANASERV)
 
+target_include_directories(mana
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${SDL2_INCLUDE_DIRS}
+    ${ENET_INCLUDE_DIR}
+    ${GUICHAN_INCLUDE_DIR}
+    ${PHYSFS_INCLUDE_DIR}
+    ${Intl_INCLUDE_DIRS})
+
 target_link_libraries(
   mana
-  PRIVATE ${ENET_LIBRARIES}
-          ${SDL2_LINK_LIBRARIES}
-          ${PHYSFS_LIBRARY}
-          CURL::libcurl
-          ${LIBXML2_LIBRARIES}
-          ${GUICHAN_LIBRARIES}
-          ${OPENGL_LIBRARIES}
-          ${Intl_LIBRARIES}
-          ZLIB::ZLIB)
+  PRIVATE
+    ${ENET_LIBRARIES}
+    ${SDL2_LINK_LIBRARIES}
+    CURL::libcurl
+    LibXml2::LibXml2
+    ZLIB::ZLIB
+    ${GUICHAN_LIBRARIES}
+    ${PHYSFS_LIBRARY}
+    ${Intl_LIBRARIES})
+
+if(ENABLE_NLS)
+  target_compile_definitions(mana PRIVATE ENABLE_NLS=1)
+  message(STATUS "i18n support enabled")
+endif()
 
 # Link with ws2_32 when using "system" ENet on Windows
 if(WIN32 AND ENABLE_MANASERV AND USE_SYSTEM_ENET)
   target_link_libraries(mana PRIVATE ws2_32)
+endif()
+
+if(WITH_OPENGL)
+  find_package(OpenGL REQUIRED)
+  target_compile_definitions(mana PRIVATE USE_OPENGL)
+  target_link_libraries(mana PRIVATE OpenGL::GL)
+  message(STATUS "OpenGL support enabled")
 endif()
 
 set_target_properties(
