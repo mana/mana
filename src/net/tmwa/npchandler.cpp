@@ -168,11 +168,6 @@ void NpcHandler::handleMessage(MessageIn &msg)
         local_player->setAction(Being::STAND);
 }
 
-void NpcHandler::startShopping(int beingId)
-{
-    // TODO
-}
-
 void NpcHandler::buy(int beingId)
 {
     MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
@@ -201,11 +196,6 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
     outMsg.writeInt16(8); // One item (length of packet)
     outMsg.writeInt16(itemId + INVENTORY_OFFSET);
     outMsg.writeInt16(amount);
-}
-
-void NpcHandler::endShopping(int beingId)
-{
-    // TODO
 }
 
 void NpcHandler::talk(int npcId)

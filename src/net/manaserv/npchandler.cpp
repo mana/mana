@@ -131,11 +131,6 @@ void NpcHandler::handleMessage(MessageIn &msg)
     delete event;
 }
 
-void NpcHandler::startShopping(int beingId)
-{
-    // TODO
-}
-
 void NpcHandler::buy(int beingId)
 {
     // TODO
@@ -160,11 +155,6 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
     msg.writeInt16(itemId);
     msg.writeInt16(amount);
     gameServerConnection->send(msg);
-}
-
-void NpcHandler::endShopping(int beingId)
-{
-    // TODO
 }
 
 void NpcHandler::talk(int npcId)

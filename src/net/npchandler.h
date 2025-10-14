@@ -30,8 +30,6 @@ class NpcHandler
     public:
         virtual ~NpcHandler() {}
 
-        virtual void startShopping(int beingId) = 0;
-
         virtual void buy(int beingId) = 0;
 
         virtual void sell(int beingId) = 0;
@@ -39,8 +37,6 @@ class NpcHandler
         virtual void buyItem(int beingId, int itemId, int amount) = 0;
 
         virtual void sellItem(int beingId, int itemId, int amount) = 0;
-
-        virtual void endShopping(int beingId) = 0;
 
         virtual void talk(int npcId) = 0;
 

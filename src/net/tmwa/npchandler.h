@@ -34,8 +34,6 @@ class NpcHandler final : public MessageHandler, public Net::NpcHandler
 
         void handleMessage(MessageIn &msg) override;
 
-        void startShopping(int beingId) override;
-
         void buy(int beingId) override;
 
         void sell(int beingId) override;
@@ -43,8 +41,6 @@ class NpcHandler final : public MessageHandler, public Net::NpcHandler
         void buyItem(int beingId, int itemId, int amount) override;
 
         void sellItem(int beingId, int itemId, int amount) override;
-
-        void endShopping(int beingId) override;
 
         void talk(int npcId) override;
 
