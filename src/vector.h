@@ -23,7 +23,7 @@
 
 #include <cmath>
 
-#include <iostream>
+#include <iosfwd>
 
 /**
  * Vector class. Represents either a 3D point in space, a velocity or a force.

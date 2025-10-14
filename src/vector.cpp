@@ -21,6 +21,8 @@
 
 #include "vector.h"
 
+#include <iostream>
+
 std::ostream& operator <<(std::ostream &os, const Vector &v)
 {
     os << "Vector(" << v.x << ", " << v.y << ", " << v.z << ")";
