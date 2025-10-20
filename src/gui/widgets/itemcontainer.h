@@ -21,13 +21,15 @@
 
 #pragma once
 
+#include <guichan/deathlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
-#include <map>
 #include <list>
+#include <map>
+#include <memory>
 
 class Image;
 class Inventory;
@@ -46,7 +48,8 @@ namespace gcn {
 class ItemContainer : public gcn::Widget,
                       public gcn::KeyListener,
                       public gcn::MouseListener,
-                      public gcn::WidgetListener
+                      public gcn::WidgetListener,
+                      public gcn::DeathListener
 {
     public:
         /**
@@ -55,7 +58,6 @@ class ItemContainer : public gcn::Widget,
          * @param inventory
          */
         ItemContainer(Inventory *inventory);
-
         ~ItemContainer() override;
 
         void hidePopup();
@@ -87,6 +89,9 @@ class ItemContainer : public gcn::Widget,
         // WidgetListener
         void widgetResized(const gcn::Event &event) override;
 
+        // DeathListener
+        void death(const gcn::Event &event) override;
+
         /**
          * Returns the selected item.
          */
@@ -103,23 +108,8 @@ class ItemContainer : public gcn::Widget,
          */
         void setFilter(const std::string &filter);
 
-        /**
-         * Adds a listener to the list that's notified each time a change to
-         * the selection occurs.
-         */
-        void addSelectionListener(gcn::SelectionListener *listener)
-        {
-            mSelectionListeners.push_back(listener);
-        }
-
-        /**
-         * Removes a listener from the list that's notified each time a change
-         * to the selection occurs.
-         */
-        void removeSelectionListener(gcn::SelectionListener *listener)
-        {
-            mSelectionListeners.remove(listener);
-        }
+        void addSelectionListener(gcn::SelectionListener *listener);
+        void removeSelectionListener(gcn::SelectionListener *listener);
 
     private:
         enum Direction
@@ -193,7 +183,25 @@ class ItemContainer : public gcn::Widget,
 
         std::string mFilter;
 
-        ItemPopup *mItemPopup;
+        std::unique_ptr<ItemPopup> mItemPopup;
 
         std::list<gcn::SelectionListener *> mSelectionListeners;
 };
+
+/**
+ * Adds a listener to the list that's notified each time a change to
+ * the selection occurs.
+ */
+inline void ItemContainer::addSelectionListener(gcn::SelectionListener *listener)
+{
+    mSelectionListeners.push_back(listener);
+}
+
+/**
+ * Removes a listener from the list that's notified each time a change
+ * to the selection occurs.
+ */
+inline void ItemContainer::removeSelectionListener(gcn::SelectionListener *listener)
+{
+    mSelectionListeners.remove(listener);
+}

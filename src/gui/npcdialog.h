@@ -32,11 +32,13 @@
 #include <vector>
 
 class BrowserBox;
+class Button;
+class IntTextField;
+class Inventory;
+class ItemContainer;
+class ItemLinkHandler;
 class ListBox;
 class TextField;
-class IntTextField;
-class ItemLinkHandler;
-class Button;
 
 /**
  * The npc dialog.
@@ -86,7 +88,7 @@ class NpcDialog final : public Window,
         /**
          * Notifies the server that client has performed a next action.
          */
-        void nextDialog();
+        void nextDialog() const;
 
         /**
          * Notifies the server that the client has performed a close action.
@@ -134,6 +136,11 @@ class NpcDialog final : public Window,
          * Requests an integer from the user.
          */
         void integerRequest(int defaultValue, int min, int max);
+
+        /**
+         * Requests up to \a amount items from the user.
+         */
+        void itemRequest(int amount);
 
         void move(int amount);
 
@@ -186,6 +193,12 @@ class NpcDialog final : public Window,
         Button *mPlusButton;
         Button *mMinusButton;
 
+        // Used for item input
+        std::unique_ptr<Inventory> mInputItems;
+        ItemContainer *mInputItemsContainer;
+        gcn::ScrollArea *mInputItemsScrollArea;
+        Button *mAddItemButton;
+
         Button *mClearButton;
 
         // Used for the button
@@ -199,7 +212,8 @@ class NpcDialog final : public Window,
             NPC_INPUT_NONE,
             NPC_INPUT_LIST,
             NPC_INPUT_STRING,
-            NPC_INPUT_INTEGER
+            NPC_INPUT_INTEGER,
+            NPC_INPUT_ITEM,
         };
 
         enum NpcActionState

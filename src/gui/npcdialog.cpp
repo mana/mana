@@ -25,13 +25,17 @@
 #include "configuration.h"
 #include "event.h"
 #include "eventlistener.h"
+#include "inventory.h"
+#include "item.h"
 #include "playerinfo.h"
 
+#include "gui/inventorywindow.h"
 #include "gui/npcpostdialog.h"
 
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/button.h"
 #include "gui/widgets/inttextfield.h"
+#include "gui/widgets/itemcontainer.h"
 #include "gui/widgets/itemlinkhandler.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
@@ -41,10 +45,13 @@
 #include "net/net.h"
 #include "net/npchandler.h"
 
+#include "resources/iteminfo.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
+
+#include <algorithm>
 
 #define CAPTION_WAITING _("Waiting for server")
 #define CAPTION_NEXT _("Next")
@@ -56,7 +63,8 @@ class NpcEventListener : public EventListener
 public:
     void event(Event::Channel channel, const Event &event) override;
 
-    NpcDialog *getDialog(int id, bool make = true);
+    NpcDialog *findDialog(int id);
+    NpcDialog *getDialog(int id);
 
     void removeDialog(int id);
 
@@ -111,15 +119,20 @@ NpcDialog::NpcDialog(int npcId)
     // Setup int input box
     mIntField = new IntTextField;
     mIntField->setVisible(true);
+    mPlusButton = new Button(_("+"), "inc", this);
+    mMinusButton = new Button(_("-"), "dec", this);
+
+    // Setup item input
+    mInputItems = std::make_unique<Inventory>(Inventory::NPC, 1);
+    mInputItemsContainer = new ItemContainer(mInputItems.get());
+    mInputItemsScrollArea = new ScrollArea(mInputItemsContainer);
+    mInputItemsScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mAddItemButton = new Button(_("Add Item"), "add", this);
 
     mClearButton = new Button(_("Clear log"), "clear", this);
 
     // Setup button
     mNextButton = new Button("", "ok", this);
-
-    //Setup more and less buttons (int input)
-    mPlusButton = new Button(_("+"), "inc", this);
-    mMinusButton = new Button(_("-"), "dec", this);
 
     int width = std::max(mNextButton->getFont()->getWidth(CAPTION_WAITING),
                          mNextButton->getFont()->getWidth(CAPTION_NEXT));
@@ -148,12 +161,14 @@ NpcDialog::~NpcDialog()
 {
     // These might not actually be in the layout, so lets be safe
     delete mScrollArea;
-    delete mItemList;
+    delete mListScrollArea;
     delete mTextField;
     delete mIntField;
     delete mResetButton;
     delete mPlusButton;
     delete mMinusButton;
+    delete mInputItemsScrollArea;
+    delete mAddItemButton;
     delete mNextButton;
 
     instances.remove(this);
@@ -212,29 +227,53 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         {
             std::string printText;  // Text that will get printed in the textbox
 
-            if (mInputState == NPC_INPUT_LIST)
+            switch (mInputState)
             {
+            case NPC_INPUT_NONE:
+                return;
+            case NPC_INPUT_LIST: {
                 int selectedIndex = mItemList->getSelected();
-
                 if (selectedIndex >= (int) mItems.size() || selectedIndex < 0)
                     return;
 
                 printText = mItems[selectedIndex];
-
                 Net::getNpcHandler()->menuSelect(mNpcId, selectedIndex + 1);
+                break;
             }
-            else if (mInputState == NPC_INPUT_STRING)
-            {
+            case NPC_INPUT_STRING: {
                 printText = mTextField->getText();
-
                 Net::getNpcHandler()->stringInput(mNpcId, printText);
+                break;
             }
-            else if (mInputState == NPC_INPUT_INTEGER)
-            {
+            case NPC_INPUT_INTEGER: {
                 printText = strprintf("%d", mIntField->getValue());
-
                 Net::getNpcHandler()->integerInput(mNpcId, mIntField->getValue());
+                break;
             }
+            case NPC_INPUT_ITEM: {
+                std::string response;
+                for (auto &item : mInputItems->getItems())
+                {
+                    if (item)
+                    {
+                        if (!printText.empty())
+                        {
+                            printText += ", ";
+                            response += ';';
+                        }
+                        printText += itemDb->get(item->getId()).name;
+                        response += toString(item->getId());
+                    }
+                }
+
+                if (response.empty())
+                    return;
+
+                Net::getNpcHandler()->stringInput(mNpcId, response);
+                break;
+            }
+            }
+
             // addText will auto remove the input layout
             addText(strprintf("> \"%s\"", printText.c_str()), false);
             addText(std::string(), false);
@@ -264,13 +303,30 @@ void NpcDialog::action(const gcn::ActionEvent &event)
     {
         mIntField->setValue(mIntField->getValue() - 1);
     }
+    else if (event.getId() == "add" && mInputState == NPC_INPUT_ITEM)
+    {
+        if (Item *item = inventoryWindow->getSelectedItem())
+        {
+            // When we only need one item, just replace whatever is there
+            if (mInputItems->getSize() == 1)
+                mInputItems->clear();
+
+            int freeSlot = mInputItems->getFreeSlot();
+            if (freeSlot == -1)
+                return;
+
+            mInputItems->setItem(freeSlot, item->getId(), 1);
+            mAddItemButton->setEnabled(mInputItems->getSize() == 1 ||
+                                       mInputItems->getFreeSlot() != -1);
+        }
+    }
     else if (event.getId() == "clear")
     {
         setText(mNewText);
     }
 }
 
-void NpcDialog::nextDialog()
+void NpcDialog::nextDialog() const
 {
     Net::getNpcHandler()->nextDialog(mNpcId);
 }
@@ -330,11 +386,10 @@ bool NpcDialog::isInputFocused() const
 
 bool NpcDialog::isAnyInputFocused()
 {
-    for (auto dialog : instances)
-        if (dialog->isInputFocused())
-            return true;
-
-    return false;
+    return std::any_of(instances.begin(), instances.end(),
+                       [](NpcDialog *dialog) {
+                           return dialog->isInputFocused();
+                       });
 }
 
 void NpcDialog::integerRequest(int defaultValue, int min, int max)
@@ -344,6 +399,16 @@ void NpcDialog::integerRequest(int defaultValue, int min, int max)
     mDefaultInt = defaultValue;
     mIntField->setRange(min, max);
     mIntField->setValue(defaultValue);
+    buildLayout();
+}
+
+void NpcDialog::itemRequest(int amount)
+{
+    mActionState = NPC_ACTION_INPUT;
+    mInputState = NPC_INPUT_ITEM;
+    mInputItems->clear();
+    mInputItems->setSize(amount);
+    mAddItemButton->setEnabled(true);
     buildLayout();
 }
 
@@ -362,6 +427,7 @@ void NpcDialog::move(int amount)
             break;
         case NPC_INPUT_NONE:
         case NPC_INPUT_STRING:
+        case NPC_INPUT_ITEM:
             break;
     }
 }
@@ -371,9 +437,7 @@ void NpcDialog::setVisible(bool visible)
     Window::setVisible(visible);
 
     if (!visible)
-    {
         scheduleDelete();
-    }
 }
 
 void NpcDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
@@ -414,8 +478,7 @@ void NpcDialog::setup()
     if (npcListener)
         return;
 
-    npcListener = new NpcEventListener();
-
+    npcListener = new NpcEventListener;
     npcListener->listen(Event::NpcChannel);
 }
 
@@ -447,6 +510,7 @@ void NpcDialog::buildLayout()
             setText(mNewText);
 
         mNextButton->setCaption(CAPTION_SUBMIT);
+
         if (mInputState == NPC_INPUT_LIST)
         {
             place(0, 0, mScrollArea, 6, 3);
@@ -473,6 +537,14 @@ void NpcDialog::buildLayout()
             place(0, 4, mResetButton, 2);
             place(2, 4, mClearButton, 2);
             place(4, 4, mNextButton, 2);
+        }
+        else if (mInputState == NPC_INPUT_ITEM)
+        {
+            place(0, 0, mScrollArea, 6, 3);
+            place(0, 3, mInputItemsScrollArea, 6, 2);
+            place(0, 5, mAddItemButton, 2);
+            place(2, 5, mClearButton, 2);
+            place(4, 5, mNextButton, 2);
         }
     }
 
@@ -521,38 +593,35 @@ void NpcEventListener::event(Event::Channel channel,
 
         dialog->integerRequest(defaultValue, min, max);
     }
+    else if (event.getType() == Event::ItemInput)
+    {
+        NpcDialog *dialog = getDialog(event.getInt("id"));
+        dialog->itemRequest(event.getInt("amount", 1));
+    }
     else if (event.getType() == Event::StringInput)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
-
-        try
-        {
-            dialog->textRequest(event.getString("default"));
-        }
-        catch (BadEvent)
-        {
-            dialog->textRequest(std::string());
-        }
+        dialog->textRequest(event.getString("default", std::string()));
     }
     else if (event.getType() == Event::Next)
     {
         int id = event.getInt("id");
 
-        if (NpcDialog *dialog = getDialog(id, false))
+        if (NpcDialog *dialog = findDialog(id))
             dialog->showNextButton();
         else
             Net::getNpcHandler()->nextDialog(id);
     }
     else if (event.getType() == Event::ClearDialog)
     {
-        if (NpcDialog *dialog = getDialog(event.getInt("id"), false))
+        if (NpcDialog *dialog = findDialog(event.getInt("id")))
             dialog->setText({});
     }
     else if (event.getType() == Event::Close)
     {
         int id = event.getInt("id");
 
-        if (NpcDialog *dialog = getDialog(id, false))
+        if (NpcDialog *dialog = findDialog(id))
             dialog->showCloseButton();
         else
             Net::getNpcHandler()->closeDialog(id);
@@ -563,7 +632,7 @@ void NpcEventListener::event(Event::Channel channel,
     }
     else if (event.getType() == Event::CloseDialog)
     {
-        if (NpcDialog *dialog = getDialog(event.getInt("id"), false))
+        if (NpcDialog *dialog = findDialog(event.getInt("id")))
             dialog->close();
     }
     else if (event.getType() == Event::Post)
@@ -572,23 +641,20 @@ void NpcEventListener::event(Event::Channel channel,
     }
 }
 
-NpcDialog *NpcEventListener::getDialog(int id, bool make)
+NpcDialog *NpcEventListener::findDialog(int id)
 {
-    auto diag = mNpcDialogs.find(id);
-    NpcDialog *dialog = nullptr;
+    auto it = mNpcDialogs.find(id);
+    return it == mNpcDialogs.end() ? nullptr : it->second;
+}
 
-    if (diag == mNpcDialogs.end())
+NpcDialog *NpcEventListener::getDialog(int id)
+{
+    auto dialog = findDialog(id);
+
+    if (!dialog)
     {
-        // Empty dialogs don't help
-        if (make)
-        {
-            dialog = new NpcDialog(id);
-            mNpcDialogs[id] = dialog;
-        }
-    }
-    else
-    {
-        dialog = diag->second;
+        dialog = new NpcDialog(id);
+        mNpcDialogs[id] = dialog;
     }
 
     return dialog;

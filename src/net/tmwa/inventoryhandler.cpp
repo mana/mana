@@ -251,18 +251,13 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
         case SMSG_PLAYER_INVENTORY_USE:
             index = msg.readInt16() - INVENTORY_OFFSET;
-            msg.readInt16(); // item id
+            itemId = msg.readInt16();
             msg.readInt32();  // id
             amount = msg.readInt16();
-            msg.readInt8();  // type
 
-            if (Item *item = inventory->getItem(index))
+            if (msg.readInt8() == 1)
             {
-                if (amount)
-                    item->setQuantity(amount);
-                else
-                    inventory->removeItemAt(index);
-
+                inventory->setItem(index, itemId, amount);
                 inventoryWindow->updateButtons();
             }
 
@@ -276,17 +271,10 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             {
                 serverNotice(_("Failed to use item."));
             }
-            else
+            else if (Item *item = inventory->getItem(index))
             {
-                if (Item *item = inventory->getItem(index))
-                {
-                    if (amount)
-                        item->setQuantity(amount);
-                    else
-                        inventory->removeItemAt(index);
-
-                    inventoryWindow->updateButtons();
-                }
+                inventory->setItem(index, item->getId(), amount);
+                inventoryWindow->updateButtons();
             }
             break;
 

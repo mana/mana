@@ -48,6 +48,7 @@ class Inventory
             INVENTORY,
             STORAGE,
             TRADE,
+            NPC,
             TYPE_END
         };
 
@@ -65,6 +66,16 @@ class Inventory
          * Returns the size that this instance is configured for.
          */
         int getSize() const { return mItems.size(); }
+
+        /**
+         * Resizes this inventory.
+         */
+        void setSize(int size);
+
+        /**
+         * Returns a reference to the items in this inventory.
+         */
+        const std::vector<std::unique_ptr<Item>> &getItems() const { return mItems; }
 
         /**
          * Returns the item at the specified index.

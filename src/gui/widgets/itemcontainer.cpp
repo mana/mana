@@ -46,7 +46,9 @@
 ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
 {
-    mItemPopup = new ItemPopup;
+    mItemPopup = std::make_unique<ItemPopup>();
+    mItemPopup->addDeathListener(this);
+
     setFocusable(true);
 
     addKeyListener(this);
@@ -54,10 +56,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
     addWidgetListener(this);
 }
 
-ItemContainer::~ItemContainer()
-{
-    delete mItemPopup;
-}
+ItemContainer::~ItemContainer() = default;
 
 void ItemContainer::logic()
 {
@@ -377,6 +376,13 @@ void ItemContainer::widgetResized(const gcn::Event &event)
 
     mGridColumns = std::max(1, getWidth() / slotSkin.width);
     adjustHeight();
+}
+
+void ItemContainer::death(const gcn::Event &event)
+{
+    // If somebody else killed the PopupUp, make sure we don't also try to delete it
+    if (event.getSource() == mItemPopup.get())
+        mItemPopup.release();
 }
 
 void ItemContainer::adjustHeight()

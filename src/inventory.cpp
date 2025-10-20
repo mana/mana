@@ -39,6 +39,19 @@ Inventory::Inventory(Type type, int size)
     mItems.resize(size == -1 ? Net::getInventoryHandler()->getSize(type) : size);
 }
 
+void Inventory::setSize(int size)
+{
+    if (mItems.size() == size)
+        return;
+
+    mItems.resize(size);
+    mUsed = 0;
+    for (auto &item : mItems)
+        if (item)
+            mUsed++;
+    distributeSlotsChangedEvent();
+}
+
 Inventory::~Inventory() = default;
 
 Item *Inventory::getItem(int index) const
@@ -95,6 +108,9 @@ void Inventory::setItem(int index, int id, int quantity)
 
 void Inventory::clear()
 {
+    if (mUsed == 0)
+        return;
+
     for (auto &item : mItems)
         item = nullptr;
     mUsed = 0;

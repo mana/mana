@@ -84,6 +84,7 @@ public:
         GuiWindowsUnloaded,
         GuiWindowsUnloading,
         IntegerInput,
+        ItemInput,
         MapLoaded,
         Menu,
         Message,

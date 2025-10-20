@@ -78,90 +78,86 @@ void NpcHandler::handleMessage(MessageIn &msg)
 
     int npcId = msg.readInt32();
 
+    auto triggerNpcEvent = [&](Event &&event) {
+        event.setInt("id", npcId);
+        event.trigger(Event::NpcChannel);
+    };
+
     switch (msg.getId())
     {
     case SMSG_NPC_CHOICE:
     {
         Event event { Event::Menu };
-        event.setInt("id", npcId);
         parseMenu(event, msg.readString(msg.getLength() - 8));
-        event.trigger(Event::NpcChannel);
+        triggerNpcEvent(std::move(event));
         break;
     }
 
     case SMSG_NPC_MESSAGE:
     {
         Event event { Event::Message };
-        event.setInt("id", npcId);
         event.setString("text", msg.readString(msg.getLength() - 8));
-        event.trigger(Event::NpcChannel);
+        triggerNpcEvent(std::move(event));
         break;
     }
 
-    case SMSG_NPC_CLOSE:
-    {
-        // Show the close button
-        Event event { Event::Close };
-        event.setInt("id", npcId);
-        event.trigger(Event::NpcChannel);
+    case SMSG_NPC_CLOSE:        // Show the close button
+        triggerNpcEvent(Event::Close);
         break;
-    }
 
     case SMSG_NPC_COMMAND:
     {
         auto command = msg.readInt16();
-        msg.readInt32(); // id
+        auto idOrAmount = msg.readInt32(); // id or amount
         msg.readInt16(); // x
         msg.readInt16(); // y
 
         switch (command)
         {
+        case NPC_REQUEST_LANG:
+        case NPC_CAMERA_ACTOR:
+        case NPC_CAMERA_POS:
+        case NPC_CAMERA_RESTORE:
+        case NPC_CAMERA_RELATIVE:
+            // todo
+            break;
         case NPC_CLOSE_DIALOG:
-        {
-            Event event { Event::CloseDialog };
-            event.setInt("id", npcId);
-            event.trigger(Event::NpcChannel);
+            triggerNpcEvent(Event::CloseDialog);
             break;
-        }
-
+        case NPC_SHOW_AVATAR:
+        case NPC_SET_AVATAR_DIRECTION:
+        case NPC_SET_AVATAR_ACTION:
+            // todo
+            break;
         case NPC_CLEAR_DIALOG:
-        {
-            Event event { Event::ClearDialog };
-            event.setInt("id", npcId);
-            event.trigger(Event::NpcChannel);
+            triggerNpcEvent(Event::ClearDialog);
+            break;
+        case NPC_REQUEST_ITEM: {
+            Event event { Event::ItemInput };
+            event.setInt("amount", idOrAmount ? idOrAmount : 1);
+            triggerNpcEvent(std::move(event));
             break;
         }
+        case NPC_REQUEST_ITEM_INDEX:
+        case NPC_REQUEST_ITEMS:
+            // todo
+            break;
         }
 
         break;
     }
 
-    case SMSG_NPC_NEXT:
-    {
-        // Show the next button
-        Event event { Event::Next };
-        event.setInt("id", npcId);
-        event.trigger(Event::NpcChannel);
+    case SMSG_NPC_NEXT:         // Show the next button
+        triggerNpcEvent(Event::Next);
         break;
-    }
 
-    case SMSG_NPC_INT_INPUT:
-    {
-        // Request for an integer
-        Event event { Event::IntegerInput };
-        event.setInt("id", npcId);
-        event.trigger(Event::NpcChannel);
+    case SMSG_NPC_INT_INPUT:    // Request for an integer
+        triggerNpcEvent(Event::IntegerInput);
         break;
-    }
 
-    case SMSG_NPC_STR_INPUT:
-    {
-        // Request for a string
-        Event event { Event::StringInput };
-        event.setInt("id", npcId);
-        event.trigger(Event::NpcChannel);
+    case SMSG_NPC_STR_INPUT:    // Request for a string
+        triggerNpcEvent(Event::StringInput);
         break;
-    }
     }
 
     if (local_player->getCurrentAction() != Being::SIT)

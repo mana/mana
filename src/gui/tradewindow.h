@@ -61,11 +61,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         void reset();
 
         /**
-         * Add an item to the trade window.
-         */
-        void addItem(int id, bool own, int quantity, bool equipment);
-
-        /**
          * Change quantity of an item.
          */
         void changeQuantity(int index, bool own, int quantity);
