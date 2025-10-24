@@ -20,6 +20,7 @@
 
 #include "resources/questdb.h"
 #include "log.h"
+#include "playerinfo.h"
 
 #include <algorithm>
 #include <unordered_map>
@@ -55,10 +56,11 @@ void readQuestVarNode(XML::Node node, const std::string &filename)
         if (child.name() == "effect")
         {
             QuestEffect &effect = quest.effects.emplace_back();
+            child.attribute("value", effect.values);
             child.attribute("map", effect.map);
             child.attribute("npc", effect.npcId);
             child.attribute("effect", effect.statusEffectId);
-            child.attribute("value", effect.values);
+            child.attribute("level", effect.level);
 
             if (effect.map.empty() || effect.npcId == 0 || effect.statusEffectId == 0 || effect.values.empty())
             {
@@ -139,12 +141,16 @@ QuestEffectMap getActiveEffects(const QuestVars &questVars,
 {
     QuestEffectMap activeEffects;
 
+    const int level = PlayerInfo::getAttribute(LEVEL);
+
     for (auto &[var, quest] : std::as_const(quests))
     {
         auto value = questVars.get(var);
 
         for (auto &effect : quest.effects)
         {
+            if (effect.level > level)
+                continue;
             if (baseName(effect.map) != mapName)
                 continue;
             if (!contains(effect.values, value))

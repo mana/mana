@@ -59,6 +59,7 @@ struct QuestEffect
     std::string map;                // Map name the NPC is located on
     int npcId = 0;
     int statusEffectId = 0;
+    int level = 0;
 };
 
 // Map of quest variables, from variable ID to value

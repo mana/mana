@@ -163,6 +163,7 @@ PlayerHandler::PlayerHandler()
     playerHandler = this;
 
     listen(Event::GameChannel);
+    listen(Event::AttributesChannel);
 }
 
 void PlayerHandler::handleMessage(MessageIn &msg)
@@ -719,6 +720,15 @@ void PlayerHandler::event(Event::Channel channel, const Event &event)
     if (channel == Event::GameChannel)
     {
         if (event.getType() == Event::MapLoaded)
+        {
+            updateQuestStatusEffects();
+        }
+    }
+    else if (channel == Event::AttributesChannel)
+    {
+        // Quest effects can have a minimum level requirement
+        if (event.getType() == Event::UpdateAttribute &&
+                event.getInt("id") == LEVEL)
         {
             updateQuestStatusEffects();
         }
