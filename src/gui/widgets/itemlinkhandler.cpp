@@ -30,12 +30,15 @@
 #include "gui/itempopup.h"
 #include "gui/okdialog.h"
 #include "gui/viewport.h"
+#include "gui/monsterpopup.h"
 
 #include "gui/widgets/itemlinkhandler.h"
 
 #include "client.h"
-#include "resources/iteminfo.h"
+#include "resources/beinginfo.h"
 #include "resources/itemdb.h"
+#include "resources/iteminfo.h"
+#include "resources/monsterdb.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -47,6 +50,22 @@ ItemLinkHandler::ItemLinkHandler(Window *parent)
 }
 
 ItemLinkHandler::~ItemLinkHandler() = default;
+
+std::string ItemLinkHandler::captionForLink(const std::string &link)
+{
+    // Monster links
+    if (!link.empty() && link[0] == 'm')
+    {
+        if (const int id = atoi(link.c_str() + 1))
+            return MonsterDB::get(id)->name;
+    }
+
+    // Item links have no prefix
+    if (const int id = atoi(link.c_str()))
+        return itemDb->get(id).name;
+
+    return link;
+}
 
 static bool isUrl(const std::string &link)
 {
@@ -89,6 +108,31 @@ void ItemLinkHandler::handleLink(const std::string &link)
         return;
     }
 
+    // Monster links start with 'm' followed by an ID (e.g., "m1062")
+    if (!link.empty() && link[0] == 'm')
+    {
+        int monsterId = 0;
+        std::istringstream mstream(link.substr(1));
+        mstream >> monsterId;
+        if (monsterId > 0)
+        {
+            auto *monsterInfo = MonsterDB::get(monsterId);
+            if (!mMonsterPopup)
+            {
+                mMonsterPopup = std::make_unique<MonsterPopup>();
+                mMonsterPopup->addDeathListener(this);
+            }
+            mMonsterPopup->setMonster(*monsterInfo);
+
+            if (mMonsterPopup->isVisible())
+                mMonsterPopup->setVisible(false);
+            else
+                mMonsterPopup->position(viewport->getMouseX(), viewport->getMouseY());
+            return;
+        }
+    }
+
+    // Finally we handle item links, which have no prefix
     int id = 0;
     std::istringstream stream(link);
     stream >> id;
@@ -123,4 +167,6 @@ void ItemLinkHandler::death(const gcn::Event &event)
     // If somebody else killed the PopupUp, make sure we don't also try to delete it
     if (event.getSource() == mItemPopup.get())
         mItemPopup.release();
+    if (mMonsterPopup && event.getSource() == mMonsterPopup.get())
+        mMonsterPopup.release();
 }

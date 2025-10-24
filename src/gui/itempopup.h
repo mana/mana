@@ -26,8 +26,6 @@
 
 #include "resources/iteminfo.h"
 
-#include <guichan/mouselistener.hpp>
-
 class Icon;
 class Label;
 class TextBox;

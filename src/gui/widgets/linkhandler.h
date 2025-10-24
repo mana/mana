@@ -32,5 +32,19 @@ class LinkHandler
     public:
         virtual ~LinkHandler() = default;
 
+        /**
+         * Called when a link has an empty caption. Returns the caption
+         * to use for the link.
+         *
+         * Default implementation just returns the link itself.
+         */
+        virtual std::string captionForLink(const std::string &link)
+        {
+            return link;
+        }
+
+        /**
+         * Called when a link is clicked.
+         */
         virtual void handleLink(const std::string &link) = 0;
 };

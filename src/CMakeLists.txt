@@ -218,6 +218,8 @@ set(SRCS
     gui/minimap.h
     gui/ministatuswindow.cpp
     gui/ministatuswindow.h
+    gui/monsterpopup.cpp
+    gui/monsterpopup.h
     gui/npcdialog.cpp
     gui/npcdialog.h
     gui/npcpostdialog.cpp

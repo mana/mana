@@ -20,9 +20,12 @@
 
 #pragma once
 
-#include "sprite.h"
+#include "resources/spritedef.h"
 
 #include <vector>
+
+class Graphics;
+class Sprite;
 
 class CompoundSprite
 {

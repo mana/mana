@@ -29,6 +29,7 @@
 #include <memory>
 
 class ItemPopup;
+class MonsterPopup;
 class Window;
 
 class ItemLinkHandler : public LinkHandler, gcn::ActionListener, public gcn::DeathListener
@@ -38,6 +39,7 @@ class ItemLinkHandler : public LinkHandler, gcn::ActionListener, public gcn::Dea
         ~ItemLinkHandler() override;
 
         // LinkHandler interface
+        std::string captionForLink(const std::string &link) override;
         void handleLink(const std::string &link) override;
 
         // ActionListener interface
@@ -48,6 +50,7 @@ class ItemLinkHandler : public LinkHandler, gcn::ActionListener, public gcn::Dea
 
     private:
         std::unique_ptr<ItemPopup> mItemPopup;
+        std::unique_ptr<MonsterPopup> mMonsterPopup;
 
         Window *mParent = nullptr;
         std::string mLink;

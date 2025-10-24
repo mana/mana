@@ -21,11 +21,11 @@
 
 #include "statuseffect.h"
 
+#include "configuration.h"
 #include "event.h"
 #include "particle.h"
 #include "sound.h"
-
-#include "configuration.h"
+#include "sprite.h"
 
 /**
  * Plays the sound effect associated with this status effect, if possible.

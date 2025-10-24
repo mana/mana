@@ -28,8 +28,6 @@
 #include "gui/truetypefont.h"
 #include "gui/widgets/linkhandler.h"
 
-#include "resources/itemdb.h"
-#include "resources/iteminfo.h"
 #include "resources/theme.h"
 
 #include "utils/stringutils.h"
@@ -161,14 +159,8 @@ void BrowserBox::addRow(std::string_view row)
             link.link = row.substr(linkStart + 2, linkSep - (linkStart + 2));
             link.caption = row.substr(linkSep + 1, linkEnd - (linkSep + 1));
 
-            if (link.caption.empty())
-            {
-                const int id = atoi(link.link.c_str());
-                if (id)
-                    link.caption = itemDb->get(id).name;
-                else
-                    link.caption = link.link;
-            }
+            if (link.caption.empty() && mLinkHandler)
+                link.caption = mLinkHandler->captionForLink(link.link);
 
             newRow.text += row.substr(0, linkStart);
             newRow.text += "##<" + link.caption;
