@@ -22,7 +22,6 @@
 #include "net/tmwa/generalhandler.h"
 
 #include "client.h"
-#include "configuration.h"
 #include "log.h"
 
 #include "gui/skilldialog.h"
@@ -69,7 +68,7 @@ extern Party *taParty;
 
 GeneralHandler::GeneralHandler():
     mAdminHandler(new AdminHandler),
-    mBeingHandler(new BeingHandler(config.enableSync)),
+    mBeingHandler(new BeingHandler),
     mBuySellHandler(new BuySellHandler),
     mCharHandler(new CharServerHandler),
     mChatHandler(new ChatHandler),

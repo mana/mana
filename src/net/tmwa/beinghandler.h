@@ -28,13 +28,9 @@ namespace TmwAthena {
 class BeingHandler final : public MessageHandler
 {
     public:
-        BeingHandler(bool enableSync);
+        BeingHandler();
 
         void handleMessage(MessageIn &msg) override;
-
-    private:
-        // Should we honor server "Stop Walking" packets
-        bool mSync;
 };
 
 } // namespace TmwAthena

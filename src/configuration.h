@@ -208,7 +208,7 @@ struct Config
     std::string screenshotDirectorySuffix;
     bool useScreenshotDirectorySuffix = true;
 
-    bool enableSync = false;
+    bool enableSync = false;    // Should we honor server "Stop Walking" packets
 
     bool joystickEnabled = false;
     int upTolerance = 100;

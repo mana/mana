@@ -24,6 +24,7 @@
 #include "actorspritemanager.h"
 #include "being.h"
 #include "client.h"
+#include "configuration.h"
 #include "effectmanager.h"
 #include "game.h"
 #include "guild.h"
@@ -49,8 +50,7 @@ namespace TmwAthena {
 // Number of pixels where we decide that the position doesn't need to be reset.
 static const float POS_DEST_DIFF_TOLERANCE = 48.0f;
 
-BeingHandler::BeingHandler(bool enableSync):
-   mSync(enableSync)
+BeingHandler::BeingHandler()
 {
     static const Uint16 _messages[] =
     {
@@ -692,7 +692,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
              */
 
             id = msg.readInt32();
-            if (mSync || id != local_player->getId())
+            if (config.enableSync || id != local_player->getId())
             {
                 dstBeing = actorSpriteManager->findBeing(id);
                 if (dstBeing)
