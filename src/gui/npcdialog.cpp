@@ -266,9 +266,6 @@ void NpcDialog::action(const gcn::ActionEvent &event)
                     }
                 }
 
-                if (response.empty())
-                    return;
-
                 Net::getNpcHandler()->stringInput(mNpcId, response);
                 break;
             }
