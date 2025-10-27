@@ -638,17 +638,17 @@ void PlayerHandler::setDestination(int x, int y, int direction)
 
 void PlayerHandler::changeAction(Being::Action action)
 {
-    char type;
+    DamageType type;
     switch (action)
     {
-        case Being::SIT: type = 2; break;
-        case Being::STAND: type = 3; break;
+        case Being::SIT:    type = DamageType::SIT; break;
+        case Being::STAND:  type = DamageType::STAND; break;
         default: return;
     }
 
     MessageOut outMsg(CMSG_PLAYER_CHANGE_ACT);
     outMsg.writeInt32(0);
-    outMsg.writeInt8(type);
+    outMsg.writeInt8(static_cast<uint8_t>(type));
 }
 
 void PlayerHandler::respawn()

@@ -63,6 +63,22 @@ enum
     SPRITE_VECTOREND
 };
 
+// this is used for both input and output
+// different values are valid in CMSG_PLAYER_CHANGE_ACT vs SMSG_BEING_ACTION
+enum class DamageType : uint8_t
+{
+    NORMAL      = 0x00,
+    TAKEITEM    = 0x01,
+    SIT         = 0x02,
+    STAND       = 0x03,
+    RETURNED    = 0x04,
+    CONTINUOUS  = 0x07,
+    DOUBLED     = 0x08,
+    CRITICAL    = 0x0a,
+    FLEE2       = 0x0b,
+    DEADLY      = 0x0c,
+};
+
 enum class LOOK : uint8_t
 {
     BASE            = 0,

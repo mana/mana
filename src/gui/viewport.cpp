@@ -215,7 +215,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             continue;
 
         auto *being = static_cast<Being*>(actor);
-        being->drawSpeech(scrollX, scrollY);
+        being->drawSpeech(graphics, scrollX, scrollY);
     }
 
     if (mDebugFlags & Map::DEBUG_BEING_IDS)

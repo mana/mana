@@ -87,6 +87,7 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
             NAME_IN_BUBBLE
         };
 
+        // These values match those in TmwAthena::DamageType
         enum AttackType
         {
             HIT = 0x00,
@@ -287,7 +288,7 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         /**
          * Draws the speech text above the being.
          */
-        void drawSpeech(int offsetX, int offsetY);
+        void drawSpeech(Graphics *graphics, int offsetX, int offsetY);
 
         uint16_t getSubType() const { return mSubType; }
 
@@ -434,7 +435,7 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
          */
         int getIp() const { return mIp; }
 
-        bool canTalk();
+        bool canTalk() const;
 
         void talkTo();
 
@@ -452,6 +453,9 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         void lookAt(const Vector &destVec);
         void lookAt(const Position &destPos)
         { lookAt(Vector(destPos.x, destPos.y)); }
+
+        int mHp;
+        int mMaxHp;
 
     protected:
         struct SpriteState {

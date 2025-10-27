@@ -221,7 +221,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
     SEX sex;
     float speed;
     Uint16 headTop, headMid, headBottom;
-    Uint16 shoes, gloves;
+    Uint16 shoes;
     Uint16 weapon, shield;
     Uint16 gmstatus;
     int param1;
@@ -229,7 +229,6 @@ void BeingHandler::handleMessage(MessageIn &msg)
     uint16_t opt1;
     uint16_t opt2;
     uint16_t opt3;
-    int type, guild;
     Uint16 status;
     Being *srcBeing, *dstBeing;
     int hairStyle, hairColor, flag;
@@ -240,7 +239,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_BEING_VISIBLE:
-        case SMSG_BEING_MOVE:
+        case SMSG_BEING_MOVE: {
             // Information about a being in range
             id = msg.readInt32();
             speed = (float)msg.readInt16();
@@ -292,18 +291,11 @@ void BeingHandler::handleMessage(MessageIn &msg)
             headMid = msg.readInt16();
             hairColor = msg.readInt16();
             shoes = msg.readInt16();  // clothes color - "abused" as shoes
-            gloves = msg.readInt16();  // head dir - "abused" as gloves
-            guild = msg.readInt32();  // guild
-            if (guild == 0)
-            {
-                dstBeing->clearGuilds();
-            }
-            else
-            {
-                dstBeing->addGuild(Guild::getGuild(guild));
-            }
-            msg.readInt16();  // guild emblem
-            msg.readInt16();  // manner
+
+            dstBeing->mHp = msg.readInt32();
+            dstBeing->mMaxHp = msg.readInt32();
+
+            msg.readInt16();  // manner (unused)
             opt3 = msg.readInt16();
             msg.readInt8();   // karma
             sex = static_cast<SEX>(msg.readInt8());
@@ -318,7 +310,6 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 dstBeing->setSprite(SPRITE_TOPCLOTHES, headMid);
                 dstBeing->setSprite(SPRITE_HAT, headTop);
                 dstBeing->setSprite(SPRITE_SHOE, shoes);
-                dstBeing->setSprite(SPRITE_GLOVES, gloves);
                 dstBeing->setSprite(SPRITE_WEAPON, weapon, "", true);
                 dstBeing->setSprite(SPRITE_SHIELD, shield);
             }
@@ -343,6 +334,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             applyStatusEffects(dstBeing, opt0, opt1, opt2, opt3);
             break;
+        }
 
         case SMSG_BEING_SPAWN:
             /*
@@ -405,42 +397,53 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 srcBeing->handleAttack(dstBeing, param1);
             break;
         }
-        case SMSG_BEING_ACTION:
+        case SMSG_BEING_ACTION: {
             srcBeing = actorSpriteManager->findBeing(msg.readInt32());
             dstBeing = actorSpriteManager->findBeing(msg.readInt32());
             msg.readInt32();   // server tick
             msg.readInt32();   // src speed
             msg.readInt32();   // dst speed
-            param1 = msg.readInt16();
-            msg.readInt16();  // param 2
-            type = msg.readInt8();
-            msg.readInt16();  // param 3
+            int damage = msg.readInt16();
+            msg.readInt16();  // div
+            auto type = static_cast<DamageType>(msg.readInt8());
+            msg.readInt16();  // damage2 (always 0)
 
             switch (type)
             {
-                case Being::HIT: // Damage
-                case Being::CRITICAL: // Critical Damage
-                case Being::MULTI: // Critical Damage
-                case Being::REFLECT: // Reflected Damage
-                case Being::FLEE: // Lucky Dodge
-                    if (dstBeing)
-                        dstBeing->takeDamage(srcBeing, param1,
-                                static_cast<Being::AttackType>(type));
-                    if (srcBeing)
-                        srcBeing->handleAttack(dstBeing, param1);
-                    break;
+                case DamageType::NORMAL:
+                case DamageType::RETURNED:
+                case DamageType::CONTINUOUS:
+                case DamageType::DOUBLED:
+                case DamageType::CRITICAL:
+                case DamageType::FLEE2: {
+                    if (type == DamageType::CONTINUOUS)
+                        type = DamageType::NORMAL;
 
-                case 0x02: // Sit
+                    if (dstBeing)
+                        dstBeing->takeDamage(srcBeing, damage,
+                                             static_cast<Being::AttackType>(type));
+                    if (srcBeing)
+                        srcBeing->handleAttack(dstBeing, damage);
+                    break;
+                }
+
+                case DamageType::SIT:
                     if (srcBeing)
                         srcBeing->setAction(Being::SIT);
                     break;
 
-                case 0x03: // Stand up
+                case DamageType::STAND:
                     if (srcBeing)
                         srcBeing->setAction(Being::STAND);
                     break;
-            }
+
+                case DamageType::TAKEITEM:
+                case DamageType::DEADLY:
+                    // todo
+                    break;
+                }
             break;
+        }
 
         case SMSG_BEING_SELFEFFECT:
         {

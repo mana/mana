@@ -960,7 +960,7 @@ void Being::updateMovement()
     }
 }
 
-void Being::drawSpeech(int offsetX, int offsetY)
+void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
 {
     const int px = getPixelX() - offsetX;
     const int speech = config.speech;
@@ -1005,6 +1005,30 @@ void Being::drawSpeech(int offsetX, int offsetY)
 
         delete mText;
         mText = nullptr;
+    }
+
+    // Draw HP bar for alive monsters which are damaged
+    if (isAlive() && getType() == MONSTER && mMaxHp > 0 && mHp < mMaxHp)
+    {
+        const int barWidth = 40;
+        const int barHeight = 6;
+        const int barX = px - (barWidth / 2);
+        const int barY = getPixelY() - getHeight() - 10 - offsetY;
+
+        float hpPercent = static_cast<float>(mHp) / static_cast<float>(mMaxHp);
+        int filledWidth = static_cast<int>(hpPercent * barWidth);
+
+        // Draw background
+        graphics->setColor(gcn::Color(0, 0, 0));
+        graphics->fillRectangle(gcn::Rectangle(barX, barY, barWidth, barHeight));
+
+        // Draw filled part
+        graphics->setColor(gcn::Color(255, 0, 0));
+        graphics->fillRectangle(gcn::Rectangle(barX, barY, filledWidth, barHeight));
+
+        // Draw border
+        graphics->setColor(gcn::Color(128, 128, 128));
+        graphics->drawRectangle(gcn::Rectangle(barX, barY, barWidth, barHeight));
     }
 }
 
@@ -1352,7 +1376,7 @@ void Being::setIp(int ip)
         updateName();
 }
 
-bool Being::canTalk()
+bool Being::canTalk() const
 {
     return mType == NPC;
 }
