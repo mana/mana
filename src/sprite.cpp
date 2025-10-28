@@ -23,7 +23,6 @@
 
 #include "graphics.h"
 
-#include "resources/action.h"
 #include "resources/animation.h"
 #include "resources/image.h"
 #include "resources/resourcemanager.h"

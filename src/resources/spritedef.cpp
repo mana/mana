@@ -24,7 +24,6 @@
 #include "log.h"
 #include "sprite.h"
 
-#include "resources/action.h"
 #include "resources/animation.h"
 #include "resources/dye.h"
 #include "resources/image.h"
@@ -32,11 +31,37 @@
 
 #include "configuration.h"
 
+#include "utils/dtor.h"
 #include "utils/xml.h"
 
 #include <set>
 
-std::set<std::string> processedFiles;
+static std::set<std::string> processedFiles;
+
+
+Action::Action() = default;
+Action::~Action()
+{
+    delete_all(mAnimations);
+}
+
+Animation *Action::getAnimation(int direction) const
+{
+    auto i = mAnimations.find(direction);
+
+    // When the given direction is not available, return the first one.
+    // (either DEFAULT, or more usually DOWN).
+    if (i == mAnimations.end())
+        i = mAnimations.begin();
+
+    return (i == mAnimations.end()) ? nullptr : i->second;
+}
+
+void Action::setAnimation(int direction, Animation *animation)
+{
+    mAnimations[direction] = animation;
+}
+
 
 Action *SpriteDef::getAction(const std::string &action) const
 {

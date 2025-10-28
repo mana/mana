@@ -22,7 +22,6 @@
 
 #include "resources/spritedef.h"
 
-class Animation;
 class Graphics;
 class Image;
 struct Frame;

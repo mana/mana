@@ -314,8 +314,6 @@ set(SRCS
     net/abilityhandler.h
     net/tradehandler.h
     net/worldinfo.h
-    resources/action.cpp
-    resources/action.h
     resources/ambientlayer.cpp
     resources/ambientlayer.h
     resources/animation.cpp

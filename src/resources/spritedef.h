@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 
-class Action;
+class Animation;
 class ImageSet;
 
 struct SpriteReference
@@ -78,6 +78,22 @@ enum SpriteDirection
     DIRECTION_LEFT,
     DIRECTION_RIGHT,
     DIRECTION_INVALID
+};
+
+/**
+ * An action consists of several animations, one for each direction.
+ */
+class Action
+{
+    public:
+        Action();
+        ~Action();
+
+        void setAnimation(int direction, Animation *animation);
+        Animation *getAnimation(int direction) const;
+
+    protected:
+        std::map<int, Animation *> mAnimations;
 };
 
 /**
