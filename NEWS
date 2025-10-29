@@ -2,6 +2,7 @@ Unreleased
 - Added support for NPCs asking for items
 - Added support for monster links
 - Added --log-file parameter to set log file path or '-' for stdout
+- Use online player list for name autocomplete
 - Removed background color from shop list entries
 - Fixed keyboard movement not stopping on NPC dialog opening
 

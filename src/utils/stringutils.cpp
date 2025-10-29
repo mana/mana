@@ -130,13 +130,11 @@ bool isWordSeparator(char chr)
 std::string findSameSubstring(const std::string &str1,
                               const std::string &str2)
 {
-    int minLength = str1.length() > str2.length() ? str2.length() : str1.length();
-    for (int f = 0; f < minLength; f ++)
+    const auto minLength = std::min(str1.length(), str2.length());
+    for (size_t f = 0; f < minLength; f++)
     {
         if (str1.at(f) != str2.at(f))
-        {
             return str1.substr(0, f);
-        }
     }
     return str1.substr(0, minLength);
 }
@@ -181,33 +179,26 @@ void fromString(const char *str, std::vector<int> &value)
 std::string autocomplete(const std::vector<std::string> &candidates,
                          std::string base)
 {
-    auto i = candidates.begin();
     toLower(base);
     std::string newName;
 
-    while (i != candidates.end())
+    for (const auto &candidate : candidates)
     {
-        if (!i->empty())
-        {
-            std::string name = *i;
-            toLower(name);
+        std::string name = candidate;
+        toLower(name);
 
-            std::string::size_type pos = name.find(base, 0);
-            if (pos == 0)
+        if (name.rfind(base, 0) == 0)
+        {
+            if (newName.empty())
             {
-                if (!newName.empty())
-                {
-                    toLower(newName);
-                    newName = findSameSubstring(name, newName);
-                }
-                else
-                {
-                    newName = *i;
-                }
+                newName = candidate;
+            }
+            else
+            {
+                toLower(newName);
+                newName = findSameSubstring(name, newName);
             }
         }
-
-        ++i;
     }
 
     return newName;

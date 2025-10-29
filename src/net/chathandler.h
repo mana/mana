@@ -22,6 +22,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace Net {
 
@@ -59,5 +60,8 @@ class ChatHandler
         virtual bool whoSupported() const = 0;
 
         virtual void requestOnlineList() = 0;
+
+        virtual std::vector<std::string> getOnlinePlayerNames() const { return {}; };
 };
-}
+
+} // namespace Net

@@ -67,8 +67,11 @@ class ChatHandler final : public MessageHandler, public Net::ChatHandler
 
         void requestOnlineList() override;
 
+        std::vector<std::string> getOnlinePlayerNames() const override;
+
     private:
         std::queue<std::string> mSentWhispers;
+        std::vector<std::string> mOnlinePlayerNames;
 };
 
 } // namespace TmwAthena

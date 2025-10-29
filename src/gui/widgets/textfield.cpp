@@ -273,31 +273,26 @@ void TextField::autoComplete()
         if (caretPos == startName)
             return;
 
-
         std::vector<std::string> nameList;
         mAutoComplete->getAutoCompleteList(nameList);
         newName = autocomplete(nameList, name);
 
+        // If we couldn't find a match, try the first words in each line of history
         if (newName.empty() && mHistory)
         {
-
-            auto i = mHistory->history.begin();
             std::vector<std::string> nameList;
 
-            while (i != mHistory->history.end())
+            for (const auto &line : mHistory->history)
             {
-                std::string line = *i;
-                unsigned int f = 0;
+                size_t f = 0;
                 while (f < line.length() && !isWordSeparator(line.at(f)))
                 {
                     f++;
                 }
-                line = line.substr(0, f);
-                if (!line.empty())
+                if (f > 0)
                 {
-                    nameList.push_back(line);
+                    nameList.push_back(line.substr(0, f));
                 }
-                ++i;
             }
 
             newName = autocomplete(nameList, name);
@@ -305,7 +300,7 @@ void TextField::autoComplete()
 
         if (!newName.empty())
         {
-            if(inputText[0] == '@' || inputText[0] == '/')
+            if (inputText[0] == '@' || inputText[0] == '/')
                 newName = "\"" + newName + "\"";
 
             setText(inputText.substr(0, startName) + newName
@@ -322,7 +317,8 @@ void TextField::handlePaste()
     std::string text = getText();
     std::string::size_type caretPos = getCaretPosition();
 
-    if (insertFromClipboard(text, caretPos)) {
+    if (insertFromClipboard(text, caretPos))
+    {
         setText(text);
         setCaretPosition(caretPos);
     }

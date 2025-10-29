@@ -25,14 +25,26 @@
 #include "game.h"
 #include "localplayer.h"
 
+#include "net/net.h"
+#include "net/chathandler.h"
+
 #include <algorithm>
 
 class PlayerNamesLister : public AutoCompleteLister
 {
+public:
     void getAutoCompleteList(std::vector<std::string>& names) const override
     {
         names.clear();
 
+        if (auto *handler = Net::getChatHandler())
+        {
+            names = handler->getOnlinePlayerNames();
+            if (!names.empty())
+                return;
+        }
+
+        // If there is no online list, fall back to local players
         for (auto actor : actorSpriteManager->getAll()) {
             if (actor->getType() != ActorSprite::PLAYER)
                 continue;
@@ -44,20 +56,20 @@ class PlayerNamesLister : public AutoCompleteLister
     }
 };
 
-class PlayerNPCNamesLister : public AutoCompleteLister
+class PlayerNPCNamesLister : public PlayerNamesLister
 {
+public:
     void getAutoCompleteList(std::vector<std::string>& names) const override
     {
-        names.clear();
+        PlayerNamesLister::getAutoCompleteList(names);
 
         for (auto actor : actorSpriteManager->getAll())
         {
-            if (actor->getType() == ActorSprite::FLOOR_ITEM)
+            if (actor->getType() != ActorSprite::NPC)
                 continue;
 
             auto *being = static_cast<Being *>(actor);
-            if ((being->getType() == Being::PLAYER ||
-                 being->getType() == Being::NPC) && !being->getName().empty())
+            if (!being->getName().empty())
                 names.push_back(being->getName());
         }
     }

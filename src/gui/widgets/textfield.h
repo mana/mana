@@ -57,7 +57,8 @@ struct TextHistory
     { return history.back() == text; }
 };
 
-class AutoCompleteLister {
+class AutoCompleteLister
+{
 public:
     virtual ~AutoCompleteLister() = default;
     virtual void getAutoCompleteList(std::vector<std::string>&) const {}

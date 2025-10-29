@@ -265,6 +265,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             int length = msg.readInt16();
             int count = (length - 4) / 31;
             std::vector<Avatar*> players;
+            mOnlinePlayerNames.clear();
             
             for (int i = 0; i < count; i++)
             {
@@ -277,6 +278,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 auto *avatar = new Avatar(nick);
                 avatar->setOnline(true);
                 players.push_back(avatar);
+                mOnlinePlayerNames.push_back(nick);
             }
 
             socialWindow->setPlayersOnline(players);
@@ -367,6 +369,11 @@ void ChatHandler::kickUser(int channelId, const std::string &name)
 void ChatHandler::requestOnlineList()
 {
     MessageOut outMsg(CMSG_ONLINE_LIST);
+}
+
+std::vector<std::string> ChatHandler::getOnlinePlayerNames() const
+{
+    return mOnlinePlayerNames;
 }
 
 } // namespace TmwAthena
