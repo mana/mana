@@ -44,16 +44,14 @@ public:
                            int srcX, int srcY,
                            int dstX, int dstY,
                            int width, int height,
-                           int desiredWidth, int desiredHeight,
-                           bool useColor) override;
+                           int desiredWidth, int desiredHeight) override;
 
 #if SDL_VERSION_ATLEAST(2, 0, 10)
     bool drawRescaledImageF(const Image *image,
                             int srcX, int srcY,
                             float dstX, float dstY,
                             int width, int height,
-                            float desiredWidth, float desiredHeight,
-                            bool useColor) override;
+                            float desiredWidth, float desiredHeight) override;
 #endif
 
     void drawRescaledImagePattern(const Image *image,
@@ -83,7 +81,7 @@ protected:
     void updateClipRect() override;
 
 private:
-    void setColorAlphaMod(const Image *image, bool useColor) const;
+    void setColorAlphaMod(const Image *image) const;
 
     SDL_Window *mWindow = nullptr;
     SDL_Renderer *mRenderer = nullptr;

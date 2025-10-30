@@ -62,15 +62,13 @@ class OpenGLGraphics final : public Graphics
         bool drawRescaledImage(const Image *image, int srcX, int srcY,
                                int dstX, int dstY,
                                int width, int height,
-                               int desiredWidth, int desiredHeight,
-                               bool useColor) override;
+                               int desiredWidth, int desiredHeight) override;
 
         bool drawRescaledImageF(const Image *image,
                                 int srcX, int srcY,
                                 float dstX, float dstY,
                                 int width, int height,
-                                float desiredWidth, float desiredHeight,
-                                bool useColor) override;
+                                float desiredWidth, float desiredHeight) override;
 
         void drawImagePattern(const Image *image,
                               int x, int y,
@@ -117,6 +115,7 @@ class OpenGLGraphics final : public Graphics
 
     protected:
         void setTexturingAndBlending(bool enable);
+        void prepareRenderImage(const Image *image);
 
         void updateClipRect() override;
 

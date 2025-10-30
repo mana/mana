@@ -73,7 +73,7 @@ void Desktop::draw(gcn::Graphics *graphics)
     {
         g->drawRescaledImage(mWallpaper, 0, 0, 0, 0,
             mWallpaper->getWidth(), mWallpaper->getHeight(),
-            getWidth(), getHeight(), false);
+            getWidth(), getHeight());
     }
     else
     {

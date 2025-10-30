@@ -221,19 +221,16 @@ static inline void drawRescaledQuad(const Image *image,
 bool OpenGLGraphics::drawRescaledImage(const Image *image, int srcX, int srcY,
                                        int dstX, int dstY,
                                        int width, int height,
-                                       int desiredWidth, int desiredHeight,
-                                       bool useColor)
+                                       int desiredWidth, int desiredHeight)
 {
     return drawRescaledImageF(image, srcX, srcY, dstX, dstY,
-                              width, height, desiredWidth, desiredHeight,
-                              useColor);
+                              width, height, desiredWidth, desiredHeight);
 }
 
 bool OpenGLGraphics::drawRescaledImageF(const Image *image, int srcX, int srcY,
                                         float dstX, float dstY,
                                         int width, int height,
-                                        float desiredWidth, float desiredHeight,
-                                        bool useColor)
+                                        float desiredWidth, float desiredHeight)
 {
     if (!image)
         return false;
@@ -241,24 +238,16 @@ bool OpenGLGraphics::drawRescaledImageF(const Image *image, int srcX, int srcY,
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
 
-    if (!useColor)
-        glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
-
-    bindTexture(Image::mTextureType, image->mGLImage);
-
-    setTexturingAndBlending(true);
+    prepareRenderImage(image);
 
     // Draw a textured quad.
     drawRescaledQuad(image, srcX, srcY, dstX, dstY, width, height,
                      desiredWidth, desiredHeight);
 
-    if (!useColor)
-    {
-        glColor4ub(static_cast<GLubyte>(mColor.r),
-                   static_cast<GLubyte>(mColor.g),
-                   static_cast<GLubyte>(mColor.b),
-                   static_cast<GLubyte>(mColor.a));
-    }
+    glColor4ub(static_cast<GLubyte>(mColor.r),
+               static_cast<GLubyte>(mColor.g),
+               static_cast<GLubyte>(mColor.b),
+               static_cast<GLubyte>(mColor.a));
 
     return true;
 }
@@ -280,11 +269,7 @@ void OpenGLGraphics::drawImagePattern(const Image *image, int x, int y, int w, i
     const auto tw = static_cast<float>(image->getTextureWidth());
     const auto th = static_cast<float>(image->getTextureHeight());
 
-    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
-
-    bindTexture(Image::mTextureType, image->mGLImage);
-
-    setTexturingAndBlending(true);
+    prepareRenderImage(image);
 
     unsigned int vp = 0;
     const unsigned int vLimit = vertexBufSize * 4;
@@ -414,11 +399,7 @@ void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
     if (srcW == 0 || srcH == 0)
         return;
 
-    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
-
-    bindTexture(Image::mTextureType, image->mGLImage);
-
-    setTexturingAndBlending(true);
+    prepareRenderImage(image);
 
     unsigned int vp = 0;
     const unsigned int vLimit = vertexBufSize * 4;
@@ -534,7 +515,10 @@ void OpenGLGraphics::drawRescaledImagePattern(const Image *image,
             drawQuadArrayii(vp);
     }
 
-    glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+    glColor4ub(static_cast<GLubyte>(mColor.r),
+               static_cast<GLubyte>(mColor.g),
+               static_cast<GLubyte>(mColor.b),
+               static_cast<GLubyte>(mColor.a));
 }
 
 void OpenGLGraphics::updateScreen()
@@ -761,6 +745,23 @@ void OpenGLGraphics::bindTexture(GLenum target, GLuint texture)
         mLastImage = texture;
         glBindTexture(target, texture);
     }
+}
+
+void OpenGLGraphics::prepareRenderImage(const Image *image)
+{
+    GLubyte r = 255, g = 255, b = 255, a = 255;
+    if (image->useColor())
+    {
+        r = static_cast<GLubyte>(mColor.r);
+        g = static_cast<GLubyte>(mColor.g);
+        b = static_cast<GLubyte>(mColor.b);
+        a = static_cast<GLubyte>(mColor.a);
+    }
+    glColor4ub(r, g, b, a * image->getAlpha());
+
+    bindTexture(Image::mTextureType, image->mGLImage);
+
+    setTexturingAndBlending(true);
 }
 
 inline void OpenGLGraphics::drawQuadArrayfi(int size)

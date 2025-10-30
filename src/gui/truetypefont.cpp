@@ -82,6 +82,8 @@ void TextChunk::render(Graphics *graphics,
         {
             img.reset(Image::load(surface));
             SDL_FreeSurface(surface);
+            if (img)
+                img->setUseColor(true);
         }
     }
 
@@ -91,8 +93,7 @@ void TextChunk::render(Graphics *graphics,
                                      img->getWidth(),
                                      img->getHeight(),
                                      img->getWidth() / scale,
-                                     img->getHeight() / scale, true);
-
+                                     img->getHeight() / scale);
     }
 }
 

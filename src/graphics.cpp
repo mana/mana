@@ -61,8 +61,7 @@ bool Graphics::drawRescaledImageF(const Image *image,
                                   int srcX, int srcY,
                                   float dstX, float dstY,
                                   int width, int height,
-                                  float desiredWidth, float desiredHeight,
-                                  bool useColor)
+                                  float desiredWidth, float desiredHeight)
 {
     return drawRescaledImage(image,
                              srcX, srcY,
@@ -70,30 +69,28 @@ bool Graphics::drawRescaledImageF(const Image *image,
                              static_cast<int>(dstY),
                              width, height,
                              static_cast<int>(desiredWidth),
-                             static_cast<int>(desiredHeight),
-                             useColor);
+                             static_cast<int>(desiredHeight));
 }
 
 bool Graphics::drawImage(const Image *image,
                          int srcX, int srcY,
                          int dstX, int dstY,
-                         int width, int height,
-                         bool useColor)
+                         int width, int height)
 {
     return drawRescaledImage(image,
                              srcX, srcY,
                              dstX, dstY,
                              width, height,
-                             width, height, useColor);
+                             width, height);
 }
 
-bool Graphics::drawImageF(const Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height, bool useColor)
+bool Graphics::drawImageF(const Image *image, int srcX, int srcY, float dstX, float dstY, int width, int height)
 {
     return drawRescaledImageF(image,
                               srcX, srcY,
                               dstX, dstY,
                               width, height,
-                              width, height, useColor);
+                              width, height);
 }
 
 void Graphics::drawImagePattern(const Image *image, int x, int y, int w, int h)

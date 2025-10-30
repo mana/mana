@@ -111,6 +111,7 @@ enum StateFlags : uint8_t
 struct ColoredRectangle
 {
     gcn::Color color;
+    bool useCurrentColor = false;
     bool filled = true;
 };
 

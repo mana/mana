@@ -119,8 +119,7 @@ class Graphics : public gcn::Graphics
                                        int srcX, int srcY,
                                        int dstX, int dstY,
                                        int width, int height,
-                                       int desiredWidth, int desiredHeight,
-                                       bool useColor = false) = 0;
+                                       int desiredWidth, int desiredHeight) = 0;
 
         /**
          * Draws a rescaled version of the image.
@@ -128,8 +127,7 @@ class Graphics : public gcn::Graphics
         virtual bool drawRescaledImageF(const Image *image, int srcX, int srcY,
                                         float dstX, float dstY,
                                         int width, int height,
-                                        float desiredWidth, float desiredHeight,
-                                        bool useColor = false);
+                                        float desiredWidth, float desiredHeight);
 
         /**
          * Blits an image onto the screen.
@@ -140,8 +138,7 @@ class Graphics : public gcn::Graphics
         virtual bool drawImage(const Image *image,
                                int srcX, int srcY,
                                int dstX, int dstY,
-                               int width, int height,
-                               bool useColor = false);
+                               int width, int height);
 
         /**
          * Blits an image onto the screen.
@@ -152,8 +149,7 @@ class Graphics : public gcn::Graphics
         virtual bool drawImageF(const Image *image,
                                 int srcX, int srcY,
                                 float dstX, float dstY,
-                                int width, int height,
-                                bool useColor = false);
+                                int width, int height);
 
         virtual void drawImagePattern(const Image *image,
                                       int x, int y,

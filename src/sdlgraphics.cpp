@@ -113,8 +113,7 @@ bool SDLGraphics::drawRescaledImage(const Image *image,
                                     int srcX, int srcY,
                                     int dstX, int dstY,
                                     int width, int height,
-                                    int desiredWidth, int desiredHeight,
-                                    bool useColor)
+                                    int desiredWidth, int desiredHeight)
 {
     // Check that preconditions for blitting are met.
     if (!image || !image->mTexture)
@@ -135,7 +134,7 @@ bool SDLGraphics::drawRescaledImage(const Image *image,
     dstRect.w = desiredWidth;
     dstRect.h = desiredHeight;
 
-    setColorAlphaMod(image, useColor);
+    setColorAlphaMod(image);
     return SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect) != 0;
 }
 
@@ -144,8 +143,7 @@ bool SDLGraphics::drawRescaledImageF(const Image *image,
                                      int srcX, int srcY,
                                      float dstX, float dstY,
                                      int width, int height,
-                                     float desiredWidth, float desiredHeight,
-                                     bool useColor)
+                                     float desiredWidth, float desiredHeight)
 {
     // Check that preconditions for blitting are met.
     if (!image || !image->mTexture)
@@ -166,7 +164,7 @@ bool SDLGraphics::drawRescaledImageF(const Image *image,
     dstRect.w = desiredWidth;
     dstRect.h = desiredHeight;
 
-    setColorAlphaMod(image, useColor);
+    setColorAlphaMod(image);
     return SDL_RenderCopyF(mRenderer, image->mTexture, &srcRect, &dstRect) == 0;
 }
 #endif
@@ -186,7 +184,7 @@ void SDLGraphics::drawRescaledImagePattern(const Image *image,
     if (scaledHeight <= 0 || scaledWidth <= 0)
         return;
 
-    setColorAlphaMod(image, false);
+    setColorAlphaMod(image);
 
     SDL_Rect srcRect;
     srcRect.x = image->mBounds.x + srcX;
@@ -382,19 +380,18 @@ void SDLGraphics::fillRectangle(const gcn::Rectangle &rectangle)
     SDL_RenderFillRect(mRenderer, &rect);
 }
 
-void SDLGraphics::setColorAlphaMod(const Image *image, bool useColor) const
+void SDLGraphics::setColorAlphaMod(const Image *image) const
 {
-    SDL_Color color = { 255, 255, 255, 255 };
-    if (useColor)
+    Uint8 r = 255, g = 255, b = 255, a = 255;
+    if (image->useColor())
     {
-        color.r = static_cast<uint8_t>(mColor.r);
-        color.g = static_cast<uint8_t>(mColor.g);
-        color.b = static_cast<uint8_t>(mColor.b);
-        color.a = static_cast<uint8_t>(mColor.a);
+        r = static_cast<Uint8>(mColor.r);
+        g = static_cast<Uint8>(mColor.g);
+        b = static_cast<Uint8>(mColor.b);
+        a = static_cast<Uint8>(mColor.a);
     }
-    color.a *= image->getAlpha();
 
     SDL_Texture *texture = image->mTexture;
-    SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
-    SDL_SetTextureAlphaMod(texture, color.a);
+    SDL_SetTextureColorMod(texture, r, g, b);
+    SDL_SetTextureAlphaMod(texture, static_cast<Uint8>(a * image->getAlpha()));
 }

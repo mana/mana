@@ -107,6 +107,16 @@ class Image : public Resource
         { return mAlpha; }
 
         /**
+         * Sets whether the graphics color should be applied when rendering this image.
+         */
+        void setUseColor(bool useColor) { mUseColor = useColor; }
+
+        /**
+         * Returns whether the graphics color should be applied when rendering this image.
+         */
+        bool useColor() const { return mUseColor; }
+
+        /**
          * Creates a new image with the desired clipping rectangle.
          *
          * @return <code>NULL</code> if creation failed and a valid
@@ -152,6 +162,7 @@ class Image : public Resource
 
         SDL_Rect mBounds;
         float mAlpha = 1.0f;
+        bool mUseColor = false;
 
         // -----------------------
         // SDL protected members

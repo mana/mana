@@ -147,7 +147,8 @@ void Skin::draw(Graphics *graphics, const WidgetState &state) const
             {
                 const auto color = graphics->getColor();
                 // TODO: Take GUI alpha into account
-                graphics->setColor(data.color);
+                if (!data.useCurrentColor)
+                    graphics->setColor(data.color);
 
                 const gcn::Rectangle rect(state.x + part.offsetX,
                                           state.y + part.offsetY,
@@ -591,6 +592,7 @@ static void readSkinStateRectNode(XML::Node node, SkinState &state)
 
     node.attribute("color", rect.color);
     node.attribute("alpha", rect.color.a);
+    node.attribute("useCurrentColor", rect.useCurrentColor);
     node.attribute("fill", rect.filled);
 }
 
@@ -687,6 +689,12 @@ void Theme::readSkinStateImgNode(XML::Node node, SkinState &state) const
     node.attribute("offsetX", part.offsetX);
     node.attribute("offsetY", part.offsetY);
 
+    bool useCurrentColor = false;
+    node.attribute("useCurrentColor", useCurrentColor);
+
+    auto subImage = image->getSubImage(x, y, width, height);
+    subImage->setUseColor(useCurrentColor);
+
     if (left + right + top + bottom > 0)
     {
         auto &border = part.data.emplace<ImageRect>();
@@ -694,13 +702,13 @@ void Theme::readSkinStateImgNode(XML::Node node, SkinState &state) const
         border.right = right;
         border.top = top;
         border.bottom = bottom;
-        border.image.reset(image->getSubImage(x, y, width, height));
+        border.image.reset(subImage);
 
         node.attribute("fill", border.fillMode);
     }
     else
     {
-        part.data = image->getSubImage(x, y, width, height);
+        part.data = subImage;
     }
 }
 
