@@ -165,6 +165,7 @@
   <progressbar id="HP" color="#D00000,C09800,779000,008710">
     <text color="#97ff9f" outlineColor="#112211" />
   </progressbar>
+  <progressbar id="HP_SMALL" color="#ff0000,ffff00,00ff00"/>
   <progressbar id="HP_POISON" color="#ffff00,70ff00,50ff00,30ff00" />
   <progressbar id="MP" color="#1250b0">
     <text color="#9dcfff" outlineColor="#111122" />
@@ -481,6 +482,18 @@
   <skin type="EmoteSlot" width="34" height="34">
     <state hovered="true">
       <img src="window.png" x="331" y="0" width="32" height="32" offsetX="1" offsetY="2" />
+    </state>
+  </skin>
+
+  <skin type="HealthBarBackground" padding="2" spacing="2" height="7">
+    <state>
+      <img src="window.png" x="53" y="30" width="7" height="6" left="2" right="2" top="2" bottom="2" />
+    </state>
+  </skin>
+
+  <skin type="HealthBar" height="3">
+    <state>
+      <img src="window.png" x="61" y="32" width="1" height="2" top="1" useCurrentColor="true" />
     </state>
   </skin>
 

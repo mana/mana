@@ -557,6 +557,8 @@ static std::optional<SkinType> readSkinType(std::string_view type)
     if (type == "EquipmentBox")         return SkinType::EquipmentBox;
     if (type == "ItemSlot")             return SkinType::ItemSlot;
     if (type == "EmoteSlot")            return SkinType::EmoteSlot;
+    if (type == "HealthBar")            return SkinType::HealthBar;
+    if (type == "HealthBarBackground")  return SkinType::HealthBarBackground;
     return {};
 }
 
@@ -905,6 +907,7 @@ static int readProgressId(const std::string &id)
     static constexpr const char *colors[Theme::THEME_PROG_END] = {
         "DEFAULT",
         "HP",
+        "HP_SMALL",
         "MP",
         "NO_MP",
         "EXP",

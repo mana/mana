@@ -98,6 +98,8 @@ enum class SkinType
     EquipmentBox,
     ItemSlot,
     EmoteSlot,
+    HealthBar,
+    HealthBarBackground,
 };
 
 enum StateFlags : uint8_t
@@ -269,6 +271,7 @@ class Theme : public EventListener
         enum ProgressPalette {
             PROG_DEFAULT,
             PROG_HP,
+            PROG_HP_SMALL,
             PROG_MP,
             PROG_NO_MP,
             PROG_EXP,

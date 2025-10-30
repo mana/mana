@@ -50,6 +50,8 @@ class Text
 
         void setColor(const gcn::Color *color);
 
+        int getX() const { return mX; }
+        int getY() const { return mY; }
         int getWidth() const { return mWidth; }
         int getHeight() const { return mHeight; }
 

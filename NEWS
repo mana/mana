@@ -1,5 +1,5 @@
 Unreleased
-- Added health bars to damaged monsters
+- Added health bars to damaged and targeted monsters
 - Added support for NPCs asking for items
 - Added support for monster links
 - Added --log-file parameter to set log file path or '-' for stdout

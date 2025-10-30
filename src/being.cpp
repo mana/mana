@@ -1007,28 +1007,37 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
         mText = nullptr;
     }
 
-    // Draw HP bar for alive monsters which are damaged
-    if (isAlive() && getType() == MONSTER && mMaxHp > 0 && mHp < mMaxHp)
+    // Draw HP bar for alive monsters which are damaged or targeted
+    if (isAlive() && getType() == MONSTER && mMaxHp > 0 && (mHp < mMaxHp || mShowName))
     {
-        const int barWidth = 40;
-        const int barHeight = 6;
+        auto theme = gui->getTheme();
+        auto &backgroundSkin = theme->getSkin(SkinType::HealthBarBackground);
+        auto &healthSkin = theme->getSkin(SkinType::HealthBar);
+
+        const auto fontHeight = gui->getFont()->getHeight();
+        const auto nameY = mDispName ? mDispName->getY() : (getPixelY() - getHeight() - 15);
+
+        const int barWidth = std::max(30, getWidth());
         const int barX = px - (barWidth / 2);
-        const int barY = getPixelY() - getHeight() - 10 - offsetY;
+        const int barY = nameY + fontHeight + backgroundSkin.spacing - offsetY;
+        const float hpPercent = static_cast<float>(mHp) / static_cast<float>(mMaxHp);
 
-        float hpPercent = static_cast<float>(mHp) / static_cast<float>(mMaxHp);
-        int filledWidth = static_cast<int>(hpPercent * barWidth);
+        WidgetState state;
+        state.x = barX;
+        state.y = barY;
+        state.width = barWidth;
+        state.height = backgroundSkin.height;
 
-        // Draw background
-        graphics->setColor(gcn::Color(0, 0, 0));
-        graphics->fillRectangle(gcn::Rectangle(barX, barY, barWidth, barHeight));
+        auto *g = static_cast<Graphics*>(graphics);
+        backgroundSkin.draw(g, state);
 
-        // Draw filled part
-        graphics->setColor(gcn::Color(255, 0, 0));
-        graphics->fillRectangle(gcn::Rectangle(barX, barY, filledWidth, barHeight));
+        state.width = static_cast<int>(hpPercent * (barWidth - 2 * backgroundSkin.padding));
+        state.height = healthSkin.height;
+        state.x += backgroundSkin.padding;
+        state.y += backgroundSkin.padding;
 
-        // Draw border
-        graphics->setColor(gcn::Color(128, 128, 128));
-        graphics->drawRectangle(gcn::Rectangle(barX, barY, barWidth, barHeight));
+        g->setColor(theme->getProgressColor(Theme::PROG_HP_SMALL, hpPercent));
+        healthSkin.draw(g, state);
     }
 }
 
@@ -1039,7 +1048,7 @@ void Being::updateNamePosition()
 
     // Monster names show above the sprite instead of below it
     if (getType() == MONSTER)
-        mDispName->adviseXY(getPixelX(), getPixelY() - getHeight());
+        mDispName->adviseXY(getPixelX(), getPixelY() - getHeight() - 15);
     else
         mDispName->adviseXY(getPixelX(), getPixelY() + mDispName->getHeight());
 }
