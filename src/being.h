@@ -454,8 +454,8 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         void lookAt(const Position &destPos)
         { lookAt(Vector(destPos.x, destPos.y)); }
 
-        int mHp;
-        int mMaxHp;
+        int mHp = 0;
+        int mMaxHp = 0;
 
     protected:
         struct SpriteState {
