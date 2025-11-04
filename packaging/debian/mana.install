@@ -1,5 +1,0 @@
-debian/mana.desktop usr/share/applications
-debian/mana.xpm usr/share/pixmaps
-data/icons/mana.png usr/share/icons
-docs/mana.6 usr/share/man/man6
-src/mana usr/games
