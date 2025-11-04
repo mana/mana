@@ -120,7 +120,7 @@ Map *MapReader::readMap(XML::Node node, const std::string &path)
     if (tilew < 0 || tileh < 0)
     {
         Log::info("MapReader: Warning: "
-                  "Unitialized tile width or height value for map: %s",
+                  "Missing tilewidth or tileheight attributes for map: %s",
                   path.c_str());
         return nullptr;
     }

@@ -284,7 +284,7 @@ void SDLGraphics::drawPoint(int x, int y)
 {
     if (mClipStack.empty())
     {
-        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw funtion outside of _beginDraw() and _endDraw()?");
+        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw function outside of _beginDraw() and _endDraw()?");
     }
 
     const gcn::ClipRectangle &top = mClipStack.top();
@@ -307,7 +307,7 @@ void SDLGraphics::drawLine(int x1, int y1, int x2, int y2)
 {
     if (mClipStack.empty())
     {
-        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw funtion outside of _beginDraw() and _endDraw()?");
+        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw function outside of _beginDraw() and _endDraw()?");
     }
 
     const gcn::ClipRectangle &top = mClipStack.top();
@@ -329,7 +329,7 @@ void SDLGraphics::drawRectangle(const gcn::Rectangle &rectangle)
 {
     if (mClipStack.empty())
     {
-        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw funtion outside of _beginDraw() and _endDraw()?");
+        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw function outside of _beginDraw() and _endDraw()?");
     }
 
     const gcn::ClipRectangle &top = mClipStack.top();
@@ -352,7 +352,7 @@ void SDLGraphics::fillRectangle(const gcn::Rectangle &rectangle)
 {
     if (mClipStack.empty())
     {
-        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw funtion outside of _beginDraw() and _endDraw()?");
+        throw GCN_EXCEPTION("Clip stack is empty, perhaps you called a draw function outside of _beginDraw() and _endDraw()?");
     }
 
     const gcn::ClipRectangle &top = mClipStack.top();
